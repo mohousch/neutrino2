@@ -556,7 +556,7 @@ int CLanguageSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			}
 		}
 		
-		return ret;
+		return RETURN_EXIT;
 	}
 	
 	showMenu();
