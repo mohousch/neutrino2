@@ -1,0 +1,544 @@
+#	yWeb language file (Englisch) by yjogol
+#	language version: 1.1
+#	$Date: 2010-03-18 19:34:14 +0100 (Do, 18 M�r 2010) $
+#	$Revision: 509 $
+=========== GENERAL / GLOBAL
+global.no_iframes=Your Browser does not support IFrames.
+clear=clear
+submit=Submit
+action=Action
+user=User
+password=Password
+language=Language
+general=General
+logos=Logos
+url=URL
+server=Server
+refreshing=refreshing ...
+refresh=refresh
+record=record
+zap=zap
+lookup=lookup
+save_values_desc=submit and save values
+save_values=Save values ...
+save=save
+save_all=save all
+administration=Administration
+normal=Normal
+management=Management
+uninstaller=Uninstaller
+send=send
+cancel=cancel
+answer=Answer
+reboot=reboot
+shutdown=shutdown
+status=Status
+restart=restart
+on=on
+off=off
+download=Download
+back=back
+date=date
+from=from
+to=to
+program=program
+others=Others
+description=description
+color=Color
+tag=Tag
+empty=empty
+check=check
+help=Help
+restriced_by_management_ip=restricted by ManagementIP
+
+#========= MAIN Menue
+main.live_tv_desc=LiveTV
+main.live_tv_popup_desc=LiveTV popup
+main.remote_full_desc=Remote & OSD full
+main.stream_to_vlc_client_desc=Stream to VLC Client
+main.version=Version
+
+# =========Main Menue
+main.boxcontrol=Boxcontrol
+main.boxcontrol_desc=Boxcontrol & Bouquets
+main.live=Live
+main.live_desc=LiveView, Timer Sync &amp; Settings
+main.tools=Tools
+main.tools_desc=Mounts, WOL, Expert Tools
+main.settings=Settings
+main.settings_desc=Settings for Box, Web, Plugins ...
+main.extensions=Extensions
+main.extensions_desc=User Extensions ...
+main.info=Info
+main.info_desc=Information about yWeb, Updates
+
+#========= Boxcontrol Menue
+bc.menue.bouquets_desc=Switch channels
+bc.menue.bouquets=Bouquets
+bc.menue.control_desc=control box functions (reboot, remote control, SPTS, ...)
+bc.menue.control=Control
+bc.menue.messages_desc=send Messages to box
+bc.menue.messages=Messages
+bc.menue.remote_desc=Web-based Remote Control
+bc.menue.remote=Remote
+bc.menue.lcd_screenshot_desc=make lcd screenshot
+bc.menue.lcd_screenshot=LCD Screenshot
+bc.menue.lcd_screenshot_desc_ni=lcshot not installed at /bin or /var/bin
+bc.menue.osd_screenshot_desc=make osd screenshot
+bc.menue.osd_screenshot=OSD Screenshot
+bc.menue.osd_screenshot_desc_ni=fbshot not installed at /bin or /var/bin
+bc.menue.tv_screenshot_desc=make tv screenshot
+bc.menue.tv_screenshot=TV Screenshot
+bc.menue.tv_screenshot_desc_ni=grab not installed at /bin, /usr/bin or /var/bin
+bc.menue.remote_osd_desc=remote and osd
+bc.menue.remote_osd=Remote & OSD
+bc.menue.remote_osd_desc_ni=dboxshot not installed at /bin or /var/bin
+
+bc.menue.decrease_volume=decrease volumen
+bc.menue.increase_volume=increase volumen
+bc.menue.mute_volume=mute volumen
+bc.menue.switch_to_tv=switch to TV
+bc.menue.switch_to_radio=switch to Radio
+bc.menue.webinf_slavebox=Webinterface der SlaveBox
+bc.menue.volumen_display=volumen display
+
+========= Boxcontrol
+bc.control.freemem=FreeMem
+bc.control.lock=lock
+bc.control.unlock=unlock
+bc.control.lcd_unlock=LCD unlock
+bc.control.standby_mode=standby mode
+bc.control.recording_mode=recording mode
+bc.control.box=box
+bc.control.remote=remote
+bc.control.playback=playback
+bc.control.epg_sectiond=EPG Sectiond
+bc.control.spts=SPTS
+bc.control.live_lock=live lock
+bc.control.optical_output=optical output
+bc.control.esound_server=ESound Server
+bc.control.reboot.ask=Really restart the Box?
+bc.control.reboot=reboot
+bc.control.shutdown.ask=Really shutdown the Box?
+bc.control.shutdown=shutdown
+bc.control.status=status
+bc.control.restart=restart
+
+========= Boxcontrol - Message
+bc.msg.message_to_screen_desc=enter message to send to TV screen
+bc.msg.message_to_screen=Message on screen
+bc.msg.popup_to_screen=Message as popup
+bc.msg.send_message=send message
+
+======== Boxcontrol - Remote & OSD
+bc.osd.shot=OSD Shot
+bc.osd.delete_shots=Delete shots
+bc.osd.shap_wait_text=Take Snapshot
+bc.tv.shot=TV Shot
+bc.all.shot=Shot
+
+========= Boxcontrol - Others
+bc.channels=Channels
+
+====== EXtension
+ext.installer_updater=Installer/Updater
+ext.uninstaller=Extensions Uninstaller
+ext.search_for_ext=Search for Extensions ...
+ext.installed_extensions=installed extensions
+ext.type=Type
+ext.extension=Extension
+ext.tag=Tag
+ext.version=Version
+ext.size=Size/k
+ext.uninstall=Uninstall
+ext.info=Info
+ext.free=Free
+ext.action=Action
+ext.status=Status
+ext.preview=New extension settings (preview)
+ext.update_preview=Update Preview List
+ext.your=Your
+ext.update=Update
+ext.update_install=update/install
+ext.site=Site
+ext.refresh_now=Settings saved. Refreshing Menue now.
+ext.ext_saved=Extensions Settings saved
+
+====== Bouquet
+bou.bouquet=Bouquet
+bou.bouquets_must_be_saved=All bouquets must be saved!
+bou.bouquet_editor=Bouquet-Editor
+bou.bouquet_add=add bouquet
+bou.name_of_bouquet=Name of bouquets
+bou.rename_bouquet=rename bouquet
+bou.move_up=move up
+bou.move_down=move down
+bou.remove=remove
+bou.delete=delete
+bou.add=add
+bou.rename=rename
+bou.bouqets_saved=Bouquets saved
+bou.delete1=Really delete Bouquet
+bou.delete2=
+bou.no_bouquet_name=No Bouquet-Name entered
+
+========EPG
+epg.get_epg=get EPG ...
+epg.epg_plus=EPG Plus
+epg.select_bouquet=select bouquet - channels will be updated
+epg.hover_for_details=move to program for more details
+epg.refresh=get or refresh EPG
+epg.past_hours=past hours
+epg.next_hours=next hours
+epg.set_timer=Set timer for recording. Done.
+epg.zap_to=Set switch to channel. Done.
+
+========EPG Streaminfo
+epg.si.streaminfo=Streaminfo
+epg.si.resolution=Resolution
+epg.si.ratio=Aspect Ratio
+epg.si.fps=Frames per second
+epg.si.audiotype=Audio type
+epg.si.frequence=Frequency
+epg.si.onid=Original Network ID
+epg.si.sid=Service ID
+epg.si.tsid=Transponder Stream ID
+epg.si.vpid=Video PID
+epg.si.apid=Audio PID
+epg.si.vtxtpid=Teletext PID
+epg.si.crypt=Crypt systems
+
+========Settings
+set.reload_neutrino=reload Neutrino
+set.reboot_required=reboot required
+set.sync_with_neutrino_desc=After changing settings via yWeb: <br/>Choose on TV "Main Menu->Service->Soft restart", to accept the changes within neutrino.<br/><br/>After changing settings within Neutrino: <br/>Choose on TV "Main Menu->Settings->Save settings now", to accept these changes and reload this page.
+set.sync_with_neutrino=Synchronization with Neutrino
+
+=======Settings General & Menue
+set.menue.webserver=Webserver
+set.menue.ucodes=Ucodes
+set.menue.boot_logo=Boot Logo
+set.menue.timer_settings=Timer Settings
+set.menue.zapit=Zapit
+set.menue.backup_restore=Backup &amp; Restore
+set.menue.bouquet_editor=Bouquet-Editor
+set.menue.video_audio=Video/Audio
+set.menue.parental=Parental
+set.menue.direct_recording=Direct Recording
+set.menue.recording=Recording
+set.menue.audio_player=Audioplayer
+set.menue.esound_server=Esound Server
+set.menue.movieplayer=Movieplayer
+set.menue.pictureviewer=Picture Viewer
+set.menue.lcd_display=LC-Display
+set.menue.key_settings=Key Layout
+set.menue.boot_options=Boot options
+set.menue.peronalization=Personalization
+set.menue.plugins=Plugins
+set.menue.others=Others
+========Neutrino Settings - Recording
+set.rec.rec_dest=Recoring destination
+set.rec.device=Recording device
+set.rec.recmode=record mode
+set.rec.server=Server
+set.rec.recorder=Video recorder
+set.rec.file=File
+set.rec.recserver_ip=Recording Server IP
+set.rec.recserver_port=Recording Server Port
+set.rec.recserver_wol=Recording Server WOL
+set.rec.mac_adress=MAC Adress
+set.rec.rec_behavior=Recording behavior
+set.rec.stop_playback=Stop Playback
+set.rec.epg_sectionsd_desc=sectionsd: off/on/restart
+set.rec.epg_sectionsd=EPG (Sectionsd)
+set.rec.dont_stop=dont stop
+set.rec.stop=stop
+set.rec.restart=restart
+set.rec.zap=Zap on announcement
+set.rec.scart=Prevent switching Scart
+set.rec.spts=Record in SPTS-Mode
+set.rec.timer_settings=Timer settings
+set.rec.start_delay=Record start delay (sec)
+set.rec.stop_delay=Record stop delay (sec)
+set.rec.zap_delay=Zap start delay (sec)
+set.rec.audio_channels=Audio channels
+set.rec.audio_standard=Record standard audio channel
+set.rec.audio_alternate=Record alternate audio channel
+set.rec.audio_ac3=Record ac3 audio channel
+set.rec.timeshift_desc=Timeshift
+set.rec.recording_dir= Record directory
+set.rec.timeshift.recordtime=Recording time in hours
+set.rec.timeshift.pause=Pause
+set.rec.timeshift.auto_record=Autom. Recording (in Sec, 0=deactivate)
+set.rec.timeshift.auto_delete=Automatic deletion
+set.rec.timeshift.permanent_timeshift=Permanent timeshift
+set.rec.channeldir=Save in channeldir
+set.rec.epg_filename=Filename(with EPG-data)
+
+========Neutrino Settings - Movieplayer
+set.mp.sources=Sources
+set.mp.streamingserver_ip=Streamingserver IP
+set.mp.streamingserver_port=Streamingserver Port
+set.mp.streamingserver=Streamingserver
+set.mp.dvd_device=DVD Device
+set.mp.vlc_dir=Directory (VLC)
+set.mp.transcoding=Transcoding
+set.mp.video_datarate=Data rate Video
+set.mp.transcode=Transcode
+set.mp.video_codec=MPEG Video Codec
+set.mp.resolution=Resolution
+set.mp.audio_datarate=Data rate Audio
+set.mp.transcode_audio=Transcode Audio (dvd/vcd/mpg)
+set.mp.force_ac3=Force AC3 using avi
+set.mp.player=Player
+set.mp.start_directory=Start directory
+set.mp.only_movieplayer=Only Movieplayer1
+set.mp.used_buffer=Used Buffer (WabberQueue)
+set.mp.number_buffersegments=Number of buffer segs
+set.mp.picture_in_browser=TV Picture in Browser
+set.mp.multi_select=Multi select in filebrowser
+
+========Neutrino Settings - Parental
+set.parental.activate=Activate
+set.parental.type.never=Never
+set.parental.type.bouquet=Bouquet
+set.parental.type.preset=Preset
+set.parental.minimum_age=Minimum Age
+set.parental.pin=PIN
+
+========Settings NHTTP
+set.nhttpd.webserver=Webserver
+set.nhttpd.authentication=Authentication
+set.nhttpd.client_without_authentication_desc=Client with no authentication check. Enter IP.
+set.nhttpd.client_without_authentication=Client without Authentication
+set.nhttpd.active_after_boot=active after boot
+set.nhttpd.port=Port
+set.nhttpd.threading=Threading
+set.nhttpd.alternate_web_folder=Alternate Web-Folder
+set.nhttpd.allowed_file_extensions=Allowed File Extensions / MIME
+set.nhttpd.allow_all_file_extensions=Allow all File Extensions
+set.nhttpd.url_of_logos_desc=Enter URL or directory of Logos
+set.nhttpd.url_of_logos=URL or directory of Logos
+set.nhttpd.server=Server
+set.nhttpd.ips_without_keep_alive_desc=(e.g. JtG Server, separate with commas)
+set.nhttpd.ips_without_keep_alive=IPs with No keep-alive
+set.nhttpd.cache=Cache
+set.nhttpd.cache_info=Cache info
+set.nhttpd.clear_cache=clear cache
+set.nhttpd.server_configuration=Server Configuration
+set.nhttpd.check_password=Password must have 4 letters at minimum
+set.nhttpd.check_port=Port is required
+
+=========Settings yWeb
+set.yweb.enter_ip_desc=enter IP (xxx.xxx.xxx.xxx)
+set.yweb.enter_mac_desc=enter MAC Adress (xx:xx:xx:xx:xx:xx)
+set.yweb.description=Description
+set.yweb.enter_description_desc=enter description
+set.yweb.management_IPs=Management IPs
+set.yweb.wake_on_lan=Wake on Lan
+set.yweb.box_tag_desc=Box Name in Top-Menue.
+set.yweb.box_tag=Box Tag
+set.yweb.box_color_desc=Box Name color in Top-Menue. e.g. enter 2188e0 without #
+set.yweb.box_color=Color
+set.yweb.start_page=Start page
+set.yweb.remote=Remote
+
+========Settings Picture viewer
+set.pv.pictureviewer=Pictureviewer
+set.pv.scale=Scaling
+set.pv.scale.none=none
+set.pv.scale.simple=simple
+set.pv.scale.complex=complex
+set.pv.slideshow_duration=Slideshow View time
+set.pv.start_dir=Start Directory
+set.pv.decoding_server_ip=Decoding-Server IP
+set.pv.decoding_server_port=Decoding-Server Port</td>
+
+========Settings Audioplayer
+set.ap.audioplayer=Audioplayer
+set.ap.display_order.actor_title=Actor, Title
+set.ap.display_order.title_actor=Title, Actor
+set.ap.display_order=Display
+set.ap.select_actual_track=Select actual Track
+set.ap.search_by_name=Search by name
+set.ap.repeat_mode=Activate repeat mode
+set.ap.show_playlist=Show playlists
+set.ap.screensaver=Screen saver (min, 0=off)
+set.ap.decode_priority=High decoding priority
+set.ap.start_dir=Start directory
+set.ap.parse_shoutcast=Shoutcast Meta-Data
+
+========Settings Timer
+set.timer.header=Timer Settings
+set.timer.username=Username
+set.timer.password=Password
+set.timer.klack.url_desc=("&" will be converted to ";" on save)
+set.timer.klack.url=Personal RSS TV-Planer URL
+set.timer.klack.security_code_desc=your klack security code to get your data without login
+set.timer.klack.security_code=Security Code
+set.timer.channel_name_replacelist=Channel name replace list
+
+============ Tools Info
+tools.info.show_messages=Kernel Messages
+tools.info.processes=Processes
+tools.info.memory=Memory
+tools.info.cpu_info=CPU info
+tools.info.mem_info=Memory info
+tools.info.partitions=Partitions
+tools.info.mtd=mtd
+tools.info.stat=Statistics
+tools.info.version=Version
+
+============ Tools yInstaller
+tools.yinstaller.no_file_given=No file given!
+tools.yinstaller.space.var=Space in /var total
+tools.yinstaller.space.used=k used
+tools.yinstaller.space.free=k free
+tools.yinstaller.space.percentage=k percentage used
+tools.yinstaller.not_determine=Can not determine free space. /var is no partition! JFFS2, YADD or USB?
+tools.yinstaller.head=yInstaller
+tools.yinstaller.tar_file=tar-File
+tools.yinstaller.upload_install=upload and install
+
+============ Tools
+tools.automount_desc=organize file automounts
+tools.automount=AutoMounts
+tools.mounts_desc=organize file mounts
+tools.mounts=Mounts
+tools.wake_on_lan=Wake on LAN
+tools.check_install=Check Install
+tools.expert=Expert
+tools.image_desc=backup or flash image
+tools.image=Image
+tools.command_shell=Command Shell
+tools.not_installed=not installed
+tools.cmd_shell.output_desc=automatic output scrolling (only IE)
+tools.path=Path
+tools.command=Command
+tools.cmd.enter_command=enter command to execute
+tools.cmd.execute_command=execute shell command
+
+=========== LIVE Menue
+live.heading=Live/Timer
+live.live=Live
+live.tv_popup_desc=LiveTV (popup)
+live.tv=TV
+live.radio_popup_desc=LiveRadio (popup)
+live.radio=Radio
+live.double_view=DoubleView
+live.timer=Timer
+live.epg=EPG
+live.epg_plus_popup_desc=EPG+ (popup)
+live.epg_plus=EPG Plus
+live.timer_sync=Timer Sync
+
+=========== LIVE tv/radio
+live.get_stream_info=Getting <br/>Streaming-Informationen.
+live.getting_bouquets=getting bouquets ...
+live.getting_channels=getting channels ...
+live.select_resolution=select resolution
+live.change_channel=change channel
+live.view_epg=view epg for selected channel
+live.reload=reload bouquets and channels
+live.getting_subchannels=getting subchannels ...
+live.mute=mute / unmute volume
+live.stop=stop streaming
+live.play_or_pause=play or pause streaming
+live.lower_volume=lower volume
+live.higher_volume=higher volume
+live.fullscreen=switch to fullscreen-mode - or use double-click
+live.lock_unlock=lock / unlock TV (record mode, rc, lcd)
+live.toggle_udp=UDP Streaming on/off
+live.settings=LiveView settings
+live.snapshot=create snapshot picture
+live.record=record mode
+live.transcode=transcode mode
+live.build_vlc=... build vlc control ...
+live.select_bouquet=select bouquet - channels will be updated
+live.select_channel=select channel - use go to zap
+live.live_popup_msg=Under Live-View do not zap channels direct by the web or by the box' RC.
+live.unlock=unlock RC
+
+=========== LIVE Record
+live.rec.record_mode=Record Mode
+live.rec.filename=Filename
+live.rec.display_on=Display on
+live.rec.transcoding_on=Transcoding on
+live.rec.record=Record
+live.rec.stop_record=Stop Record
+live.rec.tanscode=Record Transcode
+live.rec.profile=Profile
+live.rec.video=Video
+live.rec.width=Width
+live.rec.height=Height
+live.rec.codec=Codec
+live.rec.bitrate=Bitrate
+live.rec.scale=Scale
+live.rec.audio=Audio
+live.rec.channels=Channels
+live.rec.trans_broadcast=Transcode-Broadcast
+live.rec.access=Access
+live.rec.type=Type
+live.rec.ip_port=IP:Port
+
+=========== LIVE Settings
+live.set.vlc_settings=VLC Settings (IE &amp; Mozilla >= 0.8.6.1)
+live.set.deinterlace=Deinterlace
+live.set.http_caching=http caching
+live.set.udp_defaul=UDP as default
+live.set.slavebox_ip=Slave Box IP (2. dbox)
+live.set.enter_ip=enter IP (xxx.xxx.xxx.xxx) of slave-box
+live.set.vlc_rec_dir=VLC Recording Directory
+live.set.refresh_liveview=Refresh LiveView
+
+=========== LIVE Timer Edit
+live.timer_edit.timer=Timer
+live.timer_edit.times=Times
+live.timer_edit.alarm_date=Alarm date
+live.timer_edit.time=Time
+live.timer_edit.stop_date=Stop date
+live.timer_edit.repeat=Repeat
+live.timer_edit.repeat1=Repeat (0 = unlimited)
+live.timer_edit.weekdays.format=(Mo-Su, X=Timer)
+live.timer_edit.weekdays=Weekdays
+live.timer_edit.values=Values
+live.timer_edit.channel=Channel
+live.timer_edit.apids=APIDs
+live.timer_edit.apids.default=Default
+live.timer_edit.apids.standard=Standard
+live.timer_edit.apids.alt=Alternative
+live.timer_edit.apids.ac3=AC3
+live.timer_edit.apids=APids
+live.timer_edit.standby=Standby
+live.timer_edit.plugin=Plugin
+live.timer_edit.rec_dir=Recordind directory
+live.timer_edit.description=Description
+
+=========== LIVE Timer Sync
+live.timer-sync.get_timer=Get timer.
+live.timer-sync.header=Timer Sync
+live.timer-sync.timer_source=Timer Source
+live.timer-sync.rec_dir=Recording directory
+live.timer-sync.settings=Settings
+live.timer-sync.debugging=Debugging
+live.timer-sync.get_selected=get selected
+live.timer-sync.clear_all=clear all
+live.timer-sync.timer_preview=Timer Preview List
+live.timer-sync.start_time=Start time
+live.timer-sync.end_time=End time
+live.timer-sync.channel=Channel
+ive.timer-sync.programm=Program
+live.timer-sync.source=Source
+live.timer-sync.set_timer=set timer
+live.timer-sync.clear_log=clear log
+live.timer-sync.log=Log
+live.timer-sync.action=Action
+live.timer-sync.status=Status
+
+========== INFO
+info.help=Help
+info.About=About
+info.check_for_updates=Check for Updates
+info.your_version=Your Version
+info.actual_version=Actual Version
+

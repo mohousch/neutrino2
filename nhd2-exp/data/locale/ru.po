@@ -1,0 +1,3628 @@
+# Russian translations for neutrinohd2 package.
+# Copyright (C) 2022 THE neutrinohd2'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the neutrinohd2 package.
+# Automatically generated, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrinohd2 4.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-09 18:44+0200\n"
+"PO-Revision-Date: 2022-04-21 22:31+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+msgid "'X'=timer '-' no timer"
+msgstr ""
+
+#, c-format
+msgid "(%d%% over)"
+msgstr ""
+
+msgid "(Date)"
+msgstr "(Дата)"
+
+msgid "(Re)-Calculate Positions"
+msgstr "(Re)-Рассчитать позиции"
+
+msgid "(Size)"
+msgstr "(Размер)"
+
+msgid "(a) Motor Position:"
+msgstr "(a) Положение мотора:"
+
+msgid "(b) Movement:"
+msgstr "(b) Движение:"
+
+msgid "(c) Step Size:"
+msgstr "(c) Размер шага:"
+
+msgid "(filename)"
+msgstr "(имя файла)"
+
+msgid "(filename2)"
+msgstr "(имя файла2)"
+
+msgid "(relative, in seconds)"
+msgstr "(относительный, это секунды)"
+
+#, c-format
+msgid "(starting in %d min)"
+msgstr "(начиная с %d мин)"
+
+msgid "(type)"
+msgstr "(тип)"
+
+msgid "0 for unlimited repeats"
+msgstr "0 для неограниченного количества повторов"
+
+msgid "12 years"
+msgstr "12 лет"
+
+msgid "16 years"
+msgstr "16 лет"
+
+msgid "18 years"
+msgstr "18 лет"
+
+msgid "6 years"
+msgstr "6 лет"
+
+msgid "?"
+msgstr "?"
+
+msgid "A/V sync"
+msgstr "A/V sync"
+
+msgid "AC3 Delay"
+msgstr "Задержка AC3"
+
+msgid "AV Select"
+msgstr "Выбрать AV"
+
+msgid "Abortion of channel scan"
+msgstr "Прерывание сканирования канала"
+
+msgid "Absolute start directory"
+msgstr "Абсолютный начальный каталог"
+
+msgid "Actions"
+msgstr "Действия"
+
+msgid "Activate changes"
+msgstr "Активировать изменения"
+
+msgid "Activate settings"
+msgstr "Активировать настройки"
+
+msgid "Actors"
+msgstr "Актеры"
+
+msgid "Add"
+msgstr "Добавить"
+
+msgid "Add to Bouquets"
+msgstr "Добавить в букеты"
+
+msgid "Additional paths"
+msgstr "Дополнительные пути"
+
+msgid "Advanced"
+msgstr "Advanced"
+
+msgid "Age"
+msgstr "Возраст"
+
+msgid "Alarm time"
+msgstr "Время будильника"
+
+msgid "All Channels"
+msgstr "Все каналы"
+
+msgid "All Services"
+msgstr "Все сервисы"
+
+msgid "All services"
+msgstr "Все сервисы"
+
+msgid "Alpha"
+msgstr "Альфа"
+
+msgid "Alpha Setup"
+msgstr "Альфа настройка"
+
+msgid "Analog Output"
+msgstr "Аналоговый выход"
+
+msgid "Antenna positioning"
+msgstr "Позиционирование антенны"
+
+msgid "Arabic"
+msgstr "Арабский"
+
+msgid "Are you sure ?"
+msgstr "Вы уверены ?"
+
+msgid "Are you sure to format ? You will lost all data "
+msgstr "Вы уверены в форматировании ? Вы потеряете все данные"
+
+msgid "Are you sure to init ?"
+msgstr "Вы уверены, что init ?"
+
+msgid "Artist: "
+msgstr "Артист"
+
+msgid "Aspect Ratio"
+msgstr "Соотношение сторон"
+
+msgid "Audio"
+msgstr "Аудио"
+
+msgid "Audio PIDs"
+msgstr "Аудио PIDs"
+
+msgid "Audio Player"
+msgstr "Аудиоплеер"
+
+msgid "Audio Playlist"
+msgstr "Список воспроизведения аудио"
+
+msgid "Audio language preferences"
+msgstr "Настройки языка аудио"
+
+msgid "Audio master"
+msgstr "Audio master"
+
+msgid "Audio settings"
+msgstr "Настройки звука"
+
+msgid "Audioplayer"
+msgstr "Аудиоплеер"
+
+msgid "Audioplayer settings"
+msgstr "Настройки аудиоплеера"
+
+msgid "Audiotype"
+msgstr "Аудиотип"
+
+msgid "Auto Play"
+msgstr "Автоматическое воспроизведение"
+
+msgid "Auto select audio"
+msgstr "Автоматический выбор звука"
+
+msgid "Auto select subtitles"
+msgstr "Автоматический выбор субтитров"
+
+msgid "Auto-Scan"
+msgstr "Автосканирование"
+
+msgid "Auto-Scan multiple Satellites"
+msgstr "Автоматическое сканирование нескольких спутников"
+
+msgid "Available Images/Packages"
+msgstr "Доступные Images/Packages"
+
+msgid "BOTTOM"
+msgstr "кнопка"
+
+msgid "BOTTOM LEFT"
+msgstr "Кнопка лево"
+
+msgid "BOTTOM RIGHT"
+msgstr "Кнопка право"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "Background"
+msgstr "Background"
+
+msgid "Backup failed"
+msgstr "Сбой резервного копирования"
+
+msgid "Bandwidth"
+msgstr "Пропускная способность"
+
+msgid "Bitrate"
+msgstr "Битрейт"
+
+msgid "Bookmark"
+msgstr "Закладка"
+
+msgid "Bookmark change"
+msgstr "Изменение закладки"
+
+msgid "Bookmarks"
+msgstr "Закладки"
+
+msgid "Border"
+msgstr "Граница"
+
+msgid "Bosnian"
+msgstr "Боснийский"
+
+msgid "Bouquet"
+msgstr "Букет"
+
+msgid "Bouquet Editor"
+msgstr "Редактор букетов"
+
+msgid "Bouquet back"
+msgstr "Букет обратно"
+
+msgid "Bouquets"
+msgstr "Букеты"
+
+msgid "Box Info"
+msgstr "Информация о ресивере"
+
+msgid ""
+"Box will shutdown in 1 min.\n"
+"Cancel Sutdown ?"
+msgstr ""
+"Ресивер выключится через 1 минуту.\n"
+"Отменить выключение ?"
+
+msgid "Brightness"
+msgstr "Яркость"
+
+msgid "Broadcast"
+msgstr "Трансляция"
+
+msgid "Browser Options"
+msgstr "Параметры браузера"
+
+msgid "Browser hight [Pixel]"
+msgstr "Высота браузера [Пиксель]"
+
+msgid "Built date: "
+msgstr "Дата сборки: "
+
+msgid "Buttons Bar"
+msgstr "Панель кнопок"
+
+msgid "Buttons Line"
+msgstr "Линия кнопок"
+
+msgid "CAM init complete"
+msgstr "CAM init complete"
+
+msgid "CAM inserted in slot"
+msgstr "CAM inserted in slot"
+
+msgid "CAM removed from slot"
+msgstr "CAM removed from slot"
+
+msgid "CI Cam"
+msgstr "CI Cam"
+
+msgid "CI Cam settings"
+msgstr "CI Cam settings"
+
+msgid "CI cam reset"
+msgstr "CI cam reset"
+
+msgid "CIFS"
+msgstr "CIFS"
+
+msgid "CORNER ALL"
+msgstr "CORNER ALL"
+
+msgid "CORNER NONE"
+msgstr "CORNER NONE"
+
+msgid "CPU:"
+msgstr "CPU:"
+
+msgid "Cable"
+msgstr "Cable"
+
+msgid "Cable:"
+msgstr "Cable:"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Cancel movie cut/split ?"
+msgstr "Отменить вырезание/разделение фильма ?"
+
+msgid "Change PIN code"
+msgstr "Изменить PIN-код"
+
+msgid "Change sort order"
+msgstr "Изменить порядок сортировки"
+
+msgid "Channel"
+msgstr "Канал"
+
+msgid "Channel (short) / Sep.-Line / Title"
+msgstr "Канал (короткий) / Строка / Название"
+
+msgid "Channel (short) / Title"
+msgstr "Канал (короткий) / Название"
+
+msgid "Channel / Sep.-Line / Title"
+msgstr "Канал / Строка / Название"
+
+msgid "Channel / Title"
+msgstr "Канал / Название"
+
+msgid "Channel Logo"
+msgstr "Логотип канала"
+
+msgid "Channel down"
+msgstr "Channel down"
+
+msgid "Channel name"
+msgstr "Название канала"
+
+msgid "Channel not available"
+msgstr "Канал недоступен"
+
+msgid "Channel up"
+msgstr "Канал вверх"
+
+msgid "Channel:"
+msgstr "Канал:"
+
+msgid "Channellist"
+msgstr "Список каналов"
+
+msgid "Channellist settings"
+msgstr "Установки списка каналов"
+
+msgid "Check filesystem"
+msgstr "Проверка файловой системы"
+
+msgid "Clear all"
+msgstr "Очистить все"
+
+msgid "Code Rate HP"
+msgstr "Code Rate HP"
+
+msgid "Code Rate LP"
+msgstr "Code Rate LP"
+
+msgid "Colour Range"
+msgstr "Цветовая гамма"
+
+msgid "Command failed"
+msgstr "Сбой команды"
+
+msgid "Commited/Uncommited"
+msgstr "Commited/Uncommited"
+
+msgid "Contrast"
+msgstr "Контраст"
+
+msgid "Contrast / Brightness"
+msgstr "Контрастность / Яркость"
+
+msgid "Coping, please wait"
+msgstr "Копирую, пожалуйста, подождите"
+
+msgid "Copy bouquet to Favorites"
+msgstr "Скопировать букет в Избранное"
+
+msgid "Copy failed, is there jump bookmarks ? Or check free space."
+msgstr "Ошибка копирования, есть ли переходные закладки ? Или проверьте свободное место."
+
+msgid "Copy if destination is empty only"
+msgstr "Копировать, только если целевое содержимое пусто"
+
+msgid "Copy jumps"
+msgstr "Копирование прыжков"
+
+msgid "Copy jumps from movie to new file ?"
+msgstr "Копировать переходы из фильма в новый файл ?"
+
+msgid "Corner"
+msgstr "Угол"
+
+msgid "Correction time in min. (00=off). This time"
+msgstr "Время коррекции - мин. (00=выкл.). На этот раз"
+
+msgid "Country"
+msgstr "Страна"
+
+msgid "Create bookmark"
+msgstr "Создать закладку"
+
+msgid "Create list of HD channels"
+msgstr "Создать список HD-каналов"
+
+msgid "Current Track"
+msgstr "Текущий трек"
+
+msgid "Current key"
+msgstr "Текущий ключ"
+
+msgid "Current transponder"
+msgstr "Текущий транспондер"
+
+msgid "Current version"
+msgstr "Текущая версия"
+
+msgid "Cut failed, is there jump bookmarks ? Or check free space."
+msgstr "Вырезать не удалось, есть ли закладки перехода ? Или проверьте свободное место"
+
+msgid "Cut jumps"
+msgstr "Cut jumps"
+
+msgid "Cut jumps from movie ?"
+msgstr "Вырезать прыжки из фильма ?"
+
+msgid "Cutting, please wait"
+msgstr "Резка, пожалуйста, подождите"
+
+msgid "Czech"
+msgstr "Чешский"
+
+msgid "DHCP"
+msgstr "DHCP"
+
+msgid "Dark to Light"
+msgstr "От темного к светлому"
+
+msgid "Dark to Light to Dark"
+msgstr "От темного к светлому к темному"
+
+msgid "Data"
+msgstr "Данные"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Date:"
+msgstr "Дата:"
+
+msgid "Date: "
+msgstr "Дата: "
+
+msgid "Debug"
+msgstr "Отладка"
+
+msgid "Decrease Motor Position (a)"
+msgstr "Уменьшить положение двигателя (a)"
+
+msgid "Default"
+msgstr "По умолчанию"
+
+msgid "Default (Channel)"
+msgstr "По умолчанию (канал)"
+
+msgid "Default gateway"
+msgstr "Шлюз по умолчанию"
+
+msgid "Default theme"
+msgstr "Тема по умолчанию"
+
+msgid "Delayed shutdown"
+msgstr "Отложенное завершение работы"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Delete all"
+msgstr "Удалить все"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Description: "
+msgstr "Описание: "
+
+msgid "Details current program"
+msgstr "Подробная информация о текущей программе"
+
+msgid "DiSEqC"
+msgstr "DiSEqC"
+
+msgid "DiSEqC 1.0"
+msgstr "DiSEqC 1.0"
+
+msgid "DiSEqC 1.1"
+msgstr "DiSEqC 1.1"
+
+msgid "DiSEqC-repeats"
+msgstr "DiSEqC-повторы"
+
+msgid "Diashow mode"
+msgstr "Diashow режим"
+
+msgid "Dim timeout"
+msgstr "Dim timeout"
+
+msgid "Dir"
+msgstr "Dir"
+
+msgid "Direct-Mode"
+msgstr "Прямой режим"
+
+msgid "Director"
+msgstr "Директор"
+
+msgid "Directory for updates"
+msgstr "Директория для обновлений"
+
+msgid "Disable (soft) Limits"
+msgstr "Отключить (soft) Limits"
+
+msgid "Discard changes?"
+msgstr "Отменить изменения?"
+
+msgid "Diseqc input"
+msgstr "Diseqc вход"
+
+msgid "Display image"
+msgstr "Отображение изображения"
+
+msgid "Display settings"
+msgstr "Настройки дисплея"
+
+msgid "Do not scale picture"
+msgstr "Не масштабировать изображение"
+
+#, c-format
+msgid ""
+"Do you really want to flash?\n"
+"\n"
+"If a error occurs or the image is not\n"
+"valid, the box will not boot after flashing.\n"
+"\n"
+"Imagename: %s\n"
+"Target: %s"
+msgstr ""
+"Do you really want to flash?\n"
+"\n"
+"If a error occurs or the image is not\n"
+"valid, the box will not boot after flashing.\n"
+"\n"
+"Imagename: %s\n"
+"Target: %s"
+
+msgid "Do you want to overwrite this file:"
+msgstr "Вы хотите перезаписать этот файл:"
+
+msgid "Do you want to restore the previous settings?"
+msgstr "Вы хотите восстановить предыдущие настройки?"
+
+msgid "Docs:"
+msgstr "Docs"
+
+msgid "Dolby Digital"
+msgstr "Dolby Digital"
+
+msgid "Drive Mode"
+msgstr "Drive Mode"
+
+msgid "Drive Mode/auto stop"
+msgstr "Drive Mode/auto stop"
+
+msgid "Dutch"
+msgstr "Голландский"
+
+msgid "EPG"
+msgstr "EPG"
+
+msgid "EPG / Timer"
+msgstr "EPG / Timer"
+
+msgid "EPG Date"
+msgstr "EPG Date"
+
+msgid "EPG Info 1"
+msgstr "EPG Info 1"
+
+msgid "EPG Info 2"
+msgstr "EPG Info 2"
+
+msgid "EPG Info1"
+msgstr "EPG Info1"
+
+msgid "EPG Info2"
+msgstr "EPG Info2"
+
+msgid "EPG Long Description (hours)"
+msgstr "EPG Long Description (hours)"
+
+msgid "EPG Plus"
+msgstr "Обзор списка событий"
+
+msgid "EPG Title"
+msgstr "EPG Title"
+
+msgid "EPG is not available"
+msgstr "EPG недоступен"
+
+msgid "EPG not available"
+msgstr "EPG недоступен"
+
+msgid "EPG not loaded..."
+msgstr "EPG не загружен..."
+
+msgid "EPG remove after (std.)"
+msgstr "EPG remove after (std.)"
+
+msgid "EPG save path"
+msgstr "Путь сохранения EPG"
+
+msgid "EPG settings"
+msgstr "Настройки EPG"
+
+msgid "EPG-Cache (Days)"
+msgstr "EPG-Cache (Days)"
+
+msgid "East"
+msgstr "Восток"
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "Enable (soft) Limits"
+msgstr "Включить (soft) Limits"
+
+msgid "Enable standby"
+msgstr "Включить режим ожидания"
+
+msgid "English"
+msgstr "Английский"
+
+msgid "Enter 0 to switch of the blocker (red is space)"
+msgstr "Enter 0 to switch of the blocker (red is space)"
+
+msgid "Enter jump target"
+msgstr "Введите цель прыжка"
+
+msgid "Enter new Position (s)"
+msgstr "Введите новую позицию (позиции)"
+
+msgid "Enter standby"
+msgstr "Войти в режим ожидания"
+
+msgid "Enter your new youth protection pin code here!"
+msgstr "Введите здесь свой новый PIN-код защиты!"
+
+msgid "Error"
+msgstr "Ошибка"
+
+msgid "Event list"
+msgstr "Список событий"
+
+msgid "Eventlist current programm"
+msgstr "Список событий текущей программы"
+
+msgid "Eventlist overview"
+msgstr "Обзор списка событий"
+
+msgid "Events Textcolor"
+msgstr "Events Textcolor"
+
+msgid "Execute plugin"
+msgstr "Выполнить плагин"
+
+msgid "Exit"
+msgstr "Выход"
+
+msgid "Expert functions"
+msgstr "Экспертные функции"
+
+msgid "Expert-functions"
+msgstr "Эксперт-функции"
+
+msgid "FEC"
+msgstr "FEC"
+
+msgid "FEC_NONE"
+msgstr "FEC_NONE"
+
+msgid "Failed to load Netzkino Movies"
+msgstr "Не удалось загрузить фильмы Netzkino"
+
+msgid "Failed to load youtube feed"
+msgstr "Не удалось загрузить канал YouTube"
+
+msgid "Fast/timeshift record time(hours)"
+msgstr "Fast/timeshift record time(hours)"
+
+msgid "Favorites"
+msgstr "Избранное"
+
+msgid "Features"
+msgstr "Плагины"
+
+msgid "File could not be created:"
+msgstr "Файл не может быть создан:"
+
+msgid "File selector"
+msgstr "Селектор файлов"
+
+msgid "File size (MB)"
+msgstr "Размер файла (МБ)"
+
+msgid "File system"
+msgstr "Файловая система"
+
+msgid "Filebrowser"
+msgstr "Файловый браузер"
+
+msgid "Filebrowser settings"
+msgstr "Настройки файлового браузера"
+
+msgid "Filename of the play list"
+msgstr "Имя файла списка воспроизведения"
+
+msgid "Filenames (with EPG data)"
+msgstr "Имена файлов (с данными EPG)"
+
+msgid "Files Browser"
+msgstr "Браузер файлов"
+
+msgid "Film Informationen"
+msgstr "Фильм о"
+
+msgid "Filter movies by category:"
+msgstr "Фильтровать фильмы по категориям:"
+
+msgid "Filter off"
+msgstr "Фильтр выключен"
+
+msgid "Filter on"
+msgstr "Фильтр включен"
+
+msgid "Filter:"
+msgstr "Фильтр:"
+
+msgid "Focus"
+msgstr "Фокус"
+
+msgid "Font"
+msgstr "Шрифт"
+
+msgid "Font name"
+msgstr "Имя шрифта"
+
+msgid "Foot"
+msgstr "Foot"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Forum:"
+msgstr "Forum:"
+
+#, c-format
+msgid ""
+"Found the following new image:\n"
+"Date: %s, %s\n"
+"BaseImage: %s\n"
+"ImageType: %s\n"
+"\n"
+"Do you want to install this version now?"
+msgstr ""
+"Found the following new image:\n"
+"Date: %s, %s\n"
+"BaseImage: %s\n"
+"ImageType: %s\n"
+"\n"
+"Do you want to install this version now?"
+
+#, c-format
+msgid ""
+"Found the following new package:\n"
+"Package: %s\n"
+"Date: %s, %s\n"
+"BaseImage: %s\n"
+"Type: %s\n"
+"\n"
+"Do you want to download and install this version now?"
+msgstr ""
+"Found the following new package:\n"
+"Package: %s\n"
+"Date: %s, %s\n"
+"BaseImage: %s\n"
+"Type: %s\n"
+"\n"
+"Do you want to download and install this version now?"
+
+msgid "Framerate"
+msgstr "Частота кадров"
+
+msgid "French"
+msgstr "Французский"
+
+msgid "Frequency"
+msgstr "Частота"
+
+msgid "Frequency:"
+msgstr "Частота:"
+
+msgid "Friday"
+msgstr "Пятница"
+
+msgid "Frontend:"
+msgstr "Frontend:"
+
+msgid "Fullscreen"
+msgstr "Полноэкранный режим"
+
+msgid "General settings"
+msgstr "Общие настройки"
+
+msgid "Generic delay"
+msgstr "Общая задержка"
+
+msgid "Genre"
+msgstr "Жанр"
+
+msgid "Genre: "
+msgstr "Жанр:"
+
+msgid "German"
+msgstr "Немецкий"
+
+msgid "Goto Motor Position (a)"
+msgstr "Goto Motor Position (a)"
+
+msgid "Goto Reference Position"
+msgstr "Исходная позиция"
+
+msgid "Gradient"
+msgstr "Градиент"
+
+msgid "Gradient direction"
+msgstr "Направление градиента"
+
+msgid "Guard Interval"
+msgstr "Защитный интервал"
+
+msgid "Guests"
+msgstr "Гости"
+
+msgid "HD Kino"
+msgstr "HD Kino"
+
+msgid "HDD Devices:"
+msgstr "Жесткие диски:"
+
+msgid "HDD Filexplorer"
+msgstr "HDD Filexplorer"
+
+msgid "HDD Format"
+msgstr "Формат жесткого диска"
+
+msgid "HDD Init"
+msgstr "Инициализация жесткого диска"
+
+msgid "HDD Mount"
+msgstr "Монтирование жесткого диска"
+
+msgid "HDD Mount Failed"
+msgstr "Не удалось примонтировать жесткий диск"
+
+msgid "HDD Mount failed !"
+msgstr "Не удалось примонтировать жесткий диск !"
+
+msgid "HDD Mounted"
+msgstr "Жесткий диск смонтирован"
+
+msgid "HDD Umount"
+msgstr "Жесткий диск отмонтирован"
+
+msgid "HDD check failed !"
+msgstr "Проверка жесткого диска не удалась !"
+
+msgid "HDD format failed !"
+msgstr "Сбой формата жесткого диска !"
+
+msgid "HDD init failed !"
+msgstr "Сбой инициализации жесткого диска !"
+
+msgid "HDD mounted"
+msgstr "Жесткий диск смонтирован"
+
+msgid "HDD settings"
+msgstr "Настройки жесткого диска"
+
+msgid "HDD umount"
+msgstr "Жесткий диск отмонтирован"
+
+msgid "HDD umounted"
+msgstr "Жесткий диск отмонтирован"
+
+msgid "HDD unmount failed !"
+msgstr "Не удалось размонтировать жесткий диск !"
+
+msgid "HDMI Color Space"
+msgstr "Цветовое пространство HDMI"
+
+msgid "Halt Motor"
+msgstr "Halt Motor"
+
+msgid "Hdd Format"
+msgstr "Формат жесткого диска"
+
+msgid "Head"
+msgstr "Head"
+
+msgid "Help"
+msgstr "Помощь"
+
+msgid "Here you can select a skin from the following list."
+msgstr "Здесь вы можете выбрать скин из следующего списка"
+
+msgid "Hide series"
+msgstr "Скрыть серию"
+
+msgid "Hierarchy"
+msgstr "Иерархия"
+
+msgid "High decode priority"
+msgstr "Высокий приоритет декодирования"
+
+msgid "Highlight"
+msgstr "Подсветка"
+
+msgid "Hintbox Border"
+msgstr "Hintbox Border"
+
+msgid "History"
+msgstr "История"
+
+msgid "Home page:"
+msgstr "Домашняя страница:"
+
+msgid "Horizontal"
+msgstr "Горизонтальный"
+
+msgid "Horizontal (in %)"
+msgstr "Горизонтальный (in %)"
+
+msgid "Hostname"
+msgstr "Имя хоста"
+
+msgid "Hot Keys mapping"
+msgstr "Настройка кнопок пульта"
+
+msgid "How long into the future will EPG extended descriptions"
+msgstr "Как долго в будущем будут расширяться описания EPG"
+
+msgid "How long will EPG-Data be stored after they timed out?"
+msgstr "Как долго будут храниться EPG-данные после истечения срока их действия?"
+
+msgid "How long will EPG-Data in the future cached?"
+msgstr "Как долго EPG-данные будут кэшироваться в будущем?"
+
+msgid "How many events should be stored?"
+msgstr "Сколько событий должно быть сохранено?"
+
+msgid "ICE Cast"
+msgstr "ICE Cast"
+
+msgid "IP address"
+msgstr "IP-адрес"
+
+msgid "IP:"
+msgstr "IP:"
+
+msgid "ISO-8859-1"
+msgstr "ISO-8859-"
+
+msgid "Image info"
+msgstr "Информация о Image"
+
+msgid "Image info:"
+msgstr "Информация о Image:"
+
+msgid "Image:"
+msgstr "Image:"
+
+msgid "ImageType"
+msgstr "ImageType"
+
+msgid "Impossible to truncate playing movie."
+msgstr "Невозможно усечь воспроизведение фильма"
+
+msgid "Increase Motor Position (a)"
+msgstr "Увеличить положение двигателя (a)"
+
+msgid "Info"
+msgstr "Информация"
+
+msgid "Info 1"
+msgstr "Информация 1"
+
+msgid "Info 2"
+msgstr "Информация 2"
+
+msgid "Infobar"
+msgstr "Инфобар"
+
+msgid "Infobar Crypticons"
+msgstr "Infobar Crypticons"
+
+msgid "Information"
+msgstr "Информация"
+
+msgid "Install menu"
+msgstr "Меню установки"
+
+msgid "Interface"
+msgstr "Интерфейс"
+
+msgid "Internet Radio"
+msgstr "Интернет-радио"
+
+msgid "Invert"
+msgstr "Инвертировать"
+
+msgid "Is this video mode working ok ?"
+msgstr "Видеорежим работает нормально ?"
+
+msgid "Item Info"
+msgstr "Item Info"
+
+msgid "Jump (<0 back , >0 for):"
+msgstr "Jump (<0 back , >0 for):"
+
+msgid "Jump over"
+msgstr "Jump over"
+
+msgid "Key"
+msgstr "Key"
+
+msgid "Key Repeat-blocker"
+msgstr "Key Repeat-blocker"
+
+msgid "Keybinding settings"
+msgstr "Настройки клавиш"
+
+msgid "Keyword"
+msgstr "Ключевое слово"
+
+msgid "LCD EPG Align"
+msgstr "LCD EPG Align"
+
+msgid "LED-Power"
+msgstr "LED-Power"
+
+msgid "LEFT"
+msgstr "Лево"
+
+msgid "LNB High Offset"
+msgstr "LNB High Offset"
+
+msgid "LNB Low Offset"
+msgstr "LNB Low Offset"
+
+msgid "LNB switch Offset"
+msgstr "LNB switch Offset"
+
+msgid "LUFS"
+msgstr "LUFS"
+
+msgid "LaDirection"
+msgstr "LaDirection"
+
+msgid "Language"
+msgstr "Язык"
+
+msgid "Last Channel"
+msgstr "Последний канал"
+
+msgid "Last Channel settings"
+msgstr "Настройки последнего канала"
+
+msgid "Last play date"
+msgstr "Last play date"
+
+msgid "Last play stop:"
+msgstr "Last play stop:"
+
+msgid "Last played:"
+msgstr "Последнее воспроизведение:"
+
+msgid "Last recorded:"
+msgstr "Последняя запись:"
+
+msgid "Latitude"
+msgstr "Широта"
+
+msgid "Leave standby"
+msgstr "Выйти из режима ожидания"
+
+msgid "Led Color"
+msgstr "Led Color"
+
+msgid "Length"
+msgstr "Длина"
+
+msgid "Length (Min)"
+msgstr "Длина (мин)"
+
+msgid "Length (min"
+msgstr "Длина (мин"
+
+msgid "Length (min)"
+msgstr "Длина (мин)"
+
+msgid "Length: "
+msgstr "Длина:"
+
+msgid "License:"
+msgstr "Лицензия:"
+
+msgid "Light to Dark"
+msgstr "От светлого к темному"
+
+msgid "Light to Dark to Light"
+msgstr "От светлого к темному к светлому"
+
+msgid "Line"
+msgstr "Линия"
+
+msgid "List End"
+msgstr "Конец списка"
+
+msgid "List Start"
+msgstr "Начало списка"
+
+msgid "LoDirection"
+msgstr "LoDirection"
+
+msgid "Load default settings"
+msgstr "Загрузить настройки по умолчанию"
+
+msgid "Loading package list"
+msgstr "Загрузка списка пакетов"
+
+msgid "Lock RC"
+msgstr "Lock RC"
+
+msgid "Lock Remote Control"
+msgstr "Блокировка пульта"
+
+msgid "Lock movies from"
+msgstr "Блокировка фильмов от"
+
+msgid "Lock program"
+msgstr "Блокировка программы"
+
+msgid "Locked Channel"
+msgstr "Блокировка канала"
+
+#, c-format
+msgid "Locked program (from %d years up)"
+msgstr "Заблокированная программа (от %d лет и выше)"
+
+msgid "Longitude"
+msgstr "Долгота"
+
+msgid "Lower Right"
+msgstr "Нижний правый"
+
+msgid "MAC address"
+msgstr "MAC адрес"
+
+msgid "MAC address:"
+msgstr "MAC адрес:"
+
+msgid "MD5 checking"
+msgstr "проверка MD5"
+
+msgid "Main Menu"
+msgstr "Главное меню"
+
+msgid "Make Remaining Channels list"
+msgstr "Составить список оставшихся каналов"
+
+msgid "Manual frequency scan / Test signal"
+msgstr "Ручное частотное сканирование / Тестовый сигнал"
+
+msgid "Manuell(ftp) Software Manager"
+msgstr "Manuell(ftp) Software Manager"
+
+msgid "Mark"
+msgstr "Mark"
+
+msgid "Max. Events"
+msgstr "Max. Events"
+
+msgid "Media"
+msgstr "Медиа"
+
+msgid "Media Player"
+msgstr "Медиаплеер"
+
+msgid "Media Portal"
+msgstr "Медиапортал"
+
+msgid "Menu"
+msgstr "Меню"
+
+msgid "Menu Info"
+msgstr "Информация о меню"
+
+msgid "Menu Title"
+msgstr "Заголовок меню"
+
+msgid "Menu Title 2"
+msgstr "Заголовок меню 2"
+
+msgid "Menu mode"
+msgstr "Режим меню"
+
+msgid "Menutext"
+msgstr "Menutext"
+
+msgid "Message"
+msgstr "Сообщение"
+
+msgid "Messagebox Border"
+msgstr "Messagebox Border"
+
+msgid "Mini-DiSEqC"
+msgstr "Mini-DiSEqC"
+
+msgid "Misc settings"
+msgstr "Разные настройки"
+
+msgid "Mo Tu We Th Fr Sa Su"
+msgstr "Пн Вт Ср Чт Пт Сб Вс"
+
+msgid "Modechange"
+msgstr "Modechange"
+
+msgid "Modify"
+msgstr "Изменить"
+
+msgid "Modify timer"
+msgstr "Modify timer"
+
+msgid "Modulation"
+msgstr "Модуляция"
+
+msgid "Monday"
+msgstr "Понедельник"
+
+msgid "More Screenings on this Channel"
+msgstr "Больше показов на этом канале"
+
+msgid "Most popular today"
+msgstr "Самый популярный сегодня"
+
+msgid "Motor Control Settings"
+msgstr "Настройки управления двигателем"
+
+msgid "Motor Setup"
+msgstr "Настройка двигателя"
+
+msgid "Motor settings"
+msgstr "Установки двигателя"
+
+msgid "Mount network volume"
+msgstr "Монтировать сетевой том"
+
+msgid "Mount options"
+msgstr "Параметры монтирования"
+
+msgid "Move"
+msgstr "Переместить"
+
+msgid "Movie Browser"
+msgstr "Браузер фильмов"
+
+msgid "Movie Trailer"
+msgstr "Трейлер фильма"
+
+msgid "Movie end:"
+msgstr "Конец фильма:"
+
+msgid "Movie info"
+msgstr "Информация о фильме"
+
+msgid "Movie start"
+msgstr "Movie start"
+
+msgid "Movie start:"
+msgstr "Movie start:"
+
+msgid "Moviebrowser"
+msgstr "Moviebrowser"
+
+msgid "Movieplayer"
+msgstr "Movieplayer"
+
+msgid "Movieplayer settings"
+msgstr "Настройки Movieplayer"
+
+msgid "Movies Browser"
+msgstr "Браузеры фильмов"
+
+msgid "My Favorites"
+msgstr "Мои любимые"
+
+msgid "NFS"
+msgstr "NFS"
+
+msgid "NFS settings"
+msgstr "NFS установки"
+
+msgid "NTP-Server"
+msgstr "NTP-Server"
+
+msgid "NTP-Server example: ntp1.ptb.de"
+msgstr "NTP-Server example: ntp1.ptb.de"
+
+msgid "NTP/DVB-Refresh"
+msgstr "NTP/DVB-Refresh"
+
+msgid "NTP/DVB-Time-Sync in minutes"
+msgstr "NTP/DVB-Time-Sync in minutes"
+
+msgid "Name"
+msgstr "Имя"
+
+msgid "Name server"
+msgstr "Имя сервера"
+
+msgid "Netmask"
+msgstr "Сетевая маска"
+
+msgid "Network Mount Manager"
+msgstr "Диспетчер сетевых подключений"
+
+msgid "Network Name"
+msgstr "Сетевое имя"
+
+msgid "Network settings"
+msgstr "Сетевые настройки"
+
+msgid "Netzkino"
+msgstr "Netzkino"
+
+msgid "Neu by Netzkino"
+msgstr "Neu by Netzkino"
+
+msgid "Neu channel"
+msgstr "Новый канал"
+
+msgid "Neutrino Restart"
+msgstr "Перезапуск Нейтрино"
+
+msgid "Neutrino restart"
+msgstr "Перезапуск Нейтрино"
+
+msgid "New Bookmark"
+msgstr "Новая закладка"
+
+msgid "New Movies"
+msgstr "Новые фильмы"
+
+msgid ""
+"New jump back\n"
+" 'blue' for endposition"
+msgstr ""
+
+msgid ""
+"New jump forward\n"
+" 'blue' for endposition"
+msgstr ""
+"New jump forward\n"
+" 'blue' for endposition"
+
+msgid "New timer"
+msgstr "Новый таймер"
+
+msgid "Next"
+msgstr "Следующий"
+
+msgid "Next Page"
+msgstr "Следующая страница"
+
+msgid "Next bouquet"
+msgstr "Следующий букет"
+
+msgid "Next focus"
+msgstr "Следующий фокус"
+
+msgid "Next image"
+msgstr "Следующее изображение"
+
+msgid "Next program"
+msgstr "Следующая программа"
+
+msgid "No"
+msgstr "Нет"
+
+msgid "No CAM in slot"
+msgstr "No CAM in slot"
+
+msgid "No End bookmark defined!"
+msgstr "Закладка конца не определена!"
+
+msgid "No UPnP servers found"
+msgstr "Серверы UPnP не найдены"
+
+msgid ""
+"No channels were found!\n"
+"Please execute a scan\n"
+"(MENU-key -> System)"
+msgstr ""
+"Никаких каналов обнаружено не было!\n"
+"Пожалуйста, выполните сканирование\n"
+"(кнопка-Меню -> Спутник)"
+
+msgid ""
+"No channels were found!\n"
+"Please execute a scan\n"
+"(MENU-key -> service)"
+msgstr ""
+"Никаких каналов обнаружено не было!\n"
+"Пожалуйста, выполните сканирование\n"
+"(кнопка-Меню -> Сервис)"
+
+msgid "No detailed informations available"
+msgstr "Подробная информация недоступна"
+
+msgid "No info for current program available"
+msgstr "Информация о текущей программе недоступна"
+
+msgid "No key"
+msgstr "No key"
+
+msgid "No neutrino-settings found, Using defaults."
+msgstr "Настройки не найдены. Используем по умолчанию."
+
+msgid "Noise"
+msgstr "Шум"
+
+msgid "None"
+msgstr "Нет"
+
+msgid "North"
+msgstr "Север"
+
+msgid "Not available"
+msgstr "Недоступно"
+
+msgid "Not used"
+msgstr "Не используется"
+
+msgid "Now"
+msgstr "Сейчас"
+
+msgid "Number"
+msgstr "Номер"
+
+msgid "Number of lines last play"
+msgstr "Количество линий последнего воспроизведения"
+
+msgid "Number of lines last record"
+msgstr "Количество строк последней записи"
+
+msgid "Numeric Zap"
+msgstr "Номер Zap"
+
+msgid "OK"
+msgstr "Ок"
+
+msgid "OK saves, HOME! aborts"
+msgstr "OK saves, HOME! aborts"
+
+msgid "OPKG-Manager"
+msgstr "OPKG-Manager"
+
+msgid "OSD"
+msgstr "OSD"
+
+msgid "Off"
+msgstr "Выкл."
+
+msgid "On"
+msgstr "Вкл."
+
+msgid ""
+"One or several recording processes are active.\n"
+"If you encounter this message and no recording is active, please restart Neutrino."
+msgstr ""
+"One or several recording processes are active.\n"
+"If you encounter this message and no recording is active, please restart Neutrino."
+
+msgid "Online EPG"
+msgstr "Online EPG"
+
+msgid "Online Software Manager"
+msgstr "Online Software Manager"
+
+msgid "Only radio"
+msgstr "Только радио"
+
+msgid "Only tv"
+msgstr "Только тв"
+
+msgid "Options"
+msgstr "Параметры"
+
+msgid "Order by"
+msgstr "Заказать по"
+
+msgid "Original Title"
+msgstr "Оригинальное название"
+
+msgid "Original title"
+msgstr "Оригинальное название"
+
+msgid "Other"
+msgstr "Другое"
+
+msgid "Overwrite?"
+msgstr "Перезаписать?"
+
+msgid "PCM Delay"
+msgstr "Задержка PCM"
+
+msgid "PSI Setup"
+msgstr "PSI Setup"
+
+msgid "PSI settings"
+msgstr "PSI settings"
+
+msgid "Package successfully installed"
+msgstr "Пакет успешно установлен"
+
+msgid "Page Down"
+msgstr "Страница вниз"
+
+msgid "Page Up"
+msgstr "Страница вверх"
+
+msgid "Parental Lock"
+msgstr "Родительская блокировка"
+
+msgid "Parentallock settings"
+msgstr "Настройка родительского крнтроля"
+
+msgid "Partition selector"
+msgstr "Селектор разделов"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "Path"
+msgstr "Путь"
+
+msgid "Paths"
+msgstr "Пути"
+
+msgid "Permanent timeshift"
+msgstr "Постоянный сдвиг времени"
+
+msgid "Picture"
+msgstr "Картинка"
+
+msgid "Pictureviewer"
+msgstr "Pictureviewer"
+
+msgid "Pictureviewer settings"
+msgstr "Pictureviewer settings"
+
+msgid "Playtime"
+msgstr "Время воспроизведения"
+
+msgid "Please enter jump target"
+msgstr "Please enter jump target"
+
+msgid "Please enter the filename of the playlist"
+msgstr "Пожалуйста, введите имя файла списка воспроизведения"
+
+msgid "Please press the new key"
+msgstr "Пожалуйста, нажмите новую клавишу"
+
+msgid "Plugin"
+msgstr "Плагин"
+
+msgid "Plugins"
+msgstr "Плагины"
+
+msgid "Polarization"
+msgstr "Поляризация"
+
+msgid "Polish"
+msgstr "Польский"
+
+msgid "Portugues"
+msgstr "Portugues"
+
+msgid "Position:"
+msgstr "Позиция:"
+
+msgid "Power Menu"
+msgstr "Меню питания"
+
+msgid "Prefer TMBD infos ?"
+msgstr "Prefer TMBD infos ?"
+
+msgid "Prefer TMDB Infos"
+msgstr "Prefer TMDB Infos"
+
+msgid "Prefer TMDB infos"
+msgstr "Prefer TMDB infos"
+
+msgid "Prefer TMDB infos ?"
+msgstr "Prefer TMDB infos ?"
+
+msgid "Prefered subtitle language"
+msgstr "Предпочтительный язык субтитров"
+
+msgid "Preferred EPG language"
+msgstr "Предпочтительный язык EPG"
+
+msgid "Preferred language"
+msgstr "Предпочтительный язык"
+
+msgid "Presenter"
+msgstr "Presenter"
+
+msgid "Prev Page"
+msgstr "Prev Page"
+
+msgid "Previous image"
+msgstr "Предыдущее изображение"
+
+msgid "Program unknown"
+msgstr "Программа неизвестна"
+
+msgid "Progressbar Color"
+msgstr "Цвет прогрессбара"
+
+msgid "Prompt for PIN"
+msgstr "Запрос ПИН-кода"
+
+msgid "Provider"
+msgstr "Провайдер"
+
+msgid "Provider:"
+msgstr "Провайдер:"
+
+msgid "Providers"
+msgstr "Провайдеры"
+
+msgid "Proxy server"
+msgstr "Прокси-сервер"
+
+msgid "Proxyserver"
+msgstr "Proxyserver"
+
+msgid "Quality"
+msgstr "Качество"
+
+msgid "Quickzap"
+msgstr "Quickzap"
+
+msgid "RIGHT"
+msgstr "Право"
+
+msgid "Radio"
+msgstr "Радио"
+
+msgid "Radio Channel"
+msgstr "Радиоканал"
+
+msgid "Radio Mode"
+msgstr "Радио"
+
+msgid "Radio Text"
+msgstr "Радиотекст"
+
+msgid "Radius"
+msgstr "Радиус"
+
+msgid "Read one partition"
+msgstr "Чтение одного раздела"
+
+msgid "Read whole image"
+msgstr "Чтение всего изображения"
+
+msgid "Reading Flash"
+msgstr "Чтение флэш"
+
+msgid "Reboot"
+msgstr "Перезагрузка"
+
+msgid "Receipt signal"
+msgstr "Сигнал приема"
+
+msgid "Receiving list, please wait"
+msgstr "Получение списка, пожалуйста, подождите"
+
+msgid "Record"
+msgstr "Запись"
+
+msgid "Record AC3 streams"
+msgstr "Запись AC3 потока"
+
+msgid "Record alternative streams"
+msgstr "Запись альтернативных потоков"
+
+msgid "Record date"
+msgstr "Дата записи"
+
+msgid "Record default audio streams"
+msgstr "Запись аудиопотоков по умолчанию"
+
+msgid "Record standard stream"
+msgstr "Запись стандартного потока"
+
+msgid "Record start time correction"
+msgstr "Коррекция времени начала записи"
+
+msgid "Record stop time correction"
+msgstr "Коррекция времени остановки записи"
+
+msgid "Recording"
+msgstr "Запись"
+
+msgid "Recording directory"
+msgstr "Каталог записей"
+
+msgid "Recording settings"
+msgstr "Настройки записи"
+
+msgid "Recording starts in a few minutes"
+msgstr "апись начнется через несколько минут"
+
+msgid "Records browser"
+msgstr "Records browser"
+
+msgid "Refresh EPG"
+msgstr "Обновить EPG"
+
+msgid "Region"
+msgstr "Регион"
+
+msgid "Release cycle"
+msgstr "Release cycle"
+
+msgid "Reload"
+msgstr "Перезагрузка"
+
+#, fuzzy
+msgid "Reload EPG"
+msgstr "Перезагрузка"
+
+msgid "Reload channel lists"
+msgstr "Перезагрузка списков каналов"
+
+msgid "Reload movie info at start"
+msgstr "Перезагрузить информацию о фильме"
+
+#, fuzzy
+msgid "Reloading EPG, please be patient."
+msgstr "Перезагрузка списков каналов, пожалуйста, наберитесь терпения"
+
+msgid "Reloading channel lists, please be patient."
+msgstr "Перезагрузка списков каналов, пожалуйста, наберитесь терпения"
+
+msgid "Remind"
+msgstr "Напомнить"
+
+msgid "Reminder"
+msgstr "Напоминание"
+
+msgid "Remote Control lock"
+msgstr "Замок дистанционного управления"
+
+msgid "Remote Control settings"
+msgstr "Настройки пульта"
+
+msgid "Remote control reactivated."
+msgstr "Пульт повторно активирован"
+
+msgid "Remount at start"
+msgstr "Remount at start"
+
+msgid "Repeat"
+msgstr "Повторить"
+
+msgid "Repeat delay"
+msgstr "Задержка повтора"
+
+msgid "Reread image"
+msgstr "Reread image"
+
+msgid "Reread image (no scaling)"
+msgstr "Reread image (no scaling)"
+
+msgid "Reset settings to defaults"
+msgstr "Сброс настроек к значениям по умолчанию"
+
+msgid "Reset to defaults"
+msgstr "Сброс к значениям по умолчанию"
+
+msgid "Resolution"
+msgstr "Разрешение"
+
+msgid "Restore EPG on boot"
+msgstr "Восстановить EPG при загрузке"
+
+msgid "Rotor position"
+msgstr "Положение ротора"
+
+msgid "Row item"
+msgstr "Элемент строки"
+
+msgid "Row settings"
+msgstr "Настройки строки"
+
+msgid "Row width"
+msgstr "Ширина строки"
+
+msgid "Russian"
+msgstr "Русский"
+
+msgid "SB mode"
+msgstr "SB mode"
+
+msgid "SMATV Remote Tuning"
+msgstr "Удаленная настройка SMATV"
+
+msgid "SMBFS"
+msgstr "SMBFS"
+
+msgid "Same TP"
+msgstr "Тот же ТП"
+
+msgid "Sat"
+msgstr "Sat"
+
+msgid "Sat settings"
+msgstr "Настройки Sat"
+
+msgid "SatIP Client Debug"
+msgstr "SatIP Client Debug"
+
+msgid "SatIP Client enabled"
+msgstr "SatIP Client enabled"
+
+msgid "SatIP Server IP"
+msgstr "SatIP Server IP"
+
+msgid "SatIP Server Port"
+msgstr "SatIP Server Port"
+
+msgid "Satellite"
+msgstr "Спутник"
+
+msgid "Satellite Position (Step Mode):"
+msgstr "Положение спутника (шаговый режим):"
+
+msgid "Satellite display on infobar"
+msgstr "Спутниковое отображение на инфобаре"
+
+msgid "Satellite-Bouquet"
+msgstr "Спутник-Букет"
+
+msgid "Satellite:"
+msgstr "Спутник:"
+
+msgid "Satellites"
+msgstr "Спутники"
+
+msgid "Saturation"
+msgstr "Насыщенность"
+
+msgid "Saturday"
+msgstr "Суббота"
+
+msgid "Save RC configuration"
+msgstr "Сохранить конфигурацию пульта"
+
+msgid "Save Timer"
+msgstr "Save Timer"
+
+msgid "Save changes"
+msgstr "Сохранить изменения"
+
+msgid "Save changes in all movie info files"
+msgstr "Save changes in all movie info files"
+
+msgid "Save current theme"
+msgstr "Сохранить текущую тему"
+
+msgid "Save in channel dir"
+msgstr "Save in channel dir"
+
+msgid "Save settings now"
+msgstr "Сохранить настройки сейчас"
+
+msgid "Save settings now?"
+msgstr "Сохранить настройки сейчас?"
+
+msgid "Save timer"
+msgstr "Save timer"
+
+msgid "Save/Restore epg on reboot"
+msgstr "Сохранить/восстановить epg при перезагрузке"
+
+msgid "Saving RC configuration, please wait..."
+msgstr "Сохранение конфигурации пульта, пожалуйста, подождите..."
+
+msgid "Saving current theme!"
+msgstr "Сохранение текущей темы!"
+
+msgid "Saving settings now, please be patient."
+msgstr "Сохранение настроек, пожалуйста, наберитесь терпения."
+
+msgid ""
+"Saving settings now, please be patient.\n"
+" this needs Neutrino restart."
+msgstr ""
+"Сохранение настроек, пожалуйста, наберитесь терпения.\n"
+" нужен перезапуск Neutrino."
+
+msgid "Scaling"
+msgstr "Масштабирование"
+
+msgid "Scan SDT for updates"
+msgstr "Scan SDT for updates"
+
+msgid "Scan again"
+msgstr "Сканировать еще раз"
+
+msgid "Scan for Categories"
+msgstr "Сканирование по категориям"
+
+msgid "Scan for Movies ..."
+msgstr "Сканирование фильмов ..."
+
+msgid "Scan for services"
+msgstr "Сканирование служб"
+
+msgid "Scan transponder"
+msgstr "Сканирование транспондера"
+
+msgid "Scanning for UPnP servers"
+msgstr "Сканирование серверов UPnP"
+
+msgid "Scart Mode"
+msgstr "Scart"
+
+msgid "Schedule"
+msgstr "Расписание"
+
+msgid "Schedule Event"
+msgstr "Запланированное событие"
+
+msgid "Schedule Record"
+msgstr "Запись расписания"
+
+msgid "Screen"
+msgstr "Экран"
+
+msgid "Screen Setup"
+msgstr "Настройка экрана"
+
+msgid "Screenshot"
+msgstr "Скриншот"
+
+msgid "Scroll Mode"
+msgstr "Режим прокрутки"
+
+msgid "Scroll down"
+msgstr "Прокрутка вниз"
+
+msgid "Scroll left"
+msgstr "Прокрутка влево"
+
+msgid "Scroll right"
+msgstr "Прокрутка вправо"
+
+msgid "Scroll up"
+msgstr "Прокрутка вверх"
+
+msgid "Search"
+msgstr "Поиск"
+
+msgid "Search for keyword in EPG..."
+msgstr "Поиск по ключевому слову-это EPG..."
+
+msgid "Search in EPG"
+msgstr "Поиск в EPG"
+
+msgid "Search keyword"
+msgstr "Ключевое слово поиска"
+
+msgid "Search within"
+msgstr "Поиск внутри"
+
+msgid "Security"
+msgstr "Безопасность"
+
+msgid "Select Subservice"
+msgstr "Select Subservice"
+
+msgid "Select audio track"
+msgstr "Выбрать звуковую дорожку"
+
+msgid "Select language"
+msgstr "Выбор языка"
+
+msgid "Select starting-time"
+msgstr "Select starting-time"
+
+msgid "Select theme"
+msgstr "Выбрать тему"
+
+msgid "Select transponder"
+msgstr "Выбрать транспондер"
+
+msgid "Serie"
+msgstr "Serie"
+
+msgid "Serie auto create"
+msgstr "Serie auto create"
+
+msgid "Serien Trailer"
+msgstr "Serien Trailer"
+
+msgid "Server Box GUI"
+msgstr "Server Box GUI"
+
+msgid "Server Box IP"
+msgstr "Server Box IP"
+
+msgid "Server Box type"
+msgstr "Server Box type"
+
+msgid "Server IP"
+msgstr "Server IP"
+
+msgid "Service"
+msgstr "Сервис"
+
+msgid "Servicescan"
+msgstr "Servicescan"
+
+msgid "Set East (soft) Limit"
+msgstr "Устанавливает Восток (soft) Предел"
+
+msgid "Set West (soft) Limit"
+msgstr "Устанавливает Запад (soft) Предел"
+
+msgid "Set in days."
+msgstr "Устанавливается через несколько дней"
+
+msgid "Set in hours"
+msgstr "Устанавливает часы работы"
+
+msgid "Settings"
+msgstr "Настройки"
+
+msgid "Settings backup"
+msgstr "Резервное копирование настроек"
+
+msgid "Settings restore"
+msgstr "восстановить настройки"
+
+msgid "Setup New Key"
+msgstr "Настройка нового ключа"
+
+msgid "Setup network now"
+msgstr "Настройка сети сейчас"
+
+msgid "Setup network now, please wait..."
+msgstr "Настройка сети сейчас, пожалуйста, подождите..."
+
+msgid "Setup network on startup"
+msgstr "Настройка сети при запуске"
+
+msgid "Setup new key"
+msgstr "Настройка нового ключа"
+
+msgid "Setup satellites input / LNB"
+msgstr "Setup satellites input / LNB"
+
+msgid "Shortest time (in ms) to recognize 2 keystrokes"
+msgstr "Shortest time (in ms) to recognize 2 keystrokes"
+
+msgid "Should the search really be aborted?"
+msgstr "Должен ли поиск действительно быть прерван?"
+
+msgid "Show / Gameshow"
+msgstr "Show / Gameshow"
+
+msgid "Show active network settings"
+msgstr "Показать активные сетевые настройки"
+
+msgid "Show file rights"
+msgstr "Показать права на файл"
+
+msgid "Show mode"
+msgstr "Показать режим"
+
+msgid "Shuffle"
+msgstr "Shuffle"
+
+msgid "Shutdown"
+msgstr "Завершение работы"
+
+msgid "Shutdown time in min. (000=off)"
+msgstr "Время выключения - мин. (000=выкл.)"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "Skin Select"
+msgstr "Выбор скина"
+
+msgid "Skin Style Selection"
+msgstr "Выбор стиля скина"
+
+msgid "Skin Style selection"
+msgstr "Выбор стиля скина"
+
+msgid "Skin select"
+msgstr "Выбор скина"
+
+msgid "Sleep time"
+msgstr "Время сна"
+
+msgid "Sleeptimer"
+msgstr "Sleeptimer"
+
+msgid "Sleeptimer in 1 min"
+msgstr "Sleeptimer in 1 min"
+
+msgid "Slideshow"
+msgstr "Слайд-шоу"
+
+msgid "Slideshow display time"
+msgstr "Время отображения слайд-шоу"
+
+msgid "Slovak"
+msgstr "Словацкий"
+
+msgid "Software update"
+msgstr "Обновление программного обеспечения"
+
+msgid "Software update URL"
+msgstr "URL-адрес обновлений программного обеспечения"
+
+msgid "South"
+msgstr "Юг"
+
+msgid "Standby"
+msgstr "Режим ожидания"
+
+msgid "Standby Brightness"
+msgstr "Яркость в режиме ожидания"
+
+msgid "Start"
+msgstr "Старт"
+
+msgid "Start Channel"
+msgstr "Начальный канал"
+
+msgid "Start Channel settings"
+msgstr "Настройки начального канала"
+
+msgid "Start Menu"
+msgstr "Меню"
+
+msgid "Start Mode"
+msgstr "Start Mode"
+
+msgid "Start SatIP Client"
+msgstr "Start SatIP Client"
+
+msgid "Start Search"
+msgstr "Начать поиск"
+
+msgid "Start dir."
+msgstr "Start dir."
+
+msgid "Start movie from:"
+msgstr "Начните фильм с:"
+
+msgid "Start scan"
+msgstr "Начать сканирование"
+
+msgid "Start update of movie info files"
+msgstr "Начать обновление файлов информации о фильме"
+
+msgid "Startup to standby"
+msgstr "Запуск в режим ожидания"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Status line"
+msgstr "Строка состояния"
+
+msgid "Step Mode"
+msgstr "Step Mode"
+
+msgid "Step/Drive Motor East (b,c)"
+msgstr "Step/Drive Motor East (b,c)"
+
+msgid "Step/Drive Motor West (b,c)"
+msgstr "Step/Drive Motor West (b,c)"
+
+msgid "Stop SatIP Client"
+msgstr "Stop SatIP Client"
+
+msgid "Stop subtitles"
+msgstr "Остановить субтитры"
+
+msgid "Stop time"
+msgstr "Остановить время"
+
+msgid "Store Motor Position (a)"
+msgstr "Сохранить положение двигателя (a)"
+
+msgid "Stream information"
+msgstr "Информация о потоке"
+
+msgid "Stretch Mode"
+msgstr "Режим растяжения"
+
+msgid "Subchannel display"
+msgstr "Subchannel display"
+
+msgid "Subchannel down"
+msgstr "Subchannel down"
+
+msgid "Subchannel up"
+msgstr "Subchannel up"
+
+msgid "Subservices"
+msgstr "Подсервисы"
+
+msgid "Subtitle Select"
+msgstr "Выбор субтитров"
+
+msgid "Subtitle language preferences"
+msgstr "Языковые настройки субтитров"
+
+msgid "Subtitles"
+msgstr "Субтитры"
+
+msgid "Subtitles not found"
+msgstr "Субтитры не найдены"
+
+msgid "Sunday"
+msgstr "Воскресенье"
+
+msgid "Svenska"
+msgstr "Svenska"
+
+msgid "Swap rotor east/west"
+msgstr "Swap rotor east/west"
+
+msgid "Switch Step/Drive Mode (b)"
+msgstr "Switch Step/Drive Mode (b)"
+
+msgid "Symbol rate"
+msgstr "Symbol rate"
+
+msgid "Syncronisation via"
+msgstr "Syncronisation via"
+
+msgid "System"
+msgstr "Настройка тюнера"
+
+msgid "TMDB"
+msgstr "TMDB"
+
+msgid "TMDB Infos are not available"
+msgstr "TMDB Infos are not available"
+
+msgid "TMDB Key:"
+msgstr "TMDB Key:"
+
+msgid "TMDB info"
+msgstr "TMDB info"
+
+msgid "TMDB:"
+msgstr "TMDB:"
+
+msgid "TOP"
+msgstr "TOP"
+
+msgid "TOP LEFT"
+msgstr "ВЕРХНИЙ ЛЕВЫЙ"
+
+msgid "TOP RIGHT"
+msgstr "ВВЕРХУ СПРАВА"
+
+msgid "TS Browser"
+msgstr "TS Browser"
+
+msgid "TV"
+msgstr "ТВ"
+
+msgid "TV & Radio"
+msgstr "ТВ и Радио"
+
+msgid "TV Channel"
+msgstr "ТВ каналы"
+
+msgid "TV Mode"
+msgstr "ТВ"
+
+msgid "TV-System"
+msgstr "ТВ-Система"
+
+msgid "TV/Radio-mode"
+msgstr "ТВ/Радио"
+
+msgid "Teletext"
+msgstr "Телетекст"
+
+msgid "Terrestrial"
+msgstr "Terrestrial"
+
+msgid "Terrestrial:"
+msgstr "Terrestrial:"
+
+msgid "Test"
+msgstr "Тест"
+
+msgid "Test Menu"
+msgstr "Тестовое меню"
+
+msgid "Test network now"
+msgstr "Тест сети"
+
+msgid "Test signal"
+msgstr "Тест сигнала"
+
+msgid "Textcolor"
+msgstr "Textcolor"
+
+msgid "The STB will shutdown after this time."
+msgstr "STB завершит работу по истечении этого времени"
+
+msgid ""
+"The event is flagged for record.\n"
+"The box will power on and \n"
+"switch to this channel at the given time."
+msgstr ""
+"The event is flagged for record.\n"
+"The box will power on and \n"
+"switch to this channel at the given time."
+
+msgid ""
+"The event is scheduled.\n"
+"The box will power on and \n"
+"switch to this channel at the given time."
+msgstr ""
+"The event is scheduled.\n"
+"The box will power on and \n"
+"switch to this channel at the given time."
+
+msgid "The extension .m3u will be added automatically"
+msgstr "Расширение .m3u будет добавлено автоматически"
+
+msgid ""
+"The image was successfully flashed.\n"
+"The box will be rebooted now."
+msgstr ""
+"The image was successfully flashed.\n"
+"The box will be rebooted now."
+
+#, c-format
+msgid ""
+"The image was successfully saved \n"
+"under %s."
+msgstr ""
+"The image was successfully saved \n"
+"under %s."
+
+msgid ""
+"The image you have selected is an untested version, this means\n"
+"your box maybe fail to boot after update.\n"
+"\n"
+"Do you really want to update to this version?"
+msgstr ""
+"The image you have selected is an untested version, this means\n"
+"your box maybe fail to boot after update.\n"
+"\n"
+"Do you really want to update to this version?"
+
+msgid ""
+"The neutrino-settings have been updated.\n"
+"New Options will be set to default."
+msgstr ""
+"The neutrino-settings have been updated.\n"
+"New Options will be set to default."
+
+msgid ""
+"The recording directory is not writable.\n"
+"Recording will not work."
+msgstr ""
+"The recording directory is not writable.\n"
+"Recording will not work."
+
+msgid ""
+"The recording was aborted,\n"
+"because the target file could not be opened."
+msgstr ""
+"The recording was aborted,\n"
+"because the target file could not be opened."
+
+msgid "Theme name"
+msgstr "Название темы"
+
+msgid "Themes"
+msgstr "Темы"
+
+msgid "Thursday"
+msgstr "Четверг"
+
+msgid "Time"
+msgstr "Время"
+
+msgid "Time Zone"
+msgstr "Часовой пояс"
+
+msgid "Time in sec. After this time the"
+msgstr "Время в сек. После этого времени"
+
+msgid "Time-Syncronisation"
+msgstr "Синхронизация времени"
+
+msgid "Time:"
+msgstr "Время:"
+
+msgid "Timed Step Mode"
+msgstr "Timed Step Mode"
+
+msgid "Timeout waiting CI menu ready"
+msgstr "Timeout waiting CI menu ready"
+
+msgid "Timer / EPG"
+msgstr "Timer / EPG"
+
+msgid "Timer conflict. Create the timer anyway?"
+msgstr "Timer conflict. Create the timer anyway?"
+
+msgid "Timer settings"
+msgstr "Настройки таймера"
+
+msgid "Timer typ"
+msgstr "Timer typ"
+
+msgid "Timerlist"
+msgstr "Timerlist"
+
+msgid "Timeselection"
+msgstr "Timeselection"
+
+msgid "Timeshift"
+msgstr "Timeshift"
+
+msgid "Timing"
+msgstr "Тайминги"
+
+msgid "Tint"
+msgstr "Оттенок"
+
+msgid "Titel"
+msgstr "Titel"
+
+msgid "Title"
+msgstr "Название"
+
+msgid "Title: "
+msgstr "Название:"
+
+msgid "Total"
+msgstr "Всего"
+
+msgid "Track Infos"
+msgstr "Информация о треке"
+
+msgid "Transmission mode"
+msgstr "Режим передачи"
+
+msgid "Transponders:"
+msgstr "Транспондеры:"
+
+msgid "Transponderscan failed!"
+msgstr "Transponderscan failed!"
+
+msgid "Transponderscan finished."
+msgstr "Transponderscan finished."
+
+msgid "Truncate failed."
+msgstr "Truncate failed."
+
+msgid "Truncate jumps"
+msgstr "Truncate jumps"
+
+msgid "Truncate movie ?"
+msgstr "Truncate movie ?"
+
+msgid "Truncating, please wait"
+msgstr "Truncating, please wait"
+
+msgid "Tuesday"
+msgstr "Вторник"
+
+msgid "Tuner mode"
+msgstr "Режим тюнера"
+
+msgid "Tuner typ"
+msgstr "Тип тюнера"
+
+msgid "Type:"
+msgstr "Тип:"
+
+msgid "UPnP Browser"
+msgstr "UPnP Browser"
+
+msgid "USALS command repeat"
+msgstr "Повторение команды USALS"
+
+msgid "UTF-8"
+msgstr "UTF-8"
+
+msgid "Umount network volume"
+msgstr "Сетьевой том отмонтирован"
+
+msgid "Uncommited/Commited"
+msgstr "Uncommited/Commited"
+
+msgid "Unicable"
+msgstr "Unicable"
+
+msgid "Unicable SCR address"
+msgstr "Unicable SCR address"
+
+msgid "Unicable Setup"
+msgstr "Unicable Setup"
+
+msgid "Unicable frequency"
+msgstr ""
+
+msgid "Unicable settings"
+msgstr "Unicable settings"
+
+msgid "Unicable2 (JESS)"
+msgstr "Unicable2 (JESS)"
+
+msgid "Unknown"
+msgstr "Неизвестно"
+
+msgid "Update failed"
+msgstr "Сбой обновления"
+
+msgid "Upper Left"
+msgstr "Верхний левый"
+
+msgid "Use 0..9, or use Up/Down,"
+msgstr "Используйте 0..9 или используйте верх/низ"
+
+msgid "Use NIT"
+msgstr "Use NIT"
+
+msgid "Use directory"
+msgstr "Использовать каталог"
+
+msgid "Use gotoXX"
+msgstr "Use gotoXX"
+
+msgid "Use movie directory"
+msgstr "Использовать каталог фильмов"
+
+msgid "Use record directory"
+msgstr "Использовать каталог записей"
+
+msgid "User menu"
+msgstr "Меню пользователя"
+
+msgid "User menu F1"
+msgstr "Пользовательское меню - F1"
+
+msgid "User menu F2"
+msgstr "Пользовательское меню - F2"
+
+msgid "User menu F3"
+msgstr "Пользовательское меню - F3"
+
+msgid "User menu F4"
+msgstr "Пользовательское меню - F4"
+
+msgid "User menu blue"
+msgstr "Меню пользователя - синяя клавиша"
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "VTuner Device"
+msgstr "VTuner Device"
+
+msgid "Version:"
+msgstr "Версия:"
+
+msgid "Vertical"
+msgstr "Вертикаль"
+
+msgid "Vertikal (in %)"
+msgstr "Вертикаль (in %)"
+
+msgid "Video Format"
+msgstr "Формат видео"
+
+msgid "Video Resolution"
+msgstr "Разрешение видео"
+
+msgid "Video settings"
+msgstr "Настройки видео"
+
+msgid "Videotext"
+msgstr "Видеотекст"
+
+msgid "Virtual zap"
+msgstr "Virtual zap"
+
+msgid "Volume"
+msgstr "Volume"
+
+msgid "Volume / Playtime"
+msgstr "Volume / Playtim"
+
+msgid "Volume / Playtime / Audio"
+msgstr "Volume / Playtime / Audio"
+
+msgid "Volume Step Size"
+msgstr "Volume Step Size"
+
+msgid "Volume adjustment (in %)"
+msgstr "Volume adjustment (in %)"
+
+msgid "Volumebar"
+msgstr "Volumebar"
+
+msgid "WEBTV"
+msgstr "ВебТВ"
+
+msgid "Wait a few seconds for abort"
+msgstr "Подождите несколько секунд для прерывания"
+
+msgid "Waiting for CI answer"
+msgstr "Waiting for CI answer"
+
+msgid "Waiting for time..."
+msgstr "В ожидании времени..."
+
+msgid "Warn"
+msgstr "Предупредить"
+
+msgid "Wednesday"
+msgstr "Среда"
+
+msgid "West"
+msgstr "Запад"
+
+msgid "Wide Screen Auto"
+msgstr "Wide Screen Auto"
+
+msgid "Window-Content"
+msgstr "Window-Content"
+
+msgid "Window-Content inactive"
+msgstr "Window-Content inactive"
+
+msgid "Window-Content selected"
+msgstr "Window-Content selected"
+
+msgid "Write one partition"
+msgstr "Write one partition"
+
+msgid "Writing Flash"
+msgstr "Запись Flash"
+
+msgid "YT:"
+msgstr "YT:"
+
+msgid "Year"
+msgstr "Год"
+
+msgid "Year of production"
+msgstr "Год выпуска"
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "You really want to to stop record ?"
+msgstr "Вы действительно хотите остановить запись ?"
+
+msgid ""
+"Your Release cycle differs.\n"
+"To continue?"
+msgstr ""
+"Your Release cycle differs.\n"
+"To continue?"
+
+msgid ""
+"Your box remote control will be locked.\n"
+" To unlock it, press <RED> \n"
+" and <MENU> on your remote control."
+msgstr ""
+"Your box remote control will be locked.\n"
+" To unlock it, press <RED> \n"
+" and <MENU> on your remote control."
+
+msgid "Youth protection"
+msgstr "Youth protection"
+
+msgid "Youtube Player"
+msgstr "Youtube Player"
+
+msgid "Zap cycle"
+msgstr "Zap cycle"
+
+msgid "Zap to"
+msgstr "Zap to"
+
+msgid "Zapping History Bouquet"
+msgstr "Zapping History Bouquet"
+
+msgid "Zapto timer in one minute"
+msgstr "Zapto timer in one minute"
+
+msgid "Zoom in"
+msgstr "Увеличить масштаб"
+
+msgid "Zoom out"
+msgstr "Уменьшить масштаб"
+
+msgid "a empty entry means no proxy"
+msgstr "пустая запись означает отсутствие прокси"
+
+msgid "a empty entry means no proxy-auth"
+msgstr "пустая запись означает отсутствие прокси"
+
+msgid "activated"
+msgstr "активирован"
+
+msgid "add channel to my favorites"
+msgstr "добавить канал в избранное"
+
+msgid "adult movie/drama"
+msgstr "фильм для взрослых/драма"
+
+msgid "advanced"
+msgstr "advanced"
+
+msgid "adventure/western/war"
+msgstr "приключения/вестерн/война"
+
+msgid "alpha"
+msgstr "альфа"
+
+msgid "always"
+msgstr "всегда"
+
+msgid "amount of timer repeats"
+msgstr "количество самоповторов"
+
+msgid "angular"
+msgstr "angular"
+
+msgid "approx. 1 minute back"
+msgstr "1 минута назад"
+
+msgid "approx. 10 minutes back"
+msgstr "10 минут назад"
+
+msgid "approx. 5 minutes back"
+msgstr "5 минут назад"
+
+msgid "arts / culture"
+msgstr "искусство / культура"
+
+msgid "arts/culture magazines"
+msgstr "журналы об искусстве и культуре"
+
+msgid "athletics"
+msgstr "легкая атлетика"
+
+msgid "back"
+msgstr "назад"
+
+msgid "ballet"
+msgstr "балет"
+
+msgid "be Cached? (Set in hours)"
+msgstr "be Cached? (Set in hours)"
+
+msgid "biweekly"
+msgstr "раз в две недели"
+
+msgid "blue"
+msgstr "синий"
+
+msgid "bottom left"
+msgstr "нижний левый"
+
+msgid "bottom right"
+msgstr "внизу справа"
+
+msgid "broadcasting/press"
+msgstr "вещание/пресс"
+
+msgid "by bouquet"
+msgstr "по букету"
+
+msgid ""
+"by manual package update version checks are currently not supported.\n"
+"Are you sure that you wish to install this package?"
+msgstr ""
+"by manual package update version checks are currently not supported.\n"
+"Are you sure that you wish to install this package?"
+
+msgid "by page"
+msgstr "by page"
+
+msgid "can't get update list"
+msgstr "не удается получить список обновлений"
+
+msgid "can't load icecast list"
+msgstr "не удается загрузить список icecast"
+
+msgid "can't open file"
+msgstr "не удается открыть файл"
+
+msgid "can't open mtd-device"
+msgstr "не удается открыть mtd-устройство"
+
+msgid "caps / no caps"
+msgstr "caps / no caps"
+
+msgid "cartoons/puppets"
+msgstr "мультфильмы/куклы"
+
+msgid "center"
+msgstr "центр"
+
+msgid "checking version"
+msgstr "проверка версии"
+
+msgid "children / juvenile program"
+msgstr "детская программа"
+
+msgid "choose Skin Style."
+msgstr "выберите стиль скина"
+
+msgid "clear all"
+msgstr "стереть все"
+
+msgid "colored"
+msgstr "цветной"
+
+msgid "comedy"
+msgstr "комедия"
+
+msgid "cooking"
+msgstr "повар"
+
+msgid "cpu/file"
+msgstr "cpu/file"
+
+msgid "create screenshot?"
+msgstr "создать скриншот?"
+
+msgid "daily"
+msgstr "daily"
+
+msgid "date / time"
+msgstr "дата / время"
+
+msgid "default audio streams"
+msgstr "аудиопотоки по умолчанию"
+
+msgid "default center"
+msgstr "центр по умолчанию"
+
+msgid "delete"
+msgstr "удалить"
+
+msgid "detective/thriller"
+msgstr "детектив/триллер"
+
+msgid "direct connected"
+msgstr "прямое подключение"
+
+msgid "direct selection"
+msgstr "прямой выбор"
+
+msgid "directory already mounted"
+msgstr "каталог уже смонтирован"
+
+msgid "directory/share"
+msgstr "каталог/общий ресурс"
+
+msgid "discussion/interview/debate"
+msgstr "обсуждение/интервью/дебаты"
+
+msgid "dmesg"
+msgstr "dmesg"
+
+#, fuzzy
+msgid "do you want to reload EPG?"
+msgstr "вы хотите перезагрузить списки каналов?"
+
+msgid "do you want to reload channel lists?"
+msgstr "вы хотите перезагрузить списки каналов?"
+
+msgid "documentary"
+msgstr "документальный фильм"
+
+msgid "documentation / magazine"
+msgstr "документация / журнал"
+
+msgid "don't care"
+msgstr "мне все равно"
+
+msgid "downmix"
+msgstr "downmix"
+
+msgid "economics/social advisory"
+msgstr "экономика/социальное консультирование"
+
+msgid "enter proxyserver name or ip, use host:port"
+msgstr "введите имя прокси-сервера или IP-адрес, используйте host:port"
+
+msgid "enter the proxyserver password"
+msgstr "введите пароль прокси-сервера"
+
+msgid "enter the proxyserver username"
+msgstr "введите имя пользователя прокси-сервера"
+
+msgid "entertainment programmes for 10 to 16"
+msgstr "развлекательные программы от 10 до 16 лет"
+
+msgid "entertainment programmes for 6 to 14"
+msgstr "развлекательные программы для детей от 6 до 14 лет"
+
+msgid "equestrian"
+msgstr "конный спорт"
+
+msgid "erase all"
+msgstr "стереть все"
+
+msgid "erasing flash"
+msgstr "стереть флэшь"
+
+msgid "erasure of flash failed"
+msgstr "стераное флэшь не удалось"
+
+msgid "error umounting volume"
+msgstr "ошибка повторного подключения тома"
+
+msgid "experimental film/video"
+msgstr "экспериментальный фильм/видео"
+
+msgid "fashion"
+msgstr "мода"
+
+msgid "fast"
+msgstr "быстро"
+
+msgid "filebrowser item"
+msgstr "элемент файлового браузера"
+
+msgid "filesystem type not supported"
+msgstr "тип файловой системы не поддерживается"
+
+msgid "film/cinema"
+msgstr "фильм/кино"
+
+msgid "fine arts"
+msgstr "изобразительное искусство"
+
+msgid "fitness & health"
+msgstr "фитнес и здоровье"
+
+msgid "folk/traditional music"
+msgstr "народная/традиционная музыка"
+
+msgid "football/soccer"
+msgstr "футбол/футбол"
+
+msgid "foreign countries/expeditions"
+msgstr "зарубежные страны/экспедиции"
+
+msgid "fourweekly"
+msgstr "четыре недели"
+
+msgid "frame hight"
+msgstr "высота кадров"
+
+msgid "from 12 years up"
+msgstr "от 12 лет и старше"
+
+msgid "from 16 years up"
+msgstr "от 16 лет и старше"
+
+msgid "from 18 years up"
+msgstr "от 18 лет и старше"
+
+msgid "further education"
+msgstr "дополнительное образование"
+
+msgid "game show/quiz/contest"
+msgstr "игровое шоу/викторина/конкурс"
+
+msgid "gardening"
+msgstr "бонсай"
+
+msgid "getting update list"
+msgstr "получение списка обновлений"
+
+msgid "goto end"
+msgstr "goto end"
+
+msgid "goto middle"
+msgstr "goto middle"
+
+msgid "goto start"
+msgstr "goto start"
+
+msgid "green"
+msgstr "зеленый"
+
+msgid "handicraft"
+msgstr "ремесло"
+
+msgid "higher center"
+msgstr "высший центр"
+
+msgid "image has errors"
+msgstr "image has errors"
+
+msgid "info"
+msgstr "информация"
+
+msgid "infobar will be faded out."
+msgstr "infobar will be faded out."
+
+msgid "informational/educational/school programmes"
+msgstr "информационные/образовательные/школьные программы"
+
+msgid "internet Radio"
+msgstr "интернет-радио"
+
+msgid "is not installed please install again."
+msgstr "не установлен, пожалуйста, установите еще раз"
+
+msgid "is reachable (ping)"
+msgstr "доступ к контенту (ping)"
+
+msgid "is unreachable"
+msgstr "контент недоступен"
+
+msgid "is unreachable (host or protocol error)"
+msgstr "контент недоступен (ошибка хоста или протокола)"
+
+msgid "is unreachable (socket error)"
+msgstr "содержимое недоступно (ошибка сокета)"
+
+msgid "italian"
+msgstr "итальянский"
+
+msgid "jazz"
+msgstr "джаз"
+
+msgid "jump backwards"
+msgstr "jump backwards"
+
+msgid "jump ff"
+msgstr "jump ff"
+
+msgid "jump forwards"
+msgstr "jump forwards"
+
+msgid "jump prev"
+msgstr "jump prev"
+
+msgid "languages"
+msgstr "языки"
+
+msgid "large"
+msgstr "большой"
+
+msgid "last play max items"
+msgstr "last play max items"
+
+msgid "leave current"
+msgstr "оставить текущий"
+
+msgid "left"
+msgstr "левый"
+
+msgid "literature"
+msgstr "литература"
+
+msgid "load default skin configuration?"
+msgstr "загрузить конфигурацию скина по умолчанию?"
+
+msgid "local dir"
+msgstr "local dir"
+
+msgid "logos Dir"
+msgstr "logos Dir"
+
+msgid "loop"
+msgstr "loop"
+
+msgid "magazines/reports/documentary"
+msgstr "журналы/репортажи / документальные фильмы"
+
+msgid ""
+"manual flash update version checks are currently not supported.\n"
+"Are you sure that you wish to install this image?"
+msgstr ""
+"manual flash update version checks are currently not supported.\n"
+"Are you sure that you wish to install this image?"
+
+msgid "martial sports"
+msgstr "боевые виды спорта"
+
+msgid "medicine/physiology/psychology"
+msgstr "медицина/физиология/психология"
+
+msgid "middle"
+msgstr "средний"
+
+msgid "milliseconds"
+msgstr "миллисекунды"
+
+msgid "mono left"
+msgstr "mono left"
+
+msgid "mono right"
+msgstr "mono right"
+
+msgid "monochrom"
+msgstr "монохром"
+
+msgid "monthly"
+msgstr "ежемесячно"
+
+msgid "most popular"
+msgstr "самый популярный"
+
+msgid "motor sports"
+msgstr "автоспорт"
+
+msgid "motoring"
+msgstr "автомобильное дело"
+
+msgid "mount"
+msgstr "mount"
+
+msgid "mount error"
+msgstr "ошибка монтирования"
+
+msgid "mount error: timeout"
+msgstr "ошибка монтирования: тайм-аут"
+
+msgid "mount now"
+msgstr "монтировать сейчас"
+
+msgid "mount on startup"
+msgstr "монтировать при запуске"
+
+msgid "mount successful"
+msgstr "mount successful"
+
+msgid "movie/drama"
+msgstr "кино/драма"
+
+msgid "moving speed (10 = 1deg/sec)"
+msgstr "скорость перемещения (10 = 1deg/сек)"
+
+msgid "music / ballet / dance"
+msgstr "музыка / балет / танцы"
+
+msgid "musical/opera"
+msgstr "мюзикл/опера"
+
+msgid "nature/animals/environment"
+msgstr "природа/животные/окружающая среда"
+
+msgid "need reboot or epg-reset"
+msgstr "нужна перезагрузка или epg-сброс"
+
+msgid "neutrino (default)"
+msgstr "нейтрино (по умолчанию)"
+
+msgid "never"
+msgstr "никогда"
+
+msgid "new media"
+msgstr "new media"
+
+msgid "news"
+msgstr "новости"
+
+msgid "news magazine"
+msgstr "журнал новостей"
+
+msgid "news/weather report"
+msgstr "новости/прогноз погоды"
+
+msgid "next bouquet"
+msgstr "следующий букет"
+
+msgid "next focus"
+msgstr "next focus"
+
+msgid "next results"
+msgstr "следующие результаты"
+
+msgid "no"
+msgstr "нет"
+
+msgid "no (temporary)"
+msgstr "нет (temporary)"
+
+msgid "no DiSEqC"
+msgstr "нет DiSEqC"
+
+msgid "no epg found"
+msgstr "epg не найден"
+
+msgid "no gradient"
+msgstr "без градиента"
+
+msgid "none"
+msgstr "нет"
+
+msgid "normal Brightness"
+msgstr "нормальная яркость"
+
+msgid "normaly 50000, 0 to disable limit"
+msgstr "нормально 50000, 0 для отключения лимита"
+
+msgid "not available"
+msgstr "недоступно"
+
+msgid "not connected"
+msgstr "не подключен"
+
+msgid "off"
+msgstr "выкл."
+
+msgid "on"
+msgstr "вкл."
+
+msgid "on broadcasted lock"
+msgstr "on broadcasted lock"
+
+msgid "on locked bouquets"
+msgstr "на заблокированных букетах"
+
+msgid "on weekdays"
+msgstr "по будням"
+
+msgid "once"
+msgstr "однажды"
+
+msgid "output to PNG"
+msgstr "вывод в PNG"
+
+msgid "package has errors"
+msgstr "ошибки обработки пакетов"
+
+msgid "package install failed"
+msgstr "установка пакета не удалась"
+
+msgid "page down"
+msgstr "страница вниз"
+
+msgid "page up"
+msgstr "страница вверх"
+
+msgid "passthrough"
+msgstr "passthrough"
+
+msgid "password"
+msgstr "пароль"
+
+msgid "performing arts"
+msgstr "исполнительское искусство"
+
+msgid "popular culture/traditional arts"
+msgstr "народная культура/традиционное искусство"
+
+msgid "pre-school children's programmes"
+msgstr "дошкольные детские программы"
+
+msgid "prev bouquet"
+msgstr "prev bouquet"
+
+msgid "prev results"
+msgstr "prev results"
+
+msgid "programming flash"
+msgstr "программтрование флэш"
+
+msgid "ps"
+msgstr "ps"
+
+msgid "publishing date"
+msgstr "дата публикации"
+
+msgid "purple"
+msgstr "фиолетовый"
+
+msgid "rating"
+msgstr "рейтинг"
+
+msgid "record"
+msgstr "запись"
+
+msgid "record default audio streams"
+msgstr "запись аудиопотоков по умолчанию"
+
+msgid "record max items"
+msgstr "запись максимальных элементов"
+
+msgid "recording directory"
+msgstr "каталог записей"
+
+msgid "red"
+msgstr "красный"
+
+msgid "relevance"
+msgstr "релевантность"
+
+msgid "religion"
+msgstr "религия"
+
+msgid "remarkable people"
+msgstr "замечательные люди"
+
+msgid "remount"
+msgstr "перемонтировать"
+
+msgid "remove screenshot?"
+msgstr "удалить скриншот?"
+
+msgid "repeats"
+msgstr "повторяется"
+
+msgid "rock/pop"
+msgstr "рок/поп"
+
+msgid "romance"
+msgstr "романтика"
+
+msgid "row nr"
+msgstr "row nr"
+
+msgid "row width"
+msgstr "ширина строки"
+
+msgid "save play list"
+msgstr "сохранить список воспроизведения"
+
+msgid "save playlist"
+msgstr "сохранить список воспроизведения"
+
+msgid "save settings now"
+msgstr "сохранить настройки сейчас"
+
+msgid "scan for Movies ..."
+msgstr "сканирование фильмов ..."
+
+msgid "schedule"
+msgstr "расписание"
+
+msgid "science fiction/fantasy/horror"
+msgstr "научная фантастика/фэнтези/ужасы"
+
+msgid "search"
+msgstr "поиск"
+
+msgid "see timer"
+msgstr "see timer"
+
+msgid "serious music/classical music"
+msgstr "серьезная музыка/классическая музыка"
+
+msgid "serious/classical/religious/historical movie/drama"
+msgstr "серьезный/классический/религиозный/исторический фильм/драма"
+
+msgid "show movie infoviewer"
+msgstr "показать фильм infoviewer"
+
+msgid "show playlist"
+msgstr "показать список воспроизведения"
+
+msgid "shuffle"
+msgstr "shuffle"
+
+msgid "shuffle playlist"
+msgstr "писок воспроизведения в случайном порядке"
+
+msgid "simple"
+msgstr "простой"
+
+msgid "skip approx. 1 minute"
+msgstr "пропустить ок. 1 минута"
+
+msgid "skip approx. 10 minutes"
+msgstr "пропустить ок. 10 минут"
+
+msgid "skip approx. 5 minutes"
+msgstr "пропустить ок. 5 минут"
+
+msgid "skip bookmark"
+msgstr "пропустить закладку"
+
+msgid "slow"
+msgstr "медленный"
+
+msgid "small"
+msgstr "маленький"
+
+msgid "soap/melodrama/folkloric"
+msgstr "мыло/мелодрама/фольклор"
+
+msgid "social & politic events / business"
+msgstr "социальные и политические мероприятия / бизнес"
+
+msgid "social/spiritual sciences"
+msgstr "социальные/духовные науки"
+
+msgid "sorting(A..Z)"
+msgstr "сортировка(A..Z)"
+
+msgid "sorting(Time)"
+msgstr "сортировка(время)"
+
+msgid "special events (Olympic Games,World Cup etc.)"
+msgstr "специальные мероприятия (Олимпийские игры,чемпионат мира и т.д.)"
+
+msgid "sports"
+msgstr "спорт"
+
+msgid "sports magazines"
+msgstr "спортивные журналы"
+
+msgid "stereo"
+msgstr "стерео"
+
+msgid "stop on good signal(moving)"
+msgstr "стоп на хорошем сигнале(движении)"
+
+msgid "stop on good signal(stopped)"
+msgstr "стоп на хорошем сигнале(остановлен)"
+
+msgid "swap mode"
+msgstr "режим подкачки"
+
+msgid "switch off after"
+msgstr "выключить после"
+
+msgid "talk show"
+msgstr "ток-шоу"
+
+msgid "team sports (excluding football)"
+msgstr "командные виды спорта (кроме футбола)"
+
+msgid "technology/natural sciences"
+msgstr "технология/естественные науки"
+
+msgid "tennis/squash"
+msgstr "теннис/сквош"
+
+msgid "the filesize is 0 Bytes"
+msgstr "содержимое файла размером 0 байт"
+
+msgid ""
+"this need Neutrino restart\n"
+"do you want really to restart?"
+msgstr ""
+"в любом случае Нейтрино нужно перезапустить\n"
+"ты действительно хочешь перезапустить?"
+
+msgid ""
+"this needs Neutrino restart\n"
+"Skin Style selection?"
+msgstr ""
+"для этого нужен перезапуск нейтрино\n"
+"Выбрать стиль?"
+
+msgid ""
+"this needs Neutrino restart\n"
+"do you want really to restart?"
+msgstr ""
+"в любом случае Нейтрино нужно перезапустить\n"
+"ты действительно хочешь перезапустить?"
+
+msgid "time (in minutes) to switch from standby"
+msgstr "время (в минутах) переключения из режима ожидания"
+
+msgid "tmdb Info"
+msgstr "tmdb Info"
+
+msgid "to deep standby (0 = off)."
+msgstr "в глубокий режим ожидания (0 = выкл.)"
+
+msgid "top left"
+msgstr "верхний левый"
+
+msgid "top right"
+msgstr "вверху справа"
+
+msgid "tourism/travel"
+msgstr "туризм/путешествия"
+
+msgid "travel & recreation"
+msgstr "путешествия и отдых"
+
+msgid "type"
+msgstr "тип"
+
+msgid "umount"
+msgstr "umount"
+
+#, c-format
+msgid "unknown"
+msgstr "неизвестно"
+
+msgid "update"
+msgstr "обновление"
+
+msgid "username"
+msgstr "имя пользователя"
+
+msgid "variety show"
+msgstr "variety show"
+
+msgid "very large"
+msgstr "очень большой"
+
+msgid "view count"
+msgstr "количество просмотров"
+
+msgid "view mode"
+msgstr "режим просмотра"
+
+msgid "waiting for EPG..."
+msgstr "в ожидании EPG..."
+
+msgid "water sports"
+msgstr "водные виды спорта"
+
+msgid "weekly"
+msgstr "еженедельно"
+
+msgid "will added to stop time of every record timer."
+msgstr "будет добавлен ко времени остановки каждой записи"
+
+msgid "will be deducted of every record timer."
+msgstr "will be deducted of every record timer."
+
+msgid "winter sports"
+msgstr "зимние виды спорта"
+
+msgid "yes"
+msgstr "да"
+
+msgid "youtube ID Key:"
+msgstr "Ключ идентификатора YouTube:"

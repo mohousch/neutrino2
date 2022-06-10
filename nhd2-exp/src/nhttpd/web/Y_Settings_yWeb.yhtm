@@ -1,0 +1,108 @@
+{=include-block:Y_Blocks.txt;management_check_top=}
+{=include-block:Y_Blocks.txt;head=}
+<script type="text/javascript" src="/Y_Baselib.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+function do_submit(){
+	show_waitbox(true);
+	yhttpd_cache_clear("");
+	document.f.submit();
+}
+
+function do_init(){
+	val = "{=ini-get:/var/tuxbox/config/Y-Web.conf;fb;{=if-equal:{=global-var-get:boxtype=}~generic~Cuberevo~default=}~open=}";
+	var sel=3;
+	switch(val){
+		case "default": sel=0; break;
+		case "Cuberevo": sel=1; break;
+		case "Dream": sel=2;	break;
+	}
+	document.f.fb.selectedIndex = sel;
+	val = "{=ini-get:/var/tuxbox/config/Y-Web.conf;start_page;bouquets~cache=}";
+	var sel=2;
+	switch(val){
+		case "bouquets": sel=0; break;
+		case "control": sel=1; break;
+	}
+	document.f.start_page.selectedIndex = sel;
+}
+//]]>
+</script>
+</head>
+<body onload="do_init()">
+{=var-set:wait_text={=L:save_values=}=}{=include-block:Y_Blocks.txt;snip_wait=}
+<div class="work_box">
+	<div class="work_box_head"><div class="work_box_head_h2">
+	{=var-set:help_url=Help-Settings-yWeb=}{=var-set:menu=yWeb=}{=include-block:Y_Blocks.txt;work_menu=}</div></div>
+	<div class="work_box_body">
+	<form name="f" class="y_form" action="/y/cgi">
+		<table border="0" class="y_form_table">
+			<tr><td class="y_form_header" colspan="4">{=L:set.yweb.management_IPs=}</td></tr>
+			<tr>
+				<td>IP 1</td>
+				<td colspan="3"><input type="text" name="managementIP" size="15" value="{=ini-get:/var/tuxbox/config/Y-Web.conf;management_ip=}" title="{=L:set.yweb.enter_ip_desc=}"/></td>
+			</tr>
+			<tr>
+				<td>IP 2</td>
+				<td colspan="3"><input type="text" name="managementIP2" size="15" value="{=ini-get:/var/tuxbox/config/Y-Web.conf;management_ip2=}" title="{=L:set.yweb.enter_ip_desc=}"/></td>
+			</tr>
+			<tr><td class="y_form_header" colspan="4">{=L:set.yweb.wake_on_lan=}</td></tr>
+			<tr>
+				<td>MAC 1</td>
+				<td><input type="text" name="wol_mac_1" size="17" value="{=ini-get:/var/tuxbox/config/Y-Web.conf;wol_mac_1=}" title="{=L:set.yweb.enter_mac_desc=}"/></td>
+				<td>{=L:set.yweb.description=}</td>
+				<td><input type="text" name="wol_desc_1" size="17" value="{=ini-get:/var/tuxbox/config/Y-Web.conf;wol_desc_1=}" title="{=L:set.yweb.enter_description_desc=}"/></td>
+			</tr>
+			<tr>
+				<td>MAC 2</td>
+				<td><input type="text" name="wol_mac_2" size="17" value="{=ini-get:/var/tuxbox/config/Y-Web.conf;wol_mac_2=}" title="{=L:set.yweb.enter_mac_desc=}"/></td>
+				<td>{=L:set.yweb.description=}</td>
+				<td><input type="text" name="wol_desc_2" size="17" value="{=ini-get:/var/tuxbox/config/Y-Web.conf;wol_desc_2=}" title="{=L:set.yweb.enter_description_desc=}"/></td>
+			</tr>
+			<tr>
+				<td>MAC 3</td>
+				<td><input type="text" name="wol_mac_3" size="17" value="{=ini-get:/var/tuxbox/config/Y-Web.conf;wol_mac_3=}" title="{=L:set.yweb.enter_mac_desc=}"/></td>
+				<td>{=L:set.yweb.description=}</td>
+				<td><input type="text" name="wol_desc_3" size="17" value="{=ini-get:/var/tuxbox/config/Y-Web.conf;wol_desc_3=}" title="{=L:set.yweb.enter_description_desc=}"/></td>
+			</tr>
+			<tr><td class="y_form_header" colspan="4">{=L:set.yweb.box_tag=}</td></tr>
+			<tr>
+				<td>{=L:set.yweb.box_tag=}</td>
+				<td colspan="3"><input type="text" name="yweb_box_name" size="8" value="{=ini-get:/var/tuxbox/config/Y-Web.conf;yweb_box_name=}"
+					title="{=L:box_tag_desc=}"/></td>
+			</tr>
+			<tr>
+				<td>{=L:set.yweb.box_color=}</td>
+				<td colspan="3"><input type="text" name="yweb_box_color" size="8" value="{=ini-get:/var/tuxbox/config/Y-Web.conf;yweb_box_color=}"
+					title="{=L:box_color_desc=}"/></td>
+			</tr>
+			<tr><td class="y_form_header" colspan="4">{=L:others=}</td></tr>
+			<tr>
+				<td>{=L:set.yweb.remote=}</td>
+				<td colspan="3">	<select name="fb" title="{=L:remote=}">
+					<option value="default" selected="selected">default</option>
+					<option value="Cuberevo">Cuberevo</option>
+					<option value="Dream">Dream</option>
+					</select></td>
+			</tr>
+			<tr>
+				<td>{=L:set.yweb.start_page=}</td>
+				<td colspan="3">	<select name="start_page" title="{=L:start_page=}">
+					<option value="bouquets" selected="selected">{=L:bc.menue.bouquets=}</option>
+					<option value="control">{=L:bc.menue.control=}</option>
+					<option value="none">{=L:empty=}</option>
+					</select></td>
+			</tr>
+		</table>
+		<br/>
+		<input type="hidden" name="tmpl" value="Y_Settings_yWeb.yhtm"/>
+		<input type="hidden" name="execute" value="include-block:Y_Blocks.txt;yWeb_save_settings;nix"/>
+		<button type="button" ytype="save" title="{=L:save_values_desc=}" onclick="do_submit()">{=L:save=}</button>
+	</form>
+	</div>
+</div>
+
+</body>
+</html>
+{=include-block:Y_Blocks.txt;management_check_bottom=}
+

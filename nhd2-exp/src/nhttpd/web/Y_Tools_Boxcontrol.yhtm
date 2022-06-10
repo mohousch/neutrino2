@@ -1,0 +1,79 @@
+{=var-set:cancache=yPyes=}
+{=include-block:Y_Blocks.txt;head=}
+<script type="text/javascript" src="/Y_Baselib.js"></script>
+<script type="text/javascript" src="/prototype.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+function goConfirmUrl(_meld, _url){
+	if (confirm(_meld)==true) goUrl(_url);
+}
+function goUrl(_url){
+	var res = trim(loadSyncURL(_url));
+	switch(res){
+		case "1": res="on"; break;
+		case "0": res="off"; break;
+	}
+	$("out").update(res);
+}
+//]]>
+</script>
+</head>
+<body>
+<div class="work_box">
+	<div class="work_box_head"><div class="work_box_head_h2">
+	{=var-set:help_url=Help-BoxControl-Control=}{=var-set:menu={=L:bc.menue.control=}=}{=include-block:Y_Blocks.txt;work_menu=}</div></div>
+	<div class="work_box_body">
+	<form action="">
+		<table class="y_invisible_table" cellpadding="5" width="100%">
+		<tr><td class="y_form_header">{=L:bc.control.box=}</td><td class="y_form_header">{=L:bc.control.standby_mode=}</td></tr>
+		<tr>
+			<td>
+			<input type="button" value="{=L:bc.control.reboot=}" onclick='goConfirmUrl("{=L:bc.control.reboot.ask=}","/control/reboot");'/>
+			<input type="button" value="{=L:bc.control.shutdown=}" onclick='goConfirmUrl("{=L:bc.control.shutdown.ask=}","/control/shutdown");'/>
+			</td>
+			<td>
+			<input type="button" value="{=L:on=}" onclick='goUrl("/control/standby?on");'/>
+			<input type="button" value="{=L:off=}" onclick='goUrl("/control/standby?off");'/>
+			<input type="button" value="{=L:bc.control.status=}" onclick='goUrl("/control/exec?Y_Tools&amp;standby_status");'/>
+			</td>
+		</tr>
+		<tr><td class="y_form_header">{=L:bc.control.playback=}</td><td class="y_form_header">{=L:bc.control.recording_mode=}</td></tr>
+		<tr>
+			<td>
+			<input type="button" value="{=L:on=}" onclick='goUrl("/control/zapto?startplayback");'/>
+			<input type="button" value="{=L:off=}" onclick='goUrl("/control/zapto?stopplayback");'/>
+			<input type="button" value="{=L:bc.control.status=}" onclick='goUrl("/control/zapto?statusplayback");'/>
+			</td>
+			<td>
+			<input type="button" value="{=L:on=}" onclick='goUrl("/control/setmode?record=start");'/>
+			<input type="button" value="{=L:off=}" onclick='goUrl("/control/setmode?record=stop");'/>
+			<input type="button" value="{=L:bc.control.status=}" onclick='goUrl("/control/setmode?status");'/>
+			</td>
+		</tr>
+	
+		<tr><td class="y_form_header">{=L:bc.control.remote=}</td><td class="y_form_header">{=L:bc.control.live_lock=}</td></tr>
+		<tr>
+			<td>
+			<input type="button" value="{=L:on=}" onclick='goUrl("/control/rc?unlock");'/>
+			<input type="button" value="{=L:off=}" onclick='goUrl("/control/rc?lock");'/>
+			<input type="button" value="{=L:bc.control.lcd_unlock=}" onclick='goUrl("/control/exec?Y_Live&amp;live_unlock");'/>
+			</td>
+			<td>
+			<input type="button" value="{=L:bc.control.lock=}" onclick='live_lock();' />
+			<input type="button" value="{=L:bc.control.unlock=}" onclick='live_unlock();' />
+			</td>
+		</tr>
+	
+		</table>
+	</form>
+	</div>
+</div>
+<div class="work_box">
+	<div class="work_box_head"><div class="work_box_head_h2">
+	{=var-set:help_url=Help-BoxControl-Control=}{=var-set:menu={=L:answer=}=}{=include-block:Y_Blocks.txt;work_menu=}</div></div>
+	<div class="work_box_body">
+		<div id="out"></div>
+	</div>
+</div>
+</body>
+</html>

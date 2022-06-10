@@ -1,0 +1,58 @@
+{=var-set:extension={=if-file-exists:/var/tuxbox/config/extentions.txt~/var/tuxbox/config/extentions.txt~{=if-file-exists:/var/httpd/extentions.txt~/var/httpd/extentions.txt~/share/tuxbox/neutrino/httpd-y/extentions.txt=}=}=}
+{=var-set:management={=if-equal:{=func:get_request_data client_addr=}~{=ini-get:/var/tuxbox/config/Y-Web.conf;management_ip;{=func:get_request_data client_addr=}=}~1~=}{=if-equal:{=func:get_request_data client_addr=}~{=ini-get:/var/tuxbox/config/Y-Web.conf;management_ip2=}~1~=}=}
+{=include-block:Y_Blocks.txt;head=}
+<script type="text/javascript" src="/prototype.js"></script>
+<script type="text/javascript" src="/Y_Baselib.js"></script>
+<script type="text/javascript" src="/Y_yweb.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+
+function build_menu(){
+//	ext.read_items();
+	var ext_normal=ext.select_type("n");
+	ext_normal.each(function(e){
+		var item="<a target=\"work\" title=\""+e.get('desc')+"\" href=\""+e.get('file')+"\">"+e.get('menuitem')+"</a>";
+		y_add_li_to_ul(id("ext_normal"),"ext",item);
+	});
+	var ext_normal=ext.select_type("m");
+	ext_normal.each(function(e){
+		{=if-empty:{=var-get:management=}~
+		var item="<span class=\"disabled\" title=\""+e.get('desc')+" (restricted by ManagementIP)\">"+e.get('menuitem')+"</span>";
+		~
+		var item="<a target=\"work\" title=\""+e.get('desc')+"\" href=\""+e.get('file')+"\">"+e.get('menuitem')+"</a>";
+		=}
+		y_add_li_to_ul(id("ext_management"),"ext",item);
+	});
+}
+//]]>
+</script>
+</head>
+<body onload="build_menu()">
+<div class="y_menu_sec_box">
+	<div class="y_menu_sec_box_head"><h2>{=L:main.extensions=}</h2></div>
+	<div class="y_menu_sec_box_body">
+		<div class="y_menu_sec_section">{=L:normal=}</div>
+		<div class="y_menu_sec">
+			<ul id="ext_normal">
+			</ul>
+		</div>
+		<div class="y_menu_sec_section">{=L:management=}</div>
+		<div class="y_menu_sec" id="ext_management2">
+			<ul id="ext_management">
+			</ul>
+		</div>
+		<div class="y_menu_sec_section">{=L:administration=}</div>
+		<div class="y_menu_sec">
+			<ul>
+				{=if-empty:{=var-get:management=}~
+				<li class="disabled" title="{=L:restriced_by_management_ip=}">{=L:main.settings=}</li>
+				~
+				<li><a target="work" title="" href="Y_Ext_Settings.yhtm">{=L:main.settings=}</a></li>
+				=}
+			</ul>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

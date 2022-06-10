@@ -1,0 +1,54 @@
+{=include-block:Y_Blocks.txt;head_no_charset=}
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
+</head>
+<body>
+<div class="work_box">
+	<div class="work_box_head"><div class="work_box_head_h2">
+	{=var-set:help_url=Help-Live_Timer-Timer=}{=var-set:menu={=L:live.timer_edit.timer=}=}{=include-block:Y_Blocks.txt;work_menu=}</div></div>
+	<div class="work_box_body">
+<table class="timer">
+<tr class="timer_header">
+	<td>{=L:live.timer_edit.alarm_date=}</td>
+	<td>{=L:live.timer_edit.stop_date=}</td>
+	<td>{=L:live.timer_edit.repeat=}</td>
+	<td>{=L:live.timer_edit.repeat=}</td>
+	<td>{=L:live.timer_edit.type=}</td>
+	<td>{=L:live.timer_edit.description=}</td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+{=var-set:row=
+<tr class="%ctimer">
+	<td>%s</td>
+	<td>%s</td>
+	<td>%s</td>
+	<td>%s</td>
+	<td>%s</td>
+	<td>%s</td>
+	<td>
+		<a href="/fb/timer.dbox2?action=remove&amp;id=%d">
+		<img src="/images/remove.png" alt="Timer l&ouml;schen"/></a>
+	</td>
+	<td>
+		<a href="/Y_Timer_Edit.yhtm?typ=modify&amp;tid=%d">
+		<img src="/images/modify.png" alt="Timer &auml;ndern"/></a>
+	</td>
+</tr>
+=}
+{=func:get_timer_list {=var-get:row=}=}
+
+<tr class="timer_footer">
+	<td colspan="6"><img src="/images/blank.gif" width="1" height="1"/></td>
+	<td>
+		<a href="/Y_Timer_Edit.yhtm?typ=new">
+		<img src="/images/new.png" alt="neuer Timer"/></a>
+	</td>
+	<td>
+		<a href="javascript:location.reload()">
+		<img src="/images/reload.gif" alt="Aktualisieren"/></a>
+	</td>
+</tr>
+</table>
+	</div>
+</div>
+</body>

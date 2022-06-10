@@ -1,0 +1,108 @@
+{=include-block:Y_Blocks.txt;management_check_top=}
+{=include-block:Y_Blocks.txt;head=}
+<script type="text/javascript" src="/Y_Baselib.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+function form_init()
+{
+	obj_set_radio_value('authenticate', "{=ini-get:/var/tuxbox/config/nhttpd.conf;mod_auth.authenticate;false=}");
+	obj_set_radio_value('threading', "{=ini-get:/var/tuxbox/config/nhttpd.conf;webserver.threading;false=}");
+	obj_set_radio_value('mod_sendfile_sendAll', "{=ini-get:/var/tuxbox/config/nhttpd.conf;mod_sendfile.sendAll;false=}");
+}
+function do_submit()
+{
+	if(document.f.authpassword.value.length < 5)
+		alert("{=L:set.nhttpd.check_password=}");
+	else
+	if(document.f.port.value == "")
+		alert("{=L:set.nhttpd.check_port=}");
+	else{
+		show_waitbox(true);
+		yhttpd_cache_clear("");
+		document.f.submit();
+	}
+}
+//]]>
+</script>
+</head>
+<body onload="form_init()">
+{=var-set:wait_text={=L:save_values=}=}{=include-block:Y_Blocks.txt;snip_wait=}
+<div class="work_box">
+	<div class="work_box_head"><div class="work_box_head_h2">
+	{=var-set:help_url=Help-Settings-WebServer=}{=var-set:menu={=L:set.nhttpd.webserver=}=}{=include-block:Y_Blocks.txt;work_menu=}</div></div>
+	<div class="work_box_body">
+	<form name="f" class="y_form" action="/y/cgi">
+		<table border="0" width="100%">
+			<tr><td colspan="2" class="y_form_header">{=L:set.nhttpd.authentication=}</td></tr>
+			<tr>
+				<td>{=L:user=}</td>
+				<td><input type="text" name="authuser" size="20" value="{=ini-get:/var/tuxbox/config/nhttpd.conf;mod_auth.username;root~open=}" title="{=L:user=}"/></td>
+			</tr>
+			<tr>
+				<td>{=L:password=}</td>
+				<td><input type="password" name="authpassword" size="20" value="{=ini-get:/var/tuxbox/config/nhttpd.conf;mod_auth.password;dbox2~cache=}" title="{=L:password=}"/></td>
+			</tr>
+			<tr>
+				<td>{=L:set.nhttpd.client_without_authentication=}</td>
+				<td><input type="text" name="noauthclient" size="20" value="{=ini-get:/var/tuxbox/config/nhttpd.conf;mod_auth.no_auth_client~cache=}" title="{=L:set.nhttpd.client_without_authentication_desc=}"/></td>
+			</tr>
+			<tr>
+				<td>{=L:set.nhttpd.authentication=}</td>
+				<td>
+					<input type="radio" name="authenticate" value="false" />{=L:off=}&nbsp;
+					<input type="radio" name="authenticate" value="true" />{=L:on=}
+				</td>
+			</tr>
+			<tr><td colspan="2" class="y_form_header">{=L:general=}</td></tr>
+			<tr>
+				<td>{=L:language=}</td>
+				<td colspan="3">	<select name="language" title="{=L:language=}">
+					{=func:get_languages_as_dropdown=}
+				</select></td>
+			</tr>
+			<tr>
+				<td>{=L:set.nhttpd.port=}</td>
+				<td><input type="text" name="port" size="20" value="{=ini-get:/var/tuxbox/config/nhttpd.conf;WebsiteMain.port;80~cache=}" title="{=L:port=}"/>&nbsp;{=L:active_after_boot=}
+				</td>
+			</tr>
+			<tr>
+				<td>{=L:set.nhttpd.alternate_web_folder=}</td>
+				<td><input type="text" name="override_directory" size="20" value="{=ini-get:/var/tuxbox/config/nhttpd.conf;WebsiteMain.override_directory~cache=}" title="{=L:alternate_web_folder=}"/>&nbsp;{=L:active_after_boot=}
+					<input type="hidden" name="HostedDocRoot" size="60" value="{=ini-get:/var/tuxbox/config/nhttpd.conf;WebsiteMain.hosted_directory~cache=}" title="Root of hosted Web. Enter mount directory."/></td>
+			</tr>
+			<tr>
+				<td>{=L:set.nhttpd.allowed_file_extensions=}</td>
+				<td><input type="text" name="mod_sendfile_mime_types" size="60" value="{=ini-get:/var/tuxbox/config/nhttpd.conf;mod_sendfile.mime_types~cache=}"/></td>
+			</tr>
+			<tr>
+				<td>{=L:set.nhttpd.allow_all_file_extensions=}</td>
+				<td>
+					<input type="radio" name="mod_sendfile_sendAll" value="false" />{=L:off=}&nbsp;
+					<input type="radio" name="mod_sendfile_sendAll" value="true" />{=L:on=}
+				</td>
+			</tr>
+			<tr><td colspan="2" class="y_form_header">{=L:logos=}</td></tr>
+			<tr>
+				<td>{=L:set.nhttpd.url_of_logos=}</td>
+				<td><input type="text" name="Tuxbox_LogosURL" size="60" value="{=ini-get:/var/tuxbox/config/nhttpd.conf;Tuxbox.LogosURL~cache=}" title="{=L:set.nhttpd.url_of_logos_desc=}"/></td>
+			</tr>
+			<tr><td colspan="2" class="y_form_header">{=L:set.nhttpd.server=}</td></tr>
+			<tr>
+				<td>{=L:set.nhttpd.cache=}</td>
+				<td><a href="/y/cache-info" target="_blank"><u>{=L:set.nhttpd.cache_info=}</u>&nbsp;</a><button type="button" ytype="clear" name="clearcache" onclick="javascript:yhttpd_cache_clear('');">{=L:set.nhttpd.clear_cache=}</button></td>
+			</tr>
+			<tr>
+				<td>{=L:set.nhttpd.server_configuration=}</td>
+				<td><a href="/y/server-config" target="_blank"><u>{=L:set.nhttpd.server_configuration=}</u></a></td>
+			</tr>
+		</table>
+		<br/>
+		<input type="hidden" name="tmpl" value="/Y_Refresh.yhtm"/>
+		<input type="hidden" name="execute" value="include-block:Y_Blocks.txt;nhttpd_save_settings;nix"/>
+		<button type="button" ytype="save" title="{=L:save_values_desc=}" onclick="do_submit()">{=L:save=}</button>
+	</form>
+	</div>
+</div>
+</body>
+</html>
+{=include-block:Y_Blocks.txt;management_check_bottom=}

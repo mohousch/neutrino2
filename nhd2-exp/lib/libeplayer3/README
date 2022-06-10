@@ -1,0 +1,72 @@
+/*
+ * SCOPE:
+ * -------
+ *
+ * libeplayer3 was developed to create a cleaner and more stable
+ * version of the libeplayer2.
+ * Currently the lib supports only one container, which handle all
+ * files by using the ffmpeg library.
+ * 
+ * FEATURES:
+ * -----------------------
+ * 
+ * - more stable than libeplayer2.
+ * - more multimedia files are supported than libeplayer2.
+ * - mms stream support.
+ * - new videocodec support:
+ *    - wmv and vc1 (sti7109 & sti7111 & sti7105 only).
+ *    - flv.
+ * - improved http streaming support
+ * - subtitle rendering (ssa / ass) by using libass
+ *
+ * STYLE GUIDELINES:
+ * ------------------
+ *
+ * If you decide to add some lines of code please ensure the following:
+ *   - do not use a windows editor.
+ *   - a tab must be emulated by 4 spaces (most editors support this).
+ * If you accidental break this rule use astyle to reorganize indentation,
+ *  and dos2unix to remove windows style.
+ *
+ * Programming GUIDLINES:
+ * -----------------------
+ * 
+ * - the compiler is intentionally set to Wall, it would be nice if all
+ *   programmer looks for warnings and solve them. 
+ * - make sanity checks where ever you can.
+ * - freeing memory is an act of solidarity, but it also increases uptime
+ *    of your receiver. ;)
+ * - if you detect stuff which may be generic, then make it generic.
+ * - commenting code is not a bad idea.
+ *
+ * KNOWN BUGS / PROBLEMS:
+ * ----------------------
+ *
+ * - reverse playback needs improvement
+ * - some formats makes problems ?
+ * - getting stream info currently leads to a memory leak in e2. this is
+ *    not a problem of this implementation its also exists in libeplayer2.
+ *    e2 delivers a strdupped variable which is overwritten by what the container
+ *    delivers. this is very hacky ;) -> (see comment in container_ffmpeg_get_info)
+ *
+ * License:
+ * --------
+ *
+ * Copyright (C) 2010 crow, schischu, hellmaster1024 and konfetti.
+ *
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */

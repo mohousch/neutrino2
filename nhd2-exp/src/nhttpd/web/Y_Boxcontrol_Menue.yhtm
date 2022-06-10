@@ -1,0 +1,165 @@
+{=var-set:cancache=yPInstall=}
+{=include-block:Y_Blocks.txt;head=}
+<script type="text/javascript" src="/prototype.js"></script>
+<script type="text/javascript" src="/Y_Baselib.js"></script>
+<script type="text/javascript" src="/Y_yweb.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+var g_volumen = 100;
+function volumen_set_audiobar(_volumen){
+	var l = $("audiobar_left");
+	var r = $("audiobar_right");
+	/*IE: width=0 -> =""*/
+	if(_volumen > 0)
+		l.width = _volumen.toString()+"%";
+	else
+		l.width = "";
+	if(_volumen >= 100)
+		r.width = "";
+	else
+		r.width = (100-_volumen).toString()+"%";
+}
+
+function volumen_get(){
+	var __volumen_str = loadSyncURL("/control/volume");
+	var __volumen = parseInt(__volumen_str,10);
+	if(isNaN(__volumen)) __volumen=100;
+	volumen_set_audiobar(__volumen);
+	g_volumen = __volumen;
+	return __volumen;
+}
+
+function volumen_set(_volumen){
+	_volumen = Math.min(100, _volumen);
+	_volumen = Math.max(0, _volumen);
+	loadSyncURL("/control/volume?"+_volumen);
+	volumen_set_audiobar(_volumen);
+	g_volumen = _volumen;
+}
+
+function set_mute_button(){
+	var status = loadSyncURL("/control/volume?status");
+	$('btMute').update( (status==1)? "&nbsp;<img src=\"/images/volumeunmute.png\">&nbsp;": "&nbsp;<img src=\"/images/volumemute.png\">&nbsp;");
+	return status;	
+}
+
+function toggle_mute(){
+	var status = loadSyncURL("/control/volume?status");
+	if(status==0)//aus
+		loadSyncURL("/control/volume?mute");
+	else
+		loadSyncURL("/control/volume?unmute");
+	set_mute_button();
+}
+
+function set_mode(_mode){
+	var actual_mode = loadSyncURL("/control/getmode");
+	if(actual_mode != _mode)
+		loadSyncURL("/control/setmode?" + _mode);
+	parent.work.location.reload();
+}
+
+function init(){
+	volumen_set_audiobar(volumen_get());
+	set_mute_button();
+	var menu=ext.select_menu('boxcontrol');
+	menu.each(function(e){
+		var el=new Element('li').update(
+			new Element('a', {'target':'work',
+				'title': e.get('desc'),
+				'href': e.get('file')
+			}).update("-"+e.get('menuitem'))
+		);
+		$('secmenu').insert({'bottom':el}); 
+	});
+	
+}
+//]]>
+</script>
+</head>
+
+{=var-set:lcshot={=if-file-exists:/bin/lcshot~true~{=if-file-exists:/var/bin/lcshot~true~{=if-file-exists:/usr/bin/lcshot~true~false=}=}=}=}
+{=var-set:fbshot={=if-file-exists:/bin/grab~true~{=if-file-exists:/var/bin/grab~true~{=if-file-exists:/usr/bin/grab~true~false=}=}=}=}
+<body>
+<div class="y_menu_sec_box">
+	<div class="y_menu_sec_box_head"><h2>{=L:main.boxcontrol=}</h2></div>
+	<div class="y_menu_sec_box_body">
+		<div class="y_menu_sec">
+			<ul id="secmenu">
+				<li><a target="work" title="{=L:bc.menue.bouquets_desc=}" href="Y_Boxcontrol_Bouquets.yhtm">{=L:bc.menue.bouquets=}</a></li>
+				<li><a target="work" title="{=L:bc.menue.control_desc=}" href="Y_Tools_Boxcontrol.yhtm">{=L:bc.menue.control=}</a></li>
+				<li><a target="work" title="{=L:bc.menue.messages_desc=}" href="Y_Boxcontrol_Messages.yhtm">{=L:bc.menue.messages=}</a></li>
+				<li><a target="work" title="{=L:bc.menue.remote_desc=}" href="Y_Tools_Rcsim.yhtm">{=L:bc.menue.remote=}</a></li>
+
+				{=if-equal:{=var-get:lcshot=}~true~
+				<li><a target="work" title="{=L:bc.menue.lcd_screenshot_desc=}" href="Y_Tools_lcshot.yhtm">{=L:bc.menue.lcd_screenshot=}</a></li>
+				~
+				<li class="disabled" title="{=L:bc.menue.lcd_screenshot_desc_ni=}">{=L:bc.menue.lcd_screenshot=}</li>
+				=}
+
+				{=if-equal:{=var-get:fbshot=}~true~
+				<li><a target="work" title="{=L:bc.menue.tv_screenshot_desc=}" href="Y_Tools_tvshot.yhtm">{=L:bc.menue.tv_screenshot=}</a></li>
+				~
+				<li class="disabled" title="{=L:bc.menue.tv_screenshot_desc_ni=}">{=L:bc.menue.tv_screenshot=}</li>
+				=}
+
+				{=if-equal:{=var-get:fbshot=}~true~
+				<li><a target="work" title="{=L:bc.menue.osd_screenshot_desc=}" href="Y_Tools_fbshot.yhtm">{=L:bc.menue.osd_screenshot=}</a></li>
+				~
+				<li class="disabled" title="{=L:bc.menue.osd_screenshot_desc_ni=}">{=L:bc.menue.osd_screenshot=}</li>
+				=}
+
+				{=if-equal:{=var-get:fbshot=}~true~
+				<li><a target="work" title="{=L:bc.menue.remote_osd_desc=}" href="Y_Tools_remote_osd.yhtm">{=L:bc.menue.remote_osd=}</a></li>
+				~
+				<li class="disabled" title="{=L:bc.menue.remote_osd_desc_ni=}">{=L:bc.menue.remote_osd=}</li>
+				=}
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="y_menu_sec_box">
+	<div class="y_menu_sec_box_head"><h2>{=L:bc.menue.control=}</h2></div>
+	<div class="y_menu_sec_box_body">
+		<center>
+			<table class="y_text_boxcontrol_table" cellspacing="0" cellpadding="0" title="{=L:bc.menue.volumen_display=}">
+			<tr>
+			<td id="audiobar_left" width="100%"><img src="/images/blank.gif" height="1" width="0" alt="."/></td>
+			<td id="audiobar_right" width="0%" bgcolor="white"><img src="/images/blank.gif" height="1" width="0" alt="."/></td>
+			</tr>
+			</table>
+			<br/>
+			<span title="{=L:bc.menue.decrease_volume=}">
+				<a href="javascript:volumen_set(g_volumen-10);"><img src="/images/volumedown.png">&nbsp;</a></span>
+			<span title="{=L:bc.menue.increase_volume=}">
+				<a href="javascript:volumen_set(g_volumen+10);"><img src="/images/volumeup.png"></a></span>
+			<span title="{=L:bc.menue.mute_volume=}">
+				<a id="btMute" href="javascript:toggle_mute();">&nbsp;<img src="/images/volumemute.png">&nbsp;</a></span>
+<!--			<br/><br/>-->
+			<span title="{=L:bc.menue.switch_to_tv=}"><a href="javascript:set_mode('tv');"><img src="/images/live.gif">&nbsp;</a></span>
+			<span title="{=L:bc.menue.switch_to_radio=}"><a href="javascript:set_mode('radio');">&nbsp;<img src="/images/radio.png"></a></span>
+		</center>
+	</div>
+</div>
+
+{=if-empty:{=ini-get:/var/tuxbox/config/Y-Web.conf;slavebox=}~~
+<div class="y_menu_sec_box">
+	<div class="y_menu_sec_box_head"><h2>Switch to</h2></div>
+	<div class="y_menu_sec_box_body">
+		<div class="y_menu_sec">
+			<ul>
+				<li><a target="_top" title="{=L:bc.menue.webinf_slavebox=}" href="http://{=ini-get:/var/tuxbox/config/Y-Web.conf;slavebox=}/">{=ini-get:/var/tuxbox/config/Y-Web.conf;slavebox=}</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+=}
+
+<script type="text/javascript">
+//<![CDATA[
+	init();
+//]]>
+</script>
+</body>
+</html>
