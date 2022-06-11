@@ -1,6 +1,6 @@
 #!/bin/sh
 
-package="neutrinohd2"
+package="neutrino2"
 
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.

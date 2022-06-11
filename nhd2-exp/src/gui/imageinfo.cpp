@@ -154,9 +154,9 @@ void CImageInfo::paint()
 
 	const char * imagename = PACKAGE_NAME;
 	//imagename = config.getString("imagename", "neutrino-HD2").c_str();
-	const char * homepage = "https://github.com/mohousch/neutrinohd2";
+	const char * homepage = "https://github.com/mohousch/neutrino2";
 	//homepage = config.getString("homepage", "http://gitorious.org/open-duckbox-project-sh4").c_str();
-	const char * docs = "https://github.com/mohousch/neutrinohd2";
+	const char * docs = "https://github.com/mohousch/neutrino2";
 	//docs = config.getString("docs", "http://wiki.neutrino-hd.de").c_str();
 	const char * forum = "https://forum.mbremer.de/viewforum.php?f=86";
 	//forum = config.getString("forum", "http://gitorious.org/open-duckbox-project-sh4").c_str();

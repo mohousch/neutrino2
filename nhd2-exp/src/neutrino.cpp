@@ -5490,7 +5490,6 @@ int main(int argc, char *argv[])
 	
 	// initlocale
 	setlocale(LC_ALL, "");
-	//bindtextdomain(PACKAGE_NAME, CONFIGDIR "/locale");
 	bindtextdomain(PACKAGE_NAME, LOCALEDIR);
 	bind_textdomain_codeset(PACKAGE_NAME, "UTF8");
 	textdomain(PACKAGE_NAME);
