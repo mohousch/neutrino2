@@ -1,4 +1,4 @@
-installdir = $(DATADIR)/neutrino/hints
+installdir = $(DATADIR)/hints
 
 # mainmenu
 install_DATA = \

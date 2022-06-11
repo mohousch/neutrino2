@@ -698,7 +698,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.menu_Hint_Text_green = configfile.getInt32( "menu_Hint_Text_green", 85);
 	g_settings.menu_Hint_Text_blue = configfile.getInt32( "menu_Hint_Text_blue", 85);
 
-	strcpy( g_settings.font_file, configfile.getString( "font_file", DATADIR "/neutrino/fonts/arial.ttf" ).c_str() );
+	strcpy( g_settings.font_file, configfile.getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
 
 	// menue timing
 	for (int i = 0; i < TIMING_SETTING_COUNT; i++)
@@ -985,9 +985,9 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.enable_tmdb_infos = configfile.getBool("enable_tmdb_infos", false);
 
 	// icons dir
-	g_settings.icons_dir = configfile.getString("icons_dir", DATADIR "/neutrino/icons/");
-	g_settings.hints_dir = configfile.getString("hints_dir", DATADIR "/neutrino/hints/");
-	g_settings.buttons_dir = configfile.getString("buttons_dir", DATADIR "/neutrino/buttons/");
+	g_settings.icons_dir = configfile.getString("icons_dir", DATADIR "/icons/");
+	g_settings.hints_dir = configfile.getString("hints_dir", DATADIR "/hints/");
+	g_settings.buttons_dir = configfile.getString("buttons_dir", DATADIR "/buttons/");
 	
 	//set OSD resolution
 #define DEFAULT_X_OFF 35
@@ -1803,9 +1803,9 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 
 	if(access(font_file, F_OK)) 
 	{
-		if(!access(DATADIR "/neutrino/fonts/arial.ttf", F_OK))
+		if(!access(DATADIR "/fonts/arial.ttf", F_OK))
 		{
-			font.filename = strdup(DATADIR "/neutrino/fonts/arial.ttf");
+			font.filename = strdup(DATADIR "/fonts/arial.ttf");
 			strcpy(g_settings.font_file, font.filename);
 		}
 		else if(!access("/usr/share/fonts/arial.ttf", F_OK))
@@ -1815,7 +1815,7 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 		}
 		else
 		{
-			  fprintf( stderr,"CNeutrinoApp::SetupFonts: font file [%s] not found\n neutrino exit\n", DATADIR "/neutrino/fonts/arial.ttf");
+			  fprintf( stderr,"CNeutrinoApp::SetupFonts: font file [%s] not found\n neutrino exit\n", DATADIR "/fonts/arial.ttf");
 			  _exit(0);
 		}
 	}
@@ -1828,9 +1828,9 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 		{
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::SetupFonts: font file %s not ok falling back to arial.ttf\n", font_file);
 			
-			if(!access(DATADIR "/neutrino/fonts/arial.ttf", F_OK))
+			if(!access(DATADIR "/fonts/arial.ttf", F_OK))
 			{
-				font.filename = strdup(DATADIR "/neutrino/fonts/arial.ttf");
+				font.filename = strdup(DATADIR "/fonts/arial.ttf");
 				strcpy((char *)font_file, font.filename);
 			}
 			else if(!access("/usr/share/fonts/arial.ttf", F_OK))
@@ -1840,7 +1840,7 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 			}
 			else
 			{
-				  fprintf( stderr,"CNeutrinoApp::SetupFonts: font file [%s] not found\n neutrino exit\n", DATADIR "/neutrino/fonts/arial.ttf");
+				  fprintf( stderr,"CNeutrinoApp::SetupFonts: font file [%s] not found\n neutrino exit\n", DATADIR "/fonts/arial.ttf");
 				  _exit(0);
 			}
 		}
@@ -5508,7 +5508,7 @@ int main(int argc, char *argv[])
 
 	// set python path
 #if ENABLE_PYTHON
-	setenv("PYTHONPATH", DATADIR "/neutrino/python", 0);
+	setenv("PYTHONPATH", DATADIR "/python", 0);
 #endif
 
 	return CNeutrinoApp::getInstance()->run(argc, argv);

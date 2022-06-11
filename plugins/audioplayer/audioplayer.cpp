@@ -255,7 +255,7 @@ void CMP3Player::showTrackInfo(CAudiofile& file)
 	artist = file.MetaData.artist;
 	genre = file.MetaData.genre;	
 	date = file.MetaData.date;
-	cover = file.MetaData.cover.empty()? DATADIR "/neutrino/icons/no_coverArt.png" : file.MetaData.cover;
+	cover = file.MetaData.cover.empty()? DATADIR "/icons/no_coverArt.png" : file.MetaData.cover;
 
 	snprintf(duration, 8, "(%ld:%02ld)", file.MetaData.total_time / 60, file.MetaData.total_time % 60);
 	
@@ -352,7 +352,7 @@ void CMP3Player::showMenu()
 		artist = playlist[i].MetaData.artist;
 		genre = playlist[i].MetaData.genre;	
 		date = playlist[i].MetaData.date;
-		std::string cover = playlist[i].MetaData.cover.empty()? DATADIR "/neutrino/icons/no_coverArt.png" : playlist[i].MetaData.cover;
+		std::string cover = playlist[i].MetaData.cover.empty()? DATADIR "/icons/no_coverArt.png" : playlist[i].MetaData.cover;
 
 		snprintf(duration, 8, "(%ld:%02ld)", playlist[i].MetaData.total_time / 60, playlist[i].MetaData.total_time % 60);
 		

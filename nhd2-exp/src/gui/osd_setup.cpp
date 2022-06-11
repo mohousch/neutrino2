@@ -703,7 +703,7 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		fileFilter.addFilter("ttf");
 		fileBrowser.Filter = &fileFilter;
 		
-		if (fileBrowser.exec(DATADIR "/neutrino/fonts") == true)
+		if (fileBrowser.exec(DATADIR "/fonts") == true)
 		{
 			strcpy(g_settings.font_file, fileBrowser.getSelectedFile()->Name.c_str());
 			dprintf(DEBUG_NORMAL, "COSDSettings::exec: new font file %s\n", fileBrowser.getSelectedFile()->Name.c_str());
@@ -1136,7 +1136,7 @@ void CSkinManager::showMenu()
 	skinMenu->clearItems();
 	
 	// default
-	item = new ClistBoxItem(_("neutrino (default)"), true, NULL, this, "neutrino_default", RC_nokey, NULL, DATADIR "/neutrino/icons/prev.jpg");
+	item = new ClistBoxItem(_("neutrino (default)"), true, NULL, this, "neutrino_default", RC_nokey, NULL, DATADIR "/icons/prev.jpg");
 	item->setHint(_("Here you can select a skin from the following list."));
 	item->set2lines();
 	

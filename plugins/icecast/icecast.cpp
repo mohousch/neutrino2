@@ -697,7 +697,7 @@ void CIceCast::showMenu()
 
 		char duration[9];
 		snprintf(duration, 8, "%ldk", playlist[i].MetaData.total_time);
-		std::string cover = playlist[i].MetaData.cover.empty()? DATADIR "/neutrino/icons/no_coverArt.png" : playlist[i].MetaData.cover;
+		std::string cover = playlist[i].MetaData.cover.empty()? DATADIR "/icons/no_coverArt.png" : playlist[i].MetaData.cover;
 
 		//
 		item = new ClistBoxItem(tmp.c_str(), true, NULL, this, "iplay");

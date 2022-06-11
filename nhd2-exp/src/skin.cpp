@@ -1966,7 +1966,7 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 		i = scandir(iconsDir.c_str(), &namelist, 0, 0);
 		if(i < 0)
 		{
-			g_settings.icons_dir = DATADIR "/neutrino/icons/"; //fallback to default if empty
+			g_settings.icons_dir = DATADIR "/icons/"; //fallback to default if empty
 		}
 		else
 		{
@@ -1985,7 +1985,7 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 		i = scandir(buttonsDir.c_str(), &namelist, 0, 0);
 		if(i < 0)
 		{
-			g_settings.buttons_dir = DATADIR "/neutrino/buttons/"; //fallback to default if empty
+			g_settings.buttons_dir = DATADIR "/buttons/"; //fallback to default if empty
 		}
 		else
 		{
@@ -2004,7 +2004,7 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 		i = scandir(hintsDir.c_str(), &namelist, 0, 0);
 		if(i < 0)
 		{
-			g_settings.hints_dir = DATADIR "/neutrino/hints/"; //fallback to default if empty
+			g_settings.hints_dir = DATADIR "/hints/"; //fallback to default if empty
 		}
 		else
 		{
@@ -2025,17 +2025,17 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	}
 	else //fallback to default (neutrino intern)
 	{
-		strcpy( g_settings.font_file, DATADIR "/neutrino/fonts/arial.ttf");
+		strcpy( g_settings.font_file, DATADIR "/fonts/arial.ttf");
 		
-		CNeutrinoApp::getInstance()->SetupFonts(DATADIR "/neutrino/fonts/arial.ttf");
+		CNeutrinoApp::getInstance()->SetupFonts(DATADIR "/fonts/arial.ttf");
 		
-		g_settings.icons_dir = DATADIR "/neutrino/icons/";
-		g_settings.buttons_dir = DATADIR "/neutrino/buttons/";
-		g_settings.hints_dir = DATADIR "/neutrino/hints/";
+		g_settings.icons_dir = DATADIR "/icons/";
+		g_settings.buttons_dir = DATADIR "/buttons/";
+		g_settings.hints_dir = DATADIR "/hints/";
 		
-		frameBuffer->setIconBasePath(DATADIR "/neutrino/icons/");
-		frameBuffer->setButtonBasePath(DATADIR "/neutrino/buttons/");
-		frameBuffer->setHintBasePath(DATADIR "/neutrino/hints/");
+		frameBuffer->setIconBasePath(DATADIR "/icons/");
+		frameBuffer->setButtonBasePath(DATADIR "/buttons/");
+		frameBuffer->setHintBasePath(DATADIR "/hints/");
 	}	
 }
 
@@ -2073,17 +2073,17 @@ void CNeutrinoApp::unloadSkin()
 	widgets.clear();
 	
 	// set font to arial
-	strcpy( g_settings.font_file, DATADIR "/neutrino/fonts/arial.ttf");
+	strcpy( g_settings.font_file, DATADIR "/fonts/arial.ttf");
 		
-	CNeutrinoApp::getInstance()->SetupFonts(DATADIR "/neutrino/fonts/arial.ttf");
+	CNeutrinoApp::getInstance()->SetupFonts(DATADIR "/fonts/arial.ttf");
 		
-	g_settings.icons_dir = DATADIR "/neutrino/icons/";
-	g_settings.buttons_dir = DATADIR "/neutrino/buttons/";
-	g_settings.hints_dir = DATADIR "/neutrino/hints/";
+	g_settings.icons_dir = DATADIR "/icons/";
+	g_settings.buttons_dir = DATADIR "/buttons/";
+	g_settings.hints_dir = DATADIR "/hints/";
 		
-	frameBuffer->setIconBasePath(DATADIR "/neutrino/icons/");
-	frameBuffer->setButtonBasePath(DATADIR "/neutrino/buttons/");
-	frameBuffer->setHintBasePath(DATADIR "/neutrino/hints/");
+	frameBuffer->setIconBasePath(DATADIR "/icons/");
+	frameBuffer->setButtonBasePath(DATADIR "/buttons/");
+	frameBuffer->setHintBasePath(DATADIR "/hints/");
 	
 	// set colors to default
 	CThemes* themes = new CThemes();
@@ -2244,7 +2244,7 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.progressbar_color = skinConfig->getInt32("progressbar_color", 1);
 		g_settings.progressbar_gradient = skinConfig->getInt32("progressbar_gradient", DARK2LIGHT2DARK);
 		
-		strcpy( g_settings.font_file, skinConfig->getString( "font_file", DATADIR "/neutrino/fonts/arial.ttf" ).c_str() );
+		strcpy( g_settings.font_file, skinConfig->getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
 
 		colorSetupNotifier = new CColorSetupNotifier;
 		colorSetupNotifier->changeNotify("", NULL);

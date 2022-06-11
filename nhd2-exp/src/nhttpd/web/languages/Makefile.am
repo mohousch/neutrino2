@@ -1,4 +1,4 @@
-installdir = $(DATADIR)/neutrino/httpd/languages
+installdir = $(DATADIR)/httpd/languages
 
 install_DATA =	Deutsch English Portuguese
 

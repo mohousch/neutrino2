@@ -1,6 +1,6 @@
 SUBDIRS = images scripts languages
 
-installdir = $(DATADIR)/neutrino/httpd
+installdir = $(DATADIR)/httpd
 
 install_DATA =	channels.js \
 		channels.txt \

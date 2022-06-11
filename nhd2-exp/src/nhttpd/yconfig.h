@@ -120,7 +120,7 @@
 // switch for Box differences
 #ifdef CONFIG_SYSTEM_TUXBOX
 #define AUTHPASSWORD					"root"
-#define PRIVATEDOCUMENTROOT				DATADIR "/neutrino/httpd"
+#define PRIVATEDOCUMENTROOT				DATADIR "/httpd"
 #endif
 
 //

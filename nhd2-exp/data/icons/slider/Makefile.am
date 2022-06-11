@@ -1,4 +1,4 @@
-installdir = $(DATADIR)/neutrino/icons
+installdir = $(DATADIR)/icons
 
 install_DATA = \
 	slider_body.png slider_inactive.png \

@@ -324,7 +324,7 @@ function getliste(url)
 								neutrino.downloadUrl(_logo, tfile)
 								_logo = tfile
 							else
-								_logo = neutrino.DATADIR .. "/neutrino/icons/nopreview.jpg"
+								_logo = neutrino.DATADIR .. "/icons/nopreview.jpg"
 							end
 							
 							-- chart pos

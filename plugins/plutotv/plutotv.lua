@@ -192,7 +192,7 @@ function cat_menu(_id)
 		if cat == tonumber(_id) then
 			local count = 1
 			for item, item_detail in pairs(itemlist_detail) do	
-				tfile = neutrino.DATADIR .. "/neutrino/icons/nopreview.jpg"
+				tfile = neutrino.DATADIR .. "/icons/nopreview.jpg"
 					
 				if item_detail.cover ~= nil then
 					tfile = "/tmp/plutotv/" .. conv_utf8(item_detail.name) .. ".jpg"
@@ -359,7 +359,7 @@ function episode_menu(s)
 		if season == tonumber(s) then
 			local count = 1
 			for episode, episode_detail in pairs(episodelist_detail) do
-				local tfile = neutrino.DATADIR .. "/neutrino/icons/nopreview.jpg"
+				local tfile = neutrino.DATADIR .. "/icons/nopreview.jpg"
 					
 				if episode_detail.cover ~= nil then
 					tfile = "/tmp/plutotv/" .. conv_utf8(episode_detail.name) .. ".jpg"

@@ -64,7 +64,7 @@ AC_REQUIRE([TUXBOX_APPS])
 TUXBOX_APPS_DIRECTORY_ONE(configdir,CONFIGDIR,localstatedir,/var,/tuxbox/config,
 	[--with-configdir=PATH   ],[where to find the config files])
 
-TUXBOX_APPS_DIRECTORY_ONE(datadir,DATADIR,datadir,/share,/tuxbox,
+TUXBOX_APPS_DIRECTORY_ONE(datadir,DATADIR,datadir,/share,/tuxbox/neutrino2,
 	[--with-datadir=PATH     ],[where to find data])
 
 TUXBOX_APPS_DIRECTORY_ONE(plugindir,PLUGINDIR,localstatedir,/var,/tuxbox/plugins,

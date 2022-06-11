@@ -1316,7 +1316,7 @@ void CAudioPlayerGui::showPlaylist()
 		artist = m_playlist[i].MetaData.artist;
 		genre = m_playlist[i].MetaData.genre;	
 		date = m_playlist[i].MetaData.date;
-		std::string cover = m_playlist[i].MetaData.cover.empty()? DATADIR "/neutrino/icons/no_coverArt.png" : m_playlist[i].MetaData.cover;
+		std::string cover = m_playlist[i].MetaData.cover.empty()? DATADIR "/icons/no_coverArt.png" : m_playlist[i].MetaData.cover;
 
 		snprintf(duration, 8, "(%ld:%02ld)", m_playlist[i].MetaData.total_time / 60, m_playlist[i].MetaData.total_time % 60);
 		

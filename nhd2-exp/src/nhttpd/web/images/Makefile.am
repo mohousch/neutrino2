@@ -1,4 +1,4 @@
-installdir = $(DATADIR)/neutrino/httpd/images
+installdir = $(DATADIR)/httpd/images
 
 install_DATA =	accept.png \
 		addfolder.gif \

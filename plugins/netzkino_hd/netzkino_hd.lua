@@ -231,7 +231,7 @@ function get_movies(_id)
 				j_content = posts[i].content
 
 				local j_cover = "";
-				local tfile = neutrino.DATADIR .. "/neutrino/icons/nopreview.jpg"
+				local tfile = neutrino.DATADIR .. "/icons/nopreview.jpg"
 				--local attachments = posts[i].attachments[1]
 				local thumbnail = posts[i].thumbnail
 				if thumbnail then
