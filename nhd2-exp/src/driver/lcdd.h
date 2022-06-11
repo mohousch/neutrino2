@@ -45,7 +45,7 @@
 
 #include <liblcddisplay/fontrenderer.h>
 
-#define LCDDIR_VAR CONFIGDIR "/icons/lcdd"
+#define LCDDIR_VAR CONFIGDIR "/lcdd"
 
 typedef enum
 {
