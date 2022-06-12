@@ -976,7 +976,7 @@ void cVideo::setContrast(int Contrast)
 #else
 	fd = fopen("/proc/stb/vmpeg/0/pep_contrast", "w");
 #endif
-	if(fd > 0)
+	if(fd)
 	{
 		fprintf(fd, "%d", Contrast);
 		fclose(fd);
@@ -993,7 +993,7 @@ void cVideo::setSaturation(int Saturation)
 #else
 	fd = fopen("/proc/stb/vmpeg/0/pep_saturation", "w");
 #endif
-	if(fd > 0)
+	if(fd)
 	{
 		fprintf(fd, "%d", Saturation);
 		fclose(fd);
@@ -1010,7 +1010,7 @@ void cVideo::setBrightness(int Brightness)
 #else
 	fd = fopen("/proc/stb/vmpeg/0/pep_brightness", "w");
 #endif
-	if(fd > 0)
+	if(fd)
 	{
 		fprintf(fd, "%d", Brightness);
 		fclose(fd);
@@ -1027,7 +1027,7 @@ void cVideo::setTint(int Tint)
 #else
 	fd = fopen("/proc/stb/vmpeg/0/pep_hue", "w");
 #endif
-	if(fd > 0)
+	if(fd)
 	{
 		fprintf(fd, "%d", Tint);
 		fclose(fd);
