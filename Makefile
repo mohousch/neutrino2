@@ -144,9 +144,10 @@ init:
 	@read -p "Select LCD support (1-4)?" LCD; \
 	LCD=$${LCD}; \
 	case "$$LCD" in \
-		1|4|*) echo "LCD=" >> config.local;; \
+		1) echo "LCD=vfd" >> config.local;; \
 		2) echo "LCD=4-digits" >> config.local;; \
 		3) echo "LCD=lcd" >> config.local;; \
+		4|*) echo "LCD=" >> config.local;; \
 	esac; \
 	echo ""	
 # scart

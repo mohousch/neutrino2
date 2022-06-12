@@ -183,10 +183,10 @@
 %include <src/gui/widget/helpbox.h>
 %include <src/gui/widget/listbox.h>
 %include <src/gui/widget/hintbox.h>
+%include <src/gui/widget/textbox.h>
 %include <src/gui/widget/infobox.h>
 %include <src/gui/widget/listframe.h>
 %include <src/gui/widget/stringinput.h>
-%include <src/gui/widget/textbox.h>
 %include <src/gui/widget/menue.h>
 %include <src/gui/widget/framebox.h>
 %include <src/gui/widget/widget.h>
