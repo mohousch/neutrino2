@@ -4,33 +4,33 @@
 </h1>
 
 -------
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/mainmenu.png)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/mainmenu.png)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/channellist.png)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/channellist.png)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/infoviewer.bmp)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/infoviewer.bmp)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/epgview.bmp)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/epgview.bmp)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/eventlist.bmp)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/eventlist.bmp)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/epgplus.bmp)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/epgplus.bmp)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/pluginsbrowser.bmp)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/pluginsbrowser.bmp)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/moviebrowser.bmp)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/moviebrowser.bmp)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/movietrailer.bmp)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/movietrailer.bmp)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/movieinfowidget.bmp)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/movieinfowidget.bmp)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/skinselect.bmp)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/skinselect.bmp)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/metrixhd.png)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/metrixhd.png)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/KravenHD.png)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/KravenHD.png)
 
-![](https://github.com/mohousch/neutrinohd2/blob/master/nhd2-exp/doc/resources/mainmenu_2.bmp)
+![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/mainmenu_2.bmp)
 
 ## How to build neutrino-HD2 for PC (x86) ##
 
@@ -41,10 +41,10 @@ $:~ sudo apt-get install autoconf libtool libtool-bin g++ gdb swig flex bison ma
 ```
 
 ```bash
-$:~ git clone https://github.com/mohousch/neutrinohd2.git
+$:~ git clone https://github.com/mohousch/neutrino2.git
 ```
 ```bash
-$:~ cd neutrinohd2
+$:~ cd neutrino2
 ```
 
 ```bash
@@ -56,7 +56,7 @@ $:~ make
 $:~ make run
 ```
 
-* to update neutrinohd2 source code:
+* to update neutrino2 source code:
 ```bash
 $:~ make update
 ```

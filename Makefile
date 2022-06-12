@@ -1,5 +1,5 @@
 ################################################################################################################################################################################################################################################################
-# Makefile for building neutrinoHD2 for x86		
+# Makefile for building neutrino2 for x86		
 # build options:
 #  --with-configdir=PATH   where to find the config files [PREFIX/var/tuxbox/config]
 #  --with-datadir=PATH     where to find data [PREFIX/share/tuxbox]
