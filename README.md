@@ -1,6 +1,6 @@
 
 <h1 align="center">
-  Welcome to neutrino-HD2 software
+  Welcome to neutrino2 software
 </h1>
 
 -------
@@ -32,7 +32,7 @@
 
 ![](https://github.com/mohousch/neutrino2/blob/master/nhd2-exp/doc/resources/mainmenu_2.bmp)
 
-## How to build neutrino-HD2 for PC (x86) ##
+## How to build neutrino2 for PC (x86) ##
 
 * check preqs (debian):
 
@@ -76,7 +76,7 @@ $:~ make distclean
  linuxmint 20.1 Ulyssa, 20.2 Uma, 20.3 Una and LMDE 5 Elsie
  Ubuntu 20.04 Focal Fossa
 
-## how to build neutrino-HD2 for sh4/arm/mips boxes ##
+## how to build neutrino2 for sh4/arm/mips boxes ##
 see:
 * https://github.com/mohousch/buildsystem
 
