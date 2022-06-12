@@ -1072,12 +1072,6 @@ void COSDDiverses::showMenu()
 	CMenuForwarder *as = new CMenuForwarder(_("Volume Step Size"), true, g_settings.audio_step, audio_step );
 	osdDiverseSettings->addItem(as);
 	
-	// hintbox border
-	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Hintbox Border"), &g_settings.hintbox_border, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
-	
-	// messagebox border
-	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Messagebox Border"), &g_settings.hintbox_border, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
-	
 	//
 	osdDiverseSettings->addItem(new CMenuSeparator(LINE));
 	

@@ -2090,10 +2090,6 @@ void CNeutrinoApp::unloadSkin()
 	//themes->exec(NULL, "theme_default");
 	themes->setupDefaultColors();
 	
-	// menu
-	g_settings.hintbox_border = true;
-	g_settings.messagebox_border = true;
-	
 	// infobar
 	g_settings.infobar_gradient = NOGRADIENT;
 	g_settings.infobar_gradient_direction = GRADIENT_HORIZONTAL;
@@ -2230,10 +2226,6 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.infobar_buttonbar = skinConfig->getBool("infobar_buttonbar", true);
 		g_settings.infobar_buttonline = skinConfig->getBool("infobar_buttonline", false);
 		
-		//
-		g_settings.hintbox_border = skinConfig->getBool("hintbox_border", true);
-		g_settings.messagebox_border = skinConfig->getBool("messagebox_border", true);
-		
 		// itemInfo
 		g_settings.Hint_border = skinConfig->getBool("Hint_border", true);
 		g_settings.Hint_gradient = skinConfig->getInt32("Hint_gradient", NOGRADIENT);
@@ -2349,10 +2341,6 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	skinConfig->setBool("infobar_buttonbar", g_settings.infobar_buttonbar);
 	skinConfig->setBool("infobar_buttonline", g_settings.infobar_buttonline);
 	skinConfig->setBool("infobar_border", g_settings.infobar_border);
-	
-	//
-	skinConfig->setBool("hintbox_border", g_settings.hintbox_border);
-	skinConfig->setBool("messagebox_border", g_settings.messagebox_border);
 	
 	// itemInfo
 	skinConfig->setBool("Hint_border", g_settings.Hint_border);

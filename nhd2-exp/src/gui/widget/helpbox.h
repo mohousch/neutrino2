@@ -50,6 +50,9 @@ class CHelpBox
 	private:
 		ContentLines m_lines;
 		
+		//
+		int shadowMode;
+		
 	public:
 		CHelpBox();
 		~CHelpBox();
@@ -62,6 +65,9 @@ class CHelpBox
 		void add2Line(const char* const text1, const char* const text2, CFont* font1 = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint8_t col1 = COL_MENUCONTENT, const bool bg1 = false, CFont* font2 = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint8_t col2 = COL_MENUCONTENT, const bool bg2 = false);
 		void addSeparator();
 		void addPagebreak();
+		
+		//
+		void setShadowMode(int sm){shadowMode = sm;};
 		
 		//
 		void show(const char* const Caption, const int Width = HELPBOX_WIDTH, int timeout = -1, const result_ Default = mbrBack, const uint32_t ShowButtons = mbBack);

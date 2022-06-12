@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino-hd2 4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-11 21:27+0200\n"
+"POT-Creation-Date: 2022-06-12 11:51+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -957,9 +957,6 @@ msgstr ""
 msgid "Highlight"
 msgstr ""
 
-msgid "Hintbox Border"
-msgstr ""
-
 msgid "History"
 msgstr ""
 
@@ -1252,9 +1249,6 @@ msgid "Menutext"
 msgstr ""
 
 msgid "Message"
-msgstr ""
-
-msgid "Messagebox Border"
 msgstr ""
 
 msgid "Mini-DiSEqC"
@@ -1785,9 +1779,8 @@ msgstr ""
 msgid "Reload"
 msgstr "Neu laden"
 
-#, fuzzy
 msgid "Reload EPG"
-msgstr "Neu laden"
+msgstr "EPG neu laden"
 
 msgid "Reload channel lists"
 msgstr "Kanallisten neu laden"
@@ -1795,11 +1788,9 @@ msgstr "Kanallisten neu laden"
 msgid "Reload movie info at start"
 msgstr ""
 
-#, fuzzy
 msgid "Reloading EPG, please be patient."
-msgstr "Kanallisten werden neu geladen, bitte warten..."
+msgstr "EPG Daten werden neu geladen, bitte warten..."
 
-#, fuzzy
 msgid "Reloading channel lists, please be patient."
 msgstr "Kanallisten werden neu geladen, bitte warten..."
 
@@ -2927,13 +2918,11 @@ msgstr ""
 msgid "dmesg"
 msgstr ""
 
-#, fuzzy
 msgid "do you want to reload EPG?"
-msgstr "Kanallisten neu laden"
+msgstr "EPG Daten neu laden?"
 
-#, fuzzy
 msgid "do you want to reload channel lists?"
-msgstr "Kanallisten neu laden"
+msgstr "Kanallisten neu laden?"
 
 msgid "documentary"
 msgstr ""

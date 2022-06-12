@@ -721,8 +721,6 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	//
 	g_settings.use_default_skin = configfile.getBool("use_default_skin", true);
 	g_settings.preferred_skin = configfile.getString("preferred_skin", "default");
-	g_settings.hintbox_border = configfile.getBool("hintbox_border", true);
-	g_settings.messagebox_border = configfile.getBool("messagebox_border", true);
 
 	// keysbinding
 	strcpy(g_settings.repeat_blocker, configfile.getString("repeat_blocker", "250").c_str());
@@ -1218,8 +1216,6 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	//
 	configfile.setBool("use_default_skin", g_settings.use_default_skin);
 	configfile.setString("preferred_skin", g_settings.preferred_skin);
-	configfile.setBool("hintbox_border", g_settings.hintbox_border);
-	configfile.setBool("messagebox_border", g_settings.messagebox_border);
 	// END OSD
 
 	// KEYS

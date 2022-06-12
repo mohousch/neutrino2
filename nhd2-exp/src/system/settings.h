@@ -489,10 +489,6 @@ struct SNeutrinoSettings
 	int infobar_buttonbar;
 	int infobar_buttonline;
 	int infobar_border;
-	
-	//
-	int hintbox_border;
-	int messagebox_border;
 
 	// icons dir
 	std::string icons_dir;
