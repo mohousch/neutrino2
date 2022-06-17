@@ -51,7 +51,7 @@
 #include <gui/themes.h>
 
 
-#define THEMEDIR 		DATADIR "/neutrino/themes/"
+#define THEMEDIR 		DATADIR "/themes/"
 #define USERDIR 		CONFIGDIR "/themes/"
 #define FILE_PREFIX 		".theme"
 
