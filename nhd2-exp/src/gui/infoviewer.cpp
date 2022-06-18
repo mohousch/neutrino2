@@ -80,22 +80,18 @@ void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventL
 void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsdClient::responseGetCurrentNextInfoChannelID& current_next );
 
 extern CRemoteControl * g_RemoteControl;		// neutrino.cpp
-
 extern cVideo * videoDecoder;				// libdvbapi
 extern CFrontend * live_fe;				// zapit.cpp
 extern fe_map_t femap;					// zapit.cpp
 extern CFrontend * getFE(int index);			// zapit.cpp
 extern int FrontendCount;				// defined in zapit.cpp
-
 extern bool autoshift;
 extern uint32_t shift_timer;
-
 extern std::string ext_channel_name;	// defined in vcrcontrol.cpp
 extern bool timeset;			// defined in sectionsd.cpp
-
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 
-#define borderwidth 	5 //for subchannels Box
+#define borderwidth 		5 //for subchannels Box
 
 // in us
 #define LCD_UPDATE_TIME_TV_MODE (60 * 1000 * 1000)
@@ -121,7 +117,7 @@ extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 #define BUTTON_BAR_HEIGHT	20
 
 // channel
-#define CHANNAME_HEIGHT		35
+#define CHANNAME_HEIGHT	35
 #define CHANNAME_WIDTH		100
 #define CHANNUMBER_HEIGHT	35
 #define CHANNUMBER_WIDTH	100
@@ -133,9 +129,7 @@ extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 #define BOXHEIGHT_CHANNELINFO	140
 #define BOXHEIGHT_MOVIEINFO	100
 
-#define CHANINFO_HEIGHT		24
-
-//static event_id_t last_curr_id = 0, last_next_id = 0;
+#define CHANINFO_HEIGHT	24
 
 static bool sortByDateTime(const CChannelEvent& a, const CChannelEvent& b)
 {
@@ -346,7 +340,7 @@ void CInfoViewer::showRecordIcon(const bool show)
 	}	
 }
 
-void CInfoViewer::show(const int ChanNum, const std::string & Channel, const t_satellite_position satellitePosition)
+void CInfoViewer::show(const int ChanNum, const std::string& Channel, const t_satellite_position satellitePosition)
 {
 	dprintf(DEBUG_NORMAL, "CInfoViewer::show:\n");
 	
@@ -465,15 +459,14 @@ void CInfoViewer::show(const int ChanNum, const std::string & Channel, const t_s
 			CChannellogo::getInstance()->getLogoSize(channel_id, &logo_w, &logo_h, &logo_bpp);
 		
 			// display logo
-			//CChannellogo::getInstance()->displayLogo(channel_id, pic_x, pic_y, (logo_bpp == 4 && !g_settings.show_channelname)? logo_w : pic_w, pic_h, (logo_h > pic_h)? true : false, false, true);
 			CChannellogo::getInstance()->displayLogo(channel_id, pic_x, pic_y, pic_w, pic_h, (logo_h > pic_h)? true : false, false, true);
 
 			// recalculate ChanNameWidth //FIXME: timewidth
-			ChanNameWidth = BoxWidth - (30 + CHANNUMBER_WIDTH + /*logo_w*/pic_w + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth(ChannelName, true));
+			ChanNameWidth = BoxWidth - (30 + CHANNUMBER_WIDTH + pic_w + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth(ChannelName, true));
 			
 			// ChannelName
 			if(g_settings.show_channelname)
-				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->RenderString(pic_x + /*((logo_bpp == 4)? logo_w : pic_w)*/pic_w + 5, ChanNameY + ChanNameHeight, ChanNameWidth, ChannelName, COL_INFOBAR, 0, true);	// UTF-8
+				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->RenderString(pic_x + pic_w + 5, ChanNameY + ChanNameHeight, ChanNameWidth, ChannelName, COL_INFOBAR, 0, true);	// UTF-8
 		}
 		else
 		{
