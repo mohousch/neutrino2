@@ -2575,6 +2575,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	corner = CORNER_NONE;
 	scrollbar = true;
 	items_background = NULL;
+	shadowMode = SHADOW_NO;
 	
 	item_height = 0;
 	item_width = 0;
@@ -2582,7 +2583,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	items_width = 0;
 	items_height = 0;
 	
-	//itemShadow = false;
+	//
 	itemShadowMode = SHADOW_NO;
 	itemGradient = NOGRADIENT;
 	
@@ -2696,6 +2697,7 @@ ClistBox::ClistBox(CBox* position)
 	corner = CORNER_NONE;
 	scrollbar = true;
 	items_background = NULL;
+	shadowMode = SHADOW_NO;
 	
 	//
 	item_height = 0;
@@ -2703,7 +2705,6 @@ ClistBox::ClistBox(CBox* position)
 	iconOffset = 0;
 	items_width = 0;
 	items_height = 0;
-	//itemShadow = false;
 	itemShadowMode = SHADOW_NO;
 	itemGradient = NOGRADIENT;
 	
@@ -2957,6 +2958,11 @@ void ClistBox::paint()
 			}
 		}
 	}
+	else
+	{
+		//if (shadowMode)
+			//frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, COL_MENUCONTENT_PLUS_6, headRadius, headCorner | footCorner);
+	}
 
 	//
 	paintHead();
@@ -3072,7 +3078,9 @@ void ClistBox::paintItems()
 
 		// paint items background
 		if (paintFrame) //FIXME:
+		{
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, items_height, bgcolor, radius, corner);
+		}
 		else
 		{
 			if (items_background)
@@ -3632,6 +3640,8 @@ void ClistBox::hide()
 		restoreScreen();
 	else
 		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, wanted_width, wanted_height);
+		//frameBuffer->paintBackgroundBoxRel(itemBox.iX - 2, itemBox.iY - 2, full_width + 4, full_height + 4);
+		
 
 	hideItemInfo(); 
 
@@ -3711,6 +3721,7 @@ void ClistBox::scrollLineDown(const int)
 					{
 						selected = pos;
 						paintItems();
+						//paint();
 					}
 					break;
 				}
@@ -3779,6 +3790,7 @@ void ClistBox::scrollLineUp(const int)
 					{
 						selected = pos;
 						paintItems();
+						//paint();
 					}
 					break;
 				}
@@ -3833,6 +3845,7 @@ void ClistBox::scrollPageDown(const int)
 					{
 						selected = pos;
 						paintItems();
+						//paint();
 					}
 					break;
 				}
@@ -3885,6 +3898,7 @@ void ClistBox::scrollPageUp(const int)
 						{
 							selected = pos;
 							paintItems();
+							//paint();
 						}
 						break;
 					}
@@ -3913,6 +3927,7 @@ void ClistBox::scrollPageUp(const int)
 						{
 							selected = pos;
 							paintItems();
+							//paint();
 						}
 						break;
 					}
