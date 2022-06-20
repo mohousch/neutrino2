@@ -39,13 +39,12 @@ class CWidgetItem;
 class CWidget;
 class CWindow;
 
-
-// shadow
+// border
 enum {
-	SHADOW_NO,
-	SHADOW_ALL,
-	SHADOW_LEFTRIGHT,
-	SHADOW_TOPBOTTOM
+	BORDER_NO,
+	BORDER_ALL,
+	BORDER_LEFTRIGHT,
+	BORDER_TOPBOTTOM
 };
 
 // dimension helper
@@ -329,7 +328,7 @@ class CItems2DetailsLine : public CComponent
 		
 		// cutom mode
 		unsigned int tFont;
-		int shadowMode;
+		int borderMode;
 		bool savescreen;
 		bool paintframe;
 		uint32_t color;
@@ -354,7 +353,7 @@ class CItems2DetailsLine : public CComponent
 		
 		// custom mode
 		void setFont(unsigned int f){tFont = f;};
-		void setShadowMode(int m){shadowMode = m;};
+		void setBorderMode(int m){borderMode = m;};
 		void enableSaveScreen(){savescreen = true;};
 		void paintFrame(bool p){paintframe = p;};
 		void setColor(uint32_t col){color = col;};

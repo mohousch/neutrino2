@@ -80,7 +80,7 @@ CInfoBox::CInfoBox(/*CFont *fontText, const int _mode,*/ const CBox* position, c
 	
 	//m_pcTextBox->setFont(fontText);
 	//m_pcTextBox->setMode(m_nMode);
-	//m_pcTextBox->setShadowMode(shadowMode);
+	//m_pcTextBox->setBorderMode(borderMode);
 
 	if(m_nMode & AUTO_WIDTH || m_nMode & AUTO_HIGH)
 	{
@@ -192,7 +192,7 @@ void CInfoBox::initVar(void)
 
 	frameBuffer = CFrameBuffer::getInstance();
 	
-	shadowMode = SHADOW_NO;
+	borderMode = BORDER_NO;
 }
 
 //////////////////////////////////////////////////////////////////////

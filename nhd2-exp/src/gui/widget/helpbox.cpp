@@ -50,7 +50,7 @@ CHelpBox::CHelpBox()
 	dprintf(DEBUG_INFO, "Helpbox::\n");
 	
 	//
-	shadowMode = SHADOW_NO;
+	borderMode = BORDER_NO;
 }
 
 CHelpBox::~CHelpBox()
@@ -72,7 +72,7 @@ void CHelpBox::show(const char* const Caption, const int Width, int timeout, con
 
  	CMessageBox msgBox(Caption, m_lines, Width, NEUTRINO_ICON_INFO, Default, ShowButtons);
  	
- 	msgBox.setShadowMode(shadowMode);
+ 	msgBox.setBorderMode(borderMode);
 
 	msgBox.exec(timeout);
 }

@@ -108,7 +108,7 @@ class CMessageBox
 		void hide(void);
 		
 		//
-		int shadowMode;
+		int borderMode;
 
 	private:
 		uint32_t showbuttons;
@@ -128,12 +128,12 @@ class CMessageBox
 
 		~CMessageBox(void);
 		
-		void setShadowMode(int sm){shadowMode = sm;};
+		void setBorderMode(int sm){borderMode = sm;};
 
 		int exec(int timeout = -1);
 		void returnDefaultValueOnTimeout(bool returnDefault);
 };
 
-int MessageBox(const char * const Caption, const char * const Text, const result_ Default, const uint32_t ShowButtons, const char * const Icon = NULL, const int Width = MENU_WIDTH, const int timeout = -1, bool returnDefaultOnTimeout = false, const int border = SHADOW_NO); // UTF-8
+int MessageBox(const char * const Caption, const char * const Text, const result_ Default, const uint32_t ShowButtons, const char * const Icon = NULL, const int Width = MENU_WIDTH, const int timeout = -1, bool returnDefaultOnTimeout = false, const int border = BORDER_NO); // UTF-8
 
 #endif

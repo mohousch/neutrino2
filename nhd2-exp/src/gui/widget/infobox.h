@@ -70,7 +70,7 @@ class CInfoBox
 		CTextBox *m_pcTextBox;
 		unsigned int m_pcFontText;
 		int m_nMode;
-		int shadowMode;
+		int borderMode;
 		
 		// foot
 		CBox m_cBoxFrameFootRel;
@@ -116,7 +116,7 @@ class CInfoBox
 		void setBackgroundColor(fb_pixel_t col);
 		void setTextColor(uint8_t col);
 		void setFont(unsigned int font_text);
-		void setShadowMode(int sm){shadowMode = sm;};
+		void setBorderMode(int sm){borderMode = sm;};
 		
 		// foot
 		void setFootColor(fb_pixel_t col) {footColor = col;};

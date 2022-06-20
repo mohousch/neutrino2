@@ -859,14 +859,14 @@ void CTestMenu::testCWidget()
 	frame->setPosition(topBox.iX, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Filme");
 	frame->setActionKey(this, "movie");
-	frame->enableShadow();
+	frame->enableBorder();
 	frameBoxWidget->addFrame(frame);
 	
 	frame = new CFrame();
 	frame->setPosition(topBox.iX + topBox.iWidth/3, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Serien");
 	frame->setActionKey(this, "tv");
-	frame->enableShadow();
+	frame->enableBorder();
 	frameBoxWidget->addFrame(frame);
 
 	frame = new CFrame();
@@ -874,7 +874,7 @@ void CTestMenu::testCWidget()
 	frame->setTitle("Suche");
 	frame->setOption(tmdbsearch.c_str());
 	frame->setActionKey(this, "search");
-	frame->enableShadow();
+	frame->enableBorder();
 	frameBoxWidget->addFrame(frame);
 
 	frameBoxWidget->setSelected(top_selected); 
@@ -1304,7 +1304,7 @@ void CTestMenu::testCFrameBox1()
 	infoFrame->setTitle("Movie Details");
 	infoFrame->setIconName(NEUTRINO_ICON_INFO);
 	infoFrame->setActionKey(this, "minfo");
-	infoFrame->enableShadow();
+	infoFrame->enableBorder();
 
 	frameBoxWidget->addFrame(infoFrame);
 
@@ -1315,7 +1315,7 @@ void CTestMenu::testCFrameBox1()
 	playFrame->setTitle("Movie abspielen");
 	playFrame->setIconName(NEUTRINO_ICON_PLAY);
 	playFrame->setActionKey(this, "mplay");
-	playFrame->enableShadow();
+	playFrame->enableBorder();
 
 	frameBoxWidget->addFrame(playFrame);
 
@@ -1744,7 +1744,7 @@ void CTestMenu::testClistBoxWidget()
 
 		item->setHint(tmp.c_str());
 		
-		item->setShadowMode();
+		item->setBorderMode();
 		//item->setWidgetMode(MODE_MENU);
 
 		rightWidget->addItem(item);
@@ -1804,14 +1804,14 @@ void CTestMenu::testMultiWidget()
 	leftWidget->setSelected(left_selected);
 
 	ClistBoxItem *item1 = new ClistBoxItem("Item 1");
-	item1->setShadowMode();
+	item1->setBorderMode();
 	ClistBoxItem *item2 = new ClistBoxItem("Item 2");
 	item2->setOption("Item 2- Option");
 	item2->set2lines();
 	ClistBoxItem *item3 = new ClistBoxItem("Item 3");
 	item3->setOption("Item 3 Option");
 	item3->set2lines();
-	item3->setShadowMode();
+	item3->setBorderMode();
 	ClistBoxItem *item4 = new ClistBoxItem("Item4");
 	CMenuSeparator *item5 = new CMenuSeparator();
 	CMenuSeparator *item6 = new CMenuSeparator();
@@ -1991,14 +1991,14 @@ void CTestMenu::testCWidgetItem()
 	frame = new CFrame();
 	frame->setPosition(topBox.iX, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Filme");
-	frame->enableShadow();
+	frame->enableBorder();
 	frame->setHAlign(CC_ALIGN_CENTER);
 	frameBoxWidget->addFrame(frame);
 	
 	frame = new CFrame();
 	frame->setPosition(topBox.iX + topBox.iWidth/3, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Serien");
-	frame->enableShadow();
+	frame->enableBorder();
 	frame->setHAlign(CC_ALIGN_CENTER);
 	frameBoxWidget->addFrame(frame);
 
@@ -2007,7 +2007,7 @@ void CTestMenu::testCWidgetItem()
 	frame->setTitle("Suche");
 	frame->setOption(tmdbsearch.c_str());
 	frame->setActionKey(this, "search");
-	frame->enableShadow();
+	frame->enableBorder();
 	frame->setHAlign(CC_ALIGN_CENTER);
 	frameBoxWidget->addFrame(frame);
 
@@ -2934,7 +2934,7 @@ void CTestMenu::testCWindowShadow()
 
 	window->setColor(COL_MENUCONTENT_PLUS_0);
 	window->setCorner(RADIUS_MID, CORNER_ALL);
-	window->setShadowMode(SHADOW_ALL);
+	window->setBorderMode(BORDER_ALL);
 	window->enableSaveScreen();
 
 	window->paint();
@@ -2969,7 +2969,7 @@ void CTestMenu::testCWindowCustomColor()
 
 	window->setColor(COL_ORANGE_PLUS_0); // or use like make16color(0x76A5AF)
 	window->setCorner(RADIUS_MID, CORNER_ALL);
-	window->setShadowMode(SHADOW_ALL);
+	window->setBorderMode(BORDER_ALL);
 	window->enableSaveScreen();
 
 	window->paint();
@@ -3237,7 +3237,7 @@ void CTestMenu::testCInfoBox()
 	
 	CInfoBox * infoBox = new CInfoBox(&position, "CInfoBox", NEUTRINO_ICON_INFO);	
 	
-	infoBox->setShadowMode(SHADOW_ALL);
+	infoBox->setBorderMode(BORDER_ALL);
 	infoBox->setBackgroundColor(/*make16color(0xBEBEBE)*/COL_SILVER_PLUS_0);
 	infoBox->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h, PIC_RIGHT, true, true);
 	infoBox->setTextColor(COL_LIME);
@@ -3837,7 +3837,7 @@ void CTestMenu::testClistBox()
 	rightWidget->enablePaintItemInfo(70);
 	rightWidget->setItemInfoMode(ITEMINFO_HINTITEM_MODE);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
-	rightWidget->paintItemInfoShadow(SHADOW_ALL);
+	rightWidget->paintItemInfoBorder(BORDER_ALL);
 	rightWidget->paintItemInfoFrame(true);
 	rightWidget->enableItemInfoSaveScreen();
 	rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_GAMELIST_ITEMLARGE);
@@ -4537,7 +4537,7 @@ void CTestMenu::testClistBox6()
 		item->setHint(tmp.c_str());
 		
 		//item->setWidgetMode(MODE_MENU);
-		item->setShadowMode(SHADOW_TOPBOTTOM);
+		item->setBorderMode(BORDER_TOPBOTTOM);
 		item->setGradient(LIGHT2DARK2LIGHT);
 		
 		rightWidget->addItem(item);

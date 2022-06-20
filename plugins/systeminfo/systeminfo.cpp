@@ -56,7 +56,7 @@ CSysInfoWidget::CSysInfoWidget(int m)
 	cFrameBoxText.iHeight = cFrameBox.iHeight - cFrameBoxTitle.iHeight - cFrameBoxFoot.iHeight;
 
 	textBox = new CTextBox(&cFrameBoxText);
-	//textBox->setShadowMode(SHADOW_LEFTRIGHT);
+	//textBox->setBorderMode(BORDER_LEFTRIGHT);
 	textBox->setBackgroundColor(COL_BLACK_PLUS_0);
 }
 

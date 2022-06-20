@@ -92,7 +92,7 @@ void CWindow::init()
 	grad_type = GRADIENT_ONECOLOR;
 
 	//
-	shadowMode = SHADOW_NO;
+	borderMode = BORDER_NO;
 	paintFrame = true;
 
 	savescreen = false;
@@ -177,25 +177,25 @@ void CWindow::paint()
 {
 	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
 	
-	// shadow
-	if (shadowMode)
+	// border
+	if (borderMode)
 		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_6, radius, corner);
 
 	if (paintFrame)
 	{
-		if (shadowMode == SHADOW_NO)
+		if (borderMode == BORDER_NO)
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 	
-		// shadow
-		else if (shadowMode == SHADOW_ALL)
+		// border
+		else if (borderMode == BORDER_ALL)
 		{
 			frameBuffer->paintBoxRel(itemBox.iX + 2, itemBox.iY + 2, itemBox.iWidth - 4, itemBox.iHeight - 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
-		else if (shadowMode == SHADOW_LEFTRIGHT)
+		else if (borderMode == BORDER_LEFTRIGHT)
 		{
 			frameBuffer->paintBoxRel(itemBox.iX + 2, itemBox.iY, itemBox.iWidth - 4, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
-		else if (shadowMode == SHADOW_TOPBOTTOM)
+		else if (borderMode == BORDER_TOPBOTTOM)
 		{
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + 2, itemBox.iWidth, itemBox.iHeight - 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}

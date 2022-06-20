@@ -498,7 +498,7 @@ void CAudioPlayerGui::paintFanArt(CAudiofile& File)
 
 void CAudioPlayerGui::paintInfo(CAudiofile& File)
 {
-	// shadow
+	// border
 	if (g_settings.infobar_border)
 		m_frameBuffer->paintBoxRel(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.infobar_radius, g_settings.infobar_corner);
 	
@@ -1343,7 +1343,7 @@ void CAudioPlayerGui::showPlaylist()
 
 		
 		item->set2lines();
-		item->setShadowMode();
+		item->setBorderMode();
 
 		alist->addItem(item);
 	}

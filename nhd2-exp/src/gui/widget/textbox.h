@@ -119,7 +119,7 @@ class CTextBox : public CWidgetItem
 		bool bigFonts;
 		bool painted;
 		bool paintframe;
-		int shadowMode;
+		int borderMode;
 		
 		bool savescreen;
 		fb_pixel_t* background;
@@ -163,7 +163,7 @@ class CTextBox : public CWidgetItem
 		void setFont(unsigned int font_text){m_pcFontText = font_text;};
 		void setMode(const int mode);
 		void paintMainFrame(bool p){paintframe = p;};
-		void setShadowMode(int m = SHADOW_ALL){shadowMode = m;};
+		void setBorderMode(int m = BORDER_ALL){borderMode = m;};
 		void enableSaveScreen();
 
 		void paint(void);

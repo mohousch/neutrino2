@@ -85,7 +85,7 @@ CMenuItem::CMenuItem()
 	actionKey = "";
 	
 	paintFrame = true;
-	shadowMode = SHADOW_NO;
+	borderMode = BORDER_NO;
 	itemGradient = NOGRADIENT;
 	
 	//
@@ -308,23 +308,23 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 			}
 		}	
 				
-		// shadow
+		// border
 		frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_6);
 				
 		// itemBox
-		if (shadowMode == SHADOW_NO)
+		if (borderMode == BORDER_NO)
 		{
 			frameBuffer->paintBoxRel(x, y, dx, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient); 
 		}
-		else if (shadowMode == SHADOW_ALL)
+		else if (borderMode == BORDER_ALL)
 		{
 			frameBuffer->paintBoxRel(x + 2, y + 2, dx - 4, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		}
-		else if (shadowMode == SHADOW_LEFTRIGHT)
+		else if (borderMode == BORDER_LEFTRIGHT)
 		{
 			frameBuffer->paintBoxRel(x + 2, y, dx - 4, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		}
-		else if (shadowMode == SHADOW_TOPBOTTOM)
+		else if (borderMode == BORDER_TOPBOTTOM)
 		{
 			frameBuffer->paintBoxRel(x, y + 2, dx, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		} 
@@ -522,23 +522,23 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 			}
 		}	
 				
-		// shadow
+		// border
 		frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_6);
 				
 		// itemBox
-		if (shadowMode == SHADOW_NO)
+		if (borderMode == BORDER_NO)
 		{
 			frameBuffer->paintBoxRel(x, y, dx, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient); 
 		}
-		else if (shadowMode == SHADOW_ALL)
+		else if (borderMode == BORDER_ALL)
 		{
 			frameBuffer->paintBoxRel(x + 2, y + 2, dx - 4, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		}
-		else if (shadowMode == SHADOW_LEFTRIGHT)
+		else if (borderMode == BORDER_LEFTRIGHT)
 		{
 			frameBuffer->paintBoxRel(x + 2, y, dx - 4, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		}
-		else if (shadowMode == SHADOW_TOPBOTTOM)
+		else if (borderMode == BORDER_TOPBOTTOM)
 		{
 			frameBuffer->paintBoxRel(x, y + 2, dx, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		} 
@@ -783,23 +783,23 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 			}
 		}	
 				
-		// shadow
+		// border
 		frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_6);
 				
 		// itemBox
-		if (shadowMode == SHADOW_NO)
+		if (borderMode == BORDER_NO)
 		{
 			frameBuffer->paintBoxRel(x, y, dx, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient); 
 		}
-		else if (shadowMode == SHADOW_ALL)
+		else if (borderMode == BORDER_ALL)
 		{
 			frameBuffer->paintBoxRel(x + 2, y + 2, dx - 4, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		}
-		else if (shadowMode == SHADOW_LEFTRIGHT)
+		else if (borderMode == BORDER_LEFTRIGHT)
 		{
 			frameBuffer->paintBoxRel(x + 2, y, dx - 4, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		}
-		else if (shadowMode == SHADOW_TOPBOTTOM)
+		else if (borderMode == BORDER_TOPBOTTOM)
 		{
 			frameBuffer->paintBoxRel(x, y + 2, dx, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		} 
@@ -977,23 +977,23 @@ int CMenuOptionLanguageChooser::paint( bool selected, bool /*AfterPulldown*/)
 			}
 		}	
 				
-		// shadow
+		// border
 		frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_6);
 				
 		// itemBox
-		if (shadowMode == SHADOW_NO)
+		if (borderMode == BORDER_NO)
 		{
 			frameBuffer->paintBoxRel(x, y, dx, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient); 
 		}
-		else if (shadowMode == SHADOW_ALL)
+		else if (borderMode == BORDER_ALL)
 		{
 			frameBuffer->paintBoxRel(x + 2, y + 2, dx - 4, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		}
-		else if (shadowMode == SHADOW_LEFTRIGHT)
+		else if (borderMode == BORDER_LEFTRIGHT)
 		{
 			frameBuffer->paintBoxRel(x + 2, y, dx - 4, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		}
-		else if (shadowMode == SHADOW_TOPBOTTOM)
+		else if (borderMode == BORDER_TOPBOTTOM)
 		{
 			frameBuffer->paintBoxRel(x, y + 2, dx, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 		} 
@@ -1408,23 +1408,23 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				}
 			}	
 				
-			// shadow
+			// border
 			frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_6);
 				
 			// itemBox
-			if (shadowMode == SHADOW_NO)
+			if (borderMode == BORDER_NO)
 			{
 				frameBuffer->paintBoxRel(x, y, dx, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient); 
 			}
-			else if (shadowMode == SHADOW_ALL)
+			else if (borderMode == BORDER_ALL)
 			{
 				frameBuffer->paintBoxRel(x + 2, y + 2, dx - 4, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 			}
-			else if (shadowMode == SHADOW_LEFTRIGHT)
+			else if (borderMode == BORDER_LEFTRIGHT)
 			{
 				frameBuffer->paintBoxRel(x + 2, y, dx - 4, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 			}
-			else if (shadowMode == SHADOW_TOPBOTTOM)
+			else if (borderMode == BORDER_TOPBOTTOM)
 			{
 				frameBuffer->paintBoxRel(x, y + 2, dx, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 			} 
@@ -1834,23 +1834,23 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 				}
 			}	
 				
-			// shadow
+			// border
 			frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_6);
 				
 			// itemBox
-			if (shadowMode == SHADOW_NO)
+			if (borderMode == BORDER_NO)
 			{
 				frameBuffer->paintBoxRel(x, y, dx, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient); 
 			}
-			else if (shadowMode == SHADOW_ALL)
+			else if (borderMode == BORDER_ALL)
 			{
 				frameBuffer->paintBoxRel(x + 2, y + 2, dx - 4, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 			}
-			else if (shadowMode == SHADOW_LEFTRIGHT)
+			else if (borderMode == BORDER_LEFTRIGHT)
 			{
 				frameBuffer->paintBoxRel(x + 2, y, dx - 4, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 			}
-			else if (shadowMode == SHADOW_TOPBOTTOM)
+			else if (borderMode == BORDER_TOPBOTTOM)
 			{
 				frameBuffer->paintBoxRel(x, y + 2, dx, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 			} 
@@ -2348,23 +2348,23 @@ int CPluginItem::paint(bool selected, bool /*AfterPulldown*/)
 				}
 			}	
 				
-			// shadow
+			// border
 			frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_6);
 				
 			// itemBox
-			if (shadowMode == SHADOW_NO)
+			if (borderMode == BORDER_NO)
 			{
 				frameBuffer->paintBoxRel(x, y, dx, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient); 
 			}
-			else if (shadowMode == SHADOW_ALL)
+			else if (borderMode == BORDER_ALL)
 			{
 				frameBuffer->paintBoxRel(x + 2, y + 2, dx - 4, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 			}
-			else if (shadowMode == SHADOW_LEFTRIGHT)
+			else if (borderMode == BORDER_LEFTRIGHT)
 			{
 				frameBuffer->paintBoxRel(x + 2, y, dx - 4, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 			}
-			else if (shadowMode == SHADOW_TOPBOTTOM)
+			else if (borderMode == BORDER_TOPBOTTOM)
 			{
 				frameBuffer->paintBoxRel(x, y + 2, dx, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
 			} 
@@ -2538,9 +2538,9 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	itemInfoBox.iY = 0;
 	itemInfoBox.iWidth = 0;
 	itemInfoBox.iHeight = 0;
-	iteminfoshadow = false;
+	iteminfoborder = false;
 	iteminfosavescreen = false;
-	iteminfoshadowmode = SHADOW_NO;
+	iteminfobordermode = BORDER_NO;
 	iteminfoframe = true;
 	iteminfofont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
 	iteminfocolor = COL_MENUCONTENT_PLUS_0;
@@ -2575,7 +2575,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	corner = CORNER_NONE;
 	scrollbar = true;
 	items_background = NULL;
-	shadowMode = SHADOW_NO;
+	borderMode = BORDER_NO;
 	
 	item_height = 0;
 	item_width = 0;
@@ -2584,7 +2584,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	items_height = 0;
 	
 	//
-	itemShadowMode = SHADOW_NO;
+	itemBorderMode = BORDER_NO;
 	itemGradient = NOGRADIENT;
 	
 	//
@@ -2660,9 +2660,9 @@ ClistBox::ClistBox(CBox* position)
 	itemInfoBox.iY = 0;
 	itemInfoBox.iWidth = 0;
 	itemInfoBox.iHeight = 0;
-	iteminfoshadow = false;
+	iteminfoborder = false;
 	iteminfosavescreen = false;
-	iteminfoshadowmode = SHADOW_NO;
+	iteminfobordermode = BORDER_NO;
 	iteminfoframe = true;
 	iteminfofont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
 	iteminfocolor = COL_MENUCONTENT_PLUS_0;
@@ -2697,7 +2697,7 @@ ClistBox::ClistBox(CBox* position)
 	corner = CORNER_NONE;
 	scrollbar = true;
 	items_background = NULL;
-	shadowMode = SHADOW_NO;
+	borderMode = BORDER_NO;
 	
 	//
 	item_height = 0;
@@ -2705,7 +2705,7 @@ ClistBox::ClistBox(CBox* position)
 	iconOffset = 0;
 	items_width = 0;
 	items_height = 0;
-	itemShadowMode = SHADOW_NO;
+	itemBorderMode = BORDER_NO;
 	itemGradient = NOGRADIENT;
 	
 	//
@@ -2767,7 +2767,7 @@ void ClistBox::initFrames()
 
 		item->widgetType = widgetType;
 		item->paintFrame = paintFrame;
-		if (itemShadowMode) item->setShadowMode(itemShadowMode);
+		if (itemBorderMode) item->setBorderMode(itemBorderMode);
 		if (itemGradient) item->setGradient(itemGradient);
 	} 
 
@@ -2960,7 +2960,7 @@ void ClistBox::paint()
 	}
 	else
 	{
-		//if (shadowMode)
+		//if (borderMode)
 			//frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, COL_MENUCONTENT_PLUS_6, headRadius, headCorner | footCorner);
 	}
 
@@ -3459,7 +3459,7 @@ void ClistBox::paintItemInfo(int pos)
 	
 				// detailslines box
 				itemsLine.setMode(DL_HINTITEM);
-				itemsLine.setShadowMode(iteminfoshadowmode);
+				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.paintFrame(iteminfoframe);
 				itemsLine.setColor(iteminfocolor);
@@ -3476,7 +3476,7 @@ void ClistBox::paintItemInfo(int pos)
 	
 				// detailslines box
 				itemsLine.setMode(DL_HINTICON);
-				itemsLine.setShadowMode(iteminfoshadowmode);
+				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.paintFrame(iteminfoframe);
 				itemsLine.setColor(iteminfocolor);
@@ -3492,7 +3492,7 @@ void ClistBox::paintItemInfo(int pos)
 	
 				// detailslines box
 				itemsLine.setMode(DL_HINTHINT);
-				itemsLine.setShadowMode(iteminfoshadowmode);
+				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.paintFrame(iteminfoframe);
 				itemsLine.setColor(iteminfocolor);
@@ -3642,15 +3642,17 @@ void ClistBox::hide()
 		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, wanted_width, wanted_height);
 		//frameBuffer->paintBackgroundBoxRel(itemBox.iX - 2, itemBox.iY - 2, full_width + 4, full_height + 4);
 		
-
+	//
 	hideItemInfo(); 
 
+	//
 	if(textBox != NULL)
 	{
 		delete textBox;
 		textBox = NULL;
 	}
 	
+	//
 	if (items_background)
 	{
 		delete [] items_background;
@@ -4137,7 +4139,7 @@ void ClistBox::changeWidgetType()
 }
 
 //
-void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned int shortcut, bool enabled, int imode, int itype, bool i2lines, int iShadow)
+void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned int shortcut, bool enabled, int imode, int itype, bool i2lines, int iBorder)
 {
 	unsigned int number_of_plugins = (unsigned int) g_PluginList->getNumberOfPlugins();
 
@@ -4172,7 +4174,7 @@ void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned i
 			fw_plugin->setHint(g_PluginList->getDescription(count).c_str());
 			fw_plugin->setWidgetType(itype);
 			if (i2lines) fw_plugin->set2lines();
-			fw_plugin->setShadowMode(iShadow);
+			fw_plugin->setBorderMode(iBorder);
 			
 			fw_plugin->isPlugin = true;
 			

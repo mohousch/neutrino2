@@ -105,7 +105,7 @@ CMessageBox::CMessageBox(const char* const Caption, const char * const Text, con
 		m_width = new_width;
 		
 	//
-	shadowMode = SHADOW_NO;
+	borderMode = BORDER_NO;
 		
 	// initFrames
 	initFrames();
@@ -157,7 +157,7 @@ CMessageBox::CMessageBox(const char* const Caption, ContentLines& Lines, const i
 		m_width = new_width;
 		
 	//
-	shadowMode = SHADOW_NO;
+	borderMode = BORDER_NO;
 		
 	// initFrames
 	initFrames();
@@ -316,8 +316,6 @@ void CMessageBox::initFrames(void)
 	m_cBoxWindow = new CWindow(&cFrameBox);
 
 	m_cBoxWindow->enableSaveScreen();
-	//m_cBoxWindow->setShadowMode(g_settings.messagebox_border? SHADOW_ALL : SHADOW_NO);
-	//m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 }
 
 void CMessageBox::paint(void)
@@ -332,13 +330,13 @@ void CMessageBox::refresh()
 	dprintf(DEBUG_INFO, "CMessageBox::refresh\n");
 	
 	// mainBox
-	m_cBoxWindow->setShadowMode(shadowMode);
+	m_cBoxWindow->setBorderMode(borderMode);
 	m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	
 	m_cBoxWindow->paint();
 
 	// title
-	CHeaders headers(shadowMode? CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1) + 2 : CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1), shadowMode? CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + 2 : CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2), shadowMode? m_width - 4 : m_width, m_theight, m_caption.c_str(), m_iconfile.c_str());
+	CHeaders headers(borderMode? CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1) + 2 : CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1), borderMode? CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + 2 : CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2), borderMode? m_width - 4 : m_width, m_theight, m_caption.c_str(), m_iconfile.c_str());
 	
 	headers.paint();
 
@@ -621,7 +619,7 @@ int MessageBox(const char * const Caption, const char * const Text, const result
 {
    	CMessageBox * messageBox = new CMessageBox(Caption, Text, Width, Icon, Default, ShowButtons);
 	messageBox->returnDefaultValueOnTimeout(returnDefaultOnTimeout);
-	messageBox->setShadowMode(border);
+	messageBox->setBorderMode(border);
 	messageBox->exec(timeout);
 	
 	int res = messageBox->result;

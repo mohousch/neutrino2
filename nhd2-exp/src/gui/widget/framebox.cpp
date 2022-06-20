@@ -45,7 +45,7 @@ CFrame::CFrame()
 	caption = "";
 	mode = FRAME_BOX;
 
-	shadow = false;
+	border = false;
 	paintFrame = true;
 	pluginOrigName = false;
 
@@ -80,7 +80,7 @@ void CFrame::setMode(int m)
 			
 	if ( (mode == FRAME_HLINE) || (mode == FRAME_VLINE) ) 
 	{
-		//shadow = false;
+		//border = false;
 		paintFrame = false;
 		
 		setActive(false);
@@ -180,7 +180,7 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 	// paint frameBackground
 	if (paintFrame)
 	{
-		window.setShadowMode(shadow? SHADOW_ALL : SHADOW_NO);
+		window.setBorderMode(border? BORDER_ALL : BORDER_NO);
 		window.setColor(bgcolor);
 		//window.setCorner(radius, corner); //FIXME:
 		window.setGradient(gradient);
@@ -355,7 +355,7 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 		textBox.setMode(AUTO_WIDTH);
 		textBox.setFont(captionFont);
 		textBox.enableSaveScreen();
-		textBox.setShadowMode(shadow? SHADOW_ALL : SHADOW_NO);
+		textBox.setBorderMode(border? BORDER_ALL : BORDER_NO);
 
 		// caption
 		if(!caption.empty())

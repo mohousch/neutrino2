@@ -516,7 +516,7 @@ CItems2DetailsLine::CItems2DetailsLine()
 	
 	// hintitem / hinticon
 	tFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
-	shadowMode = SHADOW_NO;
+	borderMode = BORDER_NO;
 	savescreen = false;
 	paintframe = true;
 	color = COL_MENUCONTENT_PLUS_0;
@@ -600,7 +600,7 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 	{	
 		CTextBox Dline(DLx, DLy, DLwidth, DLheight);
 		Dline.paintMainFrame(paintframe);
-		//Dline.setShadowMode(shadowMode);
+		//Dline.setBorderMode(borderMode);
 		Dline.setCorner(g_settings.Hint_corner);
 		Dline.setRadius(g_settings.Hint_radius);
 		Dline.setMode(AUTO_WIDTH);
@@ -632,7 +632,7 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 		Dline.paintMainFrame(paintframe);
 		Dline.setMode(AUTO_WIDTH);
 		Dline.setFont(tFont);
-		Dline.setShadowMode(shadowMode);
+		Dline.setBorderMode(borderMode);
 		if (savescreen) Dline.enableSaveScreen();
 		Dline.setBackgroundColor(color);
 		//Dline.setCorner(g_settings.Hint_corner);
@@ -664,7 +664,7 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 		Dline.paintMainFrame(paintframe);
 		Dline.setMode(AUTO_WIDTH);
 		Dline.setFont(tFont);
-		Dline.setShadowMode(shadowMode);
+		Dline.setBorderMode(borderMode);
 		if (savescreen) Dline.enableSaveScreen();
 		Dline.setBackgroundColor(color);
 		//Dline.setCorner(g_settings.Hint_corner);

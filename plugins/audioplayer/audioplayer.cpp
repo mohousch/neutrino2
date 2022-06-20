@@ -379,7 +379,7 @@ void CMP3Player::showMenu()
 		
 		//
 		item->set2lines();
-		item->setShadowMode();
+		item->setBorderMode();
 
 		alist->addItem(item);
 	}

@@ -168,7 +168,7 @@ class CMenuItem
 		
 		//
 		bool paintFrame;
-		int shadowMode;
+		int borderMode;
 		int itemGradient;
 		
 		//
@@ -233,9 +233,7 @@ class CMenuItem
 
 		virtual void set2lines(void){nLinesItem = true;};
 		virtual void setWidgetType(int type){widgetType = type;};
-		//virtual void setWidgetMode(int mode){widgetMode = mode;};
-		//virtual void enableItemShadow(){itemShadow = true;};
-		virtual void setShadowMode(int m = SHADOW_ALL){shadowMode = m;};
+		virtual void setBorderMode(int m = BORDER_ALL){borderMode = m;};
 		virtual void setGradient(int gr){itemGradient = gr;};
 
 		//
@@ -605,9 +603,9 @@ class ClistBox : public CWidgetItem
 		bool paintFootInfo;
 		int footInfoMode;
 		CBox itemInfoBox;
-		bool iteminfoshadow;
+		bool iteminfoborder;
 		bool iteminfosavescreen;
-		int iteminfoshadowmode;
+		int iteminfobordermode;
 		bool iteminfoframe;
 		unsigned int iteminfofont;
 		uint32_t iteminfocolor;
@@ -633,15 +631,14 @@ class ClistBox : public CWidgetItem
 		int corner;
 		bool scrollbar;
 		fb_pixel_t* items_background;
-		int shadowMode;
+		int borderMode;
 		
 		//
 		int widgetMode;
 		int menu_position;
 		
 		// item
-		//bool itemShadow;
-		int itemShadowMode;
+		int itemBorderMode;
 		int itemGradient;
 		
 	public:
@@ -703,7 +700,7 @@ class ClistBox : public CWidgetItem
 				footInfoHeight = 0;
 			}
 		};
-		void paintItemInfoShadow(int m){iteminfoshadow = true; iteminfoshadowmode = m;};
+		void paintItemInfoBorder(int m){iteminfoborder = true; iteminfobordermode = m;};
 		void enableItemInfoSaveScreen(){iteminfosavescreen = true;};
 		void paintItemInfoFrame(bool p){iteminfoframe = p;};
 		void setItemInfoFont(unsigned int f){iteminfofont = f;};
@@ -718,7 +715,7 @@ class ClistBox : public CWidgetItem
 		void setRadius(int ra){radius = ra;};
 		void setCorner(int co){corner = co;};
 		void paintScrollBar(bool sb){scrollbar = sb;};
-		void setShadowMode(int sm){shadowMode = sm;};
+		void setBorderMode(int sm){borderMode = sm;};
 
 		//
 		virtual void scrollLineDown(const int lines = 1);
@@ -757,7 +754,7 @@ class ClistBox : public CWidgetItem
 		void setMenuPosition(int p){menu_position = p;};
 		
 		//
-		void setItemShadowMode(int m = SHADOW_ALL){/*itemShadow = true;*/ itemShadowMode = m;};
+		void setItemBorderMode(int m = BORDER_ALL){/*itemBorder = true;*/ itemBorderMode = m;};
 		void setItemGradient(int gr = NOGRADIENT){itemGradient = gr;};
 
 		//
@@ -770,7 +767,7 @@ class ClistBox : public CWidgetItem
 		//
 		std::string getActionKey(void){return actionKey;}; // lua
 		
-		virtual void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = WIDGET_TYPE_STANDARD, bool i2lines = false, int iShadow = SHADOW_NO);
+		virtual void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = WIDGET_TYPE_STANDARD, bool i2lines = false, int iBorder = BORDER_NO);
 		
 		//
 		inline bool isPainted(void){return painted;};

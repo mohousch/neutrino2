@@ -641,15 +641,15 @@
 
 	<WIDGET name="mainmenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="1" position="2" radius="20" corner="15">
 		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="1" mode="1" position="2" painthead="1" title="Main Menu" icon="menu" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
-			<ITEM id="5" localename="TV / RADIO" itemicon="hint_tvmode" target="0" actionkey="tvradioswitch" shadow="1" gradient="3"/>
-			<ITEM id="5" localename="EPG / Timer" itemicon="hint_timers" target="3" directkey="0x2" shadow="1" gradient="3"/>
-			<ITEM id="5" localename="Features" itemicon="hint_plugin" target="6" actionkey="features" shadow="1" gradient="3"/>
-			<ITEM id="5" localename="System" itemicon="hint_service" target="4" shadow="1" gradient="3"/>
-			<ITEM id="5" localename="Settings" itemicon="hint_settings" target="2" shadow="1" gradient="3"/>
-			<ITEM id="5" localename="OSD" itemicon="hint_osd" target="15" shadow="1" gradient="3"/>
-			<ITEM id="5" localename="Information" itemicon="hint_dboxinfo" target="5" shadow="1" gradient="3"/>
-			<ITEM id="5" localename="Power Menu" itemicon="hint_shutdown" target="7" shadow="1" gradient="3"/>
-			<ITEM id="5" localename="Media Player" itemicon="hint_media" target="8" shadow="1" gradient="3"/>
+			<ITEM id="5" localename="TV / RADIO" itemicon="hint_tvmode" target="0" actionkey="tvradioswitch" border="1" gradient="3"/>
+			<ITEM id="5" localename="EPG / Timer" itemicon="hint_timers" target="3" directkey="0x2" border="1" gradient="3"/>
+			<ITEM id="5" localename="Features" itemicon="hint_plugin" target="6" actionkey="features" border="1" gradient="3"/>
+			<ITEM id="5" localename="System" itemicon="hint_service" target="4" border="1" gradient="3"/>
+			<ITEM id="5" localename="Settings" itemicon="hint_settings" target="2" border="1" gradient="3"/>
+			<ITEM id="5" localename="OSD" itemicon="hint_osd" target="15" border="1" gradient="3"/>
+			<ITEM id="5" localename="Information" itemicon="hint_dboxinfo" target="5" border="1" gradient="3"/>
+			<ITEM id="5" localename="Power Menu" itemicon="hint_shutdown" target="7" border="1" gradient="3"/>
+			<ITEM id="5" localename="Media Player" itemicon="hint_media" target="8" border="1" gradient="3"/>
 			
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>

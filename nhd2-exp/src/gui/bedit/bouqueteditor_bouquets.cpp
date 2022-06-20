@@ -219,7 +219,7 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 			{
 				if (bouquetsChanged)
 				{
-					int result = MessageBox(_("Bouquet Editor"), _("Do you want to save the changes?"), mbrYes, mbAll, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, SHADOW_ALL);
+					int result = MessageBox(_("Bouquet Editor"), _("Do you want to save the changes?"), mbrYes, mbAll, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 
 					switch( result )
 					{
@@ -573,7 +573,7 @@ std::string CBEBouquetWidget::inputName(const char * const defaultName, const ch
 void CBEBouquetWidget::saveChanges()
 {
 	CHintBox* hintBox= new CHintBox(_("Bouquet Editor"), _("Do you want to save the changes?"), 500); // UTF-8
-	hintBox->setShadowMode(SHADOW_ALL);
+	hintBox->setBorderMode(BORDER_ALL);
 	hintBox->paint();
 	
 	g_Zapit->saveBouquets();
@@ -586,7 +586,7 @@ void CBEBouquetWidget::saveChanges()
 void CBEBouquetWidget::discardChanges()
 {
 	CHintBox* hintBox= new CHintBox(_("Bouquet Editor"), _("Discarding changes. Please be patient."), 500); // UTF-8
-	hintBox->setShadowMode(SHADOW_ALL);
+	hintBox->setBorderMode(BORDER_ALL);
 	hintBox->paint();
 	
 	g_Zapit->restoreBouquets();

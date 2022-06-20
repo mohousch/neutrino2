@@ -80,7 +80,7 @@ class CHintBox
 		fb_pixel_t* background;
 		
 		//
-		int shadowMode;
+		int borderMode;
 
 	public:
 		//
@@ -95,11 +95,11 @@ class CHintBox
 		void hide(void);
 		
 		void enablePaintHG(void){paintHG = true;};
-		void setShadowMode(int sm){shadowMode = sm;};
+		void setBorderMode(int sm){borderMode = sm;};
 
 		int exec(int timeout = -1);
 };
 
-int HintBox(const char * const Caption, const char * const Text, const int Width = HINTBOX_WIDTH, int timeout = -1, const char * const Icon = NEUTRINO_ICON_INFO, const int border = SHADOW_NO);
+int HintBox(const char * const Caption, const char * const Text, const int Width = HINTBOX_WIDTH, int timeout = -1, const char * const Icon = NEUTRINO_ICON_INFO, const int border = BORDER_NO);
 
 #endif
