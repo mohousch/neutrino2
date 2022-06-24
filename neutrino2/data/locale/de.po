@@ -1,155 +1,156 @@
-# Polish translations for neutrinohd2 package.
-# Copyright (C) 2022 THE neutrinohd2'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the neutrinohd2 package.
+# German translations for neutrino-hd2 package.
+# Copyright (C) 2022 THE neutrino-hd2'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the neutrino-hd2 package.
 # Automatically generated, 2022.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neutrinohd2 4.3\n"
+"Project-Id-Version: neutrino-hd2 4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-11 21:27+0200\n"
-"PO-Revision-Date: 2022-04-21 22:31+0200\n"
+"POT-Creation-Date: 2022-06-24 09:23+0200\n"
+"PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: pl\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "'X'=timer '-' no timer"
-msgstr ""
+msgstr "'X'=Timer '-' kein Timer"
 
 #, c-format
 msgid "(%d%% over)"
-msgstr ""
+msgstr "(%d%% vorbei)"
 
 msgid "(Date)"
-msgstr ""
+msgstr "(Datum)"
 
 msgid "(Re)-Calculate Positions"
-msgstr ""
+msgstr "(Neu)-Berechne(n)) Positionen"
 
 msgid "(Size)"
-msgstr ""
+msgstr "(Grösse)"
 
 msgid "(a) Motor Position:"
-msgstr ""
+msgstr "(a) Motor Position:"
 
 msgid "(b) Movement:"
-msgstr ""
+msgstr "(b) Bewegung:"
 
 msgid "(c) Step Size:"
-msgstr ""
+msgstr "(c) Schrittweite:"
 
 msgid "(filename)"
-msgstr ""
+msgstr "(Dateiname)"
 
 msgid "(filename2)"
-msgstr ""
+msgstr "(Dateiname2)"
 
 msgid "(relative, in seconds)"
-msgstr ""
+msgstr "(relativ, in Sekunden)"
 
 #, c-format
 msgid "(starting in %d min)"
-msgstr ""
+msgstr "(Beginn in %d Min.)"
 
 msgid "(type)"
-msgstr ""
+msgstr "(Typ)"
 
 msgid "0 for unlimited repeats"
-msgstr ""
+msgstr "0 fuer unbegrenzte Anzahl"
 
 msgid "12 years"
-msgstr ""
+msgstr "12 Jahre"
 
 msgid "16 years"
-msgstr ""
+msgstr "16 Jahre"
 
 msgid "18 years"
-msgstr ""
+msgstr "18 Jhare"
 
 msgid "6 years"
-msgstr ""
+msgstr "6 Jahre"
 
 msgid "?"
 msgstr ""
 
 msgid "A/V sync"
-msgstr ""
+msgstr "A/V sync"
 
 msgid "AC3 Delay"
-msgstr ""
+msgstr "AC3 Verzögerung"
 
 msgid "AV Select"
-msgstr ""
+msgstr "Audio / Video Auswahl"
 
 msgid "Abortion of channel scan"
-msgstr ""
+msgstr "Breche Scan ab"
 
 msgid "Absolute start directory"
-msgstr ""
+msgstr "Startverzeichnis absolut"
 
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 msgid "Activate changes"
-msgstr ""
+msgstr "Änderungen aktivieren"
 
 msgid "Activate settings"
-msgstr ""
+msgstr "Einstellungen aktivieren"
 
 msgid "Actors"
-msgstr ""
+msgstr "Darsteller"
 
 msgid "Add"
-msgstr ""
+msgstr "Hinzufügen"
 
 msgid "Add to Bouquets"
-msgstr ""
+msgstr "zur den Bouquets hinzufuegen"
 
 msgid "Additional paths"
-msgstr ""
+msgstr "Zusätzliche Verzeichnisse"
 
 msgid "Advanced"
-msgstr ""
+msgstr "Erweiterte Auswahl"
 
 msgid "Age"
-msgstr ""
+msgstr "Alter"
 
 msgid "Alarm time"
-msgstr ""
+msgstr "Alarmzeit"
 
+#, fuzzy
 msgid "All Channels"
-msgstr ""
+msgstr "Sender"
 
 msgid "All Services"
-msgstr ""
+msgstr "Alle"
 
 msgid "All services"
-msgstr ""
+msgstr "Alle"
 
 msgid "Alpha"
 msgstr ""
 
 msgid "Alpha Setup"
-msgstr ""
+msgstr "Alpha Einstellungen"
 
 msgid "Analog Output"
-msgstr ""
+msgstr "Analog-Ausgang"
 
 msgid "Antenna positioning"
-msgstr ""
+msgstr "Antennenpositionierung"
 
 msgid "Arabic"
 msgstr ""
 
 msgid "Are you sure ?"
-msgstr ""
+msgstr "Sind Sie sicher ?"
 
 msgid "Are you sure to format ? You will lost all data "
-msgstr ""
+msgstr "Alle Daten auf dem Datenträger werden gelöscht! Formatierung starten?"
 
 msgid "Are you sure to init ?"
 msgstr ""
@@ -158,10 +159,10 @@ msgid "Artist: "
 msgstr ""
 
 msgid "Aspect Ratio"
-msgstr ""
+msgstr "Bildschirmformat"
 
 msgid "Audio"
-msgstr ""
+msgstr "Tonwahl"
 
 msgid "Audio PIDs"
 msgstr ""
@@ -170,22 +171,22 @@ msgid "Audio Player"
 msgstr ""
 
 msgid "Audio Playlist"
-msgstr ""
+msgstr "Audio Playliste"
 
 msgid "Audio language preferences"
-msgstr ""
+msgstr "Bevorzugte Ton Sprachen"
 
 msgid "Audio master"
 msgstr ""
 
 msgid "Audio settings"
-msgstr ""
+msgstr "Audio Einstellungen"
 
 msgid "Audioplayer"
 msgstr ""
 
 msgid "Audioplayer settings"
-msgstr ""
+msgstr "Audioplayer Einstellungen"
 
 msgid "Audiotype"
 msgstr ""
@@ -194,52 +195,52 @@ msgid "Auto Play"
 msgstr ""
 
 msgid "Auto select audio"
-msgstr ""
+msgstr "Tonwahl automatisch"
 
 msgid "Auto select subtitles"
-msgstr ""
+msgstr "Untertitel automatisch"
 
 msgid "Auto-Scan"
-msgstr ""
+msgstr "Auto scan"
 
 msgid "Auto-Scan multiple Satellites"
-msgstr ""
+msgstr "Alle Satelliten scannen"
 
 msgid "Available Images/Packages"
-msgstr ""
+msgstr "Images/Packges sind nicht verfügbar"
 
 msgid "BOTTOM"
-msgstr ""
+msgstr "Unten"
 
 msgid "BOTTOM LEFT"
-msgstr ""
+msgstr "Unten Links"
 
 msgid "BOTTOM RIGHT"
-msgstr ""
+msgstr "Unten Recht"
 
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 msgid "Background"
-msgstr ""
+msgstr "Hintergrund"
 
 msgid "Backup failed"
 msgstr ""
 
 msgid "Bandwidth"
-msgstr ""
+msgstr "Bandbreite"
 
 msgid "Bitrate"
 msgstr ""
 
 msgid "Bookmark"
-msgstr ""
+msgstr "Markierung"
 
 msgid "Bookmark change"
 msgstr ""
 
 msgid "Bookmarks"
-msgstr ""
+msgstr "Markierungen"
 
 msgid "Border"
 msgstr ""
@@ -251,7 +252,7 @@ msgid "Bouquet"
 msgstr ""
 
 msgid "Bouquet Editor"
-msgstr ""
+msgstr "Bouquet Verwaltung"
 
 msgid "Bouquet back"
 msgstr ""
@@ -266,15 +267,17 @@ msgid ""
 "Box will shutdown in 1 min.\n"
 "Cancel Sutdown ?"
 msgstr ""
+"Die Box wird in 1 Min. heruntergefahren.\n"
+"Shutdown abbrechen?"
 
 msgid "Brightness"
-msgstr ""
+msgstr "Helligkeit"
 
 msgid "Broadcast"
 msgstr ""
 
 msgid "Browser Options"
-msgstr ""
+msgstr "Anzeigeoptionen"
 
 msgid "Browser hight [Pixel]"
 msgstr ""
@@ -289,22 +292,22 @@ msgid "Buttons Line"
 msgstr ""
 
 msgid "CAM init complete"
-msgstr ""
+msgstr "CI Modul initalisiert"
 
 msgid "CAM inserted in slot"
-msgstr ""
+msgstr "CI Modul hinzugefügt"
 
 msgid "CAM removed from slot"
-msgstr ""
+msgstr "CI Modul entfernt"
 
 msgid "CI Cam"
-msgstr ""
+msgstr "CI Cam"
 
 msgid "CI Cam settings"
-msgstr ""
+msgstr "CI Cam Einstellungen"
 
 msgid "CI cam reset"
-msgstr ""
+msgstr "CI Modul neu starten"
 
 msgid "CIFS"
 msgstr ""
@@ -319,25 +322,25 @@ msgid "CPU:"
 msgstr ""
 
 msgid "Cable"
-msgstr ""
+msgstr "Kabel"
 
 msgid "Cable:"
-msgstr ""
+msgstr "Kabel:"
 
 msgid "Cancel"
-msgstr ""
+msgstr "Abbruch"
 
 msgid "Cancel movie cut/split ?"
 msgstr ""
 
 msgid "Change PIN code"
-msgstr ""
+msgstr "PIN Code ändern"
 
 msgid "Change sort order"
-msgstr ""
+msgstr "Reihenfolge ändern"
 
 msgid "Channel"
-msgstr ""
+msgstr "Sender"
 
 msgid "Channel (short) / Sep.-Line / Title"
 msgstr ""
@@ -349,10 +352,10 @@ msgid "Channel / Sep.-Line / Title"
 msgstr ""
 
 msgid "Channel / Title"
-msgstr ""
+msgstr "Sender / Titel"
 
 msgid "Channel Logo"
-msgstr ""
+msgstr "Sender logo"
 
 msgid "Channel down"
 msgstr ""
@@ -361,19 +364,19 @@ msgid "Channel name"
 msgstr ""
 
 msgid "Channel not available"
-msgstr ""
+msgstr "Kanal ist nicht verfügbar"
 
 msgid "Channel up"
 msgstr ""
 
 msgid "Channel:"
-msgstr ""
+msgstr "Sender:"
 
 msgid "Channellist"
-msgstr ""
+msgstr "Sender Liste"
 
 msgid "Channellist settings"
-msgstr ""
+msgstr "Sender Liste Einstellungen"
 
 msgid "Check filesystem"
 msgstr ""
@@ -466,22 +469,23 @@ msgid "DHCP"
 msgstr ""
 
 msgid "Dark to Light"
-msgstr ""
+msgstr "Dunkel zu Hell"
 
 msgid "Dark to Light to Dark"
-msgstr ""
+msgstr "Dunkel zu Hell zu Dunkel"
 
 msgid "Data"
 msgstr ""
 
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 msgid "Date:"
-msgstr ""
+msgstr "Datum:"
 
+#, fuzzy
 msgid "Date: "
-msgstr ""
+msgstr "Datum:"
 
 msgid "Debug"
 msgstr ""
@@ -505,19 +509,19 @@ msgid "Delayed shutdown"
 msgstr ""
 
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 msgid "Delete all"
-msgstr ""
+msgstr "Alle löschen"
 
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 msgid "Description: "
-msgstr ""
+msgstr "Beschreibung:"
 
 msgid "Details current program"
-msgstr ""
+msgstr "Info zur Sendung"
 
 msgid "DiSEqC"
 msgstr ""
@@ -546,8 +550,9 @@ msgstr ""
 msgid "Director"
 msgstr ""
 
+#, fuzzy
 msgid "Directory for updates"
-msgstr ""
+msgstr "Scan SDT für Updates"
 
 msgid "Disable (soft) Limits"
 msgstr ""
@@ -562,7 +567,7 @@ msgid "Display image"
 msgstr ""
 
 msgid "Display settings"
-msgstr ""
+msgstr "Display Einstellungen"
 
 msgid "Do not scale picture"
 msgstr ""
@@ -629,14 +634,15 @@ msgstr ""
 msgid "EPG Title"
 msgstr ""
 
+#, fuzzy
 msgid "EPG is not available"
-msgstr ""
+msgstr "EPG nicht verfügbar"
 
 msgid "EPG not available"
-msgstr ""
+msgstr "EPG nicht verfügbar"
 
 msgid "EPG not loaded..."
-msgstr ""
+msgstr "EPG noch nicht geladen"
 
 msgid "EPG remove after (std.)"
 msgstr ""
@@ -644,17 +650,18 @@ msgstr ""
 msgid "EPG save path"
 msgstr ""
 
+#, fuzzy
 msgid "EPG settings"
-msgstr ""
+msgstr "EPG Einstellungen"
 
 msgid "EPG-Cache (Days)"
 msgstr ""
 
 msgid "East"
-msgstr ""
+msgstr "Osten"
 
 msgid "Edit"
-msgstr ""
+msgstr "Bearbeiten"
 
 msgid "Enable (soft) Limits"
 msgstr ""
@@ -663,7 +670,7 @@ msgid "Enable standby"
 msgstr ""
 
 msgid "English"
-msgstr ""
+msgstr "Englisch"
 
 msgid "Enter 0 to switch of the blocker (red is space)"
 msgstr ""
@@ -681,16 +688,16 @@ msgid "Enter your new youth protection pin code here!"
 msgstr ""
 
 msgid "Error"
-msgstr ""
+msgstr "Fehler"
 
 msgid "Event list"
-msgstr ""
+msgstr "EPG Liste"
 
 msgid "Eventlist current programm"
-msgstr ""
+msgstr "Vorschau aktuelles Programm"
 
 msgid "Eventlist overview"
-msgstr ""
+msgstr "Vorschau Übersicht"
 
 msgid "Events Textcolor"
 msgstr ""
@@ -701,11 +708,12 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
+#, fuzzy
 msgid "Expert functions"
-msgstr ""
+msgstr "Experten Funktionen"
 
 msgid "Expert-functions"
-msgstr ""
+msgstr "Experten Funktionen"
 
 msgid "FEC"
 msgstr ""
@@ -723,16 +731,17 @@ msgid "Fast/timeshift record time(hours)"
 msgstr ""
 
 msgid "Favorites"
-msgstr ""
+msgstr "Favoriten"
 
 msgid "Features"
-msgstr ""
+msgstr "Erweiterungen"
 
 msgid "File could not be created:"
 msgstr ""
 
+#, fuzzy
 msgid "File selector"
-msgstr ""
+msgstr "Skin Style Auswahl"
 
 msgid "File size (MB)"
 msgstr ""
@@ -743,8 +752,9 @@ msgstr ""
 msgid "Filebrowser"
 msgstr ""
 
+#, fuzzy
 msgid "Filebrowser settings"
-msgstr ""
+msgstr "Filebrowser Einstellungen"
 
 msgid "Filename of the play list"
 msgstr ""
@@ -774,10 +784,10 @@ msgid "Focus"
 msgstr ""
 
 msgid "Font"
-msgstr ""
+msgstr "Schrift"
 
 msgid "Font name"
-msgstr ""
+msgstr "Schrift Name"
 
 msgid "Foot"
 msgstr ""
@@ -822,7 +832,7 @@ msgid "Frequency:"
 msgstr ""
 
 msgid "Friday"
-msgstr ""
+msgstr "Freitag"
 
 msgid "Frontend:"
 msgstr ""
@@ -906,7 +916,7 @@ msgid "HDD mounted"
 msgstr ""
 
 msgid "HDD settings"
-msgstr ""
+msgstr "Festplatte Einstellungen"
 
 msgid "HDD umount"
 msgstr ""
@@ -945,9 +955,6 @@ msgid "High decode priority"
 msgstr ""
 
 msgid "Highlight"
-msgstr ""
-
-msgid "Hintbox Border"
 msgstr ""
 
 msgid "History"
@@ -1026,7 +1033,7 @@ msgid "Infobar Crypticons"
 msgstr ""
 
 msgid "Information"
-msgstr ""
+msgstr "Information"
 
 msgid "Install menu"
 msgstr ""
@@ -1058,8 +1065,9 @@ msgstr ""
 msgid "Key Repeat-blocker"
 msgstr ""
 
+#, fuzzy
 msgid "Keybinding settings"
-msgstr ""
+msgstr "Aufnahme Einstellungen"
 
 msgid "Keyword"
 msgstr ""
@@ -1089,7 +1097,7 @@ msgid "LaDirection"
 msgstr ""
 
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 msgid "Last Channel"
 msgstr ""
@@ -1195,13 +1203,14 @@ msgid "MD5 checking"
 msgstr ""
 
 msgid "Main Menu"
-msgstr ""
+msgstr "Haupt Menü"
 
 msgid "Make Remaining Channels list"
 msgstr ""
 
+#, fuzzy
 msgid "Manual frequency scan / Test signal"
-msgstr ""
+msgstr "Manueller Frequenzscan"
 
 msgid "Manuell(ftp) Software Manager"
 msgstr ""
@@ -1242,35 +1251,32 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-msgid "Messagebox Border"
-msgstr ""
-
 msgid "Mini-DiSEqC"
 msgstr ""
 
 msgid "Misc settings"
-msgstr ""
+msgstr "Diverse Einstellungen"
 
 msgid "Mo Tu We Th Fr Sa Su"
-msgstr ""
+msgstr "Mo Di Mi Do Fr Sa So"
 
 msgid "Modechange"
 msgstr ""
 
 msgid "Modify"
-msgstr ""
+msgstr "Bearbeiten"
 
 msgid "Modify timer"
-msgstr ""
+msgstr "Timer bearbeiten"
 
 msgid "Modulation"
 msgstr ""
 
 msgid "Monday"
-msgstr ""
+msgstr "Montag"
 
 msgid "More Screenings on this Channel"
-msgstr ""
+msgstr "Weitere Termine auf diesem Kanal"
 
 msgid "Most popular today"
 msgstr ""
@@ -1318,13 +1324,13 @@ msgid "Movieplayer"
 msgstr ""
 
 msgid "Movieplayer settings"
-msgstr ""
+msgstr "Movieplayer Einstellungen"
 
 msgid "Movies Browser"
 msgstr ""
 
 msgid "My Favorites"
-msgstr ""
+msgstr "Meine Favoriten"
 
 msgid "NFS"
 msgstr ""
@@ -1360,7 +1366,7 @@ msgid "Network Name"
 msgstr ""
 
 msgid "Network settings"
-msgstr ""
+msgstr "Netzwerk Einstellungen"
 
 msgid "Netzkino"
 msgstr ""
@@ -1368,20 +1374,21 @@ msgstr ""
 msgid "Neu by Netzkino"
 msgstr ""
 
+#, fuzzy
 msgid "Neu channel"
-msgstr ""
+msgstr "Sender"
 
 msgid "Neutrino Restart"
-msgstr ""
+msgstr "Neutrino neu starten"
 
 msgid "Neutrino restart"
-msgstr ""
+msgstr "Neutrino neu starten"
 
 msgid "New Bookmark"
 msgstr ""
 
 msgid "New Movies"
-msgstr ""
+msgstr "Neu Filme"
 
 msgid ""
 "New jump back\n"
@@ -1394,19 +1401,19 @@ msgid ""
 msgstr ""
 
 msgid "New timer"
-msgstr ""
+msgstr "Neuer Timer"
 
 msgid "Next"
-msgstr ""
+msgstr "Später"
 
 msgid "Next Page"
-msgstr ""
+msgstr "Seite vor"
 
 msgid "Next bouquet"
 msgstr ""
 
 msgid "Next focus"
-msgstr ""
+msgstr "Weiterer Fokus"
 
 msgid "Next image"
 msgstr ""
@@ -1415,10 +1422,10 @@ msgid "Next program"
 msgstr ""
 
 msgid "No"
-msgstr ""
+msgstr "Nein"
 
 msgid "No CAM in slot"
-msgstr ""
+msgstr "Kein CAM im Slot"
 
 msgid "No End bookmark defined!"
 msgstr ""
@@ -1431,18 +1438,25 @@ msgid ""
 "Please execute a scan\n"
 "(MENU-key -> System)"
 msgstr ""
+"Es wurden keine Kanäle gefunden!\n"
+"Führen Sie bitte eine Kanalsuche durch\n"
+"(MENU-Taste -> System)"
 
+#, fuzzy
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
 "(MENU-key -> service)"
 msgstr ""
+"Es wurden keine Kanäle gefunden!\n"
+"Führen Sie bitte eine Kanalsuche durch\n"
+"(MENU-Taste -> System)"
 
 msgid "No detailed informations available"
-msgstr ""
+msgstr "Keine ausführlichen Informationen verfügbar"
 
 msgid "No info for current program available"
-msgstr ""
+msgstr "keine Programminformationen (EPG) gefunden"
 
 msgid "No key"
 msgstr ""
@@ -1457,19 +1471,19 @@ msgid "None"
 msgstr ""
 
 msgid "North"
-msgstr ""
+msgstr "Norden"
 
 msgid "Not available"
-msgstr ""
+msgstr "Nicht verfühbar"
 
 msgid "Not used"
 msgstr ""
 
 msgid "Now"
-msgstr ""
+msgstr "Jetzt"
 
 msgid "Number"
-msgstr ""
+msgstr "Nummer"
 
 msgid "Number of lines last play"
 msgstr ""
@@ -1481,7 +1495,7 @@ msgid "Numeric Zap"
 msgstr ""
 
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 msgid "OK saves, HOME! aborts"
 msgstr ""
@@ -1493,10 +1507,10 @@ msgid "OSD"
 msgstr ""
 
 msgid "Off"
-msgstr ""
+msgstr "Aus"
 
 msgid "On"
-msgstr ""
+msgstr "Ein"
 
 msgid ""
 "One or several recording processes are active.\n"
@@ -1534,13 +1548,14 @@ msgid "Overwrite?"
 msgstr ""
 
 msgid "PCM Delay"
-msgstr ""
+msgstr "PCM Verzögerung"
 
 msgid "PSI Setup"
 msgstr ""
 
+#, fuzzy
 msgid "PSI settings"
-msgstr ""
+msgstr "EPG Einstellungen"
 
 msgid "Package successfully installed"
 msgstr ""
@@ -1552,13 +1567,14 @@ msgid "Page Up"
 msgstr ""
 
 msgid "Parental Lock"
-msgstr ""
+msgstr "Jugendschutz PIN"
 
 msgid "Parentallock settings"
-msgstr ""
+msgstr "Jugendschutz PIN Einstellungen"
 
+#, fuzzy
 msgid "Partition selector"
-msgstr ""
+msgstr "Skin Auswahl"
 
 msgid "Password"
 msgstr ""
@@ -1575,11 +1591,12 @@ msgstr ""
 msgid "Picture"
 msgstr ""
 
+#, fuzzy
 msgid "Pictureviewer"
-msgstr ""
+msgstr "Bildbetrachter"
 
 msgid "Pictureviewer settings"
-msgstr ""
+msgstr "Bildbetrachter Einstellungen"
 
 msgid "Playtime"
 msgstr ""
@@ -1602,8 +1619,9 @@ msgstr ""
 msgid "Polarization"
 msgstr ""
 
+#, fuzzy
 msgid "Polish"
-msgstr ""
+msgstr "Englisch"
 
 msgid "Portugues"
 msgstr ""
@@ -1612,7 +1630,7 @@ msgid "Position:"
 msgstr ""
 
 msgid "Power Menu"
-msgstr ""
+msgstr "Power Menü"
 
 msgid "Prefer TMBD infos ?"
 msgstr ""
@@ -1633,13 +1651,13 @@ msgid "Preferred EPG language"
 msgstr ""
 
 msgid "Preferred language"
-msgstr ""
+msgstr "Bevorzugte Sprachen"
 
 msgid "Presenter"
 msgstr ""
 
 msgid "Prev Page"
-msgstr ""
+msgstr "Seite zurück"
 
 msgid "Previous image"
 msgstr ""
@@ -1654,13 +1672,13 @@ msgid "Prompt for PIN"
 msgstr ""
 
 msgid "Provider"
-msgstr ""
+msgstr "Provider"
 
 msgid "Provider:"
 msgstr ""
 
 msgid "Providers"
-msgstr ""
+msgstr "Anbieter"
 
 msgid "Proxy server"
 msgstr ""
@@ -1702,7 +1720,7 @@ msgid "Reading Flash"
 msgstr ""
 
 msgid "Reboot"
-msgstr ""
+msgstr "Neustart"
 
 msgid "Receipt signal"
 msgstr ""
@@ -1711,7 +1729,7 @@ msgid "Receiving list, please wait"
 msgstr ""
 
 msgid "Record"
-msgstr ""
+msgstr "Aufnahme"
 
 msgid "Record AC3 streams"
 msgstr ""
@@ -1741,7 +1759,7 @@ msgid "Recording directory"
 msgstr ""
 
 msgid "Recording settings"
-msgstr ""
+msgstr "Aufnahme Einstellungen"
 
 msgid "Recording starts in a few minutes"
 msgstr ""
@@ -1750,7 +1768,7 @@ msgid "Records browser"
 msgstr ""
 
 msgid "Refresh EPG"
-msgstr ""
+msgstr "Aktualisieren"
 
 msgid "Region"
 msgstr ""
@@ -1759,25 +1777,25 @@ msgid "Release cycle"
 msgstr ""
 
 msgid "Reload"
-msgstr ""
+msgstr "Neu laden"
 
 msgid "Reload EPG"
-msgstr ""
+msgstr "EPG neu laden"
 
 msgid "Reload channel lists"
-msgstr ""
+msgstr "Kanallisten neu laden"
 
 msgid "Reload movie info at start"
 msgstr ""
 
 msgid "Reloading EPG, please be patient."
-msgstr ""
+msgstr "EPG Daten werden neu geladen, bitte warten..."
 
 msgid "Reloading channel lists, please be patient."
-msgstr ""
+msgstr "Kanallisten werden neu geladen, bitte warten..."
 
 msgid "Remind"
-msgstr ""
+msgstr "Vormerken"
 
 msgid "Reminder"
 msgstr ""
@@ -1786,7 +1804,7 @@ msgid "Remote Control lock"
 msgstr ""
 
 msgid "Remote Control settings"
-msgstr ""
+msgstr "Tasten Einstellungen"
 
 msgid "Remote control reactivated."
 msgstr ""
@@ -1848,8 +1866,9 @@ msgstr ""
 msgid "Sat"
 msgstr ""
 
+#, fuzzy
 msgid "Sat settings"
-msgstr ""
+msgstr "Satelliten Einstellungen"
 
 msgid "SatIP Client Debug"
 msgstr ""
@@ -1879,37 +1898,38 @@ msgid "Satellite:"
 msgstr ""
 
 msgid "Satellites"
-msgstr ""
+msgstr "Empfang"
 
 msgid "Saturation"
 msgstr ""
 
 msgid "Saturday"
-msgstr ""
+msgstr "Samstag"
 
 msgid "Save RC configuration"
 msgstr ""
 
 msgid "Save Timer"
-msgstr ""
+msgstr "Timer speichern"
 
 msgid "Save changes"
-msgstr ""
+msgstr "Änderungen speichern"
 
 msgid "Save changes in all movie info files"
 msgstr ""
 
 msgid "Save current theme"
-msgstr ""
+msgstr "Aktuelle Theme speichern"
 
 msgid "Save in channel dir"
 msgstr ""
 
 msgid "Save settings now"
-msgstr ""
+msgstr "Einstellungen jetzt speichern"
 
+#, fuzzy
 msgid "Save settings now?"
-msgstr ""
+msgstr "Einstellungen jetzt speichern"
 
 msgid "Save timer"
 msgstr ""
@@ -1924,54 +1944,56 @@ msgid "Saving current theme!"
 msgstr ""
 
 msgid "Saving settings now, please be patient."
-msgstr ""
+msgstr "Einstellungen werden gespeichert, bitte warten."
 
 msgid ""
 "Saving settings now, please be patient.\n"
 " this needs Neutrino restart."
 msgstr ""
+"Einstellungen werden gespeichert, bitte warten.\n"
+"Einstellungen werden aktiv nach neutrino neu Start."
 
 msgid "Scaling"
 msgstr ""
 
 msgid "Scan SDT for updates"
-msgstr ""
+msgstr "Scan SDT für Updates"
 
 msgid "Scan again"
 msgstr ""
 
 msgid "Scan for Categories"
-msgstr ""
+msgstr "Suche Kategorien ..."
 
 msgid "Scan for Movies ..."
-msgstr ""
+msgstr "Suche Filme ..."
 
 msgid "Scan for services"
 msgstr ""
 
 msgid "Scan transponder"
-msgstr ""
+msgstr "Kanalsuche"
 
 msgid "Scanning for UPnP servers"
-msgstr ""
+msgstr "Suche nach UPnP Servern"
 
 msgid "Scart Mode"
 msgstr ""
 
 msgid "Schedule"
-msgstr ""
+msgstr "Umschalten"
 
 msgid "Schedule Event"
-msgstr ""
+msgstr "Umschalten"
 
 msgid "Schedule Record"
-msgstr ""
+msgstr "Aufnehmen"
 
 msgid "Screen"
-msgstr ""
+msgstr "Bildschirm"
 
 msgid "Screen Setup"
-msgstr ""
+msgstr "Bildschirm Einstellungen"
 
 msgid "Screenshot"
 msgstr ""
@@ -1992,7 +2014,7 @@ msgid "Scroll up"
 msgstr ""
 
 msgid "Search"
-msgstr ""
+msgstr "Suche"
 
 msgid "Search for keyword in EPG..."
 msgstr ""
@@ -2016,7 +2038,7 @@ msgid "Select audio track"
 msgstr ""
 
 msgid "Select language"
-msgstr ""
+msgstr "Sprache wählen"
 
 msgid "Select starting-time"
 msgstr ""
@@ -2067,7 +2089,7 @@ msgid "Set in hours"
 msgstr ""
 
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 msgid "Settings backup"
 msgstr ""
@@ -2115,7 +2137,7 @@ msgid "Shuffle"
 msgstr ""
 
 msgid "Shutdown"
-msgstr ""
+msgstr "Ausschalten"
 
 msgid "Shutdown time in min. (000=off)"
 msgstr ""
@@ -2124,25 +2146,25 @@ msgid "Size"
 msgstr ""
 
 msgid "Skin Select"
-msgstr ""
+msgstr "Skin Auswahl"
 
 msgid "Skin Style Selection"
-msgstr ""
+msgstr "Skin Style Auswahl"
 
 msgid "Skin Style selection"
-msgstr ""
+msgstr "Skin Style Auswahl"
 
 msgid "Skin select"
-msgstr ""
+msgstr "Skin Auswahl"
 
 msgid "Sleep time"
 msgstr ""
 
 msgid "Sleeptimer"
-msgstr ""
+msgstr "Ausschalt Timer"
 
 msgid "Sleeptimer in 1 min"
-msgstr ""
+msgstr "Sleeptimer in 1 Min."
 
 msgid "Slideshow"
 msgstr ""
@@ -2154,13 +2176,13 @@ msgid "Slovak"
 msgstr ""
 
 msgid "Software update"
-msgstr ""
+msgstr "Software Aktualisierung"
 
 msgid "Software update URL"
-msgstr ""
+msgstr "Software Aktualisierung URL"
 
 msgid "South"
-msgstr ""
+msgstr "Süden"
 
 msgid "Standby"
 msgstr ""
@@ -2169,16 +2191,16 @@ msgid "Standby Brightness"
 msgstr ""
 
 msgid "Start"
-msgstr ""
+msgstr "Starten"
 
 msgid "Start Channel"
-msgstr ""
+msgstr "Start Sender"
 
 msgid "Start Channel settings"
-msgstr ""
+msgstr "Start Sender Einstellungen"
 
 msgid "Start Menu"
-msgstr ""
+msgstr "Start Menü"
 
 msgid "Start Mode"
 msgstr ""
@@ -2190,7 +2212,7 @@ msgid "Start Search"
 msgstr ""
 
 msgid "Start dir."
-msgstr ""
+msgstr "Start-Verz."
 
 msgid "Start movie from:"
 msgstr ""
@@ -2232,7 +2254,7 @@ msgid "Store Motor Position (a)"
 msgstr ""
 
 msgid "Stream information"
-msgstr ""
+msgstr "Technische Information"
 
 msgid "Stretch Mode"
 msgstr ""
@@ -2262,7 +2284,7 @@ msgid "Subtitles not found"
 msgstr ""
 
 msgid "Sunday"
-msgstr ""
+msgstr "Sonntag"
 
 msgid "Svenska"
 msgstr ""
@@ -2286,7 +2308,7 @@ msgid "TMDB"
 msgstr ""
 
 msgid "TMDB Infos are not available"
-msgstr ""
+msgstr "TMDB Informationen sind nicht verfügbar"
 
 msgid "TMDB Key:"
 msgstr ""
@@ -2409,28 +2431,28 @@ msgid "Themes"
 msgstr ""
 
 msgid "Thursday"
-msgstr ""
+msgstr "Donerstag"
 
 msgid "Time"
-msgstr ""
+msgstr "Zeit"
 
 msgid "Time Zone"
-msgstr ""
+msgstr "Zeit Zone"
 
 msgid "Time in sec. After this time the"
 msgstr ""
 
 msgid "Time-Syncronisation"
-msgstr ""
+msgstr "Zeit Synchronization"
 
 msgid "Time:"
-msgstr ""
+msgstr "Zeit:"
 
 msgid "Timed Step Mode"
 msgstr ""
 
 msgid "Timeout waiting CI menu ready"
-msgstr ""
+msgstr "CI Modul Timeout"
 
 msgid "Timer / EPG"
 msgstr ""
@@ -2445,7 +2467,7 @@ msgid "Timer typ"
 msgstr ""
 
 msgid "Timerlist"
-msgstr ""
+msgstr "Timerliste"
 
 msgid "Timeselection"
 msgstr ""
@@ -2499,7 +2521,7 @@ msgid "Truncating, please wait"
 msgstr ""
 
 msgid "Tuesday"
-msgstr ""
+msgstr "Dienstag"
 
 msgid "Tuner mode"
 msgstr ""
@@ -2537,8 +2559,9 @@ msgstr ""
 msgid "Unicable frequency"
 msgstr ""
 
+#, fuzzy
 msgid "Unicable settings"
-msgstr ""
+msgstr "Diverse Einstellungen"
 
 msgid "Unicable2 (JESS)"
 msgstr ""
@@ -2610,7 +2633,7 @@ msgid "Video Resolution"
 msgstr ""
 
 msgid "Video settings"
-msgstr ""
+msgstr "Video Einstellungen"
 
 msgid "Videotext"
 msgstr ""
@@ -2643,19 +2666,19 @@ msgid "Wait a few seconds for abort"
 msgstr ""
 
 msgid "Waiting for CI answer"
-msgstr ""
+msgstr "Warte auf CI Modul"
 
 msgid "Waiting for time..."
-msgstr ""
+msgstr "Warte auf Zeit"
 
 msgid "Warn"
-msgstr ""
+msgstr "Warnung"
 
 msgid "Wednesday"
-msgstr ""
+msgstr "Mittwoch"
 
 msgid "West"
-msgstr ""
+msgstr "Westen"
 
 msgid "Wide Screen Auto"
 msgstr ""
@@ -2679,13 +2702,13 @@ msgid "YT:"
 msgstr ""
 
 msgid "Year"
-msgstr ""
+msgstr "Jahr"
 
 msgid "Year of production"
-msgstr ""
+msgstr "Produktion Jahr"
 
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 msgid "You really want to to stop record ?"
 msgstr ""
@@ -2777,7 +2800,7 @@ msgid "athletics"
 msgstr ""
 
 msgid "back"
-msgstr ""
+msgstr "zurück"
 
 msgid "ballet"
 msgstr ""
@@ -2872,7 +2895,7 @@ msgid "default center"
 msgstr ""
 
 msgid "delete"
-msgstr ""
+msgstr "löschen"
 
 msgid "detective/thriller"
 msgstr ""
@@ -2896,10 +2919,10 @@ msgid "dmesg"
 msgstr ""
 
 msgid "do you want to reload EPG?"
-msgstr ""
+msgstr "EPG Daten neu laden?"
 
 msgid "do you want to reload channel lists?"
-msgstr ""
+msgstr "Kanallisten neu laden?"
 
 msgid "documentary"
 msgstr ""
@@ -3073,7 +3096,7 @@ msgid "jump prev"
 msgstr ""
 
 msgid "languages"
-msgstr ""
+msgstr "Sprache"
 
 msgid "large"
 msgstr ""
@@ -3186,7 +3209,7 @@ msgid "never"
 msgstr ""
 
 msgid "new media"
-msgstr ""
+msgstr "neu media"
 
 msgid "news"
 msgstr ""
@@ -3201,7 +3224,7 @@ msgid "next bouquet"
 msgstr ""
 
 msgid "next focus"
-msgstr ""
+msgstr "weiterer Fokus"
 
 msgid "next results"
 msgstr ""
@@ -3231,16 +3254,16 @@ msgid "normaly 50000, 0 to disable limit"
 msgstr ""
 
 msgid "not available"
-msgstr ""
+msgstr "nicht verfügbar"
 
 msgid "not connected"
 msgstr ""
 
 msgid "off"
-msgstr ""
+msgstr "aus"
 
 msgid "on"
-msgstr ""
+msgstr "ein"
 
 msgid "on broadcasted lock"
 msgstr ""
@@ -3306,7 +3329,7 @@ msgid "rating"
 msgstr ""
 
 msgid "record"
-msgstr ""
+msgstr "Aufnahme"
 
 msgid "record default audio streams"
 msgstr ""
@@ -3357,19 +3380,19 @@ msgid "save playlist"
 msgstr ""
 
 msgid "save settings now"
-msgstr ""
+msgstr "Einstellungen jetzt speichern"
 
 msgid "scan for Movies ..."
-msgstr ""
+msgstr "Suche Filme ..."
 
 msgid "schedule"
-msgstr ""
+msgstr "Umschalten"
 
 msgid "science fiction/fantasy/horror"
 msgstr ""
 
 msgid "search"
-msgstr ""
+msgstr "Suche"
 
 msgid "see timer"
 msgstr ""
@@ -3422,11 +3445,12 @@ msgstr ""
 msgid "social/spiritual sciences"
 msgstr ""
 
+#, fuzzy
 msgid "sorting(A..Z)"
-msgstr ""
+msgstr "Sortieren(A..Z)"
 
 msgid "sorting(Time)"
-msgstr ""
+msgstr "Sortieren(Zeit)"
 
 msgid "special events (Olympic Games,World Cup etc.)"
 msgstr ""
@@ -3467,20 +3491,29 @@ msgstr ""
 msgid "the filesize is 0 Bytes"
 msgstr ""
 
+#, fuzzy
 msgid ""
 "this need Neutrino restart\n"
 "do you want really to restart?"
 msgstr ""
+"Diese Einstellung braucht Neutrino neu Start\n"
+"willst Du wirklich Neutrino neu starten?"
 
+#, fuzzy
 msgid ""
 "this needs Neutrino restart\n"
 "Skin Style selection?"
 msgstr ""
+"Diese Einstellung braucht Neutrino neu Start\n"
+"willst Du wirklich Neutrino neu starten?"
 
+#, fuzzy
 msgid ""
 "this needs Neutrino restart\n"
 "do you want really to restart?"
 msgstr ""
+"Diese Einstellung braucht Neutrino neu Start\n"
+"willst Du wirklich Neutrino neu starten?"
 
 msgid "time (in minutes) to switch from standby"
 msgstr ""
@@ -3532,7 +3565,7 @@ msgid "view mode"
 msgstr ""
 
 msgid "waiting for EPG..."
-msgstr ""
+msgstr "Warte auf EPG..."
 
 msgid "water sports"
 msgstr ""
@@ -3550,7 +3583,7 @@ msgid "winter sports"
 msgstr ""
 
 msgid "yes"
-msgstr ""
+msgstr "Ja"
 
 msgid "youtube ID Key:"
 msgstr ""

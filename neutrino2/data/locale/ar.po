@@ -1,4 +1,4 @@
-# Bosnian translations for neutrinohd2 package.
+# Arabic translations for neutrinohd2 package.
 # Copyright (C) 2022 THE neutrinohd2'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the neutrinohd2 package.
 # Automatically generated, 2022.
@@ -7,11 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrinohd2 4.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-11 21:27+0200\n"
+"POT-Creation-Date: 2022-06-24 09:23+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: bs\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -946,9 +946,6 @@ msgstr ""
 msgid "Highlight"
 msgstr ""
 
-msgid "Hintbox Border"
-msgstr ""
-
 msgid "History"
 msgstr ""
 
@@ -1239,9 +1236,6 @@ msgid "Menutext"
 msgstr ""
 
 msgid "Message"
-msgstr ""
-
-msgid "Messagebox Border"
 msgstr ""
 
 msgid "Mini-DiSEqC"

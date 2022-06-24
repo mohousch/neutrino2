@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrinohd2 4.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-11 21:27+0200\n"
+"POT-Creation-Date: 2022-06-24 09:23+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -969,9 +969,6 @@ msgstr "Высокий приоритет декодирования"
 msgid "Highlight"
 msgstr "Подсветка"
 
-msgid "Hintbox Border"
-msgstr "Hintbox Border"
-
 msgid "History"
 msgstr "История"
 
@@ -1263,9 +1260,6 @@ msgstr "Menutext"
 
 msgid "Message"
 msgstr "Сообщение"
-
-msgid "Messagebox Border"
-msgstr "Messagebox Border"
 
 msgid "Mini-DiSEqC"
 msgstr "Mini-DiSEqC"

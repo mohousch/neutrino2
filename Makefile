@@ -41,7 +41,7 @@ export TOPDIR LC_ALL LANG
 BOXTYPE = generic
 DEST = $(PWD)/$(BOXTYPE)
 
-N_SRC  = $(PWD)/nhd2-exp
+N_SRC  = $(PWD)/neutrino2
 
 CFLAGS = -Wall -O2 -fno-strict-aliasing -O0
 
