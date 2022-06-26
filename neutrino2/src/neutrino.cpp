@@ -2482,7 +2482,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	CVFD::getInstance()->Clear();	
 
 	// show start up msg in vfd
-	CVFD::getInstance()->ShowText( (char *)"NHD2");
+	CVFD::getInstance()->ShowText( (char *)"NEUTRINO2");
 
 	// rc 
 	g_RCInput = new CRCInput;
