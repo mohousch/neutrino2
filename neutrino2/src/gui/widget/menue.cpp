@@ -248,10 +248,10 @@ void CMenuWidget::initFrames()
 		page_start.push_back(items.size());
 
 		//
-		x =  frameBuffer->getScreenX(true);
-		y =  frameBuffer->getScreenY(true);
-		width =  frameBuffer->getScreenWidth(true);
-		height =  frameBuffer->getScreenHeight(true);
+		x =  frameBuffer->getScreenX();
+		y =  frameBuffer->getScreenY();
+		width =  frameBuffer->getScreenWidth();
+		height =  frameBuffer->getScreenHeight();
 
 		full_width = width;
 		full_height = height;
