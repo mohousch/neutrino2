@@ -241,7 +241,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		int timeshiftstatus;
 		int recording_id;
 		
-#if defined (USE_PLAYBACK)
+#if defined (USE_OPENGL) // opengl playback
 		int playbackstatus;
 #endif		
 		

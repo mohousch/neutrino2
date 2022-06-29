@@ -353,7 +353,7 @@ CNeutrinoApp::CNeutrinoApp()
 	//
 	recordingstatus = 0;
 	timeshiftstatus = 0;
-#if defined (USE_PLAYBACK)
+#if defined (USE_OPENGL) // opengl playback
 	playbackstatus = 0;
 #endif
 
@@ -1904,7 +1904,7 @@ bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGD
 bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
 bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
 
-#if defined (USE_PLAYBACK)
+#if defined (USE_OPENGL) // opengl playback
 int startOpenGLplayback()
 {
 	CTimerd::RecordingInfo eventinfo;

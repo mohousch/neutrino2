@@ -79,7 +79,7 @@
 
 
 // opengl liveplayback
-#if defined (USE_PLAYBACK)
+#if defined (USE_OPENGL)
 int startOpenGLplayback();
 void stopOpenGLplayback();
 #endif
@@ -3846,7 +3846,7 @@ int startPlayBack(CZapitChannel * thisChannel)
 			}
 		}
 
-#if defined (USE_PLAYBACK)
+#if defined (USE_OPENGL) // opengl playback
 		startOpenGLplayback();
 #endif
 	}
@@ -3908,7 +3908,7 @@ int stopPlayBack(bool sendPmt)
 			pcrDemux = NULL;
 		}
 
-#if defined (USE_PLAYBACK)
+#if defined (USE_OPENGL) // opengl playback
 		stopOpenGLplayback();
 #endif
 	
@@ -3947,7 +3947,7 @@ void continuePlayBack(void)
 
 void closeAVDecoder(void)
 {
-#if !defined (USE_PLAYBACK)
+#if !defined (USE_OPENGL)
 	// close videodecoder
 	if(videoDecoder)
 		videoDecoder->Close();
@@ -3962,7 +3962,7 @@ void closeAVDecoder(void)
 
 void openAVDecoder(void)
 {
-#if !defined (USE_PLAYBACK)
+#if !defined (USE_OPENGL)
 	if(videoDecoder)
 	{
 		// open video decoder

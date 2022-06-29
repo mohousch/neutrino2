@@ -57,14 +57,14 @@ PKG_CHECK_MODULES(GLEW, glew)
 fi
 
 # use playback (dirty) for opengl
-AC_ARG_ENABLE(playback,
-	AS_HELP_STRING(--enable-playback,enable playback for opengl),
-	,[enable_playback=no])
-AM_CONDITIONAL(USE_PLAYBACK,test "$enable_playback" = "yes")
+#AC_ARG_ENABLE(playback,
+#	AS_HELP_STRING(--enable-playback,enable playback for opengl),
+#	,[enable_playback=no])
+#AM_CONDITIONAL(USE_PLAYBACK,test "$enable_playback" = "yes")
 
-if test "$enable_playback" = "yes"; then
-AC_DEFINE(USE_PLAYBACK,1,[include playback for opengl or satip])
-fi
+#if test "$enable_playback" = "yes"; then
+#AC_DEFINE(USE_PLAYBACK,1,[include playback for opengl or satip])
+#fi
 
 # gstreamer
 AC_ARG_ENABLE(gstreamer,
@@ -199,7 +199,6 @@ AM_CONDITIONAL(ENABLE_TESTING,test "$enable_testing" = "yes")
 AC_MSG_RESULT([
 Boxtype          	: $BOXTYPE
 OpenGL			: $enable_opengl
-OpenGL Playback		: $enable_playback
 Gstreamer		: $enable_gstreamer
 SCART			: $enable_scart
 LCD			: $enable_lcd
