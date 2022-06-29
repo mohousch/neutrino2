@@ -49,7 +49,7 @@ bool isTS = false;
 #include <gst/tag/tag.h>
 #include <gst/pbutils/missing-plugins.h>
 
-#if defined (PLATFORM_GENERIC)
+#if defined (USE_OPENGL)
 #if !GST_CHECK_VERSION(1,0,0)
 #include <gst/interfaces/xoverlay.h>
 #else
@@ -447,7 +447,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 			}
 			break;
 		}
-#if defined (PLATFORM_GENERIC) //FIXME: ???	
+#if defined (USE_OPENGL) //FIXME: ???	
 		case GST_MESSAGE_ELEMENT:
 		{
 #if 0
@@ -1033,7 +1033,7 @@ bool cPlayback::GetPosition(int64_t &position, int64_t &duration)
 		gint64 pts;
 		position = 0;
 		
-#if defined (PLATFORM_GENERIC)
+#if defined (USE_OPENGL)
 #if GST_VERSION_MAJOR < 1
 		gst_element_query_position(m_gst_playbin, &fmt, &pts);
 #else
