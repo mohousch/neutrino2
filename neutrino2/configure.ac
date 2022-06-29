@@ -54,6 +54,7 @@ AC_DEFINE(USE_OPENGL,1,[include opengl engine])
 PKG_CHECK_MODULES(GL, gl)
 #PKG_CHECK_MODULES(GLUT, glut)
 PKG_CHECK_MODULES(GLEW, glew)
+fi
 
 # use playback (dirty) for opengl
 AC_ARG_ENABLE(playback,
@@ -63,7 +64,6 @@ AM_CONDITIONAL(USE_PLAYBACK,test "$enable_playback" = "yes")
 
 if test "$enable_playback" = "yes"; then
 AC_DEFINE(USE_PLAYBACK,1,[include playback for opengl or satip])
-fi
 fi
 
 # gstreamer
