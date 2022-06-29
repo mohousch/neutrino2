@@ -138,7 +138,7 @@ int cAudio::SetMute(int enable)
 	}
 #endif
 
-#if !defined (PLATFORM_GENERIC)
+#if !defined (USE_OPENGL)
 	char sMuted[4];
 	sprintf(sMuted, "%d", Muted);
 
@@ -189,7 +189,7 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	}
 #endif	
 
-#if !defined (PLATFORM_GENERIC) && !defined (PLATFORM_HYPERCUBE)
+#if !defined (USE_OPENGL) && !defined (PLATFORM_HYPERCUBE)
 	char sVolume[4];
 	
 #if defined (__sh__)
@@ -388,7 +388,7 @@ void cAudio::SetHdmiDD(int ac3)
 	}
 #endif
 
-#if !defined (PLATFORM_GENERIC)
+#if !defined (USE_OPENGL)
 	int fd_ac3 = open("/proc/stb/audio/ac3", O_RDWR);
 	
 	if(fd_ac3 > 0)
@@ -424,7 +424,7 @@ int cAudio::setHwPCMDelay(int delay)
 {  
 	dprintf(DEBUG_INFO, "%s:%s - delay=%d\n", FILENAME, __FUNCTION__, delay);
 	
-#if !defined (PLATFORM_GENERIC)	
+#if !defined (USE_OPENGL)	
 	if (delay != m_pcm_delay )
 	{
 		FILE *fp = fopen("/proc/stb/audio/audio_delay_pcm", "w");
@@ -445,7 +445,7 @@ int cAudio::setHwAC3Delay(int delay)
 {
 	dprintf(DEBUG_INFO, "%s:%s - delay=%d\n", FILENAME, __FUNCTION__, delay);
 	
-#if !defined (PLATFORM_GENERIC)	
+#if !defined (USE_OPENGL)	
 	if ( delay != m_ac3_delay )
 	{
 		FILE *fp = fopen("/proc/stb/audio/audio_delay_bitstream", "w");
