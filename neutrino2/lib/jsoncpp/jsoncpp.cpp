@@ -3185,9 +3185,9 @@ bool Value::isValidIndex(ArrayIndex index) const { return index < size(); }
 
 Value const* Value::find(char const* key, char const* cend) const
 {
-  JSON_ASSERT_MESSAGE(
-      type_ == nullValue || type_ == objectValue,
-      "in Json::Value::find(key, end, found): requires objectValue or nullValue");
+ // JSON_ASSERT_MESSAGE(
+//      type_ == nullValue || type_ == objectValue,
+      //"in Json::Value::find(key, end, found): requires objectValue or nullValue");
   if (type_ == nullValue) return NULL;
   CZString actualKey(key, static_cast<unsigned>(cend-key), CZString::noDuplication);
   ObjectValues::const_iterator it = value_.map_->find(actualKey);

@@ -766,12 +766,12 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 														 epgData.epg_times.startzeit - (ANNOUNCETIME + 120 ),
 														 TIMERD_APIDS_CONF, true, recDir,true);
 														 
-										MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+										MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 									}
 								} 
 								else 
 								{
-									MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+									MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 								}
 							}
 						}
@@ -791,7 +791,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 											epgData.epg_times.startzeit - ANNOUNCETIME, 0,
 											epgData.eventID, epgData.epg_times.startzeit, 0);
 										
-							MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+							MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 						}
 						else
 							printf("timerd not available\n");

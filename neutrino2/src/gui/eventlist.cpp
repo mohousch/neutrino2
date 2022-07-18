@@ -363,12 +363,12 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 									evtlist[selected].startTime - (ANNOUNCETIME + 120),
 									TIMERD_APIDS_CONF, true, recDir,true);
 									
-							MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+							MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 						}
 					} 
 					else 
 					{
-						MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+						MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 					}
 				}
 				timerlist.clear();
@@ -401,7 +401,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 						evtlist[selected].startTime - ANNOUNCETIME, 0,
 						evtlist[selected].eventID, evtlist[selected].startTime, 0);
 					
-			MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+			MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 			timerlist.clear();
 			g_Timerd->getTimerList (timerlist);
 			
@@ -522,12 +522,12 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 						}
 						else
 						{
-							MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+							MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 						}
 					}
 					else
 					{
-						MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+						MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 					}
 
 					delete tmdb;
