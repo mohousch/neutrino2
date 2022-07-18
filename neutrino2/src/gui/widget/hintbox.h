@@ -95,7 +95,7 @@ class CHintBox
 		void hide(void);
 		
 		void enablePaintHG(void){paintHG = true;};
-		void setBorderMode(int sm){borderMode = sm;};
+		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
 
 		int exec(int timeout = -1);
 };

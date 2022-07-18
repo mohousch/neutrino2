@@ -128,7 +128,7 @@ class CMessageBox
 
 		~CMessageBox(void);
 		
-		void setBorderMode(int sm){borderMode = sm;};
+		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
 
 		int exec(int timeout = -1);
 		void returnDefaultValueOnTimeout(bool returnDefault);

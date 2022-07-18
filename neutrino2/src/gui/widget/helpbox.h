@@ -67,7 +67,7 @@ class CHelpBox
 		void addPagebreak();
 		
 		//
-		void setBorderMode(int sm){borderMode = sm;};
+		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
 		
 		//
 		void show(const char* const Caption, const int Width = HELPBOX_WIDTH, int timeout = -1, const result_ Default = mbrBack, const uint32_t ShowButtons = mbBack);

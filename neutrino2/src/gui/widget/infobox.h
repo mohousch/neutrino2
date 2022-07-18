@@ -116,7 +116,7 @@ class CInfoBox
 		void setBackgroundColor(fb_pixel_t col);
 		void setTextColor(uint8_t col);
 		void setFont(unsigned int font_text);
-		void setBorderMode(int sm){borderMode = sm;};
+		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
 		
 		// foot
 		void setFootColor(fb_pixel_t col) {footColor = col;};
