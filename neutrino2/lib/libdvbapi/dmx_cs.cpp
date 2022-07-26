@@ -107,7 +107,7 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 	dprintf(DEBUG_INFO, "cDemux::Open %s type:%s BufferSize:%d source(%d)\n", devname, aDMXCHANNELTYPE[Type], uBufferSize, demux_source);
 
 	// set demux source
-#if !defined (USE_OPENGL)	
+//#if !defined (USE_OPENGL)	
 	if (!init[demux_num])
 	{
 		int n = DMX_SOURCE_FRONT0 + demux_source;
@@ -121,7 +121,7 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 		else
 			init[demux_num] = true;
 	}
-#endif	
+//#endif	
 
 	// set demux buffer size
 	if (uBufferSize > 0)
@@ -470,7 +470,7 @@ void cDemux::removePid(unsigned short Pid)
 
 void cDemux::getSTC(int64_t * STC)
 { 
-#if 0 //defined (USE_OPENGL)
+#if 0
 	if (demux_fd < 0)
 		return;
 	

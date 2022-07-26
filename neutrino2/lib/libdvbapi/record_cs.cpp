@@ -308,5 +308,3 @@ void cRecord::RecordThread()
 	pthread_exit(NULL);
 }
 
-
-

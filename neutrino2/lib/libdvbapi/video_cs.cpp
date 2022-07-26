@@ -50,7 +50,6 @@
 
 static const char * FILENAME = "[video_cs.cpp]";
 
-
 cVideo * videoDecoder = NULL;
 
 //ugly most functions are done in proc
@@ -893,7 +892,9 @@ int cVideo::showSinglePic(const char *filename)
 {
 	
 	dprintf(DEBUG_NORMAL, "showSinglePic %s\n", filename);
+	
 	int f = open(filename, O_RDONLY);
+	
 	if (f >= 0)
 	{
 		struct stat s;
@@ -1033,6 +1034,4 @@ void cVideo::setTint(int Tint)
 		fclose(fd);
 	}
 }
-
-
 
