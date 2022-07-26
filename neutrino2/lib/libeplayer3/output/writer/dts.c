@@ -165,3 +165,4 @@ struct Writer_s WriterAudioDTS = {
 	NULL,
 	&caps
 };
+

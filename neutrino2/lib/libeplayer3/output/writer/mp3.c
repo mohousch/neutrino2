@@ -117,7 +117,7 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-#if defined __sh__
+#if defined (__sh__)
 	struct iovec iov[2];
 
 	iov[0].iov_base = PesHeader;
@@ -182,3 +182,4 @@ struct Writer_s WriterAudioMPEGL3 = {
 	NULL,
 	&caps_mpegl3,
 };
+

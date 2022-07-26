@@ -123,7 +123,7 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-#if defined __sh__
+#if defined (__sh__)
 	while (Position < call->len)
 	{
 		int PacketLength = (call->len - Position) <= MAX_PES_PACKET_SIZE ? (call->len - Position) : MAX_PES_PACKET_SIZE;
@@ -321,3 +321,4 @@ struct Writer_s WriterVideoMPEGH264 = {
 	NULL,
 	&h264_caps
 };
+

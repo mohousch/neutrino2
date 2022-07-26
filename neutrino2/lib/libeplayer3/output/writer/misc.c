@@ -125,5 +125,3 @@ void FlushBits(BitPacker_t * ld)
 	ld->BitBuffer = 0;
 }
 
-
-

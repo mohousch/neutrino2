@@ -78,7 +78,6 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* ***************************** */
 /* Types                         */
 /* ***************************** */
-#if defined (__sh__)
 typedef struct avcC_s
 {
 	unsigned char       Version;                /* configurationVersion        */
@@ -89,8 +88,6 @@ typedef struct avcC_s
 	unsigned char       NumParamSets;           /* held in bottom 5 bits       */
 	unsigned char       Params[1];              /* {length,params}{length,params}...sequence then picture*/
 } avcC_t;
-#endif
-
 
 /* ***************************** */
 /* Varaibles                     */
@@ -99,11 +96,11 @@ const unsigned char Head[] = {0, 0, 0, 1};
 static int initialHeader = 1;
 static unsigned int NalLengthBytes = 1;
 static int avc3 = 0;
-#if !defined (__sh__)
+//#if !defined (__sh__)
 static unsigned char* CodecData = NULL;
 static unsigned int CodecDataLen = 0;
 static int sps_pps_in_stream = 0;
-#endif
+//#endif
 
 /* ***************************** */
 /* Prototypes                    */
@@ -113,7 +110,7 @@ static int sps_pps_in_stream = 0;
 /* MISC Functions                */
 /* ***************************** */
 
-#if defined (__sh__)
+#if 0 //defined (__sh__)
 static int32_t UpdateExtraData(uint8_t **ppExtraData, uint32_t *pExtraDataSize, uint8_t *pData, uint32_t dataSize)
 {
 	uint8_t *aExtraData = *ppExtraData;
@@ -426,9 +423,10 @@ static int reset()
 {
 	initialHeader = 1;
 	avc3 = 0;
-#if !defined (__sh__)
+//#if !defined (__sh__)
 	sps_pps_in_stream = 0;
-#endif
+//#endif
+
 	return 0;
 }
 
@@ -470,7 +468,7 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-#if defined (__sh__)
+#if 1 //defined (__sh__)
 	if ((call->len > 3) && ((call->data[0] == 0x00 && call->data[1] == 0x00 && call->data[2] == 0x00 && call->data[3] == 0x01) || (call->data[0] == 0xff && call->data[1] == 0xff && call->data[2] == 0xff && call->data[3] == 0xff)))
 	{
 		unsigned int PacketLength = 0;

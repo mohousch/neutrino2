@@ -118,7 +118,7 @@ void CTSBrowser::loadPlaylist()
 	// recordingdir
 	Path = g_settings.network_nfs_recordingdir;
 
-	CHintBox loadBox(_("TS Browser"), _("Scan for Movies ..."));
+	CHintBox loadBox(_("Movie Player"), _("Scan for Movies ..."));
 	loadBox.paint();
 	
 	//
@@ -201,7 +201,7 @@ void CTSBrowser::openFileBrowser()
 		MI_MOVIE_INFO movieInfo;
 		m_movieInfo.clearMovieInfo(&movieInfo); // refresh structure
 
-		CHintBox loadBox(_("TS Browser"), _("Scan for Movies ..."));
+		CHintBox loadBox(_("Movie Player"), _("Scan for Movies ..."));
 		loadBox.paint();
 
 		CFileList::const_iterator files = filebrowser.getSelectedFiles().begin();
@@ -434,7 +434,7 @@ void CTSBrowser::showMenu()
 	
 	//
 	mlist->enablePaintHead();
-	mlist->setTitle(_("Movieplayer"), NEUTRINO_ICON_MOVIE);
+	mlist->setTitle(_("Movie Player"), NEUTRINO_ICON_MOVIE);
 	//mlist->setTitleHAlign(CC_ALIGN_CENTER);
 	mlist->enablePaintDate();
 	mlist->setFormat("%A %d.%m.%Y %H:%M:%S");
@@ -562,5 +562,4 @@ void plugin_exec(void)
 	delete movieBrowserHandler;
 	movieBrowserHandler = NULL;
 }
-
 

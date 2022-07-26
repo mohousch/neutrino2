@@ -181,3 +181,4 @@ struct Writer_s WriterAudioWMA = {
 	NULL,
 	&caps
 };
+

@@ -110,7 +110,7 @@ static int writeData(void* _call)
 
 	unsigned char  PesHeader[PES_MAX_HEADER_SIZE];
 
-#if defined __sh__
+#if defined (__sh__)
 	unsigned char  FakeHeaders[64]; // 64bytes should be enough to make the fake headers
 	unsigned int   FakeHeaderLength;
 	unsigned int   ExtraLength = 0;
@@ -143,7 +143,7 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-#if defined __sh__
+#if defined (__sh__)
 	usecPerFrame = 1000000000 / call->FrameRate;
 	divx_printf(10, "Microsecends per frame = %d\n", usecPerFrame);
 
@@ -304,5 +304,4 @@ struct Writer_s WriterVideoDIVX = {
     NULL,
     &divx_caps,
 };
-
 

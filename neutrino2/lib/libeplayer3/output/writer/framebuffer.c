@@ -195,3 +195,4 @@ struct Writer_s WriterFramebuffer = {
 	NULL,
 	&caps,
 };
+
