@@ -37,6 +37,22 @@
 
 #define MAX_SECTION_LENGTH 		4098
 
+//
+#if !defined (DMX_SET_SOURCE)
+typedef enum {
+	DMX_SOURCE_FRONT0 = 0,
+	DMX_SOURCE_FRONT1,
+	DMX_SOURCE_FRONT2,
+	DMX_SOURCE_FRONT3,
+	DMX_SOURCE_DVR0   = 16,
+	DMX_SOURCE_DVR1,
+	DMX_SOURCE_DVR2,
+	DMX_SOURCE_DVR3
+} dmx_source_t;
+
+#define DMX_SET_SOURCE           _IOW('o', 49, dmx_source_t)
+#endif
+
 
 typedef enum
 {
