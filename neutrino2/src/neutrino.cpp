@@ -748,17 +748,15 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	
 	// pip keys
 	g_settings.key_pip = configfile.getInt32("key_pip", RC_pip);
-	//g_settings.key_pip_subchannel = configfile.getInt32("key_pip_subchannel", RC_pipsubch);
 
 	// media keys
-	g_settings.key_recordsbrowser = configfile.getInt32( "key_recordsbrowser", RC_nokey );
+	g_settings.key_movieplayer = configfile.getInt32( "key_movieplayer", RC_nokey );
 	g_settings.key_audioplayer = configfile.getInt32( "key_audioplayer", RC_nokey );
 	g_settings.key_pictureviewer = configfile.getInt32( "key_pictureviewer", RC_nokey );
 	g_settings.key_timerlist = configfile.getInt32( "key_timerlist", RC_nokey );
 	g_settings.key_inetradio = configfile.getInt32( "key_inetradio", RC_nokey );
 	g_settings.key_moviebrowser = configfile.getInt32( "key_moviebrowser", RC_nokey );
 	g_settings.key_filebrowser = configfile.getInt32( "key_filebrowser", RC_nokey );
-	g_settings.key_webtv = configfile.getInt32( "key_webtv", RC_nokey );
 	g_settings.key_screenshot = configfile.getInt32( "key_screenshot", RC_record );
 	
         // USERMENU -> in system/settings.h
@@ -1244,14 +1242,13 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32( "key_pip", g_settings.key_pip );
 	
 	// media keys
-	configfile.setInt32( "key_recordsbrowser", g_settings.key_recordsbrowser );
+	configfile.setInt32( "key_movieplayer", g_settings.key_movieplayer );
 	configfile.setInt32( "key_audioplayer", g_settings.key_audioplayer );
 	configfile.setInt32( "key_pictureviewer", g_settings.key_pictureviewer );
 	configfile.setInt32( "key_timerlist", g_settings.key_timerlist );
 	configfile.setInt32( "key_inetradio", g_settings.key_inetradio );
 	configfile.setInt32( "key_moviebrowser", g_settings.key_moviebrowser );
 	configfile.setInt32( "key_filebrowser", g_settings.key_filebrowser );
-	configfile.setInt32( "key_webtv", g_settings.key_webtv );
 	
 	configfile.setInt32( "key_screenshot", g_settings.key_screenshot );
 	
@@ -3271,12 +3268,12 @@ void CNeutrinoApp::RealRun(void)
 
 				StartSubtitles();	
 			}			
-			else if( msg == (neutrino_msg_t)g_settings.key_recordsbrowser )	// recordsbrowser
+			else if( msg == (neutrino_msg_t)g_settings.key_movieplayer )	// recordsbrowser
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				g_PluginList->startPlugin("tsbrowser");
+				g_PluginList->startPlugin("movieplayer");
 
 				if( mode == mode_radio )
 				{

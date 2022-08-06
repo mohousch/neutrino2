@@ -21,7 +21,7 @@ neutrinohd2.pot: $(top_srcdir)/src/*.cpp $(top_srcdir)/src/gui/*.cpp $(top_srcdi
 	$(top_srcdir)/../plugins/picviewer/*.cpp \
 	$(top_srcdir)/../plugins/satipclient/*.cpp \
 	$(top_srcdir)/../plugins/systeminfo/*.cpp \
-	$(top_srcdir)/../plugins/tsbrowser/*.cpp \
+	$(top_srcdir)/../plugins/movieplayer/*.cpp \
 	$(top_srcdir)/../plugins/upnp/*.cpp \
 	$(top_srcdir)/../plugins/youtube/*.cpp
 	$(XGETTEXT) -L C++ --keyword=_ --keyword=N_ --from-code=utf-8 --no-wrap --add-comments="TRANSLATORS:" -d @PACKAGE_NAME@ -s -o $@ $^

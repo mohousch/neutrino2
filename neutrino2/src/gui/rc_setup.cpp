@@ -64,18 +64,17 @@ enum keynames {
 	KEY_SAME_TP,
 	
 	// media
-	KEY_EXTRAS_RECORDSBROWSER,
+	KEY_EXTRAS_MOVIEPLAYER,
 	KEY_EXTRAS_AUDIOPLAYER,
 	KEY_EXTRAS_PICTUREVIEWER,
 	KEY_EXTRAS_TIMERLIST,
 	KEY_EXTRAS_INETRADIO,
 	KEY_EXTRAS_MOVIEBROWSER,
 	KEY_EXTRAS_FILEBROWSER,
-	KEY_EXTRAS_WEBTV,
 	KEY_EXTRAS_SCREENSHOT
 };
 
-#define KEYBINDS_COUNT 24
+#define KEYBINDS_COUNT 23
 const char* const  keydescription[KEYBINDS_COUNT] =
 {
 	// zap
@@ -96,14 +95,13 @@ const char* const  keydescription[KEYBINDS_COUNT] =
 	_("Same TP"),
 
 	// media
-	_("Records browser"),
+	_("Movieplayer"),
 	_("Audioplayer"),
 	_("Pictureviewer"),
 	_("Timerlist"),
 	_("Internet Radio"),
 	_("Movies Browser"),
 	_("Files Browser"),
-	_("WEBTV"),
 	_("Screenshot")
 };
 
@@ -290,23 +288,17 @@ void CKeysBindingSettings::showMenu()
 		&g_settings.key_pip,
 		
 		// media
-		&g_settings.key_recordsbrowser,
+		&g_settings.key_movieplayer,
 		&g_settings.key_audioplayer,
 		&g_settings.key_pictureviewer,
 		&g_settings.key_timerlist,
 		&g_settings.key_inetradio,
 		&g_settings.key_moviebrowser,
 		&g_settings.key_filebrowser,
-		&g_settings.key_webtv,
 		
 		// misc
 		&g_settings.key_screenshot
 	};
-
-	//CKeyChooser* keychooser[KEYBINDS_COUNT];
-
-	//for (int i = 0; i < KEYBINDS_COUNT; i++)
-	//	keychooser[i] = new CKeyChooser(keyvalue_p[i], keydescription[i], NEUTRINO_ICON_SETTINGS);
 	
 	//
 	CWidget* widget = NULL;
@@ -352,30 +344,30 @@ void CKeysBindingSettings::showMenu()
 	bindSettings->addItem(new CMenuSeparator(LINE | STRING, _("Modechange")));
 	
 	// tv/radio mode
-	bindSettings->addItem(new CMenuForwarder(keydescription[KEY_TV_RADIO_MODE], true, NULL, /*keychooser[KEY_TV_RADIO_MODE]*/new CKeyChooser(keyvalue_p[KEY_TV_RADIO_MODE], keydescription[KEY_TV_RADIO_MODE], NEUTRINO_ICON_SETTINGS)));
+	bindSettings->addItem(new CMenuForwarder(keydescription[KEY_TV_RADIO_MODE], true, NULL, new CKeyChooser(keyvalue_p[KEY_TV_RADIO_MODE], keydescription[KEY_TV_RADIO_MODE], NEUTRINO_ICON_SETTINGS)));
 
 	// channellist
 	bindSettings->addItem(new CMenuSeparator(LINE | STRING, _("Channellist")));
 
 	for (int i = KEY_PAGE_UP; i <= KEY_BOUQUET_DOWN; i++)
-		bindSettings->addItem(new CMenuForwarder(keydescription[i], true, NULL, /*keychooser[i]*/new CKeyChooser(keyvalue_p[i], keydescription[i], NEUTRINO_ICON_SETTINGS)));
+		bindSettings->addItem(new CMenuForwarder(keydescription[i], true, NULL, new CKeyChooser(keyvalue_p[i], keydescription[i], NEUTRINO_ICON_SETTINGS)));
 
 	// quick zap
 	bindSettings->addItem(new CMenuSeparator(LINE | STRING, _("Quickzap")));
 
 	for (int i = KEY_CHANNEL_UP; i <= KEY_SAME_TP; i++)
-		bindSettings->addItem(new CMenuForwarder(keydescription[i], true, NULL, /*keychooser[i]*/new CKeyChooser(keyvalue_p[i], keydescription[i], NEUTRINO_ICON_SETTINGS)));
+		bindSettings->addItem(new CMenuForwarder(keydescription[i], true, NULL, new CKeyChooser(keyvalue_p[i], keydescription[i], NEUTRINO_ICON_SETTINGS)));
 	
 	// media
 	bindSettings->addItem(new CMenuSeparator(LINE | STRING, _("Media")));
-	for (int i = KEY_EXTRAS_RECORDSBROWSER; i <= KEY_EXTRAS_WEBTV; i++)
-		bindSettings->addItem(new CMenuForwarder(keydescription[i], true, NULL, /*keychooser[i]*/new CKeyChooser(keyvalue_p[i], keydescription[i], NEUTRINO_ICON_SETTINGS)));
+	for (int i = KEY_EXTRAS_MOVIEPLAYER; i <= KEY_EXTRAS_FILEBROWSER; i++)
+		bindSettings->addItem(new CMenuForwarder(keydescription[i], true, NULL, new CKeyChooser(keyvalue_p[i], keydescription[i], NEUTRINO_ICON_SETTINGS)));
 
 	// misc
 	bindSettings->addItem(new CMenuSeparator(LINE | STRING, _("Misc settings")));
 	
 	// screenshot key
-	bindSettings->addItem(new CMenuForwarder(keydescription[KEY_EXTRAS_SCREENSHOT], true, NULL, /*keychooser[KEY_EXTRAS_SCREENSHOT]*/new CKeyChooser(keyvalue_p[KEY_EXTRAS_SCREENSHOT], keydescription[KEY_EXTRAS_SCREENSHOT], NEUTRINO_ICON_SETTINGS)));
+	bindSettings->addItem(new CMenuForwarder(keydescription[KEY_EXTRAS_SCREENSHOT], true, NULL, new CKeyChooser(keyvalue_p[KEY_EXTRAS_SCREENSHOT], keydescription[KEY_EXTRAS_SCREENSHOT], NEUTRINO_ICON_SETTINGS)));
 	
 	// save rc config
 	bindSettings->addItem(new CMenuForwarder(_("Save RC configuration"), true, NULL, this, "savercconfig" ) );

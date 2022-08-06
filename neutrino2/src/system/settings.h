@@ -288,14 +288,13 @@ struct SNeutrinoSettings
 	int key_pip;
 
 	// media	
-	int key_recordsbrowser;
+	int key_movieplayer;
 	int key_audioplayer;
 	int key_pictureviewer;
 	int key_timerlist;
 	int key_inetradio;
 	int key_moviebrowser;
 	int key_filebrowser;
-	int key_webtv;
 	
 	// divers
 	int key_screenshot;
@@ -475,7 +474,7 @@ struct SNeutrinoSettings
 	int Foot_radius;
 	int Foot_line;
 	
-	//
+	// hint
 	int Hint_gradient;
 	int Hint_border;
 	int Hint_corner;

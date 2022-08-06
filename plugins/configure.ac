@@ -59,7 +59,7 @@ mediaportal/Makefile
 satipclient/Makefile
 icecast/Makefile
 internetradio/Makefile
-tsbrowser/Makefile
+movieplayer/Makefile
 moviebrowser/Makefile
 picviewer/Makefile
 audioplayer/Makefile

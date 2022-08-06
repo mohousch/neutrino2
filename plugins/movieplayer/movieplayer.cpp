@@ -1,5 +1,5 @@
 /*
-  $Id: tsbrowser.cpp 24.12.2018 mohousch Exp $
+  $Id: movieplayer.cpp 06.07.2022 mohousch Exp $
 
   License: GPL
 
@@ -25,7 +25,7 @@ extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
-class CTSBrowser : public CMenuTarget
+class CMoviePlayer : public CMenuTarget
 {
 	private:
 		// variables
@@ -54,13 +54,13 @@ class CTSBrowser : public CMenuTarget
 		void showMenu();
 
 	public:
-		CTSBrowser();
-		~CTSBrowser();
+		CMoviePlayer();
+		~CMoviePlayer();
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 		void hide();
 };
 
-CTSBrowser::CTSBrowser()
+CMoviePlayer::CMoviePlayer()
 {
 	frameBuffer = CFrameBuffer::getInstance();
 
@@ -100,18 +100,18 @@ CTSBrowser::CTSBrowser()
 	fileFilter.addFilter("ogg");
 }
 
-CTSBrowser::~CTSBrowser()
+CMoviePlayer::~CMoviePlayer()
 {
 	m_vMovieInfo.clear();
 }
 
-void CTSBrowser::hide()
+void CMoviePlayer::hide()
 {
 	frameBuffer->paintBackground();
 	frameBuffer->blit();
 }
 
-void CTSBrowser::loadPlaylist()
+void CMoviePlayer::loadPlaylist()
 {
 	m_vMovieInfo.clear();
 
@@ -186,7 +186,7 @@ void CTSBrowser::loadPlaylist()
 	loadBox.hide();
 }
 
-void CTSBrowser::openFileBrowser()
+void CMoviePlayer::openFileBrowser()
 {
 	CFileBrowser filebrowser((g_settings.filebrowser_denydirectoryleave) ? g_settings.network_nfs_picturedir : "");
 
@@ -231,7 +231,7 @@ void CTSBrowser::openFileBrowser()
 	}
 }
 
-void CTSBrowser::doTMDB(MI_MOVIE_INFO& movieFile)
+void CMoviePlayer::doTMDB(MI_MOVIE_INFO& movieFile)
 {
 	//				
 	CTmdb * tmdb = new CTmdb();
@@ -325,15 +325,15 @@ void CTSBrowser::doTMDB(MI_MOVIE_INFO& movieFile)
 	tmdb = NULL;
 }
 
-bool CTSBrowser::delFile(CFile& file)
+bool CMoviePlayer::delFile(CFile& file)
 {
 	bool result = true;
 	unlink(file.Name.c_str()); // fix: use full path
-	dprintf(DEBUG_NORMAL, "CTSBrowser::delete file: %s\r\n", file.Name.c_str());
+	dprintf(DEBUG_NORMAL, "CMoviePlayer::delete file: %s\r\n", file.Name.c_str());
 	return(result);
 }
 
-void CTSBrowser::onDeleteFile(MI_MOVIE_INFO& movieFile)
+void CMoviePlayer::onDeleteFile(MI_MOVIE_INFO& movieFile)
 {
 	std::string msg = _("Delete");
 	msg += "\r\n ";
@@ -409,7 +409,7 @@ const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 	{ NEUTRINO_ICON_BUTTON_BLUE, _("Scan for Movies ...") },
 };
 
-void CTSBrowser::showMenu()
+void CMoviePlayer::showMenu()
 {
 	widget = new CWidget();
 	mlist = new ClistBox(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
@@ -467,9 +467,9 @@ void CTSBrowser::showMenu()
 	widget = NULL;
 }
 
-int CTSBrowser::exec(CMenuTarget* parent, const std::string& actionKey)
+int CMoviePlayer::exec(CMenuTarget* parent, const std::string& actionKey)
 {
-	dprintf(DEBUG_NORMAL, "\nCTSBrowser::exec: actionKey:%s\n", actionKey.c_str());
+	dprintf(DEBUG_NORMAL, "\nMoviePlayer::exec: actionKey:%s\n", actionKey.c_str());
 	
 	if(parent)
 		hide();
@@ -555,11 +555,11 @@ void plugin_del(void)
 
 void plugin_exec(void)
 {
-	CTSBrowser* movieBrowserHandler = new CTSBrowser();
+	CMoviePlayer* moviePlayerHandler = new CMoviePlayer();
 	
-	movieBrowserHandler->exec(NULL, "");
+	moviePlayerHandler->exec(NULL, "");
 	
-	delete movieBrowserHandler;
-	movieBrowserHandler = NULL;
+	delete moviePlayerHandler;
+	moviePlayerHandler = NULL;
 }
 

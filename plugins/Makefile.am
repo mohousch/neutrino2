@@ -9,7 +9,7 @@ SUBDIRS = \
 	mediaportal \
 	icecast \
 	internetradio \
-	tsbrowser \
+	movieplayer \
 	moviebrowser \
 	picviewer \
 	audioplayer \
