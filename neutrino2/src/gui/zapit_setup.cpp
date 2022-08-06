@@ -112,26 +112,6 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
-	/*
-	else if(actionKey == "webtv")
-	{
-		CSelectChannelWidgetHandler = new CSelectChannelWidget();
-		CSelectChannelWidgetHandler->exec(NULL, "webtv");
-		
-		g_settings.startchannelwebtv_id = CSelectChannelWidgetHandler->getChannelID();
-		g_settings.StartChannelWEBTV = g_Zapit->getChannelName(CSelectChannelWidgetHandler->getChannelID());
-		g_settings.startchannelwebtv_nr = g_Zapit->getChannelNumber(CSelectChannelWidgetHandler->getChannelID()) - 1;
-
-		this->getString() = g_Zapit->getChannelName(CSelectChannelWidgetHandler->getChannelID());
-		
-		delete CSelectChannelWidgetHandler;
-		CSelectChannelWidgetHandler = NULL;
-
-		printf("id:%llx name:%s nr:%d\n", g_settings.startchannelwebtv_id, g_settings.StartChannelWEBTV.c_str(), g_settings.startchannelwebtv_nr);
-		
-		return RETURN_REPAINT;
-	}
-	*/
 
 	showMenu();
 
@@ -185,7 +165,6 @@ void CZapitSetup::showMenu()
 
 	bool activTV = false;
 	bool activRadio = false;
-	//bool activWebTV = false;
 
 	if( (!g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_tv) )
 		activTV = true;
@@ -193,17 +172,11 @@ void CZapitSetup::showMenu()
 	if( (!g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_radio) )
 		activRadio = true;
 
-	//if( (!g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_webtv) )
-	//	activWebTV = true;
-
 	// last TV channel
 	CMenuForwarder * m3 = new CMenuForwarder(_("TV Channel"), activTV, g_settings.StartChannelTV.c_str(), this, "tv");
 
 	// last radio channel
 	CMenuForwarder * m4 = new CMenuForwarder(_("Radio Channel"), activRadio, g_settings.StartChannelRadio.c_str(), this, "radio");
-
-	// last webtv channel
-	//CMenuForwarder * m5 = new CMenuForwarder(_("WebTV Channel"), activWebTV, g_settings.StartChannelWEBTV.c_str(), this, "webtv");
 
 	// last mode
 	CZapitSetupModeNotifier zapitSetupModeNotifier((int *)&g_settings.lastChannelMode, m3, m4/*, m5*/);
@@ -219,7 +192,6 @@ void CZapitSetup::showMenu()
 	zapit->addItem(m2);
 	zapit->addItem(m3);
 	zapit->addItem(m4);
-	//zapit->addItem(m5);
 
 	//
 	widget->exec(NULL, "");
@@ -228,12 +200,11 @@ void CZapitSetup::showMenu()
 }
 
 //
-CZapitSetupNotifier::CZapitSetupNotifier(CMenuOptionChooser* m1, CMenuForwarder* m2, CMenuForwarder* m3/*, CMenuForwarder* m4*/)
+CZapitSetupNotifier::CZapitSetupNotifier(CMenuOptionChooser* m1, CMenuForwarder* m2, CMenuForwarder* m3)
 {
 	zapit1 = m1;
 	zapit2 = m2;
 	zapit3 = m3;
-	//zapit4 = m4;
 }
 
 bool CZapitSetupNotifier::changeNotify(const std::string& OptionName, void *)
@@ -242,7 +213,6 @@ bool CZapitSetupNotifier::changeNotify(const std::string& OptionName, void *)
 	{
 		bool activTV = false;
 		bool activRadio = false;
-		//bool activWebTV = false;
 
 		if( (!g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_tv) )
 			activTV = true;
@@ -250,25 +220,20 @@ bool CZapitSetupNotifier::changeNotify(const std::string& OptionName, void *)
 		if( (!g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_radio) )
 			activRadio = true;
 
-		//if( (!g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_webtv) )
-		//	activWebTV = true;
-
 		zapit1->setActive(!g_settings.uselastchannel);
 		zapit2->setActive(activTV);
 		zapit3->setActive(activRadio);
-		//zapit4->setActive(activWebTV);
 	}
 
 	return true;
 }
 
 //
-CZapitSetupModeNotifier::CZapitSetupModeNotifier(int *zMode, CMenuItem *m1, CMenuItem *m2/*, CMenuItem *m3*/)
+CZapitSetupModeNotifier::CZapitSetupModeNotifier(int *zMode, CMenuItem *m1, CMenuItem *m2)
 {
 	mode = zMode;
 	item1 = m1;
 	item2 = m2;
-	//item3 = m3;
 }
 
 bool CZapitSetupModeNotifier::changeNotify(const std::string&, void *)
@@ -279,22 +244,12 @@ bool CZapitSetupModeNotifier::changeNotify(const std::string&, void *)
 	{
 		item1->setActive(false);
 		item2->setActive(true);
-		item3->setActive(false);
 	}
 	else if(nmode == NeutrinoMessages::mode_tv)
 	{
 		item1->setActive(true);
 		item2->setActive(false);
-		item3->setActive(false);
 	}
-	/*
-	else if(nmode == NeutrinoMessages::mode_webtv)
-	{
-		item1->setActive(false);
-		item2->setActive(false);
-		item3->setActive(true);
-	}
-	*/
 
 	return true;
 }
