@@ -465,8 +465,7 @@ void CInfoViewer::show(const int ChanNum, const std::string& Channel, const t_sa
 			ChanNameWidth = BoxWidth - (30 + CHANNUMBER_WIDTH + pic_w + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth(ChannelName, true));
 			
 			// ChannelName
-			if(g_settings.show_channelname)
-				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->RenderString(pic_x + pic_w + 5, ChanNameY + ChanNameHeight, ChanNameWidth, ChannelName, COL_INFOBAR, 0, true);	// UTF-8
+			g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->RenderString(pic_x + pic_w + 5, ChanNameY + ChanNameHeight, ChanNameWidth, ChannelName, COL_INFOBAR, 0, true);	// UTF-8
 		}
 		else
 		{

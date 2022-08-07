@@ -1707,8 +1707,11 @@ void CChannelList::paint()
 
 			item = new ClistBoxItem(chanlist[i]->name.c_str(), true, option.c_str());
 
+			// channel number
 			item->setNumber(chanlist[i]->number);
-			item->setPercent(runningPercent);
+			
+			// timescale
+			if (g_settings.channellist_timescale) item->setPercent(runningPercent);
 			
 			if (g_settings.channellist_ca)
 			{
@@ -1718,9 +1721,7 @@ void CChannelList::paint()
 				item->setIcon2(chanlist[i]->scrambled? NEUTRINO_ICON_SCRAMBLED : "");
 			}
 			
-			if (!displayNext) item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS);
-			
-			//
+			// logo
 			if (g_settings.epgplus_show_logo)
 			{
 				std::string logo;
@@ -1729,6 +1730,9 @@ void CChannelList::paint()
 				
 				item->setIconName(logo.c_str());
 			}
+			
+			//
+			if (!displayNext) item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS);
 			
 
 			listBox->addItem(item);

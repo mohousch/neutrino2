@@ -876,9 +876,8 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// channellist 
 	g_settings.virtual_zap_mode = configfile.getBool("virtual_zap_mode", false);
 	g_settings.make_hd_list = configfile.getInt32("make_hd_list", 0);
-	
-	//crypticon on channellist
 	g_settings.channellist_ca = configfile.getInt32("channellist_ca", 1);
+	g_settings.channellist_timescale = configfile.getInt32("channellist_timescale", 1);
 	
 	// record screenshot
 	g_settings.recording_screenshot = configfile.getInt32("recording_screenshot", 1);
@@ -900,9 +899,6 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	
 	// epgplus logos
 	g_settings.epgplus_show_logo = configfile.getBool("epgplus_show_logo", false);
-	
-	// infobar show channel name
-	g_settings.show_channelname = configfile.getBool("show_channelname", true);
 	
 	// vol
 	g_settings.volume_pos = configfile.getInt32( "volume_pos", 1);		//top_left
@@ -973,12 +969,14 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// mode
 	//g_settings.mode = configfile.getInt32("mode", mode_tv);
 
-	// tmdb
-	g_settings.tmdbkey = configfile.getString("tmdbkey", "507930c8d6d400c85eae3a7e7b3f6c78");
+	//
 	g_settings.ytkey = configfile.getString("ytkey", "");
 	g_settings.weather_api_key = configfile.getString("weather_api_key", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
+	// tmdb
+	g_settings.tmdbkey = configfile.getString("tmdbkey", "507930c8d6d400c85eae3a7e7b3f6c78");
 	g_settings.enable_tmdb_infos = configfile.getBool("enable_tmdb_infos", false);
+	g_settings.enable_tmdb_preview = configfile.getBool("enable_tmdb_preview", false);
 
 	// icons dir
 	g_settings.icons_dir = configfile.getString("icons_dir", DATADIR "/icons/");
@@ -1298,6 +1296,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	//crypticon channellist
 	configfile.setInt32("channellist_ca", g_settings.channellist_ca);
 	configfile.setInt32("make_hd_list", g_settings.make_hd_list);
+	configfile.setInt32("channellist_timescale", g_settings.channellist_timescale);
 
 	//
 	configfile.setString("timezone", g_settings.timezone);
@@ -1354,9 +1353,6 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	// epgplus logos
 	configfile.setBool("epgplus_show_logo", g_settings.epgplus_show_logo);
 	
-	// infobar show channelname
-	configfile.setBool("show_channelname", g_settings.show_channelname);
-	
 	// record screenshot
 	configfile.setInt32("recording_screenshot", g_settings.recording_screenshot);
 	
@@ -1395,11 +1391,14 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setBool("infobar_buttonline", g_settings.infobar_buttonline);
 	configfile.setBool("infobar_border", g_settings.infobar_border);
 
-	configfile.setString("tmdbkey", g_settings.tmdbkey);
+	//
 	configfile.setString("ytkey", g_settings.ytkey);
 	configfile.setString("weather_api_key", g_settings.weather_api_key);
-
+	
+	// tmdb
+	configfile.setString("tmdbkey", g_settings.tmdbkey);
 	configfile.setBool("enable_tmdb_infos", g_settings.enable_tmdb_infos);
+	configfile.setBool("enable_tmdb_preview", g_settings.enable_tmdb_preview);
 	// END MISC OPTS
 
 	// HDD

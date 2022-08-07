@@ -351,13 +351,13 @@ struct SNeutrinoSettings
 	
 	std::string logos_dir;
 	int epgplus_show_logo;
-	int show_channelname;
 
 	// channellist
 	int zap_cycle;
 	int virtual_zap_mode;
 	int channellist_ca;
 	int make_hd_list;
+	int channellist_timescale;
 
 	// epg
 	int epg_save;
@@ -453,6 +453,7 @@ struct SNeutrinoSettings
 	// tmdb
 	std::string tmdbkey;
 	int enable_tmdb_infos;
+	int enable_tmdb_preview;
 	// youtube
 	std::string ytkey;
 	//weather

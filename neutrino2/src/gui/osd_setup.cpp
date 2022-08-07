@@ -514,9 +514,6 @@ void COSDInfoBarColorSettings::showMenu()
 	//
 	OSDinfobarColorSettings->addItem( new CMenuSeparator(LINE));
 	
-	// infobar channelname
-	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Channel name"), &g_settings.show_channelname, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
-	
 	// sig/snr
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Satellite display on infobar"), &g_settings.infobar_sat_display, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	

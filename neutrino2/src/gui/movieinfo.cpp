@@ -394,6 +394,17 @@ bool CMovieInfo::loadMovieInfo(MI_MOVIE_INFO * movie_info, CFile * file)
 		}
 	}
 	
+	//epgTitle
+	if (movie_info->epgTitle.empty())
+	{
+		std::string tmp_str = movie_info->file.getFileName();
+
+		removeExtension(tmp_str);
+
+		movie_info->epgTitle = htmlEntityDecode(tmp_str);
+	}
+	
+	// production date
 	if ((movie_info->productionDate == 0) && g_settings.enable_tmdb_infos)
 	{
 		if(movie_info->file.getType() == CFile::FILE_VIDEO)
@@ -413,19 +424,8 @@ bool CMovieInfo::loadMovieInfo(MI_MOVIE_INFO * movie_info, CFile * file)
 		}
 	}
 	
-	// productionDate
 	if (movie_info->productionDate > 50 && movie_info->productionDate < 200)	// backwardcompaibility
 		movie_info->productionDate += 1900;
-
-	//epgTitle
-	if (movie_info->epgTitle.empty())
-	{
-		std::string tmp_str = movie_info->file.getFileName();
-
-		removeExtension(tmp_str);
-
-		movie_info->epgTitle = htmlEntityDecode(tmp_str);
-	}
 
 	//epgInfo1
 	if(movie_info->file.getType() == CFile::FILE_VIDEO)
@@ -498,70 +498,6 @@ bool CMovieInfo::loadMovieInfo(MI_MOVIE_INFO * movie_info, CFile * file)
 		movie_info->epgInfo1 += duration;
 	}
 
-	//grab for thumbnail
-	if (movie_info->tfile.empty())
-	{
-		// audio files
-		if(movie_info->file.getType() == CFile::FILE_AUDIO)
-		{
-			movie_info->tfile = DATADIR "/icons/no_coverArt.png";
-			
-			// mp3
-			if (getFileExt(movie_info->file.Name) == "mp3")
-			{
-				CAudiofile audiofile(movie_info->file.Name, CFile::EXTENSION_MP3);
-
-				CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
-
-				if (!audiofile.MetaData.cover.empty())
-					movie_info->tfile = audiofile.MetaData.cover;
-			}
-		}
-		else if(movie_info->file.getType() == CFile::FILE_VIDEO)
-		{
-			movie_info->tfile = DATADIR "/icons/nopreview.jpg";
-			
-			std::string fname = "";
-			fname = movie_info->file.Name;
-			changeFileNameExt(fname, ".jpg");
-					
-			if (::file_exists(fname.c_str()))
-				movie_info->tfile = fname.c_str();
-			else
-			{
-				fname.clear();
-				fname = movie_info->file.getPath();
-				fname += movie_info->epgTitle;
-				fname += ".jpg";
-
-				if (::file_exists(fname.c_str()))
-					movie_info->tfile = fname.c_str();
-				else if (g_settings.enable_tmdb_infos) //grab from tmdb
-				{
-					CTmdb * tmdb = new CTmdb();
-
-					if(tmdb->getMovieInfo(movie_info->epgTitle))
-					{
-						if ((!tmdb->getDescription().empty())) 
-						{
-							std::string tname = movie_info->file.getPath();
-							tname += movie_info->epgTitle;
-							tname += ".jpg";
-
-							tmdb->getSmallCover(tmdb->getPosterPath(), tname);
-
-							if(!tname.empty())
-								movie_info->tfile = tname;
-						}
-					}
-
-					delete tmdb;
-					tmdb = NULL;
-				}
-			}
-		}
-	}
-
 	// vote_average
 	if (movie_info->vote_average == 0)
 	{
@@ -605,6 +541,70 @@ bool CMovieInfo::loadMovieInfo(MI_MOVIE_INFO * movie_info, CFile * file)
 			}
 		}
 	}
+	
+	// preview
+	if (movie_info->tfile.empty())
+	{
+		// audio files
+		if(movie_info->file.getType() == CFile::FILE_AUDIO)
+		{
+			movie_info->tfile = DATADIR "/icons/no_coverArt.png";
+			
+			// mp3
+			if (getFileExt(movie_info->file.Name) == "mp3")
+			{
+				CAudiofile audiofile(movie_info->file.Name, CFile::EXTENSION_MP3);
+
+				CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
+
+				if (!audiofile.MetaData.cover.empty())
+					movie_info->tfile = audiofile.MetaData.cover;
+			}
+		}
+		else if(movie_info->file.getType() == CFile::FILE_VIDEO)
+		{
+			movie_info->tfile = DATADIR "/icons/nopreview.jpg";
+			
+			std::string fname = "";
+			fname = movie_info->file.Name;
+			changeFileNameExt(fname, ".jpg");
+					
+			if (::file_exists(fname.c_str()))
+				movie_info->tfile = fname.c_str();
+			else
+			{
+				fname.clear();
+				fname = movie_info->file.getPath();
+				fname += movie_info->epgTitle;
+				fname += ".jpg";
+
+				if (::file_exists(fname.c_str()))
+					movie_info->tfile = fname.c_str();
+				else if (g_settings.enable_tmdb_preview) //grab from tmdb
+				{
+					CTmdb * tmdb = new CTmdb();
+
+					if(tmdb->getMovieInfo(movie_info->epgTitle))
+					{
+						if ((!tmdb->getDescription().empty())) 
+						{
+							std::string tname = movie_info->file.getPath();
+							tname += movie_info->epgTitle;
+							tname += ".jpg";
+
+							tmdb->getSmallCover(tmdb->getPosterPath(), tname);
+
+							if(!tname.empty())
+								movie_info->tfile = tname;
+						}
+					}
+
+					delete tmdb;
+					tmdb = NULL;
+				}
+			}
+		}
+	}
 
 	return (result);
 }
@@ -642,11 +642,7 @@ MI_MOVIE_INFO CMovieInfo::loadMovieInfo(const char *file)
 #endif /* XMLTREE_LIB */
 			}
 		}
-	
-		// productionDate
-		if (movie_info.productionDate > 50 && movie_info.productionDate < 200)	// backwardcompaibility
-			movie_info.productionDate += 1900;
-
+		
 		//epgTitle
 		if (movie_info.epgTitle.empty())
 		{
@@ -656,6 +652,29 @@ MI_MOVIE_INFO CMovieInfo::loadMovieInfo(const char *file)
 
 			movie_info.epgTitle = htmlEntityDecode(tmp_str);
 		}
+	
+		// production date
+		if ((movie_info.productionDate == 0) && g_settings.enable_tmdb_infos)
+		{
+			if(movie_info.file.getType() == CFile::FILE_VIDEO)
+			{
+				CTmdb * tmdb = new CTmdb();
+
+				if(tmdb->getMovieInfo(movie_info.epgTitle))
+				{
+					if (!tmdb->getReleaseDate().empty())
+					{
+						movie_info.productionDate = atoi(tmdb->getReleaseDate().substr(0,4));
+					}
+				}
+
+				delete tmdb;
+				tmdb = NULL;
+			}
+		}
+	
+		if (movie_info.productionDate > 50 && movie_info.productionDate < 200)	// backwardcompaibility
+			movie_info.productionDate += 1900;
 
 		//epgInfo1
 		if(movie_info.file.getType() == CFile::FILE_VIDEO)
@@ -728,71 +747,6 @@ MI_MOVIE_INFO CMovieInfo::loadMovieInfo(const char *file)
 			movie_info.epgInfo1 += duration;
 		}
 
-		//grab for thumbnail
-		if (movie_info.tfile.empty())
-		{
-			// audio files
-			if(movie_info.file.getType() == CFile::FILE_AUDIO)
-			{
-				movie_info.tfile = DATADIR "/icons/no_coverArt.png";
-				
-				// mp3
-				if (getFileExt(movie_info.file.Name) == "mp3")
-				{
-					CAudiofile audiofile(movie_info.file.Name, CFile::EXTENSION_MP3);
-
-					CAudioPlayer::getInstance()->init();
-					CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
-
-					if (!audiofile.MetaData.cover.empty())
-						movie_info.tfile = audiofile.MetaData.cover;
-				}
-			}
-			else if(movie_info.file.getType() == CFile::FILE_VIDEO)
-			{
-				movie_info.tfile = DATADIR "/icons/nopreview.jpg";
-				
-				std::string fname = "";
-				fname = movie_info.file.Name;
-				changeFileNameExt(fname, ".jpg");
-					
-				if (::file_exists(fname.c_str()))
-					movie_info.tfile = fname.c_str();
-				else
-				{
-					fname.clear();
-					fname = movie_info.file.getPath();
-					fname += movie_info.epgTitle;
-					fname += ".jpg";
-
-					if (::file_exists(fname.c_str()))
-						movie_info.tfile = fname.c_str();
-					else if (g_settings.enable_tmdb_infos) //grab from tmdb
-					{
-						CTmdb * tmdb = new CTmdb();
-
-						if(tmdb->getMovieInfo(movie_info.epgTitle))
-						{
-							if ((!tmdb->getDescription().empty())) 
-							{
-								std::string tname = movie_info.file.getPath();
-								tname += movie_info.epgTitle;
-								tname += ".jpg";
-
-								tmdb->getSmallCover(tmdb->getPosterPath(), tname);
-
-								if(!tname.empty())
-									movie_info.tfile = tname;
-							}
-						}
-
-						delete tmdb;
-						tmdb = NULL;
-					}
-				}
-			}
-		}
-
 		// vote_average
 		if (movie_info.vote_average == 0)
 		{
@@ -833,6 +787,71 @@ MI_MOVIE_INFO CMovieInfo::loadMovieInfo(const char *file)
 
 					delete tmdb;
 					tmdb = NULL;
+				}
+			}
+		}
+		
+		// preview
+		if (movie_info.tfile.empty())
+		{
+			// audio files
+			if(movie_info.file.getType() == CFile::FILE_AUDIO)
+			{
+				movie_info.tfile = DATADIR "/icons/no_coverArt.png";
+				
+				// mp3
+				if (getFileExt(movie_info.file.Name) == "mp3")
+				{
+					CAudiofile audiofile(movie_info.file.Name, CFile::EXTENSION_MP3);
+
+					CAudioPlayer::getInstance()->init();
+					CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
+
+					if (!audiofile.MetaData.cover.empty())
+						movie_info.tfile = audiofile.MetaData.cover;
+				}
+			}
+			else if(movie_info.file.getType() == CFile::FILE_VIDEO)
+			{
+				movie_info.tfile = DATADIR "/icons/nopreview.jpg";
+				
+				std::string fname = "";
+				fname = movie_info.file.Name;
+				changeFileNameExt(fname, ".jpg");
+					
+				if (::file_exists(fname.c_str()))
+					movie_info.tfile = fname.c_str();
+				else
+				{
+					fname.clear();
+					fname = movie_info.file.getPath();
+					fname += movie_info.epgTitle;
+					fname += ".jpg";
+
+					if (::file_exists(fname.c_str()))
+						movie_info.tfile = fname.c_str();
+					else if (g_settings.enable_tmdb_preview) //grab from tmdb
+					{
+						CTmdb * tmdb = new CTmdb();
+
+						if(tmdb->getMovieInfo(movie_info.epgTitle))
+						{
+							if ((!tmdb->getDescription().empty())) 
+							{
+								std::string tname = movie_info.file.getPath();
+								tname += movie_info.epgTitle;
+								tname += ".jpg";
+
+								tmdb->getSmallCover(tmdb->getPosterPath(), tname);
+
+								if(!tname.empty())
+									movie_info.tfile = tname;
+							}
+						}
+
+						delete tmdb;
+						tmdb = NULL;
+					}
 				}
 			}
 		}

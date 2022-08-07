@@ -311,13 +311,17 @@ void CGeneralSettings::showMenu()
 	CStringInputSMS* keyInput = new CStringInputSMS(_("youtube ID Key:"), ytkey.c_str());
 	miscSettingsGeneral->addItem(new CMenuForwarder(_("YT:"), true, ytkey.c_str(), keyInput));
 
+	// tmdb
 	std::string tmdbkey = g_settings.tmdbkey;
 
 	CStringInputSMS* tmdbkeyInput = new CStringInputSMS(_("TMDB Key:"), tmdbkey.c_str());
 	miscSettingsGeneral->addItem(new CMenuForwarder(_("TMDB:"), true, tmdbkey.c_str(), tmdbkeyInput));
+	
+	// prefer tmdb preview
+	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("TMDB Preview"), &g_settings.enable_tmdb_preview, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	// prefer tmdb infos
-	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("TMDB"), &g_settings.enable_tmdb_infos, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("TMDB Infos"), &g_settings.enable_tmdb_infos, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	// reset factory setup
 	miscSettingsGeneral->addItem(new CMenuSeparator(LINE));
@@ -676,14 +680,17 @@ void CChannelListSettings::showMenu()
 	//
 	miscSettingsChannelList->addItem( new CMenuSeparator(LINE) );
 	
-	// channellist ca
-	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Infobar Crypticons"), &g_settings.channellist_ca, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	// timescale
+	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Timescale"), &g_settings.channellist_timescale, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
-	// logos dir
-	miscSettingsChannelList->addItem( new CMenuForwarder(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" ) );
+	// channellist ca
+	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("HD / Crypt Icons"), &g_settings.channellist_ca, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
 	// logos
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Channel Logo"), &g_settings.epgplus_show_logo, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
+	
+	// logos dir
+	miscSettingsChannelList->addItem( new CMenuForwarder(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" ) );
 	
 	//
 	widget->exec(NULL, "");
