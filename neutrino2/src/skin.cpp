@@ -178,10 +178,6 @@ CMenuTarget* CNeutrinoApp::convertTarget(const int id)
 			parent = new CPictureViewerSettings();
 			break;
 			
-		case WIDGET_MISCSETTINGS:
-			parent = new CMiscSettingsMenu();
-			break;
-			
 		case WIDGET_HDDSETUP:
 			parent = new CHDDMenuHandler();
 			break;

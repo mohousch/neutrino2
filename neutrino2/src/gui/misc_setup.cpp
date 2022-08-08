@@ -104,87 +104,9 @@ const keyval SECTIONSD_SCAN_OPTIONS[SECTIONSD_SCAN_OPTIONS_COUNT] =
 	{ 1, _("on") }
 };
 
-CMenuOptionStringChooser * tzSelect;
-
-int CMiscSettingsMenu::exec(CMenuTarget* parent, const std::string& actionKey)
-{
-	dprintf(DEBUG_NORMAL, "CMiscSettingsMenu::exec: actionKey: %s\n", actionKey.c_str());
-	
-	int ret = RETURN_REPAINT;
-	
-	if(parent)
-		parent->hide();
-	
-	showMenu();
-	
-	return ret;
-}
-
-// showmenu
-void CMiscSettingsMenu::showMenu(void)
-{
-	dprintf(DEBUG_NORMAL, "CMiscSettingsMenu::showMenu:\n");
-	
-	//
-	CWidget* widget = NULL;
-	ClistBox* miscSettings = NULL;
-	
-	//
-	miscSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		
-	miscSettings->setMenuPosition(MENU_POSITION_CENTER);
-	miscSettings->setWidgetMode(MODE_MENU);
-	miscSettings->setWidgetType(WIDGET_TYPE_CLASSIC);
-	miscSettings->enableShrinkMenu();
-		
-	//
-	miscSettings->enablePaintHead();
-	miscSettings->setTitle(_("Misc settings"), NEUTRINO_ICON_SETTINGS);
-	miscSettings->enablePaintDate();
-		
-	//
-	miscSettings->enablePaintFoot();
-			
-	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-	miscSettings->setFootButtons(&btn);
-
-	//miscSettings general
-	miscSettings->addItem(new CMenuForwarder(_("General settings"), true, NULL, new CGeneralSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
-		
-	//channellist settings
-	miscSettings->addItem(new CMenuForwarder(_("Channellist settings"), true, NULL, new CChannelListSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CHANNELLISTSETTINGS));
-
-	// epg settings
-	miscSettings->addItem(new CMenuForwarder(_("EPG settings"), true, NULL, new CEPGSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_EPGSETTINGS));
-
-	// filebrowser settings
-	miscSettings->addItem(new CMenuForwarder(_("Filebrowser settings"), true, NULL, new CFileBrowserSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FILEBROWSERSETTINGS));
-		
-	// zapit setup (start channel)
-	miscSettings->addItem(new CMenuForwarder(_("Last Channel settings"), true, NULL, new CZapitSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STARTCHANNELSETTINGS));
-		
-	//
-	if (widget == NULL) widget = new CWidget(miscSettings->getWindowsPos().iX, miscSettings->getWindowsPos().iY, miscSettings->getWindowsPos().iWidth, miscSettings->getWindowsPos().iHeight);
-	widget->name = "miscsettings";
-	widget->setMenuPosition(MENU_POSITION_CENTER);
-		
-	widget->addItem(miscSettings);
-	
-	//
-	widget->exec(NULL, "");
-}
-
 //// general settings
 extern CRemoteControl * g_RemoteControl;	// defined neutrino.cpp
-
-CGeneralSettings::CGeneralSettings()
-{
-}
-
-CGeneralSettings::~CGeneralSettings()
-{
-}
+CMenuOptionStringChooser * tzSelect;
 
 int CGeneralSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
@@ -568,14 +490,6 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 //// channellist settings
 extern t_channel_id live_channel_id;
 
-CChannelListSettings::CChannelListSettings()
-{
-}
-
-CChannelListSettings::~CChannelListSettings()
-{
-}
-
 int CChannelListSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CChannelListSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -730,14 +644,6 @@ bool CChannelListSettings::changeNotify(const std::string& OptionName, void */*d
 
 
 //// epg settings
-CEPGSettings::CEPGSettings()
-{
-}
-
-CEPGSettings::~CEPGSettings()
-{
-}
-
 int CEPGSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CEPGSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -985,14 +891,6 @@ bool CEPGConfigNotifier::changeNotify(const std::string&, void *)
 }
 
 //// filebrowser settings
-CFileBrowserSettings::CFileBrowserSettings()
-{
-}
-
-CFileBrowserSettings::~CFileBrowserSettings()
-{
-}
-
 int CFileBrowserSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CFileBrowserSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -1086,6 +984,4 @@ bool CMiscNotifier::changeNotify(const std::string&, void *)
 
    	return true;
 }
-
-
 

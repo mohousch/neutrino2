@@ -2727,13 +2727,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 			bindSettings.exec(NULL, "");
 		}
 		
-		// misc settings
-		if(ret != RETURN_EXIT_ALL)
-		{
-			CMiscSettingsMenu miscSettings;
-			miscSettings.exec(NULL, "");
-		}
-		
 		// service settings
 		if(ret != RETURN_EXIT_ALL)
 		{

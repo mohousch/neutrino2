@@ -43,18 +43,6 @@ class CMiscNotifier : public CChangeObserver
 		bool changeNotify(const std::string&, void *);
 };
 
-class CMiscSettingsMenu : public CMenuTarget, CChangeObserver
-{
-	private:
-		void showMenu(void);
-		
-	public:
-		CMiscSettingsMenu(){};
-		~CMiscSettingsMenu(){};
-		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
-};
-
 // general settings
 // data reset notifier
 class CDataResetNotifier : public CMenuTarget
@@ -79,8 +67,8 @@ class CGeneralSettings : public CMenuTarget, CChangeObserver
 		bool changeNotify(const std::string& OptionName, void *);
 		
 	public:
-		CGeneralSettings();
-		~CGeneralSettings();
+		CGeneralSettings(){};
+		~CGeneralSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -94,8 +82,8 @@ class CChannelListSettings : public CMenuTarget, CChangeObserver
 		bool changeNotify(const std::string& OptionName, void *);
 		
 	public:
-		CChannelListSettings();
-		~CChannelListSettings();
+		CChannelListSettings(){};
+		~CChannelListSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -134,8 +122,8 @@ class CEPGSettings : public CMenuTarget, CChangeObserver
 		void showMenu();
 		
 	public:
-		CEPGSettings();
-		~CEPGSettings();
+		CEPGSettings(){};
+		~CEPGSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -147,8 +135,8 @@ class CFileBrowserSettings : public CMenuTarget, CChangeObserver
 		void showMenu();
 		
 	public:
-		CFileBrowserSettings();
-		~CFileBrowserSettings();
+		CFileBrowserSettings(){};
+		~CFileBrowserSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };

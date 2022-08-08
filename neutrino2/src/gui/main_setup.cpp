@@ -123,12 +123,8 @@ void CMainSettingsMenu::showMenu(void)
 		// movieplayer settings
 		mainSettings->addItem(new CMenuForwarder(_("Movieplayer settings"), true, NULL, new CMoviePlayerSettings(), NULL, RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_MOVIEPLAYERSETTINGS));
 
-		//OSD settings
-		//mainSettings->addItem(new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
-
 		// vfd/lcd settings
-		//if(CVFD::getInstance()->has_lcd)
-			mainSettings->addItem(new CMenuForwarder(_("Display settings"), true, NULL, new CLCDSettings(), NULL, RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_LCDSETTINGS));	
+		mainSettings->addItem(new CMenuForwarder(_("Display settings"), true, NULL, new CLCDSettings(), NULL, RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_LCDSETTINGS));	
 
 		// remote control settings
 		mainSettings->addItem(new CMenuForwarder(_("Remote Control settings"), true, NULL, new CRemoteControlSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_REMOTECONTROLSETTINGS));
@@ -138,9 +134,6 @@ void CMainSettingsMenu::showMenu(void)
 		
 		// pictureviewer settings
 		mainSettings->addItem(new CMenuForwarder(_("Pictureviewer settings"), true, NULL, new CPictureViewerSettings(), NULL, RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW, NEUTRINO_ICON_MENUITEM_PICTUREVIEWERSETTINGS));
-
-		// misc settings
-		//mainSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new CMiscSettingsMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MISCSETTINGS));
 
 		//HDD settings
 		mainSettings->addItem(new CMenuForwarder(_("HDD settings"), true, NULL, new CHDDMenuHandler(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_HDDSETTINGS));
