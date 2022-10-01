@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino-hd2 4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-24 09:23+0200\n"
+"POT-Creation-Date: 2022-10-01 12:03+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -739,10 +739,6 @@ msgstr "Erweiterungen"
 msgid "File could not be created:"
 msgstr ""
 
-#, fuzzy
-msgid "File selector"
-msgstr "Skin Style Auswahl"
-
 msgid "File size (MB)"
 msgstr ""
 
@@ -751,10 +747,6 @@ msgstr ""
 
 msgid "Filebrowser"
 msgstr ""
-
-#, fuzzy
-msgid "Filebrowser settings"
-msgstr "Filebrowser Einstellungen"
 
 msgid "Filename of the play list"
 msgstr ""
@@ -840,9 +832,6 @@ msgstr ""
 msgid "Fullscreen"
 msgstr ""
 
-msgid "General settings"
-msgstr ""
-
 msgid "Generic delay"
 msgstr ""
 
@@ -871,6 +860,9 @@ msgid "Guard Interval"
 msgstr ""
 
 msgid "Guests"
+msgstr ""
+
+msgid "HD / Crypt Icons"
 msgstr ""
 
 msgid "HD Kino"
@@ -1027,9 +1019,6 @@ msgid "Info 2"
 msgstr ""
 
 msgid "Infobar"
-msgstr ""
-
-msgid "Infobar Crypticons"
 msgstr ""
 
 msgid "Information"
@@ -1301,6 +1290,10 @@ msgstr ""
 
 msgid "Movie Browser"
 msgstr ""
+
+#, fuzzy
+msgid "Movie Player"
+msgstr "Movieplayer Einstellungen"
 
 msgid "Movie Trailer"
 msgstr ""
@@ -1762,9 +1755,6 @@ msgid "Recording settings"
 msgstr "Aufnahme Einstellungen"
 
 msgid "Recording starts in a few minutes"
-msgstr ""
-
-msgid "Records browser"
 msgstr ""
 
 msgid "Refresh EPG"
@@ -2307,10 +2297,16 @@ msgstr ""
 msgid "TMDB"
 msgstr ""
 
+msgid "TMDB Infos"
+msgstr ""
+
 msgid "TMDB Infos are not available"
 msgstr "TMDB Informationen sind nicht verfügbar"
 
 msgid "TMDB Key:"
+msgstr ""
+
+msgid "TMDB Preview"
 msgstr ""
 
 msgid "TMDB info"
@@ -2326,9 +2322,6 @@ msgid "TOP LEFT"
 msgstr ""
 
 msgid "TOP RIGHT"
-msgstr ""
-
-msgid "TS Browser"
 msgstr ""
 
 msgid "TV"
@@ -2468,6 +2461,10 @@ msgstr ""
 
 msgid "Timerlist"
 msgstr "Timerliste"
+
+#, fuzzy
+msgid "Timescale"
+msgstr "Zeit"
 
 msgid "Timeselection"
 msgstr ""
@@ -2657,9 +2654,6 @@ msgid "Volume adjustment (in %)"
 msgstr ""
 
 msgid "Volumebar"
-msgstr ""
-
-msgid "WEBTV"
 msgstr ""
 
 msgid "Wait a few seconds for abort"

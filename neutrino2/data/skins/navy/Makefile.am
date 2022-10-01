@@ -2,7 +2,7 @@ installdir = $(CONFIGDIR)/skins/navy
 
 install_DATA = \
 	prev.png \
-	navy.config default.config cool.config red.config \
+	navy.config default.config cool.config red.config neutrino.config \
 	skin.xml
 	
 
