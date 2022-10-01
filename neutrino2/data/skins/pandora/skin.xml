@@ -1,6 +1,6 @@
 <skin>
 
-<!-- SKIN: navy -->
+<!-- SKIN: pandora -->
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 	<WIDGET name="epgview" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">

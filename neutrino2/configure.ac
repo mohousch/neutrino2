@@ -277,7 +277,7 @@ data/skins/KravenHD/background/Makefile
 data/skins/MetrixHD/Makefile
 data/skins/MetrixHD/buttons/Makefile
 data/skins/titan/Makefile
-data/skins/navy/Makefile
+data/skins/pandora/Makefile
 data/locale/Makefile
 src/sectionsd/Makefile
 src/timerd/Makefile
