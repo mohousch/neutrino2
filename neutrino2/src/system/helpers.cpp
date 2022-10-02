@@ -379,10 +379,24 @@ std::string getNowTimeStr(const char* format)
 {
 	char tmpStr[256];
 	struct timeval tv;
-	gettimeofday(&tv, NULL);        
-	strftime(tmpStr, sizeof(tmpStr), format, localtime(&tv.tv_sec));
+	gettimeofday(&tv, NULL); 
+	std::string tmpString;
 	
-	return (std::string)_(tmpStr);
+	if (strcmp(format, "%A %d.%m.%Y") == 0)
+	{
+		strftime(tmpStr, sizeof(tmpStr), "%A", localtime(&tv.tv_sec));
+		tmpString = _(tmpStr);
+		
+		strftime(tmpStr, sizeof(tmpStr), " %d.%m.%Y", localtime(&tv.tv_sec));
+		tmpString += _(tmpStr);
+	}
+	else
+	{       
+		strftime(tmpStr, sizeof(tmpStr), format, localtime(&tv.tv_sec));
+		tmpString = _(tmpStr);
+	}
+	
+	return tmpString;
 }
 
 std::string trim(std::string &str, const std::string &trimChars /*= " \n\r\t"*/)
