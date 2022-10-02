@@ -227,10 +227,10 @@ int COSDMenuColorSettings::exec(CMenuTarget* parent, const std::string& actionKe
 	
 	if(actionKey == "savesettings")
 	{
-		//if (g_settings.use_default_skin)
-			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		//else
-		//	CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		
+		HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
 		return ret;
 	}
@@ -416,10 +416,10 @@ int COSDInfoBarColorSettings::exec(CMenuTarget* parent, const std::string& actio
 	
 	if(actionKey == "savesettings")
 	{
-		//if (g_settings.use_default_skin)
-			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		//else
-		//	CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		
+		HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
 		return ret;
 	}
@@ -689,10 +689,10 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		CNeutrinoApp::getInstance()->SetupFonts(g_settings.font_file);
 		
-		//if (g_settings.use_default_skin)
-			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		//else
-		//	CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		
+		HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
 		return ret;
 	}
@@ -915,6 +915,8 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 	if(actionKey == "savesettings")
 	{
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+		
+		HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
 		return ret;
 	}
@@ -1185,11 +1187,10 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 		parent->hide();
 		
 		
-	if (actionKey == "neutrino2" /*&& !g_settings.use_default_skin*/)
+	if (actionKey == "neutrino2")
 	{
 		if (MessageBox(_("Skin Select"), _("this needs Neutrino restart\ndo you want really to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 		{
-			//g_settings.use_default_skin = true;
 			g_settings.preferred_skin = "neutrino2";
 			
 			CNeutrinoApp::getInstance()->unloadSkin();
@@ -1202,7 +1203,6 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		if (MessageBox(_("Skin Select"), _("this need Neutrino restart\ndo you want really to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 		{
-			//g_settings.use_default_skin = false;
 			CNeutrinoApp::getInstance()->unloadSkin();
 			g_settings.preferred_skin = actionKey;
 			
@@ -1358,7 +1358,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		{
 			if (MessageBox(_("Skin Style Selection"), _("this needs Neutrino restart\nSkin Style selection?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 			{
-				//
+				// read skin config
 				std::string skinConfigFile = CONFIGDIR "/skins/";
 				skinConfigFile += g_settings.preferred_skin.c_str();
 				skinConfigFile += "/";
@@ -1366,7 +1366,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 				
 				CNeutrinoApp::getInstance()->readSkinConfig(skinConfigFile.c_str());
 				
-				//
+				// save skin config
 				std::string skinConfig = CONFIGDIR "/skins/";
 				skinConfig += g_settings.preferred_skin.c_str();
 				skinConfig += "/";
@@ -1375,6 +1375,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 				
 				CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
 				
+				// retsrat
 				usleep(1000);
 				CNeutrinoApp::getInstance()->exec(NULL, "restart");
 			}

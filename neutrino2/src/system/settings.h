@@ -257,7 +257,6 @@ struct SNeutrinoSettings
 	
 	int volume_pos;
 	std::string preferred_skin;
-	//int use_default_skin;	
 	// END OSD
 
 	// KEYS

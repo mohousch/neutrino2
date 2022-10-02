@@ -1789,24 +1789,6 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 	return true;
 }
 
-/*
-CWidget* CNeutrinoApp::getWidget(int id)
-{
-	CWidget* ret = NULL;
-	
-	for (unsigned int i = 0; i < (unsigned int )widgets.size(); i++)
-	{
-		if ( (widgets[i] != NULL) && (widgets[i]->id == id) )
-		{
-			ret = widgets[i];
-			break;
-		}
-	}
-	
-	return ret;
-}
-*/
-
 //
 CWidget* CNeutrinoApp::getWidget(const char* const name)
 {
@@ -1823,18 +1805,6 @@ CWidget* CNeutrinoApp::getWidget(const char* const name)
 	
 	return ret;
 }
-
-/*
-bool CNeutrinoApp::widget_exists(int id)
-{
-	bool ret = false;
-	
-	if (CNeutrinoApp::getInstance()->getWidget(id))
-		ret = true;
-		
-	return ret;
-}
-*/
 
 bool CNeutrinoApp::widget_exists(const char* const name)
 {
@@ -1893,7 +1863,6 @@ bool CNeutrinoApp::hideSkinWidget(const char* const name)
 }
 
 //
-//
 void CNeutrinoApp::loadSkin(std::string skinName)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::loadSkin: %s\n", skinName.c_str());
@@ -1909,8 +1878,6 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	
 	readSkinConfig(skinConfigFile.c_str());
 	
-	//if (!g_settings.use_default_skin)
-	//{
 	// parse skin
 	std::string skinFileName = skinPath.c_str();
 	skinFileName += "/skin.xml";
@@ -2040,7 +2007,6 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	}	
 }
 
-
 //
 bool CNeutrinoApp::skin_exists(const char* const filename)
 {
@@ -2071,54 +2037,6 @@ void CNeutrinoApp::unloadSkin()
 	}
 	
 	widgets.clear();
-	
-	// set font to arial
-	strcpy( g_settings.font_file, DATADIR "/fonts/arial.ttf");
-		
-	CNeutrinoApp::getInstance()->SetupFonts(DATADIR "/fonts/arial.ttf");
-		
-	g_settings.icons_dir = DATADIR "/icons/";
-	g_settings.buttons_dir = DATADIR "/buttons/";
-	g_settings.hints_dir = DATADIR "/hints/";
-		
-	frameBuffer->setIconBasePath(DATADIR "/icons/");
-	frameBuffer->setButtonBasePath(DATADIR "/buttons/");
-	frameBuffer->setHintBasePath(DATADIR "/hints/");
-	
-	// set colors to default
-	CThemes* themes = new CThemes();
-	//themes->exec(NULL, "theme_default");
-	themes->setupDefaultColors();
-	
-	// infobar
-	g_settings.infobar_gradient = NOGRADIENT;
-	g_settings.infobar_gradient_direction = GRADIENT_HORIZONTAL;
-	g_settings.infobar_radius = NO_RADIUS;
-	g_settings.infobar_corner = CORNER_NONE;
-	g_settings.infobar_buttonbar = true;
-	g_settings.infobar_buttonline = false;
-	g_settings.infobar_border = false;
-	
-	// head
-	g_settings.Head_radius = RADIUS_MID;
-	g_settings.Head_corner = CORNER_TOP;
-	g_settings.Head_gradient = LIGHT2DARK;
-	
-	// foot
-	g_settings.Foot_radius = RADIUS_MID;
-	g_settings.Foot_corner = CORNER_BOTTOM;
-	g_settings.Foot_gradient = DARK2LIGHT;
-	
-	// itemInfo
-	g_settings.Hint_border = configfile.getBool("Hint_border", true);
-	g_settings.Hint_gradient = configfile.getInt32("Hint_gradient", NOGRADIENT);
-	
-	// progressbar color
-	g_settings.progressbar_color = configfile.getInt32("progressbar_color", 1);
-	g_settings.progressbar_gradient = configfile.getInt32("progressbar_gradient", DARK2LIGHT2DARK);
-	
-	delete themes;
-	themes = NULL;
 }
 
 //
@@ -2357,5 +2275,4 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	if (!skinConfig->saveConfig(filename))
 		printf("CNeutrinoApp::saveSkinConfig %s write error\n", filename);
 }
-
 

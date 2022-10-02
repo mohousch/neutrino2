@@ -719,7 +719,6 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.screen_yres = configfile.getInt32("screen_yres", 100);
 	
 	//
-	//g_settings.use_default_skin = configfile.getBool("use_default_skin", true);
 	g_settings.preferred_skin = configfile.getString("preferred_skin", "neutrino2");
 
 	// keysbinding
@@ -1210,7 +1209,6 @@ void CNeutrinoApp::saveSetup(const char * fname)
 		configfile.setInt32(timing_setting_name[i], g_settings.timing[i]);
 	
 	//
-	//configfile.setBool("use_default_skin", g_settings.use_default_skin);
 	configfile.setString("preferred_skin", g_settings.preferred_skin);
 	// END OSD
 
@@ -2495,7 +2493,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	g_PluginList->loadPlugins();
 	
 	// load selected skin
-	//if (!g_settings.use_default_skin)
 	loadSkin(g_settings.preferred_skin);
 	
 	// zapit	
@@ -4263,7 +4260,10 @@ void CNeutrinoApp::ExitRun(int retcode, bool save)
 		
 		// save neutrino.conf
 		if (save)
+		{
+			// save neutrino.conf
 			saveSetup(NEUTRINO_SETTINGS_FILE);
+		}
 
 		// save epg
 		if(save && g_settings.epg_save ) 
