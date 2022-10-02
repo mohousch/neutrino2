@@ -1741,3 +1741,5 @@
 /plugins/movieplayer/Makefile.in
 /plugins/movieplayer/movieplayer.la
 /plugins/movieplayer/movieplayer_la-movieplayer.lo
+/neutrino2/data/skins/pandora/Makefile
+/neutrino2/data/skins/pandora/Makefile.in
