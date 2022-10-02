@@ -382,12 +382,28 @@ std::string getNowTimeStr(const char* format)
 	gettimeofday(&tv, NULL); 
 	std::string tmpString;
 	
-	if (strcmp(format, "%A %d.%m.%Y") == 0)
+	if ( strcmp(format, "%A %d.%m.%Y") == 0 )
 	{
 		strftime(tmpStr, sizeof(tmpStr), "%A", localtime(&tv.tv_sec));
 		tmpString = _(tmpStr);
 		
 		strftime(tmpStr, sizeof(tmpStr), " %d.%m.%Y", localtime(&tv.tv_sec));
+		tmpString += _(tmpStr);
+	}
+	else if ( strcmp(format, "%A %d.%m.%Y %H:%M") == 0 )
+	{
+		strftime(tmpStr, sizeof(tmpStr), "%A", localtime(&tv.tv_sec));
+		tmpString = _(tmpStr);
+		
+		strftime(tmpStr, sizeof(tmpStr), " %d.%m.%Y %H:%M", localtime(&tv.tv_sec));
+		tmpString += _(tmpStr);
+	}
+	else if ( strcmp(format, "%A %d.%m.%Y %H:%M:%S") == 0 )
+	{
+		strftime(tmpStr, sizeof(tmpStr), "%A", localtime(&tv.tv_sec));
+		tmpString = _(tmpStr);
+		
+		strftime(tmpStr, sizeof(tmpStr), " %d.%m.%Y %H:%M:%S", localtime(&tv.tv_sec));
 		tmpString += _(tmpStr);
 	}
 	else
