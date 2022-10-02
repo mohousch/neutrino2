@@ -719,8 +719,8 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.screen_yres = configfile.getInt32("screen_yres", 100);
 	
 	//
-	g_settings.use_default_skin = configfile.getBool("use_default_skin", true);
-	g_settings.preferred_skin = configfile.getString("preferred_skin", "default");
+	//g_settings.use_default_skin = configfile.getBool("use_default_skin", true);
+	g_settings.preferred_skin = configfile.getString("preferred_skin", "neutrino2");
 
 	// keysbinding
 	strcpy(g_settings.repeat_blocker, configfile.getString("repeat_blocker", "250").c_str());
@@ -1210,7 +1210,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 		configfile.setInt32(timing_setting_name[i], g_settings.timing[i]);
 	
 	//
-	configfile.setBool("use_default_skin", g_settings.use_default_skin);
+	//configfile.setBool("use_default_skin", g_settings.use_default_skin);
 	configfile.setString("preferred_skin", g_settings.preferred_skin);
 	// END OSD
 
@@ -2495,8 +2495,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 	g_PluginList->loadPlugins();
 	
 	// load selected skin
-	if (!g_settings.use_default_skin)
-		loadSkin(g_settings.preferred_skin);
+	//if (!g_settings.use_default_skin)
+	loadSkin(g_settings.preferred_skin);
 	
 	// zapit	
 	Z_start_arg ZapStart_arg;
@@ -5044,8 +5044,8 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if(actionKey == "savesettings") 
 	{
-		if (MessageBox(_("Information"), _("Save settings now?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
-		{
+		//if (MessageBox(_("Information"), _("Save settings now?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+		//{
 			saveSetup(NEUTRINO_SETTINGS_FILE);
 
 			tuxtxt_close();
@@ -5053,57 +5053,55 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 			zapitCfg.saveLastChannel = g_settings.uselastchannel;
 			setZapitConfig(&zapitCfg);
 
-			HintBox(_("Information"), _("Saving settings now, please be patient."));
-		}
+			//
+			//HintBox(_("Information"), _("Saving settings now, please be patient."));
+		//}
 	}
 	else if (actionKey == "saveskinsettings")
 	{
 		//if (MessageBox(_("Information"), _("Save settings now?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
-		{
-			if (!g_settings.use_default_skin)
-			{
-				// fetch skin config file
-				std::string skinConfig = CONFIGDIR "/skins/";
-				skinConfig += g_settings.preferred_skin.c_str();
-				skinConfig += "/";
-				skinConfig += g_settings.preferred_skin.c_str();
-				skinConfig += ".config";
+		//{
+			// fetch skin config file
+			std::string skinConfig = CONFIGDIR "/skins/";
+			skinConfig += g_settings.preferred_skin.c_str();
+			skinConfig += "/";
+			skinConfig += g_settings.preferred_skin.c_str();
+			skinConfig += ".config";
 				
-				saveSkinConfig(skinConfig.c_str());
-			}
+			saveSkinConfig(skinConfig.c_str());
 				
-			tuxtxt_close();
+			//tuxtxt_close();
 				
-			HintBox(_("Information"), _("Saving settings now, please be patient.\n this needs Neutrino restart."));
-		}
+			//HintBox(_("Information"), _("Saving settings now, please be patient.\n this needs Neutrino restart."));
+		//}
 	}
 	else if (actionKey == "defaultskinsettings")
 	{
-		if (MessageBox(_("Information"), _("load default skin configuration?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
-		{
+		//if (MessageBox(_("Information"), _("load default skin configuration?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+		//{
 			std::string skinDefaultConfigFile = CONFIGDIR "/skins/";
 			skinDefaultConfigFile += g_settings.preferred_skin.c_str();
 			skinDefaultConfigFile += "/";
 			skinDefaultConfigFile += "default.config";
 			
 			readSkinConfig(skinDefaultConfigFile.c_str());
-		}
+		//}
 	}
 	else if(actionKey == "reloadchannels")
 	{
-		if (MessageBox(_("Information"), _("do you want to reload channel lists?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
-		{
-			HintBox(_("Information"), _("Reloading channel lists, please be patient."));
+		//if (MessageBox(_("Information"), _("do you want to reload channel lists?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+		//{
+			//HintBox(_("Information"), _("Reloading channel lists, please be patient."));
 			g_Zapit->reinitChannels();
-		}
+		//}
 	}
 	else if (actionKey == "reloadepg")
 	{
-		if (MessageBox(_("Information"), _("do you want to reload EPG?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
-		{
-			HintBox(_("Information"), _("Reloading EPG, please be patient."));
+		//if (MessageBox(_("Information"), _("do you want to reload EPG?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+		//{
+			//HintBox(_("Information"), _("Reloading EPG, please be patient."));
 			readEPG();
-		}
+		//}
 	}
 	else if (actionKey == "mainmenu")
 	{

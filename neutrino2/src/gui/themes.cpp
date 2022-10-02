@@ -72,16 +72,17 @@ int CThemes::exec(CMenuTarget * parent, const std::string& actionKey)
 
 	if( !actionKey.empty() )
 	{
-		if(actionKey == "savesettings")
+		/*if(actionKey == "savesettings")
 		{
-			if (g_settings.use_default_skin)
-				CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-			else
+			//if (g_settings.use_default_skin)
+			//	CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+			//else
 				CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 
 			return res;
 		}
-		else if(actionKey == "saveCurrentTheme")
+		else*/ 
+		if(actionKey == "saveCurrentTheme")
 		{
 			if (MessageBox(_("Information"), _("Save current theme"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 			{
@@ -95,18 +96,7 @@ int CThemes::exec(CMenuTarget * parent, const std::string& actionKey)
 				{
 					HintBox(_("Save current theme"), _("Saving current theme!"));
 					
-					if (g_settings.use_default_skin)
-						saveFile((char*)((std::string)USERDIR + nameInput->getString().c_str() + FILE_PREFIX).c_str());
-					else 
-					{
-						std::string skinConfig = CONFIGDIR "/skins/";
-						skinConfig += g_settings.preferred_skin.c_str();
-						skinConfig += "/";
-						skinConfig += nameInput->getString().c_str();
-						skinConfig += ".config";
-				
-						CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
-					}
+					saveFile((char*)((std::string)USERDIR + nameInput->getString().c_str() + FILE_PREFIX).c_str());
 				}
 
 				file_name.clear();
@@ -129,6 +119,7 @@ int CThemes::exec(CMenuTarget * parent, const std::string& actionKey)
 		else
 		{
 			std::string themeFile = actionKey;
+			
 			if ( strstr(themeFile.c_str(), "{U}") != 0 ) 
 			{
 				themeFile.erase(0, 3);
@@ -136,15 +127,17 @@ int CThemes::exec(CMenuTarget * parent, const std::string& actionKey)
 			} 
 			else
 				readFile((char*)((std::string)THEMEDIR + themeFile + FILE_PREFIX).c_str());
+				
+			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+			CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 			
 			//
-			if (!g_settings.use_default_skin)
+			if (g_settings.preferred_skin != "neutrino2")
 			{
 				if (MessageBox(_("Information"), _("this needs Neutrino restart\ndo you want really to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 				{
-					CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
-					
-					CNeutrinoApp::getInstance()->unloadSkin();
+					//CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+					//CNeutrinoApp::getInstance()->unloadSkin();
 					CNeutrinoApp::getInstance()->exec(NULL, "restart");
 				}
 			}
@@ -253,16 +246,16 @@ int CThemes::Show()
 	themes->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	themes->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	//themes->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 
 	themes->addItem(new CMenuForwarder(_("Save current theme"), true , NULL, this, "saveCurrentTheme"));
 	
 	//set default theme
-	if (g_settings.use_default_skin)
-	{
+	//if (g_settings.use_default_skin)
+	//{
 		themes->addItem( new CMenuSeparator(LINE) );
-		themes->addItem(new CMenuForwarder(_("Default theme"), true, NULL, this, "theme_default"));
-	}
+		themes->addItem(new CMenuForwarder(_("Neutrino2 theme"), true, NULL, this, "theme_default"));
+	//}
 	
 	readThemes(themes);
 
@@ -525,6 +518,4 @@ void CThemes::setupDefaultColors()
 	delete notifier;
 	notifier = NULL;
 }
-
-
 

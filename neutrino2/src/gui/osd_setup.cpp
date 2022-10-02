@@ -150,6 +150,9 @@ void COSDSettings::showMenu(void)
 		// diverses
 		osdSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new COSDDiverses(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
 		
+		// skin style selection
+		osdSettings->addItem(new CMenuForwarder(_("Skin Style selection"), true, NULL, new CSkinSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+		
 		//
 		if (widget == NULL) widget = new CWidget(osdSettings->getWindowsPos().iX, osdSettings->getWindowsPos().iY, osdSettings->getWindowsPos().iWidth, osdSettings->getWindowsPos().iHeight);
 		widget->name = "osd";
@@ -224,10 +227,10 @@ int COSDMenuColorSettings::exec(CMenuTarget* parent, const std::string& actionKe
 	
 	if(actionKey == "savesettings")
 	{
-		if (g_settings.use_default_skin)
+		//if (g_settings.use_default_skin)
 			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		else
-			CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		//else
+		//	CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 		
 		return ret;
 	}
@@ -413,10 +416,10 @@ int COSDInfoBarColorSettings::exec(CMenuTarget* parent, const std::string& actio
 	
 	if(actionKey == "savesettings")
 	{
-		if (g_settings.use_default_skin)
+		//if (g_settings.use_default_skin)
 			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		else
-			CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		//else
+		//	CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 		
 		return ret;
 	}
@@ -686,10 +689,10 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		CNeutrinoApp::getInstance()->SetupFonts(g_settings.font_file);
 		
-		if (g_settings.use_default_skin)
+		//if (g_settings.use_default_skin)
 			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		else
-			CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		//else
+		//	CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 		
 		return ret;
 	}
@@ -1085,7 +1088,7 @@ void COSDDiverses::showMenu()
 	widget->exec(NULL, "");
 }
 
-// 
+//// skinManager
 void CSkinManager::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CSkinManager::showMenu:\n");
@@ -1126,18 +1129,7 @@ void CSkinManager::showMenu()
 	
 	skinMenu->clearItems();
 	
-	// default
-	item = new ClistBoxItem(_("neutrino (default)"), true, NULL, this, "neutrino_default", RC_nokey, NULL, DATADIR "/icons/prev.jpg");
-	item->setHint(_("Here you can select a skin from the following list."));
-	item->set2lines();
-	
-	if (g_settings.use_default_skin)
-	{
-		item->setIcon1(NEUTRINO_ICON_MARK);
-	}
-	
-	skinMenu->addItem(item);
-	
+	//
 	std::string skinPath = CONFIGDIR "/skins";
 	
 	struct dirent **namelist;
@@ -1164,7 +1156,7 @@ void CSkinManager::showMenu()
 				
 				bool select = false;
 				
-				if (!g_settings.use_default_skin && g_settings.preferred_skin == namelist[i]->d_name)
+				if (g_settings.preferred_skin == namelist[i]->d_name)
 				{
 					item->setIcon1(NEUTRINO_ICON_MARK);
 					select = true;
@@ -1193,11 +1185,13 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 		parent->hide();
 		
 		
-	if (actionKey == "neutrino_default" && !g_settings.use_default_skin)
+	if (actionKey == "neutrino2" /*&& !g_settings.use_default_skin*/)
 	{
 		if (MessageBox(_("Skin Select"), _("this needs Neutrino restart\ndo you want really to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 		{
-			g_settings.use_default_skin = true;
+			//g_settings.use_default_skin = true;
+			g_settings.preferred_skin = "neutrino2";
+			
 			CNeutrinoApp::getInstance()->unloadSkin();
 			CNeutrinoApp::getInstance()->exec(NULL, "restart");
 		}
@@ -1208,7 +1202,7 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		if (MessageBox(_("Skin Select"), _("this need Neutrino restart\ndo you want really to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 		{
-			g_settings.use_default_skin = false;
+			//g_settings.use_default_skin = false;
 			CNeutrinoApp::getInstance()->unloadSkin();
 			g_settings.preferred_skin = actionKey;
 			
@@ -1224,7 +1218,7 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 	return ret;
 }
 
-// skinSettings
+//// skinSettings
 void CSkinSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CSkinSettings::showMenu:\n");
@@ -1263,6 +1257,15 @@ void CSkinSettings::showMenu()
 	}
 	
 	skinSettings->clearItems();
+	
+	// intros
+	skinSettings->addItem(new CMenuForwarder(_("back")));
+	skinSettings->addItem( new CMenuSeparator(LINE) );
+	
+	// save current skin style
+	skinSettings->addItem(new CMenuForwarder(_("Save current skin style"), true, NULL, this, "savecurrentstyle", RC_red, NEUTRINO_ICON_BUTTON_RED));
+
+	skinSettings->addItem( new CMenuSeparator(LINE) );
 	
 	// load config files
 	std::string skinPath = CONFIGDIR "/skins/";
@@ -1320,37 +1323,68 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 	if (!actionKey.empty())
 	{
-		//
-		if (MessageBox(_("Skin Style Selection"), _("this needs Neutrino restart\nSkin Style selection?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+		if (actionKey == "savecurrentstyle")
 		{
-			//
-			std::string skinConfigFile = CONFIGDIR "/skins/";
-			skinConfigFile += g_settings.preferred_skin.c_str();
-			skinConfigFile += "/";
-			skinConfigFile += actionKey.c_str();
-			
-			CNeutrinoApp::getInstance()->readSkinConfig(skinConfigFile.c_str());
-			
-			//
-			std::string skinConfig = CONFIGDIR "/skins/";
-			skinConfig += g_settings.preferred_skin.c_str();
-			skinConfig += "/";
-			skinConfig += g_settings.preferred_skin.c_str();
-			skinConfig += ".config";
-			
-			CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
-			
-			usleep(1000);
-			CNeutrinoApp::getInstance()->exec(NULL, "restart");
+			if (MessageBox(_("Information"), _("Save current style"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+			{
+				std::string file_name = "";
+				CStringInputSMS * nameInput = new CStringInputSMS(_("Skin Style name"), file_name.c_str());
+
+				nameInput->exec(NULL, "");
+				
+				//
+				if (!nameInput->getExitPressed())
+				{
+					HintBox(_("Save current style"), _("Saving current style!"));
+					
+					std::string skinConfig = CONFIGDIR "/skins/";
+					skinConfig += g_settings.preferred_skin.c_str();
+					skinConfig += "/";
+					skinConfig += nameInput->getString().c_str();
+					skinConfig += ".config";
+				
+					CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
+				}
+
+				file_name.clear();
+
+				delete nameInput;
+				nameInput = NULL;
+			}
+
+			return ret;
 		}
-		
-		return ret;
+		else
+		{
+			if (MessageBox(_("Skin Style Selection"), _("this needs Neutrino restart\nSkin Style selection?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+			{
+				//
+				std::string skinConfigFile = CONFIGDIR "/skins/";
+				skinConfigFile += g_settings.preferred_skin.c_str();
+				skinConfigFile += "/";
+				skinConfigFile += actionKey.c_str();
+				
+				CNeutrinoApp::getInstance()->readSkinConfig(skinConfigFile.c_str());
+				
+				//
+				std::string skinConfig = CONFIGDIR "/skins/";
+				skinConfig += g_settings.preferred_skin.c_str();
+				skinConfig += "/";
+				skinConfig += g_settings.preferred_skin.c_str();
+				skinConfig += ".config";
+				
+				CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
+				
+				usleep(1000);
+				CNeutrinoApp::getInstance()->exec(NULL, "restart");
+			}
+			
+			return ret;
+		}
 	}
 		
 	showMenu();
 	
 	return ret;
 }
-
-
 
