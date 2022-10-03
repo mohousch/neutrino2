@@ -307,7 +307,7 @@
 	<WIDGET name="skinstyleselectionsetup" id="32" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" scrollbar="1" itemborder="1">
 		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="Skin Style selection" halign="1">
+		<LABEL posx="640" posy="50" width="640" height="50" text="Skin Style" halign="1">
 		</LABEL>
 			
 		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
@@ -1276,6 +1276,8 @@
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0">
 			<ITEM id="5" localename="Skin select" itemicon="hint_themes" target="22" lines="1" border="1">
 			</ITEM>
+			<ITEM  id="5" localename="Skin Style" itemicon="hint_osd" target="32" lines="1" border="1">
+			</ITEM>
 			<ITEM id="5" localename="Themes" itemicon="hint_themes" target="25" lines="1" border="1">
 			</ITEM>
 			<ITEM id="5" localename="Menu" itemicon="hint_menucolors" target="23" lines="1" border="1">
@@ -1291,8 +1293,6 @@
 			<ITEM  id="5" localename="Screen" itemicon="hint_lcd4linux" target="29" lines="1" border="1">
 			</ITEM>
 			<ITEM  id="5" localename="Misc settings" itemicon="hint_osd" target="30" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Skin Style selection" itemicon="hint_osd" target="32" lines="1" border="1">
 			</ITEM>
 		</LISTBOX>
 	</WIDGET>

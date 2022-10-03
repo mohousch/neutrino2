@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino-hd2 4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-01 12:03+0200\n"
+"POT-Creation-Date: 2022-10-03 12:19+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -739,6 +739,10 @@ msgstr "Erweiterungen"
 msgid "File could not be created:"
 msgstr ""
 
+#, fuzzy
+msgid "File selector"
+msgstr "Skin Style Auswahl"
+
 msgid "File size (MB)"
 msgstr ""
 
@@ -747,6 +751,10 @@ msgstr ""
 
 msgid "Filebrowser"
 msgstr ""
+
+#, fuzzy
+msgid "Filebrowser settings"
+msgstr "Video Einstellungen"
 
 msgid "Filename of the play list"
 msgstr ""
@@ -1377,6 +1385,10 @@ msgstr "Neutrino neu starten"
 msgid "Neutrino restart"
 msgstr "Neutrino neu starten"
 
+#, fuzzy
+msgid "Neutrino2 theme"
+msgstr "Neutrino neu starten"
+
 msgid "New Bookmark"
 msgstr ""
 
@@ -1778,12 +1790,6 @@ msgstr "Kanallisten neu laden"
 msgid "Reload movie info at start"
 msgstr ""
 
-msgid "Reloading EPG, please be patient."
-msgstr "EPG Daten werden neu geladen, bitte warten..."
-
-msgid "Reloading channel lists, please be patient."
-msgstr "Kanallisten werden neu geladen, bitte warten..."
-
 msgid "Remind"
 msgstr "Vormerken"
 
@@ -1908,6 +1914,14 @@ msgstr "Änderungen speichern"
 msgid "Save changes in all movie info files"
 msgstr ""
 
+#, fuzzy
+msgid "Save current skin style"
+msgstr "Aktuelle skin style speichern"
+
+#, fuzzy
+msgid "Save current style"
+msgstr "Aktuelle style speichern"
+
 msgid "Save current theme"
 msgstr "Aktuelle Theme speichern"
 
@@ -1915,10 +1929,6 @@ msgid "Save in channel dir"
 msgstr ""
 
 msgid "Save settings now"
-msgstr "Einstellungen jetzt speichern"
-
-#, fuzzy
-msgid "Save settings now?"
 msgstr "Einstellungen jetzt speichern"
 
 msgid "Save timer"
@@ -1930,18 +1940,15 @@ msgstr ""
 msgid "Saving RC configuration, please wait..."
 msgstr ""
 
+#, fuzzy
+msgid "Saving current style!"
+msgstr "Aktuelle Theme speichern"
+
 msgid "Saving current theme!"
 msgstr ""
 
 msgid "Saving settings now, please be patient."
-msgstr "Einstellungen werden gespeichert, bitte warten."
-
-msgid ""
-"Saving settings now, please be patient.\n"
-" this needs Neutrino restart."
 msgstr ""
-"Einstellungen werden gespeichert, bitte warten.\n"
-"Einstellungen werden aktiv nach neutrino neu Start."
 
 msgid "Scaling"
 msgstr ""
@@ -2138,11 +2145,13 @@ msgstr ""
 msgid "Skin Select"
 msgstr "Skin Auswahl"
 
-msgid "Skin Style Selection"
-msgstr "Skin Style Auswahl"
+#, fuzzy
+msgid "Skin Style"
+msgstr "Skin Style"
 
-msgid "Skin Style selection"
-msgstr "Skin Style Auswahl"
+#, fuzzy
+msgid "Skin Style name"
+msgstr "Skin Style Name"
 
 msgid "Skin select"
 msgstr "Skin Auswahl"
@@ -2912,12 +2921,6 @@ msgstr ""
 msgid "dmesg"
 msgstr ""
 
-msgid "do you want to reload EPG?"
-msgstr "EPG Daten neu laden?"
-
-msgid "do you want to reload channel lists?"
-msgstr "Kanallisten neu laden?"
-
 msgid "documentary"
 msgstr ""
 
@@ -3107,9 +3110,6 @@ msgstr ""
 msgid "literature"
 msgstr ""
 
-msgid "load default skin configuration?"
-msgstr ""
-
 msgid "local dir"
 msgstr ""
 
@@ -3194,9 +3194,6 @@ msgid "nature/animals/environment"
 msgstr ""
 
 msgid "need reboot or epg-reset"
-msgstr ""
-
-msgid "neutrino (default)"
 msgstr ""
 
 msgid "never"
@@ -3496,7 +3493,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "this needs Neutrino restart\n"
-"Skin Style selection?"
+"Skin Style?"
 msgstr ""
 "Diese Einstellung braucht Neutrino neu Start\n"
 "willst Du wirklich Neutrino neu starten?"

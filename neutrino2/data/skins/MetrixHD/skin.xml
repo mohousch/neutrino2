@@ -295,7 +295,7 @@
 		<WINDOW posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</WINDOW>
 		
-		<LABEL name="title" posx="795" posy="80" width="425" height="60" text="Skin Style selection" halign="1"></LABEL>
+		<LABEL name="title" posx="795" posy="80" width="425" height="60" text="Skin Style" halign="1"></LABEL>
 		
 		<IMAGE name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"></IMAGE>
 		
@@ -1051,6 +1051,8 @@
 		<LISTBOX posx="640" posy="60" width="540" height="500" type="1" mode ="1">
 			<ITEM id="5" localename="Skin select" target="22">
 			</ITEM>
+			<ITEM id="5" localename="Skin Style" target="32">
+			</ITEM>
 			<ITEM id="5" localename="Themes" target="25" >
 			</ITEM>
 			<ITEM id="5" localename="Menu" target="23">
@@ -1066,8 +1068,6 @@
 			<ITEM id="5" localename="Screen" target="29">
 			</ITEM>
 			<ITEM id="5" localename="Misc settings" target="30">
-			</ITEM>
-			<ITEM id="5" localename="Skin Style selection" target="32">
 			</ITEM>
 		</LISTBOX>
 		

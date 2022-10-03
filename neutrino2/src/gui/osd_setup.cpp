@@ -118,8 +118,11 @@ void COSDSettings::showMenu(void)
 			
 		osdSettings->setFootButtons(&btn); 
 	
-		// skin
+		// skin manager
 		osdSettings->addItem( new CMenuForwarder(_("Skin select"), true, NULL, new CSkinManager(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
+		
+		// skin style
+		osdSettings->addItem(new CMenuForwarder(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
 
 		// Themes
 		osdSettings->addItem( new CMenuForwarder(_("Themes"), true, NULL, new CThemes(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
@@ -150,8 +153,8 @@ void COSDSettings::showMenu(void)
 		// diverses
 		osdSettings->addItem(new CMenuForwarder(_("Misc settings"), true, NULL, new COSDDiverses(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
 		
-		// skin style selection
-		osdSettings->addItem(new CMenuForwarder(_("Skin Style selection"), true, NULL, new CSkinSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+		// skin style
+		//osdSettings->addItem(new CMenuForwarder(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
 		
 		//
 		if (widget == NULL) widget = new CWidget(osdSettings->getWindowsPos().iX, osdSettings->getWindowsPos().iY, osdSettings->getWindowsPos().iWidth, osdSettings->getWindowsPos().iHeight);
@@ -1241,7 +1244,7 @@ void CSkinSettings::showMenu()
 		skinSettings->enableShrinkMenu();
 		
 		skinSettings->enablePaintHead();
-		skinSettings->setTitle(_("Skin Style selection"), NEUTRINO_ICON_COLORS);
+		skinSettings->setTitle(_("Skin Style"), NEUTRINO_ICON_COLORS);
 
 		skinSettings->enablePaintFoot();
 			
@@ -1356,7 +1359,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		}
 		else
 		{
-			if (MessageBox(_("Skin Style Selection"), _("this needs Neutrino restart\nSkin Style selection?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+			if (MessageBox(_("Skin Style"), _("this needs Neutrino restart\nSkin Style?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 			{
 				// read skin config
 				std::string skinConfigFile = CONFIGDIR "/skins/";
