@@ -719,10 +719,7 @@ void CCHline::paint()
 	if (cCBox.iHeight > 2)
 		cCBox.iHeight = 2;
 	
-	/*
-	frameBuffer->paintHLineRel(cCBox.iX, cCBox.iWidth, cCBox.iY, color);
-	frameBuffer->paintHLineRel(cCBox.iX, cCBox.iWidth, cCBox.iY + 1, color);
-	*/
+	//
 	frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color, 0, CORNER_NONE, gradient, GRADIENT_HORIZONTAL);
 }
 
@@ -754,10 +751,7 @@ void CCVline::paint()
 	if (cCBox.iWidth > 2)
 		cCBox.iWidth = 2;
 	
-	/*
-	frameBuffer->paintVLineRel(cCBox.iX, cCBox.iY, cCBox.iHeight, color);
-	frameBuffer->paintVLineRel(cCBox.iX + 1, cCBox.iY, cCBox.iHeight, color);
-	*/
+	//
 	frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color, 0, CORNER_NONE, gradient, GRADIENT_VERTICAL);
 }
 
@@ -1340,6 +1334,7 @@ CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const c
 	corner = g_settings.Head_corner;
 	gradient = g_settings.Head_gradient;
 	head_line = g_settings.Head_line;
+	head_line_gradient = false;
 
 	paintFrame = true;
 	paintDate = false;
@@ -1370,6 +1365,7 @@ CHeaders::CHeaders(CBox* position, const char * const title, const char * const 
 	corner = g_settings.Head_corner;
 	gradient = g_settings.Head_gradient;
 	head_line = g_settings.Head_line;
+	head_line_gradient = false;
 
 	paintFrame = true;
 	paintDate = false;
@@ -1406,7 +1402,8 @@ void CHeaders::paint()
 		CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient);
 	
 	if (head_line)
-		CFrameBuffer::getInstance()->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - 2, COL_MENUCONTENT_PLUS_5);
+		//CFrameBuffer::getInstance()->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - 2, COL_MENUCONTENT_PLUS_5);
+		frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 
 	// left icon
 	int i_w = 0;
@@ -1511,6 +1508,7 @@ CFooters::CFooters(const int x, const int y, const int dx, const int dy)
 	fcorner = g_settings.Foot_corner;
 	fgradient = g_settings.Foot_gradient;
 	foot_line = g_settings.Foot_line;
+	foot_line_gradient = false;
 
 	widgetItem_type = WIDGETITEM_FOOT;
 }
@@ -1534,6 +1532,7 @@ CFooters::CFooters(CBox* position)
 	fcorner = g_settings.Foot_corner;
 	fgradient = g_settings.Foot_gradient;
 	foot_line = g_settings.Foot_line;
+	foot_line_gradient = false;
 
 	widgetItem_type = WIDGETITEM_FOOT;
 }
@@ -1562,7 +1561,8 @@ void CFooters::paint()
 	
 	// paint horizontal line buttom
 	if (foot_line)
-		CFrameBuffer::getInstance()->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - itemBox.iHeight + 2, COL_MENUCONTENT_PLUS_5);
+		//CFrameBuffer::getInstance()->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - itemBox.iHeight + 2, COL_MENUCONTENT_PLUS_5);
+		frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 
 	int buttonWidth = 0;
 

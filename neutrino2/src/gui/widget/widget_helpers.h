@@ -713,6 +713,7 @@ class CHeaders : public CWidgetItem
 		int corner;
 		int gradient;
 		bool head_line;
+		bool head_line_gradient;
 
 		int hbutton_count;
 		button_label_list_t hbutton_labels;
@@ -743,7 +744,7 @@ class CHeaders : public CWidgetItem
 		void setCorner(const int co){corner = co;};
 		void enablePaintDate(void){paintDate = true;};
 		void setFormat(const char* f){if (f) format.clear(); format = f;};
-		void setHeadLine(bool l){head_line = l;};
+		void setHeadLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
 		
 		//
 		void setButtons(const struct button_label* _hbutton_labels, const int _hbutton_count = 1);
@@ -776,6 +777,7 @@ class CFooters : public CWidgetItem
 		int fcorner;
 		int fgradient;
 		bool foot_line;
+		bool foot_line_gradient;
 	
 	public:
 		CFooters(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
@@ -789,7 +791,7 @@ class CFooters : public CWidgetItem
 		void setGradient(const int grad){fgradient = grad;};
 		void setRadius(const int ra){fradius = ra;};
 		void setCorner(const int co){fcorner = co;};
-		void setFootLine(bool l){foot_line = l;};
+		void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
 		
 		//
 		void setButtons(const struct button_label *button_label, const int button_count = 1, const int _fbutton_width = 0);

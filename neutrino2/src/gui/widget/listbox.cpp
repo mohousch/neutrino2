@@ -2514,6 +2514,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	headCorner = g_settings.Head_corner;
 	headGradient = g_settings.Head_gradient;
 	head_line = g_settings.Head_line;
+	head_line_gradient = false;
 	format = "%d.%m.%Y %H:%M";
 	timer = NULL;
 
@@ -2528,6 +2529,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	footCorner = g_settings.Foot_corner;
 	footGradient = g_settings.Foot_gradient;
 	foot_line = g_settings.Foot_line;
+	foot_line_gradient = false;
 	
 	// foot info
 	paintFootInfo = false;
@@ -2639,6 +2641,7 @@ ClistBox::ClistBox(CBox* position)
 	headCorner = g_settings.Head_corner;
 	headGradient = g_settings.Head_gradient;
 	head_line = g_settings.Head_line;
+	head_line_gradient = false;
 	format = "%d.%m.%Y %H:%M";
 	timer = NULL;
 
@@ -2650,6 +2653,7 @@ ClistBox::ClistBox(CBox* position)
 	footCorner = g_settings.Foot_corner;
 	footGradient = g_settings.Foot_gradient;
 	foot_line = g_settings.Foot_line;
+	foot_line_gradient = false;
 	
 	// footInfo
 	paintFootInfo = false;
@@ -3149,8 +3153,10 @@ void ClistBox::paintHead()
 			// box
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, hheight, COL_MENUCONTENT_PLUS_0);
 
-			// paint horizontal line top
-			frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + hheight - 2, COL_MENUCONTENT_PLUS_5);
+			// head line
+			if (head_line)
+				//frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + hheight - 2, COL_MENUCONTENT_PLUS_5);
+				frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + hheight - 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 
 			// icon
 			int i_w = 0;
@@ -3226,7 +3232,8 @@ void ClistBox::paintHead()
 			
 			// paint horizontal line top
 			if (head_line)
-				frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + hheight - 2, COL_MENUCONTENT_PLUS_5);
+				//frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + hheight - 2, COL_MENUCONTENT_PLUS_5);
+				frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + hheight - 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 		
 			//paint icon (left)
 			int i_w = 0;
@@ -3308,10 +3315,13 @@ void ClistBox::paintFoot()
 		{
 			if(fbutton_count)
 			{
+				// 
 				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, fheight, COL_MENUCONTENT_PLUS_0);
 
-				// paint horizontal line buttom
-				frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - fheight + 2, COL_MENUCONTENT_PLUS_5);
+				// foot line
+				if (foot_line)
+					//frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - fheight + 2, COL_MENUCONTENT_PLUS_5);
+					frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 
 				// buttons
 				int buttonWidth = 0;
@@ -3349,9 +3359,10 @@ void ClistBox::paintFoot()
 			if (paintFrame)
 				frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight, itemBox.iWidth, fheight, footColor, footRadius, footCorner, footGradient);
 			
-			// paint horizontal line buttom
+			// foot line
 			if (foot_line)
-				frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + 2, COL_MENUCONTENT_PLUS_5);
+				//frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + 2, COL_MENUCONTENT_PLUS_5);
+				frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 
 			// buttons
 			int buttonWidth = 0;

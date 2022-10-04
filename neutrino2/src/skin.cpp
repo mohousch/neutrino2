@@ -689,10 +689,12 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 	const char* format = NULL;
 	unsigned int halign = 0;
 	unsigned int head_line = 0;
+	unsigned int head_line_gradient = 0;
 				
 	// foot
 	unsigned int paintfoot = 0;
 	unsigned int foot_line = 0;
+	unsigned int foot_line_gradient = 0;
 				
 	// iteminfo
 	unsigned int paintiteminfo = 0;
@@ -748,10 +750,12 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 		//format = xmlGetAttribute(node, (char*)"format"); //FIXME:
 		halign = xmlGetSignedNumericAttribute(node, "halign", 0);
 		head_line = xmlGetSignedNumericAttribute(node, "head_line", 0);
+		head_line_gradient = xmlGetSignedNumericAttribute(node, "head_line_gradient", 0);
 				
 		// foot
 		paintfoot = xmlGetSignedNumericAttribute(node, "paintfoot", 0);
 		foot_line = xmlGetSignedNumericAttribute(node, "foot_line", 0);
+		foot_line_gradient = xmlGetSignedNumericAttribute(node, "foot_line_gradient", 0);
 		
 		//
 		itemborder = xmlGetSignedNumericAttribute(node, "itemborder", 0);
@@ -792,14 +796,14 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 			if (paintdate) listBox->enablePaintDate();
 			//if (format) listBox->setFormat(format); //FIXME:
 			listBox->setTitleHAlign(halign);
-			listBox->setHeadLine(head_line);
+			listBox->setHeadLine(head_line, head_line_gradient);
 		}
 				
 		//
 		if (paintfoot)
 		{
 			listBox->enablePaintFoot();
-			listBox->setFootLine(foot_line);
+			listBox->setFootLine(foot_line, foot_line_gradient);
 		}
 				
 		// iteminfo
@@ -1073,7 +1077,9 @@ void CNeutrinoApp::parseCHead(_xmlNodePtr node, CWidget* widget)
 	char* title = NULL;
 	unsigned int halign = 0;
 	const char* icon = NULL;
-	unsigned int h_line = 0;
+	unsigned int head_line = 0;
+	unsigned int head_line_gradient = 0;
+	
 	unsigned int paintdate = 0;
 	char* format = NULL;
 	
@@ -1102,7 +1108,9 @@ void CNeutrinoApp::parseCHead(_xmlNodePtr node, CWidget* widget)
 		title = xmlGetAttribute(node, (char*)"localename");
 		halign = xmlGetSignedNumericAttribute(node, "halign", 0);
 		icon = xmlGetAttribute(node, (char*)"icon");
-		h_line = xmlGetSignedNumericAttribute(node, "line", 0);
+		head_line = xmlGetSignedNumericAttribute(node, "line", 0);
+		head_line_gradient = xmlGetSignedNumericAttribute(node, "line_gradient", 0);
+		
 		paintdate = xmlGetSignedNumericAttribute(node, "paintdate", 0);
 		format = xmlGetAttribute(node, (char*)"format");
 
@@ -1119,7 +1127,7 @@ void CNeutrinoApp::parseCHead(_xmlNodePtr node, CWidget* widget)
 		head->setGradient(gradient);
 		head->setCorner(corner);
 		head->setRadius(radius);
-		head->setHeadLine(h_line);
+		head->setHeadLine(head_line, head_line_gradient);
 		if (paintdate) head->enablePaintDate();
 		if (format != NULL) head->setFormat(_(format));
 					
@@ -1171,7 +1179,8 @@ void CNeutrinoApp::parseCFoot(_xmlNodePtr node, CWidget* widget)
 	unsigned int corner = 0;
 	unsigned int radius = 0;
 	
-	unsigned int f_line = 0;
+	unsigned int foot_line = 0;
+	unsigned int foot_line_gradient = 0;
 	
 	_xmlNodePtr buttonlabel_node = NULL;
 	
@@ -1195,7 +1204,8 @@ void CNeutrinoApp::parseCFoot(_xmlNodePtr node, CWidget* widget)
 				
 		if (color) finalColor = convertColor(color);
 				
-		f_line = xmlGetSignedNumericAttribute(node, "line", 0);
+		foot_line = xmlGetSignedNumericAttribute(node, "line", 0);
+		foot_line_gradient = xmlGetSignedNumericAttribute(node, "line_gradient", 0);
 						
 		foot = new CFooters(posx, posy, width, height);
 		
@@ -1207,7 +1217,7 @@ void CNeutrinoApp::parseCFoot(_xmlNodePtr node, CWidget* widget)
 		foot->setGradient(gradient);
 		foot->setCorner(corner);
 		foot->setRadius(radius);
-		foot->setFootLine(f_line);
+		foot->setFootLine(foot_line, foot_line_gradient);
 					
 		// BUTTON_LABEL
 		buttonlabel_node = node->xmlChildrenNode;

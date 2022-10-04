@@ -207,10 +207,12 @@ void CPicViewer::showMenu()
 	plist->setTitle(_("Pictureviewer"), NEUTRINO_ICON_PICTURE);
 	plist->enablePaintDate();
 	plist->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	plist->setHeadLine(true, true);
 	
 	//
 	plist->enablePaintFoot();
 	plist->setFootButtons(PictureViewerButtons, FOOT_BUTTONS_COUNT);
+	plist->setFootLine(true, true);
 	
 	//
 	plist->enablePaintItemInfo();

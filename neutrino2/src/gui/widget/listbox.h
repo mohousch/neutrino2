@@ -581,6 +581,7 @@ class ClistBox : public CWidgetItem
 		bool paintDate;
 		int thalign;
 		bool head_line;
+		bool head_line_gradient;
 		const char* format;
 		CCTime* timer;
 
@@ -595,6 +596,7 @@ class ClistBox : public CWidgetItem
 		int fbutton_width;
 		button_label_list_t fbutton_labels;
 		bool foot_line;
+		bool foot_line_gradient;
 
 		// itemInfo
 		int cFrameFootInfoHeight;
@@ -674,7 +676,7 @@ class ClistBox : public CWidgetItem
 		void setHeadRadius(int ra){headRadius = ra;};
 		void setHeadCorner(int co){headCorner = co;};
 		void setHeadGradient(int grad){headGradient = grad;};
-		void setHeadLine(bool l){head_line = l;};
+		void setHeadLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
 		void setFormat(const char* f){format = f;};
 		
 		// foot
@@ -684,7 +686,7 @@ class ClistBox : public CWidgetItem
 		void setFootRadius(int ra){footRadius = ra;};
 		void setFootCorner(int co){footCorner = co;};
 		void setFootGradient(int grad){footGradient = grad;};
-		void setFootLine(bool l){foot_line = l;};
+		void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
 
 		// itemInfo
 		void enablePaintItemInfo(int fh = 0){paintFootInfo = true; footInfoHeight = fh;};

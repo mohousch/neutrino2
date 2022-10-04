@@ -183,6 +183,7 @@ void CMediaPortal::showMenu(void)
 	mediaPortal->setTitle(_("Media Portal"), PLUGINDIR "/mediaportal/mp.png");
 	mediaPortal->enablePaintDate();
 	//mediaPortal->setHeadButtons(&HButtons);
+	mediaPortal->setHeadLine(true, true);
 	
 	// 
 	mediaPortal->enablePaintItemInfo();
