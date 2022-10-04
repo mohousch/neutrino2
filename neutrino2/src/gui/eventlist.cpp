@@ -257,7 +257,6 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 	readEvents(channel_id);
 
 	//
-	//listBox = new ClistBox(&cFrameBox);
 	paint(channel_id);
 	CFrameBuffer::getInstance()->blit();
 
@@ -578,7 +577,6 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 
 void EventList::hide()
 {
-	//listBox->hide();
 	evlWidget->hide();
 	
 	frameBuffer->blit();
@@ -646,7 +644,7 @@ void EventList::paint(t_channel_id channel_id)
 			struct tm *tmStartZeit = localtime(&evtlist[count].startTime);
 
 			strftime(tmpstr, sizeof(tmpstr), "%A", tmStartZeit );
-			datetime1_str = tmpstr;
+			datetime1_str = _(tmpstr);
 
 			strftime(tmpstr, sizeof(tmpstr), " %H:%M ", tmStartZeit );
 			datetime1_str += tmpstr;

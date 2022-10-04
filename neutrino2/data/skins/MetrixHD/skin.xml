@@ -64,7 +64,7 @@
 	<WIDGET name="eventlist" posx="0" posy="0" width="1280" height="720">
 		<WINDOW name="bg" posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		
-		<LISTBOX posx="60" posy="60" width="715" height="600" type="0" mode ="1" scrollbar="1" painthead="1" paintfoot="1"/>
+		<LISTBOX posx="60" posy="60" width="715" height="600" type="0" mode ="1" scrollbar="1" painthead="1" head_line="1" head_line_gradient="1" paintfoot="1" foot_line="1" foot_line_gradient="1"/>
 		
 		<WINDOW posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</WINDOW>
