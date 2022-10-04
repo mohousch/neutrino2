@@ -1740,7 +1740,7 @@ void CChannelList::paint()
 	}
 	
 	// head
-	if (head) head->setTitle(name.c_str());
+	if (head) head->setTitle(_(name.c_str()));
 	if (head) head->enablePaintDate();
 	if (head) head->setButtons(new_mode_active? HeadNewModeButtons : HeadButtons, HEAD_BUTTONS_COUNT);
 	
