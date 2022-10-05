@@ -153,7 +153,7 @@ void CPluginList::showMenu()
 			item = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, _(g_PluginList->getDescription(count).c_str()), CPluginsExec::getInstance(), g_PluginList->getFileName(count), RC_nokey, NULL, file_exists(IconName.c_str())? IconName.c_str() : NEUTRINO_ICON_MENUITEM_PLUGIN);
 
 			item->set2lines();
-			item->setBorderMode();
+			//item->setBorderMode();
 
 			plist->addItem(item);
 		}
