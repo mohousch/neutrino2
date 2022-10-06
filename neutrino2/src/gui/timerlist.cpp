@@ -273,6 +273,7 @@ CTimerList::CTimerList()
 	timerlistWidget = NULL;
 	listBox = NULL;
 	item = NULL;
+	timeLabel = NULL;
 
 	plugin_chooser = NULL;
 
@@ -287,6 +288,7 @@ CTimerList::CTimerList()
 	{
 		timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
 		listBox = (ClistBox*)timerlistWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		timeLabel = (CCTime*)timerlistWidget->getCCItem(CC_TIME, "time");
 	}
 	else
 	{
@@ -648,8 +650,9 @@ int CTimerList::show()
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			//listBox->paintHead();
+			//
 			listBox->refresh();
+			if (timeLabel) timeLabel->refresh();
 		} 
 		else
 		{

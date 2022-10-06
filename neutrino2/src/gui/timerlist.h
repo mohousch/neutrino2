@@ -54,6 +54,7 @@ class CTimerList : public CMenuTarget
 		//
 		CWidget* timerlistWidget;
 		ClistBox *listBox;
+		CCTime *timeLabel;
 		CMenuItem *item;
 		CBox cFrameBox;
 

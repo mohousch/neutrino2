@@ -717,8 +717,10 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 				
 	while ((node = xmlGetNextOccurence(node, "LISTBOX")) != NULL) 
 	{
+		//
 		name = xmlGetAttribute(node, (char*)"name");
-					
+		
+		//			
 		posx = xmlGetSignedNumericAttribute(node, "posx", 0);
 		posy = xmlGetSignedNumericAttribute(node, "posy", 0);
 		width = xmlGetSignedNumericAttribute(node, "width", 0);
@@ -997,8 +999,10 @@ void CNeutrinoApp::parseCWindow(_xmlNodePtr node, CWidget* widget)
 	
 	while ((node = xmlGetNextOccurence(node, "WINDOW")) != NULL) 
 	{
+		//
 		name = xmlGetAttribute(node, (char*)"name");
-				
+		
+		//		
 		posx = xmlGetSignedNumericAttribute(node, "posx", 0);
 		posy = xmlGetSignedNumericAttribute(node, "posy", 0);
 		width = xmlGetSignedNumericAttribute(node, "width", 0);
@@ -1282,8 +1286,10 @@ void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 	
 	while ((node = xmlGetNextOccurence(node, "TEXTBOX")) != NULL) 
 	{
+		//
 		name = xmlGetAttribute(node, (char*)"name");
-				
+		
+		//		
 		posx = xmlGetSignedNumericAttribute(node, "posx", 0);
 		posy = xmlGetSignedNumericAttribute(node, "posy", 0);
 		width = xmlGetSignedNumericAttribute(node, "width", 0);
@@ -1375,8 +1381,10 @@ void CNeutrinoApp::parseCCLabel(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	
 	while ((node = xmlGetNextOccurence(node, "LABEL")) != NULL) 
 	{
+		//
 		name = xmlGetAttribute(node, (char*)"name");
-								
+		
+		//						
 		cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
 		cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
 		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
@@ -1419,6 +1427,8 @@ void CNeutrinoApp::parseCCImage(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCImage:\n");
 	
 	CCImage* pic = NULL;
+	
+	char *name = NULL;
 				
 	unsigned int cc_x = 0;
 	unsigned int cc_y = 0;
@@ -1430,7 +1440,11 @@ void CNeutrinoApp::parseCCImage(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	unsigned int cc_refresh = 0;
 	
 	while ((node = xmlGetNextOccurence(node, "IMAGE")) != NULL) 
-	{				
+	{
+		//
+		name = xmlGetAttribute(node, (char*)"name");
+		
+		//				
 		cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
 		cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
 		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
@@ -1441,6 +1455,9 @@ void CNeutrinoApp::parseCCImage(_xmlNodePtr node, CWidget* widget, CWindow* wind
 		image = xmlGetAttribute(node, (char*)"image");
 							
 		pic = new CCImage(cc_x, cc_y, cc_dx, cc_dy);
+		
+		pic->cc_type = CC_IMAGE;
+		if (name) pic->cc_name = name;
 							
 		if (image != NULL)
 		{
@@ -1468,6 +1485,8 @@ void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* windo
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCTime:\n");
 	
 	CCTime* time = NULL;
+	
+	char *name = NULL;
 				
 	unsigned int cc_x = 0;
 	unsigned int cc_y = 0;
@@ -1482,7 +1501,11 @@ void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* windo
 	char* cc_format = NULL;
 	
 	while ((node = xmlGetNextOccurence(node, "TIME")) != NULL) 
-	{				
+	{
+		//
+		name = xmlGetAttribute(node, (char*)"name");
+		
+		//				
 		cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
 		cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
 		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
@@ -1500,6 +1523,9 @@ void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* windo
 		cc_format = xmlGetAttribute(node, (char*)"format");
 							
 		time = new CCTime(cc_x, cc_y, cc_dx, cc_dy);
+		
+		time->cc_type = CC_TIME;
+		if (name) time->cc_name = name;
 							
 		if (cc_format != NULL) time->setFormat(_(cc_format));
 		if (cc_refresh) time->enableRepaint();
@@ -1572,6 +1598,8 @@ void CNeutrinoApp::parseCCHline(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	
 	CCHline* hline = NULL;
 	
+	char *name = NULL;
+	
 	unsigned int x = 0;
 	unsigned int y = 0;
 	unsigned int dx = 0;
@@ -1581,6 +1609,10 @@ void CNeutrinoApp::parseCCHline(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	
 	while ((node = xmlGetNextOccurence(node, "HLINE")) != NULL) 
 	{
+		//
+		name = xmlGetAttribute(node, (char*)"name");
+		
+		//
 		x = xmlGetSignedNumericAttribute(node, "posx", 0);
 		y = xmlGetSignedNumericAttribute(node, "posy", 0);
 		dx = xmlGetSignedNumericAttribute(node, "width", 0);
@@ -1589,6 +1621,10 @@ void CNeutrinoApp::parseCCHline(_xmlNodePtr node, CWidget* widget, CWindow* wind
 		gradient = xmlGetSignedNumericAttribute(node, "gradient", 0);
 				
 		hline = new CCHline(x, y, dx, dy);
+		
+		hline->cc_type = CC_HLINE;
+		if (name) hline->cc_name = name;
+		
 		hline->setGradient(gradient);
 					
 		if (widget) widget->addCCItem(hline);
@@ -1605,6 +1641,8 @@ void CNeutrinoApp::parseCCVline(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	
 	CCVline* vline = NULL;
 	
+	char *name = NULL;
+	
 	unsigned int x = 0;
 	unsigned int y = 0;
 	unsigned int dx = 0;
@@ -1614,6 +1652,10 @@ void CNeutrinoApp::parseCCVline(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	
 	while ((node = xmlGetNextOccurence(node, "VLINE")) != NULL) 
 	{
+		//
+		name = xmlGetAttribute(node, (char*)"name");
+		
+		//
 		x = xmlGetSignedNumericAttribute(node, "posx", 0);
 		y = xmlGetSignedNumericAttribute(node, "posy", 0);
 		dx = xmlGetSignedNumericAttribute(node, "width", 0);
@@ -1622,6 +1664,10 @@ void CNeutrinoApp::parseCCVline(_xmlNodePtr node, CWidget* widget, CWindow* wind
 		gradient = xmlGetSignedNumericAttribute(node, "gradient", 0);
 				
 		vline = new CCVline(x, y, dx, dy);
+		
+		vline->cc_type = CC_VLINE;
+		if (name) vline->cc_name = name;
+		
 		vline->setGradient(gradient);
 					
 		if (widget) widget->addCCItem(vline);
