@@ -131,7 +131,7 @@ void CGeneralSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* miscSettingsGeneral = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("miscsetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("miscsetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("miscsetup");
 		miscSettingsGeneral = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -536,7 +536,7 @@ void CChannelListSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* miscSettingsChannelList = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("channelssetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("channelssetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("channelssetup");
 		miscSettingsChannelList = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -704,7 +704,7 @@ void CEPGSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* miscSettingsEPG = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("epgsetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("epgsetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("epgsetup");
 		miscSettingsEPG = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -920,7 +920,7 @@ void CFileBrowserSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* miscSettingsFileBrowser = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("filebrowsersetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("filebrowsersetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("filebrowsersetup");
 		miscSettingsFileBrowser = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

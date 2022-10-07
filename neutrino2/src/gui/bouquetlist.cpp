@@ -85,7 +85,7 @@ CBouquetList::CBouquetList(const char* const Name)
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
 	//
-	if (CNeutrinoApp::getInstance()->getWidget("bouquetlist"))
+	if (CNeutrinoApp::getInstance()->widget_exists("bouquetlist"))
 	{
 		bqWidget = CNeutrinoApp::getInstance()->getWidget("bouquetlist");
 		listBox = (ClistBox*)bqWidget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -279,7 +279,7 @@ int CBouquetList::doMenu()
 	CWidget* widget = NULL;
 	ClistBox* menu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("bqedit"))
+	if (CNeutrinoApp::getInstance()->widget_exists("bqedit"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("bqedit");
 		menu = (ClistBox*)CNeutrinoApp::getInstance()->getWidget("bqedit")->getWidgetItem(WIDGETITEM_LISTBOX);

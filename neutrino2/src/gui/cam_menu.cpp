@@ -116,7 +116,7 @@ void CCAMMenuHandler::doMainMenu()
 	CWidget* widget = NULL;
 	ClistBox* cammenu = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->getWidget("cammenu"))
+	if (CNeutrinoApp::getInstance()->widget_exists("cammenu"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("cammenu");
 		cammenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -177,7 +177,7 @@ void CCAMMenuHandler::doMainMenu()
 			sprintf(str, "%s %d", _("No CAM in slot"), i + 1);
 			
 			/*
-			if (CNeutrinoApp::getInstance()->getWidget("tempcam2"))
+			if (CNeutrinoApp::getInstance()->widget_exists("tempcam2"))
 			{
 				tempMenuWidget = CNeutrinoApp::getInstance()->getWidget("tempcam2");
 				tempMenu = (ClistBox*)tempMenuWidget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -359,7 +359,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			ClistBox* menu = NULL;
 			
 			/*
-			if (CNeutrinoApp::getInstance()->getWidget("tempcam"))
+			if (CNeutrinoApp::getInstance()->widget_exists("tempcam"))
 			{
 				menuWidget = CNeutrinoApp::getInstance()->getWidget("tempcam");
 				menu = (ClistBox*)menuWidget->getWidgetItem(WIDGETITEM_LISTBOX);

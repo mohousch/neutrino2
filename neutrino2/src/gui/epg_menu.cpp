@@ -67,7 +67,7 @@ int CEPGMenuHandler::doMenu()
 	CWidget* widget = NULL;
 	ClistBox* redMenu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("epgtimer"))
+	if (CNeutrinoApp::getInstance()->widget_exists("epgtimer"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("epgtimer");
 	}
@@ -104,7 +104,6 @@ int CEPGMenuHandler::doMenu()
 		// timerlist
 		redMenu->addItem(new ClistBoxItem(_("Timerlist"), true, NULL, new CTimerList(), "", RC_1, NEUTRINO_ICON_BUTTON_1, NEUTRINO_ICON_MENUITEM_TIMERLIST));
 		
-		//
 		//
 		widget = new CWidget(redMenu->getWindowsPos().iX, redMenu->getWindowsPos().iY, redMenu->getWindowsPos().iWidth, redMenu->getWindowsPos().iHeight);
 		widget->name = "epgtimer";

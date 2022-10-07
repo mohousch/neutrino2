@@ -476,7 +476,7 @@ void CInfoMenu::showMenu()
 	ClistBox* infoMenu = NULL;
 	
 	//
-	if (CNeutrinoApp::getInstance()->getWidget("information"))
+	if (CNeutrinoApp::getInstance()->widget_exists("information"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("information");
 	}

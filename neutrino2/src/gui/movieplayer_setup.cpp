@@ -84,7 +84,7 @@ void CMoviePlayerSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* moviePlayerSettings = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->getWidget("movieplayersetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("movieplayersetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("movieplayersetup");
 		moviePlayerSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

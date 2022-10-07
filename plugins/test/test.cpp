@@ -5698,14 +5698,14 @@ void CTestMenu::testSkinWidget()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSkinWidget\n");
 	
-	CNeutrinoApp::getInstance()->execSkinWidget("mainmenu");
+	CNeutrinoApp::getInstance()->execSkinWidget("mainmenu", NULL, "");
 }
 
 void CTestMenu::testSkinSetup()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSkinSetup\n");
 	
-	CNeutrinoApp::getInstance()->execSkinWidget("videosetup");
+	CNeutrinoApp::getInstance()->execSkinWidget("audiosetup", NULL, "");
 }
 
 // exec
@@ -7494,7 +7494,7 @@ void CTestMenu::showMenu()
 	CWidget* mWidget = NULL;
 	ClistBox* mainMenu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("testmenu"))
+	if (CNeutrinoApp::getInstance()->widget_exists("testmenu"))
 	{
 		mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu");
 		

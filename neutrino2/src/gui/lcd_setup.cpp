@@ -129,7 +129,7 @@ void CLCDSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* lcdSettings = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("lcdsetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("lcdsetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("lcdsetup");
 		lcdSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

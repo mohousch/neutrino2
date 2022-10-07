@@ -120,7 +120,7 @@ EventList::EventList()
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
 	//
-	if (CNeutrinoApp::getInstance()->getWidget("eventlist"))
+	if (CNeutrinoApp::getInstance()->widget_exists("eventlist"))
 	{
 		evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
 		listBox = (ClistBox*)evlWidget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -970,7 +970,7 @@ int CEventFinderMenu::showMenu(void)
 	CWidget* widget = NULL;
 	ClistBox* searchMenu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("epgsearch"))
+	if (CNeutrinoApp::getInstance()->widget_exists("epgsearch"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("epgsearch");
 		searchMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

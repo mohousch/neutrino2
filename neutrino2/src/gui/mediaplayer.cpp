@@ -65,7 +65,7 @@ void CMediaPlayerMenu::showMenu()
 	ClistBox* MediaPlayer = NULL;
 	
 	//
-	if (CNeutrinoApp::getInstance()->getWidget("mediaplayer"))
+	if (CNeutrinoApp::getInstance()->widget_exists("mediaplayer"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("mediaplayer");
 	}

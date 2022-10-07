@@ -126,7 +126,7 @@ void CZapitSetup::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* zapit = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("zapitsetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("zapitsetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("zapitsetup");
 		zapit = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

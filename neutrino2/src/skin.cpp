@@ -867,8 +867,9 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 			else if (itemid == MENUITEM_LISTBOXITEM)
 				menuItem = new ClistBoxItem(itemName.c_str());
 						
-			if (item_actionkey) actionKey = item_actionkey;	
-				parent = convertTarget(item_target);
+			if (item_actionkey) actionKey = item_actionkey;
+			
+			parent = convertTarget(item_target);
 							
 			menuItem->setActionKey(parent, actionKey.c_str());
 					
@@ -1793,7 +1794,7 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 			}
 			*/
 			
-			widgets.push_back(wdg);
+			//widgets.push_back(wdg);
 			
 			// WINDOW
 			parseCWindow(search->xmlChildrenNode, wdg);
@@ -1830,6 +1831,9 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 			
 			// KEY
 			parseKey(search->xmlChildrenNode, wdg);
+			
+			//
+			widgets.push_back(wdg);
 						
 			//
 			search = search->xmlNextNode;		
@@ -1866,23 +1870,30 @@ bool CNeutrinoApp::widget_exists(const char* const name)
 {
 	bool ret = false;
 	
-	if (CNeutrinoApp::getInstance()->getWidget(name))
-		ret = true;
+	for (unsigned int i = 0; i < (unsigned int )widgets.size(); i++)
+	{
+		if ( (widgets[i] != NULL) && (widgets[i]->name == name) )
+		{
+			dprintf(DEBUG_NORMAL, "CNeutrinoApp::widget_exists: (%s)\n", name);
+			
+			ret = true;
+			break;
+		}
+	}
 	
 	return ret;
 }
 
 //
-bool CNeutrinoApp::execSkinWidget(const char* const name)
+int CNeutrinoApp::execSkinWidget(const char* const name, CMenuTarget* parent, const std::string &actionKey)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::execSkinWidget:\n");
+	dprintf(DEBUG_INFO, "CNeutrinoApp::execSkinWidget: actionKey: (%s)\n", actionKey.c_str());
 	
-	bool ret = false;
+	int ret = RETURN_REPAINT;;
 	
-	if (getWidget(name))
+	if (widget_exists(name))
 	{
-		ret = true;
-		getWidget(name)->exec(NULL, "");
+		ret = getWidget(name)->exec(parent, actionKey);
 	}
 	
 	return ret;	
@@ -1894,7 +1905,7 @@ bool CNeutrinoApp::paintSkinWidget(const char* const name)
 	
 	bool ret = false;
 	
-	if (getWidget(name))
+	if (widget_exists(name))
 	{
 		ret = true;
 		getWidget(name)->paint();
@@ -1909,7 +1920,7 @@ bool CNeutrinoApp::hideSkinWidget(const char* const name)
 	
 	bool ret = false;
 	
-	if (getWidget(name))
+	if (widget_exists(name))
 	{
 		ret = true;
 		getWidget(name)->hide();

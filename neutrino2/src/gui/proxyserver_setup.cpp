@@ -65,7 +65,7 @@ int CProxySetup::showProxySetup()
 	CWidget* widget = NULL;
 	ClistBox* mn = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("proxysetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("proxysetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("proxysetup");
 		mn = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

@@ -303,6 +303,55 @@
 		</LISTBOX>
 	</WIDGET>
 	
+	<WIDGET name="updatesetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Software update" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		
+			<FOOT_BUTTON_LABEL name="information"/>
+		</LISTBOX>
+	</WIDGET>
+	
+	<WIDGET name="flashexpert" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Expert functions" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		
+			<FOOT_BUTTON_LABEL name="information"/>
+		</LISTBOX>
+	</WIDGET>
+	
+	<WIDGET name="mtdselector" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Partition selector" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		
+			<FOOT_BUTTON_LABEL name="information"/>
+		</LISTBOX>
+	</WIDGET>
+	
+	<WIDGET name="fileselector" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="File selector" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		
+			<FOOT_BUTTON_LABEL name="information"/>
+		</LISTBOX>
+	</WIDGET>
+	
+	<WIDGET name="cammenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="CI CAM settings" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		
+			<FOOT_BUTTON_LABEL name="information"/>
+		</LISTBOX>
+	</WIDGET>
+	
+	<WIDGET name="tempcam" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		
+			<FOOT_BUTTON_LABEL name="information"/>
+		</LISTBOX>
+	</WIDGET>
+	
+	<WIDGET name="tempcam2" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		
+			<FOOT_BUTTON_LABEL name="information"/>
+		</LISTBOX>
+	</WIDGET>
+	
 	<WIDGET name="videosetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
 		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Video settings" icon="video" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
@@ -361,55 +410,6 @@
 	
 	<WIDGET name="nsfsmall" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
 		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Network Mount Manager" icon="network" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
-		
-			<FOOT_BUTTON_LABEL name="information"/>
-		</LISTBOX>
-	</WIDGET>
-	
-	<WIDGET name="updatesetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Software update" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
-		
-			<FOOT_BUTTON_LABEL name="information"/>
-		</LISTBOX>
-	</WIDGET>
-	
-	<WIDGET name="flashexpert" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Expert functions" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
-		
-			<FOOT_BUTTON_LABEL name="information"/>
-		</LISTBOX>
-	</WIDGET>
-	
-	<WIDGET name="mtdselector" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Partition selector" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
-		
-			<FOOT_BUTTON_LABEL name="information"/>
-		</LISTBOX>
-	</WIDGET>
-	
-	<WIDGET name="fileselector" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="File selector" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
-		
-			<FOOT_BUTTON_LABEL name="information"/>
-		</LISTBOX>
-	</WIDGET>
-	
-	<WIDGET name="cammenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="CI CAM settings" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
-		
-			<FOOT_BUTTON_LABEL name="information"/>
-		</LISTBOX>
-	</WIDGET>
-	
-	<WIDGET name="tempcam" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
-		
-			<FOOT_BUTTON_LABEL name="information"/>
-		</LISTBOX>
-	</WIDGET>
-	
-	<WIDGET name="tempcam2" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>

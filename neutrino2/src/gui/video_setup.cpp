@@ -357,7 +357,7 @@ void CVideoSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* videoSettings = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->getWidget("videosetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("videosetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("videosetup");
 		videoSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

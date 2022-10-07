@@ -111,7 +111,7 @@ void CPictureViewerSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* PicViewerSettings = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("pictureviewersetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("pictureviewersetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("pictureviewersetup");
 		PicViewerSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

@@ -76,7 +76,7 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 	keyDeleter = new CKeyChooserItemNoKey(key);
 	
 	/*
-	if (CNeutrinoApp::getInstance()->getWidget("keychooser"))
+	if (CNeutrinoApp::getInstance()->widget_exists("keychooser"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("keychooser");	
 		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

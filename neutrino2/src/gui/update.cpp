@@ -173,7 +173,7 @@ bool CFlashUpdate::selectHttpImage(void)
 	CWidget* widget = NULL;
 	ClistBox* SelectionWidget = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("selecthttpimage"))
+	if (CNeutrinoApp::getInstance()->widget_exists("selecthttpimage"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("selecthttpimage");
 		
@@ -682,7 +682,7 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 	CWidget* widget = NULL;
 	ClistBox* mtdselector = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->getWidget("mtdselector"))
+	if (CNeutrinoApp::getInstance()->widget_exists("mtdselector"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("mtdselector");
 		
@@ -771,7 +771,7 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 	CWidget* widget = NULL;
 	ClistBox* fileselector = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->getWidget("fileselector"))
+	if (CNeutrinoApp::getInstance()->widget_exists("fileselector"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("fileselector");
 		
@@ -955,7 +955,7 @@ void CUpdateSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* updateSettings = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->getWidget("updatesetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("updatesetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("updatesetup");
 		
@@ -998,7 +998,7 @@ void CUpdateSettings::showMenu()
 	CWidget* mtdexpertWidget = NULL;
 	ClistBox* mtdexpert = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->getWidget("flashexpert"))
+	if (CNeutrinoApp::getInstance()->widget_exists("flashexpert"))
 	{
 		mtdexpertWidget = CNeutrinoApp::getInstance()->getWidget("flashexpert");
 		

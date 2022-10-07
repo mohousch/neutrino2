@@ -149,7 +149,7 @@ void CAudioSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* audioSettings = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("audiosetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("audiosetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("audiosetup");
 		audioSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

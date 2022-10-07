@@ -171,7 +171,7 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
 	//
-	if (CNeutrinoApp::getInstance()->getWidget("channellist"))
+	if (CNeutrinoApp::getInstance()->widget_exists("channellist"))
 	{
 		chWidget = CNeutrinoApp::getInstance()->getWidget("channellist");
 	
@@ -482,7 +482,7 @@ int CChannelList::doChannelMenu(void)
 	CWidget* widget = NULL;
 	ClistBox* menu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("channellistedit"))
+	if (CNeutrinoApp::getInstance()->widget_exists("channellistedit"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("channellistedit");
 		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

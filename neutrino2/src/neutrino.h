@@ -166,7 +166,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		//bool widget_exists(int id);
 		bool hasWidgets(){return widgets.size();};
 		//
-		bool execSkinWidget(const char* const name);
+		int execSkinWidget(const char* const name, CMenuTarget* parent, const std::string &actionKey);
 		bool paintSkinWidget(const char* const name);
 		bool hideSkinWidget(const char* const name);
 		//

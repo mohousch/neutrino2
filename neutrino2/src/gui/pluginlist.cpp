@@ -95,7 +95,7 @@ void CPluginList::showMenu()
 	dprintf(DEBUG_NORMAL, "CPluginList::showMenu\n");
 
 	//
-	if (CNeutrinoApp::getInstance()->getWidget("plugins"))
+	if (CNeutrinoApp::getInstance()->widget_exists("plugins"))
 	{
 		pWidget = CNeutrinoApp::getInstance()->getWidget("plugins");
 		plist = (ClistBox*)pWidget->getWidgetItem(WIDGETITEM_LISTBOX);

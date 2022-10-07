@@ -90,7 +90,7 @@ void CAudioPlayerSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* audioPlayerSettings = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("audioplayersetup"))
+	if (CNeutrinoApp::getInstance()->widget_exists("audioplayersetup"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("audioplayersetup");
 		audioPlayerSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

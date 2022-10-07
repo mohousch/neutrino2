@@ -194,7 +194,7 @@ int CNFSMountGui::menu()
 	CWidget* widget = NULL;
 	ClistBox* mountMenuW = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("nfs"))
+	if (CNeutrinoApp::getInstance()->widget_exists("nfs"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("nfs");
 		mountMenuW = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -312,7 +312,7 @@ int CNFSMountGui::menuEntry(int nr)
 	CWidget* widget = NULL;
 	ClistBox* mountMenuEntryW = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("mountvolume"))
+	if (CNeutrinoApp::getInstance()->widget_exists("mountvolume"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("mountvolume");
 		mountMenuEntryW = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -426,7 +426,7 @@ int CNFSUmountGui::menu()
 	CWidget* widget = NULL;
 	ClistBox* umountMenu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->getWidget("umountvolume"))
+	if (CNeutrinoApp::getInstance()->widget_exists("umountvolume"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("umountvolume");
 		umountMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -501,7 +501,7 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
 		
-		if (CNeutrinoApp::getInstance()->getWidget("nfssmall"))
+		if (CNeutrinoApp::getInstance()->widget_exists("nfssmall"))
 		{
 			widget = CNeutrinoApp::getInstance()->getWidget("nfssmall");
 			menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);

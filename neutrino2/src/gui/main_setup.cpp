@@ -80,7 +80,7 @@ void CMainSettingsMenu::showMenu(void)
 	ClistBox* mainSettings = NULL;
 	
 	//
-	if (CNeutrinoApp::getInstance()->getWidget("settings"))
+	if (CNeutrinoApp::getInstance()->widget_exists("settings"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("settings");
 	}

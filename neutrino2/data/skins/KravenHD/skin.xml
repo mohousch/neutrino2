@@ -563,6 +563,114 @@
 		</TIME>
 	</WIDGET>
 	
+	<WIDGET name="updatesetup" id="42" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
+		</LISTBOX>
+		<LABEL posx="640" posy="50" width="640" height="50" text="Software update" halign="1">
+		</LABEL>
+			
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
+		</IMAGE>
+		
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
+		</TIME>
+		
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
+		</TIME>
+	</WIDGET>
+	
+	<WIDGET name="flashexpert" id="110" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
+		</LISTBOX>
+		<LABEL posx="640" posy="50" width="640" height="50" text="Expert functions" halign="1">
+		</LABEL>
+			
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
+		</IMAGE>
+		
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
+		</TIME>
+		
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
+		</TIME>
+	</WIDGET>
+	
+	<WIDGET name="fileselector" id="112" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
+		</LISTBOX>
+		<LABEL posx="640" posy="50" width="640" height="50" text="File selector" halign="1">
+		</LABEL>
+			
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
+		</IMAGE>
+		
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
+		</TIME>
+		
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
+		</TIME>
+	</WIDGET>
+	
+	<WIDGET name="mtdselector" id="111" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
+		</LISTBOX>
+		<LABEL posx="640" posy="50" width="640" height="50" text="Partition selector" halign="1">
+		</LABEL>
+			
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
+		</IMAGE>
+		
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
+		</TIME>
+		
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
+		</TIME>
+	</WIDGET>
+	
+	<WIDGET name="cammenu" id="41" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
+		</LISTBOX>
+		<LABEL posx="640" posy="50" width="640" height="50" text="CI Cam settings" halign="1">
+		</LABEL>
+			
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
+		</IMAGE>
+		
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
+		</TIME>
+		
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
+		</TIME>
+	</WIDGET>
+	
+	<WIDGET name="tempcam" id="999" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1" painthead="1">
+		</LISTBOX>
+			
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
+		</IMAGE>
+		
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
+		</TIME>
+		
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
+		</TIME>
+	</WIDGET>
+	
+	<WIDGET name="tempcam2" id="999" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1" painthead="1">
+		</LISTBOX>
+			
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
+		</IMAGE>
+		
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
+		</TIME>
+		
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
+		</TIME>
+	</WIDGET>
+	
 	<WIDGET name="videosetup" id="9" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
@@ -696,114 +804,6 @@
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Network Mount Manager" halign="1">
 		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-	</WIDGET>
-	
-	<WIDGET name="updatesetup" id="42" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="Software update" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-	</WIDGET>
-	
-	<WIDGET name="flashexpert" id="110" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="Expert functions" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-	</WIDGET>
-	
-	<WIDGET name="fileselector" id="112" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="File selector" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-	</WIDGET>
-	
-	<WIDGET name="mtdselector" id="111" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="Partition selector" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-	</WIDGET>
-	
-	<WIDGET name="cammenu" id="41" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="CI Cam settings" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-	</WIDGET>
-	
-	<WIDGET name="tempcam" id="999" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1" painthead="1">
-		</LISTBOX>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-	</WIDGET>
-	
-	<WIDGET name="tempcam2" id="999" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1" painthead="1">
-		</LISTBOX>
 			
 		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
 		</IMAGE>
