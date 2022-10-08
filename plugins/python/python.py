@@ -168,120 +168,120 @@ class moviePlayer(CFileBrowser):
 		if self.getExitPressed() is not True:
 			self.__init__()
 
-class testMenu(CMenuTarget):
-	selected = 0
-	listWidget = CMenuWidget("pythonTest: CMenuWidget", NEUTRINO_ICON_MOVIE)
-
-	def __init__(self):
-		CMenuTarget.__init__
-		self.showMenu()
-
-	def showMenu(self):
-		self.listWidget.setWidgetType(WIDGET_TYPE_STANDARD)
-		self.listWidget.setWidgetMode(MODE_LISTBOX)
-		self.listWidget.enableShrinkMenu()
-		self.listWidget.addWidgetType(WIDGET_TYPE_CLASSIC)
-		self.listWidget.addWidgetType(WIDGET_TYPE_EXTENDED)
-		self.listWidget.addWidgetType(WIDGET_TYPE_FRAME)
-		self.listWidget.enablePaintItemInfo(70)
-
-		# messageBox
-		item1 = ClistBoxItem("CMessageBox")
-		item1.setItemIcon(DATADIR + "/icons/plugin.png")
-		item1.setHint("testing CMessageBox")
-		item1.setInfo1("testing CMessageBox")
-
-		# CHelpBox
-		item2 = ClistBoxItem("CHelpBox")
-		item2.setItemIcon(DATADIR + "/icons/plugin.png")
-		item2.setHint("testing CHelpBox")
-		item2.setInfo1("testing CHelpBox")
-
-		# CHintBox
-		item3 = ClistBoxItem("CHintBox")
-		item3.setItemIcon(DATADIR + "/icons/plugin.png")
-		item3.setHint("testing CHintBox")
-		item3.setInfo1("testing CHintBox")
-
-		# CInfoBox
-		item4 = ClistBoxItem("CInfoBox")
-		item4.setItemIcon(DATADIR + "/icons/plugin.png")
-		item4.setHint("testing CInfoBox")
-		item4.setInfo1("testing CInfoBox")
-
-		# CStringInput
-		item5 = ClistBoxItem("CStringInput")
-		item5.setItemIcon(DATADIR + "/icons/plugin.png")
-		item5.setHint("testing CStringInput")
-		item5.setInfo1("testing CStringInput")
-
-		# CAudioPlayerGui
-		item6 = ClistBoxItem("CAudioPlayerGui")
-		item6.setItemIcon(DATADIR + "/icons/plugin.png")
-		item6.setHint("testing CAudioPlayerGui")
-		item6.setInfo1("testing CAudioPlayerGui")
-
-		# CPictureViewerGui
-		item7 = ClistBoxItem("CPictureViewerGui")
-		item7.setItemIcon(DATADIR + "/icons/plugin.png")
-		item7.setHint("testing CPictureViewerGui")
-		item7.setInfo1("testing CPictureViewerGui")
-
-		# CFileBrowser | CMoviePlayerGui
-		item8 = ClistBoxItem("CMoviePlayerGui")
-		item8.setItemIcon(DATADIR + "/icons/plugin.png")
-		item8.setHint("testing CMoviePlayerGui")
-		item8.setInfo1("testing CMoviePlayerGui")
-
-		item = CMenuSeparator(LINE)
-
-		self.listWidget.addItem(item1)
-		self.listWidget.addItem(item2)
-		self.listWidget.addItem(item3)
-		self.listWidget.addItem(item4)
-		self.listWidget.addItem(item)
-		self.listWidget.addItem(item5)
-		self.listWidget.addItem(item)
-		self.listWidget.addItem(item6)
-		self.listWidget.addItem(item7)
-		self.listWidget.addItem(item8)
-
-		self.listWidget.addKey(RC_info)
-
-		self.listWidget._exec(None, "")
-
-		self.selected = self.listWidget.getSelected()
-		key = self.listWidget.getKey()
-
-		# first handle keys
-		if key == RC_info:
-			infoBox()
-
-		# handle selected line
-		if self.selected == 0:
-			messageBox()
-		elif self.selected == 1:
-			helpBox()
-		elif self.selected == 2:
-			hintBox()
-		elif self.selected == 3:
-			infoBox()
-		elif self.selected == 5:
-			stringInput()
-		elif self.selected == 7:
-			audioPlayer()
-		elif self.selected == 8:
-			pictureViewer()
-		elif self.selected == 9:
-			moviePlayer()
-
-		# exit pressed
-		if self.listWidget.getExitPressed() is False:
-			self.listWidget.clearItems()
-			self.showMenu()
+#class testMenu(CMenuTarget):
+#	selected = 0
+#	listWidget = CMenuWidget("pythonTest: CMenuWidget", NEUTRINO_ICON_MOVIE)
+#
+#	def __init__(self):
+#		CMenuTarget.__init__
+#		self.showMenu()
+#
+#	def showMenu(self):
+#		self.listWidget.setWidgetType(WIDGET_TYPE_STANDARD)
+#		self.listWidget.setWidgetMode(MODE_LISTBOX)
+#		self.listWidget.enableShrinkMenu()
+#		self.listWidget.addWidgetType(WIDGET_TYPE_CLASSIC)
+#		self.listWidget.addWidgetType(WIDGET_TYPE_EXTENDED)
+#		self.listWidget.addWidgetType(WIDGET_TYPE_FRAME)
+#		self.listWidget.enablePaintItemInfo(70)
+#
+#		# messageBox
+#		item1 = ClistBoxItem("CMessageBox")
+#		item1.setItemIcon(DATADIR + "/icons/plugin.png")
+#		item1.setHint("testing CMessageBox")
+#		item1.setInfo1("testing CMessageBox")
+#
+#		# CHelpBox
+#		item2 = ClistBoxItem("CHelpBox")
+#		item2.setItemIcon(DATADIR + "/icons/plugin.png")
+#		item2.setHint("testing CHelpBox")
+#		item2.setInfo1("testing CHelpBox")
+#
+#		# CHintBox
+#		item3 = ClistBoxItem("CHintBox")
+#		item3.setItemIcon(DATADIR + "/icons/plugin.png")
+#		item3.setHint("testing CHintBox")
+#		item3.setInfo1("testing CHintBox")
+#
+#		# CInfoBox
+#		item4 = ClistBoxItem("CInfoBox")
+#		item4.setItemIcon(DATADIR + "/icons/plugin.png")
+#		item4.setHint("testing CInfoBox")
+#		item4.setInfo1("testing CInfoBox")
+#
+#		# CStringInput
+#		item5 = ClistBoxItem("CStringInput")
+#		item5.setItemIcon(DATADIR + "/icons/plugin.png")
+#		item5.setHint("testing CStringInput")
+#		item5.setInfo1("testing CStringInput")
+#
+#		# CAudioPlayerGui
+#		item6 = ClistBoxItem("CAudioPlayerGui")
+#		item6.setItemIcon(DATADIR + "/icons/plugin.png")
+#		item6.setHint("testing CAudioPlayerGui")
+#		item6.setInfo1("testing CAudioPlayerGui")
+#
+#		# CPictureViewerGui
+#		item7 = ClistBoxItem("CPictureViewerGui")
+#		item7.setItemIcon(DATADIR + "/icons/plugin.png")
+#		item7.setHint("testing CPictureViewerGui")
+#		item7.setInfo1("testing CPictureViewerGui")
+#
+#		# CFileBrowser | CMoviePlayerGui
+#		item8 = ClistBoxItem("CMoviePlayerGui")
+#		item8.setItemIcon(DATADIR + "/icons/plugin.png")
+#		item8.setHint("testing CMoviePlayerGui")
+#		item8.setInfo1("testing CMoviePlayerGui")
+#
+#		item = CMenuSeparator(LINE)
+#
+#		self.listWidget.addItem(item1)
+#		self.listWidget.addItem(item2)
+#		self.listWidget.addItem(item3)
+#		self.listWidget.addItem(item4)
+#		self.listWidget.addItem(item)
+#		self.listWidget.addItem(item5)
+#		self.listWidget.addItem(item)
+#		self.listWidget.addItem(item6)
+#		self.listWidget.addItem(item7)
+#		self.listWidget.addItem(item8)
+#
+#		self.listWidget.addKey(RC_info)
+#
+#		self.listWidget._exec(None, "")
+#
+#		self.selected = self.listWidget.getSelected()
+#		key = self.listWidget.getKey()
+#
+#		# first handle keys
+#		if key == RC_info:
+#			infoBox()
+#
+#		# handle selected line
+#		if self.selected == 0:
+#			messageBox()
+#		elif self.selected == 1:
+#			helpBox()
+#		elif self.selected == 2:
+#			hintBox()
+#		elif self.selected == 3:
+#			infoBox()
+#		elif self.selected == 5:
+#			stringInput()
+#		elif self.selected == 7:
+#			audioPlayer()
+#		elif self.selected == 8:
+#			pictureViewer()
+#		elif self.selected == 9:
+#			moviePlayer()
+#
+#		# exit pressed
+#		if self.listWidget.getExitPressed() is False:
+#			self.listWidget.clearItems()
+#			self.showMenu()
 
 if __name__ == "__main__":
-	testMenu()
+	moviePlayer()
 
 
 
