@@ -1524,7 +1524,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 			// option
 			if(option_text != NULL)
 			{
-				g_Font[optionFont]->RenderString(x + BORDER_LEFT + icon_w + ICON_OFFSET, y + height, dx - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - icon_w, option_text, selected? color : optionFontColor, 0, true);
+				g_Font[optionFont]->RenderString(x + BORDER_LEFT + icon_w + ICON_OFFSET, y + height, dx - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - icon_w, option_text, (selected || !active)? color : optionFontColor, 0, true);
 			}
 		}
 		else
@@ -1541,7 +1541,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				int stringwidth = g_Font[optionFont]->getRenderWidth(option_text, true);
 				int stringstartposOption = std::max(x + BORDER_LEFT + icon_w + ICON_OFFSET + g_Font[nameFont]->getRenderWidth(l_text, true) + ICON_OFFSET, x + dx - (stringwidth + BORDER_RIGHT)); //
 
-				g_Font[optionFont]->RenderString(stringstartposOption, y + (height - g_Font[optionFont]->getHeight())/2 + g_Font[optionFont]->getHeight(), dx - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - l_text_width - icon_w, option_text, selected? color : optionFontColor, 0, true);
+				g_Font[optionFont]->RenderString(stringstartposOption, y + (height - g_Font[optionFont]->getHeight())/2 + g_Font[optionFont]->getHeight(), dx - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - l_text_width - icon_w, option_text, (selected || !active)? color : optionFontColor, 0, true);
 			}
 		}
 
@@ -2024,19 +2024,19 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 				// option
 				if(option_text != NULL)
 				{
-						g_Font[optionFont]->RenderString(l_startPosX, y + height, dx - BORDER_LEFT - BORDER_RIGHT - number_width - pb_width - 2*ICON_OFFSET - icon_w - icon1_w - icon2_w - ICON_OFFSET, option_text, selected? color : optionFontColor, 0, true);
+						g_Font[optionFont]->RenderString(l_startPosX, y + height, dx - BORDER_LEFT - BORDER_RIGHT - number_width - pb_width - 2*ICON_OFFSET - icon_w - icon1_w - icon2_w - ICON_OFFSET, option_text, (selected || !active)? color : optionFontColor, 0, true);
 				}
 				
 				// info1
 				if (!info1.empty())
 				{
-					g_Font[optionFont]->RenderString(l_startPosX, y + height/2, dx - BORDER_LEFT - BORDER_RIGHT - number_width - pb_width - 2*ICON_OFFSET - icon_w - icon1_w - icon2_w - ICON_OFFSET, info1.c_str(), selected? color : optionFontColor, 0, true);
+					g_Font[optionFont]->RenderString(l_startPosX, y + height/2, dx - BORDER_LEFT - BORDER_RIGHT - number_width - pb_width - 2*ICON_OFFSET - icon_w - icon1_w - icon2_w - ICON_OFFSET, info1.c_str(), (selected || !active)? color : optionFontColor, 0, true);
 				}
 				
 				// info 2
 				if (!info2.empty())
 				{
-					g_Font[optionFont]->RenderString(l_startPosX, y + height/2 + height/4, dx - BORDER_LEFT - BORDER_RIGHT - number_width - pb_width - 2*ICON_OFFSET - icon_w - icon1_w - icon2_w - ICON_OFFSET, info2.c_str(), selected? color : optionFontColor, 0, true);
+					g_Font[optionFont]->RenderString(l_startPosX, y + height/2 + height/4, dx - BORDER_LEFT - BORDER_RIGHT - number_width - pb_width - 2*ICON_OFFSET - icon_w - icon1_w - icon2_w - ICON_OFFSET, info2.c_str(), (selected || !active)? color : optionFontColor, 0, true);
 				}
 			}
 			else
@@ -2050,7 +2050,7 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 				// option
 				if(option_text != NULL)
 				{
-						g_Font[optionFont]->RenderString(l_startPosX + l_text_width + ICON_OFFSET, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, dx - BORDER_LEFT - BORDER_RIGHT - number_width - pb_width - 2*ICON_OFFSET - icon_w - icon1_w - icon2_w - optionInfo_width - ICON_OFFSET, option_text, selected? color : optionFontColor, 0, true);
+						g_Font[optionFont]->RenderString(l_startPosX + l_text_width + ICON_OFFSET, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, dx - BORDER_LEFT - BORDER_RIGHT - number_width - pb_width - 2*ICON_OFFSET - icon_w - icon1_w - icon2_w - optionInfo_width - ICON_OFFSET, option_text, (selected || !active)? color : optionFontColor, 0, true);
 				}
 			}
 		}
@@ -2067,7 +2067,7 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 				// option
 				if(option_text != NULL)
 				{
-						g_Font[optionFont]->RenderString(l_startPosX, y + height, dx - BORDER_LEFT - BORDER_RIGHT - number_width - pb_width - 2*ICON_OFFSET - icon_w - icon1_w - icon2_w - optionInfo_width - ICON_OFFSET, option_text, selected? color : optionFontColor, 0, true);
+						g_Font[optionFont]->RenderString(l_startPosX, y + height, dx - BORDER_LEFT - BORDER_RIGHT - number_width - pb_width - 2*ICON_OFFSET - icon_w - icon1_w - icon2_w - optionInfo_width - ICON_OFFSET, option_text, (selected || !active)? color : optionFontColor, 0, true);
 				}
 			}
 			else
@@ -2085,7 +2085,7 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 					//get icon size
 					frameBuffer->getIconSize(NEUTRINO_ICON_HD, &iw, &ih);
 
-					g_Font[optionFont]->RenderString(l_startPosX + ICON_OFFSET + l_text_width + ICON_OFFSET, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, dx - BORDER_LEFT - BORDER_RIGHT - number_width - ICON_OFFSET - pb_width - ICON_OFFSET - l_text_width - icon_w - icon1_w - ICON_OFFSET - icon2_w - ICON_OFFSET - 2*iw, option_text, selected? color : optionFontColor, 0, true);
+					g_Font[optionFont]->RenderString(l_startPosX + ICON_OFFSET + l_text_width + ICON_OFFSET, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, dx - BORDER_LEFT - BORDER_RIGHT - number_width - ICON_OFFSET - pb_width - ICON_OFFSET - l_text_width - icon_w - icon1_w - ICON_OFFSET - icon2_w - ICON_OFFSET - 2*iw, option_text, (selected || !active)? color : optionFontColor, 0, true);
 				}
 			}
 		}
@@ -2439,7 +2439,7 @@ int CPluginItem::paint(bool selected, bool /*AfterPulldown*/)
 			// option
 			if(option_text != NULL)
 			{
-					g_Font[optionFont]->RenderString(x + BORDER_LEFT + icon_w + ICON_OFFSET, y + height, dx - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - icon_w, option_text, selected? color : optionFontColor, 0, true);
+					g_Font[optionFont]->RenderString(x + BORDER_LEFT + icon_w + ICON_OFFSET, y + height, dx - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - icon_w, option_text, (selected || !active)? color : optionFontColor, 0, true);
 			}
 		}
 		else
@@ -2453,7 +2453,7 @@ int CPluginItem::paint(bool selected, bool /*AfterPulldown*/)
 			// option
 			if(option_text != NULL)
 			{
-				g_Font[optionFont]->RenderString(x + BORDER_LEFT + ICON_OFFSET + l_text_width + ICON_OFFSET, y + (height - g_Font[optionFont]->getHeight())/2 + g_Font[optionFont]->getHeight(), dx - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - l_text_width - icon_w, option_text, selected? color : optionFontColor, 0, true);
+				g_Font[optionFont]->RenderString(x + BORDER_LEFT + ICON_OFFSET + l_text_width + ICON_OFFSET, y + (height - g_Font[optionFont]->getHeight())/2 + g_Font[optionFont]->getHeight(), dx - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - l_text_width - icon_w, option_text, (selected || !active)? color : optionFontColor, 0, true);
 			}
 		}
 		
