@@ -204,7 +204,7 @@ int CHDDMenuHandler::hddMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "hddsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(hddmenu);
+		widget->addWidgetItem(hddmenu);
 	}
 	
 	hddmenu->clearItems();
@@ -354,7 +354,7 @@ int CHDDMenuHandler::hddMenu()
 			tempMenuWidget[i] = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 			tempMenuWidget[i]->setMenuPosition(MENU_POSITION_CENTER);
 			tempMenuWidget[i]->enableSaveScreen();
-			tempMenuWidget[i]->addItem(tempMenu[i]);
+			tempMenuWidget[i]->addWidgetItem(tempMenu[i]);
 		}
 		
 		//
@@ -432,7 +432,7 @@ int CHDDMenuHandler::hddMenu()
 				PartMenuWidget[j] = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 				PartMenuWidget[j]->setMenuPosition(MENU_POSITION_CENTER);
 				PartMenuWidget[j]->enableSaveScreen();
-				PartMenuWidget[j]->addItem(PartMenu[j]);
+				PartMenuWidget[j]->addWidgetItem(PartMenu[j]);
 			}
 			
 			//

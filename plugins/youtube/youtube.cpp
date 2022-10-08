@@ -181,7 +181,7 @@ void CYTBrowser::showMenu()
 	widget->addKey(RC_blue, this, CRCInput::getSpecialKeyName(RC_blue));
 	widget->addKey(RC_record, this, CRCInput::getSpecialKeyName(RC_record));
 	
-	widget->addItem(moviesMenu);
+	widget->addWidgetItem(moviesMenu);
 
 	widget->exec(NULL, "");
 	

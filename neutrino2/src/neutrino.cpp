@@ -5337,7 +5337,7 @@ void CNeutrinoApp::SelectNVOD()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "nvod";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(NVODSelector);
+		widget->addWidgetItem(NVODSelector);
 
 		//
                 if(getNVODMenu(NVODSelector))

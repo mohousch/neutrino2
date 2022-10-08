@@ -219,7 +219,7 @@ int CNFSMountGui::menu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "nfs";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(mountMenuW);
+		widget->addWidgetItem(mountMenuW);
 	}
 	
 	mountMenuW->clearItems();
@@ -337,7 +337,7 @@ int CNFSMountGui::menuEntry(int nr)
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "mountvolume";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(mountMenuEntryW);
+		widget->addWidgetItem(mountMenuEntryW);
 	}
 	
 	mountMenuEntryW->clearItems();
@@ -451,7 +451,7 @@ int CNFSUmountGui::menu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "umountvolume";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(umountMenu);
+		widget->addWidgetItem(umountMenu);
 	}
 	
 	umountMenu->clearItems();
@@ -526,7 +526,7 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 			widget->name = "nfssmall";
 			widget->setMenuPosition(MENU_POSITION_CENTER);
-			widget->addItem(menu);
+			widget->addWidgetItem(menu);
 		}
 		
 		menu->clearItems();

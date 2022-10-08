@@ -95,7 +95,7 @@ CBouquetList::CBouquetList(const char* const Name)
 		bqWidget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		
-		bqWidget->addItem(listBox);
+		bqWidget->addWidgetItem(listBox);
 	}		
 }
 
@@ -303,7 +303,7 @@ int CBouquetList::doMenu()
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(menu);
+		widget->addWidgetItem(menu);
 	}
 	
 	widget->enableSaveScreen();

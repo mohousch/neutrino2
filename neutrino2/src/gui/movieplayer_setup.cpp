@@ -109,7 +109,7 @@ void CMoviePlayerSettings::showMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "movieplayersetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(moviePlayerSettings);
+		widget->addWidgetItem(moviePlayerSettings);
 	}
 	
 	moviePlayerSettings->clearItems();

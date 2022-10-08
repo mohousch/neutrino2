@@ -150,7 +150,7 @@ void CZapitSetup::showMenu()
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(zapit);
+		widget->addWidgetItem(zapit);
 	}
 	
 	zapit->clearItems();

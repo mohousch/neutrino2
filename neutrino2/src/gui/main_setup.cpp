@@ -163,7 +163,7 @@ void CMainSettingsMenu::showMenu(void)
 		widget->name = "settings";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		widget->addItem(mainSettings);
+		widget->addWidgetItem(mainSettings);
 	}
 	
 	//

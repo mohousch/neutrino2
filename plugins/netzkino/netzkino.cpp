@@ -233,10 +233,10 @@ void CNKMovies::showMenu()
 		rightWidget->addItem(item);
 	}
 
-	mainWidget->addItem(headersWidget);
-	mainWidget->addItem(leftWidget);
-	mainWidget->addItem(rightWidget);
-	mainWidget->addItem(footersWidget);
+	mainWidget->addWidgetItem(headersWidget);
+	mainWidget->addWidgetItem(leftWidget);
+	mainWidget->addWidgetItem(rightWidget);
+	mainWidget->addWidgetItem(footersWidget);
 
 	mainWidget->addKey(RC_red, this, CRCInput::getSpecialKeyName(RC_red));
 	mainWidget->addKey(RC_green, this, CRCInput::getSpecialKeyName(RC_green));

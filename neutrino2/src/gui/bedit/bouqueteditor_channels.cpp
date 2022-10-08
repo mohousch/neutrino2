@@ -95,7 +95,7 @@ CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bou
 	{
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
-		widget->addItem(listBox);
+		widget->addWidgetItem(listBox);
 	}	
 }
 

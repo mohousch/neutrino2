@@ -112,7 +112,7 @@ void CPowerMenu::showMenu(void)
 		widget->name = "powermenu";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		widget->addItem(powerMenu);
+		widget->addWidgetItem(powerMenu);
 	}
 	
 	//

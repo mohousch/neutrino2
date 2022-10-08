@@ -98,7 +98,7 @@ void CMediaPlayerMenu::showMenu()
 		widget->name = "mediaplayer";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		widget->addItem(MediaPlayer);
+		widget->addWidgetItem(MediaPlayer);
 	}
 	
 	//

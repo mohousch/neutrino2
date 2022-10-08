@@ -213,7 +213,7 @@ void CNetworkSettings::showMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "networksetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(networkSettings);
+		widget->addWidgetItem(networkSettings);
 	}
 	
 	networkSettings->clearItems();

@@ -138,7 +138,7 @@ void CNeutrinoApp::mainMenu(void)
 		widget->name = "mainmenu";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		widget->addItem(nMenu);
+		widget->addWidgetItem(nMenu);
 	}
 
 	widget->exec(NULL, "");
@@ -294,7 +294,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 		widget->name = "features";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		widget->addItem(menu);
+		widget->addWidgetItem(menu);
 	}	
 
 	widget->addKey(RC_blue, this, "plugins");

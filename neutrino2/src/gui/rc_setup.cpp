@@ -167,7 +167,7 @@ void CRemoteControlSettings::showMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "rcsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(remoteControlSettings);
+		widget->addWidgetItem(remoteControlSettings);
 	}
 	
 	remoteControlSettings->clearItems();
@@ -329,7 +329,7 @@ void CKeysBindingSettings::showMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "rcbinding";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(bindSettings);
+		widget->addWidgetItem(bindSettings);
 	}
 	
 	bindSettings->clearItems();

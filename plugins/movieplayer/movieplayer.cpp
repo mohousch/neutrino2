@@ -458,7 +458,7 @@ void CMoviePlayer::showMenu()
 	widget->addKey(RC_blue, this, CRCInput::getSpecialKeyName(RC_blue));
 	
 	//
-	widget->addItem(mlist);
+	widget->addWidgetItem(mlist);
 
 	widget->exec(NULL, "");
 	

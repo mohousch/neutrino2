@@ -202,7 +202,7 @@ int CMenuOptionChooser::exec(CMenuTarget* parent)
 			widget->name = "optionchooser";
 			widget->setMenuPosition(MENU_POSITION_CENTER);
 			widget->enableSaveScreen();
-			widget->addItem(menu);
+			widget->addWidgetItem(menu);
 		}
 		
 		menu->clearAll();
@@ -677,7 +677,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *parent)
 			widget->name = "optionstringchooser";
 			widget->setMenuPosition(MENU_POSITION_CENTER);
 			widget->enableSaveScreen();
-			widget->addItem(menu);
+			widget->addWidgetItem(menu);
 		}
 		
 		menu->clearAll();

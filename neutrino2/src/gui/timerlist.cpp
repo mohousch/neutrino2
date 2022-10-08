@@ -540,7 +540,7 @@ int CTimerList::show()
 		timerlistWidget = new CWidget(&cFrameBox);
 		
 		timerlistWidget->setMenuPosition(MENU_POSITION_CENTER);
-		timerlistWidget->addItem(listBox);
+		timerlistWidget->addWidgetItem(listBox);
 	}
 	////
 	
@@ -974,7 +974,7 @@ int CTimerList::modifyTimer()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "modifytimer";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(timerSettings);
+		widget->addWidgetItem(timerSettings);
 	}
 	
 	timerSettings->clearItems();
@@ -1058,7 +1058,7 @@ int CTimerList::modifyTimer()
 	//
 	timerSettings_apidsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 	timerSettings_apidsWidget->setMenuPosition(MENU_POSITION_CENTER);
-	timerSettings_apidsWidget->addItem(timerSettings_apids);
+	timerSettings_apidsWidget->addWidgetItem(timerSettings_apids);
 
 	CTimerListApidNotifier apid_notifier(&timer_apids_dflt, &timer_apids_std, &timer_apids_ac3, &timer_apids_alt);
 	timer_apids_dflt = (timer->apids == 0) ? 1 : 0 ;
@@ -1129,7 +1129,7 @@ int CTimerList::newTimer()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "newtimer";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(timerSettings);
+		widget->addWidgetItem(timerSettings);
 	}
 	
 	timerSettings->clearItems();

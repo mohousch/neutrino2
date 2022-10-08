@@ -141,7 +141,7 @@ void CCAMMenuHandler::doMainMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "cammenu";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(cammenu);
+		widget->addWidgetItem(cammenu);
 	}
 	
 	cammenu->clearItems();
@@ -208,7 +208,7 @@ void CCAMMenuHandler::doMainMenu()
 				tempMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 				tempMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
 				tempMenuWidget->enableSaveScreen();
-				tempMenuWidget->addItem(tempMenu);
+				tempMenuWidget->addWidgetItem(tempMenu);
 			}
 			
 			//
@@ -388,7 +388,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				menuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 				menuWidget->setMenuPosition(MENU_POSITION_CENTER);
 				menuWidget->enableSaveScreen();
-				menuWidget->addItem(menu);
+				menuWidget->addWidgetItem(menu);
 			}
 			
 			menu->clearAll();

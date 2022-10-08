@@ -764,7 +764,7 @@ void CMoviePlayerGui::PlayFile(void)
 	//
 	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 	widget->setMenuPosition(MENU_POSITION_CENTER);
-	widget->addItem(bookStartMenu);
+	widget->addWidgetItem(bookStartMenu);
 
 	bookStartMenu->addItem(new CMenuForwarder(_("New Bookmark")));
 	bookStartMenu->addItem(new CMenuForwarder(_("Repeat")));
@@ -1718,7 +1718,7 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	//
 	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 	widget->setMenuPosition(MENU_POSITION_CENTER);
-	widget->addItem(startPosSelectionMenu);
+	widget->addWidgetItem(startPosSelectionMenu);
 	
 	// bookmark start
 	if(playlist[selected].bookmarks.start != 0)

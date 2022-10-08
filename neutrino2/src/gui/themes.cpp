@@ -233,7 +233,7 @@ int CThemes::Show()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "themessetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(themes);
+		widget->addWidgetItem(themes);
 	}
 	
 	themes->clearItems();

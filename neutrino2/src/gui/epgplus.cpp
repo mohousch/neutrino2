@@ -957,7 +957,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				menuWidgetActionsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 				menuWidgetActionsWidget->setMenuPosition(MENU_POSITION_CENTER);
 				menuWidgetActionsWidget->enableSaveScreen();
-				menuWidgetActionsWidget->addItem(menuWidgetActions);
+				menuWidgetActionsWidget->addWidgetItem(menuWidgetActions);
 
 				// record
 		  		menuWidgetActions->addItem (new CMenuForwarder(_("Record"), true, NULL, new MenuTargetAddRecordTimer(this), NULL, RC_red, NEUTRINO_ICON_BUTTON_RED), false);
@@ -996,7 +996,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				menuWidgetOptionsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 				menuWidgetOptionsWidget->setMenuPosition(MENU_POSITION_CENTER);
 				menuWidgetOptionsWidget->enableSaveScreen();
-				menuWidgetOptionsWidget->addItem(menuWidgetOptions);
+				menuWidgetOptionsWidget->addWidgetItem(menuWidgetOptions);
 				
 				menuWidgetOptions->addItem(new MenuOptionChooserSwitchSwapMode (this));
 				menuWidgetOptions->addItem(new MenuOptionChooserSwitchViewMode (this));

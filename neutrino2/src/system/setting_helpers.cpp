@@ -318,7 +318,7 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->enableSaveScreen();
-		widget->addItem(menu);
+		widget->addWidgetItem(menu);
 	}
 		
 	menu->clearAll();

@@ -137,7 +137,7 @@ void CServiceMenu::showMenu(void)
 		widget->name = "system";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		widget->addItem(service);
+		widget->addWidgetItem(service);
 	}
 	
 	widget->exec(NULL, "");

@@ -100,7 +100,7 @@ CBEBouquetWidget::CBEBouquetWidget()
 	{
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
-		widget->addItem(listBox);
+		widget->addWidgetItem(listBox);
 	}	
 }
 

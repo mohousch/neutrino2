@@ -161,7 +161,7 @@ void COSDSettings::showMenu(void)
 		widget->name = "osd";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		widget->addItem(osdSettings);
+		widget->addWidgetItem(osdSettings);
 	}
 	
 	//
@@ -278,7 +278,7 @@ void COSDMenuColorSettings::showMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "menusetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(OSDmenuColorsSettings);
+		widget->addWidgetItem(OSDmenuColorsSettings);
 	}
 	
 	OSDmenuColorsSettings->clearItems();
@@ -465,7 +465,7 @@ void COSDInfoBarColorSettings::showMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "infobarsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(OSDinfobarColorSettings);
+		widget->addWidgetItem(OSDinfobarColorSettings);
 	}
 	
 	OSDinfobarColorSettings->clearItems();
@@ -601,7 +601,7 @@ void CLanguageSettings::showMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "languagesetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(languageSettings);
+		widget->addWidgetItem(languageSettings);
 	}
 	
 	languageSettings->clearItems();
@@ -758,7 +758,7 @@ void CFontSettings::showMenu()
 		widget = new CWidget(0, 0, 700, MENU_HEIGHT);
 		widget->name = "fontsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(fontSettings);
+		widget->addWidgetItem(fontSettings);
 	}
 	
 	fontSettings->clearItems();
@@ -852,7 +852,7 @@ void COSDTimingSettings::showMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "osdtimingsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(osdTimingSettings);
+		widget->addWidgetItem(osdTimingSettings);
 	}
 	
 	osdTimingSettings->clearItems();
@@ -1048,7 +1048,7 @@ void COSDDiverses::showMenu()
 		widget = new CWidget(0, 0, 800, MENU_HEIGHT);
 		widget->name = "osdmiscsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(osdDiverseSettings);
+		widget->addWidgetItem(osdDiverseSettings);
 	}
 	
 	osdDiverseSettings->clearItems();
@@ -1129,7 +1129,7 @@ void CSkinManager::showMenu()
 		widget = new CWidget(0, 0, 800, MENU_HEIGHT);
 		widget->name = "skinsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(skinMenu);
+		widget->addWidgetItem(skinMenu);
 	}
 	
 	skinMenu->clearItems();
@@ -1256,7 +1256,7 @@ void CSkinSettings::showMenu()
 		widget = new CWidget(0, 0, 800, 600);
 		widget->name = "skinstyleselectionsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(skinSettings);
+		widget->addWidgetItem(skinSettings);
 	}
 	
 	skinSettings->clearItems();

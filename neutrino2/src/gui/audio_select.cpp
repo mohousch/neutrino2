@@ -127,7 +127,7 @@ void CAudioSelectMenuHandler::doMenu()
 	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 	widget->name = "audioselect";
 	widget->setMenuPosition(MENU_POSITION_CENTER);
-	widget->addItem(AudioSelector);
+	widget->addWidgetItem(AudioSelector);
 	
 	//
 	unsigned int count;

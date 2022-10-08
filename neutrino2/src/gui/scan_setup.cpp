@@ -369,7 +369,7 @@ void CScanSetup::showScanService()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "scansetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(scansetup);
+		widget->addWidgetItem(scansetup);
 	}
 
 	scansetup->clearItems();
@@ -430,7 +430,7 @@ void CScanSetup::showScanService()
 		satSetupWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		satSetupWidget->name = "satsetup";
 		satSetupWidget->setMenuPosition(MENU_POSITION_CENTER);
-		satSetupWidget->addItem(satSetup);
+		satSetupWidget->addWidgetItem(satSetup);
 	}
 
 	satSetup->clearItems();
@@ -467,7 +467,7 @@ void CScanSetup::showScanService()
 		satfindMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		satfindMenuWidget->name = "satfindMenuWidget";
 		satfindMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
-		satfindMenuWidget->addItem(satfindMenu);
+		satfindMenuWidget->addWidgetItem(satfindMenu);
 	}
 	
 	satfindMenu->clearItems();
@@ -511,7 +511,7 @@ void CScanSetup::showScanService()
 			satOnOffWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 			satOnOffWidget->name = "satOnOff";
 			satOnOffWidget->setMenuPosition(MENU_POSITION_CENTER);
-			satOnOffWidget->addItem(satOnOff);
+			satOnOffWidget->addWidgetItem(satOnOff);
 		}
 		
 		satOnOff->clearItems();
@@ -564,7 +564,7 @@ void CScanSetup::showScanService()
 					tempsatWidget->name = "tempsat";
 					tempsatWidget->setMenuPosition(MENU_POSITION_CENTER);
 					tempsatWidget->enableSaveScreen();
-					tempsatWidget->addItem(tempsat);
+					tempsatWidget->addWidgetItem(tempsat);
 				}
 				
 				tempsat->clearAll();
@@ -696,7 +696,7 @@ void CScanSetup::showScanService()
 			motorMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 			motorMenuWidget->name = "motorsetup";
 			motorMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
-			motorMenuWidget->addItem(motorMenu);
+			motorMenuWidget->addWidgetItem(motorMenu);
 		}
 
 		motorMenu->clearItems();
@@ -848,7 +848,7 @@ void CScanSetup::showScanService()
 		manualScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		manualScanWidget->name = "manualscan";
 		manualScanWidget->setMenuPosition(MENU_POSITION_CENTER);
-		manualScanWidget->addItem(manualScan);
+		manualScanWidget->addWidgetItem(manualScan);
 	}
 	
 	manualScan->clearItems();
@@ -1007,7 +1007,7 @@ void CScanSetup::showScanService()
 		autoScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		autoScanWidget->name = "autoscan";
 		autoScanWidget->setMenuPosition(MENU_POSITION_CENTER);
-		autoScanWidget->addItem(autoScan);
+		autoScanWidget->addWidgetItem(autoScan);
 	}
 	
 	autoScan->clearItems();
@@ -1066,7 +1066,7 @@ void CScanSetup::showScanService()
 			autoScanAllWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 			autoScanAllWidget->name = "autoscanall";
 			autoScanAllWidget->setMenuPosition(MENU_POSITION_CENTER);
-			autoScanAllWidget->addItem(autoScanAll);
+			autoScanAllWidget->addWidgetItem(autoScanAll);
 		}
 		
 		autoScanAll->clearItems();
@@ -1129,7 +1129,7 @@ int CScanSetup::showUnicableSetup()
 		uniWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		uniWidget->name = "unicablesetup";
 		uniWidget->setMenuPosition(MENU_POSITION_CENTER);
-		uniWidget->addItem(uni_setup);
+		uniWidget->addWidgetItem(uni_setup);
 	}
 	
 	uni_setup->clearItems();
@@ -1221,7 +1221,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		tpWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		tpWidget->name = "transponder";
 		tpWidget->setMenuPosition(MENU_POSITION_CENTER);
-		tpWidget->addItem(menu);
+		tpWidget->addWidgetItem(menu);
 	}
 	
 	menu->clearItems();
@@ -1816,7 +1816,7 @@ void CTunerSetup::showMenu()
 		widget->name = "tunersetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		widget->addItem(TunerSetup);
+		widget->addWidgetItem(TunerSetup);
 	}
 	
 	TunerSetup->clearItems();

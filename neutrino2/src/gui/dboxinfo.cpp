@@ -137,7 +137,7 @@ void CDBoxInfoWidget::showInfo()
 	CHeaders* head = new CHeaders(Box.iX, yPos, Box.iWidth, 40, _("Box Info"), NEUTRINO_ICON_INFO);
 	head->enablePaintDate();
 	head->setFormat("%d.%m.%Y %H:%M:%S");
-	dboxInfoWidget->addItem(head);
+	dboxInfoWidget->addWidgetItem(head);
 
 	int i = 0;
 
@@ -520,7 +520,7 @@ void CInfoMenu::showMenu()
 		widget->name = "information";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		widget->addItem(infoMenu);
+		widget->addWidgetItem(infoMenu);
 	}
 	
 	//

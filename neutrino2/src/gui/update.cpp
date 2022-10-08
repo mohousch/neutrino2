@@ -199,7 +199,7 @@ bool CFlashUpdate::selectHttpImage(void)
 		widget = new CWidget(0, 0, 600, MENU_HEIGHT);
 		widget->name = "selecthttpimage";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(SelectionWidget);
+		widget->addWidgetItem(SelectionWidget);
 	}
 	
 	SelectionWidget->clearItems();
@@ -708,7 +708,7 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "mtdselector";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(mtdselector);
+		widget->addWidgetItem(mtdselector);
 	}
 	
 	mtdselector->clearItems();
@@ -797,7 +797,7 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "fileselector";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(fileselector);
+		widget->addWidgetItem(fileselector);
 	}
 	
 	fileselector->clearItems();
@@ -981,7 +981,7 @@ void CUpdateSettings::showMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "updatesetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(updateSettings);
+		widget->addWidgetItem(updateSettings);
 	}
 	
 	updateSettings->clearItems();
@@ -1024,7 +1024,7 @@ void CUpdateSettings::showMenu()
 		mtdexpertWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		mtdexpertWidget->name = "flashexpert";
 		mtdexpertWidget->setMenuPosition(MENU_POSITION_CENTER);
-		mtdexpertWidget->addItem(mtdexpert);
+		mtdexpertWidget->addWidgetItem(mtdexpert);
 	}
 	
 	mtdexpert->clearItems();

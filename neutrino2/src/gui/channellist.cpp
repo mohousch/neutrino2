@@ -162,6 +162,9 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	
 	vline = NULL;
 	hline = NULL;
+	
+	widgetItemsCount = 0;
+	widgetCCItemsCount = 0;
 
 	// widget screen	
 	cFrameBox.iWidth = frameBuffer->getScreenWidth() - 20;
@@ -174,6 +177,9 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	if (CNeutrinoApp::getInstance()->widget_exists("channellist"))
 	{
 		chWidget = CNeutrinoApp::getInstance()->getWidget("channellist");
+		
+		widgetItemsCount = chWidget->getWidgetItemsCount();
+		widgetCCItemsCount = chWidget->getCCItemsCount();
 	
 		listBox = (ClistBox*)chWidget->getWidgetItem(WIDGETITEM_LISTBOX);
 		head = (CHeaders*)chWidget->getWidgetItem(WIDGETITEM_HEAD);
@@ -210,22 +216,22 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 		hline = new CCHline(chWidget->getWindowsPos().iX + (chWidget->getWindowsPos().iWidth/3)*2 + 10, chWidget->getWindowsPos().iY + 50 + (chWidget->getWindowsPos().iHeight - 100)/2, chWidget->getWindowsPos().iWidth/3 - 20, 2);
 		hline->setGradient(3);
 		
-		chWidget->addItem(listBox);
-		chWidget->addItem(head);
-		chWidget->addItem(foot);
-		
-		chWidget->addItem(window);
+		chWidget->addWidgetItem(listBox);
+		chWidget->addWidgetItem(head);
+		chWidget->addWidgetItem(foot);
+		chWidget->addWidgetItem(window);
 		
 		//	
 		chWidget->addCCItem(vline);
 		chWidget->addCCItem(hline);
 	}
 	
-	//
+	/*
 	if (window == NULL)
 	{
 		window = new CWindow(chWidget->getWindowsPos().iX + (chWidget->getWindowsPos().iWidth/3)*2, chWidget->getWindowsPos().iY + 50, chWidget->getWindowsPos().iWidth/3, chWidget->getWindowsPos().iHeight - 100);
 	}
+	*/
 	
 	//
 	winTopBox.iX = window->getWindowsPos().iX + 2;
@@ -506,7 +512,7 @@ int CChannelList::doChannelMenu(void)
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(menu);
+		widget->addWidgetItem(menu);
 	}
 	
 	widget->enableSaveScreen();

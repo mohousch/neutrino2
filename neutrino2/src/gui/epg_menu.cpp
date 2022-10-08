@@ -109,7 +109,7 @@ int CEPGMenuHandler::doMenu()
 		widget->name = "epgtimer";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		widget->addItem(redMenu);
+		widget->addWidgetItem(redMenu);
 	}
 					
 	return widget->exec(NULL, "");

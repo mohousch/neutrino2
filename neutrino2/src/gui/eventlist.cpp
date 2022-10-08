@@ -130,7 +130,7 @@ EventList::EventList()
 		evlWidget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		
-		evlWidget->addItem(listBox);
+		evlWidget->addWidgetItem(listBox);
 	}				
 }
 
@@ -994,7 +994,7 @@ int CEventFinderMenu::showMenu(void)
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(searchMenu);
+		widget->addWidgetItem(searchMenu);
 	}
 	
 	searchMenu->clearItems();

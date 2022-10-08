@@ -276,7 +276,7 @@ void CMediaPortal::showMenu(void)
 		mediaPortal->addItem(item);
 	}
 	
-	widget->addItem(mediaPortal);
+	widget->addWidgetItem(mediaPortal);
 	//widget->addKey(RC_spkr, this, "delete");
 
 	widget->exec(NULL, "");

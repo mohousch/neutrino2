@@ -115,7 +115,7 @@ void CAudioPlayerSettings::showMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "audioplayersetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(audioPlayerSettings);
+		widget->addWidgetItem(audioPlayerSettings);
 	}
 	
 	audioPlayerSettings->clearItems();

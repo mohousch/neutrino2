@@ -230,12 +230,12 @@ class CWidget : public CMenuTarget
 		virtual ~CWidget();
 
 		// WIDGETITEMS
-		virtual void addItem(CWidgetItem* widgetItem, const bool defaultselected = false);
-		bool hasItem(){return !items.empty();};
-		int getItemsCount(){return items.size();};
-		virtual void clearItems(void){return items.clear();};
-		virtual void paintItems();
-		virtual void removeItem(long pos);
+		virtual void addWidgetItem(CWidgetItem* widgetItem, const bool defaultselected = false);
+		bool hasWidgetItem(){return !items.empty();};
+		int getWidgetItemsCount(){return items.size();};
+		virtual void clearWidgetItems(void){return items.clear();};
+		virtual void paintWidgetItems();
+		virtual void removeWidgetItem(long pos);
 		
 		void setSelected(unsigned int _new) {selected = _new; if (selected < 0) selected = 0;};
 		

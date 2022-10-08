@@ -121,7 +121,7 @@ void CParentalLockSettings::showMenu()
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "parentallocksetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addItem(listBox);
+		widget->addWidgetItem(listBox);
 	}
 	
 	listBox->clearItems();

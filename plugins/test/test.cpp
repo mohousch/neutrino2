@@ -972,11 +972,11 @@ void CTestMenu::testCWidget()
 	}
 
 	//
-	testWidget->addItem(headers);
-	testWidget->addItem(frameBoxWidget);
-	testWidget->addItem(leftWidget);
-	testWidget->addItem(rightWidget);
-	testWidget->addItem(footers);
+	testWidget->addWidgetItem(headers);
+	testWidget->addWidgetItem(frameBoxWidget);
+	testWidget->addWidgetItem(leftWidget);
+	testWidget->addWidgetItem(rightWidget);
+	testWidget->addWidgetItem(footers);
 
 	testWidget->addKey(RC_info, this, "winfo");
 	testWidget->addKey(RC_red, this, "nextPage");
@@ -1112,8 +1112,8 @@ void CTestMenu::testCWindowWidget()
 	
 	testWidget->addCCItem(&testPig);
 	
-	testWidget->addItem(&head);
-	testWidget->addItem(&foot);
+	testWidget->addWidgetItem(&head);
+	testWidget->addWidgetItem(&foot);
 	
 	testWidget->addKey(RC_red, this, "mplay");
 	testWidget->addKey(RC_green, this, "mplay");
@@ -1155,7 +1155,7 @@ void CTestMenu::testCTextBoxWidget()
 	textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
 	
 	testWidget = new CWidget();
-	testWidget->addItem(textBoxWidget);
+	testWidget->addWidgetItem(textBoxWidget);
 	testWidget->addKey(RC_ok, this, "mplay");
 	testWidget->addKey(RC_info, this, "tinfo");
 	
@@ -1539,8 +1539,8 @@ void CTestMenu::testCFrameBoxWidget()
 		}
 	}
 
-	testWidget->addItem(frameBoxWidget);
-	testWidget->addItem(headers);
+	testWidget->addWidgetItem(frameBoxWidget);
+	testWidget->addWidgetItem(headers);
 	
 	testWidget->exec(NULL, "");
 
@@ -1660,9 +1660,9 @@ void CTestMenu::testCListFrameWidget()
 	listFrame->showSelection(true);
 
 	//
-	testWidget->addItem(headers);
-	testWidget->addItem(listFrame);
-	testWidget->addItem(footers);
+	testWidget->addWidgetItem(headers);
+	testWidget->addWidgetItem(listFrame);
+	testWidget->addWidgetItem(footers);
 
 	testWidget->addKey(RC_ok, this, "aok");
 
@@ -1751,7 +1751,7 @@ void CTestMenu::testClistBoxWidget()
 	}
 	
 	testWidget = new CWidget(&rightBox);
-	testWidget->addItem(rightWidget);
+	testWidget->addWidgetItem(rightWidget);
 
 	testWidget->addKey(RC_info, this, "linfo");
 	testWidget->addKey(RC_setup, this, "lsetup");
@@ -1927,10 +1927,10 @@ void CTestMenu::testMultiWidget()
 	
 	testWidget = new CWidget(&mainBox);
 	
-	testWidget->addItem(headers);
-	testWidget->addItem(footers);
-	testWidget->addItem(leftWidget);
-	testWidget->addItem(windowWidget);
+	testWidget->addWidgetItem(headers);
+	testWidget->addWidgetItem(footers);
+	testWidget->addWidgetItem(leftWidget);
+	testWidget->addWidgetItem(windowWidget);
 	
 	testWidget->exec(NULL, "");
 	
@@ -7521,7 +7521,7 @@ void CTestMenu::showMenu()
 		
 		mainMenu->setFootButtons(&btn);
 		
-		mWidget->addItem(mainMenu);
+		mWidget->addWidgetItem(mainMenu);
 	}
 	
 	mainMenu->clearAll();

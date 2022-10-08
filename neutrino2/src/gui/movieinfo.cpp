@@ -1938,7 +1938,7 @@ void CMovieInfoWidget::funArt()
 
 	testFrameBox->addFrame(infoFrame, true);
 
-	widget->addItem(testFrameBox);
+	widget->addWidgetItem(testFrameBox);
 	widget->exec(NULL, "");
 
 	delete widget;

@@ -76,7 +76,7 @@ CMountChooser::CMountChooser(const char* const Name, const std::string& Icon, in
 		widget->name = "mountchooser";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->enableSaveScreen();
-		widget->addItem(menu);
+		widget->addWidgetItem(menu);
 	}
 		
 	menu->clearAll();

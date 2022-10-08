@@ -964,7 +964,7 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 			buttonlabel_node = buttonlabel_node->xmlNextNode;
 		}
 		
-		if (widget) widget->addItem(listBox);
+		if (widget) widget->addWidgetItem(listBox);
 			
 		node = node->xmlNextNode;
 	}
@@ -1053,7 +1053,7 @@ void CNeutrinoApp::parseCWindow(_xmlNodePtr node, CWidget* widget)
 		// BUTTONS
 		parseCCButtons(node->xmlChildrenNode, NULL, window);
 					
-		if (widget) widget->addItem(window);
+		if (widget) widget->addWidgetItem(window);
 			
 		node = node->xmlNextNode;
 	}
@@ -1158,7 +1158,7 @@ void CNeutrinoApp::parseCHead(_xmlNodePtr node, CWidget* widget)
 			buttonlabel_node = buttonlabel_node->xmlNextNode;
 		}
 					
-		if (widget) widget->addItem(head);
+		if (widget) widget->addWidgetItem(head);
 			
 		node = node->xmlNextNode;
 	}
@@ -1246,7 +1246,7 @@ void CNeutrinoApp::parseCFoot(_xmlNodePtr node, CWidget* widget)
 			buttonlabel_node = buttonlabel_node->xmlNextNode;
 		}
 					
-		if (widget) widget->addItem(foot);
+		if (widget) widget->addWidgetItem(foot);
 			
 		node = node->xmlNextNode;
 	}
@@ -1353,7 +1353,7 @@ void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 		if (text) textBox->setText(text, image.c_str(), tw, th, tmode, tframe, fontbg);
 		*/
 					
-		if (widget) widget->addItem(textBox);
+		if (widget) widget->addWidgetItem(textBox);
 			
 		node = node->xmlNextNode;
 	}
