@@ -1745,3 +1745,12 @@
 /neutrino2/data/skins/pandora/Makefile.in
 /neutrino2/data/skins/neutrino2/Makefile
 /neutrino2/data/skins/neutrino2/Makefile.in
+/neutrino2/lib/libdvbci/dvb-ci.o
+/neutrino2/lib/libdvbci/dvbci_appmgr.o
+/neutrino2/lib/libdvbci/dvbci_camgr.o
+/neutrino2/lib/libdvbci/dvbci_datetimemgr.o
+/neutrino2/lib/libdvbci/dvbci_mmi.o
+/neutrino2/lib/libdvbci/dvbci_resmgr.o
+/neutrino2/lib/libdvbci/dvbci_session.o
+/neutrino2/lib/libdvbci/libdvbci.a
+/neutrino2/src/gui/cam_menu.o

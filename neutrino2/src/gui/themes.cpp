@@ -99,9 +99,18 @@ int CThemes::exec(CMenuTarget * parent, const std::string& actionKey)
 		}
 		else if (actionKey == "theme_default")
 		{
-			if (MessageBox(_("Information"), _("Default theme"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+			setupDefaultColors();
+			
+			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+			CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+			
+			//
+			if (g_settings.preferred_skin != "neutrino2")
 			{
-				setupDefaultColors();
+				if (MessageBox(_("Information"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+				{
+					CNeutrinoApp::getInstance()->exec(NULL, "restart");
+				}
 			}
 
 			return res;
@@ -124,7 +133,7 @@ int CThemes::exec(CMenuTarget * parent, const std::string& actionKey)
 			//
 			if (g_settings.preferred_skin != "neutrino2")
 			{
-				if (MessageBox(_("Information"), _("this needs Neutrino restart\ndo you want really to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+				if (MessageBox(_("Information"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 				{
 					CNeutrinoApp::getInstance()->exec(NULL, "restart");
 				}
@@ -163,12 +172,12 @@ void CThemes::readThemes(ClistBox* themes)
 				{
 					if ( p == 0 && hasCVSThemes == false ) 
 					{
-						themes->addItem(new CMenuSeparator(LINE | STRING, _("Select theme")));
+						//themes->addItem(new CMenuSeparator(LINE | STRING, _("Select theme")));
 						hasCVSThemes = true;
 					} 
 					else if ( p == 1 && hasUserThemes == false ) 
 					{
-						themes->addItem(new CMenuSeparator(LINE | STRING, _("Select theme")));
+						//themes->addItem(new CMenuSeparator(LINE | STRING, _("Select theme")));
 						hasUserThemes = true;
 					}
 					
@@ -238,7 +247,7 @@ int CThemes::Show()
 	
 	//set default theme
 	themes->addItem( new CMenuSeparator(LINE) );
-	themes->addItem(new CMenuForwarder(_("Neutrino2 theme"), true, NULL, this, "theme_default"));
+	themes->addItem(new CMenuForwarder(_("Neutrino2"), true, NULL, this, "theme_default"));
 
 	//	
 	readThemes(themes);

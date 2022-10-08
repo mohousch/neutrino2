@@ -186,49 +186,49 @@ class testMenu(CMenuTarget):
 		self.listWidget.enablePaintItemInfo(70)
 
 		# messageBox
-		item1 = CMenuForwarder("CMessageBox")
+		item1 = ClistBoxItem("CMessageBox")
 		item1.setItemIcon(DATADIR + "/icons/plugin.png")
 		item1.setHint("testing CMessageBox")
 		item1.setInfo1("testing CMessageBox")
 
 		# CHelpBox
-		item2 = CMenuForwarder("CHelpBox")
+		item2 = ClistBoxItem("CHelpBox")
 		item2.setItemIcon(DATADIR + "/icons/plugin.png")
 		item2.setHint("testing CHelpBox")
 		item2.setInfo1("testing CHelpBox")
 
 		# CHintBox
-		item3 = CMenuForwarder("CHintBox")
+		item3 = ClistBoxItem("CHintBox")
 		item3.setItemIcon(DATADIR + "/icons/plugin.png")
 		item3.setHint("testing CHintBox")
 		item3.setInfo1("testing CHintBox")
 
 		# CInfoBox
-		item4 = CMenuForwarder("CInfoBox")
+		item4 = ClistBoxItem("CInfoBox")
 		item4.setItemIcon(DATADIR + "/icons/plugin.png")
 		item4.setHint("testing CInfoBox")
 		item4.setInfo1("testing CInfoBox")
 
 		# CStringInput
-		item5 = CMenuForwarder("CStringInput")
+		item5 = ClistBoxItem("CStringInput")
 		item5.setItemIcon(DATADIR + "/icons/plugin.png")
 		item5.setHint("testing CStringInput")
 		item5.setInfo1("testing CStringInput")
 
 		# CAudioPlayerGui
-		item6 = CMenuForwarder("CAudioPlayerGui")
+		item6 = ClistBoxItem("CAudioPlayerGui")
 		item6.setItemIcon(DATADIR + "/icons/plugin.png")
 		item6.setHint("testing CAudioPlayerGui")
 		item6.setInfo1("testing CAudioPlayerGui")
 
 		# CPictureViewerGui
-		item7 = CMenuForwarder("CPictureViewerGui")
+		item7 = ClistBoxItem("CPictureViewerGui")
 		item7.setItemIcon(DATADIR + "/icons/plugin.png")
 		item7.setHint("testing CPictureViewerGui")
 		item7.setInfo1("testing CPictureViewerGui")
 
 		# CFileBrowser | CMoviePlayerGui
-		item8 = CMenuForwarder("CMoviePlayerGui")
+		item8 = ClistBoxItem("CMoviePlayerGui")
 		item8.setItemIcon(DATADIR + "/icons/plugin.png")
 		item8.setHint("testing CMoviePlayerGui")
 		item8.setInfo1("testing CMoviePlayerGui")
@@ -282,7 +282,6 @@ class testMenu(CMenuTarget):
 
 if __name__ == "__main__":
 	testMenu()
-
 
 
 

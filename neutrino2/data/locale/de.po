@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino-hd2 4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-03 12:19+0200\n"
+"POT-Creation-Date: 2022-10-08 11:41+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -502,9 +502,6 @@ msgstr ""
 msgid "Default gateway"
 msgstr ""
 
-msgid "Default theme"
-msgstr ""
-
 msgid "Delayed shutdown"
 msgstr ""
 
@@ -602,39 +599,32 @@ msgid "Drive Mode/auto stop"
 msgstr ""
 
 msgid "Dutch"
-msgstr ""
+msgstr "Hollandisch"
 
 msgid "EPG"
-msgstr ""
+msgstr "EPG"
 
 msgid "EPG / Timer"
-msgstr ""
+msgstr "EPG / Timer"
 
 msgid "EPG Date"
-msgstr ""
-
-msgid "EPG Info 1"
-msgstr ""
-
-msgid "EPG Info 2"
-msgstr ""
+msgstr "EPG Datum"
 
 msgid "EPG Info1"
-msgstr ""
+msgstr "EPG Info1"
 
 msgid "EPG Info2"
-msgstr ""
+msgstr "EPG Info2"
 
 msgid "EPG Long Description (hours)"
 msgstr ""
 
 msgid "EPG Plus"
-msgstr ""
+msgstr "EPG Plus"
 
 msgid "EPG Title"
-msgstr ""
+msgstr "EPG Titel"
 
-#, fuzzy
 msgid "EPG is not available"
 msgstr "EPG nicht verfügbar"
 
@@ -650,7 +640,6 @@ msgstr ""
 msgid "EPG save path"
 msgstr ""
 
-#, fuzzy
 msgid "EPG settings"
 msgstr "EPG Einstellungen"
 
@@ -706,9 +695,8 @@ msgid "Execute plugin"
 msgstr ""
 
 msgid "Exit"
-msgstr ""
+msgstr "Abbrechen"
 
-#, fuzzy
 msgid "Expert functions"
 msgstr "Experten Funktionen"
 
@@ -739,9 +727,8 @@ msgstr "Erweiterungen"
 msgid "File could not be created:"
 msgstr ""
 
-#, fuzzy
 msgid "File selector"
-msgstr "Skin Style Auswahl"
+msgstr "Datei Auswahl"
 
 msgid "File size (MB)"
 msgstr ""
@@ -750,11 +737,10 @@ msgid "File system"
 msgstr ""
 
 msgid "Filebrowser"
-msgstr ""
+msgstr "Filebrowser"
 
-#, fuzzy
 msgid "Filebrowser settings"
-msgstr "Video Einstellungen"
+msgstr "Filebrowser Einstellungen"
 
 msgid "Filename of the play list"
 msgstr ""
@@ -1386,7 +1372,7 @@ msgid "Neutrino restart"
 msgstr "Neutrino neu starten"
 
 #, fuzzy
-msgid "Neutrino2 theme"
+msgid "Neutrino2"
 msgstr "Neutrino neu starten"
 
 msgid "New Bookmark"
@@ -2038,9 +2024,6 @@ msgid "Select language"
 msgstr "Sprache wählen"
 
 msgid "Select starting-time"
-msgstr ""
-
-msgid "Select theme"
 msgstr ""
 
 msgid "Select transponder"
@@ -3483,25 +3466,14 @@ msgid "the filesize is 0 Bytes"
 msgstr ""
 
 #, fuzzy
+msgid "this need Neutrino restart"
+msgstr ""
+"Diese Einstellung braucht Neutrino neu Start\n"
+"willst Du wirklich Neutrino neu starten?"
+
 msgid ""
 "this need Neutrino restart\n"
-"do you want really to restart?"
-msgstr ""
-"Diese Einstellung braucht Neutrino neu Start\n"
-"willst Du wirklich Neutrino neu starten?"
-
-#, fuzzy
-msgid ""
-"this needs Neutrino restart\n"
-"Skin Style?"
-msgstr ""
-"Diese Einstellung braucht Neutrino neu Start\n"
-"willst Du wirklich Neutrino neu starten?"
-
-#, fuzzy
-msgid ""
-"this needs Neutrino restart\n"
-"do you want really to restart?"
+"do you really want to restart?"
 msgstr ""
 "Diese Einstellung braucht Neutrino neu Start\n"
 "willst Du wirklich Neutrino neu starten?"

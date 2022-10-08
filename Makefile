@@ -115,7 +115,7 @@ init:
 	echo ""
 # python
 	@echo -e "\npython support ?:"
-	@echo "   1)  yes"
+	@echo "   1)  yes (experimental)"
 	@echo -e "   \033[01;32m2) no\033[00m"
 	@read -p "Select python support (1-2)?" PYTHON; \
 	PYTHON=$${PYTHON}; \
@@ -330,9 +330,7 @@ $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
 			--enable-maintainer-mode \
 			--without-debug \
 			--with-boxtype=$(BOXTYPE) \
-			--enable-python \
-			--enable-lua \
-			--enable-testing
+			$(NHD2_OPTS)
 
 plugins-clean:
 	-$(MAKE) -C $(PLUGINS_SRC) clean

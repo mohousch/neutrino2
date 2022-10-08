@@ -553,7 +553,7 @@ int CLanguageSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		if (!fromStartWizzard)
 		{
-			if (MessageBox(_("Information"), _("this need Neutrino restart\ndo you want really to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+			if (MessageBox(_("Information"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 			{
 				CNeutrinoApp::getInstance()->exec(NULL, "restart");
 			}
@@ -1192,7 +1192,7 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 	if (actionKey == "neutrino2")
 	{
-		if (MessageBox(_("Skin Select"), _("this needs Neutrino restart\ndo you want really to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+		if (MessageBox(_("Skin Select"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 		{
 			g_settings.preferred_skin = "neutrino2";
 			
@@ -1204,7 +1204,7 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if (!actionKey.empty())
 	{
-		if (MessageBox(_("Skin Select"), _("this need Neutrino restart\ndo you want really to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+		if (MessageBox(_("Skin Select"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 		{
 			CNeutrinoApp::getInstance()->unloadSkin();
 			g_settings.preferred_skin = actionKey;
@@ -1359,7 +1359,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		}
 		else
 		{
-			if (MessageBox(_("Skin Style"), _("this needs Neutrino restart\nSkin Style?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+			if (MessageBox(_("Skin Style"), _("this need Neutrino restart"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 			{
 				// read skin config
 				std::string skinConfigFile = CONFIGDIR "/skins/";

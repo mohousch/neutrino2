@@ -223,6 +223,7 @@ void CDBoxInfoWidget::showInfo()
 	// separator
 	CCHline* hLine = new CCHline();
 	hLine->setPosition(Box.iX + 10,  yPos, Box.iWidth - 20, 10);
+	hLine->setGradient(3);
 	dboxInfoWidget->addCCItem(hLine);
 
 	// up time
@@ -289,6 +290,7 @@ void CDBoxInfoWidget::showInfo()
 	
 	CCHline* hLine2 = new CCHline();
 	hLine2->setPosition(Box.iX + 10,  yPos, Box.iWidth - 20, 10);
+	hLine2->setGradient(3);
 	dboxInfoWidget->addCCItem(hLine2);
     	
     	//hdd devices
