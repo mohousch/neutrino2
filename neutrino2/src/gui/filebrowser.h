@@ -63,8 +63,11 @@ class CFileBrowser
 	private:
 		CFrameBuffer *frameBuffer;
 		CBox cFrameBox;
+		CWidget *widget;
 		ClistBox *listBox;
 		CMenuItem *item;
+		
+		uint32_t sec_timer_id;
 
 		CFileList selected_filelist;
 		CFileList filelist;

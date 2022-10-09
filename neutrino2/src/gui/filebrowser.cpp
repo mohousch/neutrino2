@@ -186,6 +186,7 @@ void CFileBrowser::commonInit()
 
 	listBox = NULL;
 	item = NULL;
+	widget = NULL;
 
 	// box	
 	cFrameBox.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 40;
@@ -193,6 +194,19 @@ void CFileBrowser::commonInit()
 	
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
+	
+	//
+	if (CNeutrinoApp::getInstance()->widget_exists("filebrowser"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("filebrowser");
+		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		widget->addWidgetItem(listBox);
+	}	
 }
 
 CFileBrowser::~CFileBrowser()
@@ -336,9 +350,20 @@ bool CFileBrowser::exec(const char * const dirname)
 	exit_pressed = false;
 
 	// create listBox
-	listBox = new ClistBox(&cFrameBox);
-
-	listBox->initFrames();
+	//listBox = new ClistBox(&cFrameBox);
+	//listBox->initFrames();
+	if (CNeutrinoApp::getInstance()->widget_exists("filebrowser"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("filebrowser");
+		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		
+		widget->addWidgetItem(listBox);
+	}	
 
 	name = dirname;
 	std::replace(name.begin(), name.end(), '\\', '/');
@@ -354,6 +379,9 @@ bool CFileBrowser::exec(const char * const dirname)
 	CFrameBuffer::getInstance()->blit();
 
 	int oldselected = selected;
+	
+	// add sec timer
+	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 
 	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_FILEBROWSER]);
 
@@ -566,6 +594,11 @@ bool CFileBrowser::exec(const char * const dirname)
 			if (!(filelist.empty()))
 				SMSInput(msg_repeatok);
 		}
+		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+		{
+			//
+			widget->refresh();
+		} 
 		else
 		{
 			if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
@@ -597,8 +630,9 @@ bool CFileBrowser::exec(const char * const dirname)
 		}
 	}
 
-	delete listBox;
-	listBox = NULL;
+	//
+	g_RCInput->killTimer(sec_timer_id);
+	sec_timer_id = 0;
 
 	return res;
 }
@@ -672,7 +706,8 @@ void CFileBrowser::hide()
 	dprintf(DEBUG_NORMAL, "CFileBrowser::hide:\n");
 
 	frameBuffer->paintBackgroundBoxRel(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
-	listBox->hide();
+	//listBox->hide();
+	widget->hide();
 	
 	frameBuffer->blit();
 }
@@ -839,7 +874,8 @@ void CFileBrowser::paint()
 
 	//
 	listBox->setSelected(selected);
-	listBox->paint();
+	//listBox->paint();
+	widget->paint();
 }
 
 void CFileBrowser::SMSInput(const neutrino_msg_t msg)

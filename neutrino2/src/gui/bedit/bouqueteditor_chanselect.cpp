@@ -87,7 +87,7 @@ CBEChannelSelectWidget::CBEChannelSelectWidget(const std::string& Caption, unsig
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 
 	//
-	if (CNeutrinoApp::getInstance()->getWidget("bqeditchselect"))
+	if (CNeutrinoApp::getInstance()->widget_exists("bqeditchselect"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("bqeditchselect");
 		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -219,6 +219,19 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 
 	if (parent)
 		parent->hide();
+		
+	//
+	if (CNeutrinoApp::getInstance()->widget_exists("bqeditchselect"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("bqeditchselect");
+		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		widget->addWidgetItem(listBox);
+	}	
 
 	paint();
 	frameBuffer->blit();

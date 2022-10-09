@@ -1361,6 +1361,20 @@
 		</TIME>
 	</WIDGET>
 	
+	<WIDGET name="filebrowser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1">
+		</LISTBOX>
+			
+		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png">
+		</IMAGE>
+		
+		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y">
+		</TIME>
+		
+		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S">
+		</TIME>
+	</WIDGET>
+	
 	<WIDGET name="testmenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode ="1" scrollbar="1" itemborder="1">
 		</LISTBOX>

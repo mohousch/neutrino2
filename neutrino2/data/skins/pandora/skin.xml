@@ -613,13 +613,6 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="testmenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Test Menu" icon="multimedia" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
-		
-			<FOOT_BUTTON_LABEL name="information"/>
-		</LISTBOX>
-	</WIDGET>
-	
 	<WIDGET name="bouquetlist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
 		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" head_line="1" paintfoot="1" foot_line="1"/>
 	</WIDGET>
@@ -653,6 +646,17 @@
 	
 	<WIDGET name="eventlist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
 		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" head_line="1" paintfoot="1" foot_line="1"/>
+	</WIDGET>
+	
+	<WIDGET name="filebrowser" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" head_line="1" paintfoot="1" foot_line="1"/>
+	</WIDGET>
+	
+	<WIDGET name="testmenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Test Menu" icon="multimedia" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		
+			<FOOT_BUTTON_LABEL name="information"/>
+		</LISTBOX>
 	</WIDGET>
 </skin>
 

@@ -90,8 +90,8 @@ CBEBouquetWidget::CBEBouquetWidget()
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
-	//
-	if (CNeutrinoApp::getInstance()->getWidget("bqeditbq"))
+	/*
+	if (CNeutrinoApp::getInstance()->widget_exists("bqeditbq"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("bqeditbq");
 		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -101,7 +101,8 @@ CBEBouquetWidget::CBEBouquetWidget()
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		widget->addWidgetItem(listBox);
-	}	
+	}
+	*/	
 }
 
 CBEBouquetWidget::~CBEBouquetWidget()
@@ -195,6 +196,20 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	
 	Bouquets = &g_bouquetManager->Bouquets;
 	
+	//
+	if (CNeutrinoApp::getInstance()->widget_exists("bqeditbq"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("bqeditbq");
+		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		widget->addWidgetItem(listBox);
+	}	
+	
+	//
 	paint();
 	frameBuffer->blit();
 
@@ -426,8 +441,8 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			//listBox->paintHead();
-			listBox->refresh();
+			//
+			widget->refresh();
 		}
 		else
 		{

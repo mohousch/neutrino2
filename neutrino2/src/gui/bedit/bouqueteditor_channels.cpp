@@ -86,7 +86,7 @@ CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bou
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
 	//
-	if (CNeutrinoApp::getInstance()->getWidget("bqeditch"))
+	if (CNeutrinoApp::getInstance()->widget_exists("bqeditch"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("bqeditch");
 		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
@@ -180,6 +180,19 @@ int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		Channels = &(g_bouquetManager->Bouquets[bouquet]->tvChannels);
 	else if (mode == CZapitClient::MODE_RADIO)
 		Channels = &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
+		
+	//
+	if (CNeutrinoApp::getInstance()->widget_exists("bqeditch"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("bqeditch");
+		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		widget->addWidgetItem(listBox);
+	}	
 	
 	paint();
 	frameBuffer->blit();	
@@ -350,8 +363,7 @@ int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			//listBox->paintHead();
-			listBox->refresh();
+			widget->refresh();
 		}
 		else
 		{
