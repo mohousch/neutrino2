@@ -747,24 +747,35 @@ void CMoviePlayerGui::PlayFile(void)
 	CWidget* widget = NULL;
 	ClistBox* bookStartMenu = NULL;
 	
-	bookStartMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	bookStartMenu->setMenuPosition(MENU_POSITION_CENTER);
-	bookStartMenu->setWidgetMode(MODE_MENU);
-	bookStartMenu->enableShrinkMenu();
-		
-	bookStartMenu->enablePaintHead();
-	bookStartMenu->setTitle(_("Bookmarks"), NEUTRINO_ICON_MOVIE);
+	if (CNeutrinoApp::getInstance()->widget_exists("bookmark"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("bookmark");
+		bookStartMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		bookStartMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		bookStartMenu->setMenuPosition(MENU_POSITION_CENTER);
+		bookStartMenu->setWidgetMode(MODE_MENU);
+		bookStartMenu->enableShrinkMenu();
+			
+		bookStartMenu->enablePaintHead();
+		bookStartMenu->setTitle(_("Bookmarks"), NEUTRINO_ICON_MOVIE);
 
-	bookStartMenu->enablePaintFoot();
+		bookStartMenu->enablePaintFoot();
+				
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+				
+		bookStartMenu->setFootButtons(&btn);
 			
-	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-	bookStartMenu->setFootButtons(&btn);
-		
-	//
-	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	widget->setMenuPosition(MENU_POSITION_CENTER);
-	widget->addWidgetItem(bookStartMenu);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "bookmark";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->addWidgetItem(bookStartMenu);
+	}
+	
+	bookStartMenu->clearItems();
 
 	bookStartMenu->addItem(new CMenuForwarder(_("New Bookmark")));
 	bookStartMenu->addItem(new CMenuForwarder(_("Repeat")));
@@ -1701,24 +1712,35 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	CWidget* widget = NULL;
 	ClistBox* startPosSelectionMenu = NULL;
 	
-	startPosSelectionMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	startPosSelectionMenu->setMenuPosition(MENU_POSITION_CENTER);
-	startPosSelectionMenu->setWidgetMode(MODE_SETUP);
-	startPosSelectionMenu->enableShrinkMenu();
-		
-	startPosSelectionMenu->enablePaintHead();
-	startPosSelectionMenu->setTitle(_("Start movie from:"), NEUTRINO_ICON_MOVIE);
+	if (CNeutrinoApp::getInstance()->widget_exists("startpos"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("startpos");
+		startPosSelectionMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		startPosSelectionMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		startPosSelectionMenu->setMenuPosition(MENU_POSITION_CENTER);
+		startPosSelectionMenu->setWidgetMode(MODE_SETUP);
+		startPosSelectionMenu->enableShrinkMenu();
+			
+		startPosSelectionMenu->enablePaintHead();
+		startPosSelectionMenu->setTitle(_("Start movie from:"), NEUTRINO_ICON_MOVIE);
 
-	startPosSelectionMenu->enablePaintFoot();
+		startPosSelectionMenu->enablePaintFoot();
+				
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+				
+		startPosSelectionMenu->setFootButtons(&btn);
 			
-	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-	startPosSelectionMenu->setFootButtons(&btn);
-		
-	//
-	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	widget->setMenuPosition(MENU_POSITION_CENTER);
-	widget->addWidgetItem(startPosSelectionMenu);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "startpos";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->addWidgetItem(startPosSelectionMenu);
+	}
+	
+	startPosSelectionMenu->clearItems();
 	
 	// bookmark start
 	if(playlist[selected].bookmarks.start != 0)
