@@ -309,7 +309,7 @@ function testCWidget()
 
 	listBox:setSelected(selected)
 
-	testWidget:addItem(listBox)
+	testWidget:addWidgetItem(listBox)
 	testWidget:addKey(neutrino.RC_info, null, "info")
 
 	ret = testWidget:exec(null, "")
@@ -490,7 +490,7 @@ function testClistBox()
 	local m = neutrino.CWidget()
 	--m:setMenuPosition(neutrino.MENU_POSITION_CENTER)
 
-	m:addItem(listBox)
+	m:addWidgetItem(listBox)
 	m:addKey(neutrino.RC_info)
 	
 	if selected < 0 then
@@ -759,10 +759,10 @@ function testCWindow()
 	
 	m:setSelected(selected)
 
-	m:addItem(head)
-	m:addItem(listBox)
-	m:addItem(testFrame)
-	m:addItem(foot)
+	m:addWidgetItem(head)
+	m:addWidgetItem(listBox)
+	m:addWidgetItem(testFrame)
+	m:addWidgetItem(foot)
 
 	m:addKey(neutrino.RC_red, null, "audioPlayer")
 	m:addKey(neutrino.RC_green, null, "pictureViewer")
@@ -873,7 +873,7 @@ function testCFrameBox()
 	frameBox:addFrame(frame4)
 
 	local m = neutrino.CWidget()
-	m:addItem(frameBox)
+	m:addWidgetItem(frameBox)
 
 	ret = m:exec(null, "")
 
@@ -951,7 +951,7 @@ function testCFrameBoxRandom()
 	m:paintMainFrame(true)
 
 	--m:addItem(window)
-	m:addItem(frameBox)
+	m:addWidgetItem(frameBox)
 
 	ret = m:exec(null, "")
 

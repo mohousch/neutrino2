@@ -273,9 +273,6 @@ CTimerList::CTimerList()
 	timerlistWidget = NULL;
 	listBox = NULL;
 	item = NULL;
-	timeLabel = NULL;
-	widgetItemsCount = 0;
-	CCItemsCount = 0;
 
 	plugin_chooser = NULL;
 
@@ -510,13 +507,11 @@ int CTimerList::show()
 
 	int res = RETURN_REPAINT;
 	
-	////
 	//
 	if (CNeutrinoApp::getInstance()->widget_exists("timerlist"))
 	{
 		timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
 		listBox = (ClistBox*)timerlistWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-		timeLabel = (CCTime*)timerlistWidget->getCCItem(CC_TIME, "time");
 	}
 	else
 	{
@@ -546,10 +541,6 @@ int CTimerList::show()
 	}
 	
 	//
-	widgetItemsCount = timerlistWidget->getWidgetItemsCount();
-	CCItemsCount = timerlistWidget->getCCItemsCount();
-	
-	//
 	paint();
 
 	// add sec timer
@@ -558,7 +549,7 @@ int CTimerList::show()
 	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_MENU] == 0 ? 0xFFFF : g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 
 	bool loop = true;
-	bool update = true;
+	bool update = false;
 	
 	while(loop)
 	{
@@ -664,13 +655,11 @@ int CTimerList::show()
 		} 
 		else
 		{
-		/*
 			if( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
 			{
 				loop = false;
 				res = RETURN_EXIT_ALL;
 			}
-		*/
 		}
 
 		frameBuffer->blit();	
@@ -1176,7 +1165,7 @@ int CTimerList::newTimer()
 
 	if (!recDirs.hasItem())
 	{
-		dprintf(DEBUG_NORMAL, "CTimerList::modifyTimer: warning: no network devices available\n");
+		dprintf(DEBUG_NORMAL, "CTimerList::newTimer: warning: no network devices available\n");
 	}
 
 	CMenuForwarder* m7 = new CMenuForwarder(_("Recording directory"), true, timerNew.recordingDir, this, "recording_dir");

@@ -174,26 +174,36 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	//
 	CWidget* widget = NULL;
 	ClistBox* AVPIDSelector = NULL;
-				
-	AVPIDSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	AVPIDSelector->setMenuPosition(MENU_POSITION_CENTER);
-	AVPIDSelector->setWidgetMode(MODE_SETUP);
-	AVPIDSelector->enableShrinkMenu();
-					
-	AVPIDSelector->enablePaintHead();
-	AVPIDSelector->setTitle(_("AV Select"), NEUTRINO_ICON_AUDIO);
+	
+	if (CNeutrinoApp::getInstance()->widget_exists("avselect"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("avselect");
+		AVPIDSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{			
+		AVPIDSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		AVPIDSelector->setMenuPosition(MENU_POSITION_CENTER);
+		AVPIDSelector->setWidgetMode(MODE_SETUP);
+		AVPIDSelector->enableShrinkMenu();
+						
+		AVPIDSelector->enablePaintHead();
+		AVPIDSelector->setTitle(_("AV Select"), NEUTRINO_ICON_AUDIO);
 
-	AVPIDSelector->enablePaintFoot();
+		AVPIDSelector->enablePaintFoot();
+							
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+							
+		AVPIDSelector->setFootButtons(&btn);
 						
-	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-						
-	AVPIDSelector->setFootButtons(&btn);
-					
-	//
-	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	widget->name = "avselect";
-	widget->setMenuPosition(MENU_POSITION_CENTER);
-	widget->addWidgetItem(AVPIDSelector);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "avselect";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->addWidgetItem(AVPIDSelector);
+	}
+	
+	AVPIDSelector->clearItems();
 	
 	CAVPIDChangeExec AVPIDChanger;
 	if(playback)

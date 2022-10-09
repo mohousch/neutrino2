@@ -54,12 +54,8 @@ class CTimerList : public CMenuTarget
 		//
 		CWidget* timerlistWidget;
 		ClistBox *listBox;
-		CCTime *timeLabel;
 		CMenuItem *item;
 		CBox cFrameBox;
-		
-		unsigned int widgetItemsCount;
-		unsigned int CCItemsCount;
 
 		uint32_t sec_timer_id;
 

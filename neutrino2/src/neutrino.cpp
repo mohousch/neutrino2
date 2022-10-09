@@ -5318,25 +5318,35 @@ void CNeutrinoApp::SelectNVOD()
                 CWidget* widget = NULL;
                 ClistBox* NVODSelector = NULL;
                 
-		NVODSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		NVODSelector->setMenuPosition(MENU_POSITION_CENTER);
-		NVODSelector->setWidgetMode(MODE_SETUP);
-		NVODSelector->enableShrinkMenu();
-						
-		NVODSelector->enablePaintHead();
-		NVODSelector->setTitle(g_RemoteControl->are_subchannels ? _("Select Subservice") : _("Select starting-time"), NEUTRINO_ICON_VIDEO);
+                if (CNeutrinoApp::getInstance()->widget_exists("nvodselect"))
+		{
+			widget = CNeutrinoApp::getInstance()->getWidget("nvodselect");
+			NVODSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		}
+		else
+                {
+			NVODSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			NVODSelector->setMenuPosition(MENU_POSITION_CENTER);
+			NVODSelector->setWidgetMode(MODE_SETUP);
+			NVODSelector->enableShrinkMenu();
+							
+			NVODSelector->enablePaintHead();
+			NVODSelector->setTitle(g_RemoteControl->are_subchannels ? _("Select Subservice") : _("Select starting-time"), NEUTRINO_ICON_VIDEO);
 
-		NVODSelector->enablePaintFoot();
-							
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-							
-		NVODSelector->setFootButtons(&btn);
+			NVODSelector->enablePaintFoot();
+								
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+								
+			NVODSelector->setFootButtons(&btn);
+			
+			//
+			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			widget->name = "nvodselect";
+			widget->setMenuPosition(MENU_POSITION_CENTER);
+			widget->addWidgetItem(NVODSelector);
+		}
 		
-		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "nvod";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addWidgetItem(NVODSelector);
+		NVODSelector->clearItems();
 
 		//
                 if(getNVODMenu(NVODSelector))

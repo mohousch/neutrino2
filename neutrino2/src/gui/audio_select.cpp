@@ -108,26 +108,36 @@ void CAudioSelectMenuHandler::doMenu()
 	//
 	CWidget* widget = NULL;
 	ClistBox* AudioSelector = NULL;
-				
-	AudioSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	AudioSelector->setMenuPosition(MENU_POSITION_CENTER);
-	AudioSelector->setWidgetMode(MODE_SETUP);
-	AudioSelector->enableShrinkMenu();
-					
-	AudioSelector->enablePaintHead();
-	AudioSelector->setTitle(_("Select language"), NEUTRINO_ICON_AUDIO);
+	
+	if (CNeutrinoApp::getInstance()->widget_exists("audioselect"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("audioselect");
+		AudioSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{			
+		AudioSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		AudioSelector->setMenuPosition(MENU_POSITION_CENTER);
+		AudioSelector->setWidgetMode(MODE_SETUP);
+		AudioSelector->enableShrinkMenu();
+						
+		AudioSelector->enablePaintHead();
+		AudioSelector->setTitle(_("Select language"), NEUTRINO_ICON_AUDIO);
 
-	AudioSelector->enablePaintFoot();
+		AudioSelector->enablePaintFoot();
+							
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+							
+		AudioSelector->setFootButtons(&btn);
 						
-	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-						
-	AudioSelector->setFootButtons(&btn);
-					
-	//
-	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	widget->name = "audioselect";
-	widget->setMenuPosition(MENU_POSITION_CENTER);
-	widget->addWidgetItem(AudioSelector);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "audioselect";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->addWidgetItem(AudioSelector);
+	}
+	
+	AudioSelector->clearItems();
 	
 	//
 	unsigned int count;

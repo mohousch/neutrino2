@@ -147,7 +147,7 @@ void CMenuWidget::Init(const std::string &Icon, const int mwidth, const int mhei
 	cFrameFootInfoHeight = 0;
 	footInfoMode = ITEMINFO_INFO_MODE;
 
-	timeout = 0;
+	timeout = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
 	sec_timer_interval = 1; // 1 min
 
 	//

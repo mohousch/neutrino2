@@ -69,26 +69,36 @@ int CDVBSubSelectMenuHandler::doMenu()
 	//
 	CWidget* widget = NULL;
 	ClistBox* DVBSubSelector = NULL;
-				
-	DVBSubSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	DVBSubSelector->setMenuPosition(MENU_POSITION_CENTER);
-	DVBSubSelector->setWidgetMode(MODE_SETUP);
-	DVBSubSelector->enableShrinkMenu();
-					
-	DVBSubSelector->enablePaintHead();
-	DVBSubSelector->setTitle(_("Subtitle Select"), NEUTRINO_ICON_SUBT);
+	
+	if (CNeutrinoApp::getInstance()->widget_exists("subselect"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("subselect");
+		DVBSubSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{			
+		DVBSubSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		DVBSubSelector->setMenuPosition(MENU_POSITION_CENTER);
+		DVBSubSelector->setWidgetMode(MODE_SETUP);
+		DVBSubSelector->enableShrinkMenu();
+						
+		DVBSubSelector->enablePaintHead();
+		DVBSubSelector->setTitle(_("Subtitle Select"), NEUTRINO_ICON_SUBT);
 
-	DVBSubSelector->enablePaintFoot();
+		DVBSubSelector->enablePaintFoot();
+							
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+							
+		DVBSubSelector->setFootButtons(&btn);
 						
-	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-						
-	DVBSubSelector->setFootButtons(&btn);
-					
-	//
-	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	widget->name = "subselect";
-	widget->setMenuPosition(MENU_POSITION_CENTER);
-	widget->addWidgetItem(DVBSubSelector);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "subselect";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->addWidgetItem(DVBSubSelector);
+	}
+	
+	DVBSubSelector->clearItems();
 	
 	CSubtitleChangeExec SubtitleChanger;
 	unsigned int count;

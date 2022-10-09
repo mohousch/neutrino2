@@ -51,7 +51,7 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	enablePos = false;
 	menu_position = MENU_POSITION_CENTER;
 
-	timeout = 0;
+	timeout = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
 	selected = -1;
 	sec_timer_interval = 1;
 
@@ -81,7 +81,7 @@ CWidget::CWidget(CBox *position)
 	enablePos = false;
 	menu_position = MENU_POSITION_CENTER;
 
-	timeout = 0;
+	timeout = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
 	selected = -1;
 	sec_timer_interval = 1;
 
@@ -342,8 +342,6 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 		
 		int handled = false;
-
-		//dprintf(DEBUG_DEBUG, "CWidget::exec: msg:%s\n", CRCInput::getSpecialKeyName(msg));
 
 		if ( msg <= RC_MaxRC ) 
 		{
