@@ -176,6 +176,8 @@ class CComponent
 		virtual void setPlayTime(time_t p_time){};
 };
 
+typedef std::vector<CComponent*> CCITEMLIST;
+
 class CCIcon : public CComponent
 {
 	public:
@@ -699,6 +701,8 @@ class CWidgetItem
 		//
 		virtual inline bool isPainted(void){return painted;};
 };
+
+typedef std::vector<CWidgetItem*> WIDGETITEMLIST;
 
 // CHeaders
 class CHeaders : public CWidgetItem

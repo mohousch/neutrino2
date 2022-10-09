@@ -396,23 +396,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 		{
 			if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 			{
-				// refresh items
-				for (unsigned int i = 0; i < (unsigned int)items.size(); i++)
-				{
-					if (items[i]->update())
-					{
-						items[i]->refresh();
-					}
-				}
-				
-				// refresh CCItems
-				for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
-				{
-					if (CCItems[count]->update())
-					{
-						CCItems[count]->refresh();
-					}
-				}
+				refresh();
 			} 
 
 			switch (msg) 
@@ -502,6 +486,27 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 	}
 	
 	return retval;
+}
+
+void CWidget::refresh()
+{
+	// refresh items
+	for (unsigned int i = 0; i < (unsigned int)items.size(); i++)
+	{
+		if (items[i]->update())
+		{
+			items[i]->refresh();
+		}
+	}
+				
+	// refresh CCItems
+	for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
+	{
+		if (CCItems[count]->update())
+		{
+			CCItems[count]->refresh();
+		}
+	}
 }
 
 // events

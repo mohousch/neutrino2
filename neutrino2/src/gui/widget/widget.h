@@ -188,8 +188,8 @@ class CWidget : public CMenuTarget
 		CBox mainFrameBox;
 
 		// 
-		std::vector<CWidgetItem*> items;
-		std::vector<CComponent*> CCItems;
+		WIDGETITEMLIST items;
+		CCITEMLIST CCItems;
 
 		//
 		neutrino_msg_t      msg;
@@ -236,6 +236,7 @@ class CWidget : public CMenuTarget
 		virtual void clearWidgetItems(void){return items.clear();};
 		virtual void paintWidgetItems();
 		virtual void removeWidgetItem(long pos);
+		WIDGETITEMLIST getWidgetItems(){return items;};
 		
 		void setSelected(unsigned int _new) {selected = _new; if (selected < 0) selected = 0;};
 		
@@ -246,11 +247,13 @@ class CWidget : public CMenuTarget
 		virtual void clearCCItems(){CCItems.clear();};
 		virtual void paintCCItems();
 		virtual void removeCCItem(long pos);
+		CCITEMLIST getCCItems(){return CCItems;};
 		
 		//
 		virtual void paint();
 		virtual void hide();
 		virtual int exec(CMenuTarget *parent, const std::string &actionKey);
+		virtual void refresh();
 
 		//
 		void setTimeOut(unsigned long long int to = 0){timeout = to;};

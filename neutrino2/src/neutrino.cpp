@@ -5333,7 +5333,6 @@ void CNeutrinoApp::SelectNVOD()
 		NVODSelector->setFootButtons(&btn);
 		
 		//
-		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "nvod";
 		widget->setMenuPosition(MENU_POSITION_CENTER);

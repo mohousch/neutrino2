@@ -274,6 +274,8 @@ CTimerList::CTimerList()
 	listBox = NULL;
 	item = NULL;
 	timeLabel = NULL;
+	widgetItemsCount = 0;
+	CCItemsCount = 0;
 
 	plugin_chooser = NULL;
 
@@ -542,8 +544,12 @@ int CTimerList::show()
 		timerlistWidget->setMenuPosition(MENU_POSITION_CENTER);
 		timerlistWidget->addWidgetItem(listBox);
 	}
-	////
 	
+	//
+	widgetItemsCount = timerlistWidget->getWidgetItemsCount();
+	CCItemsCount = timerlistWidget->getCCItemsCount();
+	
+	//
 	paint();
 
 	// add sec timer
@@ -654,8 +660,7 @@ int CTimerList::show()
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
 			//
-			listBox->refresh();
-			if (timeLabel) timeLabel->refresh();
+			timerlistWidget->refresh();
 		} 
 		else
 		{

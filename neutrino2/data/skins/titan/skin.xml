@@ -4,7 +4,7 @@
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->	
 
-	<WIDGET name="mainmenu" id="1" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="mainmenu" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Main Menu" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" mode="1">
@@ -24,7 +24,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="settings" id="2" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="settings" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Settings" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
@@ -69,7 +69,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="osd" id="15" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="osd" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="OSD" icon="colors" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
@@ -102,7 +102,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="epgtimer" id="3" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="epgtimer" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="EPG / Timer" icon="epg" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
@@ -125,7 +125,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="features" id="6" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="features" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Features" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
@@ -146,7 +146,7 @@
 		</KEY>
 	</WIDGET>
 	
-	<WIDGET name="system" id="4" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="system" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="System" icon="softupdate" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
@@ -171,7 +171,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="powermenu" id="7" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="powermenu" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Power Menu" icon="power" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
@@ -194,7 +194,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="information" id="5" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="information" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Information" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
@@ -215,7 +215,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="mediaplayer" id="8" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="mediaplayer" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Media Player" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
@@ -230,7 +230,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="plugins" id="80" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="plugins" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" >
 		</LISTBOX>
 		
@@ -252,7 +252,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="timerlist" id="47" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="timerlist" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="1" scrollbar="0" >
 		</LISTBOX>
 		
@@ -274,7 +274,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="newtimer" id="90" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="newtimer" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
@@ -287,7 +287,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="modifytimer" id="91" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="modifytimer" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
@@ -300,7 +300,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="tunersetup" id="40" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="tunersetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
@@ -313,7 +313,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="scansetup" id="64" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="scansetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -326,7 +326,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="transponder" id="100" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="transponder" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -339,7 +339,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="unicablesetup" id="101" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="unicablesetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -352,7 +352,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="manualscan" id="102" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="manualscan" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -365,7 +365,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="autoscan" id="103" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="autoscan" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -378,7 +378,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="autoscanall" id="104" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="autoscanall" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -391,7 +391,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="satsetup" id="105" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="satsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -404,7 +404,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="motorsetup" id="106" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="motorsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -449,7 +449,7 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="updatesetup" id="42" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="updatesetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -462,7 +462,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="flashexpert" id="110" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="flashexpert" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -475,7 +475,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="fileselector" id="112" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="fileselector" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -488,7 +488,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="mtdselector" id="111" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="mtdselector" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -501,7 +501,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="cammenu" id="41" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="cammenu" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -514,19 +514,19 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="tempcam" id="999" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="tempcam" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" painthead="1" paintfoot="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="tempcam2" id="999" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="tempcam2" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" painthead="1" paintfoot="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="videosetup" id="9" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="videosetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -539,7 +539,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="audiosetup" id="10" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="audiosetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -552,7 +552,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="parentallocksetup" id="11" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="parentallocksetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
@@ -565,7 +565,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="networksetup" id="12" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="networksetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -578,7 +578,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="proxysetup" id="38" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="proxysetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -591,7 +591,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="nfs" id="39" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="nfs" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -643,7 +643,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="recordingsetup" id="13" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="recordingsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -656,7 +656,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="movieplayersetup" id="14" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="movieplayersetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -669,7 +669,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="audioplayersetup" id="18" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="audioplayersetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -682,7 +682,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="pictureviewersetup" id="19" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="pictureviewersetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -695,7 +695,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="lcdsetup" id="16" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="lcdsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -708,7 +708,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="zapitsetup" id="36" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="zapitsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -721,7 +721,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="lcdsetup" id="16" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="lcdsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -734,7 +734,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="hddsetup" id="21" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="hddsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -747,19 +747,19 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="temphdd" id="999" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="temphdd" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" painthead="1" paintfoot="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="temphdd2" id="999" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="temphdd2" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" painthead="1" paintfoot="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="miscsetup" id="33" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="miscsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -772,7 +772,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="filebrowsersetup" id="37" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="filebrowsersetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -785,7 +785,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="epgsetup" id="34" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="epgsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -798,7 +798,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="channelssetup" id="35" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="channelssetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
@@ -811,7 +811,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="skinsetup" id="22" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="skinsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" mode ="0" scrollbar="1">
 		</LISTBOX>
 		
@@ -824,7 +824,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="menusetup" id="23" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="menusetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
@@ -837,7 +837,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="skinstyleselectionsetup" id="32" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="skinstyleselectionsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
@@ -850,7 +850,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="themesetup" id="25" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="themesetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
@@ -863,7 +863,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="infobarsetup" id="24" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="infobarsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
@@ -876,7 +876,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="languagesetup" id="26" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="languagesetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
@@ -889,7 +889,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="fontsetup" id="27" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="fontsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
@@ -902,7 +902,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="osdtimingsetup" id="28" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="osdtimingsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
@@ -915,7 +915,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="osdmiscsetup" id="30" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="osdmiscsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
@@ -928,7 +928,7 @@
 		</FOOT>
 	</WIDGET>
 	
-	<WIDGET name="rcsetup" id="17" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="rcsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
@@ -978,13 +978,13 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="usermenu" id="999" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="usermenu" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode="1" scrollbar="1" painthead="1" paintfoot="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="testmenu" id="999" posx="0" posy="0" width="700" height="720" paintframe="1">
+	<WIDGET name="testmenu" posx="0" posy="0" width="700" height="720" paintframe="1">
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode="1" scrollbar="1" >
 		</LISTBOX>
 		

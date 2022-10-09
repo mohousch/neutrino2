@@ -134,7 +134,7 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu->addItem( new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
 		
 		//
-		if (widget == NULL) widget = new CWidget(nMenu->getWindowsPos().iX, nMenu->getWindowsPos().iY, nMenu->getWindowsPos().iWidth, nMenu->getWindowsPos().iHeight);
+		widget = new CWidget(nMenu->getWindowsPos().iX, nMenu->getWindowsPos().iY, nMenu->getWindowsPos().iWidth, nMenu->getWindowsPos().iHeight);
 		widget->name = "mainmenu";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
@@ -363,7 +363,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 		menu->integratePlugins(CPlugins::I_TYPE_USER, key);
 	}
 		
-	// start directly plugins if there is no items.
+	// start directly plugins if there is no items / start features
 	if(menu && menu->getItemsCount() == 0)
 	{
 		CPluginList * pluginList = new CPluginList();
