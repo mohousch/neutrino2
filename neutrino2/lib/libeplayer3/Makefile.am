@@ -39,11 +39,3 @@ if USE_OPENGL
 LIBEPLAYER3_LIBS += -lao
 endif
 
-bin_PROGRAMS = eplayer3 meta
-
-eplayer3_SOURCES = tools/eplayer2.c
-eplayer3_LDADD = $(LIBEPLAYER3_LIBS)
-
-meta_SOURCES = tools/meta.c
-meta_LDADD = $(LIBEPLAYER3_LIBS)
-
