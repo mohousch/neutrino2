@@ -198,6 +198,7 @@ AM_CONDITIONAL(ENABLE_TESTING,test "$enable_testing" = "yes")
 
 AC_MSG_RESULT([
 Boxtype          	: $BOXTYPE
+Box Model		: $BOXMODEL
 OpenGL			: $enable_opengl
 Gstreamer		: $enable_gstreamer
 SCART			: $enable_scart
