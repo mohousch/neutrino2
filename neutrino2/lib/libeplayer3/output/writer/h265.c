@@ -52,6 +52,25 @@
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
+
+#define H265_DEBUG
+
+#ifdef H265_DEBUG
+
+static short debug_level = 10;
+
+#define h265_printf(level, fmt, x...) do { \
+if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define h265_printf(level, fmt, x...)
+#endif
+
+#ifndef H265_SILENT
+#define h265_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define h265_err(fmt, x...)
+#endif
+
 #define IOVEC_SIZE                                      128
 
 /* ***************************** */
@@ -134,7 +153,7 @@ static int32_t PreparCodecData(unsigned char *data, unsigned int cd_len, unsigne
                         }
                         else if ((tmp_len + 4 + nal_size) >= sizeof(tmp))
                         {
-                            h264_err("Ignoring nal as tmp buffer is too small tmp_len + nal = %d\n", tmp_len + 4 + nal_size);
+                            h265_err("Ignoring nal as tmp buffer is too small tmp_len + nal = %d\n", tmp_len + 4 + nal_size);
                         }
                         pos += nal_size;
                     }
@@ -175,7 +194,7 @@ static int writeData(void* _call)
 
     if (call == NULL)
     {
-        h264_err("call data is NULL...\n");
+        h265_err("call data is NULL...\n");
         return 0;
     }
 
@@ -187,13 +206,13 @@ static int writeData(void* _call)
 
     if ((call->data == NULL) || (call->len <= 0))
     {
-        h264_err("NULL Data. ignoring...\n");
+        h265_err("NULL Data. ignoring...\n");
         return 0;
     }
 
     if (call->fd < 0)
     {
-        h264_err("file pointer < 0. ignoring ...\n");
+        h265_err("file pointer < 0. ignoring ...\n");
         return 0;
     }
     
@@ -259,7 +278,7 @@ static int writeData(void* _call)
         {
             if (ic >= IOVEC_SIZE)
             {
-                h264_err(">> Drop data due to ic overflow\n");
+                h265_err(">> Drop data due to ic overflow\n");
                 exit(-1);
                 break;
             }
@@ -296,7 +315,7 @@ static int writeData(void* _call)
         PacketLength += iov[0].iov_len;
         if (PacketLength != len)
         {
-            h264_err("<<<< not all data have been written [%d/%d]\n", len, PacketLength);
+            h265_err("<<<< not all data have been written [%d/%d]\n", len, PacketLength);
         }
     }
 
