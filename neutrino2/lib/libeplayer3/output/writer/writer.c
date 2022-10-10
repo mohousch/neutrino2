@@ -217,5 +217,3 @@ ssize_t writev_with_retry(int fd, const struct iovec *iov, int ic)
 	return len;
 }
 
-
-

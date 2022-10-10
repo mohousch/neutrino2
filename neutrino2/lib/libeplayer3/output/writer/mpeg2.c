@@ -90,6 +90,7 @@ static uint32_t private_size = 0;
 
 static int reset()
 {
+	must_send_header = true;
 	return 0;
 }
 
@@ -160,6 +161,7 @@ static int writeData(void* _call)
 		bool ok = true;
 		uint32_t pos = 4;
 		uint32_t sheader_data_len = 0;
+		
 		while (pos < data_len && ok)
 		{
 			if (pos >= data_len) break;
@@ -288,6 +290,8 @@ static int writeData(void* _call)
 
 	if (iov[0].iov_len != (unsigned)WriteExt(call->WriteV, call->fd, iov[0].iov_base, iov[0].iov_len)) 			return -1;
 	if (iov[1].iov_len != (unsigned)WriteExt(call->WriteV, call->fd, iov[1].iov_base, iov[1].iov_len)) 			return -1;
+	
+	return 1;
 #endif
 }
 
@@ -321,4 +325,21 @@ struct Writer_s WriterVideoMPEGH264 = {
 	NULL,
 	&h264_caps
 };
+
+static WriterCaps_t mpg1_caps = {
+    	"mpge1",
+    	eVideo,
+    	"V_MPEG1",
+    	VIDEO_STREAMTYPE_MPEG1
+};
+
+struct Writer_s WriterVideoMPEG1 = {
+    	&reset,
+    	&writeData,
+    	NULL,
+    	&mpg1_caps
+};
+
+
+
 

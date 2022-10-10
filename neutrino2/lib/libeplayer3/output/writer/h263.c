@@ -74,6 +74,7 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* ***************************** */
 /* Varaibles                     */
 /* ***************************** */
+static int initialHeader = 1;
 
 /* ***************************** */
 /* Prototypes                    */
@@ -85,6 +86,7 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 
 static int reset()
 {
+	initialHeader = 1;
 	return 0;
 }
 
@@ -93,8 +95,10 @@ static int writeData(void* _call)
 	WriterAVCallData_t* call = (WriterAVCallData_t*) _call;
 
 	unsigned char PesHeader[PES_MAX_HEADER_SIZE];
+#if defined (__sh__)
 	unsigned char DataCopy[PES_MAX_HEADER_SIZE];
 	int len = 0;
+#endif
 
 	h263_printf(10, "\n");
 
@@ -118,10 +122,9 @@ static int writeData(void* _call)
 		return 0;
 	}
 
+#if defined (__sh__)
 	int HeaderLength = InsertPesHeader(PesHeader, call->len, H263_VIDEO_PES_START_CODE, call->Pts,0);
-
 	int PrivateHeaderLength = InsertVideoPrivateDataHeader (&PesHeader[HeaderLength], call->len);
-
 	int PesLength = PesHeader[PES_LENGTH_BYTE_0] + (PesHeader[PES_LENGTH_BYTE_1] << 8) + PrivateHeaderLength;
 
 	PesHeader[PES_LENGTH_BYTE_0]            = PesLength & 0xff;
@@ -139,6 +142,30 @@ static int writeData(void* _call)
 	len = write(call->fd, PacketData, call->len + HeaderLength);
 
 	memcpy(PacketData, DataCopy, HeaderLength);
+#else
+	unsigned int PacketLength = call->len;
+	if (initialHeader && call->private_size && call->private_data != NULL)
+	{
+		PacketLength += call->private_size;
+	}
+
+	struct iovec iov[3];
+	int ic = 0;
+	iov[ic].iov_base = PesHeader;
+	iov[ic++].iov_len = InsertPesHeader (PesHeader, PacketLength, MPEG_VIDEO_PES_START_CODE, call->Pts, 0);
+
+	if (initialHeader && call->private_size && call->private_data != NULL)
+	{
+		initialHeader = 0;
+		iov[ic].iov_base = call->private_data;
+		iov[ic++].iov_len = call->private_size;
+	}
+	
+	iov[ic].iov_base = call->data;
+	iov[ic++].iov_len = call->len;
+
+	int len = call->WriteV(call->fd, iov, ic);
+#endif
 
 	h263_printf(10, "< len %d\n", len);
 	return len;
@@ -147,7 +174,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-
+//
 static WriterCaps_t caps_h263 = {
 	"h263",
 	eVideo,
@@ -162,6 +189,7 @@ struct Writer_s WriterVideoH263 = {
 	&caps_h263,
 };
 
+//
 static WriterCaps_t caps_flv = {
 	"FLV",
 	eVideo,
@@ -175,4 +203,20 @@ struct Writer_s WriterVideoFLV = {
 	NULL,
 	&caps_flv,
 };
+
+//
+static WriterCaps_t mpeg4p2_caps = {
+    	"mpeg4p2",
+    	eVideo,
+    	"V_MPEG4",
+    	VIDEO_STREAMTYPE_MPEG4_Part2
+};
+
+struct Writer_s WriterVideoMPEG4 = {
+    	&reset,
+    	&writeData,
+    	NULL,
+    	&mpeg4p2_caps
+};
+
 
