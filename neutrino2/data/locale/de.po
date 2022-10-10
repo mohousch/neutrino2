@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino-hd2 4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-08 11:41+0200\n"
+"POT-Creation-Date: 2022-10-10 14:50+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -62,16 +62,16 @@ msgid "0 for unlimited repeats"
 msgstr "0 fuer unbegrenzte Anzahl"
 
 msgid "12 years"
-msgstr "12 Jahre"
+msgstr ""
 
 msgid "16 years"
-msgstr "16 Jahre"
+msgstr ""
 
 msgid "18 years"
-msgstr "18 Jhare"
+msgstr ""
 
 msgid "6 years"
-msgstr "6 Jahre"
+msgstr ""
 
 msgid "?"
 msgstr ""
@@ -110,7 +110,7 @@ msgid "Add to Bouquets"
 msgstr "zur den Bouquets hinzufuegen"
 
 msgid "Additional paths"
-msgstr "Zusätzliche Verzeichnisse"
+msgstr ""
 
 msgid "Advanced"
 msgstr "Erweiterte Auswahl"
@@ -167,8 +167,9 @@ msgstr "Tonwahl"
 msgid "Audio PIDs"
 msgstr ""
 
+#, fuzzy
 msgid "Audio Player"
-msgstr ""
+msgstr "Audio Playliste"
 
 msgid "Audio Playlist"
 msgstr "Audio Playliste"
@@ -191,8 +192,9 @@ msgstr "Audioplayer Einstellungen"
 msgid "Audiotype"
 msgstr ""
 
+#, fuzzy
 msgid "Auto Play"
-msgstr ""
+msgstr "Audio Playliste"
 
 msgid "Auto select audio"
 msgstr "Tonwahl automatisch"
@@ -233,11 +235,13 @@ msgstr "Bandbreite"
 msgid "Bitrate"
 msgstr ""
 
+#, fuzzy
 msgid "Bookmark"
-msgstr "Markierung"
+msgstr "Markierungen"
 
+#, fuzzy
 msgid "Bookmark change"
-msgstr ""
+msgstr "Markierungen"
 
 msgid "Bookmarks"
 msgstr "Markierungen"
@@ -276,8 +280,9 @@ msgstr "Helligkeit"
 msgid "Broadcast"
 msgstr ""
 
+#, fuzzy
 msgid "Browser Options"
-msgstr "Anzeigeoptionen"
+msgstr "Filebrowser Einstellungen"
 
 msgid "Browser hight [Pixel]"
 msgstr ""
@@ -381,8 +386,9 @@ msgstr "Sender Liste Einstellungen"
 msgid "Check filesystem"
 msgstr ""
 
+#, fuzzy
 msgid "Clear all"
-msgstr ""
+msgstr "Alle löschen"
 
 msgid "Code Rate HP"
 msgstr ""
@@ -480,12 +486,13 @@ msgstr ""
 msgid "Date"
 msgstr "Datum"
 
+#, fuzzy
 msgid "Date:"
-msgstr "Datum:"
+msgstr "Datum"
 
 #, fuzzy
 msgid "Date: "
-msgstr "Datum:"
+msgstr "Datum"
 
 msgid "Debug"
 msgstr ""
@@ -751,8 +758,9 @@ msgstr ""
 msgid "Files Browser"
 msgstr ""
 
+#, fuzzy
 msgid "Film Informationen"
-msgstr ""
+msgstr "Information"
 
 msgid "Filter movies by category:"
 msgstr ""
@@ -931,8 +939,9 @@ msgstr ""
 msgid "Here you can select a skin from the following list."
 msgstr ""
 
+#, fuzzy
 msgid "Hide series"
-msgstr ""
+msgstr "Alle"
 
 msgid "Hierarchy"
 msgstr ""
@@ -1003,14 +1012,17 @@ msgstr ""
 msgid "Increase Motor Position (a)"
 msgstr ""
 
+#, fuzzy
 msgid "Info"
-msgstr ""
+msgstr "EPG Info1"
 
+#, fuzzy
 msgid "Info 1"
-msgstr ""
+msgstr "EPG Info1"
 
+#, fuzzy
 msgid "Info 2"
-msgstr ""
+msgstr "EPG Info2"
 
 msgid "Infobar"
 msgstr ""
@@ -1097,8 +1109,9 @@ msgstr ""
 msgid "Last played:"
 msgstr ""
 
+#, fuzzy
 msgid "Last recorded:"
-msgstr ""
+msgstr "Aufnahme"
 
 msgid "Latitude"
 msgstr ""
@@ -1145,11 +1158,13 @@ msgstr ""
 msgid "LoDirection"
 msgstr ""
 
+#, fuzzy
 msgid "Load default settings"
-msgstr ""
+msgstr "Satelliten Einstellungen"
 
+#, fuzzy
 msgid "Loading package list"
-msgstr ""
+msgstr "Kanallisten neu laden"
 
 msgid "Lock RC"
 msgstr ""
@@ -1282,8 +1297,9 @@ msgstr ""
 msgid "Move"
 msgstr ""
 
+#, fuzzy
 msgid "Movie Browser"
-msgstr ""
+msgstr "Filebrowser"
 
 #, fuzzy
 msgid "Movie Player"
@@ -1304,8 +1320,9 @@ msgstr ""
 msgid "Movie start:"
 msgstr ""
 
+#, fuzzy
 msgid "Moviebrowser"
-msgstr ""
+msgstr "Filebrowser"
 
 msgid "Movieplayer"
 msgstr ""
@@ -1322,8 +1339,9 @@ msgstr "Meine Favoriten"
 msgid "NFS"
 msgstr ""
 
+#, fuzzy
 msgid "NFS settings"
-msgstr ""
+msgstr "EPG Einstellungen"
 
 msgid "NTP-Server"
 msgstr ""
@@ -1378,8 +1396,9 @@ msgstr "Neutrino neu starten"
 msgid "New Bookmark"
 msgstr ""
 
+#, fuzzy
 msgid "New Movies"
-msgstr "Neu Filme"
+msgstr "Neuer Timer"
 
 msgid ""
 "New jump back\n"
@@ -1404,7 +1423,7 @@ msgid "Next bouquet"
 msgstr ""
 
 msgid "Next focus"
-msgstr "Weiterer Fokus"
+msgstr ""
 
 msgid "Next image"
 msgstr ""
@@ -1464,8 +1483,9 @@ msgstr ""
 msgid "North"
 msgstr "Norden"
 
+#, fuzzy
 msgid "Not available"
-msgstr "Nicht verfühbar"
+msgstr "nicht verfügbar"
 
 msgid "Not used"
 msgstr ""
@@ -1557,8 +1577,9 @@ msgstr ""
 msgid "Page Up"
 msgstr ""
 
+#, fuzzy
 msgid "Parental Lock"
-msgstr "Jugendschutz PIN"
+msgstr "Jugendschutz PIN Einstellungen"
 
 msgid "Parentallock settings"
 msgstr "Jugendschutz PIN Einstellungen"
@@ -1579,8 +1600,9 @@ msgstr ""
 msgid "Permanent timeshift"
 msgstr ""
 
+#, fuzzy
 msgid "Picture"
-msgstr ""
+msgstr "Bildbetrachter"
 
 #, fuzzy
 msgid "Pictureviewer"
@@ -1617,8 +1639,9 @@ msgstr "Englisch"
 msgid "Portugues"
 msgstr ""
 
+#, fuzzy
 msgid "Position:"
-msgstr ""
+msgstr "(a) Motor Position:"
 
 msgid "Power Menu"
 msgstr "Power Menü"
@@ -1824,8 +1847,9 @@ msgstr ""
 msgid "Row item"
 msgstr ""
 
+#, fuzzy
 msgid "Row settings"
-msgstr ""
+msgstr "Audio Einstellungen"
 
 msgid "Row width"
 msgstr ""
@@ -1894,8 +1918,9 @@ msgstr ""
 msgid "Save Timer"
 msgstr "Timer speichern"
 
+#, fuzzy
 msgid "Save changes"
-msgstr "Änderungen speichern"
+msgstr "Änderungen aktivieren"
 
 msgid "Save changes in all movie info files"
 msgstr ""
@@ -1945,11 +1970,13 @@ msgstr "Scan SDT für Updates"
 msgid "Scan again"
 msgstr ""
 
+#, fuzzy
 msgid "Scan for Categories"
-msgstr "Suche Kategorien ..."
+msgstr "Scan SDT für Updates"
 
+#, fuzzy
 msgid "Scan for Movies ..."
-msgstr "Suche Filme ..."
+msgstr "Warte auf Zeit"
 
 msgid "Scan for services"
 msgstr ""
@@ -1958,7 +1985,7 @@ msgid "Scan transponder"
 msgstr "Kanalsuche"
 
 msgid "Scanning for UPnP servers"
-msgstr "Suche nach UPnP Servern"
+msgstr ""
 
 msgid "Scart Mode"
 msgstr ""
@@ -2005,8 +2032,9 @@ msgstr ""
 msgid "Search in EPG"
 msgstr ""
 
+#, fuzzy
 msgid "Search keyword"
-msgstr ""
+msgstr "Suche"
 
 msgid "Search within"
 msgstr ""
@@ -2050,8 +2078,9 @@ msgstr ""
 msgid "Server IP"
 msgstr ""
 
+#, fuzzy
 msgid "Service"
-msgstr ""
+msgstr "Alle"
 
 msgid "Servicescan"
 msgstr ""
@@ -2181,8 +2210,9 @@ msgstr "Start Sender"
 msgid "Start Channel settings"
 msgstr "Start Sender Einstellungen"
 
+#, fuzzy
 msgid "Start Menu"
-msgstr "Start Menü"
+msgstr "Starten"
 
 msgid "Start Mode"
 msgstr ""
@@ -2346,8 +2376,9 @@ msgstr ""
 msgid "Test"
 msgstr ""
 
+#, fuzzy
 msgid "Test Menu"
-msgstr ""
+msgstr "Power Menü"
 
 msgid "Test network now"
 msgstr ""
@@ -2430,8 +2461,9 @@ msgstr ""
 msgid "Time-Syncronisation"
 msgstr "Zeit Synchronization"
 
+#, fuzzy
 msgid "Time:"
-msgstr "Zeit:"
+msgstr "Zeit"
 
 msgid "Timed Step Mode"
 msgstr ""
@@ -2476,8 +2508,9 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
+#, fuzzy
 msgid "Title: "
-msgstr ""
+msgstr "EPG Titel"
 
 msgid "Total"
 msgstr ""
@@ -2570,17 +2603,20 @@ msgstr ""
 msgid "Use NIT"
 msgstr ""
 
+#, fuzzy
 msgid "Use directory"
-msgstr ""
+msgstr "Startverzeichnis absolut"
 
 msgid "Use gotoXX"
 msgstr ""
 
+#, fuzzy
 msgid "Use movie directory"
-msgstr ""
+msgstr "Startverzeichnis absolut"
 
+#, fuzzy
 msgid "Use record directory"
-msgstr ""
+msgstr "Startverzeichnis absolut"
 
 msgid "User menu"
 msgstr ""
@@ -2658,7 +2694,7 @@ msgid "Waiting for time..."
 msgstr "Warte auf Zeit"
 
 msgid "Warn"
-msgstr "Warnung"
+msgstr ""
 
 msgid "Wednesday"
 msgstr "Mittwoch"
@@ -2688,7 +2724,7 @@ msgid "YT:"
 msgstr ""
 
 msgid "Year"
-msgstr "Jahr"
+msgstr ""
 
 msgid "Year of production"
 msgstr "Produktion Jahr"
@@ -3198,7 +3234,7 @@ msgid "next bouquet"
 msgstr ""
 
 msgid "next focus"
-msgstr "weiterer Fokus"
+msgstr ""
 
 msgid "next results"
 msgstr ""
@@ -3353,11 +3389,13 @@ msgstr ""
 msgid "save playlist"
 msgstr ""
 
+#, fuzzy
 msgid "save settings now"
 msgstr "Einstellungen jetzt speichern"
 
+#, fuzzy
 msgid "scan for Movies ..."
-msgstr "Suche Filme ..."
+msgstr "Warte auf Zeit"
 
 msgid "schedule"
 msgstr "Umschalten"
@@ -3545,6 +3583,7 @@ msgstr ""
 msgid "winter sports"
 msgstr ""
 
+#, fuzzy
 msgid "yes"
 msgstr "Ja"
 

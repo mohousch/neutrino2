@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrinohd2 4.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-24 09:23+0200\n"
+"POT-Creation-Date: 2022-10-10 14:50+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -498,9 +498,6 @@ msgstr ""
 msgid "Default gateway"
 msgstr ""
 
-msgid "Default theme"
-msgstr ""
-
 msgid "Delayed shutdown"
 msgstr ""
 
@@ -606,12 +603,6 @@ msgid "EPG / Timer"
 msgstr ""
 
 msgid "EPG Date"
-msgstr ""
-
-msgid "EPG Info 1"
-msgstr ""
-
-msgid "EPG Info 2"
 msgstr ""
 
 msgid "EPG Info1"
@@ -830,9 +821,6 @@ msgstr ""
 msgid "Fullscreen"
 msgstr ""
 
-msgid "General settings"
-msgstr ""
-
 msgid "Generic delay"
 msgstr ""
 
@@ -861,6 +849,9 @@ msgid "Guard Interval"
 msgstr ""
 
 msgid "Guests"
+msgstr ""
+
+msgid "HD / Crypt Icons"
 msgstr ""
 
 msgid "HD Kino"
@@ -1017,9 +1008,6 @@ msgid "Info 2"
 msgstr ""
 
 msgid "Infobar"
-msgstr ""
-
-msgid "Infobar Crypticons"
 msgstr ""
 
 msgid "Information"
@@ -1290,6 +1278,9 @@ msgstr ""
 msgid "Movie Browser"
 msgstr ""
 
+msgid "Movie Player"
+msgstr ""
+
 msgid "Movie Trailer"
 msgstr ""
 
@@ -1369,6 +1360,9 @@ msgid "Neutrino Restart"
 msgstr ""
 
 msgid "Neutrino restart"
+msgstr ""
+
+msgid "Neutrino2"
 msgstr ""
 
 msgid "New Bookmark"
@@ -1740,9 +1734,6 @@ msgstr ""
 msgid "Recording starts in a few minutes"
 msgstr ""
 
-msgid "Records browser"
-msgstr ""
-
 msgid "Refresh EPG"
 msgstr ""
 
@@ -1762,12 +1753,6 @@ msgid "Reload channel lists"
 msgstr ""
 
 msgid "Reload movie info at start"
-msgstr ""
-
-msgid "Reloading EPG, please be patient."
-msgstr ""
-
-msgid "Reloading channel lists, please be patient."
 msgstr ""
 
 msgid "Remind"
@@ -1893,6 +1878,12 @@ msgstr ""
 msgid "Save changes in all movie info files"
 msgstr ""
 
+msgid "Save current skin style"
+msgstr ""
+
+msgid "Save current style"
+msgstr ""
+
 msgid "Save current theme"
 msgstr ""
 
@@ -1900,9 +1891,6 @@ msgid "Save in channel dir"
 msgstr ""
 
 msgid "Save settings now"
-msgstr ""
-
-msgid "Save settings now?"
 msgstr ""
 
 msgid "Save timer"
@@ -1914,15 +1902,13 @@ msgstr ""
 msgid "Saving RC configuration, please wait..."
 msgstr ""
 
+msgid "Saving current style!"
+msgstr ""
+
 msgid "Saving current theme!"
 msgstr ""
 
 msgid "Saving settings now, please be patient."
-msgstr ""
-
-msgid ""
-"Saving settings now, please be patient.\n"
-" this needs Neutrino restart."
 msgstr ""
 
 msgid "Scaling"
@@ -2013,9 +1999,6 @@ msgid "Select language"
 msgstr ""
 
 msgid "Select starting-time"
-msgstr ""
-
-msgid "Select theme"
 msgstr ""
 
 msgid "Select transponder"
@@ -2120,10 +2103,10 @@ msgstr ""
 msgid "Skin Select"
 msgstr ""
 
-msgid "Skin Style Selection"
+msgid "Skin Style"
 msgstr ""
 
-msgid "Skin Style selection"
+msgid "Skin Style name"
 msgstr ""
 
 msgid "Skin select"
@@ -2279,10 +2262,16 @@ msgstr ""
 msgid "TMDB"
 msgstr ""
 
+msgid "TMDB Infos"
+msgstr ""
+
 msgid "TMDB Infos are not available"
 msgstr ""
 
 msgid "TMDB Key:"
+msgstr ""
+
+msgid "TMDB Preview"
 msgstr ""
 
 msgid "TMDB info"
@@ -2298,9 +2287,6 @@ msgid "TOP LEFT"
 msgstr ""
 
 msgid "TOP RIGHT"
-msgstr ""
-
-msgid "TS Browser"
 msgstr ""
 
 msgid "TV"
@@ -2439,6 +2425,9 @@ msgid "Timer typ"
 msgstr ""
 
 msgid "Timerlist"
+msgstr ""
+
+msgid "Timescale"
 msgstr ""
 
 msgid "Timeselection"
@@ -2628,9 +2617,6 @@ msgid "Volume adjustment (in %)"
 msgstr ""
 
 msgid "Volumebar"
-msgstr ""
-
-msgid "WEBTV"
 msgstr ""
 
 msgid "Wait a few seconds for abort"
@@ -2889,12 +2875,6 @@ msgstr ""
 msgid "dmesg"
 msgstr ""
 
-msgid "do you want to reload EPG?"
-msgstr ""
-
-msgid "do you want to reload channel lists?"
-msgstr ""
-
 msgid "documentary"
 msgstr ""
 
@@ -3084,9 +3064,6 @@ msgstr ""
 msgid "literature"
 msgstr ""
 
-msgid "load default skin configuration?"
-msgstr ""
-
 msgid "local dir"
 msgstr ""
 
@@ -3171,9 +3148,6 @@ msgid "nature/animals/environment"
 msgstr ""
 
 msgid "need reboot or epg-reset"
-msgstr ""
-
-msgid "neutrino (default)"
 msgstr ""
 
 msgid "never"
@@ -3461,19 +3435,12 @@ msgstr ""
 msgid "the filesize is 0 Bytes"
 msgstr ""
 
+msgid "this need Neutrino restart"
+msgstr ""
+
 msgid ""
 "this need Neutrino restart\n"
-"do you want really to restart?"
-msgstr ""
-
-msgid ""
-"this needs Neutrino restart\n"
-"Skin Style selection?"
-msgstr ""
-
-msgid ""
-"this needs Neutrino restart\n"
-"do you want really to restart?"
+"do you really want to restart?"
 msgstr ""
 
 msgid "time (in minutes) to switch from standby"
