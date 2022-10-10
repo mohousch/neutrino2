@@ -67,6 +67,8 @@ CBEChannelSelectWidget::CBEChannelSelectWidget(const std::string& Caption, unsig
 	widget = NULL;
 	listBox = NULL;
 	item = NULL;
+	
+	sec_timer_id = 0;
 
 	//
 	selected =  -1;
@@ -86,7 +88,7 @@ CBEChannelSelectWidget::CBEChannelSelectWidget(const std::string& Caption, unsig
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 
-	//
+	/*
 	if (CNeutrinoApp::getInstance()->widget_exists("bqeditchselect"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("bqeditchselect");
@@ -97,7 +99,8 @@ CBEChannelSelectWidget::CBEChannelSelectWidget(const std::string& Caption, unsig
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		widget->addWidgetItem(listBox);
-	}	
+	}
+	*/	
 }
 
 bool CBEChannelSelectWidget::isChannelInBouquet(int index)

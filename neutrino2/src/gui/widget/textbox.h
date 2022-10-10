@@ -156,8 +156,7 @@ class CTextBox : public CWidgetItem
 
 		void setPosition(const int x, const int y, const int dx, const int dy);
 		void setPosition(const CBox * position);
-		void setRadius(int r){m_textRadius = r;};
-		void setCorner(int c){m_textCorner = c;};
+		void setCorner(int ra, int co){m_textRadius = ra; m_textCorner = co;};
 		void setBackgroundColor(fb_pixel_t col){m_textBackgroundColor = col;};
 		void setTextColor(uint8_t col){m_textColor = col;};
 		void setFont(unsigned int font_text){m_pcFontText = font_text;};

@@ -111,6 +111,8 @@ EventList::EventList()
 	evlWidget = NULL;
 	listBox = NULL;
 	item = NULL;
+	
+	sec_timer_id = 0;
 
 	// box	
 	cFrameBox.iWidth = frameBuffer->getScreenWidth() - 100;
@@ -119,7 +121,7 @@ EventList::EventList()
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
-	//
+	/*
 	if (CNeutrinoApp::getInstance()->widget_exists("eventlist"))
 	{
 		evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
@@ -131,7 +133,8 @@ EventList::EventList()
 		listBox = new ClistBox(&cFrameBox);
 		
 		evlWidget->addWidgetItem(listBox);
-	}				
+	}
+	*/				
 }
 
 EventList::~EventList()
@@ -255,6 +258,21 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 	
 	//
 	readEvents(channel_id);
+	
+	////
+	if (CNeutrinoApp::getInstance()->widget_exists("eventlist"))
+	{
+		evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
+		listBox = (ClistBox*)evlWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		evlWidget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		
+		evlWidget->addWidgetItem(listBox);
+	}
+	////
 
 	//
 	paint(channel_id);
@@ -551,7 +569,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
 			//
-			listBox->refresh();
+			evlWidget->refresh();
 		} 
 		else
 		{

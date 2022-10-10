@@ -239,8 +239,8 @@ void CInfoBox::refreshTitle(void)
 	CHeaders headers(&m_cBoxFrameTitleRel, m_cTitle.c_str(), m_cIcon.c_str());
 
 	headers.setColor(headColor);
-	headers.setCorner(headCorner);
-	headers.setRadius(headRadius);
+	headers.setCorner(headRadius, headCorner);
+	//headers.setRadius(headRadius);
 	headers.setGradient(headGradient);
 	headers.setButtons(&HButton, 1);
 	
@@ -261,8 +261,8 @@ void CInfoBox::refreshFoot(void)
 	struct button_label Button = { NEUTRINO_ICON_INFO, " " };
 	
 	footers.setColor(footColor);
-	footers.setRadius(footRadius);
-	footers.setCorner(footCorner);
+	//footers.setRadius(footRadius);
+	footers.setCorner(footRadius, footCorner);
 	footers.setGradient(footGradient);
 	footers.setButtons(&Button);
 	

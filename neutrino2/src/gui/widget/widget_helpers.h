@@ -744,8 +744,7 @@ class CHeaders : public CWidgetItem
 		void setHAlign(const int m){thalign = m;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
 		void setGradient(const int grad){gradient = grad;};
-		void setRadius(const int ra){radius = ra;};
-		void setCorner(const int co){corner = co;};
+		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void enablePaintDate(void){paintDate = true;};
 		void setFormat(const char* f){if (f) format.clear(); format = f;};
 		void setHeadLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
@@ -793,8 +792,7 @@ class CFooters : public CWidgetItem
 
 		void setColor(fb_pixel_t col){fbgcolor = col;};
 		void setGradient(const int grad){fgradient = grad;};
-		void setRadius(const int ra){fradius = ra;};
-		void setCorner(const int co){fcorner = co;};
+		void setCorner(int ra, int co){fradius = ra; fcorner = co;};
 		void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
 		
 		//

@@ -2577,7 +2577,6 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	corner = CORNER_NONE;
 	scrollbar = true;
 	items_background = NULL;
-	borderMode = BORDER_NO;
 	
 	item_height = 0;
 	item_width = 0;
@@ -2701,7 +2700,6 @@ ClistBox::ClistBox(CBox* position)
 	corner = CORNER_NONE;
 	scrollbar = true;
 	items_background = NULL;
-	borderMode = BORDER_NO;
 	
 	//
 	item_height = 0;
@@ -2961,11 +2959,6 @@ void ClistBox::paint()
 				frameBuffer->saveScreen(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight, items_background);
 			}
 		}
-	}
-	else
-	{
-		//if (borderMode)
-			//frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, COL_MENUCONTENT_PLUS_6, headRadius, headCorner | footCorner);
 	}
 
 	//
@@ -4193,5 +4186,4 @@ void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned i
 		}
 	}
 }
-
 

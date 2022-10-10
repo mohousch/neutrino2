@@ -41,7 +41,33 @@
 #include <system/settings.h>
 #include <global.h>
 
+//
+bool parseJsonFromString(std::string& jData, Json::Value *root, std::string *errMsg)
+{
+	Json::CharReaderBuilder builder;
+	Json::CharReader* reader(builder.newCharReader());
+	std::string errs = "";
+	const char* jData_c = jData.c_str();
 
+	bool ret = reader->parse(jData_c, jData_c + strlen(jData_c), root, &errs);
+	if (!ret || (!errs.empty())) {
+		ret = false;
+		if (errMsg != NULL)
+			*errMsg = errs;
+	}
+	delete reader;
+	return ret;
+}
+
+bool parseJsonFromFile(std::string& jFile, Json::Value *root, std::string *errMsg)
+{
+	std::string jData = readFile(jFile);
+	bool ret = parseJsonFromString(jData, root, errMsg);
+	jData.clear();
+	return ret;
+}
+
+//
 std::string cYTVideoInfo::GetUrl(int fmt)
 {
 	yt_urlmap_iterator_t it;

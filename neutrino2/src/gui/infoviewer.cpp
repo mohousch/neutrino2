@@ -177,6 +177,8 @@ void CInfoViewer::Init()
 	timer = NULL;
 	
 	runningPercent = 0;
+	
+	sec_timer_id = 0;
 }
 
 CInfoViewer::~CInfoViewer()

@@ -163,8 +163,7 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	vline = NULL;
 	hline = NULL;
 	
-	widgetItemsCount = 0;
-	widgetCCItemsCount = 0;
+	sec_timer_id = 0;
 
 	// widget screen	
 	cFrameBox.iWidth = frameBuffer->getScreenWidth() - 20;
@@ -173,13 +172,10 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
-	//
+	/*
 	if (CNeutrinoApp::getInstance()->widget_exists("channellist"))
 	{
 		chWidget = CNeutrinoApp::getInstance()->getWidget("channellist");
-		
-		widgetItemsCount = chWidget->getWidgetItemsCount();
-		widgetCCItemsCount = chWidget->getCCItemsCount();
 	
 		listBox = (ClistBox*)chWidget->getWidgetItem(WIDGETITEM_LISTBOX);
 		head = (CHeaders*)chWidget->getWidgetItem(WIDGETITEM_HEAD);
@@ -226,24 +222,18 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 		chWidget->addCCItem(hline);
 	}
 	
-	/*
-	if (window == NULL)
-	{
-		window = new CWindow(chWidget->getWindowsPos().iX + (chWidget->getWindowsPos().iWidth/3)*2, chWidget->getWindowsPos().iY + 50, chWidget->getWindowsPos().iWidth/3, chWidget->getWindowsPos().iHeight - 100);
-	}
-	*/
-	
-	//
+	// wionTop
 	winTopBox.iX = window->getWindowsPos().iX + 2;
 	winTopBox.iY = window->getWindowsPos().iY + 2;
 	winTopBox.iWidth = window->getWindowsPos().iWidth - 4;
 	winTopBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
 	
-	//
+	// winBottom
 	winBottomBox.iX = window->getWindowsPos().iX + 2;
 	winBottomBox.iY = window->getWindowsPos().iY + window->getWindowsPos().iHeight/2 + 2;
 	winBottomBox.iWidth = window->getWindowsPos().iWidth - 4;
 	winBottomBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
+	*/
 }
 
 CChannelList::~CChannelList()
@@ -632,6 +622,69 @@ int CChannelList::exec(bool zap)
 	dprintf(DEBUG_NORMAL, "CChannelList::exec: zap:%s\n", zap? "yes" : "no");
 
 	displayNext = false; // always start with current events
+	
+	////
+	if (CNeutrinoApp::getInstance()->widget_exists("channellist"))
+	{
+		chWidget = CNeutrinoApp::getInstance()->getWidget("channellist");
+	
+		listBox = (ClistBox*)chWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		head = (CHeaders*)chWidget->getWidgetItem(WIDGETITEM_HEAD);
+		foot = (CFooters*)chWidget->getWidgetItem(WIDGETITEM_FOOT);
+		window = (CWindow*)chWidget->getWidgetItem(WIDGETITEM_WINDOW);
+		vline = (CCVline*)chWidget->getCCItem(CC_VLINE);
+		hline = (CCHline*)chWidget->getCCItem(CC_HLINE);
+	}
+	else
+	{
+		chWidget = new CWidget(&cFrameBox);
+		chWidget->paintMainFrame(true);
+		
+		// listBox
+		listBox = new ClistBox(chWidget->getWindowsPos().iX, chWidget->getWindowsPos().iY + 50, (chWidget->getWindowsPos().iWidth/3)*2, chWidget->getWindowsPos().iHeight - 100);
+		listBox->paintMainFrame(false);
+		
+		//
+		head = new CHeaders(chWidget->getWindowsPos().iX, chWidget->getWindowsPos().iY, chWidget->getWindowsPos().iWidth, 50);
+		head->setTitle(name.c_str());
+		head->enablePaintDate();
+		
+		// foot
+		foot = new CFooters(chWidget->getWindowsPos().iX, chWidget->getWindowsPos().iY + chWidget->getWindowsPos().iHeight - 50, chWidget->getWindowsPos().iWidth, 50);
+		
+		//
+		window = new CWindow(chWidget->getWindowsPos().iX + (chWidget->getWindowsPos().iWidth/3)*2, chWidget->getWindowsPos().iY + 50, chWidget->getWindowsPos().iWidth/3, chWidget->getWindowsPos().iHeight - 100);
+		
+		// vline
+		vline = new CCVline(chWidget->getWindowsPos().iX + (chWidget->getWindowsPos().iWidth/3)*2, chWidget->getWindowsPos().iY + 60, 2, chWidget->getWindowsPos().iHeight - 120);
+		vline->setGradient(3);
+			
+		// hline
+		hline = new CCHline(chWidget->getWindowsPos().iX + (chWidget->getWindowsPos().iWidth/3)*2 + 10, chWidget->getWindowsPos().iY + 50 + (chWidget->getWindowsPos().iHeight - 100)/2, chWidget->getWindowsPos().iWidth/3 - 20, 2);
+		hline->setGradient(3);
+		
+		chWidget->addWidgetItem(listBox);
+		chWidget->addWidgetItem(head);
+		chWidget->addWidgetItem(foot);
+		chWidget->addWidgetItem(window);
+		
+		//	
+		chWidget->addCCItem(vline);
+		chWidget->addCCItem(hline);
+	}
+	
+	// wionTop
+	winTopBox.iX = window->getWindowsPos().iX + 2;
+	winTopBox.iY = window->getWindowsPos().iY + 2;
+	winTopBox.iWidth = window->getWindowsPos().iWidth - 4;
+	winTopBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
+	
+	// winBottom
+	winBottomBox.iX = window->getWindowsPos().iX + 2;
+	winBottomBox.iY = window->getWindowsPos().iY + window->getWindowsPos().iHeight/2 + 2;
+	winBottomBox.iWidth = window->getWindowsPos().iWidth - 4;
+	winBottomBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
+	////
 	
 	// show list
 	int nNewChannel = show(zap);

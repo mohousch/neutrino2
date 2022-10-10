@@ -41,10 +41,6 @@
 
 #include <gui/widget/icons.h>
 
-#ifndef SWIG
-#include <jsoncpp/include/json/json.h>
-#endif
-
 // zapit types
 #include <client/zapittypes.h>
 
@@ -200,11 +196,7 @@ class cTimeMs {
 };
 
 //
-#ifndef SWIG
 std::string readFile(std::string file);
-bool parseJsonFromFile(std::string& jFile, Json::Value *root, std::string *errMsg);
-bool parseJsonFromString(std::string& jData, Json::Value *root, std::string *errMsg);
-#endif
 
 // proc utils
 int proc_put(const char *path, const char *value, const int len);

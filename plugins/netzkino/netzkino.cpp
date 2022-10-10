@@ -162,8 +162,6 @@ void CNKMovies::showMenu()
 	headersWidget->setButtons(NKHeadButtons, HEAD_BUTTONS_COUNT);
 	headersWidget->enablePaintDate();
 	headersWidget->setGradient(NOGRADIENT);
-	headersWidget->setRadius(NO_RADIUS);
-	//headersWidget->setCorner(CORNER_NONE);
 
 	// foot
 	footBox.iWidth = frameBuffer->getScreenWidth();
@@ -175,7 +173,6 @@ void CNKMovies::showMenu()
 
 	footersWidget->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	footersWidget->setGradient(NOGRADIENT);
-	footersWidget->setRadius(NO_RADIUS);
 
 	// leftwidget
 	leftBox.iWidth = 280;

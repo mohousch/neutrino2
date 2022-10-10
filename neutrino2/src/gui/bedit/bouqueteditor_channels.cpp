@@ -77,6 +77,8 @@ CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bou
 	widget = NULL;
 	listBox = NULL;
 	item = NULL;
+	
+	sec_timer_id = 0;
 
 	// box	
 	cFrameBox.iWidth = frameBuffer->getScreenWidth() - 100;
@@ -85,7 +87,7 @@ CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bou
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
-	//
+	/*
 	if (CNeutrinoApp::getInstance()->widget_exists("bqeditch"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("bqeditch");
@@ -96,7 +98,8 @@ CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bou
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		widget->addWidgetItem(listBox);
-	}	
+	}
+	*/	
 }
 
 #define BUTTONS_COUNT 4

@@ -1134,8 +1134,8 @@ void CNeutrinoApp::parseCHead(_xmlNodePtr node, CWidget* widget)
 		if (icon != NULL) head->setIcon(icon);
 		if(color != NULL) head->setColor(finalColor);
 		head->setGradient(gradient);
-		head->setCorner(corner);
-		head->setRadius(radius);
+		head->setCorner(radius, corner);
+		//head->setRadius(radius);
 		head->setHeadLine(head_line, head_line_gradient);
 		if (paintdate) head->enablePaintDate();
 		if (format != NULL) head->setFormat(_(format));
@@ -1224,8 +1224,8 @@ void CNeutrinoApp::parseCFoot(_xmlNodePtr node, CWidget* widget)
 		foot->paintMainFrame(paintframe);			
 		if (color != NULL) foot->setColor(finalColor);
 		foot->setGradient(gradient);
-		foot->setCorner(corner);
-		foot->setRadius(radius);
+		foot->setCorner(radius, corner);
+		//foot->setRadius(radius);
 		foot->setFootLine(foot_line, foot_line_gradient);
 					
 		// BUTTON_LABEL
@@ -1332,8 +1332,8 @@ void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 					
 		if (color != NULL) textBox->setBackgroundColor(finalColor);
 		
-		textBox->setCorner(corner);
-		textBox->setRadius(radius);
+		textBox->setCorner(radius, corner);
+		//textBox->setRadius(radius);
 		textBox->paintMainFrame(paintframe);
 					
 		textBox->setTextColor(textColor? convertFontColor(textColor) : COL_MENUCONTENT);

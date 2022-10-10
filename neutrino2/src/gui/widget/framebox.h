@@ -227,8 +227,7 @@ class CFrameBox : public CWidgetItem
 		//
 		void paintMainFrame(bool p){paintFrame = p;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
-		void setRadius(int ra){radius = ra;};
-		void setCorner(int co){corner = co;};
+		void setCorner(int ra, int co){radius = ra; corner = co;};
 		//
 		void enableSaveScreen();
 
@@ -238,6 +237,7 @@ class CFrameBox : public CWidgetItem
 		int oKKeyPressed(CMenuTarget* _parent, neutrino_msg_t _msg = RC_ok);
 		void homeKeyPressed(){selected = -1;};
 
+		// lua compatibility
 		std::string getActionKey(void){return actionKey;};
 		
 		// head

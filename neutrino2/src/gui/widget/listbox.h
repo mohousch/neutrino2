@@ -633,7 +633,6 @@ class ClistBox : public CWidgetItem
 		int corner;
 		bool scrollbar;
 		fb_pixel_t* items_background;
-		int borderMode;
 		
 		//
 		int widgetMode;
@@ -714,10 +713,8 @@ class ClistBox : public CWidgetItem
 		void enableSaveScreen();
 		void paintMainFrame(bool p){paintFrame = p;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
-		void setRadius(int ra){radius = ra;};
-		void setCorner(int co){corner = co;};
+		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void paintScrollBar(bool sb){scrollbar = sb;};
-		void setBorderMode(int sm){borderMode = sm;};
 
 		//
 		virtual void scrollLineDown(const int lines = 1);
@@ -740,6 +737,7 @@ class ClistBox : public CWidgetItem
 		std::string getItemName(){if (hasItem()) return items[selected]->itemName; else return "";};
 		std::string getItemHint(){if (hasItem()) return items[selected]->itemHint; else return "";};
 		std::string getItemIcon(){if (hasItem()) return items[selected]->itemIcon; else return "";};
+		CBox getWindowsPos(void){initFrames(); return (itemBox);};
 
 		// frame type methods
 		void setItemsPerPage(int itemsX = 6, int itemsY = 3){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};

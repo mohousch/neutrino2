@@ -82,6 +82,8 @@ CBEBouquetWidget::CBEBouquetWidget()
 	widget = NULL;
 	listBox = NULL;
 	item = NULL;
+	
+	sec_timer_id = 0;
 
 	// box	
 	cFrameBox.iWidth = frameBuffer->getScreenWidth() - 100;

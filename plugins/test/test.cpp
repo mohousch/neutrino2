@@ -1420,8 +1420,8 @@ void CTestMenu::testCFrameBoxWidget()
 
 	// frameBox
 	frameBoxWidget = new CFrameBox(&box);
-	frameBoxWidget->setRadius(RADIUS_MID);
-	frameBoxWidget->setCorner(CORNER_ALL);
+	//frameBoxWidget->setRadius(RADIUS_MID);
+	frameBoxWidget->setCorner(RADIUS_MID, CORNER_ALL);
 
 	CHintBox loadBox("testCFrameBoxWidget", _("Scan for Movies ..."));
 	loadBox.paint();
@@ -3012,12 +3012,12 @@ void CTestMenu::testCHeaders()
 	headers->setFormat("%d.%m.%Y %H:%M:%S");
 	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	headers->setHAlign(CC_ALIGN_CENTER);
-	headers->setRadius(4);
-	headers->setCorner(CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
+	//headers->setRadius(4);
+	headers->setCorner(4, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
 
 	footers = new CFooters(&footBox);
-	footers->setRadius(4);
-	footers->setCorner(CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
+	//footers->setRadius(4);
+	footers->setCorner(4, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
 
 	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 		

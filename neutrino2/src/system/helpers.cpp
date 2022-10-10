@@ -1717,6 +1717,7 @@ std::string readFile(std::string file)
 {
 	std::string ret_s;
 	std::ifstream tmpData(file.c_str(), std::ifstream::binary);
+	
 	if (tmpData.is_open()) 
 	{
 		tmpData.seekg(0, tmpData.end);
@@ -1769,33 +1770,6 @@ std::string randomFile(std::string suffix, std::string directory, unsigned int l
 	mkdir(directory.c_str(), 0755);
 	return directory + "/" + randomString(length) + "." + suffix;
 }
-
-#ifndef SWIG
-bool parseJsonFromFile(std::string& jFile, Json::Value *root, std::string *errMsg)
-{
-	std::string jData = readFile(jFile);
-	bool ret = parseJsonFromString(jData, root, errMsg);
-	jData.clear();
-	return ret;
-}
-
-bool parseJsonFromString(std::string& jData, Json::Value *root, std::string *errMsg)
-{
-	Json::CharReaderBuilder builder;
-	Json::CharReader* reader(builder.newCharReader());
-	std::string errs = "";
-	const char* jData_c = jData.c_str();
-
-	bool ret = reader->parse(jData_c, jData_c + strlen(jData_c), root, &errs);
-	if (!ret || (!errs.empty())) {
-		ret = false;
-		if (errMsg != NULL)
-			*errMsg = errs;
-	}
-	delete reader;
-	return ret;
-}
-#endif
 
 // proc utils
 int proc_put(const char *path, const char *value, const int len)

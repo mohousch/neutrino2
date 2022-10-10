@@ -77,9 +77,6 @@ class CChannelList
 		CWindow* window;
 		CCVline* vline;
 		CCHline* hline;
-		
-		unsigned int widgetItemsCount;
-		unsigned int widgetCCItemsCount;
 
 		//
 		uint32_t sec_timer_id;

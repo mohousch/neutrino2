@@ -273,6 +273,8 @@ CTimerList::CTimerList()
 	timerlistWidget = NULL;
 	listBox = NULL;
 	item = NULL;
+	
+	sec_timer_id = 0;
 
 	plugin_chooser = NULL;
 

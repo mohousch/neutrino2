@@ -601,8 +601,8 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 		CTextBox Dline(DLx, DLy, DLwidth, DLheight);
 		Dline.paintMainFrame(paintframe);
 		//Dline.setBorderMode(borderMode);
-		Dline.setCorner(g_settings.Hint_corner);
-		Dline.setRadius(g_settings.Hint_radius);
+		Dline.setCorner(g_settings.Hint_radius, g_settings.Hint_corner);
+		//Dline.setRadius(g_settings.Hint_radius);
 		Dline.setMode(AUTO_WIDTH);
 		
 		int iw = 100;

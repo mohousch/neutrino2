@@ -148,7 +148,7 @@ void CMenuWidget::Init(const std::string &Icon, const int mwidth, const int mhei
 	footInfoMode = ITEMINFO_INFO_MODE;
 
 	timeout = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
-	sec_timer_interval = 1; // 1 min
+	sec_timer_id = 0;
 
 	//
 	widgetType = WIDGET_TYPE_STANDARD;
@@ -1374,7 +1374,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 	CFrameBuffer::getInstance()->blit();
 
 	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(sec_timer_interval*1000*1000, false);
+	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 
 	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
 

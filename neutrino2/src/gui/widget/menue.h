@@ -109,7 +109,6 @@ class CMenuWidget : public CMenuTarget
 
 		uint32_t sec_timer_id;
 		uint64_t timeout;
-		uint64_t sec_timer_interval;
 
 		// head
 		int hheight;
@@ -208,7 +207,6 @@ class CMenuWidget : public CMenuTarget
 		int getSelected(){return selected;};
 		
 		void setTimeOut(unsigned long long int to = 0){timeout = to;};
-		void setSecTimerInterval(uint64_t interval){sec_timer_interval = interval;};
 
 		void move(int xoff, int yoff);
 		int getHeight(void) const {return height;}
