@@ -52,7 +52,7 @@
 /* ***************************** */
 
 
-//#define H264_DEBUG
+#define H264_DEBUG
 
 #ifdef H264_DEBUG
 
@@ -383,6 +383,7 @@ static int writeData(void* _call)
 		unsigned int PacketLength = 0;
 		unsigned int FakeStartCode = (call->Version << 8) | PES_VERSION_FAKE_START_CODE;
 		iov[ic++].iov_base = PesHeader;
+		
 		if (initialHeader)
 		{
 			initialHeader = 0;
@@ -400,6 +401,7 @@ static int writeData(void* _call)
 		iov[ic].iov_base = "";
 		iov[ic++].iov_len = 1;
 		iov[0].iov_len = InsertPesHeader(PesHeader, PacketLength, MPEG_VIDEO_PES_START_CODE, call->Pts, FakeStartCode);
+		
 		return call->WriteV(call->fd, iov, ic);
 	}
 
@@ -420,6 +422,7 @@ static int writeData(void* _call)
 
 		if (avcCHeader->Version != 1)
 			h264_err("Error unknown avcC version (%x). Expect problems.\n", avcCHeader->Version);
+			
 		ParametersLength                      = 0;
 		unsigned char  HeaderData[19];
 		HeaderData[ParametersLength++]        = 0x00;                                         // Start code
@@ -483,10 +486,13 @@ static int writeData(void* _call)
 		ParamSets                       = avcCHeader->Params[ParamOffset];
 		h264_printf(20,  "    number of picture param sets:  %d\n", ParamSets);
 		ParamOffset++;
+		
 		for (i = 0; i < ParamSets; i++)
 		{
 			unsigned int  PsLength      = (avcCHeader->Params[ParamOffset] << 8) + avcCHeader->Params[ParamOffset + 1];
+			
 			h264_printf(20, "        pps %d has length           %d\n", i, PsLength);
+			
 			iov[ic].iov_base = (char *) Head;
 			iov[ic++].iov_len = sizeof(Head);
 			InitialHeaderLength        += sizeof(Head);
@@ -495,8 +501,10 @@ static int writeData(void* _call)
 			InitialHeaderLength        += PsLength;
 			ParamOffset                += PsLength + 2;
 		}
+		
 		iov[0].iov_len = InsertPesHeader(PesHeader, InitialHeaderLength, MPEG_VIDEO_PES_START_CODE, INVALID_PTS_VALUE, 0);
 		ssize_t l = call->WriteV(call->fd, iov, ic);
+		
 		if (l < 0)
 			return l;
 		len += l;
@@ -516,6 +524,7 @@ static int writeData(void* _call)
 		memcpy(NalData, call->data + VideoPosition, NalLengthBytes);
 		VideoPosition += NalLengthBytes;
 		NalStart += NalLengthBytes;
+		
 		switch (NalLengthBytes)
 		{
 			case 1:
@@ -545,20 +554,25 @@ static int writeData(void* _call)
 			NalStart += NalLength;
 			ic = 0;
 			iov[ic++].iov_base = PesHeader;
+			
 			if (NalPresent)
 			{
 				NalPresent = 0;
 				iov[ic].iov_base = (char *)Head;
 				iov[ic++].iov_len = sizeof(Head);
 			}
+			
 			iov[ic].iov_base = call->data + VideoPosition;
 			iov[ic++].iov_len = NalLength;
 			VideoPosition += NalLength;
 			h264_printf(20, "  pts=%llu\n", VideoPts);
 			iov[0].iov_len = InsertPesHeader(PesHeader, NalLength, MPEG_VIDEO_PES_START_CODE, VideoPts, 0);
+			
 			ssize_t l = call->WriteV(call->fd, iov, ic);
+			
 			if (l < 0)
 				return l;
+				
 			len += l;
 			VideoPts = INVALID_PTS_VALUE;
 		}
@@ -665,6 +679,7 @@ static int writeData(void* _call)
             
             		uint32_t pack_len = 0;
             		uint32_t i = 0;
+            		
             		for (i = 0; i < NalLengthBytes; i++, pos++)
             		{
                 		pack_len <<= 8;
