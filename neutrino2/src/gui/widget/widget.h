@@ -202,7 +202,6 @@ class CWidget : public CMenuTarget
 		std::map<neutrino_msg_t, keyAction> keyActionMap;
 		uint64_t timeout;
 		uint32_t sec_timer_id;
-		uint64_t sec_timer_interval;
 		std::string actionKey; // for lua
 		
 		// screen
@@ -220,6 +219,7 @@ class CWidget : public CMenuTarget
 		int gradient;
 		int radius;
 		int corner;
+		int borderMode;
 		
 		//
 		void initFrames();
@@ -257,7 +257,6 @@ class CWidget : public CMenuTarget
 
 		//
 		void setTimeOut(unsigned long long int to = 0){timeout = to;};
-		void setSecTimerInterval(uint64_t interval){sec_timer_interval = interval;};
 		
 		//
 		void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
@@ -267,6 +266,7 @@ class CWidget : public CMenuTarget
 		void setColor(fb_pixel_t col) {backgroundColor = col;};
 		void setGradient(int gra){gradient = gra;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
+		void setBorderMode(int sm){borderMode = sm;};
 		//
 		void enableSaveScreen();
 		void setMenuPosition(int p){enablePos = true; menu_position = p;};

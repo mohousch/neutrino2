@@ -787,6 +787,10 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 		listBox->paintScrollBar(scrollbar);
 		listBox->paintMainFrame(i_paintframe);
 		if (i_color != NULL) listBox->setColor(finalColor);
+		// gradient
+		// corner
+		// radius
+		
 		if (position) listBox->setMenuPosition(position);
 		if (shrink) listBox->enableShrinkMenu();
 				
@@ -1742,6 +1746,7 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 			unsigned int gradient = 0;
 			unsigned int corner = 0;
 			unsigned int radius = 0;
+			unsigned int border = 0;
 			
 			unsigned int paintframe = 0;
 			unsigned int savescreen = 0;
@@ -1761,6 +1766,7 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 			gradient = xmlGetSignedNumericAttribute(search, "gradient", 0);
 			corner = xmlGetSignedNumericAttribute(search, "corner", 0);
 			radius = xmlGetSignedNumericAttribute(search, "radius", 0);
+			border = xmlGetSignedNumericAttribute(search, "border", 0);
 			
 			paintframe = xmlGetSignedNumericAttribute(search, "paintframe", 0);
 			savescreen = xmlGetSignedNumericAttribute(search, "savescreen", 0);
@@ -1781,6 +1787,7 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 			if (color != NULL) wdg->setColor(wColor);
 			wdg->setGradient(gradient);
 			wdg->setCorner(radius, corner);
+			wdg->setBorderMode(border);
 			if (savescreen) wdg->enableSaveScreen();
 			wdg->setTimeOut(timeout);
 			if (position) wdg->setMenuPosition(position);
@@ -1874,7 +1881,7 @@ bool CNeutrinoApp::widget_exists(const char* const name)
 	{
 		if ( (widgets[i] != NULL) && (widgets[i]->name == name) )
 		{
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::widget_exists: (%s)\n", name);
+			dprintf(DEBUG_INFO, "CNeutrinoApp::widget_exists: (%s)\n", name);
 			
 			ret = true;
 			break;

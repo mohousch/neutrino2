@@ -53,7 +53,6 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 
 	timeout = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
 	selected = -1;
-	sec_timer_interval = 1;
 
 	//
 	paintframe = false;
@@ -61,7 +60,9 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	gradient = NOGRADIENT;
 	radius = NO_RADIUS;
 	corner = CORNER_NONE;
+	borderMode = BORDER_NO;
 
+	//
 	actionKey = "";
 	
 	//
@@ -83,7 +84,6 @@ CWidget::CWidget(CBox *position)
 
 	timeout = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
 	selected = -1;
-	sec_timer_interval = 1;
 
 	//
 	paintframe = false;
@@ -91,7 +91,9 @@ CWidget::CWidget(CBox *position)
 	gradient = NOGRADIENT;
 	radius = RADIUS_MID;
 	corner = CORNER_ALL;
+	borderMode = BORDER_NO;
 
+	//
 	actionKey = "";
 	
 	//
@@ -212,8 +214,17 @@ void CWidget::paint()
 	initFrames();
 
 	// paint mainFrame
+	// border
+	if (borderMode)
+		frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, COL_MENUCONTENT_PLUS_6, radius, corner);
+		
 	if (paintframe)
-		frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient);
+	{
+		if (borderMode == BORDER_NO)
+			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient);
+		else
+			frameBuffer->paintBoxRel(mainFrameBox.iX + 2, mainFrameBox.iY + 2, mainFrameBox.iWidth - 4, mainFrameBox.iHeight - 4, backgroundColor, radius, corner, gradient);
+	}
 
 	// WidgetItems
 	if (hasWidgetItem())
@@ -333,7 +344,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 	CFrameBuffer::getInstance()->blit();
 
 	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(sec_timer_interval*1000*1000, false);
+	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
 
