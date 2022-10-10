@@ -1009,7 +1009,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 		char * encoding = Codec2Encoding(stream->codec, &version);
 
 		if (encoding != NULL)
-			ffmpeg_printf(1, "\n%d. encoding = %s - version %d\n", n, encoding, version);
+			ffmpeg_printf(1, "%d. encoding = %s - version %d\n", n, encoding, version);
 
 		/* 
 		some values in track are unset and therefor copyTrack segfaults.
