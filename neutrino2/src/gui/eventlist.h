@@ -52,6 +52,7 @@
 #include <string>
 
 
+//
 class EventList
 {
 	// Eventfinder start
@@ -130,6 +131,7 @@ class CEventListHandler : public CMenuTarget
 
 };
 
+//
 class CEventFinderMenu : public CMenuTarget
 {
         private:

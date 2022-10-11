@@ -84,10 +84,10 @@
 NEUTRINO_CPP  SNeutrinoSettings	g_settings;
 
 NEUTRINO_CPP  CZapitClient		*g_Zapit;
-NEUTRINO_CPP  CSectionsdClient	*g_Sectionsd;
+NEUTRINO_CPP  CSectionsdClient		*g_Sectionsd;
 NEUTRINO_CPP  CTimerdClient		*g_Timerd;
 
-NEUTRINO_CPP  FBFontRenderClass	*g_fontRenderer;
+NEUTRINO_CPP  FBFontRenderClass		*g_fontRenderer;
 
 NEUTRINO_CPP  CFont 			* g_Font[FONT_TYPE_COUNT];
 NEUTRINO_CPP  CFont 			* g_SignalFont;
@@ -96,10 +96,10 @@ NEUTRINO_CPP  CRCInput			*g_RCInput;
 
 NEUTRINO_CPP  CEpgData			*g_EpgData;
 NEUTRINO_CPP  CInfoViewer		*g_InfoViewer;
-NEUTRINO_CPP  EventList		*g_EventList;
+NEUTRINO_CPP  EventList			*g_EventList;
 
 NEUTRINO_CPP CLocaleManager		*g_Locale;
 
-NEUTRINO_CPP CRadioText		*g_Radiotext;
+NEUTRINO_CPP CRadioText			*g_Radiotext;
 
 #endif /* __neutrino_global_h__ */

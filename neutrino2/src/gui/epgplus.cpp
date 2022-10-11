@@ -54,7 +54,6 @@
 #define COL_MENUCONTENT_P2                 254-8*4+2
 extern CBouquetList *bouquetList;
 
-CFont * fonts[EpgPlus::NumberOfFontSettings];
 int sizes[EpgPlus::NumberOfSizeSettings];
 
 time_t EpgPlus::duration = 0;
@@ -71,18 +70,6 @@ int EpgPlus::verGap2Color = 0;
 
 int EpgPlus::sliderWidth = 0;
 int EpgPlus::channelsTableWidth = 0;
-
-static EpgPlus::FontSetting fontSettingTable[] = {
-	{EpgPlus::EPGPlus_header_font, (char *) "Bold", 20},
-	{EpgPlus::EPGPlus_timeline_fonttime, (char *) "Bold", 16},
-	{EpgPlus::EPGPlus_timeline_fontdate, (char *) "Bold", 14},
-	{EpgPlus::EPGPlus_channelentry_font, (char *) "Bold", 16},
-	{EpgPlus::EPGPlus_channelevententry_font, (char *) "Regular", 16},
-	{EpgPlus::EPGPlus_footer_fontbouquetchannelname, (char *) "Bold", 24},
-	{EpgPlus::EPGPlus_footer_fonteventdescription, (char *) "Regular", 16},
-	{EpgPlus::EPGPlus_footer_fonteventshortdescription, (char *) "Regular", 16},
-	{EpgPlus::EPGPlus_footer_fontbuttons, (char *) "Regular", 16},
-};
 
 static EpgPlus::SizeSetting sizeSettingTable[] = {
 	{EpgPlus::EPGPlus_channelentry_width, 100},
@@ -104,26 +91,26 @@ EpgPlus::Header::Header(CFrameBuffer * _frameBuffer, int _x, int _y, int _width)
 	this->width = _width;
 }
 
-EpgPlus::Header::~Header ()
+EpgPlus::Header::~Header()
 {
 }
 
-void EpgPlus::Header::init ()
+void EpgPlus::Header::init()
 {
-  	font = fonts[EPGPlus_header_font];
+  	font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE];
 }
 
 void EpgPlus::Header::paint()
 {
-	CHeaders head(this->x, this->y, this->width, /*this->font->getHeight() + 10*/40, _("Eventlist overview"), NEUTRINO_ICON_BUTTON_EPG);
+	CHeaders head(this->x, this->y, this->width, this->font->getHeight() + 10 /*40*/, _("Eventlist overview"), NEUTRINO_ICON_BUTTON_EPG);
 	head.enablePaintDate();
 	head.setFormat("%d.%m.%Y %H:%M:%S");
 	head.paint();
 }
 
-int EpgPlus::Header::getUsedHeight ()
+int EpgPlus::Header::getUsedHeight()
 {
-  	return /*font->getHeight() + 10*/40;
+  	return font->getHeight() + 10; //40;
 }
 
 // TimeLine
@@ -140,13 +127,13 @@ EpgPlus::TimeLine::TimeLine(CFrameBuffer * _frameBuffer, int _x, int _y, int _wi
 	this->durationX = _durationX;
 }
 
-void EpgPlus::TimeLine::init ()
+void EpgPlus::TimeLine::init()
 {
-	fontTime = fonts[EPGPlus_timeline_fonttime];
-	fontDate = fonts[EPGPlus_timeline_fontdate];
+	fontTime = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL];
+	fontDate = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL];
 }
 
-EpgPlus::TimeLine::~TimeLine ()
+EpgPlus::TimeLine::~TimeLine()
 {
 }
 
@@ -262,7 +249,7 @@ EpgPlus::ChannelEventEntry::ChannelEventEntry(const CChannelEvent * _channelEven
 
 void EpgPlus::ChannelEventEntry::init()
 {
-	font = fonts[EPGPlus_channelevententry_font];
+	font = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMSMALL];
 	separationLineHeight = sizes[EPGPlus_channelentry_separationlineheight];
 }
 
@@ -342,7 +329,7 @@ EpgPlus::ChannelEntry::ChannelEntry(const CZapitChannel * _channel, int _index, 
 
 void EpgPlus::ChannelEntry::init()
 {
-	font = fonts[EPGPlus_channelentry_font];
+	font = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMSMALL];
 	separationLineHeight = sizes[EPGPlus_channelentry_separationlineheight];
 }
 
@@ -448,12 +435,12 @@ EpgPlus::Footer::~Footer ()
 {
 }
 
-void EpgPlus::Footer::init ()
+void EpgPlus::Footer::init()
 {
-	fontBouquetChannelName = fonts[EPGPlus_footer_fontbouquetchannelname];
-	fontEventDescription = fonts[EPGPlus_footer_fonteventdescription];
-	fontEventShortDescription = fonts[EPGPlus_footer_fonteventshortdescription];
-	fontButtons = fonts[EPGPlus_footer_fontbuttons];
+	fontBouquetChannelName = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMSMALL];
+	fontEventDescription = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE];
+	fontEventShortDescription = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMSMALL];
+	fontButtons = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL];
 }
 
 void EpgPlus::Footer::setBouquetChannelName (const std::string & newBouquetName, const std::string & newChannelName)
@@ -511,7 +498,7 @@ struct button_label buttonLabels[] = {
 
 void EpgPlus::Footer::paintButtons(button_label * _buttonLabels, int numberOfButtons)
 {
-	CFooters foot(this->x, this->y + this->getUsedHeight() - (this->fontButtons->getHeight() + 14), this->width, /*this->fontButtons->getHeight() + 10*/40);
+	CFooters foot(this->x, this->y + this->getUsedHeight() - (this->fontButtons->getHeight() + 14), this->width, this->fontButtons->getHeight() + 10);
 	foot.setButtons(buttonLabels, numberOfButtons);
 	foot.paint();
 }
@@ -683,26 +670,17 @@ void EpgPlus::init()
 	usableScreenWidth = g_settings.screen_EndX;
 	usableScreenHeight = g_settings.screen_EndY;
 	
-	std::string FileName = std::string (g_settings.font_file);
-	for (size_t i = 0; i < NumberOfFontSettings; ++i) {
-		std::string family = g_fontRenderer->getFamily (FileName.c_str ());
-		CFont *font = g_fontRenderer->getFont (family.c_str (), fontSettingTable[i].style, fontSettingTable[i].size);
-	
-		if (font == NULL)
-		font = g_fontRenderer->getFont (family.c_str (), "Regular", fontSettingTable[i].size);
-	
-		fonts[i] = font;
-	}
-	
-	for (size_t i = 0; i < NumberOfSizeSettings; ++i) {
+	//
+	for (size_t i = 0; i < NumberOfSizeSettings; ++i) 
+	{
 		sizes[i] = sizeSettingTable[i].size;
 	}
 	
-	Header::init ();
-	TimeLine::init ();
-	ChannelEntry::init ();
-	ChannelEventEntry::init ();
-	Footer::init ();
+	Header::init();
+	TimeLine::init();
+	ChannelEntry::init();
+	ChannelEventEntry::init();
+	Footer::init();
 	
 	this->selectedChannelEntry = NULL;
 	
@@ -714,10 +692,10 @@ void EpgPlus::init()
 	verGap1Width = sizes[EPGPlus_vergap1_width];
 	verGap2Width = sizes[EPGPlus_vergap2_width];
 	
-	int headerHeight = Header::getUsedHeight ();
-	int timeLineHeight = TimeLine::getUsedHeight ();
-	this->entryHeight = ChannelEntry::getUsedHeight ();
-	int footerHeight = Footer::getUsedHeight ();
+	int headerHeight = Header::getUsedHeight();
+	int timeLineHeight = TimeLine::getUsedHeight();
+	this->entryHeight = ChannelEntry::getUsedHeight();
+	int footerHeight = Footer::getUsedHeight();
 	
 	this->maxNumberOfDisplayableEntries = (this->usableScreenHeight - headerHeight - timeLineHeight - horGap1Height - horGap2Height - footerHeight) / this->entryHeight;
 	
@@ -781,15 +759,11 @@ void EpgPlus::init()
 	this->footer = new Footer (this->frameBuffer, this->footerX, this->footerY, this->footerWidth);
 }
 
-void EpgPlus::free ()
+void EpgPlus::free()
 {
 	delete this->header;
 	delete this->timeLine;
 	delete this->footer;
-	int i;
-	for (i = 0; i < NumberOfFontSettings; ++i) {
-		delete fonts[i];
-	}
 }
 
 int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouquetList * _bouquetList)
@@ -1336,10 +1310,6 @@ void EpgPlus::paint()
 	this->frameBuffer->paintBoxRel (this->sliderX + 2, this->sliderY + int (sliderKnobPosition * sliderKnobHeight), this->sliderWidth - 4, int (sliderKnobHeight) , COL_MENUCONTENT_PLUS_3);	
 }
 
-//  -- EPG+ Menue Handler Class
-//  -- to be used for calls from Menue
-//  -- (2004-03-05 rasc)
-
 int CEPGplusHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CEPGplusHandler::exec:\n");
@@ -1512,5 +1482,4 @@ int EpgPlus::MenuOptionChooserSwitchViewMode::exec(CMenuTarget* parent)
 	
 	return RETURN_REPAINT;
 }
-
 

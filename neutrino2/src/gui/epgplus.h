@@ -60,20 +60,6 @@ class EpgPlus
 {
 	//// types, inner classes
 	public:
-		enum FontSettingID
-		{
-			EPGPlus_header_font = 0,                         
-			EPGPlus_timeline_fonttime,                   
-			EPGPlus_timeline_fontdate,                   
-			EPGPlus_channelentry_font,                   
-			EPGPlus_channelevententry_font,              
-			EPGPlus_footer_fontbouquetchannelname,       
-			EPGPlus_footer_fonteventdescription,         
-			EPGPlus_footer_fonteventshortdescription,    
-			EPGPlus_footer_fontbuttons,                  
-			NumberOfFontSettings
-		};
-
 		enum SizeSettingID
 		{                                                 
 			EPGPlus_channelentry_width = 0,                    
@@ -84,13 +70,6 @@ class EpgPlus
 			EPGPlus_vergap1_width,                         
 			EPGPlus_vergap2_width,                         
 			NumberOfSizeSettings
-		};
-
-		struct FontSetting
-		{
-			FontSettingID     settingID;
-			char*             style;
-			int               size;
 		};
 
 		struct SizeSetting
@@ -114,12 +93,12 @@ class EpgPlus
 
 		class Footer;
 
+		// Header
 		class Header
 		{
 			//// construction / destruction
 			public:
 				Header( CFrameBuffer* _frameBuffer , int _x , int _y , int _width);
-
 				~Header();
 
 			//// methods
@@ -139,12 +118,12 @@ class EpgPlus
 				static CFont *font;
 		};
 
+		// timeline
 		class TimeLine
 		{
 			//// construction / destruction
 			public:
 				TimeLine( CFrameBuffer* _frameBuffer , int _x , int _y , int _width , int _startX , int _durationX);
-    
 				~TimeLine();
 
 			//// methods
@@ -173,6 +152,7 @@ class EpgPlus
 				int durationX;
 		};
 
+		// channel event entry
 		class ChannelEventEntry
 		{
 			//// construction / destruction
@@ -213,6 +193,7 @@ class EpgPlus
 
 		typedef std::vector<ChannelEventEntry*> TCChannelEventEntries;
 
+		// channel entry
 		class ChannelEntry
 		{
 			//// construction / destruction
@@ -263,6 +244,7 @@ class EpgPlus
 
 		typedef std::vector<ChannelEntry*> TChannelEntries;
 
+		// footer
 		class Footer
 		{
 			//// construction / destruction
@@ -318,7 +300,7 @@ class EpgPlus
 				std::string currentChannelName;
 		};
 
-	
+		//
 		class MenuTargetAddReminder : public CMenuTarget
 		{
 			public:
@@ -332,6 +314,7 @@ class EpgPlus
 
 		};
 
+		//
 		class MenuTargetAddRecordTimer : public CMenuTarget
 		{
 			public:
@@ -345,6 +328,7 @@ class EpgPlus
 
 		};
 
+		//
 		class MenuTargetRefreshEpg : public CMenuTarget
 		{
 			public:
@@ -358,6 +342,7 @@ class EpgPlus
 
 		};
 
+		//
 		class MenuOptionChooserSwitchSwapMode : public CMenuOptionChooser
 		{
 			public:
@@ -374,6 +359,7 @@ class EpgPlus
 				EpgPlus * epgPlus;
 		};
 
+		//
 		class MenuOptionChooserSwitchViewMode : public CMenuOptionChooser
 		{
 			public:
@@ -388,6 +374,7 @@ class EpgPlus
 				int oldTimingMenuSettings;
 		};
 
+		//
 		class MenuTargetSettings : public CMenuTarget
 		{
 			public:
@@ -532,3 +519,4 @@ class CEPGplusHandler : public CMenuTarget
 };
 
 #endif
+

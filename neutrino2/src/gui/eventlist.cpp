@@ -1011,6 +1011,7 @@ int CEventFinderMenu::showMenu(void)
 		
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "epgsearch";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(searchMenu);
 	}
@@ -1029,5 +1030,4 @@ int CEventFinderMenu::showMenu(void)
 	
 	return(res);
 }
-
 

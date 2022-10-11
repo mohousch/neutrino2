@@ -243,7 +243,7 @@ struct SNeutrinoSettings
 		FONT_TYPE_INFOBAR_INFO        	= 19,
 		FONT_TYPE_INFOBAR_SMALL       	= 20,
 		FONT_TYPE_FILEBROWSER_ITEM    	= 21,
-		FONT_TYPE_MENU_TITLE2			= 22
+		FONT_TYPE_MENU_TITLE2		= 22
 	};
 
 	int screen_StartX;

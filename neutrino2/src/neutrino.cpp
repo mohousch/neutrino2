@@ -1789,7 +1789,7 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 	if(font.filename != NULL)
 		free((void *)font.filename);
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::SetupFonts: settings font file %s\n", /*g_settings.*/font_file);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::SetupFonts: font file: %s\n", font_file);
 
 	if(access(font_file, F_OK)) 
 	{
@@ -1843,7 +1843,7 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 
 	font.name = strdup(g_fontRenderer->getFamily(font.filename).c_str());
 
-	dprintf(DEBUG_DEBUG, "CNeutrinoApp::SetupFonts: font family %s\n", font.name);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::SetupFonts: font family %s\n", font.name);
 
 	style[1] = "Bold Regular";
 
