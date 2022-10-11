@@ -340,6 +340,3 @@ struct Writer_s WriterVideoMPEG1 = {
     	&mpg1_caps
 };
 
-
-
-

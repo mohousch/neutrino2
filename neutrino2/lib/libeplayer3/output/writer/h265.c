@@ -347,4 +347,3 @@ struct Writer_s WriterVideoH265 = {
     	&caps
 };
 
-
