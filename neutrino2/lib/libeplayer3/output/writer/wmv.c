@@ -276,7 +276,7 @@ static WriterCaps_t caps = {
 	"wmv",
 	eVideo,
 	"V_WMV",
-	VIDEO_STREAMTYPE_MPEG1
+	STREAMTYPE_VC1_SM
 };
 
 struct Writer_s WriterVideoWMV = {
