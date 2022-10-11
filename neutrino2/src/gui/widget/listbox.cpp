@@ -2881,7 +2881,7 @@ void ClistBox::initFrames()
 		}
 
 		// recalculate height
-		if(shrinkMenu)
+		if(shrinkMenu && hasItem())
 		{
 			if (widgetMode == MODE_LISTBOX)
 			{
