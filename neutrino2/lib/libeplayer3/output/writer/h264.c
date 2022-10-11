@@ -52,7 +52,7 @@
 /* ***************************** */
 
 
-#define H264_DEBUG
+//#define H264_DEBUG
 
 #ifdef H264_DEBUG
 
@@ -96,11 +96,9 @@ const unsigned char Head[] = {0, 0, 0, 1};
 static int initialHeader = 1;
 static unsigned int NalLengthBytes = 1;
 static int avc3 = 0;
-#if !defined (__sh__)
 static unsigned char* CodecData = NULL;
 static unsigned int CodecDataLen = 0;
 static int sps_pps_in_stream = 0;
-#endif
 
 /* ***************************** */
 /* Prototypes                    */
@@ -219,7 +217,6 @@ static int32_t UpdateExtraData(uint8_t **ppExtraData, uint32_t *pExtraDataSize, 
 	return 0;
 }
 
-#if !defined (__sh__)
 static int32_t PreparCodecData(unsigned char *data, unsigned int cd_len, unsigned int *NalLength)
 {
     	h264_printf(10, "H264 check codec data..!\n");
@@ -257,12 +254,12 @@ static int32_t PreparCodecData(unsigned char *data, unsigned int cd_len, unsigne
                         			
                         			if (level_org > 0x29)
                         			{
-                            				h264_printf(10, "H264 %s profile@%d.%d patched down to 4.1!", profile_str[i], level_org / 10 , level_org % 10);
+                            				h264_printf(10, "H264 %s profile@%d.%d patched down to 4.1!\n", profile_str[i], level_org / 10 , level_org % 10);
                             				tmp[tmp_len+3] = 0x29; // level 4.1
                         			}
                         			else
                         			{
-                            				h264_printf(10, "H264 %s profile@%d.%d", profile_str[i], level_org / 10 , level_org % 10);
+                            				h264_printf(10, "H264 %s profile@%d.%d\n", profile_str[i], level_org / 10 , level_org % 10);
                         			}
                         			break;
                     			}
@@ -292,30 +289,30 @@ static int32_t PreparCodecData(unsigned char *data, unsigned int cd_len, unsigne
                     			}
                     			else
                     			{
-                        			h264_printf(10, "codec_data too short(4)");
+                        			h264_printf(10, "codec_data too short(4)\n");
                         			ret = -4;
                     			}
                 		}
                 		else
                 		{
-                    			h264_printf(10,  "codec_data too short(3)");
+                    			h264_printf(10,  "codec_data too short(3)\n");
                     			ret = -3;
                 		}
             		}
             		else
             		{
-                		h264_printf(10, "codec_data too short(2)");
+                		h264_printf(10, "codec_data too short(2)\n");
                 		ret = -2;
             		}
         	}
         	else if (cd_len <= 7)
         	{
-            		h264_printf(10, "codec_data too short(1)");
+            		h264_printf(10, "codec_data too short(1)\n");
             		ret = -1;
         	}
         	else
         	{
-            		h264_printf(10, "wrong avcC version %d!", data[0]);
+            		h264_printf(10, "wrong avcC version %d!\n", data[0]);
         	}
     	}
     	else
@@ -325,15 +322,12 @@ static int32_t PreparCodecData(unsigned char *data, unsigned int cd_len, unsigne
     
     	return ret;
 }
-#endif
 
 static int reset()
 {
 	initialHeader = 1;
 	avc3 = 0;
-#if !defined (__sh__)
 	sps_pps_in_stream = 0;
-#endif
 
 	return 0;
 }
@@ -376,7 +370,7 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-#if defined (__sh__)
+#if 1 //defined (__sh__)
 	/*AnnexA*/
 	if ((call->len > 3) && ((call->data[0] == 0x00 && call->data[1] == 0x00 && call->data[2] == 0x00 && call->data[3] == 0x01) || (call->data[0] == 0xff && call->data[1] == 0xff && call->data[2] == 0xff && call->data[3] == 0xff)))
 	{
@@ -598,20 +592,20 @@ static int writeData(void* _call)
 		
 		while (InsertPrivData && i < 36 && (call->len - i) > 5)
 		{
-		    if ( (call->data[i] == 0x00 && call->data[i+1] == 0x00 && call->data[i+2] == 0x00 && call->data[i+3] == 0x01 && (call->data[i+4] == 0x67 || call->data[i+4] == 0x68)) )
-			    {
+		    	if ( (call->data[i] == 0x00 && call->data[i+1] == 0x00 && call->data[i+2] == 0x00 && call->data[i+3] == 0x01 && (call->data[i+4] == 0x67 || call->data[i+4] == 0x68)) )
+			{
 				InsertPrivData = 0;
 				sps_pps_in_stream = 1;
-			    }
-			    i += 1;
+			}
+			i += 1;
         	}
         
 		if (InsertPrivData && call->private_size > 0 /*&& initialHeader*/) // some rtsp streams can update codec data at runtime
 		{
-			    initialHeader = 0;
-			    iov[ic].iov_base  = call->private_data;
-			    iov[ic++].iov_len = call->private_size;
-			    PacketLength     += call->private_size;
+			initialHeader = 0;
+			iov[ic].iov_base  = call->private_data;
+			iov[ic++].iov_len = call->private_size;
+			PacketLength     += call->private_size;
 		}
         
 		iov[ic].iov_base  = call->data;
