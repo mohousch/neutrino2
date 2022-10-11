@@ -266,7 +266,7 @@ static int writeData(void* _call)
 static WriterCaps_t mpeg4p2_caps = {
 	"mscomp",
 	eVideo,
-	"V_MSCOMP",
+	"V_MPEG4",
 	VIDEO_STREAMTYPE_MPEG4_Part2
 };
 
