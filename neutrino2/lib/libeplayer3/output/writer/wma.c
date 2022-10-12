@@ -172,7 +172,7 @@ static WriterCaps_t caps = {
 	"wma",
 	eAudio,
 	"A_WMA",
-	AUDIO_STREAMTYPE_MPEG
+	AUDIO_STREAMTYPE_WMA
 };
 
 struct Writer_s WriterAudioWMA = {
