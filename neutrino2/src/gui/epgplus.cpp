@@ -102,7 +102,7 @@ void EpgPlus::Header::init()
 
 void EpgPlus::Header::paint()
 {
-	CHeaders head(this->x, this->y, this->width, this->font->getHeight() + 10 /*40*/, _("Eventlist overview"), NEUTRINO_ICON_BUTTON_EPG);
+	CHeaders head(this->x, this->y, this->width, /*this->font->getHeight() + 10*/40, _("Eventlist overview"), NEUTRINO_ICON_BUTTON_EPG);
 	head.enablePaintDate();
 	head.setFormat("%d.%m.%Y %H:%M:%S");
 	head.paint();
@@ -110,7 +110,7 @@ void EpgPlus::Header::paint()
 
 int EpgPlus::Header::getUsedHeight()
 {
-  	return font->getHeight() + 10; //40;
+  	return 40; //font->getHeight() + 10;
 }
 
 // TimeLine
@@ -226,7 +226,7 @@ void EpgPlus::TimeLine::clearMark()
 
 int EpgPlus::TimeLine::getUsedHeight()
 {
-	return std::max(fontDate->getHeight(), fontTime->getHeight()) + fontTime->getHeight ();
+	return std::max(fontDate->getHeight(), fontTime->getHeight()) + fontTime->getHeight();
 }
 
 // ChannelEventEntry
@@ -451,7 +451,7 @@ void EpgPlus::Footer::setBouquetChannelName (const std::string & newBouquetName,
 
 int EpgPlus::Footer::getUsedHeight ()
 {
-	return fontBouquetChannelName->getHeight() + fontEventDescription->getHeight() + fontEventShortDescription->getHeight() + fontButtons->getHeight() + 14;
+	return fontBouquetChannelName->getHeight() + fontEventDescription->getHeight() + fontEventShortDescription->getHeight() + /*fontButtons->getHeight() + 10*/40;
 }
 
 void EpgPlus::Footer::paintEventDetails (const std::string & description, const std::string & shortDescription)
@@ -498,7 +498,7 @@ struct button_label buttonLabels[] = {
 
 void EpgPlus::Footer::paintButtons(button_label * _buttonLabels, int numberOfButtons)
 {
-	CFooters foot(this->x, this->y + this->getUsedHeight() - (this->fontButtons->getHeight() + 14), this->width, this->fontButtons->getHeight() + 10);
+	CFooters foot(this->x, this->y + this->getUsedHeight() - (/*this->fontButtons->getHeight() + 10*/40), this->width, /*this->fontButtons->getHeight() + 10*/40);
 	foot.setButtons(buttonLabels, numberOfButtons);
 	foot.paint();
 }
