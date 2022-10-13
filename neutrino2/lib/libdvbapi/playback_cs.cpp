@@ -1130,7 +1130,7 @@ bool cPlayback::SetPosition(int position)
 		gst_element_seek(m_gst_playbin, 1.0, GST_FORMAT_TIME, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_ACCURATE), GST_SEEK_TYPE_SET, time_nanoseconds, GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE);
 	}
 #else
-	float pos = (position);
+	float pos = (position/1000); // in sec
 
 	if(player && player->playback)
 		player->playback->Command(player, PLAYBACK_SEEK, (void*)&pos);
