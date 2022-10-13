@@ -228,6 +228,8 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 			GstTagList *m_stream_tags = 0;
 
 			result = gst_tag_list_merge(m_stream_tags, tags, GST_TAG_MERGE_REPLACE);
+			
+			// tags
 			if (result)
 			{
 				if (m_stream_tags && gst_tag_list_is_equal(m_stream_tags, result))
@@ -241,6 +243,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 				m_stream_tags = result;
 			}
 
+			// id3cover
 			const GValue *gv_image = gst_tag_list_get_value_index(tags, GST_TAG_IMAGE, 0);
 			if ( gv_image )
 			{

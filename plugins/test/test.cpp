@@ -3946,6 +3946,7 @@ void CTestMenu::testClistBox2()
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
+	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
 
 	// footer
 	rightWidget->enablePaintFoot();
@@ -3977,7 +3978,8 @@ void CTestMenu::testClistBox2()
 
 		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			rightWidget->paintHead();
+			//rightWidget->paintHead();
+			rightWidget->refresh();
 		}
 		else if (msg == RC_up)
 		{
@@ -4125,7 +4127,7 @@ void CTestMenu::testClistBox3()
 
 		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			rightWidget->paintHead();
+			rightWidget->refresh();
 		} 
 		else if (msg == RC_up)
 		{
@@ -4269,7 +4271,7 @@ void CTestMenu::testClistBox4()
 
 		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			rightWidget->paintHead();
+			rightWidget->refresh();
 		} 
 		else if (msg == RC_up)
 		{
@@ -4426,7 +4428,7 @@ void CTestMenu::testClistBox5()
 
 		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			rightWidget->paintHead();
+			rightWidget->refresh();
 		} 
 		else if (msg == RC_up)
 		{
@@ -4590,7 +4592,7 @@ void CTestMenu::testClistBox6()
 
 		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			rightWidget->paintHead();
+			rightWidget->refresh();
 		} 
 		else if (msg == RC_up)
 		{

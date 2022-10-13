@@ -1624,6 +1624,9 @@ void CMoviePlayerGui::PlayFile(void)
 			{ 
 				hide();
 			}
+			
+			if (mplist && mplist->isPainted())
+				mplist->refresh();
 		}
 		else 
 		{
