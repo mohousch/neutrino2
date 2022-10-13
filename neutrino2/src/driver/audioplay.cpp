@@ -173,7 +173,7 @@ void * CAudioPlayer::PlayThread( void * /*arg*/)
 #if defined (PLATFORM_COOLSTREAM)
 		if(!playback->GetPosition(position, duration))
 #else
-		if(!playback->GetPosition((int64_t &)position, (int64_t &)duration))
+		if(!playback->GetPosition(position, duration))
 #endif		
 		{
 			getInstance()->state = CBaseDec::STOP;

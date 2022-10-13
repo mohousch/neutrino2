@@ -74,8 +74,8 @@ class CMoviePlayerGui : public CMenuTarget
 		int playstate;
 		int speed;
 		int slow;
-		unsigned int position;
-		unsigned int duration;
+		int position;
+		int duration;
 		unsigned int file_prozent;
 		int startposition;
 		int g_jumpseconds;

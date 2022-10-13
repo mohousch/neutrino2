@@ -872,8 +872,8 @@ void cPlayback::trickSeek(double ratio)
 {	
 	bool validposition = false;
 	gint64 pos = 0;
-	int64_t position;
-	int64_t duration;
+	int position;
+	int duration;
 	
 	// pause
 	if (ratio > -0.01 && ratio < 0.01)
@@ -1013,7 +1013,7 @@ bool cPlayback::GetSpeed(int &speed) const
 }
 
 // in milliseconds
-bool cPlayback::GetPosition(int64_t &position, int64_t &duration)
+bool cPlayback::GetPosition(int &position, int &duration)
 {
 	if(playing == false) 
 		return false;
@@ -1058,7 +1058,7 @@ bool cPlayback::GetPosition(int64_t &position, int64_t &duration)
 			
 		position = pts / 1000000.0;	// in ms
 		
-		dprintf(DEBUG_DEBUG, "%s: position: %lld ms ", __FUNCTION__, position);
+		dprintf(DEBUG_DEBUG, "%s: position: %d msec ", __FUNCTION__, position);
 		
 		//duration
 		gint64 len;
@@ -1071,7 +1071,7 @@ bool cPlayback::GetPosition(int64_t &position, int64_t &duration)
 		
 		duration = len / 1000000.0;	// in ms
 
-		dprintf(DEBUG_DEBUG, "(duration: %lld ms)\n", duration);
+		dprintf(DEBUG_DEBUG, "(duration: %d msec)\n", duration);
 	}
 #else
 	if (player && player->playback && !player->playback->isPlaying) 
@@ -1091,7 +1091,7 @@ bool cPlayback::GetPosition(int64_t &position, int64_t &duration)
 
 	position = vpts/90;
 	
-	dprintf(DEBUG_DEBUG, "%s: position: %lld ms ", __FUNCTION__, position);
+	dprintf(DEBUG_DEBUG, "%s: position: %d ms ", __FUNCTION__, position);
 	
 	// duration
 	double length = 0;
@@ -1104,34 +1104,24 @@ bool cPlayback::GetPosition(int64_t &position, int64_t &duration)
 
 	duration = (int)(length*1000);
 	
-	dprintf(DEBUG_DEBUG, "(duration: %lld ms)\n", duration);
+	dprintf(DEBUG_DEBUG, "(duration: %d ms)\n", duration);
 #endif
 	
 	return true;
 }
 
-bool cPlayback::SetPosition(int64_t position)
+bool cPlayback::SetPosition(int position)
 {
 	if(playing == false) 
 		return false;
 	
-	dprintf(DEBUG_NORMAL, "%s:%s position: %lld\n", FILENAME, __FUNCTION__, position);
+	dprintf(DEBUG_NORMAL, "%s:%s position: %d msec\n", FILENAME, __FUNCTION__, position);
 	
 #if ENABLE_GSTREAMER
-	gint64 time_nanoseconds;
+	gint64 time_nanoseconds = 0;
 		
 	if(m_gst_playbin)
 	{
-		gint64 pos = position;
-		GstFormat fmt = GST_FORMAT_TIME;
-
-#if GST_VERSION_MAJOR < 1
-		gst_element_query_duration(m_gst_playbin, &fmt, &pos);
-#else
-		gst_element_query_duration(m_gst_playbin, fmt, &pos);
-#endif
-
-		//time_nanoseconds = pos + (position * 1000000.0);
 		time_nanoseconds = position * 1000000.0;
 
 		if(time_nanoseconds < 0) 
@@ -1140,7 +1130,7 @@ bool cPlayback::SetPosition(int64_t position)
 		gst_element_seek(m_gst_playbin, 1.0, GST_FORMAT_TIME, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_ACCURATE), GST_SEEK_TYPE_SET, time_nanoseconds, GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE);
 	}
 #else
-	float pos = (position/1000.0);
+	float pos = (position);
 
 	if(player && player->playback)
 		player->playback->Command(player, PLAYBACK_SEEK, (void*)&pos);

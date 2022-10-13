@@ -49,8 +49,8 @@ class cPlayback
 		bool SetSpeed(int speed);
 		bool SetSlow(int slow);
 		bool GetSpeed(int &speed) const;
-		bool GetPosition(int64_t &position, int64_t &duration);
-		bool SetPosition(int64_t position);
+		bool GetPosition(int &position, int &duration);
+		bool SetPosition(int position);
 		void FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t *numpida, std::string *language);
 
 		cPlayback(int num = 0);

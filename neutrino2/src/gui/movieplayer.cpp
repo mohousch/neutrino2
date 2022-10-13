@@ -126,6 +126,15 @@ CMoviePlayerGui::CMoviePlayerGui()
 	mplist = NULL;
 	item = NULL;
 	
+	//
+	CBox box;
+	box.iWidth = frameBuffer->getScreenWidth();
+	box.iHeight = frameBuffer->getScreenHeight();
+	box.iX = frameBuffer->getScreenX();
+	box.iY = frameBuffer->getScreenY();
+	
+	mplist = new ClistBox(&box);
+	
 	moviescale = new CProgressBar(cFrameBoxInfo.iX + BORDER_LEFT, cFrameBoxInfo.iY + 30, cFrameBoxInfo.iWidth - BORDER_LEFT - BORDER_RIGHT, TIMESCALE_BAR_HEIGHT);
 
 	timeCounter = NULL;
@@ -146,6 +155,12 @@ CMoviePlayerGui::~CMoviePlayerGui()
 	{
 		delete timeCounter ;
 		timeCounter = NULL;
+	}
+	
+	if (mplist)
+	{
+		delete mplist;
+		mplist = NULL;
 	}
 }
 
@@ -420,7 +435,7 @@ void CMoviePlayerGui::play(unsigned int pos)
 			
 	duration = 0;
 	if(playlist[pos].length != 0)
-		duration = playlist[pos].length * 60 * 1000;
+		duration = playlist[pos].length * 60 * 1000; // in ms
 			  
 	// PlayBack Start
 #if defined (PLATFORM_COOLSTREAM)			  
@@ -441,13 +456,13 @@ void CMoviePlayerGui::play(unsigned int pos)
 		CVFD::getInstance()->ShowIcon(VFD_ICON_PLAY, true);
 				
 		// set position 
-		playback->SetPosition((int64_t)startposition);
+		playback->SetPosition(startposition * 1000);
 				
 		//
 #if defined (PLATFORM_COOLSTREAM)
 		playback->GetPosition(position, duration);
 #else
-		playback->GetPosition((int64_t &)position, (int64_t &)duration);
+		playback->GetPosition(position, duration);
 #endif
 		
 		//
@@ -516,7 +531,7 @@ void CMoviePlayerGui::playNext()
 
 			// startposition
 			if (!m_multiselect)			
-				startposition = 1000 * showStartPosSelectionMenu();
+				startposition = showStartPosSelectionMenu(); // in ms
 
 			if(startposition < 0)
 				exit = true;
@@ -586,7 +601,7 @@ void CMoviePlayerGui::playPrev()
 
 			// startposition
 			if (!m_multiselect)			
-				startposition = 1000 * showStartPosSelectionMenu();
+				startposition = showStartPosSelectionMenu(); // in sec
 
 			if(startposition < 0)
 				exit = true;
@@ -692,7 +707,7 @@ void CMoviePlayerGui::PlayFile(void)
 
 			// startposition
 			if (!m_multiselect)			
-				startposition = 1000 * showStartPosSelectionMenu();
+				startposition = showStartPosSelectionMenu(); // in sec
 
 			// audio files
 			if(playlist[selected].file.getType() == CFile::FILE_AUDIO)
@@ -807,7 +822,7 @@ void CMoviePlayerGui::PlayFile(void)
 #if defined (PLATFORM_COOLSTREAM)
 				playback->GetPosition(position, duration);
 #else
- 				playback->GetPosition((int64_t &)position, (int64_t &)duration);
+ 				playback->GetPosition(position, duration);
 #endif				
 				// check if !jump is stale (e.g. if user jumped forward or backward)
 				int play_sec = position / 1000;	// get current seconds from moviestart
@@ -854,7 +869,7 @@ void CMoviePlayerGui::PlayFile(void)
 										g_jumpseconds = g_jumpseconds + playlist[selected].bookmarks.user[book_nr].pos;
 
 										//playstate = CMoviePlayerGui::JPOS;	// bookmark  is of type loop, jump backward
-										playback->SetPosition((int64_t)g_jumpseconds * 1000);
+										playback->SetPosition(g_jumpseconds * 1000);
 									} 
 									// jump forward
 									else if (playlist[selected].bookmarks.user[book_nr].length > 0) 
@@ -865,7 +880,7 @@ void CMoviePlayerGui::PlayFile(void)
 										g_jumpseconds = g_jumpseconds + playlist[selected].bookmarks.user[book_nr].pos;
 
 										//
-										playback->SetPosition((int64_t)g_jumpseconds * 1000);
+										playback->SetPosition(g_jumpseconds * 1000);
 									}
 									
 									dprintf(DEBUG_INFO, "CMoviePlayerGui::PlayFile: do jump %d sec\r\n", g_jumpseconds);
@@ -894,14 +909,14 @@ void CMoviePlayerGui::PlayFile(void)
 				file_prozent = (position / (duration / 100));
 			
 			moviescale->reset();	
-			moviescale->paint(/*cFrameBoxInfo.iX + BORDER_LEFT, cFrameBoxInfo.iY + 30,*/ file_prozent, false);
+			moviescale->paint(file_prozent, false);
 			updateTime();
 		}
 
 		// start playing
 		if (start_play) 
 		{
-			dprintf(DEBUG_NORMAL, "CMoviePlayerGui::PlayFile: Startplay at %d seconds\n", startposition/1000);
+			dprintf(DEBUG_NORMAL, "CMoviePlayerGui::PlayFile: Startplay at %d seconds\n", startposition);
 
 			start_play = false;
 			
@@ -918,7 +933,7 @@ void CMoviePlayerGui::PlayFile(void)
 #if defined (PLATFORM_COOLSTREAM)
 			if( playback->GetPosition(position, duration) )
 #else
-			if( playback->GetPosition((int64_t &)position, (int64_t &)duration) )
+			if( playback->GetPosition(position, duration) )
 #endif			
 			{
 				playback->GetSpeed(speed);
@@ -1284,7 +1299,7 @@ void CMoviePlayerGui::PlayFile(void)
 			{	
 				// Jump Backwards 1 minute
 				//update_lcd = true;
-				playback->SetPosition(-60 * 1000);
+				playback->SetPosition(position - (60*1000));
 				
 				// time
 				if (!IsVisible()) 
@@ -1300,7 +1315,7 @@ void CMoviePlayerGui::PlayFile(void)
 			{	
 				// Jump Forward 1 minute
 				//update_lcd = true;
-				playback->SetPosition(60 * 1000);
+				playback->SetPosition(position + (60 *1000));
 				
 				// time
 				if (!IsVisible()) 
@@ -1315,7 +1330,7 @@ void CMoviePlayerGui::PlayFile(void)
 			if (mplist && !mplist->isPainted())
 			{
 				// Jump Backwards 5 minutes
-				playback->SetPosition(-5 * 60 * 1000);
+				playback->SetPosition(position - (5 * 60 * 1000));
 				
 				// time
 				if (!IsVisible()) 
@@ -1330,7 +1345,7 @@ void CMoviePlayerGui::PlayFile(void)
 			if (mplist && !mplist->isPainted())
 			{
 				// Jump Forward 5 minutes
-				playback->SetPosition(5 * 60 * 1000);
+				playback->SetPosition(position + (5 * 60 * 1000));
 				
 				// time
 				if (!IsVisible()) 
@@ -1345,7 +1360,7 @@ void CMoviePlayerGui::PlayFile(void)
 			if (mplist && !mplist->isPainted())
 			{	
 				// Jump Backwards 10 minutes
-				playback->SetPosition(-10 * 60 * 1000);
+				playback->SetPosition(position - (10 * 60 * 1000));
 				
 				// time
 				if (!IsVisible()) 
@@ -1360,7 +1375,7 @@ void CMoviePlayerGui::PlayFile(void)
 			if (mplist && !mplist->isPainted())
 			{
 				// Jump Forward 10 minutes
-				playback->SetPosition(10 * 60 * 1000);
+				playback->SetPosition(position + (10 * 60 * 1000));
 				
 				// time
 				if (!IsVisible()) 
@@ -1375,7 +1390,7 @@ void CMoviePlayerGui::PlayFile(void)
 			if (mplist && !mplist->isPainted())
 			{
 				// goto start
-				playback->SetPosition((int64_t)startposition);
+				playback->SetPosition(startposition * 1000);
 				
 				// time
 				if (!IsVisible()) 
@@ -1400,9 +1415,9 @@ void CMoviePlayerGui::PlayFile(void)
 		else if (msg == RC_5) 
 		{
 			if (mplist && !mplist->isPainted())
-				{	
+			{	
 				// goto middle
-				playback->SetPosition((int64_t)duration/2);
+				playback->SetPosition(duration/2);
 				
 				// time
 				if (!IsVisible()) 
@@ -1417,7 +1432,7 @@ void CMoviePlayerGui::PlayFile(void)
 			if (mplist && !mplist->isPainted())
 			{	
 				// goto end
-				playback->SetPosition((int64_t)duration - 60 * 1000);
+				playback->SetPosition(duration - (60 * 1000));
 				
 				//time
 				if (!IsVisible()) 
@@ -1435,7 +1450,7 @@ void CMoviePlayerGui::PlayFile(void)
 			}
 			else
 			{
-				playback->SetPosition(10 * 1000);
+				playback->SetPosition(position + (10 * 1000));
 				
 				// time
 				if (!IsVisible()) 
@@ -1453,7 +1468,7 @@ void CMoviePlayerGui::PlayFile(void)
 			}
 			else
 			{
-				playback->SetPosition(-10 * 1000);
+				playback->SetPosition(position - (10 * 1000));
 				
 				// time
 				if (!IsVisible()) 
@@ -2061,14 +2076,6 @@ const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 void CMoviePlayerGui::showPlaylist()
 {
 	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::showPlaylist:\n");
-	
-	CBox box;
-	box.iWidth = frameBuffer->getScreenWidth();
-	box.iHeight = frameBuffer->getScreenHeight();
-	box.iX = frameBuffer->getScreenX();
-	box.iY = frameBuffer->getScreenY();
-	
-	mplist = new ClistBox(&box);
 
 	for(unsigned int i = 0; i < playlist.size(); i++)
 	{

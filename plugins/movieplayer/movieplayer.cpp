@@ -43,7 +43,7 @@ class CMoviePlayer : public CMenuTarget
 		CFileFilter fileFilter;
 		CFileList filelist;
 		std::string Path;
-		CMoviePlayerGui tmpMoviePlayerGui;
+		//CMoviePlayerGui tmpMoviePlayerGui;
 
 		//
 		void loadPlaylist();
@@ -480,10 +480,15 @@ int CMoviePlayer::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		selected = mlist? mlist->getSelected() : 0;
 
-		CMovieInfoWidget movieInfoWidget;
-		movieInfoWidget.setMovie(m_vMovieInfo[selected]);
+		//CMovieInfoWidget movieInfoWidget;
+		//movieInfoWidget.setMovie(m_vMovieInfo[selected]);
 		
-		movieInfoWidget.exec(NULL, "");
+		//movieInfoWidget.exec(NULL, "");
+		
+		CMoviePlayerGui tmpMoviePlayerGui;
+		tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[selected]);
+		
+		tmpMoviePlayerGui.exec(NULL, "");
 
 		return RETURN_REPAINT;
 	}
