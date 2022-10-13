@@ -975,7 +975,7 @@ bool CMovieInfo::parseXmlTree(char */*text*/, MI_MOVIE_INFO */*movie_info*/)
 	return (true);
 }
 
-void CMovieInfo::showMovieInfo(MI_MOVIE_INFO & movie_info)
+void CMovieInfo::showMovieInfo(MI_MOVIE_INFO &movie_info)
 {
 	dprintf(DEBUG_NORMAL, "CMovieInfo::showMovieInfo:\n");
 

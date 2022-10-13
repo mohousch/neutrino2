@@ -1204,6 +1204,8 @@ CWidgetItem::CWidgetItem()
 	inFocus = true; 
 	rePaint = false; 
 	
+	painted = false;
+	
 	actionKey = ""; 
 	parent = NULL; 
 	

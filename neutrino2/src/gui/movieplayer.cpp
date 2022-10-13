@@ -2076,6 +2076,8 @@ const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 void CMoviePlayerGui::showPlaylist()
 {
 	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::showPlaylist:\n");
+	
+	mplist->clearAll();
 
 	for(unsigned int i = 0; i < playlist.size(); i++)
 	{
