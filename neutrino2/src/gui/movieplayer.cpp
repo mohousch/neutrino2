@@ -1789,7 +1789,7 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 				
 			snprintf(book[i], 19,"%5d min", position[menu_nr]/60);
 
-			dprintf(DEBUG_NORMAL, "CMoviePlayerGui::showStartPosSelectionMenu adding boomark menu N %d, position %d\n", menu_nr, position[menu_nr]);
+			dprintf(DEBUG_NORMAL, "CMoviePlayerGui::showStartPosSelectionMenu adding boomark menu N %d, position %d sec\n", menu_nr, position[menu_nr]);
 			
 			startPosSelectionMenu->addItem(new CMenuForwarder(playlist[selected].bookmarks.user[i].name.c_str(), true, book[i]));
 			menu_nr++;
@@ -1803,24 +1803,12 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	
 	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::showStartPosSelectionMenu: result %d\n", result);
 
-	//if(widget->getExitPressed())
 	if(result < 0)
 		return -1;
-	
-/*
-	if(result != 1 && result <= MI_MOVIE_BOOK_USER_MAX)
-	{
-		result--;
-		if(result > sep_pos) 
-			result--;
-		
-		pos = position[result];
-	}
-*/
 
 	pos = position[result];
 	
-	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::showStartPosSelectionMenu: selected bookmark %d position %d\n", result, pos);
+	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::showStartPosSelectionMenu: selected bookmark %d position %d sec\n", result, pos);
 	
 	return(pos) ;
 }
