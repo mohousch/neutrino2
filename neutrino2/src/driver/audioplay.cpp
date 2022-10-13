@@ -183,6 +183,9 @@ void * CAudioPlayer::PlayThread( void * /*arg*/)
 				
 			break;	
 		}
+		
+		if (getInstance()->m_Audiofile.MetaData.total_time == 0) 
+			getInstance()->m_Audiofile.MetaData.total_time = duration / 1000; // in sec
 
 		getInstance()->m_played_time = position/1000;	// in sec
 	}while(getInstance()->state != CBaseDec::STOP_REQ);
