@@ -88,12 +88,12 @@ char RDS_PSText[12][9];
 // plugin audiorecorder service
 bool ARec_Receive = false, ARec_Record = false;
 
-#if ENABLE_RASS
+//#if ENABLE_RASS
 // ... Gallery (1..999)
 #define RASS_GALMAX 999
 bool Rass_Gallery[RASS_GALMAX+1];
 int Rass_GalStart, Rass_GalEnd, Rass_GalCount, Rass_SlideFoto;
-#endif
+//#endif
 
 #define floor
 const char *DataDir = "/tmp/rass";
@@ -380,9 +380,9 @@ int CRadioText::PES_Receive(unsigned char *data, int len)
 									RDS_PsPtynDecode(false, mtext, index);	// PS
 									break;
 								case 0xda:
-#if ENABLE_RASS
+//#if ENABLE_RASS
 									RassDecode(mtext, index);		// Rass
-#endif
+//#endif
 									break;
 								}
 							}
@@ -769,7 +769,7 @@ void CRadioText::RadioStatusMsg(void)
 }
 
 
-#if ENABLE_RASS
+//#if ENABLE_RASS
 // add <names> of DVB Radio Slides Specification 1.0, 20061228
 void CRadioText::RassDecode(unsigned char *mtext, int len)
 {
@@ -1033,9 +1033,7 @@ void CRadioText::RassDecode(unsigned char *mtext, int len)
 			printf("RDS-Error: [Rass] Length not correct !\n");
 	}
 }
-#endif
 
-#if ENABLE_RASS
 int CRadioText::RassImage(int QArchiv, int QKey, bool DirUp)
 {
 	int i;
@@ -1111,7 +1109,7 @@ int CRadioText::RassImage(int QArchiv, int QKey, bool DirUp)
 
 	return QArchiv;
 }
-#endif
+//#endif
 
 static bool rtThreadRunning = false;
 
@@ -1340,7 +1338,7 @@ void CRadioText::setPid(uint inPid)
 		for (int i=0; i<5; i++) strcpy(RT_Text[i], "");
 		strcpy(RDS_PTYN, "");
 
-#if ENABLE_RASS
+//#if ENABLE_RASS
 		// Rass ...
 		Rass_Show = -1;		// -1=No, 0=Yes, 1=display
 		Rass_Archiv = -1;	// -1=Off, 0=Index, 1000-9990=Slidenr.
@@ -1349,7 +1347,7 @@ void CRadioText::setPid(uint inPid)
 		{
 			perror(DataDir);
 		}
-#endif
+//#endif
 		RT_MsgShow = false; // clear entries from old channel
 
 		rc = pthread_create(&threadRT, 0, RadioTextThread, (void *) &rt);
