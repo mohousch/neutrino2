@@ -3244,7 +3244,9 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
+				StopSubtitles();
 				g_PluginList->startPlugin("audioplayer");
+				StartSubtitles();
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_inetradio ) 	// internet radio
 			{
@@ -3252,9 +3254,7 @@ void CNeutrinoApp::RealRun(void)
 					g_InfoViewer->killTitle();
 	  
 				StopSubtitles();
-
 				g_PluginList->startPlugin("internetradio");
-
 				StartSubtitles();	
 			}			
 			else if( msg == (neutrino_msg_t)g_settings.key_movieplayer )	// recordsbrowser
@@ -3262,55 +3262,36 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
+				StopSubtitles();
 				g_PluginList->startPlugin("movieplayer");
-
-				if( mode == mode_radio )
-				{
-					if (!g_settings.radiotext_enable)
-					{
-						frameBuffer->loadBackgroundPic("radiomode.jpg");
-						frameBuffer->blit();	
-					}
-				}			
+				StartSubtitles();			
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_moviebrowser )	// moviebrowser
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
+				StopSubtitles();
 				g_PluginList->startPlugin("moviebrowser");
-
-				if( mode == mode_radio )
-				{
-					if (!g_settings.radiotext_enable)
-					{
-						frameBuffer->loadBackgroundPic("radiomode.jpg");
-						frameBuffer->blit();	
-					}
-				}	
+				StartSubtitles();	
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_filebrowser )	// filebrowser player
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
+				StopSubtitles();
 				g_PluginList->startPlugin("mediaplayer");
-
-				if( mode == mode_radio )
-				{
-					if (!g_settings.radiotext_enable)
-					{
-						frameBuffer->loadBackgroundPic("radiomode.jpg");
-						frameBuffer->blit();	
-					}
-				}	
+				StartSubtitles();	
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_pictureviewer ) 	// picture viewer
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
+				StopSubtitles();
 				g_PluginList->startPlugin("picviewer");
+				StartSubtitles();
 			}			
 			else if ( CRCInput::isNumeric(msg) && g_RemoteControl->director_mode ) 
 			{
@@ -4765,12 +4746,10 @@ void CNeutrinoApp::radioMode( bool rezap)
 		timeshiftstatus = 0;
 	}
 	
-	//if (!g_settings.radiotext_enable)
-	{
-		frameBuffer->useBackground(false);
-		frameBuffer->loadBackgroundPic("radiomode.jpg");
-		frameBuffer->blit();
-	}
+	//
+	frameBuffer->useBackground(false);
+	frameBuffer->loadBackgroundPic("radiomode.jpg");
+	frameBuffer->blit();
 
 	g_RemoteControl->radioMode();
 	SetChannelMode( g_settings.channel_mode, mode);

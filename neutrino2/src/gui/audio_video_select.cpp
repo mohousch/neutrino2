@@ -206,6 +206,7 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	AVPIDSelector->clearItems();
 	
 	CAVPIDChangeExec AVPIDChanger;
+	
 	if(playback)
 		playback->FindAllPids(apids, ac3flags, &numpida, language);
 			

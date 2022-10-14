@@ -164,3 +164,4 @@ int CDVBSubSelectMenuHandler::doMenu()
 
 	return widget->exec(NULL, "");
 }
+

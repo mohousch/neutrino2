@@ -274,36 +274,12 @@ bool CGeneralSettings::changeNotify(const std::string& OptionName, void */*data*
 
 			if (g_Radiotext && ((CNeutrinoApp::getInstance()->getMode()) == NeutrinoMessages::mode_radio))
 			{
-				// hide radiomode background pic
-				if (usedBackground) 
-				{
-					CFrameBuffer::getInstance()->saveBackgroundImage();
-					CFrameBuffer::getInstance()->clearFrameBuffer();
-
-					CFrameBuffer::getInstance()->blit();
-				}
-
 				if(live_fe)
 					g_Radiotext->setPid(g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].pid);
 			}
 		} 
 		else 
 		{
-			if (g_Radiotext && ((CNeutrinoApp::getInstance()->getMode()) == NeutrinoMessages::mode_radio))
-			{
-				// restore previous background
-				if (usedBackground) 
-				{
-					CFrameBuffer::getInstance()->restoreBackgroundImage();
-					CFrameBuffer::getInstance()->useBackground(true);
-					CFrameBuffer::getInstance()->paintBackground();
-					CFrameBuffer::getInstance()->blit();
-				}
-			
-				CFrameBuffer::getInstance()->loadBackgroundPic("radiomode.jpg");
-				CFrameBuffer::getInstance()->blit();
-			}
-
 			delete g_Radiotext;
 			g_Radiotext = NULL;
 		}
