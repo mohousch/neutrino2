@@ -155,7 +155,7 @@ int CMenuOptionChooser::getOptionValue(void) const
 
 int CMenuOptionChooser::exec(CMenuTarget* parent)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionChooser::exec: (%s)\n", optionNameString.c_str());
+	dprintf(DEBUG_NORMAL, "CMenuOptionChooser::exec: (%s)\n", optionNameString.c_str());
 
 	bool wantsRepaint = false;
 	int ret = RETURN_REPAINT;
@@ -451,7 +451,7 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 
 int CMenuOptionNumberChooser::exec(CMenuTarget*)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionNumberChooser::exec: (%s)\n", nameString.c_str());
+	dprintf(DEBUG_NORMAL, "CMenuOptionNumberChooser::exec: (%s)\n", nameString.c_str());
 
 	if( msg == RC_left ) 
 	{
@@ -630,7 +630,7 @@ void CMenuOptionStringChooser::addOption(const char * const value)
 
 int CMenuOptionStringChooser::exec(CMenuTarget *parent)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionStringChooser::exec: (%s)\n", nameString.c_str());
+	dprintf(DEBUG_NORMAL, "CMenuOptionStringChooser::exec: (%s)\n", nameString.c_str());
 
 	bool wantsRepaint = false;
 	int ret = RETURN_REPAINT; 
@@ -909,7 +909,7 @@ void CMenuOptionLanguageChooser::addOption(const char * const value)
 
 int CMenuOptionLanguageChooser::exec(CMenuTarget*)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionLanguageChooser::exec: (%s)\n", optionValue);
+	dprintf(DEBUG_NORMAL, "CMenuOptionLanguageChooser::exec: (%s)\n", optionValue);
 	
 	bool wantsRepaint = false;
 
@@ -1262,7 +1262,7 @@ int CMenuForwarder::getWidth(void) const
 
 int CMenuForwarder::exec(CMenuTarget *parent)
 {
-	dprintf(DEBUG_INFO, "CMenuForwarder::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
+	dprintf(DEBUG_NORMAL, "CMenuForwarder::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
 
 	int ret = RETURN_EXIT;
 
@@ -1558,7 +1558,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 // lockedMenuForward
 int CLockedMenuForwarder::exec(CMenuTarget * parent)
 {
-	dprintf(DEBUG_INFO, "CLockedMenuForwarder::exec\n");
+	dprintf(DEBUG_NORMAL, "CLockedMenuForwarder::exec\n");
 
 	Parent = parent;
 	
@@ -1658,7 +1658,7 @@ int ClistBoxItem::getWidth(void) const
 
 int ClistBoxItem::exec(CMenuTarget* parent)
 {
-	dprintf(DEBUG_INFO, "ClistBoxItem::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
+	dprintf(DEBUG_NORMAL, "ClistBoxItem::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
 
 	int ret = RETURN_EXIT;
 
@@ -2201,7 +2201,7 @@ int CPluginItem::getWidth(void) const
 
 int CPluginItem::exec(CMenuTarget* parent)
 {
-	dprintf(DEBUG_INFO, "CPlugin::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
+	dprintf(DEBUG_NORMAL, "CPlugin::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
 
 	int ret = RETURN_EXIT;
 

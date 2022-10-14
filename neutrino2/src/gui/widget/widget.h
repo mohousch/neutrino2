@@ -154,7 +154,7 @@ enum {
 enum
 {
 	RETURN_NONE		= 0,
-	RETURN_REPAINT 	= 1,
+	RETURN_REPAINT 		= 1,
 	RETURN_EXIT 		= 2,
 	RETURN_EXIT_ALL 	= 4
 };
@@ -168,9 +168,10 @@ class CMenuTarget
 
 	public:
 		int id;
+		std::string name;
 		
 	public:
-		CMenuTarget(){ valueStringTmp = std::string(); valueString = &valueStringTmp; id = -1;};
+		CMenuTarget(){ valueStringTmp = std::string(); valueString = &valueStringTmp; id = -1; name = "";};
 		virtual ~CMenuTarget(){};
 		virtual void hide(){valueString->clear();};
 		virtual int exec(CMenuTarget* parent, const std::string& actionKey) = 0;
@@ -180,8 +181,8 @@ class CMenuTarget
 //
 class CWidget : public CMenuTarget
 {
-	public:
-		std::string name;
+	//public:
+	//	std::string name;
 		
 	protected:
 		CFrameBuffer *frameBuffer;

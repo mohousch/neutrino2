@@ -476,8 +476,6 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 
 	int ret = show();
-	
-	dprintf(DEBUG_NORMAL, "CTimerList::exec: retval:%d\n", ret);
 
 	return ret;
 }

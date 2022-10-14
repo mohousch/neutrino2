@@ -69,7 +69,7 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	actionKey = "";
 	
 	//
-	name = "";
+	//name = "";
 }
 
 CWidget::CWidget(CBox *position)
@@ -103,7 +103,7 @@ CWidget::CWidget(CBox *position)
 	actionKey = "";
 	
 	//
-	name = "";
+	//name = "";
 }
 
 CWidget::~CWidget()
@@ -384,7 +384,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 							msg = RC_timeout;
 							break;
 						case RETURN_REPAINT:
-							hide();
+							//hide();
 							paint();
 							break;
 					}
@@ -546,7 +546,7 @@ void CWidget::onOKKeyPressed(neutrino_msg_t _msg)
 					msg = RC_timeout;
 					break;
 				case RETURN_REPAINT:
-					hide();
+					//hide();
 					paint();
 					break;
 			}
