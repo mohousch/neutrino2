@@ -167,6 +167,7 @@ class CAudioPlayerGui : public CMenuTarget
 		//
 		ClistBox* alist;
 		CMenuItem* item;
+		uint32_t sec_timer_id = 0;
 		void showPlaylist();
 	
 	public:

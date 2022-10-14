@@ -79,7 +79,6 @@ CBaseDec::RetCode CBaseDec::DecoderBase(CAudiofile* const in)
 		}
 		else
 		{
-
 			if ( f_status(fp, ShoutcastCallback) < 0 )
 				fprintf( stderr, "CBaseDec::DecoderBase:Error adding shoutcast callback: %s\n", err_txt );
 		}

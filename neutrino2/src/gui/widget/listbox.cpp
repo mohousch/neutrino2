@@ -1,5 +1,5 @@
 /*
-	$Id: listbox.cpp 2018.08.19 mohousch Exp $
+	$Id: listbox.cpp 14.10.2022 mohousch Exp $
 
 
 	License: GPL
@@ -155,7 +155,7 @@ int CMenuOptionChooser::getOptionValue(void) const
 
 int CMenuOptionChooser::exec(CMenuTarget* parent)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionChooser::exec:\n");
+	dprintf(DEBUG_INFO, "CMenuOptionChooser::exec: (%s)\n", optionNameString.c_str());
 
 	bool wantsRepaint = false;
 	int ret = RETURN_REPAINT;
@@ -451,7 +451,7 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 
 int CMenuOptionNumberChooser::exec(CMenuTarget*)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionNumberChooser::exec:\n");
+	dprintf(DEBUG_INFO, "CMenuOptionNumberChooser::exec: (%s)\n", nameString.c_str());
 
 	if( msg == RC_left ) 
 	{
@@ -630,7 +630,7 @@ void CMenuOptionStringChooser::addOption(const char * const value)
 
 int CMenuOptionStringChooser::exec(CMenuTarget *parent)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionStringChooser::exec:\n");
+	dprintf(DEBUG_INFO, "CMenuOptionStringChooser::exec: (%s)\n", nameString.c_str());
 
 	bool wantsRepaint = false;
 	int ret = RETURN_REPAINT; 
@@ -909,7 +909,7 @@ void CMenuOptionLanguageChooser::addOption(const char * const value)
 
 int CMenuOptionLanguageChooser::exec(CMenuTarget*)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionLanguageChooser::exec:\n");
+	dprintf(DEBUG_INFO, "CMenuOptionLanguageChooser::exec: (%s)\n", optionValue);
 	
 	bool wantsRepaint = false;
 

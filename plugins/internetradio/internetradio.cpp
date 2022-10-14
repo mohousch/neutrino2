@@ -165,7 +165,7 @@ void CInternetRadio::addUrl2Playlist(const char *url, const char *name, const ti
 
 void CInternetRadio::processPlaylistUrl(const char *url, const char *name, const time_t tim) 
 {
-	dprintf(DEBUG_NORMAL, "CInternetRadio::processPlaylistUrl\n");
+	dprintf(DEBUG_INFO, "CInternetRadio::processPlaylistUrl\n");
 	
 	CURL *curl_handle;
 	struct MemoryStruct chunk;
@@ -724,11 +724,6 @@ int CInternetRadio::exec(CMenuTarget* parent, const std::string& actionKey)
 
 	if(actionKey == "iplay")
 	{
-	/*
-		selected = ilist->getSelected();
-		tmpAudioPlayerGui.addToPlaylist(playlist[selected]);
-		tmpAudioPlayerGui.setCurrent(0);
-	*/
 		selected = ilist->getSelected();
 		
 		for (unsigned int i = 0; i < (unsigned int)playlist.size(); i++)
@@ -737,9 +732,8 @@ int CInternetRadio::exec(CMenuTarget* parent, const std::string& actionKey)
 		}
 
 		tmpAudioPlayerGui.setCurrent(selected);
-		
-		tmpAudioPlayerGui.exec(NULL, "");
 		tmpAudioPlayerGui.setInetMode();
+		
 		tmpAudioPlayerGui.exec(NULL, "");
 
 		return RETURN_REPAINT;

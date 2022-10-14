@@ -49,7 +49,7 @@
 |
 |	fd = fopen("scast://666", "r");
 |
-|	This opens a shoutcast sation; all you need to know is the
+|	This opens a shoutcast station; all you need to know is the
 |	station number. The query of the shoutcast directory and the
 |	lookup of a working server is done automatically. The stream
 |	is opened read-only.
@@ -176,12 +176,11 @@ magic_t known_magic[] =
 
 char err_txt[2048];			/* human readable error message */
 char redirect_url[2048];		/* new url if we've been redirected (HTTP 301/302) */
-//static int debug = 0;			/* print debugging output or not */
 static char logfile[255];		/* redirect errors from stderr */
-static int retry_num = 2 /*10*/;	/* number of retries for failed connections */
-static int enable_metadata = 0;	/* allow shoutcast meta data streaming */
+static int retry_num = 2;	/* number of retries for failed connections */
+static int enable_metadata = 1;		/* allow shoutcast meta data streaming */
 static int got_opts = 0;		/* is set to 1 if getOpts() was executed */
-static int cache_size = 196608;	/* default cache size; can be overridden at */
+static int cache_size = 196608;		/* default cache size; can be overridden at */
 					/* runtime with an option in the options file */
 
 STATIC STREAM_CACHE cache[CACHEENTMAX];
@@ -215,7 +214,7 @@ void getOpts()
 	FILE *fd = NULL;
 
 	/* options which can be set from within neutrino */
-	enable_metadata = 0/*g_settings.audioplayer_enable_sc_metadata*/;
+	enable_metadata = 1/*g_settings.audioplayer_enable_sc_metadata*/;
 
 	if (got_opts) /* prevent reading in options multiple times */
 		return;
@@ -417,8 +416,16 @@ int request_file(URL *url)
 				dprintf(DEBUG_INFO, "> %s", str);
 				send(url->fd, str, strlen(str), 0);
 
-				if( (meta_int = parse_response(url, &id3, &tmp)) < 0)
-					return meta_int;
+				//if( (meta_int = parse_response(url, &id3, &tmp)) < 0)
+				//	return meta_int;
+				
+				if ((meta_int = parse_response(url, &id3, &tmp)) < 0)
+				{
+					if (meta_int == -301 || meta_int == -302)
+						return meta_int;
+					else
+						return -1;
+				}
 
 				if(meta_int)
 				{
@@ -572,7 +579,7 @@ void readln(int fd, char *buf)
 
 int parse_response(URL *url, void * /*opt*/, CSTATE *state)
 {
-	char header[2048], /*str[255]*/ str[2048]; // combined with 2nd local str from id3 part
+	char header[2048], str[2048]; // combined with 2nd local str from id3 part
 	char *ptr, chr=0, lastchr=0;
 	int hlen = 0, response;
 	int meta_interval = 0, rval;
@@ -1669,13 +1676,13 @@ void CacheFillThread(void *c)
 
 int f_status(FILE *stream, void (*cb)(void*))
 {
-	dprintf(DEBUG_INFO, "netfile:f_status:\n");
+	dprintf(DEBUG_NORMAL, "netfile:f_status:\n");
 	
 	int i, rval = -1;
 
 	if(!stream)
 	{
-		strcpy(err_txt, "NULL pointer as stream id\n");
+		strcpy(err_txt, "netfile:f_status: NULL pointer as stream id\n");
 		return -1;
 	}
 
@@ -1684,7 +1691,7 @@ int f_status(FILE *stream, void (*cb)(void*))
 
 	if (i < 0)
 	{
-		dprintf(DEBUG_INFO, "netfile:f_status: nocache\n");
+		dprintf(DEBUG_NORMAL, "netfile:f_status: nocache\n");
 		return -1;
 	}
 
@@ -1699,13 +1706,13 @@ int f_status(FILE *stream, void (*cb)(void*))
 				rval = 0;
 			}
 			else
-				strcpy(err_txt, "no cache[].filter_arg->state hook\n");
+				strcpy(err_txt, "netfile:f_status: no cache[].filter_arg->state hook\n");
 		}
 		else
-			strcpy(err_txt, "no cache[].filter_arg hook\n");
+			strcpy(err_txt, "netfile:f_status: no cache[].filter_arg hook\n");
 	}
 	
-	fprintf(stderr, "f_status: %s\n", err_txt);
+	dprintf(DEBUG_NORMAL, "netfile:f_status: %s\n", err_txt);
 
 	return rval;
 }
@@ -1714,7 +1721,7 @@ int f_status(FILE *stream, void (*cb)(void*))
 /* information into the CSTATE structure */
 void ShoutCAST_ParseMetaData(char *md, CSTATE *state)
 {
-	/* abort if we were submitted a NULL pointer */
+	// abort if we were submitted a NULL pointer
 	if((!md) || (!state))
 		return;
 

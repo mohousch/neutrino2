@@ -116,8 +116,15 @@ void CAudioPlayerGui::Init(void)
 	cFrameBox.iY = g_settings.screen_EndY - 10 - cFrameBox.iHeight;
 	
 	//
-	alist = NULL;
+	CBox box;
+	box.iWidth = m_frameBuffer->getScreenWidth() - 40;
+	box.iHeight = m_frameBuffer->getScreenHeight() - 40;
+	box.iX = m_frameBuffer->getScreenX() + ((m_frameBuffer->getScreenWidth() - box.iWidth ) >> 1 );
+	box.iY = m_frameBuffer->getScreenY() + ((m_frameBuffer->getScreenHeight() - box.iHeight) >> 1 );
+	
+	alist = new ClistBox(&box);
 	item = NULL;
+	sec_timer_id = 0;
 	
 	//
 	update_t = true;
@@ -132,6 +139,12 @@ CAudioPlayerGui::~CAudioPlayerGui()
 	{
 		delete timeCounter ;
 		timeCounter = NULL;
+	}
+	
+	if (alist)
+	{
+		delete alist;
+		alist = NULL;
 	}
 }
 
@@ -220,6 +233,9 @@ void CAudioPlayerGui::playFile()
 
 	bool loop = true;
 	exit_pressed = false;
+	
+	//
+	sec_timer_id = g_RCInput->addTimer(g_settings.timing[SNeutrinoSettings::TIMING_INFOBAR]*1000*1000);
 	
 	//
 	if(!m_playlist.empty())
@@ -446,9 +462,18 @@ void CAudioPlayerGui::playFile()
 			loop = false;
 			g_RCInput->postMsg(msg, data);
 		}
+		/*
 		else if(msg == NeutrinoMessages::EVT_TIMER)
 		{
 			CNeutrinoApp::getInstance()->handleMsg( msg, data );
+		}
+		*/
+		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+		{
+			if (alist && alist->isPainted())
+				alist->refresh();
+			else
+				CNeutrinoApp::getInstance()->handleMsg( msg, data );
 		}
 		else
 		{
@@ -462,6 +487,13 @@ void CAudioPlayerGui::playFile()
 	}
 	
 	stop();
+	
+	//
+	if(sec_timer_id)
+	{
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
 }
 
 void CAudioPlayerGui::hide()
@@ -1296,13 +1328,7 @@ void CAudioPlayerGui::showPlaylist()
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayerGui::showPlaylist:\n");
 	
-	CBox box;
-	box.iWidth = m_frameBuffer->getScreenWidth() - 40;
-	box.iHeight = m_frameBuffer->getScreenHeight() - 40;
-	box.iX = m_frameBuffer->getScreenX() + ((m_frameBuffer->getScreenWidth() - box.iWidth ) >> 1 );
-	box.iY = m_frameBuffer->getScreenY() + ((m_frameBuffer->getScreenHeight() - box.iHeight) >> 1 );
-	
-	alist = new ClistBox(&box);
+	alist->clearAll();
 
 	for(unsigned int i = 0; i < m_playlist.size(); i++)
 	{

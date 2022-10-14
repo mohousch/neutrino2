@@ -45,9 +45,9 @@ extern "C" {
 
 /* file access modes */
 #define ACC_RO		0
-#define ACC_RW	1
+#define ACC_RW		1
 #define ACC_UD		2	/* -> this is used for the 'r+' mode */
-#define ACC_WO	3
+#define ACC_WO		3
 
 #define MODE_FILE	0
 #define MODE_HTTP	1
@@ -61,8 +61,8 @@ extern "C" {
 
 #define MAX_REDIRECTS 	5  /* follow this amount of redirects */
 
-#define CONNECTING		1	/* not used */
-#define BUFFERING		2	/* not used */
+#define CONNECTING	1	/* not used */
+#define BUFFERING	2	/* not used */
 #define RUNNING		3
 
 /* map all fopen() calls onto out f_open() function */
@@ -72,7 +72,7 @@ extern "C" {
 #define ftell		f_tell
 #define rewind		f_rewind
 #define fseek		f_seek
-#define fstatus	f_status
+#define fstatus		f_status
 #define ftype		f_type
 
 extern FILE*		f_open(const char *, const char *);
@@ -87,18 +87,18 @@ extern const char	*f_type(FILE*, const char*);
 extern char err_txt[2048];
 
 #define CACHESIZE	cache_size
-#define CACHEENTMAX	20	/* at most 20 caches are available */
-#define CACHEBTRANS	1024	/* blocksize for the stream-to-cache transfer */
+#define CACHEENTMAX	20		/* at most 20 caches are available */
+#define CACHEBTRANS	1024		/* blocksize for the stream-to-cache transfer */
 
 typedef struct
 {
-	int	access_mode;	/* access mode; FILE or HTTP */
-	int	proto_version;	/* 0= 1.0; 1 = 1.1; 2 = shoutcast */
+	int	access_mode;		/* access mode; FILE or HTTP */
+	int	proto_version;		/* 0= 1.0; 1 = 1.1; 2 = shoutcast */
 	char	url[2048];		/* universal resource locator */	
 	char	host[2048];
 	int	port;
 	char	file[2048];
-	char	entity[2048];	/* data to send on POST requests */
+	char	entity[2048];		/* data to send on POST requests */
 	int	fd;			/* filedescriptor of the file*/
 	FILE	*stream;		/* streamdescriptor */
 	char	logindata[2048];	/* base64 encoded auhtentication string of "username:password" */
@@ -110,21 +110,21 @@ typedef struct
 	void	*user;			/* user date hook point */
 	int	state;			/* CONNECTING, BUFFERING, RUNNING */
 	int	bitrate;
-	int	buffered;			/* "waterlevel" in the cache; 0 ... 65535 */
+	int	buffered;		/* "waterlevel" in the cache; 0 ... 65535 */
 	char 	station_url[1024];	/*station url */
 	char	station[1024];		/* station name */
 	char	genre[4096];		/* station genre */
 	char	artist[4096];		/* artist currently playing */
-	char	title[4096];			/* title currently playing */
+	char	title[4096];		/* title currently playing */
 } CSTATE;
 
 typedef struct
 {
-	void	*buf;		/* start of the buffer */
-	int	*len;		/* pointer to a variable containing the length of the buffer */
-	void	*arg;		/* pointer to some arguments for the filter function */
-	void	*user;	/* here the filter function can hook in */
-				/* some private data */
+	void	*buf;			/* start of the buffer */
+	int	*len;			/* pointer to a variable containing the length of the buffer */
+	void	*arg;			/* pointer to some arguments for the filter function */
+	void	*user;			/* here the filter function can hook in */
+					/* some private data */
 	void 	(*destructor)(void*);	/* stream filter destructor */
 
 	CSTATE 	*state;
@@ -132,24 +132,24 @@ typedef struct
 
 typedef struct
 {
-	int		cnt;			/* counter */
-	int		len;			/* meta block length */
+	int		cnt;		/* counter */
+	int		len;		/* meta block length */
 	int		stored;		/* number of bytes already stored */
-	int		meta_int;		/* meta data intervall */
+	int		meta_int;	/* meta data intervall */
 	char	meta_data[4096];	/* meta blocks cam be at most 4096 bytes */
 } FILTERDATA;
 
 typedef struct
 {
-	FILE		*fd;			/* stream ID */
+	FILE		*fd;		/* stream ID */
 
-	int 		acc_mode;		/* ACC_RO, ACC_RW, ACC_UD (unused yet) */
+	int 		acc_mode;	/* ACC_RO, ACC_RW, ACC_UD (unused yet) */
 
 	char	*cache;			/* cache buffer */
-	char	*ceiling;			/* cache ceiling */
+	char	*ceiling;		/* cache ceiling */
 	int		csize;		/* cache size */
 	char	*wptr;			/* next write position */
-	char	*rptr;				/* next read position */
+	char	*rptr;			/* next read position */
 	long 	filled;
 	int   	closed;			/* flag; closed = 1 if supply thread */
 	/* has been terminated due to a */
@@ -180,8 +180,8 @@ typedef struct
 
 typedef struct
 {
-	char	magic[3];	/* "ID3" */
-	char version[2];	/* version of the tag */
+	char	magic[3];		/* "ID3" */
+	char version[2];		/* version of the tag */
 	char flags;
 	char size[4];
 	char base[1024]; 
