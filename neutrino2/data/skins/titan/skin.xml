@@ -129,21 +129,12 @@
 		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Features" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
-		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
-			<ITEM id="5" localename="Timerlist" itemicon="hint_timers" target="47">
-			</ITEM>
-			<ITEM id="5" localename="Plugins" itemicon="hint_plugin" target="43">
-			</ITEM>
-			<INTEGRATION id="0x40" shortcut="3">
-			</INTEGRATION>
-		</LISTBOX>
+		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1"/>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
-			<BUTTON_LABEL name="information">
-			</BUTTON_LABEL>
+			<BUTTON_LABEL name="information"/>
 		</FOOT>
-		<KEY name="0x191" target="0" actionkey="plugins"> 
-		</KEY>
+		<KEY name="0x191" target="0" actionkey="plugins"/> 
 	</WIDGET>
 	
 	<WIDGET name="system" posx="0" posy="0" width="700" height="720" paintframe="1">

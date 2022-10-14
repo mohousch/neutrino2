@@ -168,12 +168,12 @@
 		</TIME>
 		
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="1" mode="1" itemborder="1">
-			<ITEM  id="5" localename="Timerlist" itemicon="hint_timers" target="47" lines="1" border="1">
+			<!--<ITEM  id="5" localename="Timerlist" itemicon="hint_timers" target="47" lines="1" border="1">
 			</ITEM>
 			<ITEM  id="5" localename="Plugins" itemicon="hint_plugin" target="43" lines="1" border="1">
 			</ITEM>
 			<INTEGRATION id="0x40" lines="1" border="1">
-			</INTEGRATION>
+			</INTEGRATION>-->
 		</LISTBOX>
 		<KEY name="0x191" target="0" actionkey="plugins"> 
 		</KEY>

@@ -142,6 +142,12 @@ void CNeutrinoApp::mainMenu(void)
 	}
 
 	widget->exec(NULL, "");
+	
+	if (nMenu)
+	{
+		delete nMenu;
+		nMenu = NULL;
+	}
 }
 
 // User menu
@@ -239,7 +245,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 	neutrino_msg_t key = RC_nokey;
 	const char * icon = NULL;
 
-	int menu_prev = -1;
+	//
 	static int selected[SNeutrinoSettings::BUTTON_MAX] = {
 		-1,
 #if defined (ENABLE_FUNCTIONKEYS) //FIXME:???
@@ -258,15 +264,13 @@ bool CNeutrinoApp::showUserMenu(int button)
 			txt = _("Features");
 	}
 
-	// other function keys
-	
+	//
 	CWidget* widget = NULL;
 	ClistBox* menu = NULL;
 	
 	if (CNeutrinoApp::getInstance()->widget_exists("features"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("features");
-		
 		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -314,7 +318,6 @@ bool CNeutrinoApp::showUserMenu(int button)
 
 			// timerlist
 			case SNeutrinoSettings::ITEM_TIMERLIST:
-				menu_prev = SNeutrinoSettings::ITEM_TIMERLIST;
 				keyhelper.get(&key, &icon, RC_yellow);
 				menu_item = new CMenuForwarder(_("Timerlist"), true, NULL, new CTimerList, "-1", key, icon, NEUTRINO_ICON_MENUITEM_TIMERLIST);
 				menu->addItem(menu_item, false);
@@ -322,7 +325,6 @@ bool CNeutrinoApp::showUserMenu(int button)
 
 			// rclock
 			case SNeutrinoSettings::ITEM_REMOTE:
-				menu_prev = SNeutrinoSettings::ITEM_REMOTE;
 				keyhelper.get(&key, &icon);
 				menu_item = new CMenuForwarder(_("Remote Control lock"), true, NULL, this->rcLock, "-1", key, icon, NEUTRINO_ICON_MENUITEM_PARENTALLOCKSETTINGS);
 				menu->addItem(menu_item, false);
@@ -330,9 +332,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 				
 			// vtxt	
 			case SNeutrinoSettings::ITEM_VTXT:
-				//if (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_webtv)
 				{
-					menu_prev = SNeutrinoSettings::ITEM_VTXT;
 					keyhelper.get(&key, &icon);
 					menu_item = new CMenuForwarder(_("Teletext"), true, NULL, new CTuxtxtChangeExec, "-1", key, icon, NEUTRINO_ICON_MENUITEM_VTXT);
 					menu->addItem(menu_item, false);
@@ -342,8 +342,6 @@ bool CNeutrinoApp::showUserMenu(int button)
 			// plugins
 			case SNeutrinoSettings::ITEM_PLUGIN:
 				{
-					//menu_items++;
-					menu_prev = SNeutrinoSettings::ITEM_PLUGIN;
 					keyhelper.get(&key, &icon, RC_blue);
 					menu_item = new CMenuForwarder(_("Plugins"), true, NULL, new CPluginList(), "-1", key, icon, NEUTRINO_ICON_MENUITEM_PLUGIN);
 					menu->addItem(menu_item, false);
@@ -356,7 +354,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 		}
 	}
 
-	// integragte user plugins
+	// integragte blue button plugins
 	if( button == SNeutrinoSettings::BUTTON_BLUE) 
 	{
 		keyhelper.get(&key, &icon);

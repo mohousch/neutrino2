@@ -1614,6 +1614,8 @@ void CFrameBuffer::disableManualBlit()
 
 void CFrameBuffer::blit(int mode3d)
 {
+	//dprintf(DEBUG_DEBUG, "CFrameBuffer::blit:\n");
+	
 #if defined USE_OPENGL  
 	mpGLThreadObj->blit();
 #elif defined (__sh__)

@@ -109,13 +109,6 @@
 	<WIDGET name="features" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
 		
 		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="1" mode="1" itemborder="1" position="2" painthead="1" title="Features" icon="features" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
-			<ITEM id="5" localename="Timerlist" itemicon="hint_timers" target="47">
-			</ITEM>
-			<ITEM id="5" localename="Plugins" itemicon="hint_plugin" target="43">
-			</ITEM>
-			<INTEGRATION id="0x40" shortcut="3">
-			</INTEGRATION>
-			
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 		

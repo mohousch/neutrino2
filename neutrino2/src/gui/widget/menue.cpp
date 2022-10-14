@@ -110,8 +110,10 @@ void CMenuWidget::Init(const std::string &Icon, const int mwidth, const int mhei
 	def_color = true;
 
 	// head
-	PaintDate = false;
-	timestr_len = 0;
+	paintDate = false;
+	//timestr_len = 0;
+	format = "%d.%m.%Y %H:%M";
+	timer = NULL;
 	hbutton_count	= 0;
 	hbutton_labels.clear();
 	hheight = 0;
@@ -425,13 +427,19 @@ void CMenuWidget::paintHead()
 		}
 
 		// paint time/date
-		if(PaintDate)
+		int timestr_len = 0;
+		if(paintDate)
 		{
-			std::string timestr = getNowTimeStr("%d.%m.%Y %H:%M");;
-		
+			std::string timestr = getNowTimeStr(format.c_str());
+			
 			timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
-	
-			g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->RenderString(xstartPos - timestr_len, y + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight(), timestr_len + 1, timestr.c_str(), COL_MENUHEAD, 0, true); 
+		
+			timer = new CCTime();
+			timer->setPosition(xstartPos - timestr_len - 2, y, timestr_len, hheight);
+			timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
+			timer->setFormat(format.c_str());
+			timer->enableRepaint();
+			timer->paint();
 		}
 		
 		int startPosX = x + BORDER_LEFT + i_w + ICON_OFFSET;
@@ -441,7 +449,7 @@ void CMenuWidget::paintHead()
 			startPosX = x + (width >> 1) - (stringWidth >> 1);
 
 		// title
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, y + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET - timestr_len, l_name.c_str(), COL_MENUHEAD);
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, y + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (hbutton_count)*ICON_TO_ICON_OFFSET - timestr_len, l_name.c_str(), COL_MENUHEAD);
 	}
 	else
 	{
@@ -495,13 +503,19 @@ void CMenuWidget::paintHead()
 		}
 
 		// paint time/date
-		if(PaintDate)
+		int timestr_len = 0;
+		if(paintDate)
 		{
-			std::string timestr = getNowTimeStr("%d.%m.%Y %H:%M");;
-		
+			std::string timestr = getNowTimeStr(format.c_str());
+			
 			timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
-	
-			g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->RenderString(xstartPos - timestr_len, y + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight(), timestr_len + 1, timestr.c_str(), COL_MENUHEAD, 0, true); 
+		
+			timer = new CCTime();
+			timer->setPosition(xstartPos - timestr_len - 2, y, timestr_len, hheight);
+			timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
+			timer->setFormat(format.c_str());
+			timer->enableRepaint();
+			timer->paint();
 		}
 	
 		// head title
@@ -511,7 +525,7 @@ void CMenuWidget::paintHead()
 		if (thalign == CC_ALIGN_CENTER)
 			startPosX = x + (width >> 1) - (stringWidth >> 1);
 			
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, y + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), width - BORDER_RIGHT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - timestr_len - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET, l_name.c_str(), COL_MENUHEAD, 0, true); // UTF-8
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, y + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), width - BORDER_RIGHT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - timestr_len - buttonWidth - (hbutton_count)*ICON_TO_ICON_OFFSET, l_name.c_str(), COL_MENUHEAD, 0, true); // UTF-8
 	}
 }
 
@@ -1290,6 +1304,25 @@ void CMenuWidget::hide()
 		delete textBox;
 		textBox = NULL;
 	}
+	
+	//
+	if (timer)
+	{
+		delete timer;
+		timer = NULL;
+	}
+}
+
+void CMenuWidget::refresh()
+{	
+	// head
+	if (paintDate)
+	{
+		if (timer && timer->update()) 
+		{
+			timer->refresh();
+		}
+	}
 }
 
 void CMenuWidget::integratePlugins(CPlugins::i_type_t integration, const unsigned int shortcut, bool enabled)
@@ -1459,9 +1492,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 		{
 			if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 			{
-				// head
-				if (PaintDate)
-					paintHead();
+				refresh();
 			} 
 
 			switch (msg) 

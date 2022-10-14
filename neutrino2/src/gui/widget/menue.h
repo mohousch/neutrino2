@@ -116,8 +116,6 @@ class CMenuWidget : public CMenuTarget
 		std::string iconfile;
 		int hbutton_count;
 		button_label_list_t hbutton_labels;
-		bool PaintDate;
-		int timestr_len;
 		fb_pixel_t headColor;
 		bool def_headColor;
 		int headRadius;
@@ -128,6 +126,9 @@ class CMenuWidget : public CMenuTarget
 		bool def_headGradient;
 		int thalign;
 		bool head_line;
+		bool paintDate;
+		std::string format;
+		CCTime* timer;
 		
 		// foot
 		int fheight;
@@ -199,6 +200,7 @@ class CMenuWidget : public CMenuTarget
 		virtual void paintItemInfo(int pos);
 		virtual void hideItemInfo();
 		virtual void hide();
+		virtual void refresh();
 
 		//
 		virtual int exec(CMenuTarget * parent, const std::string &actionKey);
@@ -237,7 +239,8 @@ class CMenuWidget : public CMenuTarget
 		void setTitle(const char* title = "", const char* icon = NULL){l_name = title; if(icon != NULL) iconfile = icon;};
 		void setTitleHAlign(const int m){thalign = m;};
 		void setHeadButtons(const struct button_label* _hbutton_label, const int _hbutton_count = 1);
-		void enablePaintDate(void){PaintDate = true;};
+		void enablePaintDate(void){paintDate = true;};
+		void setFormat(const char* f){if (f) format.clear(); format = f;};
 		void setHeadColor(fb_pixel_t col) {headColor = col; def_headColor = false;};
 		void setHeadCorner(int ra, int co){headRadius = ra; headCorner = co; def_headRadius = false; def_headCorner = false;};
 		void setHeadGradient(int grad){headGradient = grad; def_headGradient = false;};

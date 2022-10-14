@@ -5555,6 +5555,7 @@ void CTestMenu::testCMenuWidget()
 
 	// head
 	menuWidget->enablePaintDate();
+	menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
 	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
 	// foot
@@ -5619,6 +5620,7 @@ void CTestMenu::testCMenuWidget1()
 
 	// head
 	menuWidget->enablePaintDate();
+	menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
 	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
 	// foot

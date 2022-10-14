@@ -5367,6 +5367,8 @@ bool CNeutrinoApp::getNVODMenu(ClistBox* menu)
 	//
         if (g_RemoteControl->subChannels.empty())
                 return false;
+                
+	menu->clearItems();
 
         int count = 0;
         char nvod_id[5];

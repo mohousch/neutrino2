@@ -329,6 +329,8 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 	retval = RETURN_REPAINT;
 	pos = 0;
 	exit_pressed = false;
+	
+	bool needToBlit = false;
 
 	if (parent)
 		parent->hide();
@@ -363,6 +365,8 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 		if ( msg <= RC_MaxRC ) 
 		{
 			timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
+			
+			needToBlit = true;
 
 			// keymap
 			std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
@@ -411,6 +415,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 		{
 			if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 			{
+				needToBlit = true;
 				refresh();
 			} 
 
@@ -482,7 +487,11 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 			}
 		}
 		
-		frameBuffer->blit();
+		if (needToBlit)
+		{
+			frameBuffer->blit();
+			needToBlit = false;
+		}
 	}
 	while ( msg != RC_timeout );
 

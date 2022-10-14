@@ -1486,6 +1486,12 @@ void CHeaders::hide()
 	
 	if (paintFrame)
 		CFrameBuffer::getInstance()->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
+		
+	if (timer)
+	{
+		delete timer;
+		timer = NULL;
+	}
 }
 
 // footers
