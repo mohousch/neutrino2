@@ -327,10 +327,10 @@ void CInfoViewer::showRecordIcon(const bool show)
 			{
 				// border
 				if (g_settings.infobar_border)
-					frameBuffer->paintBoxRel(BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, BoxStartY - 30, REC_INFOBOX_WIDTH, REC_INFOBOX_HEIGHT, COL_MENUCONTENT_PLUS_6);
+					frameBuffer->paintBoxRel(BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, BoxStartY - 30, icon_w_rec, icon_h_rec, COL_MENUCONTENT_PLUS_6);
 				
 				// box
-				frameBuffer->paintBoxRel(g_settings.infobar_border? BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + 1 : BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, g_settings.infobar_border? BoxStartY - 30 - 1 : BoxStartY - 30, g_settings.infobar_border? REC_INFOBOX_WIDTH - 2 : REC_INFOBOX_WIDTH, g_settings.infobar_border? REC_INFOBOX_HEIGHT - 2 : REC_INFOBOX_HEIGHT, COL_INFOBAR_PLUS_0);
+				frameBuffer->paintBoxRel(g_settings.infobar_border? BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + 1 : BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, g_settings.infobar_border? BoxStartY - 30 + 1 : BoxStartY - 30, g_settings.infobar_border? icon_w_rec - 2 : icon_w_rec, g_settings.infobar_border? icon_h_rec - 2 : icon_h_rec, COL_INFOBAR_PLUS_0);
 
 				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString (BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + BORDER_LEFT, BoxStartY - 8, REC_INFOBOX_WIDTH, ext_channel_name.c_str(), COL_INFOBAR, 0, true);
 			} 
