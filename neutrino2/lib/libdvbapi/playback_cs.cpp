@@ -872,7 +872,8 @@ bool cPlayback::SetAPid(unsigned short pid, int /*_ac3*/)
 
 #if ENABLE_GSTREAMER
 void cPlayback::trickSeek(double ratio)
-{	
+{
+/*	
 	bool validposition = false;
 	gint64 pos = 0;
 	int position;
@@ -888,7 +889,7 @@ void cPlayback::trickSeek(double ratio)
 	if( GetPosition(position, duration) )
 	{
 		validposition = true;
-		pos = position*1000000;
+		pos = position*1000000; //ns
 	}
 
 	gst_element_set_state(m_gst_playbin, GST_STATE_PLAYING);
@@ -899,6 +900,19 @@ void cPlayback::trickSeek(double ratio)
 			gst_element_seek(m_gst_playbin, ratio, GST_FORMAT_TIME, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_SKIP), GST_SEEK_TYPE_SET, pos, GST_SEEK_TYPE_SET, -1);
 		else
 			gst_element_seek(m_gst_playbin, ratio, GST_FORMAT_TIME, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_SKIP), GST_SEEK_TYPE_SET, 0, GST_SEEK_TYPE_SET, pos);
+	}
+*/
+	GstFormat fmt = GST_FORMAT_TIME;
+	gint64 pos = 0;
+
+	gst_element_set_state(m_gst_playbin, GST_STATE_PLAYING);
+
+	if (gst_element_query_position(m_gst_playbin, fmt, &pos))
+	{
+		if (ratio >= 0.0)
+			gst_element_seek(m_gst_playbin, ratio, fmt, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_SKIP), GST_SEEK_TYPE_SET, pos, GST_SEEK_TYPE_SET, -1);
+		else
+			gst_element_seek(m_gst_playbin, ratio, fmt, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_SKIP), GST_SEEK_TYPE_SET, 0, GST_SEEK_TYPE_SET, pos);
 	}
 }
 #endif
@@ -913,12 +927,43 @@ bool cPlayback::SetSpeed(int speed)
 #if defined (ENABLE_GSTREAMER)
 	if(m_gst_playbin)
 	{
+	/*
 		if(speed == 0)
 			trickSeek(0.0);
 		else if(speed == 1)
 			trickSeek(1.0);
 		else
 			trickSeek(speed);
+	*/
+		// pause
+		if (speed == 0)
+		{
+			gst_element_set_state(m_gst_playbin, GST_STATE_PAUSED);
+			//trickSeek(0);
+			//playstate = STATE_PAUSE;
+		}
+		// play/continue
+		else if (speed == 1)
+		{
+			trickSeek(1);
+			//gst_element_set_state(m_gst_playbin, GST_STATE_PLAYING);
+			//
+			//playstate = STATE_PLAY;
+		}
+		//ff
+		else if (speed > 1)
+		{
+			trickSeek(speed);
+			//
+			//playstate = STATE_FF;
+		}
+		//rf
+		else if (speed < 0)
+		{
+			trickSeek(speed);
+			//
+			//playstate = STATE_REW;
+		}
 	}
 #else
 	int speedmap = 0;
