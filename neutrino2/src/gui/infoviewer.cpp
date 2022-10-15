@@ -299,7 +299,7 @@ void CInfoViewer::paintTime(int posx, int posy, unsigned int timeFont)
 
 	int timestr_len = g_Font[timeFont]->getRenderWidth("00:00:00");
 	
-	if (gotTime && is_visible) 
+	//if (gotTime && is_visible) 
 	{
 		timer = new CCTime();
 		timer->setPosition(posx - BORDER_RIGHT - timestr_len, posy, timestr_len, time_height);

@@ -4591,17 +4591,19 @@ static void *timeThread(void *)
 			if (dvb_time_update) 
 			{
 				success = getUTC(&UTC, first_time); // for first time, get TDT, then TOT
+				
 				if (success)
 				{
 					tim = changeUTCtoCtime((const unsigned char *) &UTC);
 
 					if (tim) 
 					{
-						if ((!messaging_neutrino_sets_time) && (geteuid() == 0)) 
+						//if ((!messaging_neutrino_sets_time) && (geteuid() == 0)) 
 						{
 							struct timeval tv;
 							tv.tv_sec = tim;
 							tv.tv_usec = 0;
+							
 							if (settimeofday(&tv, NULL) < 0) 
 							{
 								perror("[sectionsd] settimeofday");
@@ -4610,12 +4612,13 @@ static void *timeThread(void *)
 						}
 					}
 
+					//
 					time_t actTime;
 					struct tm *tmTime;
-					actTime=time(NULL);
+					actTime = time(NULL);
 					tmTime = localtime(&actTime);
 					
-					dprintf(DEBUG_DEBUG, "[sectionsd] [%sThread] - %02d.%02d.%04d %02d:%02d:%02d, tim: %s", "time\n", tmTime->tm_mday, tmTime->tm_mon+1, tmTime->tm_year+1900, tmTime->tm_hour, tmTime->tm_min, tmTime->tm_sec, ctime(&tim));
+					//dprintf(DEBUG_NORMAL, "[sectionsd] timeThread: current= %02d.%02d.%04d %02d:%02d:%02d, tim: %s\n", tmTime->tm_mday, tmTime->tm_mon+1, tmTime->tm_year+1900, tmTime->tm_hour, tmTime->tm_min, tmTime->tm_sec, ctime(&tim));
 					
 					pthread_mutex_lock(&timeIsSetMutex);
 					timeset = true;
