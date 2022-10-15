@@ -1144,7 +1144,7 @@ void CInfoViewer::killRadiotext()
 {
 	dprintf(DEBUG_INFO, "CInfoViewer::killRadiotext:\n");
 	
-	frameBuffer->paintBackgroundBox(rt_x, rt_y, rt_w, rt_h);
+	frameBuffer->paintBackgroundBoxRel(rt_x, rt_y, rt_w, rt_h);
 }
 
 void CInfoViewer::showRadiotext()
@@ -1164,11 +1164,11 @@ void CInfoViewer::showRadiotext()
 	{
 		// dimensions of radiotext window
 		rt_dx = BoxEndX - BoxStartX;
-		rt_dy = 25;
+		rt_dy = 25; //
 		rt_x = BoxStartX;
 		rt_y = g_settings.screen_StartY + 10;
-		rt_h = rt_y + 7 + rt_dy*(g_Radiotext->S_RtOsdRows + 1);
-		rt_w = rt_x + rt_dx;
+		rt_h = /*rt_y +*/ 7 + rt_dy*(g_Radiotext->S_RtOsdRows + 1);
+		rt_w = /*rt_x +*/ rt_dx;
 		
 		int lines = 0;
 		for (int i = 0; i < g_Radiotext->S_RtOsdRows; i++) 
@@ -1179,7 +1179,7 @@ void CInfoViewer::showRadiotext()
 		// refresh
 		if (lines == 0)
 		{
-			frameBuffer->paintBackgroundBox(rt_x, rt_y, rt_w, rt_h);
+			frameBuffer->paintBackgroundBoxRel(rt_x, rt_y, rt_w, rt_h);
 		}
 
 		if (g_Radiotext->RT_MsgShow) 
@@ -1189,11 +1189,11 @@ void CInfoViewer::showRadiotext()
 				frameBuffer->paintBoxRel(rt_x, rt_y, rt_w, rt_h, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_NONE);
 				
 			//
-			frameBuffer->paintBoxRel(rt_x + 1, rt_y + 1, rt_w - 2, 7 + rt_h - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
-					
+			frameBuffer->paintBoxRel(rt_x + 1, rt_y + 1, rt_w - 2, rt_h - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
+			
+			// title		
 			if (g_Radiotext->S_RtOsdTitle == 1) 
 			{
-				// Title
 				if ((lines) || (g_Radiotext->RT_PTY !=0)) 
 				{
 					sprintf(stext[0], g_Radiotext->RT_PTY == 0 ? "%s %s%s" : "%s (%s)%s", tr("Radiotext"), g_Radiotext->RT_PTY == 0 ? g_Radiotext->RDS_PTYN : g_Radiotext->ptynr2string(g_Radiotext->RT_PTY), ":");
