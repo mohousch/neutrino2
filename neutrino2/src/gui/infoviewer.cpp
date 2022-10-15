@@ -330,7 +330,7 @@ void CInfoViewer::showRecordIcon(const bool show)
 					frameBuffer->paintBoxRel(BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET - 1, BoxStartY - 30 - 1, REC_INFOBOX_WIDTH + 2, REC_INFOBOX_HEIGHT + 2, COL_MENUCONTENT_PLUS_6);
 				
 				// rec info box
-				frameBuffer->paintBoxRel(BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, BoxStartY - 30, REC_INFOBOX_WIDTH, REC_INFOBOX_HEIGHT, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
+				frameBuffer->paintBoxRel(BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, BoxStartY - 30, REC_INFOBOX_WIDTH, REC_INFOBOX_HEIGHT, COL_INFOBAR_PLUS_0/*, g_settings.infobar_radius, g_settings.infobar_corner*/);
 
 				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString (BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + BORDER_LEFT, BoxStartY - 8, REC_INFOBOX_WIDTH, ext_channel_name.c_str(), COL_INFOBAR, 0, true);
 			} 
@@ -1186,10 +1186,10 @@ void CInfoViewer::showRadiotext()
 		{
 			// shadow
 			if (g_settings.infobar_border)
-				frameBuffer->paintBoxRel(rt_x, rt_y, rt_w, rt_h, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_NONE);
+				frameBuffer->paintBoxRel(rt_x, rt_y, rt_w, rt_h, COL_MENUCONTENT_PLUS_6, g_settings.infobar_radius, g_settings.infobar_corner);
 				
 			//
-			frameBuffer->paintBoxRel(rt_x + 1, rt_y + 1, rt_w - 2, rt_h - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
+			frameBuffer->paintBoxRel(g_settings.infobar_border? rt_x + 1 : rt_x, g_settings.infobar_border? rt_y + 1 : rt_y, g_settings.infobar_border? rt_w - 2 : rt_w, g_settings.infobar_border? rt_h - 2 : rt_h, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
 			
 			// title		
 			if (g_Radiotext->S_RtOsdTitle == 1) 
