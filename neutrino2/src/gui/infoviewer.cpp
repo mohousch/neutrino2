@@ -1168,7 +1168,7 @@ void CInfoViewer::showRadiotext()
 		rt_x = BoxStartX;
 		rt_y = g_settings.screen_StartY + 10;
 		rt_h = rt_y + 7 + rt_dy*(g_Radiotext->S_RtOsdRows + 1);
-		rt_w = rt_x+rt_dx;
+		rt_w = rt_x + rt_dx;
 		
 		int lines = 0;
 		for (int i = 0; i < g_Radiotext->S_RtOsdRows; i++) 
@@ -1176,6 +1176,7 @@ void CInfoViewer::showRadiotext()
 			if (g_Radiotext->RT_Text[i][0] != '\0') lines++;
 		}
 		
+		// refresh
 		if (lines == 0)
 		{
 			frameBuffer->paintBackgroundBox(rt_x, rt_y, rt_w, rt_h);
@@ -1183,6 +1184,13 @@ void CInfoViewer::showRadiotext()
 
 		if (g_Radiotext->RT_MsgShow) 
 		{
+			// shadow
+			if (g_settings.infobar_border)
+				frameBuffer->paintBoxRel(rt_x, rt_y, rt_w, rt_h, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_NONE);
+				
+			//
+			frameBuffer->paintBoxRel(rt_x + 1, rt_y + 1, rt_w - 2, 7 + rt_h - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
+					
 			if (g_Radiotext->S_RtOsdTitle == 1) 
 			{
 				// Title
@@ -1191,12 +1199,15 @@ void CInfoViewer::showRadiotext()
 					sprintf(stext[0], g_Radiotext->RT_PTY == 0 ? "%s %s%s" : "%s (%s)%s", tr("Radiotext"), g_Radiotext->RT_PTY == 0 ? g_Radiotext->RDS_PTYN : g_Radiotext->ptynr2string(g_Radiotext->RT_PTY), ":");
 					
 					// shadow
-					if (g_settings.infobar_border)
-						frameBuffer->paintBoxRel(rt_x, rt_y, rt_dx, rt_dy, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_NONE);
+					//if (g_settings.infobar_border)
+					//	frameBuffer->paintBoxRel(rt_x, rt_y, rt_dx, rt_dy, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_NONE);
 
-					frameBuffer->paintBoxRel(rt_x + 1, rt_y + 1, rt_dx - 2, rt_dy - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
+					//frameBuffer->paintBoxRel(rt_x + 1, rt_y + 1, rt_dx - 2, rt_dy - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
+					
+					//
 					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(rt_x + 10, rt_y + 30, rt_dx - 20, stext[0], COL_INFOBAR, 0, RTisIsUTF); // UTF-8
 				}
+				
 				yoff = 17;
 				ii = 1;
 			}
@@ -1205,10 +1216,12 @@ void CInfoViewer::showRadiotext()
 			if (lines) 
 			{
 				// shadow
-				if (g_settings.infobar_border)
-					frameBuffer->paintBoxRel(rt_x, rt_y + rt_dy, rt_dx, 7 + rt_dy* g_Radiotext->S_RtOsdRows, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_NONE);
+				//if (g_settings.infobar_border)
+					//frameBuffer->paintBoxRel(rt_x, rt_y + rt_dy, rt_dx, 7 + rt_dy* g_Radiotext->S_RtOsdRows, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_NONE);
+					//frameBuffer->paintBoxRel(rt_x, rt_y, rt_w, rt_h, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_NONE);
 
-				frameBuffer->paintBoxRel(rt_x + 1, rt_y + rt_dy + 1, rt_dx - 2, 7 + rt_dy* g_Radiotext->S_RtOsdRows - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
+				//frameBuffer->paintBoxRel(rt_x + 1, rt_y + rt_dy + 1, rt_dx - 2, 7 + rt_dy* g_Radiotext->S_RtOsdRows - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
+				//frameBuffer->paintBoxRel(rt_x + 1, rt_y + 1, rt_w - 2, 7 + rt_h - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
 
 				// RT-Text roundloop
 				int ind = (g_Radiotext->RT_Index == 0) ? g_Radiotext->S_RtOsdRows - 1 : g_Radiotext->RT_Index - 1;
@@ -1221,6 +1234,7 @@ void CInfoViewer::showRadiotext()
 					// latest bottom
 					for (int i = ind+1; i < g_Radiotext->S_RtOsdRows; i++)
 						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(rts_x, rts_y + (ii++)*rt_dy, rts_dx, g_Radiotext->RT_Text[i], COL_INFOBAR, 0, RTisIsUTF); // UTF-8
+						
 					for (int i = 0; i <= ind; i++)
 						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(rts_x, rts_y + (ii++)*rt_dy, rts_dx, g_Radiotext->RT_Text[i], COL_INFOBAR, 0, RTisIsUTF); // UTF-8
 				}
@@ -1229,6 +1243,7 @@ void CInfoViewer::showRadiotext()
 					// latest top
 					for (int i = ind; i >= 0; i--)
 						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(rts_x, rts_y + (ii++)*rt_dy, rts_dx, g_Radiotext->RT_Text[i], COL_INFOBAR, 0, RTisIsUTF); // UTF-8
+						
 					for (int i = g_Radiotext->S_RtOsdRows-1; i > ind; i--)
 						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(rts_x, rts_y + (ii++)*rt_dy, rts_dx, g_Radiotext->RT_Text[i], COL_INFOBAR, 0, RTisIsUTF); // UTF-8
 				}

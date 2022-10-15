@@ -1103,7 +1103,6 @@ int CRadioText::RassImage(int QArchiv, int QKey, bool DirUp)
 		videoDecoder->finishShowSinglePic();
 		videoDecoder->showSinglePic(image);
 	}
-	//
 	
 	free(image);
 
