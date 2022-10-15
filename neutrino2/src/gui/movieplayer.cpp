@@ -1695,8 +1695,8 @@ void CMoviePlayerGui::showHelpTS()
 	helpbox.addLine(NEUTRINO_ICON_BUTTON_7, _("approx. 10 minutes back"));
 	helpbox.addLine(NEUTRINO_ICON_BUTTON_8, _("goto end"));
 	helpbox.addLine(NEUTRINO_ICON_BUTTON_9, _("skip approx. 10 minutes"));
-	//helpbox.addSeparator();
-	//helpbox.addLine("Version: $Revision: 3.0 $");
+	helpbox.addLine(NEUTRINO_ICON_BUTTON_TOP, _("skip approx. 10 seconds"));
+	helpbox.addLine(NEUTRINO_ICON_BUTTON_DOWN, _("approx. 10 seconds back"));
 
 	hide();
 

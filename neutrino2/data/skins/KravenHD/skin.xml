@@ -167,14 +167,7 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
 		</TIME>
 		
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="1" mode="1" itemborder="1">
-			<!--<ITEM  id="5" localename="Timerlist" itemicon="hint_timers" target="47" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Plugins" itemicon="hint_plugin" target="43" lines="1" border="1">
-			</ITEM>
-			<INTEGRATION id="0x40" lines="1" border="1">
-			</INTEGRATION>-->
-		</LISTBOX>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="1" mode="1" itemborder="1"/>
 		<KEY name="0x191" target="0" actionkey="plugins"> 
 		</KEY>
 	</WIDGET>
@@ -1349,16 +1342,13 @@
 	</WIDGET>
 	
 	<WIDGET name="epgview" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<TEXTBOX posx="50" posy="50" width="840" height="620"/>
-			
-		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<HEAD posx="50" posy="0" width="1180" height="50" paintframe="0" line="1"/>
+		<TEXTBOX posx="50" posy="50" width="840" height="620"/>	
+		<WINDOW name="screening" posx="50" posy="640" width="840" height="30"/>
+		<FOOT posx="50" posy="670" width="1180" height="50" paintframe="0" line="1"/>
+		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
+		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="filebrowser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">

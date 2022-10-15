@@ -58,25 +58,19 @@ class CEpgData
 	private:
 		CFrameBuffer* frameBuffer;
 
+		//
 		CBox cFrameBox;
-		CWindow cFrameWindow;
-
 		CBox cFollowScreeningBox;
-		CWindow cFollowScreeningWindow;
-
-		CBox cLeftFBox;
-		CWindow cLeftFWindow;
-
-		CBox cRightFBox;
-		CWindow cRightFWindow;
-
 		CBox cHeadBox;
 		CBox cFootBox;
-
-		CHeaders* headers;
-		
 		CBox cTextBox;
+
+		//
+		CHeaders* headers;
+		CFooters* footers;
 		CTextBox *textBox;
+		CWindow *cFollowScreeningWindow;
+		CWidget *widget;
 
 		CChannelEventList evtlist;
 		CEPGData epgData;
@@ -106,7 +100,7 @@ class CEpgData
 	public:
 
 		CEpgData();
-		void start();
+		~CEpgData();
 		int show(const t_channel_id channel_id, uint64_t id = 0, time_t * startzeit = NULL, bool doLoop = true );
 		void hide();
 };

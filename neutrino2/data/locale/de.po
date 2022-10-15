@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino-hd2 4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-13 16:38+0200\n"
+"POT-Creation-Date: 2022-10-15 15:43+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -934,7 +934,7 @@ msgid "Head"
 msgstr ""
 
 msgid "Help"
-msgstr ""
+msgstr "Hilfe"
 
 msgid "Here you can select a skin from the following list."
 msgstr ""
@@ -1309,16 +1309,16 @@ msgid "Movie Trailer"
 msgstr ""
 
 msgid "Movie end:"
-msgstr ""
+msgstr "Film Ende:"
 
 msgid "Movie info"
 msgstr ""
 
 msgid "Movie start"
-msgstr ""
+msgstr "Film Anfang"
 
 msgid "Movie start:"
-msgstr ""
+msgstr "Film Anfang:"
 
 #, fuzzy
 msgid "Moviebrowser"
@@ -1394,7 +1394,7 @@ msgid "Neutrino2"
 msgstr "Neutrino neu starten"
 
 msgid "New Bookmark"
-msgstr ""
+msgstr "Neue Markierung"
 
 #, fuzzy
 msgid "New Movies"
@@ -1441,7 +1441,7 @@ msgid "No End bookmark defined!"
 msgstr ""
 
 msgid "No UPnP servers found"
-msgstr ""
+msgstr "Keine UPnP Servern gefunden"
 
 msgid ""
 "No channels were found!\n"
@@ -1818,7 +1818,7 @@ msgid "Remount at start"
 msgstr ""
 
 msgid "Repeat"
-msgstr ""
+msgstr "Wiederholung"
 
 msgid "Repeat delay"
 msgstr ""
@@ -2809,6 +2809,9 @@ msgstr ""
 msgid "approx. 10 minutes back"
 msgstr ""
 
+msgid "approx. 10 seconds back"
+msgstr ""
+
 msgid "approx. 5 minutes back"
 msgstr ""
 
@@ -3369,7 +3372,7 @@ msgid "remove screenshot?"
 msgstr ""
 
 msgid "repeats"
-msgstr ""
+msgstr "wiederholen"
 
 msgid "rock/pop"
 msgstr ""
@@ -3436,17 +3439,20 @@ msgstr ""
 msgid "skip approx. 10 minutes"
 msgstr ""
 
+msgid "skip approx. 10 seconds"
+msgstr ""
+
 msgid "skip approx. 5 minutes"
 msgstr ""
 
 msgid "skip bookmark"
-msgstr ""
+msgstr "Markierung überspringen"
 
 msgid "slow"
-msgstr ""
+msgstr "langsam"
 
 msgid "small"
-msgstr ""
+msgstr "Klein"
 
 msgid "soap/melodrama/folkloric"
 msgstr ""
