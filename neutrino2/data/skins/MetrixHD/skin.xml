@@ -1283,8 +1283,8 @@
 	
 	<WIDGET name="epgview" posx="0" posy="0" width="1280" height="720">
 		<WINDOW name="bg" posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<HEAD posx="60" posy="60" width="715" height="60" line="1"/>
-		<FOOT posx="60" posy="600" width="715" height="60" line="1"/>
+		<HEAD posx="60" posy="60" width="715" height="60" line="1" line_gradient="3"/>
+		<FOOT posx="60" posy="600" width="715" height="60" line="1" line_gradient="3"/>
 		<TEXTBOX posx="60" posy="120" width="715" height="430" paintframe="1" fontbg="1"/>
 		<WINDOW name="screening" posx="60" posy="570" width="715" height="30" paintframe="1"/>
 		

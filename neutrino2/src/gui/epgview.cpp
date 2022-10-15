@@ -137,6 +137,18 @@ void reformatExtendedEvents(std::string strItem, std::string strLabel, bool bUse
 	}
 }
 
+// head
+const struct button_label HButton = { NEUTRINO_ICON_BUTTON_HELP, " " };
+
+// foot
+struct button_label FButtons[4] =
+{
+	{ DUMMY_ICON, " " },
+	{ DUMMY_ICON,  " "},
+	{ NEUTRINO_ICON_BUTTON_YELLOW, "Schedule"},
+	{ DUMMY_ICON, " " }
+};
+
 CEpgData::CEpgData()
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -164,6 +176,12 @@ CEpgData::CEpgData()
 		footers = new CFooters(&cFootBox);
 		cFollowScreeningWindow = new CWindow(&cFollowScreeningBox);
 		
+		// head
+		headers->enablePaintDate();
+		headers->setFormat("%A %d.%m.%Y %H:%M:%S");
+		
+		// foot
+		
 		widget = new CWidget(&cFrameBox);
 		
 		widget->addWidgetItem(textBox);
@@ -179,9 +197,18 @@ CEpgData::CEpgData()
 	timescale = new CProgressBar(cFollowScreeningBox.iX + (cFollowScreeningBox.iWidth - TIMESCALE_W)/2, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - TIMESCALE_H)/2, TIMESCALE_W, TIMESCALE_H);
 	
 	epg_done = -1;
+	
+	//
+	if (headers)
+	{
+		headers->setButtons(&HButton, 1);
+	}
 
 	//
-	if (textBox) textBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
+	if (textBox) 
+	{
+		textBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
+	}
 }
 
 CEpgData::~CEpgData()
@@ -418,9 +445,7 @@ extern char recDir[255];// defined in neutrino.cpp
 void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
 bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::ComponentTagList& tags);
 
-// head
-const struct button_label HButton = { NEUTRINO_ICON_BUTTON_HELP, " " };
-
+//
 void CEpgData::showHead(const t_channel_id channel_id)
 {
 	std::string text1 = epgData.title;
@@ -429,20 +454,16 @@ void CEpgData::showHead(const t_channel_id channel_id)
 
 	logo = CChannellogo::getInstance()->getLogoName(channel_id);
 
-	//headers = new CHeaders(&cHeadBox, text1.c_str(), logo.c_str());
+	//
 	if (headers)
 	{
 		headers->clear();
+		
 		headers->setTitle(text1.c_str());
 		headers->setIcon(logo.c_str());
 
-		headers->enablePaintDate();
-		headers->setFormat("%A %d.%m.%Y %H:%M:%S");
-		headers->setHeadLine(g_settings.Head_line);
 		headers->setButtons(&HButton, 1);
 	}
-
-	//headers->paint();
 }
 
 int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_startzeit, bool doLoop )
@@ -1024,41 +1045,20 @@ int CEpgData::FollowScreenings(const t_channel_id /*channel_id*/, const std::str
 }
 
 // foot
-struct button_label FButtons[4] =
-{
-	{ DUMMY_ICON, " " },
-	{ DUMMY_ICON,  " "},
-	{ NEUTRINO_ICON_BUTTON_YELLOW, "Schedule"},
-	{ DUMMY_ICON, " " }
-};
-
 void CEpgData::showTimerEventBar(bool _show)
 {
-	// hide only?
-	if (! _show)
-	{
-		// hide
-		frameBuffer->paintBackgroundBoxRel(cFootBox.iX, cFootBox.iY, cFootBox.iWidth, cFootBox.iHeight);
-
-		frameBuffer->blit();
-		
-		return;
-	}
-
 	if (recDir != NULL)
 	{
 		FButtons[0].button = NEUTRINO_ICON_BUTTON_RED;
 		FButtons[0].localename = _("record");
 	}
 
-	//CFooters footers(cFootBox.iX, cFootBox.iY, cFootBox.iWidth, cFootBox.iHeight);
+	//
 	if (footers)
 	{
 		footers->clear();
-		footers->setFootLine(g_settings.Foot_line);
 		footers->setButtons(FButtons, 4);
 	}
-	//footers->paint();
 }
 
 //  -- EPG Data Viewer Menu Handler Class

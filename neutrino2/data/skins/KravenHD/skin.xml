@@ -1344,7 +1344,7 @@
 	<WIDGET name="epgview" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
 		<HEAD posx="50" posy="0" width="1180" height="50" paintframe="0" line="1"/>
 		<TEXTBOX posx="50" posy="50" width="840" height="620"/>	
-		<WINDOW name="screening" posx="50" posy="640" width="840" height="30"/>
+		<WINDOW name="screening" posx="50" posy="640" width="1180" height="30"/>
 		<FOOT posx="50" posy="670" width="1180" height="50" paintframe="0" line="1"/>
 		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
 		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
