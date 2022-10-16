@@ -123,6 +123,8 @@ class CTextBox : public CWidgetItem
 		
 		bool savescreen;
 		fb_pixel_t* background;
+		void saveScreen();
+		void restoreScreen();
 
 		// Functions
 		void refreshTextLineArray(void);
@@ -163,7 +165,7 @@ class CTextBox : public CWidgetItem
 		void setMode(const int mode);
 		void paintMainFrame(bool p){paintframe = p;};
 		void setBorderMode(int m = BORDER_ALL){borderMode = m;};
-		void enableSaveScreen();
+		void enableSaveScreen(bool s){savescreen = s;};
 
 		void paint(void);
 		void hide(void);

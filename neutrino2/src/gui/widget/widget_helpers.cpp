@@ -633,7 +633,7 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 		Dline.setMode(AUTO_WIDTH);
 		Dline.setFont(tFont);
 		Dline.setBorderMode(borderMode);
-		if (savescreen) Dline.enableSaveScreen();
+		if (savescreen) Dline.enableSaveScreen(true);
 		Dline.setBackgroundColor(color);
 		//Dline.setCorner(g_settings.Hint_corner);
 		//Dline.setRadius(g_settings.Hint_radius);
@@ -665,7 +665,7 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 		Dline.setMode(AUTO_WIDTH);
 		Dline.setFont(tFont);
 		Dline.setBorderMode(borderMode);
-		if (savescreen) Dline.enableSaveScreen();
+		if (savescreen) Dline.enableSaveScreen(true);
 		Dline.setBackgroundColor(color);
 		//Dline.setCorner(g_settings.Hint_corner);
 		//Dline.setRadius(g_settings.Hint_radius);
@@ -894,7 +894,7 @@ void CCText::paint()
 	CTextBox textBox(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 
 	textBox.paintMainFrame(false);
-	textBox.enableSaveScreen();
+	textBox.enableSaveScreen(true);
 	textBox.setMode(mode);
 	textBox.setFont(font);
 	textBox.setTextColor(color);

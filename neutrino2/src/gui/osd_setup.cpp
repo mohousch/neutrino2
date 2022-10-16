@@ -1148,7 +1148,7 @@ void CSkinManager::showMenu()
 		{
 			if(namelist[i]->d_type == DT_DIR && !strstr(namelist[i]->d_name, ".") && !strstr(namelist[i]->d_name, ".."))
 			{	
-				item = new ClistBoxItem(namelist[i]->d_name);
+				item = new ClistBoxItem((strcmp(namelist[i]->d_name, "neutrino2"))? namelist[i]->d_name : "default");
 				
 				item->setActionKey(this, namelist[i]->d_name);
 				

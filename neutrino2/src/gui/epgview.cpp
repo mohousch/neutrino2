@@ -137,9 +137,6 @@ void reformatExtendedEvents(std::string strItem, std::string strLabel, bool bUse
 	}
 }
 
-// head
-const struct button_label HButton = { NEUTRINO_ICON_BUTTON_HELP, " " };
-
 // foot
 struct button_label FButtons[4] =
 {
@@ -178,7 +175,7 @@ CEpgData::CEpgData()
 		
 		// head
 		headers->enablePaintDate();
-		headers->setFormat("%A %d.%m.%Y %H:%M:%S");
+		headers->setFormat("%d.%m.%Y %H:%M:%S");
 		
 		// foot
 		
@@ -195,20 +192,32 @@ CEpgData::CEpgData()
 	if (cFollowScreeningWindow)
 		cFollowScreeningBox = cFollowScreeningWindow->getWindowsPos();
 		
-	timescale = new CProgressBar(cFollowScreeningBox.iX + (cFollowScreeningBox.iWidth - TIMESCALE_W)/2, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - TIMESCALE_H)/2, TIMESCALE_W, TIMESCALE_H);
+	int timeScaleWidth = TIMESCALE_W;
+	int timeScaleHeight = TIMESCALE_H;
+	
+	// recalculate timeScale width
+	timeScaleWidth = cFollowScreeningBox.iWidth - 20 - 4*g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">") - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("0000000000000") - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("0000000000");
+	
+	if (timeScaleWidth > TIMESCALE_W)
+		timeScaleWidth = TIMESCALE_W;
+		
+	timescale = new CProgressBar(cFollowScreeningBox.iX + (cFollowScreeningBox.iWidth - timeScaleWidth)/2, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - timeScaleHeight)/2, timeScaleWidth, timeScaleHeight);
 	
 	epg_done = -1;
-	
-	//
-	if (headers)
-	{
-		headers->setButtons(&HButton, 1);
-	}
 
 	//
 	if (textBox) 
 	{
 		textBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
+		textBox->setMode(SCROLL);
+		textBox->enableSaveScreen(true);
+	}
+	
+	// follow screening
+	if (cFollowScreeningWindow)
+	{
+		//cFollowScreeningWindow->setColor(COL_MENUHEAD_PLUS_0);
+		//cFollowScreeningWindow->paint();
 	}
 }
 
@@ -462,8 +471,6 @@ void CEpgData::showHead(const t_channel_id channel_id)
 		
 		headers->setTitle(text1.c_str());
 		headers->setIcon(logo.c_str());
-
-		headers->setButtons(&HButton, 1);
 	}
 }
 
@@ -599,13 +606,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 
 	// head
 	showHead(channel_id);
-
-	// follow screening
-	if (cFollowScreeningWindow)
-	{
-		cFollowScreeningWindow->setColor(COL_MENUHEAD_PLUS_0);
-		//cFollowScreeningWindow->paint();
-	}
 	
 	std::string fromto;
 	int widthl, widthr;
@@ -616,7 +616,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	if(textBox)
 	{
 		textBox->setText(epgBuffer.c_str());
-		//textBox->paint();
 	}
 
 	// show Timer Event Buttons
@@ -878,29 +877,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 
 void CEpgData::hide()
 {
-/*
-	frameBuffer->paintBackgroundBoxRel(cFrameBox.iX, cFrameBox.iY, cFrameBox.iX + cFrameBox.iWidth, cFrameBox.iY + cFrameBox.iHeight);
-
-	frameBuffer->blit();
-	
-        showTimerEventBar(false);
-*/
 	widget->hide();
-
-/*
-	if (textBox)
-	{
-		textBox->hide();
-		delete textBox;
-		textBox = NULL;
-	}
-	
-	if (headers)
-	{
-		delete headers;
-		headers = NULL;
-	}
-*/
 
 	//
 	epgBuffer.clear();

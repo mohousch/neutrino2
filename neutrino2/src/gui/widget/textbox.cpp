@@ -134,8 +134,11 @@ void CTextBox::initVar(void)
 	tw = th = 0;
 	thumbnail = "";
 
+	//
 	bigFonts = false;
 	painted = false;
+	
+	//
 	paintframe = true;
 	enableFrame = false;
 	useBG = false;
@@ -144,6 +147,7 @@ void CTextBox::initVar(void)
 	savescreen = false;
 	background = NULL;
 	
+	//
 	widgetItem_type = WIDGETITEM_TEXTBOX;
 }
 
@@ -258,10 +262,9 @@ void CTextBox::initFramesRel(void)
 	m_nLinesPerPage = m_cFrameTextRel.iHeight/m_nFontTextHeight;
 }
 
-void CTextBox::enableSaveScreen()
+void CTextBox::saveScreen()
 {
-	savescreen = true;
-	
+	//
 	if (savescreen)
 	{
 		if(background)
@@ -276,6 +279,14 @@ void CTextBox::enableSaveScreen()
 		{
 			frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 		}
+	}
+}
+
+void CTextBox::restoreScreen()
+{
+	if(savescreen && background) 
+	{
+		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
 }
 
@@ -468,10 +479,13 @@ void CTextBox::refreshText(void)
 	dprintf(DEBUG_DEBUG, "CTextBox::refreshText:\r\n");
 
 	// restore screen
+	/*
 	if(savescreen && background) 
 	{
 		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
+	*/
+	restoreScreen();
 	
 	// paint background	
 	if(paintframe)
@@ -681,6 +695,10 @@ void CTextBox::paint(void)
 	
 	//
 	initFramesRel();
+	
+	////
+	//enableSaveScreen();
+	saveScreen();
 	
 	//
 	refresh();	
