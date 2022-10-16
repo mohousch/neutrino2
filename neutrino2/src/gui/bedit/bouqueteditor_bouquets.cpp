@@ -102,6 +102,10 @@ CBEBouquetWidget::CBEBouquetWidget()
 	{
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
+		
+		//listBox->enablePaintHead();
+		//listBox->enablePaintDate();
+	
 		widget->addWidgetItem(listBox);
 	}
 	*/	
@@ -146,8 +150,8 @@ void CBEBouquetWidget::paint()
 
 	//
 	listBox->setTitle(_("Bouquets"));
-	listBox->enablePaintHead();
-	listBox->enablePaintDate();
+	//listBox->enablePaintHead();
+	//listBox->enablePaintDate();
 	listBox->setHeadButtons(&HButton, 1);
 	
 	//
@@ -208,6 +212,10 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	{
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
+		
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+	
 		widget->addWidgetItem(listBox);
 	}	
 	

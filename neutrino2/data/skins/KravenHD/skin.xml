@@ -1273,8 +1273,7 @@
 	</WIDGET>
 	
 	<WIDGET name="channellist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1">
-		</LISTBOX>
+		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1"/>
 		
 		<HEAD posx="50" posy="0" width="1180" height="50" paintframe="0" line="1"/>
 		<FOOT posx="50" posy="670" width="1180" height="50" paintframe="0" line="1"/>
@@ -1286,57 +1285,30 @@
 	</WIDGET>
 	
 	<WIDGET name="eventlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1">
-		</LISTBOX>
-			
-		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1" painthead="1" head_line="1"/>	
+		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
+		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="bqeditbq" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1">
-		</LISTBOX>
-			
-		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1" painthead="1" head_line="1"/>	
+		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
+		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="bqeditch" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1">
-		</LISTBOX>
-			
-		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1" painthead="1" head_line="1"/>	
+		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
+		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="bqeditchselect" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1">
-		</LISTBOX>
-			
-		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
+		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1" painthead="1" head_line="1"/>
+		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
+		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S">
 		</TIME>
 	</WIDGET>

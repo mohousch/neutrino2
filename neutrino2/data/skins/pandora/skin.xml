@@ -4,7 +4,7 @@
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
-	<WIDGET name="mainmenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="1" position="2" radius="20" corner="15">
+	<WIDGET name="mainmenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
 		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="1" mode="1" position="2" itemborder="1" painthead="1" title="Main Menu" icon="menu" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<ITEM id="5" localename="TV / RADIO" itemicon="hint_tvmode" target="0" actionkey="tvradioswitch"/>
 			<ITEM id="5" localename="EPG / Timer" itemicon="hint_timers" target="3" directkey="0x2"/>
@@ -620,19 +620,19 @@
 	</WIDGET>
 	
 	<WIDGET name="bqeditchselect" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" head_line="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1"/>
 	</WIDGET>
 	
 	<WIDGET name="bqeditch" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" scrollbar="1" painthead="1" head_line="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" scrollbar="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1"/>
 	</WIDGET>
 	
 	<WIDGET name="bqeditbq" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" head_line="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1"/>
 	</WIDGET>
 	
 	<WIDGET name="eventlist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" head_line="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" head_line="1" paintdate="1" paintfoot="1" foot_line="1"/>
 	</WIDGET>
 	
 	<WIDGET name="epgsearch" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">

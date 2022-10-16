@@ -98,6 +98,10 @@ CBEChannelSelectWidget::CBEChannelSelectWidget(const std::string& Caption, unsig
 	{
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
+		
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+		
 		widget->addWidgetItem(listBox);
 	}
 	*/	
@@ -167,8 +171,6 @@ void CBEChannelSelectWidget::paint()
 
 	//
 	listBox->setTitle(caption.c_str());
-	listBox->enablePaintHead();
-	listBox->enablePaintDate();
 	
 	//
 	listBox->enablePaintFoot();
@@ -233,6 +235,10 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 	{
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
+		
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+		
 		widget->addWidgetItem(listBox);
 	}	
 
@@ -296,7 +302,7 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
 			//
-			listBox->refresh();
+			widget->refresh();
 		}
 		else if (CNeutrinoApp::getInstance()->handleMsg(msg, data) & messages_return::cancel_all)
 		{

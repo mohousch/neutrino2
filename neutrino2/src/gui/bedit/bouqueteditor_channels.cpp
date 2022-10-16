@@ -97,6 +97,10 @@ CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bou
 	{
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
+		
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+		
 		widget->addWidgetItem(listBox);
 	}
 	*/	
@@ -148,8 +152,6 @@ void CBEChannelWidget::paint()
 
 	//
 	listBox->setTitle(caption.c_str());
-	listBox->enablePaintHead();
-	listBox->enablePaintDate();
 
 	//
 	listBox->enablePaintFoot();
@@ -194,6 +196,10 @@ int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	{
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
+		
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+		
 		widget->addWidgetItem(listBox);
 	}	
 	

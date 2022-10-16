@@ -132,6 +132,9 @@ EventList::EventList()
 		evlWidget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+		
 		evlWidget->addWidgetItem(listBox);
 	}
 	*/				
@@ -259,7 +262,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 	//
 	readEvents(channel_id);
 	
-	////
+	//
 	if (CNeutrinoApp::getInstance()->widget_exists("eventlist"))
 	{
 		evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
@@ -270,9 +273,11 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		evlWidget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+		
 		evlWidget->addWidgetItem(listBox);
 	}
-	////
 
 	//
 	paint(channel_id);
@@ -714,10 +719,7 @@ void EventList::paint(t_channel_id channel_id)
 
 	logo = CChannellogo::getInstance()->getLogoName(channel_id);
 
-	//listBox->enableShrinkMenu();
-	listBox->enablePaintHead();
 	listBox->setTitle(name.c_str(), logo.c_str());
-	listBox->enablePaintDate();
 	listBox->setHeadButtons(HeadButtons, 3);
 
 	// foot
@@ -732,8 +734,8 @@ void EventList::paint(t_channel_id channel_id)
 
 	//
 	listBox->setSelected(selected);
-	//listBox->paint();
 	
+	//
 	evlWidget->paint();
 }
 
