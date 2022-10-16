@@ -638,6 +638,7 @@ int CChannelList::exec(bool zap)
 	else
 	{
 		chWidget = new CWidget(&cFrameBox);
+		chWidget->name = "channellist";
 		chWidget->paintMainFrame(true);
 		
 		// listBox

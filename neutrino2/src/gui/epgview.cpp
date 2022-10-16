@@ -183,6 +183,7 @@ CEpgData::CEpgData()
 		// foot
 		
 		widget = new CWidget(&cFrameBox);
+		widget->name = "epgview";
 		
 		widget->addWidgetItem(textBox);
 		widget->addWidgetItem(headers);
