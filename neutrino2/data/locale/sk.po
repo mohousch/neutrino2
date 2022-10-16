@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrinohd2 4.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-13 16:38+0200\n"
+"POT-Creation-Date: 2022-10-16 13:33+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2744,6 +2744,9 @@ msgstr ""
 msgid "approx. 10 minutes back"
 msgstr ""
 
+msgid "approx. 10 seconds back"
+msgstr ""
+
 msgid "approx. 5 minutes back"
 msgstr ""
 
@@ -3367,6 +3370,9 @@ msgid "skip approx. 1 minute"
 msgstr ""
 
 msgid "skip approx. 10 minutes"
+msgstr ""
+
+msgid "skip approx. 10 seconds"
 msgstr ""
 
 msgid "skip approx. 5 minutes"
