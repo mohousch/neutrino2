@@ -933,5 +933,3 @@ void CFrameBox::setFootButtons(const struct button_label* _fbutton_labels, const
 	}
 }
 
-
-

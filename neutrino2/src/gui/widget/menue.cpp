@@ -393,7 +393,7 @@ void CMenuWidget::paintHead()
 			
 		if(i_h >= hheight)
 		{
-			i_h = hheight - 2;
+			i_h = hheight - 4;
 			//i_w = i_h*1.67;
 		}
 				
@@ -415,7 +415,7 @@ void CMenuWidget::paintHead()
 					// scale icon
 					if(ih[i] >= hheight)
 					{
-						ih[i] = hheight - 2;
+						ih[i] = hheight - 4;
 					}
 			
 					xstartPos -= (iw[i] + ICON_TO_ICON_OFFSET);
@@ -469,7 +469,7 @@ void CMenuWidget::paintHead()
 		// limit icon height
 		if(i_h >= hheight)
 		{
-			i_h = hheight - 2;
+			i_h = hheight - 4;
 			//i_w = i_h*1.67;
 		}
 				
@@ -491,7 +491,7 @@ void CMenuWidget::paintHead()
 					// scale icon
 					if(ih[i] >= hheight)
 					{
-						ih[i] = hheight - 2;
+						ih[i] = hheight - 4;
 					}
 					
 					xstartPos -= (iw[i] + ICON_TO_ICON_OFFSET);
@@ -561,7 +561,7 @@ void CMenuWidget::paintFoot()
 						
 					if(ih[i] >= fheight)
 					{
-						ih[i] = fheight - 2;
+						ih[i] = fheight - 4;
 					}
 				
 					int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
@@ -603,7 +603,7 @@ void CMenuWidget::paintFoot()
 						
 					if(ih[i] >= fheight)
 					{
-						ih[i] = fheight - 2;
+						ih[i] = fheight - 4;
 					}
 						
 					int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();

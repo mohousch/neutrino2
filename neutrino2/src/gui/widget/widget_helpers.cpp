@@ -1418,7 +1418,7 @@ void CHeaders::paint()
 		// scale icon
 		if(i_h >= itemBox.iHeight)
 		{
-			i_h = itemBox.iHeight - 2;
+			i_h = itemBox.iHeight - 4;
 			i_w = i_h*1.67;
 		}
 
@@ -1443,7 +1443,7 @@ void CHeaders::paint()
 				// scale icon
 				if(ih[i] >= itemBox.iHeight)
 				{
-					ih[i] = itemBox.iHeight - 2;
+					ih[i] = itemBox.iHeight - 4;
 				}
 		
 				startx -= (iw[i] + ICON_TO_ICON_OFFSET);
@@ -1592,7 +1592,7 @@ void CFooters::paint()
 				// scale icon
 				if(ih >= itemBox.iHeight)
 				{
-					ih = itemBox.iHeight - 2;
+					ih = itemBox.iHeight - 4;
 				}
 				
 				int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();

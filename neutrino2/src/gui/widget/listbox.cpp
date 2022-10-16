@@ -3159,7 +3159,7 @@ void ClistBox::paintHead()
 			
 			if(i_h >= hheight)
 			{
-				i_h = hheight - 2;
+				i_h = hheight - 4;
 				i_w = i_h*1.67;
 			}
 
@@ -3180,7 +3180,7 @@ void ClistBox::paintHead()
 						
 						if(ih[i] >= hheight)
 						{
-							ih[i] = hheight - 2;
+							ih[i] = hheight - 4;
 							iw[i] = ih[i]*1.67;
 						}
 
@@ -3237,7 +3237,7 @@ void ClistBox::paintHead()
 			// limit icon height
 			if(i_h >= hheight)
 			{
-				i_h = hheight - 2;
+				i_h = hheight - 4;
 				i_w = i_h*1.67;
 			}
 
@@ -3258,7 +3258,7 @@ void ClistBox::paintHead()
 						
 						if(ih[i] >= hheight)
 						{
-							ih[i] = hheight - 2;
+							ih[i] = hheight - 4;
 							iw[i] = ih[i]*1.67;
 						}
 					
@@ -3334,7 +3334,7 @@ void ClistBox::paintFoot()
 						
 						if(ih[i] >= fheight)
 						{
-							ih[i] = fheight - 2;
+							ih[i] = fheight - 4;
 						}
 						
 						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
@@ -3376,7 +3376,7 @@ void ClistBox::paintFoot()
 					
 					if(ih[i] >= fheight)
 					{
-						ih[i] = fheight - 2;
+						ih[i] = fheight - 4;
 					}
 						
 					int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
