@@ -354,7 +354,7 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 		textBox.paintMainFrame(false);
 		textBox.setMode(AUTO_WIDTH);
 		textBox.setFont(captionFont);
-		textBox.enableSaveScreen(true);
+		textBox.enableSaveScreen();
 		textBox.setBorderMode(border? BORDER_ALL : BORDER_NO);
 
 		// caption

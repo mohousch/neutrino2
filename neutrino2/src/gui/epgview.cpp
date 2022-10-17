@@ -210,15 +210,15 @@ CEpgData::CEpgData()
 	{
 		textBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 		textBox->setMode(SCROLL);
-		textBox->enableSaveScreen(true);
+		textBox->enableSaveScreen();
 	}
 	
 	// follow screening
-	if (cFollowScreeningWindow)
-	{
+	//if (cFollowScreeningWindow)
+	//{
 		//cFollowScreeningWindow->setColor(COL_MENUHEAD_PLUS_0);
 		//cFollowScreeningWindow->paint();
-	}
+	//}
 }
 
 CEpgData::~CEpgData()
@@ -260,46 +260,46 @@ void CEpgData::initFrames()
 }
 
 #define GENRE_MOVIE_COUNT 9
-const char* const genre_movie[GENRE_MOVIE_COUNT] =
+const char* genre_movie[GENRE_MOVIE_COUNT] =
 {
-	_("movie/drama"),
-	_("detective/thriller"),
-	_("adventure/western/war"),
-	_("science fiction/fantasy/horror"),
+	_("movie / drama"),
+	_("detective / thriller"),
+	_("adventure / western/war"),
+	_("science fiction / fantasy / horror"),
 	_("comedy"),
-	_("soap/melodrama/folkloric"),
+	_("soap / melodrama / folkloric"),
 	_("romance"),
-	_("serious/classical/religious/historical movie/drama"),
-	_("adult movie/drama")
+	_("serious / classical / religious / historical movie / drama"),
+	_("adult movie / drama")
 };
 
 #define GENRE_NEWS_COUNT 5
-const char* const genre_news[GENRE_NEWS_COUNT] =
+const char* genre_news[GENRE_NEWS_COUNT] =
 {
 	_("news"),
-	_("news/weather report"),
+	_("news / weather report"),
 	_("news magazine"),
 	_("documentary"),
-	_("discussion/interview/debate")
+	_("discussion / interview/debate")
 };
 
 #define GENRE_SHOW_COUNT 4
-const char* const genre_show[GENRE_SHOW_COUNT] =
+const char* genre_show[GENRE_SHOW_COUNT] =
 {
 	_("Show / Gameshow"),
-	_("game show/quiz/contest"),
+	_("game show / quiz / contest"),
 	_("variety show"),
 	_("talk show")
 };
 
 #define GENRE_SPORTS_COUNT 12
-const char* const genre_sports[GENRE_SPORTS_COUNT] =
+const char* genre_sports[GENRE_SPORTS_COUNT] =
 {
 	_("sports"),
 	_("special events (Olympic Games,World Cup etc.)"),
 	_("sports magazines"),
-	_("football/soccer"),
-	_("tennis/squash"),
+	_("football / soccer"),
+	_("tennis / squash"),
 	_("team sports (excluding football)"),
 	_("athletics"),
 	_("motor sports"),
@@ -310,73 +310,73 @@ const char* const genre_sports[GENRE_SPORTS_COUNT] =
 };
 
 #define GENRE_CHILDRENS_PROGRAMMES_COUNT 6
-const char* const genre_childrens_programmes[GENRE_CHILDRENS_PROGRAMMES_COUNT] =
+const char* genre_childrens_programmes[GENRE_CHILDRENS_PROGRAMMES_COUNT] =
 {
 	_("children / juvenile program"),
 	_("pre-school children's programmes"),
 	_("entertainment programmes for 6 to 14"),
 	_("entertainment programmes for 10 to 16"),
-	_("informational/educational/school programmes"),
-	_("cartoons/puppets"),
+	_("informational / educational / school programmes"),
+	_("cartoons / puppets"),
 };
 
 #define GENRE_MUSIC_DANCE_COUNT 7
-const char* const genre_music_dance[GENRE_MUSIC_DANCE_COUNT] =
+const char* genre_music_dance[GENRE_MUSIC_DANCE_COUNT] =
 {
 	_("music / ballet / dance"),
-	_("rock/pop"),
-	_("serious music/classical music"),
-	_("folk/traditional music"),
+	_("rock / pop"),
+	_("serious music / classical music"),
+	_("folk / traditional music"),
 	_("jazz"),
-	_("musical/opera"),
+	_("musical / opera"),
 	_("ballet"),
 };
 
 #define GENRE_ARTS_COUNT 12
-const char* const genre_arts_dance[GENRE_ARTS_COUNT] =
+const char* genre_arts_dance[GENRE_ARTS_COUNT] =
 {
 	_("arts / culture"),
 	_("performing arts"),
 	_("fine arts"),
 	_("religion"),
-	_("popular culture/traditional arts"),
+	_("popular culture / traditional arts"),
 	_("literature"),
 	_("film/cinema"),
 	_("experimental film/video"),
-	_("broadcasting/press"),
+	_("broadcasting / press"),
 	_("new media"),
 	_("arts/culture magazines"),
 	_("fashion"),
 };
 
 #define GENRE_SOCIAL_POLITICAL_COUNT 4
-const char* const genre_social_political[GENRE_SOCIAL_POLITICAL_COUNT] =
+const char* genre_social_political[GENRE_SOCIAL_POLITICAL_COUNT] =
 {
 	_("social & politic events / business"),
-	_("magazines/reports/documentary"),
-	_("economics/social advisory"),
+	_("magazines / reports / documentary"),
+	_("economics / social advisory"),
 	_("remarkable people"),
 };
 
 #define GENRE_DOCUS_MAGAZINES_COUNT 8
-const char* const genre_docus_magazines[GENRE_DOCUS_MAGAZINES_COUNT] =
+const char* genre_docus_magazines[GENRE_DOCUS_MAGAZINES_COUNT] =
 {
 	_("documentation / magazine"),
-	_("nature/animals/environment"),
+	_("nature/animals / environment"),
 	_("technology/natural sciences"),
-	_("medicine/physiology/psychology"),
+	_("medicine / physiology / psychology"),
 	_("foreign countries/expeditions"),
-	_("social/spiritual sciences"),
+	_("social / spiritual sciences"),
 	_("further education"),
 	_("languages"),
 };
 
 #define GENRE_TRAVEL_HOBBIES_COUNT 8
-const char* const genre_travel_hobbies[GENRE_TRAVEL_HOBBIES_COUNT] =
+const char* genre_travel_hobbies[GENRE_TRAVEL_HOBBIES_COUNT] =
 {
 	_("travel & recreation"),
-	_("tourism/travel"),
-	_("tourism/travel"),
+	_("tourism / travel"),
+	_("tourism / travel"),
 	_("handicraft"),
 	_("motoring"),
 	_("fitness & health"),
@@ -384,7 +384,7 @@ const char* const genre_travel_hobbies[GENRE_TRAVEL_HOBBIES_COUNT] =
 	_("gardening")
 };
 
-const unsigned char genre_sub_classes[10] =
+const char genre_sub_classes[10] =
 {
 	GENRE_MOVIE_COUNT,
 	GENRE_NEWS_COUNT,
@@ -398,18 +398,18 @@ const unsigned char genre_sub_classes[10] =
 	GENRE_TRAVEL_HOBBIES_COUNT
 };
 
-const char*const genre_sub_classes_list[10] =
+const char** genre_sub_classes_list[10] =
 {
-	*genre_movie,
-	*genre_news,
-	*genre_show,
-	*genre_sports,
-	*genre_childrens_programmes,
-	*genre_music_dance,
-	*genre_arts_dance,
-	*genre_social_political,
-	*genre_docus_magazines,
-	*genre_travel_hobbies
+	genre_movie,
+	genre_news,
+	genre_show,
+	genre_sports,
+	genre_childrens_programmes,
+	genre_music_dance,
+	genre_arts_dance,
+	genre_social_political,
+	genre_docus_magazines,
+	genre_travel_hobbies
 };
 
 bool CEpgData::hasFollowScreenings(const t_channel_id /*channel_id*/, const std::string & title) 
@@ -429,7 +429,6 @@ const char * GetGenre(const unsigned char contentClassification) // UTF-8
 {
 	const char* res = NULL;
 
-/*
 	int i = (contentClassification & 0xF0);
 	
 	if ((i >= 0x010) && (i < 0x0B0))
@@ -441,7 +440,6 @@ const char * GetGenre(const unsigned char contentClassification) // UTF-8
 	}
 	else
 		res = _("unknown");
-*/
 
 	return res;
 }
@@ -587,10 +585,11 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		epgBuffer += "\n";
 	}
 
-	// FIXME:
-	if (epgData.contentClassification.length()> 0)
+	// genre: FIXME:
+	if (epgData.contentClassification.length() > 0)
 	{
-		//epgBuffer += GetGenre(epgData.contentClassification[0]);
+		epgBuffer += "\n";
+		epgBuffer += GetGenre(epgData.contentClassification[0]);
 		epgBuffer += "\n";
 	}
 

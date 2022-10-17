@@ -479,12 +479,6 @@ void CTextBox::refreshText(void)
 	dprintf(DEBUG_DEBUG, "CTextBox::refreshText:\r\n");
 
 	// restore screen
-	/*
-	if(savescreen && background) 
-	{
-		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
-	}
-	*/
 	restoreScreen();
 	
 	// paint background	
@@ -696,8 +690,7 @@ void CTextBox::paint(void)
 	//
 	initFramesRel();
 	
-	////
-	//enableSaveScreen();
+	//
 	saveScreen();
 	
 	//
