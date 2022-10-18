@@ -554,9 +554,11 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		epgBuffer += epgData.info2;
 		epgBuffer += "\n";
 	}
+	
+	epgBuffer += "\n";
 
 	// 21.07.2005 - rainerk
-	// Show extended information
+	// extended information
 	if(0 != epgData.itemDescriptions.size() && 0 != epgData.items.size()) 
 	{
 		char line[256];
@@ -584,11 +586,20 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		epgBuffer += _tfsk;
 		epgBuffer += "\n";
 	}
+	
+	// length information
+	char lengthInfo[11];
+	sprintf(lengthInfo, "%d", epgData.epg_times.dauer / 60);
+	epgBuffer += _("length: ");
+	epgBuffer += lengthInfo;
+	epgBuffer += " Min";
+	epgBuffer += "\n";
+	
+	// audio infos
 
-	// genre: FIXME:
+	// genre:
 	if (epgData.contentClassification.length() > 0)
 	{
-		epgBuffer += "\n";
 		epgBuffer += GetGenre(epgData.contentClassification[0]);
 		epgBuffer += "\n";
 	}

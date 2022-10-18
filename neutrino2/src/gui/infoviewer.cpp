@@ -326,11 +326,11 @@ void CInfoViewer::showRecordIcon(const bool show)
 			if(!autoshift && !shift_timer) 
 			{
 				// border
-				if (g_settings.infobar_border)
-					frameBuffer->paintBoxRel(BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, BoxStartY - 30, icon_w_rec, icon_h_rec, COL_MENUCONTENT_PLUS_6);
+				//if (g_settings.infobar_border)
+				//	frameBuffer->paintBoxRel(BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, BoxStartY - 30, icon_w_rec, icon_h_rec, COL_MENUCONTENT_PLUS_6);
 				
 				// box
-				frameBuffer->paintBoxRel(g_settings.infobar_border? BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + 1 : BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, g_settings.infobar_border? BoxStartY - 30 + 1 : BoxStartY - 30, g_settings.infobar_border? icon_w_rec - 2 : icon_w_rec, g_settings.infobar_border? icon_h_rec - 2 : icon_h_rec, COL_INFOBAR_PLUS_0);
+				//frameBuffer->paintBoxRel(g_settings.infobar_border? BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + 1 : BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, g_settings.infobar_border? BoxStartY - 30 + 1 : BoxStartY - 30, g_settings.infobar_border? icon_w_rec - 2 : icon_w_rec, g_settings.infobar_border? icon_h_rec - 2 : icon_h_rec, COL_INFOBAR_PLUS_0);
 
 				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString (BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + BORDER_LEFT, BoxStartY - 8, REC_INFOBOX_WIDTH, ext_channel_name.c_str(), COL_INFOBAR, 0, true);
 			} 
@@ -1188,8 +1188,8 @@ void CInfoViewer::showRadiotext()
 			if (g_settings.infobar_border)
 				frameBuffer->paintBoxRel(rt_x, rt_y, rt_w, rt_h, COL_MENUCONTENT_PLUS_6, g_settings.infobar_radius, g_settings.infobar_corner);
 				
-			//
-			frameBuffer->paintBoxRel(g_settings.infobar_border? rt_x + 1 : rt_x, g_settings.infobar_border? rt_y + 1 : rt_y, g_settings.infobar_border? rt_w - 2 : rt_w, g_settings.infobar_border? rt_h - 2 : rt_h, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
+			// box
+			frameBuffer->paintBoxRel(g_settings.infobar_border? rt_x + 1 : rt_x, g_settings.infobar_border? rt_y + 1 : rt_y, g_settings.infobar_border? rt_w - 2 : rt_w, g_settings.infobar_border? rt_h - 2 : rt_h, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner, g_settings.infobar_gradient, g_settings.infobar_gradient_direction);
 			
 			// title		
 			if (g_Radiotext->S_RtOsdTitle == 1) 
@@ -1197,12 +1197,6 @@ void CInfoViewer::showRadiotext()
 				if ((lines) || (g_Radiotext->RT_PTY !=0)) 
 				{
 					sprintf(stext[0], g_Radiotext->RT_PTY == 0 ? "%s %s%s" : "%s (%s)%s", tr("Radiotext"), g_Radiotext->RT_PTY == 0 ? g_Radiotext->RDS_PTYN : g_Radiotext->ptynr2string(g_Radiotext->RT_PTY), ":");
-					
-					// shadow
-					//if (g_settings.infobar_border)
-					//	frameBuffer->paintBoxRel(rt_x, rt_y, rt_dx, rt_dy, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_NONE);
-
-					//frameBuffer->paintBoxRel(rt_x + 1, rt_y + 1, rt_dx - 2, rt_dy - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
 					
 					//
 					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(rt_x + 10, rt_y + 30, rt_dx - 20, stext[0], COL_INFOBAR, 0, RTisIsUTF); // UTF-8
@@ -1215,14 +1209,6 @@ void CInfoViewer::showRadiotext()
 			// Body
 			if (lines) 
 			{
-				// shadow
-				//if (g_settings.infobar_border)
-					//frameBuffer->paintBoxRel(rt_x, rt_y + rt_dy, rt_dx, 7 + rt_dy* g_Radiotext->S_RtOsdRows, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_NONE);
-					//frameBuffer->paintBoxRel(rt_x, rt_y, rt_w, rt_h, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_NONE);
-
-				//frameBuffer->paintBoxRel(rt_x + 1, rt_y + rt_dy + 1, rt_dx - 2, 7 + rt_dy* g_Radiotext->S_RtOsdRows - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
-				//frameBuffer->paintBoxRel(rt_x + 1, rt_y + 1, rt_w - 2, 7 + rt_h - 2, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner);
-
 				// RT-Text roundloop
 				int ind = (g_Radiotext->RT_Index == 0) ? g_Radiotext->S_RtOsdRows - 1 : g_Radiotext->RT_Index - 1;
 				int rts_x = rt_x + 10;
