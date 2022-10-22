@@ -708,8 +708,8 @@
 	</WIDGET>
 	
 	<WIDGET name="infobox" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
-		<HEAD posx="60" posy="60" width="1160" height="60" line="1"/>
 		<TEXTBOX posx="60" posy="120" width="1160" height="1060"/>
+		<HEAD posx="60" posy="60" width="1160" height="60" line="1"/>
 		<FOOT posx="60" posy="600" width="1160" height="60" line="1"/>
 	</WIDGET>
 	

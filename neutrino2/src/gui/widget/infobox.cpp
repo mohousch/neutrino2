@@ -118,6 +118,10 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 		footers->setGradient(footGradient);
 		
 		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
+		
+		widget->addWidgetItem(m_pcTextBox);
+		widget->addWidgetItem(headers);
+		widget->addWidgetItem(footers);
 	}
 	
 	if (m_pcTextBox)
@@ -125,6 +129,7 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 		m_pcTextBox->setPosition(&m_cBoxFrameText);
 		m_pcTextBox->setMode(SCROLL);
 		m_pcTextBox->enableSaveScreen();
+		//m_pcTextBox->setFont(m_pcFontText);
 	}
 }
 
@@ -196,6 +201,10 @@ CInfoBox::CInfoBox()
 		footers->setGradient(footGradient);
 		
 		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
+		
+		widget->addWidgetItem(m_pcTextBox);
+		widget->addWidgetItem(headers);
+		widget->addWidgetItem(footers);
 	}
 	
 	if (m_pcTextBox)
@@ -203,6 +212,7 @@ CInfoBox::CInfoBox()
 		m_pcTextBox->setPosition(&m_cBoxFrameText);
 		m_pcTextBox->setMode(SCROLL);
 		m_pcTextBox->enableSaveScreen();
+		//m_pcTextBox->setFont(m_pcFontText);
 	}
 }
 
@@ -444,8 +454,10 @@ void CInfoBox::setTextColor(uint8_t col)
 //
 void CInfoBox::setFont(unsigned int font_text)
 {
-	//if(m_pcTextBox != NULL)
-		m_pcTextBox->setFont(font_text);
+	m_pcFontText = font_text;
+	
+	if(m_pcTextBox != NULL)
+		m_pcTextBox->setFont(m_pcFontText);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -473,38 +485,10 @@ bool CInfoBox::paint(void)
 	// foot
 	refreshFoot();
 	
-	widget->addWidgetItem(m_pcTextBox);
-	widget->addWidgetItem(headers);
-	widget->addWidgetItem(footers);
-	
 	widget->paint();
 	
 	return (true);
 }
-
-//////////////////////////////////////////////////////////////////////
-// Function Name:	Refresh	
-// Description:		
-// Parameters:		
-// Data IN/OUT:		
-// Return:		
-// Notes:		
-//////////////////////////////////////////////////////////////////////
-//void CInfoBox::refresh(void)
-//{
-	//refresh title
-	//refreshTitle();
-
-	// rep-draw textbox if there is one
-	//if(m_pcTextBox != NULL)
-	//{
-	//	m_pcTextBox->refresh();
-	//}
-
-	//refreshFoot();
-	
-	//paint();
-//}
 
 //////////////////////////////////////////////////////////////////////
 // Function Name:	Exec	

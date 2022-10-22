@@ -1271,6 +1271,7 @@ void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 	unsigned int height = 0;
 				
 	unsigned int paintframe = 1;
+	unsigned int savescreen = 0;
 	char* color = NULL;
 	unsigned int corner = 0;
 	unsigned int radius = 0;
@@ -1300,7 +1301,8 @@ void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 		width = xmlGetSignedNumericAttribute(node, "width", 0);
 		height = xmlGetSignedNumericAttribute(node, "height", 0);
 				
-		paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
+		paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);
+		savescreen = xmlGetSignedNumericAttribute(node, "savescreen", 0);		
 		color = xmlGetAttribute(node, (char*)"color");
 		corner = xmlGetSignedNumericAttribute(node, "corner", 0);
 		radius = xmlGetSignedNumericAttribute(node, "radius", 0);
@@ -1333,8 +1335,8 @@ void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 		if (color != NULL) textBox->setBackgroundColor(finalColor);
 		
 		textBox->setCorner(radius, corner);
-		//textBox->setRadius(radius);
 		textBox->paintMainFrame(paintframe);
+		if (savescreen || paintframe == 0) textBox->enableSaveScreen();
 					
 		textBox->setTextColor(textColor? convertFontColor(textColor) : COL_MENUCONTENT);
 		//textBox->setFont(font);
