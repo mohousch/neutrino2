@@ -70,6 +70,7 @@ class CEpgData
 		CFooters* footers;
 		CTextBox *textBox;
 		CWindow *cFollowScreeningWindow;
+		CCIcon *audioIcon;
 		CWidget *widget;
 
 		CChannelEventList evtlist;

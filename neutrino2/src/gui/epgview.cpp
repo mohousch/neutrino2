@@ -150,6 +150,13 @@ CEpgData::CEpgData()
 {
 	frameBuffer = CFrameBuffer::getInstance();
 	
+	widget = NULL;
+	textBox = NULL;
+	headers = NULL;
+	footers = NULL;
+	cFollowScreeningWindow = NULL;
+	audioIcon = NULL;
+	
 	//
 	initFrames();
 	
@@ -590,12 +597,49 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	// length information
 	char lengthInfo[11];
 	sprintf(lengthInfo, "%d", epgData.epg_times.dauer / 60);
-	epgBuffer += _("length: ");
+	//epgBuffer += _("length: ");
 	epgBuffer += lengthInfo;
 	epgBuffer += " Min";
 	epgBuffer += "\n";
 	
-	// audio infos
+	//show Content&Component for Dolby & 16:9 //FIXME:
+        CSectionsdClient::ComponentTagList tags;
+        std::string audioInfo = "";
+	
+	if ( sectionsd_getComponentTagsUniqueKey( epgData.eventID, tags ) )
+        {
+                for (unsigned int i = 0; i < tags.size(); i++)
+                {
+			int icon_w_aspect = 0;
+			int icon_h_aspect = 0;
+			int icon_w_dd = 0;
+			int icon_h_dd = 0;
+			
+			frameBuffer->getIconSize(NEUTRINO_ICON_16_9, &icon_w_aspect, &icon_h_aspect);
+			frameBuffer->getIconSize(NEUTRINO_ICON_DD, &icon_w_dd, &icon_h_dd);
+			
+			for (unsigned int i = 0; i < tags.size(); i++)
+				if (tags[i].streamContent == 2 && !tags[i].component.empty())
+					audioInfo += tags[i].component + ", ";
+
+			if (!audioInfo.empty())
+			{
+				audioInfo.erase(audioInfo.size()-2);
+				epgBuffer += audioInfo;
+				epgBuffer += "\n";
+			}
+			
+			//FIXME:
+                        if( tags[i].streamContent == 1 && (tags[i].componentType == 2 || tags[i].componentType == 3) )
+                        {
+                                //frameBuffer->paintIcon(NEUTRINO_ICON_16_9, cFrameBox.iX + cFrameBox.iWidth - 5 - icon_w_aspect, cFrameBox.iY + cFrameBox.iHeight + 5 ); //FIXME
+                        }
+                        else if( tags[i].streamContent == 2 && tags[i].componentType == 5 )
+                        {
+                                //frameBuffer->paintIcon(NEUTRINO_ICON_DD, cFrameBox.iX + cFrameBox.iWidth - 2 - icon_w_dd - 5 - icon_w_aspect, cFrameBox.iY + cFrameBox.iHeight + 5); //FIXME
+                        }
+                }
+        }
 
 	// genre:
 	if (epgData.contentClassification.length() > 0)
@@ -644,33 +688,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	widthr = g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(epg_date);
 	
 	g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningBox.iX + cFollowScreeningBox.iWidth - 10 - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">") - 5 - widthr, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthr, epg_date, COL_MENUHEAD);
-	
-        //show Content&Component for Dolby & 16:9 //FIXME:
-        CSectionsdClient::ComponentTagList tags;
-	
-	if ( sectionsd_getComponentTagsUniqueKey( epgData.eventID, tags ) )
-        {
-                for (unsigned int i = 0; i < tags.size(); i++)
-                {
-			int icon_w_aspect = 0;
-			int icon_h_aspect = 0;
-			int icon_w_dd = 0;
-			int icon_h_dd = 0;
-			
-			frameBuffer->getIconSize(NEUTRINO_ICON_16_9, &icon_w_aspect, &icon_h_aspect);
-			frameBuffer->getIconSize(NEUTRINO_ICON_DD, &icon_w_dd, &icon_h_dd);
-			
-			//FIXME:
-                        if( tags[i].streamContent == 1 && (tags[i].componentType == 2 || tags[i].componentType == 3) )
-                        {
-                                frameBuffer->paintIcon(NEUTRINO_ICON_16_9, cFrameBox.iX + cFrameBox.iWidth - 5 - icon_w_aspect, cFrameBox.iY + cFrameBox.iHeight + 5 ); //FIXME
-                        }
-                        else if( tags[i].streamContent == 2 && tags[i].componentType == 5 )
-                        {
-                                frameBuffer->paintIcon(NEUTRINO_ICON_DD, cFrameBox.iX + cFrameBox.iWidth - 2 - icon_w_dd - 5 - icon_w_aspect, cFrameBox.iY + cFrameBox.iHeight + 5); //FIXME
-                        }
-                }
-        }
 
 	//show progressbar
 	if ( epg_done != -1 )
