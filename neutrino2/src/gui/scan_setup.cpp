@@ -567,7 +567,7 @@ void CScanSetup::showScanService()
 					tempsatWidget->addWidgetItem(tempsat);
 				}
 				
-				tempsat->clearAll();
+				tempsat->clear();
 				
 				//
 				tempsat->addItem(new CMenuForwarder(_("back")));

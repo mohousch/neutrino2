@@ -358,7 +358,7 @@ int CHDDMenuHandler::hddMenu()
 		}
 		
 		//
-		tempMenu[i]->clearAll();
+		tempMenu[i]->clear();
 
 		
 		tempMenu[i]->addItem(new CMenuForwarder(_("back")));
@@ -436,7 +436,7 @@ int CHDDMenuHandler::hddMenu()
 			}
 			
 			//
-			PartMenu[j]->clearAll();
+			PartMenu[j]->clear();
 
 			//
 			PartMenu[j]->addItem(new CMenuForwarder(_("back")));

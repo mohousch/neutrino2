@@ -55,6 +55,9 @@
 // Return:		
 // Notes:		
 ///////////////////
+const struct button_label HButton = { NEUTRINO_ICON_BUTTON_HELP, " "};
+const struct button_label FButton = { NEUTRINO_ICON_INFO, " " };
+
 CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 {
 	//
@@ -130,6 +133,16 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 		m_pcTextBox->setMode(SCROLL);
 		m_pcTextBox->enableSaveScreen();
 		//m_pcTextBox->setFont(m_pcFontText);
+	}
+	
+	if (headers)
+	{
+		headers->setButtons(&HButton, 1);
+	}
+	
+	if (footers)
+	{
+		footers->setButtons(&FButton, 1);
 	}
 }
 
@@ -214,6 +227,16 @@ CInfoBox::CInfoBox()
 		m_pcTextBox->enableSaveScreen();
 		//m_pcTextBox->setFont(m_pcFontText);
 	}
+	
+	if (headers)
+	{
+		headers->setButtons(&HButton, 1);
+	}
+	
+	if (footers)
+	{
+		footers->setButtons(&FButton, 1);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -231,6 +254,12 @@ CInfoBox::~CInfoBox()
 	//	delete m_pcTextBox;
 	//	m_pcTextBox = NULL;
 	//}
+	
+	if (headers)
+		headers->clear();
+		
+	if (footers)
+		footers->clear();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -309,7 +338,7 @@ void CInfoBox::initFramesRel(void)
 // Return:		
 // Notes:		
 //////////////////////////////////////////////////////////////////////
-const struct button_label HButton = { NEUTRINO_ICON_BUTTON_HELP, " "};
+//const struct button_label HButton = { NEUTRINO_ICON_BUTTON_HELP, " "};
 
 void CInfoBox::refreshTitle(void)
 {
@@ -322,7 +351,7 @@ void CInfoBox::refreshTitle(void)
 		//headers->setColor(headColor);
 		//headers->setCorner(headRadius, headCorner);
 		//headers->setGradient(headGradient);
-		headers->setButtons(&HButton, 1);
+		//headers->setButtons(&HButton, 1);
 		
 		//headers->paint();
 	}
@@ -341,12 +370,12 @@ void CInfoBox::refreshFoot(void)
 	if (footers)
 	{
 		footers->setPosition(&m_cBoxFrameFootRel);
-		struct button_label Button = { NEUTRINO_ICON_INFO, " " };
+		//struct button_label Button = { NEUTRINO_ICON_INFO, " " };
 		
 		//footers->setColor(footColor);
 		//footers->setCorner(footRadius, footCorner);
 		//footers->setGradient(footGradient);
-		footers->setButtons(&Button);
+		//footers->setButtons(&Button);
 		
 		//footers->paint();
 	}

@@ -2068,7 +2068,7 @@ void CMoviePlayerGui::showPlaylist()
 {
 	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::showPlaylist:\n");
 	
-	mplist->clearAll();
+	mplist->clear();
 
 	for(unsigned int i = 0; i < playlist.size(); i++)
 	{

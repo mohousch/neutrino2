@@ -700,6 +700,7 @@ class CWidgetItem
 		
 		//
 		virtual inline bool isPainted(void){return painted;};
+		virtual void clear(){};
 };
 
 typedef std::vector<CWidgetItem*> WIDGETITEMLIST;

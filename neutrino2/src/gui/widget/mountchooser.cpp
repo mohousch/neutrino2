@@ -79,7 +79,7 @@ CMountChooser::CMountChooser(const char* const Name, const std::string& Icon, in
 		widget->addWidgetItem(menu);
 	}
 		
-	menu->clearAll();
+	menu->clear();
 
 	//
 	char indexStr[2];

@@ -649,7 +649,7 @@ void EventList::paint(t_channel_id channel_id)
 {
 	dprintf(DEBUG_NORMAL, "EventList::paint\n");
 
-	listBox->clearAll();
+	listBox->clear();
 
 	for (unsigned int count = 0; count < evtlist.size(); count++)
 	{

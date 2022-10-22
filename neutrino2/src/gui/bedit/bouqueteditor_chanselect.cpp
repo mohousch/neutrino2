@@ -134,7 +134,7 @@ void CBEChannelSelectWidget::paint()
 {
 	dprintf(DEBUG_DEBUG, "CBEChannelSelectWidget::paint\n");
 
-	listBox->clearAll();
+	listBox->clear();
 
 	for (unsigned int count = 0; count < Channels.size(); count++)
 	{

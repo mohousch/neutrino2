@@ -205,7 +205,7 @@ int CMenuOptionChooser::exec(CMenuTarget* parent)
 			widget->addWidgetItem(menu);
 		}
 		
-		menu->clearAll();
+		menu->clear();
 
 		//
 		for(unsigned int count = 0; count < number_of_options; count++) 
@@ -680,7 +680,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *parent)
 			widget->addWidgetItem(menu);
 		}
 		
-		menu->clearAll();
+		menu->clear();
 
 		
 		//

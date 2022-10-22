@@ -321,7 +321,7 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 		widget->addWidgetItem(menu);
 	}
 		
-	menu->clearAll();
+	menu->clear();
 
 	//
         CStringInputSMS name(_("User menu"), g_settings.usermenu_text[button].c_str());

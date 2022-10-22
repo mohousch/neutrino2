@@ -212,7 +212,7 @@ void CCAMMenuHandler::doMainMenu()
 			}
 			
 			//
-			tempMenu->clearAll();
+			tempMenu->clear();
 
 			//
 			cammenu->addItem(new CMenuSeparator(LINE));
@@ -391,7 +391,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				menuWidget->addWidgetItem(menu);
 			}
 			
-			menu->clearAll();
+			menu->clear();
 
 			int slen = strlen(pMenu->subtitle);
 			

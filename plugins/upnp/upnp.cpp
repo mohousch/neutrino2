@@ -641,7 +641,7 @@ void CUpnpBrowserGui::showMenuDevice()
 	dprintf(DEBUG_NORMAL, "CUpnpBrowserGui::showMenuDevice:\n");
 
 	//selected = 0;
-	listBox->clearAll();
+	listBox->clear();
 
 	// add items
 	for(unsigned int i = 0; i < m_devices.size(); i++)
@@ -684,7 +684,7 @@ void CUpnpBrowserGui::showMenuEntry()
 {
 	dprintf(DEBUG_NORMAL, "CUpnpBrowserGui::showMenuEntry:\n");
 	
-	listBox->clearAll();
+	listBox->clear();
 	
 	for(unsigned int i = 0; i < entries->size(); i++)
 	{

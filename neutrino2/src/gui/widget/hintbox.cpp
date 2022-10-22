@@ -126,10 +126,6 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	cFrameBox.iX = CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - cFrameBox.iWidth ) >> 1);
 	cFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - cFrameBox.iHeight) >> 2);
 	
-	// head & body
-	//m_cBoxWindow = new CWindow(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
-	//m_cBoxWindow->enableSaveScreen();
-	
 	//
 	if (CNeutrinoApp::getInstance()->widget_exists("hintbox"))
 	{
@@ -175,11 +171,6 @@ void CHintBox::paint(void)
 
 void CHintBox::refresh(void)
 {
-	//body
-	//m_cBoxWindow->setBorderMode(borderMode);
-	//m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
-	//m_cBoxWindow->paint();
-	
 	// title
 	cFrameBoxTitle.iX = borderMode? cFrameBox.iX + 2 : cFrameBox.iX;
 	cFrameBoxTitle.iY = borderMode? cFrameBox.iY + 2 : cFrameBox.iY;
@@ -189,15 +180,12 @@ void CHintBox::refresh(void)
 	
 	headers->setTitle(caption.c_str());
 	headers->setIcon(iconfile.c_str());
-
-	//headers->paint();
 	
 	widget->setPosition(&cFrameBox);
 	widget->setBorderMode(borderMode);
-	//widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
-	//widget->addWidgetItem(m_cBoxWindow);
+	
 	widget->addWidgetItem(headers);
-	//widget->paintMainFrame(true);
+
 	widget->paint();
 
 	// body text

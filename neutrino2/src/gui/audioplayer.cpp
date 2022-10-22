@@ -1328,7 +1328,7 @@ void CAudioPlayerGui::showPlaylist()
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayerGui::showPlaylist:\n");
 	
-	alist->clearAll();
+	alist->clear();
 
 	for(unsigned int i = 0; i < m_playlist.size(); i++)
 	{

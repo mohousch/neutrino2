@@ -731,7 +731,7 @@ void CFileBrowser::paint()
 {
 	dprintf(DEBUG_NORMAL, "CFileBrowser::paint:\n");
 
-	listBox->clearAll();
+	listBox->clear();
 
 	for (unsigned int count = 0; count < filelist.size(); count++)
 	{

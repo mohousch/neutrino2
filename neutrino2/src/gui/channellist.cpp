@@ -1708,7 +1708,7 @@ void CChannelList::paint()
 	dprintf(DEBUG_NORMAL, "CChannelList::paint\n");
 
 	if (head) head->clear();
-	if (listBox) listBox->clearAll();
+	if (listBox) listBox->clear();
 	if (foot) foot->clear();
 	
 	CChannelEvent * p_event = NULL;

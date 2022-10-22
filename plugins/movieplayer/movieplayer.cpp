@@ -414,7 +414,7 @@ void CMoviePlayer::showMenu()
 	widget = new CWidget();
 	mlist = new ClistBox(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
 
-	mlist->clearAll();
+	mlist->clear();
 
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{

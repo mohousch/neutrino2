@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino-hd2 4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-16 13:33+0200\n"
+"POT-Creation-Date: 2022-10-22 23:57+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1251,6 +1251,9 @@ msgstr ""
 
 msgid "Mini-DiSEqC"
 msgstr ""
+
+msgid "Minutes"
+msgstr "Minuten"
 
 msgid "Misc settings"
 msgstr "Diverse Einstellungen"
@@ -2782,13 +2785,13 @@ msgstr ""
 msgid "add channel to my favorites"
 msgstr ""
 
-msgid "adult movie/drama"
+msgid "adult movie / drama"
 msgstr ""
 
 msgid "advanced"
 msgstr ""
 
-msgid "adventure/western/war"
+msgid "adventure / western/war"
 msgstr ""
 
 msgid "alpha"
@@ -2845,7 +2848,7 @@ msgstr ""
 msgid "bottom right"
 msgstr ""
 
-msgid "broadcasting/press"
+msgid "broadcasting / press"
 msgstr ""
 
 msgid "by bouquet"
@@ -2874,7 +2877,7 @@ msgstr ""
 msgid "caps / no caps"
 msgstr ""
 
-msgid "cartoons/puppets"
+msgid "cartoons / puppets"
 msgstr ""
 
 msgid "center"
@@ -2922,7 +2925,7 @@ msgstr ""
 msgid "delete"
 msgstr "löschen"
 
-msgid "detective/thriller"
+msgid "detective / thriller"
 msgstr ""
 
 msgid "direct connected"
@@ -2937,7 +2940,7 @@ msgstr ""
 msgid "directory/share"
 msgstr ""
 
-msgid "discussion/interview/debate"
+msgid "discussion / interview/debate"
 msgstr ""
 
 msgid "dmesg"
@@ -2955,7 +2958,7 @@ msgstr ""
 msgid "downmix"
 msgstr ""
 
-msgid "economics/social advisory"
+msgid "economics / social advisory"
 msgstr ""
 
 msgid "enter proxyserver name or ip, use host:port"
@@ -3012,10 +3015,10 @@ msgstr ""
 msgid "fitness & health"
 msgstr ""
 
-msgid "folk/traditional music"
+msgid "folk / traditional music"
 msgstr ""
 
-msgid "football/soccer"
+msgid "football / soccer"
 msgstr ""
 
 msgid "foreign countries/expeditions"
@@ -3039,7 +3042,7 @@ msgstr ""
 msgid "further education"
 msgstr ""
 
-msgid "game show/quiz/contest"
+msgid "game show / quiz / contest"
 msgstr ""
 
 msgid "gardening"
@@ -3075,7 +3078,7 @@ msgstr ""
 msgid "infobar will be faded out."
 msgstr ""
 
-msgid "informational/educational/school programmes"
+msgid "informational / educational / school programmes"
 msgstr ""
 
 msgid "internet Radio"
@@ -3141,7 +3144,7 @@ msgstr ""
 msgid "loop"
 msgstr ""
 
-msgid "magazines/reports/documentary"
+msgid "magazines / reports / documentary"
 msgstr ""
 
 msgid ""
@@ -3152,7 +3155,7 @@ msgstr ""
 msgid "martial sports"
 msgstr ""
 
-msgid "medicine/physiology/psychology"
+msgid "medicine / physiology / psychology"
 msgstr ""
 
 msgid "middle"
@@ -3200,7 +3203,7 @@ msgstr ""
 msgid "mount successful"
 msgstr ""
 
-msgid "movie/drama"
+msgid "movie / drama"
 msgstr ""
 
 msgid "moving speed (10 = 1deg/sec)"
@@ -3209,10 +3212,10 @@ msgstr ""
 msgid "music / ballet / dance"
 msgstr ""
 
-msgid "musical/opera"
+msgid "musical / opera"
 msgstr ""
 
-msgid "nature/animals/environment"
+msgid "nature/animals / environment"
 msgstr ""
 
 msgid "need reboot or epg-reset"
@@ -3227,10 +3230,10 @@ msgstr "neu media"
 msgid "news"
 msgstr ""
 
-msgid "news magazine"
+msgid "news / weather report"
 msgstr ""
 
-msgid "news/weather report"
+msgid "news magazine"
 msgstr ""
 
 msgid "next bouquet"
@@ -3314,7 +3317,7 @@ msgstr ""
 msgid "performing arts"
 msgstr ""
 
-msgid "popular culture/traditional arts"
+msgid "popular culture / traditional arts"
 msgstr ""
 
 msgid "pre-school children's programmes"
@@ -3374,7 +3377,7 @@ msgstr ""
 msgid "repeats"
 msgstr "wiederholen"
 
-msgid "rock/pop"
+msgid "rock / pop"
 msgstr ""
 
 msgid "romance"
@@ -3403,7 +3406,7 @@ msgstr "Warte auf Zeit"
 msgid "schedule"
 msgstr "Umschalten"
 
-msgid "science fiction/fantasy/horror"
+msgid "science fiction / fantasy / horror"
 msgstr ""
 
 msgid "search"
@@ -3412,10 +3415,10 @@ msgstr "Suche"
 msgid "see timer"
 msgstr ""
 
-msgid "serious music/classical music"
+msgid "serious / classical / religious / historical movie / drama"
 msgstr ""
 
-msgid "serious/classical/religious/historical movie/drama"
+msgid "serious music / classical music"
 msgstr ""
 
 msgid "show movie infoviewer"
@@ -3454,13 +3457,13 @@ msgstr "langsam"
 msgid "small"
 msgstr "Klein"
 
-msgid "soap/melodrama/folkloric"
+msgid "soap / melodrama / folkloric"
 msgstr ""
 
 msgid "social & politic events / business"
 msgstr ""
 
-msgid "social/spiritual sciences"
+msgid "social / spiritual sciences"
 msgstr ""
 
 #, fuzzy
@@ -3503,7 +3506,7 @@ msgstr ""
 msgid "technology/natural sciences"
 msgstr ""
 
-msgid "tennis/squash"
+msgid "tennis / squash"
 msgstr ""
 
 msgid "the filesize is 0 Bytes"
@@ -3537,7 +3540,7 @@ msgstr ""
 msgid "top right"
 msgstr ""
 
-msgid "tourism/travel"
+msgid "tourism / travel"
 msgstr ""
 
 msgid "travel & recreation"
