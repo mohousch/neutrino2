@@ -599,7 +599,8 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	sprintf(lengthInfo, "%d", epgData.epg_times.dauer / 60);
 	//epgBuffer += _("length: ");
 	epgBuffer += lengthInfo;
-	epgBuffer += _(" Minutes");
+	epgBuffer += " ";
+	epgBuffer += _("Minutes");
 	epgBuffer += "\n";
 	
 	// genre:

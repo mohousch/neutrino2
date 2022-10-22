@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrinohd2 4.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-16 13:33+0200\n"
+"POT-Creation-Date: 2022-10-22 23:57+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1284,6 +1284,10 @@ msgstr "Сообщение"
 
 msgid "Mini-DiSEqC"
 msgstr "Mini-DiSEqC"
+
+#, fuzzy
+msgid "Minutes"
+msgstr "Menutext"
 
 msgid "Misc settings"
 msgstr "Разные настройки"
@@ -2862,13 +2866,15 @@ msgstr ""
 msgid "add channel to my favorites"
 msgstr "добавить канал в избранное"
 
-msgid "adult movie/drama"
+#, fuzzy
+msgid "adult movie / drama"
 msgstr "фильм для взрослых/драма"
 
 msgid "advanced"
 msgstr "advanced"
 
-msgid "adventure/western/war"
+#, fuzzy
+msgid "adventure / western/war"
 msgstr "приключения/вестерн/война"
 
 msgid "alpha"
@@ -2926,7 +2932,8 @@ msgstr "нижний левый"
 msgid "bottom right"
 msgstr "внизу справа"
 
-msgid "broadcasting/press"
+#, fuzzy
+msgid "broadcasting / press"
 msgstr "вещание/пресс"
 
 msgid "by bouquet"
@@ -2958,7 +2965,8 @@ msgstr "не удается открыть mtd-устройство"
 msgid "caps / no caps"
 msgstr "caps / no caps"
 
-msgid "cartoons/puppets"
+#, fuzzy
+msgid "cartoons / puppets"
 msgstr "мультфильмы/куклы"
 
 msgid "center"
@@ -3006,7 +3014,8 @@ msgstr "центр по умолчанию"
 msgid "delete"
 msgstr "удалить"
 
-msgid "detective/thriller"
+#, fuzzy
+msgid "detective / thriller"
 msgstr "детектив/триллер"
 
 msgid "direct connected"
@@ -3021,7 +3030,8 @@ msgstr "каталог уже смонтирован"
 msgid "directory/share"
 msgstr "каталог/общий ресурс"
 
-msgid "discussion/interview/debate"
+#, fuzzy
+msgid "discussion / interview/debate"
 msgstr "обсуждение/интервью/дебаты"
 
 msgid "dmesg"
@@ -3039,7 +3049,8 @@ msgstr "мне все равно"
 msgid "downmix"
 msgstr "downmix"
 
-msgid "economics/social advisory"
+#, fuzzy
+msgid "economics / social advisory"
 msgstr "экономика/социальное консультирование"
 
 msgid "enter proxyserver name or ip, use host:port"
@@ -3096,10 +3107,12 @@ msgstr "изобразительное искусство"
 msgid "fitness & health"
 msgstr "фитнес и здоровье"
 
-msgid "folk/traditional music"
+#, fuzzy
+msgid "folk / traditional music"
 msgstr "народная/традиционная музыка"
 
-msgid "football/soccer"
+#, fuzzy
+msgid "football / soccer"
 msgstr "футбол/футбол"
 
 msgid "foreign countries/expeditions"
@@ -3123,7 +3136,8 @@ msgstr "от 18 лет и старше"
 msgid "further education"
 msgstr "дополнительное образование"
 
-msgid "game show/quiz/contest"
+#, fuzzy
+msgid "game show / quiz / contest"
 msgstr "игровое шоу/викторина/конкурс"
 
 msgid "gardening"
@@ -3159,7 +3173,8 @@ msgstr "информация"
 msgid "infobar will be faded out."
 msgstr "infobar will be faded out."
 
-msgid "informational/educational/school programmes"
+#, fuzzy
+msgid "informational / educational / school programmes"
 msgstr "информационные/образовательные/школьные программы"
 
 msgid "internet Radio"
@@ -3226,7 +3241,8 @@ msgstr "logos Dir"
 msgid "loop"
 msgstr "loop"
 
-msgid "magazines/reports/documentary"
+#, fuzzy
+msgid "magazines / reports / documentary"
 msgstr "журналы/репортажи / документальные фильмы"
 
 msgid ""
@@ -3239,7 +3255,8 @@ msgstr ""
 msgid "martial sports"
 msgstr "боевые виды спорта"
 
-msgid "medicine/physiology/psychology"
+#, fuzzy
+msgid "medicine / physiology / psychology"
 msgstr "медицина/физиология/психология"
 
 msgid "middle"
@@ -3287,7 +3304,8 @@ msgstr "монтировать при запуске"
 msgid "mount successful"
 msgstr "mount successful"
 
-msgid "movie/drama"
+#, fuzzy
+msgid "movie / drama"
 msgstr "кино/драма"
 
 msgid "moving speed (10 = 1deg/sec)"
@@ -3296,10 +3314,12 @@ msgstr "скорость перемещения (10 = 1deg/сек)"
 msgid "music / ballet / dance"
 msgstr "музыка / балет / танцы"
 
-msgid "musical/opera"
+#, fuzzy
+msgid "musical / opera"
 msgstr "мюзикл/опера"
 
-msgid "nature/animals/environment"
+#, fuzzy
+msgid "nature/animals / environment"
 msgstr "природа/животные/окружающая среда"
 
 msgid "need reboot or epg-reset"
@@ -3314,11 +3334,12 @@ msgstr "new media"
 msgid "news"
 msgstr "новости"
 
+#, fuzzy
+msgid "news / weather report"
+msgstr "новости/прогноз погоды"
+
 msgid "news magazine"
 msgstr "журнал новостей"
-
-msgid "news/weather report"
-msgstr "новости/прогноз погоды"
 
 msgid "next bouquet"
 msgstr "следующий букет"
@@ -3403,7 +3424,8 @@ msgstr "пароль"
 msgid "performing arts"
 msgstr "исполнительское искусство"
 
-msgid "popular culture/traditional arts"
+#, fuzzy
+msgid "popular culture / traditional arts"
 msgstr "народная культура/традиционное искусство"
 
 msgid "pre-school children's programmes"
@@ -3467,7 +3489,8 @@ msgstr "создать скриншот?"
 msgid "repeats"
 msgstr "повторяется"
 
-msgid "rock/pop"
+#, fuzzy
+msgid "rock / pop"
 msgstr "рок/поп"
 
 msgid "romance"
@@ -3496,7 +3519,8 @@ msgstr "Сканирование служб"
 msgid "schedule"
 msgstr "расписание"
 
-msgid "science fiction/fantasy/horror"
+#, fuzzy
+msgid "science fiction / fantasy / horror"
 msgstr "научная фантастика/фэнтези/ужасы"
 
 msgid "search"
@@ -3505,11 +3529,13 @@ msgstr "поиск"
 msgid "see timer"
 msgstr "see timer"
 
-msgid "serious music/classical music"
-msgstr "серьезная музыка/классическая музыка"
-
-msgid "serious/classical/religious/historical movie/drama"
+#, fuzzy
+msgid "serious / classical / religious / historical movie / drama"
 msgstr "серьезный/классический/религиозный/исторический фильм/драма"
+
+#, fuzzy
+msgid "serious music / classical music"
+msgstr "серьезная музыка/классическая музыка"
 
 msgid "show movie infoviewer"
 msgstr "показать фильм infoviewer"
@@ -3548,13 +3574,15 @@ msgstr "медленный"
 msgid "small"
 msgstr "маленький"
 
-msgid "soap/melodrama/folkloric"
+#, fuzzy
+msgid "soap / melodrama / folkloric"
 msgstr "мыло/мелодрама/фольклор"
 
 msgid "social & politic events / business"
 msgstr "социальные и политические мероприятия / бизнес"
 
-msgid "social/spiritual sciences"
+#, fuzzy
+msgid "social / spiritual sciences"
 msgstr "социальные/духовные науки"
 
 msgid "sorting(A..Z)"
@@ -3596,7 +3624,8 @@ msgstr "командные виды спорта (кроме футбола)"
 msgid "technology/natural sciences"
 msgstr "технология/естественные науки"
 
-msgid "tennis/squash"
+#, fuzzy
+msgid "tennis / squash"
 msgstr "теннис/сквош"
 
 msgid "the filesize is 0 Bytes"
@@ -3632,7 +3661,8 @@ msgstr "верхний левый"
 msgid "top right"
 msgstr "вверху справа"
 
-msgid "tourism/travel"
+#, fuzzy
+msgid "tourism / travel"
 msgstr "туризм/путешествия"
 
 msgid "travel & recreation"
