@@ -56,8 +56,8 @@ class CHintBox
 		CBox cFrameBoxTitle;
 		CBox cFrameBoxItem;
 		
-		CWindow* m_cBoxWindow;
-		CHeaders headers;
+		CWidget *widget;
+		CHeaders *headers;
 
 		unsigned int entries_per_page;
 		unsigned int current_page;

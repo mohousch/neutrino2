@@ -63,6 +63,8 @@
 CAlphaSetup::CAlphaSetup(const char* const Name, unsigned char * Alpha, CChangeObserver * Observer)
 {
 	frameBuffer = CFrameBuffer::getInstance();
+	
+	mainWindow = NULL;
 
 	hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight();
 	mheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
@@ -73,7 +75,8 @@ CAlphaSetup::CAlphaSetup(const char* const Name, unsigned char * Alpha, CChangeO
 	mainBox.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - mainBox.iWidth) >> 1);
 	mainBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainBox.iHeight) >> 1);
 
-	mainWindow.setPosition(&mainBox);
+	//mainWindow.setPosition(&mainBox);
+	mainWindow = new CWindow(&mainBox);
 
 	observer = Observer;
 	name = Name? Name : "";
@@ -225,7 +228,7 @@ int CAlphaSetup::exec(CMenuTarget * parent, const std::string &)
 
 void CAlphaSetup::hide()
 {
-	mainWindow.hide();
+	mainWindow->hide();
 	
 	// blit
 	frameBuffer->blit();
@@ -236,9 +239,9 @@ void CAlphaSetup::paint()
 	dprintf(DEBUG_NORMAL, "CAlphaSetup::paint\n");
 
 	// main window
-	mainWindow.setColor(COL_MENUCONTENT_PLUS_0);
-	mainWindow.setCorner(RADIUS_MID, CORNER_BOTTOM);
-	mainWindow.paint();
+	mainWindow->setColor(COL_MENUCONTENT_PLUS_0);
+	mainWindow->setCorner(RADIUS_MID, CORNER_BOTTOM);
+	mainWindow->paint();
 
 	// head
 	CHeaders headers(mainBox.iX, mainBox.iY, mainBox.iWidth, hheight, name.c_str(), NEUTRINO_ICON_COLORS);

@@ -298,6 +298,16 @@ class CWidget : public CMenuTarget
 		//
 		CWidgetItem* getWidgetItem(const int type, const std::string& name = "");
 		CComponent* getCCItem(const int type, const std::string& name = "");
+		
+		////
+		virtual void setPosition(const int x, const int y, const int dx, const int dy)
+		{
+			mainFrameBox.iX = x;
+			mainFrameBox.iY = y;
+			mainFrameBox.iWidth = dx;
+			mainFrameBox.iHeight = dy;
+		};
+		virtual void setPosition(CBox* position){mainFrameBox = *position;};
 };
 
 typedef std::vector<CWidget*> WIDGETLIST;

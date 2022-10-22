@@ -75,7 +75,8 @@ class CMessageBox
 {
 	protected:
 		CBox cFrameBox;
-		CWindow* m_cBoxWindow;
+		CWidget *m_cBoxWindow;
+		CHeaders *headers;
 
 		unsigned int m_currentPage;
 		std::vector<int>m_startEntryOfPage;

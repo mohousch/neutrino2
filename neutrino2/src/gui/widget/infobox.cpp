@@ -55,33 +55,30 @@
 // Return:		
 // Notes:		
 ///////////////////
-CInfoBox::CInfoBox(/*CFont *fontText, const int _mode,*/ const CBox* position, const char * title, const char * icon)
+CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 {
+	//
+	widget = NULL;
+	m_pcTextBox = NULL;
+	headers = NULL;
+	footers = NULL;
+	
+	//
 	initVar();
 
 	if(title != NULL)		
 		m_cTitle = title;
-
-	//if(fontText != NULL)
-	//	m_pcFontText = fontText;
 	
 	if(icon != NULL)		
 		m_cIcon = icon;
 	
 	if(position != NULL)	
 		m_cBoxFrame = *position;
-	
-	//m_nMode = _mode;
 
 	// initialise the window frames first
 	initFramesRel();
 
-	m_pcTextBox = new CTextBox(&m_cBoxFrameText);
-	
-	//m_pcTextBox->setFont(fontText);
-	//m_pcTextBox->setMode(m_nMode);
-	//m_pcTextBox->setBorderMode(borderMode);
-
+	/*
 	if(m_nMode & AUTO_WIDTH || m_nMode & AUTO_HIGH)
 	{
 		// window might changed in size
@@ -92,10 +89,43 @@ CInfoBox::CInfoBox(/*CFont *fontText, const int _mode,*/ const CBox* position, c
 
 		initFramesRel();
 	}
+	*/
 
 	//
 	m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - m_cBoxFrame.iWidth) >>1);
 	m_cBoxFrame.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - m_cBoxFrame.iHeight) >>1);
+	
+	if (CNeutrinoApp::getInstance()->widget_exists("infobox"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("infobox");
+		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+		footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
+		m_pcTextBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
+	}
+	else
+	{
+		widget = new CWidget(&m_cBoxFrame);
+		
+		headers = new CHeaders();
+		footers = new CFooters();
+		
+		headers->setColor(headColor);
+		headers->setCorner(headRadius, headCorner);
+		headers->setGradient(headGradient);
+		
+		footers->setColor(footColor);
+		footers->setCorner(footRadius, footCorner);
+		footers->setGradient(footGradient);
+		
+		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
+	}
+	
+	if (m_pcTextBox)
+	{
+		m_pcTextBox->setPosition(&m_cBoxFrameText);
+		m_pcTextBox->setMode(SCROLL);
+		m_pcTextBox->enableSaveScreen();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -108,6 +138,13 @@ CInfoBox::CInfoBox(/*CFont *fontText, const int _mode,*/ const CBox* position, c
 //////////////////////////////////////////////////////////////////////
 CInfoBox::CInfoBox()
 {
+	//
+	widget = NULL;
+	m_pcTextBox = NULL;
+	headers = NULL;
+	footers = NULL;
+	
+	//
 	initVar();
 
 	CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
@@ -117,10 +154,7 @@ CInfoBox::CInfoBox()
 	// initialise the window frames first
 	initFramesRel();
 
-	m_pcTextBox = new CTextBox();
-
-	m_pcTextBox->setPosition(&m_cBoxFrameText);
-
+	/*
 	if(m_nMode & AUTO_WIDTH || m_nMode & AUTO_HIGH)
 	{
 		// window might changed in size
@@ -131,11 +165,44 @@ CInfoBox::CInfoBox()
 
 		initFramesRel();
 	}
+	*/
 
 	//if(m_nMode & CENTER)
 	{
 		m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - m_cBoxFrame.iWidth) >>1);
 		m_cBoxFrame.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - m_cBoxFrame.iHeight) >>1);
+	}
+	
+	if (CNeutrinoApp::getInstance()->widget_exists("infobox"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("infobox");
+		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+		footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
+		m_pcTextBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
+	}
+	else
+	{
+		widget = new CWidget(&m_cBoxFrame);
+		
+		headers = new CHeaders();
+		footers = new CFooters();
+		
+		headers->setColor(headColor);
+		headers->setCorner(headRadius, headCorner);
+		headers->setGradient(headGradient);
+		
+		footers->setColor(footColor);
+		footers->setCorner(footRadius, footCorner);
+		footers->setGradient(footGradient);
+		
+		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
+	}
+	
+	if (m_pcTextBox)
+	{
+		m_pcTextBox->setPosition(&m_cBoxFrameText);
+		m_pcTextBox->setMode(SCROLL);
+		m_pcTextBox->enableSaveScreen();
 	}
 }
 
@@ -149,11 +216,11 @@ CInfoBox::CInfoBox()
 //////////////////////////////////////////////////////////////////////
 CInfoBox::~CInfoBox()
 {
-	if (m_pcTextBox != NULL)
-	{
-		delete m_pcTextBox;
-		m_pcTextBox = NULL;
-	}
+	//if (m_pcTextBox != NULL)
+	//{
+	//	delete m_pcTextBox;
+	//	m_pcTextBox = NULL;
+	//}
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -236,15 +303,19 @@ const struct button_label HButton = { NEUTRINO_ICON_BUTTON_HELP, " "};
 
 void CInfoBox::refreshTitle(void)
 {
-	CHeaders headers(&m_cBoxFrameTitleRel, m_cTitle.c_str(), m_cIcon.c_str());
+	if (headers)
+	{
+		headers->setPosition(&m_cBoxFrameTitleRel);
+		headers->setTitle(m_cTitle.c_str());
+		headers->setIcon(m_cIcon.c_str());
 
-	headers.setColor(headColor);
-	headers.setCorner(headRadius, headCorner);
-	//headers.setRadius(headRadius);
-	headers.setGradient(headGradient);
-	headers.setButtons(&HButton, 1);
-	
-	headers.paint();
+		//headers->setColor(headColor);
+		//headers->setCorner(headRadius, headCorner);
+		//headers->setGradient(headGradient);
+		headers->setButtons(&HButton, 1);
+		
+		//headers->paint();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -257,16 +328,18 @@ void CInfoBox::refreshTitle(void)
 //////////////////////////////////////////////////////////////////////
 void CInfoBox::refreshFoot(void)
 {
-	CFooters footers(&m_cBoxFrameFootRel);
-	struct button_label Button = { NEUTRINO_ICON_INFO, " " };
-	
-	footers.setColor(footColor);
-	//footers.setRadius(footRadius);
-	footers.setCorner(footRadius, footCorner);
-	footers.setGradient(footGradient);
-	footers.setButtons(&Button);
-	
-	footers.paint();
+	if (footers)
+	{
+		footers->setPosition(&m_cBoxFrameFootRel);
+		struct button_label Button = { NEUTRINO_ICON_INFO, " " };
+		
+		//footers->setColor(footColor);
+		//footers->setCorner(footRadius, footCorner);
+		//footers->setGradient(footGradient);
+		footers->setButtons(&Button);
+		
+		//footers->paint();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -292,9 +365,10 @@ bool CInfoBox::hide(void)
 */	
 
 	// hide
-	frameBuffer->paintBackgroundBoxRel(m_cBoxFrame.iX, m_cBoxFrame.iY, m_cBoxFrame.iWidth, m_cBoxFrame.iHeight);
+	//frameBuffer->paintBackgroundBoxRel(m_cBoxFrame.iX, m_cBoxFrame.iY, m_cBoxFrame.iWidth, m_cBoxFrame.iHeight);
 	
-	frameBuffer->blit();
+	//frameBuffer->blit();
+	widget->hide();
 	
 	return (true);
 }
@@ -390,14 +464,20 @@ bool CInfoBox::paint(void)
 	refreshTitle();
 
 	// textBox
-	if(m_pcTextBox != NULL)
-	{	
+	//if(m_pcTextBox != NULL)
+	//{	
 		// paint
-		m_pcTextBox->paint();
-	}
+		//m_pcTextBox->paint();
+	//}
 
 	// foot
 	refreshFoot();
+	
+	widget->addWidgetItem(m_pcTextBox);
+	widget->addWidgetItem(headers);
+	widget->addWidgetItem(footers);
+	
+	widget->paint();
 	
 	return (true);
 }
@@ -410,19 +490,21 @@ bool CInfoBox::paint(void)
 // Return:		
 // Notes:		
 //////////////////////////////////////////////////////////////////////
-void CInfoBox::refresh(void)
-{
+//void CInfoBox::refresh(void)
+//{
 	//refresh title
-	refreshTitle();
+	//refreshTitle();
 
 	// rep-draw textbox if there is one
-	if(m_pcTextBox != NULL)
-	{
-		m_pcTextBox->refresh();
-	}
+	//if(m_pcTextBox != NULL)
+	//{
+	//	m_pcTextBox->refresh();
+	//}
 
-	refreshFoot();
-}
+	//refreshFoot();
+	
+	//paint();
+//}
 
 //////////////////////////////////////////////////////////////////////
 // Function Name:	Exec	
@@ -526,7 +608,4 @@ void InfoBox(const char * const text, const char * const title, const char * con
 	delete infoBox;
 	infoBox = NULL;
 }
-
-
-
 

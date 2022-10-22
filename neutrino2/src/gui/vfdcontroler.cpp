@@ -60,6 +60,8 @@
 CVfdControler::CVfdControler(const char* const Name, CChangeObserver* Observer)
 {
 	frameBuffer = CFrameBuffer::getInstance();
+	
+	mainWindow = NULL;
 
 	hheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight();
 	mheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
@@ -73,7 +75,7 @@ CVfdControler::CVfdControler(const char* const Name, CChangeObserver* Observer)
 	x = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - width) >> 1);
 	y = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - height)>> 1);
 
-	mainWindow.setPosition(x, y, width, height);
+	mainWindow = new CWindow(x, y, width, height);
 
 	brightness = CVFD::getInstance()->getBrightness();
 	brightnessstandby = CVFD::getInstance()->getBrightnessStandby();
@@ -273,7 +275,7 @@ int CVfdControler::exec(CMenuTarget* parent, const std::string &)
 
 void CVfdControler::hide()
 {
-	mainWindow.hide();
+	mainWindow->hide();
 
 	frameBuffer->blit();
 }
@@ -285,9 +287,9 @@ void CVfdControler::paint()
 	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
 	
 	// main window
-	mainWindow.setColor(COL_MENUCONTENT_PLUS_0);
-	mainWindow.setCorner(RADIUS_MID, CORNER_BOTTOM);
-	mainWindow.paint();
+	mainWindow->setColor(COL_MENUCONTENT_PLUS_0);
+	mainWindow->setCorner(RADIUS_MID, CORNER_BOTTOM);
+	mainWindow->paint();
 
 	// head
 	CHeaders headers(x, y, width, hheight, name.c_str(), NEUTRINO_ICON_LCD);

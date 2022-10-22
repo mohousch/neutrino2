@@ -143,8 +143,6 @@ void DSeparator::draw(int x, int y, int width)
 {
 	int height = 10;
 
-	CFrameBuffer::getInstance()->paintBoxRel(x, y, width, height, COL_MENUCONTENT_PLUS_0);
-
 	// line
 	CFrameBuffer::getInstance()->paintHLineRel(x + BORDER_LEFT, width - BORDER_LEFT - BORDER_RIGHT, y + (height >> 1), COL_MENUCONTENTDARK_PLUS_0 );
 

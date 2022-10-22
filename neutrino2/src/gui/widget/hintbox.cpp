@@ -47,6 +47,12 @@
 
 CHintBox::CHintBox(const char * Caption, const char * const Text, const int Width, const char * const Icon)
 {
+	//
+	widget = NULL;
+	//m_cBoxWindow = NULL;
+	headers = NULL;
+		
+	//
 	char * begin;
 	char * pos;
 	int    nw;
@@ -80,6 +86,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 		else
 			break;
 	}
+	
 	entries_per_page = ((cFrameBox.iHeight - cFrameBoxTitle.iHeight) / cFrameBoxItem.iHeight) - 1;
 	current_page = 0;
 
@@ -120,8 +127,27 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	cFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - cFrameBox.iHeight) >> 2);
 	
 	// head & body
-	m_cBoxWindow = new CWindow(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
-	m_cBoxWindow->enableSaveScreen();
+	//m_cBoxWindow = new CWindow(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
+	//m_cBoxWindow->enableSaveScreen();
+	
+	//
+	if (CNeutrinoApp::getInstance()->widget_exists("hintbox"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("hintbox");
+		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+	}
+	else
+	{
+		headers = new CHeaders();
+		
+		widget = new CWidget(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
+		widget->name = "hintbox";
+		
+		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+	}
+	
+	widget->enableSaveScreen();
+	widget->paintMainFrame(true);
 	
 	// HG
 	paintHG = true;
@@ -150,21 +176,29 @@ void CHintBox::paint(void)
 void CHintBox::refresh(void)
 {
 	//body
-	m_cBoxWindow->setBorderMode(borderMode);
-	m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
-	m_cBoxWindow->paint();
+	//m_cBoxWindow->setBorderMode(borderMode);
+	//m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+	//m_cBoxWindow->paint();
 	
 	// title
 	cFrameBoxTitle.iX = borderMode? cFrameBox.iX + 2 : cFrameBox.iX;
 	cFrameBoxTitle.iY = borderMode? cFrameBox.iY + 2 : cFrameBox.iY;
 	cFrameBoxTitle.iWidth = borderMode? cFrameBox.iWidth - 4 : cFrameBox.iWidth;
 
-	headers.setPosition(&cFrameBoxTitle);
+	headers->setPosition(&cFrameBoxTitle);
 	
-	headers.setTitle(caption.c_str());
-	headers.setIcon(iconfile.c_str());
+	headers->setTitle(caption.c_str());
+	headers->setIcon(iconfile.c_str());
 
-	headers.paint();
+	//headers->paint();
+	
+	widget->setPosition(&cFrameBox);
+	widget->setBorderMode(borderMode);
+	//widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+	//widget->addWidgetItem(m_cBoxWindow);
+	widget->addWidgetItem(headers);
+	//widget->paintMainFrame(true);
+	widget->paint();
 
 	// body text
 	int count = entries_per_page;
@@ -211,9 +245,10 @@ void CHintBox::hide(void)
 {
 	dprintf(DEBUG_NORMAL, "CHintBox::hide: (%s)\n", caption.c_str());
 
-	m_cBoxWindow->hide();
+	//m_cBoxWindow->hide();
 
-	CFrameBuffer::getInstance()->blit();	
+	//CFrameBuffer::getInstance()->blit();	
+	widget->hide();
 }
 
 void CHintBox::paintHourGlass()

@@ -56,7 +56,7 @@ class CAlphaSetup : public CMenuTarget
 		int hheight;		// head menu font height
 		int mheight; 		// menu font height
 
-		CWindow mainWindow;
+		CWindow *mainWindow;
 
 		unsigned char *alpha;
 		std::string name;

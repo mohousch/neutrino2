@@ -55,9 +55,15 @@ class CInfoBox
 
 		// body
 		CBox m_cBoxFrame;
-
-		// head
 		CBox m_cBoxFrameTitleRel;
+		CBox m_cBoxFrameText;
+		CBox m_cBoxFrameFootRel;
+		
+		//
+		CWidget * widget;
+		
+		//
+		CHeaders *headers;
 		std::string m_cIcon;
 		std::string m_cTitle;
 		fb_pixel_t headColor;
@@ -66,14 +72,13 @@ class CInfoBox
 		int headGradient;
 		
 		// text
-		CBox m_cBoxFrameText;
 		CTextBox *m_pcTextBox;
 		unsigned int m_pcFontText;
 		int m_nMode;
 		int borderMode;
 		
 		// foot
-		CBox m_cBoxFrameFootRel;
+		CFooters *footers;
 		fb_pixel_t footColor;
 		int footRadius;
 		int footCorner;
@@ -84,11 +89,9 @@ class CInfoBox
 		void initVar(void);
 		void initFramesRel(void);
 		void refreshTitle(void);
-		void refreshText(void);
 		void refreshFoot(void);
 
 		bool paint(void);
-		void refresh(void);
 
 		void scrollPageDown(const int pages);
 		void scrollPageUp(const int pages);
