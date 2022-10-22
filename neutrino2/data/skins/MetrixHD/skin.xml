@@ -1286,6 +1286,10 @@
 		<TIME name="time" posx="835" posy="510" width="385" height="60" refresh="1" format="%H:%M:%S" font="8"/>
 	</WIDGET>
 	
+	<WIDGET name="boxinfo" posx="0" posy="0" width="1280" height="720" paintframe="1">
+		<HEAD posx="0" posy="0" width="1280" height="60" title="Box Info" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
+	</WIDGET>
+	
 	<WIDGET name="testmenu" posx="0" posy="0" width="1280" height="720">
 		<WINDOW posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<LISTBOX posx="60" posy="60" width="715" height="600" type="0" mode ="1" scrollbar="1"/>

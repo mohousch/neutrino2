@@ -652,7 +652,7 @@ uint8_t CNeutrinoApp::convertFontColor(const char* const color)
 	return rgb;
 }
 
-//
+// ClistBox
 void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseClistBox:\n");
@@ -974,7 +974,7 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 	}
 }
 
-//
+// CWindow
 void CNeutrinoApp::parseCWindow(_xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCWindow\n");
@@ -1063,7 +1063,7 @@ void CNeutrinoApp::parseCWindow(_xmlNodePtr node, CWidget* widget)
 	}
 }
 
-//
+// CHead
 void CNeutrinoApp::parseCHead(_xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCHead:\n");
@@ -1114,7 +1114,7 @@ void CNeutrinoApp::parseCHead(_xmlNodePtr node, CWidget* widget)
 				
 		if (color) finalColor = convertColor(color);
 					
-		title = xmlGetAttribute(node, (char*)"localename");
+		title = xmlGetAttribute(node, (char*)"title");
 		halign = xmlGetSignedNumericAttribute(node, "halign", 0);
 		icon = xmlGetAttribute(node, (char*)"icon");
 		head_line = xmlGetSignedNumericAttribute(node, "line", 0);
@@ -1168,7 +1168,7 @@ void CNeutrinoApp::parseCHead(_xmlNodePtr node, CWidget* widget)
 	}
 }
 
-//
+// CFoot
 void CNeutrinoApp::parseCFoot(_xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCFoot:\n");
@@ -1256,7 +1256,7 @@ void CNeutrinoApp::parseCFoot(_xmlNodePtr node, CWidget* widget)
 	}
 }
 
-//
+// CTextBox
 void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCTextBox:\n");
@@ -1363,7 +1363,7 @@ void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 	}
 }
 
-//
+// CCLabel
 void CNeutrinoApp::parseCCLabel(_xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCLabel:\n");
@@ -1426,7 +1426,7 @@ void CNeutrinoApp::parseCCLabel(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	}
 }
 
-//
+// CCImage
 void CNeutrinoApp::parseCCImage(_xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCImage:\n");
@@ -1484,7 +1484,7 @@ void CNeutrinoApp::parseCCImage(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	}	
 }
 
-//
+// CCTime
 void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCTime:\n");
@@ -1544,7 +1544,7 @@ void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* windo
 	}
 }
 
-//
+// CCButton
 void CNeutrinoApp::parseCCButtons(_xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCButtons:\n");
@@ -1596,7 +1596,7 @@ void CNeutrinoApp::parseCCButtons(_xmlNodePtr node, CWidget* widget, CWindow* wi
 	}
 }
 
-//
+// CCHline
 void CNeutrinoApp::parseCCHline(_xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCHline:\n");
@@ -1639,7 +1639,7 @@ void CNeutrinoApp::parseCCHline(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	}
 }
 
-//
+// CCVline
 void CNeutrinoApp::parseCCVline(_xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCVline:\n");
@@ -1682,7 +1682,7 @@ void CNeutrinoApp::parseCCVline(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	}
 }
 
-//
+// widget key
 void CNeutrinoApp::parseKey(_xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseKey:\n");
@@ -1791,17 +1791,6 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 			if (savescreen) wdg->enableSaveScreen();
 			wdg->setTimeOut(timeout);
 			if (position) wdg->setMenuPosition(position);
-			
-			// skip duplicate
-			/*
-			for (unsigned long i = 0; i < (unsigned long)widgets.size(); i++)
-			{
-				if(widgets[i]->id == wdg->id)
-					widgets.erase(widgets.begin() + i); 
-			}
-			*/
-			
-			//widgets.push_back(wdg);
 			
 			// WINDOW
 			parseCWindow(search->xmlChildrenNode, wdg);

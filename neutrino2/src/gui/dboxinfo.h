@@ -50,6 +50,26 @@ class CDBoxInfoWidget : public CMenuTarget
 	private:
 		CFrameBuffer* frameBuffer;
 		
+		CBox Box;
+		
+		CWidget* dboxInfoWidget;
+		CHeaders* head;
+		
+		CCIcon* cpuIcon;
+		CCLabel* cpuLabel;
+		CCLabel* cpuLabel1;
+		CCLabel* cpuLabel2;
+		CCHline* hLine;
+		CCLabel* upLabel;
+		CCLabel* memLabel;
+		CCHline* hLine2;
+		CCIcon* hddIcon;
+		CCLabel* hddLabel;
+		CCLabel* hddLabel1;
+		CCIcon* tunerIcon;
+		CCLabel* tunerLabel;
+		CCLabel* tunerLabel1;
+		
 		//
 		void showInfo();
 

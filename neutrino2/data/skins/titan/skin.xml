@@ -5,7 +5,7 @@
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->	
 
 	<WIDGET name="mainmenu" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Main Menu" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Main Menu" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" mode="1">
 			<ITEM id="5" localename="TV / RADIO" itemicon="hint_tvmode" target="0" actionkey="tvradioswitch"/>
@@ -25,7 +25,7 @@
 	</WIDGET>
 	
 	<WIDGET name="settings" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Settings" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Settings" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -70,7 +70,7 @@
 	</WIDGET>
 	
 	<WIDGET name="osd" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="OSD" icon="colors" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="OSD" icon="colors" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1"  mode="1">
@@ -103,7 +103,7 @@
 	</WIDGET>
 	
 	<WIDGET name="epgtimer" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="EPG / Timer" icon="epg" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="EPG / Timer" icon="epg" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -126,7 +126,7 @@
 	</WIDGET>
 	
 	<WIDGET name="features" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Features" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Features" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1"/>
@@ -138,7 +138,7 @@
 	</WIDGET>
 	
 	<WIDGET name="system" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="System" icon="softupdate" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="System" icon="softupdate" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -163,7 +163,7 @@
 	</WIDGET>
 	
 	<WIDGET name="powermenu" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Power Menu" icon="power" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Power Menu" icon="power" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -186,7 +186,7 @@
 	</WIDGET>
 	
 	<WIDGET name="information" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Information" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Information" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -207,7 +207,7 @@
 	</WIDGET>
 	
 	<WIDGET name="mediaplayer" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Media Player" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Media Player" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -225,7 +225,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Plugins" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Plugins" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -247,7 +247,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="1" scrollbar="0" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Timerlist" icon="timer" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Timerlist" icon="timer" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -269,7 +269,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="New timer" icon="timer" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="New timer" icon="timer" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -282,7 +282,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Modify timer" icon="timer" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Modify timer" icon="timer" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -295,7 +295,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Servicescan" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Servicescan" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -308,7 +308,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Scan transponder" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Scan transponder" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -321,7 +321,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Select transponder" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Select transponder" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -334,7 +334,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Unicable settings" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Unicable settings" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -347,7 +347,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Manual frequency scan / Test signal" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Manual frequency scan / Test signal" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -360,7 +360,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Auto scan" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Auto scan" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -373,7 +373,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Auto-Scan multiple Satellite" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Auto-Scan multiple Satellite" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -386,7 +386,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Sat settings" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Sat settings" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -399,7 +399,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="DiSEqC settings" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="DiSEqC settings" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -412,7 +412,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Motor settings" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Motor settings" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -425,7 +425,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Satellite" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Satellite" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -444,7 +444,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Software update" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Software update" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -457,7 +457,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Expert functions" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Expert functions" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -470,7 +470,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="File selector" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="File selector" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -483,7 +483,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Partition selector" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Partition selector" icon="softupdate" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -496,7 +496,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="CI CAM settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="CI CAM settings" icon="settings" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -521,7 +521,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Video settings" icon="video" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Video settings" icon="video" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -534,7 +534,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Audio settings" icon="audio" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Audio settings" icon="audio" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -547,7 +547,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Parentallock settings" icon="lock" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Parentallock settings" icon="lock" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -560,7 +560,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Network settings" icon="network" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Network settings" icon="network" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -573,7 +573,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Proxy server" icon="network" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Proxy server" icon="network" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -586,7 +586,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Mount network volume" icon="network" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Mount network volume" icon="network" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -599,7 +599,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Mount network volume" icon="keybinding" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Mount network volume" icon="keybinding" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -612,7 +612,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Umount network volume" icon="keybinding" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Umount network volume" icon="keybinding" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -625,7 +625,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Network Mount Manager" icon="keybinding" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Network Mount Manager" icon="keybinding" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -638,7 +638,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Recording settings" icon="recording" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Recording settings" icon="recording" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -651,7 +651,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Movieplayer settings" icon="movie" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Movieplayer settings" icon="movie" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -664,7 +664,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Audioplayer settings" icon="mp3" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Audioplayer settings" icon="mp3" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -677,7 +677,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Pictureviewer settings" icon="picture" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Pictureviewer settings" icon="picture" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -690,7 +690,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Display settings" icon="lcd" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Display settings" icon="lcd" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -703,7 +703,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Start Channel settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Start Channel settings" icon="settings" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -716,7 +716,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Display settings" icon="lcd" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Display settings" icon="lcd" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -729,7 +729,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="HDD settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="HDD settings" icon="settings" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -754,7 +754,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Misc settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Misc settings" icon="settings" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -767,7 +767,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Filebrowser settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Filebrowser settings" icon="settings" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -780,7 +780,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="EPG settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="EPG settings" icon="settings" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -793,7 +793,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Channellist settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Channellist settings" icon="settings" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -806,7 +806,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" mode ="0" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Skin Select" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Skin Select" icon="colors" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -819,7 +819,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Menu" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Menu" icon="colors" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -832,7 +832,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Skin Style" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Skin Style" icon="colors" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -845,7 +845,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Themes" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Themes" icon="colors" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -858,7 +858,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Infobar" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Infobar" icon="colors" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -871,7 +871,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Language" icon="language" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Language" icon="language" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -884,7 +884,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Font" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Font" icon="colors" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -897,7 +897,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Timing" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Timing" icon="colors" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -910,7 +910,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Misc settings" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Misc settings" icon="colors" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -923,7 +923,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Keybinding settings" icon="keybinding" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Keybinding settings" icon="keybinding" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -936,7 +936,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Hot Keys mapping" icon="keybinding" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Hot Keys mapping" icon="keybinding" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -979,7 +979,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode="1" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Test Menu" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Test Menu" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">

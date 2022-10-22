@@ -1337,6 +1337,17 @@
 		</TIME>
 	</WIDGET>
 	
+	<WIDGET name="boxinfo" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+		<!--<HEAD posx="50" posy="0" width="1180" height="50" paintframe="0" line="1"/>-->
+		<!--<TEXTBOX posx="50" posy="50" width="840" height="590"/>	-->
+		<!--<WINDOW name="screening" posx="50" posy="640" width="1180" height="30"/>-->
+		<!--<FOOT posx="50" posy="670" width="1180" height="50" paintframe="0" line="1"/>-->
+		<LABEL posx="890" posy="50" width="390" height="50" text="Box Info" halign="1"/>
+		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
+		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
+	</WIDGET>
+	
 	<WIDGET name="testmenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode ="1" scrollbar="1" itemborder="1">
 		</LISTBOX>
