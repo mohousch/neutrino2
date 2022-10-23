@@ -168,10 +168,13 @@ CEpgData::CEpgData()
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("epgview");
 		
-		textBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
-		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
-		footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
-		cFollowScreeningWindow = (CWindow*)widget->getWidgetItem(WIDGETITEM_WINDOW, "screening");
+		if (widget)
+		{
+			textBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
+			headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+			footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
+			cFollowScreeningWindow = (CWindow*)widget->getWidgetItem(WIDGETITEM_WINDOW, "screening");
+		}
 	}
 	else
 	{

@@ -108,7 +108,7 @@ CWidget::CWidget(CBox *position)
 
 CWidget::~CWidget()
 {
-	dprintf(DEBUG_INFO, "CWidget:: del\n");
+	dprintf(DEBUG_NORMAL, "CWidget:: del (%s)\n", name.c_str());
 
 	// WIDGETITEMS
 	if (hasWidgetItem())

@@ -1896,7 +1896,7 @@ void parseScanInputXml(fe_type_t fe_type)
 int start_scan(CZapitMessages::commandStartScan StartScan)
 {
 	// reread scaninputParser
-    if(scanInputParser) 
+    	if(scanInputParser) 
 	{
                 delete scanInputParser;
                 scanInputParser = NULL;

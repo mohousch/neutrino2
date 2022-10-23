@@ -310,7 +310,8 @@ class CWidget : public CMenuTarget
 		virtual void setPosition(CBox* position){mainFrameBox = *position;};
 };
 
-typedef std::vector<CWidget*> WIDGETLIST;
+//typedef std::vector<CWidget*> WIDGETLIST;
+typedef std::vector<std::string> WIDGETLIST;
 
 #endif // WIDGET_H_
 

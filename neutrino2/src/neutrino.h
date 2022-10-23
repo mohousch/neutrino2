@@ -175,8 +175,10 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		void saveSkinConfig(const char* const filename);
 		
 		//
+		bool parseSkinInputXml(const char* const filename, bool xml_data = false);
 		bool parseSkin(const char* const filename, bool xml_data = false);
 		// 
+		CWidget *parseCWidget(const char * const widgetName, bool data = false);
 		void parseClistBox(_xmlNodePtr node, CWidget* widget);
 		void parseCWindow(_xmlNodePtr node, CWidget* widget);
 		void parseCHead(_xmlNodePtr node, CWidget* widget);

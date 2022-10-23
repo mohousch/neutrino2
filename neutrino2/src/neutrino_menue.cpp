@@ -148,6 +148,12 @@ void CNeutrinoApp::mainMenu(void)
 		delete nMenu;
 		nMenu = NULL;
 	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 // User menu
@@ -376,6 +382,18 @@ bool CNeutrinoApp::showUserMenu(int button)
 	}
 		
 	widget->exec(NULL, "");
+	
+	if (menu)
+	{
+		delete menu;
+		menu = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 
 	return 0;
 }
