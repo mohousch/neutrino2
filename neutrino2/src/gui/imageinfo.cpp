@@ -45,6 +45,10 @@ extern cVideo * videoDecoder;
 CImageInfo::CImageInfo()
 {
 	frameBuffer = CFrameBuffer::getInstance();
+	
+	//
+	widget = NULL;
+	pig = NULL;
 
 	font_head   = SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME;
 	font_small  = SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL;
@@ -54,9 +58,10 @@ CImageInfo::CImageInfo()
 	iheight     = g_Font[font_info]->getHeight();
 	sheight     = g_Font[font_small]->getHeight();
 
-	max_width = frameBuffer->getScreenWidth(true);
-	max_height =  frameBuffer->getScreenHeight(true);
+	//max_width = frameBuffer->getScreenWidth(true);
+	//max_height =  frameBuffer->getScreenHeight(true);
 
+	//
 	width = frameBuffer->getScreenWidth() - 10;
 	height = frameBuffer->getScreenHeight() - 10;
 
@@ -66,8 +71,11 @@ CImageInfo::CImageInfo()
 
 CImageInfo::~CImageInfo()
 { 
-	if(videoDecoder)  
-		videoDecoder->Pig(-1, -1, -1, -1);
+	//if(videoDecoder)  
+	//	videoDecoder->Pig(-1, -1, -1, -1);
+	
+	delete pig;	
+	delete widget;
 }
 
 int CImageInfo::exec(CMenuTarget *parent, const std::string&)
@@ -76,10 +84,33 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 
 	if (parent)
  		parent->hide();
+ 		
+ 	//
+	if (CNeutrinoApp::getInstance()->widget_exists("imageinfo"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("imageinfo");
+	}
+	else
+	{
+		widget = new CWidget(x, y, width, height);
+		widget->paintMainFrame(true);
+		
+		pig = new CCPig(x + width - BORDER_RIGHT - width/3, y + 10, width/3, height/3);
+		
+		widget->addCCItem(pig);
+	}
+	
+	// recalculate
+	if (widget)
+	{
+		x = widget->getWindowsPos().iX;
+		y = widget->getWindowsPos().iY;
+		width = widget->getWindowsPos().iWidth;
+		height = widget->getWindowsPos().iHeight;
+	}
 
 	paint();
-
-	paint_pig(x + width - BORDER_RIGHT - width/3, y, width/3, height/3);	
+	//paint_pig(x + width - BORDER_RIGHT - width/3, y, width/3, height/3);	
 
 	frameBuffer->blit();	
 
@@ -92,16 +123,19 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 
 void CImageInfo::hide()
 {
-	if(videoDecoder)  
-		videoDecoder->Pig(-1, -1, -1, -1);
+	//if(videoDecoder)  
+	//	videoDecoder->Pig(-1, -1, -1, -1);
 	
-	frameBuffer->paintBackgroundBoxRel(0, 0, max_width, max_height);
+	//frameBuffer->paintBackgroundBoxRel(0, 0, max_width, max_height);
 
-	frameBuffer->blit();
+	//frameBuffer->blit();
+	widget->hide();
+	//pig->hide();
 }
 
 void CImageInfo::paint_pig(int _x, int _y, int w, int h)
 {
+/*
 	frameBuffer->paintBackgroundBoxRel(_x, _y, w, h);	
 		
 	//dont pig if we have 1980 x 1080
@@ -116,7 +150,8 @@ void CImageInfo::paint_pig(int _x, int _y, int w, int h)
 #else
 	if(videoDecoder)
 		videoDecoder->Pig(_x, _y, w, h);
-#endif	
+#endif
+*/
 }
 
 void CImageInfo::paintLine(int xpos, int font, const char* text)
@@ -130,7 +165,7 @@ void CImageInfo::paintLine(int xpos, int font, const char* text)
 void CImageInfo::paint()
 {
 	const char * head_string;
- 	int  xpos = x + BORDER_LEFT;
+ 	int  xpos = x + 10;
 	int x_offset = g_Font[font_info]->getRenderWidth(_("Home page:")) + 10;
 
 	ypos = y + 5;
@@ -140,10 +175,12 @@ void CImageInfo::paint()
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8, head_string);
 
 	//
-	frameBuffer->paintBoxRel(10, 10, max_width - 20, max_height - 20, COL_MENUCONTENT_PLUS_0);
+	//frameBuffer->paintBoxRel(10, 10, max_width - 20, max_height - 20, COL_MENUCONTENT_PLUS_0);
+	widget->paint();
+	//pig->paint();
 	
 	// title
-	g_Font[font_head]->RenderString(xpos, ypos + hheight + 1, width, head_string, COL_MENUHEAD, 0, true);
+	g_Font[font_head]->RenderString(xpos, ypos + hheight + 10, width, head_string, COL_MENUHEAD, 0, true);
 
 	ypos += hheight;
 	ypos += (iheight >>1);

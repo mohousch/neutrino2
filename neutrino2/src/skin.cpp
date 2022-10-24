@@ -96,6 +96,9 @@
 
 
 //
+_xmlDocPtr parser = NULL;
+
+//
 CMenuTarget* CNeutrinoApp::convertTarget(const int id)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::convertTarget: id: %d\n", id);
@@ -1056,6 +1059,9 @@ void CNeutrinoApp::parseCWindow(_xmlNodePtr node, CWidget* widget)
 			
 		// BUTTONS
 		parseCCButtons(node->xmlChildrenNode, NULL, window);
+		
+		// PIG
+		parseCCPig(node->xmlChildrenNode, NULL, window);
 					
 		if (widget) widget->addWidgetItem(window);
 			
@@ -1684,6 +1690,43 @@ void CNeutrinoApp::parseCCVline(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	}
 }
 
+// CCPig
+void CNeutrinoApp::parseCCPig(_xmlNodePtr node, CWidget* widget, CWindow* window)
+{
+	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCPig:\n");
+	
+	CCPig* pig = NULL;
+	
+	char *name = NULL;
+	
+	unsigned int x = 0;
+	unsigned int y = 0;
+	unsigned int dx = 0;
+	unsigned int dy = 0;
+	
+	while ((node = xmlGetNextOccurence(node, "PIG")) != NULL) 
+	{
+		//
+		name = xmlGetAttribute(node, (char*)"name");
+		
+		//
+		x = xmlGetSignedNumericAttribute(node, "posx", 0);
+		y = xmlGetSignedNumericAttribute(node, "posy", 0);
+		dx = xmlGetSignedNumericAttribute(node, "width", 0);
+		dy = xmlGetSignedNumericAttribute(node, "height", 0);
+				
+		pig = new CCPig(x, y, dx, dy);
+		
+		pig->cc_type = CC_PIG;
+		if (name) pig->cc_name = name;
+					
+		if (widget) widget->addCCItem(pig);
+		if (window) window->addCCItem(pig);
+				
+		node = node->xmlNextNode;
+	}
+}
+
 // widget key
 void CNeutrinoApp::parseKey(_xmlNodePtr node, CWidget* widget)
 {
@@ -1709,9 +1752,7 @@ void CNeutrinoApp::parseKey(_xmlNodePtr node, CWidget* widget)
 	}
 }
 
-//
-_xmlDocPtr parser = NULL;
-
+// parseCWidget
 CWidget *CNeutrinoApp::parseCWidget(const char * const widgetName, bool data)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::parseCWidget: %s\n", widgetName);
@@ -1738,13 +1779,12 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const widgetName, bool data)
 	unsigned int timeout = 0;
 	unsigned int position = 0;
 	
-	////
+	// get skinFileName
 	std::string skinFileName = CONFIGDIR "/skins/";
 	skinFileName += g_settings.preferred_skin;
 	skinFileName += "/skin.xml";
 	
 	parseSkinInputXml(skinFileName.c_str(), data);
-	////
 	
 	if (parser)
 	{
@@ -1757,83 +1797,86 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const widgetName, bool data)
 			//
 			name = xmlGetAttribute(search, (char*)"name");
 			
-			////
+			//
 			if (!strcmp(name, widgetName) )
 			{
-			id = xmlGetSignedNumericAttribute(search, "id", 0);
-				
-			x = xmlGetSignedNumericAttribute(search, "posx", 0);
-			y = xmlGetSignedNumericAttribute(search, "posy", 0);
-			dx = xmlGetSignedNumericAttribute(search, "width", 0);
-			dy = xmlGetSignedNumericAttribute(search, "height", 0);
-				
-			color = xmlGetAttribute(search, (char*)"color");
-			gradient = xmlGetSignedNumericAttribute(search, "gradient", 0);
-			corner = xmlGetSignedNumericAttribute(search, "corner", 0);
-			radius = xmlGetSignedNumericAttribute(search, "radius", 0);
-			border = xmlGetSignedNumericAttribute(search, "border", 0);
-				
-			paintframe = xmlGetSignedNumericAttribute(search, "paintframe", 0);
-			savescreen = xmlGetSignedNumericAttribute(search, "savescreen", 0);
-			timeout = xmlGetSignedNumericAttribute(search, "timeout", 0);
-			position = xmlGetSignedNumericAttribute(search, "position", 0);;
-				
-			// parse color
-			uint32_t wColor = COL_MENUCONTENT_PLUS_0;
+				id = xmlGetSignedNumericAttribute(search, "id", 0);
 					
-			if (color != NULL) wColor = convertColor(color);
+				x = xmlGetSignedNumericAttribute(search, "posx", 0);
+				y = xmlGetSignedNumericAttribute(search, "posy", 0);
+				dx = xmlGetSignedNumericAttribute(search, "width", 0);
+				dy = xmlGetSignedNumericAttribute(search, "height", 0);
+					
+				color = xmlGetAttribute(search, (char*)"color");
+				gradient = xmlGetSignedNumericAttribute(search, "gradient", 0);
+				corner = xmlGetSignedNumericAttribute(search, "corner", 0);
+				radius = xmlGetSignedNumericAttribute(search, "radius", 0);
+				border = xmlGetSignedNumericAttribute(search, "border", 0);
+					
+				paintframe = xmlGetSignedNumericAttribute(search, "paintframe", 0);
+				savescreen = xmlGetSignedNumericAttribute(search, "savescreen", 0);
+				timeout = xmlGetSignedNumericAttribute(search, "timeout", 0);
+				position = xmlGetSignedNumericAttribute(search, "position", 0);;
+					
+				// parse color
+				uint32_t wColor = COL_MENUCONTENT_PLUS_0;
+						
+				if (color != NULL) wColor = convertColor(color);
+					
+				//
+				widget = new CWidget(x, y, dx, dy);
+					
+				widget->id = id;
+				if (name != NULL) widget->name = name;
+				widget->paintMainFrame(paintframe);
+				if (color != NULL) widget->setColor(wColor);
+				widget->setGradient(gradient);
+				widget->setCorner(radius, corner);
+				widget->setBorderMode(border);
+				if (savescreen) widget->enableSaveScreen();
+				widget->setTimeOut(timeout);
+				if (position) widget->setMenuPosition(position);
+					
+				// WINDOW
+				parseCWindow(search->xmlChildrenNode, widget);
+					
+				// HEAD
+				parseCHead(search->xmlChildrenNode, widget);
+					
+				// FOOT
+				parseCFoot(search->xmlChildrenNode, widget);
+					
+				// LISTBOX
+				parseClistBox(search->xmlChildrenNode, widget);
+					
+				// TEXTBOX
+				parseCTextBox(search->xmlChildrenNode, widget);
+					
+				// LABEL
+				parseCCLabel(search->xmlChildrenNode, widget);
+					
+				// IMAGE
+				parseCCImage(search->xmlChildrenNode, widget);
+					
+				// TIME
+				parseCCTime(search->xmlChildrenNode, widget);
+					
+				// BUTTONS
+				parseCCButtons(search->xmlChildrenNode, widget);
+					
+				// HLINE
+				parseCCHline(search->xmlChildrenNode, widget);
+					
+				// VLINE
+				parseCCVline(search->xmlChildrenNode, widget);
 				
-			//
-			widget = new CWidget(x, y, dx, dy);
+				// PIG
+				parseCCPig(search->xmlChildrenNode, widget);
+					
+				// KEY
+				parseKey(search->xmlChildrenNode, widget);
 				
-			widget->id = id;
-			if (name != NULL) widget->name = name;
-			widget->paintMainFrame(paintframe);
-			if (color != NULL) widget->setColor(wColor);
-			widget->setGradient(gradient);
-			widget->setCorner(radius, corner);
-			widget->setBorderMode(border);
-			if (savescreen) widget->enableSaveScreen();
-			widget->setTimeOut(timeout);
-			if (position) widget->setMenuPosition(position);
-				
-			// WINDOW
-			parseCWindow(search->xmlChildrenNode, widget);
-				
-			// HEAD
-			parseCHead(search->xmlChildrenNode, widget);
-				
-			// FOOT
-			parseCFoot(search->xmlChildrenNode, widget);
-				
-			// LISTBOX
-			parseClistBox(search->xmlChildrenNode, widget);
-				
-			// TEXTBOX
-			parseCTextBox(search->xmlChildrenNode, widget);
-				
-			// LABEL
-			parseCCLabel(search->xmlChildrenNode, widget);
-				
-			// IMAGE
-			parseCCImage(search->xmlChildrenNode, widget);
-				
-			// TIME
-			parseCCTime(search->xmlChildrenNode, widget);
-				
-			// BUTTONS
-			parseCCButtons(search->xmlChildrenNode, widget);
-				
-			// HLINE
-			parseCCHline(search->xmlChildrenNode, widget);
-				
-			// VLINE
-			parseCCVline(search->xmlChildrenNode, widget);
-				
-			// KEY
-			parseKey(search->xmlChildrenNode, widget);
-			
-			ret = widget;
+				ret = widget;
 			}
 							
 			//
@@ -1883,123 +1926,131 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 	parseSkinInputXml(filename, xml_data);
 	
 	if (parser)
-	{
-				
-	_xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode; //WIDGET
-	
-	if (search) 
-	{
-		//CWidget* wdg = NULL;
+	{			
+		_xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode; //WIDGET
 		
-		while ((search = xmlGetNextOccurence(search, "WIDGET")) != NULL) 
+		if (search) 
 		{
-			char* name = NULL;
-			int id = -1;
+			CWidget* wdg = NULL;
 			
-			unsigned int x = 0;
-			unsigned int y = 0;
-			unsigned int dx = 0;
-			unsigned int dy = 0;
-			
-			char* color = NULL;
-			unsigned int gradient = 0;
-			unsigned int corner = 0;
-			unsigned int radius = 0;
-			unsigned int border = 0;
-			
-			unsigned int paintframe = 0;
-			unsigned int savescreen = 0;
-			unsigned int timeout = 0;
-			unsigned int position = 0;
-			
-			//
-			name = xmlGetAttribute(search, (char*)"name");
-			id = xmlGetSignedNumericAttribute(search, "id", 0);
-			
-			x = xmlGetSignedNumericAttribute(search, "posx", 0);
-			y = xmlGetSignedNumericAttribute(search, "posy", 0);
-			dx = xmlGetSignedNumericAttribute(search, "width", 0);
-			dy = xmlGetSignedNumericAttribute(search, "height", 0);
-			
-			color = xmlGetAttribute(search, (char*)"color");
-			gradient = xmlGetSignedNumericAttribute(search, "gradient", 0);
-			corner = xmlGetSignedNumericAttribute(search, "corner", 0);
-			radius = xmlGetSignedNumericAttribute(search, "radius", 0);
-			border = xmlGetSignedNumericAttribute(search, "border", 0);
-			
-			paintframe = xmlGetSignedNumericAttribute(search, "paintframe", 0);
-			savescreen = xmlGetSignedNumericAttribute(search, "savescreen", 0);
-			timeout = xmlGetSignedNumericAttribute(search, "timeout", 0);
-			position = xmlGetSignedNumericAttribute(search, "position", 0);;
-			
-			// parse color
-			uint32_t wColor = COL_MENUCONTENT_PLUS_0;
-				
-			if (color != NULL) wColor = convertColor(color);
-			
-			/*
-			wdg = new CWidget(x, y, dx, dy);
-			
-			wdg->id = id;
-			if (name != NULL) wdg->name = name;
-			wdg->paintMainFrame(paintframe);
-			if (color != NULL) wdg->setColor(wColor);
-			wdg->setGradient(gradient);
-			wdg->setCorner(radius, corner);
-			wdg->setBorderMode(border);
-			if (savescreen) wdg->enableSaveScreen();
-			wdg->setTimeOut(timeout);
-			if (position) wdg->setMenuPosition(position);
-			
-			// WINDOW
-			parseCWindow(search->xmlChildrenNode, wdg);
-			
-			// HEAD
-			parseCHead(search->xmlChildrenNode, wdg);
-			
-			// FOOT
-			parseCFoot(search->xmlChildrenNode, wdg);
-			
-			// LISTBOX
-			parseClistBox(search->xmlChildrenNode, wdg);
-			
-			// TEXTBOX
-			parseCTextBox(search->xmlChildrenNode, wdg);
-			
-			// LABEL
-			parseCCLabel(search->xmlChildrenNode, wdg);
-			
-			// IMAGE
-			parseCCImage(search->xmlChildrenNode, wdg);
-			
-			// TIME
-			parseCCTime(search->xmlChildrenNode, wdg);
-			
-			// BUTTONS
-			parseCCButtons(search->xmlChildrenNode, wdg);
-			
-			// HLINE
-			parseCCHline(search->xmlChildrenNode, wdg);
-			
-			// VLINE
-			parseCCVline(search->xmlChildrenNode, wdg);
-			
-			// KEY
-			parseKey(search->xmlChildrenNode, wdg);
-			*/
-			if (name)
+			while ((search = xmlGetNextOccurence(search, "WIDGET")) != NULL) 
 			{
-			//
-			widgets.push_back(name);
+				char* name = NULL;
+				
+				//
+				name = xmlGetAttribute(search, (char*)"name");
+				
+#ifndef TESTING
+				int id = -1;
+				
+				unsigned int x = 0;
+				unsigned int y = 0;
+				unsigned int dx = 0;
+				unsigned int dy = 0;
+				
+				char* color = NULL;
+				unsigned int gradient = 0;
+				unsigned int corner = 0;
+				unsigned int radius = 0;
+				unsigned int border = 0;
+				
+				unsigned int paintframe = 0;
+				unsigned int savescreen = 0;
+				unsigned int timeout = 0;
+				unsigned int position = 0;
+				
+				//
+				id = xmlGetSignedNumericAttribute(search, "id", 0);
+				
+				x = xmlGetSignedNumericAttribute(search, "posx", 0);
+				y = xmlGetSignedNumericAttribute(search, "posy", 0);
+				dx = xmlGetSignedNumericAttribute(search, "width", 0);
+				dy = xmlGetSignedNumericAttribute(search, "height", 0);
+				
+				color = xmlGetAttribute(search, (char*)"color");
+				gradient = xmlGetSignedNumericAttribute(search, "gradient", 0);
+				corner = xmlGetSignedNumericAttribute(search, "corner", 0);
+				radius = xmlGetSignedNumericAttribute(search, "radius", 0);
+				border = xmlGetSignedNumericAttribute(search, "border", 0);
+				
+				paintframe = xmlGetSignedNumericAttribute(search, "paintframe", 0);
+				savescreen = xmlGetSignedNumericAttribute(search, "savescreen", 0);
+				timeout = xmlGetSignedNumericAttribute(search, "timeout", 0);
+				position = xmlGetSignedNumericAttribute(search, "position", 0);;
+				
+				// parse color
+				uint32_t wColor = COL_MENUCONTENT_PLUS_0;
+					
+				if (color != NULL) wColor = convertColor(color);
+				
+				wdg = new CWidget(x, y, dx, dy);
+				
+				wdg->id = id;
+				if (name != NULL) wdg->name = name;
+				wdg->paintMainFrame(paintframe);
+				if (color != NULL) wdg->setColor(wColor);
+				wdg->setGradient(gradient);
+				wdg->setCorner(radius, corner);
+				wdg->setBorderMode(border);
+				if (savescreen) wdg->enableSaveScreen();
+				wdg->setTimeOut(timeout);
+				if (position) wdg->setMenuPosition(position);
+				
+				// WINDOW
+				parseCWindow(search->xmlChildrenNode, wdg);
+				
+				// HEAD
+				parseCHead(search->xmlChildrenNode, wdg);
+				
+				// FOOT
+				parseCFoot(search->xmlChildrenNode, wdg);
+				
+				// LISTBOX
+				parseClistBox(search->xmlChildrenNode, wdg);
+				
+				// TEXTBOX
+				parseCTextBox(search->xmlChildrenNode, wdg);
+				
+				// LABEL
+				parseCCLabel(search->xmlChildrenNode, wdg);
+				
+				// IMAGE
+				parseCCImage(search->xmlChildrenNode, wdg);
+				
+				// TIME
+				parseCCTime(search->xmlChildrenNode, wdg);
+				
+				// BUTTONS
+				parseCCButtons(search->xmlChildrenNode, wdg);
+				
+				// HLINE
+				parseCCHline(search->xmlChildrenNode, wdg);
+				
+				// VLINE
+				parseCCVline(search->xmlChildrenNode, wdg);
+				
+				// PIG
+				parseCCPig(search->xmlChildrenNode, wdg);
+				
+				// KEY
+				parseKey(search->xmlChildrenNode, wdg);
+				
+				//
+				widgets.push_back(wdg);
+#else
+				if (name)
+				{
+					widgets.push_back(name);
+				}
+#endif				
+							
+				//
+				search = search->xmlNextNode;		
 			}
-						
-			//
-			search = search->xmlNextNode;		
 		}
-	}
-	
-	xmlFreeDoc(parser);
-	parser = NULL;
+		
+		xmlFreeDoc(parser);
+		parser = NULL;
 	}
 	
 	//
@@ -2017,19 +2068,19 @@ CWidget* CNeutrinoApp::getWidget(const char* const name)
 	
 	for (unsigned int i = 0; i < (unsigned int )widgets.size(); i++)
 	{
-	/*
+#ifdef TESTING
+		if ( !widgets[i].empty() && !strcmp(widgets[i].c_str(), name))
+		{
+			ret = parseCWidget(name);
+			break;
+		}	
+#else
 		if ( (widgets[i] != NULL) && (widgets[i]->name == name) )
 		{
 			ret = widgets[i];
 			break;
 		}
-	*/
-		if ( !widgets[i].empty() && !strcmp(widgets[i].c_str(), name))
-		{
-			ret = parseCWidget(name);
-			break;
-		}
-		
+#endif
 	}
 	
 	return ret;
@@ -2041,8 +2092,11 @@ bool CNeutrinoApp::widget_exists(const char* const name)
 	
 	for (unsigned int i = 0; i < (unsigned int )widgets.size(); i++)
 	{
-		//if ( (widgets[i] != NULL) && (widgets[i]->name == name) )
+#ifdef TESTING
 		if ( !widgets[i].empty() && !strcmp(widgets[i].c_str(), name))
+#else
+		if ( (widgets[i] != NULL) && (widgets[i]->name == name) )
+#endif
 		{
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::widget_exists: (%s)\n", name);
 			
@@ -2052,51 +2106,6 @@ bool CNeutrinoApp::widget_exists(const char* const name)
 	}
 	
 	return ret;
-}
-
-//
-int CNeutrinoApp::execSkinWidget(const char* const name, CMenuTarget* parent, const std::string &actionKey)
-{
-	dprintf(DEBUG_INFO, "CNeutrinoApp::execSkinWidget: actionKey: (%s)\n", actionKey.c_str());
-	
-	int ret = RETURN_REPAINT;;
-	
-	if (widget_exists(name))
-	{
-		ret = getWidget(name)->exec(parent, actionKey);
-	}
-	
-	return ret;	
-}
-
-bool CNeutrinoApp::paintSkinWidget(const char* const name)
-{
-	dprintf(DEBUG_INFO, "CNeutrinoApp::paintSkinWidget:\n");
-	
-	bool ret = false;
-	
-	if (widget_exists(name))
-	{
-		ret = true;
-		getWidget(name)->paint();
-	}
-	
-	return ret;	
-}
-
-bool CNeutrinoApp::hideSkinWidget(const char* const name)
-{
-	dprintf(DEBUG_INFO, "CNeutrinoApp::hideSkinWidget:\n");
-	
-	bool ret = false;
-	
-	if (widget_exists(name))
-	{
-		ret = true;
-		getWidget(name)->hide();
-	}
-	
-	return ret;	
 }
 
 //
@@ -2264,7 +2273,7 @@ bool CNeutrinoApp::skin_exists(const char* const filename)
 void CNeutrinoApp::unloadSkin()
 {
 	// clear all skin widgets
-	/*
+#ifndef TESTING
 	for (unsigned int i = 0; i < (unsigned int) widgets.size(); i++)
 	{
 		if (widgets[i])
@@ -2273,7 +2282,7 @@ void CNeutrinoApp::unloadSkin()
 			widgets[i] = NULL;
 		}
 	}
-	*/
+#endif
 	
 	widgets.clear();
 }
@@ -2514,4 +2523,51 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	if (!skinConfig->saveConfig(filename))
 		printf("CNeutrinoApp::saveSkinConfig %s write error\n", filename);
 }
+
+//// helpers methods
+//
+int CNeutrinoApp::execSkinWidget(const char* const name, CMenuTarget* parent, const std::string &actionKey)
+{
+	dprintf(DEBUG_INFO, "CNeutrinoApp::execSkinWidget: actionKey: (%s)\n", actionKey.c_str());
+	
+	int ret = RETURN_REPAINT;;
+	
+	if (widget_exists(name))
+	{
+		ret = getWidget(name)->exec(parent, actionKey);
+	}
+	
+	return ret;	
+}
+
+bool CNeutrinoApp::paintSkinWidget(const char* const name)
+{
+	dprintf(DEBUG_INFO, "CNeutrinoApp::paintSkinWidget:\n");
+	
+	bool ret = false;
+	
+	if (widget_exists(name))
+	{
+		ret = true;
+		getWidget(name)->paint();
+	}
+	
+	return ret;	
+}
+
+bool CNeutrinoApp::hideSkinWidget(const char* const name)
+{
+	dprintf(DEBUG_INFO, "CNeutrinoApp::hideSkinWidget:\n");
+	
+	bool ret = false;
+	
+	if (widget_exists(name))
+	{
+		ret = true;
+		getWidget(name)->hide();
+	}
+	
+	return ret;	
+}
+
 

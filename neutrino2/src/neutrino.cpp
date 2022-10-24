@@ -5330,6 +5330,11 @@ void CNeutrinoApp::SelectNVOD()
 		//
                 if(getNVODMenu(NVODSelector))
                         widget->exec(NULL, "");
+                  
+#ifdef TESTING      
+		delete NVODSelector;
+		delete widget;
+#endif		
         }
 }
 

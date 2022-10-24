@@ -301,5 +301,10 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	AVPIDSelector->addItem(new CMenuOptionChooser(_("Video Format"), &g_settings.video_Format, VIDEOMENU_VIDEOFORMAT_OPTIONS, VIDEOMENU_VIDEOFORMAT_OPTION_COUNT, true, CVideoSettings::getInstance()->videoSetupNotifier, RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
 	
 	widget->exec(NULL, "");
+	
+#ifdef TESTING
+	delete AVPIDSelector;
+	delete widget;
+#endif
 }
 

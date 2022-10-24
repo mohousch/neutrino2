@@ -64,6 +64,8 @@ int CDVBSubSelectMenuHandler::exec(CMenuTarget * parent, const std::string &/*ac
 
 int CDVBSubSelectMenuHandler::doMenu()
 {
+	int res = RETURN_EXIT_ALL;
+	
 	dprintf(DEBUG_NORMAL, "CDVBSubSelectMenuHandler::doMenu:\n");
 
 	//
@@ -162,6 +164,13 @@ int CDVBSubSelectMenuHandler::doMenu()
 			DVBSubSelector->addItem(new CMenuForwarder(_("Subtitles not found"), false));
 	}
 
-	return widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
+
+#ifdef TESTING
+	delete DVBSubSelector;
+	delete widget;
+#endif
+	
+	return res;
 }
 

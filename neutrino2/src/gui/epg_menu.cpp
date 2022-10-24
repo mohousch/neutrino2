@@ -63,6 +63,8 @@ int CEPGMenuHandler::exec(CMenuTarget* parent, const std::string &)
 
 int CEPGMenuHandler::doMenu()
 {
+	int res = RETURN_REPAINT;
+	
 	//
 	CWidget* widget = NULL;
 	ClistBox* redMenu = NULL;
@@ -112,7 +114,23 @@ int CEPGMenuHandler::doMenu()
 		widget->addWidgetItem(redMenu);
 	}
 					
-	return widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
+	
+#ifdef TESTING
+	if (redMenu)
+	{
+		delete redMenu;
+		redMenu = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+#endif
+	
+	return res;
 }
 
 

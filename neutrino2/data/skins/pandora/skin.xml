@@ -191,7 +191,7 @@
 	</WIDGET>
 	
 	<WIDGET name="timerlist" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="0" itemborder="1" position="2" painthead="1" title="Timerlist" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="0" itemborder="1" position="2" scrollbar="1" painthead="1" title="Timerlist" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1">
 		
 			<FOOT_BUTTON_LABEL name="btn_red" localename="Delete"/>
 			<FOOT_BUTTON_LABEL name="btn_green" localename="New timer"/>
@@ -201,14 +201,14 @@
 	</WIDGET>
 	
 	<WIDGET name="newtimer" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="New timer" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" scrollbar="1" painthead="1" title="New timer" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1">
 
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
 	<WIDGET name="modifytimer" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Modify timer" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" scrollbar="1" painthead="1" title="Modify timer" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
@@ -711,6 +711,10 @@
 		<TEXTBOX posx="60" posy="120" width="1160" height="1060"/>
 		<HEAD posx="60" posy="60" width="1160" height="60" line="1"/>
 		<FOOT posx="60" posy="600" width="1160" height="60" line="1"/>
+	</WIDGET>
+	
+	<WIDGET name="imageinfo" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
+		<PIG posx="800" posy="80" width="400" height="215"/>
 	</WIDGET>
 	
 	<WIDGET name="testmenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">

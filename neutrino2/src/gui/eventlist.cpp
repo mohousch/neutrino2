@@ -121,7 +121,7 @@ EventList::EventList()
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
-	/*
+	//
 	if (CNeutrinoApp::getInstance()->widget_exists("eventlist"))
 	{
 		evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
@@ -136,12 +136,24 @@ EventList::EventList()
 		listBox->enablePaintDate();
 		
 		evlWidget->addWidgetItem(listBox);
-	}
-	*/				
+	}				
 }
 
 EventList::~EventList()
 {
+#ifdef TESTING
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (evlWidget)
+	{
+		delete evlWidget;
+		evlWidget = NULL;
+	}
+#endif
 }
 
 void EventList::readEvents(const t_channel_id channel_id)
@@ -262,7 +274,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 	//
 	readEvents(channel_id);
 	
-	//
+	/*
 	if (CNeutrinoApp::getInstance()->widget_exists("eventlist"))
 	{
 		evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
@@ -278,6 +290,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		
 		evlWidget->addWidgetItem(listBox);
 	}
+	*/
 
 	//
 	paint(channel_id);
@@ -1029,6 +1042,20 @@ int CEventFinderMenu::showMenu(void)
         searchMenu->addItem(mf0, false);
 	
 	res = widget->exec(NULL, "");
+	
+#ifdef TESTING
+	if (searchMenu)
+	{
+		delete searchMenu;
+		searchMenu = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+#endif	
 	
 	return(res);
 }

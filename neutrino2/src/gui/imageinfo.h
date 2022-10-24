@@ -36,6 +36,12 @@ class CImageInfo : public CMenuTarget
 	private:
 		//CConfigFile     * configfile;
 		CFrameBuffer	*frameBuffer;
+		
+		//
+		CWidget *widget;
+		CCPig *pig;
+		
+		//
 		int x;
 		int y;
 		int width;
@@ -44,8 +50,8 @@ class CImageInfo : public CMenuTarget
 		int ypos;
 		int hheight, iheight, sheight; 	// head/info/small font height
 
-		int max_height;	// Frambuffer 0.. max
-		int max_width;
+		//int max_height;	// Frambuffer 0.. max
+		//int max_width;
 
 		int font_head;
 		int font_info;

@@ -222,17 +222,35 @@ CEpgData::CEpgData()
 		textBox->setMode(SCROLL);
 		textBox->enableSaveScreen();
 	}
-	
-	// follow screening
-	//if (cFollowScreeningWindow)
-	//{
-		//cFollowScreeningWindow->setColor(COL_MENUHEAD_PLUS_0);
-		//cFollowScreeningWindow->paint();
-	//}
 }
 
 CEpgData::~CEpgData()
 {
+#ifdef TESTING
+	if (cFollowScreeningWindow)
+	{
+		delete cFollowScreeningWindow;
+		cFollowScreeningWindow = NULL;
+	}
+	
+	if (footers)
+	{
+		delete footers;
+		footers = NULL;
+	}
+	
+	if (headers)
+	{
+		delete headers;
+		headers = NULL;
+	}
+	
+	if (textBox)
+	{
+		delete textBox;
+		textBox = NULL;
+	}
+#endif
 }
 
 void CEpgData::initFrames()

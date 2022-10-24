@@ -249,6 +249,11 @@ void CAudioSelectMenuHandler::doMenu()
 	widget->exec(NULL, "");
 
 	delete audioSetupNotifierVolPercent;
+	
+#ifdef TESTING
+	delete AudioSelector;
+	delete widget;
+#endif
 }
 
 // apid change notifier

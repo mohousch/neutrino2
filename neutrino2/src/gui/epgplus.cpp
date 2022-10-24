@@ -943,6 +943,20 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				menuWidgetActions->addItem (new CMenuForwarder (_("Schedule"), true, NULL, new MenuTargetAddReminder(this), NULL, RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW), false);
 
 				menuWidgetActionsWidget->exec (NULL, "");
+				
+#ifdef TESTING
+				if (menuWidgetActions)
+				{
+					delete menuWidgetActions;
+					menuWidgetActions = NULL;
+				}
+				
+				if (menuWidgetActionsWidget)
+				{
+					delete menuWidgetActionsWidget;
+					menuWidgetActionsWidget = NULL;
+				}
+#endif
 
 		  		//this->refreshAll = true;
 	  		} 
@@ -976,6 +990,20 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				menuWidgetOptions->addItem(new MenuOptionChooserSwitchViewMode (this));
 
 				menuWidgetOptionsWidget->exec (NULL, "");
+				
+#ifdef TESTING
+				if (menuWidgetOptions)
+				{
+					delete menuWidgetOptions;
+					menuWidgetOptions = NULL;
+				}
+				
+				if (menuWidgetOptionsWidget)
+				{
+					delete menuWidgetOptionsWidget;
+					menuWidgetOptionsWidget = NULL;
+				}
+#endif
 	  		} 
 			else if (CRCInput::isNumeric (msg)) 
 			{	//numeric zap
