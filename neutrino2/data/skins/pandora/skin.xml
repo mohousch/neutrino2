@@ -714,7 +714,7 @@
 	</WIDGET>
 	
 	<WIDGET name="imageinfo" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
-		<PIG posx="800" posy="80" width="400" height="215"/>
+		<!--<PIG posx="800" posy="80" width="400" height="215"/>-->
 	</WIDGET>
 	
 	<WIDGET name="testmenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">

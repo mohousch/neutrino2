@@ -50,15 +50,11 @@ class CImageInfo : public CMenuTarget
 		int ypos;
 		int hheight, iheight, sheight; 	// head/info/small font height
 
-		//int max_height;	// Frambuffer 0.. max
-		//int max_width;
-
 		int font_head;
 		int font_info;
 		int font_small;
 
 		void paint();
-		void paint_pig(int x, int y, int w, int h);
 		void paintLine(int xpos, int font, const char* text);
 
 	public:

@@ -37,10 +37,6 @@
 #include <system/flashtool.h>
 #include <system/debug.h>
 
-#include <video_cs.h>
-
-
-extern cVideo * videoDecoder;
 
 CImageInfo::CImageInfo()
 {
@@ -58,9 +54,6 @@ CImageInfo::CImageInfo()
 	iheight     = g_Font[font_info]->getHeight();
 	sheight     = g_Font[font_small]->getHeight();
 
-	//max_width = frameBuffer->getScreenWidth(true);
-	//max_height =  frameBuffer->getScreenHeight(true);
-
 	//
 	width = frameBuffer->getScreenWidth() - 10;
 	height = frameBuffer->getScreenHeight() - 10;
@@ -71,11 +64,10 @@ CImageInfo::CImageInfo()
 
 CImageInfo::~CImageInfo()
 { 
-	//if(videoDecoder)  
-	//	videoDecoder->Pig(-1, -1, -1, -1);
-	
+#ifdef TESTING
 	delete pig;	
 	delete widget;
+#endif
 }
 
 int CImageInfo::exec(CMenuTarget *parent, const std::string&)
@@ -110,7 +102,6 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 	}
 
 	paint();
-	//paint_pig(x + width - BORDER_RIGHT - width/3, y, width/3, height/3);	
 
 	frameBuffer->blit();	
 
@@ -123,35 +114,7 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 
 void CImageInfo::hide()
 {
-	//if(videoDecoder)  
-	//	videoDecoder->Pig(-1, -1, -1, -1);
-	
-	//frameBuffer->paintBackgroundBoxRel(0, 0, max_width, max_height);
-
-	//frameBuffer->blit();
 	widget->hide();
-	//pig->hide();
-}
-
-void CImageInfo::paint_pig(int _x, int _y, int w, int h)
-{
-/*
-	frameBuffer->paintBackgroundBoxRel(_x, _y, w, h);	
-		
-	//dont pig if we have 1980 x 1080
-#if defined (__sh__)
-	int xres, yres, framerate;
-	if(videoDecoder)
-		videoDecoder->getPictureInfo(xres, yres, framerate);
-	
-	if(xres <= 1280)
-		if(videoDecoder)	
-			videoDecoder->Pig(_x, _y, w, h);
-#else
-	if(videoDecoder)
-		videoDecoder->Pig(_x, _y, w, h);
-#endif
-*/
 }
 
 void CImageInfo::paintLine(int xpos, int font, const char* text)
@@ -175,9 +138,7 @@ void CImageInfo::paint()
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8, head_string);
 
 	//
-	//frameBuffer->paintBoxRel(10, 10, max_width - 20, max_height - 20, COL_MENUCONTENT_PLUS_0);
 	widget->paint();
-	//pig->paint();
 	
 	// title
 	g_Font[font_head]->RenderString(xpos, ypos + hheight + 10, width, head_string, COL_MENUHEAD, 0, true);
