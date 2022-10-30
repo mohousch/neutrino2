@@ -60,7 +60,6 @@
 #include <system/debug.h>
 
 
-//extern tallchans allchans;			// defined in zapit.cpp
 extern CBouquetManager * g_bouquetManager;	// defined in zapit.cpp
 
 CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bouquet)
@@ -77,7 +76,6 @@ CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bou
 	widget = NULL;
 	listBox = NULL;
 	item = NULL;
-	
 	sec_timer_id = 0;
 
 	// box	
@@ -86,24 +84,6 @@ CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bou
 	
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
-	
-	/*
-	if (CNeutrinoApp::getInstance()->widget_exists("bqeditch"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("bqeditch");
-		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		widget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		listBox->enablePaintHead();
-		listBox->enablePaintDate();
-		
-		widget->addWidgetItem(listBox);
-	}
-	*/	
 }
 
 #define BUTTONS_COUNT 4

@@ -79,10 +79,10 @@ CBEBouquetWidget::CBEBouquetWidget()
 	
 	Bouquets = &g_bouquetManager->Bouquets;
 
+	//
 	widget = NULL;
 	listBox = NULL;
 	item = NULL;
-	
 	sec_timer_id = 0;
 
 	// box	
@@ -91,24 +91,6 @@ CBEBouquetWidget::CBEBouquetWidget()
 	
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
-	
-	/*
-	if (CNeutrinoApp::getInstance()->widget_exists("bqeditbq"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("bqeditbq");
-		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		widget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		//listBox->enablePaintHead();
-		//listBox->enablePaintDate();
-	
-		widget->addWidgetItem(listBox);
-	}
-	*/	
 }
 
 CBEBouquetWidget::~CBEBouquetWidget()
@@ -150,8 +132,6 @@ void CBEBouquetWidget::paint()
 
 	//
 	listBox->setTitle(_("Bouquets"));
-	//listBox->enablePaintHead();
-	//listBox->enablePaintDate();
 	listBox->setHeadButtons(&HButton, 1);
 	
 	//
@@ -597,7 +577,7 @@ std::string CBEBouquetWidget::inputName(const char * const defaultName, const ch
 
 void CBEBouquetWidget::saveChanges()
 {
-	CHintBox* hintBox= new CHintBox(_("Bouquet Editor"), _("Do you want to save the changes?"), 500); // UTF-8
+	CHintBox* hintBox= new CHintBox(_("Bouquet Editor"), _("Saving changes. Please be patient."), 500); // UTF-8
 	hintBox->setBorderMode(BORDER_ALL);
 	hintBox->paint();
 	
@@ -619,5 +599,4 @@ void CBEBouquetWidget::discardChanges()
 	hintBox->hide();
 	delete hintBox;
 }
-
 
