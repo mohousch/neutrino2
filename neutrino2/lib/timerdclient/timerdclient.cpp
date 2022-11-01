@@ -23,6 +23,7 @@
 */
 
 #include <string.h>
+#include <ctime>
 
 #include <eventserver.h>
 #include <timerdclient/timerdmsg.h>

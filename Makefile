@@ -40,11 +40,10 @@ export TOPDIR LC_ALL LANG
 
 BOXTYPE = generic
 DEST = $(PWD)/$(BOXTYPE)
-
 N_SRC  = $(PWD)/neutrino2
+NHD2_OPTS = --with-boxtype=$(BOXTYPE)
 
 CFLAGS = -Wall -O2 -fno-strict-aliasing -O0
-
 CXXFLAGS = $(CFLAGS)
 
 export CFLAGS CXXFLAGS
@@ -293,7 +292,6 @@ $(N_SRC)/config.status: | $(N_SRC) $(DEST)
 			--build=i686-pc-linux-gnu \
 			--enable-silent-rules \
 			--enable-maintainer-mode \
-			--with-boxtype=$(BOXTYPE) \
 			$(NHD2_OPTS)
 $(DEST):
 	mkdir $@
@@ -329,7 +327,6 @@ $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
 			--enable-silent-rules \
 			--enable-maintainer-mode \
 			--without-debug \
-			--with-boxtype=$(BOXTYPE) \
 			$(NHD2_OPTS)
 
 plugins-clean:

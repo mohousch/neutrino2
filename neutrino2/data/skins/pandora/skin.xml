@@ -22,7 +22,7 @@
 	
 	<WIDGET name="settings" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
 		
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="1" mode="1" itemborder="1" scrollbar="1" position="2" painthead="1" title="Settings" icon="settings" paintdate="1" head_line="1" paintfoot="1" foot_line="1">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="1" mode="1" itemborder="1" position="2" painthead="1" title="Settings" icon="settings" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<ITEM id="5" localename="Video settings" itemicon="hint_video" target="9">
 			</ITEM>
 			<ITEM id="5" localename="Audio settings" itemicon="hint_audio" target="10">
@@ -191,8 +191,7 @@
 	</WIDGET>
 	
 	<WIDGET name="timerlist" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="0" itemborder="1" position="2" scrollbar="1" painthead="1" title="Timerlist" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1">
-		
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="0" itemborder="1" position="2" painthead="1" title="Timerlist" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="btn_red" localename="Delete"/>
 			<FOOT_BUTTON_LABEL name="btn_green" localename="New timer"/>
 			<FOOT_BUTTON_LABEL name="btn_yellow" localename="Reload"/>
@@ -201,15 +200,13 @@
 	</WIDGET>
 	
 	<WIDGET name="newtimer" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" scrollbar="1" painthead="1" title="New timer" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1">
-
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="New timer" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
 	<WIDGET name="modifytimer" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" scrollbar="1" painthead="1" title="Modify timer" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1">
-		
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Modify timer" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
@@ -607,7 +604,7 @@
 	</WIDGET>
 	
 	<WIDGET name="bouquetlist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" head_line="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="channellist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
@@ -620,7 +617,7 @@
 	</WIDGET>
 	
 	<WIDGET name="bqeditchselect" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="bqeditch" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
@@ -628,11 +625,11 @@
 	</WIDGET>
 	
 	<WIDGET name="bqeditbq" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="eventlist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" head_line="1" paintdate="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" painthead="1" head_line="1" paintdate="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="epgsearch" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
@@ -643,7 +640,7 @@
 	</WIDGET>
 	
 	<WIDGET name="filebrowser" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="3" radius="20" corner="15">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" scrollbar="1" painthead="1" head_line="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="0" mode="2" itemborder="1" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="audioselect" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">

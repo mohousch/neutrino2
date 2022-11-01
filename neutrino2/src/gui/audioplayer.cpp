@@ -1388,4 +1388,3 @@ void CAudioPlayerGui::showPlaylist()
 	alist->paint();
 }
 
-
