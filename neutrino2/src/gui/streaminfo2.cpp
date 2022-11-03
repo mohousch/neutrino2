@@ -67,8 +67,8 @@ CStreamInfo2::CStreamInfo2()
 	
 	//
 	widget = NULL;
-	pig = NULL;
 
+	//
 	font_head = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
 	font_info = SNeutrinoSettings::FONT_TYPE_MENU;
 	font_small = SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL;
@@ -76,10 +76,8 @@ CStreamInfo2::CStreamInfo2()
 	hheight = g_Font[font_head]->getHeight ();
 	iheight = g_Font[font_info]->getHeight ();
 	sheight = g_Font[font_small]->getHeight ();
-
-	max_width = frameBuffer->getScreenWidth(true);
-	max_height = frameBuffer->getScreenHeight(true);
   
+  	//
 	width =  frameBuffer->getScreenWidth();
 	height = frameBuffer->getScreenHeight();
 	x = frameBuffer->getScreenX();
@@ -129,10 +127,6 @@ int CStreamInfo2::exec(CMenuTarget * parent, const std::string&)
 		widget = new CWidget(x, y, width, height);
 		widget->name = "streaminfo";
 		widget->paintMainFrame(true);
-		
-		pig = new CCPig(x + width - BORDER_RIGHT - width/3, y + 10, width/3, height/3);
-		
-		widget->addCCItem(pig);
 	}
 	
 	// recalculate
@@ -347,32 +341,8 @@ int CStreamInfo2::doSignalStrengthLoop()
 
 void CStreamInfo2::hide ()
 {
-  	//videoDecoder->Pig(-1, -1, -1, -1);
-  	//frameBuffer->paintBackgroundBoxRel(0, 0, max_width, max_height);
-	//frameBuffer->blit();
-	
 	widget->hide();
 }
-
-/*
-void CStreamInfo2::paint_pig(int _x, int _y, int w, int h)
-{
-  	frameBuffer->paintBackgroundBoxRel (_x, _y, w, h);	
-
-	frameBuffer->blit();
-	
-	//dont pig if we have 1980 x 1080
-#ifdef __sh__	
-	int xres, yres, framerate;
-	videoDecoder->getPictureInfo(xres, yres, framerate);
-	
-	if(xres <= 1280)	
-		videoDecoder->Pig( _x, _y, w, h );
-#else
-	videoDecoder->Pig( _x, _y, w, h );
-#endif
-}
-*/
 
 void CStreamInfo2::paint_signal_fe_box(int _x, int _y, int w, int h)
 {
@@ -522,7 +492,7 @@ void CStreamInfo2::SignalRenderStr(unsigned int value, int _x, int _y)
 {
 	char str[30];
 
-	frameBuffer->paintBoxRel(_x, _y - sheight + 5, 60, sheight - 1, /*COL_MENUHEAD_PLUS_0*/ COL_MENUCONTENTDARK_PLUS_0);
+	frameBuffer->paintBoxRel(_x, _y - sheight + 5, 60, sheight - 1, COL_MENUCONTENTDARK_PLUS_0);
 	sprintf(str,"%6u",value);
 	g_Font[font_small]->RenderString(_x, _y + 5, 60, str, COL_MENUCONTENTDARK, 0, true);
 }
@@ -530,11 +500,6 @@ void CStreamInfo2::SignalRenderStr(unsigned int value, int _x, int _y)
 void CStreamInfo2::paint(int /*mode*/)
 {
 	const char * head_string;
-
-	width =  frameBuffer->getScreenWidth();
-	height = frameBuffer->getScreenHeight();
-	x = frameBuffer->getScreenX();
-	y = frameBuffer->getScreenY();
 	int ypos = y + 5;
 	int xpos = x + 10;
 	
@@ -548,14 +513,8 @@ void CStreamInfo2::paint(int /*mode*/)
 
 		CVFD::getInstance ()->setMode (CVFD::MODE_MENU_UTF8, head_string);
 
-		// paint backround, title pig, etc
-		//frameBuffer->paintBoxRel(0, 0, max_width, max_height, COL_MENUCONTENTDARK_PLUS_0);
-
 		g_Font[font_head]->RenderString (xpos, ypos + hheight + 1, width, head_string, COL_MENUHEAD, 0, true);	// UTF-8
 		ypos += hheight;
-
-		// paint PIG
-		//paint_pig(width - width/3 - 10, y + 10, width/3, height/3);
 
 		// Info Output
 		paint_techinfo(xpos, ypos);
@@ -564,12 +523,8 @@ void CStreamInfo2::paint(int /*mode*/)
 	} 
 	else 
 	{
-		// --  small PIG, small signal graph
-		// -- paint backround, title pig, etc.
-		//frameBuffer->paintBoxRel (0, 0, max_width, max_height, COL_MENUCONTENTDARK_PLUS_0);
-
 		// -- paint large signal graph
-		paint_signal_fe_box(x, y, width, height-100);
+		paint_signal_fe_box(x, y, width, height - 100);
 	}
 	
 }
@@ -769,6 +724,7 @@ void CStreamInfo2::paint_techinfo(int xpos, int ypos)
 		{
 			sprintf((char*) buf, "%s", _("not available"));
 		}
+		
 		g_Font[font_small]->RenderString(xpos, ypos, width*2/3-10, "Vpid:" , COL_MENUCONTENTDARK, 0, true); // UTF-8
 		g_Font[font_small]->RenderString(xpos + spaceoffset, ypos, width*2/3-10, buf, COL_MENUCONTENTDARK, 0, true); // UTF-8
 
@@ -943,13 +899,12 @@ int CStreamInfo2::ts_close()
 	return 0;
 }
 
-void CStreamInfo2::showSNR ()
+void CStreamInfo2::showSNR()
 {
 	 if(!IS_WEBTV(live_channel_id))
 	 {
 		char percent[10];
 		int barwidth = 150;
-		//uint16_t ssig, ssnr;
 		int sig, snr;
 		int posx, posy;
 		int sw;
@@ -965,9 +920,11 @@ void CStreamInfo2::showSNR ()
 			sprintf(percent, "%d%% SIG", sig);
 			sw = g_Font[font_info]->getRenderWidth (percent);
 
-			sigscale->paint(/*x + 10 - 1, yypos + (mheight/2),*/ sig);
+			sigscale->paint(sig);
 
 			posx = posx + barwidth + 3;
+			
+			// FIXME:
 			frameBuffer->paintBoxRel(posx, posy -1, sw, mheight-8, COL_MENUCONTENTDARK_PLUS_0);
 			g_Font[font_info]->RenderString (posx+2, posy + mheight-5, sw, percent, COL_MENUCONTENTDARK);
 		}
@@ -979,14 +936,13 @@ void CStreamInfo2::showSNR ()
 			sprintf(percent, "%d%% SNR", snr);
 			sw = g_Font[font_info]->getRenderWidth (percent);
 
-			snrscale->paint(/*x + 10 - 1, yypos + mheight + 4 + 2,*/ snr);
+			snrscale->paint(snr);
 
+			// FIXME:
 			posx = posx + barwidth + 3;
 			frameBuffer->paintBoxRel(posx, posy - 1, sw, mheight-8, COL_MENUCONTENTDARK_PLUS_0, 0, true);
 			g_Font[font_info]->RenderString (posx + 2, posy + mheight-5, sw, percent, COL_MENUCONTENTDARK, 0, true);
 		}
 	}
 }
-
-
 

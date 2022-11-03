@@ -40,7 +40,6 @@ class CStreamInfo2 : public CMenuTarget
 		
 		//
 		CWidget *widget;
-		CCPig *pig;
 		
 		//
 		int x;
@@ -49,8 +48,8 @@ class CStreamInfo2 : public CMenuTarget
 		int height;
 		int hheight,iheight,sheight; 	// head/info/small font height
 
-		int  max_height;	// Frambuffer 0.. max
-		int  max_width;	
+		//int  max_height;	// Frambuffer 0.. max
+		//int  max_width;	
 
 		int yypos;
 		int  paint_mode;
@@ -93,7 +92,6 @@ class CStreamInfo2 : public CMenuTarget
 		int ts_close();
 
 		void paint(int mode);
-		//void paint_pig(int x, int y, int w, int h);
 		void paint_techinfo(int x, int y);
 		void paint_signal_fe_box(int x, int y, int w, int h);
 		void paint_signal_fe(struct bitrate rate, struct feSignal s);
