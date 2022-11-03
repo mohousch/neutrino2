@@ -39,7 +39,6 @@ class CImageInfo : public CMenuTarget
 		
 		//
 		CWidget *widget;
-		CCPig *pig;
 		
 		//
 		int x;

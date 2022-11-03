@@ -44,7 +44,6 @@ CImageInfo::CImageInfo()
 	
 	//
 	widget = NULL;
-	pig = NULL;
 
 	font_head   = SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME;
 	font_small  = SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL;
@@ -65,7 +64,6 @@ CImageInfo::CImageInfo()
 CImageInfo::~CImageInfo()
 { 
 #ifdef TESTING
-	delete pig;	
 	delete widget;
 #endif
 }
@@ -86,10 +84,6 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 	{
 		widget = new CWidget(x, y, width, height);
 		widget->paintMainFrame(true);
-		
-		pig = new CCPig(x + width - BORDER_RIGHT - width/3, y + 10, width/3, height/3);
-		
-		widget->addCCItem(pig);
 	}
 	
 	// recalculate

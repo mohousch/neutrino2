@@ -64,6 +64,10 @@ extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 CStreamInfo2::CStreamInfo2()
 {
 	frameBuffer = CFrameBuffer::getInstance ();
+	
+	//
+	widget = NULL;
+	pig = NULL;
 
 	font_head = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
 	font_info = SNeutrinoSettings::FONT_TYPE_MENU;
@@ -105,7 +109,7 @@ CStreamInfo2::CStreamInfo2()
 
 CStreamInfo2::~CStreamInfo2 ()
 {
-	videoDecoder->Pig(-1, -1, -1, -1);
+	//videoDecoder->Pig(-1, -1, -1, -1);
 }
 
 int CStreamInfo2::exec(CMenuTarget * parent, const std::string&)
@@ -114,9 +118,33 @@ int CStreamInfo2::exec(CMenuTarget * parent, const std::string&)
 
 	if (parent)
 		parent->hide();
+		
+	//
+	if (CNeutrinoApp::getInstance()->widget_exists("streaminfo"))
+	{
+		widget = CNeutrinoApp::getInstance()->getWidget("streaminfo");
+	}
+	else
+	{
+		widget = new CWidget(x, y, width, height);
+		widget->name = "streaminfo";
+		widget->paintMainFrame(true);
+		
+		pig = new CCPig(x + width - BORDER_RIGHT - width/3, y + 10, width/3, height/3);
+		
+		widget->addCCItem(pig);
+	}
+	
+	// recalculate
+	if (widget)
+	{
+		x = widget->getWindowsPos().iX;
+		y = widget->getWindowsPos().iY;
+		width = widget->getWindowsPos().iWidth;
+		height = widget->getWindowsPos().iHeight;
+	}
 
 	paint(paint_mode);
-
 	doSignalStrengthLoop();
 	
 	CFrameBuffer::getInstance()->blit();
@@ -219,13 +247,13 @@ int CStreamInfo2::doSignalStrengthLoop()
 						break;
 					}
 					
-					/* Bitrate */
+					// Bitrate
 					//g_Font[font_info]->RenderString (dx1+offset_tmp+((sw)*i), yypos+(dheight*4), offset, tmp_str, COL_MENUCONTENTDARK, 0, true);
 					
 					sprintf(currate, "%5llu.%03llu", tmp_rate / 1000ULL, tmp_rate % 1000ULL);
 					frameBuffer->paintBoxRel (dx1+offset+5+((sw+mm)*i), yypos+(dheight*3), sw, dheight, /*COL_MENUHEAD_PLUS_0*/ COL_MENUCONTENTDARK_PLUS_0);
 					
-					/* bitrate values max/min */
+					// bitrate values max/min
 					//g_Font[font_info]->RenderString (dx1+offset+10+((sw+mm)*i), yypos+(dheight*4), sw - 10, currate, COL_MENUCONTENTDARK);
 				}
 			}
@@ -233,7 +261,9 @@ int CStreamInfo2::doSignalStrengthLoop()
 			if(snrscale && sigscale)
 				showSNR();
 		}
+		
 		rate.short_average = abit_s;
+		
 		if (signal.max_ber < signal.ber) 
 		{
 			signal.max_ber = signal.ber;
@@ -283,6 +313,7 @@ int CStreamInfo2::doSignalStrengthLoop()
 			paint(paint_mode);
 			continue;
 		}
+		
 		// -- any key --> abort
 		if (msg <= RC_MaxRC) 
 		{
@@ -316,13 +347,14 @@ int CStreamInfo2::doSignalStrengthLoop()
 
 void CStreamInfo2::hide ()
 {
-  	videoDecoder->Pig(-1, -1, -1, -1);
+  	//videoDecoder->Pig(-1, -1, -1, -1);
+  	//frameBuffer->paintBackgroundBoxRel(0, 0, max_width, max_height);
+	//frameBuffer->blit();
 	
-  	frameBuffer->paintBackgroundBoxRel(0, 0, max_width, max_height);
-	
-	frameBuffer->blit();
+	widget->hide();
 }
 
+/*
 void CStreamInfo2::paint_pig(int _x, int _y, int w, int h)
 {
   	frameBuffer->paintBackgroundBoxRel (_x, _y, w, h);	
@@ -340,6 +372,7 @@ void CStreamInfo2::paint_pig(int _x, int _y, int w, int h)
 	videoDecoder->Pig( _x, _y, w, h );
 #endif
 }
+*/
 
 void CStreamInfo2::paint_signal_fe_box(int _x, int _y, int w, int h)
 {
@@ -504,6 +537,9 @@ void CStreamInfo2::paint(int /*mode*/)
 	y = frameBuffer->getScreenY();
 	int ypos = y + 5;
 	int xpos = x + 10;
+	
+	//
+	widget->paint();
 
 	if (paint_mode == 0) 
 	{
@@ -513,13 +549,13 @@ void CStreamInfo2::paint(int /*mode*/)
 		CVFD::getInstance ()->setMode (CVFD::MODE_MENU_UTF8, head_string);
 
 		// paint backround, title pig, etc
-		frameBuffer->paintBoxRel(0, 0, max_width, max_height, COL_MENUCONTENTDARK_PLUS_0);
+		//frameBuffer->paintBoxRel(0, 0, max_width, max_height, COL_MENUCONTENTDARK_PLUS_0);
 
 		g_Font[font_head]->RenderString (xpos, ypos + hheight + 1, width, head_string, COL_MENUHEAD, 0, true);	// UTF-8
 		ypos += hheight;
 
 		// paint PIG
-		paint_pig(width - width/3 - 10, y + 10, width/3, height/3);
+		//paint_pig(width - width/3 - 10, y + 10, width/3, height/3);
 
 		// Info Output
 		paint_techinfo(xpos, ypos);
@@ -530,7 +566,7 @@ void CStreamInfo2::paint(int /*mode*/)
 	{
 		// --  small PIG, small signal graph
 		// -- paint backround, title pig, etc.
-		frameBuffer->paintBoxRel (0, 0, max_width, max_height, COL_MENUCONTENTDARK_PLUS_0);
+		//frameBuffer->paintBoxRel (0, 0, max_width, max_height, COL_MENUCONTENTDARK_PLUS_0);
 
 		// -- paint large signal graph
 		paint_signal_fe_box(x, y, width, height-100);
