@@ -762,7 +762,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 				
 				if ( epg_done!= -1 ) 
 				{
-					int pbx = cFrameBox.iX + 10 + widthl + 10 + ((cFrameBox.iWidth - TIMESCALE_W- 4 - widthr - widthl - 10 - 10 - 20)>>1);
 					timescale->reset();
 					timescale->paint(epg_done);
 				}
@@ -781,9 +780,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 				case RC_left:
 					if (prev_id != 0)
 					{
-						//cLeftFWindow.setColor(COL_MENUCONTENT_PLUS_3);
-						//cLeftFWindow.paint();
-
 						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningBox.iX + 10, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthr, "<", COL_MENUCONTENT + 3);
 
 						show(channel_id, prev_id, &prev_zeit, false);
@@ -793,9 +789,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 				case RC_right:
 					if (next_id != 0)
 					{
-						//cRightFWindow.setColor(COL_MENUCONTENT_PLUS_3);
-						//cRightFWindow.paint();
-
 						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningBox.iX + cFollowScreeningBox.iWidth - 10 - widthr, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthr, ">", COL_MENUCONTENT + 3);
 
 						show(channel_id, next_id, &next_zeit, false);
@@ -932,9 +925,10 @@ bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGD
 void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* startzeit, bool clear)
 {
 	if(clear)
+	{
 		epgBuffer.clear();
-	
-	epgData.title.clear();
+		epgData.title.clear();
+	}
 
 	bool res;
 	if ( id != 0 )
@@ -973,6 +967,7 @@ void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* st
 		epg_end = temp;
 
 		epg_done = -1;
+		
 		if (( time(NULL)- (epgData.epg_times).startzeit )>= 0 )
 		{
 			unsigned nProcentagePassed=(unsigned)((float)(time(NULL) -(epgData.epg_times).startzeit)/(float)(epgData.epg_times).dauer*100.);

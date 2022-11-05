@@ -384,7 +384,7 @@ void EpgPlus::ChannelEntry::paint (bool isSelected, time_t selectedTime)
 			{
 				if ((*bouquet->channelList)[j]->number == this->channel->number) 
 				{
-					this->footer->setBouquetChannelName(bouquet->channelList->getName (), this->channel->getName ());
+					this->footer->setBouquetChannelName(bouquet->channelList->getName(), this->channel->getName());
 	
 					bouquet = NULL;
 	
@@ -797,13 +797,13 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		neutrino_msg_t msg;
 		neutrino_msg_data_t data;
 
-		this->createChannelEntries (selectedChannelIndex);
+		this->createChannelEntries(selectedChannelIndex);
 
 		this->header->paint();
 
 		this->footer->paintButtons(buttonLabels, sizeof (buttonLabels) / sizeof (button_label));
 
-		this->paint ();
+		this->paint();
 
 		this->frameBuffer->blit();
 

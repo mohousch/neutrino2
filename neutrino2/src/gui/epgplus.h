@@ -411,9 +411,9 @@ class EpgPlus
 
 		TCChannelEventEntries::const_iterator getSelectedEvent() const;
 
-		void createChannelEntries ( int selectedChannelEntryIndex);
+		void createChannelEntries( int selectedChannelEntryIndex);
 		void paint();
-		void paintChannelEntry ( int position);
+		void paintChannelEntry( int position);
 		void hide();
 
 	//// properties
