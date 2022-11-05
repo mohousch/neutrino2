@@ -35,7 +35,7 @@ function get_channels()
 	httpTool = neutrino.CHTTPTool()
 	httpTool:setTitle("Pluto TV Channels downlaoding please wait ...")
 		
-	local obj_file = "https://i.mjh.nz/PlutoTV/all.m3u8"
+	local obj_file = "https://i.mjh.nz/PlutoTV/de.m3u8"
 	local target = neutrino.CONFIGDIR .. "/webtv/plutotv.m3u8"
 		
 	if httpTool:downloadFile(obj_file, target, 100) == true then
