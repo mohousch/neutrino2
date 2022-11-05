@@ -56,13 +56,6 @@
 
 #include <config.h>
 
-#if defined (USE_OPENGL)
-#include <ao/ao.h>
-
-static ao_device *adevice = NULL;
-static ao_sample_format sformat;
-#endif
-
 
 #if LIBAVCODEC_VERSION_MAJOR > 54
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000 // 1 second of 48khz 32bit audio
@@ -628,26 +621,6 @@ static void FFMPEGThread(Context_t *context)
 
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
 
-#if defined (USE_OPENGL)
-					int driver = ao_default_driver_id();
-
-					sformat.bits = 16;
-					sformat.channels = ((AVStream*) audioTrack->stream)->codec->channels;
-					sformat.rate = ((AVStream*) audioTrack->stream)->codec->sample_rate;
-					sformat.byte_format = AO_FMT_LITTLE;
-					sformat.matrix = 0;
-					//if (adevice)
-					//	ao_close(adevice);
-					adevice = ao_open_live(driver, &sformat, NULL);
-					ao_info *ai = ao_driver_info(driver);
-					
-					//ffmpeg_printf(10, "\nbits:%d channels:%d rate:%d\n", sformat.bits, sformat.channels, sformat.rate);
-					ffmpeg_printf(10, "libao driver: %d name '%s' short '%s' author '%s'\n", driver, ai->name, ai->short_name, ai->author);
-
-					if (ao_play(adevice, (char *)avOut.data, avOut.len) == 0)
-						ffmpeg_err("writing data to audio device failed\n");
-#else
-
 					if (audioTrack->inject_as_pcm == 1)
 					{
 						int      bytesDone = 0;
@@ -750,7 +723,6 @@ static void FFMPEGThread(Context_t *context)
 							ffmpeg_err("writing data to audio device failed\n");
 						}
 					}
-#endif
 				}
 			}
 
@@ -929,11 +901,9 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	}
 
 	// initialize ffmpeg 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	avcodec_register_all();
 	av_register_all();
-
-#if defined (USE_OPENGL)
-	ao_initialize();
 #endif
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
@@ -1148,21 +1118,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				{
 					track.duration = (double) stream->duration * av_q2d(stream->time_base) * 1000.0;
 				}
-
-#if defined (USE_OPENGL)
-				track.inject_as_pcm = 1;
-
-				AVCodec *codec = avcodec_find_decoder(stream->codec->codec_id);
-
-#if LIBAVCODEC_VERSION_MAJOR < 54
-				if(codec != NULL && !avcodec_open(stream->codec, codec))
-#else
-				if(codec != NULL && !avcodec_open2(stream->codec, codec, NULL))
-#endif					  
-					printf("AVCODEC__INIT__SUCCESS\n");
-				else
-					printf("AVCODEC__INIT__FAILED\n");
-#endif
 
 				// pcm
 				if(!strncmp(encoding, "A_IPCM", 6))
@@ -1525,13 +1480,6 @@ static int container_ffmpeg_stop(Context_t *context)
 	}
 
 	isContainerRunning = 0;
-
-#if defined (USE_OPENGL)
-	//if (adevice)
-	ao_close(adevice);
-	adevice = NULL;
-	ao_shutdown();
-#endif
 
 	releaseMutex(FILENAME, __FUNCTION__,__LINE__);
 
