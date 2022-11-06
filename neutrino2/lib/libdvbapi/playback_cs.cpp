@@ -527,11 +527,10 @@ bool cPlayback::Open()
 	{
 		player->output->Command(player,OUTPUT_ADD, (void*)"audio");
 		player->output->Command(player,OUTPUT_ADD, (void*)"video");		
-		//player->output->Command(player,OUTPUT_ADD, (void*)"subtitle");		
+		player->output->Command(player,OUTPUT_ADD, (void*)"subtitle");		
 	}
 
 	// subtitle
-	/*
 	SubtitleOutputDef_t out;
 
 	out.screen_width = CFrameBuffer::getInstance()->getScreenWidth();
@@ -542,7 +541,6 @@ bool cPlayback::Open()
 	out.shareFramebuffer = 1;
     
 	player->output->subtitle->Command(player, (OutputCmd_t)OUTPUT_SET_SUBTITLE_OUTPUT, (void*) &out);
-	*/
 #endif
 
 	return true;

@@ -4,7 +4,8 @@
 #include <stdio.h>
 
 
-typedef enum { 
+typedef enum 
+{ 
 	CONTAINER_INIT, 
 	CONTAINER_ADD, 
 	CONTAINER_CAPABILITIES, 
@@ -21,7 +22,8 @@ typedef enum {
 	CONTAINER_DATA
 } ContainerCmd_t;
 
-typedef struct Container_s {
+typedef struct Container_s 
+{
 	char * Name;
 	int (* Command) (/*Context_t*/void  *, ContainerCmd_t, void *);
 	char ** Capabilities;
@@ -31,12 +33,14 @@ typedef struct Container_s {
 // ffmpeg
 extern Container_t FFMPEGContainer;
 
-static Container_t * AvailableContainer[] = {
+static Container_t * AvailableContainer[] = 
+{
 	&FFMPEGContainer,
 	NULL
 };
 
-typedef struct ContainerHandler_s {
+typedef struct ContainerHandler_s 
+{
 	char * Name;
 	Container_t * selectedContainer;    
 	Container_t * textSrtContainer;

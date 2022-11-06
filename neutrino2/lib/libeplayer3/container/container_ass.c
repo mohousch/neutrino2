@@ -51,7 +51,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-//#define ASS_DEBUG
+#define ASS_DEBUG
 
 #ifdef ASS_DEBUG
 
@@ -81,25 +81,26 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* Types                         */
 /* ***************************** */
 
-typedef struct ass_s {
-    unsigned char* data;
-    int            len;
-    unsigned char* extradata;
-    int            extralen;
+typedef struct ass_s 
+{
+	unsigned char* data;
+	int            len;
+	unsigned char* extradata;
+	int            extralen;
     
-    long long int  pts;
-    float          duration;
+	long long int  pts;
+	float          duration;
 } ass_t;
 
 typedef struct region_s
 {
-    unsigned int x;
-    unsigned int y;
-    unsigned int w;
-    unsigned int h;
-    time_t       undisplay;
+	unsigned int x;
+	unsigned int y;
+	unsigned int w;
+	unsigned int h;
+	time_t       undisplay;
     
-    struct region_s* next;
+	struct region_s* next;
 } region_t;
 
 /* ***************************** */
@@ -141,31 +142,35 @@ static region_t* firstRegion = NULL;
 
 void ass_msg_callback(int level, const char *format, va_list va, void *ctx)
 {
-    int n;
-    char *str;
-    va_list dst;
+	int n;
+	char *str;
+	va_list dst;
 
-    va_copy(dst, va);
-    n = vsnprintf(NULL, 0, format, va);
-    if (n > 0 && (str = malloc(n + 1))) {
-        vsnprintf(str, n + 1, format, dst);
-        ass_printf(100, "%s\n", str);
-        free(str);
-    }
+	va_copy(dst, va);
+	n = vsnprintf(NULL, 0, format, va);
+	    
+	if (n > 0 && (str = malloc(n + 1))) 
+	{
+		vsnprintf(str, n + 1, format, dst);
+		ass_printf(100, "%s\n", str);
+		free(str);
+    	}
 }
 
-static void getMutex(int line) {
-    ass_printf(150, "%d requesting mutex\n", line);
+static void getMutex(int line) 
+{
+	ass_printf(150, "%d requesting mutex\n", line);
 
-    pthread_mutex_lock(&mutex);
+	pthread_mutex_lock(&mutex);
 
-    ass_printf(150, "%d received mutex\n", line);
+	ass_printf(150, "%d received mutex\n", line);
 }
 
-static void releaseMutex(int line) {
-    pthread_mutex_unlock(&mutex);
+static void releaseMutex(int line) 
+{
+	pthread_mutex_unlock(&mutex);
 
-    ass_printf(150, "%d released mutex\n", line);
+	ass_printf(150, "%d released mutex\n", line);
 }
 
 /* ********************************* */
@@ -333,7 +338,8 @@ void storeRegion(unsigned int x, unsigned int y, unsigned int w, unsigned int h,
 /* Worker Thread                */
 /* **************************** */
 
-static void ASSThread(Context_t *context) {
+static void ASSThread(Context_t *context) 
+{
     Writer_t* writer;
     
     ass_printf(10, "\n");
@@ -353,17 +359,20 @@ static void ASSThread(Context_t *context) {
         ass_err("no framebuffer writer found!\n");
     }
 
-    while ( context && context->playback && context->playback->isPlaying ) {
+    while ( context && context->playback && context->playback->isPlaying ) 
+    {
 
         //IF MOVIE IS PAUSED, WAIT
-        if (context->playback->isPaused) {
+        if (context->playback->isPaused) 
+        {
             ass_printf(20, "paused\n");
 
             usleep(100000);
             continue;
         }
 
-        if (context->playback->isSeeking) {
+        if (context->playback->isSeeking) 
+        {
             ass_printf(10, "seeking\n");
 
             usleep(100000);
@@ -650,7 +659,8 @@ int container_ass_process_data(Context_t *context, SubtitleData_t* data)
     return cERR_CONTAINER_ASS_NO_ERROR;
 }
 
-static int container_ass_stop(Context_t *context) {
+static int container_ass_stop(Context_t *context) 
+{
     int ret = cERR_CONTAINER_ASS_NO_ERROR;
     int wait_time = 20;
     Writer_t* writer;
@@ -746,7 +756,8 @@ static int container_ass_switch_subtitle(Context_t* context, int* arg)
             hasPlayThreadStarted = 1;
         }
     }
-    else {
+    else 
+    {
         ass_printf(10, "A thread already exists!\n");
 
         ret = cERR_CONTAINER_ASS_ERROR;
@@ -781,27 +792,27 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
 
     switch(command)
     {
-    case CONTAINER_INIT:  {
-        ret = container_ass_init(context);
-        break;
-    }
-    case CONTAINER_STOP:  {
-        ret = container_ass_stop(context);
-        break;
-    }
-    case CONTAINER_SWITCH_SUBTITLE: {
-        ret = container_ass_switch_subtitle(context, (int*) argument);
-        break;
-    }
-    case CONTAINER_DATA: {
-        SubtitleData_t* data = (SubtitleData_t*) argument;
-        ret = container_ass_process_data(context, data);
-        break;
-    }
-    default:
-        ass_err("ContainerCmd %d not supported!\n", command);
-        ret = cERR_CONTAINER_ASS_ERROR;
-        break;
+	    case CONTAINER_INIT:  {
+		ret = container_ass_init(context);
+		break;
+	    }
+	    case CONTAINER_STOP:  {
+		ret = container_ass_stop(context);
+		break;
+	    }
+	    case CONTAINER_SWITCH_SUBTITLE: {
+		ret = container_ass_switch_subtitle(context, (int*) argument);
+		break;
+	    }
+	    case CONTAINER_DATA: {
+		SubtitleData_t* data = (SubtitleData_t*) argument;
+		ret = container_ass_process_data(context, data);
+		break;
+	    }
+	    default:
+		ass_err("ContainerCmd %d not supported!\n", command);
+		ret = cERR_CONTAINER_ASS_ERROR;
+		break;
     }
 
     ass_printf(50, "exiting with value %d\n", ret);
@@ -811,9 +822,11 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
 
 static char *ASS_Capabilities[] = {"ass", NULL };
 
-Container_t ASSContainer = {
+Container_t ASSContainer = 
+{
     "ASS",
     &Command,
     ASS_Capabilities,
 
 };
+

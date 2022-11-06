@@ -44,7 +44,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-//#define SRT_DEBUG
+#define SRT_DEBUG
 
 #ifdef SRT_DEBUG
 
@@ -75,7 +75,8 @@ static const char FILENAME[] = __FILE__;
 /* Types                         */
 /* ***************************** */
 
-typedef struct {
+typedef struct 
+{
     char * File;
     int Id;
 } SrtTrack_t;
@@ -133,7 +134,8 @@ void data_to_manager(Context_t *context, char* Text, unsigned long long int Pts,
 /* Worker Thread                 */
 /* ***************************** */
 
-static void* SrtSubtitleThread(void *data) {
+static void* SrtSubtitleThread(void *data) 
+{
     int pos = 0;
     char  Data[MAXLINELENGTH];
     unsigned long long int Pts = 0;
@@ -144,7 +146,8 @@ static void* SrtSubtitleThread(void *data) {
 
     srt_printf(10, "\n");
 
-    while(context && context->playback && context->playback->isPlaying && fsub && fgets(Data, MAXLINELENGTH, fsub)) {
+    while(context && context->playback && context->playback->isPlaying && fsub && fgets(Data, MAXLINELENGTH, fsub)) 
+    {
         srt_printf(20, "pos=%d\n", pos);
 
         if(pos == 0) 
@@ -152,7 +155,8 @@ static void* SrtSubtitleThread(void *data) {
             if(Data[0] == '\n' || Data[0] == '\0' || Data[0] == 13 /* ^M */) 
                 continue; /* Empty line not allowed here */
             pos++;
-        } else if(pos == 1) 
+        } 
+        else if(pos == 1) 
         {
             int ret, horIni, minIni, secIni, milIni, horFim, minFim, secFim, milFim;
 
@@ -213,21 +217,25 @@ static void* SrtSubtitleThread(void *data) {
 /* Functions                     */
 /* ***************************** */
 
-static void SrtManagerAdd(Context_t  *context, SrtTrack_t track) {
+static void SrtManagerAdd(Context_t  *context, SrtTrack_t track) 
+{
     srt_printf(10, "%s %d\n",track.File, track.Id);
 
-    if (Tracks == NULL) {
+    if (Tracks == NULL) 
+    {
         Tracks = malloc(sizeof(SrtTrack_t) * TRACKWRAP);
     }
 
-    if (TrackCount < TRACKWRAP) {
+    if (TrackCount < TRACKWRAP) 
+    {
         Tracks[TrackCount].File       = strdup(track.File);
         Tracks[TrackCount].Id         = track.Id;
         TrackCount++;
     }
 }
 
-static char ** SrtManagerList(Context_t  *context) {
+static char ** SrtManagerList(Context_t  *context) 
+{
     char ** tracklist = NULL;
 
     srt_printf(10, "\n");
@@ -238,7 +246,8 @@ static char ** SrtManagerList(Context_t  *context) {
 
         tracklist = malloc(sizeof(char *) * ((TrackCount*2) + 1));
 
-        for (i = 0, j = 0; i < TrackCount; i++, j+=2) {
+        for (i = 0, j = 0; i < TrackCount; i++, j+=2) 
+        {
 
             sprintf(help, "%d", Tracks[i].Id);
             tracklist[j]    = strdup(help);
@@ -250,13 +259,16 @@ static char ** SrtManagerList(Context_t  *context) {
     return tracklist;
 }
 
-static void SrtManagerDel(Context_t * context) {
+static void SrtManagerDel(Context_t * context) 
+{
     int i = 0;
 
     srt_printf(10, "\n");
 
-    if(Tracks != NULL) {
-        for (i = 0; i < TrackCount; i++) {
+    if(Tracks != NULL) 
+    {
+        for (i = 0; i < TrackCount; i++) 
+        {
             if (Tracks[i].File != NULL)
                 free(Tracks[i].File);
             Tracks[i].File = NULL;
@@ -270,7 +282,8 @@ static void SrtManagerDel(Context_t * context) {
 }
 
 
-static int SrtGetSubtitle(Context_t  *context, char * Filename) {
+static int SrtGetSubtitle(Context_t  *context, char * Filename) 
+{
     struct dirent *dirzeiger;
     DIR  *  dir;
     int     i                    = TEXTSRTOFFSET;
@@ -383,10 +396,12 @@ static int SrtGetSubtitle(Context_t  *context, char * Filename) {
     return cERR_SRT_NO_ERROR;
 }
 
-static int SrtOpenSubtitle(Context_t *context, int trackid) {
+static int SrtOpenSubtitle(Context_t *context, int trackid) 
+{
     srt_printf(10, "\n");
 
-    if(trackid < TEXTSRTOFFSET || (trackid % TEXTSRTOFFSET) >= TrackCount) {
+    if(trackid < TEXTSRTOFFSET || (trackid % TEXTSRTOFFSET) >= TrackCount) 
+    {
         srt_err("trackid not for us\n");
         return cERR_SRT_ERROR;
     }
@@ -407,7 +422,8 @@ static int SrtOpenSubtitle(Context_t *context, int trackid) {
     return cERR_SRT_NO_ERROR;
 }
 
-static int SrtCloseSubtitle(Context_t *context) {
+static int SrtCloseSubtitle(Context_t *context) 
+{
     srt_printf(10, "\n");
 
     if(fsub)
@@ -422,7 +438,8 @@ static int SrtCloseSubtitle(Context_t *context) {
 }
 
 
-static int SrtSwitchSubtitle(Context_t *context, int* arg) {
+static int SrtSwitchSubtitle(Context_t *context, int* arg) 
+{
     int ret = cERR_SRT_NO_ERROR;
     
     srt_printf(10, "arg:%d\n", *arg);
@@ -441,7 +458,8 @@ static int SrtSwitchSubtitle(Context_t *context, int* arg) {
     return ret;
 }
 
-static int SrtDel(Context_t *context) {
+static int SrtDel(Context_t *context) 
+{
     int ret = cERR_SRT_NO_ERROR;
   
     srt_printf(10, "\n");
@@ -452,29 +470,30 @@ static int SrtDel(Context_t *context) {
     return ret;
 }
 
-static int Command(void  *_context, ContainerCmd_t command, void * argument) {
+static int Command(void  *_context, ContainerCmd_t command, void * argument) 
+{
     Context_t  *context = (Context_t*) _context;
     int ret = cERR_SRT_NO_ERROR;
     
     srt_printf(10, "\n");
 
     switch(command) {
-    case CONTAINER_INIT: {
-        char * filename = (char *)argument;
-        ret = SrtGetSubtitle(context, filename);
-        break;
-    }
-    case CONTAINER_DEL: {
-        ret = SrtDel(context);
-        break;
-    }
-    case CONTAINER_SWITCH_SUBTITLE: {
-        ret = SrtSwitchSubtitle(context, (int*) argument);
-        break;
-    }
-    default:
-        srt_err("ConatinerCmd not supported! %d\n", command);
-        break;
+	    case CONTAINER_INIT: {
+		char * filename = (char *)argument;
+		ret = SrtGetSubtitle(context, filename);
+		break;
+	    }
+	    case CONTAINER_DEL: {
+		ret = SrtDel(context);
+		break;
+	    }
+	    case CONTAINER_SWITCH_SUBTITLE: {
+		ret = SrtSwitchSubtitle(context, (int*) argument);
+		break;
+	    }
+	    default:
+		srt_err("ConatinerCmd not supported! %d\n", command);
+		break;
     }
 
     srt_printf(10, "ret = %d\n", ret);
@@ -484,8 +503,10 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument) {
 
 static char *SrtCapabilities[] = { "srt", NULL };
 
-Container_t SrtContainer = {
+Container_t SrtContainer = 
+{
     "SRT",
     &Command,
     SrtCapabilities,
 };
+

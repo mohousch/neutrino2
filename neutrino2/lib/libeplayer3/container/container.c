@@ -89,7 +89,6 @@ static int selectContainer(Context_t  *context, char * extension)
 	return ret;
 }
 
-
 static int Command(void  *_context, ContainerCmd_t command, void * argument) 
 {
 	Context_t* context = (Context_t*) _context;
@@ -129,11 +128,13 @@ extern Container_t SrtContainer;
 extern Container_t SsaContainer;
 //extern Container_t ASSContainer;
 
-ContainerHandler_t ContainerHandler = {
+ContainerHandler_t ContainerHandler = 
+{
 	"Output",
 	NULL,   
 	&SrtContainer,
 	&SsaContainer,
-	/*&ASSContainer*/NULL,    
+	NULL, //&ASSContainer,    
 	Command,
 };
+

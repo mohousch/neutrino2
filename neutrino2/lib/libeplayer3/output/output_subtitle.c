@@ -42,7 +42,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-//#define SUBTITLE_DEBUG
+#define SUBTITLE_DEBUG
 
 #ifdef SUBTITLE_DEBUG
 
@@ -80,7 +80,8 @@ Number, Style, Name,, MarginL, MarginR, MarginV, Effect,, Text
 /* Types                         */
 /* ***************************** */
 
-struct sub_t {
+struct sub_t 
+{
     char *                 text;
     unsigned long long int pts;
     unsigned long int      milliDuration;
@@ -118,7 +119,8 @@ static unsigned char* destination      = NULL;
 /* ***************************** */
 /* MISC Functions                */
 /* ***************************** */
-static void getMutex(int line) {
+static void getMutex(int line) 
+{
     subtitle_printf(100, "%d requesting mutex\n", line);
 
     pthread_mutex_lock(&mutex);
@@ -126,13 +128,15 @@ static void getMutex(int line) {
     subtitle_printf(100, "%d received mutex\n", line);
 }
 
-static void releaseMutex(int line) {
+static void releaseMutex(int line) 
+{
     pthread_mutex_unlock(&mutex);
 
     subtitle_printf(100, "%d released mutex\n", line);
 }
 
-void replace_all(char ** string, char * search, char * replace) {
+void replace_all(char ** string, char * search, char * replace) 
+{
     int len = 0;
     char * ptr = NULL;
     char tempString[512];
@@ -151,7 +155,8 @@ void replace_all(char ** string, char * search, char * replace) {
 
     free(*string);
 
-    while ((ptr = strstr(tempString, search)) != NULL) {
+    while ((ptr = strstr(tempString, search)) != NULL) 
+    {
         len  = ptr - tempString;
         strncpy(newString, tempString, len);
         newString[len] = '\0';
@@ -172,7 +177,8 @@ void replace_all(char ** string, char * search, char * replace) {
 
 }
 
-int subtitle_ParseASS (char **Line) {
+int subtitle_ParseASS (char **Line) 
+{
     char* Text;
     int   i;
     char* ptr1;
@@ -212,7 +218,8 @@ int subtitle_ParseASS (char **Line) {
     return cERR_SUBTITLE_NO_ERROR;
 }
 
-int subtitle_ParseSRT (char **Line) {
+int subtitle_ParseSRT (char **Line) 
+{
 
     if ((Line == NULL) || (*Line == NULL))
     {
@@ -239,7 +246,8 @@ int subtitle_ParseSRT (char **Line) {
     return cERR_SUBTITLE_NO_ERROR;
 }
 
-int subtitle_ParseSSA (char **Line) {
+int subtitle_ParseSSA (char **Line) 
+{
 
     if ((Line == NULL) || (*Line == NULL))
     {
@@ -266,7 +274,8 @@ int subtitle_ParseSSA (char **Line) {
     return cERR_SUBTITLE_NO_ERROR;
 }
 
-void addSub(Context_t  *context, char * text, unsigned long long int pts, unsigned long int milliDuration) {
+void addSub(Context_t  *context, char * text, unsigned long long int pts, unsigned long int milliDuration) 
+{
     int count = 20;
     
     subtitle_printf(50, "index %d\n", writePointer);
@@ -295,7 +304,8 @@ void addSub(Context_t  *context, char * text, unsigned long long int pts, unsign
         return;
     }
     
-    while (subPuffer[writePointer].text != NULL) {
+    while (subPuffer[writePointer].text != NULL) 
+    {
         //List is full, wait till we got some free space
 
         if(context && context->playback && !context->playback->isPlaying)
@@ -332,7 +342,8 @@ void addSub(Context_t  *context, char * text, unsigned long long int pts, unsign
         readPointer = 0;
         writePointer = 0;
 
-        for (i = 0; i < PUFFERSIZE; i++) {
+        for (i = 0; i < PUFFERSIZE; i++) 
+        {
             if (subPuffer[i].text != NULL)
                free(subPuffer[i].text);
             subPuffer[i].text          = NULL;
@@ -364,8 +375,8 @@ void addSub(Context_t  *context, char * text, unsigned long long int pts, unsign
     subtitle_printf(10, "<\n");
 }
 
-int getNextSub(char ** text, unsigned long long int * pts, long int * milliDuration) {
-
+int getNextSub(char ** text, unsigned long long int * pts, long int * milliDuration) 
+{
     subtitle_printf(50, "index %d\n", readPointer);
 
     if (text == NULL)
@@ -422,7 +433,8 @@ int getNextSub(char ** text, unsigned long long int * pts, long int * milliDurat
 /* Worker Thread                */
 /* **************************** */
 
-static void* SubtitleThread(void* data) {
+static void* SubtitleThread(void* data) 
+{
     Context_t *context = (Context_t*) data;
     char *                  subText             = NULL;
     long int                subMilliDuration    = 0;
@@ -431,7 +443,8 @@ static void* SubtitleThread(void* data) {
 
     subtitle_printf(10, "\n");
 
-    while ( context->playback->isCreationPhase ) {
+    while ( context->playback->isCreationPhase ) 
+    {
         subtitle_err("Thread waiting for end of init phase...\n");
         usleep(1000);
     }
@@ -440,7 +453,8 @@ static void* SubtitleThread(void* data) {
 
     while ( context &&
             context->playback &&
-            context->playback->isPlaying) {
+            context->playback->isPlaying) 
+   {
 
         int curtrackid = -1;
         
@@ -449,8 +463,10 @@ static void* SubtitleThread(void* data) {
 
         subtitle_printf(50, "curtrackid %d\n", curtrackid);
 
-        if (curtrackid >= 0) {
-            if (getNextSub(&subText, &subPts, &subMilliDuration) != 0) {
+        if (curtrackid >= 0) 
+        {
+            if (getNextSub(&subText, &subPts, &subMilliDuration) != 0) 
+            {
                 usleep(500000);
                 continue;
             }
@@ -459,7 +475,8 @@ static void* SubtitleThread(void* data) {
                 context->playback->Command(context, PLAYBACK_PTS, &Pts);
             else return NULL;
 
-            if(Pts > subPts) {
+            if(Pts > subPts) 
+            {
                 subtitle_printf(10,"subtitle is to late, ignoring\n");
                 if(subText != NULL)
                     free(subText);
@@ -471,7 +488,8 @@ static void* SubtitleThread(void* data) {
             while ( context &&
                     context->playback &&
                     context->playback->isPlaying &&
-                    Pts < subPts) {
+                    Pts < subPts) 
+            {
 
                 unsigned long int diff = subPts - Pts;
                 diff = (diff*1000)/90.0;
@@ -521,7 +539,8 @@ static void* SubtitleThread(void* data) {
 /* Functions                     */
 /* ***************************** */
 
-static int Write(void* _context, void *data) {
+static int Write(void* _context, void *data) 
+{
     Context_t  * context = (Context_t  *) _context;
     char * Encoding = NULL;
     char * Text;
@@ -629,7 +648,8 @@ static int subtitle_Open(context) {
     return cERR_SUBTITLE_NO_ERROR;
 }
 
-static int subtitle_Close(Context_t* context) {
+static int subtitle_Close(Context_t* context) 
+{
     int i;
 
     subtitle_printf(10, "\n");
@@ -640,7 +660,8 @@ static int subtitle_Close(Context_t* context) {
     readPointer = 0;
     writePointer = 0;
 
-    for (i = 0; i < PUFFERSIZE; i++) {
+    for (i = 0; i < PUFFERSIZE; i++) 
+    {
         if (subPuffer[i].text != NULL)
            free(subPuffer[i].text);
 
@@ -658,7 +679,8 @@ static int subtitle_Close(Context_t* context) {
     return cERR_SUBTITLE_NO_ERROR;
 }
 
-static int subtitle_Play(Context_t* context) {
+static int subtitle_Play(Context_t* context) 
+{
     subtitle_printf(10, "\n");
 
     if (hasThreadStarted == 0)
@@ -690,18 +712,21 @@ static int subtitle_Play(Context_t* context) {
     return cERR_SUBTITLE_NO_ERROR;
 }
 
-static int subtitle_Stop(context) {
+static int subtitle_Stop(context) 
+{
     int wait_time = 20;
     int i;
     
     subtitle_printf(10, "\n");
 
-    while ( (hasThreadStarted != 0) && (--wait_time) > 0 ) {
+    while ( (hasThreadStarted != 0) && (--wait_time) > 0 ) 
+    {
         subtitle_printf(10, "Waiting for subtitle thread to terminate itself, will try another %d times\n", wait_time);
         usleep(100000);
     }
 
-    if (wait_time == 0) {
+    if (wait_time == 0) 
+    {
         subtitle_err("Timeout waiting for thread!\n");
 
         return cERR_SUBTITLE_ERROR;
@@ -719,7 +744,8 @@ static int subtitle_Stop(context) {
     readPointer = 0;
     writePointer = 0;
 
-    for (i = 0; i < PUFFERSIZE; i++) {
+    for (i = 0; i < PUFFERSIZE; i++) 
+    {
         if (subPuffer[i].text != NULL)
            free(subPuffer[i].text);
 
@@ -749,82 +775,83 @@ void subtitle_SignalConnectBuffer(void* data)
     clientData = data;
 }
 
-static int Command(void  *_context, OutputCmd_t command, void * argument) {
+static int Command(void  *_context, OutputCmd_t command, void * argument) 
+{
     Context_t  *context = (Context_t*) _context;
     int ret = cERR_SUBTITLE_NO_ERROR;
 
     subtitle_printf(50, "%d\n", command);
 
     switch(command) {
-    case OUTPUT_OPEN: {
-        ret = subtitle_Open(context);
-        break;
-    }
-    case OUTPUT_CLOSE: {
-        ret = subtitle_Close(context);
-        break;
-    }
-    case OUTPUT_PLAY: {
-        ret = subtitle_Play(context);
-        break;
-    }
-    case OUTPUT_STOP: {
-        ret = subtitle_Stop(context);
-        break;
-    }
-    case OUTPUT_SWITCH: {
-        subtitle_err("Subtitle Switch not implemented\n");
-        ret = cERR_SUBTITLE_ERROR;
-        break;
-    }
-    case OUTPUT_GET_SUBTITLE_OUTPUT: {
-        SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
-        out->screen_width = screen_width;
-        out->screen_height = screen_height;
-        out->shareFramebuffer = shareFramebuffer;
-        out->framebufferFD = framebufferFD;
-        out->destination = destination;
-        out->destStride = destStride;
-        break;
-    }
-    case OUTPUT_SET_SUBTITLE_OUTPUT: {
-        SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
-        screen_width = out->screen_width;
-        screen_height = out->screen_height;
-        shareFramebuffer = out->shareFramebuffer;
-        framebufferFD = out->framebufferFD;
-        destination = out->destination;
-        destStride = out->destStride;
-        break;
-    }
-    case OUTPUT_SUBTITLE_REGISTER_FUNCTION: {
-        subtitle_SignalConnect(argument);
-        break;
-    }
-    case OUTPUT_SUBTITLE_REGISTER_BUFFER: {
-        subtitle_SignalConnectBuffer(argument);
-        break;
-    }
-    case OUTPUT_FLUSH: {
-        subtitle_err("Subtitle Flush not implemented\n");
-        ret = cERR_SUBTITLE_ERROR;
-        break;
-    }
-    case OUTPUT_PAUSE: {
-        subtitle_err("Subtitle Pause not implemented\n");
-        ret = cERR_SUBTITLE_ERROR;
-    	break;
-    }
-    case OUTPUT_CONTINUE: {
-        subtitle_err("Subtitle Continue not implemented\n");
-        ret = cERR_SUBTITLE_ERROR;
-    	break;
-    }
+	    case OUTPUT_OPEN: {
+		ret = subtitle_Open(context);
+		break;
+	    }
+	    case OUTPUT_CLOSE: {
+		ret = subtitle_Close(context);
+		break;
+	    }
+	    case OUTPUT_PLAY: {
+		ret = subtitle_Play(context);
+		break;
+	    }
+	    case OUTPUT_STOP: {
+		ret = subtitle_Stop(context);
+		break;
+	    }
+	    case OUTPUT_SWITCH: {
+		subtitle_err("Subtitle Switch not implemented\n");
+		ret = cERR_SUBTITLE_ERROR;
+		break;
+	    }
+	    case OUTPUT_GET_SUBTITLE_OUTPUT: {
+		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
+		out->screen_width = screen_width;
+		out->screen_height = screen_height;
+		out->shareFramebuffer = shareFramebuffer;
+		out->framebufferFD = framebufferFD;
+		out->destination = destination;
+		out->destStride = destStride;
+		break;
+	    }
+	    case OUTPUT_SET_SUBTITLE_OUTPUT: {
+		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
+		screen_width = out->screen_width;
+		screen_height = out->screen_height;
+		shareFramebuffer = out->shareFramebuffer;
+		framebufferFD = out->framebufferFD;
+		destination = out->destination;
+		destStride = out->destStride;
+		break;
+	    }
+	    case OUTPUT_SUBTITLE_REGISTER_FUNCTION: {
+		subtitle_SignalConnect(argument);
+		break;
+	    }
+	    case OUTPUT_SUBTITLE_REGISTER_BUFFER: {
+		subtitle_SignalConnectBuffer(argument);
+		break;
+	    }
+	    case OUTPUT_FLUSH: {
+		subtitle_err("Subtitle Flush not implemented\n");
+		ret = cERR_SUBTITLE_ERROR;
+		break;
+	    }
+	    case OUTPUT_PAUSE: {
+		subtitle_err("Subtitle Pause not implemented\n");
+		ret = cERR_SUBTITLE_ERROR;
+	    	break;
+	    }
+	    case OUTPUT_CONTINUE: {
+		subtitle_err("Subtitle Continue not implemented\n");
+		ret = cERR_SUBTITLE_ERROR;
+	    	break;
+	    }
 
-    default:
-        subtitle_err("OutputCmd %d not supported!\n", command);
-        ret = cERR_SUBTITLE_ERROR;
-        break;
+	    default:
+		subtitle_err("OutputCmd %d not supported!\n", command);
+		ret = cERR_SUBTITLE_ERROR;
+		break;
     }
 
     subtitle_printf(50, "exiting with value %d\n", ret);

@@ -5,7 +5,8 @@
 #include <stdint.h>
 
  
-typedef enum {
+typedef enum 
+{
 	MANAGER_ADD,
 	MANAGER_LIST,
 	MANAGER_GET,
@@ -16,12 +17,14 @@ typedef enum {
 	MANAGER_GET_TRACK,
 } ManagerCmd_t;
 
-typedef enum {
+typedef enum 
+{
 	eTypeES,
 	eTypePES
 } eTrackTypeEplayer;
 
-typedef struct Track_s {
+typedef struct Track_s 
+{
 	char *                Name;
 	char *                Encoding;
 	int                   Id;
@@ -62,13 +65,15 @@ typedef struct Track_s {
 	int                   inject_as_pcm;
 } Track_t;
 
-typedef struct Manager_s {
+typedef struct Manager_s 
+{
 	char * Name;
 	int (* Command) (/*Context_t*/void  *, ManagerCmd_t, void *);
 	char ** Capabilities;
 } Manager_t;
 
-typedef struct ManagerHandler_s {
+typedef struct ManagerHandler_s 
+{
 	char * Name;
 	Manager_t * audio;
 	Manager_t * video;    
@@ -79,5 +84,4 @@ void freeTrack(Track_t* track);
 void copyTrack(Track_t* to, Track_t* from);
 
 #endif
-
 
