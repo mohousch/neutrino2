@@ -126,7 +126,7 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
 
 extern Container_t SrtContainer;
 extern Container_t SsaContainer;
-//extern Container_t ASSContainer;
+extern Container_t ASSContainer;
 
 ContainerHandler_t ContainerHandler = 
 {
@@ -134,7 +134,7 @@ ContainerHandler_t ContainerHandler =
 	NULL,   
 	&SrtContainer,
 	&SsaContainer,
-	NULL, //&ASSContainer,    
+	&ASSContainer,    
 	Command,
 };
 
