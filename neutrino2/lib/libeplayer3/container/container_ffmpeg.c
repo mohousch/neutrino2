@@ -375,6 +375,7 @@ static char* searchMeta(AVDictionary * metadata, char* ourTag)
 /* **************************** */
 static void FFMPEGThread(Context_t *context) 
 {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	AVPacket   packet;
 	off_t currentReadPosition = 0; /* last read position */
 	off_t lastReverseSeek = 0;     /* max address to read before seek again in reverse play */
@@ -771,6 +772,7 @@ static void FFMPEGThread(Context_t *context)
 	hasPlayThreadStarted = 0;
 
 	ffmpeg_printf(10, "terminating\n");
+#endif
 }
 
 /* **************************** */
@@ -778,6 +780,7 @@ static void FFMPEGThread(Context_t *context)
 /* **************************** */
 int container_ffmpeg_init(Context_t *context, char * filename)
 {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	int n, err;
 
 	ffmpeg_printf(10, ">\n");
@@ -808,7 +811,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	}
 
 	// initialize ffmpeg 
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	avcodec_register_all();
 	av_register_all();
 
@@ -1279,6 +1281,8 @@ static int container_ffmpeg_play(Context_t *context)
 {
 	int error;
 	int ret = 0;
+	
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	pthread_attr_t attr;
 
 	ffmpeg_printf(10, "\n");
@@ -1317,6 +1321,7 @@ static int container_ffmpeg_play(Context_t *context)
 
 		ret = cERR_CONTAINER_FFMPEG_ERR;
 	}
+#endif
 
 	ffmpeg_printf(10, "exiting with value %d\n", ret);
 
@@ -1376,9 +1381,9 @@ static int container_ffmpeg_stop(Context_t *context)
 	isContainerRunning = 0;
 
 	releaseMutex(FILENAME, __FUNCTION__,__LINE__);
+#endif
 
 	ffmpeg_printf(10, "ret %d\n", ret);
-#endif
 
 	return ret;
 }
@@ -1672,6 +1677,7 @@ static int container_ffmpeg_seek(Context_t *context, float sec)
 
 static int container_ffmpeg_get_length(Context_t *context, double * length) 
 {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	ffmpeg_printf(50, "\n");
 	Track_t * videoTrack = NULL;
 	Track_t * audioTrack = NULL;
@@ -1716,6 +1722,7 @@ static int container_ffmpeg_get_length(Context_t *context, double * length)
 			return cERR_CONTAINER_FFMPEG_ERR;
 		}
 	}
+#endif
 
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
@@ -1745,6 +1752,7 @@ static int container_ffmpeg_swich_subtitle(Context_t* context, int* arg)
  */
 static int container_ffmpeg_get_info(Context_t* context, char ** infoString)
 {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	Track_t * videoTrack = NULL;
 	Track_t * audioTrack = NULL;
 	char*     meta = NULL;
@@ -1796,6 +1804,7 @@ static int container_ffmpeg_get_info(Context_t* context, char ** infoString)
 		ffmpeg_err("avContext NULL\n");
 		return cERR_CONTAINER_FFMPEG_ERR;
 	}
+#endif
 
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
