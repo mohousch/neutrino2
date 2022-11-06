@@ -217,10 +217,13 @@ void releaseRegions()
              out.destStride    = destStride;
 
              writer->writeData(&out);
-             if(threeDMode == 1){
+             if(threeDMode == 1)
+             {
                  out.x = screen_width/2 + next->x;
                  writer->writeData(&out);
-             }else if(threeDMode == 2){
+             }
+             else if(threeDMode == 2)
+             {
                  out.y = screen_height/2 + next->y;
                  writer->writeData(&out);
              }
@@ -282,10 +285,13 @@ void checkRegions()
                 out.destStride    = destStride;
 
                 writer->writeData(&out);
-                if(threeDMode == 1){
+                if(threeDMode == 1)
+                {
                     out.x = screen_width/2 + next->x;
                     writer->writeData(&out);
-                }else if(threeDMode == 2){
+                }
+                else if(threeDMode == 2)
+                {
                     out.y = screen_height/2 + next->y;
                     writer->writeData(&out);
                }
@@ -297,7 +303,8 @@ void checkRegions()
            if (old == firstRegion)
                firstRegion = next;
            free(old);
-        } else
+        } 
+        else
         {
             prev = next;
             next = next->next;
@@ -316,7 +323,8 @@ void storeRegion(unsigned int x, unsigned int y, unsigned int w, unsigned int h,
     {
         firstRegion = malloc(sizeof(region_t));
         new = firstRegion;
-    } else
+    } 
+    else
     {
         new = firstRegion;
         while (new->next != NULL)
@@ -454,12 +462,16 @@ static void ASSThread(Context_t *context)
                                     
                         if (shareFramebuffer)
                         {
-                            if(context && context->playback && context->playback->isPlaying && writer){
+                            if(context && context->playback && context->playback->isPlaying && writer)
+                            {
                                 writer->writeData(&out);
-                                if(threeDMode == 1){
+                                if(threeDMode == 1)
+                                {
 			            out.x = screen_width/2 + img->dst_x;
 			            writer->writeData(&out);
-                                }else if(threeDMode == 2){
+                                }
+                                else if(threeDMode == 2)
+                                {
                                     out.y = screen_height/2 + img->dst_y;
                                     writer->writeData(&out);
                                 }
@@ -480,7 +492,8 @@ static void ASSThread(Context_t *context)
 /* fixme: check values */
                                 out.pts          = ass_track->events->Start * 90.0;
                                 out.duration     = ass_track->events->Duration / 1000.0;
-                            } else
+                            } 
+                            else
                             {
                                 out.pts          = playPts;
                                 out.duration     = 10.0;
@@ -507,7 +520,8 @@ static void ASSThread(Context_t *context)
             }
 
             releaseMutex(__LINE__);
-        } else
+        } 
+        else
         {
             usleep(1000);
         }
@@ -550,7 +564,8 @@ int container_ass_init(Context_t *context)
     
     ass_renderer = ass_renderer_init(ass_library);
     
-    if (!ass_renderer) {
+    if (!ass_renderer) 
+    {
         ass_err("ass_renderer_init failed!\n");
 
         if (ass_library)
@@ -563,11 +578,13 @@ int container_ass_init(Context_t *context)
     context->output->subtitle->Command(context, OUTPUT_GET_SUBTITLE_OUTPUT, &output);
 
     modefd=open("/proc/stb/video/3d_mode", O_RDWR);
-    if(modefd > 0){
+    if(modefd > 0)
+    {
         read(modefd, buf, 15);
         buf[15]='\0';
 	close(modefd);
-    }else threeDMode = 0;
+    }
+    else threeDMode = 0;
 
     if(strncmp(buf,"sbs",3)==0)threeDMode = 1;
     else if(strncmp(buf,"tab",3)==0)threeDMode = 2;
@@ -583,15 +600,20 @@ int container_ass_init(Context_t *context)
     ass_printf(10, "width %d, height %d, share %d, fd %d, 3D %d\n", 
               screen_width, screen_height, shareFramebuffer, framebufferFD, threeDMode);
 
-    if(threeDMode == 0){
+    if(threeDMode == 0)
+    {
         ass_set_frame_size(ass_renderer, screen_width, screen_height);
         ass_set_margins(ass_renderer, (int)(0.03 * screen_height), (int)(0.03 * screen_height) ,
                                       (int)(0.03 * screen_width ), (int)(0.03 * screen_width )  );
-    }else if(threeDMode == 1){
+    }
+    else if(threeDMode == 1)
+    {
         ass_set_frame_size(ass_renderer, screen_width/2, screen_height);
         ass_set_margins(ass_renderer, (int)(0.03 * screen_height), (int)(0.03 * screen_height) ,
                                       (int)(0.03 * screen_width/2 ), (int)(0.03 * screen_width/2 )  );
-    }else if(threeDMode == 2){
+    }
+    else if(threeDMode == 2)
+    {
         ass_set_frame_size(ass_renderer, screen_width, screen_height/2);
         ass_set_margins(ass_renderer, (int)(0.03 * screen_height/2), (int)(0.03 * screen_height/2) ,
                                       (int)(0.03 * screen_width ), (int)(0.03 * screen_width )  );
@@ -604,11 +626,16 @@ int container_ass_init(Context_t *context)
     ass_set_line_spacing(ass_renderer, ass_line_spacing);
     ass_set_fonts(ass_renderer, ASS_FONT, "Arial", 0, NULL, 1);
 
-    if(threeDMode == 0){
+    if(threeDMode == 0)
+    {
         ass_set_aspect_ratio( ass_renderer, 1.0, 1.0);
-    }else if(threeDMode == 1){
+    }
+    else if(threeDMode == 1)
+    {
         ass_set_aspect_ratio( ass_renderer, 0.5, 1.0);
-    }else if(threeDMode == 2){
+    }
+    else if(threeDMode == 2)
+    {
         ass_set_aspect_ratio( ass_renderer, 1.0, 0.5);
     }
     
@@ -673,13 +700,15 @@ static int container_ass_stop(Context_t *context)
         return cERR_CONTAINER_ASS_ERROR;
     }
 
-    while ( (hasPlayThreadStarted != 0) && (--wait_time) > 0 ) {
+    while ( (hasPlayThreadStarted != 0) && (--wait_time) > 0 ) 
+    {
         ass_printf(10, "Waiting for ass thread to terminate itself, will try another %d times\n", wait_time);
 
         usleep(100000);
     }
 
-    if (wait_time == 0) {
+    if (wait_time == 0) 
+    {
         ass_err( "Timeout waiting for thread!\n");
 
         ret = cERR_CONTAINER_ASS_ERROR;
@@ -733,24 +762,29 @@ static int container_ass_switch_subtitle(Context_t* context, int* arg)
         return cERR_CONTAINER_ASS_ERROR;
     }
 
-    if ( context && context->playback && context->playback->isPlaying ) {
+    if ( context && context->playback && context->playback->isPlaying ) 
+    {
         ass_printf(10, "is Playing\n");
     }
-    else {
+    else 
+    {
         ass_printf(10, "is NOT Playing\n");
     }
 
-    if (hasPlayThreadStarted == 0) {
+    if (hasPlayThreadStarted == 0) 
+    {
         pthread_attr_init(&attr);
         pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
-        if((error = pthread_create(&PlayThread, &attr, (void *)&ASSThread, context)) != 0) {
+        if((error = pthread_create(&PlayThread, &attr, (void *)&ASSThread, context)) != 0) 
+        {
             ass_printf(10, "Error creating thread, error:%d:%s\n", error,strerror(error));
 
             hasPlayThreadStarted = 0;
             ret = cERR_CONTAINER_ASS_ERROR;
         }
-        else {
+        else 
+        {
             ass_printf(10, "Created thread\n");
 
             hasPlayThreadStarted = 1;
@@ -782,7 +816,6 @@ static int container_ass_switch_subtitle(Context_t* context, int* arg)
     return ret;
 }
 
-
 static int Command(void  *_context, ContainerCmd_t command, void * argument)
 {
     Context_t  *context = (Context_t*) _context;
@@ -792,19 +825,23 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
 
     switch(command)
     {
-	    case CONTAINER_INIT:  {
+	    case CONTAINER_INIT:  
+	    {
 		ret = container_ass_init(context);
 		break;
 	    }
-	    case CONTAINER_STOP:  {
+	    case CONTAINER_STOP:  
+	    {
 		ret = container_ass_stop(context);
 		break;
 	    }
-	    case CONTAINER_SWITCH_SUBTITLE: {
+	    case CONTAINER_SWITCH_SUBTITLE: 
+	    {
 		ret = container_ass_switch_subtitle(context, (int*) argument);
 		break;
 	    }
-	    case CONTAINER_DATA: {
+	    case CONTAINER_DATA: 
+	    {
 		SubtitleData_t* data = (SubtitleData_t*) argument;
 		ret = container_ass_process_data(context, data);
 		break;
@@ -826,7 +863,6 @@ Container_t ASSContainer =
 {
     "ASS",
     &Command,
-    ASS_Capabilities,
-
+    ASS_Capabilities
 };
 
