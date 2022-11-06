@@ -223,12 +223,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return "A_AC3";
 			
 		case AV_CODEC_ID_DTS:
-			return "A_DTS";
-		
-//#if LIBAVCODEC_VERSION_INT > AV_VERSION_INT(52, 72, 2)			
-//		case AV_CODEC_ID_EAC3:
-//			return "A_EAC3";
-//#endif			
+			return "A_DTS";			
 			
 		case AV_CODEC_ID_WMAV1:
 		case AV_CODEC_ID_WMAV2:
@@ -419,8 +414,6 @@ static void FFMPEGThread(Context_t *context)
 			continue;
 		}
 
-#define reverse_playback_3
-#ifdef reverse_playback_3
 		if (context->playback->BackWard && av_gettime() >= showtime)
 		{
 			audioMute = 1;
@@ -464,74 +457,11 @@ static void FFMPEGThread(Context_t *context)
 			audioMute = 0;
 			context->output->Command(context, OUTPUT_AUDIOMUTE, "0");
 		}
-#endif
 
-#if 0 //ifdef reverse_playback_2
-		/* should we seek back again ?
-		* reverse play and currentReadPosition >= end of seek reverse play area ? */
-		if ((context->playback->BackWard) && (currentReadPosition >= lastReverseSeek))
-		{
-			/* fixme: surplus detection */
-			int surplus = 1;
-
-			ffmpeg_printf(20, "new seek ->c %lld, l %lld, ls %lld, lp %lld\n", currentReadPosition, lastReverseSeek, lastSeek, lastPts);
-
-			context->output->Command(context, OUTPUT_DISCONTINUITY_REVERSE, &surplus);
-
-			/* save the maximum read position, if we reach this, we must
-			* seek back again.
-			*/
-			if(lastReverseSeek == 0)
-				lastReverseSeek = currentReadPosition;
-			else
-				lastReverseSeek = lastSeek;
-
-#define use_sec_to_seek
-#if defined(use_sec_to_seek)
-			if ((err = container_ffmpeg_seek_rel(context, lastSeek, lastPts, -5)) < 0)
-#else
-			if ((err = container_ffmpeg_seek_bytes_rel(lastSeek, /* context->playback->BackWard */ -188 * 200)) < 0)
-#endif
-			{
-				ffmpeg_err( "Error seeking\n");
-
-				if (err == cERR_CONTAINER_FFMPEG_END_OF_FILE)
-				{
-					break;
-				}
-			}
-			else
-			{
-#if LIBAVCODEC_VERSION_MAJOR < 54
-				lastSeek = currentReadPosition = url_ftell(avContext->pb);
-#else
-				lastSeek = currentReadPosition = avio_tell(avContext->pb);
-#endif
-				gotlastPts = 1;
-
-#ifndef use_sec_to_seek
-				if (err != lastSeek)
-					ffmpeg_err("upssssssssssssssss seek not doing what I want\n");
-#endif
-			}
-		} 
-		else if (!context->playback->BackWard)
-		{
-			lastReverseSeek = 0;
-			lastSeek = -1;
-			lastPts = -1;
-			gotlastPts = 0;
-		}
-#endif
 		getMutex(FILENAME, __FUNCTION__,__LINE__);
 
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
-#define use_read_frame
-#ifdef use_read_frame
 		if (av_read_frame(avContext, &packet) == 0 )
-#else
-		if (av_read_packet(avContext, &packet) == 0 )
-#endif
 		{
 			long long int pts;
 			Track_t * videoTrack = NULL;
@@ -567,14 +497,6 @@ static void FFMPEGThread(Context_t *context)
 					if ((currentVideoPts > latestPts) && (currentVideoPts != INVALID_PTS_VALUE))
 						latestPts = currentVideoPts;
 
-#if 0 //ifdef reverse_playback_2
-					if (currentVideoPts != INVALID_PTS_VALUE && gotlastPts == 1)
-					{
-						lastPts = currentVideoPts;
-						gotlastPts = 0;
-					}
-#endif
-
 					ffmpeg_printf(200, "VideoTrack index = %d %lld\n",index, currentVideoPts);
 
 					avOut.data       = packet.data;
@@ -604,14 +526,6 @@ static void FFMPEGThread(Context_t *context)
 
 					if ((currentAudioPts > latestPts) && (!videoTrack))
 						latestPts = currentAudioPts;
-
-#if 0 //ifdef reverse_playback_2
-					if (currentAudioPts != INVALID_PTS_VALUE && gotlastPts == 1 && (!videoTrack))
-					{
-						lastPts = currentAudioPts;
-						gotlastPts = 0;
-					}
-#endif
 
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
 
@@ -665,11 +579,9 @@ static void FFMPEGThread(Context_t *context)
 							avOut.height     = 0;
 							avOut.type       = "audio";
 
-#ifdef reverse_playback_3
 							if (!context->playback->BackWard)
-#endif
-							if (context->output->audio->Write(context, &avOut) < 0)
-								ffmpeg_err("writing data to audio device failed\n");
+								if (context->output->audio->Write(context, &avOut) < 0)
+									ffmpeg_err("writing data to audio device failed\n");
 						}
 					}
 					else if (audioTrack->have_aacheader == 1)
@@ -687,12 +599,12 @@ static void FFMPEGThread(Context_t *context)
 						avOut.height     = 0;
 						avOut.type       = "audio";
 
-#ifdef reverse_playback_3
 						if (!context->playback->BackWard)
-#endif
-						if (context->output->audio->Write(context, &avOut) < 0)
 						{
-							ffmpeg_err("(aac) writing data to audio device failed\n");
+							if (context->output->audio->Write(context, &avOut) < 0)
+							{
+								ffmpeg_err("(aac) writing data to audio device failed\n");
+							}
 						}
 					}
 					else
@@ -709,12 +621,12 @@ static void FFMPEGThread(Context_t *context)
 						avOut.height     = 0;
 						avOut.type       = "audio";
 
-#ifdef reverse_playback_3
 						if (!context->playback->BackWard)
-#endif
-						if (context->output->audio->Write(context, &avOut) < 0)
 						{
-							ffmpeg_err("writing data to audio device failed\n");
+							if (context->output->audio->Write(context, &avOut) < 0)
+							{
+								ffmpeg_err("writing data to audio device failed\n");
+							}
 						}
 					}
 				}
@@ -937,21 +849,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	if (avformat_find_stream_info(avContext, NULL) < 0) 
 	{
 		ffmpeg_err("Error avformat_find_stream_info\n");
-#endif
-
-#ifdef this_is_ok
-		/* crow reports that sometimes this returns an error
-		* but the file is played back well. so remove this
-		* until other works are done and we can prove this.
-		*/
-
-#if LIBAVFORMAT_VERSION_MAJOR < 54
- 		av_close_input_file(avContext);
-#else
-		avformat_close_input(&avContext);
-#endif		
-		releaseMutex(FILENAME, __FUNCTION__,__LINE__);
-		return cERR_CONTAINER_FFMPEG_STREAM;
 #endif
 	}
 
