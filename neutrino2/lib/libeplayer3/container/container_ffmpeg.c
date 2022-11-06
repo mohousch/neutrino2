@@ -466,7 +466,7 @@ static void FFMPEGThread(Context_t *context)
 		}
 #endif
 
-#ifdef reverse_playback_2
+#if 0 //ifdef reverse_playback_2
 		/* should we seek back again ?
 		* reverse play and currentReadPosition >= end of seek reverse play area ? */
 		if ((context->playback->BackWard) && (currentReadPosition >= lastReverseSeek))
@@ -513,13 +513,6 @@ static void FFMPEGThread(Context_t *context)
 				if (err != lastSeek)
 					ffmpeg_err("upssssssssssssssss seek not doing what I want\n");
 #endif
-
-				/*
-				if (currentVideoPts != -1)
-					lastPts = currentVideoPts;
-				else
-					lastPts = currentAudioPts;
-				*/
 			}
 		} 
 		else if (!context->playback->BackWard)
@@ -532,6 +525,7 @@ static void FFMPEGThread(Context_t *context)
 #endif
 		getMutex(FILENAME, __FUNCTION__,__LINE__);
 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 #define use_read_frame
 #ifdef use_read_frame
 		if (av_read_frame(avContext, &packet) == 0 )
@@ -573,7 +567,7 @@ static void FFMPEGThread(Context_t *context)
 					if ((currentVideoPts > latestPts) && (currentVideoPts != INVALID_PTS_VALUE))
 						latestPts = currentVideoPts;
 
-#ifdef reverse_playback_2
+#if 0 //ifdef reverse_playback_2
 					if (currentVideoPts != INVALID_PTS_VALUE && gotlastPts == 1)
 					{
 						lastPts = currentVideoPts;
@@ -611,7 +605,7 @@ static void FFMPEGThread(Context_t *context)
 					if ((currentAudioPts > latestPts) && (!videoTrack))
 						latestPts = currentAudioPts;
 
-#ifdef reverse_playback_2
+#if 0 //ifdef reverse_playback_2
 					if (currentAudioPts != INVALID_PTS_VALUE && gotlastPts == 1 && (!videoTrack))
 					{
 						lastPts = currentAudioPts;
@@ -852,6 +846,7 @@ static void FFMPEGThread(Context_t *context)
 		    break;
 		}
 		releaseMutex(FILENAME, __FUNCTION__,__LINE__);
+#endif		
 	} /* while */
 
 	// Freeing the allocated buffer for softdecoding
@@ -904,7 +899,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	avcodec_register_all();
 	av_register_all();
-#endif
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	if ((err = av_open_input_file(&avContext, filename, NULL, 0, NULL)) != 0) 
@@ -919,7 +913,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 #else
 		ffmpeg_err("avformat_open_input failed %d (%s)\n", err, filename);
 #endif
-		//av_strerror(err, error, 512);
 		ffmpeg_err("Cause: %s\n", error);
 
 		releaseMutex(FILENAME, __FUNCTION__,__LINE__);
@@ -951,6 +944,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 		* but the file is played back well. so remove this
 		* until other works are done and we can prove this.
 		*/
+
 #if LIBAVFORMAT_VERSION_MAJOR < 54
  		av_close_input_file(avContext);
 #else
@@ -1270,8 +1264,8 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					memcpy(track.aacbuf + 96, stream->codec->extradata, stream->codec->extradata_size);
 		    
 					ffmpeg_printf(1, "aacbuf:\n");
+					
 					//Hexdump(track.aacbuf, track.aacbuflen);
-		    
 					//ffmpeg_printf(1, "priv_data:\n");
 					//Hexdump(stream->codec->priv_data, track.aacbuflen);
 
@@ -1379,6 +1373,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	isContainerRunning = 1;
 
 	releaseMutex(FILENAME, __FUNCTION__,__LINE__);
+#endif
 
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
@@ -1434,6 +1429,8 @@ static int container_ffmpeg_play(Context_t *context)
 static int container_ffmpeg_stop(Context_t *context) 
 {
 	int ret = cERR_CONTAINER_FFMPEG_NO_ERROR;
+	
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	int wait_time = 20;
 
 	ffmpeg_printf(10, "\n");
@@ -1484,12 +1481,14 @@ static int container_ffmpeg_stop(Context_t *context)
 	releaseMutex(FILENAME, __FUNCTION__,__LINE__);
 
 	ffmpeg_printf(10, "ret %d\n", ret);
+#endif
 
 	return ret;
 }
 
 static int container_ffmpeg_seek_bytes(off_t pos) 
 {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	int flag = AVSEEK_FLAG_BYTE;
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	off_t current_pos = url_ftell(avContext->pb);
@@ -1506,12 +1505,13 @@ static int container_ffmpeg_seek_bytes(off_t pos)
 	{
 		ffmpeg_err( "Error seeking\n");
 		return cERR_CONTAINER_FFMPEG_ERR;
-	}    
+	}   
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	ffmpeg_printf(30, "current_pos after seek %lld\n", url_ftell(avContext->pb));
 #else
 	ffmpeg_printf(30, "current_pos after seek %lld\n", avio_tell(avContext->pb));
+#endif
 #endif
 
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
@@ -1520,6 +1520,7 @@ static int container_ffmpeg_seek_bytes(off_t pos)
 /* seeking relative to a given byteposition N bytes ->for reverse playback needed */
 static int container_ffmpeg_seek_bytes_rel(off_t start, off_t bytes) 
 {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	int flag = AVSEEK_FLAG_BYTE;
 	off_t newpos;
 #if LIBAVCODEC_VERSION_MAJOR < 54
@@ -1560,13 +1561,14 @@ static int container_ffmpeg_seek_bytes_rel(off_t start, off_t bytes)
 #else
 	ffmpeg_printf(30, "current_pos after seek %lld\n", avio_tell(avContext->pb));
 #endif
-
+#endif
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
 
 /* seeking relative to a given byteposition N seconds ->for reverse playback needed */
 static int container_ffmpeg_seek_rel(Context_t *context, off_t pos, long long int pts, float sec) 
 {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	Track_t * videoTrack = NULL;
 	Track_t * audioTrack = NULL;
 	Track_t * current = NULL;
@@ -1665,17 +1667,19 @@ static int container_ffmpeg_seek_rel(Context_t *context, off_t pos, long long in
 	}
 
 	releaseMutex(FILENAME, __FUNCTION__,__LINE__);
+#endif
+
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
 
 static int container_ffmpeg_seek(Context_t *context, float sec) 
 {
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	Track_t * videoTrack = NULL;
 	Track_t * audioTrack = NULL;
 	Track_t * current = NULL;
 	int flag = 0;
 
-#if !defined(VDR1722)
 	ffmpeg_printf(10, "seeking %f sec\n", sec);
 
 	if (sec == 0.0)
@@ -1683,15 +1687,6 @@ static int container_ffmpeg_seek(Context_t *context, float sec)
 		ffmpeg_err("sec = 0.0 ignoring\n");
 		return cERR_CONTAINER_FFMPEG_ERR;
 	}
-#else
-	ffmpeg_printf(10, "goto %f sec\n", sec);
-
-	if (sec < 0.0)
-	{
-		ffmpeg_err("sec < 0.0 ignoring\n");
-		return cERR_CONTAINER_FFMPEG_ERR;
-	}
-#endif
 
 	context->manager->video->Command(context, MANAGER_GET_TRACK, &videoTrack);
 	context->manager->audio->Command(context, MANAGER_GET_TRACK, &audioTrack);
@@ -1740,11 +1735,9 @@ static int container_ffmpeg_seek(Context_t *context, float sec)
 		{
 			sec *= 180000.0;
 		}
-#if !defined(VDR1722)
+
 		pos += sec;
-#else
-		pos = sec;
-#endif
+
 		if (pos < 0)
 		{
 			ffmpeg_err("end of file reached\n");
@@ -1762,12 +1755,11 @@ static int container_ffmpeg_seek(Context_t *context, float sec)
 	} 
 	else
 	{
-#if !defined(VDR1722)
 		sec += ((float) current->pts / 90000.0f);
-#endif
+
 		ffmpeg_printf(10, "2. seeking to position %f sec ->time base %f %d\n", sec, av_q2d(((AVStream*) current->stream)->time_base), AV_TIME_BASE);
 
-		if (av_seek_frame(avContext, -1 /* or streamindex */, sec * AV_TIME_BASE, flag) < 0) 
+		if (av_seek_frame(avContext, -1, sec * AV_TIME_BASE, flag) < 0) 
 		{
 			ffmpeg_err( "Error seeking\n");
 			releaseMutex(FILENAME, __FUNCTION__,__LINE__);
@@ -1776,6 +1768,8 @@ static int container_ffmpeg_seek(Context_t *context, float sec)
 	}
 
 	releaseMutex(FILENAME, __FUNCTION__,__LINE__);
+#endif
+
 	return cERR_CONTAINER_FFMPEG_NO_ERROR;
 }
 

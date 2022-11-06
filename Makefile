@@ -9,7 +9,6 @@
 #  --with-boxtype          
 #  --enable-keyboard-no-rc enable keyboard control, disable rc control
 #  --enable-opengl         include opengl framebuffer support for x86
-#  --enable-playback       include enable playback for opengl and satip
 #  --enable-gstreamer      include gstreamer as player engine support
 #  --enable-lcd            include lcd support
 #  --enable-scart          enable scart output
@@ -65,39 +64,15 @@ run-gdb:
 	
 # init	
 init:
-# opengl
-#	@echo -e "\nOpengl:"
-#	@echo "   1) yes"
-#	@echo "   2) no"
-#	@read -p "Select opengl (1-2)?" OPENGL; \
-#	OPENGL=$${OPENGL}; \
-#	case "$$OPENGL" in \
-#		1) echo "OPENGL=opengl" > config.local;; \
-#		2) echo "OPENGL=" > config.local;; \
-#		*) echo "OPENGL=opengl" > config.local;; \
-#	esac; \
-#	echo ""
 # Media framework
 	@echo -e "\nMedia Framework:"
-	@echo "   1) buildinplayer (revisited libeplayer3 recommended for sh4 boxes)"
-	@echo -e "   \033[01;32m2) gstreamer (recommended for x86 / mips and arm boxes)\033[00m"
+	@echo "   1) buildinplayer (revisited libeplayer3 without playback)"
+	@echo -e "   \033[01;32m2) gstreamer (with playback)\033[00m"
 	@read -p "Select media framework (1-2)?" MEDIAFW; \
 	MEDIAFW=$${MEDIAFW}; \
 	case "$$MEDIAFW" in \
 		1) echo "MEDIAFW=buildinplayer" > config.local;; \
 		2|*) echo "MEDIAFW=gstreamer" > config.local;; \
-	esac; \
-	echo ""
-# playback
-	@echo -e "\nPlayback:"
-	@echo -e "   \033[01;32m1) yes\033[00m"
-	@echo "   2) no"
-	@read -p "Select playback (1-2)?" PLAYBACK; \
-	PLAYBACK=$${PLAYBACK}; \
-	case "$$PLAYBACK" in \
-		1) echo "PLAYBACK=playback" >> config.local;; \
-		2) echo "PLAYBACK=" >> config.local;; \
-		*) echo "PLAYBACK=playback" >> config.local;; \
 	esac; \
 	echo ""
 # lua
@@ -211,13 +186,6 @@ MEDIAFW ?= gstreamer
 
 ifeq ($(MEDIAFW), gstreamer)
 NHD2_OPTS += --enable-gstreamer --with-gstversion=1.0
-endif
-
-# opengl
-PLAYBACK ?= playback
-
-ifeq ($(PLAYBACK), playback)
-NHD2_OPTS += --enable-playback
 endif
 
 # python
