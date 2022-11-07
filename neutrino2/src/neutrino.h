@@ -204,7 +204,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		//
 		void parseKey(_xmlNodePtr node, CWidget* widget);
 		//
-		CMenuTarget* convertTarget(const int id);
+		CMenuTarget* convertTarget(const std::string& name);
 		uint32_t convertColor(const char* const color);
 		uint8_t convertFontColor(const char* const color);
 		

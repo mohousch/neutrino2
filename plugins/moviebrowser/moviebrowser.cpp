@@ -114,7 +114,7 @@ const keyval MESSAGEBOX_BROWSER_ROW_ITEM[MESSAGEBOX_BROWSER_ROW_ITEM_COUNT] =
 	{ MB_INFO_COUNTRY, _("Country") },
 	{ MB_INFO_GEOMETRIE, _("Picture") },
 	{ MB_INFO_AUDIO, _("Audio") },
-	{ MB_INFO_LENGTH, _("Length (min") },
+	{ MB_INFO_LENGTH, _("Length (Min)") },
 	{ MB_INFO_SIZE, _("Size") },
 	{ MB_INFO_BOOKMARK, _("Bookmarks") },
 	{ MB_INFO_FILENAME, _("Name") }
@@ -3049,7 +3049,7 @@ void CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 
         movieInfoMenuUpdate.addItem(new CMenuOptionChooser(_("Country"),       &movieInfoUpdateAll[MB_INFO_COUNTRY], MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true,NULL, RC_9, NEUTRINO_ICON_BUTTON_9));
 
-        movieInfoMenuUpdate.addItem(new CMenuOptionChooser(_("Length (min)"),            &movieInfoUpdateAll[MB_INFO_LENGTH], MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true, NULL, RC_0, NEUTRINO_ICON_BUTTON_0));
+        movieInfoMenuUpdate.addItem(new CMenuOptionChooser(_("Length (Min)"),            &movieInfoUpdateAll[MB_INFO_LENGTH], MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true, NULL, RC_0, NEUTRINO_ICON_BUTTON_0));
 
 	// movieInfo Menu
 #define BUFFER_SIZE 100

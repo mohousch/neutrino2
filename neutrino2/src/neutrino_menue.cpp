@@ -355,6 +355,24 @@ bool CNeutrinoApp::showUserMenu(int button)
 					menu->addItem(menu_item, false);
 				}
 				break;
+				
+			// delete zapit
+			case SNeutrinoSettings::ITEM_DELETE_ZAPIT:
+				{
+					keyhelper.get(&key, &icon);
+					menu_item = new CMenuForwarder(_("Delete channels"), true, NULL, this, "delete_zapit", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu->addItem(menu_item, false);
+				}
+				break;
+				
+			// delete zapit
+			case SNeutrinoSettings::ITEM_DELETE_WEBTV:
+				{
+					keyhelper.get(&key, &icon);
+					menu_item = new CMenuForwarder(_("Delete WebTV channels"), true, NULL, this, "delete_webtv", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu->addItem(menu_item, false);
+				}
+				break;
 
 			default:
 				dprintf(DEBUG_NORMAL, "[neutrino] WARNING! menu wrong item!!\n");

@@ -272,7 +272,9 @@ const keyval USERMENU_ITEM_OPTIONS[USERMENU_ITEM_OPTION_COUNT] =
 	{ SNeutrinoSettings::ITEM_TIMERLIST, _("Timerlist") },
 	{ SNeutrinoSettings::ITEM_PLUGIN, _("Plugins") },
 	{ SNeutrinoSettings::ITEM_VTXT, _("Videotext") },
-	{ SNeutrinoSettings::ITEM_REMOTE, _("Lock RC") }   
+	{ SNeutrinoSettings::ITEM_REMOTE, _("Lock RC") },
+	{ SNeutrinoSettings::ITEM_DELETE_ZAPIT, _("Delete channels") },
+	{ SNeutrinoSettings::ITEM_DELETE_WEBTV, _("Delete WebTV channels") }
 };
 
 int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)

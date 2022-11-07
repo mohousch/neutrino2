@@ -99,235 +99,258 @@
 _xmlDocPtr parser = NULL;
 
 //
-CMenuTarget* CNeutrinoApp::convertTarget(const int id)
+CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertTarget: id: %d\n", id);
+	dprintf(DEBUG_INFO, "CNeutrinoApp::convertTarget: id: %s\n", name);
 	
 	CMenuTarget* parent = NULL;
 	
-	switch(id)
+	if (name == "neutrino") 
 	{
-		case WIDGET_NEUTRINO:
-		case WIDGET_MAINMENU:
-		case WIDGET_FEATURES:
-			parent = this;
-			break;
-			
-		case WIDGET_MAINSETTINGS:
-			parent = new CMainSettingsMenu();
-			break;
-			
-		case WIDGET_EPGTIMER:
-			parent = new CEPGMenuHandler();
-			break;
-			
-		case WIDGET_SYSTEM:
-			parent = new CServiceMenu();
-			break;
-			
-		case WIDGET_INFORMATION:
-			parent = new CInfoMenu();
-			break;
-			
-		case WIDGET_POWERMENU:
-			parent = new CPowerMenu();
-			break;
-			
-		case WIDGET_MEDIAPLAYER:
-			parent = new CMediaPlayerMenu();
-			break;
-			
-		case WIDGET_VIDEOSETUP:
-			parent = new CVideoSettings();
-			break;
-			
-		case WIDGET_AUDIOSETUP:
-			parent = new CAudioSettings();
-			break;
-			
-		case WIDGET_PARENTALSETUP:
-			parent = new CParentalLockSettings();
-			break;
-			
-		case WIDGET_NETWORKSETUP:
-			parent = CNetworkSettings::getInstance();
-			break;
-			
-		case WIDGET_RECORDINGSETUP:
-			parent = new CRecordingSettings();
-			break;
-			
-		case WIDGET_MOVIEPLAYERSETUP:
-			parent = new CMoviePlayerSettings();
-			break;
-			
-		case WIDGET_ODSETTINGS:
-			parent = new COSDSettings();
-			break;
-			
-		case WIDGET_LCDSETUP:
-			parent = new CLCDSettings();
-			break;
-			
-		case WIDGET_REMOTECONTROLSETUP:
-			parent = new CRemoteControlSettings();
-			break;
-		
-		case WIDGET_AUDIOPLAYERSETUP:
-			parent = new CAudioPlayerSettings();
-			break;
-			
-		case WIDGET_PICTUREVIEWERSETUP:
-			parent = new CPictureViewerSettings();
-			break;
-			
-		case WIDGET_HDDSETUP:
-			parent = new CHDDMenuHandler();
-			break;
-			
-		case WIDGET_SKINSETUP:
-			parent = new CSkinManager();
-			break;
-			
-		case WIDGET_MENUSETUP:
-			parent = new COSDMenuColorSettings();
-			break;
-			
-		case WIDGET_INFOBARSETUP:
-			parent = new COSDInfoBarColorSettings();
-			break;
-			
-		case WIDGET_THEMESETUP:
-			parent = new CThemes();
-			break;
-			
-		case WIDGET_LANGUAGESETUP:
-			parent = new CLanguageSettings();
-			break;
-			
-		case WIDGET_FONTSETUP:
-			parent = new CFontSettings();
-			break;
-			
-		case WIDGET_OSDTIMINGSETUP:
-			parent = new COSDTimingSettings();
-			break;
-			
-		case WIDGET_SCREENSETUP:
-			parent = new CScreenSetup();
-			break;
-			
-		case WIDGET_OSDMISCSETUP:
-			parent = new COSDDiverses();
-			break;
-			
-		case WIDGET_ALPHASETUP:
-			parent = new CAlphaSetup(_("Alpha"), &g_settings.gtx_alpha);;
-			break;
-			
-		case WIDGET_SKINSTYLESELECTIONSETUP:
-			parent = new CSkinSettings();
-			break;
-			
-		case WIDGET_MISCSETUP:
-			parent = new CGeneralSettings();
-			break;
-			
-		case WIDGET_EPGSETUP:
-			parent = new CEPGSettings();
-			break;
-			
-		case WIDGET_CHANNELSSETUP:
-			parent = new CChannelListSettings();
-			break;
-			
-		case WIDGET_ZAPITSETUP:
-			parent = new CZapitSetup();
-			break;
-			
-		case WIDGET_FILEBROWSERSETUP:
-			parent = new CFileBrowserSettings();
-			break;
-			
-		case WIDGET_TUNERSETUP:
-			parent = new CTunerSetup();
-			break;
+		parent = this;
+	}
+	else if (name == "mainmenu") 
+	{
+		parent = this;
+	}
+	else if (name == "features") 
+	{
+		parent = this;
+	}
+	else if (name == "nvod") 
+	{
+		parent = this;
+	}
+	else if (name == "settings")
+	{
+		parent = new CMainSettingsMenu();
+	}
+	else if (name == "epgtimer")
+	{
+		parent = new CEPGMenuHandler();
+	}
+	else if (name == "system")
+	{
+		parent = new CServiceMenu();
+	}
+	else if (name == "information")
+	{
+		parent = new CInfoMenu();
+	}
+	else if (name == "powermenu")
+	{
+		parent = new CPowerMenu();
+	}
+	else if (name == "mediaplayer")
+	{
+		parent = new CMediaPlayerMenu();
+	}
+	else if (name == "videosetup")
+	{
+		parent = new CVideoSettings();
+	}
+	else if (name == "audiosetup")
+	{
+		parent = new CAudioSettings();
+	}
+	else if (name == "parentallocksetup")
+	{	
+		parent = new CParentalLockSettings();
+	}
+	else if (name == "networksetup")
+	{		
+		parent = CNetworkSettings::getInstance();
+	}
+	else if (name == "recordingsetup")
+	{	
+		parent = new CRecordingSettings();
+	}
+	else if (name == "movieplayersetup")
+	{
+		parent = new CMoviePlayerSettings();
+	}
+	else if (name == "osd")
+	{		
+		parent = new COSDSettings();
+	}
+	else if (name == "lcdsetup")
+	{
+		parent = new CLCDSettings();
+	}
+	else if (name == "rcsetup")
+	{		
+		parent = new CRemoteControlSettings();
+	}
+	else if (name == "audioplayersetup")
+	{
+		parent = new CAudioPlayerSettings();
+	}
+	else if (name == "pictureviewersetup")
+	{		
+		parent = new CPictureViewerSettings();
+	}
+	else if (name == "hddsetup")
+	{		
+		parent = new CHDDMenuHandler();
+	}
+	else if (name == "skinsetup")
+	{	
+		parent = new CSkinManager();
+	}
+	else if (name == "menusetup")
+	{
+		parent = new COSDMenuColorSettings();
+	}
+	else if (name == "infobarsetup")
+	{		
+		parent = new COSDInfoBarColorSettings();
+	}
+	else if (name == "themesetup")
+	{		
+		parent = new CThemes();
+	}
+	else if (name == "languagesetup")
+	{		
+		parent = new CLanguageSettings();
+	}
+	else if (name == "fontsetup")
+	{		
+		parent = new CFontSettings();
+	}
+	else if (name == "osdtimingsetup")
+	{
+		parent = new COSDTimingSettings();
+	}
+	else if (name == "screensetup")
+	{
+		parent = new CScreenSetup();
+	}
+	else if (name == "osdmiscsetup")
+	{		
+		parent = new COSDDiverses();
+	}
+	else if (name == "alphasetup")
+	{		
+		parent = new CAlphaSetup(_("Alpha"), &g_settings.gtx_alpha);;
+	}
+	else if (name == "skinstyleselectionsetup")
+	{		
+		parent = new CSkinSettings();
+	}
+	else if (name == "miscsetup")
+	{		
+		parent = new CGeneralSettings();
+	}
+	else if (name == "epgsetup")
+	{		
+		parent = new CEPGSettings();
+	}
+	else if (name == "channellistsetup")
+	{		
+		parent = new CChannelListSettings();
+	}
+	else if (name == "zapitsetup")
+	{		
+		parent = new CZapitSetup();
+	}
+	else if (name == "filebrowsersetup")
+	{		
+		parent = new CFileBrowserSettings();
+	}
+	else if (name == "mediaplayer")
+	{		
+		parent = new CTunerSetup();
+	}
+	else if (name == "cicamsetup")
+	{
 #if defined ENABLE_CI			
-		case WIDGET_CICAMSETUP:
-			parent = new CCAMMenuHandler();
-			break;
-#endif			
-			
-		case WIDGET_UPDATESETUP:
-			parent = new CUpdateSettings();
-			break;
-			
-		case WIDGET_BOUQUETEDITOR:
-			parent = new CBEBouquetWidget();
-			break;
-			
-		case WIDGET_IMAGEINFO:
-			parent = new CImageInfo();
-			break;
-			
-		case WIDGET_DBOXINFO:
-			parent = new CDBoxInfoWidget();
-			break;
-			
-		case WIDGET_STREAMINFO:
-			parent = new CStreamInfo2();
-			break;
-			
-		case WIDGET_SLEEPTIMER:
-			parent = new CSleepTimerWidget();
-			break;
-			
-		case WIDGET_EVENTLIST:
-			parent = new CEventListHandler();
-			break;
-			
-		case WIDGET_EPGVIEW:
-			parent = new CEPGDataHandler();
-			break;
-			
-		case WIDGET_EPGPLUS:
-			parent = new CEPGplusHandler();
-			break;
-			
-		case WIDGET_PLUINGSLIST:
-			parent = new CPluginList();
-			break;
-			
-		case WIDGET_TIMERLIST:
-		case WIDGET_NEWTIMER:
-		case WIDGET_MODIFYTIMER:
-			parent = new CTimerList();	
-			break;
-			
-		case WIDGET_PROXYSETUP:
-			parent = new CProxySetup();
-			break;
-			
-		case WIDGET_NFS:
-			parent = new CNFSMountGui();
-			break;
-			
-		case WIDGET_TRANSPONDER:
-			parent = new CTPSelectHandler();
-			break;
-		
-		case WIDGET_MANUALSCAN:
-		case WIDGET_AUTOSCAN:	
-		case WIDGET_UNICABLESETUP:
-			parent = new CScanSetup();
-			break;
-		
-		default:
-			break;
+		parent = new CCAMMenuHandler();
+#endif
+	}
+	else if (name == "updatesetup")
+	{				
+		parent = new CUpdateSettings();
+	}
+	else if (name == "bouqueteditor")
+	{		
+		parent = new CBEBouquetWidget();
+	}
+	else if (name == "imageinfo")
+	{		
+		parent = new CImageInfo();
+	}
+	else if (name == "boxinfo")
+	{
+		parent = new CDBoxInfoWidget();
+	}
+	else if (name == "streaminfo")
+	{		
+		parent = new CStreamInfo2();
+	}
+	else if (name == "sleeptimer")
+	{		
+		parent = new CSleepTimerWidget();
+	}
+	else if (name == "eventlist")
+	{		
+		parent = new CEventListHandler();
+	}
+	else if (name == "epgview")
+	{		
+		parent = new CEPGDataHandler();
+	}
+	else if (name == "epgplus")
+	{		
+		parent = new CEPGplusHandler();
+	}
+	else if (name == "pluginlist")
+	{		
+		parent = new CPluginList();
+	}
+	else if (name == "timerlist")
+	{
+		parent = new CTimerList();
+	}
+	else if (name == "newtimer")
+	{
+		parent = new CTimerList();
+	}
+	else if (name == "modifytimer")
+	{	
+		parent = new CTimerList();	
+	}
+	else if (name == "proxysetup")
+	{
+		parent = new CProxySetup();
+	}
+	else if (name == "nfs")
+	{		
+		parent = new CNFSMountGui();
+	}
+	else if (name == "scansetup")
+	{
+		parent = new CTunerSetup();
+	}
+	else if (name == "transponder")
+	{
+		parent = new CTPSelectHandler();
+	}
+	else if (name == "manualscan")
+	{
+		parent = new CScanSetup();
+	}
+	else if (name == "autoscan")
+	{
+		parent = new CScanSetup();
+	}
+	else if (name == "unicablesetup")
+	{
+		parent = new CScanSetup();
 	}
 	
 	return parent;
 }
+
 
 //
 uint32_t CNeutrinoApp::convertColor(const char* const color)
@@ -838,7 +861,7 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 		char* item_localename = NULL;
 		char* option = NULL;
 		char* item_actionkey = NULL;
-		int item_target = -1;
+		char* item_target = NULL;
 		char* itemIcon = NULL;
 		char* hint = NULL;
 		char* iconName = NULL;
@@ -854,7 +877,7 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 			item_localename = xmlGetAttribute(listboxitem_node, (char*)"localename");
 			option = xmlGetAttribute(listboxitem_node, (char*)"option");
 			item_actionkey = xmlGetAttribute(listboxitem_node, (char*)"actionkey");
-			item_target = xmlGetSignedNumericAttribute(listboxitem_node, "target", 0);
+			item_target = xmlGetAttribute(listboxitem_node, (char*)"target");
 			itemIcon = xmlGetAttribute(listboxitem_node, (char*)"itemicon");
 			hint = xmlGetAttribute(listboxitem_node, (char*)"hint");
 			iconName = xmlGetAttribute(listboxitem_node, (char*)"iconname");
@@ -876,7 +899,7 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 						
 			if (item_actionkey) actionKey = item_actionkey;
 			
-			parent = convertTarget(item_target);
+			if (item_target) parent = convertTarget(item_target);
 							
 			menuItem->setActionKey(parent, actionKey.c_str());
 					
@@ -1734,17 +1757,17 @@ void CNeutrinoApp::parseKey(_xmlNodePtr node, CWidget* widget)
 	
 	neutrino_msg_t key_name = RC_nokey;
 	char* key_actionkey = NULL;
-	unsigned int key_target = 0;
+	char *key_target = NULL;
 	
 	while ((node = xmlGetNextOccurence(node, "KEY")) != NULL) 
 	{
 		key_name = (neutrino_msg_t)xmlGetSignedNumericAttribute(node, "name", 16);
 		key_actionkey = xmlGetAttribute(node, (char*)"actionkey");
-		key_target = xmlGetSignedNumericAttribute(node, "target", 0);
+		key_target = xmlGetAttribute(node, (char*)"target");
 				
 		CMenuTarget* key_parent = NULL;
 				
-		key_parent = convertTarget(key_target);
+		if (key_target) key_parent = convertTarget(key_target);
 				
 		if (widget) widget->addKey((neutrino_msg_t)key_name, key_parent, key_actionkey);
 			
@@ -1761,7 +1784,6 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const widgetName, bool data)
 	
 	//
 	char* name = NULL;
-	int id = -1;
 			
 	unsigned int x = 0;
 	unsigned int y = 0;
@@ -1799,9 +1821,7 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const widgetName, bool data)
 			
 			//
 			if (!strcmp(name, widgetName) )
-			{
-				id = xmlGetSignedNumericAttribute(search, "id", 0);
-					
+			{	
 				x = xmlGetSignedNumericAttribute(search, "posx", 0);
 				y = xmlGetSignedNumericAttribute(search, "posy", 0);
 				dx = xmlGetSignedNumericAttribute(search, "width", 0);
@@ -1826,7 +1846,6 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const widgetName, bool data)
 				//
 				widget = new CWidget(x, y, dx, dy);
 					
-				widget->id = id;
 				if (name != NULL) widget->name = name;
 				widget->paintMainFrame(paintframe);
 				if (color != NULL) widget->setColor(wColor);
@@ -1940,9 +1959,7 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 				//
 				name = xmlGetAttribute(search, (char*)"name");
 				
-#ifndef TESTING
-				int id = -1;
-				
+#ifndef TESTING		
 				unsigned int x = 0;
 				unsigned int y = 0;
 				unsigned int dx = 0;
@@ -1960,8 +1977,6 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 				unsigned int position = 0;
 				
 				//
-				id = xmlGetSignedNumericAttribute(search, "id", 0);
-				
 				x = xmlGetSignedNumericAttribute(search, "posx", 0);
 				y = xmlGetSignedNumericAttribute(search, "posy", 0);
 				dx = xmlGetSignedNumericAttribute(search, "width", 0);
@@ -1985,7 +2000,6 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 				
 				wdg = new CWidget(x, y, dx, dy);
 				
-				wdg->id = id;
 				if (name != NULL) wdg->name = name;
 				wdg->paintMainFrame(paintframe);
 				if (color != NULL) wdg->setColor(wColor);

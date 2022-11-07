@@ -552,7 +552,6 @@ class ClistBox : public CWidgetItem
 		CScrollBar scrollBar;
 
 		//
-		//bool enableCenter;
 		bool shrinkMenu;
 
 		// frame

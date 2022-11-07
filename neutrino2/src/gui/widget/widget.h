@@ -30,125 +30,6 @@
 
 
 class ClistBox;
-//
-#define WIDGET_COUNT	83
-enum {
-	WIDGET_NEUTRINO = 			0,
-	//MENU
-	WIDGET_MAINMENU = 			1,	// mainmenu
-	WIDGET_MAINSETTINGS = 			2,	
-	WIDGET_EPGTIMER = 			3,
-	WIDGET_SYSTEM = 			4,
-	WIDGET_INFORMATION =			5,
-	WIDGET_FEATURES = 			6,
-	WIDGET_POWERMENU = 			7,
-	WIDGET_MEDIAPLAYER = 			8,
-	//SETUPS
-	WIDGET_VIDEOSETUP = 			9,
-	WIDGET_AUDIOSETUP = 			10,
-	WIDGET_PARENTALSETUP = 			11,
-	WIDGET_NETWORKSETUP = 			12,
-	WIDGET_RECORDINGSETUP = 		13,
-	WIDGET_MOVIEPLAYERSETUP = 		14,
-	WIDGET_ODSETTINGS = 			15,
-	WIDGET_LCDSETUP = 			16,
-	WIDGET_REMOTECONTROLSETUP = 		17,
-	WIDGET_AUDIOPLAYERSETUP = 		18,
-	WIDGET_PICTUREVIEWERSETUP = 		19,
-	//WIDGET_MISCSETTINGS = 			20,
-	WIDGET_HDDSETUP = 			21,
-	// osdsetup
-	WIDGET_SKINSETUP = 			22,
-	WIDGET_MENUSETUP = 			23,
-	WIDGET_INFOBARSETUP = 			24,
-	WIDGET_THEMESETUP = 			25,
-	WIDGET_LANGUAGESETUP = 			26,
-	WIDGET_FONTSETUP = 			27,
-	WIDGET_OSDTIMINGSETUP = 		28,
-	WIDGET_SCREENSETUP = 			29,
-	WIDGET_OSDMISCSETUP = 			30,
-	WIDGET_ALPHASETUP = 			31,
-	WIDGET_SKINSTYLESELECTIONSETUP = 	32,
-	// miscsetup
-	WIDGET_MISCSETUP = 			33,
-	WIDGET_EPGSETUP = 			34,
-	WIDGET_CHANNELSSETUP = 			35,
-	WIDGET_ZAPITSETUP = 			36,
-	WIDGET_FILEBROWSERSETUP = 		37,
-	// networksetup	
-	WIDGET_PROXYSETUP = 			38,
-	WIDGET_NFS = 				39,
-	//service
-	WIDGET_TUNERSETUP = 			40,
-	WIDGET_CICAMSETUP = 			41,
-	WIDGET_UPDATESETUP = 			42,
-	//LISTS
-	WIDGET_PLUINGSLIST = 			43,
-	WIDGET_EPGVIEW = 			44,
-	WIDGET_EVENTLIST = 			45,
-	WIDGET_EPGPLUS = 			46,
-	WIDGET_TIMERLIST = 			47,
-	WIDGET_CHANNELSLIST = 			48,
-	WIDGET_BOUQUETSLIST = 			49,
-	WIDGET_BOUQUETEDITOR = 			50,
-	WIDGET_FILEBROWSER = 			51,
-	//CORE/PLAYER
-	WIDGET_AUDIOPLAYER = 			52,
-	WIDGET_MOVIEPLAYER = 			53,
-	WIDGET_PICTUREVIEWER = 			54,
-	//INFOBAR
-	WIDGET_INFOBAR = 			55,
-	//DIVERS
-	WIDGET_AUDIOSELECT = 			56,
-	WIDGET_AVSELECT = 			57,
-	WIDGET_SUBSELECT = 			58,
-	WIDGET_CHANNELSELECT = 			59,
-	WIDGET_DBOXINFO = 			60,
-	WIDGET_IMAGEINFO = 			61,
-	WIDGET_MOTORCONTROL = 			62,
-	WIDGET_MOVIEINFO = 			63,
-	WIDGET_SCAN = 				64,
-	WIDGET_SLEEPTIMER = 			65,
-	WIDGET_STREAMINFO =			66,
-	WIDGET_VFDCONTROLLER = 			67,
-	WIDGET_COLORCHOOSER = 			68,
-	WIDGET_KEYCHOOSER = 			69,
-	WIDGET_MOUNTCHOOSER = 			70,
-	//
-	WIDGET_HINTBOX,
-	WIDGET_MESSAGEBOX,
-	WIDGET_HELPBOX,
-	WIDGET_INFOBOX,
-	WIDGET_PROGRESSWINDOW,
-	WIDGET_STRINGINPUT,
-	WIDGET_HTTPTOOL,
-	WIDGET_VOLUME,
-	WIDGET_MUTE,
-	//
-	WIDGET_PLUGIN = 			80,
-	WIDGET_NVOD = 				81,		// yellow
-	
-	//
-	WIDGET_NEWTIMER = 			90,
-	WIDGET_MODIFYTIMER = 			91,
-	
-	//
-	WIDGET_TRANSPONDER =			100,
-	WIDGET_UNICABLESETUP = 			101,
-	WIDGET_MANUALSCAN = 			102,
-	WIDGET_AUTOSCAN = 			103,
-	WIDGET_AUTOSCANALL = 			104,
-	WIDGET_SATSETUP = 			105,
-	WIDGET_MOTORSETUP = 			106,
-	
-	//
-	WIDGET_FLASHEXPERT = 			110,
-	WIDGET_MTDSELECTOR = 			111,
-	WIDGET_FILESELECTOR = 			112,
-	
-	//
-	WIDGET_MAX = 				999
-};
 
 //
 enum
@@ -167,11 +48,10 @@ class CMenuTarget
 		std::string valueStringTmp;
 
 	public:
-		int id;
 		std::string name;
 		
 	public:
-		CMenuTarget(){ valueStringTmp = std::string(); valueString = &valueStringTmp; id = -1; name = "";};
+		CMenuTarget(){ valueStringTmp = std::string(); valueString = &valueStringTmp; name = "";};
 		virtual ~CMenuTarget(){};
 		virtual void hide(){valueString->clear();};
 		virtual int exec(CMenuTarget* parent, const std::string& actionKey) = 0;
@@ -180,10 +60,7 @@ class CMenuTarget
 
 //
 class CWidget : public CMenuTarget
-{
-	//public:
-	//	std::string name;
-		
+{	
 	protected:
 		CFrameBuffer *frameBuffer;
 		CBox mainFrameBox;
@@ -292,14 +169,13 @@ class CWidget : public CMenuTarget
 		virtual void onDirectKeyPressed(neutrino_msg_t _msg);
 		
 		//
-		int getWidgetID(){return id;};
 		std::string getWidgetName(){return name;};
 		
 		//
 		CWidgetItem* getWidgetItem(const int type, const std::string& name = "");
 		CComponent* getCCItem(const int type, const std::string& name = "");
 		
-		////
+		//
 		virtual void setPosition(const int x, const int y, const int dx, const int dy)
 		{
 			mainFrameBox.iX = x;

@@ -1897,9 +1897,7 @@ void FillDir(int frame, int selmode)
 			strcpy(finfo[frame].path, DEFAULT_PATH);
 
 		}
-#if DEBUG
-		printf("filling directory structure:<%s>\n", finfo[frame].path);
-#endif
+
 		DIR* dp = opendir(finfo[frame].path);
 
 		struct dirent *dentry;

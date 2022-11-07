@@ -5082,6 +5082,16 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 			readEPG();
 		//}
 	}
+	else if (actionKey == "delete_zapit")
+	{
+		my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/zapit/*.xml");
+		g_Zapit->reinitChannels();
+	}
+	else if (actionKey == "delete_webtv")
+	{
+		my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/webtv/*.*");
+		g_Zapit->reinitChannels();
+	}
 	else if (actionKey == "mainmenu")
 	{
 		mainMenu();

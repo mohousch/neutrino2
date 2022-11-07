@@ -317,7 +317,9 @@ struct SNeutrinoSettings
 		ITEM_TIMERLIST = 1,
 		ITEM_PLUGIN = 2,
 		ITEM_VTXT = 3,
-		ITEM_REMOTE = 4,              
+		ITEM_REMOTE = 4,
+		ITEM_DELETE_ZAPIT = 5,
+		ITEM_DELETE_WEBTV = 6,            
 		ITEM_MAX   // MUST be always the last in the list
         }USER_ITEM;
 	

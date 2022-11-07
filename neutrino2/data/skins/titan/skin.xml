@@ -8,15 +8,15 @@
 		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Main Menu" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" mode="1">
-			<ITEM id="5" localename="TV / RADIO" itemicon="hint_tvmode" target="0" actionkey="tvradioswitch"/>
-			<ITEM id="5" localename="EPG / Timer" itemicon="hint_timers" target="3" directkey="0x2"/>
-			<ITEM id="5" localename="Features" itemicon="hint_plugin" target="6" actionkey="features"/>
-			<ITEM id="5" localename="System" itemicon="hint_service" target="4"/>
-			<ITEM id="5" localename="Settings" itemicon="hint_settings" target="2"/>
-			<ITEM id="5" localename="OSD" itemicon="hint_osd" target="15"/>
-			<ITEM id="5" localename="Information" itemicon="hint_dboxinfo" target="5"/>
-			<ITEM id="5" localename="Power Menu" itemicon="hint_shutdown" target="7"/>
-			<ITEM id="5" localename="Media Player" itemicon="hint_media" target="8"/>
+			<ITEM id="5" localename="TV / RADIO" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
+			<ITEM id="5" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer" directkey="0x2"/>
+			<ITEM id="5" localename="Features" itemicon="hint_plugin" target="neutrino" actionkey="features"/>
+			<ITEM id="5" localename="System" itemicon="hint_service" target="system"/>
+			<ITEM id="5" localename="Settings" itemicon="hint_settings" target="settings"/>
+			<ITEM id="5" localename="OSD" itemicon="hint_osd" target="osd"/>
+			<ITEM id="5" localename="Information" itemicon="hint_dboxinfo" target="information"/>
+			<ITEM id="5" localename="Power Menu" itemicon="hint_shutdown" target="powermenu"/>
+			<ITEM id="5" localename="Media Player" itemicon="hint_media" target="mediaplayer"/>
 		</LISTBOX>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
@@ -29,37 +29,37 @@
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
-			<ITEM id="5" localename="Video settings" itemicon="hint_video" target="9">
+			<ITEM id="5" localename="Video settings" itemicon="hint_video" target="videosetup">
 			</ITEM>
-			<ITEM id="5" localename="Audio settings" itemicon="hint_audio" target="10">
+			<ITEM id="5" localename="Audio settings" itemicon="hint_audio" target="audiosetup">
 			</ITEM>
-			<ITEM id="5" localename="Parentallock settings" itemicon="hint_protection" target="11">
+			<ITEM id="5" localename="Parentallock settings" itemicon="hint_protection" target="parentallocksetup">
 			</ITEM>
-			<ITEM id="5" localename="Network settings" itemicon="hint_network" target="12">
+			<ITEM id="5" localename="Network settings" itemicon="hint_network" target="networksetup">
 			</ITEM>
-			<ITEM id="5" localename="Recording settings" itemicon="hint_recording" target="13">
+			<ITEM id="5" localename="Recording settings" itemicon="hint_recording" target="recordingsetup">
 			</ITEM>
-			<ITEM id="5" localename="Movieplayer settings" itemicon="hint_mb" target="14">
+			<ITEM id="5" localename="Movieplayer settings" itemicon="hint_mb" target="movieplayersetup">
 			</ITEM>
-			<ITEM id="5" localename="Display settings" itemicon="hint_vfd" target="16">
+			<ITEM id="5" localename="Display settings" itemicon="hint_vfd" target="lcdsetup">
 			</ITEM>
-			<ITEM id="5" localename="Remote Control settings" itemicon="hint_keys" target="17">
+			<ITEM id="5" localename="Remote Control settings" itemicon="hint_keys" target="rcsetup">
 			</ITEM>
-			<ITEM id="5" localename="Audioplayer settings" itemicon="hint_aplay" target="18">
+			<ITEM id="5" localename="Audioplayer settings" itemicon="hint_aplay" target="audioplayersetup">
 			</ITEM>
-			<ITEM id="5" localename="Pictureviewer settings" itemicon="hint_picview" target="19">
+			<ITEM id="5" localename="Pictureviewer settings" itemicon="hint_picview" target="pictureviewersetup">
 			</ITEM>
-			<ITEM id="5" localename="HDD settings" itemicon="hint_hdd" target="21">
+			<ITEM id="5" localename="HDD settings" itemicon="hint_hdd" target="hddsetup">
 			</ITEM>
-			<ITEM id="5" localename="Misc settings" itemicon="hint_settings" target="33">
+			<ITEM id="5" localename="Misc settings" itemicon="hint_settings" target="miscsetup">
 			</ITEM>
-			<ITEM id="5" localename="Channellist settings" itemicon="hint_bedit" target="35" >
+			<ITEM id="5" localename="Channellist settings" itemicon="hint_bedit" target="channellistsetup" >
 			</ITEM>
-			<ITEM id="5" localename="EPG settings" itemicon="hint_streaminfo" target="34">
+			<ITEM id="5" localename="EPG settings" itemicon="hint_streaminfo" target="epgsetup">
 			</ITEM>
-			<ITEM id="5" localename="Filebrowser settings" itemicon="hint_fileplay" target="37">
+			<ITEM id="5" localename="Filebrowser settings" itemicon="hint_fileplay" target="filebrowsersetup">
 			</ITEM>
-			<ITEM id="5" localename="Start Channel settings" itemicon="hint_personalize" target="36">
+			<ITEM id="5" localename="Start Channel settings" itemicon="hint_personalize" target="zapitsetup">
 			</ITEM>
 		</LISTBOX>
 		
@@ -74,25 +74,25 @@
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1"  mode="1">
-			<ITEM id="5" localename="Skin select" itemicon="hint_themes" target="22">
+			<ITEM id="5" localename="Skin select" itemicon="hint_themes" target="skinsetup">
 			</ITEM>
-			<ITEM id="5" localename="Skin Style" itemicon="hint_osd" target="32">
+			<ITEM id="5" localename="Skin Style" itemicon="hint_osd" target="skinstyleselectionsetup">
 			</ITEM>
-			<ITEM id="5" localename="Themes" itemicon="hint_themes" target="25" >
+			<ITEM id="5" localename="Themes" itemicon="hint_themes" target="themesetup" >
 			</ITEM>
-			<ITEM id="5" localename="Menu" itemicon="hint_menucolors" target="23">
+			<ITEM id="5" localename="Menu" itemicon="hint_menucolors" target="menusetup">
 			</ITEM>
-			<ITEM id="5" localename="Infobar" itemicon="hint_infobarcolors" target="24">
+			<ITEM id="5" localename="Infobar" itemicon="hint_infobarcolors" target="infobarsetup">
 			</ITEM>
-			<ITEM id="5" localename="Language" itemicon="hint_language" target="26">
+			<ITEM id="5" localename="Language" itemicon="hint_language" target="languagesetup">
 			</ITEM>
-			<ITEM id="5" localename="Font" itemicon="hint_font" target="27">
+			<ITEM id="5" localename="Font" itemicon="hint_font" target="fontsetup">
 			</ITEM>
-			<ITEM id="5" localename="Timing" itemicon="hint_osdtiming" target="28">
+			<ITEM id="5" localename="Timing" itemicon="hint_osdtiming" target="osdtimingsetup">
 			</ITEM>
-			<ITEM id="5" localename="Screen" itemicon="hint_lcd4linux" target="29">
+			<ITEM id="5" localename="Screen" itemicon="hint_lcd4linux" target="screensetup">
 			</ITEM>
-			<ITEM id="5" localename="Misc settings" itemicon="hint_osd" target="30">
+			<ITEM id="5" localename="Misc settings" itemicon="hint_osd" target="osdmiscsetup">
 			</ITEM>
 		</LISTBOX>
 		
@@ -107,15 +107,15 @@
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
-			<ITEM id="5" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="45">
+			<ITEM id="5" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist">
 			</ITEM>
-			<ITEM id="5" localename="Details current program" itemicon="hint_restart" target="44" >
+			<ITEM id="5" localename="Details current program" itemicon="hint_restart" target="epgview" >
 			</ITEM>
-			<ITEM id="5" localename="Eventlist overview" itemicon="hint_standby" target="46">
+			<ITEM id="5" localename="Eventlist overview" itemicon="hint_standby" target="epgplus">
 			</ITEM>
-			<ITEM id="5" localename="Stream information" itemicon="hint_dboxinfo" target="66">
+			<ITEM id="5" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo">
 			</ITEM>
-			<ITEM id="5" localename="Timerlist" itemicon="hint_timers" target="47">
+			<ITEM id="5" localename="Timerlist" itemicon="hint_timers" target="timerlist">
 			</ITEM>
 		</LISTBOX>
 		
@@ -134,7 +134,7 @@
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
 			<BUTTON_LABEL name="information"/>
 		</FOOT>
-		<KEY name="0x191" target="0" actionkey="plugins"/> 
+		<KEY name="0x191" target="neutrino" actionkey="plugins"/> 
 	</WIDGET>
 	
 	<WIDGET name="system" posx="0" posy="0" width="700" height="720" paintframe="1">
@@ -142,17 +142,17 @@
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
-			<ITEM id="5" localename="Scan transponder" itemicon="hint_scan" target="40">
+			<ITEM id="5" localename="Scan transponder" itemicon="hint_scan" target="scansetup">
 			</ITEM>
-			<ITEM id="5" localename="Reload channel lists" itemicon="hint_reload" target="0" actionkey="reloadepg">
+			<ITEM id="5" localename="Reload channel lists" itemicon="hint_reload" target="neutrino" actionkey="reloadepg">
 			</ITEM>
-			<ITEM id="5" localename="Reload EPG" itemicon="hint_reload" target="0" actionkey="reloadchannels">
+			<ITEM id="5" localename="Reload EPG" itemicon="hint_reload" target="neutrino" actionkey="reloadchannels">
 			</ITEM>
-			<ITEM id="5" localename="Bouquet Editor" itemicon="hint_bedit" target="50">
+			<ITEM id="5" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor">
 			</ITEM>
-			<ITEM id="5" localename="CI Cam" itemicon="hint_ci" target="41">
+			<ITEM id="5" localename="CI Cam" itemicon="hint_ci" target="cicamsetup">
 			</ITEM>
-			<ITEM id="5" localename="Software update" itemicon="hint_swupdate" target="42">
+			<ITEM id="5" localename="Software update" itemicon="hint_swupdate" target="updatesetup">
 			</ITEM>
 		</LISTBOX>
 		
@@ -167,15 +167,15 @@
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
-			<ITEM id="5" localename="Sleeptimer" itemicon="hint_sleeptimer" target="65">
+			<ITEM id="5" localename="Sleeptimer" itemicon="hint_sleeptimer" target="sleeptimer">
 			</ITEM>
-			<ITEM id="5" localename="Neutrino Restart" itemicon="hint_restart" target="0" actionkey="restart">
+			<ITEM id="5" localename="Neutrino Restart" itemicon="hint_restart" target="neutrino" actionkey="restart">
 			</ITEM>
-			<ITEM id="5" localename="Standby" itemicon="hint_standby" target="0" actionkey="standby">
+			<ITEM id="5" localename="Standby" itemicon="hint_standby" target="neutrino" actionkey="standby">
 			</ITEM>
-			<ITEM id="5" localename="Reboot" itemicon="hint_reboot" target="0" actionkey="reboot">
+			<ITEM id="5" localename="Reboot" itemicon="hint_reboot" target="neutrino" actionkey="reboot">
 			</ITEM>
-			<ITEM id="5" localename="Shutdown" itemicon="hint_shutdown" target="0" actionkey="shutdown">
+			<ITEM id="5" localename="Shutdown" itemicon="hint_shutdown" target="neutrino" actionkey="shutdown">
 			</ITEM>
 		</LISTBOX>
 		
@@ -190,11 +190,11 @@
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
-			<ITEM id="5" localename="Information" itemicon="hint_dboxinfo" target="60">
+			<ITEM id="5" localename="Information" itemicon="hint_dboxinfo" target="boxinfo">
 			</ITEM>
-			<ITEM id="5" localename="Image info" itemicon="hint_imageinfo" target="61">
+			<ITEM id="5" localename="Image info" itemicon="hint_imageinfo" target="imageinfo">
 			</ITEM>
-			<ITEM id="5" localename="Stream information" itemicon="hint_dboxinfo" target="66">
+			<ITEM id="5" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo">
 			</ITEM>
 			<INTEGRATION id="0x02" shortcut="4">
 			</INTEGRATION>

@@ -296,7 +296,7 @@ void CMP3Player::showTrackInfo(CAudiofile& file)
 	if (duration)
 	{
 		buffer += "\n\n";
-		buffer += _("Length: ");
+		buffer += _("Length (Min)");
 		buffer += duration;
 	}
 	
