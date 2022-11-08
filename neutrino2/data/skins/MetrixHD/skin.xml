@@ -7,22 +7,20 @@
 	<WIDGET name="mainmenu" posx="0" posy="0" width="1280" height="720">
 		<WINDOW posx="650" posy="50" width="520" height="520" paintframe="1"/>
 		
-		<LISTBOX posx="640" posy="60" width="540" height="500" type="0" mode ="1" paintiteminfo="1" iteminfomode="3" iteminfoframe="0" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0" iteminfoposx="300" iteminfoposy="50" iteminfowidth="300" iteminfoheight="300">
-			<ITEM id="5" localename="TV / RADIO" lines="1" itemicon="picon_default.png" target="neutrino" actionkey="tvradioswitch"/>
-			<ITEM id="5" localename="EPG / Timer" lines="1" itemicon="buttons/timerepg.png" target="epgtimer"/>
-			<ITEM id="5" localename="Features" lines="1" itemicon="buttons/features.png" target="neutrino" actionkey="features"/>
-			<ITEM id="5" localename="System" lines="1" itemicon="buttons/service.png" target="system"/>
-			<ITEM id="5" localename="Settings" lines="1" itemicon="buttons/mainsetup.png" target="settings"/>
-			<ITEM id="5" localename="OSD" lines="1" itemicon="buttons/mediaplayer.png" target="osd"/>
-			<ITEM id="5" localename="Information" lines="1" itemicon="buttons/information.png" target="information"/>
-			<ITEM id="5" localename="Power Menu" lines="1" itemicon="buttons/powermenu.png" target="powermenu"/>
-			<ITEM id="5" localename="Media Player" lines="1" itemicon="buttons/mediaplayer.png" target="mediaplayer"/>
+		<LISTBOX posx="640" posy="60" width="540" height="500" type="0" mode ="1" paintiteminfo="1" iteminfomode="3" iteminfoframe="0" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0" iteminfoposx="300" iteminfoposy="50" iteminfowidth="300" iteminfoheight="300" itemlines="1">
+			<ITEM id="5" localename="TV / RADIO" itemicon="picon_default.png" target="neutrino" actionkey="tvradioswitch"/>
+			<ITEM id="5" localename="EPG / Timer" itemicon="buttons/timerepg.png" target="epgtimer"/>
+			<ITEM id="5" localename="Features" itemicon="buttons/features.png" target="neutrino" actionkey="features"/>
+			<ITEM id="5" localename="System" itemicon="buttons/service.png" target="system"/>
+			<ITEM id="5" localename="Settings" itemicon="buttons/mainsetup.png" target="settings"/>
+			<ITEM id="5" localename="OSD" itemicon="buttons/mediaplayer.png" target="osd"/>
+			<ITEM id="5" localename="Information" itemicon="buttons/information.png" target="information"/>
+			<ITEM id="5" localename="Power Menu" itemicon="buttons/powermenu.png" target="powermenu"/>
+			<ITEM id="5" localename="Media Player" itemicon="buttons/mediaplayer.png" target="mediaplayer"/>
 		</LISTBOX>
 		
 		<LABEL posx="650" posy="600" width="520" height="60" text="Main Menu" halign="1" fontcolor="COL_MENUHEAD" font="22"/>
-		
 		<WINDOW posx="280" posy="400" width="340" height="100" paintframe="1"/>
-		
 		<TIME posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" fontcolor="COL_MENUHEAD" font="3"/>
 		<TIME posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" fontcolor="COL_MENUHEAD" font="8"/>
 	</WIDGET>
