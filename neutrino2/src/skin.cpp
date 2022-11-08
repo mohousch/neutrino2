@@ -732,9 +732,10 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 	unsigned int iteminfo_height = 0;
 	const char* iteminfo_color = NULL;
 	
-	//
+	// item
 	unsigned int itemborder = 0;
 	unsigned int itemgradient = 0;
+	unsigned int item2lines = 0;
 	
 	//
 	_xmlNodePtr listboxitem_node = NULL;
@@ -785,9 +786,10 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 		foot_line = xmlGetSignedNumericAttribute(node, "foot_line", 0);
 		foot_line_gradient = xmlGetSignedNumericAttribute(node, "foot_line_gradient", 0);
 		
-		//
+		// item
 		itemborder = xmlGetSignedNumericAttribute(node, "itemborder", 0);
 		itemgradient = xmlGetSignedNumericAttribute(node, "itemgradient", 0);
+		item2lines = xmlGetSignedNumericAttribute(node, "itemlines", 0);
 				
 		// iteminfo
 		paintiteminfo = xmlGetSignedNumericAttribute(node, "paintiteminfo", 0);
@@ -852,6 +854,7 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 		// item
 		if (itemborder) listBox->setItemBorderMode(itemborder);
 		if (itemgradient) listBox->setItemGradient(itemgradient);
+		if (item2lines) listBox->setItem2Lines();
 				
 		// ITEM	
 		listboxitem_node = node->xmlChildrenNode;

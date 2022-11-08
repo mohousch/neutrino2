@@ -2587,6 +2587,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	//
 	itemBorderMode = BORDER_NO;
 	itemGradient = NOGRADIENT;
+	item2Lines = false;
 	
 	//
 	sec_timer_id = 0;
@@ -2709,6 +2710,7 @@ ClistBox::ClistBox(CBox* position)
 	items_height = 0;
 	itemBorderMode = BORDER_NO;
 	itemGradient = NOGRADIENT;
+	item2Lines = false;
 	
 	//
 	sec_timer_id = 0;
@@ -2771,6 +2773,7 @@ void ClistBox::initFrames()
 		item->paintFrame = paintFrame;
 		if (itemBorderMode) item->setBorderMode(itemBorderMode);
 		if (itemGradient) item->setGradient(itemGradient);
+		if (item2Lines) item->set2lines();
 	} 
 
 	// head

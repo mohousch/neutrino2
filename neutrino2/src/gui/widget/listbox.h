@@ -640,6 +640,7 @@ class ClistBox : public CWidgetItem
 		// item
 		int itemBorderMode;
 		int itemGradient;
+		bool item2Lines;
 		
 	public:
 		ClistBox(const int x = 0, int const y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
@@ -752,9 +753,10 @@ class ClistBox : public CWidgetItem
 		void setWidgetMode(int mode){widgetMode = mode;};
 		void setMenuPosition(int p){menu_position = p;};
 		
-		//
+		// item
 		void setItemBorderMode(int m = BORDER_ALL){/*itemBorder = true;*/ itemBorderMode = m;};
 		void setItemGradient(int gr = NOGRADIENT){itemGradient = gr;};
+		void setItem2Lines(){item2Lines = true;};
 
 		//
 		bool isSelectable(void){return true;};

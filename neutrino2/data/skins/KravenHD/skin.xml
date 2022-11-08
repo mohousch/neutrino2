@@ -17,25 +17,16 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
 		</TIME>
 		
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="1" itemborder="1">
-			<ITEM id="5" localename="TV / RADIO" lines="1" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch">
-			</ITEM>
-			<ITEM id="5" localename="EPG / Timer" target="epgtimer" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Features" target="neutrino" actionkey="features" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="System" target="system" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Settings" target="settings" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="OSD" target="osd" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Information" target="information" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Power Menu" target="powermenu" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Mediaplayer" target="mediaplayer" lines="1" border="1">
-			</ITEM>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="1" itemborder="1" itemlines="1">
+			<ITEM id="5" localename="TV / RADIO" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
+			<ITEM id="5" localename="EPG / Timer" target="epgtimer"/>
+			<ITEM id="5" localename="Features" target="neutrino" actionkey="features"/>
+			<ITEM id="5" localename="System" target="system"/>
+			<ITEM id="5" localename="Settings" target="settings"/>
+			<ITEM id="5" localename="OSD" target="osd"/>
+			<ITEM id="5" localename="Information" target="information"/>
+			<ITEM id="5" localename="Power Menu" target="powermenu"/>
+			<ITEM id="5" localename="Mediaplayer" target="mediaplayer"/>
 		</LISTBOX>
 	</WIDGET>
 	
@@ -52,41 +43,23 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
 		</TIME>
 		
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0">
-			<ITEM id="5" localename="Video settings" itemicon="hint_video" target="videosetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Audio settings" itemicon="hint_audio" target="audiosetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Parentallock settings" itemicon="hint_protection" target="parentallocksetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Network settings" itemicon="hint_network" target="networksetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Recording settings" itemicon="hint_recording" target="recordingsetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Movieplayer settings" itemicon="hint_mb" target="mediaplayersetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Display settings" itemicon="hint_vfd" target="lcdsetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Remote Control settings" itemicon="hint_keys" target="rcsetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Audioplayer settings" itemicon="hint_aplay" target="audioplayersetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Pictureviewer settings" itemicon="hint_picview" target="pictureviewersetup" lines="1" border="1">
-			</ITEM>
-			
-			<ITEM id="5" localename="HDD settings" itemicon="hint_hdd" target="hddsetup" lines="1" border="1">
-			</ITEM>
-			
-			<ITEM  id="5" localename="Misc settings" itemicon="hint_settings" target="miscsetup" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Channellist Settings" itemicon="hint_bedit" target="channellistsetup" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="EPG settings" itemicon="hint_streaminfo" target="epgsetup" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Filebrowser settings" itemicon="hint_fileplay" target="filebrowsersetup" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Start Channel settings" itemicon="hint_personalize" target="zapitsetup" lines="1" border="1">
-			</ITEM>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="1" itemborder="1" itemlines="1">
+			<ITEM id="5" localename="Video settings" itemicon="hint_video" target="videosetup"/>
+			<ITEM id="5" localename="Audio settings" itemicon="hint_audio" target="audiosetup"/>
+			<ITEM id="5" localename="Parentallock settings" itemicon="hint_protection" target="parentallocksetup"/>
+			<ITEM id="5" localename="Network settings" itemicon="hint_network" target="networksetup"/>
+			<ITEM id="5" localename="Recording settings" itemicon="hint_recording" target="recordingsetup"/>
+			<ITEM id="5" localename="Movieplayer settings" itemicon="hint_mb" target="mediaplayersetup"/>
+			<ITEM id="5" localename="Display settings" itemicon="hint_vfd" target="lcdsetup"/>
+			<ITEM id="5" localename="Remote Control settings" itemicon="hint_keys" target="rcsetup"/>
+			<ITEM id="5" localename="Audioplayer settings" itemicon="hint_aplay" target="audioplayersetup"/>
+			<ITEM id="5" localename="Pictureviewer settings" itemicon="hint_picview" target="pictureviewersetup"/>
+			<ITEM id="5" localename="HDD settings" itemicon="hint_hdd" target="hddsetup"/>
+			<ITEM  id="5" localename="Misc settings" itemicon="hint_settings" target="miscsetup"/>
+			<ITEM  id="5" localename="Channellist Settings" itemicon="hint_bedit" target="channellistsetup"/>
+			<ITEM  id="5" localename="EPG settings" itemicon="hint_streaminfo" target="epgsetup"/>
+			<ITEM  id="5" localename="Filebrowser settings" itemicon="hint_fileplay" target="filebrowsersetup"/>
+			<ITEM  id="5" localename="Start Channel settings" itemicon="hint_personalize" target="zapitsetup"/>
 		</LISTBOX>
 	</WIDGET>
 	
@@ -103,27 +76,18 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
 		</TIME>
 		
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0">
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="1" itemborder="1" itemlines="1">
 			<ITEM id="5" localename="Skin select" itemicon="hint_themes" target="skinsetup" lines="1" border="1">
 			</ITEM>
-			<ITEM  id="5" localename="Skin Style" itemicon="hint_osd" target="skinstyleselectionsetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Themes" itemicon="hint_themes" target="themesetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Menu" itemicon="hint_menucolors" target="menusetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Infobar" itemicon="hint_infobarcolors" target="infobarsetup" lines="1" border="1">
-			</ITEM>
-			<ITEM id="5" localename="Language" itemicon="hint_language" target="languagesetup" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Font" itemicon="hint_font" target="fontsetup" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Timing" itemicon="hint_osdtiming" target="osdtimingsetup" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Screen" itemicon="hint_lcd4linux" target="screensetup" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Misc settings" itemicon="hint_osd" target="osdmiscsetup" lines="1" border="1">
-			</ITEM>
+			<ITEM  id="5" localename="Skin Style" itemicon="hint_osd" target="skinstyleselectionsetup"/>
+			<ITEM id="5" localename="Themes" itemicon="hint_themes" target="themesetup"/>
+			<ITEM id="5" localename="Menu" itemicon="hint_menucolors" target="menusetup"/>
+			<ITEM id="5" localename="Infobar" itemicon="hint_infobarcolors" target="infobarsetup"/>
+			<ITEM id="5" localename="Language" itemicon="hint_language" target="languagesetup"/>
+			<ITEM  id="5" localename="Font" itemicon="hint_font" target="fontsetup"/>
+			<ITEM  id="5" localename="Timing" itemicon="hint_osdtiming" target="osdtimingsetup"/>
+			<ITEM  id="5" localename="Screen" itemicon="hint_lcd4linux" target="screensetup"/>
+			<ITEM  id="5" localename="Misc settings" itemicon="hint_osd" target="osdmiscsetup"/>
 		</LISTBOX>
 	</WIDGET>
 	
@@ -140,17 +104,12 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
 		</TIME>
 		
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0">
-			<ITEM  id="5" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Details current program" itemicon="hint_restart" target="epgview" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Eventlist overview" itemicon="hint_standby" target="epgplus" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo" lines="1" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Timerlist" itemicon="hint_timers" target="timerlist" lines="1" border="1">
-			</ITEM>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="1" itemborder="1" itemlines="1">
+			<ITEM  id="5" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist"/>
+			<ITEM  id="5" localename="Details current program" itemicon="hint_restart" target="epgview"/>
+			<ITEM  id="5" localename="Eventlist overview" itemicon="hint_standby" target="epgplus"/>
+			<ITEM  id="5" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo"/>
+			<ITEM  id="5" localename="Timerlist" itemicon="hint_timers" target="timerlist"/>
 		</LISTBOX>
 	</WIDGET>
 	
@@ -167,7 +126,7 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
 		</TIME>
 		
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="1" mode="1" itemborder="1"/>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="1" mode="1" itemborder="1" itemlines="1"/>
 		<KEY name="0x191" target="neutrino" actionkey="plugins"> 
 		</KEY>
 	</WIDGET>
@@ -185,13 +144,13 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
 		</TIME>
 		
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0">
-			<ITEM  id="5" localename="Scan transponder" lines="1" itemicon="hint_scan" target="scansetup" border="1"/>
-			<ITEM  id="5" localename="Reload channel lists" lines="1" itemicon="hint_reload" target="neutrino" actionkey="reloadchannels" border="1"/>
-			<ITEM  id="5" localename="Reload EPG" lines="1" itemicon="hint_reload" target="neutrino" actionkey="reloadepg" border="1"/>
-			<ITEM  id="5" localename="Bouquet Editor" lines="1" itemicon="hint_bedit" target="bouqueteditor" border="1"/>
-			<ITEM  id="5" localename="CI Cam" lines="1" itemicon="hint_ci" target="cicamsetup" border="1"/>
-			<ITEM  id="5" localename="Software update" lines="1" itemicon="hint_swupdate" target="updatesetup" border="1"/>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="1" itemborder="1" itemlines="1">
+			<ITEM  id="5" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
+			<ITEM  id="5" localename="Reload channel lists" itemicon="hint_reload" target="neutrino" actionkey="reloadchannels"/>
+			<ITEM  id="5" localename="Reload EPG" itemicon="hint_reload" target="neutrino" actionkey="reloadepg"/>
+			<ITEM  id="5" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>
+			<ITEM  id="5" localename="CI Cam" itemicon="hint_ci" target="cicamsetup"/>
+			<ITEM  id="5" localename="Software update" itemicon="hint_swupdate" target="updatesetup"/>
 		</LISTBOX>
 	</WIDGET>
 	
@@ -208,17 +167,12 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
 		</TIME>
 		
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0">
-			<ITEM  id="5" localename="Sleeptimer" lines="1" itemicon="hint_sleeptimer" target="sleeptimer" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Neutrino Restart" lines="1" itemicon="hint_restart" target="neutrino" actionkey="restart" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Standby" lines="1" itemicon="hint_standby" target="neutrino" actionkey="standby" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Reboot" lines="1" itemicon="hint_reboot" target="neutrino" actionkey="reboot" border="1">
-			</ITEM>
-			<ITEM  id="5" localename="Shutdown" lines="1" itemicon="hint_shutdown" target="neutrino" actionkey="shutdown" border="1">
-			</ITEM>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="1" itemborder="1" itemlines="1">
+			<ITEM  id="5" localename="Sleeptimer" itemicon="hint_sleeptimer" target="sleeptimer"/>
+			<ITEM  id="5" localename="Neutrino Restart" itemicon="hint_restart" target="neutrino" actionkey="restart"/>
+			<ITEM  id="5" localename="Standby" itemicon="hint_standby" target="neutrino" actionkey="standby"/>
+			<ITEM  id="5" localename="Reboot" itemicon="hint_reboot" target="neutrino" actionkey="reboot"/>
+			<ITEM  id="5" localename="Shutdown" itemicon="hint_shutdown" target="neutrino" actionkey="shutdown"/>
 		</LISTBOX>
 	</WIDGET>
 	
@@ -235,15 +189,11 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
 		</TIME>
 		
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0">
-			<ITEM id="5" lines="1" localename="Information" itemicon="hint_dboxinfo" target="boxinfo" border="1">
-			</ITEM>
-			<ITEM id="5" lines="1" localename="Image info" itemicon="hint_imageinfo" target="imageinfo" border="1">
-			</ITEM>
-			<ITEM id="5" lines="1" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo" border="1">
-			</ITEM>
-			<INTEGRATION id="0x02" lines="1" border="1">
-			</INTEGRATION>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="1" itemborder="1" itemlines="1">
+			<ITEM id="5" localename="Information" itemicon="hint_dboxinfo" target="boxinfo"/>
+			<ITEM id="5" localename="Image info" itemicon="hint_imageinfo" target="imageinfo"/>
+			<ITEM id="5" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo"/>
+			<INTEGRATION id="0x02"/>
 		</LISTBOX>
 	</WIDGET>
 	
@@ -261,103 +211,53 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
 		</TIME>
 		
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0">
-			<INTEGRATION id="0x04" lines="1" border="1">
-			</INTEGRATION>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="1" itemborder="1" itemlines="1">
+			<INTEGRATION id="0x04"/>
 		</LISTBOX>
 	</WIDGET>
 	
 	<WIDGET name="plugins" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="800" height="620" type="1" itemborder="1" scrollbar="1">
-		</LISTBOX>
-		
-		<LABEL posx="850" posy="50" width="380" height="50" text="Plugins" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="850" posy="150" width="380" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="850" posy="450" width="380" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="850" posy="500" width="380" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-		
+		<LISTBOX posx="50" posy="50" width="800" height="620" type="1" itemborder="1" scrollbar="1"/>
+		<LABEL posx="850" posy="50" width="380" height="50" text="Plugins" halign="1"/>	
+		<IMAGE posx="850" posy="150" width="380" height="300" image="background/logo.png"/>
+		<TIME posx="850" posy="450" width="380" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="850" posy="500" width="380" height="100" refresh="1" format="%H:%M:%S"/>
 		<BUTTON posx="10" posy="680" width="1260" height="40">
-			<BUTTON_LABEL name="btn_red" localename="Delete">
-			</BUTTON_LABEL>
-		
-			<BUTTON_LABEL name="btn_green" localename="Start">
-			</BUTTON_LABEL>
-		
-			<BUTTON_LABEL name="btn_yellow">
-			</BUTTON_LABEL>
-
-			<BUTTON_LABEL name="btn_blue" localename="Reload">
-			</BUTTON_LABEL>
+			<BUTTON_LABEL name="btn_red" localename="Delete"/>
+			<BUTTON_LABEL name="btn_green" localename="Start"/>
+			<BUTTON_LABEL name="btn_yellow"/>
+			<BUTTON_LABEL name="btn_blue" localename="Reload"/>
 		</BUTTON>
 	</WIDGET>
 	
 	<WIDGET name="timerlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="Timerlist" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME name="time" posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-		
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" itemborder="1"/>
+		<LABEL posx="640" posy="50" width="640" height="50" text="Timerlist" halign="1"/>
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME name="time" posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 		<BUTTON posx="10" posy="680" width="1260" height="40">
-			<BUTTON_LABEL name="btn_red" localename="Delete">
-			</BUTTON_LABEL>
-		
-			<BUTTON_LABEL name="btn_green" localename="New timer">
-			</BUTTON_LABEL>
-		
-			<BUTTON_LABEL name="btn_yellow" localename="Reload">
-			</BUTTON_LABEL>
-
-			<BUTTON_LABEL name="ok" localename="Modify">
-			</BUTTON_LABEL>
+			<BUTTON_LABEL name="btn_red" localename="Delete"/>
+			<BUTTON_LABEL name="btn_green" localename="New timer"/>
+			<BUTTON_LABEL name="btn_yellow" localename="Reload"/>
+			<BUTTON_LABEL name="ok" localename="Modify"/>
 		</BUTTON>
 	</WIDGET>
 	
 	<WIDGET name="newtimer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="New timer" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1"/>
+		<LABEL posx="640" posy="50" width="640" height="50" text="New timer" halign="1"/>
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="modifytimer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="Modify timer" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1"/>
+		<LABEL posx="640" posy="50" width="640" height="50" text="Modify timer" halign="1"/>
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="tunersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
