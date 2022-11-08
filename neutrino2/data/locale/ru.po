@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrinohd2 4.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-22 23:57+0200\n"
+"POT-Creation-Date: 2022-11-08 17:32+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -134,8 +134,9 @@ msgstr "Все сервисы"
 msgid "All services"
 msgstr "Все сервисы"
 
+#, fuzzy
 msgid "Alpha"
-msgstr "Альфа"
+msgstr "альфа"
 
 msgid "Alpha Setup"
 msgstr "Альфа настройка"
@@ -520,7 +521,14 @@ msgstr "Отложенное завершение работы"
 msgid "Delete"
 msgstr "Удалить"
 
+msgid "Delete WebTV channels"
+msgstr ""
+
 msgid "Delete all"
+msgstr "Удалить все"
+
+#, fuzzy
+msgid "Delete channels"
 msgstr "Удалить все"
 
 msgid "Description"
@@ -1155,18 +1163,6 @@ msgstr "Длина"
 
 msgid "Length (Min)"
 msgstr "Длина (мин)"
-
-#, fuzzy
-msgid "Length (min"
-msgstr "Длина (мин)"
-
-#, fuzzy
-msgid "Length (min)"
-msgstr "Длина (мин)"
-
-#, fuzzy
-msgid "Length: "
-msgstr "Длина"
 
 msgid "License:"
 msgstr "Лицензия:"
