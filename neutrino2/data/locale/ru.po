@@ -522,14 +522,14 @@ msgid "Delete"
 msgstr "Удалить"
 
 msgid "Delete WebTV channels"
-msgstr ""
+msgstr "Удалить WebTV каналы"
 
 msgid "Delete all"
 msgstr "Удалить все"
 
 #, fuzzy
 msgid "Delete channels"
-msgstr "Удалить все"
+msgstr "Удалить каналы"
 
 msgid "Description"
 msgstr "Описание"
