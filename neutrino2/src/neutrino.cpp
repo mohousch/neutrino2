@@ -4357,10 +4357,10 @@ void CNeutrinoApp::saveEpg()
 
 		while( true ) 
 		{
-			g_RCInput->getMsg(&msg, &data, 300); // 30 secs..
+			g_RCInput->getMsg(&msg, &data, 300); // 30 secs
+			
 			if (( msg == RC_timeout ) || (msg == NeutrinoMessages::EVT_SI_FINISHED)) 
 			{
-				//printf("Msg %x timeout %d EVT_SI_FINISHED %x\n", msg, RC_timeout, NeutrinoMessages::EVT_SI_FINISHED);
 				delete [] (unsigned char*) data;
 				break;
 			}

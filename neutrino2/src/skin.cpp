@@ -694,11 +694,11 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 	unsigned int width = 0;
 	unsigned int height = 0;
 				
-	unsigned int i_paintframe = 1;
-	char* i_color = NULL;
-	unsigned int i_gradient = 0;
-	unsigned int i_corner = 0;
-	unsigned int i_radius = 0;
+	unsigned int paintframe = 1;
+	char* color = NULL;
+	unsigned int gradient = 0;
+	unsigned int corner = 0;
+	unsigned int radius = 0;
 	
 	unsigned int type = WIDGET_TYPE_STANDARD;
 	unsigned int mode = MODE_LISTBOX;
@@ -753,16 +753,16 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 		width = xmlGetSignedNumericAttribute(node, "width", 0);
 		height = xmlGetSignedNumericAttribute(node, "height", 0);
 				
-		i_paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
-		i_color = xmlGetAttribute(node, (char*)"color");
-		i_gradient = xmlGetSignedNumericAttribute(node, "gradient", 0);
-		i_corner = xmlGetSignedNumericAttribute(node, "corner", 0);
-		i_radius = xmlGetSignedNumericAttribute(node, "radius", 0);
+		paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
+		color = xmlGetAttribute(node, (char*)"color");
+		gradient = xmlGetSignedNumericAttribute(node, "gradient", 0);
+		corner = xmlGetSignedNumericAttribute(node, "corner", 0);
+		radius = xmlGetSignedNumericAttribute(node, "radius", 0);
 				
 		// parse color
 		uint32_t finalColor = COL_MENUCONTENT_PLUS_0;
 				
-		if (i_color) finalColor = convertColor(i_color);
+		if (color) finalColor = convertColor(color);
 					
 		type = xmlGetSignedNumericAttribute(node, "type", 0);
 		mode = xmlGetSignedNumericAttribute(node, "mode", 0);
@@ -823,8 +823,8 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 		listBox->setWidgetType(type);
 		listBox->setWidgetMode(mode);
 		listBox->paintScrollBar(scrollbar);
-		listBox->paintMainFrame(i_paintframe);
-		if (i_color != NULL) listBox->setColor(finalColor);
+		listBox->paintMainFrame(paintframe);
+		if (color != NULL) listBox->setColor(finalColor);
 		// gradient
 		// corner
 		// radius
@@ -1027,17 +1027,15 @@ void CNeutrinoApp::parseCWindow(_xmlNodePtr node, CWidget* widget)
 	unsigned int width = 0;
 	unsigned int height = 0;
 				
-	unsigned int i_paintframe = 1;
-	char* i_color = NULL;
-	
-	unsigned int i_corner = 0;
-	unsigned int i_radius = 0;
-	unsigned int i_border = 0;
-	
-	unsigned int i_gradient = 0;
-	unsigned int i_direction = 0;
-	unsigned int i_intensity = 0;
-	unsigned int i_type = 0;
+	unsigned int paintframe = 1;
+	char* color = NULL;
+	unsigned int corner = 0;
+	unsigned int radius = 0;
+	unsigned int border = 0;
+	unsigned int gradient = 0;
+	unsigned int gradient_direction = 0;
+	unsigned int gradient_intensity = 0;
+	unsigned int gradient_type = 0;
 	
 	unsigned int refresh = 0;
 	
@@ -1052,22 +1050,22 @@ void CNeutrinoApp::parseCWindow(_xmlNodePtr node, CWidget* widget)
 		width = xmlGetSignedNumericAttribute(node, "width", 0);
 		height = xmlGetSignedNumericAttribute(node, "height", 0);
 				
-		i_paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
-		i_color = xmlGetAttribute(node, (char*)"color");
+		paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
+		color = xmlGetAttribute(node, (char*)"color");
 
-		i_corner = xmlGetSignedNumericAttribute(node, "corner", 0);
-		i_radius = xmlGetSignedNumericAttribute(node, "radius", 0);
-		i_border = xmlGetSignedNumericAttribute(node, "border", 0);
+		corner = xmlGetSignedNumericAttribute(node, "corner", 0);
+		radius = xmlGetSignedNumericAttribute(node, "radius", 0);
+		border = xmlGetSignedNumericAttribute(node, "border", 0);
 		
-		i_gradient = xmlGetSignedNumericAttribute(node, "gradient", 0);
-		i_direction = xmlGetSignedNumericAttribute(node, "direction", 0);
-		i_intensity = xmlGetSignedNumericAttribute(node, "intensity", 0);
-		i_type = xmlGetSignedNumericAttribute(node, "type", 0);
+		gradient = xmlGetSignedNumericAttribute(node, "gradient", 0);
+		gradient_direction = xmlGetSignedNumericAttribute(node, "direction", 0);
+		gradient_intensity = xmlGetSignedNumericAttribute(node, "intensity", 0);
+		gradient_type = xmlGetSignedNumericAttribute(node, "type", 0);
 				
 		// parse color
 		uint32_t finalColor = COL_MENUCONTENT_PLUS_0;
 				
-		if (i_color) finalColor = convertColor(i_color);
+		if (color) finalColor = convertColor(color);
 				
 		refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
 		
@@ -1086,13 +1084,13 @@ void CNeutrinoApp::parseCWindow(_xmlNodePtr node, CWidget* widget)
 		window->widgetItem_type = WIDGETITEM_WINDOW;
 		if (name) window->widgetItem_name = name;
 					
-		window->paintMainFrame(i_paintframe);
-		if (i_paintframe == 0) window->enableSaveScreen();
-		if (i_color) window->setColor(finalColor);
+		window->paintMainFrame(paintframe);
+		if (paintframe == 0) window->enableSaveScreen();
+		if (color) window->setColor(finalColor);
 		if (refresh) window->enableRepaint();
-		window->setCorner(i_radius, i_corner);
-		window->setBorderMode(i_border);
-		window->setGradient(i_gradient, i_direction, i_intensity, i_type);
+		window->setCorner(radius, corner);
+		window->setBorderMode(border);
+		window->setGradient(gradient, gradient_direction, gradient_intensity, gradient_type);
 		
 		// LABEL
 		parseCCLabel(node->xmlChildrenNode, NULL, window);
@@ -1282,7 +1280,7 @@ void CNeutrinoApp::parseCFoot(_xmlNodePtr node, CWidget* widget)
 			
 			// FIXME:	
 			if (posy < widget->getWindowsPos().iY)
-				posy = widget->getWindowsPos().iY;
+				posy = widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - height;
 		}
 						
 		foot = new CFooters(posx, posy, width, height);

@@ -111,7 +111,6 @@ EventList::EventList()
 	evlWidget = NULL;
 	listBox = NULL;
 	item = NULL;
-	
 	sec_timer_id = 0;
 
 	// box	
@@ -119,24 +118,7 @@ EventList::EventList()
 	cFrameBox.iHeight = frameBuffer->getScreenHeight() - 100;
 	
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
-	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
-	
-	//
-	if (CNeutrinoApp::getInstance()->widget_exists("eventlist"))
-	{
-		evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
-		listBox = (ClistBox*)evlWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		evlWidget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		listBox->enablePaintHead();
-		listBox->enablePaintDate();
-		
-		evlWidget->addWidgetItem(listBox);
-	}				
+	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;			
 }
 
 EventList::~EventList()
@@ -274,7 +256,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 	//
 	readEvents(channel_id);
 	
-	/*
+	//
 	if (CNeutrinoApp::getInstance()->widget_exists("eventlist"))
 	{
 		evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
@@ -290,7 +272,6 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		
 		evlWidget->addWidgetItem(listBox);
 	}
-	*/
 
 	//
 	paint(channel_id);
@@ -614,8 +595,6 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 void EventList::hide()
 {
 	evlWidget->hide();
-	
-	frameBuffer->blit();
 }
 
 CTimerd::CTimerEventTypes EventList::isScheduled(t_channel_id channel_id, CChannelEvent * event, int * tID)

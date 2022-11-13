@@ -623,6 +623,42 @@ int CChannelList::exec(bool zap)
 
 	displayNext = false; // always start with current events
 	
+	// show list
+	int nNewChannel = show(zap);
+
+	dprintf(DEBUG_NORMAL, "CChannelList::exec: chanlist.size:%d nNewChannel:%d\n", (int)chanlist.size(), nNewChannel);
+	
+	// zapto
+	if(zap)
+	{
+		if ( nNewChannel > -1 && nNewChannel < (int) chanlist.size()) 
+			CNeutrinoApp::getInstance()->channelList->zapTo(getKey(nNewChannel) - 1);
+	}
+
+	return nNewChannel;
+}
+
+#define CHANNEL_SMSKEY_TIMEOUT 800
+//return: >= 0 to zap, -1 on cancel, -3 on list mode change, -4 list edited, -2 zap but no restore old list/chan
+int CChannelList::show(bool zap, bool customMode)
+{
+	dprintf(DEBUG_NORMAL, "CChannelList::show: zap:%s\n", zap? "yes" : "no");
+
+	neutrino_msg_t      msg;
+	neutrino_msg_data_t data;
+	bool actzap = 0;
+	int res = -1;
+
+	new_mode_active = 0;
+
+	// display channame in vfd	
+	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8 );	
+
+	displayNext = false;
+	
+	// update events
+	updateEvents();
+	
 	////
 	if (CNeutrinoApp::getInstance()->widget_exists("channellist"))
 	{
@@ -686,42 +722,6 @@ int CChannelList::exec(bool zap)
 	winBottomBox.iWidth = window->getWindowsPos().iWidth - 4;
 	winBottomBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
 	////
-	
-	// show list
-	int nNewChannel = show(zap);
-
-	dprintf(DEBUG_NORMAL, "CChannelList::exec: chanlist.size:%d nNewChannel:%d\n", (int)chanlist.size(), nNewChannel);
-	
-	// zapto
-	if(zap)
-	{
-		if ( nNewChannel > -1 && nNewChannel < (int) chanlist.size()) 
-			CNeutrinoApp::getInstance()->channelList->zapTo(getKey(nNewChannel) - 1);
-	}
-
-	return nNewChannel;
-}
-
-#define CHANNEL_SMSKEY_TIMEOUT 800
-//return: >= 0 to zap, -1 on cancel, -3 on list mode change, -4 list edited, -2 zap but no restore old list/chan
-int CChannelList::show(bool zap, bool customMode)
-{
-	dprintf(DEBUG_NORMAL, "CChannelList::show: zap:%s\n", zap? "yes" : "no");
-
-	neutrino_msg_t      msg;
-	neutrino_msg_data_t data;
-	bool actzap = 0;
-	int res = -1;
-
-	new_mode_active = 0;
-
-	// display channame in vfd	
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8 );	
-
-	displayNext = false;
-	
-	// update events
-	updateEvents();
 	
 	// 
 	paint();
@@ -1795,7 +1795,7 @@ void CChannelList::paint()
 			if (!displayNext) item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS);
 			
 
-			listBox->addItem(item);
+			if (listBox) listBox->addItem(item);
 		}
 	}
 	
@@ -1818,9 +1818,9 @@ void CChannelList::paint()
 	if (foot) foot->setButtons(CChannelListButtons, NUM_LIST_BUTTONS);
 
 	//
-	listBox->setSelected(selected);
+	if (listBox) listBox->setSelected(selected);
 	
-	chWidget->paint();
+	if (chWidget) chWidget->paint();
 	
 	//
 	if (window) window->saveScreen();

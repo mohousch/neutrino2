@@ -304,7 +304,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 
 	const char * key = actionKey.c_str();
 	
-	CSelectChannelWidget * CSelectChannelWidgetHandler;
+	CSelectChannelWidget * CSelectChannelWidgetHandler = NULL;
 	
 	if(actionKey == "tv")
 	{
@@ -325,21 +325,6 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		CSelectChannelWidgetHandler = new CSelectChannelWidget();
 		CSelectChannelWidgetHandler->exec(NULL, "radio");
-		
-		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
-		timerNew_channel_name = g_Zapit->getChannelName(CSelectChannelWidgetHandler->getChannelID());
-		
-		delete CSelectChannelWidgetHandler;
-		CSelectChannelWidgetHandler = NULL;
-
-		this->getString() = timerNew_channel_name;
-		
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "webtv")
-	{
-		CSelectChannelWidgetHandler = new CSelectChannelWidget();
-		CSelectChannelWidgetHandler->exec(NULL, "webtv");
 		
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
 		timerNew_channel_name = g_Zapit->getChannelName(CSelectChannelWidgetHandler->getChannelID());
@@ -1153,7 +1138,7 @@ int CTimerList::newTimer()
 	CMenuOptionChooser* m3 = new CMenuOptionChooser(_("Repeat"), (int *)&timerNew.eventRepeat, TIMERLIST_REPEAT_OPTIONS, TIMERLIST_REPEAT_OPTION_COUNT, true, &notifier, RC_nokey, "", true);
 	
 	// channel
-	CMenuForwarder *m6 = new CMenuForwarder(_("Channel"), true, timerNew_channel_name.c_str(), this, CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_tv? "tv" : CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_radio? "radio" : "webtv");
+	CMenuForwarder *m6 = new CMenuForwarder(_("Channel"), true, timerNew_channel_name.c_str(), this, CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_tv? "tv" : "radio");
 
 	// recording dir
 	CMountChooser recDirs(_("recording directory"), NEUTRINO_ICON_SETTINGS, NULL, timerNew.recordingDir, g_settings.network_nfs_recordingdir);
