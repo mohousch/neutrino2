@@ -139,7 +139,7 @@ void CGeneralSettings::showMenu()
 	else
 	{
 		miscSettingsGeneral = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		miscSettingsGeneral->setMenuPosition(MENU_POSITION_CENTER);
+
 		miscSettingsGeneral->setWidgetMode(MODE_SETUP);
 		miscSettingsGeneral->enableShrinkMenu();
 		
@@ -520,7 +520,7 @@ void CChannelListSettings::showMenu()
 	else
 	{
 		miscSettingsChannelList = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		miscSettingsChannelList->setMenuPosition(MENU_POSITION_CENTER);
+
 		miscSettingsChannelList->setWidgetMode(MODE_SETUP);
 		miscSettingsChannelList->enableShrinkMenu();
 		
@@ -688,7 +688,7 @@ void CEPGSettings::showMenu()
 	else
 	{
 		miscSettingsEPG = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		miscSettingsEPG->setMenuPosition(MENU_POSITION_CENTER);
+
 		miscSettingsEPG->setWidgetMode(MODE_SETUP);
 		miscSettingsEPG->enableShrinkMenu();
 		
@@ -904,7 +904,7 @@ void CFileBrowserSettings::showMenu()
 	else
 	{
 		miscSettingsFileBrowser = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		miscSettingsFileBrowser->setMenuPosition(MENU_POSITION_CENTER);
+
 		miscSettingsFileBrowser->setWidgetMode(MODE_SETUP);
 		miscSettingsFileBrowser->enableShrinkMenu();
 		

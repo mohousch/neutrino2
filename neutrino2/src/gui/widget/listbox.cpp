@@ -185,7 +185,7 @@ int CMenuOptionChooser::exec(CMenuTarget* parent)
 		else
 		{
 			menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			menu->setMenuPosition(MENU_POSITION_CENTER);
+
 			menu->setWidgetMode(MODE_SETUP);
 			menu->enableShrinkMenu();
 			
@@ -659,7 +659,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *parent)
 		else
 		{
 			menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			menu->setMenuPosition(MENU_POSITION_CENTER);
+
 			menu->setWidgetMode(MODE_SETUP);
 			menu->enableShrinkMenu();
 			
@@ -2562,7 +2562,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	cnt = 0;
 	//
 	widgetMode = MODE_LISTBOX;
-	menu_position = MENU_POSITION_NONE;
+	//menu_position = MENU_POSITION_NONE;
 
 	savescreen = false;
 	background = NULL;
@@ -2677,7 +2677,7 @@ ClistBox::ClistBox(CBox* position)
 	cnt = 0;
 	//
 	widgetMode = MODE_LISTBOX;
-	menu_position = MENU_POSITION_NONE;
+	//menu_position = MENU_POSITION_NONE;
 	
 	//
 	inFocus = true;
@@ -2910,20 +2910,23 @@ void ClistBox::initFrames()
 		full_width = itemBox.iWidth;
 		
 		// menu position
-		if(menu_position == MENU_POSITION_CENTER)
+		if (parent && parent->getMenuPosition())
 		{
-			itemBox.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - full_width ) >> 1 );
-			itemBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
-		}
-		else if(menu_position == MENU_POSITION_LEFT)
-		{
-			itemBox.iX = frameBuffer->getScreenX();
-			itemBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
-		}
-		else if(menu_position == MENU_POSITION_RIGHT)
-		{
-			itemBox.iX = frameBuffer->getScreenX() + frameBuffer->getScreenWidth() - full_width;
-			itemBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
+			if(parent->getMenuPosition() == MENU_POSITION_CENTER)
+			{
+				itemBox.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - full_width ) >> 1 );
+				itemBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
+			}
+			else if(parent->getMenuPosition() == MENU_POSITION_LEFT)
+			{
+				itemBox.iX = frameBuffer->getScreenX();
+				itemBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
+			}
+			else if(parent->getMenuPosition() == MENU_POSITION_RIGHT)
+			{
+				itemBox.iX = frameBuffer->getScreenX() + frameBuffer->getScreenWidth() - full_width;
+				itemBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
+			}
 		}
 	}
 }
@@ -3204,7 +3207,7 @@ void ClistBox::paintHead()
 				timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
 			
 				timer = new CCTime(xstartPos - timestr_len, itemBox.iY, timestr_len, hheight);
-				//timer->setPosition(xstartPos - timestr_len, itemBox.iY, timestr_len, hheight);
+
 				timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 				timer->setFormat(format);
 				timer->enableRepaint();
@@ -3282,7 +3285,7 @@ void ClistBox::paintHead()
 				timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
 			
 				timer = new CCTime(xstartPos - timestr_len, itemBox.iY, timestr_len, hheight);
-				timer->setPosition(xstartPos - timestr_len, itemBox.iY, timestr_len, hheight);
+
 				timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 				timer->setFormat(format);
 				timer->enableRepaint();

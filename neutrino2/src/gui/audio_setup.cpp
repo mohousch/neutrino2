@@ -157,7 +157,7 @@ void CAudioSettings::showMenu()
 	else
 	{
 		audioSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		audioSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		audioSettings->setWidgetMode(MODE_SETUP);
 		audioSettings->enableShrinkMenu();
 		

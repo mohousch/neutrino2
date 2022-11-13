@@ -92,7 +92,7 @@ void CMoviePlayerSettings::showMenu()
 	else
 	{
 		moviePlayerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		moviePlayerSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		moviePlayerSettings->setWidgetMode(MODE_SETUP);
 		moviePlayerSettings->enableShrinkMenu();
 		

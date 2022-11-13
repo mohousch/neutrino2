@@ -150,7 +150,7 @@ void CRemoteControlSettings::showMenu()
 	else
 	{
 		remoteControlSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		remoteControlSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		remoteControlSettings->setWidgetMode(MODE_SETUP);
 		remoteControlSettings->enableShrinkMenu();
 		
@@ -312,7 +312,7 @@ void CKeysBindingSettings::showMenu()
 	else
 	{
 		bindSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		bindSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		bindSettings->setWidgetMode(MODE_SETUP);
 		bindSettings->enableShrinkMenu();
 		

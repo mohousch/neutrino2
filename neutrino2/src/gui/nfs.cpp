@@ -202,7 +202,7 @@ int CNFSMountGui::menu()
 	else
 	{
 		mountMenuW = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		mountMenuW->setMenuPosition(MENU_POSITION_CENTER);
+
 		mountMenuW->setWidgetMode(MODE_SETUP);
 		mountMenuW->enableShrinkMenu();
 		
@@ -320,7 +320,7 @@ int CNFSMountGui::menuEntry(int nr)
 	else
 	{
 		mountMenuEntryW = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		mountMenuEntryW->setMenuPosition(MENU_POSITION_CENTER);
+		//mountMenuEntryW->setMenuPosition(MENU_POSITION_CENTER);
 		mountMenuEntryW->setWidgetMode(MODE_SETUP);
 		mountMenuEntryW->enableShrinkMenu();
 		
@@ -434,7 +434,7 @@ int CNFSUmountGui::menu()
 	else
 	{
 		umountMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		umountMenu->setMenuPosition(MENU_POSITION_CENTER);
+		//umountMenu->setMenuPosition(MENU_POSITION_CENTER);
 		umountMenu->setWidgetMode(MODE_SETUP);
 		umountMenu->enableShrinkMenu();
 		
@@ -509,7 +509,7 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 		else
 		{
 			menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			menu->setMenuPosition(MENU_POSITION_CENTER);
+			//menu->setMenuPosition(MENU_POSITION_CENTER);
 			menu->setWidgetMode(MODE_SETUP);
 			menu->enableShrinkMenu();
 			

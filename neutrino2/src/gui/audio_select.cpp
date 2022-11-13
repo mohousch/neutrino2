@@ -117,7 +117,7 @@ void CAudioSelectMenuHandler::doMenu()
 	else
 	{			
 		AudioSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		AudioSelector->setMenuPosition(MENU_POSITION_CENTER);
+
 		AudioSelector->setWidgetMode(MODE_SETUP);
 		AudioSelector->enableShrinkMenu();
 						

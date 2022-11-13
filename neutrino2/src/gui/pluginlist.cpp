@@ -114,7 +114,6 @@ void CPluginList::showMenu()
 		
 		plist->setWidgetType(WIDGET_TYPE_CLASSIC);
 		plist->setWidgetMode(MODE_MENU);
-		plist->setMenuPosition(MENU_POSITION_CENTER);
 		
 		// head
 		plist->enablePaintHead();

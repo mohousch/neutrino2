@@ -352,7 +352,7 @@ void CScanSetup::showScanService()
 	else
 	{
 		scansetup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		scansetup->setMenuPosition(MENU_POSITION_CENTER);
+
 		scansetup->setWidgetMode(MODE_SETUP);
 		scansetup->enableShrinkMenu();
 		
@@ -413,7 +413,7 @@ void CScanSetup::showScanService()
 	else
 	{
 		satSetup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		satSetup->setMenuPosition(MENU_POSITION_CENTER);
+
 		satSetup->setWidgetMode(MODE_SETUP);
 		satSetup->enableShrinkMenu();
 		
@@ -450,7 +450,7 @@ void CScanSetup::showScanService()
 	else
 	{
 		satfindMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		satfindMenu->setMenuPosition(MENU_POSITION_CENTER);
+
 		satfindMenu->setWidgetMode(MODE_SETUP);
 		satfindMenu->enableShrinkMenu();
 		
@@ -494,7 +494,7 @@ void CScanSetup::showScanService()
 		else
 		{
 			satOnOff = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			satOnOff->setMenuPosition(MENU_POSITION_CENTER);
+
 			satOnOff->setWidgetMode(MODE_SETUP);
 			satOnOff->enableShrinkMenu();
 			
@@ -546,7 +546,7 @@ void CScanSetup::showScanService()
 				*/
 				{
 					tempsat = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-					tempsat->setMenuPosition(MENU_POSITION_CENTER);
+
 					tempsat->setWidgetMode(MODE_SETUP);
 					tempsat->enableShrinkMenu();
 					
@@ -679,7 +679,7 @@ void CScanSetup::showScanService()
 		else
 		{
 			motorMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			motorMenu->setMenuPosition(MENU_POSITION_CENTER);
+
 			motorMenu->setWidgetMode(MODE_SETUP);
 			motorMenu->enableShrinkMenu();
 			
@@ -831,7 +831,7 @@ void CScanSetup::showScanService()
 	else
 	{
 		manualScan = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		manualScan->setMenuPosition(MENU_POSITION_CENTER);
+
 		manualScan->setWidgetMode(MODE_SETUP);
 		manualScan->enableShrinkMenu();
 		
@@ -990,7 +990,7 @@ void CScanSetup::showScanService()
 	else
 	{
 		autoScan = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		autoScan->setMenuPosition(MENU_POSITION_CENTER);
+
 		autoScan->setWidgetMode(MODE_SETUP);
 		autoScan->enableShrinkMenu();
 		
@@ -1049,7 +1049,7 @@ void CScanSetup::showScanService()
 		else
 		{
 			autoScanAll = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			autoScanAll->setMenuPosition(MENU_POSITION_CENTER);
+
 			autoScanAll->setWidgetMode(MODE_SETUP);
 			autoScanAll->enableShrinkMenu();
 			
@@ -1112,7 +1112,7 @@ int CScanSetup::showUnicableSetup()
 	else
 	{
 		uni_setup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		uni_setup->setMenuPosition(MENU_POSITION_CENTER);
+
 		uni_setup->setWidgetMode(MODE_SETUP);
 		uni_setup->enableShrinkMenu();
 		
@@ -1203,7 +1203,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	else
 	{
 		menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		menu->setMenuPosition(MENU_POSITION_CENTER);
+
 		menu->setWidgetMode(MODE_SETUP);
 		
 		//
@@ -1797,7 +1797,6 @@ void CTunerSetup::showMenu()
 		TunerSetup->setWidgetMode(MODE_MENU);
 		TunerSetup->setWidgetType(WIDGET_TYPE_CLASSIC);
 		TunerSetup->enableShrinkMenu();
-		TunerSetup->setMenuPosition(MENU_POSITION_CENTER);
 		
 		//
 		TunerSetup->enablePaintHead();

@@ -635,7 +635,7 @@ class ClistBox : public CWidgetItem
 		
 		//
 		int widgetMode;
-		int menu_position;
+		//int menu_position;
 		
 		// item
 		int itemBorderMode;
@@ -751,10 +751,10 @@ class ClistBox : public CWidgetItem
 		void addWidgetType(int wtype){widget.push_back(wtype);};
 		void changeWidgetType();
 		void setWidgetMode(int mode){widgetMode = mode;};
-		void setMenuPosition(int p){menu_position = p;};
+		//void setMenuPosition(int p){menu_position = p;};
 		
 		// item
-		void setItemBorderMode(int m = BORDER_ALL){/*itemBorder = true;*/ itemBorderMode = m;};
+		void setItemBorderMode(int m = BORDER_ALL){itemBorderMode = m;};
 		void setItemGradient(int gr = NOGRADIENT){itemGradient = gr;};
 		void setItem2Lines(){item2Lines = true;};
 

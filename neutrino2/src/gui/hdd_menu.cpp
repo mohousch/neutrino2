@@ -187,7 +187,7 @@ int CHDDMenuHandler::hddMenu()
 	else
 	{
 		hddmenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		hddmenu->setMenuPosition(MENU_POSITION_CENTER);
+
 		hddmenu->setWidgetMode(MODE_SETUP);
 		hddmenu->enableShrinkMenu();
 		
@@ -337,7 +337,7 @@ int CHDDMenuHandler::hddMenu()
 		*/
 		{
 			tempMenu[i] = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			tempMenu[i]->setMenuPosition(MENU_POSITION_CENTER);
+
 			tempMenu[i]->setWidgetMode(MODE_SETUP);
 			tempMenu[i]->enableShrinkMenu();
 			
@@ -415,7 +415,7 @@ int CHDDMenuHandler::hddMenu()
 			*/
 			{
 				PartMenu[j] = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				PartMenu[j]->setMenuPosition(MENU_POSITION_CENTER);
+
 				PartMenu[j]->setWidgetMode(MODE_SETUP);
 				PartMenu[j]->enableShrinkMenu();
 				

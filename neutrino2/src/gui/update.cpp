@@ -182,7 +182,7 @@ bool CFlashUpdate::selectHttpImage(void)
 	else
 	{
 		SelectionWidget = new ClistBox(0, 0, 600, MENU_HEIGHT);
-		SelectionWidget->setMenuPosition(MENU_POSITION_CENTER);
+
 		SelectionWidget->setWidgetMode(MODE_SETUP);
 		SelectionWidget->enableShrinkMenu();
 		
@@ -691,7 +691,7 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 	else
 	{
 		mtdselector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		mtdselector->setMenuPosition(MENU_POSITION_CENTER);
+
 		mtdselector->setWidgetMode(MODE_SETUP);
 		mtdselector->enableShrinkMenu();
 		
@@ -780,7 +780,7 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 	else
 	{
 		fileselector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		fileselector->setMenuPosition(MENU_POSITION_CENTER);
+
 		fileselector->setWidgetMode(MODE_SETUP);
 		fileselector->enableShrinkMenu();
 		
@@ -964,7 +964,7 @@ void CUpdateSettings::showMenu()
 	else
 	{
 		updateSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		updateSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		updateSettings->setWidgetMode(MODE_SETUP);
 		updateSettings->enableShrinkMenu();
 		
@@ -1007,7 +1007,7 @@ void CUpdateSettings::showMenu()
 	else
 	{
 		mtdexpert = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		mtdexpert->setMenuPosition(MENU_POSITION_CENTER);
+
 		mtdexpert->setWidgetMode(MODE_SETUP);
 		mtdexpert->enableShrinkMenu();
 		

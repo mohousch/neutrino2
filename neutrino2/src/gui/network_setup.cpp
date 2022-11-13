@@ -196,7 +196,7 @@ void CNetworkSettings::showMenu()
 	else
 	{
 		networkSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		networkSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		networkSettings->setWidgetMode(MODE_SETUP);
 		networkSettings->enableShrinkMenu();
 		

@@ -172,6 +172,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		CWidget* getWidget(const char* const name);
 		bool widget_exists(const char* const name);
 		bool hasWidgets(){return widgets.size();};
+		bool eraseWidget(const char* const name);
 		//
 		int execSkinWidget(const char* const name, CMenuTarget* parent, const std::string &actionKey);
 		bool paintSkinWidget(const char* const name);

@@ -134,7 +134,7 @@ void CZapitSetup::showMenu()
 	else
 	{
 		zapit = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		zapit->setMenuPosition(MENU_POSITION_CENTER);
+
 		zapit->setWidgetMode(MODE_SETUP);
 		zapit->enableShrinkMenu();
 		

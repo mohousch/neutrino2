@@ -29,8 +29,6 @@
 #include <gui/widget/listbox.h>
 
 
-class ClistBox;
-
 //
 enum
 {
@@ -88,7 +86,6 @@ class CWidget : public CMenuTarget
 		void saveScreen();
 		void restoreScreen();
 		//
-		bool enablePos;
 		int menu_position;
 
 		// mainframe		
@@ -106,6 +103,16 @@ class CWidget : public CMenuTarget
 		CWidget(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_YRES);
 		CWidget(CBox *position);
 		virtual ~CWidget();
+		
+		//
+		virtual void setPosition(const int x, const int y, const int dx, const int dy)
+		{
+			mainFrameBox.iX = x;
+			mainFrameBox.iY = y;
+			mainFrameBox.iWidth = dx;
+			mainFrameBox.iHeight = dy;
+		};
+		virtual void setPosition(CBox* position){mainFrameBox = *position;};
 
 		// WIDGETITEMS
 		virtual void addWidgetItem(CWidgetItem* widgetItem, const bool defaultselected = false);
@@ -147,7 +154,7 @@ class CWidget : public CMenuTarget
 		void setBorderMode(int sm){borderMode = sm;};
 		//
 		void enableSaveScreen();
-		void setMenuPosition(int p){enablePos = true; menu_position = p;};
+		void setMenuPosition(int p){menu_position = p;};
 
 		// lua compatibility
 		int getSelected(){return exit_pressed ? -1 : selected;};
@@ -155,6 +162,9 @@ class CWidget : public CMenuTarget
 		neutrino_msg_t getKey(){return msg;};
 		inline CBox getWindowsPos(void){return(mainFrameBox);};
 		bool getExitPressed(){return exit_pressed;};
+		
+		//
+		int getMenuPosition(){return menu_position;};
 
 		// events
 		virtual void onOKKeyPressed(neutrino_msg_t _msg = RC_ok);
@@ -174,16 +184,6 @@ class CWidget : public CMenuTarget
 		//
 		CWidgetItem* getWidgetItem(const int type, const std::string& name = "");
 		CComponent* getCCItem(const int type, const std::string& name = "");
-		
-		//
-		virtual void setPosition(const int x, const int y, const int dx, const int dy)
-		{
-			mainFrameBox.iX = x;
-			mainFrameBox.iY = y;
-			mainFrameBox.iWidth = dx;
-			mainFrameBox.iHeight = dy;
-		};
-		virtual void setPosition(CBox* position){mainFrameBox = *position;};
 };
 
 typedef std::vector<CWidget*> WIDGETLIST;

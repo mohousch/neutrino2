@@ -73,7 +73,7 @@ int CProxySetup::showProxySetup()
 	else
 	{
 		mn = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		mn->setMenuPosition(MENU_POSITION_CENTER);
+
 		mn->setWidgetMode(MODE_SETUP);
 		mn->enableShrinkMenu();
 		

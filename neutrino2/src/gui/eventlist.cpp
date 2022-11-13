@@ -1011,7 +1011,7 @@ int CEventFinderMenu::showMenu(void)
 	else
 	{
 		searchMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		searchMenu->setMenuPosition(MENU_POSITION_CENTER);
+
 		searchMenu->setWidgetMode(MODE_SETUP);
 		searchMenu->enableShrinkMenu();
 		

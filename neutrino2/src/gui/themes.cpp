@@ -216,7 +216,7 @@ int CThemes::Show()
 	else
 	{
 		themes = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		themes->setMenuPosition(MENU_POSITION_CENTER);
+
 		themes->setWidgetMode(MODE_SETUP);
 		themes->enableShrinkMenu();
 		

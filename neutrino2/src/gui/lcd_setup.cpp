@@ -137,7 +137,7 @@ void CLCDSettings::showMenu()
 	else
 	{
 		lcdSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		lcdSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		lcdSettings->setWidgetMode(MODE_SETUP);
 		lcdSettings->enableShrinkMenu();
 		

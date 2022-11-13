@@ -516,11 +516,6 @@ int CTimerList::show()
 	else
 	{
 		//
-		timerlistWidget = new CWidget(&cFrameBox);
-		
-		timerlistWidget->setMenuPosition(MENU_POSITION_CENTER);
-		
-		//
 		listBox = new ClistBox(&cFrameBox);
 		
 		// head
@@ -951,7 +946,7 @@ int CTimerList::modifyTimer()
 	else
 	{
 		timerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		timerSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		timerSettings->setWidgetMode(MODE_SETUP);
 		timerSettings->enableShrinkMenu();
 		
@@ -1036,7 +1031,7 @@ int CTimerList::modifyTimer()
 	ClistBox* timerSettings_apids = NULL;
 				
 	timerSettings_apids = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	timerSettings_apids->setMenuPosition(MENU_POSITION_CENTER);
+
 	timerSettings_apids->setWidgetMode(MODE_SETUP);
 	timerSettings_apids->enableShrinkMenu();
 					
@@ -1106,7 +1101,7 @@ int CTimerList::newTimer()
 	else
 	{
 		timerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		timerSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		timerSettings->setWidgetMode(MODE_SETUP);
 		timerSettings->enableShrinkMenu();
 		

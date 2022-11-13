@@ -276,7 +276,10 @@ CTestMenu::CTestMenu()
 
 	//
 	menuWidget = NULL;
+	
+	//
 	item = NULL;
+	cCItem = NULL;
 
 	//
 	plist = "popular";
@@ -296,7 +299,6 @@ CTestMenu::CTestMenu()
 	progressWindow = NULL;
 	progressBar = NULL;
 	progressBar2 = NULL;
-	cCItem = NULL;
 }
 
 CTestMenu::~CTestMenu()
@@ -315,6 +317,78 @@ CTestMenu::~CTestMenu()
 	{
 		delete webTVBouquetList;
 		webTVBouquetList = NULL;
+	}
+	
+	if (headers)
+	{
+		delete headers;
+		headers = NULL;
+	}
+	
+	if (footers)
+	{
+		delete footers;
+		footers = NULL;
+	}
+	
+	if (testWidget)
+	{
+		delete testWidget;
+		testWidget = NULL;
+	}
+	
+	if (frameBoxWidget)
+	{
+		delete frameBoxWidget;
+		frameBoxWidget = NULL;
+	}
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+	
+	if (leftWidget)
+	{
+		delete leftWidget;
+		leftWidget = NULL;
+	}
+	
+	if (listFrame)
+	{
+		delete listFrame;
+		listFrame = NULL;
+	}
+	
+	if (windowWidget)
+	{
+		delete windowWidget;
+		windowWidget = NULL;
+	}
+	
+	if (textBoxWidget)
+	{
+		delete textBoxWidget;
+		textBoxWidget = NULL;
+	}
+	
+	if (progressBar)
+	{
+		delete progressBar;
+		progressBar = NULL;
+	}
+	
+	if (progressWindow)
+	{
+		delete progressWindow;
+		progressWindow = NULL;
+	}
+	
+	if (progressBar2)
+	{
+		delete progressBar2;
+		progressBar2 = NULL;
 	}
 }
 
@@ -839,8 +913,6 @@ void CTestMenu::testCWidget()
 
 	footers = new CFooters(&footBox);
 	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	//footers->setCorner(RADIUS_MID, CORNER_BOTTOM);
 	
 	// topwidget (frameBox)
 	topBox.iWidth = testWidget->getWindowsPos().iWidth;
@@ -960,8 +1032,6 @@ void CTestMenu::testCWidget()
 
 		item->set2lines();
 
-		//std::string tmp = m_vMovieInfo[i].epgTitle;
-		//tmp += "\n";
 		std::string tmp = m_vMovieInfo[i].epgInfo1;
 		tmp += "\n";
 		tmp += m_vMovieInfo[i].epgInfo2;
@@ -1345,7 +1415,7 @@ REPEAT:
 
 		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			frameBoxWidget->paintHead();
+			frameBoxWidget->refresh();
 		} 
 		else if(msg == RC_right)
 		{
@@ -1947,7 +2017,7 @@ void CTestMenu::testMultiWidget()
 //
 void CTestMenu::testCWidgetItem()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCWidgetItem\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCWidgetItem\n");
 
 	top_selected = 0;
 	left_selected = 0;
@@ -2195,7 +2265,7 @@ REPAINT:
 
 		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			headers->paint();
+			headers->refresh();
 		} 
 		else if (msg == RC_home) 
 		{
@@ -2611,7 +2681,7 @@ REPAINT:
 // CIcon
 void CTestMenu::testCIcon()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCIcon\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCIcon\n");
 
 	//CIcon testIcon(NEUTRINO_ICON_BUTTON_RED);
 	CCIcon testIcon;
@@ -2641,7 +2711,7 @@ void CTestMenu::testCIcon()
 // CImage
 void CTestMenu::testCImage()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCImage\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCImage\n");
 
 	//
 	CCImage testImage;
@@ -3978,7 +4048,6 @@ void CTestMenu::testClistBox2()
 
 		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			//rightWidget->paintHead();
 			rightWidget->refresh();
 		}
 		else if (msg == RC_up)
@@ -5579,7 +5648,7 @@ void CTestMenu::testCMenuWidget1()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (menu mode)\n");
 	
-	// our listBox
+	//
 	menuWidget = new CMenuWidget("CMenuWidget(Menu Mode)", NEUTRINO_ICON_MOVIE);
 
 	item = new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler());
@@ -5616,7 +5685,7 @@ void CTestMenu::testCMenuWidget1()
 	menuWidget->addWidgetType(WIDGET_TYPE_EXTENDED);
 	menuWidget->addWidgetType(WIDGET_TYPE_FRAME);
 	menuWidget->setItemsPerPage(6, 2);
-	//menuWidget->enableShrinkMenu();
+	menuWidget->enableShrinkMenu();
 
 	// head
 	menuWidget->enablePaintDate();
@@ -5630,7 +5699,7 @@ void CTestMenu::testCMenuWidget1()
 	//menuWidget->enablePaintItemInfo(70);
 	//menuWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
 
-	menuWidget->addKey(RC_info, this, "minfo");
+	//
 	menuWidget->addKey(RC_setup, this, "lsetup");
 
 	menuWidget->exec(NULL, "");
@@ -7485,15 +7554,16 @@ void CTestMenu::showMenu()
 	dprintf(DEBUG_NORMAL, "CTestMenu::showMenu:\n");
 	
 	//
+	CNeutrinoApp::getInstance()->eraseWidget("testmenu");
+	
+	//
 	//std::string skin = PLUGINDIR "/test/skin.xml";
 	//CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
 	
 	//
-	/*
-	std::string skin = "<skin>\n\t<WIDGET name=\"testmenu\" id=\"82\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" type=\"0\" scrollbar=\"0\" ></LISTBOX>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" gradient=\"3\" corner=\"15\" radius=\"4\" localename=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"></HEAD>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" gradient=\"3\" corner=\"15\" radius=\"4\">\n\t\t\t<BUTTON_LABEL name=\"info\"></BUTTON_LABEL>\n\t\t</FOOT>\n\t\t</WIDGET>\n\t</skin>\n";
+	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"2\" type=\"0\" scrollbar=\"1\"></LISTBOX>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"3\" corner=\"15\" radius=\"4\" title=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"></HEAD>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"3\" corner=\"15\" radius=\"4\">\n\t\t\t<BUTTON_LABEL name=\"info\"></BUTTON_LABEL>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
 
 	CNeutrinoApp::getInstance()->parseSkin(skin.c_str(), true);
-	*/
 
 	CWidget* mWidget = NULL;
 	ClistBox* mainMenu = NULL;
@@ -7516,7 +7586,7 @@ void CTestMenu::showMenu()
 		mainMenu->enablePaintHead();
 		mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
 		mainMenu->setWidgetMode(MODE_MENU);
-		mainMenu->setMenuPosition(MENU_POSITION_CENTER);
+		//mainMenu->setMenuPosition(MENU_POSITION_CENTER);
 		mainMenu->enableShrinkMenu(),
 		mainMenu->enablePaintDate();
 		mainMenu->enablePaintFoot();

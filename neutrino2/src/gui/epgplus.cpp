@@ -914,7 +914,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				ClistBox* menuWidgetActions = NULL;
 				
 				menuWidgetActions = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				menuWidgetActions->setMenuPosition(MENU_POSITION_CENTER);
+
 				menuWidgetActions->setWidgetMode(MODE_SETUP);
 				menuWidgetActions->enableShrinkMenu();
 					
@@ -967,7 +967,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				ClistBox* menuWidgetOptions = NULL;
 				
 				menuWidgetOptions = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				menuWidgetOptions->setMenuPosition(MENU_POSITION_CENTER);
+
 				menuWidgetOptions->setWidgetMode(MODE_SETUP);
 				menuWidgetOptions->enableShrinkMenu();
 					

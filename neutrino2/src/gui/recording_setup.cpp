@@ -180,7 +180,7 @@ void CRecordingSettings::showMenu()
 	else
 	{
 		recordingSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		recordingSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		recordingSettings->setWidgetMode(MODE_SETUP);
 		recordingSettings->enableShrinkMenu();
 		

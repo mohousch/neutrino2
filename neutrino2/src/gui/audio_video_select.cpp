@@ -183,7 +183,7 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	else
 	{			
 		AVPIDSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		AVPIDSelector->setMenuPosition(MENU_POSITION_CENTER);
+
 		AVPIDSelector->setWidgetMode(MODE_SETUP);
 		AVPIDSelector->enableShrinkMenu();
 						

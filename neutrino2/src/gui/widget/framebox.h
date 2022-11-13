@@ -180,6 +180,8 @@ class CFrameBox : public CWidgetItem
 		bool paintDate;
 		bool logo;
 		bool paintTitle;
+		CCTime *timer;
+		const char* format;
 		
 		// foot
 		int fheight;
@@ -216,6 +218,9 @@ class CFrameBox : public CWidgetItem
 		virtual void initFrames();
 		virtual void paint();
 		virtual void hide();
+		void refresh(){if (paintDate && paintTitle) timer->refresh();};
+		bool update() const {return paintDate;};
+
 
 		virtual void swipRight();
 		virtual void swipLeft();
@@ -250,6 +255,7 @@ class CFrameBox : public CWidgetItem
 		void setHeadRadius(int ra){headRadius = ra;};
 		void setHeadCorner(int co){headCorner = co;};
 		void setHeadGradient(int grad){headGradient = grad;};
+		void setFormat(const char* f){format = f;};
 		
 		// foot
 		void enablePaintFoot(){paint_Foot = true;};

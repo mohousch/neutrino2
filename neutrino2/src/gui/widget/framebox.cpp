@@ -484,6 +484,8 @@ CFrameBox::CFrameBox(const int x, int const y, const int dx, const int dy)
 	hbutton_count	= 0;
 	hbutton_labels.clear();
 	hheight = 0;
+	format = "%d.%m.%Y %H:%M";
+	timer = NULL;
 	
 	// foot
 	paint_Foot = false;
@@ -534,6 +536,8 @@ CFrameBox::CFrameBox(CBox* position)
 	hbutton_count	= 0;
 	hbutton_labels.clear();
 	hheight = 0;
+	format = "%d.%m.%Y %H:%M";
+	timer = NULL;
 	
 	// foot
 	paint_Foot = false;
@@ -860,8 +864,13 @@ void CFrameBox::paintHead()
 			std::string timestr = getNowTimeStr("%d.%m.%Y %H:%M");;
 			
 			timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
-		
-			g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->RenderString(xstartPos - timestr_len, itemBox.iY + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight(), timestr_len + 1, timestr.c_str(), COL_MENUHEAD, 0, true); 
+			
+			timer = new CCTime(xstartPos - timestr_len, itemBox.iY, timestr_len, hheight);
+				
+			timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
+			timer->setFormat(format);
+			timer->enableRepaint();
+			timer->paint();
 		}
 		
 		// head title

@@ -305,7 +305,7 @@ int CBouquetList::doMenu()
 	else
 	{
 		menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		menu->setMenuPosition(MENU_POSITION_CENTER);
+
 		menu->setWidgetMode(MODE_MENU);
 		menu->enableShrinkMenu();
 		

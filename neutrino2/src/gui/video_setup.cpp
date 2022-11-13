@@ -365,7 +365,7 @@ void CVideoSettings::showMenu()
 	else
 	{
 		videoSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		videoSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		videoSettings->setWidgetMode(MODE_SETUP);
 		videoSettings->enableShrinkMenu();
 		

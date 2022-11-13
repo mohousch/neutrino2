@@ -770,7 +770,7 @@ void CMoviePlayerGui::PlayFile(void)
 	else
 	{
 		bookStartMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		bookStartMenu->setMenuPosition(MENU_POSITION_CENTER);
+
 		bookStartMenu->setWidgetMode(MODE_MENU);
 		bookStartMenu->enableShrinkMenu();
 			
@@ -1738,7 +1738,7 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	else
 	{
 		startPosSelectionMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		startPosSelectionMenu->setMenuPosition(MENU_POSITION_CENTER);
+		//startPosSelectionMenu->setMenuPosition(MENU_POSITION_CENTER);
 		startPosSelectionMenu->setWidgetMode(MODE_SETUP);
 		startPosSelectionMenu->enableShrinkMenu();
 			

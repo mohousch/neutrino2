@@ -3,18 +3,9 @@
 <!-- SKIN: test menu -->
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
-<!--
-	<WIDGET name="testmenu" id="82" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" scrollbar="0" >
+	<WIDGET name="testmenu" posx="0" posy="0" width="600" height="600" position="2">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="1" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Test Menu" icon="multimedia" head_line="1" paintdate="1" paintfoot="1" foot_line="1" scrollbar="1">
+			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
-		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" localename="Test Menu" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S">
-		</HEAD>
-		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4">
-			<BUTTON_LABEL name="info">
-			</BUTTON_LABEL>
-		</FOOT>
 	</WIDGET>
--->
 </skin>

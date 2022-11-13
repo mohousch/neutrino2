@@ -101,7 +101,6 @@ void COSDSettings::showMenu(void)
 	{
 		osdSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
-		osdSettings->setMenuPosition(MENU_POSITION_CENTER);
 		osdSettings->setWidgetMode(MODE_MENU);
 		osdSettings->setWidgetType(WIDGET_TYPE_CLASSIC);
 		osdSettings->enableShrinkMenu();
@@ -259,7 +258,7 @@ void COSDMenuColorSettings::showMenu()
 	else
 	{
 		OSDmenuColorsSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		OSDmenuColorsSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		OSDmenuColorsSettings->setWidgetMode(MODE_SETUP);
 		OSDmenuColorsSettings->enableShrinkMenu();
 		
@@ -448,7 +447,7 @@ void COSDInfoBarColorSettings::showMenu()
 	else
 	{
 		OSDinfobarColorSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		OSDinfobarColorSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		OSDinfobarColorSettings->setWidgetMode(MODE_SETUP);
 		OSDinfobarColorSettings->enableShrinkMenu();
 		
@@ -584,7 +583,7 @@ void CLanguageSettings::showMenu()
 	else
 	{
 		languageSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		languageSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		languageSettings->setWidgetMode(MODE_SETUP);
 		languageSettings->enableShrinkMenu();
 		
@@ -741,7 +740,7 @@ void CFontSettings::showMenu()
 	else
 	{
 		fontSettings = new ClistBox(0, 0, 700, MENU_HEIGHT);
-		fontSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		fontSettings->setWidgetMode(MODE_SETUP);
 		fontSettings->enableShrinkMenu();
 		
@@ -835,7 +834,7 @@ void COSDTimingSettings::showMenu()
 	else
 	{
 		osdTimingSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		osdTimingSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		osdTimingSettings->setWidgetMode(MODE_SETUP);
 		osdTimingSettings->enableShrinkMenu();
 		
@@ -1031,7 +1030,7 @@ void COSDDiverses::showMenu()
 	else
 	{
 		osdDiverseSettings = new ClistBox(0, 0, 800, MENU_HEIGHT);
-		osdDiverseSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		osdDiverseSettings->setWidgetMode(MODE_SETUP);
 		osdDiverseSettings->enableShrinkMenu();
 		
@@ -1111,7 +1110,7 @@ void CSkinManager::showMenu()
 	else
 	{
 		skinMenu = new ClistBox(0, 0, 800, MENU_HEIGHT);
-		skinMenu->setMenuPosition(MENU_POSITION_CENTER);
+
 		skinMenu->setWidgetMode(MODE_LISTBOX);
 		skinMenu->setWidgetType(WIDGET_TYPE_CLASSIC);
 		skinMenu->enableShrinkMenu();
@@ -1239,7 +1238,7 @@ void CSkinSettings::showMenu()
 	else
 	{
 		skinSettings = new ClistBox(0, 0, 800, 600);
-		skinSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		skinSettings->setWidgetMode(MODE_SETUP);
 		skinSettings->enableShrinkMenu();
 		

@@ -48,8 +48,7 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	background = NULL;
 	
 	//
-	enablePos = false;
-	menu_position = MENU_POSITION_CENTER;
+	menu_position = MENU_POSITION_NONE;
 
 	timeout = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
 	sec_timer_id = 0;
@@ -67,9 +66,6 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 
 	//
 	actionKey = "";
-	
-	//
-	//name = "";
 }
 
 CWidget::CWidget(CBox *position)
@@ -82,8 +78,7 @@ CWidget::CWidget(CBox *position)
 	background = NULL;
 	
 	//
-	enablePos = false;
-	menu_position = MENU_POSITION_CENTER;
+	menu_position = MENU_POSITION_NONE;
 
 	timeout = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
 	sec_timer_id = 0;
@@ -101,14 +96,11 @@ CWidget::CWidget(CBox *position)
 
 	//
 	actionKey = "";
-	
-	//
-	//name = "";
 }
 
 CWidget::~CWidget()
 {
-	dprintf(DEBUG_NORMAL, "CWidget:: del (%s)\n", name.c_str());
+	dprintf(DEBUG_NORMAL, "CWidget::del (%s)\n", name.c_str());
 
 	// WIDGETITEMS
 	if (hasWidgetItem())
@@ -162,23 +154,20 @@ void CWidget::initFrames()
 		mainFrameBox.iWidth = frameBuffer->getScreenWidth(true);
 		
 	// menu position (x/y)
-	if (enablePos)
+	if(menu_position == MENU_POSITION_CENTER)
 	{
-		if(menu_position == MENU_POSITION_CENTER)
-		{
-			mainFrameBox.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - mainFrameBox.iWidth ) >> 1 );
-			mainFrameBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainFrameBox.iHeight) >> 1 );
-		}
-		else if(menu_position == MENU_POSITION_LEFT)
-		{
-			mainFrameBox.iX = frameBuffer->getScreenX();
-			mainFrameBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainFrameBox.iHeight) >> 1 );
-		}
-		else if(menu_position == MENU_POSITION_RIGHT)
-		{
-			mainFrameBox.iX = frameBuffer->getScreenX() + frameBuffer->getScreenWidth() - mainFrameBox.iWidth;
-			mainFrameBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainFrameBox.iHeight) >> 1 );
-		}
+		mainFrameBox.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - mainFrameBox.iWidth ) >> 1 );
+		mainFrameBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainFrameBox.iHeight) >> 1 );
+	}
+	else if(menu_position == MENU_POSITION_LEFT)
+	{
+		mainFrameBox.iX = frameBuffer->getScreenX();
+		mainFrameBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainFrameBox.iHeight) >> 1 );
+	}
+	else if(menu_position == MENU_POSITION_RIGHT)
+	{
+		mainFrameBox.iX = frameBuffer->getScreenX() + frameBuffer->getScreenWidth() - mainFrameBox.iWidth;
+		mainFrameBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainFrameBox.iHeight) >> 1 );
 	}
 
 	if(savescreen) 
@@ -187,7 +176,7 @@ void CWidget::initFrames()
 
 void CWidget::paintWidgetItems()
 {
-	dprintf(DEBUG_INFO, "CWidget:: paintWidgetItems\n");
+	dprintf(DEBUG_INFO, "CWidget::paintWidgetItems\n");
 
 	for (unsigned int i = 0; i < (unsigned int)items.size(); i++)
 	{
@@ -214,7 +203,7 @@ void CWidget::paintCCItems()
 
 void CWidget::paint()
 {
-	dprintf(DEBUG_NORMAL, "CWidget:: paint (%s)\n", name.c_str());
+	dprintf(DEBUG_NORMAL, "CWidget::paint (%s)\n", name.c_str());
 	
 	//
 	initFrames();
@@ -286,7 +275,7 @@ void CWidget::enableSaveScreen()
 
 void CWidget::hide()
 {
-	dprintf(DEBUG_NORMAL, "CWidget:: hide (%s)\n", name.c_str());
+	dprintf(DEBUG_NORMAL, "CWidget::hide (%s)\n", name.c_str());
 
 	//
 	if (hasCCItem())
@@ -324,7 +313,7 @@ void CWidget::addKey(neutrino_msg_t key, CMenuTarget *menue, const std::string &
 
 int CWidget::exec(CMenuTarget *parent, const std::string &)
 {
-	dprintf(DEBUG_NORMAL, "CWidget:: exec: (%s)\n", name.c_str());
+	dprintf(DEBUG_NORMAL, "CWidget::exec: (%s)\n", name.c_str());
 
 	retval = RETURN_REPAINT;
 	pos = 0;
@@ -944,6 +933,4 @@ CComponent* CWidget::getCCItem(const int type, const std::string& name)
 	
 	return ret;
 }
-
-
 

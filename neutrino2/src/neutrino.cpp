@@ -5315,7 +5315,6 @@ void CNeutrinoApp::SelectNVOD()
 		else
                 {
 			NVODSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			NVODSelector->setMenuPosition(MENU_POSITION_CENTER);
 			NVODSelector->setWidgetMode(MODE_SETUP);
 			NVODSelector->enableShrinkMenu();
 							

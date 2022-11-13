@@ -119,7 +119,7 @@ void CPictureViewerSettings::showMenu()
 	else
 	{
 		PicViewerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		PicViewerSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		PicViewerSettings->setWidgetMode(MODE_SETUP);
 		PicViewerSettings->enableShrinkMenu();
 		

@@ -98,7 +98,7 @@ void CAudioPlayerSettings::showMenu()
 	else
 	{
 		audioPlayerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		audioPlayerSettings->setMenuPosition(MENU_POSITION_CENTER);
+
 		audioPlayerSettings->setWidgetMode(MODE_SETUP);
 		audioPlayerSettings->enableShrinkMenu();
 		

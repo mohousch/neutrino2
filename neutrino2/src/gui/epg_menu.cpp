@@ -76,7 +76,7 @@ int CEPGMenuHandler::doMenu()
 	else
 	{
 		redMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		redMenu->setMenuPosition(MENU_POSITION_CENTER);
+
 		redMenu->setWidgetMode(MODE_MENU);
 		redMenu->setWidgetType(WIDGET_TYPE_CLASSIC);
 		redMenu->enableShrinkMenu();
