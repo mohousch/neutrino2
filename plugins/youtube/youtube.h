@@ -40,6 +40,11 @@ class CYTBrowser : public CMenuTarget
 	private:
 		CFrameBuffer* frameBuffer;
 		
+		//
+		//CWidget* widget;
+		CMenuWidget* moviesMenu;
+		CMenuItem* item;
+		
 		CConfigFile configfile;
 
 		int ytmode;
@@ -64,11 +69,6 @@ class CYTBrowser : public CMenuTarget
 		void playMovie(void);
 		void showMovieInfo(void);
 		void recordMovie(void);
-		
-		//
-		CWidget* widget;
-		ClistBox* moviesMenu;
-		CMenuItem* item;
 
 		void showMenu();
 		

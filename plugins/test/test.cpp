@@ -2955,7 +2955,7 @@ REPAINT:
 // Cwindow
 void CTestMenu::testCWindow()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCWindow\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCWindow\n");
 
 	CBox Box;
 	
@@ -2990,7 +2990,7 @@ void CTestMenu::testCWindow()
 // CWindow
 void CTestMenu::testCWindowShadow()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCWindowShadow\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCWindowShadow\n");
 
 	CBox Box;
 	
@@ -3025,7 +3025,7 @@ void CTestMenu::testCWindowShadow()
 // custom Color
 void CTestMenu::testCWindowCustomColor()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCWindowCustomColor\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCWindowCustomColor\n");
 
 	CBox Box;
 	
@@ -3059,7 +3059,7 @@ void CTestMenu::testCWindowCustomColor()
 
 void CTestMenu::testCHeaders()
 {
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCHeaders\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCHeaders\n");
 	
 	CBox headBox;
 	headBox.iX = g_settings.screen_StartX + 10;
@@ -3143,7 +3143,7 @@ void CTestMenu::testCHeaders()
 // CStringInput
 void CTestMenu::testCStringInput()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCStringInput\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCStringInput\n");
 
 	std::string value;
 	CStringInput * stringInput = new CStringInput("CStringInput", value.c_str());
@@ -3158,7 +3158,7 @@ void CTestMenu::testCStringInput()
 // CStringInputSMS
 void CTestMenu::testCStringInputSMS()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCStringInputSMS\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCStringInputSMS\n");
 
 	std::string value;
 	CStringInputSMS * stringInputSMS = new CStringInputSMS("CStringInputSMS", value.c_str());
@@ -3172,7 +3172,7 @@ void CTestMenu::testCStringInputSMS()
 // CPINInput
 void CTestMenu::testCPINInput()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCPINInput\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCPINInput\n");
 
 	std::string value;
 	CPINInput * pinInput = new CPINInput("CPINInput", value.c_str());
@@ -3187,7 +3187,7 @@ void CTestMenu::testCPINInput()
 // CPLPINInput
 void CTestMenu::testCPLPINInput()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCPLPINInput\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCPLPINInput\n");
 
 	std::string value;
 	CPLPINInput * pinInput = new CPLPINInput("CPLPINInput", value.c_str());
@@ -3202,7 +3202,7 @@ void CTestMenu::testCPLPINInput()
 // CPINChangeWidget
 void CTestMenu::testCPINChangeWidget()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCPINChangeWidget\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCPINChangeWidget\n");
 
 	std::string value;
 	CPINChangeWidget * pinInput = new CPINChangeWidget("CPINChangeWidget", value.c_str());
@@ -3217,7 +3217,7 @@ void CTestMenu::testCPINChangeWidget()
 // CIPInput
 void CTestMenu::testCIPInput()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCIPInput\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCIPInput\n");
 
 	std::string value;
 	CIPInput * ipInput = new CIPInput(_("IP:"), value);
@@ -3231,7 +3231,7 @@ void CTestMenu::testCIPInput()
 // CMACInput
 void CTestMenu::testCMACInput()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCMACInput\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCMACInput\n");
 
 	std::string value;
 	CMACInput * macInput = new CMACInput(_("MAC address:"), (char *)value.c_str());
@@ -3246,7 +3246,7 @@ void CTestMenu::testCMACInput()
 // CDateInput
 void CTestMenu::testCDateInput()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCDateInput\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCDateInput\n");
 
 	time_t value;
 	CDateInput * dateInput = new CDateInput(_("Date:"), &value);
@@ -3259,7 +3259,7 @@ void CTestMenu::testCDateInput()
 // CTimeInput
 void CTestMenu::testCTimeInput()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCTimeInput\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCTimeInput\n");
 
 	std::string value;
 	CTimeInput * timeInput = new CTimeInput(_("Time:"), (char *)value.c_str());
@@ -3274,7 +3274,7 @@ void CTestMenu::testCTimeInput()
 // CIntInput
 void CTestMenu::testCIntInput()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCIntInput\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCIntInput\n");
 
 	int value;
 	CIntInput * intInput = new CIntInput(_("Test"), value);
@@ -3288,7 +3288,7 @@ void CTestMenu::testCIntInput()
 // CInfoBox
 void CTestMenu::testCInfoBox()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCInfoBox\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCInfoBox\n");
 
 	loadMoviePlaylist();
 	
@@ -3329,7 +3329,7 @@ void CTestMenu::testCInfoBox()
 // CMessageBox
 void CTestMenu::testCMessageBox()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCMessageBox\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
 	CMessageBox * messageBox = new CMessageBox(_("Information"), "testing CMessageBox"/*, 600, NEUTRINO_ICON_INFO, mbrYes, mbNone*/);
 	
@@ -3344,7 +3344,7 @@ void CTestMenu::testCMessageBox()
 // MessageBox
 void CTestMenu::testCMessageBoxInfoMsg()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCMessageBox\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
 	MessageBox(_("Information"), "testing CMessageBoxInfoMsg", mbrBack, mbBack, NEUTRINO_ICON_INFO);
 }
@@ -3352,7 +3352,7 @@ void CTestMenu::testCMessageBoxInfoMsg()
 // MessageBox
 void CTestMenu::testCMessageBoxErrorMsg()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCMessageBox\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
 	MessageBox(_("Error"), "testing CMessageBoxErrorMsg", mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
 }
@@ -3360,7 +3360,7 @@ void CTestMenu::testCMessageBoxErrorMsg()
 // CHintBox
 void CTestMenu::testCHintBox()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCHintBox\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCHintBox\n");
 
 	CHintBox * hintBox = new CHintBox(_("Information"), "testing CHintBox");
 	
@@ -3373,7 +3373,7 @@ void CTestMenu::testCHintBox()
 // HintBox
 void CTestMenu::testCHintBoxInfo()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCHintBox\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCHintBox\n");
 
 	HintBox(_("Information"), "testCHintBoxInfo", HINTBOX_WIDTH, 10, NEUTRINO_ICON_INFO);
 }
@@ -3381,7 +3381,7 @@ void CTestMenu::testCHintBoxInfo()
 // CHelpBox
 void CTestMenu::testCHelpBox()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCHelpBox\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCHelpBox\n");
 
 	CHelpBox * helpBox = new CHelpBox();
 	
@@ -3432,7 +3432,7 @@ void CTestMenu::testCHelpBox()
 // CTextBox
 void CTestMenu::testCTextBox()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCTextBox\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCTextBox\n");
 
 	CBox Box;
 	
@@ -3508,7 +3508,7 @@ REPAINT:
 // ClistFrame
 void CTestMenu::testCListFrame()
 {
-	dprintf(DEBUG_NORMAL, "\ntestClistFrame\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistFrame\n");
 
 	CBox listFrameBox;
 	LF_LINES listFrameLines;
@@ -3679,7 +3679,7 @@ REPEAT:
 // CProgressBar
 void CTestMenu::testCProgressBar()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCProgressBar\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCProgressBar\n");
 	
 	CBox Box;
 	
@@ -3752,7 +3752,7 @@ void CTestMenu::testCProgressBar()
 // CProgressWindow
 void CTestMenu::testCProgressWindow()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCProgressWindow\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCProgressWindow\n");
 
 	progressWindow = new CProgressWindow();
 	progressWindow->setTitle("CProgressWindow");
@@ -3805,7 +3805,7 @@ void CTestMenu::testCProgressWindow()
 // CButtons
 void CTestMenu::testCButtons()
 {
-	dprintf(DEBUG_NORMAL, "\ntestCButtons\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCButtons\n");
 	
 	CCButtons buttons;
 
@@ -3826,7 +3826,7 @@ void CTestMenu::testCButtons()
 // ClistBox(standard)
 void CTestMenu::testClistBox()
 {
-	dprintf(DEBUG_NORMAL, "\ntestClistBox(standard)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(standard)\n");
 
 	CBox Box;
 	
@@ -3957,7 +3957,7 @@ void CTestMenu::testClistBox()
 // ClistBox(classic)
 void CTestMenu::testClistBox2()
 {
-	dprintf(DEBUG_NORMAL, "\ntestClistBox(classic)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(classic)\n");
 
 	CBox Box;
 	
@@ -4107,7 +4107,7 @@ void CTestMenu::testClistBox2()
 // ClistBox(extended)
 void CTestMenu::testClistBox3()
 {
-	dprintf(DEBUG_NORMAL, "\ntestClistBox(extended)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(extended)\n");
 
 	CBox Box;
 	
@@ -4255,7 +4255,7 @@ void CTestMenu::testClistBox3()
 // ClistBox(frame)
 void CTestMenu::testClistBox4()
 {
-	dprintf(DEBUG_NORMAL, "\ntestClistBox(frame)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(frame)\n");
 
 	CBox Box;
 	
@@ -4399,7 +4399,7 @@ void CTestMenu::testClistBox4()
 // ClistBox(DL_INFO)
 void CTestMenu::testClistBox5()
 {
-	dprintf(DEBUG_NORMAL, "\ntestClistBox(DL_INFO)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(DL_INFO)\n");
 
 	CBox Box;
 	
@@ -4560,7 +4560,7 @@ void CTestMenu::testClistBox5()
 // ClistBox(listBox mode)
 void CTestMenu::testClistBox6()
 {
-	dprintf(DEBUG_NORMAL, "\ntestClistBox(DL_HINT)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(DL_HINT)\n");
 
 	CBox Box;
 	
@@ -4723,7 +4723,7 @@ void CTestMenu::testClistBox6()
 
 void CTestMenu::testCFrameBox()
 {
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCFrameBox\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::CTestMenu::testCFrameBox\n");
 
 	// frameBox
 	CBox topBox;
