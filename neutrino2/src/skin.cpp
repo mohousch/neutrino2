@@ -101,7 +101,7 @@ _xmlDocPtr parser = NULL;
 //
 CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertTarget: id: %s\n", name);
+	dprintf(DEBUG_INFO, "CNeutrinoApp::convertTarget: %s\n", name.c_str());
 	
 	CMenuTarget* parent = NULL;
 	
