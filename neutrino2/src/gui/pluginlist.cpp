@@ -171,7 +171,7 @@ void CPluginList::showMenu()
 
 int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 {
-	dprintf(DEBUG_NORMAL, "CPluginList::exec\n");
+	dprintf(DEBUG_NORMAL, "CPluginList::exec: actionKey:%s\n", actionKey.c_str());
 
 	if (parent)
 		parent->hide();
