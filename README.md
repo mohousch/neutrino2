@@ -34,18 +34,16 @@
 
 ## How to build neutrino2 for PC (x86) ##
 
-* check preqs (debian):
-
-```bash
-$:~ sudo apt-get install autoconf libtool libtool-bin g++ gdb swig flex bison make texinfo subversion intltool dialog wget cmake gperf libglew-dev freeglut3-dev libcurl4-gnutls-dev libfreetype6-dev libid3tag0-dev libmad0-dev libavformat-dev libfribidi-dev libogg-dev libpng-dev libgif-dev libjpeg-dev libflac-dev libvorbis-dev libopenthreads-dev libblkid-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev lua5.2 lua5.2-dev lua-json lua-expat lua-posix lua-socket lua-soap lua-curl python2-dev libao-dev libass-dev
-```
-
 ```bash
 $:~ git clone https://github.com/mohousch/neutrino2.git
 ```
 ```bash
 $:~ cd neutrino2
 ```
+
+* check preqs (debian):
+```bash
+$:~ sudo bash prepare-for-neutrino.sh
 
 ```bash
 $:~ make
