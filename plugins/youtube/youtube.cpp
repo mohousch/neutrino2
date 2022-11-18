@@ -40,7 +40,7 @@ CYTBrowser::CYTBrowser(int mode): configfile ('\t')
 {
 	frameBuffer = CFrameBuffer::getInstance();
 	
-	//widget = NULL;
+	//
 	moviesMenu = NULL;
 	item = NULL;
 
@@ -140,10 +140,7 @@ void CYTBrowser::showMenu()
 	title += getFeedLocale();
 
 	//
-	//widget = new CWidget(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
 	moviesMenu = new CMenuWidget();
-	
-	//moviesMenu->paintMainFrame(true);
 	
 	std::string itemTitle;
 
@@ -164,13 +161,11 @@ void CYTBrowser::showMenu()
 	moviesMenu->setItemsPerPage(3, 2);
 
 	//
-	moviesMenu->enablePaintHead();
 	moviesMenu->setTitle(title.c_str(), NEUTRINO_ICON_YT_SMALL);
 	moviesMenu->enablePaintDate();
 	moviesMenu->setHeadButtons(YTHeadButtons, YT_HEAD_BUTTONS_COUNT);
 	
 	//
-	moviesMenu->enablePaintFoot();
 	moviesMenu->setFootButtons(YTFootButtons, YT_FOOT_BUTTONS_COUNT);
 	
 	//
@@ -182,16 +177,11 @@ void CYTBrowser::showMenu()
 	moviesMenu->addKey(RC_green, this, CRCInput::getSpecialKeyName(RC_green));
 	moviesMenu->addKey(RC_blue, this, CRCInput::getSpecialKeyName(RC_blue));
 	moviesMenu->addKey(RC_record, this, CRCInput::getSpecialKeyName(RC_record));
-	
-	//widget->addWidgetItem(moviesMenu);
 
 	moviesMenu->exec(NULL, "");
 	
 	delete moviesMenu;
 	moviesMenu = NULL;
-	
-	//delete widget;
-	//widget = NULL;
 }
 
 void CYTBrowser::playMovie(void)
