@@ -44,6 +44,7 @@ $:~ cd neutrino2
 * check preqs (debian):
 ```bash
 $:~ sudo bash prepare-for-neutrino.sh
+```
 
 ```bash
 $:~ make
