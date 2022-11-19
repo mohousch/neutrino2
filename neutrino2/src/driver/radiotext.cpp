@@ -61,7 +61,7 @@
 
 #include <global.h>
 #include <system/settings.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 #include <driver/color.h>
 
 #include "radiotext.h"

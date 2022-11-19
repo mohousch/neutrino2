@@ -34,7 +34,7 @@
 
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 #include <gui/widget/icons.h>
 
 #include <gui/dvbsub_select.h>

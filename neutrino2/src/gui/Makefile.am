@@ -38,9 +38,9 @@ endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino_gui.a libneutrino_gui2.a
+noinst_LIBRARIES = libneutrino2_gui.a
 
-libneutrino_gui_a_SOURCES = \
+libneutrino2_gui_a_SOURCES = \
 	bouquetlist.cpp \
 	channellist.cpp \
 	eventlist.cpp \
@@ -89,16 +89,14 @@ libneutrino_gui_a_SOURCES = \
 	hdd_menu.cpp \
 	dvbsub_select.cpp \
 	timerlist.cpp \
-	epg_menu.cpp
-
-libneutrino_gui2_a_SOURCES = \
+	epg_menu.cpp \
 	motorcontrol.cpp \
 	alphasetup.cpp \
 	psisetup.cpp \
 	vfdcontroler.cpp 
 
 if ENABLE_CI
-libneutrino_gui2_a_SOURCES += cam_menu.cpp
+libneutrino2_gui_a_SOURCES += cam_menu.cpp
 endif
 
 

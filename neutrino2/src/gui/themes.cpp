@@ -35,7 +35,7 @@
 #include <sys/wait.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <system/setting_helpers.h>
 #include <system/debug.h>

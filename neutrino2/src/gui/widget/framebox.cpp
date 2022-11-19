@@ -20,7 +20,7 @@
 */
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <gui/widget/framebox.h>
 #include <gui/widget/textbox.h>

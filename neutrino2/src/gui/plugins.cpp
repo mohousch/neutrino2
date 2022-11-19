@@ -48,7 +48,7 @@
 #include <gui/plugins.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <daemonc/remotecontrol.h>
 
@@ -59,11 +59,11 @@
 #include <gui/widget/hintbox.h>
 
 #if ENABLE_PYTHON
-#include <interfaces/python/neutrino_python.h>
+#include <interfaces/python/neutrino2_python.h>
 #endif
 
 #if ENABLE_LUA
-#include <interfaces/lua/neutrino_lua.h>
+#include <interfaces/lua/neutrino2_lua.h>
 #endif
 
 

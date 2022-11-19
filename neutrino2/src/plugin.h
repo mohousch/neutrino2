@@ -48,7 +48,7 @@
 #include <system/set_threadname.h>
 
 // neutrino
-#include <neutrino.h>
+#include <neutrino2.h>
 
 // 
 #include <client/zapitclient.h>

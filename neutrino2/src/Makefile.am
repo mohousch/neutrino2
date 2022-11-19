@@ -43,13 +43,13 @@ bin_PROGRAMS = neutrino2
 neutrino2_SOURCES = neutrino2_menue.cpp neutrino2.cpp swig_helpers.cpp skin.cpp
 
 neutrino2_LDADD = \
-	daemonc/libneutrino_daemonc.a \
-	gui/bedit/libneutrino_gui_bedit.a \
-	gui/libneutrino_gui.a \
-	gui/widget/libneutrino_gui_widget.a \
-	gui/widget/libneutrino_gui_widget2.a \
-	driver/pictureviewer/libneutrino_pictureviewer.a \
-	system/libneutrino_system.a \
+	daemonc/libneutrino2_daemonc.a \
+	gui/bedit/libneutrino2_gui_bedit.a \
+	gui/libneutrino2_gui.a \
+	gui/widget/libneutrino2_gui_widget.a \
+	gui/widget/libneutrino2_gui_widget2.a \
+	driver/pictureviewer/libneutrino2_pictureviewer.a \
+	system/libneutrino2_system.a \
 	system/helpers.o \
 	system/ytparser.o \
 	system/tmdbparser.o \
@@ -57,9 +57,8 @@ neutrino2_LDADD = \
 	gui/movieinfo.o \
 	gui/pictureviewer.o \
 	gui/audioplayer.o \
-	driver/audiodec/libneutrino_driver_audiodec.a \
+	driver/audiodec/libneutrino2_driver_audiodec.a \
 	gui/bedit/bouqueteditor_bouquets.o \
-	gui/libneutrino_gui2.a \
 	sectionsd/libsectionsd.a \
 	timerd/libtimerd.a \
 	zapit/src/libzapit.a \
@@ -132,12 +131,12 @@ neutrino2_LDADD += \
 endif
 
 if ENABLE_PYTHON
-neutrino2_LDADD += interfaces/python/libneutrino_interfaces_python.a \
+neutrino2_LDADD += interfaces/python/libneutrino2_interfaces_python.a \
 	@PYTHON_LDFLAGS@
 endif
 
 if ENABLE_LUA
-neutrino2_LDADD += interfaces/lua/libneutrino_interfaces_lua.a \
+neutrino2_LDADD += interfaces/lua/libneutrino2_interfaces_lua.a \
 	@LUA_LIB@
 endif
 

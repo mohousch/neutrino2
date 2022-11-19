@@ -37,7 +37,7 @@
 #include "gui/scan_setup.h"
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include "gui/scan.h"
 #include "gui/motorcontrol.h"

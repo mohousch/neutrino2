@@ -18,9 +18,9 @@ endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino_gui_bedit.a
+noinst_LIBRARIES = libneutrino2_gui_bedit.a
 
-libneutrino_gui_bedit_a_SOURCES = \
+libneutrino2_gui_bedit_a_SOURCES = \
 	bouqueteditor_bouquets.cpp \
 	bouqueteditor_channels.cpp \
 	bouqueteditor_chanselect.cpp

@@ -34,7 +34,7 @@
 #include <driver/vfd.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 #include <system/settings.h>
 
 #include <fcntl.h>

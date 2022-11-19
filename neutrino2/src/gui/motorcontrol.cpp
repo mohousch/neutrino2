@@ -32,7 +32,7 @@
 #include <fcntl.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <driver/rcinput.h>
 #include <driver/color.h>

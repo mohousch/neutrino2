@@ -35,7 +35,7 @@
 #endif
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <gui/nfs.h>
 
@@ -47,8 +47,6 @@
 #include <system/debug.h>
 
 #include <fstream>
-
-#include <global.h>
 
 #include <errno.h>
 #include <pthread.h>

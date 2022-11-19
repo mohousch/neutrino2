@@ -39,7 +39,7 @@
 #include <gui/widget/drawable.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 
 Drawable::Drawable()

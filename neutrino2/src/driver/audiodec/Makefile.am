@@ -21,9 +21,9 @@ endif
 
 AM_CXXFLAGS = -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino_driver_audiodec.a
+noinst_LIBRARIES = libneutrino2_driver_audiodec.a
 
-libneutrino_driver_audiodec_a_SOURCES = \
+libneutrino2_driver_audiodec_a_SOURCES = \
 	basedec.cpp \
 	cdrdec.cpp \
 	tag.c \
@@ -32,4 +32,3 @@ libneutrino_driver_audiodec_a_SOURCES = \
 	wavdec.cpp \
 	flacdec.cpp
 
- 

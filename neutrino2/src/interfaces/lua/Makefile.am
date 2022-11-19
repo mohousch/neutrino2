@@ -35,18 +35,18 @@ endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions -D__KERNEL_STRICT_NAMES
 
-noinst_LIBRARIES = libneutrino_interfaces_lua.a
+noinst_LIBRARIES = libneutrino2_interfaces_lua.a
 
-libneutrino_interfaces_lua_a_SOURCES = \
-	neutrino_lua.cpp
+libneutrino2_interfaces_lua_a_SOURCES = \
+	neutrino2_lua.cpp
 
-nodist_libneutrino_interfaces_lua_a_SOURCES = \
-	neutrino_lua_wrap.cxx
+nodist_libneutrino2_interfaces_lua_a_SOURCES = \
+	neutrino2_lua_wrap.cxx
 
-neutrino_lua_wrap.cxx :
-	$(AM_V_GEN)$(SWIG) -lua -I$(top_srcdir) -cpperraswarn neutrino_lua.i
+neutrino2_lua_wrap.cxx :
+	$(AM_V_GEN)$(SWIG) -lua -I$(top_srcdir) -cpperraswarn neutrino2_lua.i
 
-CLEANFILES = neutrino_lua_wrap.cxx
+CLEANFILES = neutrino2_lua_wrap.cxx
 
 
 

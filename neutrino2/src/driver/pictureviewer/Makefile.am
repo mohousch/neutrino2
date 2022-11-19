@@ -17,7 +17,7 @@ endif
 
 AM_CXXFLAGS = -fno-rtti -fno-exceptions
  
-noinst_LIBRARIES = libneutrino_pictureviewer.a
+noinst_LIBRARIES = libneutrino2_pictureviewer.a
 
-libneutrino_pictureviewer_a_SOURCES = pictureviewer.cpp
+libneutrino2_pictureviewer_a_SOURCES = pictureviewer.cpp
 

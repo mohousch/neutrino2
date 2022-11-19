@@ -38,7 +38,7 @@
 #include <gui/bedit/bouqueteditor_bouquets.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <driver/fontrenderer.h>
 

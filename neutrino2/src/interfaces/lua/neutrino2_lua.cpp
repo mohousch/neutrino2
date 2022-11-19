@@ -1,5 +1,5 @@
 /*
-	$Id: neutrino_lua.cpp 25.01.2019 mohousch Exp $
+	$Id: neutrino2_lua.cpp 19.11.2022 mohousch Exp $
 
 	Kommentar:
 
@@ -33,13 +33,13 @@
 #include <cstring>
 #include <unistd.h>
 
-#include <interfaces/lua/neutrino_lua.h>
+#include <interfaces/lua/neutrino2_lua.h>
 
 #include <system/helpers.h>
 #include <system/debug.h>
 
 
-extern "C" int luaopen_neutrino(lua_State* L); // declare the wrapped module
+extern "C" int luaopen_neutrino2(lua_State* L); // declare the wrapped module
 
 neutrinoLua::neutrinoLua()
 {
@@ -49,7 +49,7 @@ neutrinoLua::neutrinoLua()
 	luaL_openlibs(lua);
 
 	// call wrapped module
-	luaopen_neutrino(lua);
+	luaopen_neutrino2(lua);
 }
 
 neutrinoLua::~neutrinoLua()

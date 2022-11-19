@@ -29,17 +29,15 @@ endif
 
 AM_CXXFLAGS = -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino_system.a
+noinst_LIBRARIES = libneutrino2_system.a
 
-libneutrino_system_a_SOURCES = \
+libneutrino2_system_a_SOURCES = \
 	safe_system.c \
 	localize.cpp setting_helpers.cpp debug.cpp \
 	ping.c flashtool.cpp httptool.cpp \
 	settings.cpp lastchannel.cpp \
 	configure_network.cpp fsmounter.cpp \
-	helpers.cpp
-
-libneutrino_system_a_SOURCES += \
+	helpers.cpp \
 	tmdbparser.cpp \
 	ytparser.cpp \
 	weather.cpp

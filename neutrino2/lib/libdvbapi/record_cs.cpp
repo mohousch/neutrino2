@@ -28,7 +28,7 @@
 #include <unistd.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <system/debug.h>
 #include <system/helpers.h>

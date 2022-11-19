@@ -19,27 +19,27 @@ endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino_gui_widget.a libneutrino_gui_widget2.a 
+noinst_LIBRARIES = libneutrino2_gui_widget.a libneutrino2_gui_widget2.a 
 
-libneutrino_gui_widget_a_SOURCES = \
-	drawable.cpp \
+libneutrino2_gui_widget_a_SOURCES = \
 	widget_helpers.cpp \
 	window.cpp \
-	stringinput.cpp \
-	stringinput_ext.cpp \
+	textbox.cpp \
+	listframe.cpp \
+	listbox.cpp \
+	framebox.cpp \
+	widget.cpp
+
+libneutrino2_gui_widget2_a_SOURCES = \
+	drawable.cpp \
+	menue.cpp
+	progresswindow.cpp \
 	infobox.cpp \
 	messagebox.cpp \
 	hintbox.cpp \
 	helpbox.cpp \
-	textbox.cpp \
-	listframe.cpp \
-	listbox.cpp \
-	progresswindow.cpp \
-	framebox.cpp \
-	widget.cpp \
-	menue.cpp
-
-libneutrino_gui_widget2_a_SOURCES = \
+	stringinput.cpp \
+	stringinput_ext.cpp \
 	colorchooser.cpp \
 	keychooser.cpp \
 	mountchooser.cpp

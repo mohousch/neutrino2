@@ -37,7 +37,7 @@
 #include <fcntl.h>
 #include <sched.h>
 
-#include <neutrino.h>
+#include <neutrino2.h>
 #include <driver/audioplay.h>
 #include <driver/audiodec/netfile.h>
 

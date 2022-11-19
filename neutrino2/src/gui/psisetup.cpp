@@ -54,7 +54,7 @@
 #include <sys/select.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <video_cs.h>
 

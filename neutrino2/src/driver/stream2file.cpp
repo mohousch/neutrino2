@@ -68,7 +68,7 @@ extern "C" {
 #include <driver/genpsi.h>
 }
 
-#include <neutrino.h>
+#include <neutrino2.h>
 #include <driver/vcrcontrol.h>
 
 static cRecord * record = NULL;

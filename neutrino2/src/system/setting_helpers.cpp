@@ -48,7 +48,7 @@
 #include <config.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <gui/widget/stringinput.h>
 #include <gui/widget/messagebox.h>

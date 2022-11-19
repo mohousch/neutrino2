@@ -36,9 +36,9 @@ endif
 
 AM_CXXFLAGS = -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino_driver.a 
+noinst_LIBRARIES = libneutrino2_driver.a 
 
-libneutrino_driver_a_SOURCES = \
+libneutrino2_driver_a_SOURCES = \
 	encoding.cpp \
 	fontrenderer.cpp \
 	framebuffer.cpp \
@@ -62,12 +62,12 @@ libneutrino_driver_a_SOURCES = \
 	crw.cpp
 
 if ENABLE_LCD
-libneutrino_driver_a_SOURCES += lcdd.cpp	
+libneutrino2_driver_a_SOURCES += lcdd.cpp	
 else
-libneutrino_driver_a_SOURCES += vfd.cpp
+libneutrino2_driver_a_SOURCES += vfd.cpp
 endif
 
 if USE_OPENGL
-libneutrino_driver_a_SOURCES += \
+libneutrino2_driver_a_SOURCES += \
 	glthread.cpp
 endif

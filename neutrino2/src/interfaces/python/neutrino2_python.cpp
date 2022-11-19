@@ -1,5 +1,5 @@
 /*
-	$Id: neutrino_python.cpp 20.01.2019 mohousch Exp $
+	$Id: neutrino2_python.cpp 19.11.2022 mohousch Exp $
 
 	Kommentar:
 
@@ -29,16 +29,16 @@
 #include <config.h>
 #include <Python.h>
 
-#include <interfaces/python/neutrino_python.h>
+#include <interfaces/python/neutrino2_python.h>
 
-extern "C" void init_neutrino();
+extern "C" void init_neutrino2();
 
 neutrinoPython::neutrinoPython()
 {
 	Py_Initialize();
 	PyEval_InitThreads();
 
-	init_neutrino();
+	init_neutrino2();
 }
 
 neutrinoPython::~neutrinoPython()

@@ -29,7 +29,7 @@
 #include "gui/zapit_setup.h"
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <gui/channel_select.h>
 

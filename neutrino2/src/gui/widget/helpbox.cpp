@@ -35,7 +35,7 @@
 #endif
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <gui/widget/messagebox.h>
 #include <gui/widget/icons.h>

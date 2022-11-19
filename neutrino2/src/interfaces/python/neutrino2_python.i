@@ -1,5 +1,5 @@
 /*
-	$Id: neutrino_python.i 20.01.2019 mohousch Exp $
+	$Id: neutrino2_python.i 19.11.2022 mohousch Exp $
 
 	Kommentar:
 
@@ -26,18 +26,14 @@
 	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-%module neutrino
+%module neutrino2
 %{
 #define SWIG_COMPILE
-
-#ifdef assert(x)
-#undef asser(x)
-#endif
 
 #include <config.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 #include <neutrinoMessages.h>
 #include <swig_helpers.h>
 
@@ -45,10 +41,10 @@
 #include <libconfigfile/configfile.h>
 
 // libdvbapi
-#include <libdvbapi/playback_cs.h>
-#include <libdvbapi/audio_cs.h>
-#include <libdvbapi/video_cs.h>
-#include <libdvbapi/dmx_cs.h>
+//#include <libdvbapi/playback_cs.h>
+//#include <libdvbapi/audio_cs.h>
+//#include <libdvbapi/video_cs.h>
+//#include <libdvbapi/dmx_cs.h>
 
 // driver
 #include <driver/framebuffer.h>
@@ -76,8 +72,6 @@
 #include <system/httptool.h>
 #include <system/flashtool.h>
 
-#include <system/setting_helpers.h>
-
 // widget
 #include <gui/widget/icons.h>
 #include <gui/widget/drawable.h>
@@ -88,10 +82,10 @@
 #include <gui/widget/helpbox.h>
 #include <gui/widget/listbox.h>
 #include <gui/widget/hintbox.h>
-#include <gui/widget/infobox.h>
 #include <gui/widget/listframe.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/textbox.h>
+#include <gui/widget/infobox.h>
 #include <gui/widget/menue.h>
 #include <gui/widget/framebox.h>
 #include <gui/widget/widget.h>
@@ -103,51 +97,6 @@
 #include <gui/pictureviewer.h>
 #include <gui/filebrowser.h>
 #include <gui/plugins.h>
-#include <gui/eventlist.h>
-#include <gui/epgplus.h>
-#include <gui/epgview.h>
-#include <gui/bouquetlist.h>
-#include <gui/channellist.h>
-#include <gui/dboxinfo.h>
-#include <gui/audio_select.h>
-#include <gui/channel_select.h>
-#include <gui/sleeptimer.h>
-#include <gui/streaminfo2.h>
-#include <gui/timerlist.h>
-#include <gui/imageinfo.h>
-#include <gui/pluginlist.h>
-#include <gui/bedit/bouqueteditor_bouquets.h>
-#include <gui/update.h>
-#include <gui/cam_menu.h>
-#include <gui/hdd_menu.h>
-#include <gui/rc_lock.h>
-#include <gui/themes.h>
-#include <gui/vfdcontroler.h>
-
-//gui/setup
-#include <gui/scan_setup.h>
-#include <gui/audio_setup.h>
-#include <gui/video_setup.h>
-#include <gui/lcd_setup.h>
-#include <gui/misc_setup.h>
-#include <gui/movieplayer_setup.h>
-#include <gui/network_setup.h>
-#include <gui/osd_setup.h>
-#include <gui/parentallock_setup.h>
-#include <gui/pictureviewer_setup.h>
-#include <gui/psisetup.h>
-#include <gui/rc_setup.h>
-#include <gui/recording_setup.h>
-#include <gui/screensetup.h>
-#include <gui/zapit_setup.h>
-#include <gui/audioplayer_setup.h>
-//
-#include <gui/main_setup.h>
-#include <gui/epg_menu.h>
-#include <gui/power_menu.h>
-#include <gui/dboxinfo.h>
-#include <gui/service_menu.h>
-#include <gui/mediaplayer.h>
 
 // zapit
 #include <zapit/include/zapit/bouquets.h>
@@ -172,18 +121,20 @@
 %include "typemaps.i"
 %include "std_string.i"
 %include "stdint.i"
-%include "std_vector.i"
 %include "carrays.i"
 %include "cpointer.i"
-//%include "std_list.i"
+/*
+%include "std_vector.i"
+%include "std_list.i"
 %include "std_map.i"
 %include "std_pair.i"
-//%include "std_set.i"
+%include "std_set.i"
+*/
 %include "exception.i"
 
 %include <config.h>
 %include <src/global.h>
-%include <src/neutrino.h>
+%include <src/neutrino2.h>
 %include <src/neutrinoMessages.h>
 %include <src/swig_helpers.h>
 
@@ -191,10 +142,10 @@
 %include <lib/libconfigfile/configfile.h>
 
 // libdvbapi
-%include <lib/libdvbapi/playback_cs.h>
-%include <lib/libdvbapi/audio_cs.h>
+//%include <lib/libdvbapi/playback_cs.h>
+//%include <lib/libdvbapi/audio_cs.h>
 //%include <lib/libdvbapi/video_cs.h>
-%include <lib/libdvbapi/dmx_cs.h>
+//%include <lib/libdvbapi/dmx_cs.h>
 
 // driver
 %include <src/driver/fontrenderer.h>
@@ -211,7 +162,6 @@
 %include <src/driver/stream2file.h>
 %include <src/driver/vcrcontrol.h>
 
-
 // system
 %include <src/system/settings.h>
 %include <src/system/debug.h>
@@ -223,8 +173,6 @@
 %include <src/system/httptool.h>
 %include <src/system/flashtool.h>
 
-%include <src/system/setting_helpers.h>
-
 // widget
 %include <src/gui/widget/icons.h>
 //%include <src/gui/widget/drawable.h>
@@ -235,10 +183,10 @@
 %include <src/gui/widget/helpbox.h>
 %include <src/gui/widget/listbox.h>
 %include <src/gui/widget/hintbox.h>
+%include <src/gui/widget/textbox.h>
 %include <src/gui/widget/infobox.h>
 %include <src/gui/widget/listframe.h>
 %include <src/gui/widget/stringinput.h>
-%include <src/gui/widget/textbox.h>
 %include <src/gui/widget/menue.h>
 %include <src/gui/widget/framebox.h>
 %include <src/gui/widget/widget.h>
@@ -250,51 +198,6 @@
 %include <src/gui/pictureviewer.h>
 %include <src/gui/filebrowser.h>
 %include <src/gui/plugins.h>
-%include <src/gui/eventlist.h>
-%include <src/gui/epgplus.h>
-%include <src/gui/epgview.h>
-%include <src/gui/bouquetlist.h>
-%include <src/gui/channellist.h>
-%include <src/gui/dboxinfo.h>
-%include <src/gui/audio_select.h>
-%include <src/gui/channel_select.h>
-%include <src/gui/sleeptimer.h>
-%include <src/gui/streaminfo2.h>
-%include <src/gui/timerlist.h>
-%include <src/gui/imageinfo.h>
-%include <src/gui/pluginlist.h>
-%include <src/gui/bedit/bouqueteditor_bouquets.h>
-%include <src/gui/update.h>
-//%include <src/gui/cam_menu.h>
-%include <src/gui/hdd_menu.h>
-%include <src/gui/rc_lock.h>
-%include <src/gui/themes.h>
-%include <src/gui/vfdcontroler.h>
-
-//gui/setup
-%include <src/gui/scan_setup.h>
-%include <src/gui/audio_setup.h>
-%include <src/gui/video_setup.h>
-%include <src/gui/lcd_setup.h>
-%include <src/gui/misc_setup.h>
-%include <src/gui/movieplayer_setup.h>
-%include <src/gui/network_setup.h>
-%include <src/gui/osd_setup.h>
-%include <src/gui/parentallock_setup.h>
-%include <src/gui/pictureviewer_setup.h>
-%include <src/gui/psisetup.h>
-%include <src/gui/rc_setup.h>
-%include <src/gui/recording_setup.h>
-%include <src/gui/screensetup.h>
-%include <src/gui/zapit_setup.h>
-%include <src/gui/audioplayer_setup.h>
-//
-%include <src/gui/main_setup.h>
-%include <src/gui/epg_menu.h>
-%include <src/gui/power_menu.h>
-%include <src/gui/dboxinfo.h>
-%include <src/gui/mediaplayer.h>
-%include <src/gui/service_menu.h>
 
 // zapit
 //%include <src/zapit/include/zapit/bouquets.h>
@@ -314,6 +217,7 @@
 
 // deamonc
 %include <src/daemonc/remotecontrol.h>
+
 
 
 

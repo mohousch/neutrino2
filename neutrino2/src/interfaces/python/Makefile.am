@@ -35,23 +35,23 @@ endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions -D__KERNEL_STRICT_NAMES
 
-noinst_LIBRARIES = libneutrino_interfaces_python.a
+noinst_LIBRARIES = libneutrino2_interfaces_python.a
 
-libneutrino_interfaces_python_a_SOURCES = \
-	neutrino_python.cpp
+libneutrino2_interfaces_python_a_SOURCES = \
+	neutrino2_python.cpp
 
-nodist_libneutrino_interfaces_python_a_SOURCES = \
-	neutrino_python_wrap.cxx
+nodist_libneutrino2_interfaces_python_a_SOURCES = \
+	neutrino2_python_wrap.cxx
 
-neutrino_python_wrap.cxx :
-	$(AM_V_GEN)$(SWIG) $(AX_SWIG_PYTHON_OPT) -I$(top_srcdir) -cpperraswarn neutrino_python.i
+neutrino2_python_wrap.cxx :
+	$(AM_V_GEN)$(SWIG) $(AX_SWIG_PYTHON_OPT) -I$(top_srcdir) -cpperraswarn neutrino2_python.i
 
 installdir = $(DATADIR)/python
 
 nobase_install_PYTHON = \
-	neutrino.py
+	neutrino2.py
 
-CLEANFILES = neutrino.py neutrino_python_wrap.cxx
+CLEANFILES = neutrino2.py neutrino2_python_wrap.cxx
 
 
 

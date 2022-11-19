@@ -40,7 +40,7 @@
 #include <string>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <daemonc/remotecontrol.h>
 

@@ -53,7 +53,7 @@
 #include <id3tag.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <system/debug.h>
 

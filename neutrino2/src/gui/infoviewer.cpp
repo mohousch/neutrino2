@@ -58,7 +58,7 @@
 #include <daemonc/remotecontrol.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <gui/pictureviewer.h>
 

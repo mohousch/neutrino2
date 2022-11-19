@@ -64,7 +64,7 @@
 #include <unistd.h>
 
 #include <gui/nfs.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 #include <gui/widget/stringinput.h>
 #include <sys/vfs.h> // for statfs
 #include <gui/widget/icons.h>

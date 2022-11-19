@@ -48,7 +48,7 @@ CXXFLAGS = $(CFLAGS)
 export CFLAGS CXXFLAGS
 
 # first target is default...
-default: neutrino2 plugins
+default: neutrino plugins
 
 run:
 	$(DEST)/bin/neutrino2
@@ -248,9 +248,11 @@ ifeq ($(TESTING), testing)
 NHD2_OPTS += --enable-testing
 endif			
 
-neutrino2: $(N_SRC)/config.status
-	-rm -f $(N_SRC)/src/gui/svn_version.h
-	$(MAKE) -C $(N_SRC) install
+#
+# neutrino2
+#
+neutrino: $(N_SRC)/config.status
+	-make -C $(N_SRC) install
 
 $(N_SRC)/config.status: | $(N_SRC) $(DEST)
 	$(N_SRC)/autogen.sh
@@ -260,7 +262,9 @@ $(N_SRC)/config.status: | $(N_SRC) $(DEST)
 			--build=i686-pc-linux-gnu \
 			--enable-silent-rules \
 			--enable-maintainer-mode \
-			$(NHD2_OPTS)
+			$(NHD2_OPTS) \
+			;
+			
 $(DEST):
 	mkdir $@
 
@@ -270,13 +274,15 @@ $(N_SRC):
 neutrino2-checkout: $(N_SRC)
 
 neutrino2-clean:
-	-$(MAKE) -C $(N_SRC) clean
+	-make -C $(N_SRC) clean
 
 neutrino2-distclean:
-	-$(MAKE) -C $(N_SRC) distclean
+	-make -C $(N_SRC) distclean
 	rm -f $(N_SRC)/config.status
 
+#
 # plugins
+#
 PLUGINS_SRC = $(PWD)/plugins
 $(PLUGINS_SRC):
 	git pull
@@ -284,7 +290,7 @@ $(PLUGINS_SRC):
 plugins-checkout: $(PLUGINS_SRC)
 
 plugins: $(PLUGINS_SRC)/config.status $(N_SRC)/config.status
-	$(MAKE) -C $(PLUGINS_SRC) install
+	-make -C $(PLUGINS_SRC) install
 
 $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
 	$(PLUGINS_SRC)/autogen.sh
@@ -295,13 +301,14 @@ $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
 			--enable-silent-rules \
 			--enable-maintainer-mode \
 			--without-debug \
-			$(NHD2_OPTS)
+			$(NHD2_OPTS) \
+			;
 
 plugins-clean:
-	-$(MAKE) -C $(PLUGINS_SRC) clean
+	-make -C $(PLUGINS_SRC) clean
 
 plugins-distclean:
-	-$(MAKE) -C $(PLUGINS_SRC) distclean
+	-make -C $(PLUGINS_SRC) distclean
 	rm -f $(PLUGINS)/config.status
 
 update:

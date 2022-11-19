@@ -19,7 +19,7 @@ endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
-noinst_LIBRARIES = libneutrino_daemonc.a
+noinst_LIBRARIES = libneutrino2_daemonc.a
 
-libneutrino_daemonc_a_SOURCES = remotecontrol.cpp
+libneutrino2_daemonc_a_SOURCES = remotecontrol.cpp
 

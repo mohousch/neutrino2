@@ -24,7 +24,7 @@
 
 #include <unistd.h>
 
-#include <neutrino.h>
+#include <neutrino2.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/widget_helpers.h>
 

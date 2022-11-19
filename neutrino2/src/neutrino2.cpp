@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: neutrino.cpp 21.09.21 mohousch Exp $
+	$Id: neutrino2.cpp 19.11.2022 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 	Homepage: http://dbox.cyberphoria.org/
@@ -63,7 +63,7 @@
 #include <sys/reboot.h>
 
 #include <global.h>
-#include <neutrino.h>
+#include <neutrino2.h>
 
 #include <daemonc/remotecontrol.h>
 
@@ -174,7 +174,7 @@
 #include <playback_cs.h>
 
 #if ENABLE_LUA
-#include <interfaces/lua/neutrino_lua.h>
+#include <interfaces/lua/neutrino2_lua.h>
 #endif
 
 
