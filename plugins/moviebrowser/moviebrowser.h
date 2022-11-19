@@ -229,12 +229,16 @@ class CMovieBrowser : public CMenuTarget
 		
 	private: // Variables
 		CFrameBuffer * m_pcWindow;
+		
+		CWidget * widget;
 
 		CListFrame * m_pcBrowser;
 		CListFrame * m_pcLastPlay;
 		CListFrame * m_pcLastRecord;
 		CTextBox * m_pcInfo;
-		CListFrame * m_pcFilter; 
+		CListFrame * m_pcFilter;
+		CHeaders *headers;
+		CFooters *footers;
 	
 		CBox m_cBoxFrame;
 		CBox m_cBoxFrameLastPlayList;

@@ -437,10 +437,15 @@ void CMovieBrowser::init(void)
 	m_seriename_stale = true;
 
 	m_pcWindow = CFrameBuffer::getInstance();
+	
+	widget = NULL;
+	
+	headers = NULL;
 	m_pcBrowser = NULL;
 	m_pcLastPlay = NULL;
 	m_pcLastRecord = NULL;
 	m_pcInfo = NULL;
+	footers = NULL;
 	
 	m_windowFocus = MB_FOCUS_BROWSER;
 	
@@ -785,7 +790,7 @@ bool CMovieBrowser::saveSettings(MB_SETTINGS *settings)
 	return (result);
 }
 
-int CMovieBrowser::exec(CMenuTarget * parent, const std::string & actionKey)
+int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::exec: actionKey:%s\n", actionKey.c_str());
 
@@ -1239,8 +1244,11 @@ void CMovieBrowser::hide(void)
 {
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::Hide\r\n");
 	
-	m_pcWindow->paintBackground();
-	m_pcWindow->blit();
+	
+	//m_pcWindow->paintBackground();
+	//m_pcWindow->blit();
+	
+	widget->hide();
 	
 	if (m_pcFilter != NULL)
 	{
@@ -1281,7 +1289,11 @@ int CMovieBrowser::paint(void)
 {
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::Paint\r\n");
 
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8, _("Movie Browser"));	
+	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8, _("Movie Browser"));
+	
+	widget = new CWidget(&m_cBoxFrame);
+	
+	headers = new CHeaders(&m_cBoxFrameTitleRel);
 
 	m_pcBrowser = new CListFrame(&m_browserListLines, NULL, CListFrame::SCROLL | CListFrame::HEADER_LINE, &m_cBoxFrameBrowserList);
 
@@ -1292,6 +1304,8 @@ int CMovieBrowser::paint(void)
 	m_pcFilter = new CListFrame(&m_FilterLines, NULL, CListFrame::SCROLL | CListFrame::TITLE, &m_cBoxFrameFilter, _("Filter movies by category:"), g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]);
 
 	m_pcInfo = new CTextBox(&m_cBoxFrameInfo);
+	
+	footers = new CFooters(&m_cBoxFrameFootRel);
 
 	if(m_pcBrowser == NULL || m_pcLastPlay == NULL || m_pcLastRecord == NULL || m_pcInfo == NULL || m_pcFilter == NULL)
 	{
@@ -1318,7 +1332,12 @@ int CMovieBrowser::paint(void)
 		m_pcFilter = NULL;
 
 		return (false);
-	} 
+	}
+	
+	widget->addWidgetItem(headers);
+	widget->addWidgetItem(m_pcBrowser);
+	widget->addWidgetItem(m_pcInfo);
+	widget->addWidgetItem(footers);
 	
 	return (true);
 }
@@ -1329,6 +1348,7 @@ void CMovieBrowser::refresh(void)
 	
 	refreshTitle();
 
+/*
 	if (m_pcBrowser != NULL && m_showBrowserFiles == true )
 		 m_pcBrowser->refresh();
 	
@@ -1344,9 +1364,12 @@ void CMovieBrowser::refresh(void)
 		
 	if (m_pcFilter != NULL && m_showFilter == true) 
 		m_pcFilter->refresh();
+*/
 		
 	refreshFoot();
 	refreshLCD();
+	
+	widget->paint();
 }
 
 std::string CMovieBrowser::getCurrentDir(void)
@@ -1694,16 +1717,20 @@ void CMovieBrowser::refreshTitle(void)
 	//Paint Text Background
 	dprintf(DEBUG_INFO, "CMovieBrowser::refreshTitle: %s\r\n",m_textTitle.c_str());
 	
+	headers->clear();
+	
 	// title
 	std::string title = m_textTitle.c_str();
 	std::string mb_icon = NEUTRINO_ICON_MOVIE;
 	
 	title = _("Movie Browser");
 
-	CHeaders headers(&m_cBoxFrameTitleRel, title.c_str(), NEUTRINO_ICON_MOVIE);
-	headers.enablePaintDate();
-	headers.setButtons(MBHeadButtons, MB_HEAD_BUTTONS_COUNT);
-	headers.paint();
+	//CHeaders headers(&m_cBoxFrameTitleRel, title.c_str(), NEUTRINO_ICON_MOVIE);
+	headers->setTitle(title.c_str());
+	headers->setIcon(NEUTRINO_ICON_MOVIE);
+	headers->enablePaintDate();
+	headers->setButtons(MBHeadButtons, MB_HEAD_BUTTONS_COUNT);
+	//headers.paint();
 }
 
 #define MB_FOOT_BUTTONS_COUNT	4
@@ -1719,6 +1746,8 @@ struct button_label MBFootButtons[MB_FOOT_BUTTONS_COUNT] =
 void CMovieBrowser::refreshFoot(void) 
 {
 	dprintf(DEBUG_INFO, "CMovieBrowser::refreshFoot:\r\n");
+	
+	footers->clear();
 
 	if (m_settings.gui != MB_GUI_LAST_PLAY && m_settings.gui != MB_GUI_LAST_RECORD)
 	{
@@ -1752,10 +1781,10 @@ void CMovieBrowser::refreshFoot(void)
 
 	MBFootButtons[2].localename = _("next focus");
 
-	CFooters footers(&m_cBoxFrameFootRel);
+	//CFooters footers(&m_cBoxFrameFootRel);
 
-	footers.setButtons(MBFootButtons, MB_FOOT_BUTTONS_COUNT);
-	footers.paint();
+	footers->setButtons(MBFootButtons, MB_FOOT_BUTTONS_COUNT);
+	//footers.paint();
 }
 
 bool CMovieBrowser::onButtonPress(neutrino_msg_t msg)
