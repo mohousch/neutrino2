@@ -93,5 +93,3 @@ int neutrinoLua::execFile(const char *fileName)
 	return ret;
 }
 
-
-

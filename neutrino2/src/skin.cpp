@@ -91,7 +91,7 @@
 #include <system/debug.h>
 
 #if ENABLE_LUA
-#include <interfaces/lua/neutrino_lua.h>
+#include <interfaces/lua/neutrino2_lua.h>
 #endif
 
 

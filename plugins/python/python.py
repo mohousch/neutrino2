@@ -1,4 +1,4 @@
-from neutrino import *
+from _neutrino2 import *
 
 class messageBox(CMessageBox):
 	title = "python: CMessageBox"

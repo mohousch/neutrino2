@@ -262,8 +262,7 @@ $(N_SRC)/config.status: | $(N_SRC) $(DEST)
 			--build=i686-pc-linux-gnu \
 			--enable-silent-rules \
 			--enable-maintainer-mode \
-			$(NHD2_OPTS) \
-			;
+			$(NHD2_OPTS)
 			
 $(DEST):
 	mkdir $@
@@ -301,8 +300,7 @@ $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
 			--enable-silent-rules \
 			--enable-maintainer-mode \
 			--without-debug \
-			$(NHD2_OPTS) \
-			;
+			$(NHD2_OPTS)
 
 plugins-clean:
 	-make -C $(PLUGINS_SRC) clean
