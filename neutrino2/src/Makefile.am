@@ -38,11 +38,11 @@ endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
-bin_PROGRAMS = neutrino
+bin_PROGRAMS = neutrino2
 
-neutrino_SOURCES = neutrino_menue.cpp neutrino.cpp swig_helpers.cpp skin.cpp
+neutrino2_SOURCES = neutrino2_menue.cpp neutrino2.cpp swig_helpers.cpp skin.cpp
 
-neutrino_LDADD = \
+neutrino2_LDADD = \
 	daemonc/libneutrino_daemonc.a \
 	gui/bedit/libneutrino_gui_bedit.a \
 	gui/libneutrino_gui.a \
@@ -100,44 +100,44 @@ neutrino_LDADD = \
 	@FRIBIDI_LIBS@ \
 	-ljpeg -lrt -lblkid -ldl -lFLAC -lavformat -lavcodec -lavutil -lgif -lpthread -lOpenThreads
 
-neutrino_LDFLAGS = -Wl,--export-dynamic
+neutrino2_LDFLAGS = -Wl,--export-dynamic
 
 if !BOXTYPE_COOLSTREAM
-neutrino_LDADD += $(top_builddir)/lib/libdvbapi/libdvbapi.a
+neutrino2_LDADD += $(top_builddir)/lib/libdvbapi/libdvbapi.a
 if ENABLE_CI
-neutrino_LDADD += $(top_builddir)/lib/libdvbci/libdvbci.a
+neutrino2_LDADD += $(top_builddir)/lib/libdvbci/libdvbci.a
 endif
 endif
 
 if BOXTYPE_COOLSTREAM
-neutrino_LDADD += \
+neutrino2_LDADD += \
 	-lcoolstream-mt \
 	-lnxp
 endif
 
 if ENABLE_GSTREAMER
-neutrino_LDADD += @GSTREAMER_LIBS@
+neutrino2_LDADD += @GSTREAMER_LIBS@
 else
-neutrino_LDADD += $(top_builddir)/lib/libeplayer3/libeplayer3.a -lass
+neutrino2_LDADD += $(top_builddir)/lib/libeplayer3/libeplayer3.a -lass
 endif
 
 # LCD display
 if ENABLE_LCD
-neutrino_LDADD += $(top_builddir)/lib/liblcddisplay/liblcddisplay.a
+neutrino2_LDADD += $(top_builddir)/lib/liblcddisplay/liblcddisplay.a
 endif
 
 if USE_OPENGL
-neutrino_LDADD += \
+neutrino2_LDADD += \
 	-lglut -lGL -lGLU -lGLEW
 endif
 
 if ENABLE_PYTHON
-neutrino_LDADD += interfaces/python/libneutrino_interfaces_python.a \
+neutrino2_LDADD += interfaces/python/libneutrino_interfaces_python.a \
 	@PYTHON_LDFLAGS@
 endif
 
 if ENABLE_LUA
-neutrino_LDADD += interfaces/lua/libneutrino_interfaces_lua.a \
+neutrino2_LDADD += interfaces/lua/libneutrino_interfaces_lua.a \
 	@LUA_LIB@
 endif
 

@@ -48,19 +48,19 @@ CXXFLAGS = $(CFLAGS)
 export CFLAGS CXXFLAGS
 
 # first target is default...
-default: neutrino plugins
+default: neutrino2 plugins
 
 run:
-	$(DEST)/bin/neutrino
+	$(DEST)/bin/neutrino2
 	
 run-info:
-	$(DEST)/bin/neutrino -v 1
+	$(DEST)/bin/neutrino2 -v 1
 	
 run-debug:
-	$(DEST)/bin/neutrino -v 2		
+	$(DEST)/bin/neutrino2 -v 2		
 	
 run-gdb:
-	gdb -ex run $(DEST)/bin/neutrino
+	gdb -ex run $(DEST)/bin/neutrino2
 	
 # init	
 init:
@@ -248,7 +248,7 @@ ifeq ($(TESTING), testing)
 NHD2_OPTS += --enable-testing
 endif			
 
-neutrino: $(N_SRC)/config.status
+neutrino2: $(N_SRC)/config.status
 	-rm -f $(N_SRC)/src/gui/svn_version.h
 	$(MAKE) -C $(N_SRC) install
 
@@ -267,12 +267,12 @@ $(DEST):
 $(N_SRC):
 	git pull
 
-neutrino-checkout: $(N_SRC)
+neutrino2-checkout: $(N_SRC)
 
-neutrino-clean:
+neutrino2-clean:
 	-$(MAKE) -C $(N_SRC) clean
 
-neutrino-distclean:
+neutrino2-distclean:
 	-$(MAKE) -C $(N_SRC) distclean
 	rm -f $(N_SRC)/config.status
 
@@ -307,10 +307,10 @@ plugins-distclean:
 update:
 	git pull
 
-clean: neutrino-clean plugins-clean
-distclean: neutrino-distclean plugins-distclean
+clean: neutrino2-clean plugins-clean
+distclean: neutrino2-distclean plugins-distclean
 
-PHONY = neutrino-checkout plugins-checkout
+PHONY = neutrino2-checkout plugins-checkout
 .PHONY: $(PHONY)
 
 endif

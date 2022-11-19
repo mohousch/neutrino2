@@ -160,7 +160,7 @@ void GLThreadObj::setupCtx()
 {
 	int argc = 1;
 	/* some dummy commandline for GLUT to be happy */
-	char const *argv[2] = { "neutrino", 0 };
+	char const *argv[2] = { "neutrino2", 0 };
 	dprintf(DEBUG_NORMAL, "GLThreadObj::setupCtx: GL thread starting\n");
 	glutInit(&argc, const_cast<char **>(argv));
 	glutInitWindowSize(mX, mY);
