@@ -1300,10 +1300,20 @@ REPEAT:
 				}
 				else if(file->getType() == CFile::FILE_VIDEO)
 				{
-					CMoviePlayerGui tmpMoviePlayerGui;
-
-					tmpMoviePlayerGui.addToPlaylist(*file);
-					tmpMoviePlayerGui.exec(NULL, "urlplayback");
+					MI_MOVIE_INFO movieInfo;
+					CMovieInfo m_movieInfo;
+					
+					m_movieInfo.clearMovieInfo(&movieInfo); // refresh structure
+						
+					movieInfo.file.Name = file->Name;
+					
+					// load movie infos (from xml file)
+					m_movieInfo.loadMovieInfo(&movieInfo);
+					
+					CMovieInfoWidget movieInfoWidget;
+					movieInfoWidget.setMovie(movieInfo);
+			
+					movieInfoWidget.exec(NULL, "");
 				}
 				else if(file->getType() == CFile::FILE_AUDIO)
 				{
