@@ -45,9 +45,9 @@ neutrino2_SOURCES = neutrino2_menue.cpp neutrino2.cpp swig_helpers.cpp skin.cpp
 neutrino2_LDADD = \
 	daemonc/libneutrino2_daemonc.a \
 	gui/bedit/libneutrino2_gui_bedit.a \
-	gui/libneutrino2_gui.a \
-	gui/widget/libneutrino2_gui_widget.a \
 	gui/widget/libneutrino2_gui_widget2.a \
+	gui/widget/libneutrino2_gui_widget.a \
+	gui/libneutrino2_gui.a \
 	driver/pictureviewer/libneutrino2_pictureviewer.a \
 	system/libneutrino2_system.a \
 	system/helpers.o \
