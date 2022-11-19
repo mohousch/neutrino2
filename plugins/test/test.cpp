@@ -5649,34 +5649,41 @@ void CTestMenu::testCMenuWidget1()
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (menu mode)\n");
 	
 	//
-	menuWidget = new CMenuWidget("CMenuWidget(Menu Mode)", NEUTRINO_ICON_MOVIE);
+	menuWidget = new CMenuWidget(_("CMenuWidget(Menu Mode)"), NEUTRINO_ICON_MAINMENU);
 
 	item = new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
+	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
+	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Service"), true, NULL, new CServiceMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
+	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
+	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
+	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
 	menuWidget->addItem(item);
 
 	item = new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
+	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
+	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
 	menuWidget->addItem(item);
 	
 	menuWidget->setWidgetMode(MODE_MENU);
@@ -5692,12 +5699,6 @@ void CTestMenu::testCMenuWidget1()
 	menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
 	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
-	// foot
-	//menuWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	// foot info in menu mode are always enabled
-	//menuWidget->enablePaintItemInfo(70);
-	//menuWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
 
 	//
 	menuWidget->addKey(RC_setup, this, "lsetup");

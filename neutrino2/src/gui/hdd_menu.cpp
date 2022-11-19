@@ -260,7 +260,7 @@ int CHDDMenuHandler::hddMenu()
 
 		if(fd < 0) 
 		{
-			printf("[neutrino] HDD: Cant open %s\n", str);
+			printf("[neutrino] HDD: Cant open (1) %s\n", str);
 			continue;
 		}
 		
@@ -287,7 +287,7 @@ int CHDDMenuHandler::hddMenu()
 
 		if(!f) 
 		{
-			printf("[neutrino] HDD: Cant open %s\n", str);
+			printf("[neutrino] HDD: Cant open (2) %s\n", str);
 			continue;
 		}
 		fscanf(f, "%s", vendor);
@@ -299,7 +299,7 @@ int CHDDMenuHandler::hddMenu()
 		
 		if(!f) 
 		{
-			printf("[neutrino] HDD: Cant open %s\n", str);
+			printf("[neutrino] HDD: Cant open (3) %s\n", str);
 			continue;
 		}
 		fscanf(f, "%s", model);
@@ -311,7 +311,7 @@ int CHDDMenuHandler::hddMenu()
 		
 		if(!f) 
 		{
-			printf("[neutrino] HDD: Cant open %s\n", str);
+			printf("[neutrino] HDD: Cant open (4) %s\n", str);
 			continue;
 		}
 		fscanf(f, "%d", &removable);
