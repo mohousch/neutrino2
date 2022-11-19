@@ -45,8 +45,8 @@ neutrino2_SOURCES = neutrino2_menue.cpp neutrino2.cpp swig_helpers.cpp skin.cpp
 neutrino2_LDADD = \
 	daemonc/libneutrino2_daemonc.a \
 	gui/bedit/libneutrino2_gui_bedit.a \
-	gui/widget/libneutrino2_gui_widget2.a \
 	gui/widget/libneutrino2_gui_widget.a \
+	gui/widget/libneutrino2_gui_widget2.a \
 	gui/libneutrino2_gui.a \
 	driver/pictureviewer/libneutrino2_pictureviewer.a \
 	system/libneutrino2_system.a \
@@ -78,6 +78,14 @@ neutrino2_LDADD = \
 	gui/widget/framebox.o \
 	gui/widget/widget.o \
 	gui/widget/menue.o \
+	gui/widget/hintbox.o \
+	gui/widget/messagebox.o \
+	gui/widget/progresswindow.o \
+	gui/widget/stringinput.o \
+	gui/widget/stringinput_ext.o \
+	gui/widget/colorchooser.o \
+	gui/widget/mountchooser.o \
+	gui/widget/keychooser.o \
 	$(top_builddir)/lib/sectionsdclient/libsectionsdclient.a \
 	$(top_builddir)/lib/timerdclient/libtimerdclient.a \
 	$(top_builddir)/src/zapit/lib/libzapitclient.a \
