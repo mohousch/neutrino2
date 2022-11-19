@@ -5,7 +5,7 @@
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
 	<WIDGET name="mainmenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="3" position="2" radius="20" corner="15">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="1" mode="1" position="2" itemborder="1" painthead="1" title="Main Menu" icon="menu" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="1" mode="1" position="2" itemborder="1" painthead="1" title="Main Menu" icon="mainmenu" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<ITEM id="5" localename="TV / RADIO" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
 			<ITEM id="5" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer" directkey="0x2"/>
 			<ITEM id="5" localename="Features" itemicon="hint_plugin" target="neutrino" actionkey="features"/>

@@ -98,7 +98,7 @@
 #define NEUTRINO_ICON_TIMER					"timer"
 #define NEUTRINO_ICON_UPDATE					"softupdate"
 #define NEUTRINO_ICON_VIDEO					"video"
-#define NEUTRINO_ICON_MAINMENU					"mainmenue"
+#define NEUTRINO_ICON_MAINMENU					"mainmenu"
 #define NEUTRINO_ICON_LANGUAGE					"language"
 #define NEUTRINO_ICON_NETWORK					"network"
 #define NEUTRINO_ICON_LCD					"lcd"

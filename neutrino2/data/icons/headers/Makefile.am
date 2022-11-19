@@ -11,7 +11,7 @@ install_DATA = \
 	language.png \
 	lcd.png \
 	lock.png \
-	mainmenue.png \
+	mainmenu.png \
 	multimedia.png \
 	network.png \
 	recording.png \

@@ -90,7 +90,7 @@ void CNeutrinoApp::mainMenu(void)
 		
 		//
 		nMenu->enablePaintHead();
-		nMenu->setTitle(_("Main Menu"), NEUTRINO_ICON_BUTTON_SETUP);
+		nMenu->setTitle(_("Main Menu"), NEUTRINO_ICON_MAINMENU);
 		nMenu->enablePaintDate();
 		
 		//
