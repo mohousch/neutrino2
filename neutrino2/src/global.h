@@ -68,7 +68,7 @@
   #define NEUTRINO_CPP extern
 #endif
 
-#define NEUTRINO_SETTINGS_FILE          CONFIGDIR "/neutrino.conf"
+#define NEUTRINO_SETTINGS_FILE          CONFIGDIR "/neutrino2.conf"
 
 #define NEUTRINO_RECORDING_TIMER_SCRIPT CONFIGDIR "/recording.timer"
 #define NEUTRINO_RECORDING_START_SCRIPT CONFIGDIR "/recording.start"

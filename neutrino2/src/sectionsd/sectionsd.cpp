@@ -179,7 +179,7 @@ std::string dvbtime_filter_dir = CONFIGDIR "/zapit/dvbtimefilter.xml";
 static bool dvb_time_update = false;
 
 //NTP-Config
-#define CONF_FILE CONFIGDIR "/neutrino.conf"
+#define CONF_FILE CONFIGDIR "/neutrino2.conf"
 
 std::string ntp_system_cmd_prefix = "ntpdate ";
 

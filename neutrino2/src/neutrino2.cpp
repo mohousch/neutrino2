@@ -398,29 +398,29 @@ typedef struct font_sizes
 // neutrino_font
 font_sizes_struct neutrino_font[FONT_TYPE_COUNT] =
 {
-        {_("Menutext")               ,  20, FONT_STYLE_BOLD   , 0},
-        {_("Menu Title")         ,  30, FONT_STYLE_BOLD   , 0},
-        {_("Menu Info")          ,  16, FONT_STYLE_REGULAR, 0},
-        {_("EPG Title")          ,  25, FONT_STYLE_REGULAR, 1},
-        {_("EPG Info1")          ,  17, FONT_STYLE_ITALIC , 2},
-        {_("EPG Info2")          ,  17, FONT_STYLE_REGULAR, 2},
-        {_("EPG Date")           ,  15, FONT_STYLE_REGULAR, 2},
-        {_("Title")    ,  30, FONT_STYLE_REGULAR, 0},
-        {_("large"),  20, FONT_STYLE_BOLD   , 1},
-        {_("small"),  14, FONT_STYLE_REGULAR, 1},
-        {_("date / time") ,  16, FONT_STYLE_REGULAR, 1},
-        {_("large") ,  20, FONT_STYLE_BOLD   , 1},
-        {_("small") ,  16, FONT_STYLE_REGULAR, 1},
-        {_("Channellist")        ,  20, FONT_STYLE_BOLD   , 1},
-        {_("Description")  ,  20, FONT_STYLE_REGULAR, 1},
-        {_("Number") ,  14, FONT_STYLE_BOLD   , 2},
-        {_("direct selection")    ,  40, FONT_STYLE_BOLD   , 0},
-        {_("Number")     ,  30, FONT_STYLE_BOLD   , 0},
-        {_("Channel name")   ,  30, FONT_STYLE_BOLD   , 0},
-        {_("info")       ,  20, FONT_STYLE_REGULAR, 1},
-        {_("small")      ,  14, FONT_STYLE_REGULAR, 1},
-        {_("filebrowser item")   ,  16, FONT_STYLE_BOLD   , 1},
-        {_("Menu Title 2")         ,  40, FONT_STYLE_REGULAR   , 0},
+        {_("Menutext")               	,  20, FONT_STYLE_BOLD   , 0},
+        {_("Menu Title")         	,  30, FONT_STYLE_BOLD   , 0},
+        {_("Menu Info")          	,  16, FONT_STYLE_REGULAR, 0},
+        {_("EPG Title")          	,  25, FONT_STYLE_REGULAR, 1},
+        {_("EPG Info1")          	,  17, FONT_STYLE_ITALIC , 2},
+        {_("EPG Info2")          	,  17, FONT_STYLE_REGULAR, 2},
+        {_("EPG Date")           	,  15, FONT_STYLE_REGULAR, 2},
+        {_("Title")    			,  30, FONT_STYLE_REGULAR, 0},
+        {_("large")			,  20, FONT_STYLE_BOLD   , 1},
+        {_("small")			,  14, FONT_STYLE_REGULAR, 1},
+        {_("date / time") 		,  16, FONT_STYLE_REGULAR, 1},
+        {_("large") 			,  20, FONT_STYLE_BOLD   , 1},
+        {_("small") 			,  16, FONT_STYLE_REGULAR, 1},
+        {_("Channellist")        	,  20, FONT_STYLE_BOLD   , 1},
+        {_("Description")  		,  20, FONT_STYLE_REGULAR, 1},
+        {_("Number") 			,  14, FONT_STYLE_BOLD   , 2},
+        {_("direct selection")    	,  40, FONT_STYLE_BOLD   , 0},
+        {_("Number")     		,  30, FONT_STYLE_BOLD   , 0},
+        {_("Channel name")   		,  30, FONT_STYLE_BOLD   , 0},
+        {_("info")       		,  20, FONT_STYLE_REGULAR, 1},
+        {_("small")      		,  14, FONT_STYLE_REGULAR, 1},
+        {_("filebrowser item")   	,  16, FONT_STYLE_BOLD   , 1},
+        {_("Menu Title 2")         	,  40, FONT_STYLE_REGULAR   , 0},
 };
 
 // signal font
@@ -5466,7 +5466,7 @@ void sighandler (int signum)
 int main(int argc, char *argv[])
 {
 	// build date
-	printf(">>> neutrino-HD2 (compiled %s %s) <<<\n", __DATE__, __TIME__);
+	printf(">>> neutrino2 (compiled %s %s) <<<\n", __DATE__, __TIME__);
 
 	// sighandler
         signal(SIGTERM, sighandler);

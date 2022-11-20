@@ -27,15 +27,15 @@ local mtv_version = "mtv.de Version 0.37" -- Lua API Version: " .. APIVERSION.MA
 local conf = {}
 
 function get_confFile()
-	return neutrino.PLUGINDIR .. "/mtv/mtv.conf"
+	return neutrino2.PLUGINDIR .. "/mtv/mtv.conf"
 end
 function get_conf_mtvfavFile()
-	return neutrino.PLUGINDIR .. "/mtv/mtvfav.conf"
+	return neutrino2.PLUGINDIR .. "/mtv/mtvfav.conf"
 end
 
 function saveConfig()
 	--if conf.changed then
-		local config = neutrino.CConfigFile('\t')
+		local config = neutrino2.CConfigFile('\t')
 
 		config:setString("path", conf.path)
 		config:setString("path_m3u", conf.path_m3u)
@@ -62,7 +62,7 @@ function saveConfig()
 end
 
 function loadConfig()
-	local config = neutrino.CConfigFile('\t')
+	local config = neutrino2.CConfigFile('\t')
 
 	config:loadConfig(get_confFile())
 	conf.path = config:getString("path", "/media/sda1/movies/")
@@ -81,7 +81,7 @@ function which(bin_name)
 	local path = os.getenv("PATH") or "/bin"
 	for v in path:gmatch("([^:]+):?") do
 		local file = v .. "/" .. bin_name
-		if neutrino.file_exists(file) then
+		if neutrino2.file_exists(file) then
 			return true
 		end
 	end
@@ -134,10 +134,10 @@ function init()
 	collectgarbage()
 
 	if vodeoPlay == nil then
-		vodeoPlay = neutrino.CMoviePlayerGui()
+		vodeoPlay = neutrino2.CMoviePlayerGui()
 	end
 
-	neutrino.CFileHelpers():createDir("/tmp/mtv")
+	neutrino2.CFileHelpers():createDir("/tmp/mtv")
 
 	glob.fav_changed = false
 	glob.mtv_artist={}
@@ -207,7 +207,7 @@ function init()
 	end
 
 	local mtvconf = get_conf_mtvfavFile()
-	local havefile = neutrino.file_exists(mtvconf)
+	local havefile = neutrino2.file_exists(mtvconf)
 
 	if havefile == true then
 		local favdata = read_file(mtvconf)
@@ -225,7 +225,7 @@ function info(captxt, infotxt, sleep)
 		captxt = "Information"
 	end
 	
-	local h = neutrino.CHintBox(captxt, infotxt)
+	local h = neutrino2.CHintBox(captxt, infotxt)
 	h:exec(sleep)
 end
 
@@ -238,7 +238,7 @@ function getdata(Url, outputfile)
 
 	local data = nil
 
-	data = neutrino.getUrlAnswer(Url, "Mozilla/5.0;")
+	data = neutrino2.getUrlAnswer(Url, "Mozilla/5.0;")
 
 	return data
 end
@@ -254,7 +254,7 @@ function exist_url(tab,_url)
 end
 
 function getliste(url)
-	local h = neutrino.CHintBox("Info", "Liste wird erstellt\n")
+	local h = neutrino2.CHintBox("Info", "Liste wird erstellt\n")
 	h:paint()
 
 	local videosection = get_json_data(url)
@@ -320,11 +320,11 @@ function getliste(url)
 							end
 							
 							tfile = "/tmp/mtv/" .. v.title ..".jpg"
-							if _logo ~= nil and neutrino.file_exists(tfile) ~= true then
-								neutrino.downloadUrl(_logo, tfile)
+							if _logo ~= nil and neutrino2.file_exists(tfile) ~= true then
+								neutrino2.downloadUrl(_logo, tfile)
 								_logo = tfile
 							else
-								_logo = neutrino.DATADIR .. "/icons/nopreview.jpg"
+								_logo = neutrino2.DATADIR .. "/icons/nopreview.jpg"
 							end
 							
 							-- chart pos
@@ -463,14 +463,14 @@ function funArt(id)
 		]]
 
 		-- show funArt
-		local fb = neutrino.CSwigHelpers()
+		local fb = neutrino2.CSwigHelpers()
 
 		fb:loadBackgroundPic(glob.MTVliste[id].logo)
 
 		-- show title
 		
 		--show frame play
-		local framePlay = neutrino.CFrame("play")
+		local framePlay = neutrino2.CFrame("play")
 	end
 end
 
@@ -536,7 +536,7 @@ function dlstart(name)
 	name = name:gsub([[%s+]], "_")
 	name = name:gsub("[:'&()/]", "_")
 	local dlname = "/tmp/" .. name ..".dl"
-	local havefile = neutrino.file_exists("/tmp/.rtmpdl")
+	local havefile = neutrino2.file_exists("/tmp/.rtmpdl")
 
 	if havefile == true then
 		info("Info", "Ein anderer Download ist bereits aktiv.", 4)
@@ -546,7 +546,7 @@ function dlstart(name)
 	local dl = io.open(dlname, "w")
 	local script_start = false
 
-	local pw = neutrino.CProgressWindow()
+	local pw = neutrino2.CProgressWindow()
 
 	pw:setTitle(infotext)
 	pw:paint()
@@ -609,7 +609,7 @@ function dlstart(name)
 			os.execute("chmod 755 '" .. scriptname .. "'")
 			os.execute("sh '"..scriptname.."' &")
 	else
-		local er = neutrino.CHintBox("Info", name .." - \nDownload ist fehlerhaft \noder Video in FLV-Format")
+		local er = neutrino2.CHintBox("Info", name .." - \nDownload ist fehlerhaft \noder Video in FLV-Format")
 		er:paint()
 		os.remove(dlname)
 		print("ERROR")
@@ -687,14 +687,14 @@ function chooser_menu(id)
 
 	end
 ]]
-	local menu = neutrino.CMenuWidget(name, neutrino.PLUGINDIR .. "/mtv/mtv_hint.png")
+	local menu = neutrino2.CMenuWidget(name, neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
 
 	--if id:sub(1,29) =="Erstelle Download Liste für " then
-		menu:addItem(neutrino.CMenuForwarder("Download starten", true, "", null, "dlstart"))
+		menu:addItem(neutrino2.CMenuForwarder("Download starten", true, "", null, "dlstart"))
 	--[[elseif id:sub(1,15) =="Neue Favoriten" then
-		menu:addItem(neutrino.CMenuForwarder("Zu Favoriten hinzufügen", true, "", null, "set_bool_in_searchliste"))
+		menu:addItem(neutrino2.CMenuForwarder("Zu Favoriten hinzufügen", true, "", null, "set_bool_in_searchliste"))
 	elseif id =="favdel" then
-		menu:addItem(neutrino.CMenuForwarder("Favoriten löschen", true, "", null, "set_bool_in_mtv"))
+		menu:addItem(neutrino2.CMenuForwarder("Favoriten löschen", true, "", null, "set_bool_in_mtv"))
 	end]]
 
 	menu:exec(null, "")
@@ -716,38 +716,38 @@ end
 function mtv_liste(id)
 	print("mtv_liste:")
 
-	neutrino.CFileHelpers():removeDir("/tmp/mtv")
-	neutrino.CFileHelpers():createDir("/tmp/mtv")
+	neutrino2.CFileHelpers():removeDir("/tmp/mtv")
+	neutrino2.CFileHelpers():createDir("/tmp/mtv")
 
 	glob.MTVliste = nil;
 	local url = glob.mtv[id].url --liste url
 	glob.MTVliste = getliste(url)
 
-	local menu = neutrino.CMenuWidget(glob.mtv[id].name, neutrino.PLUGINDIR .. "/mtv/mtv_hint.png")
-	menu:setWidgetType(neutrino.WIDGET_TYPE_FRAME)
+	local menu = neutrino2.CMenuWidget(glob.mtv[id].name, neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
+	menu:setWidgetType(neutrino2.WIDGET_TYPE_FRAME)
 	menu:setItemsPerPage(3, 2)
 	menu:enablePaintDate()
 
-	--btn = neutrino.button_label_struct()
+	--btn = neutrino2.button_label_struct()
 
-	--btn.button = neutrino.NEUTRINO_ICON_BUTTON_RED
+	--btn.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
 	--btn.localename = "spiele die ganze Liste"
 
 	--menu:setFootButtons(btn)
-	menu:addKey(neutrino.RC_red, null, "playlist")
+	menu:addKey(neutrino2.RC_red, null, "playlist")
 
-	--btn2 = neutrino.button_label_struct()
+	--btn2 = neutrino2.button_label_struct()
 
-	--btn2.button = neutrino.NEUTRINO_ICON_BUTTON_REC
+	--btn2.button = neutrino2.NEUTRINO_ICON_BUTTON_REC
 	--btn2.localename = ""
 
 	--menu:setHeadButtons(btn2)
-	menu:addKey(neutrino.RC_record, null, "record")
+	menu:addKey(neutrino2.RC_record, null, "record")
 
 	local item = nil
 	if glob.MTVliste ~= nil then
 		for i, v in ipairs(glob.MTVliste) do
-			item = neutrino.ClistBoxItem(v.name, true, "", null, "play")
+			item = neutrino2.ClistBoxItem(v.name, true, "", null, "play")
 			item:setItemIcon(v.logo)
 
 			menu:addItem(item)
@@ -782,20 +782,20 @@ local m_selected = -1
 function settings()
 	loadConfig()
 
-	local menu = neutrino.CMenuWidget("Einstellungen", neutrino.NEUTRINO_ICON_SETTINGS)
+	local menu = neutrino2.CMenuWidget("Einstellungen", neutrino2.NEUTRINO_ICON_SETTINGS)
 	local item = nil
-	menu:setWidgetMode(neutrino.MODE_SETUP)
+	menu:setWidgetMode(neutrino2.MODE_SETUP)
 	menu:enableShrinkMenu()
 
-	menu:addItem(neutrino.CMenuForwarder("zurück"))
-	menu:addItem(neutrino.CMenuSeparator(neutrino.LINE))
-	item = neutrino.CMenuForwarder("Einstellungen speichern")
-	item:setIconName(neutrino.NEUTRINO_ICON_BUTTON_RED)
-	item:setDirectKey(neutrino.RC_red)
+	menu:addItem(neutrino2.CMenuForwarder("zurück"))
+	menu:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
+	item = neutrino2.CMenuForwarder("Einstellungen speichern")
+	item:setIconName(neutrino2.NEUTRINO_ICON_BUTTON_RED)
+	item:setDirectKey(neutrino2.RC_red)
 	menu:addItem(item)
-	menu:addItem(neutrino.CMenuSeparator(neutrino.LINE))
-	menu:addItem(neutrino.CMenuForwarder("Verzeichniss:", true, conf.path))
-	menu:addItem(neutrino.CMenuForwarder("Verzeichniss M3U:", true, conf.path_m3u))
+	menu:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
+	menu:addItem(neutrino2.CMenuForwarder("Verzeichniss:", true, conf.path))
+	menu:addItem(neutrino2.CMenuForwarder("Verzeichniss M3U:", true, conf.path_m3u))
 	
 	hls = ""
 	if conf.hlsflag == true then
@@ -803,9 +803,9 @@ function settings()
 	else
 		hls = "off"
 	end
-	menu:addItem(neutrino.CMenuForwarder("Videos in HLS-Format", true, hls))
+	menu:addItem(neutrino2.CMenuForwarder("Videos in HLS-Format", true, hls))
 
-	menu:addItem(neutrino.CMenuForwarder("Max. Auflösung", true, conf.maxRes))
+	menu:addItem(neutrino2.CMenuForwarder("Max. Auflösung", true, conf.maxRes))
 
 	dl = ""
 	if conf.dlflag == true then
@@ -813,7 +813,7 @@ function settings()
 	else
 		dl = "off"
 	end
-	menu:addItem(neutrino.CMenuForwarder("Auswahl vorbelegen mit", true, dl))
+	menu:addItem(neutrino2.CMenuForwarder("Auswahl vorbelegen mit", true, dl))
 
 	flv = ""
 	if conf.flvflag == true then
@@ -821,7 +821,7 @@ function settings()
 	else
 		flv = "off"
 	end
-	menu:addItem(neutrino.CMenuForwarder("Videos in FLV-Format herunterladen ?", true, flv))
+	menu:addItem(neutrino2.CMenuForwarder("Videos in FLV-Format herunterladen ?", true, flv))
 
 	playflv = ""
 	if conf.playflvflag == true then
@@ -829,7 +829,7 @@ function settings()
 	else
 		playflv = "off"
 	end
-	menu:addItem(neutrino.CMenuForwarder("Videos in FLV-Format abspielen ?", true, playflv))
+	menu:addItem(neutrino2.CMenuForwarder("Videos in FLV-Format abspielen ?", true, playflv))
 
 	shuffle = ""
 	if conf.shuffleflag == true then
@@ -837,9 +837,9 @@ function settings()
 	else
 		shuffle = "off"
 	end
-	menu:addItem(neutrino.CMenuForwarder("Zufällig abspielen ? ", true, shuffle))
+	menu:addItem(neutrino2.CMenuForwarder("Zufällig abspielen ? ", true, shuffle))
 
-	menu:addItem(neutrino.CMenuForwarder("Ausgewählte Favoriten löschen.", true, "", null, "del_fav"))
+	menu:addItem(neutrino2.CMenuForwarder("Ausgewählte Favoriten löschen.", true, "", null, "del_fav"))
 
 	if m_selected < 0 then
 		m_selected = 0
@@ -855,10 +855,10 @@ function settings()
 		if m_selected == 0 then
 			return
 		elseif m_selected == 2 then
-			neutrino.HintBox("MTV", "Einstellungen werden gespeichert bitte warten...")
+			neutrino2.HintBox("MTV", "Einstellungen werden gespeichert bitte warten...")
 			saveConfig()
 		elseif m_selected == 4 then
-			local fileBrowser = neutrino.CFileBrowser()
+			local fileBrowser = neutrino2.CFileBrowser()
 			fileBrowser.Dir_Mode = true
 
 			if fileBrowser:exec(conf.path) == true then
@@ -867,7 +867,7 @@ function settings()
 				saveConfig()
 			end 
 		elseif m_selected == 5 then
-			local fileBrowser = neutrino.CFileBrowser()
+			local fileBrowser = neutrino2.CFileBrowser()
 			fileBrowser.Dir_Mode = true
 
 			if fileBrowser:exec(conf.path_m3u) == true then
@@ -967,16 +967,16 @@ function gen_search_list(search)
 			if videosection_url then
 				videosection = getdata(videosection_url .. p)
 				if videosection == nil then
-					return neutrino.RETURN_EXIT
+					return neutrino2.RETURN_EXIT
 				end
 			else
-				return neutrino.RETURN_EXIT
+				return neutrino2.RETURN_EXIT
 			end
 			jnTab = json:decode(videosection)
 		end
 
 		if jnTab == nil or jnTab.result == nil or jnTab.result.artists == nil then 
-			return neutrino.RETURN_EXIT 
+			return neutrino2.RETURN_EXIT 
 		end
 
 		local add = true
@@ -1006,30 +1006,30 @@ function searchliste(id)
 	local url = glob.mtv_artist[id].url
 	glob.MTVliste = getliste(url)
 
-	local menu = neutrino.CMenuWidget(glob.mtv_artist[id].name, neutrino.PLUGINDIR .. "/mtv/mtv_hint.png")
-	menu:setWidgetType(neutrino.WIDGET_TYPE_FRAME)
+	local menu = neutrino2.CMenuWidget(glob.mtv_artist[id].name, neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
+	menu:setWidgetType(neutrino2.WIDGET_TYPE_FRAME)
 	menu:enablePaintDate()
 
-	--btn = neutrino.button_label_struct()
+	--btn = neutrino2.button_label_struct()
 
-	--btn.button = neutrino.NEUTRINO_ICON_BUTTON_RED
+	--btn.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
 	--btn.localename = "spiele die ganze Liste"
 
 	--menu:setFootButtons(btn)
-	menu:addKey(neutrino.RC_red, null, "playlist")
+	menu:addKey(neutrino2.RC_red, null, "playlist")
 
-	--btn2 = neutrino.button_label_struct()
+	--btn2 = neutrino2.button_label_struct()
 
-	--btn2.button = neutrino.NEUTRINO_ICON_BUTTON_REC
+	--btn2.button = neutrino2.NEUTRINO_ICON_BUTTON_REC
 	--btn2.localename = "test"
 
 	--menu:setHeadButtons(btn2)
-	menu:addKey(neutrino.RC_record, null, "record")
+	menu:addKey(neutrino2.RC_record, null, "record")
 
 	local item = nil
 
 	for i, v in ipairs(glob.MTVliste) do
-		item = neutrino.ClistBoxItem(v.name)
+		item = neutrino2.ClistBoxItem(v.name)
 		item:setActionKey(null, "playMovie")
 		item:setItemIcon(v.logo)
 
@@ -1060,7 +1060,7 @@ function search_artists()
 		return 
 	end
 
-	local h = neutrino.CHintBox("Info", "Suche: " .. conf.search)
+	local h = neutrino2.CHintBox("Info", "Suche: " .. conf.search)
 	h:paint()
 
 	if #conf.search > 0 then
@@ -1074,11 +1074,11 @@ function search_artists()
 		return
 	end
 
-	local menu = neutrino.CMenuWidget(conf.search, neutrino.PLUGINDIR .. "/mtv/mtv_hint.png")
+	local menu = neutrino2.CMenuWidget(conf.search, neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
 
 	if glob.mtv_artist then
 		for i, v in ipairs(glob.mtv_artist) do
-			menu:addItem(neutrino.CMenuForwarder(i .. ": " .. v.name, true, "", null, "search"))
+			menu:addItem(neutrino2.CMenuForwarder(i .. ": " .. v.name, true, "", null, "search"))
 		end
 	end
 
@@ -1122,7 +1122,7 @@ function mtv_listen_menu()
 		return
 	end
 
-	menu = neutrino.CMenuWidget("MTV Listen", neutrino.PLUGINDIR .. "/mtv/mtv_hint.png")
+	menu = neutrino2.CMenuWidget("MTV Listen", neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
 
 	menu:enableShrinkMenu()
 	menu:enablePaintDate()
@@ -1135,7 +1135,7 @@ function mtv_listen_menu()
 
 	local item = nil
 	for i, v in ipairs(glob.mtv) do
-		item = neutrino.ClistBoxItem(v.name)
+		item = neutrino2.ClistBoxItem(v.name)
 		item:setHint(v.url)
 		item:setActionKey(null, "mtv_liste")
 
@@ -1160,8 +1160,8 @@ local selected_mm = 0
 function main_menu()
 	print("mainMenu:")
 
-	local menu = neutrino.CMenuWidget("MTV", neutrino.PLUGINDIR .. "/mtv/mtv_hint.png")
-	menu:setWidgetMode(neutrino.MODE_MENU)
+	local menu = neutrino2.CMenuWidget("MTV", neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
+	menu:setWidgetMode(neutrino2.MODE_MENU)
 	menu:enableShrinkMenu()
 	menu:enablePaintDate()
 
@@ -1171,10 +1171,10 @@ function main_menu()
 
 	menu:setSelected(selected_mm)
 
-	menu:addItem(neutrino.CMenuForwarder("MTV Listen", true, "", null, "list"))
-	menu:addItem(neutrino.CMenuForwarder("Suche nach künstler", true, conf.search, null, "search"))
-	menu:addItem(neutrino.CMenuForwarder("MTV Live", glob.mtv_live_url ~= nil, "", null, "live"))
-	menu:addItem(neutrino.CMenuForwarder("Einstellugen", true, "", null, "settings"))
+	menu:addItem(neutrino2.CMenuForwarder("MTV Listen", true, "", null, "list"))
+	menu:addItem(neutrino2.CMenuForwarder("Suche nach künstler", true, conf.search, null, "search"))
+	menu:addItem(neutrino2.CMenuForwarder("MTV Live", glob.mtv_live_url ~= nil, "", null, "live"))
+	menu:addItem(neutrino2.CMenuForwarder("Einstellugen", true, "", null, "settings"))
 
 	menu:exec(null, "")
 
@@ -1206,7 +1206,7 @@ function main()
 	end
 	main_menu()
 	saveConfig()
-	neutrino.CFileHelpers():removeDir("/tmp/mtv")
+	neutrino2.CFileHelpers():removeDir("/tmp/mtv")
 	collectgarbage()
 	os.execute("rm /tmp/lua*");
 end

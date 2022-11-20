@@ -110,7 +110,7 @@
 #define HTTPD_CONFIGFILE 				HTTPD_CONFIGDIR "/nhttpd.conf"
 #define YWEB_CONFIGFILE 				HTTPD_CONFIGDIR "/Y-Web.conf"
 #define PUBLICDOCUMENTROOT				"/var/httpd"
-#define NEUTRINO_CONFIGFILE				HTTPD_CONFIGDIR "/neutrino.conf"
+#define NEUTRINO_CONFIGFILE				HTTPD_CONFIGDIR "/neutrino2.conf"
 #define HOSTEDDOCUMENTROOT				"/mnt/hosted"
 #define EXTRASDOCUMENTROOT				"/mnt/hosted/extras"
 #define EXTRASDOCUMENTURL				"/hosted/extras"

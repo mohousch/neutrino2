@@ -32,11 +32,11 @@ end
 
 
 function get_channels()
-	httpTool = neutrino.CHTTPTool()
+	httpTool = neutrino2.CHTTPTool()
 	httpTool:setTitle("Pluto TV Channels downlaoding please wait ...")
 		
 	local obj_file = "https://i.mjh.nz/PlutoTV/de.m3u8"
-	local target = neutrino.CONFIGDIR .. "/webtv/plutotv.m3u8"
+	local target = neutrino2.CONFIGDIR .. "/webtv/plutotv.m3u8"
 		
 	if httpTool:downloadFile(obj_file, target, 100) == true then
 		os.execute("pzapit -c")
@@ -94,7 +94,7 @@ function getVideoData(url) -- Generate stream address and evaluate it according 
 	http = "http://service-stitcher-ipv4.clusters.pluto.tv/stitch/hls/episode/"
 	token = "?advertisingId=&appName=web&appVersion=unknown&appStoreUrl=&architecture=&buildVersion=&clientTime=0&deviceDNT=0&deviceId=" .. gen_ids() .. "&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&sid=" .. gen_ids() .. "&userId=&serverSideAds=true"
 
-	local data = neutrino.getUrlAnswer(http .. url .."/master.m3u8" ..token, "Mozilla/5.0") -- Calling the generated master.m3u8
+	local data = neutrino2.getUrlAnswer(http .. url .."/master.m3u8" ..token, "Mozilla/5.0") -- Calling the generated master.m3u8
 	local count = 0
 	
 	if data then
@@ -114,11 +114,11 @@ function getVideoData(url) -- Generate stream address and evaluate it according 
 end
 
 function get_cat()
-	local hint = neutrino.CHintBox(plugin_title, "loading...", neutrino.HINTBOX_WIDTH, neutrino.PLUGINDIR .. "/plutotv/plutotv.png")
+	local hint = neutrino2.CHintBox(plugin_title, "loading...", neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
 	
 	local r = false
-	local c_data = neutrino.getUrlAnswer("http://api.pluto.tv/v3/vod/categories?includeItems=true&deviceType=web", "Mozilla/5.0")
+	local c_data = neutrino2.getUrlAnswer("http://api.pluto.tv/v3/vod/categories?includeItems=true&deviceType=web", "Mozilla/5.0")
 	
 	if c_data then
 		local jd = json:decode(c_data)
@@ -155,50 +155,50 @@ function get_cat()
 		
 		categories_menu()
 	else
-		local mBox = neutrino.CMessageBox("Fehler", "Keinen Kategorien gefunden!")
+		local mBox = neutrino2.CMessageBox("Fehler", "Keinen Kategorien gefunden!")
 		mBox:exec()
 	end
 end
 
 cm_selected = 0
 function cat_menu(_id)
-	neutrino.CFileHelpers():createDir("/tmp/plutotv")
+	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 
-	local cm = neutrino.CMenuWidget(catlist[tonumber(_id)], neutrino.PLUGINDIR .. "/plutotv/plutotv.png")
-	cm:setWidgetType(neutrino.WIDGET_TYPE_FRAME)
+	local cm = neutrino2.CMenuWidget(catlist[tonumber(_id)], neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
+	cm:setWidgetType(neutrino2.WIDGET_TYPE_FRAME)
 	cm:enablePaintItemInfo(70)
 	cm:setItemsPerPage(6, 2)
 	cm:enablePaintDate()
 	cm:clearAll()
 	
-	local red = neutrino.button_label_struct()
-	red.button = neutrino.NEUTRINO_ICON_BUTTON_RED
+	local red = neutrino2.button_label_struct()
+	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
 	red.localename = "Download"
 
-	local green = neutrino.button_label_struct()
-	green.button = neutrino.NEUTRINO_ICON_BUTTON_GREEN
+	local green = neutrino2.button_label_struct()
+	green.button = neutrino2.NEUTRINO_ICON_BUTTON_GREEN
 	green.localename = "Info"
 	
 	cm:setFootButtons(red)
 	cm:setFootButtons(green)
 	
-	cm:addKey(neutrino.RC_red, null, "rec")
-	cm:addKey(neutrino.RC_green, null, "info")
+	cm:addKey(neutrino2.RC_red, null, "rec")
+	cm:addKey(neutrino2.RC_green, null, "info")
 	
-	local hint = neutrino.CHintBox(plugin_title, "loading...", neutrino.HINTBOX_WIDTH, neutrino.PLUGINDIR .. "/plutotv/plutotv.png")
+	local hint = neutrino2.CHintBox(plugin_title, "loading...", neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
 	
 	for cat, itemlist_detail in pairs (itemlist) do
 		if cat == tonumber(_id) then
 			local count = 1
 			for item, item_detail in pairs(itemlist_detail) do	
-				tfile = neutrino.DATADIR .. "/icons/nopreview.jpg"
+				tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
 					
 				if item_detail.cover ~= nil then
 					tfile = "/tmp/plutotv/" .. conv_utf8(item_detail.name) .. ".jpg"
 					
-					if neutrino.file_exists(tfile) ~= true then
-						neutrino.downloadUrl(conv_utf8(item_detail.cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
+					if neutrino2.file_exists(tfile) ~= true then
+						neutrino2.downloadUrl(conv_utf8(item_detail.cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
 					end
 				end
 					
@@ -215,7 +215,7 @@ function cat_menu(_id)
 					genre = item_detail.genre;
 				}
 					
-				item = neutrino.ClistBoxItem(conv_utf8(item_detail.name))
+				item = neutrino2.ClistBoxItem(conv_utf8(item_detail.name))
 				item:setHintIcon(tfile)
 				item:setHint(item_detail.desc)
 				
@@ -258,26 +258,26 @@ function cat_menu(_id)
 		cat_menu(_id)
 	end
 	
-	neutrino.CFileHelpers():removeDir("/tmp/plutotv")
+	neutrino2.CFileHelpers():removeDir("/tmp/plutotv")
 end
 
 sm_selected = 0
 function season_menu(_id)
-	local h = neutrino.CHintBox(plugin_title, "Suche Episoden ...")
+	local h = neutrino2.CHintBox(plugin_title, "Suche Episoden ...")
 	h:paint()
 	local seasons = 1
-	local c_data = neutrino.getUrlAnswer("http://api.pluto.tv/v3/vod/series/".. _id .."/seasons?includeItems=true&deviceType=web", "Mozilla/5.0")
+	local c_data = neutrino2.getUrlAnswer("http://api.pluto.tv/v3/vod/series/".. _id .."/seasons?includeItems=true&deviceType=web", "Mozilla/5.0")
 	
 	if c_data then
 		local jd = json:decode(c_data)
 		if jd then
-			sm = neutrino.CMenuWidget(jd.name, neutrino.PLUGINDIR .. "/plutotv/plutotv.png")
+			sm = neutrino2.CMenuWidget(jd.name, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 			sm:clearAll()
 			
 			episodelist = {}
 			local count = 1
 			for i=1, #jd.seasons do
-				item = neutrino.ClistBoxItem("Season "..i)
+				item = neutrino2.ClistBoxItem("Season "..i)
 				item:setActionKey(null, "episode_menu")
 				
 				sm:addItem(item)
@@ -329,43 +329,43 @@ end
 
 em_selected = 0
 function episode_menu(s)
-	neutrino.CFileHelpers():createDir("/tmp/plutotv")
+	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 	
-	local em = neutrino.CMenuWidget(episodelist[tonumber(s)][1].title .. " - Season "..s, neutrino.PLUGINDIR .. "/plutotv/plutotv.png")
-	em:setWidgetType(neutrino.WIDGET_TYPE_FRAME)
+	local em = neutrino2.CMenuWidget(episodelist[tonumber(s)][1].title .. " - Season "..s, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
+	em:setWidgetType(neutrino2.WIDGET_TYPE_FRAME)
 	em:enablePaintItemInfo(70)
 	em:setItemsPerPage(6, 2)
 	em:enablePaintDate()
 	em:clearAll()
 	
-	local red = neutrino.button_label_struct()
-	red.button = neutrino.NEUTRINO_ICON_BUTTON_RED
+	local red = neutrino2.button_label_struct()
+	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
 	red.localename = "Download"
 
-	local green = neutrino.button_label_struct()
-	green.button = neutrino.NEUTRINO_ICON_BUTTON_GREEN
+	local green = neutrino2.button_label_struct()
+	green.button = neutrino2.NEUTRINO_ICON_BUTTON_GREEN
 	green.localename = "Info"
 	
 	em:setFootButtons(red)
 	em:setFootButtons(green)
 	
-	em:addKey(neutrino.RC_red, null, "rec")
-	em:addKey(neutrino.RC_green, null, "info")
+	em:addKey(neutrino2.RC_red, null, "rec")
+	em:addKey(neutrino2.RC_green, null, "info")
 	
-	local hint = neutrino.CHintBox(plugin_title, "loading...", neutrino.HINTBOX_WIDTH, neutrino.PLUGINDIR .. "/plutotv/plutotv.png")
+	local hint = neutrino2.CHintBox(plugin_title, "loading...", neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
 	
 	for season, episodelist_detail in pairs (episodelist) do
 		if season == tonumber(s) then
 			local count = 1
 			for episode, episode_detail in pairs(episodelist_detail) do
-				local tfile = neutrino.DATADIR .. "/icons/nopreview.jpg"
+				local tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
 					
 				if episode_detail.cover ~= nil then
 					tfile = "/tmp/plutotv/" .. conv_utf8(episode_detail.name) .. ".jpg"
 					
-					if neutrino.file_exists(tfile) ~= true then
-						neutrino.downloadUrl(conv_utf8(episode_detail.cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
+					if neutrino2.file_exists(tfile) ~= true then
+						neutrino2.downloadUrl(conv_utf8(episode_detail.cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
 					end
 				end
 				
@@ -384,7 +384,7 @@ function episode_menu(s)
 					eptitle = episode_detail.name;
 				}
 				
-				item = neutrino.ClistBoxItem(episode_detail.name)
+				item = neutrino2.ClistBoxItem(episode_detail.name)
 				item:setHintIcon(tfile)
 				item:setHint(episode_detail.desc)
 				item:setActionKey(null, "info")
@@ -418,7 +418,7 @@ function episode_menu(s)
 		episode_menu(s)
 	end
 	
-	neutrino.CFileHelpers():removeDir("/tmp/plutotv")
+	neutrino2.CFileHelpers():removeDir("/tmp/plutotv")
 end
 
 function playStream(id)
@@ -429,30 +429,30 @@ function playStream(id)
 	duration = playback_details[id].duration
 	rating = playback_details[id].rating
 		
-	movieWidget = neutrino.CMovieInfoWidget()
+	movieWidget = neutrino2.CMovieInfoWidget()
 	movieWidget:setMovie(file, title, info1, "", cover, duration)
 
 	movieWidget:exec(null, "")
 end
 
 function recStream(id)
-	httpTool = neutrino.CHTTPTool()
+	httpTool = neutrino2.CHTTPTool()
 	httpTool:setTitle("Pluto TV VOD downlaoding...")
 		
 	local rec_file = getVideoData(playback_details[id].uuid)
 		
-	config = neutrino.CConfigFile('\t')
+	config = neutrino2.CConfigFile('\t')
 
-	config:loadConfig(neutrino.CONFIGDIR .. "/neutrino.conf")
+	config:loadConfig(neutrino2.CONFIGDIR .. "/neutrino2.conf")
 
 	local target = config:getString("network_nfs_recordingdir") .. "/" .. conv_utf8(playback_details[id].name) .. ".mp4"
 		
 	if httpTool:downloadFile(rec_file, target, 100) == true then
 		-- save .xml
-		neutrino.CMovieInfo():saveMovieInfo(target, conv_utf8(playback_details[id].name), conv_utf8(playback_details[id].desc), "");
+		neutrino2.CMovieInfo():saveMovieInfo(target, conv_utf8(playback_details[id].name), conv_utf8(playback_details[id].desc), "");
 		
 		-- save thumbnail		
-		neutrino.CFileHelpers():copyFile(playback_details[id].cover, config:getString("network_nfs_recordingdir") .. "/" .. playback_details[id].name .. ".jpg");
+		neutrino2.CFileHelpers():copyFile(playback_details[id].cover, config:getString("network_nfs_recordingdir") .. "/" .. playback_details[id].name .. ".jpg");
 	end
 end
 
@@ -460,22 +460,22 @@ end
 m_selected = 0
 
 function categories_menu()
-	local m = neutrino.CMenuWidget(plugin_title, neutrino.PLUGINDIR .. "/plutotv/plutotv.png")
+	local m = neutrino2.CMenuWidget(plugin_title, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	m:enableShrinkMenu()
 	m:enablePaintDate()
-	m:setTitleHAlign(neutrino.CC_ALIGN_CENTER)
+	m:setTitleHAlign(neutrino2.CC_ALIGN_CENTER)
 	m:clearAll()
 	
-	local red = neutrino.button_label_struct()
-	red.button = neutrino.NEUTRINO_ICON_BUTTON_RED
+	local red = neutrino2.button_label_struct()
+	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
 	red.localename = "Update Channels"
 	
 	m:setFootButtons(red)
 	
-	m:addKey(neutrino.RC_red, null, "update")
+	m:addKey(neutrino2.RC_red, null, "update")
 	
 	for _id,_name in pairs(catlist) do
-		item = neutrino.ClistBoxItem(conv_utf8(_name))
+		item = neutrino2.ClistBoxItem(conv_utf8(_name))
 		item:setActionKey(null, "cat_menu")
 		
 		m:addItem(item)

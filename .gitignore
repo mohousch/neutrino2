@@ -1828,3 +1828,5 @@
 /neutrino2/src/neutrino2.o
 /neutrino2/src/neutrino2_menue.o
 /neutrino2/src/system/libneutrino2_system.a
+/neutrino2/src/neutrino2
+/neutrino2/src/gui/widget/libneutrino2_gui_widget2.a

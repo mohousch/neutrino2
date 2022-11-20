@@ -110,7 +110,7 @@ locale["polski"] = {
 }
 
 function get_confFile()
-	return neutrino.PLUGINDIR .. "/media_one/media_one.conf"
+	return neutrino2.PLUGINDIR .. "/media_one/media_one.conf"
 end
 
 function __LINE__() return debug.getinfo(2, 'l').currentline end
@@ -139,7 +139,7 @@ function getdata(Url, outputfile)
 
 	local data = nil
 
-	data = neutrino.getUrlAnswer(Url, 'Mozilla/5.0;')
+	data = neutrino2.getUrlAnswer(Url, 'Mozilla/5.0;')
 
 	return data
 end
@@ -171,7 +171,7 @@ function getFeedDataFromUrl(url)
 		window:hide()
 		window = nil
 		]]
-		local window = neutrino.CHintBox("DEBUG Output", data)
+		local window = neutrino2.CHintBox("DEBUG Output", data)
 		window:exec()
 	end
 	data = nil
@@ -228,7 +228,7 @@ function info(infotxt,cap)
 	end
 	h = nil
 	]]
-	local h = neutrino.CHintBox(cap, infotxt)
+	local h = neutrino2.CHintBox(cap, infotxt)
 	h:exec()
 end
 
@@ -446,13 +446,13 @@ end
 
 function getMaxScreenWidth()
 	--local max_w = SCREEN.END_X - SCREEN.OFF_X
-	local max_w = neutrino.CSwigHelpers():getScreenWidth()
+	local max_w = neutrino2.CSwigHelpers():getScreenWidth()
 	return max_w
 end
 
 function getMaxScreenHeight()
 	--local max_h = SCREEN.END_Y - SCREEN.OFF_Y
-	local max_h = neutrino.CSwigHelpers():getScreenHeight()
+	local max_h = neutrino2.CSwigHelpers():getScreenHeight()
 	return max_h
 end
 
@@ -628,7 +628,7 @@ function epgInfo(xres, yres, aspectRatio, framerate)
 	window:hide()
 	window = nil
 	]]
-	local window = neutrino.CInfoBox()
+	local window = neutrino2.CInfoBox()
 	window:setTitle(epgtitle)
 	window:setText(epgtext)
 	window:exec()
@@ -896,7 +896,7 @@ function paintMenuItem(idNr)
 
 	if  not vPlay  and (UrlVideo or UrlAudio) then
 		--vPlay  =  video.new()
-		vPlay = neutrino.CMoviePlayerGui()
+		vPlay = neutrino2.CMoviePlayerGui()
 	end
 	if  vPlay and text and #text > 1 then
 		--vPlay:setInfoFunc("epgInfo")
@@ -1001,8 +1001,8 @@ function paintMenuItem(idNr)
 	if #glob.urlPicUrls > 0 and conf.picdir == picdir then
 		--local fh = filehelpers.new()
 		--if fh then
-		neutrino.CFileHelpers():removeDir(picdir)
-		neutrino.CFileHelpers():createDir(picdir)
+		neutrino2.CFileHelpers():removeDir(picdir)
+		neutrino2.CFileHelpers():createDir(picdir)
 		--end
 		glob.urlPicUrls = nil
 		--fh = nil
@@ -1034,13 +1034,13 @@ function downloadPic(idNr,nr)
 		fpic = conf.picdir .. "/" .. id2 .. picname
 		--local fh = filehelpers.new()
 		--if fh:exist(fpic, "f") == false then
-		if neutrino.file_exists(fpic) == false then
+		if neutrino2.file_exists(fpic) == false then
 			if nr > 1 then
 				--n:PaintIcon("icon_red", 20, 30, 30,30)
 			end
 			local UrlPic = glob.urlPicUrls[nr]
 			--local ok = getdata(UrlPic,fpic)
-			local ok = neutrino.downloadUrl(UrlPic, fpic)
+			local ok = neutrino2.downloadUrl(UrlPic, fpic)
 			if not ok then
 				fpic = nil
 			end
@@ -1135,7 +1135,7 @@ function home()
 end
 function saveConfig()
 	--if conf.changed then
-		local config	= neutrino.CConfigFile('\t')
+		local config	= neutrino2.CConfigFile('\t')
 		if config then
 			config:setString("picdir", conf.picdir)
 			config:setString("bindir", conf.bindir)
@@ -1168,7 +1168,7 @@ function checkhtmlviewer()
 end
 
 function loadConfig()
-	local config	= neutrino.CConfigFile('\t')
+	local config	= neutrino2.CConfigFile('\t')
 	if config then
 		config:loadConfig(get_confFile())
 		conf.picdir = config:getString("picdir", "/tmp/rssPics")
@@ -1179,8 +1179,8 @@ function loadConfig()
 		config = nil
 	end
 
-	local Nconfig	= neutrino.CConfigFile('\t')
-	Nconfig:loadConfig(neutrino.CONFIGDIR .. "/neutrino.conf")
+	local Nconfig	= neutrino2.CConfigFile('\t')
+	Nconfig:loadConfig(neutrino2.CONFIGDIR .. "/neutrino2.conf")
 	conf.lang = Nconfig:getString("language", "english")
 	if locale[conf.lang] == nil then
 		conf.lang = "english"
@@ -1247,7 +1247,7 @@ function rssurlmenu(url)
 	end
 	local d = 0 -- directkey
 	--local m = menu.new{name=glob.feedpersed.feed.title, icon="icon_blue"}
-	local m = neutrino.CMenuWidget(glob.feedpersed.feed.title, neutrino.NEUTRINO_ICON_MOVIE, 2*neutrino.MENU_WIDTH)
+	local m = neutrino2.CMenuWidget(glob.feedpersed.feed.title, neutrino2.NEUTRINO_ICON_MOVIE, 2*neutrino2.MENU_WIDTH)
 	glob.m = m
 	--m:addKey{directkey=RC.home, id="home", action="home"}
 	--m:addKey{directkey=RC.info, id="FEED Version: " .. fp.version, action="info"}
@@ -1271,7 +1271,7 @@ function rssurlmenu(url)
 			title = title .. " "
 		end
 		--m:addItem{type="forwarder", name=title, action="showMenuItem", id=i, directkey=dkey }
-		item = neutrino.CMenuForwarder(title)
+		item = neutrino2.CMenuForwarder(title)
 		--item:setHint(glob.feedpersed.entries[i].content)
 
 		m:addItem(item)
@@ -1360,7 +1360,7 @@ function exec_submenu(id, title)
 	subm:exec()
 ]]
 
-	local subm = neutrino.CMenuWidget(title, neutrino.NEUTRINO_ICON_MOVIE)
+	local subm = neutrino2.CMenuWidget(title, neutrino2.NEUTRINO_ICON_MOVIE)
 	glob.subm = subm
 
 	for v, w in ipairs(feedentries) do
@@ -1374,7 +1374,7 @@ function exec_submenu(id, title)
 				--d = d + 1
 				--local dkey = godirectkey(d)
 				--subm:addItem{type="forwarder", name=w.name, action="exec_urlsub", id=v, directkey=dkey }
-			subm:addItem(neutrino.CMenuForwarder(w.name))
+			subm:addItem(neutrino2.CMenuForwarder(w.name))
 			--end
 		--end
 	end
@@ -1473,7 +1473,7 @@ function start()
 	sm:exec()
 ]]
 
-	local sm = neutrino.CMenuWidget("Media One", neutrino.NEUTRINO_ICON_MOVIE)
+	local sm = neutrino2.CMenuWidget("Media One", neutrino2.NEUTRINO_ICON_MOVIE)
 	glob.sm = sm
 	sm:enableShrinkMenu()
 
@@ -1481,12 +1481,12 @@ function start()
 	for v, w in ipairs(feedentries) do
 		if w and w.grup and w.submenu and check_if_double(grupmenus,w.grup) then
 			grupmenus[#grupmenus+1] = w.grup
-			sm:addItem(neutrino.ClistBoxItem(w.grup))
+			sm:addItem(neutrino2.ClistBoxItem(w.grup))
 		end
 	end
 
 	if #grupmenus then
-		sm:addItem(neutrino.CMenuSeparator(neutrino.LINE))
+		sm:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
 	end
 
 	for v, w in ipairs(feedentries) do
@@ -1497,17 +1497,17 @@ function start()
 	end
 
 	if #submenus then
-		sm:addItem(neutrino.CMenuSeparator(neutrino.LINE))
+		sm:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
 	end
 ]]
 	for v, w in ipairs(feedentries) do
 		if not w.submenu and not w.grup then
 			if w.exec == "SEPARATOR" then
-				sm:addItem(neutrino.CMenuSeparator())
+				sm:addItem(neutrino2.CMenuSeparator())
 			elseif w.exec == "SEPARATORLINE" then
-				sm:addItem(neutrino.CMenuSeparator(neutrino.LINE))
+				sm:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
 			else
-				sm:addItem(neutrino.ClistBoxItem(w.name))
+				sm:addItem(neutrino2.ClistBoxItem(w.name))
 			end
 		end
 	end
@@ -1526,7 +1526,7 @@ function start()
 end
 
 function main()
-	local config = neutrino.PLUGINDIR .. "/media_one/media_one.conf"
+	local config = neutrino2.PLUGINDIR .. "/media_one/media_one.conf"
 
 --[[
 	local fh = filehelpers.new()
@@ -1567,7 +1567,7 @@ function main()
 
 	saveConfig()
 
- 	neutrino.CFileHelpers():removeDir(picdir)
+ 	neutrino2.CFileHelpers():removeDir(picdir)
 end
 
 main()

@@ -128,7 +128,7 @@ function getdata(Url,outputfile)
 
 	local data = nil
 
-	data = neutrino.getUrlAnswer(Url, "Mozilla/5.0 (Linux mips; U;HbbTV/1.1.1 (+RTSP;DMM;Dreambox;0.1a;1.0;) CE-HTML/1.0; en) AppleWebKit/535.19 no/Volksbox QtWebkit/2.2")
+	data = neutrino2.getUrlAnswer(Url, "Mozilla/5.0 (Linux mips; U;HbbTV/1.1.1 (+RTSP;DMM;Dreambox;0.1a;1.0;) CE-HTML/1.0; en) AppleWebKit/535.19 no/Volksbox QtWebkit/2.2")
 
 	return data
 end
@@ -298,14 +298,14 @@ local title = ""
 function select_playitem()
 	print("select_playitem:")
 
-	local m = neutrino.CMenuWidget("", arte_concert, 2*neutrino.MENU_WIDTH)
+	local m = neutrino2.CMenuWidget("", arte_concert, 2*neutrino2.MENU_WIDTH)
 	
-	m:setWidgetType(neutrino.WIDGET_TYPE_EXTENDED)
+	m:setWidgetType(neutrino2.WIDGET_TYPE_EXTENDED)
 	m:enableShrinkMenu()
 
 	local item = nil
   	for i,r in  ipairs(p) do
-		item = neutrino.ClistBoxItem(r.title)
+		item = neutrino2.ClistBoxItem(r.title)
 		item:setHint(r.epg)
 		--item:setHintIcon(arte_concert)
 
@@ -320,7 +320,7 @@ function select_playitem()
 
 	m:exec(null, "")
 
-	local vPlay = neutrino.CMoviePlayerGui()
+	local vPlay = neutrino2.CMoviePlayerGui()
 
 	pmid = m:getSelected() + 1
 
@@ -422,10 +422,10 @@ end
 
 function selectmenu()
 	local item = nil
-	sm = neutrino.CMenuWidget("Arte Konzerte", arte_concert)
+	sm = neutrino2.CMenuWidget("Arte Konzerte", arte_concert)
 	
 	for i,v in  ipairs(subs) do
-		item = neutrino.ClistBoxItem(v[2], true, "", nil, v[1])
+		item = neutrino2.ClistBoxItem(v[2], true, "", nil, v[1])
 
 		sm:addItem(item)
 	end

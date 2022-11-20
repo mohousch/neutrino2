@@ -84,7 +84,7 @@ function init()
 	page = 1;
 	max_page = 1;
 
-	neutrino.CFileHelpers():createDir("/tmp/netzkino")
+	neutrino2.CFileHelpers():createDir("/tmp/netzkino")
 
 	-- use netzkino icon placed in same dir as the plugin ...
 	--netzkino_png = script_path() .. "netzkino.png"
@@ -100,10 +100,10 @@ function get_categories()
 
 	local fname = "/tmp/netzkino/netzkino_categories.txt";
 
-	local h = neutrino.CHintBox(caption, "Kategorien werden geladen ...", neutrino.HINTBOX_WIDTH, netzkino_png)
+	local h = neutrino2.CHintBox(caption, "Kategorien werden geladen ...", neutrino2.HINTBOX_WIDTH, netzkino_png)
 	h:paint();
 
-	local fp = neutrino.getUrlAnswer(base_url .. "index.json?d=www", 'Mozilla/5.0;', 90)
+	local fp = neutrino2.getUrlAnswer(base_url .. "index.json?d=www", 'Mozilla/5.0;', 90)
 
 	if fp == nil then
 		h:hide();
@@ -143,7 +143,7 @@ function get_categories()
 		if j > 1 then
 			get_categories_menu();
 		else
-			local mBox = neutrino.CMessageBox("Fehler", "Keinen Kategorien gefunden!")
+			local mBox = neutrino2.CMessageBox("Fehler", "Keinen Kategorien gefunden!")
 			mBox:exec()
 		end
 	end
@@ -156,12 +156,12 @@ function get_categories_menu()
 	local m_categories = nil
 	local item = nil
 
-	m_categories = neutrino.CMenuWidget("" .. caption.." Kategorien", netzkino_png)
+	m_categories = neutrino2.CMenuWidget("" .. caption.." Kategorien", netzkino_png)
 	m_categories:enableShrinkMenu()
 
 	for index, category_detail in pairs(categories) do
 		local count = "(" .. category_detail.post_count .. ")"
-		item = neutrino.ClistBoxItem(category_detail.title)
+		item = neutrino2.ClistBoxItem(category_detail.title)
 		item:setOptionInfo(count)
 		item:setIconName(netzkino_png)
 
@@ -195,14 +195,14 @@ function get_movies(_id)
 	local page_nr = page
 	movies = {};
 
-	local h = neutrino.CHintBox(caption, "Movies wird geladen ...", neutrino.HINTBOX_WIDTH, netzkino_png)
+	local h = neutrino2.CHintBox(caption, "Movies wird geladen ...", neutrino2.HINTBOX_WIDTH, netzkino_png)
 	h:paint();
 	
 	--local url = "https://www.netzkino.de/capi/get_category_posts&id=" .. categories[_id].category_id .. "&count=50d&page=" .. page_nr .."&custom_fields=Streaming"
 	local url = base_url .. "categories/" .. categories[_id].category_id .. ".json?d=www" .. "&count=12" .. "d&page=" ..  page_nr .."&custom_fields=Streaming"
 
 	--local fp = io.open(fname, "r")
-	local fp = neutrino.getUrlAnswer(url, 'Mozilla/5.0;', 90)
+	local fp = neutrino2.getUrlAnswer(url, 'Mozilla/5.0;', 90)
 	if fp == nil then
 		h:hide();
 		--error("Error opening file '" .. fname .. "'.")
@@ -231,7 +231,7 @@ function get_movies(_id)
 				j_content = posts[i].content
 
 				local j_cover = "";
-				local tfile = neutrino.DATADIR .. "/icons/nopreview.jpg"
+				local tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
 				--local attachments = posts[i].attachments[1]
 				local thumbnail = posts[i].thumbnail
 				if thumbnail then
@@ -247,8 +247,8 @@ function get_movies(_id)
 						j_cover = thumbnail
 
 						tfile = "/tmp/netzkino/" .. conv_utf8(j_title) .. ".jpg"
-						--if j_cover ~= nil and neutrino.file_exists(tfile) ~= true then
-							neutrino.downloadUrl(conv_utf8(j_cover), tfile, "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 4 Build/LMY48M)", 90)
+						--if j_cover ~= nil and neutrino2.file_exists(tfile) ~= true then
+							neutrino2.downloadUrl(conv_utf8(j_cover), tfile, "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 4 Build/LMY48M)", 90)
 						--end
 						--end
 					--end
@@ -272,7 +272,7 @@ function get_movies(_id)
 		--if j > 1 then
 			get_movies_menu(_id);
 		--[[else
-			local mBox = neutrino.CMessageBox("Fehler", "Keinen Stream gefunden!")
+			local mBox = neutrino2.CMessageBox("Fehler", "Keinen Stream gefunden!")
 			mBox:exec()
 
 			get_categories();
@@ -282,34 +282,34 @@ end
 
 --Auswahlmenü der Filme anzeigen
 function get_movies_menu(_id)
-	local ret = neutrino.RETURN_REPAINT
+	local ret = neutrino2.RETURN_REPAINT
 	local menu_title = caption .. ": " .. categories[_id].title;
 
-	local red = neutrino.button_label_struct()
-	red.button = neutrino.NEUTRINO_ICON_BUTTON_RED
+	local red = neutrino2.button_label_struct()
+	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
 	red.localename = "Next Page"
 
-	local green = neutrino.button_label_struct()
-	green.button = neutrino.NEUTRINO_ICON_BUTTON_GREEN
+	local green = neutrino2.button_label_struct()
+	green.button = neutrino2.NEUTRINO_ICON_BUTTON_GREEN
 	green.localename = " "
 
-	local yellow = neutrino.button_label_struct()
-	yellow.button = neutrino.NEUTRINO_ICON_BUTTON_YELLOW
+	local yellow = neutrino2.button_label_struct()
+	yellow.button = neutrino2.NEUTRINO_ICON_BUTTON_YELLOW
 	yellow.localename = "Neu bei NetzKino"
 
-	local blue = neutrino.button_label_struct()
-	blue.button = neutrino.NEUTRINO_ICON_BUTTON_BLUE
+	local blue = neutrino2.button_label_struct()
+	blue.button = neutrino2.NEUTRINO_ICON_BUTTON_BLUE
 	blue.localename = "Highlight"
 
-	local info = neutrino.button_label_struct()
-	info.button = neutrino.NEUTRINO_ICON_BUTTON_HELP
+	local info = neutrino2.button_label_struct()
+	info.button = neutrino2.NEUTRINO_ICON_BUTTON_HELP
 	
-	local rec = neutrino.button_label_struct()
-	rec.button = neutrino.NEUTRINO_ICON_REC
+	local rec = neutrino2.button_label_struct()
+	rec.button = neutrino2.NEUTRINO_ICON_REC
 	
-	m_movies = neutrino.CMenuWidget(menu_title, netzkino_png)
+	m_movies = neutrino2.CMenuWidget(menu_title, netzkino_png)
 
-	m_movies:setWidgetType(neutrino.WIDGET_TYPE_FRAME)
+	m_movies:setWidgetType(neutrino2.WIDGET_TYPE_FRAME)
 	m_movies:setItemsPerPage(6, 2)
 
 	m_movies:setFootButtons(red)
@@ -321,7 +321,7 @@ function get_movies_menu(_id)
 	
 	local item = nil
 	for _id, movie_detail in pairs(movies) do
-		item = neutrino.ClistBoxItem(conv_utf8(movie_detail.title))
+		item = neutrino2.ClistBoxItem(conv_utf8(movie_detail.title))
 		item:setHintIcon(movie_detail.cover)
 		--item:setHint(conv_utf8(movie_detail.content))
 		item:setActionKey(null, "play")
@@ -335,12 +335,12 @@ function get_movies_menu(_id)
 
 	m_movies:setSelected(selected_movie)
 
-	m_movies:addKey(neutrino.RC_info, null, "info")
-	m_movies:addKey(neutrino.RC_record, null, "record")
-	m_movies:addKey(neutrino.RC_red, null, "nextpage")
-	--m_movies:addKey(neutrino.RC_green, null, "green")
-	--m_movies:addKey(neutrino.RC_yellow, null, "new")
-	--m_movies:addKey(neutrino.RC_blue, null, "highlight")
+	m_movies:addKey(neutrino2.RC_info, null, "info")
+	m_movies:addKey(neutrino2.RC_record, null, "record")
+	m_movies:addKey(neutrino2.RC_red, null, "nextpage")
+	--m_movies:addKey(neutrino2.RC_green, null, "green")
+	--m_movies:addKey(neutrino2.RC_yellow, null, "new")
+	--m_movies:addKey(neutrino2.RC_blue, null, "highlight")
 
 	m_movies:exec(null, "")
 	
@@ -355,7 +355,7 @@ function get_movies_menu(_id)
 		cover = movies[selected_movie + 1].cover
 		file = "https://pmd.netzkino-seite.netzkino.de/" .. stream_name ..".mp4"
 
-		movieWidget = neutrino.CMovieInfoWidget()
+		movieWidget = neutrino2.CMovieInfoWidget()
 		movieWidget:setMovie(file, title, info1, "", cover)
 
 		movieWidget:exec(null, "")
@@ -382,19 +382,19 @@ end
 
 -- Filminfos anzeigen
 function showMovieInfo(_id)
-	neutrino.InfoBox(conv_utf8(movies[_id].content), conv_utf8(movies[_id].title), netzkino_png, movies[_id].cover, 160, 320)
+	neutrino2.InfoBox(conv_utf8(movies[_id].content), conv_utf8(movies[_id].title), netzkino_png, movies[_id].cover, 160, 320)
 end
 
 --Stream downloaden
 function download_stream(_id)
-	httpTool = neutrino.CHTTPTool()
+	httpTool = neutrino2.CHTTPTool()
 	httpTool:setTitle(caption)
 	
 	local stream_name = conv_utf8(movies[_id].stream);
 
-	config = neutrino.CConfigFile('\t')
+	config = neutrino2.CConfigFile('\t')
 
-	config:loadConfig(neutrino.CONFIGDIR .. "/neutrino.conf")
+	config:loadConfig(neutrino2.CONFIGDIR .. "/neutrino2.conf")
 
 	d_path = config:getString("network_nfs_recordingdir")
 
@@ -406,10 +406,10 @@ function download_stream(_id)
 
 	if httpTool:downloadFile("https://pmd.netzkino-seite.netzkino.de/" .. stream_name .. ".mp4", movie_file, 100) == true then
 		-- save .xml
-		neutrino.CMovieInfo():saveMovieInfo(movie_file, conv_utf8(movies[_id].title), conv_utf8(movies[_id].content), "");
+		neutrino2.CMovieInfo():saveMovieInfo(movie_file, conv_utf8(movies[_id].title), conv_utf8(movies[_id].content), "");
 		
 		-- save thumbnail		
-		neutrino.CFileHelpers():copyFile(movies[_id].cover, config:getString("network_nfs_recordingdir") .. "/" .. conv_utf8(movies[_id].title) .. ".jpg")
+		neutrino2.CFileHelpers():copyFile(movies[_id].cover, config:getString("network_nfs_recordingdir") .. "/" .. conv_utf8(movies[_id].title) .. ".jpg")
 	end
 end
 
@@ -453,7 +453,7 @@ end
 function main()
 	init();
 	get_categories();
-	neutrino.CFileHelpers():removeDir("/tmp/netzkino")
+	neutrino2.CFileHelpers():removeDir("/tmp/netzkino")
 	os.remove("/tmp/lua*")
 	collectgarbage();
 end
