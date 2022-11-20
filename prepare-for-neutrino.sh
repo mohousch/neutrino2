@@ -114,10 +114,10 @@ PACKAGES="\
 	${UBUNTU:+libssl-dev}           ${SUSE:+libopenssl-devel}    ${FEDORA:+openssl-devel}                         \
 	${UBUNTU:+libmount-dev}                                                                                       \
 	${UBUNTU:+mtools}                                                                                             \
-	${UBUNTU:+u-boot-tools}                                                                                       \
-	${UBUNTU:+simg2img}                                                                                           \
-	${UBUNTU:+lua5.2}                                                                                             \
-    	${UBUNTU:+python2-dev}                                                                                        \
+	${UBUNTU:+u-boot-tools}												\
+	${UBUNTU:+android-sdk-libsparse-utils}										\
+	${UBUNTU:+lua5.2}                                                                                       	\
+    	${UBUNTU:+python2-dev}                                                                                       	\
     	${UBUNTU:+libfreetype6-dev}											\
     	${UBUNTU:+libid3tag0-dev}											\
     	${UBUNTU:+libmad0-dev}												\
