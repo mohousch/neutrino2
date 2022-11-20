@@ -105,10 +105,10 @@
 		</TIME>
 		
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="1" itemborder="1" itemlines="1">
-			<ITEM  id="5" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist"/>
-			<ITEM  id="5" localename="Details current program" itemicon="hint_restart" target="epgview"/>
-			<ITEM  id="5" localename="Eventlist overview" itemicon="hint_standby" target="epgplus"/>
-			<ITEM  id="5" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo"/>
+			<ITEM  id="5" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist" directkey="RC_red"/>
+			<ITEM  id="5" localename="Details current program" itemicon="hint_restart" target="epgview" directkey="RC_green"/>
+			<ITEM  id="5" localename="Eventlist overview" itemicon="hint_standby" target="epgplus" directkey="RC_yellow"/>
+			<ITEM  id="5" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo" directkey="RC_blue"/>
 			<ITEM  id="5" localename="Timerlist" itemicon="hint_timers" target="timerlist"/>
 		</LISTBOX>
 	</WIDGET>

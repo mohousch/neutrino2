@@ -107,16 +107,11 @@
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
-			<ITEM id="5" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist">
-			</ITEM>
-			<ITEM id="5" localename="Details current program" itemicon="hint_restart" target="epgview" >
-			</ITEM>
-			<ITEM id="5" localename="Eventlist overview" itemicon="hint_standby" target="epgplus">
-			</ITEM>
-			<ITEM id="5" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo">
-			</ITEM>
-			<ITEM id="5" localename="Timerlist" itemicon="hint_timers" target="timerlist">
-			</ITEM>
+			<ITEM id="5" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist" directkey="RC_red"/>
+			<ITEM id="5" localename="Details current program" itemicon="hint_restart" target="epgview" directkey="RC_green"/>
+			<ITEM id="5" localename="Eventlist overview" itemicon="hint_standby" target="epgplus" directkey="RC_yellow"/>
+			<ITEM id="5" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo" directkey="RC_blue"/>
+			<ITEM id="5" localename="Timerlist" itemicon="hint_timers" target="timerlist"/>
 		</LISTBOX>
 		
 		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">

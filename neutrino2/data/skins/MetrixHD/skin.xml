@@ -69,14 +69,10 @@
 		</WINDOW>
 		
 		<LISTBOX posx="640" posy="60" width="540" height="500" type="0" mode ="1">
-			<ITEM id="5" lines="1" localename="Eventlist current programm" itemicon="hint_timer" target="eventlist">
-			</ITEM>
-			<ITEM id="5" lines="1" localename="Details current program" itemicon="hint_restart" target="epgview" >
-			</ITEM>
-			<ITEM id="5" lines="1" localename="Eventlist overview" itemicon="hint_standby" target="epgplus">
-			</ITEM>
-			<ITEM id="5" lines="1" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo">
-			</ITEM>
+			<ITEM id="5" lines="1" localename="Eventlist current programm" itemicon="hint_timer" target="eventlist" directkey="RC_red"/>
+			<ITEM id="5" lines="1" localename="Details current program" itemicon="hint_restart" target="epgview" directkey="RC_green"/>
+			<ITEM id="5" lines="1" localename="Eventlist overview" itemicon="hint_standby" target="epgplus" directkey="RC_yellow"/>
+			<ITEM id="5" lines="1" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo" directkey="RC_blue"/>
 			<ITEM id="5" lines="1" localename="Timerlist" itemicon="hint_timers" target="timerlist">
 			</ITEM>
 		</LISTBOX>
