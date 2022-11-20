@@ -208,6 +208,10 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		CMenuTarget* convertTarget(const std::string& name);
 		uint32_t convertColor(const char* const color);
 		uint8_t convertFontColor(const char* const color);
+		int convertCorner(const char * const corner);
+		int convertRadius(const char* const radius);
+		int convertGradient(const char* const gradient);
+		neutrino_msg_t convertKey(const char* const key);
 		
 		//
 		void mainMenu(void);

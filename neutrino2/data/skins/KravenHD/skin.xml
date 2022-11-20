@@ -4,7 +4,7 @@
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
-	<WIDGET name="mainmenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="mainmenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LABEL posx="640" posy="50" width="640" height="50" text="Main Menu" halign="1">
 		</LABEL>
 		
@@ -30,7 +30,7 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="settings" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="settings" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LABEL posx="640" posy="50" width="640" height="50" text="Settings" halign="1">
 		</LABEL>
 			
@@ -63,7 +63,7 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="osd" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="osd" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LABEL posx="640" posy="50" width="640" height="50" text="OSD" halign="1">
 		</LABEL>
 			
@@ -91,7 +91,7 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="epgtimer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="epgtimer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LABEL posx="640" posy="50" width="640" height="50" text="EPG / Timer" halign="1">
 		</LABEL>
 		
@@ -113,7 +113,7 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="features" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="features" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LABEL posx="640" posy="50" width="640" height="50" text="Features" halign="1">
 		</LABEL>
 			
@@ -127,11 +127,11 @@
 		</TIME>
 		
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="1" mode="1" itemborder="1" itemlines="1"/>
-		<KEY name="0x191" target="neutrino" actionkey="plugins"> 
+		<KEY name="RC_blue" target="neutrino" actionkey="plugins"> 
 		</KEY>
 	</WIDGET>
 	
-	<WIDGET name="system" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="system" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LABEL posx="640" posy="50" width="640" height="50" text="System" halign="1">
 		</LABEL>
 			
@@ -154,7 +154,7 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="powermenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="powermenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LABEL posx="640" posy="50" width="640" height="50" text="Power Menu" halign="1">
 		</LABEL>
 			
@@ -176,7 +176,7 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="information" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="information" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LABEL posx="640" posy="50" width="640" height="50" text="Information" halign="1">
 		</LABEL>
 			
@@ -197,7 +197,7 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="mediaplayer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="mediaplayer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LABEL posx="640" posy="50" width="640" height="50" text="Media Player" halign="1">
 		</LABEL>
 			
@@ -216,7 +216,7 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="plugins" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="plugins" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="800" height="620" type="1" itemborder="1" scrollbar="1"/>
 		<LABEL posx="850" posy="50" width="380" height="50" text="Plugins" halign="1"/>	
 		<IMAGE posx="850" posy="150" width="380" height="300" image="background/logo.png"/>
@@ -230,7 +230,7 @@
 		</BUTTON>
 	</WIDGET>
 	
-	<WIDGET name="timerlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="timerlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" itemborder="1"/>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Timerlist" halign="1"/>
 		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
@@ -244,7 +244,7 @@
 		</BUTTON>
 	</WIDGET>
 	
-	<WIDGET name="newtimer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="newtimer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1"/>
 		<LABEL posx="640" posy="50" width="640" height="50" text="New timer" halign="1"/>
 		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
@@ -252,7 +252,7 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
-	<WIDGET name="modifytimer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="modifytimer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1"/>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Modify timer" halign="1"/>
 		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
@@ -260,7 +260,7 @@
 		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
-	<WIDGET name="tunersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="tunersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Servicescan" halign="1">
@@ -276,7 +276,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="scansetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="scansetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Scan transponder" halign="1">
@@ -292,7 +292,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="transponder" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="transponder" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Select transponder" halign="1">
@@ -308,7 +308,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="unicablesetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="unicablesetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Unicable settings" halign="1">
@@ -324,7 +324,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="manualscan" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="manualscan" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Manual frequency scan / Test signal" halign="1">
@@ -340,7 +340,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="autoscan" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="autoscan" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		
@@ -357,7 +357,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="autoscanall" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="autoscanall" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		
@@ -374,7 +374,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="satsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="satsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		
@@ -391,7 +391,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="motorsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="motorsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		
@@ -408,7 +408,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="satfindMenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="satfindMenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		
@@ -425,7 +425,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="satOnOff" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="satOnOff" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" paintframe="0" itemborder="1">
 		</LISTBOX>
 		
@@ -442,7 +442,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="tempsat" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="tempsat" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="600" height="620" type="0" mode="2" scrollbar="1" itemborder="1" painthead="1">
 		</LISTBOX>
 			
@@ -456,7 +456,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="updatesetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="updatesetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Software update" halign="1">
@@ -472,7 +472,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="flashexpert" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="flashexpert" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Expert functions" halign="1">
@@ -488,7 +488,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="fileselector" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="fileselector" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="File selector" halign="1">
@@ -504,7 +504,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="mtdselector" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="mtdselector" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Partition selector" halign="1">
@@ -520,7 +520,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="cammenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="cammenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="CI Cam settings" halign="1">
@@ -536,7 +536,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="tempcam" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="tempcam" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1" painthead="1">
 		</LISTBOX>
 			
@@ -550,7 +550,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="tempcam2" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="tempcam2" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1" painthead="1">
 		</LISTBOX>
 			
@@ -564,7 +564,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="videosetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="videosetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Video settings" halign="1">
@@ -580,7 +580,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="audiosetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="audiosetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Audio settings" halign="1">
@@ -596,7 +596,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="parentallocksetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="parentallocksetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Parentallock settings" halign="1">
@@ -612,7 +612,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="networksetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="networksetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Network settings" halign="1">
@@ -628,7 +628,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="proxysetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="proxysetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Proxy server" halign="1">
@@ -644,7 +644,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="nfs" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="nfs" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Mount network volume" halign="1">
@@ -660,7 +660,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="mountvolume" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="mountvolume" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Mount network volume" halign="1">
@@ -676,7 +676,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="umountvolume" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="umountvolume" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Umount network volume" halign="1">
@@ -692,7 +692,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="nfssmall" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="nfssmall" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Network Mount Manager" halign="1">
@@ -708,7 +708,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="recordingsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="recordingsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Recording settings" halign="1">
@@ -724,7 +724,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="movieplayersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="movieplayersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Movieplayer settings" halign="1">
@@ -740,7 +740,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="audioplayersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="audioplayersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Audioplayer settings" halign="1">
@@ -756,7 +756,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="pictureviewersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="pictureviewersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Pictureviewer settings" halign="1">
@@ -772,7 +772,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="lcdsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="lcdsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Display settings" halign="1">
@@ -788,7 +788,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="hddsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="hddsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="HDD settings" halign="1">
@@ -804,7 +804,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="temphdd" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="temphdd" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1" painthead="1">
 		</LISTBOX>
 			
@@ -818,7 +818,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="temphdd2" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="temphdd2" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1" painthead="1">
 		</LISTBOX>
 			
@@ -832,7 +832,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="zapitsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="zapitsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Start Channel settings" halign="1">
@@ -848,7 +848,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="filebrowsersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="filebrowsersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Filebrowser settings" halign="1">
@@ -864,7 +864,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="epgsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="epgsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="EPG settings" halign="1">
@@ -880,7 +880,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="channelssetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="channelssetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Channellist settings" halign="1">
@@ -896,7 +896,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="miscsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="miscsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Misc settings" halign="1">
@@ -912,7 +912,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="skinsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="skinsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="1" mode ="0" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Skin Select" halign="1">
@@ -928,7 +928,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="skinstyleselectionsetup" osx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="skinstyleselectionsetup" osx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Skin Style" halign="1">
@@ -944,7 +944,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="themesetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="themesetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Themes" halign="1">
@@ -960,7 +960,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="menusetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="menusetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Menu" halign="1">
@@ -976,7 +976,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="infobarsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="infobarsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Infobar" halign="1">
@@ -992,7 +992,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="languagesetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="languagesetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Language" halign="1">
@@ -1008,7 +1008,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="fontsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="fontsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Font" halign="1">
@@ -1024,7 +1024,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="osdtimingsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="osdtimingsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="2" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Timing" halign="1">
@@ -1040,7 +1040,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="osdmiscsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="osdmiscsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="600" height="620" type="0" mode="2" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Misc settings" halign="1">
@@ -1056,7 +1056,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="rcsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="rcsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="600" height="620" type="0" mode="2" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Keybinding settings" halign="1">
@@ -1072,7 +1072,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="rcbinding" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="rcbinding" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="600" height="620" type="0" mode="2" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Hot Keys mapping" halign="1">
@@ -1088,7 +1088,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="optionstringchooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="optionstringchooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="600" height="620" type="0" mode="2" scrollbar="1" itemborder="1" painthead="1">
 		</LISTBOX>
 			
@@ -1102,7 +1102,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="optionchooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="optionchooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="600" height="620" type="0" mode="2" scrollbar="1" itemborder="1" painthead="1">
 		</LISTBOX>
 			
@@ -1116,7 +1116,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="keychooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="keychooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="600" height="620" type="0" mode="2" scrollbar="1" itemborder="1" painthead="1">
 		</LISTBOX>
 			
@@ -1130,7 +1130,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="mountchooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="mountchooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="600" height="620" type="0" mode="2" scrollbar="1" itemborder="1" painthead="1">
 		</LISTBOX>
 			
@@ -1144,7 +1144,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="usermenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="usermenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode="1" scrollbar="1" itemborder="1" painthead="1">
 		</LISTBOX>
 			
@@ -1158,7 +1158,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="bouquetlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="bouquetlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1">
 		</LISTBOX>
 			
@@ -1172,40 +1172,40 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="channellist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="channellist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1"/>
 		
 		<HEAD posx="50" posy="0" width="1180" height="50" paintframe="0" line="1"/>
 		<FOOT posx="50" posy="670" width="1180" height="50" paintframe="0" line="1"/>
 		
 		<WINDOW posx="890" posy="50" width="340" height="620"/>
-		<HLINE posx="900" posy="360" width="320" height="2" gradient="3"/>
+		<HLINE posx="900" posy="360" width="320" height="2" gradient="DARK2LIGHT2DARK"/>
 			
-		<VLINE posx="890" posy="60" width="2" height="600" gradient="3"/>
+		<VLINE posx="890" posy="60" width="2" height="600" gradient="DARK2LIGHT2DARK"/>
 	</WIDGET>
 	
-	<WIDGET name="eventlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="eventlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1" painthead="1" head_line="1"/>	
 		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
 		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
-	<WIDGET name="bqeditbq" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="bqeditbq" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1" painthead="1" head_line="1"/>	
 		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
 		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
-	<WIDGET name="bqeditch" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="bqeditch" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1" painthead="1" head_line="1"/>	
 		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
 		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
-	<WIDGET name="bqeditchselect" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="bqeditchselect" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1" painthead="1" head_line="1"/>
 		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
 		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
@@ -1213,7 +1213,7 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="epgview" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="epgview" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<HEAD posx="50" posy="0" width="1180" height="50" paintframe="0" line="1"/>
 		<TEXTBOX posx="50" posy="50" width="840" height="590"/>	
 		<WINDOW name="screening" posx="50" posy="640" width="1180" height="30"/>
@@ -1223,7 +1223,7 @@
 		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
-	<WIDGET name="filebrowser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="filebrowser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="840" height="620" type="0" mode ="1" scrollbar="1" itemborder="1">
 		</LISTBOX>
 			
@@ -1237,14 +1237,14 @@
 		</TIME>
 	</WIDGET>
 	
-	<WIDGET name="boxinfo" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="boxinfo" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LABEL posx="890" posy="50" width="390" height="50" text="Box Info" halign="1"/>
 		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
 		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
-	<WIDGET name="testmenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="3">
+	<WIDGET name="testmenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="0" mode ="1" scrollbar="1" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Test Menu" halign="1">

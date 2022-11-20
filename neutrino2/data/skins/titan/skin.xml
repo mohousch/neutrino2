@@ -5,11 +5,11 @@
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->	
 
 	<WIDGET name="mainmenu" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Main Menu" icon="mainmenu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Main Menu" icon="mainmenu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1"/>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" mode="1">
 			<ITEM id="5" localename="TV / RADIO" itemicon="hint_tvmode" target="neutrino" actionkey="tvradioswitch"/>
-			<ITEM id="5" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer" directkey="0x2"/>
+			<ITEM id="5" localename="EPG / Timer" itemicon="hint_timers" target="epgtimer" directkey="RC_red"/>
 			<ITEM id="5" localename="Features" itemicon="hint_plugin" target="neutrino" actionkey="features"/>
 			<ITEM id="5" localename="System" itemicon="hint_service" target="system"/>
 			<ITEM id="5" localename="Settings" itemicon="hint_settings" target="settings"/>
@@ -19,13 +19,13 @@
 			<ITEM id="5" localename="Media Player" itemicon="hint_media" target="mediaplayer"/>
 		</LISTBOX>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information"/>
 		</FOOT>
 	</WIDGET>
 	
 	<WIDGET name="settings" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Settings" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Settings" icon="menu" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -63,14 +63,14 @@
 			</ITEM>
 		</LISTBOX>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
 	</WIDGET>
 	
 	<WIDGET name="osd" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="OSD" icon="colors" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="OSD" icon="colors" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1"  mode="1">
@@ -96,14 +96,14 @@
 			</ITEM>
 		</LISTBOX>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
 	</WIDGET>
 	
 	<WIDGET name="epgtimer" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="EPG / Timer" icon="epg" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="EPG / Timer" icon="epg" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -119,26 +119,26 @@
 			</ITEM>
 		</LISTBOX>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
 	</WIDGET>
 	
 	<WIDGET name="features" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Features" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Features" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1"/>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information"/>
 		</FOOT>
-		<KEY name="0x191" target="neutrino" actionkey="plugins"/> 
+		<KEY name="RC_blue" target="neutrino" actionkey="plugins"/> 
 	</WIDGET>
 	
 	<WIDGET name="system" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="System" icon="softupdate" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="System" icon="softupdate" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -156,14 +156,14 @@
 			</ITEM>
 		</LISTBOX>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
 	</WIDGET>
 	
 	<WIDGET name="powermenu" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Power Menu" icon="power" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Power Menu" icon="power" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -179,14 +179,14 @@
 			</ITEM>
 		</LISTBOX>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
 	</WIDGET>
 	
 	<WIDGET name="information" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Information" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Information" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -200,14 +200,14 @@
 			</INTEGRATION>
 		</LISTBOX>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
 	</WIDGET>
 	
 	<WIDGET name="mediaplayer" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Media Player" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Media Player" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" mode="1">
@@ -215,7 +215,7 @@
 			</INTEGRATION>
 		</LISTBOX>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -225,10 +225,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Plugins" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Plugins" icon="features" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="btn_red" localename="Delete">
 			</BUTTON_LABEL>
 		
@@ -247,10 +247,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="1" scrollbar="0" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Timerlist" icon="timer" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Timerlist" icon="timer" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="btn_red" localename="Delete">
 			</BUTTON_LABEL>
 		
@@ -269,10 +269,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="New timer" icon="timer" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="New timer" icon="timer" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -282,10 +282,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Modify timer" icon="timer" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Modify timer" icon="timer" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -295,10 +295,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Servicescan" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Servicescan" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -308,10 +308,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Scan transponder" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Scan transponder" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -321,10 +321,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Select transponder" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Select transponder" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -334,10 +334,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Unicable settings" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Unicable settings" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -347,10 +347,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Manual frequency scan / Test signal" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Manual frequency scan / Test signal" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -360,10 +360,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Auto scan" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Auto scan" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -373,10 +373,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Auto-Scan multiple Satellite" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Auto-Scan multiple Satellite" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -386,10 +386,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Sat settings" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Sat settings" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -399,10 +399,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="DiSEqC settings" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="DiSEqC settings" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -412,10 +412,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Motor settings" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Motor settings" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -425,10 +425,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Satellite" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Satellite" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -444,10 +444,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Software update" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Software update" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -457,10 +457,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Expert functions" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Expert functions" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -470,10 +470,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="File selector" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="File selector" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -483,10 +483,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Partition selector" icon="softupdate" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Partition selector" icon="softupdate" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -496,10 +496,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="CI CAM settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="CI CAM settings" icon="settings" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -521,10 +521,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Video settings" icon="video" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Video settings" icon="video" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -534,10 +534,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Audio settings" icon="audio" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Audio settings" icon="audio" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -547,10 +547,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="0" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Parentallock settings" icon="lock" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Parentallock settings" icon="lock" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -560,10 +560,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Network settings" icon="network" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Network settings" icon="network" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -573,10 +573,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Proxy server" icon="network" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Proxy server" icon="network" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -586,10 +586,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Mount network volume" icon="network" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Mount network volume" icon="network" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -599,10 +599,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Mount network volume" icon="keybinding" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Mount network volume" icon="keybinding" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -612,10 +612,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Umount network volume" icon="keybinding" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Umount network volume" icon="keybinding" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -625,10 +625,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Network Mount Manager" icon="keybinding" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Network Mount Manager" icon="keybinding" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -638,10 +638,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Recording settings" icon="recording" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Recording settings" icon="recording" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -651,10 +651,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Movieplayer settings" icon="movie" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Movieplayer settings" icon="movie" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -664,10 +664,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Audioplayer settings" icon="mp3" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Audioplayer settings" icon="mp3" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -677,10 +677,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Pictureviewer settings" icon="picture" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Pictureviewer settings" icon="picture" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -690,10 +690,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Display settings" icon="lcd" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Display settings" icon="lcd" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -703,10 +703,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Start Channel settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Start Channel settings" icon="settings" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -716,10 +716,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Display settings" icon="lcd" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Display settings" icon="lcd" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -729,10 +729,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="HDD settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="HDD settings" icon="settings" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -754,10 +754,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Misc settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Misc settings" icon="settings" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -767,10 +767,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Filebrowser settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Filebrowser settings" icon="settings" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -780,10 +780,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="EPG settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="EPG settings" icon="settings" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -793,10 +793,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Channellist settings" icon="settings" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Channellist settings" icon="settings" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -806,10 +806,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="1" mode ="0" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Skin Select" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Skin Select" icon="colors" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -819,10 +819,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Menu" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Menu" icon="colors" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -832,10 +832,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Skin Style" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Skin Style" icon="colors" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -845,10 +845,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Themes" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Themes" icon="colors" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -858,10 +858,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Infobar" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Infobar" icon="colors" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -871,10 +871,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Language" icon="language" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Language" icon="language" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -884,10 +884,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Font" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Font" icon="colors" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -897,10 +897,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Timing" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Timing" icon="colors" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -910,10 +910,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Misc settings" icon="colors" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Misc settings" icon="colors" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -923,10 +923,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Keybinding settings" icon="keybinding" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Keybinding settings" icon="keybinding" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -936,10 +936,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode ="2" scrollbar="1">
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Hot Keys mapping" icon="keybinding" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Hot Keys mapping" icon="keybinding" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>
@@ -979,10 +979,10 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="0" mode="1" scrollbar="1" >
 		</LISTBOX>
 		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="3" corner="15" radius="4" title="Test Menu" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Test Menu" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
 		</HEAD>
 		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="3" corner="15" radius="4" paintframe="1">
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
 			<BUTTON_LABEL name="information">
 			</BUTTON_LABEL>
 		</FOOT>

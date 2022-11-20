@@ -7562,7 +7562,7 @@ void CTestMenu::showMenu()
 	//CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
 	
 	//
-	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"2\" type=\"0\" scrollbar=\"1\"></LISTBOX>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"3\" corner=\"15\" radius=\"4\" title=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"></HEAD>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"3\" corner=\"15\" radius=\"4\">\n\t\t\t<BUTTON_LABEL name=\"info\"></BUTTON_LABEL>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
+	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"2\" type=\"0\" scrollbar=\"1\"></LISTBOX>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"3\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"></HEAD>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"3\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"></BUTTON_LABEL>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
 
 	CNeutrinoApp::getInstance()->parseSkin(skin.c_str(), true);
 

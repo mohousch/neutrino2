@@ -506,18 +506,18 @@ extern const char* const timing_setting_name[TIMING_SETTING_COUNT];
 
 // lcdd
 #if defined(ENABLE_LCD) && (defined(PLATFORM_DREAMBOX) || defined(PLATFORM_GIGABLUE) || defined(PLATFORM_VUPLUS))
-#define DEFAULT_LCD_BRIGHTNESS		0xFF
+#define DEFAULT_LCD_BRIGHTNESS			0xFF
 #define DEFAULT_LCD_STANDBYBRIGHTNESS		0x7F
 #else
-#define DEFAULT_LCD_BRIGHTNESS		0x07
+#define DEFAULT_LCD_BRIGHTNESS			0x07
 #define DEFAULT_LCD_STANDBYBRIGHTNESS		0x07
 #endif
 #define DEFAULT_LCD_CONTRAST			0x0F
 #define DEFAULT_LCD_POWER			0x01
 #define DEFAULT_LCD_INVERSE			0x00
 #define DEFAULT_LCD_AUTODIMM			0x00
-#define DEFAULT_LCD_SHOW_VOLUME		0x01
-#define DEFAULT_LCD_SCROLL_TEXT		0x00
+#define DEFAULT_LCD_SHOW_VOLUME			0x01
+#define DEFAULT_LCD_SCROLL_TEXT			0x00
 #define DEFAULT_LCD_EPGMODE			0x01	/* 0x1 = name 0x2 = epgtitle 0x4 = separator */
 #define DEFAULT_LCD_EPGALIGN			0x00
 #define DEFAULT_LCD_DUMP_PNG			0x00
@@ -532,7 +532,7 @@ extern const char* const timing_setting_name[TIMING_SETTING_COUNT];
 //
 #define BORDER_LEFT				10
 #define BORDER_RIGHT				10
-#define SCROLLBAR_WIDTH			10 // 15
+#define SCROLLBAR_WIDTH				10 // 15
 #define ICON_OFFSET				5 // offset from left border
 #define ICON_TO_ICON_OFFSET			2
 
@@ -547,8 +547,8 @@ extern const char* const timing_setting_name[TIMING_SETTING_COUNT];
 #define HINTBOX_MAX_WIDTH  			(g_settings.screen_EndX - g_settings.screen_StartX )
 
 // CMessageBox
-#define MESSAGEBOX_MAX_HEIGHT 		0.4*DEFAULT_XRES
-#define MESSAGEBOX_MAX_WIDTH  		(g_settings.screen_EndX - g_settings.screen_StartX )
+#define MESSAGEBOX_MAX_HEIGHT 			0.4*DEFAULT_XRES
+#define MESSAGEBOX_MAX_WIDTH  			(g_settings.screen_EndX - g_settings.screen_StartX )
 
 // 
 #define PIC_W 					0.25*DEFAULT_XRES  //320
@@ -579,8 +579,8 @@ const int PARENTALLOCK_PROMPT_CHANGETOLOCKED = 2;
 const int PARENTALLOCK_PROMPT_ONSIGNAL       = 3;
 
 //
-#define widest_number "2"
-#define ANNOUNCETIME (1 * 60)
+#define widest_number 				"2"
+#define ANNOUNCETIME 				(1 * 60)
 
 #endif
 

@@ -1371,7 +1371,7 @@ void CMenuWidget::integratePlugins(CPlugins::i_type_t integration, const unsigne
 //
 void CMenuWidget::changeWidgetType()
 {
-	dprintf(DEBUG_INFO, "CMenuWidget::changeWidgetType:\n");
+	dprintf(DEBUG_NORMAL, "CMenuWidget::changeWidgetType:\n");
 
 	if(widget.size())
 	{

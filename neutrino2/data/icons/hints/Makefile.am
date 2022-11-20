@@ -69,7 +69,3 @@ install_DATA += \
 install_DATA += \
 	hint_default.png hint_xmltv.png
 	
-
-
-
-

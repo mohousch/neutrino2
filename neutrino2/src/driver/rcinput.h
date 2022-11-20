@@ -158,11 +158,11 @@ enum
 	RC_9		= KEY_9,
 	    		
 	RC_up		= KEY_UP,	    
-	RC_left	= KEY_LEFT,	    
+	RC_left		= KEY_LEFT,	    
 	RC_right	= KEY_RIGHT,	    
-	RC_down	= KEY_DOWN,
+	RC_down		= KEY_DOWN,
 	    		
-	RC_spkr	= KEY_MUTE,	   		
+	RC_spkr		= KEY_MUTE,	   		
 	RC_minus        = KEY_VOLUMEDOWN,   
 	RC_plus         = KEY_VOLUMEUP,     
 
@@ -179,38 +179,38 @@ enum
 	RC_red		= KEY_RED,	    
 	RC_green	= KEY_GREEN,	    
 	RC_yellow	= KEY_YELLOW,	    
-	RC_blue	= KEY_BLUE,	    
+	RC_blue		= KEY_BLUE,	    
 
 	RC_audio	= KEY_AUDIO,		/* 0x188 */
 	RC_video	= KEY_VIDEO,		/* 0x189 */
 			
-	RC_text	= KEY_TEXT,		/* 0x184 */
-	RC_info	= KEY_INFO,		/* 0x166 */			
+	RC_text		= KEY_TEXT,		/* 0x184 */
+	RC_info		= KEY_INFO,		/* 0x166 */			
 	RC_epg		= KEY_EPG,		/* 0x16d */
 	RC_recall 	= KEY_BACK,		/* 0x9E */
 	RC_favorites	= KEY_FAVORITES,	/* 0x16c */
 	RC_sat		= KEY_SAT,		/* 0x17d */
 			
 	RC_record	= KEY_RECORD,		/* 0xA7 */
-	RC_play	= KEY_PLAY,		/* 0xCF */
+	RC_play		= KEY_PLAY,		/* 0xCF */
 	RC_pause	= KEY_PAUSE,		/* 0x77 */
 	RC_forward	= KEY_FASTFORWARD,	/* 0xD0 */
 	RC_rewind	= KEY_REWIND,		/* 0xA8 */
-	RC_stop	= KEY_STOP,		/* 0x80 */
+	RC_stop		= KEY_STOP,		/* 0x80 */
 			
 	RC_timeshift	= KEY_TIME,		/* 0x167 */
 						
-	RC_mode	= KEY_MODE,		/* 0x175 */
+	RC_mode		= KEY_MODE,		/* 0x175 */
 
-	RC_next	= 0xFFFFFFF0,
-	RC_prev	= 0xFFFFFFF1,
+	RC_next		= 0xFFFFFFF0,
+	RC_prev		= 0xFFFFFFF1,
 
 	/* added from cuberevo3000hd so fix it please */
 	RC_music	= KEY_MUSIC,
 	RC_picture	= KEY_ARCHIVE,			
 			
-	RC_loop	= KEY_REPEAT,
-	RC_slow	= KEY_SLOW,
+	RC_loop		= KEY_REPEAT,
+	RC_slow		= KEY_SLOW,
 			
 	RC_dvbsub	= KEY_DVBSUB,
 
