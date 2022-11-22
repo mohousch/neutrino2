@@ -65,11 +65,6 @@
 // zapit
 #include <client/zapitclient.h>
 
-//#define TESTING
-
-#ifdef TESTING
-typedef std::vector<std::string> WIDGETNAMELIST;
-#endif
 
 // CNeutrinoApp -  main run-class
 typedef struct neutrino_font_descr
@@ -161,13 +156,9 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		void SetupFonts(const char* font_file);
 		
 		// skin
-#ifdef TESTING
-		WIDGETNAMELIST widgets;
-		WIDGETNAMELIST getWidgets(){return widgets;};
-#else
 		WIDGETLIST widgets;
 		WIDGETLIST getWidgets(){return widgets;};
-#endif		
+		
 		//
 		CWidget* getWidget(const char* const name);
 		bool widget_exists(const char* const name);
@@ -188,7 +179,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		bool parseSkinInputXml(const char* const filename, bool xml_data = false);
 		bool parseSkin(const char* const filename, bool xml_data = false);
 		// 
-		CWidget *parseCWidget(const char * const widgetName, bool data = false);
+		//CWidget *parseCWidget(const char * const filename, const char * const widgetName, bool data = false);
 		void parseClistBox(_xmlNodePtr node, CWidget* widget);
 		void parseCWindow(_xmlNodePtr node, CWidget* widget);
 		void parseCHead(_xmlNodePtr node, CWidget* widget);

@@ -116,20 +116,6 @@ int CEPGMenuHandler::doMenu()
 					
 	res = widget->exec(NULL, "");
 	
-#ifdef TESTING
-	if (redMenu)
-	{
-		delete redMenu;
-		redMenu = NULL;
-	}
-	
-	if (widget)
-	{
-		delete widget;
-		widget = NULL;
-	}
-#endif
-	
 	return res;
 }
 
