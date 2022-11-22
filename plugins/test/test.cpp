@@ -3591,6 +3591,9 @@ void CTestMenu::testCListFrame()
 	//
 	listFrame->setLines(&listFrameLines);
 	
+	//
+	listFrame->addKey(RC_ok, this, "aok");
+	
 	// paint
 	listFrame->paint();
 	//listFrame->showSelection(true);
@@ -3611,27 +3614,7 @@ void CTestMenu::testCListFrame()
 	{
 		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec		
 		
-		loop = listFrame->onButtonPress(msg, data); // whatever return???
-		
-		if(msg == RC_ok)
-		{
-			if(AudioPlaylist.size() > 0)
-			{
-				selected = listFrame->getSelectedLine();
-
-				for (unsigned int i = 0; i < AudioPlaylist.size(); i++)
-				{
-					tmpAudioPlayerGui.addToPlaylist(AudioPlaylist[i]);
-				}
-
-				tmpAudioPlayerGui.setCurrent(selected);
-				tmpAudioPlayerGui.exec(NULL, "");
-			}
-			
-			listFrame->paint();
-		}
-		
-		// forward msg / data to neutrino
+		loop = listFrame->onButtonPress(msg, data, this);
 
 		CFrameBuffer::getInstance()->blit();
 	}		
@@ -3905,8 +3888,6 @@ void CTestMenu::testClistBox()
 		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec		
 		
 		loop = rightWidget->onButtonPress(msg, data); // whatever return???
-		
-		// forward msg / data to neutrino
 
 		CFrameBuffer::getInstance()->blit();
 	}		
@@ -4770,45 +4751,8 @@ REPEAT:
 	while(loop)
 	{
 		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-
-		if ( (msg == RC_home) || (frameBoxWidget->getSelected() == 9) )
-		{
-			loop = false;
-		}
-		else if(msg == RC_right)
-		{
-			frameBoxWidget->swipRight();
-		}
-		else if(msg == RC_left)
-		{
-			frameBoxWidget->swipLeft();
-		}
-		else if(msg == RC_down)
-		{
-			frameBoxWidget->scrollLineDown();
-		}
-		else if(msg == RC_up)
-		{
-			frameBoxWidget->scrollLineUp();
-		}
-		else if(msg == RC_ok)
-		{
-			int rv = frameBoxWidget->oKKeyPressed(this);
-
-			//FIXME:review this
-			switch ( rv ) 
-			{
-				case RETURN_EXIT_ALL:
-					loop = false;
-				case RETURN_EXIT:
-					loop = false;
-					break;
-				case RETURN_REPAINT:
-					hide();
-					frameBoxWidget->paint();
-					break;
-			}
-		}
+		
+		loop = frameBoxWidget->onButtonPress(msg, data);
 
 		CFrameBuffer::getInstance()->blit();
 	}

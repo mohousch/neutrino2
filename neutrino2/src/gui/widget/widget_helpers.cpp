@@ -1216,90 +1216,95 @@ CWidgetItem::CWidgetItem()
 }
 
 //
-bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
+bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data, CMenuTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CWidgetItem::onButtonPress: (msg:%ld) (data:%ld)\n", msg, data);
 	
 	bool ret = true;
+	bool handled = false;
 	
-	if (msg == RC_up)
-	{
-		scrollLineUp();
-	}
-	else if (msg == RC_down)
-	{
-		scrollLineDown();
-	}
-	else if (msg == RC_left)
-	{
-		swipLeft();
-	}
-	else if (msg == RC_right)
-	{
-		swipRight();
-	}
-	else if (msg == RC_page_up)
-	{
-		scrollPageUp();
-	}
-	else if (msg == RC_page_down)
-	{
-		scrollPageDown();
-	}
-	else if (msg == RC_ok)
-	{
-		int rv = oKKeyPressed(parent);
-			
-		switch ( rv ) 
-		{
-			case RETURN_EXIT_ALL:
-				ret = false;
-			case RETURN_EXIT:
-				ret = false;
-				break;
-			case RETURN_REPAINT:
-				ret = true;
-				paint();
-				break;
-		}
-	}
-	else if (msg == RC_home) 
-	{
-		ret = false;
-	}
-	else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-	{
-		if (update())
-		{
-			refresh();
-		}
-	} 
-	else
-	{
-		std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
+	//
+	std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
 				
-		if (it != keyActionMap.end()) 
+	if (it != keyActionMap.end()) 
+	{
+		actionKey = it->second.action;
+
+		if (it->second.menue != NULL)
 		{
-			actionKey = it->second.action;
+			int rv = it->second.menue->exec(target, it->second.action);
 
-			if (it->second.menue != NULL)
+			//FIXME:review this
+			switch ( rv ) 
 			{
-				int rv = it->second.menue->exec(parent, it->second.action);
-
-				//FIXME:review this
-				switch ( rv ) 
-				{
-					case RETURN_EXIT_ALL:
-						ret = false; //fall through
-					case RETURN_EXIT:
-						ret = false;
-						break;
-					case RETURN_REPAINT:
-						ret = true;
-						paint();
-						break;
-					}
-				}
+				case RETURN_EXIT_ALL:
+					ret = false; //fall through
+				case RETURN_EXIT:
+					ret = false;
+					break;
+				case RETURN_REPAINT:
+					ret = true;
+					paint();
+					break;
+			}
+		}
+		else
+			handled = true;
+	}
+	
+	if (!handled) 
+	{
+		if (msg == RC_up)
+		{
+			scrollLineUp();
+		}
+		else if (msg == RC_down)
+		{
+			scrollLineDown();
+		}
+		else if (msg == RC_left)
+		{
+			swipLeft();
+		}
+		else if (msg == RC_right)
+		{
+			swipRight();
+		}
+		else if (msg == RC_page_up)
+		{
+			scrollPageUp();
+		}
+		else if (msg == RC_page_down)
+		{
+			scrollPageDown();
+		}
+		else if (msg == RC_ok)
+		{
+			int rv = oKKeyPressed(parent);
+				
+			switch ( rv ) 
+			{
+				case RETURN_EXIT_ALL:
+					ret = false;
+				case RETURN_EXIT:
+					ret = false;
+					break;
+				case RETURN_REPAINT:
+					ret = true;
+					paint();
+					break;
+			}
+		}
+		else if (msg == RC_home) 
+		{
+			ret = false;
+		}
+		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+		{
+			if (update())
+			{
+				refresh();
+			}
 		}
 	}
 	
