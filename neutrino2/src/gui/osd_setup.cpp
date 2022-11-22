@@ -102,7 +102,7 @@ void COSDSettings::showMenu(void)
 		osdSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		osdSettings->setWidgetMode(MODE_MENU);
-		osdSettings->setWidgetType(WIDGET_TYPE_CLASSIC);
+		osdSettings->setWidgetType(TYPE_CLASSIC);
 		osdSettings->enableShrinkMenu();
 		
 		//
@@ -1112,7 +1112,7 @@ void CSkinManager::showMenu()
 		skinMenu = new ClistBox(0, 0, 800, MENU_HEIGHT);
 
 		skinMenu->setWidgetMode(MODE_LISTBOX);
-		skinMenu->setWidgetType(WIDGET_TYPE_CLASSIC);
+		skinMenu->setWidgetType(TYPE_CLASSIC);
 		skinMenu->enableShrinkMenu();
 		
 		skinMenu->enablePaintHead();

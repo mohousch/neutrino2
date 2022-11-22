@@ -177,12 +177,12 @@ class moviePlayer(CFileBrowser):
 #		self.showMenu()
 #
 #	def showMenu(self):
-#		self.listWidget.setWidgetType(WIDGET_TYPE_STANDARD)
+#		self.listWidget.setWidgetType(TYPE_STANDARD)
 #		self.listWidget.setWidgetMode(MODE_LISTBOX)
 #		self.listWidget.enableShrinkMenu()
-#		self.listWidget.addWidgetType(WIDGET_TYPE_CLASSIC)
-#		self.listWidget.addWidgetType(WIDGET_TYPE_EXTENDED)
-#		self.listWidget.addWidgetType(WIDGET_TYPE_FRAME)
+#		self.listWidget.addWidgetType(TYPE_CLASSIC)
+#		self.listWidget.addWidgetType(TYPE_EXTENDED)
+#		self.listWidget.addWidgetType(TYPE_FRAME)
 #		self.listWidget.enablePaintItemInfo(70)
 #
 #		# messageBox

@@ -94,7 +94,7 @@ void CServiceMenu::showMenu(void)
 		service = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		service->setWidgetMode(MODE_MENU);
-		service->setWidgetType(WIDGET_TYPE_CLASSIC);
+		service->setWidgetType(TYPE_CLASSIC);
 		service->enableShrinkMenu();
 		
 		//

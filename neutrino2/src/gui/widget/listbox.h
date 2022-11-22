@@ -57,10 +57,10 @@ enum
 
 enum
 {
-	WIDGET_TYPE_STANDARD = 0,
-	WIDGET_TYPE_CLASSIC,
-	WIDGET_TYPE_EXTENDED,
-	WIDGET_TYPE_FRAME
+	TYPE_STANDARD = 0,
+	TYPE_CLASSIC,
+	TYPE_EXTENDED,
+	TYPE_FRAME
 };
 
 enum 
@@ -68,13 +68,6 @@ enum
 	MODE_LISTBOX = 0,
 	MODE_MENU,
 	MODE_SETUP
-};
-
-enum {
-	MENU_POSITION_NONE = 0,
-	MENU_POSITION_LEFT = 1,
-	MENU_POSITION_CENTER = 2,
-	MENU_POSITION_RIGHT = 3
 };
 
 enum
@@ -152,7 +145,7 @@ class CMenuItem
 		//int widgetMode;
 		bool isPlugin;
 		
-		// HACK for FRAME_WIDGET_TYPE
+		// HACK for TYPE_FRAME
 		int item_height;
 		int item_width;
 
@@ -751,7 +744,6 @@ class ClistBox : public CWidgetItem
 		void addWidgetType(int wtype){widget.push_back(wtype);};
 		void changeWidgetType();
 		void setWidgetMode(int mode){widgetMode = mode;};
-		//void setMenuPosition(int p){menu_position = p;};
 		
 		// item
 		void setItemBorderMode(int m = BORDER_ALL){itemBorderMode = m;};
@@ -768,7 +760,7 @@ class ClistBox : public CWidgetItem
 		//
 		std::string getActionKey(void){return actionKey;}; // lua
 		
-		virtual void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = WIDGET_TYPE_STANDARD, bool i2lines = false, int iBorder = BORDER_NO);
+		virtual void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = TYPE_STANDARD, bool i2lines = false, int iBorder = BORDER_NO);
 		
 		//
 		inline bool isPainted(void){return painted;};

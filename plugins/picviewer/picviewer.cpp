@@ -199,7 +199,7 @@ void CPicViewer::showMenu()
 	}
 
 	plist->setWidgetMode(MODE_LISTBOX);
-	plist->setWidgetType(WIDGET_TYPE_FRAME);
+	plist->setWidgetType(TYPE_FRAME);
 	plist->setItemsPerPage(10, 6);
 	
 	//

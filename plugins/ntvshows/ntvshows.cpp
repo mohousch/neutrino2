@@ -314,7 +314,7 @@ void CTVShows::showMenu()
 	}
 
 	mlist->setWidgetMode(MODE_LISTBOX);
-	mlist->setWidgetType(WIDGET_TYPE_FRAME);
+	mlist->setWidgetType(TYPE_FRAME);
 	mlist->setItemsPerPage(6, 2);
 	//mlist->setItemBoxColor(COL_YELLOW);
 	mlist->setSelected(selected);

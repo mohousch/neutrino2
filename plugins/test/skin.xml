@@ -3,8 +3,8 @@
 <!-- SKIN: test menu -->
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
-	<WIDGET name="testmenu" posx="0" posy="0" width="600" height="600" position="2">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="1" type="0" mode="2" itemborder="1" position="2" painthead="1" title="Test Menu" icon="multimedia" head_line="1" paintdate="1" paintfoot="1" foot_line="1" scrollbar="1">
+	<WIDGET name="testmenu" posx="0" posy="0" width="600" height="600" position="MENU_POSITION_CENTER">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" painthead="1" title="Test Menu" icon="multimedia" head_line="1" paintdate="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>

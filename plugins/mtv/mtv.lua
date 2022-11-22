@@ -724,7 +724,7 @@ function mtv_liste(id)
 	glob.MTVliste = getliste(url)
 
 	local menu = neutrino2.CMenuWidget(glob.mtv[id].name, neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
-	menu:setWidgetType(neutrino2.WIDGET_TYPE_FRAME)
+	menu:setWidgetType(neutrino2.TYPE_FRAME)
 	menu:setItemsPerPage(3, 2)
 	menu:enablePaintDate()
 
@@ -1007,7 +1007,7 @@ function searchliste(id)
 	glob.MTVliste = getliste(url)
 
 	local menu = neutrino2.CMenuWidget(glob.mtv_artist[id].name, neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
-	menu:setWidgetType(neutrino2.WIDGET_TYPE_FRAME)
+	menu:setWidgetType(neutrino2.TYPE_FRAME)
 	menu:enablePaintDate()
 
 	--btn = neutrino2.button_label_struct()

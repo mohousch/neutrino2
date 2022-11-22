@@ -2093,7 +2093,7 @@ void CMoviePlayerGui::showPlaylist()
 		mplist->addItem(item);
 	}
 
-	mplist->setWidgetType(WIDGET_TYPE_FRAME);
+	mplist->setWidgetType(TYPE_FRAME);
 	mplist->setItemsPerPage(6, 2);
 	
 	mplist->setSelected(selected);

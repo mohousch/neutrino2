@@ -235,7 +235,7 @@ function testCWidget()
 	listBox:enableShrinkMenu()
 
 	--listBox:setWidgetMode(neutrino2.MODE_LISTBOX)
-	listBox:setWidgetType(neutrino2.WIDGET_TYPE_CLASSIC)
+	listBox:setWidgetType(neutrino2.TYPE_CLASSIC)
 
 	-- CMessageBox
 	item1 = neutrino2.CMenuForwarder("CMessageBox", true, "", null, "msgBox")
@@ -331,7 +331,7 @@ function testCMenuWidget()
 	local ret = neutrino2.RETURN_REPAINT
 
 	local listBoxWidget = neutrino2.CMenuWidget("lua: CMenuWidget")
-	listBoxWidget:setWidgetType(neutrino2.WIDGET_TYPE_STANDARD)
+	listBoxWidget:setWidgetType(neutrino2.TYPE_STANDARD)
 	listBoxWidget:setWidgetMode(neutrino2.MODE_MENU)
 	listBoxWidget:enablePaintItemInfo(70)
 	listBoxWidget:enableShrinkMenu()

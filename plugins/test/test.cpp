@@ -1004,7 +1004,7 @@ void CTestMenu::testCWidget()
 
 	//
 	rightWidget = new ClistBox(&rightBox);
-	rightWidget->setWidgetType(WIDGET_TYPE_FRAME);
+	rightWidget->setWidgetType(TYPE_FRAME);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->setSelected(right_selected);
 	rightWidget->enablePaintItemInfo(80);
@@ -1769,10 +1769,10 @@ void CTestMenu::testClistBoxWidget()
 
 	rightWidget = new ClistBox(&rightBox);
 
-	rightWidget->setWidgetType(WIDGET_TYPE_FRAME);
-	rightWidget->addWidgetType(WIDGET_TYPE_STANDARD);
-	rightWidget->addWidgetType(WIDGET_TYPE_CLASSIC);
-	rightWidget->addWidgetType(WIDGET_TYPE_EXTENDED);
+	rightWidget->setWidgetType(TYPE_FRAME);
+	rightWidget->addWidgetType(TYPE_STANDARD);
+	rightWidget->addWidgetType(TYPE_CLASSIC);
+	rightWidget->addWidgetType(TYPE_EXTENDED);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->setSelected(selected);
 	rightWidget->enablePaintHead();
@@ -2131,7 +2131,7 @@ void CTestMenu::testCWidgetItem()
 
 	//
 	rightWidget = new ClistBox(&rightBox);
-	rightWidget->setWidgetType(WIDGET_TYPE_FRAME);
+	rightWidget->setWidgetType(TYPE_FRAME);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->setSelected(right_selected);
 	rightWidget->enablePaintItemInfo(80);
@@ -3887,7 +3887,7 @@ void CTestMenu::testClistBox()
 	*/
 
 	// mode
-	rightWidget->setWidgetType(WIDGET_TYPE_CLASSIC);
+	rightWidget->setWidgetType(TYPE_CLASSIC);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
 
@@ -4008,7 +4008,7 @@ void CTestMenu::testClistBox2()
 	}
 
 	// widgettype
-	rightWidget->setWidgetType(WIDGET_TYPE_CLASSIC);
+	rightWidget->setWidgetType(TYPE_CLASSIC);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -4158,7 +4158,7 @@ void CTestMenu::testClistBox3()
 	}
 
 	// widgettype
-	rightWidget->setWidgetType(WIDGET_TYPE_EXTENDED);
+	rightWidget->setWidgetType(TYPE_EXTENDED);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -4303,7 +4303,7 @@ void CTestMenu::testClistBox4()
 	}
 
 	// widgettype
-	rightWidget->setWidgetType(WIDGET_TYPE_FRAME);
+	rightWidget->setWidgetType(TYPE_FRAME);
 	rightWidget->setItemsPerPage(5,2);
 	rightWidget->enableShrinkMenu();
 	
@@ -4450,13 +4450,13 @@ void CTestMenu::testClistBox5()
 	}
 
 	// mode
-	rightWidget->setWidgetType(WIDGET_TYPE_STANDARD);
+	rightWidget->setWidgetType(TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	//
-	rightWidget->addWidgetType(WIDGET_TYPE_CLASSIC);
-	rightWidget->addWidgetType(WIDGET_TYPE_EXTENDED);
-	rightWidget->addWidgetType(WIDGET_TYPE_FRAME);
+	rightWidget->addWidgetType(TYPE_CLASSIC);
+	rightWidget->addWidgetType(TYPE_EXTENDED);
+	rightWidget->addWidgetType(TYPE_FRAME);
 	//rightWidget->enableWidgetChange();
 
 	rightWidget->setItemsPerPage(5, 2);
@@ -4615,13 +4615,13 @@ void CTestMenu::testClistBox6()
 	}
 
 	// mode
-	rightWidget->setWidgetType(WIDGET_TYPE_STANDARD);
+	rightWidget->setWidgetType(TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	//
-	rightWidget->addWidgetType(WIDGET_TYPE_CLASSIC);
-	rightWidget->addWidgetType(WIDGET_TYPE_EXTENDED);
-	rightWidget->addWidgetType(WIDGET_TYPE_FRAME);
+	rightWidget->addWidgetType(TYPE_CLASSIC);
+	rightWidget->addWidgetType(TYPE_EXTENDED);
+	rightWidget->addWidgetType(TYPE_FRAME);
 
 	rightWidget->setItemsPerPage(5, 2);
 
@@ -5615,10 +5615,10 @@ void CTestMenu::testCMenuWidget()
 	}
 
 	menuWidget->setWidgetMode(MODE_LISTBOX);
-	menuWidget->setWidgetType(WIDGET_TYPE_STANDARD);
-	menuWidget->addWidgetType(WIDGET_TYPE_CLASSIC);
-	menuWidget->addWidgetType(WIDGET_TYPE_EXTENDED);
-	menuWidget->addWidgetType(WIDGET_TYPE_FRAME);
+	menuWidget->setWidgetType(TYPE_STANDARD);
+	menuWidget->addWidgetType(TYPE_CLASSIC);
+	menuWidget->addWidgetType(TYPE_EXTENDED);
+	menuWidget->addWidgetType(TYPE_FRAME);
 	menuWidget->setItemsPerPage(6, 2);
 	menuWidget->enableShrinkMenu();
 
@@ -5650,25 +5650,29 @@ void CTestMenu::testCMenuWidget1()
 	
 	//
 	menuWidget = new CMenuWidget(_("CMenuWidget(Menu Mode)"), NEUTRINO_ICON_MAINMENU);
+	
+	item = new CMenuForwarder(_("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch", RC_mode, NEUTRINO_ICON_BUTTON_SETUP_SMALL);
+	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
+	menuWidget->addItem(item);
 
 	item = new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
-	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
+	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
-	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
+	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Service"), true, NULL, new CServiceMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
-	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
+	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
-	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
+	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu());
@@ -5687,10 +5691,10 @@ void CTestMenu::testCMenuWidget1()
 	menuWidget->addItem(item);
 	
 	menuWidget->setWidgetMode(MODE_MENU);
-	menuWidget->setWidgetType(WIDGET_TYPE_STANDARD);
-	menuWidget->addWidgetType(WIDGET_TYPE_CLASSIC);
-	menuWidget->addWidgetType(WIDGET_TYPE_EXTENDED);
-	menuWidget->addWidgetType(WIDGET_TYPE_FRAME);
+	menuWidget->setWidgetType(TYPE_STANDARD);
+	menuWidget->addWidgetType(TYPE_CLASSIC);
+	menuWidget->addWidgetType(TYPE_EXTENDED);
+	menuWidget->addWidgetType(TYPE_FRAME);
 	menuWidget->setItemsPerPage(6, 2);
 	menuWidget->enableShrinkMenu();
 
@@ -7562,7 +7566,7 @@ void CTestMenu::showMenu()
 	//CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
 	
 	//
-	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"2\" type=\"0\" scrollbar=\"1\"></LISTBOX>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"></HEAD>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"></BUTTON_LABEL>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
+	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"></LISTBOX>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"></HEAD>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"></BUTTON_LABEL>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
 
 	CNeutrinoApp::getInstance()->parseSkin(skin.c_str(), true);
 

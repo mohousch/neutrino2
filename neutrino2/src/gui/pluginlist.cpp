@@ -112,7 +112,7 @@ void CPluginList::showMenu()
 		//
 		plist = new ClistBox(0, 0, CFrameBuffer::getInstance()->getScreenWidth() / 20 * 17, CFrameBuffer::getInstance()->getScreenHeight() / 20 * 18);
 		
-		plist->setWidgetType(WIDGET_TYPE_CLASSIC);
+		plist->setWidgetType(TYPE_CLASSIC);
 		plist->setWidgetMode(MODE_MENU);
 		
 		// head

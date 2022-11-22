@@ -1795,7 +1795,7 @@ void CTunerSetup::showMenu()
 		TunerSetup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		TunerSetup->setWidgetMode(MODE_MENU);
-		TunerSetup->setWidgetType(WIDGET_TYPE_CLASSIC);
+		TunerSetup->setWidgetType(TYPE_CLASSIC);
 		TunerSetup->enableShrinkMenu();
 		
 		//

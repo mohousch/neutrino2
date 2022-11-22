@@ -73,7 +73,7 @@ void CPowerMenu::showMenu(void)
 		powerMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		powerMenu->setWidgetMode(MODE_MENU);
-		powerMenu->setWidgetType(WIDGET_TYPE_CLASSIC);
+		powerMenu->setWidgetType(TYPE_CLASSIC);
 		powerMenu->enableShrinkMenu();
 		
 		//

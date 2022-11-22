@@ -57,6 +57,14 @@ class CMenuTarget
 };
 
 //
+enum {
+	MENU_POSITION_NONE = 0,
+	MENU_POSITION_LEFT = 1,
+	MENU_POSITION_CENTER = 2,
+	MENU_POSITION_RIGHT = 3
+};
+
+//
 class CWidget : public CMenuTarget
 {	
 	protected:

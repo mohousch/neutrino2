@@ -300,7 +300,7 @@ function select_playitem()
 
 	local m = neutrino2.CMenuWidget("", arte_concert, 2*neutrino2.MENU_WIDTH)
 	
-	m:setWidgetType(neutrino2.WIDGET_TYPE_EXTENDED)
+	m:setWidgetType(neutrino2.TYPE_EXTENDED)
 	m:enableShrinkMenu()
 
 	local item = nil

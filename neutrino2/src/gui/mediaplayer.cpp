@@ -74,7 +74,7 @@ void CMediaPlayerMenu::showMenu()
 		MediaPlayer = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		MediaPlayer->setWidgetMode(MODE_MENU);
-		MediaPlayer->setWidgetType(WIDGET_TYPE_CLASSIC);
+		MediaPlayer->setWidgetType(TYPE_CLASSIC);
 		MediaPlayer->enableShrinkMenu();
 		
 		//

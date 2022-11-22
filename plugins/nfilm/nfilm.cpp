@@ -486,7 +486,7 @@ void CNFilm::showMenu(bool genre)
 
 	//
 	rightWidget = new ClistBox(&rightBox);
-	rightWidget->setWidgetType(WIDGET_TYPE_FRAME);
+	rightWidget->setWidgetType(TYPE_FRAME);
 	rightWidget->setItemsPerPage(5,2);
 	rightWidget->setSelected(right_selected);
 	rightWidget->enablePaintItemInfo();

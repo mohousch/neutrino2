@@ -89,7 +89,7 @@ void CMainSettingsMenu::showMenu(void)
 		mainSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		mainSettings->setWidgetMode(MODE_MENU);
-		mainSettings->setWidgetType(WIDGET_TYPE_CLASSIC);
+		mainSettings->setWidgetType(TYPE_CLASSIC);
 		mainSettings->enableShrinkMenu();
 		
 		//

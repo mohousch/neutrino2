@@ -153,7 +153,7 @@ void CMenuWidget::Init(const std::string &Icon, const int mwidth, const int mhei
 	sec_timer_id = 0;
 
 	//
-	widgetType = WIDGET_TYPE_STANDARD;
+	widgetType = TYPE_STANDARD;
 	shrinkMenu = false;
 	widgetMode = MODE_MENU;
 	
@@ -231,7 +231,7 @@ void CMenuWidget::initFrames()
 	} 
 
 	// init frames
-	if(widgetType == WIDGET_TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		//
 		page_start.clear();
@@ -284,7 +284,7 @@ void CMenuWidget::initFrames()
 		// footInfo height
 		if(paintFootInfo)
 		{
-			if( (widgetType == WIDGET_TYPE_STANDARD) || (widgetType == WIDGET_TYPE_CLASSIC && widgetMode == MODE_LISTBOX) )
+			if( (widgetType == TYPE_STANDARD) || (widgetType == TYPE_CLASSIC && widgetMode == MODE_LISTBOX) )
 			{
 				cFrameFootInfoHeight = footInfoHeight;
 			}
@@ -377,7 +377,7 @@ void CMenuWidget::paintHead()
 {
 	dprintf(DEBUG_DEBUG, "CMenuWidget::paintHead:\n");
 	
-	if(widgetType == WIDGET_TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		// headBoxox
 		frameBuffer->paintBoxRel(x, y, width, hheight, def_headColor? COL_MENUHEAD_PLUS_0 : headColor/*, headRadius, headCorner, headGradient*/);
@@ -533,7 +533,7 @@ void CMenuWidget::paintFoot()
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::paintFoot:\n");
 	
-	if(widgetType == WIDGET_TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		if(fbutton_count)
 		{
@@ -640,7 +640,7 @@ void CMenuWidget::paintItems()
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::paintItems:\n");
 	
-	if(widgetType == WIDGET_TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		item_start_y = y + hheight + 10;
 		items_height = height - hheight - fheight - cFrameFootInfoHeight - 20;  //TEST
@@ -721,7 +721,7 @@ void CMenuWidget::paintItems()
 		items_width = width - sb_width;
 
 		// extended
-		if(widgetType == WIDGET_TYPE_EXTENDED)
+		if(widgetType == TYPE_EXTENDED)
 		{
 			items_width = 2*(width/3) - sb_width;
 		}
@@ -739,7 +739,7 @@ void CMenuWidget::paintItems()
 		// paint items background
 		frameBuffer->paintBoxRel(x, item_start_y, width, items_height, def_color? COL_MENUCONTENT_PLUS_0 : bgcolor);
 		
-		if(widgetType == WIDGET_TYPE_EXTENDED && widgetMode == MODE_MENU)
+		if(widgetType == TYPE_EXTENDED && widgetMode == MODE_MENU)
 		{
 			frameBuffer->paintBoxRel(x + items_width, item_start_y, width - items_width, items_height, COL_MENUCONTENTDARK_PLUS_0);
 		}
@@ -747,7 +747,7 @@ void CMenuWidget::paintItems()
 		// paint right scrollBar if we have more then one page
 		if(total_pages > 1)
 		{
-			if(widgetType == WIDGET_TYPE_EXTENDED)
+			if(widgetType == TYPE_EXTENDED)
 				scrollBar.paint(x + 2*(width/3) - SCROLLBAR_WIDTH, item_start_y, items_height, total_pages, current_page);
 			else
 				scrollBar.paint(x + width - SCROLLBAR_WIDTH, item_start_y, items_height, total_pages, current_page);
@@ -792,7 +792,7 @@ void CMenuWidget::paintItemInfo(int pos)
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::paintItemInfo:\n");
 	
-	if(widgetType == WIDGET_TYPE_STANDARD)
+	if(widgetType == TYPE_STANDARD)
 	{
 		if(widgetMode == MODE_MENU || widgetMode == MODE_SETUP)
 		{
@@ -951,7 +951,7 @@ void CMenuWidget::paintItemInfo(int pos)
 			}
 		}
 	}
-	else if(widgetType == WIDGET_TYPE_CLASSIC)
+	else if(widgetType == TYPE_CLASSIC)
 	{
 		if(widgetMode == MODE_MENU)
 		{
@@ -1066,7 +1066,7 @@ void CMenuWidget::paintItemInfo(int pos)
 			}
 		}
 	}
-	else if(widgetType == WIDGET_TYPE_EXTENDED)
+	else if(widgetType == TYPE_EXTENDED)
 	{
 		CMenuItem* item = items[pos];
 
@@ -1160,7 +1160,7 @@ void CMenuWidget::paintItemInfo(int pos)
 			}
 		}
 	}
-	else if(widgetType == WIDGET_TYPE_FRAME)
+	else if(widgetType == TYPE_FRAME)
 	{
 		// refresh footInfo Box
 		frameBuffer->paintBoxRel(x, y + height - fheight - cFrameFootInfoHeight, width, cFrameFootInfoHeight, COL_MENUCONTENT_PLUS_0);
@@ -1193,7 +1193,7 @@ void CMenuWidget::hideItemInfo()
 	
 	if (paintFootInfo)
 	{
-		if( (widgetType == WIDGET_TYPE_STANDARD) || (widgetType == WIDGET_TYPE_CLASSIC && widgetMode == MODE_LISTBOX) )
+		if( (widgetType == TYPE_STANDARD) || (widgetType == TYPE_CLASSIC && widgetMode == MODE_LISTBOX) )
 		{
 			itemsLine.clear(x, y, width, height, cFrameFootInfoHeight);
 		}
@@ -1506,7 +1506,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 					
 				case (RC_page_up) :
-					if(widgetType == WIDGET_TYPE_FRAME)
+					if(widgetType == TYPE_FRAME)
 					{
 						pos = (int) page_start[current_page + 1];
 						if(pos >= (int) items.size()) 
@@ -1515,7 +1515,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 						selected = pos;
 						paintItems();
 					}
-					else if(widgetType == WIDGET_TYPE_STANDARD || widgetType == WIDGET_TYPE_CLASSIC || widgetType == WIDGET_TYPE_EXTENDED)
+					else if(widgetType == TYPE_STANDARD || widgetType == TYPE_CLASSIC || widgetType == TYPE_EXTENDED)
 					{
 						if(current_page) 
 						{
@@ -1580,7 +1580,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 
 				case (RC_page_down) :
-					if(widgetType == WIDGET_TYPE_FRAME)
+					if(widgetType == TYPE_FRAME)
 					{
 						pos = (int) page_start[current_page] - 1;
 			
@@ -1590,7 +1590,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 						selected = pos;
 						paintItems();
 					}
-					else if(widgetType == WIDGET_TYPE_STANDARD || widgetType == WIDGET_TYPE_CLASSIC || widgetType == WIDGET_TYPE_EXTENDED)
+					else if(widgetType == TYPE_STANDARD || widgetType == TYPE_CLASSIC || widgetType == TYPE_EXTENDED)
 					{
 						pos = (int) page_start[current_page + 1];
 
@@ -1626,7 +1626,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 					
 				case (RC_up) :
-					if(widgetType == WIDGET_TYPE_FRAME)
+					if(widgetType == TYPE_FRAME)
 					{
 						pos = selected - itemsPerX;
 
@@ -1649,7 +1649,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							}
 						}
 					}
-					else if(widgetType == WIDGET_TYPE_STANDARD || widgetType == WIDGET_TYPE_CLASSIC || widgetType == WIDGET_TYPE_EXTENDED)
+					else if(widgetType == TYPE_STANDARD || widgetType == TYPE_CLASSIC || widgetType == TYPE_EXTENDED)
 					{
 						//search next / prev selectable item
 						for (unsigned int count = 1; count < items.size(); count++) 
@@ -1684,7 +1684,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 					
 				case (RC_down) :
-					if(widgetType == WIDGET_TYPE_FRAME)
+					if(widgetType == TYPE_FRAME)
 					{
 						pos = selected + itemsPerX;
 
@@ -1708,7 +1708,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							} 
 						}
 					}
-					else if(widgetType == WIDGET_TYPE_STANDARD || widgetType == WIDGET_TYPE_CLASSIC || widgetType == WIDGET_TYPE_EXTENDED)
+					else if(widgetType == TYPE_STANDARD || widgetType == TYPE_CLASSIC || widgetType == TYPE_EXTENDED)
 					{
 						//search next / prev selectable item
 						for (unsigned int count = 1; count < items.size(); count++) 
@@ -1741,7 +1741,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 
 				case (RC_left):
-					if(widgetType == WIDGET_TYPE_FRAME)
+					if(widgetType == TYPE_FRAME)
 					{
 						for (unsigned int count = 1; count < items.size(); count++) 
 						{
@@ -1774,11 +1774,11 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 						}
 
 					}
-					else if (widgetType == WIDGET_TYPE_EXTENDED)
+					else if (widgetType == TYPE_EXTENDED)
 					{
 						textBox->scrollPageUp(1);
 					}
-					else if(widgetType == WIDGET_TYPE_STANDARD)
+					else if(widgetType == TYPE_STANDARD)
 					{
 						if(widgetMode == MODE_SETUP)
 						{
@@ -1819,7 +1819,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 					
 				case (RC_right):
-					if(widgetType == WIDGET_TYPE_FRAME)
+					if(widgetType == TYPE_FRAME)
 					{
 						for (unsigned int count = 1; count < items.size(); count++) 
 						{
@@ -1849,11 +1849,11 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							}
 						}
 					}
-					else if (widgetType == WIDGET_TYPE_EXTENDED)
+					else if (widgetType == TYPE_EXTENDED)
 					{
 						textBox->scrollPageDown(1);
 					}
-					else if(widgetType == WIDGET_TYPE_STANDARD)
+					else if(widgetType == TYPE_STANDARD)
 					{
 						if(widgetMode == MODE_SETUP)
 						{

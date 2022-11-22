@@ -208,17 +208,20 @@ void CWidget::paint()
 	//
 	initFrames();
 
-	// paint mainFrame
-	// border
-	if (borderMode)
-		frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, COL_MENUCONTENT_PLUS_6, radius, corner);
-		
+	// paint mainFrame	
 	if (paintframe)
 	{
+		// mainframe
 		if (borderMode == BORDER_NO)
 			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient);
 		else
+		{
+			// paint always border all
+			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, COL_MENUCONTENT_PLUS_6, radius, corner);
+			
+			// mainframe
 			frameBuffer->paintBoxRel(mainFrameBox.iX + 2, mainFrameBox.iY + 2, mainFrameBox.iWidth - 4, mainFrameBox.iHeight - 4, backgroundColor, radius, corner, gradient);
+		}
 	}
 
 	// WidgetItems

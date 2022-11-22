@@ -715,7 +715,7 @@ void CIceCast::showMenu()
 	}
 	
 	ilist->setWidgetMode(MODE_LISTBOX);
-	//ilist->setWidgetType(WIDGET_TYPE_EXTENDED);
+	//ilist->setWidgetType(TYPE_EXTENDED);
 
 	//ilist->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
 	ilist->setSelected(selected);

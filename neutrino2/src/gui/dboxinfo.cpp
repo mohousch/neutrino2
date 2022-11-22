@@ -517,7 +517,7 @@ void CInfoMenu::showMenu()
 		infoMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		infoMenu->setWidgetMode(MODE_MENU);
-		infoMenu->setWidgetType(WIDGET_TYPE_CLASSIC);
+		infoMenu->setWidgetType(TYPE_CLASSIC);
 		infoMenu->enableShrinkMenu();
 		
 		//

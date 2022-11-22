@@ -212,6 +212,12 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		int convertRadius(const char* const radius);
 		int convertGradient(const char* const gradient);
 		neutrino_msg_t convertKey(const char* const key);
+		int convertMenuPosition(const char * const position);
+		int convertClistBoxMode(const char * const mode);
+		int convertClistBoxType(const char * const type);
+		int convertCMenuItemID(const char * const id);
+		int convertBool(const char* const value);
+		int convertBorder(const char * const border);
 		
 		//
 		void mainMenu(void);
