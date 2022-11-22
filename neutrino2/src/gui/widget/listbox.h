@@ -717,6 +717,7 @@ class ClistBox : public CWidgetItem
 		virtual void swipLeft();
 		virtual void swipRight();
 
+		//
 		int getItemsCount()const{return items.size();};
 		int getCurrentPage()const{return current_page;};
 		int getTotalPages()const{return total_pages;};
@@ -753,6 +754,7 @@ class ClistBox : public CWidgetItem
 		//
 		bool isSelectable(void){return true;};
 
+		//
 		int oKKeyPressed(CMenuTarget* _parent, neutrino_msg_t _msg = RC_ok);
 		void homeKeyPressed(){selected = -1;};
 		void directKeyPressed(neutrino_msg_t _msg);

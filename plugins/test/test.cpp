@@ -3602,48 +3602,18 @@ void CTestMenu::testCListFrame()
 	// loop
 	neutrino_msg_t msg;
 	neutrino_msg_data_t data;
-
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	bool loop = true;
-
-REPEAT:
-	listFrame->refresh();
-	CFrameBuffer::getInstance()->blit();
 	
+	listFrame->setSecTimer(sec_timer_id);
+
 	while(loop)
 	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
+		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec		
 		
-		if (msg == RC_home) 
-		{
-			//
-			if (CAudioPlayer::getInstance()->getState() != CBaseDec::STOP)
-			{
-				CAudioPlayer::getInstance()->stop();
-			}
-
-			loop = false;
-		}
-		else if(msg == RC_down)
-		{
-			listFrame->scrollLineDown(1);
-			listFrame->refresh();
-		}
-		else if(msg == RC_up)
-		{
-			listFrame->scrollLineUp(1);
-			listFrame->refresh();
-		}
-		else if(msg == RC_page_down)
-		{
-			listFrame->scrollPageDown(1);
-			listFrame->refresh();
-		}
-		else if(msg == RC_page_up)
-		{
-			listFrame->scrollPageUp(1);
-			listFrame->refresh();
-		}
-		else if(msg == RC_ok)
+		loop = listFrame->onButtonPress(msg, data); // whatever return???
+		
+		if(msg == RC_ok)
 		{
 			if(AudioPlaylist.size() > 0)
 			{
@@ -3656,12 +3626,21 @@ REPEAT:
 
 				tmpAudioPlayerGui.setCurrent(selected);
 				tmpAudioPlayerGui.exec(NULL, "");
-
-				goto REPEAT;
 			}
+			
+			listFrame->paint();
 		}
+		
+		// forward msg / data to neutrino
 
 		CFrameBuffer::getInstance()->blit();
+	}		
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
 	}
 	
 	//
@@ -3855,17 +3834,14 @@ void CTestMenu::testClistBox()
 		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		//item->setOptionInfo("OptionInfo");
 
 		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		//item->setOptionInfo1("OptionInfo1");
 
 		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-		//item->setOptionInfo2("OptionInfo2");
 
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
-		//item->set2lines();
+		item->set2lines();
 
 		std::string tmp = m_vMovieInfo[i].epgInfo1;
 		tmp += "\n";
@@ -3875,32 +3851,26 @@ void CTestMenu::testClistBox()
 		
 		rightWidget->addItem(item);
 	}
-	
-	/*
-	rightWidget->addItem(new CMenuForwarder("item1"));
-	rightWidget->addItem(new CMenuForwarder("item2"));
-	rightWidget->addItem(new CMenuForwarder("item3"));
-	rightWidget->addItem(new CMenuForwarder("item4"));
-	rightWidget->addItem(new CMenuForwarder("item5"));
-	rightWidget->addItem(new CMenuForwarder("item6"));
-	rightWidget->addItem(new CMenuForwarder("item7"));
-	*/
 
 	// mode
 	rightWidget->setWidgetType(TYPE_CLASSIC);
+	rightWidget->addWidgetType(TYPE_STANDARD);
+	rightWidget->addWidgetType(TYPE_EXTENDED);
+	rightWidget->addWidgetType(TYPE_FRAME);
+	rightWidget->setWidgetMode(MODE_MENU);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
 
 	// head
-	//rightWidget->enablePaintHead();
+	rightWidget->enablePaintHead();
 	rightWidget->setTitle("ClistBox (standard)", NEUTRINO_ICON_MOVIE);
-	//rightWidget->setTitleHAlign(CC_ALIGN_CENTER);
+	rightWidget->setTitleHAlign(CC_ALIGN_CENTER);
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
 	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
 
 	// footer
-	//rightWidget->enablePaintFoot();
+	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 
 	// itemInfo
@@ -3913,10 +3883,9 @@ void CTestMenu::testClistBox()
 	rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_GAMELIST_ITEMLARGE);
 	
 	//
-	//rightWidget->paintScrollBar(true);
+	//rightWidget->paintScrollBar(false);
 	
 	//
-	//rightWidget->setParent(this);
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
@@ -5651,26 +5620,37 @@ void CTestMenu::testCMenuWidget1()
 	//
 	menuWidget = new CMenuWidget(_("CMenuWidget(Menu Mode)"), NEUTRINO_ICON_MAINMENU);
 	
-	item = new CMenuForwarder(_("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch", RC_mode, NEUTRINO_ICON_BUTTON_SETUP_SMALL);
+	item = new CMenuForwarder(_("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
+	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
+	item->setDirectKey(RC_red);
 	menuWidget->addItem(item);
 
 	item = new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
 	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
+	item->setDirectKey(RC_green);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
 	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
+	item->setDirectKey(RC_yellow);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Service"), true, NULL, new CServiceMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
 	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
+	item->setDirectKey(RC_blue);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu());
+	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
+	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
+	item->setDirectKey(RC_setup);
+	menuWidget->addItem(item);
+	
+	item = new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
 	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
 	menuWidget->addItem(item);
@@ -5678,16 +5658,19 @@ void CTestMenu::testCMenuWidget1()
 	item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
 	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
+	item->setDirectKey(RC_info);
 	menuWidget->addItem(item);
 
 	item = new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
 	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
+	item->setDirectKey(RC_standby);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
+	item->setIconName(NEUTRINO_ICON_VIDEO);
+	item->setDirectKey(RC_video);
 	menuWidget->addItem(item);
 	
 	menuWidget->setWidgetMode(MODE_MENU);
@@ -6759,6 +6742,8 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if(actionKey == "linfo")
 	{
+		hide();
+		
 		selected = rightWidget->getSelected();
 		m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
 
@@ -7562,13 +7547,14 @@ void CTestMenu::showMenu()
 	CNeutrinoApp::getInstance()->eraseWidget("testmenu");
 	
 	//
-	//std::string skin = PLUGINDIR "/test/skin.xml";
-	//CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
+	std::string skin = PLUGINDIR "/test/skin.xml";
+	CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
 	
-	//
-	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"></LISTBOX>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"></HEAD>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"></BUTTON_LABEL>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
+	/*
+	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"/>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"></BUTTON_LABEL>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
 
 	CNeutrinoApp::getInstance()->parseSkin(skin.c_str(), true);
+	*/
 
 	CWidget* mWidget = NULL;
 	ClistBox* mainMenu = NULL;
