@@ -3601,16 +3601,7 @@ void CTestMenu::testCListFrame()
 	CAudioPlayer::getInstance()->init();
 	
 	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	listFrame->setSecTimer(sec_timer_id);
 	listFrame->exec();		
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	//
 	for(int i = 0; i < 6; i++)
