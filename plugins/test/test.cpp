@@ -3596,28 +3596,14 @@ void CTestMenu::testCListFrame()
 	
 	// paint
 	listFrame->paint();
-	//listFrame->showSelection(true);
-
 	CFrameBuffer::getInstance()->blit();
 
 	CAudioPlayer::getInstance()->init();
 	
 	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	bool loop = true;
-	
 	listFrame->setSecTimer(sec_timer_id);
-
-	while(loop)
-	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec		
-		
-		loop = listFrame->onButtonPress(msg, data, this);
-
-		CFrameBuffer::getInstance()->blit();
-	}		
+	listFrame->exec();		
 	
 	if (sec_timer_id)
 	{
@@ -3814,7 +3800,7 @@ void CTestMenu::testClistBox()
 	// load items
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str()/*, true, NULL, this, "mmwplay"*/);
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 
@@ -3869,6 +3855,7 @@ void CTestMenu::testClistBox()
 	//rightWidget->paintScrollBar(false);
 	
 	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
@@ -3876,21 +3863,10 @@ void CTestMenu::testClistBox()
 	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	bool loop = true;
 	
 	rightWidget->setSecTimer(sec_timer_id);
-
-	while(loop)
-	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec		
-		
-		loop = rightWidget->onButtonPress(msg, data); // whatever return???
-
-		CFrameBuffer::getInstance()->blit();
-	}		
+	rightWidget->exec();		
 
 	rightWidget->hide();
 	delete rightWidget;
@@ -3933,7 +3909,7 @@ void CTestMenu::testClistBox2()
 	// load items
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str()/*, true, NULL, this, "mmwplay"*/);
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 		//item->setOptionInfo("OptionInfo");
@@ -3982,76 +3958,30 @@ void CTestMenu::testClistBox2()
 	rightWidget->paint();
 	CFrameBuffer::getInstance()->blit();
 
+	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_info, this, "linfo");
+	rightWidget->addKey(RC_setup, this, "lsetup");
+	
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
 	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
-	uint32_t sec_timer_id = 0;
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-
-	bool loop = true;
-
-	while(loop)
-	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-
-		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			rightWidget->refresh();
-		}
-		else if (msg == RC_up)
-		{
-			rightWidget->scrollLineUp();
-		}
-		else if (msg == RC_down)
-		{
-			rightWidget->scrollLineDown();
-		}
-		else if (msg == RC_right)
-		{
-			rightWidget->swipRight();
-		}
-		else if (msg == RC_left)
-		{
-			rightWidget->swipLeft();
-		}
-		else if (msg == RC_page_up)
-		{
-			rightWidget->scrollPageUp();
-		}
-		else if (msg == RC_page_down)
-		{
-			rightWidget->scrollPageDown();
-		} 
-		else if (msg == RC_home) 
-		{
-			loop = false;
-		}
-		else if(msg == RC_ok)
-		{
-			rightWidget->oKKeyPressed(this);
-			rightWidget->paint();
-		}
-		else if(msg == RC_info)
-		{
-			rightWidget->hide();
-
-			selected = rightWidget->getSelected();
-			m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
-			
-			rightWidget->paint();
-		}
-
-		CFrameBuffer::getInstance()->blit();
-	}
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	rightWidget->setSecTimer(sec_timer_id);
+	rightWidget->exec();		
 
 	rightWidget->hide();
 	delete rightWidget;
 	rightWidget = NULL;
-
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
 }
 
 // ClistBox(extended)
@@ -4130,76 +4060,30 @@ void CTestMenu::testClistBox3()
 	rightWidget->paint();
 	CFrameBuffer::getInstance()->blit();
 
+	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_info, this, "linfo");
+	rightWidget->addKey(RC_setup, this, "lsetup");
+	
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
 	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
-	uint32_t sec_timer_id = 0;
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-
-	bool loop = true;
-
-	while(loop)
-	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-
-		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			rightWidget->refresh();
-		} 
-		else if (msg == RC_up)
-		{
-			rightWidget->scrollLineUp();
-		}
-		else if (msg == RC_down)
-		{
-			rightWidget->scrollLineDown();
-		}
-		else if (msg == RC_right)
-		{
-			rightWidget->swipRight();
-		}
-		else if (msg == RC_left)
-		{
-			rightWidget->swipLeft();
-		}
-		else if (msg == RC_page_up)
-		{
-			rightWidget->scrollPageUp();
-		}
-		else if (msg == RC_page_down)
-		{
-			rightWidget->scrollPageDown();
-		}
-		else if (msg == RC_home) 
-		{
-			loop = false;
-		}
-		else if(msg == RC_ok)
-		{
-			rightWidget->oKKeyPressed(this);
-			rightWidget->paint();
-		}
-		else if(msg == RC_info)
-		{
-			rightWidget->hide();
-
-			selected = rightWidget->getSelected();
-			m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
-			
-			rightWidget->paint();
-		}
-
-		CFrameBuffer::getInstance()->blit();
-	}
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	rightWidget->setSecTimer(sec_timer_id);
+	rightWidget->exec();		
 
 	rightWidget->hide();
 	delete rightWidget;
 	rightWidget = NULL;
-
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
 }
 
 // ClistBox(frame)
@@ -4274,76 +4158,30 @@ void CTestMenu::testClistBox4()
 	rightWidget->paint();
 	CFrameBuffer::getInstance()->blit();
 
+	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_info, this, "linfo");
+	rightWidget->addKey(RC_setup, this, "lsetup");
+	
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
 	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
-	uint32_t sec_timer_id = 0;
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-
-	bool loop = true;
-
-	while(loop)
-	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-
-		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			rightWidget->refresh();
-		} 
-		else if (msg == RC_up)
-		{
-			rightWidget->scrollLineUp();
-		}
-		else if (msg == RC_down)
-		{
-			rightWidget->scrollLineDown();
-		}
-		else if (msg == RC_right)
-		{
-			rightWidget->swipRight();
-		}
-		else if (msg == RC_left)
-		{
-			rightWidget->swipLeft();
-		}
-		else if (msg == RC_page_up)
-		{
-			rightWidget->scrollPageUp();
-		}
-		else if (msg == RC_page_down)
-		{
-			rightWidget->scrollPageDown();
-		}
-		else if (msg == RC_home) 
-		{
-			loop = false;
-		}
-		else if(msg == RC_ok)
-		{
-			rightWidget->oKKeyPressed(this);
-			rightWidget->paint();
-		}
-		else if(msg == RC_info)
-		{
-			rightWidget->hide();
-
-			selected = rightWidget->getSelected();
-			m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
-			
-			rightWidget->paint();
-		}
-
-		CFrameBuffer::getInstance()->blit();
-	}
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	rightWidget->setSecTimer(sec_timer_id);
+	rightWidget->exec();		
 
 	rightWidget->hide();
 	delete rightWidget;
 	rightWidget = NULL;
-
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
 }
 
 // ClistBox(DL_INFO)
@@ -4431,80 +4269,30 @@ void CTestMenu::testClistBox5()
 	rightWidget->paint();
 	CFrameBuffer::getInstance()->blit();
 
+	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_info, this, "linfo");
+	rightWidget->addKey(RC_setup, this, "lsetup");
+	
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
 	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
-	uint32_t sec_timer_id = 0;
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-
-	bool loop = true;
-
-	while(loop)
-	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-
-		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			rightWidget->refresh();
-		} 
-		else if (msg == RC_up)
-		{
-			rightWidget->scrollLineUp();
-		}
-		else if (msg == RC_down)
-		{
-			rightWidget->scrollLineDown();
-		}
-		else if (msg == RC_right)
-		{
-			rightWidget->swipRight();
-		}
-		else if (msg == RC_left)
-		{
-			rightWidget->swipLeft();
-		}
-		else if (msg == RC_page_up)
-		{
-			rightWidget->scrollPageUp();
-		}
-		else if (msg == RC_page_down)
-		{
-			rightWidget->scrollPageDown();
-		}
-		else if (msg == RC_home) 
-		{
-			loop = false;
-		}
-		else if(msg == RC_ok)
-		{
-			rightWidget->oKKeyPressed(this);
-			rightWidget->paint();
-		}
-		else if(msg == RC_info)
-		{
-			rightWidget->hide();
-
-			selected = rightWidget->getSelected();
-			m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
-			
-			rightWidget->paint();
-		}
-		else if(msg == RC_setup)
-		{
-			rightWidget->changeWidgetType();
-		}
-
-		CFrameBuffer::getInstance()->blit();
-	}
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	rightWidget->setSecTimer(sec_timer_id);
+	rightWidget->exec();		
 
 	rightWidget->hide();
 	delete rightWidget;
 	rightWidget = NULL;
-
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
 }
 
 // ClistBox(listBox mode)
@@ -4595,80 +4383,30 @@ void CTestMenu::testClistBox6()
 	rightWidget->paint();
 	CFrameBuffer::getInstance()->blit();
 
+	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_info, this, "linfo");
+	rightWidget->addKey(RC_setup, this, "lsetup");
+	
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
 	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
-	uint32_t sec_timer_id = 0;
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-
-	bool loop = true;
-
-	while(loop)
-	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-
-		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			rightWidget->refresh();
-		} 
-		else if (msg == RC_up)
-		{
-			rightWidget->scrollLineUp();
-		}
-		else if (msg == RC_down)
-		{
-			rightWidget->scrollLineDown();
-		}
-		else if (msg == RC_right)
-		{
-			rightWidget->swipRight();
-		}
-		else if (msg == RC_left)
-		{
-			rightWidget->swipLeft();
-		}
-		else if (msg == RC_page_up)
-		{
-			rightWidget->scrollPageUp();
-		}
-		else if (msg == RC_page_down)
-		{
-			rightWidget->scrollPageDown();
-		}
-		else if (msg == RC_home) 
-		{
-			loop = false;
-		}
-		else if(msg == RC_ok)
-		{
-			rightWidget->oKKeyPressed(this);
-			rightWidget->paint();
-		}
-		else if(msg == RC_info)
-		{
-			rightWidget->hide();
-
-			selected = rightWidget->getSelected();
-			m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
-			
-			rightWidget->paint();
-		}
-		else if(msg == RC_setup)
-		{
-			rightWidget->changeWidgetType();
-		}
-
-		CFrameBuffer::getInstance()->blit();
-	}
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	rightWidget->setSecTimer(sec_timer_id);
+	rightWidget->exec();		
 
 	rightWidget->hide();
 	delete rightWidget;
 	rightWidget = NULL;
-
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
 }
 
 void CTestMenu::testCFrameBox()
@@ -4742,25 +4480,26 @@ REPEAT:
 	
 	CFrameBuffer::getInstance()->blit();
 
+	//
+	frameBoxWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
 	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
-
-	bool loop = true;
-
-	while(loop)
-	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-		
-		loop = frameBoxWidget->onButtonPress(msg, data);
-
-		CFrameBuffer::getInstance()->blit();
-	}
-
-	hide();
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	frameBoxWidget->setSecTimer(sec_timer_id);
+	frameBoxWidget->exec();
+	frameBoxWidget->hide();		
 
 	delete frameBoxWidget;
 	frameBoxWidget = NULL;
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
 }
 
 // play Movie Url
@@ -7491,14 +7230,12 @@ void CTestMenu::showMenu()
 	CNeutrinoApp::getInstance()->eraseWidget("testmenu");
 	
 	//
-	std::string skin = PLUGINDIR "/test/skin.xml";
-	CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
+	//std::string skin = PLUGINDIR "/test/skin.xml";
+	//CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
 	
-	/*
 	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"/>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"></BUTTON_LABEL>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
 
 	CNeutrinoApp::getInstance()->parseSkin(skin.c_str(), true);
-	*/
 
 	CWidget* mWidget = NULL;
 	ClistBox* mainMenu = NULL;

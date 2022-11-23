@@ -696,11 +696,14 @@ class CWidgetItem
 		virtual void setSecTimer(uint32_t sec){sec_timer_id = sec;};
 		
 		//
-		virtual bool onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data, CMenuTarget *target = NULL);
+		virtual bool onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data);
 		
 		//
 		virtual inline bool isPainted(void){return painted;};
 		virtual void clear(){};
+		
+		//
+		virtual void exec(void);
 };
 
 typedef std::vector<CWidgetItem*> WIDGETITEMLIST;

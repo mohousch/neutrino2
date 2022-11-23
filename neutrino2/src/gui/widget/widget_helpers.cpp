@@ -1216,7 +1216,16 @@ CWidgetItem::CWidgetItem()
 }
 
 //
-bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data, CMenuTarget *target)
+void CWidgetItem::addKey(neutrino_msg_t key, CMenuTarget *menue, const std::string & action)
+{
+	dprintf(DEBUG_DEBUG, "CWidgetItem::addKey: %s\n", action.c_str());
+	
+	keyActionMap[key].menue = menue;
+	keyActionMap[key].action = action;
+}
+
+//
+bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
 {
 	dprintf(DEBUG_DEBUG, "CWidgetItem::onButtonPress: (msg:%ld) (data:%ld)\n", msg, data);
 	
@@ -1224,32 +1233,38 @@ bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data, CM
 	bool handled = false;
 	
 	//
-	std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
-				
-	if (it != keyActionMap.end()) 
+	if ( msg <= RC_MaxRC ) 
 	{
-		actionKey = it->second.action;
-
-		if (it->second.menue != NULL)
+		std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
+					
+		if (it != keyActionMap.end()) 
 		{
-			int rv = it->second.menue->exec(target, it->second.action);
+			actionKey = it->second.action;
 
-			//FIXME:review this
-			switch ( rv ) 
+			if (it->second.menue != NULL)
 			{
-				case RETURN_EXIT_ALL:
-					ret = false; //fall through
-				case RETURN_EXIT:
-					ret = false;
-					break;
-				case RETURN_REPAINT:
-					ret = true;
-					paint();
-					break;
+				int rv = it->second.menue->exec(parent, it->second.action);
+
+				//FIXME:review this
+				switch ( rv ) 
+				{
+					case RETURN_EXIT_ALL:
+						ret = false; //fall through
+					case RETURN_EXIT:
+						ret = false;
+						break;
+					case RETURN_REPAINT:
+						ret = true;
+						paint();
+						break;
+				}
 			}
+			else
+				handled = true;
 		}
-		else
-			handled = true;
+		
+		//
+		directKeyPressed(msg);
 	}
 	
 	if (!handled) 
@@ -1311,15 +1326,24 @@ bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data, CM
 	return ret;
 }
 
-//
-void CWidgetItem::addKey(neutrino_msg_t key, CMenuTarget *menue, const std::string & action)
+void CWidgetItem::exec(void)
 {
-	dprintf(DEBUG_DEBUG, "CWidgetItem::addKey: %s\n", action.c_str());
+	dprintf(DEBUG_NORMAL, "CWidgetItem::exec:\n");
 	
-	keyActionMap[key].menue = menue;
-	keyActionMap[key].action = action;
-}
+	// loop
+	neutrino_msg_t msg;
+	neutrino_msg_data_t data;
+	bool loop = true;
 
+	while(loop)
+	{
+		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec		
+		
+		loop = onButtonPress(msg, data); // whatever return???
+
+		CFrameBuffer::getInstance()->blit();
+	}		
+}
 
 // headers
 CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const char * const title, const char * const icon)
