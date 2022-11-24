@@ -6,10 +6,12 @@
 #  --with-plugindir=PATH   where to find the plugins [PREFIX/var/tuxbox/plugins]
 #  --with-dvbincludes=PATH path for dvb includes [NONE]
 #  --with-driver=PATH      path for driver sources [NONE]
-#  --with-boxtype          
+#  --with-boxtype 
+#  --with-boxmodel	       
 #  --enable-keyboard-no-rc enable keyboard control, disable rc control
 #  --enable-opengl         include opengl framebuffer support for x86
 #  --enable-gstreamer      include gstreamer as player engine support
+#  --with-gstversion       use gstreamer version (major.minor)
 #  --enable-lcd            include lcd support
 #  --enable-scart          enable scart output
 #  --enable-ci             enable ci cam
@@ -17,10 +19,8 @@
 #  --enable-functionkeys   include RC functions keys support
 #  --enable-lua
 #  --enable-python
-#
-#
-# build preqs
-# sudo apt-get install autoconf libtool libtool-bin g++ gdb swig flex bison make texinfo subversion intltool dialog wget cmake gperf libglew-dev freeglut3-dev libcurl4-gnutls-dev libfreetype6-dev libid3tag0-dev libmad0-dev libavformat-dev libfribidi-dev libogg-dev libpng-dev libgif-dev libjpeg-dev libflac-dev libvorbis-dev libopenthreads-dev libblkid-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev lua5.2 lua5.2-dev lua-json lua-expat lua-posix lua-socket lua-soap lua-curl python2-dev libao-dev libass-dev
+#  --enable-fake_tuner     include fake tuner support for testing
+#  --enable-testing        include testing plugins support
 ################################################################################################################################################################################################################################################################
 SHELL = /bin/bash
 UID := $(shell id -u)
