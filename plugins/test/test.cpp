@@ -264,6 +264,16 @@ const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 	
 };
 
+#define WFOOT_BUTTONS_COUNT	4
+const struct button_label WFootButtons[WFOOT_BUTTONS_COUNT] =
+{
+	{ NEUTRINO_ICON_BUTTON_RED, _("Play") },
+	{ "", _(" ") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Info") },
+	{ "", _(" ") },
+	
+};
+
 CTestMenu::CTestMenu()
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -394,7 +404,7 @@ CTestMenu::~CTestMenu()
 
 void CTestMenu::hide()
 {
-	dprintf(DEBUG_NORMAL, "\nCTestMenu:hide:\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu:hide:\n");
 	
 	frameBuffer->paintBackground();
 	frameBuffer->blit();
@@ -403,7 +413,7 @@ void CTestMenu::hide()
 //// helpers functions
 void CTestMenu::loadAudioPlaylist()
 {
-	dprintf(DEBUG_NORMAL, "\nCTestMenu:loadAudioPlaylist:\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu:loadAudioPlaylist:\n");
 
 	fileFilter.clear();
 	filelist.clear();
@@ -2821,7 +2831,7 @@ void CTestMenu::testCComponent()
 	int icon_w, icon_h;
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
 	testButton.setPosition(Box.iX + 10, Box.iY + Box.iHeight - 40, Box.iWidth, 40);
-	testButton.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	testButton.setButtons(WFootButtons, WFOOT_BUTTONS_COUNT);
 	
 	windowWidget->addCCItem(&testButton);
 	
@@ -2878,8 +2888,8 @@ void CTestMenu::testCComponent()
 	windowWidget->addCCItem(&testPig);
 	
 	//
-	windowWidget->addKey(RC_ok, this, "wplay");
-	windowWidget->addKey(RC_info, this, "winfo");
+	windowWidget->addKey(RC_red, this, "wplay");
+	windowWidget->addKey(RC_yellow, this, "winfo");
 	
 	//
 	windowWidget->paint();
