@@ -252,7 +252,7 @@ endif
 # neutrino2
 #
 neutrino: $(N_SRC)/config.status
-	-make -C $(N_SRC) install
+	$(MAKE) -C $(N_SRC) install
 
 $(N_SRC)/config.status: | $(N_SRC) $(DEST)
 	$(N_SRC)/autogen.sh
@@ -273,10 +273,10 @@ $(N_SRC):
 neutrino2-checkout: $(N_SRC)
 
 neutrino2-clean:
-	-make -C $(N_SRC) clean
+	$(MAKE) -C $(N_SRC) clean
 
 neutrino2-distclean:
-	-make -C $(N_SRC) distclean
+	$(MAKE) -C $(N_SRC) distclean
 	rm -f $(N_SRC)/config.status
 
 #
@@ -289,7 +289,7 @@ $(PLUGINS_SRC):
 plugins-checkout: $(PLUGINS_SRC)
 
 plugins: $(PLUGINS_SRC)/config.status $(N_SRC)/config.status
-	-make -C $(PLUGINS_SRC) install
+	$(MAKE) -C $(PLUGINS_SRC) install
 
 $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
 	$(PLUGINS_SRC)/autogen.sh
@@ -303,10 +303,10 @@ $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
 			$(NHD2_OPTS)
 
 plugins-clean:
-	-make -C $(PLUGINS_SRC) clean
+	$(MAKE) -C $(PLUGINS_SRC) clean
 
 plugins-distclean:
-	-make -C $(PLUGINS_SRC) distclean
+	$(MAKE) -C $(PLUGINS_SRC) distclean
 	rm -f $(PLUGINS)/config.status
 
 update:
