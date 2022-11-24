@@ -271,5 +271,21 @@ void CWindow::refresh(void)
 	}
 }
 
+//
+bool CWindow::update() const
+{
+	bool ret = false;
+	
+	for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
+	{
+		if (CCItems[count]->update())
+		{
+			ret = true;
+		}
+	}
+	
+	return ret;
+}
+
 
 

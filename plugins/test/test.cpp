@@ -2764,14 +2764,32 @@ void CTestMenu::testCComponent()
 	windowWidget->setColor(COL_MENUCONTENT_PLUS_0);
 	windowWidget->setCorner(RADIUS_MID, CORNER_ALL);
 	
-	// heades
-	CHeaders head(Box.iX, Box.iY, Box.iWidth, 40, "CComponents", NEUTRINO_ICON_COLORS);
-	head.enablePaintDate();
-	head.setFormat("%A %d.%m.%Y %H:%M:%S");
+	// headleft icon
+	CCIcon headLeftIcon;
+	headLeftIcon.setIcon(NEUTRINO_ICON_COLORS);
+	headLeftIcon.setPosition(Box.iX, Box.iY + (40 - headLeftIcon.iHeight)/2, headLeftIcon.iWidth, headLeftIcon.iHeight);
+	windowWidget->addCCItem(&headLeftIcon);
 	
-	// footers
-	CFooters foot(Box.iX, Box.iY + Box.iHeight - 40, Box.iWidth, 40);
-	foot.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	// head label
+	CCLabel headLabel;
+	headLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
+	headLabel.setColor(COL_ORANGE);
+	headLabel.enablePaintBG();
+	headLabel.setText("CComponets");
+	headLabel.setPosition(Box.iX + headLeftIcon.iWidth + BORDER_LEFT, Box.iY, Box.iWidth - headLeftIcon.iWidth - BORDER_LEFT, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
+	
+	windowWidget->addCCItem(&headLabel);
+	
+	// head time
+	CCTime headTimer;
+	headTimer.setFormat("%A %d.%m.%Y %H:%M:%S");
+	headTimer.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
+	std::string timestr = getNowTimeStr("%A %d.%m.%Y %H:%M:%S");
+	int timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
+	headTimer.setPosition(Box.iX + Box.iWidth - BORDER_RIGHT - timestr_len, Box.iY, timestr_len + 1, 40);
+	headTimer.enableRepaint();
+	
+	windowWidget->addCCItem(&headTimer);
 	
 	// image
 	CCImage testImage;
@@ -2802,7 +2820,7 @@ void CTestMenu::testCComponent()
 	CCButtons testButton;
 	int icon_w, icon_h;
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
-	testButton.setPosition(Box.iX + 10, Box.iY + Box.iHeight - 100, Box.iWidth, 40);
+	testButton.setPosition(Box.iX + 10, Box.iY + Box.iHeight - 40, Box.iWidth, 40);
 	testButton.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
 	windowWidget->addCCItem(&testButton);
@@ -2860,93 +2878,29 @@ void CTestMenu::testCComponent()
 	windowWidget->addCCItem(&testPig);
 	
 	//
-REPAINT:
+	windowWidget->addKey(RC_ok, this, "wplay");
+	windowWidget->addKey(RC_info, this, "winfo");
+	
+	//
 	windowWidget->paint();
-	head.paint();
-	foot.paint();
 	//testDline.paint(Box.iX, Box.iY, Box.iWidth, Box.iHeight, 70, 35, Box.iY + 2*35);
 	//testPB.paint(/*Box.iX + Box.iWidth/2 - Box.iWidth/4, Box.iY + Box.iHeight - 150,*/pcr);
 	//testSB.paint(Box.iX + Box.iWidth - 10, Box.iY + 40, Box.iHeight - 80, NrOfPages, currentPage);
-	
 	CFrameBuffer::getInstance()->blit();
 	
 	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
-
-	uint32_t sec_timer_id = 0;
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-
-	bool loop = true;
-
-	while(loop)
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	windowWidget->setSecTimer(sec_timer_id);
+	windowWidget->exec();		
+	
+	if (sec_timer_id)
 	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-
-		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			head.refresh();
-		} 
-		else if (msg == RC_home) 
-		{
-			loop = false;
-		}
-		else if(msg == RC_page_up)
-		{
-			currentPage--;
-			
-			if (currentPage < 0)
-				currentPage = 0;
-				
-			pcr -= 25;
-			
-			if (pcr < 0)
-				pcr = 0;
-				
-			goto REPAINT;
-		}
-		else if(msg == RC_page_down)
-		{
-			currentPage++;
-			
-			if (currentPage >= (NrOfPages - 1))
-				currentPage = NrOfPages -1;
-				
-			pcr += 25;
-			
-			if (pcr > 100)
-				pcr = 100;
-				
-			goto REPAINT;
-		}
-		else if (msg == RC_ok)
-		{
-			hide();
-			
-			if (&m_vMovieInfo[0].file != NULL) 
-			{
-				CMovieInfoWidget movieInfoWidget;
-				movieInfoWidget.setMovie(m_vMovieInfo[0]);
-			
-				movieInfoWidget.exec(NULL, "");
-			}
-			
-			goto REPAINT;
-		}
-		else
-		{
-			if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
-			{
-				loop = false;
-			}
-		}
-		
-		frameBuffer->blit();
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
 	}
 	
-	hide();
+	windowWidget->hide();
 	
 	delete windowWidget;
 	windowWidget = NULL;
@@ -3858,10 +3812,6 @@ void CTestMenu::testClistBox()
 	
 	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-
-	rightWidget->hide();
-	delete rightWidget;
-	rightWidget = NULL;
 	
 	if (sec_timer_id)
 	{
@@ -3869,6 +3819,10 @@ void CTestMenu::testClistBox()
 		g_RCInput->killTimer(sec_timer_id);
 		sec_timer_id = 0;
 	}
+	
+	rightWidget->hide();
+	delete rightWidget;
+	rightWidget = NULL;
 }
 
 // ClistBox(classic)
@@ -5936,7 +5890,24 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 				m_movieInfo.showMovieInfo(m_vMovieInfo[right_selected]);
 			}
 		}
+		else if (windowWidget)
+		{
+			windowWidget->hide();
+			m_movieInfo.showMovieInfo(m_vMovieInfo[0]);
+		}
 
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "wplay")
+	{
+		if (windowWidget)
+		{
+			windowWidget->hide();
+			
+			tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
+			tmpMoviePlayerGui.exec(NULL, "");
+		}
+		
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "wok")

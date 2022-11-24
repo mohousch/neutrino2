@@ -85,6 +85,7 @@ class CWindow : public CWidgetItem
 		void paint(void);
 		void hide(void);
 		void refresh(void);
+		bool update() const;
 		
 		//
 		void addCCItem(CComponent* CCItem);
