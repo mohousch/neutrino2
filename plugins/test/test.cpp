@@ -139,6 +139,7 @@ class CTestMenu : public CMenuTarget
 		void testCImage();
 		void testCProgressBar();
 		void testCButtons();
+		void testCHButtons();
 		void testCComponent();
 
 		// CWidgetItem
@@ -264,14 +265,11 @@ const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 	
 };
 
-#define WFOOT_BUTTONS_COUNT	4
+#define WFOOT_BUTTONS_COUNT	2
 const struct button_label WFootButtons[WFOOT_BUTTONS_COUNT] =
 {
 	{ NEUTRINO_ICON_BUTTON_RED, _("Play") },
-	{ "", _(" ") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Info") },
-	{ "", _(" ") },
-	
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Info") }	
 };
 
 CTestMenu::CTestMenu()
@@ -3708,16 +3706,37 @@ void CTestMenu::testCProgressWindow()
 // CButtons
 void CTestMenu::testCButtons()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCButtons\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCButtons (foot)\n");
 	
 	CCButtons buttons;
 
 	int icon_w, icon_h;
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
 	
-	buttons.paintHeadButtons(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h, HEAD_BUTTONS_COUNT, HeadButtons);
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
+	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	buttons.paint();
+
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	g_RCInput->messageLoop();
+	hide();
+}
+
+// CButtons
+void CTestMenu::testCHButtons()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCButtons (head)\n");
 	
-	buttons.paintFootButtons(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h, FOOT_BUTTONS_COUNT, FootButtons);
+	CCButtons buttons;
+
+	int icon_w, icon_h;
+	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
+	
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
+	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT, true);
+	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();
 
@@ -5622,6 +5641,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
+	else if(actionKey == "hbuttons")
+	{
+		testCHButtons();
+
+		return RETURN_REPAINT;
+	}
 	else if(actionKey == "listbox")
 	{
 		testClistBox();
@@ -7205,7 +7230,7 @@ void CTestMenu::showMenu()
 	//std::string skin = PLUGINDIR "/test/skin.xml";
 	//CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
 	
-	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"/>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"></BUTTON_LABEL>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
+	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"/>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"/>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
 
 	CNeutrinoApp::getInstance()->parseSkin(skin.c_str(), true);
 
@@ -7257,7 +7282,8 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CComponent"));
 	mainMenu->addItem(new CMenuForwarder("CIcon", true, NULL, this, "icon"));
 	mainMenu->addItem(new CMenuForwarder("CImage", true, NULL, this, "image"));
-	mainMenu->addItem(new CMenuForwarder("CButtons", true, NULL, this, "buttons"));
+	mainMenu->addItem(new CMenuForwarder("CButtons (foot)", true, NULL, this, "buttons"));
+	mainMenu->addItem(new CMenuForwarder("CButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	mainMenu->addItem(new CMenuForwarder("CProgressWindow", true, NULL, this, "progresswindow"));
 	mainMenu->addItem(new CMenuForwarder("allCComponent", true, NULL, this, "component"));

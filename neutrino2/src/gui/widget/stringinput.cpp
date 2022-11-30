@@ -653,12 +653,10 @@ void CStringInputSMS::keyRightPressed()
 	CStringInput::keyRightPressed();
 }
 
-const struct button_label CStringInputSMSButtons[4] =
+const struct button_label CStringInputSMSButtons[2] =
 {
 	{ NEUTRINO_ICON_BUTTON_RED   , _("caps / no caps")  },
-	{ "", "" },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("clear all") },
-	{ "", "" }
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("clear all") }
 };
 
 void CStringInputSMS::paint()
@@ -680,7 +678,10 @@ void CStringInputSMS::paint()
 	frameBuffer->paintBoxRel(x, y + height - ButtonHeight, width, ButtonHeight, COL_MENUFOOT_PLUS_0, g_settings.Foot_radius, g_settings.Foot_corner, g_settings.Foot_gradient);
 
 	// foot buttons
-	buttons.paintFootButtons(x, y + height - ButtonHeight, width, ButtonHeight, 4, CStringInputSMSButtons);
+	buttons.setPosition(x, y + height - ButtonHeight, width, ButtonHeight);
+	buttons.setButtons(CStringInputSMSButtons, 2);
+	buttons.paint();
+	//buttons.paintFootButtons(x, y + height - ButtonHeight, width, ButtonHeight, 4, CStringInputSMSButtons);
 }
 
 // CPINInput

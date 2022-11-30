@@ -244,6 +244,7 @@ class CCButtons : public CComponent
 	private:
 		button_label_list_t buttons;
 		unsigned int count;
+		bool head;
 		int mode;
 
 	public:
@@ -254,14 +255,10 @@ class CCButtons : public CComponent
 		virtual ~CCButtons(){};
 		
 		//
-		void setButtons(const struct button_label *button_label, const int button_count = 1);
+		void setButtons(const struct button_label *button_label, const int button_count = 1, bool _head = false);
 		
 		//
 		void paint();
-
-		//
-		void paintFootButtons(const int x, const int y, const int dx, const int dy, const unsigned int count, const struct button_label* const content);
-		void paintHeadButtons(const int x, const int y, const int dx, const int dy, const unsigned int count, const struct button_label * const content);
 };
 
 //CScrollBar

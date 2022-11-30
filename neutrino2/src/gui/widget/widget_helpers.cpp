@@ -315,12 +315,13 @@ CCButtons::CCButtons(const int x, const int y, const int dx, const int dy)
 	
 	buttons.clear(); 
 	count = 0;
+	head = false;
 	mode = BUTTON_BUTTON;
 	
 	cc_type = CC_BUTTON;
 }
 
-void CCButtons::setButtons(const struct button_label *button_label, const int button_count)
+void CCButtons::setButtons(const struct button_label *button_label, const int button_count, bool _head)
 {
 	if (button_count)
 	{
@@ -330,19 +331,45 @@ void CCButtons::setButtons(const struct button_label *button_label, const int bu
 		}
 	}
 
-	count = buttons.size();	
+	count = buttons.size();
+	head = _head;
 }
 
 void CCButtons::paint()
 {
 	dprintf(DEBUG_INFO, "CCButtons::CCButtons:paint:\n");
-	
-	int buttonWidth = 0;
 
 	count = buttons.size();
+	
+	//
+	int buttonWidth = 0;
 	int iw[count];
 	int ih[count];
+	
+	if (head)
+	{
+		int startx = cCBox.iX + cCBox.iWidth - BORDER_LEFT;
+	
+		for (unsigned int i = 0; i < count; i++)
+		{
+			if(!buttons[i].button.empty())
+			{
+				frameBuffer->getIconSize(buttons[i].button.c_str(), &iw[i], &ih[i]);
+				
+				// scale icon
+				if(ih[i] >= cCBox.iHeight)
+				{
+					ih[i] = cCBox.iHeight - 2;
+				}
+			
+				startx -= (iw[i] + ICON_TO_ICON_OFFSET);
 
+				frameBuffer->paintIcon(buttons[i].button, startx, cCBox.iY + (cCBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+			}
+		}
+	}
+	else
+	{
 	if(count)
 	{
 		buttonWidth = (cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT)/count;
@@ -371,72 +398,6 @@ void CCButtons::paint()
 			}
 		}
 	}
-}
-
-//
-void CCButtons::paintFootButtons(const int x, const int y, const int dx, const int dy, const unsigned int count, const struct button_label * const content)
-{
-	dprintf(DEBUG_INFO, "CCButtons::paintFootButtons: x:%d y:%d dx:%d dy:%d count:%d\n", x, y, dx, dy, count);
-	
-	int iw[count]; 
-	int ih[count];
-
-	int buttonWidth = 0;
-	
-	if(count)
-	{
-		//
-		buttonWidth = (dx)/count;
-
-		for (unsigned int i = 0; i < count; i++)
-		{
-			if(!content[i].button.empty())
-			{
-				iw[i] = 0;
-				ih[i] = 0;
-
-				frameBuffer->getIconSize(content[i].button.c_str(), &iw[i], &ih[i]);
-				
-				if(ih[i] >= dy)
-				{
-					ih[i] = dy - 2;
-				}
-				
-				int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
-		
-				frameBuffer->paintIcon(content[i].button, x + BORDER_LEFT + i*buttonWidth, y + (dy - ih[i])/2, 0, true, iw[i], ih[i]);
-
-				// FIXME: i18n
-				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(x + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, y + f_h + (dy - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(content[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
-			}
-		}
-	}
-}
-
-// head buttons (right)
-void CCButtons::paintHeadButtons(const int x, const int y, const int dx, const int dy, const unsigned int count, const struct button_label * const content)
-{
-	dprintf(DEBUG_INFO, "CCButtons::paintHeadButtons: x:%d y:%d dx:%d dy:%d count:%d\n", x, y, dx, dy, count);
-	
-	int iw[count], ih[count];
-	int startx = x + dx - BORDER_RIGHT;
-	
-	for (unsigned int i = 0; i < count; i++)
-	{
-		if(!content[i].button.empty())
-		{
-			frameBuffer->getIconSize(content[i].button.c_str(), &iw[i], &ih[i]);
-			
-			// scale icon
-			if(ih[i] >= dy)
-			{
-				ih[i] = dy - 2;
-			}
-		
-			startx -= (iw[i] + ICON_TO_ICON_OFFSET);
-
-			frameBuffer->paintIcon(content[i].button, startx, y + (dy - ih[i])/2, 0, true, iw[i], ih[i]);
-		}
 	}
 }
 
