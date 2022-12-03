@@ -250,9 +250,9 @@ class CTestMenu : public CMenuTarget
 #define HEAD_BUTTONS_COUNT	3
 const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_HELP, _("Menu") },
-	{ NEUTRINO_ICON_BUTTON_SETUP, _("Exit") },
-	{ NEUTRINO_ICON_BUTTON_MUTE_SMALL, _("Mute") }
+	{ NEUTRINO_ICON_BUTTON_HELP, _("Menu"), COL_YELLOW_PLUS_0 },
+	{ NEUTRINO_ICON_BUTTON_SETUP, _("Exit"), COL_GREEN_PLUS_0 },
+	{ NEUTRINO_ICON_BUTTON_MUTE_SMALL, _("Mute"), COL_RED_PLUS_0 }
 };
 
 #define FOOT_BUTTONS_COUNT	4
@@ -3736,7 +3736,7 @@ void CTestMenu::testCHButtons()
 	
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
-	buttons.setMode(BUTTON_FRAME_BORDER);
+	buttons.setMode(BUTTON_FRAME_COLORED);
 	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();

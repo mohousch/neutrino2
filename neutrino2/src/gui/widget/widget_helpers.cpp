@@ -362,7 +362,7 @@ void CCButtons::paint()
 				{
 					f_w[i] = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
 					if (i > 0)
-						maxButtonTextWidth = std::max(f_w[i], f_w[i - 1]);
+						maxButtonTextWidth = std::max(f_w[i], f_w[i - 1] + 10);
 				}
 			}
 			
@@ -386,17 +386,31 @@ void CCButtons::paint()
 					}
 					else if (mode == BUTTON_FRAME_BORDER)
 					{
-						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
-						f_w[i] = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
 						startx -= (maxButtonTextWidth + 10 + ICON_TO_ICON_OFFSET);
 							
-						// paint frame
+						//
 						CFrame frame;
 						
 						frame.setPosition(startx, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight -2);
 						frame.enableBorder();
 						frame.paintMainFrame(true);
 						//frame.setColor(buttons[i].color);
+						frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+						frame.setTitle(_(buttons[i].localename.c_str()));
+						frame.setHAlign(CC_ALIGN_CENTER);
+						frame.paint();
+					}
+					else if (mode == BUTTON_FRAME_COLORED)
+					{
+						startx -= (maxButtonTextWidth + 10 + ICON_TO_ICON_OFFSET);
+							
+						//
+						CFrame frame;
+						
+						frame.setPosition(startx, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight -2);
+						frame.enableBorder();
+						frame.paintMainFrame(true);
+						frame.setColor(buttons[i].color);
 						frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
 						frame.setTitle(_(buttons[i].localename.c_str()));
 						frame.setHAlign(CC_ALIGN_CENTER);
@@ -420,9 +434,12 @@ void CCButtons::paint()
 					f_w[i] = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
 					
 					if (i > 0)
-						maxButtonTextWidth = std::max(f_w[i], f_w[i - 1]);
+						maxButtonTextWidth = std::max(f_w[i], f_w[i - 1]) + 10;
 				}
 			}
+			
+			if (maxButtonTextWidth > buttonWidth)
+				maxButtonTextWidth = buttonWidth;
 		
 			for (unsigned int i = 0; i < count; i++)
 			{
@@ -450,14 +467,7 @@ void CCButtons::paint()
 					}
 					else if (mode == BUTTON_FRAME_BORDER)
 					{
-						//int maxButtonTextWidth = buttonWidth;
-						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
-						int f_w = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
-						
-						if (f_w > buttonWidth)
-							f_w = buttonWidth;
-						
-						// paint frame
+						//
 						CFrame frame;
 						
 						frame.setPosition(cCBox.iX + BORDER_LEFT + i*buttonWidth, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight - 2);
@@ -471,13 +481,7 @@ void CCButtons::paint()
 					}
 					else if (mode == BUTTON_FRAME_COLORED)
 					{
-						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
-						int f_w = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[0].localename.c_str()));
-						
-						if (f_w > buttonWidth)
-							f_w = buttonWidth;
-						
-						// paint frame
+						//
 						CFrame frame;
 						frame.setPosition(cCBox.iX + BORDER_LEFT + i*buttonWidth, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight - 2);
 						frame.enableBorder();
