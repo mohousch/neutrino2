@@ -24,6 +24,7 @@
 
 #include <driver/fontrenderer.h>
 #include <driver/framebuffer.h>
+#include <driver/color.h>
 
 #include <system/localize.h>
 #include <system/settings.h>
@@ -63,15 +64,6 @@ class CBox
 		~CBox(){};
 };
 
-//
-typedef struct button_label
-{
-	std::string button;
-	std::string localename;
-} button_label_struct;
-
-typedef std::vector<button_label_struct> button_label_list_t;
-
 // CComponent
 enum {
 	CC_ICON,
@@ -99,6 +91,16 @@ enum {
 	CC_ALIGN_CENTER,
 	CC_ALIGN_RIGHT
 };
+
+// buttons
+typedef struct button_label
+{
+	std::string button;
+	std::string localename;
+	fb_pixel_t color;
+} button_label_struct;
+
+typedef std::vector<button_label_struct> button_label_list_t;
 
 class CComponent
 {
@@ -230,10 +232,9 @@ class CCImage : public CComponent
 };
 
 // buttons
+//
 enum {
 	BUTTON_BUTTON,
-	BUTTON_LINE_RIGHT,
-	BUTTON_LINE_BOTTOM,
 	BUTTON_FRAME_COLORED,
 	BUTTON_FRAME_BORDER
 };
@@ -253,6 +254,9 @@ class CCButtons : public CComponent
 		//
 		CCButtons(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
 		virtual ~CCButtons(){};
+		
+		//
+		void setMode(int m){mode = m;};
 		
 		//
 		void setButtons(const struct button_label *button_label, const int button_count = 1, bool _head = false);

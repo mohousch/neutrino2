@@ -250,18 +250,18 @@ class CTestMenu : public CMenuTarget
 #define HEAD_BUTTONS_COUNT	3
 const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_HELP, " " },
-	{ NEUTRINO_ICON_BUTTON_SETUP, " " },
-	{ NEUTRINO_ICON_BUTTON_MUTE_SMALL, " " }
+	{ NEUTRINO_ICON_BUTTON_HELP, _("Menu") },
+	{ NEUTRINO_ICON_BUTTON_SETUP, _("Exit") },
+	{ NEUTRINO_ICON_BUTTON_MUTE_SMALL, _("Mute") }
 };
 
 #define FOOT_BUTTONS_COUNT	4
 const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("Next Page") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("Prev Page") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Focus") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("New Movies") },
+	{ NEUTRINO_ICON_BUTTON_RED, _("Next Page"), COL_RED_PLUS_0 },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Prev Page"), COL_GREEN_PLUS_0 },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Focus"), COL_YELLOW_PLUS_0 },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("New Movies"), COL_BLUE_PLUS_0 },
 	
 };
 
@@ -1880,16 +1880,15 @@ void CTestMenu::testMultiWidget()
 
 	leftWidget = new ClistBox(&leftBox);
 	leftWidget->setSelected(left_selected);
+	leftWidget->setItemBorderMode();
 
 	ClistBoxItem *item1 = new ClistBoxItem("Item 1");
-	item1->setBorderMode();
 	ClistBoxItem *item2 = new ClistBoxItem("Item 2");
 	item2->setOption("Item 2- Option");
 	item2->set2lines();
 	ClistBoxItem *item3 = new ClistBoxItem("Item 3");
 	item3->setOption("Item 3 Option");
 	item3->set2lines();
-	item3->setBorderMode();
 	ClistBoxItem *item4 = new ClistBoxItem("Item4");
 	CMenuSeparator *item5 = new CMenuSeparator();
 	CMenuSeparator *item6 = new CMenuSeparator();
@@ -3715,6 +3714,7 @@ void CTestMenu::testCButtons()
 	
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	buttons.setMode(BUTTON_FRAME_COLORED);
 	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();
@@ -3735,7 +3735,8 @@ void CTestMenu::testCHButtons()
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
 	
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
-	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT, true);
+	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
+	buttons.setMode(BUTTON_FRAME_BORDER);
 	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();

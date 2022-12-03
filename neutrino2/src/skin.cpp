@@ -2127,14 +2127,22 @@ void CNeutrinoApp::parseCCButtons(_xmlNodePtr node, CWidget* widget, CWindow* wi
 	unsigned int cc_dx = 0;
 	unsigned int cc_dy = 0;
 	
+	unsigned int head = 0;
+	unsigned int mode = BUTTON_BUTTON;
+	
 	_xmlNodePtr buttonlabel_node = NULL;
 	
 	while ((node = xmlGetNextOccurence(node, "BUTTON")) != NULL) 
 	{
+		//
 		cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
 		cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
 		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
 		cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
+		
+		//
+		head = xmlGetSignedNumericAttribute(node, "head", 0);
+		mode = xmlGetSignedNumericAttribute(node, "mode", 0);
 		
 		// recalculate posx / posy
 		if (widget && widget->getMenuPosition())
@@ -2147,6 +2155,8 @@ void CNeutrinoApp::parseCCButtons(_xmlNodePtr node, CWidget* widget, CWindow* wi
 		}
 				
 		cButton = new CCButtons(cc_x, cc_y, cc_dx, cc_dy);
+		
+		cButton->setMode(mode);
 				
 		// BUTTON_LABEL
 		buttonlabel_node = node->xmlChildrenNode;
@@ -2165,7 +2175,7 @@ void CNeutrinoApp::parseCCButtons(_xmlNodePtr node, CWidget* widget, CWindow* wi
 			btn.localename = " ";
 			if (localename) btn.localename = localename;
 							
-			cButton->setButtons(&btn);
+			cButton->setButtons(&btn, head);
 					
 			buttonlabel_node = buttonlabel_node->xmlNextNode;
 		}

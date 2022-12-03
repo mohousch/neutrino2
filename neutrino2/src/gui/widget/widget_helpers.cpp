@@ -33,6 +33,7 @@
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/textbox.h>
 #include <gui/widget/window.h>
+#include <gui/widget/framebox.h>
 
 #include <video_cs.h>
 
@@ -343,61 +344,153 @@ void CCButtons::paint()
 	
 	//
 	int buttonWidth = 0;
+	int maxButtonTextWidth = buttonWidth;
 	int iw[count];
 	int ih[count];
+	int f_w[count];
 	
 	if (head)
 	{
 		int startx = cCBox.iX + cCBox.iWidth - BORDER_LEFT;
-	
-		for (unsigned int i = 0; i < count; i++)
+		
+		if(count)
 		{
-			if(!buttons[i].button.empty())
+			// get max width
+			for (unsigned int i = 0; i < count; i++)
 			{
-				frameBuffer->getIconSize(buttons[i].button.c_str(), &iw[i], &ih[i]);
-				
-				// scale icon
-				if(ih[i] >= cCBox.iHeight)
+				if (!buttons[i].localename.empty())
 				{
-					ih[i] = cCBox.iHeight - 2;
+					f_w[i] = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
+					if (i > 0)
+						maxButtonTextWidth = std::max(f_w[i], f_w[i - 1]);
 				}
+			}
 			
-				startx -= (iw[i] + ICON_TO_ICON_OFFSET);
+			for (unsigned int i = 0; i < count; i++)
+			{
+				if(!buttons[i].button.empty())
+				{
+					if (mode == BUTTON_BUTTON)
+					{
+						frameBuffer->getIconSize(buttons[i].button.c_str(), &iw[i], &ih[i]);
+						
+						// scale icon
+						if(ih[i] >= cCBox.iHeight)
+						{
+							ih[i] = cCBox.iHeight - 2;
+						}
+					
+						startx -= (iw[i] + ICON_TO_ICON_OFFSET);
 
-				frameBuffer->paintIcon(buttons[i].button, startx, cCBox.iY + (cCBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+						frameBuffer->paintIcon(buttons[i].button, startx, cCBox.iY + (cCBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+					}
+					else if (mode == BUTTON_FRAME_BORDER)
+					{
+						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
+						f_w[i] = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
+						startx -= (maxButtonTextWidth + 10 + ICON_TO_ICON_OFFSET);
+							
+						// paint frame
+						CFrame frame;
+						
+						frame.setPosition(startx, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight -2);
+						frame.enableBorder();
+						frame.paintMainFrame(true);
+						//frame.setColor(buttons[i].color);
+						frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+						frame.setTitle(_(buttons[i].localename.c_str()));
+						frame.setHAlign(CC_ALIGN_CENTER);
+						frame.paint();
+					}
+				}
 			}
 		}
 	}
 	else
 	{
-	if(count)
-	{
-		buttonWidth = (cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT)/count;
-	
-		for (unsigned int i = 0; i < count; i++)
+		if(count)
 		{
-			if (!buttons[i].button.empty())
+			buttonWidth = (cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT)/count;
+			
+			// get max width
+			for (unsigned int i = 0; i < count; i++)
 			{
-				iw[i] = 0;
-				ih[i] = 0;
-
-				CFrameBuffer::getInstance()->getIconSize(buttons[i].button.c_str(), &iw[i], &ih[i]);
-				
-				// scale icon
-				if(ih[i] >= cCBox.iHeight)
+				if (!buttons[i].localename.empty())
 				{
-					ih[i] = cCBox.iHeight - 2;
+					f_w[i] = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
+					
+					if (i > 0)
+						maxButtonTextWidth = std::max(f_w[i], f_w[i - 1]);
 				}
-				
-				int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
+			}
 		
-				CFrameBuffer::getInstance()->paintIcon(buttons[i].button, cCBox.iX + BORDER_LEFT + i*buttonWidth, cCBox.iY + (cCBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+			for (unsigned int i = 0; i < count; i++)
+			{
+				if (!buttons[i].button.empty())
+				{
+					if (mode == BUTTON_BUTTON)
+					{
+						iw[i] = 0;
+						ih[i] = 0;
 
-				// FIXME: i18n
-				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(cCBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, cCBox.iY + f_h + (cCBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
+						CFrameBuffer::getInstance()->getIconSize(buttons[i].button.c_str(), &iw[i], &ih[i]);
+						
+						// scale icon
+						if(ih[i] >= cCBox.iHeight)
+						{
+							ih[i] = cCBox.iHeight - 2;
+						}
+						
+						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
+				
+						CFrameBuffer::getInstance()->paintIcon(buttons[i].button, cCBox.iX + BORDER_LEFT + i*buttonWidth, cCBox.iY + (cCBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+
+						// FIXME: i18n
+						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(cCBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, cCBox.iY + f_h + (cCBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
+					}
+					else if (mode == BUTTON_FRAME_BORDER)
+					{
+						//int maxButtonTextWidth = buttonWidth;
+						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
+						int f_w = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
+						
+						if (f_w > buttonWidth)
+							f_w = buttonWidth;
+						
+						// paint frame
+						CFrame frame;
+						
+						frame.setPosition(cCBox.iX + BORDER_LEFT + i*buttonWidth, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight - 2);
+						frame.enableBorder();
+						frame.paintMainFrame(true);
+						//frame.setColor(buttons[i].color);
+						frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+						frame.setTitle(_(buttons[i].localename.c_str()));
+						frame.setHAlign(CC_ALIGN_CENTER);
+						frame.paint();
+					}
+					else if (mode == BUTTON_FRAME_COLORED)
+					{
+						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
+						int f_w = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[0].localename.c_str()));
+						
+						if (f_w > buttonWidth)
+							f_w = buttonWidth;
+						
+						// paint frame
+						CFrame frame;
+						frame.setPosition(cCBox.iX + BORDER_LEFT + i*buttonWidth, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight - 2);
+						frame.enableBorder();
+						frame.paintMainFrame(true);
+						frame.setColor(buttons[i].color);
+						frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+						frame.setTitle(_(buttons[i].localename.c_str()));
+						frame.setHAlign(CC_ALIGN_CENTER);
+						frame.paint();
+					}
+				}
 			}
 		}
-	}
 	}
 }
 

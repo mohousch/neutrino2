@@ -213,14 +213,17 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 			{
 				int c_w = g_Font[captionFont]->getRenderWidth(caption);
 				
-				int startPosX = window.getWindowsPos().iX + BORDER_LEFT + iconOffset + iw + 2;
+				if (c_w > window.getWindowsPos().iWidth)
+					c_w = window.getWindowsPos().iWidth;
+				
+				int startPosX = window.getWindowsPos().iX + iconOffset + iw + iconOffset;
 			
 				if (halign == CC_ALIGN_CENTER)
 					startPosX = window.getWindowsPos().iX + (window.getWindowsPos().iWidth >> 1) - (c_w >> 1);
 				else if (halign == CC_ALIGN_RIGHT)
 					startPosX = window.getWindowsPos().iX + window.getWindowsPos().iWidth - c_w;
 
-				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + 3 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - BORDER_LEFT - BORDER_RIGHT - iconOffset - iw, caption.c_str(), color, 0, true); //
+				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + 3 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, caption.c_str(), color, 0, true); //
 			}
 
 			// option
@@ -228,14 +231,14 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 			{
 				int o_w = g_Font[optionFont]->getRenderWidth(option);
 				
-				int o_startPosX = window.getWindowsPos().iX + BORDER_LEFT + iconOffset + iw + 2;
+				int o_startPosX = window.getWindowsPos().iX + iconOffset + iw + iconOffset;
 			
 				if (halign == CC_ALIGN_CENTER)
 					o_startPosX = window.getWindowsPos().iX + (window.getWindowsPos().iWidth >> 1) - (o_w >> 1);
 				else if (halign == CC_ALIGN_RIGHT)
 					o_startPosX = window.getWindowsPos().iX + window.getWindowsPos().iWidth - o_w;
 
-				g_Font[optionFont]->RenderString(o_startPosX, window.getWindowsPos().iY + window.getWindowsPos().iHeight, window.getWindowsPos().iWidth - BORDER_LEFT - BORDER_RIGHT - iconOffset - iw, option.c_str(), color, 0, true);
+				g_Font[optionFont]->RenderString(o_startPosX, window.getWindowsPos().iY + window.getWindowsPos().iHeight, window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, option.c_str(), color, 0, true);
 			}
 		}
 		else
@@ -244,14 +247,19 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 			{
 				int c_w = g_Font[captionFont]->getRenderWidth(caption);
 				
-				int startPosX = window.getWindowsPos().iX + BORDER_LEFT + iconOffset + iw + 2;
+				if (c_w > window.getWindowsPos().iWidth)
+					c_w = window.getWindowsPos().iWidth;
+					
+				int c_h = g_Font[captionFont]->getHeight();
+				
+				int startPosX = window.getWindowsPos().iX + iconOffset + iw + iconOffset;
 			
 				if (halign == CC_ALIGN_CENTER)
 					startPosX = window.getWindowsPos().iX + (window.getWindowsPos().iWidth >> 1) - (c_w >> 1);
 				else if (halign == CC_ALIGN_RIGHT)
 					startPosX = window.getWindowsPos().iX + window.getWindowsPos().iWidth - c_w;
 
-				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + (window.getWindowsPos().iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - BORDER_LEFT - BORDER_RIGHT - iconOffset - iw, caption.c_str(), color);
+				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + (window.getWindowsPos().iHeight - c_h)/2 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, caption.c_str(), color);
 			}
 		}
 	}
