@@ -271,29 +271,21 @@
 		
 		<LISTBOX posx="60" posy="60" width="715" height="540" type="TYPE_CLASSIC" mode ="1" scrollbar="1"/>
 		
-		<BUTTON posx="50" posy="630" width="735" height="40">
-			<BUTTON_LABEL name="btn_red" localename="Delete">
-			</BUTTON_LABEL>
-		
-			<BUTTON_LABEL name="btn_green" localename="Start">
-			</BUTTON_LABEL>
-		
-			<BUTTON_LABEL name="btn_yellow">
-			</BUTTON_LABEL>
-
-			<BUTTON_LABEL name="btn_blue" localename="Reload">
-			</BUTTON_LABEL>
+		<BUTTON posx="50" posy="630" width="735" height="40" mode="1" head="0">
+			<BUTTON_LABEL name="btn_red" localename="Delete" color="COL_RED_PLUS_0"/>
+			<BUTTON_LABEL name="btn_green" localename="Start" color="COL_GREEN_PLUS_0"/>
+			<BUTTON_LABEL name="btn_yellow" color="COL_YELLOW_PLUS_0"/>
+			<BUTTON_LABEL name="btn_blue" localename="Reload" color="COL_BLUE_PLUS_0"/>
 		</BUTTON>
 		
-		<WINDOW posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
-		</WINDOW>
-		
-		<LABEL name="title" posx="795" posy="80" width="425" height="60" text="Plugins" halign="1"></LABEL>
-		
-		<IMAGE name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"></IMAGE>
-		
-		<TIME name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="3"></TIME>
-		<TIME name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="8"></TIME>
+		<WINDOW posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
+		<LABEL name="title" posx="795" posy="80" width="425" height="60" text="Plugins" halign="1"/>
+		<IMAGE name="hint" posx="795" posy="150" width="425" height="275" image="picon_default.png"/>
+		<TIME name="date" posx="795" posy="460" width="425" height="60" refresh="1" format="%A %d.%m.%Y" font="3"/>
+		<TIME name="time" posx="795" posy="510" width="425" height="60" refresh="1" format="%H:%M:%S" font="8"/>
+		<BUTTON posx="785" posy="600" width="445" height="40" mode="1" head="1">
+			<BUTTON_LABEL name="btn_info" localename="Info" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
+		</BUTTON>
 	</WIDGET>
 	
 	<WIDGET name="timerlist" posx="0" posy="0" width="1280" height="720">

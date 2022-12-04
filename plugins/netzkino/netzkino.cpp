@@ -24,7 +24,7 @@ extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
-#define NEUTRINO_ICON_NETZKINO		PLUGINDIR "/netzkino/netzkino.png"
+#define NEUTRINO_ICON_NETZKINO			PLUGINDIR "/netzkino/netzkino.png"
 #define NEUTRINO_ICON_NETZKINO_SMALL		PLUGINDIR "/netzkino/netzkino_small.png"
   
 //
@@ -112,8 +112,8 @@ void CNKMovies::loadNKTitles(int mode, std::string search, int id)
 #define HEAD_BUTTONS_COUNT	2
 const struct button_label NKHeadButtons[HEAD_BUTTONS_COUNT] = 
 {
-	{NEUTRINO_ICON_REC, "" }, 
-	{NEUTRINO_ICON_BUTTON_HELP, "" }
+	{ NEUTRINO_ICON_REC, " " }, 
+	{ NEUTRINO_ICON_BUTTON_HELP, " " }
 };
 
 #define FOOT_BUTTONS_COUNT	4

@@ -132,7 +132,7 @@ const struct button_label HeadNewModeButtons[HEAD_BUTTONS_COUNT] =
 {
 	{ NEUTRINO_ICON_BUTTON_HELP, " " },
 	{ NEUTRINO_ICON_BUTTON_SETUP, " " },
-	{ NEUTRINO_ICON_BUTTON_MUTE_ZAP_ACTIVE, "" }
+	{ NEUTRINO_ICON_BUTTON_MUTE_ZAP_ACTIVE, " " }
 };
 
 CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vlist)

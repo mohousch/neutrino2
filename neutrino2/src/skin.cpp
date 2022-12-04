@@ -2161,21 +2161,29 @@ void CNeutrinoApp::parseCCButtons(_xmlNodePtr node, CWidget* widget, CWindow* wi
 		// BUTTON_LABEL
 		buttonlabel_node = node->xmlChildrenNode;
 		
-		char* button = NULL;
-		char* localename = NULL;
+		char *button = NULL;
+		char *localename = NULL;
+		char *color = NULL;
 				
 		while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "BUTTON_LABEL")) != NULL) 
 		{		
-			button = xmlGetAttribute(buttonlabel_node, (char*)"name");
-			localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
+			button = xmlGetAttribute(buttonlabel_node, (char *)"name");
+			localename = xmlGetAttribute(buttonlabel_node, (char *)"localename");
+			color = xmlGetAttribute(buttonlabel_node, (char *)"color");
 							
 			button_label_struct btn;
 			btn.button = " ";
-			if (button) btn.button = button;
 			btn.localename = " ";
+			btn.color = COL_BACKGROUND_PLUS_0;
+			
+			//
+			if (button) btn.button = button;
 			if (localename) btn.localename = localename;
+			fb_pixel_t col = COL_BACKGROUND_PLUS_0;
+			if (color) col = convertColor(color);
+			btn.color = col;
 							
-			cButton->setButtons(&btn, head);
+			cButton->setButtons(&btn, 1, head);
 					
 			buttonlabel_node = buttonlabel_node->xmlNextNode;
 		}

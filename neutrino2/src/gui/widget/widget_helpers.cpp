@@ -342,6 +342,8 @@ void CCButtons::paint()
 
 	count = buttons.size();
 	
+	dprintf(DEBUG_INFO, "CCButtons::CCButtons:paint: count: %d\n", count);
+	
 	//
 	int buttonWidth = 0;
 	int maxButtonTextWidth = buttonWidth;
@@ -362,7 +364,9 @@ void CCButtons::paint()
 				{
 					f_w[i] = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
 					if (i > 0)
-						maxButtonTextWidth = std::max(f_w[i], f_w[i - 1] + 10);
+						maxButtonTextWidth = std::max(f_w[i], f_w[i - 1]) + 10;
+					else
+						maxButtonTextWidth = f_w[i] + 10;
 				}
 			}
 			
@@ -435,6 +439,8 @@ void CCButtons::paint()
 					
 					if (i > 0)
 						maxButtonTextWidth = std::max(f_w[i], f_w[i - 1]) + 10;
+					else
+						maxButtonTextWidth = f_w[i] + 10;
 				}
 			}
 			
