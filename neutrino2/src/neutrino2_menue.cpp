@@ -54,6 +54,7 @@
 #include <gui/power_menu.h>
 #include <gui/dboxinfo.h>
 #include <gui/osd_setup.h>
+#include <gui/epg_menu.h>
 
 #include <gui/audio_select.h>
 #include <gui/epgplus.h>
@@ -101,18 +102,18 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu->setFootButtons(&btn);
 			  
 		// tv modus
-		nMenu->addItem(new CMenuForwarder(_("TV Mode"), true, NULL, this, "tv", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV), true);
+		nMenu->addItem(new CMenuForwarder(_("TV / Radio"), true, NULL, this, "tvradioswitch", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV), true);
 
-		// radio modus
-		nMenu->addItem(new CMenuForwarder(_("Radio Mode"), true, NULL, this, "radio", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RADIO));	
+		// epg / sleeptimer
+		nMenu->addItem(new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
 			
 #if defined (ENABLE_SCART)
 		// scart
 		nMenu->addItem(new CMenuForwarder(_("Scart Mode"), true, NULL, this, "scart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCART));
 #endif
 
-		// mediaplayer
-		nMenu->addItem(new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MEDIAPLAYER));
+		// features
+		nMenu->addItem(new CMenuForwarder(_("Features"), true, NULL, this, "features", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FEATURES));
 		
 		// service
 		nMenu->addItem(new CMenuForwarder(_("System"), true, NULL, new CServiceMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SERVICE));
@@ -122,15 +123,15 @@ void CNeutrinoApp::mainMenu(void)
 		
 		// osd
 		nMenu->addItem(new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
-			
-		// features
-		nMenu->addItem(new CMenuForwarder(_("Features"), true, NULL, this, "features", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FEATURES));
+		
+		//box info
+		nMenu->addItem( new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
 
 		// power menu
 		nMenu->addItem(new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_POWERMENU));
-
-		//box info
-		nMenu->addItem( new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
+		
+		// mediaplayer
+		nMenu->addItem(new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MEDIAPLAYER));
 		
 		//
 		widget = new CWidget(nMenu->getWindowsPos().iX - 2, nMenu->getWindowsPos().iY - 2, nMenu->getWindowsPos().iWidth + 4, nMenu->getWindowsPos().iHeight + 4);
