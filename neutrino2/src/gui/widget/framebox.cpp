@@ -259,7 +259,7 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 				else if (halign == CC_ALIGN_RIGHT)
 					startPosX = window.getWindowsPos().iX + window.getWindowsPos().iWidth - c_w;
 
-				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + (window.getWindowsPos().iHeight - c_h)/2 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, caption.c_str(), color);
+				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + (window.getWindowsPos().iHeight - c_h)/2 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, caption.c_str(), (bgcolor == COL_YELLOW_PLUS_0)? COL_BLACK : color);
 			}
 		}
 	}
