@@ -124,7 +124,7 @@ void CPictureViewerSettings::showMenu()
 		PicViewerSettings->enableShrinkMenu();
 		
 		PicViewerSettings->enablePaintHead();
-		PicViewerSettings->setTitle(_("Pictureviewer settings"), NEUTRINO_ICON_PICTURE);
+		PicViewerSettings->setTitle(_("Pictureviewer settings"), NEUTRINO_ICON_PICTUREVIEWER);
 
 		PicViewerSettings->enablePaintFoot();
 			

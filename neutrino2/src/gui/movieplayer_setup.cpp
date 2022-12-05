@@ -97,7 +97,7 @@ void CMoviePlayerSettings::showMenu()
 		moviePlayerSettings->enableShrinkMenu();
 		
 		moviePlayerSettings->enablePaintHead();
-		moviePlayerSettings->setTitle(_("Movieplayer settings"), NEUTRINO_ICON_MOVIE);
+		moviePlayerSettings->setTitle(_("Movieplayer settings"), NEUTRINO_ICON_MOVIEPLAYER);
 
 		moviePlayerSettings->enablePaintFoot();
 			

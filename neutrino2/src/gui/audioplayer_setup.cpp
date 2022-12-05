@@ -103,7 +103,7 @@ void CAudioPlayerSettings::showMenu()
 		audioPlayerSettings->enableShrinkMenu();
 		
 		audioPlayerSettings->enablePaintHead();
-		audioPlayerSettings->setTitle(_("Audioplayer settings"), NEUTRINO_ICON_MP3);
+		audioPlayerSettings->setTitle(_("Audioplayer settings"), NEUTRINO_ICON_AUDIOPLAYER);
 
 		audioPlayerSettings->enablePaintFoot();
 			

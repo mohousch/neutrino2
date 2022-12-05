@@ -20,5 +20,14 @@ install_DATA = \
 	softupdate.png \
 	timer.png \
 	video.png \
-	webtv.png
+	webtv.png \
+	bookmarkmanager.png \
+	edit.png \
+	edit-find.png \
+	audioplayer.png \
+	movieplayer.png \
+	pictureviewer.png \
+	streaming.png
+	
+	
 	

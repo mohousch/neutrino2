@@ -102,6 +102,13 @@
 #define NEUTRINO_ICON_LANGUAGE					"language"
 #define NEUTRINO_ICON_NETWORK					"network"
 #define NEUTRINO_ICON_LCD					"lcd"
+#define NEUTRINO_ICON_AUDIOPLAYER				"audioplayer"
+#define NEUTRINO_ICON_MOVIEPLAYER				"movieplayer"
+#define NEUTRINO_ICON_PICTUREVIEWER				"pictureviewer"
+#define NEUTRINO_ICON_STREAMING					"streaming"
+#define NEUTRINO_ICON_EDIT					"edit"
+#define NEUTRINO_ICON_EDIT_FIND					"edit-find"
+#define NEUTRINO_ICON_BOOKMARKMANAGER				"bookmarkmanager"
 
 // screen
 #define NEUTRINO_ICON_BORDER_UL					"border_ul"
