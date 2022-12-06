@@ -54,7 +54,7 @@ class CTestMenu : public CMenuTarget
 		CPicture pic;
 		CPicturePlayList PicPlaylist;
 
-		//
+		// tmdb
 		CTmdb* tmdb;
 		std::string thumbnail_dir;
 		CFileHelpers fileHelper;
@@ -65,7 +65,7 @@ class CTestMenu : public CMenuTarget
 		tmdb_video_list_t mvlist;
 		std::string tmdbsearch;
 
-		//
+		// channellist
 		CChannelList* webTVchannelList;
 		CBouquetList* webTVBouquetList;
 		
@@ -110,8 +110,10 @@ class CTestMenu : public CMenuTarget
 		
 		CComponent* cCItem;
 		
-		//
+		// pb window
 		CProgressWindow * progressWindow;
+		
+		// pb
 		CProgressBar* progressBar;
 		CProgressBar* progressBar2;
 
@@ -130,7 +132,6 @@ class CTestMenu : public CMenuTarget
 		void testCWindowWidget();
 		void testCTextBoxWidget();
 		void testCFrameBoxWidget();
-		
 		void testCWidget();
 		void testMultiWidget();
 
@@ -165,7 +166,7 @@ class CTestMenu : public CMenuTarget
 		void testCMenuWidget1();
 		void testCMenuWidget2();
 
-		// widgets
+		// misc widgets
 		void testCStringInput();
 		void testCStringInputSMS();
 		void testCPINInput();
@@ -184,13 +185,11 @@ class CTestMenu : public CMenuTarget
 		void testCHintBoxInfo();
 		void testCHelpBox();
 
-		// gui widgets
+		// misc gui widgets
 		void testVFDController();
 		void testColorChooser();
 		void testKeyChooser();
 		void testMountChooser();
-
-		//
 		void testChannelSelectWidget();
 		void testBEWidget();
 		void testAVSelectWidget();
@@ -234,14 +233,14 @@ class CTestMenu : public CMenuTarget
 		void testSkinWidget();
 		void testSkinSetup();
 		
+		// paint()
+		void showMenu();
+		
 
 	public:
 		CTestMenu();
 		~CTestMenu();
 		int exec(CMenuTarget* parent, const std::string& actionKey);
-
-		// paint()
-		void showMenu();
 
 		// hide()
 		void hide();
@@ -2032,23 +2031,26 @@ void CTestMenu::testCWidgetItem()
 
 	CBox mainBox(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
 
+	//
 	CBox headBox;
 	headBox.iX = mainBox.iX;
 	headBox.iY = mainBox.iY;
 	headBox.iWidth = mainBox.iWidth;
 	headBox.iHeight = 40;
+	
+	headers = new CHeaders(&headBox, "testCWidgetItem", NEUTRINO_ICON_MP3);
 
+	headers->enablePaintDate();
+	headers->setFormat("%A %d.%m.%Y %H:%M:%S");
+	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+
+	//
 	CBox footBox;
 	footBox.iHeight = 40;
 	footBox.iX = mainBox.iX;
 	footBox.iY = mainBox.iY + mainBox.iHeight - footBox.iHeight;
 	footBox.iWidth = mainBox.iWidth;
-
-	headers = new CHeaders(&headBox, "testCWidgetItem", NEUTRINO_ICON_MP3);
-
-	headers->enablePaintDate();
-	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-
+	
 	footers = new CFooters(&footBox);
 
 	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
@@ -2105,18 +2107,23 @@ void CTestMenu::testCWidgetItem()
 	leftWidget->setOutFocus();
 
 	ClistBoxItem *item1 = new ClistBoxItem("In den Kinos");
+	item1->setBorderMode();
 	ClistBoxItem *item2 = new ClistBoxItem("Am");
 	item2->setOption("populärsten");
 	item2->set2lines();
+	item2->setBorderMode();
 	ClistBoxItem *item3 = new ClistBoxItem("Am besten");
 	item3->setOption("bewertet");
 	item3->set2lines();
+	item3->setBorderMode();
 	ClistBoxItem *item4 = new ClistBoxItem("Neue Filme");
+	item4->setBorderMode();
 	ClistBoxItem *item5 = new ClistBoxItem(NULL, false);
 	ClistBoxItem *item6 = new ClistBoxItem(NULL, false);
 	ClistBoxItem *item7 = new ClistBoxItem(NULL, false);
 	ClistBoxItem *item8 = new ClistBoxItem(NULL, false);
 	ClistBoxItem *item9 = new ClistBoxItem("Beenden");
+	item9->setBorderMode();
 
 	leftWidget->addItem(item1);
 	leftWidget->addItem(item2);
@@ -2240,11 +2247,11 @@ DOFILM:
 	}
 
 	// background
-	bool usedBackground = CFrameBuffer::getInstance()->getuseBackground();
-	if (usedBackground)
-		CFrameBuffer::getInstance()->saveBackgroundImage();
+	//bool usedBackground = CFrameBuffer::getInstance()->getuseBackground();
+	//if (usedBackground)
+	//	CFrameBuffer::getInstance()->saveBackgroundImage();
 		
-	CFrameBuffer::getInstance()->loadBackgroundPic(DATADIR "/icons/mp3.jpg");
+	//CFrameBuffer::getInstance()->loadBackgroundPic(DATADIR "/icons/mp3.jpg");
 	
 REPAINT:
 
@@ -2642,26 +2649,17 @@ REPAINT:
 	}
 
 	//restore previous background
-	if (usedBackground)
-	{
-		CFrameBuffer::getInstance()->restoreBackgroundImage();
-		CFrameBuffer::getInstance()->useBackground(usedBackground);
-	}
+	//if (usedBackground)
+	//{
+	//	CFrameBuffer::getInstance()->restoreBackgroundImage();
+	//	CFrameBuffer::getInstance()->useBackground(usedBackground);
+	//}
 
 	// hide background image
-	CFrameBuffer::getInstance()->paintBackground();
-	CFrameBuffer::getInstance()->blit();	
+	//CFrameBuffer::getInstance()->paintBackground();
+	//CFrameBuffer::getInstance()->blit();	
 
 	hide();
-
-	delete frameBoxWidget;
-	frameBoxWidget = NULL;
-
-	delete leftWidget;
-	leftWidget = NULL;
-
-	delete rightWidget;
-	rightWidget = NULL;
 
 	g_RCInput->killTimer(sec_timer_id);
 	sec_timer_id = 0;
@@ -2682,6 +2680,24 @@ REPAINT:
 	{
 		delete footers;
 		footers = NULL;
+	}
+	
+	if (frameBoxWidget)
+	{
+		delete frameBoxWidget;
+		frameBoxWidget = NULL;
+	}
+	
+	if (leftWidget)
+	{
+		delete leftWidget;
+		leftWidget = NULL;
+	}
+
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
 	}
 }
 
