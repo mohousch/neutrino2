@@ -131,7 +131,7 @@ void CBEBouquetWidget::paint()
 	}
 
 	//
-	listBox->setTitle(_("Bouquets"));
+	listBox->setTitle(_("Bouquets"), NEUTRINO_ICON_EDIT);
 	listBox->setHeadButtons(&HButton, 1);
 	
 	//
