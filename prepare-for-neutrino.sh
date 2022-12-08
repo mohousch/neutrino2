@@ -23,7 +23,7 @@ if `which lsb_release > /dev/null 2>&1`; then
 		CentOS*) FEDORA=1; INSTALL="yum install -y";;
 		SUSE*)   SUSE=1;   INSTALL="zypper install -y";;
 		Ubuntu*) UBUNTU=1; INSTALL="apt-get -y install";;
-		Linuxm*) UBUNTU=2; INSTALL="apt-get --force-yes install";;
+		Linuxm*) UBUNTU=2; INSTALL="apt-get install";;
 		Gentoo)  GENTOO=1; INSTALL="emerge -uN";;
 	esac
 fi
@@ -87,7 +87,7 @@ PACKAGES="\
 	\
 	${UBUNTU:+rpm}                                               ${FEDORA:+rpm-build}      ${GENTOO:+rpm}         \
 	${UBUNTU:+lsb-release}          ${SUSE:+lsb-release}         ${FEDORA:+redhat-lsb}     ${GENTOO:+lsb-release} \
-	${UBUNTU:+git-core}             ${SUSE:+git-core}            ${FEDORA:+git}            ${GENTOO:+git}         \
+	${UBUNTU:+git}             ${SUSE:+git-core}            ${FEDORA:+git}            ${GENTOO:+git}         \
 	${UBUNTU:+libncurses5-dev}      ${SUSE:+ncurses-devel}       ${FEDORA:+ncurses-devel}  ${GENTOO:+ncurses}     \
 	${UBUNTU:+libncursesw5-dev}                                                                                   \
 	${UBUNTU:+gettext}              ${SUSE:+gettext-devel}       ${FEDORA:+gettext-devel}  ${GENTOO:+gettext}     \
@@ -117,6 +117,7 @@ PACKAGES="\
 	${UBUNTU:+u-boot-tools}												\
 	${UBUNTU:+android-sdk-libsparse-utils}										\
 	${UBUNTU:+lua5.2}                                                                                       	\
+	${UBUNTU:+lua5.2-dev}                                                                                       	\
     	${UBUNTU:+python2-dev}                                                                                       	\
     	${UBUNTU:+libfreetype6-dev}											\
     	${UBUNTU:+libid3tag0-dev}											\
