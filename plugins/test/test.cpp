@@ -145,6 +145,7 @@ class CTestMenu : public CMenuTarget
 
 		// CWidgetItem
 		void testCHeaders();
+		void testCFooters();
 		void testCWindow();
 		void testCWindowShadow();
 		void testCWindowCustomColor();
@@ -1243,236 +1244,6 @@ void CTestMenu::testCTextBoxWidget()
 	
 	delete textBoxWidget;
 	textBoxWidget = NULL;
-}
-
-void CTestMenu::testCFrameBox1()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu:testCFrameBox1:\n");
-	
-	// mainBox
-	CBox box;
-	box.iX = CFrameBuffer::getInstance()->getScreenX() + 40;
-	box.iY = CFrameBuffer::getInstance()->getScreenY() + 40;
-	box.iWidth = CFrameBuffer::getInstance()->getScreenWidth() - 80;
-	box.iHeight = CFrameBuffer::getInstance()->getScreenHeight() - 80;
-
-	frameBoxWidget = new CFrameBox(&box);
-
-	CHintBox loadBox("CFrameBox", _("Scan for Movies ..."));
-	loadBox.paint();
-	
-	loadMoviePlaylist();
-	
-	loadBox.hide();
-
-	// titleBox
-	CBox titleBox;
-	titleBox.iX = box.iX + 10;
-	titleBox.iY = box.iY + 40 + 10;
-	titleBox.iWidth = box.iWidth;
-	titleBox.iHeight = 40;
-
-	// starBox
-	CBox starBox;
-	starBox.iX = box.iX +10;
-	starBox.iY = box.iY + titleBox.iHeight + 40 + 10;
-	starBox.iWidth = 25;
-	starBox.iHeight = 25;
-
-	// playBox
-	CBox playBox;
-	playBox.iWidth = 300;
-	playBox.iHeight = 60;
-	playBox.iX = box.iX + 10;
-	playBox.iY = box.iY + box.iHeight - 10 - 40 - 60;
-
-	// textBox
-	CBox textBox;
-	textBox.iWidth = box.iWidth/2 - 20;
-	textBox.iHeight = box.iHeight - playBox.iHeight - 80 - titleBox.iHeight - starBox.iHeight - 4*10 - 100;
-	textBox.iX = box.iX + 10 + 40;
-	textBox.iY = starBox.iY + 20;
-
-	// head
-	frameBoxWidget->enablePaintHead();
-	frameBoxWidget->setTitle("CFrameBox", NEUTRINO_ICON_MOVIE);
-	frameBoxWidget->enablePaintDate();
-	frameBoxWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-
-	// artFrame
-	CFrame * artFrame = new CFrame();
-	artFrame->setMode(FRAME_PICTURE);
-	artFrame->setPosition(box.iX + box.iWidth/2, box.iY + 40, box.iWidth/2, box.iHeight - 2*40);
-	artFrame->setIconName(m_vMovieInfo[0].tfile.c_str());
-	artFrame->setActive(false);
-
-	frameBoxWidget->addFrame(artFrame);
-
-	// title
-	CFrame *titleFrame = new CFrame();
-	titleFrame->setMode(FRAME_LABEL);
-	titleFrame->setPosition(&titleBox);
-	titleFrame->paintMainFrame(false);
-	titleFrame->setTitle(m_vMovieInfo[0].epgTitle.c_str());
-	titleFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
-	titleFrame->setActive(false);
-
-	frameBoxWidget->addFrame(titleFrame);
-
-	// star1
-	CFrame *star1Frame = new CFrame();
-	star1Frame->setMode(FRAME_ICON);
-	star1Frame->setPosition(&starBox);
-	star1Frame->setIconName(NEUTRINO_ICON_STAR_ON);
-	star1Frame->paintMainFrame(false);
-	star1Frame->setActive(false);
-
-	frameBoxWidget->addFrame(star1Frame);
-
-	// star2
-	CFrame *star2Frame = new CFrame();
-	star2Frame->setMode(FRAME_ICON);
-	star2Frame->setPosition(starBox.iX + 25, starBox.iY, starBox.iWidth, starBox.iHeight);
-	star2Frame->setIconName(NEUTRINO_ICON_STAR_ON);
-	star2Frame->paintMainFrame(false);
-	star2Frame->setActive(false);
-
-	frameBoxWidget->addFrame(star2Frame);
-
-	// star3
-	CFrame *star3Frame = new CFrame();
-	star3Frame->setMode(FRAME_ICON);
-	star3Frame->setPosition(starBox.iX + 2*25, starBox.iY, starBox.iWidth, starBox.iHeight);
-	star3Frame->setIconName(NEUTRINO_ICON_STAR_ON);
-	star3Frame->paintMainFrame(false);
-	star3Frame->setActive(false);
-
-	frameBoxWidget->addFrame(star3Frame);
-
-	// star4
-	CFrame *star4Frame = new CFrame();
-	star4Frame->setMode(FRAME_ICON);
-	star4Frame->setPosition(starBox.iX + 3*25, starBox.iY, starBox.iWidth, starBox.iHeight);
-	star4Frame->setIconName(NEUTRINO_ICON_STAR_OFF);
-	star4Frame->paintMainFrame(false);
-	star4Frame->setActive(false);
-
-	frameBoxWidget->addFrame(star4Frame);
-
-	// text
-	CFrame *textFrame = new CFrame();
-	textFrame->setMode(FRAME_TEXT);
-	textFrame->setPosition(&textBox);
-	std::string buffer;
-	buffer = m_vMovieInfo[0].epgInfo1;
-	buffer += "\n";
-	buffer += m_vMovieInfo[0].epgInfo2;
-
-	textFrame->setTitle(buffer.c_str());
-	textFrame->paintMainFrame(false);
-	textFrame->setActive(false);
-	
-	frameBoxWidget->addFrame(textFrame);
-
-	// infoFrame
-	CFrame * infoFrame = new CFrame();
-	infoFrame->setPosition(playBox.iX + 300 + 10, playBox.iY, 300, 60);
-	infoFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-	infoFrame->setTitle("Movie Details");
-	infoFrame->setIconName(NEUTRINO_ICON_INFO);
-	infoFrame->setActionKey(this, "minfo");
-	infoFrame->enableBorder();
-
-	frameBoxWidget->addFrame(infoFrame);
-
-	// play
-	CFrame *playFrame = new CFrame();
-	playFrame->setPosition(&playBox);
-	playFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-	playFrame->setTitle("Movie abspielen");
-	playFrame->setIconName(NEUTRINO_ICON_PLAY);
-	playFrame->setActionKey(this, "mplay");
-	playFrame->enableBorder();
-
-	frameBoxWidget->addFrame(playFrame);
-
-	// foot
-	frameBoxWidget->enablePaintFoot();
-	frameBoxWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	
-REPEAT:
-	frameBoxWidget->paint();
-	
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
-	
-	uint32_t sec_timer_id = 0;
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-
-	bool loop = true;
-
-	while(loop)
-	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-
-		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			frameBoxWidget->refresh();
-		} 
-		else if(msg == RC_right)
-		{
-			frameBoxWidget->swipRight();
-		}
-		else if(msg == RC_left)
-		{
-			frameBoxWidget->swipLeft();
-		}
-		else if(msg == RC_down)
-		{
-			frameBoxWidget->scrollLineDown();
-		}
-		else if(msg == RC_up)
-		{
-			frameBoxWidget->scrollLineUp();
-		}
-		else if(msg == RC_ok)
-		{
-			int rv = frameBoxWidget->oKKeyPressed(this);
-
-			//FIXME:review this
-			switch ( rv ) 
-			{
-				case RETURN_EXIT_ALL:
-					loop = false;
-				case RETURN_EXIT:
-					loop = false;
-					break;
-				case RETURN_REPAINT:
-					hide();
-					frameBoxWidget->paint();
-					break;
-			}
-		}
-		else if (msg == RC_home) 
-		{
-			loop = false;
-		}
-
-		CFrameBuffer::getInstance()->blit();
-	}
-
-	hide();
-	
-	delete frameBoxWidget;
-	frameBoxWidget = NULL;
-	
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
 }
 
 void CTestMenu::testCFrameBoxWidget()
@@ -2759,6 +2530,125 @@ void CTestMenu::testCImage()
 	testWidget = NULL;
 }
 
+// CProgressBar
+void CTestMenu::testCProgressBar()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCProgressBar\n");
+	
+	CBox Box;
+	
+	Box.iX = g_settings.screen_StartX + 10;
+	Box.iY = g_settings.screen_StartY + 10 + (g_settings.screen_EndY - g_settings.screen_StartY - 20)/2;
+	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20);
+	Box.iHeight = 10;
+	
+	CBox Box2;
+	
+	Box2.iX = g_settings.screen_StartX + 10;
+	Box2.iY = g_settings.screen_StartY + 50;
+	Box2.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20);
+	Box2.iHeight = 10;
+	
+	progressBar = new CProgressBar(&Box);
+	progressBar2 = new CProgressBar(&Box2, 40, 100, 70, false);
+	
+	//
+	progressBar->paint(10);
+	progressBar2->paint(10);
+	CFrameBuffer::getInstance()->blit();
+	usleep(1000000);
+	progressBar->paint(20);
+	progressBar2->paint(20);
+	CFrameBuffer::getInstance()->blit();
+	usleep(1000000);
+	progressBar->paint(30);
+	progressBar2->paint(30);
+	CFrameBuffer::getInstance()->blit();
+	usleep(1000000);
+	progressBar->paint(40);
+	progressBar2->paint(40);
+	CFrameBuffer::getInstance()->blit();
+	usleep(1000000);
+	progressBar->paint(50);
+	progressBar2->paint(50);
+	CFrameBuffer::getInstance()->blit();
+	usleep(1000000);
+	progressBar->paint(60);
+	progressBar2->paint(60);
+	CFrameBuffer::getInstance()->blit();
+	usleep(1000000);
+	progressBar->paint(70);
+	progressBar2->paint(70);
+	CFrameBuffer::getInstance()->blit();
+	usleep(1000000);
+	progressBar->paint(80);
+	progressBar2->paint(80);
+	CFrameBuffer::getInstance()->blit();
+	usleep(1000000);
+	progressBar->paint(90);
+	progressBar2->paint(90);
+	CFrameBuffer::getInstance()->blit();
+	usleep(1000000);
+	progressBar->paint(100);
+	progressBar2->paint(100);
+	CFrameBuffer::getInstance()->blit();
+	
+	delete progressBar;
+	progressBar = NULL;
+	
+	delete progressBar2;
+	progressBar2 = NULL;
+	
+	//
+	hide();
+}
+
+// CButtons
+void CTestMenu::testCButtons()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCButtons (foot)\n");
+	
+	CCButtons buttons;
+
+	int icon_w, icon_h;
+	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
+	
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
+	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	buttons.setMode(BUTTON_FRAME_COLORED);
+	buttons.paint();
+
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	g_RCInput->messageLoop();
+	hide();
+}
+
+// CButtons
+void CTestMenu::testCHButtons()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCButtons (head)\n");
+	
+	CCButtons buttons;
+
+	int icon_w, icon_h;
+	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
+	
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
+	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
+	buttons.setMode(BUTTON_FRAME_COLORED);
+	buttons.paint();
+
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	g_RCInput->messageLoop();
+	
+	hide();
+}
+
+
 // CComponent
 void CTestMenu::testCComponent()
 {
@@ -2914,7 +2804,8 @@ void CTestMenu::testCComponent()
 	// loop
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	windowWidget->setSecTimer(sec_timer_id);
-	windowWidget->exec();		
+	windowWidget->exec(10);	
+	windowWidget->hide();	
 	
 	if (sec_timer_id)
 	{
@@ -2923,10 +2814,87 @@ void CTestMenu::testCComponent()
 		sec_timer_id = 0;
 	}
 	
-	windowWidget->hide();
+	if (windowWidget)
+	{
+		delete windowWidget;
+		windowWidget = NULL;
+	}
+}
+
+//
+void CTestMenu::testCHeaders()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCHeaders\n");
 	
-	delete windowWidget;
-	windowWidget = NULL;
+	CBox headBox;
+	headBox.iX = g_settings.screen_StartX + 10;
+	headBox.iY = g_settings.screen_StartY + 10;
+	headBox.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20);
+	headBox.iHeight = 40;
+
+	//
+	headers = new CHeaders(&headBox);
+
+	headers->setTitle("test CHeaders");
+	headers->setIcon(NEUTRINO_ICON_MP3);
+	headers->enablePaintDate();
+	headers->setFormat("%d.%m.%Y %H:%M:%S");
+	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	headers->setHAlign(CC_ALIGN_CENTER);
+	//headers->setRadius(4);
+	headers->setCorner(4, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
+		
+	headers->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	uint32_t sec_timer_id = 0;
+
+	// add sec timer
+	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	headers->setSecTimer(sec_timer_id);
+	headers->exec(10);
+	headers->hide();
+
+	g_RCInput->killTimer(sec_timer_id);
+	sec_timer_id = 0;
+
+	if(headers)
+	{
+		delete headers;
+		headers = NULL;
+	}
+}
+
+void CTestMenu::testCFooters()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCFooters\n");
+
+	CBox footBox;
+	footBox.iHeight = 40;
+	footBox.iX = g_settings.screen_StartX + 10;
+	footBox.iY = g_settings.screen_EndY - 10 - footBox.iHeight;
+	footBox.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20);
+
+	//
+	footers = new CFooters(&footBox);
+	
+	footers->setCorner(4, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
+	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+		
+	footers->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	footers->exec(10);
+	footers->hide();
+
+	if(footers)
+	{
+		delete footers;
+		footers = NULL;
+	}
 }
 
 // Cwindow
@@ -2952,16 +2920,14 @@ void CTestMenu::testCWindow()
 	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	testWidget = new CWidget(&Box);
-
-	testWidget->exec(NULL, "");
-
+	window->exec();
 	window->hide();
-	delete window;
-	window = NULL;
-
-	delete testWidget;
-	testWidget = NULL;
+	
+	if (window)
+	{
+		delete window;
+		window = NULL;
+	}
 }
 
 // CWindow
@@ -2987,16 +2953,15 @@ void CTestMenu::testCWindowShadow()
 	window->paint();
 	CFrameBuffer::getInstance()->blit();
 
-	testWidget = new CWidget(&Box);
-
-	testWidget->exec(NULL, "");
-
+	// loop
+	window->exec();
 	window->hide();
-	delete window;
-	window = NULL;
-
-	delete testWidget;
-	testWidget = NULL;
+	
+	if (window)
+	{
+		delete window;
+		window = NULL;
+	}
 }
 
 // custom Color
@@ -3022,100 +2987,1260 @@ void CTestMenu::testCWindowCustomColor()
 	window->paint();
 	CFrameBuffer::getInstance()->blit();
 
-	testWidget = new CWidget(&Box);
-
-	testWidget->exec(NULL, "");
-
+	// loop
+	window->exec();
 	window->hide();
-	delete window;
-	window = NULL;
-
-	delete testWidget;
-	testWidget = NULL;
+	
+	if (window)
+	{
+		delete window;
+		window = NULL;
+	}
 }
 
-void CTestMenu::testCHeaders()
+// CTextBox
+void CTestMenu::testCTextBox()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCHeaders\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCTextBox\n");
+
+	CBox Box;
 	
-	CBox headBox;
-	headBox.iX = g_settings.screen_StartX + 10;
-	headBox.iY = g_settings.screen_StartY + 10;
-	headBox.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20);
-	headBox.iHeight = 40;
+	Box.iX = g_settings.screen_StartX + 10;
+	Box.iY = g_settings.screen_StartY + 10;
+	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
+	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 20);
+	
+	textBoxWidget = new CTextBox();
 
-	CBox footBox;
-	footBox.iHeight = 40;
-	footBox.iX = g_settings.screen_StartX + 10;
-	footBox.iY = g_settings.screen_EndY - 10 - footBox.iHeight;
-	footBox.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20);
+	textBoxWidget->setPosition(&Box);
+	
+	loadMoviePlaylist();
+	
+	std::string buffer;
+	buffer = m_vMovieInfo[0].epgInfo1;
+	buffer += "\n";
+	buffer += m_vMovieInfo[0].epgInfo2;
+	
+	// scale pic
+	int p_w = 0;
+	int p_h = 0;
 
-	//headers = new CHeaders(headBox, "test CHeaders", NEUTRINO_ICON_MP3);
-	headers = new CHeaders(&headBox);
+	scaleImage(m_vMovieInfo[0].tfile, &p_w, &p_h);
+	
+	textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
+	
+	textBoxWidget->addKey(RC_ok, this, "winfo");
+	
+	//	
+	textBoxWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+	
+	// loop
+	textBoxWidget->exec();
+	textBoxWidget->hide();
+	
+	if (textBoxWidget)
+	{
+		delete textBoxWidget;
+		textBoxWidget = NULL;
+	}
+}
 
-	headers->setTitle("test CHeaders");
-	headers->setIcon(NEUTRINO_ICON_MP3);
-	headers->enablePaintDate();
-	headers->setFormat("%d.%m.%Y %H:%M:%S");
-	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	headers->setHAlign(CC_ALIGN_CENTER);
-	//headers->setRadius(4);
-	headers->setCorner(4, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
+// ClistFrame
+void CTestMenu::testCListFrame()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistFrame\n");
 
-	footers = new CFooters(&footBox);
-	//footers->setRadius(4);
-	footers->setCorner(4, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
+	CBox listFrameBox;
+	LF_LINES listFrameLines;
+	int selected = 0;
+	
+	//
+	listFrameBox.iWidth = CFrameBuffer::getInstance()->getScreenWidth() / 20 * 17;
+	listFrameBox.iHeight = CFrameBuffer::getInstance()->getScreenHeight() / 20 * 18;
 
-	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	// recalculate x and y
+	listFrameBox.iX = CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - (listFrameBox.iWidth)) / 2);
+	listFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - listFrameBox.iHeight) / 2);
+
+	//
+#define MAX_ROWS 		LF_MAX_ROWS //6
+
+	// init
+	listFrameLines.rows = 6;
+
+	for(int row = 0; row < 6; row++)
+	{
+		listFrameLines.lineArray[row].clear();
+	}
+
+	// rowwidth
+	listFrameLines.rowWidth[0] = MAX_WINDOW_WIDTH / 20;
+	listFrameLines.rowWidth[1] = MAX_WINDOW_WIDTH / 4;
+	listFrameLines.rowWidth[2] = MAX_WINDOW_WIDTH / 12;
+	listFrameLines.rowWidth[3] = MAX_WINDOW_WIDTH / 8;
+	listFrameLines.rowWidth[4] = MAX_WINDOW_WIDTH / 5;
+	listFrameLines.rowWidth[5] = MAX_WINDOW_WIDTH / 10;
+
+	// headertitle
+	listFrameLines.lineHeader[0] = "Nr";
+	listFrameLines.lineHeader[1] = "title";
+	listFrameLines.lineHeader[2] = "duration";
+	listFrameLines.lineHeader[3] = "genre";
+	listFrameLines.lineHeader[4] = "artist";
+	listFrameLines.lineHeader[5] = "date";
+	
+
+	listFrame = new CListFrame(&listFrameLines, NULL, CListFrame::TITLE | CListFrame::HEADER_LINE | CListFrame::SCROLL, &listFrameBox);
+
+	// title
+	listFrame->setTitle("listFrame (AudioPlayer)", NEUTRINO_ICON_MP3);
+	
+	// fill lineArrays list
+	CHintBox loadBox("listFrame", _("Scan for Movies ..."));
+	loadBox.paint();
+	
+	loadAudioPlaylist();
+	
+	loadBox.hide();
+
+	//
+	int count = 0;
+	for (unsigned int i = 0; i < AudioPlaylist.size(); i++)
+	{
+		std::string title;
+		std::string artist;
+		std::string genre;
+		std::string date;
+		char duration[9] = "";
+
+		title = AudioPlaylist[i].MetaData.title;
+		artist = AudioPlaylist[i].MetaData.artist;
+		genre = AudioPlaylist[i].MetaData.genre;	
+		date = AudioPlaylist[i].MetaData.date;
+
+		snprintf(duration, 8, "(%ld:%02ld)", AudioPlaylist[i].MetaData.total_time / 60, AudioPlaylist[i].MetaData.total_time % 60);
+
+		listFrameLines.lineArray[0].push_back(to_string(i + 1));
+		listFrameLines.lineArray[1].push_back(title);
+		listFrameLines.lineArray[2].push_back(duration);
+		listFrameLines.lineArray[3].push_back(genre);
+		listFrameLines.lineArray[4].push_back(artist);
+		listFrameLines.lineArray[5].push_back(date);
+	}
+	
+	//
+	listFrame->setLines(&listFrameLines);
+	
+	//
+	listFrame->addKey(RC_ok, this, "aok");
+	
+	// paint
+	listFrame->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	CAudioPlayer::getInstance()->init();
+	
+	// loop
+	listFrame->exec();		
+	
+	//
+	for(int i = 0; i < 6; i++)
+	{
+		listFrameLines.lineArray[i].clear();
+	}
+
+	listFrame->hide();
+	
+	delete listFrame;
+	listFrame = NULL;
+}
+
+// ClistBox(standard)
+void CTestMenu::testClistBox()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(standard)\n");
+
+	CBox Box;
+	
+	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20)/2;
+	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
+
+	Box.iX = 50; //frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
+	Box.iY = 50; //frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+
+	rightWidget = new ClistBox(&Box);
+	
+	CHintBox loadBox("testClistBox(standard)", _("Scan for Movies ..."));
+	loadBox.paint();
+	loadMoviePlaylist();
+	loadBox.hide();
+	
+	// load items
+	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
+	{
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str()/*, true, NULL, this, "mmwplay"*/);
+
+		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
+
+		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
+
+		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
+
+		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+
+		item->set2lines();
+
+		std::string tmp = m_vMovieInfo[i].epgInfo1;
+		tmp += "\n";
+		tmp += m_vMovieInfo[i].epgInfo2;
+
+		item->setHint(tmp.c_str());
 		
-	headers->paint();
-	footers->paint();
+		rightWidget->addItem(item);
+	}
+
+	// mode
+	rightWidget->setWidgetType(TYPE_CLASSIC);
+	rightWidget->addWidgetType(TYPE_STANDARD);
+	rightWidget->addWidgetType(TYPE_EXTENDED);
+	rightWidget->addWidgetType(TYPE_FRAME);
+	rightWidget->setWidgetMode(MODE_MENU);
+	rightWidget->enableShrinkMenu();
+	rightWidget->paintMainFrame(true);
+
+	// head
+	rightWidget->enablePaintHead();
+	rightWidget->setTitle("ClistBox (standard)", NEUTRINO_ICON_MOVIE);
+	rightWidget->setTitleHAlign(CC_ALIGN_CENTER);
+	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	rightWidget->enablePaintDate();
+	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
+
+	// footer
+	rightWidget->enablePaintFoot();
+	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+
+	// itemInfo
+	rightWidget->enablePaintItemInfo(70);
+	rightWidget->setItemInfoMode(ITEMINFO_HINTITEM_MODE);
+	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
+	rightWidget->paintItemInfoBorder(BORDER_ALL);
+	rightWidget->paintItemInfoFrame(true);
+	rightWidget->enableItemInfoSaveScreen();
+	rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_GAMELIST_ITEMLARGE);
+	
+	//
+	//rightWidget->paintScrollBar(false);
+	
+	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_info, this, "linfo");
+	rightWidget->addKey(RC_setup, this, "lsetup");
+	
+	rightWidget->paint();
 	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	rightWidget->setSecTimer(sec_timer_id);
+	rightWidget->exec();
+	rightWidget->hide();		
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+}
 
+// ClistBox(classic)
+void CTestMenu::testClistBox2()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(classic)\n");
+
+	CBox Box;
+	
+	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
+	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
+
+	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
+	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+
+	rightWidget = new ClistBox(&Box);
+
+	CHintBox loadBox("ClistBox(classic)", _("Scan for Movies ..."));
+	loadBox.paint();
+	loadMoviePlaylist();
+	loadBox.hide();
+
+	// load items
+	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
+	{
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str()/*, true, NULL, this, "mmwplay"*/);
+
+		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
+		//item->setOptionInfo("OptionInfo");
+
+		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
+		//item->setOptionInfo1("OptionInfo1");
+
+		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
+		//item->setOptionInfo2("OptionInfo2");
+
+		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+
+		item->set2lines();
+
+		std::string tmp = m_vMovieInfo[i].epgInfo1;
+		tmp += "\n";
+		tmp += m_vMovieInfo[i].epgInfo2;
+
+		item->setHint(tmp.c_str());
+
+		rightWidget->addItem(item);
+	}
+
+	// widgettype
+	rightWidget->setWidgetType(TYPE_CLASSIC);
+	rightWidget->enableShrinkMenu();
+
+	// head
+	rightWidget->setTitle("ClistBox(classic)", NEUTRINO_ICON_MOVIE);
+	rightWidget->enablePaintHead();
+	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	rightWidget->enablePaintDate();
+	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
+
+	// footer
+	rightWidget->enablePaintFoot();
+	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+
+	// footinfo
+	//rightWidget->enablePaintItemInfo(70);
+	//rightWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
+
+	//rightWidget->setSelected(selected);
+	
+	//
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_info, this, "linfo");
+	rightWidget->addKey(RC_setup, this, "lsetup");
+	
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	rightWidget->setSecTimer(sec_timer_id);
+	rightWidget->exec();		
+	rightWidget->hide();
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+}
+
+// ClistBox(extended)
+void CTestMenu::testClistBox3()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(extended)\n");
+
+	CBox Box;
+	
+	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
+	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
+
+	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
+	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+
+	rightWidget = new ClistBox(&Box);
+
+	CHintBox loadBox("ClistBox(extended)", _("Scan for Movies ..."));
+	loadBox.paint();
+	loadMoviePlaylist();
+	loadBox.hide();
+
+	// load items
+	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
+	{
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
+
+		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
+		//item->setOptionInfo("OptionInfo");
+
+		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
+		//item->setOptionInfo1("OptionInfo1");
+
+		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
+		//item->setOptionInfo2("OptionInfo2");
+
+		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+
+		//item->set2lines();
+
+		std::string tmp = m_vMovieInfo[i].epgInfo1;
+		tmp += "\n";
+		tmp += m_vMovieInfo[i].epgInfo2;
+
+		item->setHint(tmp.c_str());
+
+		rightWidget->addItem(item);
+	}
+
+	// widgettype
+	rightWidget->setWidgetType(TYPE_EXTENDED);
+	rightWidget->enableShrinkMenu();
+
+	// head
+	rightWidget->setTitle("ClistBox(extended)", NEUTRINO_ICON_MOVIE);
+	rightWidget->enablePaintHead();
+	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	rightWidget->enablePaintDate();
+
+	// footer
+	rightWidget->enablePaintFoot();
+	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+
+	// footinfo
+	rightWidget->enablePaintItemInfo(80);
+
+	//rightWidget->setSelected(selected);
+	
+	//
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_info, this, "linfo");
+	rightWidget->addKey(RC_setup, this, "lsetup");
+	
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	rightWidget->setSecTimer(sec_timer_id);
+	rightWidget->exec();		
+	rightWidget->hide();
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+}
+
+// ClistBox(frame)
+void CTestMenu::testClistBox4()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(frame)\n");
+
+	CBox Box;
+	
+	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
+	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
+
+	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
+	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+
+	rightWidget = new ClistBox(&Box);
+
+	CHintBox loadBox("ClistBox(frame)", _("Scan for Movies ..."));
+	loadBox.paint();
+	loadMoviePlaylist();
+	loadBox.hide();
+
+	// load items
+	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
+	{
+		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
+
+		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
+
+		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
+
+		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
+
+		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+
+		item->set2lines();
+
+		std::string tmp = m_vMovieInfo[i].epgInfo1;
+		tmp += "\n";
+		tmp += m_vMovieInfo[i].epgInfo2;
+
+		item->setHint(tmp.c_str());
+
+		rightWidget->addItem(item);
+	}
+
+	// widgettype
+	rightWidget->setWidgetType(TYPE_FRAME);
+	rightWidget->setItemsPerPage(5,2);
+	rightWidget->enableShrinkMenu();
+	
+	rightWidget->paintMainFrame(false);
+	
+	// head
+	//rightWidget->enablePaintHead();
+	rightWidget->setTitle("ClistBox (FRAME)", NEUTRINO_ICON_MOVIE);
+	//rightWidget->setTitleHAlign(CC_ALIGN_CENTER);
+	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	rightWidget->enablePaintDate();
+	
+	// foot
+	//rightWidget->enablePaintFoot();
+	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	
+	//
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_info, this, "linfo");
+	rightWidget->addKey(RC_setup, this, "lsetup");
+	
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	rightWidget->setSecTimer(sec_timer_id);
+	rightWidget->exec();		
+	rightWidget->hide();
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+}
+
+// ClistBox(DL_INFO)
+void CTestMenu::testClistBox5()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(DL_INFO)\n");
+
+	CBox Box;
+	
+	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
+	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
+
+	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
+	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+
+	rightWidget = new ClistBox(&Box);
+
+	CHintBox loadBox("ClistBox(DL_INFO)", _("Scan for Movies ..."));
+	loadBox.paint();
+	loadMoviePlaylist();
+	loadBox.hide();
+
+	// load items
+	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
+	{
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
+
+		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
+		//item->setOptionInfo("OptionInfo");
+
+		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
+		//item->setOptionInfo1("OptionInfo1");
+
+		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
+		//item->setOptionInfo2("OptionInfo2");
+
+		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+
+		item->set2lines();
+
+		std::string tmp = m_vMovieInfo[i].epgInfo1;
+		tmp += "\n";
+		tmp += m_vMovieInfo[i].epgInfo2;
+
+		item->setHint(tmp.c_str());
+		
+		rightWidget->addItem(item);
+	}
+
+	// mode
+	rightWidget->setWidgetType(TYPE_STANDARD);
+	rightWidget->enableShrinkMenu();
+
+	//
+	rightWidget->addWidgetType(TYPE_CLASSIC);
+	rightWidget->addWidgetType(TYPE_EXTENDED);
+	rightWidget->addWidgetType(TYPE_FRAME);
+	//rightWidget->enableWidgetChange();
+
+	rightWidget->setItemsPerPage(5, 2);
+
+	// head
+	rightWidget->setTitle("ClistBox(DL_INFO)", NEUTRINO_ICON_MOVIE);
+	rightWidget->enablePaintHead();
+	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	rightWidget->enablePaintDate();
+
+	// footer
+	rightWidget->enablePaintFoot();
+	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+
+	// footinfo
+	rightWidget->enablePaintItemInfo(80);
+	rightWidget->setItemInfoMode(ITEMINFO_INFO_MODE);
+
+	//rightWidget->setSelected(selected);
+	
+	//
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_info, this, "linfo");
+	rightWidget->addKey(RC_setup, this, "lsetup");
+	
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	rightWidget->setSecTimer(sec_timer_id);
+	rightWidget->exec();		
+	rightWidget->hide();
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+}
+
+// ClistBox(listBox mode)
+void CTestMenu::testClistBox6()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(DL_HINT)\n");
+
+	CBox Box;
+	
+	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
+	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
+
+	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
+	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+
+	rightWidget = new ClistBox(&Box);
+
+	CHintBox loadBox("ClistBox(DL_HINT)", _("Scan for Movies ..."));
+	loadBox.paint();
+	loadMoviePlaylist();
+	loadBox.hide();
+
+	// load items
+	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
+	{
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
+
+		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
+		//item->setOptionInfo("OptionInfo");
+
+		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
+		//item->setOptionInfo1("OptionInfo1");
+
+		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
+		//item->setOptionInfo2("OptionInfo2");
+
+		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+
+		item->set2lines();
+
+		std::string tmp = m_vMovieInfo[i].epgInfo1;
+		tmp += "\n";
+		tmp += m_vMovieInfo[i].epgInfo2;
+
+		item->setHint(tmp.c_str());
+		
+		//item->setWidgetMode(MODE_MENU);
+		item->setBorderMode(BORDER_TOPBOTTOM);
+		item->setGradient(LIGHT2DARK2LIGHT);
+		
+		rightWidget->addItem(item);
+	}
+
+	// mode
+	rightWidget->setWidgetType(TYPE_STANDARD);
+	rightWidget->enableShrinkMenu();
+
+	//
+	rightWidget->addWidgetType(TYPE_CLASSIC);
+	rightWidget->addWidgetType(TYPE_EXTENDED);
+	rightWidget->addWidgetType(TYPE_FRAME);
+
+	rightWidget->setItemsPerPage(5, 2);
+
+	// head
+	rightWidget->setTitle("ClistBox(DL_HINT)", NEUTRINO_ICON_MOVIE);
+	rightWidget->enablePaintHead();
+	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	rightWidget->enablePaintDate();
+
+	// footer
+	rightWidget->enablePaintFoot();
+	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+
+	// footinfo
+	rightWidget->enablePaintItemInfo(80);
+	rightWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
+
+	//rightWidget->setSelected(selected);
+	
+	//
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	//
+	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_info, this, "linfo");
+	rightWidget->addKey(RC_setup, this, "lsetup");
+	
+	rightWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	rightWidget->setSecTimer(sec_timer_id);
+	rightWidget->exec();		
+	rightWidget->hide();
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
+	
+	if (rightWidget)
+	{
+		delete rightWidget;
+		rightWidget = NULL;
+	}
+}
+
+void CTestMenu::testCFrameBox()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::CTestMenu::testCFrameBox\n");
+
+	// frameBox
+	CBox topBox;
+	
+	topBox.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20)/4;
+	topBox.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 20);
+	topBox.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - 20) - topBox.iWidth )>> 1;
+	topBox.iY = g_settings.screen_StartY + 10;
+
+	frameBoxWidget = new CFrameBox(&topBox);
+	frameBoxWidget->enableSaveScreen();
+	frameBoxWidget->setColor(0);
+
+	CFrame * frame = NULL;
+
+	frame = new CFrame();
+	frame->setPosition(topBox.iX + 10, topBox.iY + 10, topBox.iWidth - 20, 60);
+	frame->setTitle("Neu Filme");
+	frame->setIconName(NEUTRINO_ICON_MOVIE);
+	frame->setOption("in allen Kinos");
+	frame->setActionKey(this, "help");
+	frame->setColor(COL_RED_PLUS_0);
+	frame->setGradient(DARK2LIGHT2DARK);
+	frame->setHAlign(CC_ALIGN_CENTER);
+	frameBoxWidget->addFrame(frame);
+	
+	frame = new CFrame();
+	frame->setPosition(topBox.iX + 10, topBox.iY + 10 + 60 + 10, topBox.iWidth - 20, 60);
+	frame->setTitle("Im Kino");
+	frame->setActionKey(this, "help");
+	frame->setColor(COL_GREEN_PLUS_0);
+	frame->setGradient(LIGHT2DARK);
+	frame->setHAlign(CC_ALIGN_CENTER);
+	frameBoxWidget->addFrame(frame);
+
+	frame = new CFrame();
+	frame->setPosition(topBox.iX + 10, topBox.iY + 2*(10 + 60) +10, topBox.iWidth - 20, 60);
+	frame->setTitle("Am populärsten");
+	frame->setOption("(2019)");
+	frame->setActionKey(this, "help");
+	frame->setColor(COL_NOBEL_PLUS_0);
+	frame->setHAlign(CC_ALIGN_CENTER);
+	frameBoxWidget->addFrame(frame);
+	
+	// pic
+	frame = new CFrame();
+	frame->setMode(FRAME_PICTURE);
+	frame->setPosition(topBox.iX + 10, topBox.iY + 3*(10 + 60) +50, topBox.iWidth - 20, 200);
+	//frame->setActive(false);
+	frame->setIconName(DATADIR "/icons/nopreview.jpg");
+	frameBoxWidget->addFrame(frame);
+
+	frame = new CFrame();
+	frame->setPosition(topBox.iX + 10, topBox.iY + topBox.iHeight - 60 - 10, topBox.iWidth - 20, 60);
+	frame->setTitle("Exit");
+	frame->setActionKey(this, "exit");
+	frame->setGradient(LIGHT2DARK);
+	frame->setColor(COL_BLUE_PLUS_0);
+	frame->setHAlign(CC_ALIGN_CENTER);
+	frameBoxWidget->addFrame(frame);
+
+	frameBoxWidget->setSelected(selected);
+
+	frameBoxWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	frameBoxWidget->setSecTimer(sec_timer_id);
+	frameBoxWidget->exec();
+	frameBoxWidget->hide();		
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
+	
+	if (frameBoxWidget)
+	{
+		delete frameBoxWidget;
+		frameBoxWidget = NULL;
+	}
+}
+
+void CTestMenu::testCFrameBox1()
+{
+	dprintf(DEBUG_NORMAL, "\nCTestMenu:testCFrameBox1:\n");
+	
+	// mainBox
+	CBox box;
+	box.iX = CFrameBuffer::getInstance()->getScreenX() + 40;
+	box.iY = CFrameBuffer::getInstance()->getScreenY() + 40;
+	box.iWidth = CFrameBuffer::getInstance()->getScreenWidth() - 80;
+	box.iHeight = CFrameBuffer::getInstance()->getScreenHeight() - 80;
+
+	frameBoxWidget = new CFrameBox(&box);
+
+	CHintBox loadBox("CFrameBox", _("Scan for Movies ..."));
+	loadBox.paint();
+	
+	loadMoviePlaylist();
+	
+	loadBox.hide();
+
+	// titleBox
+	CBox titleBox;
+	titleBox.iX = box.iX + 10;
+	titleBox.iY = box.iY + 40 + 10;
+	titleBox.iWidth = box.iWidth;
+	titleBox.iHeight = 40;
+
+	// starBox
+	CBox starBox;
+	starBox.iX = box.iX +10;
+	starBox.iY = box.iY + titleBox.iHeight + 40 + 10;
+	starBox.iWidth = 25;
+	starBox.iHeight = 25;
+
+	// playBox
+	CBox playBox;
+	playBox.iWidth = 300;
+	playBox.iHeight = 60;
+	playBox.iX = box.iX + 10;
+	playBox.iY = box.iY + box.iHeight - 10 - 40 - 60;
+
+	// textBox
+	CBox textBox;
+	textBox.iWidth = box.iWidth/2 - 20;
+	textBox.iHeight = box.iHeight - playBox.iHeight - 80 - titleBox.iHeight - starBox.iHeight - 4*10 - 100;
+	textBox.iX = box.iX + 10 + 40;
+	textBox.iY = starBox.iY + 20;
+
+	// head
+	frameBoxWidget->enablePaintHead();
+	frameBoxWidget->setTitle("CFrameBox", NEUTRINO_ICON_MOVIE);
+	frameBoxWidget->enablePaintDate();
+	frameBoxWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+
+	// artFrame
+	CFrame * artFrame = new CFrame();
+	artFrame->setMode(FRAME_PICTURE);
+	artFrame->setPosition(box.iX + box.iWidth/2, box.iY + 40, box.iWidth/2, box.iHeight - 2*40);
+	artFrame->setIconName(m_vMovieInfo[0].tfile.c_str());
+	artFrame->setActive(false);
+
+	frameBoxWidget->addFrame(artFrame);
+
+	// title
+	CFrame *titleFrame = new CFrame();
+	titleFrame->setMode(FRAME_LABEL);
+	titleFrame->setPosition(&titleBox);
+	titleFrame->paintMainFrame(false);
+	titleFrame->setTitle(m_vMovieInfo[0].epgTitle.c_str());
+	titleFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
+	titleFrame->setActive(false);
+
+	frameBoxWidget->addFrame(titleFrame);
+
+	// star1
+	CFrame *star1Frame = new CFrame();
+	star1Frame->setMode(FRAME_ICON);
+	star1Frame->setPosition(&starBox);
+	star1Frame->setIconName(NEUTRINO_ICON_STAR_ON);
+	star1Frame->paintMainFrame(false);
+	star1Frame->setActive(false);
+
+	frameBoxWidget->addFrame(star1Frame);
+
+	// star2
+	CFrame *star2Frame = new CFrame();
+	star2Frame->setMode(FRAME_ICON);
+	star2Frame->setPosition(starBox.iX + 25, starBox.iY, starBox.iWidth, starBox.iHeight);
+	star2Frame->setIconName(NEUTRINO_ICON_STAR_ON);
+	star2Frame->paintMainFrame(false);
+	star2Frame->setActive(false);
+
+	frameBoxWidget->addFrame(star2Frame);
+
+	// star3
+	CFrame *star3Frame = new CFrame();
+	star3Frame->setMode(FRAME_ICON);
+	star3Frame->setPosition(starBox.iX + 2*25, starBox.iY, starBox.iWidth, starBox.iHeight);
+	star3Frame->setIconName(NEUTRINO_ICON_STAR_ON);
+	star3Frame->paintMainFrame(false);
+	star3Frame->setActive(false);
+
+	frameBoxWidget->addFrame(star3Frame);
+
+	// star4
+	CFrame *star4Frame = new CFrame();
+	star4Frame->setMode(FRAME_ICON);
+	star4Frame->setPosition(starBox.iX + 3*25, starBox.iY, starBox.iWidth, starBox.iHeight);
+	star4Frame->setIconName(NEUTRINO_ICON_STAR_OFF);
+	star4Frame->paintMainFrame(false);
+	star4Frame->setActive(false);
+
+	frameBoxWidget->addFrame(star4Frame);
+
+	// text
+	CFrame *textFrame = new CFrame();
+	textFrame->setMode(FRAME_TEXT);
+	textFrame->setPosition(&textBox);
+	std::string buffer;
+	buffer = m_vMovieInfo[0].epgInfo1;
+	buffer += "\n";
+	buffer += m_vMovieInfo[0].epgInfo2;
+
+	textFrame->setTitle(buffer.c_str());
+	textFrame->paintMainFrame(false);
+	textFrame->setActive(false);
+	
+	frameBoxWidget->addFrame(textFrame);
+
+	// infoFrame
+	CFrame * infoFrame = new CFrame();
+	infoFrame->setPosition(playBox.iX + 300 + 10, playBox.iY, 300, 60);
+	infoFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
+	infoFrame->setTitle("Movie Details");
+	infoFrame->setIconName(NEUTRINO_ICON_INFO);
+	infoFrame->setActionKey(this, "minfo");
+	infoFrame->enableBorder();
+
+	frameBoxWidget->addFrame(infoFrame);
+
+	// play
+	CFrame *playFrame = new CFrame();
+	playFrame->setPosition(&playBox);
+	playFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
+	playFrame->setTitle("Movie abspielen");
+	playFrame->setIconName(NEUTRINO_ICON_PLAY);
+	playFrame->setActionKey(this, "mplay");
+	playFrame->enableBorder();
+
+	frameBoxWidget->addFrame(playFrame);
+
+	// foot
+	frameBoxWidget->enablePaintFoot();
+	frameBoxWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	
+	//
+	frameBoxWidget->paint();
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
 	uint32_t sec_timer_id = 0;
 
 	// add sec timer
 	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-
-	bool loop = true;
-
-	while(loop)
+	
+	frameBoxWidget->setSecTimer(sec_timer_id);
+	frameBoxWidget->exec();
+	frameBoxWidget->hide();
+	
+	if (sec_timer_id)
 	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-
-		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			headers->refresh();
-		} 
-		else if (msg == RC_home) 
-		{
-			loop = false;
-		}
-
-		CFrameBuffer::getInstance()->blit();
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
 	}
 	
-	hide();
-
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
-
-	if(headers)
+	if (frameBoxWidget)
 	{
-		delete headers;
-		headers = NULL;
-	}
-
-	if(footers)
-	{
-		delete footers;
-		footers = NULL;
+		delete frameBoxWidget;
+		frameBoxWidget = NULL;
 	}
 }
+
+
+// CMenuWidget (listBox mode)
+void CTestMenu::testCMenuWidget()
+{
+	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (listBox mode)\n");
+	
+	// our listBox
+	menuWidget = new CMenuWidget("CMenuWidget(listBox Mode)", NEUTRINO_ICON_MOVIE, CFrameBuffer::getInstance()->getScreenWidth() / 20 * 17, CFrameBuffer::getInstance()->getScreenHeight() / 20 * 18);
+
+	//
+	CHintBox loadBox("CMenuWidget(listBox mode)", _("Scan for Movies ..."));
+	loadBox.paint();
+	loadMoviePlaylist();
+	loadBox.hide();
+	
+	// add items
+	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
+	{
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mplay", RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+
+		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
+		item->set2lines();
+
+		item->setHint(m_vMovieInfo[i].epgInfo2.c_str());
+
+		// standard | classic
+		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
+		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
+
+		menuWidget->addItem(item);
+	}
+
+	menuWidget->setWidgetMode(MODE_LISTBOX);
+	menuWidget->setWidgetType(TYPE_STANDARD);
+	menuWidget->addWidgetType(TYPE_CLASSIC);
+	menuWidget->addWidgetType(TYPE_EXTENDED);
+	menuWidget->addWidgetType(TYPE_FRAME);
+	menuWidget->setItemsPerPage(6, 2);
+	menuWidget->enableShrinkMenu();
+
+	// head
+	menuWidget->enablePaintDate();
+	menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
+	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+
+	// foot
+	menuWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	
+	// footInfo
+	menuWidget->enablePaintItemInfo(80);
+	menuWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
+
+	menuWidget->addKey(RC_info, this, "minfo");
+	menuWidget->addKey(RC_setup, this, "lsetup");
+
+	menuWidget->exec(NULL, "");
+
+	delete menuWidget;
+	menuWidget = NULL;
+}
+
+// CMenuWidget (menu mode)
+void CTestMenu::testCMenuWidget1()
+{
+	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (menu mode)\n");
+	
+	//
+	menuWidget = new CMenuWidget(_("CMenuWidget(Menu Mode)"), NEUTRINO_ICON_MAINMENU);
+	
+	item = new CMenuForwarder(_("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
+	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
+	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
+	item->setDirectKey(RC_red);
+	menuWidget->addItem(item);
+
+	item = new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler());
+	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
+	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
+	item->setDirectKey(RC_green);
+	menuWidget->addItem(item);
+	
+	item = new CMenuForwarder(_("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
+	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
+	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
+	item->setDirectKey(RC_yellow);
+	menuWidget->addItem(item);
+	
+	item = new CMenuForwarder(_("Service"), true, NULL, new CServiceMenu());
+	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
+	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
+	item->setDirectKey(RC_blue);
+	menuWidget->addItem(item);
+	
+	item = new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu());
+	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
+	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
+	item->setDirectKey(RC_setup);
+	menuWidget->addItem(item);
+	
+	item = new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings());
+	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
+	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
+	menuWidget->addItem(item);
+	
+	item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu());
+	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
+	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
+	item->setDirectKey(RC_info);
+	menuWidget->addItem(item);
+
+	item = new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu());
+	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
+	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
+	item->setDirectKey(RC_standby);
+	menuWidget->addItem(item);
+	
+	item = new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu());
+	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
+	item->setIconName(NEUTRINO_ICON_VIDEO);
+	item->setDirectKey(RC_video);
+	menuWidget->addItem(item);
+	
+	menuWidget->setWidgetMode(MODE_MENU);
+	menuWidget->setWidgetType(TYPE_STANDARD);
+	menuWidget->addWidgetType(TYPE_CLASSIC);
+	menuWidget->addWidgetType(TYPE_EXTENDED);
+	menuWidget->addWidgetType(TYPE_FRAME);
+	menuWidget->setItemsPerPage(6, 2);
+	menuWidget->enableShrinkMenu();
+
+	// head
+	menuWidget->enablePaintDate();
+	menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
+	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+
+
+	//
+	menuWidget->addKey(RC_setup, this, "lsetup");
+
+	menuWidget->exec(NULL, "");
+
+	delete menuWidget;
+	menuWidget = NULL;
+}
+
+// CMenuWidget (setup mode)
+void CTestMenu::testCMenuWidget2()
+{
+	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (setup mode)\n");
+	
+	CAudioPlayerSettings * audioPlayerSettingsMenu = new CAudioPlayerSettings();
+
+	audioPlayerSettingsMenu->exec(this, "");
+	delete audioPlayerSettingsMenu;
+	audioPlayerSettingsMenu = NULL;	
+}
+
 
 // CStringInput
 void CTestMenu::testCStringInput()
@@ -3406,265 +4531,6 @@ void CTestMenu::testCHelpBox()
 	helpBox = NULL;
 }
 
-// CTextBox
-void CTestMenu::testCTextBox()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCTextBox\n");
-
-	CBox Box;
-	
-	Box.iX = g_settings.screen_StartX + 10;
-	Box.iY = g_settings.screen_StartY + 10;
-	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
-	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 20);
-	
-	textBoxWidget = new CTextBox();
-
-	textBoxWidget->setPosition(&Box);
-	
-	loadMoviePlaylist();
-	
-	std::string buffer;
-	buffer = m_vMovieInfo[0].epgInfo1;
-	buffer += "\n";
-	buffer += m_vMovieInfo[0].epgInfo2;
-	
-	// scale pic
-	int p_w = 0;
-	int p_h = 0;
-
-	scaleImage(m_vMovieInfo[0].tfile, &p_w, &p_h);
-	
-	textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
-	
-REPAINT:	
-	textBoxWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-	
-	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
-	bool loop = true;
-
-	while(loop)
-	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-		
-		if (msg == RC_home) 
-		{
-			loop = false;
-		}
-		else if(msg == RC_info)
-		{
-			textBoxWidget->setBigFonts();
-		}
-		else if(msg == RC_ok)
-		{
-			hide();
-			
-			if (&m_vMovieInfo[0].file != NULL) 
-			{
-				CMovieInfoWidget movieInfoWidget;
-				movieInfoWidget.setMovie(m_vMovieInfo[0]);
-			
-				movieInfoWidget.exec(NULL, "");
-			}
-			
-			goto REPAINT;
-		}
-
-		CFrameBuffer::getInstance()->blit();
-	}
-
-	textBoxWidget->hide();
-	
-	delete textBoxWidget;
-	textBoxWidget = NULL;
-}
-
-// ClistFrame
-void CTestMenu::testCListFrame()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistFrame\n");
-
-	CBox listFrameBox;
-	LF_LINES listFrameLines;
-	int selected = 0;
-	
-	//
-	listFrameBox.iWidth = CFrameBuffer::getInstance()->getScreenWidth() / 20 * 17;
-	listFrameBox.iHeight = CFrameBuffer::getInstance()->getScreenHeight() / 20 * 18;
-
-	// recalculate x and y
-	listFrameBox.iX = CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - (listFrameBox.iWidth)) / 2);
-	listFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - listFrameBox.iHeight) / 2);
-
-	//
-#define MAX_ROWS 		LF_MAX_ROWS //6
-
-	// init
-	listFrameLines.rows = 6;
-
-	for(int row = 0; row < 6; row++)
-	{
-		listFrameLines.lineArray[row].clear();
-	}
-
-	// rowwidth
-	listFrameLines.rowWidth[0] = MAX_WINDOW_WIDTH / 20;
-	listFrameLines.rowWidth[1] = MAX_WINDOW_WIDTH / 4;
-	listFrameLines.rowWidth[2] = MAX_WINDOW_WIDTH / 12;
-	listFrameLines.rowWidth[3] = MAX_WINDOW_WIDTH / 8;
-	listFrameLines.rowWidth[4] = MAX_WINDOW_WIDTH / 5;
-	listFrameLines.rowWidth[5] = MAX_WINDOW_WIDTH / 10;
-
-	// headertitle
-	listFrameLines.lineHeader[0] = "Nr";
-	listFrameLines.lineHeader[1] = "title";
-	listFrameLines.lineHeader[2] = "duration";
-	listFrameLines.lineHeader[3] = "genre";
-	listFrameLines.lineHeader[4] = "artist";
-	listFrameLines.lineHeader[5] = "date";
-	
-
-	listFrame = new CListFrame(&listFrameLines, NULL, CListFrame::TITLE | CListFrame::HEADER_LINE | CListFrame::SCROLL, &listFrameBox);
-
-	// title
-	listFrame->setTitle("listFrame (AudioPlayer)", NEUTRINO_ICON_MP3);
-	
-	// fill lineArrays list
-	CHintBox loadBox("listFrame", _("Scan for Movies ..."));
-	loadBox.paint();
-	
-	loadAudioPlaylist();
-	
-	loadBox.hide();
-
-	//
-	int count = 0;
-	for (unsigned int i = 0; i < AudioPlaylist.size(); i++)
-	{
-		std::string title;
-		std::string artist;
-		std::string genre;
-		std::string date;
-		char duration[9] = "";
-
-		title = AudioPlaylist[i].MetaData.title;
-		artist = AudioPlaylist[i].MetaData.artist;
-		genre = AudioPlaylist[i].MetaData.genre;	
-		date = AudioPlaylist[i].MetaData.date;
-
-		snprintf(duration, 8, "(%ld:%02ld)", AudioPlaylist[i].MetaData.total_time / 60, AudioPlaylist[i].MetaData.total_time % 60);
-
-		listFrameLines.lineArray[0].push_back(to_string(i + 1));
-		listFrameLines.lineArray[1].push_back(title);
-		listFrameLines.lineArray[2].push_back(duration);
-		listFrameLines.lineArray[3].push_back(genre);
-		listFrameLines.lineArray[4].push_back(artist);
-		listFrameLines.lineArray[5].push_back(date);
-	}
-	
-	//
-	listFrame->setLines(&listFrameLines);
-	
-	//
-	listFrame->addKey(RC_ok, this, "aok");
-	
-	// paint
-	listFrame->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	CAudioPlayer::getInstance()->init();
-	
-	// loop
-	listFrame->exec();		
-	
-	//
-	for(int i = 0; i < 6; i++)
-	{
-		listFrameLines.lineArray[i].clear();
-	}
-
-	listFrame->hide();
-	
-	delete listFrame;
-	listFrame = NULL;
-}
-
-// CProgressBar
-void CTestMenu::testCProgressBar()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCProgressBar\n");
-	
-	CBox Box;
-	
-	Box.iX = g_settings.screen_StartX + 10;
-	Box.iY = g_settings.screen_StartY + 10 + (g_settings.screen_EndY - g_settings.screen_StartY - 20)/2;
-	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20);
-	Box.iHeight = 10;
-	
-	CBox Box2;
-	
-	Box2.iX = g_settings.screen_StartX + 10;
-	Box2.iY = g_settings.screen_StartY + 50;
-	Box2.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20);
-	Box2.iHeight = 10;
-	
-	progressBar = new CProgressBar(&Box);
-	progressBar2 = new CProgressBar(&Box2, 40, 100, 70, false);
-	
-	//
-	progressBar->paint(10);
-	progressBar2->paint(10);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(20);
-	progressBar2->paint(20);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(30);
-	progressBar2->paint(30);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(40);
-	progressBar2->paint(40);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(50);
-	progressBar2->paint(50);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(60);
-	progressBar2->paint(60);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(70);
-	progressBar2->paint(70);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(80);
-	progressBar2->paint(80);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(90);
-	progressBar2->paint(90);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(100);
-	progressBar2->paint(100);
-	CFrameBuffer::getInstance()->blit();
-	
-	delete progressBar;
-	progressBar = NULL;
-	
-	delete progressBar2;
-	progressBar2 = NULL;
-	
-	//
-	hide();
-}
-
 // CProgressWindow
 void CTestMenu::testCProgressWindow()
 {
@@ -3716,781 +4582,6 @@ void CTestMenu::testCProgressWindow()
 	progressWindow->hide();
 	delete progressWindow;
 	progressWindow = NULL;
-}
-
-// CButtons
-void CTestMenu::testCButtons()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCButtons (foot)\n");
-	
-	CCButtons buttons;
-
-	int icon_w, icon_h;
-	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
-	
-	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
-	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	buttons.setMode(BUTTON_FRAME_COLORED);
-	buttons.paint();
-
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	g_RCInput->messageLoop();
-	hide();
-}
-
-// CButtons
-void CTestMenu::testCHButtons()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCButtons (head)\n");
-	
-	CCButtons buttons;
-
-	int icon_w, icon_h;
-	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
-	
-	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
-	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
-	buttons.setMode(BUTTON_FRAME_COLORED);
-	buttons.paint();
-
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	g_RCInput->messageLoop();
-	hide();
-}
-
-// ClistBox(standard)
-void CTestMenu::testClistBox()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(standard)\n");
-
-	CBox Box;
-	
-	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20)/2;
-	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
-
-	Box.iX = 50; //frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
-	Box.iY = 50; //frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
-
-	rightWidget = new ClistBox(&Box);
-	
-	CHintBox loadBox("testClistBox(standard)", _("Scan for Movies ..."));
-	loadBox.paint();
-	loadMoviePlaylist();
-	loadBox.hide();
-	
-	// load items
-	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str()/*, true, NULL, this, "mmwplay"*/);
-
-		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		item->set2lines();
-
-		std::string tmp = m_vMovieInfo[i].epgInfo1;
-		tmp += "\n";
-		tmp += m_vMovieInfo[i].epgInfo2;
-
-		item->setHint(tmp.c_str());
-		
-		rightWidget->addItem(item);
-	}
-
-	// mode
-	rightWidget->setWidgetType(TYPE_CLASSIC);
-	rightWidget->addWidgetType(TYPE_STANDARD);
-	rightWidget->addWidgetType(TYPE_EXTENDED);
-	rightWidget->addWidgetType(TYPE_FRAME);
-	rightWidget->setWidgetMode(MODE_MENU);
-	rightWidget->enableShrinkMenu();
-	rightWidget->paintMainFrame(true);
-
-	// head
-	rightWidget->enablePaintHead();
-	rightWidget->setTitle("ClistBox (standard)", NEUTRINO_ICON_MOVIE);
-	rightWidget->setTitleHAlign(CC_ALIGN_CENTER);
-	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	rightWidget->enablePaintDate();
-	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
-
-	// footer
-	rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	// itemInfo
-	rightWidget->enablePaintItemInfo(70);
-	rightWidget->setItemInfoMode(ITEMINFO_HINTITEM_MODE);
-	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
-	rightWidget->paintItemInfoBorder(BORDER_ALL);
-	rightWidget->paintItemInfoFrame(true);
-	rightWidget->enableItemInfoSaveScreen();
-	rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_GAMELIST_ITEMLARGE);
-	
-	//
-	//rightWidget->paintScrollBar(false);
-	
-	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
-	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
-	rightWidget->exec();		
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
-	
-	rightWidget->hide();
-	delete rightWidget;
-	rightWidget = NULL;
-}
-
-// ClistBox(classic)
-void CTestMenu::testClistBox2()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(classic)\n");
-
-	CBox Box;
-	
-	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
-	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
-
-	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
-	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
-
-	rightWidget = new ClistBox(&Box);
-
-	CHintBox loadBox("ClistBox(classic)", _("Scan for Movies ..."));
-	loadBox.paint();
-	loadMoviePlaylist();
-	loadBox.hide();
-
-	// load items
-	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str()/*, true, NULL, this, "mmwplay"*/);
-
-		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		//item->setOptionInfo("OptionInfo");
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		//item->setOptionInfo1("OptionInfo1");
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-		//item->setOptionInfo2("OptionInfo2");
-
-		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		item->set2lines();
-
-		std::string tmp = m_vMovieInfo[i].epgInfo1;
-		tmp += "\n";
-		tmp += m_vMovieInfo[i].epgInfo2;
-
-		item->setHint(tmp.c_str());
-
-		rightWidget->addItem(item);
-	}
-
-	// widgettype
-	rightWidget->setWidgetType(TYPE_CLASSIC);
-	rightWidget->enableShrinkMenu();
-
-	// head
-	rightWidget->setTitle("ClistBox(classic)", NEUTRINO_ICON_MOVIE);
-	rightWidget->enablePaintHead();
-	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	rightWidget->enablePaintDate();
-	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
-
-	// footer
-	rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	// footinfo
-	//rightWidget->enablePaintItemInfo(70);
-	//rightWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
-
-	//rightWidget->setSelected(selected);
-	
-	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
-	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
-	rightWidget->exec();		
-
-	rightWidget->hide();
-	delete rightWidget;
-	rightWidget = NULL;
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
-}
-
-// ClistBox(extended)
-void CTestMenu::testClistBox3()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(extended)\n");
-
-	CBox Box;
-	
-	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
-	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
-
-	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
-	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
-
-	rightWidget = new ClistBox(&Box);
-
-	CHintBox loadBox("ClistBox(extended)", _("Scan for Movies ..."));
-	loadBox.paint();
-	loadMoviePlaylist();
-	loadBox.hide();
-
-	// load items
-	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
-
-		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		//item->setOptionInfo("OptionInfo");
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		//item->setOptionInfo1("OptionInfo1");
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-		//item->setOptionInfo2("OptionInfo2");
-
-		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		//item->set2lines();
-
-		std::string tmp = m_vMovieInfo[i].epgInfo1;
-		tmp += "\n";
-		tmp += m_vMovieInfo[i].epgInfo2;
-
-		item->setHint(tmp.c_str());
-
-		rightWidget->addItem(item);
-	}
-
-	// widgettype
-	rightWidget->setWidgetType(TYPE_EXTENDED);
-	rightWidget->enableShrinkMenu();
-
-	// head
-	rightWidget->setTitle("ClistBox(extended)", NEUTRINO_ICON_MOVIE);
-	rightWidget->enablePaintHead();
-	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	rightWidget->enablePaintDate();
-
-	// footer
-	rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	// footinfo
-	rightWidget->enablePaintItemInfo(80);
-
-	//rightWidget->setSelected(selected);
-	
-	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
-	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
-	rightWidget->exec();		
-
-	rightWidget->hide();
-	delete rightWidget;
-	rightWidget = NULL;
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
-}
-
-// ClistBox(frame)
-void CTestMenu::testClistBox4()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(frame)\n");
-
-	CBox Box;
-	
-	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
-	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
-
-	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
-	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
-
-	rightWidget = new ClistBox(&Box);
-
-	CHintBox loadBox("ClistBox(frame)", _("Scan for Movies ..."));
-	loadBox.paint();
-	loadMoviePlaylist();
-	loadBox.hide();
-
-	// load items
-	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-	{
-		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
-
-		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		item->set2lines();
-
-		std::string tmp = m_vMovieInfo[i].epgInfo1;
-		tmp += "\n";
-		tmp += m_vMovieInfo[i].epgInfo2;
-
-		item->setHint(tmp.c_str());
-
-		rightWidget->addItem(item);
-	}
-
-	// widgettype
-	rightWidget->setWidgetType(TYPE_FRAME);
-	rightWidget->setItemsPerPage(5,2);
-	rightWidget->enableShrinkMenu();
-	
-	rightWidget->paintMainFrame(false);
-	
-	// head
-	//rightWidget->enablePaintHead();
-	rightWidget->setTitle("ClistBox (FRAME)", NEUTRINO_ICON_MOVIE);
-	//rightWidget->setTitleHAlign(CC_ALIGN_CENTER);
-	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	rightWidget->enablePaintDate();
-	
-	// foot
-	//rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	
-	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
-	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
-	rightWidget->exec();		
-
-	rightWidget->hide();
-	delete rightWidget;
-	rightWidget = NULL;
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
-}
-
-// ClistBox(DL_INFO)
-void CTestMenu::testClistBox5()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(DL_INFO)\n");
-
-	CBox Box;
-	
-	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
-	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
-
-	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
-	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
-
-	rightWidget = new ClistBox(&Box);
-
-	CHintBox loadBox("ClistBox(DL_INFO)", _("Scan for Movies ..."));
-	loadBox.paint();
-	loadMoviePlaylist();
-	loadBox.hide();
-
-	// load items
-	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
-
-		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		//item->setOptionInfo("OptionInfo");
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		//item->setOptionInfo1("OptionInfo1");
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-		//item->setOptionInfo2("OptionInfo2");
-
-		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		item->set2lines();
-
-		std::string tmp = m_vMovieInfo[i].epgInfo1;
-		tmp += "\n";
-		tmp += m_vMovieInfo[i].epgInfo2;
-
-		item->setHint(tmp.c_str());
-		
-		rightWidget->addItem(item);
-	}
-
-	// mode
-	rightWidget->setWidgetType(TYPE_STANDARD);
-	rightWidget->enableShrinkMenu();
-
-	//
-	rightWidget->addWidgetType(TYPE_CLASSIC);
-	rightWidget->addWidgetType(TYPE_EXTENDED);
-	rightWidget->addWidgetType(TYPE_FRAME);
-	//rightWidget->enableWidgetChange();
-
-	rightWidget->setItemsPerPage(5, 2);
-
-	// head
-	rightWidget->setTitle("ClistBox(DL_INFO)", NEUTRINO_ICON_MOVIE);
-	rightWidget->enablePaintHead();
-	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	rightWidget->enablePaintDate();
-
-	// footer
-	rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	// footinfo
-	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ITEMINFO_INFO_MODE);
-
-	//rightWidget->setSelected(selected);
-	
-	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
-	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
-	rightWidget->exec();		
-
-	rightWidget->hide();
-	delete rightWidget;
-	rightWidget = NULL;
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
-}
-
-// ClistBox(listBox mode)
-void CTestMenu::testClistBox6()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(DL_HINT)\n");
-
-	CBox Box;
-	
-	Box.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - 20;
-	Box.iHeight = g_settings.screen_EndY - g_settings.screen_StartY - 20;
-
-	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
-	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
-
-	rightWidget = new ClistBox(&Box);
-
-	CHintBox loadBox("ClistBox(DL_HINT)", _("Scan for Movies ..."));
-	loadBox.paint();
-	loadMoviePlaylist();
-	loadBox.hide();
-
-	// load items
-	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
-
-		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		//item->setOptionInfo("OptionInfo");
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		//item->setOptionInfo1("OptionInfo1");
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-		//item->setOptionInfo2("OptionInfo2");
-
-		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		item->set2lines();
-
-		std::string tmp = m_vMovieInfo[i].epgInfo1;
-		tmp += "\n";
-		tmp += m_vMovieInfo[i].epgInfo2;
-
-		item->setHint(tmp.c_str());
-		
-		//item->setWidgetMode(MODE_MENU);
-		item->setBorderMode(BORDER_TOPBOTTOM);
-		item->setGradient(LIGHT2DARK2LIGHT);
-		
-		rightWidget->addItem(item);
-	}
-
-	// mode
-	rightWidget->setWidgetType(TYPE_STANDARD);
-	rightWidget->enableShrinkMenu();
-
-	//
-	rightWidget->addWidgetType(TYPE_CLASSIC);
-	rightWidget->addWidgetType(TYPE_EXTENDED);
-	rightWidget->addWidgetType(TYPE_FRAME);
-
-	rightWidget->setItemsPerPage(5, 2);
-
-	// head
-	rightWidget->setTitle("ClistBox(DL_HINT)", NEUTRINO_ICON_MOVIE);
-	rightWidget->enablePaintHead();
-	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	rightWidget->enablePaintDate();
-
-	// footer
-	rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	// footinfo
-	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
-
-	//rightWidget->setSelected(selected);
-	
-	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
-	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
-	rightWidget->exec();		
-
-	rightWidget->hide();
-	delete rightWidget;
-	rightWidget = NULL;
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
-}
-
-void CTestMenu::testCFrameBox()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::CTestMenu::testCFrameBox\n");
-
-	// frameBox
-	CBox topBox;
-	
-	topBox.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20)/4;
-	topBox.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 20);
-	topBox.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - 20) - topBox.iWidth )>> 1;
-	topBox.iY = g_settings.screen_StartY + 10;
-
-	frameBoxWidget = new CFrameBox(&topBox);
-	frameBoxWidget->enableSaveScreen();
-	frameBoxWidget->setColor(0);
-
-	CFrame * frame = NULL;
-
-	frame = new CFrame();
-	frame->setPosition(topBox.iX + 10, topBox.iY + 10, topBox.iWidth - 20, 60);
-	frame->setTitle("Neu Filme");
-	frame->setIconName(NEUTRINO_ICON_MOVIE);
-	frame->setOption("in allen Kinos");
-	frame->setActionKey(this, "help");
-	frame->setColor(COL_RED_PLUS_0);
-	frame->setGradient(DARK2LIGHT2DARK);
-	frame->setHAlign(CC_ALIGN_CENTER);
-	frameBoxWidget->addFrame(frame);
-	
-	frame = new CFrame();
-	frame->setPosition(topBox.iX + 10, topBox.iY + 10 + 60 + 10, topBox.iWidth - 20, 60);
-	frame->setTitle("Im Kino");
-	frame->setActionKey(this, "help");
-	frame->setColor(COL_GREEN_PLUS_0);
-	frame->setGradient(LIGHT2DARK);
-	frame->setHAlign(CC_ALIGN_CENTER);
-	frameBoxWidget->addFrame(frame);
-
-	frame = new CFrame();
-	frame->setPosition(topBox.iX + 10, topBox.iY + 2*(10 + 60) +10, topBox.iWidth - 20, 60);
-	frame->setTitle("Am populärsten");
-	frame->setOption("(2019)");
-	frame->setActionKey(this, "help");
-	frame->setColor(COL_NOBEL_PLUS_0);
-	frame->setHAlign(CC_ALIGN_CENTER);
-	frameBoxWidget->addFrame(frame);
-	
-	// pic
-	frame = new CFrame();
-	frame->setMode(FRAME_PICTURE);
-	frame->setPosition(topBox.iX + 10, topBox.iY + 3*(10 + 60) +50, topBox.iWidth - 20, 200);
-	//frame->setActive(false);
-	frame->setIconName(DATADIR "/icons/nopreview.jpg");
-	frameBoxWidget->addFrame(frame);
-
-	frame = new CFrame();
-	frame->setPosition(topBox.iX + 10, topBox.iY + topBox.iHeight - 60 - 10, topBox.iWidth - 20, 60);
-	frame->setTitle("Exit");
-	frame->setActionKey(this, "exit");
-	frame->setGradient(LIGHT2DARK);
-	frame->setColor(COL_BLUE_PLUS_0);
-	frame->setHAlign(CC_ALIGN_CENTER);
-	frameBoxWidget->addFrame(frame);
-
-	frameBoxWidget->setSelected(selected);
-
-REPEAT:
-	frameBoxWidget->paint();
-	
-	CFrameBuffer::getInstance()->blit();
-
-	//
-	frameBoxWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	frameBoxWidget->setSecTimer(sec_timer_id);
-	frameBoxWidget->exec();
-	frameBoxWidget->hide();		
-
-	delete frameBoxWidget;
-	frameBoxWidget = NULL;
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 }
 
 // play Movie Url
@@ -5226,162 +5317,6 @@ void CTestMenu::testShowPictureDir()
 	}
 }
 
-// CMenuWidget (listBox mode)
-void CTestMenu::testCMenuWidget()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (listBox mode)\n");
-	
-	// our listBox
-	menuWidget = new CMenuWidget("CMenuWidget(listBox Mode)", NEUTRINO_ICON_MOVIE, CFrameBuffer::getInstance()->getScreenWidth() / 20 * 17, CFrameBuffer::getInstance()->getScreenHeight() / 20 * 18);
-
-	//
-	CHintBox loadBox("CMenuWidget(listBox mode)", _("Scan for Movies ..."));
-	loadBox.paint();
-	loadMoviePlaylist();
-	loadBox.hide();
-	
-	// add items
-	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mplay", RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-		item->set2lines();
-
-		item->setHint(m_vMovieInfo[i].epgInfo2.c_str());
-
-		// standard | classic
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-		menuWidget->addItem(item);
-	}
-
-	menuWidget->setWidgetMode(MODE_LISTBOX);
-	menuWidget->setWidgetType(TYPE_STANDARD);
-	menuWidget->addWidgetType(TYPE_CLASSIC);
-	menuWidget->addWidgetType(TYPE_EXTENDED);
-	menuWidget->addWidgetType(TYPE_FRAME);
-	menuWidget->setItemsPerPage(6, 2);
-	menuWidget->enableShrinkMenu();
-
-	// head
-	menuWidget->enablePaintDate();
-	menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
-	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-
-	// foot
-	menuWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	
-	// footInfo
-	menuWidget->enablePaintItemInfo(80);
-	menuWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
-
-	menuWidget->addKey(RC_info, this, "minfo");
-	menuWidget->addKey(RC_setup, this, "lsetup");
-
-	menuWidget->exec(NULL, "");
-
-	delete menuWidget;
-	menuWidget = NULL;
-}
-
-// CMenuWidget (menu mode)
-void CTestMenu::testCMenuWidget1()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (menu mode)\n");
-	
-	//
-	menuWidget = new CMenuWidget(_("CMenuWidget(Menu Mode)"), NEUTRINO_ICON_MAINMENU);
-	
-	item = new CMenuForwarder(_("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
-	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
-	item->setDirectKey(RC_red);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
-	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
-	item->setDirectKey(RC_green);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(_("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
-	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
-	item->setDirectKey(RC_yellow);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(_("Service"), true, NULL, new CServiceMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
-	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
-	item->setDirectKey(RC_blue);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	item->setDirectKey(RC_setup);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
-	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
-	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
-	item->setDirectKey(RC_info);
-	menuWidget->addItem(item);
-
-	item = new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
-	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
-	item->setDirectKey(RC_standby);
-	menuWidget->addItem(item);
-	
-	item = new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu());
-	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
-	item->setIconName(NEUTRINO_ICON_VIDEO);
-	item->setDirectKey(RC_video);
-	menuWidget->addItem(item);
-	
-	menuWidget->setWidgetMode(MODE_MENU);
-	menuWidget->setWidgetType(TYPE_STANDARD);
-	menuWidget->addWidgetType(TYPE_CLASSIC);
-	menuWidget->addWidgetType(TYPE_EXTENDED);
-	menuWidget->addWidgetType(TYPE_FRAME);
-	menuWidget->setItemsPerPage(6, 2);
-	menuWidget->enableShrinkMenu();
-
-	// head
-	menuWidget->enablePaintDate();
-	menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
-	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-
-
-	//
-	menuWidget->addKey(RC_setup, this, "lsetup");
-
-	menuWidget->exec(NULL, "");
-
-	delete menuWidget;
-	menuWidget = NULL;
-}
-
-// CMenuWidget (setup mode)
-void CTestMenu::testCMenuWidget2()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (setup mode)\n");
-	
-	CAudioPlayerSettings * audioPlayerSettingsMenu = new CAudioPlayerSettings();
-
-	audioPlayerSettingsMenu->exec(this, "");
-	delete audioPlayerSettingsMenu;
-	audioPlayerSettingsMenu = NULL;	
-}
-
 // CChannellist
 void CTestMenu::testCChannellist()
 {
@@ -5524,6 +5459,11 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	else if(actionKey == "headers")
 	{
 		testCHeaders();
+		return RETURN_REPAINT;
+	}
+	else if(actionKey == "footers")
+	{
+		testCFooters();
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "stringinput")
@@ -5945,6 +5885,11 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		else if (windowWidget)
 		{
 			windowWidget->hide();
+			m_movieInfo.showMovieInfo(m_vMovieInfo[0]);
+		}
+		else if (textBoxWidget)
+		{
+			textBoxWidget->hide();
 			m_movieInfo.showMovieInfo(m_vMovieInfo[0]);
 		}
 
@@ -7302,11 +7247,11 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
-	mainMenu->addItem(new CMenuForwarder("CProgressWindow", true, NULL, this, "progresswindow"));
 	mainMenu->addItem(new CMenuForwarder("allCComponent", true, NULL, this, "component"));
 	
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidgetItems"));
-	mainMenu->addItem(new CMenuForwarder("CHeaders|CFooters", true, NULL, this, "headers"));
+	mainMenu->addItem(new CMenuForwarder("CHeaders", true, NULL, this, "headers"));
+	mainMenu->addItem(new CMenuForwarder("CFooters", true, NULL, this, "footers"));
 	mainMenu->addItem(new CMenuForwarder("CTextBox", true, NULL, this, "textbox"));
 	mainMenu->addItem(new CMenuForwarder("CListFrame", true, NULL, this, "listframe"));
 	mainMenu->addItem(new CMenuForwarder("CWindow", true, NULL, this, "window"));
@@ -7346,14 +7291,6 @@ void CTestMenu::showMenu()
 	//mainMenu->addItem(new CMenuForwarder("CDateInput", true, NULL, this, "dateinput"));
 	//mainMenu->addItem(new CMenuForwarder("CTimeInput", true, NULL, this, "timeinput"));
 	//mainMenu->addItem(new CMenuForwarder("CIntInput", true, NULL, this, "intinput"));
-	mainMenu->addItem(new CMenuForwarder("CInfoBox", true, NULL, this, "infobox"));
-	mainMenu->addItem(new CMenuForwarder("CMessageBox", true, NULL, this, "messagebox"));
-	mainMenu->addItem(new CMenuForwarder("CMessageBoxInfoMsg", true, NULL, this, "messageboxinfomsg"));
-	mainMenu->addItem(new CMenuForwarder("CMessageBoxErrorMsg", true, NULL, this, "messageboxerrormsg"));
-	mainMenu->addItem(new CMenuForwarder("CHintBox", true, NULL, this, "hintbox"));
-	mainMenu->addItem(new CMenuForwarder("CHintBoxInfo", true, NULL, this, "hintboxinfo"));
-	mainMenu->addItem(new CMenuForwarder("CHelpBox", true, NULL, this, "helpbox"));
-
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE));
 	mainMenu->addItem(new CMenuForwarder("ColorChooser", true, NULL, this, "colorchooser"));
@@ -7376,6 +7313,17 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("UmountGUI", true, NULL, this, "umountgui"));
 	mainMenu->addItem(new CMenuForwarder("MountSmallMenu", true, NULL, this, "mountsmallmenu"));
 	mainMenu->addItem(new CMenuForwarder("PluginsList", true, NULL, this, "pluginslist"));
+	
+	//
+	mainMenu->addItem(new CMenuSeparator(LINE));
+	mainMenu->addItem(new CMenuForwarder("CInfoBox", true, NULL, this, "infobox"));
+	mainMenu->addItem(new CMenuForwarder("CMessageBox", true, NULL, this, "messagebox"));
+	mainMenu->addItem(new CMenuForwarder("CMessageBoxInfoMsg", true, NULL, this, "messageboxinfomsg"));
+	mainMenu->addItem(new CMenuForwarder("CMessageBoxErrorMsg", true, NULL, this, "messageboxerrormsg"));
+	mainMenu->addItem(new CMenuForwarder("CHintBox", true, NULL, this, "hintbox"));
+	mainMenu->addItem(new CMenuForwarder("CHintBoxInfo", true, NULL, this, "hintboxinfo"));
+	mainMenu->addItem(new CMenuForwarder("CHelpBox", true, NULL, this, "helpbox"));
+	mainMenu->addItem(new CMenuForwarder("CProgressWindow", true, NULL, this, "progresswindow"));
 
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "Players"));
