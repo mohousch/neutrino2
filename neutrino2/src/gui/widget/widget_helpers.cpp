@@ -1374,7 +1374,7 @@ bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
 					break;
 			}
 		}
-		else if (msg == RC_home) 
+		else if (msg == RC_home || msg == RC_timeout) 
 		{
 			ret = false;
 		}
@@ -1384,6 +1384,10 @@ bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
 			{
 				refresh();
 			}
+		}
+		else if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
+		{
+			ret = false;
 		}
 	}
 	
@@ -1409,15 +1413,6 @@ void CWidgetItem::exec(int timeout)
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);		
 		
 		loop = onButtonPress(msg, data); //
-		
-		if (msg == RC_timeout)
-		{
-			loop = false;
-		}
-		else if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
-		{
-			loop = false;
-		}
 
 		CFrameBuffer::getInstance()->blit();
 	}		
