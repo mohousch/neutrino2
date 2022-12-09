@@ -1390,20 +1390,34 @@ bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
 	return ret;
 }
 
-void CWidgetItem::exec(void)
+void CWidgetItem::exec(int timeout)
 {
-	dprintf(DEBUG_NORMAL, "CWidgetItem::exec:\n");
+	dprintf(DEBUG_NORMAL, "CWidgetItem::exec: timeout:%d\n", timeout);
 	
 	// loop
 	neutrino_msg_t msg;
 	neutrino_msg_data_t data;
 	bool loop = true;
+	
+	if ( timeout == -1 )
+		timeout = 0xFFFF;
+		
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(timeout);
 
 	while(loop)
 	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec		
+		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);		
 		
-		loop = onButtonPress(msg, data); // whatever return???
+		loop = onButtonPress(msg, data); //
+		
+		if (msg == RC_timeout)
+		{
+			loop = false;
+		}
+		else if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
+		{
+			loop = false;
+		}
 
 		CFrameBuffer::getInstance()->blit();
 	}		

@@ -704,7 +704,7 @@ class CWidgetItem
 		virtual void clear(){};
 		
 		//
-		virtual void exec(void);
+		virtual void exec(int timeout = -1); // in sec
 };
 
 typedef std::vector<CWidgetItem*> WIDGETITEMLIST;
