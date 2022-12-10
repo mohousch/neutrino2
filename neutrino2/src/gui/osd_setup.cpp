@@ -1035,7 +1035,7 @@ void COSDDiverses::showMenu()
 		osdDiverseSettings->enableShrinkMenu();
 		
 		osdDiverseSettings->enablePaintHead();
-		osdDiverseSettings->setTitle(_("Misc settings"), NEUTRINO_ICON_SETTINGS);
+		osdDiverseSettings->setTitle(_("Misc settings"), NEUTRINO_ICON_COLORS);
 
 		osdDiverseSettings->enablePaintFoot();
 			
