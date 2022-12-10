@@ -5252,6 +5252,8 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if(actionKey == "aok")
 	{
+		hide();
+		
 		if(AudioPlaylist.size() > 0)
 		{
 			for (unsigned int i = 0; i < AudioPlaylist.size(); i++)
