@@ -27,7 +27,13 @@ install_DATA = \
 	audioplayer.png \
 	movieplayer.png \
 	pictureviewer.png \
-	streaming.png
-	
-	
+	streaming.png \
+	ci.png \
+	hdd.png \
+	service.png \
+	scan.png \
+	channellist.png \
+	zapit.png \
+	filebrowser.png \
+	misc.png
 	

@@ -139,7 +139,7 @@ void CZapitSetup::showMenu()
 		zapit->enableShrinkMenu();
 		
 		zapit->enablePaintHead();
-		zapit->setTitle(_("Start Channel settings"), NEUTRINO_ICON_SETTINGS);
+		zapit->setTitle(_("Start Channel settings"), NEUTRINO_ICON_ZAPIT);
 
 		zapit->enablePaintFoot();
 			

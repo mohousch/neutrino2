@@ -991,7 +991,7 @@ void CUpdateSettings::showMenu()
 	updateSettings->addItem(new CMenuSeparator(LINE));
 	
 	// save settings
-	updateSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings"));
+	updateSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	updateSettings->addItem( new CMenuSeparator(LINE) );
 
 	// 

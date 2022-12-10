@@ -144,7 +144,7 @@ void CGeneralSettings::showMenu()
 		miscSettingsGeneral->enableShrinkMenu();
 		
 		miscSettingsGeneral->enablePaintHead();
-		miscSettingsGeneral->setTitle(_("Misc settings"), NEUTRINO_ICON_SETTINGS);
+		miscSettingsGeneral->setTitle(_("Misc settings"), NEUTRINO_ICON_MISC);
 
 		miscSettingsGeneral->enablePaintFoot();
 			
@@ -525,7 +525,7 @@ void CChannelListSettings::showMenu()
 		miscSettingsChannelList->enableShrinkMenu();
 		
 		miscSettingsChannelList->enablePaintHead();
-		miscSettingsChannelList->setTitle(_("Channellist settings"), NEUTRINO_ICON_SETTINGS);
+		miscSettingsChannelList->setTitle(_("Channellist settings"), NEUTRINO_ICON_CHANNELLIST);
 
 		miscSettingsChannelList->enablePaintFoot();
 			
@@ -693,7 +693,7 @@ void CEPGSettings::showMenu()
 		miscSettingsEPG->enableShrinkMenu();
 		
 		miscSettingsEPG->enablePaintHead();
-		miscSettingsEPG->setTitle(_("EPG settings"), NEUTRINO_ICON_SETTINGS);
+		miscSettingsEPG->setTitle(_("EPG settings"), NEUTRINO_ICON_BUTTON_EPG);
 
 		miscSettingsEPG->enablePaintFoot();
 			
@@ -909,7 +909,7 @@ void CFileBrowserSettings::showMenu()
 		miscSettingsFileBrowser->enableShrinkMenu();
 		
 		miscSettingsFileBrowser->enablePaintHead();
-		miscSettingsFileBrowser->setTitle(_("Filebrowser settings"), NEUTRINO_ICON_SETTINGS);
+		miscSettingsFileBrowser->setTitle(_("Filebrowser settings"), NEUTRINO_ICON_FILEBROWSER);
 
 		miscSettingsFileBrowser->enablePaintFoot();
 			

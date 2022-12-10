@@ -192,7 +192,7 @@ int CHDDMenuHandler::hddMenu()
 		hddmenu->enableShrinkMenu();
 		
 		hddmenu->enablePaintHead();
-		hddmenu->setTitle(_("HDD settings"), NEUTRINO_ICON_SETTINGS);
+		hddmenu->setTitle(_("HDD settings"), NEUTRINO_ICON_HDD);
 
 		hddmenu->enablePaintFoot();
 			
@@ -330,7 +330,7 @@ int CHDDMenuHandler::hddMenu()
 			
 			if (tempMenu[i]->hasHead())
 			{
-				tempMenu[i]->setTitle(str, NEUTRINO_ICON_SETTINGS);
+				tempMenu[i]->setTitle(str, NEUTRINO_ICON_HDD);
 			}
 		}
 		else
@@ -343,7 +343,7 @@ int CHDDMenuHandler::hddMenu()
 			
 			//
 			tempMenu[i]->enablePaintHead();
-			tempMenu[i]->setTitle(str, NEUTRINO_ICON_SETTINGS);
+			tempMenu[i]->setTitle(str, NEUTRINO_ICON_HDD);
 			
 			//
 			tempMenu[i]->enablePaintFoot();		
@@ -408,7 +408,7 @@ int CHDDMenuHandler::hddMenu()
 				
 				if (PartMenu[j]->hasHead())
 				{
-					PartMenu[j]->setTitle(PART, NEUTRINO_ICON_SETTINGS);
+					PartMenu[j]->setTitle(PART, NEUTRINO_ICON_HDD);
 				}
 			}
 			else
@@ -421,7 +421,7 @@ int CHDDMenuHandler::hddMenu()
 				
 				//
 				PartMenu[j]->enablePaintHead();
-				PartMenu[j]->setTitle(PART, NEUTRINO_ICON_SETTINGS);
+				PartMenu[j]->setTitle(PART, NEUTRINO_ICON_HDD);
 				
 				//
 				PartMenu[j]->enablePaintFoot();		

@@ -82,7 +82,7 @@ CScanTs::CScanTs(int num)
 	
 	// window size
 	int _iw, _ih;
-	frameBuffer->getIconSize(NEUTRINO_ICON_UPDATE, &_iw, &_ih);
+	frameBuffer->getIconSize(NEUTRINO_ICON_SCAN, &_iw, &_ih);
 	hheight = std::max(g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), _ih) + 6;
 	
 	//
@@ -121,7 +121,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 
 	// window size
 	int _iw, _ih;
-	frameBuffer->getIconSize(NEUTRINO_ICON_UPDATE, &_iw, &_ih);
+	frameBuffer->getIconSize(NEUTRINO_ICON_SCAN, &_iw, &_ih);
 	hheight = std::max(g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), _ih) + 6;
 	
 	//
@@ -342,7 +342,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	{
 		const char * text = success ? _("Transponderscan finished.") : _("Transponderscan failed!");
 		
-		CHeaders head(x, y, width, hheight, text, NEUTRINO_ICON_UPDATE);
+		CHeaders head(x, y, width, hheight, text, NEUTRINO_ICON_SCAN);
 		const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " "};
 			
 		head.setButtons(&btn);
@@ -525,7 +525,7 @@ void CScanTs::paint(bool fortest)
 	ypos = y;
 	
 	//
-	CHeaders head(x, ypos, width, hheight, fortest ? _("Test signal") : _("Scan transponder"), NEUTRINO_ICON_UPDATE);
+	CHeaders head(x, ypos, width, hheight, fortest ? _("Test signal") : _("Scan transponder"), NEUTRINO_ICON_SCAN);
 	const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " "};
 			
 	head.setButtons(&btn);

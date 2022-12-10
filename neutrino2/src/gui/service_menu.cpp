@@ -99,7 +99,7 @@ void CServiceMenu::showMenu(void)
 		
 		//
 		service->enablePaintHead();
-		service->setTitle(_("System"), NEUTRINO_ICON_UPDATE);
+		service->setTitle(_("System"), NEUTRINO_ICON_SERVICE);
 		service->enablePaintDate();
 		
 		//

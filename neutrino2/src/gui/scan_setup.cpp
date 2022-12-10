@@ -357,7 +357,7 @@ void CScanSetup::showScanService()
 		scansetup->enableShrinkMenu();
 		
 		scansetup->enablePaintHead();
-		scansetup->setTitle(_("Scan transponder"), NEUTRINO_ICON_UPDATE);
+		scansetup->setTitle(_("Scan transponder"), NEUTRINO_ICON_SCAN);
 
 		scansetup->enablePaintFoot();
 			
@@ -418,7 +418,7 @@ void CScanSetup::showScanService()
 		satSetup->enableShrinkMenu();
 		
 		satSetup->enablePaintHead();
-		satSetup->setTitle(_("Sat settings"), NEUTRINO_ICON_UPDATE);
+		satSetup->setTitle(_("Sat settings"), NEUTRINO_ICON_SCAN);
 
 		satSetup->enablePaintFoot();
 			
@@ -455,7 +455,7 @@ void CScanSetup::showScanService()
 		satfindMenu->enableShrinkMenu();
 		
 		satfindMenu->enablePaintHead();
-		satfindMenu->setTitle(_("Motor settings"), NEUTRINO_ICON_UPDATE);
+		satfindMenu->setTitle(_("Motor settings"), NEUTRINO_ICON_SCAN);
 
 		satfindMenu->enablePaintFoot();
 			
@@ -499,7 +499,7 @@ void CScanSetup::showScanService()
 			satOnOff->enableShrinkMenu();
 			
 			satOnOff->enablePaintHead();
-			satOnOff->setTitle(_("Satellite"), NEUTRINO_ICON_UPDATE);
+			satOnOff->setTitle(_("Satellite"), NEUTRINO_ICON_SCAN);
 
 			satOnOff->enablePaintFoot();
 				
@@ -540,7 +540,7 @@ void CScanSetup::showScanService()
 					tempsat = (ClistBox*)tempsatWidget->getWidgetItem(WIDGETITEM_LISTBOX);
 					
 					if (tempsat->hasHead())
-						tempsat->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_UPDATE);
+						tempsat->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
 				}
 				else
 				*/
@@ -552,7 +552,7 @@ void CScanSetup::showScanService()
 					
 					//
 					tempsat->enablePaintHead();
-					tempsat->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_UPDATE);
+					tempsat->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
 					
 					//
 					tempsat->enablePaintFoot();		
@@ -684,7 +684,7 @@ void CScanSetup::showScanService()
 			motorMenu->enableShrinkMenu();
 			
 			motorMenu->enablePaintHead();
-			motorMenu->setTitle(_("Motor settings"), NEUTRINO_ICON_UPDATE);
+			motorMenu->setTitle(_("Motor settings"), NEUTRINO_ICON_SCAN);
 
 			motorMenu->enablePaintFoot();
 				
@@ -836,7 +836,7 @@ void CScanSetup::showScanService()
 		manualScan->enableShrinkMenu();
 		
 		manualScan->enablePaintHead();
-		manualScan->setTitle(_("Manual frequency scan / Test signal"), NEUTRINO_ICON_UPDATE);
+		manualScan->setTitle(_("Manual frequency scan / Test signal"), NEUTRINO_ICON_SCAN);
 
 		manualScan->enablePaintFoot();
 			
@@ -995,7 +995,7 @@ void CScanSetup::showScanService()
 		autoScan->enableShrinkMenu();
 		
 		autoScan->enablePaintHead();
-		autoScan->setTitle(_("Auto-Scan"), NEUTRINO_ICON_UPDATE);
+		autoScan->setTitle(_("Auto-Scan"), NEUTRINO_ICON_SCAN);
 
 		autoScan->enablePaintFoot();
 			
@@ -1054,7 +1054,7 @@ void CScanSetup::showScanService()
 			autoScanAll->enableShrinkMenu();
 			
 			autoScanAll->enablePaintHead();
-			autoScanAll->setTitle(_("Auto-Scan multiple Satellites"), NEUTRINO_ICON_UPDATE);
+			autoScanAll->setTitle(_("Auto-Scan multiple Satellites"), NEUTRINO_ICON_SCAN);
 
 			autoScanAll->enablePaintFoot();
 				
@@ -1117,7 +1117,7 @@ int CScanSetup::showUnicableSetup()
 		uni_setup->enableShrinkMenu();
 		
 		uni_setup->enablePaintHead();
-		uni_setup->setTitle(_("Unicable settings"), NEUTRINO_ICON_UPDATE);
+		uni_setup->setTitle(_("Unicable settings"), NEUTRINO_ICON_SCAN);
 
 		uni_setup->enablePaintFoot();
 			
@@ -1208,7 +1208,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		
 		//
 		menu->enablePaintHead();
-		menu->setTitle(_("Select transponder"), NEUTRINO_ICON_UPDATE);
+		menu->setTitle(_("Select transponder"), NEUTRINO_ICON_SCAN);
 
 		//
 		menu->enablePaintFoot();
@@ -1800,7 +1800,7 @@ void CTunerSetup::showMenu()
 		
 		//
 		TunerSetup->enablePaintHead();
-		TunerSetup->setTitle(_("Servicescan"), NEUTRINO_ICON_UPDATE);
+		TunerSetup->setTitle(_("Servicescan"), NEUTRINO_ICON_SCAN);
 		TunerSetup->enablePaintDate();
 		
 		//

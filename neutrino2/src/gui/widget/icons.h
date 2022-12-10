@@ -109,6 +109,14 @@
 #define NEUTRINO_ICON_EDIT					"edit"
 #define NEUTRINO_ICON_EDIT_FIND					"edit-find"
 #define NEUTRINO_ICON_BOOKMARKMANAGER				"bookmarkmanager"
+#define NEUTRINO_ICON_CI					"ci"
+#define NEUTRINO_ICON_HDD					"hdd"
+#define NEUTRINO_ICON_SERVICE					"service"
+#define NEUTRINO_ICON_SCAN					"scan"
+#define NEUTRINO_ICON_CHANNELLIST				"channellist"
+#define NEUTRINO_ICON_ZAPIT					"zapit"
+#define NEUTRINO_ICON_MISC					"misc"
+#define NEUTRINO_ICON_FILEBROWSER				"filebrowser"
 
 // screen
 #define NEUTRINO_ICON_BORDER_UL					"border_ul"

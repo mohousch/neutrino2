@@ -839,7 +839,7 @@ void COSDTimingSettings::showMenu()
 		osdTimingSettings->enableShrinkMenu();
 		
 		osdTimingSettings->enablePaintHead();
-		osdTimingSettings->setTitle(_("Timing"), NEUTRINO_ICON_SETTINGS);
+		osdTimingSettings->setTitle(_("Timing"), NEUTRINO_ICON_TIMER);
 
 		osdTimingSettings->enablePaintFoot();
 			
