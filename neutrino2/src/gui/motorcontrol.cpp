@@ -592,7 +592,7 @@ void CMotorControl::paint()
 	ypos = y;
 	
 	// headBox
-	CHeaders head(x, ypos, width, hheight, _("Motor Setup"), NEUTRINO_ICON_INFO);
+	CHeaders head(x, ypos, width, hheight, _("Motor Setup"), NEUTRINO_ICON_SCAN);
 	head.paint();
 	
 	// footer
