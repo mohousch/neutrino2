@@ -3348,7 +3348,7 @@ void CTestMenu::testCFrameBox1()
 	infoFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 	infoFrame->setTitle("Movie Details");
 	infoFrame->setIconName(NEUTRINO_ICON_INFO);
-	infoFrame->setActionKey(this, "minfo");
+	infoFrame->setActionKey(this, "winfo");
 	infoFrame->enableBorder();
 
 	frameBoxWidget->addFrame(infoFrame);
@@ -3359,7 +3359,7 @@ void CTestMenu::testCFrameBox1()
 	playFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 	playFrame->setTitle("Movie abspielen");
 	playFrame->setIconName(NEUTRINO_ICON_PLAY);
-	playFrame->setActionKey(this, "mplay");
+	playFrame->setActionKey(this, "wplay");
 	playFrame->enableBorder();
 
 	frameBoxWidget->addFrame(playFrame);
@@ -5197,6 +5197,11 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			textBoxWidget->hide();
 			m_movieInfo.showMovieInfo(m_vMovieInfo[0]);
 		}
+		else if (frameBoxWidget)
+		{
+			frameBoxWidget->hide();
+			m_movieInfo.showMovieInfo(m_vMovieInfo[0]);
+		}
 
 		return RETURN_REPAINT;
 	}
@@ -5219,6 +5224,13 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		else if (textBoxWidget)
 		{
 			textBoxWidget->hide();
+			
+			tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
+			tmpMoviePlayerGui.exec(NULL, "");
+		}
+		else if (frameBoxWidget)
+		{
+			frameBoxWidget->hide();
 			
 			tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
 			tmpMoviePlayerGui.exec(NULL, "");
