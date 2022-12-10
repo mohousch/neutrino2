@@ -160,7 +160,6 @@ class CTestMenu : public CMenuTarget
 		void testClistBox6();
 		void testCFrameBox();
 		void testCFrameBox1();
-		void testCWidgetItem();
 		
 		// CMenuWidget
 		void testCMenuWidget();
@@ -1513,6 +1512,7 @@ void CTestMenu::testCListFrameWidget()
 	testWidget->addWidgetItem(footers);
 
 	testWidget->addKey(RC_ok, this, "aok");
+	testWidget->addKey(RC_info, this, "ainfo");
 
 	testWidget->exec(NULL, "");
 
@@ -1574,7 +1574,7 @@ void CTestMenu::testClistBoxWidget()
 	// load items
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 
@@ -1791,687 +1791,6 @@ void CTestMenu::testMultiWidget()
 	windowWidget = NULL;
 }
 
-//
-void CTestMenu::testCWidgetItem()
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCWidgetItem\n");
-
-	top_selected = 0;
-	left_selected = 0;
-	right_selected = 0;
-
-	CBox mainBox(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
-
-	//
-	CBox headBox;
-	headBox.iX = mainBox.iX;
-	headBox.iY = mainBox.iY;
-	headBox.iWidth = mainBox.iWidth;
-	headBox.iHeight = 40;
-	
-	headers = new CHeaders(&headBox, "testCWidgetItem", NEUTRINO_ICON_MP3);
-
-	headers->enablePaintDate();
-	headers->setFormat("%A %d.%m.%Y %H:%M:%S");
-	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-
-	//
-	CBox footBox;
-	footBox.iHeight = 40;
-	footBox.iX = mainBox.iX;
-	footBox.iY = mainBox.iY + mainBox.iHeight - footBox.iHeight;
-	footBox.iWidth = mainBox.iWidth;
-	
-	footers = new CFooters(&footBox);
-
-	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-
-	// top widget
-	CBox topBox;
-	
-	topBox.iX = mainBox.iX;
-	topBox.iY = headBox.iY + headBox.iHeight;
-	topBox.iWidth = mainBox.iWidth;
-	topBox.iHeight = 50;
-
-	frameBoxWidget = new CFrameBox(&topBox);
-
-	CFrame * frame = NULL;
-
-	frame = new CFrame();
-	frame->setPosition(topBox.iX, topBox.iY, topBox.iWidth/3, topBox.iHeight);
-	frame->setTitle("Filme");
-	frame->enableBorder();
-	frame->setHAlign(CC_ALIGN_CENTER);
-	frameBoxWidget->addFrame(frame);
-	
-	frame = new CFrame();
-	frame->setPosition(topBox.iX + topBox.iWidth/3, topBox.iY, topBox.iWidth/3, topBox.iHeight);
-	frame->setTitle("Serien");
-	frame->enableBorder();
-	frame->setHAlign(CC_ALIGN_CENTER);
-	frameBoxWidget->addFrame(frame);
-
-	frame = new CFrame();
-	frame->setPosition(topBox.iX + 2*topBox.iWidth/3, topBox.iY, topBox.iWidth/3, topBox.iHeight);
-	frame->setTitle("Suche");
-	frame->setOption(tmdbsearch.c_str());
-	frame->setActionKey(this, "search");
-	frame->enableBorder();
-	frame->setHAlign(CC_ALIGN_CENTER);
-	frameBoxWidget->addFrame(frame);
-
-	frameBoxWidget->setSelected(top_selected); 
-	frameBoxWidget->setOutFocus();
-
-	// leftWidget
-	CBox leftBox;
-
-	leftBox.iX = mainBox.iX;
-	leftBox.iY = topBox.iY + topBox.iHeight + INTER_FRAME_SPACE;
-	leftBox.iWidth = 200;
-	leftBox.iHeight = mainBox.iHeight - headBox.iHeight - topBox.iHeight - 2*INTER_FRAME_SPACE - footBox.iHeight;
-
-	leftWidget = new ClistBox(&leftBox);
-
-	leftWidget->setSelected(left_selected);
-	leftWidget->setOutFocus();
-
-	ClistBoxItem *item1 = new ClistBoxItem("In den Kinos");
-	item1->setBorderMode();
-	ClistBoxItem *item2 = new ClistBoxItem("Am");
-	item2->setOption("populärsten");
-	item2->set2lines();
-	item2->setBorderMode();
-	ClistBoxItem *item3 = new ClistBoxItem("Am besten");
-	item3->setOption("bewertet");
-	item3->set2lines();
-	item3->setBorderMode();
-	ClistBoxItem *item4 = new ClistBoxItem("Neue Filme");
-	item4->setBorderMode();
-	ClistBoxItem *item5 = new ClistBoxItem(NULL, false);
-	ClistBoxItem *item6 = new ClistBoxItem(NULL, false);
-	ClistBoxItem *item7 = new ClistBoxItem(NULL, false);
-	ClistBoxItem *item8 = new ClistBoxItem(NULL, false);
-	ClistBoxItem *item9 = new ClistBoxItem("Beenden");
-	item9->setBorderMode();
-
-	leftWidget->addItem(item1);
-	leftWidget->addItem(item2);
-	leftWidget->addItem(item3);
-	leftWidget->addItem(item4);
-	leftWidget->addItem(item5);
-	leftWidget->addItem(item6);
-	leftWidget->addItem(item7);
-	leftWidget->addItem(item8);
-	leftWidget->addItem(item9);
-
-	// right menu
-	CBox rightBox;
-
-	rightBox.iX = mainBox.iX + leftBox.iWidth + INTER_FRAME_SPACE;
-	rightBox.iY = topBox.iY + topBox.iHeight + INTER_FRAME_SPACE;
-	rightBox.iWidth = mainBox.iWidth - leftBox.iWidth - INTER_FRAME_SPACE;
-	rightBox.iHeight = mainBox.iHeight - headBox.iHeight - topBox.iHeight - 2*INTER_FRAME_SPACE - footBox.iHeight;
-
-	//
-	rightWidget = new ClistBox(&rightBox);
-	rightWidget->setWidgetType(TYPE_FRAME);
-	rightWidget->setItemsPerPage(6,2);
-	rightWidget->setSelected(right_selected);
-	rightWidget->enablePaintItemInfo(80);
-
-	enum {
-		WIDGET_TOP,
-		WIDGET_LEFT,
-		WIDGET_RIGHT
-	};
-	
-	int focus = WIDGET_RIGHT; // frameBox
-
-	thumbnail_dir = "/tmp/nfilm";
-	page = 1;
-	plist = "popular";
-
-	//
-	tmdb = new CTmdb();
-
-	TVShows = "movie";
-
-DOFILM:
-	fileHelper.removeDir(thumbnail_dir.c_str());
-	fileHelper.createDir(thumbnail_dir.c_str(), 0755);
-
-	CHintBox loadBox("testCWidgetItem", _("Scan for Movies ..."));
-	loadBox.paint();
-
-	tmdb->clearMovieList();
-
-	tmdb->getMovieTVList(TVShows, plist, page);
-
-	std::vector<tmdbinfo> &mvlist = tmdb->getMovies();
-
-	m_vMovieInfo.clear();
-	
-	// fill our structure
-	for(unsigned int i = 0; i < mvlist.size(); i++)
-	{
-		MI_MOVIE_INFO movieInfo;
-		m_movieInfo.clearMovieInfo(&movieInfo); 
-
-		movieInfo.epgTitle = mvlist[i].title;
-
-		movieInfo.epgInfo1 = mvlist[i].overview;
-		movieInfo.ytdate = mvlist[i].release_date;
-		movieInfo.vote_average = mvlist[i].vote_average;
-		movieInfo.vote_count = mvlist[i].vote_count;
-		movieInfo.original_title = mvlist[i].original_title;
-		movieInfo.productionDate = atoi(mvlist[i].release_date.substr(0,4));
-		movieInfo.media_type = mvlist[i].media_type;
-		movieInfo.length = mvlist[i].runtime;
-		movieInfo.runtimes = mvlist[i].runtimes;
-		movieInfo.genres = mvlist[i].genres;
-		movieInfo.cast = mvlist[i].cast;
-		movieInfo.seasons = mvlist[i].seasons;
-		movieInfo.episodes = mvlist[i].episodes;
-			
-		std::string tname = thumbnail_dir;
-		tname += "/";
-		tname += movieInfo.epgTitle;
-		tname += ".jpg";
-
-		tmdb->getSmallCover(mvlist[i].poster_path, tname);
-
-		if(!tname.empty())
-			movieInfo.tfile = tname;
-
-		// video url
-		tmdb->clearVideoInfo();
-		if (tmdb->getVideoInfo("movie", mvlist[i].id))
-		{
-			std::vector<tmdbinfo>& videoInfo_list = tmdb->getVideoInfos();
-
-			movieInfo.vid = videoInfo_list[0].vid;
-			movieInfo.vkey = videoInfo_list[0].vkey;
-			movieInfo.vname = videoInfo_list[0].vname;
-		}
-
-		m_vMovieInfo.push_back(movieInfo);
-	}
-
-	loadBox.hide();
-
-	// load items
-	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
-
-		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-		item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		rightWidget->addItem(item);
-	}
-
-	// background
-	//bool usedBackground = CFrameBuffer::getInstance()->getuseBackground();
-	//if (usedBackground)
-	//	CFrameBuffer::getInstance()->saveBackgroundImage();
-		
-	//CFrameBuffer::getInstance()->loadBackgroundPic(DATADIR "/icons/mp3.jpg");
-	
-REPAINT:
-
-	// paint all widget
-	headers->paint();
-	footers->paint();
-	frameBoxWidget->paint();
-	leftWidget->paint();
-	rightWidget->paint();
-
-	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
-
-	uint32_t sec_timer_id = 0;
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-
-	bool loop = true;
-
-	while(loop)
-	{
-		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
-
-		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			headers->refresh();
-		} 
-		else if (msg == RC_home) 
-		{
-			loop = false;
-		}
-		else if(msg == RC_right)
-		{
-			if(focus == WIDGET_TOP)
-				frameBoxWidget->swipRight();
-			else if(focus == WIDGET_RIGHT)
-				rightWidget->swipRight();
-			else if (focus == WIDGET_LEFT)
-			{
-				focus = WIDGET_RIGHT;
-
-				leftWidget->setOutFocus();
-				frameBoxWidget->setOutFocus();
-
-				rightWidget->setSelected(right_selected);
-				rightWidget->setOutFocus(false);
-
-				goto REPAINT;
-			}
-		}
-		else if(msg == RC_left)
-		{
-			if(focus == WIDGET_TOP)
-				frameBoxWidget->swipLeft();
-			else if(focus == WIDGET_RIGHT)
-				rightWidget->swipLeft();
-		}
-		else if(msg == RC_up)
-		{
-			if(focus == WIDGET_LEFT)
-				leftWidget->scrollLineUp();
-			else if(focus == WIDGET_RIGHT)
-				rightWidget->scrollLineUp();
-		}
-		else if(msg == RC_down)
-		{
-			if(focus == WIDGET_LEFT)
-				leftWidget->scrollLineDown();
-			else if(focus == WIDGET_RIGHT)
-				rightWidget->scrollLineDown();
-			if(focus == WIDGET_TOP)
-			{
-				focus = WIDGET_LEFT;
-
-				frameBoxWidget->setOutFocus();
-				rightWidget->setOutFocus();
-
-				leftWidget->setSelected(left_selected);
-				leftWidget->setOutFocus(false);
-
-				goto REPAINT;
-			}
-		}
-		else if(msg == RC_yellow)
-		{
-			if(focus == WIDGET_TOP)
-			{
-				focus = WIDGET_LEFT;
-
-				frameBoxWidget->setOutFocus();
-				rightWidget->setOutFocus();
-
-				leftWidget->setSelected(left_selected);
-				leftWidget->setOutFocus(false);
-			}
-			else if (focus == WIDGET_LEFT)
-			{
-				focus = WIDGET_RIGHT;
-
-				leftWidget->setOutFocus();
-				frameBoxWidget->setOutFocus();
-
-				rightWidget->setSelected(right_selected);
-				rightWidget->setOutFocus(false);
-			}
-			else if (focus == WIDGET_RIGHT)
-			{
-				focus = WIDGET_TOP;
-
-				leftWidget->setOutFocus();
-				rightWidget->setOutFocus();
-
-				frameBoxWidget->setSelected(top_selected);
-				frameBoxWidget->setOutFocus(false);
-			}
-
-			goto REPAINT;
-		}
-		else if(msg == RC_red)
-		{
-			page++;
-			right_selected = 0;
-			hide();
-			rightWidget->clearItems();
-			goto DOFILM; // include REPAINT
-		}
-		else if(msg == RC_green)
-		{
-			page--;
-
-			if(page <= 1)
-				page = 1;
-
-			right_selected = 0;
-
-			hide();
-			rightWidget->clearItems();
-			goto DOFILM; // include REPAINT
-		}
-		else if(msg == RC_blue)
-		{
-			right_selected = 0;
-			left_selected = 3;
-			plist = "upcoming";
-			page = 1;
-			hide();
-			rightWidget->clearItems();
-			goto DOFILM;
-		}
-		else if(msg == RC_ok)
-		{
-			if(focus == WIDGET_RIGHT)
-			{
-				hide();
-
-				right_selected = rightWidget->getSelected();
-
-				///
-				ytparser.Cleanup();
-
-				// setregion
-				ytparser.SetRegion("DE");
-
-				// set max result
-				ytparser.SetMaxResults(1);
-			
-				// parse feed
-				if (ytparser.ParseFeed(cYTFeedParser::SEARCH_BY_ID, m_vMovieInfo[right_selected].vname, m_vMovieInfo[right_selected].vkey))
-				{
-					yt_video_list_t &ylist = ytparser.GetVideoList();
-	
-					for (unsigned int j = 0; j < ylist.size(); j++) 
-					{
-						m_vMovieInfo[right_selected].ytid = ylist[j].id;
-						m_vMovieInfo[right_selected].file.Name = ylist[j].GetUrl();
-					}
-				} 
-				///
-
-				if (&m_vMovieInfo[right_selected].file != NULL) 
-				{
-					//tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[right_selected]);
-					//tmpMoviePlayerGui.exec(NULL, "");
-
-					CMovieInfoWidget movieInfoWidget;
-					movieInfoWidget.setMovie(m_vMovieInfo[right_selected]);
-		
-					movieInfoWidget.exec(NULL, "");
-				}
-
-				goto REPAINT;
-			}
-			else if(focus == WIDGET_LEFT)
-			{
-				left_selected = leftWidget->getSelected();
-
-				if(top_selected == 0) // movies
-				{
-					if(left_selected == 0)
-					{
-						right_selected = 0;
-						plist = "now_playing";
-						page = 1;
-						hide();
-						rightWidget->clearItems();
-						goto DOFILM; // include REPAINT
-					}
-					else if(left_selected == 1)
-					{
-						right_selected = 0;
-						plist = "popular";
-						page = 1;
-						hide();
-						rightWidget->clearItems();
-						goto DOFILM; // include REPAINT
-					}
-					else if(left_selected == 2)
-					{
-						right_selected = 0;
-						plist = "top_rated";
-						page = 1;
-						hide();
-						rightWidget->clearItems();
-						goto DOFILM; // include REPAINT
-					}
-					else if(left_selected == 3)
-					{
-						right_selected = 0;
-						plist = "upcoming";
-						page = 1;
-						hide();
-						rightWidget->clearItems();
-						goto DOFILM; // include REPAINT
-					}
-					else if(left_selected == 8)
-						loop = false;
-				}
-				else if(top_selected == 1) // tv
-				{
-					if(left_selected == 0)
-					{
-						right_selected = 0;
-						plist = "airing_today";
-						page = 1;
-						hide();
-						rightWidget->clearItems();
-						goto DOFILM; // include REPAINT
-					}
-					else if(left_selected == 1)
-					{
-						right_selected = 0;
-						plist = "on_the_air";
-						page = 1;
-						hide();
-						rightWidget->clearItems();
-						goto DOFILM; // include REPAINT
-					}
-					else if(left_selected == 2)
-					{
-						right_selected = 0;
-						plist = "popular";
-						page = 1;
-						hide();
-						rightWidget->clearItems();
-						goto DOFILM; // include REPAINT
-					}
-					else if(left_selected == 3)
-					{
-						right_selected = 0;
-						plist = "top_rated";
-						page = 1;
-						hide();
-						rightWidget->clearItems();
-						goto DOFILM; // include REPAINT
-					}
-					else if(left_selected == 8)
-						loop = false;
-				}
-			}
-			else if(focus == WIDGET_TOP)
-			{
-				top_selected = frameBoxWidget->getSelected();
-
-				if(top_selected == 1)
-				{
-					right_selected = 0;
-					left_selected = 0;
-
-					TVShows = "tv";
-					plist = "airing_today";
-					page = 1;
-					hide();
-					rightWidget->clearItems();
-					//
-					leftWidget->clearItems();
-					ClistBoxItem *item1 = new ClistBoxItem("Heute auf Sendung");
-					ClistBoxItem *item2 = new ClistBoxItem("Auf Sendung");
-					ClistBoxItem *item3 = new ClistBoxItem("Am");
-					item3->setOption("populärsten");
-					item3->set2lines();
-					ClistBoxItem *item4 = new ClistBoxItem("am");
-					item4->setOption("besten bewertet");
-					item4->set2lines();
-					ClistBoxItem *item5 = new ClistBoxItem(NULL, false);
-					ClistBoxItem *item6 = new ClistBoxItem(NULL, false);
-					ClistBoxItem *item7 = new ClistBoxItem(NULL, false);
-					ClistBoxItem *item8 = new ClistBoxItem(NULL, false);
-					ClistBoxItem *item9 = new ClistBoxItem("Beenden");
-
-					leftWidget->addItem(item1);
-					leftWidget->addItem(item2);
-					leftWidget->addItem(item3);
-					leftWidget->addItem(item4);
-					leftWidget->addItem(item5);
-					leftWidget->addItem(item6);
-					leftWidget->addItem(item7);
-					leftWidget->addItem(item8);
-					leftWidget->addItem(item9);
-					//
-					goto DOFILM; // include REPAINT
-				}
-				else if(top_selected == 0)
-				{
-					right_selected = 0;
-					left_selected = 0;
-
-					TVShows = "movie";
-					plist = "popular";
-					page = 1;
-					hide();
-					rightWidget->clearItems();
-					leftWidget->clearItems();
-
-					ClistBoxItem *item1 = new ClistBoxItem("In den Kinos");
-					ClistBoxItem *item2 = new ClistBoxItem("Am");
-					item2->setOption("populärsten");
-					item2->set2lines();
-					ClistBoxItem *item3 = new ClistBoxItem("Am besten");
-					item3->setOption("bewertet");
-					item3->set2lines();
-					ClistBoxItem *item4 = new ClistBoxItem("Neue Filme");
-					ClistBoxItem *item5 = new ClistBoxItem(NULL, false);
-					ClistBoxItem *item6 = new ClistBoxItem(NULL, false);
-					ClistBoxItem *item7 = new ClistBoxItem(NULL, false);
-					ClistBoxItem *item8 = new ClistBoxItem(NULL, false);
-					ClistBoxItem *item9 = new ClistBoxItem("Beenden");
-
-					leftWidget->addItem(item1);
-					leftWidget->addItem(item2);
-					leftWidget->addItem(item3);
-					leftWidget->addItem(item4);
-					leftWidget->addItem(item5);
-					leftWidget->addItem(item6);
-					leftWidget->addItem(item7);
-					leftWidget->addItem(item8);
-					leftWidget->addItem(item9);
-					
-					goto DOFILM; // include REPAINT
-				}
-				else if(top_selected == 2)
-				{
-					frameBoxWidget->oKKeyPressed(this);
-					goto DOFILM;
-				}
-			}
-		}
-		else if(msg == RC_info)
-		{
-			if(focus == WIDGET_RIGHT)
-			{
-				hide();
-				right_selected = rightWidget->getSelected();
-				m_movieInfo.showMovieInfo(m_vMovieInfo[right_selected]);
-				goto REPAINT;
-			}
-		}
-		else if(msg == RC_page_down)
-		{
-			if(focus == WIDGET_RIGHT)
-			{
-				rightWidget->scrollPageDown();
-			}
-		}
-		else if(msg == RC_page_up)
-		{
-			if(focus == WIDGET_RIGHT)
-			{
-				rightWidget->scrollPageUp();
-			}
-		}
-
-		CFrameBuffer::getInstance()->blit();
-	}
-
-	//restore previous background
-	//if (usedBackground)
-	//{
-	//	CFrameBuffer::getInstance()->restoreBackgroundImage();
-	//	CFrameBuffer::getInstance()->useBackground(usedBackground);
-	//}
-
-	// hide background image
-	//CFrameBuffer::getInstance()->paintBackground();
-	//CFrameBuffer::getInstance()->blit();	
-
-	hide();
-
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
-
-	fileHelper.removeDir(thumbnail_dir.c_str());
-	m_vMovieInfo.clear();
-	
-	delete tmdb;
-	tmdb = NULL;
-
-	if(headers)
-	{
-		delete headers;
-		headers = NULL;
-	}
-
-	if(footers)
-	{
-		delete footers;
-		footers = NULL;
-	}
-	
-	if (frameBoxWidget)
-	{
-		delete frameBoxWidget;
-		frameBoxWidget = NULL;
-	}
-	
-	if (leftWidget)
-	{
-		delete leftWidget;
-		leftWidget = NULL;
-	}
-
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
-}
-
 // CIcon
 void CTestMenu::testCIcon()
 {
@@ -2492,14 +1811,9 @@ void CTestMenu::testCIcon()
 	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	testWidget = new CWidget();
-
-	testWidget->exec(NULL, "");
+	g_RCInput->messageLoop();
 
 	hide();
-
-	delete testWidget;
-	testWidget = NULL;
 }
 
 // CImage
@@ -2520,14 +1834,10 @@ void CTestMenu::testCImage()
 
 	CFrameBuffer::getInstance()->blit();
 
-	testWidget = new CWidget();
-
-	testWidget->exec(NULL, "");
-
+	// loop
+	g_RCInput->messageLoop();
+	
 	hide();
-
-	delete testWidget;
-	testWidget = NULL;
 }
 
 // CProgressBar
@@ -3134,6 +2444,7 @@ void CTestMenu::testCListFrame()
 	
 	//
 	listFrame->addKey(RC_ok, this, "aok");
+	listFrame->addKey(RC_info, this, "ainfo");
 	
 	// paint
 	listFrame->paint();
@@ -3185,7 +2496,7 @@ void CTestMenu::testClistBox()
 	// load items
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str()/*, true, NULL, this, "mmwplay"*/);
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 
@@ -3240,7 +2551,7 @@ void CTestMenu::testClistBox()
 	//rightWidget->paintScrollBar(false);
 	
 	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
@@ -3297,7 +2608,7 @@ void CTestMenu::testClistBox2()
 	// load items
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str()/*, true, NULL, this, "mmwplay"*/);
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 		//item->setOptionInfo("OptionInfo");
@@ -3347,7 +2658,7 @@ void CTestMenu::testClistBox2()
 	CFrameBuffer::getInstance()->blit();
 
 	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
@@ -3404,7 +2715,7 @@ void CTestMenu::testClistBox3()
 	// load items
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 		//item->setOptionInfo("OptionInfo");
@@ -3452,7 +2763,7 @@ void CTestMenu::testClistBox3()
 	CFrameBuffer::getInstance()->blit();
 
 	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
@@ -3509,7 +2820,7 @@ void CTestMenu::testClistBox4()
 	// load items
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
+		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 
@@ -3553,7 +2864,7 @@ void CTestMenu::testClistBox4()
 	CFrameBuffer::getInstance()->blit();
 
 	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
@@ -3610,7 +2921,7 @@ void CTestMenu::testClistBox5()
 	// load items
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 		//item->setOptionInfo("OptionInfo");
@@ -3667,7 +2978,7 @@ void CTestMenu::testClistBox5()
 	CFrameBuffer::getInstance()->blit();
 
 	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
@@ -3724,7 +3035,7 @@ void CTestMenu::testClistBox6()
 	// load items
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mmwplay");
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 		//item->setOptionInfo("OptionInfo");
@@ -3784,7 +3095,7 @@ void CTestMenu::testClistBox6()
 	CFrameBuffer::getInstance()->blit();
 
 	//
-	rightWidget->addKey(RC_ok, this, "mmwplay");
+	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
@@ -5386,13 +4697,7 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	if(parent)
 		hide();
 	
-	if(actionKey == "testing")
-	{
-		testCWidgetItem();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "widget")
+	if(actionKey == "widget")
 	{
 		testCWidget();
 
@@ -5897,9 +5202,23 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if (actionKey == "wplay")
 	{
-		if (windowWidget)
+		if (rightWidget)
+		{
+			rightWidget->hide();
+			
+			tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[rightWidget->getSelected()]);
+			tmpMoviePlayerGui.exec(NULL, "");
+		}
+		else if (windowWidget)
 		{
 			windowWidget->hide();
+			
+			tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
+			tmpMoviePlayerGui.exec(NULL, "");
+		}
+		else if (textBoxWidget)
+		{
+			textBoxWidget->hide();
 			
 			tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
 			tmpMoviePlayerGui.exec(NULL, "");
@@ -5907,440 +5226,15 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
-	else if(actionKey == "wok")
-	{
-		if (rightWidget->inFocus)
-		{
-			//hide();
-/*
-			right_selected = rightWidget->getSelected();
-
-			///
-			ytparser.Cleanup();
-
-			// setregion
-			ytparser.SetRegion("DE");
-
-			// set max result
-			ytparser.SetMaxResults(1);
-			
-			// parse feed
-			if (ytparser.ParseFeed(cYTFeedParser::SEARCH_BY_ID, m_vMovieInfo[right_selected].vname, m_vMovieInfo[right_selected].vkey))
-			{
-				yt_video_list_t &ylist = ytparser.GetVideoList();
-	
-				for (unsigned int j = 0; j < ylist.size(); j++) 
-				{
-					m_vMovieInfo[right_selected].ytid = ylist[j].id;
-					m_vMovieInfo[right_selected].file.Name = ylist[j].GetUrl();
-				}
-			} 
-				///
-
-			if (&m_vMovieInfo[right_selected].file != NULL) 
-			{
-				tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[right_selected]);
-				tmpMoviePlayerGui.exec(NULL, "");
-			}
-*/
-		}
-		else if (leftWidget->inFocus)
-		{
-			left_selected = leftWidget->getSelected();
-
-			if(top_selected == 0) // movies
-			{
-				if(left_selected == 0)
-				{
-					right_selected = 0;
-					rightWidget->clearItems();
-					//loadTMDBPlaylist("movie", "now_playing", 1);
-					TVShows = "movie";
-					plist = "now_playing";
-					page = 1;
-
-					CHintBox loadBox("CWidget", _("Scan for Movies ..."));
-					loadBox.paint();
-					loadTMDBPlaylist(TVShows.c_str(), plist.c_str(), page);
-					loadBox.hide();
-
-					// load items
-					for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-					{
-						item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
-
-						item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-						item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-						item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-						item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-						rightWidget->addItem(item);
-					}
-				}
-				else if(left_selected == 1)
-				{
-					right_selected = 0;
-					rightWidget->clearItems();
-					//loadTMDBPlaylist("movie", "popular", 1);
-					TVShows = "movie";
-					plist = "popular";
-					page = 1;
-
-					CHintBox loadBox("CWidget", _("Scan for Movies ..."));
-					loadBox.paint();
-					loadTMDBPlaylist(TVShows.c_str(), plist.c_str(), page);
-					loadBox.hide();
-
-					// load items
-					for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-					{
-						item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
-
-						item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-						item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-						item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-						item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-						rightWidget->addItem(item);
-					}
-				}
-				else if(left_selected == 2)
-				{
-					right_selected = 0;
-					rightWidget->clearItems();
-					//loadTMDBPlaylist("movie", "top_rated", 1);
-					TVShows = "movie";
-					plist = "top_rated";
-					page = 1;
-
-					CHintBox loadBox("CWidget", _("Scan for Movies ..."));
-					loadBox.paint();
-					loadTMDBPlaylist(TVShows.c_str(), plist.c_str(), page);
-					loadBox.hide();
-					
-					// load items
-					for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-					{
-						item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
-
-						item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-						item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-						item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-						item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-						rightWidget->addItem(item);
-					}
-				}
-				else if(left_selected == 3)
-				{
-					right_selected = 0;
-					rightWidget->clearItems();
-
-					TVShows = "movie";
-					plist = "upcoming";
-					page = 1;
-
-					CHintBox loadBox("CWidget", _("Scan for Movies ..."));
-					loadBox.paint();
-					loadTMDBPlaylist(TVShows.c_str(), plist.c_str(), page);
-					loadBox.hide();
-
-					// load items
-					for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-					{
-						item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
-
-						item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-						item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-						item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-						item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-						rightWidget->addItem(item);
-					}
-				}
-			}
-			else if(top_selected == 1) // tv
-			{
-				if(left_selected == 0)
-				{
-					right_selected = 0;
-					rightWidget->clearItems();
-					//loadTMDBPlaylist("tv", "airing_today", 1);
-					TVShows = "tv";
-					plist = "airing_today";
-					page = 1;
-
-					CHintBox loadBox("CWidget", _("Scan for Movies ..."));
-					loadBox.paint();
-					loadTMDBPlaylist(TVShows.c_str(), plist.c_str(), page);
-					loadBox.hide();
-
-					// load items
-					for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-					{
-						item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
-
-						item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-						item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-						item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-						item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-						rightWidget->addItem(item);
-					}
-				}
-				else if(left_selected == 1)
-				{
-					right_selected = 0;
-					rightWidget->clearItems();
-					//loadTMDBPlaylist("tv", "on_the_air", 1);
-					TVShows = "tv";
-					plist = "on_the_air";
-					page = 1;
-
-					CHintBox loadBox("CWidget", _("Scan for Movies ..."));
-					loadBox.paint();
-					loadTMDBPlaylist(TVShows.c_str(), plist.c_str(), page);
-					loadBox.hide();
-
-					// load items
-					for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-					{
-						item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
-
-						item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-						item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-						item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-						item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-						rightWidget->addItem(item);
-					}
-				}
-				else if(left_selected == 2)
-				{
-					right_selected = 0;
-					rightWidget->clearItems();
-					//loadTMDBPlaylist("tv", "popular", 1);
-					TVShows = "tv";
-					plist = "popular";
-					page = 1;
-
-					CHintBox loadBox("CWidget", _("Scan for Movies ..."));
-					loadBox.paint();
-					loadTMDBPlaylist(TVShows.c_str(), plist.c_str(), page);
-					loadBox.hide();
-
-					// load items
-					for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-					{
-						item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
-
-						item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-						item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-						item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-						item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-						rightWidget->addItem(item);
-					}
-				}
-				else if(left_selected == 3)
-				{
-					right_selected = 0;
-					rightWidget->clearItems();
-					//loadTMDBPlaylist("tv", "top_rated", 1);
-					TVShows = "tv";
-					plist = "top_rated";
-					page = 1;
-
-					CHintBox loadBox("CWidget", _("Scan for Movies ..."));
-					loadBox.paint();
-					loadTMDBPlaylist(TVShows.c_str(), plist.c_str(), page);
-					loadBox.hide();
-
-					// load items
-					for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-					{
-						item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
-
-						item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-						item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-						item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-						item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-						rightWidget->addItem(item);
-					}
-				}
-			}
-
-			if(left_selected == 8)
-				return RETURN_EXIT_ALL;
-		}
-		else if (frameBoxWidget->inFocus)
-		{
-			top_selected = frameBoxWidget->getSelected();
-
-			if(top_selected == 1) //tv
-			{
-				right_selected = 0;
-				left_selected = 0;
-
-				rightWidget->clearItems();
-				//
-				leftWidget->clearItems();
-
-				ClistBoxItem *item1 = new ClistBoxItem("Heute auf");
-				item1->setOption("Sendung");
-				item1->set2lines();
-				ClistBoxItem *item2 = new ClistBoxItem("Auf Sendung");
-				ClistBoxItem *item3 = new ClistBoxItem("Am");
-				item3->setOption("populärsten");
-				item3->set2lines();
-				ClistBoxItem *item4 = new ClistBoxItem("am");
-				item4->setOption("besten bewertet");
-				item4->set2lines();
-				ClistBoxItem *item5 = new ClistBoxItem(NULL, false);
-				ClistBoxItem *item6 = new ClistBoxItem(NULL, false);
-				ClistBoxItem *item7 = new ClistBoxItem(NULL, false);
-				ClistBoxItem *item8 = new ClistBoxItem(NULL, false);
-				ClistBoxItem *item9 = new ClistBoxItem("Beenden");
-
-				leftWidget->addItem(item1);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-				leftWidget->addItem(item2);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-				leftWidget->addItem(item3);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-				leftWidget->addItem(item4);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-				leftWidget->addItem(item5);
-				leftWidget->addItem(item6);
-				leftWidget->addItem(item7);
-				leftWidget->addItem(item8);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-				leftWidget->addItem(item9);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-
-				//loadTMDBPlaylist("tv", "airing_today", 1);
-				TVShows = "tv";
-				plist = "airing_today";
-				page = 1;
-
-				CHintBox loadBox("CWidget", _("Scan for Movies ..."));
-				loadBox.paint();
-				loadTMDBPlaylist(TVShows.c_str(), plist.c_str(), page);
-				loadBox.hide();
-
-				// load items
-				for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-				{
-					item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
-
-					item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-					item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-					item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-					item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-					rightWidget->addItem(item);
-				}
-
-				leftWidget->setSelected(0);
-				rightWidget->setSelected(0);
-			}
-			else if(top_selected == 0) // movie
-			{
-				right_selected = 0;
-				left_selected = 0;
-
-				rightWidget->clearItems();
-				leftWidget->clearItems();
-
-				ClistBoxItem *item1 = new ClistBoxItem("In den Kinos");
-				ClistBoxItem *item2 = new ClistBoxItem("Am");
-				item2->setOption("populärsten");
-				item2->set2lines();
-				ClistBoxItem *item3 = new ClistBoxItem("Am besten");
-				item3->setOption("bewertet");
-				item3->set2lines();
-				ClistBoxItem *item4 = new ClistBoxItem("Neue Filme");
-				ClistBoxItem *item5 = new ClistBoxItem(NULL, false);
-				ClistBoxItem *item6 = new ClistBoxItem(NULL, false);
-				ClistBoxItem *item7 = new ClistBoxItem(NULL, false);
-				ClistBoxItem *item8 = new ClistBoxItem(NULL, false);
-				ClistBoxItem *item9 = new ClistBoxItem("Beenden");
-
-				leftWidget->addItem(item1);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-				leftWidget->addItem(item2);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-				leftWidget->addItem(item3);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-				leftWidget->addItem(item4);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-				leftWidget->addItem(item5);
-				leftWidget->addItem(item6);
-				leftWidget->addItem(item7);
-				leftWidget->addItem(item8);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-				leftWidget->addItem(item9);
-				leftWidget->addItem(new CMenuSeparator(LINE));
-
-				CHintBox loadBox("CWidget", _("Scan for Movies ..."));
-				loadBox.paint();
-				loadTMDBPlaylist();
-				loadBox.hide();
-
-				// load items
-				for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
-				{
-					item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str());
-
-					item->setOption(m_vMovieInfo[i].epgChannel.c_str());
-
-					item->setInfo1(m_vMovieInfo[i].epgInfo1.c_str());
-
-					item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
-
-					item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-					rightWidget->addItem(item);
-				}
-
-				leftWidget->setSelected(0);
-				rightWidget->setSelected(0);
-			}
-		}
-
-		return RETURN_REPAINT;
-	}
 	else if(actionKey == "listframewidget")
 	{
 		testCListFrameWidget();
+
+		return RETURN_REPAINT;
+	}
+	else if(actionKey == "listboxmwidget")
+	{
+		testClistBoxWidget();
 
 		return RETURN_REPAINT;
 	}
@@ -6359,27 +5253,92 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
-	else if(actionKey == "listboxmwidget")
+	else if (actionKey == "ainfo")
 	{
-		testClistBoxWidget();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "mmwplay")
-	{
-		selected = rightWidget->getSelected();
-
-		if (&m_vMovieInfo[selected].file != NULL) 
-		{
-			//tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[selected]);
-			//tmpMoviePlayerGui.exec(NULL, "");
-
-			CMovieInfoWidget movieInfoWidget;
-			movieInfoWidget.setMovie(m_vMovieInfo[selected]);
+		hide();
 		
-			movieInfoWidget.exec(NULL, "");
+		selected = 0;
+		
+		if (listFrame)
+		{
+			selected = listFrame->getSelectedLine();
 		}
+		
+		std::string title;
+		std::string artist;
+		std::string genre;
+		std::string date;
+		std::string cover;
+		char duration[9] = "";
 
+		title = AudioPlaylist[selected].MetaData.title;
+		artist = AudioPlaylist[selected].MetaData.artist;
+		genre = AudioPlaylist[selected].MetaData.genre;	
+		date = AudioPlaylist[selected].MetaData.date;
+		cover = AudioPlaylist[selected].MetaData.cover.empty()? DATADIR "/icons/no_coverArt.png" : AudioPlaylist[selected].MetaData.cover;
+
+		snprintf(duration, 8, "(%ld:%02ld)", AudioPlaylist[selected].MetaData.total_time / 60, AudioPlaylist[selected].MetaData.total_time % 60);
+		
+		std::string buffer;
+		
+		// title
+		if (!title.empty())
+		{
+			buffer = _("Title: ");
+			buffer += title.c_str();
+		}
+		
+		// artist
+		if (!artist.empty())
+		{
+			buffer += "\n\n";
+			buffer += _("Artist: ");
+			buffer += artist.c_str();
+		}
+		
+		// genre
+		if (!genre.empty())
+		{
+			buffer += "\n\n";
+			buffer += _("Genre: ");
+			buffer += genre.c_str();
+		}
+		
+		// date
+		if (!date.empty())
+		{
+			buffer += "\n\n";
+			buffer += _("Date: ");
+			buffer += date.c_str();
+		}
+		
+		// duration
+		if (duration)
+		{
+			buffer += "\n\n";
+			buffer += _("Length (Min)");
+			buffer += duration;
+		}
+		
+		//
+		// infoBox
+		CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
+		
+		CInfoBox * infoBox = new CInfoBox(&position, _("Track Infos"), NEUTRINO_ICON_MP3);
+
+		// scale pic
+		int p_w = 0;
+		int p_h = 0;
+
+		::scaleImage(cover, &p_w, &p_h);
+
+		infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
+		infoBox->setMode(SCROLL);
+		infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
+		infoBox->setText(buffer.c_str(), cover.c_str(), p_w, p_h);
+		infoBox->exec();
+		delete infoBox;
+	
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "linfo")
@@ -7217,7 +6176,6 @@ void CTestMenu::showMenu()
 		mainMenu->enablePaintHead();
 		mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
 		mainMenu->setWidgetMode(MODE_MENU);
-		//mainMenu->setMenuPosition(MENU_POSITION_CENTER);
 		mainMenu->enableShrinkMenu(),
 		mainMenu->enablePaintDate();
 		mainMenu->enablePaintFoot();
@@ -7269,9 +6227,6 @@ void CTestMenu::showMenu()
 	//mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidgetItem (CFrameBox)"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "singleWidget"));
-	
-	//mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidgetItem(CFrameBox|ClistBox)"));
-	mainMenu->addItem(new CMenuForwarder("CWidgetItem(CFrameBox|ClistBox)", true, NULL, this, "testing"));
 	
 	// CMenuWidhet
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CMenuWidget"));
