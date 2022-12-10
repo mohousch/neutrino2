@@ -1556,8 +1556,10 @@ void CTestMenu::testClistBoxWidget()
 	rightWidget->enablePaintHead();
 	rightWidget->setTitle("CWidget(ClistBox)", NEUTRINO_ICON_MP3);
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	rightWidget->setHeadLine(true, true);
 	rightWidget->enablePaintDate();
 	rightWidget->enablePaintFoot();
+	rightWidget->setFootLine(true, true);
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->enablePaintItemInfo(80);
 	rightWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
@@ -6204,7 +6206,7 @@ void CTestMenu::showMenu()
 			
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistFrame)", true, NULL, this, "listframewidget"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(CWindow)", true, NULL, this, "ccwindow"));
+	mainMenu->addItem(new CMenuForwarder("CWidget(CWindow|CHead|CFoot)", true, NULL, this, "ccwindow"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(CTextBox)", true, NULL, this, "textboxwidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox)", true, NULL, this, "listboxmwidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(CFrameBox)", true, NULL, this, "firetv"));
