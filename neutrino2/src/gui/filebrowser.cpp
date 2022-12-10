@@ -848,7 +848,7 @@ void CFileBrowser::paint()
 	snprintf(l_name, sizeof(l_name), "%s %s", _("Filebrowser"), FILESYSTEM_ENCODING_TO_UTF8(std::string(name).c_str())); // UTF-8
 
 	listBox->enablePaintHead();
-	listBox->setTitle(l_name);
+	listBox->setTitle(l_name, NEUTRINO_ICON_FILEBROWSER);
 	listBox->enablePaintDate();
 	listBox->setHeadGradient(g_settings.Head_gradient);
 	listBox->setHeadRadius(g_settings.Head_radius);
