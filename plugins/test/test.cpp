@@ -141,7 +141,6 @@ class CTestMenu : public CMenuTarget
 		void testCProgressBar();
 		void testCButtons();
 		void testCHButtons();
-		void testCComponent();
 
 		// CWidgetItem
 		void testCHeaders();
@@ -149,6 +148,7 @@ class CTestMenu : public CMenuTarget
 		void testCWindow();
 		void testCWindowShadow();
 		void testCWindowCustomColor();
+		void testCWindowCComponent();
 		void testCProgressWindow();
 		void testCTextBox();
 		void testCListFrame();
@@ -1958,179 +1958,6 @@ void CTestMenu::testCHButtons()
 	hide();
 }
 
-
-// CComponent
-void CTestMenu::testCComponent()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCComponent\n");
-
-	// CBox
-	CBox Box;
-	Box.iX = g_settings.screen_StartX + 50;
-	Box.iY = g_settings.screen_StartY + 50;
-	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 100);
-	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 100);
-	
-	int currentPage = 0;
-	int NrOfPages = 4;
-	int pcr = 25;
-	
-	loadMoviePlaylist();
-	
-	std::string buffer;
-	buffer = m_vMovieInfo[0].epgInfo1;
-	buffer += "\n";
-	buffer += m_vMovieInfo[0].epgInfo2;
-	
-	// CWindow
-	windowWidget = new CWindow(&Box);
-	windowWidget->setColor(COL_MENUCONTENT_PLUS_0);
-	windowWidget->setCorner(RADIUS_MID, CORNER_ALL);
-	
-	// headleft icon
-	CCIcon headLeftIcon;
-	headLeftIcon.setIcon(NEUTRINO_ICON_COLORS);
-	headLeftIcon.setPosition(Box.iX, Box.iY + (40 - headLeftIcon.iHeight)/2, headLeftIcon.iWidth, headLeftIcon.iHeight);
-	windowWidget->addCCItem(&headLeftIcon);
-	
-	// head label
-	CCLabel headLabel;
-	headLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
-	headLabel.setColor(COL_ORANGE);
-	headLabel.enablePaintBG();
-	headLabel.setText("CComponets");
-	headLabel.setPosition(Box.iX + headLeftIcon.iWidth + BORDER_LEFT, Box.iY, Box.iWidth - headLeftIcon.iWidth - BORDER_LEFT, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
-	
-	windowWidget->addCCItem(&headLabel);
-	
-	// head time
-	CCTime headTimer;
-	headTimer.setFormat("%A %d.%m.%Y %H:%M:%S");
-	headTimer.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
-	std::string timestr = getNowTimeStr("%A %d.%m.%Y %H:%M:%S");
-	int timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
-	headTimer.setPosition(Box.iX + Box.iWidth - BORDER_RIGHT - timestr_len, Box.iY, timestr_len + 1, 40);
-	headTimer.enableRepaint();
-	
-	windowWidget->addCCItem(&headTimer);
-	
-	// image
-	CCImage testImage;
-	testImage.setImage(m_vMovieInfo[0].tfile.c_str());
-	testImage.setPosition(Box.iX, Box.iY + 40, Box.iWidth, Box.iHeight - 80);
-	testImage.setScaling(true);
-	
-	windowWidget->addCCItem(&testImage);
-	
-	// icon
-	CCIcon testIcon;
-	testIcon.setIcon(NEUTRINO_ICON_BUTTON_RED);
-	testIcon.setPosition(Box.iX + 150, Box.iY + 150, testIcon.iWidth, testIcon.iHeight);
-	
-	windowWidget->addCCItem(&testIcon);
-	
-	// label
-	CCLabel testLabel;
-	testLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
-	testLabel.setColor(COL_GREEN);
-	testLabel.enablePaintBG();
-	testLabel.setText("this is a CComponet label test :-)");
-	testLabel.setPosition(Box.iX + 10, Box.iY + 50, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
-	
-	windowWidget->addCCItem(&testLabel);
-	
-	// CButtons
-	CCButtons testButton;
-	int icon_w, icon_h;
-	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
-	testButton.setPosition(Box.iX + 10, Box.iY + Box.iHeight - 40, Box.iWidth, 40);
-	testButton.setButtons(WFootButtons, WFOOT_BUTTONS_COUNT);
-	
-	windowWidget->addCCItem(&testButton);
-	
-	// Hline
-	CCHline testHline;
-	testHline.setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 10, 10);
-	
-	windowWidget->addCCItem(&testHline);
-	
-	// Vline
-	CCVline testVline;
-	testVline.setPosition(Box.iX + Box.iWidth - 20 - 15, Box.iY + 10, 10, Box.iHeight - 20);
-	
-	windowWidget->addCCItem(&testVline);
-	
-	// CCFrameLine
-	CCFrameLine testFrameLine;
-	testFrameLine.setPosition(Box.iX + 10, Box.iY + 140, testIcon.iWidth + 100, testIcon.iHeight + 20);
-	
-	windowWidget->addCCItem(&testFrameLine);
-	
-	// DL
-	//CItems2DetailsLine testDline;
-	//testDline.setMode(DL_HINT);
-	//testDline.setHint(buffer.c_str());
-	//testDline.setIcon(m_vMovieInfo[0].tfile.c_str());
-	
-	// pb
-	//CProgressBar testPB(Box.iX + Box.iWidth/2 - Box.iWidth/4, Box.iY + Box.iHeight - 150, Box.iWidth /3, 10, 40, 100, 70, true);
-	//testPB.setPosition(Box.iX + Box.iWidth/2 - Box.iWidth/4, Box.iY + Box.iHeight - 150, Box.iWidth /3, 10);
-	
-	// sb
-	//CScrollBar testSB;
-	
-	// text
-	CCText testText;
-	testText.setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
-	testText.setMode(AUTO_WIDTH);
-	testText.setText(buffer.c_str());
-	
-	windowWidget->addCCItem(&testText);
-
-	// grid
-	CCGrid testGrid;
-	testGrid.setPosition(Box.iX + 180 + testIcon.iWidth + 100 + 20, Box.iY + 100, 200, 160);
-	testGrid.setColor(COL_PURPLE_PLUS_0);
-	
-	windowWidget->addCCItem(&testGrid);
-	
-	// pig
-	CCPig testPig;
-	testPig.setPosition(Box.iX + 180 + testIcon.iWidth + 100 + 20 + 200 + 10, Box.iY + 100, 300, 160);
-	
-	windowWidget->addCCItem(&testPig);
-	
-	//
-	windowWidget->addKey(RC_red, this, "wplay");
-	windowWidget->addKey(RC_yellow, this, "winfo");
-	
-	//
-	windowWidget->paint();
-	//testDline.paint(Box.iX, Box.iY, Box.iWidth, Box.iHeight, 70, 35, Box.iY + 2*35);
-	//testPB.paint(/*Box.iX + Box.iWidth/2 - Box.iWidth/4, Box.iY + Box.iHeight - 150,*/pcr);
-	//testSB.paint(Box.iX + Box.iWidth - 10, Box.iY + 40, Box.iHeight - 80, NrOfPages, currentPage);
-	CFrameBuffer::getInstance()->blit();
-	
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	windowWidget->setSecTimer(sec_timer_id);
-	windowWidget->exec(10);	
-	windowWidget->hide();	
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
-	
-	if (windowWidget)
-	{
-		delete windowWidget;
-		windowWidget = NULL;
-	}
-}
-
 //
 void CTestMenu::testCHeaders()
 {
@@ -2305,6 +2132,178 @@ void CTestMenu::testCWindowCustomColor()
 	{
 		delete window;
 		window = NULL;
+	}
+}
+
+// CWindow (CComponent)
+void CTestMenu::testCWindowCComponent()
+{
+	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCWindowCComponent\n");
+
+	// CBox
+	CBox Box;
+	Box.iX = g_settings.screen_StartX + 50;
+	Box.iY = g_settings.screen_StartY + 50;
+	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 100);
+	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 100);
+	
+	int currentPage = 0;
+	int NrOfPages = 4;
+	int pcr = 25;
+	
+	loadMoviePlaylist();
+	
+	std::string buffer;
+	buffer = m_vMovieInfo[0].epgInfo1;
+	buffer += "\n";
+	buffer += m_vMovieInfo[0].epgInfo2;
+	
+	// CWindow
+	windowWidget = new CWindow(&Box);
+	windowWidget->setColor(COL_MENUCONTENT_PLUS_0);
+	windowWidget->setCorner(RADIUS_MID, CORNER_ALL);
+	
+	// headleft icon
+	CCIcon headLeftIcon;
+	headLeftIcon.setIcon(NEUTRINO_ICON_COLORS);
+	headLeftIcon.setPosition(Box.iX, Box.iY + (40 - headLeftIcon.iHeight)/2, headLeftIcon.iWidth, headLeftIcon.iHeight);
+	windowWidget->addCCItem(&headLeftIcon);
+	
+	// head label
+	CCLabel headLabel;
+	headLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
+	headLabel.setColor(COL_ORANGE);
+	headLabel.enablePaintBG();
+	headLabel.setText("CComponets");
+	headLabel.setPosition(Box.iX + headLeftIcon.iWidth + BORDER_LEFT, Box.iY, Box.iWidth - headLeftIcon.iWidth - BORDER_LEFT, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
+	
+	windowWidget->addCCItem(&headLabel);
+	
+	// head time
+	CCTime headTimer;
+	headTimer.setFormat("%A %d.%m.%Y %H:%M:%S");
+	headTimer.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
+	std::string timestr = getNowTimeStr("%A %d.%m.%Y %H:%M:%S");
+	int timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
+	headTimer.setPosition(Box.iX + Box.iWidth - BORDER_RIGHT - timestr_len, Box.iY, timestr_len + 1, 40);
+	headTimer.enableRepaint();
+	
+	windowWidget->addCCItem(&headTimer);
+	
+	// image
+	CCImage testImage;
+	testImage.setImage(m_vMovieInfo[0].tfile.c_str());
+	testImage.setPosition(Box.iX, Box.iY + 40, Box.iWidth, Box.iHeight - 80);
+	testImage.setScaling(true);
+	
+	windowWidget->addCCItem(&testImage);
+	
+	// icon
+	CCIcon testIcon;
+	testIcon.setIcon(NEUTRINO_ICON_BUTTON_RED);
+	testIcon.setPosition(Box.iX + 150, Box.iY + 150, testIcon.iWidth, testIcon.iHeight);
+	
+	windowWidget->addCCItem(&testIcon);
+	
+	// label
+	CCLabel testLabel;
+	testLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
+	testLabel.setColor(COL_GREEN);
+	testLabel.enablePaintBG();
+	testLabel.setText("this is a CComponet label test :-)");
+	testLabel.setPosition(Box.iX + 10, Box.iY + 50, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
+	
+	windowWidget->addCCItem(&testLabel);
+	
+	// CButtons
+	CCButtons testButton;
+	int icon_w, icon_h;
+	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
+	testButton.setPosition(Box.iX + 10, Box.iY + Box.iHeight - 40, Box.iWidth, 40);
+	testButton.setButtons(WFootButtons, WFOOT_BUTTONS_COUNT);
+	
+	windowWidget->addCCItem(&testButton);
+	
+	// Hline
+	CCHline testHline;
+	testHline.setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 10, 10);
+	
+	windowWidget->addCCItem(&testHline);
+	
+	// Vline
+	CCVline testVline;
+	testVline.setPosition(Box.iX + Box.iWidth - 20 - 15, Box.iY + 10, 10, Box.iHeight - 20);
+	
+	windowWidget->addCCItem(&testVline);
+	
+	// CCFrameLine
+	CCFrameLine testFrameLine;
+	testFrameLine.setPosition(Box.iX + 10, Box.iY + 140, testIcon.iWidth + 100, testIcon.iHeight + 20);
+	
+	windowWidget->addCCItem(&testFrameLine);
+	
+	// DL
+	//CItems2DetailsLine testDline;
+	//testDline.setMode(DL_HINT);
+	//testDline.setHint(buffer.c_str());
+	//testDline.setIcon(m_vMovieInfo[0].tfile.c_str());
+	
+	// pb
+	//CProgressBar testPB(Box.iX + Box.iWidth/2 - Box.iWidth/4, Box.iY + Box.iHeight - 150, Box.iWidth /3, 10, 40, 100, 70, true);
+	//testPB.setPosition(Box.iX + Box.iWidth/2 - Box.iWidth/4, Box.iY + Box.iHeight - 150, Box.iWidth /3, 10);
+	
+	// sb
+	//CScrollBar testSB;
+	
+	// text
+	CCText testText;
+	testText.setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
+	testText.setMode(AUTO_WIDTH);
+	testText.setText(buffer.c_str());
+	
+	windowWidget->addCCItem(&testText);
+
+	// grid
+	CCGrid testGrid;
+	testGrid.setPosition(Box.iX + 180 + testIcon.iWidth + 100 + 20, Box.iY + 100, 200, 160);
+	testGrid.setColor(COL_PURPLE_PLUS_0);
+	
+	windowWidget->addCCItem(&testGrid);
+	
+	// pig
+	CCPig testPig;
+	testPig.setPosition(Box.iX + 180 + testIcon.iWidth + 100 + 20 + 200 + 10, Box.iY + 100, 300, 160);
+	
+	windowWidget->addCCItem(&testPig);
+	
+	//
+	windowWidget->addKey(RC_red, this, "wplay");
+	windowWidget->addKey(RC_yellow, this, "winfo");
+	
+	//
+	windowWidget->paint();
+	//testDline.paint(Box.iX, Box.iY, Box.iWidth, Box.iHeight, 70, 35, Box.iY + 2*35);
+	//testPB.paint(/*Box.iX + Box.iWidth/2 - Box.iWidth/4, Box.iY + Box.iHeight - 150,*/pcr);
+	//testSB.paint(Box.iX + Box.iWidth - 10, Box.iY + 40, Box.iHeight - 80, NrOfPages, currentPage);
+	CFrameBuffer::getInstance()->blit();
+	
+	// loop
+	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	windowWidget->setSecTimer(sec_timer_id);
+	windowWidget->exec(10);	
+	windowWidget->hide();	
+	
+	if (sec_timer_id)
+	{
+		//
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
+	
+	if (windowWidget)
+	{
+		delete windowWidget;
+		windowWidget = NULL;
 	}
 }
 
@@ -4739,11 +4738,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
-	else if(actionKey == "component")
-	{
-		testCComponent();
-		return RETURN_REPAINT;
-	}
 	else if(actionKey == "window")
 	{
 		testCWindow();
@@ -4759,6 +4753,11 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	else if(actionKey == "windowcustomcolor")
 	{
 		testCWindowCustomColor();
+		return RETURN_REPAINT;
+	}
+	else if(actionKey == "windowcomponent")
+	{
+		testCWindowCComponent();
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "headers")
@@ -6219,7 +6218,6 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
-	mainMenu->addItem(new CMenuForwarder("allCComponent", true, NULL, this, "component"));
 	
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidgetItems"));
 	mainMenu->addItem(new CMenuForwarder("CHeaders", true, NULL, this, "headers"));
@@ -6229,6 +6227,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CWindow", true, NULL, this, "window"));
 	mainMenu->addItem(new CMenuForwarder("CWindow(with shadow)", true, NULL, this, "windowshadow"));
 	mainMenu->addItem(new CMenuForwarder("CWindow(shadow|customColor)", true, NULL, this, "windowcustomcolor"));
+	mainMenu->addItem(new CMenuForwarder("CWindow (CComponent)", true, NULL, this, "windowcomponent"));
 	
 	//mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidgetItem (ClistBox)"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(standard)", true, NULL, this, "listbox"));
