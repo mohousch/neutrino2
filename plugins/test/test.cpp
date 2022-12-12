@@ -897,7 +897,7 @@ void CTestMenu::loadTMDBPlaylist(const char *txt, const char *list, const int se
 ////
 void CTestMenu::testCWidget()
 {
-	dprintf(DEBUG_NORMAL, "\nCTestMenu:testCWidget(CFrameBox/ClistBox):\n");
+	dprintf(DEBUG_NORMAL, "\nCTestMenu:testCWidget(CFrameBox|ClistBox|CHead|CFoot):\n");
 	
 	testWidget = new CWidget(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
 
@@ -941,12 +941,14 @@ void CTestMenu::testCWidget()
 	frame->setPosition(topBox.iX, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Filme");
 	frame->setActionKey(this, "movie");
+	frame->setHAlign(CC_ALIGN_CENTER);
 	frame->enableBorder();
 	frameBoxWidget->addFrame(frame);
 	
 	frame = new CFrame();
 	frame->setPosition(topBox.iX + topBox.iWidth/3, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Serien");
+	frame->setHAlign(CC_ALIGN_CENTER);
 	frame->setActionKey(this, "tv");
 	frame->enableBorder();
 	frameBoxWidget->addFrame(frame);
@@ -954,6 +956,7 @@ void CTestMenu::testCWidget()
 	frame = new CFrame();
 	frame->setPosition(topBox.iX + 2*topBox.iWidth/3, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Suche");
+	frame->setHAlign(CC_ALIGN_CENTER);
 	frame->setOption(tmdbsearch.c_str());
 	frame->setActionKey(this, "search");
 	frame->enableBorder();
@@ -6588,13 +6591,13 @@ void CTestMenu::showMenu()
 	mainMenu->clear();
 			
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidget"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(ClistFrame)", true, NULL, this, "listframewidget"));
+	mainMenu->addItem(new CMenuForwarder("CWidget(ClistFrame|CHead|CFoot)", true, NULL, this, "listframewidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(CWindow|CHead|CFoot)", true, NULL, this, "ccwindow"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(CTextBox)", true, NULL, this, "textboxwidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox)", true, NULL, this, "listboxmwidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(CFrameBox)", true, NULL, this, "firetv"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CWindow)", true, NULL, this, "multiwidget"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CFrameBox)", true, NULL, this, "widget"));
+	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CWindow|CHead|CFoot)", true, NULL, this, "multiwidget"));
+	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CFrameBox|CHead|CFoot)", true, NULL, this, "widget"));
 	
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CComponent"));
