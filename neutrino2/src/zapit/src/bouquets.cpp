@@ -116,8 +116,8 @@ CZapitChannel * CZapitBouquet::getChannelByChannelID(const t_channel_id channel_
 
 void CZapitBouquet::sortBouquet(void)
 {
-	//sort(tvChannels.begin(), tvChannels.end(), CmpChannelByChName()); //FIXME:
-	//sort(radioChannels.begin(), radioChannels.end(), CmpChannelByChName()); //FIXME:
+	sort(tvChannels.begin(), tvChannels.end(), CmpChannelByChName()); //FIXME:
+	sort(radioChannels.begin(), radioChannels.end(), CmpChannelByChName()); //FIXME:
 }
 
 void CZapitBouquet::addService(CZapitChannel *newChannel)
@@ -993,7 +993,7 @@ void CBouquetManager::makeRemainingChannelsBouquet(void)
 			unusedChannels.push_back(&(it->second));
 	}
 
-	//sort(unusedChannels.begin(), unusedChannels.end(), CmpChannelByChName()); //FIXME:
+	sort(unusedChannels.begin(), unusedChannels.end(), CmpChannelByChName()); //FIXME:
 
 	for (ZapitChannelList::const_iterator it = unusedChannels.begin(); it != unusedChannels.end(); it++) 
 	{
