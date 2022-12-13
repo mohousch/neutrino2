@@ -969,19 +969,6 @@
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
-	
-	<WIDGET name="testmenu" posx="0" posy="0" width="700" height="720" paintframe="1">
-		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" >
-		</LISTBOX>
-		
-		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="Test Menu" icon="multimedia" paintdate="1" format="%d.%m.%Y %H:%M:%S" paintframe="1">
-		</HEAD>
-		
-		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
-			<BUTTON_LABEL name="information">
-			</BUTTON_LABEL>
-		</FOOT>
-	</WIDGET>
 </skin>
 
 

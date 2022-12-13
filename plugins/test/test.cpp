@@ -234,6 +234,7 @@ class CTestMenu : public CMenuTarget
 		
 		// skin
 		void testSkinWidget();
+		void testSkinWidget2();
 		
 		// paint()
 		void showMenu();
@@ -5060,6 +5061,20 @@ void CTestMenu::testSkinWidget()
 	CNeutrinoApp::getInstance()->execSkinWidget("test", NULL, "");
 }
 
+// skin2
+void CTestMenu::testSkinWidget2()
+{
+	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSkinWidget2\n");
+	
+	CNeutrinoApp::getInstance()->eraseWidget("testmenu");
+	
+	//
+	std::string skin = PLUGINDIR "/test/skin.xml";
+	CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
+	
+	CNeutrinoApp::getInstance()->execSkinWidget("testmenu", NULL, "");
+}
+
 // exec
 int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 {
@@ -6530,6 +6545,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
+	else if(actionKey == "skin2")
+	{
+		testSkinWidget2();
+		
+		return RETURN_REPAINT;
+	}
 
 	showMenu();
 	
@@ -6540,50 +6561,29 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 void CTestMenu::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::showMenu:\n");
-	
-	//
-	CNeutrinoApp::getInstance()->eraseWidget("testmenu");
-	
-	//
-	CNeutrinoApp::getInstance()->parseSkin(PLUGINDIR "/test/skin.xml");
-	
-	/*
-	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"/>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Menu\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"/>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
-
-	CNeutrinoApp::getInstance()->parseSkin(skin.c_str(), true);
-	*/
 
 	CWidget* mWidget = NULL;
 	ClistBox* mainMenu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("testmenu"))
-	{
-		mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu");
+	mWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	mWidget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		mainMenu = (ClistBox*)mWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		mWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		mWidget->setMenuPosition(MENU_POSITION_CENTER);
+	mWidget->name = "Test Menu";
 		
-		mWidget->name = "Test Menu";
-		
-		mainMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	mainMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
-		mainMenu->enablePaintHead();
-		mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
-		mainMenu->setWidgetMode(MODE_MENU);
-		mainMenu->enableShrinkMenu(),
-		mainMenu->enablePaintDate();
-		mainMenu->enablePaintFoot();
+	mainMenu->enablePaintHead();
+	mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
+	mainMenu->setWidgetMode(MODE_MENU);
+	mainMenu->enableShrinkMenu(),
+	mainMenu->enablePaintDate();
+	mainMenu->enablePaintFoot();
 		
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 		
-		mainMenu->setFootButtons(&btn);
+	mainMenu->setFootButtons(&btn);
 		
-		mWidget->addWidgetItem(mainMenu);
-	}
+	mWidget->addWidgetItem(mainMenu);
 	
 	mainMenu->clear();
 			
@@ -6714,6 +6714,7 @@ void CTestMenu::showMenu()
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "SKIN") );		
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET", true, NULL, this, "skin"));
+	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET2", true, NULL, this, "skin2"));
 	
 	mWidget->exec(NULL, "");
 }
