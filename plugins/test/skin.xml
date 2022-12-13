@@ -1,6 +1,6 @@
 <skin>
 
-<!-- SKIN: test menu -->
+<!-- SKIN: testmenu -->
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 	<WIDGET name="testmenu" posx="0" posy="0" width="600" height="600" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_ALL" radius="RADIUS_VERYLARGE" border="BORDER_ALL" timeout="180">

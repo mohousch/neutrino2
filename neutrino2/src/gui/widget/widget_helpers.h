@@ -48,6 +48,23 @@ enum {
 	BORDER_TOPBOTTOM
 };
 
+// halign
+enum {
+	CC_ALIGN_LEFT,
+	CC_ALIGN_CENTER,
+	CC_ALIGN_RIGHT
+};
+
+// buttons
+typedef struct button_label
+{
+	std::string button;
+	std::string localename;
+	fb_pixel_t color;
+} button_label_struct;
+
+typedef std::vector<button_label_struct> button_label_list_t;
+
 // dimension helper
 class CBox
 {
@@ -84,23 +101,6 @@ enum {
 	CC_DETAILSLINE,
 	CC_SLIDER,
 };
-
-// halign
-enum {
-	CC_ALIGN_LEFT,
-	CC_ALIGN_CENTER,
-	CC_ALIGN_RIGHT
-};
-
-// buttons
-typedef struct button_label
-{
-	std::string button;
-	std::string localename;
-	fb_pixel_t color;
-} button_label_struct;
-
-typedef std::vector<button_label_struct> button_label_list_t;
 
 class CComponent
 {
@@ -164,15 +164,9 @@ class CComponent
 		virtual void setText(const char* text){};
 		virtual void enablePaintBG(){};
 		virtual void setHAlign(int h){};
-		//virtual void setFont(CFont* f){font = f;};
 		virtual void setMode(int m){};
-		//void setColor(uint8_t c){color = c;};
-		//void setText(const char* const text){Text = text;};
 		virtual void useBackground(void){};
-		//void setColor(uint8_t col){color = col;};
-		//void setFont(CFont *f){font = f;};
 		virtual void setFormat(const char* f){};
-		//void setHAlign(int h){halign = h;};
 		virtual void setInterFrame(int iframe = 15){};
 		virtual void setTotalTime(time_t tot_time){};
 		virtual void setPlayTime(time_t p_time){};
@@ -231,7 +225,7 @@ class CCImage : public CComponent
 		void paint();
 };
 
-// buttons
+// CCButtons
 //
 enum {
 	BUTTON_BUTTON,
@@ -239,7 +233,6 @@ enum {
 	BUTTON_FRAME_BORDER
 };
 
-// CButtons
 class CCButtons : public CComponent
 {
 	private:
