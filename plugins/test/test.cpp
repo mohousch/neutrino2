@@ -235,6 +235,7 @@ class CTestMenu : public CMenuTarget
 		// skin
 		void testSkinWidget();
 		void testSkinWidget2();
+		void testSkinWidget3();
 		
 		// paint()
 		void showMenu();
@@ -5048,17 +5049,14 @@ void CTestMenu::testSkinWidget()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSkinWidget\n");
 	
-	CNeutrinoApp::getInstance()->eraseWidget("test");
+	CNeutrinoApp::getInstance()->eraseWidget("testmenu");
 	
 	//
-	//std::string skin = PLUGINDIR "/test/skin.xml";
-	//CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
-	
-	std::string skin = "\n<skin>\n\t<WIDGET name=\"test\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"/>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Skin\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"/>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
+	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"/>\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Skin\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"/>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
 
 	CNeutrinoApp::getInstance()->parseSkin(skin.c_str(), true);
 	
-	CNeutrinoApp::getInstance()->execSkinWidget("test", NULL, "");
+	CNeutrinoApp::getInstance()->execSkinWidget("testmenu", NULL, "");
 }
 
 // skin2
@@ -5070,6 +5068,20 @@ void CTestMenu::testSkinWidget2()
 	
 	//
 	std::string skin = PLUGINDIR "/test/skin.xml";
+	CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
+	
+	CNeutrinoApp::getInstance()->execSkinWidget("testmenu", NULL, "");
+}
+
+// skin3
+void CTestMenu::testSkinWidget3()
+{
+	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSkinWidget3\n");
+	
+	CNeutrinoApp::getInstance()->eraseWidget("testmenu");
+	
+	//
+	std::string skin = PLUGINDIR "/test/test.xml";
 	CNeutrinoApp::getInstance()->parseSkin(skin.c_str());
 	
 	CNeutrinoApp::getInstance()->execSkinWidget("testmenu", NULL, "");
@@ -6551,6 +6563,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
+	else if(actionKey == "skin3")
+	{
+		testSkinWidget3();
+		
+		return RETURN_REPAINT;
+	}
 
 	showMenu();
 	
@@ -6715,6 +6733,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "SKIN") );		
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET", true, NULL, this, "skin"));
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET2", true, NULL, this, "skin2"));
+	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET3", true, NULL, this, "skin3"));
 	
 	mWidget->exec(NULL, "");
 }
