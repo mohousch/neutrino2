@@ -3487,7 +3487,7 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.paintFrame(iteminfoframe);
 				itemsLine.setColor(iteminfocolor);
 				itemsLine.setScaling(iteminfoscale);
-				itemsLine.setHint(item->itemHint.c_str());
+				//itemsLine.setHint(item->itemHint.c_str());
 				itemsLine.setIcon(item->itemIcon.c_str());
 					
 				itemsLine.paint(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);

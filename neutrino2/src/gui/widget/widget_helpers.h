@@ -256,6 +256,9 @@ class CCButtons : public CComponent
 		
 		//
 		void paint();
+		
+		//
+		void clear(){buttons.clear();};
 };
 
 //CScrollBar

@@ -253,8 +253,8 @@ class CTestMenu : public CMenuTarget
 #define HEAD_BUTTONS_COUNT	3
 const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_HELP, _("Menu"), COL_YELLOW_PLUS_0 },
-	{ NEUTRINO_ICON_BUTTON_SETUP, _("Exit"), COL_GREEN_PLUS_0 },
+	{ NEUTRINO_ICON_BUTTON_HELP, _("Help"), COL_YELLOW_PLUS_0 },
+	{ NEUTRINO_ICON_BUTTON_SETUP, _("Menu"), COL_GREEN_PLUS_0 },
 	{ NEUTRINO_ICON_BUTTON_MUTE_SMALL, _("Mute"), COL_RED_PLUS_0 }
 };
 
@@ -1932,9 +1932,24 @@ void CTestMenu::testCButtons()
 	int icon_w, icon_h;
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
 	
+	//
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	//buttons.setMode(BUTTON_FRAME_COLORED);
+	buttons.paint();
+	
+	//
+	buttons.clear();
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
+	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	buttons.setMode(BUTTON_FRAME_COLORED);
+	buttons.paint();
+	
+	//
+	buttons.clear();
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
+	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	buttons.setMode(BUTTON_FRAME_BORDER);
 	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();
@@ -1954,9 +1969,25 @@ void CTestMenu::testCHButtons()
 	int icon_w, icon_h;
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
 	
+	//
+	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
+	//buttons.setMode(BUTTON_FRAME_COLORED);
+	buttons.paint();
+	
+	//
+	buttons.clear();
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
+	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
 	buttons.setMode(BUTTON_FRAME_COLORED);
+	buttons.paint();
+	
+	//
+	buttons.clear();
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
+	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
+	buttons.setMode(BUTTON_FRAME_BORDER);
 	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();
@@ -3381,7 +3412,7 @@ void CTestMenu::testClistBox8()
 // ClistBox9
 void CTestMenu::testClistBox9()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox9 (hint_hint\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox9 (hinthint\n");
 
 	CBox Box;
 	
@@ -3453,7 +3484,7 @@ void CTestMenu::testClistBox9()
 
 	// itemInfo
 	rightWidget->enablePaintItemInfo(70);
-	rightWidget->setItemInfoMode(ITEMINFO_HINTITEM_MODE);
+	rightWidget->setItemInfoMode(ITEMINFO_HINTHINT_MODE);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	rightWidget->paintItemInfoBorder(BORDER_ALL);
 	rightWidget->paintItemInfoFrame(true);
@@ -6631,8 +6662,6 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CWindow(with shadow)", true, NULL, this, "windowshadow"));
 	mainMenu->addItem(new CMenuForwarder("CWindow(shadow|customColor)", true, NULL, this, "windowcustomcolor"));
 	mainMenu->addItem(new CMenuForwarder("CWindow (CComponent)", true, NULL, this, "windowcomponent"));
-	
-	//mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidgetItem (ClistBox)"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(standard)", true, NULL, this, "listbox"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(classic)", true, NULL, this, "listbox2"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(extended)", true, NULL, this, "listbox3"));
@@ -6641,9 +6670,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINT)", true, NULL, this, "listbox6"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTITEM)", true, NULL, this, "listbox7"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTICON)", true, NULL, this, "listbox8"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINT_HINT)", true, NULL, this, "listbox9"));
-	
-	//mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidgetItem (CFrameBox)"));
+	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTHINT)", true, NULL, this, "listbox9"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "singleWidget"));
 	
@@ -6684,7 +6711,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("RCLock", true, NULL, this, "rclock"));
 	mainMenu->addItem(new CMenuForwarder("SleepTimerWidget", true, NULL, this, "sleeptimer"));
 	mainMenu->addItem(new CMenuForwarder("MountGUI", true, NULL, this, "mountgui"));
-	mainMenu->addItem(new CMenuForwarder("UmountGUI", true, NULL, this, "umountgui"));
+	//mainMenu->addItem(new CMenuForwarder("UmountGUI", true, NULL, this, "umountgui"));
 	mainMenu->addItem(new CMenuForwarder("MountSmallMenu", true, NULL, this, "mountsmallmenu"));
 	mainMenu->addItem(new CMenuForwarder("PluginsList", true, NULL, this, "pluginslist"));
 	
@@ -6721,8 +6748,8 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "Plugins") );
 	mainMenu->addItem(new CMenuForwarder("StartPlugin(e.g: youtube)", true, NULL, this, "startplugin"));
 
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "EPG") );
-	mainMenu->addItem(new CMenuForwarder("ShowActuellEPG", true, NULL, this, "showepg"));
+	//mainMenu->addItem(new CMenuSeparator(LINE | STRING, "EPG") );
+	//mainMenu->addItem(new CMenuForwarder("ShowActuellEPG", true, NULL, this, "showepg"));
 
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "Channellist") );
