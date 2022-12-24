@@ -741,6 +741,40 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 	}
 }
 
+CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
+{
+	dprintf(DEBUG_NORMAL, "CCSlider::CCSlider\n");
+	
+	//
+	frameBuffer = CFrameBuffer::getInstance();
+	
+	//
+	cCBox.iX = x;
+	cCBox.iY = y;
+	cCBox.iWidth = dx;
+	cCBox.iHeight = dy; 
+	
+	//
+	cc_type = CC_SLIDER;
+}
+
+void CCSlider::paint(const int spos, const char * const iconname, const bool selected)
+{
+	dprintf(DEBUG_NORMAL, "CCSlider::paint:\n");
+	
+	// volumebox box
+	int icon_w = 120;
+	int icon_h = 11;
+	
+	// volumebody
+	frameBuffer->getIconSize(NEUTRINO_ICON_VOLUMEBODY, &icon_w, &icon_h);
+	frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, COL_MENUCONTENT_PLUS_0);
+	frameBuffer->paintIcon(NEUTRINO_ICON_VOLUMEBODY, cCBox.iX, cCBox.iY);
+
+	// slider icon
+	frameBuffer->paintIcon(selected ? iconname : NEUTRINO_ICON_VOLUMESLIDER2, cCBox.iX + spos, cCBox.iY);
+}
+
 //
 void CItems2DetailsLine::clear(int x, int y, int width, int height, int info_height)
 {

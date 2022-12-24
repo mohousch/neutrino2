@@ -262,104 +262,6 @@ class CCButtons : public CComponent
 		void clear(){buttons.clear();};
 };
 
-//CScrollBar
-class CScrollBar : public CComponent
-{
-	public:
-		CFrameBuffer* frameBuffer;
-		
-		//
-		CScrollBar(){frameBuffer = CFrameBuffer::getInstance(); cc_type = CC_SCROLLBAR;};
-		virtual ~CScrollBar(){};
-
-		// currentPage start with 0
-		void paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage);
-		void paint(CBox* position, const int NrOfPages, const int CurrentPage);
-};
-
-// CProgressBar
-class CProgressBar : public CComponent
-{
-	private:
-		unsigned char percent;
-		short red, green, yellow;
-		bool inverse;
-		uint32_t rgb;
-		double div;
-
-	public:
-		CFrameBuffer* frameBuffer;
-		
-		//
-		CProgressBar(int x, int y, int w, int h, int r = 40, int g = 100, int b = 70, bool inv = true);
-		CProgressBar(const CBox* psoition, int r = 40, int g = 100, int b = 70, bool inv = true);
-		
-		virtual ~CProgressBar(){};
-		
-		//
-		void paint(unsigned char pcr, bool paintBG = true);
-		void reset();
-		int getPercent() { return percent; };
-		
-		//
-		void setColor(uint32_t c){rgb = c;};
-};
-
-// detailsLine
-enum {
-	DL_INFO,
-	DL_HINT,
-	DL_HINTITEM,
-	DL_HINTICON,
-	DL_HINTHINT
-};
-
-class CItems2DetailsLine : public CComponent
-{
-	public:
-		CFrameBuffer* frameBuffer;
-		
-		//
-		std::string info1, option_info1;
-		std::string info2, option_info2;
-		std::string hint;
-		std::string icon;
-		int mode;
-		
-		// cutom mode
-		unsigned int tFont;
-		int borderMode;
-		bool savescreen;
-		bool paintframe;
-		uint32_t color;
-		bool scale;
-		
-		//
-		CItems2DetailsLine();
-		virtual ~CItems2DetailsLine();
-		
-		//
-		void paint(int x, int y, int width, int height, int info_height = 0, int iheight = 0, int iy = 0);
-		void clear(int x, int y, int width, int height, int info_height);
-		
-		//
-		virtual void setMode(int m){mode = m;};
-		virtual void setInfo1(const char* const text){if (text) info1 = text;};
-		virtual void setInfo2(const char* const text){if (text)  info2 = text;};
-		virtual void setOptionInfo1(const char* const text){if (text) option_info1 = text;};
-		virtual void setOptionInfo2(const char* const text){if (text) option_info2 = text;};
-		virtual void setHint(const char* const Text){if (Text) hint =  Text;};
-		virtual void setIcon(const char* const ic){if (ic) icon = ic;};
-		
-		// custom mode
-		void setFont(unsigned int f){tFont = f;};
-		void setBorderMode(int m){borderMode = m;};
-		void enableSaveScreen(){savescreen = true;};
-		void paintFrame(bool p){paintframe = p;};
-		void setColor(uint32_t col){color = col;};
-		void setScaling(bool s){scale = s;};
-};
-
 // CHline
 class CCHline : public CComponent
 {
@@ -618,6 +520,122 @@ class CCSpinner : public CComponent
 		
 		//
 		void refresh();
+};
+
+////
+//CScrollBar
+class CScrollBar : public CComponent
+{
+	public:
+		CFrameBuffer* frameBuffer;
+		
+		//
+		CScrollBar(){frameBuffer = CFrameBuffer::getInstance(); cc_type = CC_SCROLLBAR;};
+		virtual ~CScrollBar(){};
+
+		// currentPage start with 0
+		void paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage);
+		void paint(CBox* position, const int NrOfPages, const int CurrentPage);
+};
+
+// CProgressBar
+class CProgressBar : public CComponent
+{
+	private:
+		unsigned char percent;
+		short red, green, yellow;
+		bool inverse;
+		uint32_t rgb;
+		double div;
+
+	public:
+		CFrameBuffer* frameBuffer;
+		
+		//
+		CProgressBar(int x, int y, int w, int h, int r = 40, int g = 100, int b = 70, bool inv = true);
+		CProgressBar(const CBox* psoition, int r = 40, int g = 100, int b = 70, bool inv = true);
+		
+		virtual ~CProgressBar(){};
+		
+		//
+		void paint(unsigned char pcr, bool paintBG = true);
+		void reset();
+		int getPercent() { return percent; };
+		
+		//
+		void setColor(uint32_t c){rgb = c;};
+};
+
+// detailsLine
+enum {
+	DL_INFO,
+	DL_HINT,
+	DL_HINTITEM,
+	DL_HINTICON,
+	DL_HINTHINT
+};
+
+class CItems2DetailsLine : public CComponent
+{
+	public:
+		CFrameBuffer* frameBuffer;
+		
+		//
+		std::string info1, option_info1;
+		std::string info2, option_info2;
+		std::string hint;
+		std::string icon;
+		int mode;
+		
+		// cutom mode
+		unsigned int tFont;
+		int borderMode;
+		bool savescreen;
+		bool paintframe;
+		uint32_t color;
+		bool scale;
+		
+		//
+		CItems2DetailsLine();
+		virtual ~CItems2DetailsLine();
+		
+		//
+		void paint(int x, int y, int width, int height, int info_height = 0, int iheight = 0, int iy = 0);
+		void clear(int x, int y, int width, int height, int info_height);
+		
+		//
+		virtual void setMode(int m){mode = m;};
+		virtual void setInfo1(const char* const text){if (text) info1 = text;};
+		virtual void setInfo2(const char* const text){if (text)  info2 = text;};
+		virtual void setOptionInfo1(const char* const text){if (text) option_info1 = text;};
+		virtual void setOptionInfo2(const char* const text){if (text) option_info2 = text;};
+		virtual void setHint(const char* const Text){if (Text) hint =  Text;};
+		virtual void setIcon(const char* const ic){if (ic) icon = ic;};
+		
+		// custom mode
+		void setFont(unsigned int f){tFont = f;};
+		void setBorderMode(int m){borderMode = m;};
+		void enableSaveScreen(){savescreen = true;};
+		void paintFrame(bool p){paintframe = p;};
+		void setColor(uint32_t col){color = col;};
+		void setScaling(bool s){scale = s;};
+};
+
+// CCSlider
+class CCSlider : public CComponent
+{
+	private:
+	
+	public:
+		//
+		CFrameBuffer *frameBuffer;
+		
+		//
+		CCSlider(const int x, const int y, const int dx, const int dy);
+		virtual ~CCSlider(){};
+		
+		//
+		void paint(const int spos, const char * const iconname, const bool selected);
 };
 
 // CWidgetItem
