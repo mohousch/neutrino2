@@ -66,7 +66,7 @@
 #include <system/tmdbparser.h>
 #include <system/settings.h>
 
-#include <client/zapittools.h>
+#include <driver/encoding.h>
 
 #include <driver/audioplay.h>
 #include <gui/movieplayer.h>
@@ -139,7 +139,7 @@ static void XML_ADD_TAG_STRING(std::string &_xml_text_, const char *_tag_name_, 
 	_xml_text_ += "\t\t<";
 	_xml_text_ += _tag_name_;
 	_xml_text_ += ">";
-	_xml_text_ += ZapitTools::UTF8_to_UTF8XML(_tag_content_.c_str());
+	_xml_text_ += ::UTF8_to_UTF8XML(_tag_content_.c_str());
 	_xml_text_ += "</";
 	_xml_text_ += _tag_name_;
 	_xml_text_ += ">\n";
@@ -202,7 +202,7 @@ bool CMovieInfo::encodeMovieInfoXml(std::string * extMessage, MI_MOVIE_INFO * mo
 			sprintf(tmp, "%u", movie_info->audioPids[i].selected);	//pids.APIDs[i].pid);
 			*extMessage += tmp;
 			*extMessage += "\" " MI_XML_TAG_NAME "=\"";
-			*extMessage += movie_info->audioPids[i].epgAudioPidName;	// ZapitTools::UTF8_to_UTF8XML(g_RemoteControl->current_PIDs.APIDs[i].desc);
+			*extMessage += movie_info->audioPids[i].epgAudioPidName;
 			*extMessage += "\"/>\n";
 		}
 		*extMessage += "\t\t</" MI_XML_TAG_AUDIOPIDS ">\n";

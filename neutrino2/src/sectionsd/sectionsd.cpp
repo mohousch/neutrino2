@@ -88,12 +88,13 @@
 #include "SIlanguage.hpp"
 
 #include <driver/encoding.h>
+
 #include <system/debug.h>
 #include <system/helpers.h>
 #include <system/settings.h>
+
 #include <global.h>
 
-#include <client/zapittools.h>
 #include <bouquets.h>
 
 extern tallchans allchans;	// defined in zapit.cpp.
@@ -3980,7 +3981,7 @@ static void *insertEventsfromXMLTV(void* data)
 								const char *title = xmlGetData(_node);
 									
 								if(title != NULL)
-									e.setName(std::string(ZapitTools::UTF8_to_Latin1("deu")), std::string(title));
+									e.setName(std::string(::UTF8_to_Latin1("deu")), std::string(title));
 								_node = _node->xmlChildrenNode;
 							}
 								
@@ -3990,7 +3991,7 @@ static void *insertEventsfromXMLTV(void* data)
 							{
 								const char *subtitle = xmlGetData(_node);
 								if(subtitle != NULL)
-									e.setText(std::string(ZapitTools::UTF8_to_Latin1("deu")), std::string(subtitle));
+									e.setText(std::string(::UTF8_to_Latin1("deu")), std::string(subtitle));
 								_node = _node->xmlChildrenNode;
 							}
 								
@@ -3999,7 +4000,7 @@ static void *insertEventsfromXMLTV(void* data)
 							while ((_node = xmlGetNextOccurence(_node, "desc")))
 							{
 								const char *description = xmlGetData(_node);
-								if(description !=  NULL)													 							e.appendExtendedText(std::string(ZapitTools::UTF8_to_Latin1("deu")), std::string(description));
+								if(description !=  NULL)													 							e.appendExtendedText(std::string(::UTF8_to_Latin1("deu")), std::string(description));
 								_node = _node->xmlChildrenNode;
 							}
 
@@ -7403,7 +7404,7 @@ void insertEventsUnikKeyfromXMLTV(std::string& url, std::string& epgid, t_origin
 						const char *title = xmlGetData(_node);
 							
 						if(title != NULL)
-							e.setName(std::string(ZapitTools::UTF8_to_Latin1("deu")), std::string(title));
+							e.setName(std::string(::UTF8_to_Latin1("deu")), std::string(title));
 						_node = _node->xmlChildrenNode;
 					}
 						
@@ -7413,7 +7414,7 @@ void insertEventsUnikKeyfromXMLTV(std::string& url, std::string& epgid, t_origin
 					{
 						const char *subtitle = xmlGetData(_node);
 						if(subtitle != NULL)
-							e.setText(std::string(ZapitTools::UTF8_to_Latin1("deu")), std::string(subtitle));
+							e.setText(std::string(::UTF8_to_Latin1("deu")), std::string(subtitle));
 						_node = _node->xmlChildrenNode;
 					}
 						
@@ -7422,7 +7423,7 @@ void insertEventsUnikKeyfromXMLTV(std::string& url, std::string& epgid, t_origin
 					while ((_node = xmlGetNextOccurence(_node, "desc")))
 					{
 						const char *description = xmlGetData(_node);
-						if(description !=  NULL)													 							e.appendExtendedText(std::string(ZapitTools::UTF8_to_Latin1("deu")), std::string(description));
+						if(description !=  NULL)													 							e.appendExtendedText(std::string(::UTF8_to_Latin1("deu")), std::string(description));
 						_node = _node->xmlChildrenNode;
 					}
 
