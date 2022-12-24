@@ -1535,6 +1535,7 @@ void CFrameBuffer::blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint3
 	{
 		fb_pixel_t * pixpos = &data[(count + yp) * width];
 		d2 = (fb_pixel_t *) d;
+		
 		for (int count2 = 0; count2 < xc; count2++ ) 
 		{
 			fb_pixel_t pix = *(pixpos + xp);
@@ -2044,10 +2045,10 @@ fb_pixel_t * CFrameBuffer::getImage(const std::string &name, int width, int heig
 				if (_bpp == 4)
 					ret = (fb_pixel_t *) convertRGB2FB(buffer, x, y, 0, TM_INI, true); //FIXME: TM_INI ???
 				else
-					ret = (fb_pixel_t *)convertRGB2FB(buffer, x, y, convertSetupAlpha2Alpha(g_settings./*infobar_alpha*/menu_Content_alpha)); //FIXME:
+					ret = (fb_pixel_t *)convertRGB2FB(buffer, x, y, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha)); //FIXME:
 			}
 			else
-				ret = (fb_pixel_t *)convertRGB2FB(buffer, x, y, convertSetupAlpha2Alpha(g_settings./*infobar_alpha*/menu_Content_alpha), TM_NONE); //TM_NONE
+				ret = (fb_pixel_t *)convertRGB2FB(buffer, x, y, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), TM_NONE); //TM_NONE
 			
 			free(buffer);
 		} 

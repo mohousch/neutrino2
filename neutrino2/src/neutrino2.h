@@ -209,6 +209,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		int convertCMenuItemID(const char * const id);
 		int convertBool(const char* const value);
 		int convertBorder(const char * const border);
+		int convertFontSize(const char * const size);
 		
 		//
 		void mainMenu(void);

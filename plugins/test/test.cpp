@@ -2019,7 +2019,7 @@ void CTestMenu::testCHeaders()
 	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	headers->setHAlign(CC_ALIGN_CENTER);
 	//headers->setRadius(4);
-	headers->setCorner(4, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
+	headers->setCorner(RADIUS_VERYLARGE, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
 		
 	headers->paint();
 	CFrameBuffer::getInstance()->blit();
@@ -2057,7 +2057,7 @@ void CTestMenu::testCFooters()
 	//
 	footers = new CFooters(&footBox);
 	
-	footers->setCorner(4, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
+	footers->setCorner(RADIUS_VERYLARGE, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
 	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 		
 	footers->paint();

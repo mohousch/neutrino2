@@ -678,6 +678,106 @@ uint8_t CNeutrinoApp::convertFontColor(const char* const color)
 	return rgb;
 }
 
+// 
+int CNeutrinoApp::convertFontSize(const char * const size)
+{
+	int fs = SNeutrinoSettings::FONT_TYPE_MENU;
+	
+	if (size != NULL)
+	{
+		if ( strcmp(size, "FONT_TYPE_MENU") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_MENU;
+		}
+		else if ( strcmp(size, "FONT_TYPE_MENU_TITLE") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
+		}
+		else if ( strcmp(size, "FONT_TYPE_MENU_INFO") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_MENU_INFO;
+		}
+		else if ( strcmp(size, "FONT_TYPE_EPG_TITLE") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_EPG_TITLE;
+		}
+		else if ( strcmp(size, "FONT_TYPE_EPG_INFO1") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
+		}
+		else if ( strcmp(size, "FONT_TYPE_EPG_INFO2") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
+		}
+		else if ( strcmp(size, "FONT_TYPE_EPG_DATE") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_EPG_DATE;
+		}
+		else if ( strcmp(size, "FONT_TYPE_EVENTLIST_TITLE") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_EVENTLIST_TITLE;
+		}
+		else if ( strcmp(size, "FONT_TYPE_EVENTLIST_ITEMLARGE") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE;
+		}
+		else if ( strcmp(size, "FONT_TYPE_EVENTLIST_ITEMSMALL") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMSMALL;
+		}
+		else if ( strcmp(size, "FONT_TYPE_GAMELIST_ITEMLARGE") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_GAMELIST_ITEMLARGE;
+		}
+		else if ( strcmp(size, "FONT_TYPE_GAMELIST_ITEMSMALL") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_GAMELIST_ITEMSMALL;
+		}
+		else if ( strcmp(size, "FONT_TYPE_CHANNELLIST") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_CHANNELLIST;
+		}
+		else if ( strcmp(size, "FONT_TYPE_CHANNELLIST_DESCR") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR;
+		}
+		else if ( strcmp(size, "FONT_TYPE_CHANNELLIST_NUMBER") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER;
+		}
+		else if ( strcmp(size, "FONT_TYPE_CHANNEL_NUM_ZAP") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP;
+		}
+		else if ( strcmp(size, "FONT_TYPE_INFOBAR_NUMBER") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_INFOBAR_NUMBER;
+		}
+		else if ( strcmp(size, "FONT_TYPE_INFOBAR_CHANNAME") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME;
+		}
+		else if ( strcmp(size, "FONT_TYPE_INFOBAR_INFO") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO;
+		}
+		else if ( strcmp(size, "FONT_TYPE_INFOBAR_SMALL") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL;
+		}
+		else if ( strcmp(size, "FONT_TYPE_FILEBROWSER_ITEM") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_FILEBROWSER_ITEM;
+		}
+		else if ( strcmp(size, "FONT_TYPE_MENU_TITLE2") == 0)
+		{
+			fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLE2;
+		}
+	}
+	
+	return fs;
+}
+
 //
 int CNeutrinoApp::convertCorner(const char* const corner)
 {
@@ -1801,7 +1901,8 @@ void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 	char * radius = NULL;
 	
 	char* textColor = NULL;
-	unsigned int font = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
+	//unsigned int font = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
+	char *font = NULL;
 	unsigned int fontbg = 0;
 	unsigned int mode = SCROLL;
 	unsigned int border = BORDER_NO;
@@ -1837,7 +1938,8 @@ void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 		if (color) finalColor = convertColor(color);
 		
 		textColor = xmlGetAttribute(node, (char*)"textcolor");
-		font = xmlGetSignedNumericAttribute(node, "font", 0);
+		//font = xmlGetSignedNumericAttribute(node, "font", 0);
+		font = xmlGetAttribute(node, (char *)"font");
 		fontbg = xmlGetSignedNumericAttribute(node, "fontbg", 0);
 		
 		mode = xmlGetSignedNumericAttribute(node, "mode", 0);
@@ -1878,7 +1980,11 @@ void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 		if (savescreen || paintframe == 0) textBox->enableSaveScreen();
 					
 		textBox->setTextColor(textColor? convertFontColor(textColor) : COL_MENUCONTENT);
-		//textBox->setFont(font);
+		//
+		int fs = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
+		if (font) fs = convertFontSize(font);
+		textBox->setFont(fs);
+		//
 		textBox->setMode(mode);
 		
 		/*
@@ -1922,7 +2028,8 @@ void CNeutrinoApp::parseCCLabel(_xmlNodePtr node, CWidget* widget, CWindow* wind
 	unsigned int cc_refresh = 0;
 	unsigned int l_halign = 0;
 	
-	int font_size = -1;
+	//int font_size = -1;
+	char * font_size = NULL;
 	char* font_color = NULL;
 	
 	while ((node = xmlGetNextOccurence(node, "LABEL")) != NULL) 
@@ -1938,7 +2045,8 @@ void CNeutrinoApp::parseCCLabel(_xmlNodePtr node, CWidget* widget, CWindow* wind
 						
 		cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
 		
-		font_size = xmlGetSignedNumericAttribute(node, "font", 0);
+		//font_size = xmlGetSignedNumericAttribute(node, "font", 0);
+		font_size = xmlGetAttribute(node, (char *)"font");
 		font_color = xmlGetAttribute(node, (char*)"fontcolor");
 		
 		uint8_t color = COL_MENUCONTENT;
@@ -1967,7 +2075,11 @@ void CNeutrinoApp::parseCCLabel(_xmlNodePtr node, CWidget* widget, CWindow* wind
 							
 		if (!text.empty()) label->setText(_(text.c_str()));
 		label->setHAlign(l_halign);
-		if (font_size) label->setFont(font_size);
+		//if (font_size) label->setFont(font_size);
+		int fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
+		if (font_size) fs = convertFontSize(font_size);
+		label->setFont(fs);
+		//
 		if (font_color) label->setColor(color);
 							
 		if (widget) widget->addCCItem(label);
@@ -2059,7 +2171,8 @@ void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* windo
 	unsigned int cc_dx = 0;
 	unsigned int cc_dy = 0;
 	
-	int font_size = -1;
+	//int font_size = -1;
+	char * font_size = NULL;
 	char* font_color = NULL;
 						
 	unsigned int cc_refresh = 0;
@@ -2077,7 +2190,8 @@ void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* windo
 		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
 		cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
 		
-		font_size = xmlGetSignedNumericAttribute(node, "font", 0);
+		//font_size = xmlGetSignedNumericAttribute(node, "font", 0);
+		font_size = xmlGetAttribute(node, (char *)"font");
 		font_color = xmlGetAttribute(node, (char*)"fontcolor");
 		
 		uint8_t color = COL_MENUCONTENT;
@@ -2105,7 +2219,11 @@ void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* windo
 							
 		if (cc_format != NULL) time->setFormat(_(cc_format));
 		if (cc_refresh) time->enableRepaint();
-		if (font_size) time->setFont(font_size);
+		//if (font_size) time->setFont(font_size);
+		int fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
+		if (font_size) fs = convertFontSize(font_size);
+		time->setFont(fs);
+		//
 		if (font_color) time->setColor(color);
 							
 		if (widget) widget->addCCItem(time);
