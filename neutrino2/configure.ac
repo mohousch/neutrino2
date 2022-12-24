@@ -193,7 +193,6 @@ OpenGL			: $enable_opengl
 Gstreamer		: $enable_gstreamer
 SCART			: $enable_scart
 LCD			: $enable_lcd
-LCD Update		: $enable_lcd_update
 CI CAM			: $enable_ci
 4 Digits		: $enable_4digits
 F-Keys			: $enable_functionkeys
