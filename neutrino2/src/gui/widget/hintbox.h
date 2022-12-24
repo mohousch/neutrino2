@@ -74,10 +74,7 @@ class CHintBox
 		// hourglass
 		bool paintHG;
 		uint32_t sec_timer_id;
-		int count;
-		void paintHourGlass();
-		void hideHourGlass();
-		fb_pixel_t* background;
+		CCSpinner * spinner;
 		
 		//
 		int borderMode;

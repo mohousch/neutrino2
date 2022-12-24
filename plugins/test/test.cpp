@@ -141,6 +141,7 @@ class CTestMenu : public CMenuTarget
 		void testCProgressBar();
 		void testCButtons();
 		void testCHButtons();
+		void testCSpinner();
 
 		// CWidgetItem
 		void testCHeaders();
@@ -1996,6 +1997,23 @@ void CTestMenu::testCHButtons()
 	g_RCInput->messageLoop();
 	
 	hide();
+}
+
+void CTestMenu::testCSpinner()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCSpinner:");
+	
+	testWidget = new CWidget(10, 10, 20, 20);
+	
+	CCSpinner testSpinner(10, 10, 20, 20);
+	testSpinner.enableRepaint();
+	
+	testWidget->addCCItem(&testSpinner);
+	
+	testWidget->exec(NULL, "");
+	
+	delete testWidget;
+	testWidget = NULL;
 }
 
 //
@@ -5338,6 +5356,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
+	else if(actionKey == "spinner")
+	{
+		testCSpinner();
+
+		return RETURN_REPAINT;
+	}
 	else if(actionKey == "listbox")
 	{
 		testClistBox();
@@ -6651,7 +6675,8 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CImage", true, NULL, this, "image"));
 	mainMenu->addItem(new CMenuForwarder("CButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CButtons (head)", true, NULL, this, "hbuttons"));
-	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
+	mainMenu->addItem(new CMenuForwarder("CSpinner", true, NULL, this, "spinner"));
+	//mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidgetItems"));
 	mainMenu->addItem(new CMenuForwarder("CHeaders", true, NULL, this, "headers"));

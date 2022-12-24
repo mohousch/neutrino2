@@ -1257,6 +1257,98 @@ void CCCounter::refresh()
 	g_Font[font]->RenderString(cCBox.iX + cCBox.iWidth/2, cCBox.iY + (cCBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), cCBox.iWidth/2, totalTime, color, 0, true);
 }
 
+// CCSpinner
+CCSpinner::CCSpinner(const int x, const int y, const int dx, const int dy)
+{
+	frameBuffer = CFrameBuffer::getInstance();
+	
+	//
+	cCBox.iX = x;
+	cCBox.iY = y;
+	cCBox.iWidth = dx;
+	cCBox.iHeight = dy;
+	
+	int iw, ih;
+	frameBuffer->getIconSize("hourglass0", &iw, &ih);
+	
+	if (iw > dx)
+		cCBox.iWidth = iw;
+		
+	if (ih > dy)
+		cCBox.iHeight = ih;
+	
+	//
+	filename = "hourglass";
+	
+	//
+	count = 0;
+	background = NULL;
+	
+	//
+	cc_type = CC_SPINNER;
+}
+
+void CCSpinner::paint()
+{
+	dprintf(DEBUG_DEBUG, "CCSpinner::paint\n");
+	
+	//
+	if(background)
+	{
+		delete[] background;
+		background = NULL;
+	}
+
+	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
+		
+	if(background)
+	{
+		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+	//
+	
+	filename += to_string(count);
+		
+	//count = (count + 1) % 9;
+	
+	frameBuffer->paintIcon(filename, cCBox.iX, cCBox.iY);
+}
+
+void CCSpinner::hide()
+{
+	dprintf(DEBUG_DEBUG, "CCSpinner::hide\n");
+	
+	if(background) 
+	{
+		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+		
+		delete[] background;
+		background = NULL;
+	}
+	else //FIXME:
+		frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+}
+
+void CCSpinner::refresh()
+{
+	dprintf(DEBUG_DEBUG, "CCSpinner::refresh\n");
+	
+	filename.clear();
+	
+	filename = "hourglass";
+	
+	if (background)
+	{
+		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+		
+	count = (count + 1) % 9;
+	
+	filename += to_string(count);
+	
+	frameBuffer->paintIcon(filename, cCBox.iX, cCBox.iY);
+}
+
 // CWidgetItem
 CWidgetItem::CWidgetItem()
 {

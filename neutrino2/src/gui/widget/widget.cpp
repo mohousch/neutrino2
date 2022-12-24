@@ -285,7 +285,7 @@ void CWidget::hide()
 	{
 		for(unsigned int i = 0; i < (unsigned int)CCItems.size(); i++)
 		{
-			if (CCItems[i]->getCCType() == CC_PIG)
+			if ( (CCItems[i]->getCCType() == CC_PIG) || (CCItems[i]->getCCType() == CC_SPINNER) )
 			{
 				CCItems[i]->hide();
 				break;

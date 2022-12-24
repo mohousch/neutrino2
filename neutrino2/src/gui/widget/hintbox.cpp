@@ -147,9 +147,10 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	
 	// HG
 	paintHG = true;
-	count = 0;
 	sec_timer_id = 0;
-	background = NULL;
+	spinner = NULL;
+	
+	//
 	borderMode = BORDER_NO;
 }
 
@@ -233,47 +234,7 @@ void CHintBox::hide(void)
 {
 	dprintf(DEBUG_NORMAL, "CHintBox::hide: (%s)\n", caption.c_str());
 
-	//m_cBoxWindow->hide();
-
-	//CFrameBuffer::getInstance()->blit();	
 	widget->hide();
-}
-
-void CHintBox::paintHourGlass()
-{
-	dprintf(DEBUG_DEBUG, "\nCHintBox::paintHourGlass:\n");
-	
-	std::string filename = "hourglass";
-	filename += to_string(count);
-		
-	count = (count + 1) % 9;
-	
-	int ih = 0;
-	int iw = 0;
-	
-	CFrameBuffer::getInstance()->getIconSize("hourglass0", &iw, &ih);
-	
-	CFrameBuffer::getInstance()->paintIcon(filename, CFrameBuffer::getInstance()->getScreenX() + 10, CFrameBuffer::getInstance()->getScreenY() + 10);
-}
-
-void CHintBox::hideHourGlass()
-{
-	dprintf(DEBUG_DEBUG, "\nCHintBox::hideHourGlass:\n");
-	
-	int ih = 0;
-	int iw = 0;
-	
-	CFrameBuffer::getInstance()->getIconSize("hourglass0", &iw, &ih);
-	
-	if(background) 
-	{
-		CFrameBuffer::getInstance()->restoreScreen(CFrameBuffer::getInstance()->getScreenX() + 10, CFrameBuffer::getInstance()->getScreenY() + 10, iw, ih, background);
-		
-		delete[] background;
-		background = NULL;
-	}
-	else //FIXME:
-		CFrameBuffer::getInstance()->paintBackgroundBoxRel(CFrameBuffer::getInstance()->getScreenX() + 10, CFrameBuffer::getInstance()->getScreenY() + 10, iw, ih);
 }
 
 int CHintBox::exec(int timeout)
@@ -292,25 +253,12 @@ int CHintBox::exec(int timeout)
 	
 	if (paintHG)
 	{
-		int ih = 0;
-		int iw = 0;
+		spinner = new CCSpinner(CFrameBuffer::getInstance()->getScreenX() + 10, CFrameBuffer::getInstance()->getScreenY() + 10, 30, 30);
 		
-		CFrameBuffer::getInstance()->getIconSize("hourglass0", &iw, &ih);
+		spinner->enableRepaint();
 		
-		if(background)
-		{
-			delete[] background;
-			background = NULL;
-		}
-
-		background = new fb_pixel_t[iw*ih];
+		spinner->paint();
 		
-		if(background)
-		{
-			CFrameBuffer::getInstance()->saveScreen(CFrameBuffer::getInstance()->getScreenX() + 10, CFrameBuffer::getInstance()->getScreenY() + 10, iw, ih, background);
-		}
-		
-		paintHourGlass();
 	}
 		
 	CFrameBuffer::getInstance()->blit();
@@ -345,7 +293,7 @@ int CHintBox::exec(int timeout)
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
 			if (paintHG)
-				paintHourGlass();
+				spinner->refresh();
 		}
 		else
 		{
@@ -369,7 +317,9 @@ int CHintBox::exec(int timeout)
 	
 	if (paintHG)
 	{
-		hideHourGlass();
+		spinner->hide();
+		delete spinner;
+		spinner = NULL;
 	}
 		
 	g_RCInput->killTimer(sec_timer_id);

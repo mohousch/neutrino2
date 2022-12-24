@@ -95,6 +95,7 @@ enum {
 	CC_GRID,
 	CC_TIME,
 	CC_COUNTER,
+	CC_SPINNER,
 	// not to be added with addCCItem method.
 	CC_SCROLLBAR,
 	CC_PROGRESSBAR,
@@ -594,6 +595,29 @@ class CCCounter : public CComponent
 		
 		//
 		CFont* getFont(){return g_Font[font];};
+};
+
+// CCSpinner
+class CCSpinner : public CComponent
+{
+	public:
+		CFrameBuffer* frameBuffer;
+		
+		//
+		std::string filename;
+		int count;
+		fb_pixel_t* background;
+		
+		//
+		CCSpinner(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
+		virtual ~CCSpinner(){};
+		
+		//
+		void paint();
+		void hide();
+		
+		//
+		void refresh();
 };
 
 // CWidgetItem
