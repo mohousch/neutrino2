@@ -725,13 +725,13 @@ int CNeutrinoApp::convertFontSize(const char * const size)
 		{
 			fs = SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMSMALL;
 		}
-		else if ( strcmp(size, "FONT_TYPE_GAMELIST_ITEMLARGE") == 0)
+		else if ( strcmp(size, "FONT_TYPE_PLUGINLIST_ITEMLARGE") == 0)
 		{
-			fs = SNeutrinoSettings::FONT_TYPE_GAMELIST_ITEMLARGE;
+			fs = SNeutrinoSettings::FONT_TYPE_PLUGINLIST_ITEMLARGE;
 		}
-		else if ( strcmp(size, "FONT_TYPE_GAMELIST_ITEMSMALL") == 0)
+		else if ( strcmp(size, "FONT_TYPE_PLUGINLIST_ITEMSMALL") == 0)
 		{
-			fs = SNeutrinoSettings::FONT_TYPE_GAMELIST_ITEMSMALL;
+			fs = SNeutrinoSettings::FONT_TYPE_PLUGINLIST_ITEMSMALL;
 		}
 		else if ( strcmp(size, "FONT_TYPE_CHANNELLIST") == 0)
 		{

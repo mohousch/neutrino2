@@ -275,10 +275,6 @@ CBouquetList* RADIOsatList;
 CBouquetList* RADIOfavList;
 CBouquetList* RADIOallList;
 
-//CBouquetList* WEBTVbouquetList;
-//CBouquetList *WEBTVallList;
-//CBouquetList *WEBTVfavList;
-
 //
 CPlugins* g_PluginList;
 CRemoteControl* g_RemoteControl;
@@ -398,33 +394,33 @@ typedef struct font_sizes
 // neutrino_font
 font_sizes_struct neutrino_font[FONT_TYPE_COUNT] =
 {
-        {_("Menutext")               	,  20, FONT_STYLE_BOLD   , 0},
+        {_("Menu Text")               	,  20, FONT_STYLE_BOLD   , 0},
         {_("Menu Title")         	,  30, FONT_STYLE_BOLD   , 0},
         {_("Menu Info")          	,  16, FONT_STYLE_REGULAR, 0},
         {_("EPG Title")          	,  25, FONT_STYLE_REGULAR, 1},
         {_("EPG Info1")          	,  17, FONT_STYLE_ITALIC , 2},
         {_("EPG Info2")          	,  17, FONT_STYLE_REGULAR, 2},
         {_("EPG Date")           	,  15, FONT_STYLE_REGULAR, 2},
-        {_("Title")    			,  30, FONT_STYLE_REGULAR, 0},
-        {_("large")			,  20, FONT_STYLE_BOLD   , 1},
-        {_("small")			,  14, FONT_STYLE_REGULAR, 1},
-        {_("date / time") 		,  16, FONT_STYLE_REGULAR, 1},
-        {_("large") 			,  20, FONT_STYLE_BOLD   , 1},
-        {_("small") 			,  16, FONT_STYLE_REGULAR, 1},
+        {_("Eventlist Title")    	,  30, FONT_STYLE_REGULAR, 0},
+        {_("Eventlist large")		,  20, FONT_STYLE_BOLD   , 1},
+        {_("Eventlist small")		,  14, FONT_STYLE_REGULAR, 1},
+        {_("Eventlist date / time") 	,  16, FONT_STYLE_REGULAR, 1},
+        {_("Pluginlist large") 		,  20, FONT_STYLE_BOLD   , 1},
+        {_("Pluginlist small") 		,  16, FONT_STYLE_REGULAR, 1},
         {_("Channellist")        	,  20, FONT_STYLE_BOLD   , 1},
-        {_("Description")  		,  20, FONT_STYLE_REGULAR, 1},
-        {_("Number") 			,  14, FONT_STYLE_BOLD   , 2},
-        {_("direct selection")    	,  40, FONT_STYLE_BOLD   , 0},
-        {_("Number")     		,  30, FONT_STYLE_BOLD   , 0},
-        {_("Channel name")   		,  30, FONT_STYLE_BOLD   , 0},
-        {_("info")       		,  20, FONT_STYLE_REGULAR, 1},
-        {_("small")      		,  14, FONT_STYLE_REGULAR, 1},
-        {_("filebrowser item")   	,  16, FONT_STYLE_BOLD   , 1},
-        {_("Menu Title 2")         	,  40, FONT_STYLE_REGULAR   , 0},
+        {_("Channellist Description")  	,  20, FONT_STYLE_REGULAR, 1},
+        {_("Channellist Number") 	,  14, FONT_STYLE_BOLD   , 2},
+        {_("Channel direct selection")  ,  40, FONT_STYLE_BOLD   , 0},
+        {_("Infobar Number")     	,  30, FONT_STYLE_BOLD   , 0},
+        {_("Infobar Channel name")   	,  30, FONT_STYLE_BOLD   , 0},
+        {_("Infobar info")       	,  20, FONT_STYLE_REGULAR, 1},
+        {_("Infobar small")      	,  14, FONT_STYLE_REGULAR, 1},
+        {_("Filebrowser item")   	,  16, FONT_STYLE_BOLD   , 1},
+        {_("Menu Title2")         	,  40, FONT_STYLE_REGULAR   , 0},
 };
 
 // signal font
-const font_sizes_struct signal_font = {_("small"),  14, FONT_STYLE_REGULAR, 1};
+const font_sizes_struct signal_font = {_("Signal small"),  14, FONT_STYLE_REGULAR, 1};
 
 // LCD settings
 typedef struct lcd_setting_t

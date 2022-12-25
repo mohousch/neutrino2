@@ -263,9 +263,6 @@ class CMenuWidget : public CMenuTarget
 
 		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = RC_nokey, bool enabled = true);
 
-		//std::string& getString(void) { if (hasItem())return items[selected]->itemName;else return ""; };
-		//CMenuItem *getSelectedItem(void){if (hasItem()) return items[selected]; else return NULL;};
-
 		//
 		std::string getActionKey(){return actionKey;}; // lua
 };

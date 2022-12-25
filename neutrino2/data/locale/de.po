@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino-hd2 4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-08 17:32+0100\n"
+"POT-Creation-Date: 2022-12-25 08:57+0100\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -318,6 +318,9 @@ msgstr "CI Modul neu starten"
 msgid "CIFS"
 msgstr ""
 
+msgid "CMenuWidget(Menu Mode)"
+msgstr ""
+
 msgid "CORNER ALL"
 msgstr ""
 
@@ -363,10 +366,11 @@ msgstr "Sender / Titel"
 msgid "Channel Logo"
 msgstr "Sender logo"
 
-msgid "Channel down"
-msgstr ""
+#, fuzzy
+msgid "Channel direct selection"
+msgstr "Sender Liste Einstellungen"
 
-msgid "Channel name"
+msgid "Channel down"
 msgstr ""
 
 msgid "Channel not available"
@@ -379,6 +383,14 @@ msgid "Channel:"
 msgstr "Sender:"
 
 msgid "Channellist"
+msgstr "Sender Liste"
+
+#, fuzzy
+msgid "Channellist Description"
+msgstr "Sender Liste Einstellungen"
+
+#, fuzzy
+msgid "Channellist Number"
 msgstr "Sender Liste"
 
 msgid "Channellist settings"
@@ -525,9 +537,6 @@ msgstr "Alle löschen"
 #, fuzzy
 msgid "Delete channels"
 msgstr "Alle löschen"
-
-msgid "Description"
-msgstr "Beschreibung"
 
 msgid "Description: "
 msgstr "Beschreibung:"
@@ -697,11 +706,27 @@ msgstr "Fehler"
 msgid "Event list"
 msgstr "EPG Liste"
 
+#, fuzzy
+msgid "Eventlist Title"
+msgstr "Vorschau Übersicht"
+
 msgid "Eventlist current programm"
 msgstr "Vorschau aktuelles Programm"
 
+#, fuzzy
+msgid "Eventlist date / time"
+msgstr "Vorschau Übersicht"
+
+#, fuzzy
+msgid "Eventlist large"
+msgstr "Vorschau Übersicht"
+
 msgid "Eventlist overview"
 msgstr "Vorschau Übersicht"
+
+#, fuzzy
+msgid "Eventlist small"
+msgstr "EPG Liste"
 
 msgid "Events Textcolor"
 msgstr ""
@@ -752,6 +777,10 @@ msgid "File system"
 msgstr ""
 
 msgid "Filebrowser"
+msgstr "Filebrowser"
+
+#, fuzzy
+msgid "Filebrowser item"
 msgstr "Filebrowser"
 
 msgid "Filebrowser settings"
@@ -1035,6 +1064,21 @@ msgstr "EPG Info2"
 msgid "Infobar"
 msgstr ""
 
+#, fuzzy
+msgid "Infobar Channel name"
+msgstr "Start Sender"
+
+#, fuzzy
+msgid "Infobar Number"
+msgstr "Nummer"
+
+#, fuzzy
+msgid "Infobar info"
+msgstr "Information"
+
+msgid "Infobar small"
+msgstr ""
+
 msgid "Information"
 msgstr "Information"
 
@@ -1233,16 +1277,17 @@ msgstr ""
 msgid "Menu Info"
 msgstr ""
 
+msgid "Menu Text"
+msgstr ""
+
 msgid "Menu Title"
 msgstr ""
 
-msgid "Menu Title 2"
-msgstr ""
+#, fuzzy
+msgid "Menu Title2"
+msgstr "EPG Titel"
 
 msgid "Menu mode"
-msgstr ""
-
-msgid "Menutext"
 msgstr ""
 
 msgid "Message"
@@ -1333,6 +1378,9 @@ msgid "Movieplayer settings"
 msgstr "Movieplayer Einstellungen"
 
 msgid "Movies Browser"
+msgstr ""
+
+msgid "Mute"
 msgstr ""
 
 msgid "My Favorites"
@@ -1495,9 +1543,6 @@ msgstr ""
 msgid "Now"
 msgstr "Jetzt"
 
-msgid "Number"
-msgstr "Nummer"
-
 msgid "Number of lines last play"
 msgstr ""
 
@@ -1613,6 +1658,10 @@ msgstr "Bildbetrachter"
 msgid "Pictureviewer settings"
 msgstr "Bildbetrachter Einstellungen"
 
+#, fuzzy
+msgid "Play"
+msgstr "Audio Playliste"
+
 msgid "Playtime"
 msgstr ""
 
@@ -1626,6 +1675,12 @@ msgid "Please press the new key"
 msgstr ""
 
 msgid "Plugin"
+msgstr ""
+
+msgid "Pluginlist large"
+msgstr ""
+
+msgid "Pluginlist small"
 msgstr ""
 
 msgid "Plugins"
@@ -1715,9 +1770,6 @@ msgid "Radio"
 msgstr ""
 
 msgid "Radio Channel"
-msgstr ""
-
-msgid "Radio Mode"
 msgstr ""
 
 msgid "Radio Text"
@@ -2153,6 +2205,9 @@ msgstr "Ausschalten"
 msgid "Shutdown time in min. (000=off)"
 msgstr ""
 
+msgid "Signal small"
+msgstr ""
+
 msgid "Size"
 msgstr ""
 
@@ -2354,10 +2409,10 @@ msgstr ""
 msgid "TV & Radio"
 msgstr ""
 
-msgid "TV Channel"
+msgid "TV / Radio"
 msgstr ""
 
-msgid "TV Mode"
+msgid "TV Channel"
 msgstr ""
 
 msgid "TV-System"
@@ -2912,9 +2967,6 @@ msgstr ""
 msgid "daily"
 msgstr ""
 
-msgid "date / time"
-msgstr ""
-
 msgid "default audio streams"
 msgstr ""
 
@@ -2928,9 +2980,6 @@ msgid "detective / thriller"
 msgstr ""
 
 msgid "direct connected"
-msgstr ""
-
-msgid "direct selection"
 msgstr ""
 
 msgid "directory already mounted"
@@ -2997,9 +3046,6 @@ msgid "fashion"
 msgstr ""
 
 msgid "fast"
-msgstr ""
-
-msgid "filebrowser item"
 msgstr ""
 
 msgid "filesystem type not supported"

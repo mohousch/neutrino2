@@ -232,8 +232,8 @@ struct SNeutrinoSettings
 		FONT_TYPE_EVENTLIST_ITEMLARGE 	=  8,
 		FONT_TYPE_EVENTLIST_ITEMSMALL 	=  9,
 		FONT_TYPE_EVENTLIST_DATETIME  	= 10,
-		FONT_TYPE_GAMELIST_ITEMLARGE  	= 11,
-		FONT_TYPE_GAMELIST_ITEMSMALL  	= 12,
+		FONT_TYPE_PLUGINLIST_ITEMLARGE  	= 11,
+		FONT_TYPE_PLUGINLIST_ITEMSMALL  	= 12,
 		FONT_TYPE_CHANNELLIST         	= 13,
 		FONT_TYPE_CHANNELLIST_DESCR   	= 14,
 		FONT_TYPE_CHANNELLIST_NUMBER  	= 15,
@@ -252,6 +252,8 @@ struct SNeutrinoSettings
 	int screen_EndY;
 	int screen_width;
 	int screen_height;
+	
+	// font scaling
 	int screen_xres;
 	int screen_yres;
 	

@@ -2600,7 +2600,7 @@ void CTestMenu::testClistBox()
 	//rightWidget->paintItemInfoBorder(BORDER_ALL);
 	//rightWidget->paintItemInfoFrame(true);
 	//rightWidget->enableItemInfoSaveScreen();
-	//rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_GAMELIST_ITEMLARGE);
+	//rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_PLUGINLIST_ITEMLARGE);
 	
 	//
 	//rightWidget->paintScrollBar(false);
@@ -3507,7 +3507,7 @@ void CTestMenu::testClistBox9()
 	rightWidget->paintItemInfoBorder(BORDER_ALL);
 	rightWidget->paintItemInfoFrame(true);
 	rightWidget->enableItemInfoSaveScreen();
-	rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_GAMELIST_ITEMLARGE);
+	rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_PLUGINLIST_ITEMLARGE);
 	
 	//
 	//rightWidget->paintScrollBar(false);

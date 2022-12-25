@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrinohd2 4.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-08 17:32+0100\n"
+"POT-Creation-Date: 2022-12-25 08:57+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -308,6 +308,9 @@ msgstr ""
 msgid "CIFS"
 msgstr ""
 
+msgid "CMenuWidget(Menu Mode)"
+msgstr ""
+
 msgid "CORNER ALL"
 msgstr ""
 
@@ -353,10 +356,10 @@ msgstr ""
 msgid "Channel Logo"
 msgstr ""
 
-msgid "Channel down"
+msgid "Channel direct selection"
 msgstr ""
 
-msgid "Channel name"
+msgid "Channel down"
 msgstr ""
 
 msgid "Channel not available"
@@ -369,6 +372,12 @@ msgid "Channel:"
 msgstr ""
 
 msgid "Channellist"
+msgstr ""
+
+msgid "Channellist Description"
+msgstr ""
+
+msgid "Channellist Number"
 msgstr ""
 
 msgid "Channellist settings"
@@ -510,9 +519,6 @@ msgid "Delete all"
 msgstr ""
 
 msgid "Delete channels"
-msgstr ""
-
-msgid "Description"
 msgstr ""
 
 msgid "Description: "
@@ -682,10 +688,22 @@ msgstr ""
 msgid "Event list"
 msgstr ""
 
+msgid "Eventlist Title"
+msgstr ""
+
 msgid "Eventlist current programm"
 msgstr ""
 
+msgid "Eventlist date / time"
+msgstr ""
+
+msgid "Eventlist large"
+msgstr ""
+
 msgid "Eventlist overview"
+msgstr ""
+
+msgid "Eventlist small"
 msgstr ""
 
 msgid "Events Textcolor"
@@ -737,6 +755,9 @@ msgid "File system"
 msgstr ""
 
 msgid "Filebrowser"
+msgstr ""
+
+msgid "Filebrowser item"
 msgstr ""
 
 msgid "Filebrowser settings"
@@ -1015,6 +1036,18 @@ msgstr ""
 msgid "Infobar"
 msgstr ""
 
+msgid "Infobar Channel name"
+msgstr ""
+
+msgid "Infobar Number"
+msgstr ""
+
+msgid "Infobar info"
+msgstr ""
+
+msgid "Infobar small"
+msgstr ""
+
 msgid "Information"
 msgstr ""
 
@@ -1208,16 +1241,16 @@ msgstr ""
 msgid "Menu Info"
 msgstr ""
 
+msgid "Menu Text"
+msgstr ""
+
 msgid "Menu Title"
 msgstr ""
 
-msgid "Menu Title 2"
+msgid "Menu Title2"
 msgstr ""
 
 msgid "Menu mode"
-msgstr ""
-
-msgid "Menutext"
 msgstr ""
 
 msgid "Message"
@@ -1305,6 +1338,9 @@ msgid "Movieplayer settings"
 msgstr ""
 
 msgid "Movies Browser"
+msgstr ""
+
+msgid "Mute"
 msgstr ""
 
 msgid "My Favorites"
@@ -1455,9 +1491,6 @@ msgstr ""
 msgid "Now"
 msgstr ""
 
-msgid "Number"
-msgstr ""
-
 msgid "Number of lines last play"
 msgstr ""
 
@@ -1568,6 +1601,9 @@ msgstr ""
 msgid "Pictureviewer settings"
 msgstr ""
 
+msgid "Play"
+msgstr ""
+
 msgid "Playtime"
 msgstr ""
 
@@ -1581,6 +1617,12 @@ msgid "Please press the new key"
 msgstr ""
 
 msgid "Plugin"
+msgstr ""
+
+msgid "Pluginlist large"
+msgstr ""
+
+msgid "Pluginlist small"
 msgstr ""
 
 msgid "Plugins"
@@ -1668,9 +1710,6 @@ msgid "Radio"
 msgstr ""
 
 msgid "Radio Channel"
-msgstr ""
-
-msgid "Radio Mode"
 msgstr ""
 
 msgid "Radio Text"
@@ -2096,6 +2135,9 @@ msgstr ""
 msgid "Shutdown time in min. (000=off)"
 msgstr ""
 
+msgid "Signal small"
+msgstr ""
+
 msgid "Size"
 msgstr ""
 
@@ -2294,10 +2336,10 @@ msgstr ""
 msgid "TV & Radio"
 msgstr ""
 
-msgid "TV Channel"
+msgid "TV / Radio"
 msgstr ""
 
-msgid "TV Mode"
+msgid "TV Channel"
 msgstr ""
 
 msgid "TV-System"
@@ -2844,9 +2886,6 @@ msgstr ""
 msgid "daily"
 msgstr ""
 
-msgid "date / time"
-msgstr ""
-
 msgid "default audio streams"
 msgstr ""
 
@@ -2860,9 +2899,6 @@ msgid "detective / thriller"
 msgstr ""
 
 msgid "direct connected"
-msgstr ""
-
-msgid "direct selection"
 msgstr ""
 
 msgid "directory already mounted"
@@ -2929,9 +2965,6 @@ msgid "fashion"
 msgstr ""
 
 msgid "fast"
-msgstr ""
-
-msgid "filebrowser item"
 msgstr ""
 
 msgid "filesystem type not supported"

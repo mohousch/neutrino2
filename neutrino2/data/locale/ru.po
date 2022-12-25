@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrinohd2 4.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-08 17:32+0100\n"
+"POT-Creation-Date: 2022-12-25 08:57+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -321,6 +321,9 @@ msgstr "CI cam reset"
 msgid "CIFS"
 msgstr "CIFS"
 
+msgid "CMenuWidget(Menu Mode)"
+msgstr ""
+
 msgid "CORNER ALL"
 msgstr "CORNER ALL"
 
@@ -366,11 +369,12 @@ msgstr "Канал / Название"
 msgid "Channel Logo"
 msgstr "Логотип канала"
 
+#, fuzzy
+msgid "Channel direct selection"
+msgstr "прямой выбор"
+
 msgid "Channel down"
 msgstr "Channel down"
-
-msgid "Channel name"
-msgstr "Название канала"
 
 msgid "Channel not available"
 msgstr "Канал недоступен"
@@ -382,6 +386,14 @@ msgid "Channel:"
 msgstr "Канал:"
 
 msgid "Channellist"
+msgstr "Список каналов"
+
+#, fuzzy
+msgid "Channellist Description"
+msgstr "Установки списка каналов"
+
+#, fuzzy
+msgid "Channellist Number"
 msgstr "Список каналов"
 
 msgid "Channellist settings"
@@ -530,9 +542,6 @@ msgstr "Удалить все"
 #, fuzzy
 msgid "Delete channels"
 msgstr "Удалить каналы"
-
-msgid "Description"
-msgstr "Описание"
 
 msgid "Description: "
 msgstr "Описание: "
@@ -709,11 +718,27 @@ msgstr "Ошибка"
 msgid "Event list"
 msgstr "Список событий"
 
+#, fuzzy
+msgid "Eventlist Title"
+msgstr "Обзор списка событий"
+
 msgid "Eventlist current programm"
 msgstr "Список событий текущей программы"
 
+#, fuzzy
+msgid "Eventlist date / time"
+msgstr "дата / время"
+
+#, fuzzy
+msgid "Eventlist large"
+msgstr "Обзор списка событий"
+
 msgid "Eventlist overview"
 msgstr "Обзор списка событий"
+
+#, fuzzy
+msgid "Eventlist small"
+msgstr "Список событий"
 
 msgid "Events Textcolor"
 msgstr "Events Textcolor"
@@ -765,6 +790,10 @@ msgstr "Файловая система"
 
 msgid "Filebrowser"
 msgstr "Файловый браузер"
+
+#, fuzzy
+msgid "Filebrowser item"
+msgstr "элемент файлового браузера"
 
 msgid "Filebrowser settings"
 msgstr "Настройки файлового браузера"
@@ -1063,6 +1092,22 @@ msgstr "EPG Info2"
 msgid "Infobar"
 msgstr "Инфобар"
 
+#, fuzzy
+msgid "Infobar Channel name"
+msgstr "Название канала"
+
+#, fuzzy
+msgid "Infobar Number"
+msgstr "Инфобар"
+
+#, fuzzy
+msgid "Infobar info"
+msgstr "Инфобар"
+
+#, fuzzy
+msgid "Infobar small"
+msgstr "Инфобар"
+
 msgid "Information"
 msgstr "Информация"
 
@@ -1263,17 +1308,19 @@ msgstr "Меню"
 msgid "Menu Info"
 msgstr "Информация о меню"
 
+#, fuzzy
+msgid "Menu Text"
+msgstr "Menutext"
+
 msgid "Menu Title"
 msgstr "Заголовок меню"
 
-msgid "Menu Title 2"
+#, fuzzy
+msgid "Menu Title2"
 msgstr "Заголовок меню 2"
 
 msgid "Menu mode"
 msgstr "Режим меню"
-
-msgid "Menutext"
-msgstr "Menutext"
 
 msgid "Message"
 msgstr "Сообщение"
@@ -1366,6 +1413,9 @@ msgstr "Настройки Movieplayer"
 
 msgid "Movies Browser"
 msgstr "Браузеры фильмов"
+
+msgid "Mute"
+msgstr ""
 
 msgid "My Favorites"
 msgstr "Мои любимые"
@@ -1528,9 +1578,6 @@ msgstr "Не используется"
 msgid "Now"
 msgstr "Сейчас"
 
-msgid "Number"
-msgstr "Номер"
-
 msgid "Number of lines last play"
 msgstr ""
 
@@ -1646,6 +1693,10 @@ msgstr "Pictureviewer"
 msgid "Pictureviewer settings"
 msgstr "Pictureviewer settings"
 
+#, fuzzy
+msgid "Play"
+msgstr "Время воспроизведения"
+
 msgid "Playtime"
 msgstr "Время воспроизведения"
 
@@ -1660,6 +1711,14 @@ msgstr "Пожалуйста, нажмите новую клавишу"
 
 msgid "Plugin"
 msgstr "Плагин"
+
+#, fuzzy
+msgid "Pluginlist large"
+msgstr "Плагины"
+
+#, fuzzy
+msgid "Pluginlist small"
+msgstr "Плагины"
 
 msgid "Plugins"
 msgstr "Плагины"
@@ -1751,9 +1810,6 @@ msgstr "Радио"
 
 msgid "Radio Channel"
 msgstr "Радиоканал"
-
-msgid "Radio Mode"
-msgstr "Радио"
 
 msgid "Radio Text"
 msgstr "Радиотекст"
@@ -2195,6 +2251,10 @@ msgstr "Завершение работы"
 msgid "Shutdown time in min. (000=off)"
 msgstr "Время выключения - мин. (000=выкл.)"
 
+#, fuzzy
+msgid "Signal small"
+msgstr "Плагины"
+
 msgid "Size"
 msgstr "Размер"
 
@@ -2399,11 +2459,12 @@ msgstr "ТВ"
 msgid "TV & Radio"
 msgstr "ТВ и Радио"
 
+#, fuzzy
+msgid "TV / Radio"
+msgstr "ТВ и Радио"
+
 msgid "TV Channel"
 msgstr "ТВ каналы"
-
-msgid "TV Mode"
-msgstr "ТВ"
 
 msgid "TV-System"
 msgstr "ТВ-Система"
@@ -2998,9 +3059,6 @@ msgstr "создать скриншот?"
 msgid "daily"
 msgstr "daily"
 
-msgid "date / time"
-msgstr "дата / время"
-
 msgid "default audio streams"
 msgstr "аудиопотоки по умолчанию"
 
@@ -3016,9 +3074,6 @@ msgstr "детектив/триллер"
 
 msgid "direct connected"
 msgstr "прямое подключение"
-
-msgid "direct selection"
-msgstr "прямой выбор"
 
 msgid "directory already mounted"
 msgstr "каталог уже смонтирован"
@@ -3087,9 +3142,6 @@ msgstr "мода"
 
 msgid "fast"
 msgstr "быстро"
-
-msgid "filebrowser item"
-msgstr "элемент файлового браузера"
 
 msgid "filesystem type not supported"
 msgstr "тип файловой системы не поддерживается"
