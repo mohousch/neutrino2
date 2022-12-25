@@ -306,7 +306,6 @@ void CInfoViewer::paintTime(int posx, int posy, unsigned int timeFont)
 		timer->setFont(timeFont);
 		timer->setColor(COL_INFOBAR);
 		timer->setFormat("%H:%M:%S");
-		timer->enableRepaint();
 		timer->paint();		
 	}
 }

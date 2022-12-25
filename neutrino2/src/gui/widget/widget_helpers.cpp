@@ -1169,6 +1169,8 @@ CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 	
 	format = "%d.%m.%Y %H:%M";
 	
+	enableRepaint();
+	
 	cc_type = CC_TIME;
 }
 
@@ -1246,6 +1248,9 @@ CCCounter::CCCounter(const int x, const int y, const int dx, const int dy)
 	cCBox.iWidth = g_Font[font]->getRenderWidth("00:00:00 / 00:00:00");
 	cCBox.iHeight = g_Font[font]->getHeight();
 	
+	//
+	enableRepaint();
+	
 	cc_type = CC_COUNTER;
 }
 
@@ -1317,6 +1322,8 @@ CCSpinner::CCSpinner(const int x, const int y, const int dx, const int dy)
 	//
 	count = 0;
 	background = NULL;
+	
+	enableRepaint();
 	
 	//
 	cc_type = CC_SPINNER;
@@ -1694,7 +1701,6 @@ void CHeaders::paint()
 		timer->setPosition(startx - timestr_len, itemBox.iY, timestr_len, itemBox.iHeight);
 		timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 		timer->setFormat(format.c_str());
-		timer->enableRepaint();
 		timer->paint();
 	}
 	

@@ -2006,7 +2006,6 @@ void CTestMenu::testCSpinner()
 	testWidget = new CWidget(10, 10, 20, 20);
 	
 	CCSpinner testSpinner(10, 10, 20, 20);
-	testSpinner.enableRepaint();
 	
 	testWidget->addCCItem(&testSpinner);
 	
@@ -2244,7 +2243,6 @@ void CTestMenu::testCWindowCComponent()
 	std::string timestr = getNowTimeStr("%A %d.%m.%Y %H:%M:%S");
 	int timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
 	headTimer.setPosition(Box.iX + Box.iWidth - BORDER_RIGHT - timestr_len, Box.iY, timestr_len + 1, 40);
-	headTimer.enableRepaint();
 	
 	windowWidget->addCCItem(&headTimer);
 	

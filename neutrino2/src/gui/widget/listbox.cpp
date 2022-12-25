@@ -3206,7 +3206,6 @@ void ClistBox::paintHead()
 
 				timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 				timer->setFormat(format);
-				timer->enableRepaint();
 				timer->paint();
 			}
 
@@ -3284,7 +3283,6 @@ void ClistBox::paintHead()
 
 				timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 				timer->setFormat(format);
-				timer->enableRepaint();
 				timer->paint();
 			}
 		

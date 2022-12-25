@@ -438,7 +438,6 @@ void CMenuWidget::paintHead()
 			timer->setPosition(xstartPos - timestr_len - 2, y, timestr_len, hheight);
 			timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 			timer->setFormat(format.c_str());
-			timer->enableRepaint();
 			timer->paint();
 		}
 		
@@ -514,7 +513,6 @@ void CMenuWidget::paintHead()
 			timer->setPosition(xstartPos - timestr_len - 2, y, timestr_len, hheight);
 			timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 			timer->setFormat(format.c_str());
-			timer->enableRepaint();
 			timer->paint();
 		}
 	

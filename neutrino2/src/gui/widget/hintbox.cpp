@@ -254,9 +254,6 @@ int CHintBox::exec(int timeout)
 	if (paintHG)
 	{
 		spinner = new CCSpinner(CFrameBuffer::getInstance()->getScreenX() + 10, CFrameBuffer::getInstance()->getScreenY() + 10, 30, 30);
-		
-		spinner->enableRepaint();
-		
 		spinner->paint();
 		
 	}
