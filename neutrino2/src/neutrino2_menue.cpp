@@ -76,6 +76,7 @@ void CNeutrinoApp::mainMenu(void)
 	
 	CWidget* widget = NULL;
 	ClistBox* nMenu = NULL;
+	CMenuItem* item = NULL;
 	
 	if (CNeutrinoApp::getInstance()->widget_exists("mainmenu"))
 	{
@@ -89,12 +90,12 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu->setWidgetType(TYPE_CLASSIC);
 		nMenu->enableShrinkMenu();
 		
-		//
+		// head
 		nMenu->enablePaintHead();
 		nMenu->setTitle(_("Main Menu"), NEUTRINO_ICON_MAINMENU);
 		nMenu->enablePaintDate();
 		
-		//
+		// foot
 		nMenu->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
@@ -102,39 +103,48 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu->setFootButtons(&btn);
 			  
 		// tv modus
-		nMenu->addItem(new CMenuForwarder(_("TV / Radio"), true, NULL, this, "tvradioswitch", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV), true);
+		item = new CMenuForwarder(_("TV / Radio"), true, NULL, this, "tvradioswitch", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV);
+		nMenu->addItem(item, true);
 
 		// epg / sleeptimer
-		nMenu->addItem(new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
+		item = new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
+		nMenu->addItem(item);
 			
 #if defined (ENABLE_SCART)
 		// scart
-		nMenu->addItem(new CMenuForwarder(_("Scart Mode"), true, NULL, this, "scart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCART));
+		item = new CMenuForwarder(_("Scart Mode"), true, NULL, this, "scart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCART);
+		nMenu->addItem(item);
 #endif
 
 		// features
-		nMenu->addItem(new CMenuForwarder(_("Features"), true, NULL, this, "features", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FEATURES));
+		item = new CMenuForwarder(_("Features"), true, NULL, this, "features", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FEATURES);
+		nMenu->addItem(item);
 		
 		// service
-		nMenu->addItem(new CMenuForwarder(_("System"), true, NULL, new CServiceMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SERVICE));
+		item = new CMenuForwarder(_("System"), true, NULL, new CServiceMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
+		nMenu->addItem(item);
 			
 		// main setting
 		nMenu->addItem(new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SETTINGS));
 		
 		// osd
-		nMenu->addItem(new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+		item = new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
+		nMenu->addItem(item);
 		
 		//box info
-		nMenu->addItem( new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
+		item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO);
+		nMenu->addItem(item);
 
 		// power menu
-		nMenu->addItem(new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_POWERMENU));
+		item = new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_POWERMENU);
+		nMenu->addItem(item);
 		
 		// mediaplayer
-		nMenu->addItem(new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MEDIAPLAYER));
+		item = new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
+		nMenu->addItem(item);
 		
 		//
-		widget = new CWidget(nMenu->getWindowsPos().iX - 2, nMenu->getWindowsPos().iY - 2, nMenu->getWindowsPos().iWidth + 4, nMenu->getWindowsPos().iHeight + 4);
+		widget = new CWidget(nMenu->getWindowsPos().iX, nMenu->getWindowsPos().iY, nMenu->getWindowsPos().iWidth, nMenu->getWindowsPos().iHeight);
 		widget->name = "mainmenu";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
