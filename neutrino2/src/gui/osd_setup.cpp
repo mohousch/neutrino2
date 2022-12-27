@@ -979,6 +979,25 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return ret;
 	}
+	else if(actionKey == "select_spinner_dir")
+	{
+		CFileBrowser b;
+		b.Dir_Mode = true;
+		
+		if (b.exec(g_settings.spinner_dir.c_str())) 
+		{
+			g_settings.spinner_dir = b.getSelectedFile()->Name + "/";
+
+			dprintf(DEBUG_NORMAL, "COSDMiscSettings::exec: new spinner dir %s\n", g_settings.spinner_dir.c_str());
+
+			CFrameBuffer::getInstance()->setSpinnerBasePath(g_settings.spinner_dir);
+			//CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
+		}
+		
+		getString() = g_settings.spinner_dir;
+		
+		return ret;
+	}
 	
 	showMenu();
 	
@@ -1080,13 +1099,16 @@ void COSDDiverses::showMenu()
 	osdDiverseSettings->addItem(new CMenuSeparator(LINE));
 	
 	// icons dir
-	osdDiverseSettings->addItem(new CMenuForwarder("Icons Dir", true, g_settings.icons_dir.c_str(), this, "select_icons_dir"));
+	osdDiverseSettings->addItem(new CMenuForwarder(_("Icons Dir"), true, g_settings.icons_dir.c_str(), this, "select_icons_dir"));
 	
 	// buttons dir
-	osdDiverseSettings->addItem(new CMenuForwarder("Buttons Dir", true, g_settings.buttons_dir.c_str(), this, "select_buttons_dir"));
+	osdDiverseSettings->addItem(new CMenuForwarder(_("Buttons Dir"), true, g_settings.buttons_dir.c_str(), this, "select_buttons_dir"));
 	
 	// hints dir
-	osdDiverseSettings->addItem(new CMenuForwarder("Hints Dir", true, g_settings.hints_dir.c_str(), this, "select_hints_dir"));
+	osdDiverseSettings->addItem(new CMenuForwarder(_("Hints Dir"), true, g_settings.hints_dir.c_str(), this, "select_hints_dir"));
+	
+	// spinner dir
+	osdDiverseSettings->addItem(new CMenuForwarder(_("Spinner Dir"), true, g_settings.spinner_dir.c_str(), this, "select_spinner_dir"));
 
 	//
 	widget->exec(NULL, "");

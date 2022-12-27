@@ -171,6 +171,7 @@ class CFrameBuffer
 		std::string	iconBasePath;
 		std::string	hintBasePath;
 		std::string	buttonBasePath;
+		std::string	spinnerBasePath;
 
 		int             fd;
 		fb_pixel_t *    lfb;
@@ -271,6 +272,7 @@ class CFrameBuffer
 		void setIconBasePath(const std::string& iconPath);
 		void setHintBasePath(const std::string& hintPath);
 		void setButtonBasePath(const std::string& buttonPath);
+		void setSpinnerBasePath(const std::string& spinnerPath);
 
 		//
 		void getIconSize(const char * const filename, int* width, int *height);

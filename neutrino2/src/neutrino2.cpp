@@ -977,6 +977,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.icons_dir = configfile.getString("icons_dir", DATADIR "/icons/");
 	g_settings.hints_dir = configfile.getString("hints_dir", DATADIR "/hints/");
 	g_settings.buttons_dir = configfile.getString("buttons_dir", DATADIR "/buttons/");
+	g_settings.spinner_dir = configfile.getString("spinner_dir", DATADIR "/spinner/");
 	
 	//set OSD resolution
 #define DEFAULT_X_OFF 35
@@ -1428,6 +1429,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setString("icons_dir", g_settings.icons_dir);
 	configfile.setString("hints_dir", g_settings.hints_dir);	
 	configfile.setString("buttons_dir", g_settings.buttons_dir);
+	configfile.setString("spinner_dir", g_settings.spinner_dir);
 
 	if(strcmp(fname, NEUTRINO_SETTINGS_FILE))
 		configfile.saveConfig(fname);
@@ -2450,6 +2452,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	frameBuffer->setIconBasePath(g_settings.icons_dir);
 	frameBuffer->setButtonBasePath(g_settings.buttons_dir);
 	frameBuffer->setHintBasePath(g_settings.hints_dir);
+	frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
 
 	// setup fonts
 	SetupFonts(g_settings.font_file);

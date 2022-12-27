@@ -913,6 +913,14 @@ void CFrameBuffer::setButtonBasePath(const std::string & buttonPath)
 	g_settings.buttons_dir = buttonBasePath;
 }
 
+void CFrameBuffer::setSpinnerBasePath(const std::string & spinnerPath)
+{
+	dprintf(DEBUG_INFO, "CFrameBuffer::setSpinnerBasePath: %s\n", spinnerPath.c_str());
+	
+	spinnerBasePath = spinnerPath;
+	g_settings.spinner_dir = spinnerBasePath;
+}
+
 // get icon size
 void CFrameBuffer::getIconSize(const char * const filename, int * width, int * height)
 {
@@ -928,12 +936,15 @@ void CFrameBuffer::getIconSize(const char * const filename, int * width, int * h
 		
 	if (!file_exists(iconfile.c_str()))
 		iconfile = buttonBasePath + filename + ".png";
+		
+	if (!file_exists(iconfile.c_str()))
+		iconfile = spinnerBasePath + filename + ".png";
 
 	icon_fd = open(iconfile.c_str(), O_RDONLY);
 
 	if (icon_fd == -1)
 	{
-		// check for fullname icon
+		// raw check for fullname icon
 		std::string iconfile1 = iconBasePath + filename + ".raw";
 			
 		icon_fd = open(iconfile1.c_str(), O_RDONLY);
@@ -1124,28 +1135,40 @@ bool CFrameBuffer::paintIcon(const std::string& filename, const int x, const int
 		getIconSize(newname.c_str(), &width, &height);
 
 	data = getImage(newname, width, height);
-		
+	
+	// check into buttunBasePath	
 	if(!data) 
 	{
-		// check into buttunBasePath
 		newname = buttonBasePath +filename.c_str() + ".png";
 		
 		if(width == 0 || height == 0)	
 			getIconSize(newname.c_str(), &width, &height);
 
 		data = getImage(newname, width, height);
+	}
+	
+	// check into spinnerBasePath	
+	if(!data) 
+	{
+		newname = spinnerBasePath +filename.c_str() + ".png";
 		
-		if (!data)
-		{
-			dprintf(DEBUG_DEBUG, "CFrameBuffer::paintIcon: %s\n", filename.c_str());
-		
-			newname = filename;
-			
-			if(width == 0 || height == 0)	
-				getIconSize(newname.c_str(), &width, &height);
+		if(width == 0 || height == 0)	
+			getIconSize(newname.c_str(), &width, &height);
 
-			data = getImage(newname, width, height);
-		}
+		data = getImage(newname, width, height);
+	}
+	
+	// full path
+	if (!data)
+	{
+		dprintf(DEBUG_DEBUG, "CFrameBuffer::paintIcon: %s\n", filename.c_str());
+		
+		newname = filename;
+			
+		if(width == 0 || height == 0)	
+			getIconSize(newname.c_str(), &width, &height);
+
+		data = getImage(newname, width, height);
 	}
 
 	if(data) 
