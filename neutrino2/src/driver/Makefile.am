@@ -59,7 +59,8 @@ libneutrino2_driver_a_SOURCES = \
 	jpeg.cpp \
 	bmp.cpp \
 	gif.cpp \
-	crw.cpp
+	crw.cpp \
+	svg.cpp
 
 if ENABLE_LCD
 libneutrino2_driver_a_SOURCES += lcdd.cpp	

@@ -1755,6 +1755,12 @@ extern int fh_crw_getsize (const char *, int *, int *, int, int);
 extern int fh_crw_load (const char *, unsigned char **, int *, int *);
 extern int fh_crw_id (const char *);
 
+// SVG
+extern int fh_svg_getsize (const char *, int *, int *, int, int);
+extern int fh_svg_load (const char *, unsigned char **, int *, int *);
+extern int svg_load_resize(const char *name, unsigned char **buffer, int* ox, int* oy, int dx, int dy);
+extern int fh_svg_id (const char *);
+
 void add_format (int (*picsize) (const char *, int *, int *, int, int), int (*picread) (const char *, unsigned char **, int *, int *), int (*id) (const char *))
 {
 	CFormathandler * fhn = NULL;
@@ -1782,6 +1788,9 @@ void init_handlers (void)
 
 	// add crw
 	add_format(fh_crw_getsize, fh_crw_load, fh_crw_id);
+	
+	// add svg
+	add_format (fh_svg_getsize, fh_svg_load, fh_svg_id);
 }
 
 CFormathandler * fh_getsize(const char *name, int *x, int *y, int width_wanted, int height_wanted)
@@ -1805,7 +1814,7 @@ void CFrameBuffer::getSize(const std::string& name, int* width, int* height, int
 	unsigned char* rgbbuff;
 	int x = 0;
 	int y = 0;
-	int bpp = 0;
+	int bpp = 4;
 	int load_ret = FH_ERROR_MALLOC;
 	CFormathandler * fh = NULL;
 
@@ -1825,6 +1834,10 @@ void CFrameBuffer::getSize(const std::string& name, int* width, int* height, int
 	{
 		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
 			load_ret = png_load_ext(name.c_str(), &rgbbuff, &x, &y, &bpp);
+		else if (name.find(".svg") == (name.length() - 4))
+		{
+			load_ret = svg_load_resize(name.c_str(), &rgbbuff, &x, &y, *width, *height);
+		}
 		else
 			load_ret = fh->get_pic(name.c_str(), &rgbbuff, &x, &y);
 		
@@ -2040,6 +2053,11 @@ fb_pixel_t * CFrameBuffer::getImage(const std::string &name, int width, int heig
 		
 		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
 			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp);
+		else if (name.find(".svg") == (name.length() - 4))
+		{
+			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
+			_bpp = 4;
+		}
 		else
 			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
 
@@ -2052,9 +2070,13 @@ fb_pixel_t * CFrameBuffer::getImage(const std::string &name, int width, int heig
 				{
 					// alpha
 					if(_bpp == 4)
+					{
 						buffer = resize(buffer, x, y, width, height, scaling, NULL, true);
+					}
 					else
+					{
 						buffer = resize(buffer, x, y, width, height, scaling);
+					}
 				
 					x = width ;
 					y = height;

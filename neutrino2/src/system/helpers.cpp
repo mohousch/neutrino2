@@ -1876,10 +1876,10 @@ bool CChannellogo::checkLogo(t_channel_id logo_id)
 	bool logo_ok = false;
 	
 	// first png, then jpg, then gif
-	std::string strLogoExt[2] = { ".png", ".jpg" };
+	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
 	
 	// check for logo
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		logo_name = g_settings.logos_dir;
 		logo_name += "/";
@@ -1903,10 +1903,10 @@ void CChannellogo::getLogoSize(t_channel_id logo_id, int * width, int * height, 
 	bool logo_ok = false;
 	
 	// check for logo/convert channelid to logo
-	std::string strLogoExt[2] = { ".png", ".jpg" };
+	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
 	
 	// check for logo
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		logo_name = g_settings.logos_dir;
 		logo_name += "/";
@@ -1942,9 +1942,9 @@ bool CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int wid
 	
 	
 	// check for logo
-	std::string strLogoExt[2] = { ".png", ".jpg" };
+	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
 	
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		logo_name = g_settings.logos_dir;
 		logo_name += "/";
@@ -2001,7 +2001,7 @@ std::string CChannellogo::getLogoName(t_channel_id logo_id)
 	bool logo_ok = false;
 	
 	// check for logo/convert channelid to logo
-	std::string strLogoExt[2] = { ".png", ".jpg" };
+	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
 	
 	// check for logo
 	for (int i = 0; i < 2; i++)
@@ -2021,63 +2021,6 @@ std::string CChannellogo::getLogoName(t_channel_id logo_id)
 	return logo_name;
 }
 
-/*
-void * execute_logos_thread(void *c)
-{
-	CChannellogo * obj = (CChannellogo *)c;
-	obj->downloadLogos();
-	
-	return NULL;
-}
-
-pthread_mutex_t  mutex = PTHREAD_MUTEX_INITIALIZER;
-
-void CChannellogo::downloadLogos()
-{
-	//if(chanlist.size())
-	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
-	{
-		if (IS_WEBTV(it->second.getChannelID()))
-		{
-			// download logos
-			std::string logo_name;
-			logo_name = g_settings.logos_dir;
-			logo_name += "/";
-			logo_name += to_hexstring(it->second.getLogoID() & 0xFFFFFFFFFFFFULL);
-			logo_name += ".png";
-								
-			if(access(logo_name.c_str(), F_OK)) 
-			{
-				downloadUrl(it->second.getLogoUrl(), logo_name, "", 30);
-			}
-		}
-	}
-	
-	pthread_exit(0);
-}
-
-//
-void CChannellogo::loadWebTVlogos(void)
-{
-	dprintf(DEBUG_NORMAL, "CChannellogo::loadWebTVlogos:\n");
-	
-	pthread_attr_t attr;
-	pthread_attr_init(&attr);
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-	
-	if (pthread_create(&loadLogosThread, &attr, execute_logos_thread, this) != 0 )
-	{
-		dprintf(DEBUG_NORMAL, "CChannelList::CChannellogo: pthread_create(loadLogosThread)");
-	}	
-
-	pthread_attr_destroy(&attr);
-	
-	if(loadLogosThread)
-		pthread_join(loadLogosThread, NULL);
-	
-	loadLogosThread = 0;
-}
-*/
 #include <system/set_threadname.h>
 
 bool CChannellogo::loadWebTVlogos()

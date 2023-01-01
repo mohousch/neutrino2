@@ -1832,3 +1832,5 @@
 /neutrino2/src/gui/widget/libneutrino2_gui_widget2.a
 /neutrino2/data/icons/spinner/Makefile
 /neutrino2/data/icons/spinner/Makefile.in
+/neutrino2/src/driver/.deps/svg.Po
+/neutrino2/src/driver/svg.o

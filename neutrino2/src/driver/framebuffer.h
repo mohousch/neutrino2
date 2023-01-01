@@ -133,7 +133,7 @@ enum
 	THREE_TOP_AND_BUTTOM
 };
 
-// png/jpg/bmp/gif/crw
+// png/jpg/bmp/gif/crw/svg
 struct cformathandler 
 {
 	struct cformathandler * next;
