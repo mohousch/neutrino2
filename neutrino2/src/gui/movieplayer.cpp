@@ -458,7 +458,7 @@ void CMoviePlayerGui::play(unsigned int pos)
 		// set position 
 		playback->SetPosition(startposition * 1000);
 				
-		//
+		// get position / duration
 #if defined (PLATFORM_COOLSTREAM)
 		playback->GetPosition(position, duration);
 #else
@@ -531,7 +531,7 @@ void CMoviePlayerGui::playNext()
 
 			// startposition
 			if (!m_multiselect)			
-				startposition = showStartPosSelectionMenu(); // in ms
+				startposition = showStartPosSelectionMenu(); // in sec
 
 			if(startposition < 0)
 				exit = true;
@@ -1517,8 +1517,8 @@ void CMoviePlayerGui::PlayFile(void)
 		{
 			if (mplist && mplist->isPainted())
 			{
-			// FIXME: segfault
-			/*
+				// FIXME: segfault
+				/*
 				//mplist->scrollPageDown();
 				mplist->hide();
 				CMoviePlayList::iterator p = playlist.begin() + mplist->getSelected();
@@ -1528,7 +1528,7 @@ void CMoviePlayerGui::PlayFile(void)
 					selected = playlist.size() - 1;
 			
 				showPlaylist();
-			*/
+				*/
 			}
 			else
 			{
@@ -1799,7 +1799,8 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 		}
 	}
 
-	widget->exec(NULL, "12345");
+	widget->setTimeOut(/*SNeutrinoSettings::TIMING_INFOBAR*/10);
+	widget->exec(NULL, "");
 	
 	// check what menu item was ok'd  and set the appropriate play offset
 	result = startPosSelectionMenu->getSelected();
