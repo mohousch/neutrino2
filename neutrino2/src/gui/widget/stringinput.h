@@ -103,7 +103,7 @@ class CStringInput : public CMenuTarget
 		virtual int handleOthers(const neutrino_msg_t msg, const neutrino_msg_data_t data);
 
 	public:	
-		CStringInput(const char * const Head, const char * const Value, int Size = 10, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, const char * const Valid_Chars = (const char*) "0123456789. ", CChangeObserver* Observ = NULL, const char * const Icon = NEUTRINO_ICON_KEYBINDING);
+		CStringInput(const char * const Head, const char * const Value, int Size = 10, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, const char * const Valid_Chars = NULL, CChangeObserver* Observ = NULL, const char * const Icon = NEUTRINO_ICON_KEYBINDING);
 		
 		~CStringInput();
 
@@ -119,7 +119,7 @@ class CStringInputSMS : public CStringInput
 {
 		bool capsMode;
 		int arraySizes[10];
-		char Chars[10][9];					// maximal 9 character in one CharList entry!
+		char Chars[10][10];					// maximal 9 character in one CharList entry!
 
 		int keyCounter;
 		int last_digit;
@@ -136,7 +136,7 @@ class CStringInputSMS : public CStringInput
 		void initSMS(const char * const Valid_Chars);
 
 	public:
-		CStringInputSMS(const char * const Head, const char * const Value, int Size = MAX_INPUT_CHARS, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, const char* const Valid_Chars = "abcdefghijklmnopqrstuvwxyz0123456789 -_/()<>=+.,:!?\\'", CChangeObserver* Observ = NULL, const char * const Icon = NEUTRINO_ICON_KEYBINDING);
+		CStringInputSMS(const char * const Head, const char * const Value, int Size = MAX_INPUT_CHARS, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, const char* const Valid_Chars = NULL, CChangeObserver* Observ = NULL, const char * const Icon = NEUTRINO_ICON_KEYBINDING);
 };
 
 class CPINInput : public CStringInput

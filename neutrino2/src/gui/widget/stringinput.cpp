@@ -63,8 +63,8 @@ CStringInput::CStringInput(const char * const Head, const char * const Value, in
         size =  Size;
         hint_1 = Hint_1? Hint_1 : "";
         hint_2 = Hint_2? Hint_2 : "";
-        validchars = Valid_Chars;
-        iconfile = Icon ? Icon : "";
+        validchars = Valid_Chars? Valid_Chars : "0123456789. ";
+        iconfile = Icon? Icon : "";
         observ = Observ;
 
         init();
@@ -72,6 +72,7 @@ CStringInput::CStringInput(const char * const Head, const char * const Value, in
 
 CStringInput::~CStringInput() 
 {
+	g_RCInput->killTimer(smstimer);
 	valueString.clear();
 }
 
@@ -116,7 +117,6 @@ void CStringInput::init()
 
 	m_cBoxWindow.setPosition(x, y + hheight, width, height - hheight);
 	
-	//
 	// head
 	headers.setPosition(x, y, width, hheight);
 }
@@ -183,13 +183,13 @@ void CStringInput::keyUpPressed()
 	int npos = 0;
 
 	for(int count = 0; count < (int)strlen(validchars);count++)
-		if(value[selected]==validchars[count])
+		if(value[selected] == validchars[count])
 			npos = count;
 	npos++;
 	if(npos >= (int)strlen(validchars))
 		npos = 0;
 
-	value[selected]=validchars[npos];
+	value[selected] = validchars[npos];
 
 	paintChar(selected);
 }
@@ -198,14 +198,14 @@ void CStringInput::keyDownPressed()
 {
 	int npos = 0;
 	for(int count = 0; count < (int)strlen(validchars); count++)
-		if(value[selected]==validchars[count])
+		if(value[selected] == validchars[count])
 			npos = count;
 
 	npos--;
 	if(npos<0)
 		npos = strlen(validchars)-1;
 
-	value[selected]=validchars[npos];
+	value[selected] = validchars[npos];
 	paintChar(selected);
 }
 
@@ -220,6 +220,7 @@ void CStringInput::keyLeftPressed()
 	{
 		selected = size - 1;
 	}
+	
 	paintChar(old);
 	paintChar(selected);
 }
@@ -227,6 +228,7 @@ void CStringInput::keyLeftPressed()
 void CStringInput::keyRightPressed()
 {
 	int old = selected;
+	
 	if (selected < (size - 1)) 
 	{
 		selected++;
@@ -241,12 +243,14 @@ void CStringInput::keyRightPressed()
 void CStringInput::keyMinusPressed()
 {
 	int item = selected;
+	
 	while (item < (size -1))
 	{
 		value[item] = value[item+1];
 		paintChar(item);
 		item++;
 	}
+	
 	value[item] = ' ';
 	paintChar(item);
 }
@@ -254,6 +258,7 @@ void CStringInput::keyMinusPressed()
 void CStringInput::keyPlusPressed()
 {
 	int item = size -1;
+	
 	while (item > selected)
 	{
 		value[item] = value[item - 1];
@@ -284,7 +289,6 @@ int CStringInput::exec(CMenuTarget* parent, const std::string& )
 	
 	strncpy(oldval, value, size);
 
-
 	paint();
 	CFrameBuffer::getInstance()->blit();
 
@@ -304,16 +308,6 @@ int CStringInput::exec(CMenuTarget* parent, const std::string& )
 
 		if ( msg <= RC_MaxRC )
 			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_MENU] == 0 ? 0xFFFF : g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
-		
-		//
-		if (!(msg & RC_Release))
-			g_RCInput->killTimer(smstimer);
-
-		if ((msg == NeutrinoMessages::EVT_TIMER) && (data == smstimer))
-			msg = RC_right;
-
-		if (msg < RC_nokey)
-			g_RCInput->killTimer (smstimer);
 
 		if (msg == RC_left)
 		{
@@ -366,6 +360,10 @@ int CStringInput::exec(CMenuTarget* parent, const std::string& )
 		else if (msg == RC_minus)
 		{
 			keyMinusPressed();
+		}
+		else if ((msg == NeutrinoMessages::EVT_TIMER) && (data == smstimer))
+		{
+			keyRightPressed();
 		}
 		else if (msg == RC_ok)
 		{
@@ -528,9 +526,9 @@ CStringInputSMS::CStringInputSMS(const char * const Head, const char * const Val
 void CStringInputSMS::initSMS(const char * const Valid_Chars)
 {
 	last_digit = -1;				// no key pressed yet
-	const char CharList[10][11] = { "0 -_/()<>=",	// 9 characters
-					"1+.,:!?\\",
-					"abc2ä",
+	const char CharList[10][11] = { "0 -_/()<>=",	// 10 characters
+					"1+.,:!?%\\",
+					"abc2@ä",
 					"def3",
 					"ghi4",
 					"jkl5",
@@ -542,16 +540,29 @@ void CStringInputSMS::initSMS(const char * const Valid_Chars)
 	for (int i = 0; i < 10; i++)
 	{
 		int j = 0;
-		for (int k = 0; k < (int) strlen(CharList[i]); k++)
-			if (strchr(Valid_Chars, CharList[i][k]) != NULL)
+		
+		if (Valid_Chars != NULL)
+		{
+			for (int k = 0; k < (int) strlen(CharList[i]); k++)
+			{
+				if (strchr(Valid_Chars, CharList[i][k]) != NULL)
+					Chars[i][j++] = CharList[i][k];
+			}
+		}
+		else
+		{
+			for (int k = 0; k < (int) strlen(CharList[i]); k++)
+			{
 				Chars[i][j++] = CharList[i][k];
+			}
+		}
+				
 		if (j == 0)
 			Chars[i][j++] = ' ';	// prevent empty char lists 
 		arraySizes[i] = j;
 	}
 
 	height += 260;
-	//y = ((500 - height)>>1);
 	y = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - height) >> 1 );
 }
 
@@ -560,10 +571,11 @@ void CStringInputSMS::NormalKeyPressed(const neutrino_msg_t key)
 	if (CRCInput::isNumeric(key))
 	{
 		int numericvalue = CRCInput::getNumericValue(key);
+		
 		if (last_digit != numericvalue)
 		{
-			if ((last_digit != -1) &&	// there is a last key
-			    (selected < (size- 1)))	// we can shift the cursor one field to the right
+			// there is a last key we can shift the cursor one field to the right
+			if ((last_digit != -1) && (selected < (size- 1)))
 			{
 				selected++;
 				paintChar(selected - 1);
@@ -577,13 +589,14 @@ void CStringInputSMS::NormalKeyPressed(const neutrino_msg_t key)
 		last_digit = numericvalue;
 		paintChar(selected);
 		//
+		g_RCInput->killTimer(smstimer);
 		smstimer = g_RCInput->addTimer(2*1000*1000);
 	}
 	else
 	{
 		value[selected] = (char)CRCInput::getUnicodeValue(key);
-		keyRedPressed();   /* to lower, paintChar */
-		keyRightPressed(); /* last_digit = -1, move to next position */
+		keyRedPressed();   // to lower, paintChar
+		keyRightPressed(); // last_digit = -1, move to next position
 	}
 }
 
@@ -681,7 +694,6 @@ void CStringInputSMS::paint()
 	buttons.setPosition(x, y + height - ButtonHeight, width, ButtonHeight);
 	buttons.setButtons(CStringInputSMSButtons, 2);
 	buttons.paint();
-	//buttons.paintFootButtons(x, y + height - ButtonHeight, width, ButtonHeight, 4, CStringInputSMSButtons);
 }
 
 // CPINInput
