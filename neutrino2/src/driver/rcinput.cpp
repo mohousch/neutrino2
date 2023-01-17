@@ -596,12 +596,14 @@ int CRCInput::addTimer(uint64_t Interval, bool oneshot, bool correct_time )
 	uint64_t timeNow = (uint64_t) tv.tv_usec + (uint64_t)((uint64_t) tv.tv_sec * (uint64_t) 1000000);
 
 	timer _newtimer;
+	
 	if (!oneshot)
 		_newtimer.interval = Interval;
 	else
 		_newtimer.interval = 0;
 
 	_newtimer.id = timerid++;
+	
 	if ( correct_time )
 		_newtimer.times_out = timeNow+ Interval;
 	else
@@ -610,7 +612,7 @@ int CRCInput::addTimer(uint64_t Interval, bool oneshot, bool correct_time )
 	_newtimer.correct_time = correct_time;
 
 	std::vector<timer>::iterator e;
-	for ( e = timers.begin(); e!= timers.end(); ++e )
+	for ( e = timers.begin(); e != timers.end(); ++e )
 		if ( e->times_out > _newtimer.times_out )
 			break;
 
@@ -637,7 +639,7 @@ void CRCInput::killTimer(uint32_t id)
 	
 	std::vector<timer>::iterator e;
 	
-	for ( e= timers.begin(); e!= timers.end(); ++e )
+	for ( e = timers.begin(); e != timers.end(); ++e )
 	{
 		if ( e->id == id )
 		{
@@ -659,7 +661,7 @@ int CRCInput::checkTimers()
 	
 	for ( e = timers.begin(); e != timers.end(); ++e )
 	{
-		if ( e->times_out< timeNow + 2000 )
+		if ( e->times_out < timeNow + 2000 )
 		{
 			_id = e->id;
 			if ( e->interval != 0 )
@@ -668,12 +670,14 @@ int CRCInput::checkTimers()
 				_newtimer.id = e->id;
 				_newtimer.interval = e->interval;
 				_newtimer.correct_time = e->correct_time;
+				
 				if ( _newtimer.correct_time )
 					_newtimer.times_out = timeNow + e->interval;
 				else
 					_newtimer.times_out = e->times_out + e->interval;
 
 		            	timers.erase(e);
+		            	
 				for ( e= timers.begin(); e!= timers.end(); ++e )
 				{
 					if ( e->times_out > _newtimer.times_out )
@@ -1580,25 +1584,19 @@ void CRCInput::clearRCMsg()
 	rc_last_key =  KEY_MAX;
 }
 
-/*
-*       isNumeric - test if key is 0..9
-*/
+// isNumeric - test if key is 0..9
 bool CRCInput::isNumeric(const neutrino_msg_t key)
 {
 	return ((key == RC_0) || ((key >= RC_1) && (key <= RC_9)));
 }
 
-/*
-*       getNumericValue - return numeric value of the key or -1
-*/
+// getNumericValue - return numeric value of the key or -1
 int CRCInput::getNumericValue(const neutrino_msg_t key)
 {
 	return ((key == RC_0) ? (int)0 : (((key >= RC_1) && (key <= RC_9)) ? (int)(key - RC_1 + 1) : (int)-1));
 }
 
-/*
-*       convertDigitToKey - return key representing digit or RC_nokey
-*/
+// convertDigitToKey - return key representing digit or RC_nokey
 static const unsigned int digit_to_key[10] = {RC_0, RC_1, RC_2, RC_3, RC_4, RC_5, RC_6, RC_7, RC_8, RC_9};
 
 unsigned long CRCInput::convertDigitToKey(const unsigned int digit)
@@ -1606,9 +1604,7 @@ unsigned long CRCInput::convertDigitToKey(const unsigned int digit)
 	return (digit < 10) ? digit_to_key[digit] : RC_nokey;
 }
 
-/*
-*       getUnicodeValue - return unicode value of the key or -1
-*/
+// getUnicodeValue - return unicode value of the key or -1
 #define UNICODE_VALUE_SIZE 58
 static const int unicode_value[UNICODE_VALUE_SIZE] = {-1 , -1 , '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', -1 , -1 ,
 						      'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', -1 , -1 , 'A', 'S',
@@ -1623,9 +1619,7 @@ int CRCInput::getUnicodeValue(const neutrino_msg_t key)
 		return -1;
 }
 
-/*
-*       transforms the rc-key to const char *
-*/
+// transforms the rc-key to const char
 const char * CRCInput::getSpecialKeyName(const unsigned long key)
 {
 	switch(key)
@@ -1837,12 +1831,10 @@ std::string CRCInput::getKeyName(const unsigned long key)
 	}
 }
 
-/*
-* transforms the rc-key to generic - internal use only!
-*/
+// transforms the rc-key to generic - internal use only!
 int CRCInput::translate(unsigned int code, int num)
 {
-	/* common */
+	// common
 	if (code == key_standby) return RC_standby;
 	else if (code == key_spkr) return RC_spkr;
 			
@@ -1863,18 +1855,18 @@ int CRCInput::translate(unsigned int code, int num)
 	else if (code == key_right) return RC_right;
 	else if (code == key_home) return RC_home;
 			
-	/* special */
+	// special
 	else if (code == key_recall) return RC_recall;
 	else if (code == key_info) return RC_info;
 	else if (code == key_bookmark) return RC_bookmark;
 	
-	/* colored */
+	// colored
 	else if (code == key_red) return RC_red;
 	else if (code == key_green) return RC_green;
 	else if (code == key_yellow) return RC_yellow;
 	else if (code == key_blue) return RC_blue;
 	
-	/* alphanumeric */
+	// alphanumeric
 	else if (code == key_1) return RC_1;
 	else if (code == key_2) return RC_2;
 	else if (code == key_3) return RC_3;
@@ -1886,7 +1878,7 @@ int CRCInput::translate(unsigned int code, int num)
 	else if (code == key_9) return RC_9;
 	else if (code == key_0) return RC_0;
 	
-	/* media */
+	// media
 	else if (code == key_video) return RC_video;
 	else if (code == key_music) return RC_music;
 	else if (code == key_picture) return RC_picture;		
@@ -1903,7 +1895,7 @@ int CRCInput::translate(unsigned int code, int num)
 	else if (code == key_prev) return RC_prev;
 	else if (code == key_timeshift) return RC_timeshift;
 	
-	/* dvb */
+	// dvb 
 	else if (code == key_sat) return RC_sat;
 	else if (code == key_favorites) return RC_favorites;
 	else if (code == key_multifeed) return RC_multifeed;
@@ -1917,13 +1909,13 @@ int CRCInput::translate(unsigned int code, int num)
 	
 	//else if (code == key_aspect) return RC_aspect;
 	
-	/* functions */
+	// functions
 	else if (code == key_f1) return RC_f1;
 	else if (code == key_f2) return RC_f2;
 	else if (code == key_f3) return RC_f3;
 	else if (code == key_f4) return RC_f4;
 	
-	/* frontpanel */
+	// frontpanel
 	else if (code == key_vfdpower) return RC_standby;
 	else if (code == key_vfdmenu) return RC_setup;
 	else if (code == key_vfdexit) return RC_home;

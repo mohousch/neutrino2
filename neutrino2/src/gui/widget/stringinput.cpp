@@ -72,7 +72,12 @@ CStringInput::CStringInput(const char * const Head, const char * const Value, in
 
 CStringInput::~CStringInput() 
 {
-	g_RCInput->killTimer(smstimer);
+	if (smstimer)
+	{
+		g_RCInput->killTimer(smstimer);
+		smstimer = 0;
+	}
+	
 	valueString.clear();
 }
 
