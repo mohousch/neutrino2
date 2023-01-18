@@ -372,6 +372,7 @@ struct SNeutrinoSettings
 	std::string epg_dir;
 	//
 	std::vector<std::string> xmltv;
+	int epg_xmltv;
 
 	//filebrowser
 	int filesystem_is_utf8;

@@ -235,4 +235,7 @@ class CChannellogo : public OpenThreads::Thread
 //
 void scaleImage(const std::string &tname, int *p_w, int *p_h);
 
+//
+std::string ReadMarkerValue(std::string strLine, const char* strMarkerName);
+
 #endif

@@ -667,7 +667,7 @@ const keyval EPG_SERVERBOX_TYPE_OPTIONS[EPG_SERVERBOX_TYPE_OPTION_COUNT] =
 #define EPG_SERVERBOX_GUI_OPTION_COUNT 3
 const keyval EPG_SERVERBOX_GUI_OPTIONS[EPG_SERVERBOX_GUI_OPTION_COUNT] =
 {
-	{ SNeutrinoSettings::SATIP_SERVERBOX_GUI_NHD2, "neutrinoHD2" },
+	{ SNeutrinoSettings::SATIP_SERVERBOX_GUI_NHD2, "neutrino2" },
 	{ SNeutrinoSettings::SATIP_SERVERBOX_GUI_NMP, "neutrinoMP" },
 	{ SNeutrinoSettings::SATIP_SERVERBOX_GUI_ENIGMA2, "enigma2" }
 };
@@ -763,6 +763,13 @@ void CEPGSettings::showMenu()
 	// epglang
 	for(int i = 0; i < 3; i++) 
 		miscSettingsEPG->addItem(epglangSelect[i]);
+		
+	// xmltv 
+	miscSettingsEPG->addItem( new CMenuSeparator(LINE) );
+	
+	CXMLTVConfigNotifier* xmltvConfigNotifier = new CXMLTVConfigNotifier;
+	miscSettingsEPG->addItem(new CMenuOptionChooser(_("Use XMLTV EPG"), &g_settings.epg_xmltv, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, xmltvConfigNotifier));
+
 
 	// localtv epg
 	miscSettingsEPG->addItem( new CMenuSeparator(LINE) );
@@ -862,6 +869,17 @@ bool CEPGConfigNotifier::changeNotify(const std::string&, void *)
 
         if (g_settings.epg_read)
 		CNeutrinoApp::getInstance()->readEPG();
+	
+        return true;
+}
+
+// xmltv config notifier
+bool CXMLTVConfigNotifier::changeNotify(const std::string&, void *)
+{
+	dprintf(DEBUG_NORMAL, "CXMLTVConfigNotifier::changeNotify\n");
+
+        if (g_settings.epg_xmltv)
+		CNeutrinoApp::getInstance()->readXMLTV();
 	
         return true;
 }

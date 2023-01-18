@@ -115,6 +115,13 @@ class CEPGConfigNotifier : public CChangeObserver
                 bool changeNotify(const std::string&, void *);
 };
 
+// xmltv config notifier
+class CXMLTVConfigNotifier : public CChangeObserver
+{
+        public:
+                bool changeNotify(const std::string&, void *);
+};
+
 // epg settings
 class CEPGSettings : public CMenuTarget, CChangeObserver
 {

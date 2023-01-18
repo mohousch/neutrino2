@@ -4019,7 +4019,6 @@ static void *insertEventsfromXMLTV(void* data)
 	xmlFreeDoc(index_parser);	
 
 	unlink(answer.c_str());
-	////
 
 	reader_ready = true;
 	pthread_exit(NULL);

@@ -101,7 +101,7 @@ CZapitChannel * CZapitBouquet::getChannelByChannelID(const t_channel_id channel_
 	}
 
 	unsigned int i;
-	for (i = 0; (i<channels->size()) && ((*channels)[i]->getChannelID() != channel_id); i++){};
+	for (i = 0; (i < channels->size()) && ((*channels)[i]->getChannelID() != channel_id); i++){};
 
 	if (i < channels->size())
 		result = (*channels)[i];
@@ -116,8 +116,8 @@ CZapitChannel * CZapitBouquet::getChannelByChannelID(const t_channel_id channel_
 
 void CZapitBouquet::sortBouquet(void)
 {
-	sort(tvChannels.begin(), tvChannels.end(), CmpChannelByChName()); //FIXME:
-	sort(radioChannels.begin(), radioChannels.end(), CmpChannelByChName()); //FIXME:
+	//sort(tvChannels.begin(), tvChannels.end(), CmpChannelByChName()); //FIXME:
+	//sort(radioChannels.begin(), radioChannels.end(), CmpChannelByChName()); //FIXME:
 }
 
 void CZapitBouquet::addService(CZapitChannel *newChannel)
@@ -400,7 +400,6 @@ void CBouquetManager::parseBouquetsXml(const char *fname, bool bUser)
 		t_satellite_position  satellitePosition = 0;
 		freq_id_t freq = 0;
 		
-
 		dprintf(DEBUG_INFO, "CBouquetManager::parseBouquetsXml: %s\n", fname);
 
 		while ((search = xmlGetNextOccurence(search, "Bouquet")) != NULL) 
@@ -423,7 +422,7 @@ void CBouquetManager::parseBouquetsXml(const char *fname, bool bUser)
 				GET_ATTR(channel_node, (char *) "on", SCANF_ORIGINAL_NETWORK_ID_TYPE, original_network_id);
 				GET_ATTR(channel_node, (char *) "t", SCANF_TRANSPORT_STREAM_ID_TYPE, transport_stream_id);
 
-				// grab satelliteposition and freq from channel map
+				// grab satelliteposition / freq from channel map
 				for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
 				{
 					if(it->second.getServiceId() == service_id)
@@ -508,20 +507,7 @@ void CBouquetManager::makeBouquetfromCurrentservices(const _xmlNodePtr root)
 	}
 }
 
-////
-std::string ReadMarkerValue(std::string strLine, const char* strMarkerName)
-{
-	if (strLine.find(strMarkerName) != std::string::npos)
-	{
-		strLine = strLine.substr(strLine.find(strMarkerName));
-		strLine = strLine.substr(strLine.find_first_of('"')+1);
-		strLine = strLine.substr(0,strLine.find_first_of('"'));
-		return strLine;
-	}
-
-	return std::string("");
-}
-////
+//
 void CBouquetManager::parseWebTVBouquet(std::string filename)
 {
 	int cnt = 0;	
@@ -677,11 +663,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 								chan->setEPGUrl(xmltv);
 								
 								//
-								//for (unsigned long i = 0; i < (unsigned long)g_settings.xmltv.size(); i++)
-								{
-									//if(g_settings.xmltv[i] != xmltv)
-										g_settings.xmltv.push_back(xmltv);
-								}
+								g_settings.xmltv.push_back(xmltv);
 							}
 							
 							if (logo != NULL)
@@ -764,11 +746,12 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 				
 				if (!xmltv.empty())
 				{
-					std::string ext =  getFileExt(xmltv);
+					std::string ext = getFileExt(xmltv);
 					
 					if (ext == "gz")
 						changeFileNameExt(xmltv, "");
 					
+					//
 					g_settings.xmltv.push_back(xmltv);
 				}
 			}

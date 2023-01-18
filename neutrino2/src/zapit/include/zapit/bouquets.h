@@ -16,7 +16,7 @@
 #include <inttypes.h>
 
 #include <client/zapitclient.h>
-#include "channel.h"
+#include <channel.h>
 
 #include <libxmltree/xmlinterface.h>
 

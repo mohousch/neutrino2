@@ -2098,3 +2098,18 @@ void scaleImage(const std::string &tname, int *p_w, int *p_h)
 	}
 }
 
+//
+std::string ReadMarkerValue(std::string strLine, const char* strMarkerName)
+{
+	if (strLine.find(strMarkerName) != std::string::npos)
+	{
+		strLine = strLine.substr(strLine.find(strMarkerName));
+		strLine = strLine.substr(strLine.find_first_of('"') + 1);
+		strLine = strLine.substr(0,strLine.find_first_of('"'));
+		return strLine;
+	}
+
+	return std::string("");
+}
+
+

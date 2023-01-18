@@ -855,8 +855,8 @@ int CNeutrinoApp::loadSetup(const char * fname)
         g_settings.epg_old_events       = configfile.getString("epg_old_events", "1");
         g_settings.epg_max_events       = configfile.getString("epg_max_events", "50000");
         g_settings.epg_dir              = configfile.getString("epg_dir", "/media/hdd/epg");
-	g_settings.epg_save = configfile.getBool("epg_save", false);
-	g_settings.epg_read = configfile.getBool("epg_read", true);
+	g_settings.epg_save 		= configfile.getBool("epg_save", false);
+	g_settings.epg_read 		= configfile.getBool("epg_read", true);
 	
 	for(int i = 0; i < 3; i++) 
 	{
@@ -866,6 +866,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	
 	// xml
 	g_settings.xmltv.clear();
+	g_settings.epg_xmltv		= configfile.getBool("epg_xmltv", true);
 	//
 	
 	// channellist 
@@ -1310,6 +1311,10 @@ void CNeutrinoApp::saveSetup(const char * fname)
 		sprintf(cfg_key, "pref_epgs_%d", i);
 		configfile.setString(cfg_key, g_settings.pref_epgs[i]);
 	}
+	
+	//
+	g_settings.xmltv.clear();
+	configfile.setBool("epg_xmltv", g_settings.epg_xmltv);
 
 	//filebrowser
 	configfile.setBool  ("filesystem_is_utf8", g_settings.filesystem_is_utf8);
@@ -2270,6 +2275,10 @@ void CNeutrinoApp::InitZapper()
 	// read saved epg
 	if (g_settings.epg_read)
 		readEPG();
+		
+	// read xmltv epg
+	if (g_settings.epg_xmltv)
+		readXMLTV();
 
 	// first channel
 	firstChannel();
@@ -4330,12 +4339,6 @@ void CNeutrinoApp::readEPG()
 
 		g_Sectionsd->readSIfromXML(g_settings.epg_dir.c_str());
 	}
-	
-	// fromXMLTV
-	for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
-	{
-		g_Sectionsd->readSIfromXMLTV(g_settings.xmltv[i].c_str());
-	}
 }
 
 // save epg
@@ -4365,6 +4368,18 @@ void CNeutrinoApp::saveEpg()
 	}
 	
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::saveEpg: Saving EPG to %s finished\n", g_settings.epg_dir.c_str());
+}
+
+//
+void CNeutrinoApp::readXMLTV()
+{
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::readXMLTV:\n");
+	
+	// fromXMLTV
+	for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
+	{
+		g_Sectionsd->readSIfromXMLTV(g_settings.xmltv[i].c_str());
+	}
 }
 
 // mute

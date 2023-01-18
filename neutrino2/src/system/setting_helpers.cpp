@@ -115,7 +115,7 @@ extern t_channel_id live_channel_id;
 // sectionsd config notifier
 bool CSectionsdConfigNotifier::changeNotify(const std::string&, void *)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsdConfigNotifier::changeNotify\n");
+	dprintf(DEBUG_INFO, "CSectionsdConfigNotifier::changeNotify\n");
 
         CNeutrinoApp::getInstance()->SendSectionsdConfig();
 	
@@ -125,7 +125,7 @@ bool CSectionsdConfigNotifier::changeNotify(const std::string&, void *)
 // color setup notifier
 bool CColorSetupNotifier::changeNotify(const std::string&, void *)
 {
-	dprintf(DEBUG_NORMAL, "CColorSetupNotifier::changeNotify:\n");
+	dprintf(DEBUG_INFO, "CColorSetupNotifier::changeNotify:\n");
 	
 	CFrameBuffer *frameBuffer = CFrameBuffer::getInstance();
 	

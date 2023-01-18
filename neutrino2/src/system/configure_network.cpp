@@ -82,7 +82,7 @@ void CNetworkConfig::readConfig(std::string iname)
 
 void CNetworkConfig::init_vars(void)
 {
-	dprintf(DEBUG_NORMAL, "CNetworkConfig::init_vars\n");
+	dprintf(DEBUG_INFO, "CNetworkConfig::init_vars\n");
 
 	char mask[16];
 	char _broadcast[16];
@@ -172,7 +172,7 @@ bool CNetworkConfig::modified_from_orig(void)
 
 void CNetworkConfig::commitConfig(void)
 {
-	dprintf(DEBUG_NORMAL, "CNetworkConfig::commitConfig\n");
+	dprintf(DEBUG_INFO, "CNetworkConfig::commitConfig\n");
 
 	if (modified_from_orig())
 	{
