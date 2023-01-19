@@ -23,20 +23,20 @@
 #ifndef __zapit_channel_h__
 #define __zapit_channel_h__
 
-/* system */
+// system 
 #include <string>
 #include <inttypes.h>
 #include <cstdlib>
 
 #include <sectionsdclient/sectionsdclient.h>
 
-/* zapit */
-#include "client/zapitclient.h"
-#include "ci.h"
-#include "client/zapittypes.h"
+// zapit 
+#include <client/zapitclient.h>
+#include <ci.h>
+#include <client/zapittypes.h>
 
 
-/* audio map struct */
+// audio map struct
 typedef struct audio_map_set 
 {
         unsigned short apid;
@@ -47,7 +47,7 @@ typedef struct audio_map_set
 	int ttxpage;
 } audio_map_set_t;
 
-/* subtitling support */
+// subtitling support
 class CZapitAbsSub 
 {
  	public:
@@ -63,7 +63,7 @@ class CZapitAbsSub
     		ZapitSubtitleType thisSubType;
 };
 
-class CZapitDVBSub:public CZapitAbsSub 
+class CZapitDVBSub : public CZapitAbsSub 
 {
 	public:
 		unsigned short subtitling_type;
@@ -82,10 +82,10 @@ class CZapitDVBSub:public CZapitAbsSub
 		unsigned int composition_page_id;
 		unsigned int ancillary_page_id;
 
-		CZapitDVBSub(){thisSubType=DVB;};
+		CZapitDVBSub(){thisSubType = DVB;};
 };
 
-class CZapitTTXSub:public CZapitAbsSub
+class CZapitTTXSub : public CZapitAbsSub
 {
 	public:
 		unsigned short teletext_magazine_number;
@@ -103,7 +103,8 @@ class CZapitAudioChannel
 		std::string		description;
 		unsigned char		componentTag;
 		
-		enum ZapitAudioChannelType {
+		enum ZapitAudioChannelType 
+		{
 	                 MPEG,
 	                 AC3,
 	                 AAC,
@@ -146,11 +147,11 @@ class CZapitChannel
 		unsigned char currentSub;
 
 		// read only properties, set by constructor
-		t_service_id			    service_id;
+		t_service_id			service_id;
 		t_transport_stream_id		transport_stream_id;
 		t_original_network_id		original_network_id;
 		t_satellite_position		satellitePosition;
-		freq_id_t			        freq;
+		freq_id_t			freq;
 
 		// read/write properties (write possibility needed by scan)
 		unsigned char serviceType;
@@ -220,7 +221,7 @@ class CZapitChannel
 		transponder_id_t       getTransponderId(void)          const { return CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID(freq, satellitePosition,original_network_id,transport_stream_id); }
 		freq_id_t		getFreqId()			const { return freq; }
 
-		/* get methods - read and write variables */
+		// get methods - read and write variables
 		const std::string&	getName(void)			const { return name; }
 		t_satellite_position	getSatellitePosition(void)	const { return satellitePosition; }
 		unsigned char 		getAudioChannelCount(void)	{ return audioChannels.size(); }
@@ -233,24 +234,24 @@ class CZapitChannel
 		unsigned short		getPreAudioPid(void)		{ return audioPid; }
 		bool			getPidsFlag(void)		{ return pidsFlag; }
 		CCaPmt *		getCaPmt(void)			{ return caPmt; }
-		unsigned char *	getRawPmt(int &len)		{ len = pmtLen; return rawPmt; };
-		unsigned short		getaitPid(void)		{return aitPid;};
+		unsigned char *		getRawPmt(int &len)		{ len = pmtLen; return rawPmt; };
+		unsigned short		getaitPid(void)			{return aitPid;};
 		//
 		std::string		getUrl(void)			{ return url;};
 		std::string		getDescription(void)		{ return description;};
 		std::string		getLogoUrl(void)		{ return logourl;};
-		std::string		getEPGUrl(void)		{ return epgurl;};
+		std::string		getEPGUrl(void)			{ return epgurl;};
 		t_channel_id		getEPGID(void)	 		const { return epgid;};
-		t_channel_id		getLogoID(void)		const {return logoid;};
+		t_channel_id		getLogoID(void)			const {return logoid;};
 		std::string		getEPGIDName(void)		{return epgidname;};
 
 		CZapitAudioChannel * 	getAudioChannel(unsigned char index = 0xFF);
-		unsigned short 	getAudioPid(unsigned char index = 0xFF);
-		unsigned char  	getAudioChannelIndex(void)	{ return currentAudioChannel; }
+		unsigned short 		getAudioPid(unsigned char index = 0xFF);
+		unsigned char  		getAudioChannelIndex(void)	{ return currentAudioChannel; }
 
 		int addAudioChannel(const unsigned short pid, const CZapitAudioChannel::ZapitAudioChannelType audioChannelType, const std::string & description, const unsigned char componentTag);
 
-		/* set methods */
+		// set methods
 		void setServiceType(const unsigned char pserviceType)	{ serviceType = pserviceType; }
 		inline void setName(const std::string pName)            { name = pName; }
 		void setDescription(const std::string pDescr)		{ description = pDescr;};
@@ -265,24 +266,24 @@ class CZapitChannel
 		void setPidsFlag(void)					{ pidsFlag = true; }
 		void setCaPmt(CCaPmt * pCaPmt);
 		void setRawPmt(unsigned char * pmt, int len = 0);
-		void setaitPid(unsigned short aitPID)			{aitPid = aitPID;};
-		void setNumber(unsigned int num)			{number = num;};
+		void setaitPid(unsigned short aitPID)			{ aitPid = aitPID; };
+		void setNumber(unsigned int num)			{ number = num; };
 		//
-		void setLogoUrl(const std::string url)		{ logourl = url;};
-		void setEPGUrl(const std::string url)			{ epgurl = url;};
-		void setEPGID(const t_channel_id id)			{ epgid = id;};
-		void setLogoID(const t_channel_id id)			{logoid = id;};
-		void setEPGIDName(const std::string name)		{epgidname = name;};
+		void setLogoUrl(const std::string url)			{ logourl = url; };
+		void setEPGUrl(const std::string url)			{ epgurl = url; };
+		void setEPGID(const t_channel_id id)			{ epgid = id; };
+		void setLogoID(const t_channel_id id)			{ logoid = id; };
+		void setEPGIDName(const std::string name)		{ epgidname = name; };
 		
 		// cleanup methods
 		void resetPids(void);
 		
 		// subtitling related methods
-		void addTTXSubtitle(const unsigned int pid, const std::string langCode, const unsigned char magazine_number, const unsigned char page_number, const bool impaired=false);
+		void addTTXSubtitle(const unsigned int pid, const std::string langCode, const unsigned char magazine_number, const unsigned char page_number, const bool impaired = false);
 
 		void addDVBSubtitle(const unsigned int pid, const std::string langCode, const unsigned char subtitling_type, const unsigned short composition_page_id, const unsigned short ancillary_page_id);
 
-		unsigned getSubtitleCount() const { return channelSubs.size(); };
+		unsigned getSubtitleCount() 				const { return channelSubs.size(); };
 		CZapitAbsSub * getChannelSub(int index = -1);
 		int getChannelSubIndex(void);
 		void setChannelSub(int subIdx);

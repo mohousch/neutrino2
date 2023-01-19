@@ -142,6 +142,7 @@ int CZapitChannel::addAudioChannel(const unsigned short pid, const CZapitAudioCh
 	tmp->audioChannelType = audioChannelType;
 	tmp->description = description;
 	tmp->componentTag = componentTag;
+	
 	audioChannels.push_back(tmp);
 	
 	return 0;
@@ -167,6 +168,7 @@ void CZapitChannel::resetPids(void)
 
 	privatePid = 0;
 	pidsFlag = false;
+	
         std::vector<CZapitAbsSub *>::iterator subI;
 
         for (subI = channelSubs.begin(); subI != channelSubs.end(); subI++)
@@ -203,6 +205,7 @@ bool CZapitChannel::isHD()
 		{
 			char * temp = (char *) name.c_str();
 			int len = name.size();
+			
 			if((len > 1) && temp[len - 2] == 'H' && temp[len - 1] == 'D') 
 			{
 				return true;
@@ -269,11 +272,12 @@ void CZapitChannel::addTTXSubtitle(const unsigned int pid, const std::string lan
 	{
 		if ((*subI)->thisSubType == CZapitAbsSub::TTX)
 		{
-			tmpSub=reinterpret_cast<CZapitTTXSub*>(*subI);
+			tmpSub = reinterpret_cast<CZapitTTXSub*>(*subI);
+			
 			if (tmpSub->ISO639_language_code == langCode) 
 			{
 				oldSub = tmpSub;
-				if (tmpSub->pId==pid && tmpSub->teletext_magazine_number==mag_nr && tmpSub->teletext_page_number==page_number && tmpSub->hearingImpaired==impaired) 
+				if (tmpSub->pId == pid && tmpSub->teletext_magazine_number == mag_nr && tmpSub->teletext_page_number == page_number && tmpSub->hearingImpaired == impaired) 
 				{
 					return;
 				}
@@ -284,7 +288,7 @@ void CZapitChannel::addTTXSubtitle(const unsigned int pid, const std::string lan
 
 	if (oldSub) 
 	{
-		tmpSub=oldSub;
+		tmpSub = oldSub;
 	} 
 	else 
 	{
@@ -312,10 +316,10 @@ void CZapitChannel::addDVBSubtitle(const unsigned int pid, const std::string lan
 		if ((*subI)->thisSubType == CZapitAbsSub::DVB)
 		{
 			tmpSub=reinterpret_cast<CZapitDVBSub*>(*subI);
-			if (tmpSub->ISO639_language_code==langCode) 
+			if (tmpSub->ISO639_language_code == langCode) 
 			{
 				oldSub = tmpSub;
-				if (tmpSub->pId==pid && tmpSub->subtitling_type == subtitling_type && tmpSub->composition_page_id == composition_page_id && tmpSub->ancillary_page_id == ancillary_page_id) 
+				if (tmpSub->pId == pid && tmpSub->subtitling_type == subtitling_type && tmpSub->composition_page_id == composition_page_id && tmpSub->ancillary_page_id == ancillary_page_id) 
 				{
 
 					return;
@@ -366,7 +370,7 @@ void CZapitChannel::setChannelSub(int subIdx)
 {
 	if (subIdx < (int)channelSubs.size())
 	{
-		currentSub=subIdx;
+		currentSub = subIdx;
 	}
 }
 
@@ -391,3 +395,4 @@ void CZapitChannel::setRawPmt(unsigned char * pmt, int len)
 	rawPmt = pmt;
 	pmtLen = len;
 }
+
