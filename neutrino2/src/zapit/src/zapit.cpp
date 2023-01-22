@@ -1371,7 +1371,7 @@ int zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate = 0)
 	// find channel to zap
 	if( (newchannel = find_channel_tozap(channel_id, in_nvod)) == NULL ) 
 	{
-		dprintf(DEBUG_INFO, "[zapit] zapit: channel_id " PRINTF_CHANNEL_ID_TYPE " not found\n", channel_id);
+		dprintf(DEBUG_INFO, "[zapit] zapit: channel_id:%llx not found\n", channel_id);
 		return -1;
 	}
 	
@@ -3030,28 +3030,38 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 		case CZapitMessages::CMD_SETSUBSERVICES: 
 		{
 			CZapitClient::commandAddSubServices msgAddSubService;
+			#if 0
+			t_satellite_position  satellitePosition = 0;
+			freq_id_t freq = 0;
+
+			for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
+			{
+				if(it->second.getServiceId() == msgAddSubService.service_id)
+				{
+					satellitePosition = it->second.getSatellitePosition();
+					freq = it->second.getFreqId();
+				}
+			}
 	
 			while (CBasicServer::receive_data(connfd, &msgAddSubService, sizeof(msgAddSubService))) 
 			{
-				dprintf(DEBUG_DEBUG, "[zapit] NVOD insert %llx\n", CREATE_CHANNEL_ID(msgAddSubService.service_id, msgAddSubService.original_network_id, msgAddSubService.transport_stream_id));
+				//dprintf(DEBUG_DEBUG, "[zapit] NVOD insert %llx\n", CREATE_CHANNEL_ID(msgAddSubService.service_id, msgAddSubService.original_network_id, msgAddSubService.transport_stream_id));
 				
 				nvodchannels.insert (
 				std::pair <t_channel_id, CZapitChannel> (
-					CREATE_CHANNEL_ID(msgAddSubService.service_id, msgAddSubService.original_network_id, msgAddSubService.transport_stream_id),
+					CREATE_CHANNEL_ID64(msgAddSubService.service_id, msgAddSubService.original_network_id, msgAddSubService.transport_stream_id, satellitePosition, freq),
 					CZapitChannel (
 					"NVOD",
-					//service_id,
 					msgAddSubService.service_id,
 					msgAddSubService.transport_stream_id,
-					//original_network_id,
 					msgAddSubService.original_network_id,
-					1,
-					live_channel ? live_channel->getSatellitePosition() : 0,
-					0) //FIXME: global for more than one tuner???
+					ST_DIGITAL_TELEVISION_SERVICE,
+					/*live_channel ? live_channel->getSatellitePosition() : 0,*/satellitePosition,
+					freq) //FIXME: global for more than one tuner???
 				)
 				);
 			}
-	
+			#endif
 			current_is_nvod = true;
 			break;
 		}

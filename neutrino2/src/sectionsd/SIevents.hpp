@@ -360,6 +360,8 @@ class SIevent {
 		t_service_id          service_id;
 		t_original_network_id original_network_id;
 		t_transport_stream_id transport_stream_id;
+		t_satellite_position  satellitePosition;
+		freq_id_t freq;
 		
 		SIevent(const struct eit_event *);
 		// Std-Copy
@@ -400,11 +402,11 @@ class SIevent {
 		//    unsigned dauer; // in Sekunden, 0 -> time shifted (cinedoms)
 		
 		t_channel_id get_channel_id(void) const {
-			return CREATE_CHANNEL_ID(service_id, original_network_id, transport_stream_id);
+			return create_channel_id64(service_id, original_network_id, transport_stream_id, 0, 0);
 		}
 
 		event_id_t uniqueKey(void) const {
-			return CREATE_EVENT_ID(CREATE_CHANNEL_ID, eventID);
+			return CREATE_EVENT_ID(CREATE_CHANNEL_ID64, eventID);
 		}
 		
 		int runningStatus(void) const {

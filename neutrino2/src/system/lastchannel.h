@@ -23,8 +23,9 @@ nicht gespeichert werden.
 #ifndef SEEN_LastChannel
 #define SEEN_LastChannel
 
-#include <client/zapitclient.h> /*zapit*/
+#include <client/zapitclient.h>
 #include <list>
+
 
 class CLastChannel
 {
@@ -44,14 +45,14 @@ class CLastChannel
 		bool shallRemoveEqualChannel;
 
 	public:
-		CLastChannel  (void);
-		void clear   (void);
-		void store   (int channelnr, t_channel_id channel_id, bool forceStoreToLastChannels = false);
-		t_channel_id getlast (int n);
-		unsigned int size () const;
-		void clear_storedelay (void);
-		void set_store_difftime (int secs);
-		int  get_store_difftime (void) const;
+		CLastChannel(void);
+		void clear(void);
+		void store(int channelnr, t_channel_id channel_id, bool forceStoreToLastChannels = false);
+		t_channel_id getlast(int n);
+		unsigned int size() const;
+		void clear_storedelay(void);
+		void set_store_difftime(int secs);
+		int  get_store_difftime(void) const;
 };
 
 #endif

@@ -464,7 +464,7 @@ void scan_provider(_xmlNodePtr search, t_satellite_position satellitePosition, u
 						break;
 						
 					default:
-						dprintf(DEBUG_INFO, "[scan] scan_provider: setting service_type of channel_id " PRINTF_CHANNEL_ID_TYPE " %s from %02x to %02x", stI->first, scI->second.getName().c_str(), scI->second.getServiceType(), stI->second);
+						dprintf(DEBUG_INFO, "[scan] scan_provider: setting service_type of channel_id:%llx %s from %02x to %02x", stI->first, scI->second.getName().c_str(), scI->second.getServiceType(), stI->second);
 						
 						scI->second.setServiceType(stI->second);
 						break;

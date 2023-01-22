@@ -1519,7 +1519,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	uint32_t i;
 	i = 1;
 
-	int tvi = 1, ri = 1, hi = 0, webtvi = 1;
+	int tvi = 1, ri = 1, hi = 0, webtvi = 0;
 	
 	// hd bouquet
 	CBouquet * hdBouquet;
@@ -1552,7 +1552,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	if(g_settings.make_hd_list)
 		hdBouquet->channelList->SortSat();
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d TV (%d is HD) and %d RADIO and %d WEBTV channels\n", tvi - 1, hi, ri - 1, webtvi - 1);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d TV (%d is HD) and %d RADIO and %d WEBTV channels\n", tvi - 1, hi, ri - 1, webtvi);
 
 	CBouquet * tmp;
 
@@ -1912,7 +1912,7 @@ int startOpenGLplayback()
 	eventinfo.channel_id = live_channel_id;
 	CEPGData epgData;
 	
-	if (sectionsd_getActualEPGServiceKey(live_channel_id&0xFFFFFFFFFFFFULL, &epgData ))
+	if (sectionsd_getActualEPGServiceKey(live_channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
 	{
 		eventinfo.epgID = epgData.eventID;
 		eventinfo.epg_starttime = epgData.epg_times.startzeit;
@@ -1994,7 +1994,7 @@ int startAutoRecord(bool addTimer)
 	eventinfo.channel_id = live_channel_id;
 	CEPGData epgData;
 	
-	if (sectionsd_getActualEPGServiceKey(live_channel_id&0xFFFFFFFFFFFFULL, &epgData ))
+	if (sectionsd_getActualEPGServiceKey(live_channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
 	{
 		eventinfo.epgID = epgData.eventID;
 		eventinfo.epg_starttime = epgData.epg_times.startzeit;
@@ -2092,7 +2092,7 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 
 			CEPGData epgData;
 
-			if (sectionsd_getActualEPGServiceKey(eventinfo.channel_id&0xFFFFFFFFFFFFULL, &epgData ))
+			if (sectionsd_getActualEPGServiceKey(eventinfo.channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
 			{
 				eventinfo.epgID = epgData.eventID;
 				eventinfo.epg_starttime = epgData.epg_times.startzeit;
@@ -3048,7 +3048,7 @@ void CNeutrinoApp::RealRun(void)
 						CEPGData epgData;
 						event_id_t epgid = 0;
 			
-						if(sectionsd_getActualEPGServiceKey(live_channel_id&0xFFFFFFFFFFFFULL, &epgData))
+						if(sectionsd_getActualEPGServiceKey(live_channel_id & 0xFFFFFFFFFFFFULL, &epgData))
 							epgid = epgData.eventID;
 
 						if(epgid != 0) 

@@ -46,20 +46,13 @@ typedef uint64_t t_channel_id;
 typedef uint64_t transponder_id_t;
 typedef uint16_t freq_id_t;
 
-#define SCANF_SERVICE_ID_TYPE "%hx"
-#define SCANF_ORIGINAL_NETWORK_ID_TYPE "%hx"
-#define SCANF_TRANSPORT_STREAM_ID_TYPE "%hx"
-#define SCANF_SATELLITE_POSITION_TYPE "%hd"
-#define PRINTF_CHANNEL_ID_TYPE "%llx"
-#define SCANF_CHANNEL_ID_TYPE "%llx"
-#define PRINTF_TRANSPONDER_ID_TYPE "%12llx"
-
 // channel
 extern "C" {
 #include <libmd5sum/md5.h>
 }
 #include <string.h>
 
+/*
 static inline t_channel_id create_channel_id(t_service_id service_id, t_original_network_id original_network_id, t_transport_stream_id transport_stream_id, const char *url = NULL)
 {
 	if (url) 
@@ -75,6 +68,7 @@ static inline t_channel_id create_channel_id(t_service_id service_id, t_original
 	return (((t_channel_id)transport_stream_id) << 32) | (((t_channel_id)original_network_id) << 16) | (t_channel_id)service_id;
 }
 #define CREATE_CHANNEL_ID create_channel_id
+*/
 
 static inline t_channel_id create_channel_id64(t_service_id service_id, t_original_network_id original_network_id, t_transport_stream_id transport_stream_id, t_satellite_position satellitePosition, freq_id_t freq, const char *url = NULL) 
 {

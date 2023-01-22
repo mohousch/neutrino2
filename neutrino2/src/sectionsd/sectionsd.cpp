@@ -471,11 +471,11 @@ static void addEPGFilter(t_original_network_id onid, t_transport_stream_id tsid,
 static void addBlacklist(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid)
 {
 	t_channel_id channel_id =
-		CREATE_CHANNEL_ID(sid, onid, tsid);
+		create_channel_id64(sid, onid, tsid, 0, 0);
 	t_channel_id mask =
-		CREATE_CHANNEL_ID(
+		create_channel_id64(
 			(sid ? 0xFFFF : 0), (onid ? 0xFFFF : 0), (tsid ? 0xFFFF : 0)
-		);
+		, 0, 0);
 	if (!checkBlacklist(channel_id))
 	{
 		dprintf(DEBUG_DEBUG, "[sectionsd] Add Channel Blacklist for channel 0x%012llx, mask 0x%012llx\n", channel_id, mask);
@@ -491,12 +491,12 @@ static void addBlacklist(t_original_network_id onid, t_transport_stream_id tsid,
 static void addNoDVBTimelist(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid)
 {
 	t_channel_id channel_id =
-		CREATE_CHANNEL_ID(sid, onid, tsid);
+		create_channel_id64(sid, onid, tsid, 0, 0);
 
 	t_channel_id mask =
-		CREATE_CHANNEL_ID(
+		create_channel_id64(
 			(sid ? 0xFFFF : 0), (onid ? 0xFFFF : 0), (tsid ? 0xFFFF : 0)
-		);
+		, 0, 0);
 
 	if (!checkNoDVBTimelist(channel_id))
 	{
@@ -1477,7 +1477,7 @@ static void commandDumpAllServices(int connfd, char* /*data*/, const unsigned /*
 	for (MySIservicesOrderUniqueKey::iterator s = mySIservicesOrderUniqueKey.begin(); s != mySIservicesOrderUniqueKey.end(); ++s)
 	{
 		count += 1 + snprintf(daten, MAX_SIZE_DATEN,
-				      PRINTF_CHANNEL_ID_TYPE
+				      "%llx"
 				      " %hu %hhu %d %d %d %d %u ",
 				      s->first,
 				      s->second->service_id, s->second->serviceTyp,
@@ -1539,7 +1539,7 @@ static void sendAllEvents(int connfd, t_channel_id serviceUniqueKey, bool oldFor
 		goto out;
 	}
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] sendAllEvents for " PRINTF_CHANNEL_ID_TYPE "\n", serviceUniqueKey);
+	dprintf(DEBUG_DEBUG, "[sectionsd] sendAllEvents for:%llx\n", serviceUniqueKey);
 	
 	*evtList = 0;
 	liste = evtList;
@@ -1692,7 +1692,7 @@ static void commandAllEventsChannelID(int connfd, char *data, const unsigned dat
 
 	t_channel_id serviceUniqueKey = *(t_channel_id *)data;
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of all events for " PRINTF_CHANNEL_ID_TYPE "\n", serviceUniqueKey);
+	dprintf(DEBUG_DEBUG, "[sectionsd] Request of all events for:%llx\n", serviceUniqueKey);
 
 	sendAllEvents(connfd, serviceUniqueKey, false);
 
@@ -1956,7 +1956,7 @@ static void commandserviceChanged(int connfd, char *data, const unsigned dataLen
 
 	uniqueServiceKey = &(((sectionsd::commandSetServiceChanged *)data)->channel_id);
 
-	dprintf(DEBUG_NORMAL, "[sectionsd] commandserviceChanged: Service changed to " PRINTF_CHANNEL_ID_TYPE "\n", *uniqueServiceKey);
+	dprintf(DEBUG_NORMAL, "[sectionsd] commandserviceChanged: Service changed to:%llx\n", *uniqueServiceKey & 0xFFFFFFFFFFFFULL);
 
 	messaging_last_requested = time_monotonic();
 
@@ -2067,7 +2067,7 @@ static void commandCurrentNextInfoChannelID(int connfd, char *data, const unsign
 	if (dataLength != sizeof(t_channel_id))
 		goto out;
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of current/next information for " PRINTF_CHANNEL_ID_TYPE "\n", *uniqueServiceKey);
+	dprintf(DEBUG_DEBUG, "[sectionsd] Request of current/next information for:%llx\n", *uniqueServiceKey);
 
 	readLockEvents();
 	/* if the currently running program is requested... */
@@ -2477,7 +2477,7 @@ static void commandActualEPGchannelID(int connfd, char *data, const unsigned dat
 	SIevent evt;
 	SItime zeit(0, 0);
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] [commandActualEPGchannelID] Request of current EPG for " PRINTF_CHANNEL_ID_TYPE "\n", * uniqueServiceKey);
+	dprintf(DEBUG_DEBUG, "[sectionsd] [commandActualEPGchannelID] Request of current EPG for:%llx\n", * uniqueServiceKey);
 
 	readLockEvents();
 	if (*uniqueServiceKey == messaging_current_servicekey) 
@@ -2969,7 +2969,7 @@ static void commandTimesNVODservice(int connfd, char *data, const unsigned dataL
 
 	uniqueServiceKey = *(t_channel_id *)data;
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of NVOD times for " PRINTF_CHANNEL_ID_TYPE "\n", uniqueServiceKey);
+	dprintf(DEBUG_DEBUG, "[sectionsd] Request of NVOD times for:%llx\n", uniqueServiceKey);
 
 	readLockServices();
 	readLockEvents();
@@ -4702,7 +4702,7 @@ int eit_set_update_filter(int *fd)
 
 	unsigned char cur_eit = dmxCN.get_eit_version();
 	dprintf(DEBUG_DEBUG, "[sectionsd] eit_set_update_filter, servicekey = 0x"
-		PRINTF_CHANNEL_ID_TYPE
+		"%llx"
 		", current version 0x%x got events %d\n",
 		messaging_current_servicekey, cur_eit, messaging_have_CN);
 
@@ -4857,7 +4857,7 @@ static void *fseitThread(void *)
 				{
 					timeoutsDMX = 0;
 					dprintf(DEBUG_DEBUG, "[sectionsd] [freesatEitThread] timeoutsDMX for 0x"
-						PRINTF_CHANNEL_ID_TYPE
+						"%llx"
 						" reset to 0 (not broadcast)\n", messaging_current_servicekey );
 
 					dprintf(DEBUG_DEBUG, "[sectionsd] New Filterindex: %d (ges. %d)\n", dmxFSEIT.filter_index + 1, (signed) dmxFSEIT.filters.size() );
@@ -5115,7 +5115,7 @@ static void *viasateitThread(void *)
 				if ((dmxVIASAT.filter_index == 2 && !si->second->eitPresentFollowingFlag()) || ((dmxVIASAT.filter_index == 1 || dmxVIASAT.filter_index == 3) && !si->second->eitScheduleFlag()))
 				{
 					timeoutsDMX = 0;
-					dprintf(DEBUG_DEBUG, "[sectionsd] [freesatEitThread] timeoutsDMX for 0x" PRINTF_CHANNEL_ID_TYPE " reset to 0 (not broadcast)\n", messaging_current_servicekey );
+					dprintf(DEBUG_DEBUG, "[sectionsd] [freesatEitThread] timeoutsDMX for 0x" "%llx" " reset to 0 (not broadcast)\n", messaging_current_servicekey );
 
 					dprintf(DEBUG_DEBUG, "[sectionsd] New Filterindex: %d (ges. %d)\n", dmxVIASAT.filter_index + 1, (signed) dmxVIASAT.filters.size() );
 					dmxVIASAT.change(dmxVIASAT.filter_index + 1);
@@ -5397,7 +5397,7 @@ static void *eitThread(void *)
 				{
 					timeoutsDMX = 0;
 					dprintf(DEBUG_DEBUG, "[sectionsd] [eitThread] timeoutsDMX for 0x"
-						PRINTF_CHANNEL_ID_TYPE
+						"%llx"
 						" reset to 0 (not broadcast)\n", messaging_current_servicekey );
 
 					dprintf(DEBUG_DEBUG, "[sectionsd] New Filterindex: %d (ges. %d)\n", dmxEIT.filter_index + 1, (signed) dmxEIT.filters.size() );
@@ -6234,9 +6234,9 @@ void sectionsd_main_thread(void */*data*/)
 /* was: commandAllEventsChannelID sendAllEvents */
 void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "")
 {
-	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getEventsServiceKey:sendAllEvents for " PRINTF_CHANNEL_ID_TYPE "\n", serviceUniqueKey&0xFFFFFFFFFFFFULL);
+	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getEventsServiceKey:sendAllEvents for:%llx\n", serviceUniqueKey);
 
-	if ((serviceUniqueKey& 0xFFFFFFFFFFFFULL) != 0) 
+	if (serviceUniqueKey != 0) 
 	{ 
 		// service Found
 		readLockEvents();
@@ -6247,7 +6247,7 @@ void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventL
 
 		for (MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey::iterator e = mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.begin(); e != mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.end(); ++e)
 		{
-			if ((*e)->get_channel_id() == (serviceUniqueKey&0xFFFFFFFFFFFFULL)) 
+			if ((*e)->get_channel_id() == (serviceUniqueKey & 0xFFFFFFFFFFFFULL)) 
 			{ 
 				serviceIDfound = 1;
 
@@ -6613,7 +6613,7 @@ bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGD
 	SIevent evt;
 	SItime zeit(0, 0);
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] [commandActualEPGchannelID] Request of current EPG for " PRINTF_CHANNEL_ID_TYPE "\n", uniqueServiceKey);
+	dprintf(DEBUG_DEBUG, "[sectionsd] [commandActualEPGchannelID] Request of current EPG for:%llx\n", uniqueServiceKey);
 
 	readLockEvents();
 	if (uniqueServiceKey == messaging_current_servicekey) 
@@ -6822,7 +6822,7 @@ bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSecti
 bool sectionsd_getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSectionsdClient::NVODTimesList& nvod_list)
 {
 	bool ret = false;
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of NVOD times for " PRINTF_CHANNEL_ID_TYPE "\n", uniqueServiceKey);
+	dprintf(DEBUG_DEBUG, "[sectionsd] Request of NVOD times for:%llx\n", uniqueServiceKey);
 
 	nvod_list.clear();
 

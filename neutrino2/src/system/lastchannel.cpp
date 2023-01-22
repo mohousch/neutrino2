@@ -18,11 +18,11 @@ nicht gespeichert werden.
 #include <sys/time.h>
 #include <unistd.h>
 
-#include "lastchannel.h"
+#include <lastchannel.h>
 
 // //  -- Init Class  Contructor //
 
-CLastChannel::CLastChannel (void)
+CLastChannel::CLastChannel(void)
 : secs_diff_before_store(3)
 , maxSize(11)
 , shallRemoveEqualChannel(true)
@@ -30,7 +30,7 @@ CLastChannel::CLastChannel (void)
 }
 
 // // -- Clear the last channel buffer //
-void CLastChannel::clear (void)
+void CLastChannel::clear(void)
 {
 	this->lastChannels.clear();
 }
@@ -38,7 +38,7 @@ void CLastChannel::clear (void)
 // -- Store a channelnumber in Buffer
 // -- Store only if channel != last channel...
 // -- and time store delay is large enough
-void CLastChannel::store (int channel, t_channel_id channel_id, bool forceStoreToLastChannels)
+void CLastChannel::store(int channel, t_channel_id channel_id, bool forceStoreToLastChannels)
 {
 	struct timeval  tv;
 
@@ -89,7 +89,7 @@ void CLastChannel::store (int channel, t_channel_id channel_id, bool forceStoreT
 	}
 }
 
-unsigned int CLastChannel::size () const
+unsigned int CLastChannel::size() const
 {
 	return this->lastChannels.size();
 }
@@ -100,7 +100,7 @@ unsigned int CLastChannel::size () const
 // -- means: store next channel with "store" always
 //
 
-void CLastChannel::clear_storedelay (void)
+void CLastChannel::clear_storedelay(void)
 {
 	if (!this->lastChannels.empty())
 	{
@@ -114,7 +114,7 @@ void CLastChannel::clear_storedelay (void)
 // --       0 = current channel
 // -- Return:  channelnumber or <0  (end of list)
 
-t_channel_id CLastChannel::getlast (int n)
+t_channel_id CLastChannel::getlast(int n)
 {
 	if ( (n < int(this->lastChannels.size())) &&(n > -1) &&(!this->lastChannels.empty()) )
 	{
@@ -131,12 +131,12 @@ t_channel_id CLastChannel::getlast (int n)
 // -- set delaytime in secs, for accepting a new value
 // -- get returns the value
 //
-void CLastChannel::set_store_difftime (int secs)
+void CLastChannel::set_store_difftime(int secs)
 {
 	secs_diff_before_store = secs;
 }
 
-int CLastChannel::get_store_difftime (void) const
+int CLastChannel::get_store_difftime(void) const
 {
 	return    secs_diff_before_store;
 }

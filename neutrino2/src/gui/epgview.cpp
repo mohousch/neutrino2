@@ -520,7 +520,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	{
 		evtlist.clear();
 		
-		sectionsd_getEventsServiceKey(channel_id&0xFFFFFFFFFFFFULL, evtlist);
+		sectionsd_getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL, evtlist);
 		
 		// Houdini added for Private Premiere EPG start sorted by start date/time 2005-08-15
   		sort(evtlist.begin(), evtlist.end(), sortByDateTime);
@@ -770,7 +770,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 			switch ( msg )
 			{					
 				case NeutrinoMessages::EVT_CURRENTNEXT_EPG:
-					if (((*(t_channel_id *) data) == (channel_id & 0xFFFFFFFFFFFFULL))) 
+					if (((*(t_channel_id *) data) == (channel_id /*& 0xFFFFFFFFFFFFULL*/))) 
 					{
 						show(channel_id);
 					}
@@ -934,7 +934,7 @@ void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* st
 	if ( id != 0 )
 		res = sectionsd_getEPGid(id, *startzeit, &epgData);
 	else
-		res = sectionsd_getActualEPGServiceKey(channel_id&0xFFFFFFFFFFFFULL, &epgData);
+		res = sectionsd_getActualEPGServiceKey(channel_id & 0xFFFFFFFFFFFFULL, &epgData);
 
 	if ( res )
 	{

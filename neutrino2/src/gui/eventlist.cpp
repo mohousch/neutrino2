@@ -141,7 +141,7 @@ EventList::~EventList()
 void EventList::readEvents(const t_channel_id channel_id)
 {
 	evtlist.clear();
-	sectionsd_getEventsServiceKey(channel_id &0xFFFFFFFFFFFFULL, evtlist);
+	sectionsd_getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL, evtlist);
 	time_t azeit = time(NULL);
 
 	CChannelEventList::iterator e;
@@ -151,7 +151,7 @@ void EventList::readEvents(const t_channel_id channel_id)
 		CEPGData epgData;
 		
 		// todo: what if there are more than one events in the Portal
-		if (sectionsd_getActualEPGServiceKey(channel_id&0xFFFFFFFFFFFFULL, &epgData))
+		if (sectionsd_getActualEPGServiceKey(channel_id & 0xFFFFFFFFFFFFULL, &epgData))
 		{
 			CSectionsdClient::LinkageDescriptorList	linkedServices;
 
@@ -164,16 +164,18 @@ void EventList::readEvents(const t_channel_id channel_id)
 				
 					for (unsigned int i = 0; i < linkedServices.size(); i++)
 					{
-						channel_id2 = CREATE_CHANNEL_ID(
+						channel_id2 = create_channel_id64(
 								linkedServices[i].serviceId,
 								linkedServices[i].originalNetworkId,
-								linkedServices[i].transportStreamId);
+								linkedServices[i].transportStreamId,
+								0,
+								0);
 							
 						// do not add parent events
 						if (channel_id != channel_id2) 
 						{
 							evtlist2.clear();
-							sectionsd_getEventsServiceKey(channel_id2 &0xFFFFFFFFFFFFULL, evtlist2);
+							sectionsd_getEventsServiceKey(channel_id2 & 0xFFFFFFFFFFFFULL, evtlist2);
 
 							for (unsigned int loop = 0 ; loop < evtlist2.size(); loop++ )
 							{
@@ -797,7 +799,7 @@ int EventList::findEvents(void)
 				{
 					channel_id = bouquetList->Bouquets[bouquet]->channelList->getChannelFromIndex(channel)->channel_id;
 					
-					sectionsd_getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL,evtlist, m_search_epg_item, m_search_keyword);
+					sectionsd_getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL, evtlist, m_search_epg_item, m_search_keyword);
 				}
 			}
 			box.hide();

@@ -199,7 +199,7 @@ void CNeutrinoAPI::ZapTo(const char * const target)
 	t_channel_id channel_id;
 
 	sscanf(target,
-		SCANF_CHANNEL_ID_TYPE,
+		"%llx",
 		&channel_id);
 
 	ZapToChannelId(channel_id);
@@ -246,7 +246,7 @@ void CNeutrinoAPI::ZapToSubService(const char * const target)
 	t_channel_id channel_id;
 
 	sscanf(target,
-		SCANF_CHANNEL_ID_TYPE,
+		"%llx",
 		&channel_id);
 		
 // opengl liveplayback
@@ -556,7 +556,7 @@ std::string CNeutrinoAPI::getCryptInfoAsString(void)
 
 std::string CNeutrinoAPI::getLogoFile(std::string _logoURL, t_channel_id channelId) 
 {
-	std::string channelIdAsString = string_printf( PRINTF_CHANNEL_ID_TYPE, channelId & 0xFFFFFFFFFFFFULL);
+	std::string channelIdAsString = string_printf("%llx", channelId & 0xFFFFFFFFFFFFULL);
 	std::string channelName = GetServiceName(channelId);
 	//replace(channelName, " ", "_");
 	_logoURL+="/";

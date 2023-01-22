@@ -106,6 +106,7 @@ bool CEventServer::sendEvent2Client(const unsigned int eventID, const initiators
 	head.eventID = eventID;
 	head.initiatorID = initiatorID;
 	head.dataSize = eventbodysize;
+	
 	write(sock_fd, &head, sizeof(head));
 
 	if(eventbodysize != 0)
@@ -117,3 +118,4 @@ bool CEventServer::sendEvent2Client(const unsigned int eventID, const initiators
 	
 	return true;
 }
+

@@ -265,7 +265,7 @@ bool CVCRControl::CVCRDevice::Stop()
 
 bool CVCRControl::CVCRDevice::Record(const t_channel_id channel_id, int mode, const event_id_t epgid, const std::string& epgTitle, unsigned char apids, const time_t epg_time)
 {
-	dprintf(DEBUG_NORMAL, "[CVCRControl] Record channel_id: " PRINTF_CHANNEL_ID_TYPE " epg: %llx, apids %x mode\n", channel_id, epgid, apids);
+	dprintf(DEBUG_NORMAL, "[CVCRControl] Record channel_id:%llx epg: %llx, apids %x mode\n", channel_id, epgid, apids);
 	
 	// leave menu (if in any)
 	g_RCInput->postMsg(RC_timeout, 0);
@@ -485,7 +485,7 @@ std::string CVCRControl::CFileAndServerDevice::getCommandString(const CVCRComman
 	
 	extMessage += "</epgtitle>\n\t\t<id>";
 	
-	sprintf(tmp, PRINTF_CHANNEL_ID_TYPE, channel_id);
+	sprintf(tmp, "%llx", channel_id);
 	extMessage += tmp;
 	
 	extMessage += "</id>\n\t\t<info1>";

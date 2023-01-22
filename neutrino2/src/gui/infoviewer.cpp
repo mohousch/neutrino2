@@ -540,7 +540,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _Channel, con
 		if ((channel_id != _new_channel_id) || (evtlist.empty())) 
 		{
 			evtlist.clear();
-			sectionsd_getEventsServiceKey(_new_channel_id&0xFFFFFFFFFFFFULL, evtlist);
+			sectionsd_getEventsServiceKey(_new_channel_id & 0xFFFFFFFFFFFFULL, evtlist);
 			
 			if (!evtlist.empty())
 				sort(evtlist.begin(),evtlist.end(), sortByDateTime);
@@ -722,9 +722,9 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _Channel, con
 
 void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EPGPos)
 {
-	dprintf(DEBUG_INFO, "CInfoViewer::getCurrentNextEPG:\n");
+	dprintf(DEBUG_NORMAL, "CInfoViewer::getCurrentNextEPG:%llx\n", ChannelID);
 	
-	sectionsd_getCurrentNextServiceKey(ChannelID&0xFFFFFFFFFFFFULL, info_CurrentNext);
+	sectionsd_getCurrentNextServiceKey(ChannelID & 0xFFFFFFFFFFFFULL, info_CurrentNext);
 	
 	if (!evtlist.empty()) 
 	{
@@ -1245,7 +1245,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 
  	if ((msg == NeutrinoMessages::EVT_CURRENTNEXT_EPG) || (msg == NeutrinoMessages::EVT_NEXTPROGRAM)) 
 	{
-	  	getEPG(*(t_channel_id *)data, info_CurrentNext);
+	  	getEPG(*(t_channel_id *)data & 0xFFFFFFFFFFFFULL, info_CurrentNext);
 	  	
 	  	if ( is_visible )
 			show_Data(true);
@@ -1462,7 +1462,7 @@ void CInfoViewer::showButton_SubServices()
 
 void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsdClient::CurrentNextInfo &info)
 {
-	dprintf(DEBUG_INFO, "CInfoViewer::getEPG: channel_id:0x%llx\n", for_channel_id);
+	dprintf(DEBUG_NORMAL, "CInfoViewer::getEPG: channel_id:%llx\n", for_channel_id);
 
 	// to clear the oldinfo for channels without epg, call getEPG() with for_channel_id = 0
 	if (for_channel_id == 0)

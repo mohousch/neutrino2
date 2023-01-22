@@ -219,7 +219,7 @@ void ParseChannels(_xmlNodePtr node, const t_transport_stream_id transport_strea
 		// insert channels
 		pair<map<t_channel_id, CZapitChannel>::iterator, bool> ret;
 
-		ret = allchans.insert (std::pair <t_channel_id, CZapitChannel> (chid, CZapitChannel( name, 
+		ret = allchans.insert(std::pair <t_channel_id, CZapitChannel> (chid, CZapitChannel( name, 
 												     service_id, 
 												     transport_stream_id,
 												     original_network_id, 

@@ -89,5 +89,4 @@ class CEventServer
 		bool sendEvent2Client(const unsigned int eventID, const initiators initiatorID, const eventClient* ClientData, const void* eventbody = NULL, const unsigned int eventbodysize = 0);
 };
 
-
 #endif

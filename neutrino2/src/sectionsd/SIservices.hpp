@@ -105,7 +105,7 @@ public:
 		}
 
 	t_channel_id uniqueKey(void) const {
-		return CREATE_CHANNEL_ID(service_id, original_network_id, transport_stream_id);
+		return create_channel_id64(service_id, original_network_id, transport_stream_id, 0, 0);
 	}
 };
 
@@ -170,7 +170,7 @@ public:
 	}
 
 	t_channel_id uniqueKey(void) const {
-		return CREATE_CHANNEL_ID(service_id, transport_stream_id, original_network_id);
+		return create_channel_id64(service_id, transport_stream_id, original_network_id, 0, 0);
 	}
 
 	void dump(void) const {

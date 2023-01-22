@@ -97,8 +97,10 @@ t_channel_id CSubService::getChannelID(void) const
 		}
 	}
 
-	return ((uint64_t) ( satellitePosition >= 0 ? satellitePosition : (uint64_t)(0xF000 + abs(satellitePosition))) << 48) |
-		(uint64_t) CREATE_CHANNEL_ID(service.service_id, service.original_network_id, service.transport_stream_id);
+	//return ((uint64_t) ( satellitePosition >= 0 ? satellitePosition : (uint64_t)(0xF000 + abs(satellitePosition))) << 48) |
+	//	(uint64_t) CREATE_CHANNEL_ID(service.service_id, service.original_network_id, service.transport_stream_id);
+	
+	return create_channel_id64(service.service_id, service.original_network_id, service.transport_stream_id, satellitePosition, freq);
 }
 
 CRemoteControl::CRemoteControl()
@@ -138,7 +140,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			{
 				g_InfoViewer->chanready = 0;
 				g_Zapit->zapTo_serviceID_NOWAIT(current_channel_id );
-				g_Sectionsd->setServiceChanged(current_channel_id &0xFFFFFFFFFFFFULL, false);
+				g_Sectionsd->setServiceChanged(current_channel_id & 0xFFFFFFFFFFFFULL, false);
 
 				zap_completion_timeout = getcurrenttime() + 2 * (long long) 1000000;
 
@@ -199,7 +201,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				director_mode = 0;
 				needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
 
-				g_Sectionsd->setServiceChanged( current_channel_id&0xFFFFFFFFFFFFULL, true );
+				g_Sectionsd->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
 				CNeutrinoApp::getInstance()->channelList->adjustToChannelID(current_channel_id);
 				
 				// update info.				
@@ -240,11 +242,9 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 
 		//
 		CSectionsdClient::CurrentNextInfo info_CN;
-		sectionsd_getCurrentNextServiceKey(current_channel_id&0xFFFFFFFFFFFFULL, info_CN);
+		sectionsd_getCurrentNextServiceKey(current_channel_id & 0xFFFFFFFFFFFFULL, info_CN);
 		
-		dprintf(DEBUG_INFO, "CRemoteControl::handleMsg got  EVT_CURRENTEPG, uniqueKey: %llx chid: %llx flags: %x\n", info_CN.current_uniqueKey, current_channel_id, info_CN.flags);
-
-		dprintf(DEBUG_INFO, "CRemoteControl::handleMsg comparing: uniqueKey: %llx chid: %llx\n", info_CN.current_uniqueKey >> 16, current_channel_id & 0xFFFFFFFFFFFFULL);
+		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg got  EVT_CURRENTEPG, uniqueKey: %llx chid: %llx flags: %x\n", info_CN.current_uniqueKey, current_channel_id, info_CN.flags);
 		
 		if ((info_CN.current_uniqueKey >> 16) == (current_channel_id & 0xFFFFFFFFFFFFULL) || (info_CN.current_uniqueKey >> 16) == (current_sub_channel_id & 0xFFFFFFFFFFFFULL))
 		{
@@ -305,7 +305,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	}
 	else if (msg == NeutrinoMessages::EVT_NOEPG_YET)
 	{
-		if ((*(t_channel_id *)data) == (current_channel_id&0xFFFFFFFFFFFFULL))
+		if ((*(t_channel_id *)data) == (current_channel_id & 0xFFFFFFFFFFFFULL))
 		{
 			if ( !is_video_started )
 				g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
@@ -318,7 +318,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if ((*(t_channel_id *)data) == ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) ? current_channel_id : current_sub_channel_id))
 		{
 			// tell sectionsd to start epg on the zapped channel
-			g_Sectionsd->setServiceChanged( current_channel_id&0xFFFFFFFFFFFFULL, false );
+			g_Sectionsd->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, false );
 		
 			// show servicename in VFD
 			// don't show service name in standby mode
@@ -389,11 +389,11 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				getNVODs();
 				
 				if (subChannels.empty())
-					g_Sectionsd->setServiceChanged( current_channel_id&0xFFFFFFFFFFFFULL, true );
+					g_Sectionsd->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
 			}
 			else
 				// EVENT anfordern!
-				g_Sectionsd->setServiceChanged( current_channel_id&0xFFFFFFFFFFFFULL, true );
+				g_Sectionsd->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
 
 		}
 		
@@ -421,7 +421,7 @@ void CRemoteControl::getSubChannels()
 								      linkedServices[i].serviceId,
 								      linkedServices[i].transportStreamId,
 								      linkedServices[i].name));
-					if (subChannels[i].getChannelID() == (current_channel_id&0xFFFFFFFFFFFFULL))
+					if (subChannels[i].getChannelID() == (current_channel_id & 0xFFFFFFFFFFFFULL))
 						selected_subchannel = i;
 				}
 				copySubChannelsToZapit();

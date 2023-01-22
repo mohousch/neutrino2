@@ -99,10 +99,6 @@ class CChannelList
 		bool displayNext;
 
 		SMSKeyInput c_SMSKeyInput;
-		
-		//
-		//pthread_t loadLogosThread;
-		//void downloadLogos();
 
 	public:
 		CChannelList(const char * const Name, bool _historyMode = false, bool _vlist = false );

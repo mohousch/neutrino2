@@ -214,7 +214,7 @@ void CChannelList::updateEvents(void)
 			{		
 				events.clear();
 
-				sectionsd_getEventsServiceKey(chanlist[count]->channel_id& 0xFFFFFFFFFFFFULL, events);
+				sectionsd_getEventsServiceKey(chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL, events);
 				chanlist[count]->nextEvent.startTime = (long)0x7fffffff;
 				
 				for ( CChannelEventList::iterator e = events.begin(); e != events.end(); ++e ) 
@@ -241,7 +241,7 @@ void CChannelList::updateEvents(void)
 			
 			for (uint32_t count = 0; count < chanlist.size(); count++)
 			{
-				p_requested_channels[count] = chanlist[count]->channel_id&0xFFFFFFFFFFFFULL;
+				p_requested_channels[count] = chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL;
 			}
 
 			CChannelEventList pevents;
@@ -254,7 +254,7 @@ void CChannelList::updateEvents(void)
 			{
 				for ( CChannelEventList::iterator e = pevents.begin(); e != pevents.end(); ++e )
 				{
-					if ((chanlist[count]->channel_id&0xFFFFFFFFFFFFULL) == (e->channelID&0xFFFFFFFFFFFFULL))//FIXME: get_channel_id()
+					if ((chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL) == (e->channelID & 0xFFFFFFFFFFFFULL))//FIXME: get_channel_id()
 					{
 						chanlist[count]->currentEvent= *e;
 
@@ -362,7 +362,7 @@ t_channel_id CChannelList::getActiveChannel_ChannelID(void) const
 {
 	if (selected < chanlist.size()) 
 	{
-		printf("CChannelList::getActiveChannel_ChannelID:%llx\n", chanlist[selected]->channel_id);
+		dprintf(DEBUG_NORMAL, "CChannelList::getActiveChannel_ChannelID:%llx\n", chanlist[selected]->channel_id);
 		
 		return chanlist[selected]->channel_id;
 	} 
@@ -1843,7 +1843,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 					
 	events.clear();
 
-	sectionsd_getEventsServiceKey(chanlist[_selected]->channel_id& 0xFFFFFFFFFFFFULL, events);
+	sectionsd_getEventsServiceKey(chanlist[_selected]->channel_id & 0xFFFFFFFFFFFFULL, events);
 	chanlist[_selected]->nextEvent.startTime = (long)0x7fffffff;
 				
 	for ( CChannelEventList::iterator e = events.begin(); e != events.end(); ++e ) 

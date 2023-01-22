@@ -418,9 +418,9 @@ void CBouquetManager::parseBouquetsXml(const char *fname, bool bUser)
 			while ((channel_node = xmlGetNextOccurence(channel_node, "S")) != NULL) 
 			{
 				std::string  name1 = xmlGetAttribute(channel_node, (char *) "n");
-				GET_ATTR(channel_node, (char *) "i", SCANF_SERVICE_ID_TYPE, service_id);
-				GET_ATTR(channel_node, (char *) "on", SCANF_ORIGINAL_NETWORK_ID_TYPE, original_network_id);
-				GET_ATTR(channel_node, (char *) "t", SCANF_TRANSPORT_STREAM_ID_TYPE, transport_stream_id);
+				GET_ATTR(channel_node, (char *) "i", "%hx", service_id);
+				GET_ATTR(channel_node, (char *) "on", "%hx", original_network_id);
+				GET_ATTR(channel_node, (char *) "t", "%hx", transport_stream_id);
 
 				// grab satelliteposition / freq from channel map
 				for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
@@ -467,9 +467,9 @@ void CBouquetManager::makeBouquetfromCurrentservices(const _xmlNodePtr root)
 	CZapitBouquet * newBouquet = addBouquet(_("Neu channel"));
 	newBouquet->bHidden = false;
 	newBouquet->bLocked = false;
-			
+	
+	t_service_id          service_id;		
 	t_original_network_id original_network_id;
-	t_service_id          service_id;
 	t_transport_stream_id transport_stream_id;
 	t_satellite_position  satellitePosition;
 	freq_id_t freq = 0;
@@ -487,10 +487,10 @@ void CBouquetManager::makeBouquetfromCurrentservices(const _xmlNodePtr root)
 				
 				if (strncmp(xmlGetAttribute(channel_node, "action"), "remove", 6)) 
 				{
-					GET_ATTR(provider, "position", SCANF_SATELLITE_POSITION_TYPE, satellitePosition);
-					GET_ATTR(transponder, "onid", SCANF_ORIGINAL_NETWORK_ID_TYPE, original_network_id);
-					GET_ATTR(transponder, "id", SCANF_TRANSPORT_STREAM_ID_TYPE, transport_stream_id);
-					GET_ATTR(channel_node, "service_id", SCANF_SERVICE_ID_TYPE, service_id);
+					GET_ATTR(provider, "position", "%hd", satellitePosition);
+					GET_ATTR(transponder, "onid", "%hx", original_network_id);
+					GET_ATTR(transponder, "id", "%hx", transport_stream_id);
+					GET_ATTR(channel_node, "service_id", "%hx", service_id);
 								
 					CZapitChannel *chan = findChannelByChannelID(CREATE_CHANNEL_ID64);
 
@@ -592,7 +592,8 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 						{
 							chan->setName(title);
 							chan->setDescription(description);
-									
+							
+							//		
 							newBouquet->addService(chan);
 
 							cnt++;
@@ -691,7 +692,8 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 										chan->setLogoID(it->second.getLogoID());
 								}
 							}
-
+							
+							//
 							newBouquet->addService(chan);
 
 							cnt++;
@@ -844,7 +846,8 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 										chan->setLogoID(it->second.getLogoID());
 								}
 							}
-
+							
+							//
 							gBouquet->addService(chan);
 
 							cnt++;

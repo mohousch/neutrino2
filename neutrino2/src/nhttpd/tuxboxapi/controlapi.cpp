@@ -854,9 +854,9 @@ void CControlAPI::_GetBouquetWriteItem(CyhookHandler *hh, CZapitChannel * channe
 	if (hh->ParamList["format"] == "json")
 	{
 		hh->printf("\t\t{'number': '%u', 'id': '"
-			PRINTF_CHANNEL_ID_TYPE
+			"%llx"
 			"', 'short_id': '"
-			PRINTF_CHANNEL_ID_TYPE
+			"%llx"
 			"', 'name': '%s', logo: '%s', bouquetnr: '%d'}\n",
 			nr,
 			channel->channel_id,
@@ -869,9 +869,9 @@ void CControlAPI::_GetBouquetWriteItem(CyhookHandler *hh, CZapitChannel * channe
 	else if((hh->ParamList["format"] == "xml") || !(hh->ParamList["xml"].empty()) )
 	{
 		hh->printf("<channel>\n\t<number>%u</number>\n\t<bouquet>%d</bouquet>\n\t<id>"
-			PRINTF_CHANNEL_ID_TYPE
+			"%llx"
 			"</id>\n\t<short_id>"
-			PRINTF_CHANNEL_ID_TYPE
+			"%llx"
 			"</short_id>\n\t<name><![CDATA[%s]]></name>\n<logo><![CDATA[%s]]></logo>\n</channel>\n",
 			nr,
 			bouquetNr,
@@ -884,7 +884,7 @@ void CControlAPI::_GetBouquetWriteItem(CyhookHandler *hh, CZapitChannel * channe
 	else
 	{
 		hh->printf("%u "
-			PRINTF_CHANNEL_ID_TYPE
+			"%llx"
 			" %s\n",
 			nr,
 			channel->channel_id,
@@ -1043,10 +1043,10 @@ void CControlAPI::channelEPGAsXML(CyhookHandler *hh, int bouquetnr, t_channel_id
 {
 	sectionsd_getEventsServiceKey(channel_id&0xFFFFFFFFFFFFULL, NeutrinoAPI->eList);
 	hh->printf("<channel_id>"
-			PRINTF_CHANNEL_ID_TYPE
+			"%llx"
 			"</channel_id>\r\n", channel_id&0xFFFFFFFFFFFFULL);
 	hh->printf("<channel_short_id>"
-			PRINTF_CHANNEL_ID_TYPE
+			"%llx"
 			"</channel_short_id>\r\n", channel_id&0xFFFFFFFFFFFFULL);
 	hh->printf("<channel_name><![CDATA[%s]]></channel_name>\r\n", NeutrinoAPI->GetServiceName(channel_id).c_str());
 
@@ -1059,7 +1059,7 @@ void CControlAPI::channelEPGAsXML(CyhookHandler *hh, int bouquetnr, t_channel_id
 		hh->WriteLn("<prog>");
 		hh->printf("\t<bouquetnr>%d</bouquetnr>\r\n", bouquetnr);
 		hh->printf("\t<channel_id>"
-				PRINTF_CHANNEL_ID_TYPE
+				"%llx"
 				"</channel_id>\r\n", channel_id&0xFFFFFFFFFFFFULL);
 		hh->printf("\t<eventid>%llu</eventid>\r\n", eventIterator->eventID);
 		hh->printf("\t<eventid_hex>%llx</eventid_hex>\r\n", eventIterator->eventID);
@@ -1109,7 +1109,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 			CZapitChannel * channel = *cit;
 			event = NeutrinoAPI->ChannelListEvents[channel->channel_id];
 			if(event)
-				hh->printf(PRINTF_CHANNEL_ID_TYPE
+				hh->printf("%llx"
 					" %llu %s\n",
 					channel->channel_id&0xFFFFFFFFFFFFULL,
 					event->eventID,
@@ -1129,9 +1129,9 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 				CZapitChannel * channel = *cit;
 				event = NeutrinoAPI->ChannelListEvents[channel->channel_id];
 				if(event)
-					hh->printf(PRINTF_CHANNEL_ID_TYPE
+					hh->printf("%llx"
 							" %ld %u %llu %s\n",
-							channel->channel_id&0xFFFFFFFFFFFFULL,
+							channel->channel_id & 0xFFFFFFFFFFFFULL,
 							event->startTime,
 							event->duration,
 							event->eventID,
@@ -1173,7 +1173,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 		{
 			t_channel_id channel_id;
 			sscanf(hh->ParamList["id"].c_str(),
-				SCANF_CHANNEL_ID_TYPE,
+				"%llx",
 				&channel_id);
 			sectionsd_getEventsServiceKey(channel_id&0xFFFFFFFFFFFFULL, NeutrinoAPI->eList);
 			CChannelEventList::iterator eventIterator;
@@ -1194,7 +1194,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 			//eventlist for a chan
 			t_channel_id channel_id;
 			sscanf(hh->ParamList["1"].c_str(),
-				SCANF_CHANNEL_ID_TYPE,
+				"%llx",
 				&channel_id);
 			SendEventList(hh, channel_id);
 		}
@@ -1220,7 +1220,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 		if (!(hh->ParamList["channelid"].empty()))
 		{
 			sscanf(hh->ParamList["channelid"].c_str(),
-			SCANF_CHANNEL_ID_TYPE,
+			"%llx",
 			&channel_id);
 		}
 		else if (!(hh->ParamList["channelname"].empty()))
@@ -1304,7 +1304,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 {
 	if (hh->ParamList.empty())
 	{
-		hh->printf(PRINTF_CHANNEL_ID_TYPE
+		hh->printf("%llx"
 				"\n",
 				NeutrinoAPI->Zapit->getCurrentServiceID()&0xFFFFFFFFFFFFULL);
 		return;
@@ -1353,9 +1353,9 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 				for(unsigned int i = 0; i< desc.size(); i++)
 				{
 					t_channel_id sub_channel_id =
-						CREATE_CHANNEL_ID(
-						desc[i].serviceId, desc[i].originalNetworkId, desc[i].transportStreamId);
-					hh->printf(PRINTF_CHANNEL_ID_TYPE
+						create_channel_id64(
+						desc[i].serviceId, desc[i].originalNetworkId, desc[i].transportStreamId, 0, 0);
+					hh->printf("%llx"
 						" %s\n",
 						sub_channel_id&0xFFFFFFFFFFFFULL,
 						(desc[i].name).c_str());
@@ -1468,7 +1468,7 @@ void CControlAPI::SendChannelList(CyhookHandler *hh)
 	for (; !(cit.EndOfChannels()); cit++) 
 	{
 		CZapitChannel * channel = *cit;
-		hh->printf(PRINTF_CHANNEL_ID_TYPE
+		hh->printf("%llx"
 				" %s\n",
 				channel->channel_id&0xFFFFFFFFFFFFULL,
 				channel->getName().c_str());
@@ -1607,7 +1607,7 @@ void CControlAPI::SendTimers(CyhookHandler *hh)
 					strcpy(zAddData, NeutrinoAPI->Zapit->isChannelTVChannel(timer->channel_id) ? "Unknown TV-Channel" : "Unknown Radio-Channel");
 			}
 			else
-				sprintf(zAddData, PRINTF_CHANNEL_ID_TYPE, timer->channel_id&0xFFFFFFFFFFFFULL);
+				sprintf(zAddData, "%llx", timer->channel_id&0xFFFFFFFFFFFFULL);
 
 			zAddData[22]=0;
 
@@ -1781,21 +1781,21 @@ void CControlAPI::SendTimersXML(CyhookHandler *hh)
 		switch(timer->eventType)
 		{
 			case CTimerd::TIMER_NEXTPROGRAM :{
-				hh->printf("\t\t\t<channel_id>" PRINTF_CHANNEL_ID_TYPE "</channel_id>\n", timer->channel_id&0xFFFFFFFFFFFFULL);
+				hh->printf("\t\t\t<channel_id>" "%llx" "</channel_id>\n", timer->channel_id&0xFFFFFFFFFFFFULL);
 				hh->printf("\t\t\t<channel_name>%s</channel_name>\n",channel_name.c_str());
 				hh->printf("\t\t\t<title>%s</title>\n",title.c_str());
 			}
 			break;
 
 			case CTimerd::TIMER_ZAPTO :{
-				hh->printf("\t\t\t<channel_id>" PRINTF_CHANNEL_ID_TYPE "</channel_id>\n", timer->channel_id&0xFFFFFFFFFFFFULL);
+				hh->printf("\t\t\t<channel_id>" "%llx" "</channel_id>\n", timer->channel_id&0xFFFFFFFFFFFFULL);
 				hh->printf("\t\t\t<channel_name>%s</channel_name>\n",channel_name.c_str());
 				hh->printf("\t\t\t<title>%s</title>\n",title.c_str());
 			}
 			break;
 
 			case CTimerd::TIMER_RECORD :{
-				hh->printf("\t\t\t<channel_id>" PRINTF_CHANNEL_ID_TYPE "</channel_id>\n", timer->channel_id&0xFFFFFFFFFFFFULL);
+				hh->printf("\t\t\t<channel_id>" "%llx" "</channel_id>\n", timer->channel_id&0xFFFFFFFFFFFFULL);
 				hh->printf("\t\t\t<channel_name>%s</channel_name>\n",channel_name.c_str());
 				hh->printf("\t\t\t<title>%s</title>\n",title.c_str());
 
@@ -2154,7 +2154,7 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 	// channel by Id or name
 	if(hh->ParamList["channel_id"] != "")
 		sscanf(hh->ParamList["channel_id"].c_str(),
-		SCANF_CHANNEL_ID_TYPE,
+		"%llx",
 		&eventinfo.channel_id);
 	else
 		eventinfo.channel_id = NeutrinoAPI->ChannelNameToChannelId(hh->ParamList["channel_name"]);
@@ -2354,7 +2354,7 @@ void CControlAPI::changeBouquetCGI(CyhookHandler *hh)
 		int delta;
 		const char * bchannels = hh->ParamList["bchannels"].c_str();
 		while (sscanf(bchannels,
-				SCANF_CHANNEL_ID_TYPE
+				"%llx"
 				"%n",
 				&channel_id,
 				&delta) > 0)
@@ -2452,7 +2452,7 @@ void CControlAPI::logoCGI(CyhookHandler *hh)
 {
 	t_channel_id channel_id;
 	sscanf(hh->ParamList["1"].c_str(),
-		SCANF_CHANNEL_ID_TYPE,
+		"%llx",
 		&channel_id);
 	hh->Write(NeutrinoAPI->getLogoFile(hh->WebserverConfigList["Tuxbox.LogosURL"], channel_id));
 }

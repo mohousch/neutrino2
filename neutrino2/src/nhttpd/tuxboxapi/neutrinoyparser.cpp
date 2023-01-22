@@ -297,11 +297,11 @@ std::string  CNeutrinoYParser::func_get_channels_as_dropdown(CyhookHandler *, st
 			CEPGData epg;
 			CZapitChannel * channel = channels[j];
 			char buf[100],id[20];
-			sprintf(id,PRINTF_CHANNEL_ID_TYPE, channel->channel_id);
+			sprintf(id, "%llx", channel->channel_id);
 			std::string _sid = std::string(id);
 			sel = (_sid == achannel_id) ? "selected=\"selected\"" : "";
 			sectionsd_getActualEPGServiceKey(channel->channel_id&0xFFFFFFFFFFFFULL, &epg);
-			sprintf(buf,"<option value="PRINTF_CHANNEL_ID_TYPE" %s>%.20s - %.30s</option>\n", channel->channel_id, sel.c_str(), channel->getName().c_str(),epg.title.c_str());
+			sprintf(buf, "<option value=""%llx"" %s>%.20s - %.30s</option>\n", channel->channel_id, sel.c_str(), channel->getName().c_str(),epg.title.c_str());
 			yresult += buf;
 		}
 	}
@@ -363,7 +363,7 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 
 		if(have_logos)
 			yresult += string_printf("<td class=\"%c\" width=\"44\" rowspan=\"2\"><a href=\"javascript:do_zap('"
-					PRINTF_CHANNEL_ID_TYPE
+					"%llx"
 					"')\"><img class=\"channel_logo\" src=\"%s\"/></a></td>", classname, channel->channel_id,
 					(NeutrinoAPI->getLogoFile(hh->WebserverConfigList["Tuxbox.LogosURL"], channel->channel_id)).c_str());
 
@@ -386,11 +386,11 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 
 		/* channel name and buttons */
 		yresult += string_printf("<td>\n%s<a class=\"clist\" href=\"javascript:do_zap('"
-				PRINTF_CHANNEL_ID_TYPE
+				"%llx"
 				"')\">&nbsp;%d. %s%s</a>&nbsp;<a href=\"javascript:do_epg('"
-				PRINTF_CHANNEL_ID_TYPE
+				"%llx"
 				"','"
-				PRINTF_CHANNEL_ID_TYPE
+				"%llx"
 				"')\">%s</a>\n",
 				((channel->channel_id == current_channel) ? "<a name=\"akt\"></a>" : " "),
 				channel->channel_id,
@@ -423,14 +423,14 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 					cmd.service_id = ntohs(ni->service_id);
 					cmd.transport_stream_id = ntohs(ni->transport_stream_id);
 
-					t_channel_id channel_id = CREATE_CHANNEL_ID(cmd.service_id, cmd.original_network_id, cmd.transport_stream_id);
+					t_channel_id channel_id = create_channel_id64(cmd.service_id, cmd.original_network_id, cmd.transport_stream_id, 0, 0);
 
 					timestr = timeString(ni->zeit.startzeit); // FIXME: time is wrong (at least on little endian)!
 					sectionsd_getActualEPGServiceKey(channel_id&0xFFFFFFFFFFFFULL, &epg); // FIXME: der scheissendreck geht nit!!!
 					yresult += string_printf("<tr>\n<td align=\"left\" style=\"width: 31px\" class=\"%cepg\">&nbsp;</td>", classname);
 					yresult += string_printf("<td class=\"%cepg\">%s&nbsp;", classname, timestr.c_str());
 					yresult += string_printf("%s<a href=\"javascript:do_zap('"
-							PRINTF_CHANNEL_ID_TYPE
+							"%llx"
 							")'\">%04x:%04x:%04x %s</a>", // FIXME: get name
 							(channel_id == current_channel) ? "<a name=\"akt\"></a>" : " ",
 							channel_id,
@@ -480,7 +480,7 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 //-------------------------------------------------------------------------
 std::string  CNeutrinoYParser::func_get_actual_channel_id(CyhookHandler *, std::string)
 {
-	return string_printf(PRINTF_CHANNEL_ID_TYPE, live_channel_id);
+	return string_printf("%llx", live_channel_id);
 }
 
 //-------------------------------------------------------------------------
@@ -1045,18 +1045,14 @@ std::string  CNeutrinoYParser::func_set_timer_form(CyhookHandler *hh, std::strin
 	for (; !(cit.EndOfChannels()); cit++) {
 		sel = ((*cit)->channel_id == current_channel) ? "selected=\"selected\"" : "";
 		hh->ParamList["program_row"] +=
-			string_printf("<option value=\""
-				PRINTF_CHANNEL_ID_TYPE
-				"\" %s>%s</option>\n",
+			string_printf("<option value=\"%llx\" %s>%s</option>\n",
 				(*cit)->channel_id, sel.c_str(), (*cit)->getName().c_str());
 	}
 	cit = g_bouquetManager->radioChannelsBegin();
 	for (; !(cit.EndOfChannels()); cit++) {
 		sel = ((*cit)->channel_id == current_channel) ? "selected=\"selected\"" : "";
 		hh->ParamList["program_row"] +=
-			string_printf("<option value=\""
-				PRINTF_CHANNEL_ID_TYPE
-				"\" %s>%s</option>\n",
+			string_printf("<option value=\"%llx\" %s>%s</option>\n",
 				(*cit)->channel_id, sel.c_str(), (*cit)->getName().c_str());
 	}
 	// recordingDir
@@ -1137,33 +1133,38 @@ std::string  CNeutrinoYParser::func_set_bouquet_edit_form(CyhookHandler *hh, std
 		int selected = atoi(hh->ParamList["selected"].c_str()) - 1;
 		int mode = NeutrinoAPI->Zapit->getMode();
 		ZapitChannelList* channels = mode == CZapitClient::MODE_TV ? &(g_bouquetManager->Bouquets[selected]->tvChannels) : &(g_bouquetManager->Bouquets[selected]->radioChannels);
-		for(int j = 0; j < (int) channels->size(); j++) {
+		
+		for(int j = 0; j < (int) channels->size(); j++) 
+		{
 			hh->ParamList["bouquet_channels"] +=
-				string_printf("<option value=\""
-					PRINTF_CHANNEL_ID_TYPE
-					"\">%s</option>\n",
+				string_printf("<option value=\"%llx\">%s</option>\n",
 					(*channels)[j]->channel_id,
 					(*channels)[j]->getName().c_str());
 		}
+		
 		ZapitChannelList Channels;
 		Channels.clear();
-		if (mode == CZapitClient::MODE_RADIO) {
+		
+		if (mode == CZapitClient::MODE_RADIO) 
+		{
 			for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
 				if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE)
 					Channels.push_back(&(it->second));
-		} else {
+		} 
+		else 
+		{
 			for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
 				if (it->second.getServiceType() != ST_DIGITAL_RADIO_SOUND_SERVICE)
 					Channels.push_back(&(it->second));
 		}
 		sort(Channels.begin(), Channels.end(), CmpChannelByChName());
 
-		for (int i = 0; i < (int) Channels.size(); i++) {
-			if (!g_bouquetManager->existsChannelInBouquet(selected, Channels[i]->channel_id)){
+		for (int i = 0; i < (int) Channels.size(); i++) 
+		{
+			if (!g_bouquetManager->existsChannelInBouquet(selected, Channels[i]->channel_id))
+			{
 				hh->ParamList["all_channels"] +=
-					string_printf("<option value=\""
-						PRINTF_CHANNEL_ID_TYPE
-						"\">%s</option>\n",
+					string_printf("<option value=\"%llx\">%s</option>\n",
 						Channels[i]->channel_id,
 						Channels[i]->getName().c_str());
 			}

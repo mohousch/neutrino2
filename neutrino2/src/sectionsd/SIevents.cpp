@@ -71,6 +71,10 @@ SIevent::SIevent(const struct eit_event *e)
 	service_id = 0;
 	original_network_id = 0;
 	transport_stream_id = 0;
+	
+	//
+	satellitePosition = 0;
+	freq = 0;
 }
 
 SIevent::SIevent(const t_original_network_id _original_network_id, const t_transport_stream_id _transport_stream_id, const t_service_id _service_id,

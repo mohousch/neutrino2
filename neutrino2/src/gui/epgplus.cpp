@@ -554,11 +554,9 @@ void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 			CZapitChannel * channel = (*this->channelList)[i];
 	
 			ChannelEntry * channelEntry = new ChannelEntry (channel, i, this->frameBuffer, this->footer, this->bouquetList, this->channelsTableX + 2, yPosChannelEntry, this->channelsTableWidth);
-			//printf("Going to get getEventsServiceKey for %llx\n", (channel->channel_id & 0xFFFFFFFFFFFFULL));
-			//CChannelEventList channelEventList = g_Sectionsd->getEventsServiceKey (channel->channel->channel_id & 0xFFFFFFFFFFFFULL);
+			
 			CChannelEventList channelEventList;
 			sectionsd_getEventsServiceKey(channel->channel_id & 0xFFFFFFFFFFFFULL, channelEventList);
-			//printf("channelEventList size %d\n", channelEventList.size());
 	
 			int xPosEventEntry = this->eventsTableX;
 			int widthEventEntry = 0;
@@ -566,10 +564,8 @@ void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 		
 			CChannelEventList::const_iterator lastIt (channelEventList.end ());
 			
-			//for (CChannelEventList::const_iterator It = channelEventList.begin (); (It != channelEventList.end ()) && (It->startTime < (this->startTime + this->duration)); ++It) 
 			for (CChannelEventList::const_iterator It = channelEventList.begin (); It != channelEventList.end (); ++It) 
 			{
-				//if(0x2bc000b004b7ULL == (channel->channel_id & 0xFFFFFFFFFFFFULL)) printf("*** Check1 event %s event start %ld this start %ld\n", It->description.c_str(), It->startTime, (this->startTime + this->duration));
 				if(!(It->startTime < (this->startTime + this->duration)) )
 					continue;
 				
@@ -577,7 +573,7 @@ void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 				{
 					int startTimeDiff = It->startTime - this->startTime;
 					int endTimeDiff = this->startTime + time_t (this->duration) - It->startTime - time_t (It->duration);
-					//if(0x2bc000b004b7ULL == (channel->channel_id & 0xFFFFFFFFFFFFULL)) printf("*** Check event %s\n", It->description.c_str());
+
 					if ((startTimeDiff >= 0) && (endTimeDiff >= 0)) 
 					{
 						// channel event fits completely in the visible part of time line
@@ -601,20 +597,17 @@ void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 					else if (startTimeDiff > 0) 
 					{	
 						// channel event starts and ends after visible part of the time line => break the loop
-						//if(0x2bc000b004b7ULL == (channel->channel_id & 0xFFFFFFFFFFFFULL)) printf("*** break 1\n");
 						break;
 					} 
 					else 
 					{				
 						// channel event starts and ends after visible part of the time line => ignore the channel event
-						//if(0x2bc000b004b7ULL == (channel->channel_id & 0xFFFFFFFFFFFFULL)) printf("*** continue 1 startTimeDiff %ld endTimeDiff %ld\n", startTimeDiff, endTimeDiff);
 						continue;
 					}
 		
 					if (lastEndTime < It->startTime) 
 					{	
 						// there is a gap between last end time and new start time => fill it with a new event entry
-				
 						CChannelEvent channelEvent;
 						channelEvent.startTime = lastEndTime;
 						channelEvent.duration = It->startTime - channelEvent.startTime;
