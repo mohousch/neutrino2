@@ -470,12 +470,9 @@ static void addEPGFilter(t_original_network_id onid, t_transport_stream_id tsid,
 
 static void addBlacklist(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid)
 {
-	t_channel_id channel_id =
-		create_channel_id64(sid, onid, tsid, 0, 0);
-	t_channel_id mask =
-		create_channel_id64(
-			(sid ? 0xFFFF : 0), (onid ? 0xFFFF : 0), (tsid ? 0xFFFF : 0)
-		, 0, 0);
+	t_channel_id channel_id = create_channel_id(sid, onid, tsid, 0, 0);
+	t_channel_id mask = create_channel_id((sid ? 0xFFFF : 0), (onid ? 0xFFFF : 0), (tsid ? 0xFFFF : 0), 0, 0);
+	
 	if (!checkBlacklist(channel_id))
 	{
 		dprintf(DEBUG_DEBUG, "[sectionsd] Add Channel Blacklist for channel 0x%012llx, mask 0x%012llx\n", channel_id, mask);
@@ -490,13 +487,9 @@ static void addBlacklist(t_original_network_id onid, t_transport_stream_id tsid,
 
 static void addNoDVBTimelist(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid)
 {
-	t_channel_id channel_id =
-		create_channel_id64(sid, onid, tsid, 0, 0);
+	t_channel_id channel_id = create_channel_id(sid, onid, tsid, 0, 0);
 
-	t_channel_id mask =
-		create_channel_id64(
-			(sid ? 0xFFFF : 0), (onid ? 0xFFFF : 0), (tsid ? 0xFFFF : 0)
-		, 0, 0);
+	t_channel_id mask = create_channel_id((sid ? 0xFFFF : 0), (onid ? 0xFFFF : 0), (tsid ? 0xFFFF : 0), 0, 0);
 
 	if (!checkNoDVBTimelist(channel_id))
 	{

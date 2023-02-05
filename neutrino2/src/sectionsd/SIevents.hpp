@@ -402,11 +402,11 @@ class SIevent {
 		//    unsigned dauer; // in Sekunden, 0 -> time shifted (cinedoms)
 		
 		t_channel_id get_channel_id(void) const {
-			return create_channel_id64(service_id, original_network_id, transport_stream_id, 0, 0);
+			return create_channel_id(service_id, original_network_id, transport_stream_id, 0, 0);
 		}
 
 		event_id_t uniqueKey(void) const {
-			return CREATE_EVENT_ID(CREATE_CHANNEL_ID64, eventID);
+			return CREATE_EVENT_ID(CREATE_CHANNEL_ID, eventID);
 		}
 		
 		int runningStatus(void) const {

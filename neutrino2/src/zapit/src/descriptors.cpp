@@ -243,7 +243,7 @@ void service_list_descriptor(const unsigned char * const buffer, const t_transpo
 	for (int i = 0; i < buffer[1]; i += 3) 
 	{
 		t_service_id service_id = buffer[i + 2] << 8 | buffer[i + 3];
-		t_channel_id channel_id = CREATE_CHANNEL_ID64;
+		t_channel_id channel_id = CREATE_CHANNEL_ID;
 		uint8_t service_type = buffer[i+4];
 
 		//printf("[service_list] type %X sid %X\n", service_type, service_id);
@@ -531,7 +531,7 @@ void service_descriptor(const unsigned char * const buffer, const t_service_id s
 	found_channels++;
 	eventServer->sendEvent ( CZapitClient::EVT_SCAN_NUM_CHANNELS, CEventServer::INITID_ZAPIT, &found_channels, sizeof(found_channels));
 
-	t_channel_id channel_id = CREATE_CHANNEL_ID64;
+	t_channel_id channel_id = CREATE_CHANNEL_ID;
 	tallchans_iterator I = allchans.find(channel_id);
 
 	if (I != allchans.end()) 
@@ -707,7 +707,7 @@ void current_service_descriptor(const unsigned char * const buffer, const t_serv
         if ( !service_wr )
 		return;
 
-	tallchans_iterator I = curchans.find(CREATE_CHANNEL_ID64);
+	tallchans_iterator I = curchans.find(CREATE_CHANNEL_ID);
 
 	if (I != curchans.end())
 		return;
@@ -769,7 +769,7 @@ void current_service_descriptor(const unsigned char * const buffer, const t_serv
 	}
 
 	// insert new channel
-	curchans.insert (std::pair <t_channel_id, CZapitChannel> (CREATE_CHANNEL_ID64, CZapitChannel (serviceName, service_id, transport_stream_id, original_network_id, real_type, satellitePosition, freq )));
+	curchans.insert (std::pair <t_channel_id, CZapitChannel> (CREATE_CHANNEL_ID, CZapitChannel (serviceName, service_id, transport_stream_id, original_network_id, real_type, satellitePosition, freq )));
 }
 
 /* 0x49 */

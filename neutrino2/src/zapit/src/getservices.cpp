@@ -191,7 +191,7 @@ void ParseChannels(_xmlNodePtr node, const t_transport_stream_id transport_strea
 		vtype = xmlGetNumericAttribute(node, "vt", 16);
 		scrambled = xmlGetNumericAttribute(node, "s", 16);
 
-		chid = CREATE_CHANNEL_ID64;
+		chid = CREATE_CHANNEL_ID;
 		char *ptr = xmlGetAttribute(node, "action");
 		bool remove = ptr ? (!strcmp(ptr, "remove") || !strcmp(ptr, "replace")) : false;
 		bool add    = ptr ? (!strcmp(ptr, "add")    || !strcmp(ptr, "replace")) : true;

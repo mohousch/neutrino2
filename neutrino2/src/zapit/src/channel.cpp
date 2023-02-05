@@ -36,7 +36,7 @@ CZapitChannel::CZapitChannel(const std::string& p_name, t_service_id p_sid, t_tr
 	satellitePosition = p_satellite_position;
 	freq = p_freq;
 
-	channel_id = CREATE_CHANNEL_ID64;
+	channel_id = CREATE_CHANNEL_ID;
 	caPmt = NULL;
 	rawPmt = NULL;
 	videoType = CHANNEL_VIDEO_MPEG2;

@@ -96,11 +96,8 @@ t_channel_id CSubService::getChannelID(void) const
 			freq = it->second.getFreqId();
 		}
 	}
-
-	//return ((uint64_t) ( satellitePosition >= 0 ? satellitePosition : (uint64_t)(0xF000 + abs(satellitePosition))) << 48) |
-	//	(uint64_t) CREATE_CHANNEL_ID(service.service_id, service.original_network_id, service.transport_stream_id);
 	
-	return create_channel_id64(service.service_id, service.original_network_id, service.transport_stream_id, satellitePosition, freq);
+	return create_channel_id(service.service_id, service.original_network_id, service.transport_stream_id, satellitePosition, freq);
 }
 
 CRemoteControl::CRemoteControl()
@@ -249,7 +246,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if ((info_CN.current_uniqueKey >> 16) == (current_channel_id & 0xFFFFFFFFFFFFULL) || (info_CN.current_uniqueKey >> 16) == (current_sub_channel_id & 0xFFFFFFFFFFFFULL))
 		{
 			//CURRENT-EPG for current channel arrived!;
-			
 #if defined (ENABLE_LCD)
 			CVFD::getInstance()->setEPGTitle(info_CN.current_name);
 #endif			

@@ -432,7 +432,7 @@ void CBouquetManager::parseBouquetsXml(const char *fname, bool bUser)
 					}
 				}
 
-				CZapitChannel *chan = findChannelByChannelID(CREATE_CHANNEL_ID64);
+				CZapitChannel *chan = findChannelByChannelID(CREATE_CHANNEL_ID);
 
 				if (chan != NULL) 
 				{
@@ -492,7 +492,7 @@ void CBouquetManager::makeBouquetfromCurrentservices(const _xmlNodePtr root)
 					GET_ATTR(transponder, "id", "%hx", transport_stream_id);
 					GET_ATTR(channel_node, "service_id", "%hx", service_id);
 								
-					CZapitChannel *chan = findChannelByChannelID(CREATE_CHANNEL_ID64);
+					CZapitChannel *chan = findChannelByChannelID(CREATE_CHANNEL_ID);
 
 					if (chan != NULL)
 						newBouquet->addService(chan);
@@ -580,7 +580,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 
 					if(!url.empty())
 					{
-						id = create_channel_id64(0, 0, 0, 0, 0, url.c_str());
+						id = create_channel_id(0, 0, 0, 0, 0, url.c_str());
 					
 						pair<map<t_channel_id, CZapitChannel>::iterator, bool> ret;
 
@@ -647,7 +647,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 						xmltv = xmlGetAttribute(l1, (const char*)"xmltv");
 						logo = xmlGetAttribute(l1, (const char*)"logo");
 
-						id = create_channel_id64(0, 0, 0, 0, 0, url);
+						id = create_channel_id(0, 0, 0, 0, 0, url);
 							
 						pair<map<t_channel_id, CZapitChannel>::iterator, bool> ret;
 						ret = allchans.insert(std::pair <t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
@@ -809,7 +809,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 						}
 						
 						//
-						id = create_channel_id64(0, 0, 0, 0, 0, url);
+						id = create_channel_id(0, 0, 0, 0, 0, url);
 							
 						pair<map<t_channel_id, CZapitChannel>::iterator, bool> ret;
 						ret = allchans.insert(std::pair <t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
