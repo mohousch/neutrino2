@@ -338,7 +338,7 @@ int satellite_delivery_system_descriptor(const unsigned char * const buffer, t_t
 		return 0;
 	}
 
-	TsidOnid = CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID(freq, satellitePosition, original_network_id, transport_stream_id);
+	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
 	add_to_scan(TsidOnid, &feparams, polarization, true, feindex);
 
@@ -394,7 +394,7 @@ int cable_delivery_system_descriptor(const unsigned char * const buffer, t_trans
 
 	freq = feparams.frequency/100;
 
-       TsidOnid = CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID(freq, satellitePosition, original_network_id, transport_stream_id);
+       TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
         add_to_scan(TsidOnid, &feparams, 0, true, feindex);
 
@@ -543,7 +543,7 @@ void service_descriptor(const unsigned char * const buffer, const t_service_id s
 		channel = &I->second;
 	}
 
-	transponder_id_t tpid = CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID( freq, satellitePosition, original_network_id, transport_stream_id);
+	transponder_id_t tpid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 	if(service_wr) 
 	{
 		pair<map<t_channel_id, CZapitChannel>::iterator,bool> ret;
@@ -915,7 +915,7 @@ int terrestrial_delivery_system_descriptor(const unsigned char * const buffer, t
 
 	freq = feparams.frequency/1000000;
 
-	TsidOnid = CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID(freq, satellitePosition, original_network_id, transport_stream_id);
+	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
 	add_to_scan(TsidOnid, &feparams, 0, true, feindex);
 

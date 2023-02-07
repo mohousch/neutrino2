@@ -36,7 +36,6 @@ class CZapitBouquet
 		bool bUser;
 		bool bFav;
 		bool bWebTV;
-		t_satellite_position satellitePosition;
 
 		ZapitChannelList radioChannels;
 		ZapitChannelList tvChannels;

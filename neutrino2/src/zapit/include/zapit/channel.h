@@ -218,7 +218,7 @@ class CZapitChannel
 		bool 			isWEBTV(){return isWebTV;};
 
 		t_channel_id         	getChannelID(void)         	const { return channel_id; }
-		transponder_id_t       getTransponderId(void)          const { return CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID(freq, satellitePosition,original_network_id,transport_stream_id); }
+		transponder_id_t       getTransponderId(void)          const { return CREATE_TRANSPONDER_ID(freq, satellitePosition,original_network_id,transport_stream_id); }
 		freq_id_t		getFreqId()			const { return freq; }
 
 		// get methods - read and write variables

@@ -21,7 +21,6 @@
 
 #include <channel.h>
 
-/* system */
 #include <system/debug.h>
 
 

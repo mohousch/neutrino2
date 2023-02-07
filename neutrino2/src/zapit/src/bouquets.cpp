@@ -305,15 +305,20 @@ void CBouquetManager::saveBouquets(const CZapitClient::bouquetMode bouquetMode, 
 	if (bouquetMode == CZapitClient::BM_DELETEBOUQUETS) 
 	{
 		dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: removing existing bouquets");
+		
 		g_bouquetManager->clearAll();
 		unlink(BOUQUETS_XML);
 	}
 	else if (bouquetMode == CZapitClient::BM_DONTTOUCHBOUQUETS)
 	{
+		dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: leave current bouquets");
+		
 		return;
 	}
 	else if (bouquetMode == CZapitClient::BM_CREATESATELLITEBOUQUET) 
 	{
+		dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: create satellite bouquets");
+		
 		while (Bouquets.size() > 1) 
 		{
 			BouquetList::iterator it = Bouquets.begin() + 1;
@@ -328,6 +333,8 @@ void CBouquetManager::saveBouquets(const CZapitClient::bouquetMode bouquetMode, 
 	}
 	else if (bouquetMode == CZapitClient::BM_UPDATEBOUQUETS) 
 	{
+		dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: update existing bouquets");
+		
 		while (!(Bouquets.empty())) 
 		{
 			CZapitBouquet * bouquet;
@@ -468,11 +475,11 @@ void CBouquetManager::makeBouquetfromCurrentservices(const _xmlNodePtr root)
 	newBouquet->bHidden = false;
 	newBouquet->bLocked = false;
 	
-	t_service_id          service_id;		
-	t_original_network_id original_network_id;
-	t_transport_stream_id transport_stream_id;
-	t_satellite_position  satellitePosition;
-	freq_id_t freq = 0;
+	t_service_id          	service_id;		
+	t_original_network_id 	original_network_id;
+	t_transport_stream_id 	transport_stream_id;
+	t_satellite_position  	satellitePosition;
+	freq_id_t 		freq = 0;
 	
 	while (provider) 
 	{	

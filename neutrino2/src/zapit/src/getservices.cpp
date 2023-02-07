@@ -139,7 +139,7 @@ void ParseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition,
 			freq = feparams.frequency/100000;
 
 		// add current transponder to TP list
-		transponder_id_t tid = CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID(freq, satellitePosition, original_network_id, transport_stream_id);
+		transponder_id_t tid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
 		pair<map<transponder_id_t, transponder>::iterator, bool> ret;
 
@@ -409,7 +409,7 @@ void ParseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellit
 		else if((frontendType == FE_OFDM) || (frontendType == FE_ATSC))
 			freq = feparams.frequency/100000;
 			
-		transponder_id_t tid = CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID(freq, satellitePosition, fake_nid, fake_tid);
+		transponder_id_t tid = CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid);
 
 		//polarization &= 1;
 		polarization &= 7;

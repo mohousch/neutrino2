@@ -173,7 +173,7 @@ int add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t
 
 			freq++;
 			
-			TsidOnid = CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID( freq1, satellitePosition, original_network_id, transport_stream_id);
+			TsidOnid = CREATE_TRANSPONDER_ID( freq1, satellitePosition, original_network_id, transport_stream_id);
 
 			dprintf(DEBUG_INFO, "[scan] add_to_scan: SAME freq %d pol1 %d pol2 %d tpid %llx\n", feparams->frequency, poltmp1, poltmp2, TsidOnid);
 
@@ -285,7 +285,7 @@ _repeat:
 			continue;
 		}
 
-		TsidOnid = CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID(freq, satellitePosition, tI->second.original_network_id, tI->second.transport_stream_id);
+		TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, tI->second.original_network_id, tI->second.transport_stream_id);
 
 		stI = transponders.find(TsidOnid);
 		if(stI == transponders.end())
@@ -395,7 +395,7 @@ int scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_po
 	// read network information table
 	fake_tid++; fake_nid++;
 
-	add_to_scan(CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID(freq, satellitePosition, fake_nid, fake_tid), &feparams, polarization, false, feindex);
+	add_to_scan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &feparams, polarization, false, feindex);
 
 	return 0;
 }
@@ -711,7 +711,7 @@ void * scan_transponder(void * arg)
 	fake_tid++; 
 	fake_nid++;
 
-	add_to_scan(CREATE_TRANSPONDER_ID_FROM_SATELLITEPOSITION_ORIGINALNETWORK_TRANSPORTSTREAM_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, ScanTP.feindex);
+	add_to_scan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, ScanTP.feindex);
 
 	get_sdts(satellitePosition, ScanTP.feindex);
 

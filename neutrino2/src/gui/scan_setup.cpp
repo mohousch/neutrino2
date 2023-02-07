@@ -95,7 +95,7 @@ const keyval SCANTS_BOUQUET_OPTIONS[SCANTS_BOUQUET_OPTION_COUNT] =
 	{ CZapitClient::BM_DELETEBOUQUETS, _("erase all") },
 	{ CZapitClient::BM_DONTTOUCHBOUQUETS, _("leave current") },
 	{ CZapitClient::BM_UPDATEBOUQUETS, _("update") },
-	{CZapitClient::BM_CREATESATELLITEBOUQUET, _("Satellite-Bouquet") }
+	{ CZapitClient::BM_CREATESATELLITEBOUQUET, _("create satellite bouquets") }
 };
 
 #define SCANTS_ZAPIT_SCANTYPE_COUNT 4
