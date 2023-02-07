@@ -775,9 +775,6 @@ void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::s
 			getEventsFromHTTP(channel_id);
 		}
 		
-		// xmltv FIXME:
-		//getEventsFromXMLTV(channel_id);
-		
 		abort_zapit = 0;
 
 		zap_completion_timeout = now + 2 * (long long) 1000000;
@@ -839,12 +836,14 @@ void CRemoteControl::getEventsFromHTTP(t_channel_id chid)
 	//
 	t_channel_id epgid = 0;
 	CZapitChannel *chan = NULL;
+	t_satellite_position  satellitePosition = 0;
 	
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
 	{
 		if(it->second.getChannelID() == chid)
 		{
 			chan = &it->second;
+			satellitePosition = it->second.getSatellitePosition();
 		}
 	}
 	
@@ -881,7 +880,7 @@ void CRemoteControl::getEventsFromHTTP(t_channel_id chid)
 		else if (g_settings.epg_serverbox_type == DVB_S)
 		{
 			// namenspace for sat
-			evUrl += to_hexstring(GET_SATELLITEPOSITION_FROM_CHANNEL_ID(epgid)); //satpos
+			evUrl += to_hexstring(satellitePosition); //satpos
 		}
 
 		evUrl += "0000";
@@ -901,39 +900,5 @@ void CRemoteControl::getEventsFromHTTP(t_channel_id chid)
 
 	//
 	insertEventsfromHTTP(evUrl, GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(chid), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid), GET_SERVICE_ID_FROM_CHANNEL_ID(chid));
-}
-
-//
-// defined in sectionsd.cpp
-void insertEventsUnikKeyfromXMLTV(std::string& url, std::string& epgid, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
-
-// online epg get events
-void CRemoteControl::getEventsFromXMLTV(t_channel_id chid)
-{
-	dprintf(DEBUG_NORMAL, "CRemoteControl::getEventsFromXMLTV: channelID: %llx\n", chid);
-	
-	//
-	CZapitChannel *chan = NULL;
-	
-	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
-	{
-		if(it->second.getChannelID() == chid)
-		{
-			chan = &it->second;
-		}
-	}
-	
-	// localtv
-	std::string evUrl;
-	std::string epg_id;
-
-	//
-	if (chan)
-	{
-		evUrl = chan->getEPGUrl();
-		epg_id = chan->getEPGIDName();
-	
-		insertEventsUnikKeyfromXMLTV(evUrl, epg_id, GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(chid), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid), GET_SERVICE_ID_FROM_CHANNEL_ID(chid));
-	}
 }
 

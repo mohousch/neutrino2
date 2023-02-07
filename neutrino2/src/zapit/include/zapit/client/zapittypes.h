@@ -78,7 +78,6 @@ static inline bool IS_WEBTV(t_channel_id cid)
 #define GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(channel_id) ((t_transport_stream_id)((channel_id) >> 32))
 #define GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(channel_id) ((t_original_network_id)((channel_id) >> 16))
 #define GET_SERVICE_ID_FROM_CHANNEL_ID(channel_id) ((t_service_id)(channel_id))
-#define GET_SATELLITEPOSITION_FROM_CHANNEL_ID(channel_id) ((t_satellite_position )(channel_id >> 32) & 0xFFFF)
 
 // transponder_id
 #define CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id) ( ((uint64_t)freq << 48) |  ((uint64_t) ( satellitePosition >= 0 ? satellitePosition : (uint64_t)(0xF000+ abs(satellitePosition))) << 32) | ((uint64_t)transport_stream_id << 16) | (uint64_t)original_network_id)
