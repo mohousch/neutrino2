@@ -135,9 +135,11 @@ int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feinde
 					multilingual_network_name_descriptor(buffer + pos);
 					break;
 
-				/*case 0x5F:
+				/*
+				case 0x5F:
 					private_data_specifier_descriptor(buffer + pos);
-					break;*/
+					break;
+				*/
 
 				case 0x80: // unknown, Eutelsat 13.0E
 					break;

@@ -840,13 +840,10 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.lastChannelMode = configfile.getInt32("lastChannelMode", 1);		//TV mode
 	g_settings.StartChannelTV = configfile.getString("startchanneltv", "");
 	g_settings.StartChannelRadio = configfile.getString("startchannelradio", "");
-	g_settings.StartChannelWEBTV = configfile.getString("startchannelwebtv", "");
 	g_settings.startchanneltv_id =  configfile.getInt64("startchanneltv_id", 0); 
 	g_settings.startchannelradio_id = configfile.getInt64("startchannelradio_id", 0);
-	g_settings.startchannelwebtv_id = configfile.getInt64("startchannelwebtv_id", 0);
 	g_settings.startchanneltv_nr =  configfile.getInt32("startchanneltv_nr", 0);
 	g_settings.startchannelradio_nr = configfile.getInt32("startchannelradio_nr", 0);
-	g_settings.startchannelwebtv_nr = configfile.getInt32("startchannelwebtv_nr", 0);
 	g_settings.uselastchannel = configfile.getInt32("uselastchannel" , 1);
 
 	// epg
@@ -1335,13 +1332,10 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("lastChannelMode", g_settings.lastChannelMode);
 	configfile.setString("startchanneltv", g_settings.StartChannelTV );
 	configfile.setString("startchannelradio", g_settings.StartChannelRadio );
-	configfile.setString("startchannelwebtv", g_settings.StartChannelWEBTV );
 	configfile.setInt64("startchanneltv_id", g_settings.startchanneltv_id);
 	configfile.setInt64("startchannelradio_id", g_settings.startchannelradio_id);
-	configfile.setInt64("startchannelwebtv_id", g_settings.startchannelwebtv_id);
 	configfile.setInt32("startchanneltv_nr", g_settings.startchanneltv_nr);
 	configfile.setInt32("startchannelradio_nr", g_settings.startchannelradio_nr);
-	configfile.setInt32("startchannelwebtv_nr", g_settings.startchannelwebtv_nr);
 	configfile.setInt32("uselastchannel", g_settings.uselastchannel);
 	
 	// radiotext	
@@ -2509,10 +2503,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 	ZapStart_arg.lastchannelmode = g_settings.lastChannelMode;
 	ZapStart_arg.startchanneltv_id = g_settings.startchanneltv_id;
 	ZapStart_arg.startchannelradio_id = g_settings.startchannelradio_id;
-	ZapStart_arg.startchannelwebtv_id = g_settings.startchannelwebtv_id;
 	ZapStart_arg.startchanneltv_nr = g_settings.startchanneltv_nr;
 	ZapStart_arg.startchannelradio_nr = g_settings.startchannelradio_nr;
-	ZapStart_arg.startchannelwebtv_nr = g_settings.startchannelwebtv_nr;
 	ZapStart_arg.uselastchannel = g_settings.uselastchannel;
 	
 	ZapStart_arg.video_mode = g_settings.video_Mode;

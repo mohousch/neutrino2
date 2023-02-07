@@ -130,12 +130,12 @@ t_channel_id rec_channel_id = 0;
 
 bool firstzap = true;
 bool playing = false;
-bool g_list_changed = false; 		/* flag to indicate, allchans was changed */
+bool g_list_changed = false; 		// flag to indicate, allchans was changed
 
 int change_audio_pid(uint8_t index);
 
 //
-void SaveServices(bool tocopy);
+void saveServices(bool tocopy);
 
 // SDT
 int scanSDT = 0;
@@ -218,7 +218,6 @@ bool saveLastChannel = true;
 int lastChannelMode = TV_MODE;
 uint32_t  lastChannelRadio = 0;
 uint32_t  lastChannelTV = 0;
-uint32_t lastChannelWEBTV = 0;
 bool makeRemainingChannelsBouquet = false;
 
 // set/get zapit.config
@@ -945,7 +944,6 @@ void saveZapitSettings(bool write, bool write_a)
 
 			config.setInt32("lastChannelRadio", lastChannelRadio);
 			config.setInt32("lastChannelTV", lastChannelTV);
-			config.setInt32("lastChannelWEBTV", lastChannelWEBTV);
 			config.setInt64("lastChannel", live_channel_id);
 		}
 		
@@ -980,7 +978,6 @@ void loadZapitSettings()
 	lastChannelMode = config.getInt32("lastChannelMode", TV_MODE);
 	lastChannelRadio = config.getInt32("lastChannelRadio", 0);
 	lastChannelTV = config.getInt32("lastChannelTV", 0);
-	lastChannelWEBTV = config.getInt32("lastChannelWEBTV", 0);
 
 	live_channel_id = config.getInt64("lastChannel", 0);
 
@@ -2886,7 +2883,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 	
 			if(g_list_changed) 
 			{
-				SaveServices(true); //FIXME
+				saveServices(true); //FIXME
 				g_list_changed = 0;
 			}
 			break;
@@ -4848,7 +4845,6 @@ int zapit_main_thread(void *data)
 
 		lastChannelRadio = ZapStart_arg->startchannelradio_nr;
 		lastChannelTV    = ZapStart_arg->startchanneltv_nr;
-		lastChannelWEBTV = ZapStart_arg->startchannelwebtv_nr;
 	}
 	else
 	{

@@ -248,6 +248,8 @@ void CBouquetManager::writeBouquetChannels(FILE * bouq_fd, uint32_t i, bool /*bU
 
 void CBouquetManager::saveBouquets(void)
 {
+	dprintf(DEBUG_NORMAL, "saveBouquets\n");
+	
 	FILE * bouq_fd;
 	
 	bouq_fd = fopen(BOUQUETS_XML, "w");
@@ -257,7 +259,7 @@ void CBouquetManager::saveBouquets(void)
 	{
 		if (Bouquets[i] != remainChannels) 
 		{
-			dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: name %s user: %d\n", Bouquets[i]->Name.c_str(), Bouquets[i]->bUser);
+			dprintf(DEBUG_NORMAL, "CBouquetManager::saveBouquets: name %s user: %d\n", Bouquets[i]->Name.c_str(), Bouquets[i]->bUser);
 			
 			if(!Bouquets[i]->bUser && !Bouquets[i]->bWebTV)
 			{
@@ -276,6 +278,8 @@ void CBouquetManager::saveBouquets(void)
 
 void CBouquetManager::saveUBouquets(void)
 {
+	dprintf(DEBUG_NORMAL, "saveUBouquets\n");
+	
 	FILE * ubouq_fd;
 	
 	ubouq_fd = fopen(UBOUQUETS_XML, "w");
@@ -302,23 +306,19 @@ void CBouquetManager::saveUBouquets(void)
 
 void CBouquetManager::saveBouquets(const CZapitClient::bouquetMode bouquetMode, const char * const providerName)
 {
+	dprintf(DEBUG_NORMAL, "CBouquetManager::saveBouquets: mode:%d\n", bouquetMode);
+	
 	if (bouquetMode == CZapitClient::BM_DELETEBOUQUETS) 
 	{
-		dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: removing existing bouquets");
-		
 		g_bouquetManager->clearAll();
 		unlink(BOUQUETS_XML);
 	}
 	else if (bouquetMode == CZapitClient::BM_DONTTOUCHBOUQUETS)
 	{
-		dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: leave current bouquets");
-		
 		return;
 	}
 	else if (bouquetMode == CZapitClient::BM_CREATESATELLITEBOUQUET) 
 	{
-		dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: create satellite bouquets");
-		
 		while (Bouquets.size() > 1) 
 		{
 			BouquetList::iterator it = Bouquets.begin() + 1;
@@ -333,8 +333,6 @@ void CBouquetManager::saveBouquets(const CZapitClient::bouquetMode bouquetMode, 
 	}
 	else if (bouquetMode == CZapitClient::BM_UPDATEBOUQUETS) 
 	{
-		dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: update existing bouquets");
-		
 		while (!(Bouquets.empty())) 
 		{
 			CZapitBouquet * bouquet;

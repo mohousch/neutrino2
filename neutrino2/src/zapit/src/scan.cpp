@@ -67,7 +67,7 @@ extern void initTuner(CFrontend * fe);
 
 extern _xmlDocPtr scanInputParser;
 
-void SaveServices(bool tocopy);
+void saveServices(bool tocopy);
 
 int zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate = 0);
 void * nit_thread(void * data);
@@ -145,7 +145,7 @@ int add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t
 		freq = feparams->frequency / 100;
 	else if(getFE(feindex)->getInfo()->type == FE_QPSK)
 		freq = feparams->frequency / 1000;
-	else if(getFE(feindex)->getInfo()->type == FE_OFDM)
+	else if(getFE(feindex)->getInfo()->type == FE_OFDM || getFE(feindex)->getInfo()->type == FE_ATSC)
 		freq = feparams->frequency / 1000000;
 
 	uint8_t poltmp1 = polarity & 1;
@@ -241,6 +241,8 @@ _repeat:
 			actual_freq = tI->second.feparams.frequency;
 		else if( getFE(feindex)->getInfo()->type == FE_OFDM)
 			actual_freq = tI->second.feparams.frequency;
+		else if( getFE(feindex)->getInfo()->type == FE_ATSC)
+			actual_freq = tI->second.feparams.frequency;
 
 		processed_transponders++;
 		
@@ -273,7 +275,7 @@ _repeat:
 			freq = tI->second.feparams.frequency/100;
 		else if( getFE(feindex)->getInfo()->type == FE_QPSK)
 			freq = tI->second.feparams.frequency/1000;
-		else if( getFE(feindex)->getInfo()->type == FE_OFDM)
+		else if( getFE(feindex)->getInfo()->type == FE_OFDM || getFE(feindex)->getInfo()->type == FE_ATSC)
 			freq = tI->second.feparams.frequency/1000000;
 			
 		// parse sdt
@@ -289,7 +291,7 @@ _repeat:
 
 		stI = transponders.find(TsidOnid);
 		if(stI == transponders.end())
-			transponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid,transponder (tI->second.transport_stream_id,tI->second.feparams,tI->second.polarization,tI->second.original_network_id)));
+			transponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder(tI->second.transport_stream_id,tI->second.feparams,tI->second.polarization,tI->second.original_network_id)));
 		else
 			stI->second.feparams.u.qpsk.fec_inner = tI->second.feparams.u.qpsk.fec_inner;
 		
@@ -353,7 +355,7 @@ int scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_po
 		freq = feparams.frequency/100;
 	else if( getFE(feindex)->getInfo()->type == FE_QPSK)
 		freq = feparams.frequency/1000;
-	else if( getFE(feindex)->getInfo()->type == FE_OFDM)
+	else if( getFE(feindex)->getInfo()->type == FE_OFDM || getFE(feindex)->getInfo()->type == FE_ATSC)
 		freq = feparams.frequency/1000000;
 		
 	if( getFE(feindex)->getInfo()->type == FE_QAM)	//DVB-C
@@ -391,6 +393,7 @@ int scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_po
 
 		feparams.u.qpsk.fec_inner = (fe_code_rate_t) xml_fec;
 	}
+	// FIXME: add atsc
 
 	// read network information table
 	fake_tid++; fake_nid++;
@@ -543,6 +546,10 @@ void * start_scanthread(void *scanmode)
 	{
 		frontendType = (char *) "sat";
 	}
+	else if( getFE(feindex)->getInfo()->type == FE_ATSC)
+	{
+		frontendType = (char *) "atsc";
+	}
 	
 	// get provider position and name
 	parseScanInputXml(getFE(feindex)->getInfo()->type);
@@ -625,13 +632,11 @@ void * start_scanthread(void *scanmode)
 
 	if (found_channels) 
 	{
-		SaveServices(true);
+		saveServices(true);
 		
 		dprintf(DEBUG_NORMAL, "[scan] start_scanthread: save services done\n"); 
 		
 	        g_bouquetManager->saveBouquets();
-	        //g_bouquetManager->sortBouquets();
-	        //g_bouquetManager->renumServices();
 	        g_bouquetManager->clearAll();
 		g_bouquetManager->loadBouquets();
 		
@@ -707,7 +712,7 @@ void * scan_transponder(void * arg)
 	else if( getFE(ScanTP.feindex)->getInfo()->type == FE_OFDM)
 		freq = TP->feparams.frequency/1000000;
 
-	// read network information table
+	// add TP to scan
 	fake_tid++; 
 	fake_nid++;
 
@@ -722,12 +727,10 @@ void * scan_transponder(void * arg)
 
 	if(found_channels) 
 	{
-		SaveServices(true);
+		saveServices(true);
 		
 		scanBouquetManager->saveBouquets(bouquetMode, providerName);
 	        g_bouquetManager->saveBouquets();
-	        //g_bouquetManager->sortBouquets();
-	        //g_bouquetManager->renumServices();
 	        g_bouquetManager->clearAll();
 		g_bouquetManager->loadBouquets();
 		
@@ -745,3 +748,4 @@ void * scan_transponder(void * arg)
 
 	pthread_exit(NULL);
 }
+

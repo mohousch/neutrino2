@@ -75,9 +75,10 @@ extern bool have_a;
 
 extern void parseScanInputXml(fe_type_t fe_type);	// defined in zapit.cpp
 
-void ParseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system)
+// parse transponder from services.xml
+void parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system)
 {
-	dprintf(DEBUG_INFO, "[getservices] ParseTransponders:\n");
+	dprintf(DEBUG_INFO, "[getservices] parseTransponders:\n");
 
 	t_transport_stream_id transport_stream_id;
 	t_original_network_id original_network_id;
@@ -135,7 +136,7 @@ void ParseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition,
 			freq = feparams.frequency/100;
 		else if(system == DVB_S)
 			freq = feparams.frequency/1000;
-		else if(system == DVB_T)
+		else if(system == DVB_T || system == DVB_A)
 			freq = feparams.frequency/100000;
 
 		// add current transponder to TP list
@@ -149,7 +150,7 @@ void ParseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition,
 			printf("[getservices] duplicate transponder id %llx freq %d\n", tid, feparams.frequency);
 
 		// read channels that belong to the current transponder
-		ParseChannels(node->xmlChildrenNode, transport_stream_id, original_network_id, satellitePosition, freq, polarization);
+		parseChannels(node->xmlChildrenNode, transport_stream_id, original_network_id, satellitePosition, freq, polarization);
 
 		// hop to next transponder
 		node = node->xmlNextNode;
@@ -158,9 +159,9 @@ void ParseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition,
 	return;
 }
 
-void ParseChannels(_xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation)
+void parseChannels(_xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation)
 {
-	dprintf(DEBUG_DEBUG, "[getservices] ParseChannels:\n");
+	dprintf(DEBUG_DEBUG, "[getservices] parseChannels:\n");
 
 	t_service_id service_id;
 	std::string  name;
@@ -229,7 +230,7 @@ void ParseChannels(_xmlNodePtr node, const t_transport_stream_id transport_strea
 
 		if(ret.second == false) 
 		{
-			dprintf(DEBUG_INFO, "[getservices] ParseChannels: duplicate channel %s id %llx freq %d (old %s at %d)\n", name.c_str(), chid, freq, ret.first->second.getName().c_str(), ret.first->second.getFreqId());
+			dprintf(DEBUG_INFO, "[getservices] parseChannels: duplicate channel %s id %llx freq %d (old %s at %d)\n", name.c_str(), chid, freq, ret.first->second.getName().c_str(), ret.first->second.getFreqId());
 		} 
 		else 
 		{
@@ -259,9 +260,9 @@ void ParseChannels(_xmlNodePtr node, const t_transport_stream_id transport_strea
 }
 
 // scan services.xml
-void FindTransponder(_xmlNodePtr search)
+void findTransponder(_xmlNodePtr search)
 {
-	dprintf(DEBUG_INFO, "[getservices] FindTransponder:\n");
+	dprintf(DEBUG_INFO, "[getservices] findTransponder:\n");
 
 	t_satellite_position satellitePosition = 0;
     	delivery_system_t system = DVB_S;
@@ -282,11 +283,26 @@ void FindTransponder(_xmlNodePtr search)
 				}
 			}
 			
-			dprintf(DEBUG_INFO, "[getservices] FindTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
+			dprintf(DEBUG_INFO, "[getservices] findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
 		}
 		else if ( !(strcmp(xmlGetName(search), "terrestrial")) && have_t)
 		{
 			system = DVB_T;
+			
+			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
+			{
+				if( !strcmp(spos_it->second.name.c_str(), xmlGetAttribute(search, "name")) ) 
+				{
+					satellitePosition = spos_it->first;
+					break;
+				}
+			}
+			
+			dprintf(DEBUG_INFO, "[getservices] FindTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
+		}
+		else if ( !(strcmp(xmlGetName(search), "atsc")) && have_a)
+		{
+			system = DVB_A;
 			
 			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
 			{
@@ -313,7 +329,7 @@ void FindTransponder(_xmlNodePtr search)
 		}
 		
 		// parse TP
-		ParseTransponders(search->xmlChildrenNode, satellitePosition, system);
+		parseTransponders(search->xmlChildrenNode, satellitePosition, system);
 
 		newfound++;
 		
@@ -324,9 +340,9 @@ void FindTransponder(_xmlNodePtr search)
 // parse sat transponder from satellites/cables/terrestrials.xml/atsc.xml
 static uint32_t fake_tid;
 static uint32_t fake_nid;
-void ParseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellite_position satellitePosition)
+void parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellite_position satellitePosition)
 {
-	dprintf(DEBUG_DEBUG, "[getservices] ParseSatTransponders:\n");
+	dprintf(DEBUG_DEBUG, "[getservices] parseSatTransponders:\n");
 
 	uint8_t polarization = 0;
 	uint8_t system = 0;
@@ -411,7 +427,6 @@ void ParseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellit
 			
 		transponder_id_t tid = CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid);
 
-		//polarization &= 1;
 		polarization &= 7;
 		
 		// insert TPs list
@@ -467,7 +482,7 @@ int loadMotorPositions(void)
 	return 0;
 }
 
-void SaveMotorPositions()
+void saveMotorPositions()
 {
 	FILE * fd;
 	sat_iterator_t sit;
@@ -571,7 +586,7 @@ int loadTransponders()
 				}
 				
 				// parse sat TP
-				ParseSatTransponders(FE_QPSK, search, position);
+				parseSatTransponders(FE_QPSK, search, position);
 				
 				position++;
 				
@@ -610,7 +625,7 @@ int loadTransponders()
 				}
 
 				// parse sat TP
-				ParseSatTransponders(FE_QAM, search, position);
+				parseSatTransponders(FE_QAM, search, position);
 				
 				position++;
 				
@@ -649,7 +664,7 @@ int loadTransponders()
 				}
 
 				// parse sat TP
-				ParseSatTransponders(FE_OFDM, search, position);
+				parseSatTransponders(FE_OFDM, search, position);
 				
 				position++;
 				
@@ -687,7 +702,7 @@ int loadTransponders()
 				}
 
 				// parse sat TP
-				ParseSatTransponders(FE_ATSC, search, position);
+				parseSatTransponders(FE_ATSC, search, position);
 				
 				position++;
 				
@@ -737,7 +752,7 @@ int loadServices(bool only_current)
 			search = search->xmlNextNode;
 		}
 
-		FindTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
+		findTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
 		
 		xmlFreeDoc(parser);
 	}
@@ -763,13 +778,13 @@ do_current:
 		
 		dprintf(DEBUG_INFO, "[getservices] loadServices: " CURRENTSERVICES_XML "  found.\n");
 		
-		FindTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
+		findTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
 		
 		xmlFreeDoc(parser);
 		unlink(CURRENTSERVICES_XML);
 		
 		if(newfound)
-			SaveServices(true); //FIXME for second tuner
+			saveServices(true); //FIXME for second tuner
 	}
 
 	if(!only_current) 
@@ -777,7 +792,7 @@ do_current:
 		parser = parseXmlFile(MYSERVICES_XML);
 		if (parser != NULL) 
 		{
-			FindTransponder(xmlDocGetRootElement(parser)->xmlChildrenNode);
+			findTransponder(xmlDocGetRootElement(parser)->xmlChildrenNode);
 			
 			xmlFreeDoc(parser);
 		}
@@ -798,7 +813,7 @@ void zapit_cp(char * from, char * to)
 	sync();
 }
 
-void SaveServices(bool tocopy)
+void saveServices(bool tocopy)
 {
 	transponder_id_t tpid = 0;
 	FILE * fd = 0;

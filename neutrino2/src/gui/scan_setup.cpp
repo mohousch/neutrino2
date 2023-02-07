@@ -293,7 +293,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		// send directly diseqc
 		if( getFE(feindex)->getInfo()->type == FE_QPSK )
 		{
-			SaveMotorPositions();
+			saveMotorPositions();
 			
 			//diseqc type
 			getFE(feindex)->setDiseqcType((diseqc_t)getFE(feindex)->diseqcType);
@@ -1433,7 +1433,7 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 		TP_hierarchy = getConfigValue(index, "TP_hierarchy", 0);
 	}
 
-    if(getFE(index)->getInfo()->type == FE_ATSC)
+    	if(getFE(index)->getInfo()->type == FE_ATSC)
 	{
 		TP_mod = getConfigValue(index, "TP_mod", 3);
 	}
