@@ -79,6 +79,7 @@
 void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
 void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsdClient::responseGetCurrentNextInfoChannelID& current_next );
 
+extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern CRemoteControl * g_RemoteControl;		// neutrino.cpp
 extern cVideo * videoDecoder;				// libdvbapi
 extern CFrontend * live_fe;				// zapit.cpp

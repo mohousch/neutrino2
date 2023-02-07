@@ -47,7 +47,8 @@
 
 #include <client/msgtypes.h>
 
-
+extern satellite_map_t satellitePositions;		// defined in getServices.cpp
+extern scan_list_t scanProviders;			// defined in zapit.cpp
 extern CBouquetManager *g_bouquetManager;
 extern transponder_list_t transponders; 		//  defined in zapit.cpp
 extern tallchans allchans;  				//  defined in zapit.cpp

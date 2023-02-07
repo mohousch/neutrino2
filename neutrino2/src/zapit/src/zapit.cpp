@@ -78,6 +78,9 @@
 #endif
 
 
+extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+extern scan_list_t scanProviders;						// defined in zapit.cpp
+
 // opengl liveplayback
 #if defined (USE_OPENGL)
 int startOpenGLplayback();
@@ -4247,7 +4250,8 @@ void * sdt_thread(void */*arg*/)
 
 			char buffer[256];
 			fd = fopen(CURRENTSERVICES_TMP, "w");
-			if(!fd) {
+			if(!fd) 
+			{
 				dprintf(DEBUG_INFO, "[zapit] [sdt monitor] " CURRENTSERVICES_TMP ": cant open!\n");
 				continue;
 			}

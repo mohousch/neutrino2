@@ -44,6 +44,8 @@
 #include <satconfig.h>
 
 
+extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+//extern scan_list_t scanProviders;						// defined in zapit.cpp
 extern transponder_list_t transponders;
 
 #define SOUTH		0

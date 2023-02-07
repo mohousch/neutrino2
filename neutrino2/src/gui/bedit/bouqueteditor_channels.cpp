@@ -60,6 +60,8 @@
 #include <system/debug.h>
 
 
+extern satellite_map_t satellitePositions;	// defined in getServices.cpp
+extern transponder_list_t transponders;		// defined in zapit.cpp
 extern CBouquetManager * g_bouquetManager;	// defined in zapit.cpp
 
 CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bouquet)

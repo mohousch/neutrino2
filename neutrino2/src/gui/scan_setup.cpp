@@ -59,6 +59,8 @@
 #include <satconfig.h>
 
 
+extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+
 // global
 CScanSettings * scanSettings;
 static int dmode = NO_DISEQC;
@@ -1394,7 +1396,6 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	strcpy(satNameNoDiseqc, configfile.getString(cfg_key, "none").c_str());
 	
 	scan_mode = getConfigValue(index, "scan_mode", 1); // NIT (0) or fast (1)
-	scanSectionsd = getConfigValue(index, "scanSectionsd", 0);
 	
 	// freq
 	sprintf(cfg_key, "fe%d_TP_freq", index);
@@ -1454,7 +1455,6 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 	configfile.setString(cfg_key, satNameNoDiseqc );
 	
 	setConfigValue(index, "scan_mode", scan_mode);
-	setConfigValue(index, "scanSectionsd", scanSectionsd ); // sectionsd
 	
 	// freq
 	sprintf(cfg_key, "fe%d_TP_freq", index);

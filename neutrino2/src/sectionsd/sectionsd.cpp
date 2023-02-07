@@ -96,6 +96,7 @@
 #include <global.h>
 
 #include <bouquets.h>
+#include <frontend_c.h>
 
 extern tallchans allchans;	// defined in zapit.cpp.
 int op_increase (int i) { return ++i; }
@@ -210,11 +211,7 @@ static pthread_rwlock_t messagingLock = PTHREAD_RWLOCK_INITIALIZER;
 static pthread_cond_t timeThreadSleepCond = PTHREAD_COND_INITIALIZER;
 static pthread_mutex_t timeThreadSleepMutex = PTHREAD_MUTEX_INITIALIZER;
 
-// zapit includes
-#include <frontend_c.h>
-//#include <gui/scan_setup.h>
 extern CFrontend * live_fe;
-//extern CScanSettings * scanSettings;			// defined in scan_setup.cpp
 extern int FrontendCount;
 
 

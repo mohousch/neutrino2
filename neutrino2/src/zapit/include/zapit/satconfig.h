@@ -50,7 +50,5 @@ typedef std::map<t_satellite_position, sat_config_t>::iterator sat_iterator_t;
 typedef std::map <int, std::string> scan_list_t;
 typedef std::map <int, std::string>::iterator scan_list_iterator_t;
 
-extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-extern scan_list_t scanProviders;						// defined in zapit.cpp
-
 #endif		/* _SAT_CONFIG_H_ */
+

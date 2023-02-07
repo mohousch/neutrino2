@@ -56,6 +56,8 @@
 #include <gui/bedit/bouqueteditor_chanselect.h>
 
 
+extern satellite_map_t satellitePositions;	// defined in getServices.cpp
+extern transponder_list_t transponders;		// defined in zapit.cpp
 extern tallchans allchans;			// defined in zapit.cpp
 extern CBouquetManager* g_bouquetManager;	// defined in zapit.cpp
 void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id); // defined in zapit.cpp

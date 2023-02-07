@@ -62,6 +62,8 @@ static int moving = 0;
 #define BAR_WIDTH 100
 #define BAR_HEIGHT 16 //(13 + BAR_BORDER*2)
 
+extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+
 //extern CFrontend * live_fe;
 CFrontend * getFE(int index);
 extern CScanSettings * scanSettings;

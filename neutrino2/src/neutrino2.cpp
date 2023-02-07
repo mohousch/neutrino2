@@ -182,6 +182,7 @@ cPlayback* playback = NULL;
 
 extern char rec_filename[1024];				// defined in stream2file.cpp
 
+extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern tallchans allchans;				// defined in zapit.cpp
 extern CBouquetManager * g_bouquetManager;		// defined in zapit.cpp
 

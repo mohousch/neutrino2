@@ -55,6 +55,7 @@
 extern cVideo * videoDecoder;
 extern cAudio * audioDecoder;
 
+extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern CRemoteControl *g_RemoteControl;	/* neutrino.cpp */
 extern CZapitClient::SatelliteList satList;
 extern CFrontend * live_fe;

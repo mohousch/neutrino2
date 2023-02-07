@@ -62,7 +62,7 @@ class CScanSettings
 		int		scanType;
 		char            satNameNoDiseqc[50];
 		
-		int		scanSectionsd;
+		//
 		int		scan_mode;
 		int		TP_fec;
 		int		TP_pol;

@@ -67,12 +67,13 @@
 #define BAR_WIDTH 150
 #define BAR_HEIGHT 8//(13 + BAR_BORDER*2)
 
+extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 TP_params TP;
 CFrontend * getFE(int index);
 extern CScanSettings * scanSettings;		// defined in scan_setup.cpp
 extern t_channel_id live_channel_id; 		//defined in zapit.cpp
 
-
+//
 CScanTs::CScanTs(int num)
 {
 	frameBuffer = CFrameBuffer::getInstance();
