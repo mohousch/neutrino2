@@ -36,8 +36,8 @@
 // sdt update 
 #define SERVICES_TMP    		"/tmp/services.tmp"
 #define BOUQUETS_TMP    		"/tmp/bouquets.tmp"
-#define CURRENTSERVICES_XML     "/tmp/currentservices.xml"
-#define CURRENTSERVICES_TMP     "/tmp/currentservices.tmp"
+#define CURRENTSERVICES_XML     	"/tmp/currentservices.xml"
+#define CURRENTSERVICES_TMP     	"/tmp/currentservices.tmp"
 #define CURRENTBOUQUETS_XML		"/tmp/currentbouquets.xml"
 #define CURRENTBOUQUETS_TMP		"/tmp/currentbouquets.tmp"
 
@@ -45,12 +45,12 @@
 #define CABLES_XML      		CONFIGDIR "/cables.xml"
 #define SATELLITES_XML  		CONFIGDIR "/satellites.xml"
 #define TERRESTRIALS_XML 		CONFIGDIR "/terrestrial.xml"
-#define ATSC_XML                CONFIGDIR "/atsc.xml"
+#define ATSC_XML                	CONFIGDIR "/atsc.xml"
 
 // zapit/frontend/audio
-#define ZAPIT_CONFIGFILE      	CONFIGDIR "/zapit/zapit.conf"
-#define SATCONFIG 			    CONFIGDIR "/zapit/sat.conf"
-#define FRONTEND_CONFIGFILE 	CONFIGDIR "/zapit/frontend.conf"
+#define ZAPIT_CONFIGFILE      		CONFIGDIR "/zapit/zapit.conf"
+#define SATCONFIG			CONFIGDIR "/zapit/sat.conf"
+#define FRONTEND_CONFIGFILE 		CONFIGDIR "/zapit/frontend.conf"
 #define VOLUME_CONFIG_FILE 		CONFIGDIR "/zapit/audiovolume.conf"
 #define AUDIO_CONFIG_FILE 		CONFIGDIR "/zapit/audio.conf"
 

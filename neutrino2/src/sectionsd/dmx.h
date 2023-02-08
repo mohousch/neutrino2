@@ -51,7 +51,8 @@ class DMX
 		unsigned char	eit_version;
 		bool		cache; /* should read sections be cached? true for all but dmxCN */
 
-		inline bool isOpen(void) {
+		inline bool isOpen(void) 
+		{
 			return (fd != -1);
 		}
 

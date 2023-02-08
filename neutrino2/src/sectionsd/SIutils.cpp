@@ -137,54 +137,56 @@ int saveStringToXMLfile(FILE *out, const char *c, int /*withControlCodes*/)
 	  c=buf;
 	*/
 	for(; *c; c++) {
-		switch ((unsigned char)*c) {
-		case '<':
-			fprintf(out, "&lt;");
-			break;
-		case '>':
-			fprintf(out, "&gt;");
-			break;
-		case '&':
-			fprintf(out, "&amp;");
-			break;
-		case '\"':
-			fprintf(out, "&quot;");
-			break;
-		case '\'':
-			fprintf(out, "&apos;");
-			break;
+		switch ((unsigned char)*c) 
+		{
+			case '<':
+				fprintf(out, "&lt;");
+				break;
+			case '>':
+				fprintf(out, "&gt;");
+				break;
+			case '&':
+				fprintf(out, "&amp;");
+				break;
+			case '\"':
+				fprintf(out, "&quot;");
+				break;
+			case '\'':
+				fprintf(out, "&apos;");
+				break;
 #if 0
-		case 0x81:
-		case 0x82:
-			break;
-		case 0x86:
-			if(withControlCodes)
-				fprintf(out, "<b>");
-			break;
-		case 0x87:
-			if(withControlCodes)
-				fprintf(out, "</b>");
-			break;
-		case 0x8a:
-			if(withControlCodes)
-				fprintf(out, "<br/>");
-			break;
-		default:
-			if (*c<32)
+			case 0x81:
+			case 0x82:
 				break;
-			if ((*c>=32) && (((unsigned char)*c)<128))
-				fprintf(out, "%c", *c);
-			else
-				fprintf(out, "&#%d;", *c);
+			case 0x86:
+				if(withControlCodes)
+					fprintf(out, "<b>");
+				break;
+			case 0x87:
+				if(withControlCodes)
+					fprintf(out, "</b>");
+				break;
+			case 0x8a:
+				if(withControlCodes)
+					fprintf(out, "<br/>");
+				break;
+			default:
+				if (*c<32)
+					break;
+				if ((*c>=32) && (((unsigned char)*c)<128))
+					fprintf(out, "%c", *c);
+				else
+					fprintf(out, "&#%d;", *c);
 #else
-		default:
-			if ((unsigned char)*c<32)
-				break;
-			fprintf(out, "%c", *c);
+			default:
+				if ((unsigned char)*c<32)
+					break;
+				fprintf(out, "%c", *c);
 #endif
 		} // case
 
 	} // for
+	
 	return 0;
 }
 
@@ -193,11 +195,13 @@ void removeControlCodes(char *string)
 {
 	if(!string)
 		return;
+		
 	for(; *string; )
 		if (!((*string>=32) && (((unsigned char)*string)<128)))
 			memmove(string, string+1, strlen(string+1)+1);
 		else
 			string++;
+			
 	return ;
 }
 

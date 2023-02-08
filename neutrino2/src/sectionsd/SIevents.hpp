@@ -40,7 +40,6 @@
 // forward references
 class SIservice;
 class SIservices;
-class SIbouquets;
 
 struct eit_event {
 	unsigned event_id_hi			: 8;
@@ -103,62 +102,69 @@ struct descr_pdc_header {
 	unsigned pil2				: 8;
 } __attribute__ ((packed)) ;
 
-class SIlinkage {
-public:
-	SIlinkage(const struct descr_linkage_header *link) {
-		linkageType = link->linkage_type;
-		transportStreamId = (link->transport_stream_id_hi << 8) | link->transport_stream_id_lo;
-		originalNetworkId = (link->original_network_id_hi << 8) | link->original_network_id_lo;
-		serviceId = (link->service_id_hi << 8) | link->service_id_lo;
-		if (link->descriptor_length > sizeof(struct descr_linkage_header) - 2)
-			//name = std::string(((const char *)link) + sizeof(struct descr_linkage_header), link->descriptor_length - (sizeof(struct descr_linkage_header) - 2));
-			name = convertDVBUTF8(((const char *)link)+sizeof(struct descr_linkage_header), link->descriptor_length-(sizeof(struct descr_linkage_header)-2), 0, 0);
-	}
+class SIlinkage 
+{
+	public:
+		SIlinkage(const struct descr_linkage_header *link) 
+		{
+			linkageType = link->linkage_type;
+			transportStreamId = (link->transport_stream_id_hi << 8) | link->transport_stream_id_lo;
+			originalNetworkId = (link->original_network_id_hi << 8) | link->original_network_id_lo;
+			serviceId = (link->service_id_hi << 8) | link->service_id_lo;
+			if (link->descriptor_length > sizeof(struct descr_linkage_header) - 2)
+				//name = std::string(((const char *)link) + sizeof(struct descr_linkage_header), link->descriptor_length - (sizeof(struct descr_linkage_header) - 2));
+				name = convertDVBUTF8(((const char *)link)+sizeof(struct descr_linkage_header), link->descriptor_length-(sizeof(struct descr_linkage_header)-2), 0, 0);
+		}
 
-	// Std-copy
-	SIlinkage(const SIlinkage &l) {
-		linkageType = l.linkageType;
-		transportStreamId = l.transportStreamId;
-		originalNetworkId = l.originalNetworkId;
-		serviceId = l.serviceId;
-		name = l.name;
-	}
+		// Std-copy
+		SIlinkage(const SIlinkage &l) 
+		{
+			linkageType = l.linkageType;
+			transportStreamId = l.transportStreamId;
+			originalNetworkId = l.originalNetworkId;
+			serviceId = l.serviceId;
+			name = l.name;
+		}
 
-	// default
-	SIlinkage(void) {
-		linkageType = 0;
-		transportStreamId = 0;
-		originalNetworkId = 0;
-		serviceId = 0;
-		//name = ;
-	}
-	
-	// Der Operator zum sortieren
-	bool operator < (const SIlinkage& l) const {
-		return name < l.name;
-	}
+		// default
+		SIlinkage(void) 
+		{
+			linkageType = 0;
+			transportStreamId = 0;
+			originalNetworkId = 0;
+			serviceId = 0;
+			//name = ;
+		}
+		
+		// Der Operator zum sortieren
+		bool operator < (const SIlinkage& l) const 
+		{
+			return name < l.name;
+		}
 
-	void dump(void) const {
-		printf("Linakge Type: 0x%02hhx\n", linkageType);
-		if (name.length())
-			printf("Name: %s\n", name.c_str());
-		printf("Transport Stream Id: 0x%04hhx\n", transportStreamId);
-		printf("Original Network Id: 0x%04hhx\n", originalNetworkId);
-		printf("Service Id: 0x%04hhx\n", serviceId);
-	}
-	
-	int saveXML(FILE *file) const {
-		fprintf(file, "\t\t\t<linkage type=\"%02x\" linkage_descriptor=\"", linkageType);
-		saveStringToXMLfile(file, name.c_str());
-		fprintf(file, "\" transport_stream_id=\"%04x\" original_network_id=\"%04x\" service_id=\"%04x\" />\n", transportStreamId, originalNetworkId, serviceId);
-		return 0;
-	}
+		void dump(void) const 
+		{
+			printf("Linakge Type: 0x%02hhx\n", linkageType);
+			if (name.length())
+				printf("Name: %s\n", name.c_str());
+			printf("Transport Stream Id: 0x%04hhx\n", transportStreamId);
+			printf("Original Network Id: 0x%04hhx\n", originalNetworkId);
+			printf("Service Id: 0x%04hhx\n", serviceId);
+		}
+		
+		int saveXML(FILE *file) const 
+		{
+			fprintf(file, "\t\t\t<linkage type=\"%02x\" linkage_descriptor=\"", linkageType);
+			saveStringToXMLfile(file, name.c_str());
+			fprintf(file, "\" transport_stream_id=\"%04x\" original_network_id=\"%04x\" service_id=\"%04x\" />\n", transportStreamId, originalNetworkId, serviceId);
+			return 0;
+		}
 
-	unsigned char linkageType; // Linkage Descriptor
-	std::string name; // Text aus dem Linkage Descriptor
-	t_transport_stream_id transportStreamId; // Linkage Descriptor
-	t_original_network_id originalNetworkId; // Linkage Descriptor
-	t_service_id          serviceId;         // Linkage Descriptor
+		unsigned char linkageType; // Linkage Descriptor
+		std::string name; // Text aus dem Linkage Descriptor
+		t_transport_stream_id transportStreamId; // Linkage Descriptor
+		t_original_network_id originalNetworkId; // Linkage Descriptor
+		t_service_id          serviceId;         // Linkage Descriptor
 };
 
 // Fuer for_each
@@ -178,7 +184,8 @@ struct saveSIlinkageXML : public std::unary_function<class SIlinkage, void>
 //typedef std::multiset <SIlinkage, std::less<SIlinkage> > SIlinkage_descs;
 typedef std::vector<class SIlinkage> SIlinkage_descs;
 
-class SIcomponent {
+class SIcomponent 
+{
 	public:
 		SIcomponent(const struct descr_component_header *comp) 
 		{
@@ -191,21 +198,24 @@ class SIcomponent {
 		}
 		
 		// Std-copy
-		SIcomponent(const SIcomponent &c) {
+		SIcomponent(const SIcomponent &c) 
+		{
 			streamContent=c.streamContent;
 			componentType=c.componentType;
 			componentTag=c.componentTag;
 			component=c.component;
 		}
     
-		SIcomponent(void) {
+		SIcomponent(void) 
+		{
 			streamContent=0;
 			componentType=0;
 			componentTag=0;      
 		}
 		
 		// Der Operator zum sortieren
-		bool operator < (const SIcomponent& c) const {
+		bool operator < (const SIcomponent& c) const 
+		{
 			return streamContent < c.streamContent;
 		}
 		
@@ -248,15 +258,18 @@ struct saveSIcomponentXML : public std::unary_function<class SIcomponent, void>
 
 typedef std::multiset <SIcomponent, std::less<SIcomponent> > SIcomponents;
 
-class SIparentalRating {
+class SIparentalRating 
+{
 	public:
-		SIparentalRating(const std::string &cc, unsigned char rate) {
+		SIparentalRating(const std::string &cc, unsigned char rate) 
+		{
 			rating = rate;
 			countryCode = cc;
 		}
 		
 		// Std-Copy
-		SIparentalRating(const SIparentalRating &r) {
+		SIparentalRating(const SIparentalRating &r) 
+		{
 			rating = r.rating;
 			countryCode = r.countryCode;
 		}
@@ -272,7 +285,8 @@ class SIparentalRating {
 			printf("Rating: %s %hhu (+3)\n", countryCode.c_str(), rating);
 		}
 		
-		int saveXML(FILE *file) const {
+		int saveXML(FILE *file) const 
+		{
 			if(fprintf(file, "\t\t\t<parental_rating country=\"%s\" rating=\"%hhu\"/>\n", countryCode.c_str(), rating)<0)
 				return 1;
 			return 0;
@@ -298,22 +312,26 @@ struct saveSIparentalRatingXML : public std::unary_function<SIparentalRating, vo
 
 typedef std::set <SIparentalRating, std::less<SIparentalRating> > SIparentalRatings;
 
-class SItime {
+class SItime 
+{
 	public:
-		SItime(time_t s, unsigned d) {
-			startzeit=s;
-			dauer=d; // in Sekunden, 0 -> time shifted (cinedoms)
+		SItime(time_t s, unsigned d) 
+		{
+			startzeit = s;
+			dauer = d; // in Sekunden, 0 -> time shifted (cinedoms)
 		}
 		
 		// Std-Copy
-		SItime(const SItime &t) {
-			startzeit=t.startzeit;
-			dauer=t.dauer;
+		SItime(const SItime &t) 
+		{
+			startzeit = t.startzeit;
+			dauer = t.dauer;
 		}
 		
 		// Der Operator zum sortieren
-		bool operator < (const SItime& t) const {
-		  return startzeit < t.startzeit;
+		bool operator < (const SItime& t) const 
+		{
+			return startzeit < t.startzeit;
 		}
 		
 		void dump(void) const 
@@ -322,7 +340,8 @@ class SItime {
 			printf("Dauer: %02u:%02u:%02u (%umin, %us)\n", dauer/3600, (dauer%3600)/60, dauer%60, dauer/60, dauer);
 		}
 		
-		int saveXML(FILE *file) const { // saves the time
+		int saveXML(FILE *file) const 
+		{ // saves the time
 			// Ist so noch nicht in Ordnung, das sollte untergliedert werden,
 			// da sonst evtl. time,date,duration,time,date,... auftritt
 			// und eine rein sequentielle Ordnung finde ich nicht ok.
@@ -355,7 +374,8 @@ struct saveSItimeXML : public std::unary_function<SItime, void>
 	void operator() (const SItime &t) { t.saveXML(f);}
 };
 
-class SIevent {
+class SIevent 
+{
 	public:
 		t_service_id          service_id;
 		t_original_network_id original_network_id;
@@ -367,10 +387,13 @@ class SIevent {
 		// Std-Copy
 		SIevent(const SIevent &);
 		SIevent(const t_original_network_id, const t_transport_stream_id, const t_service_id, const unsigned short);
-		SIevent(void) {
+		SIevent(void) 
+		{
 			service_id = 0;
 			original_network_id = 0;
 			transport_stream_id = 0;
+			satellitePosition = 0;
+			freq = 0;
 			eventID    = 0;
 			vps = 0;
 			table_id = 0xFF; /* 0xFF means "not set" */
@@ -401,15 +424,18 @@ class SIevent {
 		//    time_t startzeit; // lokale Zeit, 0 -> time shifted (cinedoms)
 		//    unsigned dauer; // in Sekunden, 0 -> time shifted (cinedoms)
 		
-		t_channel_id get_channel_id(void) const {
+		t_channel_id get_channel_id(void) const 
+		{
 			return create_channel_id(service_id, original_network_id, transport_stream_id, 0, 0);
 		}
 
-		event_id_t uniqueKey(void) const {
+		event_id_t uniqueKey(void) const 
+		{
 			return CREATE_EVENT_ID(CREATE_CHANNEL_ID, eventID);
 		}
 		
-		int runningStatus(void) const {
+		int runningStatus(void) const 
+		{
 			return running;
 		}
 		
@@ -421,11 +447,12 @@ class SIevent {
 		unsigned char table_id;
 		unsigned char version;
 		// Der Operator zum sortieren
-		bool operator < (const SIevent& e) const {
+		bool operator < (const SIevent& e) const 
+		{
 		  return uniqueKey()<e.uniqueKey();
 		}
 		int saveXML(FILE *file) const { // saves the event
-		  return saveXML0(file) || saveXML2(file);
+			return saveXML0(file) || saveXML2(file);
 		}
 		int saveXML(FILE *file, const char *serviceName) const; // saves the event
 		void dump(void) const; // dumps the event to stdout

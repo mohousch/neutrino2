@@ -99,7 +99,7 @@
 #include <frontend_c.h>
 
 extern tallchans allchans;	// defined in zapit.cpp.
-int op_increase (int i) { return ++i; }
+int op_increase(int i) { return ++i; }
 
 // 60 Minuten Zyklus...
 #define TIME_EIT_SCHEDULED_PAUSE 60 * 60
@@ -3366,525 +3366,6 @@ static void *insertEventsfromFile(void *)
 }
 
 //
-#if 0
-static void *insertEventsfromHTTP(void* data)
-{
-	dprintf(DEBUG_NORMAL, "[sectionsd] insertEventsfromHTTP\n");
-	
-	//
-	if (!data)
-	{
-		reader_ready = true;
-		pthread_exit(NULL);
-	}
-	
-	std::string url = (std::string)(char *) data;
-	
-	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
-	{
-		if ( IS_WEBTV(it->second.getChannelID()) )
-		{
-			if(g_settings.epg_serverbox_gui == SNeutrinoSettings::SATIP_SERVERBOX_GUI_ENIGMA2)
-			{
-				url += "/web/epgservice?sRef=1:0:"; 
-
-				url += to_hexstring(1);
-				url += ":";
-				url += to_hexstring(GET_SERVICE_ID_FROM_CHANNEL_ID(it->second.getEPGID())); //sid
-				url += ":";
-				url += to_hexstring(GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(it->second.getEPGID())); //tsid
-				url += ":";
-				url += to_hexstring(GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(it->second.getEPGID())); //onid
-				url += ":";
-
-				if(g_settings.epg_serverbox_type == DVB_C)
-				{
-					url += "FFFF"; // namenspace for cable
-				}
-				else if (g_settings.epg_serverbox_type == DVB_T)
-				{
-					url += "EEEE"; // namenspace for terrestrial
-				}
-				else if (g_settings.epg_serverbox_type == DVB_S)
-				{
-					// namenspace for sat
-					url += to_hexstring(GET_SATELLITEPOSITION_FROM_CHANNEL_ID(it->second.getEPGID())); //satpos
-				}
-
-				url += "0000";
-				url += ":";
-				url += "0:0:0:";
-			}
-			else if( (g_settings.epg_serverbox_gui == SNeutrinoSettings::SATIP_SERVERBOX_GUI_NMP) || (g_settings.epg_serverbox_gui == SNeutrinoSettings::SATIP_SERVERBOX_GUI_NHD2) )
-			{
-				url += "/control/epg?channelid=";
-
-			 	url += to_hexstring(it->second.getEPGID());
-
-				url += "&xml=true&details=true";
-			}
-			
-			//dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd:insertEventsfromHTTP: url:%s\n", url.c_str());
-
-			std::string answer;
-
-			//
-			unsigned short id = 0;
-			time_t start_time;
-			time_t stop_time;
-			unsigned duration = 0;
-			char* title = NULL;
-			char* description = NULL;
-			char* descriptionextended = NULL;
-
-			answer = "/tmp/epg.xml";
-			
-			::downloadUrl(url, answer);
-
-			if(g_settings.epg_serverbox_gui == SNeutrinoSettings::SATIP_SERVERBOX_GUI_NHD2)
-			{
-				//NHD2
-				/*
-				<epglist>
-					<channel_id>bf270f2b5e</channel_id>
-					<channel_short_id>bf270f2b5e</channel_short_id>
-					<channel_name>Disney SD</channel_name>
-					<prog>
-						<bouquetnr>0</bouquetnr>
-						<channel_id>bf270f2b5e</channel_id>
-						<eventid>365560600707</eventid>
-						<eventid_hex>551d1c1883</eventid_hex>
-						<start_sec>1609424700</start_sec>
-						<start_t>15:25</start_t>
-						<date>31.12.2020</date>
-						<stop_sec>1609426200</stop_sec>
-						<stop_t>15:50</stop_t>
-						<duration_min>25</duration_min>
-						<description>Phineas und Ferb</description>
-						<info1>
-						Carl liest Major Monogram eine Geschichte vor diese erzählt von einer abenteuerlichen Reise von Phineas und Ferb.
-						</info1>
-						<info2>
-						Phineas, Ferb und ihre nervige Schwester haben Sommerferien. Die zwei erfinderischen Jungen denken sich immer neue, abenteuerliche Dinge aus, um Spass zu haben und den Sommer zu nutzen.Candice dagegen findet wenig Vergnügen an den Abenteuern ihrer Brüder. Bei jeder Gelegenheit versucht sie, die Beiden bei ihrer Mutter zu verpetzen.
-						</info2>
-					</prog>
-				-</epglist>
-				*/
-
-				//
-				_xmlNodePtr event = NULL;
-				_xmlNodePtr node = NULL;
-
-				//
-				_xmlDocPtr index_parser = parseXmlFile(answer.c_str());
-
-				if (index_parser != NULL) 
-				{
-					event = xmlDocGetRootElement(index_parser)->xmlChildrenNode;
-
-					while (event) 
-					{
-						node = event->xmlChildrenNode;
-
-						// bouquetnr
-						while(xmlGetNextOccurence(node, "bouquetnr") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						// channel_id
-						while(xmlGetNextOccurence(node, "channel_id") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						// eventid
-						while(xmlGetNextOccurence(node, "eventid") != NULL)
-						{
-							id = atoi(xmlGetData(node) + 10);
-
-							node = node->xmlNextNode;
-						}
-
-						// eventid_hex
-						while(xmlGetNextOccurence(node, "eventid_hex") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						//start_sec
-						while(xmlGetNextOccurence(node, "start_sec") != NULL)
-						{
-							start_time = (time_t)atoi(xmlGetData(node));
-
-							node = node->xmlNextNode;
-						}
-
-						// start_t
-						while(xmlGetNextOccurence(node, "start_t") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						// date
-						while(xmlGetNextOccurence(node, "date") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-			
-						//stop_sec
-						while(xmlGetNextOccurence(node, "stop_sec") != NULL)
-						{
-							stop_time = (time_t)atoi(xmlGetData(node));
-							duration = stop_time - start_time;
-
-							node = node->xmlNextNode;
-						}
-
-						// stop_t
-						while(xmlGetNextOccurence(node, "stop_t") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						// duration_min
-						while(xmlGetNextOccurence(node, "duration_min") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						//description (title)
-						while(xmlGetNextOccurence(node, "description") != NULL)
-						{
-							title = xmlGetData(node);
-							
-							node = node->xmlNextNode;
-						}
-
-						// info1 (description)
-						while(xmlGetNextOccurence(node, "info1") != NULL)
-						{
-							description = xmlGetData(node);
-							
-							node = node->xmlNextNode;
-						}
-
-						//info2 (descriptionextended)
-						while(xmlGetNextOccurence(node, "info2") != NULL)
-						{
-							descriptionextended = xmlGetData(node);
-							
-							node = node->xmlNextNode;
-						}
-
-						//
-						SIevent e(GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(it->second.getChannelID()), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(it->second.getChannelID()), GET_SERVICE_ID_FROM_CHANNEL_ID(it->second.getChannelID()), id);
-
-						e.times.insert(SItime(start_time, duration));
-						if(title != NULL)
-							e.setName(std::string(UTF8_to_Latin1("ger")), std::string(title));
-
-						if(description != NULL)
-							e.setText(std::string(UTF8_to_Latin1("ger")), std::string(description));
-
-						if(descriptionextended != NULL)
-							e.appendExtendedText(std::string(UTF8_to_Latin1("ger")), std::string(descriptionextended));
-
-						addEvent(e, 0);
-						
-						event = event->xmlNextNode;
-					}
-
-					xmlFreeDoc(index_parser);
-				}
-			}
-			else if(g_settings.epg_serverbox_gui == SNeutrinoSettings::SATIP_SERVERBOX_GUI_NMP)
-			{
-				//NMP
-				/*
-				-<epglist>
-					<channel_name><![CDATA[XITE]]></channel_name>
-					<channel_id>f1270f5e38</channel_id>
-					<channel_short_id>f1270f5e38</channel_short_id>
-					<epg_id></epg_id>
-					<short_epg_id></short_epg_id>
-					-<prog>
-						<bouquetnr>0</bouquetnr>
-						<channel_id>f1270f5e38</channel_id>
-						<epg_id>b24403f300012b66</epg_id>
-						<eventid>67878416345993535</eventid>
-						<eventid_hex>f1270f5e38113f</eventid_hex>
-						<start_sec>1483102800</start_sec>
-						<start_t>14:00</start_t>
-						<date>30.12.2016</date>
-						<stop_sec>1483117200</stop_sec>
-						<stop_t>18:00</stop_t>
-						<duration_min>240</duration_min>
-						<info1><![CDATA[Xite wishes you happy holidays! To complete the holiday spirit, we have made a mix of all of your favourite music.]]></info1>
-						<info2><![CDATA[Xite wishes you happy holidays! To complete the holiday spirit, we have made a mix of all of your favourite music.]]></info2>
-						<description><![CDATA[Happy Holidays]]></description>
-					-</prog>
-				-</epglist>
-				*/
-
-				//
-				_xmlNodePtr event = NULL;
-				_xmlNodePtr node = NULL;
-
-				//
-				_xmlDocPtr index_parser = parseXmlFile(answer.c_str());
-
-				if (index_parser != NULL) 
-				{
-					event = xmlDocGetRootElement(index_parser)->xmlChildrenNode;
-
-					while (event) 
-					{
-						node = event->xmlChildrenNode;
-
-						// bouquetnr
-						while(xmlGetNextOccurence(node, "bouquetnr") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						// channel_id
-						while(xmlGetNextOccurence(node, "channel_id") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						// epg_id
-						while(xmlGetNextOccurence(node, "epg_id") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						// eventid
-						while(xmlGetNextOccurence(node, "eventid") != NULL)
-						{
-							id = atoi(xmlGetData(node) + 10);
-
-							node = node->xmlNextNode;
-						}
-
-						// eventid_hex
-						while(xmlGetNextOccurence(node, "eventid_hex") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						//start_sec
-						while(xmlGetNextOccurence(node, "start_sec") != NULL)
-						{
-							start_time = (time_t)atoi(xmlGetData(node));
-
-							node = node->xmlNextNode;
-						}
-
-						// start_t
-						while(xmlGetNextOccurence(node, "start_t") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						// date
-						while(xmlGetNextOccurence(node, "date") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-			
-						//stop_sec
-						while(xmlGetNextOccurence(node, "stop_sec") != NULL)
-						{
-							stop_time = (time_t)atoi(xmlGetData(node));
-							duration = stop_time - start_time;
-
-							node = node->xmlNextNode;
-						}
-
-						// stop_t
-						while(xmlGetNextOccurence(node, "stop_t") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						// duration_min
-						while(xmlGetNextOccurence(node, "duration_min") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						// info1 (description)
-						while(xmlGetNextOccurence(node, "info1") != NULL)
-						{
-							description = xmlGetData(node);
-							
-							node = node->xmlNextNode;
-						}
-
-						//info2 (descriptionextended)
-						while(xmlGetNextOccurence(node, "info2") != NULL)
-						{
-							descriptionextended = xmlGetData(node);
-							
-							node = node->xmlNextNode;
-						}
-
-						//description (title)
-						while(xmlGetNextOccurence(node, "description") != NULL)
-						{
-							title = xmlGetData(node);
-							
-							node = node->xmlNextNode;
-						}
-
-						//
-						SIevent e(GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(it->second.getChannelID()), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(it->second.getChannelID()), GET_SERVICE_ID_FROM_CHANNEL_ID(it->second.getChannelID()), id);
-
-						e.times.insert(SItime(start_time, duration));
-						if(title != NULL)
-							e.setName(std::string(UTF8_to_Latin1("ger")), std::string(title));
-
-						if(description != NULL)
-							e.setText(std::string(UTF8_to_Latin1("ger")), std::string(description));
-
-						if(descriptionextended != NULL)
-							e.appendExtendedText(std::string(UTF8_to_Latin1("ger")), std::string(descriptionextended));
-
-						addEvent(e, 0);
-						
-						event = event->xmlNextNode;
-					}
-
-					xmlFreeDoc(index_parser);
-				}
-			}
-			else if(g_settings.epg_serverbox_gui == SNeutrinoSettings::SATIP_SERVERBOX_GUI_ENIGMA2)
-			{
-				/*
-				<e2eventlist>
-					<e2event>
-						<e2eventid></e2eventid>
-						<e2eventstart></e2eventstart>
-						<e2eventduration></e2eventduration>
-						<e2eventcurrenttime></e2eventcurrenttime>
-						<e2eventtitle></e2eventtitle>
-						<e2eventdescription></e2eventdescription>
-						<e2eventdescriptionextended></e2eventdescriptionextended>
-						<e2eventservicereference></e2eventservicereference>
-						<e2eventservicename></e2eventservicename>
-					</e2event>
-				</e2eventlist>
-				*/
-
-				//
-				_xmlNodePtr event = NULL;
-				_xmlNodePtr node = NULL;
-
-				//
-				_xmlDocPtr index_parser = parseXmlFile(answer.c_str());
-
-				if (index_parser != NULL) 
-				{
-					event = xmlDocGetRootElement(index_parser)->xmlChildrenNode;
-
-					while (event) 
-					{
-						node = event->xmlChildrenNode;
-
-						//e2eventid
-						while(xmlGetNextOccurence(node, "e2eventid") != NULL)
-						{
-							id = atoi(xmlGetData(node));
-							node = node->xmlNextNode;
-						}
-
-						//e2eventstart
-						while(xmlGetNextOccurence(node, "e2eventstart") != NULL)
-						{
-							start_time = (time_t)atoi(xmlGetData(node));
-							node = node->xmlNextNode;
-						}
-			
-						//e2eventduration
-						while(xmlGetNextOccurence(node, "e2eventduration") != NULL)
-						{
-							duration = (unsigned)atoi(xmlGetData(node));
-							node = node->xmlNextNode;
-						}
-
-						//e2eventcurrenttime
-						while(xmlGetNextOccurence(node, "e2eventcurrenttime") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						//e2eventtitle
-						while(xmlGetNextOccurence(node, "e2eventtitle") != NULL)
-						{
-							title = xmlGetData(node);
-							node = node->xmlNextNode;
-						}
-
-						//e2eventdescription
-						while(xmlGetNextOccurence(node, "e2eventdescription") != NULL)
-						{
-							description = xmlGetData(node);
-							node = node->xmlNextNode;
-						}
-
-						//e2eventdescriptionextended
-						while(xmlGetNextOccurence(node, "e2eventdescriptionextended") != NULL)
-						{
-							descriptionextended = xmlGetData(node);
-							node = node->xmlNextNode;
-						}
-
-						//e2eventservicereference
-						while(xmlGetNextOccurence(node, "e2eventservicereference") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						//e2eventservicename
-						while(xmlGetNextOccurence(node, "e2eventservicename") != NULL)
-						{
-							node = node->xmlNextNode;
-						}
-
-						//
-						SIevent e(GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(it->second.getChannelID()), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(it->second.getChannelID()), GET_SERVICE_ID_FROM_CHANNEL_ID(it->second.getChannelID()), id);
-
-						e.times.insert(SItime(start_time, duration));
-						if(title != NULL)
-							e.setName(std::string(UTF8_to_Latin1("ger")), std::string(title));
-
-						if(description != NULL)
-							e.setText(std::string(UTF8_to_Latin1("ger")), std::string(description));
-
-						if(descriptionextended != NULL)
-							e.appendExtendedText(std::string(UTF8_to_Latin1("ger")), std::string(descriptionextended));
-
-						addEvent(e, 0);
-						
-						event = event->xmlNextNode;
-					}
-
-					xmlFreeDoc(index_parser);
-				}
-			}
-
-			unlink(answer.c_str());
-		}
-	}
-	////
-
-	pthread_exit(NULL);
-}
-#endif
-
-//
 static void *insertEventsfromXMLTV(void* data)
 {
 	dprintf(DEBUG_NORMAL, "[sectionsd] insertEventsfromXMLTV\n");
@@ -3914,7 +3395,6 @@ static void *insertEventsfromXMLTV(void* data)
 	//
 	unsigned int ev_count = 0;
 
-	//answer = "/tmp/epg.xml";
 	answer = randomFile(::getFileExt(url), "/tmp", 8);
 	
 	::downloadUrl(url, answer);
@@ -4046,42 +3526,6 @@ static void commandReadSIfromXML(int connfd, char *data, const unsigned dataLeng
 	return ;
 }
 
-// fromHTTP / localtv
-#if 0
-static void commandReadSIfromHTTP(int connfd, char *data, const unsigned dataLength)
-{
-	dprintf(DEBUG_NORMAL, "[sectionsd] commandReadSIfromHTTP\n");
-
-	pthread_t thrInsert;
-
-	if (dataLength > 100)
-		return ;
-
-	writeLockMessaging();
-	data[dataLength] = '\0';
-	static std::string url_tmp = "";
-	url_tmp = (std::string)data;
-	unlockMessaging();
-
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-	writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
-
-	pthread_attr_t attr;
-	pthread_attr_init(&attr);
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-
-	if (pthread_create (&thrInsert, &attr, insertEventsfromHTTP, (void *)url_tmp.c_str()))
-	{
-		perror("sectionsd: pthread_create()");
-	}
-
-	pthread_attr_destroy(&attr);
-
-	return ;
-}
-#endif
-
 // fromXMLTV
 static void commandReadSIfromXMLTV(int connfd, char *data, const unsigned dataLength)
 {
@@ -4116,7 +3560,7 @@ static void commandReadSIfromXMLTV(int connfd, char *data, const unsigned dataLe
 	return ;
 }
 
-
+//
 static void write_epg_xml_header(FILE * fd, const t_original_network_id onid, const t_transport_stream_id tsid, const t_service_id sid)
 {
 	fprintf(fd,
@@ -4446,8 +3890,7 @@ static s_cmd_table connectionCommands[sectionsd::numberOfCommands] = {
 	{	commandUnRegisterEventClient,           "commandUnRegisterEventClient"	},
 	{	commandFreeMemory,			"commandFreeMemory"			},
 	{	commandReadSIfromXML,			"commandReadSIfromXML"			},
-	//{	commandReadSIfromHTTP,			"commandReadSIfromHTTP"		},
-	{	commandReadSIfromXMLTV,		"commandReadSIfromXMLTV"	},
+	{	commandReadSIfromXMLTV,			"commandReadSIfromXMLTV"	},
 	{	commandWriteSI2XML,			"commandWriteSI2XML"			},
 	{	commandLoadLanguages,                   "commandLoadLanguages"		},
 	{	commandSaveLanguages,                   "commandSaveLanguages"		},
@@ -5995,6 +5438,7 @@ void sectionsd_main_thread(void */*data*/)
 	// load languages
 	SIlanguage::loadLanguages();
 
+	//
 	tzset(); // TZ auswerten
 
 	CBasicServer sectionsd_server;
@@ -6059,7 +5503,7 @@ void sectionsd_main_thread(void */*data*/)
 			return;
 		}
 
-		// EIT-Thread2 starten
+		// CN-Thread starten
 		rc = pthread_create(&threadCN, 0, cnThread, 0);
 
 		if (rc) 
@@ -6200,6 +5644,7 @@ void sectionsd_main_thread(void */*data*/)
 		pthread_join(threadCN, NULL);
 
 		eit_stop_update_filter(&eit_update_fd);
+		
 		if(eitDmx)
 			delete eitDmx;
 
@@ -6320,6 +5765,7 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 			flag |= CSectionsdClient::epgflags::has_current; // aktuelles event da...
 			flag |= CSectionsdClient::epgflags::has_anything;
 		}
+		
 		if (!myNextEvent) 
 		{
 			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: !myNextEvent \n");
@@ -6345,7 +5791,8 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 			(CSectionsdClient::epgflags::has_current|CSectionsdClient::epgflags::has_next)) 
 	{
 		SItime zeitEvt1(0, 0);
-		if (!(flag & CSectionsdClient::epgflags::has_current)) {
+		if (!(flag & CSectionsdClient::epgflags::has_current)) 
+		{
 			currentEvt = findActualSIeventForServiceUniqueKey(uniqueServiceKey, zeitEvt1, 0, &flag2);
 		} 
 		else 
@@ -6757,11 +6204,13 @@ bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdC
 
 	MySIeventsOrderUniqueKey::iterator eFirst = mySIeventsOrderUniqueKey.find(uniqueKey);
 
-	if (eFirst != mySIeventsOrderUniqueKey.end()) {
+	if (eFirst != mySIeventsOrderUniqueKey.end()) 
+	{
 		CSectionsdClient::responseGetComponentTags response;
 		ret = true;
 
-		for (SIcomponents::iterator cmp = eFirst->second->components.begin(); cmp != eFirst->second->components.end(); ++cmp) {
+		for (SIcomponents::iterator cmp = eFirst->second->components.begin(); cmp != eFirst->second->components.end(); ++cmp) 
+		{
 			response.component = cmp->component;
 			response.componentType = cmp->componentType;
 			response.componentTag = cmp->componentTag;
@@ -6787,10 +6236,12 @@ bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSecti
 
 	MySIeventsOrderUniqueKey::iterator eFirst = mySIeventsOrderUniqueKey.find(uniqueKey);
 
-	if (eFirst != mySIeventsOrderUniqueKey.end()) {
+	if (eFirst != mySIeventsOrderUniqueKey.end()) 
+	{
 		for (SIlinkage_descs::iterator linkage_desc = eFirst->second->linkage_descs.begin(); linkage_desc != eFirst->second->linkage_descs.end(); ++linkage_desc)
 		{
-			if (linkage_desc->linkageType == 0xB0) {
+			if (linkage_desc->linkageType == 0xB0) 
+			{
 
 				CSectionsdClient::responseGetLinkageDescriptors response;
 				response.name = linkage_desc->name.c_str();
@@ -6824,8 +6275,10 @@ bool sectionsd_getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSect
 	{
 		dprintf(DEBUG_DEBUG, "[sectionsd] NVODServices: %u\n", si->second->nvods.size());
 
-		if (si->second->nvods.size()) {
-			for (SInvodReferences::iterator ni = si->second->nvods.begin(); ni != si->second->nvods.end(); ++ni) {
+		if (si->second->nvods.size()) 
+		{
+			for (SInvodReferences::iterator ni = si->second->nvods.begin(); ni != si->second->nvods.end(); ++ni) 
+			{
 				SItime zeitEvt1(0, 0);
 				findActualSIeventForServiceUniqueKey(ni->uniqueKey(), zeitEvt1, 15*60);
 
@@ -6859,7 +6312,7 @@ bool sectionsd_isReady(void)
 	return sectionsd_ready;
 }
 
-void insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid)
+void sectionsd_insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid)
 {
 	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd:insertEventsfromHTTP: url:%s\n", url.c_str());
 	
@@ -7318,118 +6771,4 @@ void insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_trans
 
 	unlink(answer.c_str());
 }
-
-#if 1
-void insertEventsUnikKeyfromXMLTV(std::string& url, std::string& epgid, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid)
-{
-	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd:insertEventsUnikKeyfromXMLTV: url:%s\n", url.c_str());
-	
-	if (url.empty())
-		return;
-
-	std::string answer;
-
-	//
-	unsigned short id = 0;
-	time_t start_time;
-	time_t stop_time;
-	unsigned duration = 0;
-	char* title = NULL;
-	char* description = NULL;
-	char* descriptionextended = NULL;
-	
-	//
-	unsigned int ev_count = 0;
-
-	answer = "/tmp/epg.xml";
-	
-	if (!::downloadUrl(url, answer))
-		return;
-	
-	//
-	_xmlNodePtr event = NULL;
-	_xmlNodePtr node = NULL;
-
-	//
-	_xmlDocPtr index_parser = parseXmlFile(answer.c_str());
-
-	if (index_parser != NULL) 
-	{
-		event = xmlDocGetRootElement(index_parser);
-		node = event->xmlChildrenNode;
-			
-		if (node)
-		{
-			while ((node = xmlGetNextOccurence(node, "programme")))
-			{
-				const char *chan = xmlGetAttribute(node, "channel");
-				const char *start = xmlGetAttribute(node, "start");
-				const char *stop  = xmlGetAttribute(node, "stop");
-
-				// check epgidname // channel
-				if (strcmp(chan, epgid.c_str()) == 0)
-				{
-					struct tm starttime, stoptime;
-					strptime(start, "%Y%m%d%H%M%S %z", &starttime);
-					strptime(stop, "%Y%m%d%H%M%S %z", &stoptime);
-
-					time_t start_time = mktime(&starttime) + starttime.tm_gmtoff;
-					time_t duration = mktime(&stoptime) + stoptime.tm_gmtoff - start_time;
-
-					//
-					time_t current_time;
-					time(&current_time);
-					double time_diff = difftime(current_time, start_time + duration);
-
-					//
-					SIevent e(_onid, _tsid, _sid, ev_count+0x8000);
-					e.table_id = 0x50;
-					e.times.insert(SItime(start_time, duration));
-						
-					_xmlNodePtr _node = node->xmlChildrenNode;
-						
-					while ((_node = xmlGetNextOccurence(_node, "title")))
-					{
-						const char *title = xmlGetData(_node);
-							
-						if(title != NULL)
-							e.setName(std::string(::UTF8_to_Latin1("deu")), std::string(title));
-						_node = _node->xmlChildrenNode;
-					}
-						
-					//
-					_node = node->xmlChildrenNode;
-					while ((_node = xmlGetNextOccurence(_node, "sub-title")))
-					{
-						const char *subtitle = xmlGetData(_node);
-						if(subtitle != NULL)
-							e.setText(std::string(::UTF8_to_Latin1("deu")), std::string(subtitle));
-						_node = _node->xmlChildrenNode;
-					}
-						
-					//
-					_node = node->xmlChildrenNode;;
-					while ((_node = xmlGetNextOccurence(_node, "desc")))
-					{
-						const char *description = xmlGetData(_node);
-						if(description !=  NULL)													 							e.appendExtendedText(std::string(::UTF8_to_Latin1("deu")), std::string(description));
-						_node = _node->xmlChildrenNode;
-					}
-
-					addEvent(e, ev_count);
-
-					ev_count++;
-				}
-
-				node = node->xmlNextNode;	
-			}
-		}
-	}
-	
-	xmlFreeDoc(index_parser);	
-
-	unlink(answer.c_str());
-}
-#endif
-
 

@@ -826,7 +826,7 @@ void CRemoteControl::tvMode()
 }
 
 // defined in sectionsd.cpp
-void insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
+void sectionsd_insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
 
 // online epg get events
 void CRemoteControl::getEventsFromHTTP(t_channel_id chid)
@@ -899,6 +899,6 @@ void CRemoteControl::getEventsFromHTTP(t_channel_id chid)
 	}
 
 	//
-	insertEventsfromHTTP(evUrl, GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(chid), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid), GET_SERVICE_ID_FROM_CHANNEL_ID(chid));
+	sectionsd_insertEventsfromHTTP(evUrl, GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(chid), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid), GET_SERVICE_ID_FROM_CHANNEL_ID(chid));
 }
 

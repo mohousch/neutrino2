@@ -26,6 +26,7 @@ freesatHuffmanDecoder::~freesatHuffmanDecoder()
 {
 	int	i, j;
 	huffTableEntry *currentEntry, *nextEntry;
+	
 	for ( j = 0 ; j < 2; j++ )
 	{ 
 		for ( i = 0 ; i < 256; i++ ) 
@@ -84,6 +85,7 @@ static unsigned char resolveChar(char *str)
 			return val;
 		}
 	}
+	
 	return str[0];
 }
 
@@ -108,6 +110,7 @@ static unsigned long decodeBinary(char *binary)
 		}
 		mask >>= 1;
 	}
+	
 	return val;
 }
 
@@ -132,6 +135,7 @@ bool freesatHuffmanDecoder::loadFile(int tableid, const char *filename)
 		{
 			from = binary = to = NULL;
 			int elems = sscanf(buf,"%a[^:]:%a[^:]:%a[^:]:", &from, &binary, &to);
+			
 			if ( elems == 3 )
 			{
 				int bin_len = strlen(binary);
@@ -258,3 +262,4 @@ std::string freesatHuffmanDecoder::decode(const unsigned char *src, size_t size)
 	
 	return uncompressed;
 }
+

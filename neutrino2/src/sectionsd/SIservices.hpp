@@ -58,7 +58,6 @@ struct sdt_service {
 	unsigned descriptors_loop_length_lo	: 8;
 } __attribute__ ((packed)) ; // 5 Bytes
 
-
 class SInvodReference
 {
 	public:

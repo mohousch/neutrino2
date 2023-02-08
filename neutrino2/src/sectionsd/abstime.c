@@ -13,6 +13,7 @@ time_t time_monotonic_ms(void)
 	}
 	ret = ((t.tv_sec + 604800)& 0x01FFFFF) * 1000; /* avoid overflow */
 	ret += t.tv_nsec / 1000000;
+	
 	return ret;
 }
 
@@ -26,5 +27,6 @@ time_t time_monotonic(void)
 	}
 	/* CLOCK_MONOTONIC is often == uptime, so starts at 0. Bad for relative
 	   time comparisons if the uptime is low, so add 7 days */
+	   
 	return t.tv_sec + 604800;
 }

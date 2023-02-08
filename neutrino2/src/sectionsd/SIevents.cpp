@@ -40,10 +40,7 @@
 #include "SIutils.hpp"
 #include "SIservices.hpp"
 #include "SIevents.hpp"
-#ifdef UPDATE_NETWORKS
-#include "SIbouquets.hpp"
-#include "SInetworks.hpp"
-#endif
+
 #include "SIsections.hpp"
 #include <dmxapi.h>
 
@@ -71,6 +68,8 @@ SIevent::SIevent(const struct eit_event *e)
 	service_id = 0;
 	original_network_id = 0;
 	transport_stream_id = 0;
+	satellitePosition = 0;
+	freq = 0;
 	
 	//
 	satellitePosition = 0;
@@ -83,6 +82,8 @@ SIevent::SIevent(const t_original_network_id _original_network_id, const t_trans
 	original_network_id = _original_network_id;
 	transport_stream_id = _transport_stream_id;
 	service_id          = _service_id;
+	satellitePosition = 0;
+	freq = 0;
 	eventID		    = _event_id;
 	table_id            = 0xFF; /* not set */
 	version 	    = 0xFF;
@@ -108,6 +109,8 @@ SIevent::SIevent(const SIevent &e)
 	service_id          = e.service_id;
 	original_network_id = e.original_network_id;
 	transport_stream_id = e.transport_stream_id;
+	satellitePosition = e.satellitePosition;
+	freq = e.freq;
 	itemDescription=e.itemDescription;
 	item=e.item;
 	langExtendedText=e.langExtendedText;
@@ -135,6 +138,7 @@ int SIevent::saveXML(FILE *file, const char *serviceName) const
 		if(fprintf(file, "</service_name>\n")<0)
 			return 3;
 	}
+	
 	return saveXML2(file);
 }
 
@@ -174,8 +178,10 @@ int SIevent::saveXML2(FILE *file) const
 	for (std::map<std::string, std::string>::const_iterator
 			i = langName.begin() ;
 			i != langName.end() ;
-			i++) {
-		if (i->second.length()) {
+			i++) 
+	{
+		if (i->second.length()) 
+		{
 			fprintf(file, "\t\t\t<name lang=\"%s\" string=\"", i->first.c_str());
 			saveStringToXMLfile(file, i->second.c_str());
 			fprintf(file, "\"/>\n");
@@ -184,28 +190,37 @@ int SIevent::saveXML2(FILE *file) const
 	for (std::map<std::string, std::string>::const_iterator
 			i = langText.begin() ;
 			i != langText.end() ;
-			i++) {
-		if (i->second.length()) {
+			i++) 
+	{
+		if (i->second.length()) 
+		{
 			fprintf(file, "\t\t\t<text lang=\"%s\" string=\"", i->first.c_str());
 			saveStringToXMLfile(file, i->second.c_str());
 			fprintf(file, "\"/>\n");
 		}
 	}
-	if(item.length()) {
+	
+	if(item.length()) 
+	{
 		fprintf(file, "\t\t\t<item string=\"");
 		saveStringToXMLfile(file, item.c_str());
 		fprintf(file, "\"/>\n");
 	}
-	if(itemDescription.length()) {
+	
+	if(itemDescription.length()) 
+	{
 		fprintf(file, "\t\t\t<item_description string=\"");
 		saveStringToXMLfile(file, itemDescription.c_str());
 		fprintf(file, "\"/>\n");
 	}
+	
 	for (std::map<std::string, std::string>::const_iterator
 			i = langExtendedText.begin() ;
 			i != langExtendedText.end() ;
-			i++) {
-		if (i->second.length()) {
+			i++) 
+	{
+		if (i->second.length()) 
+		{
 			fprintf(file, "\t\t\t<extended_text lang=\"%s\" string=\"", i->first.c_str());
 			saveStringToXMLfile(file, i->second.c_str());
 			fprintf(file, "\"/>\n");
@@ -218,18 +233,25 @@ int SIevent::saveXML2(FILE *file) const
 	for_each(ratings.begin(), ratings.end(), saveSIparentalRatingXML(file));
 	for_each(linkage_descs.begin(), linkage_descs.end(), saveSIlinkageXML(file));
 	fprintf(file, "\t\t</event>\n");
+	
 	return 0;
 }
 
 std::string SIevent::getName() const
 {
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) {
+	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	{
 		std::map<std::string, std::string>::const_iterator it = langName.begin() ;
-		if (it != langName.end()) return it->second;
-		else return("");
-	} else {
+		if (it != langName.end()) 
+			return it->second;
+		else 
+			return("");
+	} 
+	else 
+	{
 		std::string retval;
 		SIlanguage::filter(langName, 1, retval);
+		
 		return retval;
 	}
 }
@@ -239,21 +261,28 @@ void SIevent::setName(const std::string &lang, const std::string &name)
 	std::string tmp = name;
 	std::replace(tmp.begin(), tmp.end(), '\n', ' ');
 	//printf("setName: lang %s text %s\n", lang.c_str(), name.c_str());
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) {
+	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	{
 		langName[languangeOFF] = tmp; //name;
 	} 
-	else {
+	else 
+	{
 		langName[lang] = tmp; //name;
 	}
 }
 
 std::string SIevent::getText() const
 {
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) {
+	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	{
 		std::map<std::string, std::string>::const_iterator it = langText.begin() ;
-		if (it != langText.end()) return it->second;
-		else return("");
-	} else {
+		if (it != langText.end()) 
+			return it->second;
+		else 
+			return("");
+	} 
+	else 
+	{
 		std::string retval;
 		SIlanguage::filter(langText, 0, retval);
 		return retval;
@@ -263,20 +292,28 @@ std::string SIevent::getText() const
 void SIevent::setText(const std::string &lang, const std::string &text)
 {
 	//printf("setText: lang %s text %s\n", lang.c_str(), text.c_str());
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) {
+	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	{
 		langText[languangeOFF] = text;
-	} else {
+	} 
+	else 
+	{
 		langText[lang] = text;
 	}
 }
 
 std::string SIevent::getExtendedText() const
 {
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) {
+	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	{
 		std::map<std::string, std::string>::const_iterator it = langExtendedText.begin() ;
-		if (it != langExtendedText.end()) return it->second;
-		else return("");
-	} else {
+		if (it != langExtendedText.end()) 
+			return it->second;
+		else 
+			return("");
+	} 
+	else 
+	{
 		std::string retval;
 		SIlanguage::filter(langExtendedText, 0, retval);
 		return retval;
@@ -285,9 +322,12 @@ std::string SIevent::getExtendedText() const
 
 void SIevent::appendExtendedText(const std::string &lang, const std::string &text)
 {
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) {
+	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	{
 		langExtendedText[languangeOFF] += text;
-	} else {
+	} 
+	else 
+	{
 		langExtendedText[lang] += text;
 	}
 }
@@ -295,9 +335,12 @@ void SIevent::appendExtendedText(const std::string &lang, const std::string &tex
 void SIevent::setExtendedText(const std::string &lang, const std::string &text)
 {
 	//printf("setExtendedText: lang %s text %s\n", lang.c_str(), text.c_str());
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) {
+	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	{
 		langExtendedText[languangeOFF] = text;
-	} else {
+	} 
+	else 
+	{
 		langExtendedText[lang] = text;
 	}
 }
@@ -327,13 +370,15 @@ void SIevent::dump(void) const
 			it != langExtendedText.end() ; ++it)
 		printf("Extended-Text (%s): %s\n", it->first.c_str(), it->second.c_str());
 
-	if(contentClassification.length()) {
+	if(contentClassification.length()) 
+	{
 		printf("Content classification:");
 		for(unsigned i=0; i<contentClassification.length(); i++)
 			printf(" 0x%02hhx", contentClassification[i]);
 		printf("\n");
 	}
-	if(userClassification.length()) {
+	if(userClassification.length()) 
+	{
 		printf("User classification:");
 		for(unsigned i=0; i<userClassification.length(); i++)
 			printf(" 0x%02hhx", userClassification[i]);

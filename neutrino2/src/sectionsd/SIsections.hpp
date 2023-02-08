@@ -60,80 +60,6 @@ struct SI_section_SDT_header {
 	unsigned reserved_future_use2		: 8;
 } __attribute__ ((packed)) ; // 11 bytes
 
-struct SI_section_NIT_header {
-	unsigned table_id			: 8;
-#if __BYTE_ORDER == __BIG_ENDIAN
-	unsigned section_syntax_indicator	: 1;
-	unsigned reserved_future_use		: 1;
-	unsigned reserved1			: 2;
-	unsigned section_length_hi		: 4;
-#else
-	unsigned section_length_hi		: 4;
-	unsigned reserved1			: 2;
-	unsigned reserved_future_use		: 1;
-	unsigned section_syntax_indicator	: 1;
-#endif
-	unsigned section_length_lo		: 8;
-	unsigned network_id_hi			: 8;
-	unsigned network_id_lo			: 8;
-#if __BYTE_ORDER == __BIG_ENDIAN
-	unsigned reserved2			: 2;
-	unsigned version_number			: 5;
-	unsigned current_next_indicator		: 1;
-#else
-	unsigned current_next_indicator		: 1;
-	unsigned version_number			: 5;
-	unsigned reserved2			: 2;
-#endif
-	unsigned section_number			: 8;
-	unsigned last_section_number		: 8;
-#if __BYTE_ORDER == __BIG_ENDIAN
-	unsigned reserved_future_use2		: 4;
-	unsigned network_descriptors_length_hi	: 4;
-#else
-	unsigned network_descriptors_length_hi	: 4;
-	unsigned reserved_future_use2		: 4;
-#endif
-	unsigned network_descriptors_length_lo	: 8;
-} __attribute__ ((packed)) ; // 10 bytes
-
-struct SI_section_BAT_header {
-	unsigned table_id			: 8;
-#if __BYTE_ORDER == __BIG_ENDIAN
-	unsigned section_syntax_indicator	: 1;
-	unsigned reserved_future_use		: 1;
-	unsigned reserved1			: 2;
-	unsigned section_length_hi		: 4;
-#else
-	unsigned section_length_hi		: 4;
-	unsigned reserved1			: 2;
-	unsigned reserved_future_use		: 1;
-	unsigned section_syntax_indicator	: 1;
-#endif
-	unsigned section_length_lo		: 8;
-	unsigned bouquet_id_hi			: 8;
-	unsigned bouquet_id_lo			: 8;
-#if __BYTE_ORDER == __BIG_ENDIAN
-	unsigned reserved2			: 2;
-	unsigned version_number			: 5;
-	unsigned current_next_indicator		: 1;
-#else
-	unsigned current_next_indicator		: 1;
-	unsigned version_number			: 5;
-	unsigned reserved2			: 2;
-#endif
-	unsigned section_number			: 8;
-	unsigned last_section_number		: 8;
-#if __BYTE_ORDER == __BIG_ENDIAN
-	unsigned reserved_future_use2		: 4;
-	unsigned bouquet_descriptors_length_hi	: 4;
-#else
-	unsigned bouquet_descriptors_length_hi	: 4;
-	unsigned reserved_future_use2		: 4;
-#endif
-	unsigned bouquet_descriptors_length_lo	: 8;
-} __attribute__ ((packed)) ; // 10 bytes
-
 struct SI_section_EIT_header {
 	unsigned table_id			: 8;
 #if __BYTE_ORDER == __BIG_ENDIAN
@@ -210,6 +136,7 @@ class SIsection
 		SIsection(unsigned bufLength, uint8_t *buf) 
 		{
 			buffer = 0; bufferLength = 0;
+			
 			if ((buf) && (bufLength >= sizeof(struct SI_section_header))) 
 			{
 				buffer = buf;
@@ -218,45 +145,55 @@ class SIsection
 		}
 
 		// Destruktor
-		virtual ~SIsection(void) {
+		virtual ~SIsection(void) 
+		{
 			bufferLength = 0;
 		}
 
-		unsigned char tableID(void) const {
+		unsigned char tableID(void) const 
+		{
 			return buffer ? ((struct SI_section_header *)buffer)->table_id : (unsigned char) -1;
 		}
 
-		unsigned short tableIDextension(void) const {
+		unsigned short tableIDextension(void) const 
+		{
 			return buffer ? ((((struct SI_section_header *)buffer)->table_id_extension_hi << 8) |
 				((struct SI_section_header *)buffer)->table_id_extension_lo) : (unsigned short) -1;
 		}
 
-		unsigned char sectionNumber(void) const {
+		unsigned char sectionNumber(void) const 
+		{
 			return buffer ? ((struct SI_section_header *)buffer)->section_number : (unsigned char) -1;
 		}
 
-		unsigned char versionNumber(void) const {
+		unsigned char versionNumber(void) const 
+		{
 			return buffer ? ((struct SI_section_header *)buffer)->version_number : (unsigned char) -1;
 		}
 
-		unsigned char currentNextIndicator(void) const {
+		unsigned char currentNextIndicator(void) const 
+		{
 			return buffer ? ((struct SI_section_header *)buffer)->current_next_indicator : (unsigned char) -1;
 		}
 
-		unsigned char lastSectionNumber(void) const {
+		unsigned char lastSectionNumber(void) const 
+		{
 			return buffer ? ((struct SI_section_header *)buffer)->last_section_number : (unsigned char) -1;
 		}
 
-		struct SI_section_header const *header(void) const {
+		struct SI_section_header const *header(void) const 
+		{
 			return (struct SI_section_header *)buffer;
 		}
 
-		static uint64_t key(const struct SI_section_header *header) {
+		static uint64_t key(const struct SI_section_header *header) 
+		{
 			// Der eindeutige Key einer SIsection besteht aus 1 Byte Table-ID,
 			// 2 Byte Table-ID-extension, 1 Byte Section number
 			// 1 Byte Version number und 1 Byte current_next_indicator
 			if (!header)
 				return (uint64_t) -1;
+				
 			return 	(((uint64_t)header->table_id) << 40) +
 				(((uint64_t)header->table_id_extension_hi) << 32) +
 				(((uint64_t)header->table_id_extension_lo) << 24) +
@@ -265,16 +202,19 @@ class SIsection
 				(((uint64_t)header->current_next_indicator));
 		}
 
-		uint64_t key(void) const {
+		uint64_t key(void) const 
+		{
 			return buffer ? key(header()) : (uint64_t) -1;
 		}
 
 		// Der Operator zum sortieren
-		bool operator < (const SIsection& s) const {
+		bool operator < (const SIsection& s) const 
+		{
 			return key() < s.key();
 		}
 
-		static void dumpSmallSectionHeader(const struct SI_section_header *header) {
+		static void dumpSmallSectionHeader(const struct SI_section_header *header) 
+		{
 			if (!header)
 				return;
 			printf("\ntable_id: 0x%02x ", header->table_id);
@@ -282,21 +222,25 @@ class SIsection
 			printf("section_number: 0x%02x\n", header->section_number);
 		}
 
-		static void dumpSmallSectionHeader(const SIsection &s) {
+		static void dumpSmallSectionHeader(const SIsection &s) 
+		{
 			dumpSmallSectionHeader((struct SI_section_header *)s.buffer);
 		}
 
-		void dumpSmallSectionHeader(void) const {
+		void dumpSmallSectionHeader(void) const 
+		{
 			dumpSmallSectionHeader((struct SI_section_header *)buffer);
 		}
 
-		int saveBufferToFile(FILE *file) const {
+		int saveBufferToFile(FILE *file) const 
+		{
 			if (!file)
 				return 1;
 			return (fwrite(buffer, bufferLength, 1, file) != 1);
 		}
 
-		int saveBufferToFile(const char *filename) const {
+		int saveBufferToFile(const char *filename) const 
+		{
 			if (!filename)
 				return 2;
 
@@ -311,15 +255,18 @@ class SIsection
 			return 2;
 		}
 
-		static void dump1(const struct SI_section_header *header) {
+		static void dump1(const struct SI_section_header *header) 
+		{
 			if (!header)
 				return;
+				
 			printf("\ntable_id: 0x%02x\n", header->table_id);
 			printf("section_syntax_indicator: 0x%02x\n", header->section_syntax_indicator);
 			printf("section_length: %hu\n", (header->section_length_hi << 8) | header->section_length_lo);
 		}
 
-		static void dump2(const struct SI_section_header *header) {
+		static void dump2(const struct SI_section_header *header) 
+		{
 			if (!header)
 				return;
 			printf("version_number: 0x%02x\n", header->version_number);
@@ -328,7 +275,8 @@ class SIsection
 			printf("last_section_number: 0x%02x\n", header->last_section_number);
 		}
 
-		static void dump(const struct SI_section_header *header) {
+		static void dump(const struct SI_section_header *header) 
+		{
 			if (!header)
 				return;
 			dump1(header);
@@ -336,11 +284,13 @@ class SIsection
 			dump2(header);
 		}
 
-		static void dump(const SIsection &s) {
+		static void dump(const SIsection &s) 
+		{
 			dump((struct SI_section_header *)s.buffer);
 		}
 
-		void dump(void) const {
+		void dump(void) const 
+		{
 			dump((struct SI_section_header *)buffer);
 		}
 
@@ -379,45 +329,54 @@ class SIsections : public std::set <SIsection, std::less<SIsection> >
 class SIsectionEIT : public SIsection
 {
 	public:
-		SIsectionEIT(const SIsection &s) : SIsection(s) {
+		SIsectionEIT(const SIsection &s) : SIsection(s) 
+		{
 			parsed = 0;
 			parse();
 		}
 
 		// Std-Copy
-		SIsectionEIT(const SIsectionEIT &s) : SIsection(s) {
+		SIsectionEIT(const SIsectionEIT &s) : SIsection(s) 
+		{
 			evts = s.evts;
 			parsed = s.parsed;
 		}
 
 		// Benutzt den uebergebenen Puffer (sollte mit new char[n] allokiert sein)
-		SIsectionEIT(unsigned bufLength, uint8_t *buf) : SIsection(bufLength, buf) {
+		SIsectionEIT(unsigned bufLength, uint8_t *buf) : SIsection(bufLength, buf) 
+		{
 			parsed = 0;
 			parse();
 		}
 
-		t_service_id service_id(void) const {
+		t_service_id service_id(void) const 
+		{
 			return buffer ? ((((struct SI_section_EIT_header *)buffer)->service_id_hi << 8) |
 					((struct SI_section_EIT_header *)buffer)->service_id_lo): 0;
 		}
 
-		t_original_network_id original_network_id(void) const {
+		t_original_network_id original_network_id(void) const 
+		{
 			return buffer ? ((((struct SI_section_EIT_header *)buffer)->original_network_id_hi << 8) |
 					((struct SI_section_EIT_header *)buffer)->original_network_id_lo) : 0;
 		}
 
-		t_transport_stream_id transport_stream_id(void) const {
+		t_transport_stream_id transport_stream_id(void) const 
+		{
 			return buffer ? ((((struct SI_section_EIT_header *)buffer)->transport_stream_id_hi << 8) |
 					((struct SI_section_EIT_header *)buffer)->transport_stream_id_lo) : 0;
 		}
 
-		struct SI_section_EIT_header const *header(void) const {
+		struct SI_section_EIT_header const *header(void) const 
+		{
 			return (struct SI_section_EIT_header *)buffer;
 		}
 
-		static void dump(const struct SI_section_EIT_header *header) {
+		static void dump(const struct SI_section_EIT_header *header) 
+		{
 			if (!header)
 				return;
+				
 			SIsection::dump1((const struct SI_section_header *)header);
 			printf("service_id: 0x%02x%02x\n", header->service_id_hi, header->service_id_lo);
 			SIsection::dump2((const struct SI_section_header *)header);
@@ -427,23 +386,27 @@ class SIsectionEIT : public SIsection
 			printf("last_table_id 0x%02x\n", header->last_table_id);
 		}
 
-		static void dump(const SIsectionEIT &s) {
+		static void dump(const SIsectionEIT &s) 
+		{
 			dump((struct SI_section_EIT_header *)s.buffer);
 			for_each(s.evts.begin(), s.evts.end(), printSIevent());
 		}
 
-		void dump(void) const {
+		void dump(void) const 
+		{
 			dump((struct SI_section_EIT_header *)buffer);
 			for_each(evts.begin(), evts.end(), printSIevent());
 		}
 
-		const SIevents &events(void) const {
+		const SIevents &events(void) const 
+		{
 			//if(!parsed)
 			//	parse(); -> nicht const
 			return evts;
 		}
 
-		int is_parsed(void) const {
+		int is_parsed(void) const 
+		{
 			return parsed;
 		}
 
@@ -471,32 +434,38 @@ class SIsectionSDT : public SIsection
 		}
 
 		// Std-Copy
-		SIsectionSDT(const SIsectionSDT &s) : SIsection(s) {
+		SIsectionSDT(const SIsectionSDT &s) : SIsection(s) 
+		{
 			svs = s.svs;
 			parsed = s.parsed;
 		}
 
 		// Benutzt den uebergebenen Puffer (sollte mit new char[n] allokiert sein)
-		SIsectionSDT(unsigned bufLength, uint8_t *buf) : SIsection(bufLength, buf) {
+		SIsectionSDT(unsigned bufLength, uint8_t *buf) : SIsection(bufLength, buf) 
+		{
 			parsed = 0;
 			parse();
 		}
 
-		t_transport_stream_id transport_stream_id(void) const {
+		t_transport_stream_id transport_stream_id(void) const 
+		{
 			return buffer ? ((((struct SI_section_SDT_header *)buffer)->transport_stream_id_hi << 8) |
 					((struct SI_section_SDT_header *)buffer)->transport_stream_id_lo) : 0;
 		}
 
-		struct SI_section_SDT_header const *header(void) const {
+		struct SI_section_SDT_header const *header(void) const 
+		{
 			return (struct SI_section_SDT_header *)buffer;
 		}
 
-		t_original_network_id original_network_id(void) const {
+		t_original_network_id original_network_id(void) const 
+		{
 			return buffer ? ((((struct SI_section_SDT_header *)buffer)->original_network_id_hi << 8) |
 					((struct SI_section_SDT_header *)buffer)->original_network_id_lo) : 0;
 		}
 
-		static void dump(const struct SI_section_SDT_header *header) {
+		static void dump(const struct SI_section_SDT_header *header) 
+		{
 			if (!header)
 				return;
 			SIsection::dump1((const struct SI_section_header *)header);
@@ -505,17 +474,20 @@ class SIsectionSDT : public SIsection
 			printf("original_network_id: 0x%02x%02x\n", header->original_network_id_hi, header->original_network_id_lo);
 		}
 
-		static void dump(const SIsectionSDT &s) {
+		static void dump(const SIsectionSDT &s) 
+		{
 			dump((struct SI_section_SDT_header *)s.buffer);
 			for_each(s.svs.begin(), s.svs.end(), printSIservice());
 		}
 
-		void dump(void) const {
+		void dump(void) const 
+		{
 			dump((struct SI_section_SDT_header *)buffer);
 			for_each(svs.begin(), svs.end(), printSIservice());
 		}
 
-		const SIservices &services(void) const {
+		const SIservices &services(void) const 
+		{
 			//if(!parsed)
 			//	parse(); -> nicht const
 			return svs;

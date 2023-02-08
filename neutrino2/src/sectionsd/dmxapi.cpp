@@ -39,6 +39,8 @@
 
 /*zapit includes*/
 #include <frontend_c.h>
+
+
 extern CFrontend * live_fe;
 
 struct SI_section_TOT_header
@@ -57,8 +59,7 @@ struct SI_section_TOT_header
 	unsigned char      reserved2                :  4;
 #endif
 	unsigned short     descr_loop_length_lo     :  8;
-}
-__attribute__ ((packed)); /* 10 bytes */
+}__attribute__ ((packed)); /* 10 bytes */
 
 struct SI_section_TDT_header
 {
@@ -69,8 +70,7 @@ struct SI_section_TDT_header
 	unsigned short     section_length           : 12;
 	/*	uint64_t UTC_time                 : 40;*/
 	UTC_t              UTC_time;
-}
-__attribute__ ((packed)); /* 8 bytes */
+}__attribute__ ((packed)); /* 8 bytes */
 
 struct descrLocalTimeOffset
 {
@@ -146,7 +146,6 @@ bool getUTC(UTC_t * const UTC, const bool TDT)
 
 	(*UTC).time = tmp;
 
-#if 1
 	short loop_length = tdt_tot_header.descr_loop_length_hi << 8 | tdt_tot_header.descr_loop_length_lo;
 	if (loop_length >= 15) 
 	{
@@ -184,7 +183,6 @@ bool getUTC(UTC_t * const UTC, const bool TDT)
 			}
 		}
 	}
-#endif
 
 	/* TOT without descriptors seems to be not better than a plain TDT, such TOT's are */
 	/* found on transponders which also have wrong time in TDT etc, so don't trust it. */
@@ -196,3 +194,4 @@ bool getUTC(UTC_t * const UTC, const bool TDT)
 
 	return ret;
 }
+

@@ -44,12 +44,12 @@
 // Alles neu macht der Mai.
 //
 //
-time_t changeUTCtoCtime(const unsigned char *buffer, int local_time=1);
+time_t changeUTCtoCtime(const unsigned char *buffer, int local_time = 1);
 
 // returns the descriptor type as readable text
 const char *decode_descr (unsigned char tag_value);
 
-int saveStringToXMLfile(FILE *out, const char *string, int withControlCodes=0);
+int saveStringToXMLfile(FILE *out, const char *string, int withControlCodes = 0);
 
 // Entfernt die ControlCodes aus dem String (-> String wird evtl. kuerzer)
 void removeControlCodes(char *string);

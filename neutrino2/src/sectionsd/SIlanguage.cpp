@@ -49,8 +49,6 @@
 #include <sectionsdclient/sectionsdclient.h>
 
 
-#define LANGUAGEFILE CONFIGDIR "/epglanguages.conf"
-
 std::vector<std::string> SIlanguage::languages;
 pthread_mutex_t SIlanguage::languages_lock = PTHREAD_MUTEX_INITIALIZER;
 
@@ -162,6 +160,7 @@ bool SIlanguage::loadLanguages()
 	languages = tmpLang;
 	mode = tmpMode;
 	pthread_mutex_unlock(&languages_lock);
+	
 	return true;
 
 error:
@@ -169,6 +168,7 @@ error:
 	languages = tmpLang;
 	mode = tmpMode;
 	pthread_mutex_unlock(&languages_lock);
+	
 	return false;
 }
 

@@ -37,10 +37,7 @@
 #include "SIutils.hpp"
 #include "SIservices.hpp"
 #include "SIevents.hpp"
-#ifdef UPDATE_NETWORKS
-#include "SIbouquets.hpp"
-#include "SInetworks.hpp"
-#endif
+
 #include "SIsections.hpp"
 #include <dmxapi.h>
 
@@ -54,12 +51,14 @@
 
 //#define DEBUG
 
-struct descr_generic_header {
+struct descr_generic_header 
+{
 	unsigned descriptor_tag			: 8;
 	unsigned descriptor_length		: 8;
 } __attribute__ ((packed)) ;
 
-struct descr_short_event_header {
+struct descr_short_event_header 
+{
 	unsigned descriptor_tag			: 8;
 	unsigned descriptor_length		: 8;
 	unsigned language_code_hi		: 8;
@@ -68,14 +67,16 @@ struct descr_short_event_header {
 	unsigned event_name_length		: 8;
 } __attribute__ ((packed)) ;
 
-struct descr_service_header {
+struct descr_service_header 
+{
 	unsigned descriptor_tag			: 8;
 	unsigned descriptor_length		: 8;
 	unsigned service_typ			: 8;
 	unsigned service_provider_name_length	: 8;
 } __attribute__ ((packed)) ;
 
-struct descr_extended_event_header {
+struct descr_extended_event_header 
+{
 	unsigned descriptor_tag			: 8;
 	unsigned descriptor_length		: 8;
 	unsigned descriptor_number		: 4;
@@ -86,13 +87,15 @@ struct descr_extended_event_header {
 	unsigned length_of_items		: 8;
 } __attribute__ ((packed)) ;
 
-struct service_list_entry {
+struct service_list_entry 
+{
 	unsigned service_id_hi			: 8;
 	unsigned service_id_lo			: 8;
 	unsigned service_type			: 8;
 } __attribute__ ((packed)) ;
 
-struct private_data_specifier {
+struct private_data_specifier 
+{
 	unsigned byte1				: 8;
 	unsigned byte2				: 8;
 	unsigned byte3				: 8;
@@ -111,6 +114,7 @@ static int get_table(unsigned char hi, unsigned char mid, unsigned char lo)
 	lang[1] = mid;
 	lang[2] = lo;
 	lang[3] = 0;
+	
 	if(!strcmp(lang, "pol"))
 		return 2;
 	else if(!strcmp(lang, "tur"))
@@ -142,7 +146,7 @@ bool check_blacklisted(const t_original_network_id onid, const t_transport_strea
 //-----------------------------------------------------------------------
 void SIsectionEIT::parseLinkageDescriptor(const uint8_t *buf, SIevent &e, unsigned maxlen)
 {
-	if(maxlen>=sizeof(struct descr_linkage_header))
+	if(maxlen >= sizeof(struct descr_linkage_header))
 	{
 		SIlinkage l((const struct descr_linkage_header *)buf);
 		e.linkage_descs.insert(e.linkage_descs.end(), l);
@@ -201,7 +205,9 @@ void SIsectionEIT::parseParentalRatingDescriptor(const uint8_t *buf, SIevent &e,
 	struct descr_generic_header *cont=(struct descr_generic_header *)buf;
 	if(cont->descriptor_length+sizeof(struct descr_generic_header)>maxlen)
 		return; // defekt
+		
 	const uint8_t *s = buf + sizeof(struct descr_generic_header);
+	
 	while(s<buf+sizeof(struct descr_generic_header)+cont->descriptor_length-4) 
 	{
 		e.ratings.insert(SIparentalRating(std::string((const char *)s, 3), *(s + 3)));
@@ -214,6 +220,7 @@ void SIsectionEIT::parseExtendedEventDescriptor(const uint8_t *buf, SIevent &e, 
 	struct descr_extended_event_header *evt=(struct descr_extended_event_header *)buf;
 	if((evt->descriptor_length + sizeof(descr_generic_header)>maxlen) || (evt->descriptor_length<sizeof(struct descr_extended_event_header) - sizeof(descr_generic_header)))
 		return; // defekt
+		
 	unsigned char *items = (unsigned char *)(buf + sizeof(struct descr_extended_event_header));
 	int tsidonid = (e.transport_stream_id << 16) | e.original_network_id;
 	int table = get_table(evt->iso_639_2_language_code_hi, evt->iso_639_2_language_code_mid, evt->iso_639_2_language_code_lo);
@@ -262,6 +269,7 @@ void SIsectionEIT::parseShortEventDescriptor(const uint8_t *buf, SIevent &e, uns
 	struct descr_short_event_header *evt = (struct descr_short_event_header *)buf;
 	if((evt->descriptor_length+sizeof(descr_generic_header)>maxlen) || (evt->descriptor_length<sizeof(struct descr_short_event_header)-sizeof(descr_generic_header)))
 		return; // defekt
+		
 	int tsidonid = (e.transport_stream_id << 16) | e.original_network_id;
 	int table = get_table(evt->language_code_hi, evt->language_code_mid, evt->language_code_lo);
 
@@ -324,7 +332,8 @@ void SIsectionEIT::parse(void)
 	if (!buffer || parsed)
 		return;
 
-	if (bufferLength < sizeof(SI_section_EIT_header) + sizeof(struct eit_event)) {
+	if (bufferLength < sizeof(SI_section_EIT_header) + sizeof(struct eit_event)) 
+	{
 		bufferLength=0;
 		return;
 	}
@@ -360,7 +369,7 @@ void SIsectionEIT::parse(void)
 #ifdef ENABLE_PPT
 void SIsectionPPT::parseLinkageDescriptor(const char *buf, SIevent &e, unsigned maxlen)
 {
-	if(maxlen>=sizeof(struct descr_linkage_header))
+	if(maxlen >= sizeof(struct descr_linkage_header))
 	{
 		SIlinkage l((const struct descr_linkage_header *)buf);
 		e.linkage_descs.insert(e.linkage_descs.end(), l);
@@ -379,6 +388,7 @@ void SIsectionPPT::parseContentDescriptor(const char *buf, SIevent &e, unsigned 
 	struct descr_generic_header *cont=(struct descr_generic_header *)buf;
 	if(cont->descriptor_length+sizeof(struct descr_generic_header)>maxlen)
 		return; // defekt
+		
 	const char *classification=buf+sizeof(struct descr_generic_header);
 	while(classification<=buf+sizeof(struct descr_generic_header)+cont->descriptor_length-2) 
 	{
@@ -395,6 +405,7 @@ void SIsectionPPT::parseParentalRatingDescriptor(const char *buf, SIevent &e, un
 	struct descr_generic_header *cont=(struct descr_generic_header *)buf;
 	if(cont->descriptor_length+sizeof(struct descr_generic_header)>maxlen)
 		return; // defekt
+		
 	const char *s=buf+sizeof(struct descr_generic_header);
 	while(s<buf+sizeof(struct descr_generic_header)+cont->descriptor_length-4) 
 	{
@@ -656,6 +667,7 @@ void SIsectionSDT::parseServiceDescriptor(const uint8_t *buf, SIservice &s)
 	buf+=sizeof(struct descr_service_header);
 	s.serviceTyp = sv->service_typ;
 	is_blacklisted = check_blacklisted(s.original_network_id, s.transport_stream_id);
+	
 	if(sv->service_provider_name_length) 
 	{
 		//if(*buf < 0x06) // other code table
@@ -757,377 +769,4 @@ void SIsectionSDT::parse(void)
 
 	parsed = 1;
 }
-
-#ifdef UPDATE_NETWORKS
-// Die infos aus dem Puffer holen
-void SIsectionBAT::parse(void)
-{
-	const char *actPos;
-	struct bat_service *sv;
-	//struct bouquet_ident bi;
-	struct SI_section_BAT_header *bh;
-	unsigned short descriptors_loop_length;
-	unsigned short descriptors_length;
-	uint32_t current_private_data_specifier;
-	struct loop_len *ll;
-	//std::string bouquetName = "";
-
-	if (!buffer || parsed)
-		return;
-
-	if (bufferLength < sizeof(SI_section_BAT_header) + sizeof(struct bat_service)) {
-		printf("BAT fix?\n");	//No Services possible - length too short
-		bufferLength=0;
-		return;
-	}
-
-	actPos = &buffer[0];				// We need Bouquet ID and bouquet descriptor length from header
-	bh = (struct SI_section_BAT_header *)actPos;	// Header
-	t_bouquet_id bouquet_id = (bh->bouquet_id_hi << 8) | bh->bouquet_id_lo;
-	//printf("hi: %hu lo: %hu\n", bh->bouquet_descriptors_length_hi, bh->bouquet_descriptors_length_lo);
-	descriptors_loop_length = (bh->bouquet_descriptors_length_hi << 8) | bh->bouquet_descriptors_length_lo;
-	//SIbouquet s((bh->bouquet_id_hi << 8) | bh->bouquet_id_lo);	//Create a new Bouquet entry
-	//printf("ident: %hu actpos: %p buf+bl: %p desclen: %hu\n", bi.bouquet_id, actPos, buffer+bufferLength, descriptors_loop_length);
-	int count = 0;
-	//Fill out Bouquet Name
-	//count = parseDescriptors(((const char *)bh) + sizeof(SI_section_BAT_header), descriptors_loop_length, s, bh->section_number, count);
-	const char *des = ((const char *)bh) + sizeof(SI_section_BAT_header);
-	unsigned len = descriptors_loop_length;
-	struct descr_generic_header *desc;
-	struct descr_generic_header *privdesc = NULL;
-	std::string bouquetName = "";
-	current_private_data_specifier = 0;
-	while(len>=sizeof(struct descr_generic_header)) 
-	{
-		desc=(struct descr_generic_header *)des;
-		if(desc->descriptor_tag==0x47) 
-		{
-			//printf("Found bouquet name descriptor\n");
-			//parseBouquetNameDescriptor((const char *)desc, s);
-			const char *buf = (const char *) desc;
-			//struct descr_generic_header *sv=(struct descr_generic_header *)buf;
-			buf+=sizeof(struct descr_generic_header);
-			if(desc->descriptor_length) 
-			{
-				/*
-				  if(*buf < 0x06) // other code table
-				    s.bouquetName=std::string(buf+1, sv->descriptor_length-1);
-				  else
-				    s.bouquetName=std::string(buf, sv->descriptor_length);
-				*/
-				//Mega stupid providers do not reserve their own bouquet_id
-				//So we do it for them... f*ck that's stupid too, but what else can we do...
-				if (bouquet_id == 0x0001) 
-				{
-					if (!strncmp((const char *) buf, "NOVA", 4))
-						bouquet_id = NOVA;
-					if (!strncmp((const char *) buf, "CanalDigitaal", 13))
-						bouquet_id = CANALDIGITAAL;
-				}
-
-				bouquetName  = CDVBString((const char *)(buf), desc->descriptor_length).getContent();
-			}
-		}
-		if (desc->descriptor_tag == 0x5f) 
-		{
-			const char *buf = (const char *) desc;
-			//struct descr_generic_header *sv=(struct descr_generic_header *)buf;
-			buf+=sizeof(struct descr_generic_header);
-			struct private_data_specifier *pds=(struct private_data_specifier *)buf;
-			buf+=sizeof(struct private_data_specifier);
-			current_private_data_specifier=(((pds->byte1 << 24) | (pds->byte2 << 16)) | (pds->byte3 << 8)) | pds->byte4;
-			//printf("Private Data Specifier: %08x\n", current_private_data_specifier);
-		}
-		len-=desc->descriptor_length+2;
-		des+=desc->descriptor_length+2;
-	}
-	//s.bouquetName = bouquetName;
-
-	actPos += sizeof(SI_section_BAT_header) + descriptors_loop_length;
-
-	ll = (struct loop_len *)actPos;
-	descriptors_loop_length = (ll->descriptors_loop_length_hi << 8) | ll->descriptors_loop_length_lo; 	//len is not used at the moment
-	//printf("desclen: %hu\n", descriptors_loop_length);
-	actPos += sizeof(loop_len);
-
-	if (bouquet_id != 0x0001) 
-	{
-		while (actPos <= &buffer[bufferLength - sizeof(struct bat_service)]) 
-		{
-			sv = (struct bat_service *)actPos;
-			//s.transport_stream_id = (sv->transport_stream_id_hi << 8) | sv->transport_stream_id_lo;
-			//s.original_network_id = (sv->original_network_id_hi << 8) | sv->original_network_id_lo;
-			//s.position = (uint16_t) (((bh->section_number & 0x1f) << 11) + (count & 0x7ff));
-			//printf("Section Number: %d Count: %d position: %04x\n", bh->section_number, count, s.position);
-			descriptors_length = (sv->descriptors_loop_length_hi << 8) | sv->descriptors_loop_length_lo;
-			// Transport Stream Loop
-			//count = parseDescriptors(((const char *)sv) + sizeof(struct bat_service), descriptors_length, s, bh->section_number, count,
-			//(const char *) bouquetName[0]);
-			bool found = false;
-			int loop_count = 1;
-			while (loop_count >= 0) 
-			{
-				const char *des_ = ((const char *)sv) + sizeof(struct bat_service);
-				len = descriptors_length;
-
-				while(len>=sizeof(struct descr_generic_header)) 
-				{
-					desc=(struct descr_generic_header *)des_;
-					//printf("Type: %s\n", decode_descr(desc->descriptor_tag));
-					//printf("Length: %hhu\n", desc->descriptor_length);
-					const char *buf = (const char *) desc;
-					buf+=sizeof(struct descr_generic_header);
-					unsigned short dlen = desc->descriptor_length;
-					if ((desc->descriptor_tag==0x41) && (loop_count == 0) && (current_private_data_specifier != 0x00000002)) 
-					{
-						//printf("Found service list descriptor\n");
-						//count = parseServiceListDescriptor((const char *)desc, s, section_no, count);
-						//struct descr_generic_header *sv=(struct descr_generic_header *)buf;
-
-						while(dlen >= sizeof(struct service_list_entry)) 
-						{
-							struct service_list_entry *sl=(struct service_list_entry *)buf;
-							buf+=sizeof(struct service_list_entry);
-							SIbouquet bs(bouquet_id);
-							bs.bouquetName = bouquetName;
-							bs.transport_stream_id = (sv->transport_stream_id_hi << 8) | sv->transport_stream_id_lo;
-							bs.original_network_id = (sv->original_network_id_hi << 8) | sv->original_network_id_lo;
-							bs.service_id=(sl->service_id_hi << 8) | sl->service_id_lo;
-							bs.serviceTyp=sl->service_type;
-							bs.position = (uint16_t) (((bh->section_number & 0x1f) << 11) + (count & 0x7ff));
-							if (found) 
-							{
-								const char *privbuf = (const char *) privdesc;
-								privbuf+=sizeof(struct descr_generic_header);
-								unsigned short privdlen = privdesc->descriptor_length;
-								bool found_posi = false;
-								int order_entry_size;
-								order_entry_size = sizeof(struct digplus_order_entry);
-								while ((privdlen >= order_entry_size) && (!found_posi)) 
-								{
-									struct digplus_order_entry *oe = (struct digplus_order_entry *)privbuf;
-									privbuf+=order_entry_size;
-									/*
-									printf("Search: %04x Service_id: %04x Posi:%04x\n",
-										(sl->service_id_hi << 8) | sl->service_id_lo,
-										(oe->service_id_hi << 8) | oe->service_id_lo,
-										(oe->channel_number_hi << 8) | oe->channel_number_lo);
-									*/
-									if (	((sl->service_id_hi << 8) | sl->service_id_lo) == ((oe->service_id_hi << 8) | oe->service_id_lo)) 
-									{
-										bs.position = (oe->channel_number_hi << 8) | oe->channel_number_lo;
-										/*
-										printf("Found Search: %04x Service_id: %04x Posi:%04x\n",
-										(sl->service_id_hi << 8) | sl->service_id_lo,
-										current_service_id,
-										current_channel_number);
-										*/
-										found_posi=true;
-									}
-									privdlen -= order_entry_size;
-								}
-								if (!found_posi)
-									bs.position = 0xffff;
-							}
-//	printf("Section Number: %d Count: %d position: %04x\n", section_no, count, bs.position);
-							//printf("Set Position: %04x\n",bs.position);
-							bsv.insert(bs);
-							dlen -= sizeof(struct service_list_entry);
-							count++;
-						}
-					}
-					
-					if (desc->descriptor_tag == 0x5f) 
-					{
-						struct private_data_specifier *pds=(struct private_data_specifier *)buf;
-						buf+=sizeof(struct private_data_specifier);
-						if ((pds->byte1 != 0) || (pds->byte2 != 0) || (pds->byte3 != 0) || (pds->byte4 != 0))
-							current_private_data_specifier=(((pds->byte1 << 24) | (pds->byte2 << 16)) |
-											(pds->byte3 << 8)) | pds->byte4;
-						//printf("Private Data Specifier: %08x\n", current_private_data_specifier);
-					}
-					
-					if (desc->descriptor_tag == 0x81) 
-					{
-						if (current_private_data_specifier == 0x55504300) 
-						{
-							//printf("UPC Bouquet ordering descriptor found!\n");
-							privdesc = (struct descr_generic_header *)desc;
-							found = true;
-						}
-					}
-					
-					if (desc->descriptor_tag == 0x82) 
-					{
-						if ((current_private_data_specifier == 0x00000010) || (bouquet_id == 0x0021)) 
-						{
-							//printf("TPS Bouquet ordering descriptor found!\n");
-							privdesc = (struct descr_generic_header *)desc;
-							found = true;
-						}
-					}
-					
-					if (desc->descriptor_tag == 0x83) 
-					{
-						if ((current_private_data_specifier == 0x000000c0) || (current_private_data_specifier == 0x0000003a)) 
-						{
-							//printf("Canal+ Bouquet ordering descriptor found!\n");
-							privdesc = (struct descr_generic_header *)desc;
-							found = true;
-						}
-					}
-					
-					if (desc->descriptor_tag == 0x93) 
-					{
-						if ((current_private_data_specifier == 0x00362275) || (bouquet_id == CANALDIGITAAL)) 
-						{
-							//printf("Irdeto Bouquet ordering descriptor found!\n");
-							privdesc = (struct descr_generic_header *)desc;
-							found = true;
-						}
-					}
-					
-					if ((desc->descriptor_tag == 0xb1) && (loop_count == 0)) 
-					{
-						if (current_private_data_specifier == 0x00000002) {
-							//printf("BSkyB Bouquet ordering descriptor found!\n");
-							const char *privbuf = (const char *) desc;
-							privbuf+=sizeof(struct descr_generic_header);
-							unsigned short privdlen = desc->descriptor_length - 2;
-							//Nirvana 27.4.06: first 2 bytes still unknown: always 0xffff on sky italia?
-							//check if resulting bouquets on 28.2E look more sensible...
-							struct bskyb_bid *bid = (struct bskyb_bid *)privbuf;
-							if ((bid->unknown1 == 0xff) && (bid->unknown2 == 0xff)) 
-							{
-
-								privbuf+=2; //first 2 bytes of each 0xb1 desc unknown
-
-								while (privdlen >= sizeof(struct bskyb_order_entry)) 
-								{
-									struct bskyb_order_entry *oe = (struct bskyb_order_entry *)privbuf;
-									privbuf+=sizeof(struct bskyb_order_entry);
-									SIbouquet bs(bouquet_id);
-									bs.bouquetName = bouquetName;
-									bs.transport_stream_id = (sv->transport_stream_id_hi << 8) |
-												 sv->transport_stream_id_lo;
-									bs.original_network_id = (sv->original_network_id_hi << 8) |
-												 sv->original_network_id_lo;
-									bs.service_id = (oe->service_id_hi << 8) | oe->service_id_lo;
-									bs.serviceTyp = oe->service_type;
-									bs.position = (oe->channel_number_hi << 8) | oe->channel_number_lo;
-									bsv.insert(bs);
-									privdlen -= sizeof(struct bskyb_order_entry);
-								}
-							}
-
-						}
-					}
-					len-=desc->descriptor_length+2;
-					des_+=desc->descriptor_length+2;
-				}
-				loop_count--;
-			}
-
-			actPos += sizeof(struct bat_service) + descriptors_length;
-			//	count++;
-		}
-	}
-	parsed = 1;
-}
-
-void SIsectionNIT::copyDeliveryDescriptor(const char *buf, SInetwork &s)
-{
-	//struct descr_generic_header *sv=(struct descr_generic_header *)buf;
-	buf+=sizeof(struct descr_generic_header);
-	memmove(s.delivery_descriptor, buf, sizeof(struct satellite_delivery_descriptor));  //same size as cable...
-	//printf("Bouquet-Name: %s\n", s.bouquetName.c_str());
-}
-
-void SIsectionNIT::parseDescriptors(const uint8_t *des, unsigned len, SInetwork &s)
-{
-	//  struct satellite_delivery_descriptor *sdd;
-	//  const char *ddp;
-	//  t_transport_stream_id tsid;
-	//  t_original_network_id onid;
-	//  unsigned short orbital_pos;
-
-	struct descr_generic_header *desc;
-	des += sizeof(struct nit_transponder);
-	len -= sizeof(struct nit_transponder);
-
-	while(len>=sizeof(struct descr_generic_header)) 
-	{
-		desc=(struct descr_generic_header *)des;
-		//printf("Type: %s\n", decode_descr(desc->descriptor_tag));
-		//printf("Length: %hhu\n", desc->descriptor_length);
-		if ( (desc->descriptor_tag==0x43) || (desc->descriptor_tag==0x44) ) 
-		{
-			s.delivery_type = desc->descriptor_tag;
-			//printf("Found satellite_delivery_system_descriptor\n");
-			copyDeliveryDescriptor((const char *)desc, s);
-			//ddp = &s.delivery_descriptor[0];
-			//sdd = (struct satellite_delivery_descriptor *)ddp;
-			//tsid = s.transport_stream_id;
-			//onid = s.original_network_id;
-			//orbital_pos = (sdd->orbital_pos_hi << 8) | sdd->orbital_pos_lo;
-			//printf("ONID: %04x TSID: %04x Orbital Position: %d\n", onid, tsid, orbital_pos);
-		}
-		len-=desc->descriptor_length+2;
-		des+=desc->descriptor_length+2;
-	}
-}
-
-// Die infos aus dem Puffer holen
-void SIsectionNIT::parse(void)
-{
-	const char *actPos;
-	const char *bufEnd;
-	struct nit_transponder *tp;
-	struct SI_section_NIT_header *nh;
-	unsigned short descriptors_loop_length;
-	unsigned short descriptors_length;
-	struct loop_len *ll;
-	//t_network_id network_id;
-
-	if (!buffer || parsed)
-		return;
-
-	if (bufferLength < sizeof(SI_section_NIT_header) + sizeof(struct nit_transponder)) 
-	{
-		printf("NIT fix?\n");	//No Services possible - length too short
-		bufferLength=0;
-		return;
-	}
-
-	actPos = buffer;				// We need Bouquet ID and bouquet descriptor length from header
-	bufEnd = buffer + bufferLength;
-	nh = (struct SI_section_NIT_header *)actPos;	// Header
-	//printf("hi: %hu lo: %hu\n", bh->bouquet_descriptors_length_hi, bh->bouquet_descriptors_length_lo);
-	descriptors_loop_length = (nh->network_descriptors_length_hi << 8) | nh->network_descriptors_length_lo;
-	//SIbouquet s((bh->bouquet_id_hi << 8) | bh->bouquet_id_lo);	//Create a new Bouquet entry
-	//printf("ident: %hu actpos: %p buf+bl: %p desclen: %hu\n", bi.bouquet_id, actPos, buffer+bufferLength, descriptors_loop_length);
-	//parseDescriptors(((const char *)bh) + sizeof(SI_section_BAT_header), descriptors_loop_length, s); //Fill out Bouquet Name
-	actPos += sizeof(SI_section_NIT_header) + descriptors_loop_length;
-
-	ll = (struct loop_len *)actPos;
-	descriptors_loop_length = (ll->descriptors_loop_length_hi << 8) | ll->descriptors_loop_length_lo; 	//len is not used at the moment
-	//printf("desclen: %hu\n", descriptors_loop_length);
-	actPos += sizeof(loop_len);
-
-	while (actPos <= bufEnd - sizeof(struct nit_transponder)) 
-	{
-		tp = (struct nit_transponder *)actPos;
-		SInetwork s(tp);
-		s.network_id = (nh->network_id_hi << 8) | nh->network_id_lo;
-		s.transport_stream_id = (tp->transport_stream_id_hi << 8) | tp->transport_stream_id_lo;
-		s.original_network_id = (tp->original_network_id_hi << 8) | tp->original_network_id_lo;
-		descriptors_length = sizeof(struct nit_transponder) + ((tp->descriptors_loop_length_hi << 8) | tp->descriptors_loop_length_lo);
-		parseDescriptors(actPos, min((unsigned)(bufEnd - actPos), descriptors_length), s); // Transport Stream Loop
-		ntw.insert(s);
-		actPos += descriptors_length;
-	}
-	parsed = 1;
-}
-#endif
-
 

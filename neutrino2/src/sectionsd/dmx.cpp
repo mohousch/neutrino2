@@ -43,6 +43,8 @@
 
 /*zapit includes*/
 #include <frontend_c.h>
+
+
 extern CFrontend * live_fe;			/* zapit.cpp */
 
 typedef std::map<sections_id_t, version_number_t, std::less<sections_id_t> > MyDMXOrderUniqueKey;
@@ -106,6 +108,7 @@ void DMX::addfilter(const unsigned char filter, const unsigned char mask)
 	s_filters tmp;
 	tmp.filter = filter;
 	tmp.mask   = mask;
+	
 	filters.push_back(tmp);
 }
 
@@ -157,18 +160,22 @@ bool DMX::check_complete(const unsigned char table_id, const unsigned short exte
 {
 	int current_section_number = 0;
 
-	if (((table_id == 0x4e) || (table_id == 0x50)) && (current_service == extension_id)) {
+	if (((table_id == 0x4e) || (table_id == 0x50)) && (current_service == extension_id)) 
+	{
 		if (last == 0)
 			return true;
+			
 		MyDMXOrderUniqueKey::iterator di = myDMXOrderUniqueKey.find(create_sections_id(
 				table_id,
 				extension_id,
 				current_section_number,
 				onid,
 				tsid));
-		if (di != myDMXOrderUniqueKey.end()) {
+		if (di != myDMXOrderUniqueKey.end()) 
+		{
 			di++;
 		}
+		
 		while ((di != myDMXOrderUniqueKey.end()) && ((uint8_t) ((di->first >> 56) & 0xff) == table_id) &&
 				((uint16_t) ((di->first >> 40) & 0xffff) == extension_id) &&
 				(((uint8_t) ((di->first >> 32) & 0xff) == current_section_number + 1) ||
@@ -176,21 +183,25 @@ bool DMX::check_complete(const unsigned char table_id, const unsigned short exte
 				((uint16_t) ((di->first >> 16) & 0xffff) == onid) &&
 				((uint16_t) (di->first & 0xffff) == tsid))
 		{
-			if ((uint8_t) ((di->first >> 32) & 0xff) == last) {
+			if ((uint8_t) ((di->first >> 32) & 0xff) == last) 
+			{
 				return true;
 			}
-			else {
+			else 
+			{
 				current_section_number = (uint8_t) (di->first >> 32) & 0xff;
 				di++;
 			}
 		}
 	}
+	
 	return false;
 }
 
 int DMX::getSection(uint8_t *buf, const unsigned timeoutInMSeconds, int &timeouts)
 {
-	struct minimal_section_header {
+	struct minimal_section_header 
+	{
 		unsigned table_id                 : 8;
 #if __BYTE_ORDER == __BIG_ENDIAN
 		unsigned section_syntax_indicator : 1;
@@ -206,7 +217,8 @@ int DMX::getSection(uint8_t *buf, const unsigned timeoutInMSeconds, int &timeout
 		unsigned section_length_lo        : 8;
 	} __attribute__ ((packed));  // 3 bytes total
 
-	struct extended_section_header {
+	struct extended_section_header 
+	{
 		unsigned table_extension_id_hi    : 8;
 		unsigned table_extension_id_lo    : 8;
 #if __BYTE_ORDER == __BIG_ENDIAN
@@ -222,7 +234,8 @@ int DMX::getSection(uint8_t *buf, const unsigned timeoutInMSeconds, int &timeout
 		unsigned last_section_number	  : 8;
 	} __attribute__ ((packed));  // 5 bytes total
 
-	struct eit_extended_section_header {
+	struct eit_extended_section_header 
+	{
 		unsigned transport_stream_id_hi	  : 8;
 		unsigned transport_stream_id_lo	  : 8;
 		unsigned original_network_id_hi   : 8;
@@ -253,6 +266,7 @@ int DMX::getSection(uint8_t *buf, const unsigned timeoutInMSeconds, int &timeout
 	if (rc < 3)
 	{
 		unlock();
+		
 		if (rc <= 0)
 		{
 			timeouts++;
@@ -262,6 +276,7 @@ int DMX::getSection(uint8_t *buf, const unsigned timeoutInMSeconds, int &timeout
 			real_pause();
 			real_unpause();
 		}
+		
 		return -1;
 	}
 
@@ -308,7 +323,8 @@ int DMX::getSection(uint8_t *buf, const unsigned timeoutInMSeconds, int &timeout
 		extended_header = (extended_section_header *)(buf+3);
 
 		// only current sections
-		if (extended_header->current_next_indicator != 0) {
+		if (extended_header->current_next_indicator != 0) 
+		{
 			// if ((initial_header.table_id >= 0x4e) && (initial_header.table_id <= 0x6f))
 			if (pID == 0x12 || pID == 0x39) 
 			{
@@ -324,18 +340,16 @@ int DMX::getSection(uint8_t *buf, const unsigned timeoutInMSeconds, int &timeout
 				current_tsid = 0;
 			}
 
-			int eh_tbl_extension_id = extended_header->table_extension_id_hi * 256
-						  + extended_header->table_extension_id_lo;
+			int eh_tbl_extension_id = extended_header->table_extension_id_hi * 256 + extended_header->table_extension_id_lo;
 
 			/* if we are not caching the already read sections (CN-thread), check EIT version and get out */
 			if (!cache)
 			{
-				if (initial_header->table_id == 0x4e &&
-						eh_tbl_extension_id == current_service &&
-						extended_header->version_number != eit_version) {
+				if (initial_header->table_id == 0x4e && eh_tbl_extension_id == current_service && extended_header->version_number != eit_version) {
 					//dprintf(DEBUG_DEBUG, "EIT old: %d new version: %d\n",eit_version,extended_header->version_number);
 					eit_version = extended_header->version_number;
 				}
+				
 				return rc;
 			}
 
@@ -373,6 +387,7 @@ int DMX::getSection(uint8_t *buf, const unsigned timeoutInMSeconds, int &timeout
 							   current_tsid,
 							   extended_header->last_section_number))
 						timeouts = -2;
+						
 					return -1;
 				}
 				else 
@@ -516,7 +531,8 @@ int DMX::request_unpause(void)
 	return 0;
 }
 
-const char *dmx_filter_types [] = {
+const char *dmx_filter_types [] = 
+{
 	"dummy filter",
 	"actual transport stream, scheduled",
 	"other transport stream, now/next",
@@ -600,6 +616,7 @@ ssize_t DMX::readNbytes(int _fd, char *buf, const size_t n, unsigned timeoutInMS
 		return r;
 
 	perror ("[sectionsd] DMX::readNbytes read");
+	
 	return -1;
 }
 
@@ -669,3 +686,4 @@ unsigned int DMX::get_current_service()
 {
 	return current_service;
 }
+
