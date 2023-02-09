@@ -91,7 +91,8 @@ class CSectionsdClient : private CBasicClient
 			EVT_WRITE_SI_FINISHED
 		};
 
-		struct epgflags {
+		struct epgflags 
+		{
 			enum
 			{
 				has_anything = 0x01,
@@ -197,7 +198,6 @@ class CSectionsdClient : private CBasicClient
 		void freeMemory();
 
 		void readSIfromXML(const char * epgxmlname);
-		//void readSIfromHTTP(const char* url);
 		void readSIfromXMLTV(const char* url);
 
 		void writeSI2XML(const char * epgxmlname);

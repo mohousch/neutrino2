@@ -47,16 +47,14 @@
 #include <system/helpers.h>	// needed for safe_mkdir
 #include <system/settings.h>
 
-#include <dirent.h>
-
 
 extern _xmlDocPtr scanInputParser;				// defined in zapit.cpp
-extern transponder_list_t transponders;				// defined in zapit.cpp // from services.xml
+extern transponder_list_t transponders;				// defined in zapit.cpp
 extern tallchans allchans;					// defined in zapit.cpp
 extern int scanSDT;						// defined in zapit.cpp
 static int newfound;
 
-satellite_map_t satellitePositions;		// satellite position as specified in satellites.xml
+satellite_map_t satellitePositions;				// satellite position as specified in satellites.xml
 std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats liste
 
 int newtpid;
@@ -734,10 +732,12 @@ int loadServices(bool only_current)
 
 		while (search) 
 		{
+			t_satellite_position position;
+			
 			if (!(strcmp(xmlGetName(search), "sat"))) 
 			{
 				// position
-				t_satellite_position position = xmlGetSignedNumericAttribute(search, "position", 10);
+				position = xmlGetSignedNumericAttribute(search, "position", 10);
 				char * name = xmlGetAttribute(search, "name");
 
 				if(satellitePositions.find(position) == satellitePositions.end()) 

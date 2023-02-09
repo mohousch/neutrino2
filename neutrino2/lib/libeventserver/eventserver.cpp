@@ -31,6 +31,8 @@
 
 #include "eventserver.h"
 
+#include <system/debug.h>
+
 
 void CEventServer::registerEvent2(const unsigned int eventID, const unsigned int ClientID, const std::string udsName)
 {
@@ -72,13 +74,12 @@ void CEventServer::sendEvent(const unsigned int eventID, const initiators initia
 	}
 }
 
-
 bool CEventServer::sendEvent2Client(const unsigned int eventID, const initiators initiatorID, const eventClient* ClientData, const void* eventbody, const unsigned int eventbodysize)
 {
 	struct sockaddr_un servaddr;
 	int clilen, sock_fd;
 
-	printf("CEventServer::sendEvent2Client >\n");
+	dprintf(DEBUG_INFO, "CEventServer::sendEvent2Client >\n");
 
 	memset(&servaddr, 0, sizeof(struct sockaddr_un));
 	servaddr.sun_family = AF_UNIX;
@@ -88,7 +89,7 @@ bool CEventServer::sendEvent2Client(const unsigned int eventID, const initiators
 	if ((sock_fd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0)
 	{
 		perror("[eventserver]: socket");
-		printf("CEventServer::sendEvent2Client <\n");
+		dprintf(DEBUG_INFO, "CEventServer::sendEvent2Client <\n");
 		return false;
 	}
 
@@ -98,7 +99,7 @@ bool CEventServer::sendEvent2Client(const unsigned int eventID, const initiators
 		snprintf(errmsg, 128, "[eventserver]: connect (%s)", ClientData->udsName);
 		perror(errmsg);
 		close(sock_fd);
-		printf("CEventServer::sendEvent2Client <\n");
+		dprintf(DEBUG_INFO, "CEventServer::sendEvent2Client <\n");
 		return false;
 	}
 

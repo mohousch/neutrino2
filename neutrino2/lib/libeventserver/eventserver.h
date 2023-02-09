@@ -46,7 +46,6 @@ class CEventServer
 			INITID_GENERIC_INPUT_EVENT_PROVIDER
 		};
 	
-	
 		struct commandRegisterEvent
 		{
 			unsigned int eventID;

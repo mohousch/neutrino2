@@ -1161,7 +1161,7 @@ CTPSelectHandler::CTPSelectHandler(int num)
 	feindex = num;
 }
 
-extern std::map<transponder_id_t, transponder> select_transponders;
+extern std::map<transponder_id_t, transponder> select_transponders;		// defined in getservices.cpp
 int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
 	transponder_list_t::iterator tI;
@@ -1286,7 +1286,6 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	select = menu->getSelected();
 
 	int retval = tpWidget->exec(NULL, "");
-	//select = menu->getSelected();
 
 	if(select >= 0) 
 	{

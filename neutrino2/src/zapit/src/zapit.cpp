@@ -77,9 +77,10 @@
 #include <dvb-ci.h>
 #endif
 
+#include <playback_cs.h>
+
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-extern scan_list_t scanProviders;						// defined in zapit.cpp
 
 // opengl liveplayback
 #if defined (USE_OPENGL)
@@ -87,8 +88,7 @@ int startOpenGLplayback();
 void stopOpenGLplayback();
 #endif
 
-// satip cast
-#include <playback_cs.h>
+// webtv
 extern cPlayback *playback;
 
 // globals 
@@ -199,9 +199,9 @@ bool current_is_nvod = false;
 // list of all channels (services)
 tallchans allchans;             	// tallchans defined in "bouquets.h"
 tallchans curchans;             	// tallchans defined in "bouquets.h"
+transponder_list_t transponders;    	// from services.xml
 
-// transponder scan
-transponder_list_t transponders;    // ???
+// scan
 pthread_t scan_thread;
 extern int found_transponders;		// defined in descriptors.cpp
 extern int processed_transponders;	// defined in scan.cpp
@@ -209,12 +209,12 @@ extern int found_channels;		// defined in descriptors.cpp
 extern short curr_sat;			// defined in scan.cpp
 extern short scan_runs;			// defined in scan.cpp
 extern short abort_scan;		// defined in scan.cpp
-
 CZapitClient::bouquetMode bouquetMode = CZapitClient::BM_UPDATEBOUQUETS;
 CZapitClient::scanType scanType = CZapitClient::ST_TVRADIO;
-
-bool standby = true;
 void * scan_transponder(void * arg);
+
+//
+bool standby = true;
 
 // zapit config
 bool saveLastChannel = true;
@@ -1839,8 +1839,8 @@ int prepare_channels()
 	// load frontend config
 	loadFrontendConfig();
         
-    // load sats/tps
-    loadTransponders();
+    	// load sats/tps
+    	loadTransponders();
 
 	// load services
 	if (loadServices(false) < 0)
@@ -1849,7 +1849,7 @@ int prepare_channels()
 		return -1;
 	}
 
-	dprintf(DEBUG_INFO, "[zapit] prepare_channels: loadServices: success\n");
+	dprintf(DEBUG_NORMAL, "[zapit] prepare_channels: loadServices: success\n");
 
 	// load bouquets
 	g_bouquetManager->loadBouquets();		// 2004.08.02 g_bouquetManager->storeBouquets();

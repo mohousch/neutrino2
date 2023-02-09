@@ -39,11 +39,11 @@
 void parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system );
 void parseChannels(_xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation );
 void FindTransponder(_xmlNodePtr root);
-int loadTransponders();
-int loadServices(bool only_current);
 void saveServices(bool tocopy=false);
 void saveMotorPositions();
 int loadMotorPositions(void);
+int loadTransponders();
+int loadServices(bool only_current);
 
 // transponder
 struct transponder
@@ -66,14 +66,14 @@ struct transponder
 	}
 
 	transponder(const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, const struct dvb_frontend_parameters p_feparams, const uint8_t p_polarization = 0, delivery_system_t _system = DVB_S)
-    {
-        transport_stream_id = p_transport_stream_id;
-        original_network_id = p_original_network_id;
-        feparams            = p_feparams;
-        polarization        = p_polarization;
-        updated = 0;
-        system = _system;
-    }
+	{
+		transport_stream_id = p_transport_stream_id;
+		original_network_id = p_original_network_id;
+		feparams            = p_feparams;
+		polarization        = p_polarization;
+		updated = 0;
+		system = _system;
+	}
 
 	transponder(t_transport_stream_id p_transport_stream_id, struct dvb_frontend_parameters p_feparams, unsigned short p_polarization, t_original_network_id p_original_network_id, delivery_system_t _system = DVB_S)
 	{
