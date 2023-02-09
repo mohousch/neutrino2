@@ -543,8 +543,7 @@ static bool deleteEvent(const event_id_t uniqueKey)
 	   }
 	 */
 
-	if (!(epg_filter_except_current_next && (evt.table_id == 0x4e || evt.table_id == 0x4f)) &&
-			(evt.table_id != 0xFF)) 
+	if (!(epg_filter_except_current_next && (evt.table_id == 0x4e || evt.table_id == 0x4f)) && (evt.table_id != 0xFF)) 
 	{
 		if (!epg_filter_is_whitelist && EPG_filtered) 
 		{
@@ -564,8 +563,7 @@ static bool deleteEvent(const event_id_t uniqueKey)
 		// current-next => fill current or next event...
 		readLockMessaging();
 
-		if (evt.get_channel_id() == messaging_current_servicekey && // but only if it is the current channel...
-				(messaging_got_CN != 0x03)) 
+		if (evt.get_channel_id() == messaging_current_servicekey && (messaging_got_CN != 0x03))
 		{ 
 			// ...and if we don't have them already.
 			unlockMessaging();
@@ -796,8 +794,7 @@ static bool deleteEvent(const event_id_t uniqueKey)
 			/* create an event that's surely behind the one to check in the sort order */
 			e->eventID = 0xFFFF; /* lowest order sort criteria is eventID */
 			/* returns an iterator that's behind 'e' */
-			MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey::iterator x =
-				mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.upper_bound(e);
+			MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey::iterator x =         mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.upper_bound(e);
 			e->eventID = eventID;
 
 			/* the first decrement of the iterator gives us an event that's a potential
@@ -1040,7 +1037,7 @@ static void removeOldEvents(const long seconds)
 	return;
 }
 
-#ifdef REMOVE_DUPS
+//#ifdef REMOVE_DUPS
 /* Remove duplicate events (same Service, same start and endtime)
  * with different eventID. Use the one from the lower table_id.
  * This routine could be extended to remove overlapping events also,
@@ -1093,7 +1090,7 @@ static void removeDupEvents(void)
 
 	return;
 }
-#endif
+//#endif
 
 // SIservicePtr;
 typedef SIservice *SIservicePtr;
@@ -5322,13 +5319,13 @@ static void *houseKeepingThread(void *)
 		unlockEvents();
 		//usleep(100);
 		//lockEvents();
-#ifdef REMOVE_DUPS
+//#ifdef REMOVE_DUPS
 		removeDupEvents();
 		readLockEvents();
 		dprintf(DEBUG_DEBUG, "[sectionsd] Removed %d dup events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		anzEventsAlt = mySIeventsOrderUniqueKey.size();
 		unlockEvents();
-#endif
+//#endif
 		dprintf(DEBUG_DEBUG, "[sectionsd] before removewasteepg\n");
 
 		readLockEvents();
