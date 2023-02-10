@@ -1517,7 +1517,7 @@ void CFrontend::setDiseqc(int sat_no, const uint8_t pol, const uint32_t frequenc
 		return;
 
 	//secSetVoltage(polarity, 15);	/* first of all set the "polarization" */
-	//secSetTone(tone, 1);                /* set the "band" */
+	//secSetTone(tone, 1);		/* set the "band" */
 
 	//secSetVoltage(SEC_VOLTAGE_13, 15);//FIXME for test
 	secSetTone(SEC_TONE_OFF, 20);
@@ -1784,8 +1784,10 @@ double powerd(double x, int y)
 
 	if (!y)
 		return 1.000;
-	else {
-		while (i < y) {
+	else 
+	{
+		while (i < y) 
+		{
 			i++;
 			ans = ans * x;
 		}
@@ -1801,31 +1803,40 @@ double SIN(double x)
 	double y1 = 0.0;
 	double diff = 1000.0;
 
-	if (x < 0.0) {
+	if (x < 0.0) 
+	{
 		x = -1 * x;
 		sign = -1;
 	}
 
-	while (x > 360.0 * M_PI / 180) {
+	while (x > 360.0 * M_PI / 180) 
+	{
 		x = x - 360 * M_PI / 180;
 	}
 
-	if (x > (270.0 * M_PI / 180)) {
+	if (x > (270.0 * M_PI / 180)) 
+	{
 		sign = sign * -1;
 		x = 360.0 * M_PI / 180 - x;
-	} else if (x > (180.0 * M_PI / 180)) {
+	} 
+	else if (x > (180.0 * M_PI / 180)) 
+	{
 		sign = sign * -1;
 		x = x - 180.0 * M_PI / 180;
-	} else if (x > (90.0 * M_PI / 180)) {
+	} 
+	else if (x > (90.0 * M_PI / 180)) 
+	{
 		x = 180.0 * M_PI / 180 - x;
 	}
 
-	while (powerd(diff, 2) > 1.0E-16) {
+	while (powerd(diff, 2) > 1.0E-16) 
+	{
 		i++;
 		diff = j * factorial_div(powerd(x, (2 * i - 1)), (2 * i - 1));
 		y1 = y1 + diff;
 		j = -1 * j;
 	}
+	
 	return (sign * y1);
 }
 
@@ -1844,23 +1855,27 @@ double ATAN(double x)
 	double deltay = 1.0;	/* the value of the next term in the series */
 	double addangle = 0.0;	/* used if arctan > 22.5 degrees */
 
-	if (x < 0.0) {
+	if (x < 0.0) 
+	{
 		x = -1 * x;
 		sign = -1;
 	}
 
-	while (x > 0.3249196962) {
+	while (x > 0.3249196962) 
+	{
 		k++;
 		x = (x - 0.3249196962) / (1 + x * 0.3249196962);
 	}
 	addangle = k * 18.0 * M_PI / 180;
 
-	while (powerd(deltay, 2) > 1.0E-16) {
+	while (powerd(deltay, 2) > 1.0E-16) 
+	{
 		i++;
 		deltay = j * powerd(x, (2 * i - 1)) / (2 * i - 1);
 		y = y + deltay;
 		j = -1 * j;
 	}
+	
 	return (sign * (y + addangle));
 }
 
@@ -1905,7 +1920,8 @@ double calcElevation(double SatLon, double SiteLat, double SiteLon, int Height_o
 
 	if (El_geometric > 10.2)
 		El_observed = El_geometric + 0.01617 * (COS(Radians(std::fabs(El_geometric))) / SIN(Radians(std::fabs(El_geometric))));
-	else {
+	else 
+	{
 		El_observed = El_geometric + refraction;
 	}
 
@@ -1954,7 +1970,8 @@ double calcSatHourangle(double Azimuth, double Elevation, double Declination, do
 
 	(void)Declination;
 
-	if (Azimuth > 270) {
+	if (Azimuth > 270) 
+	{
 		returnvalue = ((returnvalue - 180) + 360);
 		if (returnvalue > 360)
 			returnvalue = 360 - (returnvalue - 360);
@@ -1993,19 +2010,25 @@ void CFrontend::gotoXX(t_satellite_position pos)
 	
 	dprintf(DEBUG_INFO, "CFrontend::gotoXX: fe(%d,%d) azimuth=%f, elevation=%f, declination=%f, PolarmountHourAngle=%f\n", fe_adapter, fenumber, azimuth, elevation, declination, satHourAngle);
 	
-	if (SiteLat >= 0) {
+	if (SiteLat >= 0) 
+	{
 		int tmp = (int)round(fabs(180 - satHourAngle) * 10.0);
 		RotorCmd = (tmp / 10) * 0x10 + gotoXTable[tmp % 10];
 		if (satHourAngle < 180)	// the east
 			RotorCmd |= 0xE000;
 		else
 			RotorCmd |= 0xD000;
-	} else {
-		if (satHourAngle < 180) {
+	} 
+	else 
+	{
+		if (satHourAngle < 180) 
+		{
 			int tmp = (int)round(fabs(satHourAngle) * 10.0);
 			RotorCmd = (tmp / 10) * 0x10 + gotoXTable[tmp % 10];
 			RotorCmd |= 0xD000;
-		} else {
+		} 
+		else 
+		{
 			int tmp = (int)round(fabs(360 - satHourAngle) * 10.0);
 			RotorCmd = (tmp / 10) * 0x10 + gotoXTable[tmp % 10];
 			RotorCmd |= 0xE000;

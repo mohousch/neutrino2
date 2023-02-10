@@ -190,12 +190,7 @@ class CZapitChannel
 		std::string url;
 		std::string description;
 		bool isWebTV;
-		//
 		std::string logourl;
-		//std::string epgurl;
-		//t_channel_id epgid;
-		//t_channel_id logoid;
-		//
 		std::string epgidname;
 		std::string epgurl;
 
@@ -210,7 +205,7 @@ class CZapitChannel
 		t_transport_stream_id	getTransportStreamId(void) 	const { return transport_stream_id; }
 		t_original_network_id	getOriginalNetworkId(void) 	const { return original_network_id; }
 		unsigned char        	getServiceType(bool real = false);
-		int 			getVideoType() { return videoType;};
+		int 			getVideoType()			{ return videoType;};
 
 		bool			isHD();
 		bool			is3DTV();
@@ -218,7 +213,7 @@ class CZapitChannel
 		bool 			isWEBTV(){return isWebTV;};
 
 		t_channel_id         	getChannelID(void)         	const { return channel_id; }
-		transponder_id_t       getTransponderId(void)          const { return CREATE_TRANSPONDER_ID(freq, satellitePosition,original_network_id,transport_stream_id); }
+		transponder_id_t       getTransponderId(void)		const { return CREATE_TRANSPONDER_ID(freq, satellitePosition,original_network_id,transport_stream_id); }
 		freq_id_t		getFreqId()			const { return freq; }
 
 		// get methods - read and write variables

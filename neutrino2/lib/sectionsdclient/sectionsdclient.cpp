@@ -1,5 +1,5 @@
 /*
-  Client-Interface f�r zapit  -   DBoxII-Project
+  Client-Interface f�r sectionsd  -   DBoxII-Project
 
   $Id: sectionsdclient.cpp,v 1.53 2007/01/12 22:57:57 houdini Exp $
 
@@ -101,6 +101,7 @@ void CSectionsdClient::unRegisterEvent(const unsigned int eventID, const unsigne
 	close_connection();
 }
 
+////
 bool CSectionsdClient::getIsTimeSet()
 {
 	sectionsd::responseIsTimeSet rmsg;
@@ -693,16 +694,6 @@ void CSectionsdClient::readSIfromXML(const char * epgxmlname)
 	close_connection();
 }
 
-/*
-void CSectionsdClient::readSIfromHTTP(const char* url)
-{
-	send(sectionsd::readSIfromHTTP, (char*) url, strlen(url));
-
-	readResponse();
-	close_connection();
-}
-*/
-
 void CSectionsdClient::readSIfromXMLTV(const char* url)
 {
 	send(sectionsd::readSIfromXMLTV, (char*)url, strlen(url));
@@ -747,3 +738,4 @@ void CSectionsdClient::dumpStatus()
 	send(sectionsd::dumpStatusinformation);
 	close_connection();
 }
+

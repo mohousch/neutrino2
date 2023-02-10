@@ -167,9 +167,7 @@ void EventList::readEvents(const t_channel_id channel_id)
 						channel_id2 = create_channel_id(
 								linkedServices[i].serviceId,
 								linkedServices[i].originalNetworkId,
-								linkedServices[i].transportStreamId,
-								0,
-								0);
+								linkedServices[i].transportStreamId);
 							
 						// do not add parent events
 						if (channel_id != channel_id2) 

@@ -42,15 +42,14 @@ class CZapitBouquet
 
 		//
 		inline CZapitBouquet(const std::string name) { Name = name; bHidden = false; bLocked = false; bUser = true; bWebTV = false;}
-
-		void addService(CZapitChannel * newChannel);
-
-		void removeService(CZapitChannel * oldChannel);
-		void removeService(const t_channel_id channel_id, unsigned char serviceType = ST_RESERVED) { removeService(getChannelByChannelID(channel_id, serviceType)); }
-		
-		void moveService (const unsigned int oldPosition, const unsigned int newPosition, const unsigned char serviceType);
 		
 		CZapitChannel * getChannelByChannelID(const t_channel_id channel_id, const unsigned char serviceType = ST_RESERVED);
+		void addService(CZapitChannel * newChannel);
+		void removeService(CZapitChannel * oldChannel);
+		void removeService(const t_channel_id channel_id, unsigned char serviceType = ST_RESERVED) 			 			{ 
+			removeService(getChannelByChannelID(channel_id, serviceType)); 
+		}
+		void moveService (const unsigned int oldPosition, const unsigned int newPosition, const unsigned char serviceType);
 		void sortBouquet(void);
 };
 
@@ -102,7 +101,6 @@ class CBouquetManager
 		void saveBouquets(void);
 		void saveUBouquets(void);
 		void saveBouquets(const CZapitClient::bouquetMode bouquetMode, const char * const providerName);
-
 		void loadBouquets(bool loadCurrentBouquet = false);
 		void renumServices();
 
@@ -123,7 +121,7 @@ class CBouquetManager
 
 		// webtv
 		void parseWebTVBouquet(std::string filename);
-		void loadWebTVBouquet(const std::string& dirname);
+		void loadWebTVBouquets(const std::string& dirname);
 };
 
 /*

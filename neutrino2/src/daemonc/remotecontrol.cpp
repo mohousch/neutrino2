@@ -97,7 +97,7 @@ t_channel_id CSubService::getChannelID(void) const
 		}
 	}
 	
-	return create_channel_id(service.service_id, service.original_network_id, service.transport_stream_id, satellitePosition, freq);
+	return create_channel_id(service.service_id, service.original_network_id, service.transport_stream_id/*, satellitePosition, freq*/);
 }
 
 CRemoteControl::CRemoteControl()

@@ -33,7 +33,6 @@
 
 #define SECTIONSD_UDS_NAME "/tmp/sectionsd.sock"
 
-
 struct sectionsd
 {
 	static const CBasicMessage::t_version ACTVERSION = 5;

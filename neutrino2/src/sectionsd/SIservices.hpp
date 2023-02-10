@@ -105,7 +105,7 @@ class SInvodReference
 
 		t_channel_id uniqueKey(void) const 
 		{
-			return create_channel_id(service_id, original_network_id, transport_stream_id, 0, 0);
+			return create_channel_id(service_id, original_network_id, transport_stream_id);
 		}
 };
 
@@ -178,7 +178,7 @@ class SIservice
 
 		t_channel_id uniqueKey(void) const 
 		{
-			return create_channel_id(service_id, transport_stream_id, original_network_id, 0, 0);
+			return create_channel_id(service_id, transport_stream_id, original_network_id);
 		}
 
 		void dump(void) const 

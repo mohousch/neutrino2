@@ -37,9 +37,6 @@
 #include <string>
 #include <map>
 
-// zapit types
-#include <client/zapittypes.h>
-
 // stmfb
 #ifdef __sh__
 #include <linux/stmfb.h>

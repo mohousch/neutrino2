@@ -74,7 +74,6 @@ static inline bool IS_WEBTV(t_channel_id cid)
 	return (cid & 0xFFFFFFFF00000000) == 0xFFFFFFFF00000000;
 }
 
-//
 #define GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(channel_id) ((t_transport_stream_id)((channel_id) >> 32))
 #define GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(channel_id) ((t_original_network_id)((channel_id) >> 16))
 #define GET_SERVICE_ID_FROM_CHANNEL_ID(channel_id) ((t_service_id)(channel_id))
@@ -89,6 +88,7 @@ static inline bool IS_WEBTV(t_channel_id cid)
 
 #define SAME_TRANSPONDER(id1, id2) ((id1 >> 16) == (id2 >> 16))
 
+//
 enum ChannelVideoType {
 	CHANNEL_VIDEO_MPEG2 	= 0,
 	CHANNEL_VIDEO_MPEG4 	= 1,	
@@ -277,12 +277,9 @@ typedef struct ZAPIT_start_arg
 	int lastchannelmode;
 	t_channel_id startchanneltv_id;
 	t_channel_id startchannelradio_id;
-	//t_channel_id startchannelwebtv_id;
 	int startchanneltv_nr;
 	int startchannelradio_nr;
-	//int startchannelwebtv_nr;
 	int uselastchannel;
-	
 	int video_mode;
 } Z_start_arg;
 //

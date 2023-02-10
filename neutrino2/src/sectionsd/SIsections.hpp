@@ -28,38 +28,6 @@
 #include <endian.h>
 
 
-struct SI_section_SDT_header {
-	unsigned table_id			: 8;
-#if __BYTE_ORDER == __BIG_ENDIAN
-	unsigned section_syntax_indicator	: 1;
-	unsigned reserved_future_use		: 1;
-	unsigned reserved1			: 2;
-	unsigned section_length_hi		: 4;
-#else
-	unsigned section_length_hi		: 4;
-	unsigned reserved1			: 2;
-	unsigned reserved_future_use		: 1;
-	unsigned section_syntax_indicator	: 1;
-#endif
-	unsigned section_length_lo		: 8;
-	unsigned transport_stream_id_hi		: 8;
-	unsigned transport_stream_id_lo		: 8;
-#if __BYTE_ORDER == __BIG_ENDIAN
-	unsigned reserved2			: 2;
-	unsigned version_number			: 5;
-	unsigned current_next_indicator		: 1;
-#else
-	unsigned current_next_indicator		: 1;
-	unsigned version_number			: 5;
-	unsigned reserved2			: 2;
-#endif
-	unsigned section_number			: 8;
-	unsigned last_section_number		: 8;
-	unsigned original_network_id_hi		: 8;
-	unsigned original_network_id_lo		: 8;
-	unsigned reserved_future_use2		: 8;
-} __attribute__ ((packed)) ; // 11 bytes
-
 struct SI_section_EIT_header {
 	unsigned table_id			: 8;
 #if __BYTE_ORDER == __BIG_ENDIAN
@@ -422,85 +390,6 @@ class SIsectionEIT : public SIsection
 		void parseParentalRatingDescriptor(const uint8_t *buf, SIevent &e, unsigned maxlen);
 		void parseLinkageDescriptor(const uint8_t *buf, SIevent &e, unsigned maxlen);
 		void parsePDCDescriptor(const uint8_t *buf, SIevent &e, unsigned maxlen);
-};
-
-class SIsectionSDT : public SIsection
-{
-	public:
-		SIsectionSDT(const SIsection &s) : SIsection(s) 
-		{
-			parsed = 0;
-			parse();
-		}
-
-		// Std-Copy
-		SIsectionSDT(const SIsectionSDT &s) : SIsection(s) 
-		{
-			svs = s.svs;
-			parsed = s.parsed;
-		}
-
-		// Benutzt den uebergebenen Puffer (sollte mit new char[n] allokiert sein)
-		SIsectionSDT(unsigned bufLength, uint8_t *buf) : SIsection(bufLength, buf) 
-		{
-			parsed = 0;
-			parse();
-		}
-
-		t_transport_stream_id transport_stream_id(void) const 
-		{
-			return buffer ? ((((struct SI_section_SDT_header *)buffer)->transport_stream_id_hi << 8) |
-					((struct SI_section_SDT_header *)buffer)->transport_stream_id_lo) : 0;
-		}
-
-		struct SI_section_SDT_header const *header(void) const 
-		{
-			return (struct SI_section_SDT_header *)buffer;
-		}
-
-		t_original_network_id original_network_id(void) const 
-		{
-			return buffer ? ((((struct SI_section_SDT_header *)buffer)->original_network_id_hi << 8) |
-					((struct SI_section_SDT_header *)buffer)->original_network_id_lo) : 0;
-		}
-
-		static void dump(const struct SI_section_SDT_header *header) 
-		{
-			if (!header)
-				return;
-			SIsection::dump1((const struct SI_section_header *)header);
-			printf("transport_stream_id: 0x%02x%02x\n", header->transport_stream_id_hi, header->transport_stream_id_lo);
-			SIsection::dump2((const struct SI_section_header *)header);
-			printf("original_network_id: 0x%02x%02x\n", header->original_network_id_hi, header->original_network_id_lo);
-		}
-
-		static void dump(const SIsectionSDT &s) 
-		{
-			dump((struct SI_section_SDT_header *)s.buffer);
-			for_each(s.svs.begin(), s.svs.end(), printSIservice());
-		}
-
-		void dump(void) const 
-		{
-			dump((struct SI_section_SDT_header *)buffer);
-			for_each(svs.begin(), svs.end(), printSIservice());
-		}
-
-		const SIservices &services(void) const 
-		{
-			//if(!parsed)
-			//	parse(); -> nicht const
-			return svs;
-		}
-
-	private:
-		SIservices svs;
-		int parsed;
-		void parse(void);
-		void parseDescriptors(const uint8_t *desc, unsigned len, SIservice &s);
-		void parseServiceDescriptor(const uint8_t *buf, SIservice &s);
-		void parsePrivateDataDescriptor(const uint8_t *buf, SIservice &s);
-		void parseNVODreferenceDescriptor(const uint8_t *buf, SIservice &s);
 };
 
 #endif // SISECTIONS_HPP

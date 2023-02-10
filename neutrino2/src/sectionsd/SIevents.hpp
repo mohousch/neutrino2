@@ -426,7 +426,7 @@ class SIevent
 		
 		t_channel_id get_channel_id(void) const 
 		{
-			return create_channel_id(service_id, original_network_id, transport_stream_id, 0, 0);
+			return create_channel_id(service_id, original_network_id, transport_stream_id);
 		}
 
 		event_id_t uniqueKey(void) const 

@@ -101,7 +101,9 @@ CZapitChannel * CZapitBouquet::getChannelByChannelID(const t_channel_id channel_
 	}
 
 	unsigned int i;
-	for (i = 0; (i < channels->size()) && ((*channels)[i]->getChannelID() != channel_id); i++){};
+	for (i = 0; (i < channels->size()) && ((*channels)[i]->getChannelID() != channel_id); i++)
+	{
+	};
 
 	if (i < channels->size())
 		result = (*channels)[i];
@@ -112,12 +114,6 @@ CZapitChannel * CZapitBouquet::getChannelByChannelID(const t_channel_id channel_
 	}
 
 	return result;
-}
-
-void CZapitBouquet::sortBouquet(void)
-{
-	//sort(tvChannels.begin(), tvChannels.end(), CmpChannelByChName()); //FIXME:
-	//sort(radioChannels.begin(), radioChannels.end(), CmpChannelByChName()); //FIXME:
 }
 
 void CZapitBouquet::addService(CZapitChannel *newChannel)
@@ -186,6 +182,12 @@ void CZapitBouquet::moveService(const unsigned int oldPosition, const unsigned i
 		advance(it, newPosition - oldPosition);
 		channels->insert(it, tmp);
 	}
+}
+
+void CZapitBouquet::sortBouquet(void)
+{
+	sort(tvChannels.begin(), tvChannels.end(), CmpChannelByChName()); //FIXME:
+	sort(radioChannels.begin(), radioChannels.end(), CmpChannelByChName()); //FIXME:
 }
 
 // CBouquetManager
@@ -868,9 +870,9 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 	dprintf(DEBUG_INFO, "CBouquetManager::loadWebTVBouquet: load %d WEBTV Channels (allchans:%d)\n", cnt, (int) allchans.size());
 }
 
-void CBouquetManager::loadWebTVBouquet(const std::string& dirname)
+void CBouquetManager::loadWebTVBouquets(const std::string& dirname)
 {
-	dprintf(DEBUG_INFO, "CBouquetManager::loadWebTVBouquet: %s\n", dirname.c_str());
+	dprintf(DEBUG_INFO, "CBouquetManager::loadWebTVBouquets: %s\n", dirname.c_str());
 
 	dirent64 **namelist;
 	int n;
@@ -879,7 +881,7 @@ void CBouquetManager::loadWebTVBouquet(const std::string& dirname)
 
 	if (n < 0)
 	{
-		perror(("getServices: scandir: " + dirname).c_str());
+		perror(("CBouquetManager::loadWebTVBouquets: scandir: " + dirname).c_str());
 		return;
 	}
 	
@@ -899,7 +901,7 @@ void CBouquetManager::loadWebTVBouquet(const std::string& dirname)
 	free(namelist);
 }
 
-
+//
 void CBouquetManager::loadBouquets(bool loadCurrentBouquet)
 {
 	dprintf(DEBUG_INFO, "CBouquetManager::loadBouquets:\n");
@@ -929,7 +931,7 @@ void CBouquetManager::loadBouquets(bool loadCurrentBouquet)
 	}
 
 	// webTV bouquets
-	loadWebTVBouquet(CONFIGDIR "/webtv");
+	loadWebTVBouquets(CONFIGDIR "/webtv");
 
 	renumServices();
 }
@@ -1018,7 +1020,7 @@ void CBouquetManager::renumServices()
 {
 	if(remainChannels)
 		deleteBouquet(remainChannels);
-
+		
 	remainChannels = NULL;
 	
 	makeRemainingChannelsBouquet();
@@ -1035,8 +1037,11 @@ CZapitBouquet * CBouquetManager::addBouquet(const std::string& name, bool ub, bo
 	{
 		BouquetList::iterator it;
 		for(it = Bouquets.begin(); it != Bouquets.end(); it++)
+		{
 			if(!(*it)->bUser)
 				break;
+		}
+				
 		Bouquets.insert(it, newBouquet);
 	} 
 	else
@@ -1084,7 +1089,6 @@ int CBouquetManager::existsBouquet(char const * const name, bool ignore_user)
 {
 	for (unsigned int i = 0; i < Bouquets.size(); i++) 
 	{
-		//if (Bouquets[i]->Name == name)
 		if ((!ignore_user || !Bouquets[i]->bUser) && (Bouquets[i]->Name == name))
 			return (int)i;
 	}
@@ -1199,11 +1203,14 @@ CBouquetManager::ChannelIterator CBouquetManager::ChannelIterator::operator ++(i
 		if ((unsigned int) c >= getBouquet()->size()) 
 		{
 			for (b++; b < Owner->Bouquets.size(); b++)
+			{
 				if (getBouquet()->size() != 0) 
 				{
 					c = 0;
 					goto end;
 				}
+			}
+			
 			c = -2;
 		}
 	}
@@ -1221,12 +1228,16 @@ CBouquetManager::ChannelIterator CBouquetManager::ChannelIterator::FindChannelNr
 {
 	c = channel;
 	for (b = 0; b < Owner->Bouquets.size(); b++)
+	{
 		if (getBouquet()->size() > (unsigned int)c)
 			goto end;
 		else
 			c -= getBouquet()->size();
+	}
+	
 	c = -2;
- end:
+	
+end:
 	return (*this);
 }
 
@@ -1235,10 +1246,14 @@ int CBouquetManager::ChannelIterator::getLowestChannelNumberWithChannelID(const 
 	int i = 0;
 
 	for (b = 0; b < Owner->Bouquets.size(); b++)
+	{
 		for (c = 0; (unsigned int) c < getBouquet()->size(); c++, i++)
+		{
 			if ((**this)->getChannelID() == channel_id)
-			    return (**this)->number -1;
-			    //return i;
+				return (**this)->number -1;
+		}
+	}
+		
 	return -1; // not found
 }
 
@@ -1250,10 +1265,10 @@ int CBouquetManager::ChannelIterator::getNrofFirstChannelofBouquet(const unsigne
 	int i = 0;
 
 	for (b = 0; b < bouquet_nr; b++)
+	{
 		i += getBouquet()->size();
+	}
 
 	return i;
 }
-
-
 

@@ -467,8 +467,8 @@ static void addEPGFilter(t_original_network_id onid, t_transport_stream_id tsid,
 
 static void addBlacklist(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid)
 {
-	t_channel_id channel_id = create_channel_id(sid, onid, tsid, 0, 0);
-	t_channel_id mask = create_channel_id((sid ? 0xFFFF : 0), (onid ? 0xFFFF : 0), (tsid ? 0xFFFF : 0), 0, 0);
+	t_channel_id channel_id = create_channel_id(sid, onid, tsid);
+	t_channel_id mask = create_channel_id((sid ? 0xFFFF : 0), (onid ? 0xFFFF : 0), (tsid ? 0xFFFF : 0));
 	
 	if (!checkBlacklist(channel_id))
 	{
@@ -484,9 +484,9 @@ static void addBlacklist(t_original_network_id onid, t_transport_stream_id tsid,
 
 static void addNoDVBTimelist(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid)
 {
-	t_channel_id channel_id = create_channel_id(sid, onid, tsid, 0, 0);
+	t_channel_id channel_id = create_channel_id(sid, onid, tsid);
 
-	t_channel_id mask = create_channel_id((sid ? 0xFFFF : 0), (onid ? 0xFFFF : 0), (tsid ? 0xFFFF : 0), 0, 0);
+	t_channel_id mask = create_channel_id((sid ? 0xFFFF : 0), (onid ? 0xFFFF : 0), (tsid ? 0xFFFF : 0));
 
 	if (!checkNoDVBTimelist(channel_id))
 	{
@@ -3158,13 +3158,14 @@ static void commandFreeMemory(int connfd, char * /*data*/, const unsigned /*data
 
 	writeLockEvents();
 	
-	//test
+	//FIXME: TEST
 	std::set<SIeventPtr> allevents;
 
 	allevents.insert(mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.begin(), mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.end());
 	/* this probably not needed, but takes only additional ~2 seconds
 	 * with even count > 70000 */
 	allevents.insert(mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.begin(), mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.end());
+	
 	MySIeventsOrderUniqueKey::iterator it;
 	for(it = mySIeventsOrderUniqueKey.begin(); it != mySIeventsOrderUniqueKey.end(); ++it)
 		allevents.insert(it->second);
@@ -3179,11 +3180,13 @@ static void commandFreeMemory(int connfd, char * /*data*/, const unsigned /*data
 	mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.clear();
 	mySIeventsOrderUniqueKey.clear();
 	mySIeventsNVODorderUniqueKey.clear();
+	
 	unlockEvents();
 
 	struct sectionsd::msgResponseHeader responseHeader;
 	responseHeader.dataLength = 0;
 	writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
+	
 	return ;
 }
 
@@ -3741,10 +3744,9 @@ static void commandLoadLanguages(int connfd, char* /*data*/, const unsigned /*da
 	bool retval = SIlanguage::loadLanguages();
 	responseHeader.dataLength = sizeof(retval);
 
-	if (writeNbytes(connfd, (const char *)&responseHeader,
-			sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) {
-		writeNbytes(connfd, (const char *)&retval,
-			    responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
+	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
+	{
+		writeNbytes(connfd, (const char *)&retval, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
 	}
 }
 
@@ -3754,10 +3756,9 @@ static void commandSaveLanguages(int connfd, char* /*data*/, const unsigned /*da
 	bool retval = SIlanguage::saveLanguages();
 	responseHeader.dataLength = sizeof(retval);
 
-	if (writeNbytes(connfd, (const char *)&responseHeader,
-			sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) {
-		writeNbytes(connfd, (const char *)&retval,
-			    responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
+	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
+	{
+		writeNbytes(connfd, (const char *)&retval, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
 	}
 }
 
@@ -3765,11 +3766,15 @@ static void commandSetLanguages(int connfd, char* data, const unsigned dataLengt
 {
 	bool retval = true;
 
-	if (dataLength % 3) {
+	if (dataLength % 3) 
+	{
 		retval = false;
-	} else {
+	} 
+	else 
+	{
 		std::vector<std::string> languages;
-		for (unsigned int i = 0 ; i < dataLength ; ) {
+		for (unsigned int i = 0 ; i < dataLength ; ) 
+		{
 			char tmp[4];
 			tmp[0] = data[i++];
 			tmp[1] = data[i++];
@@ -3783,10 +3788,9 @@ static void commandSetLanguages(int connfd, char* data, const unsigned dataLengt
 	struct sectionsd::msgResponseHeader responseHeader;
 	responseHeader.dataLength = sizeof(retval);
 
-	if (writeNbytes(connfd, (const char *)&responseHeader,
-			sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) {
-		writeNbytes(connfd, (const char *)&retval, responseHeader.dataLength,
-			    WRITE_TIMEOUT_IN_SECONDS);
+	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
+	{
+		writeNbytes(connfd, (const char *)&retval, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
 	} 
 }
 
@@ -3795,18 +3799,17 @@ static void commandGetLanguages(int connfd, char* /* data */, const unsigned /* 
 	std::string retval;
 	std::vector<std::string> languages = SIlanguage::getLanguages();
 
-	for (std::vector<std::string>::iterator it = languages.begin() ;
-			it != languages.end() ; it++) {
+	for (std::vector<std::string>::iterator it = languages.begin() ; it != languages.end() ; it++) 
+	{
 		retval.append(*it);
 	}
 
 	struct sectionsd::msgResponseHeader responseHeader;
 	responseHeader.dataLength = retval.length();
 
-	if (writeNbytes(connfd, (const char *)&responseHeader,
-			sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) {
-		writeNbytes(connfd, (const char *)retval.c_str(),
-			    responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
+	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
+	{
+		writeNbytes(connfd, (const char *)retval.c_str(), responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
 	} 
 }
 
@@ -3815,9 +3818,12 @@ static void commandSetLanguageMode(int connfd, char* data , const unsigned dataL
 	bool retval = true;
 	CSectionsdClient::SIlanguageMode_t tmp(CSectionsdClient::ALL);
 
-	if (dataLength != sizeof(tmp)) {
+	if (dataLength != sizeof(tmp)) 
+	{
 		retval = false;
-	} else {
+	} 
+	else 
+	{
 		tmp = *(CSectionsdClient::SIlanguageMode_t *)data;
 		SIlanguage::setMode(tmp);
 	}
@@ -3825,10 +3831,9 @@ static void commandSetLanguageMode(int connfd, char* data , const unsigned dataL
 	struct sectionsd::msgResponseHeader responseHeader;
 	responseHeader.dataLength = sizeof(retval);
 
-	if (writeNbytes(connfd, (const char *)&responseHeader,
-			sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) {
-		writeNbytes(connfd, (const char *)&retval,
-			    responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
+	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
+	{
+		writeNbytes(connfd, (const char *)&retval, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
 	} 
 }
 
@@ -3841,10 +3846,9 @@ static void commandGetLanguageMode(int connfd, char* /* data */, const unsigned 
 	struct sectionsd::msgResponseHeader responseHeader;
 	responseHeader.dataLength = sizeof(retval);
 
-	if (writeNbytes(connfd, (const char *)&responseHeader,
-			sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) {
-		writeNbytes(connfd, (const char *)&retval,
-			    responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
+	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
+	{
+		writeNbytes(connfd, (const char *)&retval, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
 	} 
 }
 

@@ -32,6 +32,7 @@
 
 #include <vector>
 
+
 #define REMINDER_MESSAGE_MAXLEN 31
 #define EXEC_PLUGIN_NAME_MAXLEN 31
 #define RECORD_DIR_MAXLEN 100
@@ -167,5 +168,4 @@ class CTimerd
 };
 
 #endif
-
 
