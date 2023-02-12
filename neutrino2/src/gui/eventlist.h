@@ -36,7 +36,7 @@
 #define __EVENTLIST_HPP__
 
 #include <timerdclient/timerdclient.h>
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 
 #include <driver/framebuffer.h>
 #include <driver/fontrenderer.h>

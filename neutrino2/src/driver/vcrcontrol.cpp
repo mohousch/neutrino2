@@ -63,6 +63,7 @@
 #include <daemonc/remotecontrol.h>
 
 //
+#include <zapit.h>
 #include <client/zapittypes.h>
 #include <frontend_c.h>
 #include <channel.h>
@@ -82,13 +83,15 @@ extern "C" {
 #include <driver/genpsi.h>
 }
 
-bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
-bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
-bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
-bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::ComponentTagList& tags);
+//bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
+//bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
+//bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
+//bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsd::ComponentTagList& tags);
 
 CMovieInfo * g_cMovieInfo;
 MI_MOVIE_INFO * g_movieInfo;
+
+extern CZapitChannel * live_channel;			// defined in zapit.cpp
 
 static CVCRControl vcrControl;
 
@@ -344,7 +347,7 @@ void CVCRControl::CFileAndServerDevice::RestoreNeutrino(void)
 
 		// start playback
 		if (!g_Zapit->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
-			g_Zapit->startPlayBack();
+			zapit_startPlayBack(live_channel);
 
 		// alten mode wieder herstellen (ausser wen zwischenzeitlich auf oder aus sb geschalten wurde)
 		if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
@@ -391,7 +394,7 @@ void CVCRControl::CFileAndServerDevice::CutBackNeutrino(const t_channel_id chann
 
 		// stop playback im standby
 		if( last_mode == NeutrinoMessages::mode_standby )
-			g_Zapit->stopPlayBack();
+			zapit_stopPlayBack();
 	}
 }
 
@@ -497,7 +500,7 @@ std::string CVCRControl::CFileAndServerDevice::getCommandString(const CVCRComman
 	extMessage += tmp;
 	extMessage += "</epgid>\n\t\t<mode>";
 
-	sprintf(tmp, "%d", g_Zapit->getMode());
+	sprintf(tmp, "%d", zapit_getMode());
 	extMessage += tmp;
 	extMessage += "</mode>\n\t\t<videopid>";
 	sprintf(tmp, "%u", si.vpid);
@@ -905,7 +908,7 @@ std::string CVCRControl::CFileAndServerDevice::getMovieInfoString(const CVCRComm
 	g_movieInfo->epgInfo2		= UTF8_to_UTF8XML(info2.c_str());
 	g_movieInfo->epgEpgId		= epgid ;
 
-	g_movieInfo->epgMode		= g_Zapit->getMode();
+	g_movieInfo->epgMode		= zapit_getMode();
 	g_movieInfo->epgVideoPid	= si.vpid;
 	g_movieInfo->VideoType		= si.vtype;
 
@@ -998,7 +1001,7 @@ void CVCRControl::CFileAndServerDevice::processAPIDnames()
 	{
 		if ( record_EPGid != 0 )
 		{
-			CSectionsdClient::ComponentTagList tags;
+			CSectionsd::ComponentTagList tags;
 
 			if ( sectionsd_getComponentTagsUniqueKey( record_EPGid, tags ) )
 			{

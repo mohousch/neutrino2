@@ -158,7 +158,7 @@
 // sectionsd
 //#include <sectionsdclient/sectionsdMsg.h>
 #include <sectionsd/sectionsdtypes.h>
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 
 // timerd
 #include <timerdclient/timerdmsg.h>
@@ -305,7 +305,7 @@
 // sectionsd
 //%include <lib/sectionsdclient/sectionsdMsg.h>
 %include <src/sectionsd/sectionsdtypes.h>
-%include <src/sectionsd/sectionsdclient.h>
+%include <src/sectionsd/sectionsd.h>
 
 // timerd
 //%include <lib/timerdclient/timerdmsg.h>

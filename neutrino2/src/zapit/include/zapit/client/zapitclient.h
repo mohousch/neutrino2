@@ -358,10 +358,10 @@ class CZapitClient : public CBasicClient
 		void setSubServices( subServiceList& subServices );
 
 		/* set Mode */
-		void setMode(const channelsMode mode);
+		//void setMode(const channelsMode mode);
 
 		/* set Mode */
-		int getMode();
+		//int getMode();
 
 		/* set RecordMode */
 		void setRecordMode(const bool activate);
@@ -500,12 +500,12 @@ class CZapitClient : public CBasicClient
 
 		void setStandby(const bool enable);
 
-		void startPlayBack();
-		void stopPlayBack();
-		void lockPlayBack();
-		void unlockPlayBack();
-		void pausePlayBack();
-		void continuePlayBack();
+		//void startPlayBack();
+		//void stopPlayBack();
+		//void lockPlayBack();
+		//void unlockPlayBack();
+		//void pausePlayBack();
+		//void continuePlayBack();
 
 		bool tune_TP(TP_params TP, int feindex = 0);
 		

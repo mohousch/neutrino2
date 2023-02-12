@@ -557,7 +557,7 @@ int main (int argc, char** argv)
 	}
 
 	/* choose source mode */
-	zapit.setMode(radio ? CZapitClient::MODE_RADIO : CZapitClient::MODE_TV);
+	//zapit.setMode(radio ? CZapitClient::MODE_RADIO : CZapitClient::MODE_TV);
 
 	/* set audio channel */
 	if (audio)

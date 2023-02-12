@@ -7,7 +7,7 @@
 
 // tuxbox
 #include <eventserver.h>
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 #include <timerdclient/timerdclient.h>
 
 /*zapit includes*/

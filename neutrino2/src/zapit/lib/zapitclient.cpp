@@ -250,6 +250,7 @@ void CZapitClient::zapTo_subServiceID_NOWAIT(const t_channel_id channel_id)
 }
 
 /* set mode tv/radio */
+/*
 void CZapitClient::setMode(const channelsMode mode)
 {
 	CZapitMessages::commandSetMode msg;
@@ -260,8 +261,10 @@ void CZapitClient::setMode(const channelsMode mode)
 
 	close_connection();
 }
+*/
 
 /* get mode */
+/*
 int CZapitClient::getMode()
 {
 	send(CZapitMessages::CMD_GET_MODE);
@@ -272,6 +275,7 @@ int CZapitClient::getMode()
 	close_connection();
 	return response.mode;
 }
+*/
 
 // set SubServices
 void CZapitClient::setSubServices( subServiceList& subServices )
@@ -1147,13 +1151,16 @@ void CZapitClient::setVideoSystem(int video_system)
 }
 
 /* start playback */
+/*
 void CZapitClient::startPlayBack()
 {
 	send(CZapitMessages::CMD_SB_START_PLAYBACK);
 	close_connection();
 }
+*/
 
 /* stop playback */
+/*
 void CZapitClient::stopPlayBack()
 {
 	send(CZapitMessages::CMD_SB_STOP_PLAYBACK);
@@ -1163,35 +1170,44 @@ void CZapitClient::stopPlayBack()
 	
 	close_connection();
 }
+*/
 
 // lock playback
+/*
 void CZapitClient::lockPlayBack()
 {
 	send(CZapitMessages::CMD_SB_LOCK_PLAYBACK);
 	
 	close_connection();
 }
+*/
 
 // unlock playback
+/*
 void CZapitClient::unlockPlayBack()
 {
 	send(CZapitMessages::CMD_SB_UNLOCK_PLAYBACK);
 	close_connection();
 }
+*/
 
 // pause playback
+/*
 void CZapitClient::pausePlayBack()
 {
 	send(CZapitMessages::CMD_SB_PAUSE_PLAYBACK);
 	close_connection();
 }
+*/
 
 // pause playback
+/*
 void CZapitClient::continuePlayBack()
 {
 	send(CZapitMessages::CMD_SB_CONTINUE_PLAYBACK);
 	close_connection();
 }
+*/
 
 /* is playback activ? */
 bool CZapitClient::isPlayBackActive()

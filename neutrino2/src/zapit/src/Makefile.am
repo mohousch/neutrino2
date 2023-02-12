@@ -33,14 +33,14 @@ libzapit_a_SOURCES = \
 	scan.cpp zapit.cpp cam.cpp ci.cpp frontend.cpp \
 	descriptors.cpp nit.cpp pat.cpp pmt.cpp sdt.cpp
 
-bin_PROGRAMS = pzapit
+#bin_PROGRAMS = pzapit
 
-pzapit_SOURCES = \
-	pzapit.cpp
+#pzapit_SOURCES = \
+#	pzapit.cpp
 
-pzapit_LDADD = \
-	$(top_builddir)/src/zapit/lib/libzapitclient.a \
-	$(top_builddir)/lib/connection/libtuxbox-connection.a \
-	$(top_builddir)/src/driver/encoding.o
+#pzapit_LDADD = \
+#	$(top_builddir)/src/zapit/lib/libzapitclient.a \
+#	$(top_builddir)/lib/connection/libtuxbox-connection.a \
+#	$(top_builddir)/src/driver/encoding.o
 
 

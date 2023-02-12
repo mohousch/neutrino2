@@ -25,6 +25,7 @@
 #define __zapit_h__
 
 #include "client/zapitclient.h"
+#include "client/msgtypes.h"
 
 #include "bouquets.h"
 
@@ -45,10 +46,6 @@ void internalSendChannels(int connfd, ZapitChannelList* channels, bool nonames);
 void sendBouquetChannels (int connfd, const unsigned int bouquet, CZapitClient::channelsMode mode = CZapitClient::MODE_CURRENT, bool nonames = false);
 void sendChannels(int connfd, const CZapitClient::channelsMode mode = CZapitClient::MODE_CURRENT, const CZapitClient::channelsOrder order = CZapitClient::SORT_BOUQUET);
 
-int startPlayBack(CZapitChannel *);
-int stopPlayBack(bool sendPmt = false);
-void pausePlayBack(void);
-void continuePlayBack(void);
 
 unsigned int zapTo(const unsigned int channel);
 unsigned int zapTo(const unsigned int bouquet, const unsigned int channel);
@@ -64,5 +61,18 @@ void openAVDecoder(void);
 
 void enterStandby(void);
 void leaveStandby(void);
+
+////
+void zapit_getLastChannel(unsigned int &channumber, char &mode);
+int zapit_getMode(void);
+void zapit_setMode(const CZapitClient::channelsMode mode);
+
+int zapit_startPlayBack(CZapitChannel *);
+int zapit_stopPlayBack(bool sendPmt = false);
+void zapit_pausePlayBack(void);
+void zapit_continuePlayBack(void);
+void zapit_lockPlayBack();
+void zapit_unlockPlayBack();
+////
 
 #endif /* __zapit_h__ */

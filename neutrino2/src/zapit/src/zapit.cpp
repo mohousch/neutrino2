@@ -1390,7 +1390,7 @@ int zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate = 0)
 	}
 	
 	// FIXME: how to stop ci_capmt or we dont need this???
-	stopPlayBack(!forupdate);
+	zapit_stopPlayBack(!forupdate);
 
 	//
 	if (!IS_WEBTV(channel_id))
@@ -1467,7 +1467,7 @@ tune_again:
 	}
 
 	// start playback (live)
-	int res = startPlayBack(live_channel);
+	int res = zapit_startPlayBack(live_channel);
 
 	//
 	if  (IS_WEBTV(channel_id))
@@ -1783,7 +1783,7 @@ void setTVMode(void)
 		openAVDecoder();
 }
 
-int getMode(void)
+int zapit_getMode(void)
 {
 	if (currentMode & TV_MODE)
 		return CZapitClient::MODE_TV;
@@ -1914,7 +1914,7 @@ int start_scan(CZapitMessages::commandStartScan StartScan)
 	scan_runs = 1;
 	
 	//stop playback
-	stopPlayBack();
+	zapit_stopPlayBack();
 	
 	// stop pmt update filter
     	pmt_stop_update_filter(&pmt_update_fd);	
@@ -2011,7 +2011,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			change_audio_pid(msgSetAudioChannel.channel);
 			break;
 		}
-		
+		#if 0
 		case CZapitMessages::CMD_SET_MODE: 
 		{
 			CZapitMessages::commandSetMode msgSetMode;
@@ -2023,14 +2023,16 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 				setRadioMode();
 			break;
 		}
-		
+		#endif
+		#if 0
 		case CZapitMessages::CMD_GET_MODE: 
 		{
 			CZapitMessages::responseGetMode msgGetMode;
-			msgGetMode.mode = (CZapitClient::channelsMode) getMode();
+			msgGetMode.mode = (CZapitClient::channelsMode) zapit_getMode();
 			CBasicServer::send_data(connfd, &msgGetMode, sizeof(msgGetMode));
 			break;
 		}
+		#endif
 		
 		case CZapitMessages::CMD_GET_CURRENT_SERVICEID: 
 		{
@@ -2567,7 +2569,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 					scanProviders.clear();
 			}
 	
-			stopPlayBack();
+			zapit_stopPlayBack();
 				
 			// stop update pmt filter
 			pmt_stop_update_filter(&pmt_update_fd);
@@ -2902,22 +2904,25 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			break;
 		}		
 	
+		#if 0
 		case CZapitMessages::CMD_SB_START_PLAYBACK:
-			startPlayBack(live_channel);
+			zapit_startPlayBack(live_channel);
 						
 			break;
-	
+		#endif
+		#if 0
 		case CZapitMessages::CMD_SB_STOP_PLAYBACK:
-			stopPlayBack(true);
+			zapit_stopPlayBack(true);
 			
 			CZapitMessages::responseCmd response;
 			response.cmd = CZapitMessages::CMD_READY;
 			CBasicServer::send_data(connfd, &response, sizeof(response));
 						
 			break;
-	
+		#endif
+		#if 0
 		case CZapitMessages::CMD_SB_LOCK_PLAYBACK:		
-			stopPlayBack(true);
+			zapit_stopPlayBack(true);
 			
 #if !defined (PLATFORM_COOLSTREAM)			
 			closeAVDecoder();
@@ -2926,7 +2931,8 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			playbackStopForced = true;
 
 			break;
-	
+		#endif
+		#if 0
 		case CZapitMessages::CMD_SB_UNLOCK_PLAYBACK:
 			playbackStopForced = false;
 			
@@ -2936,7 +2942,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 
 			if(live_channel != NULL)
 			{
-				startPlayBack(live_channel);
+				zapit_startPlayBack(live_channel);
 			
 				// cam
 				if (!IS_WEBTV(live_channel->getChannelID()))
@@ -2959,16 +2965,20 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 #endif				
 			
 			break;
+			#endif
 
+		#if 0
 		case CZapitMessages::CMD_SB_PAUSE_PLAYBACK:
-			pausePlayBack();
+			zapit_pausePlayBack();
 						
 			break;
-
+		#endif
+		#if 0
 		case CZapitMessages::CMD_SB_CONTINUE_PLAYBACK:
-			continuePlayBack();
+			zapit_continuePlayBack();
 						
 			break;
+		#endif
 	
 		case CZapitMessages::CMD_SET_AUDIO_MODE: 
 		{
@@ -3574,7 +3584,7 @@ void sendChannels(int connfd, const CZapitClient::channelsMode mode, const CZapi
 }
 
 // startplayback return: 0=playing, -1= failed
-int startPlayBack(CZapitChannel * thisChannel)
+int zapit_startPlayBack(CZapitChannel * thisChannel)
 {
 	dprintf(DEBUG_NORMAL, "[zapit] startPlayBack: chid:%llx\n", thisChannel->getChannelID());
 
@@ -3866,7 +3876,7 @@ int startPlayBack(CZapitChannel * thisChannel)
 	return 0;
 }
 
-int stopPlayBack(bool sendPmt)
+int zapit_stopPlayBack(bool sendPmt)
 {
 	dprintf(DEBUG_NORMAL, "[zapit] stopPlayBack: standby %d forced %d\n", standby, playbackStopForced);
 
@@ -3937,7 +3947,7 @@ int stopPlayBack(bool sendPmt)
 	return 0;
 }
 
-void pausePlayBack(void)
+void zapit_pausePlayBack(void)
 {
 	dprintf(DEBUG_NORMAL, "[zapit] pausePlayBack\n");
 
@@ -3946,7 +3956,7 @@ void pausePlayBack(void)
 		playback->SetSpeed(0);
 }
 
-void continuePlayBack(void)
+void zapit_continuePlayBack(void)
 {
 	dprintf(DEBUG_DEBUG, "[zapit] continuePlayBack\n");
 
@@ -4006,7 +4016,7 @@ void enterStandby(void)
 	saveZapitSettings(true, true);
 	
 	// stop playback
-	stopPlayBack(true);
+	zapit_stopPlayBack(true);
 	
 #if !defined (PLATFORM_COOLSTREAM)
 	// close AVdecoder
@@ -4980,7 +4990,7 @@ int zapit_main_thread(void *data)
 	saveZapitSettings(true, true);
 	
 	// stop playback (stop capmt)
-	stopPlayBack();
+	zapit_stopPlayBack();
 
 	// stop vtuner pump thread
 	if (getVTuner() != NULL)
@@ -5015,4 +5025,63 @@ int zapit_main_thread(void *data)
 	return 0;
 }
 
+////
+void zapit_getLastChannel(unsigned int &channumber, char &mode)
+{
+	CZapitClient::responseGetLastChannel responseGetLastChannel;
+	responseGetLastChannel = load_settings();
+}
 
+void zapit_setMode(const CZapitClient::channelsMode mode)
+{			
+	if (mode == CZapitClient::MODE_TV)
+		setTVMode();
+	else if (mode == CZapitClient::MODE_RADIO)
+		setRadioMode();
+}
+
+void zapit_lockPlayBack()
+{
+	zapit_stopPlayBack(true);
+			
+#if !defined (PLATFORM_COOLSTREAM)			
+	closeAVDecoder();
+#endif			
+			
+	playbackStopForced = true;
+}
+
+void zapit_unlockPlayBack()
+{
+	playbackStopForced = false;
+			
+#if !defined (PLATFORM_COOLSTREAM)
+	openAVDecoder();
+#endif			
+
+	if(live_channel != NULL)
+	{
+		zapit_startPlayBack(live_channel);
+			
+		// cam
+		if (!IS_WEBTV(live_channel->getChannelID()))
+			sendCaPmtPlayBackStart(live_channel, live_fe);
+	}
+			
+			// ci cam
+#if defined (ENABLE_CI)	
+	if(live_channel != NULL)
+	{
+		if(live_fe != NULL)
+			ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
+	}
+#endif					
+
+#if defined (ENABLE_GSTREAMER)
+	if (! (currentMode & RECORD_MODE))
+		if(live_channel)
+			zapit(live_channel->getChannelID(), current_is_nvod);
+#endif
+}
+
+////

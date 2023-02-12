@@ -152,7 +152,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 	TP.feparams.u.qpsk.fec_inner = (fe_code_rate_t) scanSettings->TP_fec;
 	TP.polarization = scanSettings->TP_pol;
 
-	g_Zapit->stopPlayBack();
+	zapit_stopPlayBack();
 	g_Zapit->tune_TP(TP, feindex);
 
 	paint();

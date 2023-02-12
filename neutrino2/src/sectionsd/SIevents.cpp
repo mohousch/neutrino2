@@ -239,7 +239,7 @@ int SIevent::saveXML2(FILE *file) const
 
 std::string SIevent::getName() const
 {
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	if (CSectionsd::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
 	{
 		std::map<std::string, std::string>::const_iterator it = langName.begin() ;
 		if (it != langName.end()) 
@@ -261,7 +261,7 @@ void SIevent::setName(const std::string &lang, const std::string &name)
 	std::string tmp = name;
 	std::replace(tmp.begin(), tmp.end(), '\n', ' ');
 	//printf("setName: lang %s text %s\n", lang.c_str(), name.c_str());
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	if (CSectionsd::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
 	{
 		langName[languangeOFF] = tmp; //name;
 	} 
@@ -273,7 +273,7 @@ void SIevent::setName(const std::string &lang, const std::string &name)
 
 std::string SIevent::getText() const
 {
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	if (CSectionsd::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
 	{
 		std::map<std::string, std::string>::const_iterator it = langText.begin() ;
 		if (it != langText.end()) 
@@ -292,7 +292,8 @@ std::string SIevent::getText() const
 void SIevent::setText(const std::string &lang, const std::string &text)
 {
 	//printf("setText: lang %s text %s\n", lang.c_str(), text.c_str());
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	
+	if (CSectionsd::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
 	{
 		langText[languangeOFF] = text;
 	} 
@@ -304,7 +305,7 @@ void SIevent::setText(const std::string &lang, const std::string &text)
 
 std::string SIevent::getExtendedText() const
 {
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	if (CSectionsd::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
 	{
 		std::map<std::string, std::string>::const_iterator it = langExtendedText.begin() ;
 		if (it != langExtendedText.end()) 
@@ -322,7 +323,7 @@ std::string SIevent::getExtendedText() const
 
 void SIevent::appendExtendedText(const std::string &lang, const std::string &text)
 {
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	if (CSectionsd::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
 	{
 		langExtendedText[languangeOFF] += text;
 	} 
@@ -335,7 +336,8 @@ void SIevent::appendExtendedText(const std::string &lang, const std::string &tex
 void SIevent::setExtendedText(const std::string &lang, const std::string &text)
 {
 	//printf("setExtendedText: lang %s text %s\n", lang.c_str(), text.c_str());
-	if (CSectionsdClient::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
+	
+	if (CSectionsd::LANGUAGE_MODE_OFF == SIlanguage::getMode()) 
 	{
 		langExtendedText[languangeOFF] = text;
 	} 

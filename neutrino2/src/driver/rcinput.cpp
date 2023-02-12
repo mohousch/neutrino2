@@ -1075,7 +1075,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 						switch(emsg.eventID)
 						{
-							case CSectionsdClient::EVT_TIMESET:
+							case CSectionsd::EVT_TIMESET:
 								{
                                     					if ((int64_t)last_keypress > *(int64_t*)p)
 										last_keypress += *(int64_t *)p;
@@ -1086,21 +1086,21 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 								}
 								break;
 								
-							case CSectionsdClient::EVT_GOT_CN_EPG:
+							case CSectionsd::EVT_GOT_CN_EPG:
 								*msg = NeutrinoMessages::EVT_CURRENTNEXT_EPG;
 								*data = (neutrino_msg_data_t) p;
 								dont_delete_p = true;
 								break;
 								
-							case CSectionsdClient::EVT_SERVICES_UPDATE:
+							case CSectionsd::EVT_SERVICES_UPDATE:
 								*msg = NeutrinoMessages::EVT_SERVICES_UPD;
 								*data = 0;
 								break;
 								
-							case CSectionsdClient::EVT_BOUQUETS_UPDATE:
+							case CSectionsd::EVT_BOUQUETS_UPDATE:
 								break;
 								
-							case CSectionsdClient::EVT_WRITE_SI_FINISHED:
+							case CSectionsd::EVT_WRITE_SI_FINISHED:
 								*msg = NeutrinoMessages::EVT_SI_FINISHED;
 								*data = 0;
 								break;

@@ -76,8 +76,8 @@
 #include <system/helpers.h>
 
 
-void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
-void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsdClient::responseGetCurrentNextInfoChannelID& current_next );
+//void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
+//void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsd::responseGetCurrentNextInfoChannelID& current_next );
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern CRemoteControl * g_RemoteControl;		// neutrino.cpp
@@ -756,7 +756,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 				--eli; // prev epg
 			}
 
-			info_CurrentNext.flags = CSectionsdClient::epgflags::has_current;
+			info_CurrentNext.flags = CSectionsd::epgflags::has_current;
 			info_CurrentNext.current_uniqueKey      = eli->eventID;
 			info_CurrentNext.current_zeit.startzeit = eli->startTime;
 			info_CurrentNext.current_zeit.dauer     = eli->duration;
@@ -773,7 +773,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 				++eli;
 				if (eli != evtlist.end()) 
 				{
-					info_CurrentNext.flags                  = CSectionsdClient::epgflags::has_current | CSectionsdClient::epgflags::has_next;
+					info_CurrentNext.flags                  = CSectionsd::epgflags::has_current | CSectionsd::epgflags::has_next;
 					info_CurrentNext.next_uniqueKey         = eli->eventID;
 					info_CurrentNext.next_zeit.startzeit    = eli->startTime;
 					info_CurrentNext.next_zeit.dauer        = eli->duration;
@@ -788,7 +788,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 		}
 	}
 
-	if (!(info_CurrentNext.flags & (CSectionsdClient::epgflags::has_later | CSectionsdClient::epgflags::has_current | CSectionsdClient::epgflags::not_broadcast))) 
+	if (!(info_CurrentNext.flags & (CSectionsd::epgflags::has_later | CSectionsd::epgflags::has_current | CSectionsd::epgflags::not_broadcast))) 
 	{
 		// nicht gefunden / noch nicht geladen
 		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->RenderString (ChanInfoX, ChanInfoY + 2*ChanInfoHeight, BoxEndX - ChanNameX, gotTime ? (showButtonBar ? _("waiting for EPG...") : _("EPG not loaded...")) : _("Waiting for time..."), COL_INFOBAR, 0, true);	// UTF-8
@@ -1461,7 +1461,7 @@ void CInfoViewer::showButton_SubServices()
   	}
 }
 
-void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsdClient::CurrentNextInfo &info)
+void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info)
 {
 	dprintf(DEBUG_NORMAL, "CInfoViewer::getEPG: channel_id:%llx\n", for_channel_id);
 
@@ -1491,9 +1491,9 @@ void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsdClient::Cu
 		memcpy(p, &for_channel_id, sizeof(t_channel_id));
 		neutrino_msg_t msg;
 		
-		if (info.flags & (CSectionsdClient::epgflags::has_current | CSectionsdClient::epgflags::has_next))
+		if (info.flags & (CSectionsd::epgflags::has_current | CSectionsd::epgflags::has_next))
 		{
-			if (info.flags & CSectionsdClient::epgflags::has_current)
+			if (info.flags & CSectionsd::epgflags::has_current)
 				msg = NeutrinoMessages::EVT_CURRENTEPG;
 			else
 				msg = NeutrinoMessages::EVT_NEXTEPG;
@@ -1668,7 +1668,7 @@ void CInfoViewer::show_Data(bool calledFromEvent)
 		} 
 		else 
 		{
-	  		if ((info_CurrentNext.flags & CSectionsdClient::epgflags::has_current) && (info_CurrentNext.flags & CSectionsdClient::epgflags::has_next) && (showButtonBar) ) 
+	  		if ((info_CurrentNext.flags & CSectionsd::epgflags::has_current) && (info_CurrentNext.flags & CSectionsd::epgflags::has_next) && (showButtonBar) ) 
 			{
 				if ((uint) info_CurrentNext.next_zeit.startzeit < (info_CurrentNext.current_zeit.startzeit + info_CurrentNext.current_zeit.dauer)) 
 				{
@@ -1680,7 +1680,7 @@ void CInfoViewer::show_Data(bool calledFromEvent)
 		// seit / rest /runningPercent
 		time_t jetzt = time(NULL);
 
-		if (info_CurrentNext.flags & CSectionsdClient::epgflags::has_current) 
+		if (info_CurrentNext.flags & CSectionsd::epgflags::has_current) 
 		{
 	  		int seit = (jetzt - info_CurrentNext.current_zeit.startzeit + 30) / 60;
 	  		int rest = (info_CurrentNext.current_zeit.dauer / 60) - seit;
@@ -1704,7 +1704,7 @@ void CInfoViewer::show_Data(bool calledFromEvent)
 	  		sprintf(runningStart, "%02d:%02d", pStartZeit->tm_hour, pStartZeit->tm_min);
 		} 
 
-		if (info_CurrentNext.flags & CSectionsdClient::epgflags::has_next) 
+		if (info_CurrentNext.flags & CSectionsd::epgflags::has_next) 
 		{
 	  		unsigned dauer = info_CurrentNext.next_zeit.dauer / 60;
 	  		sprintf (nextDuration, "%d min", dauer);
@@ -1713,7 +1713,7 @@ void CInfoViewer::show_Data(bool calledFromEvent)
 		} 
 		
 	  	//percent
-	  	if (info_CurrentNext.flags & CSectionsdClient::epgflags::has_current) 
+	  	if (info_CurrentNext.flags & CSectionsd::epgflags::has_current) 
 		{
 			if(!calledFromEvent || (oldrunningPercent != runningPercent)) 
 			{
@@ -1732,7 +1732,7 @@ void CInfoViewer::show_Data(bool calledFromEvent)
 		// red button
 		if (showButtonBar) 
 		{
-	  		if (info_CurrentNext.flags & CSectionsdClient::epgflags::has_anything) 
+	  		if (info_CurrentNext.flags & CSectionsd::epgflags::has_anything) 
 			{
 				// red button
 				frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_RED, BoxStartX + BORDER_LEFT, buttonBarStartY + 1, 0, true, icon_red_w, buttonBarHeight - 2);
@@ -1742,7 +1742,7 @@ void CInfoViewer::show_Data(bool calledFromEvent)
 		}
 
 		// paint epg infos
-		if ( (info_CurrentNext.flags & CSectionsdClient::epgflags::not_broadcast) || ((calledFromEvent) && !(info_CurrentNext.flags & (CSectionsdClient::epgflags::has_next | CSectionsdClient::epgflags::has_current)))) 
+		if ( (info_CurrentNext.flags & CSectionsd::epgflags::not_broadcast) || ((calledFromEvent) && !(info_CurrentNext.flags & (CSectionsd::epgflags::has_next | CSectionsd::epgflags::has_current)))) 
 		{
 			// next / noepg/waiting for time
 	  		nextLabel->setText(gotTime ? _("EPG not available") : _("Waiting for time..."));
@@ -1752,7 +1752,7 @@ void CInfoViewer::show_Data(bool calledFromEvent)
 		else 
 		{
 	  		// found some epg
-	  		if ((info_CurrentNext.flags & CSectionsdClient::epgflags::has_next) && (!(info_CurrentNext.flags & CSectionsdClient::epgflags::has_current))) 
+	  		if ((info_CurrentNext.flags & CSectionsd::epgflags::has_next) && (!(info_CurrentNext.flags & CSectionsd::epgflags::has_current))) 
 			{
 				// current infos
 				currentLabel->setText(_("No info for current program available"));
@@ -1788,7 +1788,7 @@ void CInfoViewer::show_Data(bool calledFromEvent)
 				currentPlayTime->paint();
 
 				// next 
-				if ((!is_nvod) && (info_CurrentNext.flags & CSectionsdClient::epgflags::has_next)) 
+				if ((!is_nvod) && (info_CurrentNext.flags & CSectionsd::epgflags::has_next)) 
 				{
 					//
 					nextStartTime->setText(nextStart);
@@ -1951,7 +1951,7 @@ void CInfoViewer::showLcdPercentOver()
 		int runningPercent = -1;
 		time_t jetzt = time (NULL);
 
-		if (info_CurrentNext.flags & CSectionsdClient::epgflags::has_current) 
+		if (info_CurrentNext.flags & CSectionsd::epgflags::has_current) 
 		{
 			if (jetzt < info_CurrentNext.current_zeit.startzeit)
 				runningPercent = 0;

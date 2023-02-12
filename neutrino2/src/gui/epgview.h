@@ -50,7 +50,7 @@
 #include <gui/widget/textbox.h>
 #include <gui/widget/window.h>
 
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 
 
 class CEpgData

@@ -36,7 +36,7 @@
 #include <string>
 #include <list>
 
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 #include <timerdclient/timerdclient.h>
 
 #include <neutrinoMessages.h>

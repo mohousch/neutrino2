@@ -70,8 +70,8 @@ extern CZapitClient::SatelliteList satList;
 void stopOpenGLplayback();
 #endif
 
-void sectionsd_getChannelEvents(CChannelEventList &eList, const bool tv_mode = true, t_channel_id *chidlist = NULL, int clen = 0);
-void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
+//void sectionsd_getChannelEvents(CChannelEventList &eList, const bool tv_mode = true, t_channel_id *chidlist = NULL, int clen = 0);
+//void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
 
 //
 // No Class Helpers
@@ -171,14 +171,16 @@ CNeutrinoAPI::~CNeutrinoAPI(void)
 
 	if (NeutrinoYParser)
 		delete NeutrinoYParser;
+		
 	if (ControlAPI)
 		delete ControlAPI;
-	//if (Sectionsd)
-	//	delete Sectionsd;
+	
 	if (Zapit)
 		delete Zapit;
+		
 	if (Timerd)
 		delete Timerd;
+		
 	if (EventServer)
 		delete EventServer;
 }
@@ -225,7 +227,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 		}
 
 		// stop playback im standby
-		Zapit->stopPlayBack();
+		zapit_stopPlayBack();
 	}
 	else
 	{

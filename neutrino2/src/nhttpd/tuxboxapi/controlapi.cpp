@@ -42,20 +42,22 @@
 #include "neutrinoapi.h"
 #include "controlapi.h"
 
-bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
-bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
-void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
-void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsdClient::responseGetCurrentNextInfoChannelID& current_next );
-bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::LinkageDescriptorList& descriptors);
-bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::ComponentTagList& tags);
-void sectionsd_pauseScanning(const bool doPause);
-bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
+
+//bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
+//bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
+//void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
+//void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsd::responseGetCurrentNextInfoChannelID& current_next );
+//bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsd::LinkageDescriptorList& descriptors);
+//bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsd::ComponentTagList& tags);
+//void sectionsd_pauseScanning(const bool doPause);
+//bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
 
 extern int scanning;
 
 extern tallchans allchans;
 extern CBouquetManager *g_bouquetManager;
 extern t_channel_id live_channel_id;
+extern CZapitChannel * live_channel;			// defined in zapit.cpp
 
 //=============================================================================
 // Initialization of static variables
@@ -349,7 +351,7 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 		else if (hh->ParamList["record"] == "start")	// start record mode
 		{
 			if(hh->ParamList["stopplayback"] == "true")
-				NeutrinoAPI->Zapit->stopPlayBack();
+				zapit_stopPlayBack();
 				
 			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
 			sectionsd_pauseScanning(true);
@@ -361,7 +363,7 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
 			sectionsd_pauseScanning(false);
 			if (!NeutrinoAPI->Zapit->isPlayBackActive())
-				NeutrinoAPI->Zapit->startPlayBack();
+				zapit_startPlayBack(live_channel);
 		}
 		hh->SendOk();
 	}
@@ -372,7 +374,7 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 //
 void CControlAPI::GetModeCGI(CyhookHandler *hh)
 {
-	int mode = NeutrinoAPI->Zapit->getMode();
+	int mode = zapit_getMode();
 	
 	if ( mode == CZapitClient::MODE_TV)
 		hh->WriteLn("tv");
@@ -1018,7 +1020,7 @@ void CControlAPI::GetBouquetsCGI(CyhookHandler *hh)
 		hh->WriteLn("<bouquets>");
 	}
 
-	int mode = NeutrinoAPI->Zapit->getMode();
+	int mode = zapit_getMode();
 	std::string bouquet;
 	for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
 	{
@@ -1110,7 +1112,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 		CChannelEvent *event;
 		NeutrinoAPI->GetChannelEvents();
 
-		int mode = NeutrinoAPI->Zapit->getMode();
+		int mode = zapit_getMode();
 		CBouquetManager::ChannelIterator cit = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
 		for (; !(cit.EndOfChannels()); cit++) 
 		{
@@ -1131,7 +1133,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 		{
 			CChannelEvent *event;
 			NeutrinoAPI->GetChannelEvents();
-			int mode = NeutrinoAPI->Zapit->getMode();
+			int mode = zapit_getMode();
 			CBouquetManager::ChannelIterator cit = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
 			for (; !(cit.EndOfChannels()); cit++) {
 				CZapitChannel * channel = *cit;
@@ -1255,7 +1257,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 		{
 			// list for given bouquet
 			ZapitChannelList channels;
-			int mode = NeutrinoAPI->Zapit->getMode();
+			int mode = zapit_getMode();
 
 			channels = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->Bouquets[bouquetnr]->radioChannels : g_bouquetManager->Bouquets[bouquetnr]->tvChannels;
 			std::string bouquet = std::string(g_bouquetManager->Bouquets[bouquetnr]->bFav ? _("My Favorites") :g_bouquetManager->Bouquets[bouquetnr]->Name.c_str());
@@ -1275,7 +1277,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 		{
 			// list all bouquets			if(encode)
 			ZapitChannelList channels;
-			int mode = NeutrinoAPI->Zapit->getMode();
+			int mode = zapit_getMode();
 
 			for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
 			{
@@ -1325,14 +1327,14 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 			SendAllCurrentVAPid(hh);
 		else if (hh->ParamList["1"] == "stopplayback")
 		{
-			NeutrinoAPI->Zapit->stopPlayBack();
+			zapit_stopPlayBack();
 			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
 			sectionsd_pauseScanning(true);
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "startplayback")
 		{
-			NeutrinoAPI->Zapit->startPlayBack();
+			zapit_startPlayBack(live_channel);
 			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
 			sectionsd_pauseScanning(false);
 			dprintf("start playback requested..\n");
@@ -1357,8 +1359,8 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 		else if (hh->ParamList["1"] == "getallsubchannels")
 		{
 			t_channel_id current_channel = NeutrinoAPI->Zapit->getCurrentServiceID();
-			CSectionsdClient::LinkageDescriptorList desc;
-			CSectionsdClient::responseGetCurrentNextInfoChannelID currentNextInfo;
+			CSectionsd::LinkageDescriptorList desc;
+			CSectionsd::responseGetCurrentNextInfoChannelID currentNextInfo;
 			sectionsd_getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
 			if (sectionsd_getLinkageDescriptorsUniqueKey(currentNextInfo.current_uniqueKey,desc))
 			{
@@ -1474,7 +1476,7 @@ void CControlAPI::SendEventList(CyhookHandler *hh, t_channel_id channel_id)
 //
 void CControlAPI::SendChannelList(CyhookHandler *hh)
 {
-	int mode = NeutrinoAPI->Zapit->getMode();
+	int mode = zapit_getMode();
 	hh->SetHeader(HTTP_OK, "text/html; charset=UTF-8");
 	CBouquetManager::ChannelIterator cit = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
 	for (; !(cit.EndOfChannels()); cit++) 
@@ -1522,14 +1524,14 @@ void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 	bool eit_not_ok=true;
 	CZapitClient::responseGetPIDs pids;
 
-	CSectionsdClient::ComponentTagList tags;
+	CSectionsd::ComponentTagList tags;
 	pids.PIDs.vpid=0;
 	NeutrinoAPI->Zapit->getPIDS(pids);
 
 	hh->printf("%05u\n", pids.PIDs.vpid);
 
 	t_channel_id current_channel = NeutrinoAPI->Zapit->getCurrentServiceID();
-	CSectionsdClient::responseGetCurrentNextInfoChannelID currentNextInfo;
+	CSectionsd::responseGetCurrentNextInfoChannelID currentNextInfo;
 	sectionsd_getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
 	if (sectionsd_getComponentTagsUniqueKey(currentNextInfo.current_uniqueKey,tags))
 	{
@@ -1783,7 +1785,6 @@ void CControlAPI::SendTimersXML(CyhookHandler *hh)
 		std::string title = timer->epgTitle;
 		if(timer->epgID!=0)
 		{
-			//CSectionsdClient sdc;
 			CEPGData epgdata;
 			if (sectionsd_getEPGid(timer->epgID, timer->epg_starttime, &epgdata))
 				title = epgdata.title;
@@ -2399,7 +2400,7 @@ void CControlAPI::updateBouquetCGI(CyhookHandler *hh)
 void CControlAPI::build_live_url(CyhookHandler *hh)
 {
 	std::string xpids,port,yresult;
-	int mode = NeutrinoAPI->Zapit->getMode();
+	int mode = zapit_getMode();
 
 	if ( mode == CZapitClient::MODE_TV)
 	{

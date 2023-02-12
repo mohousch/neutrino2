@@ -103,8 +103,9 @@ extern cVideo * videoDecoder;
 extern CZapitChannel * live_channel;
 
 // channel events
-void sectionsd_getChannelEvents(CChannelEventList &eList, const bool tv_mode, t_channel_id *chidlist, int clen);
-void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
+//void sectionsd_getChannelEvents(CChannelEventList &eList, const bool tv_mode, t_channel_id *chidlist, int clen);
+//void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
+//bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
 
 //
 void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id);	// defined in zapit.cpp
@@ -1044,7 +1045,7 @@ int CChannelList::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 					
 					if ( zapProtection->check() )
 					{
-						g_RemoteControl->startvideo();
+						g_RemoteControl->startvideo(chanlist[selected]->channel_id);
 						
 						// remember it for the next time
 						chanlist[selected]->last_unlocked_EPGid = g_RemoteControl->current_EPGid;
@@ -1053,11 +1054,11 @@ int CChannelList::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 					zapProtection = NULL;
 				}
 				else
-					g_RemoteControl->startvideo();
+					g_RemoteControl->startvideo(chanlist[selected]->channel_id);
 			}
 		}
 		else
-			g_RemoteControl->startvideo();
+			g_RemoteControl->startvideo(chanlist[selected]->channel_id);
 
 		return messages_return::handled;
 	}
@@ -1639,7 +1640,6 @@ bool CChannelList::canZap(CZapitChannel * channel)
 	return iscurrent;
 }
 
-bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
 void CChannelList::paint()
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::paint\n");

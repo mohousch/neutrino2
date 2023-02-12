@@ -149,8 +149,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	if (!frameBuffer->getActive())
 		return RETURN_EXIT_ALL;
 
-        g_Zapit->stopPlayBack();
-	//g_Sectionsd->setPauseScanning(true);
+        zapit_stopPlayBack();
 	sectionsd_pauseScanning(true);
 
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);

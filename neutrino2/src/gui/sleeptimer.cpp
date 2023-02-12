@@ -66,10 +66,10 @@ int CSleepTimerWidget::exec(CMenuTarget* parent, const std::string &)
    
 	shutdown_min = g_Timerd->getSleepTimerRemaining();  // remaining shutdown time?
 	sprintf(value,"%03d", shutdown_min);
-	CSectionsdClient::CurrentNextInfo info_CurrentNext;
+	CSectionsd::CurrentNextInfo info_CurrentNext;
 	g_InfoViewer->getEPG(g_RemoteControl->current_channel_id, info_CurrentNext);
 	
-  	if ( info_CurrentNext.flags & CSectionsdClient::epgflags::has_current) 
+  	if ( info_CurrentNext.flags & CSectionsd::epgflags::has_current) 
 	{
   		time_t jetzt = time(NULL);
   		int current_epg_zeit_dauer_rest = (info_CurrentNext.current_zeit.dauer + 150 - (jetzt - info_CurrentNext.current_zeit.startzeit ))/60 ;

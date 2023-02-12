@@ -28,7 +28,7 @@
 #include <inttypes.h>
 #include <cstdlib>
 
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 
 // zapit 
 #include <client/zapitclient.h>

@@ -74,8 +74,7 @@
 #include <settings.h>
 #include <configfile.h>
 
-//#include <sectionsdclient/sectionsdMsg.h>
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 #include <eventserver.h>
 
 #include "abstime.h"
@@ -746,7 +745,7 @@ static bool deleteEvent(const event_id_t uniqueKey)
 		}
 	}
 
-	if ((already_exists) && (SIlanguage::getMode() == CSectionsdClient::LANGUAGE_MODE_OFF)) 
+	if ((already_exists) && (SIlanguage::getMode() == CSectionsd::LANGUAGE_MODE_OFF)) 
 	{
 		si->second->contentClassification = evt.contentClassification;
 		si->second->userClassification = evt.userClassification;
@@ -776,7 +775,7 @@ static bool deleteEvent(const event_id_t uniqueKey)
 
 		//Strip ExtendedDescription if too far in the future
 		if ((e->times.begin()->startzeit > zeit + secondsExtendedTextCache) &&
-				(SIlanguage::getMode() == CSectionsdClient::LANGUAGE_MODE_OFF) && (zeit != 0))
+				(SIlanguage::getMode() == CSectionsd::LANGUAGE_MODE_OFF) && (zeit != 0))
 			e->setExtendedText("OFF","");
 
 		/*
@@ -1142,21 +1141,21 @@ static const SIevent& findActualSIeventForServiceUniqueKey(const t_channel_id se
 		if ((*e)->get_channel_id() == serviceUniqueKey)
 		{
 			if (flag != 0)
-				*flag |= CSectionsdClient::epgflags::has_anything; // berhaupt was da...
+				*flag |= CSectionsd::epgflags::has_anything; // berhaupt was da...
 
 			for (SItimes::iterator t = (*e)->times.begin(); t != (*e)->times.end(); ++t) 
 			{
 				if ((long)(azeit + plusminus) < (long)(t->startzeit + t->dauer))
 				{
 					if (flag != 0)
-						*flag |= CSectionsdClient::epgflags::has_later; // later events are present...
+						*flag |= CSectionsd::epgflags::has_later; // later events are present...
 
 					if (t->startzeit <= (long)(azeit + plusminus))
 					{
 						//printf("azeit %d, startzeit+t->dauer %d \n", azeit, (long)(t->startzeit+t->dauer) );
 
 						if (flag != 0)
-							*flag |= CSectionsdClient::epgflags::has_current; // aktuelles event da...
+							*flag |= CSectionsd::epgflags::has_current; // aktuelles event da...
 
 						zeit = *t;
 
@@ -1736,7 +1735,7 @@ static bool		messaging_need_eit_version = false;
 std::string epg_dir("");
 
 //static void commandserviceChanged(int connfd, char *data, const unsigned dataLength)
-void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false)
+void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent)
 {
 	t_channel_id *uniqueServiceKey;
 	//if (dataLength != sizeof(sectionsd::commandSetServiceChanged))
@@ -1852,7 +1851,7 @@ void sectionsd_registerEventClient(const unsigned int eventID, const unsigned in
 		eventServer->registerEvent2(eventID, clientID, udsName);
 
 		//if (((CEventServer::commandRegisterEvent*)data)->eventID == CSectionsdClient::EVT_TIMESET)
-		if (eventID == CSectionsdClient::EVT_TIMESET)
+		if (eventID == CSectionsd::EVT_TIMESET)
 			messaging_neutrino_sets_time = true;
 	}
 }
@@ -1869,7 +1868,7 @@ void sectionsd_unRegisterEventClient(const unsigned int eventID, const unsigned 
 }
 
 //static void commandSetConfig(int connfd, char *data, const unsigned /*dataLength*/)
-void sectionsd_setConfig(const CSectionsdClient::epg_config config)
+void sectionsd_setConfig(const CSectionsd::epg_config config)
 {
 	//struct sectionsd::msgResponseHeader responseHeader;
 	//struct sectionsd::commandSetConfig *pmsg;
@@ -2529,7 +2528,7 @@ _done:
 	cp(tmpname, filename);
 	unlink(tmpname);
 _ret:
-	eventServer->sendEvent(CSectionsdClient::EVT_WRITE_SI_FINISHED, CEventServer::INITID_SECTIONSD);
+	eventServer->sendEvent(CSectionsd::EVT_WRITE_SI_FINISHED, CEventServer::INITID_SECTIONSD);
 	
 	return ;
 }
@@ -2574,7 +2573,7 @@ static void *timeThread(void *)
 				timeset = true;
 				pthread_cond_broadcast(&timeIsSetCond);
 				pthread_mutex_unlock(&timeIsSetMutex );
-				eventServer->sendEvent(CSectionsdClient::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &actTime, sizeof(actTime) );
+				eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &actTime, sizeof(actTime) );
 				dprintf(DEBUG_NORMAL, "[sectionsd] timeThread: Time is already set by system, no further timeThread work!\n");
 				break;
 			}
@@ -2589,7 +2588,7 @@ static void *timeThread(void *)
 			time_ntp = true;
 			pthread_cond_broadcast(&timeIsSetCond);
 			pthread_mutex_unlock(&timeIsSetMutex );
-			eventServer->sendEvent(CSectionsdClient::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &actTime, sizeof(actTime) );
+			eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &actTime, sizeof(actTime) );
 			dprintf(DEBUG_NORMAL, "[sectionsd] timeThread: Time is already set by system\n");
 		} 
 		else 
@@ -2631,7 +2630,7 @@ static void *timeThread(void *)
 					time_ntp= false;
 					pthread_cond_broadcast(&timeIsSetCond);
 					pthread_mutex_unlock(&timeIsSetMutex );
-					eventServer->sendEvent(CSectionsdClient::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &tim, sizeof(tim));
+					eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &tim, sizeof(tim));
 					dprintf(DEBUG_NORMAL, "[sectionsd] timeThread: Time is already set by DVB\n");
 				}
 			}
@@ -3667,7 +3666,7 @@ static void *cnThread(void *)
 				{
 					dprintf(DEBUG_DEBUG, "[sectionsd] waiting for more than %d seconds - bail out...\n", TIME_EIT_VERSION_WAIT);
 					/* send event anyway, so that we know there is no EPG */
-					eventServer->sendEvent(CSectionsdClient::EVT_GOT_CN_EPG,
+					eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG,
 							       CEventServer::INITID_SECTIONSD,
 							       &messaging_current_servicekey,
 							       sizeof(messaging_current_servicekey));
@@ -3689,7 +3688,7 @@ static void *cnThread(void *)
 			messaging_have_CN = messaging_got_CN;
 			unlockMessaging();
 			dprintf(DEBUG_DEBUG, "[sectionsd] [cnThread] got current_next (0x%x) - sending event!\n", messaging_have_CN);
-			eventServer->sendEvent(CSectionsdClient::EVT_GOT_CN_EPG,
+			eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG,
 					       CEventServer::INITID_SECTIONSD,
 					       &messaging_current_servicekey,
 					       sizeof(messaging_current_servicekey));
@@ -3778,7 +3777,7 @@ static void *cnThread(void *)
 			/* we can get here if we got the EIT version but no events */
 			/* send a "no epg" event anyway before going to sleep */
 			if (messaging_have_CN == 0x00)
-				eventServer->sendEvent(CSectionsdClient::EVT_GOT_CN_EPG,
+				eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG,
 								CEventServer::INITID_SECTIONSD,
 								&messaging_current_servicekey,
 								sizeof(messaging_current_servicekey));
@@ -4059,11 +4058,11 @@ void sectionsd_main_thread(void */*data*/)
 	eventServer = new CEventServer;
 	
 	//
-	eventServer->registerEvent2(CSectionsdClient::EVT_TIMESET, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CSectionsdClient::EVT_GOT_CN_EPG, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CSectionsdClient::EVT_SERVICES_UPDATE, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CSectionsdClient::EVT_BOUQUETS_UPDATE, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CSectionsdClient::EVT_WRITE_SI_FINISHED, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsd::EVT_TIMESET, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsd::EVT_GOT_CN_EPG, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsd::EVT_SERVICES_UPDATE, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsd::EVT_BOUQUETS_UPDATE, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsd::EVT_WRITE_SI_FINISHED, 222, NEUTRINO_UDS_NAME);
 	
 	messaging_neutrino_sets_time = true;
 
@@ -4253,7 +4252,7 @@ void sectionsd_main_thread(void */*data*/)
 }
 
 /* was: commandAllEventsChannelID sendAllEvents */
-void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "")
+void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search, std::string search_text)
 {
 	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getEventsServiceKey:sendAllEvents for:%llx\n", serviceUniqueKey);
 
@@ -4323,7 +4322,7 @@ void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventL
 }
 
 /* was: commandCurrentNextInfoChannelID */
-void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsdClient::responseGetCurrentNextInfoChannelID& current_next )
+void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsd::responseGetCurrentNextInfoChannelID& current_next )
 {
 	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: Request of current/next information for: %llx\n", uniqueServiceKey);
 
@@ -4343,13 +4342,13 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 		{
 			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: !myCurrentEvent \n");
 			change = true;
-			flag |= CSectionsdClient::epgflags::not_broadcast;
+			flag |= CSectionsd::epgflags::not_broadcast;
 		} 
 		else 
 		{
 			currentEvt = *myCurrentEvent;
-			flag |= CSectionsdClient::epgflags::has_current; // aktuelles event da...
-			flag |= CSectionsdClient::epgflags::has_anything;
+			flag |= CSectionsd::epgflags::has_current; // aktuelles event da...
+			flag |= CSectionsd::epgflags::has_anything;
 		}
 		
 		if (!myNextEvent) 
@@ -4360,24 +4359,24 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 		else 
 		{
 			nextEvt = *myNextEvent;
-			if (flag & CSectionsdClient::epgflags::not_broadcast) 
+			if (flag & CSectionsd::epgflags::not_broadcast) 
 			{
-				dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: CSectionsdClient::epgflags::has_no_current\n");
-				flag = CSectionsdClient::epgflags::has_no_current;
+				dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: CSectionsd::epgflags::has_no_current\n");
+				flag = CSectionsd::epgflags::has_no_current;
 			}
-			flag |= CSectionsdClient::epgflags::has_next; // aktuelles event da...
-			flag |= CSectionsdClient::epgflags::has_anything;
+			flag |= CSectionsd::epgflags::has_next; // aktuelles event da...
+			flag |= CSectionsd::epgflags::has_anything;
 		}
 	}
 
 	/* if another than the currently running program is requested, then flag will still be 0
 	if either the current or the next event is not found, this condition will be true, too.
 	*/
-	if ((flag & (CSectionsdClient::epgflags::has_current|CSectionsdClient::epgflags::has_next)) !=
-			(CSectionsdClient::epgflags::has_current|CSectionsdClient::epgflags::has_next)) 
+	if ((flag & (CSectionsd::epgflags::has_current|CSectionsd::epgflags::has_next)) !=
+			(CSectionsd::epgflags::has_current|CSectionsd::epgflags::has_next)) 
 	{
 		SItime zeitEvt1(0, 0);
-		if (!(flag & CSectionsdClient::epgflags::has_current)) 
+		if (!(flag & CSectionsd::epgflags::has_current)) 
 		{
 			currentEvt = findActualSIeventForServiceUniqueKey(uniqueServiceKey, zeitEvt1, 0, &flag2);
 		} 
@@ -4396,13 +4395,13 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 
 		if (currentEvt.service_id != 0)
 		{	//Found
-			flag &= (CSectionsdClient::epgflags::has_no_current|CSectionsdClient::epgflags::not_broadcast)^(unsigned)-1;
-			flag |= CSectionsdClient::epgflags::has_current;
-			flag |= CSectionsdClient::epgflags::has_anything;
+			flag &= (CSectionsd::epgflags::has_no_current|CSectionsd::epgflags::not_broadcast)^(unsigned)-1;
+			flag |= CSectionsd::epgflags::has_current;
+			flag |= CSectionsd::epgflags::has_anything;
 
 			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: current EPG found. service_id: %x, flag: 0x%x\n",currentEvt.service_id, flag);
 
-			if (!(flag & CSectionsdClient::epgflags::has_next)) 
+			if (!(flag & CSectionsd::epgflags::has_next)) 
 			{
 				dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: *nextEvt not from cur/next V1!\n");
 				nextEvt = findNextSIevent(currentEvt.uniqueKey(), zeitEvt2);
@@ -4422,15 +4421,15 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 				if ( /*( !si->second->eitScheduleFlag() ) || */
 					( !si->second->eitPresentFollowingFlag() ) )
 				{
-					flag |= CSectionsdClient::epgflags::not_broadcast;
+					flag |= CSectionsd::epgflags::not_broadcast;
 				}
 			}
 			unlockServices();
 
-			if ( flag2 & CSectionsdClient::epgflags::has_anything )
+			if ( flag2 & CSectionsd::epgflags::has_anything )
 			{
-				flag |= CSectionsdClient::epgflags::has_anything;
-				if (!(flag & CSectionsdClient::epgflags::has_next)) 
+				flag |= CSectionsd::epgflags::has_anything;
+				if (!(flag & CSectionsd::epgflags::has_next)) 
 				{
 					dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: *nextEvt not from cur/next V2!\n");
 					nextEvt = findNextSIeventForServiceUniqueKey(uniqueServiceKey, zeitEvt2);
@@ -4453,7 +4452,7 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 
 							if (eFirst->second->times.begin()->startzeit < azeit &&
 									eFirst->second->uniqueKey() == nextEvt.uniqueKey() - 1)
-								flag |= CSectionsdClient::epgflags::has_no_current;
+								flag |= CSectionsd::epgflags::has_no_current;
 						}
 					}
 				}
@@ -4462,9 +4461,9 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 		
 		if (nextEvt.service_id != 0)
 		{
-			flag &= CSectionsdClient::epgflags::not_broadcast^(unsigned)-1;
+			flag &= CSectionsd::epgflags::not_broadcast^(unsigned)-1;
 			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: next EPG found. service_id: %x, flag: 0x%x\n",nextEvt.service_id, flag);
-			flag |= CSectionsdClient::epgflags::has_next;
+			flag |= CSectionsd::epgflags::has_next;
 		}
 		else if (flag != 0)
 		{
@@ -4480,12 +4479,12 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 			if (currentEvt.linkage_descs[i].linkageType == 0xB0)
 			{
 				dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: linkage in current EPG found.\n");
-				flag |= CSectionsdClient::epgflags::current_has_linkagedescriptors;
+				flag |= CSectionsd::epgflags::current_has_linkagedescriptors;
 				break;
 			}
 	} 
 	else
-		flag |= CSectionsdClient::epgflags::has_no_current;
+		flag |= CSectionsd::epgflags::has_no_current;
 
 	time_t now;
 
@@ -4493,8 +4492,8 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 		currentEvt.getName().c_str(), currentEvt.eventID,
 		nextEvt.getName().c_str(), nextEvt.eventID, flag);
 
-	CSectionsdClient::sectionsdTime time_cur;
-	CSectionsdClient::sectionsdTime time_nxt;
+	CSectionsd::sectionsdTime time_cur;
+	CSectionsd::sectionsdTime time_nxt;
 	now = time(NULL);
 	time_cur.startzeit = currentEvt.times.begin()->startzeit;
 	time_cur.dauer = currentEvt.times.begin()->dauer;
@@ -4692,7 +4691,7 @@ bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGD
 }
 
 /* was static void sendEventList(int connfd, const unsigned char serviceTyp1, const unsigned char serviceTyp2 = 0, int sendServiceName = 1, t_channel_id * chidlist = NULL, int clen = 0) */
-void sectionsd_getChannelEvents(CChannelEventList &eList, const bool tv_mode = true, t_channel_id *chidlist = NULL, int clen = 0)
+void sectionsd_getChannelEvents(CChannelEventList &eList, bool tv_mode, t_channel_id *chidlist, int clen)
 {
 	unsigned char serviceTyp1, serviceTyp2;
 	clen = clen / sizeof(t_channel_id);
@@ -4779,7 +4778,7 @@ void sectionsd_getChannelEvents(CChannelEventList &eList, const bool tv_mode = t
 }
 
 /*was static void commandComponentTagsUniqueKey(int connfd, char *data, const unsigned dataLength) */
-bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::ComponentTagList& tags)
+bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsd::ComponentTagList& tags)
 {
 	bool ret = false;
 	dprintf(DEBUG_DEBUG, "[sectionsd] Request of ComponentTags for 0x%llx\n", uniqueKey);
@@ -4792,7 +4791,7 @@ bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdC
 
 	if (eFirst != mySIeventsOrderUniqueKey.end()) 
 	{
-		CSectionsdClient::responseGetComponentTags response;
+		CSectionsd::responseGetComponentTags response;
 		ret = true;
 
 		for (SIcomponents::iterator cmp = eFirst->second->components.begin(); cmp != eFirst->second->components.end(); ++cmp) 
@@ -4812,7 +4811,7 @@ bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdC
 }
 
 /* was static void commandLinkageDescriptorsUniqueKey(int connfd, char *data, const unsigned dataLength) */
-bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::LinkageDescriptorList& descriptors)
+bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsd::LinkageDescriptorList& descriptors)
 {
 	bool ret = false;
 	dprintf(DEBUG_DEBUG, "[sectionsd] Request of LinkageDescriptors for 0x%llx\n", uniqueKey);
@@ -4829,7 +4828,7 @@ bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSecti
 			if (linkage_desc->linkageType == 0xB0) 
 			{
 
-				CSectionsdClient::responseGetLinkageDescriptors response;
+				CSectionsd::responseGetLinkageDescriptors response;
 				response.name = linkage_desc->name.c_str();
 				response.transportStreamId = linkage_desc->transportStreamId;
 				response.originalNetworkId = linkage_desc->originalNetworkId;
@@ -4846,7 +4845,7 @@ bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSecti
 }
 	
 /* was static void commandTimesNVODservice(int connfd, char *data, const unsigned dataLength) */
-bool sectionsd_getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSectionsdClient::NVODTimesList& nvod_list)
+bool sectionsd_getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSectionsd::NVODTimesList& nvod_list)
 {
 	bool ret = false;
 	dprintf(DEBUG_DEBUG, "[sectionsd] Request of NVOD times for:%llx\n", uniqueServiceKey);
@@ -4868,7 +4867,7 @@ bool sectionsd_getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSect
 				SItime zeitEvt1(0, 0);
 				findActualSIeventForServiceUniqueKey(ni->uniqueKey(), zeitEvt1, 15*60);
 
-				CSectionsdClient::responseGetNVODTimes response;
+				CSectionsd::responseGetNVODTimes response;
 
 				response.service_id =  ni->service_id;
 				response.original_network_id = ni->original_network_id;

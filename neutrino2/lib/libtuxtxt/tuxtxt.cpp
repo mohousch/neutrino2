@@ -25,6 +25,7 @@
 
 #include "tuxtxt.h"
 
+#include <client/zapitclient.h>
 #include <global.h>
 
 #include <dmx_cs.h>

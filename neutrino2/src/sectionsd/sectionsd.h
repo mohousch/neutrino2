@@ -1,9 +1,7 @@
-#ifndef __sectionsdclient__
-#define __sectionsdclient__
+#ifndef __sectionsd__
+#define __sectionsd__
 /*
-  Client-Interface f�r sectionsd  -   DBoxII-Project
-
-  $Id: sectionsdclient.h,v 1.42 2007/01/12 22:57:57 houdini Exp $
+  $Id: sectionsd.h 12022023 mohousch Exp $
 
   License: GPL
 
@@ -62,18 +60,11 @@ class CChannelEvent
 
 typedef std::vector<CChannelEvent> CChannelEventList;
 
-class CSectionsdClient /*: private CBasicClient*/
+class CSectionsd
 {
-	private:
-		//virtual unsigned char getVersion() const;
-		//virtual const char* getSocketName() const;
-
-		//int readResponse(char* data = NULL, unsigned int size = 0);
-		//bool send(const unsigned char command, const char* data = NULL, const unsigned int size = 0);
-		//char * parseExtendedEvents(char * dp, CEPGData * epgdata);
-
 	public:
-		enum SIlanguageMode_t {
+		enum SIlanguageMode_t 
+		{
 			ALL,
 			FIRST_FIRST,
 			FIRST_ALL,
@@ -134,18 +125,18 @@ class CSectionsdClient /*: private CBasicClient*/
 			t_service_id                    service_id;
 			t_original_network_id           original_network_id;
 			t_transport_stream_id           transport_stream_id;
-			CSectionsdClient::sectionsdTime zeit;
+			CSectionsd::sectionsdTime zeit;
 		};
 		typedef std::vector<responseGetNVODTimes> NVODTimesList;
 
 		struct responseGetCurrentNextInfoChannelID
 		{
 			event_id_t                      current_uniqueKey;
-			CSectionsdClient::sectionsdTime current_zeit;
+			CSectionsd::sectionsdTime current_zeit;
 			std::string                     current_name;
 			char                            current_fsk;
 			event_id_t                      next_uniqueKey;
-			CSectionsdClient::sectionsdTime next_zeit;
+			CSectionsd::sectionsdTime next_zeit;
 			std::string                     next_name;
 			unsigned                        flags;
 		};
@@ -164,46 +155,13 @@ class CSectionsdClient /*: private CBasicClient*/
 			std::string network_ntpserver;
 			std::string epg_dir;
 		} epg_config;
-
-		//bool getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::ComponentTagList& tags);
-		//bool getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::LinkageDescriptorList& descriptors);
-		//bool getNVODTimesServiceKey(const t_channel_id channel_id, CSectionsdClient::NVODTimesList& nvod_list);
-		//bool getCurrentNextServiceKey(const t_channel_id channel_id, CSectionsdClient::responseGetCurrentNextInfoChannelID& current_next);
-		//bool getIsTimeSet();
-		//void setPauseScanning(const bool doPause);
-		//bool getIsScanningActive();
-		//void setPauseSorting(const bool doPause);
-		//void setServiceChanged(const t_channel_id channel_id, const bool requestEvent);
-		//CChannelEventList getChannelEvents(const bool tv_mode = true, t_channel_id* = NULL, int size = 0);
-		//CChannelEventList getEventsServiceKey(const t_channel_id channel_id);
-		//bool getEventsServiceKeySearchAdd(CChannelEventList& evtlist,const t_channel_id channel_id,char m_search_typ,std::string& m_search_text);
-		//bool getEPGid(const event_id_t eventid, const time_t starttime, CEPGData * epgdata);
-		//bool getActualEPGServiceKey(const t_channel_id channel_id, CEPGData * epgdata);
-		//bool getEPGidShort(const event_id_t eventid, CShortEPGData * epgdata);
-		//void freeMemory();
-		//void readSIfromXML(const char * epgxmlname);
-		//void readSIfromXMLTV(const char* url);
-		//void writeSI2XML(const char * epgxmlname);
-		
-		//void setConfig(const epg_config config);
-		//void dumpStatus(void);
-
-		/*
-		  ein beliebiges Event anmelden
-		*/
-		//void registerEvent(const unsigned int eventID, const unsigned int clientID, const char * const udsName);
-
-		/*
-		  ein beliebiges Event abmelden
-		*/
-		//void unRegisterEvent(const unsigned int eventID, const unsigned int clientID);
 };
 
 class CEPGData
 {
 	public:
 		uint64_t eventID;
-		CSectionsdClient::sectionsdTime	epg_times;
+		CSectionsd::sectionsdTime	epg_times;
 		std::string                     title;
 		std::string                     info1;
 		std::string                     info2;
@@ -227,5 +185,26 @@ class CEPGData
 			userClassification    = "";
 		};
 };
+
+//
+void sectionsd_getChannelEvents(CChannelEventList &eList, bool tv_mode = true, t_channel_id *chidlist = NULL, int clen = 0);
+void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
+void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsd::responseGetCurrentNextInfoChannelID& current_next );
+bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
+bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
+bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
+bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsd::ComponentTagList& tags);
+bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsd::LinkageDescriptorList& descriptors);
+bool sectionsd_getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSectionsd::NVODTimesList& nvod_list);
+void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
+void sectionsd_pauseScanning(const bool doPause);
+void sectionsd_freeMemory();
+void sectionsd_readSIfromXML(const char *epgxmlname);
+void sectionsd_writeSI2XML(const char *epgxmlname);
+void sectionsd_readSIfromXMLTV(const char *url);
+void sectionsd_insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
+void sectionsd_setConfig(const CSectionsd::epg_config config);
+void sectionsd_registerEventClient(const unsigned int eventID, const unsigned int clientID, const char * const udsName);
+void sectionsd_unRegisterEventClient(const unsigned int eventID, const unsigned int clientID);
 
 #endif

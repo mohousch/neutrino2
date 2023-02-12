@@ -179,17 +179,17 @@
 
 
 //
-bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
-bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
-bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
-void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
-void sectionsd_pauseScanning(const bool doPause);
-void sectionsd_readSIfromXMLTV(const char *url);
-void sectionsd_readSIfromXML(const char *epgxmlname);
-void sectionsd_writeSI2XML(const char*epgxmlname);
-void sectionsd_setConfig(const CSectionsdClient::epg_config config);
-void sectionsd_registerEventClient(const unsigned int eventID, const unsigned int clientID, const char * const udsName);
-void sectionsd_unRegisterEventClient(const unsigned int eventID, const unsigned int clientID);
+//bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
+//bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
+//bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
+//void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
+//void sectionsd_pauseScanning(const bool doPause);
+//void sectionsd_readSIfromXMLTV(const char *url);
+//void sectionsd_readSIfromXML(const char *epgxmlname);
+//void sectionsd_writeSI2XML(const char*epgxmlname);
+//void sectionsd_setConfig(const CSectionsd::epg_config config);
+//void sectionsd_registerEventClient(const unsigned int eventID, const unsigned int clientID, const char * const udsName);
+//void sectionsd_unRegisterEventClient(const unsigned int eventID, const unsigned int clientID);
 
 //
 cPlayback* playback = NULL;
@@ -1460,7 +1460,7 @@ void CNeutrinoApp::firstChannel()
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::firstChannel\n");
 
-	g_Zapit->getLastChannel(firstchannel.channelNumber, firstchannel.mode);
+	zapit_getLastChannel(firstchannel.channelNumber, firstchannel.mode);
 }
 
 // CNeutrinoApp -  channelsInit, get the Channellist from zapit
@@ -2252,7 +2252,7 @@ void CNeutrinoApp::SendSectionsdConfig(void)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::SendSectionsdConfig\n");
 
-        CSectionsdClient::epg_config config;
+        CSectionsd::epg_config config;
 	
         config.epg_cache                = atoi(g_settings.epg_cache.c_str());
         config.epg_old_events           = atoi(g_settings.epg_old_events.c_str());
@@ -2288,7 +2288,7 @@ void CNeutrinoApp::InitZapper()
 	// first channel
 	firstChannel();
 
-	int tvmode = g_Zapit->getMode();
+	int tvmode = zapit_getMode();
 
 	if (tvmode == CZapitClient::MODE_TV)
 		mode = NeutrinoMessages::mode_tv;
@@ -2358,19 +2358,6 @@ static void CSSendMessage(uint32_t msg, uint32_t data)
 		g_RCInput->postMsg(msg, data);
 }
 #endif
-
-/*
-void CNeutrinoApp::initSectionsdClient()
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::initSectionsdClient\n");
-
-	sectionsd_registerEventClient(CSectionsdClient::EVT_TIMESET, 222, NEUTRINO_UDS_NAME);
-	sectionsd_registerEventClient(CSectionsdClient::EVT_GOT_CN_EPG, 222, NEUTRINO_UDS_NAME);
-	sectionsd_registerEventClient(CSectionsdClient::EVT_SERVICES_UPDATE, 222, NEUTRINO_UDS_NAME);
-	sectionsd_registerEventClient(CSectionsdClient::EVT_BOUQUETS_UPDATE, 222, NEUTRINO_UDS_NAME);
-	sectionsd_registerEventClient(CSectionsdClient::EVT_WRITE_SI_FINISHED, 222, NEUTRINO_UDS_NAME);
-}
-*/
 
 void CNeutrinoApp::initZapitClient()
 {
@@ -2590,9 +2577,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	CVFD::getInstance()->setMuted(current_muted);
 #endif
 	
-	// sectionsd client
-	g_Sectionsd = new CSectionsdClient;
-	
 	// timed client
 	g_Timerd = new CTimerdClient;
 	
@@ -2653,7 +2637,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// start assistant
 	if(loadSettingsErg) 
 	{
-		int tvmode = g_Zapit->getMode();
+		int tvmode = zapit_getMode();
 
 		if (tvmode == CZapitClient::MODE_TV)
 			mode = NeutrinoMessages::mode_tv;
@@ -2979,7 +2963,7 @@ void CNeutrinoApp::RealRun(void)
 			{
 				if (IS_WEBTV(live_channel_id))
 				{
-					g_Zapit->pausePlayBack();
+					zapit_pausePlayBack();
 					timeshiftstatus = 1;
 				}
 				else
@@ -3014,7 +2998,7 @@ void CNeutrinoApp::RealRun(void)
 				
 				if (IS_WEBTV(live_channel_id))
 				{
-					g_Zapit->continuePlayBack();
+					zapit_continuePlayBack();
 					timeshiftstatus = 0;
 				}
 				else
@@ -4238,7 +4222,7 @@ void CNeutrinoApp::ExitRun(int retcode, bool save)
 		}
 
 		// stop playback
-		g_Zapit->stopPlayBack();
+		zapit_stopPlayBack();
 
 		if(retcode > RESTART)
 		{
@@ -4301,8 +4285,8 @@ void CNeutrinoApp::ExitRun(int retcode, bool save)
 		if (g_RCInput != NULL)
 			delete g_RCInput;
 			
-		if(g_Sectionsd)
-			delete g_Sectionsd;
+		//if(g_Sectionsd)
+		//	delete g_Sectionsd;
 			
 		if(g_Timerd)
 			delete g_Timerd;
@@ -4889,7 +4873,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		else
 		{
 			//zapit stop playback
-			g_Zapit->stopPlayBack();
+			zapit_stopPlayBack();
 		}
 
 		// stop sectionsd
@@ -4951,7 +4935,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 
 		// this is buggy don't respect parentallock
 		if(!recordingstatus && !timeshiftstatus)
-			g_Zapit->startPlayBack();
+			zapit_startPlayBack(live_channel);
 
 
 		sectionsd_pauseScanning(false);
@@ -5438,7 +5422,7 @@ void CNeutrinoApp::lockPlayBack(void)
 	StopSubtitles();
 
 	// stop/lock live playback	
-	g_Zapit->lockPlayBack();
+	zapit_lockPlayBack();
 		
 	//pause epg scanning
 	sectionsd_pauseScanning(true);	
@@ -5447,7 +5431,7 @@ void CNeutrinoApp::lockPlayBack(void)
 void CNeutrinoApp::unlockPlayBack(void)
 {
 	// unlock playback	
-	g_Zapit->unlockPlayBack();	
+	zapit_unlockPlayBack();	
 		
 	//start epg scanning
 	sectionsd_pauseScanning(false);

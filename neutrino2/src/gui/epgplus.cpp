@@ -33,7 +33,7 @@
 #include <neutrino2.h>
 
 #include <gui/epgplus.h>
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 
 #include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
@@ -53,6 +53,10 @@
 #define COL_MENUCONTENT_P1                 254-8*4+1
 #define COL_MENUCONTENT_P2                 254-8*4+2
 extern CBouquetList *bouquetList;
+
+//
+//bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
+//void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
 
 int sizes[EpgPlus::NumberOfSizeSettings];
 
@@ -262,7 +266,6 @@ bool EpgPlus::ChannelEventEntry::isSelected (time_t selectedTime) const
 	   return (selectedTime >= this->channelEvent.startTime) && (selectedTime < this->channelEvent.startTime + time_t (this->channelEvent.duration));
 }
 
-bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
 void EpgPlus::ChannelEventEntry::paint (bool _isSelected, bool toggleColor)
 {
 	this->frameBuffer->paintBoxRel(this->x, this->y, this->width, this->font->getHeight() + 10, this->channelEvent.description.empty()? COL_MENUCONTENT_PLUS_0 : (_isSelected ? COL_MENUCONTENTSELECTED_PLUS_0 : (toggleColor ? COL_MENUCONTENT_PLUS_1 : COL_MENUCONTENT_PLUS_2)));
@@ -512,8 +515,6 @@ EpgPlus::~EpgPlus()
 {
  	 this->free();
 }
-
-void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
 
 void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 {

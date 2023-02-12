@@ -37,7 +37,7 @@
 #include <vector>
 #include <map>
 
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 
 
 #define LANGUAGEFILE CONFIGDIR "/epglanguages.conf"
@@ -49,15 +49,15 @@ class SIlanguage {
 		static bool saveLanguages();
 		static void setLanguages(const std::vector<std::string>& newLanguages);
 		static std::vector<std::string> getLanguages();
-		static void setMode(CSectionsdClient::SIlanguageMode_t newMode);
-		static CSectionsdClient::SIlanguageMode_t getMode();
+		static void setMode(CSectionsd::SIlanguageMode_t newMode);
+		static CSectionsd::SIlanguageMode_t getMode();
 
 	private:
 		SIlanguage();
 		~SIlanguage();
 		static std::vector<std::string> languages;
 		static pthread_mutex_t languages_lock;
-		static CSectionsdClient::SIlanguageMode_t mode;
+		static CSectionsd::SIlanguageMode_t mode;
 };
 
 #endif

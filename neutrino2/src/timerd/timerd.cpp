@@ -31,7 +31,7 @@
 #include <syscall.h>
 
 #include <timermanager.h>
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 
 #include <connection/basicserver.h>
 #include <timerdclient/timerdmsg.h>

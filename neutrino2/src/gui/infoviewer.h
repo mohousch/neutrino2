@@ -37,7 +37,7 @@
 
 #include <string>
 
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 
 #include <driver/rcinput.h>
 #include <driver/framebuffer.h>
@@ -164,7 +164,7 @@ class CInfoViewer
 		bool show_dot;
 		bool new_chan;
 
-		CSectionsdClient::CurrentNextInfo info_CurrentNext;
+		CSectionsd::CurrentNextInfo info_CurrentNext;
 		t_channel_id   channel_id;
 
 		int timescale_posx;
@@ -228,8 +228,8 @@ class CInfoViewer
 
 		void killTitle();
 		
-		void getEPG(const t_channel_id for_channel_id, CSectionsdClient::CurrentNextInfo &info); // needed by CSleepTimerWidget
-		CSectionsdClient::CurrentNextInfo getCurrentNextInfo() { return info_CurrentNext; }
+		void getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info); // needed by CSleepTimerWidget
+		CSectionsd::CurrentNextInfo getCurrentNextInfo() { return info_CurrentNext; }
 	
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
 		void clearVirtualZapMode() {virtual_zap_mode = false;}

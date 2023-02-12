@@ -34,15 +34,15 @@
 #include <timermanager.h>
 #include <timerdclient/timerdclient.h>
 #include <timerdclient/timerdmsg.h>
-#include <sectionsd/sectionsdclient.h>
+#include <sectionsd/sectionsd.h>
 
 #include <vector>
 #include <system/debug.h>
 
 
-extern bool timeset; // from
-void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
-bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
+extern bool timeset; // from sectionsd.cpp
+//void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
+//bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
 
 static pthread_mutex_t tm_eventsMutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 

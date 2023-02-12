@@ -55,8 +55,8 @@ class CZapitMessages
 			CMD_ZAPTO_SUBSERVICEID_NOWAIT      =  9,
 
 			CMD_STOP_VIDEO                     = 10,		// not supported yet
-			CMD_SET_MODE                       = 11,
-			CMD_GET_MODE                       = 12,
+			//CMD_SET_MODE                       = 11,
+			//CMD_GET_MODE                       = 12,
 			CMD_GET_LAST_CHANNEL               = 13,
 			CMD_GET_APID_VPID                  = 14,		// not supported yet
 			CMD_GET_VTXT_PID                   = 15,		// not supported yet
@@ -100,8 +100,8 @@ class CZapitMessages
 
 			CMD_SET_RECORD_MODE                = 51,
 			CMD_GET_RECORD_MODE                = 52,
-			CMD_SB_START_PLAYBACK              = 53,
-			CMD_SB_STOP_PLAYBACK               = 54,
+			//CMD_SB_START_PLAYBACK              = 53,
+			//CMD_SB_STOP_PLAYBACK               = 54,
 			CMD_SB_GET_PLAYBACK_ACTIVE         = 55,
 			
 			CMD_SET_AUDIO_MODE                 = 57,
@@ -125,8 +125,9 @@ class CZapitMessages
 			CMD_RELOAD_CURRENTSERVICES	   = 80,
 
 			CMD_TUNE_TP                        = 91,
-			CMD_SB_LOCK_PLAYBACK		   = 92,
-			CMD_SB_UNLOCK_PLAYBACK		   = 93,
+			
+			//CMD_SB_LOCK_PLAYBACK		   = 92,
+			//CMD_SB_UNLOCK_PLAYBACK		   = 93,
 			CMD_GET_BOUQUET_NCHANNELS          = 94,
 			
 			CMD_REZAP		  	   = 95,
@@ -148,8 +149,8 @@ class CZapitMessages
 			CMD_SET_VOLUME_PERCENT		  = 112,
 			CMD_GET_VOLUME_PERCENT		  = 113,
 
-			CMD_SB_PAUSE_PLAYBACK		  = 114,
-			CMD_SB_CONTINUE_PLAYBACK	  = 115,
+			//CMD_SB_PAUSE_PLAYBACK		  = 114,
+			//CMD_SB_CONTINUE_PLAYBACK	  = 115,
 
 			CMD_GET_CHANNEL_URL		  = 116,
 			CMD_GET_CHANNEL_DESCRIPTION	  = 117,

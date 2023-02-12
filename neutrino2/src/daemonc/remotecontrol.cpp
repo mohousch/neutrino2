@@ -56,13 +56,13 @@ extern tallchans allchans;	// defined in bouquets.h
 extern bool autoshift;
 extern uint32_t scrambled_timer;
 
-bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::ComponentTagList& tags);
-bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::LinkageDescriptorList& descriptors);
-bool sectionsd_getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSectionsdClient::NVODTimesList& nvod_list);
+//bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsd::ComponentTagList& tags);
+//bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsd::LinkageDescriptorList& descriptors);
+//bool sectionsd_getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSectionsd::NVODTimesList& nvod_list);
 //void sectionsd_setPrivatePid(unsigned short pid);
-void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsdClient::responseGetCurrentNextInfoChannelID& current_next );
-void sectionsd_insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
-void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
+//void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsd::responseGetCurrentNextInfoChannelID& current_next );
+//void sectionsd_insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
+//void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
 
 
 CSubService::CSubService(const t_original_network_id anoriginal_network_id, const t_service_id aservice_id, const t_transport_stream_id atransport_stream_id, const std::string &asubservice_name)
@@ -240,7 +240,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			return messages_return::handled;
 
 		//
-		CSectionsdClient::CurrentNextInfo info_CN;
+		CSectionsd::CurrentNextInfo info_CN;
 		sectionsd_getCurrentNextServiceKey(current_channel_id & 0xFFFFFFFFFFFFULL, info_CN);
 		
 		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg got  EVT_CURRENTEPG, uniqueKey: %llx chid: %llx flags: %x\n", info_CN.current_uniqueKey, current_channel_id, info_CN.flags);
@@ -272,7 +272,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				if ( has_unresolved_ctags )
 					processAPIDnames();
 
-				if (selected_subchannel <= 0 && info_CN.flags & CSectionsdClient::epgflags::current_has_linkagedescriptors)
+				if (selected_subchannel <= 0 && info_CN.flags & CSectionsd::epgflags::current_has_linkagedescriptors)
 				{
 					subChannels.clear();
 					getSubChannels();
@@ -405,7 +405,7 @@ void CRemoteControl::getSubChannels()
 {
 	if ( subChannels.size() == 0 )
 	{
-		CSectionsdClient::LinkageDescriptorList	linkedServices;
+		CSectionsd::LinkageDescriptorList	linkedServices;
 		
 		if ( sectionsd_getLinkageDescriptorsUniqueKey( current_EPGid, linkedServices ) )
 		{
@@ -439,7 +439,7 @@ void CRemoteControl::getNVODs()
 	
 	if ( subChannels.size() == 0 )
 	{
-		CSectionsdClient::NVODTimesList	NVODs;
+		CSectionsd::NVODTimesList	NVODs;
 		
 		if ( sectionsd_getNVODTimesServiceKey( current_channel_id & 0xFFFFFFFFFFFFULL, NVODs ) )
 		{
@@ -579,7 +579,7 @@ void CRemoteControl::processAPIDnames()
 	{
 		if ( current_EPGid != 0 )
 		{
-			CSectionsdClient::ComponentTagList tags;
+			CSectionsd::ComponentTagList tags;
 
 			if ( sectionsd_getComponentTagsUniqueKey( current_EPGid, tags ) )
 			{
@@ -731,7 +731,7 @@ void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::s
 	dprintf(DEBUG_NORMAL, "CRemoteControl::zapTo_ChannelID:%llx\n", channel_id);
 	
 	if (start_video)
-		startvideo();
+		startvideo(channel_id);
 	else
 		stopvideo();
 
@@ -789,12 +789,22 @@ void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::s
 	}
 }
 
-void CRemoteControl::startvideo()
+void CRemoteControl::startvideo(t_channel_id channel_id)
 {
+	CZapitChannel *chan = NULL;
+	
+	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
+	{
+		if(it->second.getChannelID() == channel_id)
+		{
+			chan = &it->second;
+		}
+	}
+	
 	if ( !is_video_started )
 	{
 		is_video_started = true;
-		g_Zapit->startPlayBack();
+		zapit_startPlayBack(chan);
 	}
 }
 
@@ -803,7 +813,7 @@ void CRemoteControl::stopvideo()
 	if ( is_video_started )
 	{
 		is_video_started= false;
-		g_Zapit->stopPlayBack();
+		zapit_stopPlayBack();
 	}
 }
 
@@ -811,7 +821,7 @@ void CRemoteControl::radioMode()
 {
 	dprintf(DEBUG_NORMAL, "CRemoteControl::radioMode\n");
 	
-	g_Zapit->setMode( CZapitClient::MODE_RADIO );
+	zapit_setMode( CZapitClient::MODE_RADIO );
 	
 	CVFD::getInstance()->ShowIcon(VFD_ICON_RADIO, true);
 	CVFD::getInstance()->ShowIcon(VFD_ICON_TV, false);
@@ -821,7 +831,7 @@ void CRemoteControl::tvMode()
 {
 	dprintf(DEBUG_NORMAL, "CRemoteControl::tvMode\n");
 	
-	g_Zapit->setMode( CZapitClient::MODE_TV );
+	zapit_setMode( CZapitClient::MODE_TV );
 	
 	CVFD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
 	CVFD::getInstance()->ShowIcon(VFD_ICON_TV, true);
