@@ -102,7 +102,7 @@ class CZapitMessages
 			CMD_GET_RECORD_MODE                = 52,
 			//CMD_SB_START_PLAYBACK              = 53,
 			//CMD_SB_STOP_PLAYBACK               = 54,
-			CMD_SB_GET_PLAYBACK_ACTIVE         = 55,
+			//CMD_SB_GET_PLAYBACK_ACTIVE         = 55,
 			
 			CMD_SET_AUDIO_MODE                 = 57,
 			CMD_READY                          = 58,
@@ -111,7 +111,7 @@ class CZapitMessages
 			CMD_SET_AUDIOCHAN                  = 61,
 			CMD_MUTE                           = 62,
 			CMD_SET_VOLUME                     = 63,
-			CMD_SET_STANDBY                    = 64,
+			//CMD_SET_STANDBY                    = 64,
 			CMD_SET_VIDEO_SYSTEM               = 65,
 			CMD_SET_NTSC                       = 66,
 

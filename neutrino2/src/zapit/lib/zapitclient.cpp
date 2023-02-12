@@ -1126,6 +1126,7 @@ void CZapitClient::saveBouquets()
 }
 
 /* set standby */
+/*
 void CZapitClient::setStandby(const bool enable)
 {
 	CZapitMessages::commandBoolean msg;
@@ -1140,6 +1141,7 @@ void CZapitClient::setStandby(const bool enable)
 	
 	close_connection();
 }
+*/
 
 /* set video system */
 void CZapitClient::setVideoSystem(int video_system)
@@ -1210,6 +1212,7 @@ void CZapitClient::continuePlayBack()
 */
 
 /* is playback activ? */
+/*
 bool CZapitClient::isPlayBackActive()
 {
 	send(CZapitMessages::CMD_SB_GET_PLAYBACK_ACTIVE);
@@ -1220,6 +1223,7 @@ bool CZapitClient::isPlayBackActive()
 	close_connection();
 	return response.activated;
 }
+*/
 
 /* set audio mode */
 void CZapitClient::setAudioMode(const int mode)

@@ -1934,7 +1934,7 @@ int start_scan(CZapitMessages::commandStartScan StartScan)
 
 bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 {
-	if ((standby) && ((rmsg.cmd != CZapitMessages::CMD_SET_VOLUME) && (rmsg.cmd != CZapitMessages::CMD_MUTE) && (rmsg.cmd != CZapitMessages::CMD_IS_TV_CHANNEL) && (rmsg.cmd != CZapitMessages::CMD_SET_STANDBY))) 
+	if ((standby) && ((rmsg.cmd != CZapitMessages::CMD_SET_VOLUME) && (rmsg.cmd != CZapitMessages::CMD_MUTE) && (rmsg.cmd != CZapitMessages::CMD_IS_TV_CHANNEL) /*&& (rmsg.cmd != CZapitMessages::CMD_SET_STANDBY)*/)) 
 	{
 		dprintf(DEBUG_DEBUG, "[zapit] cmd %d in standby mode\n", rmsg.cmd);
 
@@ -2737,7 +2737,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			CBasicServer::send_data(connfd, &msgGetRecordModeState, sizeof(msgGetRecordModeState));
 			break;
 		}
-		
+		#if 0
 		case CZapitMessages::CMD_SB_GET_PLAYBACK_ACTIVE: 
 		{
 			CZapitMessages::responseGetPlaybackState msgGetPlaybackState;
@@ -2746,7 +2746,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			CBasicServer::send_data(connfd, &msgGetPlaybackState, sizeof(msgGetPlaybackState));
 			break;
 		}
-	
+		#endif
 		case CZapitMessages::CMD_BQ_ADD_BOUQUET: 
 		{
 			char * name = CBasicServer::receive_string(connfd);
@@ -3171,7 +3171,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			CBasicServer::send_data(connfd, &msgVolumePercent, sizeof(msgVolumePercent));
 			break;
 		}
-
+		#if 0
 		case CZapitMessages::CMD_SET_STANDBY: 
 		{
 			CZapitMessages::commandBoolean msgBoolean;
@@ -3193,6 +3193,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			
 			break;
 		}
+		#endif
 	
 		case CZapitMessages::CMD_NVOD_SUBSERVICE_NUM: 
 		{
@@ -5084,4 +5085,18 @@ void zapit_unlockPlayBack()
 #endif
 }
 
+bool zapit_isPlayBackActive()
+{
+	CZapitMessages::responseGetPlaybackState msgGetPlaybackState;
+	
+	return msgGetPlaybackState.activated = playing;
+}
+
+void zapit_setStandby(bool enable)
+{
+	if (enable)
+		enterStandby();
+	else
+		leaveStandby();
+}
 ////

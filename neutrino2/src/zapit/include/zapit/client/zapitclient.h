@@ -498,7 +498,7 @@ class CZapitClient : public CBasicClient
 		/*					*/
 		/****************************************/
 
-		void setStandby(const bool enable);
+		//void setStandby(const bool enable);
 
 		//void startPlayBack();
 		//void stopPlayBack();
@@ -509,7 +509,7 @@ class CZapitClient : public CBasicClient
 
 		bool tune_TP(TP_params TP, int feindex = 0);
 		
-		bool isPlayBackActive();
+		//bool isPlayBackActive();
 		
 		void setAudioMode(int mode);
 		void getAudioMode(int * mode);

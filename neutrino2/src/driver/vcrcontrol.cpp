@@ -346,7 +346,7 @@ void CVCRControl::CFileAndServerDevice::RestoreNeutrino(void)
 		g_Zapit->setRecordMode( false );
 
 		// start playback
-		if (!g_Zapit->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
+		if (!zapit_isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
 			zapit_startPlayBack(live_channel);
 
 		// alten mode wieder herstellen (ausser wen zwischenzeitlich auf oder aus sb geschalten wurde)
@@ -359,7 +359,7 @@ void CVCRControl::CFileAndServerDevice::RestoreNeutrino(void)
 		if(last_mode == NeutrinoMessages::mode_standby && CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby )
 		{
 			//Wenn vorher und jetzt standby, dann die zapit wieder auf sb schalten
-			g_Zapit->setStandby(true);
+			zapit_setStandby(true);
 		}
 	}	
 }
@@ -372,7 +372,7 @@ void CVCRControl::CFileAndServerDevice::CutBackNeutrino(const t_channel_id chann
 	{
 		if(last_mode == NeutrinoMessages::mode_standby)
 		{
-			g_Zapit->setStandby(false);
+			zapit_setStandby(false);
 		}
 	
 		if (channel_id != 0) 

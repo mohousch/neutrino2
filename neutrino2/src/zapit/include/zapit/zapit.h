@@ -73,6 +73,8 @@ void zapit_pausePlayBack(void);
 void zapit_continuePlayBack(void);
 void zapit_lockPlayBack();
 void zapit_unlockPlayBack();
+bool zapit_isPlayBackActive();
+void zapit_setStandby(bool enable);
 ////
 
 #endif /* __zapit_h__ */

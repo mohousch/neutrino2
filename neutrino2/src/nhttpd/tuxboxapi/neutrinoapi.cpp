@@ -213,7 +213,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 	// standby modus
 	if(CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby)
 	{
-		Zapit->setStandby(false);
+		zapit_setStandby(false);
 		
 // opengl liveplayback
 #if defined (USE_PLAYBACK)

@@ -362,7 +362,7 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 			NeutrinoAPI->Zapit->setRecordMode(false);
 			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
 			sectionsd_pauseScanning(false);
-			if (!NeutrinoAPI->Zapit->isPlayBackActive())
+			if (!zapit_isPlayBackActive())
 				zapit_startPlayBack(live_channel);
 		}
 		hh->SendOk();
@@ -1341,7 +1341,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "statusplayback")
-			hh->Write((char *) (NeutrinoAPI->Zapit->isPlayBackActive() ? "1" : "0"));
+			hh->Write((char *) (zapit_isPlayBackActive() ? "1" : "0"));
 		else if (hh->ParamList["1"] == "stopsectionsd")
 		{
 			//NeutrinoAPI->Sectionsd->setPauseScanning(true);

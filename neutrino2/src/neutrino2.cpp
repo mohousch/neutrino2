@@ -3725,7 +3725,7 @@ _repeat:
 			if( mode == mode_standby )
 			{
 				// set standby
-				g_Zapit->setStandby(true);				
+				zapit_setStandby(true);				
 			}
 		}
 		
@@ -4868,7 +4868,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		// zapit standby
 		if(!recordingstatus && !timeshiftstatus)
 		{
-			g_Zapit->setStandby(true);
+			zapit_setStandby(true);
 		} 
 		else
 		{
@@ -4931,7 +4931,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		mode = mode_unknown;
 
 		// zapit startplayback
-		g_Zapit->setStandby(false);
+		zapit_setStandby(false);
 
 		// this is buggy don't respect parentallock
 		if(!recordingstatus && !timeshiftstatus)
