@@ -29,7 +29,7 @@
 #include <sys/un.h>
 #include <unistd.h>
 
-#include "eventserver.h"
+#include <eventserver.h>
 
 #include <system/debug.h>
 
@@ -79,7 +79,7 @@ bool CEventServer::sendEvent2Client(const unsigned int eventID, const initiators
 	struct sockaddr_un servaddr;
 	int clilen, sock_fd;
 
-	dprintf(DEBUG_INFO, "CEventServer::sendEvent2Client >\n");
+	dprintf(DEBUG_NORMAL, "CEventServer::sendEvent2Client >(%s)\n", ClientData->udsName);
 
 	memset(&servaddr, 0, sizeof(struct sockaddr_un));
 	servaddr.sun_family = AF_UNIX;
@@ -99,7 +99,7 @@ bool CEventServer::sendEvent2Client(const unsigned int eventID, const initiators
 		snprintf(errmsg, 128, "[eventserver]: connect (%s)", ClientData->udsName);
 		perror(errmsg);
 		close(sock_fd);
-		dprintf(DEBUG_INFO, "CEventServer::sendEvent2Client <\n");
+		dprintf(DEBUG_NORMAL, "CEventServer::sendEvent2Client <(%s)\n", ClientData->udsName);
 		return false;
 	}
 

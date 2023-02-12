@@ -28,7 +28,7 @@
 #define __timerdtypes__
 
 #include <client/zapittypes.h>
-#include <sectionsdclient/sectionsdtypes.h>
+#include <sectionsd/sectionsdtypes.h>
 
 #include <vector>
 

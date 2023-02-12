@@ -53,7 +53,7 @@
 // 
 #include <client/zapitclient.h>
 
-#include <sectionsdclient/sectionsdclient.h>
+#include <sectionsd/sectionsdclient.h>
 
 #include <timerdclient/timerdclient.h>
 #include <timerdclient/timerdmsg.h>
@@ -301,7 +301,15 @@ bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData
 bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::ComponentTagList& tags);
 bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::LinkageDescriptorList& descriptors);
 bool sectionsd_getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSectionsdClient::NVODTimesList& nvod_list);
-void sectionsd_setPrivatePid(unsigned short pid);
+void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
+void sectionsd_pauseScanning(const bool doPause);
+void sectionsd_freeMemory();
+void sectionsd_readSIfromXML(const char *epgxmlname);
+void sectionsd_writeSI2XML(const char *epgxmlname);
+void sectionsd_readSIfromXMLTV(const char *url);
+void sectionsd_setConfig(const CSectionsdClient::epg_config config);
+void sectionsd_registerEventClient(const unsigned int eventID, const unsigned int clientID, const char * const udsName);
+void sectionsd_unRegisterEventClient(const unsigned int eventID, const unsigned int clientID);
 
 #endif
 

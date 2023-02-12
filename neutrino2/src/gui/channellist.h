@@ -41,7 +41,7 @@
 
 #include <system/lastchannel.h>
 
-#include <sectionsdclient/sectionsdclient.h>
+#include <sectionsd/sectionsdclient.h>
 
 // zapit includes
 #include <client/zapitclient.h>

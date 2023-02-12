@@ -156,9 +156,9 @@
 #include <zapit/include/zapit/client/zapitclient.h>
 
 // sectionsd
-#include <sectionsdclient/sectionsdMsg.h>
-#include <sectionsdclient/sectionsdtypes.h>
-#include <sectionsdclient/sectionsdclient.h>
+//#include <sectionsdclient/sectionsdMsg.h>
+#include <sectionsd/sectionsdtypes.h>
+#include <sectionsd/sectionsdclient.h>
 
 // timerd
 #include <timerdclient/timerdmsg.h>
@@ -304,8 +304,8 @@
 
 // sectionsd
 //%include <lib/sectionsdclient/sectionsdMsg.h>
-%include <lib/sectionsdclient/sectionsdtypes.h>
-%include <lib/sectionsdclient/sectionsdclient.h>
+%include <src/sectionsd/sectionsdtypes.h>
+%include <src/sectionsd/sectionsdclient.h>
 
 // timerd
 //%include <lib/timerdclient/timerdmsg.h>

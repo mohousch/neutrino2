@@ -35,7 +35,6 @@
 class CEventServer
 {
 	public:
-	
 		enum initiators
 		{
 			INITID_SECTIONSD,
@@ -73,7 +72,6 @@ class CEventServer
 		void sendEvent(const unsigned int eventID, const initiators initiatorID, const void* eventbody = NULL, const unsigned int eventbodysize = 0);
 	
 	protected:
-	
 		struct eventClient
 		{
 			char udsName[50];

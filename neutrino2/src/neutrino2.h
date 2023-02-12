@@ -232,7 +232,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		CColorSetupNotifier *colorSetupNotifier;
 
 		//
-		void initSectionsdClient();
+		//void initSectionsdClient();
 		void initZapitClient();
 		void initTimerdClient();
 

@@ -39,7 +39,7 @@
 // zapit includes
 #include <client/zapitclient.h>
 
-#include <sectionsdclient/sectionsdclient.h>
+#include <sectionsd/sectionsdclient.h>
 #include <timerdclient/timerdclient.h>
 
 #include <driver/fontrenderer.h>

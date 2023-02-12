@@ -178,6 +178,20 @@
 #endif
 
 
+//
+bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
+bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
+bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
+void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
+void sectionsd_pauseScanning(const bool doPause);
+void sectionsd_readSIfromXMLTV(const char *url);
+void sectionsd_readSIfromXML(const char *epgxmlname);
+void sectionsd_writeSI2XML(const char*epgxmlname);
+void sectionsd_setConfig(const CSectionsdClient::epg_config config);
+void sectionsd_registerEventClient(const unsigned int eventID, const unsigned int clientID, const char * const udsName);
+void sectionsd_unRegisterEventClient(const unsigned int eventID, const unsigned int clientID);
+
+//
 cPlayback* playback = NULL;
 
 extern char rec_filename[1024];				// defined in stream2file.cpp
@@ -1892,10 +1906,6 @@ void CNeutrinoApp::setupRecordingDevice(void)
 	}
 }
 
-bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
-bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
-bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
-
 #if defined (USE_OPENGL) // opengl playback
 int startOpenGLplayback()
 {
@@ -2253,7 +2263,7 @@ void CNeutrinoApp::SendSectionsdConfig(void)
         config.network_ntprefresh       = atoi(g_settings.network_ntprefresh.c_str());
         config.network_ntpenable        = g_settings.network_ntpenable;
 	
-        g_Sectionsd->setConfig(config);
+        sectionsd_setConfig(config);
 }
 
 // init zapper
@@ -2321,8 +2331,8 @@ void CNeutrinoApp::InitZapper()
 		}	
 
 		// start epg scanning
-		g_Sectionsd->setPauseScanning(false);
-		g_Sectionsd->setServiceChanged(live_channel_id&0xFFFFFFFFFFFFULL, true );
+		sectionsd_pauseScanning(false);
+		sectionsd_setServiceChanged(live_channel_id&0xFFFFFFFFFFFFULL, true );
 		
 		// process apids
 		g_Zapit->getPIDS(g_RemoteControl->current_PIDs);
@@ -2349,17 +2359,18 @@ static void CSSendMessage(uint32_t msg, uint32_t data)
 }
 #endif
 
-//
+/*
 void CNeutrinoApp::initSectionsdClient()
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::initSectionsdClient\n");
 
-	g_Sectionsd->registerEvent(CSectionsdClient::EVT_TIMESET, 222, NEUTRINO_UDS_NAME);
-	g_Sectionsd->registerEvent(CSectionsdClient::EVT_GOT_CN_EPG, 222, NEUTRINO_UDS_NAME);
-	g_Sectionsd->registerEvent(CSectionsdClient::EVT_SERVICES_UPDATE, 222, NEUTRINO_UDS_NAME);
-	g_Sectionsd->registerEvent(CSectionsdClient::EVT_BOUQUETS_UPDATE, 222, NEUTRINO_UDS_NAME);
-	g_Sectionsd->registerEvent(CSectionsdClient::EVT_WRITE_SI_FINISHED, 222, NEUTRINO_UDS_NAME);
+	sectionsd_registerEventClient(CSectionsdClient::EVT_TIMESET, 222, NEUTRINO_UDS_NAME);
+	sectionsd_registerEventClient(CSectionsdClient::EVT_GOT_CN_EPG, 222, NEUTRINO_UDS_NAME);
+	sectionsd_registerEventClient(CSectionsdClient::EVT_SERVICES_UPDATE, 222, NEUTRINO_UDS_NAME);
+	sectionsd_registerEventClient(CSectionsdClient::EVT_BOUQUETS_UPDATE, 222, NEUTRINO_UDS_NAME);
+	sectionsd_registerEventClient(CSectionsdClient::EVT_WRITE_SI_FINISHED, 222, NEUTRINO_UDS_NAME);
 }
+*/
 
 void CNeutrinoApp::initZapitClient()
 {
@@ -2628,7 +2639,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	setupRecordingDevice();
 
 	// init sectionsd client
-	initSectionsdClient();
+	//initSectionsdClient();
 
 	// init zapit client
 	initZapitClient();
@@ -4330,7 +4341,7 @@ void CNeutrinoApp::readEPG()
 	{
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::readEpg: read EPG from: %s....\n", g_settings.epg_dir.c_str());
 
-		g_Sectionsd->readSIfromXML(g_settings.epg_dir.c_str());
+		sectionsd_readSIfromXML(g_settings.epg_dir.c_str());
 	}
 }
 
@@ -4346,7 +4357,7 @@ void CNeutrinoApp::saveEpg()
 		neutrino_msg_t      msg;
 		neutrino_msg_data_t data;
 		
-		g_Sectionsd->writeSI2XML(g_settings.epg_dir.c_str());
+		sectionsd_writeSI2XML(g_settings.epg_dir.c_str());
 
 		while( true ) 
 		{
@@ -4371,7 +4382,7 @@ void CNeutrinoApp::readXMLTV()
 	// fromXMLTV
 	for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
 	{
-		g_Sectionsd->readSIfromXMLTV(g_settings.xmltv[i].c_str());
+		sectionsd_readSIfromXMLTV(g_settings.xmltv[i].c_str());
 	}
 }
 
@@ -4882,8 +4893,8 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		}
 
 		// stop sectionsd
-		g_Sectionsd->setServiceChanged(0, false);
-		g_Sectionsd->setPauseScanning(true);
+		sectionsd_setServiceChanged(0, false);
+		sectionsd_pauseScanning(true);
 
 		//save epg
 		if(!recordingstatus && !timeshiftstatus)
@@ -4943,8 +4954,8 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 			g_Zapit->startPlayBack();
 
 
-		g_Sectionsd->setPauseScanning(false);
-		g_Sectionsd->setServiceChanged(live_channel_id&0xFFFFFFFFFFFFULL, true );
+		sectionsd_pauseScanning(false);
+		sectionsd_setServiceChanged(live_channel_id&0xFFFFFFFFFFFFULL, true );
 
 		if( lastMode == mode_radio ) 
 		{
@@ -5430,7 +5441,7 @@ void CNeutrinoApp::lockPlayBack(void)
 	g_Zapit->lockPlayBack();
 		
 	//pause epg scanning
-	g_Sectionsd->setPauseScanning(true);	
+	sectionsd_pauseScanning(true);	
 }
 
 void CNeutrinoApp::unlockPlayBack(void)
@@ -5439,7 +5450,7 @@ void CNeutrinoApp::unlockPlayBack(void)
 	g_Zapit->unlockPlayBack();	
 		
 	//start epg scanning
-	g_Sectionsd->setPauseScanning(false);
+	sectionsd_pauseScanning(false);
 
 	// start subtitles
 	StartSubtitles();

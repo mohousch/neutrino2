@@ -48,6 +48,11 @@ void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventL
 void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsdClient::responseGetCurrentNextInfoChannelID& current_next );
 bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::LinkageDescriptorList& descriptors);
 bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::ComponentTagList& tags);
+void sectionsd_pauseScanning(const bool doPause);
+bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
+
+extern int scanning;
+
 extern tallchans allchans;
 extern CBouquetManager *g_bouquetManager;
 extern t_channel_id live_channel_id;
@@ -345,13 +350,16 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 		{
 			if(hh->ParamList["stopplayback"] == "true")
 				NeutrinoAPI->Zapit->stopPlayBack();
-			NeutrinoAPI->Sectionsd->setPauseScanning(true);
+				
+			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
+			sectionsd_pauseScanning(true);
 			NeutrinoAPI->Zapit->setRecordMode(true);
 		}
 		else if (hh->ParamList["record"] == "stop")	// stop record mode
 		{
 			NeutrinoAPI->Zapit->setRecordMode(false);
-			NeutrinoAPI->Sectionsd->setPauseScanning(false);
+			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
+			sectionsd_pauseScanning(false);
 			if (!NeutrinoAPI->Zapit->isPlayBackActive())
 				NeutrinoAPI->Zapit->startPlayBack();
 		}
@@ -1318,13 +1326,15 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 		else if (hh->ParamList["1"] == "stopplayback")
 		{
 			NeutrinoAPI->Zapit->stopPlayBack();
-			NeutrinoAPI->Sectionsd->setPauseScanning(true);
+			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
+			sectionsd_pauseScanning(true);
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "startplayback")
 		{
 			NeutrinoAPI->Zapit->startPlayBack();
-			NeutrinoAPI->Sectionsd->setPauseScanning(false);
+			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
+			sectionsd_pauseScanning(false);
 			dprintf("start playback requested..\n");
 			hh->SendOk();
 		}
@@ -1332,16 +1342,18 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 			hh->Write((char *) (NeutrinoAPI->Zapit->isPlayBackActive() ? "1" : "0"));
 		else if (hh->ParamList["1"] == "stopsectionsd")
 		{
-			NeutrinoAPI->Sectionsd->setPauseScanning(true);
+			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
+			sectionsd_pauseScanning(true);
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "startsectionsd")
 		{
-			NeutrinoAPI->Sectionsd->setPauseScanning(false);
+			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
+			sectionsd_pauseScanning(false);
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "statussectionsd")
-			hh->Write((char *) (NeutrinoAPI->Sectionsd->getIsScanningActive() ? "1" : "0"));
+			hh->Write((char *) (scanning ? "1" : "0"));
 		else if (hh->ParamList["1"] == "getallsubchannels")
 		{
 			t_channel_id current_channel = NeutrinoAPI->Zapit->getCurrentServiceID();
@@ -1771,9 +1783,9 @@ void CControlAPI::SendTimersXML(CyhookHandler *hh)
 		std::string title = timer->epgTitle;
 		if(timer->epgID!=0)
 		{
-			CSectionsdClient sdc;
+			//CSectionsdClient sdc;
 			CEPGData epgdata;
-			if (sdc.getEPGid(timer->epgID, timer->epg_starttime, &epgdata))
+			if (sectionsd_getEPGid(timer->epgID, timer->epg_starttime, &epgdata))
 				title = epgdata.title;
 		}
 

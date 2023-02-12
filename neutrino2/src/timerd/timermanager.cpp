@@ -34,13 +34,15 @@
 #include <timermanager.h>
 #include <timerdclient/timerdclient.h>
 #include <timerdclient/timerdmsg.h>
-#include <sectionsdclient/sectionsdclient.h>
+#include <sectionsd/sectionsdclient.h>
 
 #include <vector>
 #include <system/debug.h>
 
 
 extern bool timeset; // from
+void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
+bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
 
 static pthread_mutex_t tm_eventsMutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 
@@ -1162,10 +1164,10 @@ CTimerEvent_Record::CTimerEvent_Record(time_t lannounceTime, time_t lalarmTime, 
 	eventInfo.channel_id = channel_id;
 	eventInfo.apids = apids;
 	recordingDir = recDir;
-	CSectionsdClient sdc;
+	//CSectionsdClient sdc;
 	epgTitle="";
 	CShortEPGData epgdata;
-	if (sdc.getEPGidShort(epgID, &epgdata))
+	if (sectionsd_getEPGidShort(epgID, &epgdata))
 		epgTitle = epgdata.title; 
 }
 
@@ -1275,8 +1277,10 @@ void CTimerEvent_Record::Reschedule()
 
 void CTimerEvent_Record::getEpgId()
 {
-	CSectionsdClient sdc;
-	CChannelEventList evtlist = sdc.getEventsServiceKey(eventInfo.channel_id &0xFFFFFFFFFFFFULL);
+	//CSectionsdClient sdc;
+	CChannelEventList evtlist;
+	
+	sectionsd_getEventsServiceKey(eventInfo.channel_id &0xFFFFFFFFFFFFULL, evtlist);
 	// we check for a time in the middle of the recording
 	time_t check_time = alarmTime/2 + stopTime/2;
 	for ( CChannelEventList::iterator e = evtlist.begin(); e != evtlist.end(); ++e )
@@ -1291,7 +1295,7 @@ void CTimerEvent_Record::getEpgId()
 	if(eventInfo.epgID != 0)
 	{
 		CShortEPGData epgdata;
-		if (sdc.getEPGidShort(eventInfo.epgID, &epgdata))
+		if (sectionsd_getEPGidShort(eventInfo.epgID, &epgdata))
 			epgTitle=epgdata.title; 
 	}
 }
@@ -1318,11 +1322,12 @@ void CTimerEvent_Zapto::fireEvent()
 
 void CTimerEvent_Zapto::getEpgId()
 {
-	CSectionsdClient sdc;
-	CChannelEventList evtlist = sdc.getEventsServiceKey(eventInfo.channel_id &0xFFFFFFFFFFFFULL);
+	//CSectionsdClient sdc;
+	CChannelEventList evtlist; 
+	sectionsd_getEventsServiceKey(eventInfo.channel_id &0xFFFFFFFFFFFFULL, evtlist);
 	// we check for a time 5 min after zap
 	time_t check_time = alarmTime + 300;
-	for ( CChannelEventList::iterator e= evtlist.begin(); e != evtlist.end(); ++e )
+	for ( CChannelEventList::iterator e = evtlist.begin(); e != evtlist.end(); ++e )
 	{
 		if ( e->startTime < check_time && (e->startTime + (int)e->duration) > check_time)
 		{

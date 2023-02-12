@@ -37,7 +37,7 @@
 
 #include <string>
 
-#include <sectionsdclient/sectionsdclient.h>
+#include <sectionsd/sectionsdclient.h>
 
 #include <driver/rcinput.h>
 #include <driver/framebuffer.h>

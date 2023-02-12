@@ -74,8 +74,8 @@
 #include <settings.h>
 #include <configfile.h>
 
-#include <sectionsdclient/sectionsdMsg.h>
-#include <sectionsdclient/sectionsdclient.h>
+//#include <sectionsdclient/sectionsdMsg.h>
+#include <sectionsd/sectionsdclient.h>
 #include <eventserver.h>
 
 #include "abstime.h"
@@ -170,7 +170,7 @@ static long secondsToCache;
 static long secondsExtendedTextCache;
 // Ab wann ein Event als alt gilt (in Sekunden)
 static long oldEventsAre;
-static int scanning = 1;
+int scanning = 1;
 
 std::string epg_filter_dir = CONFIGDIR "/zapit/epgfilter.xml";
 static bool epg_filter_is_whitelist = false;
@@ -364,7 +364,7 @@ struct OrderServiceUniqueKeyFirstStartTimeEventUniqueKey
 
 typedef std::set<SIeventPtr, OrderServiceUniqueKeyFirstStartTimeEventUniqueKey> MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
 
-/*static*/ MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
+static MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
 
 struct OrderFirstEndTimeServiceIDEventUniqueKey
 {
@@ -1037,7 +1037,7 @@ static void removeOldEvents(const long seconds)
 	return;
 }
 
-//#ifdef REMOVE_DUPS
+#ifdef REMOVE_DUPS
 /* Remove duplicate events (same Service, same start and endtime)
  * with different eventID. Use the one from the lower table_id.
  * This routine could be extended to remove overlapping events also,
@@ -1090,7 +1090,7 @@ static void removeDupEvents(void)
 
 	return;
 }
-//#endif
+#endif
 
 // SIservicePtr;
 typedef SIservice *SIservicePtr;
@@ -1101,6 +1101,7 @@ static MySIservicesOrderUniqueKey mySIservicesOrderUniqueKey;
 typedef std::map<t_channel_id, SIservicePtr, std::less<t_channel_id> > MySIservicesNVODorderUniqueKey;
 static MySIservicesNVODorderUniqueKey mySIservicesNVODorderUniqueKey;
 
+/*
 inline bool readNbytes(int fd, char *buf, const size_t numberOfBytes, const time_t timeoutInSeconds)
 {
 	timeval timeout;
@@ -1116,6 +1117,7 @@ inline bool writeNbytes(int fd, const char *buf,  const size_t numberOfBytes, co
 	timeout.tv_usec = 0;
 	return send_data(fd, buf, numberOfBytes, timeout);
 }
+*/
 
 static const SIevent& findSIeventForEventUniqueKey(const event_id_t eventUniqueKey)
 {
@@ -1359,17 +1361,19 @@ static void findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, SIeven
 // handles incoming requests
 //---------------------------------------------------------------------
  
-static void commandPauseScanning(int connfd, char *data, const unsigned dataLength)
+//static void commandPauseScanning(int connfd, char *data, const unsigned dataLength)
+void sectionsd_pauseScanning(const bool doPause)
 {
-	if (dataLength != 4)
-		return ;
+	//if (dataLength != 4)
+	//	return ;
 
-	int pause = *(int *)data;
+	//int pause = *(int *)data;
+	int pause = doPause;
 
 	if (pause && pause != 1)
 		return ;
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of %s scanning.\n", pause ? "stop" : "continue" );
+	dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_pauseScanning: Request of %s scanning.\n", pause ? "stop" : "continue" );
 
 	if (scanning && pause)
 	{
@@ -1420,32 +1424,21 @@ static void commandPauseScanning(int connfd, char *data, const unsigned dataLeng
 		dmxVIASAT.change(0);
 	}
 
+/*
 	struct sectionsd::msgResponseHeader msgResponse;
-
 	msgResponse.dataLength = 0;
-
 	writeNbytes(connfd, (const char *)&msgResponse, sizeof(msgResponse), WRITE_TIMEOUT_IN_SECONDS);
+*/
 
 	return ;
 }
 
-static void commandGetIsScanningActive(int connfd, char* /*data*/, const unsigned /*dataLength*/)
+//static void commandDumpAllServices(int connfd, char* /*data*/, const unsigned /*dataLength*/)
+void sectionsd_dumpAllServices(void)
 {
-	struct sectionsd::msgResponseHeader responseHeader;
-
-	responseHeader.dataLength = sizeof(scanning);
-
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true)
-	{
-		writeNbytes(connfd, (const char *)&scanning, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	}
-}
-
-static void commandDumpAllServices(int connfd, char* /*data*/, const unsigned /*dataLength*/)
-{
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of service list.\n");
+	dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_dumpAllServices: Request of service list.\n");
 	
-	long count=0;
+	long count = 0;
 	
 #define MAX_SIZE_SERVICELIST	64*1024
 	char *serviceList = new char[MAX_SIZE_SERVICELIST]; // 65kb should be enough and dataLength is unsigned short
@@ -1483,27 +1476,30 @@ static void commandDumpAllServices(int connfd, char* /*data*/, const unsigned /*
 			strcat(serviceList, "\n");
 			strcat(serviceList, s->second->providerName.c_str());
 			strcat(serviceList, "\n");
-		} else {
+		} 
+		else 
+		{
 			dprintf(DEBUG_DEBUG, "[sectionsd] warning: commandDumpAllServices: serviceList cut\n");
 			break;
 		}
 	}
 
 	unlockServices();
-	struct sectionsd::msgResponseHeader msgResponse;
-	msgResponse.dataLength = strlen(serviceList) + 1;
+	
+	//struct sectionsd::msgResponseHeader msgResponse;
+	//msgResponse.dataLength = strlen(serviceList) + 1;
 
-	if (msgResponse.dataLength > MAX_SIZE_SERVICELIST)
-		printf("warning: commandDumpAllServices: length=%d\n", msgResponse.dataLength);
+	//if (msgResponse.dataLength > MAX_SIZE_SERVICELIST)
+	//	printf("warning: commandDumpAllServices: length=%d\n", msgResponse.dataLength);
 
-	if (msgResponse.dataLength == 1)
-		msgResponse.dataLength = 0;
+	//if (msgResponse.dataLength == 1)
+	//	msgResponse.dataLength = 0;
 
-	if (writeNbytes(connfd, (const char *)&msgResponse, sizeof(msgResponse), WRITE_TIMEOUT_IN_SECONDS) == true)
-	{
-		if (msgResponse.dataLength)
-			writeNbytes(connfd, serviceList, msgResponse.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	}
+	//if (writeNbytes(connfd, (const char *)&msgResponse, sizeof(msgResponse), WRITE_TIMEOUT_IN_SECONDS) == true)
+	//{
+	//	if (msgResponse.dataLength)
+	//		writeNbytes(connfd, serviceList, msgResponse.dataLength, WRITE_TIMEOUT_IN_SECONDS);
+	//}
 
 	delete[] serviceList;
 
@@ -1516,9 +1512,9 @@ static void sendAllEvents(int connfd, t_channel_id serviceUniqueKey, bool oldFor
 	char *evtList = new char[MAX_SIZE_EVENTLIST]; // 64kb should be enough and dataLength is unsigned short
 	char *liste;
 	long count=0;
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-//	int laststart = 0;
+	//struct sectionsd::msgResponseHeader responseHeader;
+	//responseHeader.dataLength = 0;
+	//int laststart = 0;
 
 	if (!evtList)
 	{
@@ -1652,19 +1648,22 @@ static void sendAllEvents(int connfd, t_channel_id serviceUniqueKey, bool oldFor
 	//printf("warning: [sectionsd] all events - response-size: 0x%x, count = %lx\n", liste - evtList, count);
 	if (liste - evtList > MAX_SIZE_EVENTLIST)
 		printf("warning: [sectionsd] all events - response-size: 0x%x\n", liste - evtList);
-	responseHeader.dataLength = liste - evtList;
+		
+	//responseHeader.dataLength = liste - evtList;
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] all events - response-size: 0x%x\n", responseHeader.dataLength);
+	//dprintf(DEBUG_DEBUG, "[sectionsd] all events - response-size: 0x%x\n", responseHeader.dataLength);
 
-	if ( responseHeader.dataLength == 1 )
-		responseHeader.dataLength = 0;
+	//if ( responseHeader.dataLength == 1 )
+	//	responseHeader.dataLength = 0;
 
 out:
+/*
 	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true)
 	{
 		if (responseHeader.dataLength)
 			writeNbytes(connfd, evtList, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
 	}
+*/
 
 	if (evtList)
 		delete[] evtList;
@@ -1672,30 +1671,15 @@ out:
 	return ;
 }
 
-static void commandAllEventsChannelID(int connfd, char *data, const unsigned dataLength)
+//static void commandDumpStatusInformation(int /*connfd*/, char* /*data*/, const unsigned /*dataLength*/)
+void sectionsd_dumpStatus(void)
 {
-	if (dataLength != sizeof(t_channel_id))
-		return ;
-
-	t_channel_id serviceUniqueKey = *(t_channel_id *)data;
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of all events for:%llx\n", serviceUniqueKey);
-
-	sendAllEvents(connfd, serviceUniqueKey, false);
-
-	return ;
-}
-
-static void commandDumpStatusInformation(int /*connfd*/, char* /*data*/, const unsigned /*dataLength*/)
-{
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of status information");
+	dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_dumpStatus: Request of status information");
 
 	readLockEvents();
 
 	unsigned anzEvents = mySIeventsOrderUniqueKey.size();
-
 	unsigned anzNVODevents = mySIeventsNVODorderUniqueKey.size();
-
 	unsigned anzMetaServices = mySIeventUniqueKeysMetaOrderServiceUniqueKey.size();
 
 	unlockEvents();
@@ -1703,10 +1687,9 @@ static void commandDumpStatusInformation(int /*connfd*/, char* /*data*/, const u
 	readLockServices();
 
 	unsigned anzServices = mySIservicesOrderUniqueKey.size();
-
 	unsigned anzNVODservices = mySIservicesNVODorderUniqueKey.size();
-
-	//  unsigned anzServices=services.size();
+	//unsigned anzServices=services.size();
+	
 	unlockServices();
 
 	struct mallinfo speicherinfo = mallinfo();
@@ -1747,203 +1730,21 @@ static void commandDumpStatusInformation(int /*connfd*/, char* /*data*/, const u
 	return ;
 }
 
-static void commandComponentTagsUniqueKey(int connfd, char *data, const unsigned dataLength)
-{
-	int nResultDataSize = 0;
-	char *pResultData = 0;
-	char *p;
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-	MySIeventsOrderUniqueKey::iterator eFirst;
-
-	if (dataLength != 8)
-		return ;
-
-	event_id_t uniqueKey = *(event_id_t *)data;
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of ComponentTags for 0x%llx\n", uniqueKey);
-
-	readLockEvents();
-
-	nResultDataSize = sizeof(int);    // num. Component-Tags
-
-	eFirst = mySIeventsOrderUniqueKey.find(uniqueKey);
-
-	if (eFirst != mySIeventsOrderUniqueKey.end())
-	{
-		//Found
-		dprintf(DEBUG_DEBUG, "[sectionsd] ComponentTags found.\n");
-		dprintf(DEBUG_DEBUG, "[sectionsd] components.size %d \n", eFirst->second->components.size());
-
-		for (SIcomponents::iterator cmp = eFirst->second->components.begin(); cmp != eFirst->second->components.end(); ++cmp)
-		{
-			dprintf(DEBUG_DEBUG, "[sectionsd]  %s \n", cmp->component.c_str());
-			nResultDataSize += cmp->component.length() + 1 +	// name
-					   sizeof(unsigned char) +		// componentType
-					   sizeof(unsigned char) +		// componentTag
-					   sizeof(unsigned char);		// streamContent
-		}
-	}
-
-	pResultData = new char[nResultDataSize];
-
-	if (!pResultData)
-	{
-		fprintf(stderr, "low on memory!\n");
-		unlockEvents();
-		goto out;
-	}
-
-	p = pResultData;
-
-	if (eFirst != mySIeventsOrderUniqueKey.end())
-	{
-		*((int *)p) = eFirst->second->components.size();
-		p += sizeof(int);
-
-		for (SIcomponents::iterator cmp = eFirst->second->components.begin(); cmp != eFirst->second->components.end(); ++cmp)
-		{
-
-			strcpy(p, cmp->component.c_str());
-			p += cmp->component.length() + 1;
-			*((unsigned char *)p) = cmp->componentType;
-			p += sizeof(unsigned char);
-			*((unsigned char *)p) = cmp->componentTag;
-			p += sizeof(unsigned char);
-			*((unsigned char *)p) = cmp->streamContent;
-			p += sizeof(unsigned char);
-		}
-	}
-	else
-	{
-		*((int *)p) = 0;
-		p += sizeof(int);
-	}
-
-	unlockEvents();
-
-	responseHeader.dataLength = nResultDataSize;
-
-out:
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true)
-	{
-		if (responseHeader.dataLength)
-			writeNbytes(connfd, pResultData, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	}
-
-	if (pResultData)
-		delete[] pResultData;
-
-	return ;
-}
-
-static void commandLinkageDescriptorsUniqueKey(int connfd, char *data, const unsigned dataLength)
-{
-	int nResultDataSize = 0;
-	char *pResultData = 0;
-	char *p;
-	MySIeventsOrderUniqueKey::iterator eFirst;
-	int countDescs = 0;
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-	event_id_t uniqueKey;
-
-	if (dataLength != 8)
-		goto out;
-
-	uniqueKey = *(event_id_t *)data;
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of LinkageDescriptors for 0x%llx\n", uniqueKey);
-
-	readLockEvents();
-
-	nResultDataSize = sizeof(int);    // num. Component-Tags
-
-	eFirst = mySIeventsOrderUniqueKey.find(uniqueKey);
-
-	if (eFirst != mySIeventsOrderUniqueKey.end())
-	{
-		//Found
-		dprintf(DEBUG_DEBUG, "[sectionsd] LinkageDescriptors found.\n");
-		dprintf(DEBUG_DEBUG, "[sectionsd] linkage_descs.size %d \n", eFirst->second->linkage_descs.size());
-
-		for (SIlinkage_descs::iterator linkage_desc = eFirst->second->linkage_descs.begin(); linkage_desc != eFirst->second->linkage_descs.end(); ++linkage_desc)
-		{
-			if (linkage_desc->linkageType == 0xB0)
-			{
-				countDescs++;
-				dprintf(DEBUG_DEBUG, "[sectionsd]  %s \n", linkage_desc->name.c_str());
-				nResultDataSize += linkage_desc->name.length() + 1 +	// name
-						   sizeof(t_transport_stream_id) +	//transportStreamId
-						   sizeof(t_original_network_id) +	//originalNetworkId
-						   sizeof(t_service_id);		//serviceId
-			}
-		}
-	}
-
-	pResultData = new char[nResultDataSize];
-
-	if (!pResultData)
-	{
-		fprintf(stderr, "low on memory!\n");
-		unlockEvents();
-		goto out;
-	}
-
-	p = pResultData;
-
-	*((int *)p) = countDescs;
-	p += sizeof(int);
-
-	if (eFirst != mySIeventsOrderUniqueKey.end())
-	{
-		for (SIlinkage_descs::iterator linkage_desc = eFirst->second->linkage_descs.begin(); linkage_desc != eFirst->second->linkage_descs.end(); ++linkage_desc)
-		{
-			if (linkage_desc->linkageType == 0xB0)
-			{
-				strcpy(p, linkage_desc->name.c_str());
-				p += linkage_desc->name.length() + 1;
-				*((t_transport_stream_id *)p) = linkage_desc->transportStreamId;
-				p += sizeof(t_transport_stream_id);
-				*((t_original_network_id *)p) = linkage_desc->originalNetworkId;
-				p += sizeof(t_original_network_id);
-				*((t_service_id *)p) = linkage_desc->serviceId;
-				p += sizeof(t_service_id);
-			}
-		}
-	}
-
-	unlockEvents();
-
-	responseHeader.dataLength = nResultDataSize;
-
-out:
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader),  WRITE_TIMEOUT_IN_SECONDS) == true)
-	{
-		if (responseHeader.dataLength)
-			writeNbytes(connfd, pResultData, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	}
-
-	if (pResultData)
-		delete[] pResultData;
-
-	return ;
-}
-
 /* messaging_eit_is_busy does not need locking, it is only written to from CN-Thread */
 static bool		messaging_eit_is_busy = false;
 static bool		messaging_need_eit_version = false;
 std::string epg_dir("");
 
-static void commandserviceChanged(int connfd, char *data, const unsigned dataLength)
+//static void commandserviceChanged(int connfd, char *data, const unsigned dataLength)
+void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false)
 {
 	t_channel_id *uniqueServiceKey;
-	if (dataLength != sizeof(sectionsd::commandSetServiceChanged))
-		goto out;
+	//if (dataLength != sizeof(sectionsd::commandSetServiceChanged))
+	//	goto out;
 
-	uniqueServiceKey = &(((sectionsd::commandSetServiceChanged *)data)->channel_id);
+	uniqueServiceKey = /*&(((sectionsd::commandSetServiceChanged *)data)->channel_id)*/&channel_id;
 
-	dprintf(DEBUG_NORMAL, "[sectionsd] commandserviceChanged: Service changed to:%llx\n", *uniqueServiceKey & 0xFFFFFFFFFFFFULL);
+	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_setServiceChanged: Service changed to:%llx\n", *uniqueServiceKey & 0xFFFFFFFFFFFFULL);
 
 	messaging_last_requested = time_monotonic();
 
@@ -1955,7 +1756,8 @@ static void commandserviceChanged(int connfd, char *data, const unsigned dataLen
 			dmxCN.request_pause();
 			dmxEIT.request_pause();
 		}
-		dprintf(DEBUG_NORMAL, "[sectionsd] commandserviceChanged: service is filtered!\n");
+		
+		dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_setServiceChanged: service is filtered!\n");
 	}
 	else
 	{
@@ -1965,7 +1767,7 @@ static void commandserviceChanged(int connfd, char *data, const unsigned dataLen
 			dmxCN.request_unpause();
 			dmxEIT.request_unpause();
 
-			dprintf(DEBUG_NORMAL, "[sectionsd] commandserviceChanged: service is no longer filtered!\n");
+			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_setServiceChanged: service is no longer filtered!\n");
 		}
 	}
 
@@ -1976,14 +1778,15 @@ static void commandserviceChanged(int connfd, char *data, const unsigned dataLen
 		{
 			dvb_time_update = false;
 		}
-		dprintf(DEBUG_NORMAL, "[sectionsd] commandserviceChanged: DVB time update is blocked!\n");
+		
+		dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_setServiceChanged: DVB time update is blocked!\n");
 	}
 	else
 	{
 		if (!dvb_time_update) 
 		{
 			dvb_time_update = true;
-			dprintf(DEBUG_NORMAL, "[sectionsd] commandserviceChanged: DVB time update is allowed!\n");
+			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_setServiceChanged: DVB time update is allowed!\n");
 		}
 	}
 
@@ -2019,568 +1822,19 @@ static void commandserviceChanged(int connfd, char *data, const unsigned dataLen
 		dmxVIASAT.setCurrentService(messaging_current_servicekey & 0xffff);
 	}
 
-out:
-	struct sectionsd::msgResponseHeader msgResponse;
-	msgResponse.dataLength = 0;
-	writeNbytes(connfd, (const char *)&msgResponse, sizeof(msgResponse), WRITE_TIMEOUT_IN_SECONDS);
-
-	return ;
-}
-
-/* send back the current and next event for the channel id passed to it
- * Works like that:
- * - if the currently running program is requested, return myCurrentEvent and myNextEvent,
- *   if they are present (filled in by cnThread)
- * - if one or both of those are not present, or if a different program than the currently
- *   running is requested, search the missing events in the list of events gathered by the
- *   EIT and PPT threads, based on the current time.
- *
- * TODO: the handling of "flag" should be vastly simplified.
- */
-static void commandCurrentNextInfoChannelID(int connfd, char *data, const unsigned dataLength)
-{
-	int nResultDataSize = 0;
-	char* pResultData = 0;
-	char* p;
-	SIevent currentEvt;
-	SIevent nextEvt;
-	unsigned flag = 0, flag2 = 0;
-	/* ugly hack: retry fetching current/next by restarting dmxCN if this is true */
-	bool change = false;
-	struct sectionsd::msgResponseHeader pmResponse;
-
-	t_channel_id * uniqueServiceKey = (t_channel_id *)data;
-
-	if (dataLength != sizeof(t_channel_id))
-		goto out;
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of current/next information for:%llx\n", *uniqueServiceKey);
-
-	readLockEvents();
-	/* if the currently running program is requested... */
-	if (*uniqueServiceKey == messaging_current_servicekey) 
-	{
-		/* ...check for myCurrentEvent and myNextEvent */
-		if (!myCurrentEvent) 
-		{
-			dprintf(DEBUG_DEBUG, "[sectionsd] !myCurrentEvent ");
-			change = true;
-			flag |= CSectionsdClient::epgflags::not_broadcast;
-		} 
-		else 
-		{
-			currentEvt = *myCurrentEvent;
-			flag |= CSectionsdClient::epgflags::has_current; // aktuelles event da...
-			flag |= CSectionsdClient::epgflags::has_anything;
-		}
-
-		if (!myNextEvent) 
-		{
-			dprintf(DEBUG_DEBUG, "[sectionsd] !myNextEvent ");
-			change = true;
-		} 
-		else 
-		{
-			nextEvt = *myNextEvent;
-			if (flag & CSectionsdClient::epgflags::not_broadcast) {
-				dprintf(DEBUG_DEBUG, "[sectionsd] epgflags::has_no_current\n");
-				flag = CSectionsdClient::epgflags::has_no_current;
-			}
-			flag |= CSectionsdClient::epgflags::has_next; // aktuelles event da...
-			flag |= CSectionsdClient::epgflags::has_anything;
-		}
-	}
-
-	if ((flag & (CSectionsdClient::epgflags::has_current|CSectionsdClient::epgflags::has_next)) !=
-			(CSectionsdClient::epgflags::has_current|CSectionsdClient::epgflags::has_next)) 
-	{
-		//dprintf("commandCurrentNextInfoChannelID: current or next missing!\n");
-
-		SItime zeitEvt1(0, 0);
-		if (!(flag & CSectionsdClient::epgflags::has_current)) 
-		{
-			currentEvt = findActualSIeventForServiceUniqueKey(*uniqueServiceKey, zeitEvt1, 0, &flag2);
-		} 
-		else 
-		{
-			zeitEvt1.startzeit = currentEvt.times.begin()->startzeit;
-			zeitEvt1.dauer = currentEvt.times.begin()->dauer;
-		}
-		SItime zeitEvt2(zeitEvt1);
-
-		if (currentEvt.getName().empty() && flag2 != 0)
-		{
-			dprintf(DEBUG_DEBUG, "[sectionsd] commandCurrentNextInfoChannelID change1\n");
-			change = true;
-		}
-
-		if (currentEvt.service_id != 0)
-		{	//Found
-			flag &= (CSectionsdClient::epgflags::has_no_current|CSectionsdClient::epgflags::not_broadcast)^(unsigned)-1;
-			flag |= CSectionsdClient::epgflags::has_current;
-			flag |= CSectionsdClient::epgflags::has_anything;
-			dprintf(DEBUG_DEBUG, "[sectionsd] current EPG found. service_id: %x, flag: 0x%x\n",currentEvt.service_id, flag);
-
-			if (!(flag & CSectionsdClient::epgflags::has_next)) 
-			{
-				dprintf(DEBUG_DEBUG, "[sectionsd] *nextEvt not from cur/next V1!\n");
-				nextEvt = findNextSIevent(currentEvt.uniqueKey(), zeitEvt2);
-			}
-		}
-		else
-		{	// no current event...
-			readLockServices();
-
-			MySIservicesOrderUniqueKey::iterator si = mySIservicesOrderUniqueKey.end();
-			si = mySIservicesOrderUniqueKey.find(*uniqueServiceKey);
-
-			if (si != mySIservicesOrderUniqueKey.end())
-			{
-				dprintf(DEBUG_DEBUG, "[sectionsd] current service has%s scheduled events, and has%s present/following events\n", si->second->eitScheduleFlag() ? "" : " no", si->second->eitPresentFollowingFlag() ? "" : " no" );
-
-				if ( /*( !si->second->eitScheduleFlag() ) || */
-					( !si->second->eitPresentFollowingFlag() ) )
-				{
-					flag |= CSectionsdClient::epgflags::not_broadcast;
-				}
-			}
-			unlockServices();
-
-			if ( flag2 & CSectionsdClient::epgflags::has_anything )
-			{
-				flag |= CSectionsdClient::epgflags::has_anything;
-				if (!(flag & CSectionsdClient::epgflags::has_next)) 
-				{
-					dprintf(DEBUG_DEBUG, "[sectionsd] *nextEvt not from cur/next V2!\n");
-					nextEvt = findNextSIeventForServiceUniqueKey(*uniqueServiceKey, zeitEvt2);
-				}
-
-				if (nextEvt.service_id != 0)
-				{
-					MySIeventsOrderUniqueKey::iterator eFirst = mySIeventsOrderUniqueKey.find(*uniqueServiceKey);
-
-					if (eFirst != mySIeventsOrderUniqueKey.end())
-					{
-						// this is a race condition if first entry found is == mySIeventsOrderUniqueKey.begin()
-						// so perform a check
-						if (eFirst != mySIeventsOrderUniqueKey.begin())
-							--eFirst;
-
-						if (eFirst != mySIeventsOrderUniqueKey.begin())
-						{
-							time_t azeit = time(NULL);
-
-							if (eFirst->second->times.begin()->startzeit < azeit &&
-									eFirst->second->uniqueKey() == nextEvt.uniqueKey() - 1)
-								flag |= CSectionsdClient::epgflags::has_no_current;
-						}
-					}
-				}
-			}
-		}
-
-		if (nextEvt.service_id != 0)
-		{
-			flag &= CSectionsdClient::epgflags::not_broadcast^(unsigned)-1;
-			dprintf(DEBUG_DEBUG, "[sectionsd] next EPG found. service_id: %x, flag: 0x%x\n",nextEvt.service_id, flag);
-			flag |= CSectionsdClient::epgflags::has_next;
-		}
-		else if (flag != 0)
-		{
-			dprintf(DEBUG_DEBUG, "[sectionsd] commandCurrentNextInfoChannelID change2 flag: 0x%02x\n", flag);
-			change = true;
-		}
-	}
-
-	if (currentEvt.service_id != 0)
-	{
-		/* check for nvod linkage */
-		for (unsigned int i = 0; i < currentEvt.linkage_descs.size(); i++)
-			if (currentEvt.linkage_descs[i].linkageType == 0xB0)
-			{
-				dprintf(DEBUG_DEBUG, "[sectionsd] linkage in current EPG found.\n");
-				flag |= CSectionsdClient::epgflags::current_has_linkagedescriptors;
-				break;
-			}
-	} else
-		flag |= CSectionsdClient::epgflags::has_no_current;
-
-	nResultDataSize =
-		sizeof(event_id_t) +                        // Unique-Key
-		sizeof(CSectionsdClient::sectionsdTime) +  	// zeit
-		currentEvt.getName().length() + 1 + 	// name + '\0'
-		sizeof(event_id_t) +                        // Unique-Key
-		sizeof(CSectionsdClient::sectionsdTime) +  	// zeit
-		nextEvt.getName().length() + 1 +    	// name + '\0'
-		sizeof(unsigned) + 				// flags
-		1						// CurrentFSK
-		;
-
-	pResultData = new char[nResultDataSize];
-	time_t now;
-
-	if (!pResultData)
-	{
-		fprintf(stderr, "low on memory!\n");
-		unlockEvents();
-		nResultDataSize = 0; // send empty response
-		goto out;
-	}
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] currentEvt: '%s' (%04x) nextEvt: '%s' (%04x) flag: 0x%02x\n",
-		currentEvt.getName().c_str(), currentEvt.eventID,
-		nextEvt.getName().c_str(), nextEvt.eventID, flag);
-
-	CSectionsdClient::sectionsdTime time_cur;
-	CSectionsdClient::sectionsdTime time_nxt;
-	now = time(NULL);
-	time_cur.startzeit = currentEvt.times.begin()->startzeit;
-	time_cur.dauer = currentEvt.times.begin()->dauer;
-	time_nxt.startzeit = nextEvt.times.begin()->startzeit;
-	time_nxt.dauer = nextEvt.times.begin()->dauer;
-
-	/* for nvod events that have multiple times, find the one that matches the current time... */
-	if (currentEvt.times.size() > 1) 
-	{
-		for (SItimes::iterator t = currentEvt.times.begin(); t != currentEvt.times.end(); ++t) 
-		{
-			if ((long)now < (long)(t->startzeit + t->dauer) && (long)now > (long)t->startzeit) 
-			{
-				time_cur.startzeit = t->startzeit;
-				time_cur.dauer =t->dauer;
-				break;
-			}
-		}
-	}
-
-	/* ...and the one after that. */
-	if (nextEvt.times.size() > 1) 
-	{
-		for (SItimes::iterator t = nextEvt.times.begin(); t != nextEvt.times.end(); ++t) 
-		{
-			if ((long)(time_cur.startzeit + time_cur.dauer) <= (long)(t->startzeit)) 
-			{ 
-				// TODO: it's not "long", it's "time_t"
-				time_nxt.startzeit = t->startzeit;
-				time_nxt.dauer =t->dauer;
-				break;
-			}
-		}
-	}
-
-	p = pResultData;
-	*((event_id_t *)p) = currentEvt.uniqueKey();
-	p += sizeof(event_id_t);
-	*((CSectionsdClient::sectionsdTime *)p) = time_cur;
-	p += sizeof(CSectionsdClient::sectionsdTime);
-	strcpy(p, currentEvt.getName().c_str());
-	p += currentEvt.getName().length() + 1;
-	*((event_id_t *)p) = nextEvt.uniqueKey();
-	p += sizeof(event_id_t);
-	*((CSectionsdClient::sectionsdTime *)p) = time_nxt;
-	p += sizeof(CSectionsdClient::sectionsdTime);
-	strcpy(p, nextEvt.getName().c_str());
-	p += nextEvt.getName().length() + 1;
-	*((unsigned*)p) = flag;
-	p += sizeof(unsigned);
-	*p = currentEvt.getFSK();
-	p++;
-
-	unlockEvents();
-
-	if (change && !messaging_eit_is_busy && (time_monotonic() - messaging_last_requested) < 11) 
-	{
-		/* restart dmxCN, but only if it is not already running, and only for 10 seconds */
-		dprintf(DEBUG_DEBUG, "[sectionsd] change && !messaging_eit_is_busy => dmxCN.change(0)\n");
-		dmxCN.change(0);
-	}
-
-	// response
-
-out:
-	pmResponse.dataLength = nResultDataSize;
-	bool rc = writeNbytes(connfd, (const char *)&pmResponse, sizeof(pmResponse), WRITE_TIMEOUT_IN_SECONDS);
-
-	if ( nResultDataSize > 0 )
-	{
-		if (rc == true)
-			writeNbytes(connfd, pResultData, nResultDataSize, WRITE_TIMEOUT_IN_SECONDS);
-
-		delete[] pResultData;
-	}
-	else
-	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] current/next EPG not found!\n");
-	}
-
-	return ;
-}
-
-// Sendet ein EPG, unlocked die events, unpaused dmxEIT
-static void sendEPG(int connfd, const SIevent& e, const SItime& t, int shortepg = 0)
-{
-	struct sectionsd::msgResponseHeader responseHeader;
-
-	if (!shortepg)
-	{
-		// new format - 0 delimiters
-		responseHeader.dataLength =
-			sizeof(event_id_t) +                        // Unique-Key
-			e.getName().length() + 1 + 			// Name + del
-			e.getText().length() + 1 + 			// Text + del
-			e.getExtendedText().length() + 1 +		// ext + del
-			// 21.07.2005 - rainerk
-			// Send extended events
-			e.itemDescription.length() + 1 +		// Item Description + del
-			e.item.length() + 1 +			// Item + del
-			e.contentClassification.length() + 1 + 	// Text + del
-			e.userClassification.length() + 1 + 	// ext + del
-			1 +                                   	// fsk
-			sizeof(CSectionsdClient::sectionsdTime); 	// zeit
-	}
-	else
-		responseHeader.dataLength =
-			e.getName().length() + 1 + 			// Name + del
-			e.getText().length() + 1 + 			// Text + del
-			e.getExtendedText().length() + 1 + 1;	// ext + del + 0
-
-	char *msgData = new char[responseHeader.dataLength];
-
-	if (!msgData)
-	{
-		fprintf(stderr, "sendEPG: low on memory!\n");
-		unlockEvents();
-		responseHeader.dataLength = 0;
-		goto out;
-	}
-
-	if (!shortepg)
-	{
-		char *p = msgData;
-		*((event_id_t *)p) = e.uniqueKey();
-		p += sizeof(event_id_t);
-
-		strcpy(p, e.getName().c_str());
-		p += e.getName().length() + 1;
-		strcpy(p, e.getText().c_str());
-		p += e.getText().length() + 1;
-		strcpy(p, e.getExtendedText().c_str());
-		p += e.getExtendedText().length() + 1;
-		// 21.07.2005 - rainerk
-		// Send extended events
-		strcpy(p, e.itemDescription.c_str());
-		p += e.itemDescription.length() + 1;
-		strcpy(p, e.item.c_str());
-		p += e.item.length() + 1;
-
-//		strlen(userClassification.c_str()) is not equal to e.userClassification.length()
-//		because of binary data same is with contentClassification
-		// add length
-		*p = (unsigned char)e.contentClassification.length();
-		p++;
-		memmove(p, e.contentClassification.data(), e.contentClassification.length());
-		p += e.contentClassification.length();
-
-		*p = (unsigned char)e.userClassification.length();
-		p++;
-		memmove(p, e.userClassification.data(), e.userClassification.length());
-		p += e.userClassification.length();
-
-		*p = e.getFSK();
-		p++;
-
-		CSectionsdClient::sectionsdTime zeit;
-		zeit.startzeit = t.startzeit;
-		zeit.dauer = t.dauer;
-		*((CSectionsdClient::sectionsdTime *)p) = zeit;
-		p += sizeof(CSectionsdClient::sectionsdTime);
-
-	}
-	else
-		sprintf(msgData,
-			"%s\xFF%s\xFF%s\xFF",
-			e.getName().c_str(),
-			e.getText().c_str(),
-			e.getExtendedText().c_str()
-		       );
-
-	unlockEvents();
-
-out:
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS)) 
-	{
-		if (responseHeader.dataLength)
-			writeNbytes(connfd, msgData, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	}
-
-	if (msgData)
-		delete[] msgData;
-}
-
-static void commandGetNextEPG(int connfd, char *data, const unsigned dataLength)
-{
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-
-	if (dataLength != 8 + 4) {
-		writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
-		return ;
-	}
-
-	event_id_t * uniqueEventKey = (event_id_t *)data;
-
-	time_t *starttime = (time_t *)(data + 8);
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of next epg for 0x%llx %s", *uniqueEventKey, ctime(starttime));
-
-	readLockEvents();
-
-	SItime zeit(*starttime, 0);
-
-	const SIevent &nextEvt = findNextSIevent(*uniqueEventKey, zeit);
-
-	if (nextEvt.service_id != 0)
-	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] next epg found.\n");
-		sendEPG(connfd, nextEvt, zeit);
-// this call is made in sendEPG()
-//		unlockEvents();
-		return;
-	}
-
-	unlockEvents();
-	dprintf(DEBUG_DEBUG, "[sectionsd] next epg not found!\n");
-
-	writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
-	return ;
-}
-
-static void commandActualEPGchannelID(int connfd, char *data, const unsigned dataLength)
-{
-	if (dataLength != sizeof(t_channel_id))
-		return ;
-
-	t_channel_id * uniqueServiceKey = (t_channel_id *)data;
-	SIevent evt;
-	SItime zeit(0, 0);
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] [commandActualEPGchannelID] Request of current EPG for:%llx\n", * uniqueServiceKey);
-
-	readLockEvents();
-	if (*uniqueServiceKey == messaging_current_servicekey) 
-	{
-		if (myCurrentEvent) 
-		{
-			evt = *myCurrentEvent;
-			zeit.startzeit = evt.times.begin()->startzeit;
-			zeit.dauer = evt.times.begin()->dauer;
-			if (evt.times.size() > 1) 
-			{
-				time_t now = time(NULL);
-				for (SItimes::iterator t = evt.times.begin(); t != evt.times.end(); ++t) 
-				{
-					if ((long)now < (long)(t->startzeit + t->dauer) && (long)now > (long)t->startzeit) 
-					{
-						zeit.startzeit = t->startzeit;
-						zeit.dauer = t->dauer;
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	if (evt.service_id == 0)
-	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] [commandActualEPGchannelID] evt.service_id == 0 ==> no myCurrentEvent!\n");
-		evt = findActualSIeventForServiceUniqueKey(*uniqueServiceKey, zeit);
-	}
-
-	if (evt.service_id != 0)
-	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] EPG found.\n");
-		sendEPG(connfd, evt, zeit);
-		return;
-	}
-
-	unlockEvents();
-	dprintf(DEBUG_DEBUG, "[sectionsd] EPG not found!\n");
-
-// out:
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-	writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
-
-	return ;
-}
-
-static void commandGetEPGPrevNext(int connfd, char *data, const unsigned dataLength)
-{
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-	char* msgData = NULL;
-
-	if (dataLength != 8 + 4) 
-	{
-		writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
-		return;
-	}
-
-	event_id_t * uniqueEventKey = (event_id_t *)data;
-
-	time_t *starttime = (time_t *)(data + 8);
-	SItime zeit(*starttime, 0);
-	SItime prev_zeit(0, 0);
-	SItime next_zeit(0, 0);
-	SIevent prev_evt;
-	SIevent next_evt;
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of Prev/Next EPG for 0x%llx %s", *uniqueEventKey, ctime(starttime));
-
-	readLockEvents();
-
-	findPrevNextSIevent(*uniqueEventKey, zeit, prev_evt, prev_zeit, next_evt, next_zeit);
-
-	responseHeader.dataLength =
-		12 + 1 + 				// Unique-Key + del
-		8 + 1 + 				// start time + del
-		12 + 1 + 				// Unique-Key + del
-		8 + 1 + 1;				// start time + del
-
-	msgData = new char[responseHeader.dataLength];
-
-	if (!msgData)
-	{
-		fprintf(stderr, "low on memory!\n");
-		unlockEvents();
-		responseHeader.dataLength = 0; // empty response
-		goto out;
-	}
-
-	sprintf(msgData, "%012llx\xFF%08lx\xFF%012llx\xFF%08lx\xFF",
-		prev_evt.uniqueKey(),
-		prev_zeit.startzeit,
-		next_evt.uniqueKey(),
-		next_zeit.startzeit
-	       );
-	unlockEvents();
-
-out:
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS)) 
-	{
-		if (responseHeader.dataLength)
-			writeNbytes(connfd, msgData, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	} 
-
-	if (msgData)
-		delete[] msgData;
+//out:
+//	struct sectionsd::msgResponseHeader msgResponse;
+//	msgResponse.dataLength = 0;
+//	writeNbytes(connfd, (const char *)&msgResponse, sizeof(msgResponse), WRITE_TIMEOUT_IN_SECONDS);
 
 	return ;
 }
 
 bool channel_in_requested_list(t_channel_id * clist, t_channel_id chid, int len)
 {
-	if(len == 0) return true;
+	if(len == 0) 
+		return true;
+		
 	for(int i = 0; i < len; i++) 
 	{
 		if(clist[i] == chid)
@@ -2589,518 +1843,80 @@ bool channel_in_requested_list(t_channel_id * clist, t_channel_id chid, int len)
 	return false;
 }
 
-static void sendEventList(int connfd, const unsigned char serviceTyp1, const unsigned char serviceTyp2 = 0, int sendServiceName = 1, t_channel_id * chidlist = NULL, int clen = 0)
+//static void commandRegisterEventClient(int /*connfd*/, char *data, const unsigned dataLength)
+void sectionsd_registerEventClient(const unsigned int eventID, const unsigned int clientID, const char * const udsName)
 {
-#define MAX_SIZE_BIGEVENTLIST	128*1024
-
-	char *evtList = new char[MAX_SIZE_BIGEVENTLIST]; // 128k mssen reichen... schaut euch mal das Ergebnis fr loop an, jedesmal wenn die Senderliste aufgerufen wird
-	char *liste;
-	long count = 0;
-	t_channel_id uniqueNow = 0;
-	t_channel_id uniqueOld = 0;
-	bool found_already = false;
-	time_t azeit = time(NULL);
-	std::string sname;
-	struct sectionsd::msgResponseHeader msgResponse;
-	msgResponse.dataLength = 0;
-
-	if (!evtList)
+	//if (dataLength == sizeof(CEventServer::commandRegisterEvent))
 	{
-		fprintf(stderr, "low on memory!\n");
-		goto out;
-	}
-
-	*evtList = 0;
-	liste = evtList;
-
-	readLockEvents();
-
-	/* !!! FIXME: if the box starts on a channel where there is no EPG sent, it hangs!!!	*/
-	for (MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey::iterator e = mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.begin(); e != mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.end(); ++e)
-	{
-		uniqueNow = (*e)->get_channel_id();
-		if (!channel_in_requested_list(chidlist, uniqueNow, clen)) continue;
-		if ( uniqueNow != uniqueOld )
-		{
-			found_already = true;
-			readLockServices();
-			// new service, check service- type
-			MySIservicesOrderUniqueKey::iterator s = mySIservicesOrderUniqueKey.find(uniqueNow);
-
-			if (s != mySIservicesOrderUniqueKey.end())
-			{
-				if (s->second->serviceTyp == serviceTyp1 || (serviceTyp2 && s->second->serviceTyp == serviceTyp2))
-				{
-					sname = s->second->serviceName;
-					found_already = false;
-				}
-			}
-			else
-			{
-				// wenn noch nie hingetuned wurde, dann gibts keine Info ber den ServiceTyp...
-				// im Zweifel mitnehmen
-				found_already = false;
-			}
-			unlockServices();
-
-			uniqueOld = uniqueNow;
-		}
-
-		if ( !found_already )
-		{
-			std::string eName = (*e)->getName();
-			std::string eText = (*e)->getText();
-			std::string eExtendedText = (*e)->getExtendedText();
-
-			for (SItimes::iterator t = (*e)->times.begin(); t != (*e)->times.end(); ++t)
-			{
-				if (t->startzeit <= azeit && azeit <= (long)(t->startzeit + t->dauer))
-				{
-					if (sendServiceName)
-					{
-						count += 13 + sname.length() + 1 + eName.length() + 1;
-						if (count < MAX_SIZE_BIGEVENTLIST) 
-						{
-							sprintf(liste, "%012llx\n", (*e)->uniqueKey());
-							liste += 13;
-							strcpy(liste, sname.c_str());
-							liste += sname.length();
-							*liste = '\n';
-							liste++;
-							strcpy(liste, eName.c_str());
-							liste += eName.length();
-							*liste = '\n';
-							liste++;
-						} 
-						else 
-						{
-							dprintf(DEBUG_DEBUG, "[sectionsd] warning: sendEventList - eventlist cut\n");
-							break;
-						}
-
-					} // if sendServiceName
-					else
-					{
-						count += sizeof(event_id_t) + 4 + 4 + eName.length() + 1;
-						if (eText.empty())
-						{
-							count += eExtendedText.substr(0, 50).length();
-						}
-						else
-						{
-							count += eText.length();
-						}
-						count++;
-
-						if (count < MAX_SIZE_BIGEVENTLIST) 
-						{
-							*((event_id_t *)liste) = (*e)->uniqueKey();
-							liste += sizeof(event_id_t);
-							*((unsigned *)liste) = t->startzeit;
-							liste += 4;
-							*((unsigned *)liste) = t->dauer;
-							liste += 4;
-							strcpy(liste, eName.c_str());
-							liste += eName.length();
-							liste++;
-
-							if (eText.empty())
-							{
-								strcpy(liste, eExtendedText.substr(0, 50).c_str());
-								liste += strlen(liste);
-							}
-							else
-							{
-								strcpy(liste, eText.c_str());
-								liste += eText.length();
-							}
-							liste++;
-						} 
-						else 
-						{
-							dprintf(DEBUG_DEBUG, "[sectionsd] warning: sendEventList - eventlist cut\n");
-							break;
-						}
-					} // else !sendServiceName
-
-					found_already = true;
-
-					break;
-				}
-			}
-		}
-	}
-
-	if (sendServiceName && (count+1 < MAX_SIZE_BIGEVENTLIST))
-	{
-		*liste = 0;
-		liste++;
-		count++;
-	}
-
-	unlockEvents();
-
-	//printf("warning: [sectionsd] sendEventList - response-size: 0x%x, count = %lx\n", liste - evtList, count);
-	if (liste - evtList > MAX_SIZE_BIGEVENTLIST)
-		printf("warning: [sectionsd] sendEventList- response-size: 0x%x\n", liste - evtList);
-	msgResponse.dataLength = liste - evtList;
-	dprintf(DEBUG_DEBUG, "[sectionsd] sendEventList - response-size: 0x%x\n", msgResponse.dataLength);
-
-	if ( msgResponse.dataLength == 1 )
-		msgResponse.dataLength = 0;
-
-out:
-	if (writeNbytes(connfd, (const char *)&msgResponse, sizeof(msgResponse), WRITE_TIMEOUT_IN_SECONDS) == true)
-	{
-		if (msgResponse.dataLength)
-			writeNbytes(connfd, evtList, msgResponse.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	}
-
-	if (evtList)
-		delete[] evtList;
-}
-
-// Sendet ein short EPG, unlocked die events, unpaused dmxEIT
-static void sendShort(int connfd, const SIevent& e, const SItime& t)
-{
-
-	struct sectionsd::msgResponseHeader responseHeader;
-
-	responseHeader.dataLength =
-		12 + 1 + 				// Unique-Key + del
-		e.getName().length() + 1 + 		// name + del
-		8 + 1 + 				// start time + del
-		8 + 1 + 1;				// duration + del + 0
-	char* msgData = new char[responseHeader.dataLength];
-
-	if (!msgData)
-	{
-		fprintf(stderr, "low on memory!\n");
-		unlockEvents();
-		responseHeader.dataLength = 0;
-		goto out;
-	}
-
-	sprintf(msgData,
-		"%012llx\n%s\n%08lx\n%08x\n",
-		e.uniqueKey(),
-		e.getName().c_str(),
-		t.startzeit,
-		t.dauer
-	       );
-	unlockEvents();
-
-out:
-	if(writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS)) 
-	{
-		if (responseHeader.dataLength)
-			writeNbytes(connfd, msgData, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	} 
-
-	if (msgData)
-		delete[] msgData;
-}
-
-static void commandGetNextShort(int connfd, char *data, const unsigned dataLength)
-{
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-	if (dataLength != 8 + 4) 
-	{
-		writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
-		return;
-	}
-
-	event_id_t * uniqueEventKey = (event_id_t *)data;
-
-	time_t *starttime = (time_t *)(data + 8);
-	SItime zeit(*starttime, 0);
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of next short for 0x%llx %s", *uniqueEventKey, ctime(starttime));
-
-	readLockEvents();
-
-	const SIevent &nextEvt = findNextSIevent(*uniqueEventKey, zeit);
-
-	if (nextEvt.service_id != 0)
-	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] next short found.\n");
-		sendShort(connfd, nextEvt, zeit);
-		// this call is made in sendShort()
-		//unlockEvents();
-		return;
-	}
-	unlockEvents();
-	dprintf(DEBUG_DEBUG, "[sectionsd] next short not found!\n");
-
-	writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
-}
-
-static void commandEventListTV(int connfd, char* /*data*/, const unsigned /*dataLength*/)
-{
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of TV event list.\n");
-	
-	sendEventList(connfd, 0x01, 0x04);
-}
-
-static void commandEventListTVids(int connfd, char* data, const unsigned dataLength)
-{
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of TV event list (IDs).\n");
-	
-	sendEventList(connfd, 0x01, 0x04, 0, (t_channel_id *) data, dataLength/sizeof(t_channel_id));
-}
-
-static void commandEventListRadio(int connfd, char* /*data*/, const unsigned /*dataLength*/)
-{
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of radio event list.\n");
-	sendEventList(connfd, 0x02);
-}
-
-static void commandEventListRadioIDs(int connfd, char* data, const unsigned dataLength)
-{
-	sendEventList(connfd, 0x02, 0, 0, (t_channel_id *) data, dataLength/sizeof(t_channel_id));
-}
-
-static void commandEPGepgID(int connfd, char *data, const unsigned dataLength)
-{
-	struct sectionsd::msgResponseHeader pmResponse;
-	pmResponse.dataLength = 0;
-
-	if (dataLength != 8 + 4) 
-	{
-		writeNbytes(connfd, (const char *)&pmResponse, sizeof(pmResponse), WRITE_TIMEOUT_IN_SECONDS);
-		return;
-	}
-
-	event_id_t * epgID = (event_id_t *)data;
-
-	time_t* startzeit = (time_t *)(data + 8);
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of current EPG for 0x%llx 0x%lx\n", *epgID, *startzeit);
-
-	readLockEvents();
-
-	const SIevent& evt = findSIeventForEventUniqueKey(*epgID);
-
-	if (evt.service_id != 0)
-	{	// Event found
-		SItimes::iterator t = evt.times.begin();
-
-		for (; t != evt.times.end(); ++t)
-			if (t->startzeit == *startzeit)
-				break;
-
-		if (t != evt.times.end())
-		{
-			dprintf(DEBUG_DEBUG, "[sectionsd] EPG found.");
-			// Sendet ein EPG, unlocked die events, unpaused dmxEIT
-			sendEPG(connfd, evt, *t);
-			// this call is made in sendEPG()
-			//unlockEvents();
-			return;
-		}
-	}
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] EPG not found!");
-	unlockEvents();
-	// response
-
-	writeNbytes(connfd, (const char *)&pmResponse, sizeof(pmResponse), WRITE_TIMEOUT_IN_SECONDS);
-}
-
-static void commandEPGepgIDshort(int connfd, char *data, const unsigned dataLength)
-{
-	struct sectionsd::msgResponseHeader pmResponse;
-	pmResponse.dataLength = 0;
-
-	if (dataLength != 8) 
-	{
-		writeNbytes(connfd, (const char *)&pmResponse, sizeof(pmResponse), WRITE_TIMEOUT_IN_SECONDS);
-		return;
-	}
-
-	event_id_t * epgID = (event_id_t *)data;
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of current EPG for 0x%llx\n", *epgID);
-
-	readLockEvents();
-
-	const SIevent& evt = findSIeventForEventUniqueKey(*epgID);
-
-	if (evt.service_id != 0)
-	{	// Event found
-		dprintf(DEBUG_DEBUG, "[sectionsd] EPG found.");
-		sendEPG(connfd, evt, SItime(0, 0), 1);
-		// this call is made in sendEPG()
-		//unlockEvents();
-		return;
-	}
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] EPG not found!");
-	unlockEvents();
-	// response
-
-	writeNbytes(connfd, (const char *)&pmResponse, sizeof(pmResponse), WRITE_TIMEOUT_IN_SECONDS);
-}
-
-static void commandTimesNVODservice(int connfd, char *data, const unsigned dataLength)
-{
-	MySIservicesNVODorderUniqueKey::iterator si;
-	char *msgData = 0;
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-	t_channel_id uniqueServiceKey;
-
-	if (dataLength != sizeof(t_channel_id))
-		goto out;
-
-	uniqueServiceKey = *(t_channel_id *)data;
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of NVOD times for:%llx\n", uniqueServiceKey);
-
-	readLockServices();
-	readLockEvents();
-
-	si = mySIservicesNVODorderUniqueKey.find(uniqueServiceKey);
-
-	if (si != mySIservicesNVODorderUniqueKey.end())
-	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] NVODServices: %u\n", si->second->nvods.size());
-
-		if (si->second->nvods.size())
-		{
-			responseHeader.dataLength = (sizeof(t_service_id) + sizeof(t_original_network_id) + sizeof(t_transport_stream_id) + 4 + 4) * si->second->nvods.size();
-			msgData = new char[responseHeader.dataLength];
-
-			if (!msgData)
-			{
-				fprintf(stderr, "low on memory!\n");
-				unlockEvents();
-				unlockServices();
-				responseHeader.dataLength = 0; // empty response
-				goto out;
-			}
-
-			char *p = msgData;
-			//time_t azeit = time(NULL);
-
-			for (SInvodReferences::iterator ni = si->second->nvods.begin(); ni != si->second->nvods.end(); ++ni)
-			{
-				// Zeiten sind erstmal dummy, d.h. pro Service eine Zeit
-				ni->toStream(p); // => p += sizeof(t_service_id) + sizeof(t_original_network_id) + sizeof(t_transport_stream_id);
-
-				SItime zeitEvt1(0, 0);
-				//        const SIevent &evt=
-				findActualSIeventForServiceUniqueKey(ni->uniqueKey(), zeitEvt1, 15*60);
-				*(time_t *)p = zeitEvt1.startzeit;
-				p += 4;
-				*(unsigned *)p = zeitEvt1.dauer;
-				p += 4;
-			}
-		}
-	}
-	unlockEvents();
-	unlockServices();
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] data bytes: %u\n", responseHeader.dataLength);
-
-out:
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS))
-	{
-		if (responseHeader.dataLength)
-			writeNbytes(connfd, msgData, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	}
-
-	if (msgData)
-		delete[] msgData;
-}
-
-static void commandGetIsTimeSet(int connfd, char* /*data*/, const unsigned /*dataLength*/)
-{
-	sectionsd::responseIsTimeSet rmsg;
-
-	rmsg.IsTimeSet = timeset;
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of Time-Is-Set %d\n", rmsg.IsTimeSet);
-
-	struct sectionsd::msgResponseHeader responseHeader;
-
-	responseHeader.dataLength = sizeof(rmsg);
-
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true)
-	{
-		writeNbytes(connfd, (const char *)&rmsg, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	}
-}
-
-static void commandRegisterEventClient(int /*connfd*/, char *data, const unsigned dataLength)
-{
-	if (dataLength == sizeof(CEventServer::commandRegisterEvent))
-	{
-		eventServer->registerEvent2(((CEventServer::commandRegisterEvent*)data)->eventID, ((CEventServer::commandRegisterEvent*)data)->clientID, ((CEventServer::commandRegisterEvent*)data)->udsName);
-
-		if (((CEventServer::commandRegisterEvent*)data)->eventID == CSectionsdClient::EVT_TIMESET)
+		//eventServer->registerEvent2(((CEventServer::commandRegisterEvent*)data)->eventID, ((CEventServer::commandRegisterEvent*)data)->clientID, ((CEventServer::commandRegisterEvent*)data)->udsName);
+		eventServer->registerEvent2(eventID, clientID, udsName);
+
+		//if (((CEventServer::commandRegisterEvent*)data)->eventID == CSectionsdClient::EVT_TIMESET)
+		if (eventID == CSectionsdClient::EVT_TIMESET)
 			messaging_neutrino_sets_time = true;
 	}
 }
 
 
 
-static void commandUnRegisterEventClient(int /*connfd*/, char *data, const unsigned dataLength)
+//static void commandUnRegisterEventClient(int /*connfd*/, char *data, const unsigned dataLength)
+void sectionsd_unRegisterEventClient(const unsigned int eventID, const unsigned int clientID)
 {
-	if (dataLength == sizeof(CEventServer::commandUnRegisterEvent))
-		eventServer->unRegisterEvent2(((CEventServer::commandUnRegisterEvent*)data)->eventID, ((CEventServer::commandUnRegisterEvent*)data)->clientID);
+	//if (dataLength == sizeof(CEventServer::commandUnRegisterEvent))
+		//eventServer->unRegisterEvent2(((CEventServer::commandUnRegisterEvent*)data)->eventID, ((CEventServer::commandUnRegisterEvent*)data)->clientID);
+		
+	eventServer->unRegisterEvent2(eventID, clientID);
 }
 
-static void commandSetConfig(int connfd, char *data, const unsigned /*dataLength*/)
+//static void commandSetConfig(int connfd, char *data, const unsigned /*dataLength*/)
+void sectionsd_setConfig(const CSectionsdClient::epg_config config)
 {
-	struct sectionsd::msgResponseHeader responseHeader;
-	struct sectionsd::commandSetConfig *pmsg;
+	//struct sectionsd::msgResponseHeader responseHeader;
+	//struct sectionsd::commandSetConfig *pmsg;
+	//pmsg = (struct sectionsd::commandSetConfig *)data;
 
-	pmsg = (struct sectionsd::commandSetConfig *)data;
-
-	if (secondsToCache != (long)(pmsg->epg_cache)*24*60L*60L) 
+	if (secondsToCache != (long)(config.epg_cache)*24*60L*60L) 
 	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] new epg_cache = %d\n", pmsg->epg_cache);
+		dprintf(DEBUG_DEBUG, "[sectionsd] new epg_cache = %d\n", config.epg_cache);
 		
 		writeLockEvents();
-		secondsToCache = (long)(pmsg->epg_cache)*24*60L*60L;
+		secondsToCache = (long)(config.epg_cache)*24*60L*60L;
 		unlockEvents();
 	}
 
-	if (oldEventsAre != (long)(pmsg->epg_old_events)*60L*60L) 
+	if (oldEventsAre != (long)(config.epg_old_events)*60L*60L) 
 	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] new epg_old_events = %d\n", pmsg->epg_old_events);
+		dprintf(DEBUG_DEBUG, "[sectionsd] new epg_old_events = %d\n", config.epg_old_events);
 		
 		writeLockEvents();
-		oldEventsAre = (long)(pmsg->epg_old_events)*60L*60L;
+		oldEventsAre = (long)(config.epg_old_events)*60L*60L;
 		unlockEvents();
 	}
 	
-	if (secondsExtendedTextCache != (long)(pmsg->epg_extendedcache)*60L*60L) 
+	if (secondsExtendedTextCache != (long)(config.epg_extendedcache)*60L*60L) 
 	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] new epg_extendedcache = %d\n", pmsg->epg_extendedcache);
+		dprintf(DEBUG_DEBUG, "[sectionsd] new epg_extendedcache = %d\n", config.epg_extendedcache);
 		
 		//lockEvents();
 		writeLockEvents();
-		secondsExtendedTextCache = (long)(pmsg->epg_extendedcache)*60L*60L;
+		secondsExtendedTextCache = (long)(config.epg_extendedcache)*60L*60L;
 		unlockEvents();
 	}
 	
-	if (max_events != pmsg->epg_max_events) 
+	if (max_events != config.epg_max_events) 
 	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] new epg_max_events = %d\n", pmsg->epg_max_events);
+		dprintf(DEBUG_DEBUG, "[sectionsd] new epg_max_events = %d\n", config.epg_max_events);
 		writeLockEvents();
-		max_events = pmsg->epg_max_events;
+		max_events = config.epg_max_events;
 		unlockEvents();
 	}
 
-	if (ntprefresh != pmsg->network_ntprefresh) 
+	if (ntprefresh != config.network_ntprefresh) 
 	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] new network_ntprefresh = %d\n", pmsg->network_ntprefresh);
+		dprintf(DEBUG_DEBUG, "[sectionsd] new network_ntprefresh = %d\n", config.network_ntprefresh);
 		
 		pthread_mutex_lock(&timeThreadSleepMutex);
-		ntprefresh = pmsg->network_ntprefresh;
+		ntprefresh = config.network_ntprefresh;
 		if (timeset) 
 		{
 			// wake up time thread
@@ -3109,12 +1925,13 @@ static void commandSetConfig(int connfd, char *data, const unsigned /*dataLength
 		pthread_mutex_unlock(&timeThreadSleepMutex);
 	}
 
-	if (ntpenable ^ (pmsg->network_ntpenable == 1))	
+	if (ntpenable ^ (config.network_ntpenable == 1))	
 	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] new network_ntpenable = %d\n", pmsg->network_ntpenable);
+		dprintf(DEBUG_DEBUG, "[sectionsd] new network_ntpenable = %d\n", config.network_ntpenable);
 		
 		pthread_mutex_lock(&timeThreadSleepMutex);
-		ntpenable = (pmsg->network_ntpenable == 1);
+		ntpenable = (config.network_ntpenable == 1);
+		
 		if (timeset) 
 		{
 			// wake up time thread
@@ -3123,9 +1940,11 @@ static void commandSetConfig(int connfd, char *data, const unsigned /*dataLength
 		pthread_mutex_unlock(&timeThreadSleepMutex);
 	}
 
-	if (ntpserver.compare((std::string)&data[sizeof(struct sectionsd::commandSetConfig)])) 
+	//if (ntpserver.compare((std::string)&data[sizeof(struct sectionsd::commandSetConfig)]))
+	if (!config.network_ntpserver.empty()) 
 	{
-		ntpserver = (std::string)&data[sizeof(struct sectionsd::commandSetConfig)];
+		//ntpserver = (std::string)&data[sizeof(struct sectionsd::commandSetConfig)];
+		ntpserver = config.network_ntpserver;
 		dprintf(DEBUG_DEBUG, "[sectionsd] new network_ntpserver = %s\n", ntpserver.c_str());
 		
 		// check for rdate
@@ -3134,13 +1953,17 @@ static void commandSetConfig(int connfd, char *data, const unsigned /*dataLength
 		ntp_system_cmd = ntp_system_cmd_prefix + ntpserver;
 	}
 
-	if (epg_dir.compare((std::string)&data[sizeof(struct sectionsd::commandSetConfig) + strlen(&data[sizeof(struct sectionsd::commandSetConfig)]) + 1])) {
-		epg_dir= (std::string)&data[sizeof(struct sectionsd::commandSetConfig) + strlen(&data[sizeof(struct sectionsd::commandSetConfig)]) + 1];
+	//if (epg_dir.compare((std::string)&data[sizeof(struct sectionsd::commandSetConfig) + strlen(&data[sizeof(struct sectionsd::commandSetConfig)]) + 1])) 
+	if (!config.epg_dir.empty())
+	{
+		//epg_dir= (std::string)&data[sizeof(struct sectionsd::commandSetConfig) + strlen(&data[sizeof(struct sectionsd::commandSetConfig)]) + 1];
+		epg_dir = config.epg_dir;
 		dprintf(DEBUG_DEBUG, "[sectionsd] new epg_dir = %s\n", epg_dir.c_str());
 	}
 
-	responseHeader.dataLength = 0;
-	writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
+	//responseHeader.dataLength = 0;
+	//writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
+	
 	return ;
 }
 
@@ -3152,13 +1975,14 @@ static void deleteSIexceptEPG()
 	dmxEIT.dropCachedSectionIDs();
 }
 
-static void commandFreeMemory(int connfd, char * /*data*/, const unsigned /*dataLength*/)
+//static void commandFreeMemory(int connfd, char * /*data*/, const unsigned /*dataLength*/)
+void sectionsd_freeMemory()
 {
 	deleteSIexceptEPG();
 
 	writeLockEvents();
 	
-	//FIXME: TEST
+	//FIXME:
 	std::set<SIeventPtr> allevents;
 
 	allevents.insert(mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.begin(), mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.end());
@@ -3183,9 +2007,9 @@ static void commandFreeMemory(int connfd, char * /*data*/, const unsigned /*data
 	
 	unlockEvents();
 
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-	writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
+	//struct sectionsd::msgResponseHeader responseHeader;
+	//responseHeader.dataLength = 0;
+	//writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
 	
 	return ;
 }
@@ -3494,23 +2318,25 @@ static void *insertEventsfromXMLTV(void* data)
 	pthread_exit(NULL);
 }
 
-static void commandReadSIfromXML(int connfd, char *data, const unsigned dataLength)
+//static void commandReadSIfromXML(int connfd, char *data, const unsigned dataLength)
+void sectionsd_readSIfromXML(const char *epgxmlname)
 {
 	dprintf(DEBUG_NORMAL, "[sectionsd] commandReadSIfromXML\n");
 
 	pthread_t thrInsert;
 
-	if (dataLength > 100)
-		return ;
+	//if (dataLength > 100)
+	//	return ;
 
 	writeLockMessaging();
-	data[dataLength] = '\0';
-	epg_dir = (std::string)data + "/";
+	//data[dataLength] = '\0';
+	//epg_dir = (std::string)data + "/";
+	epg_dir = (std::string)epgxmlname + "/";
 	unlockMessaging();
 
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-	writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
+	//struct sectionsd::msgResponseHeader responseHeader;
+	//responseHeader.dataLength = 0;
+	//writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
 
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
@@ -3518,7 +2344,7 @@ static void commandReadSIfromXML(int connfd, char *data, const unsigned dataLeng
 
 	if (pthread_create (&thrInsert, &attr, insertEventsfromFile, 0 ))
 	{
-		perror("sectionsd: pthread_create()");
+		perror("sectionsd: sectionsd_readSIfromXML: pthread_create()");
 	}
 
 	pthread_attr_destroy(&attr);
@@ -3527,24 +2353,26 @@ static void commandReadSIfromXML(int connfd, char *data, const unsigned dataLeng
 }
 
 // fromXMLTV
-static void commandReadSIfromXMLTV(int connfd, char *data, const unsigned dataLength)
+//static void commandReadSIfromXMLTV(int connfd, char *data, const unsigned dataLength)
+void sectionsd_readSIfromXMLTV(const char *url)
 {
-	dprintf(DEBUG_NORMAL, "[sectionsd] commandReadSIfromXMLTV\n");
+	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_readSIfromXMLTV\n");
 
 	pthread_t thrInsert;
 
-	if (dataLength > 100)
+	//if (dataLength > 100)
+	if (!url)
 		return ;
 
 	writeLockMessaging();
-	data[dataLength] = '\0';
-	static std::string url_tmp = "";
-	url_tmp = (std::string)data;
+	//data[dataLength] = '\0';
+	static std::string url_tmp = url;
+	//url_tmp = (std::string)data;
 	unlockMessaging();
 
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-	writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
+	//struct sectionsd::msgResponseHeader responseHeader;
+	//responseHeader.dataLength = 0;
+	//writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
 
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
@@ -3552,7 +2380,7 @@ static void commandReadSIfromXMLTV(int connfd, char *data, const unsigned dataLe
 
 	if (pthread_create (&thrInsert, &attr, insertEventsfromXMLTV, (void *)url_tmp.c_str()))
 	{
-		perror("sectionsd: pthread_create()");
+		perror("sectionsd: sectionsd_readSIfromXMLTV: pthread_create()");
 	}
 
 	pthread_attr_destroy(&attr);
@@ -3604,7 +2432,8 @@ void cp(char * from, char * to)
 	system(cmd);
 }
 
-static void commandWriteSI2XML(int connfd, char *data, const unsigned dataLength)
+//static void commandWriteSI2XML(int connfd, char *data, const unsigned dataLength)
+void sectionsd_writeSI2XML(const char *epgxmlname)
 {
 	FILE * indexfile = NULL;
 	FILE * eventfile =NULL;
@@ -3616,26 +2445,27 @@ static void commandWriteSI2XML(int connfd, char *data, const unsigned dataLength
 	t_transport_stream_id tsid = 0;
 	t_service_id sid = 0;
 
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = 0;
-	writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
+	//struct sectionsd::msgResponseHeader responseHeader;
+	//responseHeader.dataLength = 0;
+	//writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS);
 
-	if (dataLength > 100)
-		goto _ret ;
+	//if (dataLength > 100)
+	//	goto _ret ;
 
-	strncpy(epgdir, data, dataLength);
-	epgdir[dataLength] = '\0';
+	//strncpy(epgdir, data, dataLength);
+	strcpy(epgdir, epgxmlname);
+	//epgdir[dataLength] = '\0';
 	sprintf(tmpname, "%s/index.tmp", epgdir);
 
 	if (!(indexfile = fopen(tmpname, "w"))) 
 	{
-		printf("[sectionsd] unable to open %s for writing\n", tmpname);
+		printf("[sectionsd] sectionsd_writeSI2XML: unable to open %s for writing\n", tmpname);
 		goto _ret;
 	}
 	else 
 	{
 
-		printf("[sectionsd] Writing Information to file: %s\n", tmpname);
+		printf("[sectionsd] sectionsd_writeSI2XML:: Writing Information to file: %s\n", tmpname);
 
 		write_index_xml_header(indexfile);
 
@@ -3691,275 +2521,17 @@ _done:
 
 		printf("[sectionsd] Writing Information finished\n");
 	}
-	strncpy(filename, data, dataLength);
-	filename[dataLength] = '\0';
+	//strncpy(filename, data, dataLength);
+	strcpy(filename, epgxmlname);
+	//filename[dataLength] = '\0';
 	strncat(filename, "/index.xml", 10);
 
 	cp(tmpname, filename);
 	unlink(tmpname);
 _ret:
 	eventServer->sendEvent(CSectionsdClient::EVT_WRITE_SI_FINISHED, CEventServer::INITID_SECTIONSD);
-	return ;
-}
-
-/* dummy1: do not send back anything */
-static void commandDummy1(int, char *, const unsigned)
-{
-	return;
-}
-
-/* dummy2: send back an empty response */
-static void commandDummy2(int connfd, char *, const unsigned)
-{
-	struct sectionsd::msgResponseHeader msgResponse;
-	msgResponse.dataLength = 0;
-	writeNbytes(connfd, (const char *)&msgResponse, sizeof(msgResponse), WRITE_TIMEOUT_IN_SECONDS);
-	return;
-}
-
-static void commandAllEventsChannelIDSearch(int connfd, char *data, const unsigned dataLength)
-{
-	//dprintf(DEBUG_DEBUG, "Request of commandAllEventsChannelIDSearch, %d\n",dataLength);
 	
-	if (dataLength > 5)
-	{
-		char *data_ptr = data;
-		char search = 0;
-		std::string search_text;
-
-		t_channel_id channel_id = *(t_channel_id*)data_ptr;
-		data_ptr += sizeof(t_channel_id);
-		search = *data_ptr;
-		data_ptr += sizeof(char);
-		if(search != 0)
-			search_text = data_ptr;
-		sendAllEvents(connfd, channel_id, false, search, search_text);
-	}
-	return;
-}
-
-static void commandLoadLanguages(int connfd, char* /*data*/, const unsigned /*dataLength*/)
-{
-	struct sectionsd::msgResponseHeader responseHeader;
-	bool retval = SIlanguage::loadLanguages();
-	responseHeader.dataLength = sizeof(retval);
-
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
-	{
-		writeNbytes(connfd, (const char *)&retval, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	}
-}
-
-static void commandSaveLanguages(int connfd, char* /*data*/, const unsigned /*dataLength*/)
-{
-	struct sectionsd::msgResponseHeader responseHeader;
-	bool retval = SIlanguage::saveLanguages();
-	responseHeader.dataLength = sizeof(retval);
-
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
-	{
-		writeNbytes(connfd, (const char *)&retval, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	}
-}
-
-static void commandSetLanguages(int connfd, char* data, const unsigned dataLength)
-{
-	bool retval = true;
-
-	if (dataLength % 3) 
-	{
-		retval = false;
-	} 
-	else 
-	{
-		std::vector<std::string> languages;
-		for (unsigned int i = 0 ; i < dataLength ; ) 
-		{
-			char tmp[4];
-			tmp[0] = data[i++];
-			tmp[1] = data[i++];
-			tmp[2] = data[i++];
-			tmp[3] = '\0';
-			languages.push_back(tmp);
-		}
-		SIlanguage::setLanguages(languages);
-	}
-
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = sizeof(retval);
-
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
-	{
-		writeNbytes(connfd, (const char *)&retval, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	} 
-}
-
-static void commandGetLanguages(int connfd, char* /* data */, const unsigned /* dataLength */)
-{
-	std::string retval;
-	std::vector<std::string> languages = SIlanguage::getLanguages();
-
-	for (std::vector<std::string>::iterator it = languages.begin() ; it != languages.end() ; it++) 
-	{
-		retval.append(*it);
-	}
-
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = retval.length();
-
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
-	{
-		writeNbytes(connfd, (const char *)retval.c_str(), responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	} 
-}
-
-static void commandSetLanguageMode(int connfd, char* data , const unsigned dataLength)
-{
-	bool retval = true;
-	CSectionsdClient::SIlanguageMode_t tmp(CSectionsdClient::ALL);
-
-	if (dataLength != sizeof(tmp)) 
-	{
-		retval = false;
-	} 
-	else 
-	{
-		tmp = *(CSectionsdClient::SIlanguageMode_t *)data;
-		SIlanguage::setMode(tmp);
-	}
-
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = sizeof(retval);
-
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
-	{
-		writeNbytes(connfd, (const char *)&retval, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	} 
-}
-
-static void commandGetLanguageMode(int connfd, char* /* data */, const unsigned /* dataLength */)
-{
-	CSectionsdClient::SIlanguageMode_t retval(CSectionsdClient::ALL);
-
-	retval = SIlanguage::getMode();
-
-	struct sectionsd::msgResponseHeader responseHeader;
-	responseHeader.dataLength = sizeof(retval);
-
-	if (writeNbytes(connfd, (const char *)&responseHeader, sizeof(responseHeader), WRITE_TIMEOUT_IN_SECONDS) == true) 
-	{
-		writeNbytes(connfd, (const char *)&retval, responseHeader.dataLength, WRITE_TIMEOUT_IN_SECONDS);
-	} 
-}
-
-struct s_cmd_table
-{
-	void (*cmd)(int connfd, char *, const unsigned);
-	std::string sCmd;
-};
-
-static s_cmd_table connectionCommands[sectionsd::numberOfCommands] = {
-	{	commandDummy2,				"commandDummy1"			},
-	{	commandEventListTV,			"commandEventListTV"			},
-	{	commandDummy2,				"commandDummy2"			},
-	{	commandDumpStatusInformation,		"commandDumpStatusInformation"	},
-	{	commandAllEventsChannelIDSearch,        "commandAllEventsChannelIDSearch"	},
-	{	commandDummy2,				"commandSetHoursToCache"		},
-	{	commandDummy2,				"commandSetHoursExtendedCache"	},
-	{	commandDummy2,				"commandSetEventsAreOldInMinutes"	},
-	{	commandDumpAllServices,                 "commandDumpAllServices"		},
-	{	commandEventListRadio,                  "commandEventListRadio"		},
-	{	commandGetNextEPG,                      "commandGetNextEPG"			},
-	{	commandGetNextShort,                    "commandGetNextShort"		},
-	{	commandPauseScanning,                   "commandPauseScanning"		},
-	{	commandGetIsScanningActive,             "commandGetIsScanningActive"		},
-	{	commandActualEPGchannelID,              "commandActualEPGchannelID"		},
-	{	commandEventListTVids,                  "commandEventListTVids"		},
-	{	commandEventListRadioIDs,               "commandEventListRadioIDs"		},
-	{	commandCurrentNextInfoChannelID,        "commandCurrentNextInfoChannelID"	},
-	{	commandEPGepgID,                        "commandEPGepgID"			},
-	{	commandEPGepgIDshort,                   "commandEPGepgIDshort"		},
-	{	commandComponentTagsUniqueKey,          "commandComponentTagsUniqueKey"	},
-	{	commandAllEventsChannelID,              "commandAllEventsChannelID"		},
-	{	commandTimesNVODservice,                "commandTimesNVODservice"		},
-	{	commandGetEPGPrevNext,                  "commandGetEPGPrevNext"		},
-	{	commandGetIsTimeSet,                    "commandGetIsTimeSet"		},
-	{	commandserviceChanged,                  "commandserviceChanged"		},
-	{	commandLinkageDescriptorsUniqueKey,     "commandLinkageDescriptorsUniqueKey"	},
-	{	commandDummy2,                          "commandPauseSorting"		},
-	{	commandRegisterEventClient,             "commandRegisterEventClient"		},
-	{	commandUnRegisterEventClient,           "commandUnRegisterEventClient"	},
-	{	commandFreeMemory,			"commandFreeMemory"			},
-	{	commandReadSIfromXML,			"commandReadSIfromXML"			},
-	{	commandReadSIfromXMLTV,			"commandReadSIfromXMLTV"	},
-	{	commandWriteSI2XML,			"commandWriteSI2XML"			},
-	{	commandLoadLanguages,                   "commandLoadLanguages"		},
-	{	commandSaveLanguages,                   "commandSaveLanguages"		},
-	{	commandSetLanguages,                    "commandSetLanguages"		},
-	{	commandGetLanguages,                    "commandGetLanguages"		},
-	{	commandSetLanguageMode,                 "commandSetLanguageMode"		},
-	{	commandGetLanguageMode,                 "commandGetLanguageMode"		},
-	{	commandSetConfig,			"commandSetConfig"			},
-	{	commandDummy1,				"commandRestart"			},
-	{	commandDummy1,				"commandPing"				}
-};
-
-//static void *connectionThread(void *conn)
-bool sectionsd_parse_command(CBasicMessage::Header &rmsg, int connfd)
-{
-	// spart die thread-creation-zeit, und die Locks lassen ohnehin nur ein cmd gleichzeitig zu
-	try
-	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] Connection from UDS\n");
-
-		struct sectionsd::msgRequestHeader header;
-
-		memmove(&header, &rmsg, sizeof(CBasicMessage::Header));
-		memset(((char *)&header) + sizeof(CBasicMessage::Header), 0, sizeof(header) - sizeof(CBasicMessage::Header));
-
-		bool readbytes = readNbytes(connfd, ((char *)&header) + sizeof(CBasicMessage::Header), sizeof(header) - sizeof(CBasicMessage::Header), READ_TIMEOUT_IN_SECONDS);
-
-		if (readbytes == true)
-		{
-			dprintf(DEBUG_DEBUG, "[sectionsd] version: %hhd, cmd: %hhd, numbytes: %d\n", header.version, header.command, readbytes);
-
-			if (header.command < sectionsd::numberOfCommands)
-			{
-				dprintf(DEBUG_DEBUG, "[sectionsd] data length: %hd\n", header.dataLength);
-				char *data = new char[header.dataLength + 1];
-
-				if (!data)
-					fprintf(stderr, "low on memory!\n");
-				else
-				{
-					bool rc = true;
-
-					if (header.dataLength)
-						rc = readNbytes(connfd, data, header.dataLength, READ_TIMEOUT_IN_SECONDS);
-
-					if (rc == true)
-					{
-						dprintf(DEBUG_DEBUG, "[sectionsd] %s\n", connectionCommands[header.command].sCmd.c_str());
-						connectionCommands[header.command].cmd(connfd, data, header.dataLength);
-					}
-
-					delete[] data;
-				}
-			}
-		}
-	} // try
-#ifdef WITH_EXCEPTIONS
-	catch (std::exception& e)
-	{
-		fprintf(stderr, "Caught std-exception in connection-thread %s!\n", e.what());
-	}
-#endif
-	catch (...)
-	{
-		fprintf(stderr, "Caught exception in connection-thread!\n");
-	}
-
-	return true;
+	return ;
 }
 
 //---------------------------------------------------------------------
@@ -5323,13 +3895,13 @@ static void *houseKeepingThread(void *)
 		unlockEvents();
 		//usleep(100);
 		//lockEvents();
-//#ifdef REMOVE_DUPS
+#ifdef REMOVE_DUPS
 		removeDupEvents();
 		readLockEvents();
 		dprintf(DEBUG_DEBUG, "[sectionsd] Removed %d dup events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		anzEventsAlt = mySIeventsOrderUniqueKey.size();
 		unlockEvents();
-//#endif
+#endif
 		dprintf(DEBUG_DEBUG, "[sectionsd] before removewasteepg\n");
 
 		readLockEvents();
@@ -5442,7 +4014,7 @@ void sectionsd_main_thread(void */*data*/)
 	//
 	tzset(); // TZ auswerten
 
-	CBasicServer sectionsd_server;
+	//CBasicServer sectionsd_server;
 
 	//NTP-Config laden
 	if (!ntp_config.loadConfig(CONF_FILE))
@@ -5476,13 +4048,24 @@ void sectionsd_main_thread(void */*data*/)
 	readDVBTimeFilter();
 	readEncodingFile();
 
+/*
 	if (!sectionsd_server.prepare(SECTIONSD_UDS_NAME)) 
 	{
 		dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to prepare basic server\n");
 		return;
 	}
+*/
 	
 	eventServer = new CEventServer;
+	
+	//
+	eventServer->registerEvent2(CSectionsdClient::EVT_TIMESET, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsdClient::EVT_GOT_CN_EPG, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsdClient::EVT_SERVICES_UPDATE, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsdClient::EVT_BOUQUETS_UPDATE, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsdClient::EVT_WRITE_SI_FINISHED, 222, NEUTRINO_UDS_NAME);
+	
+	messaging_neutrino_sets_time = true;
 
 	// time-Thread starten
 	rc = pthread_create(&threadTOT, 0, timeThread, 0);
@@ -5549,8 +4132,9 @@ void sectionsd_main_thread(void */*data*/)
 	
 	if(FrontendCount)
 		eit_update_fd = -1;
-
-	while (sectionsd_server.run(sectionsd_parse_command, sectionsd::ACTVERSION, true)) 
+#if 1
+	//while (sectionsd_server.run(sectionsd_parse_command, sectionsd::ACTVERSION, true))
+	while (true) 
 	{
 		sched_yield();
 		
@@ -5587,6 +4171,7 @@ void sectionsd_main_thread(void */*data*/)
 		*/
 		usleep(20000);
 	}
+#endif
 
 	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: stopping...\n");
 	
@@ -5805,7 +4390,7 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 
 		if (currentEvt.getName().empty() && flag2 != 0)
 		{
-			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: commandCurrentNextInfoChannelID change1\n");
+			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: change1\n");
 			change = true;
 		}
 
@@ -5883,7 +4468,7 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 		}
 		else if (flag != 0)
 		{
-			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: commandCurrentNextInfoChannelID change2 flag: 0x%02x\n", flag);
+			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_getCurrentNextServiceKey: change2 flag: 0x%02x\n", flag);
 			change = true;
 		}
 	}
@@ -5971,7 +4556,7 @@ void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSections
 bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata)
 {
 	bool ret = false;
-	dprintf(DEBUG_DEBUG, "[sectionsd] Request of current EPG for 0x%llx\n", epgID);
+	dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_getEPGidShort: Request of current EPG for 0x%llx\n", epgID);
 
 	readLockEvents();
 
@@ -5979,14 +4564,14 @@ bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata)
 
 	if (e.service_id != 0)
 	{	// Event found
-		dprintf(DEBUG_DEBUG, "[sectionsd] EPG found.\n");
+		dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_getEPGidShort:: EPG found.\n");
 		epgdata->title = e.getName();
 		epgdata->info1 = e.getText();
 		epgdata->info2 = e.getExtendedText();
 		ret = true;
 	} 
 	else
-		dprintf(DEBUG_DEBUG, "[sectionsd] EPG not found!\n");
+		dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_getEPGidShort:: EPG not found!\n");
 	unlockEvents();
 	
 	return ret;
@@ -6051,7 +4636,7 @@ bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGD
 	SIevent evt;
 	SItime zeit(0, 0);
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] [commandActualEPGchannelID] Request of current EPG for:%llx\n", uniqueServiceKey);
+	dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_getActualEPGServiceKey Request of current EPG for:%llx\n", uniqueServiceKey);
 
 	readLockEvents();
 	if (uniqueServiceKey == messaging_current_servicekey) 
@@ -6079,7 +4664,7 @@ bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGD
 
 	if (evt.service_id == 0)
 	{
-		dprintf(DEBUG_DEBUG, "[sectionsd] [commandActualEPGchannelID] evt.service_id == 0 ==> no myCurrentEvent!\n");
+		dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_getActualEPGchannelID evt.service_id == 0 ==> no myCurrentEvent!\n");
 		evt = findActualSIeventForServiceUniqueKey(uniqueServiceKey, zeit);
 	}
 

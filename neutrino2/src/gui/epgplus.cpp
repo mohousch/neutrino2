@@ -33,7 +33,7 @@
 #include <neutrino2.h>
 
 #include <gui/epgplus.h>
-#include <sectionsdclient/sectionsdclient.h>
+#include <sectionsd/sectionsdclient.h>
 
 #include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>

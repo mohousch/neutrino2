@@ -7,7 +7,7 @@
 
 // tuxbox
 #include <eventserver.h>
-#include <sectionsdclient/sectionsdclient.h>
+#include <sectionsd/sectionsdclient.h>
 #include <timerdclient/timerdclient.h>
 
 /*zapit includes*/
@@ -31,7 +31,7 @@ bool _initialize_iso639_map(void);
 class CNeutrinoAPI
 {
 	// Clientlibs
-	CSectionsdClient	*Sectionsd;
+	//CSectionsdClient	*Sectionsd;
 	CZapitClient		*Zapit;
 	CTimerdClient		*Timerd;
 #ifdef ENABLE_LCDAPI

@@ -36,7 +36,7 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <plugin.h>
+//#include <plugin.h>
 
 #include <gui/pluginlist.h>
 #include <gui/widget/infobox.h>

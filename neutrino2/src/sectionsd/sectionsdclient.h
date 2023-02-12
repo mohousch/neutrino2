@@ -28,7 +28,7 @@
 
 #include <connection/basicclient.h>
 
-#include <sectionsdclient/sectionsdtypes.h>
+#include <sectionsd/sectionsdtypes.h>
 
 
 class CShortEPGData
@@ -62,15 +62,15 @@ class CChannelEvent
 
 typedef std::vector<CChannelEvent> CChannelEventList;
 
-class CSectionsdClient : private CBasicClient
+class CSectionsdClient /*: private CBasicClient*/
 {
 	private:
-		virtual unsigned char getVersion() const;
-		virtual const char* getSocketName() const;
+		//virtual unsigned char getVersion() const;
+		//virtual const char* getSocketName() const;
 
-		int readResponse(char* data = NULL, unsigned int size = 0);
-		bool send(const unsigned char command, const char* data = NULL, const unsigned int size = 0);
-		char * parseExtendedEvents(char * dp, CEPGData * epgdata);
+		//int readResponse(char* data = NULL, unsigned int size = 0);
+		//bool send(const unsigned char command, const char* data = NULL, const unsigned int size = 0);
+		//char * parseExtendedEvents(char * dp, CEPGData * epgdata);
 
 	public:
 		enum SIlanguageMode_t {
@@ -165,55 +165,38 @@ class CSectionsdClient : private CBasicClient
 			std::string epg_dir;
 		} epg_config;
 
-		bool getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::ComponentTagList& tags);
-
-		bool getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::LinkageDescriptorList& descriptors);
-
-		bool getNVODTimesServiceKey(const t_channel_id channel_id, CSectionsdClient::NVODTimesList& nvod_list);
-
-		bool getCurrentNextServiceKey(const t_channel_id channel_id, CSectionsdClient::responseGetCurrentNextInfoChannelID& current_next);
-
-		bool getIsTimeSet();
-
-		void setPauseScanning(const bool doPause);
-
-		bool getIsScanningActive();
-
-		void setPauseSorting(const bool doPause);
-
-		void setServiceChanged(const t_channel_id channel_id, const bool requestEvent);
-
-		CChannelEventList getChannelEvents(const bool tv_mode = true, t_channel_id* = NULL, int size = 0);
-
-		CChannelEventList getEventsServiceKey(const t_channel_id channel_id);
-
-		bool getEventsServiceKeySearchAdd(CChannelEventList& evtlist,const t_channel_id channel_id,char m_search_typ,std::string& m_search_text);
-
-		bool getEPGid(const event_id_t eventid, const time_t starttime, CEPGData * epgdata);
-
-		bool getActualEPGServiceKey(const t_channel_id channel_id, CEPGData * epgdata);
-
-		bool getEPGidShort(const event_id_t eventid, CShortEPGData * epgdata);
-
-		void freeMemory();
-
-		void readSIfromXML(const char * epgxmlname);
-		void readSIfromXMLTV(const char* url);
-
-		void writeSI2XML(const char * epgxmlname);
+		//bool getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::ComponentTagList& tags);
+		//bool getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::LinkageDescriptorList& descriptors);
+		//bool getNVODTimesServiceKey(const t_channel_id channel_id, CSectionsdClient::NVODTimesList& nvod_list);
+		//bool getCurrentNextServiceKey(const t_channel_id channel_id, CSectionsdClient::responseGetCurrentNextInfoChannelID& current_next);
+		//bool getIsTimeSet();
+		//void setPauseScanning(const bool doPause);
+		//bool getIsScanningActive();
+		//void setPauseSorting(const bool doPause);
+		//void setServiceChanged(const t_channel_id channel_id, const bool requestEvent);
+		//CChannelEventList getChannelEvents(const bool tv_mode = true, t_channel_id* = NULL, int size = 0);
+		//CChannelEventList getEventsServiceKey(const t_channel_id channel_id);
+		//bool getEventsServiceKeySearchAdd(CChannelEventList& evtlist,const t_channel_id channel_id,char m_search_typ,std::string& m_search_text);
+		//bool getEPGid(const event_id_t eventid, const time_t starttime, CEPGData * epgdata);
+		//bool getActualEPGServiceKey(const t_channel_id channel_id, CEPGData * epgdata);
+		//bool getEPGidShort(const event_id_t eventid, CShortEPGData * epgdata);
+		//void freeMemory();
+		//void readSIfromXML(const char * epgxmlname);
+		//void readSIfromXMLTV(const char* url);
+		//void writeSI2XML(const char * epgxmlname);
+		
+		//void setConfig(const epg_config config);
+		//void dumpStatus(void);
 
 		/*
 		  ein beliebiges Event anmelden
 		*/
-		void registerEvent(const unsigned int eventID, const unsigned int clientID, const char * const udsName);
+		//void registerEvent(const unsigned int eventID, const unsigned int clientID, const char * const udsName);
 
 		/*
 		  ein beliebiges Event abmelden
 		*/
-		void unRegisterEvent(const unsigned int eventID, const unsigned int clientID);
-
-		void setConfig(const epg_config config);
-		void dumpStatus(void);
+		//void unRegisterEvent(const unsigned int eventID, const unsigned int clientID);
 };
 
 class CEPGData

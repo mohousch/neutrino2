@@ -30,7 +30,7 @@
 #include <cstring> // memset
 #include <endian.h>
 
-#include <sectionsdclient/sectionsdMsg.h>
+#include <sectionsd/sectionsdtypes.h>
 
 
 // forward references

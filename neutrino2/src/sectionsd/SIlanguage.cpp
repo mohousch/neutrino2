@@ -46,7 +46,7 @@
 #include <pthread.h>
 #include <fstream>
 
-#include <sectionsdclient/sectionsdclient.h>
+#include <sectionsd/sectionsdclient.h>
 
 
 std::vector<std::string> SIlanguage::languages;

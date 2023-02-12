@@ -71,6 +71,7 @@ void stopOpenGLplayback();
 #endif
 
 void sectionsd_getChannelEvents(CChannelEventList &eList, const bool tv_mode = true, t_channel_id *chidlist = NULL, int clen = 0);
+void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
 
 //
 // No Class Helpers
@@ -133,7 +134,7 @@ std::string CNeutrinoAPI::ddmodes[] 		= { "CH1/CH2", "C", "L/R", "L/C/R", "L/R/S
 //
 CNeutrinoAPI::CNeutrinoAPI()
 {
-	Sectionsd = new CSectionsdClient();
+	//Sectionsd = new CSectionsdClient();
 	Zapit = new CZapitClient();
 	Timerd = new CTimerdClient();
 
@@ -172,8 +173,8 @@ CNeutrinoAPI::~CNeutrinoAPI(void)
 		delete NeutrinoYParser;
 	if (ControlAPI)
 		delete ControlAPI;
-	if (Sectionsd)
-		delete Sectionsd;
+	//if (Sectionsd)
+	//	delete Sectionsd;
 	if (Zapit)
 		delete Zapit;
 	if (Timerd)
@@ -220,7 +221,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 		if (channel_id != 0) 
 		{
 			if (Zapit->zapTo_record(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
-				Sectionsd->setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
+				sectionsd_setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
 		}
 
 		// stop playback im standby
@@ -237,7 +238,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 #endif		
 
 		if (Zapit->zapTo_serviceID(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
-			Sectionsd->setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
+			sectionsd_setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
 	}
 }
 
@@ -255,7 +256,7 @@ void CNeutrinoAPI::ZapToSubService(const char * const target)
 #endif		
 
 	if (Zapit->zapTo_subServiceID(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
-		Sectionsd->setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
+		sectionsd_setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
 }
 
 t_channel_id CNeutrinoAPI::ChannelNameToChannelId(std::string search_channel_name)

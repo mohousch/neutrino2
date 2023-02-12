@@ -73,6 +73,8 @@ CFrontend * getFE(int index);
 extern CScanSettings * scanSettings;		// defined in scan_setup.cpp
 extern t_channel_id live_channel_id; 		//defined in zapit.cpp
 
+void sectionsd_pauseScanning(const bool doPause);
+
 //
 CScanTs::CScanTs(int num)
 {
@@ -148,8 +150,8 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		return RETURN_EXIT_ALL;
 
         g_Zapit->stopPlayBack();
-
-	g_Sectionsd->setPauseScanning(true);
+	//g_Sectionsd->setPauseScanning(true);
+	sectionsd_pauseScanning(true);
 
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);
 
@@ -366,7 +368,8 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	hide();
 	
 	// start sectionsd
-	g_Sectionsd->setPauseScanning(false);
+	//g_Sectionsd->setPauseScanning(false);
+	sectionsd_pauseScanning(false);
 
 	// zap
 	if (CNeutrinoApp::getInstance()->channelList)

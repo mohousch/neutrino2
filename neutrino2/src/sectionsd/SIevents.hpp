@@ -31,7 +31,7 @@
 #include <algorithm>
 #include <string>
 
-#include <sectionsdclient/sectionsdtypes.h>
+#include <sectionsd/sectionsdtypes.h>
 #include <sectionsd/edvbstring.h>
 #include <sectionsd/SIutils.hpp>
 #include <sectionsd/SIservices.hpp>

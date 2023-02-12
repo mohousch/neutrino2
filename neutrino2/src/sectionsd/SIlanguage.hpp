@@ -37,7 +37,7 @@
 #include <vector>
 #include <map>
 
-#include <sectionsdclient/sectionsdclient.h>
+#include <sectionsd/sectionsdclient.h>
 
 
 #define LANGUAGEFILE CONFIGDIR "/epglanguages.conf"

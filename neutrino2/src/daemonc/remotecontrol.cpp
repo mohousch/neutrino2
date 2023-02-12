@@ -59,8 +59,10 @@ extern uint32_t scrambled_timer;
 bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::ComponentTagList& tags);
 bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsdClient::LinkageDescriptorList& descriptors);
 bool sectionsd_getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSectionsdClient::NVODTimesList& nvod_list);
-void sectionsd_setPrivatePid(unsigned short pid);
+//void sectionsd_setPrivatePid(unsigned short pid);
 void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsdClient::responseGetCurrentNextInfoChannelID& current_next );
+void sectionsd_insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
+void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
 
 
 CSubService::CSubService(const t_original_network_id anoriginal_network_id, const t_service_id aservice_id, const t_transport_stream_id atransport_stream_id, const std::string &asubservice_name)
@@ -137,7 +139,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			{
 				g_InfoViewer->chanready = 0;
 				g_Zapit->zapTo_serviceID_NOWAIT(current_channel_id );
-				g_Sectionsd->setServiceChanged(current_channel_id & 0xFFFFFFFFFFFFULL, false);
+				sectionsd_setServiceChanged(current_channel_id & 0xFFFFFFFFFFFFULL, false);
 
 				zap_completion_timeout = getcurrenttime() + 2 * (long long) 1000000;
 
@@ -198,7 +200,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				director_mode = 0;
 				needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
 
-				g_Sectionsd->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
+				sectionsd_setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
 				CNeutrinoApp::getInstance()->channelList->adjustToChannelID(current_channel_id);
 				
 				// update info.				
@@ -314,7 +316,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if ((*(t_channel_id *)data) == ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) ? current_channel_id : current_sub_channel_id))
 		{
 			// tell sectionsd to start epg on the zapped channel
-			g_Sectionsd->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, false );
+			sectionsd_setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, false );
 		
 			// show servicename in VFD
 			// don't show service name in standby mode
@@ -385,11 +387,11 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				getNVODs();
 				
 				if (subChannels.empty())
-					g_Sectionsd->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
+					sectionsd_setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
 			}
 			else
 				// EVENT anfordern!
-				g_Sectionsd->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
+				sectionsd_setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
 
 		}
 		
@@ -676,7 +678,7 @@ const std::string & CRemoteControl::setSubChannel(const int numSub, const bool f
 	g_Zapit->zapTo_subServiceID_NOWAIT( current_sub_channel_id );
 	
 	// Houdini: to restart reading the private EPG when switching to a new option
-	g_Sectionsd->setServiceChanged( current_sub_channel_id , true );
+	sectionsd_setServiceChanged( current_sub_channel_id , true );
 
 	return subChannels[numSub].subservice_name;
 }
@@ -770,7 +772,7 @@ void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::s
 		g_Zapit->zapTo_serviceID_NOWAIT(channel_id);
 
 		// getEventsFromHTTP / localtv
-		if(g_settings.epg_enable_online_epg)
+		if(g_settings.epg_enable_online_epg && IS_WEBTV(channel_id))
 		{
 			getEventsFromHTTP(channel_id);
 		}
@@ -824,9 +826,6 @@ void CRemoteControl::tvMode()
 	CVFD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
 	CVFD::getInstance()->ShowIcon(VFD_ICON_TV, true);
 }
-
-// defined in sectionsd.cpp
-void sectionsd_insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
 
 // online epg get events
 void CRemoteControl::getEventsFromHTTP(t_channel_id chid)

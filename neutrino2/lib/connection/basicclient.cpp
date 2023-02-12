@@ -100,6 +100,8 @@ bool CBasicClient::send_data(const char* data, const size_t size)
 		close_connection();
 		return false;
 	}
+	
+	printf("[CBasicClient] send_data (%s)\n", getSocketName());
 
 	return true;
 }
@@ -147,6 +149,8 @@ bool CBasicClient::receive_data(char* data, const size_t size, bool use_max_time
 		close_connection();
 		return false;
 	}
+	
+	printf("[CBasicClient] receive_data: (%s)\n", getSocketName());
 
 	return true;
 }
