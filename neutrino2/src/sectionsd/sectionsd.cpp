@@ -1843,6 +1843,7 @@ bool channel_in_requested_list(t_channel_id * clist, t_channel_id chid, int len)
 }
 
 //static void commandRegisterEventClient(int /*connfd*/, char *data, const unsigned dataLength)
+#if 0
 void sectionsd_registerEventClient(const unsigned int eventID, const unsigned int clientID, const char * const udsName)
 {
 	//if (dataLength == sizeof(CEventServer::commandRegisterEvent))
@@ -1856,8 +1857,6 @@ void sectionsd_registerEventClient(const unsigned int eventID, const unsigned in
 	}
 }
 
-
-
 //static void commandUnRegisterEventClient(int /*connfd*/, char *data, const unsigned dataLength)
 void sectionsd_unRegisterEventClient(const unsigned int eventID, const unsigned int clientID)
 {
@@ -1866,6 +1865,7 @@ void sectionsd_unRegisterEventClient(const unsigned int eventID, const unsigned 
 		
 	eventServer->unRegisterEvent2(eventID, clientID);
 }
+#endif
 
 //static void commandSetConfig(int connfd, char *data, const unsigned /*dataLength*/)
 void sectionsd_setConfig(const CSectionsd::epg_config config)
@@ -2550,7 +2550,7 @@ static void *timeThread(void *)
 
 	pthread_setcanceltype (PTHREAD_CANCEL_ASYNCHRONOUS, 0);
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] [%sThread] pid %d (%lu) start\n", "time", getpid(), pthread_self());
+	dprintf(DEBUG_NORMAL, "[sectionsd] [timeThread] pid %d start\n", getpid());
 
 	while(!sectionsd_stop)
 	{
@@ -2790,7 +2790,7 @@ static void *fseitThread(void *)
 	int rc = pthread_getschedparam(pthread_self(), &policy, &parm);
 	dprintf(DEBUG_DEBUG, "[sectionsd] freesatEitThread getschedparam: %d pol %d, prio %d\n", rc, policy, parm.sched_priority);
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] [%sThread] pid %d (%lu) start\n", "fseit", getpid(), pthread_self());
+	dprintf(DEBUG_NORMAL, "[sectionsd] [fseitThread] pid %d start\n", getpid());
 	
 	int timeoutsDMX = 0;
 	uint8_t *static_buf = new uint8_t[MAX_SECTION_LENGTH];
@@ -3051,7 +3051,7 @@ static void *viasateitThread(void *)
 	
 	dprintf(DEBUG_DEBUG, "[sectionsd] viasatEitThread getschedparam: %d pol %d, prio %d\n", rc, policy, parm.sched_priority);
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] [%sThread] pid %d (%lu) start\n", "viasateit", getpid(), pthread_self());
+	dprintf(DEBUG_NORMAL, "[sectionsd] [viasateitThread] pid %d start\n", getpid());
 	
 	int timeoutsDMX = 0;
 	uint8_t *static_buf = new uint8_t[MAX_SECTION_LENGTH];
@@ -3329,7 +3329,7 @@ static void *eitThread(void *)
 	int rc = pthread_getschedparam(pthread_self(), &policy, &parm);
 	dprintf(DEBUG_DEBUG, "[sectionsd] eitThread getschedparam: %d pol %d, prio %d\n", rc, policy, parm.sched_priority);
 	
-	dprintf(DEBUG_DEBUG, "[sectionsd] [%sThread] pid %d (%lu) start\n", "eit", getpid(), pthread_self());
+	dprintf(DEBUG_NORMAL, "[sectionsd] [eitThread] pid %d start\n", getpid());
 	
 	int timeoutsDMX = 0;
 	uint8_t *static_buf = new uint8_t[MAX_SECTION_LENGTH];
@@ -3592,7 +3592,7 @@ static void *cnThread(void *)
 	// set EIT filter  0x4e
 	dmxCN.addfilter(0x4e, 0xff); //0  current TS, current/next
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] [%sThread] pid %d (%lu) start\n", "cn", getpid(), pthread_self());
+	dprintf(DEBUG_NORMAL, "[sectionsd] [cnThread] pid %d start\n", getpid());
 	
 	t_channel_id time_trigger_last = 0;
 	int timeoutsDMX = 0;
@@ -3847,7 +3847,7 @@ static void *houseKeepingThread(void *)
 {
 	int count = 0;
 
-	dprintf(DEBUG_DEBUG, "[sectionsd] housekeeping-thread started.\n");
+	dprintf(DEBUG_NORMAL, "[sectionsd] housekeeping-thread started.\n");
 	
 	pthread_setcanceltype (PTHREAD_CANCEL_ASYNCHRONOUS, 0);
 
@@ -3930,6 +3930,8 @@ static void *houseKeepingThread(void *)
 
 static void readEPGFilter(void)
 {
+	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_readEPGFilter:\n");
+	
 	_xmlDocPtr filter_parser = parseXmlFile(epg_filter_dir.c_str());
 
 	t_original_network_id onid = 0;
@@ -3965,6 +3967,8 @@ static void readEPGFilter(void)
 
 static void readDVBTimeFilter(void)
 {
+	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_readDVBTimeFilter:\n");
+	
 	_xmlDocPtr filter_parser = parseXmlFile(dvbtime_filter_dir.c_str());
 
 	t_original_network_id onid = 0;
@@ -3996,16 +4000,19 @@ static void readDVBTimeFilter(void)
 }
 
 extern cDemux * dmxUTC;
-
-void sectionsd_main_thread(void */*data*/)
+pthread_t threadTOT, threadEIT, threadCN, threadHouseKeeping, threadFSEIT, threadVIASATEIT;
+//void sectionsd_main_thread(void */*data*/)
+void sectionsd_Start(void)
 {
-	pthread_t threadTOT, threadEIT, threadCN, threadHouseKeeping, threadFSEIT, threadVIASATEIT;
+	dprintf(DEBUG_NORMAL, "sectionsd_Start:\n");
+	
+	//pthread_t threadTOT, threadEIT, threadCN, threadHouseKeeping, threadFSEIT, threadVIASATEIT;
 
 	int rc;
 
-	struct sched_param parm;
+	//struct sched_param parm;
 
-	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: startup, tid %ld\n", syscall(__NR_gettid));
+	//dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: startup, tid %ld\n", syscall(__NR_gettid));
 
 	// load languages
 	SIlanguage::loadLanguages();
@@ -4019,7 +4026,7 @@ void sectionsd_main_thread(void */*data*/)
 	if (!ntp_config.loadConfig(CONF_FILE))
 	{
 		// set defaults if no configuration file exists
-		printf("sectionsd_main_thread: %s not found\n", CONF_FILE);
+		printf("sectionsd_Start: %s not found\n", CONF_FILE);
 	}
 
 	ntpserver = ntp_config.getString("network_ntpserver", "de.pool.ntp.org");
@@ -4055,6 +4062,7 @@ void sectionsd_main_thread(void */*data*/)
 	}
 */
 	
+	// eventServer
 	eventServer = new CEventServer;
 	
 	//
@@ -4072,7 +4080,7 @@ void sectionsd_main_thread(void */*data*/)
 	if (rc) 
 	{
 		dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create time-thread (rc=%d)\n", rc);
-		return;
+		//return;
 	}
 
 	if(FrontendCount)
@@ -4083,7 +4091,7 @@ void sectionsd_main_thread(void */*data*/)
 		if (rc) 
 		{
 			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create eit-thread (rc=%d)\n", rc);
-			return;
+			//return;
 		}
 
 		// CN-Thread starten
@@ -4091,8 +4099,8 @@ void sectionsd_main_thread(void */*data*/)
 
 		if (rc) 
 		{
-			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create eit-thread (rc=%d)\n", rc);
-			return;
+			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create cn-thread (rc=%d)\n", rc);
+			//return;
 		}
 
 		// freesat
@@ -4101,7 +4109,7 @@ void sectionsd_main_thread(void */*data*/)
 		if (rc) 
 		{
 			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create fseit-thread (rc=%d)\n", rc);
-			return;
+			//return;
 		}
 		
 		// viasat
@@ -4110,28 +4118,52 @@ void sectionsd_main_thread(void */*data*/)
 		if (rc) 
 		{
 			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create viasateit-thread (rc=%d)\n", rc);
-			return;
+			//return;
 		}
 	}
 
 	// housekeeping-Thread starten
+	/*
 	rc = pthread_create(&threadHouseKeeping, 0, houseKeepingThread, 0);
 
 	if (rc) 
 	{
 		dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create housekeeping-thread (rc=%d)\n", rc);
-		return;
+		//return;
 	}
+	*/
 
-	int policy;
-	rc = pthread_getschedparam(pthread_self(), &policy, &parm);
-	dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_main_thread: mainloop getschedparam %d policy %d prio %d\n", rc, policy, parm.sched_priority);
+	//int policy;
+	//rc = pthread_getschedparam(pthread_self(), &policy, &parm);
+	//dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_main_thread: mainloop getschedparam %d policy %d prio %d\n", rc, policy, parm.sched_priority);
 	
 	sectionsd_ready = true;
 	
 	if(FrontendCount)
 		eit_update_fd = -1;
-#if 1
+		
+	if (eit_update_fd != -1) 
+	{
+		unsigned char buf[MAX_SECTION_LENGTH];
+		int ret = eitDmx->Read(buf, MAX_SECTION_LENGTH, 10);
+
+		// dirty hack eitDmx read sucked always //FIXME???
+		if (ret > 0) 
+		{
+			writeLockMessaging();
+			//messaging_skipped_sections_ID[0].clear();
+			//messaging_sections_max_ID[0] = -1;
+			//messaging_sections_got_all[0] = false;
+			messaging_have_CN = 0x00;
+			messaging_got_CN = 0x00;
+			messaging_last_requested = time_monotonic();
+			unlockMessaging();
+			//sched_yield();
+			dmxCN.change(0);
+			//sched_yield();
+		}
+	}
+#if 0
 	//while (sectionsd_server.run(sectionsd_parse_command, sectionsd::ACTVERSION, true))
 	while (true) 
 	{
@@ -4172,6 +4204,7 @@ void sectionsd_main_thread(void */*data*/)
 	}
 #endif
 
+#if 0
 	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: stopping...\n");
 	
 	scanning = 0;
@@ -4247,8 +4280,88 @@ void sectionsd_main_thread(void */*data*/)
 	}
 
 	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: ended\n");
+#endif
 
-	return;
+	//return;
+}
+
+void sectionsd_Stop(void)
+{
+	dprintf(DEBUG_NORMAL, "sectionsd_Stop:\n");
+	
+	scanning = 0;
+	timeset = true;
+	
+#if 0
+	/*
+	pthread_mutex_lock(&timeIsSetMutex);
+	pthread_cond_broadcast(&timeIsSetCond);
+	pthread_mutex_unlock(&timeIsSetMutex);
+	
+	if(FrontendCount)
+	{
+		pthread_mutex_lock(&timeThreadSleepMutex);
+		pthread_cond_broadcast(&timeThreadSleepCond);
+		pthread_mutex_unlock(&timeThreadSleepMutex);
+		
+		pthread_mutex_lock(&dmxEIT.start_stop_mutex);
+		pthread_cond_broadcast(&dmxEIT.change_cond);
+		pthread_mutex_unlock(&dmxEIT.start_stop_mutex);
+		
+		pthread_mutex_lock(&dmxCN.start_stop_mutex);
+		pthread_cond_broadcast(&dmxCN.change_cond);
+		pthread_mutex_unlock(&dmxCN.start_stop_mutex);
+	}
+	
+	if(FrontendCount)
+	{
+		dmxEIT.request_pause();
+		dmxCN.request_pause();
+		dmxFSEIT.request_pause();
+		dmxVIASAT.request_pause();
+	}
+	*/
+
+	//pthread_cancel(threadHouseKeeping);
+
+	if(FrontendCount)
+	{
+		if(dmxUTC) 
+			dmxUTC->Stop();
+	}
+
+	// timethread
+	//pthread_cancel(threadTOT);
+	//pthread_join(threadTOT, NULL);
+	
+	if(FrontendCount)
+	{
+		if(dmxUTC) 
+			delete dmxUTC;
+	
+		pthread_join(threadEIT, NULL);
+		pthread_join(threadCN, NULL);
+
+		//eit_stop_update_filter(&eit_update_fd);
+		
+		if(eitDmx)
+			delete eitDmx;
+
+		// close eitdmx
+		dmxEIT.close();
+		
+		// close cndmx
+		dmxCN.close();
+		
+		// close freesatdmx
+		dmxFSEIT.close();
+		
+		//
+		dmxVIASAT.close();
+	}
+#endif
+	
+	sectionsd_stop = 1;
 }
 
 /* was: commandAllEventsChannelID sendAllEvents */

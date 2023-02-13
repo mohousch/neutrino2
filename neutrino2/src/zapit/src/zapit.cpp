@@ -1785,13 +1785,18 @@ void setTVMode(void)
 
 int zapit_getMode(void)
 {
+	dprintf(DEBUG_NORMAL, "zapit_getMode:\n");
+	
+	int mode = 0;
+	
 	if (currentMode & TV_MODE)
-		return CZapitClient::MODE_TV;
+		mode = CZapitClient::MODE_TV;
+	else if (currentMode & RADIO_MODE)
+		mode = CZapitClient::MODE_RADIO;
+		
+	dprintf(DEBUG_NORMAL, "zapit_getMode: mode (%d)\n", mode);
 
-	if (currentMode & RADIO_MODE)
-		return CZapitClient::MODE_RADIO;
-
-	return 0;
+	return mode;
 }
 
 void setRecordMode(void)

@@ -204,7 +204,9 @@ void sectionsd_writeSI2XML(const char *epgxmlname);
 void sectionsd_readSIfromXMLTV(const char *url);
 void sectionsd_insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
 void sectionsd_setConfig(const CSectionsd::epg_config config);
-void sectionsd_registerEventClient(const unsigned int eventID, const unsigned int clientID, const char * const udsName);
-void sectionsd_unRegisterEventClient(const unsigned int eventID, const unsigned int clientID);
+//void sectionsd_registerEventClient(const unsigned int eventID, const unsigned int clientID, const char * const udsName);
+//void sectionsd_unRegisterEventClient(const unsigned int eventID, const unsigned int clientID);
+void sectionsd_Start(void);
+void sectionsd_Stop(void);
 
 #endif

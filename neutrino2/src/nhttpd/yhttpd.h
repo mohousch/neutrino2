@@ -13,10 +13,11 @@
 // system
 #include <signal.h>
 #include <stdlib.h>
+
 // yhttpd
-#include "yconfig.h"
-#include "ytypes_globals.h"
-#include "ywebserver.h"
+#include <yconfig.h>
+#include <yhttpd_core/ytypes_globals.h>
+#include <yhttpd_core/ywebserver.h>
 
 //
 class Cyhttpd 
@@ -43,6 +44,10 @@ class Cyhttpd
 		void hooks_detach(); 			// Remove a Hook-Class from HookList
 		void ReadConfig(void); 			// Read the config file for the webserver
 		void ReadLanguage(void); 		// Read Language Files
+		
+		//
+		//void Start(void);
+		//void Stop(void){stop_webserver();};
 };
 
 #endif // __yhttpd_h__

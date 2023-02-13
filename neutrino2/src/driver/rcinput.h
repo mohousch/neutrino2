@@ -245,8 +245,8 @@ enum
 	RC_nokey	= 0xFFFFFFFE
 };
 
-typedef unsigned long neutrino_msg_t;
-typedef unsigned long neutrino_msg_data_t;
+typedef unsigned long long neutrino_msg_t;
+typedef unsigned long long neutrino_msg_data_t;
 
 //rc-code definitions
 static const neutrino_msg_t RC_Repeat   = 0x0400;
@@ -414,11 +414,11 @@ class CRCInput
 
 		static bool isNumeric(const neutrino_msg_t key);
 		static int getNumericValue(const neutrino_msg_t key);
-		static unsigned long convertDigitToKey(const unsigned int digit);
+		static unsigned long long convertDigitToKey(const unsigned int digit);
 		static int getUnicodeValue(const neutrino_msg_t key);
 
-		static const char * getSpecialKeyName(const unsigned long key);
-		static std::string getKeyName(const unsigned long key);
+		static const char * getSpecialKeyName(const unsigned long long key);
+		static std::string getKeyName(const unsigned long long key);
 
 		int addTimer(uint64_t Interval, bool oneshot = true, bool correct_time = true );
 		int addTimer(struct timeval Timeout);

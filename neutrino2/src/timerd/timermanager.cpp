@@ -252,7 +252,7 @@ int CTimerManager::addEvent(CTimerEvent* evt, bool save)
 	eventID++;						// increase unique event id
 	evt->eventID = eventID;
 	
-	if(evt->eventRepeat==CTimerd::TIMERREPEAT_WEEKDAYS)
+	if(evt->eventRepeat == CTimerd::TIMERREPEAT_WEEKDAYS)
 		// Weekdays without weekday specified reduce to once
 		evt->eventRepeat=CTimerd::TIMERREPEAT_ONCE;
 	events[eventID] = evt;			// insert into events

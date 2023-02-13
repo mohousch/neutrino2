@@ -9,6 +9,8 @@
 
 #include "freesatv2.h"
 
+#include <system/debug.h>
+
 
 std::map<std::string, int> CountryCodeDefaultMapping;
 std::map<int, int> TransponderDefaultMapping;
@@ -16,6 +18,8 @@ std::set<int> TransponderUseTwoCharMapping;
 
 int readEncodingFile()
 {
+	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_readEncodingFile:\n");
+	
 	FILE *f = fopen(CONFIGDIR "/encoding.conf", "rt");
 	
 	if (f) 

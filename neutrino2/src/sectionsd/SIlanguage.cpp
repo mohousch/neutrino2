@@ -46,6 +46,8 @@
 #include <pthread.h>
 #include <fstream>
 
+#include <system/debug.h>
+
 
 std::vector<std::string> SIlanguage::languages;
 pthread_mutex_t SIlanguage::languages_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -116,6 +118,8 @@ void SIlanguage::filter(const std::map<std::string, std::string>& s, int max, st
 
 bool SIlanguage::loadLanguages()
 {
+	dprintf(DEBUG_NORMAL, "[sectionsd] SIlanguage::loadLanguages:\n");
+	
 	pthread_mutex_lock(&languages_lock);
 	std::ifstream file(LANGUAGEFILE);
 	std::string word;
@@ -172,6 +176,8 @@ error:
 
 bool SIlanguage::saveLanguages()
 {
+	dprintf(DEBUG_NORMAL, "SIlanguage::saveLanguages:\n");
+	
 	pthread_mutex_lock(&languages_lock);
 	std::ofstream file(LANGUAGEFILE);
 	
@@ -219,6 +225,8 @@ error:
 
 void SIlanguage::setLanguages(const std::vector<std::string>& newLanguages)
 {
+	dprintf(DEBUG_NORMAL, "SIlanguage::setLanguages:\n");
+	
 	pthread_mutex_lock(&languages_lock);
 	languages = newLanguages;
 	pthread_mutex_unlock(&languages_lock);
@@ -226,6 +234,8 @@ void SIlanguage::setLanguages(const std::vector<std::string>& newLanguages)
 
 std::vector<std::string> SIlanguage::getLanguages()
 {
+	dprintf(DEBUG_NORMAL, "SIlanguage::getLanguages:\n");
+	
 	pthread_mutex_lock(&languages_lock);
 	std::vector<std::string> retval(languages);  // Store it before unlock
 	pthread_mutex_unlock(&languages_lock);

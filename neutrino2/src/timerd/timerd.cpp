@@ -254,6 +254,7 @@ bool timerd_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			CTimerdMsg::responseAddTimer rspAddTimer;
 			CTimerEvent* event;
 			CTimerd::TransferEventInfo evInfo;
+			
 			switch(msgAddTimer.eventType)
 			{
 				case CTimerd::TIMER_STANDBY :
@@ -266,6 +267,7 @@ bool timerd_parse_command(CBasicMessage::Header &rmsg, int connfd)
 						standby.standby_on,
 						msgAddTimer.eventRepeat,
 						msgAddTimer.repeatCount);
+						
 					rspAddTimer.eventID = CTimerManager::getInstance()->addEvent(event);
 					break;
 

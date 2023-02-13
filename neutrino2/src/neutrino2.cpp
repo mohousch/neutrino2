@@ -177,6 +177,8 @@
 #include <interfaces/lua/neutrino2_lua.h>
 #endif
 
+#include <nhttpd/yhttpd.h>
+
 
 //
 //bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
@@ -258,13 +260,14 @@ extern int FrontendCount;				// defined in zapit.cpp
 
 // nhttpd thread
 void * nhttpd_main_thread(void *data);
-static pthread_t nhttpd_thread ;
+static pthread_t nhttpd_thread;
+//static Cyhttpd *yhttpd = NULL;
 
-// sectionsd thread
-extern int sectionsd_stop;				// defined in sectionsd.cpp
-static pthread_t sections_thread;
-void * sectionsd_main_thread(void *data);
-extern bool timeset;
+// sectionsd
+//extern int sectionsd_stop;				// defined in sectionsd.cpp
+//static pthread_t sections_thread;
+//void * sectionsd_main_thread(void *data);
+//extern bool timeset;
 
 // Audio/Video Decoder
 extern cVideo* videoDecoder;		//libcoolstream (video_cs.cpp)
@@ -2564,12 +2567,15 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	// nhttpd thread FIXME:
 	pthread_create(&nhttpd_thread, NULL, nhttpd_main_thread, (void *) NULL);	
+	//yhttpd = new Cyhttpd();
+	//yhttpd->Start();
 
 	// streamts thread FIXME:
 	pthread_create(&stream_thread, NULL, streamts_main_thread, (void *) NULL);	
 
 	// sectionsd thread
-	pthread_create(&sections_thread, NULL, sectionsd_main_thread, (void *) NULL);
+	//pthread_create(&sections_thread, NULL, sectionsd_main_thread, (void *) NULL);
+	sectionsd_Start();
 
 	// for boxes with lcd :-)
 #if ENABLE_LCD	
@@ -5159,7 +5165,17 @@ void stop_daemons()
 	dprintf(DEBUG_NORMAL, "stop_daemons: httpd shutdown\n");
 	pthread_cancel(nhttpd_thread);
 	pthread_join(nhttpd_thread, NULL);
-	dprintf(DEBUG_NORMAL, "stop_daemons: httpd shutdown done\n");		
+	dprintf(DEBUG_NORMAL, "stop_daemons: httpd shutdown done\n");	
+	/*
+	if (yhttpd)
+	{
+		yhttpd->Stop();
+		
+		delete yhttpd;
+		yhttpd = NULL;
+	}
+	*/
+	
 
 	// stop streamts
 	dprintf(DEBUG_NORMAL, "stop_daemons: streamts shutdown\n");	
@@ -5174,10 +5190,11 @@ void stop_daemons()
 	dprintf(DEBUG_NORMAL, "stop_daemons: timerd shutdown done\n");		
 
 	// stop sectionsd
-	sectionsd_stop = 1;
+	//sectionsd_stop = 1;
 	dprintf(DEBUG_NORMAL, "stop_daemons: sectionsd shutdown\n");
-	pthread_join(sections_thread, NULL);
-	dprintf(DEBUG_NORMAL, "stop_daemons: sectionsd shutdown done\n");
+	//pthread_join(sections_thread, NULL);
+	//dprintf(DEBUG_NORMAL, "stop_daemons: sectionsd shutdown done\n");
+	sectionsd_Stop();
 
 	// zapit stop	
 	dprintf(DEBUG_NORMAL, "stop_daemons: zapit shutdown\n");

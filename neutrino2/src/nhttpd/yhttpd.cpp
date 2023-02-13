@@ -79,7 +79,8 @@ void thread_cleanup (void *p)
 	y = NULL;
 }
 
-void * nhttpd_main_thread(void *) 
+void * nhttpd_main_thread(void *)
+//void Cyhttpd::Start(void) 
 {
 	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, 0);
 	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
@@ -215,6 +216,7 @@ bool Cyhttpd::Configure()
 		}
 #endif
 	}
+	
 	return true;
 }
 
@@ -227,6 +229,7 @@ void Cyhttpd::run()
 	{
 		if (flag_threading_off)
 			webserver->is_threading = false;
+			
 		webserver->run();
 		stop_webserver();
 	} 
@@ -248,6 +251,7 @@ void Cyhttpd::version(FILE *dest)
 void Cyhttpd::stop_webserver() 
 {
 	aprintf("stop requested......\n");
+	
 	if (webserver) 
 	{
 		webserver->stop();
@@ -475,3 +479,4 @@ void Cyhttpd::ReadLanguage(void)
 	log_level_printf(3, "ReadLanguage:%s\n", ConfigList["Language.selected"].c_str());
 	lang->setLanguage(ConfigList["Language.selected"]);
 }
+
