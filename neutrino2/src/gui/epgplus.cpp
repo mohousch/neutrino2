@@ -52,11 +52,8 @@
 
 #define COL_MENUCONTENT_P1                 254-8*4+1
 #define COL_MENUCONTENT_P2                 254-8*4+2
-extern CBouquetList *bouquetList;
 
-//
-//bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
-//void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
+extern CBouquetList *bouquetList;
 
 int sizes[EpgPlus::NumberOfSizeSettings];
 
@@ -291,7 +288,7 @@ void EpgPlus::ChannelEventEntry::paint (bool _isSelected, bool toggleColor)
 	
 		CShortEPGData shortEpgData;
 	
-		this->footer->paintEventDetails(this->channelEvent.description, sectionsd_getEPGidShort(this->channelEvent.eventID, &shortEpgData) ? shortEpgData.info1 : "");
+		this->footer->paintEventDetails(this->channelEvent.description, CSectionsd::getInstance()->getEPGidShort(this->channelEvent.eventID, &shortEpgData) ? shortEpgData.info1 : "");
 	
 		this->timeLine->paintGrid();
 	}
@@ -557,7 +554,7 @@ void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 			ChannelEntry * channelEntry = new ChannelEntry (channel, i, this->frameBuffer, this->footer, this->bouquetList, this->channelsTableX + 2, yPosChannelEntry, this->channelsTableWidth);
 			
 			CChannelEventList channelEventList;
-			sectionsd_getEventsServiceKey(channel->channel_id & 0xFFFFFFFFFFFFULL, channelEventList);
+			CSectionsd::getInstance()->getEventsServiceKey(channel->channel_id & 0xFFFFFFFFFFFFULL, channelEventList);
 	
 			int xPosEventEntry = this->eventsTableX;
 			int widthEventEntry = 0;

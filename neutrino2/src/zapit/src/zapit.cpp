@@ -1939,7 +1939,7 @@ int start_scan(CZapitMessages::commandStartScan StartScan)
 
 bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 {
-	if ((standby) && ((rmsg.cmd != CZapitMessages::CMD_SET_VOLUME) && (rmsg.cmd != CZapitMessages::CMD_MUTE) && (rmsg.cmd != CZapitMessages::CMD_IS_TV_CHANNEL) /*&& (rmsg.cmd != CZapitMessages::CMD_SET_STANDBY)*/)) 
+	if ((standby) && ((rmsg.cmd != CZapitMessages::CMD_SET_VOLUME) && (rmsg.cmd != CZapitMessages::CMD_MUTE) /*&& (rmsg.cmd != CZapitMessages::CMD_IS_TV_CHANNEL)*/ /*&& (rmsg.cmd != CZapitMessages::CMD_SET_STANDBY)*/)) 
 	{
 		dprintf(DEBUG_DEBUG, "[zapit] cmd %d in standby mode\n", rmsg.cmd);
 
@@ -1951,6 +1951,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 		case CZapitMessages::CMD_SHUTDOWN:
 			return false;
 	
+		#if 0
 		case CZapitMessages::CMD_ZAPTO:
 		{
 			CZapitMessages::commandZapto msgZapto;
@@ -1958,7 +1959,8 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			zapTo(msgZapto.bouquet, msgZapto.channel);
 			break;
 		}
-		
+		#endif
+		#if 0
 		case CZapitMessages::CMD_ZAPTO_CHANNELNR: 
 		{
 			CZapitMessages::commandZaptoChannelNr msgZaptoChannelNr;
@@ -1966,7 +1968,8 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			zapTo(msgZaptoChannelNr.channel);
 			break;
 		}
-	
+		#endif
+		#if 0
 		case CZapitMessages::CMD_ZAPTO_SERVICEID:
 		case CZapitMessages::CMD_ZAPTO_SUBSERVICEID: 
 		{
@@ -1982,7 +1985,8 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			CBasicServer::send_data(connfd, &msgResponseZapComplete, sizeof(msgResponseZapComplete));
 			break;
 		}
-	
+		#endif
+		#if 0
 		case CZapitMessages::CMD_ZAPTO_SERVICEID_NOWAIT:
 		case CZapitMessages::CMD_ZAPTO_SUBSERVICEID_NOWAIT: 
 		{
@@ -1992,7 +1996,8 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			zapTo_ChannelID(msgZaptoServiceID.channel_id, (rmsg.cmd == CZapitMessages::CMD_ZAPTO_SUBSERVICEID_NOWAIT));
 			break;
 		}
-		
+		#endif
+		#if 0
 		case CZapitMessages::CMD_GET_LAST_CHANNEL: 
 		{
 			CZapitClient::responseGetLastChannel responseGetLastChannel;
@@ -2000,6 +2005,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			CBasicServer::send_data(connfd, &responseGetLastChannel, sizeof(responseGetLastChannel)); // bouquet & channel number are already starting at 0!
 			break;
 		}
+		#endif
 		
 		case CZapitMessages::CMD_GET_CURRENT_SATELLITE_POSITION: 
 		{
@@ -2318,6 +2324,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			break;
 		}
 		
+		#if 0
 		case CZapitMessages::CMD_IS_TV_CHANNEL: 
 		{
 			t_channel_id                             requested_channel_id;
@@ -2341,8 +2348,10 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			CBasicServer::send_data(connfd, &response, sizeof(response));
 			break;
 		}
+		#endif
 
 		// radio channel
+		#if 0
 		case CZapitMessages::CMD_IS_RADIO_CHANNEL: 
 		{
 			t_channel_id requested_channel_id;
@@ -2360,8 +2369,10 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			CBasicServer::send_data(connfd, &response, sizeof(response));
 			break;
 		}
+		#endif
 
 		// webtv channel
+		#if 0
 		case CZapitMessages::CMD_IS_WEBTV_CHANNEL: 
 		{
 			t_channel_id requested_channel_id;
@@ -2380,6 +2391,7 @@ bool zapit_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			CBasicServer::send_data(connfd, &response, sizeof(response));
 			break;
 		}
+		#endif
 	
 		case CZapitMessages::CMD_BQ_RESTORE: 
 		{
@@ -5036,6 +5048,9 @@ void zapit_getLastChannel(unsigned int &channumber, char &mode)
 {
 	CZapitClient::responseGetLastChannel responseGetLastChannel;
 	responseGetLastChannel = load_settings();
+	
+	channumber = responseGetLastChannel.channelNumber;
+	mode = responseGetLastChannel.mode;
 }
 
 void zapit_setMode(const CZapitClient::channelsMode mode)
@@ -5092,9 +5107,7 @@ void zapit_unlockPlayBack()
 
 bool zapit_isPlayBackActive()
 {
-	CZapitMessages::responseGetPlaybackState msgGetPlaybackState;
-	
-	return msgGetPlaybackState.activated = playing;
+	return playing;
 }
 
 void zapit_setStandby(bool enable)
@@ -5104,4 +5117,102 @@ void zapit_setStandby(bool enable)
 	else
 		leaveStandby();
 }
+
+bool zapit_isChannelTVChannel(const t_channel_id channel_id)
+{
+	bool ret = false;
+			
+	tallchans_iterator it = allchans.find(channel_id);
+	if (it == allchans.end()) 
+	{
+		it = nvodchannels.find(channel_id);
+
+		if (it == nvodchannels.end())
+			ret = true;
+		else
+			ret = (it->second.getServiceType() != ST_DIGITAL_RADIO_SOUND_SERVICE);
+	} 
+	else
+		ret = (it->second.getServiceType() != ST_DIGITAL_RADIO_SOUND_SERVICE);
+		
+	return ret;
+}
+
+bool zapit_isChannelWEBTVChannel(const t_channel_id channel_id)
+{
+	bool ret = false;
+			
+	tallchans_iterator it = allchans.find(channel_id);
+	if (it == allchans.end()) 
+	{
+		ret = it->second.isWebTV;
+	} 
+	
+	ret = it->second.isWebTV;
+		
+	return ret;
+}
+
+bool zapit_isChannelRadioChannel(const t_channel_id channel_id)
+{
+	bool ret = false;
+			
+	tallchans_iterator it = allchans.find(channel_id);
+	if (it == allchans.end()) 
+	{
+		ret = (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE);
+	} 
+
+	ret = (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE);
+		
+	return ret;
+}
+
+void zapit_zapTo_serviceID_NOWAIT(const t_channel_id channel_id)
+{
+	zapTo_ChannelID(channel_id, false);
+}
+
+void zapit_zapTo_subServiceID_NOWAIT(const t_channel_id channel_id)
+{
+	zapTo_ChannelID(channel_id, true);
+}
+
+void zapit_zapTo(const unsigned int bouquet, const unsigned int channel)
+{		
+	zapTo(bouquet, channel);
+}
+
+void zapit_zapTo(const unsigned int channel)
+{
+	zapTo(channel);
+}
+
+unsigned int zapit_zapTo_serviceID(const t_channel_id channel_id)
+{
+	unsigned int zapStatus = 0;
+			
+	zapStatus = zapTo_ChannelID(channel_id, false);
+		
+	return zapStatus;
+}
+
+unsigned int zapit_zapTo_subServiceID(const t_channel_id channel_id)
+{
+	unsigned int zapStatus = 0;
+			
+	zapStatus = zapTo_ChannelID(channel_id, true);
+		
+	return zapStatus;
+}
+
+unsigned int zapit_zapTo_record(const t_channel_id channel_id)
+{
+	unsigned int zapStatus = 0;
+			
+	zapStatus = zapTo_RecordID(channel_id);
+		
+	return zapStatus;
+}
+
 ////

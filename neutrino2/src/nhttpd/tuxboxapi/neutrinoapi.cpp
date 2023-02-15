@@ -70,9 +70,6 @@ extern CZapitClient::SatelliteList satList;
 void stopOpenGLplayback();
 #endif
 
-//void sectionsd_getChannelEvents(CChannelEventList &eList, const bool tv_mode = true, t_channel_id *chidlist = NULL, int clen = 0);
-//void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
-
 //
 // No Class Helpers
 //
@@ -222,8 +219,8 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 	
 		if (channel_id != 0) 
 		{
-			if (Zapit->zapTo_record(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
-				sectionsd_setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
+			if (zapit_zapTo_record(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
+				CSectionsd::getInstance()->setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
 		}
 
 		// stop playback im standby
@@ -239,8 +236,8 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 		stopOpenGLplayback();
 #endif		
 
-		if (Zapit->zapTo_serviceID(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
-			sectionsd_setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
+		if (zapit_zapTo_serviceID(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
+			CSectionsd::getInstance()->setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
 	}
 }
 
@@ -257,8 +254,8 @@ void CNeutrinoAPI::ZapToSubService(const char * const target)
 	stopOpenGLplayback();
 #endif		
 
-	if (Zapit->zapTo_subServiceID(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
-		sectionsd_setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
+	if (zapit_zapTo_subServiceID(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
+		CSectionsd::getInstance()->setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
 }
 
 t_channel_id CNeutrinoAPI::ChannelNameToChannelId(std::string search_channel_name)
@@ -323,7 +320,7 @@ bool CNeutrinoAPI::GetStreamInfo(int bitInfo[10])
 
 bool CNeutrinoAPI::GetChannelEvents(void)
 {
-	sectionsd_getChannelEvents(eList);
+	CSectionsd::getInstance()->getChannelEvents(eList);
 	CChannelEventList::iterator eventIterator;
 
 	ChannelListEvents.clear();

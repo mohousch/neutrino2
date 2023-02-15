@@ -56,15 +56,6 @@ extern tallchans allchans;	// defined in bouquets.h
 extern bool autoshift;
 extern uint32_t scrambled_timer;
 
-//bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsd::ComponentTagList& tags);
-//bool sectionsd_getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsd::LinkageDescriptorList& descriptors);
-//bool sectionsd_getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSectionsd::NVODTimesList& nvod_list);
-//void sectionsd_setPrivatePid(unsigned short pid);
-//void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsd::responseGetCurrentNextInfoChannelID& current_next );
-//void sectionsd_insertEventsfromHTTP(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
-//void sectionsd_setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
-
-
 CSubService::CSubService(const t_original_network_id anoriginal_network_id, const t_service_id aservice_id, const t_transport_stream_id atransport_stream_id, const std::string &asubservice_name)
 {
 	service.original_network_id = anoriginal_network_id;
@@ -138,8 +129,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			if ((*(t_channel_id *)data) != current_channel_id) 
 			{
 				g_InfoViewer->chanready = 0;
-				g_Zapit->zapTo_serviceID_NOWAIT(current_channel_id );
-				sectionsd_setServiceChanged(current_channel_id & 0xFFFFFFFFFFFFULL, false);
+				zapit_zapTo_serviceID_NOWAIT(current_channel_id );
+				CSectionsd::getInstance()->setServiceChanged(current_channel_id & 0xFFFFFFFFFFFFULL, false);
 
 				zap_completion_timeout = getcurrenttime() + 2 * (long long) 1000000;
 
@@ -200,7 +191,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				director_mode = 0;
 				needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
 
-				sectionsd_setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
+				CSectionsd::getInstance()->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
 				CNeutrinoApp::getInstance()->channelList->adjustToChannelID(current_channel_id);
 				
 				// update info.				
@@ -241,7 +232,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 
 		//
 		CSectionsd::CurrentNextInfo info_CN;
-		sectionsd_getCurrentNextServiceKey(current_channel_id & 0xFFFFFFFFFFFFULL, info_CN);
+		CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel_id & 0xFFFFFFFFFFFFULL, info_CN);
 		
 		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg got  EVT_CURRENTEPG, uniqueKey: %llx chid: %llx flags: %x\n", info_CN.current_uniqueKey, current_channel_id, info_CN.flags);
 		
@@ -316,7 +307,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if ((*(t_channel_id *)data) == ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) ? current_channel_id : current_sub_channel_id))
 		{
 			// tell sectionsd to start epg on the zapped channel
-			sectionsd_setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, false );
+			CSectionsd::getInstance()->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, false );
 		
 			// show servicename in VFD
 			// don't show service name in standby mode
@@ -387,11 +378,11 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				getNVODs();
 				
 				if (subChannels.empty())
-					sectionsd_setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
+					CSectionsd::getInstance()->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
 			}
 			else
 				// EVENT anfordern!
-				sectionsd_setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
+				CSectionsd::getInstance()->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
 
 		}
 		
@@ -407,7 +398,7 @@ void CRemoteControl::getSubChannels()
 	{
 		CSectionsd::LinkageDescriptorList	linkedServices;
 		
-		if ( sectionsd_getLinkageDescriptorsUniqueKey( current_EPGid, linkedServices ) )
+		if ( CSectionsd::getInstance()->getLinkageDescriptorsUniqueKey( current_EPGid, linkedServices ) )
 		{
 			if ( linkedServices.size()> 1 )
 			{
@@ -441,7 +432,7 @@ void CRemoteControl::getNVODs()
 	{
 		CSectionsd::NVODTimesList	NVODs;
 		
-		if ( sectionsd_getNVODTimesServiceKey( current_channel_id & 0xFFFFFFFFFFFFULL, NVODs ) )
+		if ( CSectionsd::getInstance()->getNVODTimesServiceKey( current_channel_id & 0xFFFFFFFFFFFFULL, NVODs ) )
 		{
 			are_subchannels = false;
 			
@@ -581,7 +572,7 @@ void CRemoteControl::processAPIDnames()
 		{
 			CSectionsd::ComponentTagList tags;
 
-			if ( sectionsd_getComponentTagsUniqueKey( current_EPGid, tags ) )
+			if ( CSectionsd::getInstance()->getComponentTagsUniqueKey( current_EPGid, tags ) )
 			{
 				has_unresolved_ctags = false;
 
@@ -675,10 +666,10 @@ const std::string & CRemoteControl::setSubChannel(const int numSub, const bool f
 		scrambled_timer = 0;
 	}
 
-	g_Zapit->zapTo_subServiceID_NOWAIT( current_sub_channel_id );
+	zapit_zapTo_subServiceID_NOWAIT( current_sub_channel_id );
 	
 	// Houdini: to restart reading the private EPG when switching to a new option
-	sectionsd_setServiceChanged( current_sub_channel_id , true );
+	CSectionsd::getInstance()->setServiceChanged( current_sub_channel_id , true );
 
 	return subChannels[numSub].subservice_name;
 }
@@ -769,7 +760,7 @@ void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::s
 		abort_zapit = 1;
 
 		// zap
-		g_Zapit->zapTo_serviceID_NOWAIT(channel_id);
+		zapit_zapTo_serviceID_NOWAIT(channel_id);
 
 		// getEventsFromHTTP / localtv
 		if(g_settings.epg_enable_online_epg && IS_WEBTV(channel_id))
@@ -908,6 +899,6 @@ void CRemoteControl::getEventsFromHTTP(t_channel_id chid)
 	}
 
 	//
-	sectionsd_insertEventsfromHTTP(evUrl, GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(chid), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid), GET_SERVICE_ID_FROM_CHANNEL_ID(chid));
+	CSectionsd::getInstance()->insertEventsfromHTTP(evUrl, GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(chid), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid), GET_SERVICE_ID_FROM_CHANNEL_ID(chid));
 }
 

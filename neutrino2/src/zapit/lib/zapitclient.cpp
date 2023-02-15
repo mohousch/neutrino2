@@ -58,6 +58,7 @@ void CZapitClient::shutdown()
 
 /* zaps to channel of specified bouquet */
 /* bouquets are numbered starting at 0 */
+/*
 void CZapitClient::zapTo(const unsigned int bouquet, const unsigned int channel)
 {
 	CZapitMessages::commandZapto msg;
@@ -69,8 +70,10 @@ void CZapitClient::zapTo(const unsigned int bouquet, const unsigned int channel)
 
 	close_connection();
 }
+*/
 
 /* zaps to channel by nr */
+/*
 void CZapitClient::zapTo(const unsigned int channel)
 {
 	CZapitMessages::commandZaptoChannelNr msg;
@@ -81,6 +84,7 @@ void CZapitClient::zapTo(const unsigned int channel)
 
 	close_connection();
 }
+*/
 
 /* get current SID */
 t_channel_id CZapitClient::getCurrentServiceID()
@@ -135,6 +139,7 @@ CZapitClient::CCurrentServiceInfo CZapitClient::getRecordServiceInfo()
 }
 
 /* get lastchannel */
+/*
 void CZapitClient::getLastChannel(unsigned int &channumber, char &mode)
 {
 	send(CZapitMessages::CMD_GET_LAST_CHANNEL);
@@ -147,6 +152,7 @@ void CZapitClient::getLastChannel(unsigned int &channumber, char &mode)
 
 	close_connection();
 }
+*/
 
 /* get current satpos*/
 int32_t CZapitClient::getCurrentSatellitePosition(void)
@@ -173,6 +179,7 @@ void CZapitClient::setAudioChannel(const unsigned int channel)
 }
 
 /* zaps to onid_sid, returns the "zap-status" */
+/*
 unsigned int CZapitClient::zapTo_serviceID(const t_channel_id channel_id)
 {
 	CZapitMessages::commandZaptoServiceID msg;
@@ -189,8 +196,10 @@ unsigned int CZapitClient::zapTo_serviceID(const t_channel_id channel_id)
 
 	return response.zapStatus;
 }
+*/
 
 // zap to record
+/*
 unsigned int CZapitClient::zapTo_record(const t_channel_id channel_id)
 {
 	CZapitMessages::commandZaptoServiceID msg;
@@ -207,8 +216,10 @@ unsigned int CZapitClient::zapTo_record(const t_channel_id channel_id)
 
 	return response.zapStatus;
 }
+*/
 
 /* zaps to sub onid_sid, returns the "zap-status" */
+/*
 unsigned int CZapitClient::zapTo_subServiceID(const t_channel_id channel_id)
 {
 	CZapitMessages::commandZaptoServiceID msg;
@@ -224,8 +235,10 @@ unsigned int CZapitClient::zapTo_subServiceID(const t_channel_id channel_id)
 
 	return response.zapStatus;
 }
+*/
 
 /* zaps to channel, does NOT wait for completion (uses event) */
+/*
 void CZapitClient::zapTo_serviceID_NOWAIT(const t_channel_id channel_id)
 {
 	CZapitMessages::commandZaptoServiceID msg;
@@ -236,8 +249,10 @@ void CZapitClient::zapTo_serviceID_NOWAIT(const t_channel_id channel_id)
 
 	close_connection();
 }
+*/
 
 /* zaps to subservice, does NOT wait for completion (uses event) */
+/*
 void CZapitClient::zapTo_subServiceID_NOWAIT(const t_channel_id channel_id)
 {
 	CZapitMessages::commandZaptoServiceID msg;
@@ -248,6 +263,7 @@ void CZapitClient::zapTo_subServiceID_NOWAIT(const t_channel_id channel_id)
 
 	close_connection();
 }
+*/
 
 /* set mode tv/radio */
 /*
@@ -559,6 +575,7 @@ std::string CZapitClient::getChannelDescription(const t_channel_id channel_id)
 }
 
 /* is channel a TV channel ? */
+/*
 bool CZapitClient::isChannelTVChannel(const t_channel_id channel_id)
 {
 	send(CZapitMessages::CMD_IS_TV_CHANNEL, (char *) & channel_id, sizeof(channel_id));
@@ -568,8 +585,10 @@ bool CZapitClient::isChannelTVChannel(const t_channel_id channel_id)
 	close_connection();
 	return response.status;
 }
+*/
 
 /* is channel a Radio channel ? */
+/*
 bool CZapitClient::isChannelRadioChannel(const t_channel_id channel_id)
 {
 	send(CZapitMessages::CMD_IS_RADIO_CHANNEL, (char *) & channel_id, sizeof(channel_id));
@@ -579,8 +598,10 @@ bool CZapitClient::isChannelRadioChannel(const t_channel_id channel_id)
 	close_connection();
 	return response.status;
 }
+*/
 
 /* is channel a WEBTV channel ? */
+/*
 bool CZapitClient::isChannelWEBTVChannel(const t_channel_id channel_id)
 {
 	send(CZapitMessages::CMD_IS_WEBTV_CHANNEL, (char *) & channel_id, sizeof(channel_id));
@@ -590,6 +611,7 @@ bool CZapitClient::isChannelWEBTVChannel(const t_channel_id channel_id)
 	close_connection();
 	return response.status;
 }
+*/
 
 /* restore bouquets so as if they were just loaded */
 void CZapitClient::restoreBouquets()

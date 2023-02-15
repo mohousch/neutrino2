@@ -47,17 +47,17 @@ class CZapitMessages
 			CMD_REGISTEREVENTS                 =  2,
 			CMD_UNREGISTEREVENTS               =  3,
 
-			CMD_ZAPTO                          =  4,
-			CMD_ZAPTO_CHANNELNR                =  5,
-			CMD_ZAPTO_SERVICEID                =  6,
-			CMD_ZAPTO_SUBSERVICEID             =  7,
-			CMD_ZAPTO_SERVICEID_NOWAIT         =  8,
-			CMD_ZAPTO_SUBSERVICEID_NOWAIT      =  9,
+			//CMD_ZAPTO                          =  4,
+			//CMD_ZAPTO_CHANNELNR                =  5,
+			//CMD_ZAPTO_SERVICEID                =  6,
+			//CMD_ZAPTO_SUBSERVICEID             =  7,
+			//CMD_ZAPTO_SERVICEID_NOWAIT         =  8,
+			//CMD_ZAPTO_SUBSERVICEID_NOWAIT      =  9,
 
 			CMD_STOP_VIDEO                     = 10,		// not supported yet
 			//CMD_SET_MODE                       = 11,
 			//CMD_GET_MODE                       = 12,
-			CMD_GET_LAST_CHANNEL               = 13,
+			//CMD_GET_LAST_CHANNEL               = 13,
 			CMD_GET_APID_VPID                  = 14,		// not supported yet
 			CMD_GET_VTXT_PID                   = 15,		// not supported yet
 			CMD_GET_NVOD_CHANNELS              = 16,		// not supported yet
@@ -95,7 +95,6 @@ class CZapitMessages
 			CMD_BQ_REMOVE_CHANNEL_FROM_BOUQUET = 46,
 			CMD_BQ_RENUM_CHANNELLIST           = 47,
 			CMD_BQ_RESTORE                     = 48,
-			
 			CMD_BQ_SAVE_BOUQUETS               = 50,
 
 			CMD_SET_RECORD_MODE                = 51,
@@ -119,7 +118,7 @@ class CZapitMessages
 			CMD_SEND_MOTOR_COMMAND             = 68,
 
 			CMD_GET_CHANNEL_NAME               = 69,
-			CMD_IS_TV_CHANNEL                  = 70,
+			//CMD_IS_TV_CHANNEL                  = 70,
 
 			CMD_SCANSETTYPE                    = 79,
 			CMD_RELOAD_CURRENTSERVICES	   = 80,
@@ -155,8 +154,8 @@ class CZapitMessages
 			CMD_GET_CHANNEL_URL		  = 116,
 			CMD_GET_CHANNEL_DESCRIPTION	  = 117,
 
-			CMD_IS_WEBTV_CHANNEL		  = 118,
-			CMD_IS_RADIO_CHANNEL		  = 119,
+			//CMD_IS_WEBTV_CHANNEL		  = 118,
+			//CMD_IS_RADIO_CHANNEL		  = 119,
 
 			CMD_GET_CHANNEL_NUMBER		  = 120
 		};

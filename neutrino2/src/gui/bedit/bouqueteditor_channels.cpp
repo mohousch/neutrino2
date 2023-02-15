@@ -330,7 +330,7 @@ int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 			if (state == beDefault)
 			{
 				if (selected < Channels->size()) /* Channels.size() might be 0 */
-					g_Zapit->zapTo_serviceID((*Channels)[selected]->channel_id);
+					zapit_zapTo_serviceID((*Channels)[selected]->channel_id);
 
 			} 
 			else if (state == beMoving) 

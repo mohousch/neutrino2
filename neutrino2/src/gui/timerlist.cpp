@@ -666,8 +666,6 @@ void CTimerList::hide()
 	}
 }
 
-bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
-
 void CTimerList::paint()
 {
 	dprintf(DEBUG_NORMAL, "CTimerList::paint\n");
@@ -751,7 +749,7 @@ void CTimerList::paint()
 					{
 						CEPGData epgdata;
 						
-						if (sectionsd_getEPGid(timer.epgID, timer.epg_starttime, &epgdata))
+						if (CSectionsd::getInstance()->getEPGid(timer.epgID, timer.epg_starttime, &epgdata))
 						{
 							zAddData += " : ";
 							zAddData += epgdata.title;
@@ -1204,7 +1202,7 @@ bool askUserOnTimerConflict(time_t announceTime, time_t stopTime)
 		{
 			CEPGData epgdata;
 
-			if (sectionsd_getEPGid(it->epgID, it->epg_starttime, &epgdata))
+			if (CSectionsd::getInstance()->getEPGid(it->epgID, it->epg_starttime, &epgdata))
 			{
 				timerbuf += ":";
 				timerbuf += epgdata.title;

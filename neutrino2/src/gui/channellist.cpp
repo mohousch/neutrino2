@@ -102,11 +102,6 @@ extern CBouquetManager * g_bouquetManager;
 extern cVideo * videoDecoder;
 extern CZapitChannel * live_channel;
 
-// channel events
-//void sectionsd_getChannelEvents(CChannelEventList &eList, const bool tv_mode, t_channel_id *chidlist, int clen);
-//void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
-//bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
-
 //
 void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id);	// defined in zapit.cpp
 
@@ -215,7 +210,7 @@ void CChannelList::updateEvents(void)
 			{		
 				events.clear();
 
-				sectionsd_getEventsServiceKey(chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL, events);
+				CSectionsd::getInstance()->getEventsServiceKey(chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL, events);
 				chanlist[count]->nextEvent.startTime = (long)0x7fffffff;
 				
 				for ( CChannelEventList::iterator e = events.begin(); e != events.end(); ++e ) 
@@ -249,7 +244,7 @@ void CChannelList::updateEvents(void)
 
 			pevents.clear();
 			
-			sectionsd_getChannelEvents(pevents, (CNeutrinoApp::getInstance()->getMode()) != NeutrinoMessages::mode_radio, p_requested_channels, size_requested_channels);
+			CSectionsd::getInstance()->getChannelEvents(pevents, (CNeutrinoApp::getInstance()->getMode()) != NeutrinoMessages::mode_radio, p_requested_channels, size_requested_channels);
 			
 			for (uint32_t count = 0; count < chanlist.size(); count++) 
 			{
@@ -1843,7 +1838,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 					
 	events.clear();
 
-	sectionsd_getEventsServiceKey(chanlist[_selected]->channel_id & 0xFFFFFFFFFFFFULL, events);
+	CSectionsd::getInstance()->getEventsServiceKey(chanlist[_selected]->channel_id & 0xFFFFFFFFFFFFULL, events);
 	chanlist[_selected]->nextEvent.startTime = (long)0x7fffffff;
 				
 	for ( CChannelEventList::iterator e = events.begin(); e != events.end(); ++e ) 

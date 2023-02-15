@@ -76,9 +76,6 @@
 #include <system/helpers.h>
 
 
-//void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
-//void sectionsd_getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsd::responseGetCurrentNextInfoChannelID& current_next );
-
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern CRemoteControl * g_RemoteControl;		// neutrino.cpp
 extern cVideo * videoDecoder;				// libdvbapi
@@ -541,7 +538,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _Channel, con
 		if ((channel_id != _new_channel_id) || (evtlist.empty())) 
 		{
 			evtlist.clear();
-			sectionsd_getEventsServiceKey(_new_channel_id & 0xFFFFFFFFFFFFULL, evtlist);
+			CSectionsd::getInstance()->getEventsServiceKey(_new_channel_id & 0xFFFFFFFFFFFFULL, evtlist);
 			
 			if (!evtlist.empty())
 				sort(evtlist.begin(),evtlist.end(), sortByDateTime);
@@ -725,7 +722,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 {
 	dprintf(DEBUG_NORMAL, "CInfoViewer::getCurrentNextEPG:%llx\n", ChannelID);
 	
-	sectionsd_getCurrentNextServiceKey(ChannelID & 0xFFFFFFFFFFFFULL, info_CurrentNext);
+	CSectionsd::getInstance()->getCurrentNextServiceKey(ChannelID & 0xFFFFFFFFFFFFULL, info_CurrentNext);
 	
 	if (!evtlist.empty()) 
 	{
@@ -1471,7 +1468,7 @@ void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentN
 		return;
 	}
 
-	sectionsd_getCurrentNextServiceKey(for_channel_id & 0xFFFFFFFFFFFFULL, info);
+	CSectionsd::getInstance()->getCurrentNextServiceKey(for_channel_id & 0xFFFFFFFFFFFFULL, info);
 
 	// if there is no EPG, send an event so that parental lock can work
 	if (info.current_uniqueKey == 0 && info.next_uniqueKey == 0) 

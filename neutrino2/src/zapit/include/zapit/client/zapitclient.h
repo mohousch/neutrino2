@@ -261,25 +261,25 @@ class CZapitClient : public CBasicClient
 
 		/* zaps to channel of specified bouquet */
 		/* bouquets are numbered starting at 0 */
-		void zapTo(const unsigned int bouquet, const unsigned int channel);
+		//void zapTo(const unsigned int bouquet, const unsigned int channel);
 
 		/* zaps to channel  */
-		void zapTo(const unsigned int channel);
+		//void zapTo(const unsigned int channel);
 
 		/* zaps to channel, returns the "zap-status" */
-		unsigned int zapTo_serviceID(const t_channel_id channel_id);
+		//unsigned int zapTo_serviceID(const t_channel_id channel_id);
 		
 		/* zap to record channel */
-		unsigned int zapTo_record(const t_channel_id channel_id);
+		//unsigned int zapTo_record(const t_channel_id channel_id);
 
 		/* zaps to subservice, returns the "zap-status" */
-		unsigned int zapTo_subServiceID(const t_channel_id channel_id);
+		//unsigned int zapTo_subServiceID(const t_channel_id channel_id);
 
 		/* zaps to channel, does NOT wait for completion (uses event) */
-		void zapTo_serviceID_NOWAIT(const t_channel_id channel_id);
+		//void zapTo_serviceID_NOWAIT(const t_channel_id channel_id);
 
 		/* zaps to subservice, does NOT wait for completion (uses event) */
-		void zapTo_subServiceID_NOWAIT(const t_channel_id channel_id);
+		//void zapTo_subServiceID_NOWAIT(const t_channel_id channel_id);
 
 		/* return the current (tuned) ServiceID */
 		t_channel_id getCurrentServiceID();
@@ -291,7 +291,7 @@ class CZapitClient : public CBasicClient
 		int32_t getCurrentSatellitePosition();
 
 		/* get last channel-information */
-		void getLastChannel(unsigned int &channumber, char &mode);
+		//void getLastChannel(unsigned int &channumber, char &mode);
 
 		/* audiochan set */
 		void setAudioChannel(const unsigned int channel);
@@ -326,9 +326,9 @@ class CZapitClient : public CBasicClient
 		std::string getChannelDescription(const t_channel_id channel_id);
 
 		/* is channel a TV channel ? */
-		bool isChannelTVChannel(const t_channel_id channel_id);
-		bool isChannelRadioChannel(const t_channel_id channel_id);
-		bool isChannelWEBTVChannel(const t_channel_id channel_id);
+		//bool isChannelTVChannel(const t_channel_id channel_id);
+		//bool isChannelRadioChannel(const t_channel_id channel_id);
+		//bool isChannelWEBTVChannel(const t_channel_id channel_id);
 
 		/* get the current_TP */
 		bool get_current_TP(TP_params *TP);

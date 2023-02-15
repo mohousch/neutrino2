@@ -75,6 +75,18 @@ void zapit_lockPlayBack();
 void zapit_unlockPlayBack();
 bool zapit_isPlayBackActive();
 void zapit_setStandby(bool enable);
+
+bool zapit_isChannelTVChannel(const t_channel_id channel_id);
+bool zapit_isChannelWEBTVChannel(const t_channel_id channel_id);
+bool zapit_isChannelRadioChannel(const t_channel_id channel_id);
+
+void zapit_zapTo_serviceID_NOWAIT(const t_channel_id channel_id);
+void zapit_zapTo_subServiceID_NOWAIT(const t_channel_id channel_id);
+void zapit_zapTo(const unsigned int bouquet, const unsigned int channel);
+void zapit_zapTo(const unsigned int channel);
+unsigned int zapit_zapTo_serviceID(const t_channel_id channel_id);
+unsigned int zapit_zapTo_subServiceID(const t_channel_id channel_id);
+unsigned int zapit_zapTo_record(const t_channel_id channel_id);
 ////
 
 #endif /* __zapit_h__ */

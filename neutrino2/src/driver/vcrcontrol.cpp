@@ -83,10 +83,6 @@ extern "C" {
 #include <driver/genpsi.h>
 }
 
-//bool sectionsd_getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
-//bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
-//bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
-//bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsd::ComponentTagList& tags);
 
 CMovieInfo * g_cMovieInfo;
 MI_MOVIE_INFO * g_movieInfo;
@@ -128,7 +124,6 @@ void CVCRControl::registerDevice(CDevice * const device)
 
 bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
 {
-	//int mode = g_Zapit->isChannelTVChannel(eventinfo->channel_id) ? NeutrinoMessages::mode_tv : NeutrinoMessages::mode_radio;
 	int mode = CNeutrinoApp::getInstance()->getMode();
 
 	return Device->Record(eventinfo->channel_id, mode, eventinfo->epgID, eventinfo->epgTitle, eventinfo->apids, eventinfo->epg_starttime); 
@@ -287,7 +282,7 @@ bool CVCRControl::CVCRDevice::Record(const t_channel_id channel_id, int mode, co
 		if(channel_id != 0)	// wenn ein channel angegeben ist
 		{
 			// zap for record
-			g_Zapit->zapTo_record(channel_id);			// for recording
+			zapit_zapTo_record(channel_id);			// for recording
 		}
 
 		// apids
@@ -337,30 +332,23 @@ bool CVCRControl::CVCRDevice::Resume()
 
 void CVCRControl::CFileAndServerDevice::RestoreNeutrino(void)
 {
-	//printf("RestoreNeutrino\n");fflush(stdout);
-	
-	// unset record mode
-	// after this zapit send EVT_RECORDMODE_DEACTIVATED, so neutrino getting NeutrinoMessages::EVT_RECORDMODE
+	g_Zapit->setRecordMode( false );
 
+	// start playback
+	if (!zapit_isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
+		zapit_startPlayBack(live_channel);
+
+	// alten mode wieder herstellen (ausser wen zwischenzeitlich auf oder aus sb geschalten wurde)
+	if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
 	{
-		g_Zapit->setRecordMode( false );
+		if(!autoshift) 
+			g_RCInput->postMsg( NeutrinoMessages::CHANGEMODE , last_mode);
+	}
 
-		// start playback
-		if (!zapit_isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
-			zapit_startPlayBack(live_channel);
-
-		// alten mode wieder herstellen (ausser wen zwischenzeitlich auf oder aus sb geschalten wurde)
-		if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
-		{
-			if(!autoshift) 
-				g_RCInput->postMsg( NeutrinoMessages::CHANGEMODE , last_mode);
-		}
-
-		if(last_mode == NeutrinoMessages::mode_standby && CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby )
-		{
-			//Wenn vorher und jetzt standby, dann die zapit wieder auf sb schalten
-			zapit_setStandby(true);
-		}
+	if(last_mode == NeutrinoMessages::mode_standby && CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby )
+	{
+		//Wenn vorher und jetzt standby, dann die zapit wieder auf sb schalten
+		zapit_setStandby(true);
 	}	
 }
 
@@ -386,7 +374,7 @@ void CVCRControl::CFileAndServerDevice::CutBackNeutrino(const t_channel_id chann
 			}
 		
 			// zap to record
-			g_Zapit->zapTo_record(channel_id);
+			zapit_zapTo_record(channel_id);
 		}
 
 		// after this zapit send EVT_RECORDMODE_ACTIVATED, so neutrino getting NeutrinoMessages::EVT_RECORDMODE
@@ -471,7 +459,7 @@ std::string CVCRControl::CFileAndServerDevice::getCommandString(const CVCRComman
 	{
 		CShortEPGData epgdata;
 
-		if(sectionsd_getEPGidShort(epgid, &epgdata)) 
+		if(CSectionsd::getInstance()->getEPGidShort(epgid, &epgdata)) 
 		{
 			//#warning fixme sectionsd should deliver data in UTF-8 format
 			tmpstring = epgdata.title;
@@ -676,7 +664,7 @@ bool CVCRControl::CFileDevice::Record(const t_channel_id channel_id, int mode, c
 		{
 			CShortEPGData epgdata;
 
-			if(sectionsd_getEPGidShort(epgid, &epgdata))
+			if(CSectionsd::getInstance()->getEPGidShort(epgid, &epgdata))
 			{
 				if (!(epgdata.title.empty()))
 				{
@@ -795,14 +783,14 @@ bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname)
 
 		pos = strlen(filename);
 
-		if(sectionsd_getActualEPGServiceKey(channel_id&0xFFFFFFFFFFFFULL, &epgData));
+		if(CSectionsd::getInstance()->getActualEPGServiceKey(channel_id&0xFFFFFFFFFFFFULL, &epgData));
 			epgid = epgData.eventID;
 
 		if(epgid != 0) 
 		{
 			CShortEPGData epgdata;
 
-			if(sectionsd_getEPGidShort(epgid, &epgdata)) 
+			if(CSectionsd::getInstance()->getEPGidShort(epgid, &epgdata)) 
 			{
 				if (!(epgdata.title.empty())) 
 				{
@@ -882,7 +870,7 @@ std::string CVCRControl::CFileAndServerDevice::getMovieInfoString(const CVCRComm
 	{
 		CEPGData epgdata;
 		
-		if (sectionsd_getEPGid(epgid, epg_time, &epgdata)) 
+		if (CSectionsd::getInstance()->getEPGid(epgid, epg_time, &epgdata)) 
 		{
 			tmpstring = epgdata.title;
 			info1 = epgdata.info1;
@@ -1003,7 +991,7 @@ void CVCRControl::CFileAndServerDevice::processAPIDnames()
 		{
 			CSectionsd::ComponentTagList tags;
 
-			if ( sectionsd_getComponentTagsUniqueKey( record_EPGid, tags ) )
+			if ( CSectionsd::getInstance()->getComponentTagsUniqueKey( record_EPGid, tags ) )
 			{
 				has_unresolved_ctags = false;
 

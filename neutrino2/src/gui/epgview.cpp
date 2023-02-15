@@ -479,11 +479,6 @@ static bool sortByDateTime (const CChannelEvent& a, const CChannelEvent& b)
 
 extern char recDir[255];// defined in neutrino.cpp
 
-//void sectionsd_getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
-//bool sectionsd_getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsd::ComponentTagList& tags);
-//bool sectionsd_getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
-//bool sectionsd_getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
-
 //
 void CEpgData::showHead(const t_channel_id channel_id)
 {
@@ -523,7 +518,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	{
 		evtlist.clear();
 		
-		sectionsd_getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL, evtlist);
+		CSectionsd::getInstance()->getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL, evtlist);
 		
 		// Houdini added for Private Premiere EPG start sorted by start date/time 2005-08-15
   		sort(evtlist.begin(), evtlist.end(), sortByDateTime);
@@ -680,7 +675,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
         bool have_16_9 = false;
         tags.clear();
 	
-	if ( sectionsd_getComponentTagsUniqueKey( epgData.eventID, tags ) )
+	if ( CSectionsd::getInstance()->getComponentTagsUniqueKey( epgData.eventID, tags ) )
         {
                 for (unsigned int i = 0; i < tags.size(); i++)
                 {
@@ -932,9 +927,9 @@ void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* st
 
 	bool res;
 	if ( id != 0 )
-		res = sectionsd_getEPGid(id, *startzeit, &epgData);
+		res = CSectionsd::getInstance()->getEPGid(id, *startzeit, &epgData);
 	else
-		res = sectionsd_getActualEPGServiceKey(channel_id & 0xFFFFFFFFFFFFULL, &epgData);
+		res = CSectionsd::getInstance()->getActualEPGServiceKey(channel_id & 0xFFFFFFFFFFFFULL, &epgData);
 
 	if ( res )
 	{
@@ -942,15 +937,10 @@ void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* st
 		if (false == epgData.itemDescriptions.empty()) 
 		{
 			reformatExtendedEvents("Year of production", _("Year of production"), false, epgData);
-
 			reformatExtendedEvents("Original title", _("Original title"), false, epgData);
-
 			reformatExtendedEvents("Director", _("Director"), false, epgData);
-
 			reformatExtendedEvents("Actor", _("Actors"), true, epgData);
-
 			reformatExtendedEvents("Guests", _("Guests"), false, epgData);
-
 			reformatExtendedEvents("Presenter", _("Presenter"), false, epgData);
 		}
 		

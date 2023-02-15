@@ -4695,14 +4695,14 @@ void CTestMenu::testShowActuellEPG()
 	CEPGData epgData;
 	event_id_t epgid = 0;
 			
-	if(sectionsd_getActualEPGServiceKey(CNeutrinoApp::getInstance()->channelList->getActiveChannel_ChannelID(), &epgData))
+	if(CSectionsd::getInstance()->getActualEPGServiceKey(CNeutrinoApp::getInstance()->channelList->getActiveChannel_ChannelID() & 0xFFFFFFFFFFFFULL, &epgData))
 		epgid = epgData.eventID;
 
 	if(epgid != 0) 
 	{
 		CShortEPGData epgdata;
 				
-		if(sectionsd_getEPGidShort(epgid, &epgdata)) 
+		if(CSectionsd::getInstance()->getEPGidShort(epgid, &epgdata)) 
 		{
 			title += CNeutrinoApp::getInstance()->channelList->getActiveChannelName();
 			title += ":";
@@ -6771,8 +6771,8 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "Plugins") );
 	mainMenu->addItem(new CMenuForwarder("StartPlugin(e.g: youtube)", true, NULL, this, "startplugin"));
 
-	//mainMenu->addItem(new CMenuSeparator(LINE | STRING, "EPG") );
-	//mainMenu->addItem(new CMenuForwarder("ShowActuellEPG", true, NULL, this, "showepg"));
+	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "EPG") );
+	mainMenu->addItem(new CMenuForwarder("ShowActuellEPG", true, NULL, this, "showepg"));
 
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "Channellist") );
