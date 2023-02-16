@@ -530,8 +530,6 @@ void * start_scanthread(void *scanmode)
 	scan_sat_mode = mode & 0xFF00; 	// single = 0, all = 1
 
 	dprintf(DEBUG_NORMAL, "[scan] start_scanthread: scan mode %s, satellites %s\n", scan_mode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
-	
-	CZapitClient myZapitClient;
 
 	fake_tid = fake_nid = 0;
 
@@ -644,7 +642,8 @@ void * start_scanthread(void *scanmode)
 		dprintf(DEBUG_INFO, "[scan] start_scanthread: save bouquets done\n");
 		
 		stop_scan(true);
-		myZapitClient.reloadCurrentServices();
+
+		eventServer->sendEvent(CZapitClient::EVT_BOUQUETS_CHANGED, CEventServer::INITID_ZAPIT);
 	} 
 	else 
 	{
@@ -724,8 +723,6 @@ void * scan_transponder(void * arg)
 	if(abort_scan)
 		found_channels = 0;
 
-	CZapitClient myZapitClient;
-
 	if(found_channels) 
 	{
 		saveServices(true);
@@ -736,7 +733,8 @@ void * scan_transponder(void * arg)
 		g_bouquetManager->loadBouquets();
 		
 		stop_scan(true);
-		myZapitClient.reloadCurrentServices();
+
+		eventServer->sendEvent(CZapitClient::EVT_BOUQUETS_CHANGED, CEventServer::INITID_ZAPIT);
 	} 
 	else 
 	{

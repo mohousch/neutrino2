@@ -3420,7 +3420,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE) 
 	{
 		// set audio map after channel zap
-		g_Zapit->getAudioMode(&g_settings.audio_AnalogMode);
+		zapit_getAudioMode(&g_settings.audio_AnalogMode);
 
 		if(g_settings.audio_AnalogMode < 0 || g_settings.audio_AnalogMode > 2)
 			g_settings.audio_AnalogMode = 0;
@@ -3859,7 +3859,7 @@ _repeat:
 				CZapitClient Zapit;
 				name += "\n";
 
-				std::string zAddData = Zapit.getChannelName( timer.channel_id ); // UTF-8
+				std::string zAddData = zapit_getChannelName( timer.channel_id ); // UTF-8
 				if( zAddData.empty()) 
 				{
 					zAddData = _("Program unknown");
@@ -4389,7 +4389,7 @@ void CNeutrinoApp::AudioMute( int newValue, bool isEvent )
 
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::AudioMute: current_muted %d new %d isEvent: %d\n", current_muted, newValue, isEvent);
 	
-	g_Zapit->muteAudio(current_muted);
+	zapit_muteAudio(current_muted);
 
 	if( isEvent && ( mode != mode_scart ) && ( mode != mode_audio) && ( mode != mode_pic))
 	{
@@ -5064,7 +5064,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		//if (MessageBox(_("Information"), _("do you want to reload channel lists?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 		//{
 			//HintBox(_("Information"), _("Reloading channel lists, please be patient."));
-			g_Zapit->reinitChannels();
+			zapit_reinitChannels();
 		//}
 	}
 	else if (actionKey == "reloadepg")
@@ -5078,12 +5078,12 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	else if (actionKey == "delete_zapit")
 	{
 		my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/zapit/*.xml");
-		g_Zapit->reinitChannels();
+		zapit_reinitChannels();
 	}
 	else if (actionKey == "delete_webtv")
 	{
 		my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/webtv/*.*");
-		g_Zapit->reinitChannels();
+		zapit_reinitChannels();
 	}
 	else if (actionKey == "mainmenu")
 	{

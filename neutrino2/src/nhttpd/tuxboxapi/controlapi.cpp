@@ -318,7 +318,7 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 	{
 		if (hh->ParamList["1"] == "status")	// display recoding status
 		{
-			if (NeutrinoAPI->Zapit->isRecordModeActive())
+			if (zapit_isRecordModeActive())
 				hh->WriteLn("on");
 			else
 				hh->WriteLn("off");
@@ -346,11 +346,11 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 				
 			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
 			CSectionsd::getInstance()->pauseScanning(true);
-			NeutrinoAPI->Zapit->setRecordMode(true);
+			zapit_setRecordMode(true);
 		}
 		else if (hh->ParamList["record"] == "stop")	// stop record mode
 		{
-			NeutrinoAPI->Zapit->setRecordMode(false);
+			zapit_setRecordMode(false);
 			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
 			CSectionsd::getInstance()->pauseScanning(false);
 			if (!zapit_isPlayBackActive())
@@ -805,27 +805,27 @@ void CControlAPI::VolumeCGI(CyhookHandler *hh)
 	{
 		//without param: show actual volumen
 		unsigned int volume;
-		NeutrinoAPI->Zapit->getVolume(&volume, &volume);
+		zapit_getVolume(&volume, &volume);
 		hh->printf("%d", volume);
 	}
 	else if (hh->ParamList["1"].compare("mute") == 0)
 	{
-		NeutrinoAPI->Zapit->muteAudio(true);
+		zapit_muteAudio(true);
 		hh->SendOk();
 	}
 	else if (hh->ParamList["1"].compare("unmute") == 0)
 	{
-		NeutrinoAPI->Zapit->muteAudio(false);
+		zapit_muteAudio(false);
 		hh->SendOk();
 	}
 	else if (hh->ParamList["1"].compare("status") == 0) 
 	{ // Mute status
-		(NeutrinoAPI->Zapit->getMuteStatus()) ? hh->Write("1") :  hh->Write("0");
+		(zapit_getMuteStatus()) ? hh->Write("1") :  hh->Write("0");
 	}
 	else if(hh->ParamList["1"]!="") 
 	{ //set volume
 		char vol = atol( hh->ParamList["1"].c_str() );
-		NeutrinoAPI->Zapit->setVolume(vol,vol);
+		zapit_setVolume(vol,vol);
 		hh->SendOk();
 	}
 	else

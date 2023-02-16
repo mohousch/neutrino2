@@ -87,6 +87,39 @@ void zapit_zapTo(const unsigned int channel);
 unsigned int zapit_zapTo_serviceID(const t_channel_id channel_id);
 unsigned int zapit_zapTo_subServiceID(const t_channel_id channel_id);
 unsigned int zapit_zapTo_record(const t_channel_id channel_id);
+
+std::string zapit_getChannelName(const t_channel_id channel_id);
+int zapit_getChannelNumber(const t_channel_id channel_id);
+std::string zapit_getChannelURL(const t_channel_id channel_id);
+std::string zapit_getChannelDescription(const t_channel_id channel_id);
+
+void zapit_setRecordMode(const bool activate);
+bool zapit_isRecordModeActive();
+t_channel_id zapit_getRecordServiceID();
+CZapitClient::CCurrentServiceInfo zapit_getRecordServiceInfo();
+void zapit_getRecordPIDS(CZapitClient::responseGetPIDs& pids);
+
+void zapit_reinitChannels();
+void zapit_reloadCurrentServices();
+
+bool zapit_tune_TP(TP_params TP, int feindex = 0);
+
+bool zapit_reZap();
+
+void zapit_muteAudio(const bool mute);
+bool zapit_getMuteStatus();
+void zapit_getAudioMode(int * mode);
+void zapit_setAudioMode(int mode);
+void zapit_setVolume(const unsigned int left, const unsigned int right);
+void zapit_getVolume(unsigned int *left, unsigned int *right);
+void zapit_setVolumePercent(const unsigned int percent, t_channel_id channel_id = 0, const unsigned int apid = 0);
+void zapit_getVolumePercent(unsigned int *percent, t_channel_id channel_id = 0, const unsigned int apid = 0, const bool is_ac3 = false);
+void zapit_setAudioChannel(const unsigned int channel);
+
+void zapit_setVideoSystem(int video_system);
+
+bool zapit_setConfig(Zapit_config Cfg);
+void zapit_getConfig(Zapit_config * Cfg);
 ////
 
 #endif /* __zapit_h__ */

@@ -113,6 +113,7 @@ CZapitClient::CCurrentServiceInfo CZapitClient::getCurrentServiceInfo()
 }
 
 /* get record SID */
+/*
 t_channel_id CZapitClient::getRecordServiceID()
 {
 	send(CZapitMessages::CMD_GET_RECORD_SERVICEID);
@@ -124,8 +125,10 @@ t_channel_id CZapitClient::getRecordServiceID()
 
 	return response.channel_id;
 }
+*/
 
 /* get record Service Infos */
+/*
 CZapitClient::CCurrentServiceInfo CZapitClient::getRecordServiceInfo()
 {
 	send(CZapitMessages::CMD_GET_RECORD_SERVICEINFO);
@@ -137,6 +140,7 @@ CZapitClient::CCurrentServiceInfo CZapitClient::getRecordServiceInfo()
 	
 	return response;
 }
+*/
 
 /* get lastchannel */
 /*
@@ -167,6 +171,7 @@ int32_t CZapitClient::getCurrentSatellitePosition(void)
 }
 
 /* set audio channel */
+/*
 void CZapitClient::setAudioChannel(const unsigned int channel)
 {
 	CZapitMessages::commandSetAudioChannel msg;
@@ -177,6 +182,7 @@ void CZapitClient::setAudioChannel(const unsigned int channel)
 
 	close_connection();
 }
+*/
 
 /* zaps to onid_sid, returns the "zap-status" */
 /*
@@ -346,6 +352,7 @@ void CZapitClient::getPIDS(responseGetPIDs& pids)
 }
 
 //TEST
+/*
 void CZapitClient::getRecordPIDS(responseGetPIDs& pids)
 {
 	CZapitMessages::responseGeneralInteger responseInteger;
@@ -383,6 +390,7 @@ void CZapitClient::getRecordPIDS(responseGetPIDs& pids)
 
 	close_connection();
 }
+*/
 
 // zapto Nvod subservice
 void CZapitClient::zaptoNvodSubService(const int num)
@@ -531,6 +539,7 @@ bool CZapitClient::getChannels( BouquetChannelList& channels, channelsMode mode,
 
 /* request information about a particular channel_id */
 /* channel name */
+/*
 std::string CZapitClient::getChannelName(const t_channel_id channel_id)
 {
 	send(CZapitMessages::CMD_GET_CHANNEL_NAME, (char *) & channel_id, sizeof(channel_id));
@@ -540,8 +549,10 @@ std::string CZapitClient::getChannelName(const t_channel_id channel_id)
 	close_connection();
 	return std::string(response.name);
 }
+*/
 
 /* channel number */
+/*
 int CZapitClient::getChannelNumber(const t_channel_id channel_id)
 {
 	send(CZapitMessages::CMD_GET_CHANNEL_NUMBER, (char *) & channel_id, sizeof(channel_id));
@@ -551,8 +562,10 @@ int CZapitClient::getChannelNumber(const t_channel_id channel_id)
 	close_connection();
 	return response.number;
 }
+*/
 
 /* channel url */
+/*
 std::string CZapitClient::getChannelURL(const t_channel_id channel_id)
 {
 	send(CZapitMessages::CMD_GET_CHANNEL_URL, (char *) & channel_id, sizeof(channel_id));
@@ -562,8 +575,10 @@ std::string CZapitClient::getChannelURL(const t_channel_id channel_id)
 	close_connection();
 	return std::string(response.url);
 }
+*/
 
 /* channel description */
+/*
 std::string CZapitClient::getChannelDescription(const t_channel_id channel_id)
 {
 	send(CZapitMessages::CMD_GET_CHANNEL_DESCRIPTION, (char *) & channel_id, sizeof(channel_id));
@@ -573,6 +588,7 @@ std::string CZapitClient::getChannelDescription(const t_channel_id channel_id)
 	close_connection();
 	return std::string(response.description);
 }
+*/
 
 /* is channel a TV channel ? */
 /*
@@ -624,6 +640,7 @@ void CZapitClient::restoreBouquets()
 }
 
 /* reloads channels and services*/
+/*
 void CZapitClient::reinitChannels()
 {
 	send(CZapitMessages::CMD_REINIT_CHANNELS);
@@ -632,9 +649,11 @@ void CZapitClient::reinitChannels()
 	CBasicClient::receive_data((char* )&response, sizeof(response), true);
 	close_connection();
 }
+*/
 
 /* reload current services */
 /* called when sectionsd updates currentservices.xml */
+/*
 void CZapitClient::reloadCurrentServices()
 {
 	send(CZapitMessages::CMD_RELOAD_CURRENTSERVICES);
@@ -643,8 +662,10 @@ void CZapitClient::reloadCurrentServices()
 	CBasicClient::receive_data((char* )&response, sizeof(response), true);
 	close_connection();
 }
+*/
 
 /* mute audio */
+/*
 void CZapitClient::muteAudio(const bool mute)
 {
 	CZapitMessages::commandBoolean msg;
@@ -655,8 +676,10 @@ void CZapitClient::muteAudio(const bool mute)
 
 	close_connection();
 }
+*/
 
 /* Get mute status */
+/*
 bool CZapitClient::getMuteStatus()
 {
 	CZapitMessages::commandBoolean msg;
@@ -666,8 +689,10 @@ bool CZapitClient::getMuteStatus()
 	close_connection();
 	return msg.truefalse;
 }
+*/
 
 /* set volume */
+/*
 void CZapitClient::setVolume(const unsigned int left, const unsigned int right)
 {
 	CZapitMessages::commandVolume msg;
@@ -679,8 +704,10 @@ void CZapitClient::setVolume(const unsigned int left, const unsigned int right)
 
 	close_connection();
 }
+*/
 
 /* get volume */
+/*
 void CZapitClient::getVolume(unsigned int * left, unsigned int * right)
 {
         CZapitMessages::commandVolume msg;
@@ -693,8 +720,10 @@ void CZapitClient::getVolume(unsigned int * left, unsigned int * right)
 
         close_connection();
 }
+*/
 
 /* set volume percent */
+/*
 void CZapitClient::setVolumePercent(unsigned int percent, t_channel_id channel_id, const unsigned int apid)
 {
 	CZapitMessages::commandVolumePercent msg;
@@ -707,8 +736,10 @@ void CZapitClient::setVolumePercent(unsigned int percent, t_channel_id channel_i
 
 	close_connection();
 }
+*/
 
 /* get volume percent */
+/*
 void CZapitClient::getVolumePercent(unsigned int * percent, t_channel_id channel_id, const unsigned int apid, const bool is_ac3)
 {
 	CZapitMessages::commandVolumePercent msg;
@@ -724,6 +755,7 @@ void CZapitClient::getVolumePercent(unsigned int * percent, t_channel_id channel
 
 	close_connection();
 }
+*/
 
 /* delivery_system */
 delivery_system_t CZapitClient::getDeliverySystem(int /*feindex*/)
@@ -799,28 +831,34 @@ bool CZapitClient::stopScan()
 }
 
 /* set zapit config */
+/*
 bool CZapitClient::setConfig(Zapit_config Cfg)
 {
 	bool reply = send(CZapitMessages::CMD_SETCONFIG, (char*)&Cfg, sizeof(Cfg));
         close_connection();
         return reply;
 }
+*/
 
 /* get zapit config */
+/*
 void CZapitClient::getConfig (Zapit_config * Cfg)
 {
 	send(CZapitMessages::CMD_GETCONFIG);
 	CBasicClient::receive_data((char *) Cfg, sizeof(Zapit_config));
 	close_connection();
 }
+*/
 
 /* rezap */
+/*
 bool CZapitClient::Rezap()
 {
         bool reply = send(CZapitMessages::CMD_REZAP);
         close_connection();
         return reply;
 }
+*/
 
 /* start manual scan */
 bool CZapitClient::scan_TP(TP_params TP, int feindex)
@@ -837,6 +875,7 @@ bool CZapitClient::scan_TP(TP_params TP, int feindex)
 }
 
 /* tune TP */
+/*
 bool CZapitClient::tune_TP(TP_params TP, int feindex)
 {
 	CZapitMessages::commandTuneTP msg;
@@ -849,6 +888,7 @@ bool CZapitClient::tune_TP(TP_params TP, int feindex)
 	
 	return reply;
 }
+*/
 
 /* query if ts-scan is ready - response gives status */
 bool CZapitClient::isScanReady(unsigned int &satellite,  unsigned int &processed_transponder, unsigned int &transponder, unsigned int &services )
@@ -1166,6 +1206,7 @@ void CZapitClient::setStandby(const bool enable)
 */
 
 /* set video system */
+/*
 void CZapitClient::setVideoSystem(int video_system)
 {
 	CZapitMessages::commandInt msg;
@@ -1173,6 +1214,7 @@ void CZapitClient::setVideoSystem(int video_system)
 	send(CZapitMessages::CMD_SET_VIDEO_SYSTEM, (char*)&msg, sizeof(msg));
 	close_connection();
 }
+*/
 
 /* start playback */
 /*
@@ -1248,6 +1290,7 @@ bool CZapitClient::isPlayBackActive()
 */
 
 /* set audio mode */
+/*
 void CZapitClient::setAudioMode(const int mode)
 {
 	CZapitMessages::commandInt msg;
@@ -1255,8 +1298,10 @@ void CZapitClient::setAudioMode(const int mode)
 	send(CZapitMessages::CMD_SET_AUDIO_MODE, (char*)&msg, sizeof(msg));
 	close_connection();
 }
+*/
 
 /* get audio mode */
+/*
 void CZapitClient::getAudioMode(int * mode)
 {
         CZapitMessages::commandInt msg;
@@ -1265,8 +1310,10 @@ void CZapitClient::getAudioMode(int * mode)
         * mode = msg.val;
         close_connection();
 }
+*/
 
 /* set record mode */
+/*
 void CZapitClient::setRecordMode(const bool activate)
 {
 	CZapitMessages::commandSetRecordMode msg;
@@ -1274,8 +1321,10 @@ void CZapitClient::setRecordMode(const bool activate)
 	send(CZapitMessages::CMD_SET_RECORD_MODE, (char*)&msg, sizeof(msg));
 	close_connection();
 }
+*/
 
 // is record mode active
+/*
 bool CZapitClient::isRecordModeActive()
 {
 	send(CZapitMessages::CMD_GET_RECORD_MODE);
@@ -1286,6 +1335,7 @@ bool CZapitClient::isRecordModeActive()
 	close_connection();
 	return response.activated;
 }
+*/
 
 /* register event */
 void CZapitClient::registerEvent(const unsigned int eventID, const unsigned int clientID, const char * const udsName)

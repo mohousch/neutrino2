@@ -287,7 +287,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		paintLine(xpos2, ypos_cur_satellite, w - 95, scanSettings->satNameNoDiseqc);
 		paintLine(xpos2, ypos_frequency, w, buffer);
 
-		success = g_Zapit->tune_TP(TP, feindex);
+		success = zapit_tune_TP(TP, feindex);
 	} 
 	else if(manual)
 		success = g_Zapit->scan_TP(TP, feindex);

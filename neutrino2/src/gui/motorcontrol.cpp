@@ -153,7 +153,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 	TP.polarization = scanSettings->TP_pol;
 
 	zapit_stopPlayBack();
-	g_Zapit->tune_TP(TP, feindex);
+	zapit_tune_TP(TP, feindex);
 
 	paint();
 	paintMenu();

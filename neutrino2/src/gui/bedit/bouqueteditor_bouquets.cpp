@@ -582,7 +582,7 @@ void CBEBouquetWidget::saveChanges()
 	hintBox->paint();
 	
 	g_Zapit->saveBouquets();
-	g_Zapit->reinitChannels();
+	zapit_reinitChannels();
 	
 	hintBox->hide();
 	delete hintBox;

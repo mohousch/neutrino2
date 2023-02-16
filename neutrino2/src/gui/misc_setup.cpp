@@ -399,7 +399,7 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 		}
 
 		// audio mode
-		g_Zapit->setAudioMode(g_settings.audio_AnalogMode);
+		zapit_setAudioMode(g_settings.audio_AnalogMode);
 
 		if(audioDecoder)
 			audioDecoder->SetHdmiDD(g_settings.hdmi_dd );
@@ -602,7 +602,7 @@ bool CChannelListSettings::changeNotify(const std::string& OptionName, void */*d
 	{
 		setZapitConfig(&zapitCfg);
 		
-		g_Zapit->reinitChannels();
+		zapit_reinitChannels();
 		
 		return true;
 	}

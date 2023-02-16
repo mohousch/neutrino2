@@ -1763,9 +1763,15 @@ void CChannelList::paint()
 
 void CChannelList::paintCurrentNextEvent(int _selected)
 {
-	if (window) window->restoreScreen(); window->paint();
-	if (hline) hline->paint();
-	if (vline) vline->paint();
+	if (window)
+	{	window->restoreScreen(); 
+		window->paint();
+	}
+	
+	if (hline) 
+		hline->paint();
+	if (vline) 
+		vline->paint();
 	
 	CChannelEvent * p_event = NULL;
 	time_t jetzt = time(NULL);

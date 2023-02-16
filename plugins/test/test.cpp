@@ -4749,7 +4749,7 @@ void CTestMenu::testChannelSelectWidget()
 	//CSelectChannelWidget_TVChanID;
 	//CSelectChannelWidget_TVChanName.c_str();
 
-	printf("testChannelSelectWidget: chan_id:%llx chan_name:%s\n", CSelectChannelWidgetHandler->getChannelID(), g_Zapit->getChannelName(CSelectChannelWidgetHandler->getChannelID()).c_str());
+	printf("testChannelSelectWidget: chan_id:%llx chan_name:%s\n", CSelectChannelWidgetHandler->getChannelID(), zapit_getChannelName(CSelectChannelWidgetHandler->getChannelID()).c_str());
 		
 	delete CSelectChannelWidgetHandler;
 	CSelectChannelWidgetHandler = NULL;

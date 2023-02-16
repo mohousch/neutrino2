@@ -285,7 +285,7 @@ class CZapitClient : public CBasicClient
 		t_channel_id getCurrentServiceID();
 		
 		/* return the record (tuned) ServiceID */
-		t_channel_id getRecordServiceID();
+		//t_channel_id getRecordServiceID();
 
 		/* return the current satellite position */
 		int32_t getCurrentSatellitePosition();
@@ -294,7 +294,7 @@ class CZapitClient : public CBasicClient
 		//void getLastChannel(unsigned int &channumber, char &mode);
 
 		/* audiochan set */
-		void setAudioChannel(const unsigned int channel);
+		//void setAudioChannel(const unsigned int channel);
 
 		/* gets all bouquets */
 		/* bouquets are numbered starting at 0 */
@@ -315,15 +315,15 @@ class CZapitClient : public CBasicClient
 
 		/* request information about a particular channel_id */
 		/* channel name */
-		std::string getChannelName(const t_channel_id channel_id);
+		//std::string getChannelName(const t_channel_id channel_id);
 
-		int getChannelNumber(const t_channel_id channel_id);
+		//int getChannelNumber(const t_channel_id channel_id);
 
 		// webtv channel url
-		std::string getChannelURL(const t_channel_id channel_id);
+		//std::string getChannelURL(const t_channel_id channel_id);
 
 		// webtv channel description
-		std::string getChannelDescription(const t_channel_id channel_id);
+		//std::string getChannelDescription(const t_channel_id channel_id);
 
 		/* is channel a TV channel ? */
 		//bool isChannelTVChannel(const t_channel_id channel_id);
@@ -337,22 +337,22 @@ class CZapitClient : public CBasicClient
 		void restoreBouquets();
 
 		/* reloads channels and services*/
-		void reinitChannels();
+		//void reinitChannels();
 
 		/* called when sectionsd updates currentservices.xml */
-		void reloadCurrentServices();
+		//void reloadCurrentServices();
 
 		/* get current APID-List */
 		void getPIDS( responseGetPIDs& pids );
 		
 		/* get record channel APID-List */
-		void getRecordPIDS(responseGetPIDs& pids);
+		//void getRecordPIDS(responseGetPIDs& pids);
 
 		/* get info about the current service */
 		CZapitClient::CCurrentServiceInfo getCurrentServiceInfo();
 		
 		/* get info about the record service */
-		CZapitClient::CCurrentServiceInfo getRecordServiceInfo();
+		//CZapitClient::CCurrentServiceInfo getRecordServiceInfo();
 
 		/* transfer SubService-List to zapit */
 		void setSubServices( subServiceList& subServices );
@@ -364,22 +364,22 @@ class CZapitClient : public CBasicClient
 		//int getMode();
 
 		/* set RecordMode */
-		void setRecordMode(const bool activate);
+		//void setRecordMode(const bool activate);
 		
 		/* get RecordMode */
-		bool isRecordModeActive();
+		//bool isRecordModeActive();
 
 		/* mute audio */
-		void muteAudio(const bool mute);
-		bool getMuteStatus();
+		//void muteAudio(const bool mute);
+		//bool getMuteStatus();
 
 		/* set audio volume */
-		void setVolume(const unsigned int left, const unsigned int right);
-		void getVolume(unsigned int *left, unsigned int *right);
+		//void setVolume(const unsigned int left, const unsigned int right);
+		//void getVolume(unsigned int *left, unsigned int *right);
 		
 		/* set audio adjustement in percent */
-		void setVolumePercent(const unsigned int percent, t_channel_id channel_id = 0, const unsigned int apid = 0);
-		void getVolumePercent(unsigned int * percent, t_channel_id channel_id = 0, const unsigned int apid = 0, const bool is_ac3 = false);
+		//void setVolumePercent(const unsigned int percent, t_channel_id channel_id = 0, const unsigned int apid = 0);
+		//void getVolumePercent(unsigned int * percent, t_channel_id channel_id = 0, const unsigned int apid = 0, const bool is_ac3 = false);
 
 		/* get dvb transmission type */
 		delivery_system_t getDeliverySystem(int feindex = 0);
@@ -395,9 +395,9 @@ class CZapitClient : public CBasicClient
 		/*					*/
 		/****************************************/
 		/* start TS-Scan */
-		bool setConfig(Zapit_config Cfg);
-		void getConfig(Zapit_config * Cfg);
-		bool Rezap();
+		//bool setConfig(Zapit_config Cfg);
+		//void getConfig(Zapit_config * Cfg);
+		//bool Rezap();
 		bool startScan(int scan_mode, int feindex = 0);
 		bool stopScan();
 		/* start manual scan */
@@ -507,13 +507,13 @@ class CZapitClient : public CBasicClient
 		//void pausePlayBack();
 		//void continuePlayBack();
 
-		bool tune_TP(TP_params TP, int feindex = 0);
+		//bool tune_TP(TP_params TP, int feindex = 0);
 		
 		//bool isPlayBackActive();
 		
-		void setAudioMode(int mode);
-		void getAudioMode(int * mode);
-		void setVideoSystem(int video_system);
+		//void setAudioMode(int mode);
+		//void getAudioMode(int * mode);
+		//fsetVoluvoid setVideoSystem(int video_system);
 		
 		//void addFrontend();
 

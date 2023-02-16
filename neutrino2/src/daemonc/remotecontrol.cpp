@@ -640,7 +640,7 @@ void CRemoteControl::setAPID( uint32_t APID )
 		return;
 
 	current_PIDs.PIDs.selected_apid = APID;
-	g_Zapit->setAudioChannel( APID );
+	zapit_setAudioChannel( APID );
 	
 	// needed for auto audio select
 	CVFD::getInstance()->ShowIcon(VFD_ICON_DOLBY, current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].is_ac3? true : false);

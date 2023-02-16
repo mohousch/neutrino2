@@ -54,18 +54,19 @@ class CZapitMessages
 			//CMD_ZAPTO_SERVICEID_NOWAIT         =  8,
 			//CMD_ZAPTO_SUBSERVICEID_NOWAIT      =  9,
 
-			CMD_STOP_VIDEO                     = 10,		// not supported yet
+			//CMD_STOP_VIDEO                     = 10,		// not supported yet
 			//CMD_SET_MODE                       = 11,
 			//CMD_GET_MODE                       = 12,
 			//CMD_GET_LAST_CHANNEL               = 13,
-			CMD_GET_APID_VPID                  = 14,		// not supported yet
-			CMD_GET_VTXT_PID                   = 15,		// not supported yet
-			CMD_GET_NVOD_CHANNELS              = 16,		// not supported yet
-			CMD_REINIT_CHANNELS                = 17,
+			//CMD_GET_APID_VPID                  = 14,		// not supported yet
+			//CMD_GET_VTXT_PID                   = 15,		// not supported yet
+			//CMD_GET_NVOD_CHANNELS              = 16,		// not supported yet
+			//CMD_REINIT_CHANNELS                = 17,
 			CMD_GET_CHANNELS                   = 18,
 			CMD_GET_BOUQUETS                   = 19,
 			CMD_GET_BOUQUET_CHANNELS           = 20,
-			CMD_GET_CA_INFO                    = 21,		// not supported yet
+			CMD_GET_BOUQUET_NCHANNELS          = 94,
+			//CMD_GET_CA_INFO                    = 21,		// not supported yet
 			CMD_GET_CURRENT_SERVICEID          = 22,
 			CMD_GET_CURRENT_SERVICEINFO        = 23,
 			CMD_GET_DELIVERY_SYSTEM            = 24,
@@ -81,6 +82,9 @@ class CZapitMessages
 			CMD_SCANSETDISEQCTYPE              = 33,
 			CMD_SCANSETDISEQCREPEAT            = 34,
 			CMD_SCANSETBOUQUETMODE             = 35,
+			CMD_SCANSETFEMODE                 = 111,
+			CMD_SCANSETTYPE                    = 79,
+			CMD_SCANSTOP                       = 98,
 
 			CMD_BQ_ADD_BOUQUET                 = 36,
 			CMD_BQ_MOVE_BOUQUET                = 37,
@@ -97,67 +101,60 @@ class CZapitMessages
 			CMD_BQ_RESTORE                     = 48,
 			CMD_BQ_SAVE_BOUQUETS               = 50,
 
-			CMD_SET_RECORD_MODE                = 51,
-			CMD_GET_RECORD_MODE                = 52,
+			//CMD_SET_RECORD_MODE                = 51,
+			//CMD_GET_RECORD_MODE                = 52,
 			//CMD_SB_START_PLAYBACK              = 53,
 			//CMD_SB_STOP_PLAYBACK               = 54,
 			//CMD_SB_GET_PLAYBACK_ACTIVE         = 55,
 			
-			CMD_SET_AUDIO_MODE                 = 57,
-			CMD_READY                          = 58,
+			//CMD_SET_AUDIO_MODE                 = 57,
+			//CMD_READY                          = 58,
 			CMD_GETPIDS                        = 59,
 			CMD_SETSUBSERVICES                 = 60,
-			CMD_SET_AUDIOCHAN                  = 61,
-			CMD_MUTE                           = 62,
-			CMD_SET_VOLUME                     = 63,
+			//CMD_SET_AUDIOCHAN                  = 61,
+			//CMD_MUTE                           = 62,
+			//CMD_SET_VOLUME                     = 63,
 			//CMD_SET_STANDBY                    = 64,
-			CMD_SET_VIDEO_SYSTEM               = 65,
-			CMD_SET_NTSC                       = 66,
+			//CMD_SET_VIDEO_SYSTEM               = 65,
+			//CMD_SET_NTSC                       = 66,
 
 			CMD_NVOD_SUBSERVICE_NUM            = 67,
 			CMD_SEND_MOTOR_COMMAND             = 68,
 
-			CMD_GET_CHANNEL_NAME               = 69,
+			//CMD_GET_CHANNEL_NAME               = 69,
 			//CMD_IS_TV_CHANNEL                  = 70,
-
-			CMD_SCANSETTYPE                    = 79,
-			CMD_RELOAD_CURRENTSERVICES	   = 80,
-
-			CMD_TUNE_TP                        = 91,
-			
 			//CMD_SB_LOCK_PLAYBACK		   = 92,
 			//CMD_SB_UNLOCK_PLAYBACK		   = 93,
-			CMD_GET_BOUQUET_NCHANNELS          = 94,
 			
-			CMD_REZAP		  	   = 95,
-			CMD_GETCONFIG		  	   = 96,
-			CMD_SETCONFIG		  	   = 97,
-			CMD_SCANSTOP                       = 98,
 			
-			CMD_GET_VOLUME          	   = 104,
-			CMD_GET_AUDIO_MODE      	   = 105,
-			CMD_GET_MUTE_STATUS		   = 106,
+			//CMD_RELOAD_CURRENTSERVICES	   = 80,
+			//CMD_TUNE_TP                        = 91,
+			//CMD_REZAP		  	   = 95,
 			
-			CMD_GET_RECORD_SERVICEID          = 107,
-			CMD_GET_RECORD_SERVICEINFO        = 108,
+			//CMD_GETCONFIG		  	   = 96,
+			//CMD_SETCONFIG		  	   = 97,
+			//CMD_GET_VOLUME          	   = 104,
+			//CMD_GET_AUDIO_MODE      	   = 105,
+			//CMD_GET_MUTE_STATUS		   = 106,
 			
-			CMD_GETRECORDPIDS		  = 109,
+			//CMD_GET_RECORD_SERVICEID          = 107,
+			//CMD_GET_RECORD_SERVICEINFO        = 108,
 			
-			CMD_SCANSETFEMODE                 = 111,
+			//CMD_GETRECORDPIDS		  = 109,
 			
-			CMD_SET_VOLUME_PERCENT		  = 112,
-			CMD_GET_VOLUME_PERCENT		  = 113,
+			//CMD_SET_VOLUME_PERCENT		  = 112,
+			//CMD_GET_VOLUME_PERCENT		  = 113,
 
 			//CMD_SB_PAUSE_PLAYBACK		  = 114,
 			//CMD_SB_CONTINUE_PLAYBACK	  = 115,
 
-			CMD_GET_CHANNEL_URL		  = 116,
-			CMD_GET_CHANNEL_DESCRIPTION	  = 117,
+			//CMD_GET_CHANNEL_URL		  = 116,
+			//CMD_GET_CHANNEL_DESCRIPTION	  = 117,
 
 			//CMD_IS_WEBTV_CHANNEL		  = 118,
 			//CMD_IS_RADIO_CHANNEL		  = 119,
 
-			CMD_GET_CHANNEL_NUMBER		  = 120
+			//CMD_GET_CHANNEL_NUMBER		  = 120
 		};
 
 		struct commandBoolean
