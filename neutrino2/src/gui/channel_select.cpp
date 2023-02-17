@@ -23,7 +23,7 @@
 #endif
 
 // zapit includes
-#include <bouquets.h>
+#include <zapit/bouquets.h>
 
 #include "gui/channel_select.h"
 

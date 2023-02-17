@@ -5,7 +5,7 @@ LANGPO = $(LANGS:=.po)
 
 EXTRA_DIST = $(LANGPO)
 
-neutrinohd2.pot: $(top_srcdir)/src/*.cpp $(top_srcdir)/src/gui/*.cpp $(top_srcdir)/src/gui/widget/*.cpp $(top_srcdir)/src/system/*.cpp $(top_srcdir)/src/driver/*.cpp $(top_srcdir)/src/daemonc/*.cpp $(top_srcdir)/src/zapit/src/*.cpp \
+neutrinohd2.pot: $(top_srcdir)/src/*.cpp $(top_srcdir)/src/gui/*.cpp $(top_srcdir)/src/gui/widget/*.cpp $(top_srcdir)/src/system/*.cpp $(top_srcdir)/src/driver/*.cpp $(top_srcdir)/src/daemonc/*.cpp $(top_srcdir)/src/zapit/*.cpp \
 	$(top_srcdir)/../plugins/test/*.cpp \
 	$(top_srcdir)/../plugins/audioplayer/*.cpp \
 	$(top_srcdir)/../plugins/fileexplorer/*.cpp \

@@ -23,7 +23,7 @@ nicht gespeichert werden.
 #ifndef SEEN_LastChannel
 #define SEEN_LastChannel
 
-#include <client/zapitclient.h>
+#include <zapit/zapitclient.h>
 #include <list>
 
 

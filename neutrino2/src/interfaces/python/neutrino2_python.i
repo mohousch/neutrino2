@@ -99,10 +99,10 @@
 #include <gui/plugins.h>
 
 // zapit
-#include <zapit/include/zapit/bouquets.h>
-#include <zapit/include/zapit/channel.h>
-#include <zapit/include/zapit/client/zapittypes.h>
-#include <zapit/include/zapit/client/zapitclient.h>
+#include <zapit/bouquets.h>
+#include <zapit/channel.h>
+#include <zapit/zapittypes.h>
+#include <zapit/zapitclient.h>
 
 // sectionsd
 #include <sectionsd/sectionsdtypes.h>
@@ -199,10 +199,10 @@
 %include <src/gui/plugins.h>
 
 // zapit
-//%include <src/zapit/include/zapit/bouquets.h>
-%include <src/zapit/include/zapit/channel.h>
-%include <src/zapit/include/zapit/client/zapittypes.h>
-%include <src/zapit/include/zapit/client/zapitclient.h>
+//%include <src/zapit/bouquets.h>
+%include <src/zapit/channel.h>
+%include <src/zapit/zapittypes.h>
+%include <src/zapit/zapitclient.h>
 
 // sectionsd
 //%include <lib/sectionsdclient/sectionsdMsg.h>

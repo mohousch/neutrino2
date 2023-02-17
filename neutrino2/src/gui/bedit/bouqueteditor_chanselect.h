@@ -43,9 +43,9 @@
 #include <gui/widget/listbox.h>
 
 // zapit includes
-#include <client/zapitclient.h>
-#include <channel.h>
-#include <bouquets.h>
+#include <zapit/zapitclient.h>
+#include <zapit/channel.h>
+#include <zapit/bouquets.h>
 
 
 class CBEChannelSelectWidget : public CMenuTarget

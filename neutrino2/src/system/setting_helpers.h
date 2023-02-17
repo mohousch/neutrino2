@@ -39,7 +39,7 @@
 #include <gui/widget/listbox.h>
 
 // zapit includes
-#include <client/zapittypes.h>
+#include <zapit/zapittypes.h>
 
 #include <string>
 

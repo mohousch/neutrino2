@@ -52,7 +52,7 @@
 #include <gui/streaminfo2.h>
 
 // zapit includes
-#include <frontend_c.h>
+#include <zapit/frontend_c.h>
 
 #include <system/debug.h>
 

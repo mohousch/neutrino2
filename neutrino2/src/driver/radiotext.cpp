@@ -68,7 +68,8 @@
 #include "radiotools.h"
 
 /*zapit includes*/
-#include <frontend_c.h>
+#include <zapit/frontend_c.h>
+
 #include <video_cs.h>
 //
 #include <framebuffer.h>

@@ -63,10 +63,10 @@
 #include <daemonc/remotecontrol.h>
 
 //
-#include <zapit.h>
-#include <client/zapittypes.h>
-#include <frontend_c.h>
-#include <channel.h>
+#include <zapit/zapit.h>
+#include <zapit/zapittypes.h>
+#include <zapit/frontend_c.h>
+#include <zapit/channel.h>
 
 #include <system/helpers.h>
 #include <system/debug.h>

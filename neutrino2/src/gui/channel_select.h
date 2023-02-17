@@ -27,7 +27,7 @@
 #include <string>
 
 // zapit includes
-#include <client/zapitclient.h>
+#include <zapit/zapitclient.h>
 
 		
 class CSelectChannelWidget : public CMenuTarget

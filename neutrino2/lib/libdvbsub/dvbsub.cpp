@@ -18,7 +18,7 @@
 #include "helpers.hpp"
 #include "dvbsubtitle.h"
 
-#include <frontend_c.h>
+#include <zapit/frontend_c.h>
 
 
 extern CFrontend * live_fe;

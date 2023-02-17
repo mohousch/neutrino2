@@ -25,7 +25,7 @@
 
 #include <string>
 
-#include <frontend_c.h>
+#include <zapit/frontend_c.h>
 #include "dmx_cs.h"
 
 

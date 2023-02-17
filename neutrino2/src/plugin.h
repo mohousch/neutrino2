@@ -50,9 +50,6 @@
 // neutrino
 #include <neutrino2.h>
 
-// 
-#include <client/zapitclient.h>
-
 #include <sectionsd/sectionsd.h>
 
 #include <timerdclient/timerdclient.h>
@@ -181,11 +178,12 @@
 #include <system/httptool.h>
 
 // zapit
-#include <frontend_c.h>
-#include <getservices.h>
-#include <satconfig.h>
-#include <channel.h>
-#include <bouquets.h>
+#include <zapit/frontend_c.h>
+#include <zapit/getservices.h>
+#include <zapit/satconfig.h>
+#include <zapit/channel.h>
+#include <zapit/bouquets.h>
+#include <zapit/zapitclient.h>
 
 // libdvbapi
 #include <playback_cs.h>

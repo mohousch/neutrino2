@@ -51,8 +51,8 @@
 #include <neutrino2.h>
 
 /*zapit includes*/
-#include <satconfig.h>
-#include <frontend_c.h>
+#include <zapit/satconfig.h>
+#include <zapit/frontend_c.h>
 
 #include <gui/pictureviewer.h>
 
@@ -230,29 +230,29 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	
 	/*
 	// send fe mode
-	g_Zapit->setFEMode((fe_mode_t)scanSettings->femode, feindex);
+	zapit_setFEMode((fe_mode_t)scanSettings->femode, feindex);
 
 	if( getFE(feindex)->getInfo()->type == FE_QPSK )
 	{
 		// send diseqc type to zapit
 		diseqcType = (diseqc_t) scanSettings->diseqcMode;
 		
-		g_Zapit->setDiseqcType(diseqcType, feindex);
+		zapit_setDiseqcType(diseqcType, feindex);
 		//printf("scan.cpp send to zapit diseqctype: %d\n", diseqcType);
 			
 		// send diseqc repeat to zapit
-		g_Zapit->setDiseqcRepeat( scanSettings->diseqcRepeat, feindex);
+		zapit_setDiseqcRepeat( scanSettings->diseqcRepeat, feindex);
 	}
 	*/
 	
 	// send bouquets mode
-	g_Zapit->setScanBouquetMode( (CZapitClient::bouquetMode) scanSettings->bouquetMode);
+	zapit_setScanBouquetMode( (CZapitClient::bouquetMode) scanSettings->bouquetMode);
 
 	// send satellite list to zapit
-	g_Zapit->setScanSatelliteList(satList);
+	zapit_setScanSatelliteList(satList);
 
         // send scantype to zapit
-        g_Zapit->setScanType((CZapitClient::scanType) scanSettings->scanType );
+        zapit_setScanType((CZapitClient::scanType) scanSettings->scanType );
 	
 	paint(test);
 	
@@ -287,12 +287,12 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		paintLine(xpos2, ypos_cur_satellite, w - 95, scanSettings->satNameNoDiseqc);
 		paintLine(xpos2, ypos_frequency, w, buffer);
 
-		success = zapit_tune_TP(TP, feindex);
+		success = zapit_tuneTP(TP, feindex);
 	} 
 	else if(manual)
-		success = g_Zapit->scan_TP(TP, feindex);
+		success = zapit_scanTP(TP, feindex);
 	else
-		success = g_Zapit->startScan(scan_mode, feindex);
+		success = zapit_startScan(scan_mode, feindex);
 
 	// poll for messages
 	istheend = !success;
@@ -328,7 +328,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	
 	// to join scan thread
-	g_Zapit->stopScan();
+	zapit_stopScan();
 
 	if(!manual) 
 	{

@@ -57,7 +57,7 @@
 #include <gui/epgplus.h>
 
 //
-#include <client/zapitclient.h>
+#include <zapit/zapitclient.h>
 
 #include <algorithm>
 

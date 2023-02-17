@@ -37,9 +37,9 @@
 #include <stdio.h>
 
 // zapit includes
-#include <client/msgtypes.h>
-#include <client/zapitclient.h>
-#include <zapit.h>
+#include <zapit/msgtypes.h>
+#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 
 #include <sectionsd/sectionsd.h>
 #include <timerdclient/timerdclient.h>
@@ -85,7 +85,7 @@
 
 NEUTRINO_CPP  SNeutrinoSettings	g_settings;
 
-NEUTRINO_CPP  CZapitClient		*g_Zapit;
+//NEUTRINO_CPP  CZapitClient		*g_Zapit;
 //NEUTRINO_CPP  CSectionsdClient	*g_Sectionsd;
 NEUTRINO_CPP  CTimerdClient		*g_Timerd;
 

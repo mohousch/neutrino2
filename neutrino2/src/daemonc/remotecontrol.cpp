@@ -47,7 +47,7 @@
 #include <system/helpers.h>
 
 // zapit includes
-#include <bouquets.h>
+#include <zapit/bouquets.h>
 
 
 extern tallchans allchans;	// defined in bouquets.h
@@ -249,7 +249,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				{
 					// ist nur ein neues Programm, kein neuer Kanal
 					// PIDs neu holen
-					g_Zapit->getPIDS( current_PIDs );
+					zapit_getPIDS( current_PIDs );
 					
 					// APID Bearbeitung neu anstossen
 					has_unresolved_ctags = true;
@@ -327,7 +327,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			}
 			
 			// get pids
-			g_Zapit->getPIDS(current_PIDs );
+			zapit_getPIDS(current_PIDs );
 
 			t_channel_id * p = new t_channel_id;
 			*p = current_channel_id;
@@ -346,7 +346,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	}
 	else if (msg == NeutrinoMessages::EVT_PMT_CHANGED) 
 	{
-		g_Zapit->getPIDS(current_PIDs);
+		zapit_getPIDS(current_PIDs);
 		processAPIDnames();
 		
 		return messages_return::unhandled;
@@ -631,7 +631,7 @@ void CRemoteControl::copySubChannelsToZapit(void)
 	for (CSubServiceListSorted::const_iterator e = subChannels.begin(); e != subChannels.end(); e++)
 		zapitList.push_back(e->getAsZapitSubService());
 
-	g_Zapit->setSubServices(zapitList);
+	zapit_setSubServices(zapitList);
 }
 
 void CRemoteControl::setAPID( uint32_t APID )

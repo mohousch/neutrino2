@@ -63,7 +63,7 @@
 #include <gui/bouquetlist.h>
 
 // zapit
-#include <client/zapitclient.h>
+#include <zapit/zapitclient.h>
 
 
 // CNeutrinoApp -  main run-class
@@ -232,7 +232,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		CColorSetupNotifier *colorSetupNotifier;
 
 		//
-		void initZapitClient();
+		//void initZapitClient();
 		void initTimerdClient();
 
 		void readEPG();

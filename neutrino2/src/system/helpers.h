@@ -42,7 +42,7 @@
 #include <gui/widget/icons.h>
 
 // zapit types
-#include <client/zapittypes.h>
+#include <zapit/zapittypes.h>
 
 #include <OpenThreads/Thread>
 

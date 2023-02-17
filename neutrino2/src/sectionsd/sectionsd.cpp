@@ -71,7 +71,7 @@
 #include <libxmltree/xmlinterface.h>
 
 // zapit includes
-#include <settings.h>
+#include <zapit/settings.h>
 #include <configfile.h>
 
 #include <sectionsd/sectionsd.h>
@@ -94,8 +94,8 @@
 
 #include <global.h>
 
-#include <bouquets.h>
-#include <frontend_c.h>
+#include <zapit/bouquets.h>
+#include <zapit/frontend_c.h>
 
 extern tallchans allchans;	// defined in zapit.cpp.
 int op_increase(int i) { return ++i; }

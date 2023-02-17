@@ -34,7 +34,7 @@
 
 #include <string>
 
-#include <client/zapitclient.h>
+#include <zapit/zapitclient.h>
 
 #include <configfile.h>
 

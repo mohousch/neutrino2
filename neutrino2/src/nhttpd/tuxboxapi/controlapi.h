@@ -9,7 +9,7 @@
 // yhttpd
 
 /*zapit includes*/
-#include <channel.h>
+#include <zapit/channel.h>
 #include "yhook.h"
 
 // forward declaration

@@ -40,9 +40,9 @@
 #include <gui/widget/listbox.h>
 
 // zapit
-#include <client/zapitclient.h>
-#include <channel.h>
-#include <bouquets.h>
+#include <zapit/zapitclient.h>
+#include <zapit/channel.h>
+#include <zapit/bouquets.h>
 
 #include <string>
 #include <gui/widget/listbox.h>

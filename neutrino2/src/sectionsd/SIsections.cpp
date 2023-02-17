@@ -42,7 +42,8 @@
 #include <dmxapi.h>
 
 /*zapit includes*/
-#include <dvbstring.h>
+#include <zapit/dvbstring.h>
+
 #include <edvbstring.h>
 
 

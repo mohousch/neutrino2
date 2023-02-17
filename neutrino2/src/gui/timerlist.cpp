@@ -68,9 +68,9 @@
 #include <system/debug.h>
 
 //
-#include <client/zapitclient.h>
-#include <channel.h>
-#include <bouquets.h>
+#include <zapit/zapitclient.h>
+#include <zapit/channel.h>
+#include <zapit/bouquets.h>
 
 #include <gui/channel_select.h>
 

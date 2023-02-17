@@ -34,7 +34,7 @@
 
 #include <driver/framebuffer.h>
 
-#include <settings.h>  //zapit/settings.h
+#include <zapit/settings.h>  //zapit/settings.h
 
 
 class CTPSelectHandler : public CMenuTarget

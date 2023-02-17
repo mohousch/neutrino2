@@ -42,7 +42,7 @@
 #include <system/debug.h>
 
 /*zapit includes*/
-#include <frontend_c.h>
+#include <zapit/frontend_c.h>
 
 
 extern CFrontend * live_fe;			/* zapit.cpp */

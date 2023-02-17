@@ -25,7 +25,7 @@
 #include <config.h>
 #include <string>
 
-#include <frontend_c.h>
+#include <zapit/frontend_c.h>
 
 
 #ifndef AUDIO_SOURCE_HDMI

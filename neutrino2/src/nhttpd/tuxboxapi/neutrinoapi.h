@@ -11,7 +11,7 @@
 #include <timerdclient/timerdclient.h>
 
 /*zapit includes*/
-#include <client/zapitclient.h>
+#include <zapit/zapitclient.h>
 
 // nhttpd
 #include "helper.h"
@@ -32,7 +32,7 @@ class CNeutrinoAPI
 {
 	// Clientlibs
 	//CSectionsdClient	*Sectionsd;
-	CZapitClient		*Zapit;
+	//CZapitClient		*Zapit;
 	CTimerdClient		*Timerd;
 #ifdef ENABLE_LCDAPI
 	CLCDAPI                 *LcdAPI;

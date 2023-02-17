@@ -44,8 +44,8 @@
 #include <sectionsd/sectionsd.h>
 
 // zapit includes
-#include <client/zapitclient.h>
-#include <channel.h>
+#include <zapit/zapitclient.h>
+#include <zapit/channel.h>
 
 #include <string>
 #include <vector>

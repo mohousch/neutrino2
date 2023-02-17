@@ -60,10 +60,10 @@
 #include <driver/vcrcontrol.h>
 
 //
-#include <bouquets.h>
-#include <satconfig.h>
-#include <getservices.h>
-#include <frontend_c.h>
+#include <zapit/bouquets.h>
+#include <zapit/satconfig.h>
+#include <zapit/getservices.h>
+#include <zapit/frontend_c.h>
 
 #include <gui/epgplus.h>
 #include <system/debug.h>

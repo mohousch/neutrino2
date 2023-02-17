@@ -149,11 +149,11 @@
 #include <timerdclient/timerdmsg.h>
 
 // zapit includes
-#include <frontend_c.h>
-#include <getservices.h>
-#include <satconfig.h>
-#include <channel.h>
-#include <bouquets.h>
+#include <zapit/frontend_c.h>
+#include <zapit/getservices.h>
+#include <zapit/satconfig.h>
+#include <zapit/channel.h>
+#include <zapit/bouquets.h>
 
 // libdvbapi
 #include <video_cs.h>
@@ -234,8 +234,8 @@ static pthread_t stream_thread ;
 
 // zapit thread
 extern int zapit_ready;					//defined in zapit.cpp
-static pthread_t zapit_thread ;
-void * zapit_main_thread(void *data);
+//static pthread_t zapit_thread ;
+//void * zapit_main_thread(void *data);
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 Zapit_config zapitCfg;
 void setZapitConfig(Zapit_config * Cfg);
@@ -316,7 +316,7 @@ static void initGlobals(void)
 	g_fontRenderer  = NULL;
 	g_RCInput       = NULL;
 	g_Timerd        = NULL;
-	g_Zapit 	= new CZapitClient;
+	//g_Zapit 	= new CZapitClient;
 	g_RemoteControl = NULL;
 	g_EpgData       = NULL;
 	g_InfoViewer    = NULL;
@@ -2325,7 +2325,7 @@ void CNeutrinoApp::InitZapper()
 		CSectionsd::getInstance()->setServiceChanged(live_channel_id&0xFFFFFFFFFFFFULL, true );
 		
 		// process apids
-		g_Zapit->getPIDS(g_RemoteControl->current_PIDs);
+		zapit_getPIDS(g_RemoteControl->current_PIDs);
 		g_RemoteControl->processAPIDnames();
 				
 		// permenant timeshift
@@ -2349,6 +2349,7 @@ static void CSSendMessage(uint32_t msg, uint32_t data)
 }
 #endif
 
+#if 0
 void CNeutrinoApp::initZapitClient()
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::initZapitClient\n");
@@ -2389,8 +2390,10 @@ void CNeutrinoApp::initZapitClient()
 	};
 
 	for (int i = 0; i < ZAPIT_EVENT_COUNT; i++)
-		g_Zapit->registerEvent(zapit_event[i], 222, NEUTRINO_UDS_NAME);
+		//g_Zapit->registerEvent(zapit_event[i], 222, NEUTRINO_UDS_NAME);
+		eventServer->registerEvent2(zapit_event[i], 222, NEUTRINO_UDS_NAME);
 }
+#endif
 
 void CNeutrinoApp::initTimerdClient()
 {
@@ -2501,7 +2504,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 	current_volume = g_settings.current_volume;
 
 	// zapit
-	pthread_create(&zapit_thread, NULL, zapit_main_thread, (void *) &ZapStart_arg);	
+	//pthread_create(&zapit_thread, NULL, zapit_main_thread, (void *) &ZapStart_arg);
+	zapit_Start((void *) &ZapStart_arg);
 
 	// wait until zapit is ready
 	while(!zapit_ready)
@@ -2619,7 +2623,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	//initSectionsdClient();
 
 	// init zapit client
-	initZapitClient();
+	//initZapitClient();
 
 	// init timerd client
 	initTimerdClient();
@@ -3575,7 +3579,7 @@ _repeat:
 				if(old_b_id < 0) 
 					old_b_id = old_b;
 
-				g_Zapit->saveBouquets();
+				zapit_saveBouquets();
 			}
 
 			return messages_return::handled;
@@ -4290,8 +4294,8 @@ void CNeutrinoApp::ExitRun(int retcode, bool save)
 		if(g_fontRenderer)
 			delete g_fontRenderer;
 			
-		if(g_Zapit)
-			delete g_Zapit;
+		//if(g_Zapit)
+		//	delete g_Zapit;
 			
 		if (frameBuffer != NULL)
 			delete frameBuffer;
@@ -5184,10 +5188,10 @@ void stop_daemons()
 	CSectionsd::getInstance()->Stop();
 
 	// zapit stop	
-	dprintf(DEBUG_NORMAL, "stop_daemons: zapit shutdown\n");
-	g_Zapit->shutdown();
-	pthread_join(zapit_thread, NULL);
-	dprintf(DEBUG_NORMAL, "stop_daemons: zapit shutdown done\n");	
+	//dprintf(DEBUG_NORMAL, "stop_daemons: zapit shutdown\n");
+	//zapit_shutdown();
+	//pthread_join(zapit_thread, NULL);
+	//dprintf(DEBUG_NORMAL, "stop_daemons: zapit shutdown done\n");	
 }
 
 // stop subtitle

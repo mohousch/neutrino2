@@ -51,7 +51,7 @@
 #include <gui/widget/stringinput.h>
 
 //
-#include <client/zapitclient.h>
+#include <zapit/zapitclient.h>
 
 #include <system/debug.h>
 
@@ -581,7 +581,7 @@ void CBEBouquetWidget::saveChanges()
 	hintBox->setBorderMode(BORDER_ALL);
 	hintBox->paint();
 	
-	g_Zapit->saveBouquets();
+	zapit_saveBouquets();
 	zapit_reinitChannels();
 	
 	hintBox->hide();
@@ -594,7 +594,7 @@ void CBEBouquetWidget::discardChanges()
 	hintBox->setBorderMode(BORDER_ALL);
 	hintBox->paint();
 	
-	g_Zapit->restoreBouquets();
+	zapit_restoreBouquets();
 	
 	hintBox->hide();
 	delete hintBox;

@@ -5,7 +5,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir) \
 	-I$(srcdir) \
 	-I$(top_srcdir)/src \
-	-I$(top_srcdir)/src/zapit/include/zapit \
 	-I$(top_srcdir)/src/gui/widget \
 	-I$(top_srcdir)/src/nhttpd \
 	-I$(top_srcdir)/lib \
@@ -63,7 +62,7 @@ neutrino2_LDADD = \
 	gui/bedit/bouqueteditor_bouquets.o \
 	sectionsd/libsectionsd.a \
 	timerd/libtimerd.a \
-	zapit/src/libzapit.a \
+	zapit/libzapit.a \
 	nhttpd/libnhttpd.a \
 	nhttpd/tuxboxapi/libnhttpd_tuxboxapi.a \
 	nhttpd/yhttpd_mods/libyhttpdmods.a \
@@ -89,7 +88,6 @@ neutrino2_LDADD = \
 	gui/widget/mountchooser.o \
 	gui/widget/keychooser.o \
 	$(top_builddir)/lib/timerdclient/libtimerdclient.a \
-	$(top_builddir)/src/zapit/lib/libzapitclient.a \
 	$(top_builddir)/lib/libconfigfile/libtuxbox-configfile.a \
 	$(top_builddir)/lib/connection/libtuxbox-connection.a \
 	$(top_builddir)/lib/libeventserver/libtuxbox-eventserver.a \

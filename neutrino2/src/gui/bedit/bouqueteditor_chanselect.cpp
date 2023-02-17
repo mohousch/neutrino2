@@ -44,11 +44,11 @@
 #include <gui/widget/widget_helpers.h>
 
 //
-#include <client/zapitclient.h>
-#include <channel.h>
-#include <bouquets.h>
-#include <satconfig.h>
-#include <getservices.h>
+#include <zapit/zapitclient.h>
+#include <zapit/channel.h>
+#include <zapit/bouquets.h>
+#include <zapit/satconfig.h>
+#include <zapit/getservices.h>
 
 #include <system/debug.h>
 #include <system/helpers.h>

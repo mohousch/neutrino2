@@ -24,7 +24,7 @@
 #endif
 
 // zapit includes
-#include <bouquets.h>
+#include <zapit/bouquets.h>
 
 #include "gui/zapit_setup.h"
 

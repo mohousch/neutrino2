@@ -272,8 +272,6 @@ data/locale/Makefile
 src/sectionsd/Makefile
 src/timerd/Makefile
 src/zapit/Makefile
-src/zapit/lib/Makefile
-src/zapit/src/Makefile
 src/interfaces/Makefile
 src/interfaces/python/Makefile
 src/interfaces/lua/Makefile

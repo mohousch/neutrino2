@@ -67,8 +67,8 @@
 #include <sys/param.h>
 
 //
-#include <satconfig.h>
-#include <frontend_c.h>
+#include <zapit/satconfig.h>
+#include <zapit/frontend_c.h>
 
 #include <video_cs.h>
 #include <system/debug.h>
@@ -1527,7 +1527,7 @@ void CInfoViewer::showSNR()
 				char freq[20];
 				
 				// get current service info
-				CZapitClient::CCurrentServiceInfo si = g_Zapit->getCurrentServiceInfo();
+				CZapitClient::CCurrentServiceInfo si = zapit_getCurrentServiceInfo();
 				
 				// freq
 				if(live_fe != NULL)

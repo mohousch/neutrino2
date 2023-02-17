@@ -49,7 +49,7 @@
 #include <system/helpers.h>
 
 // zapit includes
-#include <bouquets.h>
+#include <zapit/bouquets.h>
 
 #include <wordexp.h>
 

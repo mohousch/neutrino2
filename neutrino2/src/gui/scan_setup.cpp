@@ -54,9 +54,9 @@
 #include <global.h>
 
 //zapit includes
-#include <frontend_c.h>
-#include <getservices.h>
-#include <satconfig.h>
+#include <zapit/frontend_c.h>
+#include <zapit/getservices.h>
+#include <zapit/satconfig.h>
 
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp

@@ -52,10 +52,10 @@
 #include <gui/widget/icons.h>
 
 //
-#include <client/zapitclient.h>
-#include <bouquets.h>
-#include <satconfig.h>
-#include <getservices.h>
+#include <zapit/zapitclient.h>
+#include <zapit/bouquets.h>
+#include <zapit/satconfig.h>
+#include <zapit/getservices.h>
 
 #include <system/debug.h>
 

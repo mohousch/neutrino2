@@ -28,7 +28,7 @@
 
 #include <list>
 
-#include <zapit/include/zapit/ci.h>
+#include <zapit/ci.h>
 
 
 #define MAX_MMI_ITEMS 20

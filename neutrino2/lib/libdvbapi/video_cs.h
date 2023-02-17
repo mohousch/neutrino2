@@ -25,7 +25,7 @@
 #include <linux/dvb/video.h>
 #include <driver/framebuffer.h>
 
-#include <frontend_c.h>
+#include <zapit/frontend_c.h>
 
 
 #ifndef VIDEO_SOURCE_HDMI

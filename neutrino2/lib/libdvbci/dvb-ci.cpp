@@ -45,7 +45,6 @@
 #include <driver/rcinput.h>
 
 #include <connection/messagetools.h>   /* get_length_field_size */
-#include <zapit/include/zapit/ci.h>
 
 #include <config.h>
 #include <system/debug.h>

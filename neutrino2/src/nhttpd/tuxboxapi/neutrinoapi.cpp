@@ -39,11 +39,11 @@
 #include <dmx_cs.h>
 
 /*zapit includes*/
-#include <frontend_c.h>
-#include <satconfig.h>
-#include <client/zapitclient.h>
-#include <channel.h>
-#include <bouquets.h>
+#include <zapit/frontend_c.h>
+#include <zapit/satconfig.h>
+#include <zapit/zapitclient.h>
+#include <zapit/channel.h>
+#include <zapit/bouquets.h>
 
 
 extern tallchans allchans;
@@ -132,7 +132,7 @@ std::string CNeutrinoAPI::ddmodes[] 		= { "CH1/CH2", "C", "L/R", "L/C/R", "L/R/S
 CNeutrinoAPI::CNeutrinoAPI()
 {
 	//Sectionsd = new CSectionsdClient();
-	Zapit = new CZapitClient();
+	//Zapit = new CZapitClient();
 	Timerd = new CTimerdClient();
 
 	NeutrinoYParser = new CNeutrinoYParser(this);
@@ -172,8 +172,8 @@ CNeutrinoAPI::~CNeutrinoAPI(void)
 	if (ControlAPI)
 		delete ControlAPI;
 	
-	if (Zapit)
-		delete Zapit;
+	//if (Zapit)
+	//	delete Zapit;
 		
 	if (Timerd)
 		delete Timerd;
@@ -186,7 +186,7 @@ void CNeutrinoAPI::UpdateBouquets(void)
 {
 #if 0 //FIXME
 	BouquetList.clear();
-	Zapit->getBouquets(BouquetList, true, true);
+	zapit_getBouquets(BouquetList, true, true);
 	for (unsigned int i = 1; i <= BouquetList.size(); i++)
 		UpdateBouquet(i);
 
@@ -228,7 +228,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 	}
 	else
 	{
-		if ( channel_id == Zapit->getCurrentServiceID() )
+		if ( channel_id == zapit_getCurrentServiceID() )
 			return;
 		
 // opengl liveplayback
@@ -261,7 +261,7 @@ void CNeutrinoAPI::ZapToSubService(const char * const target)
 t_channel_id CNeutrinoAPI::ChannelNameToChannelId(std::string search_channel_name)
 {
 //FIXME depending on mode missing
-	//int mode = Zapit->getMode();
+	//int mode = zapit_getMode();
 	t_channel_id channel_id = (t_channel_id)-1;
 	CStringArray channel_names = ySplitStringVector(search_channel_name, ",");
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 

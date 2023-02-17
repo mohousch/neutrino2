@@ -41,7 +41,7 @@
 #include <system/lastchannel.h>
 
 // zapit includes
-#include <bouquets.h>
+#include <zapit/bouquets.h>
 
 #include <string>
 #include <vector>

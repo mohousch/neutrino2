@@ -67,7 +67,7 @@
 #include <dmx_cs.h>
 
 /*zapit includes*/
-#include <frontend_c.h>
+#include <zapit/frontend_c.h>
 
 /*gui includes*/
 #include <gui/scan_setup.h>

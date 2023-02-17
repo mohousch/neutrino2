@@ -46,8 +46,8 @@
 #include <dmx_cs.h>
 
 /*zapit includes*/
-#include <frontend_c.h>
-#include <satconfig.h>
+#include <zapit/frontend_c.h>
+#include <zapit/satconfig.h>
 
 #include <system/debug.h>
 
@@ -179,7 +179,7 @@ int CStreamInfo2::doSignalStrengthLoop()
 	//CChannelList *channelList = CNeutrinoApp::getInstance ()->channelList;
 	//int curnum = channelList->getActiveChannelNumber();
 	//CZapitChannel * channel = channelList->getChannel(curnum);
-	//CZapitClient::CCurrentServiceInfo si = g_Zapit->getCurrentServiceInfo();
+	//CZapitClient::CCurrentServiceInfo si = zapit_getCurrentServiceInfo();
 	
 	ts_setup();
 
@@ -672,7 +672,7 @@ void CStreamInfo2::paint_techinfo(int xpos, int ypos)
 	  if(!IS_WEBTV(live_channel_id))
 	  {
 		//tsfrequenz
-		CZapitClient::CCurrentServiceInfo si = g_Zapit->getCurrentServiceInfo();
+		CZapitClient::CCurrentServiceInfo si = zapit_getCurrentServiceInfo();
 
 		ypos += iheight;
 		char * f = NULL, *s = NULL, *m = NULL;

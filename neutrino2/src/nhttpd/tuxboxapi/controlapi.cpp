@@ -29,8 +29,8 @@
 #include <neutrinoMessages.h>
 
 //
-#include <channel.h>
-#include <bouquets.h>
+#include <zapit/channel.h>
+#include <zapit/bouquets.h>
 
 #include <configfile.h>
 // yhttpd
@@ -525,7 +525,7 @@ void CControlAPI::GetBouquetsxmlCGI(CyhookHandler *hh)
 // get actual channel_id
 void CControlAPI::GetChannel_IDCGI(CyhookHandler *hh)
 {
-	CZapitClient::CCurrentServiceInfo current_pids = NeutrinoAPI->Zapit->getCurrentServiceInfo();
+	CZapitClient::CCurrentServiceInfo current_pids = zapit_getCurrentServiceInfo();
 	hh->printf("%x%04x%04x\n",current_pids.tsid, current_pids.onid, current_pids.sid);
 }
 
@@ -1307,7 +1307,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 	{
 		hh->printf("%llx"
 				"\n",
-				NeutrinoAPI->Zapit->getCurrentServiceID()&0xFFFFFFFFFFFFULL);
+				zapit_getCurrentServiceID()&0xFFFFFFFFFFFFULL);
 		return;
 	}
 	else
@@ -1349,7 +1349,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 			hh->Write((char *) (scanning ? "1" : "0"));
 		else if (hh->ParamList["1"] == "getallsubchannels")
 		{
-			t_channel_id current_channel = NeutrinoAPI->Zapit->getCurrentServiceID();
+			t_channel_id current_channel = zapit_getCurrentServiceID();
 			CSectionsd::LinkageDescriptorList desc;
 			CSectionsd::responseGetCurrentNextInfoChannelID currentNextInfo;
 			CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
@@ -1494,7 +1494,7 @@ void CControlAPI::SendcurrentVAPid(CyhookHandler *hh)
 {
 	CZapitClient::responseGetPIDs pids;
 	pids.PIDs.vpid=0;
-	NeutrinoAPI->Zapit->getPIDS(pids);
+	zapit_getPIDS(pids);
 
 	hh->printf("%u\n", pids.PIDs.vpid);
 	if(!pids.APIDs.empty())
@@ -1517,11 +1517,11 @@ void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 
 	CSectionsd::ComponentTagList tags;
 	pids.PIDs.vpid=0;
-	NeutrinoAPI->Zapit->getPIDS(pids);
+	zapit_getPIDS(pids);
 
 	hh->printf("%05u\n", pids.PIDs.vpid);
 
-	t_channel_id current_channel = NeutrinoAPI->Zapit->getCurrentServiceID();
+	t_channel_id current_channel = zapit_getCurrentServiceID();
 	CSectionsd::responseGetCurrentNextInfoChannelID currentNextInfo;
 	CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
 	if (CSectionsd::getInstance()->getComponentTagsUniqueKey(currentNextInfo.current_uniqueKey,tags))
@@ -1901,7 +1901,7 @@ void CControlAPI::YWeb_SendVideoStreamingPids(CyhookHandler *hh, int apid_no)
 	CZapitClient::responseGetPIDs pids;
 	int apid=0,apid_idx=0;
 	pids.PIDs.vpid=0;
-	NeutrinoAPI->Zapit->getPIDS(pids);
+	zapit_getPIDS(pids);
 
 	if( apid_no < (int)pids.APIDs.size())
 		apid_idx=apid_no;
@@ -1930,7 +1930,7 @@ void CControlAPI::YWeb_SendRadioStreamingPid(CyhookHandler *hh)
 {
 	CZapitClient::responseGetPIDs pids;
 	int apid=0;
-	NeutrinoAPI->Zapit->getPIDS(pids);
+	zapit_getPIDS(pids);
 
 	if(!pids.APIDs.empty())
 		apid = pids.APIDs[0].pid;
@@ -2246,13 +2246,13 @@ void CControlAPI::setBouquetCGI(CyhookHandler *hh)
 	if (hh->ParamList["selected"] != "") {
 		int selected = atoi(hh->ParamList["selected"].c_str());
 		if(hh->ParamList["action"].compare("hide") == 0)
-			NeutrinoAPI->Zapit->setBouquetHidden(selected - 1,true);
+			zapit_setBouquetHidden(selected - 1,true);
 		else if(hh->ParamList["action"].compare("show") == 0)
-			NeutrinoAPI->Zapit->setBouquetHidden(selected - 1,false);
+			zapit_setBouquetHidden(selected - 1,false);
 		else if(hh->ParamList["action"].compare("lock") == 0)
-			NeutrinoAPI->Zapit->setBouquetLock(selected - 1,true);
+			zapit_setBouquetLock(selected - 1,true);
 		else if(hh->ParamList["action"].compare("unlock") == 0)
-			NeutrinoAPI->Zapit->setBouquetLock(selected - 1,false);
+			zapit_setBouquetLock(selected - 1,false);
 		hh->SendOk();
 	}
 	else
@@ -2262,7 +2262,7 @@ void CControlAPI::setBouquetCGI(CyhookHandler *hh)
 //
 void CControlAPI::saveBouquetCGI(CyhookHandler *hh)
 {
-	NeutrinoAPI->Zapit->saveBouquets();
+	zapit_saveBouquets();
 	NeutrinoAPI->UpdateBouquets();
 	hh->SendOk();
 }
@@ -2277,12 +2277,12 @@ void CControlAPI::moveBouquetCGI(CyhookHandler *hh)
 		int selected = atoi(hh->ParamList["selected"].c_str());
 		if (hh->ParamList["action"] == "up") 
 		{
-			NeutrinoAPI->Zapit->moveBouquet(selected - 1, (selected - 1) - 1);
+			zapit_moveBouquet(selected - 1, (selected - 1) - 1);
 			selected--;
 		} 
 		else 
 		{
-			NeutrinoAPI->Zapit->moveBouquet(selected - 1, (selected + 1) - 1);
+			zapit_moveBouquet(selected - 1, (selected + 1) - 1);
 			selected++;
 		}
 		hh->SendOk();
@@ -2299,7 +2299,7 @@ void CControlAPI::deleteBouquetCGI(CyhookHandler *hh)
 	if (hh->ParamList["selected"] != "") 
 	{
 		selected = atoi(hh->ParamList["selected"].c_str());
-		NeutrinoAPI->Zapit->deleteBouquet(selected - 1);
+		zapit_deleteBouquet(selected - 1);
 		hh->SendOk();
 	}
 	else
@@ -2312,9 +2312,9 @@ void CControlAPI::addBouquetCGI(CyhookHandler *hh)
 	if (!hh->ParamList["name"].empty())
 	{
 		std::string tmp = hh->ParamList["name"];
-		if (NeutrinoAPI->Zapit->existsBouquet(tmp.c_str()) == -1)
+		if (zapit_existsBouquet(tmp.c_str()) == -1)
 		{
-			NeutrinoAPI->Zapit->addBouquet(tmp.c_str());
+			zapit_addBouquet(tmp.c_str());
 			hh->SendOk();
 		}
 		else
@@ -2329,9 +2329,9 @@ void CControlAPI::renameBouquetCGI(CyhookHandler *hh)
 	{
 		if (hh->ParamList["nameto"] != "")
 		{
-			if (NeutrinoAPI->Zapit->existsBouquet((hh->ParamList["nameto"]).c_str()) == -1)
+			if (zapit_existsBouquet((hh->ParamList["nameto"]).c_str()) == -1)
 			{
-				NeutrinoAPI->Zapit->renameBouquet(atoi(hh->ParamList["selected"].c_str()) - 1, hh->ParamList["nameto"].c_str());
+				zapit_renameBouquet(atoi(hh->ParamList["selected"].c_str()) - 1, hh->ParamList["nameto"].c_str());
 				hh->SendOk();
 				return;
 			}
@@ -2347,11 +2347,11 @@ void CControlAPI::changeBouquetCGI(CyhookHandler *hh)
 	{
 		int selected = atoi(hh->ParamList["selected"].c_str());
 		CZapitClient::BouquetChannelList BChannelList;
-		NeutrinoAPI->Zapit->getBouquetChannels(selected - 1, BChannelList, CZapitClient::MODE_CURRENT, true);
+		zapit_getBouquetChannels(selected - 1, BChannelList, CZapitClient::MODE_CURRENT, true);
 		CZapitClient::BouquetChannelList::iterator channels = BChannelList.begin();
 		for(; channels != BChannelList.end();channels++)
 		{
-			NeutrinoAPI->Zapit->removeChannelFromBouquet(selected - 1, channels->channel_id);
+			zapit_removeChannelFromBouquet(selected - 1, channels->channel_id);
 		}
 
 		t_channel_id channel_id;
@@ -2363,11 +2363,11 @@ void CControlAPI::changeBouquetCGI(CyhookHandler *hh)
 				&channel_id,
 				&delta) > 0)
 		{
-			NeutrinoAPI->Zapit->addChannelToBouquet(selected - 1, channel_id);
+			zapit_addChannelToBouquet(selected - 1, channel_id);
 			bchannels += (delta + 1); // skip the separating ',', too
 		}
 
-		NeutrinoAPI->Zapit->renumChannellist();
+		zapit_renumChannellist();
 		NeutrinoAPI->UpdateBouquets();
 		if(hh->ParamList["redirect"] != "")
 			hh->SendRewrite(hh->ParamList["redirect"]);
@@ -2401,7 +2401,7 @@ void CControlAPI::build_live_url(CyhookHandler *hh)
 
 		if(hh->ParamList["audio_no"] !="")
 			apid_no = atoi(hh->ParamList["audio_no"].c_str());
-		NeutrinoAPI->Zapit->getPIDS(pids);
+		zapit_getPIDS(pids);
 
 		if( apid_no < (int)pids.APIDs.size())
 			apid_idx=apid_no;
@@ -2419,7 +2419,7 @@ void CControlAPI::build_live_url(CyhookHandler *hh)
 		CZapitClient::responseGetPIDs pids;
 		int apid=0;
 
-		NeutrinoAPI->Zapit->getPIDS(pids);
+		zapit_getPIDS(pids);
 		if(!pids.APIDs.empty())
 			apid = pids.APIDs[0].pid;
 
