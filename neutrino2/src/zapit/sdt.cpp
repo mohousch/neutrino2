@@ -41,9 +41,6 @@
 
 #define SDT_SIZE 	MAX_SECTION_LENGTH
 
-//extern CFrontend * getFE(int index);
-
-
 // sdt scan
 int parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_network_id *p_original_network_id,t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
@@ -52,7 +49,7 @@ int parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_network_id
 
 	memset(secdone, 0, 255);
 	
-	dprintf(DEBUG_NORMAL, "%s\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "[sdt] %s:\n", __FUNCTION__);
 
 	cDemux * dmx = new cDemux();
 	

@@ -103,7 +103,7 @@ std::map <transponder_id_t, transponder> nittransponders;
 
 bool tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_satellite_position satellitePosition, int feindex)
 {
-	dprintf(DEBUG_NORMAL, "%s\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "[scan] %s:\n", __FUNCTION__);
 	
 	// init tuner
 	CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
@@ -224,7 +224,7 @@ int get_sdts(t_satellite_position satellitePosition, int feindex)
 	stiterator stI;
 	std::map <transponder_id_t, transponder>::iterator sT;
 
-	dprintf(DEBUG_INFO, "[scan] get_sdts: scanning tp from sat/service\n");
+	dprintf(DEBUG_NORMAL, "[scan] get_sdts: scanning tp from sat/service\n");
 
 _repeat:
 	for (tI = scantransponders.begin(); tI != scantransponders.end(); tI++) 
@@ -232,7 +232,7 @@ _repeat:
 		if(abort_scan)
 			return 0;
 
-		dprintf(DEBUG_INFO, "[scan] get_sdts: scanning: %llx\n", tI->first);
+		dprintf(DEBUG_NORMAL, "[scan] get_sdts: scanning: %llx\n", tI->first);
 
 		//
 		//if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
@@ -280,13 +280,14 @@ _repeat:
 			freq = tI->second.feparams.frequency/1000000;
 			
 		// parse sdt
-		dprintf(DEBUG_INFO, "[scan] get_sdts: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
-		
+		dprintf(DEBUG_NORMAL, "[scan] get_sdts: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
+		#if 0 //FIXME
 		if(parse_sdt(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
 		{
 			dprintf(DEBUG_INFO, "[scan] get_sdts: SDT failed !\n");
 			continue;
 		}
+		#endif
 
 		TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, tI->second.original_network_id, tI->second.transport_stream_id);
 
@@ -406,7 +407,7 @@ int scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_po
 
 void scan_provider(_xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
 {
-	dprintf(DEBUG_NORMAL, "%s\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "[scan] %s:\n", __FUNCTION__);
 	
 	_xmlNodePtr tps = NULL;
 	found_transponders = 0;
@@ -418,7 +419,7 @@ void scan_provider(_xmlNodePtr search, t_satellite_position satellitePosition, u
 
 	if(sit == satellitePositions.end()) 
 	{
-		dprintf(DEBUG_INFO, "[scan] scan_provider: WARNING satellite position %d not found!\n", satellitePosition);
+		dprintf(DEBUG_NORMAL, "[scan] scan_provider: WARNING satellite position %d not found!\n", satellitePosition);
 		
 		return;
 	}
@@ -482,7 +483,7 @@ void scan_provider(_xmlNodePtr search, t_satellite_position satellitePosition, u
 
 void stop_scan(const bool success)
 {
-	dprintf(DEBUG_NORMAL, "%s\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "[scan] %s:\n", __FUNCTION__);
 	
 	// notify client about end of scan
 	scan_runs = 0;

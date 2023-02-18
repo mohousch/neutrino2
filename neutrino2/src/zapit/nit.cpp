@@ -47,6 +47,8 @@
 
 int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
+	dprintf(DEBUG_NORMAL, "[nit] %s:\n", __FUNCTION__);
+	
 	int ret = 0;
 	int secdone[255];
 	int sectotal = -1;

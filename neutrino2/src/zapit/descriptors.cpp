@@ -241,6 +241,8 @@ void network_name_descriptor(const unsigned char * const /*buffer*/)
 /* 0x41 */
 void service_list_descriptor(const unsigned char * const buffer, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq)
 {
+	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	
 	for (int i = 0; i < buffer[1]; i += 3) 
 	{
 		t_service_id service_id = buffer[i + 2] << 8 | buffer[i + 3];
@@ -267,6 +269,8 @@ void stuffing_descriptor(const unsigned char * const)
 /* 0x43 */
 int satellite_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
+	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	
 	FrontendParameters feparams;
 	uint8_t polarization;
 	stiterator tI;
@@ -349,6 +353,8 @@ int satellite_delivery_system_descriptor(const unsigned char * const buffer, t_t
 /* 0x44 */
 int cable_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
+	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	
 	transponder_id_t TsidOnid;
 
 	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_QAM)
@@ -419,6 +425,8 @@ void bouquet_name_descriptor(const unsigned char * const)
 
 uint8_t fix_service_type(uint8_t type)
 {
+	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	
 	if( (type == 0x9A) || (type == 0x86) || (type==0xc3) || (type==0xc5) || (type==0xc6) )
 			return 1;
 	return type;
@@ -427,6 +435,8 @@ uint8_t fix_service_type(uint8_t type)
 /* 0x48 */
 void service_descriptor(const unsigned char * const buffer, const t_service_id service_id, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, bool free_ca, int feindex)
 {
+	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	
 	bool service_wr = false;
 	uint8_t service_type = buffer[2];
 	CZapitChannel *channel = NULL;
@@ -693,6 +703,8 @@ void service_descriptor(const unsigned char * const buffer, const t_service_id s
 
 void current_service_descriptor(const unsigned char * const buffer, const t_service_id service_id, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq)
 {
+	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	
 	bool service_wr = false;
 	uint8_t service_type = buffer[2];
 
@@ -791,6 +803,8 @@ int NVOD_reference_descriptor(
 	t_original_network_id * const onid,
 	t_service_id * const sid)
 {
+	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	
 	if ((unsigned int)(buffer[1] / 6) + 1 >= num) {
 		*tsid = (buffer[2 + (6 * num)] << 16) | buffer[3 + (6 * num)];
 		*onid = (buffer[4 + (6 * num)] << 16) | buffer[5 + (6 * num)];
@@ -880,6 +894,8 @@ void subtitling_descriptor(const unsigned char * const)
 /* 0x5A */ //FIXME is brocken :-(
 int terrestrial_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
+	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	
 	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM)
 		return -1;
 
