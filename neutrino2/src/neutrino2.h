@@ -63,7 +63,7 @@
 #include <gui/bouquetlist.h>
 
 // zapit
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 
 
 // CNeutrinoApp -  main run-class
@@ -107,7 +107,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 
 		struct timeval standby_pressed_at;
 
-		CZapitClient::responseGetLastChannel firstchannel;
+		CZapit::responseGetLastChannel firstchannel;
 		st_rmsg sendmessage;
 
 		bool skipShutdownTimer;

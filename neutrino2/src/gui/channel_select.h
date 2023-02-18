@@ -27,7 +27,7 @@
 #include <string>
 
 // zapit includes
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 
 		
 class CSelectChannelWidget : public CMenuTarget
@@ -35,7 +35,7 @@ class CSelectChannelWidget : public CMenuTarget
 	private:
 		t_channel_id ChannelID;
 
-		void InitZapitChannelHelper(CZapitClient::channelsMode mode);
+		void InitZapitChannelHelper(CZapit::channelsMode mode);
 
 	public:
 		CSelectChannelWidget();

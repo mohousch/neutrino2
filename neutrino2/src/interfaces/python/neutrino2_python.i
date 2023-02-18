@@ -102,7 +102,7 @@
 #include <zapit/bouquets.h>
 #include <zapit/channel.h>
 #include <zapit/zapittypes.h>
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 
 // sectionsd
 #include <sectionsd/sectionsdtypes.h>
@@ -202,7 +202,7 @@
 //%include <src/zapit/bouquets.h>
 %include <src/zapit/channel.h>
 %include <src/zapit/zapittypes.h>
-%include <src/zapit/zapitclient.h>
+%include <src/zapit/zapit.h>
 
 // sectionsd
 //%include <lib/sectionsdclient/sectionsdMsg.h>

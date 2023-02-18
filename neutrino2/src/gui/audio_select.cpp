@@ -231,7 +231,7 @@ void CAudioSelectMenuHandler::doMenu()
 	
 	for(count = 0; count < g_RemoteControl->current_PIDs.APIDs.size(); count++ ) 
 	{
-		zapit_getVolumePercent((unsigned int *) &percent[count], 0, g_RemoteControl->current_PIDs.APIDs[count].pid);
+		CZapit::getInstance()->getVolumePercent((unsigned int *) &percent[count], 0, g_RemoteControl->current_PIDs.APIDs[count].pid);
 		int is_active = count == g_RemoteControl->current_PIDs.PIDs.selected_apid;
 		
 		if(!sep_added) 
@@ -276,7 +276,7 @@ bool CAudioSetupNotifierVolPercent::changeNotify(const std::string& OptionName _
 {
 	int percent = *(int *) data;
 	
-	zapit_setVolumePercent(percent, live_channel_id, g_RemoteControl->current_PIDs.PIDs.selected_apid);
+	CZapit::getInstance()->setVolumePercent(percent, live_channel_id, g_RemoteControl->current_PIDs.PIDs.selected_apid);
 	
 	return true;
 }

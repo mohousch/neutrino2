@@ -307,20 +307,20 @@ void CBouquetManager::saveUBouquets(void)
 	chmod(UBOUQUETS_XML, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 }
 
-void CBouquetManager::saveBouquets(const CZapitClient::bouquetMode bouquetMode, const char * const providerName)
+void CBouquetManager::saveBouquets(const CZapit::bouquetMode bouquetMode, const char * const providerName)
 {
 	dprintf(DEBUG_NORMAL, "CBouquetManager::saveBouquets: mode:%d\n", bouquetMode);
 	
-	if (bouquetMode == CZapitClient::BM_DELETEBOUQUETS) 
+	if (bouquetMode == CZapit::BM_DELETEBOUQUETS) 
 	{
 		g_bouquetManager->clearAll();
 		unlink(BOUQUETS_XML);
 	}
-	else if (bouquetMode == CZapitClient::BM_DONTTOUCHBOUQUETS)
+	else if (bouquetMode == CZapit::BM_DONTTOUCHBOUQUETS)
 	{
 		return;
 	}
-	else if (bouquetMode == CZapitClient::BM_CREATESATELLITEBOUQUET) 
+	else if (bouquetMode == CZapit::BM_CREATESATELLITEBOUQUET) 
 	{
 		while (Bouquets.size() > 1) 
 		{
@@ -334,7 +334,7 @@ void CBouquetManager::saveBouquets(const CZapitClient::bouquetMode bouquetMode, 
 		if(Bouquets.size() > 0)
 			Bouquets[0]->Name = providerName;
 	}
-	else if (bouquetMode == CZapitClient::BM_UPDATEBOUQUETS) 
+	else if (bouquetMode == CZapit::BM_UPDATEBOUQUETS) 
 	{
 		while (!(Bouquets.empty())) 
 		{
@@ -1181,7 +1181,7 @@ CZapitChannel *CBouquetManager::findChannelByName(std::string name, const t_serv
 }
 
 //// ChannelIterator
-CBouquetManager::ChannelIterator::ChannelIterator(CBouquetManager *owner, const CZapitClient::channelsMode Mode)
+CBouquetManager::ChannelIterator::ChannelIterator(CBouquetManager *owner, const CZapit::channelsMode Mode)
 {
 	Owner = owner;
 	mode = Mode;

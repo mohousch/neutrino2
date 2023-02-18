@@ -41,7 +41,7 @@
 #include <gui/widget/listbox.h>
 
 // zapit
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
 
@@ -72,7 +72,7 @@ class CBEChannelWidget : public CMenuTarget
 		unsigned int		newPosition;
 		bool			channelsChanged;
 		std::string		caption;
-		CZapitClient::channelsMode mode;
+		CZapit::channelsMode mode;
 		unsigned int bouquet;
 
 		uint32_t sec_timer_id;

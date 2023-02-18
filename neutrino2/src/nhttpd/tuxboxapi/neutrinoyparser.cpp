@@ -219,10 +219,10 @@ std::string  CNeutrinoYParser::func_get_bouquets_as_dropdown(CyhookHandler *, st
 	if(nr_str != "")
 		nr = atoi(nr_str.c_str());
 
-	int mode = zapit_getMode();
+	int mode = CZapit::getInstance()->getMode();
 	for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
 	{
-		ZapitChannelList * channels = mode == CZapitClient::MODE_RADIO ? &g_bouquetManager->Bouquets[i]->radioChannels : &g_bouquetManager->Bouquets[i]->tvChannels;
+		ZapitChannelList * channels = mode == CZapit::MODE_RADIO ? &g_bouquetManager->Bouquets[i]->radioChannels : &g_bouquetManager->Bouquets[i]->tvChannels;
 		sel=(nr==(i+1)) ? "selected=\"selected\"" : "";
 		if(!channels->empty() && (!g_bouquetManager->Bouquets[i]->bHidden || do_show_hidden == "true"))
 			yresult += string_printf("<option value=%u %s>%s</option>\n", i + 1, sel.c_str(),
@@ -278,7 +278,7 @@ std::string  CNeutrinoYParser::func_get_channels_as_dropdown(CyhookHandler *, st
 	std::string abouquet, achannel_id, yresult, sel, sid;
 
 	int bnumber = 1;
-	int mode = zapit_getMode();
+	int mode = CZapit::getInstance()->getMode();
 
 	ySplitString(para," ",abouquet, achannel_id);
 	if(abouquet != "")
@@ -287,7 +287,7 @@ std::string  CNeutrinoYParser::func_get_channels_as_dropdown(CyhookHandler *, st
 	{
 		bnumber--;
 		ZapitChannelList channels;
-		channels = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->Bouquets[bnumber]->radioChannels : g_bouquetManager->Bouquets[bnumber]->tvChannels;
+		channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[bnumber]->radioChannels : g_bouquetManager->Bouquets[bnumber]->tvChannels;
 		for(int j = 0; j < (int) channels.size(); j++) 
 		{
 			CEPGData epg;
@@ -314,7 +314,7 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 	std::string abnumber, tmp,yresult;
 	ZapitChannelList channels;
 	int num;
-	int mode = zapit_getMode();
+	int mode = CZapit::getInstance()->getMode();
 
 	ySplitString(para," ",abnumber, tmp);
 	if(abnumber != "")
@@ -322,12 +322,12 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 	if (BouquetNr > 0) 
 	{
 		BouquetNr--;
-		channels = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->Bouquets[BouquetNr]->radioChannels : g_bouquetManager->Bouquets[BouquetNr]->tvChannels;
-		num = 1 + (mode == CZapitClient::MODE_RADIO ? g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr) : g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr)) ;
+		channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[BouquetNr]->radioChannels : g_bouquetManager->Bouquets[BouquetNr]->tvChannels;
+		num = 1 + (mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr) : g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr)) ;
 	} 
 	else 
 	{
-		CBouquetManager::ChannelIterator cit = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
+		CBouquetManager::ChannelIterator cit = mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
 		for (; !(cit.EndOfChannels()); cit++)
 			channels.push_back(*cit);
 		num = 1;
@@ -407,11 +407,11 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 			CSectionsd::NVODTimesList nvod_list;
 			if (CSectionsd::getInstance()->getNVODTimesServiceKey(channel->channel_id&0xFFFFFFFFFFFFULL, nvod_list))
 			{
-				CZapitClient::subServiceList subServiceList;
+				CZapit::subServiceList subServiceList;
 
 				for (CSectionsd::NVODTimesList::iterator ni = nvod_list.begin(); ni != nvod_list.end(); ni++)
 				{
-					CZapitClient::commandAddSubServices cmd;
+					CZapit::commandAddSubServices cmd;
 					CEPGData epg;
 
 					// Byte Sequence by ntohs
@@ -441,7 +441,7 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 				}
 
 				if (!(subServiceList.empty()))
-					zapit_setSubServices(subServiceList);
+					CZapit::getInstance()->setSubServices(subServiceList);
 			}
 		}
 		else if ((event = NeutrinoAPI->ChannelListEvents[channel->channel_id]))
@@ -486,11 +486,11 @@ std::string  CNeutrinoYParser::func_get_actual_channel_id(CyhookHandler *, std::
 std::string  CNeutrinoYParser::func_get_mode(CyhookHandler *, std::string)
 {
 	std::string yresult;
-	int mode = zapit_getMode();
+	int mode = CZapit::getInstance()->getMode();
 
-	if ( mode == CZapitClient::MODE_TV)
+	if ( mode == CZapit::MODE_TV)
 		yresult = "tv";
-	else if ( mode == CZapitClient::MODE_RADIO)
+	else if ( mode == CZapit::MODE_RADIO)
 		yresult = "radio";
 	else
 		yresult = "unknown";
@@ -502,13 +502,13 @@ std::string  CNeutrinoYParser::func_get_mode(CyhookHandler *, std::string)
 //-------------------------------------------------------------------------
 std::string  CNeutrinoYParser::func_get_video_pids(CyhookHandler *, std::string para)
 {
-	CZapitClient::responseGetPIDs pids;
+	CZapit::responseGetPIDs pids;
 	int apid=0,apid_no=0,apid_idx=0;
 	pids.PIDs.vpid=0;
 
 	if(para != "")
 		apid_no = atoi(para.c_str());
-	zapit_getPIDS(pids);
+	CZapit::getInstance()->getPIDS(pids);
 
 	if( apid_no < (int)pids.APIDs.size())
 		apid_idx=apid_no;
@@ -522,10 +522,10 @@ std::string  CNeutrinoYParser::func_get_video_pids(CyhookHandler *, std::string 
 //-------------------------------------------------------------------------
 std::string  CNeutrinoYParser::func_get_radio_pid(CyhookHandler *, std::string)
 {
-	CZapitClient::responseGetPIDs pids;
+	CZapit::responseGetPIDs pids;
 	int apid=0;
 
-	zapit_getPIDS(pids);
+	CZapit::getInstance()->getPIDS(pids);
 	if(!pids.APIDs.empty())
 		apid = pids.APIDs[0].pid;
 
@@ -550,13 +550,13 @@ std::string  CNeutrinoYParser::func_get_audio_pids_as_dropdown(CyhookHandler *, 
 			init_iso=false;
 	}
 	bool eit_not_ok=true;
-	CZapitClient::responseGetPIDs pids;
+	CZapit::responseGetPIDs pids;
 
 	CSectionsd::ComponentTagList tags;
 	pids.PIDs.vpid = 0;
-	zapit_getPIDS(pids);
+	CZapit::getInstance()->getPIDS(pids);
 
-	t_channel_id current_channel = live_channel_id; //zapit_getCurrentServiceID();
+	t_channel_id current_channel = live_channel_id; //CZapit::getInstance()->getCurrentServiceID();
 	CSectionsd::responseGetCurrentNextInfoChannelID currentNextInfo;
 	CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
 	if (CSectionsd::getInstance()->getComponentTagsUniqueKey(currentNextInfo.current_uniqueKey,tags))
@@ -590,7 +590,7 @@ std::string  CNeutrinoYParser::func_get_audio_pids_as_dropdown(CyhookHandler *, 
 	if(eit_not_ok)
 	{
 		unsigned short i = 0;
-		for (CZapitClient::APIDList::iterator it = pids.APIDs.begin(); it!=pids.APIDs.end(); it++)
+		for (CZapit::APIDList::iterator it = pids.APIDs.begin(); it!=pids.APIDs.end(); it++)
 		{
 			if(!(init_iso))
 			{
@@ -781,9 +781,9 @@ std::string  CNeutrinoYParser::func_get_boxtype(CyhookHandler *, std::string)
 //-------------------------------------------------------------------------
 std::string  CNeutrinoYParser::func_get_current_stream_info(CyhookHandler *hh, std::string)
 {
-	CZapitClient::CCurrentServiceInfo serviceinfo;
+	CZapit::CCurrentServiceInfo serviceinfo;
 
-	serviceinfo = zapit_getCurrentServiceInfo();
+	serviceinfo = CZapit::getInstance()->getCurrentServiceInfo();
 	hh->ParamList["onid"] = itoh(serviceinfo.onid);
 	hh->ParamList["sid"] = itoh(serviceinfo.sid);
 	hh->ParamList["tsid"] = itoh(serviceinfo.tsid);
@@ -793,7 +793,7 @@ std::string  CNeutrinoYParser::func_get_current_stream_info(CyhookHandler *hh, s
 	hh->ParamList["pmtpid"] = (serviceinfo.pmtpid != 0)?itoh(serviceinfo.pmtpid):"not available";
 	hh->ParamList["tsfrequency"] = string_printf("%d.%d MHz", serviceinfo.tsfrequency/1000, serviceinfo.tsfrequency%1000);
 	hh->ParamList["polarisation"] = serviceinfo.polarisation==1?"h":"v";
-	hh->ParamList["ServiceName"] = NeutrinoAPI->GetServiceName(live_channel_id);//zapit_getCurrentServiceID());
+	hh->ParamList["ServiceName"] = NeutrinoAPI->GetServiceName(live_channel_id);//CZapit::getInstance()->getCurrentServiceID());
 	hh->ParamList["VideoFormat"] = NeutrinoAPI->getVideoResolutionAsString();
 	hh->ParamList["BitRate"] = NeutrinoAPI->getVideoFramerateAsString();
 	hh->ParamList["AspectRatio"] = NeutrinoAPI->getVideoAspectRatioAsString();
@@ -816,8 +816,8 @@ std::string  CNeutrinoYParser::func_get_timer_list(CyhookHandler *, std::string 
 	NeutrinoAPI->Timerd->getTimerList(timerlist);
 	sort(timerlist.begin(), timerlist.end());
 
-	CZapitClient::BouquetChannelList channellist_tv;
-	CZapitClient::BouquetChannelList channellist_radio;
+	CZapit::BouquetChannelList channellist_tv;
+	CZapit::BouquetChannelList channellist_radio;
 	channellist_tv.clear();
 	channellist_radio.clear();
 
@@ -862,7 +862,7 @@ std::string  CNeutrinoYParser::func_get_timer_list(CyhookHandler *, std::string 
 			{
 				sAddData = NeutrinoAPI->GetServiceName(timer->channel_id);
 				if (sAddData.empty())
-					sAddData = zapit_isChannelTVChannel(timer->channel_id) ? "Unknown TV-Channel" : "Unknown Radio-Channel";
+					sAddData = CZapit::getInstance()->isChannelTVChannel(timer->channel_id) ? "Unknown TV-Channel" : "Unknown Radio-Channel";
 
 				if( timer->apids != TIMERD_APIDS_CONF)
 				{
@@ -1036,7 +1036,7 @@ std::string  CNeutrinoYParser::func_set_timer_form(CyhookHandler *hh, std::strin
 	hh->ParamList["timer_repeatCount"]  = itoa(timer.repeatCount);
 
 	// program row
-	t_channel_id current_channel = (cmd == "new") ? live_channel_id /*zapit_getCurrentServiceID()*/ : timer.channel_id;
+	t_channel_id current_channel = (cmd == "new") ? live_channel_id /*CZapit::getInstance()->getCurrentServiceID()*/ : timer.channel_id;
 	CBouquetManager::ChannelIterator cit = g_bouquetManager->tvChannelsBegin();
 	for (; !(cit.EndOfChannels()); cit++) {
 		sel = ((*cit)->channel_id == current_channel) ? "selected=\"selected\"" : "";
@@ -1127,8 +1127,8 @@ std::string  CNeutrinoYParser::func_set_bouquet_edit_form(CyhookHandler *hh, std
 	if (!(hh->ParamList["selected"].empty()))
 	{
 		int selected = atoi(hh->ParamList["selected"].c_str()) - 1;
-		int mode = zapit_getMode();
-		ZapitChannelList* channels = mode == CZapitClient::MODE_TV ? &(g_bouquetManager->Bouquets[selected]->tvChannels) : &(g_bouquetManager->Bouquets[selected]->radioChannels);
+		int mode = CZapit::getInstance()->getMode();
+		ZapitChannelList* channels = mode == CZapit::MODE_TV ? &(g_bouquetManager->Bouquets[selected]->tvChannels) : &(g_bouquetManager->Bouquets[selected]->radioChannels);
 		
 		for(int j = 0; j < (int) channels->size(); j++) 
 		{
@@ -1141,7 +1141,7 @@ std::string  CNeutrinoYParser::func_set_bouquet_edit_form(CyhookHandler *hh, std
 		ZapitChannelList Channels;
 		Channels.clear();
 		
-		if (mode == CZapitClient::MODE_RADIO) 
+		if (mode == CZapit::MODE_RADIO) 
 		{
 			for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
 				if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE)

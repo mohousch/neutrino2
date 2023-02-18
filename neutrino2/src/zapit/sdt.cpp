@@ -41,7 +41,7 @@
 
 #define SDT_SIZE 	MAX_SECTION_LENGTH
 
-extern CFrontend * getFE(int index);
+//extern CFrontend * getFE(int index);
 
 
 // sdt scan
@@ -60,7 +60,7 @@ int parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_network_id
 #if defined (PLATFORM_COOLSTREAM)
 	dmx->Open(DMX_PSI_CHANNEL);
 #else	
-	dmx->Open( DMX_PSI_CHANNEL, SDT_SIZE, getFE(feindex) );
+	dmx->Open( DMX_PSI_CHANNEL, SDT_SIZE, CZapit::getInstance()->getFE(feindex) );
 #endif	
 
 	unsigned char buffer[SDT_SIZE];

@@ -64,14 +64,14 @@ int scnt = 0;
 extern map<t_channel_id, audio_map_set_t> audio_map;		// defined in zapit.cpp
 
 extern int FrontendCount;
-extern CFrontend * getFE(int index);
+//extern CFrontend * getFE(int index);
 
 extern bool have_s;
 extern bool have_c;
 extern bool have_t;
 extern bool have_a;
 
-extern void parseScanInputXml(fe_type_t fe_type);	// defined in zapit.cpp
+//extern void parseScanInputXml(fe_type_t fe_type);	// defined in zapit.cpp
 
 // parse transponder from services.xml
 void parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system)
@@ -554,7 +554,7 @@ int loadTransponders()
 		
 	if (have_s)
 	{
-		parseScanInputXml(FE_QPSK);
+		CZapit::getInstance()->parseScanInputXml(FE_QPSK);
 			
 		if ( scanInputParser != NULL ) 
 		{
@@ -595,7 +595,7 @@ int loadTransponders()
 	
 	if (have_c)
 	{
-		parseScanInputXml(FE_QAM);
+		CZapit::getInstance()->parseScanInputXml(FE_QAM);
 			
 		if ( scanInputParser != NULL ) 
 		{
@@ -634,7 +634,7 @@ int loadTransponders()
 	
 	if (have_t)
 	{
-		parseScanInputXml(FE_OFDM);
+		CZapit::getInstance()->parseScanInputXml(FE_OFDM);
 			
 		if ( scanInputParser != NULL ) 
 		{
@@ -673,7 +673,7 @@ int loadTransponders()
 	
 	if (have_a)
 	{
-		parseScanInputXml(FE_ATSC);
+		CZapit::getInstance()->parseScanInputXml(FE_ATSC);
 			
 		if ( scanInputParser != NULL ) 
 		{
@@ -762,7 +762,7 @@ int loadServices(bool only_current)
 	// load motor position
 	for(int i = 0; i < FrontendCount; i++)
 	{
-		if( getFE(i)->getInfo()->type == FE_QPSK)
+		if( CZapit::getInstance()->getFE(i)->getInfo()->type == FE_QPSK)
 		{
 			loadMotorPositions();
 			break;

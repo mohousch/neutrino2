@@ -38,7 +38,7 @@
 #include <driver/rcinput.h> 			/* neutrino_msg_t, neutrino_msg_data_t */
 
 /*zapit*/
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 
 #include <vector>
 #include <string>
@@ -55,7 +55,7 @@ struct st_rmsg
 class CSubService
 {
 	private:
-		struct CZapitClient::commandAddSubServices service;
+		struct CZapit::commandAddSubServices service;
 	
 	public:
 		time_t      startzeit;
@@ -66,7 +66,7 @@ class CSubService
 		CSubService(const t_original_network_id, const t_service_id, const t_transport_stream_id, const time_t astartzeit, const unsigned adauer);
 	
 		t_channel_id getChannelID(void) const;
-		inline const struct CZapitClient::commandAddSubServices getAsZapitSubService(void) const { return service;}
+		inline const struct CZapit::commandAddSubServices getAsZapitSubService(void) const { return service;}
 };
 
 typedef std::vector<CSubService> CSubServiceListSorted;
@@ -87,7 +87,7 @@ class CRemoteControl
 		t_channel_id                  current_channel_id;
 		unsigned long long            current_EPGid;
 		unsigned long long            next_EPGid;
-		CZapitClient::responseGetPIDs current_PIDs;
+		CZapit::responseGetPIDs current_PIDs;
 	
 		// APID - Details
 		bool                          has_ac3;

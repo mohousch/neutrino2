@@ -44,7 +44,6 @@
 #include <gui/widget/widget_helpers.h>
 
 //
-#include <zapit/zapitclient.h>
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
 #include <zapit/satconfig.h>
@@ -62,7 +61,7 @@ extern tallchans allchans;			// defined in zapit.cpp
 extern CBouquetManager* g_bouquetManager;	// defined in zapit.cpp
 void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id); // defined in zapit.cpp
 
-CBEChannelSelectWidget::CBEChannelSelectWidget(const std::string& Caption, unsigned int Bouquet, CZapitClient::channelsMode Mode)
+CBEChannelSelectWidget::CBEChannelSelectWidget(const std::string& Caption, unsigned int Bouquet, CZapit::channelsMode Mode)
 {
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -176,20 +175,20 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 	dprintf(DEBUG_NORMAL, "CBEChannelSelectWidget::exec: actionKey:%s\n", actionKey.c_str());
 
 	//
-	if (mode == CZapitClient::MODE_TV)
+	if (mode == CZapit::MODE_TV)
 		bouquetChannels = &(g_bouquetManager->Bouquets[bouquet]->tvChannels);
-	else if (mode == CZapitClient::MODE_RADIO)
+	else if (mode == CZapit::MODE_RADIO)
 		bouquetChannels = &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
 
 	Channels.clear();
 	
-	if (mode == CZapitClient::MODE_TV) 
+	if (mode == CZapit::MODE_TV) 
 	{
 		for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
 			if ( (it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE) && (!IS_WEBTV(it->second.getChannelID())) )
 				Channels.push_back(&(it->second));
 	}
-	else if (mode == CZapitClient::MODE_RADIO) 
+	else if (mode == CZapit::MODE_RADIO) 
 	{
 		for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
 			if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE)
@@ -256,7 +255,7 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 				else
 					addChannelToBouquet(bouquet, Channels[selected]->channel_id);
 
-				bouquetChannels = mode == CZapitClient::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
+				bouquetChannels = mode == CZapit::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
 		
 				paint();
 				g_RCInput->postMsg(RC_down, 0);

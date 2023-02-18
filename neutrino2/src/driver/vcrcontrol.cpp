@@ -137,9 +137,9 @@ void CVCRControl::CDevice::getAPIDs(const unsigned char ap, APIDList & apid_list
                 apids = g_settings.recording_audio_pids_default;
 
         apid_list.clear();
-        CZapitClient::responseGetPIDs allpids;
+        CZapit::responseGetPIDs allpids;
 	
-	zapit_getRecordPIDS(allpids);
+	CZapit::getInstance()->getRecordPIDS(allpids);
 
         // assume smallest apid ist std apid
         if (apids & TIMERD_APIDS_STD)
@@ -282,7 +282,7 @@ bool CVCRControl::CVCRDevice::Record(const t_channel_id channel_id, int mode, co
 		if(channel_id != 0)	// wenn ein channel angegeben ist
 		{
 			// zap for record
-			zapit_zapTo_record(channel_id);			// for recording
+			CZapit::getInstance()->zapTo_record(channel_id);			// for recording
 		}
 
 		// apids
@@ -294,15 +294,15 @@ bool CVCRControl::CVCRDevice::Record(const t_channel_id channel_id, int mode, co
 		        if(!apid_list.empty())
 		        {
 		                if(!apid_list.begin()->ac3)
-		                        zapit_setAudioChannel(apid_list.begin()->index);
+		                        CZapit::getInstance()->setAudioChannel(apid_list.begin()->index);
 		                else
-		                        zapit_setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
+		                        CZapit::getInstance()->setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
 		        }
 		        else
-		                zapit_setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
+		                CZapit::getInstance()->setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
 		}
 		else
-		        zapit_setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
+		        CZapit::getInstance()->setAudioChannel(0); //sonst apid 0, also auf jeden fall ac3 aus !
 	}
 
 	// switch to scart
@@ -332,11 +332,11 @@ bool CVCRControl::CVCRDevice::Resume()
 
 void CVCRControl::CFileAndServerDevice::RestoreNeutrino(void)
 {
-	zapit_setRecordMode( false );
+	CZapit::getInstance()->setRecordMode( false );
 
 	// start playback
-	if (!zapit_isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
-		zapit_startPlayBack(live_channel);
+	if (!CZapit::getInstance()->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
+		CZapit::getInstance()->startPlayBack(live_channel);
 
 	// alten mode wieder herstellen (ausser wen zwischenzeitlich auf oder aus sb geschalten wurde)
 	if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
@@ -348,7 +348,7 @@ void CVCRControl::CFileAndServerDevice::RestoreNeutrino(void)
 	if(last_mode == NeutrinoMessages::mode_standby && CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby )
 	{
 		//Wenn vorher und jetzt standby, dann die zapit wieder auf sb schalten
-		zapit_setStandby(true);
+		CZapit::getInstance()->setStandby(true);
 	}	
 }
 
@@ -360,7 +360,7 @@ void CVCRControl::CFileAndServerDevice::CutBackNeutrino(const t_channel_id chann
 	{
 		if(last_mode == NeutrinoMessages::mode_standby)
 		{
-			zapit_setStandby(false);
+			CZapit::getInstance()->setStandby(false);
 		}
 	
 		if (channel_id != 0) 
@@ -374,15 +374,15 @@ void CVCRControl::CFileAndServerDevice::CutBackNeutrino(const t_channel_id chann
 			}
 		
 			// zap to record
-			zapit_zapTo_record(channel_id);
+			CZapit::getInstance()->zapTo_record(channel_id);
 		}
 
 		// after this zapit send EVT_RECORDMODE_ACTIVATED, so neutrino getting NeutrinoMessages::EVT_RECORDMODE
-		zapit_setRecordMode( true );
+		CZapit::getInstance()->setRecordMode( true );
 
 		// stop playback im standby
 		if( last_mode == NeutrinoMessages::mode_standby )
-			zapit_stopPlayBack();
+			CZapit::getInstance()->stopPlayBack();
 	}
 }
 
@@ -424,13 +424,13 @@ std::string CVCRControl::CFileAndServerDevice::getCommandString(const CVCRComman
 		"\t\t<channelname>";
 	
 	//
-	CZapitClient::responseGetPIDs pids;
+	CZapit::responseGetPIDs pids;
 
-	zapit_getRecordPIDS(pids);
+	CZapit::getInstance()->getRecordPIDS(pids);
 
-	CZapitClient::CCurrentServiceInfo si;
+	CZapit::CCurrentServiceInfo si;
 
-	si = zapit_getRecordServiceInfo();
+	si = CZapit::getInstance()->getRecordServiceInfo();
 
         APIDList apid_list;
         getAPIDs(apids, apid_list);
@@ -445,7 +445,7 @@ std::string CVCRControl::CFileAndServerDevice::getCommandString(const CVCRComman
         }
 
 	std::string tmpstring;
-	tmpstring = zapit_getChannelName(channel_id);
+	tmpstring = CZapit::getInstance()->getChannelName(channel_id);
 
 	if (tmpstring.empty())
 		extMessage += "unknown";
@@ -488,7 +488,7 @@ std::string CVCRControl::CFileAndServerDevice::getCommandString(const CVCRComman
 	extMessage += tmp;
 	extMessage += "</epgid>\n\t\t<mode>";
 
-	sprintf(tmp, "%d", zapit_getMode());
+	sprintf(tmp, "%d", CZapit::getInstance()->getMode());
 	extMessage += tmp;
 	extMessage += "</mode>\n\t\t<videopid>";
 	sprintf(tmp, "%u", si.vpid);
@@ -558,9 +558,9 @@ bool CVCRControl::CFileDevice::Record(const t_channel_id channel_id, int mode, c
 	// cut neutrino
 	CutBackNeutrino(channel_id, mode);
 
-	CZapitClient::CCurrentServiceInfo si;
+	CZapit::CCurrentServiceInfo si;
 
-	si = zapit_getRecordServiceInfo();
+	si = CZapit::getInstance()->getRecordServiceInfo();
 
 	numpids = 0;
 
@@ -578,9 +578,9 @@ bool CVCRControl::CFileDevice::Record(const t_channel_id channel_id, int mode, c
 		transfer_pids(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
         }
         
-        CZapitClient::responseGetPIDs allpids;
+        CZapit::responseGetPIDs allpids;
 
-	zapit_getRecordPIDS(allpids);
+	CZapit::getInstance()->getRecordPIDS(allpids);
 
 	//record file name format
 	char filename[512]; // UTF-8
@@ -601,7 +601,7 @@ bool CVCRControl::CFileDevice::Record(const t_channel_id channel_id, int mode, c
 		pos = strlen(filename);
 	}
 
-	ext_channel_name = zapit_getChannelName(channel_id);
+	ext_channel_name = CZapit::getInstance()->getChannelName(channel_id);
 
 	if (!(ext_channel_name.empty()))
 	{
@@ -706,7 +706,7 @@ bool CVCRControl::CFileDevice::Record(const t_channel_id channel_id, int mode, c
 	if (IS_WEBTV(channel_id))
 	{
 		error_msg = ::start_file_recording(filename,
-			      getMovieInfoString(CMD_VCR_RECORD, channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), zapit_getChannelURL(channel_id));
+			      getMovieInfoString(CMD_VCR_RECORD, channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), CZapit::getInstance()->getChannelURL(channel_id));
 	}
 	else
 	{
@@ -765,7 +765,7 @@ bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname)
 	
 		pos = strlen(filename);
 
-		channel_name = zapit_getChannelName(channel_id);
+		channel_name = CZapit::getInstance()->getChannelName(channel_id);
 
 		if (!(channel_name.empty())) 
 		{
@@ -849,16 +849,16 @@ std::string CVCRControl::CFileAndServerDevice::getMovieInfoString(const CVCRComm
 
 	g_cMovieInfo->clearMovieInfo(g_movieInfo);
 
-	zapit_getRecordPIDS(pids);
+	CZapit::getInstance()->getRecordPIDS(pids);
 
 
-	CZapitClient::CCurrentServiceInfo si;
+	CZapit::CCurrentServiceInfo si;
 
-	si = zapit_getRecordServiceInfo();
+	si = CZapit::getInstance()->getRecordServiceInfo();
 
 	std::string tmpstring;
 
-	tmpstring = zapit_getChannelName(channel_id);
+	tmpstring = CZapit::getInstance()->getChannelName(channel_id);
 
 	if (tmpstring.empty())
 		g_movieInfo->epgChannel = "unknown";
@@ -896,7 +896,7 @@ std::string CVCRControl::CFileAndServerDevice::getMovieInfoString(const CVCRComm
 	g_movieInfo->epgInfo2		= UTF8_to_UTF8XML(info2.c_str());
 	g_movieInfo->epgEpgId		= epgid ;
 
-	g_movieInfo->epgMode		= zapit_getMode();
+	g_movieInfo->epgMode		= CZapit::getInstance()->getMode();
 	g_movieInfo->epgVideoPid	= si.vpid;
 	g_movieInfo->VideoType		= si.vtype;
 

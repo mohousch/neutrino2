@@ -68,7 +68,7 @@
 #include <system/debug.h>
 
 //
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
 
@@ -312,7 +312,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		CSelectChannelWidgetHandler->exec(NULL, "tv");
 		
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
-		timerNew_channel_name = zapit_getChannelName(CSelectChannelWidgetHandler->getChannelID());
+		timerNew_channel_name = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 
 		this->getString() = timerNew_channel_name;
 		
@@ -327,7 +327,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		CSelectChannelWidgetHandler->exec(NULL, "radio");
 		
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
-		timerNew_channel_name = zapit_getChannelName(CSelectChannelWidgetHandler->getChannelID());
+		timerNew_channel_name = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
@@ -863,7 +863,7 @@ std::string CTimerList::convertChannelId2String(const t_channel_id id) // UTF-8
 	
 	std::string name;
 
-	name = zapit_getChannelName(id); // UTF-8
+	name = CZapit::getInstance()->getChannelName(id); // UTF-8
 
 	if (name.empty())
 		name = _("Unknown");

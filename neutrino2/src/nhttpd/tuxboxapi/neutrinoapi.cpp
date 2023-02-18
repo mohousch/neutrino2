@@ -3,7 +3,7 @@
 // NeutrionAPI
 //
 // Aggregates: NeutrinoYParser, NeutrinoControlAPI
-// Defines Interfaces to:CControldClient, CSectionsdClient, CZapitClient,
+// Defines Interfaces to:CControldClient, CSectionsd, CZapit,
 //			CTimerdClient,CLCDAPI
 // Place for common used Neutrino-functions used by NeutrinoYParser, NeutrinoControlAPI
 //=============================================================================
@@ -41,7 +41,7 @@
 /*zapit includes*/
 #include <zapit/frontend_c.h>
 #include <zapit/satconfig.h>
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
 
@@ -53,7 +53,7 @@ extern cVideo * videoDecoder;
 extern cAudio * audioDecoder;
 
 extern CRemoteControl *g_RemoteControl;	// neutrino.cpp
-extern CZapitClient::SatelliteList satList;
+extern CZapit::SatelliteList satList;
 
 // yhttpd
 #include "ylogging.h"
@@ -132,7 +132,7 @@ std::string CNeutrinoAPI::ddmodes[] 		= { "CH1/CH2", "C", "L/R", "L/C/R", "L/R/S
 CNeutrinoAPI::CNeutrinoAPI()
 {
 	//Sectionsd = new CSectionsdClient();
-	//Zapit = new CZapitClient();
+	//Zapit = new CZapit();
 	Timerd = new CTimerdClient();
 
 	NeutrinoYParser = new CNeutrinoYParser(this);
@@ -186,7 +186,7 @@ void CNeutrinoAPI::UpdateBouquets(void)
 {
 #if 0 //FIXME
 	BouquetList.clear();
-	zapit_getBouquets(BouquetList, true, true);
+	CZapit::getInstance()->getBouquets(BouquetList, true, true);
 	for (unsigned int i = 1; i <= BouquetList.size(); i++)
 		UpdateBouquet(i);
 
@@ -210,7 +210,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 	// standby modus
 	if(CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby)
 	{
-		zapit_setStandby(false);
+		CZapit::getInstance()->setStandby(false);
 		
 // opengl liveplayback
 #if defined (USE_PLAYBACK)
@@ -219,16 +219,16 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 	
 		if (channel_id != 0) 
 		{
-			if (zapit_zapTo_record(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
+			if (CZapit::getInstance()->zapTo_record(channel_id) != CZapit::ZAP_INVALID_PARAM)
 				CSectionsd::getInstance()->setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
 		}
 
 		// stop playback im standby
-		zapit_stopPlayBack();
+		CZapit::getInstance()->stopPlayBack();
 	}
 	else
 	{
-		if ( channel_id == zapit_getCurrentServiceID() )
+		if ( channel_id == CZapit::getInstance()->getCurrentServiceID() )
 			return;
 		
 // opengl liveplayback
@@ -236,7 +236,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 		stopOpenGLplayback();
 #endif		
 
-		if (zapit_zapTo_serviceID(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
+		if (CZapit::getInstance()->zapTo_serviceID(channel_id) != CZapit::ZAP_INVALID_PARAM)
 			CSectionsd::getInstance()->setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
 	}
 }
@@ -254,14 +254,14 @@ void CNeutrinoAPI::ZapToSubService(const char * const target)
 	stopOpenGLplayback();
 #endif		
 
-	if (zapit_zapTo_subServiceID(channel_id) != CZapitClient::ZAP_INVALID_PARAM)
+	if (CZapit::getInstance()->zapTo_subServiceID(channel_id) != CZapit::ZAP_INVALID_PARAM)
 		CSectionsd::getInstance()->setServiceChanged(channel_id&0xFFFFFFFFFFFFULL, false);
 }
 
 t_channel_id CNeutrinoAPI::ChannelNameToChannelId(std::string search_channel_name)
 {
 //FIXME depending on mode missing
-	//int mode = zapit_getMode();
+	//int mode = CZapit::getInstance()->getMode();
 	t_channel_id channel_id = (t_channel_id)-1;
 	CStringArray channel_names = ySplitStringVector(search_channel_name, ",");
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 
@@ -343,14 +343,14 @@ std::string CNeutrinoAPI::GetServiceName(t_channel_id channel_id)
 		return "";
 }
 
-CZapitClient::BouquetChannelList *CNeutrinoAPI::GetBouquet(unsigned int, int)
+CZapit::BouquetChannelList *CNeutrinoAPI::GetBouquet(unsigned int, int)
 {
 	//FIXME
 	printf("CNeutrinoAPI::GetChannelList still used !\n");
 	return NULL;
 }
 
-CZapitClient::BouquetChannelList *CNeutrinoAPI::GetChannelList(int)
+CZapit::BouquetChannelList *CNeutrinoAPI::GetChannelList(int)
 {
 	//FIXME
 	printf("CNeutrinoAPI::GetChannelList still used !\n");

@@ -129,7 +129,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			if ((*(t_channel_id *)data) != current_channel_id) 
 			{
 				g_InfoViewer->chanready = 0;
-				zapit_zapTo_serviceID_NOWAIT(current_channel_id );
+				CZapit::getInstance()->zapTo_serviceID_NOWAIT(current_channel_id );
 				CSectionsd::getInstance()->setServiceChanged(current_channel_id & 0xFFFFFFFFFFFFULL, false);
 
 				zap_completion_timeout = getcurrenttime() + 2 * (long long) 1000000;
@@ -249,7 +249,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				{
 					// ist nur ein neues Programm, kein neuer Kanal
 					// PIDs neu holen
-					zapit_getPIDS( current_PIDs );
+					CZapit::getInstance()->getPIDS( current_PIDs );
 					
 					// APID Bearbeitung neu anstossen
 					has_unresolved_ctags = true;
@@ -327,7 +327,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			}
 			
 			// get pids
-			zapit_getPIDS(current_PIDs );
+			CZapit::getInstance()->getPIDS(current_PIDs );
 
 			t_channel_id * p = new t_channel_id;
 			*p = current_channel_id;
@@ -346,7 +346,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	}
 	else if (msg == NeutrinoMessages::EVT_PMT_CHANGED) 
 	{
-		zapit_getPIDS(current_PIDs);
+		CZapit::getInstance()->getPIDS(current_PIDs);
 		processAPIDnames();
 		
 		return messages_return::unhandled;
@@ -626,12 +626,12 @@ void CRemoteControl::processAPIDnames()
 
 void CRemoteControl::copySubChannelsToZapit(void)
 {
-	CZapitClient::subServiceList zapitList;
+	CZapit::subServiceList zapitList;
 
 	for (CSubServiceListSorted::const_iterator e = subChannels.begin(); e != subChannels.end(); e++)
 		zapitList.push_back(e->getAsZapitSubService());
 
-	zapit_setSubServices(zapitList);
+	CZapit::getInstance()->setSubServices(zapitList);
 }
 
 void CRemoteControl::setAPID( uint32_t APID )
@@ -640,7 +640,7 @@ void CRemoteControl::setAPID( uint32_t APID )
 		return;
 
 	current_PIDs.PIDs.selected_apid = APID;
-	zapit_setAudioChannel( APID );
+	CZapit::getInstance()->setAudioChannel( APID );
 	
 	// needed for auto audio select
 	CVFD::getInstance()->ShowIcon(VFD_ICON_DOLBY, current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].is_ac3? true : false);
@@ -666,7 +666,7 @@ const std::string & CRemoteControl::setSubChannel(const int numSub, const bool f
 		scrambled_timer = 0;
 	}
 
-	zapit_zapTo_subServiceID_NOWAIT( current_sub_channel_id );
+	CZapit::getInstance()->zapTo_subServiceID_NOWAIT( current_sub_channel_id );
 	
 	// Houdini: to restart reading the private EPG when switching to a new option
 	CSectionsd::getInstance()->setServiceChanged( current_sub_channel_id , true );
@@ -760,7 +760,7 @@ void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::s
 		abort_zapit = 1;
 
 		// zap
-		zapit_zapTo_serviceID_NOWAIT(channel_id);
+		CZapit::getInstance()->zapTo_serviceID_NOWAIT(channel_id);
 
 		// getEventsFromHTTP / localtv
 		if(g_settings.epg_enable_online_epg && IS_WEBTV(channel_id))
@@ -795,7 +795,7 @@ void CRemoteControl::startvideo(t_channel_id channel_id)
 	if ( !is_video_started )
 	{
 		is_video_started = true;
-		zapit_startPlayBack(chan);
+		CZapit::getInstance()->startPlayBack(chan);
 	}
 }
 
@@ -804,7 +804,7 @@ void CRemoteControl::stopvideo()
 	if ( is_video_started )
 	{
 		is_video_started= false;
-		zapit_stopPlayBack();
+		CZapit::getInstance()->stopPlayBack();
 	}
 }
 
@@ -812,7 +812,7 @@ void CRemoteControl::radioMode()
 {
 	dprintf(DEBUG_NORMAL, "CRemoteControl::radioMode\n");
 	
-	zapit_setMode( CZapitClient::MODE_RADIO );
+	CZapit::getInstance()->setMode( CZapit::MODE_RADIO );
 	
 	CVFD::getInstance()->ShowIcon(VFD_ICON_RADIO, true);
 	CVFD::getInstance()->ShowIcon(VFD_ICON_TV, false);
@@ -822,7 +822,7 @@ void CRemoteControl::tvMode()
 {
 	dprintf(DEBUG_NORMAL, "CRemoteControl::tvMode\n");
 	
-	zapit_setMode( CZapitClient::MODE_TV );
+	CZapit::getInstance()->setMode( CZapit::MODE_TV );
 	
 	CVFD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
 	CVFD::getInstance()->ShowIcon(VFD_ICON_TV, true);

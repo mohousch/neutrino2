@@ -15,8 +15,8 @@
 
 #include <inttypes.h>
 
-#include <zapit/zapitclient.h>
-#include <zapit/channel.h>
+#include "zapit.h"
+#include "channel.h"
 
 #include <libxmltree/xmlinterface.h>
 
@@ -73,18 +73,18 @@ class CBouquetManager
 		{
 			private:
 				CBouquetManager * Owner;
-				CZapitClient::channelsMode mode;
+				CZapit::channelsMode mode;
 				unsigned int b;
 				int c;
 				ZapitChannelList *getBouquet() 
 				{ 
-					if (mode == CZapitClient::MODE_TV)
+					if (mode == CZapit::MODE_TV)
 						return &(Owner->Bouquets[b]->tvChannels);
-					else if (mode == CZapitClient::MODE_RADIO)
+					else if (mode == CZapit::MODE_RADIO)
 						return &(Owner->Bouquets[b]->radioChannels);
 				};
 			public:
-				ChannelIterator(CBouquetManager *owner, const CZapitClient::channelsMode Mode = CZapitClient::MODE_TV);
+				ChannelIterator(CBouquetManager *owner, const CZapit::channelsMode Mode = CZapit::MODE_TV);
 				ChannelIterator operator ++(int);
 				CZapitChannel* operator *();
 				ChannelIterator FindChannelNr(const unsigned int channel);
@@ -93,14 +93,14 @@ class CBouquetManager
 				bool EndOfChannels() { return (c == -2); };
 		};
 
-		ChannelIterator tvChannelsBegin() { return ChannelIterator(this, CZapitClient::MODE_TV); };
-		ChannelIterator radioChannelsBegin() { return ChannelIterator(this, CZapitClient::MODE_RADIO); };
+		ChannelIterator tvChannelsBegin() { return ChannelIterator(this, CZapit::MODE_TV); };
+		ChannelIterator radioChannelsBegin() { return ChannelIterator(this, CZapit::MODE_RADIO); };
 
 		BouquetList Bouquets;
 
 		void saveBouquets(void);
 		void saveUBouquets(void);
-		void saveBouquets(const CZapitClient::bouquetMode bouquetMode, const char * const providerName);
+		void saveBouquets(const CZapit::bouquetMode bouquetMode, const char * const providerName);
 		void loadBouquets(bool loadCurrentBouquet = false);
 		void renumServices();
 

@@ -42,7 +42,7 @@
 #include <neutrinoMessages.h>
 
 /*zapit includes*/
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 
 
 class CVCRControl
@@ -145,7 +145,7 @@ class CVCRControl
 				
 				unsigned long long            record_EPGid;
 				unsigned long long            record_next_EPGid;
-				CZapitClient::responseGetPIDs pids;
+				CZapit::responseGetPIDs pids;
 				void processAPIDnames();
 		};
 

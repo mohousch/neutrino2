@@ -39,7 +39,6 @@
 #include <zapit/settings.h>
 #include <zapit/getservices.h>
 #include <connection/basicserver.h>
-#include <zapit//msgtypes.h>
 #include <zapit/frontend_c.h>
 #include <zapit/satconfig.h>
 

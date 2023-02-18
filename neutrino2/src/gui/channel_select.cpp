@@ -59,19 +59,19 @@ int CSelectChannelWidget::exec(CMenuTarget *parent, const std::string &actionKey
 
 	if(actionKey == "tv")
 	{
-		InitZapitChannelHelper(CZapitClient::MODE_TV);
+		InitZapitChannelHelper(CZapit::MODE_TV);
 		return res;
 	}
 	else if(actionKey == "radio")
 	{
-		InitZapitChannelHelper(CZapitClient::MODE_RADIO);
+		InitZapitChannelHelper(CZapit::MODE_RADIO);
 		return res;
 	}
 
 	return res;
 }
 
-void CSelectChannelWidget::InitZapitChannelHelper(CZapitClient::channelsMode mode)
+void CSelectChannelWidget::InitZapitChannelHelper(CZapit::channelsMode mode)
 {
 	dprintf(DEBUG_NORMAL, "CSelectChannelWidget::InitZapitChannelHelper:\n");
 
@@ -84,11 +84,11 @@ void CSelectChannelWidget::InitZapitChannelHelper(CZapitClient::channelsMode mod
 	int nMode = CNeutrinoApp::getInstance()->getMode();
 
 	// set mode
-	if(mode == CZapitClient::MODE_TV)
+	if(mode == CZapit::MODE_TV)
 	{
 		CNeutrinoApp::getInstance()->SetChannelMode(g_settings.channel_mode, NeutrinoMessages::mode_tv);
 	}
-	else if(mode == CZapitClient::MODE_RADIO)
+	else if(mode == CZapit::MODE_RADIO)
 	{
 		CNeutrinoApp::getInstance()->SetChannelMode(g_settings.channel_mode, NeutrinoMessages::mode_radio);
 	}

@@ -34,7 +34,7 @@
 #include <eventserver.h>
 
 #include <zapit/bouquets.h>
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 #include <zapit/getservices.h>
 #include <zapit/nit.h>
 #include <zapit/scan.h>
@@ -45,7 +45,6 @@
 
 #include <xmlinterface.h>
 
-#include <zapit/msgtypes.h>
 
 extern satellite_map_t satellitePositions;		// defined in getServices.cpp
 extern scan_list_t scanProviders;			// defined in zapit.cpp
@@ -59,12 +58,12 @@ extern uint32_t  found_tv_chans;
 extern uint32_t  found_radio_chans;
 extern uint32_t  found_data_chans;
 extern t_channel_id live_channel_id;
-extern CZapitClient::bouquetMode bouquetMode;
+extern CZapit::bouquetMode _bouquetMode;
 extern CEventServer *eventServer;
 
-extern CFrontend * getFE(int index);
+//extern CFrontend * getFE(int index);
 extern CFrontend * live_fe;
-extern void initTuner(CFrontend * fe);
+//extern void initTuner(CFrontend * fe);
 
 extern _xmlDocPtr scanInputParser;
 
@@ -89,7 +88,7 @@ std::map <transponder_id_t, transponder> scantransponders;		// TP list to scan
 std::map <transponder_id_t, transponder> scanedtransponders;		// global TP list for current scan
 std::map <transponder_id_t, transponder> nittransponders;
 
-extern void parseScanInputXml(fe_type_t fe_type);
+//extern void parseScanInputXml(fe_type_t fe_type);
 
 
 #define TIMER_START()			\
@@ -107,21 +106,21 @@ bool tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_satelli
 	dprintf(DEBUG_NORMAL, "%s\n", __FUNCTION__);
 	
 	// init tuner
-	initTuner(getFE(feindex));
+	CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
 	
 	//Set Input
-	getFE(feindex)->setInput(satellitePosition, feparams->frequency, polarization);
+	CZapit::getInstance()->getFE(feindex)->setInput(satellitePosition, feparams->frequency, polarization);
 
 	//Drive Rotor	(SAT)
-	if( getFE(feindex)->getInfo()->type == FE_QPSK)
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 	{
-		int ret = getFE(feindex)->driveToSatellitePosition(satellitePosition, false); //true);
+		int ret = CZapit::getInstance()->getFE(feindex)->driveToSatellitePosition(satellitePosition, false); //true);
 		
 		if(ret > 0) 
 		{
 			dprintf(DEBUG_INFO, "[scan]-tuneFrequency: waiting %d seconds for motor to turn satellite dish.\n", ret);
 			
-			eventServer->sendEvent(CZapitClient::EVT_SCAN_PROVIDER, CEventServer::INITID_ZAPIT, (void *) "moving rotor", 13);
+			eventServer->sendEvent(CZapit::EVT_SCAN_PROVIDER, CEventServer::INITID_ZAPIT, (void *) "moving rotor", 13);
 		
 			for(int i = 0; i < ret; i++) 
 			{
@@ -133,7 +132,7 @@ bool tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_satelli
 		}
 	}
 
-	return getFE(feindex)->tuneFrequency(feparams, polarization, false);
+	return CZapit::getInstance()->getFE(feindex)->tuneFrequency(feparams, polarization, false);
 }
 
 int add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit = 0, int feindex = 0)
@@ -142,11 +141,11 @@ int add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t
 
 	freq_id_t freq;
 
-	if(getFE(feindex)->getInfo()->type == FE_QAM)
+	if(CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 		freq = feparams->frequency / 100;
-	else if(getFE(feindex)->getInfo()->type == FE_QPSK)
+	else if(CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 		freq = feparams->frequency / 1000;
-	else if(getFE(feindex)->getInfo()->type == FE_OFDM || getFE(feindex)->getInfo()->type == FE_ATSC)
+	else if(CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 		freq = feparams->frequency / 1000000;
 
 	uint8_t poltmp1 = polarity & 1;
@@ -236,28 +235,28 @@ _repeat:
 		dprintf(DEBUG_INFO, "[scan] get_sdts: scanning: %llx\n", tI->first);
 
 		// msg to neutrino
-		if( getFE(feindex)->getInfo()->type == FE_QAM)
+		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 			actual_freq = tI->second.feparams.frequency;
-		else if( getFE(feindex)->getInfo()->type == FE_QPSK)
+		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 			actual_freq = tI->second.feparams.frequency;
-		else if( getFE(feindex)->getInfo()->type == FE_OFDM)
+		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 			actual_freq = tI->second.feparams.frequency;
-		else if( getFE(feindex)->getInfo()->type == FE_ATSC)
+		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 			actual_freq = tI->second.feparams.frequency;
 
 		processed_transponders++;
 		
-		eventServer->sendEvent(CZapitClient::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, CEventServer::INITID_ZAPIT, &processed_transponders, sizeof(processed_transponders));
-		eventServer->sendEvent(CZapitClient::EVT_SCAN_PROVIDER, CEventServer::INITID_ZAPIT, (void *) " ", 2);
-		eventServer->sendEvent(CZapitClient::EVT_SCAN_SERVICENAME, CEventServer::INITID_ZAPIT, (void *) " ", 2);
-		eventServer->sendEvent(CZapitClient::EVT_SCAN_REPORT_FREQUENCY,CEventServer::INITID_ZAPIT, &actual_freq, sizeof(actual_freq));
+		eventServer->sendEvent(CZapit::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, CEventServer::INITID_ZAPIT, &processed_transponders, sizeof(processed_transponders));
+		eventServer->sendEvent(CZapit::EVT_SCAN_PROVIDER, CEventServer::INITID_ZAPIT, (void *) " ", 2);
+		eventServer->sendEvent(CZapit::EVT_SCAN_SERVICENAME, CEventServer::INITID_ZAPIT, (void *) " ", 2);
+		eventServer->sendEvent(CZapit::EVT_SCAN_REPORT_FREQUENCY,CEventServer::INITID_ZAPIT, &actual_freq, sizeof(actual_freq));
 
 		// by sat send pol to neutrino
-		if( getFE(feindex)->getInfo()->type == FE_QPSK)
+		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 		{
 			actual_polarisation = ((tI->second.feparams.u.qpsk.symbol_rate/1000) << 16) | (tI->second.feparams.u.qpsk.fec_inner << 8) | (uint)tI->second.polarization;
 
-			eventServer->sendEvent(CZapitClient::EVT_SCAN_REPORT_FREQUENCYP, CEventServer::INITID_ZAPIT,&actual_polarisation,sizeof(actual_polarisation));
+			eventServer->sendEvent(CZapit::EVT_SCAN_REPORT_FREQUENCYP, CEventServer::INITID_ZAPIT,&actual_polarisation,sizeof(actual_polarisation));
 		}
 		
 		// tune TP
@@ -272,11 +271,11 @@ _repeat:
 
 		freq_id_t freq;
 
-		if( getFE(feindex)->getInfo()->type == FE_QAM)
+		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 			freq = tI->second.feparams.frequency/100;
-		else if( getFE(feindex)->getInfo()->type == FE_QPSK)
+		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 			freq = tI->second.feparams.frequency/1000;
-		else if( getFE(feindex)->getInfo()->type == FE_OFDM || getFE(feindex)->getInfo()->type == FE_ATSC)
+		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 			freq = tI->second.feparams.frequency/1000000;
 			
 		// parse sdt
@@ -327,7 +326,7 @@ _repeat:
 		
 		if(scantransponders.size()) 
 		{
-			eventServer->sendEvent(CZapitClient::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_ZAPIT, &found_transponders, sizeof(found_transponders));
+			eventServer->sendEvent(CZapit::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_ZAPIT, &found_transponders, sizeof(found_transponders));
 			goto _repeat;
 		}
 	}
@@ -347,26 +346,26 @@ int scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_po
 	freq_id_t freq;
 	feparams.inversion = INVERSION_AUTO;
 
-	if ( getFE(feindex)->getInfo()->type == FE_OFDM)
+	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 		feparams.frequency = xmlGetNumericAttribute(transponder, "centre_frequency", 0);
 	else
 		feparams.frequency = xmlGetNumericAttribute(transponder, "frequency", 0);
 
-	if( getFE(feindex)->getInfo()->type == FE_QAM)
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 		freq = feparams.frequency/100;
-	else if( getFE(feindex)->getInfo()->type == FE_QPSK)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 		freq = feparams.frequency/1000;
-	else if( getFE(feindex)->getInfo()->type == FE_OFDM || getFE(feindex)->getInfo()->type == FE_ATSC)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 		freq = feparams.frequency/1000000;
 		
-	if( getFE(feindex)->getInfo()->type == FE_QAM)	//DVB-C
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)	//DVB-C
 	{
 		feparams.u.qam.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
 		feparams.u.qam.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(transponder, "fec_inner", 0);
 		feparams.u.qam.modulation = (fe_modulation_t) xmlGetNumericAttribute(transponder, "modulation", 0);
 		diseqc_pos = 0;
 	}
-	else if( getFE(feindex)->getInfo()->type == FE_OFDM)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
 		feparams.u.ofdm.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(transponder, "bandwidth", 0);
 		feparams.u.ofdm.code_rate_HP = (fe_code_rate_t) xmlGetNumericAttribute(transponder, "code_rate_hp", 0);
@@ -379,7 +378,7 @@ int scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_po
 			
 		diseqc_pos = 0;
 	}
-	else if ( getFE(feindex)->getInfo()->type == FE_QPSK) 
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) 
 	{
 		feparams.u.qpsk.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
 		polarization = xmlGetNumericAttribute(transponder, "polarization", 0);
@@ -423,8 +422,8 @@ void scan_provider(_xmlNodePtr search, t_satellite_position satellitePosition, u
 		return;
 	}
 
-	eventServer->sendEvent(CZapitClient::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, CEventServer::INITID_ZAPIT, &processed_transponders, sizeof(processed_transponders));
-	eventServer->sendEvent(CZapitClient::EVT_SCAN_SATELLITE, CEventServer::INITID_ZAPIT, sit->second.name.c_str(), sit->second.name.size() + 1);
+	eventServer->sendEvent(CZapit::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, CEventServer::INITID_ZAPIT, &processed_transponders, sizeof(processed_transponders));
+	eventServer->sendEvent(CZapit::EVT_SCAN_SATELLITE, CEventServer::INITID_ZAPIT, sit->second.name.c_str(), sit->second.name.size() + 1);
 	
 	tps = search->xmlChildrenNode;
 
@@ -440,7 +439,7 @@ void scan_provider(_xmlNodePtr search, t_satellite_position satellitePosition, u
 		tps = tps->xmlNextNode;
 	}
 	
-	eventServer->sendEvent( CZapitClient::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_ZAPIT, &found_transponders, sizeof(found_transponders));
+	eventServer->sendEvent( CZapit::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_ZAPIT, &found_transponders, sizeof(found_transponders));
 
 	// start scanning
 	get_sdts(satellitePosition, feindex);
@@ -486,7 +485,7 @@ void stop_scan(const bool success)
 	
 	// notify client about end of scan
 	scan_runs = 0;
-	eventServer->sendEvent(success ? CZapitClient::EVT_SCAN_COMPLETE : CZapitClient::EVT_SCAN_FAILED, CEventServer::INITID_ZAPIT);
+	eventServer->sendEvent(success ? CZapit::EVT_SCAN_COMPLETE : CZapit::EVT_SCAN_FAILED, CEventServer::INITID_ZAPIT);
 	
 	if (scanBouquetManager) 
 	{
@@ -500,7 +499,7 @@ void * start_scanthread(void *scanmode)
 {
 	dprintf(DEBUG_INFO, "[scan] start_scanthread: starting... tid %ld\n", syscall(__NR_gettid));
 	
-	CZapitMessages::commandStartScan StartScan = *(CZapitMessages::commandStartScan *) scanmode;
+	CZapit::commandStartScan StartScan = *(CZapit::commandStartScan *) scanmode;
 	
 	int mode = StartScan.scan_mode;
 	int feindex = StartScan.feindex;
@@ -533,25 +532,25 @@ void * start_scanthread(void *scanmode)
 
 	fake_tid = fake_nid = 0;
 
-	if( getFE(feindex)->getInfo()->type == FE_QAM)
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 	{
 		frontendType = (char *) "cable";
 	}
-	else if( getFE(feindex)->getInfo()->type == FE_OFDM)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
 		frontendType = (char *) "terrestrial";
 	}
-	else if( getFE(feindex)->getInfo()->type == FE_QPSK)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 	{
 		frontendType = (char *) "sat";
 	}
-	else if( getFE(feindex)->getInfo()->type == FE_ATSC)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 	{
 		frontendType = (char *) "atsc";
 	}
 	
 	// get provider position and name
-	parseScanInputXml(getFE(feindex)->getInfo()->type);
+	CZapit::getInstance()->parseScanInputXml(CZapit::getInstance()->getFE(feindex)->getInfo()->type);
 	
 	_xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
 
@@ -560,7 +559,7 @@ void * start_scanthread(void *scanmode)
 	{
 		t_satellite_position position = xmlGetSignedNumericAttribute(search, "position", 10);
 	
-		if( ( getFE(feindex)->getInfo()->type == FE_QAM) || ( getFE(feindex)->getInfo()->type == FE_OFDM) )
+		if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) )
 		{
 			strcpy(providerName, xmlGetAttribute(search, const_cast<char*>("name")));
 			
@@ -591,7 +590,7 @@ void * start_scanthread(void *scanmode)
 			strcpy(providerName, xmlGetAttribute(search,  "name"));
 
 			// satfeed
-			if( ( getFE(feindex)->getInfo()->type == FE_OFDM || getFE(feindex)->getInfo()->type == FE_QAM) && xmlGetAttribute(search, "satfeed") )
+			if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) && xmlGetAttribute(search, "satfeed") )
 			{
 				if (!strcmp(xmlGetAttribute(search, "satfeed"), "true"))
 					satfeed = true;
@@ -604,7 +603,7 @@ void * start_scanthread(void *scanmode)
 			scanedtransponders.clear();
 			nittransponders.clear();
 
-			dprintf(DEBUG_INFO, "[scan] start_scanthread: scanning %s at %d bouquetMode %d\n", providerName, position, bouquetMode);
+			dprintf(DEBUG_INFO, "[scan] start_scanthread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
 				
 			scan_provider(search, position, diseqc_pos, satfeed, feindex);
 					
@@ -616,7 +615,7 @@ void * start_scanthread(void *scanmode)
 
 			if(scanBouquetManager->Bouquets.size() > 0) 
 			{
-				scanBouquetManager->saveBouquets(bouquetMode, providerName);
+				scanBouquetManager->saveBouquets(_bouquetMode, providerName);
 			}
 					
 			scanBouquetManager->clearAll();
@@ -643,7 +642,7 @@ void * start_scanthread(void *scanmode)
 		
 		stop_scan(true);
 
-		eventServer->sendEvent(CZapitClient::EVT_BOUQUETS_CHANGED, CEventServer::INITID_ZAPIT);
+		eventServer->sendEvent(CZapit::EVT_BOUQUETS_CHANGED, CEventServer::INITID_ZAPIT);
 	} 
 	else 
 	{
@@ -661,7 +660,7 @@ void * scan_transponder(void * arg)
 {
 	dprintf(DEBUG_NORMAL, "[scan.cpp] scan_transponder: starting... tid %ld\n", syscall(__NR_gettid));
 	
-	CZapitMessages::commandScanTP ScanTP = *(CZapitMessages::commandScanTP *) arg;
+	CZapit::commandScanTP ScanTP = *(CZapit::commandScanTP *) arg;
 	TP_params * TP = &ScanTP.TP;
 	
 	char providerName[32] = "";
@@ -685,31 +684,31 @@ void * scan_transponder(void * arg)
 	satellitePosition = scanProviders.begin()->first;
 	dprintf(DEBUG_INFO, "[scan] scan_transponder: scanning sat %s position %d fe(%d)\n", providerName, satellitePosition, ScanTP.feindex);
 	
-	eventServer->sendEvent(CZapitClient::EVT_SCAN_SATELLITE, CEventServer::INITID_ZAPIT, providerName, strlen(providerName) + 1);
+	eventServer->sendEvent(CZapit::EVT_SCAN_SATELLITE, CEventServer::INITID_ZAPIT, providerName, strlen(providerName) + 1);
 
 	scan_mode = TP->scan_mode;
 	TP->feparams.inversion = INVERSION_AUTO;
 
-	if( getFE(ScanTP.feindex)->getInfo()->type == FE_QAM)
+	if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_QAM)
 	{
 		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d rate %d fec %d mod %d\n", ScanTP.feindex, TP->feparams.frequency, TP->feparams.u.qam.symbol_rate, TP->feparams.u.qam.fec_inner, TP->feparams.u.qam.modulation);
 	}
-	else if( getFE(ScanTP.feindex)->getInfo()->type == FE_OFDM)
+	else if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_OFDM)
 	{
 		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", ScanTP.feindex, TP->feparams.frequency, TP->feparams.u.ofdm.bandwidth, TP->feparams.u.ofdm.code_rate_HP, TP->feparams.u.ofdm.code_rate_LP, TP->feparams.u.ofdm.constellation, TP->feparams.u.ofdm.transmission_mode, TP->feparams.u.ofdm.guard_interval, TP->feparams.u.ofdm.hierarchy_information);
 	}
-	else if( getFE(ScanTP.feindex)->getInfo()->type == FE_QPSK)
+	else if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_QPSK)
 	{
 		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d rate %d fec %d pol %d NIT %s\n", ScanTP.feindex, TP->feparams.frequency, TP->feparams.u.qpsk.symbol_rate, TP->feparams.u.qpsk.fec_inner, TP->polarization, scan_mode ? "no" : "yes");
 	}
 
 	freq_id_t freq;
 
-	if( getFE(ScanTP.feindex)->getInfo()->type == FE_QAM)
+	if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_QAM)
 		freq = TP->feparams.frequency/100;
-	else if( getFE(ScanTP.feindex)->getInfo()->type == FE_QPSK)
+	else if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_QPSK)
 		freq = TP->feparams.frequency/1000;
-	else if( getFE(ScanTP.feindex)->getInfo()->type == FE_OFDM)
+	else if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_OFDM)
 		freq = TP->feparams.frequency/1000000;
 
 	// add TP to scan
@@ -727,14 +726,14 @@ void * scan_transponder(void * arg)
 	{
 		saveServices(true);
 		
-		scanBouquetManager->saveBouquets(bouquetMode, providerName);
+		scanBouquetManager->saveBouquets(_bouquetMode, providerName);
 	        g_bouquetManager->saveBouquets();
 	        g_bouquetManager->clearAll();
 		g_bouquetManager->loadBouquets();
 		
 		stop_scan(true);
 
-		eventServer->sendEvent(CZapitClient::EVT_BOUQUETS_CHANGED, CEventServer::INITID_ZAPIT);
+		eventServer->sendEvent(CZapit::EVT_BOUQUETS_CHANGED, CEventServer::INITID_ZAPIT);
 	} 
 	else 
 	{

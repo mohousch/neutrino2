@@ -183,7 +183,7 @@
 #include <zapit/satconfig.h>
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 
 // libdvbapi
 #include <playback_cs.h>
@@ -194,7 +194,6 @@
 // globals
 extern  SNeutrinoSettings g_settings;
 
-extern  CZapitClient *g_Zapit;
 extern  CTimerdClient *g_Timerd;
 
 extern  FBFontRenderClass *g_fontRenderer;

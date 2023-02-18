@@ -43,7 +43,7 @@
 #include <gui/widget/listbox.h>
 
 // zapit includes
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
 
@@ -65,7 +65,7 @@ class CBEChannelSelectWidget : public CMenuTarget
 
 		//
 		unsigned int bouquet;
-		CZapitClient::channelsMode mode;
+		CZapit::channelsMode mode;
 		bool isChannelInBouquet(int index);
 
 		bool modified;
@@ -80,7 +80,7 @@ class CBEChannelSelectWidget : public CMenuTarget
 		void paint();
 
 	public:
-		CBEChannelSelectWidget(const std::string& Caption, unsigned int Bouquet, CZapitClient::channelsMode Mode);
+		CBEChannelSelectWidget(const std::string& Caption, unsigned int Bouquet, CZapit::channelsMode Mode);
 		int exec(CMenuTarget *parent, const std::string &actionKey);
 		void hide();
 		

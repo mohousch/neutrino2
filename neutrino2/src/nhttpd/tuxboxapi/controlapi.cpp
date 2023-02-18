@@ -318,7 +318,7 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 	{
 		if (hh->ParamList["1"] == "status")	// display recoding status
 		{
-			if (zapit_isRecordModeActive())
+			if (CZapit::getInstance()->isRecordModeActive())
 				hh->WriteLn("on");
 			else
 				hh->WriteLn("off");
@@ -342,19 +342,19 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 		else if (hh->ParamList["record"] == "start")	// start record mode
 		{
 			if(hh->ParamList["stopplayback"] == "true")
-				zapit_stopPlayBack();
+				CZapit::getInstance()->stopPlayBack();
 				
 			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
 			CSectionsd::getInstance()->pauseScanning(true);
-			zapit_setRecordMode(true);
+			CZapit::getInstance()->setRecordMode(true);
 		}
 		else if (hh->ParamList["record"] == "stop")	// stop record mode
 		{
-			zapit_setRecordMode(false);
+			CZapit::getInstance()->setRecordMode(false);
 			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
 			CSectionsd::getInstance()->pauseScanning(false);
-			if (!zapit_isPlayBackActive())
-				zapit_startPlayBack(live_channel);
+			if (!CZapit::getInstance()->isPlayBackActive())
+				CZapit::getInstance()->startPlayBack(live_channel);
 		}
 		hh->SendOk();
 	}
@@ -365,11 +365,11 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 //
 void CControlAPI::GetModeCGI(CyhookHandler *hh)
 {
-	int mode = zapit_getMode();
+	int mode = CZapit::getInstance()->getMode();
 	
-	if ( mode == CZapitClient::MODE_TV)
+	if ( mode == CZapit::MODE_TV)
 		hh->WriteLn("tv");
-	else if ( mode == CZapitClient::MODE_RADIO)
+	else if ( mode == CZapit::MODE_RADIO)
 		return hh->WriteLn("radio");
 	else
 		return hh->WriteLn("unknown");
@@ -525,7 +525,7 @@ void CControlAPI::GetBouquetsxmlCGI(CyhookHandler *hh)
 // get actual channel_id
 void CControlAPI::GetChannel_IDCGI(CyhookHandler *hh)
 {
-	CZapitClient::CCurrentServiceInfo current_pids = zapit_getCurrentServiceInfo();
+	CZapit::CCurrentServiceInfo current_pids = CZapit::getInstance()->getCurrentServiceInfo();
 	hh->printf("%x%04x%04x\n",current_pids.tsid, current_pids.onid, current_pids.sid);
 }
 
@@ -805,27 +805,27 @@ void CControlAPI::VolumeCGI(CyhookHandler *hh)
 	{
 		//without param: show actual volumen
 		unsigned int volume;
-		zapit_getVolume(&volume, &volume);
+		CZapit::getInstance()->getVolume(&volume, &volume);
 		hh->printf("%d", volume);
 	}
 	else if (hh->ParamList["1"].compare("mute") == 0)
 	{
-		zapit_muteAudio(true);
+		CZapit::getInstance()->muteAudio(true);
 		hh->SendOk();
 	}
 	else if (hh->ParamList["1"].compare("unmute") == 0)
 	{
-		zapit_muteAudio(false);
+		CZapit::getInstance()->muteAudio(false);
 		hh->SendOk();
 	}
 	else if (hh->ParamList["1"].compare("status") == 0) 
 	{ // Mute status
-		(zapit_getMuteStatus()) ? hh->Write("1") :  hh->Write("0");
+		(CZapit::getInstance()->getMuteStatus()) ? hh->Write("1") :  hh->Write("0");
 	}
 	else if(hh->ParamList["1"]!="") 
 	{ //set volume
 		char vol = atol( hh->ParamList["1"].c_str() );
-		zapit_setVolume(vol,vol);
+		CZapit::getInstance()->setVolume(vol,vol);
 		hh->SendOk();
 	}
 	else
@@ -898,14 +898,14 @@ void CControlAPI::GetBouquetCGI(CyhookHandler *hh)
 {
 	if (!(hh->ParamList.empty()))
 	{
-		int mode = CZapitClient::MODE_CURRENT;
+		int mode = CZapit::MODE_CURRENT;
 
 		if (!(hh->ParamList["mode"].empty()))
 		{
 			if (hh->ParamList["mode"].compare("TV") == 0)
-				mode = CZapitClient::MODE_TV;
+				mode = CZapit::MODE_TV;
 			if (hh->ParamList["mode"].compare("RADIO") == 0)
-				mode = CZapitClient::MODE_RADIO;
+				mode = CZapit::MODE_RADIO;
 		}
 
 		// Get Bouquet Number. First matching current channel
@@ -943,8 +943,8 @@ void CControlAPI::GetBouquetCGI(CyhookHandler *hh)
 				int BouquetNr = atoi(hh->ParamList["bouquet"].c_str());
 				if(BouquetNr > 0)
 					BouquetNr--;
-				channels = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->Bouquets[BouquetNr]->radioChannels : g_bouquetManager->Bouquets[BouquetNr]->tvChannels;
-				int num = 1 + (mode == CZapitClient::MODE_RADIO ? g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr) : g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr)) ;
+				channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[BouquetNr]->radioChannels : g_bouquetManager->Bouquets[BouquetNr]->tvChannels;
+				int num = 1 + (mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr) : g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr)) ;
 				for(int j = 0; j < (int) channels.size(); j++) 
 				{
 					CZapitChannel * channel = channels[j];
@@ -957,13 +957,13 @@ void CControlAPI::GetBouquetCGI(CyhookHandler *hh)
 				for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
 				{
 					/*
-					CBouquetManager::ChannelIterator cit = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
+					CBouquetManager::ChannelIterator cit = mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
 					for (; !(cit.EndOfChannels()); cit++) 
 					{
 						CZapitChannel * channel = *cit;
 					*/
-					channels = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->Bouquets[i]->radioChannels : g_bouquetManager->Bouquets[i]->tvChannels;
-					int num = 1 + (mode == CZapitClient::MODE_RADIO ? g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(i) : g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(i)) ;
+					channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[i]->radioChannels : g_bouquetManager->Bouquets[i]->tvChannels;
+					int num = 1 + (mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(i) : g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(i)) ;
 					for(int j = 0; j < (int) channels.size(); j++) 
 					{
 						CZapitChannel * channel = channels[j];
@@ -1011,11 +1011,11 @@ void CControlAPI::GetBouquetsCGI(CyhookHandler *hh)
 		hh->WriteLn("<bouquets>");
 	}
 
-	int mode = zapit_getMode();
+	int mode = CZapit::getInstance()->getMode();
 	std::string bouquet;
 	for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
 	{
-		ZapitChannelList * channels = mode == CZapitClient::MODE_RADIO ? &g_bouquetManager->Bouquets[i]->radioChannels : &g_bouquetManager->Bouquets[i]->tvChannels;
+		ZapitChannelList * channels = mode == CZapit::MODE_RADIO ? &g_bouquetManager->Bouquets[i]->radioChannels : &g_bouquetManager->Bouquets[i]->tvChannels;
 		if(!channels->empty() && (!g_bouquetManager->Bouquets[i]->bHidden || show_hidden))
 		{
 			bouquet = std::string(g_bouquetManager->Bouquets[i]->bFav ? _("My Favorites") :g_bouquetManager->Bouquets[i]->Name.c_str());
@@ -1103,8 +1103,8 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 		CChannelEvent *event;
 		NeutrinoAPI->GetChannelEvents();
 
-		int mode = zapit_getMode();
-		CBouquetManager::ChannelIterator cit = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
+		int mode = CZapit::getInstance()->getMode();
+		CBouquetManager::ChannelIterator cit = mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
 		for (; !(cit.EndOfChannels()); cit++) 
 		{
 			CZapitChannel * channel = *cit;
@@ -1124,8 +1124,8 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 		{
 			CChannelEvent *event;
 			NeutrinoAPI->GetChannelEvents();
-			int mode = zapit_getMode();
-			CBouquetManager::ChannelIterator cit = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
+			int mode = CZapit::getInstance()->getMode();
+			CBouquetManager::ChannelIterator cit = mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
 			for (; !(cit.EndOfChannels()); cit++) {
 				CZapitChannel * channel = *cit;
 				event = NeutrinoAPI->ChannelListEvents[channel->channel_id];
@@ -1248,9 +1248,9 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 		{
 			// list for given bouquet
 			ZapitChannelList channels;
-			int mode = zapit_getMode();
+			int mode = CZapit::getInstance()->getMode();
 
-			channels = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->Bouquets[bouquetnr]->radioChannels : g_bouquetManager->Bouquets[bouquetnr]->tvChannels;
+			channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[bouquetnr]->radioChannels : g_bouquetManager->Bouquets[bouquetnr]->tvChannels;
 			std::string bouquet = std::string(g_bouquetManager->Bouquets[bouquetnr]->bFav ? _("My Favorites") :g_bouquetManager->Bouquets[bouquetnr]->Name.c_str());
 			bouquet = encodeString(bouquet); // encode (URLencode) the bouquetname
 			hh->printf("\t<bouquet>\n\t\t<number>%d</number>\n\t\t<name><![CDATA[%s]]></name>\n\t", bouquetnr+1, bouquet.c_str());
@@ -1268,11 +1268,11 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 		{
 			// list all bouquets			if(encode)
 			ZapitChannelList channels;
-			int mode = zapit_getMode();
+			int mode = CZapit::getInstance()->getMode();
 
 			for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
 			{
-				channels = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->Bouquets[i]->radioChannels : g_bouquetManager->Bouquets[i]->tvChannels;
+				channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[i]->radioChannels : g_bouquetManager->Bouquets[i]->tvChannels;
 				std::string bouquet = std::string(g_bouquetManager->Bouquets[i]->bFav ? _("My Favorites") :g_bouquetManager->Bouquets[i]->Name.c_str());
 				bouquet = encodeString(bouquet); // encode (URLencode) the bouquetname
 				hh->printf("\t<bouquet>\n\t\t<number>%d</number>\n\t\t<name><![CDATA[%s]]></name>\n\t", i+1, bouquet.c_str());
@@ -1307,7 +1307,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 	{
 		hh->printf("%llx"
 				"\n",
-				zapit_getCurrentServiceID()&0xFFFFFFFFFFFFULL);
+				CZapit::getInstance()->getCurrentServiceID()&0xFFFFFFFFFFFFULL);
 		return;
 	}
 	else
@@ -1318,21 +1318,21 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 			SendAllCurrentVAPid(hh);
 		else if (hh->ParamList["1"] == "stopplayback")
 		{
-			zapit_stopPlayBack();
+			CZapit::getInstance()->stopPlayBack();
 			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
 			CSectionsd::getInstance()->pauseScanning(true);
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "startplayback")
 		{
-			zapit_startPlayBack(live_channel);
+			CZapit::getInstance()->startPlayBack(live_channel);
 			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
 			CSectionsd::getInstance()->pauseScanning(false);
 			dprintf("start playback requested..\n");
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "statusplayback")
-			hh->Write((char *) (zapit_isPlayBackActive() ? "1" : "0"));
+			hh->Write((char *) (CZapit::getInstance()->isPlayBackActive() ? "1" : "0"));
 		else if (hh->ParamList["1"] == "stopsectionsd")
 		{
 			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
@@ -1349,7 +1349,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 			hh->Write((char *) (scanning ? "1" : "0"));
 		else if (hh->ParamList["1"] == "getallsubchannels")
 		{
-			t_channel_id current_channel = zapit_getCurrentServiceID();
+			t_channel_id current_channel = CZapit::getInstance()->getCurrentServiceID();
 			CSectionsd::LinkageDescriptorList desc;
 			CSectionsd::responseGetCurrentNextInfoChannelID currentNextInfo;
 			CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
@@ -1467,9 +1467,9 @@ void CControlAPI::SendEventList(CyhookHandler *hh, t_channel_id channel_id)
 //
 void CControlAPI::SendChannelList(CyhookHandler *hh)
 {
-	int mode = zapit_getMode();
+	int mode = CZapit::getInstance()->getMode();
 	hh->SetHeader(HTTP_OK, "text/html; charset=UTF-8");
-	CBouquetManager::ChannelIterator cit = mode == CZapitClient::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
+	CBouquetManager::ChannelIterator cit = mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
 	for (; !(cit.EndOfChannels()); cit++) 
 	{
 		CZapitChannel * channel = *cit;
@@ -1492,9 +1492,9 @@ void CControlAPI::SendStreamInfo(CyhookHandler *hh)
 //
 void CControlAPI::SendcurrentVAPid(CyhookHandler *hh)
 {
-	CZapitClient::responseGetPIDs pids;
+	CZapit::responseGetPIDs pids;
 	pids.PIDs.vpid=0;
-	zapit_getPIDS(pids);
+	CZapit::getInstance()->getPIDS(pids);
 
 	hh->printf("%u\n", pids.PIDs.vpid);
 	if(!pids.APIDs.empty())
@@ -1513,15 +1513,15 @@ void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 			init_iso=false;
 	}
 	bool eit_not_ok=true;
-	CZapitClient::responseGetPIDs pids;
+	CZapit::responseGetPIDs pids;
 
 	CSectionsd::ComponentTagList tags;
 	pids.PIDs.vpid=0;
-	zapit_getPIDS(pids);
+	CZapit::getInstance()->getPIDS(pids);
 
 	hh->printf("%05u\n", pids.PIDs.vpid);
 
-	t_channel_id current_channel = zapit_getCurrentServiceID();
+	t_channel_id current_channel = CZapit::getInstance()->getCurrentServiceID();
 	CSectionsd::responseGetCurrentNextInfoChannelID currentNextInfo;
 	CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
 	if (CSectionsd::getInstance()->getComponentTagsUniqueKey(currentNextInfo.current_uniqueKey,tags))
@@ -1556,7 +1556,7 @@ void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 	if(eit_not_ok)
 	{
 		unsigned short i = 0;
-		for (CZapitClient::APIDList::iterator it = pids.APIDs.begin(); it!=pids.APIDs.end(); it++)
+		for (CZapit::APIDList::iterator it = pids.APIDs.begin(); it!=pids.APIDs.end(); it++)
 		{
 			if(!(init_iso))
 			{
@@ -1609,7 +1609,7 @@ void CControlAPI::SendTimers(CyhookHandler *hh)
 			{
 				strncpy(zAddData, NeutrinoAPI->GetServiceName(timer->channel_id).c_str(), 22);
 				if (zAddData[0] == 0)
-					strcpy(zAddData, zapit_isChannelTVChannel(timer->channel_id) ? "Unknown TV-Channel" : "Unknown Radio-Channel");
+					strcpy(zAddData, CZapit::getInstance()->isChannelTVChannel(timer->channel_id) ? "Unknown TV-Channel" : "Unknown Radio-Channel");
 			}
 			else
 				sprintf(zAddData, "%llx", timer->channel_id&0xFFFFFFFFFFFFULL);
@@ -1770,7 +1770,7 @@ void CControlAPI::SendTimersXML(CyhookHandler *hh)
 		// channel infos
 		std::string channel_name = NeutrinoAPI->GetServiceName(timer->channel_id);
 		if (channel_name.empty())
-			channel_name = zapit_isChannelTVChannel(timer->channel_id) ? "Unknown TV-Channel" : "Unknown Radio-Channel";
+			channel_name = CZapit::getInstance()->isChannelTVChannel(timer->channel_id) ? "Unknown TV-Channel" : "Unknown Radio-Channel";
 
 		// epg title
 		std::string title = timer->epgTitle;
@@ -1898,10 +1898,10 @@ void CControlAPI::YWebCGI(CyhookHandler *hh)
 //
 void CControlAPI::YWeb_SendVideoStreamingPids(CyhookHandler *hh, int apid_no)
 {
-	CZapitClient::responseGetPIDs pids;
+	CZapit::responseGetPIDs pids;
 	int apid=0,apid_idx=0;
 	pids.PIDs.vpid=0;
-	zapit_getPIDS(pids);
+	CZapit::getInstance()->getPIDS(pids);
 
 	if( apid_no < (int)pids.APIDs.size())
 		apid_idx=apid_no;
@@ -1928,9 +1928,9 @@ void CControlAPI::YWeb_SendVideoStreamingPids(CyhookHandler *hh, int apid_no)
 //
 void CControlAPI::YWeb_SendRadioStreamingPid(CyhookHandler *hh)
 {
-	CZapitClient::responseGetPIDs pids;
+	CZapit::responseGetPIDs pids;
 	int apid=0;
-	zapit_getPIDS(pids);
+	CZapit::getInstance()->getPIDS(pids);
 
 	if(!pids.APIDs.empty())
 		apid = pids.APIDs[0].pid;
@@ -2246,13 +2246,13 @@ void CControlAPI::setBouquetCGI(CyhookHandler *hh)
 	if (hh->ParamList["selected"] != "") {
 		int selected = atoi(hh->ParamList["selected"].c_str());
 		if(hh->ParamList["action"].compare("hide") == 0)
-			zapit_setBouquetHidden(selected - 1,true);
+			CZapit::getInstance()->setBouquetHidden(selected - 1,true);
 		else if(hh->ParamList["action"].compare("show") == 0)
-			zapit_setBouquetHidden(selected - 1,false);
+			CZapit::getInstance()->setBouquetHidden(selected - 1,false);
 		else if(hh->ParamList["action"].compare("lock") == 0)
-			zapit_setBouquetLock(selected - 1,true);
+			CZapit::getInstance()->setBouquetLock(selected - 1,true);
 		else if(hh->ParamList["action"].compare("unlock") == 0)
-			zapit_setBouquetLock(selected - 1,false);
+			CZapit::getInstance()->setBouquetLock(selected - 1,false);
 		hh->SendOk();
 	}
 	else
@@ -2262,7 +2262,7 @@ void CControlAPI::setBouquetCGI(CyhookHandler *hh)
 //
 void CControlAPI::saveBouquetCGI(CyhookHandler *hh)
 {
-	zapit_saveBouquets();
+	CZapit::getInstance()->saveBouquets();
 	NeutrinoAPI->UpdateBouquets();
 	hh->SendOk();
 }
@@ -2277,12 +2277,12 @@ void CControlAPI::moveBouquetCGI(CyhookHandler *hh)
 		int selected = atoi(hh->ParamList["selected"].c_str());
 		if (hh->ParamList["action"] == "up") 
 		{
-			zapit_moveBouquet(selected - 1, (selected - 1) - 1);
+			CZapit::getInstance()->moveBouquet(selected - 1, (selected - 1) - 1);
 			selected--;
 		} 
 		else 
 		{
-			zapit_moveBouquet(selected - 1, (selected + 1) - 1);
+			CZapit::getInstance()->moveBouquet(selected - 1, (selected + 1) - 1);
 			selected++;
 		}
 		hh->SendOk();
@@ -2299,7 +2299,7 @@ void CControlAPI::deleteBouquetCGI(CyhookHandler *hh)
 	if (hh->ParamList["selected"] != "") 
 	{
 		selected = atoi(hh->ParamList["selected"].c_str());
-		zapit_deleteBouquet(selected - 1);
+		CZapit::getInstance()->deleteBouquet(selected - 1);
 		hh->SendOk();
 	}
 	else
@@ -2312,9 +2312,9 @@ void CControlAPI::addBouquetCGI(CyhookHandler *hh)
 	if (!hh->ParamList["name"].empty())
 	{
 		std::string tmp = hh->ParamList["name"];
-		if (zapit_existsBouquet(tmp.c_str()) == -1)
+		if (CZapit::getInstance()->existsBouquet(tmp.c_str()) == -1)
 		{
-			zapit_addBouquet(tmp.c_str());
+			CZapit::getInstance()->addBouquet(tmp.c_str());
 			hh->SendOk();
 		}
 		else
@@ -2329,9 +2329,9 @@ void CControlAPI::renameBouquetCGI(CyhookHandler *hh)
 	{
 		if (hh->ParamList["nameto"] != "")
 		{
-			if (zapit_existsBouquet((hh->ParamList["nameto"]).c_str()) == -1)
+			if (CZapit::getInstance()->existsBouquet((hh->ParamList["nameto"]).c_str()) == -1)
 			{
-				zapit_renameBouquet(atoi(hh->ParamList["selected"].c_str()) - 1, hh->ParamList["nameto"].c_str());
+				CZapit::getInstance()->renameBouquet(atoi(hh->ParamList["selected"].c_str()) - 1, hh->ParamList["nameto"].c_str());
 				hh->SendOk();
 				return;
 			}
@@ -2346,12 +2346,12 @@ void CControlAPI::changeBouquetCGI(CyhookHandler *hh)
 	if (!(hh->ParamList["selected"].empty()))
 	{
 		int selected = atoi(hh->ParamList["selected"].c_str());
-		CZapitClient::BouquetChannelList BChannelList;
-		zapit_getBouquetChannels(selected - 1, BChannelList, CZapitClient::MODE_CURRENT, true);
-		CZapitClient::BouquetChannelList::iterator channels = BChannelList.begin();
+		CZapit::BouquetChannelList BChannelList;
+		CZapit::getInstance()->getBouquetChannels(selected - 1, BChannelList, CZapit::MODE_CURRENT, true);
+		CZapit::BouquetChannelList::iterator channels = BChannelList.begin();
 		for(; channels != BChannelList.end();channels++)
 		{
-			zapit_removeChannelFromBouquet(selected - 1, channels->channel_id);
+			CZapit::getInstance()->removeChannelFromBouquet(selected - 1, channels->channel_id);
 		}
 
 		t_channel_id channel_id;
@@ -2363,11 +2363,11 @@ void CControlAPI::changeBouquetCGI(CyhookHandler *hh)
 				&channel_id,
 				&delta) > 0)
 		{
-			zapit_addChannelToBouquet(selected - 1, channel_id);
+			CZapit::getInstance()->addChannelToBouquet(selected - 1, channel_id);
 			bchannels += (delta + 1); // skip the separating ',', too
 		}
 
-		zapit_renumChannellist();
+		CZapit::getInstance()->renumChannellist();
 		NeutrinoAPI->UpdateBouquets();
 		if(hh->ParamList["redirect"] != "")
 			hh->SendRewrite(hh->ParamList["redirect"]);
@@ -2391,17 +2391,17 @@ void CControlAPI::updateBouquetCGI(CyhookHandler *hh)
 void CControlAPI::build_live_url(CyhookHandler *hh)
 {
 	std::string xpids,port,yresult;
-	int mode = zapit_getMode();
+	int mode = CZapit::getInstance()->getMode();
 
-	if ( mode == CZapitClient::MODE_TV)
+	if ( mode == CZapit::MODE_TV)
 	{
-		CZapitClient::responseGetPIDs pids;
+		CZapit::responseGetPIDs pids;
 		int apid=0,apid_no=0,apid_idx=0;
 		pids.PIDs.vpid=0;
 
 		if(hh->ParamList["audio_no"] !="")
 			apid_no = atoi(hh->ParamList["audio_no"].c_str());
-		zapit_getPIDS(pids);
+		CZapit::getInstance()->getPIDS(pids);
 
 		if( apid_no < (int)pids.APIDs.size())
 			apid_idx=apid_no;
@@ -2414,12 +2414,12 @@ void CControlAPI::build_live_url(CyhookHandler *hh)
 		else
 			xpids = string_printf("0x%04x,0x%04x,0x%04x",pids.PIDs.pmtpid, pids.PIDs.vpid, apid);
 	}
-	else if ( mode == CZapitClient::MODE_RADIO)
+	else if ( mode == CZapit::MODE_RADIO)
 	{
-		CZapitClient::responseGetPIDs pids;
+		CZapit::responseGetPIDs pids;
 		int apid=0;
 
-		zapit_getPIDS(pids);
+		CZapit::getInstance()->getPIDS(pids);
 		if(!pids.APIDs.empty())
 			apid = pids.APIDs[0].pid;
 
@@ -2434,7 +2434,7 @@ void CControlAPI::build_live_url(CyhookHandler *hh)
 		url = "http://"+hh->ParamList["host"];
 	else
 		url = "http://"+hh->HeaderList["Host"];
-	//url += (mode == CZapitClient::MODE_TV) ? ":31339/0," : ":31338/";
+	//url += (mode == CZapit::MODE_TV) ? ":31339/0," : ":31338/";
 	url += ":31339/0,";
 	url += xpids;
 

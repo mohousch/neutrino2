@@ -1527,7 +1527,7 @@ void CInfoViewer::showSNR()
 				char freq[20];
 				
 				// get current service info
-				CZapitClient::CCurrentServiceInfo si = zapit_getCurrentServiceInfo();
+				CZapit::CCurrentServiceInfo si = CZapit::getInstance()->getCurrentServiceInfo();
 				
 				// freq
 				if(live_fe != NULL)

@@ -34,7 +34,7 @@
 #include <eventserver.h>
 
 #include <zapit/bouquets.h>
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 #include <zapit/descriptors.h>
 #include <zapit/dvbstring.h>
 #include <zapit/frontend_c.h>
@@ -47,7 +47,7 @@
 
 
 extern CBouquetManager *g_bouquetManager;
-extern CZapitClient::scanType scanType;
+extern CZapit::scanType _scanType;
 extern tallchans allchans;   			//  defined in zapit.cpp
 extern tallchans curchans;   			//  defined in zapit.cpp
 std::string curr_chan_name;
@@ -62,7 +62,7 @@ std::map <t_channel_id, uint8_t> service_types;
 
 extern CEventServer *eventServer;
 
-CFrontend * getFE(int index);
+//CFrontend * getFE(int index);
 
 int add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit = 0, int feindex = 0);
 
@@ -273,7 +273,7 @@ int satellite_delivery_system_descriptor(const unsigned char * const buffer, t_t
 	transponder_id_t TsidOnid;
 	int modulationSystem, modulationType, rollOff, fec_inner;
 
-	if ( getFE(feindex)->getInfo()->type != FE_QPSK)
+	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_QPSK)
 		return -1;
 
 	//freq
@@ -351,7 +351,7 @@ int cable_delivery_system_descriptor(const unsigned char * const buffer, t_trans
 {
 	transponder_id_t TsidOnid;
 
-	if ( getFE(feindex)->getInfo()->type != FE_QAM)
+	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_QAM)
 		return -1;
 
 	FrontendParameters feparams;
@@ -439,24 +439,24 @@ void service_descriptor(const unsigned char * const buffer, const t_service_id s
 	if(service_type == 0x11 || service_type == 0x19)
 		service_type = ST_DIGITAL_TELEVISION_SERVICE;
 
-	switch ( scanType ) 
+	switch ( _scanType ) 
 	{
-		case CZapitClient::ST_TVRADIO:
+		case CZapit::ST_TVRADIO:
 			if ( (service_type == ST_DIGITAL_TELEVISION_SERVICE ) || (service_type == ST_DIGITAL_RADIO_SOUND_SERVICE) )
 				service_wr = true;
 			break;
 			
-		case CZapitClient::ST_TV:
+		case CZapit::ST_TV:
 			if ( service_type == ST_DIGITAL_TELEVISION_SERVICE )
 				service_wr = true;
 			break;
 			
-		case CZapitClient::ST_RADIO:
+		case CZapit::ST_RADIO:
 			if ( service_type == ST_DIGITAL_RADIO_SOUND_SERVICE )
 				service_wr = true;
 			break;
 			
-		case CZapitClient::ST_ALL:
+		case CZapit::ST_ALL:
 			service_wr = true;
 			break;
 	}
@@ -530,7 +530,7 @@ void service_descriptor(const unsigned char * const buffer, const t_service_id s
 	}
 
 	found_channels++;
-	eventServer->sendEvent ( CZapitClient::EVT_SCAN_NUM_CHANNELS, CEventServer::INITID_ZAPIT, &found_channels, sizeof(found_channels));
+	eventServer->sendEvent ( CZapit::EVT_SCAN_NUM_CHANNELS, CEventServer::INITID_ZAPIT, &found_channels, sizeof(found_channels));
 
 	t_channel_id channel_id = CREATE_CHANNEL_ID;
 	tallchans_iterator I = allchans.find(channel_id);
@@ -592,7 +592,7 @@ void service_descriptor(const unsigned char * const buffer, const t_service_id s
 #if defined (PLATFORM_COOLSTREAM)
 			dmx->Open(DMX_PSI_CHANNEL);
 #else			
-			dmx->Open(DMX_PSI_CHANNEL, 1024, getFE(feindex));
+			dmx->Open(DMX_PSI_CHANNEL, 1024, CZapit::getInstance()->getFE(feindex));
 #endif			
 			
 			if (!((dmx->sectionFilter(0x10, filter, mask, 5, 10000) < 0) || (dmx->Read(buff, 1024) < 0))) 
@@ -629,18 +629,18 @@ void service_descriptor(const unsigned char * const buffer, const t_service_id s
 
 	//
 	lastProviderName = providerName;
-	eventServer->sendEvent(CZapitClient::EVT_SCAN_PROVIDER, CEventServer::INITID_ZAPIT, (void *) lastProviderName.c_str(), lastProviderName.length() + 1);
+	eventServer->sendEvent(CZapit::EVT_SCAN_PROVIDER, CEventServer::INITID_ZAPIT, (void *) lastProviderName.c_str(), lastProviderName.length() + 1);
 
 	switch (service_type) 
 	{
 		case ST_DIGITAL_TELEVISION_SERVICE:
 			found_tv_chans++;
-			eventServer->sendEvent(CZapitClient::EVT_SCAN_FOUND_TV_CHAN, CEventServer::INITID_ZAPIT, &found_tv_chans, sizeof(found_tv_chans));
+			eventServer->sendEvent(CZapit::EVT_SCAN_FOUND_TV_CHAN, CEventServer::INITID_ZAPIT, &found_tv_chans, sizeof(found_tv_chans));
 			break;
 			
 		case ST_DIGITAL_RADIO_SOUND_SERVICE:
 			found_radio_chans++;
-			eventServer->sendEvent(CZapitClient::EVT_SCAN_FOUND_RADIO_CHAN, CEventServer::INITID_ZAPIT, &found_radio_chans, sizeof(found_radio_chans));
+			eventServer->sendEvent(CZapit::EVT_SCAN_FOUND_RADIO_CHAN, CEventServer::INITID_ZAPIT, &found_radio_chans, sizeof(found_radio_chans));
 			break;
 			
 		case ST_NVOD_REFERENCE_SERVICE:
@@ -650,7 +650,7 @@ void service_descriptor(const unsigned char * const buffer, const t_service_id s
 		case ST_RCS_FLS:
 		default:
 			found_data_chans++;
-			eventServer->sendEvent(CZapitClient::EVT_SCAN_FOUND_DATA_CHAN, CEventServer::INITID_ZAPIT, &found_data_chans, sizeof(found_data_chans));
+			eventServer->sendEvent(CZapit::EVT_SCAN_FOUND_DATA_CHAN, CEventServer::INITID_ZAPIT, &found_data_chans, sizeof(found_data_chans));
 			break;
 	}
 
@@ -665,7 +665,7 @@ void service_descriptor(const unsigned char * const buffer, const t_service_id s
 				int bouquetId;
 				char pname[100];
 				
-				if ( getFE(feindex)->getInfo()->type == FE_QPSK)
+				if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 					snprintf(pname, 100, "[%c%03d.%d] %s", satellitePosition > 0? 'E' : 'W', abs((int)satellitePosition)/10, abs((int)satellitePosition)%10, providerName.c_str());
 				else
 					snprintf(pname, 100, "%s", providerName.c_str());
@@ -678,7 +678,7 @@ void service_descriptor(const unsigned char * const buffer, const t_service_id s
 					bouquet = scanBouquetManager->Bouquets[bouquetId];
 
 				lastServiceName = serviceName;
-				eventServer->sendEvent(CZapitClient::EVT_SCAN_SERVICENAME, CEventServer::INITID_ZAPIT, (void *) lastServiceName.c_str(), lastServiceName.length() + 1);
+				eventServer->sendEvent(CZapit::EVT_SCAN_SERVICENAME, CEventServer::INITID_ZAPIT, (void *) lastServiceName.c_str(), lastServiceName.length() + 1);
 
 				CZapitChannel *chan = scanBouquetManager->findChannelByChannelID(channel_id);
 				if(chan)
@@ -880,7 +880,7 @@ void subtitling_descriptor(const unsigned char * const)
 /* 0x5A */ //FIXME is brocken :-(
 int terrestrial_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
-	if ( getFE(feindex)->getInfo()->type != FE_OFDM)
+	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM)
 		return -1;
 
 	FrontendParameters feparams;

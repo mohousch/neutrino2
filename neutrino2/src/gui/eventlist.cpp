@@ -57,7 +57,7 @@
 #include <gui/epgplus.h>
 
 //
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 
 #include <algorithm>
 
@@ -667,7 +667,7 @@ void EventList::paint(t_channel_id channel_id)
 			{
 				t_channel_id channel = evtlist[count].get_channel_id();
 				datetime1_str += "      ";
-				datetime1_str += zapit_getChannelName(channel);
+				datetime1_str += CZapit::getInstance()->getChannelName(channel);
 			}
 
 			sprintf(tmpstr, "[%d min]", evtlist[count].duration / 60 );
@@ -889,7 +889,7 @@ int CEventFinderMenu::exec(CMenuTarget * parent, const std::string &actionKey)
 		if(*m_search_list == EventList::SEARCH_LIST_CHANNEL)
 		{
 			mf[1]->setActive(true);
-			m_search_channelname = zapit_getChannelName(*m_search_channel_id);;
+			m_search_channelname = CZapit::getInstance()->getChannelName(*m_search_channel_id);;
 		}
 		else if(*m_search_list == EventList::SEARCH_LIST_BOUQUET)
 		{
@@ -922,7 +922,7 @@ int CEventFinderMenu::exec(CMenuTarget * parent, const std::string &actionKey)
 				{
 					*m_search_bouquet_id = nNewBouquet;
 					*m_search_channel_id = bouquetList->Bouquets[nNewBouquet]->channelList->getActiveChannel_ChannelID();
-					m_search_channelname = zapit_getChannelName(*m_search_channel_id);
+					m_search_channelname = CZapit::getInstance()->getChannelName(*m_search_channel_id);
 				}
 			}
 		}
@@ -955,7 +955,7 @@ int CEventFinderMenu::showMenu(void)
 	
 	if(*m_search_list == EventList::SEARCH_LIST_CHANNEL)
 	{
-		m_search_channelname = zapit_getChannelName(*m_search_channel_id);
+		m_search_channelname = CZapit::getInstance()->getChannelName(*m_search_channel_id);
 	}
 	else if(*m_search_list == EventList::SEARCH_LIST_BOUQUET)
 	{

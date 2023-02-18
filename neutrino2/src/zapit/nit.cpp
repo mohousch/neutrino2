@@ -43,7 +43,7 @@
 #define NIT_SIZE 1024
 
 
-extern CFrontend * getFE(int index);
+//extern CFrontend * getFE(int index);
 
 int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
@@ -60,7 +60,7 @@ int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feinde
 #if defined (PLATFORM_COOLSTREAM)
 	dmx->Open(DMX_PSI_CHANNEL);
 #else	
-	dmx->Open(DMX_PSI_CHANNEL, NIT_SIZE, getFE(feindex));
+	dmx->Open(DMX_PSI_CHANNEL, NIT_SIZE, CZapit::getInstance()->getFE(feindex));
 #endif	
 
 	unsigned char buffer[NIT_SIZE];

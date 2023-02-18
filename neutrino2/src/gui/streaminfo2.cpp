@@ -57,7 +57,7 @@ extern cAudio * audioDecoder;
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern CRemoteControl *g_RemoteControl;	/* neutrino.cpp */
-extern CZapitClient::SatelliteList satList;
+extern CZapit::SatelliteList satList;
 extern CFrontend * live_fe;
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 
@@ -179,7 +179,7 @@ int CStreamInfo2::doSignalStrengthLoop()
 	//CChannelList *channelList = CNeutrinoApp::getInstance ()->channelList;
 	//int curnum = channelList->getActiveChannelNumber();
 	//CZapitChannel * channel = channelList->getChannel(curnum);
-	//CZapitClient::CCurrentServiceInfo si = zapit_getCurrentServiceInfo();
+	//CZapit::CCurrentServiceInfo si = CZapit::getInstance()->getCurrentServiceInfo();
 	
 	ts_setup();
 
@@ -672,7 +672,7 @@ void CStreamInfo2::paint_techinfo(int xpos, int ypos)
 	  if(!IS_WEBTV(live_channel_id))
 	  {
 		//tsfrequenz
-		CZapitClient::CCurrentServiceInfo si = zapit_getCurrentServiceInfo();
+		CZapit::CCurrentServiceInfo si = CZapit::getInstance()->getCurrentServiceInfo();
 
 		ypos += iheight;
 		char * f = NULL, *s = NULL, *m = NULL;

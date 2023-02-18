@@ -86,10 +86,10 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		CSelectChannelWidgetHandler->exec(NULL, "tv");
 		
 		g_settings.startchanneltv_id = CSelectChannelWidgetHandler->getChannelID();
-		g_settings.StartChannelTV = zapit_getChannelName(CSelectChannelWidgetHandler->getChannelID());
-		g_settings.startchanneltv_nr = zapit_getChannelNumber(CSelectChannelWidgetHandler->getChannelID()) - 1;
+		g_settings.StartChannelTV = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
+		g_settings.startchanneltv_nr = CZapit::getInstance()->getChannelNumber(CSelectChannelWidgetHandler->getChannelID()) - 1;
 
-		this->getString() = zapit_getChannelName(CSelectChannelWidgetHandler->getChannelID());
+		this->getString() = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
@@ -102,10 +102,10 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		CSelectChannelWidgetHandler->exec(NULL, "radio");
 		
 		g_settings.startchannelradio_id = CSelectChannelWidgetHandler->getChannelID();
-		g_settings.StartChannelRadio = zapit_getChannelName(CSelectChannelWidgetHandler->getChannelID());
-		g_settings.startchannelradio_nr = zapit_getChannelNumber(CSelectChannelWidgetHandler->getChannelID()) - 1;
+		g_settings.StartChannelRadio = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
+		g_settings.startchannelradio_nr = CZapit::getInstance()->getChannelNumber(CSelectChannelWidgetHandler->getChannelID()) - 1;
 
-		this->getString() = zapit_getChannelName(CSelectChannelWidgetHandler->getChannelID());
+		this->getString() = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;

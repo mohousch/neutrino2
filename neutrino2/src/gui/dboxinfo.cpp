@@ -63,7 +63,7 @@ static const int FSHIFT = 16;              	// nr of bits of precision
 #define LOAD_FRAC(x) LOAD_INT(((x) & (FIXED_1-1)) * 100)
 
 extern int FrontendCount;
-CFrontend * getFE(int index);
+//CFrontend * getFE(int index);
 
 // hdd
 #include <stdio.h>
@@ -465,7 +465,7 @@ void CDBoxInfoWidget::showInfo()
 	
 	for(int i2 = 0; i2 < FrontendCount; i2++)
 	{
-		CFrontend * fe = getFE(i2);
+		CFrontend * fe = CZapit::getInstance()->getFE(i2);
 		char tbuf[255];
 		
 		sprintf(tbuf, "Tuner-%d: %s", i2 + 1, fe->getInfo()->name);

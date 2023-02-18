@@ -11,7 +11,7 @@
 #include <timerdclient/timerdclient.h>
 
 /*zapit includes*/
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 
 // nhttpd
 #include "helper.h"
@@ -31,8 +31,6 @@ bool _initialize_iso639_map(void);
 class CNeutrinoAPI
 {
 	// Clientlibs
-	//CSectionsdClient	*Sectionsd;
-	//CZapitClient		*Zapit;
 	CTimerdClient		*Timerd;
 #ifdef ENABLE_LCDAPI
 	CLCDAPI                 *LcdAPI;
@@ -40,15 +38,15 @@ class CNeutrinoAPI
 	CEventServer		*EventServer;
 
 	// complete channellists
-	CZapitClient::BouquetChannelList RadioChannelList,TVChannelList;
+	CZapit::BouquetChannelList RadioChannelList,TVChannelList;
 	// events of actual channel
 	std::map<unsigned, CChannelEvent *> ChannelListEvents;
 	// List of available tv bouquets
-	std::map<int, CZapitClient::BouquetChannelList> TVBouquetsList;
+	std::map<int, CZapit::BouquetChannelList> TVBouquetsList;
 	// List of available radio bouquets
-	std::map<int, CZapitClient::BouquetChannelList> RadioBouquetsList;
+	std::map<int, CZapit::BouquetChannelList> RadioBouquetsList;
 	// List of bouquets
-	CZapitClient::BouquetList BouquetList;
+	CZapit::BouquetList BouquetList;
 
 	//bool standby_mode;
 
@@ -68,8 +66,8 @@ class CNeutrinoAPI
 	bool GetChannelEvents(void);
 	bool GetStreamInfo(int bitinfo[10]);
 	std::string GetServiceName(t_channel_id channel_id);
-	CZapitClient::BouquetChannelList *GetBouquet(unsigned int BouquetNr, int Mode);
-	CZapitClient::BouquetChannelList *GetChannelList(int Mode);
+	CZapit::BouquetChannelList *GetBouquet(unsigned int BouquetNr, int Mode);
+	CZapit::BouquetChannelList *GetChannelList(int Mode);
 
 	// support functions
 	void ZapTo          (const char * const target);

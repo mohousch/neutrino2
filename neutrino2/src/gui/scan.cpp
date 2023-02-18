@@ -69,7 +69,7 @@
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 TP_params TP;
-CFrontend * getFE(int index);
+//CFrontend * getFE(int index);
 extern CScanSettings * scanSettings;		// defined in scan_setup.cpp
 extern t_channel_id live_channel_id; 		//defined in zapit.cpp
 
@@ -117,8 +117,8 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	bool manual = (actionKey == "manual") || test;
 	
 	sat_iterator_t sit;
-	CZapitClient::ScanSatelliteList satList;
-	CZapitClient::commandSetScanSatelliteList sat;
+	CZapit::ScanSatelliteList satList;
+	CZapit::commandSetScanSatelliteList sat;
 
 	// window size
 	int _iw, _ih;
@@ -147,7 +147,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	if (!frameBuffer->getActive())
 		return RETURN_EXIT_ALL;
 
-        zapit_stopPlayBack();
+        CZapit::getInstance()->stopPlayBack();
 	CSectionsd::getInstance()->pauseScanning(true);
 
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);
@@ -175,7 +175,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		// freq
 		TP.feparams.frequency = atoi(scanSettings->TP_freq);
 		
-		if( getFE(feindex)->getInfo()->type == FE_QPSK )
+		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
 		{
 			TP.feparams.u.qpsk.symbol_rate = atoi(scanSettings->TP_rate);
 			TP.feparams.u.qpsk.fec_inner = (fe_code_rate_t) scanSettings->TP_fec;
@@ -183,7 +183,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 
 			printf("CScanTs::exec: fe(%d) freq %d rate %d fec %d pol %d\n", feindex, TP.feparams.frequency, TP.feparams.u.qpsk.symbol_rate, TP.feparams.u.qpsk.fec_inner, TP.polarization/*, TP.feparams.u.qpsk.modulation*/ );
 		} 
-		else if( getFE(feindex)->getInfo()->type == FE_QAM )
+		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
 		{
 			TP.feparams.u.qam.symbol_rate	= atoi(scanSettings->TP_rate);
 			TP.feparams.u.qam.fec_inner	= (fe_code_rate_t)scanSettings->TP_fec;
@@ -191,7 +191,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 
 			printf("CScanTs::exec: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP.feparams.frequency, TP.feparams.u.qam.symbol_rate, TP.feparams.u.qam.fec_inner, TP.feparams.u.qam.modulation);
 		}
-		else if( getFE(feindex)->getInfo()->type == FE_OFDM )
+		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM )
 		{
 			TP.feparams.u.ofdm.bandwidth =  (fe_bandwidth_t)scanSettings->TP_band;
 			TP.feparams.u.ofdm.code_rate_HP = (fe_code_rate_t)scanSettings->TP_HP; 
@@ -230,29 +230,29 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	
 	/*
 	// send fe mode
-	zapit_setFEMode((fe_mode_t)scanSettings->femode, feindex);
+	CZapit::getInstance()->setFEMode((fe_mode_t)scanSettings->femode, feindex);
 
-	if( getFE(feindex)->getInfo()->type == FE_QPSK )
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
 	{
 		// send diseqc type to zapit
 		diseqcType = (diseqc_t) scanSettings->diseqcMode;
 		
-		zapit_setDiseqcType(diseqcType, feindex);
+		CZapit::getInstance()->setDiseqcType(diseqcType, feindex);
 		//printf("scan.cpp send to zapit diseqctype: %d\n", diseqcType);
 			
 		// send diseqc repeat to zapit
-		zapit_setDiseqcRepeat( scanSettings->diseqcRepeat, feindex);
+		CZapit::getInstance()->setDiseqcRepeat( scanSettings->diseqcRepeat, feindex);
 	}
 	*/
 	
 	// send bouquets mode
-	zapit_setScanBouquetMode( (CZapitClient::bouquetMode) scanSettings->bouquetMode);
+	CZapit::getInstance()->setScanBouquetMode( (CZapit::bouquetMode) scanSettings->bouquetMode);
 
 	// send satellite list to zapit
-	zapit_setScanSatelliteList(satList);
+	CZapit::getInstance()->setScanSatelliteList(satList);
 
         // send scantype to zapit
-        zapit_setScanType((CZapitClient::scanType) scanSettings->scanType );
+        CZapit::getInstance()->setScanType((CZapit::scanType) scanSettings->scanType );
 	
 	paint(test);
 	
@@ -265,21 +265,21 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		char buffer[128];
 		char * f, *s, *m;
 
-		if( getFE(feindex)->getInfo()->type == FE_QPSK) 
+		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) 
 		{
-			getFE(feindex)->getDelSys(scanSettings->TP_fec, dvbs_get_modulation((fe_code_rate_t)scanSettings->TP_fec), f, s, m);
+			CZapit::getInstance()->getFE(feindex)->getDelSys(scanSettings->TP_fec, dvbs_get_modulation((fe_code_rate_t)scanSettings->TP_fec), f, s, m);
 
 			sprintf(buffer, "%u %c %d %s %s %s", atoi(scanSettings->TP_freq)/1000, scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(/*get_set.*/scanSettings->TP_rate)/1000, f, s, m);
 		} 
-		else if( getFE(feindex)->getInfo()->type == FE_QAM) 
+		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) 
 		{
-			getFE(feindex)->getDelSys(scanSettings->TP_fec, scanSettings->TP_mod, f, s, m);
+			CZapit::getInstance()->getFE(feindex)->getDelSys(scanSettings->TP_fec, scanSettings->TP_mod, f, s, m);
 
 			sprintf(buffer, "%u %d %s %s %s", atoi(scanSettings->TP_freq), atoi(scanSettings->TP_rate)/1000, f, s, m);
 		}
-		else if( getFE(feindex)->getInfo()->type == FE_OFDM)
+		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 		{
-			getFE(feindex)->getDelSys(scanSettings->TP_HP, scanSettings->TP_const, f, s, m);
+			CZapit::getInstance()->getFE(feindex)->getDelSys(scanSettings->TP_HP, scanSettings->TP_const, f, s, m);
 
 			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq)/1000, f, s, m);
 		}
@@ -287,12 +287,12 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		paintLine(xpos2, ypos_cur_satellite, w - 95, scanSettings->satNameNoDiseqc);
 		paintLine(xpos2, ypos_frequency, w, buffer);
 
-		success = zapit_tuneTP(TP, feindex);
+		success = CZapit::getInstance()->tuneTP(TP, feindex);
 	} 
 	else if(manual)
-		success = zapit_scanTP(TP, feindex);
+		success = CZapit::getInstance()->scanTP(TP, feindex);
 	else
-		success = zapit_startScan(scan_mode, feindex);
+		success = CZapit::getInstance()->startScan(scan_mode, feindex);
 
 	// poll for messages
 	istheend = !success;
@@ -328,7 +328,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	
 	// to join scan thread
-	zapit_stopScan();
+	CZapit::getInstance()->stopScan();
 
 	if(!manual) 
 	{
@@ -425,7 +425,7 @@ int CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				int rate = data >> 16;
 				char * f, *s, *m;
 				
-				getFE(feindex)->getDelSys(fec, (fe_modulation_t)0, f, s, m); // FIXME
+				CZapit::getInstance()->getFE(feindex)->getDelSys(fec, (fe_modulation_t)0, f, s, m); // FIXME
 				
 				sprintf(buffer, " %c %d %s %s %s", pol == 0 ? 'H' : 'V', rate, f, s, m);
 				
@@ -545,21 +545,21 @@ void CScanTs::paint(bool fortest)
 	ypos_cur_satellite = ypos;
 	
 
-	if ( getFE(feindex)->getInfo()->type == FE_QPSK)
+	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 	{	//sat
 		paintLineLocale(xpos1, &ypos, width - xpos1, _("Satellite:"));
 		xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Satellite:"), true); // UTF-8
 	}
 
 	//CABLE
-	else if ( getFE(feindex)->getInfo()->type == FE_QAM)
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 	{	//cable
 		paintLineLocale(xpos1, &ypos, width - xpos1, _("Cable:"));
 		xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Cable:"), true); // UTF-8
 	}
 
 	//DVB-T
-	else if ( getFE(feindex)->getInfo()->type == FE_OFDM)
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{	//terrestrial
 		paintLineLocale(xpos1, &ypos, width - xpos1, _("Terrestrial:"));
 		xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Terrestrial:"), true); // UTF-8
@@ -614,8 +614,8 @@ void CScanTs::showSNR()
 	int posx, posy;
 	int sw;
 
-	ssig = getFE(feindex)->getSignalStrength();
-	ssnr = getFE(feindex)->getSignalNoiseRatio();
+	ssig = CZapit::getInstance()->getFE(feindex)->getSignalStrength();
+	ssnr = CZapit::getInstance()->getFE(feindex)->getSignalNoiseRatio();
 
 	snr = (ssnr & 0xFFFF) * 100 / 65535;
 	sig = (ssig & 0xFFFF) * 100 / 65535;

@@ -31,7 +31,7 @@
 #include <sectionsd/sectionsd.h>
 
 // zapit 
-#include <zapit/zapitclient.h>
+//#include <zapit/zapit.h>
 #include <zapit/ci.h>
 #include <zapit/zapittypes.h>
 

@@ -52,7 +52,6 @@
 #include <gui/widget/icons.h>
 
 //
-#include <zapit/zapitclient.h>
 #include <zapit/bouquets.h>
 #include <zapit/satconfig.h>
 #include <zapit/getservices.h>
@@ -72,7 +71,7 @@ CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bou
 	state = beDefault;
 	caption = Caption;
 	bouquet = Bouquet;
-	mode = CZapitClient::MODE_TV;
+	mode = CZapit::MODE_TV;
 
 	//
 	widget = NULL;
@@ -163,9 +162,9 @@ int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	if (parent)
 		parent->hide();
 
-	if (mode == CZapitClient::MODE_TV)
+	if (mode == CZapit::MODE_TV)
 		Channels = &(g_bouquetManager->Bouquets[bouquet]->tvChannels);
-	else if (mode == CZapitClient::MODE_RADIO)
+	else if (mode == CZapit::MODE_RADIO)
 		Channels = &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
 		
 	//
@@ -311,12 +310,12 @@ int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		{
 			if (state == beDefault)
 			{
-				if (mode == CZapitClient::MODE_TV)
-					mode = CZapitClient::MODE_RADIO;
+				if (mode == CZapit::MODE_TV)
+					mode = CZapit::MODE_RADIO;
 				else
-					mode = CZapitClient::MODE_TV;
+					mode = CZapit::MODE_TV;
 
-				Channels = mode == CZapitClient::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
+				Channels = mode == CZapit::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
 
 				selected = 0;
 
@@ -330,7 +329,7 @@ int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 			if (state == beDefault)
 			{
 				if (selected < Channels->size()) /* Channels.size() might be 0 */
-					zapit_zapTo_serviceID((*Channels)[selected]->channel_id);
+					CZapit::getInstance()->zapTo_serviceID((*Channels)[selected]->channel_id);
 
 			} 
 			else if (state == beMoving) 
@@ -382,7 +381,7 @@ void CBEChannelWidget::deleteChannel()
 
 	g_bouquetManager->Bouquets[bouquet]->removeService((*Channels)[selected]->channel_id);
 
-	Channels = mode == CZapitClient::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
+	Channels = mode == CZapit::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
 
 	if (selected >= Channels->size())
 		selected = Channels->empty() ? 0 : (Channels->size() - 1);
@@ -401,7 +400,7 @@ void CBEChannelWidget::addChannel()
 	if (channelSelectWidget->hasChanged())
 	{
 		channelsChanged = true;
-		Channels = mode == CZapitClient::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
+		Channels = mode == CZapit::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
 	}
 	
 	delete channelSelectWidget;
@@ -438,10 +437,10 @@ void CBEChannelWidget::internalMoveChannel(unsigned int fromPosition, unsigned i
 	if (toPosition == Channels->size()) 
 		return;
 
-	g_bouquetManager->Bouquets[bouquet]->moveService(fromPosition, toPosition, mode == CZapitClient::MODE_TV ? 1 : 2);
+	g_bouquetManager->Bouquets[bouquet]->moveService(fromPosition, toPosition, mode == CZapit::MODE_TV ? 1 : 2);
 
 	channelsChanged = true;
-	Channels = mode == CZapitClient::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
+	Channels = mode == CZapit::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
 
 	selected = toPosition;
 	newPosition = toPosition;

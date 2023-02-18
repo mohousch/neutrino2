@@ -79,8 +79,8 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 
 // misc settings
 extern Zapit_config zapitCfg;			//defined in neutrino.cpp
-void setZapitConfig(Zapit_config * Cfg);
-void getZapitConfig(Zapit_config *Cfg);
+//void setZapitConfig(Zapit_config * Cfg);
+//void getZapitConfig(Zapit_config *Cfg);
 
 // option off1 on0
 #define OPTIONS_OFF1_ON0_OPTION_COUNT 2
@@ -340,8 +340,8 @@ bool CTZChangeNotifier::changeNotify(const std::string&, void * Data)
 
 // data reset notifier
 extern Zapit_config zapitCfg;
-void loadZapitSettings();
-void getZapitConfig(Zapit_config *Cfg);
+//void loadZapitSettings();
+//void getZapitConfig(Zapit_config *Cfg);
 
 int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 {
@@ -399,7 +399,7 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 		}
 
 		// audio mode
-		zapit_setAudioMode(g_settings.audio_AnalogMode);
+		CZapit::getInstance()->setAudioMode(g_settings.audio_AnalogMode);
 
 		if(audioDecoder)
 			audioDecoder->SetHdmiDD(g_settings.hdmi_dd );
@@ -559,7 +559,7 @@ void CChannelListSettings::showMenu()
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Zap cycle"), &g_settings.zap_cycle, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
 	//
-	getZapitConfig(&zapitCfg);
+	CZapit::getInstance()->getZapitConfig(&zapitCfg);
 	
 	// other
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Make Remaining Channels list"), (int *)&zapitCfg.makeRemainingChannelsBouquet, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this));
@@ -600,15 +600,15 @@ bool CChannelListSettings::changeNotify(const std::string& OptionName, void */*d
 	}
 	else if(OptionName == _("Make Remaining Channels list")) // rmains channel
 	{
-		setZapitConfig(&zapitCfg);
+		CZapit::getInstance()->setZapitConfig(&zapitCfg);
 		
-		zapit_reinitChannels();
+		CZapit::getInstance()->reinitChannels();
 		
 		return true;
 	}
 	else if(OptionName == _("Scan SDT for updates"))
 	{
-		setZapitConfig(&zapitCfg);
+		CZapit::getInstance()->setZapitConfig(&zapitCfg);
 		bool ret = (MessageBox(_("Information"), _("Neutrino restart"), mbrNo, mbNo | mbYes) == mbrYes);
 
 		if(ret)

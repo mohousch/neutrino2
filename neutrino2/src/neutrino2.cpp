@@ -238,8 +238,8 @@ extern int zapit_ready;					//defined in zapit.cpp
 //void * zapit_main_thread(void *data);
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 Zapit_config zapitCfg;
-void setZapitConfig(Zapit_config * Cfg);
-void getZapitConfig(Zapit_config * Cfg);
+//void setZapitConfig(Zapit_config * Cfg);
+//void getZapitConfig(Zapit_config * Cfg);
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
 extern CFrontend * live_fe;
 extern CScanSettings * scanSettings;			// defined in scan_setup.cpp
@@ -316,7 +316,6 @@ static void initGlobals(void)
 	g_fontRenderer  = NULL;
 	g_RCInput       = NULL;
 	g_Timerd        = NULL;
-	//g_Zapit 	= new CZapitClient;
 	g_RemoteControl = NULL;
 	g_EpgData       = NULL;
 	g_InfoViewer    = NULL;
@@ -1450,7 +1449,7 @@ void CNeutrinoApp::firstChannel()
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::firstChannel\n");
 
-	zapit_getLastChannel(firstchannel.channelNumber, firstchannel.mode);
+	CZapit::getInstance()->getLastChannel(firstchannel.channelNumber, firstchannel.mode);
 }
 
 // CNeutrinoApp -  channelsInit, get the Channellist from zapit
@@ -2278,11 +2277,11 @@ void CNeutrinoApp::InitZapper()
 	// first channel
 	firstChannel();
 
-	int tvmode = zapit_getMode();
+	int tvmode = CZapit::getInstance()->getMode();
 
-	if (tvmode == CZapitClient::MODE_TV)
+	if (tvmode == CZapit::MODE_TV)
 		mode = NeutrinoMessages::mode_tv;
-	else if (tvmode == CZapitClient::MODE_RADIO)
+	else if (tvmode == CZapit::MODE_RADIO)
 		mode = NeutrinoMessages::mode_radio;
 
 	lastMode = mode;
@@ -2325,7 +2324,7 @@ void CNeutrinoApp::InitZapper()
 		CSectionsd::getInstance()->setServiceChanged(live_channel_id&0xFFFFFFFFFFFFULL, true );
 		
 		// process apids
-		zapit_getPIDS(g_RemoteControl->current_PIDs);
+		CZapit::getInstance()->getPIDS(g_RemoteControl->current_PIDs);
 		g_RemoteControl->processAPIDnames();
 				
 		// permenant timeshift
@@ -2346,52 +2345,6 @@ static void CSSendMessage(uint32_t msg, uint32_t data)
 {
 	if (g_RCInput)
 		g_RCInput->postMsg(msg, data);
-}
-#endif
-
-#if 0
-void CNeutrinoApp::initZapitClient()
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::initZapitClient\n");
-
-#define ZAPIT_EVENT_COUNT 30
-	const CZapitClient::events zapit_event[ZAPIT_EVENT_COUNT] =
-	{
-		CZapitClient::EVT_ZAP_COMPLETE,
-		CZapitClient::EVT_ZAP_COMPLETE_IS_NVOD,
-		CZapitClient::EVT_ZAP_FAILED,
-		CZapitClient::EVT_ZAP_SUB_COMPLETE,
-		CZapitClient::EVT_ZAP_SUB_FAILED,
-		CZapitClient::EVT_ZAP_MOTOR,
-		CZapitClient::EVT_ZAP_CA_CLEAR,
-		CZapitClient::EVT_ZAP_CA_LOCK,
-		CZapitClient::EVT_ZAP_CA_FTA,
-		CZapitClient::EVT_ZAP_CA_ID,
-		CZapitClient::EVT_RECORDMODE_ACTIVATED,
-		CZapitClient::EVT_RECORDMODE_DEACTIVATED,
-		CZapitClient::EVT_SCAN_COMPLETE,
-		CZapitClient::EVT_SCAN_FAILED,
-		CZapitClient::EVT_SCAN_NUM_TRANSPONDERS,
-		CZapitClient::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS,
-		CZapitClient::EVT_SCAN_REPORT_FREQUENCY,
-		CZapitClient::EVT_SCAN_REPORT_FREQUENCYP,
-		CZapitClient::EVT_SCAN_SATELLITE,
-		CZapitClient::EVT_SCAN_NUM_CHANNELS,
-		CZapitClient::EVT_SCAN_PROVIDER,
-		CZapitClient::EVT_BOUQUETS_CHANGED,
-		CZapitClient::EVT_SERVICES_CHANGED,
-		CZapitClient::EVT_SCAN_SERVICENAME,
-		CZapitClient::EVT_SCAN_FOUND_A_CHAN,
-		CZapitClient::EVT_SCAN_FOUND_TV_CHAN,
-		CZapitClient::EVT_SCAN_FOUND_RADIO_CHAN,
-		CZapitClient::EVT_SCAN_FOUND_DATA_CHAN,
-		CZapitClient::EVT_SDT_CHANGED,
-		CZapitClient::EVT_PMT_CHANGED
-	};
-
-	for (int i = 0; i < ZAPIT_EVENT_COUNT; i++)
-		//g_Zapit->registerEvent(zapit_event[i], 222, NEUTRINO_UDS_NAME);
-		eventServer->registerEvent2(zapit_event[i], 222, NEUTRINO_UDS_NAME);
 }
 #endif
 
@@ -2505,7 +2458,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	// zapit
 	//pthread_create(&zapit_thread, NULL, zapit_main_thread, (void *) &ZapStart_arg);
-	zapit_Start((void *) &ZapStart_arg);
+	CZapit::getInstance()->Start((void *) &ZapStart_arg);
 
 	// wait until zapit is ready
 	while(!zapit_ready)
@@ -2634,11 +2587,11 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// start assistant
 	if(loadSettingsErg) 
 	{
-		int tvmode = zapit_getMode();
+		int tvmode = CZapit::getInstance()->getMode();
 
-		if (tvmode == CZapitClient::MODE_TV)
+		if (tvmode == CZapit::MODE_TV)
 			mode = NeutrinoMessages::mode_tv;
-		else if (tvmode == CZapitClient::MODE_RADIO)
+		else if (tvmode == CZapit::MODE_RADIO)
 			mode = NeutrinoMessages::mode_radio;
 
 		// startup pic : FIXME
@@ -2960,7 +2913,7 @@ void CNeutrinoApp::RealRun(void)
 			{
 				if (IS_WEBTV(live_channel_id))
 				{
-					zapit_pausePlayBack();
+					CZapit::getInstance()->pausePlayBack();
 					timeshiftstatus = 1;
 				}
 				else
@@ -2995,7 +2948,7 @@ void CNeutrinoApp::RealRun(void)
 				
 				if (IS_WEBTV(live_channel_id))
 				{
-					zapit_continuePlayBack();
+					CZapit::getInstance()->continuePlayBack();
 					timeshiftstatus = 0;
 				}
 				else
@@ -3424,7 +3377,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE) 
 	{
 		// set audio map after channel zap
-		zapit_getAudioMode(&g_settings.audio_AnalogMode);
+		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
 
 		if(g_settings.audio_AnalogMode < 0 || g_settings.audio_AnalogMode > 2)
 			g_settings.audio_AnalogMode = 0;
@@ -3579,7 +3532,7 @@ _repeat:
 				if(old_b_id < 0) 
 					old_b_id = old_b;
 
-				zapit_saveBouquets();
+				CZapit::getInstance()->saveBouquets();
 			}
 
 			return messages_return::handled;
@@ -3722,7 +3675,7 @@ _repeat:
 			if( mode == mode_standby )
 			{
 				// set standby
-				zapit_setStandby(true);				
+				CZapit::getInstance()->setStandby(true);				
 			}
 		}
 		
@@ -3816,9 +3769,9 @@ _repeat:
 		
 		if(recordingstatus == 0) 
 		{
-			bool isTVMode = zapit_isChannelTVChannel(eventinfo->channel_id);
-			bool isRadioMode = zapit_isChannelRadioChannel(eventinfo->channel_id);
-			bool isWEBTVMode = zapit_isChannelWEBTVChannel(eventinfo->channel_id);
+			bool isTVMode = CZapit::getInstance()->isChannelTVChannel(eventinfo->channel_id);
+			bool isRadioMode = CZapit::getInstance()->isChannelRadioChannel(eventinfo->channel_id);
+			bool isWEBTVMode = CZapit::getInstance()->isChannelWEBTVChannel(eventinfo->channel_id);
 
 			dvbsub_stop();
 
@@ -3860,10 +3813,9 @@ _repeat:
 
 				CTimerd::responseGetTimer &timer = tmpTimerList[0];
 
-				CZapitClient Zapit;
 				name += "\n";
 
-				std::string zAddData = zapit_getChannelName( timer.channel_id ); // UTF-8
+				std::string zAddData = CZapit::getInstance()->getChannelName( timer.channel_id ); // UTF-8
 				if( zAddData.empty()) 
 				{
 					zAddData = _("Program unknown");
@@ -4219,7 +4171,7 @@ void CNeutrinoApp::ExitRun(int retcode, bool save)
 		}
 
 		// stop playback
-		zapit_stopPlayBack();
+		CZapit::getInstance()->stopPlayBack();
 
 		if(retcode > RESTART)
 		{
@@ -4393,7 +4345,7 @@ void CNeutrinoApp::AudioMute( int newValue, bool isEvent )
 
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::AudioMute: current_muted %d new %d isEvent: %d\n", current_muted, newValue, isEvent);
 	
-	zapit_muteAudio(current_muted);
+	CZapit::getInstance()->muteAudio(current_muted);
 
 	if( isEvent && ( mode != mode_scart ) && ( mode != mode_audio) && ( mode != mode_pic))
 	{
@@ -4865,12 +4817,12 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		// zapit standby
 		if(!recordingstatus && !timeshiftstatus)
 		{
-			zapit_setStandby(true);
+			CZapit::getInstance()->setStandby(true);
 		} 
 		else
 		{
 			//zapit stop playback
-			zapit_stopPlayBack();
+			CZapit::getInstance()->stopPlayBack();
 		}
 
 		// stop sectionsd
@@ -4928,11 +4880,11 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		mode = mode_unknown;
 
 		// zapit startplayback
-		zapit_setStandby(false);
+		CZapit::getInstance()->setStandby(false);
 
 		// this is buggy don't respect parentallock
 		if(!recordingstatus && !timeshiftstatus)
-			zapit_startPlayBack(live_channel);
+			CZapit::getInstance()->startPlayBack(live_channel);
 
 
 		CSectionsd::getInstance()->pauseScanning(false);
@@ -5027,7 +4979,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 			tuxtxt_close();
 			
 			zapitCfg.saveLastChannel = g_settings.uselastchannel;
-			setZapitConfig(&zapitCfg);
+			CZapit::getInstance()->setZapitConfig(&zapitCfg);
 
 			//
 			//HintBox(_("Information"), _("Saving settings now, please be patient."));
@@ -5068,7 +5020,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		//if (MessageBox(_("Information"), _("do you want to reload channel lists?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 		//{
 			//HintBox(_("Information"), _("Reloading channel lists, please be patient."));
-			zapit_reinitChannels();
+			CZapit::getInstance()->reinitChannels();
 		//}
 	}
 	else if (actionKey == "reloadepg")
@@ -5082,12 +5034,12 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	else if (actionKey == "delete_zapit")
 	{
 		my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/zapit/*.xml");
-		zapit_reinitChannels();
+		CZapit::getInstance()->reinitChannels();
 	}
 	else if (actionKey == "delete_webtv")
 	{
 		my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/webtv/*.*");
-		zapit_reinitChannels();
+		CZapit::getInstance()->reinitChannels();
 	}
 	else if (actionKey == "mainmenu")
 	{
@@ -5430,7 +5382,7 @@ void CNeutrinoApp::lockPlayBack(void)
 	StopSubtitles();
 
 	// stop/lock live playback	
-	zapit_lockPlayBack();
+	CZapit::getInstance()->lockPlayBack();
 		
 	//pause epg scanning
 	CSectionsd::getInstance()->pauseScanning(true);	
@@ -5439,7 +5391,7 @@ void CNeutrinoApp::lockPlayBack(void)
 void CNeutrinoApp::unlockPlayBack(void)
 {
 	// unlock playback	
-	zapit_unlockPlayBack();	
+	CZapit::getInstance()->unlockPlayBack();	
 		
 	//start epg scanning
 	CSectionsd::getInstance()->pauseScanning(false);

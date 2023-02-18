@@ -40,7 +40,7 @@
 #include <gui/widget/listbox.h>
 
 // zapit
-#include <zapit/zapitclient.h>
+#include <zapit/zapit.h>
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
 

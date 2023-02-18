@@ -25,7 +25,9 @@
 
 #include "tuxtxt.h"
 
-#include <zapitclient.h>
+#include <zapit/zapit.h>
+#include <zapit/frontend_c.h>
+
 #include <global.h>
 
 #include <dmx_cs.h>
@@ -35,7 +37,6 @@
 #include <system/debug.h>
 	
 #include <configfile.h>
-#include <frontend_c.h>
 #include <video_cs.h>
 
 

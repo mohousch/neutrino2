@@ -70,10 +70,10 @@ char zapit_long[20];				//defined neutrino.cpp
 
 // frontend
 extern int FrontendCount;			// defined in zapit.cpp
-extern CFrontend * getFE(int index);
-extern void saveFrontendConfig(int feindex);
-extern void loadFrontendConfig();
-extern void setMode(fe_mode_t newmode, int feindex);
+//extern CFrontend * getFE(int index);
+//extern void saveFrontendConfig(int feindex);
+//extern void loadFrontendConfig();
+//extern void setMode(fe_mode_t newmode, int feindex);
 
 // option off0_on1
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
@@ -94,19 +94,19 @@ const keyval OPTIONS_OFF1_ON0_OPTIONS[OPTIONS_OFF1_ON0_OPTION_COUNT] =
 #define SCANTS_BOUQUET_OPTION_COUNT 4
 const keyval SCANTS_BOUQUET_OPTIONS[SCANTS_BOUQUET_OPTION_COUNT] =
 {
-	{ CZapitClient::BM_DELETEBOUQUETS, _("erase all") },
-	{ CZapitClient::BM_DONTTOUCHBOUQUETS, _("leave current") },
-	{ CZapitClient::BM_UPDATEBOUQUETS, _("update") },
-	{ CZapitClient::BM_CREATESATELLITEBOUQUET, _("create satellite bouquets") }
+	{ CZapit::BM_DELETEBOUQUETS, _("erase all") },
+	{ CZapit::BM_DONTTOUCHBOUQUETS, _("leave current") },
+	{ CZapit::BM_UPDATEBOUQUETS, _("update") },
+	{ CZapit::BM_CREATESATELLITEBOUQUET, _("create satellite bouquets") }
 };
 
 #define SCANTS_ZAPIT_SCANTYPE_COUNT 4
 const keyval SCANTS_ZAPIT_SCANTYPE[SCANTS_ZAPIT_SCANTYPE_COUNT] =
 {
-	{  CZapitClient::ST_TVRADIO, _("TV & Radio") },
-	{  CZapitClient::ST_TV, _("Only tv") },
-	{  CZapitClient::ST_RADIO, _("Only radio") },
-	{  CZapitClient::ST_ALL, _("All services") }
+	{  CZapit::ST_TVRADIO, _("TV & Radio") },
+	{  CZapit::ST_TV, _("Only tv") },
+	{  CZapit::ST_RADIO, _("Only radio") },
+	{  CZapit::ST_ALL, _("All services") }
 };
 
 #define SATSETUP_DISEQC_OPTION_COUNT 8
@@ -293,26 +293,26 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::exec: error while saving scan-settings!\n");
 		
 		// send directly diseqc
-		if( getFE(feindex)->getInfo()->type == FE_QPSK )
+		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
 		{
 			saveMotorPositions();
 			
 			//diseqc type
-			getFE(feindex)->setDiseqcType((diseqc_t)getFE(feindex)->diseqcType);
+			CZapit::getInstance()->getFE(feindex)->setDiseqcType((diseqc_t)CZapit::getInstance()->getFE(feindex)->diseqcType);
 			
 			// diseqc repeat
-			getFE(feindex)->setDiseqcRepeats(getFE(feindex)->diseqcRepeats);
+			CZapit::getInstance()->getFE(feindex)->setDiseqcRepeats(CZapit::getInstance()->getFE(feindex)->diseqcRepeats);
 		
 			//gotoxx
-			getFE(feindex)->gotoXXLatitude = strtod(zapit_lat, NULL);
-			getFE(feindex)->gotoXXLongitude = strtod(zapit_long, NULL);
+			CZapit::getInstance()->getFE(feindex)->gotoXXLatitude = strtod(zapit_lat, NULL);
+			CZapit::getInstance()->getFE(feindex)->gotoXXLongitude = strtod(zapit_long, NULL);
 		}
 		
 		// set fe mode
-		setMode(getFE(feindex)->mode, feindex);
+		CZapit::getInstance()->setFEMode(CZapit::getInstance()->getFE(feindex)->mode, feindex);
 		
 		// save frontend.conf
-		saveFrontendConfig(feindex);
+		CZapit::getInstance()->saveFrontendConfig(feindex);
 		
 		hintBox->hide();
 		delete hintBox;
@@ -334,7 +334,7 @@ void CScanSetup::showScanService()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showScanService: Tuner: %d\n", feindex);
 	
-	if(!getFE(feindex))
+	if(!CZapit::getInstance()->getFE(feindex))
 		return;
 	
 	//load scan settings 
@@ -377,17 +377,17 @@ void CScanSetup::showScanService()
 	scansetup->clearItems();
 	
 	// 
-	dmode = getFE(feindex)->diseqcType;
+	dmode = CZapit::getInstance()->getFE(feindex)->diseqcType;
 	//int shortcut = 1;
 	
 	//sat list iterator
 	sat_iterator_t sit;
 	
 	// load frontend config
-	loadFrontendConfig();
+	CZapit::getInstance()->loadFrontendConfig();
 	
 	// load motor position
-	if( getFE(feindex)->getInfo()->type == FE_QPSK) 
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) 
 		loadMotorPositions();
 	
 	// intros
@@ -483,7 +483,7 @@ void CScanSetup::showScanService()
 	ClistBox* satOnOff = NULL;
 	
 	// scan setup SAT
-	if( getFE(feindex)->getInfo()->type == FE_QPSK) 
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) 
 	{
 		satSelect = new CMenuOptionStringChooser(_("Satellite"), scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
 			
@@ -621,7 +621,7 @@ void CScanSetup::showScanService()
 			}
 		}
 	} 
-	else if ( getFE(feindex)->getInfo()->type == FE_QAM) 
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) 
 	{
 		satSelect = new CMenuOptionStringChooser(_("Cable"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
 
@@ -634,7 +634,7 @@ void CScanSetup::showScanService()
 			}
 		}
 	}
-	else if ( getFE(feindex)->getInfo()->type == FE_OFDM) 
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
 	{
 		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
 
@@ -647,7 +647,7 @@ void CScanSetup::showScanService()
 			}
 		}
 	}
-    	else if ( getFE(feindex)->getInfo()->type == FE_ATSC) 
+    	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC) 
 	{
 		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
 
@@ -668,7 +668,7 @@ void CScanSetup::showScanService()
 	CWidget* motorMenuWidget = NULL;
 	ClistBox* motorMenu = NULL;
 
-	if ( getFE(feindex)->getInfo()->type == FE_QPSK) 
+	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) 
 	{
 		satfindMenu->addItem(new CMenuForwarder(_("Motor settings"), true, NULL, new CMotorControl(feindex)));
 		
@@ -714,31 +714,31 @@ void CScanSetup::showScanService()
 
 		motorMenu->addItem(new CMenuSeparator(LINE));
 
-		motorMenu->addItem(new CMenuOptionNumberChooser(_("moving speed (10 = 1deg/sec)"), (int *)&getFE(feindex)->motorRotationSpeed, true, 0, 64, NULL) );
+		motorMenu->addItem(new CMenuOptionNumberChooser(_("moving speed (10 = 1deg/sec)"), (int *)&CZapit::getInstance()->getFE(feindex)->motorRotationSpeed, true, 0, 64, NULL) );
 
-		motorMenu->addItem(new CMenuOptionChooser(_("Use gotoXX"),  (int *)&getFE(feindex)->useGotoXX, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+		motorMenu->addItem(new CMenuOptionChooser(_("Use gotoXX"),  (int *)&CZapit::getInstance()->getFE(feindex)->useGotoXX, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 		CStringInput * toff;
 		CStringInput * taff;
-		sprintf(zapit_lat, "%3.6f", getFE(feindex)->gotoXXLatitude);
-		sprintf(zapit_long, "%3.6f", getFE(feindex)->gotoXXLongitude);
+		sprintf(zapit_lat, "%3.6f", CZapit::getInstance()->getFE(feindex)->gotoXXLatitude);
+		sprintf(zapit_long, "%3.6f", CZapit::getInstance()->getFE(feindex)->gotoXXLongitude);
 
 		// gotoxxladirection
-		motorMenu->addItem(new CMenuOptionChooser(_("LaDirection"),  (int *)&getFE(feindex)->gotoXXLaDirection, OPTIONS_SOUTH0_NORTH1_OPTIONS, OPTIONS_SOUTH0_NORTH1_OPTION_COUNT, true));
+		motorMenu->addItem(new CMenuOptionChooser(_("LaDirection"),  (int *)&CZapit::getInstance()->getFE(feindex)->gotoXXLaDirection, OPTIONS_SOUTH0_NORTH1_OPTIONS, OPTIONS_SOUTH0_NORTH1_OPTION_COUNT, true));
 
 		// latitude
 		toff = new CStringInput(_("Latitude"), (char *) zapit_lat, 10, NULL, NULL, "0123456789.");
 		motorMenu->addItem(new CMenuForwarder(_("Latitude"), true, zapit_lat, toff));
 
 		// gotoxx lodirection
-		motorMenu->addItem(new CMenuOptionChooser(_("LoDirection"),  (int *)&getFE(feindex)->gotoXXLoDirection, OPTIONS_EAST0_WEST1_OPTIONS, OPTIONS_EAST0_WEST1_OPTION_COUNT, true));
+		motorMenu->addItem(new CMenuOptionChooser(_("LoDirection"),  (int *)&CZapit::getInstance()->getFE(feindex)->gotoXXLoDirection, OPTIONS_EAST0_WEST1_OPTIONS, OPTIONS_EAST0_WEST1_OPTION_COUNT, true));
 
 		// longitude
 		taff = new CStringInput(_("Longitude"), (char *) zapit_long, 10, NULL, NULL, "0123456789.");
 		motorMenu->addItem(new CMenuForwarder(_("Longitude"), true, zapit_long, taff));
 		
 		// usals repeat
-		motorMenu->addItem(new CMenuOptionNumberChooser(_("USALS command repeat"), (int *)&getFE(feindex)->repeatUsals, true, 0, 10, NULL, 0, 0, _("Off")) );
+		motorMenu->addItem(new CMenuOptionNumberChooser(_("USALS command repeat"), (int *)&CZapit::getInstance()->getFE(feindex)->repeatUsals, true, 0, 10, NULL, 0, 0, _("Off")) );
 		
 		// rotor swap east/west
 		motorMenu->addItem( new CMenuOptionChooser(_("Swap rotor east/west"), &g_settings.rotor_swap, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
@@ -749,11 +749,11 @@ void CScanSetup::showScanService()
 	// mode loop can be used if we hat twice sat tuner, otherwise direct connected or not connected
 	// FIXME:
 	bool have_twin = false;
-	if( getFE(feindex)->getInfo()->type == FE_QPSK || getFE(feindex)->getInfo()->type == FE_OFDM)
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
 		for(int i = 0; i < FrontendCount; i++) 
 		{
-			if( i != feindex && ( getFE(i)->getInfo()->type == getFE(feindex)->getInfo()->type) )
+			if( i != feindex && ( CZapit::getInstance()->getFE(i)->getInfo()->type == CZapit::getInstance()->getFE(feindex)->getInfo()->type) )
 			{
 				have_twin = true;
 				break;
@@ -761,22 +761,22 @@ void CScanSetup::showScanService()
 		}
 	}
 	
-	scansetup->addItem(new CMenuOptionChooser(_("Tuner mode"),  (int *)&getFE(feindex)->mode, FRONTEND_MODE_OPTIONS, have_twin? FRONTEND_MODE_TWIN_OPTION_COUNT:FRONTEND_MODE_SINGLE_OPTION_COUNT, true, feModeNotifier));
+	scansetup->addItem(new CMenuOptionChooser(_("Tuner mode"),  (int *)&CZapit::getInstance()->getFE(feindex)->mode, FRONTEND_MODE_OPTIONS, have_twin? FRONTEND_MODE_TWIN_OPTION_COUNT:FRONTEND_MODE_SINGLE_OPTION_COUNT, true, feModeNotifier));
 	
 	scansetup->addItem( new CMenuSeparator(LINE) );
 
 	// scan type
-	CMenuOptionChooser * ojScantype = new CMenuOptionChooser(_("Scan for services"), (int *)&scanSettings->scanType, SCANTS_ZAPIT_SCANTYPE, SCANTS_ZAPIT_SCANTYPE_COUNT, ((getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (getFE(feindex)->mode != (fe_mode_t)FE_LOOP)));
+	CMenuOptionChooser * ojScantype = new CMenuOptionChooser(_("Scan for services"), (int *)&scanSettings->scanType, SCANTS_ZAPIT_SCANTYPE, SCANTS_ZAPIT_SCANTYPE_COUNT, ((CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)));
 	feModeNotifier->addItem(0, ojScantype);
 	scansetup->addItem(ojScantype);
 		
 	// bqts
-	CMenuOptionChooser * ojBouquets = new CMenuOptionChooser(_("Bouquet"), (int *)&scanSettings->bouquetMode, SCANTS_BOUQUET_OPTIONS, SCANTS_BOUQUET_OPTION_COUNT, ((getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (getFE(feindex)->mode != (fe_mode_t)FE_LOOP)));
+	CMenuOptionChooser * ojBouquets = new CMenuOptionChooser(_("Bouquet"), (int *)&scanSettings->bouquetMode, SCANTS_BOUQUET_OPTIONS, SCANTS_BOUQUET_OPTION_COUNT, ((CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)));
 	feModeNotifier->addItem(0, ojBouquets);
 	scansetup->addItem(ojBouquets);
 	
 	// NIT
-	CMenuOptionChooser * useNit = new CMenuOptionChooser(_("Use NIT"), (int *)&scanSettings->scan_mode, OPTIONS_OFF1_ON0_OPTIONS, OPTIONS_OFF1_ON0_OPTION_COUNT, ( (getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (getFE(feindex)->mode != (fe_mode_t)FE_LOOP) ));
+	CMenuOptionChooser * useNit = new CMenuOptionChooser(_("Use NIT"), (int *)&scanSettings->scan_mode, OPTIONS_OFF1_ON0_OPTIONS, OPTIONS_OFF1_ON0_OPTION_COUNT, ( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP) ));
 	feModeNotifier->addItem(0, useNit);
 	scansetup->addItem(useNit);
 		
@@ -789,15 +789,15 @@ void CScanSetup::showScanService()
 	CMenuForwarder * fmotorMenu = NULL;
 	CMenuForwarder * uniSetup = NULL;
 
-	if( getFE(feindex)->getInfo()->type == FE_QPSK )
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
 	{
 		// diseqc
-		ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, ( (getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (getFE(feindex)->mode != FE_LOOP) ), satNotify, RC_nokey, "", true);
+		ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&CZapit::getInstance()->getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, ( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP) ), satNotify, RC_nokey, "", true);
 		feModeNotifier->addItem(1, ojDiseqc);
 		
 		// diseqc repeat
-		ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &getFE(feindex)->diseqcRepeats, (dmode != NO_DISEQC) && \
-			(dmode < DISEQC_ADVANCED) && (getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (getFE(feindex)->mode != FE_LOOP), 0, 2, NULL);
+		ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &CZapit::getInstance()->getFE(feindex)->diseqcRepeats, (dmode != NO_DISEQC) && \
+			(dmode < DISEQC_ADVANCED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP), 0, 2, NULL);
 		satNotify->addItem(4, ojDiseqcRepeats);
 		feModeNotifier->addItem(4, ojDiseqcRepeats);
 
@@ -807,11 +807,11 @@ void CScanSetup::showScanService()
 		feModeNotifier->addItem(3, uniSetup);
 
 		// lnb setup
-		fsatSetup = new CMenuForwarder(_("Setup satellites input / LNB"), (getFE(feindex)->mode != FE_NOTCONNECTED) && (getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, satSetupWidget, "", RC_nokey);
+		fsatSetup = new CMenuForwarder(_("Setup satellites input / LNB"), (CZapit::getInstance()->getFE(feindex)->mode != FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, satSetupWidget, "", RC_nokey);
 		feModeNotifier->addItem(1, fsatSetup);
 		
 		// motor settings
-		fmotorMenu = new CMenuForwarder(_("Motor settings"), (getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, motorMenuWidget, "", RC_nokey);
+		fmotorMenu = new CMenuForwarder(_("Motor settings"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, motorMenuWidget, "", RC_nokey);
 		feModeNotifier->addItem(1, fmotorMenu);
 		
 		scansetup->addItem(ojDiseqc);
@@ -876,7 +876,7 @@ void CScanSetup::showScanService()
 	// frequency
 	int freq_length = 8;
 
-	switch (getFE(feindex)->getInfo()->type)
+	switch (CZapit::getInstance()->getFE(feindex)->getInfo()->type)
 	{
 		case FE_QPSK:
 		freq_length = 8;
@@ -904,19 +904,19 @@ void CScanSetup::showScanService()
 	// modulation(t/c)/polarisation(sat)
 	CMenuOptionChooser * mod_pol = NULL;
 
-	if( getFE(feindex)->getInfo()->type == FE_QPSK )
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
 	{
 		mod_pol = new CMenuOptionChooser(_("Polarization"), (int *)&scanSettings->TP_pol, SATSETUP_SCANTP_POL, SATSETUP_SCANTP_POL_COUNT, true);
 	}
-	else if( getFE(feindex)->getInfo()->type == FE_QAM)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 	{
 		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_mod, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
 	}
-	else if( getFE(feindex)->getInfo()->type == FE_OFDM)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
 		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_const, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
 	}
-    	else if( getFE(feindex)->getInfo()->type == FE_ATSC)
+    	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 	{
 		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_const, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
 	}
@@ -928,10 +928,10 @@ void CScanSetup::showScanService()
 	CMenuForwarder * Rate = new CMenuForwarder(_("Symbol rate"), true, scanSettings->TP_rate, rate);
 
 	// fec
-	int fec_count = ( getFE(feindex)->getInfo()->type == FE_QPSK) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
+	int fec_count = ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
 	CMenuOptionChooser * fec = new CMenuOptionChooser(_("FEC"), (int *)&scanSettings->TP_fec, SATSETUP_SCANTP_FEC, fec_count, true);
 		
-	if( getFE(feindex)->getInfo()->type != FE_OFDM && getFE(feindex)->getInfo()->type != FE_ATSC)
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM && CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_ATSC)
 	{
 		// Rate
 		manualScan->addItem(Rate);
@@ -941,7 +941,7 @@ void CScanSetup::showScanService()
 	}
 
 	// band/hp/lp/
-	if( getFE(feindex)->getInfo()->type == FE_OFDM)
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
 		// Band
 		CMenuOptionChooser * Band = new CMenuOptionChooser(_("Bandwidth"), (int *)&scanSettings->TP_band, SATSETUP_SCANTP_BAND, SATSETUP_SCANTP_BAND_COUNT, true);
@@ -976,7 +976,7 @@ void CScanSetup::showScanService()
 	// scan
 	manualScan->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "manual") );
 		
-	CMenuForwarder * manScan = new CMenuForwarder(_("Manual frequency scan / Test signal"), (getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, manualScanWidget, "");
+	CMenuForwarder * manScan = new CMenuForwarder(_("Manual frequency scan / Test signal"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, manualScanWidget, "");
 	feModeNotifier->addItem(0, manScan);
 	scansetup->addItem(manScan);
 		
@@ -1029,7 +1029,7 @@ void CScanSetup::showScanService()
 	autoScan->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "auto") );
 		
 	// auto scan menu item
-	CMenuForwarder * auScan = new CMenuForwarder(_("Auto-Scan"), (getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, autoScanWidget, "");
+	CMenuForwarder * auScan = new CMenuForwarder(_("Auto-Scan"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, autoScanWidget, "");
 	feModeNotifier->addItem(0, auScan);
 	
 	scansetup->addItem(auScan);
@@ -1037,7 +1037,7 @@ void CScanSetup::showScanService()
 	// scan all sats
 	CMenuForwarder * fautoScanAll = NULL;
 		
-	if( getFE(feindex)->getInfo()->type == FE_QPSK )
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
 	{
 		//
 		CWidget* autoScanAllWidget = NULL;
@@ -1073,7 +1073,7 @@ void CScanSetup::showScanService()
 		
 		autoScanAll->clearItems();
 			
-		fautoScanAll = new CMenuForwarder(_("Auto-Scan multiple Satellites"), ( (dmode != NO_DISEQC) && (getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (getFE(feindex)->mode != (fe_mode_t)FE_LOOP)), NULL, autoScanAllWidget );
+		fautoScanAll = new CMenuForwarder(_("Auto-Scan multiple Satellites"), ( (dmode != NO_DISEQC) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)), NULL, autoScanAllWidget );
 		satNotify->addItem(2, fautoScanAll);
 		feModeNotifier->addItem(2, fautoScanAll);
 
@@ -1140,12 +1140,12 @@ int CScanSetup::showUnicableSetup()
 	uni_setup->addItem(new CMenuSeparator(LINE));
 
 	// uni_scr
-	CMenuOptionNumberChooser * uniscr = new CMenuOptionNumberChooser(_("Unicable SCR address"), &getFE(feindex)->uni_scr, true, \
+	CMenuOptionNumberChooser * uniscr = new CMenuOptionNumberChooser(_("Unicable SCR address"), &CZapit::getInstance()->getFE(feindex)->uni_scr, true, \
 		-1, dmode == DISEQC_UNICABLE ? 7 : 31, NULL, 0, -1, _("Off"));
 	uni_setup->addItem(uniscr);
 
 	// uni_qrg
-	CIntInput *uni_qrg = new CIntInput(_("Unicable frequency"), (int&) getFE(feindex)->uni_qrg, 4);
+	CIntInput *uni_qrg = new CIntInput(_("Unicable frequency"), (int&) CZapit::getInstance()->getFE(feindex)->uni_qrg, 4);
 	CMenuForwarder * uniqrg = new CMenuForwarder(_("Unicable frequency"), true, uni_qrg->getValue(), uni_qrg);
 	uni_setup->addItem(uniqrg);
 
@@ -1243,11 +1243,11 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		char buf[128];
 		char * f, *s, *m;
 		
-		switch( getFE(feindex)->getInfo()->type) 
+		switch( CZapit::getInstance()->getFE(feindex)->getInfo()->type) 
 		{
 			case FE_QPSK:
 			{
-				getFE(feindex)->getDelSys(tI->second.feparams.u.qpsk.fec_inner, dvbs_get_modulation(tI->second.feparams.u.qpsk.fec_inner),  f, s, m);
+				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.u.qpsk.fec_inner, dvbs_get_modulation(tI->second.feparams.u.qpsk.fec_inner),  f, s, m);
 
 				snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.polarization ? 'V' : 'H', tI->second.feparams.u.qpsk.symbol_rate/1000, f, s, m);
 			}
@@ -1255,7 +1255,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 
 			case FE_QAM:
 			{
-				getFE(feindex)->getDelSys(tI->second.feparams.u.qam.fec_inner, tI->second.feparams.u.qam.modulation, f, s, m);
+				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.u.qam.fec_inner, tI->second.feparams.u.qam.modulation, f, s, m);
 
 				snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.u.qam.symbol_rate/1000, f, s, m);
 			}
@@ -1263,7 +1263,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 
 			case FE_OFDM:
 			{
-				getFE(feindex)->getDelSys(tI->second.feparams.u.ofdm.code_rate_HP, tI->second.feparams.u.ofdm.constellation, f, s, m);
+				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.u.ofdm.code_rate_HP, tI->second.feparams.u.ofdm.constellation, f, s, m);
 
 				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
 			}
@@ -1271,7 +1271,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				
 			case FE_ATSC:
             		{
-				getFE(feindex)->getDelSys(FEC_NONE, tI->second.feparams.u.vsb.modulation, f, s, m);
+				CZapit::getInstance()->getFE(feindex)->getDelSys(FEC_NONE, tI->second.feparams.u.vsb.modulation, f, s, m);
 
 				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
 			}
@@ -1295,7 +1295,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 
 		sprintf( scanSettings->TP_freq, "%d", tmpI->second.feparams.frequency);
 		
-		switch( getFE(feindex)->getInfo()->type) 
+		switch( CZapit::getInstance()->getFE(feindex)->getInfo()->type) 
 		{
 			case FE_QPSK:
 				//printf("CTPSelectHandler::exec: fe(%d) selected TP: freq %d pol %d SR %d fec %d\n", feindex, tmpI->second.feparams.frequency, tmpI->second.polarization, tmpI->second.feparams.u.qpsk.symbol_rate, tmpI->second.feparams.u.qpsk.fec_inner);
@@ -1351,7 +1351,7 @@ CScanSettings::CScanSettings( int num)
 {
 	//satNameNoDiseqc[0] = 0;
 	strcpy(satNameNoDiseqc, "none");
-	bouquetMode     = CZapitClient::BM_UPDATEBOUQUETS;
+	bouquetMode     = CZapit::BM_UPDATEBOUQUETS;
 	//scanType = CServiceScan::SCAN_TVRADIO;
 	
 	feindex = num;
@@ -1383,12 +1383,12 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	if(!configfile.loadConfig(fileName))
 		printf("%s not found\n", fileName);
 	
-	if( !getFE(index) )
+	if( !CZapit::getInstance()->getFE(index) )
 		return false;
 	
 	// common
-	scanType = (CZapitClient::scanType) getConfigValue(index, "scanType", CZapitClient::ST_ALL);
-	bouquetMode = (CZapitClient::bouquetMode) getConfigValue(index, "bouquetMode", CZapitClient::BM_UPDATEBOUQUETS);
+	scanType = (CZapit::scanType) getConfigValue(index, "scanType", CZapit::ST_ALL);
+	bouquetMode = (CZapit::bouquetMode) getConfigValue(index, "bouquetMode", CZapit::BM_UPDATEBOUQUETS);
 	
 	char cfg_key[81];
 	sprintf(cfg_key, "fe%d_satNameNoDiseqc", index);
@@ -1404,13 +1404,13 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	sprintf(cfg_key, "fe%d_TP_rate", index);
 	strcpy(TP_rate, configfile.getString(cfg_key, "27500000").c_str());
 	
-	if(getFE(index)->getInfo()->type == FE_QPSK)
+	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QPSK)
 	{
 		TP_fec = getConfigValue(index, "TP_fec", 1);
 		TP_pol = getConfigValue(index, "TP_pol", 0);
 	}
 		
-	if(getFE(index)->getInfo()->type == FE_QAM)
+	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QAM)
 	{
 		TP_mod = getConfigValue(index, "TP_mod", 3);
 		TP_fec = getConfigValue(index, "TP_fec", 1);
@@ -1422,7 +1422,7 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 #endif
 
 	//DVB-T
-	if(getFE(index)->getInfo()->type == FE_OFDM)
+	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_OFDM)
 	{
 		TP_band = getConfigValue(index, "TP_band", 0);
 		TP_HP = getConfigValue(index, "TP_HP", 2);
@@ -1433,7 +1433,7 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 		TP_hierarchy = getConfigValue(index, "TP_hierarchy", 0);
 	}
 
-    	if(getFE(index)->getInfo()->type == FE_ATSC)
+    	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_ATSC)
 	{
 		TP_mod = getConfigValue(index, "TP_mod", 3);
 	}
@@ -1463,19 +1463,19 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 	sprintf(cfg_key, "fe%d_TP_rate", index);
 	configfile.setString(cfg_key, TP_rate);
 	
-	if(getFE(index)->getInfo()->type == FE_QPSK)
+	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QPSK)
 	{
 		setConfigValue(index, "TP_pol", TP_pol);
 		setConfigValue(index, "TP_fec", TP_fec);
 	}
 	
-	if(getFE(index)->getInfo()->type == FE_QAM)
+	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QAM)
 	{
 		setConfigValue(index, "TP_mod", TP_mod);
 		setConfigValue(index, "TP_fec", TP_fec);
 	}
 
-	if(getFE(index)->getInfo()->type == FE_OFDM)
+	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_OFDM)
 	{
 		setConfigValue(index, "TP_band", TP_band);
 		setConfigValue(index, "TP_HP", TP_HP);
@@ -1486,7 +1486,7 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 		setConfigValue(index, "TP_hierarchy", TP_hierarchy);
 	}
 
-    	if(getFE(index)->getInfo()->type == FE_ATSC)
+    	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_ATSC)
 	{
 		setConfigValue(index, "TP_mod", TP_mod);
 	}
@@ -1625,8 +1625,8 @@ bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 	}
 
 	dmode = type;
-	getFE(feindex)->setDiseqcType( getFE(feindex)->diseqcType );
-	getFE(feindex)->setDiseqcRepeats( getFE(feindex)->diseqcRepeats );
+	CZapit::getInstance()->getFE(feindex)->setDiseqcType( CZapit::getInstance()->getFE(feindex)->diseqcType );
+	CZapit::getInstance()->getFE(feindex)->setDiseqcRepeats( CZapit::getInstance()->getFE(feindex)->diseqcRepeats );
 
 	return true;
 }
@@ -1825,7 +1825,7 @@ void CTunerSetup::showMenu()
 				
 	for(int i = 0; i < FrontendCount; i++)
 	{
-		CFrontend * fe = getFE(i);
+		CFrontend * fe = CZapit::getInstance()->getFE(i);
 		char tbuf[255];
 				
 		sprintf(tbuf, "Tuner-%d: %s", i + 1, fe->getInfo()->name);

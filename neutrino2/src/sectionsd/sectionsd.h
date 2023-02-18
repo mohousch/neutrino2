@@ -166,8 +166,6 @@ class CSectionsd
 		CSectionsd(){};
 		
 		void run(){};
-		
-	protected:
 	
 	public:
 		~CSectionsd(){};

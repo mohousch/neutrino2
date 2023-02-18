@@ -37,8 +37,6 @@
 #include <stdio.h>
 
 // zapit includes
-#include <zapit/msgtypes.h>
-#include <zapit/zapitclient.h>
 #include <zapit/zapit.h>
 
 #include <sectionsd/sectionsd.h>
