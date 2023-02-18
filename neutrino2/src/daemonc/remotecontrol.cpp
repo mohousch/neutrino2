@@ -762,10 +762,10 @@ void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::s
 		// zap
 		CZapit::getInstance()->zapTo_serviceID_NOWAIT(channel_id);
 
-		// getEventsFromHTTP / localtv
-		if(g_settings.epg_enable_online_epg && IS_WEBTV(channel_id))
+		// getEventsFromLocalTV
+		if(g_settings.epg_enable_localtv_epg)
 		{
-			getEventsFromHTTP(channel_id);
+			getEventsFromLocalTV(channel_id);
 		}
 		
 		abort_zapit = 0;
@@ -829,9 +829,12 @@ void CRemoteControl::tvMode()
 }
 
 // online epg get events
-void CRemoteControl::getEventsFromHTTP(t_channel_id chid)
+void CRemoteControl::getEventsFromLocalTV(t_channel_id chid)
 {
-	dprintf(DEBUG_NORMAL, "CRemoteControl::getEventsFromHTTP: channelID: %llx\n", chid);
+	if (!IS_WEBTV(chid))
+		return;
+		
+	dprintf(DEBUG_NORMAL, "CRemoteControl::getEventsFromLocalTV: channelID: %llx\n", chid);
 	
 	//
 	t_channel_id epgid = 0;
@@ -849,7 +852,7 @@ void CRemoteControl::getEventsFromHTTP(t_channel_id chid)
 	
 	if (chan) epgid = chan->getEPGID();
 	
-	dprintf(DEBUG_NORMAL, "CRemoteControl::getEventsFromHTTP: epgid: %llx\n", epgid);
+	dprintf(DEBUG_NORMAL, "CRemoteControl::getEventsFromLocalTV: epgid: %llx\n", epgid);
 	
 	// localtv
 	std::string evUrl;

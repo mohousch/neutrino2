@@ -234,14 +234,14 @@ _repeat:
 
 		dprintf(DEBUG_INFO, "[scan] get_sdts: scanning: %llx\n", tI->first);
 
-		// msg to neutrino
-		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
-			actual_freq = tI->second.feparams.frequency;
-		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
-			actual_freq = tI->second.feparams.frequency;
-		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
-			actual_freq = tI->second.feparams.frequency;
-		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+		//
+		//if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
+		//	actual_freq = tI->second.feparams.frequency;
+		//else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+		//	actual_freq = tI->second.feparams.frequency;
+		//else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+		//	actual_freq = tI->second.feparams.frequency;
+		//else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 			actual_freq = tI->second.feparams.frequency;
 
 		processed_transponders++;
@@ -269,6 +269,7 @@ _repeat:
 		if(abort_scan)
 			return 0;
 
+		//
 		freq_id_t freq;
 
 		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
@@ -495,11 +496,11 @@ void stop_scan(const bool success)
 	}
 }
 	
-void * start_scanthread(void *scanmode)
+void * start_scanthread(void *data)
 {
-	dprintf(DEBUG_INFO, "[scan] start_scanthread: starting... tid %ld\n", syscall(__NR_gettid));
+	dprintf(DEBUG_NORMAL, "[scan] start_scanthread: starting... tid %ld\n", syscall(__NR_gettid));
 	
-	CZapit::commandStartScan StartScan = *(CZapit::commandStartScan *) scanmode;
+	CZapit::commandStartScan StartScan = *(CZapit::commandStartScan *) data;
 	
 	int mode = StartScan.scan_mode;
 	int feindex = StartScan.feindex;
@@ -559,7 +560,7 @@ void * start_scanthread(void *scanmode)
 	{
 		t_satellite_position position = xmlGetSignedNumericAttribute(search, "position", 10);
 	
-		if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) )
+		if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC) )
 		{
 			strcpy(providerName, xmlGetAttribute(search, const_cast<char*>("name")));
 			
@@ -662,6 +663,7 @@ void * scan_transponder(void * arg)
 	
 	CZapit::commandScanTP ScanTP = *(CZapit::commandScanTP *) arg;
 	TP_params * TP = &ScanTP.TP;
+	int feindex = ScanTP.feindex;
 	
 	char providerName[32] = "";
 	t_satellite_position satellitePosition = 0;
@@ -682,6 +684,7 @@ void * scan_transponder(void * arg)
 	strcpy(providerName, scanProviders.size() > 0 ? scanProviders.begin()->second.c_str() : "unknown provider");
 
 	satellitePosition = scanProviders.begin()->first;
+	
 	dprintf(DEBUG_INFO, "[scan] scan_transponder: scanning sat %s position %d fe(%d)\n", providerName, satellitePosition, ScanTP.feindex);
 	
 	eventServer->sendEvent(CZapit::EVT_SCAN_SATELLITE, CEventServer::INITID_ZAPIT, providerName, strlen(providerName) + 1);
@@ -689,35 +692,35 @@ void * scan_transponder(void * arg)
 	scan_mode = TP->scan_mode;
 	TP->feparams.inversion = INVERSION_AUTO;
 
-	if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_QAM)
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 	{
-		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d rate %d fec %d mod %d\n", ScanTP.feindex, TP->feparams.frequency, TP->feparams.u.qam.symbol_rate, TP->feparams.u.qam.fec_inner, TP->feparams.u.qam.modulation);
+		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP->feparams.frequency, TP->feparams.u.qam.symbol_rate, TP->feparams.u.qam.fec_inner, TP->feparams.u.qam.modulation);
 	}
-	else if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_OFDM)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
-		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", ScanTP.feindex, TP->feparams.frequency, TP->feparams.u.ofdm.bandwidth, TP->feparams.u.ofdm.code_rate_HP, TP->feparams.u.ofdm.code_rate_LP, TP->feparams.u.ofdm.constellation, TP->feparams.u.ofdm.transmission_mode, TP->feparams.u.ofdm.guard_interval, TP->feparams.u.ofdm.hierarchy_information);
+		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP->feparams.frequency, TP->feparams.u.ofdm.bandwidth, TP->feparams.u.ofdm.code_rate_HP, TP->feparams.u.ofdm.code_rate_LP, TP->feparams.u.ofdm.constellation, TP->feparams.u.ofdm.transmission_mode, TP->feparams.u.ofdm.guard_interval, TP->feparams.u.ofdm.hierarchy_information);
 	}
-	else if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_QPSK)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 	{
-		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d rate %d fec %d pol %d NIT %s\n", ScanTP.feindex, TP->feparams.frequency, TP->feparams.u.qpsk.symbol_rate, TP->feparams.u.qpsk.fec_inner, TP->polarization, scan_mode ? "no" : "yes");
+		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d rate %d fec %d pol %d NIT %s\n", feindex, TP->feparams.frequency, TP->feparams.u.qpsk.symbol_rate, TP->feparams.u.qpsk.fec_inner, TP->polarization, scan_mode ? "no" : "yes");
 	}
 
 	freq_id_t freq;
 
-	if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_QAM)
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 		freq = TP->feparams.frequency/100;
-	else if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_QPSK)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 		freq = TP->feparams.frequency/1000;
-	else if( CZapit::getInstance()->getFE(ScanTP.feindex)->getInfo()->type == FE_OFDM)
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 		freq = TP->feparams.frequency/1000000;
 
 	// add TP to scan
 	fake_tid++; 
 	fake_nid++;
 
-	add_to_scan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, ScanTP.feindex);
+	add_to_scan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, feindex);
 
-	get_sdts(satellitePosition, ScanTP.feindex);
+	get_sdts(satellitePosition, feindex);
 
 	if(abort_scan)
 		found_channels = 0;

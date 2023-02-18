@@ -776,18 +776,18 @@ void CEPGSettings::showMenu()
 
 	// server box ip
 	CIPInput * epg_IP = new CIPInput(_("Server Box IP"), g_settings.epg_serverbox_ip);
-	CMenuForwarder* o1 = new CMenuForwarder(_("Server Box IP"), g_settings.epg_enable_online_epg, g_settings.epg_serverbox_ip.c_str(), epg_IP);
+	CMenuForwarder* o1 = new CMenuForwarder(_("Server Box IP"), g_settings.epg_enable_localtv_epg, g_settings.epg_serverbox_ip.c_str(), epg_IP);
 
 	// server gui (neutrino/neutrinohd/enigma2)
-	CMenuOptionChooser* o2 = new CMenuOptionChooser(_("Server Box GUI"), &g_settings.epg_serverbox_gui, EPG_SERVERBOX_GUI_OPTIONS, EPG_SERVERBOX_GUI_OPTION_COUNT, g_settings.epg_enable_online_epg);
+	CMenuOptionChooser* o2 = new CMenuOptionChooser(_("Server Box GUI"), &g_settings.epg_serverbox_gui, EPG_SERVERBOX_GUI_OPTIONS, EPG_SERVERBOX_GUI_OPTION_COUNT, g_settings.epg_enable_localtv_epg);
 
 	// server box type (sat/cable/terrestrial)
-	CMenuOptionChooser* o3 = new CMenuOptionChooser(_("Server Box type"), &g_settings.epg_serverbox_type, EPG_SERVERBOX_TYPE_OPTIONS, EPG_SERVERBOX_TYPE_OPTION_COUNT, g_settings.epg_enable_online_epg);
+	CMenuOptionChooser* o3 = new CMenuOptionChooser(_("Server Box type"), &g_settings.epg_serverbox_type, EPG_SERVERBOX_TYPE_OPTIONS, EPG_SERVERBOX_TYPE_OPTION_COUNT, g_settings.epg_enable_localtv_epg);
 
 	// online EPG on/off
 	COnlineEPGNotifier* onlineEPGNotifier = new COnlineEPGNotifier(o1, o2, o3);
 
-	miscSettingsEPG->addItem(new CMenuOptionChooser(_("Online EPG"), &g_settings.epg_enable_online_epg, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true, onlineEPGNotifier));
+	miscSettingsEPG->addItem(new CMenuOptionChooser(_("Local TV EPG"), &g_settings.epg_enable_localtv_epg, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true, onlineEPGNotifier));
 
 	miscSettingsEPG->addItem(o1);
 	miscSettingsEPG->addItem(o2);
@@ -816,9 +816,9 @@ bool COnlineEPGNotifier::changeNotify(const std::string&, void *)
 	dprintf(DEBUG_NORMAL, "COnlineEPGNotifier::changeNotify\n");
 
 	{
-		item1->setActive(g_settings.epg_enable_online_epg);
-		item2->setActive(g_settings.epg_enable_online_epg);
-		item3->setActive(g_settings.epg_enable_online_epg);
+		item1->setActive(g_settings.epg_enable_localtv_epg);
+		item2->setActive(g_settings.epg_enable_localtv_epg);
+		item3->setActive(g_settings.epg_enable_localtv_epg);
 	}
 	
         return true;

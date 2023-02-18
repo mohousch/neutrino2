@@ -31,7 +31,6 @@
 #include <sectionsd/sectionsd.h>
 
 // zapit 
-//#include <zapit/zapit.h>
 #include <zapit/ci.h>
 #include <zapit/zapittypes.h>
 
@@ -283,5 +282,7 @@ class CZapitChannel
 		int getChannelSubIndex(void);
 		void setChannelSub(int subIdx);
 };
+
+typedef std::vector<CZapitChannel*> ZapitChannelList;
 
 #endif /* __zapit_channel_h__ */

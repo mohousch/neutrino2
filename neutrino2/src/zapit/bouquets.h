@@ -16,16 +16,18 @@
 #include <inttypes.h>
 
 #include "zapit.h"
-#include "channel.h"
+#include "zapit/channel.h"
 
 #include <libxmltree/xmlinterface.h>
 
 
 using namespace std;
 
+class CZapit;
+
 typedef map<t_channel_id, CZapitChannel> tallchans;
 typedef tallchans::iterator tallchans_iterator;
-typedef vector<CZapitChannel*> ZapitChannelList;
+//typedef vector<CZapitChannel*> ZapitChannelList;
 
 class CZapitBouquet
 {
@@ -76,6 +78,8 @@ class CBouquetManager
 				CZapit::channelsMode mode;
 				unsigned int b;
 				int c;
+				friend class CZapit;
+				
 				ZapitChannelList *getBouquet() 
 				{ 
 					if (mode == CZapit::MODE_TV)

@@ -22,8 +22,15 @@
 #define __zapit__
 
 
-#include <string>
+#include <algorithm>
+#include <cstdio>
+#include <functional>
+#include <map>
 #include <vector>
+#include <string.h>
+#include <ctype.h>
+
+#include <inttypes.h>
 
 #include <OpenThreads/Thread>
 #include <OpenThreads/Condition>
@@ -32,10 +39,13 @@
 #include <zapit/zapittypes.h>
 #include <zapit/frontend_c.h>
 #include <zapit/channel.h>
+//#include <zapit/bouquets.h>
 
 
 #define CHANNEL_NAME_SIZE 40
 #define RESPONSE_GET_BOUQUETS_END_MARKER 0xFFFFFFFF
+
+//typedef vector<CZapitChannel*> ZapitChannelList;
 
 class CZapit
 {
@@ -261,24 +271,17 @@ class CZapit
 		static OpenThreads::Mutex mutex_sectionsd;
 		
 		//
-		void setRecordMode(void);
-		void unsetRecordMode(void);
-		
 		void initFrontend();
 		void OpenFE();
 		void CloseFE();
-		//CFrontend * getFE(int index);
 		CFrontend * getVTuner();
-		//void initTuner(CFrontend * fe);
 		bool loopCanTune(CFrontend * fe, CZapitChannel * thischannel);
 		CFrontend * getPreferredFrontend(CZapitChannel * thischannel);
-		//bool CanZap(CZapitChannel * thischannel);
 		CFrontend * getFrontend(CZapitChannel * thischannel);
 		CFrontend * getRecordFrontend(CZapitChannel * thischannel);
 		void lockFrontend(CFrontend *fe);
 		void unlockFrontend(CFrontend *fe);
-		//void saveFrontendConfig(int feindex);
-		//void loadFrontendConfig();
+		
 		void loadAudioMap();
 		void saveAudioMap();
 		void loadVolumeMap();
@@ -299,24 +302,34 @@ class CZapit
 		int getPidVolume(t_channel_id channel_id, int pid, bool ac3);
 		void setVolumePercent(int percent);
 		int change_audio_pid(uint8_t index);
+		void setRecordMode(void);
+		void unsetRecordMode(void);
 		void setRadioMode(void);
 		void setTVMode(void);
 		int prepare_channels();
-		//void parseScanInputXml(fe_type_t fe_type);
 		
-		//
-		//unsigned int zapTo(const unsigned int channel);
-		//unsigned int zapTo(const unsigned int bouquet, const unsigned int channel);
 		unsigned int zapTo_ChannelID(const t_channel_id channel_id, const bool isSubService);
 
-		void sendAPIDs(int connfd);
-		void sendSubPIDs(int connfd);
-		void sendRecordAPIDs(int connfd);
-		void sendRecordSubPIDs(int connfd);
-
+		//
+		void sendAPIDs(CZapit::responseGetAPIDs &response);
+		void sendSubPIDs(CZapit::responseGetSubPIDs &response);
+		void sendRecordAPIDs(CZapit::responseGetAPIDs &response);
+		void sendRecordSubPIDs(CZapit::responseGetSubPIDs &response);
+		
+		//
+		void internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr);
+		void internalSendNChannels(ZapitChannelList* channels, const unsigned int first_channel_nr);
+		void sendBouquets(CZapit::responseGetBouquets &msgBouquet, const bool emptyBouquetsToo, CZapit::channelsMode mode);
+		void sendBouquetChannels(const unsigned int bouquet, const CZapit::channelsMode mode);
+		void sendBouquetNChannels(const unsigned int bouquet, const CZapit::channelsMode mode);
+		void sendChannels(ZapitChannelList &channels, const CZapit::channelsMode mode, const CZapit::channelsOrder order);
+		void sendNChannels(ZapitChannelList &channels, const CZapit::channelsMode mode, const CZapit::channelsOrder order);
+		
+		//
 		void closeAVDecoder(void);
 		void openAVDecoder(void);
 
+		//
 		void enterStandby(void);
 		void leaveStandby(void);
 		
@@ -324,9 +337,6 @@ class CZapit
 		int start_scan(CZapit::commandStartScan StartScan);
 		
 		CZapit(){};
-		
-		void run(){};
-
 	public:
 		~CZapit(){};
 		static CZapit *getInstance()
@@ -375,9 +385,7 @@ class CZapit
 
 		void zapTo_serviceID_NOWAIT(const t_channel_id channel_id);
 		void zapTo_subServiceID_NOWAIT(const t_channel_id channel_id);
-		//void zapTo(const unsigned int bouquet, const unsigned int channel);
 		unsigned int zapTo(const unsigned int bouquet, const unsigned int channel);
-		//void zapTo(const unsigned int channel);
 		unsigned int zapTo(const unsigned int channel);
 		unsigned int zapTo_serviceID(const t_channel_id channel_id);
 		unsigned int zapTo_subServiceID(const t_channel_id channel_id);
@@ -427,10 +435,10 @@ class CZapit
 		void setVideoSystem(int video_system);
 
 		// channels / bouquets
-		bool getChannels(CZapit::BouquetChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const CZapit::channelsOrder order = CZapit::SORT_BOUQUET, const bool utf_encoded = false);
-		void getBouquets( CZapit::BouquetList& bouquets, const bool emptyBouquetsToo = false, const bool utf_encoded = false, CZapit::channelsMode mode = CZapit::MODE_CURRENT);
+		//bool getChannels(CZapit::BouquetChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const CZapit::channelsOrder order = CZapit::SORT_BOUQUET, const bool utf_encoded = false);
+		//void getBouquets( CZapit::BouquetList& bouquets, const bool emptyBouquetsToo = false, const bool utf_encoded = false, CZapit::channelsMode mode = CZapit::MODE_CURRENT);
 		bool getBouquetChannels(const unsigned int bouquet, CZapit::BouquetChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const bool utf_encoded = false);
-		bool getBouquetNChannels(const unsigned int bouquet, CZapit::BouquetNChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const bool utf_encoded = false);
+		//bool getBouquetNChannels(const unsigned int bouquet, CZapit::BouquetNChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const bool utf_encoded = false);
 
 		// bouquetManager
 		void renumChannellist();
@@ -464,154 +472,9 @@ class CZapit
 		bool stopScan();
 
 		//
-		//bool setConfig(Zapit_config Cfg);
-		//void getConfig(Zapit_config * Cfg);
-
 		void Start(Z_start_arg *ZapStart_arg);
+		void run();
+		void Stop();
 };
-
-//void save_settings (bool write);
-
-// scan functions
-void *start_scanthread(void *);
-//int start_scan(CZapit::commandStartScan StartScan);
-
-//
-#if 0
-void addChannelToBouquet (const unsigned int bouquet, const t_channel_id channel_id);
-void sendBouquets(int connfd, const bool emptyBouquetsToo, CZapit::channelsMode mode = CZapit::MODE_CURRENT);
-void internalSendChannels(int connfd, ZapitChannelList* channels, bool nonames);
-void sendBouquetChannels (int connfd, const unsigned int bouquet, CZapit::channelsMode mode = CZapit::MODE_CURRENT, bool nonames = false);
-void sendChannels(int connfd, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const CZapit::channelsOrder order = CZapit::SORT_BOUQUET);
-#endif
-#if 0
-unsigned int zapTo(const unsigned int channel);
-unsigned int zapTo(const unsigned int bouquet, const unsigned int channel);
-unsigned int zapTo_ChannelID(const t_channel_id channel_id, const bool isSubService);
-
-void sendAPIDs(int connfd);
-void sendSubPIDs(int connfd);
-void sendRecordAPIDs(int connfd);
-void sendRecordSubPIDs(int connfd);
-
-void closeAVDecoder(void);
-void openAVDecoder(void);
-
-void enterStandby(void);
-void leaveStandby(void);
-#endif
-//
-#if 0
-void zapit_getLastChannel(unsigned int &channumber, char &mode);
-int zapit_getMode(void);
-void zapit_setMode(const CZapit::channelsMode mode);
-
-int zapit_startPlayBack(CZapitChannel *);
-int zapit_stopPlayBack(bool sendPmt = false);
-void zapit_pausePlayBack(void);
-void zapit_continuePlayBack(void);
-void zapit_lockPlayBack();
-void zapit_unlockPlayBack();
-bool zapit_isPlayBackActive();
-void zapit_setStandby(bool enable);
-
-bool zapit_isChannelTVChannel(const t_channel_id channel_id);
-bool zapit_isChannelWEBTVChannel(const t_channel_id channel_id);
-bool zapit_isChannelRadioChannel(const t_channel_id channel_id);
-
-void zapit_zapTo_serviceID_NOWAIT(const t_channel_id channel_id);
-void zapit_zapTo_subServiceID_NOWAIT(const t_channel_id channel_id);
-void zapit_zapTo(const unsigned int bouquet, const unsigned int channel);
-void zapit_zapTo(const unsigned int channel);
-unsigned int zapit_zapTo_serviceID(const t_channel_id channel_id);
-unsigned int zapit_zapTo_subServiceID(const t_channel_id channel_id);
-unsigned int zapit_zapTo_record(const t_channel_id channel_id);
-
-std::string zapit_getChannelName(const t_channel_id channel_id);
-int zapit_getChannelNumber(const t_channel_id channel_id);
-std::string zapit_getChannelURL(const t_channel_id channel_id);
-std::string zapit_getChannelDescription(const t_channel_id channel_id);
-
-// current service
-void zapit_getPIDS( CZapit::responseGetPIDs& pids );
-t_channel_id zapit_getCurrentServiceID();
-CZapit::CCurrentServiceInfo zapit_getCurrentServiceInfo();
-int32_t zapit_getCurrentSatellitePosition();
-bool zapit_getCurrentTP(TP_params *TP);
-
-// novd
-void zapit_setSubServices( CZapit::subServiceList& subServices );
-//void zapit_zaptoNvodSubService(const int num);
-
-// record
-void zapit_setRecordMode(const bool activate);
-bool zapit_isRecordModeActive();
-t_channel_id zapit_getRecordServiceID();
-CZapit::CCurrentServiceInfo zapit_getRecordServiceInfo();
-void zapit_getRecordPIDS(CZapit::responseGetPIDs& pids);
-
-void zapit_reinitChannels();
-void zapit_reloadCurrentServices();
-bool zapit_reZap();
-
-// frontend
-void zapit_sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t cmd, uint8_t num_parameters, uint8_t param1, uint8_t param2, int feindex = 0);
-delivery_system_t zapit_getDeliverySystem(int feindex = 0);
-
-// audio / video
-void zapit_muteAudio(const bool mute);
-bool zapit_getMuteStatus();
-void zapit_getAudioMode(int * mode);
-void zapit_setAudioMode(int mode);
-void zapit_setVolume(const unsigned int left, const unsigned int right);
-void zapit_getVolume(unsigned int *left, unsigned int *right);
-void zapit_setVolumePercent(const unsigned int percent, t_channel_id channel_id = 0, const unsigned int apid = 0);
-void zapit_getVolumePercent(unsigned int *percent, t_channel_id channel_id = 0, const unsigned int apid = 0, const bool is_ac3 = false);
-void zapit_setAudioChannel(const unsigned int channel);
-void zapit_setVideoSystem(int video_system);
-
-// channels / bouquets
-bool zapit_getChannels(CZapit::BouquetChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const CZapit::channelsOrder order = CZapit::SORT_BOUQUET, const bool utf_encoded = false);
-void zapit_getBouquets( CZapit::BouquetList& bouquets, const bool emptyBouquetsToo = false, const bool utf_encoded = false, CZapit::channelsMode mode = CZapit::MODE_CURRENT);
-bool zapit_getBouquetChannels(const unsigned int bouquet, CZapit::BouquetChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const bool utf_encoded = false);
-bool zapit_getBouquetNChannels(const unsigned int bouquet, CZapit::BouquetNChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const bool utf_encoded = false);
-
-// bouquetManager
-void zapit_renumChannellist();
-void zapit_saveBouquets();
-void zapit_restoreBouquets();
-void zapit_addBouquet(const char * const name); // UTF-8 encoded
-void zapit_deleteBouquet(const unsigned int bouquet);
-void zapit_renameBouquet(const unsigned int bouquet, const char * const newName); // UTF-8 encoded
-void zapit_moveBouquet(const unsigned int bouquet, const unsigned int newPos);
-void zapit_moveChannel(const unsigned int bouquet, unsigned int oldPos, unsigned int newPos, CZapit::channelsMode mode = CZapit::MODE_CURRENT);
-signed int zapit_existsBouquet(const char * const name); // UTF-8 encoded
-void zapit_setBouquetLock(const unsigned int bouquet, const bool lock);
-void zapit_setBouquetHidden(const unsigned int bouquet, const bool hidden);
-void zapit_addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id);
-bool zapit_existsChannelInBouquet(const unsigned int bouquet, const t_channel_id channel_id);
-void zapit_removeChannelFromBouquet(const unsigned int bouquet, const t_channel_id channel_id);
-
-// scan
-bool zapit_tuneTP(TP_params TP, int feindex = 0);
-bool zapit_scanTP(TP_params TP, int feindex = 0);
-bool zapit_isScanReady(unsigned int &satellite, unsigned int &processed_transponder, unsigned int &transponder, unsigned int &services );
-void zapit_getScanSatelliteList( CZapit::SatelliteList &satelliteList );
-void zapit_setScanSatelliteList( CZapit::ScanSatelliteList &satelliteList );
-void zapit_setScanType(const CZapit::scanType mode);
-void zapit_setFEMode(const fe_mode_t mode, int feindex = 0);
-void zapit_setScanBouquetMode(const CZapit::bouquetMode mode);
-void zapit_setDiseqcType(const diseqc_t diseqc, int feindex = 0);
-void zapit_setDiseqcRepeat(const uint32_t repeat, int feindex = 0);
-void zapit_setScanMotorPosList( CZapit::ScanMotorPosList& motorPosList );
-bool zapit_startScan(int scan_mode, int feindex = 0);
-bool zapit_stopScan();
-
-//
-bool zapit_setConfig(Zapit_config Cfg);
-void zapit_getConfig(Zapit_config * Cfg);
-
-void zapit_Start(void *data);
-#endif
 
 #endif

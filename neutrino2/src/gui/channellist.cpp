@@ -93,18 +93,10 @@ bool pip_selected = false;
 extern bool autoshift;
 int info_height = 0;
 bool new_mode_active = 0;
-
 extern int FrontendCount;				// defined in zapit.cpp
-//extern bool CanZap(CZapitChannel * thischannel);	// defined in zapit.cpp
-
 extern CBouquetManager * g_bouquetManager;
-
 extern cVideo * videoDecoder;
 extern CZapitChannel * live_channel;
-
-//
-void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id);	// defined in zapit.cpp
-
 extern int old_b_id;
 
 #define NUM_LIST_BUTTONS 4
@@ -494,7 +486,7 @@ int CChannelList::doChannelMenu(void)
 
 				if(!g_bouquetManager->existsChannelInBouquet(new_bouquet_id, channel_id)) 
 				{
-					addChannelToBouquet(new_bouquet_id, channel_id);
+					CZapit::getInstance()->addChannelToBouquet(new_bouquet_id, channel_id);
 				}
 				
 				if(g_bouquetManager->existsChannelInBouquet(old_bouquet_id, channel_id)) 
@@ -521,7 +513,7 @@ int CChannelList::doChannelMenu(void)
 				
 				if(!g_bouquetManager->existsChannelInBouquet(bouquet_id, channel_id)) 
 				{
-					addChannelToBouquet(bouquet_id, channel_id);
+					CZapit::getInstance()->addChannelToBouquet(bouquet_id, channel_id);
 					return 1;
 				}
 				break;
@@ -536,7 +528,7 @@ int CChannelList::doChannelMenu(void)
 				
 				if(!g_bouquetManager->existsChannelInBouquet(bouquet_id, channel_id)) 
 				{
-					addChannelToBouquet(bouquet_id, channel_id);
+					CZapit::getInstance()->addChannelToBouquet(bouquet_id, channel_id);
 					return 1;
 				}
 				

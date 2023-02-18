@@ -3796,7 +3796,7 @@ static void *houseKeepingThread(void *)
 
 void CSectionsd::readEPGFilter(void)
 {
-	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_readEPGFilter:\n");
+	dprintf(DEBUG_NORMAL, "[sectionsd] CSectionsd::readEPGFilter:\n");
 	
 	_xmlDocPtr filter_parser = parseXmlFile(epg_filter_dir.c_str());
 
@@ -3833,7 +3833,7 @@ void CSectionsd::readEPGFilter(void)
 
 void CSectionsd::readDVBTimeFilter(void)
 {
-	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_readDVBTimeFilter:\n");
+	dprintf(DEBUG_NORMAL, "[sectionsd] CSectionsd::readDVBTimeFilter:\n");
 	
 	_xmlDocPtr filter_parser = parseXmlFile(dvbtime_filter_dir.c_str());
 
@@ -4864,7 +4864,7 @@ bool CSectionsd::isReady(void)
 
 void CSectionsd::insertEventsfromLocalTV(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd:insertEventsfromHTTP: url:%s\n", url.c_str());
+	dprintf(DEBUG_NORMAL, "CSectionsd:insertEventsfromLocalTV: url:%s\n", url.c_str());
 	
 	if (url.empty())
 		return;

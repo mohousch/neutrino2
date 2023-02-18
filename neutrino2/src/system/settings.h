@@ -446,7 +446,7 @@ struct SNeutrinoSettings
 		SATIP_SERVERBOX_GUI_ENIGMA2
 	};
 	
-	int epg_enable_online_epg;
+	int epg_enable_localtv_epg;
 	std::string epg_serverbox_ip;
 	int epg_serverbox_type;
 	int epg_serverbox_gui;

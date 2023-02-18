@@ -958,7 +958,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// end VFD
 
 	// online epg
-	g_settings.epg_enable_online_epg = configfile.getBool("epg_enable_online_epg", false);
+	g_settings.epg_enable_localtv_epg = configfile.getBool("epg_enable_localtv_epg", false);
 	g_settings.epg_serverbox_ip = configfile.getString("epg_serverbox_ip", "192.168.0.12");
 	g_settings.epg_serverbox_type = configfile.getInt32("epg_serverbox_type", DVB_C);
 	g_settings.epg_serverbox_gui = configfile.getInt32("epg_serverbox_gui", SNeutrinoSettings::SATIP_SERVERBOX_GUI_ENIGMA2);
@@ -1423,7 +1423,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	// END VFD
 
 	// online epg
-	configfile.setBool("epg_enable_online_epg", g_settings.epg_enable_online_epg);
+	configfile.setBool("epg_enable_localtv_epg", g_settings.epg_enable_localtv_epg);
 	configfile.setString("epg_serverbox_ip", g_settings.epg_serverbox_ip);
 	configfile.setInt32("epg_serverbox_type", g_settings.epg_serverbox_type);
 	configfile.setInt32("epg_serverbox_gui", g_settings.epg_serverbox_gui);
@@ -2314,9 +2314,9 @@ void CNeutrinoApp::InitZapper()
 		CVFD::getInstance()->showServicename(channelList->getActiveChannelName(), true, channelList->getActiveChannelNumber());
 		
 		// online epg
-		if(g_settings.epg_enable_online_epg)
+		if(g_settings.epg_enable_localtv_epg)
 		{
-			g_RemoteControl->getEventsFromHTTP(live_channel_id);
+			g_RemoteControl->getEventsFromLocalTV(live_channel_id);
 		}	
 
 		// start epg scanning
@@ -2585,6 +2585,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	CVFD::getInstance()->setlcdparameter();
 	
 	// start assistant
+	#if 0
 	if(loadSettingsErg) 
 	{
 		int tvmode = CZapit::getInstance()->getMode();
@@ -2625,8 +2626,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 		// setup timezone
 		if(ret != RETURN_EXIT_ALL)
+		{
 			if(tzSelect)
 				tzSelect->exec(NULL);
+		}
 
 		// setup network
 		if(ret != RETURN_EXIT_ALL)
@@ -2659,8 +2662,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 		// picviewersettings
 		if(ret != RETURN_EXIT_ALL)
 		{
-			CPictureViewerSettings PicViewerSettings;
-			PicViewerSettings.exec(NULL, "");
+			CPictureViewerSettings picViewerSettings;
+			picViewerSettings.exec(NULL, "");
 		}
 		
 		// keysettings
@@ -2685,6 +2688,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 		saveSetup(NEUTRINO_SETTINGS_FILE);
 	}
+	#endif
 	
 	// zapper
 	InitZapper();
@@ -5109,17 +5113,7 @@ void stop_daemons()
 	pthread_cancel(nhttpd_thread);
 	pthread_join(nhttpd_thread, NULL);
 	dprintf(DEBUG_NORMAL, "stop_daemons: httpd shutdown done\n");	
-	/*
-	if (yhttpd)
-	{
-		yhttpd->Stop();
-		
-		delete yhttpd;
-		yhttpd = NULL;
-	}
-	*/
 	
-
 	// stop streamts
 	dprintf(DEBUG_NORMAL, "stop_daemons: streamts shutdown\n");	
 	streamts_stop = 1;
@@ -5134,7 +5128,7 @@ void stop_daemons()
 
 	// stop sectionsd
 	//sectionsd_stop = 1;
-	dprintf(DEBUG_NORMAL, "stop_daemons: sectionsd shutdown\n");
+	//dprintf(DEBUG_NORMAL, "stop_daemons: sectionsd shutdown\n");
 	//pthread_join(sections_thread, NULL);
 	//dprintf(DEBUG_NORMAL, "stop_daemons: sectionsd shutdown done\n");
 	CSectionsd::getInstance()->Stop();
@@ -5143,7 +5137,8 @@ void stop_daemons()
 	//dprintf(DEBUG_NORMAL, "stop_daemons: zapit shutdown\n");
 	//zapit_shutdown();
 	//pthread_join(zapit_thread, NULL);
-	//dprintf(DEBUG_NORMAL, "stop_daemons: zapit shutdown done\n");	
+	//dprintf(DEBUG_NORMAL, "stop_daemons: zapit shutdown done\n");
+	CZapit::getInstance()->Stop();
 }
 
 // stop subtitle

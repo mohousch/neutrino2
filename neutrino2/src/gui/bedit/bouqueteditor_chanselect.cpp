@@ -59,7 +59,6 @@ extern satellite_map_t satellitePositions;	// defined in getServices.cpp
 extern transponder_list_t transponders;		// defined in zapit.cpp
 extern tallchans allchans;			// defined in zapit.cpp
 extern CBouquetManager* g_bouquetManager;	// defined in zapit.cpp
-void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id); // defined in zapit.cpp
 
 CBEChannelSelectWidget::CBEChannelSelectWidget(const std::string& Caption, unsigned int Bouquet, CZapit::channelsMode Mode)
 {
@@ -253,7 +252,7 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 				if (isChannelInBouquet(selected))
 					g_bouquetManager->Bouquets[bouquet]->removeService(Channels[selected]->channel_id);
 				else
-					addChannelToBouquet(bouquet, Channels[selected]->channel_id);
+					CZapit::getInstance()->addChannelToBouquet(bouquet, Channels[selected]->channel_id);
 
 				bouquetChannels = mode == CZapit::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
 		

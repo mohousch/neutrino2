@@ -34,4 +34,6 @@ extern CBouquetManager* scanBouquetManager;
 
 char * getFrontendName();
 
+void * start_scanthread(void *data);
+
 #endif /* __scan_h__ */
