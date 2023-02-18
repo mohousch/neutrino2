@@ -857,7 +857,7 @@ bool CEPGlangSelectNotifier::changeNotify(const std::string&, void *)
 	}
 	
 	if(found)
-		sectionsd_set_languages(v_languages);
+		CSectionsd::getInstance()->setLanguages(v_languages);
 	
 	return true;
 }

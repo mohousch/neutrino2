@@ -802,7 +802,7 @@ do_current:
 
 	return 0;
 }
-
+/*
 void zapit_cp(char * from, char * to)
 {
         char cmd[256] = "cp -f ";
@@ -812,6 +812,7 @@ void zapit_cp(char * from, char * to)
         system(cmd);
 	sync();
 }
+*/
 
 void saveServices(bool tocopy)
 {
@@ -1007,7 +1008,8 @@ void saveServices(bool tocopy)
 
 	if(tocopy) 
 	{
-		zapit_cp((char *) SERVICES_TMP, (char *) SERVICES_XML);
+		//zapit_cp((char *) SERVICES_TMP, (char *) SERVICES_XML);
+		CFileHelpers::getInstance()->copyFile(SERVICES_TMP, SERVICES_XML);
 		unlink(SERVICES_TMP);
 	}
 

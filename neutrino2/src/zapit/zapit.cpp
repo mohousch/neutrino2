@@ -121,11 +121,6 @@ int volume_percent = 0;
 extern int current_volume;
 extern int current_muted;
 
-//int getPidVolume(t_channel_id channel_id, int pid, bool ac3);
-//void setPidVolume(t_channel_id channel_id, int pid, int percent);
-
-//void setVolumePercent(int percent);
-
 // live/record channel id
 t_channel_id live_channel_id = 0;
 t_channel_id rec_channel_id = 0;
@@ -133,8 +128,6 @@ t_channel_id rec_channel_id = 0;
 bool firstzap = true;
 bool playing = false;
 bool g_list_changed = false; 		// flag to indicate, allchans was changed
-
-//int change_audio_pid(uint8_t index);
 
 //
 void saveServices(bool tocopy);
@@ -2834,20 +2827,6 @@ void CZapit::setZapitConfig(Zapit_config * Cfg)
 	saveZapitSettings(true, false);
 }
 
-void CZapit::sendConfig(int connfd)
-{
-	dprintf(DEBUG_INFO, "\n[zapit] sendConfig:\n");
-	
-	Zapit_config Cfg;
-
-	Cfg.makeRemainingChannelsBouquet = makeRemainingChannelsBouquet;
-	Cfg.saveLastChannel = config.getBool("saveLastChannel", true);
-	Cfg.scanSDT = scanSDT;
-
-	// send
-	//CBasicServer::send_data(connfd, &Cfg, sizeof(Cfg));
-}
-
 void CZapit::getZapitConfig(Zapit_config *Cfg)
 {
         Cfg->makeRemainingChannelsBouquet = makeRemainingChannelsBouquet;
@@ -3348,9 +3327,9 @@ void *event_proc(void *ptr)
 //#define CHECK_FOR_LOCK
 //#endif
 //int zapit_main_thread(void *data)
-void CZapit::Start(void *data)
+void CZapit::Start(Z_start_arg *ZapStart_arg)
 {
-	Z_start_arg *ZapStart_arg = (Z_start_arg *) data;
+	//Z_start_arg *ZapStart_arg = (Z_start_arg *) data;
 	
 	//dprintf(DEBUG_INFO, "[zapit] zapit_main_thread: starting... tid %ld\n", syscall(__NR_gettid));
 	dprintf(DEBUG_NORMAL, "zapit_Start\n");
@@ -3392,7 +3371,6 @@ void CZapit::Start(void *data)
 		CZapit::EVT_SDT_CHANGED,
 		CZapit::EVT_PMT_CHANGED
 	};
-	////
 	
 	//scan for dvb adapter/frontend and feed them in map
 	initFrontend();
@@ -3597,17 +3575,10 @@ void CZapit::Start(void *data)
 	// load services
 	prepare_channels();
 
-	//set basic server
-	//CBasicServer zapit_server;
-
-	//set zapit socket
-	//if (!zapit_server.prepare(ZAPIT_UDS_NAME))
-	//	return -1;
-
 	// init event server
 	eventServer = new CEventServer;
 	
-	////
+	//
 	for (int i = 0; i < ZAPIT_EVENT_COUNT; i++)
 		eventServer->registerEvent2(zapit_event[i], 222, NEUTRINO_UDS_NAME);
 
@@ -3758,7 +3729,7 @@ void CZapit::Start(void *data)
 #endif
 }
 
-////
+//
 void CZapit::getLastChannel(unsigned int &channumber, char &mode)
 {
 	CZapit::responseGetLastChannel responseGetLastChannel;
@@ -4704,20 +4675,5 @@ bool CZapit::stopScan()
 	}
 	
 	return scan_runs;
-}
-
-//
-bool CZapit::setConfig(Zapit_config Cfg)
-{
-	setZapitConfig(&Cfg);
-	
-	return true;
-}
-
-void CZapit::getConfig(Zapit_config * Cfg)
-{
-	Cfg->makeRemainingChannelsBouquet = makeRemainingChannelsBouquet;
-	Cfg->saveLastChannel = config.getBool("saveLastChannel", true);
-	Cfg->scanSDT = scanSDT;
 }		
-////
+

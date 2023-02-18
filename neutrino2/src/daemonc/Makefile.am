@@ -10,7 +10,7 @@ AM_CPPFLAGS = \
 	@FREETYPE_CFLAGS@
 
 if BOXTYPE_COOLSTREAM
-AM_CPPFLAGS += -I$(top_srcdir)/src/zapit/include \
+AM_CPPFLAGS += \
 	-I$(top_srcdir)/lib/libcoolstream
 else
 AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbapi

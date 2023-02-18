@@ -899,6 +899,6 @@ void CRemoteControl::getEventsFromHTTP(t_channel_id chid)
 	}
 
 	//
-	CSectionsd::getInstance()->insertEventsfromHTTP(evUrl, GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(chid), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid), GET_SERVICE_ID_FROM_CHANNEL_ID(chid));
+	CSectionsd::getInstance()->insertEventsfromLocalTV(evUrl, GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(chid), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid), GET_SERVICE_ID_FROM_CHANNEL_ID(chid));
 }
 

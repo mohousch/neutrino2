@@ -320,10 +320,6 @@ class CZapit
 		void enterStandby(void);
 		void leaveStandby(void);
 		
-		//void setZapitConfig(Zapit_config * Cfg);
-		//void getZapitConfig(Zapit_config *Cfg);
-		void sendConfig(int connfd);
-		
 		//
 		int start_scan(CZapit::commandStartScan StartScan);
 		
@@ -345,7 +341,7 @@ class CZapit
 			return zapit;
 		};
 		
-		#if 1
+		//
 		CFrontend * getFE(int index);
 		void initTuner(CFrontend * fe);
 		void saveFrontendConfig(int feindex);
@@ -468,11 +464,10 @@ class CZapit
 		bool stopScan();
 
 		//
-		bool setConfig(Zapit_config Cfg);
-		void getConfig(Zapit_config * Cfg);
+		//bool setConfig(Zapit_config Cfg);
+		//void getConfig(Zapit_config * Cfg);
 
-		void Start(void *data);
-		#endif
+		void Start(Z_start_arg *ZapStart_arg);
 };
 
 //void save_settings (bool write);

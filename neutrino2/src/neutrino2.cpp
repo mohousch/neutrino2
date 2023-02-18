@@ -2458,7 +2458,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	// zapit
 	//pthread_create(&zapit_thread, NULL, zapit_main_thread, (void *) &ZapStart_arg);
-	CZapit::getInstance()->Start((void *) &ZapStart_arg);
+	CZapit::getInstance()->Start(&ZapStart_arg);
 
 	// wait until zapit is ready
 	while(!zapit_ready)
