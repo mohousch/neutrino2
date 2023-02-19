@@ -1883,11 +1883,11 @@ void CZapit::addChannelToBouquet(const unsigned int bouquet, const t_channel_id 
 		printf("channel_id not found in channellist\n");
 }
 
-void CZapit::sendAPIDs(CZapit::responseGetAPIDs &response)
+void CZapit::sendAPIDs(APIDList &apids)
 {
 	for (uint32_t  i = 0; i < live_channel->getAudioChannelCount(); i++) 
 	{
-		//CZapit::responseGetAPIDs response;
+		CZapit::responseGetAPIDs response;
 		response.pid = live_channel->getAudioPid(i);
 		strncpy(response.desc, live_channel->getAudioChannel(i)->description.c_str(), 25);
 
@@ -1905,14 +1905,16 @@ void CZapit::sendAPIDs(CZapit::responseGetAPIDs &response)
 		} 
 		
 		response.component_tag = live_channel->getAudioChannel(i)->componentTag;
+		
+		apids.push_back(response);
 	}
 }
 
-void CZapit::sendSubPIDs(CZapit::responseGetSubPIDs &response)
+void CZapit::sendSubPIDs(SubPIDList &subpids)
 {
 	for (int i = 0 ; i < (int)live_channel->getSubtitleCount() ; ++i) 
 	{
-		//CZapit::responseGetSubPIDs response;
+		CZapit::responseGetSubPIDs response;
 		CZapitAbsSub* s = live_channel->getChannelSub(i);
 		CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
 		CZapitTTXSub* st = reinterpret_cast<CZapitTTXSub*>(s);
@@ -1939,14 +1941,18 @@ void CZapit::sendSubPIDs(CZapit::responseGetSubPIDs &response)
 			response.ancillary_page = 0;
 			response.hearingImpaired = st->hearingImpaired;
 		}
+		
+		subpids.push_back(response);
 	}
 }
 
 //
-void CZapit::sendRecordAPIDs(CZapit::responseGetAPIDs &response)
+void CZapit::sendRecordAPIDs(APIDList &apids)
 {
 	for (uint32_t  i = 0; i < rec_channel->getAudioChannelCount(); i++) 
 	{
+		CZapit::responseGetAPIDs response;
+		
 		response.pid = rec_channel->getAudioPid(i);
 		strncpy(response.desc, rec_channel->getAudioChannel(i)->description.c_str(), 25);
 
@@ -1964,14 +1970,17 @@ void CZapit::sendRecordAPIDs(CZapit::responseGetAPIDs &response)
 		} 
 		
 		response.component_tag = rec_channel->getAudioChannel(i)->componentTag;
+		
+		apids.push_back(response);
 	}
 }
 
-void CZapit::sendRecordSubPIDs(CZapit::responseGetSubPIDs &response)
+void CZapit::sendRecordSubPIDs(SubPIDList &subpids)
 {	
 	for (int i = 0 ; i < (int)rec_channel->getSubtitleCount() ; ++i) 
 	{
-		//CZapit::responseGetSubPIDs response;
+		CZapit::responseGetSubPIDs response;
+		
 		CZapitAbsSub* s = rec_channel->getChannelSub(i);
 		CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
 		CZapitTTXSub* st = reinterpret_cast<CZapitTTXSub*>(s);
@@ -1997,6 +2006,8 @@ void CZapit::sendRecordSubPIDs(CZapit::responseGetSubPIDs &response)
 			response.ancillary_page = 0;
 			response.hearingImpaired = st->hearingImpaired;
 		}
+		
+		subpids.push_back(response);
 	}
 }
 
@@ -4002,8 +4013,8 @@ void CZapit::getPIDS( CZapit::responseGetPIDs &pids )
 	if (live_channel) 
 	{
 		CZapit::responseGetOtherPIDs responseGetOtherPIDs;
-		CZapit::responseGetAPIDs responseAPID;
-		CZapit::responseGetSubPIDs responseSubPID;
+		CZapit::APIDList apids;
+		CZapit::SubPIDList subpids;
 		
 		responseGetOtherPIDs.vpid = live_channel->getVideoPid();
 		responseGetOtherPIDs.vtxtpid = live_channel->getTeletextPid();
@@ -4012,13 +4023,13 @@ void CZapit::getPIDS( CZapit::responseGetPIDs &pids )
 		responseGetOtherPIDs.selected_apid = live_channel->getAudioChannelIndex();
 		responseGetOtherPIDs.privatepid = live_channel->getPrivatePid();
 		
-		sendAPIDs(responseAPID);
-		sendSubPIDs(responseSubPID);
+		sendAPIDs(apids);
+		sendSubPIDs(subpids);
 		
 		//
 		pids.PIDs = responseGetOtherPIDs;
-		pids.APIDs.push_back(responseAPID);
-		pids.SubPIDs.push_back(responseSubPID);
+		pids.APIDs = apids;
+		pids.SubPIDs = subpids;
 	}
 }
 
@@ -4180,8 +4191,8 @@ void CZapit::getRecordPIDS(CZapit::responseGetPIDs &pids)
 	if (rec_channel) 
 	{
 		CZapit::responseGetOtherPIDs responseGetOtherPIDs;
-		CZapit::responseGetAPIDs responseAPID;
-		CZapit::responseGetSubPIDs responseSubPID;
+		CZapit::APIDList apids;
+		CZapit::SubPIDList subpids;
 		
 		responseGetOtherPIDs.vpid = rec_channel->getVideoPid();
 		responseGetOtherPIDs.vtxtpid = rec_channel->getTeletextPid();
@@ -4190,13 +4201,13 @@ void CZapit::getRecordPIDS(CZapit::responseGetPIDs &pids)
 		responseGetOtherPIDs.selected_apid = rec_channel->getAudioChannelIndex();
 		responseGetOtherPIDs.privatepid = rec_channel->getPrivatePid();
 		
-		sendRecordAPIDs(responseAPID);
-		sendRecordSubPIDs(responseSubPID);
+		sendRecordAPIDs(apids);
+		sendRecordSubPIDs(subpids);
 		
 		//
 		pids.PIDs = responseGetOtherPIDs;
-		pids.APIDs.push_back(responseAPID);
-		pids.SubPIDs.push_back(responseSubPID);
+		pids.APIDs = apids;
+		pids.SubPIDs = subpids;
 	}
 }
 

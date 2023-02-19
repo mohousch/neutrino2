@@ -311,10 +311,10 @@ class CZapit
 		unsigned int zapTo_ChannelID(const t_channel_id channel_id, const bool isSubService);
 
 		//
-		void sendAPIDs(CZapit::responseGetAPIDs &response);
-		void sendSubPIDs(CZapit::responseGetSubPIDs &response);
-		void sendRecordAPIDs(CZapit::responseGetAPIDs &response);
-		void sendRecordSubPIDs(CZapit::responseGetSubPIDs &response);
+		void sendAPIDs(APIDList &apids);
+		void sendSubPIDs(SubPIDList &subpids);
+		void sendRecordAPIDs(APIDList &apids);
+		void sendRecordSubPIDs(SubPIDList &subpids);
 		
 		//
 		void internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr);
@@ -397,7 +397,7 @@ class CZapit
 		std::string getChannelDescription(const t_channel_id channel_id);
 
 		// current service
-		void getPIDS( CZapit::responseGetPIDs& pids );
+		void getPIDS(CZapit::responseGetPIDs &pids);
 		t_channel_id getCurrentServiceID();
 		CZapit::CCurrentServiceInfo getCurrentServiceInfo();
 		int32_t getCurrentSatellitePosition();
@@ -411,7 +411,7 @@ class CZapit
 		bool isRecordModeActive();
 		t_channel_id getRecordServiceID();
 		CZapit::CCurrentServiceInfo getRecordServiceInfo();
-		void getRecordPIDS(CZapit::responseGetPIDs& pids);
+		void getRecordPIDS(CZapit::responseGetPIDs &pids);
 
 		void reinitChannels();
 		void reloadCurrentServices();

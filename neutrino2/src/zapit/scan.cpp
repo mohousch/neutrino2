@@ -63,8 +63,6 @@ extern CEventServer *eventServer;
 extern CFrontend * live_fe;
 extern _xmlDocPtr scanInputParser;
 
-//void * nit_thread(void * data);
-
 static int prov_found;
 short abort_scan;
 short scan_runs;
