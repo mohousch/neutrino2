@@ -268,7 +268,7 @@ class CZapit
 		};
 		
 	private:
-		static OpenThreads::Mutex mutex_sectionsd;
+		static OpenThreads::Mutex mutex_zapit;
 		
 		//
 		void initFrontend();
@@ -405,7 +405,6 @@ class CZapit
 
 		// novd
 		void setSubServices( CZapit::subServiceList& subServices );
-		//void zaptoNvodSubService(const int num);
 
 		// record
 		void setRecordMode(const bool activate);

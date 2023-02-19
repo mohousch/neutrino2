@@ -137,7 +137,7 @@ bool tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_satelli
 
 int add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit = 0, int feindex = 0)
 {
-	dprintf(DEBUG_INFO, "[scan] add_to_scan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, polarity, TsidOnid, fromnit, feindex);
+	dprintf(DEBUG_NORMAL, "[scan] add_to_scan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, polarity, TsidOnid, fromnit, feindex);
 
 	freq_id_t freq;
 
@@ -281,13 +281,12 @@ _repeat:
 			
 		// parse sdt
 		dprintf(DEBUG_NORMAL, "[scan] get_sdts: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
-		#if 0 //FIXME
+		
 		if(parse_sdt(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
 		{
 			dprintf(DEBUG_INFO, "[scan] get_sdts: SDT failed !\n");
 			continue;
 		}
-		#endif
 
 		TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, tI->second.original_network_id, tI->second.transport_stream_id);
 
@@ -658,11 +657,11 @@ void * start_scanthread(void *data)
 	pthread_exit(NULL);
 }
 
-void * scan_transponder(void * arg)
+void * scan_transponder(void * data)
 {
 	dprintf(DEBUG_NORMAL, "[scan.cpp] scan_transponder: starting... tid %ld\n", syscall(__NR_gettid));
 	
-	CZapit::commandScanTP ScanTP = *(CZapit::commandScanTP *) arg;
+	CZapit::commandScanTP ScanTP = *(CZapit::commandScanTP *) data;
 	TP_params * TP = &ScanTP.TP;
 	int feindex = ScanTP.feindex;
 	

@@ -84,7 +84,7 @@ class CLanguageSettings : public CMenuTarget, CChangeObserver
 		
 		bool changeNotify(const std::string& OptionName, void *);
 		
-		int exec(CMenuTarget* parent, const std::string& actionKey);
+		int exec(CMenuTarget *parent, const std::string &actionKey);
 };
 
 class CFontSettings : public CMenuTarget

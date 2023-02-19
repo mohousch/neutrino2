@@ -427,6 +427,7 @@ static bool checkEPGFilter(t_original_network_id onid, t_transport_stream_id tsi
 			return true;
 		filterptr = filterptr->next;
 	}
+	
 	return false;
 }
 
@@ -439,6 +440,7 @@ static bool checkBlacklist(t_channel_id channel_id)
 			return true;
 		blptr = blptr->next;
 	}
+	
 	return false;
 }
 

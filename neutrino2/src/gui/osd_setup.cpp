@@ -536,7 +536,7 @@ CLanguageSettings::~CLanguageSettings()
 {
 }
 
-int CLanguageSettings::exec(CMenuTarget* parent, const std::string& actionKey)
+int CLanguageSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CLanguageSettings::exec: actionKey: %s\n", actionKey.c_str());
 	

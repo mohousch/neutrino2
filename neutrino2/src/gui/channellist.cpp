@@ -1062,39 +1062,36 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 	
 	for (i = 0; i < chanlist.size(); i++) 
 	{
-		if(chanlist[i] == NULL) 
+		if (chanlist[i] != NULL)
 		{
-			//printf("CChannelList::adjustToChannelID REPORT BUG !! %d is NULL !!\n", i);
-			continue;
-		}
-
-		if (chanlist[i]->channel_id == channel_id) 
-		{
-			selected = i;
-			lastChList.store(selected, channel_id, false);
-
-			tuned = i;
-			
-			if (bToo && (bouquetList != NULL)) 
+			if (chanlist[i]->channel_id == channel_id) 
 			{
-				//FIXME
-				if(CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_tv) 
+				selected = i;
+				lastChList.store(selected, channel_id, false);
+
+				tuned = i;
+				
+				if (bToo && (bouquetList != NULL)) 
 				{
-					TVbouquetList->adjustToChannelID(channel_id);
-					TVsatList->adjustToChannelID(channel_id);
-					TVfavList->adjustToChannelID(channel_id);
-					TVallList->adjustToChannelID(channel_id);
-				} 
-				else if(CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_radio) 
-				{
-					RADIObouquetList->adjustToChannelID(channel_id);
-					RADIOsatList->adjustToChannelID(channel_id);
-					RADIOfavList->adjustToChannelID(channel_id);
-					RADIOallList->adjustToChannelID(channel_id);
+					//FIXME
+					if(CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_tv) 
+					{
+						TVbouquetList->adjustToChannelID(channel_id);
+						TVsatList->adjustToChannelID(channel_id);
+						TVfavList->adjustToChannelID(channel_id);
+						TVallList->adjustToChannelID(channel_id);
+					} 
+					else if(CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_radio) 
+					{
+						RADIObouquetList->adjustToChannelID(channel_id);
+						RADIOsatList->adjustToChannelID(channel_id);
+						RADIOfavList->adjustToChannelID(channel_id);
+						RADIOallList->adjustToChannelID(channel_id);
+					}
 				}
+				
+				return true;
 			}
-			
-			return true;
 		}
 	}
 

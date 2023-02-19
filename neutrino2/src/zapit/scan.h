@@ -27,13 +27,8 @@
 #include <map>
 #include <string>
 
-#include <zapit/bouquets.h>
-
-
-extern CBouquetManager* scanBouquetManager;
-
-char * getFrontendName();
 
 void * start_scanthread(void *data);
+void * scan_transponder(void * data);
 
 #endif /* __scan_h__ */

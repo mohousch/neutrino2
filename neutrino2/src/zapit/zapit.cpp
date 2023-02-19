@@ -64,6 +64,7 @@
 #include <zapit/zapit.h>
 #include <zapit/satconfig.h>
 #include <zapit/frontend_c.h>
+#include <zapit/bouquets.h>
 
 // libxmltree
 #include <xmlinterface.h>
@@ -203,7 +204,6 @@ extern short scan_runs;			// defined in scan.cpp
 extern short abort_scan;		// defined in scan.cpp
 CZapit::bouquetMode _bouquetMode = CZapit::BM_UPDATEBOUQUETS;
 CZapit::scanType _scanType = CZapit::ST_TVRADIO;
-void * scan_transponder(void * arg);
 
 //
 bool standby = true;
@@ -216,8 +216,8 @@ uint32_t  lastChannelTV = 0;
 bool makeRemainingChannelsBouquet = false;
 
 // set/get zapit.config
-void setZapitConfig(Zapit_config * Cfg);
-void sendConfig(int connfd);
+//void setZapitConfig(Zapit_config * Cfg);
+//void sendConfig(int connfd);
 
 // pmt update filter
 static int pmt_update_fd = -1;
@@ -369,7 +369,6 @@ void CZapit::OpenFE()
 
 void CZapit::CloseFE()
 {
-
 	for(fe_map_iterator_t it = femap.begin(); it != femap.end(); it++) 
 	{
 		CFrontend * fe = it->second;
@@ -1867,49 +1866,6 @@ void CZapit::parseScanInputXml(fe_type_t fe_type)
 			dprintf(DEBUG_INFO, "[zapit] parseScanInputXml: Unknown type %d\n", fe_type);
 			return;
 	}
-}
-
-/*
- * return 0 on success
- * return -1 otherwise
- */
-int CZapit::start_scan(CZapit::commandStartScan StartScan)
-{
-	// reread scaninputParser
-    	if(scanInputParser) 
-	{
-                delete scanInputParser;
-                scanInputParser = NULL;
-
-		CFrontend * fe = getFE(StartScan.feindex);
-		parseScanInputXml(fe->getInfo()->type);
-
-		if (!scanInputParser) 
-		{
-			dprintf(DEBUG_INFO, "[zapit] start_scan: scan not configured\n");
-			return -1;
-		}
-	}
-
-	scan_runs = 1;
-	
-	//stop playback
-	stopPlayBack();
-	
-	// stop pmt update filter
-    	pmt_stop_update_filter(&pmt_update_fd);	
-
-	found_transponders = 0;
-	found_channels = 0;
-
-	if (pthread_create(&scan_thread, 0, start_scanthread,  (void*)&StartScan)) 
-	{
-		dprintf(DEBUG_INFO, "[zapit] pthread_create\n");
-		scan_runs = 0;
-		return -1;
-	}
-
-	return 0;
 }
 
 /****************************************************************/
@@ -4648,6 +4604,49 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 	retune = true;
 	
 	return true;
+}
+
+/*
+ * return 0 on success
+ * return -1 otherwise
+ */
+int CZapit::start_scan(CZapit::commandStartScan StartScan)
+{
+	// reread scaninputParser
+    	if(scanInputParser) 
+	{
+                delete scanInputParser;
+                scanInputParser = NULL;
+
+		CFrontend * fe = getFE(StartScan.feindex);
+		parseScanInputXml(fe->getInfo()->type);
+
+		if (!scanInputParser) 
+		{
+			dprintf(DEBUG_INFO, "[zapit] start_scan: scan not configured\n");
+			return -1;
+		}
+	}
+
+	scan_runs = 1;
+	
+	//stop playback
+	stopPlayBack();
+	
+	// stop pmt update filter
+    	pmt_stop_update_filter(&pmt_update_fd);	
+
+	found_transponders = 0;
+	found_channels = 0;
+
+	if (pthread_create(&scan_thread, 0, start_scanthread,  (void*)&StartScan)) 
+	{
+		dprintf(DEBUG_INFO, "[zapit] pthread_create\n");
+		scan_runs = 0;
+		return -1;
+	}
+
+	return 0;
 }
 
 bool CZapit::isScanReady(unsigned int &satellite, unsigned int &processed_transponder, unsigned int &transponder, unsigned int &services )

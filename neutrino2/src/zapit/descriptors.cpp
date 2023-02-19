@@ -46,6 +46,7 @@
 #include <math.h>
 
 
+extern CBouquetManager* scanBouquetManager;
 extern CBouquetManager *g_bouquetManager;
 extern CZapit::scanType _scanType;
 extern tallchans allchans;   			//  defined in zapit.cpp

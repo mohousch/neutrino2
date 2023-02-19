@@ -167,7 +167,6 @@ class CSectionsd
 		void sendAllEvents(int connfd, t_channel_id serviceUniqueKey, bool oldFormat = true, char search = 0, std::string search_text = "");
 		void dumpStatus(void);
 		bool channel_in_requested_list(t_channel_id * clist, t_channel_id chid, int len);
-		//void deleteSIexceptEPG();
 		void write_epg_xml_header(FILE * fd, const t_original_network_id onid, const t_transport_stream_id tsid, const t_service_id sid);
 		void write_index_xml_header(FILE * fd);
 		void write_epgxml_footer(FILE *fd);

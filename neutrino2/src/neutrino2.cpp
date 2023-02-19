@@ -2457,7 +2457,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	current_volume = g_settings.current_volume;
 
 	// zapit
-	//pthread_create(&zapit_thread, NULL, zapit_main_thread, (void *) &ZapStart_arg);
 	CZapit::getInstance()->Start(&ZapStart_arg);
 
 	// wait until zapit is ready
@@ -2511,14 +2510,11 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	// nhttpd thread FIXME:
 	pthread_create(&nhttpd_thread, NULL, nhttpd_main_thread, (void *) NULL);	
-	//yhttpd = new Cyhttpd();
-	//yhttpd->Start();
 
 	// streamts thread FIXME:
 	pthread_create(&stream_thread, NULL, streamts_main_thread, (void *) NULL);	
 
 	// sectionsd thread
-	//pthread_create(&sections_thread, NULL, sectionsd_main_thread, (void *) NULL);
 	CSectionsd::getInstance()->Start();
 
 	// for boxes with lcd :-)
@@ -2572,12 +2568,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// setup recording device
 	setupRecordingDevice();
 
-	// init sectionsd client
-	//initSectionsdClient();
-
-	// init zapit client
-	//initZapitClient();
-
 	// init timerd client
 	initTimerdClient();
 
@@ -2585,7 +2575,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	CVFD::getInstance()->setlcdparameter();
 	
 	// start assistant
-	#if 0
 	if(loadSettingsErg) 
 	{
 		int tvmode = CZapit::getInstance()->getMode();
@@ -2688,7 +2677,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 		saveSetup(NEUTRINO_SETTINGS_FILE);
 	}
-	#endif
 	
 	// zapper
 	InitZapper();

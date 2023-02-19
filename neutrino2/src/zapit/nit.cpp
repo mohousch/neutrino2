@@ -34,16 +34,15 @@
 #include <system/debug.h>
 
 /* zapit */
+#include <zapit/zapit.h>
 #include <zapit/descriptors.h>
 #include <zapit/getservices.h>
 #include <dmx_cs.h>
 #include <zapit/nit.h>
 #include <zapit/scan.h>
 
+
 #define NIT_SIZE 1024
-
-
-//extern CFrontend * getFE(int index);
 
 int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
