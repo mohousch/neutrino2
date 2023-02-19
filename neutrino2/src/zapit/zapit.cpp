@@ -1954,7 +1954,6 @@ void CZapit::sendRecordAPIDs(CZapit::responseGetAPIDs &response)
 {
 	for (uint32_t  i = 0; i < rec_channel->getAudioChannelCount(); i++) 
 	{
-		//CZapit::responseGetAPIDs response;
 		response.pid = rec_channel->getAudioPid(i);
 		strncpy(response.desc, rec_channel->getAudioChannel(i)->description.c_str(), 25);
 
@@ -4005,12 +4004,14 @@ std::string CZapit::getChannelDescription(const t_channel_id channel_id)
 	return desc;
 }
 
-void CZapit::getPIDS( CZapit::responseGetPIDs& pids )
+void CZapit::getPIDS( CZapit::responseGetPIDs &pids )
 {
-	//#FIXME
 	if (live_channel) 
 	{
 		CZapit::responseGetOtherPIDs responseGetOtherPIDs;
+		CZapit::responseGetAPIDs responseAPID;
+		CZapit::responseGetSubPIDs responseSubPID;
+		
 		responseGetOtherPIDs.vpid = live_channel->getVideoPid();
 		responseGetOtherPIDs.vtxtpid = live_channel->getTeletextPid();
 		responseGetOtherPIDs.pmtpid = live_channel->getPmtPid();
@@ -4018,12 +4019,13 @@ void CZapit::getPIDS( CZapit::responseGetPIDs& pids )
 		responseGetOtherPIDs.selected_apid = live_channel->getAudioChannelIndex();
 		responseGetOtherPIDs.privatepid = live_channel->getPrivatePid();
 		
-		CZapit::responseGetAPIDs                       responseAPID;
-		CZapit::responseGetSubPIDs                     responseSubPID;
-				
-		//CBasicServer::send_data(connfd, &responseGetOtherPIDs, sizeof(responseGetOtherPIDs));
-		//sendRecordAPIDs(connfd);
-		//sendRecordSubPIDs(connfd);
+		sendAPIDs(responseAPID);
+		sendSubPIDs(responseSubPID);
+		
+		//
+		pids.PIDs = responseGetOtherPIDs;
+		pids.APIDs.push_back(responseAPID);
+		pids.SubPIDs.push_back(responseSubPID);
 	}
 }
 
@@ -4185,6 +4187,9 @@ void CZapit::getRecordPIDS(CZapit::responseGetPIDs &pids)
 	if (rec_channel) 
 	{
 		CZapit::responseGetOtherPIDs responseGetOtherPIDs;
+		CZapit::responseGetAPIDs responseAPID;
+		CZapit::responseGetSubPIDs responseSubPID;
+		
 		responseGetOtherPIDs.vpid = rec_channel->getVideoPid();
 		responseGetOtherPIDs.vtxtpid = rec_channel->getTeletextPid();
 		responseGetOtherPIDs.pmtpid = rec_channel->getPmtPid();
@@ -4192,12 +4197,13 @@ void CZapit::getRecordPIDS(CZapit::responseGetPIDs &pids)
 		responseGetOtherPIDs.selected_apid = rec_channel->getAudioChannelIndex();
 		responseGetOtherPIDs.privatepid = rec_channel->getPrivatePid();
 		
-		CZapit::responseGetAPIDs                       responseAPID;
-		CZapit::responseGetSubPIDs                     responseSubPID;
-				
-		//CBasicServer::send_data(connfd, &responseGetOtherPIDs, sizeof(responseGetOtherPIDs));
-		//sendRecordAPIDs(connfd);
-		//sendRecordSubPIDs(connfd);
+		sendRecordAPIDs(responseAPID);
+		sendRecordSubPIDs(responseSubPID);
+		
+		//
+		pids.PIDs = responseGetOtherPIDs;
+		pids.APIDs.push_back(responseAPID);
+		pids.SubPIDs.push_back(responseSubPID);
 	}
 }
 
