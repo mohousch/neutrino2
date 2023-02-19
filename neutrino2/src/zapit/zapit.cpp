@@ -4502,7 +4502,9 @@ void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channe
 
 // scan
 bool CZapit::tuneTP(TP_params TP, int feindex)
-{		
+{
+	bool ret = false;
+			
 	initTuner(getFE(feindex));
 			
 	// inversion
@@ -4541,10 +4543,12 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 	}
 		
 	// tune it
-	getFE(feindex)->tuneFrequency(&TP.feparams, TP.polarization, true);
+	ret = getFE(feindex)->tuneFrequency(&TP.feparams, TP.polarization, true);
 			
 	// set retune flag
 	retune = true;
+	
+	return ret;
 }
 
 bool CZapit::scanTP(TP_params TP, int feindex)
