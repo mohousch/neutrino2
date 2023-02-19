@@ -1457,7 +1457,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit\n");
 
-	const char * fav_bouquetname = _("My Favorites");
+	const char * fav_bouquetname = _("Favorites");
 
 	if(g_bouquetManager->existsUBouquet(fav_bouquetname, true) == -1)
 		g_bouquetManager->addBouquet(fav_bouquetname, true, true);

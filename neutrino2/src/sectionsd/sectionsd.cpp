@@ -2310,7 +2310,7 @@ void CSectionsd::write_indexxml_footer(FILE *fd)
 //
 void CSectionsd::writeSI2XML(const char *epgxmlname)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::writeSI2XML\n");
+	dprintf(DEBUG_NORMAL, "CSectionsd::writeSI2XML:\n");
 	
 	FILE * indexfile = NULL;
 	FILE * eventfile =NULL;
@@ -2327,13 +2327,13 @@ void CSectionsd::writeSI2XML(const char *epgxmlname)
 
 	if (!(indexfile = fopen(tmpname, "w"))) 
 	{
-		printf("[sectionsd] sectionsd_writeSI2XML: unable to open %s for writing\n", tmpname);
+		dprintf(DEBUG_NORMAL, "[sectionsd] CSectionsd::writeSI2XML: unable to open %s for writing\n", tmpname);
 		goto _ret;
 	}
 	else 
 	{
 
-		printf("[sectionsd] sectionsd_writeSI2XML:: Writing Information to file: %s\n", tmpname);
+		dprintf(DEBUG_NORMAL, "[sectionsd] CSectionsd::writeSI2XML: Writing Information to file: %s\n", tmpname);
 
 		write_index_xml_header(indexfile);
 
@@ -2387,7 +2387,7 @@ _done:
 		write_indexxml_footer(indexfile);
 		fclose(indexfile);
 
-		printf("[sectionsd] Writing Information finished\n");
+		dprintf(DEBUG_NORMAL, "[sectionsd] CSectionsd::writeSI2XML: Writing Information finished\n");
 	}
 
 	strcpy(filename, epgxmlname);

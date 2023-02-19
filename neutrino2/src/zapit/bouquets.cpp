@@ -251,7 +251,7 @@ void CBouquetManager::writeBouquetChannels(FILE * bouq_fd, uint32_t i, bool /*bU
 
 void CBouquetManager::saveBouquets(void)
 {
-	dprintf(DEBUG_NORMAL, "saveBouquets\n");
+	dprintf(DEBUG_NORMAL, "CBouquetManager::saveBouquets:\n");
 	
 	FILE * bouq_fd;
 	
@@ -281,7 +281,7 @@ void CBouquetManager::saveBouquets(void)
 
 void CBouquetManager::saveUBouquets(void)
 {
-	dprintf(DEBUG_NORMAL, "saveUBouquets\n");
+	dprintf(DEBUG_NORMAL, "CBouquetManager::saveUBouquets:\n");
 	
 	FILE * ubouq_fd;
 	

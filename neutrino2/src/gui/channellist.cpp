@@ -519,11 +519,11 @@ int CChannelList::doChannelMenu(void)
 				break;
 				
 			case 3: // add to my favorites
-				bouquet_id = g_bouquetManager->existsUBouquet(_("My Favorites"), true);
+				bouquet_id = g_bouquetManager->existsUBouquet(_("Favorites"), true);
 				if(bouquet_id == -1) 
 				{
-					g_bouquetManager->addBouquet(_("My Favorites"), true);
-					bouquet_id = g_bouquetManager->existsUBouquet(_("My Favorites"), true);
+					g_bouquetManager->addBouquet(_("Favorites"), true);
+					bouquet_id = g_bouquetManager->existsUBouquet(_("Favorites"), true);
 				}
 				
 				if(!g_bouquetManager->existsChannelInBouquet(bouquet_id, channel_id)) 
