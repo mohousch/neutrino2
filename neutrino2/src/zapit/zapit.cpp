@@ -258,6 +258,8 @@ bool have_a = false;
 
 void CZapit::initFrontend()
 {
+	dprintf(DEBUG_NORMAL, "CZapit::initFrontend\n");
+	
 	// clear femap
 	femap.clear();
 
@@ -310,7 +312,7 @@ void CZapit::initFrontend()
 				}
 				
 				// set it to standby
-				fe->Close();
+				//fe->Close(); //FIXME: do we need this???
 			}
 			else
 				delete fe;
@@ -3547,8 +3549,8 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 #endif	
 	
 	//while (zapit_server.run(zapit_parse_command, CZapitMessages::ACTVERSION, true))
-#if 0
-	while (true) 
+#if 1
+	//while (true) 
 	{
 		//check for lock
 #ifdef CHECK_FOR_LOCK
@@ -4749,7 +4751,7 @@ void CZapit::setScanMotorPosList( CZapit::ScanMotorPosList& motorPosList )
 
 bool CZapit::startScan(int scan_mode, int feindex)
 {		
-	printf("[zapit] startScan: fe(%d) scan_mode: %d\n", feindex, scan_mode);
+	printf("[zapit] CZapit::startScan: fe(%d) scan_mode: %d\n", feindex, scan_mode);
 	
 	CZapit::commandStartScan StartScan;
 	StartScan.scan_mode = scan_mode;
@@ -4757,9 +4759,14 @@ bool CZapit::startScan(int scan_mode, int feindex)
 	
 	// start scan thread
 	if(start_scan(StartScan) == -1)
+	{
 		eventServer->sendEvent(CZapit::EVT_SCAN_FAILED, CEventServer::INITID_ZAPIT);
+		return false;
+	}
 			
 	retune = true;
+	
+	return true;
 }
 
 bool CZapit::stopScan()
