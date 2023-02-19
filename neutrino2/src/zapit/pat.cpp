@@ -29,15 +29,13 @@
 #include <dmx_cs.h>
 #include <zapit/frontend_c.h>
 
+
 #define PAT_SIZE 1024
 
-
-extern CFrontend * getFE(int index);
-extern CFrontend * live_fe;
-
-
-int parse_pat(CZapitChannel * const channel, CFrontend * fe)
+int CPat::parse_pat(CZapitChannel * const channel, CFrontend * fe)
 {
+	dprintf(DEBUG_NORMAL, "CPat::parse_pat:\n");
+	
 	if (!channel)
 		return -1;
 	

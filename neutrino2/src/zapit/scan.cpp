@@ -60,17 +60,10 @@ extern uint32_t  found_data_chans;
 extern t_channel_id live_channel_id;
 extern CZapit::bouquetMode _bouquetMode;
 extern CEventServer *eventServer;
-
-//extern CFrontend * getFE(int index);
 extern CFrontend * live_fe;
-//extern void initTuner(CFrontend * fe);
-
 extern _xmlDocPtr scanInputParser;
 
-void saveServices(bool tocopy);
-
-int zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate = 0);
-void * nit_thread(void * data);
+//void * nit_thread(void * data);
 
 static int prov_found;
 short abort_scan;
@@ -88,9 +81,6 @@ std::map <transponder_id_t, transponder> scantransponders;		// TP list to scan
 std::map <transponder_id_t, transponder> scanedtransponders;		// global TP list for current scan
 std::map <transponder_id_t, transponder> nittransponders;
 
-//extern void parseScanInputXml(fe_type_t fe_type);
-
-
 #define TIMER_START()			\
         static struct timeval tv, tv2;	\
         static unsigned int msec;	\
@@ -101,7 +91,7 @@ std::map <transponder_id_t, transponder> nittransponders;
 	msec = tv2.tv_sec - tv.tv_sec;		\
         printf("%s: %d sec\n", label, msec)
 
-bool tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_satellite_position satellitePosition, int feindex)
+bool CScan::tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_satellite_position satellitePosition, int feindex)
 {
 	dprintf(DEBUG_NORMAL, "[scan] %s:\n", __FUNCTION__);
 	
@@ -135,7 +125,7 @@ bool tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_satelli
 	return CZapit::getInstance()->getFE(feindex)->tuneFrequency(feparams, polarization, false);
 }
 
-int add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit = 0, int feindex = 0)
+int CScan::add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit, int feindex)
 {
 	dprintf(DEBUG_NORMAL, "[scan] add_to_scan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, polarity, TsidOnid, fromnit, feindex);
 
@@ -217,7 +207,7 @@ int add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t
 
 static uint32_t fake_tid, fake_nid;
 
-int get_sdts(t_satellite_position satellitePosition, int feindex)
+int CScan::get_sdts(t_satellite_position satellitePosition, int feindex)
 {
 	transponder_id_t TsidOnid = 0;
 	stiterator tI;
@@ -235,14 +225,7 @@ _repeat:
 		dprintf(DEBUG_NORMAL, "[scan] get_sdts: scanning: %llx\n", tI->first);
 
 		//
-		//if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
-		//	actual_freq = tI->second.feparams.frequency;
-		//else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
-		//	actual_freq = tI->second.feparams.frequency;
-		//else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
-		//	actual_freq = tI->second.feparams.frequency;
-		//else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
-			actual_freq = tI->second.feparams.frequency;
+		actual_freq = tI->second.feparams.frequency;
 
 		processed_transponders++;
 		
@@ -282,7 +265,7 @@ _repeat:
 		// parse sdt
 		dprintf(DEBUG_NORMAL, "[scan] get_sdts: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
 		
-		if(parse_sdt(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
+		if(CSdt::getInstance()->parse_sdt(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
 		{
 			dprintf(DEBUG_INFO, "[scan] get_sdts: SDT failed !\n");
 			continue;
@@ -301,7 +284,7 @@ _repeat:
 		{
 			dprintf(DEBUG_INFO, "[scan] get_sdts: parsing NIT\n");
 			
-			if( parse_nit(satellitePosition, freq, feindex) < 0 )
+			if( CNit::getInstance()->parse_nit(satellitePosition, freq, feindex) < 0 )
 			{
 				dprintf(DEBUG_INFO, "[scan] get_sdts: NIT failed !\n");
 			}
@@ -335,7 +318,7 @@ _repeat:
 	return 0;
 }
 
-int scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, bool /*satfeed*/, int feindex)
+int CScan::scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, bool /*satfeed*/, int feindex)
 {
 	uint8_t polarization = 0;
 	uint8_t system = 0, modulation = 1;
@@ -404,7 +387,7 @@ int scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_po
 	return 0;
 }
 
-void scan_provider(_xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
+void CScan::scan_provider(_xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
 {
 	dprintf(DEBUG_NORMAL, "[scan] %s:\n", __FUNCTION__);
 	
@@ -480,7 +463,7 @@ void scan_provider(_xmlNodePtr search, t_satellite_position satellitePosition, u
 	TIMER_STOP("[scan] scanning took");
 }
 
-void stop_scan(const bool success)
+void CScan::stop_scan(const bool success)
 {
 	dprintf(DEBUG_NORMAL, "[scan] %s:\n", __FUNCTION__);
 	
@@ -606,7 +589,7 @@ void * start_scanthread(void *data)
 
 			dprintf(DEBUG_INFO, "[scan] start_scanthread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
 				
-			scan_provider(search, position, diseqc_pos, satfeed, feindex);
+			CScan::getInstance()->scan_provider(search, position, diseqc_pos, satfeed, feindex);
 					
 			if(abort_scan) 
 			{
@@ -631,7 +614,7 @@ void * start_scanthread(void *data)
 
 	if (found_channels) 
 	{
-		saveServices(true);
+		CServices::getInstance()->saveServices(true);
 		
 		dprintf(DEBUG_NORMAL, "[scan] start_scanthread: save services done\n"); 
 		
@@ -641,13 +624,13 @@ void * start_scanthread(void *data)
 		
 		dprintf(DEBUG_INFO, "[scan] start_scanthread: save bouquets done\n");
 		
-		stop_scan(true);
+		CScan::getInstance()->stop_scan(true);
 
 		eventServer->sendEvent(CZapit::EVT_BOUQUETS_CHANGED, CEventServer::INITID_ZAPIT);
 	} 
 	else 
 	{
-		stop_scan(false);
+		CScan::getInstance()->stop_scan(false);
 	}
 
 	scantransponders.clear();
@@ -718,29 +701,29 @@ void * scan_transponder(void * data)
 	fake_tid++; 
 	fake_nid++;
 
-	add_to_scan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, feindex);
+	CScan::getInstance()->add_to_scan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, feindex);
 
-	get_sdts(satellitePosition, feindex);
+	CScan::getInstance()->get_sdts(satellitePosition, feindex);
 
 	if(abort_scan)
 		found_channels = 0;
 
 	if(found_channels) 
 	{
-		saveServices(true);
+		CServices::getInstance()->saveServices(true);
 		
 		scanBouquetManager->saveBouquets(_bouquetMode, providerName);
 	        g_bouquetManager->saveBouquets();
 	        g_bouquetManager->clearAll();
 		g_bouquetManager->loadBouquets();
 		
-		stop_scan(true);
+		CScan::getInstance()->stop_scan(true);
 
 		eventServer->sendEvent(CZapit::EVT_BOUQUETS_CHANGED, CEventServer::INITID_ZAPIT);
 	} 
 	else 
 	{
-		stop_scan(false);
+		CScan::getInstance()->stop_scan(false);
 	}
 	
 	scantransponders.clear();

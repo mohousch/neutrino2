@@ -28,6 +28,35 @@
 #include <string>
 
 
+class CScan
+{
+	private:
+		CScan(){};
+		~CScan(){};
+		
+	public:
+		//
+		static CScan *getInstance()
+		{
+			static CScan * scan = NULL;
+
+			if(!scan) 
+			{
+				scan = new CScan();
+			} 
+
+			return scan;
+		};
+		
+		//
+		bool tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_satellite_position satellitePosition, int feindex);
+		int add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit = 0, int feindex = 0);
+		int get_sdts(t_satellite_position satellitePosition, int feindex);
+		int scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, bool /*satfeed*/, int feindex);
+		void scan_provider(_xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex);
+		void stop_scan(const bool success);
+};
+
 void * start_scanthread(void *data);
 void * scan_transponder(void * data);
 

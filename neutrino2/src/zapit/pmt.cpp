@@ -64,8 +64,10 @@ extern short scan_runs;
  * 0xc6 User Private (Canal+)
  */
 
-unsigned short parse_ES_info(const unsigned char * const buffer, CZapitChannel * const channel, CCaPmt * const caPmt)
+unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitChannel * const channel, CCaPmt * const caPmt)
 {
+	dprintf(DEBUG_NORMAL, "CPmt::parse_ES_info:\n");
+	
 	unsigned short ES_info_length;
 	unsigned short pos;
 	unsigned char descriptor_tag;
@@ -104,11 +106,11 @@ unsigned short parse_ES_info(const unsigned char * const buffer, CZapitChannel *
 		switch (descriptor_tag) 
 		{
 			case VIDEO_STREAM_DESCRIPTOR:
-				video_stream_descriptor(buffer + pos);
+				CDescriptors::getInstance()->video_stream_descriptor(buffer + pos);
 				break;
 
 			case AUDIO_STREAM_DESCRIPTOR:
-				audio_stream_descriptor(buffer + pos);
+				CDescriptors::getInstance()->audio_stream_descriptor(buffer + pos);
 				break;
 
 			case REGISTRATION_DESCRIPTOR:
@@ -127,15 +129,15 @@ unsigned short parse_ES_info(const unsigned char * const buffer, CZapitChannel *
 				break;
 
 			case MAXIMUM_BITRATE_DESCRIPTOR:
-				Maximum_bitrate_descriptor(buffer + pos);
+				CDescriptors::getInstance()->Maximum_bitrate_descriptor(buffer + pos);
 				break;
 
 			case PRIVATE_DATA_INDICATOR_DESCRIPTOR:
-				Private_data_indicator_descriptor(buffer + pos);
+				CDescriptors::getInstance()->Private_data_indicator_descriptor(buffer + pos);
 				break;
 
 			case STD_DESCRIPTOR:
-				STD_descriptor(buffer + pos);
+				CDescriptors::getInstance()->STD_descriptor(buffer + pos);
 				break;
 				
 			case 0x1C:
@@ -150,7 +152,7 @@ unsigned short parse_ES_info(const unsigned char * const buffer, CZapitChannel *
 				break;
 
 			case VBI_DATA_DESCRIPTOR:
-				VBI_data_descriptor(buffer + pos);
+				CDescriptors::getInstance()->VBI_data_descriptor(buffer + pos);
 				break;
 
 			case STREAM_IDENTIFIER_DESCRIPTOR:
@@ -202,15 +204,15 @@ unsigned short parse_ES_info(const unsigned char * const buffer, CZapitChannel *
 					descramble = true;//FIXME MGM / 10E scrambling subtitles ?
 				}
 
-				subtitling_descriptor(buffer + pos);
+				CDescriptors::getInstance()->subtitling_descriptor(buffer + pos);
 				break;
 
 			case PRIVATE_DATA_SPECIFIER_DESCRIPTOR:
-				private_data_specifier_descriptor(buffer + pos);
+				CDescriptors::getInstance()->private_data_specifier_descriptor(buffer + pos);
 				break;
 
 			case DATA_BROADCAST_ID_DESCRIPTOR:
-				data_broadcast_id_descriptor(buffer + pos);
+				CDescriptors::getInstance()->data_broadcast_id_descriptor(buffer + pos);
 				break;
 
 			case AC3_DESCRIPTOR:
@@ -469,8 +471,10 @@ unsigned short parse_ES_info(const unsigned char * const buffer, CZapitChannel *
 int curpmtpid;
 int pmt_caids[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-int parse_pmt(CZapitChannel * const channel, CFrontend * fe)
+int CPmt::parse_pmt(CZapitChannel * const channel, CFrontend * fe)
 {
+	dprintf(DEBUG_NORMAL, "CPmt::parse_pmt:\n");
+	
 	if(!channel)
 		return -1;
 	
@@ -677,8 +681,10 @@ int parse_pmt(CZapitChannel * const channel, CFrontend * fe)
 //
 cDemux * pmtDemux = NULL;
 
-int pmt_set_update_filter( CZapitChannel * const channel, int * fd, CFrontend * fe)
+int CPmt::pmt_set_update_filter( CZapitChannel * const channel, int * fd, CFrontend * fe)
 {
+	dprintf(DEBUG_NORMAL, "CPmt::pmt_set_update_filter:\n");
+	
 	unsigned char filter[DMX_FILTER_SIZE];
 	unsigned char mask[DMX_FILTER_SIZE];
 	unsigned char mode[DMX_FILTER_SIZE];
@@ -726,9 +732,9 @@ int pmt_set_update_filter( CZapitChannel * const channel, int * fd, CFrontend * 
 	return 0;
 }
 
-int pmt_stop_update_filter(int * fd)
+int CPmt::pmt_stop_update_filter(int * fd)
 {
-	dprintf(DEBUG_NORMAL, "[pmt] stop update filter\n");
+	dprintf(DEBUG_NORMAL, "[pmt] pmt_stop_update_filter\n");
 
 	if (pmtDemux)
 		pmtDemux->Stop();

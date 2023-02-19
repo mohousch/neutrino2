@@ -130,9 +130,6 @@ bool firstzap = true;
 bool playing = false;
 bool g_list_changed = false; 		// flag to indicate, allchans was changed
 
-//
-void saveServices(bool tocopy);
-
 // SDT
 int scanSDT = 0;
 void * sdt_thread(void * arg);
@@ -214,10 +211,6 @@ int lastChannelMode = TV_MODE;
 uint32_t  lastChannelRadio = 0;
 uint32_t  lastChannelTV = 0;
 bool makeRemainingChannelsBouquet = false;
-
-// set/get zapit.config
-//void setZapitConfig(Zapit_config * Cfg);
-//void sendConfig(int connfd);
 
 // pmt update filter
 static int pmt_update_fd = -1;
@@ -1239,7 +1232,7 @@ bool CZapit::parse_channel_pat_pmt(CZapitChannel * thischannel, CFrontend * fe)
 	{
 		dprintf(DEBUG_NORMAL, "[zapit] no pmt pid, going to parse pat\n");	
 		
-		if (parse_pat(thischannel, fe) < 0)
+		if (CPat::getInstance()->parse_pat(thischannel, fe) < 0)
 		{
 			dprintf(DEBUG_NORMAL, "[zapit] pat parsing failed\n");
 			
@@ -1248,17 +1241,17 @@ bool CZapit::parse_channel_pat_pmt(CZapitChannel * thischannel, CFrontend * fe)
 	}
 
 	// parse program map table and store pids
-	if ( !failed && parse_pmt(thischannel, fe) < 0) 
+	if ( !failed && CPmt::getInstance()->parse_pmt(thischannel, fe) < 0) 
 	{
 		dprintf(DEBUG_NORMAL, "[zapit] pmt parsing failed\n");	
 		
-		if (parse_pat(thischannel, fe) < 0) 
+		if (CPat::getInstance()->parse_pat(thischannel, fe) < 0) 
 		{
 			dprintf(DEBUG_NORMAL, "[zapit] pat parsing failed\n");
 			
 			failed = true;
 		}
-		else if (parse_pmt(thischannel, fe) < 0) 
+		else if (CPmt::getInstance()->parse_pmt(thischannel, fe) < 0) 
 		{
 			dprintf(DEBUG_NORMAL, "[zapit] pmt parsing failed\n");
 			
@@ -1362,7 +1355,7 @@ int CZapit::zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate)
 		firstzap = false;
 
 		// stop update pmt filter
-		pmt_stop_update_filter(&pmt_update_fd);
+		CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
 	}
 	
 	// FIXME: how to stop ci_capmt or we dont need this???
@@ -1468,7 +1461,7 @@ tune_again:
 		eventServer->sendEvent(CZapit::EVT_ZAP_CA_ID, CEventServer::INITID_ZAPIT, &caid, sizeof(int));
 
 		// start pmt update filter
-		pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
+		CPmt::getInstance()->pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
 	}	
 
 	return 0;
@@ -1821,10 +1814,10 @@ int CZapit::prepare_channels()
 	loadFrontendConfig();
         
     	// load sats/tps
-    	loadTransponders();
+    	CServices::getInstance()->loadTransponders();
 
 	// load services
-	if (loadServices(false) < 0)
+	if (CServices::getInstance()->loadServices(false) < 0)
 	{
 		dprintf(DEBUG_NORMAL, "[zapit] prepare_channels: loadServices: failed\n");
 		return -1;
@@ -2862,7 +2855,7 @@ void * sdt_thread(void */*arg*/)
 
 			if(live_channel) 
 			{
-				if( parse_current_sdt(transport_stream_id, original_network_id, satellitePosition, freq, live_fe) < 0 )
+				if( CSdt::getInstance()->parse_current_sdt(transport_stream_id, original_network_id, satellitePosition, freq, live_fe) < 0 )
 					continue;
 			}
 
@@ -3572,7 +3565,7 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 
 			if (ret > 0) 
 			{
-				pmt_stop_update_filter(&pmt_update_fd);
+				CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
 
 				dprintf(DEBUG_INFO, "[zapit] pmt updated, sid 0x%x new version 0x%x\n", (buf[3] << 8) + buf[4], (buf[5] >> 1) & 0x1F);
 
@@ -3583,7 +3576,7 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 					int vpid = live_channel->getVideoPid();
 					int apid = live_channel->getAudioPid();
 					
-					parse_pmt(live_channel, live_fe);
+					CPmt::getInstance()->parse_pmt(live_channel, live_fe);
 					
 					bool apid_found = false;
 					// check if selected audio pid still present
@@ -3613,7 +3606,7 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 						}
 #endif	
 
-						pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
+						CPmt::getInstance()->pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
 					}
 						
 					eventServer->sendEvent(CZapit::EVT_PMT_CHANGED, CEventServer::INITID_ZAPIT, &channel_id, sizeof(channel_id));
@@ -3700,7 +3693,7 @@ void CZapit::run()
 
 			if (ret > 0) 
 			{
-				pmt_stop_update_filter(&pmt_update_fd);
+				CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
 
 				dprintf(DEBUG_INFO, "[zapit] pmt updated, sid 0x%x new version 0x%x\n", (buf[3] << 8) + buf[4], (buf[5] >> 1) & 0x1F);
 
@@ -3711,7 +3704,7 @@ void CZapit::run()
 					int vpid = live_channel->getVideoPid();
 					int apid = live_channel->getAudioPid();
 					
-					parse_pmt(live_channel, live_fe);
+					CPmt::getInstance()->parse_pmt(live_channel, live_fe);
 					
 					bool apid_found = false;
 					// check if selected audio pid still present
@@ -3741,7 +3734,7 @@ void CZapit::run()
 						}
 #endif	
 
-						pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
+						CPmt::getInstance()->pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
 					}
 						
 					eventServer->sendEvent(CZapit::EVT_PMT_CHANGED, CEventServer::INITID_ZAPIT, &channel_id, sizeof(channel_id));
@@ -4409,7 +4402,7 @@ void CZapit::saveBouquets()
 	
 	if(g_list_changed) 
 	{
-		saveServices(true); //FIXME
+		CServices::getInstance()->saveServices(true); //FIXME
 		g_list_changed = 0;
 	}
 }
@@ -4603,7 +4596,7 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 	CZapit::stopPlayBack();
 				
 	// stop update pmt filter
-	pmt_stop_update_filter(&pmt_update_fd);
+	CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
 	
 	scan_runs = 1;
 	
@@ -4646,7 +4639,7 @@ int CZapit::start_scan(CZapit::commandStartScan StartScan)
 	stopPlayBack();
 	
 	// stop pmt update filter
-    	pmt_stop_update_filter(&pmt_update_fd);	
+    	CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);	
 
 	found_transponders = 0;
 	found_channels = 0;

@@ -70,10 +70,6 @@ char zapit_long[20];				//defined neutrino.cpp
 
 // frontend
 extern int FrontendCount;			// defined in zapit.cpp
-//extern CFrontend * getFE(int index);
-//extern void saveFrontendConfig(int feindex);
-//extern void loadFrontendConfig();
-//extern void setMode(fe_mode_t newmode, int feindex);
 
 // option off0_on1
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
@@ -295,7 +291,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		// send directly diseqc
 		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
 		{
-			saveMotorPositions();
+			CServices::getInstance()->saveMotorPositions();
 			
 			//diseqc type
 			CZapit::getInstance()->getFE(feindex)->setDiseqcType((diseqc_t)CZapit::getInstance()->getFE(feindex)->diseqcType);
@@ -388,7 +384,7 @@ void CScanSetup::showScanService()
 	
 	// load motor position
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) 
-		loadMotorPositions();
+		CServices::getInstance()->loadMotorPositions();
 	
 	// intros
 	scansetup->addItem(new CMenuForwarder(_("back")));

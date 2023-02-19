@@ -64,17 +64,14 @@ int scnt = 0;
 extern map<t_channel_id, audio_map_set_t> audio_map;		// defined in zapit.cpp
 
 extern int FrontendCount;
-//extern CFrontend * getFE(int index);
 
 extern bool have_s;
 extern bool have_c;
 extern bool have_t;
 extern bool have_a;
 
-//extern void parseScanInputXml(fe_type_t fe_type);	// defined in zapit.cpp
-
 // parse transponder from services.xml
-void parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system)
+void CServices::parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system)
 {
 	dprintf(DEBUG_INFO, "[getservices] parseTransponders:\n");
 
@@ -157,7 +154,7 @@ void parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition,
 	return;
 }
 
-void parseChannels(_xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation)
+void CServices::parseChannels(_xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation)
 {
 	dprintf(DEBUG_DEBUG, "[getservices] parseChannels:\n");
 
@@ -258,7 +255,7 @@ void parseChannels(_xmlNodePtr node, const t_transport_stream_id transport_strea
 }
 
 // scan services.xml
-void findTransponder(_xmlNodePtr search)
+void CServices::findTransponder(_xmlNodePtr search)
 {
 	dprintf(DEBUG_INFO, "[getservices] findTransponder:\n");
 
@@ -338,7 +335,7 @@ void findTransponder(_xmlNodePtr search)
 // parse sat transponder from satellites/cables/terrestrials.xml/atsc.xml
 static uint32_t fake_tid;
 static uint32_t fake_nid;
-void parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellite_position satellitePosition)
+void CServices::parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellite_position satellitePosition)
 {
 	dprintf(DEBUG_DEBUG, "[getservices] parseSatTransponders:\n");
 
@@ -437,7 +434,7 @@ void parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellit
 	}
 }
 
-int loadMotorPositions(void)
+int CServices::loadMotorPositions(void)
 {
 	dprintf(DEBUG_INFO, "[getservices] loadMotorPositions:\n");
 
@@ -480,7 +477,7 @@ int loadMotorPositions(void)
 	return 0;
 }
 
-void saveMotorPositions()
+void CServices::saveMotorPositions()
 {
 	FILE * fd;
 	sat_iterator_t sit;
@@ -516,7 +513,7 @@ void saveMotorPositions()
 	fclose(fd);
 }
 
-void init_sat(t_satellite_position position)
+void CServices::init_sat(t_satellite_position position)
 {
 	dprintf(DEBUG_DEBUG, "[getservices] init_sat:\n");
 
@@ -534,7 +531,7 @@ void init_sat(t_satellite_position position)
 }
 
 // load transponders
-int loadTransponders()
+int CServices::loadTransponders()
 {
 	bool satcleared = 0;
 	scnt = 0;
@@ -713,7 +710,7 @@ int loadTransponders()
 }	
 
 // load services
-int loadServices(bool only_current)
+int CServices::loadServices(bool only_current)
 {
 	_xmlDocPtr parser;
 	scnt = 0;
@@ -802,20 +799,11 @@ do_current:
 
 	return 0;
 }
-/*
-void zapit_cp(char * from, char * to)
-{
-        char cmd[256] = "cp -f ";
-        strcat(cmd, from);
-        strcat(cmd, " ");
-        strcat(cmd, to);
-        system(cmd);
-	sync();
-}
-*/
 
-void saveServices(bool tocopy)
+void CServices::saveServices(bool tocopy)
 {
+	dprintf(DEBUG_INFO, "[getservices] saveServices:\n");
+	
 	transponder_id_t tpid = 0;
 	FILE * fd = 0;
 	bool updated = 0;

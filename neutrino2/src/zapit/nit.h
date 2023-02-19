@@ -23,6 +23,28 @@
 #define __zapit_nit_h__
 
 
-int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);
+class CNit
+{
+	private:
+		CNit(){};
+		~CNit(){};
+		
+	public:
+		//
+		static CNit *getInstance()
+		{
+			static CNit * nit = NULL;
+
+			if(!nit ) 
+			{
+				nit = new CNit();
+			} 
+
+			return nit;
+		};
+		
+		//
+		int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);
+};
 
 #endif /* __zapit_nit_h__ */

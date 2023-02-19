@@ -27,8 +27,31 @@
 #include <zapit/frontend_c.h>
 
 
-int parse_pmt(CZapitChannel * const channel, CFrontend * fe);
-int pmt_set_update_filter(CZapitChannel * const channel, int * fd, CFrontend * fe);
-int pmt_stop_update_filter(int * fd);
+class CPmt
+{
+	private:
+		CPmt(){};
+		~CPmt(){};
+		
+	public:
+		//
+		static CPmt *getInstance()
+		{
+			static CPmt * pmt = NULL;
+
+			if(!pmt) 
+			{
+				pmt = new CPmt();
+			} 
+
+			return pmt;
+		};
+		
+		//
+		unsigned short parse_ES_info(const unsigned char * const buffer, CZapitChannel * const channel, CCaPmt * const caPmt);
+		int parse_pmt(CZapitChannel * const channel, CFrontend * fe);
+		int pmt_set_update_filter(CZapitChannel * const channel, int * fd, CFrontend * fe);
+		int pmt_stop_update_filter(int * fd);
+};
 
 #endif /* __zapit_pmt_h__ */

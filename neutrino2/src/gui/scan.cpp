@@ -69,7 +69,6 @@
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 TP_params TP;
-//CFrontend * getFE(int index);
 extern CScanSettings * scanSettings;		// defined in scan_setup.cpp
 extern t_channel_id live_channel_id; 		//defined in zapit.cpp
 

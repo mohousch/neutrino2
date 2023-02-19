@@ -39,14 +39,37 @@
 
 #define zapped_chan_is_nvod 0x80
 
-void parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system );
-void parseChannels(_xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation );
-void FindTransponder(_xmlNodePtr root);
-void saveServices(bool tocopy=false);
-void saveMotorPositions();
-int loadMotorPositions(void);
-int loadTransponders();
-int loadServices(bool only_current);
+class CServices
+{
+	private:
+		CServices(){};
+		~CServices(){};
+		
+	public:
+		static CServices *getInstance()
+		{
+			static CServices * services = NULL;
+
+			if(!services) 
+			{
+				services = new CServices();
+			} 
+
+			return services;
+		};
+		
+		//
+		void parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system );
+		void parseChannels(_xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation );
+		void findTransponder(_xmlNodePtr root);
+		void parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellite_position satellitePosition);
+		int loadMotorPositions(void);
+		void saveMotorPositions();
+		void init_sat(t_satellite_position position);
+		int loadTransponders();
+		int loadServices(bool only_current);
+		void saveServices(bool tocopy=false);
+};
 
 // transponder
 struct transponder

@@ -26,6 +26,29 @@
 #include <zapit/frontend_c.h>
 
 
-int parse_pat(CZapitChannel * const channel, CFrontend * fe);
+class CPat
+{
+	private:
+		CPat(){};
+		~CPat(){};
+		
+	public:
+		//
+		static CPat *getInstance()
+		{
+			static CPat * pat = NULL;
+
+			if(!pat) 
+			{
+				pat = new CPat();
+			} 
+
+			return pat;
+		};
+		
+		//
+		int parse_pat(CZapitChannel * const channel, CFrontend * fe);
+};
 
 #endif /* __zapit_pat_h__ */
+

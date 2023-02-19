@@ -42,7 +42,7 @@
 #define SDT_SIZE 	MAX_SECTION_LENGTH
 
 // sdt scan
-int parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_network_id *p_original_network_id,t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+int CSdt::parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_network_id *p_original_network_id,t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
 	int secdone[255];
 	int sectotal = -1;
@@ -135,61 +135,61 @@ int parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_network_id
 				switch (buffer[pos2]) 
 				{
 					case 0x0A:
-						ISO_639_language_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->ISO_639_language_descriptor(buffer + pos2);
 						break;
 	
 					/*
 					case 0x40:
-						network_name_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->network_name_descriptor(buffer + pos2);
 						break;
 					*/
 
 					case 0x42:
-						stuffing_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->stuffing_descriptor(buffer + pos2);
 						break;
 	
 					case 0x47:
-						bouquet_name_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->bouquet_name_descriptor(buffer + pos2);
 						break;
 	
 					case 0x48:
-						service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq, free_CA_mode, feindex);
+						CDescriptors::getInstance()->service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq, free_CA_mode, feindex);
 						break;
 	
 					case 0x49:
-						country_availability_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->country_availability_descriptor(buffer + pos2);
 						break;
 	
 					case 0x4A:
-						linkage_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->linkage_descriptor(buffer + pos2);
 						break;
 	
 					case 0x4B:
-						//NVOD_reference_descriptor(buffer + pos2);
+						//CDescriptors::getInstance()->NVOD_reference_descriptor(buffer + pos2);
 						break;
 	
 					case 0x4C:
-						time_shifted_service_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->time_shifted_service_descriptor(buffer + pos2);
 						break;
 	
 					case 0x51:
-						mosaic_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->mosaic_descriptor(buffer + pos2);
 						break;
 	
 					case 0x53:
-						CA_identifier_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->CA_identifier_descriptor(buffer + pos2);
 						break;
 	
 					case 0x5D:
-						multilingual_service_name_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->multilingual_service_name_descriptor(buffer + pos2);
 						break;
 	
 					case 0x5F:
-						private_data_specifier_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->private_data_specifier_descriptor(buffer + pos2);
 						break;
 	
 					case 0x64:
-						data_broadcast_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->data_broadcast_descriptor(buffer + pos2);
 						break;
 	
 					case 0x80: // unknown, Eutelsat 13.0E
@@ -229,7 +229,7 @@ int parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_network_id
 						break;
 	
 					default:
-						//generic_descriptor(buffer + pos2);
+						//CDescriptors::getInstance()->generic_descriptor(buffer + pos2);
 						break;
 				}
 			}
@@ -244,7 +244,7 @@ int parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_network_id
 // sdt monitor
 extern tallchans curchans;
 
-int parse_current_sdt( const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend * fe)
+int CSdt::parse_current_sdt( const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend * fe)
 { 
 	if(!fe)
 		return -1;
@@ -332,12 +332,12 @@ int parse_current_sdt( const t_transport_stream_id p_transport_stream_id, const 
 				switch (buffer[pos2]) 
 				{
 					case 0x48:
-						current_service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq);
+						CDescriptors::getInstance()->current_service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq);
 						ret = 0;
 						break;
 	
 					default:
-						//generic_descriptor(buffer + pos2);
+						//CDescriptors::getInstance()->generic_descriptor(buffer + pos2);
 						break;
 				}
 			}

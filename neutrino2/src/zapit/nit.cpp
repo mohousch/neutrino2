@@ -44,7 +44,7 @@
 
 #define NIT_SIZE 1024
 
-int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+int CNit::parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
 	dprintf(DEBUG_NORMAL, "[nit] %s:\n", __FUNCTION__);
 	
@@ -125,20 +125,20 @@ int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feinde
 			switch (buffer[pos])
 			{
 				case 0x40:
-					network_name_descriptor(buffer + pos);
+					CDescriptors::getInstance()->network_name_descriptor(buffer + pos);
 					break;
 
 				case 0x4A:
-					linkage_descriptor(buffer + pos);
+					CDescriptors::getInstance()->linkage_descriptor(buffer + pos);
 					break;
 
 				case 0x5B:
-					multilingual_network_name_descriptor(buffer + pos);
+					CDescriptors::getInstance()->multilingual_network_name_descriptor(buffer + pos);
 					break;
 
 				/*
 				case 0x5F:
-					private_data_specifier_descriptor(buffer + pos);
+					CDescriptors::getInstance()->private_data_specifier_descriptor(buffer + pos);
 					break;
 				*/
 
@@ -171,15 +171,15 @@ int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feinde
 				switch (buffer[pos2])
 				{
 					case 0x41:
-						service_list_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq);
+						CDescriptors::getInstance()->service_list_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq);
 						break;
 
 					case 0x42:
-						stuffing_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->stuffing_descriptor(buffer + pos2);
 						break;
 
 					case 0x43:
-						if (satellite_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
+						if (CDescriptors::getInstance()->satellite_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
 						{
 							ret = -2;
 							goto _return;
@@ -187,7 +187,7 @@ int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feinde
 						break;
 
 					case 0x44:
-						if (cable_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
+						if (CDescriptors::getInstance()->cable_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
 						{
 							ret = -2;
 							goto _return;
@@ -195,7 +195,7 @@ int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feinde
 						break;
 
 					case 0x5A:
-						if(terrestrial_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
+						if(CDescriptors::getInstance()->terrestrial_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
 						{
 							ret = -2;
 							goto _return;
@@ -203,11 +203,11 @@ int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feinde
 						break;
 
 					case 0x5F:
-						private_data_specifier_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->private_data_specifier_descriptor(buffer + pos2);
 						break;
 
 					case 0x62:
-						frequency_list_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->frequency_list_descriptor(buffer + pos2);
 						break;
 
 					case 0x82: // unknown, Eutelsat 13.0E
