@@ -2011,66 +2011,36 @@ void CZapit::sendRecordSubPIDs(SubPIDList &subpids)
 	}
 }
 
-void CZapit::internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr)
+void CZapit::internalSendChannels(ZapitChannelList *channels, const unsigned int first_channel_nr, CZapit::BouquetChannelList &Bchannels)
 {
-	int data_count = channels->size();
-
-#if RECORD_RESEND // old, before tv/radio resend
-	if (currentMode & RECORD_MODE) 
-	{
-		for (uint32_t  i = 0; i < channels->size(); i++)
-			if ((*channels)[i]->getTransponderId() != live_channel->getTransponderId())
-				data_count--;
-	}
-#endif
-
 	for (uint32_t  i = 0; i < channels->size();i++) 
 	{
-#if RECORD_RESEND // old, before tv/radio resend
-		if ((currentMode & RECORD_MODE) && ((*channels)[i]->getTransponderId() != live_fe->getTsidOnid()))
-			continue;
-#endif
-
 		CZapit::responseGetBouquetChannels response;
+		
 		strncpy(response.name, ((*channels)[i]->getName()).c_str(), CHANNEL_NAME_SIZE);
-		response.name[CHANNEL_NAME_SIZE-1] = 0;
-			
-		//printf("internalSendChannels: name %s\n", response.name);
-			
+		response.name[CHANNEL_NAME_SIZE-1] = 0;	
 		response.satellitePosition = (*channels)[i]->getSatellitePosition();
 		response.channel_id = (*channels)[i]->getChannelID();
 		response.nr = first_channel_nr + i;
+		
+		Bchannels.push_back(response);
 	}
 }
 
-void CZapit::internalSendNChannels(ZapitChannelList* channels, const unsigned int first_channel_nr)
+void CZapit::internalSendNChannels(ZapitChannelList *channels, const unsigned int first_channel_nr, CZapit::BouquetNChannelList &Bchannels)
 {
-	int data_count = channels->size();
-
-#if RECORD_RESEND // old, before tv/radio resend
-	if (currentMode & RECORD_MODE) 
-	{
-		for (uint32_t  i = 0; i < channels->size(); i++)
-			if ((*channels)[i]->getTransponderId() != live_channel->getTransponderId())
-				data_count--;
-	}
-#endif
-
 	for (uint32_t  i = 0; i < channels->size();i++) 
 	{
-#if RECORD_RESEND // old, before tv/radio resend
-		if ((currentMode & RECORD_MODE) && ((*channels)[i]->getTransponderId() != live_fe->getTsidOnid()))
-			continue;
-#endif
-
 		CZapit::responseGetBouquetNChannels response;
+		
 		response.nr = first_channel_nr + i;
+		
+		Bchannels.push_back(response);
 	}
 }
 
 void CZapit::sendBouquets(CZapit::responseGetBouquets &msgBouquet, const bool emptyBouquetsToo, CZapit::channelsMode mode)
 {
-	//CZapit::responseGetBouquets msgBouquet;
         int curMode;
 	
         switch(mode) 
@@ -2094,12 +2064,6 @@ void CZapit::sendBouquets(CZapit::responseGetBouquets &msgBouquet, const bool em
                      && (((curMode & RADIO_MODE) && !g_bouquetManager->Bouquets[i]->radioChannels.empty())
                    )))
 		{
-// ATTENTION: in RECORD_MODE empty bouquets are not send!
-#if RECORD_RESEND // old, before tv/radio resend
-			if ((!(currentMode & RECORD_MODE)) || (( live_fe != NULL) &&
-			     (((currentMode & RADIO_MODE) && (g_bouquetManager->Bouquets[i]->recModeRadioSize( live_fe->getTsidOnid()) > 0)) ||
-			      ((currentMode & TV_MODE)    && (g_bouquetManager->Bouquets[i]->recModeTVSize   ( live_fe->getTsidOnid()) > 0)))))
-#endif
 			{
 				msgBouquet.bouquet_nr = i;
 				strncpy(msgBouquet.name, g_bouquetManager->Bouquets[i]->Name.c_str(), 30);
@@ -2113,7 +2077,7 @@ void CZapit::sendBouquets(CZapit::responseGetBouquets &msgBouquet, const bool em
 	msgBouquet.bouquet_nr = RESPONSE_GET_BOUQUETS_END_MARKER;
 }
 
-void CZapit::sendBouquetChannels(const unsigned int bouquet, const CZapit::channelsMode mode)
+void CZapit::sendBouquetChannels(CZapit::BouquetChannelList &Bchannels, const unsigned int bouquet, const CZapit::channelsMode mode)
 {
 	if (bouquet >= g_bouquetManager->Bouquets.size()) 
 	{
@@ -2122,12 +2086,12 @@ void CZapit::sendBouquetChannels(const unsigned int bouquet, const CZapit::chann
 	}
 
 	if (((currentMode & RADIO_MODE) && (mode == CZapit::MODE_CURRENT)) || (mode == CZapit::MODE_RADIO))
-		internalSendChannels(&(g_bouquetManager->Bouquets[bouquet]->radioChannels), g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(bouquet));
+		internalSendChannels(&(g_bouquetManager->Bouquets[bouquet]->radioChannels), g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(bouquet), Bchannels);
 	else if (((currentMode & TV_MODE) && (mode == CZapit::MODE_CURRENT)) || (mode == CZapit::MODE_TV))
-		internalSendChannels(&(g_bouquetManager->Bouquets[bouquet]->tvChannels), g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(bouquet));
+		internalSendChannels(&(g_bouquetManager->Bouquets[bouquet]->tvChannels), g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(bouquet), Bchannels);
 }
 
-void CZapit::sendBouquetNChannels(const unsigned int bouquet, const CZapit::channelsMode mode)
+void CZapit::sendBouquetNChannels(CZapit::BouquetNChannelList &Bchannels, const unsigned int bouquet, const CZapit::channelsMode mode)
 {
 	if (bouquet >= g_bouquetManager->Bouquets.size()) 
 	{
@@ -2136,13 +2100,15 @@ void CZapit::sendBouquetNChannels(const unsigned int bouquet, const CZapit::chan
 	}
 
 	if (((currentMode & RADIO_MODE) && (mode == CZapit::MODE_CURRENT)) || (mode == CZapit::MODE_RADIO))
-		internalSendNChannels(&(g_bouquetManager->Bouquets[bouquet]->radioChannels), g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(bouquet));
+		internalSendNChannels(&(g_bouquetManager->Bouquets[bouquet]->radioChannels), g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(bouquet), Bchannels);
 	else if (((currentMode & TV_MODE) && (mode == CZapit::MODE_CURRENT)) || (mode == CZapit::MODE_TV))
-		internalSendNChannels(&(g_bouquetManager->Bouquets[bouquet]->tvChannels), g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(bouquet));
+		internalSendNChannels(&(g_bouquetManager->Bouquets[bouquet]->tvChannels), g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(bouquet), Bchannels);
 }
 
-void CZapit::sendChannels(ZapitChannelList &channels, const CZapit::channelsMode mode, const CZapit::channelsOrder order)
+void CZapit::sendChannels(CZapit::BouquetChannelList &Bchannels, const CZapit::channelsMode mode, const CZapit::channelsOrder order)
 {
+	ZapitChannelList channels;
+	
 	if (order == CZapit::SORT_BOUQUET) 
 	{
 		CBouquetManager::ChannelIterator cit = g_bouquetManager->tvChannelsBegin();
@@ -2173,11 +2139,13 @@ void CZapit::sendChannels(ZapitChannelList &channels, const CZapit::channelsMode
 		sort(channels.begin(), channels.end(), CmpChannelByChName());
 	}
 
-	internalSendChannels(&channels, 0);
+	internalSendChannels(&channels, 0, Bchannels);
 }
 
-void CZapit::sendNChannels(ZapitChannelList &channels, const CZapit::channelsMode mode, const CZapit::channelsOrder order)
+void CZapit::sendNChannels(CZapit::BouquetNChannelList &Bchannels, const CZapit::channelsMode mode, const CZapit::channelsOrder order)
 {
+	ZapitChannelList channels;
+	
 	if (order == CZapit::SORT_BOUQUET) 
 	{
 		CBouquetManager::ChannelIterator cit = g_bouquetManager->tvChannelsBegin();
@@ -2208,7 +2176,7 @@ void CZapit::sendNChannels(ZapitChannelList &channels, const CZapit::channelsMod
 		sort(channels.begin(), channels.end(), CmpChannelByChName());
 	}
 
-	internalSendNChannels(&channels, 0);
+	internalSendNChannels(&channels, 0, Bchannels);
 }
 
 // startplayback return: 0=playing, -1= failed
@@ -4365,38 +4333,28 @@ bool CZapit::getChannels(CZapit::BouquetChannelList& channels, const CZapit::cha
 	return true;
 }
 */
+
 /*
 void CZapit::getBouquets( CZapit::BouquetList& bouquets, const bool emptyBouquetsToo, const bool utf_encoded, CZapit::channelsMode mode)
 {
-	//sendBouquets(bouquets, emptyBouquetsToo, mode);
+	sendBouquets(bouquets, emptyBouquetsToo, mode);
 }
 */
 
 bool CZapit::getBouquetChannels(const unsigned int bouquet, CZapit::BouquetChannelList& channels, const CZapit::channelsMode mode, const bool utf_encoded)
 {
-#if 0
-	if (utf_encoded)
-		sendNChannels(channels, bouquet, mode);
-	else
-		sendChannels(channels, bouquet, mode);
-#endif
+	sendBouquetChannels(channels, bouquet, mode);
 	
 	return true;
 }
 
-/*
 bool CZapit::getBouquetNChannels(const unsigned int bouquet, CZapit::BouquetNChannelList& channels, const CZapit::channelsMode mode, const bool utf_encoded)
 {
-#if 0
-	if (utf_encoded)
-		sendNChannels(channels, bouquet, mode);
-	else
-		sendChannels(channels, bouquet, mode);
-#endif
+	sendBouquetNChannels(channels, bouquet, mode);
 	
 	return true;
 }
-*/
+
 // bqt
 void CZapit::renumChannellist()
 {

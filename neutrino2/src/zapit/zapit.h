@@ -45,8 +45,6 @@
 #define CHANNEL_NAME_SIZE 40
 #define RESPONSE_GET_BOUQUETS_END_MARKER 0xFFFFFFFF
 
-//typedef vector<CZapitChannel*> ZapitChannelList;
-
 class CZapit
 {
 	public:
@@ -317,13 +315,13 @@ class CZapit
 		void sendRecordSubPIDs(SubPIDList &subpids);
 		
 		//
-		void internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr);
-		void internalSendNChannels(ZapitChannelList* channels, const unsigned int first_channel_nr);
+		void internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, CZapit::BouquetChannelList &Bchannels);
+		void internalSendNChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, CZapit::BouquetNChannelList &Bchannels);
 		void sendBouquets(CZapit::responseGetBouquets &msgBouquet, const bool emptyBouquetsToo, CZapit::channelsMode mode);
-		void sendBouquetChannels(const unsigned int bouquet, const CZapit::channelsMode mode);
-		void sendBouquetNChannels(const unsigned int bouquet, const CZapit::channelsMode mode);
-		void sendChannels(ZapitChannelList &channels, const CZapit::channelsMode mode, const CZapit::channelsOrder order);
-		void sendNChannels(ZapitChannelList &channels, const CZapit::channelsMode mode, const CZapit::channelsOrder order);
+		void sendBouquetChannels(CZapit::BouquetChannelList &Bchannels, const unsigned int bouquet, const CZapit::channelsMode mode);
+		void sendBouquetNChannels(CZapit::BouquetNChannelList &Bchannels, const unsigned int bouquet, const CZapit::channelsMode mode);
+		void sendChannels(CZapit::BouquetChannelList &Bchannels, const CZapit::channelsMode mode, const CZapit::channelsOrder order);
+		void sendNChannels(CZapit::BouquetNChannelList &Bchannels, const CZapit::channelsMode mode, const CZapit::channelsOrder order);
 		
 		//
 		void closeAVDecoder(void);
@@ -436,8 +434,8 @@ class CZapit
 		// channels / bouquets
 		//bool getChannels(CZapit::BouquetChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const CZapit::channelsOrder order = CZapit::SORT_BOUQUET, const bool utf_encoded = false);
 		//void getBouquets( CZapit::BouquetList& bouquets, const bool emptyBouquetsToo = false, const bool utf_encoded = false, CZapit::channelsMode mode = CZapit::MODE_CURRENT);
-		bool getBouquetChannels(const unsigned int bouquet, CZapit::BouquetChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const bool utf_encoded = false);
-		//bool getBouquetNChannels(const unsigned int bouquet, CZapit::BouquetNChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const bool utf_encoded = false);
+		bool getBouquetChannels(const unsigned int bouquet, CZapit::BouquetChannelList &channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const bool utf_encoded = false);
+		bool getBouquetNChannels(const unsigned int bouquet, CZapit::BouquetNChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const bool utf_encoded = false);
 
 		// bouquetManager
 		void renumChannellist();

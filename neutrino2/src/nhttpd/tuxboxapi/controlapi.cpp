@@ -2349,6 +2349,7 @@ void CControlAPI::changeBouquetCGI(CyhookHandler *hh)
 		CZapit::BouquetChannelList BChannelList;
 		CZapit::getInstance()->getBouquetChannels(selected - 1, BChannelList, CZapit::MODE_CURRENT, true);
 		CZapit::BouquetChannelList::iterator channels = BChannelList.begin();
+		
 		for(; channels != BChannelList.end();channels++)
 		{
 			CZapit::getInstance()->removeChannelFromBouquet(selected - 1, channels->channel_id);
