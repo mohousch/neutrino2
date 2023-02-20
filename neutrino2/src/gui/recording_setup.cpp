@@ -43,6 +43,8 @@
 #include <system/setting_helpers.h>
 #include <system/helpers.h>
 
+#include <timerd/timerd.h>
+
 
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
@@ -206,7 +208,7 @@ void CRecordingSettings::showMenu()
 	int rec_pre = 0;
 	int rec_post = 0;
 	
-	g_Timerd->getRecordingSafety(rec_pre, rec_post);
+	timerd_getRecordingSafety(rec_pre, rec_post);
 
 	sprintf(g_settings.record_safety_time_before, "%02d", rec_pre/60);
 	sprintf(g_settings.record_safety_time_after, "%02d", rec_post/60);
@@ -297,7 +299,7 @@ void CRecordingSettings::showMenu()
 // recording safety notifier
 bool CRecordingSafetyNotifier::changeNotify(const std::string&, void *)
 {
-	g_Timerd->setRecordingSafety(atoi(g_settings.record_safety_time_before)*60, atoi(g_settings.record_safety_time_after)*60);
+	timerd_setRecordingSafety(atoi(g_settings.record_safety_time_before)*60, atoi(g_settings.record_safety_time_after)*60);
 
    	return true;
 }

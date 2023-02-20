@@ -35,6 +35,8 @@
 #include <gui/epgplus.h>
 #include <sectionsd/sectionsd.h>
 
+#include <timerd/timerd.h>
+
 #include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/stringinput.h>
@@ -1370,7 +1372,7 @@ int EpgPlus::MenuTargetAddReminder::exec(CMenuTarget */*parent*/, const std::str
 	{
 		if (g_Timerd->isTimerdAvailable ()) 
 		{
-			g_Timerd->addZaptoTimerEvent (this->epgPlus->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime - ANNOUNCETIME, 0, (*It)->channelEvent.eventID, (*It)->channelEvent.startTime, 0);
+			timerd_addZaptoTimerEvent (this->epgPlus->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime - ANNOUNCETIME, 0, (*It)->channelEvent.eventID, (*It)->channelEvent.startTime, 0);
 	
 			MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);	// UTF-8
 		} 
@@ -1398,7 +1400,7 @@ int EpgPlus::MenuTargetAddRecordTimer::exec(CMenuTarget */*parent*/, const std::
 	{
 		if (g_Timerd->isTimerdAvailable ()) 
 		{
-			g_Timerd->addRecordTimerEvent (this->epgPlus->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime + (*It)->channelEvent.duration, (*It)->channelEvent.eventID, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime - (ANNOUNCETIME + 120) , TIMERD_APIDS_CONF, true);
+			timerd_addRecordTimerEvent (this->epgPlus->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime + (*It)->channelEvent.duration, (*It)->channelEvent.eventID, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime - (ANNOUNCETIME + 120) , TIMERD_APIDS_CONF, true);
 
 			MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);	// UTF-8
 		} 

@@ -28,6 +28,8 @@
 #include <global.h>
 #include <neutrinoMessages.h>
 
+#include <timerd/timerd.h>
+
 //
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
@@ -133,7 +135,7 @@ void CControlAPI::compatibility_Timer(CyhookHandler *hh)
 		if(hh->ParamList["action"] == "remove")
 		{
 			unsigned removeId = atoi(hh->ParamList["id"].c_str());
-			NeutrinoAPI->Timerd->removeTimerEvent(removeId);
+			timerd_removeTimerEvent(removeId);
 		}
 		else if(hh->ParamList["action"] == "modify")
 			doModifyTimer(hh);
@@ -284,13 +286,13 @@ void CControlAPI::TimerCGI(CyhookHandler *hh)
 			else if (hh->ParamList["action"] == "remove")
 			{
 				unsigned removeId = atoi(hh->ParamList["id"].c_str());
-				NeutrinoAPI->Timerd->removeTimerEvent(removeId);
+				timerd_removeTimerEvent(removeId);
 				hh->SendOk();
 			}
 			else if(hh->ParamList["get"] != "")
 			{
 				int pre=0,post=0;
-				NeutrinoAPI->Timerd->getRecordingSafety(pre,post);
+				timerd_getRecordingSafety(pre,post);
 				if(hh->ParamList["get"] == "pre")
 					hh->printf("%d\n", pre);
 				else if(hh->ParamList["get"] == "post")
@@ -1685,7 +1687,7 @@ void CControlAPI::SendTimersXML(CyhookHandler *hh)
 
 	// Look for Recording Safety Timers too
 	int pre=0, post=0;
-	NeutrinoAPI->Timerd->getRecordingSafety(pre, post);
+	timerd_getRecordingSafety(pre, post);
 	//hh->printf("\t\t\t<recording_safety>%d</recording_safety>\n",(int)timer->recordingSafety);
 	hh->printf("\t\t\t<pre_delay>%d</pre_delay>\n",pre);
 	hh->printf("\t\t\t<post_delay>%d</post_delay>\n",post);
@@ -2210,7 +2212,7 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 		if(hh->ParamList["id"] != "")
 		{
 			unsigned modyId = atoi(hh->ParamList["id"].c_str());
-			NeutrinoAPI->Timerd->removeTimerEvent(modyId);
+			timerd_removeTimerEvent(modyId);
 		}
 		else
 		{
@@ -2224,19 +2226,19 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 			if(eventinfo.recordingSafety)
 			{
 				int pre,post;
-				NeutrinoAPI->Timerd->getRecordingSafety(pre,post);
+				timerd_getRecordingSafety(pre,post);
 				real_alarmTimeT -= pre;
 			}
 
 			for(; timer != timerlist.end();timer++)
 				if(timer->alarmTime == real_alarmTimeT)
 				{
-					NeutrinoAPI->Timerd->removeTimerEvent(timer->eventID);
+					timerd_removeTimerEvent(timer->eventID);
 					break;
 				}
 		}
 	}
-	NeutrinoAPI->Timerd->addTimerEvent(type,data,announceTimeT,alarmTimeT,stopTimeT,rep,repCount);
+	timerd_addTimerEvent(type,data,announceTimeT,alarmTimeT,stopTimeT,rep,repCount);
 	hh->SendOk();
 }
 

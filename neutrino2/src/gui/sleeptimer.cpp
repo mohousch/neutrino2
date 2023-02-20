@@ -44,6 +44,7 @@
 #include <gui/widget/stringinput.h>
 
 #include <timerdclient/timerdclient.h>
+#include <timerd/timerd.h>
 
 #include <daemonc/remotecontrol.h>
 
@@ -64,7 +65,7 @@ int CSleepTimerWidget::exec(CMenuTarget* parent, const std::string &)
 	if (parent)
 		parent->hide();
    
-	shutdown_min = g_Timerd->getSleepTimerRemaining();  // remaining shutdown time?
+	shutdown_min = timerd_getSleepTimerRemaining();  // remaining shutdown time?
 	sprintf(value,"%03d", shutdown_min);
 	CSectionsd::CurrentNextInfo info_CurrentNext;
 	g_InfoViewer->getEPG(g_RemoteControl->current_channel_id, info_CurrentNext);
@@ -96,16 +97,15 @@ int CSleepTimerWidget::exec(CMenuTarget* parent, const std::string &)
 		
 		if (shutdown_min == 0)	// if set to zero remove existing sleeptimer 
 		{
-			if(g_Timerd->getSleeptimerID() > 0) 
+			if(timerd_getSleeptimerID() > 0) 
 			{
-				g_Timerd->removeTimerEvent(g_Timerd->getSleeptimerID());
+				timerd_removeTimerEvent(timerd_getSleeptimerID());
 			}
 		}
 		else	// set the sleeptimer to actual time + shutdown mins and announce 1 min before
-			g_Timerd->setSleeptimer(time(NULL) + ((shutdown_min - 1) * 60), time(NULL) + shutdown_min * 60, 0);
+			timerd_setSleeptimer(time(NULL) + ((shutdown_min - 1) * 60), time(NULL) + shutdown_min * 60, 0);
 	}
 	
 	return res;
 }
-
 

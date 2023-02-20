@@ -232,9 +232,6 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		CColorSetupNotifier *colorSetupNotifier;
 
 		//
-		//void initZapitClient();
-		void initTimerdClient();
-
 		void readEPG();
 		void saveEpg();
 		void readXMLTV();

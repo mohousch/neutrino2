@@ -37,6 +37,7 @@
 
 #include <string>
 #include <timerdclient/timerdclient.h>
+#include <timerd/timerd.h>
 
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>

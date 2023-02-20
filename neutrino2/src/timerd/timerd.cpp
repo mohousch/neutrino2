@@ -31,6 +31,10 @@
 #include <syscall.h>
 
 #include <timermanager.h>
+#include <timerdclient/timerdclient.h>
+#include <timerdclient/timerdmsg.h>
+#include <timerd.h>
+
 #include <sectionsd/sectionsd.h>
 
 #include <connection/basicserver.h>
@@ -56,7 +60,7 @@ bool timerd_parse_command(CBasicMessage::Header &rmsg, int connfd)
 		case CTimerdMsg::CMD_UNREGISTEREVENT :
 			CTimerManager::getInstance()->getEventServer()->unRegisterEvent(connfd);
 			break;
-
+		/*
 		case CTimerdMsg::CMD_GETSLEEPTIMER:
 			rspGetSleeptimer.eventID = 0;
 			if (CTimerManager::getInstance()->listEvents(events))
@@ -74,6 +78,7 @@ bool timerd_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			}
 			CBasicServer::send_data(connfd, &rspGetSleeptimer, sizeof(rspGetSleeptimer));
 			break;
+		*/
 
 		case CTimerdMsg::CMD_GETTIMER:						// timer daten abfragen
 			CTimerdMsg::commandGetTimer msgGetTimer;
@@ -246,7 +251,7 @@ bool timerd_parse_command(CBasicMessage::Header &rmsg, int connfd)
 				CBasicServer::send_data(connfd, &rspStatus, sizeof(rspStatus));
 				break;
 			}
-
+		#if 0
 		case CTimerdMsg::CMD_ADDTIMER:						// neuen timer hinzuf�gen
 			CTimerdMsg::commandAddTimer msgAddTimer;
 			CBasicServer::receive_data(connfd,&msgAddTimer, sizeof(msgAddTimer));
@@ -381,7 +386,8 @@ bool timerd_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			CBasicServer::send_data(connfd, &rspAddTimer, sizeof(rspAddTimer));
 
 			break;
-			
+		#endif
+		/*	
 		case CTimerdMsg::CMD_REMOVETIMER:						//	timer entfernen
 			dprintf(DEBUG_INFO, "timerd_parse_command: command remove\n");
 			CTimerdMsg::commandRemoveTimer msgRemoveTimer;
@@ -389,7 +395,8 @@ bool timerd_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			dprintf(DEBUG_INFO, "timerd_parse_command: command remove %d\n",msgRemoveTimer.eventID);
 			CTimerManager::getInstance()->removeEvent(msgRemoveTimer.eventID);
 			break;
-
+		*/
+		/*
 		case CTimerdMsg::CMD_STOPTIMER:						//	timer stoppen
 			dprintf(DEBUG_INFO, "timerd_parse_command: command stop\n");
 			CTimerdMsg::commandRemoveTimer msgStopTimer;
@@ -397,6 +404,7 @@ bool timerd_parse_command(CBasicMessage::Header &rmsg, int connfd)
 			dprintf(DEBUG_INFO, "timerd_parse_command: command stop %d\n",msgStopTimer.eventID);
 			CTimerManager::getInstance()->stopEvent(msgStopTimer.eventID);
 			break;
+		*/
 
 		case CTimerdMsg::CMD_TIMERDAVAILABLE:					// testen ob server l�uft ;)
 			{
@@ -421,6 +429,7 @@ bool timerd_parse_command(CBasicMessage::Header &rmsg, int connfd)
 				CTimerManager::getInstance()->modifyEvent(data.eventID , data.apids);
 			}
 			break;
+		/*
 		case CTimerdMsg::CMD_SETRECSAFETY:				  // aufnahmekorrektur setzen
 			{
 				CTimerdMsg::commandRecordingSafety data;
@@ -428,6 +437,8 @@ bool timerd_parse_command(CBasicMessage::Header &rmsg, int connfd)
 				CTimerManager::getInstance()->setRecordingSafety(data.pre , data.post);
 			}
 			break;
+		*/
+		/*
 		case CTimerdMsg::CMD_GETRECSAFETY:				  // aufnahmekorrektur lesen
 			{
 				CTimerdMsg::commandRecordingSafety data;
@@ -435,6 +446,7 @@ bool timerd_parse_command(CBasicMessage::Header &rmsg, int connfd)
 				CBasicServer::send_data(connfd, &data, sizeof(data));
 			}
 			break;
+		*/
 		default:
 			printf("timerd_parse_command: unknown command\n");
 	}
@@ -461,3 +473,160 @@ int timerd_main_thread(void */*data*/)
 	
 	return 0;
 }
+
+////
+void timerd_stopTimerEvent(int evId)
+{
+	dprintf(DEBUG_NORMAL, "timerd_stopTimerEvent\n");
+	
+	CTimerManager::getInstance()->stopEvent(evId);
+}
+
+void timerd_removeTimerEvent(int evId)
+{
+	dprintf(DEBUG_INFO, "timerd_removeTimerEvent\n");
+	
+	CTimerManager::getInstance()->removeEvent(evId);
+}
+
+int timerd_addTimerEvent(CTimerd::CTimerEventTypes evType, void* data, time_t alarmtime,time_t announcetime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount, bool forceadd)
+{
+//FIXME
+}
+
+int timerd_setSleeptimer(time_t announcetime, time_t alarmtime, int timerid)
+{
+	dprintf(DEBUG_INFO, "timerd_setSleepTimer\n");
+	
+	int timerID;
+
+	if(timerid == 0)
+		timerID = timerd_getSleeptimerID();
+	else
+		timerID = timerid;
+
+	if(timerID != 0)
+	{
+		//timerd_modifyTimerEvent(timerID, announcetime, alarmtime, 0);//FIXME
+	}
+	else
+	{
+		timerID = timerd_addTimerEvent(CTimerd::TIMER_SLEEPTIMER, NULL, announcetime, alarmtime, 0);
+	}
+
+	return timerID;   
+}
+
+int timerd_getSleeptimerID()
+{
+	CTimerdMsg::responseGetSleeptimer rspGetSleeptimer;
+	CTimerEventMap events;
+	CTimerEventMap::iterator pos;
+	
+	rspGetSleeptimer.eventID = 0;
+	
+	if (CTimerManager::getInstance()->listEvents(events))
+	{
+		for (pos = events.begin(); pos != events.end(); pos++)
+		{
+			dprintf(DEBUG_INFO, "timerd_parse_command: ID: %u type: %u\n", pos->second->eventID, pos->second->eventType);
+					
+			if(pos->second->eventType == CTimerd::TIMER_SLEEPTIMER)
+			{
+				rspGetSleeptimer.eventID = pos->second->eventID;
+				break;
+			}
+		}
+	}
+	
+	return rspGetSleeptimer.eventID;
+}
+
+int timerd_getSleepTimerRemaining()
+{
+	int timerID;
+	
+	if((timerID = timerd_getSleeptimerID()) != 0)
+	{
+		CTimerd::responseGetTimer timer;
+		//getTimer( timer, timerID);//FIXME
+		int min=(((timer.alarmTime + 1 - time(NULL)) / 60)+1); //aufrunden auf n�chst gr��erere Min.
+		if(min <1)
+			min=1;
+		return min;
+	}
+	else
+		return 0;
+}
+
+int timerd_addSleepTimerEvent(time_t announcetime, time_t alarmtime)
+{
+	return timerd_addTimerEvent(CTimerd::TIMER_SLEEPTIMER, NULL, announcetime, alarmtime, 0);
+}
+
+int timerd_addShutdownTimerEvent(time_t alarmtime, time_t announcetime, time_t stoptime)
+{
+	return timerd_addTimerEvent(CTimerd::TIMER_SHUTDOWN, NULL, announcetime, alarmtime, stoptime);
+}
+
+int timerd_addRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t stoptime, unsigned long long epgID, time_t epg_starttime, time_t announcetime, unsigned char apids, bool safety, std::string recDir, bool forceAdd)
+{
+	CTimerd::RecordingInfo eventInfo;
+	
+	eventInfo.channel_id = channel_id;
+	eventInfo.epgID = epgID;
+	eventInfo.epg_starttime = epg_starttime;
+	eventInfo.apids = apids;
+	eventInfo.recordingSafety = safety;
+	strncpy(eventInfo.recordingDir, recDir.c_str(), RECORD_DIR_MAXLEN);
+	
+	return timerd_addTimerEvent(CTimerd::TIMER_RECORD, &eventInfo, announcetime, alarmtime, stoptime,CTimerd::TIMERREPEAT_ONCE, 0, forceAdd);
+}
+
+int timerd_addImmediateRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t stoptime, unsigned long long epgID, time_t epg_starttime, unsigned char apids)
+{
+	CTimerd::EventInfo eventInfo;
+	
+	eventInfo.channel_id = channel_id;
+	eventInfo.epgID = epgID;
+	eventInfo.epg_starttime = epg_starttime;
+	eventInfo.apids = apids;
+	eventInfo.recordingSafety = false;
+	
+	return timerd_addTimerEvent(CTimerd::TIMER_IMMEDIATE_RECORD, &eventInfo, 0, alarmtime, stoptime);
+}
+
+int timerd_addStandbyTimerEvent(bool standby_on,time_t alarmtime, time_t announcetime, time_t stoptime)
+{
+	return timerd_addTimerEvent(CTimerd::TIMER_STANDBY, &standby_on,  announcetime, alarmtime, stoptime);
+}
+
+int timerd_addZaptoTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t announcetime, time_t stoptime, unsigned long long epgID, time_t epg_starttime, unsigned char apids)
+{
+	CTimerd::EventInfo eventInfo;
+	
+	eventInfo.channel_id = channel_id;
+	eventInfo.epgID = epgID;
+	eventInfo.epg_starttime = epg_starttime;
+	eventInfo.apids = apids;
+	
+	return timerd_addTimerEvent(CTimerd::TIMER_ZAPTO, &eventInfo, announcetime, alarmtime, stoptime);
+}
+
+int timerd_addNextProgramTimerEvent(CTimerd::EventInfo eventInfo,time_t alarmtime, time_t announcetime, time_t stoptime)
+{
+	return timerd_addTimerEvent(CTimerd::TIMER_NEXTPROGRAM, &eventInfo, alarmtime, announcetime, stoptime);
+}
+
+void timerd_setRecordingSafety(int pre, int post)
+{
+	CTimerManager::getInstance()->setRecordingSafety(pre, post);
+}
+
+void timerd_getRecordingSafety(int &pre, int &post)
+{
+	CTimerManager::getInstance()->getRecordingSafety(pre, post);
+}
+
+
+

@@ -816,7 +816,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 							
 							if (doRecord)
 							{
-								if (g_Timerd->addRecordTimerEvent(channel_id,
+								if (timerd_addRecordTimerEvent(channel_id,
 												     epgData.epg_times.startzeit,
 												     epgData.epg_times.startzeit + epgData.epg_times.dauer,
 												     epgData.eventID, epgData.epg_times.startzeit,
@@ -826,7 +826,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 									if(askUserOnTimerConflict(epgData.epg_times.startzeit - (ANNOUNCETIME + 120),
 												  epgData.epg_times.startzeit + epgData.epg_times.dauer))
 									{
-										g_Timerd->addRecordTimerEvent(channel_id,
+										timerd_addRecordTimerEvent(channel_id,
 														 epgData.epg_times.startzeit,
 														 epgData.epg_times.startzeit + epgData.epg_times.dauer,
 														 epgData.eventID, epgData.epg_times.startzeit,
@@ -853,7 +853,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 					{
 						if(g_Timerd->isTimerdAvailable())
 						{
-							g_Timerd->addZaptoTimerEvent(channel_id,
+							timerd_addZaptoTimerEvent(channel_id,
 											epgData.epg_times.startzeit,
 											epgData.epg_times.startzeit - ANNOUNCETIME, 0,
 											epgData.eventID, epgData.epg_times.startzeit, 0);

@@ -65,7 +65,7 @@ void CTimerdClient::unRegisterEvent(unsigned int eventID, unsigned int clientID)
 
 	close_connection();
 }
-
+/*
 int CTimerdClient::setSleeptimer(time_t announcetime, time_t alarmtime, int timerid)
 {
 	int timerID;
@@ -86,7 +86,8 @@ int CTimerdClient::setSleeptimer(time_t announcetime, time_t alarmtime, int time
 
 	return timerID;   
 }
-
+*/
+/*
 int CTimerdClient::getSleeptimerID()
 {
 	send(CTimerdMsg::CMD_GETSLEEPTIMER);
@@ -96,7 +97,8 @@ int CTimerdClient::getSleeptimerID()
 	close_connection();  
 	return response.eventID;
 }
-
+*/
+/*
 int CTimerdClient::getSleepTimerRemaining()
 {
 	int timerID;
@@ -112,6 +114,7 @@ int CTimerdClient::getSleepTimerRemaining()
 	else
 		return 0;
 }
+*/
 
 void CTimerdClient::getTimerList(CTimerd::TimerList &timerlist)
 {
@@ -204,7 +207,7 @@ bool CTimerdClient::rescheduleTimerEvent(int eventid, time_t announcediff, time_
 	close_connection();
 	return response.status;
 }
-
+#if 0
 int CTimerdClient::addTimerEvent( CTimerd::CTimerEventTypes evType, void* data, time_t announcetime, time_t alarmtime,time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount,bool forceadd)
 {
 
@@ -286,7 +289,8 @@ int CTimerdClient::addTimerEvent( CTimerd::CTimerEventTypes evType, void* data, 
 
 	return( response.eventID);
 }
-
+#endif
+/*
 void CTimerdClient::removeTimerEvent( int evId)
 {
 	CTimerdMsg::commandRemoveTimer msgRemoveTimer;
@@ -297,6 +301,7 @@ void CTimerdClient::removeTimerEvent( int evId)
 
 	close_connection();  
 }
+*/
 
 bool CTimerdClient::isTimerdAvailable()
 {
@@ -317,7 +322,7 @@ CTimerd::TimerList CTimerdClient::getOverlappingTimers(time_t& startTime, time_t
 	int timerPost;
 
 	getTimerList(timerlist);
-	getRecordingSafety(timerPre, timerPost);
+	//getRecordingSafety(timerPre, timerPost);
 
 	for (CTimerd::TimerList::iterator it = timerlist.begin();
 	     it != timerlist.end();it++)
@@ -360,7 +365,7 @@ void CTimerdClient::modifyTimerAPid(int eventid, unsigned char apids)
 	send(CTimerdMsg::CMD_SETAPID, (char*) &data, sizeof(data)); 
 	close_connection();
 }
-
+/*
 void CTimerdClient::setRecordingSafety(int pre, int post)
 {
 	CTimerdMsg::commandRecordingSafety data;
@@ -369,7 +374,8 @@ void CTimerdClient::setRecordingSafety(int pre, int post)
 	send(CTimerdMsg::CMD_SETRECSAFETY, (char*) &data, sizeof(data)); 
 	close_connection();
 }
-
+*/
+#if 0
 void CTimerdClient::getRecordingSafety(int &pre, int &post)
 {
 	send(CTimerdMsg::CMD_GETRECSAFETY);
@@ -390,6 +396,7 @@ void CTimerdClient::getRecordingSafety(int &pre, int &post)
 		post = 0;
 	}
 }
+#endif
 
 //void CTimerdClient::getWeekdaysFromStr(int *rep, const char* str)
 void CTimerdClient::getWeekdaysFromStr(CTimerd::CTimerEventRepeat *eventRepeat, const char* str)
@@ -428,7 +435,7 @@ void CTimerdClient::setWeekdaysToStr(CTimerd::CTimerEventRepeat rep, char* str)
 	//else
 	//	strcpy(str,"-------");
 }
-
+/*
 void CTimerdClient::stopTimerEvent( int evId)
 {
 	CTimerdMsg::commandRemoveTimer msgRemoveTimer;
@@ -439,4 +446,5 @@ void CTimerdClient::stopTimerEvent( int evId)
 
 	close_connection();  
 }
+*/
 

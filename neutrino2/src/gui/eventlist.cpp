@@ -59,6 +59,8 @@
 //
 #include <zapit/zapit.h>
 
+#include <timerd/timerd.h>
+
 #include <algorithm>
 
 #include <system/debug.h>
@@ -349,7 +351,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 				CTimerd::CTimerEventTypes etype = isScheduled(channel_id, &evtlist[selected], &tID);
 				if(etype == CTimerd::TIMER_RECORD) 
 				{
-					g_Timerd->removeTimerEvent(tID);
+					timerd_removeTimerEvent(tID);
 					timerlist.clear();
 					g_Timerd->getTimerList(timerlist);
 
@@ -359,7 +361,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 				
 				if (recDir != NULL)
 				{
-					if (g_Timerd->addRecordTimerEvent(channel_id,
+					if (timerd_addRecordTimerEvent(channel_id,
 								evtlist[selected].startTime,
 								evtlist[selected].startTime + evtlist[selected].duration,
 								evtlist[selected].eventID, evtlist[selected].startTime,
@@ -368,7 +370,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 					{
 						if(askUserOnTimerConflict(evtlist[selected].startTime - (ANNOUNCETIME + 120), evtlist[selected].startTime + evtlist[selected].duration))
 						{
-							g_Timerd->addRecordTimerEvent(channel_id,
+							timerd_addRecordTimerEvent(channel_id,
 									evtlist[selected].startTime,
 									evtlist[selected].startTime + evtlist[selected].duration,
 									evtlist[selected].eventID, evtlist[selected].startTime,
@@ -400,7 +402,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 			
 			if(etype == CTimerd::TIMER_ZAPTO) 
 			{
-				g_Timerd->removeTimerEvent(tID);
+				timerd_removeTimerEvent(tID);
 				timerlist.clear();
 				g_Timerd->getTimerList(timerlist);
 
@@ -408,7 +410,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 				continue;
 			}
 
-			g_Timerd->addZaptoTimerEvent(channel_id, 
+			timerd_addZaptoTimerEvent(channel_id, 
 						evtlist[selected].startTime,
 						evtlist[selected].startTime - ANNOUNCETIME, 0,
 						evtlist[selected].eventID, evtlist[selected].startTime, 0);

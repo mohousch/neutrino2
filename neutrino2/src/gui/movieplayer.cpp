@@ -65,6 +65,8 @@
 
 #include <daemonc/remotecontrol.h>
 
+#include <timerd/timerd.h>
+
 #include <system/settings.h>
 #include <system/helpers.h>
 #include <system/tmdbparser.h>
@@ -635,7 +637,7 @@ void CMoviePlayerGui::stop()
 			if(MessageBox(_("Information"), _("You really want to to stop record ?"), mbrYes, mbYes | mbNo, NULL, 450, 30, true) == mbrYes)
 			{
 				CVCRControl::getInstance()->Stop();
-				g_Timerd->stopTimerEvent(CNeutrinoApp::getInstance()->recording_id);
+				timerd_stopTimerEvent(CNeutrinoApp::getInstance()->recording_id);
 				CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
 
 				CNeutrinoApp::getInstance()->recording_id = 0;

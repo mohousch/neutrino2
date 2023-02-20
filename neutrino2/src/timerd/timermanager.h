@@ -232,14 +232,14 @@ class CTimerManager
 		
 		CTimerManager();
 		static void* timerThread(void *arg);
-		CTimerEvent			*nextEvent();
+		CTimerEvent *nextEvent();
 	public:
 		
 		
 		static CTimerManager* getInstance();
 		
 		CEventServer* getEventServer() {return eventServer;};
-		int addEvent(CTimerEvent*,bool save = true);
+		int addEvent(CTimerEvent*, bool save = true);
 		bool removeEvent(int leventID);
 		bool stopEvent(int leventID);
 		CTimerEvent* getNextEvent();

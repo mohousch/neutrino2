@@ -447,13 +447,13 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		if(timerNew.eventRepeat >= CTimerd::TIMERREPEAT_WEEKDAYS)
 			g_Timerd->getWeekdaysFromStr(&timerNew.eventRepeat, m_weekdaysStr.c_str());
 
-		if (g_Timerd->addTimerEvent(timerNew.eventType,data,timerNew.announceTime,timerNew.alarmTime, timerNew.stopTime,timerNew.eventRepeat,timerNew.repeatCount,false) == -1)
+		if (timerd_addTimerEvent(timerNew.eventType,data,timerNew.announceTime,timerNew.alarmTime, timerNew.stopTime,timerNew.eventRepeat,timerNew.repeatCount,false) == -1)
 		{
 			bool forceAdd = askUserOnTimerConflict(timerNew.announceTime,timerNew.stopTime);
 
 			if (forceAdd)
 			{
-				g_Timerd->addTimerEvent(timerNew.eventType,data,timerNew.announceTime,timerNew.alarmTime, timerNew.stopTime, timerNew.eventRepeat,timerNew.repeatCount,true);
+				timerd_addTimerEvent(timerNew.eventType,data,timerNew.announceTime,timerNew.alarmTime, timerNew.stopTime, timerNew.eventRepeat,timerNew.repeatCount,true);
 			}
 		}
 		
@@ -573,7 +573,7 @@ int CTimerList::show()
 		{
 			selected = listBox->getSelected();
 
-			g_Timerd->removeTimerEvent(timerlist[selected].eventID);
+			timerd_removeTimerEvent(timerlist[selected].eventID);
 			skipEventID = timerlist[selected].eventID;
 			update = true;
 		}
