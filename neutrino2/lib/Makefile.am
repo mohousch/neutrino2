@@ -1,7 +1,6 @@
 SUBDIRS = \
 	connection \
 	libeventserver \
-	timerdclient \
 	libconfigfile \
 	libmd5sum \
 	libnet \

@@ -44,6 +44,7 @@
 #define TIMERD_APIDS_AC3  0x04
 #define TIMERD_APIDS_ALL  0xFF
 
+/*
 class CTimerd
 {
 	public:
@@ -107,31 +108,31 @@ class CTimerd
 		};
 
 		class RecordingInfo : public EventInfo
-			{
+		{
 			public:
 				RecordingInfo(){};
 				RecordingInfo(EventInfo& e)
-					{
-						apids = e.apids;
-						channel_id = e.channel_id;
-						epgID = e.epgID;
-						epg_starttime = e.epg_starttime;
-						recordingSafety = e.recordingSafety;
-					};
+				{
+					apids = e.apids;
+					channel_id = e.channel_id;
+					epgID = e.epgID;
+					epg_starttime = e.epg_starttime;
+					recordingSafety = e.recordingSafety;
+				};
 				RecordingInfo& operator = (EventInfo& e)
-					{
-						apids = e.apids;
-						channel_id = e.channel_id;
-						epgID = e.epgID;
-						epg_starttime = e.epg_starttime;
-						recordingSafety = e.recordingSafety;
-						return *this;
-					}
+				{
+					apids = e.apids;
+					channel_id = e.channel_id;
+					epgID = e.epgID;
+					epg_starttime = e.epg_starttime;
+					recordingSafety = e.recordingSafety;
+					return *this;
+				}
 				unsigned char apids;
 				int eventID;
 				char recordingDir[RECORD_DIR_MAXLEN];
 				char epgTitle[EPG_TITLE_MAXLEN];
-			};
+		};
 
 		struct RecordingStopInfo
 		{
@@ -166,6 +167,7 @@ class CTimerd
 		
 		typedef std::vector<responseGetTimer> TimerList;
 };
+*/
 
 #endif
 

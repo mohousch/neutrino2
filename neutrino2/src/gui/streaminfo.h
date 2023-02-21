@@ -20,8 +20,8 @@
 */
 
 
-#ifndef __streaminfo2__
-#define __streaminfo2__
+#ifndef __streaminfo__
+#define __streaminfo__
 
 #include <gui/widget/widget.h>
 
@@ -32,7 +32,7 @@
 #include <dmx_cs.h>
 
 
-class CStreamInfo2 : public CMenuTarget
+class CStreamInfo : public CMenuTarget
 {
 	private:
 
@@ -69,13 +69,15 @@ class CStreamInfo2 : public CMenuTarget
 		int   sig_text_snr_x;
 		int   sig_text_rate_x;
 
-		struct feSignal {
+		struct feSignal 
+		{
 			unsigned long	ber, old_ber, max_ber, min_ber;
 			unsigned long	sig, old_sig, max_sig, min_sig;
 			unsigned long	snr, old_snr, max_snr, min_snr;
 		} signal;
 		
-		struct bitrate {
+		struct bitrate 
+		{
 			unsigned int short_average, max_short_average, min_short_average;
 		} rate;
 
@@ -105,8 +107,8 @@ class CStreamInfo2 : public CMenuTarget
 
 	public:
 
-		CStreamInfo2();
-		~CStreamInfo2();
+		CStreamInfo();
+		~CStreamInfo();
 
 		void hide();
 		int exec(CMenuTarget* parent, const std::string & actionKey);
@@ -114,6 +116,4 @@ class CStreamInfo2 : public CMenuTarget
 };
 
 #endif
-
-
 

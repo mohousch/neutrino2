@@ -354,7 +354,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 
 		timerlist[selected].announceTime = timerlist[selected].alarmTime -60;
 		if(timerlist[selected].eventRepeat >= CTimerd::TIMERREPEAT_WEEKDAYS)
-			g_Timerd->getWeekdaysFromStr(&timerlist[selected].eventRepeat, m_weekdaysStr.c_str());
+			CTimerd::getInstance()->getWeekdaysFromStr(&timerlist[selected].eventRepeat, m_weekdaysStr.c_str());
 		
 		if(timerlist[selected].eventType == CTimerd::TIMER_RECORD)
 		{
@@ -364,15 +364,15 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 			else
 				timerlist[selected].apids = (timer_apids_std * TIMERD_APIDS_STD) | (timer_apids_ac3 * TIMERD_APIDS_AC3) |
 					(timer_apids_alt * TIMERD_APIDS_ALT);
-			g_Timerd->modifyTimerAPid(timerlist[selected].eventID,timerlist[selected].apids);
-			g_Timerd->modifyRecordTimerEvent(timerlist[selected].eventID, timerlist[selected].announceTime,
+			CTimerd::getInstance()->modifyTimerAPid(timerlist[selected].eventID,timerlist[selected].apids);
+			CTimerd::getInstance()->modifyRecordTimerEvent(timerlist[selected].eventID, timerlist[selected].announceTime,
 						      timerlist[selected].alarmTime,
 						      timerlist[selected].stopTime, timerlist[selected].eventRepeat,
 						      timerlist[selected].repeatCount,timerlist[selected].recordingDir);
 		} 
 		else
 		{
-			g_Timerd->modifyTimerEvent(timerlist[selected].eventID, timerlist[selected].announceTime,
+			CTimerd::getInstance()->modifyTimerEvent(timerlist[selected].eventID, timerlist[selected].announceTime,
 						timerlist[selected].alarmTime,
 						timerlist[selected].stopTime, timerlist[selected].eventRepeat,
 						timerlist[selected].repeatCount);
@@ -445,15 +445,15 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		}
 		
 		if(timerNew.eventRepeat >= CTimerd::TIMERREPEAT_WEEKDAYS)
-			g_Timerd->getWeekdaysFromStr(&timerNew.eventRepeat, m_weekdaysStr.c_str());
+			CTimerd::getInstance()->getWeekdaysFromStr(&timerNew.eventRepeat, m_weekdaysStr.c_str());
 
-		if (timerd_addTimerEvent(timerNew.eventType,data,timerNew.announceTime,timerNew.alarmTime, timerNew.stopTime,timerNew.eventRepeat,timerNew.repeatCount,false) == -1)
+		if (CTimerd::getInstance()->addTimerEvent(timerNew.eventType,data,timerNew.announceTime,timerNew.alarmTime, timerNew.stopTime,timerNew.eventRepeat,timerNew.repeatCount,false) == -1)
 		{
 			bool forceAdd = askUserOnTimerConflict(timerNew.announceTime,timerNew.stopTime);
 
 			if (forceAdd)
 			{
-				timerd_addTimerEvent(timerNew.eventType,data,timerNew.announceTime,timerNew.alarmTime, timerNew.stopTime, timerNew.eventRepeat,timerNew.repeatCount,true);
+				CTimerd::getInstance()->addTimerEvent(timerNew.eventType,data,timerNew.announceTime,timerNew.alarmTime, timerNew.stopTime, timerNew.eventRepeat,timerNew.repeatCount,true);
 			}
 		}
 		
@@ -468,7 +468,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 void CTimerList::updateEvents(void)
 {
 	timerlist.clear();
-	g_Timerd->getTimerList(timerlist);
+	CTimerd::getInstance()->getTimerList(timerlist);
 	
 	//Remove last deleted event from List
 	CTimerd::TimerList::iterator timer = timerlist.begin();
@@ -573,7 +573,7 @@ int CTimerList::show()
 		{
 			selected = listBox->getSelected();
 
-			timerd_removeTimerEvent(timerlist[selected].eventID);
+			CTimerd::getInstance()->removeTimerEvent(timerlist[selected].eventID);
 			skipEventID = timerlist[selected].eventID;
 			update = true;
 		}
@@ -975,7 +975,7 @@ int CTimerList::modifyTimer()
 		timerSettings->addItem( m2);
 	}
 
-	g_Timerd->setWeekdaysToStr(timer->eventRepeat, (char *)m_weekdaysStr.c_str());
+	CTimerd::getInstance()->setWeekdaysToStr(timer->eventRepeat, (char *)m_weekdaysStr.c_str());
 	timer->eventRepeat = (CTimerd::CTimerEventRepeat)(((int)timer->eventRepeat) & 0x1FF);
 	CStringInput timerSettings_weekdays(_("on weekdays"), (char *)m_weekdaysStr.c_str(), 7, _("Mo Tu We Th Fr Sa Su"), _("'X'=timer '-' no timer"), "-X");
 	CMenuForwarder *m4 = new CMenuForwarder(_("on weekdays"), ((int)timer->eventRepeat) >= (int)CTimerd::TIMERREPEAT_WEEKDAYS, m_weekdaysStr.c_str(), &timerSettings_weekdays );
@@ -1186,8 +1186,7 @@ int CTimerList::newTimer()
 
 bool askUserOnTimerConflict(time_t announceTime, time_t stopTime)
 {
-	CTimerdClient Timer;
-	CTimerd::TimerList overlappingTimers = Timer.getOverlappingTimers(announceTime,stopTime);
+	CTimerd::TimerList overlappingTimers = CTimerd::getInstance()->getOverlappingTimers(announceTime,stopTime);
 	
 	//printf("[CTimerdClient] attention\n%d\t%d\t%d conflicts with:\n",timerNew.announceTime,timerNew.alarmTime,timerNew.stopTime);
 

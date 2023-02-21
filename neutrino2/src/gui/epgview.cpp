@@ -809,14 +809,14 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 				case RC_red:
 					if (recDir != NULL)
 					{
-						if(g_Timerd->isTimerdAvailable())
+						if(CTimerd::getInstance()->isTimerdAvailable())
 						{
 							bool doRecord = true;
 							strcpy(recDir, g_settings.network_nfs_recordingdir);
 							
 							if (doRecord)
 							{
-								if (timerd_addRecordTimerEvent(channel_id,
+								if (CTimerd::getInstance()->addRecordTimerEvent(channel_id,
 												     epgData.epg_times.startzeit,
 												     epgData.epg_times.startzeit + epgData.epg_times.dauer,
 												     epgData.eventID, epgData.epg_times.startzeit,
@@ -826,7 +826,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 									if(askUserOnTimerConflict(epgData.epg_times.startzeit - (ANNOUNCETIME + 120),
 												  epgData.epg_times.startzeit + epgData.epg_times.dauer))
 									{
-										timerd_addRecordTimerEvent(channel_id,
+										CTimerd::getInstance()->addRecordTimerEvent(channel_id,
 														 epgData.epg_times.startzeit,
 														 epgData.epg_times.startzeit + epgData.epg_times.dauer,
 														 epgData.eventID, epgData.epg_times.startzeit,
@@ -851,9 +851,9 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 				case RC_yellow:
 				{
 					{
-						if(g_Timerd->isTimerdAvailable())
+						if(CTimerd::getInstance()->isTimerdAvailable())
 						{
-							timerd_addZaptoTimerEvent(channel_id,
+							CTimerd::getInstance()->addZaptoTimerEvent(channel_id,
 											epgData.epg_times.startzeit,
 											epgData.epg_times.startzeit - ANNOUNCETIME, 0,
 											epgData.eventID, epgData.epg_times.startzeit, 0);

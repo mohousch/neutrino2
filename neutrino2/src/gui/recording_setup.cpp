@@ -208,7 +208,7 @@ void CRecordingSettings::showMenu()
 	int rec_pre = 0;
 	int rec_post = 0;
 	
-	timerd_getRecordingSafety(rec_pre, rec_post);
+	CTimerd::getInstance()->getRecordingSafety(rec_pre, rec_post);
 
 	sprintf(g_settings.record_safety_time_before, "%02d", rec_pre/60);
 	sprintf(g_settings.record_safety_time_after, "%02d", rec_post/60);
@@ -299,7 +299,7 @@ void CRecordingSettings::showMenu()
 // recording safety notifier
 bool CRecordingSafetyNotifier::changeNotify(const std::string&, void *)
 {
-	timerd_setRecordingSafety(atoi(g_settings.record_safety_time_before)*60, atoi(g_settings.record_safety_time_after)*60);
+	CTimerd::getInstance()->setRecordingSafety(atoi(g_settings.record_safety_time_before)*60, atoi(g_settings.record_safety_time_after)*60);
 
    	return true;
 }

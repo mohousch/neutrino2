@@ -48,7 +48,7 @@
 #include <system/setting_helpers.h>
 #include <system/configure_network.h>
 
-#include <timerdclient/timerdtypes.h>
+#include <timerd/timerdtypes.h>
 
 #include <gui/timerlist.h>
 #include <gui/channellist.h>          		/* CChannelList */

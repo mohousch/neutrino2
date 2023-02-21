@@ -57,7 +57,7 @@ libneutrino2_gui_a_SOURCES = \
 	movieplayer.cpp \
 	rc_lock.cpp \
 	epgplus.cpp \
-	streaminfo2.cpp \
+	streaminfo.cpp \
 	dboxinfo.cpp \
 	plugins.cpp \
 	imageinfo.cpp \

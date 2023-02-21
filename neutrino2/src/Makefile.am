@@ -87,7 +87,6 @@ neutrino2_LDADD = \
 	gui/widget/colorchooser.o \
 	gui/widget/mountchooser.o \
 	gui/widget/keychooser.o \
-	$(top_builddir)/lib/timerdclient/libtimerdclient.a \
 	$(top_builddir)/lib/libconfigfile/libtuxbox-configfile.a \
 	$(top_builddir)/lib/connection/libtuxbox-connection.a \
 	$(top_builddir)/lib/libeventserver/libtuxbox-eventserver.a \

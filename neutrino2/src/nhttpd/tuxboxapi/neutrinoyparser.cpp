@@ -813,7 +813,7 @@ std::string  CNeutrinoYParser::func_get_timer_list(CyhookHandler *, std::string 
 	CTimerd::TimerList timerlist;				// List of bouquets
 
 	timerlist.clear();
-	NeutrinoAPI->Timerd->getTimerList(timerlist);
+	CTimerd::getInstance()->getTimerList(timerlist);
 	sort(timerlist.begin(), timerlist.end());
 
 	CZapit::BouquetChannelList channellist_tv;
@@ -950,7 +950,7 @@ std::string  CNeutrinoYParser::func_set_timer_form(CyhookHandler *hh, std::strin
 		if(stimerid != "")
 			timerId = (unsigned)atoi(stimerid.c_str());
 
-		NeutrinoAPI->Timerd->getTimer(timer, timerId);
+		CTimerd::getInstance()->getTimer(timer, timerId);
 		std::string zType = NeutrinoAPI->timerEventType2Str(timer.eventType);
 
 		hh->ParamList["timerId"] = itoa(timerId);
@@ -1027,7 +1027,7 @@ std::string  CNeutrinoYParser::func_set_timer_form(CyhookHandler *hh, std::strin
 
 	// Weekdays
 	char weekdays[8];
-	NeutrinoAPI->Timerd->setWeekdaysToStr(timer.eventRepeat, weekdays);
+	CTimerd::getInstance()->setWeekdaysToStr(timer.eventRepeat, weekdays);
 	hh->ParamList["weekdays"]=	 weekdays;
 
 	// timer repeats

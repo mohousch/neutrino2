@@ -211,7 +211,6 @@ lib/libeventserver/Makefile
 lib/libmd5sum/Makefile
 lib/libnet/Makefile
 lib/libxmltree/Makefile
-lib/timerdclient/Makefile
 lib/libtuxtxt/Makefile
 lib/libdvbsub/Makefile
 lib/liblcddisplay/Makefile

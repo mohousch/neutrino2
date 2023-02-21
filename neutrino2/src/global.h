@@ -40,7 +40,7 @@
 #include <zapit/zapit.h>
 
 #include <sectionsd/sectionsd.h>
-#include <timerdclient/timerdclient.h>
+#include <timerd/timerd.h>
 
 #include <driver/fontrenderer.h>
 #include <driver/rcinput.h>
@@ -82,10 +82,6 @@
 
 
 NEUTRINO_CPP  SNeutrinoSettings	g_settings;
-
-//NEUTRINO_CPP  CZapitClient		*g_Zapit;
-//NEUTRINO_CPP  CSectionsdClient	*g_Sectionsd;
-NEUTRINO_CPP  CTimerdClient		*g_Timerd;
 
 NEUTRINO_CPP  FBFontRenderClass		*g_fontRenderer;
 NEUTRINO_CPP  CFont 			* g_Font[FONT_TYPE_COUNT];

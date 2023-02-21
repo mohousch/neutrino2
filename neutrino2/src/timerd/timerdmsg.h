@@ -24,40 +24,36 @@
 #ifndef __timerdmsg_h__
 #define __timerdmsg_h__
 
+#include <string>
+#include <cstring>
 
-#include <connection/basicmessage.h>
-
-#include "timerdtypes.h" // REMINDER_MESSAGE_MAXLEN
-
-
-#define TIMERD_UDS_NAME "/tmp/timerd.sock"
+#include <timerd/timerdtypes.h> // REMINDER_MESSAGE_MAXLEN
 
 
-class CTimerdMsg : public CBasicMessage
+class CTimerdMsg
 {	
 	public:
-		static const CBasicMessage::t_version ACTVERSION = 2;
-
-		enum commands
+		enum events
 		{
-			//CMD_ADDTIMER = 1,
-			//CMD_REMOVETIMER,
-			CMD_GETTIMER,
-			CMD_GETTIMERLIST,
-			CMD_MODIFYTIMER,
-			//CMD_GETSLEEPTIMER,
-			CMD_RESCHEDULETIMER,
-
-			CMD_REGISTEREVENT,
-			CMD_UNREGISTEREVENT,
-			CMD_TIMERDAVAILABLE,
-			CMD_SHUTDOWN,
-			CMD_SETAPID,
-			//CMD_GETRECSAFETY,
-			//CMD_SETRECSAFETY,
-			//CMD_STOPTIMER
+			EVT_SHUTDOWN = 1,
+			EVT_ANNOUNCE_SHUTDOWN,
+			EVT_ZAPTO,
+			EVT_ANNOUNCE_ZAPTO,
+			EVT_NEXTPROGRAM,
+			EVT_ANNOUNCE_NEXTPROGRAM,
+			EVT_STANDBY_ON,
+			EVT_STANDBY_OFF,
+			EVT_RECORD_START,
+			EVT_RECORD_STOP,
+			EVT_ANNOUNCE_RECORD,
+			EVT_ANNOUNCE_SLEEPTIMER,
+			EVT_SLEEPTIMER,
+			EVT_REMIND,
+			EVT_EXEC_PLUGIN
 		};
-
+		
+		//
+		#if 0
 		struct commandAddTimer
 		{
 			CTimerd::CTimerEventTypes  eventType;
@@ -67,12 +63,13 @@ class CTimerdMsg : public CBasicMessage
 			time_t                     stopTime;			
 			uint32_t                   repeatCount;
 		};
-
+		#endif
 		struct commandGetTimer
 		{
 			int   eventID;
 		};
 
+		#if 0
 		struct commandModifyTimer
 		{
 			int                        eventID;
@@ -93,12 +90,13 @@ class CTimerdMsg : public CBasicMessage
 		{
 			char name[EXEC_PLUGIN_NAME_MAXLEN];
 		};
-
+		#endif
 		struct commandRecordDir
 		{
 			char recDir[RECORD_DIR_MAXLEN];
 		};
 
+		#if 0
 		struct commandSetAPid
 		{
 			int   eventID;
@@ -120,13 +118,14 @@ class CTimerdMsg : public CBasicMessage
 			int pre;
 			int post;
 		};
-
+		#endif
 
 		struct generalInteger
 		{
 			int number;
 		};
 
+		#if 0
 		struct responseAddTimer
 		{
 			int   eventID;
@@ -136,16 +135,19 @@ class CTimerdMsg : public CBasicMessage
 		{
 			bool available;
 		};
+		#endif
 			
 		struct responseGetSleeptimer
 		{
 			int   eventID;
 		};
 
+		#if 0
 		struct responseStatus
 		{
 			bool status;
 		};
+		#endif
 };
 
 #endif /* __timerdmsg_h__ */

@@ -112,7 +112,7 @@
 #include <gui/audio_select.h>
 #include <gui/channel_select.h>
 #include <gui/sleeptimer.h>
-#include <gui/streaminfo2.h>
+#include <gui/streaminfo.h>
 #include <gui/timerlist.h>
 #include <gui/imageinfo.h>
 #include <gui/pluginlist.h>
@@ -161,9 +161,9 @@
 #include <sectionsd/sectionsd.h>
 
 // timerd
-#include <timerdclient/timerdmsg.h>
-#include <timerdclient/timerdtypes.h>
-#include <timerdclient/timerdclient.h>
+#include <timerd/timerdmsg.h>
+#include <timerd/timerdtypes.h>
+#include <timerd/timerd.h>
 
 // deamonc
 #include <daemonc/remotecontrol.h>
@@ -259,7 +259,7 @@
 %include <src/gui/audio_select.h>
 %include <src/gui/channel_select.h>
 %include <src/gui/sleeptimer.h>
-%include <src/gui/streaminfo2.h>
+%include <src/gui/streaminfo.h>
 %include <src/gui/timerlist.h>
 %include <src/gui/imageinfo.h>
 %include <src/gui/pluginlist.h>
@@ -303,14 +303,12 @@
 %include <src/zapit/zapit.h>
 
 // sectionsd
-//%include <lib/sectionsdclient/sectionsdMsg.h>
 %include <src/sectionsd/sectionsdtypes.h>
 %include <src/sectionsd/sectionsd.h>
 
 // timerd
-//%include <lib/timerdclient/timerdmsg.h>
-%include <lib/timerdclient/timerdtypes.h>
-%include <lib/timerdclient/timerdclient.h>
+%include <src/timerd/timerdtypes.h>
+%include <src/timerd/timerd.h>
 
 // deamonc
 %include <src/daemonc/remotecontrol.h>

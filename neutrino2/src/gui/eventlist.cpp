@@ -199,7 +199,7 @@ void EventList::readEvents(const t_channel_id channel_id)
   			}
   		}
 		timerlist.clear();
-		g_Timerd->getTimerList(timerlist);
+		CTimerd::getInstance()->getTimerList(timerlist);
 
 	}
 	
@@ -351,9 +351,9 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 				CTimerd::CTimerEventTypes etype = isScheduled(channel_id, &evtlist[selected], &tID);
 				if(etype == CTimerd::TIMER_RECORD) 
 				{
-					timerd_removeTimerEvent(tID);
+					CTimerd::getInstance()->removeTimerEvent(tID);
 					timerlist.clear();
-					g_Timerd->getTimerList(timerlist);
+					CTimerd::getInstance()->getTimerList(timerlist);
 
 					paint(channel_id);
 					continue;
@@ -361,7 +361,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 				
 				if (recDir != NULL)
 				{
-					if (timerd_addRecordTimerEvent(channel_id,
+					if (CTimerd::getInstance()->addRecordTimerEvent(channel_id,
 								evtlist[selected].startTime,
 								evtlist[selected].startTime + evtlist[selected].duration,
 								evtlist[selected].eventID, evtlist[selected].startTime,
@@ -370,7 +370,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 					{
 						if(askUserOnTimerConflict(evtlist[selected].startTime - (ANNOUNCETIME + 120), evtlist[selected].startTime + evtlist[selected].duration))
 						{
-							timerd_addRecordTimerEvent(channel_id,
+							CTimerd::getInstance()->addRecordTimerEvent(channel_id,
 									evtlist[selected].startTime,
 									evtlist[selected].startTime + evtlist[selected].duration,
 									evtlist[selected].eventID, evtlist[selected].startTime,
@@ -386,7 +386,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 					}
 				}
 				timerlist.clear();
-				g_Timerd->getTimerList(timerlist);
+				CTimerd::getInstance()->getTimerList(timerlist);
 				
 				//
 				paint(channel_id);
@@ -402,22 +402,22 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 			
 			if(etype == CTimerd::TIMER_ZAPTO) 
 			{
-				timerd_removeTimerEvent(tID);
+				CTimerd::getInstance()->removeTimerEvent(tID);
 				timerlist.clear();
-				g_Timerd->getTimerList(timerlist);
+				CTimerd::getInstance()->getTimerList(timerlist);
 
 				paint(channel_id);
 				continue;
 			}
 
-			timerd_addZaptoTimerEvent(channel_id, 
+			CTimerd::getInstance()->addZaptoTimerEvent(channel_id, 
 						evtlist[selected].startTime,
 						evtlist[selected].startTime - ANNOUNCETIME, 0,
 						evtlist[selected].eventID, evtlist[selected].startTime, 0);
 					
 			MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 			timerlist.clear();
-			g_Timerd->getTimerList (timerlist);
+			CTimerd::getInstance()->getTimerList (timerlist);
 			
 			//
 			paint(channel_id);
@@ -479,7 +479,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 						g_RCInput->postMsg( msg, data );
 					}
 					timerlist.clear();
-					g_Timerd->getTimerList (timerlist);
+					CTimerd::getInstance()->getTimerList (timerlist);
 
 					paint(channel_id);
 				}

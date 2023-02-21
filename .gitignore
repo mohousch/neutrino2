@@ -1864,3 +1864,5 @@
 /neutrino2/src/zapit/scan.o
 /neutrino2/src/zapit/sdt.o
 /neutrino2/src/zapit/zapit.o
+/neutrino2/src/gui/.deps/streaminfo.Po
+/neutrino2/src/gui/streaminfo.o

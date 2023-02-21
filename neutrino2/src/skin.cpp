@@ -57,7 +57,7 @@
 #include <gui/epg_menu.h>
 #include <gui/epgplus.h>
 #include <gui/timerlist.h>
-#include <gui/streaminfo2.h>
+#include <gui/streaminfo.h>
 #include <gui/service_menu.h>
 #include <gui/mediaplayer.h>
 #include <gui/dboxinfo.h>
@@ -285,7 +285,7 @@ CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 	}
 	else if (name == "streaminfo")
 	{		
-		parent = new CStreamInfo2();
+		parent = new CStreamInfo();
 	}
 	else if (name == "sleeptimer")
 	{		

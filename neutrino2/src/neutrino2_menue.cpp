@@ -58,7 +58,7 @@
 
 #include <gui/audio_select.h>
 #include <gui/epgplus.h>
-#include <gui/streaminfo2.h>
+#include <gui/streaminfo.h>
 #include <gui/movieplayer.h>
 #include <gui/pluginlist.h>
 

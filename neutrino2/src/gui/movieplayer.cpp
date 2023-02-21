@@ -637,7 +637,7 @@ void CMoviePlayerGui::stop()
 			if(MessageBox(_("Information"), _("You really want to to stop record ?"), mbrYes, mbYes | mbNo, NULL, 450, 30, true) == mbrYes)
 			{
 				CVCRControl::getInstance()->Stop();
-				timerd_stopTimerEvent(CNeutrinoApp::getInstance()->recording_id);
+				CTimerd::getInstance()->stopTimerEvent(CNeutrinoApp::getInstance()->recording_id);
 				CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
 
 				CNeutrinoApp::getInstance()->recording_id = 0;

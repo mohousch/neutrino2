@@ -77,7 +77,7 @@
 #include <driver/color.h>
 
 #include <gui/epgplus.h>
-#include <gui/streaminfo2.h>
+#include <gui/streaminfo.h>
 
 #include <gui/widget/colorchooser.h>
 #include <gui/widget/messagebox.h>
@@ -146,7 +146,7 @@
 #include <system/fsmounter.h>
 #include <system/helpers.h>
 
-#include <timerdclient/timerdmsg.h>
+#include <timerd/timerdmsg.h>
 #include <timerd/timerd.h>
 
 // zapit includes
@@ -225,8 +225,8 @@ extern int dvbsub_terminate();
 static CProgressBar * g_volscale;
 
 // timerd thread
-static pthread_t timer_thread;
-void * timerd_main_thread(void *data);
+//static pthread_t timer_thread;
+//void * timerd_main_thread(void *data);
 
 // streamts thread
 extern int streamts_stop;				// defined in streamts.cpp
@@ -316,7 +316,6 @@ static void initGlobals(void)
 {
 	g_fontRenderer  = NULL;
 	g_RCInput       = NULL;
-	g_Timerd        = NULL;
 	g_RemoteControl = NULL;
 	g_EpgData       = NULL;
 	g_InfoViewer    = NULL;
@@ -2024,7 +2023,7 @@ int startAutoRecord(bool addTimer)
 	else if (addTimer) 
 	{
 		time_t now = time(NULL);
-		CNeutrinoApp::getInstance()->recording_id = timerd_addImmediateRecordTimerEvent(eventinfo.channel_id, now, now + g_settings.record_hours*60*60, eventinfo.epgID, eventinfo.epg_starttime, eventinfo.apids);
+		CNeutrinoApp::getInstance()->recording_id = CTimerd::getInstance()->addImmediateRecordTimerEvent(eventinfo.channel_id, now, now + g_settings.record_hours*60*60, eventinfo.epgID, eventinfo.epg_starttime, eventinfo.apids);
 	}	
 
 	CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
@@ -2044,7 +2043,7 @@ void stopAutoRecord()
 		
 		if(CNeutrinoApp::getInstance()->recording_id) 
 		{
-			timerd_stopTimerEvent(CNeutrinoApp::getInstance()->recording_id);
+			CTimerd::getInstance()->stopTimerEvent(CNeutrinoApp::getInstance()->recording_id);
 			CNeutrinoApp::getInstance()->recording_id = 0;
 		}
 	} 
@@ -2095,7 +2094,7 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 				eventinfo.epgTitle[EPG_TITLE_MAXLEN - 1] = 0;
 				
 				// record end time
-				timerd_getRecordingSafety(pre, post);
+				CTimerd::getInstance()->getRecordingSafety(pre, post);
 				
 				if (epgData.epg_times.startzeit > 0)
 					record_end = epgData.epg_times.startzeit + epgData.epg_times.dauer + post;
@@ -2130,12 +2129,12 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 			}
 			else if (addTimer) // add timer
 			{
-				recording_id = timerd_addImmediateRecordTimerEvent(eventinfo.channel_id, now, record_end, eventinfo.epgID, eventinfo.epg_starttime, eventinfo.apids);
+				recording_id = CTimerd::getInstance()->addImmediateRecordTimerEvent(eventinfo.channel_id, now, record_end, eventinfo.epgID, eventinfo.epg_starttime, eventinfo.apids);
 			}
 		} 
 		else 
 		{
-			timerd_stopTimerEvent(recording_id);
+			CTimerd::getInstance()->stopTimerEvent(recording_id);
 			
 			startNextRecording();
 		}
@@ -2403,7 +2402,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	CVFD::getInstance()->Clear();	
 
 	// show start up msg in vfd
-	CVFD::getInstance()->ShowText( (char *)"NEUTRINO2");
+	CVFD::getInstance()->ShowText( (char *)"N2");
 
 	// rc 
 	g_RCInput = new CRCInput;
@@ -2486,7 +2485,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 	}
 
 	// timerd thread
-	pthread_create(&timer_thread, NULL, timerd_main_thread, (void *) NULL);
+	//pthread_create(&timer_thread, NULL, timerd_main_thread, (void *) NULL);
+	CTimerd::getInstance()->Start();
 
 	// nhttpd thread FIXME:
 	pthread_create(&nhttpd_thread, NULL, nhttpd_main_thread, (void *) NULL);	
@@ -2502,9 +2502,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	CVFD::getInstance()->showVolume(g_settings.current_volume);
 	CVFD::getInstance()->setMuted(current_muted);
 #endif
-	
-	// timed client
-	g_Timerd = new CTimerdClient;
 	
 	// remote control
 	g_RemoteControl = new CRemoteControl;
@@ -3009,7 +3006,7 @@ void CNeutrinoApp::RealRun(void)
 				{
 					if(MessageBox(_("Information"), _("You really want to to stop record ?"), mbrYes, mbYes | mbNo, NULL, 450, 30, true) == mbrYes)
 					{
-						timerd_stopTimerEvent(recording_id);
+						CTimerd::getInstance()->stopTimerEvent(recording_id);
 						recordingstatus = 0; //FIXME???
 						CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
 					}
@@ -3774,10 +3771,9 @@ _repeat:
 			std::string name = _("Zapto timer in one minute");
 
 			CTimerd::TimerList tmpTimerList;
-			CTimerdClient tmpTimerdClient;
 
 			tmpTimerList.clear();
-			tmpTimerdClient.getTimerList( tmpTimerList );
+			CTimerd::getInstance()->getTimerList( tmpTimerList );
 
 			if(tmpTimerList.size() > 0) 
 			{
@@ -4133,7 +4129,7 @@ void CNeutrinoApp::ExitRun(int retcode, bool save)
 		if(recordingstatus) 
 		{
 			CVCRControl::getInstance()->Stop();
-			timerd_stopTimerEvent(recording_id);
+			CTimerd::getInstance()->stopTimerEvent(recording_id);
 		}
 
 		if(retcode > RESTART)
@@ -4206,20 +4202,11 @@ void CNeutrinoApp::ExitRun(int retcode, bool save)
 		if (g_RCInput != NULL)
 			delete g_RCInput;
 			
-		//if(g_Sectionsd)
-		//	delete g_Sectionsd;
-			
-		if(g_Timerd)
-			delete g_Timerd;
-			
 		if(g_RemoteControl)
 			delete g_RemoteControl;
 			
 		if(g_fontRenderer)
 			delete g_fontRenderer;
-			
-		//if(g_Zapit)
-		//	delete g_Zapit;
 			
 		if (frameBuffer != NULL)
 			delete frameBuffer;
@@ -5089,10 +5076,11 @@ void stop_daemons()
 	dprintf(DEBUG_NORMAL, "stop_daemons: streamts shutdown done\n");	
 
 	// stop timerd	  
-	dprintf(DEBUG_NORMAL, "stop_daemons: timerd shutdown\n");
-	g_Timerd->shutdown();
-	pthread_join(timer_thread, NULL);
-	dprintf(DEBUG_NORMAL, "stop_daemons: timerd shutdown done\n");		
+	//dprintf(DEBUG_NORMAL, "stop_daemons: timerd shutdown\n");
+	//timerd_shutdown();
+	//pthread_join(timer_thread, NULL);
+	//dprintf(DEBUG_NORMAL, "stop_daemons: timerd shutdown done\n");
+	CTimerd::getInstance()->Stop();		
 
 	// stop sectionsd
 	//sectionsd_stop = 1;

@@ -131,10 +131,6 @@ std::string CNeutrinoAPI::ddmodes[] 		= { "CH1/CH2", "C", "L/R", "L/C/R", "L/R/S
 //
 CNeutrinoAPI::CNeutrinoAPI()
 {
-	//Sectionsd = new CSectionsdClient();
-	//Zapit = new CZapit();
-	Timerd = new CTimerdClient();
-
 	NeutrinoYParser = new CNeutrinoYParser(this);
 	ControlAPI = new CControlAPI(this);
 	
@@ -171,12 +167,6 @@ CNeutrinoAPI::~CNeutrinoAPI(void)
 		
 	if (ControlAPI)
 		delete ControlAPI;
-	
-	//if (Zapit)
-	//	delete Zapit;
-		
-	if (Timerd)
-		delete Timerd;
 		
 	if (EventServer)
 		delete EventServer;

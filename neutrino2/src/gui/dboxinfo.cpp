@@ -49,7 +49,7 @@
 
 #include <gui/dboxinfo.h>
 #include <gui/imageinfo.h>
-#include <gui/streaminfo2.h>
+#include <gui/streaminfo.h>
 
 // zapit includes
 #include <zapit/frontend_c.h>
@@ -63,7 +63,6 @@ static const int FSHIFT = 16;              	// nr of bits of precision
 #define LOAD_FRAC(x) LOAD_INT(((x) & (FIXED_1-1)) * 100)
 
 extern int FrontendCount;
-//CFrontend * getFE(int index);
 
 // hdd
 #include <stdio.h>
@@ -539,7 +538,7 @@ void CInfoMenu::showMenu()
 		infoMenu->addItem(new CMenuForwarder(_("Image info"),  true, NULL, new CImageInfo(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_IMAGEINFO), false);
 		
 		//
-		infoMenu->addItem(new CMenuForwarder(_("Stream information"), true, NULL, new CStreamInfo2(), "", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
+		infoMenu->addItem(new CMenuForwarder(_("Stream information"), true, NULL, new CStreamInfo(), "", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
 		
 		//
 		infoMenu->integratePlugins(CPlugins::I_TYPE_MAIN);

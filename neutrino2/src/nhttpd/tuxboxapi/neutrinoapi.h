@@ -7,10 +7,9 @@
 
 // tuxbox
 #include <eventserver.h>
-#include <sectionsd/sectionsd.h>
-#include <timerdclient/timerdclient.h>
 
-/*zapit includes*/
+#include <sectionsd/sectionsd.h>
+#include <timerd/timerd.h>
 #include <zapit/zapit.h>
 
 // nhttpd
@@ -30,8 +29,6 @@ bool _initialize_iso639_map(void);
 //-------------------------------------------------------------------------
 class CNeutrinoAPI
 {
-	// Clientlibs
-	CTimerdClient		*Timerd;
 #ifdef ENABLE_LCDAPI
 	CLCDAPI                 *LcdAPI;
 #endif	

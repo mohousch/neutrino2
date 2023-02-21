@@ -52,8 +52,8 @@
 
 #include <sectionsd/sectionsd.h>
 
-#include <timerdclient/timerdclient.h>
-#include <timerdclient/timerdmsg.h>
+#include <timerd/timerd.h>
+#include <timerd/timerdmsg.h>
 
 //
 #include <driver/fontrenderer.h>
@@ -110,7 +110,7 @@
 #include <gui/infoviewer.h>
 #include <gui/eventlist.h>
 #include <gui/epgplus.h>
-#include <gui/streaminfo2.h>
+#include <gui/streaminfo.h>
 #include <gui/bouquetlist.h>
 #include <gui/eventlist.h>
 #include <gui/channellist.h>
@@ -193,8 +193,6 @@
 
 // globals
 extern  SNeutrinoSettings g_settings;
-
-extern  CTimerdClient *g_Timerd;
 
 extern  FBFontRenderClass *g_fontRenderer;
 

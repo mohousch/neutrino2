@@ -29,7 +29,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-#include <gui/streaminfo2.h>
+#include <gui/streaminfo.h>
 
 #include <global.h>
 #include <neutrino2.h>
@@ -62,7 +62,7 @@ extern CFrontend * live_fe;
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 
 
-CStreamInfo2::CStreamInfo2()
+CStreamInfo::CStreamInfo()
 {
 	frameBuffer = CFrameBuffer::getInstance ();
 	
@@ -106,14 +106,14 @@ CStreamInfo2::CStreamInfo2()
 	 ts_dmx = NULL;
 }
 
-CStreamInfo2::~CStreamInfo2 ()
+CStreamInfo::~CStreamInfo()
 {
 	//videoDecoder->Pig(-1, -1, -1, -1);
 }
 
-int CStreamInfo2::exec(CMenuTarget * parent, const std::string&)
+int CStreamInfo::exec(CMenuTarget * parent, const std::string&)
 {
-	dprintf(DEBUG_NORMAL, "CStreamInfo2::exec\n");
+	dprintf(DEBUG_NORMAL, "CStreamInfo::exec\n");
 
 	if (parent)
 		parent->hide();
@@ -149,7 +149,7 @@ int CStreamInfo2::exec(CMenuTarget * parent, const std::string&)
 	return RETURN_REPAINT;
 }
 
-int CStreamInfo2::doSignalStrengthLoop()
+int CStreamInfo::doSignalStrengthLoop()
 {	
 #define RED_BAR 40
 #define YELLOW_BAR 70
@@ -340,12 +340,12 @@ int CStreamInfo2::doSignalStrengthLoop()
 	return msg;
 }
 
-void CStreamInfo2::hide ()
+void CStreamInfo::hide ()
 {
 	widget->hide();
 }
 
-void CStreamInfo2::paint_signal_fe_box(int _x, int _y, int w, int h)
+void CStreamInfo::paint_signal_fe_box(int _x, int _y, int w, int h)
 {
 	 if(!IS_WEBTV(live_channel_id))
 	 {
@@ -403,7 +403,7 @@ void CStreamInfo2::paint_signal_fe_box(int _x, int _y, int w, int h)
 	}
 }
 
-void CStreamInfo2::paint_signal_fe(struct bitrate br, struct feSignal s)
+void CStreamInfo::paint_signal_fe(struct bitrate br, struct feSignal s)
 {
 	if(!live_fe || (IS_WEBTV(live_channel_id)))
 		return;
@@ -475,7 +475,7 @@ void CStreamInfo2::paint_signal_fe(struct bitrate br, struct feSignal s)
 }
 
 // -- calc y from max_range and max_y
-int CStreamInfo2::y_signal_fe (unsigned long value, unsigned long max_value, int max_y)
+int CStreamInfo::y_signal_fe (unsigned long value, unsigned long max_value, int max_y)
 {
 	long l;
 
@@ -489,7 +489,7 @@ int CStreamInfo2::y_signal_fe (unsigned long value, unsigned long max_value, int
 	return (int) l;
 }
 
-void CStreamInfo2::SignalRenderStr(unsigned int value, int _x, int _y)
+void CStreamInfo::SignalRenderStr(unsigned int value, int _x, int _y)
 {
 	char str[30];
 
@@ -498,7 +498,7 @@ void CStreamInfo2::SignalRenderStr(unsigned int value, int _x, int _y)
 	g_Font[font_small]->RenderString(_x, _y + 5, 60, str, COL_MENUCONTENTDARK, 0, true);
 }
 
-void CStreamInfo2::paint(int /*mode*/)
+void CStreamInfo::paint(int /*mode*/)
 {
 	const char * head_string;
 	int ypos = y + 5;
@@ -530,7 +530,7 @@ void CStreamInfo2::paint(int /*mode*/)
 	
 }
 
-void CStreamInfo2::paint_techinfo(int xpos, int ypos)
+void CStreamInfo::paint_techinfo(int xpos, int ypos)
 {
 	char buf[100];
 	int xres, yres, framerate;
@@ -789,7 +789,7 @@ long delta_time_ms (struct timeval *tv, struct timeval *last_tv)
 
 uint64_t b_total;
 
-int CStreamInfo2::ts_setup()
+int CStreamInfo::ts_setup()
 {
 	if(!IS_WEBTV(live_channel_id))
 	{
@@ -835,7 +835,7 @@ int CStreamInfo2::ts_setup()
 	return 0;
 }
 
-int CStreamInfo2::update_rate()
+int CStreamInfo::update_rate()
 {
 	int ret = 0;
 	
@@ -887,7 +887,7 @@ int CStreamInfo2::update_rate()
 	return ret;
 }
 
-int CStreamInfo2::ts_close()
+int CStreamInfo::ts_close()
 {
 	if(!IS_WEBTV(live_channel_id))
 	{
@@ -900,7 +900,7 @@ int CStreamInfo2::ts_close()
 	return 0;
 }
 
-void CStreamInfo2::showSNR()
+void CStreamInfo::showSNR()
 {
 	 if(!IS_WEBTV(live_channel_id))
 	 {

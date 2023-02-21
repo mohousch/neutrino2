@@ -63,6 +63,8 @@
 #include <global.h>
 #include <neutrino2.h>
 
+#include <timerd/timerdmsg.h>
+
 #include <system/debug.h>
 
 
@@ -1271,72 +1273,72 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 						
 						switch(emsg.eventID)
 						{
-							case CTimerdClient::EVT_ANNOUNCE_RECORD :
+							case CTimerdMsg::EVT_ANNOUNCE_RECORD :
 								*msg = NeutrinoMessages::ANNOUNCE_RECORD;
 								*data = (size_t) p;
 								dont_delete_p = true;
 								break;
 								
-							case CTimerdClient::EVT_ANNOUNCE_ZAPTO :
+							case CTimerdMsg::EVT_ANNOUNCE_ZAPTO :
 								*msg = NeutrinoMessages::ANNOUNCE_ZAPTO;
 								*data = 0;
 								break;
 								
-							case CTimerdClient::EVT_ANNOUNCE_SHUTDOWN :
+							case CTimerdMsg::EVT_ANNOUNCE_SHUTDOWN :
 								*msg = NeutrinoMessages::ANNOUNCE_SHUTDOWN;
 								*data = 0;
 								break;
 								
-							case CTimerdClient::EVT_ANNOUNCE_SLEEPTIMER :
+							case CTimerdMsg::EVT_ANNOUNCE_SLEEPTIMER :
 								*msg = NeutrinoMessages::ANNOUNCE_SLEEPTIMER;
 								*data = 0;
 								break;
 								
-							case CTimerdClient::EVT_SLEEPTIMER :
+							case CTimerdMsg::EVT_SLEEPTIMER :
 								*msg = NeutrinoMessages::SLEEPTIMER;
 								*data = 0;
 								break;
 								
-							case CTimerdClient::EVT_RECORD_START :
+							case CTimerdMsg::EVT_RECORD_START :
 								*msg = NeutrinoMessages::RECORD_START;
 								*data = (size_t) p;
 								dont_delete_p = true;
 								break;
 								
-							case CTimerdClient::EVT_RECORD_STOP :
+							case CTimerdMsg::EVT_RECORD_STOP :
 								*msg = NeutrinoMessages::RECORD_STOP;
 								*data = (size_t) p;
 								dont_delete_p = true;
 								break;
 								
-							case CTimerdClient::EVT_ZAPTO :
+							case CTimerdMsg::EVT_ZAPTO :
 								*msg = NeutrinoMessages::ZAPTO;
 								*data = (size_t)  p;
 								dont_delete_p = true;
 								break;
 								
-							case CTimerdClient::EVT_SHUTDOWN :
+							case CTimerdMsg::EVT_SHUTDOWN :
 								*msg = NeutrinoMessages::SHUTDOWN;
 								*data = 0;
 								break;
 								
-							case CTimerdClient::EVT_STANDBY_ON :
+							case CTimerdMsg::EVT_STANDBY_ON :
 								*msg = NeutrinoMessages::STANDBY_ON;
 								*data = 0;
 								break;
 								
-							case CTimerdClient::EVT_STANDBY_OFF :
+							case CTimerdMsg::EVT_STANDBY_OFF :
 								*msg = NeutrinoMessages::STANDBY_OFF;
 								*data = 0;
 								break;
 								
-							case CTimerdClient::EVT_REMIND :
+							case CTimerdMsg::EVT_REMIND :
 								*msg = NeutrinoMessages::REMIND;
 								*data = (size_t) p;
 								dont_delete_p = true;
 								break;
 								
-							case CTimerdClient::EVT_EXEC_PLUGIN :
+							case CTimerdMsg::EVT_EXEC_PLUGIN :
 								*msg = NeutrinoMessages::EVT_START_PLUGIN;
 								*data = (size_t) p;
 								dont_delete_p = true;

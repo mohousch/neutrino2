@@ -42,7 +42,7 @@
 #include <gui/eventlist.h>
 #include <gui/infoviewer.h>
 #include <gui/epgplus.h>
-#include <gui/streaminfo2.h>
+#include <gui/streaminfo.h>
 
 #include <system/debug.h>
 
@@ -101,7 +101,7 @@ int CEPGMenuHandler::doMenu()
 		redMenu->addItem(new ClistBoxItem(_("Eventlist overview"), true, NULL, new CEPGplusHandler(), "", RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW, NEUTRINO_ICON_MENUITEM_STANDBY));
 
 		//tech info
-		redMenu->addItem(new ClistBoxItem(_("Stream information"), true, NULL, new CStreamInfo2(), "", RC_blue, NEUTRINO_ICON_BUTTON_BLUE, NEUTRINO_ICON_MENUITEM_TIMERLIST));
+		redMenu->addItem(new ClistBoxItem(_("Stream information"), true, NULL, new CStreamInfo(), "", RC_blue, NEUTRINO_ICON_BUTTON_BLUE, NEUTRINO_ICON_MENUITEM_TIMERLIST));
 		
 		// timerlist
 		redMenu->addItem(new ClistBoxItem(_("Timerlist"), true, NULL, new CTimerList(), "", RC_1, NEUTRINO_ICON_BUTTON_1, NEUTRINO_ICON_MENUITEM_TIMERLIST));

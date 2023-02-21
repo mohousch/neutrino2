@@ -130,12 +130,12 @@ void CControlAPI::compatibility_Timer(CyhookHandler *hh)
 {
 	log_level_printf(4,"CControlAPI Compatibility Timer Start url:%s\n",hh->UrlData["url"].c_str());
 	
-	if(NeutrinoAPI->Timerd->isTimerdAvailable() && hh->ParamList.size() > 0)
+	if(CTimerd::getInstance()->isTimerdAvailable() && hh->ParamList.size() > 0)
 	{
 		if(hh->ParamList["action"] == "remove")
 		{
 			unsigned removeId = atoi(hh->ParamList["id"].c_str());
-			timerd_removeTimerEvent(removeId);
+			CTimerd::getInstance()->removeTimerEvent(removeId);
 		}
 		else if(hh->ParamList["action"] == "modify")
 			doModifyTimer(hh);
@@ -275,7 +275,7 @@ void CControlAPI::Execute(CyhookHandler *hh)
 //=============================================================================
 void CControlAPI::TimerCGI(CyhookHandler *hh)
 {
-	if (NeutrinoAPI->Timerd->isTimerdAvailable())
+	if (CTimerd::getInstance()->isTimerdAvailable())
 	{
 		if (!hh->ParamList.empty() && hh->ParamList["format"].empty())
 		{
@@ -286,13 +286,13 @@ void CControlAPI::TimerCGI(CyhookHandler *hh)
 			else if (hh->ParamList["action"] == "remove")
 			{
 				unsigned removeId = atoi(hh->ParamList["id"].c_str());
-				timerd_removeTimerEvent(removeId);
+				CTimerd::getInstance()->removeTimerEvent(removeId);
 				hh->SendOk();
 			}
 			else if(hh->ParamList["get"] != "")
 			{
 				int pre=0,post=0;
-				timerd_getRecordingSafety(pre,post);
+				CTimerd::getInstance()->getRecordingSafety(pre,post);
 				if(hh->ParamList["get"] == "pre")
 					hh->printf("%d\n", pre);
 				else if(hh->ParamList["get"] == "post")
@@ -1588,7 +1588,7 @@ void CControlAPI::SendTimers(CyhookHandler *hh)
 		send_id = true;
 
 	timerlist.clear();
-	NeutrinoAPI->Timerd->getTimerList(timerlist);
+	CTimerd::getInstance()->getTimerList(timerlist);
 
 	CTimerd::TimerList::iterator timer = timerlist.begin();
 
@@ -1673,7 +1673,7 @@ void CControlAPI::SendTimersXML(CyhookHandler *hh)
 	// Init local timer iterator
 	CTimerd::TimerList timerlist;			// List of timers
 	timerlist.clear();
-	NeutrinoAPI->Timerd->getTimerList(timerlist);
+	CTimerd::getInstance()->getTimerList(timerlist);
 	sort(timerlist.begin(), timerlist.end());		// sort timer
 	CTimerd::TimerList::iterator timer = timerlist.begin();
 
@@ -1687,7 +1687,7 @@ void CControlAPI::SendTimersXML(CyhookHandler *hh)
 
 	// Look for Recording Safety Timers too
 	int pre=0, post=0;
-	timerd_getRecordingSafety(pre, post);
+	CTimerd::getInstance()->getRecordingSafety(pre, post);
 	//hh->printf("\t\t\t<recording_safety>%d</recording_safety>\n",(int)timer->recordingSafety);
 	hh->printf("\t\t\t<pre_delay>%d</pre_delay>\n",pre);
 	hh->printf("\t\t\t<post_delay>%d</post_delay>\n",post);
@@ -1765,7 +1765,7 @@ void CControlAPI::SendTimersXML(CyhookHandler *hh)
 		hh->printf("\t\t\t\t<number>%d</number>\n",(int)timer->eventRepeat);
 		hh->printf("\t\t\t\t<text>%s</text>\n",zRep.c_str());
 		char weekdays[8]={0};
-		NeutrinoAPI->Timerd->setWeekdaysToStr(timer->eventRepeat, weekdays);
+		CTimerd::getInstance()->setWeekdaysToStr(timer->eventRepeat, weekdays);
 		hh->printf("\t\t\t\t<weekdays>%s</weekdays>\n",weekdays);
 		hh->WriteLn("\t\t\t</repeat>\n");
 
@@ -2123,7 +2123,7 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 		rep = (CTimerd::CTimerEventRepeat)0;
 
 	if(((int)rep) >= ((int)CTimerd::TIMERREPEAT_WEEKDAYS) && hh->ParamList["wd"] != "")
-		NeutrinoAPI->Timerd->getWeekdaysFromStr(&rep, hh->ParamList["wd"].c_str());
+		CTimerd::getInstance()->getWeekdaysFromStr(&rep, hh->ParamList["wd"].c_str());
 	// apids
 	bool changeApids=false;
 	unsigned char apids=0;
@@ -2212,13 +2212,13 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 		if(hh->ParamList["id"] != "")
 		{
 			unsigned modyId = atoi(hh->ParamList["id"].c_str());
-			timerd_removeTimerEvent(modyId);
+			CTimerd::getInstance()->removeTimerEvent(modyId);
 		}
 		else
 		{
 			CTimerd::TimerList timerlist;
 			timerlist.clear();
-			NeutrinoAPI->Timerd->getTimerList(timerlist);
+			CTimerd::getInstance()->getTimerList(timerlist);
 			CTimerd::TimerList::iterator timer = timerlist.begin();
 
 			// Look for Recording Safety Timers too
@@ -2226,19 +2226,19 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 			if(eventinfo.recordingSafety)
 			{
 				int pre,post;
-				timerd_getRecordingSafety(pre,post);
+				CTimerd::getInstance()->getRecordingSafety(pre,post);
 				real_alarmTimeT -= pre;
 			}
 
 			for(; timer != timerlist.end();timer++)
 				if(timer->alarmTime == real_alarmTimeT)
 				{
-					timerd_removeTimerEvent(timer->eventID);
+					CTimerd::getInstance()->removeTimerEvent(timer->eventID);
 					break;
 				}
 		}
 	}
-	timerd_addTimerEvent(type,data,announceTimeT,alarmTimeT,stopTimeT,rep,repCount);
+	CTimerd::getInstance()->addTimerEvent(type,data,announceTimeT,alarmTimeT,stopTimeT,rep,repCount);
 	hh->SendOk();
 }
 

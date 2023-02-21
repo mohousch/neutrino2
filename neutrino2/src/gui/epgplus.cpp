@@ -1370,9 +1370,9 @@ int EpgPlus::MenuTargetAddReminder::exec(CMenuTarget */*parent*/, const std::str
 		&& (!(*It)->channelEvent.description.empty ())
 		) 
 	{
-		if (g_Timerd->isTimerdAvailable ()) 
+		if (CTimerd::getInstance()->isTimerdAvailable ()) 
 		{
-			timerd_addZaptoTimerEvent (this->epgPlus->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime - ANNOUNCETIME, 0, (*It)->channelEvent.eventID, (*It)->channelEvent.startTime, 0);
+			CTimerd::getInstance()->addZaptoTimerEvent (this->epgPlus->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime - ANNOUNCETIME, 0, (*It)->channelEvent.eventID, (*It)->channelEvent.startTime, 0);
 	
 			MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);	// UTF-8
 		} 
@@ -1398,9 +1398,9 @@ int EpgPlus::MenuTargetAddRecordTimer::exec(CMenuTarget */*parent*/, const std::
 		&& (!(*It)->channelEvent.description.empty ())
 		) 
 	{
-		if (g_Timerd->isTimerdAvailable ()) 
+		if (CTimerd::getInstance()->isTimerdAvailable ()) 
 		{
-			timerd_addRecordTimerEvent (this->epgPlus->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime + (*It)->channelEvent.duration, (*It)->channelEvent.eventID, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime - (ANNOUNCETIME + 120) , TIMERD_APIDS_CONF, true);
+			CTimerd::getInstance()->addRecordTimerEvent (this->epgPlus->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime + (*It)->channelEvent.duration, (*It)->channelEvent.eventID, (*It)->channelEvent.startTime, (*It)->channelEvent.startTime - (ANNOUNCETIME + 120) , TIMERD_APIDS_CONF, true);
 
 			MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);	// UTF-8
 		} 
