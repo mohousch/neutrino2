@@ -23,6 +23,7 @@
 #define __zapit_frontend_h__
 
 #include <inttypes.h>
+#include <OpenThreads/Thread>
 
 #include <config.h>
 
@@ -98,7 +99,7 @@ class CFrontend
 		int fenumber;
 		int fe_adapter;
 
-        /* information about the used frontend type */
+        	/* information about the used frontend type */
 		struct dvb_frontend_info info;
 		
 		fe_mode_t mode;
@@ -146,6 +147,11 @@ class CFrontend
 
 		/* vtuner/faketuner flag */
 		bool isvtuner;
+		
+		//
+#if !defined (USE_OPENGL)
+		OpenThreads::Mutex      mutex;
+#endif
 	  
 	private:
 		/* slave */

@@ -137,6 +137,10 @@ bool CFrontend::Open()
 
 	sprintf(filename, "/dev/dvb/adapter%d/frontend%d", fe_adapter, fenumber);
 
+#if !defined (USE_OPENGL)
+	mutex.lock();
+#endif
+	
 	if (fd < 0) 
 	{
 		// open frontend
@@ -152,6 +156,10 @@ bool CFrontend::Open()
 		
 		dprintf(DEBUG_NORMAL, "CFrontend::Open %s %s\n", filename, info.name);
 	}
+
+#if !defined (USE_OPENGL)
+	mutex.unlock();
+#endif
 	
 	currentTransponder.TP_id = 0;
 	
@@ -162,9 +170,17 @@ bool CFrontend::Open()
 
 void CFrontend::Init(void)
 {
+#if !defined (USE_OPENGL)
+	mutex.lock();
+#endif
+	
 	secSetVoltage(SEC_VOLTAGE_13, 15);
 	secSetTone(SEC_TONE_OFF, 15);
 	setDiseqcType(diseqcType);
+	
+#if !defined (USE_OPENGL)
+	mutex.unlock();
+#endif
 }
 
 void CFrontend::setMasterSlave(bool _slave)
