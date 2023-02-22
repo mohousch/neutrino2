@@ -53,7 +53,6 @@
 #include <sectionsd/sectionsd.h>
 
 #include <timerd/timerd.h>
-#include <timerd/timerdmsg.h>
 
 //
 #include <driver/fontrenderer.h>

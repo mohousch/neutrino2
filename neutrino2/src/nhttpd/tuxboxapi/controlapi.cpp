@@ -2238,7 +2238,7 @@ void CControlAPI::doNewTimer(CyhookHandler *hh)
 				}
 		}
 	}
-	CTimerd::getInstance()->addTimerEvent(type,data,announceTimeT,alarmTimeT,stopTimeT,rep,repCount);
+	//CTimerd::getInstance()->addTimerEvent(type, data, announceTimeT, alarmTimeT, stopTimeT, rep, repCount);//FIXME
 	hh->SendOk();
 }
 

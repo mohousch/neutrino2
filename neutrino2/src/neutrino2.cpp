@@ -146,7 +146,6 @@
 #include <system/fsmounter.h>
 #include <system/helpers.h>
 
-#include <timerd/timerdmsg.h>
 #include <timerd/timerd.h>
 
 // zapit includes
@@ -224,38 +223,22 @@ extern int dvbsub_terminate();
 // volume bar
 static CProgressBar * g_volscale;
 
-// timerd thread
-//static pthread_t timer_thread;
-//void * timerd_main_thread(void *data);
-
 // streamts thread
 extern int streamts_stop;				// defined in streamts.cpp
 void * streamts_main_thread(void *data);
 static pthread_t stream_thread ;
 
-// zapit thread
+// zapit
 extern int zapit_ready;					//defined in zapit.cpp
-//static pthread_t zapit_thread ;
-//void * zapit_main_thread(void *data);
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 Zapit_config zapitCfg;
-//void setZapitConfig(Zapit_config * Cfg);
-//void getZapitConfig(Zapit_config * Cfg);
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
 extern CFrontend * live_fe;
-extern CScanSettings * scanSettings;			// defined in scan_setup.cpp
-extern int FrontendCount;				// defined in zapit.cpp
 
 // nhttpd thread
 void * nhttpd_main_thread(void *data);
 static pthread_t nhttpd_thread;
 //static Cyhttpd *yhttpd = NULL;
-
-// sectionsd
-//extern int sectionsd_stop;				// defined in sectionsd.cpp
-//static pthread_t sections_thread;
-//void * sectionsd_main_thread(void *data);
-//extern bool timeset;
 
 // Audio/Video Decoder
 extern cVideo* videoDecoder;		//libcoolstream (video_cs.cpp)
@@ -295,8 +278,6 @@ extern CMenuOptionStringChooser* tzSelect;
 
 bool parentallocked = false;
 static char **global_argv;
-
-extern const char * locale_real_names[]; 		//#include <system/locals_intern.h>
 
 //user menu
 const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] = {

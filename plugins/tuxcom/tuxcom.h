@@ -66,7 +66,7 @@ static const char *charset = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW
 #define FILEBUFFER_SIZE (100 * 1024) // Edit files up to 100k
 #define FTPBUFFER_SIZE  (200 * 1024) // FTP Download Buffer size
 
-#define MSG_VERSION    "Tuxbox Commander Version 1.17-hd (neutrinoHD2 port 0.1)"
+#define MSG_VERSION    "Tuxbox Commander Version 1.17-hd (neutrino2 port 0.1)"
 #define MSG_COPYRIGHT  "� (C) dbluelle 2004-2007"
 
 //

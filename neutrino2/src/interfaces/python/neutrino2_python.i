@@ -109,7 +109,6 @@
 #include <sectionsd/sectionsd.h>
 
 // timerd
-#include <timerd/timerdmsg.h>
 #include <timerd/timerdtypes.h>
 #include <timerd/timerd.h>
 

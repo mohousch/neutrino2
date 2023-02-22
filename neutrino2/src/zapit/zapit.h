@@ -470,7 +470,7 @@ class CZapit
 
 		//
 		void Start(Z_start_arg *ZapStart_arg);
-		void run();
+		//void run();
 		void Stop();
 };
 

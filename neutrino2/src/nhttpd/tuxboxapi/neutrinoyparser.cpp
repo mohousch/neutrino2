@@ -939,11 +939,12 @@ std::string  CNeutrinoYParser::func_get_timer_list(CyhookHandler *, std::string 
 // para ::= <type=new|modify> [timerid]
 std::string  CNeutrinoYParser::func_set_timer_form(CyhookHandler *hh, std::string para)
 {
-	unsigned timerId=0;
+	unsigned timerId = 0;
 	std::string cmd, stimerid;
 	CTimerd::responseGetTimer timer;             // Timer
 	time_t now_t = time(NULL);
 	ySplitString(para, " ", cmd, stimerid);
+	
 	if(cmd != "new")
 	{
 		// init timerid
@@ -956,6 +957,7 @@ std::string  CNeutrinoYParser::func_set_timer_form(CyhookHandler *hh, std::strin
 		hh->ParamList["timerId"] = itoa(timerId);
 		hh->ParamList["zType"] = zType;
 	}
+	
 	// Alarm/StopTime
 	struct tm *alarmTime = (cmd == "new") ? localtime(&now_t) : localtime(&(timer.alarmTime));
 

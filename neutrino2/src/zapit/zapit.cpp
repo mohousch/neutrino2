@@ -3241,18 +3241,14 @@ void *event_proc(void *ptr)
 }
 
 //#define CHECK_FOR_LOCK
-//#endif
-//int zapit_main_thread(void *data)
+
 void CZapit::Start(Z_start_arg *ZapStart_arg)
 {
-	//Z_start_arg *ZapStart_arg = (Z_start_arg *) data;
-	
-	//dprintf(DEBUG_INFO, "[zapit] zapit_main_thread: starting... tid %ld\n", syscall(__NR_gettid));
 	dprintf(DEBUG_NORMAL, "CZapit::Start\n");
 	
 	abort_zapit = 0;
 	
-	////
+	//
 #define ZAPIT_EVENT_COUNT 30
 	const CZapit::events zapit_event[ZAPIT_EVENT_COUNT] =
 	{
@@ -3494,7 +3490,7 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	// init event server
 	eventServer = new CEventServer;
 	
-	//
+	// register events
 	for (int i = 0; i < ZAPIT_EVENT_COUNT; i++)
 		eventServer->registerEvent2(zapit_event[i], 222, NEUTRINO_UDS_NAME);
 
@@ -3511,140 +3507,10 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	//wakeup from standby and zap it to live channel
 	leaveStandby(); 
 	
-	zapit_ready = 1;
-	
-	//check for lock
-#ifdef CHECK_FOR_LOCK	
-	bool check_lock = true;
-	time_t lastlockcheck = 0;
-#endif	
-	
-	//while (zapit_server.run(zapit_parse_command, CZapitMessages::ACTVERSION, true))
-#if 1
-	//while (true) 
-	{
-		//check for lock
-#ifdef CHECK_FOR_LOCK
-		if (check_lock && !standby && live_channel && time(NULL) > lastlockcheck && scan_runs == 0) 
-		{
-			if ( (live_fe->getStatus() & FE_HAS_LOCK) == 0) 
-			{
-				zapit( live_channel->getChannelID(), current_is_nvod, true);
-			}
-			
-			lastlockcheck = time(NULL);
-		}
-#endif
-		
-		// pmt update
-		if (pmt_update_fd != -1) 
-		{
-			unsigned char buf[4096];
-			int ret = pmtDemux->Read(buf, 4095, 10); /* every 10 msec */
-
-			if (ret > 0) 
-			{
-				CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
-
-				dprintf(DEBUG_INFO, "[zapit] pmt updated, sid 0x%x new version 0x%x\n", (buf[3] << 8) + buf[4], (buf[5] >> 1) & 0x1F);
-
-				// zap channel
-				if(live_channel) 
-				{
-					t_channel_id channel_id = live_channel->getChannelID();
-					int vpid = live_channel->getVideoPid();
-					int apid = live_channel->getAudioPid();
-					
-					CPmt::getInstance()->parse_pmt(live_channel, live_fe);
-					
-					bool apid_found = false;
-					// check if selected audio pid still present
-					for (int i = 0; i <  live_channel->getAudioChannelCount(); i++) 
-					{
-						if (live_channel->getAudioChannel(i)->pid == apid) 
-						{
-							apid_found = true;
-							break;
-						}
-					}
-					
-					if(!apid_found || vpid != live_channel->getVideoPid()) 
-					{
-						zapit(live_channel->getChannelID(), current_is_nvod, true);
-					} 
-					else 
-					{
-						sendCaPmtPlayBackStart(live_channel, live_fe);
-						
-						// ci cam
-#if defined (ENABLE_CI)
-						if(live_channel != NULL)
-						{
-							if(live_fe != NULL)
-								ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
-						}
-#endif	
-
-						CPmt::getInstance()->pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
-					}
-						
-					eventServer->sendEvent(CZapit::EVT_PMT_CHANGED, CEventServer::INITID_ZAPIT, &channel_id, sizeof(channel_id));
-				}
-			}
-		}
-
-		usleep(0);
-	}
-#endif
-
-#if 0
-	//HOUSEKEPPING
-	dprintf(DEBUG_INFO, "zapit: shutdown started\n\n");
-
-	//save audio map
-	if(live_channel)
-		save_channel_pids(live_channel);
-	
-	// save setting
-	saveZapitSettings(true, true);
-	
-	// stop playback (stop capmt)
-	zapit_stopPlayBack();
-
-	// stop vtuner pump thread
-	if (getVTuner() != NULL)
-	{
-		pthread_cancel(eventthread);
-		pthread_join(eventthread, NULL);
-		pthread_cancel(pumpthread);
-		pthread_join(pumpthread, NULL);
-	}
-	
-	// stop std thread
-	pthread_cancel(tsdt);
-	pthread_join(tsdt, NULL);
-
-	if (pmtDemux)
-		delete pmtDemux;
-	
-	if(audioDecoder)
-		delete audioDecoder;
-	
-	if(videoDecoder)
-		delete videoDecoder;
-
-	//close frontend	
-	for(fe_map_iterator_t it = femap.begin(); it != femap.end(); it++)
-		delete it->second;
-
-	zapit_ready = 0;
-
-	dprintf(DEBUG_INFO, "[zapit] zapit shutdown complete :-)\n");
-
-	return 0;
-#endif
+	zapit_ready = 1;	
 }
 
+#if 0
 void CZapit::run()
 {
 	dprintf(DEBUG_NORMAL, "CZapit::run:\n");
@@ -3724,6 +3590,7 @@ void CZapit::run()
 		usleep(0);
 	}
 }
+#endif
 
 void CZapit::Stop()
 {
@@ -3744,6 +3611,7 @@ void CZapit::Stop()
 	{
 		pthread_cancel(eventthread);
 		pthread_join(eventthread, NULL);
+		
 		pthread_cancel(pumpthread);
 		pthread_join(pumpthread, NULL);
 	}
