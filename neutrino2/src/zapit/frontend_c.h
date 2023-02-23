@@ -23,7 +23,6 @@
 #define __zapit_frontend_h__
 
 #include <inttypes.h>
-#include <OpenThreads/Thread>
 
 #include <config.h>
 
@@ -147,11 +146,6 @@ class CFrontend
 
 		/* vtuner/faketuner flag */
 		bool isvtuner;
-		
-		//
-#if !defined (USE_OPENGL)
-		OpenThreads::Mutex      mutex;
-#endif
 	  
 	private:
 		/* slave */

@@ -851,6 +851,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			}
 		}
 
+		// fd_pipe_high
 		if(FD_ISSET(fd_pipe_high_priority[0], &rfds))
 		{
 			struct event buf;
@@ -1002,7 +1003,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					// nhttp event msg 
 					if ( emsg.initiatorID == CEventServer::INITID_HTTPD )
 					{					  
-						dprintf(DEBUG_DEBUG, "CRCInput::getMsg_us: event - from NHTTPD %x %x\n", emsg.eventID, *(unsigned*) p);					
+						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from NHTTPD %x %x\n", emsg.eventID, *(unsigned*) p);					
 						
 						switch(emsg.eventID)
 						{
@@ -1074,7 +1075,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					}
 					else if ( emsg.initiatorID == CEventServer::INITID_SECTIONSD )
 					{					  
-						dprintf(DEBUG_DEBUG, "CRCInput::getMsg_us: event - from SECTIONSD %x %x\n", emsg.eventID, *(unsigned*) p);						
+						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from SECTIONSD %x %x\n", emsg.eventID, *(unsigned*) p);						
 
 						switch(emsg.eventID)
 						{
@@ -1114,7 +1115,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					}
 					else if ( emsg.initiatorID == CEventServer::INITID_ZAPIT )
 					{					  
-						dprintf(DEBUG_DEBUG, "CRCInput::getMsg_us: event - from ZAPIT %x %x\n", emsg.eventID, *(unsigned*) p);						
+						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from ZAPIT %x %x\n", emsg.eventID, *(unsigned*) p);						
 						
 						switch(emsg.eventID)
 						{
@@ -1269,7 +1270,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					}
 					else if ( emsg.initiatorID == CEventServer::INITID_TIMERD )
 					{					  
-						dprintf(DEBUG_DEBUG, "CRCInput::getMsg_us: event - from TIMERD %x %x\n", emsg.eventID, *(unsigned*) p);					
+						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from TIMERD %x %x\n", emsg.eventID, *(unsigned*) p);					
 						
 						switch(emsg.eventID)
 						{
@@ -1351,7 +1352,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					}
 					else if (emsg.initiatorID == CEventServer::INITID_NEUTRINO)
 					{					  
-						dprintf(DEBUG_DEBUG, "CRCInput::getMsg_us: event - from NEUTRINO %x %x\n", emsg.eventID, *(unsigned*) p);					
+						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from NEUTRINO %x %x\n", emsg.eventID, *(unsigned*) p);					
 						
 						if ((emsg.eventID == NeutrinoMessages::EVT_RECORDING_ENDED) && (read_bytes == sizeof(stream2file_status2_t)))
 						{
@@ -1362,7 +1363,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					}
 					else if (emsg.initiatorID == CEventServer::INITID_GENERIC_INPUT_EVENT_PROVIDER)
 					{					  
-						dprintf(DEBUG_DEBUG, "CRCInput::getMsg_us: event - from GENERIC_INPUT_EVENT_PROVIDER %x %x\n", emsg.eventID, *(unsigned*) p);						
+						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from GENERIC_INPUT_EVENT_PROVIDER %x %x\n", emsg.eventID, *(unsigned*) p);						
 						
 						if (read_bytes == sizeof(int))
 						{
@@ -1395,6 +1396,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			}
 		}
 
+		// fd_rc
 		for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++) 
 		{
 			if ((fd_rc[i] != -1) && (FD_ISSET(fd_rc[i], &rfds))) 
@@ -1409,7 +1411,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					continue;
 				}
 								
-				dprintf(DEBUG_INFO, "CRCInput::getMsg_us: type: 0x%X key: 0x%X value %d, translate: 0x%X -%s-\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
+				dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: type: 0x%X key: 0x%X value %d, translate: 0x%X -%s-\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
 
 				uint32_t trkey = translate(ev.code, i);
 
@@ -1494,7 +1496,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			// printf("got event from low-pri pipe %x %x\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, "got event from low-pri pipe msg: (%x) data: (%x)\n", *msg, *data );
 
 			return;
 		}
@@ -1560,9 +1562,10 @@ void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 
 void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority)
 {
-	//printf("postMsg %x %x %d\n", msg, data, Priority );
+	dprintf(DEBUG_DEBUG, "postMsg %x %x %d\n", msg, data, Priority );
 
 	struct event buf;
+	
 	buf.msg  = msg;
 	buf.data = data;
 

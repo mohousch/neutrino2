@@ -447,13 +447,13 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		if(timerNew.eventRepeat >= CTimerd::TIMERREPEAT_WEEKDAYS)
 			CTimerd::getInstance()->getWeekdaysFromStr(&timerNew.eventRepeat, m_weekdaysStr.c_str());
 
-		//if (CTimerd::getInstance()->addTimerEvent(timerNew.eventType, data, timerNew.announceTime, timerNew.alarmTime,  timerNew.stopTime, timerNew.eventRepeat, timerNew.repeatCount, false) == -1)
+		if (CTimerd::getInstance()->addTimerEvent(timerNew.eventType, data, timerNew.announceTime, timerNew.alarmTime,  timerNew.stopTime, timerNew.eventRepeat, timerNew.repeatCount, false) == -1)
 		{
 			bool forceAdd = askUserOnTimerConflict(timerNew.announceTime,timerNew.stopTime);
 
 			if (forceAdd)
 			{
-				//CTimerd::getInstance()->addTimerEvent(timerNew.eventType, data, timerNew.announceTime, timerNew.alarmTime, timerNew.stopTime, timerNew.eventRepeat, timerNew.repeatCount, true);
+				CTimerd::getInstance()->addTimerEvent(timerNew.eventType, data, timerNew.announceTime, timerNew.alarmTime, timerNew.stopTime, timerNew.eventRepeat, timerNew.repeatCount, true);
 			}
 		}
 		

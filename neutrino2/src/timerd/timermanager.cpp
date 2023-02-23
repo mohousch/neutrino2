@@ -332,6 +332,7 @@ bool CTimerManager::listEvents(CTimerEventMap &Events)
 		pos->second->Refresh();
 		Events[pos->second->eventID] = pos->second;
 	}
+	
 	pthread_mutex_unlock(&tm_eventsMutex);
 	
 	return true;

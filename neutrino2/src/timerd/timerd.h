@@ -88,8 +88,8 @@ class CTimerd
 
 		struct TransferRecordingInfo : TransferEventInfo
 		{
-			char         recordingDir[RECORD_DIR_MAXLEN];
-			char         epgTitle[EPG_TITLE_MAXLEN];
+			char recordingDir[RECORD_DIR_MAXLEN];
+			char epgTitle[EPG_TITLE_MAXLEN];
 
 		};
 
@@ -97,6 +97,7 @@ class CTimerd
 		{
 			public:
 				RecordingInfo(){};
+				
 				RecordingInfo(EventInfo& e)
 				{
 					apids = e.apids;
@@ -105,6 +106,7 @@ class CTimerd
 					epg_starttime = e.epg_starttime;
 					recordingSafety = e.recordingSafety;
 				};
+				
 				RecordingInfo& operator = (EventInfo& e)
 				{
 					apids = e.apids;
@@ -114,6 +116,7 @@ class CTimerd
 					recordingSafety = e.recordingSafety;
 					return *this;
 				}
+				
 				unsigned char apids;
 				int eventID;
 				char recordingDir[RECORD_DIR_MAXLEN];
@@ -153,7 +156,7 @@ class CTimerd
 		
 		typedef std::vector<responseGetTimer> TimerList;
 		
-		////
+		//
 		struct commandAddTimer
 		{
 			CTimerd::CTimerEventTypes  eventType;
@@ -182,6 +185,11 @@ class CTimerd
 		struct commandRecordDir
 		{
 			char recDir[RECORD_DIR_MAXLEN];
+		};
+		
+		struct commandSetStandby
+		{
+			bool standby_on;
 		};
 		
 		struct generalInteger
@@ -221,20 +229,20 @@ class CTimerd
 		void stopTimerEvent(int evId);
 		void removeTimerEvent(int evId);
 
-		//int addTimerEvent(CTimerd::CTimerEventTypes evType, void* data, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0, CTimerd::CTimerEventRepeat evrepeat = CTimerd::TIMERREPEAT_ONCE, uint32_t repeatcount = 0, bool forceadd = true);
+		int addTimerEvent(CTimerd::CTimerEventTypes evType, void* data, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0, CTimerd::CTimerEventRepeat evrepeat = CTimerd::TIMERREPEAT_ONCE, uint32_t repeatcount = 0, bool forceadd = true);
 		int setSleeptimer(time_t announcetime, time_t alarmtime, int timerid = 0);
 		int getSleeptimerID();
 		int getSleepTimerRemaining();
 		int addSleepTimerEvent(time_t announcetime,time_t alarmtime);
 		int addShutdownTimerEvent(time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0);
-		int addRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t stoptime, unsigned long long epgID=0, time_t epg_starttime=0, time_t announcetime = 0, unsigned char apids=TIMERD_APIDS_STD, bool safety=false,std::string recDir="", bool forceAdd=true);
-		int addImmediateRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t stoptime, unsigned long long epgID=0, time_t epg_starttime=0,unsigned char apids=TIMERD_APIDS_STD);
+		int addRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t stoptime, unsigned long long epgID = 0, time_t epg_starttime = 0, time_t announcetime = 0, unsigned char apids = TIMERD_APIDS_STD, bool safety = false, std::string recDir = "", bool forceAdd = true);
+		int addImmediateRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t stoptime, unsigned long long epgID = 0, time_t epg_starttime = 0, unsigned char apids = TIMERD_APIDS_STD);
 		int addStandbyTimerEvent(bool standby_on,time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0);
-		int addZaptoTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0, unsigned long long epgID=0, time_t epg_starttime=0,unsigned char apids=TIMERD_APIDS_STD);
+		int addZaptoTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0, unsigned long long epgID=0, time_t epg_starttime = 0,unsigned char apids = TIMERD_APIDS_STD);
 		int addNextProgramTimerEvent(CTimerd::EventInfo eventInfo, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0);
 
 		bool rescheduleTimerEvent(int eventid, time_t announcediff, time_t alarmdiff, time_t stoptime);
-		bool modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount, void *data = NULL, int datalen = 0);
+		bool modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime = 0, CTimerd::CTimerEventRepeat evrepeat = CTimerd::TIMERREPEAT_ONCE, uint32_t repeatcount = 0, void *data = NULL, int datalen = 0);
 		bool modifyRecordTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount, const char * const recordingdir);
 
 		void getTimer(CTimerd::responseGetTimer &timer, unsigned timerID);

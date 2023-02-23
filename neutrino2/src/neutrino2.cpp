@@ -3585,7 +3585,6 @@ _repeat:
 	// event messages
 	else if (msg == NeutrinoMessages::EVT_VOLCHANGED) 
 	{
-		//setVolume(msg, false, true);
 		return messages_return::handled;
 	}
 	else if( msg == NeutrinoMessages::EVT_MUTECHANGED ) 
@@ -3618,7 +3617,7 @@ _repeat:
 	else if( msg == NeutrinoMessages::EVT_RECORDMODE ) 
 	{
 		// sent by rcinput, then got msg from zapit about record activated/deactivated
-		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: recordmode %s\n", ( data ) ? "on":"off" );
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: recordmode %s\n", ( data ) ? "on" : "off" );
 		
 		if(!recordingstatus && (!data)) 
 		{
@@ -3708,7 +3707,6 @@ _repeat:
 	else if( msg == NeutrinoMessages::EVT_PMT_CHANGED) 
 	{
 		res = messages_return::handled;
-		//t_channel_id channel_id = *(t_channel_id*) data;
 
 		return res;
 	}
@@ -3765,6 +3763,7 @@ _repeat:
 				name += "\n";
 
 				std::string zAddData = CZapit::getInstance()->getChannelName( timer.channel_id ); // UTF-8
+				
 				if( zAddData.empty()) 
 				{
 					zAddData = _("Program unknown");
@@ -4083,7 +4082,7 @@ skip_message:
 
 		channelList->adjustToChannelID(live_channel_id);
 	}
-	
+
 	if ((msg >= RC_WithData) && (msg < RC_WithData + 0x10000000))
 		delete[] (unsigned char*) data;
 

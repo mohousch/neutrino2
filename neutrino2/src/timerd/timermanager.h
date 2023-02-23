@@ -246,7 +246,7 @@ class CTimerManager
 		CTimerEvent* getNextEvent();
 		bool listEvents(CTimerEventMap &Events);
 		CTimerd::CTimerEventTypes *getEventType(int leventID);
-		int modifyEvent(int leventID, time_t announceTime, time_t alarmTime, time_t stopTime, uint32_t repeatcount, CTimerd::CTimerEventRepeat evrepeat, CTimerd::responseGetTimer& data);
+		int modifyEvent(int leventID, time_t announceTime, time_t alarmTime, time_t stopTime, uint32_t repeatcount, CTimerd::CTimerEventRepeat evrepeat, CTimerd::responseGetTimer &data);
 		int modifyEvent(int leventID, unsigned char apids);
 		int rescheduleEvent(int leventID, time_t announceTime, time_t alarmTime, time_t stopTime);
 		void saveEventsToConfig();
