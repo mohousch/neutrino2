@@ -115,9 +115,6 @@ void CServiceMenu::showMenu(void)
 		// reload Channels
 		service->addItem(new CMenuForwarder(_("Reload channel lists"), true, NULL, CNeutrinoApp::getInstance(), "reloadchannels", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RELOADCHANNELS));
 		
-		// reload EPG
-		service->addItem(new CMenuForwarder(_("Reload EPG"), true, NULL, CNeutrinoApp::getInstance(), "reloadepg", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RELOADCHANNELS));
-
 		// Bouquets Editor
 		service->addItem(new CMenuForwarder(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));
 		

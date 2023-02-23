@@ -112,7 +112,6 @@
 		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode ="1">
 			<ITEM id="MENUITEM_FORWARDER" lines="1" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
 			<ITEM id="MENUITEM_FORWARDER" lines="1" localename="Reload channel lists" itemicon="hint_reload" target="neutrino" actionkey="reloadchannels"/>
-			<ITEM id="MENUITEM_FORWARDER" lines="1" localename="Reload EPG" itemicon="hint_reload" target="neutrino" actionkey="reloadepg"/>
 			<ITEM id="MENUITEM_FORWARDER" lines="1" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>
 			<ITEM id="MENUITEM_FORWARDER" lines="1" localename="CI Cam" itemicon="hint_ci" target="cicamsetup"/>
 			<ITEM id="MENUITEM_FORWARDER" lines="1" localename="Software update" itemicon="hint_swupdate" target="updatesetup"/>

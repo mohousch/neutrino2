@@ -717,13 +717,12 @@ void CEPGSettings::showMenu()
 	miscSettingsEPG->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	miscSettingsEPG->addItem( new CMenuSeparator(LINE) );
 
-	// read epg from xml
+	//
 	CEPGConfigNotifier* epgConfigNotifier = new CEPGConfigNotifier;
-	miscSettingsEPG->addItem(new CMenuOptionChooser(_("Restore EPG on boot"), &g_settings.epg_read, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, epgConfigNotifier));
-
-	// save epg
 	CSectionsdConfigNotifier* sectionsdConfigNotifier = new CSectionsdConfigNotifier;
-	miscSettingsEPG->addItem(new CMenuOptionChooser(_("Save/Restore epg on reboot"), &g_settings.epg_save, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	
+	// save / restore epg on boot
+	miscSettingsEPG->addItem(new CMenuOptionChooser(_("Save/Restore epg on reboot"), &g_settings.epg_save, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, epgConfigNotifier));
 
 	// epg cache
         CStringInput * miscSettings_epg_cache = new CStringInput(_("EPG-Cache (Days)"), g_settings.epg_cache.c_str(), 2, _("How long will EPG-Data in the future cached?"), _("Set in days."), "0123456789 ", sectionsdConfigNotifier);
@@ -867,7 +866,7 @@ bool CEPGConfigNotifier::changeNotify(const std::string&, void *)
 {
 	dprintf(DEBUG_NORMAL, "CEPGConfigNotifier::changeNotify\n");
 
-        if (g_settings.epg_read)
+        if (g_settings.epg_save)
 		CNeutrinoApp::getInstance()->readEPG();
 	
         return true;

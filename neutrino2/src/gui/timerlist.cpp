@@ -468,10 +468,13 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 void CTimerList::updateEvents(void)
 {
 	timerlist.clear();
+	
+	// get timerlist
 	CTimerd::getInstance()->getTimerList(timerlist);
 	
-	//Remove last deleted event from List
+	// remove last deleted event from List
 	CTimerd::TimerList::iterator timer = timerlist.begin();
+	
 	for(; timer != timerlist.end(); timer++)
 	{
 		if(timer->eventID == skipEventID)
@@ -480,6 +483,7 @@ void CTimerList::updateEvents(void)
 			break;
 		}
 	}
+	
 	sort(timerlist.begin(), timerlist.end());
 }
 
@@ -491,6 +495,9 @@ int CTimerList::show()
 	neutrino_msg_data_t data;
 
 	int res = RETURN_REPAINT;
+	
+	//
+	updateEvents();
 	
 	//
 	if (CNeutrinoApp::getInstance()->widget_exists("timerlist"))

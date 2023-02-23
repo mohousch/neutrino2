@@ -139,9 +139,7 @@
 		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_CLASSIC" scrollbar="1" mode="MODE_MENU">
 			<ITEM id="MENUITEM_FORWARDER" localename="Scan transponder" itemicon="hint_scan" target="scansetup">
 			</ITEM>
-			<ITEM id="MENUITEM_FORWARDER" localename="Reload channel lists" itemicon="hint_reload" target="neutrino" actionkey="reloadepg">
-			</ITEM>
-			<ITEM id="MENUITEM_FORWARDER" localename="Reload EPG" itemicon="hint_reload" target="neutrino" actionkey="reloadchannels">
+			<ITEM id="MENUITEM_FORWARDER" localename="Reload channel lists" itemicon="hint_reload" target="neutrino" actionkey="reloadchannels">
 			</ITEM>
 			<ITEM id="MENUITEM_FORWARDER" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor">
 			</ITEM>

@@ -274,7 +274,8 @@ const keyval USERMENU_ITEM_OPTIONS[USERMENU_ITEM_OPTION_COUNT] =
 	{ SNeutrinoSettings::ITEM_VTXT, _("Videotext") },
 	{ SNeutrinoSettings::ITEM_REMOTE, _("Lock RC") },
 	{ SNeutrinoSettings::ITEM_DELETE_ZAPIT, _("Delete channels") },
-	{ SNeutrinoSettings::ITEM_DELETE_WEBTV, _("Delete WebTV channels") }
+	{ SNeutrinoSettings::ITEM_DELETE_WEBTV, _("Delete WebTV channels") },
+	{ SNeutrinoSettings::ITEM_FREEMEMORY, ("Free Memory") }
 };
 
 int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)

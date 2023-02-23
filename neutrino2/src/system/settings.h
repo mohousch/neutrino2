@@ -321,7 +321,8 @@ struct SNeutrinoSettings
 		ITEM_VTXT = 3,
 		ITEM_REMOTE = 4,
 		ITEM_DELETE_ZAPIT = 5,
-		ITEM_DELETE_WEBTV = 6,            
+		ITEM_DELETE_WEBTV = 6,
+		ITEM_FREEMEMORY = 7,          
 		ITEM_MAX   // MUST be always the last in the list
         }USER_ITEM;
 	
@@ -364,7 +365,6 @@ struct SNeutrinoSettings
 
 	// epg
 	int epg_save;
-	int epg_read;
 	std::string epg_cache;
 	std::string epg_old_events;
 	std::string epg_max_events;

@@ -838,7 +838,6 @@ int CNeutrinoApp::loadSetup(const char * fname)
         g_settings.epg_max_events       = configfile.getString("epg_max_events", "50000");
         g_settings.epg_dir              = configfile.getString("epg_dir", "/media/hdd/epg");
 	g_settings.epg_save 		= configfile.getBool("epg_save", false);
-	g_settings.epg_read 		= configfile.getBool("epg_read", true);
 	
 	for(int i = 0; i < 3; i++) 
 	{
@@ -1281,7 +1280,6 @@ void CNeutrinoApp::saveSetup(const char * fname)
 
 	// epg
 	configfile.setBool("epg_save", g_settings.epg_save);
-	configfile.setBool("epg_read", g_settings.epg_read);
         configfile.setString("epg_cache_time", g_settings.epg_cache );
         configfile.setString("epg_extendedcache_time", g_settings.epg_extendedcache);
         configfile.setString("epg_old_events", g_settings.epg_old_events );
@@ -2248,7 +2246,7 @@ void CNeutrinoApp::InitZapper()
 	SendSectionsdConfig();
 
 	// read saved epg
-	if (g_settings.epg_read)
+	if (g_settings.epg_save)
 		readEPG();
 		
 	// read xmltv epg
@@ -4979,6 +4977,10 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	{
 		my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/webtv/*.*");
 		CZapit::getInstance()->reinitChannels();
+	}
+	else if (actionKey == "free_memory")
+	{
+		CSectionsd::getInstance()->freeMemory();
 	}
 	else if (actionKey == "mainmenu")
 	{

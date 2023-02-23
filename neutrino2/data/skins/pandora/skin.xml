@@ -117,8 +117,6 @@
 			</ITEM>
 			<ITEM id="MENUITEM_FORWARDER" localename="Reload channel lists" itemicon="hint_reload" target="neutrino" actionkey="reloadchannels">
 			</ITEM>
-			<ITEM id="MENUITEM_FORWARDER" localename="Reload EPG" itemicon="hint_reload" target="neutrino" actionkey="reloadepg">
-			</ITEM>
 			<ITEM id="MENUITEM_FORWARDER" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor">
 			</ITEM>
 			<ITEM id="MENUITEM_FORWARDER" localename="CI Cam" itemicon="hint_ci" target="cicamsetup">

@@ -369,6 +369,14 @@ bool CNeutrinoApp::showUserMenu(int button)
 					menu->addItem(menu_item, false);
 				}
 				break;
+				
+			case SNeutrinoSettings::ITEM_FREEMEMORY:
+				{
+					keyhelper.get(&key, &icon);
+					menu_item = new CMenuForwarder(_("Free Memory"), true, NULL, this, "free_memory", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu->addItem(menu_item, false);
+				}
+				break;
 
 			default:
 				dprintf(DEBUG_NORMAL, "[neutrino] WARNING! menu wrong item!!\n");
