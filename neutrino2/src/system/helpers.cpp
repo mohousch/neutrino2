@@ -1376,7 +1376,7 @@ bool CFileHelpers::readDir(const std::string& dirname, CFileList* flist, CFileFi
 	return true;
 }
 
-////
+//
 CFileList CFileHelpers::readDir(const std::string& dirname, CFileFilter * fileFilter, bool skipDirs)
 {
 	CFileList flist;
@@ -1439,7 +1439,6 @@ CFileList CFileHelpers::readDir(const std::string& dirname, CFileFilter * fileFi
 
 	free(namelist);
 
-	//return true;
 	return flist;
 }
 
@@ -2111,5 +2110,4 @@ std::string ReadMarkerValue(std::string strLine, const char* strMarkerName)
 
 	return std::string("");
 }
-
 

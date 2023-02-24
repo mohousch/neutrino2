@@ -48,6 +48,8 @@
 #include <system/debug.h>
 #include <system/helpers.h>
 
+#include <driver/encoding.h>
+
 #include <global.h>
 #include <neutrino2.h>
 
@@ -212,7 +214,7 @@ void CBouquetManager::writeBouquetChannels(FILE * bouq_fd, uint32_t i, bool /*bU
 		{
 			fprintf(bouq_fd, "\t\t<S i=\"%x\" n=\"%s\" t=\"%x\" on=\"%x\"/>\n",
 				Bouquets[i]->tvChannels[j]->getServiceId(),
-				convert_UTF8_To_UTF8_XML(Bouquets[i]->tvChannels[j]->getName().c_str()).c_str(),
+				UTF8_to_UTF8XML(Bouquets[i]->tvChannels[j]->getName().c_str()).c_str(),
 				Bouquets[i]->tvChannels[j]->getTransportStreamId(),
 				Bouquets[i]->tvChannels[j]->getOriginalNetworkId()
 				);
@@ -233,7 +235,7 @@ void CBouquetManager::writeBouquetChannels(FILE * bouq_fd, uint32_t i, bool /*bU
 		{
 			fprintf(bouq_fd, "\t\t<S i=\"%x\" n=\"%s\" t=\"%x\" on=\"%x\"/>\n",
 				Bouquets[i]->radioChannels[j]->getServiceId(),
-				convert_UTF8_To_UTF8_XML(Bouquets[i]->radioChannels[j]->getName().c_str()).c_str(),
+				UTF8_to_UTF8XML(Bouquets[i]->radioChannels[j]->getName().c_str()).c_str(),
 				Bouquets[i]->radioChannels[j]->getTransportStreamId(),
 				Bouquets[i]->radioChannels[j]->getOriginalNetworkId()
 				);
@@ -266,7 +268,7 @@ void CBouquetManager::saveBouquets(void)
 			
 			if(!Bouquets[i]->bUser && !Bouquets[i]->bWebTV)
 			{
-				writeBouquetHeader(bouq_fd, i, convert_UTF8_To_UTF8_XML(Bouquets[i]->Name.c_str()).c_str());
+				writeBouquetHeader(bouq_fd, i, UTF8_to_UTF8XML(Bouquets[i]->Name.c_str()).c_str());
 				writeBouquetChannels(bouq_fd, i);
 				writeBouquetFooter(bouq_fd);
 			}
@@ -294,7 +296,7 @@ void CBouquetManager::saveUBouquets(void)
 		{
 			if(Bouquets[i]->bUser && !Bouquets[i]->bWebTV) 
 			{
-				writeBouquetHeader(ubouq_fd, i, convert_UTF8_To_UTF8_XML(Bouquets[i]->Name.c_str()).c_str());
+				writeBouquetHeader(ubouq_fd, i, UTF8_to_UTF8XML(Bouquets[i]->Name.c_str()).c_str());
 				writeBouquetChannels(ubouq_fd, i, true);
 				writeBouquetFooter(ubouq_fd);
 			}

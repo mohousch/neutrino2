@@ -206,13 +206,13 @@ int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t 
 							ei->epg_starttime,
 							evrepeat,
 							repeatcount);
-		
+			eventID = CTimerManager::getInstance()->addEvent(event);
 			break;
 		}
 					
 		case CTimerd::TIMER_REMIND :
 		{
-			CTimerd::commandRemind *remind = static_cast<CTimerd::commandRemind*>(data);;
+			CTimerd::commandRemind *remind = static_cast<CTimerd::commandRemind*>(data);
 			
 			event = new CTimerEvent_Remind(
 							announcetime,

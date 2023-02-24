@@ -54,6 +54,9 @@
 #include <system/debug.h>
 #include <system/settings.h>
 
+//
+#include <driver/encoding.h>
+
 // zapit headers
 #include <zapit/cam.h>
 #include <zapit/getservices.h>
@@ -2923,7 +2926,7 @@ void * sdt_thread(void */*arg*/)
 					updated = 1;
 
 					fprintf(fd, "\t\t\t<S action=\"add\" i=\"%04x\" n=\"%s\" t=\"%x\"/>\n",
-                                        	cI->second.getServiceId(), convert_UTF8_To_UTF8_XML(cI->second.getName().c_str()).c_str(),
+                                        	cI->second.getServiceId(), UTF8_to_UTF8XML(cI->second.getName().c_str()).c_str(),
                                         	cI->second.getServiceType());
 				} 
 				else 
@@ -2939,7 +2942,7 @@ void * sdt_thread(void */*arg*/)
 					   }
 					   updated = 1;
 					   fprintf(fd, "\t\t\t<S action=\"replace\" i=\"%04x\" n=\"%s\" t=\"%x\"/>\n",
-                                        	cI->second.getServiceId(), convert_UTF8_To_UTF8_XML(cI->second.getName().c_str()).c_str(),
+                                        	cI->second.getServiceId(), UTF8_to_UTF8XML(cI->second.getName().c_str()).c_str(),
                                         	cI->second.getServiceType());
 					}
 				}
@@ -2963,7 +2966,7 @@ void * sdt_thread(void */*arg*/)
 
 					   	updated = 1;
 					   	fprintf(fd, "\t\t\t<S action=\"remove\" i=\"%04x\" n=\"%s\" t=\"%x\"/>\n",
-                                        	ccI->second.getServiceId(), convert_UTF8_To_UTF8_XML(ccI->second.getName().c_str()).c_str(),
+                                        	ccI->second.getServiceId(), UTF8_to_UTF8XML(ccI->second.getName().c_str()).c_str(),
                                         	ccI->second.getServiceType());
 					}
 				}

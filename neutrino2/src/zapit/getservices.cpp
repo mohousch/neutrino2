@@ -47,6 +47,8 @@
 #include <system/helpers.h>	// needed for safe_mkdir
 #include <system/settings.h>
 
+#include <driver/encoding.h>
+
 
 extern _xmlDocPtr scanInputParser;				// defined in zapit.cpp
 extern transponder_list_t transponders;				// defined in zapit.cpp
@@ -927,7 +929,7 @@ void CServices::saveServices(bool tocopy)
 					{
 						fprintf(fd, "\t\t\t<S i=\"%04x\" n=\"%s\" v=\"%x\" a=\"%x\" p=\"%x\" pmt=\"%x\" tx=\"%x\" t=\"%x\" vt=\"%d\" s=\"%d\"/>\n",
 								ccI->second.getServiceId(), 
-								convert_UTF8_To_UTF8_XML(ccI->second.getName().c_str()).c_str(),
+								UTF8_to_UTF8XML(ccI->second.getName().c_str()).c_str(),
 								ccI->second.getVideoPid(), 
 								ccI->second.getPreAudioPid(),
 								ccI->second.getPcrPid(), 
@@ -941,7 +943,7 @@ void CServices::saveServices(bool tocopy)
 					{
 						fprintf(fd, "\t\t\t<S i=\"%04x\" n=\"%s\" t=\"%x\" s=\"%d\"/>\n",
 								ccI->second.getServiceId(), 
-								convert_UTF8_To_UTF8_XML(ccI->second.getName().c_str()).c_str(),
+								UTF8_to_UTF8XML(ccI->second.getName().c_str()).c_str(),
 								ccI->second.getServiceType(true), 
 								ccI->second.scrambled);
 					}

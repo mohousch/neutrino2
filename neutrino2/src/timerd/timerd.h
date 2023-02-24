@@ -77,22 +77,6 @@ class CTimerd
 			bool          recordingSafety;
 		};
 
-		struct TransferEventInfo
-		{
-			event_id_t    epgID;
-			time_t        epg_starttime;
-			t_channel_id  channel_id;
-			unsigned char apids;
-			bool          recordingSafety;
-		};
-
-		struct TransferRecordingInfo : TransferEventInfo
-		{
-			char recordingDir[RECORD_DIR_MAXLEN];
-			char epgTitle[EPG_TITLE_MAXLEN];
-
-		};
-
 		class RecordingInfo : public EventInfo
 		{
 			public:
@@ -156,27 +140,11 @@ class CTimerd
 		
 		typedef std::vector<responseGetTimer> TimerList;
 		
-		//
-		struct commandAddTimer
-		{
-			CTimerd::CTimerEventTypes  eventType;
-			CTimerd::CTimerEventRepeat eventRepeat;
-			time_t                     alarmTime;
-			time_t                     announceTime;
-			time_t                     stopTime;			
-			uint32_t                   repeatCount;
-		};
-
-		struct commandGetTimer
-		{
-			int   eventID;
-		};
-		
 		struct commandRemind
 		{
 			char message[REMINDER_MESSAGE_MAXLEN];
 		};
-
+		
 		struct commandExecPlugin
 		{
 			char name[EXEC_PLUGIN_NAME_MAXLEN];
@@ -186,27 +154,11 @@ class CTimerd
 		{
 			char recDir[RECORD_DIR_MAXLEN];
 		};
-		
+
 		struct commandSetStandby
 		{
 			bool standby_on;
 		};
-		
-		struct generalInteger
-		{
-			int number;
-		};
-
-		struct responseAddTimer
-		{
-			int   eventID;
-		};
-		
-		struct responseGetSleeptimer
-		{
-			int   eventID;
-		};
-		////
 		
 	private:
 		CTimerd(){};

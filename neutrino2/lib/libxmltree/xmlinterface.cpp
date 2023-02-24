@@ -85,42 +85,6 @@ std::string Unicode_Character_to_UTF8(const int character)
 #endif /* USE_LIBXML */
 }
 
-std::string convert_UTF8_To_UTF8_XML(const char* s)
-{
-	std::string r;
-
-	while ((*s) != 0)
-	{
-		/* cf.
-		 * http://www.w3.org/TR/2004/REC-xml-20040204/#syntax
-		 * and
-		 * http://www.w3.org/TR/2004/REC-xml-20040204/#sec-predefined-ent
-		 */
-		switch (*s)
-		{
-		case '<':
-			r += "&lt;";
-			break;
-		case '>':
-			r += "&gt;";
-			break;
-		case '&':
-			r += "&amp;";
-			break;
-		case '\"':
-			r += "&quot;";
-			break;
-		case '\'':
-			r += "&apos;";
-			break;
-		default:
-			r += *s;
-		}
-		s++;
-	}
-	return r;
-}
-
 #ifdef USE_LIBXML
 xmlDocPtr parseXml(const char * data)
 {

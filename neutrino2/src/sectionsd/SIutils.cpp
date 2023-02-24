@@ -136,7 +136,8 @@ int saveStringToXMLfile(FILE *out, const char *c, int /*withControlCodes*/)
 	  buf[outlen]=0;
 	  c=buf;
 	*/
-	for(; *c; c++) {
+	for(; *c; c++) 
+	{
 		switch ((unsigned char)*c) 
 		{
 			case '<':
