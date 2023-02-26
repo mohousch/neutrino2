@@ -5200,9 +5200,10 @@ void CNeutrinoApp::SelectNVOD()
                 CWidget* widget = NULL;
                 ClistBox* NVODSelector = NULL;
                 
-                if (CNeutrinoApp::getInstance()->widget_exists("nvodselect"))
-		{
-			widget = CNeutrinoApp::getInstance()->getWidget("nvodselect");
+                widget = CNeutrinoApp::getInstance()->getWidget("nvodselect");
+                
+                if (widget)
+                {
 			NVODSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 		}
 		else

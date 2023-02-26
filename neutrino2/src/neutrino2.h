@@ -103,12 +103,11 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		int lastMode;
 		int chmode;
 		
-		CTimerd::RecordingInfo * nextRecordingInfo;
+		CTimerd::RecordingInfo *nextRecordingInfo;
 
 		struct timeval standby_pressed_at;
 
 		CZapit::responseGetLastChannel firstchannel;
-		st_rmsg sendmessage;
 
 		bool skipShutdownTimer;
 

@@ -3867,360 +3867,6 @@ void CSectionsd::readDVBTimeFilter(void)
 	}
 }
 
-extern cDemux * dmxUTC;
-pthread_t threadTOT, threadEIT, threadCN, threadHouseKeeping, threadFSEIT, threadVIASATEIT;
-//void sectionsd_main_thread(void */*data*/)
-void CSectionsd::Start(void)
-{
-	dprintf(DEBUG_NORMAL, "CSectionsd::Start:\n");
-	
-	//pthread_t threadTOT, threadEIT, threadCN, threadHouseKeeping, threadFSEIT, threadVIASATEIT;
-
-	int rc;
-
-	//struct sched_param parm;
-
-	//dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: startup, tid %ld\n", syscall(__NR_gettid));
-
-	// load languages
-	SIlanguage::loadLanguages();
-
-	//
-	tzset(); // TZ auswerten
-
-	//NTP-Config laden
-	if (!ntp_config.loadConfig(CONF_FILE))
-	{
-		// set defaults if no configuration file exists
-		printf("sectionsd_Start: %s not found\n", CONF_FILE);
-	}
-
-	ntpserver = ntp_config.getString("network_ntpserver", "de.pool.ntp.org");
-	ntprefresh = atoi(ntp_config.getString("network_ntprefresh","30").c_str() );
-	ntpenable = ntp_config.getBool("network_ntpenable", false);
-	
-	// check for rdate
-	if( !access("/bin/rdate", F_OK) || !access("/sbin/rdate", F_OK) || !access("/usr/bin/rdate", F_OK) || !access("/usr/sbin/rdate", F_OK)) 
-		ntp_system_cmd_prefix = "rdate -s ";
-	
-	ntp_system_cmd = ntp_system_cmd_prefix + ntpserver;
-
-	//EPG Einstellungen laden
-	secondsToCache = (atoi(ntp_config.getString("epg_cache_time","14").c_str() ) *24*60L*60L); //Tage
-	secondsExtendedTextCache = (atoi(ntp_config.getString("epg_extendedcache_time","360").c_str() ) *60L*60L); //Stunden
-	oldEventsAre = (atoi(ntp_config.getString("epg_old_events","1").c_str() ) *60L*60L); //Stunden
-	max_events= atoi(ntp_config.getString("epg_max_events","50000").c_str() );
-
-	dprintf(DEBUG_NORMAL, "[sectionsd] Caching max %d events\n", max_events);
-	dprintf(DEBUG_NORMAL, "[sectionsd] Caching %ld days\n", secondsToCache / (24*60*60L));
-	dprintf(DEBUG_NORMAL, "[sectionsd] Caching %ld hours Extended Text\n", secondsExtendedTextCache / (60*60L));
-	dprintf(DEBUG_NORMAL, "[sectionsd] Events are old %ldmin after their end time\n", oldEventsAre / 60);
-
-	readEPGFilter();
-	readDVBTimeFilter();
-	readEncodingFile();
-	
-	// eventServer
-	eventServer = new CEventServer;
-	
-	//
-	eventServer->registerEvent2(CSectionsd::EVT_TIMESET, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CSectionsd::EVT_GOT_CN_EPG, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CSectionsd::EVT_SERVICES_UPDATE, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CSectionsd::EVT_BOUQUETS_UPDATE, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CSectionsd::EVT_WRITE_SI_FINISHED, 222, NEUTRINO_UDS_NAME);
-	
-	messaging_neutrino_sets_time = true;
-
-	// time-Thread starten
-	rc = pthread_create(&threadTOT, 0, timeThread, 0);
-
-	if (rc) 
-	{
-		dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create time-thread (rc=%d)\n", rc);
-		//return;
-	}
-
-	if(FrontendCount)
-	{
-		// EIT-Thread starten
-		rc = pthread_create(&threadEIT, 0, eitThread, 0);
-
-		if (rc) 
-		{
-			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create eit-thread (rc=%d)\n", rc);
-			//return;
-		}
-
-		// CN-Thread starten
-		rc = pthread_create(&threadCN, 0, cnThread, 0);
-
-		if (rc) 
-		{
-			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create cn-thread (rc=%d)\n", rc);
-			//return;
-		}
-
-		// freesat
-		rc = pthread_create(&threadFSEIT, 0, fseitThread, 0);
-
-		if (rc) 
-		{
-			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create fseit-thread (rc=%d)\n", rc);
-			//return;
-		}
-		
-		// viasat
-		rc = pthread_create(&threadVIASATEIT, 0, viasateitThread, 0);
-
-		if (rc) 
-		{
-			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create viasateit-thread (rc=%d)\n", rc);
-			//return;
-		}
-	}
-
-	// housekeeping-Thread starten
-	/*
-	rc = pthread_create(&threadHouseKeeping, 0, houseKeepingThread, 0);
-
-	if (rc) 
-	{
-		dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create housekeeping-thread (rc=%d)\n", rc);
-		//return;
-	}
-	*/
-
-	//int policy;
-	//rc = pthread_getschedparam(pthread_self(), &policy, &parm);
-	//dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_main_thread: mainloop getschedparam %d policy %d prio %d\n", rc, policy, parm.sched_priority);
-	
-	sectionsd_ready = true;
-	
-	if(FrontendCount)
-		eit_update_fd = -1;
-		
-	if (eit_update_fd != -1) 
-	{
-		unsigned char buf[MAX_SECTION_LENGTH];
-		int ret = eitDmx->Read(buf, MAX_SECTION_LENGTH, 10);
-
-		// dirty hack eitDmx read sucked always //FIXME???
-		if (ret > 0) 
-		{
-			writeLockMessaging();
-			//messaging_skipped_sections_ID[0].clear();
-			//messaging_sections_max_ID[0] = -1;
-			//messaging_sections_got_all[0] = false;
-			messaging_have_CN = 0x00;
-			messaging_got_CN = 0x00;
-			messaging_last_requested = time_monotonic();
-			unlockMessaging();
-			//sched_yield();
-			dmxCN.change(0);
-			//sched_yield();
-		}
-	}
-#if 0
-	while (true) 
-	{
-		sched_yield();
-		
-		if (eit_update_fd != -1) 
-		{
-			unsigned char buf[MAX_SECTION_LENGTH];
-			int ret = eitDmx->Read(buf, MAX_SECTION_LENGTH, 10);
-
-			// dirty hack eitDmx read sucked always //FIXME???
-			if (ret > 0) 
-			{
-				writeLockMessaging();
-				//messaging_skipped_sections_ID[0].clear();
-				//messaging_sections_max_ID[0] = -1;
-				//messaging_sections_got_all[0] = false;
-				messaging_have_CN = 0x00;
-				messaging_got_CN = 0x00;
-				messaging_last_requested = time_monotonic();
-				unlockMessaging();
-				sched_yield();
-				dmxCN.change(0);
-				sched_yield();
-			}
-		}
-		
-		if(sectionsd_stop)
-			break;
-
-		sched_yield();
-		
-		/* 
-		10 ms is the minimal timeslice anyway (HZ = 100), so let's
-		wait 20 ms at least to lower the CPU load 
-		*/
-		usleep(20000);
-	}
-#endif
-
-#if 0
-	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: stopping...\n");
-	
-	scanning = 0;
-	timeset = true;
-	
-	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: broadcasting...\n");
-	
-	pthread_mutex_lock(&timeIsSetMutex);
-	pthread_cond_broadcast(&timeIsSetCond);
-	pthread_mutex_unlock(&timeIsSetMutex);
-	
-	if(FrontendCount)
-	{
-		pthread_mutex_lock(&timeThreadSleepMutex);
-		pthread_cond_broadcast(&timeThreadSleepCond);
-		pthread_mutex_unlock(&timeThreadSleepMutex);
-		
-		pthread_mutex_lock(&dmxEIT.start_stop_mutex);
-		pthread_cond_broadcast(&dmxEIT.change_cond);
-		pthread_mutex_unlock(&dmxEIT.start_stop_mutex);
-		
-		pthread_mutex_lock(&dmxCN.start_stop_mutex);
-		pthread_cond_broadcast(&dmxCN.change_cond);
-		pthread_mutex_unlock(&dmxCN.start_stop_mutex);
-	}
-
-	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: pausing...\n");
-	
-	if(FrontendCount)
-	{
-		dmxEIT.request_pause();
-		dmxCN.request_pause();
-		dmxFSEIT.request_pause();
-		dmxVIASAT.request_pause();
-	}
-
-	pthread_cancel(threadHouseKeeping);
-
-	if(FrontendCount)
-	{
-		if(dmxUTC) 
-			dmxUTC->Stop();
-	}
-
-	// timethread
-	pthread_cancel(threadTOT);
-	pthread_join(threadTOT, NULL);
-	
-	if(FrontendCount)
-	{
-		if(dmxUTC) 
-			delete dmxUTC;
-	
-		pthread_join(threadEIT, NULL);
-		pthread_join(threadCN, NULL);
-
-		eit_stop_update_filter(&eit_update_fd);
-		
-		if(eitDmx)
-			delete eitDmx;
-
-		// close eitdmx
-		dmxEIT.close();
-		
-		// close cndmx
-		dmxCN.close();
-		
-		// close freesatdmx
-		dmxFSEIT.close();
-		
-		//
-		dmxVIASAT.close();
-	}
-
-	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: ended\n");
-#endif
-
-	//return;
-}
-
-void CSectionsd::Stop(void)
-{
-	dprintf(DEBUG_NORMAL, "CSectionsd::Stop:\n");
-	
-	scanning = 0;
-	timeset = true;
-	
-#if 0
-	/*
-	pthread_mutex_lock(&timeIsSetMutex);
-	pthread_cond_broadcast(&timeIsSetCond);
-	pthread_mutex_unlock(&timeIsSetMutex);
-	
-	if(FrontendCount)
-	{
-		pthread_mutex_lock(&timeThreadSleepMutex);
-		pthread_cond_broadcast(&timeThreadSleepCond);
-		pthread_mutex_unlock(&timeThreadSleepMutex);
-		
-		pthread_mutex_lock(&dmxEIT.start_stop_mutex);
-		pthread_cond_broadcast(&dmxEIT.change_cond);
-		pthread_mutex_unlock(&dmxEIT.start_stop_mutex);
-		
-		pthread_mutex_lock(&dmxCN.start_stop_mutex);
-		pthread_cond_broadcast(&dmxCN.change_cond);
-		pthread_mutex_unlock(&dmxCN.start_stop_mutex);
-	}
-	
-	if(FrontendCount)
-	{
-		dmxEIT.request_pause();
-		dmxCN.request_pause();
-		dmxFSEIT.request_pause();
-		dmxVIASAT.request_pause();
-	}
-	*/
-
-	//pthread_cancel(threadHouseKeeping);
-
-	if(FrontendCount)
-	{
-		if(dmxUTC) 
-			dmxUTC->Stop();
-	}
-
-	// timethread
-	//pthread_cancel(threadTOT);
-	//pthread_join(threadTOT, NULL);
-	
-	if(FrontendCount)
-	{
-		if(dmxUTC) 
-			delete dmxUTC;
-	
-		pthread_join(threadEIT, NULL);
-		pthread_join(threadCN, NULL);
-
-		//eit_stop_update_filter(&eit_update_fd);
-		
-		if(eitDmx)
-			delete eitDmx;
-
-		// close eitdmx
-		dmxEIT.close();
-		
-		// close cndmx
-		dmxCN.close();
-		
-		// close freesatdmx
-		dmxFSEIT.close();
-		
-		//
-		dmxVIASAT.close();
-	}
-#endif
-	
-	sectionsd_stop = 1;
-}
-
 void CSectionsd::getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search, std::string search_text)
 {
 	dprintf(DEBUG_NORMAL, "CSectionsd::getEventsServiceKey:sendAllEvents for:%llx\n", serviceUniqueKey);
@@ -5322,5 +4968,163 @@ void CSectionsd::insertEventsfromLocalTV(std::string& url, t_original_network_id
 	}
 
 	unlink(answer.c_str());
+}
+
+extern cDemux * dmxUTC;
+pthread_t threadTOT, threadEIT, threadCN, threadHouseKeeping, threadFSEIT, threadVIASATEIT;
+
+void CSectionsd::Start(void)
+{
+	dprintf(DEBUG_NORMAL, "CSectionsd::Start:\n");
+
+	int rc;
+
+	// load languages
+	SIlanguage::loadLanguages();
+
+	//
+	tzset(); // TZ auswerten
+
+	//NTP-Config laden
+	if (!ntp_config.loadConfig(CONF_FILE))
+	{
+		// set defaults if no configuration file exists
+		printf("sectionsd_Start: %s not found\n", CONF_FILE);
+	}
+
+	ntpserver = ntp_config.getString("network_ntpserver", "de.pool.ntp.org");
+	ntprefresh = atoi(ntp_config.getString("network_ntprefresh","30").c_str() );
+	ntpenable = ntp_config.getBool("network_ntpenable", false);
+	
+	// check for rdate
+	if( !access("/bin/rdate", F_OK) || !access("/sbin/rdate", F_OK) || !access("/usr/bin/rdate", F_OK) || !access("/usr/sbin/rdate", F_OK)) 
+		ntp_system_cmd_prefix = "rdate -s ";
+	
+	ntp_system_cmd = ntp_system_cmd_prefix + ntpserver;
+
+	// epg config
+	secondsToCache = (atoi(ntp_config.getString("epg_cache_time","14").c_str() ) *24*60L*60L); //Tage
+	secondsExtendedTextCache = (atoi(ntp_config.getString("epg_extendedcache_time","360").c_str() ) *60L*60L); //Stunden
+	oldEventsAre = (atoi(ntp_config.getString("epg_old_events","1").c_str() ) *60L*60L); //Stunden
+	max_events= atoi(ntp_config.getString("epg_max_events","50000").c_str() );
+
+	dprintf(DEBUG_NORMAL, "[sectionsd] Caching max %d events\n", max_events);
+	dprintf(DEBUG_NORMAL, "[sectionsd] Caching %ld days\n", secondsToCache / (24*60*60L));
+	dprintf(DEBUG_NORMAL, "[sectionsd] Caching %ld hours Extended Text\n", secondsExtendedTextCache / (60*60L));
+	dprintf(DEBUG_NORMAL, "[sectionsd] Events are old %ldmin after their end time\n", oldEventsAre / 60);
+
+	//
+	readEPGFilter();
+	readDVBTimeFilter();
+	readEncodingFile();
+	
+	// eventServer
+	eventServer = new CEventServer;
+	
+	//
+	eventServer->registerEvent2(CSectionsd::EVT_TIMESET, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsd::EVT_GOT_CN_EPG, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsd::EVT_SERVICES_UPDATE, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsd::EVT_BOUQUETS_UPDATE, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(CSectionsd::EVT_WRITE_SI_FINISHED, 222, NEUTRINO_UDS_NAME);
+	
+	messaging_neutrino_sets_time = true;
+
+	// time-Thread starten
+	rc = pthread_create(&threadTOT, 0, timeThread, 0);
+
+	if (rc) 
+	{
+		dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create time-thread (rc=%d)\n", rc);
+	}
+
+	if(FrontendCount)
+	{
+		// EIT-Thread starten
+		rc = pthread_create(&threadEIT, 0, eitThread, 0);
+
+		if (rc) 
+		{
+			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create eit-thread (rc=%d)\n", rc);
+		}
+
+		// CN-Thread starten
+		rc = pthread_create(&threadCN, 0, cnThread, 0);
+
+		if (rc) 
+		{
+			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create cn-thread (rc=%d)\n", rc);
+		}
+
+		// freesat
+		rc = pthread_create(&threadFSEIT, 0, fseitThread, 0);
+
+		if (rc) 
+		{
+			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create fseit-thread (rc=%d)\n", rc);
+		}
+		
+		// viasat
+		rc = pthread_create(&threadVIASATEIT, 0, viasateitThread, 0);
+
+		if (rc) 
+		{
+			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create viasateit-thread (rc=%d)\n", rc);
+		}
+	}
+	
+	sectionsd_ready = true;
+	
+	//if(FrontendCount)
+	eit_update_fd = -1;
+}
+
+void CSectionsd::Stop(void)
+{
+	dprintf(DEBUG_NORMAL, "CSectionsd::Stop:\n");
+	
+	scanning = 0;
+	timeset = true;
+
+	// timethread
+	pthread_cancel(threadTOT);
+	pthread_join(threadTOT, NULL);
+	
+	if(FrontendCount)
+	{
+		if(dmxUTC) 
+			delete dmxUTC;
+	
+		pthread_cancel(threadEIT);
+		pthread_join(threadEIT, NULL);
+		
+		pthread_cancel(threadCN);
+		pthread_join(threadCN, NULL);
+		
+		pthread_cancel(threadFSEIT);
+		pthread_join(threadFSEIT, NULL);
+		
+		pthread_cancel(threadVIASATEIT);
+		pthread_join(threadVIASATEIT, NULL);
+
+		//eit_stop_update_filter(&eit_update_fd);
+		
+		if(eitDmx)
+			delete eitDmx;
+
+		// close eitdmx
+		dmxEIT.close();
+		
+		// close cndmx
+		dmxCN.close();
+		
+		// close freesatdmx
+		dmxFSEIT.close();
+		
+		//
+		dmxVIASAT.close();
+	}
+	
+	sectionsd_stop = 1;
 }
 

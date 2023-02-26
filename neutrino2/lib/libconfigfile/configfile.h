@@ -30,6 +30,7 @@
 #include <string>
 #include <vector>
 
+
 typedef std::map<std::string, std::string> ConfigDataMap;
 
 class CConfigFile

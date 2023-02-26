@@ -109,9 +109,11 @@ void CAudioSelectMenuHandler::doMenu()
 	CWidget* widget = NULL;
 	ClistBox* AudioSelector = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("audioselect"))
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("audioselect");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("audioselect");
 		AudioSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -249,11 +251,6 @@ void CAudioSelectMenuHandler::doMenu()
 	widget->exec(NULL, "");
 
 	delete audioSetupNotifierVolPercent;
-	
-#ifdef TESTING
-	delete AudioSelector;
-	delete widget;
-#endif
 }
 
 // apid change notifier

@@ -69,11 +69,10 @@ int CEPGMenuHandler::doMenu()
 	CWidget* widget = NULL;
 	ClistBox* redMenu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("epgtimer"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("epgtimer");
-	}
-	else
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("epgtimer");
+	
+	if (widget == NULL)
 	{
 		redMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 

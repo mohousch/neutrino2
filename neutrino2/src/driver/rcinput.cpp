@@ -1496,7 +1496,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, "got event from low-pri pipe msg: (%x) data: (%x)\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: got event from low-pri pipe msg: (%x) data: (%x)\n", *msg, *data );
 
 			return;
 		}

@@ -85,10 +85,13 @@ class CDBoxInfoWidget : public CMenuTarget
 class CInfoMenu : public CMenuTarget
 {
 	private:
+		CWidget* widget;
+		ClistBox* infoMenu;
+	
 		void showMenu();
 		
 	public:
-		CInfoMenu(){};
+		CInfoMenu(){widget = NULL; infoMenu = NULL;};
 		~CInfoMenu(){};
 		
 		void hide(){};

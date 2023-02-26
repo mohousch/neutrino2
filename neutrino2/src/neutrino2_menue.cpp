@@ -78,11 +78,9 @@ void CNeutrinoApp::mainMenu(void)
 	ClistBox* nMenu = NULL;
 	CMenuItem* item = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("mainmenu"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("mainmenu");
-	}
-	else
+	widget = CNeutrinoApp::getInstance()->getWidget("mainmenu");
+	
+	if (widget == NULL)
 	{
 		nMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
@@ -272,9 +270,10 @@ bool CNeutrinoApp::showUserMenu(int button)
 	CWidget* widget = NULL;
 	ClistBox* menu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("features"))
+	widget = CNeutrinoApp::getInstance()->getWidget("features");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("features");
 		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

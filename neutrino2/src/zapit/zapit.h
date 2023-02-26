@@ -32,8 +32,8 @@
 
 #include <inttypes.h>
 
-#include <OpenThreads/Thread>
-#include <OpenThreads/Condition>
+//#include <OpenThreads/Thread>
+//#include <OpenThreads/Condition>
 
 // zapit
 #include <zapit/zapittypes.h>
@@ -266,7 +266,7 @@ class CZapit
 		};
 		
 	private:
-		static OpenThreads::Mutex mutex_zapit;
+		//static OpenThreads::Mutex mutex_zapit;
 		
 		//
 		void initFrontend();

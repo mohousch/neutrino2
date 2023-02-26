@@ -93,11 +93,12 @@ struct button_label CPluginListHeadButtons = {NEUTRINO_ICON_BUTTON_HELP_SMALL, "
 void CPluginList::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CPluginList::showMenu\n");
+	
+	pWidget = CNeutrinoApp::getInstance()->getWidget("plugins");
 
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("plugins"))
+	if (pWidget)
 	{
-		pWidget = CNeutrinoApp::getInstance()->getWidget("plugins");
 		plist = (ClistBox*)pWidget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

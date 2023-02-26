@@ -24,8 +24,8 @@
 #include <string>
 #include <vector>
 
-#include <OpenThreads/Thread>
-#include <OpenThreads/Condition>
+//#include <OpenThreads/Thread>
+//#include <OpenThreads/Condition>
 
 #include <sectionsd/sectionsdtypes.h>
 #include <sectionsd/SIevents.hpp>
@@ -159,7 +159,7 @@ class CSectionsd
 		} epg_config;
 		
 	private:
-		static OpenThreads::Mutex mutex_sectionsd;
+		//static OpenThreads::Mutex mutex_sectionsd;
 		
 		//
 		void findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, SIevent &prev, SItime &prev_zeit, SIevent &next, SItime &next_zeit);
@@ -177,8 +177,6 @@ class CSectionsd
 		
 		//
 		CSectionsd(){};
-		
-		void run(){};
 	
 	public:
 		~CSectionsd(){};

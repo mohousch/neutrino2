@@ -194,7 +194,7 @@ class CTimerd
 		int addNextProgramTimerEvent(CTimerd::EventInfo eventInfo, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0);
 
 		bool rescheduleTimerEvent(int eventid, time_t announcediff, time_t alarmdiff, time_t stoptime);
-		bool modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime = 0, CTimerd::CTimerEventRepeat evrepeat = CTimerd::TIMERREPEAT_ONCE, uint32_t repeatcount = 0, void *data = NULL, int datalen = 0);
+		bool modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime = 0, CTimerd::CTimerEventRepeat evrepeat = CTimerd::TIMERREPEAT_ONCE, uint32_t repeatcount = 0, void *data = NULL);
 		bool modifyRecordTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount, const char * const recordingdir);
 
 		void getTimer(CTimerd::responseGetTimer &timer, unsigned timerID);

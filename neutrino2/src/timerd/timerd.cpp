@@ -400,7 +400,7 @@ bool CTimerd::rescheduleTimerEvent(int eventid, time_t announcediff, time_t alar
 	return status;
 }
 
-bool CTimerd::modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount, void *data, int datalen)
+bool CTimerd::modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount, void *data)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::modifyTimerEvent\n");
 	
@@ -449,7 +449,7 @@ bool CTimerd::modifyRecordTimerEvent(int eventid, time_t announcetime, time_t al
 	
 	strncpy(rdir.recDir, recordingdir, RECORD_DIR_MAXLEN - 1);
 	
-	return CTimerd::modifyTimerEvent(eventid, announcetime, alarmtime, stoptime, evrepeat, repeatcount, &rdir, sizeof(rdir));
+	return CTimerd::modifyTimerEvent(eventid, announcetime, alarmtime, stoptime, evrepeat, repeatcount, &rdir);
 }
 
 void CTimerd::setRecordingSafety(int pre, int post)

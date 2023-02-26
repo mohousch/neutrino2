@@ -43,14 +43,6 @@
 #include <vector>
 #include <string>
 
-struct st_rmsg
-{
-	unsigned char version;
-	unsigned char cmd;
-	unsigned char param;
-	unsigned short param2;
-	char param3[30];
-};
 
 class CSubService
 {

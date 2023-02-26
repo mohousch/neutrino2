@@ -142,10 +142,11 @@ void CDBoxInfoWidget::showInfo()
 {
 	dprintf(DEBUG_NORMAL, "CDBoxInfoWidget::showInfo:\n");
 	
+	dboxInfoWidget = CNeutrinoApp::getInstance()->getWidget("boxinfo");
+	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("boxinfo"))
+	if (dboxInfoWidget)
 	{
-		dboxInfoWidget = CNeutrinoApp::getInstance()->getWidget("boxinfo");
 		head = (CHeaders*)dboxInfoWidget->getWidgetItem(WIDGETITEM_HEAD);
 	}
 	else
@@ -503,15 +504,9 @@ void CInfoMenu::showMenu()
 	dprintf(DEBUG_NORMAL, "CInfoMenu::showMenu:\n");
 	
 	//
-	CWidget* widget = NULL;
-	ClistBox* infoMenu = NULL;
+	widget = CNeutrinoApp::getInstance()->getWidget("information");
 	
-	//
-	if (CNeutrinoApp::getInstance()->widget_exists("information"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("information");
-	}
-	else
+	if (widget == NULL)
 	{
 		infoMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
