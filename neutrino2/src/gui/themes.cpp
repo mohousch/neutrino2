@@ -207,10 +207,10 @@ int CThemes::Show()
 	CWidget* widget = NULL;
 	ClistBox* themes = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("themesetup"))
+	widget = CNeutrinoApp::getInstance()->getWidget("themesetup");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("themesetup");
-		
 		themes = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

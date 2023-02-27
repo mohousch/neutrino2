@@ -41,9 +41,6 @@
 #include "SIsections.hpp"
 #include <dmxapi.h>
 
-/*zapit includes*/
-#include <zapit/dvbstring.h>
-
 #include <edvbstring.h>
 
 

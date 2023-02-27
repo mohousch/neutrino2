@@ -2840,7 +2840,7 @@ CWidget* CNeutrinoApp::getWidget(const char* const name)
 	
 	return ret;
 }
-
+/*
 bool CNeutrinoApp::widget_exists(const char* const name)
 {
 	bool ret = false;
@@ -2858,7 +2858,7 @@ bool CNeutrinoApp::widget_exists(const char* const name)
 	
 	return ret;
 }
-
+*/
 // eraseWidget
 bool CNeutrinoApp::eraseWidget(const char* const name)
 {
@@ -3320,11 +3320,14 @@ int CNeutrinoApp::execSkinWidget(const char* const name, CMenuTarget* parent, co
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::execSkinWidget: actionKey: (%s)\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;;
+	int ret = RETURN_REPAINT;
+	CWidget * widget = NULL;
 	
-	if (widget_exists(name))
+	widget = getWidget(name);
+	
+	if (widget)
 	{
-		ret = getWidget(name)->exec(parent, actionKey);
+		ret = widget->exec(parent, actionKey);
 	}
 	
 	return ret;	
@@ -3335,11 +3338,14 @@ bool CNeutrinoApp::paintSkinWidget(const char* const name)
 	dprintf(DEBUG_INFO, "CNeutrinoApp::paintSkinWidget:\n");
 	
 	bool ret = false;
+	CWidget * widget = NULL;
 	
-	if (widget_exists(name))
+	widget = getWidget(name);
+	
+	if (widget)
 	{
+		widget->paint();
 		ret = true;
-		getWidget(name)->paint();
 	}
 	
 	return ret;	
@@ -3350,11 +3356,14 @@ bool CNeutrinoApp::hideSkinWidget(const char* const name)
 	dprintf(DEBUG_INFO, "CNeutrinoApp::hideSkinWidget:\n");
 	
 	bool ret = false;
+	CWidget * widget = NULL;
 	
-	if (widget_exists(name))
+	widget = getWidget(name);
+	
+	if (widget)
 	{
+		widget->hide();
 		ret = true;
-		getWidget(name)->hide();
 	}
 	
 	return ret;	

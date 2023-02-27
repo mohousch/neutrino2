@@ -1913,7 +1913,7 @@ void CSectionsd::freeMemory()
 // fromFile
 static void *insertEventsfromFile(void *)
 {
-	dprintf(DEBUG_NORMAL, "[sectionsd] insertEventsfromFile\n");
+	dprintf(DEBUG_INFO, "[sectionsd] insertEventsfromFile\n");
 
 	_xmlDocPtr event_parser = NULL;
 	_xmlNodePtr eventfile = NULL;
@@ -1944,7 +1944,7 @@ static void *insertEventsfromFile(void *)
 		{
 			time_t now = time_monotonic_ms();
 			
-			dprintf(DEBUG_NORMAL, "[sectionsd] Reading Information from file %s:\n", indexname.c_str());
+			dprintf(DEBUG_INFO, "[sectionsd] Reading Information from file %s:\n", indexname.c_str());
 
 			eventfile = xmlDocGetRootElement(index_parser)->xmlChildrenNode;
 
@@ -2076,7 +2076,7 @@ static void *insertEventsfromFile(void *)
 
 			xmlFreeDoc(index_parser);
 
-			dprintf(DEBUG_NORMAL, "[sectionsd] Reading Information finished after %ld miliseconds (%d events)\n", time_monotonic_ms() - now, ev_count);
+			dprintf(DEBUG_INFO, "[sectionsd] Reading Information finished after %ld miliseconds (%d events)\n", time_monotonic_ms() - now, ev_count);
 		}
 	}
 
@@ -2088,7 +2088,7 @@ static void *insertEventsfromFile(void *)
 //
 static void *insertEventsfromXMLTV(void* data)
 {
-	dprintf(DEBUG_NORMAL, "[sectionsd] insertEventsfromXMLTV\n");
+	dprintf(DEBUG_INFO, "[sectionsd] insertEventsfromXMLTV\n");
 	
 	//
 	if (!data)
@@ -2099,7 +2099,7 @@ static void *insertEventsfromXMLTV(void* data)
 	
 	std::string url = (std::string)(char *) data;
 	
-	dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd:insertEventsfromXMLTV: url:%s\n", url.c_str());
+	dprintf(DEBUG_INFO, "[sectionsd] sectionsd:insertEventsfromXMLTV: url:%s\n", url.c_str());
 
 	std::string answer;
 
@@ -2217,7 +2217,7 @@ static void *insertEventsfromXMLTV(void* data)
 //
 void CSectionsd::readSIfromXML(const char *epgxmlname)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromXML\n");
+	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromXML: %s\n", epgxmlname);
 
 	pthread_t thrInsert;
 
@@ -2244,7 +2244,7 @@ void CSectionsd::readSIfromXML(const char *epgxmlname)
 //
 void CSectionsd::readSIfromXMLTV(const char *url)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromXMLTV\n");
+	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromXMLTV: %s\n", url);
 
 	pthread_t thrInsert;
 

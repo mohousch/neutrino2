@@ -76,11 +76,9 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
  		parent->hide();
  		
  	//
-	if (CNeutrinoApp::getInstance()->widget_exists("imageinfo"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("imageinfo");
-	}
-	else
+ 	widget = CNeutrinoApp::getInstance()->getWidget("imageinfo");
+ 	
+	if (widget == NULL)
 	{
 		widget = new CWidget(x, y, width, height);
 		widget->paintMainFrame(true);

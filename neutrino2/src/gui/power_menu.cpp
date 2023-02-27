@@ -64,11 +64,9 @@ void CPowerMenu::showMenu(void)
 	ClistBox* powerMenu = NULL;
 	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("powermenu"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("powermenu");
-	}
-	else
+	widget = CNeutrinoApp::getInstance()->getWidget("powermenu");
+	
+	if (widget)
 	{
 		powerMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
@@ -107,7 +105,7 @@ void CPowerMenu::showMenu(void)
 		powerMenu->integratePlugins(CPlugins::I_TYPE_POWER);
 	
 		//
-		if (widget == NULL) widget = new CWidget(powerMenu->getWindowsPos().iX, powerMenu->getWindowsPos().iY, powerMenu->getWindowsPos().iWidth, powerMenu->getWindowsPos().iHeight);
+		widget = new CWidget(powerMenu->getWindowsPos().iX, powerMenu->getWindowsPos().iY, powerMenu->getWindowsPos().iWidth, powerMenu->getWindowsPos().iHeight);
 		widget->name = "powermenu";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		

@@ -188,9 +188,10 @@ void CNetworkSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* networkSettings = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("networksetup"))
+	widget = CNeutrinoApp::getInstance()->getWidget("networksetup");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("networksetup");
 		networkSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

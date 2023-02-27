@@ -861,7 +861,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, "\n\033[1;32mCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%x) data:(0x%x)\033[0m\n", *msg, *data );
+			dprintf(DEBUG_INFO, "\n\033[1;32mCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%x) data:(0x%x)\033[0m\n", *msg, *data );
 
 			return;
 		}
@@ -1003,7 +1003,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					// nhttp event msg 
 					if ( emsg.initiatorID == CEventServer::INITID_HTTPD )
 					{					  
-						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from NHTTPD %x %x\n", emsg.eventID, *(unsigned*) p);					
+						dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from NHTTPD %x %x\n", emsg.eventID, *(unsigned*) p);					
 						
 						switch(emsg.eventID)
 						{
@@ -1075,7 +1075,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					}
 					else if ( emsg.initiatorID == CEventServer::INITID_SECTIONSD )
 					{					  
-						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from SECTIONSD %x %x\n", emsg.eventID, *(unsigned*) p);						
+						dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from SECTIONSD %x %x\n", emsg.eventID, *(unsigned*) p);						
 
 						switch(emsg.eventID)
 						{
@@ -1115,7 +1115,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					}
 					else if ( emsg.initiatorID == CEventServer::INITID_ZAPIT )
 					{					  
-						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from ZAPIT %x %x\n", emsg.eventID, *(unsigned*) p);						
+						dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from ZAPIT %x %x\n", emsg.eventID, *(unsigned*) p);						
 						
 						switch(emsg.eventID)
 						{
@@ -1270,7 +1270,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					}
 					else if ( emsg.initiatorID == CEventServer::INITID_TIMERD )
 					{					  
-						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from TIMERD %x %x\n", emsg.eventID, *(unsigned*) p);					
+						dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from TIMERD %x %x\n", emsg.eventID, *(unsigned*) p);					
 						
 						switch(emsg.eventID)
 						{
@@ -1352,7 +1352,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					}
 					else if (emsg.initiatorID == CEventServer::INITID_NEUTRINO)
 					{					  
-						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from NEUTRINO %x %x\n", emsg.eventID, *(unsigned*) p);					
+						dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from NEUTRINO %x %x\n", emsg.eventID, *(unsigned*) p);					
 						
 						if ((emsg.eventID == NeutrinoMessages::EVT_RECORDING_ENDED) && (read_bytes == sizeof(stream2file_status2_t)))
 						{
@@ -1363,7 +1363,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					}
 					else if (emsg.initiatorID == CEventServer::INITID_GENERIC_INPUT_EVENT_PROVIDER)
 					{					  
-						dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: event - from GENERIC_INPUT_EVENT_PROVIDER %x %x\n", emsg.eventID, *(unsigned*) p);						
+						dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from GENERIC_INPUT_EVENT_PROVIDER %x %x\n", emsg.eventID, *(unsigned*) p);						
 						
 						if (read_bytes == sizeof(int))
 						{
@@ -1411,7 +1411,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					continue;
 				}
 								
-				dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: type: 0x%X key: 0x%X value %d, translate: 0x%X -%s-\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
+				dprintf(DEBUG_INFO, "CRCInput::getMsg_us: type: 0x%X key: 0x%X value %d, translate: 0x%X -%s-\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
 
 				uint32_t trkey = translate(ev.code, i);
 
@@ -1496,7 +1496,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: got event from low-pri pipe msg: (%x) data: (%x)\n", *msg, *data );
+			dprintf(DEBUG_INFO, "CRCInput::getMsg_us: got event from low-pri pipe msg: (%x) data: (%x)\n", *msg, *data );
 
 			return;
 		}

@@ -121,19 +121,6 @@ EventList::EventList()
 
 EventList::~EventList()
 {
-#ifdef TESTING
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
-	if (evlWidget)
-	{
-		delete evlWidget;
-		evlWidget = NULL;
-	}
-#endif
 }
 
 void EventList::readEvents(const t_channel_id channel_id)
@@ -255,9 +242,10 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 	readEvents(channel_id);
 	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("eventlist"))
+	evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
+	
+	if (evlWidget)
 	{
-		evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
 		listBox = (ClistBox*)evlWidget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -980,9 +968,10 @@ int CEventFinderMenu::showMenu(void)
 	CWidget* widget = NULL;
 	ClistBox* searchMenu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("epgsearch"))
+	widget = CNeutrinoApp::getInstance()->getWidget("epgsearch");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("epgsearch");
 		searchMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

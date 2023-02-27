@@ -164,17 +164,14 @@ CEpgData::CEpgData()
 	epgBuffer.clear();
 
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("epgview"))
+	widget = CNeutrinoApp::getInstance()->getWidget("epgview");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("epgview");
-		
-		if (widget)
-		{
-			textBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
-			headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
-			footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
-			cFollowScreeningWindow = (CWindow*)widget->getWidgetItem(WIDGETITEM_WINDOW, "screening");
-		}
+		textBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
+		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+		footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
+		cFollowScreeningWindow = (CWindow*)widget->getWidgetItem(WIDGETITEM_WINDOW, "screening");
 	}
 	else
 	{
@@ -816,22 +813,11 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 							
 							if (doRecord)
 							{
-								if (CTimerd::getInstance()->addRecordTimerEvent(channel_id,
-												     epgData.epg_times.startzeit,
-												     epgData.epg_times.startzeit + epgData.epg_times.dauer,
-												     epgData.eventID, epgData.epg_times.startzeit,
-												     epgData.epg_times.startzeit - (ANNOUNCETIME + 120 ),
-												     TIMERD_APIDS_CONF, true, recDir,false) == -1)
+								if (CTimerd::getInstance()->addRecordTimerEvent(channel_id, epgData.epg_times.startzeit, epgData.epg_times.startzeit + epgData.epg_times.dauer, epgData.eventID, epgData.epg_times.startzeit, epgData.epg_times.startzeit - (ANNOUNCETIME + 120 ), TIMERD_APIDS_CONF, true, recDir,false) == -1)
 								{
-									if(askUserOnTimerConflict(epgData.epg_times.startzeit - (ANNOUNCETIME + 120),
-												  epgData.epg_times.startzeit + epgData.epg_times.dauer))
+									if(askUserOnTimerConflict(epgData.epg_times.startzeit - (ANNOUNCETIME + 120), epgData.epg_times.startzeit + epgData.epg_times.dauer))
 									{
-										CTimerd::getInstance()->addRecordTimerEvent(channel_id,
-														 epgData.epg_times.startzeit,
-														 epgData.epg_times.startzeit + epgData.epg_times.dauer,
-														 epgData.eventID, epgData.epg_times.startzeit,
-														 epgData.epg_times.startzeit - (ANNOUNCETIME + 120 ),
-														 TIMERD_APIDS_CONF, true, recDir,true);
+										CTimerd::getInstance()->addRecordTimerEvent(channel_id, epgData.epg_times.startzeit, epgData.epg_times.startzeit + epgData.epg_times.dauer, epgData.eventID, epgData.epg_times.startzeit, epgData.epg_times.startzeit - (ANNOUNCETIME + 120 ), TIMERD_APIDS_CONF, true, recDir,true);
 														 
 										MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 									}
@@ -853,10 +839,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 					{
 						if(CTimerd::getInstance()->isTimerdAvailable())
 						{
-							CTimerd::getInstance()->addZaptoTimerEvent(channel_id,
-											epgData.epg_times.startzeit,
-											epgData.epg_times.startzeit - ANNOUNCETIME, 0,
-											epgData.eventID, epgData.epg_times.startzeit, 0);
+							CTimerd::getInstance()->addZaptoTimerEvent(channel_id, epgData.epg_times.startzeit, epgData.epg_times.startzeit - ANNOUNCETIME, 0, epgData.eventID, epgData.epg_times.startzeit, 0);
 										
 							MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 						}

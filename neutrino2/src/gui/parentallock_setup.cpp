@@ -96,9 +96,10 @@ void CParentalLockSettings::showMenu()
 	dprintf(DEBUG_NORMAL, "CParentalLockSettings::showMenu:\n");
 	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("parentallocksetup"))
+	widget = CNeutrinoApp::getInstance()->getWidget("parentallocksetup");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("parentallocksetup");
 		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

@@ -207,9 +207,10 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 		parent->hide();
 		
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("bqeditchselect"))
+	widget = CNeutrinoApp::getInstance()->getWidget("bqeditchselect");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("bqeditchselect");
 		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

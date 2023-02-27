@@ -403,9 +403,10 @@ int CChannelList::doChannelMenu(void)
 	CWidget* widget = NULL;
 	ClistBox* menu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("channellistedit"))
+	widget = CNeutrinoApp::getInstance()->getWidget("channellistedit");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("channellistedit");
 		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -584,11 +585,11 @@ int CChannelList::show(bool zap, bool customMode)
 	// update events
 	updateEvents();
 	
-	////
-	if (CNeutrinoApp::getInstance()->widget_exists("channellist"))
-	{
-		chWidget = CNeutrinoApp::getInstance()->getWidget("channellist");
+	//
+	chWidget = CNeutrinoApp::getInstance()->getWidget("channellist");
 	
+	if (chWidget)
+	{
 		listBox = (ClistBox*)chWidget->getWidgetItem(WIDGETITEM_LISTBOX);
 		head = (CHeaders*)chWidget->getWidgetItem(WIDGETITEM_HEAD);
 		foot = (CFooters*)chWidget->getWidgetItem(WIDGETITEM_FOOT);

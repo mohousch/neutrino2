@@ -174,9 +174,10 @@ void CRecordingSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* recordingSettings = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("recordingsetup"))
+	widget = CNeutrinoApp::getInstance()->getWidget("recordingsetup");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("recordingsetup");
 		recordingSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

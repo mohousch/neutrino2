@@ -97,10 +97,11 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 	//
 	m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - m_cBoxFrame.iWidth) >>1);
 	m_cBoxFrame.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - m_cBoxFrame.iHeight) >>1);
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("infobox");
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("infobox"))
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("infobox");
 		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
 		footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
 		m_pcTextBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
@@ -191,9 +192,11 @@ CInfoBox::CInfoBox()
 		m_cBoxFrame.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - m_cBoxFrame.iHeight) >>1);
 	}
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("infobox"))
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("infobox");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("infobox");
 		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
 		footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
 		m_pcTextBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);

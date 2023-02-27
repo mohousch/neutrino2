@@ -65,11 +65,9 @@ void CMediaPlayerMenu::showMenu()
 	ClistBox* MediaPlayer = NULL;
 	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("mediaplayer"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("mediaplayer");
-	}
-	else
+	widget = CNeutrinoApp::getInstance()->getWidget("mediaplayer");
+	
+	if (widget == NULL)
 	{
 		MediaPlayer = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
@@ -93,7 +91,7 @@ void CMediaPlayerMenu::showMenu()
 		MediaPlayer->integratePlugins(CPlugins::I_TYPE_MULTIMEDIA);
 		
 		//
-		if (widget == NULL) widget = new CWidget(MediaPlayer->getWindowsPos().iX, MediaPlayer->getWindowsPos().iY, MediaPlayer->getWindowsPos().iWidth, MediaPlayer->getWindowsPos().iHeight);
+		widget = new CWidget(MediaPlayer->getWindowsPos().iX, MediaPlayer->getWindowsPos().iY, MediaPlayer->getWindowsPos().iWidth, MediaPlayer->getWindowsPos().iHeight);
 		widget->name = "mediaplayer";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		

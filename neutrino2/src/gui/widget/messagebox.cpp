@@ -186,6 +186,8 @@ CMessageBox::~CMessageBox(void)
 			}
 		}
 	}
+	
+	hide();
 }
 
 void CMessageBox::init(const char * const Caption, const int Width, const char * const Icon)
@@ -320,9 +322,10 @@ void CMessageBox::initFrames(void)
 	cFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2);
 	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("messagebox"))
+	m_cBoxWindow = CNeutrinoApp::getInstance()->getWidget("messagebox");
+	
+	if (m_cBoxWindow)
 	{
-		m_cBoxWindow = CNeutrinoApp::getInstance()->getWidget("messagebox");
 		headers = (CHeaders*)m_cBoxWindow->getWidgetItem(WIDGETITEM_HEAD);
 	}
 	else

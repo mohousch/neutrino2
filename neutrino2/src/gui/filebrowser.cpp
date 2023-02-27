@@ -196,20 +196,6 @@ void CFileBrowser::commonInit()
 	
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
-	
-	/*
-	if (CNeutrinoApp::getInstance()->widget_exists("filebrowser"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("filebrowser");
-		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		widget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		widget->addWidgetItem(listBox);
-	}
-	*/	
 }
 
 CFileBrowser::~CFileBrowser()
@@ -353,9 +339,10 @@ bool CFileBrowser::exec(const char * const dirname)
 	exit_pressed = false;
 
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("filebrowser"))
+	widget = CNeutrinoApp::getInstance()->getWidget("filebrowser");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("filebrowser");
 		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

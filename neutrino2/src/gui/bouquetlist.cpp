@@ -84,22 +84,7 @@ CBouquetList::CBouquetList(const char* const Name)
 	cFrameBox.iHeight = frameBuffer->getScreenHeight() / 20 * 18;
 	
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
-	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
-	
-	/*
-	if (CNeutrinoApp::getInstance()->widget_exists("bouquetlist"))
-	{
-		bqWidget = CNeutrinoApp::getInstance()->getWidget("bouquetlist");
-		listBox = (ClistBox*)bqWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		bqWidget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		bqWidget->addWidgetItem(listBox);
-	}
-	*/		
+	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;	
 }
 
 CBouquetList::~CBouquetList()
@@ -242,10 +227,11 @@ int CBouquetList::exec(bool bShowChannelList, bool zap, bool customMode)
 {
 	dprintf(DEBUG_NORMAL, "CBouquetList::exec: showChannelList:%s, zap:%s customMode:%s\n", bShowChannelList? "yes" : "no", zap? "yes" : "no", customMode? "yes" : "no");
 	
-	////
-	if (CNeutrinoApp::getInstance()->widget_exists("bouquetlist"))
+	//
+	bqWidget = CNeutrinoApp::getInstance()->getWidget("bouquetlist");
+	
+	if (bqWidget)
 	{
-		bqWidget = CNeutrinoApp::getInstance()->getWidget("bouquetlist");
 		listBox = (ClistBox*)bqWidget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -255,7 +241,6 @@ int CBouquetList::exec(bool bShowChannelList, bool zap, bool customMode)
 		
 		bqWidget->addWidgetItem(listBox);
 	}
-	////
 
 	// select bouquet to show
 	int res = show(bShowChannelList, customMode);
@@ -297,9 +282,10 @@ int CBouquetList::doMenu()
 	CWidget* widget = NULL;
 	ClistBox* menu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("bqedit"))
+	widget = CNeutrinoApp::getInstance()->getWidget("bqedit");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("bqedit");
 		menu = (ClistBox*)CNeutrinoApp::getInstance()->getWidget("bqedit")->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

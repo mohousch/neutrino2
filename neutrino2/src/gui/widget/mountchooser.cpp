@@ -46,10 +46,11 @@
 
 CMountChooser::CMountChooser(const char* const Name, const std::string& Icon, int* chosenIndex, char* chosenLocalDir, const char* const selectedLocalDir, const int mwidth, const int mheight)
 {
-	//	
-	if (CNeutrinoApp::getInstance()->widget_exists("mountchooser"))
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("mountchooser");
+		
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("mountchooser");	
 		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 			
 		// title

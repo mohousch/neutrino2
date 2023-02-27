@@ -764,9 +764,10 @@ void CMoviePlayerGui::PlayFile(void)
 	CWidget* widget = NULL;
 	ClistBox* bookStartMenu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("bookmark"))
+	widget = CNeutrinoApp::getInstance()->getWidget("bookmark");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("bookmark");
 		bookStartMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -1732,9 +1733,10 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	CWidget* widget = NULL;
 	ClistBox* startPosSelectionMenu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("startpos"))
+	widget = CNeutrinoApp::getInstance()->getWidget("startpos");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("startpos");
 		startPosSelectionMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

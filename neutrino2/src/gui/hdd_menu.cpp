@@ -179,9 +179,10 @@ int CHDDMenuHandler::hddMenu()
 	CWidget* widget = NULL;
 	ClistBox* hddmenu = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("hddsetup"))
+	widget = CNeutrinoApp::getInstance()->getWidget("hddsetup");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("hddsetup");
 		hddmenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

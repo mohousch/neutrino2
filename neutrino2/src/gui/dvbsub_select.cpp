@@ -72,9 +72,10 @@ int CDVBSubSelectMenuHandler::doMenu()
 	CWidget* widget = NULL;
 	ClistBox* DVBSubSelector = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("subselect"))
+	widget = CNeutrinoApp::getInstance()->getWidget("subselect");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("subselect");
 		DVBSubSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

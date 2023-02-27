@@ -175,9 +175,10 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	CWidget* widget = NULL;
 	ClistBox* AVPIDSelector = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("avselect"))
+	widget = CNeutrinoApp::getInstance()->getWidget("avselect");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("avselect");
 		AVPIDSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

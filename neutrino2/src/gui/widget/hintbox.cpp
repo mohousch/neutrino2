@@ -127,9 +127,10 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	cFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - cFrameBox.iHeight) >> 2);
 	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("hintbox"))
+	widget = CNeutrinoApp::getInstance()->getWidget("hintbox");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("hintbox");
 		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
 	}
 	else

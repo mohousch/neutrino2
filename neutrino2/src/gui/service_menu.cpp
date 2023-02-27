@@ -85,11 +85,9 @@ void CServiceMenu::showMenu(void)
 	CWidget* widget = NULL;
 	ClistBox* service = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("system"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("system");
-	}
-	else
+	widget = CNeutrinoApp::getInstance()->getWidget("system");
+	
+	if (widget == NULL)
 	{
 		service = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		

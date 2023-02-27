@@ -80,11 +80,9 @@ void CMainSettingsMenu::showMenu(void)
 	ClistBox* mainSettings = NULL;
 	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("settings"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("settings");
-	}
-	else
+	widget = CNeutrinoApp::getInstance()->getWidget("settings");
+	
+	if (widget == NULL)
 	{
 		mainSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
@@ -158,7 +156,7 @@ void CMainSettingsMenu::showMenu(void)
 		//mainSettings->addItem( new CMenuForwarder(_("PSI settings"), true, NULL, chPSISetup, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_PSISETTINGS));
 	
 		//
-		if (widget == NULL) widget = new CWidget(mainSettings->getWindowsPos().iX, mainSettings->getWindowsPos().iY, mainSettings->getWindowsPos().iWidth, mainSettings->getWindowsPos().iHeight);
+		widget = new CWidget(mainSettings->getWindowsPos().iX, mainSettings->getWindowsPos().iY, mainSettings->getWindowsPos().iWidth, mainSettings->getWindowsPos().iHeight);
 		widget->name = "settings";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		

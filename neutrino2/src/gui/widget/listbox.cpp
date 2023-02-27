@@ -172,9 +172,10 @@ int CMenuOptionChooser::exec(CMenuTarget* parent)
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
 		
-		if (CNeutrinoApp::getInstance()->widget_exists("optionchooser"))
+		widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
+		
+		if (widget)
 		{
-			widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
 			menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 			// head title
 			if (menu->hasHead())
@@ -647,9 +648,10 @@ int CMenuOptionStringChooser::exec(CMenuTarget *parent)
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
 		
-		if (CNeutrinoApp::getInstance()->widget_exists("optionstringchooser"))
+		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
+		
+		if (widget)
 		{
-			widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
 			menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 			
 			// title

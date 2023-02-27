@@ -119,11 +119,9 @@ int CStreamInfo::exec(CMenuTarget * parent, const std::string&)
 		parent->hide();
 		
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("streaminfo"))
-	{
-		widget = CNeutrinoApp::getInstance()->getWidget("streaminfo");
-	}
-	else
+	widget = CNeutrinoApp::getInstance()->getWidget("streaminfo");
+	
+	if (widget == NULL)
 	{
 		widget = new CWidget(x, y, width, height);
 		widget->name = "streaminfo";

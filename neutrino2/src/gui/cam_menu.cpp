@@ -116,9 +116,10 @@ void CCAMMenuHandler::doMainMenu()
 	CWidget* widget = NULL;
 	ClistBox* cammenu = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("cammenu"))
+	widget = CNeutrinoApp::getInstance()->getWidget("cammenu");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("cammenu");
 		cammenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

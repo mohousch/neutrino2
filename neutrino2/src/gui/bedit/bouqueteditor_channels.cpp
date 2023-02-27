@@ -168,9 +168,10 @@ int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		Channels = &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
 		
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("bqeditch"))
+	widget = CNeutrinoApp::getInstance()->getWidget("bqeditch");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("bqeditch");
 		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

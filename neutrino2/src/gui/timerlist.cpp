@@ -500,9 +500,10 @@ int CTimerList::show()
 	updateEvents();
 	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("timerlist"))
+	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
+	
+	if (timerlistWidget)
 	{
-		timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
 		listBox = (ClistBox*)timerlistWidget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -928,9 +929,10 @@ int CTimerList::modifyTimer()
 	CWidget* widget = NULL;
 	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("modifytimer"))
+	widget = CNeutrinoApp::getInstance()->getWidget("modifytimer");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("modifytimer");
 		timerSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -1083,9 +1085,10 @@ int CTimerList::newTimer()
 	CWidget* widget = NULL;
 	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("newtimer"))
+	widget = CNeutrinoApp::getInstance()->getWidget("newtimer");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("newtimer");
 		timerSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

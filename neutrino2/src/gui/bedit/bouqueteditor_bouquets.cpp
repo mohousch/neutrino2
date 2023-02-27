@@ -181,9 +181,10 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	Bouquets = &g_bouquetManager->Bouquets;
 	
 	//
-	if (CNeutrinoApp::getInstance()->widget_exists("bqeditbq"))
+	widget = CNeutrinoApp::getInstance()->getWidget("bqeditbq");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("bqeditbq");
 		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else

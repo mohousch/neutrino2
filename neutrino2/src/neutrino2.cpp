@@ -2463,8 +2463,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 		audioDecoder->setHwPCMDelay(g_settings.pcm_delay);
 	}
 
-	// timerd thread
-	//pthread_create(&timer_thread, NULL, timerd_main_thread, (void *) NULL);
+	// timerd
 	CTimerd::getInstance()->Start();
 
 	// nhttpd thread FIXME:
@@ -2473,7 +2472,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// streamts thread FIXME:
 	pthread_create(&stream_thread, NULL, streamts_main_thread, (void *) NULL);	
 
-	// sectionsd thread
+	// sectionsd
 	CSectionsd::getInstance()->Start();
 
 	// for boxes with lcd :-)
@@ -2524,9 +2523,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// setup recording device
 	setupRecordingDevice();
 
-	// init timerd client
-	//initTimerdClient();
-
+	//
 	CVFD::getInstance()->setPower(g_settings.lcd_setting[SNeutrinoSettings::LCD_POWER]);
 	CVFD::getInstance()->setlcdparameter();
 	
@@ -5058,24 +5055,12 @@ void stop_daemons()
 	dprintf(DEBUG_NORMAL, "stop_daemons: streamts shutdown done\n");	
 
 	// stop timerd	  
-	//dprintf(DEBUG_NORMAL, "stop_daemons: timerd shutdown\n");
-	//timerd_shutdown();
-	//pthread_join(timer_thread, NULL);
-	//dprintf(DEBUG_NORMAL, "stop_daemons: timerd shutdown done\n");
 	CTimerd::getInstance()->Stop();		
 
 	// stop sectionsd
-	//sectionsd_stop = 1;
-	//dprintf(DEBUG_NORMAL, "stop_daemons: sectionsd shutdown\n");
-	//pthread_join(sections_thread, NULL);
-	//dprintf(DEBUG_NORMAL, "stop_daemons: sectionsd shutdown done\n");
 	CSectionsd::getInstance()->Stop();
 
 	// zapit stop	
-	//dprintf(DEBUG_NORMAL, "stop_daemons: zapit shutdown\n");
-	//zapit_shutdown();
-	//pthread_join(zapit_thread, NULL);
-	//dprintf(DEBUG_NORMAL, "stop_daemons: zapit shutdown done\n");
 	CZapit::getInstance()->Stop();
 }
 

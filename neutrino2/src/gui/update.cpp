@@ -173,10 +173,10 @@ bool CFlashUpdate::selectHttpImage(void)
 	CWidget* widget = NULL;
 	ClistBox* SelectionWidget = NULL;
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("selecthttpimage"))
+	widget = CNeutrinoApp::getInstance()->getWidget("selecthttpimage");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("selecthttpimage");
-		
 		SelectionWidget = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -682,10 +682,10 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 	CWidget* widget = NULL;
 	ClistBox* mtdselector = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("mtdselector"))
+	widget = CNeutrinoApp::getInstance()->getWidget("mtdselector");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("mtdselector");
-		
 		mtdselector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -771,10 +771,10 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 	CWidget* widget = NULL;
 	ClistBox* fileselector = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("fileselector"))
+	widget = CNeutrinoApp::getInstance()->getWidget("fileselector");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("fileselector");
-		
 		fileselector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -955,10 +955,10 @@ void CUpdateSettings::showMenu()
 	CWidget* widget = NULL;
 	ClistBox* updateSettings = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("updatesetup"))
+	widget = CNeutrinoApp::getInstance()->getWidget("updatesetup");
+	
+	if (widget)
 	{
-		widget = CNeutrinoApp::getInstance()->getWidget("updatesetup");
-		
 		updateSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
@@ -998,10 +998,10 @@ void CUpdateSettings::showMenu()
 	CWidget* mtdexpertWidget = NULL;
 	ClistBox* mtdexpert = NULL; 
 	
-	if (CNeutrinoApp::getInstance()->widget_exists("flashexpert"))
+	mtdexpertWidget = CNeutrinoApp::getInstance()->getWidget("flashexpert");
+	
+	if (mtdexpertWidget)
 	{
-		mtdexpertWidget = CNeutrinoApp::getInstance()->getWidget("flashexpert");
-		
 		mtdexpert = (ClistBox*)mtdexpertWidget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
