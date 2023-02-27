@@ -66,7 +66,7 @@ void CPowerMenu::showMenu(void)
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("powermenu");
 	
-	if (widget)
+	if (widget == NULL)
 	{
 		powerMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		

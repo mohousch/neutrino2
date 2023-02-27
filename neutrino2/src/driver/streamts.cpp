@@ -555,11 +555,16 @@ pthread_t stream_thread ;
 
 void CStreamTS::Start()
 {
+	dprintf(DEBUG_NORMAL, "CStreamTS::Start:\n");
+	
+	//
 	pthread_create(&stream_thread, NULL, streamts_main_thread, (void *)NULL);
 }
 
 void CStreamTS::Stop()
 {
+	dprintf(DEBUG_NORMAL, "CStreamTS::Stop:\n");
+	
 	streamts_stop = 1;
 	pthread_join(stream_thread, NULL);
 }
