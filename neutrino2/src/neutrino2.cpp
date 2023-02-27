@@ -75,6 +75,7 @@
 #include <driver/vcrcontrol.h>
 #include <driver/shutdown_count.h>
 #include <driver/color.h>
+#include <driver/streamts.h>
 
 #include <gui/epgplus.h>
 #include <gui/streaminfo.h>
@@ -223,22 +224,12 @@ extern int dvbsub_terminate();
 // volume bar
 static CProgressBar * g_volscale;
 
-// streamts thread
-extern int streamts_stop;				// defined in streamts.cpp
-void * streamts_main_thread(void *data);
-static pthread_t stream_thread ;
-
 // zapit
 extern int zapit_ready;					//defined in zapit.cpp
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 Zapit_config zapitCfg;
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
 extern CFrontend * live_fe;
-
-// nhttpd thread
-void * nhttpd_main_thread(void *data);
-static pthread_t nhttpd_thread;
-//static Cyhttpd *yhttpd = NULL;
 
 // Audio/Video Decoder
 extern cVideo* videoDecoder;		//libcoolstream (video_cs.cpp)
@@ -2409,7 +2400,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	ZapStart_arg.startchanneltv_nr = g_settings.startchanneltv_nr;
 	ZapStart_arg.startchannelradio_nr = g_settings.startchannelradio_nr;
 	ZapStart_arg.uselastchannel = g_settings.uselastchannel;
-	
 	ZapStart_arg.video_mode = g_settings.video_Mode;
 	
 	current_volume = g_settings.current_volume;
@@ -2466,11 +2456,11 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// timerd
 	CTimerd::getInstance()->Start();
 
-	// nhttpd thread FIXME:
-	pthread_create(&nhttpd_thread, NULL, nhttpd_main_thread, (void *) NULL);	
+	// nhttpd
+	Cyhttpd::getInstance()->Start();
 
-	// streamts thread FIXME:
-	pthread_create(&stream_thread, NULL, streamts_main_thread, (void *) NULL);	
+	// streamts
+	CStreamTS::getInstance()->Start();	
 
 	// sectionsd
 	CSectionsd::getInstance()->Start();
@@ -2484,7 +2474,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// remote control
 	g_RemoteControl = new CRemoteControl;
 	
-	// epg Data
+	// epg view
 	g_EpgData = new CEpgData;
 	
 	// channel infoviewer
@@ -3314,8 +3304,6 @@ void CNeutrinoApp::RealRun(void)
 // handle msg
 int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
-	//dprintf(DEBUG_DEBUG, "CNeutrinoApp::handleMsg: msg:%s\n", CRCInput::getSpecialKeyName(msg));
-
 	int res = 0;
 
 	// zap complete event
@@ -3426,15 +3414,11 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			int old_mode = g_settings.channel_mode;
 
 			dprintf(DEBUG_NORMAL, "\nCNeutrinoApp::handleMsg: ZAP START:\n");
-			
-			//dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: bouquetList %x size %d old_b %d\n", (size_t) bouquetList, bouquetList->Bouquets.size(), old_b);
 
 			if(bouquetList->Bouquets.size()) 
 			{
 				old_num = bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber();
 			}
-
-			//dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: TEST: old_b:%d old_num:%d\n", old_b, old_num);
 
 			if( msg == RC_ok ) 
 			{
@@ -3671,7 +3655,7 @@ _repeat:
 					}
 				}
 				else
-					printf("CNeutrinoApp::handleMsg: falscher state\n");
+					printf("CNeutrinoApp::handleMsg: wrong state\n");
 			}
 			else
 				puts("CNeutrinoApp::handleMsg: no recording devices");
@@ -4179,6 +4163,12 @@ void CNeutrinoApp::ExitRun(int retcode, bool save)
 			
 		if(g_RemoteControl)
 			delete g_RemoteControl;
+			
+		if (g_EpgData)
+			delete g_EpgData;
+			
+		if (g_EventList)
+			delete g_EventList;
 			
 		if(g_fontRenderer)
 			delete g_fontRenderer;
@@ -4921,7 +4911,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if (actionKey == "saveskinsettings")
 	{
-		if (MessageBox(_("Information"), _("Save settings now?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		if (MessageBox(_("Information"), _("Save Skin settings now?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
 			// fetch skin config file
 			std::string skinConfig = CONFIGDIR "/skins/";
@@ -4934,7 +4924,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 				
 			//tuxtxt_close();
 				
-			HintBox(_("Information"), _("Saving settings now, please be patient.\n this needs Neutrino restart."));
+			HintBox(_("Information"), _("Saving Skin settings now, please be patient.\n this needs Neutrino restart."));
 		}
 	}
 	else if (actionKey == "defaultskinsettings")
@@ -5043,16 +5033,10 @@ void stop_daemons()
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::stop_daemons\n");
 
 	// stop nhttpd		
-	dprintf(DEBUG_NORMAL, "stop_daemons: httpd shutdown\n");
-	pthread_cancel(nhttpd_thread);
-	pthread_join(nhttpd_thread, NULL);
-	dprintf(DEBUG_NORMAL, "stop_daemons: httpd shutdown done\n");	
+	Cyhttpd::getInstance()->Stop();
 	
 	// stop streamts
-	dprintf(DEBUG_NORMAL, "stop_daemons: streamts shutdown\n");	
-	streamts_stop = 1;
-	pthread_join(stream_thread, NULL);
-	dprintf(DEBUG_NORMAL, "stop_daemons: streamts shutdown done\n");	
+	CStreamTS::getInstance()->Stop();	
 
 	// stop timerd	  
 	CTimerd::getInstance()->Stop();		

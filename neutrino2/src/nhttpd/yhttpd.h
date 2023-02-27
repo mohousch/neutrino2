@@ -24,13 +24,18 @@ class Cyhttpd
 {
 	private:
 		CWebserver *webserver; 			// Aggregation of Webserver (now: only one)
+		
+		//
+		pthread_t thrWebServer;
+		static void * webServerThread(void *data);
+		Cyhttpd();
 
 	public:
 		bool flag_threading_off; 		// switch of Connection Threading
 		static CStringList ConfigList; 		// Vars & Values from ReadConfig
 
 		// constructor & destructor
-		Cyhttpd();
+		//Cyhttpd();
 		~Cyhttpd();
 
 		// Main Programm calls
@@ -46,8 +51,17 @@ class Cyhttpd
 		void ReadLanguage(void); 		// Read Language Files
 		
 		//
-		//void Start(void);
-		//void Stop(void){stop_webserver();};
+		static Cyhttpd *getInstance()
+		{
+			static Cyhttpd* instance = NULL;
+	
+			if(!instance)
+				instance = new Cyhttpd;
+
+			return instance;
+		};
+		void Start(void);
+		void Stop(void);
 };
 
 #endif // __yhttpd_h__

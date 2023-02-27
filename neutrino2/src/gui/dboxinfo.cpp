@@ -504,6 +504,10 @@ void CInfoMenu::showMenu()
 	dprintf(DEBUG_NORMAL, "CInfoMenu::showMenu:\n");
 	
 	//
+	widget = NULL; 
+	infoMenu = NULL;
+	
+	//
 	widget = CNeutrinoApp::getInstance()->getWidget("information");
 	
 	if (widget == NULL)

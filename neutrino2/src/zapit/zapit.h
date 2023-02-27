@@ -32,9 +32,6 @@
 
 #include <inttypes.h>
 
-//#include <OpenThreads/Thread>
-//#include <OpenThreads/Condition>
-
 // zapit
 #include <zapit/zapittypes.h>
 #include <zapit/frontend_c.h>

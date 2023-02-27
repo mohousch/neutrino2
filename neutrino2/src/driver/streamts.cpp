@@ -35,6 +35,8 @@
 #include <zapit/channel.h>
 #include <zapit/frontend_c.h>
 
+#include <driver/streamts.h>
+
 
 #define TS_SIZE 	188
 #define IN_SIZE         (TS_SIZE * 362)
@@ -434,7 +436,7 @@ void * streamts_live_thread(void * data)
 
 int streamts_stop;
 
-void streamts_main_thread(void *)
+static void * streamts_main_thread(void *)
 {
 	struct sockaddr_in servaddr;
 	int clilen;
@@ -453,7 +455,7 @@ void streamts_main_thread(void *)
 	if(listenfd < 0) 
 	{
 		dprintf(DEBUG_NORMAL, "streamts_main_thread: Open incoming port failed\n");
-		return;
+		return 0;
 	}
 
 	clilen = sizeof (servaddr);
@@ -544,7 +546,22 @@ void streamts_main_thread(void *)
 		close(connfd);
 	}
 	
-	return;
+	return 0;
 }
 
+////				// defined in streamts.cpp
+//void * streamts_main_thread(void *data);
+pthread_t stream_thread ;
+
+void CStreamTS::Start()
+{
+	pthread_create(&stream_thread, NULL, streamts_main_thread, (void *)NULL);
+}
+
+void CStreamTS::Stop()
+{
+	streamts_stop = 1;
+	pthread_join(stream_thread, NULL);
+}
+////
 

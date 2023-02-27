@@ -91,7 +91,7 @@ class CInfoMenu : public CMenuTarget
 		void showMenu();
 		
 	public:
-		CInfoMenu(){widget = NULL; infoMenu = NULL;};
+		CInfoMenu(){};
 		~CInfoMenu(){};
 		
 		void hide(){};

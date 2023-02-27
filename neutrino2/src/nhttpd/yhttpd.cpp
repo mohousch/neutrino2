@@ -27,7 +27,7 @@ static CyParser yParser;
 // Setting yhttpd Instance
 //
 #include "yhttpd.h"
-static Cyhttpd *yhttpd = NULL;
+//static Cyhttpd *yhttpd = NULL;
 CStringList Cyhttpd::ConfigList;
 //
 // HOOKS: Definition & Instance for Hooks, attach/detach Hooks
@@ -60,10 +60,12 @@ static CNeutrinoAPI *NeutrinoAPI;
 #endif
 
 //
+//
+//
 void yhttpd_reload_config() 
 {
-	if (yhttpd)
-		yhttpd->ReadConfig();
+	//if (yhttpd)
+	Cyhttpd::getInstance()->ReadConfig();
 }
 
 //
@@ -72,31 +74,52 @@ void yhttpd_reload_config()
 void thread_cleanup (void *p)
 {
 	Cyhttpd *y = (Cyhttpd *)p;
-	if (y) {
+	
+	if (y) 
+	{
 		y->stop_webserver();
 		delete y;
 	}
+	
 	y = NULL;
 }
 
-void * nhttpd_main_thread(void *)
-//void Cyhttpd::Start(void) 
+//
+// Start
+//
+void Cyhttpd::Start(void)
+{
+	aprintf("Cyhttpd::Start:\n");
+	
+	CLogging::getInstance()->setDebug(true);
+	CLogging::getInstance()->LogLevel = 0;
+	
+	// start webserver thread
+	if (pthread_create (&thrWebServer, NULL, webServerThread, (void *) this) != 0 )
+	{
+		aprintf("Cyhttpd::Init: create webServerThread failed\n");
+	}
+}
+
+//
+// Stop
+//
+void Cyhttpd::Stop(void)
+{
+	aprintf("Cyhttpd::Stop:\n");
+	
+	pthread_cancel(thrWebServer);
+	pthread_join(thrWebServer, NULL);
+}
+
+void * Cyhttpd::webServerThread(void *data)
 {
 	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, 0);
 	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
 	
 	aprintf("Webserver %s tid %ld\n", WEBSERVERNAME, syscall(__NR_gettid));
 	
-	yhttpd = new Cyhttpd();
-	
-	CLogging::getInstance()->setDebug(true);
-	CLogging::getInstance()->LogLevel = 0;
-	
-	if (!yhttpd) 
-	{
-		aprintf("Error initializing WebServer\n");
-		return (void *) EXIT_FAILURE;
-	}
+	Cyhttpd *yhttpd = (Cyhttpd *)data;
 
 	pthread_cleanup_push(thread_cleanup, yhttpd);
 
@@ -115,8 +138,6 @@ void * nhttpd_main_thread(void *)
 	}
 
 	pthread_cleanup_pop(0);
-	delete yhttpd;
-	yhttpd = NULL;
 
 	aprintf("Main end\n");
 	return (void *) EXIT_SUCCESS;
@@ -455,7 +476,7 @@ void Cyhttpd::ReadConfig(void)
 	// language
 	ConfigList["Language.directory"] = Config->getString("Language.directory", HTTPD_LANGUAGEDIR);
 	ConfigList["Language.selected"] = Config->getString("Language.selected", HTTPD_DEFAULT_LANGUAGE);
-	yhttpd->ReadLanguage();
+	Cyhttpd::getInstance()->ReadLanguage();
 
 	// Read App specifig settings by Hook
 	CyhookHandler::Hooks_ReadConfig(Config, ConfigList);
