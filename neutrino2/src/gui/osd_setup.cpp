@@ -230,7 +230,7 @@ int COSDMenuColorSettings::exec(CMenuTarget* parent, const std::string& actionKe
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 		
-		HintBox(_("Information"), _("Saving settings now, please be patient."));
+		//HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
 		return ret;
 	}
@@ -420,7 +420,7 @@ int COSDInfoBarColorSettings::exec(CMenuTarget* parent, const std::string& actio
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 		
-		HintBox(_("Information"), _("Saving settings now, please be patient."));
+		//HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
 		return ret;
 	}
@@ -552,7 +552,7 @@ int CLanguageSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		if (!fromStartWizzard)
 		{
-			if (MessageBox(_("Information"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+			if (MessageBox(_("Information"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 			{
 				CNeutrinoApp::getInstance()->exec(NULL, "restart");
 			}
@@ -695,7 +695,7 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 		
-		HintBox(_("Information"), _("Saving settings now, please be patient."));
+		//HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
 		return ret;
 	}
@@ -921,7 +921,7 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		
-		HintBox(_("Information"), _("Saving settings now, please be patient."));
+		//HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
 		return ret;
 	}
@@ -1218,7 +1218,7 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 	if (actionKey == "neutrino2")
 	{
-		if (MessageBox(_("Skin Select"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+		if (MessageBox(_("Skin Select"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
 			g_settings.preferred_skin = "neutrino2";
 			
@@ -1230,7 +1230,7 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if (!actionKey.empty())
 	{
-		if (MessageBox(_("Skin Select"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+		if (MessageBox(_("Skin Select"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
 			CNeutrinoApp::getInstance()->unloadSkin();
 			g_settings.preferred_skin = actionKey;
@@ -1355,7 +1355,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		if (actionKey == "savecurrentstyle")
 		{
-			if (MessageBox(_("Information"), _("Save current style"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+			if (MessageBox(_("Information"), _("Save current style"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 			{
 				std::string file_name = "";
 				CStringInputSMS * nameInput = new CStringInputSMS(_("Skin Style name"), file_name.c_str());
@@ -1386,7 +1386,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		}
 		else
 		{
-			if (MessageBox(_("Skin Style"), _("this need Neutrino restart"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+			if (MessageBox(_("Skin Style"), _("this need Neutrino restart"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 			{
 				// read skin config
 				std::string skinConfigFile = CONFIGDIR "/skins/";

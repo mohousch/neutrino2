@@ -2980,7 +2980,7 @@ void CNeutrinoApp::RealRun(void)
 				// stop record if recording
 				if( recordingstatus ) 
 				{
-					if(MessageBox(_("Information"), _("You really want to to stop record ?"), mbrYes, mbYes | mbNo, NULL, 450, 30, true) == mbrYes)
+					if(MessageBox(_("Information"), _("You really want to to stop record ?"), mbrYes, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes)
 					{
 						CTimerd::getInstance()->stopTimerEvent(recording_id);
 						recordingstatus = 0; //FIXME???
@@ -3875,7 +3875,7 @@ _repeat:
 	else if( msg == NeutrinoMessages::ANNOUNCE_SHUTDOWN) 
 	{
 		if( mode != mode_scart )
-			skipShutdownTimer = (MessageBox(_("Information"), _("Box will shutdown in 1 min.\nCancel Sutdown ?"), mbrNo, mbYes | mbNo, NULL, 450, 5) == mbrYes);
+			skipShutdownTimer = (MessageBox(_("Information"), _("Box will shutdown in 1 min.\nCancel Sutdown ?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 5) == mbrYes);
 	}
 	else if( msg == NeutrinoMessages::SHUTDOWN ) 
 	{
@@ -3944,7 +3944,7 @@ _repeat:
 			else
 				goto skip_message;
 
-			MessageBox(_("Information"), _(msgbody.c_str()), mbrBack, mbBack, NEUTRINO_ICON_INFO, 450, 5);
+			MessageBox(_("Information"), _(msgbody.c_str()), mbrBack, mbBack, NEUTRINO_ICON_INFO, MESSAGEBOX_WIDTH, 5);
 
 skip_message:
 			;
@@ -4098,7 +4098,7 @@ void CNeutrinoApp::ExitRun(int retcode, bool save)
 	}
 	
 	//
-	if (!recordingstatus || MessageBox(_("Information"), _("You really want to to stop record ?"), mbrNo, mbYes | mbNo, NULL, 450, 30, true) == mbrYes)  
+	if (!recordingstatus || MessageBox(_("Information"), _("You really want to to stop record ?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes)  
 	{
 		// stop recording
 		if(recordingstatus) 
@@ -4906,8 +4906,8 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if(actionKey == "savesettings") 
 	{
-		//if (MessageBox(_("Information"), _("Save settings now?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
-		//{
+		if (MessageBox(_("Information"), _("Save settings now?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		{
 			saveSetup(NEUTRINO_SETTINGS_FILE);
 
 			tuxtxt_close();
@@ -4916,13 +4916,13 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 			CZapit::getInstance()->setZapitConfig(&zapitCfg);
 
 			//
-			//HintBox(_("Information"), _("Saving settings now, please be patient."));
-		//}
+			HintBox(_("Information"), _("Saving settings now, please be patient."));
+		}
 	}
 	else if (actionKey == "saveskinsettings")
 	{
-		//if (MessageBox(_("Information"), _("Save settings now?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
-		//{
+		if (MessageBox(_("Information"), _("Save settings now?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		{
 			// fetch skin config file
 			std::string skinConfig = CONFIGDIR "/skins/";
 			skinConfig += g_settings.preferred_skin.c_str();
@@ -4934,36 +4934,36 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 				
 			//tuxtxt_close();
 				
-			//HintBox(_("Information"), _("Saving settings now, please be patient.\n this needs Neutrino restart."));
-		//}
+			HintBox(_("Information"), _("Saving settings now, please be patient.\n this needs Neutrino restart."));
+		}
 	}
 	else if (actionKey == "defaultskinsettings")
 	{
-		//if (MessageBox(_("Information"), _("load default skin configuration?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
-		//{
+		if (MessageBox(_("Information"), _("load default skin configuration?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		{
 			std::string skinDefaultConfigFile = CONFIGDIR "/skins/";
 			skinDefaultConfigFile += g_settings.preferred_skin.c_str();
 			skinDefaultConfigFile += "/";
 			skinDefaultConfigFile += "default.config";
 			
 			readSkinConfig(skinDefaultConfigFile.c_str());
-		//}
+		}
 	}
 	else if(actionKey == "reloadchannels")
 	{
-		//if (MessageBox(_("Information"), _("do you want to reload channel lists?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
-		//{
-			//HintBox(_("Information"), _("Reloading channel lists, please be patient."));
+		if (MessageBox(_("Information"), _("do you want to reload channel lists?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		{
+			HintBox(_("Information"), _("Reloading channel lists, please be patient."));
 			CZapit::getInstance()->reinitChannels();
-		//}
+		}
 	}
 	else if (actionKey == "reloadepg")
 	{
-		//if (MessageBox(_("Information"), _("do you want to reload EPG?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
-		//{
-			//HintBox(_("Information"), _("Reloading EPG, please be patient."));
+		if (MessageBox(_("Information"), _("do you want to reload EPG?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		{
+			HintBox(_("Information"), _("Reloading EPG, please be patient."));
 			readEPG();
-		//}
+		}
 	}
 	else if (actionKey == "delete_zapit")
 	{
