@@ -789,7 +789,7 @@ void CEPGSettings::showMenu()
 	// online EPG on/off
 	COnlineEPGNotifier* onlineEPGNotifier = new COnlineEPGNotifier(o1, o2, o3);
 
-	miscSettingsEPG->addItem(new CMenuOptionChooser(_("Local TV EPG"), &g_settings.epg_enable_localtv_epg, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true, onlineEPGNotifier));
+	miscSettingsEPG->addItem(new CMenuOptionChooser(_("LocalTV EPG"), &g_settings.epg_enable_localtv_epg, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true, onlineEPGNotifier));
 
 	miscSettingsEPG->addItem(o1);
 	miscSettingsEPG->addItem(o2);

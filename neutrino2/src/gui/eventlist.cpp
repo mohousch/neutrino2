@@ -104,6 +104,8 @@ EventList::EventList()
 	m_search_epg_item = SEARCH_EPG_TITLE;
 	m_search_channel_id = 1;
 	m_search_bouquet_id= 1;
+	
+	evtlist.clear();
 
 	//
 	evlWidget = NULL;
@@ -121,11 +123,13 @@ EventList::EventList()
 
 EventList::~EventList()
 {
+	evtlist.clear();
 }
 
 void EventList::readEvents(const t_channel_id channel_id)
 {
 	evtlist.clear();
+	
 	CSectionsd::getInstance()->getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL, evtlist);
 	time_t azeit = time(NULL);
 

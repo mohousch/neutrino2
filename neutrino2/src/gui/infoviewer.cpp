@@ -177,6 +177,8 @@ void CInfoViewer::Init()
 	runningPercent = 0;
 	
 	sec_timer_id = 0;
+	
+	evtlist.clear();
 }
 
 CInfoViewer::~CInfoViewer()
@@ -198,6 +200,8 @@ CInfoViewer::~CInfoViewer()
 		delete timescale;
 		timescale = NULL;
 	}
+	
+	evtlist.clear();
 }
 
 void CInfoViewer::initFrames(void)
@@ -1926,7 +1930,9 @@ void CInfoViewer::killTitle()
 	{
 		delete nextPlayTime;
 		nextPlayTime = NULL;
-	}		
+	}
+	
+	evtlist.clear();		
 }
 
 void CInfoViewer::Set_CA_Status(int Status)

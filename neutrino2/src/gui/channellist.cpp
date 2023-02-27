@@ -135,6 +135,8 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	vlist = _vlist;
 
 	displayNext = false;
+	
+	events.clear();
 
 	//
 	chWidget = NULL;
@@ -143,7 +145,6 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	item = NULL;
 	
 	window = NULL;
-	//winBottom = NULL;
 	
 	head = NULL;
 	foot = NULL;
@@ -164,6 +165,7 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 CChannelList::~CChannelList()
 {
 	chanlist.clear();
+	events.clear();
 }
 
 void CChannelList::ClearList(void)
@@ -189,7 +191,9 @@ void CChannelList::updateEvents(void)
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::updateEvents\n");
 
-	CChannelEventList events;
+	//CChannelEventList events;
+	
+	events.clear();
 
 	if (displayNext) 
 	{
@@ -1629,9 +1633,14 @@ void CChannelList::paint()
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::paint\n");
 
-	if (head) head->clear();
-	if (listBox) listBox->clear();
-	if (foot) foot->clear();
+	if (head) 
+		head->clear();
+		
+	if (listBox) 
+		listBox->clear();
+		
+	if (foot) 
+		foot->clear();
 	
 	CChannelEvent * p_event = NULL;
 	time_t jetzt = time(NULL);

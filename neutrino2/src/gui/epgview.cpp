@@ -162,6 +162,7 @@ CEpgData::CEpgData()
 	
 	//
 	epgBuffer.clear();
+	evtlist.clear();
 
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("epgview");
@@ -223,31 +224,8 @@ CEpgData::CEpgData()
 
 CEpgData::~CEpgData()
 {
-#ifdef TESTING
-	if (cFollowScreeningWindow)
-	{
-		delete cFollowScreeningWindow;
-		cFollowScreeningWindow = NULL;
-	}
-	
-	if (footers)
-	{
-		delete footers;
-		footers = NULL;
-	}
-	
-	if (headers)
-	{
-		delete headers;
-		headers = NULL;
-	}
-	
-	if (textBox)
-	{
-		delete textBox;
-		textBox = NULL;
-	}
-#endif
+	epgBuffer.clear();
+	evtlist.clear();
 }
 
 void CEpgData::initFrames()
@@ -995,7 +973,6 @@ int CEpgData::FollowScreenings(const t_channel_id /*channel_id*/, const std::str
 
   	count = 0;
 	screening_dates = screening_nodual = "";
-	// alredy read: evtlist = g_Sectionsd->getEventsServiceKey( channel_id&0xFFFFFFFFFFFFULL );
     	curtime = time(NULL);
 
 	for ( e = evtlist.begin(); e != evtlist.end(); ++e )

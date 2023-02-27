@@ -93,6 +93,7 @@ class CChannelList
 		std::string name;
 		std::vector<CZapitChannel*> chanlist;
 		CZapProtection* zapProtection;
+		CChannelEventList events;
 
 		bool historyMode;
 		bool vlist; 		// "virtual" list, not bouquet
