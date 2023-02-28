@@ -23,12 +23,6 @@
 
 using namespace std;
 
-class CZapit;
-
-typedef map<t_channel_id, CZapitChannel> tallchans;
-typedef tallchans::iterator tallchans_iterator;
-//typedef vector<CZapitChannel*> ZapitChannelList;
-
 class CZapitBouquet
 {
 	public:
@@ -108,11 +102,11 @@ class CBouquetManager
 		void loadBouquets(bool loadCurrentBouquet = false);
 		void renumServices();
 
-		CZapitBouquet* addBouquet(const std::string& name, bool ub = false, bool myfav = false, bool iswebtv = false);
+		CZapitBouquet* addBouquet(const std::string& name, bool ub = false);
 		CZapitBouquet* addBouquetIfNotExist(const std::string& name);
 		void deleteBouquet(const unsigned int id);
 		void deleteBouquet(const CZapitBouquet* bouquet);
-		int  existsBouquet(char const * const name, bool ignore_user = false);
+		int  existsBouquet(char const * const name);
 		int  existsUBouquet(char const * const name, bool myfav = false);
 		void moveBouquet(const unsigned int oldId, const unsigned int newId);
 		bool existsChannelInBouquet(unsigned int bq_id, const t_channel_id channel_id);

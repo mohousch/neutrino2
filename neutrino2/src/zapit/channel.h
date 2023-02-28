@@ -23,6 +23,14 @@
 #ifndef __zapit_channel_h__
 #define __zapit_channel_h__
 
+#include <algorithm>
+#include <cstdio>
+#include <functional>
+#include <map>
+#include <vector>
+#include <string.h>
+#include <ctype.h>
+
 // system 
 #include <string>
 #include <inttypes.h>
@@ -284,5 +292,8 @@ class CZapitChannel
 };
 
 typedef std::vector<CZapitChannel*> ZapitChannelList;
+
+typedef std::map<t_channel_id, CZapitChannel> tallchans;
+typedef tallchans::iterator tallchans_iterator;
 
 #endif /* __zapit_channel_h__ */

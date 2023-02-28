@@ -43,6 +43,7 @@
 
 // zapit types
 #include <zapit/zapittypes.h>
+#include <zapit/getservices.h>
 
 #include <OpenThreads/Thread>
 

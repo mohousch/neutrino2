@@ -47,6 +47,7 @@
 #include <system/debug.h>
 #include <system/settings.h>
 #include <system/helpers.h>
+#include <system/set_threadname.h>
 
 // zapit includes
 #include <zapit/bouquets.h>
@@ -2019,8 +2020,6 @@ std::string CChannellogo::getLogoName(t_channel_id logo_id)
 
 	return logo_name;
 }
-
-#include <system/set_threadname.h>
 
 bool CChannellogo::loadWebTVlogos()
 {

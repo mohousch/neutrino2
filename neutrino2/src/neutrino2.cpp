@@ -235,10 +235,8 @@ extern CFrontend * live_fe;
 extern cVideo* videoDecoder;		//libcoolstream (video_cs.cpp)
 extern cAudio* audioDecoder;		//libcoolstream (audio_cs.cpp)
 
+//
 int prev_video_Mode;
-
-void stop_daemons();
-
 int current_volume;
 int current_muted;
 
@@ -1427,11 +1425,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit\n");
 
-	const char * fav_bouquetname = _("Favorites");
-
-	if(g_bouquetManager->existsUBouquet(fav_bouquetname, true) == -1)
-		g_bouquetManager->addBouquet(fav_bouquetname, true, true);
-
+	//
 	if(TVallList) 
 		delete TVallList;
 
@@ -5028,7 +5022,7 @@ bool CNeutrinoApp::changeNotify(const std::string& OptionName, void */*data*/)
 	return false;
 }
 
-void stop_daemons()
+void CNeutrinoApp::stop_daemons()
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::stop_daemons\n");
 
@@ -5304,7 +5298,7 @@ void CNeutrinoApp::unlockPlayBack(void)
 }
 
 // signal handler
-void sighandler (int signum)
+void sighandler(int signum)
 {
 	signal(signum, SIG_IGN);
 	
@@ -5312,7 +5306,7 @@ void sighandler (int signum)
 	{
 		case SIGTERM:
 		case SIGINT:
-			stop_daemons();
+			//stop_daemons();
 			_exit(0);
 			
 		  default:

@@ -105,7 +105,7 @@ void CBEBouquetWidget::paint()
 	{
 		if (!(*Bouquets)[count]->bWebTV)
 		{
-			item = new ClistBoxItem((*Bouquets)[count]->bFav ? _("Favorites") : (*Bouquets)[count]->Name.c_str());
+			item = new ClistBoxItem((*Bouquets)[count]->Name.c_str());
 
 			if(state == beMoving && count == selected)
 				item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
@@ -399,7 +399,7 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 
 				if (selected < Bouquets->size()) /* Bouquets->size() might be 0 */
 				{
-					CBEChannelWidget* channelWidget = new CBEChannelWidget((*Bouquets)[selected]->bFav ? _("Favorites") : (*Bouquets)[selected]->Name, selected);
+					CBEChannelWidget* channelWidget = new CBEChannelWidget((*Bouquets)[selected]->Name, selected);
 
 					channelWidget->exec(this, "");
 					if (channelWidget->hasChanged())
@@ -455,7 +455,7 @@ void CBEBouquetWidget::deleteBouquet()
 	if (selected >= Bouquets->size()) /* Bouquets->size() might be 0 */
 		return;
 
-	if (MessageBox(_("Delete"), (*Bouquets)[selected]->bFav ? _("Favorites") : (*Bouquets)[selected]->Name.c_str(), mbrNo, mbYes | mbNo) != mbrYes)
+	if (MessageBox(_("Delete"), (*Bouquets)[selected]->Name.c_str(), mbrNo, mbYes | mbNo) != mbrYes)
 	{
 		paint();
 		return;

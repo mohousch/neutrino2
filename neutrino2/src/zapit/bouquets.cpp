@@ -347,7 +347,7 @@ void CBouquetManager::saveBouquets(const CZapit::bouquetMode bouquetMode, const 
 
 			if(dest == -1) 
 			{
-				bouquet = g_bouquetManager->addBouquet(Bouquets[0]->Name.c_str(), false);
+				bouquet = g_bouquetManager->addBouquet(Bouquets[0]->Name.c_str());
 				dest = g_bouquetManager->existsBouquet(Bouquets[0]->Name.c_str());
 			}
 			else
@@ -803,11 +803,10 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 					if (url != NULL) 
 					{
 						description = "stream";
-						//std::string bqName = name;
-						//bqName += "-";
 						std::string bqName = "WEBTV";
 						
 						CZapitBouquet* gBouquet = pBouquet;
+						
 						if (!group.empty())
 						{
 							bqName = group;
@@ -815,7 +814,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 							bqName += name;
 							bqName += ")";
 							gBouquet = addBouquetIfNotExist(bqName);
-							gBouquet->bWebTV = true;		
+							gBouquet->bWebTV = true;	
 						}
 						
 						//
@@ -981,7 +980,7 @@ void CBouquetManager::makeRemainingChannelsBouquet(void)
 		return;
 
 	// TODO: use locales
-	remainChannels = addBouquet((Bouquets.size() == 0) ? _("All Channels") : _("Other"), false); // UTF-8 encoded
+	remainChannels = addBouquet((Bouquets.size() == 0) ? _("All Channels") : _("Other")); // UTF-8 encoded
 
 	for (tallchans::iterator it = allchans.begin(); it != allchans.end(); it++)
 	{
@@ -1029,12 +1028,10 @@ void CBouquetManager::renumServices()
 	makeRemainingChannelsBouquet();
 }
 
-CZapitBouquet * CBouquetManager::addBouquet(const std::string& name, bool ub, bool myfav, bool iswebtv)
+CZapitBouquet * CBouquetManager::addBouquet(const std::string& name, bool ub)
 {
-	CZapitBouquet * newBouquet = new CZapitBouquet(myfav ? _("Favorites") : name);
+	CZapitBouquet * newBouquet = new CZapitBouquet(name);
 	newBouquet->bUser = ub;
-	newBouquet->bFav = myfav;
-	newBouquet->bWebTV = iswebtv;
 
 	if(ub) 
 	{
@@ -1057,9 +1054,10 @@ CZapitBouquet* CBouquetManager::addBouquetIfNotExist(const std::string& name)
 {
 	CZapitBouquet* bouquet = NULL;
 
-	int bouquetId = existsBouquet(name.c_str(), true);
+	int bouquetId = existsBouquet(name.c_str());
+	
 	if (bouquetId == -1)
-		bouquet = addBouquet(name, false);
+		bouquet = addBouquet(name);
 	else
 		bouquet = Bouquets[bouquetId];
 
@@ -1088,11 +1086,11 @@ void CBouquetManager::deleteBouquet(const CZapitBouquet* bouquet)
 
 // -- Find Bouquet-Name, if BQ exists   (2002-04-02 rasc)
 // -- Return: Bouqet-ID (found: 0..n)  or -1 (Bouquet does not exist)
-int CBouquetManager::existsBouquet(char const * const name, bool ignore_user)
+int CBouquetManager::existsBouquet(char const * const name)
 {
 	for (unsigned int i = 0; i < Bouquets.size(); i++) 
 	{
-		if ((!ignore_user || !Bouquets[i]->bUser) && (Bouquets[i]->Name == name))
+		if ( (!Bouquets[i]->bUser) && (Bouquets[i]->Name == name) )
 			return (int)i;
 	}
 	

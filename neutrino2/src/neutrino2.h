@@ -281,6 +281,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		};
 		
 		void ExitRun(int retcode = SHUTDOWN, bool save = true);
+		void stop_daemons();
 };
 
 #endif

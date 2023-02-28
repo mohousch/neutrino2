@@ -103,6 +103,7 @@ class CBEBouquetWidget : public CMenuTarget
 	public:
 		CBEBouquetWidget();
 		~CBEBouquetWidget();
+		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 

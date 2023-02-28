@@ -22,9 +22,20 @@
 #ifndef __getservices_h__
 #define __getservices_h__
 
-#include <linux/dvb/frontend.h>
+#include <algorithm>
+#include <cstdio>
+#include <functional>
+#include <map>
+#include <vector>
+#include <string.h>
+#include <ctype.h>
 
-#include <eventserver.h>
+// system 
+#include <string>
+#include <inttypes.h>
+#include <cstdlib>
+
+#include <linux/dvb/frontend.h>
 
 #include <zapit/ci.h>
 #include <zapit/descriptors.h>
@@ -32,9 +43,7 @@
 #include <zapit/zapittypes.h>
 
 
-#include <xmlinterface.h>
-
-#include <map>
+#include <libxmltree/xmlinterface.h>
 
 
 #define zapped_chan_is_nvod 0x80

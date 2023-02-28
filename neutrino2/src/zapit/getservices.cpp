@@ -42,6 +42,7 @@
 #include <zapit/satconfig.h>
 
 #include <xmlinterface.h>
+#include <eventserver.h>
 
 #include <system/debug.h>
 #include <system/helpers.h>	// needed for safe_mkdir
