@@ -93,6 +93,7 @@
 #include <system/settings.h>
 
 #include <global.h>
+#include <neutrinoMessages.h>
 
 #include <zapit/bouquets.h>
 #include <zapit/frontend_c.h>
@@ -204,7 +205,7 @@ static bool		messaging_eit_is_busy = false;
 static bool		messaging_need_eit_version = false;
 std::string epg_dir("");
 
-static CEventServer *eventServer;
+//static CEventServer *eventServer;
 
 static pthread_rwlock_t eventsLock = PTHREAD_RWLOCK_INITIALIZER; // Unsere (fast-)mutex, damit nicht gleichzeitig in die Menge events geschrieben und gelesen wird
 static pthread_rwlock_t servicesLock = PTHREAD_RWLOCK_INITIALIZER; // Unsere (fast-)mutex, damit nicht gleichzeitig in die Menge services geschrieben und gelesen wird
@@ -2396,7 +2397,9 @@ _done:
 	CFileHelpers::getInstance()->copyFile(tmpname, filename);
 	unlink(tmpname);
 _ret:
-	eventServer->sendEvent(CSectionsd::EVT_WRITE_SI_FINISHED, CEventServer::INITID_SECTIONSD);
+	//eventServer->sendEvent(CSectionsd::EVT_WRITE_SI_FINISHED, CEventServer::INITID_SECTIONSD);
+	//FIXME:
+	g_RCInput->sendEvent(NeutrinoMessages::EVT_SI_FINISHED);
 	
 	return ;
 }
@@ -2441,7 +2444,11 @@ static void *timeThread(void *)
 				timeset = true;
 				pthread_cond_broadcast(&timeIsSetCond);
 				pthread_mutex_unlock(&timeIsSetMutex );
-				eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &actTime, sizeof(actTime) );
+				
+				//eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &actTime, sizeof(actTime) );
+				//FIXME:
+				g_RCInput->sendEvent(NeutrinoMessages::EVT_TIMESET, (void *)actTime, sizeof(actTime));
+				
 				dprintf(DEBUG_NORMAL, "[sectionsd] timeThread: Time is already set by system, no further timeThread work!\n");
 				break;
 			}
@@ -2456,7 +2463,10 @@ static void *timeThread(void *)
 			time_ntp = true;
 			pthread_cond_broadcast(&timeIsSetCond);
 			pthread_mutex_unlock(&timeIsSetMutex );
-			eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &actTime, sizeof(actTime) );
+			
+			//eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &actTime, sizeof(actTime) );
+			//FIXME:
+			g_RCInput->sendEvent(NeutrinoMessages::EVT_TIMESET, (void *)actTime, sizeof(actTime));
 			dprintf(DEBUG_NORMAL, "[sectionsd] timeThread: Time is already set by system\n");
 		} 
 		else 
@@ -2498,7 +2508,10 @@ static void *timeThread(void *)
 					time_ntp= false;
 					pthread_cond_broadcast(&timeIsSetCond);
 					pthread_mutex_unlock(&timeIsSetMutex );
-					eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &tim, sizeof(tim));
+					
+					//eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &tim, sizeof(tim));
+					//FIXME:
+					g_RCInput->sendEvent(NeutrinoMessages::EVT_TIMESET, (void *)tim, sizeof(tim));
 					dprintf(DEBUG_NORMAL, "[sectionsd] timeThread: Time is already set by DVB\n");
 				}
 			}
@@ -3534,10 +3547,10 @@ static void *cnThread(void *)
 				{
 					dprintf(DEBUG_DEBUG, "[sectionsd] waiting for more than %d seconds - bail out...\n", TIME_EIT_VERSION_WAIT);
 					/* send event anyway, so that we know there is no EPG */
-					eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG,
-							       CEventServer::INITID_SECTIONSD,
-							       &messaging_current_servicekey,
-							       sizeof(messaging_current_servicekey));
+					//eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG, CEventServer::INITID_SECTIONSD, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
+					//FIXME:
+					g_RCInput->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (void *)messaging_current_servicekey, sizeof(messaging_current_servicekey));
+					
 					writeLockMessaging();
 					messaging_need_eit_version = false;
 					unlockMessaging();
@@ -3556,10 +3569,10 @@ static void *cnThread(void *)
 			messaging_have_CN = messaging_got_CN;
 			unlockMessaging();
 			dprintf(DEBUG_DEBUG, "[sectionsd] [cnThread] got current_next (0x%x) - sending event!\n", messaging_have_CN);
-			eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG,
-					       CEventServer::INITID_SECTIONSD,
-					       &messaging_current_servicekey,
-					       sizeof(messaging_current_servicekey));
+			//eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG, CEventServer::INITID_SECTIONSD, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
+			//FIXME:
+					g_RCInput->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (void *)messaging_current_servicekey, sizeof(messaging_current_servicekey));
+			
 			/* we received an event => reset timeout timer... */
 			eit_waiting_since = zeit;
 			dmxCN.lastChanged = zeit; /* this is ugly - needs somehting better */
@@ -3645,10 +3658,11 @@ static void *cnThread(void *)
 			/* we can get here if we got the EIT version but no events */
 			/* send a "no epg" event anyway before going to sleep */
 			if (messaging_have_CN == 0x00)
-				eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG,
-								CEventServer::INITID_SECTIONSD,
-								&messaging_current_servicekey,
-								sizeof(messaging_current_servicekey));
+			{
+				//eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG, CEventServer::INITID_SECTIONSD, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
+				//FIXME:
+				g_RCInput->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (void *)messaging_current_servicekey, sizeof(messaging_current_servicekey));
+			}
 			continue;
 		}
 
@@ -3954,7 +3968,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 		/* ...check for myCurrentEvent and myNextEvent */
 		if (!myCurrentEvent) 
 		{
-			dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: !myCurrentEvent\n");
+			dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: !myCurrentEvent\n");
 			change = true;
 			flag |= CSectionsd::epgflags::not_broadcast;
 		} 
@@ -3967,7 +3981,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 		
 		if (!myNextEvent) 
 		{
-			dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: !myNextEvent\n");
+			dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: !myNextEvent\n");
 			change = true;
 		} 
 		else 
@@ -3975,7 +3989,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 			nextEvt = *myNextEvent;
 			if (flag & CSectionsd::epgflags::not_broadcast) 
 			{
-				dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: CSectionsd::epgflags::has_no_current\n");
+				dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: CSectionsd::epgflags::has_no_current\n");
 				flag = CSectionsd::epgflags::has_no_current;
 			}
 			flag |= CSectionsd::epgflags::has_next; // aktuelles event da...
@@ -4003,7 +4017,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 
 		if (currentEvt.getName().empty() && flag2 != 0)
 		{
-			dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: change1\n");
+			dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: change1\n");
 			change = true;
 		}
 
@@ -4013,11 +4027,11 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 			flag |= CSectionsd::epgflags::has_current;
 			flag |= CSectionsd::epgflags::has_anything;
 
-			dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: current EPG found. service_id: %x, flag: 0x%x\n",currentEvt.service_id, flag);
+			dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: current EPG found. service_id: %x, flag: 0x%x\n",currentEvt.service_id, flag);
 
 			if (!(flag & CSectionsd::epgflags::has_next)) 
 			{
-				dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: *nextEvt not from cur/next V1!\n");
+				dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: *nextEvt not from cur/next V1!\n");
 				nextEvt = findNextSIevent(currentEvt.uniqueKey(), zeitEvt2);
 			}
 		}
@@ -4030,7 +4044,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 
 			if (si != mySIservicesOrderUniqueKey.end())
 			{
-				dprintf(DEBUG_DEBUG, "CSectionsd::getCurrentNextServiceKey: current service has%s scheduled events, and has%s present/following events\n", si->second->eitScheduleFlag() ? "" : " no", si->second->eitPresentFollowingFlag() ? "" : " no" );
+				dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: current service has%s scheduled events, and has%s present/following events\n", si->second->eitScheduleFlag() ? "" : " no", si->second->eitPresentFollowingFlag() ? "" : " no" );
 
 				if ( /*( !si->second->eitScheduleFlag() ) || */
 					( !si->second->eitPresentFollowingFlag() ) )
@@ -4045,7 +4059,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 				flag |= CSectionsd::epgflags::has_anything;
 				if (!(flag & CSectionsd::epgflags::has_next)) 
 				{
-					dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: *nextEvt not from cur/next V2!\n");
+					dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: *nextEvt not from cur/next V2!\n");
 					nextEvt = findNextSIeventForServiceUniqueKey(uniqueServiceKey, zeitEvt2);
 				}
 
@@ -4076,12 +4090,12 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 		if (nextEvt.service_id != 0)
 		{
 			flag &= CSectionsd::epgflags::not_broadcast^(unsigned)-1;
-			dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: next EPG found. service_id: %x, flag: 0x%x\n",nextEvt.service_id, flag);
+			dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: next EPG found. service_id: %x, flag: 0x%x\n",nextEvt.service_id, flag);
 			flag |= CSectionsd::epgflags::has_next;
 		}
 		else if (flag != 0)
 		{
-			dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: change2 flag: 0x%02x\n", flag);
+			dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: change2 flag: 0x%02x\n", flag);
 			change = true;
 		}
 	}
@@ -4092,7 +4106,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 		for (unsigned int i = 0; i < currentEvt.linkage_descs.size(); i++)
 			if (currentEvt.linkage_descs[i].linkageType == 0xB0)
 			{
-				dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: linkage in current EPG found.\n");
+				dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: linkage in current EPG found.\n");
 				flag |= CSectionsd::epgflags::current_has_linkagedescriptors;
 				break;
 			}
@@ -4102,7 +4116,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 
 	time_t now;
 
-	dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: currentEvt: '%s' (%04x) nextEvt: '%s' (%04x) flag: 0x%02x\n",
+	dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: currentEvt: '%s' (%04x) nextEvt: '%s' (%04x) flag: 0x%02x\n",
 		currentEvt.getName().c_str(), currentEvt.eventID,
 		nextEvt.getName().c_str(), nextEvt.eventID, flag);
 
@@ -4160,7 +4174,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 	if (change && !messaging_eit_is_busy && (time_monotonic() - messaging_last_requested) < 11) 
 	{
 		/* restart dmxCN, but only if it is not already running, and only for 10 seconds */
-		dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: change && !messaging_eit_is_busy => dmxCN.change(0)\n");
+		dprintf(DEBUG_INFO, "CSectionsd::getCurrentNextServiceKey: change && !messaging_eit_is_busy => dmxCN.change(0)\n");
 		dmxCN.change(0);
 	}
 }
@@ -4184,6 +4198,7 @@ bool CSectionsd::getEPGidShort(event_id_t epgID, CShortEPGData * epgdata)
 	} 
 	else
 		dprintf(DEBUG_DEBUG, "CSectionsd::getEPGidShort:: EPG not found!\n");
+		
 	unlockEvents();
 	
 	return ret;
@@ -5019,6 +5034,7 @@ void CSectionsd::Start(void)
 	readEncodingFile();
 	
 	// eventServer
+	/*
 	eventServer = new CEventServer;
 	
 	//
@@ -5027,6 +5043,7 @@ void CSectionsd::Start(void)
 	eventServer->registerEvent2(CSectionsd::EVT_SERVICES_UPDATE, 222, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(CSectionsd::EVT_BOUQUETS_UPDATE, 222, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(CSectionsd::EVT_WRITE_SI_FINISHED, 222, NEUTRINO_UDS_NAME);
+	*/
 	
 	messaging_neutrino_sets_time = true;
 

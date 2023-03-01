@@ -1477,19 +1477,22 @@ void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentN
 	// if there is no EPG, send an event so that parental lock can work
 	if (info.current_uniqueKey == 0 && info.next_uniqueKey == 0) 
 	{
+		/*
 		char *p = new char[sizeof(t_channel_id)];
 		memcpy(p, &for_channel_id, sizeof(t_channel_id));
 
 		//
 		g_RCInput->postMsg(NeutrinoMessages::EVT_NOEPG_YET, (const neutrino_msg_data_t) p, false);
+		*/
+		g_RCInput->sendEvent(NeutrinoMessages::EVT_NOEPG_YET, (void *)for_channel_id, sizeof(t_channel_id));
 		
 		return;
 	}
 
 	if (info.current_uniqueKey != 0 || info.next_uniqueKey != 0)
 	{
-		char *p = new char[sizeof(t_channel_id)];
-		memcpy(p, &for_channel_id, sizeof(t_channel_id));
+		//char *p = new char[sizeof(t_channel_id)];
+		//memcpy(p, &for_channel_id, sizeof(t_channel_id));
 		neutrino_msg_t msg;
 		
 		if (info.flags & (CSectionsd::epgflags::has_current | CSectionsd::epgflags::has_next))
@@ -1503,7 +1506,8 @@ void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentN
 			msg = NeutrinoMessages::EVT_NOEPG_YET;
 
 		//
-		g_RCInput->postMsg(msg, (const neutrino_msg_data_t)p, false); // data is pointer to allocated memory
+		//g_RCInput->postMsg(msg, (const neutrino_msg_data_t)p, false); // data is pointer to allocated memory
+		g_RCInput->sendEvent(msg, (void *)for_channel_id, sizeof(t_channel_id));
 	}	
 }
 

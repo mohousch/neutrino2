@@ -2120,6 +2120,7 @@ void CNeutrinoApp::startNextRecording()
 	if ( nextRecordingInfo != NULL ) 
 	{
 		bool doRecord = true;
+		
 		if (CVCRControl::getInstance()->isDeviceRegistered()) 
 		{
 			recording_id = nextRecordingInfo->eventID;

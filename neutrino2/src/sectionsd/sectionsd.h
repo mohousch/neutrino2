@@ -65,6 +65,17 @@ typedef std::vector<CChannelEvent> CChannelEventList;
 class CSectionsd
 {
 	public:
+		/*
+		enum events
+		{
+			EVT_TIMESET,
+			EVT_GOT_CN_EPG,
+			//EVT_SERVICES_UPDATE,
+			//EVT_BOUQUETS_UPDATE,
+			EVT_WRITE_SI_FINISHED
+		};
+		*/
+		
 		enum SIlanguageMode_t 
 		{
 			ALL,
@@ -73,15 +84,6 @@ class CSectionsd
 			ALL_FIRST,
 			ALL_ALL,
 			LANGUAGE_MODE_OFF
-		};
-
-		enum events
-		{
-			EVT_TIMESET,
-			EVT_GOT_CN_EPG,
-			EVT_SERVICES_UPDATE,
-			EVT_BOUQUETS_UPDATE,
-			EVT_WRITE_SI_FINISHED
 		};
 
 		struct epgflags 

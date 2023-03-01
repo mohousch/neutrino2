@@ -1009,20 +1009,28 @@ ssize_t _writeall(int fd, const void *buf, size_t count)
 	ssize_t retval;
 	char *ptr = (char*)buf;
 	ssize_t handledcount = 0;
-	if (fd < 0) return -1;
+	
+	if (fd < 0) 
+		return -1;
+		
 	while (handledcount < count)
 	{
 		retval = write(fd, &ptr[handledcount], count - handledcount);
 
-		if (retval == 0) return -1;
+		if (retval == 0) 
+			return -1;
+			
 		if (retval < 0)
 		{
-			if (errno == EINTR) continue;
+			if (errno == EINTR) 
+				continue;
+				
 			perror("write");
 			return retval;
 		}
 		handledcount += retval;
 	}
+	
 	return handledcount;
 }
 
@@ -1031,19 +1039,26 @@ ssize_t _read(int fd, void *buf, size_t count)
 	ssize_t retval;
 	char *ptr = (char*)buf;
 	ssize_t handledcount = 0;
-	if (fd < 0) return -1;
+	
+	if (fd < 0) 
+		return -1;
+		
 	while (handledcount < count)
 	{
 		retval = read(fd, &ptr[handledcount], count - handledcount);
+		
 		if (retval < 0)
 		{
-			if (errno == EINTR) continue;
+			if (errno == EINTR) 
+				continue;
+				
 			perror("read");
 			return retval;
 		}
 		handledcount += retval;
 		break; /* one read only */
 	}
+	
 	return handledcount;
 }
 

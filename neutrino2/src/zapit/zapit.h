@@ -45,6 +45,7 @@
 class CZapit
 {
 	public:
+		/*
 		enum events
 		{
 			FIRST_EVENT_MARKER,           // <- no actual event, needed by pzapit
@@ -83,6 +84,7 @@ class CZapit
 			
 			LAST_EVENT_MARKER             // <- no actual event, needed by pzapit
 		};
+		*/
 
 		enum zapStatus
 		{
