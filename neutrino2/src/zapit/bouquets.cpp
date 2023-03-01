@@ -137,6 +137,8 @@ void CZapitBouquet::addService(CZapitChannel *newChannel)
 
 void CZapitBouquet::removeService(CZapitChannel *oldChannel)
 {
+	dprintf(DEBUG_NORMAL, "CZapitBouquet::removeService");
+	
 	if (oldChannel != NULL) 
 	{
 		ZapitChannelList * channels = &tvChannels;
@@ -398,7 +400,6 @@ void CBouquetManager::parseBouquetsXml(const char *fname, bool bUser)
 		return;
 
 	_xmlNodePtr root = xmlDocGetRootElement(parser);
-
 	_xmlNodePtr search = root->xmlChildrenNode;
 	_xmlNodePtr channel_node;
 
@@ -474,7 +475,7 @@ void CBouquetManager::makeBouquetfromCurrentservices(const _xmlNodePtr root)
 	_xmlNodePtr provider = root->xmlChildrenNode;
 	
 	// TODO: use locales
-	CZapitBouquet * newBouquet = addBouquet(_("Neu channel"));
+	CZapitBouquet * newBouquet = addBouquet("Neu channel");
 	newBouquet->bHidden = false;
 	newBouquet->bLocked = false;
 	
@@ -980,7 +981,7 @@ void CBouquetManager::makeRemainingChannelsBouquet(void)
 		return;
 
 	// TODO: use locales
-	remainChannels = addBouquet((Bouquets.size() == 0) ? _("All Channels") : _("Other")); // UTF-8 encoded
+	remainChannels = addBouquet((Bouquets.size() == 0) ? "All Channels" : "Other"); // UTF-8 encoded
 
 	for (tallchans::iterator it = allchans.begin(); it != allchans.end(); it++)
 	{
@@ -1090,13 +1091,14 @@ int CBouquetManager::existsBouquet(char const * const name)
 {
 	for (unsigned int i = 0; i < Bouquets.size(); i++) 
 	{
-		if ( (!Bouquets[i]->bUser) && (Bouquets[i]->Name == name) )
+		if ( /*(!Bouquets[i]->bUser) &&*/ (Bouquets[i]->Name == name) )
 			return (int)i;
 	}
 	
 	return -1;
 }
 
+/*
 int CBouquetManager::existsUBouquet(char const * const name, bool myfav)
 {
 	unsigned int i;
@@ -1114,12 +1116,13 @@ int CBouquetManager::existsUBouquet(char const * const name, bool myfav)
 
 	return -1;
 }
+*/
 
 // -- Check if channel exists in BQ   (2002-04-05 rasc)
 // -- Return: True/false
 bool CBouquetManager::existsChannelInBouquet( unsigned int bq_id, const t_channel_id channel_id)
 {
-	bool     status = false;
+	bool status = false;
 	CZapitChannel  *ch = NULL;
 
 	if (bq_id <= Bouquets.size()) 

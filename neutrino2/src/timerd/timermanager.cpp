@@ -99,7 +99,7 @@ void CTimerManager::Init(void)
 	loadRecordingSafety();
 
 	// thread starten
-	if(pthread_create (&thrTimer, NULL, timerThread, (void *) this) != 0 )
+	if(pthread_create (&thrTimer, NULL, timerThread, (void *)this) != 0 )
 	{
 		dprintf(DEBUG_NORMAL, "CTimerManager::Init: create timerThread failed\n");
 	}
@@ -117,13 +117,13 @@ CTimerManager * CTimerManager::getInstance()
 	return instance;
 }
 
-void* CTimerManager::timerThread(void *arg)
+void* CTimerManager::timerThread(void *data)
 {
 	pthread_mutex_t dummy_mutex = PTHREAD_MUTEX_INITIALIZER;
 	pthread_cond_t dummy_cond = PTHREAD_COND_INITIALIZER;
 	struct timespec wait;
 	
-	CTimerManager *timerManager = (CTimerManager *) arg;
+	CTimerManager *timerManager = (CTimerManager *)data;
 
 	int sleeptime = 10;
 
@@ -155,7 +155,7 @@ void* CTimerManager::timerThread(void *arg)
 			// fire events who's time has come
 			CTimerEvent *event;
 
-			pthread_setcancelstate(PTHREAD_CANCEL_DISABLE,NULL);
+			pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
 			pthread_mutex_lock(&tm_eventsMutex);
 
 			CTimerEventMap::iterator pos = timerManager->events.begin();
@@ -184,8 +184,8 @@ void* CTimerManager::timerThread(void *arg)
 					{
 						event->setState(CTimerd::TIMERSTATE_ISRUNNING);
 						dprintf(DEBUG_DEBUG, "CTimerManager::timerThread: firing event\n");
-						event->fireEvent();										// fire event specific handler
-						if(event->stopTime == 0)					// if event needs no stop event
+						event->fireEvent();	// fire event specific handler
+						if(event->stopTime == 0)	// if event needs no stop event
 							event->setState(CTimerd::TIMERSTATE_HASFINISHED);
 						timerManager->m_saveEvents = true;
 					}
@@ -217,14 +217,14 @@ void* CTimerManager::timerThread(void *arg)
 					timerManager->m_saveEvents = true;
 				}
 				
-				if(event->eventState == CTimerd::TIMERSTATE_TERMINATED)				// event is terminated, so delete it
+				if(event->eventState == CTimerd::TIMERSTATE_TERMINATED)	// event is terminated, so delete it
 				{
 					dprintf(DEBUG_DEBUG, "CTimerManager::timerThread: deleting event\n");
 					
 					pos->second->printEvent();
 					dprintf(DEBUG_DEBUG, "\n");
-					delete pos->second;										// delete event
-					timerManager->events.erase(pos);				// remove from list
+					delete pos->second;	// delete event
+					timerManager->events.erase(pos);	// remove from list
 					timerManager->m_saveEvents = true;
 				}
 			}
@@ -235,7 +235,8 @@ void* CTimerManager::timerThread(void *arg)
 			{
 				timerManager->saveEventsToConfig();
 			}
-			pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,NULL);
+			
+			pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
 
 			wait.tv_sec = (((time(NULL) / sleeptime) * sleeptime) + sleeptime);
 			wait.tv_nsec = 0;
@@ -243,7 +244,7 @@ void* CTimerManager::timerThread(void *arg)
 		}
 	}
 	
-	return 0;
+	return NULL;
 }
 
 CTimerEvent * CTimerManager::getNextEvent()

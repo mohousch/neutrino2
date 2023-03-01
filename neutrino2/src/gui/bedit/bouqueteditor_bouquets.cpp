@@ -105,7 +105,7 @@ void CBEBouquetWidget::paint()
 	{
 		if (!(*Bouquets)[count]->bWebTV)
 		{
-			item = new ClistBoxItem((*Bouquets)[count]->Name.c_str());
+			item = new ClistBoxItem(_((*Bouquets)[count]->Name.c_str()));
 
 			if(state == beMoving && count == selected)
 				item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);

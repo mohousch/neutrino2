@@ -132,7 +132,7 @@ void CBEChannelWidget::paint()
 	}
 
 	//
-	listBox->setTitle(caption.c_str(), NEUTRINO_ICON_EDIT);
+	listBox->setTitle(_(caption.c_str()), NEUTRINO_ICON_EDIT);
 
 	//
 	listBox->enablePaintFoot();

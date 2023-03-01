@@ -329,7 +329,7 @@ int CBouquetList::doMenu()
 			{
 				case 0:
 					hide();
-					bouquet_id = g_bouquetManager->existsUBouquet(Bouquets[selected]->channelList->getName());
+					bouquet_id = g_bouquetManager->existsBouquet(Bouquets[selected]->channelList->getName());
 					if(bouquet_id < 0) 
 						tmp = g_bouquetManager->addBouquet(Bouquets[selected]->channelList->getName(), true);
 					else
@@ -367,7 +367,7 @@ int CBouquetList::doMenu()
 			{
 				case 0:
 					hide();
-					bouquet_id = g_bouquetManager->existsUBouquet(Bouquets[selected]->channelList->getName());
+					bouquet_id = g_bouquetManager->existsBouquet(Bouquets[selected]->channelList->getName());
 					if(bouquet_id >= 0) 
 					{
 						g_bouquetManager->deleteBouquet(bouquet_id);

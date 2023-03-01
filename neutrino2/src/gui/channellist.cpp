@@ -463,6 +463,7 @@ int CChannelList::doChannelMenu(void)
 				{
 					bouquet_id = bouquetList->getActiveBouquetNumber();
 					bouquet_id = g_bouquetManager->existsBouquet(bouquetList->Bouquets[bouquet_id]->channelList->getName());
+
 					if (bouquet_id == -1)
 						return 0;
 					
@@ -524,11 +525,12 @@ int CChannelList::doChannelMenu(void)
 				break;
 				
 			case 3: // add to my favorites
-				bouquet_id = g_bouquetManager->existsUBouquet(_("Favorites"), true);
+				bouquet_id = g_bouquetManager->existsBouquet("Favorites");
+
 				if(bouquet_id == -1) 
 				{
-					g_bouquetManager->addBouquet(_("Favorites"), true);
-					bouquet_id = g_bouquetManager->existsUBouquet(_("Favorites"), true);
+					g_bouquetManager->addBouquet("Favorites", true);
+					bouquet_id = g_bouquetManager->existsBouquet("Favorites");
 				}
 				
 				if(!g_bouquetManager->existsChannelInBouquet(bouquet_id, channel_id)) 

@@ -549,8 +549,7 @@ static void * streamts_main_thread(void *)
 	return 0;
 }
 
-////				// defined in streamts.cpp
-//void * streamts_main_thread(void *data);
+//
 pthread_t stream_thread ;
 
 void CStreamTS::Start()

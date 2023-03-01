@@ -232,7 +232,7 @@ class CTimerManager
 		bool              	wakeup;
 		
 		CTimerManager();
-		static void* timerThread(void *arg);
+		static void* timerThread(void *data);
 		CTimerEvent *nextEvent();
 	public:
 		
