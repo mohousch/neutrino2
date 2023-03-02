@@ -2421,6 +2421,21 @@ int CNeutrinoApp::run(int argc, char **argv)
 	eventServer->registerEvent2(NeutrinoMessages::EVT_SERVICES_UPD, 222, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_PMT_CHANGED, 222, NEUTRINO_UDS_NAME);
 	// timerd
+	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_SHUTDOWN, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::SHUTDOWN, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_NEXTPROGRAM, 222, NEUTRINO_UDS_NAME);
+	//eventServer->registerEvent2(NeutrinoMessages::NEXTPROGRAM, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::STANDBY_ON, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::STANDBY_OFF, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_RECORD, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::RECORD_START, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::RECORD_STOP, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_ZAPTO, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::ZAPTO, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::SLEEPTIMER, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_SLEEPTIMER, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::REMIND, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_START_PLUGIN, 222, NEUTRINO_UDS_NAME);
 
 	// rc 
 	g_RCInput = new CRCInput;

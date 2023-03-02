@@ -15,6 +15,7 @@
 class CTimerd
 {
 	public:
+		/*
 		enum events
 		{
 			EVT_SHUTDOWN = 1,
@@ -33,6 +34,7 @@ class CTimerd
 			EVT_REMIND,
 			EVT_EXEC_PLUGIN
 		};
+		*/
 		
 		enum CTimerEventRepeat 
 		{ 

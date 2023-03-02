@@ -40,8 +40,12 @@
 
 #include <driver/rcinput.h>
 
+#include <neutrinoMessages.h>
+#include <libeventserver/eventserver.h>
+
 
 extern bool timeset; // from sectionsd.cpp
+extern CEventServer *eventServer;
 
 static pthread_mutex_t tm_eventsMutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 
@@ -53,12 +57,12 @@ CTimerManager::CTimerManager()
 void CTimerManager::Init(void)
 {
 	eventID = 0;
-	eventServer = new CEventServer;
+	//eventServer = new CEventServer;
 	m_saveEvents = false;
 	m_isTimeSet = false;
 	wakeup = 0; 	//fallback
 	
-	//
+	/*
 	eventServer->registerEvent2(CTimerd::EVT_ANNOUNCE_SHUTDOWN, 222, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(CTimerd::EVT_SHUTDOWN, 222, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(CTimerd::EVT_ANNOUNCE_NEXTPROGRAM, 222, NEUTRINO_UDS_NAME);
@@ -74,6 +78,7 @@ void CTimerManager::Init(void)
 	eventServer->registerEvent2(CTimerd::EVT_ANNOUNCE_SLEEPTIMER, 222, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(CTimerd::EVT_REMIND, 222, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(CTimerd::EVT_EXEC_PLUGIN, 222, NEUTRINO_UDS_NAME);
+	*/
 
 	int fd = open("/proc/stb/fp/was_timer_wakeup", O_RDONLY);
 	unsigned char buffer[2];
@@ -1104,27 +1109,27 @@ void CTimerEvent::saveToConfig(CConfigFile *config)
 // event shutdown
 void CTimerEvent_Shutdown::announceEvent()
 {
-	CTimerManager::getInstance()->getEventServer()->sendEvent(CTimerd::EVT_ANNOUNCE_SHUTDOWN, CEventServer::INITID_TIMERD);
+	eventServer->sendEvent(NeutrinoMessages::ANNOUNCE_SHUTDOWN, CEventServer::INITID_NEUTRINO);
 }
 
 void CTimerEvent_Shutdown::fireEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Shutdown::fireEvent: Shutdown Timer fired\n");
 	//event in neutrinos remoteq. schreiben
-	CTimerManager::getInstance()->getEventServer()->sendEvent(CTimerd::EVT_SHUTDOWN, CEventServer::INITID_TIMERD);
+	eventServer->sendEvent(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO);
 }
 
 // event sleeptimer
 void CTimerEvent_Sleeptimer::announceEvent()
 {
-	CTimerManager::getInstance()->getEventServer()->sendEvent(CTimerd::EVT_ANNOUNCE_SLEEPTIMER, CEventServer::INITID_TIMERD);
+	eventServer->sendEvent(NeutrinoMessages::ANNOUNCE_SLEEPTIMER, CEventServer::INITID_NEUTRINO);
 }
 
 void CTimerEvent_Sleeptimer::fireEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Sleeptimer::fireEven: Sleeptimer Timer fired\n");
 	//event in neutrinos remoteq. schreiben
-	CTimerManager::getInstance()->getEventServer()->sendEvent(CTimerd::EVT_SLEEPTIMER, CEventServer::INITID_TIMERD);
+	eventServer->sendEvent(NeutrinoMessages::SLEEPTIMER, CEventServer::INITID_NEUTRINO);
 }
 
 // event standby
@@ -1152,9 +1157,7 @@ void CTimerEvent_Standby::fireEvent()
 {
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Standby::fireEvent Standby Timer fired: %s\n",standby_on?"on":"off");
 	
-	CTimerManager::getInstance()->getEventServer()->sendEvent(
-		(standby_on)?CTimerd::EVT_STANDBY_ON:CTimerd::EVT_STANDBY_OFF,
-		CEventServer::INITID_TIMERD);
+	eventServer->sendEvent((standby_on)? NeutrinoMessages::STANDBY_ON : NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO);
 }
 
 void CTimerEvent_Standby::saveToConfig(CConfigFile *config)
@@ -1222,10 +1225,7 @@ void CTimerEvent_Record::fireEvent()
 	ri.eventID = eventID;
 	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
 	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());						
-	CTimerManager::getInstance()->getEventServer()->sendEvent(CTimerd::EVT_RECORD_START,
-								  CEventServer::INITID_TIMERD,
-								  &ri,
-								  sizeof(CTimerd::RecordingInfo));
+	eventServer->sendEvent(NeutrinoMessages::RECORD_START, CEventServer::INITID_NEUTRINO, &ri, sizeof(CTimerd::RecordingInfo));
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::fireEvent: Record Timer fired\n"); 
 }
 
@@ -1236,8 +1236,7 @@ void CTimerEvent_Record::announceEvent()
 	ri.eventID = eventID;
 	strcpy(ri.recordingDir, recordingDir.substr(0, sizeof(ri.recordingDir)-1).c_str());						
 	strcpy(ri.epgTitle, epgTitle.substr(0, sizeof(ri.epgTitle)-1).c_str());						
-	CTimerManager::getInstance()->getEventServer()->sendEvent(CTimerd::EVT_ANNOUNCE_RECORD, CEventServer::INITID_TIMERD,
-								  &ri,sizeof(CTimerd::RecordingInfo));
+	eventServer->sendEvent(NeutrinoMessages::ANNOUNCE_RECORD, CEventServer::INITID_NEUTRINO, &ri,sizeof(CTimerd::RecordingInfo));
 	dprintf(DEBUG_NORMAL, "CTimerEvent_Record::announceEvent: Record announcement\n"); 
 }
 
@@ -1247,10 +1246,7 @@ void CTimerEvent_Record::stopEvent()
 	
 	// Set EPG-ID if not set
 	stopinfo.eventID = eventID;
-	CTimerManager::getInstance()->getEventServer()->sendEvent(CTimerd::EVT_RECORD_STOP,
-								  CEventServer::INITID_TIMERD,
-								  &stopinfo,
-								  sizeof(CTimerd::RecordingStopInfo));
+	eventServer->sendEvent(NeutrinoMessages::RECORD_STOP, CEventServer::INITID_NEUTRINO, &stopinfo, sizeof(CTimerd::RecordingStopInfo));
 								  
 	// Programmiere shutdown timer, wenn in wakeup state und kein record/zapto timer in 10 min
 	CTimerManager::getInstance()->shutdownOnWakeup(eventID);
@@ -1327,15 +1323,12 @@ void CTimerEvent_Record::Refresh()
 // event zapto
 void CTimerEvent_Zapto::announceEvent()
 {
-	CTimerManager::getInstance()->getEventServer()->sendEvent(CTimerd::EVT_ANNOUNCE_ZAPTO, CEventServer::INITID_TIMERD);
+	eventServer->sendEvent(NeutrinoMessages::ANNOUNCE_ZAPTO, CEventServer::INITID_NEUTRINO);
 }
 
 void CTimerEvent_Zapto::fireEvent()
 {
-	CTimerManager::getInstance()->getEventServer()->sendEvent(CTimerd::EVT_ZAPTO,
-								  CEventServer::INITID_TIMERD,
-								  &eventInfo,
-								  sizeof(CTimerd::EventInfo));
+	eventServer->sendEvent(NeutrinoMessages::ZAPTO, CEventServer::INITID_NEUTRINO, &eventInfo, sizeof(CTimerd::EventInfo));
 }
 
 void CTimerEvent_Zapto::getEpgId()
@@ -1391,18 +1384,12 @@ CTimerEvent(CTimerd::TIMER_NEXTPROGRAM, config, iId)
 
 void CTimerEvent_NextProgram::announceEvent()
 {
-	CTimerManager::getInstance()->getEventServer()->sendEvent(CTimerd::EVT_ANNOUNCE_NEXTPROGRAM,
-								  CEventServer::INITID_TIMERD,
-								  &eventInfo,
-								  sizeof(eventInfo));
+	eventServer->sendEvent(NeutrinoMessages::EVT_NEXTPROGRAM, CEventServer::INITID_NEUTRINO, &eventInfo, sizeof(eventInfo));
 }
 
 void CTimerEvent_NextProgram::fireEvent()
 {
-	CTimerManager::getInstance()->getEventServer()->sendEvent(CTimerd::EVT_NEXTPROGRAM,
-								  CEventServer::INITID_TIMERD,
-								  &eventInfo,
-								  sizeof(eventInfo));
+	eventServer->sendEvent(NeutrinoMessages::EVT_NEXTPROGRAM, CEventServer::INITID_NEUTRINO, &eventInfo, sizeof(eventInfo));
 }
 
 void CTimerEvent_NextProgram::saveToConfig(CConfigFile *config)
@@ -1456,10 +1443,7 @@ CTimerEvent(CTimerd::TIMER_REMIND, config, iId)
 
 void CTimerEvent_Remind::fireEvent()
 {
-	CTimerManager::getInstance()->getEventServer()->sendEvent(
-		CTimerd::EVT_REMIND,
-		CEventServer::INITID_TIMERD,
-		message,REMINDER_MESSAGE_MAXLEN);
+	eventServer->sendEvent(NeutrinoMessages::REMIND, CEventServer::INITID_NEUTRINO, message,REMINDER_MESSAGE_MAXLEN);
 }
 
 void CTimerEvent_Remind::saveToConfig(CConfigFile *config)
@@ -1497,10 +1481,7 @@ CTimerEvent(CTimerd::TIMER_EXEC_PLUGIN, config, iId)
 
 void CTimerEvent_ExecPlugin::fireEvent()
 {
-	CTimerManager::getInstance()->getEventServer()->sendEvent(
-		CTimerd::EVT_EXEC_PLUGIN,
-		CEventServer::INITID_TIMERD,
-		name, EXEC_PLUGIN_NAME_MAXLEN);
+	eventServer->sendEvent(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, name, EXEC_PLUGIN_NAME_MAXLEN);
 }
 
 void CTimerEvent_ExecPlugin::saveToConfig(CConfigFile *config)

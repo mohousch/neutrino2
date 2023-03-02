@@ -222,7 +222,7 @@ class CTimerManager
 	private:
 		void Init(void);
 		int			eventID;
-		CEventServer		*eventServer;
+		//CEventServer		*eventServer;
 		CTimerEventMap		events;
 		pthread_t		thrTimer;
 		bool              	m_saveEvents;
@@ -239,7 +239,7 @@ class CTimerManager
 		
 		static CTimerManager* getInstance();
 		
-		CEventServer* getEventServer() {return eventServer;};
+		//CEventServer* getEventServer() {return eventServer;};
 		int addEvent(CTimerEvent*, bool save = true);
 		bool removeEvent(int leventID);
 		bool stopEvent(int leventID);

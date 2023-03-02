@@ -1278,6 +1278,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					
 					else
 					#endif
+					#if 0
 					if ( emsg.initiatorID == CEventServer::INITID_TIMERD )
 					{					  
 						dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from TIMERD %x %x\n", emsg.eventID, *(unsigned*) p);					
@@ -1359,7 +1360,9 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 								printf("CRCInput::getMsg_us: event INITID_TIMERD - unknown eventID 0x%x\n",  emsg.eventID );
 						}
 					}
-					else if (emsg.initiatorID == CEventServer::INITID_NEUTRINO)
+					else 
+					#endif
+					if (emsg.initiatorID == CEventServer::INITID_NEUTRINO)
 					{					  
 						dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from NEUTRINO %x %x\n", emsg.eventID, *(unsigned*) p);					
 						
@@ -1370,7 +1373,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 							dont_delete_p = true;
 						}
 						
-						////
+						//
 						switch(emsg.eventID)
 						{
 							// from zapit
@@ -1537,10 +1540,10 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 								break;
 								
 							// from httpd
-							case NeutrinoMessages::SHUTDOWN :
-								*msg = NeutrinoMessages::SHUTDOWN;
-								*data = 0;
-								break;
+							//case NeutrinoMessages::SHUTDOWN :
+							//	*msg = NeutrinoMessages::SHUTDOWN;
+							//	*data = 0;
+							//	break;
 								
 							case NeutrinoMessages::REBOOT :
 								*msg = NeutrinoMessages::REBOOT;
@@ -1573,21 +1576,21 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 								*msg = NeutrinoMessages::STANDBY_TOGGLE;
 								*data = 0;
 								break;
-							case NeutrinoMessages::STANDBY_ON :
-								*msg = NeutrinoMessages::STANDBY_ON;
-								*data = 0;
-								break;
+							//case NeutrinoMessages::STANDBY_ON :
+							//	*msg = NeutrinoMessages::STANDBY_ON;
+							//	*data = 0;
+							//	break;
 								
-							case NeutrinoMessages::STANDBY_OFF :
-								*msg = NeutrinoMessages::STANDBY_OFF;
-								*data = 0;
-								break;
+							//case NeutrinoMessages::STANDBY_OFF :
+							//	*msg = NeutrinoMessages::STANDBY_OFF;
+							//	*data = 0;
+							//	break;
 								
-							case NeutrinoMessages::EVT_START_PLUGIN :
-								*msg = NeutrinoMessages::EVT_START_PLUGIN;
-								*data = (size_t) p;
-								dont_delete_p = true;
-								break;
+							//case NeutrinoMessages::EVT_START_PLUGIN :
+							//	*msg = NeutrinoMessages::EVT_START_PLUGIN;
+							//	*data = (size_t) p;
+							//	dont_delete_p = true;
+							//	break;
 								
 							case NeutrinoMessages::LOCK_RC :
 								*msg = NeutrinoMessages::LOCK_RC;
@@ -1598,6 +1601,85 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 								*msg = NeutrinoMessages::UNLOCK_RC;
 								*data = 0;
 								break;
+								
+							// timerd
+							case NeutrinoMessages::ANNOUNCE_RECORD :
+								*msg = NeutrinoMessages::ANNOUNCE_RECORD;
+								*data = (size_t) p;
+								dont_delete_p = true;
+								break;
+								
+							case NeutrinoMessages::ANNOUNCE_ZAPTO :
+								*msg = NeutrinoMessages::ANNOUNCE_ZAPTO;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::ANNOUNCE_SHUTDOWN :
+								*msg = NeutrinoMessages::ANNOUNCE_SHUTDOWN;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::ANNOUNCE_SLEEPTIMER :
+								*msg = NeutrinoMessages::ANNOUNCE_SLEEPTIMER;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::SLEEPTIMER :
+								*msg = NeutrinoMessages::SLEEPTIMER;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::RECORD_START :
+								*msg = NeutrinoMessages::RECORD_START;
+								*data = (size_t) p;
+								dont_delete_p = true;
+								break;
+								
+							case NeutrinoMessages::RECORD_STOP :
+								*msg = NeutrinoMessages::RECORD_STOP;
+								*data = (size_t) p;
+								dont_delete_p = true;
+								break;
+								
+							case NeutrinoMessages::ZAPTO :
+								*msg = NeutrinoMessages::ZAPTO;
+								*data = (size_t)  p;
+								dont_delete_p = true;
+								break;
+								
+							case NeutrinoMessages::EVT_NEXTPROGRAM :
+								*msg = NeutrinoMessages::EVT_NEXTPROGRAM;
+								*data = (size_t)  p;
+								dont_delete_p = true;
+								break;
+								
+							case NeutrinoMessages::SHUTDOWN :
+								*msg = NeutrinoMessages::SHUTDOWN;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::STANDBY_ON :
+								*msg = NeutrinoMessages::STANDBY_ON;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::STANDBY_OFF :
+								*msg = NeutrinoMessages::STANDBY_OFF;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::REMIND :
+								*msg = NeutrinoMessages::REMIND;
+								*data = (size_t) p;
+								dont_delete_p = true;
+								break;
+								
+							case NeutrinoMessages::EVT_START_PLUGIN :
+								*msg = NeutrinoMessages::EVT_START_PLUGIN;
+								*data = (size_t) p;
+								dont_delete_p = true;
+								break;
+
 								
 							//
 							default:
