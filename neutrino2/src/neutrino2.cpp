@@ -254,6 +254,7 @@ CBouquetList* RADIOfavList;
 CBouquetList* RADIOallList;
 
 //
+CEventServer *eventServer = NULL;
 CPlugins* g_PluginList;
 CRemoteControl* g_RemoteControl;
 
@@ -291,6 +292,7 @@ static void initGlobals(void)
 	g_InfoViewer    = NULL;
 	g_EventList     = NULL;
 	g_Locale        = new CLocaleManager;
+	eventServer 	= new CEventServer;
 	g_PluginList    = NULL;
 #if defined (ENABLE_CI)	
 	g_CamHandler 	= NULL;
@@ -2368,6 +2370,57 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	// show start up msg in vfd
 	CVFD::getInstance()->ShowText( (char *)"N2");
+	
+	// register events
+	// httpd
+	eventServer->registerEvent2(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::STANDBY_TOGGLE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_POPUP, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_EXTMSG, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::LOCK_RC, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::UNLOCK_RC, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::REBOOT, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::RESTART, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	// sectionsd
+	eventServer->registerEvent2(NeutrinoMessages::EVT_TIMESET, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_CURRENTNEXT_EPG, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SI_FINISHED, 222, NEUTRINO_UDS_NAME);
+	// zapit
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_COMPLETE, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_ISNVOD, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_FAILED, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_SUB_FAILED, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_MOTOR, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_CA_CLEAR, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_CA_LOCK, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_CA_FTA, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_CA_ID, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_RECORDMODE, 222, NEUTRINO_UDS_NAME);
+	//eventServer->registerEvent2(NeutrinoMessages::EVT_RECORDMODE_DEACTIVATED, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_COMPLETE, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FAILED, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_SATELLITE, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_NUM_CHANNELS, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_PROVIDER, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_BOUQUETSCHANGED, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SERVICESCHANGED, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_SERVICENAME, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_A_CHAN, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SERVICES_UPD, 222, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_PMT_CHANGED, 222, NEUTRINO_UDS_NAME);
+	// timerd
 
 	// rc 
 	g_RCInput = new CRCInput;

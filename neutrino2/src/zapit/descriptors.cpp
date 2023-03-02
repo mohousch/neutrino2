@@ -64,7 +64,7 @@ uint32_t  found_data_chans;
 std::string lastServiceName;
 std::map <t_channel_id, uint8_t> service_types;
 
-//extern CEventServer *eventServer;
+extern CEventServer *eventServer;
 
 void CDescriptors::generic_descriptor(const unsigned char * const)
 {
@@ -540,9 +540,9 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 	}
 
 	found_channels++;
-	//eventServer->sendEvent ( CZapit::EVT_SCAN_NUM_CHANNELS, CEventServer::INITID_ZAPIT, &found_channels, sizeof(found_channels));
+	eventServer->sendEvent ( NeutrinoMessages::EVT_SCAN_NUM_CHANNELS, CEventServer::INITID_NEUTRINO, &found_channels, sizeof(found_channels));
 	//FIXME:
-	g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_NUM_CHANNELS, (void *)&found_channels, sizeof(found_channels));
+	//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_NUM_CHANNELS, (void *)found_channels, sizeof(found_channels));
 
 	t_channel_id channel_id = CREATE_CHANNEL_ID;
 	tallchans_iterator I = allchans.find(channel_id);
@@ -641,24 +641,24 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 
 	//
 	lastProviderName = providerName;
-	//eventServer->sendEvent(CZapit::EVT_SCAN_PROVIDER, CEventServer::INITID_ZAPIT, (void *) lastProviderName.c_str(), lastProviderName.length() + 1);
+	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, CEventServer::INITID_NEUTRINO, (void *) lastProviderName.c_str(), lastProviderName.length() + 1);
 	//FIXME:
-	g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, (void *)lastProviderName.c_str(), lastProviderName.length() + 1);
+	//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, (void *)lastProviderName.c_str(), lastProviderName.length() + 1);
 
 	switch (service_type) 
 	{
 		case ST_DIGITAL_TELEVISION_SERVICE:
 			found_tv_chans++;
-			//eventServer->sendEvent(CZapit::EVT_SCAN_FOUND_TV_CHAN, CEventServer::INITID_ZAPIT, &found_tv_chans, sizeof(found_tv_chans));
+			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN, CEventServer::INITID_NEUTRINO, &found_tv_chans, sizeof(found_tv_chans));
 			//FIXME:
-			g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN, (void *)&found_tv_chans, sizeof(found_tv_chans));
+			//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN, (void *)found_tv_chans, sizeof(found_tv_chans));
 			break;
 			
 		case ST_DIGITAL_RADIO_SOUND_SERVICE:
 			found_radio_chans++;
-			//eventServer->sendEvent(CZapit::EVT_SCAN_FOUND_RADIO_CHAN, CEventServer::INITID_ZAPIT, &found_radio_chans, sizeof(found_radio_chans));
+			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN, CEventServer::INITID_NEUTRINO, &found_radio_chans, sizeof(found_radio_chans));
 			//FIXME:
-			g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN, (void *)&found_radio_chans, sizeof(found_radio_chans));
+			//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN, (void *)found_radio_chans, sizeof(found_radio_chans));
 			break;
 			
 		case ST_NVOD_REFERENCE_SERVICE:
@@ -668,9 +668,9 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 		case ST_RCS_FLS:
 		default:
 			found_data_chans++;
-			//eventServer->sendEvent(CZapit::EVT_SCAN_FOUND_DATA_CHAN, CEventServer::INITID_ZAPIT, &found_data_chans, sizeof(found_data_chans));
+			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN, CEventServer::INITID_NEUTRINO, &found_data_chans, sizeof(found_data_chans));
 			//FIXME:
-			g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN, (void *)&found_data_chans, sizeof(found_data_chans));
+			//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN, (void *)found_data_chans, sizeof(found_data_chans));
 			break;
 	}
 
@@ -698,9 +698,9 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 					bouquet = scanBouquetManager->Bouquets[bouquetId];
 
 				lastServiceName = serviceName;
-				//eventServer->sendEvent(CZapit::EVT_SCAN_SERVICENAME, CEventServer::INITID_ZAPIT, (void *) lastServiceName.c_str(), lastServiceName.length() + 1);
+				eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SERVICENAME, CEventServer::INITID_NEUTRINO, (void *) lastServiceName.c_str(), lastServiceName.length() + 1);
 				//FIXME:
-				g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_SERVICENAME, (void *)lastServiceName.c_str(), lastServiceName.length() + 1);
+				//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_SERVICENAME, (void *)lastServiceName.c_str(), lastServiceName.length() + 1);
 
 				CZapitChannel *chan = scanBouquetManager->findChannelByChannelID(channel_id);
 				if(chan)

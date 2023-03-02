@@ -441,7 +441,7 @@ class CRCInput
 
 		//
 		int messageLoop(bool anyKeyCancels = false, int timeout= -1);
-		void sendEvent(const neutrino_msg_t event, const void *data = NULL, const unsigned int datalen = 0, const bool prio = true);
+		//void sendEvent(const neutrino_msg_t event, const void *data = NULL, const unsigned int datalen = 0, const bool prio = true);
 };
 
 // Converts input of numeric keys to SMS style char input

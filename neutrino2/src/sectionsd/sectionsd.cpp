@@ -205,7 +205,7 @@ static bool		messaging_eit_is_busy = false;
 static bool		messaging_need_eit_version = false;
 std::string epg_dir("");
 
-//static CEventServer *eventServer;
+extern CEventServer *eventServer;
 
 static pthread_rwlock_t eventsLock = PTHREAD_RWLOCK_INITIALIZER; // Unsere (fast-)mutex, damit nicht gleichzeitig in die Menge events geschrieben und gelesen wird
 static pthread_rwlock_t servicesLock = PTHREAD_RWLOCK_INITIALIZER; // Unsere (fast-)mutex, damit nicht gleichzeitig in die Menge services geschrieben und gelesen wird
@@ -2397,9 +2397,9 @@ _done:
 	CFileHelpers::getInstance()->copyFile(tmpname, filename);
 	unlink(tmpname);
 _ret:
-	//eventServer->sendEvent(CSectionsd::EVT_WRITE_SI_FINISHED, CEventServer::INITID_SECTIONSD);
+	eventServer->sendEvent(NeutrinoMessages::EVT_SI_FINISHED, CEventServer::INITID_NEUTRINO);
 	//FIXME:
-	g_RCInput->sendEvent(NeutrinoMessages::EVT_SI_FINISHED);
+	//g_RCInput->sendEvent(NeutrinoMessages::EVT_SI_FINISHED);
 	
 	return ;
 }
@@ -2445,9 +2445,9 @@ static void *timeThread(void *)
 				pthread_cond_broadcast(&timeIsSetCond);
 				pthread_mutex_unlock(&timeIsSetMutex );
 				
-				//eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &actTime, sizeof(actTime) );
+				eventServer->sendEvent(NeutrinoMessages::EVT_TIMESET, CEventServer::INITID_NEUTRINO, &actTime, sizeof(actTime) );
 				//FIXME:
-				g_RCInput->sendEvent(NeutrinoMessages::EVT_TIMESET, (void *)actTime, sizeof(actTime));
+				//g_RCInput->sendEvent(NeutrinoMessages::EVT_TIMESET, (void *)actTime, sizeof(actTime));
 				
 				dprintf(DEBUG_NORMAL, "[sectionsd] timeThread: Time is already set by system, no further timeThread work!\n");
 				break;
@@ -2464,9 +2464,10 @@ static void *timeThread(void *)
 			pthread_cond_broadcast(&timeIsSetCond);
 			pthread_mutex_unlock(&timeIsSetMutex );
 			
-			//eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &actTime, sizeof(actTime) );
+			eventServer->sendEvent(NeutrinoMessages::EVT_TIMESET, CEventServer::INITID_NEUTRINO, &actTime, sizeof(actTime) );
 			//FIXME:
-			g_RCInput->sendEvent(NeutrinoMessages::EVT_TIMESET, (void *)actTime, sizeof(actTime));
+			//g_RCInput->sendEvent(NeutrinoMessages::EVT_TIMESET, (void *)actTime, sizeof(actTime));
+			
 			dprintf(DEBUG_NORMAL, "[sectionsd] timeThread: Time is already set by system\n");
 		} 
 		else 
@@ -2509,9 +2510,10 @@ static void *timeThread(void *)
 					pthread_cond_broadcast(&timeIsSetCond);
 					pthread_mutex_unlock(&timeIsSetMutex );
 					
-					//eventServer->sendEvent(CSectionsd::EVT_TIMESET, CEventServer::INITID_SECTIONSD, &tim, sizeof(tim));
+					eventServer->sendEvent(NeutrinoMessages::EVT_TIMESET, CEventServer::INITID_NEUTRINO, &tim, sizeof(tim));
 					//FIXME:
-					g_RCInput->sendEvent(NeutrinoMessages::EVT_TIMESET, (void *)tim, sizeof(tim));
+					//g_RCInput->sendEvent(NeutrinoMessages::EVT_TIMESET, (void *)tim, sizeof(tim));
+					
 					dprintf(DEBUG_NORMAL, "[sectionsd] timeThread: Time is already set by DVB\n");
 				}
 			}
@@ -3547,9 +3549,9 @@ static void *cnThread(void *)
 				{
 					dprintf(DEBUG_DEBUG, "[sectionsd] waiting for more than %d seconds - bail out...\n", TIME_EIT_VERSION_WAIT);
 					/* send event anyway, so that we know there is no EPG */
-					//eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG, CEventServer::INITID_SECTIONSD, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
+					eventServer->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, CEventServer::INITID_NEUTRINO, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
 					//FIXME:
-					g_RCInput->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (void *)messaging_current_servicekey, sizeof(messaging_current_servicekey));
+					//g_RCInput->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (void *)messaging_current_servicekey, sizeof(messaging_current_servicekey));
 					
 					writeLockMessaging();
 					messaging_need_eit_version = false;
@@ -3569,9 +3571,9 @@ static void *cnThread(void *)
 			messaging_have_CN = messaging_got_CN;
 			unlockMessaging();
 			dprintf(DEBUG_DEBUG, "[sectionsd] [cnThread] got current_next (0x%x) - sending event!\n", messaging_have_CN);
-			//eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG, CEventServer::INITID_SECTIONSD, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
+			eventServer->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, CEventServer::INITID_NEUTRINO, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
 			//FIXME:
-					g_RCInput->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (void *)messaging_current_servicekey, sizeof(messaging_current_servicekey));
+			//g_RCInput->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (void *)messaging_current_servicekey, sizeof(messaging_current_servicekey));
 			
 			/* we received an event => reset timeout timer... */
 			eit_waiting_since = zeit;
@@ -3659,9 +3661,9 @@ static void *cnThread(void *)
 			/* send a "no epg" event anyway before going to sleep */
 			if (messaging_have_CN == 0x00)
 			{
-				//eventServer->sendEvent(CSectionsd::EVT_GOT_CN_EPG, CEventServer::INITID_SECTIONSD, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
+				eventServer->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, CEventServer::INITID_NEUTRINO, &messaging_current_servicekey, sizeof(messaging_current_servicekey));
 				//FIXME:
-				g_RCInput->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (void *)messaging_current_servicekey, sizeof(messaging_current_servicekey));
+				//g_RCInput->sendEvent(NeutrinoMessages::EVT_CURRENTNEXT_EPG, (void *)messaging_current_servicekey, sizeof(messaging_current_servicekey));
 			}
 			continue;
 		}

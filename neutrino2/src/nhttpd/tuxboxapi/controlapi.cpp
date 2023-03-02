@@ -52,6 +52,8 @@ extern CBouquetManager *g_bouquetManager;
 extern t_channel_id live_channel_id;
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
 
+extern CEventServer *eventServer;
+
 //=============================================================================
 // Initialization of static variables
 //=============================================================================
@@ -330,18 +332,18 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 		if (hh->ParamList["1"] == "radio")	// switch to radio mode
 		{
 			int mode = NeutrinoMessages::mode_radio;
-			//NeutrinoAPI->EventServer->sendEvent(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_HTTPD, (void *)&mode, sizeof(int));
+			eventServer->sendEvent(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_NEUTRINO, (void *)&mode, sizeof(int));
 			//FIXME:
-			g_RCInput->sendEvent(NeutrinoMessages::CHANGEMODE, (void *)&mode, sizeof(int));
+			//g_RCInput->sendEvent(NeutrinoMessages::CHANGEMODE, (void *)mode, sizeof(int));
 			sleep(1);
 			NeutrinoAPI->UpdateBouquets();
 		}
 		else if (hh->ParamList["1"] == "tv")	// switch to tv mode
 		{
 			int mode = NeutrinoMessages::mode_tv;
-			//NeutrinoAPI->EventServer->sendEvent(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_HTTPD, (void *)&mode, sizeof(int));
+			eventServer->sendEvent(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_NEUTRINO, (void *)&mode, sizeof(int));
 			//FIXME:
-			g_RCInput->sendEvent(NeutrinoMessages::CHANGEMODE, (void *)&mode, sizeof(int));
+			//g_RCInput->sendEvent(NeutrinoMessages::CHANGEMODE, (void *)mode, sizeof(int));
 			sleep(1);
 			NeutrinoAPI->UpdateBouquets();
 		}
@@ -440,16 +442,16 @@ void CControlAPI::StandbyCGI(CyhookHandler *hh)
 	{
 		if (hh->ParamList["1"] == "on")	// standby mode on
 		{
-			//NeutrinoAPI->EventServer->sendEvent(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_HTTPD);
+			eventServer->sendEvent(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_NEUTRINO);
 			//FIXME:
-			g_RCInput->sendEvent(NeutrinoMessages::STANDBY_ON);
+			//g_RCInput->sendEvent(NeutrinoMessages::STANDBY_ON);
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "off")// standby mode off
 		{
-			//NeutrinoAPI->EventServer->sendEvent(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_HTTPD);
+			eventServer->sendEvent(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO);
 			//FIXME:
-			g_RCInput->sendEvent(NeutrinoMessages::STANDBY_OFF);
+			//g_RCInput->sendEvent(NeutrinoMessages::STANDBY_OFF);
 			hh->SendOk();
 		}
 		else
@@ -465,13 +467,13 @@ void CControlAPI::RCCGI(CyhookHandler *hh)
 	if (!(hh->ParamList.empty()))
 	{
 		if (hh->ParamList["1"] == "lock")	// lock remote control
-			//NeutrinoAPI->EventServer->sendEvent(NeutrinoMessages::LOCK_RC, CEventServer::INITID_HTTPD);
+			eventServer->sendEvent(NeutrinoMessages::LOCK_RC, CEventServer::INITID_NEUTRINO);
 			//FIXME:
-			g_RCInput->sendEvent(NeutrinoMessages::LOCK_RC);
+			//g_RCInput->sendEvent(NeutrinoMessages::LOCK_RC);
 		else if (hh->ParamList["1"] == "unlock")// unlock remote control
-			//NeutrinoAPI->EventServer->sendEvent(NeutrinoMessages::UNLOCK_RC, CEventServer::INITID_HTTPD);
+			eventServer->sendEvent(NeutrinoMessages::UNLOCK_RC, CEventServer::INITID_NEUTRINO);
 			//FIXME:
-			g_RCInput->sendEvent(NeutrinoMessages::UNLOCK_RC);
+			//g_RCInput->sendEvent(NeutrinoMessages::UNLOCK_RC);
 		else
 			hh->SendError();
 	}
@@ -567,10 +569,10 @@ void CControlAPI::MessageCGI(CyhookHandler *hh)
 
 	if (event != 0)
 	{
-		message=decodeString(message);
-		//NeutrinoAPI->EventServer->sendEvent(event, CEventServer::INITID_HTTPD, (void *) message.c_str(), message.length() + 1);
+		message = decodeString(message);
+		eventServer->sendEvent(event, CEventServer::INITID_NEUTRINO, (void *) message.c_str(), message.length() + 1);
 		//FIXME:
-		g_RCInput->sendEvent(event, (void *)message.c_str(), message.length() + 1);
+		//g_RCInput->sendEvent(event, (void *)message.c_str(), message.length() + 1);
 		hh->SendOk();
 	}
 	else
@@ -602,9 +604,9 @@ void CControlAPI::ShutdownCGI(CyhookHandler *hh)
 {
 	if (hh->ParamList.empty())
 	{
-		//NeutrinoAPI->EventServer->sendEvent(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_HTTPD);
+		eventServer->sendEvent(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO);
 		//FIXME:
-		g_RCInput->sendEvent(NeutrinoMessages::SHUTDOWN);
+		//g_RCInput->sendEvent(NeutrinoMessages::SHUTDOWN);
 		hh->SendOk();
 	}
 	else
@@ -621,9 +623,9 @@ void CControlAPI::RebootCGI(CyhookHandler *hh)
 	*/
 	if (hh->ParamList.empty())
 	{
-		//NeutrinoAPI->EventServer->sendEvent(NeutrinoMessages::REBOOT, CEventServer::INITID_HTTPD);
+		eventServer->sendEvent(NeutrinoMessages::REBOOT, CEventServer::INITID_NEUTRINO);
 		//FIXME:
-		g_RCInput->sendEvent(NeutrinoMessages::REBOOT);
+		//g_RCInput->sendEvent(NeutrinoMessages::REBOOT);
 		hh->SendOk();
 	}
 	else
@@ -640,9 +642,9 @@ void CControlAPI::RestartCGI(CyhookHandler *hh)
 	*/
 	if (hh->ParamList.empty())
 	{
-		//NeutrinoAPI->EventServer->sendEvent(NeutrinoMessages::RESTART, CEventServer::INITID_HTTPD);
+		eventServer->sendEvent(NeutrinoMessages::RESTART, CEventServer::INITID_NEUTRINO);
 		//FIXME:
-		g_RCInput->sendEvent(NeutrinoMessages::RESTART);
+		//g_RCInput->sendEvent(NeutrinoMessages::RESTART);
 		hh->SendOk();
 	}
 	else
@@ -1422,10 +1424,10 @@ void CControlAPI::StartPluginCGI(CyhookHandler *hh)
 		if (hh->ParamList["name"] != "")
 		{
 			pluginname = hh->ParamList["name"];
-			pluginname=decodeString(pluginname);
-			//NeutrinoAPI->EventServer->sendEvent(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_HTTPD, (void *) pluginname.c_str(), pluginname.length() + 1);
+			pluginname = decodeString(pluginname);
+			eventServer->sendEvent(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, (void *) pluginname.c_str(), pluginname.length() + 1);
 			//FIXME:
-			g_RCInput->sendEvent(NeutrinoMessages::EVT_START_PLUGIN, (void *)pluginname.c_str(), pluginname.length() + 1);
+			//g_RCInput->sendEvent(NeutrinoMessages::EVT_START_PLUGIN, (void *)pluginname.c_str(), pluginname.length() + 1);
 
 			hh->SendOk();
 		}

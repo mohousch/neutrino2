@@ -1002,7 +1002,8 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					
 					dprintf(DEBUG_INFO, "CRCInput::getMsg_us: got event from fd_event: %x %x\n", emsg.eventID, *(unsigned*) p);
 
-					// nhttp event msg 
+					// nhttp event msg
+					#if 0
 					if ( emsg.initiatorID == CEventServer::INITID_HTTPD )
 					{					  
 						dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from NHTTPD %x %x\n", emsg.eventID, *(unsigned*) p);					
@@ -1075,6 +1076,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 								printf("CRCInput::getMsg_us: event INITID_HTTPD - unknown eventID 0x%x\n",  emsg.eventID );
 						}
 					}
+					#endif
 					#if 0
 					else if ( emsg.initiatorID == CEventServer::INITID_SECTIONSD )
 					{					  
@@ -1273,8 +1275,10 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 							dont_delete_p = true;
 						}
 					}
+					
+					else
 					#endif
-					else if ( emsg.initiatorID == CEventServer::INITID_TIMERD )
+					if ( emsg.initiatorID == CEventServer::INITID_TIMERD )
 					{					  
 						dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from TIMERD %x %x\n", emsg.eventID, *(unsigned*) p);					
 						
@@ -1353,7 +1357,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 							default :
 								printf("CRCInput::getMsg_us: event INITID_TIMERD - unknown eventID 0x%x\n",  emsg.eventID );
-
 						}
 					}
 					else if (emsg.initiatorID == CEventServer::INITID_NEUTRINO)
@@ -1366,6 +1369,247 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 							*data = (neutrino_msg_data_t) p;
 							dont_delete_p = true;
 						}
+						
+						////
+						switch(emsg.eventID)
+						{
+							// from zapit
+							case NeutrinoMessages::EVT_RECORDMODE:
+								*msg  = NeutrinoMessages::EVT_RECORDMODE;
+								*data = *(bool*)p;
+								break;
+								
+							//case NeutrinoMessages::EVT_RECORDMODE_DEACTIVATED:
+							//	*msg  = NeutrinoMessages::EVT_RECORDMODE;
+							//	*data = false;
+							//	break;
+								
+							case NeutrinoMessages::EVT_ZAP_COMPLETE:
+								*msg = NeutrinoMessages::EVT_ZAP_COMPLETE;
+								break;
+								
+							case NeutrinoMessages::EVT_ZAP_FAILED:
+								*msg = NeutrinoMessages::EVT_ZAP_FAILED;
+								break;
+								
+							case NeutrinoMessages::EVT_ZAP_SUB_FAILED:
+								*msg = NeutrinoMessages::EVT_ZAP_SUB_FAILED;
+								break;
+								
+							case NeutrinoMessages::EVT_ZAP_ISNVOD:
+								*msg = NeutrinoMessages::EVT_ZAP_ISNVOD;
+								break;
+								
+							case NeutrinoMessages::EVT_ZAP_SUB_COMPLETE:
+								*msg = NeutrinoMessages::EVT_ZAP_SUB_COMPLETE;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_COMPLETE:
+								*msg  = NeutrinoMessages::EVT_SCAN_COMPLETE;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS:
+								*msg  = NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS:
+								*msg  = NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY:
+								*msg = NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_FOUND_A_CHAN:
+								*msg = NeutrinoMessages::EVT_SCAN_FOUND_A_CHAN;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_SERVICENAME:
+								*msg = NeutrinoMessages::EVT_SCAN_SERVICENAME;
+								break;
+							case NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN:
+								*msg  = NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN:
+								*msg  = NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN:
+								*msg  = NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP:
+								*msg  = NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_NUM_CHANNELS:
+								*msg = NeutrinoMessages::EVT_SCAN_NUM_CHANNELS;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_PROVIDER:
+								*msg = NeutrinoMessages::EVT_SCAN_PROVIDER;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_SATELLITE:
+								*msg = NeutrinoMessages::EVT_SCAN_SATELLITE;
+								break;
+							case NeutrinoMessages::EVT_BOUQUETSCHANGED:
+								*msg  = NeutrinoMessages::EVT_BOUQUETSCHANGED;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::EVT_SERVICESCHANGED:
+								*msg  = NeutrinoMessages::EVT_SERVICESCHANGED;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::EVT_ZAP_CA_CLEAR:
+								*msg  = NeutrinoMessages::EVT_ZAP_CA_CLEAR;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_ZAP_CA_LOCK:
+								*msg  = NeutrinoMessages::EVT_ZAP_CA_LOCK;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_ZAP_CA_FTA:
+								*msg  = NeutrinoMessages::EVT_ZAP_CA_FTA;
+								*data = *(unsigned*) p;
+								break;
+							
+							case NeutrinoMessages::EVT_ZAP_CA_ID :
+								*msg = NeutrinoMessages::EVT_ZAP_CA_ID;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_SCAN_FAILED:
+								*msg  = NeutrinoMessages::EVT_SCAN_FAILED;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::EVT_ZAP_MOTOR:
+								*msg  = NeutrinoMessages::EVT_ZAP_MOTOR;
+								*data = *(unsigned*) p;
+								break;
+								
+							case NeutrinoMessages::EVT_SERVICES_UPD:
+								*msg          = NeutrinoMessages::EVT_SERVICES_UPD;
+								*data         = 0;
+								break;
+								
+							case NeutrinoMessages::EVT_PMT_CHANGED:
+								*msg          = NeutrinoMessages::EVT_PMT_CHANGED;
+								*data = (neutrino_msg_data_t) p;
+								break;
+							
+							// from sectionsd	
+							case NeutrinoMessages::EVT_TIMESET:
+								{
+                                    					if ((int64_t)last_keypress > *(int64_t*)p)
+										last_keypress += *(int64_t *)p;
+
+								    	*msg = NeutrinoMessages::EVT_TIMESET;
+								    	*data = (neutrino_msg_data_t) p;
+								   	 dont_delete_p = true;
+								}
+								break;
+								
+							case NeutrinoMessages::EVT_CURRENTNEXT_EPG:
+								*msg = NeutrinoMessages::EVT_CURRENTNEXT_EPG;
+								*data = (neutrino_msg_data_t) p;
+								dont_delete_p = true;
+								break;
+								
+							case NeutrinoMessages::EVT_SI_FINISHED:
+								*msg = NeutrinoMessages::EVT_SI_FINISHED;
+								*data = 0;
+								break;
+								
+							// from httpd
+							case NeutrinoMessages::SHUTDOWN :
+								*msg = NeutrinoMessages::SHUTDOWN;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::REBOOT :
+								*msg = NeutrinoMessages::REBOOT;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::RESTART :
+								*msg = NeutrinoMessages::RESTART;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::EVT_POPUP :
+								*msg = NeutrinoMessages::EVT_POPUP;
+								*data = (size_t) p;
+								dont_delete_p = true;
+								break;
+								
+							case NeutrinoMessages::EVT_EXTMSG :
+								*msg = NeutrinoMessages::EVT_EXTMSG;
+								*data = (size_t) p;
+								dont_delete_p = true;
+								break;
+								
+							case NeutrinoMessages::CHANGEMODE :	// Change
+								*msg = NeutrinoMessages::CHANGEMODE;
+								*data = *(size_t*) p;
+								break;
+								
+							case NeutrinoMessages::STANDBY_TOGGLE :
+								*msg = NeutrinoMessages::STANDBY_TOGGLE;
+								*data = 0;
+								break;
+							case NeutrinoMessages::STANDBY_ON :
+								*msg = NeutrinoMessages::STANDBY_ON;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::STANDBY_OFF :
+								*msg = NeutrinoMessages::STANDBY_OFF;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::EVT_START_PLUGIN :
+								*msg = NeutrinoMessages::EVT_START_PLUGIN;
+								*data = (size_t) p;
+								dont_delete_p = true;
+								break;
+								
+							case NeutrinoMessages::LOCK_RC :
+								*msg = NeutrinoMessages::LOCK_RC;
+								*data = 0;
+								break;
+								
+							case NeutrinoMessages::UNLOCK_RC :
+								*msg = NeutrinoMessages::UNLOCK_RC;
+								*data = 0;
+								break;
+								
+							//
+							default:
+								printf("CRCInput::getMsg_us: event INITID_ZAPIT - unknown eventID 0x%x\n",  emsg.eventID );
+						}
+						
+						if (((*msg) >= RC_WithData) && ((*msg) < RC_WithData + 0x10000000))
+						{
+							*data = (neutrino_msg_data_t) p;
+							dont_delete_p = true;
+						}
+						////
 					}
 					else if (emsg.initiatorID == CEventServer::INITID_GENERIC_INPUT_EVENT_PROVIDER)
 					{					  
@@ -1493,6 +1737,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			}/* if FDSET */
 		} /* for NUMBER_OF_EVENT_DEVICES */
 
+		// pipe low prio
 		if(FD_ISSET(fd_pipe_low_priority[0], &rfds))
 		{
 			struct event buf;
@@ -1940,16 +2185,23 @@ int CRCInput::translate(unsigned int code, int num)
 	else return RC_nokey;
 }
 
+/*
 void CRCInput::sendEvent(const neutrino_msg_t event, const void *data, const unsigned int datalen, const bool prio)
 {
 	dprintf(DEBUG_NORMAL, "CRCInput::sendEvent >\n");
 	
-	char *p = new char[datalen];
-	memcpy(p, &data, datalen);
+	if (datalen != 0)
+	{
+		unsigned char *p = new unsigned char[datalen];
+		memcpy(p, (unsigned char *)&data, datalen);
 
-	//
-	postMsg(event, (const neutrino_msg_data_t) p, prio);
+		//
+		postMsg(event, (const neutrino_msg_data_t) p, prio);
+	}
+	else
+		postMsg(event, 0, prio);
 }
+*/
 
 //
 #define SMSKEY_TIMEOUT 2000
