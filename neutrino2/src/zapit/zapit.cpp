@@ -4350,7 +4350,7 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 
 bool CZapit::scanTP(TP_params TP, int feindex)
 {
-	if(!(TP.feparams.frequency > 0) && live_channel) 
+	if(!(TP.feparams.frequency > 0) && (live_channel && !live_channel->isWebTV)) 
 	{
 		// TP
 		transponder_list_t::iterator transponder = transponders.find(live_channel->getTransponderId());
@@ -4406,7 +4406,7 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 			
 	retune = true;
 	
-	return true;
+	return scan_runs;
 }
 
 /*
@@ -4444,7 +4444,7 @@ int CZapit::start_scan(CZapit::commandStartScan StartScan)
 
 	if (pthread_create(&scan_thread, NULL, start_scanthread,  (void*)&StartScan)) 
 	{
-		dprintf(DEBUG_INFO, "[zapit] pthread_create\n");
+		dprintf(DEBUG_INFO, "[zapit] pthread_create failed\n");
 		scan_runs = 0;
 		return -1;
 	}
@@ -4478,7 +4478,6 @@ bool CZapit::isScanReady(unsigned int &satellite, unsigned int &processed_transp
 void CZapit::getScanSatelliteList( CZapit::SatelliteList &satelliteList )
 {
 	CZapit::responseGetSatelliteList sat;
-	//satlength = sizeof(sat);
 	
 	sat_iterator_t sit;
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 

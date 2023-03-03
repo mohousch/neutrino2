@@ -46,7 +46,6 @@
 
 extern bool timeset; // from sectionsd.cpp
 extern CEventServer *eventServer;
-
 static pthread_mutex_t tm_eventsMutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 
 CTimerManager::CTimerManager()
@@ -62,6 +61,7 @@ void CTimerManager::Init(void)
 	wakeup = 0; 	//fallback
 	thrTimer = 0;
 
+	//
 	int fd = open("/proc/stb/fp/was_timer_wakeup", O_RDONLY);
 	unsigned char buffer[2];
 	
@@ -140,7 +140,7 @@ void* CTimerManager::timerThread(void *data)
 			time_t now = time(NULL);
 
 			// fire events who's time has come
-			CTimerEvent *event;
+			CTimerEvent *event = NULL;
 
 			pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
 			pthread_mutex_lock(&tm_eventsMutex);
@@ -274,6 +274,7 @@ bool CTimerManager::removeEvent(int leventID)
 {
 	bool res = false;
 	pthread_mutex_lock(&tm_eventsMutex);
+	
 	if(events.find(leventID) != events.end())							 // if i have a event with this id
 	{
 		if( (events[leventID]->eventState == CTimerd::TIMERSTATE_ISRUNNING) && (events[leventID]->stopTime > 0) )
@@ -622,13 +623,13 @@ void CTimerManager::loadEventsFromConfig()
 						new CTimerEvent_ExecPlugin(&config, savedIDs[i]);
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else if(event->eventRepeat != CTimerd::TIMERREPEAT_ONCE)
 						{
 							// old periodic timers need to be rescheduled
 							event->eventState = CTimerd::TIMERSTATE_HASFINISHED;
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else
 						{
@@ -709,7 +710,7 @@ bool CTimerManager::shutdown()
 	dprintf(DEBUG_NORMAL, "CTimerManager::shutdown: Waiting for timermanager thread to terminate ...\n");
 	
 	pthread_cancel(thrTimer);
-	pthread_join(thrTimer,NULL);
+	pthread_join(thrTimer, NULL);
 	
 	dprintf(DEBUG_NORMAL, "CTimerManager::shutdown: Timermanager thread terminated\n");
 
@@ -838,6 +839,7 @@ void CTimerManager::setRecordingSafety(int pre, int post)
    	m_saveEvents = true; // also saves extra times
 }
 
+//
 CTimerEvent::CTimerEvent( CTimerd::CTimerEventTypes evtype, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount)
 {
 	eventRepeat = evrepeat;

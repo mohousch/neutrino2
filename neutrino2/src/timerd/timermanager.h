@@ -234,8 +234,6 @@ class CTimerManager
 		static void* timerThread(void *data);
 		CTimerEvent *nextEvent();
 	public:
-		
-		
 		static CTimerManager* getInstance();
 		
 		//
