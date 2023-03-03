@@ -139,21 +139,6 @@ CNeutrinoAPI::CNeutrinoAPI()
 #endif	
 
 	UpdateBouquets();
-/*
-	EventServer = new CEventServer;
-	EventServer->registerEvent2( NeutrinoMessages::SHUTDOWN, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-	EventServer->registerEvent2( NeutrinoMessages::STANDBY_ON, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-	EventServer->registerEvent2( NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-	EventServer->registerEvent2( NeutrinoMessages::STANDBY_TOGGLE, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-	EventServer->registerEvent2( NeutrinoMessages::EVT_POPUP, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-	EventServer->registerEvent2( NeutrinoMessages::EVT_EXTMSG, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-	EventServer->registerEvent2( NeutrinoMessages::CHANGEMODE, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-	EventServer->registerEvent2( NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-	EventServer->registerEvent2( NeutrinoMessages::LOCK_RC, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-	EventServer->registerEvent2( NeutrinoMessages::UNLOCK_RC, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-	EventServer->registerEvent2( NeutrinoMessages::REBOOT, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-	EventServer->registerEvent2( NeutrinoMessages::RESTART, CEventServer::INITID_HTTPD, "/tmp/neutrino.sock");
-*/
 }
 
 CNeutrinoAPI::~CNeutrinoAPI(void)
@@ -168,9 +153,6 @@ CNeutrinoAPI::~CNeutrinoAPI(void)
 		
 	if (ControlAPI)
 		delete ControlAPI;
-		
-	//if (EventServer)
-	//	delete EventServer;
 }
 
 void CNeutrinoAPI::UpdateBouquets(void)

@@ -137,7 +137,7 @@ bool g_list_changed = false; 		// flag to indicate, allchans was changed
 // SDT
 int scanSDT = 0;
 void * sdt_thread(void * arg);
-pthread_t tsdt;
+pthread_t tsdt = 0;
 bool sdt_wakeup = false;
 
 // the conditional access module
@@ -196,7 +196,7 @@ tallchans curchans;             	// tallchans defined in "bouquets.h"
 transponder_list_t transponders;    	// from services.xml
 
 // scan
-pthread_t scan_thread;
+pthread_t scan_thread = 0;
 extern int found_transponders;		// defined in descriptors.cpp
 extern int processed_transponders;	// defined in scan.cpp
 extern int found_channels;		// defined in descriptors.cpp
@@ -1195,8 +1195,6 @@ bool CZapit::tune_to_channel(CFrontend * frontend, CZapitChannel * thischannel, 
 		{
 			dprintf(DEBUG_INFO, "[zapit] waiting %d seconds for motor to turn satellite dish.\n", waitForMotor);
 			eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_MOTOR, CEventServer::INITID_NEUTRINO, &waitForMotor, sizeof(waitForMotor));
-			//FIXME:
-			//g_RCInput->sendEvent(NeutrinoMessages::EVT_ZAP_MOTOR, (void *)waitForMotor, sizeof(waitForMotor));
 				
 			for(int i = 0; i < waitForMotor; i++) 
 			{
@@ -1465,8 +1463,6 @@ tune_again:
 		int caid = 1;
 
 		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_CA_ID, CEventServer::INITID_NEUTRINO, &caid, sizeof(int));
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_ZAP_CA_ID, (void *)caid, sizeof(int));
 
 		// start pmt update filter
 		CPmt::getInstance()->pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
@@ -1787,8 +1783,6 @@ void CZapit::setRecordMode(void)
 	lockFrontend(record_fe);
 	 
 	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, (void *)true, sizeof(bool) );
-	//FIXME:
-	//g_RCInput->sendEvent(NeutrinoMessages::EVT_RECORDMODE, (void *)true, sizeof(bool));
 }
 
 void CZapit::unsetRecordMode(void)
@@ -1809,8 +1803,6 @@ void CZapit::unsetRecordMode(void)
 	currentMode &= ~RECORD_MODE;
  
 	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, (void *)false, sizeof(bool) );
-	//FIXME:
-	//g_RCInput->sendEvent(NeutrinoMessages::EVT_RECORDMODE, (void *)false, sizeof(bool));
 }
 
 int CZapit::prepare_channels()
@@ -2695,8 +2687,6 @@ unsigned int CZapit::zapTo_ChannelID(t_channel_id channel_id, bool isSubService)
 		dprintf(DEBUG_NORMAL, "[zapit] zapTo_ChannelID: zapit failed, chid %llx\n", channel_id);
 		
 		eventServer->sendEvent((isSubService ? NeutrinoMessages::EVT_ZAP_SUB_FAILED : NeutrinoMessages::EVT_ZAP_FAILED), CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
-		//FIXME:
-		//g_RCInput->sendEvent(isSubService? NeutrinoMessages::EVT_ZAP_SUB_FAILED : NeutrinoMessages::EVT_ZAP_FAILED, (void *)channel_id, sizeof(channel_id));
 		
 		return result;
 	}
@@ -2716,23 +2706,17 @@ unsigned int CZapit::zapTo_ChannelID(t_channel_id channel_id, bool isSubService)
 		dprintf(DEBUG_NORMAL, "[zapit] zapTo_ChannelID: isSubService chid %llx\n", channel_id);
 		
 		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, (void *)channel_id, sizeof(channel_id));
 	}
 	else if (current_is_nvod) 
 	{
 		dprintf(DEBUG_NORMAL, "[zapit] zapTo_ChannelID: NVOD chid %llx\n", channel_id);
 		
 		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_ISNVOD, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_ZAP_ISNVOD, (void *)channel_id, sizeof(channel_id));
 		
 		result |= CZapit::ZAP_IS_NVOD;
 	}
 	else
 		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_COMPLETE, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_ZAP_COMPLETE, (void *)channel_id, sizeof(channel_id));
 
 	return result;
 }
@@ -3057,8 +3041,6 @@ void * sdt_thread(void */*arg*/)
 
 			if(updated && (scanSDT == 1))
 			  	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICES_UPD, CEventServer::INITID_NEUTRINO);
-			  	//FIXME:
-				//g_RCInput->sendEvent(NeutrinoMessages::EVT_SERVICES_UPD);
 
 			dprintf(DEBUG_INFO, "[zapit] [sdt monitor] %s\n", updated? "found changes": "no changes found");
 		}
@@ -3270,43 +3252,6 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	
 	abort_zapit = 0;
 	
-	/*
-#define ZAPIT_EVENT_COUNT 30
-	const CZapit::events zapit_event[ZAPIT_EVENT_COUNT] =
-	{
-		CZapit::EVT_ZAP_COMPLETE,
-		CZapit::EVT_ZAP_COMPLETE_IS_NVOD,
-		CZapit::EVT_ZAP_FAILED,
-		CZapit::EVT_ZAP_SUB_COMPLETE,
-		CZapit::EVT_ZAP_SUB_FAILED,
-		CZapit::EVT_ZAP_MOTOR,
-		CZapit::EVT_ZAP_CA_CLEAR,
-		CZapit::EVT_ZAP_CA_LOCK,
-		CZapit::EVT_ZAP_CA_FTA,
-		CZapit::EVT_ZAP_CA_ID,
-		CZapit::EVT_RECORDMODE_ACTIVATED,
-		CZapit::EVT_RECORDMODE_DEACTIVATED,
-		CZapit::EVT_SCAN_COMPLETE,
-		CZapit::EVT_SCAN_FAILED,
-		CZapit::EVT_SCAN_NUM_TRANSPONDERS,
-		CZapit::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS,
-		CZapit::EVT_SCAN_REPORT_FREQUENCY,
-		CZapit::EVT_SCAN_REPORT_FREQUENCYP,
-		CZapit::EVT_SCAN_SATELLITE,
-		CZapit::EVT_SCAN_NUM_CHANNELS,
-		CZapit::EVT_SCAN_PROVIDER,
-		CZapit::EVT_BOUQUETS_CHANGED,
-		CZapit::EVT_SERVICES_CHANGED,
-		CZapit::EVT_SCAN_SERVICENAME,
-		CZapit::EVT_SCAN_FOUND_A_CHAN,
-		CZapit::EVT_SCAN_FOUND_TV_CHAN,
-		CZapit::EVT_SCAN_FOUND_RADIO_CHAN,
-		CZapit::EVT_SCAN_FOUND_DATA_CHAN,
-		CZapit::EVT_SDT_CHANGED,
-		CZapit::EVT_PMT_CHANGED
-	};
-	*/
-	
 	//scan for dvb adapter/frontend and feed them in map
 	initFrontend();
 	
@@ -3510,13 +3455,6 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	// load services
 	prepare_channels();
 
-	// init event server
-	//eventServer = new CEventServer;
-	
-	// register events
-	//for (int i = 0; i < ZAPIT_EVENT_COUNT; i++)
-	//	eventServer->registerEvent2(zapit_event[i], 222, NEUTRINO_UDS_NAME);
-
 	//create sdt thread
 	pthread_create(&tsdt, NULL, sdt_thread, (void *) NULL);
 
@@ -3606,8 +3544,6 @@ void CZapit::run()
 					}
 						
 					//eventServer->sendEvent(CZapit::EVT_PMT_CHANGED, CEventServer::INITID_ZAPIT, &channel_id, sizeof(channel_id));
-					//FIXME:
-					g_RCInput->sendEvent(NeutrinoMessages::EVT_PMT_CHANGED, (void *)channel_id, sizeof(channel_id));
 				}
 			}
 		}
@@ -4083,15 +4019,11 @@ void CZapit::reinitChannels()
 		live_channel = &(cit->second); 
 	
 	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICESCHANGED, CEventServer::INITID_NEUTRINO);
-	//FIXME:
-	//g_RCInput->sendEvent(NeutrinoMessages::EVT_SERVICESCHANGED);
 }
 
 void CZapit::reloadCurrentServices()
 {
 	eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
-	//FIXME:
-	//g_RCInput->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED);
 }
 
 void CZapit::sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t cmd, uint8_t num_parameters, uint8_t param1, uint8_t param2, int feindex)
@@ -4265,8 +4197,6 @@ void CZapit::saveBouquets()
 	g_bouquetManager->renumServices();
 			
 	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICESCHANGED, CEventServer::INITID_NEUTRINO);
-	//FIXME:
-	//g_RCInput->sendEvent(NeutrinoMessages::EVT_SERVICESCHANGED);
 	
 	if(g_list_changed) 
 	{
@@ -4365,8 +4295,6 @@ void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channe
 	}
 	
 	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICESCHANGED, CEventServer::INITID_NEUTRINO);
-	//FIXME:
-	//g_RCInput->sendEvent(NeutrinoMessages::EVT_SERVICESCHANGED);
 }
 
 // scan
@@ -4470,7 +4398,7 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 	
 	scan_runs = 1;
 	
-	if (pthread_create(&scan_thread, 0, scan_transponder, (void*) &TP)) 
+	if (pthread_create(&scan_thread, NULL, scan_transponder, (void*) &TP)) 
 	{
 		dprintf(DEBUG_INFO, "[zapit] pthread_create\n");
 		scan_runs = 0;
@@ -4514,7 +4442,7 @@ int CZapit::start_scan(CZapit::commandStartScan StartScan)
 	found_transponders = 0;
 	found_channels = 0;
 
-	if (pthread_create(&scan_thread, 0, start_scanthread,  (void*)&StartScan)) 
+	if (pthread_create(&scan_thread, NULL, start_scanthread,  (void*)&StartScan)) 
 	{
 		dprintf(DEBUG_INFO, "[zapit] pthread_create\n");
 		scan_runs = 0;
@@ -4634,8 +4562,7 @@ bool CZapit::startScan(int scan_mode, int feindex)
 	if(start_scan(StartScan) == -1)
 	{
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED);
+
 		return false;
 	}
 			

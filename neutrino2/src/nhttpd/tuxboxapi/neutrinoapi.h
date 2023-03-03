@@ -32,8 +32,6 @@ class CNeutrinoAPI
 #ifdef ENABLE_LCDAPI
 	CLCDAPI                 *LcdAPI;
 #endif	
-	//CEventServer		*EventServer;
-
 	// complete channellists
 	CZapit::BouquetChannelList RadioChannelList,TVChannelList;
 	// events of actual channel

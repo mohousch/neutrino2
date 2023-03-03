@@ -57,28 +57,10 @@ CTimerManager::CTimerManager()
 void CTimerManager::Init(void)
 {
 	eventID = 0;
-	//eventServer = new CEventServer;
 	m_saveEvents = false;
 	m_isTimeSet = false;
 	wakeup = 0; 	//fallback
-	
-	/*
-	eventServer->registerEvent2(CTimerd::EVT_ANNOUNCE_SHUTDOWN, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_SHUTDOWN, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_ANNOUNCE_NEXTPROGRAM, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_NEXTPROGRAM, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_STANDBY_ON, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_STANDBY_OFF, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_ANNOUNCE_RECORD, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_RECORD_START, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_RECORD_STOP, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_ANNOUNCE_ZAPTO, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_ZAPTO, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_SLEEPTIMER, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_ANNOUNCE_SLEEPTIMER, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_REMIND, 222, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(CTimerd::EVT_EXEC_PLUGIN, 222, NEUTRINO_UDS_NAME);
-	*/
+	thrTimer = 0;
 
 	int fd = open("/proc/stb/fp/was_timer_wakeup", O_RDONLY);
 	unsigned char buffer[2];

@@ -112,8 +112,6 @@ bool CScan::tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_
 			dprintf(DEBUG_INFO, "[scan]-tuneFrequency: waiting %d seconds for motor to turn satellite dish.\n", ret);
 			
 			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, CEventServer::INITID_NEUTRINO, (void *) "moving rotor", 13);
-			//FIXME:
-			//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, (void *)"moving rotor", 13);
 		
 			for(int i = 0; i < ret; i++) 
 			{
@@ -236,14 +234,6 @@ _repeat:
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, CEventServer::INITID_NEUTRINO, (void *) " ", 2);
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SERVICENAME, CEventServer::INITID_NEUTRINO, (void *) " ", 2);
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY,CEventServer::INITID_NEUTRINO, &actual_freq, sizeof(actual_freq));
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, (void *)processed_transponders, sizeof(processed_transponders));
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, (void *)" ", 2);
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_SERVICENAME, (void *)" ", 2);
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, (void *)actual_freq, sizeof(actual_freq));
 
 		// by sat send pol to neutrino
 		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
@@ -251,8 +241,6 @@ _repeat:
 			actual_polarisation = ((tI->second.feparams.u.qpsk.symbol_rate/1000) << 16) | (tI->second.feparams.u.qpsk.fec_inner << 8) | (uint)tI->second.polarization;
 
 			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, CEventServer::INITID_NEUTRINO, &actual_polarisation,sizeof(actual_polarisation));
-			//FIXME:
-			//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, (void *)actual_polarisation, sizeof(actual_polarisation));
 		}
 		
 		// tune TP
@@ -324,8 +312,7 @@ _repeat:
 		if(scantransponders.size()) 
 		{
 			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_NEUTRINO, &found_transponders, sizeof(found_transponders));
-			//FIXME:
-			//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, (void *)found_transponders, sizeof(found_transponders));
+
 			goto _repeat;
 		}
 	}
@@ -423,10 +410,6 @@ void CScan::scan_provider(_xmlNodePtr search, t_satellite_position satellitePosi
 
 	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, CEventServer::INITID_NEUTRINO, &processed_transponders, sizeof(processed_transponders));
 	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, sit->second.name.c_str(), sit->second.name.size() + 1);
-	//FIXME:
-	//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, (void *)processed_transponders, sizeof(processed_transponders));
-	//FIXME:
-	//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, (void *)sit->second.name.c_str(), sit->second.name.size() + 1);
 	
 	tps = search->xmlChildrenNode;
 
@@ -443,8 +426,6 @@ void CScan::scan_provider(_xmlNodePtr search, t_satellite_position satellitePosi
 	}
 	
 	eventServer->sendEvent( NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_NEUTRINO, &found_transponders, sizeof(found_transponders));
-	//FIXME:
-	//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, (void *)found_transponders, sizeof(found_transponders));
 
 	// start scanning
 	get_sdts(satellitePosition, feindex);
@@ -491,8 +472,6 @@ void CScan::stop_scan(const bool success)
 	// notify client about end of scan
 	scan_runs = 0;
 	eventServer->sendEvent(success ? NeutrinoMessages::EVT_SCAN_COMPLETE : NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
-	//FIXME:
-	//g_RCInput->sendEvent(success? NeutrinoMessages::EVT_SCAN_COMPLETE : NeutrinoMessages::EVT_SCAN_FAILED);
 	
 	if (scanBouquetManager) 
 	{
@@ -505,6 +484,9 @@ void CScan::stop_scan(const bool success)
 void * start_scanthread(void *data)
 {
 	dprintf(DEBUG_NORMAL, "[scan] start_scanthread: starting... tid %ld\n", syscall(__NR_gettid));
+	
+	if (!data)
+		return 0;
 	
 	CZapit::commandStartScan StartScan = *(CZapit::commandStartScan *) data;
 	
@@ -650,8 +632,6 @@ void * start_scanthread(void *data)
 		CScan::getInstance()->stop_scan(true);
 
 		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED);
 	} 
 	else 
 	{
@@ -668,6 +648,9 @@ void * start_scanthread(void *data)
 void * scan_transponder(void * data)
 {
 	dprintf(DEBUG_NORMAL, "[scan.cpp] scan_transponder: starting... tid %ld\n", syscall(__NR_gettid));
+	
+	if (!data)
+		return 0;
 	
 	CZapit::commandScanTP ScanTP = *(CZapit::commandScanTP *) data;
 	TP_params * TP = &ScanTP.TP;
@@ -696,8 +679,6 @@ void * scan_transponder(void * data)
 	dprintf(DEBUG_INFO, "[scan] scan_transponder: scanning sat %s position %d fe(%d)\n", providerName, satellitePosition, ScanTP.feindex);
 	
 	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, providerName, strlen(providerName) + 1);
-	//FIXME:
-	//g_RCInput->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, (void *)providerName, strlen(providerName) + 1);
 
 	scan_mode = TP->scan_mode;
 	TP->feparams.inversion = INVERSION_AUTO;
@@ -747,8 +728,6 @@ void * scan_transponder(void * data)
 		CScan::getInstance()->stop_scan(true);
 
 		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED);
 	} 
 	else 
 	{

@@ -1821,7 +1821,10 @@ void CTestMenu::testCIcon()
 	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	g_RCInput->messageLoop();
+	testWidget = new CWidget();
+	testWidget->exec(NULL, "");
+	delete testWidget;
+	testWidget = NULL;
 
 	hide();
 }
@@ -1845,7 +1848,10 @@ void CTestMenu::testCImage()
 	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	g_RCInput->messageLoop();
+	testWidget = new CWidget();
+	testWidget->exec(NULL, "");
+	delete testWidget;
+	testWidget = NULL;
 	
 	hide();
 }
@@ -1956,7 +1962,11 @@ void CTestMenu::testCButtons()
 	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	g_RCInput->messageLoop();
+	testWidget = new CWidget();
+	testWidget->exec(NULL, "");
+	delete testWidget;
+	testWidget = NULL;
+	
 	hide();
 }
 
@@ -1994,7 +2004,10 @@ void CTestMenu::testCHButtons()
 	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	g_RCInput->messageLoop();
+	testWidget = new CWidget();
+	testWidget->exec(NULL, "");
+	delete testWidget;
+	testWidget = NULL;
 	
 	hide();
 }

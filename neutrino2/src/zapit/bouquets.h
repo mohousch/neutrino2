@@ -37,7 +37,7 @@ class CZapitBouquet
 		ZapitChannelList tvChannels;
 
 		//
-		inline CZapitBouquet(const std::string name) { Name = name; bHidden = false; bLocked = false; bUser = true; bWebTV = false;}
+		inline CZapitBouquet(const std::string name) { Name = name; bHidden = false; bLocked = false; bUser = false; bFav = false; bWebTV = false;}
 		
 		CZapitChannel * getChannelByChannelID(const t_channel_id channel_id, const unsigned char serviceType = ST_RESERVED);
 		void addService(CZapitChannel * newChannel);

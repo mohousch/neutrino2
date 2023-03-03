@@ -258,7 +258,7 @@ static const neutrino_msg_t RC_Messages = 0x90000000;
 static const neutrino_msg_t RC_WithData = 0xA0000000;
 
 #define NEUTRINO_UDS_NAME 		"/tmp/neutrino.sock"
-#define NEUTRINO_RCCONFIG_FILE	CONFIGDIR "/rc.conf"
+#define NEUTRINO_RCCONFIG_FILE		CONFIGDIR "/rc.conf"
 
 class CRCInput
 {
@@ -440,7 +440,7 @@ class CRCInput
 		void clearRCMsg();
 
 		//
-		int messageLoop(bool anyKeyCancels = false, int timeout= -1);
+		//int messageLoop(bool anyKeyCancels = false, int timeout= -1);
 		//void sendEvent(const neutrino_msg_t event, const void *data = NULL, const unsigned int datalen = 0, const bool prio = true);
 };
 

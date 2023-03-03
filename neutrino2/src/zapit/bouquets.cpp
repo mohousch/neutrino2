@@ -733,7 +733,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 		std::string group = "";
 		std::string epgid = "";
 		std::string alogo = "";
-		CZapitBouquet* pBouquet = NULL;
+		//CZapitBouquet* pBouquet = NULL;
 				
 		infile.open(filename.c_str(), std::ifstream::in);
 
@@ -793,8 +793,8 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 					alogo = ReadMarkerValue(strInfoLine, "tvg-logo=");
 				}
 				
-				pBouquet = addBouquetIfNotExist("WEBTV");
-				pBouquet->bWebTV = true;
+				//pBouquet = addBouquetIfNotExist("WEBTV");
+				//pBouquet->bWebTV = true;
 			}		
 			else if(strlen(cLine) > 0 && cLine[0] != '#')
 			{
@@ -806,7 +806,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 						description = "stream";
 						std::string bqName = "WEBTV";
 						
-						CZapitBouquet* gBouquet = pBouquet;
+						//CZapitBouquet* gBouquet = pBouquet;
 						
 						if (!group.empty())
 						{
@@ -814,8 +814,8 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 							bqName += " (";
 							bqName += name;
 							bqName += ")";
-							gBouquet = addBouquetIfNotExist(bqName);
-							gBouquet->bWebTV = true;	
+							newBouquet = addBouquetIfNotExist(bqName);
+							newBouquet->bWebTV = true;	
 						}
 						
 						//
@@ -858,7 +858,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 							}
 							
 							//
-							gBouquet->addService(chan);
+							newBouquet->addService(chan);
 
 							cnt++;
 						}
@@ -868,6 +868,12 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 		}
 
 		infile.close();
+	}
+	
+	for (unsigned int i = 0; i < Bouquets.size(); i++) 
+	{
+		if (Bouquets[i]->bWebTV && Bouquets[i]->tvChannels.empty())
+			deleteBouquet(Bouquets[i]);
 	}
 
 	dprintf(DEBUG_INFO, "CBouquetManager::loadWebTVBouquet: load %d WEBTV Channels (allchans:%d)\n", cnt, (int) allchans.size());

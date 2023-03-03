@@ -63,9 +63,6 @@ CImageInfo::CImageInfo()
 
 CImageInfo::~CImageInfo()
 { 
-#ifdef TESTING
-	delete widget;
-#endif
 }
 
 int CImageInfo::exec(CMenuTarget *parent, const std::string&)
@@ -97,7 +94,7 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 
 	frameBuffer->blit();	
 
-	g_RCInput->messageLoop();
+	widget->exec(NULL, "");
 
 	hide();
 

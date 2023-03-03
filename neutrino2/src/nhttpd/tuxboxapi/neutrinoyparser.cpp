@@ -227,6 +227,7 @@ std::string  CNeutrinoYParser::func_get_bouquets_as_dropdown(CyhookHandler *, st
 		if(!channels->empty() && (!g_bouquetManager->Bouquets[i]->bHidden || do_show_hidden == "true"))
 			yresult += string_printf("<option value=%u %s>%s</option>\n", i + 1, sel.c_str(),
 				(encodeString(std::string(g_bouquetManager->Bouquets[i]->bFav ? _("Favorites") :g_bouquetManager->Bouquets[i]->Name.c_str()))).c_str());
+				
 			//yresult += string_printf("<option value=%u %s>%s</option>\n", i + 1, sel.c_str(), (encodeString(std::string(g_bouquetManager->Bouquets[i]->Name.c_str()))).c_str());
 	}
 	return yresult;
@@ -246,7 +247,7 @@ std::string  CNeutrinoYParser::func_get_bouquets_as_templatelist(CyhookHandler *
 	{
 		if(!g_bouquetManager->Bouquets[i]->bHidden || do_show_hidden == "true") 
 		{
-			yresult += string_printf(ytemplate.c_str(), i + 1, g_bouquetManager->Bouquets[i]->bFav ? _("My Favorites") : g_bouquetManager->Bouquets[i]->Name.c_str());
+			yresult += string_printf(ytemplate.c_str(), i + 1, g_bouquetManager->Bouquets[i]->bFav ? _("Favorites") : g_bouquetManager->Bouquets[i]->Name.c_str());
 			yresult += "\r\n";
 		}
 	}

@@ -1042,7 +1042,7 @@ void CControlAPI::GetBouquetsCGI(CyhookHandler *hh)
 		ZapitChannelList * channels = mode == CZapit::MODE_RADIO ? &g_bouquetManager->Bouquets[i]->radioChannels : &g_bouquetManager->Bouquets[i]->tvChannels;
 		if(!channels->empty() && (!g_bouquetManager->Bouquets[i]->bHidden || show_hidden))
 		{
-			bouquet = std::string(g_bouquetManager->Bouquets[i]->bFav ? _("My Favorites") :g_bouquetManager->Bouquets[i]->Name.c_str());
+			bouquet = std::string(g_bouquetManager->Bouquets[i]->bFav ? _("Favorites") :g_bouquetManager->Bouquets[i]->Name.c_str());
 			if(encode)
 				bouquet = encodeString(bouquet); // encode (URLencode) the bouquetname
 
@@ -1275,7 +1275,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 			int mode = CZapit::getInstance()->getMode();
 
 			channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[bouquetnr]->radioChannels : g_bouquetManager->Bouquets[bouquetnr]->tvChannels;
-			std::string bouquet = std::string(g_bouquetManager->Bouquets[bouquetnr]->bFav ? _("My Favorites") :g_bouquetManager->Bouquets[bouquetnr]->Name.c_str());
+			std::string bouquet = std::string(g_bouquetManager->Bouquets[bouquetnr]->bFav ? _("Favorites") :g_bouquetManager->Bouquets[bouquetnr]->Name.c_str());
 			bouquet = encodeString(bouquet); // encode (URLencode) the bouquetname
 			hh->printf("\t<bouquet>\n\t\t<number>%d</number>\n\t\t<name><![CDATA[%s]]></name>\n\t", bouquetnr+1, bouquet.c_str());
 
@@ -1297,7 +1297,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 			for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
 			{
 				channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[i]->radioChannels : g_bouquetManager->Bouquets[i]->tvChannels;
-				std::string bouquet = std::string(g_bouquetManager->Bouquets[i]->bFav ? _("My Favorites") :g_bouquetManager->Bouquets[i]->Name.c_str());
+				std::string bouquet = std::string(g_bouquetManager->Bouquets[i]->bFav ? _("Favorites") :g_bouquetManager->Bouquets[i]->Name.c_str());
 				bouquet = encodeString(bouquet); // encode (URLencode) the bouquetname
 				hh->printf("\t<bouquet>\n\t\t<number>%d</number>\n\t\t<name><![CDATA[%s]]></name>\n\t", i+1, bouquet.c_str());
 
