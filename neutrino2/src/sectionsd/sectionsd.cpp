@@ -1675,11 +1675,7 @@ void CSectionsd::dumpStatus(void)
 //
 void CSectionsd::setServiceChanged(t_channel_id channel_id, bool requestEvent)
 {
-	t_channel_id *uniqueServiceKey;
-	//if (dataLength != sizeof(sectionsd::commandSetServiceChanged))
-	//	goto out;
-
-	uniqueServiceKey = /*&(((sectionsd::commandSetServiceChanged *)data)->channel_id)*/&channel_id;
+	t_channel_id *uniqueServiceKey = &channel_id;
 
 	dprintf(DEBUG_NORMAL, "CSectionsd::setServiceChanged: Service changed to:%llx\n", *uniqueServiceKey & 0xFFFFFFFFFFFFULL);
 
@@ -1753,10 +1749,13 @@ void CSectionsd::setServiceChanged(t_channel_id channel_id, bool requestEvent)
 
 		messaging_need_eit_version = false;
 		unlockMessaging();
+		
 		dmxCN.setCurrentService(messaging_current_servicekey & 0xffff);
 		dmxEIT.setCurrentService(messaging_current_servicekey & 0xffff);
 		dmxFSEIT.setCurrentService(messaging_current_servicekey & 0xffff);
 		dmxVIASAT.setCurrentService(messaging_current_servicekey & 0xffff);
+		
+		// add localtv here
 	}
 
 	return ;
