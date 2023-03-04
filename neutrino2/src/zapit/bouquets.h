@@ -114,12 +114,14 @@ class CBouquetManager
 		void clearAll();
 
 		CZapitChannel* findChannelByChannelID(const t_channel_id channel_id);
-		void sortBouquets(void);
 		CZapitChannel* findChannelByName(std::string name, const t_service_id sid);
 
 		// webtv
 		void parseWebTVBouquet(std::string filename);
 		void loadWebTVBouquets(const std::string& dirname);
+		
+		//
+		void sortBouquets(void);
 };
 
 /*

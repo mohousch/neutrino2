@@ -941,6 +941,12 @@ void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* st
 	{
 		epgBuffer.clear();
 		epgData.title.clear();
+		epgData.info1.clear();
+		epgData.info2.clear();
+		epgData.contentClassification.clear();
+		epgData.userClassification.clear();
+		
+		epgBuffer.clear();
 	}
 
 	bool res;

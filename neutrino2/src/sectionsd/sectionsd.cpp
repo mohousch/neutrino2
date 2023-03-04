@@ -98,7 +98,9 @@
 #include <zapit/bouquets.h>
 #include <zapit/frontend_c.h>
 
-extern tallchans allchans;	// defined in zapit.cpp.
+
+extern CBouquetManager * g_bouquetManager;	// defined in der zapit.cpp
+//extern tallchans allchans;	// defined in zapit.cpp.
 int op_increase(int i) { return ++i; }
 
 // 60 Minuten Zyklus...
@@ -2106,8 +2108,8 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 	dprintf(DEBUG_INFO, "[sectionsd] sectionsd:insertEventsfromXMLTV: chid:%s\n", chid);
 	
 	//
-	CZapitChannel *channel = NULL;
-	
+	CZapitChannel *channel = g_bouquetManager->findChannelByChannelID(chid);
+	/*
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
 	{
 		if(it->second.getChannelID() == chid)
@@ -2115,6 +2117,7 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 			channel = &it->second;
 		}
 	}
+	*/
 	
 	//
 	std::string url;
@@ -2250,6 +2253,7 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 	t_transport_stream_id _tsid = GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid);
 	t_service_id _sid = GET_SERVICE_ID_FROM_CHANNEL_ID(chid);
 	
+	/*
 	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
 	{
 		if(it->second.getChannelID() == chid)
@@ -2258,8 +2262,14 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 			satellitePosition = it->second.getSatellitePosition();
 		}
 	}
+	*/
+	chan = g_bouquetManager->findChannelByChannelID(chid);
 	
-	if (chan) epgid = chan->getEPGID();
+	if (chan)
+	{
+		satellitePosition = chan->getSatellitePosition();
+		epgid = chan->getEPGID();
+	}
 	
 	dprintf(DEBUG_NORMAL, "CSectionsd:insertEventsfromLocalTV:epgid: %llx\n", epgid);
 	
