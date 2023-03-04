@@ -233,8 +233,8 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		//
 		void readEPG();
 		void saveEpg();
-		void readXMLTV();
 
+		//
 		int run(int argc, char **argv);
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
 

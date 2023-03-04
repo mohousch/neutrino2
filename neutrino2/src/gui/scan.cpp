@@ -268,7 +268,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		{
 			CZapit::getInstance()->getFE(feindex)->getDelSys(scanSettings->TP_fec, dvbs_get_modulation((fe_code_rate_t)scanSettings->TP_fec), f, s, m);
 
-			sprintf(buffer, "%u %c %d %s %s %s", atoi(scanSettings->TP_freq)/1000, scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(/*get_set.*/scanSettings->TP_rate)/1000, f, s, m);
+			sprintf(buffer, "%u %c %d %s %s %s", atoi(scanSettings->TP_freq)/1000, scanSettings->TP_pol == 0 ? 'H' : 'V', atoi(scanSettings->TP_rate)/1000, f, s, m);
 		} 
 		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) 
 		{

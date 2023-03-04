@@ -130,7 +130,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			{
 				g_InfoViewer->chanready = 0;
 				CZapit::getInstance()->zapTo_serviceID_NOWAIT(current_channel_id );
-				CSectionsd::getInstance()->setServiceChanged(current_channel_id & 0xFFFFFFFFFFFFULL, false);
+				CSectionsd::getInstance()->setServiceChanged(current_channel_id, false);
 
 				zap_completion_timeout = getcurrenttime() + 2 * (long long) 1000000;
 
@@ -191,7 +191,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				director_mode = 0;
 				needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
 
-				CSectionsd::getInstance()->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
+				CSectionsd::getInstance()->setServiceChanged( current_channel_id, true );
 				CNeutrinoApp::getInstance()->channelList->adjustToChannelID(current_channel_id);
 				
 				// update info.				
@@ -307,7 +307,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		if ((*(t_channel_id *)data) == ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) ? current_channel_id : current_sub_channel_id))
 		{
 			// tell sectionsd to start epg on the zapped channel
-			CSectionsd::getInstance()->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, false );
+			CSectionsd::getInstance()->setServiceChanged( current_channel_id, false );
 		
 			// show servicename in VFD
 			// don't show service name in standby mode
@@ -378,11 +378,11 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				getNVODs();
 				
 				if (subChannels.empty())
-					CSectionsd::getInstance()->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
+					CSectionsd::getInstance()->setServiceChanged( current_channel_id, true );
 			}
 			else
 				// EVENT anfordern!
-				CSectionsd::getInstance()->setServiceChanged( current_channel_id & 0xFFFFFFFFFFFFULL, true );
+				CSectionsd::getInstance()->setServiceChanged( current_channel_id, true );
 
 		}
 		
@@ -761,12 +761,6 @@ void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::s
 
 		// zap
 		CZapit::getInstance()->zapTo_serviceID_NOWAIT(channel_id);
-
-		// getEventsFromLocalTV
-		if(g_settings.epg_enable_localtv_epg)
-		{
-			getEventsFromLocalTV(channel_id);
-		}
 		
 		abort_zapit = 0;
 
@@ -826,82 +820,5 @@ void CRemoteControl::tvMode()
 	
 	CVFD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
 	CVFD::getInstance()->ShowIcon(VFD_ICON_TV, true);
-}
-
-// online epg get events
-void CRemoteControl::getEventsFromLocalTV(t_channel_id chid)
-{
-	if (!IS_WEBTV(chid))
-		return;
-		
-	dprintf(DEBUG_NORMAL, "CRemoteControl::getEventsFromLocalTV: channelID: %llx\n", chid);
-	
-	//
-	t_channel_id epgid = 0;
-	CZapitChannel *chan = NULL;
-	t_satellite_position  satellitePosition = 0;
-	
-	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
-	{
-		if(it->second.getChannelID() == chid)
-		{
-			chan = &it->second;
-			satellitePosition = it->second.getSatellitePosition();
-		}
-	}
-	
-	if (chan) epgid = chan->getEPGID();
-	
-	dprintf(DEBUG_NORMAL, "CRemoteControl::getEventsFromLocalTV: epgid: %llx\n", epgid);
-	
-	// localtv
-	std::string evUrl;
-
-	if(g_settings.epg_serverbox_gui == SNeutrinoSettings::SATIP_SERVERBOX_GUI_ENIGMA2)
-	{
-		evUrl = "http://";
-		evUrl += g_settings.epg_serverbox_ip;
-		evUrl += "/web/epgservice?sRef=1:0:"; 
-
-		evUrl += to_hexstring(1);
-		evUrl += ":";
-		evUrl += to_hexstring(GET_SERVICE_ID_FROM_CHANNEL_ID(epgid)); //sid
-		evUrl += ":";
-		evUrl += to_hexstring(GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(epgid)); //tsid
-		evUrl += ":";
-		evUrl += to_hexstring(GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(epgid)); //onid
-		evUrl += ":";
-
-		if(g_settings.epg_serverbox_type == DVB_C)
-		{
-			evUrl += "FFFF"; // namenspace for cable
-		}
-		else if (g_settings.epg_serverbox_type == DVB_T)
-		{
-			evUrl += "EEEE"; // namenspace for terrestrial
-		}
-		else if (g_settings.epg_serverbox_type == DVB_S)
-		{
-			// namenspace for sat
-			evUrl += to_hexstring(satellitePosition); //satpos
-		}
-
-		evUrl += "0000";
-		evUrl += ":";
-		evUrl += "0:0:0:";
-	}
-	else if( (g_settings.epg_serverbox_gui == SNeutrinoSettings::SATIP_SERVERBOX_GUI_NMP) || (g_settings.epg_serverbox_gui == SNeutrinoSettings::SATIP_SERVERBOX_GUI_NHD2) )
-	{
-		evUrl = "http://";
-		evUrl += g_settings.epg_serverbox_ip;
-		evUrl += "/control/epg?channelid=";
-
-         	evUrl += to_hexstring(epgid);
-
-		evUrl += "&xml=true&details=true";
-	}
-
-	//
-	CSectionsd::getInstance()->insertEventsfromLocalTV(evUrl, GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(chid), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid), GET_SERVICE_ID_FROM_CHANNEL_ID(chid));
 }
 

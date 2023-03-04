@@ -371,8 +371,19 @@ struct SNeutrinoSettings
 	std::string epg_extendedcache;
 	std::string epg_dir;
 	//
-	std::vector<std::string> xmltv;
+	//std::vector<std::string> xmltv;
 	int epg_xmltv;
+	// localtv
+	enum {
+		SATIP_SERVERBOX_GUI_NHD2,
+		SATIP_SERVERBOX_GUI_NMP,
+		SATIP_SERVERBOX_GUI_ENIGMA2
+	};
+	
+	int epg_enable_localtv_epg;
+	std::string epg_serverbox_ip;
+	int epg_serverbox_type;
+	int epg_serverbox_gui;
 
 	//filebrowser
 	int filesystem_is_utf8;
@@ -438,18 +449,6 @@ struct SNeutrinoSettings
 	int lcd_setting_dim_brightness;
 	int lcd_ledcolor;
 	// END VFD
-
-	// SATIP
-	enum {
-		SATIP_SERVERBOX_GUI_NHD2,
-		SATIP_SERVERBOX_GUI_NMP,
-		SATIP_SERVERBOX_GUI_ENIGMA2
-	};
-	
-	int epg_enable_localtv_epg;
-	std::string epg_serverbox_ip;
-	int epg_serverbox_type;
-	int epg_serverbox_gui;
 
 	// tmdb
 	std::string tmdbkey;

@@ -112,9 +112,6 @@ class CRemoteControl
 		//
 		inline const std::string & getCurrentChannelName(void) const { return current_channel_name; };
 		inline int getCurrentChannelNumber(void) { return current_channel_number; };
-
-		//
-		void getEventsFromLocalTV(t_channel_id chid);
 };
 
 #endif

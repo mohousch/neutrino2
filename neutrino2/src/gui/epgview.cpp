@@ -157,14 +157,16 @@ CEpgData::CEpgData()
 	cFollowScreeningWindow = NULL;
 	audioIcon = NULL;
 	
-	//
-	initFrames();
+	epg_done = -1;
 	
 	//
 	epgBuffer.clear();
 	evtlist.clear();
-
+	
 	//
+	initFrames();
+
+	/*
 	widget = CNeutrinoApp::getInstance()->getWidget("epgview");
 	
 	if (widget)
@@ -210,8 +212,6 @@ CEpgData::CEpgData()
 		timeScaleWidth = TIMESCALE_W;
 		
 	timescale = new CProgressBar(cFollowScreeningBox.iX + (cFollowScreeningBox.iWidth - timeScaleWidth)/2, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - timeScaleHeight)/2, timeScaleWidth, timeScaleHeight);
-	
-	epg_done = -1;
 
 	//
 	if (textBox) 
@@ -220,6 +220,7 @@ CEpgData::CEpgData()
 		textBox->setMode(SCROLL);
 		textBox->enableSaveScreen();
 	}
+	*/
 }
 
 CEpgData::~CEpgData()
@@ -613,6 +614,62 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 
 		FollowScreenings(channel_id, epgData.title);
 	}
+	
+	////
+	widget = CNeutrinoApp::getInstance()->getWidget("epgview");
+	
+	if (widget)
+	{
+		textBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
+		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+		footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
+		cFollowScreeningWindow = (CWindow*)widget->getWidgetItem(WIDGETITEM_WINDOW, "screening");
+	}
+	else
+	{
+		textBox = new CTextBox(&cTextBox);
+		headers = new CHeaders(&cHeadBox);
+		footers = new CFooters(&cFootBox);
+		cFollowScreeningWindow = new CWindow(&cFollowScreeningBox);
+		
+		// head
+		headers->enablePaintDate();
+		headers->setFormat("%d.%m.%Y %H:%M:%S");
+		
+		// foot
+		
+		widget = new CWidget(&cFrameBox);
+		widget->name = "epgview";
+		
+		widget->addWidgetItem(textBox);
+		widget->addWidgetItem(headers);
+		widget->addWidgetItem(footers);
+		widget->addWidgetItem(cFollowScreeningWindow);
+	}
+	
+	//
+	if (cFollowScreeningWindow)
+		cFollowScreeningBox = cFollowScreeningWindow->getWindowsPos();
+		
+	int timeScaleWidth = TIMESCALE_W;
+	int timeScaleHeight = TIMESCALE_H;
+	
+	// recalculate timeScale width
+	timeScaleWidth = cFollowScreeningBox.iWidth - 20 - 4*g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">") - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("0000000000000") - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("0000000000");
+	
+	if (timeScaleWidth > TIMESCALE_W)
+		timeScaleWidth = TIMESCALE_W;
+		
+	timescale = new CProgressBar(cFollowScreeningBox.iX + (cFollowScreeningBox.iWidth - timeScaleWidth)/2, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - timeScaleHeight)/2, timeScaleWidth, timeScaleHeight);
+
+	//
+	if (textBox) 
+	{
+		textBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
+		textBox->setMode(SCROLL);
+		textBox->enableSaveScreen();
+	}
+	////
 
 	// head
 	showHead(channel_id);

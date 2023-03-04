@@ -65,17 +65,6 @@ typedef std::vector<CChannelEvent> CChannelEventList;
 class CSectionsd
 {
 	public:
-		/*
-		enum events
-		{
-			EVT_TIMESET,
-			EVT_GOT_CN_EPG,
-			//EVT_SERVICES_UPDATE,
-			//EVT_BOUQUETS_UPDATE,
-			EVT_WRITE_SI_FINISHED
-		};
-		*/
-		
 		enum SIlanguageMode_t 
 		{
 			ALL,
@@ -161,9 +150,33 @@ class CSectionsd
 		} epg_config;
 		
 	private:
-		//static OpenThreads::Mutex mutex_sectionsd;
+		//
+		pthread_t threadTOT, threadEIT, threadCN, threadFSEIT, threadVIASATEIT;
+		static void *timeThread(void *);
+		static void *eitThread(void *);
+		static void *cnThread(void *);
+		static void *fseitThread(void *);
+		static void *viasateitThread(void *);
+		//
+		static void *insertEventsfromFile(void *);
+		static void *insertEventsfromXMLTV(void* data);
+		static void *insertEventsfromLocalTV(void *data);
 		
 		//
+		bool checkEPGFilter(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid);
+		bool checkBlacklist(t_channel_id channel_id);
+		bool checkNoDVBTimelist(t_channel_id channel_id);
+		void addEPGFilter(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid);
+		void addBlacklist(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid);
+		void addNoDVBTimelist(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid);
+		bool deleteEvent(const event_id_t uniqueKey);
+		void addEvent(const SIevent &evt, const time_t zeit, bool cn = false);
+		void addNVODevent(const SIevent &evt);
+		void removeOldEvents(const long seconds);
+		const SIevent& findSIeventForEventUniqueKey(const event_id_t eventUniqueKey);
+		const SIevent& findActualSIeventForServiceUniqueKey(const t_channel_id serviceUniqueKey, SItime& zeit, long plusminus = 0, unsigned *flag = 0);
+		const SIevent& findNextSIeventForServiceUniqueKey(const t_channel_id serviceUniqueKey, SItime& zeit);
+		const SIevent &findNextSIevent(const event_id_t uniqueKey, SItime &zeit);
 		void findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, SIevent &prev, SItime &prev_zeit, SIevent &next, SItime &next_zeit);
 		void dumpAllServices(void);
 		void sendAllEvents(int connfd, t_channel_id serviceUniqueKey, bool oldFormat = true, char search = 0, std::string search_text = "");
@@ -213,11 +226,17 @@ class CSectionsd
 		void freeMemory();
 		void readSIfromXML(const char *epgxmlname);
 		void writeSI2XML(const char *epgxmlname);
-		void readSIfromXMLTV(const char *url);
-		void insertEventsfromLocalTV(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
+		
+		//
+		//void readSIfromXMLTV(const char *url);
+		void readSIfromXMLTV(const t_channel_id chid);
+		void readSIfromLocalTV(const t_channel_id chid);
+		//
 		void setConfig(const CSectionsd::epg_config config);
 		void deleteSIexceptEPG();
 		void setLanguages(const std::vector<std::string>& newLanguages);
+		
+		//void insertEventsfromLocalTV(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
 };
 
 class CEPGData

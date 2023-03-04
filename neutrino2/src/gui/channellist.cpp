@@ -653,7 +653,6 @@ int CChannelList::show(bool zap, bool customMode)
 	winBottomBox.iY = window->getWindowsPos().iY + window->getWindowsPos().iHeight/2 + 2;
 	winBottomBox.iWidth = window->getWindowsPos().iWidth - 4;
 	winBottomBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
-	////
 	
 	// 
 	paint();

@@ -2757,7 +2757,7 @@ void CZapit::getZapitConfig(Zapit_config *Cfg)
 sdt_tp_t sdt_tp;
 void * sdt_thread(void */*arg*/)
 {
-	dprintf(DEBUG_INFO, "[zapit] sdt_thread: starting... tid %ld\n", syscall(__NR_gettid));
+	dprintf(DEBUG_NORMAL, "[zapit] sdt_thread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	time_t tstart, tcur, wtime = 0;
 	int ret;

@@ -837,7 +837,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	}
 	
 	// xml
-	g_settings.xmltv.clear();
+	//g_settings.xmltv.clear();
 	g_settings.epg_xmltv		= configfile.getBool("epg_xmltv", true);
 	//
 	
@@ -1284,7 +1284,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	}
 	
 	//
-	g_settings.xmltv.clear();
+	//g_settings.xmltv.clear();
 	configfile.setBool("epg_xmltv", g_settings.epg_xmltv);
 
 	//filebrowser
@@ -2236,10 +2236,6 @@ void CNeutrinoApp::InitZapper()
 	// read saved epg
 	if (g_settings.epg_save)
 		readEPG();
-		
-	// read xmltv epg
-	if (g_settings.epg_xmltv)
-		readXMLTV();
 
 	// first channel
 	firstChannel();
@@ -2281,14 +2277,14 @@ void CNeutrinoApp::InitZapper()
 		CVFD::getInstance()->showServicename(channelList->getActiveChannelName(), true, channelList->getActiveChannelNumber());
 		
 		// online epg
-		if(g_settings.epg_enable_localtv_epg)
-		{
-			g_RemoteControl->getEventsFromLocalTV(live_channel_id);
-		}	
+		//if(g_settings.epg_enable_localtv_epg)
+		//{
+		//	g_RemoteControl->getEventsFromLocalTV(live_channel_id);
+		//}	
 
 		// start epg scanning
 		CSectionsd::getInstance()->pauseScanning(false);
-		CSectionsd::getInstance()->setServiceChanged(live_channel_id&0xFFFFFFFFFFFFULL, true );
+		CSectionsd::getInstance()->setServiceChanged(live_channel_id/*&0xFFFFFFFFFFFFULL*/, true );
 		
 		// process apids
 		CZapit::getInstance()->getPIDS(g_RemoteControl->current_PIDs);
@@ -4292,18 +4288,6 @@ void CNeutrinoApp::saveEpg()
 	}
 	
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::saveEpg: Saving EPG to %s finished\n", g_settings.epg_dir.c_str());
-}
-
-//
-void CNeutrinoApp::readXMLTV()
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::readXMLTV:\n");
-	
-	// fromXMLTV
-	for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
-	{
-		CSectionsd::getInstance()->readSIfromXMLTV(g_settings.xmltv[i].c_str());
-	}
 }
 
 // mute

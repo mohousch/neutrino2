@@ -823,12 +823,13 @@ bool COnlineEPGNotifier::changeNotify(const std::string&, void *)
 		item3->setActive(g_settings.epg_enable_localtv_epg);
 	}
 	
+	if (g_settings.epg_enable_localtv_epg)
+		CSectionsd::getInstance()->readSIfromLocalTV(live_channel_id);
+	
         return true;
 }
 
 // epg language select notifier
-void sectionsd_set_languages(const std::vector<std::string>& newLanguages);
-
 bool CEPGlangSelectNotifier::changeNotify(const std::string&, void *)
 {
 	std::vector<std::string> v_languages;
@@ -881,7 +882,7 @@ bool CXMLTVConfigNotifier::changeNotify(const std::string&, void *)
 	dprintf(DEBUG_NORMAL, "CXMLTVConfigNotifier::changeNotify\n");
 
         if (g_settings.epg_xmltv)
-		CNeutrinoApp::getInstance()->readXMLTV();
+		CSectionsd::getInstance()->readSIfromXMLTV(live_channel_id);
 	
         return true;
 }

@@ -133,7 +133,7 @@ CLCDDisplay::CLCDDisplay()
 	
 	if (fd < 0)
 	{
-		printf("couldn't open LCD - load lcd.ko!\n");
+		printf("CLCDDisplay::CLCDDisplay: couldn't open LCD - load lcd.ko!\n");
 		return;
 	}
 	else
@@ -210,7 +210,7 @@ int CLCDDisplay::setLCDContrast(int contrast)
 
 int CLCDDisplay::setLCDBrightness(int brightness)
 {
-	printf("setLCDBrightness %d\n", brightness);
+	printf("CLCDDisplay::setLCDBrightness: %d\n", brightness);
 	
 	FILE *f = fopen("/proc/stb/lcd/oled_brightness", "w");
 	if (!f)
