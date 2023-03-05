@@ -362,7 +362,7 @@ CRCInput::CRCInput() : configfile('\t')
 {
 	timerid = 1;
 
-	// pipe for internal event-queue
+	// pipe_high
 	if (pipe(fd_pipe_high_priority) < 0)
 	{
 		perror("fd_pipe_high_priority");
@@ -372,6 +372,7 @@ CRCInput::CRCInput() : configfile('\t')
 	fcntl(fd_pipe_high_priority[0], F_SETFL, O_NONBLOCK );
 	fcntl(fd_pipe_high_priority[1], F_SETFL, O_NONBLOCK );
 
+	// pipe_low
 	if (pipe(fd_pipe_low_priority) < 0)
 	{
 		perror("fd_pipe_low_priority");
@@ -380,6 +381,18 @@ CRCInput::CRCInput() : configfile('\t')
 
 	fcntl(fd_pipe_low_priority[0], F_SETFL, O_NONBLOCK );
 	fcntl(fd_pipe_low_priority[1], F_SETFL, O_NONBLOCK );
+	
+	// pipe_event
+	/*
+	if (pipe(fd_pipe_event) < 0)
+	{
+		perror("fd_pipe_event");
+		exit(-1);
+	}
+
+	fcntl(fd_pipe_event[0], F_SETFL, O_NONBLOCK );
+	fcntl(fd_pipe_event[1], F_SETFL, O_NONBLOCK );
+	*/
 
 	// open event-library
 	fd_event = 0;
@@ -508,24 +521,40 @@ void CRCInput::calculateMaxFd()
 	
 	if(fd_pipe_low_priority[0] > fd_max)
 		fd_max = fd_pipe_low_priority[0];
+		
+	/*
+	if(fd_pipe_event[0] > fd_max)
+		fd_max = fd_pipe_event[0];
+	*/
 }
 
 CRCInput::~CRCInput()
 {
 	close();
 
+	//
 	if(fd_pipe_high_priority[0])
 		::close(fd_pipe_high_priority[0]);
 	
 	if(fd_pipe_high_priority[1])
 		::close(fd_pipe_high_priority[1]);
 
+	//
 	if(fd_pipe_low_priority[0])
 		::close(fd_pipe_low_priority[0]);
 	
 	if(fd_pipe_low_priority[1])
 		::close(fd_pipe_low_priority[1]);
 
+	/*
+	if(fd_pipe_event[0])
+		::close(fd_pipe_event[0]);
+	
+	if(fd_pipe_event[1])
+		::close(fd_pipe_event[1]);
+	*/
+		
+	//
 	if(fd_event)
 		::close(fd_event);
 }
@@ -540,57 +569,6 @@ void CRCInput::restartInput()
 	close();
 	open();
 }
-
-/*
-int CRCInput::messageLoop(bool anyKeyCancels, int timeout)
-{
-	neutrino_msg_t      msg;
-	neutrino_msg_data_t data;
-
-	int res = RETURN_REPAINT;
-
-	bool doLoop = true;
-
-	if ( timeout == -1 )
-		timeout = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
-
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd( timeout == 0 ? 0xFFFF : timeout);
-
-	while (doLoop)
-	{
-		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
-
-		if ( ( msg == RC_timeout ) || ( msg == RC_home ) || ( msg == RC_ok ) )
-		{
-			doLoop = false;
-		}
-		else
-		{
-			int mr = CNeutrinoApp::getInstance()->handleMsg( msg, data );
-
-			if ( mr & messages_return::cancel_all )
-			{
-				res = RETURN_EXIT_ALL;
-				doLoop = false;
-			}
-			else if ( mr & messages_return::unhandled )
-			{
-				if ( (msg <= RC_MaxRC) && (data == 0) )                     // <- button pressed
-				{
-					if ( anyKeyCancels )
-						doLoop = false;
-					else
-						timeoutEnd = CRCInput::calcTimeoutEnd( timeout );
-				}
-			}
-		}
-
-		CFrameBuffer::getInstance()->blit();
-	}
-
-	return res;
-}
-*/
 
 int CRCInput::addTimer(uint64_t Interval, bool oneshot, bool correct_time )
 {
@@ -820,6 +798,8 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		FD_SET(fd_event, &rfds);
 		FD_SET(fd_pipe_high_priority[0], &rfds);
 		FD_SET(fd_pipe_low_priority[0], &rfds);
+		//
+		//FD_SET(fd_pipe_event[0], &rfds);
 
 		int status = select(fd_max + 1, &rfds, NULL, NULL, &tvselect);
 
@@ -977,6 +957,25 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			}
 		}
 #endif /* KEYBOARD_INSTEAD_OF_REMOTE_CONTROL */
+
+		/*/
+		if(FD_ISSET(fd_pipe_event[0], &rfds))
+		{
+			struct pevent buf;
+
+			read(fd_pipe_event[0], &buf, sizeof(buf));
+			
+			unsigned char* p;
+			p = new unsigned char[ sizeof(buf) + 1];
+
+			*msg  = buf.msg;
+			*data = (const neutrino_msg_data_t) p;
+
+			dprintf(DEBUG_NORMAL, "\033[1;32mCRCInput::getMsg_us:got event from event pipe msg=(0x%x) data:(0x%x) <\033[0m\n", *msg, *data );
+
+			return;
+		}
+		*/
 
 		// fd_eventclient
 		if(FD_ISSET(fd_event, &rfds)) 
@@ -1889,20 +1888,17 @@ int CRCInput::translate(unsigned int code, int num)
 }
 
 /*
-void CRCInput::sendEvent(const neutrino_msg_t event, const void *data, const unsigned int datalen, const bool prio)
+void CRCInput::sendEvent(const neutrino_msg_t event, void *data, const unsigned int datalen)
 {
 	dprintf(DEBUG_NORMAL, "CRCInput::sendEvent >\n");
+		
+	//
+	struct pevent buf;
 	
-	if (datalen != 0)
-	{
-		unsigned char *p = new unsigned char[datalen];
-		memcpy(p, (unsigned char *)&data, datalen);
+	buf.msg  = event;
+	buf.data = data;
 
-		//
-		postMsg(event, (const neutrino_msg_data_t) p, prio);
-	}
-	else
-		postMsg(event, 0, prio);
+	write(fd_pipe_event[1], &buf, sizeof(buf));
 }
 */
 

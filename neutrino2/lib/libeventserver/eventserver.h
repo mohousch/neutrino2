@@ -37,10 +37,6 @@ class CEventServer
 	public:
 		enum initiators
 		{
-			//INITID_SECTIONSD,
-			//INITID_ZAPIT,
-			INITID_TIMERD,
-			//INITID_HTTPD,
 			INITID_NEUTRINO,
 			INITID_GENERIC_INPUT_EVENT_PROVIDER
 		};

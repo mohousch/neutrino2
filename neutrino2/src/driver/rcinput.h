@@ -267,7 +267,16 @@ class CRCInput
 		{
 			neutrino_msg_t msg;
 			neutrino_msg_data_t data;
+			void *buf;
 		};
+		
+		/*
+		struct pevent
+		{
+			neutrino_msg_t msg;
+			void *data;
+		};
+		*/
 
 		struct timer
 		{
@@ -282,6 +291,7 @@ class CRCInput
 
 		int fd_pipe_high_priority[2];
 		int fd_pipe_low_priority[2];
+		//int fd_pipe_event[2];
 
 #define NUMBER_OF_EVENT_DEVICES 4
 
@@ -440,8 +450,7 @@ class CRCInput
 		void clearRCMsg();
 
 		//
-		//int messageLoop(bool anyKeyCancels = false, int timeout= -1);
-		//void sendEvent(const neutrino_msg_t event, const void *data = NULL, const unsigned int datalen = 0, const bool prio = true);
+		//void sendEvent(const neutrino_msg_t event, void *data = NULL, const unsigned int datalen = 0);
 };
 
 // Converts input of numeric keys to SMS style char input

@@ -120,27 +120,7 @@ class CTimerd
 		};
 		
 		typedef std::vector<responseGetTimer> TimerList;
-		
-		struct commandRemind
-		{
-			char message[REMINDER_MESSAGE_MAXLEN];
-		};
-		
-		struct commandExecPlugin
-		{
-			char name[EXEC_PLUGIN_NAME_MAXLEN];
-		};
 
-		struct commandRecordDir
-		{
-			char recDir[RECORD_DIR_MAXLEN];
-		};
-
-		struct commandSetStandby
-		{
-			bool standby_on;
-		};
-		
 	private:
 		CTimerd(){};
 		
@@ -194,8 +174,8 @@ class CTimerd
 		bool isTimerdAvailable();
 
 		//
-		void Start();
-		void Stop();
+		void Start(void);
+		void Stop(void);
 };
 
 #endif

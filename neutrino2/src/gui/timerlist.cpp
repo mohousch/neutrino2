@@ -365,17 +365,11 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 				timerlist[selected].apids = (timer_apids_std * TIMERD_APIDS_STD) | (timer_apids_ac3 * TIMERD_APIDS_AC3) |
 					(timer_apids_alt * TIMERD_APIDS_ALT);
 			CTimerd::getInstance()->modifyTimerAPid(timerlist[selected].eventID,timerlist[selected].apids);
-			CTimerd::getInstance()->modifyRecordTimerEvent(timerlist[selected].eventID, timerlist[selected].announceTime,
-						      timerlist[selected].alarmTime,
-						      timerlist[selected].stopTime, timerlist[selected].eventRepeat,
-						      timerlist[selected].repeatCount,timerlist[selected].recordingDir);
+			CTimerd::getInstance()->modifyRecordTimerEvent(timerlist[selected].eventID, timerlist[selected].announceTime, timerlist[selected].alarmTime, timerlist[selected].stopTime, timerlist[selected].eventRepeat, timerlist[selected].repeatCount,timerlist[selected].recordingDir);
 		} 
 		else
 		{
-			CTimerd::getInstance()->modifyTimerEvent(timerlist[selected].eventID, timerlist[selected].announceTime,
-						timerlist[selected].alarmTime,
-						timerlist[selected].stopTime, timerlist[selected].eventRepeat,
-						timerlist[selected].repeatCount);
+			CTimerd::getInstance()->modifyTimerEvent(timerlist[selected].eventID, timerlist[selected].announceTime, timerlist[selected].alarmTime, timerlist[selected].stopTime, timerlist[selected].eventRepeat, timerlist[selected].repeatCount);
 		}
 		
 		return RETURN_EXIT;
@@ -996,6 +990,7 @@ int CTimerList::modifyTimer()
 	CTimerListRepeatNotifier notifier((int *)&timer->eventRepeat, m4, m5);
 	CMenuOptionChooser * m3 = new CMenuOptionChooser(_("Repeat"), (int *)&timer->eventRepeat, TIMERLIST_REPEAT_OPTIONS, TIMERLIST_REPEAT_OPTION_COUNT, true, &notifier);
 
+	// recdir
 	//printf("TIMER: rec dir %s len %s\n", timer->recordingDir, strlen(timer->recordingDir));
 
 	if(!strlen(timer->recordingDir))
