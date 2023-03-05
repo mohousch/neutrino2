@@ -181,9 +181,6 @@ class CSectionsd
 		const SIevent& findNextSIeventForServiceUniqueKey(const t_channel_id serviceUniqueKey, SItime& zeit);
 		const SIevent &findNextSIevent(const event_id_t uniqueKey, SItime &zeit);
 		void findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, SIevent &prev, SItime &prev_zeit, SIevent &next, SItime &next_zeit);
-		void dumpAllServices(void);
-		void sendAllEvents(int connfd, t_channel_id serviceUniqueKey, bool oldFormat = true, char search = 0, std::string search_text = "");
-		void dumpStatus(void);
 		bool channel_in_requested_list(t_channel_id * clist, t_channel_id chid, int len);
 		void write_epg_xml_header(FILE * fd, const t_original_network_id onid, const t_transport_stream_id tsid, const t_service_id sid);
 		void write_index_xml_header(FILE * fd);
@@ -240,7 +237,8 @@ class CSectionsd
 		void deleteSIexceptEPG();
 		void setLanguages(const std::vector<std::string>& newLanguages);
 		
-		//void insertEventsfromLocalTV(std::string& url, t_original_network_id _onid, t_transport_stream_id _tsid, t_service_id _sid);
+		//
+		void dumpStatus(void);
 };
 
 class CEPGData

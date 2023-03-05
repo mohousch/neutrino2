@@ -424,6 +424,7 @@ ChannelNoDVBTimelist *CurrentNoDVBTime = NULL;
 bool CSectionsd::checkEPGFilter(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid)
 {
 	EPGFilter *filterptr = CurrentEPGFilter;
+	
 	while (filterptr)
 	{
 		if (((filterptr->onid == onid) || (filterptr->onid == 0)) &&
@@ -439,6 +440,7 @@ bool CSectionsd::checkEPGFilter(t_original_network_id onid, t_transport_stream_i
 bool CSectionsd::checkBlacklist(t_channel_id channel_id)
 {
 	ChannelBlacklist *blptr = CurrentBlacklist;
+	
 	while (blptr)
 	{
 		if (blptr->chan == (channel_id & blptr->mask))
@@ -452,6 +454,7 @@ bool CSectionsd::checkBlacklist(t_channel_id channel_id)
 bool CSectionsd::checkNoDVBTimelist(t_channel_id channel_id)
 {
 	ChannelNoDVBTimelist *blptr = CurrentNoDVBTime;
+	
 	while (blptr)
 	{
 		if (blptr->chan == (channel_id & blptr->mask))
@@ -530,6 +533,7 @@ bool CSectionsd::deleteEvent(const event_id_t uniqueKey)
 		mySIeventsNVODorderUniqueKey.erase(uniqueKey);
 
 		//printf("Deleting: %04x\n", (int) uniqueKey);
+		
 		unlockEvents();
 		return true;
 	}
@@ -588,9 +592,12 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 				{
 					if (myCurrentEvent)
 						delete myCurrentEvent;
+						
 					myCurrentEvent = new SIevent(evt);
+					
 					writeLockMessaging();
 					messaging_got_CN |= 0x01;
+					
 					if (myNextEvent && (*myNextEvent).uniqueKey() == evt.uniqueKey()) 
 					{
 						dprintf(DEBUG_DEBUG, "[sectionsd] addevent-cn: removing next-event\n");
@@ -599,6 +606,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 						myNextEvent = NULL;
 						messaging_got_CN &= 0x01;
 					}
+					
 					unlockMessaging();
 					dprintf(DEBUG_DEBUG, "[sectionsd] addevent-cn: added running (%d) event 0x%04x '%s'\n", evt.runningStatus(), evt.eventID, evt.getName().c_str());
 				} 
@@ -612,8 +620,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 			} 
 			else 
 			{
-				if ((!myNextEvent    || (myNextEvent    && (*myNextEvent).uniqueKey()    != evt.uniqueKey() && (*myNextEvent).times.begin()->startzeit < evt.times.begin()->startzeit)) &&
-						(!myCurrentEvent || (myCurrentEvent && (*myCurrentEvent).uniqueKey() != evt.uniqueKey()))) 
+				if ((!myNextEvent || (myNextEvent && (*myNextEvent).uniqueKey() != evt.uniqueKey() && (*myNextEvent).times.begin()->startzeit < evt.times.begin()->startzeit)) && (!myCurrentEvent || (myCurrentEvent && (*myCurrentEvent).uniqueKey() != evt.uniqueKey()))) 
 				{
 					if (myNextEvent)
 						delete myNextEvent;
@@ -673,6 +680,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 		{
 			SIcomponents::iterator c1 = si->second->components.begin();
 			SIcomponents::iterator c2 = evt.components.begin();
+			
 			while ((c1 != si->second->components.end()) && (c2 != evt.components.end())) 
 			{
 				if ((c1->componentType != c2->componentType) ||
@@ -721,10 +729,10 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 		{
 			SIparentalRatings::iterator p1 = si->second->ratings.begin();
 			SIparentalRatings::iterator p2 = evt.ratings.begin();
+			
 			while ((p1 != si->second->ratings.end()) && (p2 != evt.ratings.end())) 
 			{
-				if ((p1->rating != p2->rating) ||
-						(strcmp(p1->countryCode.c_str(),p2->countryCode.c_str()) != 0)) 
+				if ((p1->rating != p2->rating) || (strcmp(p1->countryCode.c_str(),p2->countryCode.c_str()) != 0)) 
 				{
 					already_exists = false;
 					break;
@@ -743,10 +751,10 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 		{
 			SItimes::iterator t1 = si->second->times.begin();
 			SItimes::iterator t2 = evt.times.begin();
+			
 			while ((t1 != si->second->times.end()) && (t2 != evt.times.end())) 
 			{
-				if ((t1->startzeit != t2->startzeit) ||
-						(t1->dauer != t2->dauer)) 
+				if ((t1->startzeit != t2->startzeit) || (t1->dauer != t2->dauer)) 
 				{
 					already_exists = false;
 					break;
@@ -764,11 +772,13 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 		si->second->itemDescription = evt.itemDescription;
 		si->second->item = evt.item;
 		si->second->vps = evt.vps;
-		if ((evt.getExtendedText().length() > 0) &&
-				(evt.times.begin()->startzeit < zeit + secondsExtendedTextCache))
+		
+		if ((evt.getExtendedText().length() > 0) && (evt.times.begin()->startzeit < zeit + secondsExtendedTextCache))
 			si->second->setExtendedText("OFF",evt.getExtendedText().c_str());
+			
 		if (evt.getText().length() > 0)
 			si->second->setText("OFF",evt.getText().c_str());
+			
 		if (evt.getName().length() > 0)
 			si->second->setName("OFF",evt.getName().c_str());
 	}
@@ -786,8 +796,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 		SIeventPtr e(eptr);
 
 		//Strip ExtendedDescription if too far in the future
-		if ((e->times.begin()->startzeit > zeit + secondsExtendedTextCache) &&
-				(SIlanguage::getMode() == LANGUAGE_MODE_OFF) && (zeit != 0))
+		if ((e->times.begin()->startzeit > zeit + secondsExtendedTextCache) && (SIlanguage::getMode() == LANGUAGE_MODE_OFF) && (zeit != 0))
 			e->setExtendedText("OFF","");
 
 		/*
@@ -847,6 +856,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 			// Mehrere Events mit gleicher ID sind, diese vorher loeschen
 			unlockEvents();
 		}
+		
 		deleteEvent(e->uniqueKey());
 		readLockEvents();
 
@@ -859,6 +869,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
  * the old-fashioned "delete future events always", invert this */
 			time_t now = time(NULL);
 			bool back = false;
+			
 			//if ((*lastEvent)->times.size() == 1)
 			if (*lastEvent != NULL && (*lastEvent)->times.size() == 1)
 			{
@@ -885,7 +896,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 			}
 			// else fprintf(stderr, ">");
 			unlockEvents();
-			//deleteEvent((*lastEvent)->uniqueKey());
+
 			if(*lastEvent != NULL)
 				deleteEvent((*lastEvent)->uniqueKey());
 		}
@@ -893,6 +904,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 			unlockEvents();
 		
 		readLockEvents();
+		
 		// Pruefen ob es ein Meta-Event ist
 		MySIeventUniqueKeysMetaOrderServiceUniqueKey::iterator i = mySIeventUniqueKeysMetaOrderServiceUniqueKey.find(e->get_channel_id());
 
@@ -1352,10 +1364,6 @@ void CSectionsd::findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, S
 //
 void CSectionsd::pauseScanning(const bool doPause)
 {
-	//if (dataLength != 4)
-	//	return ;
-
-	//int pause = *(int *)data;
 	int pause = doPause;
 
 	if (pause && pause != 1)
@@ -1416,229 +1424,19 @@ void CSectionsd::pauseScanning(const bool doPause)
 }
 
 //
-void CSectionsd::dumpAllServices(void)
-{
-	dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_dumpAllServices: Request of service list.\n");
-	
-	long count = 0;
-	
-#define MAX_SIZE_SERVICELIST	64*1024
-	char *serviceList = new char[MAX_SIZE_SERVICELIST]; // 65kb should be enough and dataLength is unsigned short
-
-	if (!serviceList)
-	{
-		fprintf(stderr, "low on memory!\n");
-		return ;
-	}
-
-	*serviceList = 0;
-	readLockServices();
-#define MAX_SIZE_DATEN	200
-	char daten[MAX_SIZE_DATEN];
-
-	for (MySIservicesOrderUniqueKey::iterator s = mySIservicesOrderUniqueKey.begin(); s != mySIservicesOrderUniqueKey.end(); ++s)
-	{
-		count += 1 + snprintf(daten, MAX_SIZE_DATEN,
-				      "%llx"
-				      " %hu %hhu %d %d %d %d %u ",
-				      s->first,
-				      s->second->service_id, s->second->serviceTyp,
-				      s->second->eitScheduleFlag(), s->second->eitPresentFollowingFlag(),
-				      s->second->runningStatus(), s->second->freeCAmode(),
-				      s->second->nvods.size());
-		/**	soll es in count ?
-					+ strlen(s->second->serviceName.c_str()) + 1
-		 			+ strlen(s->second->providerName.c_str()) + 1
-		 			+ 3;  **/
-		if (count < MAX_SIZE_SERVICELIST)
-		{
-			strcat(serviceList, daten);
-			strcat(serviceList, "\n");
-			strcat(serviceList, s->second->serviceName.c_str());
-			strcat(serviceList, "\n");
-			strcat(serviceList, s->second->providerName.c_str());
-			strcat(serviceList, "\n");
-		} 
-		else 
-		{
-			dprintf(DEBUG_DEBUG, "[sectionsd] warning: commandDumpAllServices: serviceList cut\n");
-			break;
-		}
-	}
-
-	unlockServices();
-
-	delete[] serviceList;
-
-	return ;
-}
-
-void CSectionsd::sendAllEvents(int connfd, t_channel_id serviceUniqueKey, bool oldFormat, char search, std::string search_text)
-{
-#define MAX_SIZE_EVENTLIST	64*1024
-	char *evtList = new char[MAX_SIZE_EVENTLIST]; // 64kb should be enough and dataLength is unsigned short
-	char *liste;
-	long count=0;
-
-	if (!evtList)
-	{
-		fprintf(stderr, "low on memory!\n");
-		goto out;
-	}
-
-	dprintf(DEBUG_DEBUG, "[sectionsd] sendAllEvents for:%llx\n", serviceUniqueKey);
-	
-	*evtList = 0;
-	liste = evtList;
-
-	if (serviceUniqueKey != 0)
-	{
-		// service Found
-		readLockEvents();
-		int serviceIDfound = 0;
-
-		if (search_text.length()) std::transform(search_text.begin(), search_text.end(), search_text.begin(), op_increase);
-		for (MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey::iterator e = mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.begin(); e != mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.end(); ++e)
-		{
-			if ((*e)->get_channel_id() == serviceUniqueKey)
-			{
-				serviceIDfound = 1;
-
-				bool copy = true;
-				if(search == 0); // nothing to do here
-				else if(search == 1)
-				{
-					std::string eName = (*e)->getName();
-					std::transform(eName.begin(), eName.end(), eName.begin(), op_increase);
-					if(eName.find(search_text) == std::string::npos)
-						copy = false;
-				}
-				else if(search == 2)
-				{
-					std::string eText = (*e)->getText();
-					std::transform(eText.begin(), eText.end(), eText.begin(), op_increase);
-					if(eText.find(search_text) == std::string::npos)
-						copy = false;
-				}
-				else if(search == 3)
-				{
-					std::string eExtendedText = (*e)->getExtendedText();
-					std::transform(eExtendedText.begin(), eExtendedText.end(), eExtendedText.begin(), op_increase);
-					if(eExtendedText.find(search_text) == std::string::npos)
-						copy = false;
-				}
-
-				if(copy)
-				{
-					for (SItimes::iterator t = (*e)->times.begin(); t != (*e)->times.end(); ++t)
-					{
-						if ( oldFormat )
-						{
-#define MAX_SIZE_STRTIME	50
-							char strZeit[MAX_SIZE_STRTIME];
-							char strZeit2[MAX_SIZE_STRTIME];
-							struct tm *tmZeit;
-
-							tmZeit = localtime(&(t->startzeit));
-							count += snprintf(strZeit, MAX_SIZE_STRTIME, "%012llx ", (*e)->uniqueKey());
-							count += snprintf(strZeit2, MAX_SIZE_STRTIME, "%02d.%02d %02d:%02d %u ",
-									  tmZeit->tm_mday, tmZeit->tm_mon + 1, tmZeit->tm_hour, tmZeit->tm_min, (*e)->times.begin()->dauer / 60);
-							count += (*e)->getName().length() + 1;
-
-							if (count < MAX_SIZE_EVENTLIST) {
-								strcat(liste, strZeit);
-								strcat(liste, strZeit2);
-								strcat(liste, (*e)->getName().c_str());
-								strcat(liste, "\n");
-							} else {
-								dprintf(DEBUG_DEBUG, "[sectionsd] warning: sendAllEvents eventlist cut\n");
-								break;
-							}
-						}
-						else
-						{
-							count += sizeof(event_id_t) + 4 + 4 + (*e)->getName().length() + 1;
-							if (((*e)->getText()).empty())
-							{
-								count += (*e)->getExtendedText().substr(0, 50).length();
-							}
-							else
-							{
-								count += (*e)->getText().length();
-							}
-							count++;
-
-							if (count < MAX_SIZE_EVENTLIST) 
-							{
-								*((event_id_t *)liste) = (*e)->uniqueKey();
-								liste += sizeof(event_id_t);
-								*((unsigned *)liste) = t->startzeit;
-								liste += 4;
-								*((unsigned *)liste) = t->dauer;
-								liste += 4;
-								strcpy(liste, (*e)->getName().c_str());
-								liste += (*e)->getName().length();
-								liste++;
-
-								if (((*e)->getText()).empty())
-								{
-									strcpy(liste, (*e)->getExtendedText().substr(0, 50).c_str());
-									liste += strlen(liste);
-								}
-								else
-								{
-									strcpy(liste, (*e)->getText().c_str());
-									liste += (*e)->getText().length();
-								}
-								liste++;
-							} 
-							else 
-							{
-								dprintf(DEBUG_DEBUG, "[sectionsd] warning: sendAllEvents eventlist cut\n");
-								break;
-							}
-						}
-						//					}
-					}
-				} // if = serviceID
-			}
-			else if ( serviceIDfound )
-				break; // sind nach serviceID und startzeit sortiert -> nicht weiter suchen
-		}
-
-		unlockEvents();
-	}
-
-	//printf("warning: [sectionsd] all events - response-size: 0x%x, count = %lx\n", liste - evtList, count);
-	if (liste - evtList > MAX_SIZE_EVENTLIST)
-		printf("warning: [sectionsd] all events - response-size: 0x%x\n", liste - evtList);
-
-out:
-	if (evtList)
-		delete[] evtList;
-
-	return ;
-}
-
-//
 void CSectionsd::dumpStatus(void)
 {
 	dprintf(DEBUG_DEBUG, "[sectionsd] sectionsd_dumpStatus: Request of status information");
 
 	readLockEvents();
-
 	unsigned anzEvents = mySIeventsOrderUniqueKey.size();
 	unsigned anzNVODevents = mySIeventsNVODorderUniqueKey.size();
 	unsigned anzMetaServices = mySIeventUniqueKeysMetaOrderServiceUniqueKey.size();
-
 	unlockEvents();
 
 	readLockServices();
-
 	unsigned anzServices = mySIservicesOrderUniqueKey.size();
 	unsigned anzNVODservices = mySIservicesNVODorderUniqueKey.size();
-	//unsigned anzServices=services.size();
-	
 	unlockServices();
 
 	struct mallinfo speicherinfo = mallinfo();
@@ -1649,7 +1447,7 @@ void CSectionsd::dumpStatus(void)
 	char stati[MAX_SIZE_STATI];
 
 	snprintf(stati, MAX_SIZE_STATI,
-		 "$Id: sectionsd.cpp,v 1.31 2013/08/18 11:23:30 mohousch $\n"
+		 "$Id: sectionsd.cpp,v 1.35 05.03.2023 mohousch $\n"
 		 "Current time: %s"
 		 "Hours to cache: %ld\n"
 		 "Hours to cache extended text: %ld\n"
@@ -1664,14 +1462,14 @@ void CSectionsd::dumpStatus(void)
 		 "handed out by malloc: %d (%dkb)\n"
 		 "Total bytes memory allocated with `sbrk' by malloc,\n"
 		 "in bytes: %d (%dkb)\n"
-		 "FreeSat enabled\n"
 		 ,ctime(&zeit),
 		 secondsToCache / (60*60L), secondsExtendedTextCache / (60*60L), oldEventsAre / 60, anzServices, anzNVODservices, anzEvents, anzNVODevents, anzMetaServices,
 		 //    resourceUsage.ru_maxrss, resourceUsage.ru_ixrss, resourceUsage.ru_idrss, resourceUsage.ru_isrss,
 		 speicherinfo.uordblks, speicherinfo.uordblks / 1024,
-		 speicherinfo.arena, speicherinfo.arena / 1024
+		 speicherinfo.arena, 
+		 speicherinfo.arena / 1024
 		);
-	printf("%s\n", stati);
+	dprintf(DEBUG_NORMAL, "%s\n", stati);
 
 	return ;
 }
@@ -1768,6 +1566,7 @@ void CSectionsd::setServiceChanged(t_channel_id channel_id, bool requestEvent)
 	return;
 }
 
+//
 bool CSectionsd::channel_in_requested_list(t_channel_id * clist, t_channel_id chid, int len)
 {
 	if(len == 0) 
@@ -1879,6 +1678,7 @@ void CSectionsd::deleteSIexceptEPG()
 	writeLockServices();
 	mySIservicesOrderUniqueKey.clear();
 	unlockServices();
+	
 	dmxEIT.dropCachedSectionIDs();
 }
 
@@ -1890,24 +1690,6 @@ void CSectionsd::freeMemory()
 	deleteSIexceptEPG();
 
 	writeLockEvents();
-	
-	//FIXME:
-	std::set<SIeventPtr> allevents;
-
-	allevents.insert(mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.begin(), mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.end());
-	/* this probably not needed, but takes only additional ~2 seconds
-	 * with even count > 70000 */
-	allevents.insert(mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.begin(), mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.end());
-	
-	MySIeventsOrderUniqueKey::iterator it;
-	for(it = mySIeventsOrderUniqueKey.begin(); it != mySIeventsOrderUniqueKey.end(); ++it)
-		allevents.insert(it->second);
-	for(it = mySIeventsNVODorderUniqueKey.begin(); it != mySIeventsNVODorderUniqueKey.end(); ++it)
-		allevents.insert(it->second);
-
-	for(std::set<SIeventPtr>::iterator ait = allevents.begin(); ait != allevents.end(); ++ait)
-		delete (*ait);
-	//
 	
 	mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.clear();
 	mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.clear();
@@ -2941,7 +2723,7 @@ void CSectionsd::writeSI2XML(const char *epgxmlname)
 			}
 			
 			fprintf(indexfile, "\t<eventfile name=\"%s\"/>\n",eventname);
-			write_epg_xml_header(eventfile,onid,tsid,sid);
+			write_epg_xml_header(eventfile, onid, tsid, sid);
 
 			while (e != mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey.end()) 
 			{
@@ -2965,7 +2747,7 @@ void CSectionsd::writeSI2XML(const char *epgxmlname)
 						goto _done;
 					}
 					fprintf(indexfile, "\t<eventfile name=\"%s\"/>\n", eventname);
-					write_epg_xml_header(eventfile,onid,tsid,sid);
+					write_epg_xml_header(eventfile, onid, tsid, sid);
 				}
 				(*e)->saveXML(eventfile);
 				e ++;
