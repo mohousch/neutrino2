@@ -1048,13 +1048,13 @@ void CSectionsd::removeOldEvents(const long seconds)
 	return;
 }
 
-#ifdef REMOVE_DUPS
+//#ifdef REMOVE_DUPS
 /* Remove duplicate events (same Service, same start and endtime)
  * with different eventID. Use the one from the lower table_id.
  * This routine could be extended to remove overlapping events also,
  * but let's keep that for later
  */
-void removeDupEvents(void)
+void CSectionsd::removeDupEvents(void)
 {
 	MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey::iterator e1, e2, del;
 	/* list of event IDs to delete */
@@ -1101,7 +1101,7 @@ void removeDupEvents(void)
 
 	return;
 }
-#endif
+//#endif
 
 // SIservicePtr;
 typedef SIservice *SIservicePtr;
@@ -1776,7 +1776,9 @@ bool CSectionsd::channel_in_requested_list(t_channel_id * clist, t_channel_id ch
 	for(int i = 0; i < len; i++) 
 	{
 		if(clist[i] == chid)
+		{
 			return true;
+		}
 	}
 	
 	return false;
@@ -4288,7 +4290,7 @@ void *CSectionsd::cnThread(void *)
 }
 
 /* helper function for the housekeeping-thread */
-void print_meminfo(void)
+void CSectionsd::print_meminfo(void)
 {
 	struct mallinfo meminfo = mallinfo();
 	
@@ -4301,8 +4303,7 @@ void print_meminfo(void)
 // housekeeping-thread
 // does cleaning on fetched datas
 //
-#if 0
-static void *houseKeepingThread(void *)
+void *CSectionsd::houseKeepingThread(void *)
 {
 	int count = 0;
 
@@ -4312,6 +4313,33 @@ static void *houseKeepingThread(void *)
 
 	while (!sectionsd_stop)
 	{
+		//
+		if (FrontendCount)
+		{
+			if (eit_update_fd != -1) 
+			{
+				unsigned char buf[MAX_SECTION_LENGTH];
+				int ret = eitDmx->Read(buf, MAX_SECTION_LENGTH, 10);
+
+				// dirty hack eitDmx read sucked always //FIXME???
+				if (ret > 0) 
+				{
+					writeLockMessaging();
+					//messaging_skipped_sections_ID[0].clear();
+					//messaging_sections_max_ID[0] = -1;
+					//messaging_sections_got_all[0] = false;
+					messaging_have_CN = 0x00;
+					messaging_got_CN = 0x00;
+					messaging_last_requested = time_monotonic();
+					unlockMessaging();
+					sched_yield();
+					dmxCN.change(0);
+					sched_yield();
+				}
+			}
+		}
+		
+		//
 		if (count == META_HOUSEKEEPING) 
 		{
 			dprintf(DEBUG_DEBUG, "[sectionsd] meta housekeeping - deleting all transponders, services, bouquets.\n");
@@ -4344,28 +4372,31 @@ static void *houseKeepingThread(void *)
 		dprintf(DEBUG_DEBUG, "[sectionsd] after removeoldevents\n");
 		readLockEvents();
 		dprintf(DEBUG_DEBUG, "[sectionsd] Removed %d old events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
+		
 		if (mySIeventsOrderUniqueKey.size() != anzEventsAlt)
 		{
-			print_meminfo();
+			CSectionsd::getInstance()->print_meminfo();
 			dprintf(DEBUG_DEBUG, "[sectionsd] Removed %d old events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		}
+		
 		anzEventsAlt = mySIeventsOrderUniqueKey.size();
 		unlockEvents();
 		//usleep(100);
 		//lockEvents();
-#ifdef REMOVE_DUPS
-		removeDupEvents();
+//#ifdef REMOVE_DUPS
+		CSectionsd::getInstance()->removeDupEvents();
 		readLockEvents();
 		dprintf(DEBUG_DEBUG, "[sectionsd] Removed %d dup events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		anzEventsAlt = mySIeventsOrderUniqueKey.size();
 		unlockEvents();
-#endif
+//#endif
 		dprintf(DEBUG_DEBUG, "[sectionsd] before removewasteepg\n");
 
 		readLockEvents();
+		
 		if (mySIeventsOrderUniqueKey.size() != anzEventsAlt)
 		{
-			print_meminfo();
+			CSectionsd::getInstance()->print_meminfo();
 			dprintf(DEBUG_DEBUG, "[sectionsd] Removed %d waste events.\n", anzEventsAlt - mySIeventsOrderUniqueKey.size());
 		}
 
@@ -4377,7 +4408,7 @@ static void *houseKeepingThread(void *)
 
 		unlockEvents();
 
-		print_meminfo();
+		CSectionsd::getInstance()->print_meminfo();
 
 		count++;
 
@@ -4386,7 +4417,6 @@ static void *houseKeepingThread(void *)
 
 	pthread_exit(NULL);
 }
-#endif
 
 void CSectionsd::readEPGFilter(void)
 {
@@ -4967,6 +4997,7 @@ void CSectionsd::getChannelEvents(CChannelEventList &eList, bool tv_mode, t_chan
 					aEvent.startTime = t->startzeit;
 					aEvent.duration = t->dauer;
 					aEvent.description = (*e)->getName();
+					
 					if (((*e)->getText()).empty())
 						aEvent.text = (*e)->getExtendedText().substr(0, 120);
 					else
@@ -5193,6 +5224,14 @@ void CSectionsd::Start(void)
 		{
 			dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create viasateit-thread (rc=%d)\n", rc);
 		}
+	}
+	
+	// housekeeping-Thread starten
+	rc = pthread_create(&threadHouseKeeping, 0, houseKeepingThread, 0);
+
+	if (rc) 
+	{
+		dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create housekeeping-thread (rc=%d)\n", rc);
 	}
 	
 	sectionsd_ready = true;

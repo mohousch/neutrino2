@@ -151,12 +151,14 @@ class CSectionsd
 		
 	private:
 		//
-		pthread_t threadTOT, threadEIT, threadCN, threadFSEIT, threadVIASATEIT;
+		pthread_t threadTOT, threadEIT, threadCN, threadFSEIT, threadVIASATEIT, threadHouseKeeping;
 		static void *timeThread(void *);
 		static void *eitThread(void *);
 		static void *cnThread(void *);
 		static void *fseitThread(void *);
 		static void *viasateitThread(void *);
+		//
+		static void *houseKeepingThread(void *);
 		//
 		static void *insertEventsfromFile(void *);
 		static void *insertEventsfromXMLTV(void* data);
@@ -173,6 +175,7 @@ class CSectionsd
 		void addEvent(const SIevent &evt, const time_t zeit, bool cn = false);
 		void addNVODevent(const SIevent &evt);
 		void removeOldEvents(const long seconds);
+		void removeDupEvents(void);
 		const SIevent& findSIeventForEventUniqueKey(const event_id_t eventUniqueKey);
 		const SIevent& findActualSIeventForServiceUniqueKey(const t_channel_id serviceUniqueKey, SItime& zeit, long plusminus = 0, unsigned *flag = 0);
 		const SIevent& findNextSIeventForServiceUniqueKey(const t_channel_id serviceUniqueKey, SItime& zeit);
@@ -189,6 +192,7 @@ class CSectionsd
 		void readEPGFilter(void);
 		void readDVBTimeFilter(void);
 		bool isReady(void);
+		void print_meminfo(void);
 		
 		//
 		CSectionsd(){};
