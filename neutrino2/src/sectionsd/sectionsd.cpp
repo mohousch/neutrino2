@@ -2928,7 +2928,7 @@ void CSectionsd::writeSI2XML(const char *epgxmlname)
 			chid = create_channel_id(sid, onid, tsid);
 			
 			//snprintf(eventname, 17, "%04x%04x%04x.xml", onid, tsid, sid);
-			sprintf(eventname, "%s", to_hexstring(chid).c_str());
+			sprintf(eventname, "%s.xml", to_hexstring(chid).c_str());
 			sprintf(filename, "%s/%s", epgdir, eventname);
 
 			if (!(eventfile = fopen(filename, "w"))) 
@@ -2955,7 +2955,7 @@ void CSectionsd::writeSI2XML(const char *epgxmlname)
 					fclose(eventfile);
 					
 					//snprintf(eventname, 17, "%04x%04x%04x.xml", onid, tsid, sid);
-					sprintf(eventname, "%s", to_hexstring(chid).c_str());
+					sprintf(eventname, "%s.xml", to_hexstring(chid).c_str());
 					sprintf(filename, "%s/%s", epgdir, eventname);
 					
 					if (!(eventfile = fopen(filename, "w"))) 
