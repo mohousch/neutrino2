@@ -266,126 +266,125 @@ void CEpgData::initFrames()
 #define GENRE_MOVIE_COUNT 9
 const char* genre_movie[GENRE_MOVIE_COUNT] =
 {
-	_("movie / drama"),
-	_("detective / thriller"),
-	_("adventure / western/war"),
-	_("science fiction / fantasy / horror"),
-	_("comedy"),
-	_("soap / melodrama / folkloric"),
-	_("romance"),
-	_("serious / classical / religious / historical movie / drama"),
-	_("adult movie / drama")
+	_("Movie / Drama"),
+	_("Detective / Thriller"),
+	_("Adventure / Western/War"),
+	_("Science fiction / Fantasy / Horror"),
+	_("Comedy"),
+	_("Soap / Melodrama / Folkloric"),
+	_("Romance"),
+	_("Serious / Classical / Religious / Historical movie / Drama"),
+	_("Adult movie / Drama")
 };
 
 #define GENRE_NEWS_COUNT 5
 const char* genre_news[GENRE_NEWS_COUNT] =
 {
-	_("news"),
-	_("news / weather report"),
-	_("news magazine"),
-	_("documentary"),
-	_("discussion / interview/debate")
+	_("News"),
+	_("News / Weather report"),
+	_("News magazine"),
+	_("Documentary"),
+	_("Discussion / Interview/ Debate")
 };
 
 #define GENRE_SHOW_COUNT 4
 const char* genre_show[GENRE_SHOW_COUNT] =
 {
 	_("Show / Gameshow"),
-	_("game show / quiz / contest"),
-	_("variety show"),
-	_("talk show")
+	_("Game show / Quiz / Contest"),
+	_("Variety show"),
+	_("Talk show")
 };
 
 #define GENRE_SPORTS_COUNT 12
 const char* genre_sports[GENRE_SPORTS_COUNT] =
 {
-	_("sports"),
-	_("special events (Olympic Games,World Cup etc.)"),
-	_("sports magazines"),
-	_("football / soccer"),
-	_("tennis / squash"),
-	_("team sports (excluding football)"),
-	_("athletics"),
-	_("motor sports"),
-	_("water sports"),
-	_("winter sports"),
-	_("equestrian"),
-	_("martial sports"),
+	_("Sports"),
+	_("Special events (Olympic Games,World Cup etc.)"),
+	_("Sports magazines"),
+	_("Football / Soccer"),
+	_("Tennis / Squash"),
+	_("Team sports (excluding football)"),
+	_("Athletics"),
+	_("Motor sports"),
+	_("Water sports"),
+	_("Winter sports"),
+	_("Equestrian"),
+	_("Martial sports"),
 };
 
 #define GENRE_CHILDRENS_PROGRAMMES_COUNT 6
 const char* genre_childrens_programmes[GENRE_CHILDRENS_PROGRAMMES_COUNT] =
 {
-	_("children / juvenile program"),
-	_("pre-school children's programmes"),
-	_("entertainment programmes for 6 to 14"),
-	_("entertainment programmes for 10 to 16"),
-	_("informational / educational / school programmes"),
-	_("cartoons / puppets"),
+	_("Children / Juvenile program"),
+	_("Pre-school children's programmes"),
+	_("Entertainment programmes for 6 to 14"),
+	_("Entertainment programmes for 10 to 16"),
+	_("Informational / educational / school programmes"),
+	_("Cartoons / Puppets"),
 };
 
 #define GENRE_MUSIC_DANCE_COUNT 7
 const char* genre_music_dance[GENRE_MUSIC_DANCE_COUNT] =
 {
-	_("music / ballet / dance"),
-	_("rock / pop"),
-	_("serious music / classical music"),
-	_("folk / traditional music"),
-	_("jazz"),
-	_("musical / opera"),
-	_("ballet"),
+	_("Music / Ballet / Dance"),
+	_("Rock / Pop"),
+	_("Serious music / Classical music"),
+	_("Folk / Traditional music"),
+	_("Jazz"),
+	_("Musical / Opera"),
+	_("Ballet"),
 };
 
 #define GENRE_ARTS_COUNT 12
 const char* genre_arts_dance[GENRE_ARTS_COUNT] =
 {
-	_("arts / culture"),
-	_("performing arts"),
-	_("fine arts"),
-	_("religion"),
-	_("popular culture / traditional arts"),
-	_("literature"),
-	_("film/cinema"),
-	_("experimental film/video"),
-	_("broadcasting / press"),
-	_("new media"),
-	_("arts/culture magazines"),
-	_("fashion"),
+	_("Arts / Culture"),
+	_("Performing arts"),
+	_("Fine arts"),
+	_("Religion"),
+	_("Popular culture / Traditional arts"),
+	_("Literature"),
+	_("Film / Cinema"),
+	_("Experimental film / Video"),
+	_("Broadcasting / Press"),
+	_("New media"),
+	_("Arts / Culture magazines"),
+	_("Fashion"),
 };
 
 #define GENRE_SOCIAL_POLITICAL_COUNT 4
 const char* genre_social_political[GENRE_SOCIAL_POLITICAL_COUNT] =
 {
-	_("social & politic events / business"),
-	_("magazines / reports / documentary"),
-	_("economics / social advisory"),
-	_("remarkable people"),
+	_("Social & politic events / Business"),
+	_("Magazines / Reports / Documentary"),
+	_("Economics / Social advisory"),
+	_("Remarkable people"),
 };
 
 #define GENRE_DOCUS_MAGAZINES_COUNT 8
 const char* genre_docus_magazines[GENRE_DOCUS_MAGAZINES_COUNT] =
 {
-	_("documentation / magazine"),
-	_("nature/animals / environment"),
-	_("technology/natural sciences"),
-	_("medicine / physiology / psychology"),
-	_("foreign countries/expeditions"),
-	_("social / spiritual sciences"),
-	_("further education"),
-	_("languages"),
+	_("Documentation / Magazine"),
+	_("Nature / Animals / Environment"),
+	_("Technology / Natural sciences"),
+	_("Medicine / Physiology / Psychology"),
+	_("Foreign countries / Expeditions"),
+	_("Social / Spiritual sciences"),
+	_("Further education"),
+	_("Languages"),
 };
 
-#define GENRE_TRAVEL_HOBBIES_COUNT 8
+#define GENRE_TRAVEL_HOBBIES_COUNT 7
 const char* genre_travel_hobbies[GENRE_TRAVEL_HOBBIES_COUNT] =
 {
-	_("travel & recreation"),
-	_("tourism / travel"),
-	_("tourism / travel"),
-	_("handicraft"),
-	_("motoring"),
-	_("fitness & health"),
-	_("cooking"),
-	_("gardening")
+	_("Travel & recreation"),
+	_("Tourism / Travel"),
+	_("Handicraft"),
+	_("Motoring"),
+	_("Fitness & health"),
+	_("Cooking"),
+	_("Gardening")
 };
 
 const char genre_sub_classes[10] =

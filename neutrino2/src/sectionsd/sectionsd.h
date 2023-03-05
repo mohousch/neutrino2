@@ -214,13 +214,13 @@ class CSectionsd
 		//
 		void getChannelEvents(CChannelEventList &eList, bool tv_mode = true, t_channel_id *chidlist = NULL, int clen = 0);
 		void getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
-		void getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsd::responseGetCurrentNextInfoChannelID& current_next );
+		void getCurrentNextServiceKey(t_channel_id uniqueServiceKey, responseGetCurrentNextInfoChannelID& current_next );
 		bool getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
 		bool getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
 		bool getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
-		bool getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsd::ComponentTagList& tags);
-		bool getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsd::LinkageDescriptorList& descriptors);
-		bool getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSectionsd::NVODTimesList& nvod_list);
+		bool getComponentTagsUniqueKey(const event_id_t uniqueKey, ComponentTagList& tags);
+		bool getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, LinkageDescriptorList& descriptors);
+		bool getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, NVODTimesList& nvod_list);
 		void setServiceChanged(t_channel_id channel_id, bool requestEvent = false);
 		void pauseScanning(const bool doPause);
 		void freeMemory();
@@ -232,7 +232,7 @@ class CSectionsd
 		void readSIfromXMLTV(const t_channel_id chid);
 		void readSIfromLocalTV(const t_channel_id chid);
 		//
-		void setConfig(const CSectionsd::epg_config config);
+		void setConfig(const epg_config config);
 		void deleteSIexceptEPG();
 		void setLanguages(const std::vector<std::string>& newLanguages);
 		

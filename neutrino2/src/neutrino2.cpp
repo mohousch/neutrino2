@@ -2275,16 +2275,10 @@ void CNeutrinoApp::InitZapper()
 
 		// show service name in vfd
 		CVFD::getInstance()->showServicename(channelList->getActiveChannelName(), true, channelList->getActiveChannelNumber());
-		
-		// online epg
-		//if(g_settings.epg_enable_localtv_epg)
-		//{
-		//	g_RemoteControl->getEventsFromLocalTV(live_channel_id);
-		//}	
 
 		// start epg scanning
 		CSectionsd::getInstance()->pauseScanning(false);
-		CSectionsd::getInstance()->setServiceChanged(live_channel_id/*&0xFFFFFFFFFFFFULL*/, true );
+		CSectionsd::getInstance()->setServiceChanged(live_channel_id, true );
 		
 		// process apids
 		CZapit::getInstance()->getPIDS(g_RemoteControl->current_PIDs);
@@ -4859,7 +4853,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 
 
 		CSectionsd::getInstance()->pauseScanning(false);
-		CSectionsd::getInstance()->setServiceChanged(live_channel_id&0xFFFFFFFFFFFFULL, true );
+		CSectionsd::getInstance()->setServiceChanged(live_channel_id, true );
 
 		if( lastMode == mode_radio ) 
 		{

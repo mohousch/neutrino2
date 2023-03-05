@@ -396,7 +396,7 @@ void CRemoteControl::getSubChannels()
 {
 	if ( subChannels.size() == 0 )
 	{
-		CSectionsd::LinkageDescriptorList	linkedServices;
+		CSectionsd::LinkageDescriptorList linkedServices;
 		
 		if ( CSectionsd::getInstance()->getLinkageDescriptorsUniqueKey( current_EPGid, linkedServices ) )
 		{
@@ -430,7 +430,7 @@ void CRemoteControl::getNVODs()
 	
 	if ( subChannels.size() == 0 )
 	{
-		CSectionsd::NVODTimesList	NVODs;
+		CSectionsd::NVODTimesList NVODs;
 		
 		if ( CSectionsd::getInstance()->getNVODTimesServiceKey( current_channel_id & 0xFFFFFFFFFFFFULL, NVODs ) )
 		{

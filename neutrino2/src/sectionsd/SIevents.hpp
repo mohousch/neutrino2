@@ -380,8 +380,6 @@ class SIevent
 		t_service_id          service_id;
 		t_original_network_id original_network_id;
 		t_transport_stream_id transport_stream_id;
-		t_satellite_position  satellitePosition;
-		freq_id_t freq;
 		
 		SIevent(const struct eit_event *);
 		// Std-Copy
@@ -392,15 +390,11 @@ class SIevent
 			service_id = 0;
 			original_network_id = 0;
 			transport_stream_id = 0;
-			satellitePosition = 0;
-			freq = 0;
 			eventID    = 0;
 			vps = 0;
 			table_id = 0xFF; /* 0xFF means "not set" */
 			version = 0xFF;
 			running = 0;
-			//dauer=0;
-			//startzeit=0;
 		}
 		unsigned short eventID;
 		// Name aus dem Short-Event-Descriptor
@@ -421,9 +415,8 @@ class SIevent
 
 		std::string contentClassification; // Aus dem Content Descriptor, als String, da mehrere vorkommen koennen
 		std::string userClassification; // Aus dem Content Descriptor, als String, da mehrere vorkommen koennen
-		//    time_t startzeit; // lokale Zeit, 0 -> time shifted (cinedoms)
-		//    unsigned dauer; // in Sekunden, 0 -> time shifted (cinedoms)
 		
+		//
 		t_channel_id get_channel_id(void) const 
 		{
 			return create_channel_id(service_id, original_network_id, transport_stream_id);
@@ -431,7 +424,7 @@ class SIevent
 
 		event_id_t uniqueKey(void) const 
 		{
-			return CREATE_EVENT_ID(CREATE_CHANNEL_ID, eventID);
+			return CREATE_EVENT_ID(create_channel_id(service_id, original_network_id, transport_stream_id), eventID);
 		}
 		
 		int runningStatus(void) const 

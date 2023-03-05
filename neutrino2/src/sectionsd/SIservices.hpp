@@ -139,7 +139,7 @@ class SIservice
 			service_id          = _service_id;
 			original_network_id = _original_network_id;
 			transport_stream_id = _transport_stream_id;
-			serviceTyp=0;
+			serviceTyp = 0;
 			is_actual =0;
 			memset(&flags, 0, sizeof(flags));
 		}
@@ -150,12 +150,12 @@ class SIservice
 			service_id          = s.service_id;
 			original_network_id = s.original_network_id;
 			transport_stream_id = s.transport_stream_id;
-			serviceTyp=s.serviceTyp;
-			providerName=s.providerName;
-			serviceName=s.serviceName;
-			flags=s.flags;
-			nvods=s.nvods;
-			is_actual=s.is_actual;
+			serviceTyp = s.serviceTyp;
+			providerName = s.providerName;
+			serviceName = s.serviceName;
+			flags = s.flags;
+			nvods = s.nvods;
+			is_actual = s.is_actual;
 		}
 		
 		t_service_id          service_id;
@@ -193,6 +193,7 @@ class SIservice
 			for_each(nvods.begin(), nvods.end(), printSInvodReference());
 			printf("\n");
 		}
+		
 	protected:
 		struct 
 		{

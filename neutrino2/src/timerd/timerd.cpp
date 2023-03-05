@@ -60,7 +60,7 @@ void CTimerd::removeTimerEvent(int evId)
 	CTimerManager::getInstance()->removeEvent(evId);
 }
 
-int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t alarmtime, time_t announcetime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount, bool forceadd)
+int CTimerd::addTimerEvent(CTimerEventTypes evType, void *data, time_t alarmtime, time_t announcetime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount, bool forceadd)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::addTimerEvent\n");
 
@@ -71,7 +71,7 @@ int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t 
 	{
 		dprintf(DEBUG_NORMAL, "CTimerd::addTimerEvent: checking for overlapping timers\n");
 		
-		CTimerd::TimerList overlappingTimer;
+		TimerList overlappingTimer;
 		overlappingTimer = getOverlappingTimers(alarmtime, stoptime);
 		
 		if (overlappingTimer.size() > 0)
@@ -84,9 +84,9 @@ int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t 
 	//			
 	switch(evType)
 	{
-		case CTimerd::TIMER_STANDBY :
+		case TIMER_STANDBY :
 		{
-			CTimerd::commandSetStandby *standby = static_cast<CTimerd::commandSetStandby*>(data);
+			commandSetStandby *standby = static_cast<commandSetStandby*>(data);
 
 			event = new CTimerEvent_Standby(
 						announcetime,
@@ -99,7 +99,7 @@ int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t 
 			break;
 		}
 
-		case CTimerd::TIMER_SHUTDOWN :
+		case TIMER_SHUTDOWN :
 		{
 			event = new CTimerEvent_Shutdown(
 						announcetime,
@@ -111,7 +111,7 @@ int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t 
 			break;
 		}
 
-		case CTimerd::TIMER_SLEEPTIMER :
+		case TIMER_SLEEPTIMER :
 		{
 			event = new CTimerEvent_Sleeptimer(
 						announcetime,
@@ -123,9 +123,9 @@ int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t 
 			break;
 		}
 
-		case CTimerd::TIMER_RECORD :
+		case TIMER_RECORD :
 		{		
-			CTimerd::RecordingInfo *ri = static_cast<CTimerd::RecordingInfo*>(data); 
+			RecordingInfo *ri = static_cast<RecordingInfo*>(data); 
 			
 			if(ri->recordingSafety)
 			{
@@ -153,9 +153,9 @@ int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t 
 			break;
 		}
 		
-		case CTimerd::TIMER_IMMEDIATE_RECORD :
+		case TIMER_IMMEDIATE_RECORD :
 		{
-			CTimerd::EventInfo *ei = static_cast<CTimerd::EventInfo*>(data);
+			EventInfo *ei = static_cast<EventInfo*>(data);
 		
 			event = new CTimerEvent_Record(
 						announcetime,
@@ -168,14 +168,14 @@ int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t 
 						evrepeat,
 						repeatcount);
 						
-			event->eventState = CTimerd::TIMERSTATE_ISRUNNING;
+			event->eventState = TIMERSTATE_ISRUNNING;
 			eventID = CTimerManager::getInstance()->addEvent(event);
 			break;
 		}
 
-		case CTimerd::TIMER_ZAPTO :
+		case TIMER_ZAPTO :
 		{
-			CTimerd::EventInfo *ei = static_cast<CTimerd::EventInfo*>(data);
+			EventInfo *ei = static_cast<EventInfo*>(data);
 		
 			if(ei->channel_id > 0)
 			{
@@ -193,9 +193,9 @@ int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t 
 			break;
 		}
 
-		case CTimerd::TIMER_NEXTPROGRAM :
+		case TIMER_NEXTPROGRAM :
 		{
-			CTimerd::EventInfo *ei = static_cast<CTimerd::EventInfo*>(data); 
+			EventInfo *ei = static_cast<EventInfo*>(data); 
 
 			event = new CTimerEvent_NextProgram(
 							announcetime,
@@ -210,9 +210,9 @@ int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t 
 			break;
 		}
 					
-		case CTimerd::TIMER_REMIND :
+		case TIMER_REMIND :
 		{
-			CTimerd::commandRemind *remind = static_cast<CTimerd::commandRemind*>(data);
+			commandRemind *remind = static_cast<commandRemind*>(data);
 			
 			event = new CTimerEvent_Remind(
 							announcetime,
@@ -225,9 +225,9 @@ int CTimerd::addTimerEvent(CTimerd::CTimerEventTypes evType, void *data, time_t 
 			break;
 		}
 					
-		case CTimerd::TIMER_EXEC_PLUGIN :
+		case TIMER_EXEC_PLUGIN :
 		{
-			CTimerd::commandExecPlugin *pluginMsg = static_cast<CTimerd::commandExecPlugin*>(data);
+			commandExecPlugin *pluginMsg = static_cast<commandExecPlugin*>(data);
 			
 			event = new CTimerEvent_ExecPlugin(
 							announcetime,
@@ -253,17 +253,17 @@ int CTimerd::setSleeptimer(time_t announcetime, time_t alarmtime, int timerid)
 	int timerID;
 
 	if(timerid == 0)
-		timerID = CTimerd::getSleeptimerID();
+		timerID = getSleeptimerID();
 	else
 		timerID = timerid;
 
 	if(timerID != 0)
 	{
-		CTimerd::modifyTimerEvent(timerID, announcetime, alarmtime);
+		modifyTimerEvent(timerID, announcetime, alarmtime);
 	}
 	else
 	{
-		timerID = CTimerd::addTimerEvent(CTimerd::TIMER_SLEEPTIMER, NULL, announcetime, alarmtime, 0);				
+		timerID = addTimerEvent(TIMER_SLEEPTIMER, NULL, announcetime, alarmtime, 0);				
 	}
 
 	return timerID;   
@@ -284,7 +284,7 @@ int CTimerd::getSleeptimerID()
 		{
 			dprintf(DEBUG_INFO, "CTimerd::getSleeptimerID: ID: %u type: %u\n", pos->second->eventID, pos->second->eventType);
 					
-			if(pos->second->eventType == CTimerd::TIMER_SLEEPTIMER)
+			if(pos->second->eventType == TIMER_SLEEPTIMER)
 			{
 				eventID = pos->second->eventID;
 				break;
@@ -301,9 +301,9 @@ int CTimerd::getSleepTimerRemaining()
 	
 	int timerID;
 	
-	if((timerID = CTimerd::getSleeptimerID()) != 0)
+	if((timerID = getSleeptimerID()) != 0)
 	{
-		CTimerd::responseGetTimer timer;
+		responseGetTimer timer;
 		getTimer( timer, timerID);
 		
 		int min = (((timer.alarmTime + 1 - time(NULL)) / 60) + 1); //aufrunden auf n�chst gr��erere Min.
@@ -320,21 +320,21 @@ int CTimerd::addSleepTimerEvent(time_t announcetime, time_t alarmtime)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::addSleepTimerEvent\n");
 	
-	return CTimerd::addTimerEvent(CTimerd::TIMER_SLEEPTIMER, NULL, announcetime, alarmtime, 0);
+	return addTimerEvent(TIMER_SLEEPTIMER, NULL, announcetime, alarmtime, 0);
 }
 
 int CTimerd::addShutdownTimerEvent(time_t alarmtime, time_t announcetime, time_t stoptime)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::addShutdownTimerEvent\n");
 	
-	return CTimerd::addTimerEvent(CTimerd::TIMER_SHUTDOWN, NULL, announcetime, alarmtime, stoptime);
+	return addTimerEvent(TIMER_SHUTDOWN, NULL, announcetime, alarmtime, stoptime);
 }
 
 int CTimerd::addRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t stoptime, unsigned long long epgID, time_t epg_starttime, time_t announcetime, unsigned char apids, bool safety, std::string recDir, bool forceAdd)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::addRecordTimerEvent\n");
 	
-	CTimerd::RecordingInfo eventInfo;
+	RecordingInfo eventInfo;
 	
 	eventInfo.channel_id = channel_id;
 	eventInfo.epgID = epgID;
@@ -343,14 +343,14 @@ int CTimerd::addRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime
 	eventInfo.recordingSafety = safety;
 	strncpy(eventInfo.recordingDir, recDir.c_str(), RECORD_DIR_MAXLEN);
 	
-	return CTimerd::addTimerEvent(CTimerd::TIMER_RECORD, &eventInfo, announcetime, alarmtime, stoptime,CTimerd::TIMERREPEAT_ONCE, 0, forceAdd);
+	return addTimerEvent(TIMER_RECORD, &eventInfo, announcetime, alarmtime, stoptime, TIMERREPEAT_ONCE, 0, forceAdd);
 }
 
 int CTimerd::addImmediateRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t stoptime, unsigned long long epgID, time_t epg_starttime, unsigned char apids)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::addImmediateRecordTimerEvent\n");
 	
-	CTimerd::EventInfo eventInfo;
+	EventInfo eventInfo;
 	
 	eventInfo.channel_id = channel_id;
 	eventInfo.epgID = epgID;
@@ -358,35 +358,35 @@ int CTimerd::addImmediateRecordTimerEvent(const t_channel_id channel_id, time_t 
 	eventInfo.apids = apids;
 	eventInfo.recordingSafety = false;
 	
-	return CTimerd::addTimerEvent(CTimerd::TIMER_IMMEDIATE_RECORD, &eventInfo, 0, alarmtime, stoptime);
+	return addTimerEvent(TIMER_IMMEDIATE_RECORD, &eventInfo, 0, alarmtime, stoptime);
 }
 
 int CTimerd::addStandbyTimerEvent(bool standby_on, time_t alarmtime, time_t announcetime, time_t stoptime)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::addStandbyTimerEvent\n");
 	
-	return CTimerd::addTimerEvent(CTimerd::TIMER_STANDBY, &standby_on,  announcetime, alarmtime, stoptime);
+	return addTimerEvent(TIMER_STANDBY, &standby_on,  announcetime, alarmtime, stoptime);
 }
 
 int CTimerd::addZaptoTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t announcetime, time_t stoptime, unsigned long long epgID, time_t epg_starttime, unsigned char apids)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::addZaptoTimerEvent\n");
 	
-	CTimerd::EventInfo eventInfo;
+	EventInfo eventInfo;
 	
 	eventInfo.channel_id = channel_id;
 	eventInfo.epgID = epgID;
 	eventInfo.epg_starttime = epg_starttime;
 	eventInfo.apids = apids;
 	
-	return CTimerd::addTimerEvent(CTimerd::TIMER_ZAPTO, &eventInfo, announcetime, alarmtime, stoptime);
+	return addTimerEvent(TIMER_ZAPTO, &eventInfo, announcetime, alarmtime, stoptime);
 }
 
 int CTimerd::addNextProgramTimerEvent(CTimerd::EventInfo eventInfo, time_t alarmtime, time_t announcetime, time_t stoptime)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::addNextProgramTimerEvent\n");
 	
-	return CTimerd::addTimerEvent(CTimerd::TIMER_NEXTPROGRAM, &eventInfo, alarmtime, announcetime, stoptime);
+	return addTimerEvent(TIMER_NEXTPROGRAM, &eventInfo, alarmtime, announcetime, stoptime);
 }
 
 bool CTimerd::rescheduleTimerEvent(int eventid, time_t announcediff, time_t alarmdiff, time_t stoptime)
@@ -400,31 +400,31 @@ bool CTimerd::rescheduleTimerEvent(int eventid, time_t announcediff, time_t alar
 	return status;
 }
 
-bool CTimerd::modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount, void *data)
+bool CTimerd::modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerEventRepeat evrepeat, uint32_t repeatcount, void *data)
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::modifyTimerEvent\n");
 	
-	//FIXME
-	CTimerd::responseGetTimer *timerInfo = static_cast<CTimerd::responseGetTimer*>(data);
-	CTimerd::CTimerEventTypes *type = CTimerManager::getInstance()->getEventType(eventid);
+	//
+	responseGetTimer *timerInfo = static_cast<responseGetTimer*>(data);
+	CTimerEventTypes *type = CTimerManager::getInstance()->getEventType(eventid);
 
 	if (type)
 	{
 		switch (*type)
 		{
-			case CTimerd::TIMER_SHUTDOWN:						
-			case CTimerd::TIMER_NEXTPROGRAM:
-			case CTimerd::TIMER_ZAPTO:
-			case CTimerd::TIMER_STANDBY:
-			case CTimerd::TIMER_REMIND:
-			case CTimerd::TIMER_SLEEPTIMER:
-			case CTimerd::TIMER_EXEC_PLUGIN:
-			case CTimerd::TIMER_IMMEDIATE_RECORD:
+			case TIMER_SHUTDOWN:						
+			case TIMER_NEXTPROGRAM:
+			case TIMER_ZAPTO:
+			case TIMER_STANDBY:
+			case TIMER_REMIND:
+			case TIMER_SLEEPTIMER:
+			case TIMER_EXEC_PLUGIN:
+			case TIMER_IMMEDIATE_RECORD:
 				break;
 				
-			case CTimerd::TIMER_RECORD:
+			case TIMER_RECORD:
 			{
-				//CTimerd::commandRecordDir rdir;
+				//commandRecordDir rdir;
 				//strcpy(_data.recordingDir, rdir.recDir);
 				break;
 			}
@@ -445,11 +445,11 @@ bool CTimerd::modifyRecordTimerEvent(int eventid, time_t announcetime, time_t al
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::modifyRecordTimerEvent\n");
 	
-	CTimerd::commandRecordDir rdir;
+	commandRecordDir rdir;
 	
 	strncpy(rdir.recDir, recordingdir, RECORD_DIR_MAXLEN - 1);
 	
-	return CTimerd::modifyTimerEvent(eventid, announcetime, alarmtime, stoptime, evrepeat, repeatcount, &rdir);
+	return modifyTimerEvent(eventid, announcetime, alarmtime, stoptime, evrepeat, repeatcount, &rdir);
 }
 
 void CTimerd::setRecordingSafety(int pre, int post)
@@ -485,7 +485,7 @@ void CTimerd::getTimer(CTimerd::responseGetTimer &timer, unsigned timerID)
 	dprintf(DEBUG_NORMAL, "CTimerd::getTimer\n");
 	
 	CTimerEventMap events;
-	CTimerd::responseGetTimer resp;
+	responseGetTimer resp;
 	
 	if(CTimerManager::getInstance()->listEvents(events))
 	{
@@ -502,16 +502,16 @@ void CTimerd::getTimer(CTimerd::responseGetTimer &timer, unsigned timerID)
 			resp.stopTime = event->stopTime;
 			resp.repeatCount = event->repeatCount;
 					
-			if(event->eventType == CTimerd::TIMER_STANDBY)
+			if(event->eventType == TIMER_STANDBY)
 				resp.standby_on = static_cast<CTimerEvent_Standby*>(event)->standby_on;
-			else if(event->eventType == CTimerd::TIMER_NEXTPROGRAM)
+			else if(event->eventType == TIMER_NEXTPROGRAM)
 			{
 				resp.epgID = static_cast<CTimerEvent_NextProgram*>(event)->eventInfo.epgID;
 				resp.epg_starttime = static_cast<CTimerEvent_NextProgram*>(event)->eventInfo.epg_starttime;
 				resp.channel_id = static_cast<CTimerEvent_NextProgram*>(event)->eventInfo.channel_id;
 				resp.apids = static_cast<CTimerEvent_Record*>(event)->eventInfo.apids;
 			}
-			else if(event->eventType == CTimerd::TIMER_RECORD)
+			else if(event->eventType == TIMER_RECORD)
 			{
 				CTimerEvent_Record* ev= static_cast<CTimerEvent_Record*>(event);
 				resp.epgID = ev->eventInfo.epgID;
@@ -521,7 +521,7 @@ void CTimerd::getTimer(CTimerd::responseGetTimer &timer, unsigned timerID)
 				strcpy(resp.recordingDir, ev->recordingDir.substr(0,sizeof(resp.recordingDir)-1).c_str());						
 				strcpy(resp.epgTitle, ev->epgTitle.substr(0,sizeof(resp.epgTitle)-1).c_str());						
 			}
-			else if(event->eventType == CTimerd::TIMER_ZAPTO)
+			else if(event->eventType == TIMER_ZAPTO)
 			{
 				CTimerEvent_Zapto* ev= static_cast<CTimerEvent_Zapto*>(event);
 				resp.epgID = ev->eventInfo.epgID;
@@ -530,12 +530,12 @@ void CTimerd::getTimer(CTimerd::responseGetTimer &timer, unsigned timerID)
 				resp.apids = ev->eventInfo.apids;
 				strcpy(resp.epgTitle, ev->epgTitle.substr(0,sizeof(resp.epgTitle)-1).c_str());						
 			}
-			else if(event->eventType == CTimerd::TIMER_REMIND)
+			else if(event->eventType == TIMER_REMIND)
 			{
 				memset(resp.message, 0, sizeof(resp.message));
 				strncpy(resp.message, static_cast<CTimerEvent_Remind*>(event)->message, sizeof(resp.message)-1);
 			}
-			else if (event->eventType == CTimerd::TIMER_EXEC_PLUGIN)
+			else if (event->eventType == TIMER_EXEC_PLUGIN)
 			{
 				memset(resp.pluginName, 0, sizeof(resp.pluginName));
 				strncpy(resp.pluginName, static_cast<CTimerEvent_ExecPlugin*>(event)->name, sizeof(resp.message)-1);						
@@ -558,7 +558,7 @@ void CTimerd::getTimerList( CTimerd::TimerList &timerlist)
 	{
 		for(CTimerEventMap::iterator lpos = events.begin(); lpos != events.end(); lpos++)
 		{
-			CTimerd::responseGetTimer lresp;
+			responseGetTimer lresp;
 
 			CTimerEvent *event = lpos->second;
 
@@ -571,16 +571,16 @@ void CTimerd::getTimerList( CTimerd::TimerList &timerlist)
 			lresp.stopTime = event->stopTime;
 			lresp.repeatCount = event->repeatCount;
 
-			if(event->eventType == CTimerd::TIMER_STANDBY)
+			if(event->eventType == TIMER_STANDBY)
 				lresp.standby_on = static_cast<CTimerEvent_Standby*>(event)->standby_on;
-			else if(event->eventType == CTimerd::TIMER_NEXTPROGRAM)
+			else if(event->eventType == TIMER_NEXTPROGRAM)
 			{
 				lresp.epgID = static_cast<CTimerEvent_NextProgram*>(event)->eventInfo.epgID;
 				lresp.epg_starttime = static_cast<CTimerEvent_NextProgram*>(event)->eventInfo.epg_starttime;
 				lresp.channel_id = static_cast<CTimerEvent_NextProgram*>(event)->eventInfo.channel_id;
 				lresp.apids = static_cast<CTimerEvent_Record*>(event)->eventInfo.apids;
 			}
-			else if(event->eventType == CTimerd::TIMER_RECORD)
+			else if(event->eventType == TIMER_RECORD)
 			{
 				CTimerEvent_Record* ev= static_cast<CTimerEvent_Record*>(event);
 				lresp.epgID = ev->eventInfo.epgID;
@@ -590,7 +590,7 @@ void CTimerd::getTimerList( CTimerd::TimerList &timerlist)
 				strcpy(lresp.recordingDir, ev->recordingDir.substr(0, sizeof(lresp.recordingDir)-1).c_str());
 				strcpy(lresp.epgTitle, ev->epgTitle.substr(0, sizeof(lresp.epgTitle)-1).c_str());						
 			}
-			else if(event->eventType == CTimerd::TIMER_ZAPTO)
+			else if(event->eventType == TIMER_ZAPTO)
 			{
 				CTimerEvent_Zapto* ev= static_cast<CTimerEvent_Zapto*>(event);
 				lresp.epgID = ev->eventInfo.epgID;
@@ -599,11 +599,11 @@ void CTimerd::getTimerList( CTimerd::TimerList &timerlist)
 				lresp.apids = ev->eventInfo.apids;
 				strcpy(lresp.epgTitle, ev->epgTitle.substr(0, sizeof(lresp.epgTitle)-1).c_str());						
 			}
-			else if(event->eventType == CTimerd::TIMER_REMIND)
+			else if(event->eventType == TIMER_REMIND)
 			{
 				strcpy(lresp.message, static_cast<CTimerEvent_Remind*>(event)->message);
 			}
-			else if(event->eventType == CTimerd::TIMER_EXEC_PLUGIN)
+			else if(event->eventType == TIMER_EXEC_PLUGIN)
 			{
 				strcpy(lresp.pluginName, static_cast<CTimerEvent_ExecPlugin*>(event)->name);
 			}
@@ -617,27 +617,27 @@ CTimerd::TimerList CTimerd::getOverlappingTimers(time_t& startTime, time_t& stop
 {
 	dprintf(DEBUG_NORMAL, "CTimerd::getOverlappingTimers\n");
 	
-	CTimerd::TimerList timerlist; 
-	CTimerd::TimerList overlapping;
+	TimerList timerlist; 
+	TimerList overlapping;
 	int timerPre;
 	int timerPost;
 
-	CTimerd::getTimerList(timerlist);
-	CTimerd::getRecordingSafety(timerPre, timerPost);
+	getTimerList(timerlist);
+	getRecordingSafety(timerPre, timerPost);
 
-	for (CTimerd::TimerList::iterator it = timerlist.begin(); it != timerlist.end();it++)
+	for (TimerList::iterator it = timerlist.begin(); it != timerlist.end();it++)
 	{
 		if(it->stopTime != 0 && stopTime != 0)
 		{
 			// Check if both timers have start and end. In this case do not show conflict, if endtime is the same than the starttime of the following timer
-			if ((stopTime + timerPost > it->alarmTime) && (startTime - timerPre < it->stopTime)) //FIXME
+			if ((stopTime + timerPost > it->alarmTime) && (startTime - timerPre < it->stopTime)) 
 			{
 				overlapping.push_back(*it);
 			}
 		}
 		else
 		{
-			if (!((stopTime < it->announceTime) || (startTime > it->stopTime))) //FIXME
+			if (!((stopTime < it->announceTime) || (startTime > it->stopTime)))
 			{
 				overlapping.push_back(*it);
 			}
@@ -647,11 +647,11 @@ CTimerd::TimerList CTimerd::getOverlappingTimers(time_t& startTime, time_t& stop
 	return overlapping;
 }
 
-void CTimerd::getWeekdaysFromStr(CTimerd::CTimerEventRepeat *eventRepeat, const char* str)
+void CTimerd::getWeekdaysFromStr(CTimerEventRepeat *eventRepeat, const char* str)
 {
 	int rep = (int) *eventRepeat;
 	
-	if(rep >= (int)CTimerd::TIMERREPEAT_WEEKDAYS)
+	if(rep >= (int)TIMERREPEAT_WEEKDAYS)
 	{
 		for(int n = 0; n < 7; n++)
 		{
@@ -666,12 +666,12 @@ void CTimerd::getWeekdaysFromStr(CTimerd::CTimerEventRepeat *eventRepeat, const 
 		}
 	}
 	
-	*eventRepeat = (CTimerd::CTimerEventRepeat) rep;
+	*eventRepeat = (CTimerEventRepeat) rep;
 }
 
-void CTimerd::setWeekdaysToStr(CTimerd::CTimerEventRepeat rep, char* str)
+void CTimerd::setWeekdaysToStr(CTimerEventRepeat rep, char* str)
 {
-	if(rep >= CTimerd::TIMERREPEAT_WEEKDAYS)
+	if(rep >= TIMERREPEAT_WEEKDAYS)
 	{
 		for(int n = 0; n < 7; n++)
 		{

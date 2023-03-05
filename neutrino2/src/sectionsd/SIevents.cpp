@@ -68,26 +68,18 @@ SIevent::SIevent(const struct eit_event *e)
 	service_id = 0;
 	original_network_id = 0;
 	transport_stream_id = 0;
-	satellitePosition = 0;
-	freq = 0;
-	
-	//
-	satellitePosition = 0;
-	freq = 0;
 }
 
 SIevent::SIevent(const t_original_network_id _original_network_id, const t_transport_stream_id _transport_stream_id, const t_service_id _service_id,
 		 const unsigned short _event_id)
 {
-	original_network_id = _original_network_id;
-	transport_stream_id = _transport_stream_id;
-	service_id          = _service_id;
-	satellitePosition = 0;
-	freq = 0;
-	eventID		    = _event_id;
-	table_id            = 0xFF; /* not set */
-	version 	    = 0xFF;
-	running		    = 0;
+	original_network_id 	= _original_network_id;
+	transport_stream_id 	= _transport_stream_id;
+	service_id          	= _service_id;
+	eventID		    	= _event_id;
+	table_id            	= 0xFF; /* not set */
+	version 	    	= 0xFF;
+	running		   	= 0;
 	/*	
 	contentClassification = "";
 	userClassification = "";
@@ -100,29 +92,25 @@ SIevent::SIevent(const t_original_network_id _original_network_id, const t_trans
 // Std-Copy
 SIevent::SIevent(const SIevent &e)
 {
-	eventID=e.eventID;
-	langName=e.langName;
-	langText=e.langText;
-	//startzeit=e.startzeit;
-	//dauer=e.dauer;
-	times=e.times;
+	eventID = e.eventID;
+	langName = e.langName;
+	langText = e.langText;
+	times = e.times;
 	service_id          = e.service_id;
 	original_network_id = e.original_network_id;
 	transport_stream_id = e.transport_stream_id;
-	satellitePosition = e.satellitePosition;
-	freq = e.freq;
-	itemDescription=e.itemDescription;
-	item=e.item;
-	langExtendedText=e.langExtendedText;
-	contentClassification=e.contentClassification;
-	userClassification=e.userClassification;
-	components=e.components;
-	ratings=e.ratings;
-	linkage_descs=e.linkage_descs;
-	running=e.running;
+	itemDescription = e.itemDescription;
+	item = e.item;
+	langExtendedText = e.langExtendedText;
+	contentClassification = e.contentClassification;
+	userClassification = e.userClassification;
+	components = e.components;
+	ratings = e.ratings;
+	linkage_descs = e.linkage_descs;
+	running = e.running;
 	vps = e.vps;
 	table_id = e.table_id;
-	version =  e.version;
+	version = e.version;
 }
 
 int SIevent::saveXML(FILE *file, const char *serviceName) const

@@ -162,7 +162,7 @@ class CTimerd
 		void stopTimerEvent(int evId);
 		void removeTimerEvent(int evId);
 
-		int addTimerEvent(CTimerd::CTimerEventTypes evType, void* data, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0, CTimerd::CTimerEventRepeat evrepeat = CTimerd::TIMERREPEAT_ONCE, uint32_t repeatcount = 0, bool forceadd = true);
+		int addTimerEvent(CTimerEventTypes evType, void* data, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0, CTimerEventRepeat evrepeat = TIMERREPEAT_ONCE, uint32_t repeatcount = 0, bool forceadd = true);
 		int setSleeptimer(time_t announcetime, time_t alarmtime, int timerid = 0);
 		int getSleeptimerID();
 		int getSleepTimerRemaining();
@@ -172,19 +172,19 @@ class CTimerd
 		int addImmediateRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t stoptime, unsigned long long epgID = 0, time_t epg_starttime = 0, unsigned char apids = TIMERD_APIDS_STD);
 		int addStandbyTimerEvent(bool standby_on,time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0);
 		int addZaptoTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0, unsigned long long epgID=0, time_t epg_starttime = 0,unsigned char apids = TIMERD_APIDS_STD);
-		int addNextProgramTimerEvent(CTimerd::EventInfo eventInfo, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0);
+		int addNextProgramTimerEvent(EventInfo eventInfo, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0);
 
 		bool rescheduleTimerEvent(int eventid, time_t announcediff, time_t alarmdiff, time_t stoptime);
-		bool modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime = 0, CTimerd::CTimerEventRepeat evrepeat = CTimerd::TIMERREPEAT_ONCE, uint32_t repeatcount = 0, void *data = NULL);
-		bool modifyRecordTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat, uint32_t repeatcount, const char * const recordingdir);
+		bool modifyTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime = 0, CTimerEventRepeat evrepeat = TIMERREPEAT_ONCE, uint32_t repeatcount = 0, void *data = NULL);
+		bool modifyRecordTimerEvent(int eventid, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerEventRepeat evrepeat, uint32_t repeatcount, const char * const recordingdir);
 
-		void getTimer(CTimerd::responseGetTimer &timer, unsigned timerID);
-		void getTimerList( CTimerd::TimerList &timerlist);
+		void getTimer(responseGetTimer &timer, unsigned timerID);
+		void getTimerList(TimerList &timerlist);
 
-		CTimerd::TimerList getOverlappingTimers(time_t& startTime, time_t& stopTime);
+		TimerList getOverlappingTimers(time_t& startTime, time_t& stopTime);
 
-		void getWeekdaysFromStr(CTimerd::CTimerEventRepeat *eventRepeat, const char* str);
-		void setWeekdaysToStr(CTimerd::CTimerEventRepeat rep, char* str);
+		void getWeekdaysFromStr(CTimerEventRepeat *eventRepeat, const char* str);
+		void setWeekdaysToStr(CTimerEventRepeat rep, char* str);
 
 		void setRecordingSafety(int pre, int post);
 		void getRecordingSafety(int &pre, int &post);

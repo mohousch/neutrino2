@@ -142,7 +142,7 @@ void EventList::readEvents(const t_channel_id channel_id)
 		// todo: what if there are more than one events in the Portal
 		if (CSectionsd::getInstance()->getActualEPGServiceKey(channel_id & 0xFFFFFFFFFFFFULL, &epgData))
 		{
-			CSectionsd::LinkageDescriptorList	linkedServices;
+			CSectionsd::LinkageDescriptorList linkedServices;
 
 			if ( CSectionsd::getInstance()->getLinkageDescriptorsUniqueKey( epgData.eventID, linkedServices ) )
 			{

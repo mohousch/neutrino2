@@ -314,13 +314,13 @@ class CZapit
 		void sendRecordSubPIDs(SubPIDList &subpids);
 		
 		//
-		void internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, CZapit::BouquetChannelList &Bchannels);
-		void internalSendNChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, CZapit::BouquetNChannelList &Bchannels);
-		void sendBouquets(CZapit::responseGetBouquets &msgBouquet, const bool emptyBouquetsToo, CZapit::channelsMode mode);
-		void sendBouquetChannels(CZapit::BouquetChannelList &Bchannels, const unsigned int bouquet, const CZapit::channelsMode mode);
-		void sendBouquetNChannels(CZapit::BouquetNChannelList &Bchannels, const unsigned int bouquet, const CZapit::channelsMode mode);
-		void sendChannels(CZapit::BouquetChannelList &Bchannels, const CZapit::channelsMode mode, const CZapit::channelsOrder order);
-		void sendNChannels(CZapit::BouquetNChannelList &Bchannels, const CZapit::channelsMode mode, const CZapit::channelsOrder order);
+		void internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, BouquetChannelList &Bchannels);
+		void internalSendNChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, BouquetNChannelList &Bchannels);
+		void sendBouquets(responseGetBouquets &msgBouquet, const bool emptyBouquetsToo, channelsMode mode);
+		void sendBouquetChannels(BouquetChannelList &Bchannels, const unsigned int bouquet, const channelsMode mode);
+		void sendBouquetNChannels(BouquetNChannelList &Bchannels, const unsigned int bouquet, const channelsMode mode);
+		void sendChannels(BouquetChannelList &Bchannels, const channelsMode mode, const channelsOrder order);
+		void sendNChannels(BouquetNChannelList &Bchannels, const channelsMode mode, const channelsOrder order);
 		
 		//
 		void closeAVDecoder(void);
@@ -331,7 +331,7 @@ class CZapit
 		void leaveStandby(void);
 		
 		//
-		int start_scan(CZapit::commandStartScan StartScan);
+		int start_scan(commandStartScan StartScan);
 		
 		CZapit(){};
 	public:
@@ -364,7 +364,7 @@ class CZapit
 		//
 		void getLastChannel(unsigned int &channumber, char &mode);
 		int getMode(void);
-		void setMode(const CZapit::channelsMode mode);
+		void setMode(const channelsMode mode);
 
 		// playback
 		int startPlayBack(CZapitChannel *);
@@ -394,21 +394,21 @@ class CZapit
 		std::string getChannelDescription(const t_channel_id channel_id);
 
 		// current service
-		void getPIDS(CZapit::responseGetPIDs &pids);
+		void getPIDS(responseGetPIDs &pids);
 		t_channel_id getCurrentServiceID();
 		CZapit::CCurrentServiceInfo getCurrentServiceInfo();
 		int32_t getCurrentSatellitePosition();
 		bool getCurrentTP(TP_params *TP);
 
 		// novd
-		void setSubServices( CZapit::subServiceList& subServices );
+		void setSubServices( subServiceList& subServices );
 
 		// record
 		void setRecordMode(const bool activate);
 		bool isRecordModeActive();
 		t_channel_id getRecordServiceID();
 		CZapit::CCurrentServiceInfo getRecordServiceInfo();
-		void getRecordPIDS(CZapit::responseGetPIDs &pids);
+		void getRecordPIDS(responseGetPIDs &pids);
 
 		void reinitChannels();
 		void reloadCurrentServices();
@@ -431,10 +431,10 @@ class CZapit
 		void setVideoSystem(int video_system);
 
 		// channels / bouquets
-		//bool getChannels(CZapit::BouquetChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const CZapit::channelsOrder order = CZapit::SORT_BOUQUET, const bool utf_encoded = false);
-		//void getBouquets( CZapit::BouquetList& bouquets, const bool emptyBouquetsToo = false, const bool utf_encoded = false, CZapit::channelsMode mode = CZapit::MODE_CURRENT);
-		bool getBouquetChannels(const unsigned int bouquet, CZapit::BouquetChannelList &channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const bool utf_encoded = false);
-		bool getBouquetNChannels(const unsigned int bouquet, CZapit::BouquetNChannelList& channels, const CZapit::channelsMode mode = CZapit::MODE_CURRENT, const bool utf_encoded = false);
+		//bool getChannels(BouquetChannelList& channels, const channelsMode mode = MODE_CURRENT, const channelsOrder order = SORT_BOUQUET, const bool utf_encoded = false);
+		//void getBouquets( BouquetList& bouquets, const bool emptyBouquetsToo = false, const bool utf_encoded = false, channelsMode mode = MODE_CURRENT);
+		bool getBouquetChannels(const unsigned int bouquet, BouquetChannelList &channels, const channelsMode mode = MODE_CURRENT, const bool utf_encoded = false);
+		bool getBouquetNChannels(const unsigned int bouquet, BouquetNChannelList& channels, const channelsMode mode = MODE_CURRENT, const bool utf_encoded = false);
 
 		// bouquetManager
 		void renumChannellist();
@@ -444,7 +444,7 @@ class CZapit
 		void deleteBouquet(const unsigned int bouquet);
 		void renameBouquet(const unsigned int bouquet, const char * const newName); // UTF-8 encoded
 		void moveBouquet(const unsigned int bouquet, const unsigned int newPos);
-		void moveChannel(const unsigned int bouquet, unsigned int oldPos, unsigned int newPos, CZapit::channelsMode mode = CZapit::MODE_CURRENT);
+		void moveChannel(const unsigned int bouquet, unsigned int oldPos, unsigned int newPos, channelsMode mode = MODE_CURRENT);
 		signed int existsBouquet(const char * const name); // UTF-8 encoded
 		void setBouquetLock(const unsigned int bouquet, const bool lock);
 		void setBouquetHidden(const unsigned int bouquet, const bool hidden);
@@ -456,14 +456,14 @@ class CZapit
 		bool tuneTP(TP_params TP, int feindex = 0);
 		bool scanTP(TP_params TP, int feindex = 0);
 		bool isScanReady(unsigned int &satellite, unsigned int &processed_transponder, unsigned int &transponder, unsigned int &services );
-		void getScanSatelliteList( CZapit::SatelliteList &satelliteList );
-		void setScanSatelliteList( CZapit::ScanSatelliteList &satelliteList );
-		void setScanType(const CZapit::scanType mode);
+		void getScanSatelliteList( SatelliteList &satelliteList );
+		void setScanSatelliteList( ScanSatelliteList &satelliteList );
+		void setScanType(const scanType mode);
 		void setFEMode(const fe_mode_t mode, int feindex = 0);
-		void setScanBouquetMode(const CZapit::bouquetMode mode);
+		void setScanBouquetMode(const bouquetMode mode);
 		void setDiseqcType(const diseqc_t diseqc, int feindex = 0);
 		void setDiseqcRepeat(const uint32_t repeat, int feindex = 0);
-		void setScanMotorPosList( CZapit::ScanMotorPosList& motorPosList );
+		void setScanMotorPosList( ScanMotorPosList& motorPosList );
 		bool startScan(int scan_mode, int feindex = 0);
 		bool stopScan();
 
