@@ -5008,6 +5008,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if (actionKey == "free_memory")
 	{
+		CSectionsd::getInstance()->dumpStatus();
 		CSectionsd::getInstance()->freeMemory();
 	}
 	else if (actionKey == "mainmenu")
