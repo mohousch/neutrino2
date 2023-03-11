@@ -843,7 +843,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, "\033[1;32mCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%x) data:(0x%x) <\033[0m\n", *msg, *data );
+			dprintf(DEBUG_INFO, "\033[1;32mCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%x) data:(0x%x) <\033[0m\n", *msg, *data );
 
 			return;
 		}
@@ -1363,7 +1363,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					continue;
 				}
 								
-				dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: type: 0x%X key: 0x%X value %d, translate: 0x%X -%s-\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
+				dprintf(DEBUG_INFO, "CRCInput::getMsg_us: type: 0x%X key: 0x%X value %d, translate: 0x%X -%s-\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
 
 				uint32_t trkey = translate(ev.code, i);
 
@@ -1449,7 +1449,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, "CRCInput::getMsg_us: got event from low-pri pipe msg: (%x) data: (%x)\n", *msg, *data );
+			dprintf(DEBUG_INFO, "CRCInput::getMsg_us: got event from low-pri pipe msg: (%x) data: (%x)\n", *msg, *data );
 
 			return;
 		}
@@ -1515,7 +1515,7 @@ void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 
 void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority)
 {
-	dprintf(DEBUG_NORMAL, "CRCInput::postMsg %x %x %d >\n", msg, data, Priority );
+	dprintf(DEBUG_INFO, "CRCInput::postMsg %x %x %d >\n", msg, data, Priority );
 
 	struct event buf;
 	

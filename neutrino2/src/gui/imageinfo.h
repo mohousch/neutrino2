@@ -39,6 +39,7 @@ class CImageInfo : public CMenuTarget
 		
 		//
 		CWidget *widget;
+		CWindow *window;
 		
 		//
 		int x;

@@ -44,6 +44,7 @@ CImageInfo::CImageInfo()
 	
 	//
 	widget = NULL;
+	window = NULL;
 
 	font_head   = SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME;
 	font_small  = SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL;
@@ -78,8 +79,11 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 	if (widget == NULL)
 	{
 		widget = new CWidget(x, y, width, height);
-		widget->paintMainFrame(true);
+		
+		widget->name = "imageinfo";
 	}
+	
+	window = new CWindow(x, y, width, height);
 	
 	// recalculate
 	if (widget)
@@ -88,6 +92,8 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 		y = widget->getWindowsPos().iY;
 		width = widget->getWindowsPos().iWidth;
 		height = widget->getWindowsPos().iHeight;
+		
+		window->setPosition(x, y, width, height);
 	}
 
 	paint();
@@ -127,7 +133,7 @@ void CImageInfo::paint()
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8, head_string);
 
 	//
-	widget->paint();
+	window->paint();
 	
 	// title
 	g_Font[font_head]->RenderString(xpos, ypos + hheight + 10, width, head_string, COL_MENUHEAD, 0, true);

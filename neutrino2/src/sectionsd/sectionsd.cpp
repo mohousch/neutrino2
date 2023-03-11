@@ -1910,7 +1910,7 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 	//if (url.empty())
 	//	return 0;
 
-	std::string answer = "/tmp/epg.xml";
+	std::string answer;
 
 	//
 	unsigned short id = 0;
@@ -1924,7 +1924,7 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 	//
 	unsigned int ev_count = 0;
 
-	//answer = randomFile(::getFileExt(url), "/tmp", 8);
+	answer = randomFile(::getFileExt(url), "/tmp", 8);
 	
 	if (!::downloadUrl(url, answer))
 		return 0;
