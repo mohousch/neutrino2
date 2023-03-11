@@ -371,7 +371,7 @@ struct SNeutrinoSettings
 	std::string epg_extendedcache;
 	std::string epg_dir;
 	//
-	//std::vector<std::string> xmltv;
+	std::vector<std::string> xmltv;
 	int epg_xmltv;
 	// localtv
 	enum {

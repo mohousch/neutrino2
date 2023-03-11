@@ -675,7 +675,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 								chan->setEPGUrl(xmltv);
 								
 								//
-								//g_settings.xmltv.push_back(xmltv);
+								g_settings.xmltv.push_back(xmltv);
 							}
 							
 							if (logo != NULL)
@@ -684,7 +684,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 								chan->setLogoID(id);
 							}
 							
-							if (epgid)
+							if (epgid != NULL)
 							{ 
 								epg_id = strtoull(epgid, NULL, 16);
 								chan->setEPGID(epg_id);
@@ -765,7 +765,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 						changeFileNameExt(xmltv, "");
 					
 					//
-					//g_settings.xmltv.push_back(xmltv);
+					g_settings.xmltv.push_back(xmltv);
 				}
 			}
 			

@@ -339,7 +339,7 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 	char classname;
 	t_channel_id current_channel = live_channel_id;
 	int prozent;
-	CSectionsd::responseGetCurrentNextInfoChannelID currentNextInfo;
+	CSectionsd::CurrentNextInfo currentNextInfo;
 	std::string timestr;
 	bool have_logos = false;
 
@@ -558,7 +558,7 @@ std::string  CNeutrinoYParser::func_get_audio_pids_as_dropdown(CyhookHandler *, 
 	CZapit::getInstance()->getPIDS(pids);
 
 	t_channel_id current_channel = live_channel_id; //CZapit::getInstance()->getCurrentServiceID();
-	CSectionsd::responseGetCurrentNextInfoChannelID currentNextInfo;
+	CSectionsd::CurrentNextInfo currentNextInfo;
 	CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
 	if (CSectionsd::getInstance()->getComponentTagsUniqueKey(currentNextInfo.current_uniqueKey,tags))
 	{

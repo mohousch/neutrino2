@@ -100,7 +100,7 @@
 
 
 extern CBouquetManager * g_bouquetManager;	// defined in der zapit.cpp
-//extern tallchans allchans;	// defined in zapit.cpp.
+extern tallchans allchans;	// defined in zapit.cpp.
 int op_increase(int i) { return ++i; }
 
 // 60 Minuten Zyklus...
@@ -353,12 +353,12 @@ typedef SIevent *SIeventPtr;
 
 typedef std::map<event_id_t, SIeventPtr, std::less<event_id_t> > MySIeventsOrderUniqueKey;
 static MySIeventsOrderUniqueKey mySIeventsOrderUniqueKey;
+static MySIeventsOrderUniqueKey mySIeventsNVODorderUniqueKey;
+
 static SIevent * myCurrentEvent = NULL;
 static SIevent * myNextEvent = NULL;
 
-// Mengen mit SIeventPtr sortiert nach Event-ID fuer NVOD-Events (mehrere Zeiten)
-static MySIeventsOrderUniqueKey mySIeventsNVODorderUniqueKey;
-
+//
 struct OrderServiceUniqueKeyFirstStartTimeEventUniqueKey
 {
 	bool operator()(const SIeventPtr &p1, const SIeventPtr &p2)
@@ -1544,7 +1544,7 @@ void CSectionsd::setServiceChanged(t_channel_id channel_id, bool requestEvent)
 		
 		//
 		writeLockMessaging();
-		messaging_current_servicekey = /**uniqueServiceKey*/channel_id;
+		messaging_current_servicekey = channel_id;
 		messaging_have_CN = 0x00;
 		messaging_got_CN = 0x00;
 		messaging_zap_detected = true;
@@ -1560,7 +1560,7 @@ void CSectionsd::setServiceChanged(t_channel_id channel_id, bool requestEvent)
 		// add localtv here
 		readSIfromLocalTV(messaging_current_servicekey);
 		// xmltv
-		readSIfromXMLTV(messaging_current_servicekey);
+		//readSIfromXMLTV(messaging_current_servicekey);
 	}
 
 	return;
@@ -1766,6 +1766,7 @@ void *CSectionsd::insertEventsfromFile(void *)
 
 							node = event->xmlChildrenNode;
 
+							//
 							while (xmlGetNextOccurence(node, "name") != NULL) 
 							{
 								e.setName(std::string(UTF8_to_Latin1(xmlGetAttribute(node, "lang"))), std::string(xmlGetAttribute(node, "string")));
@@ -1773,6 +1774,7 @@ void *CSectionsd::insertEventsfromFile(void *)
 								node = node->xmlNextNode;
 							}
 
+							//
 							while (xmlGetNextOccurence(node, "text") != NULL) 
 							{
 								e.setText(std::string(UTF8_to_Latin1(xmlGetAttribute(node, "lang"))), std::string(xmlGetAttribute(node, "string")));
@@ -1780,18 +1782,21 @@ void *CSectionsd::insertEventsfromFile(void *)
 								node = node->xmlNextNode;
 							}
 
+							//
 							while (xmlGetNextOccurence(node, "item") != NULL) 
 							{
 								e.item = std::string(xmlGetAttribute(node, "string"));
 								node = node->xmlNextNode;
 							}
 
+							//
 							while (xmlGetNextOccurence(node, "item_description") != NULL) 
 							{
 								e.itemDescription = std::string(xmlGetAttribute(node, "string"));
 								node = node->xmlNextNode;
 							}
 
+							//
 							while (xmlGetNextOccurence(node, "extended_text") != NULL) 
 							{
 								e.appendExtendedText(std::string(UTF8_to_Latin1(xmlGetAttribute(node, "lang"))), std::string(xmlGetAttribute(node, "string")));
@@ -1799,6 +1804,7 @@ void *CSectionsd::insertEventsfromFile(void *)
 								node = node->xmlNextNode;
 							}
 
+							//
 							while (xmlGetNextOccurence(node, "time") != NULL) 
 							{
 								e.times.insert(SItime(xmlGetNumericAttribute(node, "start_time", 10), xmlGetNumericAttribute(node, "duration", 10)));
@@ -1806,6 +1812,7 @@ void *CSectionsd::insertEventsfromFile(void *)
 								node = node->xmlNextNode;
 							}
 
+							//
 							unsigned int count = 0;
 							while (xmlGetNextOccurence(node, "content") != NULL) 
 							{
@@ -1819,6 +1826,7 @@ void *CSectionsd::insertEventsfromFile(void *)
 							e.contentClassification = std::string(cclass, count);
 							e.userClassification = std::string(cuser, count);
 
+							//
 							while (xmlGetNextOccurence(node, "component") != NULL) 
 							{
 								SIcomponent c;
@@ -1830,12 +1838,14 @@ void *CSectionsd::insertEventsfromFile(void *)
 								node = node->xmlNextNode;
 							}
 
+							//
 							while (xmlGetNextOccurence(node, "parental_rating") != NULL) 
 							{
 								e.ratings.insert(SIparentalRating(std::string(UTF8_to_Latin1(xmlGetAttribute(node, "country"))), (unsigned char) xmlGetNumericAttribute(node, "rating", 10)));
 								node = node->xmlNextNode;
 							}
 
+							//
 							while (xmlGetNextOccurence(node, "linkage") != NULL) 
 							{
 								SIlinkage l;
@@ -1848,7 +1858,7 @@ void *CSectionsd::insertEventsfromFile(void *)
 
 								node = node->xmlNextNode;
 							}
-							//lockEvents();
+							
 							//writeLockEvents();
 							CSectionsd::getInstance()->addEvent(e, 0);
 							ev_count++;
@@ -1888,23 +1898,19 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 		pthread_exit(NULL);
 	}
 	
-	//std::string url = (std::string)(char *) data;
-	t_channel_id chid = (t_channel_id)data;
+	std::string url = (std::string)(char *) data;
+	//t_channel_id chid = (t_channel_id)data;
 	
-	dprintf(DEBUG_INFO, "[sectionsd] sectionsd:insertEventsfromXMLTV: chid:%llx\n", chid);
-	
-	//
-	CZapitChannel *channel = g_bouquetManager->findChannelByChannelID(chid);
+	dprintf(DEBUG_INFO, "[sectionsd] sectionsd:insertEventsfromXMLTV: chid:%s\n", url);
 	
 	//
-	std::string url;
-	
-	if (channel) url = channel->getEPGUrl();
-	
-	if (url.empty())
-		return 0;
+	//CZapitChannel *channel = g_bouquetManager->findChannelByChannelID(chid);
+	//std::string url;
+	//if (channel) url = channel->getEPGUrl();
+	//if (url.empty())
+	//	return 0;
 
-	std::string answer;
+	std::string answer = "/tmp/epg.xml";
 
 	//
 	unsigned short id = 0;
@@ -1918,9 +1924,10 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 	//
 	unsigned int ev_count = 0;
 
-	answer = randomFile(::getFileExt(url), "/tmp", 8);
+	//answer = randomFile(::getFileExt(url), "/tmp", 8);
 	
-	::downloadUrl(url, answer);
+	if (!::downloadUrl(url, answer))
+		return 0;
 	
 	//
 	_xmlNodePtr event = NULL;
@@ -1942,12 +1949,12 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 				const char *start = xmlGetAttribute(node, "start");
 				const char *stop  = xmlGetAttribute(node, "stop");
 				
-				//for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
-				//{
-					//if ( IS_WEBTV(it->second.getChannelID()) )
-					//{
+				for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
+				{
+					if ( IS_WEBTV(it->second.getChannelID()) )
+					{
 						// check epgidname // channel
-						if ( (strcmp(chan, /*it->second.*/channel->getEPGIDName().c_str()) == 0) /*&& (!it->second.getEPGUrl().empty())*/ )
+						if ( (strcmp(chan, it->second.getEPGIDName().c_str()) == 0) && (!it->second.getEPGUrl().empty()) )
 						{
 							struct tm starttime, stoptime;
 							strptime(start, "%Y%m%d%H%M%S %z", &starttime);
@@ -1962,12 +1969,11 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 							double time_diff = difftime(current_time, start_time + duration);
 
 							//
-							SIevent e(GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(/*it->second.getChannelID()*/chid), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(/*it->second.getChannelID()*/chid), GET_SERVICE_ID_FROM_CHANNEL_ID(/*it->second.getChannelID()*/chid), ev_count+0x8000);
+							SIevent e(GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(it->second.getChannelID()), GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(it->second.getChannelID()), GET_SERVICE_ID_FROM_CHANNEL_ID(it->second.getChannelID()), ev_count + 0x8000);
 							e.table_id = 0x50;
 							e.times.insert(SItime(start_time, duration));
 								
-							_xmlNodePtr _node = node->xmlChildrenNode;
-								
+							_xmlNodePtr _node = node->xmlChildrenNode;	
 							while ((_node = xmlGetNextOccurence(_node, "title")))
 							{
 								const char *title = xmlGetData(_node);
@@ -2000,8 +2006,8 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 
 							ev_count++;
 						}
-					//}
-				//}
+					}
+				}
 
 				node = node->xmlNextNode;	
 			}
@@ -2570,30 +2576,30 @@ void CSectionsd::readSIfromXML(const char *epgxmlname)
 
 // fromXMLTV
 //
-//void CSectionsd::readSIfromXMLTV(const char *url)
-void CSectionsd::readSIfromXMLTV(const t_channel_id chid)
+void CSectionsd::readSIfromXMLTV(const char *url)
+//void CSectionsd::readSIfromXMLTV(const t_channel_id chid)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromXMLTV: %llx\n", chid);
+	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromXMLTV: %s\n", url);
 
 	pthread_t thrInsert;
 
-	//if (!url)
-	//	return ;
-	if ( !chid && !IS_WEBTV(chid) )
-		return;
+	if (!url)
+		return ;
+	//if ( !chid && !IS_WEBTV(chid) )
+	//	return;
 		
-	if(!g_settings.epg_xmltv)
-		return;
+	//if(!g_settings.epg_xmltv)
+	//	return;
 
-	//writeLockMessaging();
-	//static std::string url_tmp = url;
-	//unlockMessaging();
+	writeLockMessaging();
+	static std::string url_tmp = url;
+	unlockMessaging();
 
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
-	if (pthread_create (&thrInsert, &attr, insertEventsfromXMLTV, (void *)chid))
+	if (pthread_create (&thrInsert, &attr, insertEventsfromXMLTV, (void *)url_tmp.c_str()))
 	{
 		perror("sectionsd: sectionsd_readSIfromXMLTV: pthread_create()");
 	}
@@ -3589,6 +3595,7 @@ void *CSectionsd::eitThread(void *)
 	}
 
 	dmxEIT.start(); // -> unlock
+	
 	if (!scanning)
 		dmxEIT.request_pause();
 
@@ -3603,8 +3610,10 @@ void *CSectionsd::eitThread(void *)
 				break;
 			sleep(1);
 		}
+		
 		if(sectionsd_stop)
 			break;
+			
 		time_t zeit = time_monotonic();
 
 		rc = dmxEIT.getSection(static_buf, timeoutInMSeconds, timeoutsDMX);
@@ -3624,7 +3633,8 @@ void *CSectionsd::eitThread(void *)
 				timeoutsDMX = 0;
 				dmxEIT.change(dmxEIT.filter_index + 1);
 			}
-			else {
+			else 
+			{
 				sendToSleepNow = true;
 				timeoutsDMX = 0;
 			}
@@ -4340,7 +4350,7 @@ void CSectionsd::getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEven
 	}
 }
 
-void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectionsd::responseGetCurrentNextInfoChannelID& current_next )
+void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CurrentNextInfo& current_next )
 {
 	dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: Request of current/next information for: %llx\n", uniqueServiceKey);
 
@@ -4501,7 +4511,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CSectio
 			}
 	} 
 	else
-		flag |= CSectionsd::epgflags::has_no_current;
+		flag |= epgflags::has_no_current;
 
 	time_t now;
 
@@ -4774,7 +4784,7 @@ void CSectionsd::getChannelEvents(CChannelEventList &eList, bool tv_mode, t_chan
 				{
 					CChannelEvent aEvent;
 
-					aEvent.channelID = (*e)->get_channel_id();//FIXME: get_channel_id()
+					aEvent.channelID = (*e)->get_channel_id();
 					aEvent.eventID = (*e)->uniqueKey();
 					aEvent.startTime = t->startzeit;
 					aEvent.duration = t->dauer;
@@ -4797,7 +4807,7 @@ void CSectionsd::getChannelEvents(CChannelEventList &eList, bool tv_mode, t_chan
 	unlockEvents();
 }
 
-bool CSectionsd::getComponentTagsUniqueKey(const event_id_t uniqueKey, CSectionsd::ComponentTagList& tags)
+bool CSectionsd::getComponentTagsUniqueKey(const event_id_t uniqueKey, ComponentTagList& tags)
 {
 	bool ret = false;
 	dprintf(DEBUG_DEBUG, "CSectionsd::getComponentTagsUniqueKey: Request of ComponentTags for 0x%llx\n", uniqueKey);
@@ -4810,7 +4820,7 @@ bool CSectionsd::getComponentTagsUniqueKey(const event_id_t uniqueKey, CSections
 
 	if (eFirst != mySIeventsOrderUniqueKey.end()) 
 	{
-		CSectionsd::responseGetComponentTags response;
+		responseGetComponentTags response;
 		ret = true;
 
 		for (SIcomponents::iterator cmp = eFirst->second->components.begin(); cmp != eFirst->second->components.end(); ++cmp) 
@@ -4830,7 +4840,7 @@ bool CSectionsd::getComponentTagsUniqueKey(const event_id_t uniqueKey, CSections
 
 }
 
-bool CSectionsd::getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSectionsd::LinkageDescriptorList& descriptors)
+bool CSectionsd::getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, LinkageDescriptorList& descriptors)
 {
 	bool ret = false;
 	dprintf(DEBUG_DEBUG, "CSectionsd::getLinkageDescriptorsUniqueKey: Request of LinkageDescriptors for 0x%llx\n", uniqueKey);
@@ -4847,7 +4857,8 @@ bool CSectionsd::getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSec
 			if (linkage_desc->linkageType == 0xB0) 
 			{
 
-				CSectionsd::responseGetLinkageDescriptors response;
+				responseGetLinkageDescriptors response;
+				
 				response.name = linkage_desc->name.c_str();
 				response.transportStreamId = linkage_desc->transportStreamId;
 				response.originalNetworkId = linkage_desc->originalNetworkId;
@@ -4864,7 +4875,7 @@ bool CSectionsd::getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, CSec
 
 }
 	
-bool CSectionsd::getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSectionsd::NVODTimesList& nvod_list)
+bool CSectionsd::getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, NVODTimesList& nvod_list)
 {
 	bool ret = false;
 	dprintf(DEBUG_DEBUG, "CSectionsd::getNVODTimesServiceKey: Request of NVOD times for:%llx\n", uniqueServiceKey);
@@ -4886,7 +4897,7 @@ bool CSectionsd::getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, CSe
 				SItime zeitEvt1(0, 0);
 				findActualSIeventForServiceUniqueKey(ni->uniqueKey(), zeitEvt1, 15*60);
 
-				CSectionsd::responseGetNVODTimes response;
+				responseGetNVODTimes response;
 
 				response.service_id =  ni->service_id;
 				response.original_network_id = ni->original_network_id;
@@ -5016,6 +5027,15 @@ void CSectionsd::Start(void)
 		dprintf(DEBUG_NORMAL, "[sectionsd] sectionsd_main_thread: failed to create housekeeping-thread (rc=%d)\n", rc);
 	}
 	
+	//
+	if (g_settings.epg_xmltv)
+        {
+        	for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
+        	{
+			readSIfromXMLTV(g_settings.xmltv[i].c_str());
+		}
+	}
+	
 	sectionsd_ready = true;
 	
 	//if(FrontendCount)
@@ -5050,7 +5070,8 @@ void CSectionsd::Stop(void)
 		pthread_cancel(threadVIASATEIT);
 		pthread_join(threadVIASATEIT, NULL);
 
-		//eit_stop_update_filter(&eit_update_fd);
+		//
+		eit_stop_update_filter(&eit_update_fd);
 		
 		if(eitDmx)
 			delete eitDmx;

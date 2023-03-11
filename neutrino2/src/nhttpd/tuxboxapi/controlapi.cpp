@@ -1375,7 +1375,7 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 		{
 			t_channel_id current_channel = CZapit::getInstance()->getCurrentServiceID();
 			CSectionsd::LinkageDescriptorList desc;
-			CSectionsd::responseGetCurrentNextInfoChannelID currentNextInfo;
+			CSectionsd::CurrentNextInfo currentNextInfo;
 			CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
 			if (CSectionsd::getInstance()->getLinkageDescriptorsUniqueKey(currentNextInfo.current_uniqueKey,desc))
 			{
@@ -1545,7 +1545,7 @@ void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 	hh->printf("%05u\n", pids.PIDs.vpid);
 
 	t_channel_id current_channel = CZapit::getInstance()->getCurrentServiceID();
-	CSectionsd::responseGetCurrentNextInfoChannelID currentNextInfo;
+	CSectionsd::CurrentNextInfo currentNextInfo;
 	CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel&0xFFFFFFFFFFFFULL, currentNextInfo);
 	if (CSectionsd::getInstance()->getComponentTagsUniqueKey(currentNextInfo.current_uniqueKey,tags))
 	{

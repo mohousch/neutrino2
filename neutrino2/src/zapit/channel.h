@@ -126,7 +126,7 @@ class CZapitAudioChannel
 	       ZapitAudioChannelType audioChannelType;
 };
 
-class CChannelList;	// defined gui/channellist.cpp
+//
 class CCaPmt;
 
 class CZapitChannel
@@ -167,14 +167,9 @@ class CZapitChannel
 		CCaPmt* caPmt;
 		unsigned char* rawPmt;
 		int pmtLen;
-		
-		// from neutrino CChannel class
-		uint64_t last_unlocked_EPGid;
-		time_t last_unlocked_time;
 
+		//
 		std::string ttx_language_code;
-
-		friend class CChannelList;
 
 	public:
 		// channel name
@@ -200,6 +195,10 @@ class CZapitChannel
 		std::string logourl;
 		std::string epgidname;
 		std::string epgurl;
+		
+		//
+		uint64_t last_unlocked_EPGid;
+		time_t last_unlocked_time;
 
 		// constructor, desctructor
 		CZapitChannel(const std::string& p_name, t_service_id p_sid, t_transport_stream_id p_tsid, t_original_network_id p_onid, unsigned char p_service_type, t_satellite_position p_satellite_position, freq_id_t p_freq);

@@ -882,7 +882,12 @@ bool CXMLTVConfigNotifier::changeNotify(const std::string&, void *)
 	dprintf(DEBUG_NORMAL, "CXMLTVConfigNotifier::changeNotify\n");
 
         if (g_settings.epg_xmltv)
-		CSectionsd::getInstance()->readSIfromXMLTV(live_channel_id);
+        {
+        	for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
+        	{
+			CSectionsd::getInstance()->readSIfromXMLTV(g_settings.xmltv[i].c_str());
+		}
+	}
 	
         return true;
 }

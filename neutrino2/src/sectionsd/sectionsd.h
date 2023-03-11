@@ -122,20 +122,17 @@ class CSectionsd
 		};
 		typedef std::vector<responseGetNVODTimes> NVODTimesList;
 
-		struct responseGetCurrentNextInfoChannelID
+		struct CurrentNextInfo
 		{
 			event_id_t                      current_uniqueKey;
-			CSectionsd::sectionsdTime current_zeit;
+			sectionsdTime 			current_zeit;
 			std::string                     current_name;
 			char                            current_fsk;
 			event_id_t                      next_uniqueKey;
-			CSectionsd::sectionsdTime next_zeit;
+			sectionsdTime 			next_zeit;
 			std::string                     next_name;
 			unsigned                        flags;
 		};
-
-		struct CurrentNextInfo : public responseGetCurrentNextInfoChannelID
-		{};
 
 		typedef struct
 		{
@@ -215,7 +212,7 @@ class CSectionsd
 		//
 		void getChannelEvents(CChannelEventList &eList, bool tv_mode = true, t_channel_id *chidlist = NULL, int clen = 0);
 		void getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search = 0, std::string search_text = "");
-		void getCurrentNextServiceKey(t_channel_id uniqueServiceKey, responseGetCurrentNextInfoChannelID& current_next );
+		void getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CurrentNextInfo& current_next );
 		bool getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
 		bool getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
 		bool getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
@@ -229,8 +226,8 @@ class CSectionsd
 		void writeSI2XML(const char *epgxmlname);
 		
 		//
-		//void readSIfromXMLTV(const char *url);
-		void readSIfromXMLTV(const t_channel_id chid);
+		void readSIfromXMLTV(const char *url);
+		//void readSIfromXMLTV(const t_channel_id chid);
 		void readSIfromLocalTV(const t_channel_id chid);
 		//
 		void setConfig(const epg_config config);
