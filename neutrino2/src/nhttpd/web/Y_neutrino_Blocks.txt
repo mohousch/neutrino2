@@ -194,7 +194,7 @@ start-block~neutrino_form-data_movieplayer
 		<table cellspacing="0" border="0" cellpadding="2" width="100%">
 			<tr>
 				<td>{=L:set.mp.start_directory=}</td>
-				<td><input type="text" name="streaming_moviedir" size="60" /></td>
+				<td><input type="text" name="movieplayer_moviedir" size="60" value="{=ini-get:/var/tuxbox/config/neutrino2.conf;network_nfs_moviedir~cache=}" /></td>
 			</tr>
 		</table>
 		<br/>
@@ -1020,15 +1020,8 @@ end-block~neutrino_form-data_audioplayer
 
 # ------- save Settings
 start-block~neutrino_audioplayer_save_settings
-{=ini-set:/var/tuxbox/config/neutrino2.conf;audioplayer_display;{=audioplayer_display=}~open=}
-{=ini-set:/var/tuxbox/config/neutrino2.conf;audioplayer_follow;{=audioplayer_follow=}~cache=}
-{=ini-set:/var/tuxbox/config/neutrino2.conf;audioplayer_select_title_by_name;{=audioplayer_select_title_by_name=}~cache=}
-{=ini-set:/var/tuxbox/config/neutrino2.conf;audioplayer_repeat_on;{=audioplayer_repeat_on=}~cache=}
-{=ini-set:/var/tuxbox/config/neutrino2.conf;audioplayer_show_playlist;{=audioplayer_show_playlist=}~cache=}
-{=ini-set:/var/tuxbox/config/neutrino2.conf;audioplayer_screensaver;{=audioplayer_screensaver=}~cache=}
 {=ini-set:/var/tuxbox/config/neutrino2.conf;audioplayer_highprio;{=audioplayer_highprio=}~cache=}
 {=ini-set:/var/tuxbox/config/neutrino2.conf;network_nfs_audioplayerdir;{=network_nfs_audioplayerdir=}~cache=}
-{=ini-set:/var/tuxbox/config/neutrino2.conf;audioplayer_enable_sc_metadata;{=audioplayer_enable_sc_metadata=}~save=}
 end-block~neutrino_audioplayer_save_settings
 
 # ------- Neutrino form-data: direct_recording -------------------------------

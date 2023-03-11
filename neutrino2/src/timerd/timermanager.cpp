@@ -1422,12 +1422,13 @@ CTimerEvent(CTimerd::TIMER_REMIND, config, iId)
 	ostr << iId;
 	std::string id = ostr.str();
 	strcpy(message, config->getString("MESSAGE_" + id).c_str());
+	
 	dprintf(DEBUG_DEBUG, "CTimerEvent_Remind::CTimerEvent_Remind: read MESSAGE_%s %s (%p)\n",id.c_str(),message,message);
 }
 
 void CTimerEvent_Remind::fireEvent()
 {
-	eventServer->sendEvent(NeutrinoMessages::REMIND, CEventServer::INITID_NEUTRINO, message,REMINDER_MESSAGE_MAXLEN);
+	eventServer->sendEvent(NeutrinoMessages::REMIND, CEventServer::INITID_NEUTRINO, message, REMINDER_MESSAGE_MAXLEN);
 }
 
 void CTimerEvent_Remind::saveToConfig(CConfigFile *config)
@@ -1437,6 +1438,7 @@ void CTimerEvent_Remind::saveToConfig(CConfigFile *config)
 	ostr << eventID;
 	std::string id = ostr.str();
 	config->setString("MESSAGE_" + id, message);
+	
 	dprintf(DEBUG_DEBUG, "CTimerEvent_Remind::saveToConfig: set MESSAGE_%s to %s (%p)\n", id.c_str(), message,message);
 
 }
@@ -1447,7 +1449,7 @@ CTimerEvent_ExecPlugin::CTimerEvent_ExecPlugin(time_t lannounceTime,
 					       const char * const plugin,
 					       CTimerd::CTimerEventRepeat evrepeat,
 					       uint32_t repeatcount) :
-	CTimerEvent(CTimerd::TIMER_EXEC_PLUGIN, lannounceTime, lalarmTime, (time_t) 0, evrepeat,repeatcount)
+	CTimerEvent(CTimerd::TIMER_EXEC_PLUGIN, lannounceTime, lalarmTime, (time_t) 0, evrepeat, repeatcount)
 {
 	memset(name, 0, sizeof(name));
 	strncpy(name, plugin, sizeof(name)-1);

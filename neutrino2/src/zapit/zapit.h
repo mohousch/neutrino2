@@ -1,5 +1,5 @@
 /*
-  Client-Interface f�r zapit  -   DBoxII-Project
+  zapit.h 
 
   License: GPL
 

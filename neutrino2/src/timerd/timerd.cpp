@@ -1,5 +1,5 @@
 /*
-	Timer-Daemon  -   DBoxII-Project
+	Timerd  -   DBoxII-Project
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
