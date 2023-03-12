@@ -2479,9 +2479,9 @@ void CControlAPI::build_live_url(CyhookHandler *hh)
 void CControlAPI::logoCGI(CyhookHandler *hh)
 {
 	t_channel_id channel_id;
-	sscanf(hh->ParamList["1"].c_str(),
-		"%llx",
-		&channel_id);
+	
+	sscanf(hh->ParamList["1"].c_str(), "%llx", &channel_id);
+	
 	hh->Write(NeutrinoAPI->getLogoFile(hh->WebserverConfigList["Tuxbox.LogosURL"], channel_id));
 }
 
@@ -2499,7 +2499,7 @@ void CControlAPI::ConfigCGI(CyhookHandler *hh)
 		load = false;
 
 	// Para "config" describes the config type
-	if(hh->ParamList["config"] == "neutrino")
+	if(hh->ParamList["config"] == "neutrino2")
 		config_filename = NEUTRINO_CONFIGFILE;
 	else if(hh->ParamList["config"] == "nhttpd")
 		config_filename = HTTPD_CONFIGFILE;

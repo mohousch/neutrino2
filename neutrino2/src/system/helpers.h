@@ -38,8 +38,11 @@
 
 #include <driver/file.h>
 #include <driver/rcinput.h>
+#include <driver/framebuffer.h>
 
 #include <gui/widget/icons.h>
+
+#include <system/settings.h>
 
 // zapit types
 #include <zapit/zapittypes.h>
@@ -234,7 +237,7 @@ class CChannellogo : public OpenThreads::Thread
 };
 
 //
-void scaleImage(const std::string &tname, int *p_w, int *p_h);
+void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w = PIC_W, int dest_h = PIC_H);
 
 //
 std::string ReadMarkerValue(std::string strLine, const char* strMarkerName);

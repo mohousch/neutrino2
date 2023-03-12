@@ -2075,7 +2075,7 @@ void CChannellogo::run()
 }
 
 //
-void scaleImage(const std::string &tname, int *p_w, int *p_h)
+void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w, int dest_h)
 {
 	int nbpp = 0;
 
@@ -2084,7 +2084,7 @@ void scaleImage(const std::string &tname, int *p_w, int *p_h)
 		CFrameBuffer::getInstance()->getSize(tname, p_w, p_h, &nbpp);
 
 		// scale
-		if(*p_w <= PIC_W && *p_h <= PIC_H)
+		if(*p_w <= dest_w && *p_h <= dest_h)
 		{
 			// do not thing
 		}
@@ -2092,15 +2092,15 @@ void scaleImage(const std::string &tname, int *p_w, int *p_h)
 		{
 			float aspect = (float)(*p_w) / (float)(*p_h);
 					
-			if (((float)(*p_w) / (float)PIC_W) > ((float)(*p_h) / (float)PIC_H)) 
+			if (((float)(*p_w) / (float)dest_w) > ((float)(*p_h) / (float)dest_h)) 
 			{
-				*p_w = PIC_W;
-				*p_h = (int)(PIC_W / aspect);
+				*p_w = dest_w;
+				*p_h = (int)(dest_w / aspect);
 			}
 			else
 			{
-				*p_h = PIC_H;
-				*p_w = (int)(PIC_H * aspect);
+				*p_h = dest_h;
+				*p_w = (int)(dest_h * aspect);
 			}
 		}
 	}

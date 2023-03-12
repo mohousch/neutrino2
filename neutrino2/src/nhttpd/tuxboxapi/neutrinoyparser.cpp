@@ -84,9 +84,9 @@ THandleStatus CNeutrinoYParser::Hook_SendResponse(CyhookHandler *hh)
 //-----------------------------------------------------------------------------
 THandleStatus CNeutrinoYParser::Hook_ReadConfig(CConfigFile *Config, CStringList &ConfigList)
 {
-//	ConfigList["ExtrasDocumentRoot"]= Config->getString("ExtrasDocRoot", EXTRASDOCUMENTROOT);
+//	ConfigList["ExtrasDocumentRoot"] = Config->getString("ExtrasDocRoot", EXTRASDOCUMENTROOT);
 //	ConfigList["ExtrasDocumentURL"]	= Config->getString("ExtrasDocURL", EXTRASDOCUMENTURL);
-	ConfigList["TUXBOX_LOGOS_URL"]= Config->getString("Tuxbox.LogosURL", TUXBOX_LOGOS_URL);
+	ConfigList["TUXBOX_LOGOS_URL"] = Config->getString("Tuxbox.LogosURL", TUXBOX_LOGOS_URL);
 
 	if (Config->getInt32("configfile.version") < 3)
 	{
@@ -104,25 +104,25 @@ THandleStatus CNeutrinoYParser::Hook_ReadConfig(CConfigFile *Config, CStringList
 const CNeutrinoYParser::TyFuncCall CNeutrinoYParser::yFuncCallList[]=
 {
 	{"mount-get-list", 				&CNeutrinoYParser::func_mount_get_list},
-	{"mount-set-values", 			&CNeutrinoYParser::func_mount_set_values},
-	{"get_bouquets_as_dropdown",	&CNeutrinoYParser::func_get_bouquets_as_dropdown},
-	{"get_bouquets_as_templatelist",&CNeutrinoYParser::func_get_bouquets_as_templatelist},
-	{"get_actual_bouquet_number",	&CNeutrinoYParser::func_get_actual_bouquet_number},
-	{"get_channels_as_dropdown",	&CNeutrinoYParser::func_get_channels_as_dropdown},
-	{"get_bouquets_with_epg",		&CNeutrinoYParser::func_get_bouquets_with_epg},
-	{"get_actual_channel_id",		&CNeutrinoYParser::func_get_actual_channel_id},
+	{"mount-set-values", 				&CNeutrinoYParser::func_mount_set_values},
+	{"get_bouquets_as_dropdown",			&CNeutrinoYParser::func_get_bouquets_as_dropdown},
+	{"get_bouquets_as_templatelist",		&CNeutrinoYParser::func_get_bouquets_as_templatelist},
+	{"get_actual_bouquet_number",			&CNeutrinoYParser::func_get_actual_bouquet_number},
+	{"get_channels_as_dropdown",			&CNeutrinoYParser::func_get_channels_as_dropdown},
+	{"get_bouquets_with_epg",			&CNeutrinoYParser::func_get_bouquets_with_epg},
+	{"get_actual_channel_id",			&CNeutrinoYParser::func_get_actual_channel_id},
 	{"get_mode",					&CNeutrinoYParser::func_get_mode},
 	{"get_video_pids",				&CNeutrinoYParser::func_get_video_pids},
 	{"get_audio_pid",				&CNeutrinoYParser::func_get_radio_pid},
-	{"get_audio_pids_as_dropdown",	&CNeutrinoYParser::func_get_audio_pids_as_dropdown},
+	{"get_audio_pids_as_dropdown",			&CNeutrinoYParser::func_get_audio_pids_as_dropdown},
 	{"umount_get_list",				&CNeutrinoYParser::func_unmount_get_list},
-	{"get_partition_list",			&CNeutrinoYParser::func_get_partition_list},
+	{"get_partition_list",				&CNeutrinoYParser::func_get_partition_list},
 	{"get_boxtype",					&CNeutrinoYParser::func_get_boxtype},
-	{"get_current_stream_info",		&CNeutrinoYParser::func_get_current_stream_info},
+	{"get_current_stream_info",			&CNeutrinoYParser::func_get_current_stream_info},
 	{"get_timer_list",				&CNeutrinoYParser::func_get_timer_list},
 	{"set_timer_form",				&CNeutrinoYParser::func_set_timer_form},
-	{"bouquet_editor_main",			&CNeutrinoYParser::func_bouquet_editor_main},
-	{"set_bouquet_edit_form",		&CNeutrinoYParser::func_set_bouquet_edit_form},
+	{"bouquet_editor_main",				&CNeutrinoYParser::func_bouquet_editor_main},
+	{"set_bouquet_edit_form",			&CNeutrinoYParser::func_set_bouquet_edit_form},
 
 };
 

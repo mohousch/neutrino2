@@ -108,7 +108,7 @@
 			<ITEM  id="MENUITEM_FORWARDER" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist" directkey="RC_red"/>
 			<ITEM  id="MENUITEM_FORWARDER" localename="Details current program" itemicon="hint_restart" target="epgview" directkey="RC_green"/>
 			<ITEM  id="MENUITEM_FORWARDER" localename="Eventlist overview" itemicon="hint_standby" target="epgplus" directkey="RC_yellow"/>
-			<ITEM  id="MENUITEM_FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo" directkey="RC_blue"/>
+			<!--<ITEM  id="MENUITEM_FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo" directkey="RC_blue"/>-->
 			<ITEM  id="MENUITEM_FORWARDER" localename="Timerlist" itemicon="hint_timers" target="timerlist"/>
 		</LISTBOX>
 	</WIDGET>

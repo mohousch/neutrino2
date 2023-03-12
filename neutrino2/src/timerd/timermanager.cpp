@@ -86,7 +86,7 @@ void CTimerManager::Init(void)
 	loadRecordingSafety();
 
 	// thread starten
-	if(pthread_create (&thrTimer, 0, timerThread, (void *)this) != 0 )
+	if(pthread_create (&thrTimer, 0, timerThread, 0) != 0 )
 	{
 		dprintf(DEBUG_NORMAL, "CTimerManager::Init: create timerThread failed\n");
 	}
@@ -109,22 +109,20 @@ void* CTimerManager::timerThread(void *data)
 	pthread_mutex_t dummy_mutex = PTHREAD_MUTEX_INITIALIZER;
 	pthread_cond_t dummy_cond = PTHREAD_COND_INITIALIZER;
 	struct timespec wait;
-	
-	CTimerManager *timerManager = (CTimerManager *)data;
 
 	int sleeptime = 10;
 
 	while(1)
 	{
-		if(!timerManager->m_isTimeSet)
+		if(!CTimerManager::getInstance()->m_isTimeSet)
 		{ 
 			// time not set yet
 			if (timeset)
 			{
 				dprintf(DEBUG_DEBUG, "CTimerManager::timerThread: sectionsd says \"time ok\"\n");
 				
-				timerManager->m_isTimeSet = true;
-				timerManager->loadEventsFromConfig();
+				CTimerManager::getInstance()->m_isTimeSet = true;
+				CTimerManager::getInstance()->loadEventsFromConfig();
 			}
 			else
 			{
@@ -145,8 +143,8 @@ void* CTimerManager::timerThread(void *data)
 			pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
 			pthread_mutex_lock(&tm_eventsMutex);
 
-			CTimerEventMap::iterator pos = timerManager->events.begin();
-			for(;pos != timerManager->events.end(); pos++)
+			CTimerEventMap::iterator pos = CTimerManager::getInstance()->events.begin();
+			for(;pos != CTimerManager::getInstance()->events.end(); pos++)
 			{
 				event = pos->second;
 				dprintf(DEBUG_DEBUG, "CTimerManager::timerThread: checking event: %03d\n", event->eventID);
@@ -161,7 +159,7 @@ void* CTimerManager::timerThread(void *data)
 						event->setState(CTimerd::TIMERSTATE_PREANNOUNCE);
 						dprintf(DEBUG_DEBUG, "CTimerManager::timerThread: announcing event\n");
 						event->announceEvent();							// event specific announce handler
-						timerManager->m_saveEvents = true;
+						CTimerManager::getInstance()->m_saveEvents = true;
 					}
 				}
 
@@ -172,9 +170,10 @@ void* CTimerManager::timerThread(void *data)
 						event->setState(CTimerd::TIMERSTATE_ISRUNNING);
 						dprintf(DEBUG_DEBUG, "CTimerManager::timerThread: firing event\n");
 						event->fireEvent();	// fire event specific handler
+						
 						if(event->stopTime == 0)	// if event needs no stop event
 							event->setState(CTimerd::TIMERSTATE_HASFINISHED);
-						timerManager->m_saveEvents = true;
+						CTimerManager::getInstance()->m_saveEvents = true;
 					}
 				}
 
@@ -185,7 +184,7 @@ void* CTimerManager::timerThread(void *data)
 						dprintf(DEBUG_DEBUG, "CTimerManager::timerThread: stopping event\n");
 						event->stopEvent();							//  event specific stop handler
 						event->setState(CTimerd::TIMERSTATE_HASFINISHED); 
-						timerManager->m_saveEvents = true;
+						CTimerManager::getInstance()->m_saveEvents = true;
 					}
 				}
 
@@ -201,7 +200,7 @@ void* CTimerManager::timerThread(void *data)
 						dprintf(DEBUG_DEBUG, "CTimerManager::timerThread: event terminated\n");
 						event->setState(CTimerd::TIMERSTATE_TERMINATED);
 					}
-					timerManager->m_saveEvents = true;
+					CTimerManager::getInstance()->m_saveEvents = true;
 				}
 				
 				if(event->eventState == CTimerd::TIMERSTATE_TERMINATED)	// event is terminated, so delete it
@@ -211,16 +210,16 @@ void* CTimerManager::timerThread(void *data)
 					pos->second->printEvent();
 					dprintf(DEBUG_DEBUG, "\n");
 					delete pos->second;	// delete event
-					timerManager->events.erase(pos);	// remove from list
-					timerManager->m_saveEvents = true;
+					CTimerManager::getInstance()->events.erase(pos);	// remove from list
+					CTimerManager::getInstance()->m_saveEvents = true;
 				}
 			}
 			pthread_mutex_unlock(&tm_eventsMutex);
 
 			// save events if requested
-			if(timerManager->m_saveEvents)
+			if (CTimerManager::getInstance()->m_saveEvents)
 			{
-				timerManager->saveEventsToConfig();
+				CTimerManager::getInstance()->saveEventsToConfig();
 			}
 			
 			pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);

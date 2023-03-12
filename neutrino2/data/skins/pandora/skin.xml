@@ -94,7 +94,7 @@
 			<ITEM id="MENUITEM_FORWARDER" localename="Eventlist current programm" itemicon="hint_sleeptimer" target="eventlist" directkey="RC_red"/>
 			<ITEM id="MENUITEM_FORWARDER" localename="Details current program" itemicon="hint_restart" target="epgview" directkey="RC_green"/>
 			<ITEM id="MENUITEM_FORWARDER" localename="Eventlist overview" itemicon="hint_standby" target="epgplus" directkey="RC_yellow"/>
-			<ITEM id="MENUITEM_FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo" directkey="RC_blue"/>
+			<!--<ITEM id="MENUITEM_FORWARDER" localename="Stream information" itemicon="hint_dboxinfo" target="streaminfo" directkey="RC_blue"/>-->
 			<ITEM id="MENUITEM_FORWARDER" localename="Timerlist" itemicon="hint_timers" target="timerlist"/>
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
@@ -702,7 +702,7 @@
 		<FOOT posx="60" posy="600" width="1160" height="60" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="imageinfo" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL"/>
+	<WIDGET name="imageinfo" posx="50" posy="50" width="1180" height="620" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL"/>
 	
 	<WIDGET name="streaminfo" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK"/>
 </skin>

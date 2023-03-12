@@ -231,7 +231,7 @@ class CTimerManager
 		bool              	wakeup;
 		
 		CTimerManager();
-		static void* timerThread(void *data);
+		static void* timerThread(void *);
 		CTimerEvent *nextEvent();
 	public:
 		static CTimerManager* getInstance();

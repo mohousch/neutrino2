@@ -532,7 +532,8 @@ std::string CNeutrinoAPI::getLogoFile(std::string _logoURL, t_channel_id channel
 	std::string channelIdAsString = string_printf("%llx", channelId & 0xFFFFFFFFFFFFULL);
 	std::string channelName = GetServiceName(channelId);
 	//replace(channelName, " ", "_");
-	_logoURL+="/";
+	_logoURL += "/";
+	
 	if(access((_logoURL + channelIdAsString + ".jpg").c_str(), 4) == 0)
 		return _logoURL + channelIdAsString + ".jpg";
 	else if (access((_logoURL + channelIdAsString + ".png").c_str(), 4) == 0)
