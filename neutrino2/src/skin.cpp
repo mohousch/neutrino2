@@ -2939,7 +2939,7 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 			 
 			strcpy( g_settings.font_file, fontFileName.c_str() );
 			
-			CNeutrinoApp::getInstance()->SetupFonts(g_settings.font_file);
+			CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
 			
 			// setIconPath
 			std::string iconsDir = CONFIGDIR "/skins/";
@@ -3030,7 +3030,7 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 		{
 			strcpy( g_settings.font_file, DATADIR "/fonts/arial.ttf");
 			
-			CNeutrinoApp::getInstance()->SetupFonts(DATADIR "/fonts/arial.ttf");
+			CNeutrinoApp::getInstance()->setupFonts(DATADIR "/fonts/arial.ttf");
 			
 			g_settings.icons_dir = DATADIR "/icons/";
 			g_settings.buttons_dir = DATADIR "/buttons/";

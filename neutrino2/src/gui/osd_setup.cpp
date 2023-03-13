@@ -690,7 +690,7 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 	if(actionKey == "savesettings")
 	{
-		CNeutrinoApp::getInstance()->SetupFonts(g_settings.font_file);
+		CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
 		
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
@@ -711,7 +711,7 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			strcpy(g_settings.font_file, fileBrowser.getSelectedFile()->Name.c_str());
 			dprintf(DEBUG_NORMAL, "COSDSettings::exec: new font file %s\n", fileBrowser.getSelectedFile()->Name.c_str());
 			
-			CNeutrinoApp::getInstance()->SetupFonts(g_settings.font_file);
+			CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
 			CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
 		}
 		
@@ -810,7 +810,7 @@ int COSDTimingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		for (int i = 0; i < TIMING_SETTING_COUNT; i++)
 			g_settings.timing[i] = default_timing[i];
 
-		CNeutrinoApp::getInstance()->SetupTiming();
+		CNeutrinoApp::getInstance()->setupTiming();
 		
 		return ret;
 	}

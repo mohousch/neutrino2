@@ -117,7 +117,7 @@ bool CSectionsdConfigNotifier::changeNotify(const std::string&, void *)
 {
 	dprintf(DEBUG_INFO, "CSectionsdConfigNotifier::changeNotify\n");
 
-        CNeutrinoApp::getInstance()->SendSectionsdConfig();
+        CNeutrinoApp::getInstance()->sendSectionsdConfig();
 	
         return true;
 }
@@ -245,7 +245,7 @@ int CTuxtxtChangeExec::exec(CMenuTarget *parent, const std::string &actionKey)
 	
 	g_RCInput->clearRCMsg();
 
-	CNeutrinoApp::getInstance()->StopSubtitles();
+	CNeutrinoApp::getInstance()->stopSubtitles();
 				
 	tuxtx_stop_subtitle();
 
@@ -257,9 +257,9 @@ int CTuxtxtChangeExec::exec(CMenuTarget *parent, const std::string &actionKey)
 				
 	g_RCInput->clearRCMsg();
 				
-	CNeutrinoApp::getInstance()->AudioMute(current_muted, true);
+	CNeutrinoApp::getInstance()->audioMute(current_muted, true);
 
-	CNeutrinoApp::getInstance()->StartSubtitles();
+	CNeutrinoApp::getInstance()->startSubtitles();
 
 	return RETURN_REPAINT;
 }

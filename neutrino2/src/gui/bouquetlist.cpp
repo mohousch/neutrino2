@@ -424,27 +424,27 @@ int CBouquetList::show(bool bShowChannelList, bool customMode)
 		}
 		else if(msg == RC_red || msg == RC_favorites) 
 		{
-			CNeutrinoApp::getInstance()->SetChannelMode(LIST_MODE_FAV, mode);
+			CNeutrinoApp::getInstance()->setChannelMode(LIST_MODE_FAV, mode);
 
 			hide();
 			return -3;
 		} 
 		else if(msg == RC_green) 
 		{
-			CNeutrinoApp::getInstance()->SetChannelMode(LIST_MODE_PROV, mode);
+			CNeutrinoApp::getInstance()->setChannelMode(LIST_MODE_PROV, mode);
 			hide();
 			return -3;
 		} 
 		else if(msg == RC_yellow || msg == RC_sat)
 		{
-			CNeutrinoApp::getInstance()->SetChannelMode(LIST_MODE_SAT, mode);
+			CNeutrinoApp::getInstance()->setChannelMode(LIST_MODE_SAT, mode);
 
 			hide();
 			return -3;
 		} 
 		else if(msg == RC_blue) 
 		{
-			CNeutrinoApp::getInstance()->SetChannelMode(LIST_MODE_ALL, mode);
+			CNeutrinoApp::getInstance()->setChannelMode(LIST_MODE_ALL, mode);
 
 			hide();
 			return -3;

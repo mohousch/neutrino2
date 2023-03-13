@@ -86,11 +86,11 @@ void CSelectChannelWidget::InitZapitChannelHelper(CZapit::channelsMode mode)
 	// set mode
 	if(mode == CZapit::MODE_TV)
 	{
-		CNeutrinoApp::getInstance()->SetChannelMode(g_settings.channel_mode, NeutrinoMessages::mode_tv);
+		CNeutrinoApp::getInstance()->setChannelMode(g_settings.channel_mode, NeutrinoMessages::mode_tv);
 	}
 	else if(mode == CZapit::MODE_RADIO)
 	{
-		CNeutrinoApp::getInstance()->SetChannelMode(g_settings.channel_mode, NeutrinoMessages::mode_radio);
+		CNeutrinoApp::getInstance()->setChannelMode(g_settings.channel_mode, NeutrinoMessages::mode_radio);
 	}
 	
 _repeat:	
@@ -133,7 +133,7 @@ _repeat:
 	}
 	
 	// set last channel mode
-	CNeutrinoApp::getInstance()->SetChannelMode(channelMode, nMode);
+	CNeutrinoApp::getInstance()->setChannelMode(channelMode, nMode);
 
 	// set last activ bouquet and channel
 	if(bouquetList->Bouquets.size()) 

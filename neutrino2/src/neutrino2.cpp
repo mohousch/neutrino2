@@ -308,7 +308,7 @@ CNeutrinoApp::CNeutrinoApp()
 	standby_pressed_at.tv_sec = 0;
 
 	frameBuffer = CFrameBuffer::getInstance();
-	SetupFrameBuffer();
+	setupFrameBuffer();
 
 	mode = mode_unknown;
 	
@@ -1628,13 +1628,13 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d RADIO bouquets\n", bnum);
 
 	//
-	SetChannelMode( g_settings.channel_mode, mode);
+	setChannelMode( g_settings.channel_mode, mode);
 	
 	// load webtv logos
 	CChannellogo::getInstance()->loadWebTVlogos();
 }
 
-void CNeutrinoApp::SetChannelMode(int newmode, int nMode)
+void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 {
 	const char *aLISTMODE[] = {
 		"LIST_MODE_FAV",
@@ -1643,7 +1643,7 @@ void CNeutrinoApp::SetChannelMode(int newmode, int nMode)
 		"LIST_MODE_ALL"
 	};
 	
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::SetChannelMode: ChannelsMode: %s nMode: %d\n", aLISTMODE[newmode], nMode);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setChannelMode: ChannelsMode: %s nMode: %d\n", aLISTMODE[newmode], nMode);
 
 	chmode = nMode;
 
@@ -1706,7 +1706,7 @@ void CNeutrinoApp::SetChannelMode(int newmode, int nMode)
 }
 
 // CNeutrinoApp -  run, the main runloop
-void CNeutrinoApp::CmdParser(int argc, char **argv)
+void CNeutrinoApp::cmdParser(int argc, char **argv)
 {
         global_argv = new char *[argc + 1];
 	
@@ -1732,19 +1732,19 @@ void CNeutrinoApp::CmdParser(int argc, char **argv)
 }
 
 // setup the framebuffer
-void CNeutrinoApp::SetupFrameBuffer()
+void CNeutrinoApp::setupFrameBuffer()
 {
 	frameBuffer->init();
 	
 	if(frameBuffer->setMode() ) 
 	{
-		dprintf(DEBUG_NORMAL, "CNeutrinoApp::SetupFrameBuffer: Error while setting framebuffer mode\n");
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupFrameBuffer: Error while setting framebuffer mode\n");
 		exit(-1);
 	}	
 }
 
 // setup fonts
-void CNeutrinoApp::SetupFonts(const char* font_file)
+void CNeutrinoApp::setupFonts(const char* font_file)
 {
 	const char * style[3];
 
@@ -1756,7 +1756,7 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 	if(font.filename != NULL)
 		free((void *)font.filename);
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::SetupFonts: font file: %s\n", font_file);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupFonts: font file: %s\n", font_file);
 
 	if(access(font_file, F_OK)) 
 	{
@@ -1772,7 +1772,7 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 		}
 		else
 		{
-			  fprintf( stderr,"CNeutrinoApp::SetupFonts: font file [%s] not found\n neutrino exit\n", DATADIR "/fonts/arial.ttf");
+			  fprintf( stderr,"CNeutrinoApp::setupFonts: font file [%s] not found\n neutrino exit\n", DATADIR "/fonts/arial.ttf");
 			  _exit(0);
 		}
 	}
@@ -1783,7 +1783,7 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 		// check??? (use only true type fonts or fallback to arial.ttf
 		if( !strstr(font.filename, ".ttf") )
 		{
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::SetupFonts: font file %s not ok falling back to arial.ttf\n", font_file);
+			dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupFonts: font file %s not ok falling back to arial.ttf\n", font_file);
 			
 			if(!access(DATADIR "/fonts/arial.ttf", F_OK))
 			{
@@ -1797,7 +1797,7 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 			}
 			else
 			{
-				  fprintf( stderr,"CNeutrinoApp::SetupFonts: font file [%s] not found\n neutrino exit\n", DATADIR "/fonts/arial.ttf");
+				  fprintf( stderr,"CNeutrinoApp::setupFonts: font file [%s] not found\n neutrino exit\n", DATADIR "/fonts/arial.ttf");
 				  _exit(0);
 			}
 		}
@@ -1810,7 +1810,7 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 
 	font.name = strdup(g_fontRenderer->getFamily(font.filename).c_str());
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::SetupFonts: font family %s\n", font.name);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupFonts: font family %s\n", font.name);
 
 	style[1] = "Bold Regular";
 
@@ -1835,9 +1835,9 @@ void CNeutrinoApp::SetupFonts(const char* font_file)
 }
 
 // setup the menu timeouts
-void CNeutrinoApp::SetupTiming()
+void CNeutrinoApp::setupTiming()
 {
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::SetupTiming\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupTiming\n");
 
 	for (int i = 0; i < TIMING_SETTING_COUNT; i++)
 		sprintf(g_settings.timing_string[i], "%d", g_settings.timing[i]);
@@ -2204,9 +2204,9 @@ void CNeutrinoApp::startNextRecording()
 #define LCD_UPDATE_TIME_TV_MODE (60 * 1000 * 1000)
 
 // send sectionsd config
-void CNeutrinoApp::SendSectionsdConfig(void)
+void CNeutrinoApp::sendSectionsdConfig(void)
 {
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::SendSectionsdConfig\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::sendSectionsdConfig\n");
 
         CSectionsd::epg_config config;
 	
@@ -2223,15 +2223,15 @@ void CNeutrinoApp::SendSectionsdConfig(void)
 }
 
 // init zapper
-void CNeutrinoApp::InitZapper()
+void CNeutrinoApp::initZapper()
 {
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::InitZapper\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::initZapper\n");
 
 	// start infobar
 	g_InfoViewer->start();
 	
 	// send sectionsd config
-	SendSectionsdConfig();
+	sendSectionsdConfig();
 
 	// read saved epg
 	if (g_settings.epg_save)
@@ -2288,12 +2288,12 @@ void CNeutrinoApp::InitZapper()
 		if(g_settings.auto_timeshift)
 			startAutoRecord(true);
 		
-		// show info bar
+		// show infobar
 		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR, 0);
 		
-		SelectSubtitles();
+		selectSubtitles();
 		
-		StartSubtitles();
+		startSubtitles();
 	}
 }
 
@@ -2315,7 +2315,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 {
 	dprintf( DEBUG_NORMAL, "CNeutrinoApp::run:\n");
 
-	CmdParser(argc, argv);
+	cmdParser(argc, argv);
 	
 #if defined (PLATFORM_COOLSTREAM)
 	cs_api_init();
@@ -2339,10 +2339,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 	frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
 
 	// setup fonts
-	SetupFonts(g_settings.font_file);
+	setupFonts(g_settings.font_file);
 	
 	// setup menue timing
-	SetupTiming();
+	setupTiming();
 	
 	// setup color
 	colorSetupNotifier = new CColorSetupNotifier;
@@ -2437,8 +2437,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// plugins
 	g_PluginList = new CPlugins;
 	g_PluginList->setPluginDir(PLUGINDIR);
-
-	// load Pluginlist before main menu (only show script menu if at least one script is available
 	g_PluginList->loadPlugins();
 	
 	// load selected skin
@@ -2545,7 +2543,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// init network at startup
 	CNetworkSettings::getInstance()->readNetworkSettings(g_settings.ifname);
 
-	if(CNetworkSettings::getInstance()->network_automatic_start == 1)
+	if (CNetworkSettings::getInstance()->network_automatic_start == 1)
 		CNetworkSettings::getInstance()->setNetwork();	
 	
 	// mount shares before scanning for plugins
@@ -2675,10 +2673,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 	}
 	
 	// zapper
-	InitZapper();
+	initZapper();
 	
 	// audio mute
-	AudioMute(current_muted, true);	
+	audioMute(current_muted, true);	
 
 // Cam-Ci
 #if defined (ENABLE_CI)	
@@ -2688,11 +2686,11 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// init shutdown count
 	SHTDCNT::getInstance()->init();
 
-	// real run loop ;-)
-	RealRun();
+	// realRun loop ;-)
+	realRun();
 
 	// exitRun
-	ExitRun(SHUTDOWN);
+	exitRun(SHUTDOWN);
 
 	// never reached
 	return 0;
@@ -2701,7 +2699,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 // quickZap
 void CNeutrinoApp::quickZap(int msg)
 {
-	StopSubtitles();
+	stopSubtitles();
 	
 	if(g_settings.zap_cycle && (bouquetList != NULL) && !(bouquetList->Bouquets.empty()))
 		bouquetList->Bouquets[bouquetList->getActiveBouquetNumber()]->channelList->quickZap(msg, true);
@@ -2712,20 +2710,20 @@ void CNeutrinoApp::quickZap(int msg)
 // showInfo
 void CNeutrinoApp::showInfo()
 {
-	StopSubtitles();
+	stopSubtitles();
 
 	g_InfoViewer->showTitle(channelList->getActiveChannelNumber(), channelList->getActiveChannelName(), channelList->getActiveSatellitePosition(), channelList->getActiveChannel_ChannelID());
 
-	StartSubtitles();
+	startSubtitles();
 }
 
 // real run
-void CNeutrinoApp::RealRun(void)
+void CNeutrinoApp::realRun(void)
 {
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::RealRun: initialized everything\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::realRun: initialized everything\n");
 
 	// clear msg 
 	g_RCInput->clearRCMsg();
@@ -2741,7 +2739,7 @@ void CNeutrinoApp::RealRun(void)
 	{
 		g_RCInput->getMsg(&msg, &data, 100);	// 10 secs..
 		
-		dprintf(DEBUG_DEBUG, "CNeutrinoApp::RealRun: msg:%s\n", CRCInput::getSpecialKeyName(msg));		
+		dprintf(DEBUG_DEBUG, "CNeutrinoApp::realRun: msg:%s\n", CRCInput::getSpecialKeyName(msg));		
 
 		// mode TV/Radio/IPTV
 		if( (mode == mode_tv) || (mode == mode_radio) ) 
@@ -2752,11 +2750,11 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 
 				g_EpgData->show(live_channel_id);
 
-				StartSubtitles();
+				startSubtitles();
 			}
 			else if(msg == RC_epg) 
 			{
@@ -2764,11 +2762,11 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 
 				g_EventList->exec(live_channel_id, channelList->getActiveChannelName());
 
-				StartSubtitles();
+				startSubtitles();
 			}
 			else if( msg == RC_text ) 
 			{
@@ -2778,7 +2776,7 @@ void CNeutrinoApp::RealRun(void)
 
 				g_RCInput->clearRCMsg();
 
-				StopSubtitles();
+				stopSubtitles();
 				
 				tuxtx_stop_subtitle();
 
@@ -2790,9 +2788,9 @@ void CNeutrinoApp::RealRun(void)
 				
 				g_RCInput->clearRCMsg();
 				
-				AudioMute(current_muted, true);
+				audioMute(current_muted, true);
 
-				StartSubtitles();
+				startSubtitles();
 			}			
 			else if(msg == (neutrino_msg_t)g_settings.key_timerlist) //timerlist
 			{
@@ -2800,29 +2798,29 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				
 				CTimerList* Timerlist = new CTimerList;
 				Timerlist->exec(NULL, "");
 				delete Timerlist;
 				Timerlist = NULL;
 				
-				StartSubtitles();
+				startSubtitles();
 			}		
 			else if( msg == RC_setup ) 
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 
 				//
 				mainMenu();
 
 				// restore mute symbol
-				AudioMute(current_muted, true);
+				audioMute(current_muted, true);
 
-				StartSubtitles();
+				startSubtitles();
 			}
 			else if( msg == (neutrino_msg_t) g_settings.key_tvradio_mode)
 			{
@@ -2839,7 +2837,7 @@ void CNeutrinoApp::RealRun(void)
 			{
 			   	if(g_RemoteControl->subChannels.size() > 0) 
 				{
-					StopSubtitles();
+					stopSubtitles();
 					g_RemoteControl->subChannelUp();
 					g_InfoViewer->showSubchan(); 
 			    	} 
@@ -2857,7 +2855,7 @@ void CNeutrinoApp::RealRun(void)
 			{
 			   	if(g_RemoteControl->subChannels.size()> 0) 
 				{
-					StopSubtitles();
+					stopSubtitles();
 					g_RemoteControl->subChannelDown();
 					g_InfoViewer->showSubchan();
 			    	} 
@@ -2881,21 +2879,21 @@ void CNeutrinoApp::RealRun(void)
 			}
 			else if( msg == (neutrino_msg_t) g_settings.key_zaphistory) 
 			{
-				StopSubtitles();
+				stopSubtitles();
 				
 				// Zap-History "Bouquet"
 				int res = channelList->numericZap( msg );
 
-				StartSubtitles(res < 0);
+				startSubtitles(res < 0);
 			}
 			else if(msg == (neutrino_msg_t) g_settings.key_lastchannel) 
 			{
-				StopSubtitles();
+				stopSubtitles();
 				
 				// Quick Zap
 				int res = channelList->numericZap( msg );
 
-				StartSubtitles(res < 0);
+				startSubtitles(res < 0);
 			}
 			else if(msg == RC_pause) // start timeshift recording
 			{
@@ -3011,7 +3009,7 @@ void CNeutrinoApp::RealRun(void)
 			}
 			else if( (msg == RC_record || msg == RC_stop) ) 
 			{
-				dprintf(DEBUG_NORMAL, "CNeutrinoApp::RealRun\n");
+				dprintf(DEBUG_NORMAL, "CNeutrinoApp::realRun\n");
 				
 				if(autoshift) 
 				{
@@ -3044,7 +3042,7 @@ void CNeutrinoApp::RealRun(void)
 					g_InfoViewer->killTitle();
 
 				//
-				StopSubtitles();
+				stopSubtitles();
 				
 				//	
 				CEPGMenuHandler* redMenu = new CEPGMenuHandler();
@@ -3055,7 +3053,7 @@ void CNeutrinoApp::RealRun(void)
 				redMenu = NULL;
 				
 				//
-				StartSubtitles();
+				startSubtitles();
 			}
 			else if( ( msg == RC_green) || ( msg == RC_audio) )
 			{
@@ -3072,7 +3070,7 @@ void CNeutrinoApp::RealRun(void)
 				}
 				else
 				{
-					StopSubtitles();
+					stopSubtitles();
 
 					// audio handler
 					CAudioSelectMenuHandler* audioSelectMenuHandler = new CAudioSelectMenuHandler();
@@ -3082,7 +3080,7 @@ void CNeutrinoApp::RealRun(void)
 					delete audioSelectMenuHandler;
 					audioSelectMenuHandler = NULL;
 
-					StartSubtitles();
+					startSubtitles();
 				}
 			}
 			else if( (msg == RC_yellow || msg == RC_multifeed) )
@@ -3090,27 +3088,27 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 
 				// select NVODs
 				if (!IS_WEBTV(live_channel_id))
 				{
-					SelectNVOD();
+					selectNVOD();
 				}
 
-				StartSubtitles();
+				startSubtitles();
 			}
 			else if( msg == RC_blue ) 
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 
 				// features
 				showUserMenu(SNeutrinoSettings::BUTTON_BLUE);
 
-				StartSubtitles();
+				startSubtitles();
 			}
 #if defined (ENABLE_FUNCTIONKEYS)			
 			else if( msg == RC_f1 ) 
@@ -3119,9 +3117,9 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				showUserMenu(SNeutrinoSettings::BUTTON_F1);
-				StartSubtitles();
+				startSubtitles();
 			}
 			else if( msg == RC_f2 )
 			{
@@ -3129,9 +3127,9 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				showUserMenu(SNeutrinoSettings::BUTTON_F2);
-				StartSubtitles();
+				startSubtitles();
 			}
 			else if( msg == RC_f3 ) 
 			{
@@ -3139,9 +3137,9 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
  
-				StopSubtitles();
+				stopSubtitles();
 				showUserMenu(SNeutrinoSettings::BUTTON_F3);
-				StartSubtitles();
+				startSubtitles();
 			}
 			else if( msg == RC_f4 ) 
 			{
@@ -3149,9 +3147,9 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				showUserMenu(SNeutrinoSettings::BUTTON_F4);
-				StartSubtitles();
+				startSubtitles();
 			}
 #endif			
 			else if( msg == RC_dvbsub )
@@ -3159,7 +3157,7 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				
 				// show list only if we have subs
 				if(live_channel)
@@ -3171,85 +3169,85 @@ void CNeutrinoApp::RealRun(void)
 					}
 				}
 				
-				StartSubtitles();
+				startSubtitles();
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_audioplayer ) 
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				g_PluginList->startPlugin("audioplayer");
-				StartSubtitles();
+				startSubtitles();
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_inetradio ) 	// internet radio
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 	  
-				StopSubtitles();
+				stopSubtitles();
 				g_PluginList->startPlugin("internetradio");
-				StartSubtitles();	
+				startSubtitles();	
 			}			
 			else if( msg == (neutrino_msg_t)g_settings.key_movieplayer )	// recordsbrowser
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				g_PluginList->startPlugin("movieplayer");
-				StartSubtitles();			
+				startSubtitles();			
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_moviebrowser )	// moviebrowser
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				g_PluginList->startPlugin("moviebrowser");
-				StartSubtitles();	
+				startSubtitles();	
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_filebrowser )	// filebrowser player
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				g_PluginList->startPlugin("mediaplayer");
-				StartSubtitles();	
+				startSubtitles();	
 			}
 			else if( msg == (neutrino_msg_t)g_settings.key_pictureviewer ) 	// picture viewer
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				g_PluginList->startPlugin("picviewer");
-				StartSubtitles();
+				startSubtitles();
 			}			
 			else if ( CRCInput::isNumeric(msg) && g_RemoteControl->director_mode ) 
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				
 				g_RemoteControl->setSubChannel(CRCInput::getNumericValue(msg));
 				
 				g_InfoViewer->showSubchan();
 				
-				StartSubtitles();
+				startSubtitles();
 			}
 			else if (CRCInput::isNumeric(msg)) 
 			{
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				
 				channelList->numericZap( msg );
 				
-				StartSubtitles();
+				startSubtitles();
 			}			
 			else if (CRCInput::isNumeric(msg) && (mode == mode_radio && g_settings.radiotext_enable && g_Radiotext != NULL && g_Radiotext->Rass_Show) ) 
 			{
@@ -3300,12 +3298,12 @@ void CNeutrinoApp::RealRun(void)
 				if(g_InfoViewer->is_visible)
 					g_InfoViewer->killTitle();
 
-				StopSubtitles();
+				stopSubtitles();
 				
 				// first step show channels from the same TP
 				channelList->numericZap( msg );
 				
-				StartSubtitles();
+				startSubtitles();
 			}
 			else 
 			{
@@ -3397,9 +3395,9 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		scrambled_timer = g_RCInput->addTimer(10*1000*1000, true);
 		
 		// select subtitle
-		SelectSubtitles();
+		selectSubtitles();
 		
-		StartSubtitles(!g_InfoViewer->is_visible);
+		startSubtitles(!g_InfoViewer->is_visible);
 	}
 
 	// timer event
@@ -3458,7 +3456,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 
 		if( (mode == mode_tv) || (mode == mode_radio))
 		{
-			StopSubtitles();
+			stopSubtitles();
 
 			// pre-selected channel-num/bouquet-num/channel-mode
 			int nNewChannel = -1;
@@ -3482,12 +3480,12 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			}
 			else if(msg == RC_sat) 
 			{
-				SetChannelMode(LIST_MODE_SAT, mode);
+				setChannelMode(LIST_MODE_SAT, mode);
 				nNewChannel = bouquetList->exec(true, true);
 			}
 			else if(msg == RC_favorites) 
 			{
-				SetChannelMode(LIST_MODE_FAV, mode);
+				setChannelMode(LIST_MODE_FAV, mode);
 				nNewChannel = bouquetList->exec(true, true);
 			}
 _repeat:
@@ -3496,13 +3494,13 @@ _repeat:
 			if(nNewChannel == -1) // on cancel
 			{
 				// restore orig. bouquet and selected channel on cancel
-				SetChannelMode(old_mode, mode);
+				setChannelMode(old_mode, mode);
 				bouquetList->activateBouquet(old_b, false);
 				
 				if(bouquetList->Bouquets.size())
 					bouquetList->Bouquets[old_b]->channelList->setSelected(old_num - 1);
 				
-				StartSubtitles(mode == mode_tv);
+				startSubtitles(mode == mode_tv);
 			}
 			else if(nNewChannel == -3) // list mode changed
 			{ 
@@ -3609,7 +3607,7 @@ _repeat:
 		else 
 		{
 			//mute
-			AudioMute( !current_muted, true);
+			audioMute( !current_muted, true);
 		}
 		
 		return messages_return::handled;
@@ -3874,7 +3872,7 @@ _repeat:
 	else if( msg == NeutrinoMessages::SLEEPTIMER) 
 	{
 		if(g_settings.shutdown_real)
-			ExitRun(SHUTDOWN);
+			exitRun(SHUTDOWN);
 		else
 			standbyMode( true );
 		
@@ -3918,7 +3916,7 @@ _repeat:
 	{
 		if(!skipShutdownTimer) 
 		{
-			ExitRun(SHUTDOWN);
+			exitRun(SHUTDOWN);
 		}
 		else 
 		{
@@ -3930,7 +3928,7 @@ _repeat:
 	{
 		if(!skipShutdownTimer) 
 		{
-			ExitRun(REBOOT);
+			exitRun(REBOOT);
 		}
 		else 
 		{
@@ -3942,7 +3940,7 @@ _repeat:
 	{
 		if(!skipShutdownTimer) 
 		{
-			ExitRun(RESTART);
+			exitRun(RESTART);
 		}
 		else 
 		{
@@ -4124,7 +4122,7 @@ skip_message:
 }
 
 // exit run
-void CNeutrinoApp::ExitRun(int retcode, bool save)
+void CNeutrinoApp::exitRun(int retcode, bool save)
 { 
 	// break silently autotimeshift
 	if(autoshift) 
@@ -4184,7 +4182,7 @@ void CNeutrinoApp::ExitRun(int retcode, bool save)
 
 		tuxtx_stop_subtitle();
 		
-		dprintf(DEBUG_NORMAL, "CNeutrinoApp::ExitRun: entering off state (retcode:%d)\n", retcode);
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::exitRun: entering off state (retcode:%d)\n", retcode);
 			
 		stop_daemons();
 		
@@ -4229,7 +4227,7 @@ void CNeutrinoApp::ExitRun(int retcode, bool save)
 		if (frameBuffer != NULL)
 			delete frameBuffer;
 
-		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::ExitRun: Good bye (retcode: %d) <<<\n", retcode);
+		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
 		
 #if defined (USE_OPENGL)		
 		if(retcode == RESTART)
@@ -4285,7 +4283,7 @@ void CNeutrinoApp::saveEpg()
 }
 
 // mute
-void CNeutrinoApp::AudioMute( int newValue, bool isEvent )
+void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 {
 	int dx = 32;
 	int dy = 32;
@@ -4308,7 +4306,7 @@ void CNeutrinoApp::AudioMute( int newValue, bool isEvent )
 
 	current_muted = newValue;
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::AudioMute: current_muted %d new %d isEvent: %d\n", current_muted, newValue, isEvent);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::audioMute: current_muted %d new %d isEvent: %d\n", current_muted, newValue, isEvent);
 	
 	CZapit::getInstance()->muteAudio(current_muted);
 
@@ -4463,7 +4461,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint, bool
 			
 			//FIXME
 			if (current_muted && msg == RC_plus)
-				AudioMute(0, true);
+				audioMute(0, true);
 
 			timeoutEnd = CRCInput::calcTimeoutEnd(nowait ? 5 : 10);
 		}
@@ -4500,7 +4498,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint, bool
 
 				//FIXME
 				if (mode != mode_scart && mode != mode_pic && (g_settings.current_volume == 0) )
-					AudioMute(true, true);
+					audioMute(true, true);
 			}
 		}
 
@@ -4558,7 +4556,7 @@ void CNeutrinoApp::tvMode( bool rezap )
 
 		CVFD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
 
-		StartSubtitles(!rezap);
+		startSubtitles(!rezap);
 	}
 
 	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
@@ -4600,7 +4598,7 @@ void CNeutrinoApp::tvMode( bool rezap )
 	frameBuffer->blit();
 
 	g_RemoteControl->tvMode();
-	SetChannelMode(g_settings.channel_mode, mode);
+	setChannelMode(g_settings.channel_mode, mode);
 
 	// rezap
 	if( rezap ) 
@@ -4623,7 +4621,7 @@ void CNeutrinoApp::radioMode( bool rezap)
 		g_InfoViewer->lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );
 #endif		
 
-		StopSubtitles();
+		stopSubtitles();
 	}
 
 	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
@@ -4666,7 +4664,7 @@ void CNeutrinoApp::radioMode( bool rezap)
 	frameBuffer->blit();
 
 	g_RemoteControl->radioMode();
-	SetChannelMode( g_settings.channel_mode, mode);
+	setChannelMode( g_settings.channel_mode, mode);
 	
 	if (g_settings.radiotext_enable) 
 	{
@@ -4761,7 +4759,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 			g_Radiotext = NULL;
 		}
 
-		StopSubtitles();
+		stopSubtitles();
 
 		frameBuffer->useBackground(false);
 		frameBuffer->paintBackground();
@@ -4865,7 +4863,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		}
 
 		// set vol (saved)
-		AudioMute(current_muted, false );					
+		audioMute(current_muted, false );					
 
 		// start record if
 		if((mode == mode_tv) && wasshift) 
@@ -4875,7 +4873,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 
 		wasshift = false;
 
-		StartSubtitles();
+		startSubtitles();
 		
 		g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 	}
@@ -4893,19 +4891,19 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 
 	if(actionKey == "shutdown") 
 	{
-		ExitRun(SHUTDOWN);
+		exitRun(SHUTDOWN);
 	}
 	else if(actionKey == "reboot")
 	{
-		ExitRun(REBOOT);
+		exitRun(REBOOT);
 	}
 	else if(actionKey == "restart") 
 	{		
-		ExitRun(RESTART);
+		exitRun(RESTART);
 	}
 	else if(actionKey == "restart_dont_save") 
 	{		
-		ExitRun(RESTART, false);
+		exitRun(RESTART, false);
 	}
 	else if(actionKey == "standby")
 	{
@@ -5022,9 +5020,9 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		if(parent)
 			parent->hide();
 		
-		StopSubtitles();
+		stopSubtitles();
 		showUserMenu(SNeutrinoSettings::BUTTON_BLUE);
-		StartSubtitles();
+		startSubtitles();
 				
 		return RETURN_REPAINT;	
 	}
@@ -5033,14 +5031,14 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		if(parent)
 			parent->hide();
 		
-		StopSubtitles();
+		stopSubtitles();
 		
 		CPluginList * pluginList = new CPluginList();
 		pluginList->exec(NULL, "");
 		delete pluginList;
 		pluginList = NULL;
 
-		StartSubtitles();
+		startSubtitles();
 				
 		return RETURN_REPAINT;
 	}
@@ -5091,12 +5089,12 @@ void CNeutrinoApp::stop_daemons()
 }
 
 // stop subtitle
-void CNeutrinoApp::StopSubtitles()
+void CNeutrinoApp::stopSubtitles()
 {
 	if (IS_WEBTV(live_channel_id))
 		return;
 	
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::StopSubtitles\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::stopSubtitles\n");
 	
 	int ttx, ttxpid, ttxpage;
 
@@ -5122,12 +5120,12 @@ void CNeutrinoApp::StopSubtitles()
 }
 
 // start subtitle
-void CNeutrinoApp::StartSubtitles(bool show)
+void CNeutrinoApp::startSubtitles(bool show)
 {
 	if (IS_WEBTV(live_channel_id))
 		return;
 	
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::StartSubtitles\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::startSubtitles\n");
 	
 	if(!show)
 		return;
@@ -5140,7 +5138,7 @@ void CNeutrinoApp::StartSubtitles(bool show)
 }
 
 // select subtitle
-void CNeutrinoApp::SelectSubtitles()
+void CNeutrinoApp::selectSubtitles()
 {
 	if(!g_settings.auto_subs)
 		return;
@@ -5167,7 +5165,7 @@ void CNeutrinoApp::SelectSubtitles()
 				{
 					if(temp == it->second && sd->ISO639_language_code == it->first) 
 					{
-						printf("CNeutrinoApp::SelectSubtitles: found DVB %s, pid %x\n", sd->ISO639_language_code.c_str(), sd->pId);
+						printf("CNeutrinoApp::selectSubtitles: found DVB %s, pid %x\n", sd->ISO639_language_code.c_str(), sd->pId);
 						dvbsub_stop();
 						dvbsub_setpid(sd->pId);
 						return;
@@ -5189,7 +5187,7 @@ void CNeutrinoApp::SelectSubtitles()
 					if(temp == it->second && sd->ISO639_language_code == it->first) 
 					{
 						int page = ((sd->teletext_magazine_number & 0xFF) << 8) | sd->teletext_page_number;
-						printf("CNeutrinoApp::SelectSubtitles: found TTX %s, pid %x page %03X\n", sd->ISO639_language_code.c_str(), sd->pId, page);
+						printf("CNeutrinoApp::selectSubtitles: found TTX %s, pid %x page %03X\n", sd->ISO639_language_code.c_str(), sd->pId, page);
 
 						tuxtx_stop_subtitle();
 
@@ -5203,8 +5201,10 @@ void CNeutrinoApp::SelectSubtitles()
 }
 
 // select NVOD
-void CNeutrinoApp::SelectNVOD()
+void CNeutrinoApp::selectNVOD()
 {
+	dprintf(DEBUG_NORMAL, "selectNVOD\n");
+	
         if (!(g_RemoteControl->subChannels.empty()))
         {
                 //
@@ -5324,7 +5324,7 @@ bool CNeutrinoApp::getNVODMenu(ClistBox* menu)
 void CNeutrinoApp::lockPlayBack(void)
 {
 	// stop subtitles
-	StopSubtitles();
+	stopSubtitles();
 
 	// stop/lock live playback	
 	CZapit::getInstance()->lockPlayBack();
@@ -5342,7 +5342,7 @@ void CNeutrinoApp::unlockPlayBack(void)
 	CSectionsd::getInstance()->pauseScanning(false);
 
 	// start subtitles
-	StartSubtitles();
+	startSubtitles();
 }
 
 // signal handler

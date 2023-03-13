@@ -127,12 +127,12 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		
 		void setvol(int vol);
 		
-		void RealRun(void);
-		void InitZapper();
+		void realRun(void);
+		void initZapper();
 
-		void SetupFrameBuffer();
+		void setupFrameBuffer();
 		
-		void CmdParser(int argc, char **argv);
+		void cmdParser(int argc, char **argv);
 	
 		bool doGuiRecord(char * preselectedDir, bool addTimer = false);
 		
@@ -151,8 +151,8 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		//
 		void saveSetup(const char * fname);
 		int loadSetup(const char * fname);
-		void SetupTiming();
-		void SetupFonts(const char* font_file);
+		void setupTiming();
+		void setupFonts(const char* font_file);
 		
 		// skin
 		WIDGETLIST widgets;
@@ -213,10 +213,10 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		//
 		void mainMenu(void);
 		bool showUserMenu(int button);
-		void SelectNVOD();
+		void selectNVOD();
                 bool getNVODMenu(ClistBox* menu);
 
-		void AudioMute( int newValue, bool isEvent= false );
+		void audioMute( int newValue, bool isEvent= false );
 		void setVolume(const neutrino_msg_t key, const bool bDoPaint = true, bool nowait = false);
 
 		// channellist
@@ -254,18 +254,18 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		int playbackstatus;
 #endif		
 		
-		void SendSectionsdConfig(void);
+		void sendSectionsdConfig(void);
 
 		//
-		int GetChannelMode(void) { return g_settings.channel_mode; };
-		void SetChannelMode(int newmode, int nMode);
+		int getChannelMode(void) { return g_settings.channel_mode; };
+		void setChannelMode(int newmode, int nMode);
 		
 		//dvb/txt subs
 		void quickZap(int msg);
 		void showInfo();
-		void StopSubtitles();
-		void StartSubtitles(bool show = true);
-		void SelectSubtitles();
+		void stopSubtitles();
+		void startSubtitles(bool show = true);
+		void selectSubtitles();
 
 		//
 		void lockPlayBack(void);
@@ -280,7 +280,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 			REBOOT
 		};
 		
-		void ExitRun(int retcode = SHUTDOWN, bool save = true);
+		void exitRun(int retcode = SHUTDOWN, bool save = true);
 		void stop_daemons();
 };
 

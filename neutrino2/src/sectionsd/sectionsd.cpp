@@ -2957,12 +2957,13 @@ static cDemux * eitDmx;
 int eit_set_update_filter(int *fd)
 {
 	dprintf(DEBUG_DEBUG, "[sectionsd] eit_set_update_filter\n");
+	
+	if (!FrontendCount)
+		return 0;
 
 	unsigned char cur_eit = dmxCN.get_eit_version();
-	dprintf(DEBUG_DEBUG, "[sectionsd] eit_set_update_filter, servicekey = 0x"
-		"%llx"
-		", current version 0x%x got events %d\n",
-		messaging_current_servicekey, cur_eit, messaging_have_CN);
+	
+	dprintf(DEBUG_DEBUG, "[sectionsd] eit_set_update_filter, servicekey = 0x" "%llx" ", current version 0x%x got events %d\n", messaging_current_servicekey, cur_eit, messaging_have_CN);
 
 	if (cur_eit == 0xff) 
 	{
@@ -3003,6 +3004,7 @@ int eit_set_update_filter(int *fd)
 	eitDmx->sectionFilter(0x12, filter, mask, 4, timeout, mode);
 	
 	*fd = 1;
+	
 	return 0;
 }
 
@@ -3010,7 +3012,7 @@ int eit_stop_update_filter(int *fd)
 {
 	printf("[sectionsd] stop eit update filter\n");
 	
-	if(eitDmx)
+	if(eitDmx && FrontendCount)
 	{
 		eitDmx->Stop();
 		
@@ -3030,8 +3032,9 @@ int eit_stop_update_filter(int *fd)
 void *CSectionsd::fseitThread(void *)
 {
 	struct SI_section_header *header;
-	/* we are holding the start_stop lock during this timeout, so don't
-	   make it too long... */
+	
+	/* we are holding the start_stop lock during this timeout, so don't make it too long... */
+	
 	unsigned timeoutInMSeconds = EIT_READ_TIMEOUT;
 	bool sendToSleepNow = false;
 	pthread_setcanceltype (PTHREAD_CANCEL_ASYNCHRONOUS, 0);
