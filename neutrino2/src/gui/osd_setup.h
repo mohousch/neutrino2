@@ -113,8 +113,8 @@ class COSDTimingSettings : public CMenuTarget
 		void showMenu();
 		
 	public:
-		COSDTimingSettings();
-		~COSDTimingSettings();
+		COSDTimingSettings(){};
+		~COSDTimingSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -126,8 +126,8 @@ class COSDDiverses : public CMenuTarget
 		void showMenu();
 		
 	public:
-		COSDDiverses();
-		~COSDDiverses();
+		COSDDiverses(){};
+		~COSDDiverses(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };

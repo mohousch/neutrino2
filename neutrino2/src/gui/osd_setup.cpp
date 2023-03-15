@@ -786,16 +786,6 @@ void CFontSettings::showMenu()
 // osd timing settings
 static CTimingSettingsNotifier timingsettingsnotifier;
 
-COSDTimingSettings::COSDTimingSettings()
-{
-	dprintf(DEBUG_NORMAL, "COSDTimingSettings\n");
-}
-
-COSDTimingSettings::~COSDTimingSettings()
-{
-	dprintf(DEBUG_NORMAL, "~COSDTimingSettings\n");
-}
-
 int COSDTimingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDTimingSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -898,16 +888,6 @@ bool CTimingSettingsNotifier::changeNotify(const std::string& OptionName, void *
 }
 
 // diverses
-COSDDiverses::COSDDiverses()
-{
-	dprintf(DEBUG_NORMAL, "COSDDiverses:\n");
-}
-
-COSDDiverses::~COSDDiverses()
-{
-	dprintf(DEBUG_NORMAL, "~COSDDiverses:\n");
-}
-
 int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDDiverses::exec: actionKey: %s\n", actionKey.c_str());

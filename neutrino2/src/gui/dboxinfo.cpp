@@ -91,8 +91,6 @@ static int my_filter(const struct dirent * dent)
 
 CDBoxInfoWidget::CDBoxInfoWidget()
 {
-	dprintf(DEBUG_NORMAL, "CDBoxInfoWidget::CDBoxInfoWidget:\n");
-	
 	frameBuffer = CFrameBuffer::getInstance();
 	
 	//
@@ -160,6 +158,8 @@ void CDBoxInfoWidget::showInfo()
 		head = new CHeaders(Box.iX, Box.iY, Box.iWidth, 40, _("Box Info"), NEUTRINO_ICON_INFO);
 		head->enablePaintDate();
 		head->setFormat("%d.%m.%Y %H:%M:%S");
+		
+		dboxInfoWidget->name = "boxinfo";
 		dboxInfoWidget->addWidgetItem(head);
 
 	}

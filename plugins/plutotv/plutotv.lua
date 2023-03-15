@@ -39,7 +39,8 @@ function get_channels()
 	local target = neutrino2.CONFIGDIR .. "/webtv/plutotv.m3u8"
 		
 	if httpTool:downloadFile(obj_file, target, 100) == true then
-		os.execute("pzapit -c")
+		--os.execute("pzapit -c")
+		neutrino2.CZapit_getInstance():reinitChannels()
 	end
 end
 

@@ -219,7 +219,7 @@ CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 	}
 	else if (name == "osdtimingsetup")
 	{
-		parent = new COSDTimingSettings();
+		parent = new COSDTimingSettings;
 	}
 	else if (name == "screensetup")
 	{
@@ -227,7 +227,7 @@ CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 	}
 	else if (name == "osdmiscsetup")
 	{		
-		parent = new COSDDiverses();
+		parent = new COSDDiverses;
 	}
 	else if (name == "alphasetup")
 	{		
@@ -281,7 +281,7 @@ CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 	}
 	else if (name == "boxinfo")
 	{
-		parent = new CDBoxInfoWidget();
+		parent = new CDBoxInfoWidget;
 	}
 	else if (name == "streaminfo")
 	{		

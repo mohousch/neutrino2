@@ -4184,7 +4184,20 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::exitRun: entering off state (retcode:%d)\n", retcode);
 			
-		stop_daemons();
+		// stop nhttpd		
+		Cyhttpd::getInstance()->Stop();
+		
+		// stop streamts
+		CStreamTS::getInstance()->Stop();	
+
+		// stop timerd	  
+		CTimerd::getInstance()->Stop();		
+
+		// stop sectionsd
+		CSectionsd::getInstance()->Stop();
+
+		// zapit stop	
+		CZapit::getInstance()->Stop();
 		
 		//
 #if !defined (USE_OPENGL)		
@@ -5068,26 +5081,6 @@ bool CNeutrinoApp::changeNotify(const std::string& OptionName, void */*data*/)
 	return false;
 }
 
-void CNeutrinoApp::stop_daemons()
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::stop_daemons\n");
-
-	// stop nhttpd		
-	Cyhttpd::getInstance()->Stop();
-	
-	// stop streamts
-	CStreamTS::getInstance()->Stop();	
-
-	// stop timerd	  
-	CTimerd::getInstance()->Stop();		
-
-	// stop sectionsd
-	CSectionsd::getInstance()->Stop();
-
-	// zapit stop	
-	CZapit::getInstance()->Stop();
-}
-
 // stop subtitle
 void CNeutrinoApp::stopSubtitles()
 {
@@ -5354,7 +5347,21 @@ void sighandler(int signum)
 	{
 		case SIGTERM:
 		case SIGINT:
-			//stop_daemons();
+			// stop nhttpd		
+			Cyhttpd::getInstance()->Stop();
+			
+			// stop streamts
+			CStreamTS::getInstance()->Stop();	
+
+			// stop timerd	  
+			CTimerd::getInstance()->Stop();		
+
+			// stop sectionsd
+			CSectionsd::getInstance()->Stop();
+
+			// zapit stop	
+			CZapit::getInstance()->Stop();
+			
 			_exit(0);
 			
 		  default:
