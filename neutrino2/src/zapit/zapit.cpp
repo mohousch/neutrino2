@@ -149,9 +149,10 @@ bool g_list_changed = false; 		// flag to indicate, allchans was changed
 
 // SDT
 int scanSDT = 0;
-void * sdt_thread(void * arg);
-pthread_t tsdt = 0;
+//void * sdt_thread(void * arg);
+//pthread_t tsdt = 0;
 bool sdt_wakeup = false;
+sdt_tp_t sdt_tp;
 
 // the conditional access module
 CCam * cam0 = NULL;
@@ -230,6 +231,7 @@ uint32_t  lastChannelTV = 0;
 bool makeRemainingChannelsBouquet = false;
 
 // pmt update filter
+pthread_t tpmt = 0;
 static int pmt_update_fd = -1;
 
 // dvbsub
@@ -2767,10 +2769,13 @@ void CZapit::getZapitConfig(Zapit_config *Cfg)
         Cfg->scanSDT = scanSDT;
 }
 
-sdt_tp_t sdt_tp;
-void * sdt_thread(void */*arg*/)
+//sdt_tp_t sdt_tp;
+void * CZapit::sdt_thread(void */*arg*/)
 {
 	dprintf(DEBUG_NORMAL, "[zapit] sdt_thread: starting... tid %ld\n", syscall(__NR_gettid));
+	
+	if (!FrontendCount)
+		return 0;
 	
 	time_t tstart, tcur, wtime = 0;
 	int ret;
@@ -3481,29 +3486,22 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	//wakeup from standby and zap it to live channel
 	leaveStandby(); 
 	
+	//create pmt update filter thread
+	pthread_create(&tpmt, NULL, updatePMTFilter, (void *) NULL);
+	
 	zapit_ready = 1;	
 }
 
-#if 0
-void CZapit::run()
+//
+void *CZapit::updatePMTFilter(void *)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::run:\n");
 	
+	if (!FrontendCount)
+		return 0;
+	
 	while (true) 
-	{
-		//check for lock
-#ifdef CHECK_FOR_LOCK
-		if (check_lock && !standby && live_channel && time(NULL) > lastlockcheck && scan_runs == 0) 
-		{
-			if ( (live_fe->getStatus() & FE_HAS_LOCK) == 0) 
-			{
-				zapit( live_channel->getChannelID(), current_is_nvod, true);
-			}
-			
-			lastlockcheck = time(NULL);
-		}
-#endif
-		
+	{	
 		// pmt update
 		if (pmt_update_fd != -1) 
 		{
@@ -3538,11 +3536,11 @@ void CZapit::run()
 					
 					if(!apid_found || vpid != live_channel->getVideoPid()) 
 					{
-						zapit(live_channel->getChannelID(), current_is_nvod, true);
+						CZapit::getInstance()->zapit(live_channel->getChannelID(), current_is_nvod, true);
 					} 
 					else 
 					{
-						sendCaPmtPlayBackStart(live_channel, live_fe);
+						CZapit::getInstance()->sendCaPmtPlayBackStart(live_channel, live_fe);
 						
 						// ci cam
 #if defined (ENABLE_CI)
@@ -3556,15 +3554,21 @@ void CZapit::run()
 						CPmt::getInstance()->pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
 					}
 						
-					//eventServer->sendEvent(CZapit::EVT_PMT_CHANGED, CEventServer::INITID_ZAPIT, &channel_id, sizeof(channel_id));
+					eventServer->sendEvent(NeutrinoMessages::EVT_PMT_CHANGED, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
 				}
 			}
 		}
 
 		usleep(0);
 	}
+	
+	// stop update pmt filter
+	CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
+	pmt_update_fd = -1;
+		
+	
+	pthread_exit(NULL);
 }
-#endif
 
 void CZapit::Stop()
 {
@@ -3593,6 +3597,10 @@ void CZapit::Stop()
 	// stop std thread
 	pthread_cancel(tsdt);
 	pthread_join(tsdt, NULL);
+	
+	// stop pmt update filter thread
+	pthread_cancel(tpmt);
+	pthread_join(tpmt, NULL);
 
 	if (pmtDemux)
 		delete pmtDemux;

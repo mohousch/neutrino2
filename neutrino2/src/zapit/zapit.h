@@ -335,6 +335,12 @@ class CZapit
 		static void * start_scanthread(void *data);
 		static void * scan_transponder(void * data);
 		
+		//
+		pthread_t tsdt;
+		static void * sdt_thread(void * arg);
+		//
+		static void *updatePMTFilter(void *);
+		
 		CZapit(){};
 	public:
 		~CZapit(){};
