@@ -84,7 +84,20 @@
 #include <playback_cs.h>
 
 
+// scan
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+extern CBouquetManager *scanBouquetManager;
+extern uint32_t failed_transponders;
+extern uint32_t  found_tv_chans;
+extern uint32_t  found_radio_chans;
+extern uint32_t  found_data_chans;
+extern std::map <transponder_id_t, transponder> scantransponders;		// TP list to scan
+extern std::map <transponder_id_t, transponder> scanedtransponders;		// global TP list for current scan
+extern std::map <transponder_id_t, transponder> nittransponders;
+extern int scan_mode;
+extern int scan_sat_mode;
+extern uint32_t fake_tid, fake_nid;
+extern int prov_found;
 
 // opengl liveplayback
 #if defined (USE_OPENGL)
@@ -196,7 +209,7 @@ tallchans curchans;             	// tallchans defined in "bouquets.h"
 transponder_list_t transponders;    	// from services.xml
 
 // scan
-pthread_t scan_thread = 0;
+//pthread_t scan_thread = 0;
 extern int found_transponders;		// defined in descriptors.cpp
 extern int processed_transponders;	// defined in scan.cpp
 extern int found_channels;		// defined in descriptors.cpp
@@ -4583,3 +4596,265 @@ bool CZapit::stopScan()
 	return scan_runs;
 }		
 
+////
+void * CZapit::start_scanthread(void *data)
+{
+	dprintf(DEBUG_NORMAL, "CZapit::start_scanthread: starting... tid %ld\n", syscall(__NR_gettid));
+	
+	if (!data)
+		return 0;
+	
+	CZapit::commandStartScan StartScan = *(CZapit::commandStartScan *) data;
+	
+	int mode = StartScan.scan_mode;
+	int feindex = StartScan.feindex;
+	
+	scan_list_iterator_t spI;
+	char providerName[80] = "";
+	char *frontendType;
+	uint8_t diseqc_pos = 0;
+	scanBouquetManager = new CBouquetManager();
+	processed_transponders = 0;
+	failed_transponders = 0;
+	found_transponders = 0;
+ 	found_tv_chans = 0;
+ 	found_radio_chans = 0;
+ 	found_data_chans = 0;
+	found_channels = 0;
+	bool satfeed = false;
+	
+	abort_scan = 0;
+
+	curr_sat = 0;
+	scantransponders.clear();
+	scanedtransponders.clear();
+	nittransponders.clear();
+
+	scan_mode = mode & 0xFF;	// NIT (0) or fast (1)
+	scan_sat_mode = mode & 0xFF00; 	// single = 0, all = 1
+
+	dprintf(DEBUG_NORMAL, "CZapit::start_scanthread: scan mode %s, satellites %s\n", scan_mode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
+
+	fake_tid = fake_nid = 0;
+
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
+	{
+		frontendType = (char *) "cable";
+	}
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+	{
+		frontendType = (char *) "terrestrial";
+	}
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+	{
+		frontendType = (char *) "sat";
+	}
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+	{
+		frontendType = (char *) "atsc";
+	}
+	
+	// get provider position and name
+	CZapit::getInstance()->parseScanInputXml(CZapit::getInstance()->getFE(feindex)->getInfo()->type);
+	
+	_xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
+
+	// read all sat or cable sections
+	while ( (search = xmlGetNextOccurence(search, frontendType)) != NULL ) 
+	{
+		t_satellite_position position = xmlGetSignedNumericAttribute(search, "position", 10);
+	
+		if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC) )
+		{
+			strcpy(providerName, xmlGetAttribute(search, const_cast<char*>("name")));
+			
+			for (spI = scanProviders.begin(); spI != scanProviders.end(); spI++)
+			{
+				if (!strcmp(spI->second.c_str(), providerName))
+				{
+					// position needed because multi tuner if pos == 0 scan_provider() will abort
+					position = spI->first;
+
+					break;
+				}
+			}
+		} 
+		else //sat
+		{
+			for (spI = scanProviders.begin(); spI != scanProviders.end(); spI++)
+			{
+				if(spI->first == position)
+					break;
+			}
+		}
+
+		// provider is not wanted - jump to the next one
+		if (spI != scanProviders.end()) 
+		{
+			// get name of current satellite oder cable provider
+			strcpy(providerName, xmlGetAttribute(search,  "name"));
+
+			// satfeed
+			if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) && xmlGetAttribute(search, "satfeed") )
+			{
+				if (!strcmp(xmlGetAttribute(search, "satfeed"), "true"))
+					satfeed = true;
+			}
+
+			// increase sat counter
+			curr_sat++;
+
+			scantransponders.clear();
+			scanedtransponders.clear();
+			nittransponders.clear();
+
+			dprintf(DEBUG_INFO, "CZapit::start_scanthread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
+				
+			CScan::getInstance()->scan_provider(search, position, diseqc_pos, satfeed, feindex);
+					
+			if(abort_scan) 
+			{
+				found_channels = 0;
+				break;
+			}
+
+			if(scanBouquetManager->Bouquets.size() > 0) 
+			{
+				scanBouquetManager->saveBouquets(_bouquetMode, providerName);
+			}
+					
+			scanBouquetManager->clearAll();
+		}
+
+		// go to next satellite
+		search = search->xmlNextNode;
+	}
+
+	// report status
+	dprintf(DEBUG_NORMAL, "CZapit::start_scanthread: found %d transponders (%d failed) and %d channels\n", found_transponders, failed_transponders, found_channels);
+
+	if (found_channels) 
+	{
+		CServices::getInstance()->saveServices(true);
+		
+		dprintf(DEBUG_NORMAL, "CZapit::start_scanthread: save services done\n"); 
+		
+	        g_bouquetManager->saveBouquets();
+	        g_bouquetManager->clearAll();
+		g_bouquetManager->loadBouquets();
+		
+		dprintf(DEBUG_INFO, "CZapit::start_scanthread: save bouquets done\n");
+		
+		CScan::getInstance()->stop_scan(true);
+
+		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
+	} 
+	else 
+	{
+		CScan::getInstance()->stop_scan(false);
+	}
+
+	scantransponders.clear();
+	scanedtransponders.clear();
+	nittransponders.clear();
+
+	pthread_exit(NULL);
+}
+
+void * CZapit::scan_transponder(void * data)
+{
+	dprintf(DEBUG_NORMAL, "CZapit::scan_transponder: starting... tid %ld\n", syscall(__NR_gettid));
+	
+	if (!data)
+		return 0;
+	
+	CZapit::commandScanTP ScanTP = *(CZapit::commandScanTP *) data;
+	TP_params * TP = &ScanTP.TP;
+	int feindex = ScanTP.feindex;
+	
+	char providerName[32] = "";
+	t_satellite_position satellitePosition = 0;
+
+	prov_found = 0;
+        found_transponders = 0;
+        found_channels = 0;
+        processed_transponders = 0;
+        found_tv_chans = 0;
+        found_radio_chans = 0;
+        found_data_chans = 0;
+	fake_tid = fake_nid = 0;
+	scanBouquetManager = new CBouquetManager();
+	scantransponders.clear();
+	scanedtransponders.clear();
+	nittransponders.clear();
+
+	strcpy(providerName, scanProviders.size() > 0 ? scanProviders.begin()->second.c_str() : "unknown provider");
+
+	satellitePosition = scanProviders.begin()->first;
+	
+	dprintf(DEBUG_INFO, "CZapit::scan_transponder: scanning sat %s position %d fe(%d)\n", providerName, satellitePosition, ScanTP.feindex);
+	
+	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, providerName, strlen(providerName) + 1);
+
+	scan_mode = TP->scan_mode;
+	TP->feparams.inversion = INVERSION_AUTO;
+
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
+	{
+		dprintf(DEBUG_NORMAL, "CZapit::scan_transponder: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP->feparams.frequency, TP->feparams.u.qam.symbol_rate, TP->feparams.u.qam.fec_inner, TP->feparams.u.qam.modulation);
+	}
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+	{
+		dprintf(DEBUG_NORMAL, "CZapit::scan_transponder: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP->feparams.frequency, TP->feparams.u.ofdm.bandwidth, TP->feparams.u.ofdm.code_rate_HP, TP->feparams.u.ofdm.code_rate_LP, TP->feparams.u.ofdm.constellation, TP->feparams.u.ofdm.transmission_mode, TP->feparams.u.ofdm.guard_interval, TP->feparams.u.ofdm.hierarchy_information);
+	}
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+	{
+		dprintf(DEBUG_NORMAL, "CZapit::scan_transponder: fe(%d) freq %d rate %d fec %d pol %d NIT %s\n", feindex, TP->feparams.frequency, TP->feparams.u.qpsk.symbol_rate, TP->feparams.u.qpsk.fec_inner, TP->polarization, scan_mode ? "no" : "yes");
+	}
+
+	freq_id_t freq;
+
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
+		freq = TP->feparams.frequency/100;
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+		freq = TP->feparams.frequency/1000;
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+		freq = TP->feparams.frequency/1000000;
+
+	// add TP to scan
+	fake_tid++; 
+	fake_nid++;
+
+	CScan::getInstance()->add_to_scan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, feindex);
+
+	CScan::getInstance()->get_sdts(satellitePosition, feindex);
+
+	if(abort_scan)
+		found_channels = 0;
+
+	if(found_channels) 
+	{
+		CServices::getInstance()->saveServices(true);
+		
+		scanBouquetManager->saveBouquets(_bouquetMode, providerName);
+	        g_bouquetManager->saveBouquets();
+	        g_bouquetManager->clearAll();
+		g_bouquetManager->loadBouquets();
+		
+		CScan::getInstance()->stop_scan(true);
+
+		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
+	} 
+	else 
+	{
+		CScan::getInstance()->stop_scan(false);
+	}
+	
+	scantransponders.clear();
+	scanedtransponders.clear();
+	nittransponders.clear();
+
+	pthread_exit(NULL);
+}
+
+////

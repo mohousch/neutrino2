@@ -57,7 +57,7 @@ class CScan
 		void stop_scan(const bool success);
 };
 
-void * start_scanthread(void *data);
-void * scan_transponder(void * data);
+//void * start_scanthread(void *data);
+//void * scan_transponder(void * data);
 
 #endif /* __scan_h__ */

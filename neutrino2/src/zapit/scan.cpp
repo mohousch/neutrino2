@@ -66,7 +66,7 @@ extern CEventServer *eventServer;
 extern CFrontend * live_fe;
 extern _xmlDocPtr scanInputParser;
 
-static int prov_found;
+int prov_found = 0;
 short abort_scan;
 short scan_runs;
 short curr_sat;
@@ -206,7 +206,8 @@ int CScan::add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, 
 	return 1;
 }
 
-static uint32_t fake_tid, fake_nid;
+uint32_t fake_tid = 0;
+uint32_t fake_nid = 0;
 
 int CScan::get_sdts(t_satellite_position satellitePosition, int feindex)
 {
@@ -480,7 +481,7 @@ void CScan::stop_scan(const bool success)
 		scanBouquetManager = NULL;
 	}
 }
-	
+#if 0	
 void * start_scanthread(void *data)
 {
 	dprintf(DEBUG_NORMAL, "[scan] start_scanthread: starting... tid %ld\n", syscall(__NR_gettid));
@@ -740,4 +741,4 @@ void * scan_transponder(void * data)
 
 	pthread_exit(NULL);
 }
-
+#endif
