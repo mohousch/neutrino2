@@ -4757,8 +4757,6 @@ void * CZapit::start_scanthread(void *data)
 		
 		dprintf(DEBUG_INFO, "CZapit::start_scanthread: save bouquets done\n");
 		
-		//CScan::getInstance()->stop_scan(true);
-		////
 		// notify client about end of scan
 		scan_runs = 0;
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_COMPLETE, CEventServer::INITID_NEUTRINO);
@@ -4769,14 +4767,11 @@ void * CZapit::start_scanthread(void *data)
 			delete scanBouquetManager;
 			scanBouquetManager = NULL;
 		}
-		////
 
 		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
 	} 
 	else 
 	{
-		//CScan::getInstance()->stop_scan(false);
-		////
 		// notify client about end of scan
 		scan_runs = 0;
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
@@ -4787,7 +4782,6 @@ void * CZapit::start_scanthread(void *data)
 			delete scanBouquetManager;
 			scanBouquetManager = NULL;
 		}
-		////
 	}
 
 	scantransponders.clear();
@@ -4877,8 +4871,6 @@ void * CZapit::scan_transponder(void * data)
 	        g_bouquetManager->clearAll();
 		g_bouquetManager->loadBouquets();
 		
-		//CScan::getInstance()->stop_scan(true);
-		////
 		// notify client about end of scan
 		scan_runs = 0;
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_COMPLETE, CEventServer::INITID_NEUTRINO);
@@ -4889,13 +4881,11 @@ void * CZapit::scan_transponder(void * data)
 			delete scanBouquetManager;
 			scanBouquetManager = NULL;
 		}
-		////
 
 		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
 	} 
 	else 
 	{
-		//CScan::getInstance()->stop_scan(false);
 		// notify client about end of scan
 		scan_runs = 0;
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
