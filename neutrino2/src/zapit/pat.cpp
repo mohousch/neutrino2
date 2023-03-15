@@ -32,9 +32,9 @@
 
 #define PAT_SIZE 1024
 
-int CPat::parse_pat(CZapitChannel * const channel, CFrontend * fe)
+int CPat::parsePAT(CZapitChannel * const channel, CFrontend * fe)
 {
-	dprintf(DEBUG_NORMAL, "CPat::parse_pat:\n");
+	dprintf(DEBUG_NORMAL, "CPat::parsePAT:\n");
 	
 	if (!channel)
 		return -1;
@@ -71,7 +71,7 @@ int CPat::parse_pat(CZapitChannel * const channel, CFrontend * fe)
 	do {
 		if ( (dmx->sectionFilter(0, filter, mask, 5) < 0) || (i = dmx->Read(buffer, PAT_SIZE) < 0))
 		{
-			dprintf(DEBUG_NORMAL, "parse_pat: dmx read failed\n");
+			dprintf(DEBUG_NORMAL, "CPat::parsePAT: dmx read failed\n");
 			
 			delete dmx;
 			return -1;
@@ -94,7 +94,7 @@ int CPat::parse_pat(CZapitChannel * const channel, CFrontend * fe)
 	
 	delete dmx;
 
-	dprintf(DEBUG_NORMAL, "parse_pat: sid 0x%X not found..\n", channel->getServiceId());
+	dprintf(DEBUG_NORMAL, "CPat::parsePAT: sid 0x%X not found..\n", channel->getServiceId());
 	
 	return -1;
 }

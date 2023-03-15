@@ -64,9 +64,9 @@ extern short scan_runs;
  * 0xc6 User Private (Canal+)
  */
 
-unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitChannel * const channel, CCaPmt * const caPmt)
+unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChannel * const channel, CCaPmt * const caPmt)
 {
-	dprintf(DEBUG_NORMAL, "CPmt::parse_ES_info:\n");
+	dprintf(DEBUG_NORMAL, "CPmt::parseESInfo:\n");
 	
 	unsigned short ES_info_length;
 	unsigned short pos;
@@ -221,7 +221,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 
 			case APPLICATION_SIGNALLING_DESCRIPTOR:
 				channel->setaitPid(esInfo->elementary_PID);
-				dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: channel->setaitPid(0x%x)\n", esInfo->elementary_PID);			
+				dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: channel->setaitPid(0x%x)\n", esInfo->elementary_PID);			
 				break;
 				
 			case ENHANCED_AC3_DESCRIPTOR:
@@ -242,7 +242,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 				break;
 
 			default:
-				dprintf(DEBUG_INFO, "[pmt]parse_ES_info: descriptor_tag: 0x%02x\n", descriptor_tag);
+				dprintf(DEBUG_INFO, "CPmt::parseESInfo: descriptor_tag: 0x%02x\n", descriptor_tag);
 				break;
 		}
 	}
@@ -267,7 +267,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 			else if(esInfo->stream_type == 0x42)
 				channel->videoType = CHANNEL_VIDEO_CAVS;
 
-			dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: vpid 0x%x stream 0x%02x type 0x%02x\n", esInfo->elementary_PID, esInfo->stream_type, channel->videoType);
+			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: vpid 0x%x stream 0x%02x type 0x%02x\n", esInfo->elementary_PID, esInfo->stream_type, channel->videoType);
 			break;
 
 		case 0x03:
@@ -285,7 +285,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 			
 			descramble = true;
 			
-			dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
+			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
 			break;
 
 		case 0x05:// private section
@@ -313,7 +313,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 	
 						case APPLICATION_SIGNALLING_DESCRIPTOR:
 							channel->setaitPid(esInfo->elementary_PID);
-							dprintf(DEBUG_NORMAL, "[pmt]0x05:parse_ES_info: channel->setaitPid(0x%x)\n", esInfo->elementary_PID);
+							dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: channel->setaitPid(0x%x)\n", esInfo->elementary_PID);
 							break;
 							
 						default:
@@ -324,7 +324,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 				if ( tmp == 3 ) 
 				{
 					channel->setPrivatePid(esInfo->elementary_PID);
-					dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: channel->setPrivatePid(0x%x)\n", esInfo->elementary_PID);
+					dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: channel->setPrivatePid(0x%x)\n", esInfo->elementary_PID);
 				}
 				descramble = true;
 				break;
@@ -342,7 +342,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 			if(!scan_runs)
 				channel->addAudioChannel(esInfo->elementary_PID, CZapitAudioChannel::AC3, description, componentTag);
 			
-			dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
+			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
 			break;
 			
 		case 0x06:
@@ -383,7 +383,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 				}
 				descramble = true;
 				
-				dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
+				dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
 			}
 			break;
 			
@@ -397,7 +397,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 			if(!scan_runs)
 				channel->addAudioChannel(esInfo->elementary_PID, CZapitAudioChannel::AAC, description, componentTag);
 			
-			dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
+			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
 			break;
 	        case 0x11:	 // AACPLUS
 			if (description == "")
@@ -409,7 +409,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 			if(!scan_runs)
 				channel->addAudioChannel(esInfo->elementary_PID, CZapitAudioChannel::AACPLUS, description, componentTag);
 			
-			dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
+			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
 			break;
 			
 		case 0x80: // user private ... but bluray LPCM
@@ -423,7 +423,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 			if(!scan_runs)
 				channel->addAudioChannel(esInfo->elementary_PID, CZapitAudioChannel::LPCM, description, componentTag);
 			
-			dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
+			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
 			break;
 			
 		case 0x82: // bluray DTS (dvb user private...)
@@ -437,7 +437,7 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 			if(!scan_runs)
 				channel->addAudioChannel(esInfo->elementary_PID, CZapitAudioChannel::DTS, description, componentTag);
 			
-			dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
+			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
 			break;
 		
 		case 0x85: // bluray DTS-HD HRA(dvb user private...)
@@ -452,11 +452,11 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 			if(!scan_runs)
 				channel->addAudioChannel(esInfo->elementary_PID, CZapitAudioChannel::DTSHD, description, componentTag);
 			
-			dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
+			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: apid 0x%x %s\n", esInfo->elementary_PID, description.c_str());
 			break;
 
 		default:
-			dprintf(DEBUG_NORMAL, "[pmt]parse_ES_info: stream_type: 0x%02x\n", esInfo->stream_type);
+			dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: stream_type: 0x%02x\n", esInfo->stream_type);
 			break;
 	}
 
@@ -471,9 +471,9 @@ unsigned short CPmt::parse_ES_info(const unsigned char * const buffer, CZapitCha
 int curpmtpid;
 int pmt_caids[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-int CPmt::parse_pmt(CZapitChannel * const channel, CFrontend * fe)
+int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 {
-	dprintf(DEBUG_NORMAL, "CPmt::parse_pmt:\n");
+	dprintf(DEBUG_NORMAL, "CPmt::parsePMT:\n");
 	
 	if(!channel)
 		return -1;
@@ -494,7 +494,7 @@ int CPmt::parse_pmt(CZapitChannel * const channel, CFrontend * fe)
 	unsigned char filter[DMX_FILTER_SIZE];
 	unsigned char mask[DMX_FILTER_SIZE];
 
-	dprintf(DEBUG_NORMAL, "[pmt]parse_pmt: parsing pmt pid 0x%X\n", channel->getPmtPid());
+	dprintf(DEBUG_NORMAL, "CPmt::parsePMT: pid 0x%X\n", channel->getPmtPid());
 
 	if (channel->getPmtPid() == 0)
 	{
@@ -526,7 +526,7 @@ int CPmt::parse_pmt(CZapitChannel * const channel, CFrontend * fe)
 
 	if ( (dmx->sectionFilter(channel->getPmtPid(), filter, mask, 5) < 0) || (dmx->Read(buffer, PMT_SIZE) < 0) ) 
 	{
-		dprintf(DEBUG_NORMAL, "[pmt]parse_pmt: dmx read failed\n");
+		dprintf(DEBUG_NORMAL, "CPmt::parsePMT: dmx read failed\n");
 		
 		delete dmx;
 		return -1;
@@ -622,7 +622,7 @@ int CPmt::parse_pmt(CZapitChannel * const channel, CFrontend * fe)
 	caPmt->current_next_indicator = buffer[5] & 0x01;
 	caPmt->reserved2 = buffer[10] >> 4;
 
-	dprintf(DEBUG_NORMAL, "[pmt]parse_pmt: pcr pid: old 0x%x new 0x%x\n", channel->getPcrPid(), ((buffer[8] & 0x1F) << 8) + buffer[9]);
+	dprintf(DEBUG_NORMAL, "CPmt::parsePMT: pcr pid: old 0x%x new 0x%x\n", channel->getPcrPid(), ((buffer[8] & 0x1F) << 8) + buffer[9]);
 
 	// reset pids
 	if(channel->getCaPmt() != 0) 
@@ -654,7 +654,7 @@ int CPmt::parse_pmt(CZapitChannel * const channel, CFrontend * fe)
 
 	// capmt parse ES_Info
 	for (i = 12 + program_info_length; i < section_length - 1; i += ES_info_length + 5)
-		ES_info_length = parse_ES_info(buffer + i, channel, caPmt);
+		ES_info_length = parseESInfo(buffer + i, channel, caPmt);
 
 	if(scan_runs) 
 	{

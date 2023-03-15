@@ -42,8 +42,10 @@
 #define SDT_SIZE 	MAX_SECTION_LENGTH
 
 // sdt scan
-int CSdt::parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_network_id *p_original_network_id,t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_network_id *p_original_network_id,t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
+	dprintf(DEBUG_NORMAL, "CSdt::parseSDT:\n");
+	
 	int secdone[255];
 	int sectotal = -1;
 
@@ -96,7 +98,7 @@ int CSdt::parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_netw
 	do {
 		if (dmx->Read(buffer, SDT_SIZE) < 0) 
 		{
-			dprintf(DEBUG_NORMAL, "parse_sdt: dmx read failed\n");
+			dprintf(DEBUG_NORMAL, "CSdt::parseSDT:: dmx read failed\n");
 			
 			delete dmx;
 			return -1;
@@ -110,7 +112,7 @@ int CSdt::parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_netw
 		original_network_id = (buffer[8] << 8) | buffer[9];
 
 		unsigned char secnum = buffer[6];
-		dprintf(DEBUG_NORMAL, "parse_sdt: section %X last %X tsid 0x%x onid 0x%x -> %s\n", buffer[6], buffer[7], transport_stream_id, original_network_id, secdone[secnum] ? "skip" : "use");
+		dprintf(DEBUG_NORMAL, "CSdt::parseSDT:: section %X last %X tsid 0x%x onid 0x%x -> %s\n", buffer[6], buffer[7], transport_stream_id, original_network_id, secdone[secnum] ? "skip" : "use");
 
 		if(secdone[secnum])
 			continue;
@@ -241,10 +243,10 @@ int CSdt::parse_sdt(t_transport_stream_id *p_transport_stream_id,t_original_netw
 	return 0;
 }
 
-// sdt monitor
+//
 extern tallchans curchans;
 
-int CSdt::parse_current_sdt( const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend * fe)
+int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend * fe)
 { 
 	if(!fe)
 		return -1;

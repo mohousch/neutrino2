@@ -44,7 +44,7 @@ class CNit
 		};
 		
 		//
-		int parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);
+		int parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);
 };
 
 #endif /* __zapit_nit_h__ */

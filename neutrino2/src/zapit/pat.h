@@ -47,7 +47,7 @@ class CPat
 		};
 		
 		//
-		int parse_pat(CZapitChannel * const channel, CFrontend * fe);
+		int parsePAT(CZapitChannel * const channel, CFrontend * fe);
 };
 
 #endif /* __zapit_pat_h__ */

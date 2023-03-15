@@ -267,7 +267,7 @@ _repeat:
 		// parse sdt
 		dprintf(DEBUG_NORMAL, "CScan::getSDTS: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
 		
-		if(CSdt::getInstance()->parse_sdt(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
+		if(CSdt::getInstance()->parseSDT(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
 		{
 			dprintf(DEBUG_INFO, "CScan::getSDTS: SDT failed !\n");
 			continue;
@@ -286,7 +286,7 @@ _repeat:
 		{
 			dprintf(DEBUG_INFO, "CScan::getSDTS: parsing NIT\n");
 			
-			if( CNit::getInstance()->parse_nit(satellitePosition, freq, feindex) < 0 )
+			if( CNit::getInstance()->parseNIT(satellitePosition, freq, feindex) < 0 )
 			{
 				dprintf(DEBUG_INFO, "CScan::getSDTS: NIT failed !\n");
 			}

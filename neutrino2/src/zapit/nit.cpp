@@ -44,9 +44,9 @@
 
 #define NIT_SIZE 1024
 
-int CNit::parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
-	dprintf(DEBUG_NORMAL, "[nit] %s:\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CNit::%s:\n", __FUNCTION__);
 	
 	int ret = 0;
 	int secdone[255];
@@ -98,7 +98,7 @@ int CNit::parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int 
 	do {
 		if (dmx->Read(buffer, NIT_SIZE) < 0) 
 		{
-			dprintf(DEBUG_NORMAL, "parse_nit: dmx read failed\n");
+			dprintf(DEBUG_NORMAL, "CNit::parseNIT: dmx read failed\n");
 			
 			delete dmx;
 			return -1;
@@ -112,7 +112,7 @@ int CNit::parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int 
 		network_descriptors_length = ((buffer[8] & 0x0F) << 8) | buffer[9];
 		unsigned char secnum = buffer[6];
 		
-		dprintf(DEBUG_NORMAL, "parse_nit: section 0x%x last 0x%x network_id 0x%x -> %s\n", secnum, buffer[7], network_id, secdone[secnum] ? "skip" : "use");
+		dprintf(DEBUG_NORMAL, "CNit::parseNIT: section 0x%x last 0x%x network_id 0x%x -> %s\n", secnum, buffer[7], network_id, secdone[secnum] ? "skip" : "use");
 
 		if(secdone[secnum]) // mark sec XX done
 			continue;
@@ -149,7 +149,7 @@ int CNit::parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int 
 					break;
 
 				default:
-					dprintf(DEBUG_DEBUG, "parse_nit: first_descriptor_tag: %02x\n", buffer[pos]);
+					dprintf(DEBUG_DEBUG, "CNit::parseNIT: first_descriptor_tag: %02x\n", buffer[pos]);
 					break;
 			}
 		}
@@ -214,7 +214,7 @@ int CNit::parse_nit(t_satellite_position satellitePosition, freq_id_t freq, int 
 						break;
 
 					default:
-						dprintf(DEBUG_DEBUG, "parse_nit: second_descriptor_tag: %02x\n", buffer[pos2]);
+						dprintf(DEBUG_DEBUG, "CNit::parseNIT: second_descriptor_tag: %02x\n", buffer[pos2]);
 						break;
 				}
 			}

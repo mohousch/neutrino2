@@ -1251,7 +1251,7 @@ bool CZapit::parse_channel_pat_pmt(CZapitChannel * thischannel, CFrontend * fe)
 	{
 		dprintf(DEBUG_NORMAL, "[zapit] no pmt pid, going to parse pat\n");	
 		
-		if (CPat::getInstance()->parse_pat(thischannel, fe) < 0)
+		if (CPat::getInstance()->parsePAT(thischannel, fe) < 0)
 		{
 			dprintf(DEBUG_NORMAL, "[zapit] pat parsing failed\n");
 			
@@ -1260,17 +1260,17 @@ bool CZapit::parse_channel_pat_pmt(CZapitChannel * thischannel, CFrontend * fe)
 	}
 
 	// parse program map table and store pids
-	if ( !failed && CPmt::getInstance()->parse_pmt(thischannel, fe) < 0) 
+	if ( !failed && CPmt::getInstance()->parsePMT(thischannel, fe) < 0) 
 	{
 		dprintf(DEBUG_NORMAL, "[zapit] pmt parsing failed\n");	
 		
-		if (CPat::getInstance()->parse_pat(thischannel, fe) < 0) 
+		if (CPat::getInstance()->parsePAT(thischannel, fe) < 0) 
 		{
 			dprintf(DEBUG_NORMAL, "[zapit] pat parsing failed\n");
 			
 			failed = true;
 		}
-		else if (CPmt::getInstance()->parse_pmt(thischannel, fe) < 0) 
+		else if (CPmt::getInstance()->parsePMT(thischannel, fe) < 0) 
 		{
 			dprintf(DEBUG_NORMAL, "[zapit] pmt parsing failed\n");
 			
@@ -2856,7 +2856,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 
 			if(live_channel) 
 			{
-				if( CSdt::getInstance()->parse_current_sdt(transport_stream_id, original_network_id, satellitePosition, freq, live_fe) < 0 )
+				if( CSdt::getInstance()->parseCurrentSDT(transport_stream_id, original_network_id, satellitePosition, freq, live_fe) < 0 )
 					continue;
 			}
 
@@ -3521,7 +3521,7 @@ void *CZapit::updatePMTFilter(void *)
 					int vpid = live_channel->getVideoPid();
 					int apid = live_channel->getAudioPid();
 					
-					CPmt::getInstance()->parse_pmt(live_channel, live_fe);
+					CPmt::getInstance()->parsePMT(live_channel, live_fe);
 					
 					bool apid_found = false;
 					// check if selected audio pid still present
