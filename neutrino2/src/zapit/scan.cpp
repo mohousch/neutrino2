@@ -94,7 +94,7 @@ std::map <transponder_id_t, transponder> nittransponders;
 
 bool CScan::tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_satellite_position satellitePosition, int feindex)
 {
-	dprintf(DEBUG_NORMAL, "[scan] %s:\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CScan::%s:\n", __FUNCTION__);
 	
 	// init tuner
 	CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
@@ -109,7 +109,7 @@ bool CScan::tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_
 		
 		if(ret > 0) 
 		{
-			dprintf(DEBUG_INFO, "[scan]-tuneFrequency: waiting %d seconds for motor to turn satellite dish.\n", ret);
+			dprintf(DEBUG_INFO, "CScan::tuneFrequency: waiting %d seconds for motor to turn satellite dish.\n", ret);
 			
 			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_PROVIDER, CEventServer::INITID_NEUTRINO, (void *) "moving rotor", 13);
 		
@@ -126,9 +126,9 @@ bool CScan::tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_
 	return CZapit::getInstance()->getFE(feindex)->tuneFrequency(feparams, polarization, false);
 }
 
-int CScan::add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit, int feindex)
+int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit, int feindex)
 {
-	dprintf(DEBUG_NORMAL, "[scan] add_to_scan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, polarity, TsidOnid, fromnit, feindex);
+	dprintf(DEBUG_NORMAL, "CScan::addToScan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, polarity, TsidOnid, fromnit, feindex);
 
 	freq_id_t freq;
 
@@ -166,7 +166,7 @@ int CScan::add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, 
 			
 			TsidOnid = CREATE_TRANSPONDER_ID( freq1, satellitePosition, original_network_id, transport_stream_id);
 
-			dprintf(DEBUG_INFO, "[scan] add_to_scan: SAME freq %d pol1 %d pol2 %d tpid %llx\n", feparams->frequency, poltmp1, poltmp2, TsidOnid);
+			dprintf(DEBUG_INFO, "CScan::addToScan: SAME freq %d pol1 %d pol2 %d tpid %llx\n", feparams->frequency, poltmp1, poltmp2, TsidOnid);
 
 			feparams->frequency = feparams->frequency + 1000;
 			tI = scanedtransponders.find(TsidOnid);
@@ -209,14 +209,14 @@ int CScan::add_to_scan(transponder_id_t TsidOnid, FrontendParameters *feparams, 
 uint32_t fake_tid = 0;
 uint32_t fake_nid = 0;
 
-int CScan::get_sdts(t_satellite_position satellitePosition, int feindex)
+int CScan::getSDTS(t_satellite_position satellitePosition, int feindex)
 {
 	transponder_id_t TsidOnid = 0;
 	stiterator tI;
 	stiterator stI;
 	std::map <transponder_id_t, transponder>::iterator sT;
 
-	dprintf(DEBUG_NORMAL, "[scan] get_sdts: scanning tp from sat/service\n");
+	dprintf(DEBUG_NORMAL, "CScan::getSDTS: scanning tp from sat/service\n");
 
 _repeat:
 	for (tI = scantransponders.begin(); tI != scantransponders.end(); tI++) 
@@ -224,7 +224,7 @@ _repeat:
 		if(abort_scan)
 			return 0;
 
-		dprintf(DEBUG_NORMAL, "[scan] get_sdts: scanning: %llx\n", tI->first);
+		dprintf(DEBUG_NORMAL, "CScan::getSDTS: scanning: %llx\n", tI->first);
 
 		//
 		actual_freq = tI->second.feparams.frequency;
@@ -265,11 +265,11 @@ _repeat:
 			freq = tI->second.feparams.frequency/1000000;
 			
 		// parse sdt
-		dprintf(DEBUG_NORMAL, "[scan] get_sdts: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
+		dprintf(DEBUG_NORMAL, "CScan::getSDTS: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
 		
 		if(CSdt::getInstance()->parse_sdt(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
 		{
-			dprintf(DEBUG_INFO, "[scan] get_sdts: SDT failed !\n");
+			dprintf(DEBUG_INFO, "CScan::getSDTS: SDT failed !\n");
 			continue;
 		}
 
@@ -284,31 +284,32 @@ _repeat:
 		// parse nit
 		if(!scan_mode) 
 		{
-			dprintf(DEBUG_INFO, "[scan] get_sdts: parsing NIT\n");
+			dprintf(DEBUG_INFO, "CScan::getSDTS: parsing NIT\n");
 			
 			if( CNit::getInstance()->parse_nit(satellitePosition, freq, feindex) < 0 )
 			{
-				dprintf(DEBUG_INFO, "[scan] get_sdts: NIT failed !\n");
+				dprintf(DEBUG_INFO, "CScan::getSDTS: NIT failed !\n");
 			}
 		}
 
-		dprintf(DEBUG_INFO, "[scan] get_sdts: tpid ready: %llx\n", TsidOnid);
+		dprintf(DEBUG_INFO, "CScan::getSDTS: tpid ready: %llx\n", TsidOnid);
 	}
 
 	// add found transponder by nit to scan
 	if(!scan_mode) 
 	{
-		dprintf(DEBUG_INFO, "[scan] get_sdts: found %d transponders (%d failed) and %d channels\n", found_transponders, failed_transponders, found_channels);
+		dprintf(DEBUG_INFO, "CScan::getSDTS: found %d transponders (%d failed) and %d channels\n", found_transponders, failed_transponders, found_channels);
 		
 		scantransponders.clear();
+		
 		for (tI = nittransponders.begin(); tI != nittransponders.end(); tI++) 
 		{
-			add_to_scan(tI->first, &tI->second.feparams, tI->second.polarization, false, feindex);
+			addToScan(tI->first, &tI->second.feparams, tI->second.polarization, false, feindex);
 		}
 
 		nittransponders.clear();
 		
-		dprintf(DEBUG_INFO, "\n\n[scan] get_sdts: found %d additional transponders from nit\n", scantransponders.size());
+		dprintf(DEBUG_INFO, "CScan::getSDTS: found %d additional transponders from nit\n", scantransponders.size());
 		
 		if(scantransponders.size()) 
 		{
@@ -321,8 +322,10 @@ _repeat:
 	return 0;
 }
 
-int CScan::scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, bool /*satfeed*/, int feindex)
+int CScan::scanTransponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, bool /*satfeed*/, int feindex)
 {
+	dprintf(DEBUG_INFO, "CScan::scanTransponder:\n");
+	
 	uint8_t polarization = 0;
 	uint8_t system = 0, modulation = 1;
 	int xml_fec;
@@ -385,14 +388,14 @@ int CScan::scan_transponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satel
 	// read network information table
 	fake_tid++; fake_nid++;
 
-	add_to_scan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &feparams, polarization, false, feindex);
+	addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &feparams, polarization, false, feindex);
 
 	return 0;
 }
 
-void CScan::scan_provider(_xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
+void CScan::scanProvider(_xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
 {
-	dprintf(DEBUG_NORMAL, "[scan] %s:\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CScan::%s:\n", __FUNCTION__);
 	
 	_xmlNodePtr tps = NULL;
 	found_transponders = 0;
@@ -404,7 +407,7 @@ void CScan::scan_provider(_xmlNodePtr search, t_satellite_position satellitePosi
 
 	if(sit == satellitePositions.end()) 
 	{
-		dprintf(DEBUG_NORMAL, "[scan] scan_provider: WARNING satellite position %d not found!\n", satellitePosition);
+		dprintf(DEBUG_NORMAL, "[scan] scanProvider: WARNING satellite position %d not found!\n", satellitePosition);
 		
 		return;
 	}
@@ -420,7 +423,7 @@ void CScan::scan_provider(_xmlNodePtr search, t_satellite_position satellitePosi
 		if(abort_scan)
 			return;
 
-		scan_transponder(tps, diseqc_pos, satellitePosition, satfeed, feindex);
+		scanTransponder(tps, diseqc_pos, satellitePosition, satfeed, feindex);
 
 		// next transponder
 		tps = tps->xmlNextNode;
@@ -429,7 +432,7 @@ void CScan::scan_provider(_xmlNodePtr search, t_satellite_position satellitePosi
 	eventServer->sendEvent( NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_NEUTRINO, &found_transponders, sizeof(found_transponders));
 
 	// start scanning
-	get_sdts(satellitePosition, feindex);
+	getSDTS(satellitePosition, feindex);
 
 	/* 
 	 * channels from PAT do not have service_type set.
@@ -454,7 +457,7 @@ void CScan::scan_provider(_xmlNodePtr search, t_satellite_position satellitePosi
 						break;
 						
 					default:
-						dprintf(DEBUG_INFO, "[scan] scan_provider: setting service_type of channel_id:%llx %s from %02x to %02x", stI->first, scI->second.getName().c_str(), scI->second.getServiceType(), stI->second);
+						dprintf(DEBUG_INFO, "CScan::scanProvider: setting service_type of channel_id:%llx %s from %02x to %02x", stI->first, scI->second.getName().c_str(), scI->second.getServiceType(), stI->second);
 						
 						scI->second.setServiceType(stI->second);
 						break;
@@ -463,282 +466,6 @@ void CScan::scan_provider(_xmlNodePtr search, t_satellite_position satellitePosi
 		}
 	}
 	
-	TIMER_STOP("[scan] scanning took");
+	TIMER_STOP("CScan::scanProvider: scanning took");
 }
 
-void CScan::stop_scan(const bool success)
-{
-	dprintf(DEBUG_NORMAL, "[scan] %s:\n", __FUNCTION__);
-	
-	// notify client about end of scan
-	scan_runs = 0;
-	eventServer->sendEvent(success ? NeutrinoMessages::EVT_SCAN_COMPLETE : NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
-	
-	if (scanBouquetManager) 
-	{
-		scanBouquetManager->clearAll();
-		delete scanBouquetManager;
-		scanBouquetManager = NULL;
-	}
-}
-#if 0	
-void * start_scanthread(void *data)
-{
-	dprintf(DEBUG_NORMAL, "[scan] start_scanthread: starting... tid %ld\n", syscall(__NR_gettid));
-	
-	if (!data)
-		return 0;
-	
-	CZapit::commandStartScan StartScan = *(CZapit::commandStartScan *) data;
-	
-	int mode = StartScan.scan_mode;
-	int feindex = StartScan.feindex;
-	
-	scan_list_iterator_t spI;
-	char providerName[80] = "";
-	char *frontendType;
-	uint8_t diseqc_pos = 0;
-	scanBouquetManager = new CBouquetManager();
-	processed_transponders = 0;
-	failed_transponders = 0;
-	found_transponders = 0;
- 	found_tv_chans = 0;
- 	found_radio_chans = 0;
- 	found_data_chans = 0;
-	found_channels = 0;
-	bool satfeed = false;
-	
-	abort_scan = 0;
-
-	curr_sat = 0;
-	scantransponders.clear();
-	scanedtransponders.clear();
-	nittransponders.clear();
-
-	scan_mode = mode & 0xFF;	// NIT (0) or fast (1)
-	scan_sat_mode = mode & 0xFF00; 	// single = 0, all = 1
-
-	dprintf(DEBUG_NORMAL, "[scan] start_scanthread: scan mode %s, satellites %s\n", scan_mode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
-
-	fake_tid = fake_nid = 0;
-
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
-	{
-		frontendType = (char *) "cable";
-	}
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
-	{
-		frontendType = (char *) "terrestrial";
-	}
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
-	{
-		frontendType = (char *) "sat";
-	}
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
-	{
-		frontendType = (char *) "atsc";
-	}
-	
-	// get provider position and name
-	CZapit::getInstance()->parseScanInputXml(CZapit::getInstance()->getFE(feindex)->getInfo()->type);
-	
-	_xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
-
-	// read all sat or cable sections
-	while ( (search = xmlGetNextOccurence(search, frontendType)) != NULL ) 
-	{
-		t_satellite_position position = xmlGetSignedNumericAttribute(search, "position", 10);
-	
-		if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC) )
-		{
-			strcpy(providerName, xmlGetAttribute(search, const_cast<char*>("name")));
-			
-			for (spI = scanProviders.begin(); spI != scanProviders.end(); spI++)
-			{
-				if (!strcmp(spI->second.c_str(), providerName))
-				{
-					// position needed because multi tuner if pos == 0 scan_provider() will abort
-					position = spI->first;
-
-					break;
-				}
-			}
-		} 
-		else //sat
-		{
-			for (spI = scanProviders.begin(); spI != scanProviders.end(); spI++)
-			{
-				if(spI->first == position)
-					break;
-			}
-		}
-
-		// provider is not wanted - jump to the next one
-		if (spI != scanProviders.end()) 
-		{
-			// get name of current satellite oder cable provider
-			strcpy(providerName, xmlGetAttribute(search,  "name"));
-
-			// satfeed
-			if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) && xmlGetAttribute(search, "satfeed") )
-			{
-				if (!strcmp(xmlGetAttribute(search, "satfeed"), "true"))
-					satfeed = true;
-			}
-
-			// increase sat counter
-			curr_sat++;
-
-			scantransponders.clear();
-			scanedtransponders.clear();
-			nittransponders.clear();
-
-			dprintf(DEBUG_INFO, "[scan] start_scanthread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
-				
-			CScan::getInstance()->scan_provider(search, position, diseqc_pos, satfeed, feindex);
-					
-			if(abort_scan) 
-			{
-				found_channels = 0;
-				break;
-			}
-
-			if(scanBouquetManager->Bouquets.size() > 0) 
-			{
-				scanBouquetManager->saveBouquets(_bouquetMode, providerName);
-			}
-					
-			scanBouquetManager->clearAll();
-		}
-
-		// go to next satellite
-		search = search->xmlNextNode;
-	}
-
-	// report status
-	dprintf(DEBUG_NORMAL, "[scan] start_scanthread: found %d transponders (%d failed) and %d channels\n", found_transponders, failed_transponders, found_channels);
-
-	if (found_channels) 
-	{
-		CServices::getInstance()->saveServices(true);
-		
-		dprintf(DEBUG_NORMAL, "[scan] start_scanthread: save services done\n"); 
-		
-	        g_bouquetManager->saveBouquets();
-	        g_bouquetManager->clearAll();
-		g_bouquetManager->loadBouquets();
-		
-		dprintf(DEBUG_INFO, "[scan] start_scanthread: save bouquets done\n");
-		
-		CScan::getInstance()->stop_scan(true);
-
-		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
-	} 
-	else 
-	{
-		CScan::getInstance()->stop_scan(false);
-	}
-
-	scantransponders.clear();
-	scanedtransponders.clear();
-	nittransponders.clear();
-
-	pthread_exit(NULL);
-}
-
-void * scan_transponder(void * data)
-{
-	dprintf(DEBUG_NORMAL, "[scan.cpp] scan_transponder: starting... tid %ld\n", syscall(__NR_gettid));
-	
-	if (!data)
-		return 0;
-	
-	CZapit::commandScanTP ScanTP = *(CZapit::commandScanTP *) data;
-	TP_params * TP = &ScanTP.TP;
-	int feindex = ScanTP.feindex;
-	
-	char providerName[32] = "";
-	t_satellite_position satellitePosition = 0;
-
-	prov_found = 0;
-        found_transponders = 0;
-        found_channels = 0;
-        processed_transponders = 0;
-        found_tv_chans = 0;
-        found_radio_chans = 0;
-        found_data_chans = 0;
-	fake_tid = fake_nid = 0;
-	scanBouquetManager = new CBouquetManager();
-	scantransponders.clear();
-	scanedtransponders.clear();
-	nittransponders.clear();
-
-	strcpy(providerName, scanProviders.size() > 0 ? scanProviders.begin()->second.c_str() : "unknown provider");
-
-	satellitePosition = scanProviders.begin()->first;
-	
-	dprintf(DEBUG_INFO, "[scan] scan_transponder: scanning sat %s position %d fe(%d)\n", providerName, satellitePosition, ScanTP.feindex);
-	
-	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, providerName, strlen(providerName) + 1);
-
-	scan_mode = TP->scan_mode;
-	TP->feparams.inversion = INVERSION_AUTO;
-
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
-	{
-		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP->feparams.frequency, TP->feparams.u.qam.symbol_rate, TP->feparams.u.qam.fec_inner, TP->feparams.u.qam.modulation);
-	}
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
-	{
-		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP->feparams.frequency, TP->feparams.u.ofdm.bandwidth, TP->feparams.u.ofdm.code_rate_HP, TP->feparams.u.ofdm.code_rate_LP, TP->feparams.u.ofdm.constellation, TP->feparams.u.ofdm.transmission_mode, TP->feparams.u.ofdm.guard_interval, TP->feparams.u.ofdm.hierarchy_information);
-	}
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
-	{
-		dprintf(DEBUG_NORMAL, "[scan] scan_transponder: fe(%d) freq %d rate %d fec %d pol %d NIT %s\n", feindex, TP->feparams.frequency, TP->feparams.u.qpsk.symbol_rate, TP->feparams.u.qpsk.fec_inner, TP->polarization, scan_mode ? "no" : "yes");
-	}
-
-	freq_id_t freq;
-
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
-		freq = TP->feparams.frequency/100;
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
-		freq = TP->feparams.frequency/1000;
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
-		freq = TP->feparams.frequency/1000000;
-
-	// add TP to scan
-	fake_tid++; 
-	fake_nid++;
-
-	CScan::getInstance()->add_to_scan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, feindex);
-
-	CScan::getInstance()->get_sdts(satellitePosition, feindex);
-
-	if(abort_scan)
-		found_channels = 0;
-
-	if(found_channels) 
-	{
-		CServices::getInstance()->saveServices(true);
-		
-		scanBouquetManager->saveBouquets(_bouquetMode, providerName);
-	        g_bouquetManager->saveBouquets();
-	        g_bouquetManager->clearAll();
-		g_bouquetManager->loadBouquets();
-		
-		CScan::getInstance()->stop_scan(true);
-
-		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
-	} 
-	else 
-	{
-		CScan::getInstance()->stop_scan(false);
-	}
-	
-	scantransponders.clear();
-	scanedtransponders.clear();
-	nittransponders.clear();
-
-	pthread_exit(NULL);
-}
-#endif

@@ -345,7 +345,7 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 
 	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-	CScan::getInstance()->add_to_scan(TsidOnid, &feparams, polarization, true, feindex);
+	CScan::getInstance()->addToScan(TsidOnid, &feparams, polarization, true, feindex);
 
 	return 0;
 }
@@ -403,7 +403,7 @@ int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const b
 
        TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-        CScan::getInstance()->add_to_scan(TsidOnid, &feparams, 0, true, feindex);
+        CScan::getInstance()->addToScan(TsidOnid, &feparams, 0, true, feindex);
 
 	return 0;
 }
@@ -934,7 +934,7 @@ int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * c
 
 	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-	CScan::getInstance()->add_to_scan(TsidOnid, &feparams, 0, true, feindex);
+	CScan::getInstance()->addToScan(TsidOnid, &feparams, 0, true, feindex);
 
 	return 0;
 }

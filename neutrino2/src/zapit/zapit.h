@@ -334,7 +334,6 @@ class CZapit
 		pthread_t scan_thread; 
 		static void * start_scanthread(void *data);
 		static void * scan_transponder(void * data);
-		int start_scan(commandStartScan StartScan);
 		
 		CZapit(){};
 	public:

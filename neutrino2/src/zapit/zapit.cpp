@@ -4422,49 +4422,7 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 	return scan_runs;
 }
 
-/*
- * return 0 on success
- * return -1 otherwise
- */
-int CZapit::start_scan(commandStartScan StartScan)
-{
-	// reread scaninputParser
-    	if(scanInputParser) 
-	{
-                delete scanInputParser;
-                scanInputParser = NULL;
-
-		CFrontend * fe = getFE(StartScan.feindex);
-		parseScanInputXml(fe->getInfo()->type);
-
-		if (!scanInputParser) 
-		{
-			dprintf(DEBUG_INFO, "[zapit] start_scan: scan not configured\n");
-			return -1;
-		}
-	}
-
-	scan_runs = 1;
-	
-	//stop playback
-	stopPlayBack();
-	
-	// stop pmt update filter
-    	CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);	
-
-	found_transponders = 0;
-	found_channels = 0;
-
-	if (pthread_create(&scan_thread, NULL, start_scanthread,  (void*)&StartScan)) 
-	{
-		dprintf(DEBUG_INFO, "[zapit] pthread_create failed\n");
-		scan_runs = 0;
-		return -1;
-	}
-
-	return 0;
-}
-
+//
 bool CZapit::isScanReady(unsigned int &satellite, unsigned int &processed_transponder, unsigned int &transponder, unsigned int &services )
 {
 	bool scanReady = false;
@@ -4562,6 +4520,7 @@ void CZapit::setScanMotorPosList( ScanMotorPosList& motorPosList )
 	//	SaveMotorPositions();
 }
 
+//
 bool CZapit::startScan(int scan_mode, int feindex)
 {		
 	printf("[zapit] CZapit::startScan: fe(%d) scan_mode: %d\n", feindex, scan_mode);
@@ -4571,16 +4530,61 @@ bool CZapit::startScan(int scan_mode, int feindex)
 	StartScan.feindex = feindex;
 	
 	// start scan thread
+	/*
 	if(start_scan(StartScan) == -1)
 	{
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
 
 		return false;
 	}
+	*/
+	////
+	bool ret = false;
+	
+	// reread scaninputParser
+    	if(scanInputParser) 
+	{
+                delete scanInputParser;
+                scanInputParser = NULL;
+
+		CFrontend * fe = getFE(feindex);
+		parseScanInputXml(fe->getInfo()->type);
+
+		if (!scanInputParser) 
+		{
+			dprintf(DEBUG_INFO, "[zapit] startScan: scan not configured\n");
+			
+			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
+			
+			return false;
+		}
+	}
+
+	scan_runs = 1;
+	
+	//stop playback
+	stopPlayBack();
+	
+	// stop pmt update filter
+    	CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);	
+
+	found_transponders = 0;
+	found_channels = 0;
+
+	if (pthread_create(&scan_thread, NULL, start_scanthread,  (void*)&StartScan)) 
+	{
+		dprintf(DEBUG_INFO, "[zapit] pthread_create failed\n");
+		scan_runs = 0;
+		
+		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
+		
+		return false;
+	}
+	////
 			
 	retune = true;
 	
-	return true;
+	return scan_runs;
 }
 
 bool CZapit::stopScan()
@@ -4596,7 +4600,7 @@ bool CZapit::stopScan()
 	return scan_runs;
 }		
 
-////
+//
 void * CZapit::start_scanthread(void *data)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::start_scanthread: starting... tid %ld\n", syscall(__NR_gettid));
@@ -4710,7 +4714,7 @@ void * CZapit::start_scanthread(void *data)
 
 			dprintf(DEBUG_INFO, "CZapit::start_scanthread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
 				
-			CScan::getInstance()->scan_provider(search, position, diseqc_pos, satfeed, feindex);
+			CScan::getInstance()->scanProvider(search, position, diseqc_pos, satfeed, feindex);
 					
 			if(abort_scan) 
 			{
@@ -4745,13 +4749,37 @@ void * CZapit::start_scanthread(void *data)
 		
 		dprintf(DEBUG_INFO, "CZapit::start_scanthread: save bouquets done\n");
 		
-		CScan::getInstance()->stop_scan(true);
+		//CScan::getInstance()->stop_scan(true);
+		////
+		// notify client about end of scan
+		scan_runs = 0;
+		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_COMPLETE, CEventServer::INITID_NEUTRINO);
+		
+		if (scanBouquetManager) 
+		{
+			scanBouquetManager->clearAll();
+			delete scanBouquetManager;
+			scanBouquetManager = NULL;
+		}
+		////
 
 		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
 	} 
 	else 
 	{
-		CScan::getInstance()->stop_scan(false);
+		//CScan::getInstance()->stop_scan(false);
+		////
+		// notify client about end of scan
+		scan_runs = 0;
+		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
+		
+		if (scanBouquetManager) 
+		{
+			scanBouquetManager->clearAll();
+			delete scanBouquetManager;
+			scanBouquetManager = NULL;
+		}
+		////
 	}
 
 	scantransponders.clear();
@@ -4825,9 +4853,9 @@ void * CZapit::scan_transponder(void * data)
 	fake_tid++; 
 	fake_nid++;
 
-	CScan::getInstance()->add_to_scan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, feindex);
+	CScan::getInstance()->addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, feindex);
 
-	CScan::getInstance()->get_sdts(satellitePosition, feindex);
+	CScan::getInstance()->getSDTS(satellitePosition, feindex);
 
 	if(abort_scan)
 		found_channels = 0;
@@ -4841,13 +4869,35 @@ void * CZapit::scan_transponder(void * data)
 	        g_bouquetManager->clearAll();
 		g_bouquetManager->loadBouquets();
 		
-		CScan::getInstance()->stop_scan(true);
+		//CScan::getInstance()->stop_scan(true);
+		////
+		// notify client about end of scan
+		scan_runs = 0;
+		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_COMPLETE, CEventServer::INITID_NEUTRINO);
+		
+		if (scanBouquetManager) 
+		{
+			scanBouquetManager->clearAll();
+			delete scanBouquetManager;
+			scanBouquetManager = NULL;
+		}
+		////
 
 		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
 	} 
 	else 
 	{
-		CScan::getInstance()->stop_scan(false);
+		//CScan::getInstance()->stop_scan(false);
+		// notify client about end of scan
+		scan_runs = 0;
+		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
+		
+		if (scanBouquetManager) 
+		{
+			scanBouquetManager->clearAll();
+			delete scanBouquetManager;
+			scanBouquetManager = NULL;
+		}
 	}
 	
 	scantransponders.clear();
@@ -4857,4 +4907,3 @@ void * CZapit::scan_transponder(void * data)
 	pthread_exit(NULL);
 }
 
-////
