@@ -563,7 +563,7 @@ void CBouquetList::paint()
 
 	for (unsigned int count = 0; count < Bouquets.size(); count++)
 	{
-		item = new ClistBoxItem(Bouquets[count]->channelList->getName());
+		item = new ClistBoxItem(_(Bouquets[count]->channelList->getName()));
 
 		item->setNumber(count + 1);
 		listBox->addItem(item);
