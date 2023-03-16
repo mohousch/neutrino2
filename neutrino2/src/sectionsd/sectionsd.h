@@ -24,9 +24,6 @@
 #include <string>
 #include <vector>
 
-//#include <OpenThreads/Thread>
-//#include <OpenThreads/Condition>
-
 #include <sectionsd/sectionsdtypes.h>
 #include <sectionsd/SIevents.hpp>
 

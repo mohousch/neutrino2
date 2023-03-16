@@ -36,7 +36,6 @@
 #include <zapit/zapittypes.h>
 #include <zapit/frontend_c.h>
 #include <zapit/channel.h>
-//#include <zapit/bouquets.h>
 
 
 #define CHANNEL_NAME_SIZE 40
@@ -45,53 +44,11 @@
 class CZapit
 {
 	public:
-		/*
-		enum events
-		{
-			FIRST_EVENT_MARKER,           // <- no actual event, needed by pzapit
-			EVT_ZAP_COMPLETE = FIRST_EVENT_MARKER,
-			EVT_ZAP_COMPLETE_IS_NVOD,
-			EVT_ZAP_FAILED,
-			EVT_ZAP_SUB_COMPLETE,
-			EVT_ZAP_SUB_FAILED,
-			EVT_ZAP_MOTOR,
-			EVT_RECORDMODE_ACTIVATED,
-			EVT_RECORDMODE_DEACTIVATED,
-			EVT_SCAN_COMPLETE,
-			EVT_SCAN_FAILED,
-			EVT_SCAN_NUM_TRANSPONDERS,
-			EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS,
- 			EVT_SCAN_REPORT_FREQUENCY,
- 			EVT_SCAN_REPORT_FREQUENCYP,
- 			EVT_SCAN_SERVICENAME,
- 			EVT_SCAN_FOUND_A_CHAN,
- 			EVT_SCAN_FOUND_TV_CHAN,
- 			EVT_SCAN_FOUND_RADIO_CHAN,
- 			EVT_SCAN_FOUND_DATA_CHAN,
-			EVT_SCAN_SATELLITE,
-			EVT_SCAN_NUM_CHANNELS,
-			EVT_SCAN_PROVIDER,
-			EVT_BOUQUETS_CHANGED,
-			EVT_ZAP_CA_CLEAR,
-			EVT_ZAP_CA_LOCK,
-			EVT_ZAP_CA_FTA,
-			EVT_ZAP_CA_ID,
-			EVT_SDT_CHANGED,
-			EVT_SERVICES_CHANGED,
-			EVT_PMT_CHANGED,
-
-			EVT_ZAP_COMPLETE_IS_WEBTV,
-			
-			LAST_EVENT_MARKER             // <- no actual event, needed by pzapit
-		};
-		*/
-
 		enum zapStatus
 		{
 			ZAP_OK = 0x01,
 			ZAP_IS_NVOD = 0x02,
-			ZAP_INVALID_PARAM = 0x04,
-			ZAP_IS_WEBTV = 0x08
+			ZAP_INVALID_PARAM = 0x04
 		};
 
 		enum bouquetMode
@@ -129,6 +86,7 @@ class CZapit
 			t_service_id          service_id;
 			t_transport_stream_id transport_stream_id;
 		};
+		
 		typedef std::vector<commandAddSubServices> subServiceList;
 
 		struct commandSetScanSatelliteList
@@ -138,6 +96,7 @@ class CZapit
 			
 			int type;
 		};
+		
 		typedef std::vector<commandSetScanSatelliteList> ScanSatelliteList;
 
 		struct commandSetScanMotorPosList
@@ -145,6 +104,7 @@ class CZapit
 			t_satellite_position satPosition;
 			int motorPos;
 		};
+		
 		typedef std::vector<commandSetScanMotorPosList> ScanMotorPosList;
 
 		struct responseGetLastChannel
@@ -160,9 +120,10 @@ class CZapit
 			bool	 locked;
 			bool	 hidden;
 		};
+		
 		typedef std::vector<responseGetBouquets> BouquetList;
 
-		struct responseChannels
+		struct responseGetBouquetChannels
 		{
 			unsigned int nr;
 			t_channel_id channel_id;
@@ -171,18 +132,13 @@ class CZapit
 			unsigned char service_type;
 		};
 
-		struct responseGetBouquetChannels : public responseChannels
-		{};
-
 		typedef std::vector<responseGetBouquetChannels> BouquetChannelList;
 
-		struct responseNChannels
+		struct responseGetBouquetNChannels
 		{
 			unsigned int nr;
 		};
-
-		struct responseGetBouquetNChannels : public responseNChannels
-		{};
+		
 		typedef std::vector<responseGetBouquetNChannels> BouquetNChannelList;
 
 		struct responseGetAPIDs
@@ -192,6 +148,7 @@ class CZapit
 			int     is_ac3;
 			int     component_tag;
 		};
+		
 		typedef std::vector<responseGetAPIDs> APIDList;
 		
 		struct responseGetSubPIDs
@@ -202,6 +159,7 @@ class CZapit
 			uint	ancillary_page;
 			bool	hearingImpaired;
 		};
+		
 		typedef std::vector<responseGetSubPIDs> SubPIDList;
 
 		struct responseGetOtherPIDs
@@ -250,6 +208,7 @@ class CZapit
 
 			delivery_system_t system;
 		};
+		
 		typedef std::vector<responseGetSatelliteList> SatelliteList;
 		
 		struct commandStartScan
@@ -265,8 +224,6 @@ class CZapit
 		};
 		
 	private:
-		//static OpenThreads::Mutex mutex_zapit;
-		
 		//
 		void initFrontend();
 		void OpenFE();

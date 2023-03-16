@@ -149,10 +149,8 @@ bool g_list_changed = false; 		// flag to indicate, allchans was changed
 
 // SDT
 int scanSDT = 0;
-//void * sdt_thread(void * arg);
-//pthread_t tsdt = 0;
 bool sdt_wakeup = false;
-sdt_tp_t sdt_tp;
+sdt_tp_t sdt_tp;			// defined in getservices.h
 
 // the conditional access module
 CCam * cam0 = NULL;
@@ -2769,7 +2767,7 @@ void CZapit::getZapitConfig(Zapit_config *Cfg)
         Cfg->scanSDT = scanSDT;
 }
 
-//sdt_tp_t sdt_tp;
+//
 void * CZapit::sdt_thread(void */*arg*/)
 {
 	dprintf(DEBUG_NORMAL, "[zapit] sdt_thread: starting... tid %ld\n", syscall(__NR_gettid));
@@ -4537,16 +4535,6 @@ bool CZapit::startScan(int scan_mode, int feindex)
 	StartScan.scan_mode = scan_mode;
 	StartScan.feindex = feindex;
 	
-	// start scan thread
-	/*
-	if(start_scan(StartScan) == -1)
-	{
-		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
-
-		return false;
-	}
-	*/
-	////
 	bool ret = false;
 	
 	// reread scaninputParser
@@ -4588,7 +4576,6 @@ bool CZapit::startScan(int scan_mode, int feindex)
 		
 		return false;
 	}
-	////
 			
 	retune = true;
 	
