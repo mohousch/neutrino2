@@ -98,6 +98,15 @@ extern int scan_mode;
 extern int scan_sat_mode;
 extern uint32_t fake_tid, fake_nid;
 extern int prov_found;
+extern int found_transponders;		// defined in descriptors.cpp
+extern int processed_transponders;	// defined in scan.cpp
+extern int found_channels;		// defined in descriptors.cpp
+extern short curr_sat;			// defined in scan.cpp
+extern short scan_runs;			// defined in scan.cpp
+extern short abort_scan;		// defined in scan.cpp
+CZapit::bouquetMode _bouquetMode = CZapit::BM_UPDATEBOUQUETS;
+CZapit::scanType _scanType = CZapit::ST_TVRADIO;
+scan_list_t scanProviders;
 
 // opengl liveplayback
 #if defined (USE_OPENGL)
@@ -184,9 +193,6 @@ extern cDemux * videoDemux;			// defined in dmx_cs.pp (libdvbapi)
 cDemux * pcrDemux = NULL;			// defined in dmx_cs.pp (libdvbapi)
 extern cDemux * pmtDemux;			// defined in pmt.cpp
 
-// map which stores the wanted scanned cables/satellites/terrestrials
-scan_list_t scanProviders;
-
 // zapit mode
 enum {
 	TV_MODE = 0x01,
@@ -206,17 +212,6 @@ bool current_is_nvod = false;
 tallchans allchans;             	// tallchans defined in "bouquets.h"
 tallchans curchans;             	// tallchans defined in "bouquets.h"
 transponder_list_t transponders;    	// from services.xml
-
-// scan
-//pthread_t scan_thread = 0;
-extern int found_transponders;		// defined in descriptors.cpp
-extern int processed_transponders;	// defined in scan.cpp
-extern int found_channels;		// defined in descriptors.cpp
-extern short curr_sat;			// defined in scan.cpp
-extern short scan_runs;			// defined in scan.cpp
-extern short abort_scan;		// defined in scan.cpp
-CZapit::bouquetMode _bouquetMode = CZapit::BM_UPDATEBOUQUETS;
-CZapit::scanType _scanType = CZapit::ST_TVRADIO;
 
 //
 bool standby = true;
@@ -3493,7 +3488,7 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 //
 void *CZapit::updatePMTFilter(void *)
 {
-	dprintf(DEBUG_NORMAL, "CZapit::run:\n");
+	dprintf(DEBUG_NORMAL, "CZapit::updatePMTFilter: tid %ld\n", syscall(__NR_gettid));
 	
 	if (!FrontendCount)
 		return 0;

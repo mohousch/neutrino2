@@ -66,18 +66,18 @@ extern CEventServer *eventServer;
 extern CFrontend * live_fe;
 extern _xmlDocPtr scanInputParser;
 
+//
 int prov_found = 0;
 short abort_scan;
 short scan_runs;
 short curr_sat;
 uint32_t processed_transponders;
 uint32_t failed_transponders;
-uint32_t  actual_freq;
-uint32_t actual_polarisation;
 int scan_mode = 0;
 int scan_sat_mode = 0;
 CBouquetManager *scanBouquetManager = NULL;
-
+uint32_t fake_tid = 0;
+uint32_t fake_nid = 0;
 std::map <transponder_id_t, transponder> scantransponders;		// TP list to scan
 std::map <transponder_id_t, transponder> scanedtransponders;		// global TP list for current scan
 std::map <transponder_id_t, transponder> nittransponders;
@@ -205,9 +205,6 @@ int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, ui
 
 	return 1;
 }
-
-uint32_t fake_tid = 0;
-uint32_t fake_nid = 0;
 
 int CScan::getSDTS(t_satellite_position satellitePosition, int feindex)
 {

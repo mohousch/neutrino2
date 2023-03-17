@@ -56,22 +56,21 @@ extern transponder_list_t transponders;				// defined in zapit.cpp
 extern tallchans allchans;					// defined in zapit.cpp
 extern int scanSDT;						// defined in zapit.cpp
 static int newfound;
-
-satellite_map_t satellitePositions;				// satellite position as specified in satellites.xml
-std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats liste
-
-int newtpid;
-int tcnt = 0;
-int scnt = 0;
-
 extern map<t_channel_id, audio_map_set_t> audio_map;		// defined in zapit.cpp
-
 extern int FrontendCount;
-
 extern bool have_s;
 extern bool have_c;
 extern bool have_t;
 extern bool have_a;
+
+satellite_map_t satellitePositions;				// satellite position as specified in satellites.xml
+std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats liste
+
+//int newtpid;
+//int tcnt = 0;
+//int scnt = 0;
+
+
 
 // parse transponder from services.xml
 void CServices::parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system)
@@ -336,8 +335,8 @@ void CServices::findTransponder(_xmlNodePtr search)
 }
 
 // parse sat transponder from satellites/cables/terrestrials.xml/atsc.xml
-static uint32_t fake_tid;
-static uint32_t fake_nid;
+//static uint32_t fake_tid;
+//static uint32_t fake_nid;
 void CServices::parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellite_position satellitePosition)
 {
 	dprintf(DEBUG_DEBUG, "[getservices] parseSatTransponders:\n");

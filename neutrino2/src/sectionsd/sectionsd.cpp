@@ -2585,6 +2585,7 @@ void CSectionsd::readSIfromXMLTV(const char *url)
 
 	if (!url)
 		return ;
+		
 	//if ( !chid && !IS_WEBTV(chid) )
 	//	return;
 		
@@ -2601,7 +2602,7 @@ void CSectionsd::readSIfromXMLTV(const char *url)
 
 	if (pthread_create (&thrInsert, &attr, insertEventsfromXMLTV, (void *)url_tmp.c_str()))
 	{
-		perror("sectionsd: sectionsd_readSIfromXMLTV: pthread_create()");
+		perror("CSectionsd::readSIfromXMLTV: pthread_create()");
 	}
 
 	pthread_attr_destroy(&attr);
@@ -2616,8 +2617,8 @@ void CSectionsd::readSIfromLocalTV(const t_channel_id chid)
 
 	pthread_t thrInsert;
 
-	if ( !chid && !IS_WEBTV(chid) )
-		return;
+	//if ( !chid && !IS_WEBTV(chid) )
+	//	return;
 		
 	if(!g_settings.epg_enable_localtv_epg)
 		return;
@@ -2628,7 +2629,7 @@ void CSectionsd::readSIfromLocalTV(const t_channel_id chid)
 
 	if (pthread_create (&thrInsert, &attr, insertEventsfromLocalTV, (void *)chid))
 	{
-		perror("sectionsd: sectionsd_readSIfromLocalTV: pthread_create failed");
+		perror("CSectionsd::readSIfromLocalTV: pthread_create failed");
 	}
 
 	pthread_attr_destroy(&attr);

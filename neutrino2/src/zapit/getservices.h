@@ -48,38 +48,6 @@
 
 #define zapped_chan_is_nvod 0x80
 
-class CServices
-{
-	private:
-		CServices(){};
-		~CServices(){};
-		
-	public:
-		static CServices *getInstance()
-		{
-			static CServices * services = NULL;
-
-			if(!services) 
-			{
-				services = new CServices();
-			} 
-
-			return services;
-		};
-		
-		//
-		void parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system );
-		void parseChannels(_xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation );
-		void findTransponder(_xmlNodePtr root);
-		void parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellite_position satellitePosition);
-		int loadMotorPositions(void);
-		void saveMotorPositions();
-		void init_sat(t_satellite_position position);
-		int loadTransponders();
-		int loadServices(bool only_current);
-		void saveServices(bool tocopy=false);
-};
-
 // transponder
 struct transponder
 {
@@ -123,7 +91,47 @@ struct transponder
 
 typedef std::map<transponder_id_t, transponder> transponder_list_t;
 typedef std::map <transponder_id_t, transponder>::iterator stiterator;  // used in scan.cpp
-typedef std::map<transponder_id_t, bool> sdt_tp_t;                    	// used in zapit.cpp
+typedef std::map<transponder_id_t, bool> sdt_tp_t; 			// used in zapit.cpp
+
+//
+class CServices
+{
+	public:
+		int newtpid;
+		int tcnt;
+		int scnt;
+		uint32_t fake_tid;
+		uint32_t fake_nid;
+
+	private:
+		CServices(){tcnt = 0; scnt = 0;};
+		~CServices(){};
+		
+	public:
+		static CServices *getInstance()
+		{
+			static CServices * services = NULL;
+
+			if(!services) 
+			{
+				services = new CServices();
+			} 
+
+			return services;
+		};
+		
+		//
+		void parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system );
+		void parseChannels(_xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation );
+		void findTransponder(_xmlNodePtr root);
+		void parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellite_position satellitePosition);
+		int loadMotorPositions(void);
+		void saveMotorPositions();
+		void init_sat(t_satellite_position position);
+		int loadTransponders();
+		int loadServices(bool only_current);
+		void saveServices(bool tocopy=false);
+};
 
 #endif /* __getservices_h__ */
 

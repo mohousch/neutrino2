@@ -60,6 +60,7 @@
 
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+extern std::map<transponder_id_t, transponder> select_transponders;		// defined in getservices.cpp
 
 // global
 CScanSettings * scanSettings;
@@ -1166,7 +1167,7 @@ CTPSelectHandler::CTPSelectHandler(int num)
 	feindex = num;
 }
 
-extern std::map<transponder_id_t, transponder> select_transponders;		// defined in getservices.cpp
+//
 int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
 	transponder_list_t::iterator tI;

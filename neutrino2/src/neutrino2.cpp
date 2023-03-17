@@ -2358,7 +2358,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// VFD clear	
 	CVFD::getInstance()->Clear();	
 
-	// show start up msg in vfd
+	// show startup msg in vfd
 	CVFD::getInstance()->ShowText( (char *)"N2");
 	
 	// register events
