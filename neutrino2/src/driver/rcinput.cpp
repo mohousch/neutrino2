@@ -832,7 +832,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				return;
 			}
 		}
-
+		
 		// fd_pipe_high
 		if(FD_ISSET(fd_pipe_high_priority[0], &rfds))
 		{
@@ -843,7 +843,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_INFO, "\033[1;32mCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%x) data:(0x%x) <\033[0m\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, "\n\033[1;32mCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%x) data:(0x%x) <\033[0m\n", *msg, *data );
 
 			return;
 		}
@@ -1001,7 +1001,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				{
 					read_bytes = recv(fd_eventclient, p, emsg.dataSize, MSG_WAITALL);
 					
-					dprintf(DEBUG_INFO, "CRCInput::getMsg_us: got event from fd_event: %x %x\n", emsg.eventID, *(unsigned*) p);
+					dprintf(DEBUG_NORMAL, "\n\033[1;32mCRCInput::getMsg_us:got event from fd_event msg=(0x%x) data:(0x%x) <\033[0m\n", emsg.eventID, *(unsigned*) p);
 
 					if (emsg.initiatorID == CEventServer::INITID_NEUTRINO)
 					{					  
@@ -1363,7 +1363,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					continue;
 				}
 								
-				dprintf(DEBUG_INFO, "CRCInput::getMsg_us: type: 0x%X key: 0x%X value %d, translate: 0x%X -%s-\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
+				dprintf(DEBUG_NORMAL, "\n\033[1;32mCRCInput::getMsg_us:got event from device type: 0x%X key: 0x%X value %d, translate: 0x%X -%s<\033[0m\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
 
 				uint32_t trkey = translate(ev.code, i);
 
@@ -1449,7 +1449,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_INFO, "CRCInput::getMsg_us: got event from low-pri pipe msg: (%x) data: (%x)\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, "\n\033[1;32mCRCInput::getMsg_us:got event from low-pri pipe msg=(0x%x) data:(0x%x) <\033[0m\n", *msg, *data );
 
 			return;
 		}

@@ -350,6 +350,7 @@ bool CFileBrowser::exec(const char * const dirname)
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		
+		widget->name = "filebrowser";
 		widget->addWidgetItem(listBox);
 	}	
 

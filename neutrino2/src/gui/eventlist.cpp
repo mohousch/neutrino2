@@ -260,6 +260,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		listBox->enablePaintHead();
 		listBox->enablePaintDate();
 		
+		evlWidget->name = "eventlist";
 		evlWidget->addWidgetItem(listBox);
 	}
 

@@ -517,7 +517,7 @@ int CTimerList::show()
 		
 		//
 		timerlistWidget = new CWidget(&cFrameBox);
-		
+		timerlistWidget->name = "timerlist";
 		timerlistWidget->setMenuPosition(MENU_POSITION_CENTER);
 		timerlistWidget->addWidgetItem(listBox);
 	}

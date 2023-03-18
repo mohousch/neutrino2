@@ -107,7 +107,6 @@ class CBouquetManager
 		void deleteBouquet(const unsigned int id);
 		void deleteBouquet(const CZapitBouquet* bouquet);
 		int  existsBouquet(char const * const name);
-		//int  existsUBouquet(char const * const name, bool myfav = false);
 		void moveBouquet(const unsigned int oldId, const unsigned int newId);
 		bool existsChannelInBouquet(unsigned int bq_id, const t_channel_id channel_id);
 

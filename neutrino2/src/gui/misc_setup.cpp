@@ -155,6 +155,7 @@ void CGeneralSettings::showMenu()
 		
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "miscsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(miscSettingsGeneral);
 	}
@@ -537,6 +538,7 @@ void CChannelListSettings::showMenu()
 		
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "channelssetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(miscSettingsChannelList);
 	}
@@ -706,6 +708,7 @@ void CEPGSettings::showMenu()
 		
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "epgsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(miscSettingsEPG);
 	}
@@ -947,6 +950,7 @@ void CFileBrowserSettings::showMenu()
 		
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "filebrowsersetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(miscSettingsFileBrowser);
 	}

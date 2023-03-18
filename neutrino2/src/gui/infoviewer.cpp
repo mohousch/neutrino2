@@ -527,7 +527,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _Channel, con
 	// channel id
 	channel_id = _new_channel_id;
 
-	dprintf(DEBUG_NORMAL, "\nCInfoViewer::showTitle: channel:%llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CInfoViewer::showTitle: channel:%llx\n", channel_id);
 
 	// subchannel
 	if (! _calledFromNumZap && !(g_RemoteControl->subChannels.empty()) && (g_RemoteControl->selected_subchannel > 0))
@@ -757,7 +757,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 				--eli; // prev epg
 			}
 
-			info_CurrentNext.flags = CSectionsd::epgflags::has_current;
+			info_CurrentNext.flags 			= CSectionsd::epgflags::has_current;
 			info_CurrentNext.current_uniqueKey      = eli->eventID;
 			info_CurrentNext.current_zeit.startzeit = eli->startTime;
 			info_CurrentNext.current_zeit.dauer     = eli->duration;

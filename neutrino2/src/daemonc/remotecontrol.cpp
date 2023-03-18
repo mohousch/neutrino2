@@ -126,7 +126,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		{
 			dprintf(DEBUG_INFO, "CRemoteControl::handleMsg: timeout EVT_ZAP current_channel_id: %llx data: %llx\n", current_channel_id, *(t_channel_id *)data);
 			
-			if ((*(t_channel_id *)data) != current_channel_id & 0xFFFFFFFFFFFFULL) 
+			if ((*(t_channel_id *)data) != current_channel_id) 
 			{
 				g_InfoViewer->chanready = 0;
 				CZapit::getInstance()->zapTo_serviceID_NOWAIT(current_channel_id );
@@ -157,7 +157,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			g_InfoViewer->chanready = 1;
 
 			// warte auf keine Meldung vom ZAPIT -> jemand anderer hat das zappen ausgel�st...
-			if ((*(t_channel_id *)data) != current_channel_id & 0xFFFFFFFFFFFFULL) 
+			if ((*(t_channel_id *)data) != current_channel_id) 
 			{
 				// get channel name/number
 				t_channel_id new_id = *(t_channel_id *)data;
@@ -207,7 +207,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			{
 				dprintf(DEBUG_INFO, "CRemoteControl::handleMsg EVT_ZAP_SUB current_sub_channel_id: %llx data: %llx\n", current_sub_channel_id, *(t_channel_id *)data);
 				
-				if ((*(t_channel_id *)data) != current_sub_channel_id & 0xFFFFFFFFFFFFULL)
+				if ((*(t_channel_id *)data) != current_sub_channel_id)
 				{
 					current_sub_channel_id = *(t_channel_id *)data;
 
@@ -227,7 +227,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	//
 	if ( msg == NeutrinoMessages::EVT_CURRENTEPG )
 	{
-		if ((*(t_channel_id *)data) != (current_channel_id & 0xFFFFFFFFFFFFULL) && (*(t_channel_id *)data) != (current_sub_channel_id & 0xFFFFFFFFFFFFULL))
+		if ((*(t_channel_id *)data) != (current_channel_id) && (*(t_channel_id *)data) != (current_sub_channel_id))
 			return messages_return::handled;
 
 		//
@@ -284,7 +284,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	}
 	else if ( msg == NeutrinoMessages::EVT_NEXTEPG )
 	{
-		if ((*(t_channel_id *)data) != current_channel_id & 0xFFFFFFFFFFFFULL)
+		if ((*(t_channel_id *)data) != current_channel_id)
 			return messages_return::handled;
 
 		if ( !is_video_started )
@@ -294,7 +294,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	}
 	else if (msg == NeutrinoMessages::EVT_NOEPG_YET)
 	{
-		if ((*(t_channel_id *)data) == (current_channel_id & 0xFFFFFFFFFFFFULL))
+		if ((*(t_channel_id *)data) == (current_channel_id))
 		{
 			if ( !is_video_started )
 				g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
@@ -304,7 +304,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	}
 	else if ( (msg == NeutrinoMessages::EVT_ZAP_COMPLETE) || (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) ) 
 	{
-		if ((*(t_channel_id *)data) == ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) ? current_channel_id & 0xFFFFFFFFFFFFULL : current_sub_channel_id & 0xFFFFFFFFFFFFULL))
+		if ((*(t_channel_id *)data) == ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) ? current_channel_id : current_sub_channel_id))
 		{
 			// tell sectionsd to start epg on the zapped channel
 			CSectionsd::getInstance()->setServiceChanged( current_channel_id, false );
@@ -353,7 +353,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	}
 	else if (msg == NeutrinoMessages::EVT_ZAP_ISNVOD)
 	{
-		if ((*(t_channel_id *)data) == current_channel_id & 0xFFFFFFFFFFFFULL)
+		if ((*(t_channel_id *)data) == current_channel_id)
 		{
 			needs_nvods = true;
 			

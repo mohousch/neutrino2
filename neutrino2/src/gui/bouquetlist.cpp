@@ -239,6 +239,7 @@ int CBouquetList::exec(bool bShowChannelList, bool zap, bool customMode)
 		bqWidget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		
+		bqWidget->name = "bouquetlist";
 		bqWidget->addWidgetItem(listBox);
 	}
 

@@ -1104,26 +1104,6 @@ int CBouquetManager::existsBouquet(char const * const name)
 	return -1;
 }
 
-/*
-int CBouquetManager::existsUBouquet(char const * const name, bool myfav)
-{
-	unsigned int i;
-
-	for (i = 0; i < Bouquets.size(); i++) 
-	{
-		if(myfav) 
-		{
-			if (Bouquets[i]->bFav)
-				return (int)i;
-		}
-		else if (Bouquets[i]->bUser && (Bouquets[i]->Name == name))
-			return (int)i;
-	}
-
-	return -1;
-}
-*/
-
 // -- Check if channel exists in BQ   (2002-04-05 rasc)
 // -- Return: True/false
 bool CBouquetManager::existsChannelInBouquet( unsigned int bq_id, const t_channel_id channel_id)

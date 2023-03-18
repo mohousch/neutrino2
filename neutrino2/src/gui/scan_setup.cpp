@@ -467,7 +467,7 @@ void CScanSetup::showScanService()
 		
 		//
 		satfindMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		satfindMenuWidget->name = "satfindMenuWidget";
+		satfindMenuWidget->name = "satfindMenu";
 		satfindMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
 		satfindMenuWidget->addWidgetItem(satfindMenu);
 	}

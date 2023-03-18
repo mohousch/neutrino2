@@ -1744,7 +1744,7 @@ int CZapit::change_audio_pid(uint8_t index)
 
 void CZapit::setRadioMode(void)
 {
-	dprintf(DEBUG_NORMAL, "[zapit] setRadioMode:\n");
+	dprintf(DEBUG_NORMAL, "CZapit::setRadioMode:\n");
 
 	currentMode |= RADIO_MODE;
 	currentMode &= ~TV_MODE;
@@ -1755,7 +1755,7 @@ void CZapit::setRadioMode(void)
 
 void CZapit::setTVMode(void)
 {
-	dprintf(DEBUG_NORMAL, "[zapit] setTVMode:\n");
+	dprintf(DEBUG_NORMAL, "CZapit::setTVMode:\n");
 
 	currentMode |= TV_MODE;
 	currentMode &= ~RADIO_MODE;
@@ -1766,7 +1766,7 @@ void CZapit::setTVMode(void)
 
 int CZapit::getMode(void)
 {
-	dprintf(DEBUG_NORMAL, "zapit_getMode:\n");
+	dprintf(DEBUG_NORMAL, "CZapit::getMode:\n");
 	
 	int mode = 0;
 	
@@ -1774,14 +1774,14 @@ int CZapit::getMode(void)
 		mode = MODE_TV;
 	else if (currentMode & RADIO_MODE)
 		mode = MODE_RADIO;
-		
-	dprintf(DEBUG_NORMAL, "zapit_getMode: mode (%d)\n", mode);
 
 	return mode;
 }
 
 void CZapit::setRecordMode(void)
 {
+	dprintf(DEBUG_NORMAL, "CZapit::setRecordMode:\n");
+	
 	if(currentMode & RECORD_MODE) 
 		return;
 
@@ -1875,11 +1875,7 @@ void CZapit::parseScanInputXml(fe_type_t fe_type)
 	}
 }
 
-/****************************************************************/
-/*  functions for new command handling via CZapit		*/
-/*  these functions should be encapsulated in a class CZapit	*/
-/****************************************************************/
-
+//
 void CZapit::addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id)
 {
 	CZapitChannel * chan = g_bouquetManager->findChannelByChannelID(channel_id);
@@ -3609,8 +3605,6 @@ void CZapit::Stop()
 		delete it->second;
 
 	zapit_ready = 0;
-
-	dprintf(DEBUG_INFO, "[zapit] zapit shutdown complete :-)\n");
 }
 
 //
