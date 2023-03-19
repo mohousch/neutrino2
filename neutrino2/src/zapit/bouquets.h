@@ -60,7 +60,7 @@ class CBouquetManager
 		void parseBouquetsXml(const char* fname, bool ub = false);
 		void writeBouquetHeader(FILE * bouq_fd, uint32_t i, const char * bouquetName);
 		void writeBouquetFooter(FILE * bouq_fd);
-		void writeBouquetChannels(FILE * bouq_fd, uint32_t i, bool bUser = false);
+		void writeBouquetChannels(FILE * bouq_fd, uint32_t i);
 		void makeBouquetfromCurrentservices (const _xmlNodePtr root);
 
 	public:
@@ -102,8 +102,8 @@ class CBouquetManager
 		void loadBouquets(bool loadCurrentBouquet = false);
 		void renumServices();
 
-		CZapitBouquet* addBouquet(const std::string& name, bool ub = false);
-		CZapitBouquet* addBouquetIfNotExist(const std::string& name);
+		CZapitBouquet* addBouquet(const std::string& name, bool ub = false, bool webtvb = false);
+		CZapitBouquet* addBouquetIfNotExist(const std::string& name, bool ub = false, bool webtvb = false);
 		void deleteBouquet(const unsigned int id);
 		void deleteBouquet(const CZapitBouquet* bouquet);
 		int  existsBouquet(char const * const name);
@@ -130,8 +130,7 @@ class CBouquetManager
  * Channel names are not US-ASCII, but UTF-8 encoded.
  * Hence we need a compare function that considers the whole unicode charset.
  * For instance all countless variants of the letter a have to be regarded as the same letter.
- */
- 
+ */ 
 struct CmpChannelByChName: public binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
 {
 	static bool comparetolower(const char a, const char b)

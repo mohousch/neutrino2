@@ -64,16 +64,6 @@ extern tallchans allchans;   			//  defined in zapit.cpp
 extern CConfigFile config;   			//  defined in zapit.cpp
 extern CBouquetManager * g_bouquetManager;	//  defined in zapit.cpp
 
-#define TIMER_START()                                                                   \
-        static struct timeval tv, tv2;                                                  \
-        static unsigned int msec;                                                       \
-        gettimeofday(&tv, NULL)
-
-#define TIMER_STOP(label)                                                               \
-        gettimeofday(&tv2, NULL);                                                       \
-        msec = ((tv2.tv_sec - tv.tv_sec) * 1000) + ((tv2.tv_usec - tv.tv_usec) / 1000); \
-        printf("%s: %u msec\n", label, msec)
-
 #define GET_ATTR(node, name, fmt, arg)                                  \
         do {                                                            \
                 char * ptr = xmlGetAttribute(node, name);               \
@@ -206,7 +196,7 @@ void CBouquetManager::writeBouquetFooter(FILE * bouq_fd)
 	fprintf(bouq_fd, "\t</Bouquet>\n");
 }
 
-void CBouquetManager::writeBouquetChannels(FILE * bouq_fd, uint32_t i, bool /*bUser*/)
+void CBouquetManager::writeBouquetChannels(FILE * bouq_fd, uint32_t i)
 {
 	bool write_names = 1;
 
@@ -266,7 +256,7 @@ void CBouquetManager::saveBouquets(void)
 	{
 		if (Bouquets[i] != remainChannels) 
 		{
-			dprintf(DEBUG_NORMAL, "CBouquetManager::saveBouquets: name %s user: %d\n", Bouquets[i]->Name.c_str(), Bouquets[i]->bUser);
+			dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: name %s user: %d webtv: %d\n", Bouquets[i]->Name.c_str(), Bouquets[i]->bUser, Bouquets[i]->bWebTV);
 			
 			if(!Bouquets[i]->bUser && !Bouquets[i]->bWebTV)
 			{
@@ -296,10 +286,12 @@ void CBouquetManager::saveUBouquets(void)
 	{
 		if (Bouquets[i] != remainChannels) 
 		{
+			dprintf(DEBUG_INFO, "CBouquetManager::saveUBouquets: name %s user: %d webtv: %d\n", Bouquets[i]->Name.c_str(), Bouquets[i]->bUser, Bouquets[i]->bWebTV);
+			
 			if(Bouquets[i]->bUser && !Bouquets[i]->bWebTV) 
 			{
 				writeBouquetHeader(ubouq_fd, i, UTF8_to_UTF8XML(Bouquets[i]->Name.c_str()).c_str());
-				writeBouquetChannels(ubouq_fd, i, true);
+				writeBouquetChannels(ubouq_fd, i);
 				writeBouquetFooter(ubouq_fd);
 			}
 		}
@@ -546,8 +538,8 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 	std::string name = std::string(rindex(filename.c_str(), '/') + 1);
 	removeExtension(name);
 
-	CZapitBouquet *newBouquet = addBouquetIfNotExist(name);
-	newBouquet->bWebTV = true;
+	CZapitBouquet *newBouquet = addBouquetIfNotExist(name, false, true);
+	//newBouquet->bWebTV = true;
 	
 	if(iptv)
 	{
@@ -814,8 +806,8 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 							bqName += " (";
 							bqName += name;
 							bqName += ")";
-							newBouquet = addBouquetIfNotExist(bqName);
-							newBouquet->bWebTV = true;	
+							newBouquet = addBouquetIfNotExist(bqName, false, true);
+							//newBouquet->bWebTV = true;	
 						}
 						
 						//
@@ -1035,10 +1027,11 @@ void CBouquetManager::renumServices()
 	makeRemainingChannelsBouquet();
 }
 
-CZapitBouquet * CBouquetManager::addBouquet(const std::string& name, bool ub)
+CZapitBouquet * CBouquetManager::addBouquet(const std::string& name, bool ub, bool webtvb)
 {
 	CZapitBouquet * newBouquet = new CZapitBouquet(name);
 	newBouquet->bUser = ub;
+	newBouquet->bWebTV = webtvb;
 
 	if(ub) 
 	{
@@ -1057,14 +1050,14 @@ CZapitBouquet * CBouquetManager::addBouquet(const std::string& name, bool ub)
 	return newBouquet;
 }
 
-CZapitBouquet* CBouquetManager::addBouquetIfNotExist(const std::string& name)
+CZapitBouquet* CBouquetManager::addBouquetIfNotExist(const std::string& name, bool ub, bool webtvb)
 {
 	CZapitBouquet* bouquet = NULL;
 
 	int bouquetId = existsBouquet(name.c_str());
 	
 	if (bouquetId == -1)
-		bouquet = addBouquet(name);
+		bouquet = addBouquet(name, ub, webtvb);
 	else
 		bouquet = Bouquets[bouquetId];
 
