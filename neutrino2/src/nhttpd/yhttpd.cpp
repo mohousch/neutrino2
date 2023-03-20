@@ -27,7 +27,8 @@ static CyParser yParser;
 // Setting yhttpd Instance
 //
 #include "yhttpd.h"
-//static Cyhttpd *yhttpd = NULL;
+
+
 CStringList Cyhttpd::ConfigList;
 //
 // HOOKS: Definition & Instance for Hooks, attach/detach Hooks
@@ -64,7 +65,6 @@ static CNeutrinoAPI *NeutrinoAPI;
 //
 void yhttpd_reload_config() 
 {
-	//if (yhttpd)
 	Cyhttpd::getInstance()->ReadConfig();
 }
 

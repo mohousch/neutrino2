@@ -35,7 +35,6 @@ class Cyhttpd
 		static CStringList ConfigList; 		// Vars & Values from ReadConfig
 
 		// constructor & destructor
-		//Cyhttpd();
 		~Cyhttpd();
 
 		// Main Programm calls
