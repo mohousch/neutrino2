@@ -73,7 +73,7 @@ short scan_runs;
 short curr_sat;
 uint32_t processed_transponders;
 uint32_t failed_transponders;
-int scan_mode = 0;
+int scanMode = 0;
 int scan_sat_mode = 0;
 CBouquetManager *scanBouquetManager = NULL;
 uint32_t fake_tid = 0;
@@ -279,7 +279,7 @@ _repeat:
 			stI->second.feparams.u.qpsk.fec_inner = tI->second.feparams.u.qpsk.fec_inner;
 		
 		// parse nit
-		if(!scan_mode) 
+		if(!scanMode) 
 		{
 			dprintf(DEBUG_INFO, "CScan::getSDTS: parsing NIT\n");
 			
@@ -293,7 +293,7 @@ _repeat:
 	}
 
 	// add found transponder by nit to scan
-	if(!scan_mode) 
+	if(!scanMode) 
 	{
 		dprintf(DEBUG_INFO, "CScan::getSDTS: found %d transponders (%d failed) and %d channels\n", found_transponders, failed_transponders, found_channels);
 		

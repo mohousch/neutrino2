@@ -213,7 +213,7 @@ class CZapit
 		
 		struct commandStartScan
 		{
-			int scan_mode;
+			int scanmode;
 			int feindex;
 		};
 		

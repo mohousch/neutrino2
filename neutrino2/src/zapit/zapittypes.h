@@ -260,7 +260,7 @@ typedef struct TP_parameter
 	uint64_t TP_id;					// diseqc<<24 | feparams->frequency>>8
 	uint8_t polarization;
 	uint8_t diseqc;
-	int scan_mode;
+	int scanmode;
 	
 	struct dvb_frontend_parameters feparams;
 } TP_params;

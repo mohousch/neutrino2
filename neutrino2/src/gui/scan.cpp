@@ -169,7 +169,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		}
 		
 		// scan mode
-		TP.scan_mode = scanSettings->scan_mode;
+		TP.scanmode = scanSettings->scan_mode;
 		
 		// freq
 		TP.feparams.frequency = atoi(scanSettings->TP_freq);
