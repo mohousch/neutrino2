@@ -2075,6 +2075,8 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 			}
 			else
 			{
+				int l_text_width = g_Font[nameFont]->getRenderWidth(l_text, true);
+				
 				// local
 				if(l_text != NULL)
 				{
@@ -2084,11 +2086,21 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 				// option
 				if(option_text != NULL)
 				{
-					int iw, ih;
-					//get icon size
-					frameBuffer->getIconSize(NEUTRINO_ICON_HD, &iw, &ih);
+					if (widgetMode != MODE_SETUP)
+					{
+						int iw, ih;
+						//get icon size
+						frameBuffer->getIconSize(NEUTRINO_ICON_HD, &iw, &ih);
 
-					g_Font[optionFont]->RenderString(l_startPosX + ICON_OFFSET + l_text_width + ICON_OFFSET, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, dx - BORDER_LEFT - BORDER_RIGHT - number_width - ICON_OFFSET - pb_width - ICON_OFFSET - l_text_width - icon_w - icon1_w - ICON_OFFSET - icon2_w - ICON_OFFSET - 2*iw, option_text, (selected || !active)? color : optionFontColor, 0, true);
+						g_Font[optionFont]->RenderString(l_startPosX + ICON_OFFSET + l_text_width + ICON_OFFSET, y + g_Font[optionFont]->getHeight() + (height - g_Font[optionFont]->getHeight())/2, dx - BORDER_LEFT - BORDER_RIGHT - number_width - ICON_OFFSET - pb_width - ICON_OFFSET - l_text_width - icon_w - icon1_w - ICON_OFFSET - icon2_w - ICON_OFFSET - 2*iw, option_text, (selected || !active)? color : optionFontColor, 0, true);
+					}
+					else
+					{
+						int stringwidth = g_Font[optionFont]->getRenderWidth(option_text, true);
+						int stringstartposOption = std::max(x + BORDER_LEFT + icon_w + ICON_OFFSET + g_Font[nameFont]->getRenderWidth(l_text, true) + ICON_OFFSET, x + dx - (stringwidth + BORDER_RIGHT)); //
+
+						g_Font[optionFont]->RenderString(stringstartposOption, y + (height - g_Font[optionFont]->getHeight())/2 + g_Font[optionFont]->getHeight(), dx - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - l_text_width - icon_w, option_text, (selected || !active)? color : optionFontColor, 0, true);
+					}
 				}
 			}
 		}
