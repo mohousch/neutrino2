@@ -87,19 +87,19 @@ void CPowerMenu::showMenu(void)
 		powerMenu->setFootButtons(&btn); 
 	
 		// sleep timer
-		powerMenu->addItem(new CMenuForwarder(_("Sleeptimer"), true, NULL, new CSleepTimerWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
+		powerMenu->addItem(new ClistBoxItem(_("Sleeptimer"), true, NULL, new CSleepTimerWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
 
 		// restart neutrino
-		powerMenu->addItem(new CMenuForwarder(_("Neutrino Restart"), true, NULL, CNeutrinoApp::getInstance(), "restart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RESTART));
+		powerMenu->addItem(new ClistBoxItem(_("Neutrino Restart"), true, NULL, CNeutrinoApp::getInstance(), "restart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RESTART));
 
 		// standby
-		powerMenu->addItem(new CMenuForwarder(_("Standby"), true, NULL, CNeutrinoApp::getInstance(), "standby", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STANDBY));
+		powerMenu->addItem(new ClistBoxItem(_("Standby"), true, NULL, CNeutrinoApp::getInstance(), "standby", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STANDBY));
 
 		// reboot
-		powerMenu->addItem(new CMenuForwarder(_("Reboot"), true, NULL, CNeutrinoApp::getInstance(), "reboot", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_REBOOT));
+		powerMenu->addItem(new ClistBoxItem(_("Reboot"), true, NULL, CNeutrinoApp::getInstance(), "reboot", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_REBOOT));
 
 		// shutdown
-		powerMenu->addItem(new CMenuForwarder(_("Shutdown"), true, NULL, CNeutrinoApp::getInstance(), "shutdown", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SHUTDOWN));
+		powerMenu->addItem(new ClistBoxItem(_("Shutdown"), true, NULL, CNeutrinoApp::getInstance(), "shutdown", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SHUTDOWN));
 
 		//
 		powerMenu->integratePlugins(CPlugins::I_TYPE_POWER);

@@ -1271,7 +1271,7 @@ function rssurlmenu(url)
 			title = title .. " "
 		end
 		--m:addItem{type="forwarder", name=title, action="showMenuItem", id=i, directkey=dkey }
-		item = neutrino2.CMenuForwarder(title)
+		item = neutrino2.ClistBoxItem(title)
 		--item:setHint(glob.feedpersed.entries[i].content)
 
 		m:addItem(item)
@@ -1374,7 +1374,7 @@ function exec_submenu(id, title)
 				--d = d + 1
 				--local dkey = godirectkey(d)
 				--subm:addItem{type="forwarder", name=w.name, action="exec_urlsub", id=v, directkey=dkey }
-			subm:addItem(neutrino2.CMenuForwarder(w.name))
+			subm:addItem(neutrino2.ClistBoxItem(w.name))
 			--end
 		--end
 	end

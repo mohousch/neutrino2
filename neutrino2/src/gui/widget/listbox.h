@@ -142,7 +142,7 @@ class CMenuItem
 		
 		//
 		int widgetType;
-		//int widgetMode;
+		int widgetMode;
 		bool isPlugin;
 		
 		// HACK for TYPE_FRAME
@@ -387,6 +387,7 @@ class CMenuSeparator : public CMenuItem
 };
 
 // CMenuForwarder
+/*
 class CMenuForwarder : public CMenuItem
 {
 	//
@@ -412,6 +413,7 @@ class CMenuForwarder : public CMenuItem
 
 		void setName(const char * const name){textString = name;};
 };
+*/
 
 // CPINProtection
 class CPINProtection
@@ -439,6 +441,7 @@ class CZapProtection : public CPINProtection
 };
 
 // CLockedMenuForwarder
+/*
 class CLockedMenuForwarder : public CMenuForwarder, public CPINProtection
 {
 	CMenuTarget * Parent;
@@ -454,6 +457,7 @@ class CLockedMenuForwarder : public CMenuForwarder, public CPINProtection
 
 		virtual int exec(CMenuTarget* parent);
 };
+*/
 
 ////
 // CMenulistBoxItem
@@ -484,7 +488,25 @@ class ClistBoxItem : public CMenuItem
 		void setName(const char * const name){textString = name;};
 };
 
+// CLockedlistBoxItem
+class CLockedlistBoxItem : public ClistBoxItem, public CPINProtection
+{
+	CMenuTarget * Parent;
+	bool AlwaysAsk;
+
+	protected:
+		virtual CMenuTarget* getParent(){ return Parent;};
+		
+	public:   
+		CLockedlistBoxItem(const char * const Text, char * _validPIN, bool alwaysAsk = false, const bool Active = true, char * Option = NULL, CMenuTarget * Target = NULL, const char * const ActionKey = NULL, neutrino_msg_t DirectKey = RC_nokey, const char * const IconName = NULL, const char * const ItemIcon = NULL, const char* const Hint = NULL)
+		 : ClistBoxItem(Text, Active, Option, Target, ActionKey, DirectKey, IconName, ItemIcon, Hint),
+		   CPINProtection( _validPIN){AlwaysAsk = alwaysAsk;};
+
+		virtual int exec(CMenuTarget* parent);
+};
+
 // CPlugnItem
+/*
 class CPluginItem : public CMenuItem
 {
 	std::string optionValueString;
@@ -511,7 +533,7 @@ class CPluginItem : public CMenuItem
 		
 		void setName(const char * const name){textString = name;};
 };
-
+*/
 //
 class ClistBox : public CWidgetItem
 {

@@ -55,7 +55,7 @@ class Cyhttpd
 			static Cyhttpd* instance = NULL;
 	
 			if(!instance)
-				instance = new Cyhttpd;
+				instance = new Cyhttpd();
 
 			return instance;
 		};

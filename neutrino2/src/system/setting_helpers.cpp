@@ -330,7 +330,7 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	//
         CStringInputSMS name(_("User menu"), g_settings.usermenu_text[button].c_str());
         
-        menu->addItem(new CMenuForwarder(_("Name"), true, g_settings.usermenu_text[button].c_str(), &name));
+        menu->addItem(new ClistBoxItem(_("Name"), true, g_settings.usermenu_text[button].c_str(), &name));
         menu->addItem(new CMenuSeparator(LINE));
 
         char text[10];

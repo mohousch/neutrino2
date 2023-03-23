@@ -148,7 +148,7 @@ void CCAMMenuHandler::doMainMenu()
 	cammenu->clearItems();
 	
 	// intros
-	cammenu->addItem(new CMenuForwarder(_("back")));
+	cammenu->addItem(new ClistBoxItem(_("back")));
 
 	//
 	CWidget* tempMenuWidget = NULL;
@@ -165,13 +165,13 @@ void CCAMMenuHandler::doMainMenu()
 			char CAM[255];
 			sprintf(CAM, "cam%d", i + 1);
 
-			cammenu->addItem(new CMenuForwarder(name, true, NULL, this, CAM, RC_nokey));
+			cammenu->addItem(new ClistBoxItem(name, true, NULL, this, CAM, RC_nokey));
 
 			char RESET[32];
 			sprintf(RESET, "reset%d", i + 1);
 
 			cammenu->addItem(new CMenuSeparator(LINE));
-			cammenu->addItem(new CMenuForwarder(_("CI cam reset"), true, NULL, this, RESET, RC_nokey));
+			cammenu->addItem(new ClistBoxItem(_("CI cam reset"), true, NULL, this, RESET, RC_nokey));
 		} 
 		else 
 		{
@@ -217,7 +217,7 @@ void CCAMMenuHandler::doMainMenu()
 
 			//
 			cammenu->addItem(new CMenuSeparator(LINE));
-			cammenu->addItem(new CMenuForwarder(str, false, NULL, tempMenuWidget));
+			cammenu->addItem(new ClistBoxItem(str, false, NULL, tempMenuWidget));
 		}
 	}	
 
@@ -410,7 +410,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 						
 						dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: subtitle: %s\n", sptr);
 						
-						menu->addItem(new CMenuForwarder(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
+						menu->addItem(new ClistBoxItem(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
 						sptr = &tptr[i1+1];
 					}
 					bpos++;
@@ -420,16 +420,16 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				{
 					dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: subtitle: %s\n", sptr);
 					
-					menu->addItem(new CMenuForwarder(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
+					menu->addItem(new ClistBoxItem(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
 				}
 			}
 			
 			for(i = 0; i < pMenu->choice_nb; i++) 
 			{
 				if(sublevel)
-					menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str()));
+					menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str()));
 				else
-					menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, NULL, NULL, CRCInput::convertDigitToKey(i+1)));
+					menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, NULL, NULL, CRCInput::convertDigitToKey(i+1)));
 			}
 			slen = strlen(pMenu->bottom);
 			
@@ -437,7 +437,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			{
 				dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: bottom: %s\n", pMenu->bottom);
 				
-				menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->bottom, slen, 0).c_str(), false));
+				menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->bottom, slen, 0).c_str(), false));
 			}
 
 			menuWidget->exec(NULL, "");

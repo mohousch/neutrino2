@@ -158,11 +158,11 @@ void CZapitSetup::showMenu()
 	zapit->clearItems();
 	
 	// intros
-	zapit->addItem(new CMenuForwarder(_("back")));
+	zapit->addItem(new ClistBoxItem(_("back")));
 	zapit->addItem(new CMenuSeparator(LINE));
 	
 	// save settings
-	zapit->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	zapit->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	zapit->addItem(new CMenuSeparator(LINE));
 
 	bool activTV = false;
@@ -175,10 +175,10 @@ void CZapitSetup::showMenu()
 		activRadio = true;
 
 	// last TV channel
-	CMenuForwarder * m3 = new CMenuForwarder(_("TV Channel"), activTV, g_settings.StartChannelTV.c_str(), this, "tv");
+	ClistBoxItem * m3 = new ClistBoxItem(_("TV Channel"), activTV, g_settings.StartChannelTV.c_str(), this, "tv");
 
 	// last radio channel
-	CMenuForwarder * m4 = new CMenuForwarder(_("Radio Channel"), activRadio, g_settings.StartChannelRadio.c_str(), this, "radio");
+	ClistBoxItem * m4 = new ClistBoxItem(_("Radio Channel"), activRadio, g_settings.StartChannelRadio.c_str(), this, "radio");
 
 	// last mode
 	CZapitSetupModeNotifier zapitSetupModeNotifier((int *)&g_settings.lastChannelMode, m3, m4);
@@ -202,7 +202,7 @@ void CZapitSetup::showMenu()
 }
 
 //
-CZapitSetupNotifier::CZapitSetupNotifier(CMenuOptionChooser* m1, CMenuForwarder* m2, CMenuForwarder* m3)
+CZapitSetupNotifier::CZapitSetupNotifier(CMenuOptionChooser* m1, ClistBoxItem* m2, ClistBoxItem* m3)
 {
 	zapit1 = m1;
 	zapit2 = m2;

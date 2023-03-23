@@ -927,13 +927,13 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				menuWidgetActionsWidget->addWidgetItem(menuWidgetActions);
 
 				// record
-		  		menuWidgetActions->addItem (new CMenuForwarder(_("Record"), true, NULL, new MenuTargetAddRecordTimer(this), NULL, RC_red, NEUTRINO_ICON_BUTTON_RED), false);
+		  		menuWidgetActions->addItem (new ClistBoxItem(_("Record"), true, NULL, new MenuTargetAddRecordTimer(this), NULL, RC_red, NEUTRINO_ICON_BUTTON_RED), false);
 
 				// refresh
-				menuWidgetActions->addItem (new CMenuForwarder(_("Refresh EPG"), true, NULL, new MenuTargetRefreshEpg(this), NULL, RC_green, NEUTRINO_ICON_BUTTON_GREEN), false);
+				menuWidgetActions->addItem (new ClistBoxItem(_("Refresh EPG"), true, NULL, new MenuTargetRefreshEpg(this), NULL, RC_green, NEUTRINO_ICON_BUTTON_GREEN), false);
 
 				// shedulde
-				menuWidgetActions->addItem (new CMenuForwarder (_("Schedule"), true, NULL, new MenuTargetAddReminder(this), NULL, RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW), false);
+				menuWidgetActions->addItem (new ClistBoxItem(_("Schedule"), true, NULL, new MenuTargetAddReminder(this), NULL, RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW), false);
 
 				menuWidgetActionsWidget->exec (NULL, "");
 				

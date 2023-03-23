@@ -32,7 +32,6 @@ libneutrino2_gui_widget_a_SOURCES = \
 
 libneutrino2_gui_widget2_a_SOURCES = \
 	drawable.cpp \
-	menue.cpp \
 	progresswindow.cpp \
 	infobox.cpp \
 	messagebox.cpp \
@@ -43,4 +42,8 @@ libneutrino2_gui_widget2_a_SOURCES = \
 	colorchooser.cpp \
 	keychooser.cpp \
 	mountchooser.cpp
+	
+libneutrino2_gui_widget2_a_SOURCES += \
+	menue.cpp
+
 

@@ -123,18 +123,18 @@ void CAudioPlayerSettings::showMenu()
 	audioPlayerSettings->clearItems();
 	
 	// intros
-	audioPlayerSettings->addItem(new CMenuForwarder(_("back")));
+	audioPlayerSettings->addItem(new ClistBoxItem(_("back")));
 	audioPlayerSettings->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	audioPlayerSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	audioPlayerSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	audioPlayerSettings->addItem( new CMenuSeparator(LINE) );
 
 	// high prio
 	audioPlayerSettings->addItem(new CMenuOptionChooser(_("High decode priority"), &g_settings.audioplayer_highprio, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true ));
 
 	// start dir
-	audioPlayerSettings->addItem(new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_audioplayerdir, this, "audioplayerdir"));
+	audioPlayerSettings->addItem(new ClistBoxItem(_("Start dir."), true, g_settings.network_nfs_audioplayerdir, this, "audioplayerdir"));
 	
 	//
 	widget->exec(NULL, "");

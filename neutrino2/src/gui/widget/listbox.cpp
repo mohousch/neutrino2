@@ -220,7 +220,7 @@ int CMenuOptionChooser::exec(CMenuTarget* parent)
 			if(options[count].valname != 0)
 				l_option = options[count].valname;
 			
-			menu->addItem(new CMenuForwarder(_(l_option)), selected);
+			menu->addItem(new /*CMenuForwarder*/ClistBoxItem(_(l_option)), selected);
 		}
 		
 		widget->exec(NULL, "");
@@ -692,7 +692,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *parent)
 			if (strcmp(options[count].c_str(), optionValue) == 0)
 				selected = true;
 
-			menu->addItem(new CMenuForwarder(options[count].c_str()), selected);
+			menu->addItem(new /*CMenuForwarder*/ClistBoxItem(options[count].c_str()), selected);
 		}
 		
 		widget->exec(NULL, "");
@@ -1195,6 +1195,7 @@ bool CZapProtection::check()
 }
 
 // CMenuForwarder
+#if 0
 CMenuForwarder::CMenuForwarder(const char * const Text, const bool Active, const char * const Option, CMenuTarget* Target, const char * const ActionKey, neutrino_msg_t DirectKey, const char * const IconName, const char * const ItemIcon, const char* const Hint )
 {
 	textString = Text? Text : "";
@@ -1556,8 +1557,9 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		return y + height;
 	}
 }
-
+#endif
 // lockedMenuForward
+#if 0
 int CLockedMenuForwarder::exec(CMenuTarget * parent)
 {
 	dprintf(DEBUG_NORMAL, "CLockedMenuForwarder::exec\n");
@@ -1577,7 +1579,7 @@ int CLockedMenuForwarder::exec(CMenuTarget * parent)
 	
 	return CMenuForwarder::exec(parent);
 }
-
+#endif
 //ClistBoxItem
 ClistBoxItem::ClistBoxItem(const char * const Text, const bool Active, const char * const Option, CMenuTarget* Target, const char * const ActionKey, const neutrino_msg_t DirectKey, const char * const IconName, const char* const ItemIcon, const char* const Hint)
 {
@@ -1618,7 +1620,7 @@ int ClistBoxItem::getHeight(void) const
 		ih = ITEM_ICON_H_MINI;
 			
 		//if (widgetMode == MODE_LISTBOX)
-		if(nLinesItem)
+		if(nLinesItem && widgetMode == MODE_LISTBOX)
 		{
 			ih = ITEM_ICON_H_MINI*2;
 		}
@@ -1955,8 +1957,7 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 			icon_h = ITEM_ICON_H_MINI;
 			icon_w = ITEM_ICON_W_MINI;
 			
-			//if (widgetMode == MODE_LISTBOX)
-			if(nLinesItem)
+			if(nLinesItem && widgetMode == MODE_LISTBOX)
 			{
 				icon_h = ITEM_ICON_H_MINI*2;
 				icon_w = ITEM_ICON_W_MINI;
@@ -2102,7 +2103,29 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 	}
 }
 
+// CLockedlistBoxItem
+int CLockedlistBoxItem::exec(CMenuTarget * parent)
+{
+	dprintf(DEBUG_NORMAL, "CLockedlistBoxItem::exec\n");
+
+	Parent = parent;
+	
+	if( (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER) || AlwaysAsk )
+	{
+		if (!check())
+		{
+			Parent = NULL;
+			return RETURN_REPAINT;
+		}
+	}
+
+	Parent = NULL;
+	
+	return ClistBoxItem::exec(parent);
+}
+
 //CPluginItem
+/*
 CPluginItem::CPluginItem(const char * const pluginName, const bool Active, const neutrino_msg_t DirectKey, const char* const IconName)
 {
 	textString = "";
@@ -2238,7 +2261,8 @@ const char * CPluginItem::getOption(void)
 	else
 		return NULL;
 }
-
+*/
+#if 0
 int CPluginItem::paint(bool selected, bool /*AfterPulldown*/)
 {
 	dprintf(DEBUG_DEBUG, "CPluginItem::paint:\n");
@@ -2468,7 +2492,7 @@ int CPluginItem::paint(bool selected, bool /*AfterPulldown*/)
 		return y + height;
 	}
 }
-
+#endif
 //// ClistBox
 ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 {
@@ -2768,6 +2792,7 @@ void ClistBox::initFrames()
 		CMenuItem * item = items[count];
 
 		item->widgetType = widgetType;
+		item->widgetMode = widgetMode;
 		item->paintFrame = paintFrame;
 		if (itemBorderMode) item->setBorderMode(itemBorderMode);
 		if (itemGradient) item->setGradient(itemGradient);
@@ -4175,7 +4200,7 @@ void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned i
 			neutrino_msg_t dk = (shortcut != RC_nokey) ? CRCInput::convertDigitToKey(sc++) : RC_nokey;
 
 			//FIXME: iconName
-			CMenuForwarder *fw_plugin = new CMenuForwarder(g_PluginList->getName(count), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());
+			/*CMenuForwarder*/ClistBoxItem *fw_plugin = new /*CMenuForwarder*/ClistBoxItem(g_PluginList->getName(count), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());
 
 			fw_plugin->setHint(g_PluginList->getDescription(count).c_str());
 			fw_plugin->setWidgetType(itype);

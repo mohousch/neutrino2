@@ -316,7 +316,7 @@ int CBouquetList::doMenu()
 
 	if(!zapitBouquet->bUser) 
 	{
-		menu->addItem(new CMenuForwarder(_("Copy bouquet to Favorites")), old_selected == i ++);
+		menu->addItem(new ClistBoxItem(_("Copy bouquet to Favorites")), old_selected == i ++);
 		ret = widget->exec(NULL, "");
 		select = menu->getSelected();
 		
@@ -355,7 +355,7 @@ int CBouquetList::doMenu()
 	} 
 	else if(!zapitBouquet->bWebTV) 
 	{
-		menu->addItem(new CMenuForwarder(_("Delete")), old_selected == i ++);
+		menu->addItem(new ClistBoxItem(_("Delete")), old_selected == i ++);
 		ret = widget->exec(NULL, "");
 		select = menu->getSelected();
 		

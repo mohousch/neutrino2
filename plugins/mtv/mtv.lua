@@ -690,11 +690,11 @@ function chooser_menu(id)
 	local menu = neutrino2.CMenuWidget(name, neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
 
 	--if id:sub(1,29) =="Erstelle Download Liste für " then
-		menu:addItem(neutrino2.CMenuForwarder("Download starten", true, "", null, "dlstart"))
+		menu:addItem(neutrino2.ClistBoxItem("Download starten", true, "", null, "dlstart"))
 	--[[elseif id:sub(1,15) =="Neue Favoriten" then
-		menu:addItem(neutrino2.CMenuForwarder("Zu Favoriten hinzufügen", true, "", null, "set_bool_in_searchliste"))
+		menu:addItem(neutrino2.ClistBoxItem("Zu Favoriten hinzufügen", true, "", null, "set_bool_in_searchliste"))
 	elseif id =="favdel" then
-		menu:addItem(neutrino2.CMenuForwarder("Favoriten löschen", true, "", null, "set_bool_in_mtv"))
+		menu:addItem(neutrino2.ClistBoxItem("Favoriten löschen", true, "", null, "set_bool_in_mtv"))
 	end]]
 
 	menu:exec(null, "")
@@ -787,15 +787,15 @@ function settings()
 	menu:setWidgetMode(neutrino2.MODE_SETUP)
 	menu:enableShrinkMenu()
 
-	menu:addItem(neutrino2.CMenuForwarder("zurück"))
+	menu:addItem(neutrino2.ClistBoxItem("zurück"))
 	menu:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
-	item = neutrino2.CMenuForwarder("Einstellungen speichern")
+	item = neutrino2.ClistBoxItem("Einstellungen speichern")
 	item:setIconName(neutrino2.NEUTRINO_ICON_BUTTON_RED)
 	item:setDirectKey(neutrino2.RC_red)
 	menu:addItem(item)
 	menu:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
-	menu:addItem(neutrino2.CMenuForwarder("Verzeichniss:", true, conf.path))
-	menu:addItem(neutrino2.CMenuForwarder("Verzeichniss M3U:", true, conf.path_m3u))
+	menu:addItem(neutrino2.ClistBoxItem("Verzeichniss:", true, conf.path))
+	menu:addItem(neutrino2.ClistBoxItem("Verzeichniss M3U:", true, conf.path_m3u))
 	
 	hls = ""
 	if conf.hlsflag == true then
@@ -803,9 +803,9 @@ function settings()
 	else
 		hls = "off"
 	end
-	menu:addItem(neutrino2.CMenuForwarder("Videos in HLS-Format", true, hls))
+	menu:addItem(neutrino2.ClistBoxItem("Videos in HLS-Format", true, hls))
 
-	menu:addItem(neutrino2.CMenuForwarder("Max. Auflösung", true, conf.maxRes))
+	menu:addItem(neutrino2.ClistBoxItem("Max. Auflösung", true, conf.maxRes))
 
 	dl = ""
 	if conf.dlflag == true then
@@ -813,7 +813,7 @@ function settings()
 	else
 		dl = "off"
 	end
-	menu:addItem(neutrino2.CMenuForwarder("Auswahl vorbelegen mit", true, dl))
+	menu:addItem(neutrino2.ClistBoxItem("Auswahl vorbelegen mit", true, dl))
 
 	flv = ""
 	if conf.flvflag == true then
@@ -821,7 +821,7 @@ function settings()
 	else
 		flv = "off"
 	end
-	menu:addItem(neutrino2.CMenuForwarder("Videos in FLV-Format herunterladen ?", true, flv))
+	menu:addItem(neutrino2.ClistBoxItem("Videos in FLV-Format herunterladen ?", true, flv))
 
 	playflv = ""
 	if conf.playflvflag == true then
@@ -829,7 +829,7 @@ function settings()
 	else
 		playflv = "off"
 	end
-	menu:addItem(neutrino2.CMenuForwarder("Videos in FLV-Format abspielen ?", true, playflv))
+	menu:addItem(neutrino2.ClistBoxItem("Videos in FLV-Format abspielen ?", true, playflv))
 
 	shuffle = ""
 	if conf.shuffleflag == true then
@@ -837,9 +837,9 @@ function settings()
 	else
 		shuffle = "off"
 	end
-	menu:addItem(neutrino2.CMenuForwarder("Zufällig abspielen ? ", true, shuffle))
+	menu:addItem(neutrino2.ClistBoxItem("Zufällig abspielen ? ", true, shuffle))
 
-	menu:addItem(neutrino2.CMenuForwarder("Ausgewählte Favoriten löschen.", true, "", null, "del_fav"))
+	menu:addItem(neutrino2.ClistBoxItem("Ausgewählte Favoriten löschen.", true, "", null, "del_fav"))
 
 	if m_selected < 0 then
 		m_selected = 0
@@ -1078,7 +1078,7 @@ function search_artists()
 
 	if glob.mtv_artist then
 		for i, v in ipairs(glob.mtv_artist) do
-			menu:addItem(neutrino2.CMenuForwarder(i .. ": " .. v.name, true, "", null, "search"))
+			menu:addItem(neutrino2.ClistBoxItem(i .. ": " .. v.name, true, "", null, "search"))
 		end
 	end
 
@@ -1171,10 +1171,10 @@ function main_menu()
 
 	menu:setSelected(selected_mm)
 
-	menu:addItem(neutrino2.CMenuForwarder("MTV Listen", true, "", null, "list"))
-	menu:addItem(neutrino2.CMenuForwarder("Suche nach künstler", true, conf.search, null, "search"))
-	menu:addItem(neutrino2.CMenuForwarder("MTV Live", glob.mtv_live_url ~= nil, "", null, "live"))
-	menu:addItem(neutrino2.CMenuForwarder("Einstellugen", true, "", null, "settings"))
+	menu:addItem(neutrino2.ClistBoxItem("MTV Listen", true, "", null, "list"))
+	menu:addItem(neutrino2.ClistBoxItem("Suche nach künstler", true, conf.search, null, "search"))
+	menu:addItem(neutrino2.ClistBoxItem("MTV Live", glob.mtv_live_url ~= nil, "", null, "live"))
+	menu:addItem(neutrino2.ClistBoxItem("Einstellugen", true, "", null, "settings"))
 
 	menu:exec(null, "")
 

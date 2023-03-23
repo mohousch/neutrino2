@@ -163,11 +163,11 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->clearItems();
 	
 	// intros
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("back")));
+	miscSettingsGeneral->addItem(new ClistBoxItem(_("back")));
 	miscSettingsGeneral->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	miscSettingsGeneral->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	miscSettingsGeneral->addItem( new CMenuSeparator(LINE) );
 
 	// rc delay
@@ -183,7 +183,7 @@ void CGeneralSettings::showMenu()
 
 	// delay counter
 	CStringInput * miscSettings_shutdown_count = new CStringInput(_("switch off after"), g_settings.shutdown_count, 3, _("time (in minutes) to switch from standby"), _("to deep standby (0 = off)."), "0123456789 ");
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("switch off after"), true, g_settings.shutdown_count, miscSettings_shutdown_count));
+	miscSettingsGeneral->addItem(new ClistBoxItem(_("switch off after"), true, g_settings.shutdown_count, miscSettings_shutdown_count));
 
 	// start to standby
 	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("Startup to standby"), &g_settings.power_standby, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
@@ -233,13 +233,13 @@ void CGeneralSettings::showMenu()
 	std::string ytkey = g_settings.ytkey;
 	
 	CStringInputSMS* keyInput = new CStringInputSMS(_("youtube ID Key:"), ytkey.c_str());
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("YT:"), true, ytkey.c_str(), keyInput));
+	miscSettingsGeneral->addItem(new ClistBoxItem(_("YT:"), true, ytkey.c_str(), keyInput));
 
 	// tmdb
 	std::string tmdbkey = g_settings.tmdbkey;
 
 	CStringInputSMS* tmdbkeyInput = new CStringInputSMS(_("TMDB Key:"), tmdbkey.c_str());
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("TMDB:"), true, tmdbkey.c_str(), tmdbkeyInput));
+	miscSettingsGeneral->addItem(new ClistBoxItem(_("TMDB:"), true, tmdbkey.c_str(), tmdbkeyInput));
 	
 	// prefer tmdb preview
 	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("TMDB Preview"), &g_settings.enable_tmdb_preview, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
@@ -251,9 +251,9 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->addItem(new CMenuSeparator(LINE));
 	
 	CDataResetNotifier * resetNotifier = new CDataResetNotifier();
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("Reset settings to defaults"), true, NULL, resetNotifier, "factory"));
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("Settings backup"),  true, NULL, resetNotifier, "backup"));
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("Settings restore"), true, NULL, resetNotifier, "restore"));
+	miscSettingsGeneral->addItem(new ClistBoxItem(_("Reset settings to defaults"), true, NULL, resetNotifier, "factory"));
+	miscSettingsGeneral->addItem(new ClistBoxItem(_("Settings backup"),  true, NULL, resetNotifier, "backup"));
+	miscSettingsGeneral->addItem(new ClistBoxItem(_("Settings restore"), true, NULL, resetNotifier, "restore"));
 	
 	//
 	widget->exec(NULL, "");
@@ -546,11 +546,11 @@ void CChannelListSettings::showMenu()
 	miscSettingsChannelList->clearItems();
 	
 	// intros
-	miscSettingsChannelList->addItem(new CMenuForwarder(_("back")));
+	miscSettingsChannelList->addItem(new ClistBoxItem(_("back")));
 	miscSettingsChannelList->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	miscSettingsChannelList->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	miscSettingsChannelList->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	miscSettingsChannelList->addItem( new CMenuSeparator(LINE) );
 	
 	// HD list
@@ -584,7 +584,7 @@ void CChannelListSettings::showMenu()
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Channel Logo"), &g_settings.epgplus_show_logo, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
 	
 	// logos dir
-	miscSettingsChannelList->addItem( new CMenuForwarder(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" ) );
+	miscSettingsChannelList->addItem( new ClistBoxItem(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" ) );
 	
 	//
 	widget->exec(NULL, "");
@@ -716,11 +716,11 @@ void CEPGSettings::showMenu()
 	miscSettingsEPG->clearItems();
 	
 	// intros
-	miscSettingsEPG->addItem(new CMenuForwarder(_("back")));
+	miscSettingsEPG->addItem(new ClistBoxItem(_("back")));
 	miscSettingsEPG->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	miscSettingsEPG->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	miscSettingsEPG->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	miscSettingsEPG->addItem( new CMenuSeparator(LINE) );
 
 	//
@@ -732,22 +732,22 @@ void CEPGSettings::showMenu()
 
 	// epg cache
         CStringInput * miscSettings_epg_cache = new CStringInput(_("EPG-Cache (Days)"), g_settings.epg_cache.c_str(), 2, _("How long will EPG-Data in the future cached?"), _("Set in days."), "0123456789 ", sectionsdConfigNotifier);
-        miscSettingsEPG->addItem(new CMenuForwarder(_("EPG-Cache (Days)"), true, g_settings.epg_cache.c_str(), miscSettings_epg_cache));
+        miscSettingsEPG->addItem(new ClistBoxItem(_("EPG-Cache (Days)"), true, g_settings.epg_cache.c_str(), miscSettings_epg_cache));
 
 	// extended epg cache
         CStringInput * miscSettings_epg_cache_e = new CStringInput(_("EPG Long Description (hours)"), g_settings.epg_extendedcache.c_str(), 3, _("How long into the future will EPG extended descriptions"), _("be Cached? (Set in hours)"), "0123456789 ", sectionsdConfigNotifier);
-        miscSettingsEPG->addItem(new CMenuForwarder(_("EPG Long Description (hours)"), true, g_settings.epg_extendedcache.c_str(), miscSettings_epg_cache_e));
+        miscSettingsEPG->addItem(new ClistBoxItem(_("EPG Long Description (hours)"), true, g_settings.epg_extendedcache.c_str(), miscSettings_epg_cache_e));
 
 	// old events
         CStringInput * miscSettings_epg_old_events = new CStringInput(_("EPG remove after (std.)"), g_settings.epg_old_events.c_str(), 2, _("How long will EPG-Data be stored after they timed out?"), _("Set in hours"), "0123456789 ", sectionsdConfigNotifier);
-        miscSettingsEPG->addItem(new CMenuForwarder(_("EPG remove after (std.)"), true, g_settings.epg_old_events.c_str(), miscSettings_epg_old_events));
+        miscSettingsEPG->addItem(new ClistBoxItem(_("EPG remove after (std.)"), true, g_settings.epg_old_events.c_str(), miscSettings_epg_old_events));
 
 	// max epg events
         CStringInput * miscSettings_epg_max_events = new CStringInput(_("Max. Events"), g_settings.epg_max_events.c_str(), 5, _("How many events should be stored?"), _("normaly 50000, 0 to disable limit"), "0123456789 ", sectionsdConfigNotifier);
-        miscSettingsEPG->addItem(new CMenuForwarder(_("Max. Events"), true, g_settings.epg_max_events.c_str(), miscSettings_epg_max_events));
+        miscSettingsEPG->addItem(new ClistBoxItem(_("Max. Events"), true, g_settings.epg_max_events.c_str(), miscSettings_epg_max_events));
 
 	// epg save dir
-        miscSettingsEPG->addItem(new CMenuForwarder(_("EPG save path"), true, g_settings.epg_dir.c_str(), this, "epgdir"));
+        miscSettingsEPG->addItem(new ClistBoxItem(_("EPG save path"), true, g_settings.epg_dir.c_str(), this, "epgdir"));
 	
 	// epglang
 	miscSettingsEPG->addItem(new CMenuSeparator(LINE | STRING, _("Preferred EPG language")));
@@ -781,7 +781,7 @@ void CEPGSettings::showMenu()
 
 	// server box ip
 	CIPInput * epg_IP = new CIPInput(_("Server Box IP"), g_settings.epg_serverbox_ip);
-	CMenuForwarder* o1 = new CMenuForwarder(_("Server Box IP"), g_settings.epg_enable_localtv_epg, g_settings.epg_serverbox_ip.c_str(), epg_IP);
+	ClistBoxItem* o1 = new ClistBoxItem(_("Server Box IP"), g_settings.epg_enable_localtv_epg, g_settings.epg_serverbox_ip.c_str(), epg_IP);
 
 	// server gui (neutrino/neutrinohd/enigma2)
 	CMenuOptionChooser* o2 = new CMenuOptionChooser(_("Server Box GUI"), &g_settings.epg_serverbox_gui, EPG_SERVERBOX_GUI_OPTIONS, EPG_SERVERBOX_GUI_OPTION_COUNT, g_settings.epg_enable_localtv_epg);
@@ -809,7 +809,7 @@ void CEPGSettings::showMenu()
 }
 
 // onlineepg notifier
-COnlineEPGNotifier::COnlineEPGNotifier(CMenuForwarder* m1, CMenuOptionChooser* m2, CMenuOptionChooser* m3)
+COnlineEPGNotifier::COnlineEPGNotifier(ClistBoxItem* m1, CMenuOptionChooser* m2, CMenuOptionChooser* m3)
 {
 	item1 = m1;
 	item2 = m2;
@@ -958,11 +958,11 @@ void CFileBrowserSettings::showMenu()
 	miscSettingsFileBrowser->clearItems();
 	
 	// intros
-	miscSettingsFileBrowser->addItem(new CMenuForwarder(_("back")));
+	miscSettingsFileBrowser->addItem(new ClistBoxItem(_("back")));
 	miscSettingsFileBrowser->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	miscSettingsFileBrowser->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	miscSettingsFileBrowser->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	miscSettingsFileBrowser->addItem( new CMenuSeparator(LINE) );
 
 	// UTF 

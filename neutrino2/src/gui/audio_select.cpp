@@ -153,7 +153,7 @@ void CAudioSelectMenuHandler::doMenu()
 		char apid[5];
 		sprintf(apid, "%d", count);
 
-		AudioSelector->addItem(new CMenuForwarder(g_RemoteControl->current_PIDs.APIDs[count].desc, true, NULL, &APIDChanger, apid, CRCInput::convertDigitToKey(count + 1)), (count == g_RemoteControl->current_PIDs.PIDs.selected_apid));
+		AudioSelector->addItem(new ClistBoxItem(g_RemoteControl->current_PIDs.APIDs[count].desc, true, NULL, &APIDChanger, apid, CRCInput::convertDigitToKey(count + 1)), (count == g_RemoteControl->current_PIDs.PIDs.selected_apid));
 	}
 
 	if(g_RemoteControl->current_PIDs.APIDs.size())
@@ -195,7 +195,7 @@ void CAudioSelectMenuHandler::doMenu()
 				char item[64];
 				//snprintf(item,sizeof(item), "DVB: %s (pid %x)", sd->ISO639_language_code.c_str(), sd->pId);
 				snprintf(item, sizeof(item), "DVB: %s", sd->ISO639_language_code.c_str());
-				AudioSelector->addItem(new CMenuForwarder(item, sd->pId != dvbsub_getpid() /* !dvbsub_getpid(&pid, NULL)*/, NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
+				AudioSelector->addItem(new ClistBoxItem(item, sd->pId != dvbsub_getpid() /* !dvbsub_getpid(&pid, NULL)*/, NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
 			}
 			
 			//txtsub
@@ -215,14 +215,14 @@ void CAudioSelectMenuHandler::doMenu()
 				char item[64];
 				//snprintf(item, sizeof(item), "TTX: %s (pid %x page %03X)", sd->ISO639_language_code.c_str(), sd->pId, page);
 				snprintf(item, sizeof(item), "TTX: %s", sd->ISO639_language_code.c_str());
-				AudioSelector->addItem(new CMenuForwarder(item,  !tuxtx_subtitle_running(&pid, &page, NULL), NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
+				AudioSelector->addItem(new ClistBoxItem(item,  !tuxtx_subtitle_running(&pid, &page, NULL), NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
 			}
 		}
 		
 		if(sep_added) 
 		{
 			AudioSelector->addItem(new CMenuSeparator(LINE));
-			AudioSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW ));
+			AudioSelector->addItem(new ClistBoxItem(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW ));
 		}
 
 	}

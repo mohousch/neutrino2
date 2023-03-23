@@ -133,7 +133,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 				char item[64];
 	
 				snprintf(item,sizeof(item), "DVB: %s", sd->ISO639_language_code.c_str());
-				DVBSubSelector->addItem(new CMenuForwarder(item, sd->pId != dvbsub_getpid() /*dvbsub_getpid(&pid, NULL)*/, NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
+				DVBSubSelector->addItem(new ClistBoxItem(item, sd->pId != dvbsub_getpid() /*dvbsub_getpid(&pid, NULL)*/, NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
 			}
 			
 			//txt subs
@@ -152,17 +152,17 @@ int CDVBSubSelectMenuHandler::doMenu()
 				char item[64];
 				
 				snprintf(item, sizeof(item), "TTX: %s", sd->ISO639_language_code.c_str());
-				DVBSubSelector->addItem(new CMenuForwarder(item,  !tuxtx_subtitle_running(&pid, &page, NULL), NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
+				DVBSubSelector->addItem(new ClistBoxItem(item,  !tuxtx_subtitle_running(&pid, &page, NULL), NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
 			}
 		}
 		
 		if(sep_added) 
 		{
 			DVBSubSelector->addItem(new CMenuSeparator(LINE));
-			DVBSubSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", RC_red, NEUTRINO_ICON_BUTTON_RED ));
+			DVBSubSelector->addItem(new ClistBoxItem(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", RC_red, NEUTRINO_ICON_BUTTON_RED ));
 		}
 		else
-			DVBSubSelector->addItem(new CMenuForwarder(_("Subtitles not found"), false));
+			DVBSubSelector->addItem(new ClistBoxItem(_("Subtitles not found"), false));
 	}
 
 	res = widget->exec(NULL, "");

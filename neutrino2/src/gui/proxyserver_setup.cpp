@@ -97,13 +97,13 @@ int CProxySetup::showProxySetup()
 	mn->clearItems();
 
 	CStringInputSMS * softUpdate_proxy = new CStringInputSMS(_("Hostname"), g_settings.softupdate_proxyserver, MAX_INPUT_CHARS, _("enter proxyserver name or ip, use host:port"), _("a empty entry means no proxy"), "abcdefghijklmnopqrstuvwxyz0123456789-.: ");
-	mn->addItem(new CMenuForwarder(_("Hostname"), true, g_settings.softupdate_proxyserver, softUpdate_proxy));
+	mn->addItem(new ClistBoxItem(_("Hostname"), true, g_settings.softupdate_proxyserver, softUpdate_proxy));
 
 	CStringInputSMS * softUpdate_proxyuser = new CStringInputSMS(_("Username"), g_settings.softupdate_proxyusername, MAX_INPUT_CHARS, _("enter the proxyserver username"), _("a empty entry means no proxy-auth"), "abcdefghijklmnopqrstuvwxyz0123456789!""§$%&/()=?-. ");
-	mn->addItem(new CMenuForwarder(_("Username"), true, g_settings.softupdate_proxyusername, softUpdate_proxyuser));
+	mn->addItem(new ClistBoxItem(_("Username"), true, g_settings.softupdate_proxyusername, softUpdate_proxyuser));
 
 	CStringInputSMS * softUpdate_proxypass = new CStringInputSMS(_("Password"), g_settings.softupdate_proxypassword, MAX_INPUT_CHARS, _("enter the proxyserver password"), _("a empty entry means no proxy-auth"), "abcdefghijklmnopqrstuvwxyz0123456789!""§$%&/()=?-. ");
-	mn->addItem(new CMenuForwarder(_("Password"), true, g_settings.softupdate_proxypassword, softUpdate_proxypass));
+	mn->addItem(new ClistBoxItem(_("Password"), true, g_settings.softupdate_proxypassword, softUpdate_proxypass));
 
 	//
 	int res = widget->exec(NULL, "");

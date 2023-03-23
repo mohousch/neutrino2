@@ -218,11 +218,11 @@ void CRecordingSettings::showMenu()
 
 	//safety time befor
 	CStringInput * timerBefore = new CStringInput(_("Record start time correction"), g_settings.record_safety_time_before, 2, _("Correction time in min. (00=off). This time"), _("will be deducted of every record timer."),"0123456789 ", RecordingSafetyNotifier);
-	CMenuForwarder *fTimerBefore = new CMenuForwarder(_("Record start time correction"), true, g_settings.record_safety_time_before, timerBefore);
+	ClistBoxItem *fTimerBefore = new ClistBoxItem(_("Record start time correction"), true, g_settings.record_safety_time_before, timerBefore);
 
 	//safety time after
 	CStringInput * timerAfter = new CStringInput(_("Record stop time correction"), g_settings.record_safety_time_after, 2, _("Correction time in min. (00=off). This time"), _("will added to stop time of every record timer."),"0123456789 ", RecordingSafetyNotifier);
-	CMenuForwarder *fTimerAfter = new CMenuForwarder(_("Record stop time correction"), true, g_settings.record_safety_time_after, timerAfter);
+	ClistBoxItem *fTimerAfter = new ClistBoxItem(_("Record stop time correction"), true, g_settings.record_safety_time_after, timerAfter);
 
 	//audiopids
 	g_settings.recording_audio_pids_std = ( g_settings.recording_audio_pids_default & TIMERD_APIDS_STD ) ? 1 : 0 ;
@@ -247,15 +247,15 @@ void CRecordingSettings::showMenu()
 	CMenuOptionChooser* oj13 = new CMenuOptionChooser(_("Save in channel dir"), &g_settings.recording_save_in_channeldir, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 
 	//RecDir
-	CMenuForwarder* fRecDir = new CMenuForwarder(_("Recording directory"), true, g_settings.network_nfs_recordingdir, this, "recordingdir");
+	ClistBoxItem* fRecDir = new ClistBoxItem(_("Recording directory"), true, g_settings.network_nfs_recordingdir, this, "recordingdir");
 
 	// intros
-	recordingSettings->addItem(new CMenuForwarder(_("back")));
+	recordingSettings->addItem(new ClistBoxItem(_("back")));
 	recordingSettings->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	recordingSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	recordingSettings->addItem(new CMenuForwarder(_("Activate changes"), true, NULL, this, "recording"));
+	recordingSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	recordingSettings->addItem(new ClistBoxItem(_("Activate changes"), true, NULL, this, "recording"));
 
 	recordingSettings->addItem(new CMenuSeparator(LINE | STRING, _("Timer settings")));
 	recordingSettings->addItem(fTimerBefore);

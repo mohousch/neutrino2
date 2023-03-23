@@ -98,7 +98,7 @@ CMountChooser::CMountChooser(const char* const Name, const std::string& Icon, in
 			s +=")";
 			snprintf(indexStr,2,"%d",i);
 			
-			menu->addItem(new CMenuForwarder(s.c_str(), true, NULL, this, (std::string("MID:") + std::string(indexStr)).c_str()), (strcmp(selectedLocalDir,g_settings.network_nfs_local_dir[i]) == 0));
+			menu->addItem(new ClistBoxItem(s.c_str(), true, NULL, this, (std::string("MID:") + std::string(indexStr)).c_str()), (strcmp(selectedLocalDir,g_settings.network_nfs_local_dir[i]) == 0));
 		}
 	}	
 }

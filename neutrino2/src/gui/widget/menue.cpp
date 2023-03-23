@@ -1355,7 +1355,7 @@ void CMenuWidget::integratePlugins(CPlugins::i_type_t integration, const unsigne
 			neutrino_msg_t dk = (shortcut != RC_nokey) ? CRCInput::convertDigitToKey(sc++) : RC_nokey;
 
 			//FIXME: iconName
-			CMenuForwarder *fw_plugin = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());
+			ClistBoxItem *fw_plugin = new ClistBoxItem(_(g_PluginList->getName(count)), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());
 
 			fw_plugin->setHint(_(g_PluginList->getDescription(count).c_str()));
 			//fw_plugin->setWidgetMode(MODE_LISTBOX); //FIXME:

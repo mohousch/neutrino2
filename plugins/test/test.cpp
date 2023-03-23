@@ -105,7 +105,7 @@ class CTestMenu : public CMenuTarget
 		CTextBox* textBoxWidget;
 		
 		// CMenuwidget
-		CMenuWidget* menuWidget;
+		//CMenuWidget* menuWidget;
 		CMenuItem* item;
 		
 		CComponent* cCItem;
@@ -166,9 +166,9 @@ class CTestMenu : public CMenuTarget
 		void testCFrameBox1();
 		
 		// CMenuWidget
-		void testCMenuWidget();
-		void testCMenuWidget1();
-		void testCMenuWidget2();
+		//void testCMenuWidget();
+		//void testCMenuWidget1();
+		//void testCMenuWidget2();
 
 		// misc widgets
 		void testCStringInput();
@@ -287,7 +287,7 @@ CTestMenu::CTestMenu()
 	webTVBouquetList = NULL;
 
 	//
-	menuWidget = NULL;
+	//menuWidget = NULL;
 	
 	//
 	item = NULL;
@@ -2890,7 +2890,7 @@ void CTestMenu::testClistBox4()
 	// load items
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
+		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "wplay");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 
@@ -3827,6 +3827,7 @@ void CTestMenu::testCFrameBox1()
 
 
 // CMenuWidget (listBox mode)
+#if 0
 void CTestMenu::testCMenuWidget()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (listBox mode)\n");
@@ -3894,54 +3895,54 @@ void CTestMenu::testCMenuWidget1()
 	//
 	menuWidget = new CMenuWidget(_("CMenuWidget(Menu Mode)"), NEUTRINO_ICON_MAINMENU);
 	
-	item = new CMenuForwarder(_("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
+	item = new ClistBoxItem(_("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
 	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
 	item->setDirectKey(RC_red);
 	menuWidget->addItem(item);
 
-	item = new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler());
+	item = new ClistBoxItem(_("Timer / EPG"), true, NULL, new CEPGMenuHandler());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
 	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
 	item->setDirectKey(RC_green);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
+	item = new ClistBoxItem(_("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
 	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
 	item->setDirectKey(RC_yellow);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("Service"), true, NULL, new CServiceMenu());
+	item = new ClistBoxItem(_("Service"), true, NULL, new CServiceMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
 	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
 	item->setDirectKey(RC_blue);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu());
+	item = new ClistBoxItem(_("Settings"), true, NULL, new CMainSettingsMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
 	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
 	item->setDirectKey(RC_setup);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings());
+	item = new ClistBoxItem(_("OSD"), true, NULL, new COSDSettings());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
 	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu());
+	item = new ClistBoxItem(_("Information"), true, NULL, new CInfoMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
 	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
 	item->setDirectKey(RC_info);
 	menuWidget->addItem(item);
 
-	item = new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu());
+	item = new ClistBoxItem(_("Power Menu"), true, NULL, new CPowerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
 	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
 	item->setDirectKey(RC_standby);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu());
+	item = new ClistBoxItem(_("Media Player"), true, NULL, new CMediaPlayerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
 	item->setIconName(NEUTRINO_ICON_VIDEO);
 	item->setDirectKey(RC_video);
@@ -3981,7 +3982,7 @@ void CTestMenu::testCMenuWidget2()
 	delete audioPlayerSettingsMenu;
 	audioPlayerSettingsMenu = NULL;	
 }
-
+#endif
 
 // CStringInput
 void CTestMenu::testCStringInput()
@@ -5175,7 +5176,7 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if(actionKey == "menuforwarder")
 	{
-		MessageBox(_("Information"), "testing CMenuForwarder", mbrBack, mbBack, NEUTRINO_ICON_INFO);
+		MessageBox(_("Information"), "testing ClistBoxItem", mbrBack, mbBack, NEUTRINO_ICON_INFO);
 
 		return RETURN_REPAINT;
 	}
@@ -5577,12 +5578,14 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
+	/*
 	else if(actionKey == "menuwidget")
 	{
 		testCMenuWidget();
 
 		return RETURN_REPAINT;
 	}
+	*/
 	else if(actionKey == "pluginslist")
 	{
 		testPluginsList();
@@ -5607,6 +5610,7 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
+	/*
 	else if(actionKey == "menuwidget1")
 	{
 		testCMenuWidget1();
@@ -5619,10 +5623,11 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
+	*/
 	else if(actionKey == "mplay")
 	{
-		if (menuWidget)
-			selected = menuWidget->getSelected();
+		if (testWidget)
+			selected = testWidget->getSelected();
 		else
 			selected = 0;
 
@@ -5638,9 +5643,9 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if(actionKey == "minfo")
 	{
-		if (menuWidget)
-			selected = menuWidget->getSelected();
-		else
+		//if (menuWidget)
+		//	selected = menuWidget->getSelected();
+		//else
 			selected = 0;
 
 		m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
@@ -5850,8 +5855,8 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	{
 		if (rightWidget)
 			rightWidget->changeWidgetType();
-		else if (menuWidget)
-			menuWidget->changeWidgetType();
+		//else if (menuWidget)
+		//	menuWidget->changeWidgetType();
 
 		return RETURN_NONE;
 	}
@@ -6673,130 +6678,130 @@ void CTestMenu::showMenu()
 	
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CComponent"));
-	mainMenu->addItem(new CMenuForwarder("CIcon", true, NULL, this, "icon"));
-	mainMenu->addItem(new CMenuForwarder("CImage", true, NULL, this, "image"));
-	mainMenu->addItem(new CMenuForwarder("CButtons (foot)", true, NULL, this, "buttons"));
-	mainMenu->addItem(new CMenuForwarder("CButtons (head)", true, NULL, this, "hbuttons"));
-	mainMenu->addItem(new CMenuForwarder("CSpinner", true, NULL, this, "spinner"));
-	//mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
+	mainMenu->addItem(new ClistBoxItem("CIcon", true, NULL, this, "icon"));
+	mainMenu->addItem(new ClistBoxItem("CImage", true, NULL, this, "image"));
+	mainMenu->addItem(new ClistBoxItem("CButtons (foot)", true, NULL, this, "buttons"));
+	mainMenu->addItem(new ClistBoxItem("CButtons (head)", true, NULL, this, "hbuttons"));
+	mainMenu->addItem(new ClistBoxItem("CSpinner", true, NULL, this, "spinner"));
+	//mainMenu->addItem(new ClistBoxItem("CProgressBar", true, NULL, this, "progressbar"));
 	
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidgetItems"));
-	mainMenu->addItem(new CMenuForwarder("CHeaders", true, NULL, this, "headers"));
-	mainMenu->addItem(new CMenuForwarder("CFooters", true, NULL, this, "footers"));
-	mainMenu->addItem(new CMenuForwarder("CTextBox", true, NULL, this, "textbox"));
-	mainMenu->addItem(new CMenuForwarder("CListFrame", true, NULL, this, "listframe"));
-	mainMenu->addItem(new CMenuForwarder("CWindow", true, NULL, this, "window"));
-	mainMenu->addItem(new CMenuForwarder("CWindow(with shadow)", true, NULL, this, "windowshadow"));
-	mainMenu->addItem(new CMenuForwarder("CWindow(shadow|customColor)", true, NULL, this, "windowcustomcolor"));
-	mainMenu->addItem(new CMenuForwarder("CWindow (CComponent)", true, NULL, this, "windowcomponent"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(standard)", true, NULL, this, "listbox"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(classic)", true, NULL, this, "listbox2"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(extended)", true, NULL, this, "listbox3"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(Frame)", true, NULL, this, "listbox4"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_INFO)", true, NULL, this, "listbox5"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINT)", true, NULL, this, "listbox6"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTITEM)", true, NULL, this, "listbox7"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTICON)", true, NULL, this, "listbox8"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTHINT)", true, NULL, this, "listbox9"));
-	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
-	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "singleWidget"));
+	mainMenu->addItem(new ClistBoxItem("CHeaders", true, NULL, this, "headers"));
+	mainMenu->addItem(new ClistBoxItem("CFooters", true, NULL, this, "footers"));
+	mainMenu->addItem(new ClistBoxItem("CTextBox", true, NULL, this, "textbox"));
+	mainMenu->addItem(new ClistBoxItem("CListFrame", true, NULL, this, "listframe"));
+	mainMenu->addItem(new ClistBoxItem("CWindow", true, NULL, this, "window"));
+	mainMenu->addItem(new ClistBoxItem("CWindow(with shadow)", true, NULL, this, "windowshadow"));
+	mainMenu->addItem(new ClistBoxItem("CWindow(shadow|customColor)", true, NULL, this, "windowcustomcolor"));
+	mainMenu->addItem(new ClistBoxItem("CWindow (CComponent)", true, NULL, this, "windowcomponent"));
+	mainMenu->addItem(new ClistBoxItem("ClistBox(standard)", true, NULL, this, "listbox"));
+	mainMenu->addItem(new ClistBoxItem("ClistBox(classic)", true, NULL, this, "listbox2"));
+	mainMenu->addItem(new ClistBoxItem("ClistBox(extended)", true, NULL, this, "listbox3"));
+	mainMenu->addItem(new ClistBoxItem("ClistBox(Frame)", true, NULL, this, "listbox4"));
+	mainMenu->addItem(new ClistBoxItem("ClistBox(DL_INFO)", true, NULL, this, "listbox5"));
+	mainMenu->addItem(new ClistBoxItem("ClistBox(DL_HINT)", true, NULL, this, "listbox6"));
+	mainMenu->addItem(new ClistBoxItem("ClistBox(DL_HINTITEM)", true, NULL, this, "listbox7"));
+	mainMenu->addItem(new ClistBoxItem("ClistBox(DL_HINTICON)", true, NULL, this, "listbox8"));
+	mainMenu->addItem(new ClistBoxItem("ClistBox(DL_HINTHINT)", true, NULL, this, "listbox9"));
+	mainMenu->addItem(new ClistBoxItem("CFrameBox", true, NULL, this, "framebox"));
+	mainMenu->addItem(new ClistBoxItem("CFrameBox", true, NULL, this, "singleWidget"));
 	
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidget"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(ClistFrame|CHead|CFoot)", true, NULL, this, "listframewidget"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(CWindow|CHead|CFoot)", true, NULL, this, "ccwindow"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(CTextBox)", true, NULL, this, "textboxwidget"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox)", true, NULL, this, "listboxmwidget"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(CFrameBox)", true, NULL, this, "firetv"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CWindow|CHead|CFoot)", true, NULL, this, "multiwidget"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CFrameBox|CHead|CFoot)", true, NULL, this, "widget"));
+	mainMenu->addItem(new ClistBoxItem("CWidget(ClistFrame|CHead|CFoot)", true, NULL, this, "listframewidget"));
+	mainMenu->addItem(new ClistBoxItem("CWidget(CWindow|CHead|CFoot)", true, NULL, this, "ccwindow"));
+	mainMenu->addItem(new ClistBoxItem("CWidget(CTextBox)", true, NULL, this, "textboxwidget"));
+	mainMenu->addItem(new ClistBoxItem("CWidget(ClistBox)", true, NULL, this, "listboxmwidget"));
+	mainMenu->addItem(new ClistBoxItem("CWidget(CFrameBox)", true, NULL, this, "firetv"));
+	mainMenu->addItem(new ClistBoxItem("CWidget(ClistBox|CWindow|CHead|CFoot)", true, NULL, this, "multiwidget"));
+	mainMenu->addItem(new ClistBoxItem("CWidget(ClistBox|CFrameBox|CHead|CFoot)", true, NULL, this, "widget"));
 	
 	// CMenuWidhet
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CMenuWidget"));
-	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_LISTBOX)", true, NULL, this, "menuwidget"));
-	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU)", true, NULL, this, "menuwidget1"));
-	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_SETUP)", true, NULL, this, "menuwidget2"));
+	//mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CMenuWidget"));
+	//mainMenu->addItem(new ClistBoxItem("CMenuWidget(MODE_LISTBOX)", true, NULL, this, "menuwidget"));
+	//mainMenu->addItem(new ClistBoxItem("CMenuWidget(MODE_MENU)", true, NULL, this, "menuwidget1"));
+	//mainMenu->addItem(new ClistBoxItem("CMenuWidget(MODE_SETUP)", true, NULL, this, "menuwidget2"));
 
 	// other widget
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "other Widget"));
-	mainMenu->addItem(new CMenuForwarder("CStringInput", true, NULL, this, "stringinput"));
-	mainMenu->addItem(new CMenuForwarder("CStringInputSMS", true, NULL, this, "stringinputsms"));
-	mainMenu->addItem(new CMenuForwarder("CPINInput", true, NULL, this, "pininput"));
-	mainMenu->addItem(new CMenuForwarder("CPLPINInput", true, NULL, this, "plpininput"));
-	mainMenu->addItem(new CMenuForwarder("CPINChangeWidget", true, NULL, this, "pinchangewidget"));
-	mainMenu->addItem(new CMenuForwarder("CIPInput", true, NULL, this, "ipinput"));
-	mainMenu->addItem(new CMenuForwarder("CMACInput", true, NULL, this, "macinput"));
-	//mainMenu->addItem(new CMenuForwarder("CDateInput", true, NULL, this, "dateinput"));
-	//mainMenu->addItem(new CMenuForwarder("CTimeInput", true, NULL, this, "timeinput"));
-	//mainMenu->addItem(new CMenuForwarder("CIntInput", true, NULL, this, "intinput"));
+	mainMenu->addItem(new ClistBoxItem("CStringInput", true, NULL, this, "stringinput"));
+	mainMenu->addItem(new ClistBoxItem("CStringInputSMS", true, NULL, this, "stringinputsms"));
+	mainMenu->addItem(new ClistBoxItem("CPINInput", true, NULL, this, "pininput"));
+	mainMenu->addItem(new ClistBoxItem("CPLPINInput", true, NULL, this, "plpininput"));
+	mainMenu->addItem(new ClistBoxItem("CPINChangeWidget", true, NULL, this, "pinchangewidget"));
+	mainMenu->addItem(new ClistBoxItem("CIPInput", true, NULL, this, "ipinput"));
+	mainMenu->addItem(new ClistBoxItem("CMACInput", true, NULL, this, "macinput"));
+	//mainMenu->addItem(new ClistBoxItem("CDateInput", true, NULL, this, "dateinput"));
+	//mainMenu->addItem(new ClistBoxItem("CTimeInput", true, NULL, this, "timeinput"));
+	//mainMenu->addItem(new ClistBoxItem("CIntInput", true, NULL, this, "intinput"));
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE));
-	mainMenu->addItem(new CMenuForwarder("ColorChooser", true, NULL, this, "colorchooser"));
-	mainMenu->addItem(new CMenuForwarder("KeyChooserItem", true, NULL, this, "keychooser"));
-	mainMenu->addItem(new CMenuForwarder("VFDController", true, NULL, this, "vfdcontroller"));
-	mainMenu->addItem(new CMenuForwarder("MountChooser", true, NULL, this, "mountchooser"));
+	mainMenu->addItem(new ClistBoxItem("ColorChooser", true, NULL, this, "colorchooser"));
+	mainMenu->addItem(new ClistBoxItem("KeyChooserItem", true, NULL, this, "keychooser"));
+	mainMenu->addItem(new ClistBoxItem("VFDController", true, NULL, this, "vfdcontroller"));
+	mainMenu->addItem(new ClistBoxItem("MountChooser", true, NULL, this, "mountchooser"));
 	
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE));
-	mainMenu->addItem(new CMenuForwarder("ChannelSelectWidget", true, NULL, this, "channelselect"));
-	mainMenu->addItem(new CMenuForwarder("BEWidget", true, NULL, this, "bewidget"));
-	mainMenu->addItem(new CMenuForwarder("AudioVideoSelectWidget", true, NULL, this, "avselect"));
-	mainMenu->addItem(new CMenuForwarder("AudioSelectWidget", true, NULL, this, "aselect"));
-	mainMenu->addItem(new CMenuForwarder("DVBSubSelectWidget", true, NULL, this, "dvbsubselect"));
-	mainMenu->addItem(new CMenuForwarder("AlphaSetup", true, NULL, this, "alphasetup"));
-	mainMenu->addItem(new CMenuForwarder("PSISetup", true, NULL, this, "psisetup"));
-	mainMenu->addItem(new CMenuForwarder("RCLock", true, NULL, this, "rclock"));
-	mainMenu->addItem(new CMenuForwarder("SleepTimerWidget", true, NULL, this, "sleeptimer"));
-	mainMenu->addItem(new CMenuForwarder("MountGUI", true, NULL, this, "mountgui"));
-	//mainMenu->addItem(new CMenuForwarder("UmountGUI", true, NULL, this, "umountgui"));
-	mainMenu->addItem(new CMenuForwarder("MountSmallMenu", true, NULL, this, "mountsmallmenu"));
-	mainMenu->addItem(new CMenuForwarder("PluginsList", true, NULL, this, "pluginslist"));
+	mainMenu->addItem(new ClistBoxItem("ChannelSelectWidget", true, NULL, this, "channelselect"));
+	mainMenu->addItem(new ClistBoxItem("BEWidget", true, NULL, this, "bewidget"));
+	mainMenu->addItem(new ClistBoxItem("AudioVideoSelectWidget", true, NULL, this, "avselect"));
+	mainMenu->addItem(new ClistBoxItem("AudioSelectWidget", true, NULL, this, "aselect"));
+	mainMenu->addItem(new ClistBoxItem("DVBSubSelectWidget", true, NULL, this, "dvbsubselect"));
+	mainMenu->addItem(new ClistBoxItem("AlphaSetup", true, NULL, this, "alphasetup"));
+	mainMenu->addItem(new ClistBoxItem("PSISetup", true, NULL, this, "psisetup"));
+	mainMenu->addItem(new ClistBoxItem("RCLock", true, NULL, this, "rclock"));
+	mainMenu->addItem(new ClistBoxItem("SleepTimerWidget", true, NULL, this, "sleeptimer"));
+	mainMenu->addItem(new ClistBoxItem("MountGUI", true, NULL, this, "mountgui"));
+	//mainMenu->addItem(new ClistBoxItem("UmountGUI", true, NULL, this, "umountgui"));
+	mainMenu->addItem(new ClistBoxItem("MountSmallMenu", true, NULL, this, "mountsmallmenu"));
+	mainMenu->addItem(new ClistBoxItem("PluginsList", true, NULL, this, "pluginslist"));
 	
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE));
-	mainMenu->addItem(new CMenuForwarder("CInfoBox", true, NULL, this, "infobox"));
-	mainMenu->addItem(new CMenuForwarder("CMessageBox", true, NULL, this, "messagebox"));
-	mainMenu->addItem(new CMenuForwarder("CMessageBoxInfoMsg", true, NULL, this, "messageboxinfomsg"));
-	mainMenu->addItem(new CMenuForwarder("CMessageBoxErrorMsg", true, NULL, this, "messageboxerrormsg"));
-	mainMenu->addItem(new CMenuForwarder("CHintBox", true, NULL, this, "hintbox"));
-	mainMenu->addItem(new CMenuForwarder("CHintBoxInfo", true, NULL, this, "hintboxinfo"));
-	mainMenu->addItem(new CMenuForwarder("CHelpBox", true, NULL, this, "helpbox"));
-	mainMenu->addItem(new CMenuForwarder("CProgressWindow", true, NULL, this, "progresswindow"));
+	mainMenu->addItem(new ClistBoxItem("CInfoBox", true, NULL, this, "infobox"));
+	mainMenu->addItem(new ClistBoxItem("CMessageBox", true, NULL, this, "messagebox"));
+	mainMenu->addItem(new ClistBoxItem("CMessageBoxInfoMsg", true, NULL, this, "messageboxinfomsg"));
+	mainMenu->addItem(new ClistBoxItem("CMessageBoxErrorMsg", true, NULL, this, "messageboxerrormsg"));
+	mainMenu->addItem(new ClistBoxItem("CHintBox", true, NULL, this, "hintbox"));
+	mainMenu->addItem(new ClistBoxItem("CHintBoxInfo", true, NULL, this, "hintboxinfo"));
+	mainMenu->addItem(new ClistBoxItem("CHelpBox", true, NULL, this, "helpbox"));
+	mainMenu->addItem(new ClistBoxItem("CProgressWindow", true, NULL, this, "progresswindow"));
 
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "Players"));
-	mainMenu->addItem(new CMenuForwarder("PlayMovieURL", true, NULL, this, "playmovieurl"));
-	mainMenu->addItem(new CMenuForwarder("PlayAudioURL", true, NULL, this, "playaudiourl"));
-	mainMenu->addItem(new CMenuForwarder("ShowPictureURL", true, NULL, this, "showpictureurl"));
+	mainMenu->addItem(new ClistBoxItem("PlayMovieURL", true, NULL, this, "playmovieurl"));
+	mainMenu->addItem(new ClistBoxItem("PlayAudioURL", true, NULL, this, "playaudiourl"));
+	mainMenu->addItem(new ClistBoxItem("ShowPictureURL", true, NULL, this, "showpictureurl"));
 
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE));
-	mainMenu->addItem(new CMenuForwarder("PlayMovieFolder", true, NULL, this, "playmoviefolder"));
-	mainMenu->addItem(new CMenuForwarder("PlayAudioFolder", true, NULL, this, "playaudiofolder"));
-	mainMenu->addItem(new CMenuForwarder("ShowPictureFolder", true, NULL, this, "showpicturefolder"));
+	mainMenu->addItem(new ClistBoxItem("PlayMovieFolder", true, NULL, this, "playmoviefolder"));
+	mainMenu->addItem(new ClistBoxItem("PlayAudioFolder", true, NULL, this, "playaudiofolder"));
+	mainMenu->addItem(new ClistBoxItem("ShowPictureFolder", true, NULL, this, "showpicturefolder"));
 
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE));
-	mainMenu->addItem(new CMenuForwarder("PlayMovieDir(without Browser)", true, NULL, this, "playmoviedir"));
-	mainMenu->addItem(new CMenuForwarder("PlayAudioDir(without Browser)", true, NULL, this, "playaudiodir"));
-	mainMenu->addItem(new CMenuForwarder("ShowPictureDir(without Browser)", true, NULL, this, "showpicturedir"));
+	mainMenu->addItem(new ClistBoxItem("PlayMovieDir(without Browser)", true, NULL, this, "playmoviedir"));
+	mainMenu->addItem(new ClistBoxItem("PlayAudioDir(without Browser)", true, NULL, this, "playaudiodir"));
+	mainMenu->addItem(new ClistBoxItem("ShowPictureDir(without Browser)", true, NULL, this, "showpicturedir"));
 
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "Plugins") );
-	mainMenu->addItem(new CMenuForwarder("StartPlugin(e.g: youtube)", true, NULL, this, "startplugin"));
+	mainMenu->addItem(new ClistBoxItem("StartPlugin(e.g: youtube)", true, NULL, this, "startplugin"));
 
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "EPG") );
-	mainMenu->addItem(new CMenuForwarder("ShowActuellEPG", true, NULL, this, "showepg"));
+	mainMenu->addItem(new ClistBoxItem("ShowActuellEPG", true, NULL, this, "showepg"));
 
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "Channellist") );
-	mainMenu->addItem(new CMenuForwarder("CChannelList:", true, NULL, this, "channellist"));
-	mainMenu->addItem(new CMenuForwarder("CBouquetList:", true, NULL, this, "bouquetlist"));
+	mainMenu->addItem(new ClistBoxItem("CChannelList:", true, NULL, this, "channellist"));
+	mainMenu->addItem(new ClistBoxItem("CBouquetList:", true, NULL, this, "bouquetlist"));
 	
 	//
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "SKIN") );		
-	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET", true, NULL, this, "skin"));
-	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET2", true, NULL, this, "skin2"));
-	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET3", true, NULL, this, "skin3"));
+	mainMenu->addItem(new ClistBoxItem("SKIN-WIDGET", true, NULL, this, "skin"));
+	mainMenu->addItem(new ClistBoxItem("SKIN-WIDGET2", true, NULL, this, "skin2"));
+	mainMenu->addItem(new ClistBoxItem("SKIN-WIDGET3", true, NULL, this, "skin3"));
 	
 	mWidget->exec(NULL, "");
 }

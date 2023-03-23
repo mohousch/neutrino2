@@ -116,15 +116,15 @@ void CMoviePlayerSettings::showMenu()
 	moviePlayerSettings->clearItems();
 	
 	// intros
-	moviePlayerSettings->addItem(new CMenuForwarder(_("back")));
+	moviePlayerSettings->addItem(new ClistBoxItem(_("back")));
 	moviePlayerSettings->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	moviePlayerSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	moviePlayerSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	moviePlayerSettings->addItem( new CMenuSeparator(LINE) );
 
 	// multiformat Dir
-	moviePlayerSettings->addItem(new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_moviedir, this, "moviedir") ); 
+	moviePlayerSettings->addItem(new ClistBoxItem(_("Start dir."), true, g_settings.network_nfs_moviedir, this, "moviedir") ); 
 	
 	//
 	widget->exec(NULL, "");

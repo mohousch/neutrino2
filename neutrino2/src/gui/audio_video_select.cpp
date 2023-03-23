@@ -281,7 +281,7 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 			if (!name_ok)
 				apidtitle.append(apidnumber);
 
-			AVPIDSelector->addItem(new CMenuForwarder(apidtitle.c_str(), enabled, NULL, &AVPIDChanger, apidnumber, CRCInput::convertDigitToKey(count + 1)), (count == currentapid) );
+			AVPIDSelector->addItem(new ClistBoxItem(apidtitle.c_str(), enabled, NULL, &AVPIDChanger, apidnumber, CRCInput::convertDigitToKey(count + 1)), (count == currentapid) );
 		}
 		
 		AVPIDSelector->addItem(new CMenuSeparator(LINE));

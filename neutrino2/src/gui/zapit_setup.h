@@ -44,9 +44,9 @@ class CZapitSetupNotifier : public CChangeObserver
 {
 	private:
 		CMenuOptionChooser * zapit1;
-		CMenuForwarder * zapit2, * zapit3;
+		ClistBoxItem * zapit2, * zapit3;
 	public:
-		CZapitSetupNotifier(CMenuOptionChooser* m1, CMenuForwarder* m2, CMenuForwarder* m3);
+		CZapitSetupNotifier(CMenuOptionChooser* m1, ClistBoxItem* m2, ClistBoxItem* m3);
 		bool changeNotify(const std::string&, void * data);
 };
 

@@ -53,7 +53,7 @@
 class CKeyChooserItem;
 class CKeyChooserItemNoKey;
 
-class CKeyChooser : public CMenuWidget
+class CKeyChooser : public CMenuWidget/*CMenuTarget*/
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -73,8 +73,6 @@ class CKeyChooser : public CMenuWidget
 		//
 		CKeyChooser(int* const Key, const char* const Title, const std::string& Icon = "");
 		~CKeyChooser();
-
-		//void paint();
 		
 		//
 		//int exec(CMenuTarget* parent, const std::string & actionKey);

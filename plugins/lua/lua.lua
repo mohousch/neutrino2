@@ -238,27 +238,27 @@ function testCWidget()
 	listBox:setWidgetType(neutrino2.TYPE_CLASSIC)
 
 	-- CMessageBox
-	item1 = neutrino2.CMenuForwarder("CMessageBox", true, "", null, "msgBox")
+	item1 = neutrino2.ClistBoxItem("CMessageBox", true, "", null, "msgBox")
 	item1:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item1:setHint("testing CMessageBox")
 	item1:setInfo1("testing CMessageBox")
 
 	-- CHelpBox
-	item2 = neutrino2.CMenuForwarder("CHelpBox")
+	item2 = neutrino2.ClistBoxItem("CHelpBox")
 	item2:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item2:setHint("testing CHelpBox")
 	item2:setInfo1("testing CHelpBox")
 	item2:setActionKey(null, "helpBox")
 
 	-- CHintBox
-	item3 = neutrino2.CMenuForwarder("CHintBox")
+	item3 = neutrino2.ClistBoxItem("CHintBox")
 	item3:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item3:setHint("testing CHintBox")
 	item3:setInfo1("testing CHintBox")
 	item3:setActionKey(null, "hintBox")
 
 	-- CInfoBox
-	item4 = neutrino2.CMenuForwarder("CInfoBox")
+	item4 = neutrino2.ClistBoxItem("CInfoBox")
 	item4:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item4:setHint("testing CInfoBox")
 	item4:setInfo1("testing CInfoBox")
@@ -266,28 +266,28 @@ function testCWidget()
 
 	-- CStringInput
 	local data = ""
-	item5 = neutrino2.CMenuForwarder("CStringInput", false)
+	item5 = neutrino2.ClistBoxItem("CStringInput", false)
 	item5:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item5:setHint("testing CStringInput")
 	item5:setInfo1("testing CStringInput")
 	item5:setActionKey(null, "cStringInput")
 
 	-- CAudioPlayerGui
-	item6 = neutrino2.CMenuForwarder("CAudioPlayerGui")
+	item6 = neutrino2.ClistBoxItem("CAudioPlayerGui")
 	item6:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item6:setHint("testing CAudioPlayerGui")
 	item6:setInfo1("testing CAudioPlayerGui")
 	item6:setActionKey(null, "audioPlayer")
 
 	-- CPictureViewerGui
-	item7 = neutrino2.CMenuForwarder("CPictureViewerGui")
+	item7 = neutrino2.ClistBoxItem("CPictureViewerGui")
 	item7:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item7:setHint("testing CPictureViewerGui")
 	item7:setInfo1("testing CPictureViewerGui")
 	item7:setActionKey(null, "pictureViewer")
 
 	-- CMoviePlayerGui
-	item8 = neutrino2.CMenuForwarder("CMoviePlayerGui")
+	item8 = neutrino2.ClistBoxItem("CMoviePlayerGui")
 	item8:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item8:setHint("testing CMoviePlayerGui")
 	item8:setInfo1("testing CMoviePlayerGui")
@@ -338,49 +338,49 @@ function testCMenuWidget()
 	listBoxWidget:setMenuPosition(neutrino2.MENU_POSITION_RIGHT)
 
 	-- CMessageBox
-	item1 = neutrino2.CMenuForwarder("CMessageBox", true, "", self, "msgBox")
+	item1 = neutrino2.ClistBoxItem("CMessageBox", true, "", self, "msgBox")
 	item1:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item1:setHint("testing CMessageBox")
 	item1:setInfo1("testing CMessageBox")
 
 	-- CHelpBox
-	item2 = neutrino2.CMenuForwarder("CHelpBox")
+	item2 = neutrino2.ClistBoxItem("CHelpBox")
 	item2:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item2:setHint("testing CHelpBox")
 	item2:setInfo1("testing CHelpBox")
 
 	-- CHintBox
-	item3 = neutrino2.CMenuForwarder("CHintBox")
+	item3 = neutrino2.ClistBoxItem("CHintBox")
 	item3:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item3:setHint("testing CHintBox")
 	item3:setInfo1("testing CHintBox")
 
 	-- CInfoBox
-	item4 = neutrino2.CMenuForwarder("CInfoBox")
+	item4 = neutrino2.ClistBoxItem("CInfoBox")
 	item4:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item4:setHint("testing CInfoBox")
 	item4:setInfo1("testing CInfoBox")
 
 	-- CStringInput
-	item5 = neutrino2.CMenuForwarder("CStringInput", false)
+	item5 = neutrino2.ClistBoxItem("CStringInput", false)
 	item5:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item5:setHint("testing CStringInput")
 	item5:setInfo1("testing CStringInput")
 
 	-- CAudioPlayerGui
-	item6 = neutrino2.CMenuForwarder("CAudioPlayerGui")
+	item6 = neutrino2.ClistBoxItem("CAudioPlayerGui")
 	item6:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item6:setHint("testing CAudioPlayerGui")
 	item6:setInfo1("testing CAudioPlayerGui")
 
 	-- CPictureViewerGui
-	item7 = neutrino2.CMenuForwarder("CPictureViewerGui")
+	item7 = neutrino2.ClistBoxItem("CPictureViewerGui")
 	item7:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item7:setHint("testing CPictureViewerGui")
 	item7:setInfo1("testing CPictureViewerGui")
 
 	-- CMoviePlayerGui
-	item8 = neutrino2.CMenuForwarder("CMoviePlayerGui")
+	item8 = neutrino2.ClistBoxItem("CMoviePlayerGui")
 	item8:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item8:setHint("testing CMoviePlayerGui")
 	item8:setInfo1("testing CMoviePlayerGui")
@@ -430,49 +430,49 @@ function testClistBox()
 	listBox:enableShrinkMenu()
 
 	-- CMessageBox
-	item1 = neutrino2.CMenuForwarder("CMessageBox", true, "", self, "msgBox")
+	item1 = neutrino2.ClistBoxItem("CMessageBox", true, "", self, "msgBox")
 	item1:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item1:setHint("testing CMessageBox")
 	item1:setInfo1("testing CMessageBox")
 
 	-- CHelpBox
-	item2 = neutrino2.CMenuForwarder("CHelpBox")
+	item2 = neutrino2.ClistBoxItem("CHelpBox")
 	item2:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item2:setHint("testing CHelpBox")
 	item2:setInfo1("testing CHelpBox")
 
 	-- CHintBox
-	item3 = neutrino2.CMenuForwarder("CHintBox")
+	item3 = neutrino2.ClistBoxItem("CHintBox")
 	item3:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item3:setHint("testing CHintBox")
 	item3:setInfo1("testing CHintBox")
 
 	-- CInfoBox
-	item4 = neutrino2.CMenuForwarder("CInfoBox")
+	item4 = neutrino2.ClistBoxItem("CInfoBox")
 	item4:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item4:setHint("testing CInfoBox")
 	item4:setInfo1("testing CInfoBox")
 
 	-- CStringInput
-	item5 = neutrino2.CMenuForwarder("CStringInput", false)
+	item5 = neutrino2.ClistBoxItem("CStringInput", false)
 	item5:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item5:setHint("testing CStringInput")
 	item5:setInfo1("testing CStringInput")
 
 	-- CAudioPlayerGui
-	item6 = neutrino2.CMenuForwarder("CAudioPlayerGui")
+	item6 = neutrino2.ClistBoxItem("CAudioPlayerGui")
 	item6:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item6:setHint("testing CAudioPlayerGui")
 	item6:setInfo1("testing CAudioPlayerGui")
 
 	-- CPictureViewerGui
-	item7 = neutrino2.CMenuForwarder("CPictureViewerGui")
+	item7 = neutrino2.ClistBoxItem("CPictureViewerGui")
 	item7:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item7:setHint("testing CPictureViewerGui")
 	item7:setInfo1("testing CPictureViewerGui")
 
 	-- CMoviePlayerGui
-	item8 = neutrino2.CMenuForwarder("CMoviePlayerGui")
+	item8 = neutrino2.ClistBoxItem("CMoviePlayerGui")
 	item8:setHintIcon(neutrino2.DATADIR .. "/icons/features.png")
 	item8:setHint("testing CMoviePlayerGui")
 	item8:setInfo1("testing CMoviePlayerGui")
@@ -670,22 +670,22 @@ function main()
 	m:enablePaintItemInfo(70)
 	m:setItemInfoMode(neutrino2.ITEMINFO_HINT_MODE)
 
-	item1 = neutrino2.CMenuForwarder("testCWidget", true, "", null, "listWidget")
+	item1 = neutrino2.ClistBoxItem("testCWidget", true, "", null, "listWidget")
 	item1:setHint("lua: testing CWidget")
 
-	item2 = neutrino2.CMenuForwarder("testCMenuWidget")
+	item2 = neutrino2.ClistBoxItem("testCMenuWidget")
 	item2:setActionKey(null, "listBoxWidget")
 	item2:setHint("lua: testing CMenuWidget")
 
-	item5 = neutrino2.CMenuForwarder("testCFrameBox")
+	item5 = neutrino2.ClistBoxItem("testCFrameBox")
 	item5:setHint("lua: testing CFrameBox")
 	item5:setActionKey(null, "frameBox")
 
-	item6 = neutrino2.CMenuForwarder("testActionKey/jumpTarget")
+	item6 = neutrino2.ClistBoxItem("testActionKey/jumpTarget")
 	item6:setActionKey(neutrino2.CAudioPlayerSettings(), "jumpTarget")
 	item6:setHint("lua: testing testActionKey/jumpTarget")
 
-	item8 = neutrino2.CMenuForwarder("testCFrameBox(2)")
+	item8 = neutrino2.ClistBoxItem("testCFrameBox(2)")
 	item8:setHint("lua: testing CFrameBoxRandom")
 	item8:setActionKey(null, "frameBoxRandom")
 

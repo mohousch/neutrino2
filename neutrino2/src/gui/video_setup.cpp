@@ -389,11 +389,11 @@ void CVideoSettings::showMenu()
 	videoSettings->clearItems();
 	
 	// intros
-	videoSettings->addItem(new CMenuForwarder(_("back")));
+	videoSettings->addItem(new ClistBoxItem(_("back")));
 	videoSettings->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	videoSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	videoSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	videoSettings->addItem( new CMenuSeparator(LINE) );
 
 	// video aspect ratio 4:3/16:9
@@ -421,7 +421,7 @@ void CVideoSettings::showMenu()
 	videoSettings->addItem( new CMenuSeparator(LINE) );
 	
 	CPSISetup * chPSISetup = new CPSISetup(_("PSI settings"), &g_settings.contrast, &g_settings.saturation, &g_settings.brightness, &g_settings.tint);
-	videoSettings->addItem( new CMenuForwarder(_("PSI settings"), true, NULL, chPSISetup));
+	videoSettings->addItem( new ClistBoxItem(_("PSI settings"), true, NULL, chPSISetup));
 #endif
 
 	/*

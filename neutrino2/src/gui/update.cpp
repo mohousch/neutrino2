@@ -205,7 +205,7 @@ bool CFlashUpdate::selectHttpImage(void)
 	SelectionWidget->clearItems();
 	
 	// intros
-	SelectionWidget->addItem(new CMenuForwarder(_("back")));
+	SelectionWidget->addItem(new ClistBoxItem(_("back")));
 
 	std::ifstream urlFile(g_settings.softupdate_url_file);
 
@@ -267,7 +267,7 @@ bool CFlashUpdate::selectHttpImage(void)
 				if(!allow_flash && (versionInfo.snapshot < '3'))
 					enabled = false;
 
-				SelectionWidget->addItem(new CMenuForwarder(names[i].c_str(), enabled, descriptions[i].c_str(), new CUpdateMenuTarget(i, &selected), NULL, RC_nokey, NEUTRINO_ICON_UPDATE_SMALL ));
+				SelectionWidget->addItem(new ClistBoxItem(names[i].c_str(), enabled, descriptions[i].c_str(), new CUpdateMenuTarget(i, &selected), NULL, RC_nokey, NEUTRINO_ICON_UPDATE_SMALL ));
 				i++;
 			}
 		}
@@ -714,7 +714,7 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 	mtdselector->clearItems();
 	
 	// intros
-	mtdselector->addItem(new CMenuForwarder(_("Cancel")));
+	mtdselector->addItem(new ClistBoxItem(_("Cancel")));
 	mtdselector->addItem(new CMenuSeparator(LINE));
 	
 	CMTDInfo* mtdInfo = CMTDInfo::getInstance();
@@ -753,11 +753,11 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 		
 		if(actionkey == "writemtd")
 		{			  
-			mtdselector->addItem(new CMenuForwarder(mtdInfo->getMTDName(x1).c_str(), true, NULL, this, sActionKey));
+			mtdselector->addItem(new ClistBoxItem(mtdInfo->getMTDName(x1).c_str(), true, NULL, this, sActionKey));
 		}
 		else if(actionkey == "readmtd")
 		{
-			mtdselector->addItem(new CMenuForwarder(mtdInfo->getMTDName(x1).c_str(), true, NULL, this, sActionKey));
+			mtdselector->addItem(new ClistBoxItem(mtdInfo->getMTDName(x1).c_str(), true, NULL, this, sActionKey));
 		}
 	}
 	
@@ -803,7 +803,7 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 	fileselector->clearItems();
 	
 	// intros
-	fileselector->addItem(new CMenuForwarder(_("Cancel")));
+	fileselector->addItem(new ClistBoxItem(_("Cancel")));
 	fileselector->addItem(new CMenuSeparator(LINE));
 
 	struct dirent **namelist;
@@ -823,7 +823,7 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 			
 			if(pos != -1)
 			{
-				fileselector->addItem(new CMenuForwarder(filen.c_str(), true, NULL, this, (actionkey + filen).c_str()));
+				fileselector->addItem(new ClistBoxItem(filen.c_str(), true, NULL, this, (actionkey + filen).c_str()));
 //#warning TODO: make sure file is UTF-8 encoded
 			}
 			free(namelist[count]);
@@ -987,11 +987,11 @@ void CUpdateSettings::showMenu()
 	updateSettings->clearItems();
 		
 	// intros
-	updateSettings->addItem(new CMenuForwarder(_("back")));
+	updateSettings->addItem(new ClistBoxItem(_("back")));
 	updateSettings->addItem(new CMenuSeparator(LINE));
 	
 	// save settings
-	updateSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	updateSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	updateSettings->addItem( new CMenuSeparator(LINE) );
 
 	// 
@@ -1030,28 +1030,28 @@ void CUpdateSettings::showMenu()
 	mtdexpert->clearItems();
 		
 	// intros
-	mtdexpert->addItem(new CMenuForwarder(_("back")));
+	mtdexpert->addItem(new ClistBoxItem(_("back")));
 	mtdexpert->addItem(new CMenuSeparator(LINE));
 		
 	CFlashExpert * fe = new CFlashExpert();
 
 	// read mtd 
-	mtdexpert->addItem(new CMenuForwarder(_("Read one partition"), true, NULL, fe, "readflashmtd"));
+	mtdexpert->addItem(new ClistBoxItem(_("Read one partition"), true, NULL, fe, "readflashmtd"));
 
 	// write mtd
-	mtdexpert->addItem(new CMenuForwarder(_("Write one partition"), true, NULL, fe, "writeflashmtd"));
+	mtdexpert->addItem(new ClistBoxItem(_("Write one partition"), true, NULL, fe, "writeflashmtd"));
 
 	// experten function
 	//FIXME: allow update only when the rootfs is jffs2/squashfs
-	updateSettings->addItem(new CMenuForwarder(_("Expert-functions"), true, NULL, mtdexpertWidget));
+	updateSettings->addItem(new ClistBoxItem(_("Expert-functions"), true, NULL, mtdexpertWidget));
 	updateSettings->addItem(new CMenuSeparator(LINE));
 		
 	// update dir
-	updateSettings->addItem( new CMenuForwarder(_("Directory for updates"), true, g_settings.update_dir , this, "update_dir") );
+	updateSettings->addItem( new ClistBoxItem(_("Directory for updates"), true, g_settings.update_dir , this, "update_dir") );
 	
 	// url
 	CStringInputSMS * updateSettings_url_file = new CStringInputSMS(_("Software update URL"), g_settings.softupdate_url_file);
-	updateSettings->addItem(new CMenuForwarder(_("Software update URL"), true, g_settings.softupdate_url_file, updateSettings_url_file));
+	updateSettings->addItem(new ClistBoxItem(_("Software update URL"), true, g_settings.softupdate_url_file, updateSettings_url_file));
 
 	// show current version
 	updateSettings->addItem(new CMenuSeparator(LINE | STRING, _("Current version")));
@@ -1066,27 +1066,27 @@ void CUpdateSettings::showMenu()
 	//static CFlashVersionInfo versionInfo(versionString);
 
 	// release cycle
-	updateSettings->addItem(new CMenuForwarder(_("Release cycle"), false, /*versionInfo.getReleaseCycle()*/ RELEASE_CYCLE));
+	updateSettings->addItem(new ClistBoxItem(_("Release cycle"), false, /*versionInfo.getReleaseCycle()*/ RELEASE_CYCLE));
 		
 	// date
-	updateSettings->addItem(new CMenuForwarder(_("Date"), false, /*versionInfo.getDate()*/ __DATE__ ));
+	updateSettings->addItem(new ClistBoxItem(_("Date"), false, /*versionInfo.getDate()*/ __DATE__ ));
 		
 	// time
-	updateSettings->addItem(new CMenuForwarder(_("Time"), false, /*versionInfo.getTime()*/ __TIME__));
+	updateSettings->addItem(new ClistBoxItem(_("Time"), false, /*versionInfo.getTime()*/ __TIME__));
 		
 	// type
 	// versionInfo.getType() returns const char * which is never deallocated
-	updateSettings->addItem(new CMenuForwarder(_("ImageType"), false, /*versionInfo.getType()*/ "Snapshot" ));
+	updateSettings->addItem(new ClistBoxItem(_("ImageType"), false, /*versionInfo.getType()*/ "Snapshot" ));
 
 	// check update
 	//FIXME: allow update only when the rootfs is jffs2/squashfs
 	updateSettings->addItem(new CMenuSeparator(LINE));
 	
 	// offline
-	updateSettings->addItem(new CMenuForwarder(_("Manuell(ftp) Software Manager"), true, NULL, new CFlashUpdate(CFlashUpdate::UPDATEMODE_MANUAL)));
+	updateSettings->addItem(new ClistBoxItem(_("Manuell(ftp) Software Manager"), true, NULL, new CFlashUpdate(CFlashUpdate::UPDATEMODE_MANUAL)));
 
 	// online
-	updateSettings->addItem(new CMenuForwarder(_("Online Software Manager"), true, NULL, new CFlashUpdate(CFlashUpdate::UPDATEMODE_INTERNET)));
+	updateSettings->addItem(new ClistBoxItem(_("Online Software Manager"), true, NULL, new CFlashUpdate(CFlashUpdate::UPDATEMODE_INTERNET)));
 	
 	//
 	widget->exec(NULL, "");

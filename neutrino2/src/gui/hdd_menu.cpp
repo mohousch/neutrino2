@@ -210,15 +210,15 @@ int CHDDMenuHandler::hddMenu()
 	
 	hddmenu->clearItems();
 	
-	hddmenu->addItem(new CMenuForwarder(_("back")));
+	hddmenu->addItem(new ClistBoxItem(_("back")));
 	hddmenu->addItem(new CMenuSeparator(LINE));
 	
 	// save settings
-	hddmenu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	hddmenu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	hddmenu->addItem( new CMenuSeparator(LINE) );
 	
 	// activate settings
-	hddmenu->addItem(new CMenuForwarder(_("Activate settings"), true, NULL, this, "activateNow"));
+	hddmenu->addItem(new ClistBoxItem(_("Activate settings"), true, NULL, this, "activateNow"));
 
 	// sleep time
 	hddmenu->addItem( new CMenuOptionChooser(_("Sleep time"), &g_settings.hdd_sleep, HDD_SLEEP_OPTIONS, HDD_SLEEP_OPTION_COUNT, true));
@@ -362,11 +362,11 @@ int CHDDMenuHandler::hddMenu()
 		tempMenu[i]->clear();
 
 		
-		tempMenu[i]->addItem(new CMenuForwarder(_("back")));
+		tempMenu[i]->addItem(new ClistBoxItem(_("back")));
 		tempMenu[i]->addItem(new CMenuSeparator(LINE));
 		
 		//init hdd	
-		tempMenu[i]->addItem(new CMenuForwarder(_("HDD Init"), enabled, "", new CHDDInit, namelist[i]->d_name));
+		tempMenu[i]->addItem(new ClistBoxItem(_("HDD Init"), enabled, "", new CHDDInit, namelist[i]->d_name));
 		tempMenu[i]->addItem(new CMenuSeparator(LINE));
 		
 		// check for parts
@@ -440,33 +440,33 @@ int CHDDMenuHandler::hddMenu()
 			PartMenu[j]->clear();
 
 			//
-			PartMenu[j]->addItem(new CMenuForwarder(_("back")));
+			PartMenu[j]->addItem(new ClistBoxItem(_("back")));
 			PartMenu[j]->addItem(new CMenuSeparator(LINE));
 			
 			// format part
-			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Format"), true, NULL, new CHDDFmtExec, PART));
+			PartMenu[j]->addItem(new ClistBoxItem(_("HDD Format"), true, NULL, new CHDDFmtExec, PART));
 			
 			// fs check
-			PartMenu[j]->addItem(new CMenuForwarder(_("Check filesystem"), true, NULL, new CHDDChkExec, PART));
+			PartMenu[j]->addItem(new ClistBoxItem(_("Check filesystem"), true, NULL, new CHDDChkExec, PART));
 			
 			// mount part
-			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Mount"), true, NULL, new CHDDMountMSGExec, PART));
+			PartMenu[j]->addItem(new ClistBoxItem(_("HDD Mount"), true, NULL, new CHDDMountMSGExec, PART));
 
 			// umount part
-			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Umount"), true, NULL, new CHDDuMountMSGExec, PART));
+			PartMenu[j]->addItem(new ClistBoxItem(_("HDD Umount"), true, NULL, new CHDDuMountMSGExec, PART));
 			
 			// hdd explorer
 			PartMenu[j]->addItem(new CMenuSeparator(LINE));
-			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Filexplorer"), mounted, NULL, new CHDDBrowser(), DEVICE));
+			PartMenu[j]->addItem(new ClistBoxItem(_("HDD Filexplorer"), mounted, NULL, new CHDDBrowser(), DEVICE));
 			
 			// part
-			tempMenu[i]->addItem(new CMenuForwarder(PART, true, mounted? _("HDD mounted") : _("HDD umounted"), PartMenuWidget[j]));
+			tempMenu[i]->addItem(new ClistBoxItem(PART, true, mounted? _("HDD mounted") : _("HDD umounted"), PartMenuWidget[j]));
 			
 			close(fd);
 		}
 		
 		//hddmenu->addItem(new CMenuSeparator(LINE));
-		hddmenu->addItem(new CMenuForwarder(str, enabled, NULL, tempMenuWidget[i]));
+		hddmenu->addItem(new ClistBoxItem(str, enabled, NULL, tempMenuWidget[i]));
 
 		// result
 		hdd_found = 1;

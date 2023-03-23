@@ -161,11 +161,11 @@ void CLCDSettings::showMenu()
 	lcdSettings->clearItems();
 	
 	// intros
-	lcdSettings->addItem(new CMenuForwarder(_("back")));
+	lcdSettings->addItem(new ClistBoxItem(_("back")));
 	lcdSettings->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	lcdSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	lcdSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	lcdSettings->addItem(new CMenuSeparator(LINE));
 	
 	CLcdNotifier * lcdnotifier = new CLcdNotifier();
@@ -195,7 +195,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(oj_dumppng);
 	
 	// lcd controller
-	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));
+	lcdSettings->addItem(new ClistBoxItem(_("Contrast / Brightness"), true, NULL, lcdsliders));
 #else	
 #if defined (PLATFORM_GIGABLUE)	
 	// led color
@@ -207,15 +207,15 @@ void CLCDSettings::showMenu()
 	
 	// dimm-time
 	CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");
-	lcdSettings->addItem(new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
+	lcdSettings->addItem(new ClistBoxItem(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
 
 	// dimm brightness
 	//CStringInput * dim_brightness = new CStringInput(_("brightness after dim timeout"), g_settings.lcd_setting_dim_brightness, 3, NULL, NULL, "0123456789 ");
-	//lcdSettings->addItem(new CMenuForwarder(_("Brightness after dim timeout"), true, g_settings.lcd_setting_dim_brightness, dim_brightness));
+	//lcdSettings->addItem(new ClistBoxItem(_("Brightness after dim timeout"), true, g_settings.lcd_setting_dim_brightness, dim_brightness));
 
 	// vfd controller
 	lcdSettings->addItem(new CMenuSeparator(LINE));
-	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));	
+	lcdSettings->addItem(new ClistBoxItem(_("Contrast / Brightness"), true, NULL, lcdsliders));	
 #endif	
 #endif	
 	

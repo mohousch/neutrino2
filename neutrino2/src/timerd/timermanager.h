@@ -235,6 +235,7 @@ class CTimerManager
 		CTimerEvent *nextEvent();
 	public:
 		static CTimerManager* getInstance();
+		~CTimerManager(){};
 		
 		//
 		int addEvent(CTimerEvent*, bool save = true);

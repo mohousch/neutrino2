@@ -128,11 +128,11 @@ void CParentalLockSettings::showMenu()
 	listBox->clearItems();
 	
 	// intro
-	listBox->addItem(new CMenuForwarder(_("back")));
+	listBox->addItem(new ClistBoxItem(_("back")));
 	listBox->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	listBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	listBox->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	listBox->addItem( new CMenuSeparator(LINE) );
 
 	// prompt
@@ -143,7 +143,7 @@ void CParentalLockSettings::showMenu()
 
 	// Pin
 	CPINChangeWidget * pinChangeWidget = new CPINChangeWidget(_("Change PIN code"), g_settings.parentallock_pincode, 4, _("Enter your new youth protection pin code here!"));
-	listBox->addItem( new CMenuForwarder(_("Change PIN code"), true, g_settings.parentallock_pincode, pinChangeWidget, NULL));
+	listBox->addItem( new ClistBoxItem(_("Change PIN code"), true, g_settings.parentallock_pincode, pinChangeWidget, NULL));
 	
 	//
 	widget->exec(NULL, "");

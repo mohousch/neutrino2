@@ -143,11 +143,11 @@ void CPictureViewerSettings::showMenu()
 	PicViewerSettings->clearItems();
 	
 	// intros
-	PicViewerSettings->addItem(new CMenuForwarder(_("back")));
+	PicViewerSettings->addItem(new ClistBoxItem(_("back")));
 	PicViewerSettings->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	PicViewerSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	PicViewerSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	PicViewerSettings->addItem( new CMenuSeparator(LINE) );
 
 	// Pic Viewer Scaling
@@ -157,7 +157,7 @@ void CPictureViewerSettings::showMenu()
 	PicViewerSettings->addItem(new CMenuOptionNumberChooser(_("Slideshow display time"), &g_settings.picviewer_slide_time, true, 0, 999));
 
 	// Pic Viewer Default Dir
-	PicViewerSettings->addItem(new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_picturedir, this, "picturedir"));
+	PicViewerSettings->addItem(new ClistBoxItem(_("Start dir."), true, g_settings.network_nfs_picturedir, this, "picturedir"));
 	
 	//
 	widget->exec(NULL, "");

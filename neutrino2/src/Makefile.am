@@ -78,7 +78,6 @@ neutrino2_LDADD = \
 	gui/widget/listframe.o \
 	gui/widget/framebox.o \
 	gui/widget/widget.o \
-	gui/widget/menue.o \
 	gui/widget/hintbox.o \
 	gui/widget/messagebox.o \
 	gui/widget/progresswindow.o \
@@ -87,6 +86,7 @@ neutrino2_LDADD = \
 	gui/widget/colorchooser.o \
 	gui/widget/mountchooser.o \
 	gui/widget/keychooser.o \
+	gui/widget/menue.o \
 	$(top_builddir)/lib/libconfigfile/libtuxbox-configfile.a \
 	$(top_builddir)/lib/connection/libtuxbox-connection.a \
 	$(top_builddir)/lib/libeventserver/libtuxbox-eventserver.a \

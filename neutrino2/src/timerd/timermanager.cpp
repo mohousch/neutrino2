@@ -99,7 +99,7 @@ CTimerManager * CTimerManager::getInstance()
 	static CTimerManager* instance = NULL;
 	
 	if(!instance)
-		instance = new CTimerManager;
+		instance = new CTimerManager();
 
 	return instance;
 }

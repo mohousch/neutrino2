@@ -364,7 +364,7 @@ void CNFilm::paintLeftWidgetItems(ClistBox *listBox, bool genre)
 	{
 		for (unsigned int count = 0; count < genres.size(); count++) 
 		{
-			listBox->addItem(new CMenuForwarder(genres[count].title.c_str(), true, NULL, new CNFilm(genres[count].id, true)));
+			listBox->addItem(new ClistBoxItem(genres[count].title.c_str(), true, NULL, new CNFilm(genres[count].id, true)));
 		}
 
 		delete tmdb;

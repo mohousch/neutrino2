@@ -124,7 +124,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		     (msg == NeutrinoMessages::EVT_ZAP_FAILED  ) || 
 		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD  ) ) 
 		{
-			dprintf(DEBUG_INFO, "CRemoteControl::handleMsg: timeout EVT_ZAP current_channel_id: %llx data: %llx\n", current_channel_id, *(t_channel_id *)data);
+			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: timeout EVT_ZAP current_channel_id: %llx data: %llx\n", current_channel_id, *(t_channel_id *)data);
 			
 			if ((*(t_channel_id *)data) != current_channel_id) 
 			{
@@ -152,7 +152,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		     (msg == NeutrinoMessages::EVT_ZAP_FAILED) || 
 		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD) )
 		{
-			dprintf(DEBUG_INFO, "CRemoteControl::handleMsg: EVT_ZAP current_channel_id: %llx data: %llx\n", current_channel_id, *(t_channel_id *)data);
+			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP current_channel_id: %llx data: %llx\n", current_channel_id, *(t_channel_id *)data);
 			
 			g_InfoViewer->chanready = 1;
 
@@ -205,7 +205,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			if ( (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) || 
 			     (msg == NeutrinoMessages:: EVT_ZAP_SUB_FAILED ) ) 
 			{
-				dprintf(DEBUG_INFO, "CRemoteControl::handleMsg EVT_ZAP_SUB current_sub_channel_id: %llx data: %llx\n", current_sub_channel_id, *(t_channel_id *)data);
+				dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg EVT_ZAP_SUB current_sub_channel_id: %llx data: %llx\n", current_sub_channel_id, *(t_channel_id *)data);
 				
 				if ((*(t_channel_id *)data) != current_sub_channel_id)
 				{
@@ -426,7 +426,7 @@ void CRemoteControl::getSubChannels()
 
 void CRemoteControl::getNVODs()
 {
-	dprintf(DEBUG_INFO, "CRemoteControl::getNVODs: getNVODs, current_EPGid: %llx\n", current_EPGid);
+	dprintf(DEBUG_NORMAL, "CRemoteControl::getNVODs: getNVODs, current_EPGid: %llx\n", current_EPGid);
 	
 	if ( subChannels.size() == 0 )
 	{
@@ -605,7 +605,7 @@ void CRemoteControl::processAPIDnames()
 	} 
 	else if(pref_found >= 0) 
 	{
-		dprintf(DEBUG_INFO, "CRemoteControl::processAPIDnames: set apid name= %s pid= 0x%x\n", current_PIDs.APIDs[pref_found].desc, current_PIDs.APIDs[pref_found].pid);
+		dprintf(DEBUG_NORMAL, "CRemoteControl::processAPIDnames: set apid name= %s pid= 0x%x\n", current_PIDs.APIDs[pref_found].desc, current_PIDs.APIDs[pref_found].pid);
 		setAPID(pref_found);
 	}
 	else if(ac3_found >= 0) 

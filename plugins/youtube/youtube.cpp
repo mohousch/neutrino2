@@ -343,12 +343,12 @@ int CYTBrowser::showCategoriesMenu(void)
 	mainMenu.setWidgetMode(MODE_MENU);
 	mainMenu.enableShrinkMenu();
 
-	mainMenu.addItem(new CMenuForwarder(_("Most popular today"), true, NULL, new CYTBrowser(cYTFeedParser::MOST_POPULAR), NULL));
+	mainMenu.addItem(new ClistBoxItem(_("Most popular today"), true, NULL, new CYTBrowser(cYTFeedParser::MOST_POPULAR), NULL));
 
 	mainMenu.addItem(new CMenuSeparator(LINE));
 	
 	// search
-	mainMenu.addItem(new CMenuForwarder(_("Search keyword"), true, ytsearch.c_str(), this, "search", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	mainMenu.addItem(new ClistBoxItem(_("Search keyword"), true, ytsearch.c_str(), this, "search", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	
 	// ytorder
 	mainMenu.addItem(new CMenuOptionChooser(_("Order by"), &m_settings.ytorderby, YT_ORDERBY_OPTIONS, YT_ORDERBY_OPTION_COUNT, true, NULL, RC_green, NEUTRINO_ICON_BUTTON_GREEN, true));

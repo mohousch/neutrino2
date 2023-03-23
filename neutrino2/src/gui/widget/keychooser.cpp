@@ -90,7 +90,7 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 	else
 	{
 		menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		menu->setMenuPosition(MENU_POSITION_CENTER);
+		//menu->setMenuPosition(MENU_POSITION_CENTER);
 		menu->setWidgetMode(MODE_SETUP);
 		menu->enableShrinkMenu();
 		
@@ -108,30 +108,31 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 		widget->name = "keychooser";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->enableSaveScreen();
-		widget->addItem(menu);
+		widget->addWidgetItem(menu);
 	}
 		
-	menu->clearAll();
+	menu->clear();
 
 	//
 	menu->addItem(new CKeyValue());
 	menu->addItem(new CMenuSeparator(LINE));
-	menu->addItem(new CMenuForwarder(_("back")));
+	menu->addItem(new ClistBoxItem(_("back")));
 	menu->addItem(new CMenuSeparator(LINE));
-	menu->addItem(new CMenuForwarder(_("Setup new key"), true, NULL, keyChooser));
-	menu->addItem(new CMenuForwarder(_("No key"), true, NULL, keyDeleter));
+	menu->addItem(new ClistBoxItem(_("Setup new key"), true, NULL, keyChooser));
+	menu->addItem(new ClistBoxItem(_("No key"), true, NULL, keyDeleter));
+	
+	//
+	menu->enableShrinkMenu();
 	*/
 	
-	//
 	enableShrinkMenu();
 	
-	//
 	addItem(new CKeyValue());
 	addItem(new CMenuSeparator(LINE));
-	addItem(new CMenuForwarder(_("back")));
+	addItem(new ClistBoxItem(_("back")));
 	addItem(new CMenuSeparator(LINE));
-	addItem(new CMenuForwarder(_("Setup new key"), true, NULL, keyChooser));
-	addItem(new CMenuForwarder(_("No key"), true, NULL, keyDeleter));
+	addItem(new ClistBoxItem(_("Setup new key"), true, NULL, keyChooser));
+	addItem(new ClistBoxItem(_("No key"), true, NULL, keyDeleter));
 }
 
 CKeyChooser::~CKeyChooser()
@@ -244,5 +245,4 @@ void CKeyChooserItem::paint()
 
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(m_cBox.iX + BORDER_LEFT, m_cBox.iY + hheight + mheight* 2, m_cBox.iWidth, _("Wait a few seconds for abort"), COL_MENUCONTENT, 0, true); // UTF-8
 }
-
 
