@@ -187,7 +187,7 @@ class CMenuItem
 
 		virtual bool isSelectable(void) const {return false;}
 
-		virtual int exec(CMenuTarget */*parent*/) {return 0;}
+		virtual int exec(CMenuTarget *) {return 0;}
 		
 		//
 		virtual void setActive(const bool Active);
@@ -277,7 +277,7 @@ class CMenuOptionChooser : public CMenuItem
 
 		int paint(bool selected, bool AfterPulldown = false);
 
-		int exec(CMenuTarget *parent);
+		int exec(CMenuTarget* target);
 };
 
 // CMenuOptionNumberChooser
@@ -318,7 +318,7 @@ class CMenuOptionNumberChooser : public CMenuItem
 		
 		int paint(bool selected, bool AfterPulldown = false);
 
-		int exec(CMenuTarget *parent);
+		int exec(CMenuTarget *target);
 };
 
 // CMenuOptionStringChooser
@@ -343,29 +343,7 @@ class CMenuOptionStringChooser : public CMenuItem
 
 		bool isSelectable(void) const {return active;}
 
-		int exec(CMenuTarget* parent);
-};
-
-// CMenuOptionLanguageChooser
-class CMenuOptionLanguageChooser : public CMenuItem
-{
-	int height;
-	char* optionValue;
-	std::vector<std::string> options;
-	CChangeObserver * observ;
-
-	public:
-		CMenuOptionLanguageChooser(char* Name, CChangeObserver *Observ = NULL, const char *const IconName = NULL);
-		~CMenuOptionLanguageChooser();
-
-		void addOption(const char* const value);
-
-		int paint(bool selected, bool AfterPulldown = false);
-		int getHeight(void) const {return height;}
-
-		bool isSelectable(void) const {return true;}
-
-		int exec(CMenuTarget * parent);
+		int exec(CMenuTarget* target);
 };
 
 // CMenuSeparator
@@ -385,35 +363,6 @@ class CMenuSeparator : public CMenuItem
 
 		virtual const char * getString(void);
 };
-
-// CMenuForwarder
-/*
-class CMenuForwarder : public CMenuItem
-{
-	//
-	std::string optionValueString;
-
-	protected:
-		std::string textString;
-
-		virtual const char *getName(void);
-		virtual const char *getOption(void);
-		
-	public:
-		CMenuForwarder(const char* const Text, const bool Active = true, const char* const Option = NULL, CMenuTarget* Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL );
-
-		~CMenuForwarder(){};
-		
-		int paint(bool selected = false, bool AfterPulldown = false);
-		int getHeight(void) const;
-		int getWidth(void) const;
-
-		int exec(CMenuTarget* parent);
-		bool isSelectable(void) const {return active;}
-
-		void setName(const char * const name){textString = name;};
-};
-*/
 
 // CPINProtection
 class CPINProtection
@@ -440,26 +389,6 @@ class CZapProtection : public CPINProtection
 		bool check();
 };
 
-// CLockedMenuForwarder
-/*
-class CLockedMenuForwarder : public CMenuForwarder, public CPINProtection
-{
-	CMenuTarget * Parent;
-	bool AlwaysAsk;
-
-	protected:
-		virtual CMenuTarget* getParent(){ return Parent;};
-		
-	public:   
-		CLockedMenuForwarder(const char * const Text, char * _validPIN, bool alwaysAsk = false, const bool Active = true, char * Option = NULL, CMenuTarget * Target = NULL, const char * const ActionKey = NULL, neutrino_msg_t DirectKey = RC_nokey, const char * const IconName = NULL, const char * const ItemIcon = NULL, const char* const Hint = NULL)
-		 : CMenuForwarder(Text, Active, Option, Target, ActionKey, DirectKey, IconName, ItemIcon, Hint),
-		   CPINProtection( _validPIN){AlwaysAsk = alwaysAsk;};
-
-		virtual int exec(CMenuTarget* parent);
-};
-*/
-
-////
 // CMenulistBoxItem
 class ClistBoxItem : public CMenuItem
 {
@@ -482,7 +411,7 @@ class ClistBoxItem : public CMenuItem
 		int getHeight(void) const;
 		int getWidth(void) const;
 
-		int exec(CMenuTarget* parent);
+		int exec(CMenuTarget* target);
 		bool isSelectable(void) const {return active;};
 		
 		void setName(const char * const name){textString = name;};
@@ -502,38 +431,9 @@ class CLockedlistBoxItem : public ClistBoxItem, public CPINProtection
 		 : ClistBoxItem(Text, Active, Option, Target, ActionKey, DirectKey, IconName, ItemIcon, Hint),
 		   CPINProtection( _validPIN){AlwaysAsk = alwaysAsk;};
 
-		virtual int exec(CMenuTarget* parent);
+		virtual int exec(CMenuTarget* target);
 };
 
-// CPlugnItem
-/*
-class CPluginItem : public CMenuItem
-{
-	std::string optionValueString;
-
-	protected:
-		//
-		std::string textString;
-
-		//
-		virtual const char *getName(void);
-		virtual const char *getOption(void);
-
-	public:
-		CPluginItem(const char* const pluginName, const bool Active = true, const neutrino_msg_t DirectKey = RC_nokey, const char* const Icon = NULL);
-		
-		~CPluginItem(){};
-		
-		int paint(bool selected = false, bool AfterPulldown = false);
-		int getHeight(void) const;
-		int getWidth(void) const;
-
-		int exec(CMenuTarget* parent);
-		bool isSelectable(void) const {return active;};
-		
-		void setName(const char * const name){textString = name;};
-};
-*/
 //
 class ClistBox : public CWidgetItem
 {

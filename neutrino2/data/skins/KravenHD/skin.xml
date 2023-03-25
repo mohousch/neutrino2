@@ -260,7 +260,7 @@
 	</WIDGET>
 	
 	<WIDGET name="tunersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1">
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1">
 		</LISTBOX>
 		<LABEL posx="640" posy="50" width="640" height="50" text="Servicescan" halign="1">
 		</LABEL>
