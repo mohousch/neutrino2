@@ -360,7 +360,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 				}
 				break;
 				
-			// delete zapit
+			// delete webtv
 			case SNeutrinoSettings::ITEM_DELETE_WEBTV:
 				{
 					keyhelper.get(&key, &icon);
@@ -373,6 +373,30 @@ bool CNeutrinoApp::showUserMenu(int button)
 				{
 					keyhelper.get(&key, &icon);
 					menu_item = new ClistBoxItem(_("Free Memory"), true, NULL, this, "free_memory", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu->addItem(menu_item, false);
+				}
+				break;
+				
+			case SNeutrinoSettings::ITEM_LOAD_ZAPIT:
+				{
+					keyhelper.get(&key, &icon);
+					menu_item = new ClistBoxItem(_("Reload channel lists"), true, NULL, this, "reloadchannels", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu->addItem(menu_item, false);
+				}
+				break;
+				
+			case SNeutrinoSettings::ITEM_LOAD_XMLTV:
+				{
+					keyhelper.get(&key, &icon);
+					menu_item = new ClistBoxItem(_(""), true, NULL, this, "reloadxmltvepg", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu->addItem(menu_item, false);
+				}
+				break;
+				
+			case SNeutrinoSettings::ITEM_LOAD_EPG:
+				{
+					keyhelper.get(&key, &icon);
+					menu_item = new ClistBoxItem(_("Reload EPG"), true, NULL, this, "reloadepg", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
 					menu->addItem(menu_item, false);
 				}
 				break;

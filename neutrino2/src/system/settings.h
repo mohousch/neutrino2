@@ -322,7 +322,10 @@ struct SNeutrinoSettings
 		ITEM_REMOTE = 4,
 		ITEM_DELETE_ZAPIT = 5,
 		ITEM_DELETE_WEBTV = 6,
-		ITEM_FREEMEMORY = 7,          
+		ITEM_FREEMEMORY = 7,
+		ITEM_LOAD_ZAPIT = 8,
+		ITEM_LOAD_XMLTV = 9,
+		ITEM_LOAD_EPG = 10,          
 		ITEM_MAX   // MUST be always the last in the list
         }USER_ITEM;
 	

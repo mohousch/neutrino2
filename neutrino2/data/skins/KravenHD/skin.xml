@@ -146,7 +146,6 @@
 		
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1">
 			<ITEM  id="MENUITEM_LISTBOXITEM" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
-			<ITEM  id="MENUITEM_LISTBOXITEM" localename="Reload channel lists" itemicon="hint_reload" target="neutrino" actionkey="reloadchannels"/>
 			<ITEM  id="MENUITEM_LISTBOXITEM" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>
 			<ITEM  id="MENUITEM_LISTBOXITEM" localename="CI Cam" itemicon="hint_ci" target="cicamsetup"/>
 			<ITEM  id="MENUITEM_LISTBOXITEM" localename="Software update" itemicon="hint_swupdate" target="updatesetup"/>
@@ -1158,7 +1157,7 @@
 	</WIDGET>
 	
 	<WIDGET name="bouquetlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" itemborder="1">
+		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" itemborder="1">
 		</LISTBOX>
 			
 		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png">
@@ -1172,7 +1171,7 @@
 	</WIDGET>
 	
 	<WIDGET name="channellist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" itemborder="1"/>
+		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" itemborder="1"/>
 		
 		<HEAD posx="50" posy="0" width="1180" height="50" paintframe="0" line="1"/>
 		<FOOT posx="50" posy="670" width="1180" height="50" paintframe="0" line="1"/>
@@ -1184,7 +1183,7 @@
 	</WIDGET>
 	
 	<WIDGET name="eventlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" itemborder="1" painthead="1" head_line="1"/>	
+		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" itemborder="1" painthead="1" head_line="1"/>	
 		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
 		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>

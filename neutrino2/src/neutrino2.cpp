@@ -5004,7 +5004,20 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		if (MessageBox(_("Information"), _("do you want to reload EPG?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
 			HintBox(_("Information"), _("Reloading EPG, please be patient."));
-			readEPG();
+			
+			CSectionsd::getInstance()->readSIfromXML(g_settings.epg_dir.c_str());
+		}
+	}
+	else if (actionKey == "reloadxmltvepg")
+	{
+		if (MessageBox(_("Information"), _("do you want to reload XMLTV EPG?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		{
+			HintBox(_("Information"), _("Reloading XMLTV EPG, please be patient."));
+			
+			for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
+			{
+				CSectionsd::getInstance()->readSIfromXMLTV(g_settings.xmltv[i].c_str());
+			}
 		}
 	}
 	else if (actionKey == "delete_zapit")

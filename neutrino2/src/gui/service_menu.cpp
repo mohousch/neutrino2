@@ -111,7 +111,7 @@ void CServiceMenu::showMenu(void)
 		service->addItem(new ClistBoxItem(_("Scan transponder"), true, NULL, new CTunerSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCANSETTINGS));
 
 		// reload Channels
-		service->addItem(new ClistBoxItem(_("Reload channel lists"), true, NULL, CNeutrinoApp::getInstance(), "reloadchannels", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RELOADCHANNELS));
+		//service->addItem(new ClistBoxItem(_("Reload channel lists"), true, NULL, CNeutrinoApp::getInstance(), "reloadchannels", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RELOADCHANNELS));
 		
 		// Bouquets Editor
 		service->addItem(new ClistBoxItem(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));

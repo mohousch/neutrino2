@@ -113,16 +113,10 @@
 	<WIDGET name="system" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		
 		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="System" icon="softupdate" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
-			<ITEM id="MENUITEM_LISTBOXITEM" localename="Scan transponder" itemicon="hint_scan" target="scansetup">
-			</ITEM>
-			<ITEM id="MENUITEM_LISTBOXITEM" localename="Reload channel lists" itemicon="hint_reload" target="neutrino" actionkey="reloadchannels">
-			</ITEM>
-			<ITEM id="MENUITEM_LISTBOXITEM" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor">
-			</ITEM>
-			<ITEM id="MENUITEM_LISTBOXITEM" localename="CI Cam" itemicon="hint_ci" target="cicamsetup">
-			</ITEM>
-			<ITEM id="MENUITEM_LISTBOXITEM" localename="Software update" itemicon="hint_swupdate" target="updatesetup">
-			</ITEM>
+			<ITEM id="MENUITEM_LISTBOXITEM" localename="Scan transponder" itemicon="hint_scan" target="scansetup"/>
+			<ITEM id="MENUITEM_LISTBOXITEM" localename="Bouquet Editor" itemicon="hint_bedit" target="bouqueteditor"/>
+			<ITEM id="MENUITEM_LISTBOXITEM" localename="CI Cam" itemicon="hint_ci" target="cicamsetup"/>
+			<ITEM id="MENUITEM_LISTBOXITEM" localename="Software update" itemicon="hint_swupdate" target="updatesetup"/>
 			
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
@@ -596,11 +590,11 @@
 	</WIDGET>
 	
 	<WIDGET name="bouquetlist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="channellist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<LISTBOX posx="100" posy="150" width="700" height="420" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" scrollbar="1"/>
+		<LISTBOX posx="100" posy="150" width="700" height="420" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" scrollbar="1"/>
 		<WINDOW posx="800" posy="150" width="380" height="420" paintframe="0"/>
 		<HEAD posx="100" posy="100" width="1080" height="50" paintframe="0" line="1"/>
 		<FOOT posx="100" posy="570" width="1080" height="50" paintframe="0" line="1"/>
@@ -609,19 +603,19 @@
 	</WIDGET>
 	
 	<WIDGET name="bqeditchselect" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="bqeditch" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1"/>
 	</WIDGET>
 	
 	<WIDGET name="bqeditbq" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="eventlist" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" painthead="1" head_line="1" paintdate="1" paintfoot="1" foot_line="1" scrollbar="1"/>
+		<LISTBOX posx="100" posy="100" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" head_line="1" paintdate="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="epgsearch" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">

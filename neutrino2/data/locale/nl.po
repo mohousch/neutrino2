@@ -1,13 +1,13 @@
-# Dutch translations for neutrinohd2 package.
-# Copyright (C) 2022 THE neutrinohd2'S COPYRIGHT HOLDER
+# Dutch translations for neutrino2 package.
+# Copyright (C) 2022 THE neutrino2'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the neutrinohd2 package.
 # Automatically generated, 2022.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neutrinohd2 4.3\n"
+"Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-25 08:57+0100\n"
+"POT-Creation-Date: 2023-03-25 15:06+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -112,16 +112,19 @@ msgstr ""
 msgid "Additional paths"
 msgstr ""
 
+msgid "Adult movie / Drama"
+msgstr ""
+
 msgid "Advanced"
+msgstr ""
+
+msgid "Adventure / Western/War"
 msgstr ""
 
 msgid "Age"
 msgstr ""
 
 msgid "Alarm time"
-msgstr ""
-
-msgid "All Channels"
 msgstr ""
 
 msgid "All Services"
@@ -157,7 +160,16 @@ msgstr ""
 msgid "Artist: "
 msgstr ""
 
+msgid "Arts / Culture"
+msgstr ""
+
+msgid "Arts / Culture magazines"
+msgstr ""
+
 msgid "Aspect Ratio"
+msgstr ""
+
+msgid "Athletics"
 msgstr ""
 
 msgid "Audio"
@@ -226,6 +238,9 @@ msgstr ""
 msgid "Backup failed"
 msgstr ""
 
+msgid "Ballet"
+msgstr ""
+
 msgid "Bandwidth"
 msgstr ""
 
@@ -273,6 +288,9 @@ msgstr ""
 msgid "Broadcast"
 msgstr ""
 
+msgid "Broadcasting / Press"
+msgstr ""
+
 msgid "Browser Options"
 msgstr ""
 
@@ -283,6 +301,9 @@ msgid "Built date: "
 msgstr ""
 
 msgid "Buttons Bar"
+msgstr ""
+
+msgid "Buttons Dir"
 msgstr ""
 
 msgid "Buttons Line"
@@ -331,6 +352,9 @@ msgid "Cancel"
 msgstr ""
 
 msgid "Cancel movie cut/split ?"
+msgstr ""
+
+msgid "Cartoons / Puppets"
 msgstr ""
 
 msgid "Change PIN code"
@@ -387,6 +411,9 @@ msgstr ""
 msgid "Check filesystem"
 msgstr ""
 
+msgid "Children / Juvenile program"
+msgstr ""
+
 msgid "Clear all"
 msgstr ""
 
@@ -399,6 +426,9 @@ msgstr ""
 msgid "Colour Range"
 msgstr ""
 
+msgid "Comedy"
+msgstr ""
+
 msgid "Command failed"
 msgstr ""
 
@@ -409,6 +439,9 @@ msgid "Contrast"
 msgstr ""
 
 msgid "Contrast / Brightness"
+msgstr ""
+
+msgid "Cooking"
 msgstr ""
 
 msgid "Coping, please wait"
@@ -528,6 +561,9 @@ msgstr ""
 msgid "Details current program"
 msgstr ""
 
+msgid "Detective / Thriller"
+msgstr ""
+
 msgid "DiSEqC"
 msgstr ""
 
@@ -564,6 +600,12 @@ msgstr ""
 msgid "Discard changes?"
 msgstr ""
 
+msgid "Discarding changes. Please be patient."
+msgstr ""
+
+msgid "Discussion / Interview/ Debate"
+msgstr ""
+
 msgid "Diseqc input"
 msgstr ""
 
@@ -593,7 +635,16 @@ msgstr ""
 msgid "Do you want to restore the previous settings?"
 msgstr ""
 
+msgid "Do you want to save the changes?"
+msgstr ""
+
 msgid "Docs:"
+msgstr ""
+
+msgid "Documentary"
+msgstr ""
+
+msgid "Documentation / Magazine"
 msgstr ""
 
 msgid "Dolby Digital"
@@ -656,6 +707,9 @@ msgstr ""
 msgid "East"
 msgstr ""
 
+msgid "Economics / Social advisory"
+msgstr ""
+
 msgid "Edit"
 msgstr ""
 
@@ -681,6 +735,15 @@ msgid "Enter standby"
 msgstr ""
 
 msgid "Enter your new youth protection pin code here!"
+msgstr ""
+
+msgid "Entertainment programmes for 10 to 16"
+msgstr ""
+
+msgid "Entertainment programmes for 6 to 14"
+msgstr ""
+
+msgid "Equestrian"
 msgstr ""
 
 msgid "Error"
@@ -716,6 +779,9 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
+msgid "Experimental film / Video"
+msgstr ""
+
 msgid "Expert functions"
 msgstr ""
 
@@ -732,6 +798,9 @@ msgid "Failed to load Netzkino Movies"
 msgstr ""
 
 msgid "Failed to load youtube feed"
+msgstr ""
+
+msgid "Fashion"
 msgstr ""
 
 msgid "Fast/timeshift record time(hours)"
@@ -773,6 +842,9 @@ msgstr ""
 msgid "Files Browser"
 msgstr ""
 
+msgid "Film / Cinema"
+msgstr ""
+
 msgid "Film Informationen"
 msgstr ""
 
@@ -788,7 +860,16 @@ msgstr ""
 msgid "Filter:"
 msgstr ""
 
+msgid "Fine arts"
+msgstr ""
+
+msgid "Fitness & health"
+msgstr ""
+
 msgid "Focus"
+msgstr ""
+
+msgid "Folk / Traditional music"
 msgstr ""
 
 msgid "Font"
@@ -798,6 +879,12 @@ msgid "Font name"
 msgstr ""
 
 msgid "Foot"
+msgstr ""
+
+msgid "Football / Soccer"
+msgstr ""
+
+msgid "Foreign countries / Expeditions"
 msgstr ""
 
 msgid "Format"
@@ -830,6 +917,9 @@ msgstr ""
 msgid "Framerate"
 msgstr ""
 
+msgid "Free Memory"
+msgstr ""
+
 msgid "French"
 msgstr ""
 
@@ -846,6 +936,15 @@ msgid "Frontend:"
 msgstr ""
 
 msgid "Fullscreen"
+msgstr ""
+
+msgid "Further education"
+msgstr ""
+
+msgid "Game show / Quiz / Contest"
+msgstr ""
+
+msgid "Gardening"
 msgstr ""
 
 msgid "Generic delay"
@@ -941,6 +1040,9 @@ msgstr ""
 msgid "Halt Motor"
 msgstr ""
 
+msgid "Handicraft"
+msgstr ""
+
 msgid "Hdd Format"
 msgstr ""
 
@@ -963,6 +1065,9 @@ msgid "High decode priority"
 msgstr ""
 
 msgid "Highlight"
+msgstr ""
+
+msgid "Hints Dir"
 msgstr ""
 
 msgid "History"
@@ -1005,6 +1110,9 @@ msgid "IP:"
 msgstr ""
 
 msgid "ISO-8859-1"
+msgstr ""
+
+msgid "Icons Dir"
 msgstr ""
 
 msgid "Image info"
@@ -1052,6 +1160,9 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
+msgid "Informational / educational / school programmes"
+msgstr ""
+
 msgid "Install menu"
 msgstr ""
 
@@ -1068,6 +1179,9 @@ msgid "Is this video mode working ok ?"
 msgstr ""
 
 msgid "Item Info"
+msgstr ""
+
+msgid "Jazz"
 msgstr ""
 
 msgid "Jump (<0 back , >0 for):"
@@ -1113,6 +1227,9 @@ msgid "LaDirection"
 msgstr ""
 
 msgid "Language"
+msgstr ""
+
+msgid "Languages"
 msgstr ""
 
 msgid "Last Channel"
@@ -1166,6 +1283,9 @@ msgstr ""
 msgid "List Start"
 msgstr ""
 
+msgid "Literature"
+msgstr ""
+
 msgid "LoDirection"
 msgstr ""
 
@@ -1173,6 +1293,9 @@ msgid "Load default settings"
 msgstr ""
 
 msgid "Loading package list"
+msgstr ""
+
+msgid "LocalTV EPG"
 msgstr ""
 
 msgid "Lock RC"
@@ -1209,6 +1332,9 @@ msgstr ""
 msgid "MD5 checking"
 msgstr ""
 
+msgid "Magazines / Reports / Documentary"
+msgstr ""
+
 msgid "Main Menu"
 msgstr ""
 
@@ -1224,6 +1350,9 @@ msgstr ""
 msgid "Mark"
 msgstr ""
 
+msgid "Martial sports"
+msgstr ""
+
 msgid "Max. Events"
 msgstr ""
 
@@ -1234,6 +1363,9 @@ msgid "Media Player"
 msgstr ""
 
 msgid "Media Portal"
+msgstr ""
+
+msgid "Medicine / Physiology / Psychology"
 msgstr ""
 
 msgid "Menu"
@@ -1299,6 +1431,12 @@ msgstr ""
 msgid "Motor settings"
 msgstr ""
 
+msgid "Motor sports"
+msgstr ""
+
+msgid "Motoring"
+msgstr ""
+
 msgid "Mount network volume"
 msgstr ""
 
@@ -1306,6 +1444,9 @@ msgid "Mount options"
 msgstr ""
 
 msgid "Move"
+msgstr ""
+
+msgid "Movie / Drama"
 msgstr ""
 
 msgid "Movie Browser"
@@ -1341,10 +1482,13 @@ msgstr ""
 msgid "Movies Browser"
 msgstr ""
 
-msgid "Mute"
+msgid "Music / Ballet / Dance"
 msgstr ""
 
-msgid "My Favorites"
+msgid "Musical / Opera"
+msgstr ""
+
+msgid "Mute"
 msgstr ""
 
 msgid "NFS"
@@ -1368,7 +1512,13 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+msgid "Name of bouquets"
+msgstr ""
+
 msgid "Name server"
+msgstr ""
+
+msgid "Nature / Animals / Environment"
 msgstr ""
 
 msgid "Netmask"
@@ -1387,9 +1537,6 @@ msgid "Netzkino"
 msgstr ""
 
 msgid "Neu by Netzkino"
-msgstr ""
-
-msgid "Neu channel"
 msgstr ""
 
 msgid "Neutrino Restart"
@@ -1417,7 +1564,19 @@ msgid ""
 " 'blue' for endposition"
 msgstr ""
 
+msgid "New media"
+msgstr ""
+
 msgid "New timer"
+msgstr ""
+
+msgid "News"
+msgstr ""
+
+msgid "News / Weather report"
+msgstr ""
+
+msgid "News magazine"
 msgstr ""
 
 msgid "Next"
@@ -1524,9 +1683,6 @@ msgid ""
 "If you encounter this message and no recording is active, please restart Neutrino."
 msgstr ""
 
-msgid "Online EPG"
-msgstr ""
-
 msgid "Online Software Manager"
 msgstr ""
 
@@ -1546,9 +1702,6 @@ msgid "Original Title"
 msgstr ""
 
 msgid "Original title"
-msgstr ""
-
-msgid "Other"
 msgstr ""
 
 msgid "Overwrite?"
@@ -1588,6 +1741,9 @@ msgid "Path"
 msgstr ""
 
 msgid "Paths"
+msgstr ""
+
+msgid "Performing arts"
 msgstr ""
 
 msgid "Permanent timeshift"
@@ -1635,6 +1791,9 @@ msgstr ""
 msgid "Polish"
 msgstr ""
 
+msgid "Popular culture / Traditional arts"
+msgstr ""
+
 msgid "Portugues"
 msgstr ""
 
@@ -1642,6 +1801,9 @@ msgid "Position:"
 msgstr ""
 
 msgid "Power Menu"
+msgstr ""
+
+msgid "Pre-school children's programmes"
 msgstr ""
 
 msgid "Prefer TMBD infos ?"
@@ -1782,16 +1944,34 @@ msgstr ""
 msgid "Release cycle"
 msgstr ""
 
+msgid "Religion"
+msgstr ""
+
 msgid "Reload"
 msgstr ""
 
 msgid "Reload EPG"
 msgstr ""
 
+msgid "Reload XMLTV EPG"
+msgstr ""
+
 msgid "Reload channel lists"
 msgstr ""
 
 msgid "Reload movie info at start"
+msgstr ""
+
+msgid "Reloading EPG, please be patient."
+msgstr ""
+
+msgid "Reloading XMLTV EPG, please be patient."
+msgstr ""
+
+msgid "Reloading channel lists, please be patient."
+msgstr ""
+
+msgid "Remarkable people"
 msgstr ""
 
 msgid "Remind"
@@ -1833,7 +2013,10 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-msgid "Restore EPG on boot"
+msgid "Rock / Pop"
+msgstr ""
+
+msgid "Romance"
 msgstr ""
 
 msgid "Rotor position"
@@ -1890,9 +2073,6 @@ msgstr ""
 msgid "Satellite display on infobar"
 msgstr ""
 
-msgid "Satellite-Bouquet"
-msgstr ""
-
 msgid "Satellite:"
 msgstr ""
 
@@ -1906,6 +2086,9 @@ msgid "Saturday"
 msgstr ""
 
 msgid "Save RC configuration"
+msgstr ""
+
+msgid "Save Skin settings now?"
 msgstr ""
 
 msgid "Save Timer"
@@ -1932,6 +2115,9 @@ msgstr ""
 msgid "Save settings now"
 msgstr ""
 
+msgid "Save settings now?"
+msgstr ""
+
 msgid "Save timer"
 msgstr ""
 
@@ -1939,6 +2125,14 @@ msgid "Save/Restore epg on reboot"
 msgstr ""
 
 msgid "Saving RC configuration, please wait..."
+msgstr ""
+
+msgid ""
+"Saving Skin settings now, please be patient.\n"
+" this needs Neutrino restart."
+msgstr ""
+
+msgid "Saving changes. Please be patient."
 msgstr ""
 
 msgid "Saving current style!"
@@ -1984,6 +2178,9 @@ msgid "Schedule Event"
 msgstr ""
 
 msgid "Schedule Record"
+msgstr ""
+
+msgid "Science fiction / Fantasy / Horror"
 msgstr ""
 
 msgid "Screen"
@@ -2050,6 +2247,12 @@ msgid "Serie auto create"
 msgstr ""
 
 msgid "Serien Trailer"
+msgstr ""
+
+msgid "Serious / Classical / Religious / Historical movie / Drama"
+msgstr ""
+
+msgid "Serious music / Classical music"
 msgstr ""
 
 msgid "Server Box GUI"
@@ -2172,6 +2375,15 @@ msgstr ""
 msgid "Slovak"
 msgstr ""
 
+msgid "Soap / Melodrama / Folkloric"
+msgstr ""
+
+msgid "Social & politic events / Business"
+msgstr ""
+
+msgid "Social / Spiritual sciences"
+msgstr ""
+
 msgid "Software update"
 msgstr ""
 
@@ -2179,6 +2391,18 @@ msgid "Software update URL"
 msgstr ""
 
 msgid "South"
+msgstr ""
+
+msgid "Special events (Olympic Games,World Cup etc.)"
+msgstr ""
+
+msgid "Spinner Dir"
+msgstr ""
+
+msgid "Sports"
+msgstr ""
+
+msgid "Sports magazines"
 msgstr ""
 
 msgid "Standby"
@@ -2346,10 +2570,25 @@ msgstr ""
 msgid "TV-System"
 msgstr ""
 
+msgid "TV/Radio"
+msgstr ""
+
 msgid "TV/Radio-mode"
 msgstr ""
 
+msgid "Talk show"
+msgstr ""
+
+msgid "Team sports (excluding football)"
+msgstr ""
+
+msgid "Technology / Natural sciences"
+msgstr ""
+
 msgid "Teletext"
+msgstr ""
+
+msgid "Tennis / Squash"
 msgstr ""
 
 msgid "Terrestrial"
@@ -2496,6 +2735,9 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
+msgid "Tourism / Travel"
+msgstr ""
+
 msgid "Track Infos"
 msgstr ""
 
@@ -2509,6 +2751,9 @@ msgid "Transponderscan failed!"
 msgstr ""
 
 msgid "Transponderscan finished."
+msgstr ""
+
+msgid "Travel & recreation"
 msgstr ""
 
 msgid "Truncate failed."
@@ -2583,6 +2828,9 @@ msgstr ""
 msgid "Use NIT"
 msgstr ""
 
+msgid "Use XMLTV EPG"
+msgstr ""
+
 msgid "Use directory"
 msgstr ""
 
@@ -2617,6 +2865,9 @@ msgid "Username"
 msgstr ""
 
 msgid "VTuner Device"
+msgstr ""
+
+msgid "Variety show"
 msgstr ""
 
 msgid "Version:"
@@ -2673,6 +2924,9 @@ msgstr ""
 msgid "Warn"
 msgstr ""
 
+msgid "Water sports"
+msgstr ""
+
 msgid "Wednesday"
 msgstr ""
 
@@ -2689,6 +2943,9 @@ msgid "Window-Content inactive"
 msgstr ""
 
 msgid "Window-Content selected"
+msgstr ""
+
+msgid "Winter sports"
 msgstr ""
 
 msgid "Write one partition"
@@ -2759,13 +3016,7 @@ msgstr ""
 msgid "add channel to my favorites"
 msgstr ""
 
-msgid "adult movie / drama"
-msgstr ""
-
 msgid "advanced"
-msgstr ""
-
-msgid "adventure / western/war"
 msgstr ""
 
 msgid "alpha"
@@ -2792,19 +3043,7 @@ msgstr ""
 msgid "approx. 5 minutes back"
 msgstr ""
 
-msgid "arts / culture"
-msgstr ""
-
-msgid "arts/culture magazines"
-msgstr ""
-
-msgid "athletics"
-msgstr ""
-
 msgid "back"
-msgstr ""
-
-msgid "ballet"
 msgstr ""
 
 msgid "be Cached? (Set in hours)"
@@ -2820,9 +3059,6 @@ msgid "bottom left"
 msgstr ""
 
 msgid "bottom right"
-msgstr ""
-
-msgid "broadcasting / press"
 msgstr ""
 
 msgid "by bouquet"
@@ -2851,16 +3087,10 @@ msgstr ""
 msgid "caps / no caps"
 msgstr ""
 
-msgid "cartoons / puppets"
-msgstr ""
-
 msgid "center"
 msgstr ""
 
 msgid "checking version"
-msgstr ""
-
-msgid "children / juvenile program"
 msgstr ""
 
 msgid "choose Skin Style."
@@ -2872,13 +3102,10 @@ msgstr ""
 msgid "colored"
 msgstr ""
 
-msgid "comedy"
-msgstr ""
-
-msgid "cooking"
-msgstr ""
-
 msgid "cpu/file"
+msgstr ""
+
+msgid "create satellite bouquets"
 msgstr ""
 
 msgid "create screenshot?"
@@ -2896,9 +3123,6 @@ msgstr ""
 msgid "delete"
 msgstr ""
 
-msgid "detective / thriller"
-msgstr ""
-
 msgid "direct connected"
 msgstr ""
 
@@ -2908,25 +3132,22 @@ msgstr ""
 msgid "directory/share"
 msgstr ""
 
-msgid "discussion / interview/debate"
-msgstr ""
-
 msgid "dmesg"
 msgstr ""
 
-msgid "documentary"
+msgid "do you want to reload EPG?"
 msgstr ""
 
-msgid "documentation / magazine"
+msgid "do you want to reload XMLTV EPG?"
+msgstr ""
+
+msgid "do you want to reload channel lists?"
 msgstr ""
 
 msgid "don't care"
 msgstr ""
 
 msgid "downmix"
-msgstr ""
-
-msgid "economics / social advisory"
 msgstr ""
 
 msgid "enter proxyserver name or ip, use host:port"
@@ -2936,15 +3157,6 @@ msgid "enter the proxyserver password"
 msgstr ""
 
 msgid "enter the proxyserver username"
-msgstr ""
-
-msgid "entertainment programmes for 10 to 16"
-msgstr ""
-
-msgid "entertainment programmes for 6 to 14"
-msgstr ""
-
-msgid "equestrian"
 msgstr ""
 
 msgid "erase all"
@@ -2959,34 +3171,10 @@ msgstr ""
 msgid "error umounting volume"
 msgstr ""
 
-msgid "experimental film/video"
-msgstr ""
-
-msgid "fashion"
-msgstr ""
-
 msgid "fast"
 msgstr ""
 
 msgid "filesystem type not supported"
-msgstr ""
-
-msgid "film/cinema"
-msgstr ""
-
-msgid "fine arts"
-msgstr ""
-
-msgid "fitness & health"
-msgstr ""
-
-msgid "folk / traditional music"
-msgstr ""
-
-msgid "football / soccer"
-msgstr ""
-
-msgid "foreign countries/expeditions"
 msgstr ""
 
 msgid "fourweekly"
@@ -3004,15 +3192,6 @@ msgstr ""
 msgid "from 18 years up"
 msgstr ""
 
-msgid "further education"
-msgstr ""
-
-msgid "game show / quiz / contest"
-msgstr ""
-
-msgid "gardening"
-msgstr ""
-
 msgid "getting update list"
 msgstr ""
 
@@ -3028,9 +3207,6 @@ msgstr ""
 msgid "green"
 msgstr ""
 
-msgid "handicraft"
-msgstr ""
-
 msgid "higher center"
 msgstr ""
 
@@ -3041,9 +3217,6 @@ msgid "info"
 msgstr ""
 
 msgid "infobar will be faded out."
-msgstr ""
-
-msgid "informational / educational / school programmes"
 msgstr ""
 
 msgid "internet Radio"
@@ -3067,9 +3240,6 @@ msgstr ""
 msgid "italian"
 msgstr ""
 
-msgid "jazz"
-msgstr ""
-
 msgid "jump backwards"
 msgstr ""
 
@@ -3080,9 +3250,6 @@ msgid "jump forwards"
 msgstr ""
 
 msgid "jump prev"
-msgstr ""
-
-msgid "languages"
 msgstr ""
 
 msgid "large"
@@ -3097,7 +3264,7 @@ msgstr ""
 msgid "left"
 msgstr ""
 
-msgid "literature"
+msgid "load default skin configuration?"
 msgstr ""
 
 msgid "local dir"
@@ -3109,18 +3276,9 @@ msgstr ""
 msgid "loop"
 msgstr ""
 
-msgid "magazines / reports / documentary"
-msgstr ""
-
 msgid ""
 "manual flash update version checks are currently not supported.\n"
 "Are you sure that you wish to install this image?"
-msgstr ""
-
-msgid "martial sports"
-msgstr ""
-
-msgid "medicine / physiology / psychology"
 msgstr ""
 
 msgid "middle"
@@ -3144,12 +3302,6 @@ msgstr ""
 msgid "most popular"
 msgstr ""
 
-msgid "motor sports"
-msgstr ""
-
-msgid "motoring"
-msgstr ""
-
 msgid "mount"
 msgstr ""
 
@@ -3168,37 +3320,13 @@ msgstr ""
 msgid "mount successful"
 msgstr ""
 
-msgid "movie / drama"
-msgstr ""
-
 msgid "moving speed (10 = 1deg/sec)"
-msgstr ""
-
-msgid "music / ballet / dance"
-msgstr ""
-
-msgid "musical / opera"
-msgstr ""
-
-msgid "nature/animals / environment"
 msgstr ""
 
 msgid "need reboot or epg-reset"
 msgstr ""
 
 msgid "never"
-msgstr ""
-
-msgid "new media"
-msgstr ""
-
-msgid "news"
-msgstr ""
-
-msgid "news / weather report"
-msgstr ""
-
-msgid "news magazine"
 msgstr ""
 
 msgid "next bouquet"
@@ -3279,15 +3407,6 @@ msgstr ""
 msgid "password"
 msgstr ""
 
-msgid "performing arts"
-msgstr ""
-
-msgid "popular culture / traditional arts"
-msgstr ""
-
-msgid "pre-school children's programmes"
-msgstr ""
-
 msgid "prev bouquet"
 msgstr ""
 
@@ -3309,6 +3428,9 @@ msgstr ""
 msgid "rating"
 msgstr ""
 
+msgid "ready"
+msgstr ""
+
 msgid "record"
 msgstr ""
 
@@ -3327,12 +3449,6 @@ msgstr ""
 msgid "relevance"
 msgstr ""
 
-msgid "religion"
-msgstr ""
-
-msgid "remarkable people"
-msgstr ""
-
 msgid "remount"
 msgstr ""
 
@@ -3340,12 +3456,6 @@ msgid "remove screenshot?"
 msgstr ""
 
 msgid "repeats"
-msgstr ""
-
-msgid "rock / pop"
-msgstr ""
-
-msgid "romance"
 msgstr ""
 
 msgid "row nr"
@@ -3369,19 +3479,10 @@ msgstr ""
 msgid "schedule"
 msgstr ""
 
-msgid "science fiction / fantasy / horror"
-msgstr ""
-
 msgid "search"
 msgstr ""
 
 msgid "see timer"
-msgstr ""
-
-msgid "serious / classical / religious / historical movie / drama"
-msgstr ""
-
-msgid "serious music / classical music"
 msgstr ""
 
 msgid "show movie infoviewer"
@@ -3420,28 +3521,10 @@ msgstr ""
 msgid "small"
 msgstr ""
 
-msgid "soap / melodrama / folkloric"
-msgstr ""
-
-msgid "social & politic events / business"
-msgstr ""
-
-msgid "social / spiritual sciences"
-msgstr ""
-
 msgid "sorting(A..Z)"
 msgstr ""
 
 msgid "sorting(Time)"
-msgstr ""
-
-msgid "special events (Olympic Games,World Cup etc.)"
-msgstr ""
-
-msgid "sports"
-msgstr ""
-
-msgid "sports magazines"
 msgstr ""
 
 msgid "stereo"
@@ -3457,18 +3540,6 @@ msgid "swap mode"
 msgstr ""
 
 msgid "switch off after"
-msgstr ""
-
-msgid "talk show"
-msgstr ""
-
-msgid "team sports (excluding football)"
-msgstr ""
-
-msgid "technology/natural sciences"
-msgstr ""
-
-msgid "tennis / squash"
 msgstr ""
 
 msgid "the filesize is 0 Bytes"
@@ -3497,12 +3568,6 @@ msgstr ""
 msgid "top right"
 msgstr ""
 
-msgid "tourism / travel"
-msgstr ""
-
-msgid "travel & recreation"
-msgstr ""
-
 msgid "type"
 msgstr ""
 
@@ -3519,9 +3584,6 @@ msgstr ""
 msgid "username"
 msgstr ""
 
-msgid "variety show"
-msgstr ""
-
 msgid "very large"
 msgstr ""
 
@@ -3534,9 +3596,6 @@ msgstr ""
 msgid "waiting for EPG..."
 msgstr ""
 
-msgid "water sports"
-msgstr ""
-
 msgid "weekly"
 msgstr ""
 
@@ -3544,9 +3603,6 @@ msgid "will added to stop time of every record timer."
 msgstr ""
 
 msgid "will be deducted of every record timer."
-msgstr ""
-
-msgid "winter sports"
 msgstr ""
 
 msgid "yes"
