@@ -402,7 +402,6 @@ class CZapit
 		bool getBouquetNChannels(const unsigned int bouquet, BouquetNChannelList& channels, const channelsMode mode = MODE_CURRENT, const bool utf_encoded = false);
 
 		// bouquetManager
-		void renumChannellist();
 		void saveBouquets();
 		void restoreBouquets();
 		void addBouquet(const char * const name); // UTF-8 encoded

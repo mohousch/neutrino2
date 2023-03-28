@@ -2391,7 +2391,7 @@ void CControlAPI::changeBouquetCGI(CyhookHandler *hh)
 			bchannels += (delta + 1); // skip the separating ',', too
 		}
 
-		CZapit::getInstance()->renumChannellist();
+		//
 		NeutrinoAPI->UpdateBouquets();
 		if(hh->ParamList["redirect"] != "")
 			hh->SendRewrite(hh->ParamList["redirect"]);

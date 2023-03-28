@@ -181,8 +181,8 @@ void CZapitBouquet::moveService(const unsigned int oldPosition, const unsigned i
 
 void CZapitBouquet::sortBouquet(void)
 {
-	sort(tvChannels.begin(), tvChannels.end(), CmpChannelByChName()); //FIXME:
-	sort(radioChannels.begin(), radioChannels.end(), CmpChannelByChName()); //FIXME:
+	sort(tvChannels.begin(), tvChannels.end(), CmpChannelByChName());
+	sort(radioChannels.begin(), radioChannels.end(), CmpChannelByChName());
 }
 
 // CBouquetManager
@@ -379,7 +379,7 @@ void CBouquetManager::saveBouquets(const CZapit::bouquetMode bouquetMode, const 
 
 void CBouquetManager::sortBouquets(void)
 {
-	sort(Bouquets.begin(), Bouquets.end(), CmpBouquetByChName()); //FIXME:
+	sort(Bouquets.begin(), Bouquets.end(), CmpBouquetByChName());
 }
 
 void CBouquetManager::parseBouquetsXml(const char *fname, bool bUser)
@@ -467,7 +467,7 @@ void CBouquetManager::makeBouquetfromCurrentservices(const _xmlNodePtr root)
 	_xmlNodePtr provider = root->xmlChildrenNode;
 	
 	// TODO: use locales
-	CZapitBouquet * newBouquet = addBouquet("Neu channel");
+	CZapitBouquet * newBouquet = addBouquet("New channel");
 	newBouquet->bHidden = false;
 	newBouquet->bLocked = false;
 	
@@ -934,7 +934,8 @@ void CBouquetManager::loadBouquets(bool loadCurrentBouquet)
 	// webTV bouquets
 	loadWebTVBouquets(CONFIGDIR "/webtv");
 
-	renumServices();
+	//renumServices();
+	makeRemainingChannelsBouquet();
 }
 
 void CBouquetManager::makeRemainingChannelsBouquet(void)
@@ -942,9 +943,12 @@ void CBouquetManager::makeRemainingChannelsBouquet(void)
 	ZapitChannelList unusedChannels;
 	set<t_channel_id> chans_processed;
 	bool tomake = config.getBool("makeRemainingChannelsBouquet", true);
-
-	int i = 1;  // tv
-    	int j = 1;  // radio
+	
+	//
+	if(remainChannels)
+		deleteBouquet(remainChannels);
+		
+	remainChannels = NULL;
 
 	for (vector<CZapitBouquet*>::const_iterator it = Bouquets.begin(); it != Bouquets.end(); it++) 
 	{
@@ -953,9 +957,6 @@ void CBouquetManager::makeRemainingChannelsBouquet(void)
 		{
 			if(tomake) 
 				chans_processed.insert((*jt)->getChannelID());
-			
-			if(!(*jt)->number) 
-				(*jt)->number = i++;
 			
 			if(!(*jt)->pname && !(*it)->bUser) 
 				(*jt)->pname = (char *) (*it)->Name.c_str();
@@ -966,9 +967,6 @@ void CBouquetManager::makeRemainingChannelsBouquet(void)
 		{
 			if(tomake) 
 				chans_processed.insert((*jt)->getChannelID());
-			
-			if(!(*jt)->number) 
-				(*jt)->number = j++;
 
 			if(!(*jt)->pname && !(*it)->bUser) 
 				(*jt)->pname = (char *) (*it)->Name.c_str();
@@ -978,8 +976,8 @@ void CBouquetManager::makeRemainingChannelsBouquet(void)
 	if(!tomake)
 		return;
 
-	// TODO: use locales
-	remainChannels = addBouquet((Bouquets.size() == 0) ? "All Channels" : "Other"); // UTF-8 encoded
+	//
+	remainChannels = addBouquet((Bouquets.size() == 0) ? "All Channels" : "Other");
 
 	for (tallchans::iterator it = allchans.begin(); it != allchans.end(); it++)
 	{
@@ -1000,31 +998,6 @@ void CBouquetManager::makeRemainingChannelsBouquet(void)
 		remainChannels = NULL;
 		return;
 	}
-
-	// renum remainsChannels
-	// tv
-	for (vector<CZapitChannel*>::iterator jt = remainChannels->tvChannels.begin(); jt != remainChannels->tvChannels.end(); jt++)
-	{
-		if(!(*jt)->number) 
-			(*jt)->number = i++;
-	}
-
-	// radio
-	for (vector<CZapitChannel*>::iterator jt = remainChannels->radioChannels.begin(); jt != remainChannels->radioChannels.end(); jt++)
-	{
-		if(!(*jt)->number) 
-			(*jt)->number = j++;
-	}
-}
-
-void CBouquetManager::renumServices()
-{
-	if(remainChannels)
-		deleteBouquet(remainChannels);
-		
-	remainChannels = NULL;
-	
-	makeRemainingChannelsBouquet();
 }
 
 CZapitBouquet * CBouquetManager::addBouquet(const std::string& name, bool ub, bool webtvb)
@@ -1090,7 +1063,7 @@ int CBouquetManager::existsBouquet(char const * const name)
 {
 	for (unsigned int i = 0; i < Bouquets.size(); i++) 
 	{
-		if ( /*(!Bouquets[i]->bUser) &&*/ (Bouquets[i]->Name == name) )
+		if ( Bouquets[i]->Name == name )
 			return (int)i;
 	}
 	
@@ -1210,6 +1183,7 @@ CZapitChannel* CBouquetManager::ChannelIterator::operator *()
 CBouquetManager::ChannelIterator CBouquetManager::ChannelIterator::FindChannelNr(const unsigned int channel)
 {
 	c = channel;
+	
 	for (b = 0; b < Owner->Bouquets.size(); b++)
 	{
 		if (getBouquet()->size() > (unsigned int)c)

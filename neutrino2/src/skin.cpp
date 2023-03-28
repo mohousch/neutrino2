@@ -1434,9 +1434,7 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 			int id = MENUITEM_LISTBOXITEM;
 			if (item_id) id = convertCMenuItemID(item_id);
 			
-			/*if (id == MENUITEM_FORWARDER)
-				menuItem = new CMenuForwarder(itemName.c_str());
-			else*/ if (id == MENUITEM_LISTBOXITEM)
+			if (id == MENUITEM_LISTBOXITEM)
 				menuItem = new ClistBoxItem(itemName.c_str());
 						
 			if (item_actionkey) actionKey = item_actionkey;

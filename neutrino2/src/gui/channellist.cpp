@@ -1700,10 +1700,7 @@ void CChannelList::paint()
 			item = new ClistBoxItem(chanlist[i]->name.c_str(), true, option.c_str());
 
 			// channel number
-			if (CNeutrinoApp::getInstance()->getChannelMode() == LIST_MODE_ALL)
-				item->setNumber(chanlist[i]->number);
-			else 
-				item->setNumber(i + 1);
+			item->setNumber(chanlist[i]->number);
 			
 			// timescale
 			if (g_settings.channellist_timescale) item->setPercent(runningPercent);

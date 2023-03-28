@@ -190,7 +190,7 @@ class CMenuWidget : public CMenuTarget
 		bool hasItem();
 		int getItemsCount()const{return items.size();};
 		void clearItems(void){items.clear();};
-		void clearAll(void){items.clear(); hbutton_labels.clear(); fbutton_labels.clear(); widget.clear();current_page = 0;};
+		void clear(void){items.clear(); hbutton_labels.clear(); fbutton_labels.clear(); widget.clear();current_page = 0;};
 
 		//
 		virtual void initFrames();

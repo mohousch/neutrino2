@@ -100,7 +100,6 @@ class CBouquetManager
 		void saveUBouquets(void);
 		void saveBouquets(const CZapit::bouquetMode bouquetMode, const char * const providerName);
 		void loadBouquets(bool loadCurrentBouquet = false);
-		void renumServices();
 
 		CZapitBouquet* addBouquet(const std::string& name, bool ub = false, bool webtvb = false);
 		CZapitBouquet* addBouquetIfNotExist(const std::string& name, bool ub = false, bool webtvb = false);

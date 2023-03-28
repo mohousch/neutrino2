@@ -4193,16 +4193,10 @@ bool CZapit::getBouquetNChannels(const unsigned int bouquet, BouquetNChannelList
 }
 
 // bqt
-void CZapit::renumChannellist()
-{
-	g_bouquetManager->renumServices();
-}
-
 void CZapit::saveBouquets()
 {
 	g_bouquetManager->saveBouquets();
 	g_bouquetManager->saveUBouquets();
-	g_bouquetManager->renumServices();
 			
 	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICESCHANGED, CEventServer::INITID_NEUTRINO);
 	
