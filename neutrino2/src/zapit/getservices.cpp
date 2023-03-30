@@ -66,16 +66,10 @@ extern bool have_a;
 satellite_map_t satellitePositions;				// satellite position as specified in satellites.xml
 std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats liste
 
-//int newtpid;
-//int tcnt = 0;
-//int scnt = 0;
-
-
-
 // parse transponder from services.xml
 void CServices::parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system)
 {
-	dprintf(DEBUG_INFO, "[getservices] parseTransponders:\n");
+	dprintf(DEBUG_INFO, "CServices::parseTransponders:\n");
 
 	t_transport_stream_id transport_stream_id;
 	t_original_network_id original_network_id;
@@ -158,7 +152,7 @@ void CServices::parseTransponders(_xmlNodePtr node, t_satellite_position satelli
 
 void CServices::parseChannels(_xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation)
 {
-	dprintf(DEBUG_DEBUG, "[getservices] parseChannels:\n");
+	dprintf(DEBUG_DEBUG, "CServices::parseChannels:\n");
 
 	t_service_id service_id;
 	std::string  name;
@@ -227,7 +221,7 @@ void CServices::parseChannels(_xmlNodePtr node, const t_transport_stream_id tran
 
 		if(ret.second == false) 
 		{
-			dprintf(DEBUG_INFO, "[getservices] parseChannels: duplicate channel %s id %llx freq %d (old %s at %d)\n", name.c_str(), chid, freq, ret.first->second.getName().c_str(), ret.first->second.getFreqId());
+			dprintf(DEBUG_INFO, "CServices::parseChannels: duplicate channel %s id %llx freq %d (old %s at %d)\n", name.c_str(), chid, freq, ret.first->second.getName().c_str(), ret.first->second.getFreqId());
 		} 
 		else 
 		{
@@ -259,7 +253,7 @@ void CServices::parseChannels(_xmlNodePtr node, const t_transport_stream_id tran
 // scan services.xml
 void CServices::findTransponder(_xmlNodePtr search)
 {
-	dprintf(DEBUG_INFO, "[getservices] findTransponder:\n");
+	dprintf(DEBUG_INFO, "CServices::findTransponder:\n");
 
 	t_satellite_position satellitePosition = 0;
     	delivery_system_t system = DVB_S;
@@ -280,7 +274,7 @@ void CServices::findTransponder(_xmlNodePtr search)
 				}
 			}
 			
-			dprintf(DEBUG_INFO, "[getservices] findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
+			dprintf(DEBUG_INFO, "CServices::findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
 		}
 		else if ( !(strcmp(xmlGetName(search), "terrestrial")) && have_t)
 		{
@@ -295,7 +289,7 @@ void CServices::findTransponder(_xmlNodePtr search)
 				}
 			}
 			
-			dprintf(DEBUG_INFO, "[getservices] FindTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
+			dprintf(DEBUG_INFO, "CServices::findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
 		}
 		else if ( !(strcmp(xmlGetName(search), "atsc")) && have_a)
 		{
@@ -310,14 +304,14 @@ void CServices::findTransponder(_xmlNodePtr search)
 				}
 			}
 			
-			dprintf(DEBUG_INFO, "[getservices] FindTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
+			dprintf(DEBUG_INFO, "CServices::findTransponder: going to parse dvb-%c provider %s\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"));
 		}
 		else if ( !(strcmp(xmlGetName(search), "sat")) && have_s) 
 		{
 			system = DVB_S;
 			satellitePosition = xmlGetSignedNumericAttribute(search, "position", 10);
 			
-			dprintf(DEBUG_INFO, "[getservices] FindTransponder: going to parse dvb-%c provider %s position %d\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"), satellitePosition);
+			dprintf(DEBUG_INFO, "CServices::findTransponder: going to parse dvb-%c provider %s position %d\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"), satellitePosition);
 		}
 		else // unknow
 		{
@@ -339,7 +333,7 @@ void CServices::findTransponder(_xmlNodePtr search)
 //static uint32_t fake_nid;
 void CServices::parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellite_position satellitePosition)
 {
-	dprintf(DEBUG_DEBUG, "[getservices] parseSatTransponders:\n");
+	dprintf(DEBUG_DEBUG, "CServices::parseSatTransponders:\n");
 
 	uint8_t polarization = 0;
 	uint8_t system = 0;
@@ -438,7 +432,7 @@ void CServices::parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search,
 
 int CServices::loadMotorPositions(void)
 {
-	dprintf(DEBUG_INFO, "[getservices] loadMotorPositions:\n");
+	dprintf(DEBUG_INFO, "CServices::loadMotorPositions:\n");
 
 	FILE *fd = NULL;
 	char buffer[256] = "";
@@ -517,7 +511,7 @@ void CServices::saveMotorPositions()
 
 void CServices::init_sat(t_satellite_position position)
 {
-	dprintf(DEBUG_DEBUG, "[getservices] init_sat:\n");
+	dprintf(DEBUG_DEBUG, "CServices::init_sat:\n");
 
 	satellitePositions[position].position = 0;
 	satellitePositions[position].diseqc = -1;
@@ -540,7 +534,7 @@ int CServices::loadTransponders()
 	
 	t_satellite_position position = 0; //first position
 
-	dprintf(DEBUG_INFO, "[getservices] loadTransponders:\n");
+	dprintf(DEBUG_INFO, "CServices::loadTransponders:\n");
 	
 	select_transponders.clear();
 	fake_tid = 0;
@@ -717,7 +711,7 @@ int CServices::loadServices(bool only_current)
 	_xmlDocPtr parser;
 	scnt = 0;
 
-	dprintf(DEBUG_INFO, "[getservices] loadServices:\n");
+	dprintf(DEBUG_INFO, "CServices::loadServices:\n");
 
 	if(only_current)
 		goto do_current;
@@ -756,7 +750,7 @@ int CServices::loadServices(bool only_current)
 		xmlFreeDoc(parser);
 	}
 
-	dprintf(DEBUG_INFO, "[getservices] loadServices: services loaded (%d)...\n", scnt);
+	dprintf(DEBUG_INFO, "CServices::loadServices: services loaded (%d)...\n", scnt);
 
 	// load motor position
 	for(int i = 0; i < FrontendCount; i++)
@@ -769,13 +763,13 @@ int CServices::loadServices(bool only_current)
 	}
 
 do_current:
-	dprintf(DEBUG_DEBUG, "[getservices] loadServices: loading current services\n");
+	dprintf(DEBUG_DEBUG, "CServices::loadServices: loading current services\n");
 
 	if (scanSDT && (parser = parseXmlFile(CURRENTSERVICES_XML))) 
 	{
 		newfound = 0;
 		
-		dprintf(DEBUG_INFO, "[getservices] loadServices: " CURRENTSERVICES_XML "  found.\n");
+		dprintf(DEBUG_INFO, "CServices::loadServices: " CURRENTSERVICES_XML "  found.\n");
 		
 		findTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
 		
@@ -789,6 +783,7 @@ do_current:
 	if(!only_current) 
 	{
 		parser = parseXmlFile(MYSERVICES_XML);
+		
 		if (parser != NULL) 
 		{
 			findTransponder(xmlDocGetRootElement(parser)->xmlChildrenNode);
@@ -797,14 +792,14 @@ do_current:
 		}
 	}
 
-	dprintf(DEBUG_INFO, "[getservices] loadServices: services loaded (%d)...\n", allchans.size());
+	dprintf(DEBUG_INFO, "CServices::loadServices: services loaded (%d)...\n", allchans.size());
 
 	return 0;
 }
 
 void CServices::saveServices(bool tocopy)
 {
-	dprintf(DEBUG_INFO, "[getservices] saveServices:\n");
+	dprintf(DEBUG_INFO, "CServices::saveServices:\n");
 	
 	transponder_id_t tpid = 0;
 	FILE * fd = 0;

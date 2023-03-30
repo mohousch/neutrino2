@@ -60,7 +60,7 @@ class CCaTable
 		unsigned writeToBuffer(unsigned char * const buffer);
 		
 		//cam
-		unsigned CamwriteToBuffer(unsigned char * const buffer);
+		unsigned CamWriteToBuffer(unsigned char * const buffer);
 
 	public:
 		unsigned reserved2		: 4;
@@ -75,7 +75,7 @@ class CEsInfo : public CCaTable
 		unsigned writeToBuffer(unsigned char * const buffer);
 		
 		//cam
-		unsigned CamwriteToBuffer(unsigned char * const buffer);
+		unsigned CamWriteToBuffer(unsigned char * const buffer);
 
 	public:
 		unsigned stream_type		: 8;
@@ -99,7 +99,7 @@ class CCaPmt : public CCaTable
 		
 		//cam
 		unsigned CamgetLength(void);
-		unsigned CamwriteToBuffer(CZapitChannel * thischannel, unsigned char * const buffer, int demux = 0, int camask = 1);
+		unsigned CamWriteToBuffer(CZapitChannel * thischannel, unsigned char * const buffer, int demux = 0, int camask = 1);
 
 		unsigned ca_pmt_list_management	: 8;
 		unsigned program_number		: 16;

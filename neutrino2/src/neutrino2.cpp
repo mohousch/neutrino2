@@ -1720,7 +1720,7 @@ void CNeutrinoApp::cmdParser(int argc, char **argv)
 		if (((!strcmp(argv[x], "-v")) || (!strcmp(argv[x], "--verbose"))) && (x + 1 < argc)) 
 		{
 			int dl = atoi(argv[x + 1]);
-			dprintf(DEBUG_NORMAL, "set debuglevel: %d\n", dl);
+			dprintf(DEBUG_NORMAL, "CNeutrinoApp::cmdParser: set debuglevel: %d\n", dl);
 			setDebugLevel(dl);
 			x++;
 		}

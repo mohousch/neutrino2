@@ -92,7 +92,7 @@ unsigned int CCaTable::writeToBuffer(unsigned char * const buffer) // returns nu
 }
 
 // cam
-unsigned int CCaTable::CamwriteToBuffer(unsigned char * const buffer) // returns number of bytes written
+unsigned int CCaTable::CamWriteToBuffer(unsigned char * const buffer) // returns number of bytes written
 { 
 	unsigned int pos = 0;
 
@@ -123,7 +123,7 @@ unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns num
 }
 
 // cam
-unsigned int CEsInfo::CamwriteToBuffer(unsigned char * const buffer) // returns number of bytes written
+unsigned int CEsInfo::CamWriteToBuffer(unsigned char * const buffer) // returns number of bytes written
 {
 	int len = 0;
 	
@@ -192,7 +192,7 @@ unsigned int CCaPmt::getLength(void)  // the (3 + length_field()) initial bytes 
 }
 
 // Cam
-unsigned int CCaPmt::CamwriteToBuffer(CZapitChannel * thischannel, unsigned char * const buffer, int demux, int camask) // returns number of bytes written
+unsigned int CCaPmt::CamWriteToBuffer(CZapitChannel * thischannel, unsigned char * const buffer, int demux, int camask) // returns number of bytes written
 {
 	unsigned int i;
 
@@ -230,18 +230,20 @@ unsigned int CCaPmt::CamwriteToBuffer(CZapitChannel * thischannel, unsigned char
         int len = 19;
         int wp = 31;
 
-	i = CCaTable::CamwriteToBuffer(&(buffer[wp]));
+	i = CCaTable::CamWriteToBuffer(&(buffer[wp]));
 	wp += i;
 	len += i;
 
-	buffer[lenpos]=((len & 0xf00)>>8);
-	buffer[lenpos+1]=(len & 0xff);
+	buffer[lenpos] = ((len & 0xf00)>>8);
+	buffer[lenpos + 1] = (len & 0xff);
 
-	for (i = 0; i < es_info.size(); i++) {
+	for (i = 0; i < es_info.size(); i++) 
+	{
 		wp += es_info[i]->writeToBuffer(&(buffer[wp]));
 	}
-	buffer[4] = ((wp-6)>>8) & 0xff;
-	buffer[5]=(wp-6) & 0xff;
+	
+	buffer[4] = ((wp - 6)>>8) & 0xff;
+	buffer[5] = (wp - 6) & 0xff;
 
 	return wp;
 }
