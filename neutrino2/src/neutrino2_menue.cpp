@@ -388,7 +388,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_LOAD_XMLTV:
 				{
 					keyhelper.get(&key, &icon);
-					menu_item = new ClistBoxItem(_(""), true, NULL, this, "reloadxmltvepg", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu_item = new ClistBoxItem(_("Reload XMLTV EPG"), true, NULL, this, "reloadxmltvepg", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
 					menu->addItem(menu_item, false);
 				}
 				break;

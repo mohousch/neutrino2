@@ -55,6 +55,7 @@ extern tallchans allchans;	// defined in bouquets.h
 //FIXME: auto-timeshift
 extern bool autoshift;
 extern uint32_t scrambled_timer;
+void stopAutoRecord();
 
 CSubService::CSubService(const t_original_network_id anoriginal_network_id, const t_service_id aservice_id, const t_transport_stream_id atransport_stream_id, const std::string &asubservice_name)
 {
@@ -711,9 +712,7 @@ const std::string & CRemoteControl::subChannelDown(void)
   	}
 }
 
-void stopAutoRecord();
-extern int abort_zapit;
-
+//
 void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::string & channame, const bool start_video) // UTF-8
 {
 	current_channel_id = channel_id;
@@ -756,13 +755,9 @@ void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::s
 			g_RCInput->killTimer(scrambled_timer);
 			scrambled_timer = 0;
 		}
-		
-		abort_zapit = 1;
 
 		// zap
 		CZapit::getInstance()->zapTo_serviceID_NOWAIT(channel_id);
-		
-		abort_zapit = 0;
 
 		zap_completion_timeout = now + 2 * (long long) 1000000;
 		

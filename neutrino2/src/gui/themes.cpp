@@ -107,7 +107,7 @@ int CThemes::exec(CMenuTarget * parent, const std::string& actionKey)
 			//
 			if (g_settings.preferred_skin != "neutrino2")
 			{
-				if (MessageBox(_("Information"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+				if (MessageBox(_("Information"), _("this need GUI restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 				{
 					CNeutrinoApp::getInstance()->exec(NULL, "restart");
 				}
@@ -133,7 +133,7 @@ int CThemes::exec(CMenuTarget * parent, const std::string& actionKey)
 			//
 			if (g_settings.preferred_skin != "neutrino2")
 			{
-				if (MessageBox(_("Information"), _("this need Neutrino restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
+				if (MessageBox(_("Information"), _("this need GUI restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
 				{
 					CNeutrinoApp::getInstance()->exec(NULL, "restart");
 				}

@@ -288,7 +288,7 @@ class CZapit
 		void leaveStandby(void);
 		
 		//
-		pthread_t scan_thread; 
+		pthread_t scan_thread, scan_tp_thread; 
 		static void * start_scanthread(void *data);
 		static void * scan_transponder(void * data);
 		

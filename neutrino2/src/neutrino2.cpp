@@ -225,7 +225,6 @@ extern int dvbsub_terminate();
 static CProgressBar * g_volscale;
 
 // zapit
-extern int zapit_ready;					//defined in zapit.cpp
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 Zapit_config zapitCfg;
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
@@ -2457,10 +2456,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	// zapit
 	CZapit::getInstance()->Start(&ZapStart_arg);
-
-	// wait until zapit is ready
-	while(!zapit_ready)
-		usleep(0);
 	
 	// dvbsub thread
 	dvbsub_init();
@@ -4976,7 +4971,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 				
 			//tuxtxt_close();
 				
-			HintBox(_("Information"), _("Saving Skin settings now, please be patient.\n this needs Neutrino restart."));
+			HintBox(_("Information"), _("Saving Skin settings now, please be patient.\n this needs GUI restart."));
 		}
 	}
 	else if (actionKey == "defaultskinsettings")

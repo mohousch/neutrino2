@@ -117,10 +117,6 @@ void stopOpenGLplayback();
 // webtv
 extern cPlayback *playback;
 
-// globals 
-int zapit_ready = 0;
-int abort_zapit = 0;
-
 // ci
 #if defined (ENABLE_CI)
 cDvbCi * ci = NULL;
@@ -1198,12 +1194,6 @@ bool CZapit::tune_to_channel(CFrontend * frontend, CZapitChannel * thischannel, 
 			for(int i = 0; i < waitForMotor; i++) 
 			{
 				sleep(1);
-					
-				if(abort_zapit) 
-				{
-					abort_zapit = 0;
-					return false;
-				}
 			}
 		}
 	}
@@ -2775,7 +2765,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 	
 	dprintf(DEBUG_INFO, "CZaoit::sdt_thread: sdt monitor started\n");
 
-	while(zapit_ready) 
+	while(true) 
 	{
 		sleep(1);
 
@@ -3248,8 +3238,6 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::Start\n");
 	
-	abort_zapit = 0;
-	
 	//scan for dvb adapter/frontend and feed them in map
 	initFrontend();
 	
@@ -3468,8 +3456,6 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	
 	//create pmt update filter thread
 	pthread_create(&tpmt, NULL, updatePMTFilter, (void *) NULL);
-	
-	zapit_ready = 1;	
 }
 
 //
@@ -3594,8 +3580,6 @@ void CZapit::Stop()
 	//close frontend	
 	for(fe_map_iterator_t it = femap.begin(); it != femap.end(); it++)
 		delete it->second;
-
-	zapit_ready = 0;
 }
 
 //
@@ -4391,7 +4375,7 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 	
 	scan_runs = 1;
 	
-	if (pthread_create(&scan_thread, NULL, scan_transponder, (void*) &TP)) 
+	if (pthread_create(&scan_tp_thread, NULL, scan_transponder, (void*) &TP)) 
 	{
 		dprintf(DEBUG_INFO, "CZapit::scanTP: pthread_create\n");
 		scan_runs = 0;

@@ -613,7 +613,7 @@ bool CChannelListSettings::changeNotify(const std::string& OptionName, void */*d
 	else if(OptionName == _("Scan SDT for updates"))
 	{
 		CZapit::getInstance()->setZapitConfig(&zapitCfg);
-		bool ret = (MessageBox(_("Information"), _("Neutrino restart"), mbrNo, mbNo | mbYes) == mbrYes);
+		bool ret = (MessageBox(_("Information"), _("GUI restart"), mbrNo, mbNo | mbYes) == mbrYes);
 
 		if(ret)
 			CNeutrinoApp::getInstance()->exitRun(CNeutrinoApp::RESTART);

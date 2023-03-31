@@ -90,7 +90,7 @@ void CPowerMenu::showMenu(void)
 		powerMenu->addItem(new ClistBoxItem(_("Sleeptimer"), true, NULL, new CSleepTimerWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
 
 		// restart neutrino
-		powerMenu->addItem(new ClistBoxItem(_("Neutrino Restart"), true, NULL, CNeutrinoApp::getInstance(), "restart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RESTART));
+		powerMenu->addItem(new ClistBoxItem(_("GUI restart"), true, NULL, CNeutrinoApp::getInstance(), "restart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RESTART));
 
 		// standby
 		powerMenu->addItem(new ClistBoxItem(_("Standby"), true, NULL, CNeutrinoApp::getInstance(), "standby", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STANDBY));

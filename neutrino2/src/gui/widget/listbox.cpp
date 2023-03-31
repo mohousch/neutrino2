@@ -3188,7 +3188,7 @@ void ClistBox::swipRight()
 }
 
 //
-int ClistBox::oKKeyPressed(CMenuTarget* _parent, neutrino_msg_t _msg)
+int ClistBox::oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg)
 {
 	dprintf(DEBUG_INFO, "ClistBox::okKeyPressed:\n");
 	
@@ -3200,7 +3200,7 @@ int ClistBox::oKKeyPressed(CMenuTarget* _parent, neutrino_msg_t _msg)
 		items[selected]->msg = _msg;
 	}	
 
-	ret = items[selected]->exec(_parent);
+	ret = items[selected]->exec(target);
 	
 	return ret;
 }

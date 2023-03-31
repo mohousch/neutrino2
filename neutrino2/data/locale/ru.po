@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-25 15:06+0100\n"
+"POT-Creation-Date: 2023-03-31 18:16+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1022,6 +1022,9 @@ msgstr "Полноэкранный режим"
 msgid "Further education"
 msgstr "дополнительное образование"
 
+msgid "GUI restart"
+msgstr ""
+
 #, fuzzy
 msgid "Game show / Quiz / Contest"
 msgstr "игровое шоу/викторина/конкурс"
@@ -1661,12 +1664,6 @@ msgstr ""
 msgid "Neu by Netzkino"
 msgstr ""
 
-msgid "Neutrino Restart"
-msgstr "Перезапуск Нейтрино"
-
-msgid "Neutrino restart"
-msgstr "Перезапуск Нейтрино"
-
 #, fuzzy
 msgid "Neutrino2"
 msgstr "Перезапуск Нейтрино"
@@ -2301,7 +2298,7 @@ msgstr "Сохранение конфигурации пульта, пожалу
 
 msgid ""
 "Saving Skin settings now, please be patient.\n"
-" this needs Neutrino restart."
+" this needs GUI restart."
 msgstr ""
 
 #, fuzzy
@@ -3812,14 +3809,14 @@ msgid "the filesize is 0 Bytes"
 msgstr "содержимое файла размером 0 байт"
 
 #, fuzzy
-msgid "this need Neutrino restart"
+msgid "this need GUI restart"
 msgstr ""
 "для этого нужен перезапуск нейтрино\n"
 "Выбрать стиль?"
 
 #, fuzzy
 msgid ""
-"this need Neutrino restart\n"
+"this need GUI restart\n"
 "do you really want to restart?"
 msgstr ""
 "в любом случае Нейтрино нужно перезапустить\n"
