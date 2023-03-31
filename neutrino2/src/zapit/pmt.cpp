@@ -719,7 +719,7 @@ int CPmt::pmt_set_update_filter( CZapitChannel * const channel, int * fd, CFront
 	mask[2] = 0xFF;
 	mask[4] = 0xFF;
 
-	dprintf(DEBUG_NORMAL, "[pmt] pmt_set_update_filter: sid 0x%x pid 0x%x version 0x%x\n", channel->getServiceId(), channel->getPmtPid(), channel->getCaPmt()->version_number);
+	dprintf(DEBUG_NORMAL, "CPmt::pmt_set_update_filter: sid 0x%x pid 0x%x version 0x%x\n", channel->getServiceId(), channel->getPmtPid(), channel->getCaPmt()->version_number);
 	
 	filter[3] = (channel->getCaPmt()->version_number << 1) | 0x01;
 	mask[3] = (0x1F << 1) | 0x01;
@@ -734,7 +734,7 @@ int CPmt::pmt_set_update_filter( CZapitChannel * const channel, int * fd, CFront
 
 int CPmt::pmt_stop_update_filter(int * fd)
 {
-	dprintf(DEBUG_NORMAL, "[pmt] pmt_stop_update_filter\n");
+	dprintf(DEBUG_NORMAL, "CPmt::pmt_stop_update_filter\n");
 
 	if (pmtDemux)
 		pmtDemux->Stop();

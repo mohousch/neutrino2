@@ -46,15 +46,13 @@
 
 int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
-	dprintf(DEBUG_NORMAL, "CNit::%s:\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CNit::parseNIT:\n");
 	
 	int ret = 0;
 	int secdone[255];
 	int sectotal = -1;
 
 	memset(secdone, 0, 255);
-	
-	dprintf(DEBUG_NORMAL, "%s\n", __FUNCTION__);
 	
 	cDemux * dmx = new cDemux();
 	
@@ -105,7 +103,7 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 		}
 
 		if(buffer[0] != 0x40)
-			printf("parse_nit: Bogus section received: 0x%x\n", buffer[0]);
+			printf("CNit::parseNIT: Bogus section received: 0x%x\n", buffer[0]);
 
 		section_length = ((buffer[1] & 0x0F) << 8) + buffer[2];
 		network_id = ((buffer[3] << 8)| buffer [4]);

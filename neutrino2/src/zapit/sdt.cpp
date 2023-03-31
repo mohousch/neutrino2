@@ -50,8 +50,6 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 	int sectotal = -1;
 
 	memset(secdone, 0, 255);
-	
-	dprintf(DEBUG_NORMAL, "[sdt] %s:\n", __FUNCTION__);
 
 	cDemux * dmx = new cDemux();
 	
@@ -105,7 +103,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 		}
 
 		if(buffer[0] != 0x42)
-		        printf("parse_sdt: fe(%d) Bogus section received: 0x%x\n", feindex, buffer[0]);
+		        printf("CSdt::parseSDT: fe(%d) Bogus section received: 0x%x\n", feindex, buffer[0]);
 
 		section_length = ((buffer[1] & 0x0F) << 8) | buffer[2];
 		transport_stream_id = (buffer[3] << 8) | buffer[4];
