@@ -3000,7 +3000,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 
 			if(updated && (scanSDT == 1))
 			{
-				CZapit::getInstance()->reinitChannels();
+				CServices::getInstance()->loadServices(true);
 			  	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICES_UPD, CEventServer::INITID_NEUTRINO);
 			}
 
