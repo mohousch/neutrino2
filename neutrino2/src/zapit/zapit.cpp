@@ -2806,10 +2806,8 @@ void * CZapit::sdt_thread(void */*arg*/)
 			char tpstr[256];
 			char satstr[256];
 			bool tpdone = 0;
-			//bool satfound = 0;
-			//FIXME: writing current services is brocken ;(
-			//NOTE: think about multi services
-
+			bool satfound = 0;
+		
 			tI = transponders.find(tpid);
 			if(tI == transponders.end()) 
 			{
@@ -2834,6 +2832,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 
 			char buffer[256];
 			fd = fopen(CURRENTSERVICES_TMP, "w");
+			
 			if(!fd) 
 			{
 				dprintf(DEBUG_INFO, "CZapit::sdt_thread: " CURRENTSERVICES_TMP ": cant open!\n");
@@ -2843,6 +2842,8 @@ void * CZapit::sdt_thread(void */*arg*/)
 			sat_iterator_t spos_it = satellitePositions.find(satellitePosition); 
 			if(spos_it == satellitePositions.end())
 				continue;
+				
+			const char* delsys = "";
 
 			if(live_channel) 
 			{
@@ -2855,6 +2856,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 						tI->second.feparams.frequency, tI->second.feparams.inversion,
 						tI->second.feparams.u.qpsk.symbol_rate, tI->second.feparams.u.qpsk.fec_inner,
 						tI->second.polarization);
+						delsys = "</sat>";
 						break;
 
 					case DVB_C: /* cable */
@@ -2864,6 +2866,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 						tI->second.feparams.frequency, tI->second.feparams.inversion,
 						tI->second.feparams.u.qam.symbol_rate, tI->second.feparams.u.qam.fec_inner,
 						tI->second.feparams.u.qam.modulation);
+						delsys = "</cable>";
 						break;
 						
 					case DVB_T: /* terrestrial */
@@ -2873,6 +2876,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 						tI->second.feparams.frequency, tI->second.feparams.inversion,
 						tI->second.feparams.u.ofdm.bandwidth, tI->second.feparams.u.ofdm.code_rate_HP,
 						tI->second.feparams.u.ofdm.code_rate_LP, tI->second.feparams.u.ofdm.constellation,tI->second.feparams.u.ofdm.transmission_mode, tI->second.feparams.u.ofdm.guard_interval, tI->second.feparams.u.ofdm.hierarchy_information);
+						delsys = "</terrestrial>";
 						break;
 
 					default:
@@ -2889,15 +2893,14 @@ void * CZapit::sdt_thread(void */*arg*/)
 			else 
 			{
 				fgets(buffer, 255, fd1);
-				//while(!feof(fd1) && !strstr(buffer, satfound ? "</sat>" : "</zapit>")) 
-				while( !feof(fd1) ) 
+				while(!feof(fd1) && !strstr(buffer, satfound ? delsys : "</zapit>")) 
 				{
-					//if(!satfound && !strcmp(buffer, satstr))
-					//	satfound = 1;
+					if(!satfound && !strcmp(buffer, satstr))
+						satfound = 1;
+						
 					fputs(buffer, fd);
 					fgets(buffer, 255, fd1);
 				}
-				//fclose(fd1);
 			}
 
 			for (tallchans_iterator cI = curchans.begin(); cI != curchans.end(); cI++) 
@@ -2907,8 +2910,9 @@ void * CZapit::sdt_thread(void */*arg*/)
 				{
 					if(!tpdone) 
 					{
-						//if(!satfound) 
+						if(!satfound) 
 							fprintf(fd, "%s", satstr);
+							
 						fprintf(fd, "%s", tpstr);
 						tpdone = 1;
 					}
@@ -2922,17 +2926,19 @@ void * CZapit::sdt_thread(void */*arg*/)
 				{
 					if(strcmp(cI->second.getName().c_str(), ccI->second.getName().c_str())) 
 					{
-					   if(!tpdone) 
-					   {
-						//if(!satfound) 
-							fprintf(fd, "%s", satstr);
-						fprintf(fd, "%s", tpstr);
-						tpdone = 1;
-					   }
-					   updated = 1;
-					   fprintf(fd, "\t\t\t<S action=\"replace\" i=\"%04x\" n=\"%s\" t=\"%x\"/>\n",
-                                        	cI->second.getServiceId(), UTF8_to_UTF8XML(cI->second.getName().c_str()).c_str(),
-                                        	cI->second.getServiceType());
+						if(!tpdone) 
+						{
+							if(!satfound) 
+								fprintf(fd, "%s", satstr);
+								
+							fprintf(fd, "%s", tpstr);
+							tpdone = 1;
+						}
+						updated = 1;
+						
+						fprintf(fd, "\t\t\t<S action=\"replace\" i=\"%04x\" n=\"%s\" t=\"%x\"/>\n",
+		                                	cI->second.getServiceId(), UTF8_to_UTF8XML(cI->second.getName().c_str()).c_str(),
+		                                	cI->second.getServiceType());
 					}
 				}
 			}
@@ -2946,7 +2952,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 					{
 					   	if(!tpdone) 
 						{
-							//if(!satfound) 
+							if(!satfound) 
 								fprintf(fd, "%s", satstr);
 
 							fprintf(fd, "%s", tpstr);
@@ -2963,49 +2969,13 @@ void * CZapit::sdt_thread(void */*arg*/)
 
 			if(tpdone) 
 			{
-				//fprintf(fd, "\t\t</TS>\n");
-				//switch ( live_fe->getInfo()->type)
-				switch(spos_it->second.system)
-				{
-					case DVB_S: /* satellite */
-						fprintf(fd, "\t</sat>\n");
-						break;
-						
-					case DVB_C: /* cable */
-						fprintf(fd, "\t</cable>\n");
-						break;
-						
-					case DVB_T: /* terrestrial */
-						fprintf(fd, "\t</terrestrial>\n");
-						break;
-						
-					default:
-						break;
-				}
+				fprintf(fd, "\t\t</TS>\n");
+				fprintf(fd, "\t%s\n", delsys);
 			}
-			#if 0
 			else if(satfound)
 			{
-				//fprintf(fd, "\t</sat>\n");
-				switch ( live_fe->getInfo()->type)
-				{
-					case FE_QPSK: /* satellite */
-						fprintf(fd, "\t</sat>\n");
-						break;
-						
-					case FE_QAM: /* cable */
-						fprintf(fd, "\t</cable>\n");
-						break;
-						
-					case FE_OFDM: /* satellite */
-						fprintf(fd, "\t</terrestrial>\n");
-						break;
-						
-					default:
-						break;
-				}
+				fprintf(fd, "\t%s\n", delsys);
 			}
-			#endif
 
 			if(fd1) 
 			{
@@ -3016,21 +2986,25 @@ void * CZapit::sdt_thread(void */*arg*/)
 					fgets(buffer, 255, fd1);
 				}
 
-				//if(!satfound) 
+				if(!satfound) 
 					fprintf(fd, "</zapit>\n");
 
 				fclose(fd1);
 			} 
-			//else
-			//	fprintf(fd, "</zapit>\n");
+			else
+				fprintf(fd, "</zapit>\n");
+				
 			fclose(fd);
 
 			rename(CURRENTSERVICES_TMP, CURRENTSERVICES_XML);
 
 			if(updated && (scanSDT == 1))
+			{
+				CZapit::getInstance()->reinitChannels();
 			  	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICES_UPD, CEventServer::INITID_NEUTRINO);
+			}
 
-			dprintf(DEBUG_INFO, "CZapit::sdt_thread: %s\n", updated? "found changes": "no changes found");
+			dprintf(DEBUG_NORMAL, "CZapit::sdt_thread: %s\n", updated? "found changes": "no changes found");
 		}
 	}
 

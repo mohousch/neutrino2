@@ -127,7 +127,7 @@
 		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Power Menu" icon="power" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<ITEM id="MENUITEM_LISTBOXITEM" localename="Sleeptimer" itemicon="hint_sleeptimer" target="sleeptimer">
 			</ITEM>
-			<ITEM id="MENUITEM_LISTBOXITEM" localename="Neutrino Restart" itemicon="hint_restart" target="neutrino" actionkey="restart">
+			<ITEM id="MENUITEM_LISTBOXITEM" localename="GUI restart" itemicon="hint_restart" target="neutrino" actionkey="restart">
 			</ITEM>
 			<ITEM id="MENUITEM_LISTBOXITEM" localename="Standby" itemicon="hint_standby" target="neutrino" actionkey="standby">
 			</ITEM>

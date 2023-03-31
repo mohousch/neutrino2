@@ -195,7 +195,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				CSectionsd::getInstance()->setServiceChanged( current_channel_id, true );
 				CNeutrinoApp::getInstance()->channelList->adjustToChannelID(current_channel_id);
 				
-				// update info.				
+				// update info			
 			}
 
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
