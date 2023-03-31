@@ -425,9 +425,9 @@ void CDescriptors::bouquet_name_descriptor(const unsigned char * const)
 
 uint8_t CDescriptors::fix_service_type(uint8_t type)
 {
-	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "[descriptor] %s:\n", __FUNCTION__);
 	
-	if( (type == 0x9A) || (type == 0x86) || (type==0xc3) || (type==0xc5) || (type==0xc6) )
+	if( (type == 0x9A) || (type == 0x86) || (type == 0xc3) || (type == 0xc5) || (type == 0xc6) )
 			return 1;
 	return type;
 }
@@ -701,9 +701,10 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 	}
 }
 
+//
 void CDescriptors::current_service_descriptor(const unsigned char * const buffer, const t_service_id service_id, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq)
 {
-	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "[descriptor] %s:\n", __FUNCTION__);
 	
 	bool service_wr = false;
 	uint8_t service_type = buffer[2];
