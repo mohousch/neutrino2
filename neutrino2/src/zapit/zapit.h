@@ -260,7 +260,7 @@ class CZapit
 		void unsetRecordMode(void);
 		void setRadioMode(void);
 		void setTVMode(void);
-		int prepare_channels();
+		int prepareChannels();
 		
 		unsigned int zapTo_ChannelID(const t_channel_id channel_id, const bool isSubService);
 
@@ -294,11 +294,12 @@ class CZapit
 		
 		//
 		pthread_t tsdt;
-		static void * sdt_thread(void * arg);
+		static void * sdtThread(void * arg);
 		//
+		pthread_t tpmt;
 		static void *updatePMTFilter(void *);
 		
-		CZapit(){};
+		CZapit(){scan_thread = 0; scan_tp_thread = 0; tsdt = 0; tpmt = 0;};
 	public:
 		~CZapit(){};
 		static CZapit *getInstance()

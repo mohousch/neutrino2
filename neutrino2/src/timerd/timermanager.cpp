@@ -86,7 +86,7 @@ void CTimerManager::Init(void)
 	loadRecordingSafety();
 
 	// thread starten
-	if(pthread_create (&thrTimer, 0, timerThread, 0) != 0 )
+	if(pthread_create (&thrTimer, NULL, timerThread, (void *)NULL) != 0 )
 	{
 		dprintf(DEBUG_NORMAL, "CTimerManager::Init: create timerThread failed\n");
 	}

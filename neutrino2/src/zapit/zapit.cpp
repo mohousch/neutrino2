@@ -220,7 +220,6 @@ uint32_t  lastChannelTV = 0;
 bool makeRemainingChannelsBouquet = false;
 
 // pmt update filter
-pthread_t tpmt = 0;
 static int pmt_update_fd = -1;
 
 // dvbsub
@@ -1794,7 +1793,7 @@ void CZapit::unsetRecordMode(void)
 	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, (void *)false, sizeof(bool) );
 }
 
-int CZapit::prepare_channels()
+int CZapit::prepareChannels()
 {
 	live_channel = 0;
 	
@@ -1812,11 +1811,11 @@ int CZapit::prepare_channels()
 	// load services
 	if (CServices::getInstance()->loadServices(false) < 0)
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::prepare_channels: loadServices: failed\n");
+		dprintf(DEBUG_NORMAL, "CZapit::prepareChannels: loadServices: failed\n");
 		return -1;
 	}
 
-	dprintf(DEBUG_NORMAL, "CZapit::prepare_channels: loadServices: success\n");
+	dprintf(DEBUG_NORMAL, "CZapit::prepareChannels: loadServices: success\n");
 
 	// load bouquets
 	g_bouquetManager->loadBouquets();		// 2004.08.02 g_bouquetManager->storeBouquets();
@@ -2740,9 +2739,9 @@ void CZapit::getZapitConfig(Zapit_config *Cfg)
 }
 
 //
-void * CZapit::sdt_thread(void */*arg*/)
+void * CZapit::sdtThread(void */*arg*/)
 {
-	dprintf(DEBUG_NORMAL, "CZapit::sdt_thread: starting... tid %ld\n", syscall(__NR_gettid));
+	dprintf(DEBUG_NORMAL, "CZapit::sdtThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	if (!FrontendCount)
 		return 0;
@@ -2763,7 +2762,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 	tstart = time(0);
 	sdt_tp.clear();
 	
-	dprintf(DEBUG_INFO, "CZaoit::sdt_thread: sdt monitor started\n");
+	dprintf(DEBUG_INFO, "CZaoit::sdtThread: sdt monitor started\n");
 
 	while(true) 
 	{
@@ -2791,7 +2790,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 		
 		if(wtime && ((tcur - wtime) > 2) && !sdt_wakeup) 
 		{
-			dprintf(DEBUG_INFO, "Czapit::sdt_thread: sdt monitor wakeup...\n");
+			dprintf(DEBUG_INFO, "Czapit::sdtThread: sdt monitor wakeup...\n");
 			
 			wtime = 0;
 
@@ -2811,14 +2810,14 @@ void * CZapit::sdt_thread(void */*arg*/)
 			tI = transponders.find(tpid);
 			if(tI == transponders.end()) 
 			{
-				dprintf(DEBUG_INFO, "CZapit::sdt_thread: tp not found ?!\n");
+				dprintf(DEBUG_INFO, "CZapit::sdtThread: tp not found ?!\n");
 				continue;
 			}
 			stI = sdt_tp.find(tpid);
 
 			if((stI != sdt_tp.end()) && stI->second) 
 			{
-				dprintf(DEBUG_INFO, "CZapit::sdt_thread: TP already updated.\n");
+				dprintf(DEBUG_INFO, "CZapit::sdtThread: TP already updated.\n");
 				continue;
 			}
 
@@ -2835,7 +2834,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 			
 			if(!fd) 
 			{
-				dprintf(DEBUG_INFO, "CZapit::sdt_thread: " CURRENTSERVICES_TMP ": cant open!\n");
+				dprintf(DEBUG_INFO, "CZapit::sdtThread: " CURRENTSERVICES_TMP ": cant open!\n");
 				continue;
 			}
 
@@ -3004,7 +3003,7 @@ void * CZapit::sdt_thread(void */*arg*/)
 			  	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICES_UPD, CEventServer::INITID_NEUTRINO);
 			}
 
-			dprintf(DEBUG_NORMAL, "CZapit::sdt_thread: %s\n", updated? "found changes": "no changes found");
+			dprintf(DEBUG_NORMAL, "CZapit::sdtThread: %s\n", updated? "found changes": "no changes found");
 		}
 	}
 
@@ -3082,8 +3081,8 @@ static int vtunerFD = -1;
 static int frontendFD = -1;
 unsigned char buffer[(188 / 4) * 4096];
 __u16 pidlist[30];
-#define BUFFER_SIZE ((188 / 4) * 4096) /* multiple of ts packet and page size */
-#define DEMUX_BUFFER_SIZE (8 * ((188 / 4) * 4096)) /* 1.5MB */
+#define BUFFER_SIZE ((188 / 4) * 4096) 			/* multiple of ts packet and page size */
+#define DEMUX_BUFFER_SIZE (8 * ((188 / 4) * 4096)) 	/* 1.5MB */
 
 void *pump_proc(void *ptr)
 {
@@ -3206,8 +3205,7 @@ void *event_proc(void *ptr)
 	return NULL;
 }
 
-//#define CHECK_FOR_LOCK
-
+//
 void CZapit::Start(Z_start_arg *ZapStart_arg)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::Start\n");
@@ -3413,10 +3411,10 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	}
 
 	// load services
-	prepare_channels();
+	prepareChannels();
 
 	//create sdt thread
-	pthread_create(&tsdt, NULL, sdt_thread, (void *) NULL);
+	pthread_create(&tsdt, NULL, sdtThread, (void *) NULL);
 
 	//get live channel
 	tallchans_iterator cit;
@@ -3969,7 +3967,7 @@ void CZapit::reinitChannels()
 {		
 	t_channel_id cid = live_channel ? live_channel->getChannelID() : 0; 
 	
-	prepare_channels();
+	prepareChannels();
 			
 	tallchans_iterator cit = allchans.find(cid);
 	if (cit != allchans.end()) 
@@ -4160,7 +4158,7 @@ void CZapit::restoreBouquets()
 {
 	if(g_list_changed) 
 	{
-		prepare_channels();
+		prepareChannels();
 				
 		g_list_changed = 0;
 	} 
