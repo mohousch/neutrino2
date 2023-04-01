@@ -363,8 +363,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 
 	hide();
 	
-	// start sectionsd
-	//g_Sectionsd->setPauseScanning(false);
+	//
 	CSectionsd::getInstance()->pauseScanning(false);
 
 	// zap

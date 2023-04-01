@@ -1846,9 +1846,9 @@ void CZapit::parseScanInputXml(fe_type_t fe_type)
 			scanInputParser = parseXmlFile(TERRESTRIALS_XML);
 			break;
 
-        case FE_ATSC:
-            scanInputParser = parseXmlFile(ATSC_XML);
-            break;
+		case FE_ATSC:
+		    	scanInputParser = parseXmlFile(ATSC_XML);
+		    	break;
 			
 		default:
 			dprintf(DEBUG_INFO, "CZapit::parseScanInputXml: Unknown type %d\n", fe_type);
@@ -4299,6 +4299,7 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 	return ret;
 }
 
+//
 bool CZapit::scanTP(TP_params TP, int feindex)
 {
 	if(!(TP.feparams.frequency > 0) && (live_channel && !live_channel->isWebTV)) 
@@ -4349,7 +4350,7 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 	
 	scan_runs = 1;
 	
-	if (pthread_create(&scan_tp_thread, NULL, scan_transponder, (void*) &TP)) 
+	if (pthread_create(&scan_tp_thread, NULL, scanTransponderThread, (void*) &TP)) 
 	{
 		dprintf(DEBUG_INFO, "CZapit::scanTP: pthread_create\n");
 		scan_runs = 0;
@@ -4467,8 +4468,6 @@ bool CZapit::startScan(int scan_mode, int feindex)
 	StartScan.scanmode = scan_mode;
 	StartScan.feindex = feindex;
 	
-	bool ret = false;
-	
 	// reread scaninputParser
     	if(scanInputParser) 
 	{
@@ -4499,7 +4498,7 @@ bool CZapit::startScan(int scan_mode, int feindex)
 	found_transponders = 0;
 	found_channels = 0;
 
-	if (pthread_create(&scan_thread, NULL, start_scanthread,  (void*)&StartScan)) 
+	if (pthread_create(&scan_thread, NULL, scanThread,  (void*)&StartScan)) 
 	{
 		dprintf(DEBUG_INFO, "CZapit::startScan: pthread_create failed\n");
 		scan_runs = 0;
@@ -4511,7 +4510,7 @@ bool CZapit::startScan(int scan_mode, int feindex)
 			
 	retune = true;
 	
-	return scan_runs;
+	return true;
 }
 
 bool CZapit::stopScan()
@@ -4530,9 +4529,9 @@ bool CZapit::stopScan()
 }		
 
 //
-void * CZapit::start_scanthread(void *data)
+void * CZapit::scanThread(void *data)
 {
-	dprintf(DEBUG_NORMAL, "CZapit::start_scanthread: starting... tid %ld\n", syscall(__NR_gettid));
+	dprintf(DEBUG_NORMAL, "CZapit::scanThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	if (!data)
 		return 0;
@@ -4566,7 +4565,7 @@ void * CZapit::start_scanthread(void *data)
 	scanMode = mode & 0xFF;	// NIT (0) or fast (1)
 	scan_sat_mode = mode & 0xFF00; 	// single = 0, all = 1
 
-	dprintf(DEBUG_NORMAL, "CZapit::start_scanthread: scan mode %s, satellites %s\n", scanMode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
+	dprintf(DEBUG_NORMAL, "CZapit::scanThread: scan mode %s, satellites %s\n", scanMode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
 
 	fake_tid = fake_nid = 0;
 
@@ -4641,7 +4640,7 @@ void * CZapit::start_scanthread(void *data)
 			scanedtransponders.clear();
 			nittransponders.clear();
 
-			dprintf(DEBUG_INFO, "CZapit::start_scanthread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
+			dprintf(DEBUG_INFO, "CZapit::scanThread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
 				
 			CScan::getInstance()->scanProvider(search, position, diseqc_pos, satfeed, feindex);
 					
@@ -4664,19 +4663,19 @@ void * CZapit::start_scanthread(void *data)
 	}
 
 	// report status
-	dprintf(DEBUG_NORMAL, "CZapit::start_scanthread: found %d transponders (%d failed) and %d channels\n", found_transponders, failed_transponders, found_channels);
+	dprintf(DEBUG_NORMAL, "CZapit::scanThread: found %d transponders (%d failed) and %d channels\n", found_transponders, failed_transponders, found_channels);
 
 	if (found_channels) 
 	{
 		CServices::getInstance()->saveServices(true);
 		
-		dprintf(DEBUG_NORMAL, "CZapit::start_scanthread: save services done\n"); 
+		dprintf(DEBUG_NORMAL, "CZapit::scanThread: save services done\n"); 
 		
 	        g_bouquetManager->saveBouquets();
 	        g_bouquetManager->clearAll();
 		g_bouquetManager->loadBouquets();
 		
-		dprintf(DEBUG_INFO, "CZapit::start_scanthread: save bouquets done\n");
+		dprintf(DEBUG_INFO, "CZapit::scanThread: save bouquets done\n");
 		
 		// notify client about end of scan
 		scan_runs = 0;
@@ -4712,14 +4711,16 @@ void * CZapit::start_scanthread(void *data)
 	pthread_exit(NULL);
 }
 
-void * CZapit::scan_transponder(void * data)
+//
+void * CZapit::scanTransponderThread(void * data)
 {
-	dprintf(DEBUG_NORMAL, "CZapit::scan_transponder: starting... tid %ld\n", syscall(__NR_gettid));
+	dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	if (!data)
 		return 0;
 	
 	CZapit::commandScanTP ScanTP = *(CZapit::commandScanTP *) data;
+	
 	TP_params * TP = &ScanTP.TP;
 	int feindex = ScanTP.feindex;
 	
@@ -4743,7 +4744,7 @@ void * CZapit::scan_transponder(void * data)
 
 	satellitePosition = scanProviders.begin()->first;
 	
-	dprintf(DEBUG_INFO, "CZapit::scan_transponder: scanning sat %s position %d fe(%d)\n", providerName, satellitePosition, ScanTP.feindex);
+	dprintf(DEBUG_INFO, "CZapit::scanTransponderThread: scanning sat %s position %d fe(%d)\n", providerName, satellitePosition, ScanTP.feindex);
 	
 	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, providerName, strlen(providerName) + 1);
 
@@ -4752,15 +4753,15 @@ void * CZapit::scan_transponder(void * data)
 
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::scan_transponder: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP->feparams.frequency, TP->feparams.u.qam.symbol_rate, TP->feparams.u.qam.fec_inner, TP->feparams.u.qam.modulation);
+		dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP->feparams.frequency, TP->feparams.u.qam.symbol_rate, TP->feparams.u.qam.fec_inner, TP->feparams.u.qam.modulation);
 	}
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::scan_transponder: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP->feparams.frequency, TP->feparams.u.ofdm.bandwidth, TP->feparams.u.ofdm.code_rate_HP, TP->feparams.u.ofdm.code_rate_LP, TP->feparams.u.ofdm.constellation, TP->feparams.u.ofdm.transmission_mode, TP->feparams.u.ofdm.guard_interval, TP->feparams.u.ofdm.hierarchy_information);
+		dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP->feparams.frequency, TP->feparams.u.ofdm.bandwidth, TP->feparams.u.ofdm.code_rate_HP, TP->feparams.u.ofdm.code_rate_LP, TP->feparams.u.ofdm.constellation, TP->feparams.u.ofdm.transmission_mode, TP->feparams.u.ofdm.guard_interval, TP->feparams.u.ofdm.hierarchy_information);
 	}
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::scan_transponder: fe(%d) freq %d rate %d fec %d pol %d NIT %s\n", feindex, TP->feparams.frequency, TP->feparams.u.qpsk.symbol_rate, TP->feparams.u.qpsk.fec_inner, TP->polarization, scanMode ? "no" : "yes");
+		dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: fe(%d) freq %d rate %d fec %d pol %d NIT %s\n", feindex, TP->feparams.frequency, TP->feparams.u.qpsk.symbol_rate, TP->feparams.u.qpsk.fec_inner, TP->polarization, scanMode ? "no" : "yes");
 	}
 
 	freq_id_t freq;

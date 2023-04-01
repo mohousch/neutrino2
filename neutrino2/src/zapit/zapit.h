@@ -289,8 +289,8 @@ class CZapit
 		
 		//
 		pthread_t scan_thread, scan_tp_thread; 
-		static void * start_scanthread(void *data);
-		static void * scan_transponder(void * data);
+		static void * scanThread(void *data);
+		static void * scanTransponderThread(void * data);
 		
 		//
 		pthread_t tsdt;
