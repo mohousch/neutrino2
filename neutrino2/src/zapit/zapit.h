@@ -288,7 +288,7 @@ class CZapit
 		void leaveStandby(void);
 		
 		//
-		pthread_t scan_thread, scan_tp_thread; 
+		pthread_t scan_thread; 
 		static void * scanThread(void *data);
 		static void * scanTransponderThread(void * data);
 		
@@ -299,7 +299,7 @@ class CZapit
 		pthread_t tpmt;
 		static void *updatePMTFilter(void *);
 		
-		CZapit(){scan_thread = 0; scan_tp_thread = 0; tsdt = 0; tpmt = 0;};
+		CZapit(){scan_thread = 0; tsdt = 0; tpmt = 0;};
 	public:
 		~CZapit(){};
 		static CZapit *getInstance()

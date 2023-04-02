@@ -387,7 +387,7 @@ int CBouquetList::doMenu()
 }
 
 // bShowChannelList default to true, returns new bouquet or -1/-2
-int CBouquetList::show(/*bool bShowChannelList,*/ bool customMode)
+int CBouquetList::show(bool customMode)
 {
 	dprintf(DEBUG_NORMAL, "CBouquetList::show: customMode:%s\n", customMode? "yes" : "no");
 

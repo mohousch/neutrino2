@@ -4348,7 +4348,7 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 	
 	scan_runs = 1;
 	
-	if (pthread_create(&scan_tp_thread, NULL, scanTransponderThread, (void*) &TP)) 
+	if (pthread_create(&scan_thread, NULL, scanTransponderThread, (void*) &TP)) 
 	{
 		dprintf(DEBUG_INFO, "CZapit::scanTP: pthread_create\n");
 		scan_runs = 0;
@@ -4463,6 +4463,7 @@ bool CZapit::startScan(int scan_mode, int feindex)
 	dprintf(DEBUG_NORMAL, "CZapit::startScan: fe(%d) scan_mode: %d\n", feindex, scan_mode);
 	
 	commandStartScan StartScan;
+	
 	StartScan.scanmode = scan_mode;
 	StartScan.feindex = feindex;
 	
@@ -4496,7 +4497,7 @@ bool CZapit::startScan(int scan_mode, int feindex)
 	found_transponders = 0;
 	found_channels = 0;
 
-	if (pthread_create(&scan_thread, NULL, scanThread,  (void*)&StartScan)) 
+	if (pthread_create(&scan_thread, NULL, scanThread, (void*)&StartScan)) 
 	{
 		dprintf(DEBUG_INFO, "CZapit::startScan: pthread_create failed\n");
 		scan_runs = 0;
