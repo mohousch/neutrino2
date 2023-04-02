@@ -457,7 +457,7 @@ int CChannelList::doChannelMenu(void)
 		switch(select) 
 		{
 			case 0: //delete
-				result = MessageBox(_("Delete"), "Delete channel from bouquet?", mbrNo, mbYes | mbNo );
+				result = MessageBox(_("Delete"), _("Delete channel from bouquet?"), mbrNo, mbYes | mbNo );
 
 				if(result == mbrYes) 
 				{
@@ -480,12 +480,14 @@ int CChannelList::doChannelMenu(void)
 				old_bouquet_id = g_bouquetManager->existsBouquet(bouquetList->Bouquets[old_bouquet_id]->channelList->getName());
 
 				do {
-					new_bouquet_id = bouquetList->exec(false, false);
+					new_bouquet_id = bouquetList->exec(false, false, false);
 				} while(new_bouquet_id == -3);
 
 				hide();
+				
 				if(new_bouquet_id < 0)
 					return 0;
+					
 				new_bouquet_id = g_bouquetManager->existsBouquet(bouquetList->Bouquets[new_bouquet_id]->channelList->getName());
 				if ((new_bouquet_id == -1) || (new_bouquet_id == old_bouquet_id))
 					return 0;
@@ -505,7 +507,7 @@ int CChannelList::doChannelMenu(void)
 				
 			case 2: // add to
 				do {
-					bouquet_id = bouquetList->exec(false, false);
+					bouquet_id = bouquetList->exec(false, false, false);
 				} while(bouquet_id == -3);
 				
 				hide();
@@ -1758,11 +1760,15 @@ void CChannelList::paint()
 	//
 	if (window) window->saveScreen();
 	
-	paintCurrentNextEvent(selected);
+	if(chanlist.size())
+		paintCurrentNextEvent(selected);
 }
 
 void CChannelList::paintCurrentNextEvent(int _selected)
 {
+	if (_selected < 0)
+		return;
+		
 	if (window)
 	{	window->restoreScreen(); 
 		window->paint();

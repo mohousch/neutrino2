@@ -107,7 +107,7 @@ _repeat:
 	if(bouquetList->Bouquets.size() && bouquetList->Bouquets[activBouquet]->channelList->getSize() > 0)
 		nNewChannel = bouquetList->Bouquets[activBouquet]->channelList->show(false, true);
 	else
-		nNewChannel = bouquetList->show(true, true);
+		nNewChannel = bouquetList->show(true);
 
 	if(bouquetList->Bouquets.size())
 	{ 

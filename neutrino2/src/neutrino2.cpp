@@ -1578,7 +1578,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	for (i = 0; i < g_bouquetManager->Bouquets.size(); i++) 
 	{
 		// tv
-		if (!g_bouquetManager->Bouquets[i]->bHidden && !g_bouquetManager->Bouquets[i]->tvChannels.empty())
+		if (!g_bouquetManager->Bouquets[i]->bHidden /*&& !g_bouquetManager->Bouquets[i]->tvChannels.empty()*/)
 		{
 			CBouquet * ltmp;
 			if(g_bouquetManager->Bouquets[i]->bUser || g_bouquetManager->Bouquets[i]->bWebTV) 
@@ -1606,7 +1606,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	bnum = 0;
 	for (i = 0; i < g_bouquetManager->Bouquets.size(); i++) 
 	{	
-		if (!g_bouquetManager->Bouquets[i]->bHidden && !g_bouquetManager->Bouquets[i]->radioChannels.empty() )
+		if (!g_bouquetManager->Bouquets[i]->bHidden /*&& !g_bouquetManager->Bouquets[i]->radioChannels.empty()*/)
 		{
 			CBouquet * ltmp;
 			if(g_bouquetManager->Bouquets[i]->bUser) 

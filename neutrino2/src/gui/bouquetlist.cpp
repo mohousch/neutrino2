@@ -223,6 +223,7 @@ int CBouquetList::activateBouquet( int id, bool bShowChannelList, bool zap)
 	return res;
 }
 
+//
 int CBouquetList::exec(bool bShowChannelList, bool zap, bool customMode)
 {
 	dprintf(DEBUG_NORMAL, "CBouquetList::exec: showChannelList:%s, zap:%s customMode:%s\n", bShowChannelList? "yes" : "no", zap? "yes" : "no", customMode? "yes" : "no");
@@ -244,7 +245,7 @@ int CBouquetList::exec(bool bShowChannelList, bool zap, bool customMode)
 	}
 
 	// select bouquet to show
-	int res = show(bShowChannelList, customMode);
+	int res = show(customMode);
 
 	dprintf(DEBUG_NORMAL, "CBouquetList::exec: res:%d\n", res);
 
@@ -386,9 +387,9 @@ int CBouquetList::doMenu()
 }
 
 // bShowChannelList default to true, returns new bouquet or -1/-2
-int CBouquetList::show(bool bShowChannelList, bool customMode)
+int CBouquetList::show(/*bool bShowChannelList,*/ bool customMode)
 {
-	dprintf(DEBUG_NORMAL, "CBouquetList::show: showChannelList:%s customMode:%s\n", bShowChannelList? "yes" : "no", customMode? "yes" : "no");
+	dprintf(DEBUG_NORMAL, "CBouquetList::show: customMode:%s\n", customMode? "yes" : "no");
 
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
@@ -499,15 +500,11 @@ int CBouquetList::show(bool bShowChannelList, bool customMode)
 		{
 			selected = listBox->getSelected();
 
-			if(!bShowChannelList || Bouquets[selected]->channelList->getSize() > 0) 
-			{
-				zapOnExit = true;
-				loop = false;
-			}
+			zapOnExit = true;
+			loop = false;
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			//listBox->paintHead();
 			listBox->refresh();
 		} 
 		else 
