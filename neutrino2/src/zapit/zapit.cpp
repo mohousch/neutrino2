@@ -312,9 +312,9 @@ void CZapit::initFrontend()
 				}
 				
 				// set it to standby
-				usleep(2500); 
-				
 				fe->Close(); //FIXME: do we need this???
+				
+				usleep(150000);
 			}
 			else
 				delete fe;

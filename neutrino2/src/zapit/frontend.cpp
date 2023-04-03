@@ -195,8 +195,11 @@ void CFrontend::Close()
 	tuned = false;
 	standby = true;
 	
-	close(fd);
-	fd = -1;
+	if (fd >= 0)
+	{
+		close(fd);
+		fd = -1;
+	}
 	
 	dprintf(DEBUG_NORMAL, "CFrontend::Close fe(%d,%d) %s\n", fe_adapter, fenumber, info.name);
 }
@@ -204,7 +207,11 @@ void CFrontend::Close()
 void CFrontend::reset(void)
 {
 #if 1
-	close(fd);
+	if (fd >= 0)
+	{
+		close(fd);
+		fd = -1;
+	}
 	
 	usleep(150000);
 
