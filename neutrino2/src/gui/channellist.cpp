@@ -840,11 +840,13 @@ int CChannelList::show(bool zap, bool customMode)
 			if (bouquetList->Bouquets.size() > 0) 
 			{
 				bool found = true;
-				uint32_t nNext = (bouquetList->getActiveBouquetNumber()+1) % bouquetList->Bouquets.size();
+				uint32_t nNext = (bouquetList->getActiveBouquetNumber() + 1) % bouquetList->Bouquets.size();
+				
 				if(bouquetList->Bouquets[nNext]->channelList->getSize() <= 0) 
 				{
 					found = false;
 					nNext = nNext < bouquetList->Bouquets.size() - 1 ? nNext + 1 : 0;
+					
 					for(uint32_t i = nNext; i < bouquetList->Bouquets.size(); i++) 
 					{
 						if(bouquetList->Bouquets[i]->channelList->getSize() > 0) 
@@ -869,11 +871,12 @@ int CChannelList::show(bool zap, bool customMode)
 			if (bouquetList->Bouquets.size() > 0) 
 			{
 				bool found = true;
-				int nNext = (bouquetList->getActiveBouquetNumber()+bouquetList->Bouquets.size()-1) % bouquetList->Bouquets.size();
+				int nNext = (bouquetList->getActiveBouquetNumber()+bouquetList->Bouquets.size() - 1) % bouquetList->Bouquets.size();
+				
 				if(bouquetList->Bouquets[nNext]->channelList->getSize() <= 0) 
 				{
 					found = false;
-					nNext = nNext > 0 ? nNext-1 : bouquetList->Bouquets.size()-1;
+					nNext = nNext > 0 ? nNext - 1 : bouquetList->Bouquets.size() - 1;
 					
 					for(int i = nNext; i > 0; i--) 
 					{

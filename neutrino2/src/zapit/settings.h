@@ -33,13 +33,12 @@
 #define UBOUQUETS_XML    		CONFIGDIR "/zapit/ubouquets.xml"
 #define MYSERVICES_XML			CONFIGDIR "/zapit/myservices.xml"
 
-// sdt update 
+// getservices
 #define SERVICES_TMP    		"/tmp/services.tmp"
-#define BOUQUETS_TMP    		"/tmp/bouquets.tmp"
+
+// sdt update
 #define CURRENTSERVICES_XML     	"/tmp/currentservices.xml"
 #define CURRENTSERVICES_TMP     	"/tmp/currentservices.tmp"
-#define CURRENTBOUQUETS_XML		"/tmp/currentbouquets.xml"
-#define CURRENTBOUQUETS_TMP		"/tmp/currentbouquets.tmp"
 
 // providers
 #define CABLES_XML      		CONFIGDIR "/cables.xml"
@@ -54,7 +53,7 @@
 #define VOLUME_CONFIG_FILE 		CONFIGDIR "/zapit/audiovolume.conf"
 #define AUDIO_CONFIG_FILE 		CONFIGDIR "/zapit/audio.conf"
 
-#define DVBADAPTER_MAX			2	// needed for twin on generic HW (x86)
+#define DVBADAPTER_MAX			2	// needed for twin on generic HW
 #define FRONTEND_MAX			4
 
 #define CAMD_UDS_NAME  			"/tmp/camd.socket"

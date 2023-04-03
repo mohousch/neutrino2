@@ -329,8 +329,6 @@ void CServices::findTransponder(_xmlNodePtr search)
 }
 
 // parse sat transponder from satellites/cables/terrestrials.xml/atsc.xml
-//static uint32_t fake_tid;
-//static uint32_t fake_nid;
 void CServices::parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellite_position satellitePosition)
 {
 	dprintf(DEBUG_DEBUG, "CServices::parseSatTransponders:\n");
@@ -993,7 +991,7 @@ void CServices::saveServices(bool tocopy)
 
 	if(tocopy) 
 	{
-		//zapit_cp((char *) SERVICES_TMP, (char *) SERVICES_XML);
+		//
 		CFileHelpers::getInstance()->copyFile(SERVICES_TMP, SERVICES_XML);
 		unlink(SERVICES_TMP);
 	}

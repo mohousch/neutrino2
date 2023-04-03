@@ -312,6 +312,8 @@ void CZapit::initFrontend()
 				}
 				
 				// set it to standby
+				usleep(2500); 
+				
 				fe->Close(); //FIXME: do we need this???
 			}
 			else
@@ -3010,7 +3012,7 @@ void * CZapit::sdtThread(void */*arg*/)
 	return 0;
 }
 
-// vtuner test
+// vtuner
 #ifdef TUNER_VUSOLO4K
 #define VTUNER_GET_MESSAGE  11
 #define VTUNER_SET_RESPONSE 12
@@ -3271,11 +3273,11 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 		struct dvb_frontend_info fe_info;
 		char frontend_filename[256], demux_filename[256], vtuner_filename[256];
 
-		//printf("linking adapter1/frontend0 to vtunerc0\n");
+		dprintf(DEBUG_NORMAL, "linking adapter1/frontend0 to vtuner0\n");
 
 		sprintf(frontend_filename, "/dev/dvb/adapter%d/frontend0", getVTuner()->fe_adapter);
 		sprintf(demux_filename, "/dev/dvb/adapter%d/demux0", getVTuner()->fe_adapter);
-		sprintf(vtuner_filename, "/dev/vtunerc0"); //FIXME: think about this (/dev/misc/vtuner%)
+		sprintf(vtuner_filename, "/dev/vtuner0"); //FIXME: think about this (/dev/misc/vtuner%)
 
 		dprintf(DEBUG_NORMAL, "CZapit::Start: linking %s to %s\n", frontend_filename, vtuner_filename);
 
