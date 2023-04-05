@@ -4302,6 +4302,10 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 //
 bool CZapit::scanTP(TP_params TP, int feindex)
 {
+	dprintf(DEBUG_NORMAL, "CZapit::scanTP fe:(%d)\n", feindex);
+	
+	commandScanTP msg;
+	
 	if(!(TP.feparams.frequency > 0) && (live_channel && !live_channel->isWebTV)) 
 	{
 		// TP
@@ -4350,7 +4354,10 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 	
 	scan_runs = 1;
 	
-	if (pthread_create(&scan_thread, NULL, scanTransponderThread, (void*) &TP)) 
+	msg.TP = TP;
+	msg.feindex = feindex;
+	
+	if (pthread_create(&scan_thread, NULL, scanTransponderThread, (void *) &msg)) 
 	{
 		dprintf(DEBUG_INFO, "CZapit::scanTP: pthread_create\n");
 		scan_runs = 0;
@@ -4460,14 +4467,11 @@ void CZapit::setScanMotorPosList( ScanMotorPosList& motorPosList )
 }
 
 //
-bool CZapit::startScan(int scan_mode, int feindex)
+bool CZapit::startScan(commandStartScan scan)
 {		
-	dprintf(DEBUG_NORMAL, "CZapit::startScan: fe(%d) scan_mode: %d\n", feindex, scan_mode);
+	dprintf(DEBUG_NORMAL, "CZapit::startScan: fe(%d) scanmode: %d\n", scan.feindex, scan.scanmode);
 	
-	commandStartScan StartScan;
-	
-	StartScan.scanmode = scan_mode;
-	StartScan.feindex = feindex;
+	//commandStartScan params;
 	
 	// reread scaninputParser
     	if(scanInputParser) 
@@ -4475,7 +4479,7 @@ bool CZapit::startScan(int scan_mode, int feindex)
                 delete scanInputParser;
                 scanInputParser = NULL;
 
-		CFrontend * fe = getFE(feindex);
+		CFrontend * fe = getFE(scan.feindex);
 		parseScanInputXml(fe->getInfo()->type);
 
 		if (!scanInputParser) 
@@ -4498,8 +4502,11 @@ bool CZapit::startScan(int scan_mode, int feindex)
 
 	found_transponders = 0;
 	found_channels = 0;
+	
+	//params.scanmode = mode;
+	//params.feindex = index;
 
-	if (pthread_create(&scan_thread, NULL, scanThread, (void*)&StartScan)) 
+	if (pthread_create(&scan_thread, 0, scanThread, (void *) &scan)) 
 	{
 		dprintf(DEBUG_INFO, "CZapit::startScan: pthread_create failed\n");
 		scan_runs = 0;
@@ -4530,17 +4537,17 @@ bool CZapit::stopScan()
 }		
 
 //
-void * CZapit::scanThread(void *data)
+void * CZapit::scanThread(void * data)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::scanThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	if (!data)
 		return 0;
 	
-	CZapit::commandStartScan StartScan = *(CZapit::commandStartScan *) data;
+	CZapit::commandStartScan params = *(CZapit::commandStartScan *) data;
 	
-	int mode = StartScan.scanmode;
-	int feindex = StartScan.feindex;
+	int mode = params.scanmode;
+	int feindex = params.feindex;
 	
 	scan_list_iterator_t spI;
 	char providerName[80] = "";
@@ -4566,7 +4573,7 @@ void * CZapit::scanThread(void *data)
 	scanMode = mode & 0xFF;	// NIT (0) or fast (1)
 	scan_sat_mode = mode & 0xFF00; 	// single = 0, all = 1
 
-	dprintf(DEBUG_NORMAL, "CZapit::scanThread: scan mode %s, satellites %s\n", scanMode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
+	dprintf(DEBUG_NORMAL, "CZapit::scanThread: fe(%d) scan mode %s, satellites %s\n", feindex, scanMode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
 
 	fake_tid = fake_nid = 0;
 
@@ -4745,7 +4752,7 @@ void * CZapit::scanTransponderThread(void * data)
 
 	satellitePosition = scanProviders.begin()->first;
 	
-	dprintf(DEBUG_INFO, "CZapit::scanTransponderThread: scanning sat %s position %d fe(%d)\n", providerName, satellitePosition, ScanTP.feindex);
+	dprintf(DEBUG_INFO, "CZapit::scanTransponderThread: scanning sat %s position %d fe(%d)\n", providerName, satellitePosition, feindex);
 	
 	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, providerName, strlen(providerName) + 1);
 

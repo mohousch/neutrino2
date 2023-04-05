@@ -291,7 +291,14 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	else if(manual)
 		success = CZapit::getInstance()->scanTP(TP, feindex);
 	else
-		success = CZapit::getInstance()->startScan(scan_mode, feindex);
+	{
+		CZapit::commandStartScan msg;
+
+		msg.scanmode = scan_mode;
+		msg.feindex = feindex;
+		
+		success = CZapit::getInstance()->startScan(/*scan_mode, feindex*/msg);
+	}
 
 	// poll for messages
 	istheend = !success;

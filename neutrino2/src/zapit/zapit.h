@@ -289,7 +289,7 @@ class CZapit
 		
 		//
 		pthread_t scan_thread; 
-		static void * scanThread(void *data);
+		static void * scanThread(void * data);
 		static void * scanTransponderThread(void * data);
 		
 		//
@@ -299,7 +299,7 @@ class CZapit
 		pthread_t tpmt;
 		static void *updatePMTFilter(void *);
 		
-		CZapit(){scan_thread = 0; tsdt = 0; tpmt = 0;};
+		CZapit(){};
 	public:
 		~CZapit(){};
 		static CZapit *getInstance()
@@ -429,7 +429,7 @@ class CZapit
 		void setDiseqcType(const diseqc_t diseqc, int feindex = 0);
 		void setDiseqcRepeat(const uint32_t repeat, int feindex = 0);
 		void setScanMotorPosList( ScanMotorPosList& motorPosList );
-		bool startScan(int scan_mode, int feindex = 0);
+		bool startScan(/*int mode, int index = 0*/commandStartScan scan);
 		bool stopScan();
 
 		//
