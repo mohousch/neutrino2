@@ -313,10 +313,10 @@ class CFrameBuffer
 		void getSize(const std::string &name, int * width, int * height, int * nbpp);
 		unsigned char* resize(unsigned char * origin, int ox, int oy, int dx, int dy, ScalingMode type, unsigned char * dst = NULL, bool alpha = false);
 
-		fb_pixel_t * getImage(const std::string& name, int width, int height, ScalingMode scaling = COLOR);
+		fb_pixel_t * getImage(const std::string& name, int width, int height);
 		void * convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp = 0xFF, int m_transparent = TM_BLACK, bool alpha = false);
 		void displayRGB(unsigned char * rgbbuff, int x_size, int y_size, int x_pan, int y_pan, int x_offs, int y_offs, bool clearfb = true);
-		bool displayImage(const std::string& name, int posx = 0, int posy = 0, int width = DEFAULT_XRES, int height = DEFAULT_YRES, ScalingMode scaling = COLOR, int x_pan = 0, int y_pan = 0, bool clearfb = false);
+		bool displayImage(const std::string& name, int posx = 0, int posy = 0, int width = DEFAULT_XRES, int height = DEFAULT_YRES, int x_pan = 0, int y_pan = 0);
 };
 
 #endif

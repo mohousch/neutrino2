@@ -1136,7 +1136,7 @@ bool CFrameBuffer::paintIcon(const std::string& filename, const int x, const int
 
 	data = getImage(newname, width, height);
 	
-	// check into buttunBasePath	
+	// check into buttonBasePath	
 	if(!data) 
 	{
 		newname = buttonBasePath +filename.c_str() + ".png";
@@ -1968,6 +1968,90 @@ unsigned char * CFrameBuffer::resize(unsigned char * origin, int ox, int oy, int
 	return(cr);
 }
 
+// getImage
+fb_pixel_t * CFrameBuffer::getImage(const std::string &name, int width, int height)
+{
+	dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage:\n");
+	
+	int x = 0;
+	int y = 0;
+	CFormathandler * fh = NULL;
+	unsigned char * buffer = NULL;
+	fb_pixel_t * ret = NULL;
+	int load_ret = FH_ERROR_MALLOC;
+	int _bpp = 0;
+
+	//
+  	fh = fh_getsize(name.c_str(), &x, &y, INT_MAX, INT_MAX); // unscaled
+	
+  	if (fh) 
+	{
+		buffer = (unsigned char *) malloc(x*y*4);
+		
+		if (buffer == NULL) 
+		{
+		  	dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage: Error: malloc\n");
+		  	return NULL;
+		}
+		
+		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
+			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp);
+		else if (name.find(".svg") == (name.length() - 4))
+		{
+			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
+			_bpp = 4;
+		}
+		else
+			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
+
+		if (load_ret == FH_ERROR_OK) 
+		{
+			// resize
+			if(x != width || y != height)
+			{
+				// alpha
+				if(_bpp == 4)
+				{
+					buffer = resize(buffer, x, y, width, height, COLOR, NULL, true);
+				}
+				else
+				{
+					buffer = resize(buffer, x, y, width, height, COLOR);
+				}
+				
+				x = width ;
+				y = height;
+			} 
+			
+			// convert RGB2FB
+			if( name.find(".png") == (name.length() - 4) )
+			{
+				// alpha
+				if (_bpp == 4)
+					ret = (fb_pixel_t *) convertRGB2FB(buffer, x, y, 0, TM_INI, true); // TM_INI
+				else
+					ret = (fb_pixel_t *)convertRGB2FB(buffer, x, y, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha)); // TM_BLACK
+			}
+			else
+				ret = (fb_pixel_t *)convertRGB2FB(buffer, x, y, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), TM_NONE); //TM_NONE
+			
+			free(buffer);
+		} 
+		else 
+		{
+	  		dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage: Error decoding file %s\n", name.c_str ());
+	  		free (buffer);
+	  		buffer = NULL;
+		}
+  	} 
+	else
+	{
+		dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage: Error open file %s\n", name.c_str ());
+	}
+
+	return ret;
+}
+
 // convertRGB2FB
 void * CFrameBuffer::convertRGB2FB(unsigned char * rgbbuff, unsigned long x, unsigned long y, int transp, int m_transparent, bool alpha)
 {
@@ -2023,133 +2107,6 @@ void * CFrameBuffer::convertRGB2FB(unsigned char * rgbbuff, unsigned long x, uns
 	return (void *) fbbuff;
 }
 
-// getImage
-fb_pixel_t * CFrameBuffer::getImage(const std::string &name, int width, int height, ScalingMode scaling)
-{
-	dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage:\n");
-	
-	int x = 0;
-	int y = 0;
-	CFormathandler * fh = NULL;
-	unsigned char * buffer = NULL;
-	fb_pixel_t * ret = NULL;
-	int load_ret = FH_ERROR_MALLOC;
-	int _bpp = 0;
-
-	if (scaling == NONE)
-  		fh = fh_getsize(name.c_str(), &x, &y, INT_MAX, INT_MAX); // unscaled
-	else
-		fh = fh_getsize(name.c_str(), &x, &y, width, height);
-	
-  	if (fh) 
-	{
-		buffer = (unsigned char *) malloc(x*y*4);
-		
-		if (buffer == NULL) 
-		{
-		  	dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage: Error: malloc\n");
-		  	return NULL;
-		}
-		
-		if ((name.find(".png") == (name.length() - 4)) && (fh_png_id(name.c_str())))
-			load_ret = png_load_ext(name.c_str(), &buffer, &x, &y, &_bpp);
-		else if (name.find(".svg") == (name.length() - 4))
-		{
-			load_ret = svg_load_resize(name.c_str(), &buffer, &x, &y, width, height);
-			_bpp = 4;
-		}
-		else
-			load_ret = fh->get_pic(name.c_str(), &buffer, &x, &y);
-
-		if (load_ret == FH_ERROR_OK) 
-		{
-			// resize
-			if(scaling != NONE)
-			{
-				if(x != width || y != height)
-				{
-					// alpha
-					if(_bpp == 4)
-					{
-						buffer = resize(buffer, x, y, width, height, scaling, NULL, true);
-					}
-					else
-					{
-						buffer = resize(buffer, x, y, width, height, scaling);
-					}
-				
-					x = width ;
-					y = height;
-				} 
-			}
-			
-			// convert RGB2FB
-			if( name.find(".png") == (name.length() - 4) )
-			{
-				// alpha
-				if (_bpp == 4)
-					ret = (fb_pixel_t *) convertRGB2FB(buffer, x, y, 0, TM_INI, true); //FIXME: TM_INI ???
-				else
-					ret = (fb_pixel_t *)convertRGB2FB(buffer, x, y, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha)); //FIXME:
-			}
-			else
-				ret = (fb_pixel_t *)convertRGB2FB(buffer, x, y, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha), TM_NONE); //TM_NONE
-			
-			free(buffer);
-		} 
-		else 
-		{
-	  		dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage: Error decoding file %s\n", name.c_str ());
-	  		free (buffer);
-	  		buffer = NULL;
-		}
-  	} 
-	else
-	{
-		dprintf(DEBUG_DEBUG, "CFrameBuffer::getImage: Error open file %s\n", name.c_str ());
-	}
-
-	return ret;
-}
-
-// display image
-bool CFrameBuffer::displayImage(const std::string& name, int posx, int posy, int width, int height, ScalingMode scaling, int x_pan, int y_pan, bool clearfb)
-{
-	dprintf(DEBUG_DEBUG, "CFrameBuffer::displayImage %s\n", name.c_str());
-	
-	if(!getActive())
-		return false;
-
-	//
-	int dx = width;
-	int dy = height;
-	int bpp = 0;
-	
-	if(scaling == NONE)
-	{
-		getSize(name.c_str(), &dx, &dy, &bpp);
-	}
-	
-	bool isPNG = false;
-	
-	if( name.find(".png") == (name.length() - 4) )
-		isPNG = true;
-	
-	fb_pixel_t* data = getImage(name, dx, dy, scaling);
-
-	if(clearfb)
-                clearFrameBuffer();
-
-	if(data) 
-	{
-		blit2FB(data, dx, dy, posx, posy, x_pan, y_pan, isPNG? true : false);
-		free(data);
-		return true;
-	}
-	
-	return false;
-}
-
 // display RGB (used in pictureviewer)
 void CFrameBuffer::displayRGB(unsigned char * rgbbuff, int x_size, int y_size, int x_pan, int y_pan, int x_offs, int y_offs, bool clearfb)
 {
@@ -2185,5 +2142,31 @@ void CFrameBuffer::displayRGB(unsigned char * rgbbuff, int x_size, int y_size, i
         blit2FB(fbbuff, x_size, y_size, x_offs, y_offs, x_pan, y_pan);
 	
         free(fbbuff);
+}
+
+// display image
+bool CFrameBuffer::displayImage(const std::string& name, int posx, int posy, int width, int height, int x_pan, int y_pan)
+{
+	dprintf(DEBUG_DEBUG, "CFrameBuffer::displayImage %s\n", name.c_str());
+	
+	if(!getActive())
+		return false;
+
+	//
+	bool isPNG = false;
+	
+	if( name.find(".png") == (name.length() - 4) )
+		isPNG = true;
+	
+	fb_pixel_t* data = getImage(name, width, height);
+
+	if(data) 
+	{
+		blit2FB(data, width, height, posx, posy, x_pan, y_pan, isPNG? true : false);
+		free(data);
+		return true;
+	}
+	
+	return false;
 }
 
