@@ -764,16 +764,14 @@ cDvbCi::cDvbCi(int Slots)
 
 	for (i = 0; i < Slots; i++)
 	{
+#if defined (__sh__)
 		sprintf(filename, "/dev/dvb/adapter0/ci%d", i);
+#else
+		sprintf(filename, "/dev/ci%d", i);
+#endif
 
 		fd = open(filename, O_RDWR | O_NONBLOCK);
 		
-		if(fd < 0)
-		{
-			sprintf(filename, "/dev/ci%d", i);
-			fd = open(filename, O_RDWR | O_NONBLOCK);
-		}
-	    
 		if (fd > 0)
 		{
 			tSlot *slot = (tSlot*) malloc(sizeof(tSlot));
