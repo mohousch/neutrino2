@@ -145,12 +145,11 @@ void* CTimerManager::timerThread(void *data)
 			pthread_mutex_lock(&tm_eventsMutex);
 
 			CTimerEventMap::iterator pos = CTimerManager::getInstance()->events.begin();
+			
 			for(; pos != timerManager->events.end(); pos++)
 			{
 				event = pos->second;
 				dprintf(DEBUG_DEBUG, "CTimerManager::timerThread: checking event: %03d\n", event->eventID);
-				
-				//event->printEvent();
 
 				// if event wants to be announced
 				if(event->announceTime > 0 && event->eventState == CTimerd::TIMERSTATE_SCHEDULED ) 
@@ -210,12 +209,16 @@ void* CTimerManager::timerThread(void *data)
 				{
 					dprintf(DEBUG_INFO, "CTimerManager::timerThread: deleting event\n");
 					
-					pos->second->printEvent();
-					dprintf(DEBUG_DEBUG, "\n");
+					//pos->second->printEvent();
+					//dprintf(DEBUG_DEBUG, "\n");
 					
-					//delete pos->second;			// delete event
-					//timerManager->events.erase(pos);	// remove from list
+					delete pos->second;			// delete event
+					timerManager->events.erase(pos++);	// remove from list
+					
 					timerManager->m_saveEvents = true;
+					
+					if(pos == timerManager->events.end())
+						break;
 				}
 			}
 			pthread_mutex_unlock(&tm_eventsMutex);
@@ -266,14 +269,13 @@ int CTimerManager::addEvent(CTimerEvent* evt, bool save)
 	eventID++;						// increase unique event id
 	evt->eventID = eventID;
 	
-	if(evt->eventRepeat == CTimerd::TIMERREPEAT_WEEKDAYS)
-		// Weekdays without weekday specified reduce to once
+	if(evt->eventRepeat == CTimerd::TIMERREPEAT_WEEKDAYS) // Weekdays without weekday specified reduce to once
 		evt->eventRepeat = CTimerd::TIMERREPEAT_ONCE;
 		
 	events[eventID] = evt;			// insert into events
 	m_saveEvents = m_saveEvents || save;
 	
-	dprintf(DEBUG_DEBUG, "CTimerManager::addEvent: adding event:\n");
+	dprintf(DEBUG_INFO, "CTimerManager::addEvent: adding event:\n");
 	evt->printEvent();
 	dprintf(DEBUG_DEBUG, "\n");
 	
@@ -289,12 +291,13 @@ bool CTimerManager::removeEvent(int leventID)
 	bool res = false;
 	pthread_mutex_lock(&tm_eventsMutex);
 	
-	if(events.find(leventID) != events.end())							 // if i have a event with this id
+	if(events.find(leventID) != events.end()) // if i have a event with this id
 	{
 		if( (events[leventID]->eventState == CTimerd::TIMERSTATE_ISRUNNING) && (events[leventID]->stopTime > 0) )
 			events[leventID]->stopEvent();	// if event is running an has stopTime 
 
-		events[leventID]->eventState = CTimerd::TIMERSTATE_TERMINATED;		// set the state to terminated
+		events[leventID]->eventState = CTimerd::TIMERSTATE_TERMINATED;	// set the state to terminated
+
 		res = true;	// so timerthread will do the rest for us
 	}
 	else
@@ -503,17 +506,17 @@ void CTimerManager::loadEventsFromConfig()
 			{
 				case CTimerd::TIMER_SHUTDOWN :
 					{
-						CTimerEvent_Shutdown *event=
-						new CTimerEvent_Shutdown(&config, savedIDs[i]);
+						CTimerEvent_Shutdown *event = new CTimerEvent_Shutdown(&config, savedIDs[i]);
+						
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else if(event->eventRepeat != CTimerd::TIMERREPEAT_ONCE)
 						{
 							// old periodic timers need to be rescheduled
 							event->eventState = CTimerd::TIMERSTATE_HASFINISHED;
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else
 						{
@@ -524,17 +527,16 @@ void CTimerManager::loadEventsFromConfig()
 					}       
 				case CTimerd::TIMER_NEXTPROGRAM :
 					{
-						CTimerEvent_NextProgram *event=
-						new CTimerEvent_NextProgram(&config, savedIDs[i]);
+						CTimerEvent_NextProgram *event = new CTimerEvent_NextProgram(&config, savedIDs[i]);
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else if(event->eventRepeat != CTimerd::TIMERREPEAT_ONCE)
 						{
 							// old periodic timers need to be rescheduled
 							event->eventState = CTimerd::TIMERSTATE_HASFINISHED;
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else
 						{
@@ -545,8 +547,7 @@ void CTimerManager::loadEventsFromConfig()
 					}       
 				case CTimerd::TIMER_ZAPTO :
 					{
-						CTimerEvent_Zapto *event=
-						new CTimerEvent_Zapto(&config, savedIDs[i]);
+						CTimerEvent_Zapto *event = new CTimerEvent_Zapto(&config, savedIDs[i]);
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
 							addEvent(event, false);
@@ -555,7 +556,7 @@ void CTimerManager::loadEventsFromConfig()
 						{
 							// old periodic timers need to be rescheduled
 							event->eventState = CTimerd::TIMERSTATE_HASFINISHED;
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else
 						{
@@ -566,17 +567,16 @@ void CTimerManager::loadEventsFromConfig()
 					}          
 				case CTimerd::TIMER_STANDBY :
 					{
-						CTimerEvent_Standby *event=
-						new CTimerEvent_Standby(&config, savedIDs[i]);
+						CTimerEvent_Standby *event = new CTimerEvent_Standby(&config, savedIDs[i]);
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else if(event->eventRepeat != CTimerd::TIMERREPEAT_ONCE)
 						{
 							// old periodic timers need to be rescheduled
 							event->eventState = CTimerd::TIMERSTATE_HASFINISHED;
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else
 						{
@@ -587,17 +587,16 @@ void CTimerManager::loadEventsFromConfig()
 					}           
 				case CTimerd::TIMER_RECORD :
 					{
-						CTimerEvent_Record *event=
-						new CTimerEvent_Record(&config, savedIDs[i]);
+						CTimerEvent_Record *event = new CTimerEvent_Record(&config, savedIDs[i]);
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else if(event->eventRepeat != CTimerd::TIMERREPEAT_ONCE)
 						{
 							// old periodic timers need to be rescheduled
 							event->eventState = CTimerd::TIMERSTATE_HASFINISHED;
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else
 						{
@@ -608,17 +607,16 @@ void CTimerManager::loadEventsFromConfig()
 					}          
 				case CTimerd::TIMER_SLEEPTIMER :
 					{
-						CTimerEvent_Sleeptimer *event=
-						new CTimerEvent_Sleeptimer(&config, savedIDs[i]);
+						CTimerEvent_Sleeptimer *event = new CTimerEvent_Sleeptimer(&config, savedIDs[i]);
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else if(event->eventRepeat != CTimerd::TIMERREPEAT_ONCE)
 						{
 							// old periodic timers need to be rescheduled
 							event->eventState = CTimerd::TIMERSTATE_HASFINISHED;
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else
 						{
@@ -629,17 +627,16 @@ void CTimerManager::loadEventsFromConfig()
 					}
 				case CTimerd::TIMER_REMIND :
 					{
-						CTimerEvent_Remind *event=
-						new CTimerEvent_Remind(&config, savedIDs[i]);
+						CTimerEvent_Remind *event = new CTimerEvent_Remind(&config, savedIDs[i]);
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else if(event->eventRepeat != CTimerd::TIMERREPEAT_ONCE)
 						{
 							// old periodic timers need to be rescheduled
 							event->eventState = CTimerd::TIMERSTATE_HASFINISHED;
-							addEvent(event,false);
+							addEvent(event, false);
 						}
 						else
 						{
@@ -650,8 +647,7 @@ void CTimerManager::loadEventsFromConfig()
 					}
 				case CTimerd::TIMER_EXEC_PLUGIN :
 					{
-						CTimerEvent_ExecPlugin *event=
-						new CTimerEvent_ExecPlugin(&config, savedIDs[i]);
+						CTimerEvent_ExecPlugin *event = new CTimerEvent_ExecPlugin(&config, savedIDs[i]);
 						if((event->alarmTime >= now) || (event->stopTime > now))
 						{
 							addEvent(event, false);
@@ -701,18 +697,17 @@ void CTimerManager::loadRecordingSafety()
 
 void CTimerManager::saveEventsToConfig()
 {
-	dprintf(DEBUG_NORMAL, "CTimerManager::saveEventsToConfig\n");
+	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig\n");
 	
 	pthread_mutex_lock(&tm_eventsMutex);
 	
-	// Sperren !!!
 	CConfigFile config(',');
 	config.clear();
 	
 	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: save %d events to config ...\n", events.size());
 	
 	CTimerEventMap::iterator pos = events.begin();
-	for(;pos != events.end();pos++)
+	for(; pos != events.end(); pos++)
 	{
 		CTimerEvent *event = pos->second;
 		dprintf(DEBUG_INFO, "[timermanager] event #%d\n",event->eventID);
@@ -721,9 +716,9 @@ void CTimerManager::saveEventsToConfig()
 	dprintf(DEBUG_INFO, "\n");
 	
 	config.setInt32 ("EXTRA_TIME_START", m_extraTimeStart);
-	dprintf(DEBUG_INFO, "[timermanager] setting EXTRA_TIME_START to %d\n",m_extraTimeStart);
+	dprintf(DEBUG_INFO, "[timermanager] setting EXTRA_TIME_START to %d\n", m_extraTimeStart);
 	config.setInt32 ("EXTRA_TIME_END", m_extraTimeEnd);
-	dprintf(DEBUG_INFO, "[timermanager] setting EXTRA_TIME_END to %d\n",m_extraTimeEnd);
+	dprintf(DEBUG_INFO, "[timermanager] setting EXTRA_TIME_END to %d\n", m_extraTimeEnd);
 	dprintf(DEBUG_INFO, "[timermanager] now saving config to %s...\n", TIMERD_CONFIGFILE);
 	config.saveConfig(TIMERD_CONFIGFILE);
 	
@@ -731,7 +726,6 @@ void CTimerManager::saveEventsToConfig()
 	
 	m_saveEvents = false;			
 
-	// Freigeben !!!
 	pthread_mutex_unlock(&tm_eventsMutex);
 }
 
