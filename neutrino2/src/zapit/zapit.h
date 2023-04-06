@@ -32,6 +32,9 @@
 
 #include <inttypes.h>
 
+// libxmltree
+#include <lib/libxmltree/xmlinterface.h>
+
 // zapit
 #include <zapit/zapittypes.h>
 #include <zapit/frontend_c.h>
@@ -323,7 +326,7 @@ class CZapit
 		void setZapitConfig(Zapit_config * Cfg);
 		void getZapitConfig(Zapit_config *Cfg);
 		
-		void parseScanInputXml(fe_type_t fe_type);
+		_xmlDocPtr parseScanInputXml(fe_type_t fe_type);
 		
 		bool CanZap(CZapitChannel * thischannel);
 		
@@ -429,7 +432,7 @@ class CZapit
 		void setDiseqcType(const diseqc_t diseqc, int feindex = 0);
 		void setDiseqcRepeat(const uint32_t repeat, int feindex = 0);
 		void setScanMotorPosList( ScanMotorPosList& motorPosList );
-		bool startScan(/*int mode, int index = 0*/commandStartScan scan);
+		bool startScan(int mode, int feindex = 0);
 		bool stopScan();
 
 		//

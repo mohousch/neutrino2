@@ -85,9 +85,6 @@
 
 extern int current_muted;
 
-#define AUDIOPLAYER_START_SCRIPT 			CONFIGDIR "/audioplayer.start"
-#define AUDIOPLAYER_END_SCRIPT 			CONFIGDIR "/audioplayer.end"
-
 CAudioPlayerGui::CAudioPlayerGui()
 {
 	dprintf(DEBUG_INFO, "CAudioPlayerGui::CAudioPlayerGui()\n");
@@ -184,11 +181,6 @@ int CAudioPlayerGui::exec(CMenuTarget * parent, const std::string &actionKey)
 	
 	// stop playback
 	CNeutrinoApp::getInstance()->lockPlayBack();
-
-	//start AP start-script
-	puts("[audioplayer.cpp] executing " AUDIOPLAYER_START_SCRIPT "."); 
-	if (system(AUDIOPLAYER_START_SCRIPT) != 0) 
-		perror("Datei " AUDIOPLAYER_START_SCRIPT " fehlt.Bitte erstellen, wenn gebraucht.\nFile " AUDIOPLAYER_START_SCRIPT " not found. Please create if needed.\n");
 
 	//show
 	playFile();

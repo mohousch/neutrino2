@@ -2036,11 +2036,6 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		//
 		if(recordingstatus == 1) 
 		{
-			puts("CNeutrinoApp::doGuiRecord: executing " NEUTRINO_RECORDING_START_SCRIPT ".");
-
-			if (system(NEUTRINO_RECORDING_START_SCRIPT) != 0)
-				perror(NEUTRINO_RECORDING_START_SCRIPT " failed");
-			
 			//
 			time_t now = time(NULL);
 			int record_end = now + g_settings.record_hours*60*60;
@@ -3669,10 +3664,6 @@ _repeat:
 			timeshiftstatus = 0;
 		}
 
-		puts("CNeutrinoApp::handleMsg: executing " NEUTRINO_RECORDING_START_SCRIPT ".");
-		if (system(NEUTRINO_RECORDING_START_SCRIPT) != 0)
-			perror(NEUTRINO_RECORDING_START_SCRIPT " failed");
-
 		if (nextRecordingInfo != NULL)
 			delete[] (unsigned char *) nextRecordingInfo;
 
@@ -3710,10 +3701,6 @@ _repeat:
 
 			if ( recordingstatus == 0 ) 
 			{
-				puts("CNeutrinoApp::handleMsg: executing " NEUTRINO_RECORDING_ENDED_SCRIPT ".");
-				if (system(NEUTRINO_RECORDING_ENDED_SCRIPT) != 0)
-					perror(NEUTRINO_RECORDING_ENDED_SCRIPT " failed");
-
 				CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false);
 			}
 		}
@@ -3822,8 +3809,6 @@ _repeat:
 	}
 	else if( msg == NeutrinoMessages::ANNOUNCE_RECORD) 
 	{
-		system(NEUTRINO_RECORDING_TIMER_SCRIPT);
-
 		char * lrecDir = ((CTimerd::RecordingInfo*)data)->recordingDir;
 
 		// ether-wake
@@ -4809,12 +4794,6 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 			}
 		}			
 
-		//run script
-		puts("CNeutrinoApp::standbyMode: executing " NEUTRINO_ENTER_STANDBY_SCRIPT ".");
-		
-		if (system(NEUTRINO_ENTER_STANDBY_SCRIPT) != 0)
-			perror(NEUTRINO_ENTER_STANDBY_SCRIPT " failed");
-
 		lastMode = mode;
 		mode = mode_standby;
 
@@ -4834,10 +4813,6 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 
 		// set fb active
 		frameBuffer->setActive(true);
-
-		puts("CNeutrinoApp::standbyMode: executing " NEUTRINO_LEAVE_STANDBY_SCRIPT ".");
-		if (system(NEUTRINO_LEAVE_STANDBY_SCRIPT) != 0)
-			perror(NEUTRINO_LEAVE_STANDBY_SCRIPT " failed");
 
 		// vfd mode
 		CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);

@@ -717,6 +717,12 @@ void CFrontend::setFrontend(const struct dvb_frontend_parameters *feparams, bool
 			modulation = feparams->u.ofdm.constellation;
 			fec_inner = feparams->u.ofdm.code_rate_HP;
 			break;
+			
+		case FE_ATSC:
+			delsys = SYS_ATSC;
+			modulation = feparams->u.ofdm.constellation;
+			fec_inner = feparams->u.ofdm.code_rate_HP;
+			break;
 
 		default:
 			dprintf(DEBUG_INFO, "CFrontend::setFrontend: unknown frontend type, exiting\n");

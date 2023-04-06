@@ -96,10 +96,6 @@
 #include <video_cs.h>
 
 
-// scripts
-#define MOVIEPLAYER_START_SCRIPT 	CONFIGDIR "/movieplayer.start" 
-#define MOVIEPLAYER_END_SCRIPT 	CONFIGDIR "/movieplayer.end"
-
 // CMovieInfoViewer
 #define TIMEOSD_FONT 		SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME
 #define TIMEBARH 		38
@@ -181,11 +177,6 @@ void CMoviePlayerGui::cutNeutrino()
 	
 	//
 	CNeutrinoApp::getInstance()->lockPlayBack();
-	
-	// start mp start-script
-	puts("[movieplayer.cpp] executing " MOVIEPLAYER_START_SCRIPT ".");
-	if (system(MOVIEPLAYER_START_SCRIPT) != 0)
-		perror("Datei " MOVIEPLAYER_START_SCRIPT " fehlt. Bitte erstellen, wenn gebraucht.\nFile " MOVIEPLAYER_START_SCRIPT " not found. Please create if needed.\n");
 
 	stopped = true;
 }
@@ -206,11 +197,6 @@ void CMoviePlayerGui::restoreNeutrino()
 	//show infobar
 	g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 	
-	// start end script
-	puts("[movieplayer.cpp] executing " MOVIEPLAYER_END_SCRIPT ".");
-	if (system(MOVIEPLAYER_END_SCRIPT) != 0)
-		perror("Datei " MOVIEPLAYER_END_SCRIPT " fehlt. Bitte erstellen, wenn gebraucht.\nFile " MOVIEPLAYER_END_SCRIPT " not found. Please create if needed.\n");
-
 	stopped = false;
 }
 

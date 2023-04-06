@@ -1825,7 +1825,7 @@ int CZapit::prepareChannels()
 	return 0;
 }
 
-void CZapit::parseScanInputXml(fe_type_t fe_type)
+_xmlDocPtr CZapit::parseScanInputXml(fe_type_t fe_type)
 {
 	if(scanInputParser) 
 	{
@@ -1853,8 +1853,11 @@ void CZapit::parseScanInputXml(fe_type_t fe_type)
 			
 		default:
 			dprintf(DEBUG_INFO, "CZapit::parseScanInputXml: Unknown type %d\n", fe_type);
-			return;
+			scanInputParser = NULL;
+			break;
 	}
+	
+	return scanInputParser;
 }
 
 //
@@ -3208,231 +3211,6 @@ void *event_proc(void *ptr)
 }
 
 //
-void CZapit::Start(Z_start_arg *ZapStart_arg)
-{
-	dprintf(DEBUG_NORMAL, "CZapit::Start\n");
-	
-	//scan for dvb adapter/frontend and feed them in map
-	initFrontend();
-	
-	// load frontend config
-	loadFrontendConfig();
-		
-	// video/audio decoder
-	int video_mode = ZapStart_arg->video_mode;
-	
-	// video decoder
-#if defined (PLATFORM_COOLSTREAM)
-	videoDecoder = new cVideo(video_mode, videoDemux->getChannel(), videoDemux->getBuffer());
-	videoDecoder->Standby(false);
-	
-	audioDecoder = new cAudio(audioDemux->getBuffer(), videoDecoder->GetTVEnc(), NULL);
-	videoDecoder->SetAudioHandle(audioDecoder->GetHandle());
-#else	
-	videoDecoder = new cVideo();
-		
-	// set video system
-	if(videoDecoder)
-		videoDecoder->SetVideoSystem(video_mode);	
-	
-	// audio decoder
-	audioDecoder = new cAudio();
-#endif	
-	
-#if defined (__sh__)
-	if(FrontendCount > 1)
-	{
-		//lib-stb-hal/libspark
-		/* 
-		* this is a strange hack: the drivers seem to only work correctly after
-		* demux0 has been used once. After that, we can use demux1,2,... 
-		*/
-		struct dmx_pes_filter_params p;
-		int dmx = open("/dev/dvb/adapter0/demux0", O_RDWR );
-		if (dmx < 0)
-			printf("%s: ERROR open /dev/dvb/adapter0/demux0 (%m)\n", __func__);
-		else
-		{
-			memset(&p, 0, sizeof(p));
-			p.output = DMX_OUT_DECODER;
-			p.input  = DMX_IN_FRONTEND;
-			p.flags  = DMX_IMMEDIATE_START;
-			p.pes_type = DMX_PES_VIDEO;
-			ioctl(dmx, DMX_SET_PES_FILTER, &p);
-			ioctl(dmx, DMX_STOP);
-			close(dmx);
-		}
-	}
-#endif
-
-	// init vtuner
-	if (getVTuner() != NULL)
-	{
-		char type[8];
-		struct dmx_pes_filter_params filter;
-		struct dvb_frontend_info fe_info;
-		char frontend_filename[256], demux_filename[256], vtuner_filename[256];
-
-		dprintf(DEBUG_NORMAL, "linking adapter1/frontend0 to vtuner0\n");
-
-		sprintf(frontend_filename, "/dev/dvb/adapter%d/frontend0", getVTuner()->fe_adapter);
-		sprintf(demux_filename, "/dev/dvb/adapter%d/demux0", getVTuner()->fe_adapter);
-		sprintf(vtuner_filename, "/dev/vtuner0"); //FIXME: think about this (/dev/misc/vtuner%)
-
-		dprintf(DEBUG_NORMAL, "CZapit::Start: linking %s to %s\n", frontend_filename, vtuner_filename);
-
-		frontendFD = open(frontend_filename, O_RDWR);
-		if (frontendFD < 0)
-		{
-			perror(frontend_filename);
-		}
-
-		demuxFD = open(demux_filename, O_RDONLY | O_NONBLOCK);
-		if (demuxFD < 0)
-		{
-			perror(demux_filename);
-		}
-
-		vtunerFD = open(vtuner_filename, O_RDWR);
-		if (vtunerFD < 0)
-		{
-			perror(vtuner_filename);
-		}
-
-		if (ioctl(frontendFD, FE_GET_INFO, &fe_info) < 0)
-		{
-			perror("FE_GET_INFO");
-		}
-
-		close(frontendFD);
-		frontendFD = -1;
-
-		filter.input = DMX_IN_FRONTEND;
-		filter.flags = 0;
-#if DVB_API_VERSION > 3
-		filter.pid = 0;
-		filter.output = DMX_OUT_TSDEMUX_TAP;
-		filter.pes_type = DMX_PES_OTHER;
-#else
-		filter.pid = -1;
-		filter.output = DMX_OUT_TAP;
-		filter.pes_type = DMX_TAP_TS;
-#endif
-
-		ioctl(demuxFD, DMX_SET_BUFFER_SIZE, DEMUX_BUFFER_SIZE);
-		ioctl(demuxFD, DMX_SET_PES_FILTER, &filter);
-		ioctl(demuxFD, DMX_START);
-
-		switch (fe_info.type)
-		{
-			case FE_QPSK:
-				strcpy(type,"DVB-S2");
-				break;
-			case FE_QAM:
-				strcpy(type,"DVB-C");
-				break;
-			case FE_OFDM:
-				strcpy(type,"DVB-T");
-				break;
-			case FE_ATSC:
-				strcpy(type,"ATSC");
-				break;
-			default:
-				printf("Frontend type 0x%x not supported", fe_info.type);
-		}
-
-		ioctl(vtunerFD, VTUNER_SET_NAME, "virtuel tuner");
-		ioctl(vtunerFD, VTUNER_SET_TYPE, type);
-		ioctl(vtunerFD, VTUNER_SET_FE_INFO, &fe_info);
-		ioctl(vtunerFD, VTUNER_SET_HAS_OUTPUTS, "no");
-		ioctl(vtunerFD, VTUNER_SET_ADAPTER, 1);
-
-#if DVB_API_VERSION > 5 || DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 5
-		{
-			struct dtv_properties props;
-			struct dtv_property p[1];
-			props.num = 1;
-			props.props = p;
-			p[0].cmd = DTV_ENUM_DELSYS;
-
-			if (ioctl(frontendFD, FE_GET_PROPERTY, &props) >= 0)
-			{
-				ioctl(vtunerFD, VTUNER_SET_DELSYS, p[0].u.buffer.data);
-			}
-		}
-#endif
-
-		memset(pidlist, 0xff, sizeof(pidlist));
-
-		dprintf(DEBUG_NORMAL, "CZapit::Start: init succeeded\n");
-
-		pthread_create(&eventthread, NULL, event_proc, (void*)NULL);
-		pthread_create(&pumpthread, NULL, pump_proc, (void*)NULL);
-	}	
-
-	//CI init
-#if defined (ENABLE_CI)	
-	ci = cDvbCi::getInstance();
-#endif	
-	
-	//globals
-	scan_runs = 0;
-	found_channels = 0;
-	curr_sat = 0;
-
-	// load configuration or set defaults if no configuration file exists
-	loadZapitSettings();
-
-	//create Bouquet Manager
-	g_bouquetManager = new CBouquetManager();
-	
-	//start channel
-	if(ZapStart_arg->uselastchannel == 0)
-	{
-		// mode
-		if (ZapStart_arg->lastchannelmode == RADIO_MODE)
-			setRadioMode();
-		else if (ZapStart_arg->lastchannelmode == TV_MODE)
-			setTVMode();
-		
-		// live channel id
-		if (currentMode & RADIO_MODE)
-			live_channel_id = ZapStart_arg->startchannelradio_id;
-		else if (currentMode & TV_MODE)
-			live_channel_id = ZapStart_arg->startchanneltv_id;
-
-		lastChannelRadio = ZapStart_arg->startchannelradio_nr;
-		lastChannelTV    = ZapStart_arg->startchanneltv_nr;
-	}
-	else
-	{
-		if (lastChannelMode == RADIO_MODE)
-			setRadioMode();
-		else if (lastChannelMode == TV_MODE)
-			setTVMode();
-	}
-
-	// load services
-	prepareChannels();
-
-	//create sdt thread
-	pthread_create(&tsdt, NULL, sdtThread, (void *) NULL);
-
-	//get live channel
-	tallchans_iterator cit;
-	cit = allchans.find(live_channel_id);
-
-	if(cit != allchans.end())
-		live_channel = &(cit->second);
-	
-	//wakeup from standby and zap it to live channel
-	leaveStandby(); 
-	
-	//create pmt update filter thread
-	pthread_create(&tpmt, NULL, updatePMTFilter, (void *) NULL);
-}
-
-//
 void *CZapit::updatePMTFilter(void *)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::updatePMTFilter: tid %ld\n", syscall(__NR_gettid));
@@ -3508,52 +3286,6 @@ void *CZapit::updatePMTFilter(void *)
 		
 	
 	pthread_exit(NULL);
-}
-
-void CZapit::Stop()
-{
-	dprintf(DEBUG_NORMAL, "CZapit::Stop:\n");
-
-	//save audio map
-	if(live_channel)
-		save_channel_pids(live_channel);
-	
-	// save setting
-	saveZapitSettings(true, true);
-	
-	// stop playback (stop capmt)
-	stopPlayBack();
-
-	// stop vtuner pump thread
-	if (getVTuner() != NULL)
-	{
-		pthread_cancel(eventthread);
-		pthread_join(eventthread, NULL);
-		
-		pthread_cancel(pumpthread);
-		pthread_join(pumpthread, NULL);
-	}
-	
-	// stop std thread
-	pthread_cancel(tsdt);
-	pthread_join(tsdt, NULL);
-	
-	// stop pmt update filter thread
-	pthread_cancel(tpmt);
-	pthread_join(tpmt, NULL);
-
-	if (pmtDemux)
-		delete pmtDemux;
-	
-	if(audioDecoder)
-		delete audioDecoder;
-	
-	if(videoDecoder)
-		delete videoDecoder;
-
-	//close frontend	
-	for(fe_map_iterator_t it = femap.begin(); it != femap.end(); it++)
-		delete it->second;
 }
 
 //
@@ -4302,9 +4034,7 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 //
 bool CZapit::scanTP(TP_params TP, int feindex)
 {
-	dprintf(DEBUG_NORMAL, "CZapit::scanTP fe:(%d)\n", feindex);
-	
-	commandScanTP msg;
+	printf("CZapit::scanTP fe:(%d)\n", feindex);
 	
 	if(!(TP.feparams.frequency > 0) && (live_channel && !live_channel->isWebTV)) 
 	{
@@ -4354,10 +4084,13 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 	
 	scan_runs = 1;
 	
+	commandScanTP msg;
+	
+	memset(&msg, 0, sizeof(msg));
 	msg.TP = TP;
 	msg.feindex = feindex;
 	
-	if (pthread_create(&scan_thread, NULL, scanTransponderThread, (void *) &msg)) 
+	if (pthread_create(&scan_thread, 0, scanTransponderThread, (void *) &msg)) 
 	{
 		dprintf(DEBUG_INFO, "CZapit::scanTP: pthread_create\n");
 		scan_runs = 0;
@@ -4467,30 +4200,15 @@ void CZapit::setScanMotorPosList( ScanMotorPosList& motorPosList )
 }
 
 //
-bool CZapit::startScan(commandStartScan scan)
+bool CZapit::startScan(int mode, int feindex)
 {		
-	dprintf(DEBUG_NORMAL, "CZapit::startScan: fe(%d) scanmode: %d\n", scan.feindex, scan.scanmode);
+	printf("CZapit::startScan: fe(%d) scanmode: %d\n", feindex, mode);
 	
-	//commandStartScan params;
+	commandStartScan scan;
 	
-	// reread scaninputParser
-    	if(scanInputParser) 
-	{
-                delete scanInputParser;
-                scanInputParser = NULL;
-
-		CFrontend * fe = getFE(scan.feindex);
-		parseScanInputXml(fe->getInfo()->type);
-
-		if (!scanInputParser) 
-		{
-			dprintf(DEBUG_INFO, "CZapit::startScan: scan not configured\n");
-			
-			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
-			
-			return false;
-		}
-	}
+	memset(&scan, 0, sizeof(scan));
+	scan.scanmode = mode;
+	scan.feindex = feindex;
 
 	scan_runs = 1;
 	
@@ -4502,9 +4220,6 @@ bool CZapit::startScan(commandStartScan scan)
 
 	found_transponders = 0;
 	found_channels = 0;
-	
-	//params.scanmode = mode;
-	//params.feindex = index;
 
 	if (pthread_create(&scan_thread, 0, scanThread, (void *) &scan)) 
 	{
@@ -4595,7 +4310,7 @@ void * CZapit::scanThread(void * data)
 	}
 	
 	// get provider position and name
-	CZapit::getInstance()->parseScanInputXml(CZapit::getInstance()->getFE(feindex)->getInfo()->type);
+	scanInputParser = CZapit::getInstance()->parseScanInputXml(CZapit::getInstance()->getFE(feindex)->getInfo()->type);
 	
 	_xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
 
@@ -4727,10 +4442,10 @@ void * CZapit::scanTransponderThread(void * data)
 	if (!data)
 		return 0;
 	
-	CZapit::commandScanTP ScanTP = *(CZapit::commandScanTP *) data;
+	CZapit::commandScanTP params = *(CZapit::commandScanTP *) data;
 	
-	TP_params * TP = &ScanTP.TP;
-	int feindex = ScanTP.feindex;
+	TP_params * TP = &params.TP;
+	int feindex = params.feindex;
 	
 	char providerName[32] = "";
 	t_satellite_position satellitePosition = 0;
@@ -4752,7 +4467,7 @@ void * CZapit::scanTransponderThread(void * data)
 
 	satellitePosition = scanProviders.begin()->first;
 	
-	dprintf(DEBUG_INFO, "CZapit::scanTransponderThread: scanning sat %s position %d fe(%d)\n", providerName, satellitePosition, feindex);
+	dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: scanning sat %s position %d fe(%d)\n", providerName, satellitePosition, feindex);
 	
 	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, providerName, strlen(providerName) + 1);
 
@@ -4833,5 +4548,277 @@ void * CZapit::scanTransponderThread(void * data)
 	nittransponders.clear();
 
 	pthread_exit(NULL);
+}
+
+//
+void CZapit::Start(Z_start_arg *ZapStart_arg)
+{
+	dprintf(DEBUG_NORMAL, "CZapit::Start\n");
+	
+	//scan for dvb adapter/frontend and feed them in map
+	initFrontend();
+	
+	// load frontend config
+	loadFrontendConfig();
+		
+	// video/audio decoder
+	int video_mode = ZapStart_arg->video_mode;
+	
+	// video decoder
+#if defined (PLATFORM_COOLSTREAM)
+	videoDecoder = new cVideo(video_mode, videoDemux->getChannel(), videoDemux->getBuffer());
+	videoDecoder->Standby(false);
+	
+	audioDecoder = new cAudio(audioDemux->getBuffer(), videoDecoder->GetTVEnc(), NULL);
+	videoDecoder->SetAudioHandle(audioDecoder->GetHandle());
+#else	
+	videoDecoder = new cVideo();
+		
+	// set video system
+	if(videoDecoder)
+		videoDecoder->SetVideoSystem(video_mode);	
+	
+	// audio decoder
+	audioDecoder = new cAudio();
+#endif	
+	
+#if defined (__sh__)
+	if(FrontendCount > 1)
+	{
+		//lib-stb-hal/libspark
+		/* 
+		* this is a strange hack: the drivers seem to only work correctly after
+		* demux0 has been used once. After that, we can use demux1,2,... 
+		*/
+		struct dmx_pes_filter_params p;
+		int dmx = open("/dev/dvb/adapter0/demux0", O_RDWR );
+		if (dmx < 0)
+			printf("%s: ERROR open /dev/dvb/adapter0/demux0 (%m)\n", __func__);
+		else
+		{
+			memset(&p, 0, sizeof(p));
+			p.output = DMX_OUT_DECODER;
+			p.input  = DMX_IN_FRONTEND;
+			p.flags  = DMX_IMMEDIATE_START;
+			p.pes_type = DMX_PES_VIDEO;
+			ioctl(dmx, DMX_SET_PES_FILTER, &p);
+			ioctl(dmx, DMX_STOP);
+			close(dmx);
+		}
+	}
+#endif
+
+	// init vtuner
+	if (getVTuner() != NULL)
+	{
+		char type[8];
+		struct dmx_pes_filter_params filter;
+		struct dvb_frontend_info fe_info;
+		char frontend_filename[256], demux_filename[256], vtuner_filename[256];
+
+		dprintf(DEBUG_NORMAL, "linking adapter1/frontend0 to vtuner0\n");
+
+		sprintf(frontend_filename, "/dev/dvb/adapter%d/frontend0", getVTuner()->fe_adapter);
+		sprintf(demux_filename, "/dev/dvb/adapter%d/demux0", getVTuner()->fe_adapter);
+		sprintf(vtuner_filename, "/dev/vtuner0"); //FIXME: think about this (/dev/misc/vtuner%)
+
+		dprintf(DEBUG_NORMAL, "CZapit::Start: linking %s to %s\n", frontend_filename, vtuner_filename);
+
+		frontendFD = open(frontend_filename, O_RDWR);
+		if (frontendFD < 0)
+		{
+			perror(frontend_filename);
+		}
+
+		demuxFD = open(demux_filename, O_RDONLY | O_NONBLOCK);
+		if (demuxFD < 0)
+		{
+			perror(demux_filename);
+		}
+
+		vtunerFD = open(vtuner_filename, O_RDWR);
+		if (vtunerFD < 0)
+		{
+			perror(vtuner_filename);
+		}
+
+		if (ioctl(frontendFD, FE_GET_INFO, &fe_info) < 0)
+		{
+			perror("FE_GET_INFO");
+		}
+
+		close(frontendFD);
+		frontendFD = -1;
+
+		filter.input = DMX_IN_FRONTEND;
+		filter.flags = 0;
+#if DVB_API_VERSION > 3
+		filter.pid = 0;
+		filter.output = DMX_OUT_TSDEMUX_TAP;
+		filter.pes_type = DMX_PES_OTHER;
+#else
+		filter.pid = -1;
+		filter.output = DMX_OUT_TAP;
+		filter.pes_type = DMX_TAP_TS;
+#endif
+
+		ioctl(demuxFD, DMX_SET_BUFFER_SIZE, DEMUX_BUFFER_SIZE);
+		ioctl(demuxFD, DMX_SET_PES_FILTER, &filter);
+		ioctl(demuxFD, DMX_START);
+
+		switch (fe_info.type)
+		{
+			case FE_QPSK:
+				strcpy(type,"DVB-S2");
+				break;
+			case FE_QAM:
+				strcpy(type,"DVB-C");
+				break;
+			case FE_OFDM:
+				strcpy(type,"DVB-T");
+				break;
+			case FE_ATSC:
+				strcpy(type,"ATSC");
+				break;
+			default:
+				printf("Frontend type 0x%x not supported", fe_info.type);
+		}
+
+		ioctl(vtunerFD, VTUNER_SET_NAME, "virtuel tuner");
+		ioctl(vtunerFD, VTUNER_SET_TYPE, type);
+		ioctl(vtunerFD, VTUNER_SET_FE_INFO, &fe_info);
+		ioctl(vtunerFD, VTUNER_SET_HAS_OUTPUTS, "no");
+		ioctl(vtunerFD, VTUNER_SET_ADAPTER, 1);
+
+#if DVB_API_VERSION > 5 || DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 5
+		{
+			struct dtv_properties props;
+			struct dtv_property p[1];
+			props.num = 1;
+			props.props = p;
+			p[0].cmd = DTV_ENUM_DELSYS;
+
+			if (ioctl(frontendFD, FE_GET_PROPERTY, &props) >= 0)
+			{
+				ioctl(vtunerFD, VTUNER_SET_DELSYS, p[0].u.buffer.data);
+			}
+		}
+#endif
+
+		memset(pidlist, 0xff, sizeof(pidlist));
+
+		dprintf(DEBUG_NORMAL, "CZapit::Start: init succeeded\n");
+
+		pthread_create(&eventthread, NULL, event_proc, (void*)NULL);
+		pthread_create(&pumpthread, NULL, pump_proc, (void*)NULL);
+	}	
+
+	//CI init
+#if defined (ENABLE_CI)	
+	ci = cDvbCi::getInstance();
+#endif	
+	
+	//globals
+	scan_runs = 0;
+	found_channels = 0;
+	curr_sat = 0;
+
+	// load configuration or set defaults if no configuration file exists
+	loadZapitSettings();
+
+	//create Bouquet Manager
+	g_bouquetManager = new CBouquetManager();
+	
+	//start channel
+	if(ZapStart_arg->uselastchannel == 0)
+	{
+		// mode
+		if (ZapStart_arg->lastchannelmode == RADIO_MODE)
+			setRadioMode();
+		else if (ZapStart_arg->lastchannelmode == TV_MODE)
+			setTVMode();
+		
+		// live channel id
+		if (currentMode & RADIO_MODE)
+			live_channel_id = ZapStart_arg->startchannelradio_id;
+		else if (currentMode & TV_MODE)
+			live_channel_id = ZapStart_arg->startchanneltv_id;
+
+		lastChannelRadio = ZapStart_arg->startchannelradio_nr;
+		lastChannelTV    = ZapStart_arg->startchanneltv_nr;
+	}
+	else
+	{
+		if (lastChannelMode == RADIO_MODE)
+			setRadioMode();
+		else if (lastChannelMode == TV_MODE)
+			setTVMode();
+	}
+
+	// load services
+	prepareChannels();
+
+	//create sdt thread
+	pthread_create(&tsdt, NULL, sdtThread, (void *) NULL);
+
+	//get live channel
+	tallchans_iterator cit;
+	cit = allchans.find(live_channel_id);
+
+	if(cit != allchans.end())
+		live_channel = &(cit->second);
+	
+	//wakeup from standby and zap it to live channel
+	leaveStandby(); 
+	
+	//create pmt update filter thread
+	pthread_create(&tpmt, NULL, updatePMTFilter, (void *) NULL);
+}
+
+//
+void CZapit::Stop()
+{
+	dprintf(DEBUG_NORMAL, "CZapit::Stop:\n");
+
+	//save audio map
+	if(live_channel)
+		save_channel_pids(live_channel);
+	
+	// save setting
+	saveZapitSettings(true, true);
+	
+	// stop playback (stop capmt)
+	stopPlayBack();
+
+	// stop vtuner pump thread
+	if (getVTuner() != NULL)
+	{
+		pthread_cancel(eventthread);
+		pthread_join(eventthread, NULL);
+		
+		pthread_cancel(pumpthread);
+		pthread_join(pumpthread, NULL);
+	}
+	
+	// stop std thread
+	pthread_cancel(tsdt);
+	pthread_join(tsdt, NULL);
+	
+	// stop pmt update filter thread
+	pthread_cancel(tpmt);
+	pthread_join(tpmt, NULL);
+
+	if (pmtDemux)
+		delete pmtDemux;
+	
+	if(audioDecoder)
+		delete audioDecoder;
+	
+	if(videoDecoder)
+		delete videoDecoder;
+
+	//close frontend	
+	for(fe_map_iterator_t it = femap.begin(); it != femap.end(); it++)
+		delete it->second;
 }
 

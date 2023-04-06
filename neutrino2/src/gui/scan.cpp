@@ -57,9 +57,6 @@
 #include <gui/pictureviewer.h>
 
 
-#define NEUTRINO_SCAN_START_SCRIPT	CONFIGDIR "/scan.start"
-#define NEUTRINO_SCAN_STOP_SCRIPT	CONFIGDIR "/scan.stop"
-
 #define RED_BAR 40
 #define YELLOW_BAR 70
 #define GREEN_BAR 100
@@ -180,7 +177,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.u.qpsk.fec_inner = (fe_code_rate_t) scanSettings->TP_fec;
 			TP.polarization = scanSettings->TP_pol;
 
-			printf("CScanTs::exec: fe(%d) freq %d rate %d fec %d pol %d\n", feindex, TP.feparams.frequency, TP.feparams.u.qpsk.symbol_rate, TP.feparams.u.qpsk.fec_inner, TP.polarization/*, TP.feparams.u.qpsk.modulation*/ );
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d rate %d fec %d pol %d\n", feindex, TP.feparams.frequency, TP.feparams.u.qpsk.symbol_rate, TP.feparams.u.qpsk.fec_inner, TP.polarization);
 		} 
 		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
 		{
@@ -188,7 +185,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.u.qam.fec_inner	= (fe_code_rate_t)scanSettings->TP_fec;
 			TP.feparams.u.qam.modulation	= (fe_modulation_t) scanSettings->TP_mod;
 
-			printf("CScanTs::exec: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP.feparams.frequency, TP.feparams.u.qam.symbol_rate, TP.feparams.u.qam.fec_inner, TP.feparams.u.qam.modulation);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP.feparams.frequency, TP.feparams.u.qam.symbol_rate, TP.feparams.u.qam.fec_inner, TP.feparams.u.qam.modulation);
 		}
 		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM )
 		{
@@ -200,7 +197,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.u.ofdm.guard_interval = (fe_guard_interval_t)scanSettings->TP_guard;
 			TP.feparams.u.ofdm.hierarchy_information = (fe_hierarchy_t)scanSettings->TP_hierarchy;
 
-			printf("CScanTs::exec: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP.feparams.frequency, TP.feparams.u.ofdm.bandwidth, TP.feparams.u.ofdm.code_rate_HP, TP.feparams.u.ofdm.code_rate_LP, TP.feparams.u.ofdm.constellation, TP.feparams.u.ofdm.transmission_mode, TP.feparams.u.ofdm.guard_interval, TP.feparams.u.ofdm.hierarchy_information);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP.feparams.frequency, TP.feparams.u.ofdm.bandwidth, TP.feparams.u.ofdm.code_rate_HP, TP.feparams.u.ofdm.code_rate_LP, TP.feparams.u.ofdm.constellation, TP.feparams.u.ofdm.transmission_mode, TP.feparams.u.ofdm.guard_interval, TP.feparams.u.ofdm.hierarchy_information);
 		}
 	} 
 	else 
@@ -220,12 +217,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	
 	success = false;
-
-	if(!manual) 
-	{
-                if (system(NEUTRINO_SCAN_START_SCRIPT) != 0)
-                	perror(NEUTRINO_SCAN_START_SCRIPT " failed");
-	}
 	
 	/*
 	// send fe mode
@@ -289,15 +280,12 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		success = CZapit::getInstance()->tuneTP(TP, feindex);
 	} 
 	else if(manual)
+	{
 		success = CZapit::getInstance()->scanTP(TP, feindex);
+	}
 	else
 	{
-		CZapit::commandStartScan msg;
-
-		msg.scanmode = scan_mode;
-		msg.feindex = feindex;
-		
-		success = CZapit::getInstance()->startScan(/*scan_mode, feindex*/msg);
+		success = CZapit::getInstance()->startScan(scan_mode, feindex);
 	}
 
 	// poll for messages
@@ -336,13 +324,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	// to join scan thread
 	CZapit::getInstance()->stopScan();
 
-	if(!manual) 
-	{
-                if (system(NEUTRINO_SCAN_STOP_SCRIPT) != 0)
-                	perror(NEUTRINO_SCAN_STOP_SCRIPT " failed");
-				
-	}
-
 	//
 	if(!test) 
 	{
@@ -361,6 +342,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 
 		do {
 			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
+			
 			if ( msg <= RC_MaxRC )
 				msg = RC_timeout;
 			else
@@ -517,8 +499,6 @@ void CScanTs::paintLineLocale(int _x, int * _y, int _width, const char* const l)
 
 void CScanTs::paintLine(int _x, int _y, int w, const char * const txt)
 {
-	//printf("CScanTs::paintLine x %d y %d w %d width %d xpos2 %d: %s\n", x, y, w, width, xpos2, txt);
-	
 	frameBuffer->paintBoxRel(_x, _y, w, mheight, COL_MENUCONTENT_PLUS_0);
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, _y + mheight, w, txt, COL_MENUCONTENT, 0, true); // UTF-8
 }
@@ -534,8 +514,7 @@ void CScanTs::paint(bool fortest)
 	CHeaders head(x, ypos, width, hheight, fortest ? _("Test signal") : _("Scan transponder"), NEUTRINO_ICON_SCAN);
 	const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " "};
 			
-	head.setButtons(&btn);
-		
+	head.setButtons(&btn);	
 	head.paint();
 	
 	// main box
@@ -568,6 +547,13 @@ void CScanTs::paint(bool fortest)
 	{	//terrestrial
 		paintLineLocale(xpos1, &ypos, width - xpos1, _("Terrestrial:"));
 		xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Terrestrial:"), true); // UTF-8
+	}
+	
+	// ATSC
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+	{	//terrestrial
+		paintLineLocale(xpos1, &ypos, width - xpos1, _("Atsc:"));
+		xpos2 = xpos1 + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_("Atsc:"), true); // UTF-8
 	}
 
 	// transponder
@@ -633,7 +619,7 @@ void CScanTs::showSNR()
 		sprintf(percent, "%d%% SIG", sig);
 		sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth ("100% SIG");
 
-		sigscale->paint(/*x + 20 - 1, y + height - mheight - 5 + 2,*/ sig);
+		sigscale->paint(sig);
 
 		posx = posx + barwidth + 3;
 		sw = x + 247 - posx;
@@ -647,7 +633,7 @@ void CScanTs::showSNR()
 		sprintf(percent, "%d%% SNR", snr);
 		sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth ("100% SNR");
 		
-		snrscale->paint(/*x + 20 + 260 - 1, y + height - mheight - 5 + 2,*/ snr);
+		snrscale->paint(snr);
 
 		posx = posx + barwidth + 3;
 		sw = x + width - posx;
@@ -655,3 +641,4 @@ void CScanTs::showSNR()
 		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT);
 	}
 }
+
