@@ -3980,7 +3980,8 @@ skip_message:
 	{
 		std::string text = (char*)data;
 		std::string::size_type pos;
-		while((pos=text.find('/'))!= std::string::npos)
+		
+		while((pos=text.find('/')) != std::string::npos)
 		{
 			text[pos] = '\n';
 		}

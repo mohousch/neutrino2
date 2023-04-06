@@ -151,7 +151,7 @@ class CTimerd
 		int addRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t stoptime, unsigned long long epgID = 0, time_t epg_starttime = 0, time_t announcetime = 0, unsigned char apids = TIMERD_APIDS_STD, bool safety = false, std::string recDir = "", bool forceAdd = true);
 		int addImmediateRecordTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t stoptime, unsigned long long epgID = 0, time_t epg_starttime = 0, unsigned char apids = TIMERD_APIDS_STD);
 		int addStandbyTimerEvent(bool standby_on,time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0);
-		int addZaptoTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0, unsigned long long epgID=0, time_t epg_starttime = 0,unsigned char apids = TIMERD_APIDS_STD);
+		int addZaptoTimerEvent(const t_channel_id channel_id, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0, unsigned long long epgID = 0, time_t epg_starttime = 0,unsigned char apids = TIMERD_APIDS_STD);
 		int addNextProgramTimerEvent(EventInfo eventInfo, time_t alarmtime, time_t announcetime = 0, time_t stoptime = 0);
 
 		bool rescheduleTimerEvent(int eventid, time_t announcediff, time_t alarmdiff, time_t stoptime);
