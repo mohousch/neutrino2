@@ -4086,7 +4086,6 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 	
 	commandScanTP msg;
 	
-	memset(&msg, 0, sizeof(msg));
 	msg.TP = TP;
 	msg.feindex = feindex;
 	
@@ -4204,9 +4203,8 @@ bool CZapit::startScan(int mode, int feindex)
 {		
 	printf("CZapit::startScan: fe(%d) scanmode: %d\n", feindex, mode);
 	
-	commandStartScan scan;
+	commandScanProvider scan;
 	
-	memset(&scan, 0, sizeof(scan));
 	scan.scanmode = mode;
 	scan.feindex = feindex;
 
@@ -4259,7 +4257,7 @@ void * CZapit::scanThread(void * data)
 	if (!data)
 		return 0;
 	
-	CZapit::commandStartScan params = *(CZapit::commandStartScan *) data;
+	CZapit::commandScanProvider params = * static_cast<CZapit::commandScanProvider*>(data);
 	
 	int mode = params.scanmode;
 	int feindex = params.feindex;
@@ -4442,7 +4440,7 @@ void * CZapit::scanTransponderThread(void * data)
 	if (!data)
 		return 0;
 	
-	CZapit::commandScanTP params = *(CZapit::commandScanTP *) data;
+	CZapit::commandScanTP params = *static_cast<CZapit::commandScanTP*>(data);
 	
 	TP_params * TP = &params.TP;
 	int feindex = params.feindex;

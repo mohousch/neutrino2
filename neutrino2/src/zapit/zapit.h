@@ -214,15 +214,16 @@ class CZapit
 		
 		typedef std::vector<responseGetSatelliteList> SatelliteList;
 		
-		struct commandStartScan
-		{
-			int scanmode;
-			int feindex;
-		};
-		
+		//
 		struct commandScanTP
 		{
 			TP_params TP;
+			int feindex;
+		};
+		
+		struct commandScanProvider
+		{
+			int scanmode;
 			int feindex;
 		};
 		
