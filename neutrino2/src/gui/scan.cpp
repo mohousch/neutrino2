@@ -99,7 +99,7 @@ CScanTs::CScanTs(int num)
 
 int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 {
-	dprintf(DEBUG_DEBUG, "CScanTs::exec: ectionKey: %s\n", actionKey.c_str());
+	dprintf(DEBUG_INFO, "CScanTs::exec: actionKey: %s\n", actionKey.c_str());
 
 	if(parent)
 		parent->hide();
@@ -164,9 +164,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 				break;
 			}
 		}
-		
-		// scan mode
-		TP.scanmode = scanSettings->scan_mode;
 		
 		// freq
 		TP.feparams.frequency = atoi(scanSettings->TP_freq);
@@ -281,11 +278,22 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	} 
 	else if(manual)
 	{
-		success = CZapit::getInstance()->scanTP(TP, feindex);
+		CZapit::commandScanTP msg;
+	
+		msg.TP = TP;
+		msg.scanmode = scan_mode;
+		msg.feindex = feindex;
+	
+		success = CZapit::getInstance()->scanTP(/*TP, scan_mode, feindex*/msg);
 	}
 	else
 	{
-		success = CZapit::getInstance()->startScan(scan_mode, feindex);
+		CZapit::commandScanProvider msg;
+		
+		msg.scanmode = scan_mode;
+		msg.feindex = feindex;
+	
+		success = CZapit::getInstance()->startScan(/*scan_mode, feindex*/msg);
 	}
 
 	// poll for messages
@@ -474,6 +482,8 @@ int CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 
 void CScanTs::paintRadar(void)
 {
+	dprintf(DEBUG_INFO, "CScanTs::paintRadar\n");
+	
 	char filename[30];
 	
 	sprintf(filename, "radar%d.raw", radar);
@@ -505,6 +515,8 @@ void CScanTs::paintLine(int _x, int _y, int w, const char * const txt)
 
 void CScanTs::paint(bool fortest)
 {
+	dprintf(DEBUG_INFO, "CScanTs::paint\n");
+	
 	int ypos;
 	int iw, ih;
 
@@ -598,6 +610,8 @@ int CScanTs::greater_xpos(int xpos, const char* const txt)
 
 void CScanTs::showSNR()
 {
+	dprintf(DEBUG_INFO, "CScanTs::showSNR\n");
+	
 	char percent[10];
 	int barwidth = 150;
 	uint16_t ssig, ssnr;

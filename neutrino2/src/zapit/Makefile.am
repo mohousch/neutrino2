@@ -23,7 +23,7 @@ if !ENABLE_GSTREAMER
 AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include
 endif
 
-AM_CPPFLAGS += -fno-rtti -fno-exceptions
+#AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
 noinst_LIBRARIES = libzapit.a
 

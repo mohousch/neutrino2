@@ -206,7 +206,7 @@ int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, ui
 	return 1;
 }
 
-int CScan::getSDTS(t_satellite_position satellitePosition, int feindex)
+bool CScan::getSDTS(t_satellite_position satellitePosition, int feindex)
 {
 	transponder_id_t TsidOnid = 0;
 	stiterator tI;
@@ -219,7 +219,7 @@ _repeat:
 	for (tI = scantransponders.begin(); tI != scantransponders.end(); tI++) 
 	{
 		if(abort_scan)
-			return 0;
+			return false;
 
 		dprintf(DEBUG_NORMAL, "CScan::getSDTS: scanning: %llx\n", tI->first);
 
@@ -249,7 +249,7 @@ _repeat:
 		}
 
 		if(abort_scan)
-			return 0;
+			return false;
 
 		//
 		freq_id_t freq;
@@ -316,10 +316,10 @@ _repeat:
 		}
 	}
 
-	return 0;
+	return true;
 }
 
-int CScan::scanTransponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, bool /*satfeed*/, int feindex)
+bool CScan::scanTransponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, int feindex)
 {
 	dprintf(DEBUG_INFO, "CScan::scanTransponder:\n");
 	
@@ -387,10 +387,10 @@ int CScan::scanTransponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 
 	addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &feparams, polarization, false, feindex);
 
-	return 0;
+	return true;
 }
 
-void CScan::scanProvider(_xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
+bool CScan::scanProvider(_xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
 {
 	dprintf(DEBUG_NORMAL, "CScan::%s:\n", __FUNCTION__);
 	
@@ -406,7 +406,7 @@ void CScan::scanProvider(_xmlNodePtr search, t_satellite_position satellitePosit
 	{
 		dprintf(DEBUG_NORMAL, "[scan] scanProvider: WARNING satellite position %d not found!\n", satellitePosition);
 		
-		return;
+		return false;
 	}
 
 	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, CEventServer::INITID_NEUTRINO, &processed_transponders, sizeof(processed_transponders));
@@ -418,9 +418,9 @@ void CScan::scanProvider(_xmlNodePtr search, t_satellite_position satellitePosit
 	while ((tps = xmlGetNextOccurence(tps, "transponder")) != NULL) 
 	{
 		if(abort_scan)
-			return;
+			return false;
 
-		scanTransponder(tps, diseqc_pos, satellitePosition, satfeed, feindex);
+		scanTransponder(tps, diseqc_pos, satellitePosition, feindex);
 
 		// next transponder
 		tps = tps->xmlNextNode;
@@ -464,5 +464,7 @@ void CScan::scanProvider(_xmlNodePtr search, t_satellite_position satellitePosit
 	}
 	
 	TIMER_STOP("CScan::scanProvider: scanning took");
+	
+	return true;
 }
 

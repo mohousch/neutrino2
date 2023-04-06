@@ -55,9 +55,9 @@ class CScan
 		//
 		bool tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_satellite_position satellitePosition, int feindex);
 		int addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit = 0, int feindex = 0);
-		int getSDTS(t_satellite_position satellitePosition, int feindex);
-		int scanTransponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, bool /*satfeed*/, int feindex);
-		void scanProvider(_xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex);
+		bool getSDTS(t_satellite_position satellitePosition, int feindex);
+		bool scanTransponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, int feindex);
+		bool scanProvider(_xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex);
 };
 
 #endif /* __scan_h__ */

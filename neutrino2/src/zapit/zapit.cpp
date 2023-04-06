@@ -4032,50 +4032,11 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 }
 
 //
-bool CZapit::scanTP(TP_params TP, int feindex)
+bool CZapit::scanTP(/*TP_params TP, int smode, int feindex*/commandScanTP &msg)
 {
-	printf("CZapit::scanTP fe:(%d)\n", feindex);
+	printf("CZapit::scanTP fe:(%d) scanmode:%d\n", msg.feindex, msg.scanmode);
 	
-	if(!(TP.feparams.frequency > 0) && (live_channel && !live_channel->isWebTV)) 
-	{
-		// TP
-		transponder_list_t::iterator transponder = transponders.find(live_channel->getTransponderId());
-	
-		// freq
-		TP.feparams.frequency = transponder->second.feparams.frequency;
-				
-		switch ( getFE(feindex)->getInfo()->type) 
-		{
-			case FE_QPSK:
-				TP.feparams.u.qpsk.symbol_rate = transponder->second.feparams.u.qpsk.symbol_rate;
-				TP.feparams.u.qpsk.fec_inner = transponder->second.feparams.u.qpsk.fec_inner;
-				TP.polarization = transponder->second.polarization;
-				break;
-
-			case FE_QAM:
-				TP.feparams.u.qam.symbol_rate = transponder->second.feparams.u.qam.symbol_rate;
-				TP.feparams.u.qam.fec_inner = transponder->second.feparams.u.qam.fec_inner;
-				TP.feparams.u.qam.modulation = transponder->second.feparams.u.qam.modulation;
-				break;
-
-			case FE_OFDM:
-				TP.feparams.u.ofdm.bandwidth =  transponder->second.feparams.u.ofdm.bandwidth;
-				TP.feparams.u.ofdm.code_rate_HP = transponder->second.feparams.u.ofdm.code_rate_HP; 
-				TP.feparams.u.ofdm.code_rate_LP = transponder->second.feparams.u.ofdm.code_rate_LP; 
-				TP.feparams.u.ofdm.constellation = transponder->second.feparams.u.ofdm.constellation;
-				TP.feparams.u.ofdm.transmission_mode = transponder->second.feparams.u.ofdm.transmission_mode;
-				TP.feparams.u.ofdm.guard_interval = transponder->second.feparams.u.ofdm.guard_interval;
-				TP.feparams.u.ofdm.hierarchy_information = transponder->second.feparams.u.ofdm.hierarchy_information;
-				break;
-
-			default:
-				dprintf(DEBUG_INFO, "CZapit::scanTP: Unknown type %d\n", getFE(feindex)->getInfo()->type);
-				return false;
-		}
-	
-		if(scanProviders.size() > 0)
-			scanProviders.clear();
-	}
+	bool ret = true;
 	
 	CZapit::stopPlayBack();
 				
@@ -4084,20 +4045,24 @@ bool CZapit::scanTP(TP_params TP, int feindex)
 	
 	scan_runs = 1;
 	
-	commandScanTP msg;
-	
-	msg.TP = TP;
-	msg.feindex = feindex;
+	//CZapit::commandScanTP msg;
+	//msg.TP = TP;
+	//msg.scanmode = smode;
+	//msg.feindex = feindex;
 	
 	if (pthread_create(&scan_thread, 0, scanTransponderThread, (void *) &msg)) 
 	{
 		dprintf(DEBUG_INFO, "CZapit::scanTP: pthread_create\n");
 		scan_runs = 0;
+		
+		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
+		
+		ret = false;
 	} 
 			
 	retune = true;
 	
-	return scan_runs;
+	return ret;
 }
 
 //
@@ -4199,14 +4164,15 @@ void CZapit::setScanMotorPosList( ScanMotorPosList& motorPosList )
 }
 
 //
-bool CZapit::startScan(int mode, int feindex)
+bool CZapit::startScan(/*int mode, int feindex*/commandScanProvider &msg)
 {		
-	printf("CZapit::startScan: fe(%d) scanmode: %d\n", feindex, mode);
+	printf("CZapit::startScan: fe(%d) scanmode: %d\n", msg.feindex, msg.scanmode);
 	
-	commandScanProvider scan;
+	bool ret = true;
 	
-	scan.scanmode = mode;
-	scan.feindex = feindex;
+	//CZapit::commandScanProvider msg;
+	//msg.scanmode = mode;
+	//msg.feindex = feindex;
 
 	scan_runs = 1;
 	
@@ -4216,22 +4182,19 @@ bool CZapit::startScan(int mode, int feindex)
 	// stop pmt update filter
     	CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);	
 
-	found_transponders = 0;
-	found_channels = 0;
-
-	if (pthread_create(&scan_thread, 0, scanThread, (void *) &scan)) 
+	if (pthread_create(&scan_thread, 0, scanThread, (void *) &msg)) 
 	{
 		dprintf(DEBUG_INFO, "CZapit::startScan: pthread_create failed\n");
 		scan_runs = 0;
 		
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
 		
-		return false;
+		ret = false;
 	}
 			
 	retune = true;
 	
-	return true;
+	return ret;
 }
 
 bool CZapit::stopScan()
@@ -4241,8 +4204,8 @@ bool CZapit::stopScan()
 	if(scan_runs) 
 	{
 		abort_scan = 1;
-		pthread_join(scan_thread, NULL);
-		abort_scan = 0;
+		//pthread_join(scan_thread, NULL);
+		//abort_scan = 0;
 		scan_runs = 0;
 	}
 	
@@ -4254,10 +4217,7 @@ void * CZapit::scanThread(void * data)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::scanThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
-	if (!data)
-		return 0;
-	
-	CZapit::commandScanProvider params = * static_cast<CZapit::commandScanProvider*>(data);
+	CZapit::commandScanProvider params = *(CZapit::commandScanProvider*)data;
 	
 	int mode = params.scanmode;
 	int feindex = params.feindex;
@@ -4276,8 +4236,6 @@ void * CZapit::scanThread(void * data)
 	found_channels = 0;
 	bool satfeed = false;
 	
-	abort_scan = 0;
-
 	curr_sat = 0;
 	scantransponders.clear();
 	scanedtransponders.clear();
@@ -4363,7 +4321,11 @@ void * CZapit::scanThread(void * data)
 
 			dprintf(DEBUG_INFO, "CZapit::scanThread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
 				
-			CScan::getInstance()->scanProvider(search, position, diseqc_pos, satfeed, feindex);
+			if ( !CScan::getInstance()->scanProvider(search, position, diseqc_pos, satfeed, feindex) )
+			{
+				found_channels = 0;
+				break;
+			}
 					
 			if(abort_scan) 
 			{
@@ -4437,12 +4399,10 @@ void * CZapit::scanTransponderThread(void * data)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
-	if (!data)
-		return 0;
-	
-	CZapit::commandScanTP params = *static_cast<CZapit::commandScanTP*>(data);
+	CZapit::commandScanTP params = *(CZapit::commandScanTP*)data;
 	
 	TP_params * TP = &params.TP;
+	scanMode = params.scanmode;
 	int feindex = params.feindex;
 	
 	char providerName[32] = "";
@@ -4469,7 +4429,7 @@ void * CZapit::scanTransponderThread(void * data)
 	
 	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, providerName, strlen(providerName) + 1);
 
-	scanMode = TP->scanmode;
+	//scanMode = TP->scanmode;
 	TP->feparams.inversion = INVERSION_AUTO;
 
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
