@@ -489,7 +489,7 @@ void CVFD::setMode(const MODES m, const char * const title)
 	switch (m) 
 	{
 		case MODE_TVRADIO:
-			if (g_settings.lcd_epgmode == 1)	
+			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
 				showServicename(servicename, true, serviceNum);
 			else 
 			{

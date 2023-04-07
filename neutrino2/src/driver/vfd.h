@@ -413,6 +413,12 @@ class CVFD
 			LED_RED,
 			LED_PURPLE
 		};
+		
+		enum EPGMODE
+		{
+			EPGMODE_CHANNELNUMBER,
+			EPGMODE_TIME
+		};
 
 	private:
 		MODES			mode;

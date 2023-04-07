@@ -77,26 +77,22 @@ const keyval LCDMENU_EPGALIGN_OPTIONS[LCDMENU_EPGALIGN_OPTION_COUNT] =
 	{ 0, _("left")   },
 	{ 1, _("center") }
 };
-#endif
-
-#if defined (PLATFORM_GIGABLUE) 
-#if !defined (ENABLE_LCD)
+#else
 #define LCDMENU_LEDCOLOR_OPTION_COUNT 4
 const keyval LCDMENU_LEDCOLOR_OPTIONS[LCDMENU_LEDCOLOR_OPTION_COUNT] =
 {
-	{ CVFD::LED_OFF, _("off") },
-	{ CVFD::LED_BLUE, _("blue") },
-	{ CVFD::LED_RED, _("red") },
+	{ CVFD::LED_OFF, _("off") 	},
+	{ CVFD::LED_BLUE, _("blue") 	},
+	{ CVFD::LED_RED, _("red") 	},
 	{ CVFD::LED_PURPLE, _("purple") },
 };
 
 #define LCDMENU_EPGMODE_OPTION_COUNT 2
 const keyval LCDMENU_EPGMODE_OPTIONS[LCDMENU_EPGMODE_OPTION_COUNT] =
 {
-	{ 1, _("Default (Channel Number)")		},
-	{ 2, _("Time")		}
+	{ CVFD::EPGMODE_CHANNELNUMBER, _("Channel Number")	},
+	{ CVFD::EPGMODE_TIME, _("Time")				}
 };
-#endif
 #endif
 
 CLCDSettings::CLCDSettings()
@@ -198,8 +194,8 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(oj_align);
 
 	//dump to png
-	CMenuOptionChooser* oj_dumppng = new CMenuOptionChooser(_("output to PNG"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_DUMP_PNG], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
-	lcdSettings->addItem(oj_dumppng);
+	//CMenuOptionChooser* oj_dumppng = new CMenuOptionChooser(_("output to PNG"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_DUMP_PNG], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
+	//lcdSettings->addItem(oj_dumppng);
 	
 	// lcd controller
 	lcdSettings->addItem(new ClistBoxItem(_("Contrast / Brightness"), true, NULL, lcdsliders));
@@ -207,22 +203,21 @@ void CLCDSettings::showMenu()
 #if defined (PLATFORM_GIGABLUE)	
 	// led color
 	lcdSettings->addItem(new CMenuOptionChooser(_("Led Color"), &g_settings.lcd_ledcolor, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
+#endif
 	
 	//lcd_epg
-	CMenuOptionChooser* oj_epg = new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPGMODE_OPTIONS, LCDMENU_EPGMODE_OPTION_COUNT, true);
-	lcdSettings->addItem(oj_epg);	
-#elif !defined (PLATFORM_CUBEREVO_250HD) && !defined (PLATFORM_SPARK)
+	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPGMODE_OPTIONS, LCDMENU_EPGMODE_OPTION_COUNT, true));	
+
+#if !defined (PLATFORM_CUBEREVO_250HD) && !defined (PLATFORM_SPARK) && !defined (PLATFORM_GIGABLUE)
 	// vfd power
-	CMenuOptionChooser * oj2 = new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_POWER], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier);
-	lcdSettings->addItem(oj2);
+	lcdSettings->addItem(new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_POWER], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
 	
 	// dimm-time
 	CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");
 	lcdSettings->addItem(new ClistBoxItem(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
 
 	// dimm brightness
-	//CStringInput * dim_brightness = new CStringInput(_("brightness after dim timeout"), g_settings.lcd_setting_dim_brightness, 3, NULL, NULL, "0123456789 ");
-	//lcdSettings->addItem(new ClistBoxItem(_("Brightness after dim timeout"), true, g_settings.lcd_setting_dim_brightness, dim_brightness));
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, 15));
 
 	// vfd controller
 	lcdSettings->addItem(new CMenuSeparator(LINE));
