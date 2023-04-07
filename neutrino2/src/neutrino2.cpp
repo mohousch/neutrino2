@@ -926,6 +926,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.lcd_setting_dim_brightness = configfile.getInt32("lcd_dim_brightness", 0);
 	
 	g_settings.lcd_ledcolor = configfile.getInt32("lcd_ledcolor", 1);
+	g_settings.lcd_epgmode = configfile.getInt32("lcd_epgmode", 1);
 	// end VFD
 
 	// online epg
@@ -1390,6 +1391,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("lcd_dim_brightness", g_settings.lcd_setting_dim_brightness);
 	
 	configfile.setInt32("lcd_ledcolor", g_settings.lcd_ledcolor);
+	configfile.setInt32("lcd_epgmode", g_settings.lcd_epgmode);
 	// END VFD
 
 	// online epg

@@ -209,7 +209,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuOptionChooser(_("Led Color"), &g_settings.lcd_ledcolor, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
 	
 	//lcd_epg
-	CMenuOptionChooser* oj_epg = new CMenuOptionChooser(_("EPG"), &lcd_epgmode, LCDMENU_EPGMODE_OPTIONS, LCDMENU_EPGMODE_OPTION_COUNT, true);
+	CMenuOptionChooser* oj_epg = new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPGMODE_OPTIONS, LCDMENU_EPGMODE_OPTION_COUNT, true);
 	lcdSettings->addItem(oj_epg);	
 #elif !defined (PLATFORM_CUBEREVO_250HD) && !defined (PLATFORM_SPARK)
 	// vfd power
