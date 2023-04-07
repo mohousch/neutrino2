@@ -7,7 +7,8 @@ SUBDIRS = \
 	libxmltree \
 	libtuxtxt \
 	libdvbsub \
-	jsoncpp
+	jsoncpp \
+	libiw
 
 if !BOXTYPE_COOLSTREAM
 SUBDIRS += libdvbapi

@@ -37,6 +37,8 @@
 
 #include <libnet.h>
 
+#include <libiw/iwscan.h>
+
 #include <gui/widget/hintbox.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/stringinput_ext.h>
@@ -110,6 +112,8 @@ CNetworkSettings::~CNetworkSettings()
 
 void CNetworkSettings::readNetworkSettings(std::string iname)
 {
+	dprintf(DEBUG_NORMAL, "CNetworkSettings::readNetworkSettings: (%s)\n", iname.c_str());
+	
 	networkConfig->readConfig(iname);
 
 	network_automatic_start = networkConfig->automatic_start ? 1 : 0;
@@ -225,7 +229,7 @@ void CNetworkSettings::showMenu()
 	//interface
 	int ifcount = scandir("/sys/class/net", &namelist, my_filter, alphasort);
 
-	CMenuOptionStringChooser * ifSelect = new CMenuOptionStringChooser(_("Interface"), g_settings.ifname, ifcount > 1, this);
+	CMenuOptionStringChooser * ifSelect = new CMenuOptionStringChooser(_("Interface"), g_settings.ifname, ifcount > 1, this, RC_nokey, "", true);
 
 	bool found = false;
 
@@ -354,8 +358,25 @@ void CNetworkSettings::showMenu()
 	if(ifcount > 1) // if there is only one, its probably wired
 	{
 		//ssid
-		CStringInputSMS * networkSettings_ssid = new CStringInputSMS(_("Network Name"), network_ssid.c_str());
-		ClistBoxItem * m9 = new ClistBoxItem(_("Network Name"), networkConfig->wireless, network_ssid.c_str(), networkSettings_ssid );
+		//CStringInputSMS * networkSettings_ssid = new CStringInputSMS(_("Network Name"), network_ssid.c_str());
+		//ClistBoxItem * m9 = new ClistBoxItem(_("Network Name"), networkConfig->wireless, network_ssid.c_str(), networkSettings_ssid );
+		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, this, RC_nokey, "", true);
+		
+		//
+		std::vector<wlan_network> networks;
+		
+		get_wlan_list(g_settings.ifname, networks);
+		
+		std::string option[networks.size()];
+		
+		for (unsigned i = 0; i < networks.size(); ++i) 
+		{
+			option[i] = networks[i].qual;
+			option[i] += ", ";
+			option[i] += networks[i].channel;
+
+			m9->addOption(networks[i].ssid.c_str());
+		}
 
 		//key
 		CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
@@ -366,15 +387,15 @@ void CNetworkSettings::showMenu()
 		
 		// ssid
 		networkSettings->addItem(new CMenuSeparator(LINE));
-		networkSettings->addItem( m9);
+		networkSettings->addItem(m9);
 
 		// key
-		networkSettings->addItem( m10);
+		networkSettings->addItem(m10);
 
-		//encryption
+		// encryption
 		CMenuOptionChooser * m11 = new CMenuOptionChooser(_("Security"), &network_encryption, OPTIONS_WLAN_SECURITY_OPTIONS, OPTIONS_WLAN_SECURITY_OPTION_COUNT, true);
 		wlanEnable[2] = m11;
-		networkSettings->addItem( m11); //encryption
+		networkSettings->addItem(m11); //encryption
 	}
 	
 	// ntp

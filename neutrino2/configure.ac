@@ -218,6 +218,7 @@ lib/libdvbapi/Makefile
 lib/libeplayer3/Makefile
 lib/jsoncpp/Makefile
 lib/libdvbci/Makefile
+lib/libiw/Makefile
 src/nhttpd/Makefile
 src/nhttpd/web/Makefile
 src/nhttpd/web/images/Makefile

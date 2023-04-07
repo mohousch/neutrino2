@@ -263,6 +263,15 @@ CFrameBuffer::~CFrameBuffer()
 {
 	dprintf(DEBUG_NORMAL, "~CFrameBuffer()\n");
 	
+	CFormathandler *fh = fh_root;
+	
+	while (fh) 
+	{
+		CFormathandler *tmp = fh->next;
+		free(fh);
+		fh = tmp;
+	}
+	
 	if (background) 
 	{
 		free(background);
