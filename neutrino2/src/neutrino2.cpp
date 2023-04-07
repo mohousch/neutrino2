@@ -415,11 +415,11 @@ const lcd_setting_struct_t lcd_setting[LCD_SETTING_COUNT] =
 	{"lcd_show_volume"      , DEFAULT_LCD_SHOW_VOLUME      },
 	{"lcd_autodimm"         , DEFAULT_LCD_AUTODIMM         },
 	{"lcd_scroll_text"      , DEFAULT_LCD_SCROLL_TEXT      },
-//#if ENABLE_LCD
+#if ENABLE_LCD
 	{"lcd_epgmode"          , DEFAULT_LCD_EPGMODE          },
 	{"lcd_epgalign"         , DEFAULT_LCD_EPGALIGN         },
 	{"lcd_dump_png"         , DEFAULT_LCD_DUMP_PNG         },
-//#endif	
+#endif	
 };
 
 // loadSetup, load the application-settings
