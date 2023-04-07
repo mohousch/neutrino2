@@ -89,6 +89,13 @@ const keyval LCDMENU_LEDCOLOR_OPTIONS[LCDMENU_LEDCOLOR_OPTION_COUNT] =
 	{ CVFD::LED_RED, _("red") },
 	{ CVFD::LED_PURPLE, _("purple") },
 };
+
+#define LCDMENU_EPG_OPTION_COUNT 2
+const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
+{
+	{ 1, _("Default (Channel Number)")		},
+	{ 2, _("Time")		}
+};
 #endif
 #endif
 
@@ -199,7 +206,11 @@ void CLCDSettings::showMenu()
 #else	
 #if defined (PLATFORM_GIGABLUE)	
 	// led color
-	lcdSettings->addItem(new CMenuOptionChooser(_("Led Color"), &g_settings.lcd_ledcolor, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));	
+	lcdSettings->addItem(new CMenuOptionChooser(_("Led Color"), &g_settings.lcd_ledcolor, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
+	
+	//lcd_epg
+	CMenuOptionChooser* oj_epg = new CMenuOptionChooser(_("EPG"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_EPGMODE], LCDMENU_EPG_OPTIONS, LCDMENU_EPG_OPTION_COUNT, true);
+	lcdSettings->addItem(oj_epg);	
 #elif !defined (PLATFORM_CUBEREVO_250HD) && !defined (PLATFORM_SPARK)
 	// vfd power
 	CMenuOptionChooser * oj2 = new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_POWER], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier);

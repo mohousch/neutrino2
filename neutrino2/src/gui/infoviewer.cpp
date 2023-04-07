@@ -60,8 +60,6 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <gui/pictureviewer.h>
-
 #include <sys/timeb.h>
 #include <time.h>
 #include <sys/param.h>
@@ -71,9 +69,10 @@
 #include <zapit/frontend_c.h>
 
 #include <video_cs.h>
-#include <system/debug.h>
 
+#include <system/debug.h>
 #include <system/helpers.h>
+#include <system/channellogo.h>
 
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp

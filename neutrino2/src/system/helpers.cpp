@@ -1062,6 +1062,205 @@ ssize_t _read(int fd, void *buf, size_t count)
 	return handledcount;
 }
 
+//
+std::string readFile(std::string file)
+{
+	std::string ret_s;
+	std::ifstream tmpData(file.c_str(), std::ifstream::binary);
+	
+	if (tmpData.is_open()) 
+	{
+		tmpData.seekg(0, tmpData.end);
+		int length = tmpData.tellg();
+		if (length > 0xffff) 
+		{ 
+			/* longer than 64k? better read in chunks! */
+			cerr << __func__ << ": file " << file << " too big (" << length << " bytes)" << endl;
+			return "";
+		}
+		
+		tmpData.seekg(0, tmpData.beg);
+		char* buffer = new char[length + 1];
+		if (! buffer) 
+		{
+			cerr << __func__ << ": allocating " << (length + 1) << " bytes for buffer failed" << endl;
+			return "";
+		}
+		tmpData.read(buffer, length);
+		tmpData.close();
+		buffer[length] = '\0';
+		ret_s = (string)buffer;
+		delete [] buffer;
+	}
+	else {
+		cerr << "Error read " << file << endl;
+		return "";
+	}
+
+	return ret_s;
+}
+
+//
+std::string randomString(unsigned int length)
+{
+	std::string random = "";
+	const char alphanum[] =
+	    "0123456789"
+	    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	    "abcdefghijklmnopqrstuvwxyz";
+	unsigned int i;
+	for(i = 0; i < length; ++i)
+		random += alphanum[rand() % (sizeof(alphanum) - 1)];
+	return random;
+}
+
+//
+std::string randomFile(std::string suffix, std::string directory, unsigned int length)
+{
+	mkdir(directory.c_str(), 0755);
+	return directory + "/" + randomString(length) + "." + suffix;
+}
+
+// proc utils
+int proc_put(const char *path, const char *value, const int len)
+{
+	int ret, ret2;
+	int pfd = open(path, O_WRONLY);
+	if (pfd < 0)
+		return pfd;
+	ret = write(pfd, value, len);
+	ret2 = close(pfd);
+	if (ret2 < 0)
+		return ret2;
+	return ret;
+}
+
+int proc_put(const char *path, const char *value)
+{
+	return proc_put(path, value, strlen(value));
+}
+
+int proc_put(const char *path, std::string value)
+{
+	return proc_put(path, value.c_str());
+}
+
+int proc_put(const char *path, int value)
+{
+	return proc_put(path, to_string(value).c_str());
+}
+
+int proc_put(const char *path, unsigned int value)
+{
+	return proc_put(path, to_string(value).c_str());
+}
+
+int proc_put(const char *path, long value)
+{
+	return proc_put(path, to_string(value).c_str());
+}
+
+int proc_put(const char *path, unsigned long value)
+{
+	return proc_put(path, to_string(value).c_str());
+}
+
+int proc_put(const char *path, long long value)
+{
+	return proc_put(path, to_string(value).c_str());
+}
+
+int proc_put(const char *path, unsigned long long value)
+{
+	return proc_put(path, to_string(value).c_str());
+}
+
+int proc_put(const char *path, bool state)
+{
+	return proc_put(path, state ? "1" : "0", 1);
+}
+
+int proc_get(const char *path, char *value, const int len)
+{
+	int ret, ret2;
+	int pfd = open(path, O_RDONLY);
+	if (pfd < 0)
+		return pfd;
+	ret = read(pfd, value, len);
+	value[len-1] = '\0'; /* make sure string is terminated */
+	if (ret >= 0)
+	{
+		while (ret > 0 && isspace(value[ret-1]))
+			ret--;		/* remove trailing whitespace */
+		value[ret] = '\0';	/* terminate, even if ret = 0 */
+	}
+	ret2 = close(pfd);
+	if (ret2 < 0)
+		return ret2;
+	return ret;
+}
+
+unsigned int proc_get_hex(const char *path)
+{
+	unsigned int n, ret = 0;
+	char buf[16];
+	n = proc_get(path, buf, 16);
+	if (n > 0)
+		sscanf(buf, "%x", &ret);
+	return ret;
+}
+
+//
+void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w, int dest_h)
+{
+	int nbpp = 0;
+
+	if(!access(tname.c_str(), F_OK) )
+	{
+		CFrameBuffer::getInstance()->getSize(tname, p_w, p_h, &nbpp);
+
+		// scale
+		if(*p_w <= dest_w && *p_h <= dest_h)
+		{
+			// do not thing
+		}
+		else
+		{
+			float aspect = (float)(*p_w) / (float)(*p_h);
+					
+			if (((float)(*p_w) / (float)dest_w) > ((float)(*p_h) / (float)dest_h)) 
+			{
+				*p_w = dest_w;
+				*p_h = (int)(dest_w / aspect);
+			}
+			else
+			{
+				*p_h = dest_h;
+				*p_w = (int)(dest_h * aspect);
+			}
+		}
+	}
+	else
+	{
+		*p_w = 0;
+		*p_h = 0;
+	}
+}
+
+//
+std::string ReadMarkerValue(std::string strLine, const char* strMarkerName)
+{
+	if (strLine.find(strMarkerName) != std::string::npos)
+	{
+		strLine = strLine.substr(strLine.find(strMarkerName));
+		strLine = strLine.substr(strLine.find_first_of('"') + 1);
+		strLine = strLine.substr(0,strLine.find_first_of('"'));
+		return strLine;
+	}
+
+	return std::string("");
+}
+
 // FielHelpers
 CFileHelpers::CFileHelpers()
 {
@@ -1725,403 +1924,5 @@ bool cTimeMs::TimedOut(void)
 uint64_t cTimeMs::Elapsed(void)
 {
   	return Now() - begin;
-}
-
-//
-std::string readFile(std::string file)
-{
-	std::string ret_s;
-	std::ifstream tmpData(file.c_str(), std::ifstream::binary);
-	
-	if (tmpData.is_open()) 
-	{
-		tmpData.seekg(0, tmpData.end);
-		int length = tmpData.tellg();
-		if (length > 0xffff) 
-		{ 
-			/* longer than 64k? better read in chunks! */
-			cerr << __func__ << ": file " << file << " too big (" << length << " bytes)" << endl;
-			return "";
-		}
-		
-		tmpData.seekg(0, tmpData.beg);
-		char* buffer = new char[length + 1];
-		if (! buffer) 
-		{
-			cerr << __func__ << ": allocating " << (length + 1) << " bytes for buffer failed" << endl;
-			return "";
-		}
-		tmpData.read(buffer, length);
-		tmpData.close();
-		buffer[length] = '\0';
-		ret_s = (string)buffer;
-		delete [] buffer;
-	}
-	else {
-		cerr << "Error read " << file << endl;
-		return "";
-	}
-
-	return ret_s;
-}
-
-//
-std::string randomString(unsigned int length)
-{
-	std::string random = "";
-	const char alphanum[] =
-	    "0123456789"
-	    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	    "abcdefghijklmnopqrstuvwxyz";
-	unsigned int i;
-	for(i = 0; i < length; ++i)
-		random += alphanum[rand() % (sizeof(alphanum) - 1)];
-	return random;
-}
-
-//
-std::string randomFile(std::string suffix, std::string directory, unsigned int length)
-{
-	mkdir(directory.c_str(), 0755);
-	return directory + "/" + randomString(length) + "." + suffix;
-}
-
-// proc utils
-int proc_put(const char *path, const char *value, const int len)
-{
-	int ret, ret2;
-	int pfd = open(path, O_WRONLY);
-	if (pfd < 0)
-		return pfd;
-	ret = write(pfd, value, len);
-	ret2 = close(pfd);
-	if (ret2 < 0)
-		return ret2;
-	return ret;
-}
-
-int proc_put(const char *path, const char *value)
-{
-	return proc_put(path, value, strlen(value));
-}
-
-int proc_put(const char *path, std::string value)
-{
-	return proc_put(path, value.c_str());
-}
-
-int proc_put(const char *path, int value)
-{
-	return proc_put(path, to_string(value).c_str());
-}
-
-int proc_put(const char *path, unsigned int value)
-{
-	return proc_put(path, to_string(value).c_str());
-}
-
-int proc_put(const char *path, long value)
-{
-	return proc_put(path, to_string(value).c_str());
-}
-
-int proc_put(const char *path, unsigned long value)
-{
-	return proc_put(path, to_string(value).c_str());
-}
-
-int proc_put(const char *path, long long value)
-{
-	return proc_put(path, to_string(value).c_str());
-}
-
-int proc_put(const char *path, unsigned long long value)
-{
-	return proc_put(path, to_string(value).c_str());
-}
-
-int proc_put(const char *path, bool state)
-{
-	return proc_put(path, state ? "1" : "0", 1);
-}
-
-int proc_get(const char *path, char *value, const int len)
-{
-	int ret, ret2;
-	int pfd = open(path, O_RDONLY);
-	if (pfd < 0)
-		return pfd;
-	ret = read(pfd, value, len);
-	value[len-1] = '\0'; /* make sure string is terminated */
-	if (ret >= 0)
-	{
-		while (ret > 0 && isspace(value[ret-1]))
-			ret--;		/* remove trailing whitespace */
-		value[ret] = '\0';	/* terminate, even if ret = 0 */
-	}
-	ret2 = close(pfd);
-	if (ret2 < 0)
-		return ret2;
-	return ret;
-}
-
-unsigned int proc_get_hex(const char *path)
-{
-	unsigned int n, ret = 0;
-	char buf[16];
-	n = proc_get(path, buf, 16);
-	if (n > 0)
-		sscanf(buf, "%x", &ret);
-	return ret;
-}
-
-// CChannellogo
-CChannellogo* CChannellogo::getInstance()
-{
-	static CChannellogo* Channellogo = NULL;
-	if(!Channellogo)
-		Channellogo = new CChannellogo();
-	return Channellogo;
-}
-
-// check for logo
-bool CChannellogo::checkLogo(t_channel_id logo_id)
-{	
-        std::string logo_name;
-	bool logo_ok = false;
-	
-	// first png, then jpg, then gif
-	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
-	
-	// check for logo
-	for (int i = 0; i < 3; i++)
-	{
-		logo_name = g_settings.logos_dir;
-		logo_name += "/";
-		logo_name += to_hexstring(logo_id & 0xFFFFFFFFFFFFULL);
-		logo_name += strLogoExt[i].c_str();
-
-		if(!access(logo_name.c_str(), F_OK)) 
-		{
-			logo_ok = true;
-			dprintf(DEBUG_DEBUG, "CChannellogo::checkLogo: found logo: %s\n", logo_name.c_str());
-			break;
-		}
-	}
-	
-	return logo_ok;
-}
-
-void CChannellogo::getLogoSize(t_channel_id logo_id, int * width, int * height, int * bpp)
-{
-	std::string logo_name;
-	bool logo_ok = false;
-	
-	// check for logo/convert channelid to logo
-	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
-	
-	// check for logo
-	for (int i = 0; i < 3; i++)
-	{
-		logo_name = g_settings.logos_dir;
-		logo_name += "/";
-		logo_name += to_hexstring(logo_id & 0xFFFFFFFFFFFFULL);
-		logo_name += strLogoExt[i].c_str();
-
-		if(!access(logo_name.c_str(), F_OK)) 
-		{
-			logo_ok = true;
-			break;
-		}
-	}
-	
-	if(logo_ok)
-	{
-		// get logo real size
-		CFrameBuffer::getInstance()->getSize(logo_name.c_str(), width, height, bpp);
-		
-		dprintf(DEBUG_DEBUG, "CChannellogo::getLogoSize: logo: %s (%dx%d) %dbpp\n", logo_name.c_str(), *width, *height, *bpp);
-	}
-}
-
-// display logo
-bool CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int width, int height, bool upscale, bool center_x, bool center_y)
-{	
-        std::string logo_name;
-	bool ret = false;
-	bool logo_ok = false;
-	
-	int logo_w = width;
-	int logo_h = height;
-	int logo_bpp = 0;
-	
-	
-	// check for logo
-	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
-	
-	for (int i = 0; i < 3; i++)
-	{
-		logo_name = g_settings.logos_dir;
-		logo_name += "/";
-		logo_name += to_hexstring(logo_id & 0xFFFFFFFFFFFFULL);
-		logo_name += strLogoExt[i].c_str();
-
-		if(!access(logo_name.c_str(), F_OK)) 
-		{
-			logo_ok = true;
-			break;
-		}
-	}
-	
-	if(logo_ok)
-	{
-		// get logo real size
-		CFrameBuffer::getInstance()->getSize(logo_name, &logo_w, &logo_h, &logo_bpp);
-	
-		// scale only PNG logos
-		if( logo_name.find(".png") == (logo_name.length() - 4) )
-		{
-			// upscale
-			if(upscale)
-			{	
-				//rescale logo image
-				float aspect = (float)(logo_w) / (float)(logo_h);
-					
-				if (((float)(logo_w) / (float)width) > ((float)(logo_h) / (float)height)) 
-				{
-					logo_w = width;
-					logo_h = (int)(width / aspect);
-				}
-				else
-				{
-					logo_h = height;
-					logo_w = (int)(height * aspect);
-				}
-			}
-			
-			ret = CFrameBuffer::getInstance()->displayImage(logo_name, center_x?posx + (width - logo_w)/2 : posx, center_y?posy + (height - logo_h)/2 : posy, logo_w, logo_h);
-		}
-		else
-		{
-			ret = CFrameBuffer::getInstance()->displayImage(logo_name, posx, posy, width, height);
-		}
-        }
-
-	return ret;
-}
-
-std::string CChannellogo::getLogoName(t_channel_id logo_id)
-{
-	std::string logo_name = "";
-	bool logo_ok = false;
-	
-	// check for logo/convert channelid to logo
-	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
-	
-	// check for logo
-	for (int i = 0; i < 2; i++)
-	{
-		logo_name = g_settings.logos_dir;
-		logo_name += "/";
-		logo_name += to_hexstring(logo_id & 0xFFFFFFFFFFFFULL);
-		logo_name += strLogoExt[i].c_str();
-
-		if(!access(logo_name.c_str(), F_OK)) 
-		{
-			logo_ok = true;
-			break;
-		}
-	}
-
-	return logo_name;
-}
-
-bool CChannellogo::loadWebTVlogos()
-{
-	dprintf(DEBUG_NORMAL, "CChannellogo::loadWebTVlogos:\n");
-	
-	if (logo_running)
-		return false;
-
-	logo_running = true;
-	
-	return (OpenThreads::Thread::start() == 0);
-}
-
-void CChannellogo::run()
-{
-	set_threadname(__func__);
-	
-	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
-	{
-		if (IS_WEBTV(it->second.getChannelID()))
-		{
-			// download logos
-			std::string logo_name;
-			logo_name = g_settings.logos_dir;
-			logo_name += "/";
-			logo_name += to_hexstring(it->second.getLogoID() & 0xFFFFFFFFFFFFULL);
-			logo_name += ".png";
-								
-			if(access(logo_name.c_str(), F_OK)) 
-			{
-				downloadUrl(it->second.getLogoUrl(), logo_name, "", 30);
-			}
-		}
-	}
-	
-	OpenThreads::Thread::join();
-	logo_running = false;
-}
-
-//
-void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w, int dest_h)
-{
-	int nbpp = 0;
-
-	if(!access(tname.c_str(), F_OK) )
-	{
-		CFrameBuffer::getInstance()->getSize(tname, p_w, p_h, &nbpp);
-
-		// scale
-		if(*p_w <= dest_w && *p_h <= dest_h)
-		{
-			// do not thing
-		}
-		else
-		{
-			float aspect = (float)(*p_w) / (float)(*p_h);
-					
-			if (((float)(*p_w) / (float)dest_w) > ((float)(*p_h) / (float)dest_h)) 
-			{
-				*p_w = dest_w;
-				*p_h = (int)(dest_w / aspect);
-			}
-			else
-			{
-				*p_h = dest_h;
-				*p_w = (int)(dest_h * aspect);
-			}
-		}
-	}
-	else
-	{
-		*p_w = 0;
-		*p_h = 0;
-	}
-}
-
-//
-std::string ReadMarkerValue(std::string strLine, const char* strMarkerName)
-{
-	if (strLine.find(strMarkerName) != std::string::npos)
-	{
-		strLine = strLine.substr(strLine.find(strMarkerName));
-		strLine = strLine.substr(strLine.find_first_of('"') + 1);
-		strLine = strLine.substr(0,strLine.find_first_of('"'));
-		return strLine;
-	}
-
-	return std::string("");
 }
 

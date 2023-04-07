@@ -56,6 +56,7 @@
 
 #include <system/debug.h>
 #include <system/tmdbparser.h>
+#include <system/channellogo.h>
 
 
 #define TIMESCALE_W	150

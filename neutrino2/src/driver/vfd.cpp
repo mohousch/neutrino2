@@ -488,8 +488,14 @@ void CVFD::setMode(const MODES m, const char * const title)
 
 	switch (m) 
 	{
-		case MODE_TVRADIO:	
-			showServicename(servicename, true, serviceNum);
+		case MODE_TVRADIO:
+			if (g_settings.lcd_setting[SNeutrinoSettings::LCD_EPGMODE] == 1)	
+				showServicename(servicename, true, serviceNum);
+			else 
+			{
+				showclock = true;
+				showTime(true);
+			}
 			
 #if !defined(PLATFORM_SPARK7162)			
 			ShowIcon(VFD_ICON_MP3, false);	        // NOTE: @dbo  //ICON_MP3 and ICON_DOLBY switched in infoviewer 

@@ -45,7 +45,8 @@
 #include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/mountchooser.h>
-#include <gui/pictureviewer.h>
+
+//#include <gui/pictureviewer.h>
 
 #include <global.h>
 #include <neutrino2.h>
@@ -65,6 +66,7 @@
 
 #include <system/debug.h>
 #include <system/tmdbparser.h>
+#include <system/channellogo.h>
 
 #include <gui/widget/infobox.h>
 

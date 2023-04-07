@@ -136,6 +136,29 @@ ssize_t _writeall(int fd, const void *buf, size_t count);
 ssize_t _read(int fd, void *buf, size_t count);
 
 //
+std::string readFile(std::string file);
+
+// proc utils
+int proc_put(const char *path, const char *value, const int len);
+int proc_put(const char *path, const char *value);
+int proc_put(const char *path, std::string value);
+int proc_put(const char *path, int value);
+int proc_put(const char *path, unsigned int value);
+int proc_put(const char *path, long value);
+int proc_put(const char *path, unsigned long value);
+int proc_put(const char *path, long long value);
+int proc_put(const char *path, unsigned long long value);
+int proc_put(const char *path, bool state);
+int proc_get(const char *path, char *value, const int len);
+unsigned int proc_get_hex(const char *path);
+
+//
+void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w = PIC_W, int dest_h = PIC_H);
+
+//
+std::string ReadMarkerValue(std::string strLine, const char* strMarkerName);
+
+//
 std::string randomString(unsigned int length = 10);
 std::string randomFile(std::string suffix = "tmp", std::string directory = "/tmp", unsigned int length = 10);
 
@@ -177,7 +200,8 @@ class CFileHelpers
 };
 
 //
-class eEnv {
+class eEnv 
+{
 	private:
 		static bool initialized;
 		static void initialize();
@@ -187,7 +211,8 @@ class eEnv {
 		static std::string resolve(const std::string &path);
 };
 
-class cTimeMs {
+class cTimeMs 
+{
 	private:
 		uint64_t begin;
 
@@ -198,48 +223,5 @@ class cTimeMs {
 		bool TimedOut(void);
 		uint64_t Elapsed(void);
 };
-
-//
-std::string readFile(std::string file);
-
-// proc utils
-int proc_put(const char *path, const char *value, const int len);
-int proc_put(const char *path, const char *value);
-int proc_put(const char *path, std::string value);
-int proc_put(const char *path, int value);
-int proc_put(const char *path, unsigned int value);
-int proc_put(const char *path, long value);
-int proc_put(const char *path, unsigned long value);
-int proc_put(const char *path, long long value);
-int proc_put(const char *path, unsigned long long value);
-int proc_put(const char *path, bool state);
-int proc_get(const char *path, char *value, const int len);
-unsigned int proc_get_hex(const char *path);
-
-// channel logo helper class
-class CChannellogo : public OpenThreads::Thread
-{
-	public:
-		CChannellogo(){logo_running = false;};
-		~CChannellogo(){};
-		
-		static CChannellogo* getInstance();
-		
-		bool displayLogo(t_channel_id logo_id, int posx, int posy, int width, int height, bool upscale = false, bool center_x = true, bool center_y = true);
-		bool checkLogo(t_channel_id logo_id);
-		void getLogoSize(t_channel_id logo_id, int * width, int * height, int * bpp);
-		std::string getLogoName(t_channel_id logo_id);
-		
-		// webtv
-		void run();
-		bool loadWebTVlogos();
-		bool logo_running;
-};
-
-//
-void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w = PIC_W, int dest_h = PIC_H);
-
-//
-std::string ReadMarkerValue(std::string strLine, const char* strMarkerName);
 
 #endif

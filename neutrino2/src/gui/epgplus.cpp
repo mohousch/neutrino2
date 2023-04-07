@@ -48,8 +48,8 @@
 #include <algorithm>
 #include <sstream>
 
-#include <gui/pictureviewer.h>
 #include <system/debug.h>
+#include <system/channellogo.h>
 
 
 #define COL_MENUCONTENT_P1                 254-8*4+1

@@ -46,6 +46,7 @@
 
 #include <gui/eventlist.h>
 #include <gui/infoviewer.h>
+#include <gui/epgplus.h>
 
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/icons.h>
@@ -53,6 +54,9 @@
 
 #include <system/settings.h>
 #include <system/lastchannel.h>
+#include <system/debug.h>
+#include <system/channellogo.h>
+
 #include <gui/filebrowser.h>
 
 #include <gui/bouquetlist.h>
@@ -64,9 +68,6 @@
 #include <zapit/satconfig.h>
 #include <zapit/getservices.h>
 #include <zapit/frontend_c.h>
-
-#include <gui/epgplus.h>
-#include <system/debug.h>
 
 #include <video_cs.h>
 #include <misc_setup.h>

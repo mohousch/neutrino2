@@ -426,11 +426,11 @@ struct SNeutrinoSettings
 	// END UPDATE
 
 	// VFD
-#if ENABLE_LCD
+//#if ENABLE_LCD
 #define LCD_SETTING_COUNT 11
-#else	
-#define LCD_SETTING_COUNT 8
-#endif
+//#else	
+//#define LCD_SETTING_COUNT 8
+//#endif
 	enum LCD_SETTINGS {
 		LCD_BRIGHTNESS         = 0,
 		LCD_STANDBY_BRIGHTNESS = 1,
@@ -440,11 +440,11 @@ struct SNeutrinoSettings
 		LCD_SHOW_VOLUME        = 5,
 		LCD_AUTODIMM           = 6,
 		LCD_SCROLL_TEXT		= 7,
-#if ENABLE_LCD
+//#if ENABLE_LCD
 		LCD_EPGMODE		= 8,
 		LCD_EPGALIGN            = 9,
 		LCD_DUMP_PNG		= 10,
-#endif		
+//#endif		
 	};
 
 	int lcd_setting[LCD_SETTING_COUNT];

@@ -38,6 +38,7 @@ libneutrino2_system_a_SOURCES = \
 	settings.cpp lastchannel.cpp \
 	configure_network.cpp fsmounter.cpp \
 	helpers.cpp \
+	channellogo.cpp \
 	tmdbparser.cpp \
 	ytparser.cpp \
 	weather.cpp
