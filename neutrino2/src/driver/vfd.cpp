@@ -46,6 +46,8 @@
 #include <system/helpers.h>
 
 
+extern CRemoteControl *g_RemoteControl;
+
 #if defined (__sh__)
 #if defined (PLATFORM_SPARK7162)
 static struct aotom_ioctl_data aotom_data;
@@ -488,7 +490,7 @@ void CVFD::setMode(const MODES m, const char * const title)
 	{
 		case MODE_TVRADIO:
 			if (g_settings.lcd_titlemode == EPGMODE_CHANNELNUMBER)	
-				showServicename(servicename, true, serviceNum);
+				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
 			else if (g_settings.lcd_titlemode == EPGMODE_TIME)
 				showTime(true);
 			

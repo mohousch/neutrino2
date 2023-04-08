@@ -4029,7 +4029,7 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 }
 
 //
-bool CZapit::scanTP(/*TP_params TP, int smode, int feindex*/commandScanTP &msg)
+bool CZapit::scanTP(commandScanTP &msg)
 {
 	printf("CZapit::scanTP fe:(%d) scanmode:%d\n", msg.feindex, msg.scanmode);
 	
@@ -4041,11 +4041,6 @@ bool CZapit::scanTP(/*TP_params TP, int smode, int feindex*/commandScanTP &msg)
 	CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
 	
 	scan_runs = 1;
-	
-	//CZapit::commandScanTP msg;
-	//msg.TP = TP;
-	//msg.scanmode = smode;
-	//msg.feindex = feindex;
 	
 	if (pthread_create(&scan_thread, 0, scanTransponderThread, (void *) &msg)) 
 	{
@@ -4161,16 +4156,12 @@ void CZapit::setScanMotorPosList( ScanMotorPosList& motorPosList )
 }
 
 //
-bool CZapit::startScan(/*int mode, int feindex*/commandScanProvider &msg)
+bool CZapit::startScan(commandScanProvider &msg)
 {		
 	printf("CZapit::startScan: fe(%d) scanmode: %d\n", msg.feindex, msg.scanmode);
 	
 	bool ret = true;
 	
-	//CZapit::commandScanProvider msg;
-	//msg.scanmode = mode;
-	//msg.feindex = feindex;
-
 	scan_runs = 1;
 	
 	//stop playback
@@ -4201,8 +4192,8 @@ bool CZapit::stopScan()
 	if(scan_runs) 
 	{
 		abort_scan = 1;
-		//pthread_join(scan_thread, NULL);
-		//abort_scan = 0;
+		pthread_join(scan_thread, NULL);
+		abort_scan = 0;
 		scan_runs = 0;
 	}
 	
