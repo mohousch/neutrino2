@@ -305,7 +305,7 @@ void CDBoxInfoWidget::showInfo()
 	dboxInfoWidget->addCCItem(upLabel);
 	
 	// mem
-	sprintf(ubuf, "memory total %lldMB, free %lldMB", (long) info.totalram/1024/1024, (long) info.freeram/1024/1024);
+	sprintf(ubuf, "memory total %dKb, free %dKb", (int) info.totalram/1024, (int) info.freeram/1024);
 
 	yPos += upLabel->getWindowsPos().iHeight + 10;
 	
