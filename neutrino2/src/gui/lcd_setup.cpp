@@ -62,7 +62,7 @@ const keyval LCDMENU_STATUSLINE_OPTIONS[LCDMENU_STATUSLINE_OPTION_COUNT] =
 #define LCDMENU_EPG_OPTION_COUNT 6
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
-	{ 1, _("Default (Channel)")		},
+	{ 1, _("Channel")		},
 	{ 2, _("Title")		},
 	{ 3, _("Channel / Title")	},
 	{ 7, _("Channel / Sep.-Line / Title") },
@@ -171,7 +171,6 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuSeparator(LINE));
 	
 	CLcdNotifier * lcdnotifier = new CLcdNotifier();
-	
 	CVfdControler * lcdsliders = new CVfdControler(_("Display settings"), NULL);
 	
 	// LCD
@@ -180,24 +179,19 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
 	
 	//option invert
-	CMenuOptionChooser* oj_inverse = new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier);
-	lcdSettings->addItem(oj_inverse);
+	lcdSettings->addItem(new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
 
 	//status display
-	CMenuOptionChooser* oj_status = new CMenuOptionChooser(_("Status line"), &g_settings.lcd_show_volume, LCDMENU_STATUSLINE_OPTIONS, LCDMENU_STATUSLINE_OPTION_COUNT, true);
-	lcdSettings->addItem(oj_status);
+	lcdSettings->addItem(new CMenuOptionChooser(_("Status line"), &g_settings.lcd_show_volume, LCDMENU_STATUSLINE_OPTIONS, LCDMENU_STATUSLINE_OPTION_COUNT, true));
 	
 	//lcd_epg
-	CMenuOptionChooser* oj_epg = new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPG_OPTIONS, LCDMENU_EPG_OPTION_COUNT, true);
-	lcdSettings->addItem(oj_epg);
+	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPG_OPTIONS, LCDMENU_EPG_OPTION_COUNT, true));
 
 	//align
-	CMenuOptionChooser* oj_align = new CMenuOptionChooser(_("LCD EPG Align"), &g_settings.lcd_epgalign, LCDMENU_EPGALIGN_OPTIONS, LCDMENU_EPGALIGN_OPTION_COUNT, true);
-	lcdSettings->addItem(oj_align);
+	lcdSettings->addItem(new CMenuOptionChooser(_("LCD EPG Align"), &g_settings.lcd_epgalign, LCDMENU_EPGALIGN_OPTIONS, LCDMENU_EPGALIGN_OPTION_COUNT, true));
 
 	//dump to png
-	//CMenuOptionChooser* oj_dumppng = new CMenuOptionChooser(_("output to PNG"), &g_settings.lcd_dump_png, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
-	//lcdSettings->addItem(oj_dumppng);
+	//lcdSettings->addItem(new CMenuOptionChooser(_("output to PNG"), &g_settings.lcd_dump_png, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
 	// dimm-time
 	CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");
@@ -246,13 +240,8 @@ bool CLcdNotifier::changeNotify(const std::string&, void * Data)
 	int state = *(int *)Data;
 
 	dprintf(DEBUG_NORMAL, "ClcdNotifier: state: %d\n", state);
-	
-//#if defined (PLATFORM_GIGABLUE) && !defined (ENABLE_LCD)
-//	CVFD::getInstance()->vfd_led(state);
-//#else	
-	CVFD::getInstance()->setPower(state);
-	CVFD::getInstance()->setlcdparameter();
-//#endif	
+		
+	CVFD::getInstance()->setPower(state);	
 
 	return true;
 }
