@@ -248,7 +248,7 @@ void CVFD::init()
 	
 	// set led color
 #if defined (PLATFORM_GIGABLUE)
-	vfd_led(g_settings.lcd_ledcolor);  //0:off, 1:blue, 2:red, 3:purple
+	vfd_led(g_settings.lcd_power);  //0:off, 1:blue, 2:red, 3:purple
 #elif defined (PLATFORM_VENTON)
 	vfd_symbol_network(0);
 	vfd_symbol_circle(0);
