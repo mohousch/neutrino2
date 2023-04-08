@@ -305,7 +305,7 @@ void CDBoxInfoWidget::showInfo()
 	dboxInfoWidget->addCCItem(upLabel);
 	
 	// mem
-	sprintf(ubuf, "memory total %dKb, free %dKb", (int) info.totalram/1024, (int) info.freeram/1024);
+	sprintf(ubuf, "memory total %lldMB, free %lldMB", (long) info.totalram/1024/1024, (long) info.freeram/1024/1024);
 
 	yPos += upLabel->getWindowsPos().iHeight + 10;
 	
@@ -362,8 +362,8 @@ void CDBoxInfoWidget::showInfo()
 		char str[256];
 		char vendor[128];
 		char model[128];
-		int64_t bytes;
-		int64_t megabytes;
+		int64_t bytes = 0;
+		int64_t megabytes = 0;
 		int removable = 0;
 		
 		sprintf(str, "/dev/%s", namelist[i1]->d_name);
@@ -371,8 +371,8 @@ void CDBoxInfoWidget::showInfo()
 
 		if(fd_hdd < 0) 
 		{
-			//printf("[neutrino] HDD: Cant open %s\n", str);
-			continue;
+			//printf("HDD: Cant open %s\n", str);
+			//continue;
 		}
 		
 		if (ioctl(fd_hdd, BLKGETSIZE64, &bytes))
@@ -417,13 +417,24 @@ void CDBoxInfoWidget::showInfo()
 		
 		// free space on hdd
 		struct statfs s;
-		
-		if (::statfs(g_settings.network_nfs_recordingdir, &s) == 0) 
+		if (megabytes)
 		{
-			sprintf(str, "%s (%s-%s %lld %s), free %ldMB", namelist[i1]->d_name, vendor, model, megabytes < 10000 ? megabytes : megabytes/1000, megabytes < 10000 ? "MB" : "GB", (long)( ((s.f_bfree/1024)/1024))*s.f_bsize);
+			if (::statfs(g_settings.network_nfs_recordingdir, &s) == 0) 
+			{
+				sprintf(str, "%s (%s-%s %lld %s), free %ldMB", namelist[i1]->d_name, vendor, model, megabytes < 10000 ? megabytes : megabytes/1000, megabytes < 10000 ? "MB" : "GB", (long)( ((s.f_bfree/1024)/1024))*s.f_bsize);
+			}
+			else
+				sprintf(str, "%s (%s-%s %lld %s)", namelist[i1]->d_name, vendor, model, megabytes < 10000 ? megabytes : megabytes/1000, megabytes < 10000 ? "MB" : "GB");
 		}
 		else
-			sprintf(str, "%s (%s-%s %lld %s)", namelist[i1]->d_name, vendor, model, megabytes < 10000 ? megabytes : megabytes/1000, megabytes < 10000 ? "MB" : "GB");
+		{
+			if (::statfs(g_settings.network_nfs_recordingdir, &s) == 0) 
+			{
+				sprintf(str, "%s (%s-%s), free %ldMB", namelist[i1]->d_name, vendor, model, (long)( ((s.f_bfree/1024)/1024))*s.f_bsize);
+			}
+			else
+				sprintf(str, "%s (%s-%s)", namelist[i1]->d_name, vendor, model);
+		}
 		
 		free(namelist[i1]);
 		
@@ -448,7 +459,7 @@ void CDBoxInfoWidget::showInfo()
 	
 	if (FrontendCount)
 	{
-		yPos += hddIcon->iHeight + 10;
+		yPos += 10;
 		
 		tunerIcon->setPosition(Box.iX + 10, yPos, 100, 40);
 		dboxInfoWidget->addCCItem(tunerIcon);

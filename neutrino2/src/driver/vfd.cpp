@@ -356,6 +356,7 @@ void CVFD::showTime(bool force)
 			{
 				hour = t->tm_hour;
 				minute = t->tm_min;
+				
 #if defined (PLATFORM_KATHREIN)	// time and date at kathrein because 16 character vfd
 				strftime(timestr, 20, "%H:%M - %d.%m.%y", t);
 #elif !defined(PLATFORM_SPARK7162) && !defined (PLATFORM_KATHREIN) // no time at spark7162 because clock integrated
