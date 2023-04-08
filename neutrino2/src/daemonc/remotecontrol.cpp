@@ -193,7 +193,9 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
 
 				CSectionsd::getInstance()->setServiceChanged( current_channel_id, true );
-				CNeutrinoApp::getInstance()->channelList->adjustToChannelID(current_channel_id);
+				
+				//
+				//CNeutrinoApp::getInstance()->channelList->adjustToChannelID(current_channel_id);
 				
 				// update info			
 			}

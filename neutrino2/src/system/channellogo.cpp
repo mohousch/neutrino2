@@ -87,7 +87,7 @@ bool CChannellogo::checkLogo(t_channel_id logo_id)
 		if(!access(logo_name.c_str(), F_OK)) 
 		{
 			logo_ok = true;
-			dprintf(DEBUG_DEBUG, "CChannellogo::checkLogo: found logo: %s\n", logo_name.c_str());
+			dprintf(DEBUG_INFO, "CChannellogo::checkLogo: found logo: %s\n", logo_name.c_str());
 			break;
 		}
 	}
@@ -123,7 +123,7 @@ void CChannellogo::getLogoSize(t_channel_id logo_id, int * width, int * height, 
 		// get logo real size
 		CFrameBuffer::getInstance()->getSize(logo_name.c_str(), width, height, bpp);
 		
-		dprintf(DEBUG_DEBUG, "CChannellogo::getLogoSize: logo: %s (%dx%d) %dbpp\n", logo_name.c_str(), *width, *height, *bpp);
+		dprintf(DEBUG_INFO, "CChannellogo::getLogoSize: logo: %s (%dx%d) %dbpp\n", logo_name.c_str(), *width, *height, *bpp);
 	}
 }
 
