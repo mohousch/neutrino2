@@ -340,7 +340,7 @@ void CVFD::showTime(bool force)
 
 	if (showclock) 
 	{
-		if (mode == MODE_STANDBY) 
+		//if (mode == MODE_STANDBY) 
 		{
 			char timestr[21];
 			struct timeb tm;
@@ -354,9 +354,9 @@ void CVFD::showTime(bool force)
 			{
 				hour = t->tm_hour;
 				minute = t->tm_min;
-#if defined (PLATFORM_KATHREIN)							/* time and date at kathrein because 16 character vfd	*/
+#if defined (PLATFORM_KATHREIN)	// time and date at kathrein because 16 character vfd
 				strftime(timestr, 20, "%H:%M - %d.%m.%y", t);
-#elif !defined(PLATFORM_SPARK7162) && !defined (PLATFORM_KATHREIN)		/* no time at spark7162 because clock integrated	*/
+#elif !defined(PLATFORM_SPARK7162) && !defined (PLATFORM_KATHREIN) // no time at spark7162 because clock integrated
  				strftime(timestr, 20, "%H:%M", t);
 #endif				
 				ShowText(timestr);
@@ -535,7 +535,7 @@ void CVFD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_TV, false);			
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
-			showclock = false;
+			showclock = true;
 			break;
 
 		case MODE_SHUTDOWN:
@@ -569,12 +569,12 @@ void CVFD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
 			
-			showclock = false;
+			showclock = true;
 			break;
 			
 		case MODE_MOVIE:  
 			ShowIcon(VFD_ICON_TV, false);			
-			showclock = false;
+			showclock = true;
 			break;
 	}
 

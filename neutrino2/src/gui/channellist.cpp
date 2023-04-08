@@ -587,7 +587,7 @@ int CChannelList::show(bool zap, bool customMode)
 	new_mode_active = 0;
 
 	// display channame in vfd	
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8 );	
+	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);	
 
 	displayNext = false;
 	

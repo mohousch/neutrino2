@@ -173,7 +173,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				// don't show service name in standby mode
 				if( CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby )
 				{
-					CVFD::getInstance()->showServicename(current_channel_name, true,  current_channel_number); // UTF-8						
+					//CVFD::getInstance()->showServicename(current_channel_name, true,  current_channel_number); // UTF-8						
 				}
 				
 				current_channel_id = new_id;
@@ -326,7 +326,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 					current_channel_number = cit->second.number;
 				}
 					
-				CVFD::getInstance()->showServicename(current_channel_name, true,  current_channel_number); // UTF-8						
+				//CVFD::getInstance()->showServicename(current_channel_name, true,  current_channel_number); // UTF-8						
 			}
 			
 			// get pids
@@ -373,7 +373,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 					current_channel_number = cit->second.number;
 				}
 								
-				CVFD::getInstance()->showServicename(std::string("<") + current_channel_name + '>', true, current_channel_number); // UTF-8					
+				//CVFD::getInstance()->showServicename(std::string("<") + current_channel_name + '>', true, current_channel_number); // UTF-8					
 			}
 				
 			if ( current_EPGid != 0)

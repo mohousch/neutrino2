@@ -2264,7 +2264,7 @@ void CNeutrinoApp::initZapper()
 		channelList->adjustToChannelID(live_channel_id);
 
 		// show service name in vfd
-		CVFD::getInstance()->showServicename(channelList->getActiveChannelName(), true, channelList->getActiveChannelNumber());
+		//CVFD::getInstance()->showServicename(channelList->getActiveChannelName(), true, channelList->getActiveChannelNumber());
 
 		// start epg scanning
 		CSectionsd::getInstance()->pauseScanning(false);
