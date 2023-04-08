@@ -1899,16 +1899,8 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 	}
 	
 	std::string url = (std::string)(char *) data;
-	//t_channel_id chid = (t_channel_id)data;
 	
-	dprintf(DEBUG_INFO, "[sectionsd] sectionsd:insertEventsfromXMLTV: chid:%s\n", url);
-	
-	//
-	//CZapitChannel *channel = g_bouquetManager->findChannelByChannelID(chid);
-	//std::string url;
-	//if (channel) url = channel->getEPGUrl();
-	//if (url.empty())
-	//	return 0;
+	dprintf(DEBUG_INFO, "[sectionsd] sectionsd:insertEventsfromXMLTV: chid:%s\n", url.c_str());
 
 	std::string answer;
 
