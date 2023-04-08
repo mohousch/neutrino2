@@ -426,32 +426,22 @@ struct SNeutrinoSettings
 	// END UPDATE
 
 	// VFD
-#if ENABLE_LCD
-#define LCD_SETTING_COUNT 11
-#else	
-#define LCD_SETTING_COUNT 8
+	int lcd_brightness;
+	int lcd_standbybrightness;
+	int lcd_contrast;
+	int lcd_power;
+	int lcd_inverse;
+	int lcd_show_volume;
+	int lcd_autodimm;
+#if defined (ENABLE_LCD)
+	int lcd_epgmode;
+	int lcd_epgalign;
+	int lcd_dump_png;
 #endif
-	enum LCD_SETTINGS {
-		LCD_BRIGHTNESS         = 0,
-		LCD_STANDBY_BRIGHTNESS = 1,
-		LCD_CONTRAST           = 2,
-		LCD_POWER              = 3,
-		LCD_INVERSE            = 4,
-		LCD_SHOW_VOLUME        = 5,
-		LCD_AUTODIMM           = 6,
-		LCD_SCROLL_TEXT		= 7,
-#if ENABLE_LCD
-		LCD_EPGMODE		= 8,
-		LCD_EPGALIGN            = 9,
-		LCD_DUMP_PNG		= 10,
-#endif		
-	};
-
-	int lcd_setting[LCD_SETTING_COUNT];
 	char lcd_setting_dim_time[4];
 	int lcd_setting_dim_brightness;
 	int lcd_ledcolor;
-	int lcd_epgmode;
+	int lcd_titlemode;
 	// END VFD
 
 	// tmdb

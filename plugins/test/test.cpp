@@ -105,7 +105,7 @@ class CTestMenu : public CMenuTarget
 		CTextBox* textBoxWidget;
 		
 		// CMenuwidget
-		//CMenuWidget* menuWidget;
+		CMenuWidget* menuWidget;
 		CMenuItem* item;
 		
 		CComponent* cCItem;
@@ -166,9 +166,9 @@ class CTestMenu : public CMenuTarget
 		void testCFrameBox1();
 		
 		// CMenuWidget
-		//void testCMenuWidget();
-		//void testCMenuWidget1();
-		//void testCMenuWidget2();
+		void testCMenuWidget();
+		void testCMenuWidget1();
+		void testCMenuWidget2();
 
 		// misc widgets
 		void testCStringInput();
@@ -3827,7 +3827,7 @@ void CTestMenu::testCFrameBox1()
 
 
 // CMenuWidget (listBox mode)
-#if 0
+#if 1
 void CTestMenu::testCMenuWidget()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (listBox mode)\n");
@@ -5578,14 +5578,24 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
-	/*
 	else if(actionKey == "menuwidget")
 	{
 		testCMenuWidget();
 
 		return RETURN_REPAINT;
 	}
-	*/
+	else if(actionKey == "menuwidget1")
+	{
+		testCMenuWidget1();
+
+		return RETURN_REPAINT;
+	}
+	else if(actionKey == "menuwidget2")
+	{
+		testCMenuWidget2();
+
+		return RETURN_REPAINT;
+	}
 	else if(actionKey == "pluginslist")
 	{
 		testPluginsList();
@@ -5610,20 +5620,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
-	/*
-	else if(actionKey == "menuwidget1")
-	{
-		testCMenuWidget1();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "menuwidget2")
-	{
-		testCMenuWidget2();
-
-		return RETURN_REPAINT;
-	}
-	*/
 	else if(actionKey == "mplay")
 	{
 		if (testWidget)
@@ -6716,10 +6712,10 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new ClistBoxItem("CWidget(ClistBox|CFrameBox|CHead|CFoot)", true, NULL, this, "widget"));
 	
 	// CMenuWidhet
-	//mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CMenuWidget"));
-	//mainMenu->addItem(new ClistBoxItem("CMenuWidget(MODE_LISTBOX)", true, NULL, this, "menuwidget"));
-	//mainMenu->addItem(new ClistBoxItem("CMenuWidget(MODE_MENU)", true, NULL, this, "menuwidget1"));
-	//mainMenu->addItem(new ClistBoxItem("CMenuWidget(MODE_SETUP)", true, NULL, this, "menuwidget2"));
+	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CMenuWidget"));
+	mainMenu->addItem(new ClistBoxItem("CMenuWidget(MODE_LISTBOX)", true, NULL, this, "menuwidget"));
+	mainMenu->addItem(new ClistBoxItem("CMenuWidget(MODE_MENU)", true, NULL, this, "menuwidget1"));
+	mainMenu->addItem(new ClistBoxItem("CMenuWidget(MODE_SETUP)", true, NULL, this, "menuwidget2"));
 
 	// other widget
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "other Widget"));

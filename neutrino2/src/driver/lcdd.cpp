@@ -206,7 +206,7 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	fonts.channelname = fontRenderer->getFont(fontname3, style_name3, 15);
 	fonts.menutitle   = fonts.channelname;
 
-	setAutoDimm(g_settings.lcd_setting[SNeutrinoSettings::LCD_AUTODIMM]);
+	setAutoDimm(g_settings.lcd_autodimm);
 
 	if (!display.isAvailable())
 	{
@@ -248,7 +248,8 @@ void CLCD::displayUpdate()
 	if (stat("/tmp/lcd.locked", &buf) == -1)
 	{
 		display.update();
-		if (g_settings.lcd_setting[SNeutrinoSettings::LCD_DUMP_PNG])
+		
+		if (g_settings.lcd_dump_png)
 			display.dump_png("/tmp/lcdd.png");
 	}
 }
@@ -284,7 +285,7 @@ void CLCD::setlcdparameter(void)
 	if(!has_lcd) 
 		return;
 	
-	last_toggle_state_power = g_settings.lcd_setting[SNeutrinoSettings::LCD_POWER];
+	last_toggle_state_power = g_settings.lcd_power;
 	int dim_time = atoi(g_settings.lcd_setting_dim_time);
 	int dim_brightness = g_settings.lcd_setting_dim_brightness;
 	bool timeouted = (dim_time > 0) && (timeout_cnt == 0);
@@ -293,19 +294,19 @@ void CLCD::setlcdparameter(void)
 	if (timeouted)
 		brightness = dim_brightness;
 	else
-		brightness = g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS];
+		brightness = g_settings.lcd_brightness;
 
 	if (last_toggle_state_power && (!timeouted || dim_brightness > 0))
 		power = 1;
 
 	if (mode == MODE_STANDBY)
-		brightness = g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS];
+		brightness = g_settings.lcd_standbybrightness;
 
 	setlcdparameter(brightness,
-			g_settings.lcd_setting[SNeutrinoSettings::LCD_CONTRAST],
+			g_settings.lcd_contrast,
 			power,
-			g_settings.lcd_setting[SNeutrinoSettings::LCD_INVERSE],
-			0 /*g_settings.lcd_setting[SNeutrinoSettings::LCD_BIAS]*/);
+			g_settings.lcd_inverse,
+			0);
 }
 
 static std::string removeLeadingSpaces(const std::string & text)
@@ -478,7 +479,7 @@ void CLCD::showServicename(const std::string name, const bool perform_wakeup, in
 	   2 = show epg title
 	   4 = draw separator line between name and EPG
 	 */
-	int showmode = g_settings.lcd_setting[SNeutrinoSettings::LCD_EPGMODE];
+	int showmode = g_settings.lcd_epgmode;
 
 	//printf("CLCD::showServicename '%s' epg: '%s'\n", name.c_str(), epg_title.c_str());
 
@@ -506,7 +507,7 @@ void CLCD::setEPGTitle(const std::string title)
 
 void CLCD::setMovieInfo(const AUDIOMODES playmode, const std::string big, const std::string small, const bool centered)
 {
-	int showmode = g_settings.lcd_setting[SNeutrinoSettings::LCD_EPGMODE];
+	int showmode = g_settings.lcd_epgmode;
 	
 	showmode |= 3; // take only the separator line from the config
 
@@ -604,8 +605,8 @@ void CLCD::showVolume(const char vol, const bool perform_update)
 	
 	volume = vol;
 	if (
-	    ((mode == MODE_TVRADIO) && (g_settings.lcd_setting[SNeutrinoSettings::LCD_SHOW_VOLUME])) ||
-	    ((mode == MODE_MOVIE) && (g_settings.lcd_setting[SNeutrinoSettings::LCD_SHOW_VOLUME])) ||
+	    ((mode == MODE_TVRADIO) && (g_settings.lcd_show_volume)) ||
+	    ((mode == MODE_MOVIE) && (g_settings.lcd_show_volume)) ||
 	    (mode == MODE_SCART) ||
 	    (mode == MODE_AUDIO)
 	    )
@@ -678,15 +679,15 @@ void CLCD::showPercentOver(const unsigned char perc, const bool perform_update, 
 		unsigned int lcd_width = display.xres;
 		unsigned int lcd_height = display.yres;
 
-		if (g_settings.lcd_setting[SNeutrinoSettings::LCD_SHOW_VOLUME] == 0)
+		if (g_settings.lcd_show_volume == 0)
 		{
 			left = 12+2; top = lcd_height - height - 1 - 2; width = lcd_width - left - 4 - 50;
 		}
-		else if (g_settings.lcd_setting[SNeutrinoSettings::LCD_SHOW_VOLUME] == 2)
+		else if (g_settings.lcd_show_volume == 2)
 		{
 			left = 12+2; top = 1+2; width = lcd_width - left - 4;
 		}
-		else if (g_settings.lcd_setting[SNeutrinoSettings::LCD_SHOW_VOLUME] == 3)
+		else if (g_settings.lcd_show_volume == 3)
 		{
 			left = 12+2; top = 1+2; width = lcd_width - left - 4 - 20;
 
@@ -934,7 +935,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 	case MODE_MOVIE:
 		display.clear_screen(); // clear lcd
 		
-		switch (g_settings.lcd_setting[SNeutrinoSettings::LCD_SHOW_VOLUME])
+		switch (g_settings.lcd_show_volume)
 		{
 		case 0:
 			drawBanner();
@@ -1043,67 +1044,67 @@ void CLCD::setMode(const MODES m, const char * const title)
 
 void CLCD::setBrightness(int bright)
 {
-	g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS] = bright;
+	g_settings.lcd_brightness = bright;
 	setlcdparameter();
 }
 
 int CLCD::getBrightness()
 {
-	return g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS];
+	return g_settings.lcd_brightness;
 }
 
 void CLCD::setBrightnessStandby(int bright)
 {
-	g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS] = bright;
+	g_settings.lcd_standbybrightness = bright;
 	setlcdparameter();
 }
 
 int CLCD::getBrightnessStandby()
 {
-	return g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS];
+	return g_settings.lcd_standbybrightness;
 }
 
 void CLCD::setContrast(int contrast)
 {
-	g_settings.lcd_setting[SNeutrinoSettings::LCD_CONTRAST] = contrast;
+	g_settings.lcd_contrast = contrast;
 	setlcdparameter();
 }
 
 int CLCD::getContrast()
 {
-	return g_settings.lcd_setting[SNeutrinoSettings::LCD_CONTRAST];
+	return g_settings.lcd_contrast;
 }
 
 void CLCD::setPower(int power)
 {
-	g_settings.lcd_setting[SNeutrinoSettings::LCD_POWER] = power;
+	g_settings.lcd_power = power;
 	setlcdparameter();
 }
 
 int CLCD::getPower()
 {
-	return g_settings.lcd_setting[SNeutrinoSettings::LCD_POWER];
+	return g_settings.lcd_power;
 }
 
 void CLCD::togglePower(void)
 {
 	last_toggle_state_power = 1 - last_toggle_state_power;
-	setlcdparameter((mode == MODE_STANDBY) ? g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS] : g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS],
-			g_settings.lcd_setting[SNeutrinoSettings::LCD_CONTRAST],
+	setlcdparameter((mode == MODE_STANDBY) ? g_settings.lcd_standbybrightness : g_settings.lcd_brightness,
+			g_settings.lcd_contrast,
 			last_toggle_state_power,
-			g_settings.lcd_setting[SNeutrinoSettings::LCD_INVERSE],
-			0 /*g_settings.lcd_setting[SNeutrinoSettings::LCD_BIAS]*/);
+			g_settings.lcd_inverse,
+			0);
 }
 
 void CLCD::setInverse(int inverse)
 {
-	g_settings.lcd_setting[SNeutrinoSettings::LCD_INVERSE] = inverse;
+	g_settings.lcd_inverse = inverse;
 	setlcdparameter();
 }
 
 int CLCD::getInverse()
 {
-	return g_settings.lcd_setting[SNeutrinoSettings::LCD_INVERSE];
+	return g_settings.lcd_inverse;
 }
 
 void CLCD::setAutoDimm(int /*autodimm*/)
@@ -1112,7 +1113,7 @@ void CLCD::setAutoDimm(int /*autodimm*/)
 
 int CLCD::getAutoDimm()
 {
-	return g_settings.lcd_setting[SNeutrinoSettings::LCD_AUTODIMM];
+	return g_settings.lcd_autodimm;
 }
 
 void CLCD::setMuted(bool mu)

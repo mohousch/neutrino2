@@ -541,8 +541,8 @@ void testNetworkSettings(const char* ip, const char* netmask, const char* broadc
 	text += our_nameserver;
 	text += ' ';
 	text += mypinghost(our_nameserver);
-	text += "\nwww.google.de: ";
-	text += mypinghost("173.194.35.152");
+	text += "\nwiki.tuxbox-neutrino.org: ";
+	text += mypinghost("81.7.17.245");
 
 	MessageBox(_("Test network now"), text.c_str(), mbrBack, mbBack, NEUTRINO_ICON_INFO); // UTF-8
 }

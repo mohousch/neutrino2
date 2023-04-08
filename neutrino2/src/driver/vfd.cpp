@@ -186,9 +186,9 @@ void CVFD::count_down()
 			if (g_settings.lcd_setting_dim_brightness > 0) 
 			{
 				// save lcd brightness, setBrightness() changes global setting
-				int b = g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS];
+				int b = g_settings.lcd_brightness;
 				setBrightness(g_settings.lcd_setting_dim_brightness);
-				g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS] = b;
+				g_settings.lcd_brightness = b;
 			} 
 			else 
 			{
@@ -204,7 +204,7 @@ void CVFD::wake_up()
 	if (atoi(g_settings.lcd_setting_dim_time) > 0) 
 	{
 		timeout_cnt = atoi(g_settings.lcd_setting_dim_time);
-		g_settings.lcd_setting_dim_brightness > 0 ? setBrightness(g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS]) : setPower(1);
+		g_settings.lcd_setting_dim_brightness > 0 ? setBrightness(g_settings.lcd_brightness) : setPower(1);
 	}
 	else
 		setPower(1);
@@ -299,19 +299,17 @@ void CVFD::setlcdparameter(void)
 	if(!has_lcd || is4digits) 
 		return;
 
-	last_toggle_state_power = g_settings.lcd_setting[SNeutrinoSettings::LCD_POWER];
+	last_toggle_state_power = g_settings.lcd_power;
 	
-	setlcdparameter( (mode == MODE_STANDBY) ? g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS] : g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS], last_toggle_state_power);
+	setlcdparameter( (mode == MODE_STANDBY) ? g_settings.lcd_brightness : g_settings.lcd_brightness, last_toggle_state_power);
 }
 
 void CVFD::showServicename(const std::string& name, const bool perform_wakeup, int pos) // UTF-8
 {
 	dprintf(DEBUG_DEBUG, "CVFD::showServicename: %s\n", name.c_str());
 	
-	if(!has_lcd /*|| is4digits*/) 
+	if(!has_lcd) 
 		return;
-		
-	//dprintf(DEBUG_DEBUG, "CVFD::showServicename: %s\n", name.c_str());
 	
 	servicename = name;
 	serviceNum = pos;
@@ -489,13 +487,10 @@ void CVFD::setMode(const MODES m, const char * const title)
 	switch (m) 
 	{
 		case MODE_TVRADIO:
-			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
+			if (g_settings.lcd_titlemode == EPGMODE_CHANNELNUMBER)	
 				showServicename(servicename, true, serviceNum);
-			else 
-			{
-				showclock = true;
+			else if (g_settings.lcd_titlemode == EPGMODE_TIME)
 				showTime(true);
-			}
 			
 #if !defined(PLATFORM_SPARK7162)			
 			ShowIcon(VFD_ICON_MP3, false);	        // NOTE: @dbo  //ICON_MP3 and ICON_DOLBY switched in infoviewer 
@@ -510,7 +505,6 @@ void CVFD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_STANDBY, false);	
 #endif
 			showclock = true;
-			//showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */			
 			break;
 
 		case MODE_AUDIO:
@@ -592,7 +586,7 @@ void CVFD::setBrightness(int bright)
 	if(!has_lcd || is4digits) 
 		return;
 
-	g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS] = bright;
+	g_settings.lcd_brightness = bright;
 	
 	setlcdparameter();
 }
@@ -600,10 +594,10 @@ void CVFD::setBrightness(int bright)
 int CVFD::getBrightness()
 {
 	//FIXME for old neutrino.conf
-	if(g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS] > DEFAULT_LCD_BRIGHTNESS)
-		g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS] = DEFAULT_LCD_BRIGHTNESS;
+	if(g_settings.lcd_brightness > DEFAULT_LCD_BRIGHTNESS)
+		g_settings.lcd_brightness = DEFAULT_LCD_BRIGHTNESS;
 
-	return g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS];
+	return g_settings.lcd_brightness;
 }
 
 void CVFD::setBrightnessStandby(int bright)
@@ -611,17 +605,17 @@ void CVFD::setBrightnessStandby(int bright)
 	if(!has_lcd || is4digits) 
 		return;
 
-	g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS] = bright;
+	g_settings.lcd_standbybrightness = bright;
 	setlcdparameter();
 }
 
 int CVFD::getBrightnessStandby()
 {
 	//FIXME for old neutrino.conf
-	if(g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS] > DEFAULT_LCD_STANDBYBRIGHTNESS )
-		g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS] = DEFAULT_LCD_STANDBYBRIGHTNESS;
+	if(g_settings.lcd_standbybrightness > DEFAULT_LCD_STANDBYBRIGHTNESS )
+		g_settings.lcd_standbybrightness = DEFAULT_LCD_STANDBYBRIGHTNESS;
 	
-	return g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS];
+	return g_settings.lcd_standbybrightness;
 }
 
 void CVFD::setPower(int power)
@@ -644,7 +638,7 @@ void CVFD::setPower(int power)
 
 int CVFD::getPower()
 {
-	return g_settings.lcd_setting[SNeutrinoSettings::LCD_POWER];
+	return g_settings.lcd_power;
 }
 
 void CVFD::togglePower(void)
@@ -653,7 +647,7 @@ void CVFD::togglePower(void)
 		return;
 
 	last_toggle_state_power = 1 - last_toggle_state_power;
-	setlcdparameter((mode == MODE_STANDBY) ? g_settings.lcd_setting[SNeutrinoSettings::LCD_STANDBY_BRIGHTNESS] : g_settings.lcd_setting[SNeutrinoSettings::LCD_BRIGHTNESS], last_toggle_state_power);
+	setlcdparameter((mode == MODE_STANDBY) ? g_settings.lcd_standbybrightness : g_settings.lcd_brightness, last_toggle_state_power);
 }
 
 void CVFD::setMuted(bool mu)
@@ -694,7 +688,7 @@ void CVFD::Unlock()
 
 void CVFD::Clear()
 {
-	if(!has_lcd || is4digits) 
+	if(!has_lcd) 
 		return;
 	
 #if defined (ENABLE_4DIGITS)
@@ -988,12 +982,12 @@ void CVFD::setFPTime(void)
 	time_t tnow = time(NULL);
 	
 	tm *now = localtime(&tnow);
-	timebuf[0]=1;
-	timebuf[1]=now->tm_min;
-	timebuf[2]=now->tm_hour;
-	timebuf[3]=now->tm_mday;
-	timebuf[4]=now->tm_mon+1;
-	timebuf[5]=now->tm_year % 100;
+	timebuf[0] = 1;
+	timebuf[1] = now->tm_min;
+	timebuf[2] = now->tm_hour;
+	timebuf[3] = now->tm_mday;
+	timebuf[4] = now->tm_mon+1;
+	timebuf[5] = now->tm_year % 100;
 	
 	struct vfd_ioctl_data data;
 	memset(&data, 0, sizeof(struct vfd_ioctl_data));
@@ -1003,7 +997,16 @@ void CVFD::setFPTime(void)
 		perror("VFDPWRLED");
 	
 	closeDevice();
-#else	
+#else
+	time_t t = time(NULL);
+		
+	proc_put("/proc/stb/fp/rtc", t);
+
+	struct tm *lt = localtime(&t);
+	struct tm *gt = gmtime(&t);
+	int offset = (lt->tm_hour - gt->tm_hour) * 3600;
+
+	proc_put("/proc/stb/fp/rtc_offset", offset);	
 #endif
 }
 

@@ -107,6 +107,7 @@ class CLCD
 			MODE_INFOBOX,
 #endif // LCD_UPDATE
 		};
+		
 		enum AUDIOMODES
 		{
 			AUDIO_MODE_PLAY,

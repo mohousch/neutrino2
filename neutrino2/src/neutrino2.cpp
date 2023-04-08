@@ -398,30 +398,6 @@ font_sizes_struct neutrino_font[FONT_TYPE_COUNT] =
 // signal font
 const font_sizes_struct signal_font = {_("Signal small"),  14, FONT_STYLE_REGULAR, 1};
 
-// LCD settings
-typedef struct lcd_setting_t
-{
-	const char * const name;
-	const unsigned int default_value;
-} lcd_setting_struct_t;
-
-const lcd_setting_struct_t lcd_setting[LCD_SETTING_COUNT] =
-{
-	{"lcd_brightness"       , DEFAULT_LCD_BRIGHTNESS       },
-	{"lcd_standbybrightness", DEFAULT_LCD_STANDBYBRIGHTNESS},
-	{"lcd_contrast"         , DEFAULT_LCD_CONTRAST         },
-	{"lcd_power"            , DEFAULT_LCD_POWER            },
-	{"lcd_inverse"          , DEFAULT_LCD_INVERSE          },
-	{"lcd_show_volume"      , DEFAULT_LCD_SHOW_VOLUME      },
-	{"lcd_autodimm"         , DEFAULT_LCD_AUTODIMM         },
-	{"lcd_scroll_text"      , DEFAULT_LCD_SCROLL_TEXT      },
-#if ENABLE_LCD
-	{"lcd_epgmode"          , DEFAULT_LCD_EPGMODE          },
-	{"lcd_epgalign"         , DEFAULT_LCD_EPGALIGN         },
-	{"lcd_dump_png"         , DEFAULT_LCD_DUMP_PNG         },
-#endif	
-};
-
 // loadSetup, load the application-settings
 int CNeutrinoApp::loadSetup(const char * fname)
 {
@@ -919,14 +895,24 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// end software update
 
 	// VFD
-	for (int i = 0; i < LCD_SETTING_COUNT; i++)
-		g_settings.lcd_setting[i] = configfile.getInt32(lcd_setting[i].name, lcd_setting[i].default_value);
+	g_settings.lcd_brightness = configfile.getInt32("lcd_brightness", DEFAULT_LCD_BRIGHTNESS);
+	g_settings.lcd_standbybrightness = configfile.getInt32("lcd_standbybrightness", DEFAULT_LCD_STANDBYBRIGHTNESS);
+	g_settings.lcd_contrast = configfile.getInt32("lcd_contrast", DEFAULT_LCD_CONTRAST);
+	g_settings.lcd_power = configfile.getInt32("lcd_power", DEFAULT_LCD_POWER);
+	g_settings.lcd_inverse = configfile.getInt32("lcd_inverse", DEFAULT_LCD_INVERSE);
+	g_settings.lcd_show_volume = configfile.getInt32("lcd_show_volume", DEFAULT_LCD_SHOW_VOLUME);
+	g_settings.lcd_autodimm = configfile.getInt32("lcd_autodimm", DEFAULT_LCD_AUTODIMM);
+#if defined (ENABLE_LCD)
+	g_settings.lcd_epgmode = configfile.getInt32("lcd_epgmode", DEFAULT_LCD_EPGMODE);
+	g_settings.lcd_epgalign = configfile.getInt32("lcd_epgalign", DEFAULT_LCD_EPGALIGN);
+	g_settings.lcd_dump_png = configfile.getInt32("lcd_dump_png", DEFAULT_LCD_DUMP_PNG);
+#endif
 	
 	strcpy(g_settings.lcd_setting_dim_time, configfile.getString("lcd_dim_time", "0").c_str());
 	g_settings.lcd_setting_dim_brightness = configfile.getInt32("lcd_dim_brightness", 0);
 	
 	g_settings.lcd_ledcolor = configfile.getInt32("lcd_ledcolor", 1);
-	g_settings.lcd_epgmode = configfile.getInt32("lcd_epgmode", 1);
+	g_settings.lcd_titlemode = configfile.getInt32("lcd_titlemode", 1);
 	// end VFD
 
 	// online epg
@@ -934,9 +920,6 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.epg_serverbox_ip = configfile.getString("epg_serverbox_ip", "192.168.0.12");
 	g_settings.epg_serverbox_type = configfile.getInt32("epg_serverbox_type", DVB_C);
 	g_settings.epg_serverbox_gui = configfile.getInt32("epg_serverbox_gui", SNeutrinoSettings::SATIP_SERVERBOX_GUI_ENIGMA2);
-
-	// mode
-	//g_settings.mode = configfile.getInt32("mode", mode_tv);
 
 	//
 	g_settings.ytkey = configfile.getString("ytkey", "");
@@ -1384,14 +1367,24 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	// END UPDATE
 
 	// VFD 
-	for (int i = 0; i < LCD_SETTING_COUNT; i++)
-		configfile.setInt32(lcd_setting[i].name, g_settings.lcd_setting[i]);
+	configfile.setInt32("lcd_brightness", g_settings.lcd_brightness);
+	configfile.setInt32("lcd_standbybrightness", g_settings.lcd_standbybrightness);
+	configfile.setInt32("lcd_contrast", g_settings.lcd_contrast);
+	configfile.setInt32("lcd_power", g_settings.lcd_power);
+	configfile.setInt32("lcd_inverse", g_settings.lcd_inverse);
+	configfile.setInt32("lcd_show_volume", g_settings.lcd_show_volume);
+	configfile.setInt32("lcd_autodimm", g_settings.lcd_autodimm);
+#if defined (ENABLE_LCD)
+	configfile.setInt32("lcd_epgmode", g_settings.lcd_epgmode);
+	configfile.setInt32("lcd_epgalign", g_settings.lcd_epgalign);
+	configfile.setInt32("lcd_dump_png", g_settings.lcd_dump_png);
+#endif
 	
 	configfile.setString("lcd_dim_time", g_settings.lcd_setting_dim_time);
 	configfile.setInt32("lcd_dim_brightness", g_settings.lcd_setting_dim_brightness);
 	
 	configfile.setInt32("lcd_ledcolor", g_settings.lcd_ledcolor);
-	configfile.setInt32("lcd_epgmode", g_settings.lcd_epgmode);
+	configfile.setInt32("lcd_titlemode", g_settings.lcd_titlemode);
 	// END VFD
 
 	// online epg
@@ -2558,7 +2551,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	setupRecordingDevice();
 
 	//
-	CVFD::getInstance()->setPower(g_settings.lcd_setting[SNeutrinoSettings::LCD_POWER]);
+	CVFD::getInstance()->setPower(g_settings.lcd_power);
 	CVFD::getInstance()->setlcdparameter();
 	
 	// start assistant

@@ -87,8 +87,8 @@ const keyval LCDMENU_LEDCOLOR_OPTIONS[LCDMENU_LEDCOLOR_OPTION_COUNT] =
 	{ CVFD::LED_PURPLE, _("purple") },
 };
 
-#define LCDMENU_EPGMODE_OPTION_COUNT 2
-const keyval LCDMENU_EPGMODE_OPTIONS[LCDMENU_EPGMODE_OPTION_COUNT] =
+#define LCDMENU_TITLEMODE_OPTION_COUNT 2
+const keyval LCDMENU_TITLEMODE_OPTIONS[LCDMENU_TITLEMODE_OPTION_COUNT] =
 {
 	{ CVFD::EPGMODE_CHANNELNUMBER, _("Channel Number")	},
 	{ CVFD::EPGMODE_TIME, _("Time")				}
@@ -178,23 +178,23 @@ void CLCDSettings::showMenu()
 	// LCD
 #if defined (ENABLE_LCD)
 	//option invert
-	CMenuOptionChooser* oj_inverse = new CMenuOptionChooser(_("Invert"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_INVERSE], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier);
+	CMenuOptionChooser* oj_inverse = new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier);
 	lcdSettings->addItem(oj_inverse);
 
 	//status display
-	CMenuOptionChooser* oj_status = new CMenuOptionChooser(_("Status line"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_SHOW_VOLUME], LCDMENU_STATUSLINE_OPTIONS, LCDMENU_STATUSLINE_OPTION_COUNT, true);
+	CMenuOptionChooser* oj_status = new CMenuOptionChooser(_("Status line"), &g_settings.lcd_show_volume, LCDMENU_STATUSLINE_OPTIONS, LCDMENU_STATUSLINE_OPTION_COUNT, true);
 	lcdSettings->addItem(oj_status);
 	
 	//lcd_epg
-	CMenuOptionChooser* oj_epg = new CMenuOptionChooser(_("EPG"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_EPGMODE], LCDMENU_EPG_OPTIONS, LCDMENU_EPG_OPTION_COUNT, true);
+	CMenuOptionChooser* oj_epg = new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPG_OPTIONS, LCDMENU_EPG_OPTION_COUNT, true);
 	lcdSettings->addItem(oj_epg);
 
 	//align
-	CMenuOptionChooser* oj_align = new CMenuOptionChooser(_("LCD EPG Align"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_EPGALIGN], LCDMENU_EPGALIGN_OPTIONS, LCDMENU_EPGALIGN_OPTION_COUNT, true);
+	CMenuOptionChooser* oj_align = new CMenuOptionChooser(_("LCD EPG Align"), &g_settings.lcd_epgalign, LCDMENU_EPGALIGN_OPTIONS, LCDMENU_EPGALIGN_OPTION_COUNT, true);
 	lcdSettings->addItem(oj_align);
 
 	//dump to png
-	//CMenuOptionChooser* oj_dumppng = new CMenuOptionChooser(_("output to PNG"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_DUMP_PNG], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
+	//CMenuOptionChooser* oj_dumppng = new CMenuOptionChooser(_("output to PNG"), &g_settings.lcd_dump_png, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 	//lcdSettings->addItem(oj_dumppng);
 	
 	// lcd controller
@@ -205,12 +205,12 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuOptionChooser(_("Led Color"), &g_settings.lcd_ledcolor, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
 #endif
 	
-	//lcd_epg
-	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPGMODE_OPTIONS, LCDMENU_EPGMODE_OPTION_COUNT, true));	
+	// titlemode
+	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_titlemode, LCDMENU_TITLEMODE_OPTIONS, LCDMENU_TITLEMODE_OPTION_COUNT, true));	
 
 #if !defined (PLATFORM_CUBEREVO_250HD) && !defined (PLATFORM_SPARK) && !defined (PLATFORM_GIGABLUE)
 	// vfd power
-	lcdSettings->addItem(new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_setting[SNeutrinoSettings::LCD_POWER], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
 	
 	// dimm-time
 	CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");

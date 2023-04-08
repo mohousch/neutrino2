@@ -1825,7 +1825,7 @@ int CZapit::prepareChannels()
 	return 0;
 }
 
-_xmlDocPtr CZapit::parseScanInputXml(fe_type_t fe_type)
+void CZapit::parseScanInputXml(fe_type_t fe_type)
 {
 	if(scanInputParser) 
 	{
@@ -1853,11 +1853,8 @@ _xmlDocPtr CZapit::parseScanInputXml(fe_type_t fe_type)
 			
 		default:
 			dprintf(DEBUG_INFO, "CZapit::parseScanInputXml: Unknown type %d\n", fe_type);
-			scanInputParser = NULL;
-			break;
+			return;
 	}
-	
-	return scanInputParser;
 }
 
 //
@@ -4266,7 +4263,7 @@ void * CZapit::scanThread(void * data)
 	}
 	
 	// get provider position and name
-	scanInputParser = CZapit::getInstance()->parseScanInputXml(CZapit::getInstance()->getFE(feindex)->getInfo()->type);
+	CZapit::getInstance()->parseScanInputXml(CZapit::getInstance()->getFE(feindex)->getInfo()->type);
 	
 	_xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
 
