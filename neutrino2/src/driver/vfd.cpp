@@ -489,9 +489,9 @@ void CVFD::setMode(const MODES m, const char * const title)
 	switch (m) 
 	{
 		case MODE_TVRADIO:
-			if (g_settings.lcd_titlemode == EPGMODE_CHANNELNUMBER)	
+			if (g_settings.lcd_epgmode == EPGMODE_CHANNELNUMBER)	
 				showServicename(g_RemoteControl->getCurrentChannelName(), true, g_RemoteControl->getCurrentChannelNumber());
-			else if (g_settings.lcd_titlemode == EPGMODE_TIME)
+			else if (g_settings.lcd_epgmode == EPGMODE_TIME)
 				showTime(true);
 			
 #if !defined(PLATFORM_SPARK7162)			
@@ -622,7 +622,7 @@ int CVFD::getBrightnessStandby()
 
 void CVFD::setPower(int power)
 {
-	if(!has_lcd || is4digits) 
+	if(!has_lcd) 
 		return;
 
 #if defined (__sh__)
@@ -635,6 +635,25 @@ void CVFD::setPower(int power)
 		perror("VFDPWRLED");
 	
 	closeDevice();
+//#endif
+#else
+#if defined (PLATFORM_GIGABLUE)
+	const char *VFDLED[] = {
+		"VFD_OFF",
+		"VFD_BLUE",
+		"VFD_RED",
+		"VFD_PURPLE"
+	};
+	
+	dprintf(DEBUG_NORMAL, "CVFD::setPower: %s\n", VFDLED[power]);
+	  
+	FILE * f;
+	if((f = fopen("/proc/stb/fp/led0_pattern", "w")) == NULL) 
+		return;
+	
+	fprintf(f, "%d", power);
+	fclose(f);
+#endif	
 #endif
 }
 
@@ -905,27 +924,6 @@ void CVFD::setFan(bool enable)
 	
 	closeDevice();
 	*/
-#endif	
-}
-
-void CVFD::vfd_led(int led)
-{
-	const char *VFDLED[] = {
-		"VFD_OFF",
-		"VFD_BLUE",
-		"VFD_RED",
-		"VFD_PURPLE"
-	};
-	
-	dprintf(DEBUG_NORMAL, "CVFD::vfd_led: %s\n", VFDLED[led]);
-	
-#if defined (PLATFORM_GIGABLUE)  
-	FILE * f;
-	if((f = fopen("/proc/stb/fp/led0_pattern", "w")) == NULL) 
-		return;
-	
-	fprintf(f, "%d", led);
-	fclose(f);
 #endif	
 }
 

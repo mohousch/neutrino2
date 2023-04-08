@@ -492,9 +492,6 @@ class CVFD
 		void setFan(bool enable);
 		void setFPTime(void);
 		
-		// gigablue800se
-		void vfd_led(int led);
-		
 		// venton
 		void vfd_symbol_network(int net);
 		void vfd_symbol_circle(int cir);

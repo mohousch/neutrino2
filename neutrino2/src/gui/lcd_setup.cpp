@@ -50,7 +50,6 @@ const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
         { 1, _("on") }
 };
 
-#if defined (ENABLE_LCD)
 #define LCDMENU_STATUSLINE_OPTION_COUNT 4
 const keyval LCDMENU_STATUSLINE_OPTIONS[LCDMENU_STATUSLINE_OPTION_COUNT] =
 {
@@ -77,24 +76,24 @@ const keyval LCDMENU_EPGALIGN_OPTIONS[LCDMENU_EPGALIGN_OPTION_COUNT] =
 	{ 0, _("left")   },
 	{ 1, _("center") }
 };
-#else
+
 #define LCDMENU_LEDCOLOR_OPTION_COUNT 4
 const keyval LCDMENU_LEDCOLOR_OPTIONS[LCDMENU_LEDCOLOR_OPTION_COUNT] =
 {
-	{ CVFD::LED_OFF, _("off") 	},
-	{ CVFD::LED_BLUE, _("blue") 	},
-	{ CVFD::LED_RED, _("red") 	},
-	{ CVFD::LED_PURPLE, _("purple") },
+	{ 0, _("off") 	},
+	{ 1, _("blue") 	},
+	{ 2, _("red") 	},
+	{ 3, _("purple") },
 };
 
 #define LCDMENU_TITLEMODE_OPTION_COUNT 2
 const keyval LCDMENU_TITLEMODE_OPTIONS[LCDMENU_TITLEMODE_OPTION_COUNT] =
 {
-	{ CVFD::EPGMODE_CHANNELNUMBER, _("Channel Number")	},
-	{ CVFD::EPGMODE_TIME, _("Time")				}
+	{ 0, _("Channel Number")	},
+	{ 1, _("Time")			}
 };
-#endif
 
+//
 CLCDSettings::CLCDSettings()
 {
 }
@@ -177,6 +176,9 @@ void CLCDSettings::showMenu()
 	
 	// LCD
 #if defined (ENABLE_LCD)
+	// led_power
+	lcdSettings->addItem(new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
+	
 	//option invert
 	CMenuOptionChooser* oj_inverse = new CMenuOptionChooser(_("Invert"), &g_settings.lcd_inverse, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier);
 	lcdSettings->addItem(oj_inverse);
@@ -197,21 +199,30 @@ void CLCDSettings::showMenu()
 	//CMenuOptionChooser* oj_dumppng = new CMenuOptionChooser(_("output to PNG"), &g_settings.lcd_dump_png, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 	//lcdSettings->addItem(oj_dumppng);
 	
+	// dimm-time
+	CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");
+	lcdSettings->addItem(new ClistBoxItem(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
+
+	// dimm brightness
+	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, 15));
+
+	// vfd controller
+	lcdSettings->addItem(new CMenuSeparator(LINE));
+	
 	// lcd controller
 	lcdSettings->addItem(new ClistBoxItem(_("Contrast / Brightness"), true, NULL, lcdsliders));
-#else	
+#else
+	// lcd_power
 #if defined (PLATFORM_GIGABLUE)	
-	// led color
-	lcdSettings->addItem(new CMenuOptionChooser(_("Led Color"), &g_settings.lcd_ledcolor, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
+	lcdSettings->addItem(new CMenuOptionChooser(_("LED_Power"), &g_settings.lcd_power, LCDMENU_LEDCOLOR_OPTIONS, LCDMENU_LEDCOLOR_OPTION_COUNT, true, lcdnotifier));
+#else
+	lcdSettings->addItem(new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
 #endif
 	
-	// titlemode
-	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_titlemode, LCDMENU_TITLEMODE_OPTIONS, LCDMENU_TITLEMODE_OPTION_COUNT, true));	
+	// epgmode
+	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_TITLEMODE_OPTIONS, LCDMENU_TITLEMODE_OPTION_COUNT, true));	
 
-#if !defined (PLATFORM_CUBEREVO_250HD) && !defined (PLATFORM_SPARK) && !defined (PLATFORM_GIGABLUE)
-	// vfd power
-	lcdSettings->addItem(new CMenuOptionChooser(_("LED-Power"), &g_settings.lcd_power, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, lcdnotifier));
-	
+#if !defined (PLATFORM_CUBEREVO_250HD) && !defined (PLATFORM_SPARK) && !defined (PLATFORM_GIGABLUE)	
 	// dimm-time
 	CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");
 	lcdSettings->addItem(new ClistBoxItem(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
@@ -236,12 +247,12 @@ bool CLcdNotifier::changeNotify(const std::string&, void * Data)
 
 	dprintf(DEBUG_NORMAL, "ClcdNotifier: state: %d\n", state);
 	
-#if defined (PLATFORM_GIGABLUE) && !defined (ENABLE_LCD)
-	CVFD::getInstance()->vfd_led(state);
-#else	
+//#if defined (PLATFORM_GIGABLUE) && !defined (ENABLE_LCD)
+//	CVFD::getInstance()->vfd_led(state);
+//#else	
 	CVFD::getInstance()->setPower(state);
 	CVFD::getInstance()->setlcdparameter();
-#endif	
+//#endif	
 
 	return true;
 }
