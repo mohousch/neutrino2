@@ -565,7 +565,8 @@ void CStreamTS::Stop()
 	dprintf(DEBUG_NORMAL, "CStreamTS::Stop:\n");
 	
 	streamts_stop = 1;
-	pthread_join(stream_thread, NULL);
+	
+	//pthread_cancel(stream_thread);
+	//pthread_join(stream_thread, NULL);
 }
-////
 

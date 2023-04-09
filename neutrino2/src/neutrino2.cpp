@@ -4150,19 +4150,19 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::exitRun: entering off state (retcode:%d)\n", retcode);
 			
 		// stop nhttpd		
-		//Cyhttpd::getInstance()->Stop();
+		Cyhttpd::getInstance()->Stop();
 		
 		// stop streamts
-		//CStreamTS::getInstance()->Stop();	
+		CStreamTS::getInstance()->Stop();	
 
 		// stop timerd	  
-		//CTimerd::getInstance()->Stop();		
+		CTimerd::getInstance()->Stop();		
 
 		// stop sectionsd
-		//CSectionsd::getInstance()->Stop();
+		CSectionsd::getInstance()->Stop();
 
 		// zapit stop	
-		//CZapit::getInstance()->Stop();
+		CZapit::getInstance()->Stop();
 		
 		//
 #if !defined (USE_OPENGL)		
@@ -5308,19 +5308,19 @@ void sighandler(int signum)
 		case SIGTERM:
 		case SIGINT:
 			// stop nhttpd		
-			//Cyhttpd::getInstance()->Stop();
+			Cyhttpd::getInstance()->Stop();
 			
 			// stop streamts
-			//CStreamTS::getInstance()->Stop();	
+			CStreamTS::getInstance()->Stop();	
 
 			// stop timerd	  
-			//CTimerd::getInstance()->Stop();		
+			CTimerd::getInstance()->Stop();		
 
 			// stop sectionsd
-			//CSectionsd::getInstance()->Stop();
+			CSectionsd::getInstance()->Stop();
 
 			// zapit stop	
-			//CZapit::getInstance()->Stop();
+			CZapit::getInstance()->Stop();
 			
 			_exit(0);
 			

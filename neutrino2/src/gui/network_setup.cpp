@@ -358,8 +358,6 @@ void CNetworkSettings::showMenu()
 	if(ifcount > 1) // if there is only one, its probably wired
 	{
 		//ssid
-		//CStringInputSMS * networkSettings_ssid = new CStringInputSMS(_("Network Name"), network_ssid.c_str());
-		//ClistBoxItem * m9 = new ClistBoxItem(_("Network Name"), networkConfig->wireless, network_ssid.c_str(), networkSettings_ssid );
 		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, this, RC_nokey, "", true);
 		
 		//
@@ -380,7 +378,7 @@ void CNetworkSettings::showMenu()
 
 		//key
 		CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
-		ClistBoxItem *m10 = new ClistBoxItem(_("Key"), networkConfig->wireless, network_key.c_str(), networkSettings_key );
+		ClistBoxItem *m10 = new ClistBoxItem(_("Key"), /*networkConfig->wireless*/true, network_key.c_str(), networkSettings_key );
 
 		wlanEnable[0] = m9;
 		wlanEnable[1] = m10;
@@ -448,13 +446,14 @@ bool CIPChangeNotifier::changeNotify(const std::string& locale, void * Data)
 		//readNetworkSettings(); //???
 		
 		dprintf(DEBUG_NORMAL, "CNetworkSetup::changeNotify: using %s, static %d\n", g_settings.ifname, CNetworkSettings::getInstance()->networkConfig->inet_static);
-
+/*
 		changeNotify(_("DHCP"), &CNetworkSettings::getInstance()->networkConfig->inet_static);
 
 		int ecnt = sizeof(CNetworkSettings::getInstance()->wlanEnable) / sizeof(CMenuItem*);
 
 		for(int i = 0; i < ecnt; i++)
 			CNetworkSettings::getInstance()->wlanEnable[i]->setActive(CNetworkSettings::getInstance()->networkConfig->wireless);
+*/
 
 	}
 

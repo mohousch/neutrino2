@@ -4747,12 +4747,12 @@ void CZapit::Stop()
 	}
 	
 	// stop std thread
-	pthread_cancel(tsdt);
-	pthread_join(tsdt, NULL);
+	//pthread_cancel(tsdt);
+	//pthread_join(tsdt, NULL);
 	
 	// stop pmt update filter thread
-	pthread_cancel(tpmt);
-	pthread_join(tpmt, NULL);
+	//pthread_cancel(tpmt);
+	//pthread_join(tpmt, NULL);
 
 	if (pmtDemux)
 		delete pmtDemux;

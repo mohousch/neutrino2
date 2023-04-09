@@ -5054,17 +5054,17 @@ void CSectionsd::Stop(void)
 		if(dmxUTC) 
 			delete dmxUTC;
 	
-		pthread_cancel(threadEIT);
-		pthread_join(threadEIT, NULL);
+		//pthread_cancel(threadEIT);
+		//pthread_join(threadEIT, NULL);
 		
-		pthread_cancel(threadCN);
-		pthread_join(threadCN, NULL);
+		//pthread_cancel(threadCN);
+		//pthread_join(threadCN, NULL);
 		
-		pthread_cancel(threadFSEIT);
-		pthread_join(threadFSEIT, NULL);
+		//pthread_cancel(threadFSEIT);
+		//pthread_join(threadFSEIT, NULL);
 		
-		pthread_cancel(threadVIASATEIT);
-		pthread_join(threadVIASATEIT, NULL);
+		//pthread_cancel(threadVIASATEIT);
+		//pthread_join(threadVIASATEIT, NULL);
 
 		//
 		eit_stop_update_filter(&eit_update_fd);

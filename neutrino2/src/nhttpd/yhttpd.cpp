@@ -157,8 +157,8 @@ void Cyhttpd::Stop(void)
 {
 	aprintf("Cyhttpd::Stop:\n");
 	
-	pthread_cancel(thrWebServer);
-	pthread_join(thrWebServer, NULL);
+	//pthread_cancel(thrWebServer);
+	//pthread_join(thrWebServer, NULL);
 }
 
 //
