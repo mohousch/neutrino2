@@ -35,6 +35,7 @@ class Cyhttpd
 		static CStringList ConfigList; 		// Vars & Values from ReadConfig
 
 		// constructor & destructor
+		//Cyhttpd();
 		~Cyhttpd();
 
 		// Main Programm calls
@@ -53,10 +54,10 @@ class Cyhttpd
 		static Cyhttpd *getInstance()
 		{
 			static Cyhttpd* instance = NULL;
-	
+		
 			if(!instance)
 				instance = new Cyhttpd();
-
+		
 			return instance;
 		};
 		void Start(void);

@@ -40,10 +40,10 @@ class CySocket
 {
 public:
 	// constructor & destructor
-			CySocket();
-			CySocket(SOCKET s):sock(s){init();};
-	virtual 	~CySocket(void);
-	void 		init(void);					// some extra initialization
+	CySocket();
+	CySocket(SOCKET s):sock(s){init();};
+	virtual ~CySocket(void);
+	void init(void);					// some extra initialization
 #ifdef Y_CONFIG_USE_OPEN_SSL
 	bool 			initAsSSL(void);			// initialize this socket as a SSL-socket
 	static bool 		initSSL(void);				// global initialize of SSL-Library, CTX and cerificate/key-file

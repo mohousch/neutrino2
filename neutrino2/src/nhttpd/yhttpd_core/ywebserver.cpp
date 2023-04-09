@@ -123,8 +123,8 @@ bool CWebserver::run(void)
 		dperror("Socket cannot bind and listen. Abort.\n");
 		return false;
 	}
+	
 #ifdef Y_CONFIG_FEATURE_KEEP_ALIVE
-
 	// initialize values for select
 	int listener = listenSocket.get_socket();// Open Listener
 	struct timeval tv; // timeout struct
@@ -219,16 +219,17 @@ bool CWebserver::run(void)
 	while (!terminate) 
 	{
 		CySocket *newConnectionSock;
+		
 		if (!(newConnectionSock = listenSocket.accept())) //Now: Blocking wait
 		{
 			dperror("Socket accept error. Continue.\n");
 			continue;
 		}
-		log_level_printf(3, "Socket connect from %s\n",
-				(listenSocket.get_client_ip()).c_str());
+		log_level_printf(3, "Socket connect from %s\n", (listenSocket.get_client_ip()).c_str());
+		
 #ifdef Y_CONFIG_USE_OPEN_SSL
 		if(Cyhttpd::ConfigList["SSL"]=="true")
-		newConnectionSock->initAsSSL(); // make it a SSL-socket
+			newConnectionSock->initAsSSL(); // make it a SSL-socket
 #endif
 		handle_connection(newConnectionSock);
 	}
@@ -470,3 +471,4 @@ void *WebThread(void *args) {
 	}
 	return NULL;
 }
+

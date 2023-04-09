@@ -44,7 +44,8 @@ std::string CySocket::SSL_CA_file;
 // Constructor & Destructor & Initialization
 //=============================================================================
 CySocket::CySocket() :
-	sock(0) {
+	sock(0) 
+{
 #ifdef Y_CONFIG_USE_OPEN_SSL
 	ssl = NULL;
 #endif
@@ -56,17 +57,19 @@ CySocket::CySocket() :
 }
 
 //-----------------------------------------------------------------------------
-CySocket::~CySocket() {
+CySocket::~CySocket() 
+{
 #ifdef Y_CONFIG_USE_OPEN_SSL
 	if(isSSLSocket && ssl != NULL)
-	SSL_free(ssl);
+		SSL_free(ssl);
 #endif
 }
 
 //-----------------------------------------------------------------------------
 // initialize
 //-----------------------------------------------------------------------------
-void CySocket::init(void) {
+void CySocket::init(void) 
+{
 	handling = false;
 	isOpened = false;
 	isValid = true;
@@ -149,7 +152,8 @@ bool CySocket::initSSL(void)
 //=============================================================================
 // Socket handling
 //=============================================================================
-void CySocket::close(void) {
+void CySocket::close(void) 
+{
 	if (sock != 0 && sock != INVALID_SOCKET)
 		::close( sock);
 #ifndef Y_CONFIG_FEATURE_KEEP_ALIVE
@@ -158,12 +162,14 @@ void CySocket::close(void) {
 	isOpened = false;
 }
 //-----------------------------------------------------------------------------
-void CySocket::shutdown(void) {
+void CySocket::shutdown(void) 
+{
 	if (sock != 0 && sock != INVALID_SOCKET)
 		::shutdown(sock, SHUT_RDWR);
 }
 //-----------------------------------------------------------------------------
-bool CySocket::listen(int port, int max_connections) {
+bool CySocket::listen(int port, int max_connections) 
+{
 	if (sock == INVALID_SOCKET)
 		return false;
 
@@ -182,15 +188,21 @@ bool CySocket::listen(int port, int max_connections) {
 	return false;
 }
 //-----------------------------------------------------------------------------
-CySocket* CySocket::accept() {
+CySocket* CySocket::accept() 
+{
 	init();
 	SOCKET newSock = ::accept(sock, (sockaddr *) &addr, &addr_len);
-	if (newSock == INVALID_SOCKET) {
+	
+	if (newSock == INVALID_SOCKET) 
+	{
 		dperror("accept: invalid socket\n");
 		return NULL;
 	}
+	
 	CySocket *new_ySocket = new CySocket(newSock);
-	if (new_ySocket != NULL) {
+	
+	if (new_ySocket != NULL) 
+	{
 		new_ySocket->setAddr(addr);
 #ifdef TCP_CORK
 		new_ySocket->set_option(IPPROTO_TCP, TCP_CORK);
@@ -203,22 +215,26 @@ CySocket* CySocket::accept() {
 	return new_ySocket;
 }
 //-----------------------------------------------------------------------------
-std::string CySocket::get_client_ip(void) {
+std::string CySocket::get_client_ip(void) 
+{
 	return inet_ntoa(addr.sin_addr);
 }
 //-----------------------------------------------------------------------------
-int CySocket::get_accept_port(void) {
+int CySocket::get_accept_port(void) 
+{
 	return (int) ntohs(addr.sin_port);
 }
 //-----------------------------------------------------------------------------
-void CySocket::setAddr(sockaddr_in _addr) {
+void CySocket::setAddr(sockaddr_in _addr) 
+{
 	addr = _addr;
 }
 
 //-----------------------------------------------------------------------------
 // Set Socket Option (return = false = error)
 //-----------------------------------------------------------------------------
-bool CySocket::set_option(int typ, int option) {
+bool CySocket::set_option(int typ, int option) 
+{
 	int on = 1;
 	return (setsockopt(sock, typ, option, (char *) &on, sizeof(on)) >= 0);
 }
@@ -226,7 +242,8 @@ bool CySocket::set_option(int typ, int option) {
 //-----------------------------------------------------------------------------
 // Set Re-Use Option for Port.
 //-----------------------------------------------------------------------------
-void CySocket::set_reuse_port() {
+void CySocket::set_reuse_port() 
+{
 #ifdef SO_REUSEPORT
 	if(!set_option(SOL_SOCKET, SO_REUSEPORT))
 	dperror("setsockopt(SO_REUSEPORT)\n");
@@ -236,7 +253,8 @@ void CySocket::set_reuse_port() {
 //-----------------------------------------------------------------------------
 // Set Re-Use Option for Address.
 //-----------------------------------------------------------------------------
-void CySocket::set_reuse_addr() {
+void CySocket::set_reuse_addr() 
+{
 #ifdef SO_REUSEADDR
 	if(!set_option(SOL_SOCKET, SO_REUSEADDR))
 	dperror("setsockopt(SO_REUSEADDR)\n");
@@ -246,7 +264,8 @@ void CySocket::set_reuse_addr() {
 //-----------------------------------------------------------------------------
 // Set Keep-Alive Option for Socket.
 //-----------------------------------------------------------------------------
-void CySocket::set_keep_alive() {
+void CySocket::set_keep_alive() 
+{
 #ifdef SO_KEEPALIVE
 	if(!set_option(SOL_SOCKET, SO_KEEPALIVE))
 	dperror("setsockopt(SO_KEEPALIVE)\n");
@@ -256,7 +275,8 @@ void CySocket::set_keep_alive() {
 //-----------------------------------------------------------------------------
 // Set Keep-Alive Option for Socket.
 //-----------------------------------------------------------------------------
-void CySocket::set_tcp_nodelay() {
+void CySocket::set_tcp_nodelay() 
+{
 #ifdef TCP_NODELAY
 	if(!set_option(IPPROTO_TCP, TCP_NODELAY))
 	dperror("setsockopt(SO_KEEPALIVE)\n");
@@ -268,7 +288,8 @@ void CySocket::set_tcp_nodelay() {
 //-----------------------------------------------------------------------------
 // Read a buffer (normal or SSL)
 //-----------------------------------------------------------------------------
-int CySocket::Read(char *buffer, unsigned int length) {
+int CySocket::Read(char *buffer, unsigned int length) 
+{
 #ifdef Y_CONFIG_USE_OPEN_SSL
 	if(isSSLSocket)
 	return SSL_read(ssl, buffer, length);
@@ -279,7 +300,8 @@ int CySocket::Read(char *buffer, unsigned int length) {
 //-----------------------------------------------------------------------------
 // Send a buffer (normal or SSL)
 //-----------------------------------------------------------------------------
-int CySocket::Send(char const *buffer, unsigned int length) {
+int CySocket::Send(char const *buffer, unsigned int length) 
+{
 	unsigned int len = 0;
 #ifdef Y_CONFIG_USE_OPEN_SSL
 	if(isSSLSocket)
@@ -294,7 +316,8 @@ int CySocket::Send(char const *buffer, unsigned int length) {
 //-----------------------------------------------------------------------------
 // Check if Socket was closed by client
 //-----------------------------------------------------------------------------
-bool CySocket::CheckSocketOpen() {
+bool CySocket::CheckSocketOpen() 
+{
 	char buffer[32] = { 0 };
 
 #ifdef CONFIG_SYSTEM_CYGWIN
@@ -312,7 +335,8 @@ bool CySocket::CheckSocketOpen() {
 // BASIC Send File over Socket for FILE*
 // fd is an opened FILE-Descriptor
 //-----------------------------------------------------------------------------
-int CySocket::SendFile(int filed) {
+int CySocket::SendFile(int filed) 
+{
 	if (!isValid)
 		return false;
 #ifdef Y_CONFIG_HAVE_SENDFILE
@@ -347,7 +371,8 @@ int CySocket::SendFile(int filed) {
 // fd is an opened FILE-Descriptor
 //-----------------------------------------------------------------------------
 //TODO: Write upload Progress Informations into a file
-unsigned int CySocket::ReceiveFileGivenLength(int filed, unsigned int _length) {
+unsigned int CySocket::ReceiveFileGivenLength(int filed, unsigned int _length) 
+{
 	unsigned int _readbytes = 0;
 	char buffer[RECEIVE_BLOCK_LEN];
 	int retries = 0;
@@ -473,3 +498,4 @@ std::string CySocket::ReceiveLine() {
 
 	return result;
 }
+

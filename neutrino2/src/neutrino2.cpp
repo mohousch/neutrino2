@@ -4150,31 +4150,23 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::exitRun: entering off state (retcode:%d)\n", retcode);
 			
 		// stop nhttpd		
-		Cyhttpd::getInstance()->Stop();
+		//Cyhttpd::getInstance()->Stop();
 		
 		// stop streamts
-		CStreamTS::getInstance()->Stop();	
+		//CStreamTS::getInstance()->Stop();	
 
 		// stop timerd	  
-		CTimerd::getInstance()->Stop();		
+		//CTimerd::getInstance()->Stop();		
 
 		// stop sectionsd
-		CSectionsd::getInstance()->Stop();
+		//CSectionsd::getInstance()->Stop();
 
 		// zapit stop	
-		CZapit::getInstance()->Stop();
+		//CZapit::getInstance()->Stop();
 		
 		//
 #if !defined (USE_OPENGL)		
-		time_t t = time(NULL);
-		
-		proc_put("/proc/stb/fp/rtc", t);
-
-		struct tm *lt = localtime(&t);
-		struct tm *gt = gmtime(&t);
-		int offset = (lt->tm_hour - gt->tm_hour) * 3600;
-
-		proc_put("/proc/stb/fp/rtc_offset", offset);
+		CVFD::getInstance()->setFPTime();
 #endif		
 
 #if defined (PLATFORM_COOLSTREAM)
@@ -5316,19 +5308,19 @@ void sighandler(int signum)
 		case SIGTERM:
 		case SIGINT:
 			// stop nhttpd		
-			Cyhttpd::getInstance()->Stop();
+			//Cyhttpd::getInstance()->Stop();
 			
 			// stop streamts
-			CStreamTS::getInstance()->Stop();	
+			//CStreamTS::getInstance()->Stop();	
 
 			// stop timerd	  
-			CTimerd::getInstance()->Stop();		
+			//CTimerd::getInstance()->Stop();		
 
 			// stop sectionsd
-			CSectionsd::getInstance()->Stop();
+			//CSectionsd::getInstance()->Stop();
 
 			// zapit stop	
-			CZapit::getInstance()->Stop();
+			//CZapit::getInstance()->Stop();
 			
 			_exit(0);
 			

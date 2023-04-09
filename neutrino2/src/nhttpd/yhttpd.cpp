@@ -29,6 +29,7 @@ static CyParser yParser;
 #include "yhttpd.h"
 
 
+//static Cyhttpd *yhttpd = NULL;
 CStringList Cyhttpd::ConfigList;
 //
 // HOOKS: Definition & Instance for Hooks, attach/detach Hooks
@@ -66,6 +67,8 @@ static CNeutrinoAPI *NeutrinoAPI;
 void yhttpd_reload_config() 
 {
 	Cyhttpd::getInstance()->ReadConfig();
+	//if (yhttpd)
+	//	yhttpd->ReadConfig();
 }
 
 //
@@ -83,6 +86,52 @@ void thread_cleanup (void *p)
 	
 	y = NULL;
 }
+
+//
+//
+#if 0
+void * nhttpdThread(void *) 
+{
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, 0);
+	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+	
+	aprintf("Webserver %s tid %ld\n", WEBSERVERNAME, syscall(__NR_gettid));
+	
+	yhttpd = new Cyhttpd();
+	
+	CLogging::getInstance()->setDebug(true);
+	CLogging::getInstance()->LogLevel = 0;
+	
+	if (!yhttpd) 
+	{
+		aprintf("Error initializing WebServer\n");
+		return (void *) EXIT_FAILURE;
+	}
+
+	pthread_cleanup_push(thread_cleanup, yhttpd);
+
+	yhttpd->flag_threading_off = true;
+
+	yhttpd->hooks_attach();
+	yhttpd->ReadConfig();
+
+	if (yhttpd->Configure()) 
+	{
+		// Start Webserver: fork ist if not in debug mode
+		aprintf("Webserver starting...\n");
+		dprintf("Start in Debug-Mode\n"); // non forked debugging loop
+
+		yhttpd->run();
+	}
+
+	pthread_cleanup_pop(0);
+	delete yhttpd;
+	yhttpd = NULL;
+
+	aprintf("Main end\n");
+	return (void *) EXIT_SUCCESS;
+}
+#endif
 
 //
 // Start
@@ -112,6 +161,9 @@ void Cyhttpd::Stop(void)
 	pthread_join(thrWebServer, NULL);
 }
 
+//
+//
+//
 void * Cyhttpd::webServerThread(void *data)
 {
 	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, 0);
@@ -252,7 +304,7 @@ void Cyhttpd::run()
 			webserver->is_threading = false;
 			
 		webserver->run();
-		stop_webserver();
+		//stop_webserver();
 	} 
 	else
 		aprintf("Error initializing WebServer\n");

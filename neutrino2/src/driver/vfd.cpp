@@ -342,29 +342,26 @@ void CVFD::showTime(bool force)
 
 	if (showclock) 
 	{
-		//if (mode == MODE_STANDBY) 
+		char timestr[21];
+		struct timeb tm;
+		struct tm * t;
+		static int hour = 0, minute = 0;
+
+		ftime(&tm);
+		t = localtime(&tm.time);
+
+		if(force || ((hour != t->tm_hour) || (minute != t->tm_min))) 
 		{
-			char timestr[21];
-			struct timeb tm;
-			struct tm * t;
-			static int hour = 0, minute = 0;
-
-			ftime(&tm);
-			t = localtime(&tm.time);
-
-			if(force || ((hour != t->tm_hour) || (minute != t->tm_min))) 
-			{
-				hour = t->tm_hour;
-				minute = t->tm_min;
+			hour = t->tm_hour;
+			minute = t->tm_min;
 				
 #if defined (PLATFORM_KATHREIN)	// time and date at kathrein because 16 character vfd
-				strftime(timestr, 20, "%H:%M - %d.%m.%y", t);
+			strftime(timestr, 20, "%H:%M - %d.%m.%y", t);
 #elif !defined(PLATFORM_SPARK7162) && !defined (PLATFORM_KATHREIN) // no time at spark7162 because clock integrated
- 				strftime(timestr, 20, "%H:%M", t);
+ 			strftime(timestr, 20, "%H:%M", t);
 #endif				
-				ShowText(timestr);
-			}
-		} 
+			ShowText(timestr);
+		}
 	}
 
 	if (CNeutrinoApp::getInstance()->recordingstatus) 
