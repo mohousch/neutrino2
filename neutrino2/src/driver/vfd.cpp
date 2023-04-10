@@ -997,13 +997,13 @@ void CVFD::setFPTime(void)
 	closeDevice();
 #else
 	time_t t = time(NULL);
-		
-	proc_put("/proc/stb/fp/rtc", t);
-
+	
 	struct tm *lt = localtime(&t);
 	struct tm *gt = gmtime(&t);
+	
 	int offset = (lt->tm_hour - gt->tm_hour) * 3600;
-
+		
+	proc_put("/proc/stb/fp/rtc", t + offset);
 	proc_put("/proc/stb/fp/rtc_offset", offset);	
 #endif
 }
