@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-31 18:16+0200\n"
+"POT-Creation-Date: 2023-04-10 16:41+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -173,6 +173,9 @@ msgstr "Bildschirmformat"
 msgid "Athletics"
 msgstr ""
 
+msgid "Atsc:"
+msgstr ""
+
 msgid "Audio"
 msgstr "Tonwahl"
 
@@ -292,6 +295,9 @@ msgstr ""
 msgid "Brightness"
 msgstr "Helligkeit"
 
+msgid "Brightness after dim timeout"
+msgstr ""
+
 msgid "Broadcast"
 msgstr ""
 
@@ -388,6 +394,10 @@ msgstr "Sender / Titel"
 
 msgid "Channel Logo"
 msgstr "Sender logo"
+
+#, fuzzy
+msgid "Channel Number"
+msgstr "Sender Liste"
 
 #, fuzzy
 msgid "Channel direct selection"
@@ -548,9 +558,6 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-msgid "Default (Channel)"
-msgstr ""
-
 msgid "Default gateway"
 msgstr ""
 
@@ -564,6 +571,10 @@ msgid "Delete WebTV channels"
 msgstr ""
 
 msgid "Delete all"
+msgstr "Alle löschen"
+
+#, fuzzy
+msgid "Delete channel from bouquet?"
 msgstr "Alle löschen"
 
 #, fuzzy
@@ -1243,6 +1254,9 @@ msgstr ""
 msgid "LED-Power"
 msgstr ""
 
+msgid "LED_Power"
+msgstr ""
+
 msgid "LEFT"
 msgstr ""
 
@@ -1291,9 +1305,6 @@ msgid "Latitude"
 msgstr ""
 
 msgid "Leave standby"
-msgstr ""
-
-msgid "Led Color"
 msgstr ""
 
 msgid "Length"
@@ -3475,9 +3486,6 @@ msgid "on weekdays"
 msgstr ""
 
 msgid "once"
-msgstr ""
-
-msgid "output to PNG"
 msgstr ""
 
 msgid "package has errors"

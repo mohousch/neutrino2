@@ -158,14 +158,16 @@ int asn_1_decode(uint16_t * length, unsigned char * asn_1_array, uint32_t asn_1_
 		// there is only one word
 		*length = length_field & 0x7f;
 		return 1;
-	} else if (length_field == 0x81) 
+	} 
+	else if (length_field == 0x81) 
 	{
 		if (asn_1_array_len < 2)
 			return -1;
 
 		*length = asn_1_array[1];
 		return 2;
-	} else if (length_field == 0x82) 
+	} 
+	else if (length_field == 0x82) 
 	{
 		if (asn_1_array_len < 3)
 			return -1;
@@ -224,11 +226,33 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 	return eDataError;
 }
 
+static bool transmitData(tSlot *slot, unsigned char *d, int len)
+{
+	printf("%s -> %s len(%d)\n", FILENAME, __func__, len);
+
+#if 0 //BOXMODEL_VUSOLO4K || BOXMODEL_VUDUO4K || BOXMODEL_VUDUO4KSE || BOXMODEL_VUULTIMO4K || BOXMODEL_VUZERO4K
+	int res = write(slot->fd, d, len);
+
+	free(d);
+	
+	if (res < 0 || res != len)
+	{
+		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
+		return false;
+	}
+#else
+	slot->sendqueue.push(queueData(d, len));
+#endif
+	return true;
+}
+
+
 //send some data on an fd, for a special slot and connection_id
 eData sendData(tSlot* slot, unsigned char* data, int len)
 {	
         dprintf(DEBUG_DEBUG, "%s: %p, %d\n", __func__, data, len);
        
+#if defined (__sh__)
 	unsigned char *d = (unsigned char*) malloc(len + 5);
 		
 	// only poll connection if we are not awaiting an answer
@@ -286,6 +310,11 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 	}
 #else
 	slot->sendqueue.push( queueData(d, len) );
+#endif
+#else //__sh__
+	unsigned char *d = (unsigned char *) malloc(len);
+	memcpy(d, data, len);
+	transmitData(slot, d, len);
 #endif	 
 	
 	return eDataReady;
@@ -425,7 +454,6 @@ void cDvbCi::process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int a
 			printf("unhandled tpdu_tag 0x%0x\n", tpdu_tag);
 	}
 }
-
 
 void cDvbCi::setSource(int slot, int source)
 {

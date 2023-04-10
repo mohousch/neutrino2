@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-31 18:16+0200\n"
+"POT-Creation-Date: 2023-04-10 16:41+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -182,6 +182,9 @@ msgstr "Соотношение сторон"
 msgid "Athletics"
 msgstr "легкая атлетика"
 
+msgid "Atsc:"
+msgstr ""
+
 msgid "Audio"
 msgstr "Аудио"
 
@@ -302,6 +305,9 @@ msgstr ""
 msgid "Brightness"
 msgstr "Яркость"
 
+msgid "Brightness after dim timeout"
+msgstr ""
+
 msgid "Broadcast"
 msgstr "Трансляция"
 
@@ -401,6 +407,10 @@ msgstr "Канал / Название"
 
 msgid "Channel Logo"
 msgstr "Логотип канала"
+
+#, fuzzy
+msgid "Channel Number"
+msgstr "Список каналов"
 
 #, fuzzy
 msgid "Channel direct selection"
@@ -566,9 +576,6 @@ msgstr "Уменьшить положение двигателя (a)"
 msgid "Default"
 msgstr "По умолчанию"
 
-msgid "Default (Channel)"
-msgstr "По умолчанию (канал)"
-
 msgid "Default gateway"
 msgstr "Шлюз по умолчанию"
 
@@ -583,6 +590,10 @@ msgstr "Удалить WebTV каналы"
 
 msgid "Delete all"
 msgstr "Удалить все"
+
+#, fuzzy
+msgid "Delete channel from bouquet?"
+msgstr "Удалить каналы"
 
 #, fuzzy
 msgid "Delete channels"
@@ -1306,6 +1317,10 @@ msgstr "LCD EPG Align"
 msgid "LED-Power"
 msgstr "LED-Power"
 
+#, fuzzy
+msgid "LED_Power"
+msgstr "LED-Power"
+
 msgid "LEFT"
 msgstr "Лево"
 
@@ -1356,9 +1371,6 @@ msgstr "Широта"
 
 msgid "Leave standby"
 msgstr "Выйти из режима ожидания"
-
-msgid "Led Color"
-msgstr "Led Color"
 
 msgid "Length"
 msgstr "Длина"
@@ -3641,9 +3653,6 @@ msgstr "по будням"
 
 msgid "once"
 msgstr "однажды"
-
-msgid "output to PNG"
-msgstr "вывод в PNG"
 
 msgid "package has errors"
 msgstr "ошибки обработки пакетов"
