@@ -3535,6 +3535,7 @@ _repeat:
 
 						gettimeofday(&endtime, NULL);
 						seconds = endtime.tv_sec - standby_pressed_at.tv_sec;
+						
 						if (endtime.tv_usec < standby_pressed_at.tv_usec)
 							seconds--;
 						
@@ -3551,25 +3552,6 @@ _repeat:
 			g_RCInput->postMsg(new_msg, 0);
 			return messages_return::cancel_all | messages_return::handled;
 		}
-		/*
-		else 
-		{
-			if (standby_pressed_at.tv_sec != 0)
-			{
-				struct timeval endtime;
-				gettimeofday(&endtime, NULL);
-				time_t seconds = endtime.tv_sec - standby_pressed_at.tv_sec;
-				if (endtime.tv_usec < standby_pressed_at.tv_usec)
-					seconds--;
-					
-				if (seconds >= 1) 
-				{
-					g_RCInput->postMsg(NeutrinoMessages::SHUTDOWN, 0);
-					return messages_return::cancel_all | messages_return::handled;
-				}
-			}
-		}
-		*/
 		
 		return messages_return::handled;
 	}

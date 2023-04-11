@@ -85,17 +85,33 @@ AC_DEFINE(ENABLE_LCD,1,[include lcd support])
 fi
 
 # lcd update
-AM_CONDITIONAL(LCD_UPDATE,test "$enable_lcd_update" = "yes")
+AC_ARG_ENABLE(lcdupdate,
+	AS_HELP_STRING(--enable-lcdupdate,include lcd update support),
+	,[enable_lcdupdate=no])
+AM_CONDITIONAL(LCD_UPDATE,test "$enable_lcdupdate" = "yes")
 
-if test "$enable_lcd" = "yes"; then
+if test "$enable_lcdupdate" = "yes"; then
 AC_DEFINE(LCD_UPDATE,1,[include lcd update support])
 fi
 
 # lcdapi
-AM_CONDITIONAL(ENABLE_LCDAPI,test "$enable_lcd" = "yes")
+AC_ARG_ENABLE(lcdapi,
+	AS_HELP_STRING(--enable-lcdapi,include lcd api support),
+	,[enable_lcdapi=no])
+AM_CONDITIONAL(ENABLE_LCDAPI,test "$enable_lcdapi" = "yes")
 
-if test "$enable_lcd" = "yes"; then
+if test "$enable_lcdapi" = "yes"; then
 AC_DEFINE(ENABLE_LCDAPI,1,[include lcd api support])
+fi
+
+# tftlcd
+AC_ARG_ENABLE(tftlcd,
+	AS_HELP_STRING(--enable-tftlcd,include tftlcd support),
+	,[enable_tftlcd=no])
+AM_CONDITIONAL(ENABLE_TFTLCD,test "$enable_tftlcd" = "yes")
+
+if test "$enable_tftlcd" = "yes"; then
+AC_DEFINE(ENABLE_TFTLCD,1,[include tftlcd support])
 fi
 
 # scart output
@@ -193,8 +209,11 @@ OpenGL			: $enable_opengl
 Gstreamer		: $enable_gstreamer
 SCART			: $enable_scart
 LCD			: $enable_lcd
-CI CAM			: $enable_ci
+LCD_API			: $enable_lcdapi
+LCD_UPDATE		: $enable_lcdupdate
+TFTLCD			: $enable_tftlcd
 4 Digits		: $enable_4digits
+CI CAM			: $enable_ci
 F-Keys			: $enable_functionkeys
 Python			: $enable_python
 Lua			: $enable_lua

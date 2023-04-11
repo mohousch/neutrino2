@@ -13,9 +13,12 @@
 #  --enable-gstreamer      include gstreamer as player engine support
 #  --with-gstversion       use gstreamer version (major.minor)
 #  --enable-lcd            include lcd support
+#  --enable_lcdapi	   include lcd api support
+#  --enable_lcdupdate	   include lcd update
+#  --enable_tftlcd	   include tft lcd support
+#  --enable-4digits        include 4 segment lcd support
 #  --enable-scart          enable scart output
 #  --enable-ci             enable ci cam
-#  --enable-4digits        include 4 segment lcd support
 #  --enable-functionkeys   include RC functions keys support
 #  --enable-lua
 #  --enable-python
@@ -109,17 +112,20 @@ init:
 		2|*) echo "CICAM=" >> config.local;; \
 	esac; \
 	echo ""
-# vfd / 4digits / lcd
+# vfd / 4digits / lcd / tftlcd
 	@echo -e "\nLCD support ?:"
 	@echo "   1)  4 Digits"
 	@echo "   2)  LCD"
 	@echo -e "   \033[01;32m3)  VFD\033[00m"
-	@read -p "Select LCD support (1-3)?" LCD; \
+	@echo "   4)  TFT LCD"
+	@read -p "Select LCD support (1-4)?" LCD; \
 	LCD=$${LCD}; \
 	case "$$LCD" in \
 		1) echo "LCD=4-digits" >> config.local;; \
 		2) echo "LCD=lcd" >> config.local;; \
-		3|*) echo "LCD=vfd" >> config.local;; \
+		3) echo "LCD=vfd" >> config.local;; \
+		4) echo "LCD=tftlcd" >> config.local;; \
+		*) echo "LCD=vfd" >> config.local;; \
 	esac; \
 	echo ""	
 # scart
@@ -223,6 +229,10 @@ endif
 
 ifeq ($(LCD), 4-digits)
 NHD2_OPTS += --enable-4digits
+endif
+
+ifeq ($(LCD), tftlcd)
+NHD2_OPTS += --enable-lcd --enable-tftlcd
 endif
 
 # FKEYS

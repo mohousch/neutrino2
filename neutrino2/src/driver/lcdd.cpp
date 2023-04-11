@@ -73,6 +73,7 @@ CLCD::CLCD()
 	icon_dolby = false;	
 	has_lcd = true;
 	is4digits = false;
+	isfblcd = false;
 	clearClock = 0;
 }
 
@@ -124,6 +125,7 @@ void* CLCD::TimeThread(void *)
 	{
 		sleep(1);
 		struct stat buf;
+		
 		if (stat("/tmp/lcd.locked", &buf) == -1) 
 		{
 			CLCD::getInstance()->showTime();

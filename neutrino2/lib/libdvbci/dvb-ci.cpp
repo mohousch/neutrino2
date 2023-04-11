@@ -182,8 +182,11 @@ int asn_1_decode(uint16_t * length, unsigned char * asn_1_array, uint32_t asn_1_
 //wait for a while for some data und read it if some
 eData waitData(int fd, unsigned char* buffer, int* len)
 {
-	int        retval;
-	struct      pollfd fds;
+	//printf("[dvbci] waitData:\n");
+	
+#if 1 //defined (__sh__)
+	int retval;
+	struct pollfd fds;
 	
 	fds.fd = fd;
 	fds.events = POLLOUT | POLLPRI | POLLIN;
@@ -203,7 +206,7 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 	{
 		if (fds.revents & POLLIN)
 		{ 
-			int n = read (fd, buffer, *len);
+			int n = ::read (fd, buffer, *len);
 		      
 			if (n > 0)
 			{
@@ -222,6 +225,18 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 			return eDataStatusChanged;
 		}
 	}
+#else
+	int r;
+	r = ::read(fd, buffer, *len);
+	
+	if (r > 0)
+	{
+		*len = r;
+		return eDataReady;
+	}
+	
+	*len = 0;
+#endif
 
 	return eDataError;
 }
@@ -323,6 +338,7 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 //send a transport connection create request
 bool sendCreateTC(tSlot* slot)
 {
+#if defined (__sh__)
 	unsigned char* data = (unsigned char*) malloc(sizeof(char) * 5);
 	
 	data[0] = slot->slot;
@@ -332,6 +348,7 @@ bool sendCreateTC(tSlot* slot)
 	data[4] = slot->slot + 1 	/*conid*/;
 
 	sendData(slot, data, 5);
+#endif
 	
 	return true;
 }
@@ -495,7 +512,11 @@ void cDvbCi::slot_pollthread(void *c)
 	
 	while (1)
 	{
+#if defined (__sh__)
 		int len = 1024;
+#else
+		int len = 4096;
+#endif
 		unsigned char* d;
 		eData status;
 		    
@@ -517,8 +538,9 @@ void cDvbCi::slot_pollthread(void *c)
 				} 
 				else
 				{
-					/* wait for pollpri */
+					// wait for pollpri
 					status = waitData(slot->fd, data, &len);
+					
 					if (status == eDataStatusChanged)
 					{
 						info.num = slot->slot;
@@ -798,7 +820,7 @@ cDvbCi::cDvbCi(int Slots)
 		sprintf(filename, "/dev/ci%d", i);
 #endif
 
-		fd = open(filename, O_RDWR | O_NONBLOCK);
+		fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
 		
 		if (fd > 0)
 		{
@@ -832,13 +854,17 @@ cDvbCi::cDvbCi(int Slots)
 
 			slot_data.push_back(slot);
 			
-			/* now reset the slot so the poll pri can happen in the thread */
-			reset(i); 
+			// now reset the slot so the poll pri can happen in the thread
+#if defined (__sh__)
+			reset(i);
+#else
+			ioctl(fd, 0);
+#endif
 
-			/* create a thread for each slot */	  
+			// create a thread for each slot	  
 			if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot)) 
 			{
-				printf("pthread_create\n");
+				printf("cDvbCi::cDvbCi: pthread_create\n");
 			}
 		}
 	}

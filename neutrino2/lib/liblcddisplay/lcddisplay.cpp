@@ -113,7 +113,12 @@ CLCDDisplay::CLCDDisplay()
 	flipped = false;
 	inverted = 0;
 	is_oled = 0;
+	is_tftlcd = false;
 	last_brightness = 0;
+	
+#if defined (ENABLE_TFTLCD)
+	is_tftlcd = true;
+#endif
 	
 	//open device
 	fd = open("/dev/dbox/oled0", O_RDWR);
@@ -133,6 +138,10 @@ CLCDDisplay::CLCDDisplay()
 	
 	if (fd < 0)
 	{
+		if (is_tftlcd)
+		{
+		}
+		
 		printf("CLCDDisplay::CLCDDisplay: couldn't open LCD - load lcd.ko!\n");
 		return;
 	}
@@ -274,7 +283,7 @@ void CLCDDisplay::resume()
 		printf("[lcddisplay] LCD_IOCTL_CLEAR failed (%m)\n");
 	
 	//graphic (binary) mode 
-	int i=LCD_MODE_BIN;
+	int i = LCD_MODE_BIN;
 	if( ioctl(fd, LCD_IOCTL_ASC_MODE, &i) < 0 )
 		printf("[lcddisplay] LCD_IOCTL_ASC_MODE failed (%m)\n");
 	//
