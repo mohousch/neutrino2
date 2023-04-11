@@ -4157,7 +4157,10 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		//
 #if !defined (USE_OPENGL)
 #if !defined (ENABLE_LCD)		
-		CVFD::getInstance()->setFPTime();
+		time_t t = time(NULL);
+		struct tm *lt = localtime(&t);
+		
+		proc_put("/proc/stb/fp/rtc", t + lt->tm_gmtoff);
 #endif
 #endif		
 
