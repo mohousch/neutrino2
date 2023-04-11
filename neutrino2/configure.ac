@@ -84,26 +84,6 @@ if test "$enable_lcd" = "yes"; then
 AC_DEFINE(ENABLE_LCD,1,[include lcd support])
 fi
 
-# lcd update
-AC_ARG_ENABLE(lcdupdate,
-	AS_HELP_STRING(--enable-lcdupdate,include lcd update support),
-	,[enable_lcdupdate=no])
-AM_CONDITIONAL(LCD_UPDATE,test "$enable_lcdupdate" = "yes")
-
-if test "$enable_lcdupdate" = "yes"; then
-AC_DEFINE(LCD_UPDATE,1,[include lcd update support])
-fi
-
-# lcdapi
-AC_ARG_ENABLE(lcdapi,
-	AS_HELP_STRING(--enable-lcdapi,include lcd api support),
-	,[enable_lcdapi=no])
-AM_CONDITIONAL(ENABLE_LCDAPI,test "$enable_lcdapi" = "yes")
-
-if test "$enable_lcdapi" = "yes"; then
-AC_DEFINE(ENABLE_LCDAPI,1,[include lcd api support])
-fi
-
 # tftlcd
 AC_ARG_ENABLE(tftlcd,
 	AS_HELP_STRING(--enable-tftlcd,include tftlcd support),
@@ -112,6 +92,16 @@ AM_CONDITIONAL(ENABLE_TFTLCD,test "$enable_tftlcd" = "yes")
 
 if test "$enable_tftlcd" = "yes"; then
 AC_DEFINE(ENABLE_TFTLCD,1,[include tftlcd support])
+fi
+
+# 4 digits
+AC_ARG_ENABLE(4digits,
+	AS_HELP_STRING(--enable-4digits,include 5 segment lcd support),
+	,[enable_4digits=no])
+AM_CONDITIONAL(ENABLE_4DIGITS,test "$enable_4digits" = "yes")
+
+if test "$enable_4digits" = "yes"; then
+AC_DEFINE(ENABLE_4DIGITS,1,[include 5 segment lcd support])
 fi
 
 # scart output
@@ -132,16 +122,6 @@ AM_CONDITIONAL(ENABLE_CI,test "$enable_ci" = "yes")
 
 if test "$enable_ci" = "yes"; then
 AC_DEFINE(ENABLE_CI,1,[include ci cam support])
-fi
-
-# 4 digits
-AC_ARG_ENABLE(4digits,
-	AS_HELP_STRING(--enable-4digits,include 5 segment lcd support),
-	,[enable_4digits=no])
-AM_CONDITIONAL(ENABLE_4DIGITS,test "$enable_4digits" = "yes")
-
-if test "$enable_4digits" = "yes"; then
-AC_DEFINE(ENABLE_4DIGITS,1,[include 5 segment lcd support])
 fi
 
 # function keys
@@ -209,8 +189,6 @@ OpenGL			: $enable_opengl
 Gstreamer		: $enable_gstreamer
 SCART			: $enable_scart
 LCD			: $enable_lcd
-LCD_API			: $enable_lcdapi
-LCD_UPDATE		: $enable_lcdupdate
 TFTLCD			: $enable_tftlcd
 4 Digits		: $enable_4digits
 CI CAM			: $enable_ci

@@ -38,20 +38,15 @@ class LcdFontRenderClass;
 class CLCDAPI
 {
 	CLCD				*vfd;
-public:
-	CLCDAPI();
-	~CLCDAPI(void);
-	void LockDisplay(int lock);
-
-	bool ShowPng(char *filename);
-
-	void Clear(void);
-	bool ShotPng(char *filename);
 	
-#ifdef ENABLE_GRAPHLCD
-	bool ShowNgPng(char *filename);
-	bool ShotNgPng(char *filename);
-#endif
+	public:
+		CLCDAPI();
+		~CLCDAPI(void);
+		
+		void LockDisplay(int lock);
+		bool ShowPng(char *filename);
+		void Clear(void);
+		bool ShotPng(char *filename);
 };
 
 #endif /* __nhttpd_lcdapi_h__ */

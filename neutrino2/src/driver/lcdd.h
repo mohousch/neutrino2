@@ -32,18 +32,17 @@
 #include <config.h>
 #endif
 
-#ifdef LCD_UPDATE
 // TODO Why is USE_FILE_OFFSET64 not defined, if file.h is included here????
 #ifndef __USE_FILE_OFFSET64
 #define __USE_FILE_OFFSET64 1
 #endif
 #include <driver/file.h>
-#endif // LCD_UPDATE
 
 #include <configfile.h>
 #include <pthread.h>
 
 #include <liblcddisplay/fontrenderer.h>
+
 
 #define LCDDIR_VAR CONFIGDIR "/lcdd"
 
@@ -100,12 +99,10 @@ class CLCD
 			MODE_AUDIO,
 			MODE_MOVIE,
 			MODE_PIC,
-#ifdef LCD_UPDATE
 			MODE_FILEBROWSER,
 			MODE_PROGRESSBAR,
 			MODE_PROGRESSBAR2,
-			MODE_INFOBOX,
-#endif // LCD_UPDATE
+			MODE_INFOBOX
 		};
 		
 		enum AUDIOMODES
@@ -238,7 +235,6 @@ class CLCD
 		bool ShowPng(char *filename);
 		bool DumpPng(char *filename);
 		
-#ifdef LCD_UPDATE
 	private:
 		CFileList* m_fileList;
 		int m_fileListPos;
@@ -259,8 +255,7 @@ class CLCD
 		void showInfoBox(const char * const title = NULL,const char * const text = NULL,int autoNewline = -1,int timer = -1);
 		void showProgressBar(int global = -1,const char * const text = NULL,int show_escape = -1,int timer = -1);
 		void showProgressBar2(int local = -1,const char * const text_local = NULL,int global = -1,const char * const text_global = NULL,int show_escape = -1);
-#endif // LCD_UPDATE
 };
 
-
 #endif
+

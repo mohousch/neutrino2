@@ -71,3 +71,4 @@ if USE_OPENGL
 libneutrino2_driver_a_SOURCES += \
 	glthread.cpp
 endif
+

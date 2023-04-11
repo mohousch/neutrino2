@@ -54,7 +54,6 @@ extern CRemoteControl * g_RemoteControl; /* neutrino.cpp */
 CLCD::CLCD()
 	: configfile('\t')
 {
-#ifdef LCD_UPDATE
 	m_fileList = NULL;
 	m_fileListPos = 0;
 	m_fileListHeader = "";
@@ -65,7 +64,6 @@ CLCD::CLCD()
 	m_progressHeaderLocal = "";
 	m_progressGlobal = 0;
 	m_progressLocal = 0;
-#endif // LCD_UPDATE
 	muted = false;
 	percentOver = 0;
 	volume = 0;
@@ -1015,7 +1013,7 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
 		                 /* "showTime()" clears the whole lcd in MODE_STANDBY                         */
 		break;
-#ifdef LCD_UPDATE
+
 	case MODE_FILEBROWSER:
 		showclock = true;
 		display.clear_screen(); // clear lcd
@@ -1037,7 +1035,6 @@ void CLCD::setMode(const MODES m, const char * const title)
 		showclock = false;
 		showInfoBox();
 		break;
-#endif // LCD_UPDATE
 	}
 	
 	wake_up();
@@ -1246,7 +1243,6 @@ bool CLCD::DumpPng(char *filename)
 	return display.dump_png(filename);
 }
 
-#ifdef LCD_UPDATE
 // showInfoBox
 #define EPG_INFO_FONT_HEIGHT 9
 #define EPG_INFO_SHADOW_WIDTH 1
@@ -1579,6 +1575,4 @@ void CLCD::showProgressBar2(int local,const char * const text_local ,int global 
 		displayUpdate();
 	}
 }
-#endif // LCD_UPDATE
-
 

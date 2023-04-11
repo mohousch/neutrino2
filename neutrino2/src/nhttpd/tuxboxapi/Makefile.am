@@ -30,7 +30,7 @@ noinst_LIBRARIES = libnhttpd_tuxboxapi.a
 libnhttpd_tuxboxapi_a_SOURCES = \
 	neutrinoapi.cpp neutrinoyparser.cpp controlapi.cpp
 
-if ENABLE_LCDAPI
+if ENABLE_LCD
 libnhttpd_tuxboxapi_a_SOURCES += \
 	lcdapi.cpp
 endif

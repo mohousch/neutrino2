@@ -130,7 +130,6 @@ typedef enum
 	VFD_ICON_CLOCK		= VFD_SPARK_CLOCK,
 	VFD_ICON_STANDBY	= VFD_SPARK_CYCLE	
 } vfd_icon;
-
 #endif //spark7162
 
 #if defined(PLATFORM_KATHREIN)

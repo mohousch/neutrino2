@@ -13,8 +13,6 @@
 #  --enable-gstreamer      include gstreamer as player engine support
 #  --with-gstversion       use gstreamer version (major.minor)
 #  --enable-lcd            include lcd support
-#  --enable_lcdapi	   include lcd api support
-#  --enable_lcdupdate	   include lcd update
 #  --enable_tftlcd	   include tft lcd support
 #  --enable-4digits        include 4 segment lcd support
 #  --enable-scart          enable scart output
