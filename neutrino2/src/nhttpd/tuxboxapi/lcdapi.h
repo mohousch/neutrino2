@@ -43,10 +43,10 @@ class CLCDAPI
 		CLCDAPI();
 		~CLCDAPI(void);
 		
-		void LockDisplay(int lock);
-		bool ShowPng(char *filename);
-		void Clear(void);
-		bool ShotPng(char *filename);
+		void lockDisplay(int lock);
+		bool showPng(char *filename);
+		void clear(void);
+		bool shotPng(char *filename);
 };
 
 #endif /* __nhttpd_lcdapi_h__ */

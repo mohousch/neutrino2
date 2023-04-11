@@ -46,22 +46,22 @@
 //static char font_name[3][10]={"Micron","Micron","Pakenham"};
 
 //-------------------------------------------------------------------------
-void CLCDAPI::Clear(void)
+void CLCDAPI::clear(void)
 {
 	vfd->Clear(); // clear lcd
 }
 
-void CLCDAPI::LockDisplay(int plock)
+void CLCDAPI::lockDisplay(int plock)
 {
 	vfd->Lock();
 }
 
-bool CLCDAPI::ShowPng(char *filename)
+bool CLCDAPI::showPng(char *filename)
 {
 	return vfd->ShowPng(filename);
 }
 
-bool CLCDAPI::ShotPng(char *filename)
+bool CLCDAPI::shotPng(char *filename)
 {
 	return vfd->DumpPng(filename);
 }
