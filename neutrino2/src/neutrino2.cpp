@@ -4155,8 +4155,10 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		CZapit::getInstance()->Stop();
 		
 		//
-#if !defined (USE_OPENGL)		
+#if !defined (USE_OPENGL)
+#if !defined (ENABLE_LCD)		
 		CVFD::getInstance()->setFPTime();
+#endif
 #endif		
 
 #if defined (PLATFORM_COOLSTREAM)
