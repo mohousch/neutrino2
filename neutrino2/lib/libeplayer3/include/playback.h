@@ -7,7 +7,8 @@
 typedef void(* PlaybackDieNowCallback)();
 bool PlaybackDieNowRegisterCallback(PlaybackDieNowCallback callback);
 
-typedef enum {
+typedef enum 
+{
 	PLAYBACK_OPEN, 
 	PLAYBACK_CLOSE, 
 	PLAYBACK_PLAY, 
@@ -28,7 +29,8 @@ typedef enum {
 	PLAYBACK_GET_FRAME_COUNT
 } PlaybackCmd_t;
 
-typedef struct PlaybackHandler_s {
+typedef struct PlaybackHandler_s 
+{
 	char * Name;
 
 	int fd;
@@ -58,3 +60,4 @@ typedef struct PlaybackHandler_s {
 } PlaybackHandler_t;
 
 #endif
+

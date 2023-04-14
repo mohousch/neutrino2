@@ -224,6 +224,7 @@ class CZapitChannel
 
 		// get methods - read and write variables
 		const std::string&	getName(void)			const { return name; }
+		const int 		getNumber(void)			const { return number;}
 		t_satellite_position	getSatellitePosition(void)	const { return satellitePosition; }
 		unsigned char 		getAudioChannelCount(void)	{ return audioChannels.size(); }
 		unsigned short		getPcrPid(void)			{ return pcrPid; }

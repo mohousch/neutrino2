@@ -95,7 +95,6 @@ extern Writer_t WriterVideoMSCOMP;
 extern Writer_t WriterVideoH263;
 extern Writer_t WriterVideoFLV;
 extern Writer_t WriterVideoVC1;
-extern Writer_t WriterVideoH265;
 
 // subtitle
 extern Writer_t WriterFramebuffer;
@@ -141,3 +140,4 @@ ssize_t write_with_retry(int fd, const void *buf, int size);
 ssize_t writev_with_retry(int fd, const struct iovec *iov, int ic);
 
 #endif
+

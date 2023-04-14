@@ -27,4 +27,5 @@ typedef struct pcmPrivateData_s
 	int uBitsPerSample;
 	int bLittleEndian;
 } pcmPrivateData_t;
+
 #endif

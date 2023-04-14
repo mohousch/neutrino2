@@ -55,7 +55,6 @@
 #include <system/helpers.h>
 
 #include <curl/curl.h>
-//#include <curl/types.h>
 #include <curl/easy.h>
 
 #include <stdio.h>
@@ -75,21 +74,21 @@
 #define gTmpPath 					"/var/tmp/"
 #define gUserAgent 					"neutrino/softupdater 1.0"
 
-#define LIST_OF_UPDATES_LOCAL_FILENAME 		"update.list"
-#define RELEASE_CYCLE                  		PACKAGE_VERSION
+#define LIST_OF_UPDATES_LOCAL_FILENAME 			"update.list"
+#define RELEASE_CYCLE                  			PACKAGE_VERSION
 #define RELEASE_TYPE					"Snapshot" // FIXME:
-#define FILEBROWSER_UPDATE_FILTER      		"img"
+#define FILEBROWSER_UPDATE_FILTER      			"img"
 
-#define MTD_OF_WHOLE_IMAGE             		0
+#define MTD_OF_WHOLE_IMAGE             			0
 
 //FIXME: add the right mtd part (meaned is roofs, on some boxes this contains also kernel) for your boxtype bevor u use this
 //NOTE: be carefull with this
 #if defined (PLATFORM_DGS)	
-#define MTD_DEVICE_OF_UPDATE_PART      "/dev/mtd5"
+#define MTD_DEVICE_OF_UPDATE_PART      			"/dev/mtd5"
 #elif defined (PLATFORM_GIGABLUE_800SE)
-#define MTD_DEVICE_OF_UPDATE_PART      "/dev/mtd0"
+#define MTD_DEVICE_OF_UPDATE_PART      			"/dev/mtd0"
 #else
-#define MTD_DEVICE_OF_UPDATE_PART      "/dev/mtd5"
+#define MTD_DEVICE_OF_UPDATE_PART      			"/dev/mtd5"
 #endif
 
 
@@ -136,24 +135,6 @@ class CUpdateMenuTarget : public CMenuTarget
 		}
 };
 
-/*
-class CNonLocalizedMenuSeparator : public CMenuSeparator
-{
-	const char * the_text;
-
-	public:
-		CNonLocalizedMenuSeparator(const char *ltext, const neutrino_locale_t Text) : CMenuSeparator(LINE | STRING, g_Locale->getText(Text))
-		{
-			the_text = ltext;
-		}
-
-		virtual const char * getString(void)
-		{
-			return the_text;
-		}
-};
-*/
-
 bool CFlashUpdate::selectHttpImage(void)
 {
 	CHTTPTool httpTool;
@@ -165,7 +146,7 @@ bool CFlashUpdate::selectHttpImage(void)
 	char fileTypes[128];
 	int selected = -1;
 
-	//httpTool.setStatusViewer(progressWindow);
+	//
 	httpTool.setTitle(_("Software update"));
 	progressWindow->showStatusMessageUTF(_("getting update list")); // UTF-8
 
@@ -261,7 +242,7 @@ bool CFlashUpdate::selectHttpImage(void)
 				description += ' ';
 				description += versionInfo.getTime();
 				
-				descriptions.push_back(description); /* workaround since CMenuForwarder does not store the Option String itself */
+				descriptions.push_back(description);
 				
 				//if( versionInfo.getType() < '3' && !allow_flash)
 				if(!allow_flash && (versionInfo.snapshot < '3'))
@@ -649,7 +630,7 @@ void CFlashExpert::writemtd(const std::string & filename, int mtdNumber)
 		return;
 
 #ifdef ENABLE_LCD
-        CVFD::getInstance()->showProgressBar2(0,"checking",0,"Update Neutrino");
+        CVFD::getInstance()->showProgressBar2(0, "checking", 0, "Update Neutrino");
         CVFD::getInstance()->setMode(CLCD::MODE_PROGRESSBAR2);	
 #endif // VFD_UPDATE
 

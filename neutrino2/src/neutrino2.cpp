@@ -2684,11 +2684,13 @@ void CNeutrinoApp::quickZap(int msg)
 // showInfo
 void CNeutrinoApp::showInfo()
 {
+/*
 	stopSubtitles();
 
 	g_InfoViewer->showTitle(channelList->getActiveChannelNumber(), channelList->getActiveChannelName(), channelList->getActiveSatellitePosition(), channelList->getActiveChannel_ChannelID());
 
 	startSubtitles();
+*/
 }
 
 // real run
@@ -3717,7 +3719,8 @@ _repeat:
 				tvMode(false);
 			}
 			
-			channelList->zapTo_ChannelID(eventinfo->channel_id);
+			//channelList->zapTo_ChannelID(eventinfo->channel_id);
+			CZapit::getInstance()->zapTo_serviceID_NOWAIT(eventinfo->channel_id);
 		}
 		
 		delete[] (unsigned char*) data;
@@ -4155,13 +4158,12 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		CZapit::getInstance()->Stop();
 		
 		//
-#if !defined (USE_OPENGL)
-#if !defined (ENABLE_LCD)		
+#if !defined (USE_OPENGL)		
 		time_t t = time(NULL);
+	
 		struct tm *lt = localtime(&t);
 		
 		proc_put("/proc/stb/fp/rtc", t + lt->tm_gmtoff);
-#endif
 #endif		
 
 #if defined (PLATFORM_COOLSTREAM)

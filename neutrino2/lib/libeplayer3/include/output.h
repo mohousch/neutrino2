@@ -52,7 +52,8 @@ typedef struct
 	char*                  type;
 } AudioVideoOut_t;
 
-typedef struct Output_s {
+typedef struct Output_s 
+{
 	char * Name;
 	int (* Command) (/*Context_t*/void  *, OutputCmd_t, void *);
 	int (* Write) (/*Context_t*/void  *, void* privateData);
@@ -62,13 +63,15 @@ typedef struct Output_s {
 extern Output_t LinuxDvbOutput;
 extern Output_t SubtitleOutput;
 
-static Output_t * AvailableOutput[] = {
+static Output_t * AvailableOutput[] = 
+{
 	&LinuxDvbOutput,    
 	&SubtitleOutput,    
 	NULL
 };
 
-typedef struct OutputHandler_s {
+typedef struct OutputHandler_s 
+{
 	char * Name;
 	Output_t * audio;
 	Output_t * video;    

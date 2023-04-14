@@ -70,6 +70,7 @@ class CRemoteControl
 	std::string             current_channel_name;
 	unsigned int 		current_channel_number;
 	t_channel_id            current_sub_channel_id;
+	uint32_t		current_channel_satposition;
 
 	void getNVODs();
 	void getSubChannels();

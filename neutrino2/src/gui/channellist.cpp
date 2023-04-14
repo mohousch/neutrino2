@@ -1003,19 +1003,6 @@ void CChannelList::hide()
 	frameBuffer->blit();
 }
 
-bool CChannelList::showInfo(int pos, int epgpos)
-{
-	if((pos >= (signed int) chanlist.size()) || (pos < 0))
-		return false;
-
-	CZapitChannel * chan = chanlist[pos];
-	
-	// channel infobar
-	g_InfoViewer->showTitle(pos + 1, chan->name, chan->getSatellitePosition(), chan->channel_id, true, epgpos); // UTF-8
-	
-	return true;
-}
-
 int CChannelList::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
 	if ( msg == NeutrinoMessages::EVT_PROGRAMLOCKSTATUS) 
@@ -1367,8 +1354,6 @@ int CChannelList::numericZap(int key)
 			
 			frameBuffer->blit();
 
-			// show infobar
-			showInfo(chn - 1);
 			lastchan = chn;
 		}
 
@@ -1461,11 +1446,8 @@ int CChannelList::numericZap(int key)
 	} 
 	else 
 	{
-		// show infobar
-		showInfo(tuned);
-		
 		// kill infobar
-		g_InfoViewer->killTitle();
+		//g_InfoViewer->killTitle();
 
 		if ( showEPG )
 			g_EventList->exec(chanlist[chn]->epgid, chanlist[chn]->name);
@@ -1505,7 +1487,6 @@ void CChannelList::virtual_zap_mode(bool up)
         {
                 if (lastchan != chn || (epgpos != 0))
                 {
-                        showInfo(chn - 1, epgpos);
                         lastchan = chn;
                 }
 
@@ -1585,8 +1566,7 @@ void CChannelList::virtual_zap_mode(bool up)
         }
         else
         {
-                showInfo(tuned);
-                g_InfoViewer->killTitle();
+                //g_InfoViewer->killTitle();
 
                 // Rote Taste zeigt EPG fuer gewaehlten Kanal an
                 if ( showEPG )
