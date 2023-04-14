@@ -1205,6 +1205,9 @@ void CChannelList::zapTo(int pos, bool rezap)
 		{
 			g_InfoViewer->handleMsg(NeutrinoMessages::EVT_RECORDMODE, 0);
 		}
+		
+		//
+		g_InfoViewer->showTitle(pos + 1, chan->name, chan->getSatellitePosition(), chan->channel_id, true, epgpos); 
 	}
 }
 

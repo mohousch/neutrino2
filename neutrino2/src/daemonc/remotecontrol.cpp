@@ -127,19 +127,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		{
 			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: timeout EVT_ZAP current_channel_id: %llx data: %llx\n", current_channel_id, *(t_channel_id *)data);
 			
-			// get channel name/number
-			t_channel_id new_id = *(t_channel_id *)data;
-			tallchans_iterator cit = allchans.find(new_id);
-				
-			if ( cit != allchans.end() )
-			{
-				current_channel_name = cit->second.getName();
-				current_channel_number = cit->second.getNumber();
-				current_channel_satposition = cit->second.getSatellitePosition();
-			}
-				
-			current_channel_id = new_id;
-			
 			if ((*(t_channel_id *)data) != current_channel_id) 
 			{
 				g_InfoViewer->chanready = 0;
@@ -159,8 +146,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			//
 			if (g_InfoViewer->is_visible)
 				g_InfoViewer->killTitle();
-			else
-				g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);
 
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
 				g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
