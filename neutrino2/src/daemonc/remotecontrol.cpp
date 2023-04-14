@@ -99,8 +99,8 @@ CRemoteControl::CRemoteControl()
 	current_channel_id = 	0;
 	current_sub_channel_id = 0;
 	current_channel_name = 	"";
-	
 	current_channel_number = 0;
+	current_channel_satposition = 0;
 
 	zap_completion_timeout = 0;
 
@@ -129,6 +129,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			
 			if ((*(t_channel_id *)data) != current_channel_id) 
 			{
+				printf("ZAPZAPZAP\n");
 				g_InfoViewer->chanready = 0;
 				CZapit::getInstance()->zapTo_serviceID_NOWAIT(current_channel_id );
 				CSectionsd::getInstance()->setServiceChanged(current_channel_id, false);
@@ -142,6 +143,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				zap_completion_timeout = 0;
 				g_InfoViewer->chanready = 1;
 			}
+			
+			//
+			if (g_InfoViewer->is_visible)
+				g_InfoViewer->killTitle();
 
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
 				g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
@@ -187,7 +192,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				director_mode = 0;
 				needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
 				
-				g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);	
+				if (g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+				else
+					g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);	
 			}
 
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
@@ -212,6 +220,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 							break;
 						}
 					}
+					
+					// name / satposition
 				}
 			}
 		}
@@ -301,22 +311,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		{
 			// tell sectionsd to start epg on the zapped channel
 			CSectionsd::getInstance()->setServiceChanged( current_channel_id, false );
-		
-			// show servicename in VFD
-			// don't show service name in standby mode
-			if( CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby )
-			{
-				// get channel number
-				t_channel_id new_id = *(t_channel_id *)data;
-				tallchans_iterator cit = allchans.find(new_id);
-					
-				if ( cit != allchans.end() )
-				{
-					current_channel_name = cit->second.getName();
-					current_channel_number = cit->second.getNumber();
-					current_channel_satposition = cit->second.getSatellitePosition();
-				}		
-			}
 			
 			// get pids
 			CZapit::getInstance()->getPIDS(current_PIDs );
