@@ -1207,7 +1207,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 		}
 		
 		//
-		g_InfoViewer->showTitle(pos + 1, chan->name, chan->getSatellitePosition(), chan->channel_id, true, epgpos); 
+		g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 	}
 }
 
