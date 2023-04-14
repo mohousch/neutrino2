@@ -2684,13 +2684,11 @@ void CNeutrinoApp::quickZap(int msg)
 // showInfo
 void CNeutrinoApp::showInfo()
 {
-/*
 	stopSubtitles();
 
 	g_InfoViewer->showTitle(channelList->getActiveChannelNumber(), channelList->getActiveChannelName(), channelList->getActiveSatellitePosition(), channelList->getActiveChannel_ChannelID());
 
 	startSubtitles();
-*/
 }
 
 // real run
