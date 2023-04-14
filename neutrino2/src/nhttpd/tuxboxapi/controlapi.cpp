@@ -231,18 +231,20 @@ void CControlAPI::Execute(CyhookHandler *hh)
 	if(CLogging::getInstance()->getDebug())
 	{
 		dprintf("Execute CGI : %s\n",filename.c_str());
-		for(CStringList::iterator it = hh->ParamList.begin() ;
-			 it != hh->ParamList.end() ; it++)
-				dprintf("  Parameter %s : %s\n",it->first.c_str(), it->second.c_str());
+		
+		for(CStringList::iterator it = hh->ParamList.begin(); it != hh->ParamList.end(); it++)
+			dprintf("  Parameter %s : %s\n",it->first.c_str(), it->second.c_str());
 	}
 
 	// get function index
 	for(unsigned int i = 0;i < (sizeof(yCgiCallList)/sizeof(yCgiCallList[0])); i++)
+	{
 		if (filename == yCgiCallList[i].func_name)
 		{
 			index = i;
 			break;
 		}
+	}
 		
 	if(index == -1) // function not found
 	{
@@ -254,10 +256,12 @@ void CControlAPI::Execute(CyhookHandler *hh)
 	else if(std::string(yCgiCallList[index].mime_type) == "")	// decide in function
 		;
 	else if(std::string(yCgiCallList[index].mime_type) == "+xml")		// Parameter xml?
+	{
 		if ((hh->ParamList["xml"] != "") ||(hh->ParamList["format"] == "xml"))
 			hh->SetHeader(HTTP_OK, "text/xml; charset=UTF-8");
 		else
 			hh->SetHeader(HTTP_OK, "text/html; charset=UTF-8");
+	}
 	else
 		hh->SetHeader(HTTP_OK, yCgiCallList[index].mime_type);
 	// response
@@ -616,11 +620,6 @@ void CControlAPI::ShutdownCGI(CyhookHandler *hh)
 //
 void CControlAPI::RebootCGI(CyhookHandler *hh)
 {
-	/*
-	FILE *f = fopen("/tmp/.reboot", "w");
-	fclose(f);
-	return ShutdownCGI(hh);
-	*/
 	if (hh->ParamList.empty())
 	{
 		eventServer->sendEvent(NeutrinoMessages::REBOOT, CEventServer::INITID_NEUTRINO);
@@ -635,11 +634,6 @@ void CControlAPI::RebootCGI(CyhookHandler *hh)
 //
 void CControlAPI::RestartCGI(CyhookHandler *hh)
 {
-	/*
-	FILE *f = fopen("/tmp/.reboot", "w");
-	fclose(f);
-	return ShutdownCGI(hh);
-	*/
 	if (hh->ParamList.empty())
 	{
 		eventServer->sendEvent(NeutrinoMessages::RESTART, CEventServer::INITID_NEUTRINO);
@@ -1329,28 +1323,24 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 {
 	if (hh->ParamList.empty())
 	{
-		hh->printf("%llx"
-				"\n",
-				CZapit::getInstance()->getCurrentServiceID()&0xFFFFFFFFFFFFULL);
+		hh->printf("%llx" "\n", CZapit::getInstance()->getCurrentServiceID()&0xFFFFFFFFFFFFULL);
 		return;
 	}
 	else
 	{
-		if (hh->ParamList["1"] == "getpids")		// getpids !
+		if (hh->ParamList["1"] == "getpids")			// getpids !
 			SendcurrentVAPid(hh);
 		else if (hh->ParamList["1"] == "getallpids")		// getpids !
 			SendAllCurrentVAPid(hh);
 		else if (hh->ParamList["1"] == "stopplayback")
 		{
 			CZapit::getInstance()->stopPlayBack();
-			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
 			CSectionsd::getInstance()->pauseScanning(true);
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "startplayback")
 		{
 			CZapit::getInstance()->startPlayBack(live_channel);
-			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
 			CSectionsd::getInstance()->pauseScanning(false);
 			dprintf("start playback requested..\n");
 			hh->SendOk();
@@ -1359,13 +1349,11 @@ void CControlAPI::ZaptoCGI(CyhookHandler *hh)
 			hh->Write((char *) (CZapit::getInstance()->isPlayBackActive() ? "1" : "0"));
 		else if (hh->ParamList["1"] == "stopsectionsd")
 		{
-			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
 			CSectionsd::getInstance()->pauseScanning(true);
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "startsectionsd")
 		{
-			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
 			CSectionsd::getInstance()->pauseScanning(false);
 			hh->SendOk();
 		}

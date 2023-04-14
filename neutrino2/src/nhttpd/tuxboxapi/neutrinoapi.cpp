@@ -171,9 +171,7 @@ void CNeutrinoAPI::ZapTo(const char * const target)
 {
 	t_channel_id channel_id;
 
-	sscanf(target,
-		"%llx",
-		&channel_id);
+	sscanf(target, "%llx", &channel_id);
 
 	ZapToChannelId(channel_id);
 }

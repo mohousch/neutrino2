@@ -186,11 +186,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				selected_subchannel = -1;
 				director_mode = 0;
 				needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
-
-				CSectionsd::getInstance()->setServiceChanged( current_channel_id, true );
 				
-				// infobar
-				g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id, true);		
+				g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);	
 			}
 
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
@@ -335,9 +332,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			{
 				g_Radiotext->setPid(current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].pid);
 			}
-			
-			// infobar
-			g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id, true);
 		}
 
 	    	return messages_return::handled;

@@ -153,7 +153,7 @@ void CInfoViewer::Init()
 	gotTime = timeset;
 	CA_Status = false;
 	virtual_zap_mode = false;
-	chanready = 1;
+	chanready = 0;
 	
 	// init dimension
 	initFrames();
