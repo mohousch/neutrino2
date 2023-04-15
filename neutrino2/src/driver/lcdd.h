@@ -171,7 +171,7 @@ class CLCD
 
 		bool has_lcd;
 		bool is4digits;	
-		bool isfblcd;
+		bool istftlcd;
 		void wake_up();
 		void setled(void) { return; };
 		void setlcdparameter(void);

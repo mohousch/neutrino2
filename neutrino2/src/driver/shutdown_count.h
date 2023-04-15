@@ -29,6 +29,7 @@
 #include <configfile.h>
 #include <pthread.h>
 
+
 class SHTDCNT
 {
 	private:
@@ -43,9 +44,6 @@ class SHTDCNT
 		static void* TimeThread(void*);
 
 	public:
-
-		void setlcdparameter(void);
-
 		static SHTDCNT* getInstance();
 		void init();
 };

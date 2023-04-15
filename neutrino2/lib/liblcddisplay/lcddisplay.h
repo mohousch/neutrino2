@@ -77,8 +77,7 @@ class CLCDDisplay
 		
 		unsigned char inverted;
 		bool flipped;
-		int is_oled;	//1=oled, 2=lcd, 3=??? 4=fblcd
-		bool is_tftlcd;
+		int is_oled;	//1=oled, 2=lcd, 3=??? 4=tftlcd
 		int last_brightness;
 		
 		raw_display_t _buffer;

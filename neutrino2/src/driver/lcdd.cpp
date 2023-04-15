@@ -71,7 +71,7 @@ CLCD::CLCD()
 	icon_dolby = false;	
 	has_lcd = true;
 	is4digits = false;
-	isfblcd = false;
+	istftlcd = false;
 	clearClock = 0;
 }
 

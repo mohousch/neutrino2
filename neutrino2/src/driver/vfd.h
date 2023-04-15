@@ -448,7 +448,8 @@ class CVFD
 
 		~CVFD();
 		bool has_lcd;	
-		bool is4digits;	
+		bool is4digits;
+		bool istftlcd;
 		
 		void setlcdparameter(void);
 

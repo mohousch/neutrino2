@@ -113,13 +113,11 @@ CLCDDisplay::CLCDDisplay()
 	flipped = false;
 	inverted = 0;
 	is_oled = 0;
-	is_tftlcd = false;
 	last_brightness = 0;
 	
 #if defined (ENABLE_TFTLCD)
-	is_tftlcd = true;
-#endif
-	
+	is_oled = 4;
+#else
 	//open device
 	fd = open("/dev/dbox/oled0", O_RDWR);
 	
@@ -138,10 +136,6 @@ CLCDDisplay::CLCDDisplay()
 	
 	if (fd < 0)
 	{
-		if (is_tftlcd)
-		{
-		}
-		
 		printf("CLCDDisplay::CLCDDisplay: couldn't open LCD - load lcd.ko!\n");
 		return;
 	}
@@ -174,6 +168,7 @@ CLCDDisplay::CLCDDisplay()
 			is_oled = 3;
 		}
 	}
+#endif
 	  
 	setSize(xres, yres, bpp);
 

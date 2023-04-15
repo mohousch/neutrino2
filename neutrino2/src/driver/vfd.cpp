@@ -92,18 +92,21 @@ void CVFD::closeDevice()
 }
 #endif
 
-// default: has_lcd:1, is4digits:0, has_led:0
+// default: has_lcd:true, is4digits:0, has_led:0
 // constructor
 CVFD::CVFD()
 {
 	// vfd
-	has_lcd = 1;
+	has_lcd = true;
 
 	// 4digits
-	is4digits = 0;
+	is4digits = false;
+	
+	// tftlcd
+	istftlcd = false;
 	
 #if defined (ENABLE_4DIGITS)
-	is4digits = 1;
+	is4digits = true;
 #endif
 
 #if !defined (__sh__)
@@ -142,7 +145,7 @@ CVFD::CVFD()
 							if(fd < 0)
 							{
 								dprintf(DEBUG_NORMAL, "CVFD::init no VFD/LCD detected\n");
-								has_lcd = 0;
+								has_lcd = false;
 							}
 						}
 					}
