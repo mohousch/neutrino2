@@ -1005,6 +1005,8 @@ void CChannelList::hide()
 
 bool CChannelList::showInfo(int pos, int epgpos)
 {
+	dprintf(DEBUG_NORMAL, "CChannelList::showInfo:\n");
+	
 	if((pos >= (signed int) chanlist.size()) || (pos < 0))
 		return false;
 
@@ -1158,6 +1160,8 @@ bool CChannelList::zapTo_ChannelID(const t_channel_id channel_id, bool rezap)
 // 
 void CChannelList::zapTo(int pos, bool rezap)
 {
+	dprintf(DEBUG_NORMAL, "CChannelList::zapTo:\n");
+	
 	// show emty channellist error msg
 	if (chanlist.empty()) 
 	{
@@ -1601,6 +1605,8 @@ void CChannelList::virtual_zap_mode(bool up)
 
 void CChannelList::quickZap(int key, bool cycle)
 {
+	dprintf(DEBUG_NORMAL, "CChannelList::quickZap:\n");
+	
         if(chanlist.size() == 0)
                 return;
 

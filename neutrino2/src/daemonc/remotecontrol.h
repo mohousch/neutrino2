@@ -70,7 +70,7 @@ class CRemoteControl
 	std::string             current_channel_name;
 	unsigned int 		current_channel_number;
 	t_channel_id            current_sub_channel_id;
-	uint32_t		current_channel_satposition;
+	t_satellite_position	current_channel_satposition;
 
 	void getNVODs();
 	void getSubChannels();
@@ -114,7 +114,7 @@ class CRemoteControl
 		inline const std::string& getCurrentChannelName(void) const { return current_channel_name; };
 		inline int getCurrentChannelNumber(void) { return current_channel_number; };
 		inline t_channel_id getCurrentChannelChannelID(void) { return current_channel_id;};
-		inline uint32_t getCurrentChannelSatellitePosition(void) { return current_channel_satposition;};
+		inline t_satellite_position getCurrentChannelSatellitePosition(void) { return current_channel_satposition;};
 };
 
 #endif

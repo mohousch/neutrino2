@@ -215,9 +215,9 @@ class CInfoViewer
 
 		void start();
 
-		void show(const int ChanNum, const std::string& Channel, const t_satellite_position satellitePosition); // Channel must be UTF-8 encoded
+		void show(const int ChanNum, const std::string& ChannelName, const t_satellite_position satellitePosition); // Channel must be UTF-8 encoded
 
-		void showTitle(const int _ChanNum, const std::string& _Channel, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id = 0, const bool _calledFromNumZap = false, int _epgpos = 0); // Channel must be UTF-8 encoded
+		void showTitle(const int _ChanNum, const std::string& _ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id = 0, const bool _calledFromNumZap = false, int _epgpos = 0); // Channel must be UTF-8 encoded
 
 		enum
 		{

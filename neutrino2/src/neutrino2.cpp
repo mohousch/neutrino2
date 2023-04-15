@@ -2673,7 +2673,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 // quickZap
 void CNeutrinoApp::quickZap(int msg)
 {
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::qquickZap:\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::quickZap:\n");
 	
 	stopSubtitles();
 	
@@ -2690,7 +2690,7 @@ void CNeutrinoApp::showInfo()
 	
 	stopSubtitles();
 
-	g_InfoViewer->showTitle(g_RemoteControl->getCurrentChannelNumber(), g_RemoteControl->getCurrentChannelName(), g_RemoteControl->getCurrentChannelSatellitePosition(), g_RemoteControl->getCurrentChannelChannelID());
+	g_InfoViewer->showTitle(channelList->getActiveChannelNumber(), channelList->getActiveChannelName(), channelList->getActiveSatellitePosition(), channelList->getActiveChannel_ChannelID());
 
 	startSubtitles();
 }

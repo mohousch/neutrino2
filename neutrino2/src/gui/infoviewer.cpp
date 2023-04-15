@@ -508,10 +508,12 @@ void CInfoViewer::show(const int ChanNum, const std::string& Channel, const t_sa
 }
 
 //
-void CInfoViewer::showTitle(const int _ChanNum, const std::string& _Channel, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id, const bool _calledFromNumZap, int _epgpos)
+void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id, const bool _calledFromNumZap, int _epgpos)
 {
+	dprintf(DEBUG_NORMAL, "CInfoViewer::showTitle: channel:%llx\n", _new_channel_id);
+	
 	//
-	std::string ChannelName = _Channel;
+	std::string ChannelName = _ChannelName;
 	show_dot = true;
 	is_visible = true;
 	new_chan = false;
@@ -525,8 +527,6 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _Channel, con
 
 	// channel id
 	channel_id = _new_channel_id;
-
-	dprintf(DEBUG_NORMAL, "CInfoViewer::showTitle: channel:%llx\n", channel_id);
 
 	// subchannel
 	if (! _calledFromNumZap && !(g_RemoteControl->subChannels.empty()) && (g_RemoteControl->selected_subchannel > 0))
