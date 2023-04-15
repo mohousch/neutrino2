@@ -2673,6 +2673,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 // quickZap
 void CNeutrinoApp::quickZap(int msg)
 {
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::qquickZap:\n");
+	
 	stopSubtitles();
 	
 	if(g_settings.zap_cycle && (bouquetList != NULL) && !(bouquetList->Bouquets.empty()))
@@ -2684,6 +2686,8 @@ void CNeutrinoApp::quickZap(int msg)
 // showInfo
 void CNeutrinoApp::showInfo()
 {
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::showInfo:\n");
+	
 	stopSubtitles();
 
 	g_InfoViewer->showTitle(g_RemoteControl->getCurrentChannelNumber(), g_RemoteControl->getCurrentChannelName(), g_RemoteControl->getCurrentChannelSatellitePosition(), g_RemoteControl->getCurrentChannelChannelID());
@@ -4079,7 +4083,9 @@ skip_message:
 
 // exit run
 void CNeutrinoApp::exitRun(int retcode, bool save)
-{ 
+{
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::exitRun: (retcode:%d)\n", retcode);
+	
 	// break silently autotimeshift
 	if(autoshift) 
 	{
