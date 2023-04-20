@@ -1535,7 +1535,7 @@ bool CFileHelpers::readDir(const std::string& dirname, CFileList* flist, CFileFi
 	int n;
 	std::string dir = dirname + "/";
 
-	dprintf(DEBUG_INFO, "CFileHelpers::readDir %s\n", dir.c_str());
+	dprintf(DEBUG_NORMAL, "CFileHelpers::readDir %s\n", dir.c_str());
 
 	n = scandir64(dir.c_str(), &namelist, 0, alphasort64);
 	if (n < 0)

@@ -623,7 +623,10 @@ void CTestMenu::loadMoviePlaylist()
 	m_vMovieInfo.clear();
 	
 	//
-	if(CFileHelpers::getInstance()->readDir(Path, &filelist, &fileFilter))
+	//if(CFileHelpers::getInstance()->readDir(Path, &filelist, &fileFilter))
+	CFileHelpers::getInstance()->addRecursiveDir(&filelist, Path, &fileFilter);
+
+	if(filelist.size() > 0)
 	{
 		// filter them
 		MI_MOVIE_INFO movieInfo;
@@ -1102,9 +1105,13 @@ void CTestMenu::testCWindowWidget()
 	loadMoviePlaylist();
 	
 	std::string buffer;
-	buffer = m_vMovieInfo[0].epgInfo1;
-	buffer += "\n";
-	buffer += m_vMovieInfo[0].epgInfo2;
+	
+	if (!m_vMovieInfo.empty())
+	{
+		buffer = m_vMovieInfo[0].epgInfo1;
+		buffer += "\n";
+		buffer += m_vMovieInfo[0].epgInfo2;
+	}
 	
 	//
 	testWidget = new CWidget(&Box);
@@ -1131,7 +1138,8 @@ void CTestMenu::testCWindowWidget()
 	// image
 	CCImage testImage;
 	testImage.setPosition(Box.iX + Box.iWidth - 210, Box.iY + 50, 200, 350);
-	testImage.setImage(m_vMovieInfo[0].tfile.c_str());
+	if (!m_vMovieInfo.empty())
+		testImage.setImage(m_vMovieInfo[0].tfile.c_str());
 	
 	testWidget->addCCItem(&testImage);
 	
@@ -1224,20 +1232,25 @@ void CTestMenu::testCTextBoxWidget()
 	
 	loadMoviePlaylist();
 	
-	std::string buffer;
-	buffer = m_vMovieInfo[0].epgInfo1;
-	buffer += "\n";
-	buffer += m_vMovieInfo[0].epgInfo2;
-	
-	// scale pic
+	//
 	int p_w = 0;
 	int p_h = 0;
-
-	scaleImage(m_vMovieInfo[0].tfile, &p_w, &p_h);
+	std::string buffer;
+	
+	if (!m_vMovieInfo.empty())
+	{
+		buffer = m_vMovieInfo[0].epgInfo1;
+		buffer += "\n";
+		buffer += m_vMovieInfo[0].epgInfo2;
+		
+		// scale pic
+		scaleImage(m_vMovieInfo[0].tfile, &p_w, &p_h);
+	}
 	
 	textBoxWidget = new CTextBox(&box);
 	
-	textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
+	if (!m_vMovieInfo.empty())
+		textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
 	
 	testWidget = new CWidget();
 	testWidget->addWidgetItem(textBoxWidget);
@@ -1702,9 +1715,13 @@ void CTestMenu::testMultiWidget()
 	loadMoviePlaylist();
 	
 	std::string buffer;
-	buffer = m_vMovieInfo[0].epgInfo1;
-	buffer += "\n";
-	buffer += m_vMovieInfo[0].epgInfo2;
+	
+	if (!m_vMovieInfo.empty())
+	{
+		buffer = m_vMovieInfo[0].epgInfo1;
+		buffer += "\n";
+		buffer += m_vMovieInfo[0].epgInfo2;
+	}
 	
 	// CWindow
 	windowWidget = new CWindow(&Box);
@@ -1719,7 +1736,8 @@ void CTestMenu::testMultiWidget()
 	
 	// image
 	CCImage testImage;
-	testImage.setImage(m_vMovieInfo[0].tfile.c_str());
+	if (!m_vMovieInfo.empty())
+		testImage.setImage(m_vMovieInfo[0].tfile.c_str());
 	testImage.setPosition(Box.iX + Box.iWidth - 210, Box.iY + 50, 200, 350);
 	
 	windowWidget->addCCItem(&testImage);
@@ -2224,9 +2242,13 @@ void CTestMenu::testCWindowCComponent()
 	loadMoviePlaylist();
 	
 	std::string buffer;
-	buffer = m_vMovieInfo[0].epgInfo1;
-	buffer += "\n";
-	buffer += m_vMovieInfo[0].epgInfo2;
+	
+	if (!m_vMovieInfo.empty())
+	{
+		buffer = m_vMovieInfo[0].epgInfo1;
+		buffer += "\n";
+		buffer += m_vMovieInfo[0].epgInfo2;
+	}
 	
 	// CWindow
 	windowWidget = new CWindow(&Box);
@@ -2261,7 +2283,8 @@ void CTestMenu::testCWindowCComponent()
 	
 	// image
 	CCImage testImage;
-	testImage.setImage(m_vMovieInfo[0].tfile.c_str());
+	if (!m_vMovieInfo.empty())
+		testImage.setImage(m_vMovieInfo[0].tfile.c_str());
 	testImage.setPosition(Box.iX, Box.iY + 40, Box.iWidth, Box.iHeight - 80);
 	testImage.setScaling(true);
 	
@@ -2395,17 +2418,20 @@ void CTestMenu::testCTextBox()
 	loadMoviePlaylist();
 	
 	std::string buffer;
-	buffer = m_vMovieInfo[0].epgInfo1;
-	buffer += "\n";
-	buffer += m_vMovieInfo[0].epgInfo2;
-	
-	// scale pic
 	int p_w = 0;
 	int p_h = 0;
-
-	scaleImage(m_vMovieInfo[0].tfile, &p_w, &p_h);
 	
-	textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
+	if (!m_vMovieInfo.empty())
+	{
+		buffer = m_vMovieInfo[0].epgInfo1;
+		buffer += "\n";
+		buffer += m_vMovieInfo[0].epgInfo2;
+		
+		// scale pic
+		scaleImage(m_vMovieInfo[0].tfile, &p_w, &p_h);
+		
+		textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
+	}
 	
 	textBoxWidget->addKey(RC_ok, this, "winfo");
 	
@@ -3701,7 +3727,8 @@ void CTestMenu::testCFrameBox1()
 	CFrame * artFrame = new CFrame();
 	artFrame->setMode(FRAME_PICTURE);
 	artFrame->setPosition(box.iX + box.iWidth/2, box.iY + 40, box.iWidth/2, box.iHeight - 2*40);
-	artFrame->setIconName(m_vMovieInfo[0].tfile.c_str());
+	if (!m_vMovieInfo.empty())
+		artFrame->setIconName(m_vMovieInfo[0].tfile.c_str());
 	artFrame->setActive(false);
 
 	frameBoxWidget->addFrame(artFrame);
@@ -3711,7 +3738,8 @@ void CTestMenu::testCFrameBox1()
 	titleFrame->setMode(FRAME_LABEL);
 	titleFrame->setPosition(&titleBox);
 	titleFrame->paintMainFrame(false);
-	titleFrame->setTitle(m_vMovieInfo[0].epgTitle.c_str());
+	if (!m_vMovieInfo.empty())
+		titleFrame->setTitle(m_vMovieInfo[0].epgTitle.c_str());
 	titleFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	titleFrame->setActive(false);
 
@@ -3762,9 +3790,13 @@ void CTestMenu::testCFrameBox1()
 	textFrame->setMode(FRAME_TEXT);
 	textFrame->setPosition(&textBox);
 	std::string buffer;
-	buffer = m_vMovieInfo[0].epgInfo1;
-	buffer += "\n";
-	buffer += m_vMovieInfo[0].epgInfo2;
+	
+	if (!m_vMovieInfo.empty())
+	{
+		buffer = m_vMovieInfo[0].epgInfo1;
+		buffer += "\n";
+		buffer += m_vMovieInfo[0].epgInfo2;
+	}
 
 	textFrame->setTitle(buffer.c_str());
 	textFrame->paintMainFrame(false);
@@ -5622,17 +5654,20 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if(actionKey == "mplay")
 	{
-		if (testWidget)
-			selected = testWidget->getSelected();
-		else
-			selected = 0;
-
-		if (&m_vMovieInfo[selected].file != NULL) 
+		if (!m_vMovieInfo.empty())
 		{
-			CMovieInfoWidget movieInfoWidget;
-			movieInfoWidget.setMovie(m_vMovieInfo[selected]);
-		
-			movieInfoWidget.exec(NULL, "");
+			if (testWidget)
+				selected = testWidget->getSelected();
+			else
+				selected = 0;
+
+			if (&m_vMovieInfo[selected].file != NULL) 
+			{
+				CMovieInfoWidget movieInfoWidget;
+				movieInfoWidget.setMovie(m_vMovieInfo[selected]);
+			
+				movieInfoWidget.exec(NULL, "");
+			}
 		}
 
 		return RETURN_REPAINT;
@@ -5644,7 +5679,8 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		//else
 			selected = 0;
 
-		m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
+		if (!m_vMovieInfo.empty())
+			m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
 
 		return RETURN_REPAINT;
 	}
@@ -5662,62 +5698,71 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if(actionKey == "winfo")
 	{
-		if (rightWidget)
+		if (!m_vMovieInfo.empty())
 		{
-			if (rightWidget->inFocus)
+			if (rightWidget)
 			{
-				right_selected = rightWidget->getSelected();
-				m_movieInfo.showMovieInfo(m_vMovieInfo[right_selected]);
+				if (rightWidget->inFocus)
+				{
+					right_selected = rightWidget->getSelected();
+					m_movieInfo.showMovieInfo(m_vMovieInfo[right_selected]);
+				}
 			}
-		}
-		else if (windowWidget)
-		{
-			windowWidget->hide();
-			m_movieInfo.showMovieInfo(m_vMovieInfo[0]);
-		}
-		else if (textBoxWidget)
-		{
-			textBoxWidget->hide();
-			m_movieInfo.showMovieInfo(m_vMovieInfo[0]);
-		}
-		else if (frameBoxWidget)
-		{
-			frameBoxWidget->hide();
-			m_movieInfo.showMovieInfo(m_vMovieInfo[0]);
+			else if (windowWidget)
+			{
+				windowWidget->hide();
+				m_movieInfo.showMovieInfo(m_vMovieInfo[0]);
+			}
+			else if (textBoxWidget)
+			{
+				textBoxWidget->hide();
+				m_movieInfo.showMovieInfo(m_vMovieInfo[0]);
+			}
+			else if (frameBoxWidget)
+			{
+				frameBoxWidget->hide();
+				m_movieInfo.showMovieInfo(m_vMovieInfo[0]);
+			}
 		}
 
 		return RETURN_REPAINT;
 	}
 	else if (actionKey == "wplay")
 	{
-		if (rightWidget)
+		printf("wplay1...");
+		if (!m_vMovieInfo.empty())
 		{
-			rightWidget->hide();
-			
-			tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[rightWidget->getSelected()]);
-			tmpMoviePlayerGui.exec(NULL, "");
+			if (rightWidget && rightWidget->hasItem())
+			{
+				rightWidget->hide();
+				
+				tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[rightWidget->getSelected()]);
+				tmpMoviePlayerGui.exec(NULL, "");
+			}
+			else if (windowWidget)
+			{
+				windowWidget->hide();
+				
+				tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
+				tmpMoviePlayerGui.exec(NULL, "");
+			}
+			else if (textBoxWidget)
+			{
+				textBoxWidget->hide();
+				
+				tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
+				tmpMoviePlayerGui.exec(NULL, "");
+			}
+			else if (frameBoxWidget)
+			{
+				frameBoxWidget->hide();
+				
+				tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
+				tmpMoviePlayerGui.exec(NULL, "");
+			}
 		}
-		else if (windowWidget)
-		{
-			windowWidget->hide();
-			
-			tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
-			tmpMoviePlayerGui.exec(NULL, "");
-		}
-		else if (textBoxWidget)
-		{
-			textBoxWidget->hide();
-			
-			tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
-			tmpMoviePlayerGui.exec(NULL, "");
-		}
-		else if (frameBoxWidget)
-		{
-			frameBoxWidget->hide();
-			
-			tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
-			tmpMoviePlayerGui.exec(NULL, "");
-		}
+		
+		printf("wplay2...");
 		
 		return RETURN_REPAINT;
 	}
@@ -5752,98 +5797,104 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if (actionKey == "ainfo")
 	{
-		hide();
-		
-		selected = 0;
-		
-		if (listFrame)
+		if (!AudioPlaylist.empty())
 		{
-			selected = listFrame->getSelectedLine();
-		}
-		
-		std::string title;
-		std::string artist;
-		std::string genre;
-		std::string date;
-		std::string cover;
-		char duration[9] = "";
+			hide();
+			
+			selected = 0;
+			
+			if (listFrame)
+			{
+				selected = listFrame->getSelectedLine();
+			}
+			
+			std::string title;
+			std::string artist;
+			std::string genre;
+			std::string date;
+			std::string cover;
+			char duration[9] = "";
 
-		title = AudioPlaylist[selected].MetaData.title;
-		artist = AudioPlaylist[selected].MetaData.artist;
-		genre = AudioPlaylist[selected].MetaData.genre;	
-		date = AudioPlaylist[selected].MetaData.date;
-		cover = AudioPlaylist[selected].MetaData.cover.empty()? DATADIR "/icons/no_coverArt.png" : AudioPlaylist[selected].MetaData.cover;
+			title = AudioPlaylist[selected].MetaData.title;
+			artist = AudioPlaylist[selected].MetaData.artist;
+			genre = AudioPlaylist[selected].MetaData.genre;	
+			date = AudioPlaylist[selected].MetaData.date;
+			cover = AudioPlaylist[selected].MetaData.cover.empty()? DATADIR "/icons/no_coverArt.png" : AudioPlaylist[selected].MetaData.cover;
 
-		snprintf(duration, 8, "(%ld:%02ld)", AudioPlaylist[selected].MetaData.total_time / 60, AudioPlaylist[selected].MetaData.total_time % 60);
-		
-		std::string buffer;
-		
-		// title
-		if (!title.empty())
-		{
-			buffer = _("Title: ");
-			buffer += title.c_str();
-		}
-		
-		// artist
-		if (!artist.empty())
-		{
-			buffer += "\n\n";
-			buffer += _("Artist: ");
-			buffer += artist.c_str();
-		}
-		
-		// genre
-		if (!genre.empty())
-		{
-			buffer += "\n\n";
-			buffer += _("Genre: ");
-			buffer += genre.c_str();
-		}
-		
-		// date
-		if (!date.empty())
-		{
-			buffer += "\n\n";
-			buffer += _("Date: ");
-			buffer += date.c_str();
-		}
-		
-		// duration
-		if (duration)
-		{
-			buffer += "\n\n";
-			buffer += _("Length (Min)");
-			buffer += duration;
-		}
-		
-		//
-		// infoBox
-		CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
-		
-		CInfoBox * infoBox = new CInfoBox(&position, _("Track Infos"), NEUTRINO_ICON_MP3);
+			snprintf(duration, 8, "(%ld:%02ld)", AudioPlaylist[selected].MetaData.total_time / 60, AudioPlaylist[selected].MetaData.total_time % 60);
+			
+			std::string buffer;
+			
+			// title
+			if (!title.empty())
+			{
+				buffer = _("Title: ");
+				buffer += title.c_str();
+			}
+			
+			// artist
+			if (!artist.empty())
+			{
+				buffer += "\n\n";
+				buffer += _("Artist: ");
+				buffer += artist.c_str();
+			}
+			
+			// genre
+			if (!genre.empty())
+			{
+				buffer += "\n\n";
+				buffer += _("Genre: ");
+				buffer += genre.c_str();
+			}
+			
+			// date
+			if (!date.empty())
+			{
+				buffer += "\n\n";
+				buffer += _("Date: ");
+				buffer += date.c_str();
+			}
+			
+			// duration
+			if (duration)
+			{
+				buffer += "\n\n";
+				buffer += _("Length (Min)");
+				buffer += duration;
+			}
+			
+			//
+			// infoBox
+			CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
+			
+			CInfoBox * infoBox = new CInfoBox(&position, _("Track Infos"), NEUTRINO_ICON_MP3);
 
-		// scale pic
-		int p_w = 0;
-		int p_h = 0;
+			// scale pic
+			int p_w = 0;
+			int p_h = 0;
 
-		::scaleImage(cover, &p_w, &p_h);
+			::scaleImage(cover, &p_w, &p_h);
 
-		infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-		infoBox->setMode(SCROLL);
-		infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
-		infoBox->setText(buffer.c_str(), cover.c_str(), p_w, p_h);
-		infoBox->exec();
-		delete infoBox;
+			infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
+			infoBox->setMode(SCROLL);
+			infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
+			infoBox->setText(buffer.c_str(), cover.c_str(), p_w, p_h);
+			infoBox->exec();
+			delete infoBox;
+		}
 	
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "linfo")
 	{
-		hide();
-		
-		selected = rightWidget->getSelected();
-		m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
+		if (!m_vMovieInfo.empty())
+		{
+			hide();
+			
+			selected = rightWidget->getSelected();
+			m_movieInfo.showMovieInfo(m_vMovieInfo[selected]);
+		}
 
 		return RETURN_REPAINT;
 	}

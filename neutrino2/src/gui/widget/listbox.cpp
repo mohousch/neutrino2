@@ -3198,9 +3198,9 @@ int ClistBox::oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg)
 	{
 		actionKey = items[selected]->actionKey;
 		items[selected]->msg = _msg;
+		
+		ret = items[selected]->exec(target);
 	}	
-
-	ret = items[selected]->exec(target);
 	
 	return ret;
 }
