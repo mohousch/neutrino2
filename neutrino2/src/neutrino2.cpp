@@ -3721,8 +3721,8 @@ _repeat:
 				tvMode(false);
 			}
 			
-			//channelList->zapTo_ChannelID(eventinfo->channel_id);
-			CZapit::getInstance()->zapTo_serviceID_NOWAIT(eventinfo->channel_id);
+			channelList->zapToChannelID(eventinfo->channel_id);
+			//CZapit::getInstance()->zapToServiceIDNOWAIT(eventinfo->channel_id);
 		}
 		
 		delete[] (unsigned char*) data;

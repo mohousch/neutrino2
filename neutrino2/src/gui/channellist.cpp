@@ -1141,9 +1141,9 @@ void CChannelList::setSelected( int nChannelNr)
 }
 
 // -- Zap to channel with channel_id
-bool CChannelList::zapTo_ChannelID(const t_channel_id channel_id, bool rezap)
+bool CChannelList::zapToChannelID(const t_channel_id channel_id, bool rezap)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::zapTo_ChannelID %llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CChannelList::zapToChannelID %llx\n", channel_id);
 	
 	for (unsigned int i = 0; i < chanlist.size(); i++) 
 	{
@@ -1188,7 +1188,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 		}		
 		
 		tuned = pos;
-		g_RemoteControl->zapTo_ChannelID(chan->channel_id, chan->name, !chan->bAlwaysLocked); // UTF-8
+		g_RemoteControl->zapToChannelID(chan->channel_id, chan->name, !chan->bAlwaysLocked); // UTF-8
 		
 		// TODO check is it possible bouquetList is NULL ?
 		if (bouquetList != NULL) 
@@ -1240,7 +1240,7 @@ int CChannelList::numericZap(int key)
 		if(channel_id) 
 		{
 			lastChList.clear_storedelay(); // ignore store delay
-			zapTo_ChannelID(channel_id);
+			zapToChannelID(channel_id);
 		}
 		
 		return res;

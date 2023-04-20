@@ -130,7 +130,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			if ((*(t_channel_id *)data) != current_channel_id) 
 			{
 				g_InfoViewer->chanready = 0;
-				CZapit::getInstance()->zapTo_serviceID_NOWAIT(current_channel_id );
+				CZapit::getInstance()->zapToServiceIDNOWAIT(current_channel_id );
 				CSectionsd::getInstance()->setServiceChanged(current_channel_id, false);
 
 				zap_completion_timeout = getcurrenttime() + 2 * (long long) 1000000;
@@ -667,7 +667,7 @@ const std::string & CRemoteControl::setSubChannel(const int numSub, const bool f
 		scrambled_timer = 0;
 	}
 
-	CZapit::getInstance()->zapTo_subServiceID_NOWAIT( current_sub_channel_id );
+	CZapit::getInstance()->zapToSubServiceIDNOWAIT( current_sub_channel_id );
 	
 	// Houdini: to restart reading the private EPG when switching to a new option
 	CSectionsd::getInstance()->setServiceChanged( current_sub_channel_id , true );
@@ -713,12 +713,12 @@ const std::string & CRemoteControl::subChannelDown(void)
 }
 
 //
-void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::string & channame, const bool start_video) // UTF-8
+void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::string & channame, const bool start_video) // UTF-8
 {
 	current_channel_id = channel_id;
 	current_channel_name = channame;
 	
-	dprintf(DEBUG_NORMAL, "CRemoteControl::zapTo_ChannelID:%llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CRemoteControl::zapToChannelID:%llx\n", channel_id);
 	
 	if (start_video)
 		startvideo(channel_id);
@@ -757,7 +757,7 @@ void CRemoteControl::zapTo_ChannelID(const t_channel_id channel_id, const std::s
 		}
 
 		// zap
-		CZapit::getInstance()->zapTo_serviceID_NOWAIT(channel_id);
+		CZapit::getInstance()->zapToServiceIDNOWAIT(channel_id);
 
 		zap_completion_timeout = now + 2 * (long long) 1000000;
 		

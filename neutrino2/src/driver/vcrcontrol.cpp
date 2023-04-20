@@ -282,7 +282,7 @@ bool CVCRControl::CVCRDevice::Record(const t_channel_id channel_id, int mode, co
 		if(channel_id != 0)	// wenn ein channel angegeben ist
 		{
 			// zap for record
-			CZapit::getInstance()->zapTo_record(channel_id);			// for recording
+			CZapit::getInstance()->zapToRecordID(channel_id);			// for recording
 		}
 
 		// apids
@@ -374,7 +374,7 @@ void CVCRControl::CFileAndServerDevice::CutBackNeutrino(const t_channel_id chann
 			}
 		
 			// zap to record
-			CZapit::getInstance()->zapTo_record(channel_id);
+			CZapit::getInstance()->zapToRecordID(channel_id);
 		}
 
 		// after this zapit send EVT_RECORDMODE_ACTIVATED, so neutrino getting NeutrinoMessages::EVT_RECORDMODE

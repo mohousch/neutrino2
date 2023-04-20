@@ -250,24 +250,24 @@ class CZapit
 		void sendCaPmtPlayBackStart(CZapitChannel * thischannel, CFrontend * fe);
 		void sendcapmtPlayBackStop(bool _sendPmt);
 		void sendCaPmtRecordStop(void);
-		void save_channel_pids(CZapitChannel * thischannel);
-		CZapitChannel * find_channel_tozap(const t_channel_id channel_id, bool in_nvod);
-		bool tune_to_channel(CFrontend * frontend, CZapitChannel * thischannel, bool &transponder_change);
-		bool parse_channel_pat_pmt(CZapitChannel * thischannel, CFrontend * fe);
-		void restore_channel_pids(CZapitChannel * thischannel);
+		void saveChannelPids(CZapitChannel * thischannel);
+		CZapitChannel * findChannelToZap(const t_channel_id channel_id, bool in_nvod);
+		bool tuneToChannel(CFrontend * frontend, CZapitChannel * thischannel, bool &transponder_change);
+		bool parseChannelPatPmt(CZapitChannel * thischannel, CFrontend * fe);
+		void restoreChannelPids(CZapitChannel * thischannel);
 		int zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate = 0);
-		int zapTo_RecordID(const t_channel_id channel_id);
+		//int zapToRecordID(const t_channel_id channel_id);
 		void setPidVolume(t_channel_id channel_id, int pid, int percent);
 		int getPidVolume(t_channel_id channel_id, int pid, bool ac3);
 		void setVolumePercent(int percent);
-		int change_audio_pid(uint8_t index);
+		int changeAudioPid(uint8_t index);
 		void setRecordMode(void);
 		void unsetRecordMode(void);
 		void setRadioMode(void);
 		void setTVMode(void);
 		int prepareChannels();
 		
-		unsigned int zapTo_ChannelID(const t_channel_id channel_id, const bool isSubService);
+		unsigned int zapToChannelID(const t_channel_id channel_id, const bool isSubService);
 
 		//
 		void sendAPIDs(APIDList &apids);
@@ -351,13 +351,14 @@ class CZapit
 		bool isChannelWEBTVChannel(const t_channel_id channel_id);
 		bool isChannelRadioChannel(const t_channel_id channel_id);
 
-		void zapTo_serviceID_NOWAIT(const t_channel_id channel_id);
-		void zapTo_subServiceID_NOWAIT(const t_channel_id channel_id);
+		void zapToServiceIDNOWAIT(const t_channel_id channel_id);
+		void zapToSubServiceIDNOWAIT(const t_channel_id channel_id);
 		unsigned int zapTo(const unsigned int bouquet, const unsigned int channel);
 		unsigned int zapTo(const unsigned int channel);
-		unsigned int zapTo_serviceID(const t_channel_id channel_id);
-		unsigned int zapTo_subServiceID(const t_channel_id channel_id);
-		unsigned int zapTo_record(const t_channel_id channel_id);
+		unsigned int zapToServiceID(const t_channel_id channel_id);
+		unsigned int zapToSubServiceID(const t_channel_id channel_id);
+		//unsigned int zapTo_record(const t_channel_id channel_id);
+		int zapToRecordID(const t_channel_id channel_id);
 
 		std::string getChannelName(const t_channel_id channel_id);
 		int getChannelNumber(const t_channel_id channel_id);

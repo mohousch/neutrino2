@@ -190,7 +190,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 	
 		if (channel_id != 0) 
 		{
-			if (CZapit::getInstance()->zapTo_record(channel_id) != CZapit::ZAP_INVALID_PARAM)
+			if (CZapit::getInstance()->zapToRecordID(channel_id) != CZapit::ZAP_INVALID_PARAM)
 				CSectionsd::getInstance()->setServiceChanged(channel_id, false);
 		}
 
@@ -207,7 +207,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 		stopOpenGLplayback();
 #endif		
 
-		if (CZapit::getInstance()->zapTo_serviceID(channel_id) != CZapit::ZAP_INVALID_PARAM)
+		if (CZapit::getInstance()->zapToServiceID(channel_id) != CZapit::ZAP_INVALID_PARAM)
 		{
 			CSectionsd::getInstance()->setServiceChanged(channel_id, false);
 			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
@@ -228,7 +228,7 @@ void CNeutrinoAPI::ZapToSubService(const char * const target)
 	stopOpenGLplayback();
 #endif		
 
-	if (CZapit::getInstance()->zapTo_subServiceID(channel_id) != CZapit::ZAP_INVALID_PARAM)
+	if (CZapit::getInstance()->zapToSubServiceID(channel_id) != CZapit::ZAP_INVALID_PARAM)
 		CSectionsd::getInstance()->setServiceChanged(channel_id, false);
 }
 

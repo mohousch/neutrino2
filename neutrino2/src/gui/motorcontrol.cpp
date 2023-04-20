@@ -397,7 +397,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 			// zap
 			if (CNeutrinoApp::getInstance()->channelList)
 			{
-				CNeutrinoApp::getInstance()->channelList->zapTo_ChannelID(CNeutrinoApp::getInstance()->channelList->getActiveChannel_ChannelID(), true);
+				CNeutrinoApp::getInstance()->channelList->zapToChannelID(CNeutrinoApp::getInstance()->channelList->getActiveChannel_ChannelID(), true);
 			}
 		}
 		
