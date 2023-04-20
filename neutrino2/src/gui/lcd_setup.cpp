@@ -59,6 +59,7 @@ const keyval LCDMENU_STATUSLINE_OPTIONS[LCDMENU_STATUSLINE_OPTION_COUNT] =
 	{ 3, _("Volume / Playtime / Audio") }
 };
 
+#if defined (ENABLE_LCD)
 #define LCDMENU_EPG_OPTION_COUNT 6
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
@@ -69,6 +70,14 @@ const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 	{ 11, _("Channel (short) / Title") },
 	{ 15, _("Channel (short) / Sep.-Line / Title") }
 };
+#else
+#define LCDMENU_EPG_OPTION_COUNT 2
+const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
+{
+	{ 0, _("Channel")	},
+	{ 1, _("Time")			}
+};
+#endif
 
 #define LCDMENU_EPGALIGN_OPTION_COUNT 2
 const keyval LCDMENU_EPGALIGN_OPTIONS[LCDMENU_EPGALIGN_OPTION_COUNT] =
@@ -84,13 +93,6 @@ const keyval LCDMENU_LEDCOLOR_OPTIONS[LCDMENU_LEDCOLOR_OPTION_COUNT] =
 	{ 1, _("blue") 	},
 	{ 2, _("red") 	},
 	{ 3, _("purple") },
-};
-
-#define LCDMENU_TITLEMODE_OPTION_COUNT 2
-const keyval LCDMENU_TITLEMODE_OPTIONS[LCDMENU_TITLEMODE_OPTION_COUNT] =
-{
-	{ 0, _("Channel Number")	},
-	{ 1, _("Time")			}
 };
 
 //
@@ -214,7 +216,7 @@ void CLCDSettings::showMenu()
 #endif
 	
 	// epgmode
-	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_TITLEMODE_OPTIONS, LCDMENU_TITLEMODE_OPTION_COUNT, true));	
+	lcdSettings->addItem(new CMenuOptionChooser(_("EPG"), &g_settings.lcd_epgmode, LCDMENU_EPG_OPTIONS, LCDMENU_EPG_OPTION_COUNT, true));	
 
 #if !defined (PLATFORM_CUBEREVO_250HD) && !defined (PLATFORM_SPARK) && !defined (PLATFORM_GIGABLUE)	
 	// dimm-time

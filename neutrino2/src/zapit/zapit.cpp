@@ -768,7 +768,7 @@ void CZapit::saveFrontendConfig(int feindex)
 
 void CZapit::loadFrontendConfig()
 {
-	dprintf(DEBUG_INFO, "CZapit::loadFrontendConfig\n");
+	dprintf(DEBUG_NORMAL, "CZapit::loadFrontendConfig\n");
 	
 	if (!fe_configfile.loadConfig(FRONTEND_CONFIGFILE))
 		printf("%s not found\n", FRONTEND_CONFIGFILE);
@@ -813,7 +813,7 @@ void CZapit::loadFrontendConfig()
 
 void CZapit::loadAudioMap()
 {
-	dprintf(DEBUG_INFO, "CZapit::loadAudioMap\n");
+	dprintf(DEBUG_NORMAL, "CZapit::loadAudioMap\n");
 	
         FILE *audio_config_file = fopen(AUDIO_CONFIG_FILE, "r");
 	audio_map.clear();
@@ -871,6 +871,8 @@ void CZapit::saveAudioMap()
 
 void CZapit::loadVolumeMap()
 {
+	dprintf(DEBUG_NORMAL, "CZapit::loadVolumeMap\n");
+	
 	vol_map.clear();
 	FILE * volume_config_file = fopen(VOLUME_CONFIG_FILE, "r");
 	if (!volume_config_file) 
@@ -893,6 +895,8 @@ void CZapit::loadVolumeMap()
 
 void CZapit::saveVolumeMap()
 {
+	dprintf(DEBUG_NORMAL, "CZapit::saveVolumeMap\n");
+	
 	FILE * volume_config_file = fopen(VOLUME_CONFIG_FILE, "w");
 	if (!volume_config_file) 
 	{
@@ -908,7 +912,7 @@ void CZapit::saveVolumeMap()
 
 void CZapit::saveZapitSettings(bool write, bool write_a)
 {
-	dprintf(DEBUG_INFO, "CZapit::saveZapitSettings\n");
+	dprintf(DEBUG_NORMAL, "CZapit::saveZapitSettings\n");
 	
 	// lastchannel
 	if (live_channel) 
@@ -963,7 +967,7 @@ void CZapit::saveZapitSettings(bool write, bool write_a)
 
 void CZapit::loadZapitSettings()
 {
-	dprintf(DEBUG_INFO, "CZapit::loadZapitSettings\n");
+	dprintf(DEBUG_NORMAL, "CZapit::loadZapitSettings\n");
 	
 	if (!config.loadConfig(ZAPIT_CONFIGFILE))
 		printf("%s not found\n", ZAPIT_CONFIGFILE);
@@ -981,26 +985,6 @@ void CZapit::loadZapitSettings()
 	
 	// load volume map
 	loadVolumeMap();
-}
-
-CZapit::responseGetLastChannel load_settings(void)
-{
-	dprintf(DEBUG_INFO, "CZapit::responseGetLastChannel load_settings:\n");
-	
-	CZapit::responseGetLastChannel lastchannel;
-
-	if (currentMode & RADIO_MODE)
-	{
-		lastchannel.mode = 'r';
-		lastchannel.channelNumber = lastChannelRadio;
-	}
-	else if (currentMode & TV_MODE)
-	{
-		lastchannel.mode = 't';
-		lastchannel.channelNumber = lastChannelTV;
-	}
-	
-	return lastchannel;
 }
  
 void CZapit::sendCaPmtPlayBackStart(CZapitChannel * thischannel, CFrontend * fe)
@@ -1797,6 +1781,8 @@ void CZapit::unsetRecordMode(void)
 
 int CZapit::prepareChannels()
 {
+	dprintf(DEBUG_NORMAL, "CZapit::prepareChannels:\n");
+	
 	live_channel = 0;
 	
 	// clear all channels/bouquets/TP's lists
@@ -3288,11 +3274,21 @@ void *CZapit::updatePMTFilter(void *)
 //
 void CZapit::getLastChannel(unsigned int &channumber, char &mode)
 {
-	responseGetLastChannel responseGetLastChannel;
-	responseGetLastChannel = load_settings();
+	responseGetLastChannel lastChannel;
 	
-	channumber = responseGetLastChannel.channelNumber;
-	mode = responseGetLastChannel.mode;
+	if (currentMode & RADIO_MODE)
+	{
+		lastChannel.mode = 'r';
+		lastChannel.channelNumber = lastChannelRadio;
+	}
+	else if (currentMode & TV_MODE)
+	{
+		lastChannel.mode = 't';
+		lastChannel.channelNumber = lastChannelTV;
+	}
+	
+	channumber = lastChannel.channelNumber;
+	mode = lastChannel.mode;
 }
 
 void CZapit::setMode(const channelsMode mode)
@@ -4562,11 +4558,11 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 		struct dvb_frontend_info fe_info;
 		char frontend_filename[256], demux_filename[256], vtuner_filename[256];
 
-		dprintf(DEBUG_NORMAL, "linking adapter1/frontend0 to vtuner0\n");
+		dprintf(DEBUG_NORMAL, "linking adapter%d/frontend0 to vtuner0\n", getVTuner()->fe_adapter);
 
 		sprintf(frontend_filename, "/dev/dvb/adapter%d/frontend0", getVTuner()->fe_adapter);
 		sprintf(demux_filename, "/dev/dvb/adapter%d/demux0", getVTuner()->fe_adapter);
-		sprintf(vtuner_filename, "/dev/vtuner0"); //FIXME: think about this (/dev/misc/vtuner%)
+		sprintf(vtuner_filename, "/dev/vtunerc0"); //FIXME: think about this (/dev/misc/vtuner%)
 
 		dprintf(DEBUG_NORMAL, "CZapit::Start: linking %s to %s\n", frontend_filename, vtuner_filename);
 
@@ -4627,7 +4623,7 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 				strcpy(type,"ATSC");
 				break;
 			default:
-				printf("Frontend type 0x%x not supported", fe_info.type);
+				printf("Frontend type 0x%x not supported\n", fe_info.type);
 		}
 
 		ioctl(vtunerFD, VTUNER_SET_NAME, "virtuel tuner");
@@ -4652,8 +4648,6 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 #endif
 
 		memset(pidlist, 0xff, sizeof(pidlist));
-
-		dprintf(DEBUG_NORMAL, "CZapit::Start: init succeeded\n");
 
 		pthread_create(&eventthread, NULL, event_proc, (void*)NULL);
 		pthread_create(&pumpthread, NULL, pump_proc, (void*)NULL);
@@ -4719,6 +4713,8 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	
 	//create pmt update filter thread
 	pthread_create(&tpmt, NULL, updatePMTFilter, (void *) NULL);
+	
+	dprintf(DEBUG_NORMAL, "CZapit::Start: init succeeded\n");
 }
 
 //
@@ -4737,7 +4733,7 @@ void CZapit::Stop()
 	stopPlayBack();
 
 	// stop vtuner pump thread
-	if (getVTuner() != NULL)
+	//if (getVTuner() != NULL)
 	{
 		pthread_cancel(eventthread);
 		pthread_join(eventthread, NULL);

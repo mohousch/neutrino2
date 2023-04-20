@@ -252,7 +252,34 @@ TESTING ?=
 
 ifeq ($(TESTING), testing)
 NHD2_OPTS += --enable-testing
-endif			
+endif
+
+#
+#
+#
+printenv:
+	@echo
+	@echo '================================================================================'
+	@echo "MEDIAFW			: $(MEDIAFW)"
+	@echo "PYTHON			: $(PYTHON)"
+	@echo "LUA			: $(LUA)"
+	@echo "CICAM			: $(CICAM)"
+	@echo "SCART			: $(SCART)"
+	@echo "LCD			: $(LCD)"
+	@echo "FKEYS			: $(FKEYS)"
+	@echo "FAKETUNER		: $(FAKETUNER)"
+	@echo "TESTING			: $(TESTING)"
+	@echo '================================================================================'
+
+#
+#
+#
+help:
+	@echo "main target:"
+	@echo " make init			- setup build options"
+	@echo " make 				- build neutrino2 / plugins"
+	@echo " make run			- start neutrino2"
+	@echo		
 
 #
 # neutrino2

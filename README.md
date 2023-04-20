@@ -3,35 +3,6 @@
   Welcome to neutrino2 software
 </h1>
 
--------
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/mainmenu.png)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/channellist.png)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/infoviewer.bmp)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/epgview.bmp)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/eventlist.bmp)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/epgplus.bmp)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/pluginsbrowser.bmp)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/moviebrowser.bmp)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/movietrailer.bmp)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/movieinfowidget.bmp)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/skinselect.bmp)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/metrixhd.png)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/KravenHD.png)
-
-![](https://github.com/mohousch/neutrino2/blob/master/neutrino2/doc/resources/mainmenu_2.bmp)
-
 ## How to build neutrino2 for PC (x86) ##
 
 ```bash
