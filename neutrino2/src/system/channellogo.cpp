@@ -246,7 +246,7 @@ void CChannellogo::run()
 			logo_name += to_hexstring(it->second.getLogoID() & 0xFFFFFFFFFFFFULL);
 			logo_name += ".png";
 								
-			if(access(logo_name.c_str(), F_OK)) 
+			if(access(logo_name.c_str(), F_OK))
 			{
 				downloadUrl(it->second.getLogoUrl(), logo_name, "", 30);
 			}

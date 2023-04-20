@@ -4669,6 +4669,9 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	//create Bouquet Manager
 	g_bouquetManager = new CBouquetManager();
 	
+	// load services
+	prepareChannels();
+	
 	//start channel
 	if(ZapStart_arg->uselastchannel == 0)
 	{
@@ -4694,9 +4697,6 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 		else if (lastChannelMode == TV_MODE)
 			setTVMode();
 	}
-
-	// load services
-	prepareChannels();
 
 	//create sdt thread
 	pthread_create(&tsdt, NULL, sdtThread, (void *) NULL);
