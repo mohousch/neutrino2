@@ -80,6 +80,7 @@ CMenuItem::CMenuItem()
 
 	active = true;
 	marked = false;
+	hidden = false;
 
 	jumpTarget = NULL;
 	actionKey = "";
@@ -121,6 +122,19 @@ void CMenuItem::setMarked(const bool Marked)
 	
 	if (x != -1)
 		paint();
+}
+
+void CMenuItem::setHidden(const bool Hidden)
+{
+	hidden = Hidden;
+	
+	if (x != -1)
+	{
+		if (parent)
+			parent->initFrames();
+			
+		paint();
+	}
 }
 
 // CMenuOptionChooser
@@ -266,6 +280,9 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionChooser::paint\n");
+	
+	if (hidden)
+		return y;
 
 	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
 
@@ -480,6 +497,9 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::paint\n");
+	
+	if (hidden)
+		return y;
 
 	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
 
@@ -738,6 +758,9 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 {
 	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::paint\n");
+	
+	if (hidden)
+		return y;
 
 	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
 
@@ -1060,6 +1083,9 @@ int ClistBoxItem::getHeight(void) const
 	int iw = 0;
 	int ih = 0;
 	int bpp = 0;
+	
+	if (hidden)
+		return 0;
 
 	if(widgetType == TYPE_FRAME)
 	{
@@ -1162,6 +1188,9 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 
 	uint8_t color = COL_MENUCONTENT;
 	fb_pixel_t bgcolor = marked? COL_MENUCONTENTSELECTED_PLUS_1 : COL_MENUCONTENT_PLUS_0;
+	
+	if (hidden)
+		return y;
 
 	if (selected)
 	{

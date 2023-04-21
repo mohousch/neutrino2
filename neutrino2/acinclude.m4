@@ -171,9 +171,9 @@ AC_DEFUN([AC_PROG_EGREP],
 AC_DEFUN([TUXBOX_BOXTYPE],[
 
 AC_ARG_WITH(boxtype,
-	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,coolstream,hypercube,venton,xp1000,odin,ixuss,iqonios,e3hd,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas],
+	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,coolstream,hypercube,venton,xp1000,odin,ixuss,iqonios,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas],
 	[case "${withval}" in
-		generic|dgs|gigablue|dreambox|xtrend|fulan|kathrein|ipbox|hl101|topfield|fortis_hdbox|octagon|atevio|adb_box|whitebox|vip|homecast|vuplus|azbox|technomate|coolstream|hypercube|venton|xp1000|odin|ixuss|iqonios|e3hd|ebox5000|wetek|edision|hd|gi|xpeedc|formuler|miraclebox|spycat|xsarius|zgemma|wwio|axas)
+		generic|dgs|gigablue|dreambox|xtrend|fulan|kathrein|ipbox|hl101|topfield|fortis_hdbox|octagon|atevio|adb_box|whitebox|vip|homecast|vuplus|azbox|technomate|coolstream|hypercube|venton|xp1000|odin|ixuss|iqonios|ebox5000|wetek|edision|hd|gi|xpeedc|formuler|miraclebox|spycat|xsarius|zgemma|wwio|axas)
 			BOXTYPE="$withval"
 			;;
 		cu*)
@@ -309,7 +309,7 @@ AC_ARG_WITH(boxtype,
 			BOXMODEL="$withval"
 			;;
 			
-		e4*)
+		e*hd)
 			BOXTYPE="axas"
 			BOXMODEL="$withval"
 			;;
@@ -322,12 +322,12 @@ AC_ARG_WITH(boxtype,
 AC_ARG_WITH(boxmodel,
 	[  --with-boxmodel	valid for dgs: cuberevo,cuberevo_mini,cuberevo_mini2,cuberevo_mini_fta,cuberevo_250hd,cuberevo_2000hd,cuberevo_9500hd
 				valid for gigablue: gbsolo,gb800se,gb800ue,gb800seplus,gb800ueplus,gbquad
-				valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025, dm500hd, dm7020hd, dm8000, dm800, dm800se, dm520
+				valid for dreambox: dm500, dm500plus, dm600pvr, dm56x0, dm7000, dm7020, dm7025, dm500hd, dm7020hd, dm8000, dm800, dm800se, dm520, dm900, dm920
 				valid for xtrend: et4x00,et5x00,et6x00,et7x00, et8000,et8500,et9x00, et10000
 				valid for fulan: spark, spark7162
 				valid for kathrein: ufs910, ufs922, ufs912, ufs913, ufc960
 				valid for ipbox: ipbox55, ipbox99, ipbox9900
-				valid for ipbox: hl101
+				valid for hl: hl101
 				valid for atevio: atevio700,atevio7000,atevio7500,atevio7600
 				valid for octagon: octagon1008
 				valid for topfield: tf7700
@@ -349,7 +349,7 @@ AC_ARG_WITH(boxmodel,
 				valid for xsarius: fusionhd, fusionhdse, purehd
 				valid for zgemma: h3, h4, h5, h7, i55, lc, sh1
 				valid for wwio: bre2ze4k
-				valid for axas: e4hdultra],
+				valid for axas: e3hd e4hdultra],
 	[case "${withval}" in
 		cuberevo|cuberevo_mini|cuberevo_mini2|cuberevo_mini_fta|cuberevo_250hd|cuberevo_2000hd|cuberevo_9500hd)
 			if test "$BOXTYPE" = "dgs"; then
@@ -372,7 +372,7 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
-		dm500|dm500plus|dm600pvr|dm56x0|dm7000|dm7020|dm7025|dm500hd|dm7020hd|dm8000|dm800|dm800se|dm520)
+		dm500|dm500plus|dm600pvr|dm56x0|dm7000|dm7020|dm7025|dm500hd|dm7020hd|dm8000|dm800|dm800se|dm520|dm900|dm920)
 			if test "$BOXTYPE" = "dreambox"; then
 				BOXMODEL="$withval"
 			else
@@ -498,13 +498,6 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
-		e3hd)
-			if test "$BOXTYPE" = "e3hd"; then
-				BOXMODEL="$withval"
-			else
-				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
-			fi
-			;;
 		ebox5000)
 			if test "$BOXTYPE" = "ebox5000"; then
 				BOXMODEL="$withval"
@@ -589,7 +582,7 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
-		e4hdultra)
+		e3hd|e4hdultra)
 			if test "$BOXTYPE" = "axas"; then
 				BOXMODEL="$withval"
 			else
@@ -643,7 +636,6 @@ AM_CONDITIONAL(BOXTYPE_IXUSS, test "$BOXTYPE" = "ixuss")
 AM_CONDITIONAL(BOXTYPE_IQONIOS, test "$BOXTYPE" = "iqonios")
 AM_CONDITIONAL(BOXTYPE_ODIN, test "$BOXTYPE" = "odin")
 AM_CONDITIONAL(BOXTYPE_XP1000, test "$BOXTYPE" = "xp1000")
-AM_CONDITIONAL(BOXTYPE_E3HD, test "$BOXTYPE" = "e3hd")
 AM_CONDITIONAL(BOXTYPE_EBOX5000, test "$BOXTYPE" = "ebox5000")
 AM_CONDITIONAL(BOXTYPE_WETEK, test "$BOXTYPE" = "wetek")
 AM_CONDITIONAL(BOXTYPE_EDISION, test "$BOXTYPE" = "edision")
@@ -680,13 +672,14 @@ AM_CONDITIONAL(BOXMODEL_DM500PLUS,test "$BOXMODEL" = "dm500plus")
 AM_CONDITIONAL(BOXMODEL_DM600PVR,test "$BOXMODEL" = "dm600pvr")
 AM_CONDITIONAL(BOXMODEL_DM56x0,test "$BOXMODEL" = "dm56x0")
 AM_CONDITIONAL(BOXMODEL_DM7000,test "$BOXMODEL" = "dm7000" -o "$BOXMODEL" = "dm7020" -o "$BOXMODEL" = "dm7025")
-
 AM_CONDITIONAL(BOXMODEL_DM500HD,test "$BOXMODEL" = "dm500hd")
 AM_CONDITIONAL(BOXMODEL_DM800HD,test "$BOXMODEL" = "dm800")
 AM_CONDITIONAL(BOXMODEL_DM800SE,test "$BOXMODEL" = "dm800se")
 AM_CONDITIONAL(BOXMODEL_DM7000HD,test "$BOXMODEL" = "dm7020hd")
 AM_CONDITIONAL(BOXMODEL_DM8000HD,test "$BOXMODEL" = "dm8000")
 AM_CONDITIONAL(BOXMODEL_DM520,test "$BOXMODEL" = "dm520")
+AM_CONDITIONAL(BOXMODEL_DM900,test "$BOXMODEL" = "dm900")
+AM_CONDITIONAL(BOXMODEL_DM920,test "$BOXMODEL" = "dm920")
 
 AM_CONDITIONAL(BOXMODEL_ET4X00,test "$BOXMODEL" = "et4x00")
 AM_CONDITIONAL(BOXMODEL_ET5X00,test "$BOXMODEL" = "et5x00")
@@ -757,8 +750,6 @@ AM_CONDITIONAL(BOXMODEL_ODINM6, test "$BOXMODEL" = "odinm6")
 AM_CONDITIONAL(BOXMODEL_ODINM7, test "$BOXMODEL" = "odinm7")
 AM_CONDITIONAL(BOXMODEL_ODINM9, test "$BOXMODEL" = "odinm9")
 
-AM_CONDITIONAL(BOXMODEL_E3HD,test "$BOXMODEL" = "e3hd")
-
 AM_CONDITIONAL(BOXMODEL_WETEKPLAY, test "$BOXMODEL" = "wetekplay")
 
 AM_CONDITIONAL(BOXMODEL_OSMINI, test "$BOXMODEL" = "osmini")
@@ -808,6 +799,7 @@ AM_CONDITIONAL(BOXMODEL_SH1, test "$BOXMODEL" = "sh1")
 AM_CONDITIONAL(BOXMODEL_BRE2ZE4K, test "$BOXMODEL" = "bre2ze4k")
 AM_CONDITIONAL(BOXMODEL_BRE2ZET2C, test "$BOXMODEL" = "bre2zet2c")
 
+AM_CONDITIONAL(BOXMODEL_E3HD, test "$BOXMODEL" = "e3hd")
 AM_CONDITIONAL(BOXMODEL_E4HDULTRA, test "$BOXMODEL" = "e4hdultra")
 
 if test "$BOXTYPE" = "generic"; then
@@ -942,6 +934,10 @@ elif test "$BOXMODEL" = "dm800se"; then
 	AC_DEFINE(BOXMODEL_DM800SE, 1, [building for dreambox 800se])
 elif test "$BOXMODEL" = "dm520"; then
 	AC_DEFINE(BOXMODEL_DM520, 1, [building for dreambox 520])
+elif test "$BOXMODEL" = "dm900"; then
+	AC_DEFINE(BOXMODEL_DM900, 1, [building for dreambox 900])
+elif test "$BOXMODEL" = "dm920"; then
+	AC_DEFINE(BOXMODEL_DM920, 1, [building for dreambox 920])
 
 elif test "$BOXMODEL" = "et4x00"; then
 	AC_DEFINE(BOXMODEL_ET4X00, 1, [building for xtrend et4x00])
@@ -1067,9 +1063,6 @@ elif test "$BOXMODEL" = "odinm7"; then
 elif test "$BOXMODEL" = "odinm9"; then
 	AC_DEFINE(BOXMODEL_ODINM9, 1, [building for odinm9])
 
-elif test "$BOXMODEL" = "e3hd"; then
-	AC_DEFINE(BOXMODEL_E3HD, 1, [building for e3hd])
-
 elif test "$BOXMODEL" = "wetekplay"; then
 	AC_DEFINE(BOXMODEL_WETEKPLAY, 1, [building for wetekplay])
 
@@ -1156,7 +1149,9 @@ elif test "$BOXMODEL" = "bre2ze4k"; then
 	AC_DEFINE(BOXMODEL_BRE2ZE4K, 1, [building for bre2ze4k])
 elif test "$BOXMODEL" = "bre2zet2c"; then
 	AC_DEFINE(BOXMODEL_BRE2ZET2C, 1, [building for bre2zet2c])
-	
+
+elif test "$BOXMODEL" = "e3hd"; then
+	AC_DEFINE(BOXMODEL_E3HD, 1, [building for e3hd])	
 elif test "$BOXMODEL" = "e4hdultra"; then
 	AC_DEFINE(BOXMODEL_E4HDULTRA, 1, [building for e4hdultra])
 fi

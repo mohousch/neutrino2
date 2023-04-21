@@ -118,6 +118,7 @@ class CMenuItem
 	public:
 		bool active;
 		bool marked;
+		bool hidden;
 		
 		//
 		neutrino_msg_t directKey;
@@ -192,6 +193,7 @@ class CMenuItem
 		//
 		virtual void setActive(const bool Active);
 		virtual void setMarked(const bool Marked);
+		virtual void setHidden(const bool Hidden);
 
 		//
 		virtual int getYPosition(void) const { return y; }
@@ -250,7 +252,10 @@ class CMenuOptionChooser : public CMenuItem
 
 		int getHeight(void) const
 		{
-			return height;
+			if (hidden)
+				return 0;
+			else
+				return height;
 		}
 		
 		bool isSelectable(void) const
@@ -300,7 +305,10 @@ class CMenuOptionNumberChooser : public CMenuItem
 
 		int getHeight(void) const
 		{
-			return height;
+			if (hidden)
+				return 0;
+			else	
+				return height;
 		}
 		
 		bool isSelectable(void) const
@@ -339,7 +347,7 @@ class CMenuOptionStringChooser : public CMenuItem
 		void addOption(const char * value);
 
 		int paint(bool selected, bool AfterPulldown = false);
-		int getHeight(void) const {return height;}
+		int getHeight(void) const {if (hidden) return 0; else return height;}
 
 		bool isSelectable(void) const {return active;}
 

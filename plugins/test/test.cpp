@@ -983,6 +983,7 @@ void CTestMenu::testCWidget()
 	leftWidget->setOutFocus();
 
 	ClistBoxItem *item1 = new ClistBoxItem("In den Kinos", true, NULL, this, "movie_in_cinema");
+	//item1->setHidden(true);
 	ClistBoxItem *item2 = new ClistBoxItem("Am", true, NULL, this, "movie_popular");
 	item2->setOption("populärsten");
 	item2->set2lines();
@@ -3931,6 +3932,7 @@ void CTestMenu::testCMenuWidget1()
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
 	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
 	item->setDirectKey(RC_red);
+	//item->setHidden(true);
 	menuWidget->addItem(item);
 
 	item = new ClistBoxItem(_("Timer / EPG"), true, NULL, new CEPGMenuHandler());
@@ -3990,7 +3992,7 @@ void CTestMenu::testCMenuWidget1()
 
 	// head
 	menuWidget->enablePaintDate();
-	menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
+	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
 	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
 
