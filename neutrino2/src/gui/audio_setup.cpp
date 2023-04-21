@@ -261,6 +261,8 @@ void CAudioSettings::showMenu()
 	for(int i = 0; i < 3; i++) 
 		audioSettings->addItem(sublangSelect[i]);
 	
+	//
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 	
 	//

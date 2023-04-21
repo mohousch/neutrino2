@@ -99,6 +99,7 @@ void CMediaPlayerMenu::showMenu()
 	}
 	
 	//
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 }
 

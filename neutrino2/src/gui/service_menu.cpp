@@ -134,6 +134,8 @@ void CServiceMenu::showMenu(void)
 		widget->addWidgetItem(service);
 	}
 	
+	//
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 }
 

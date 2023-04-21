@@ -562,6 +562,7 @@ void CInfoMenu::showMenu()
 	}
 	
 	//
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 }
 

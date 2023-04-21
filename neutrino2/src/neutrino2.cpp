@@ -5196,7 +5196,10 @@ void CNeutrinoApp::selectNVOD()
 
 		//
                 if(getNVODMenu(NVODSelector))
-                        widget->exec(NULL, "");		
+                {
+                	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+                        widget->exec(NULL, "");
+                }	
         }
 }
 

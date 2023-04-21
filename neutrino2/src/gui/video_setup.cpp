@@ -438,6 +438,8 @@ void CVideoSettings::showMenu()
 	videoSettings->addItem(new CMenuOptionNumberChooser(_("Tint"), (int *)&g_settings.tint, true, 0, 255));
 	*/
 	
+	//
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 }
 

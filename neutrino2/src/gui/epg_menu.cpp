@@ -112,7 +112,8 @@ int CEPGMenuHandler::doMenu()
 		
 		widget->addWidgetItem(redMenu);
 	}
-					
+	
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);				
 	res = widget->exec(NULL, "");
 	
 	return res;

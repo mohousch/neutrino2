@@ -149,6 +149,7 @@ void CNeutrinoApp::mainMenu(void)
 		widget->addWidgetItem(nMenu);
 	}
 
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 }
 
@@ -427,7 +428,8 @@ bool CNeutrinoApp::showUserMenu(int button)
 		menu->setSelected(selected[button]);
 		selected[button] = menu->getSelected();
 	}
-		
+	
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);	
 	widget->exec(NULL, "");
 
 	return 0;

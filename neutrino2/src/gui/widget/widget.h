@@ -149,7 +149,7 @@ class CWidget : public CMenuTarget
 		virtual void refresh();
 
 		//
-		void setTimeOut(unsigned long long int to = 0){timeout = to;};
+		void setTimeOut(uint64_t to = 0){timeout = to;};
 		
 		//
 		void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");

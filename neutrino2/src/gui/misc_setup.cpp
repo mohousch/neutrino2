@@ -256,6 +256,7 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->addItem(new ClistBoxItem(_("Settings restore"), true, NULL, resetNotifier, "restore"));
 	
 	//
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 }
 
@@ -587,6 +588,7 @@ void CChannelListSettings::showMenu()
 	miscSettingsChannelList->addItem( new ClistBoxItem(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" ) );
 	
 	//
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 }
 
@@ -796,6 +798,9 @@ void CEPGSettings::showMenu()
 	
 	// xmltv
 	
+	
+	//
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 
 	delete epg_IP;
@@ -971,6 +976,7 @@ void CFileBrowserSettings::showMenu()
 	miscSettingsFileBrowser->addItem(new CMenuOptionChooser(_("Absolute start directory"), &g_settings.filebrowser_denydirectoryleave, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true));
 	
 	//
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 }
 

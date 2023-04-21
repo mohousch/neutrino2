@@ -1789,7 +1789,7 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 		}
 	}
 
-	widget->setTimeOut(/*SNeutrinoSettings::TIMING_INFOBAR*/10);
+	widget->setTimeOut(10);
 	widget->exec(NULL, "");
 	
 	// check what menu item was ok'd  and set the appropriate play offset

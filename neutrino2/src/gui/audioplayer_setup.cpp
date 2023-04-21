@@ -137,6 +137,7 @@ void CAudioPlayerSettings::showMenu()
 	audioPlayerSettings->addItem(new ClistBoxItem(_("Start dir."), true, g_settings.network_nfs_audioplayerdir, this, "audioplayerdir"));
 	
 	//
+	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 }
 
