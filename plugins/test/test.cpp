@@ -5675,9 +5675,9 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if(actionKey == "minfo")
 	{
-		//if (menuWidget)
-		//	selected = menuWidget->getSelected();
-		//else
+		if (menuWidget)
+			selected = menuWidget->getSelected();
+		else
 			selected = 0;
 
 		if (!m_vMovieInfo.empty())
@@ -5903,8 +5903,8 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	{
 		if (rightWidget)
 			rightWidget->changeWidgetType();
-		//else if (menuWidget)
-		//	menuWidget->changeWidgetType();
+		else if (menuWidget)
+			menuWidget->changeWidgetType();
 
 		return RETURN_NONE;
 	}
