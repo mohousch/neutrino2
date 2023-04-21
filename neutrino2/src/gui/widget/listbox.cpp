@@ -137,6 +137,62 @@ void CMenuItem::setHidden(const bool Hidden)
 	}
 }
 
+void CMenuItem::paintItemBox(int dy, fb_pixel_t col)
+{
+	if (!paintFrame)
+	{
+		if (background)
+		{
+			delete [] background;
+			background = NULL;
+		}
+									
+		background = new fb_pixel_t[dx*dy];
+						
+		if (background)
+		{
+			CFrameBuffer::getInstance()->saveScreen(x, y, dx, dy, background);
+		}
+	}	
+		
+	// border
+	CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, COL_MENUCONTENT_PLUS_6);
+				
+	// itemBox
+	if (borderMode == BORDER_NO)
+	{
+		CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, col, NO_RADIUS, CORNER_NONE, itemGradient); 
+	}
+	else if (borderMode == BORDER_ALL)
+	{
+		CFrameBuffer::getInstance()->paintBoxRel(x + 2, y + 2, dx - 4, dy - 4, col, NO_RADIUS, CORNER_NONE, itemGradient);
+	}
+	else if (borderMode == BORDER_LEFTRIGHT)
+	{
+		CFrameBuffer::getInstance()->paintBoxRel(x + 2, y, dx - 4, dy, col, NO_RADIUS, CORNER_NONE, itemGradient);
+	}
+	else if (borderMode == BORDER_TOPBOTTOM)
+	{
+		CFrameBuffer::getInstance()->paintBoxRel(x, y + 2, dx, dy - 4, col, NO_RADIUS, CORNER_NONE, itemGradient);
+	} 
+}
+
+void CMenuItem::refreshItemBox(int dy, fb_pixel_t col)
+{
+	if (paintFrame)
+		CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, col);
+	else
+	{
+		if (background)
+		{
+			CFrameBuffer::getInstance()->restoreScreen(x, y, dx, dy, background);
+							
+			delete [] background;
+			background = NULL;
+		}
+	}
+}
+
 // CMenuOptionChooser
 CMenuOptionChooser::CMenuOptionChooser(const char * const OptionName, int* const OptionValue, const struct keyval *const Options, const unsigned Number_Of_Options, const bool Active, CChangeObserver* const Observ, const neutrino_msg_t DirectKey, const std::string & IconName, bool Pulldown)
 {
@@ -310,57 +366,11 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 	// paint item
 	if (selected)
 	{
-		if (!paintFrame)
-		{
-			if (background)
-			{
-				delete [] background;
-				background = NULL;
-			}
-									
-			background = new fb_pixel_t[dx*height];
-						
-			if (background)
-			{
-				frameBuffer->saveScreen(x, y, dx, height, background);
-			}
-		}	
-				
-		// border
-		frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_6);
-				
-		// itemBox
-		if (borderMode == BORDER_NO)
-		{
-			frameBuffer->paintBoxRel(x, y, dx, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient); 
-		}
-		else if (borderMode == BORDER_ALL)
-		{
-			frameBuffer->paintBoxRel(x + 2, y + 2, dx - 4, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-		}
-		else if (borderMode == BORDER_LEFTRIGHT)
-		{
-			frameBuffer->paintBoxRel(x + 2, y, dx - 4, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-		}
-		else if (borderMode == BORDER_TOPBOTTOM)
-		{
-			frameBuffer->paintBoxRel(x, y + 2, dx, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-		} 
+		paintItemBox(height, bgcolor);
 	}
 	else
 	{
-		if (paintFrame)
-			frameBuffer->paintBoxRel(x, y, dx, height, bgcolor);
-		else
-		{
-			if (background)
-			{
-				frameBuffer->restoreScreen(x, y, dx, height, background);
-							
-				delete [] background;
-				background = NULL;
-			}
-		}
+		refreshItemBox(height, bgcolor);
 	}
 
 	//
@@ -527,57 +537,11 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 	// paint item
 	if (selected)
 	{
-		if (!paintFrame)
-		{
-			if (background)
-			{
-				delete [] background;
-				background = NULL;
-			}
-									
-			background = new fb_pixel_t[dx*height];
-						
-			if (background)
-			{
-				frameBuffer->saveScreen(x, y, dx, height, background);
-			}
-		}	
-				
-		// border
-		frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_6);
-				
-		// itemBox
-		if (borderMode == BORDER_NO)
-		{
-			frameBuffer->paintBoxRel(x, y, dx, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient); 
-		}
-		else if (borderMode == BORDER_ALL)
-		{
-			frameBuffer->paintBoxRel(x + 2, y + 2, dx - 4, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-		}
-		else if (borderMode == BORDER_LEFTRIGHT)
-		{
-			frameBuffer->paintBoxRel(x + 2, y, dx - 4, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-		}
-		else if (borderMode == BORDER_TOPBOTTOM)
-		{
-			frameBuffer->paintBoxRel(x, y + 2, dx, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-		} 
+		paintItemBox(height, bgcolor);
 	}
 	else
 	{
-		if (paintFrame)
-			frameBuffer->paintBoxRel(x, y, dx, height, bgcolor);
-		else
-		{
-			if (background)
-			{
-				frameBuffer->restoreScreen(x, y, dx, height, background);
-							
-				delete [] background;
-				background = NULL;
-			}
-		}
+		refreshItemBox(height, bgcolor);
 	}
 
 	// option
@@ -788,57 +752,11 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 	// paint item
 	if (selected)
 	{
-		if (!paintFrame)
-		{
-			if (background)
-			{
-				delete [] background;
-				background = NULL;
-			}
-									
-			background = new fb_pixel_t[dx*height];
-						
-			if (background)
-			{
-				frameBuffer->saveScreen(x, y, dx, height, background);
-			}
-		}	
-				
-		// border
-		frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_6);
-				
-		// itemBox
-		if (borderMode == BORDER_NO)
-		{
-			frameBuffer->paintBoxRel(x, y, dx, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient); 
-		}
-		else if (borderMode == BORDER_ALL)
-		{
-			frameBuffer->paintBoxRel(x + 2, y + 2, dx - 4, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-		}
-		else if (borderMode == BORDER_LEFTRIGHT)
-		{
-			frameBuffer->paintBoxRel(x + 2, y, dx - 4, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-		}
-		else if (borderMode == BORDER_TOPBOTTOM)
-		{
-			frameBuffer->paintBoxRel(x, y + 2, dx, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-		} 
+		paintItemBox(height, bgcolor);
 	}
 	else
 	{
-		if (paintFrame)
-			frameBuffer->paintBoxRel(x, y, dx, height, bgcolor);
-		else
-		{
-			if (background)
-			{
-				frameBuffer->restoreScreen(x, y, dx, height, background);
-							
-				delete [] background;
-				background = NULL;
-			}
-		}
+		refreshItemBox(height, bgcolor);
 	}
 
 	// paint icon
@@ -1095,7 +1013,7 @@ int ClistBoxItem::getHeight(void) const
 	{
 		ih = ITEM_ICON_H_MINI;
 			
-		//if (widgetMode == MODE_LISTBOX)
+		//
 		if(nLinesItem && widgetMode == MODE_LISTBOX)
 		{
 			ih = ITEM_ICON_H_MINI*2;
@@ -1301,57 +1219,11 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 		//
 		if (selected)
 		{
-			if (!paintFrame)
-			{
-				if (background)
-				{
-					delete [] background;
-					background = NULL;
-				}
-									
-				background = new fb_pixel_t[dx*height];
-						
-				if (background)
-				{
-					frameBuffer->saveScreen(x, y, dx, height, background);
-				}
-			}	
-				
-			// border
-			frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_6);
-				
-			// itemBox
-			if (borderMode == BORDER_NO)
-			{
-				frameBuffer->paintBoxRel(x, y, dx, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient); 
-			}
-			else if (borderMode == BORDER_ALL)
-			{
-				frameBuffer->paintBoxRel(x + 2, y + 2, dx - 4, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-			}
-			else if (borderMode == BORDER_LEFTRIGHT)
-			{
-				frameBuffer->paintBoxRel(x + 2, y, dx - 4, height, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-			}
-			else if (borderMode == BORDER_TOPBOTTOM)
-			{
-				frameBuffer->paintBoxRel(x, y + 2, dx, height - 4, bgcolor, NO_RADIUS, CORNER_NONE, itemGradient);
-			} 
+			paintItemBox(height, bgcolor);
 		}
 		else
 		{
-			if (paintFrame)
-					frameBuffer->paintBoxRel(x, y, dx, height, bgcolor);
-			else
-			{
-				if (background)
-				{
-					frameBuffer->restoreScreen(x, y, dx, height, background);
-							
-					delete [] background;
-					background = NULL;
-				}
-			}
+			refreshItemBox(height, bgcolor);
 		}
 
 		// icon1 (right)

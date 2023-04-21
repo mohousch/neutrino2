@@ -176,9 +176,18 @@ class CMenuItem
 		bool pulldown;
 
 		CMenuItem();
-		virtual ~CMenuItem(){};
+		virtual ~CMenuItem()
+		{
+			if (background)
+			{
+				delete [] background;
+				background = NULL;
+			}
+		};
 
 		virtual void init(const int X, const int Y, const int DX, const int OFFX);
+		virtual void paintItemBox(int dy, fb_pixel_t col);
+		virtual void refreshItemBox(int dy, fb_pixel_t col);
 		virtual int paint(bool selected = false, bool AfterPulldown = false) = 0;
 		virtual int getHeight(void) const = 0;
 		virtual int getWidth(void) const
@@ -202,8 +211,6 @@ class CMenuItem
 		//
 		virtual void setOption(const char* text){if (text) option = text;};
 		virtual void setOptionInfo(const char* text){if (text) optionInfo = text;};
-
-		//
 		virtual void setInfo1(const char* const text){if (text) info1 = text;};
 		virtual void setInfo2(const char* const text){if (text) info2 = text;};
 		virtual void setOptionInfo1(const char* const text){if (text) option_info1 = text;};
