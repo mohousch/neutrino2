@@ -2266,7 +2266,7 @@ void CTestMenu::testCWindowCComponent()
 	headLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
 	headLabel.setColor(COL_ORANGE);
 	headLabel.enablePaintBG();
-	headLabel.setText("CComponets");
+	headLabel.setText("CComponents");
 	headLabel.setPosition(Box.iX + headLeftIcon.iWidth + BORDER_LEFT, Box.iY, Box.iWidth - headLeftIcon.iWidth - BORDER_LEFT, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
 	
 	windowWidget->addCCItem(&headLabel);
@@ -2350,6 +2350,7 @@ void CTestMenu::testCWindowCComponent()
 	// text
 	CCText testText;
 	testText.setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
+	testText.setColor(COL_GREEN);
 	testText.setText(buffer.c_str());
 	
 	windowWidget->addCCItem(&testText);

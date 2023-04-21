@@ -977,7 +977,7 @@ CCText::CCText(const int x, const int y, const int dx, const int dy)
 	
 	font = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
 	color = COL_MENUCONTENT;
-	useBG = false;
+	paintBG = false; 
 	
 	//
 	Text.clear();
@@ -991,7 +991,7 @@ CCText::CCText(const int x, const int y, const int dx, const int dy)
 ////
 void CCText::addTextToArray(const std::string & text) // UTF-8
 {
-	if (text==" ")
+	if (text == " ")
 	{
 		emptyLineCount ++;
 		
@@ -1023,9 +1023,9 @@ void CCText::processTextToArray(std::string text) // UTF-8
 				aktWord += *text_;
 
 			// check the wordwidth - add to this line if size ok
-			int aktWordWidth = g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO2]->getRenderWidth(aktWord);
+			int aktWordWidth = g_Font[font]->getRenderWidth(aktWord);
 			
-			if((aktWordWidth + aktWidth) < (cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT))
+			if((aktWordWidth + aktWidth) < (cCBox.iWidth))
 			{	
 				//space ok, add
 				aktWidth += aktWordWidth;
@@ -1074,7 +1074,7 @@ void CCText::paint()
 
 	for(int i = 0; i < textSize && i < medlinecount; i++, y += medlineheight)
 	{
-		g_Font[font]->RenderString(cCBox.iX + BORDER_LEFT, y + medlineheight, cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT, Text[i], color, 0, true, useBG); // UTF-8
+		g_Font[font]->RenderString(cCBox.iX, y + medlineheight, cCBox.iWidth, Text[i], color, 0, true, paintBG); // UTF-8
 	}
 }
 

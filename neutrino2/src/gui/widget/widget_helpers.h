@@ -351,7 +351,7 @@ class CCLabel : public CComponent
 		
 		//
 		bool savescreen;
-		uint32_t* background;
+		fb_pixel_t* background;
 		
 		//
 		CCLabel(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0, bool save = false);
@@ -385,7 +385,7 @@ class CCText : public CComponent
 		unsigned int font;
 		std::vector<std::string> Text;
 		uint8_t color;
-		bool useBG;
+		bool paintBG;
 		
 		//
 		CCText(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
@@ -395,7 +395,7 @@ class CCText : public CComponent
 		void setFont(unsigned int f){font = f;};
 		void setColor(uint8_t c){color = c;};
 		void setText(const char* const text){processTextToArray(text);};
-		void useBackground(void){useBG = true;};
+		void enablePaintBG(){paintBG = true;};
 		
 		//
 		void paint();
