@@ -976,34 +976,106 @@ CCText::CCText(const int x, const int y, const int dx, const int dy)
 	cCBox.iHeight = dy;
 	
 	font = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
-	mode = AUTO_WIDTH;
 	color = COL_MENUCONTENT;
 	useBG = false;
 	
-	Text = " ";
+	//
+	Text.clear();
 	
+	medlineheight = g_Font[font]->getHeight();
+	medlinecount  = cCBox.iHeight / medlineheight;
+
 	cc_type = CC_TEXT;
+}
+
+////
+void CCText::addTextToArray(const std::string & text) // UTF-8
+{
+	if (text==" ")
+	{
+		emptyLineCount ++;
+		
+		if(emptyLineCount < 2)
+		{
+			Text.push_back(text);
+		}
+	}
+	else
+	{
+		emptyLineCount = 0;
+		Text.push_back(text);
+	}
+}
+
+void CCText::processTextToArray(std::string text) // UTF-8
+{
+	std::string aktLine = "";
+	std::string aktWord = "";
+	int aktWidth = 0;
+	text += ' ';
+	char* text_ = (char*) text.c_str();
+
+	while(*text_ != 0)
+	{
+		if ( (*text_ == ' ') || (*text_ == '\n') || (*text_ == '-') || (*text_ == '.') )
+		{
+			if(*text_ != '\n')
+				aktWord += *text_;
+
+			// check the wordwidth - add to this line if size ok
+			int aktWordWidth = g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO2]->getRenderWidth(aktWord);
+			
+			if((aktWordWidth + aktWidth) < (cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT))
+			{	
+				//space ok, add
+				aktWidth += aktWordWidth;
+				aktLine += aktWord;
+			
+				if(*text_ == '\n')
+				{	//enter-handler
+					addTextToArray(aktLine);
+					aktLine = "";
+					aktWidth = 0;
+				}	
+				aktWord = "";
+			}
+			else
+			{	
+				//new line needed
+				addTextToArray( aktLine );
+				aktLine = aktWord;
+				aktWidth = aktWordWidth;
+				aktWord = "";
+				
+				if(*text_ == '\n')
+					continue;
+			}
+		}
+		else
+		{
+			aktWord += *text_;
+		}
+		text_++;
+	}
+	//add the rest
+	addTextToArray( aktLine + aktWord );
 }
 
 void CCText::paint()
 {
 	dprintf(DEBUG_INFO, "CCText::paint\n");
-	
-	CTextBox textBox(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 
-	textBox.paintMainFrame(false);
-	textBox.enableSaveScreen();
-	textBox.setMode(mode);
-	textBox.setFont(font);
-	textBox.setTextColor(color);
+	// recalculate
+	medlineheight = g_Font[font]->getHeight();
+	medlinecount = cCBox.iHeight / medlineheight;
 
-	// caption
-	if(!Text.empty())
+	int textSize = Text.size();
+	int y = cCBox.iY + 10;
+
+	for(int i = 0; i < textSize && i < medlinecount; i++, y += medlineheight)
 	{
-		textBox.setText(Text.c_str(), NULL, 0, 0, PIC_RIGHT, false, useBG);
+		g_Font[font]->RenderString(cCBox.iX + BORDER_LEFT, y + medlineheight, cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT, Text[i], color, 0, true, useBG); // UTF-8
 	}
-	
-	textBox.paint();
 }
 
 // grid

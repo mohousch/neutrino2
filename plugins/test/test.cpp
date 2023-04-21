@@ -1188,7 +1188,7 @@ void CTestMenu::testCWindowWidget()
 	// text
 	CCText testText;
 	testText.setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
-	testText.setMode(AUTO_WIDTH);
+	testText.setColor(COL_RED);
 	testText.setText(buffer.c_str());
 	
 	testWidget->addCCItem(&testText);
@@ -1783,7 +1783,6 @@ void CTestMenu::testMultiWidget()
 	// text
 	CCText testText(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
 	//testText.setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
-	testText.setMode(AUTO_WIDTH);
 	testText.setText(buffer.c_str());
 	
 	windowWidget->addCCItem(&testText);
@@ -2351,7 +2350,6 @@ void CTestMenu::testCWindowCComponent()
 	// text
 	CCText testText;
 	testText.setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
-	testText.setMode(AUTO_WIDTH);
 	testText.setText(buffer.c_str());
 	
 	windowWidget->addCCItem(&testText);

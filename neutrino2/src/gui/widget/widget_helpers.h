@@ -22,6 +22,17 @@
 #ifndef __gui_widget_helpers_h__
 #define __gui_widget_helpers_h__
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <string>
+#include <vector>
+
 #include <driver/fontrenderer.h>
 #include <driver/framebuffer.h>
 #include <driver/color.h>
@@ -360,13 +371,19 @@ class CCLabel : public CComponent
 //CText
 class CCText : public CComponent
 {
+	private:
+		int emptyLineCount;
+		int medlineheight;
+		int medlinecount;
+		
+		void addTextToArray(const std::string & text );
+		void processTextToArray(std::string text);
 	public:
 		CFrameBuffer* frameBuffer;
 		
 		//
 		unsigned int font;
-		int mode;
-		std::string Text;
+		std::vector<std::string> Text;
 		uint8_t color;
 		bool useBG;
 		
@@ -376,9 +393,8 @@ class CCText : public CComponent
 		
 		//
 		void setFont(unsigned int f){font = f;};
-		void setMode(int m){mode = m;};
 		void setColor(uint8_t c){color = c;};
-		void setText(const char* const text){Text = text? text : "";};
+		void setText(const char* const text){processTextToArray(text);};
 		void useBackground(void){useBG = true;};
 		
 		//

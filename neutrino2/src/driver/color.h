@@ -48,8 +48,8 @@
 #define COL_PURPLE		 		0x06
 #define COL_TEAL		 		0x07
 #define COL_NOBEL		 		0x08
-#define COL_MATTERHORN 			0x09
-#define COL_RED	 			0x0A
+#define COL_MATTERHORN 				0x09
+#define COL_RED	 				0x0A
 #define COL_LIME	 			0x0B
 #define COL_YELLOW	 			0x0C
 #define COL_BLUE	 			0x0D
@@ -59,13 +59,13 @@
 #define COL_BLACK	 			0x11
 #define COL_ORANGE				0x12
 #define COL_SILVER				0x13
-#define COL_BACKGROUND 			0xFF
+#define COL_BACKGROUND 				0xFF
 
 // neutrino font colors
-#define COL_MENUCONTENTINACTIVE		254-8*1
-#define COL_MENUCONTENTSELECTED		254-8*2
+#define COL_MENUCONTENTINACTIVE			254-8*1
+#define COL_MENUCONTENTSELECTED			254-8*2
 #define COL_MENUCONTENTDARK			254-8*3
-#define COL_MENUCONTENT			254-8*4
+#define COL_MENUCONTENT				254-8*4
 #define COL_MENUHEAD				254-8*5
 #define COL_MENUFOOT				254-8*6
 #define COL_INFOBAR				254-8*7
@@ -77,15 +77,15 @@
 #define COL_MAROON_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_MAROON]
 #define COL_GREEN_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_GREEN]
 #define COL_OLIVE_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_OLIVE]
-#define COL_NAVY_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_NAVY]
+#define COL_NAVY_PLUS_0				CFrameBuffer::getInstance()->realcolor[COL_NAVY]
 #define COL_PURPLE_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_PURPLE]
-#define COL_TEAL_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_TEAL]
+#define COL_TEAL_PLUS_0				CFrameBuffer::getInstance()->realcolor[COL_TEAL]
 #define COL_NOBEL_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_NOBEL]
 #define COL_MATTERHORN_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_MATTERHORN]
 #define COL_RED_PLUS_0				CFrameBuffer::getInstance()->realcolor[COL_RED]
-#define COL_LIME_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_LIME]
+#define COL_LIME_PLUS_0				CFrameBuffer::getInstance()->realcolor[COL_LIME]
 #define COL_YELLOW_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_YELLOW]
-#define COL_BLUE_PLUS_0                       CFrameBuffer::getInstance()->realcolor[COL_BLUE]
+#define COL_BLUE_PLUS_0                       	CFrameBuffer::getInstance()->realcolor[COL_BLUE]
 #define COL_MAGENTA_PLUS_0 			CFrameBuffer::getInstance()->realcolor[COL_MAGENTA]
 #define COL_AQUA_PLUS_0 			CFrameBuffer::getInstance()->realcolor[COL_AQUA]
 #define COL_WHITE_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_WHITE]
@@ -127,7 +127,7 @@
 #define COL_MENUFOOT_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_MENUFOOT + 0]
 
 // itemInfo
-#define COL_MENUHINT_PLUS_0        	CFrameBuffer::getInstance()->realcolor[COL_MENUHINT + 0]
+#define COL_MENUHINT_PLUS_0        		CFrameBuffer::getInstance()->realcolor[COL_MENUHINT + 0]
 
 
 //
