@@ -393,7 +393,7 @@ class CCText : public CComponent
 		
 		//
 		void setFont(unsigned int f){font = f;};
-		void setColor(uint8_t c){color = c;};
+		void setColor(uint8_t col){color = col;};
 		void setText(const char* const text){processTextToArray(text);};
 		void enablePaintBG(){paintBG = true;};
 		

@@ -6777,7 +6777,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new ClistBoxItem("CPLPINInput", true, NULL, this, "plpininput"));
 	mainMenu->addItem(new ClistBoxItem("CPINChangeWidget", true, NULL, this, "pinchangewidget"));
 	mainMenu->addItem(new ClistBoxItem("CIPInput", true, NULL, this, "ipinput"));
-	mainMenu->addItem(new ClistBoxItem("CMACInput", true, NULL, this, "macinput"));
+	//mainMenu->addItem(new ClistBoxItem("CMACInput", true, NULL, this, "macinput"));
 	//mainMenu->addItem(new ClistBoxItem("CDateInput", true, NULL, this, "dateinput"));
 	//mainMenu->addItem(new ClistBoxItem("CTimeInput", true, NULL, this, "timeinput"));
 	//mainMenu->addItem(new ClistBoxItem("CIntInput", true, NULL, this, "intinput"));
