@@ -37,6 +37,8 @@
 #include <system/flashtool.h>
 #include <system/debug.h>
 
+#include <gui/widget/widget_helpers.h>
+
 
 CImageInfo::CImageInfo()
 {
@@ -206,39 +208,16 @@ void CImageInfo::paint()
 	paintLine(xpos + x_offset, font_info, homepage);
 
 	// license
-	ypos += 5*iheight;
+	ypos += 2*iheight;
 	paintLine(xpos, font_info, _("License:"));
-	paintLine(xpos + x_offset, font_small, "This program is free software; you can redistribute it and/or modify");
-
-	ypos += sheight;
-	paintLine(xpos + x_offset, font_small, "it under the terms of the GNU General Public License as published by");
-
-	ypos += sheight;
-	paintLine(xpos + x_offset, font_small, "the Free Software Foundation; either version 2 of the License, or");
-
-	ypos += sheight;
-	paintLine(xpos + x_offset, font_small, "(at your option) any later version.");
-
-	ypos += sheight;
-	paintLine(xpos + x_offset, font_small, "This program is distributed in the hope that it will be useful,");
-
-	ypos += sheight;
-	paintLine(xpos + x_offset, font_small, "but WITHOUT ANY WARRANTY; without even the implied warranty of");
-
-	ypos += sheight;
-	paintLine(xpos + x_offset, font_small, "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.");
-
-	ypos += sheight;
-	paintLine(xpos + x_offset, font_small, "See the GNU General Public License for more details.");
-
-	ypos += sheight;
-	paintLine(xpos + x_offset, font_small, "You should have received a copy of the GNU General Public License");
-
-	ypos += sheight;
-	paintLine(xpos + x_offset, font_small, "along with this program; if not, write to the Free Software");
-
-	ypos += sheight;
-	paintLine(xpos + x_offset, font_small, "Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.");	
+	
+	std::string Text = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\nYou should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.";
+	
+	CCText licence;
+	licence.setPosition(xpos + x_offset, ypos, width - x_offset, height - 2*iheight);
+	licence.setText(Text.c_str());
+	
+	licence.paint();
 }
 
 
