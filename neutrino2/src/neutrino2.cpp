@@ -348,7 +348,6 @@ CNeutrinoApp * CNeutrinoApp::getInstance()
 	if(!neutrinoApp) 
 	{
 		neutrinoApp = new CNeutrinoApp();
-		dprintf(DEBUG_NORMAL, "NeutrinoApp Instance created\n");
 	}
 
 	return neutrinoApp;

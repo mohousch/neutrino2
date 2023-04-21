@@ -69,7 +69,7 @@ CLCD::CLCD()
 	volume = 0;
 	timeout_cnt = 0;
 	icon_dolby = false;	
-	has_lcd = true;
+	has_lcd = false;
 	is4digits = false;
 	istftlcd = false;
 	clearClock = 0;
@@ -211,8 +211,11 @@ bool CLCD::lcdInit(const char * fontfile, const char * fontname, const char * fo
 	if (!display.isAvailable())
 	{
 		dprintf(DEBUG_NORMAL, "CLCD::lcdInit: exit...(no lcd-support)\n");
+		has_lcd = false;
 		return false;
 	}
+	
+	has_lcd = true;
  
 	for (int i = 0; i < LCD_NUMBER_OF_ELEMENTS; i++)
 	{

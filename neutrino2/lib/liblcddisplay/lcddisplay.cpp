@@ -109,6 +109,7 @@ CLCDDisplay::CLCDDisplay()
 	xres = 132;
 	yres = 64; 
 	bpp = 8;
+	fd = -1;
 	
 	flipped = false;
 	inverted = 0;
@@ -126,6 +127,7 @@ CLCDDisplay::CLCDDisplay()
 		xres = 128;
 		if (!access("/proc/stb/lcd/oled_brightness", W_OK) || !access("/proc/stb/fp/oled_brightness", W_OK) )
 			is_oled = 2;
+			
 		fd = open(LCD_DEVICE, O_RDWR);
 	} 
 	else
@@ -145,6 +147,7 @@ CLCDDisplay::CLCDDisplay()
 		ioctl(fd, LCD_IOCTL_ASC_MODE, &i);
 		
 		FILE *f = fopen("/proc/stb/lcd/xres", "r");
+		
 		if (f)
 		{
 			int tmp;
