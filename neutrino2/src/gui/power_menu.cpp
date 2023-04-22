@@ -66,8 +66,13 @@ void CPowerMenu::showMenu(void)
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("powermenu");
 	
-	if (widget == NULL)
+	if (widget)
 	{
+		powerMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget();
 		powerMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		powerMenu->setWidgetMode(MODE_MENU);
@@ -85,32 +90,34 @@ void CPowerMenu::showMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		powerMenu->setFootButtons(&btn); 
-	
-		// sleep timer
-		powerMenu->addItem(new ClistBoxItem(_("Sleeptimer"), true, NULL, new CSleepTimerWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
-
-		// restart neutrino
-		powerMenu->addItem(new ClistBoxItem(_("GUI restart"), true, NULL, CNeutrinoApp::getInstance(), "restart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RESTART));
-
-		// standby
-		powerMenu->addItem(new ClistBoxItem(_("Standby"), true, NULL, CNeutrinoApp::getInstance(), "standby", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STANDBY));
-
-		// reboot
-		powerMenu->addItem(new ClistBoxItem(_("Reboot"), true, NULL, CNeutrinoApp::getInstance(), "reboot", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_REBOOT));
-
-		// shutdown
-		powerMenu->addItem(new ClistBoxItem(_("Shutdown"), true, NULL, CNeutrinoApp::getInstance(), "shutdown", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SHUTDOWN));
-
+		
 		//
-		powerMenu->integratePlugins(CPlugins::I_TYPE_POWER);
-	
-		//
-		widget = new CWidget(powerMenu->getWindowsPos().iX, powerMenu->getWindowsPos().iY, powerMenu->getWindowsPos().iWidth, powerMenu->getWindowsPos().iHeight);
+		widget->setPosition(powerMenu->getWindowsPos().iX, powerMenu->getWindowsPos().iY, powerMenu->getWindowsPos().iWidth, powerMenu->getWindowsPos().iHeight);
 		widget->name = "powermenu";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		widget->addWidgetItem(powerMenu);
 	}
+	
+	powerMenu->clear();
+	
+	// sleep timer
+	powerMenu->addItem(new ClistBoxItem(_("Sleeptimer"), true, NULL, new CSleepTimerWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
+
+	// restart neutrino
+	powerMenu->addItem(new ClistBoxItem(_("GUI restart"), true, NULL, CNeutrinoApp::getInstance(), "restart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RESTART));
+
+	// standby
+	powerMenu->addItem(new ClistBoxItem(_("Standby"), true, NULL, CNeutrinoApp::getInstance(), "standby", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STANDBY));
+
+	// reboot
+	powerMenu->addItem(new ClistBoxItem(_("Reboot"), true, NULL, CNeutrinoApp::getInstance(), "reboot", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_REBOOT));
+
+	// shutdown
+	powerMenu->addItem(new ClistBoxItem(_("Shutdown"), true, NULL, CNeutrinoApp::getInstance(), "shutdown", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SHUTDOWN));
+
+	//
+	powerMenu->integratePlugins(CPlugins::I_TYPE_POWER);
 	
 	//
 	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);

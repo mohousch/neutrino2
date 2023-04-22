@@ -87,8 +87,13 @@ void CServiceMenu::showMenu(void)
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("system");
 	
-	if (widget == NULL)
+	if (widget)
 	{
+		service = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget();
 		service = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		service->setWidgetMode(MODE_MENU);
@@ -106,37 +111,35 @@ void CServiceMenu::showMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		service->setFootButtons(&btn);
-	
-		// tuner/scan setup
-		service->addItem(new ClistBoxItem(_("Scan transponder"), true, NULL, new CTunerSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCANSETTINGS));
-
-		// reload Channels
-		//service->addItem(new ClistBoxItem(_("Reload channel lists"), true, NULL, CNeutrinoApp::getInstance(), "reloadchannels", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_RELOADCHANNELS));
-		
-		// Bouquets Editor
-		service->addItem(new ClistBoxItem(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));
-		
-		// CI Cam 	
-#if defined (ENABLE_CI)
-		service->addItem(new ClistBoxItem(_("CI Cam"), true, NULL, g_CamHandler, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CICAM));
-#endif
-		
-		// software update
-		service->addItem(new ClistBoxItem(_("Software update"), true, NULL, new CUpdateSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SOFTUPDATE));
-
-		service->integratePlugins(CPlugins::I_TYPE_SERVICE);
 		
 		//
-		widget = new CWidget(service->getWindowsPos().iX, service->getWindowsPos().iY, service->getWindowsPos().iWidth, service->getWindowsPos().iHeight);
+		widget->setPosition(service->getWindowsPos().iX, service->getWindowsPos().iY, service->getWindowsPos().iWidth, service->getWindowsPos().iHeight);
 		widget->name = "system";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		widget->addWidgetItem(service);
 	}
 	
+	service->clear();
+	
+	// tuner/scan setup
+	service->addItem(new ClistBoxItem(_("Scan transponder"), true, NULL, new CTunerSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCANSETTINGS));
+		
+	// Bouquets Editor
+	service->addItem(new ClistBoxItem(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));
+		
+	// CI Cam 	
+#if defined (ENABLE_CI)
+	service->addItem(new ClistBoxItem(_("CI Cam"), true, NULL, g_CamHandler, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CICAM));
+#endif
+		
+	// software update
+	service->addItem(new ClistBoxItem(_("Software update"), true, NULL, new CUpdateSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SOFTUPDATE));
+
+	service->integratePlugins(CPlugins::I_TYPE_SERVICE);
+	
 	//
 	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 }
-
 

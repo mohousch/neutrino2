@@ -67,7 +67,11 @@ void CMediaPlayerMenu::showMenu()
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("mediaplayer");
 	
-	if (widget == NULL)
+	if (widget)
+	{
+		MediaPlayer = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
 	{
 		MediaPlayer = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
@@ -86,9 +90,6 @@ void CMediaPlayerMenu::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		MediaPlayer->setFootButtons(&btn); 
-
-		//
-		MediaPlayer->integratePlugins(CPlugins::I_TYPE_MULTIMEDIA);
 		
 		//
 		widget = new CWidget(MediaPlayer->getWindowsPos().iX, MediaPlayer->getWindowsPos().iY, MediaPlayer->getWindowsPos().iWidth, MediaPlayer->getWindowsPos().iHeight);
@@ -97,6 +98,11 @@ void CMediaPlayerMenu::showMenu()
 		
 		widget->addWidgetItem(MediaPlayer);
 	}
+	
+	MediaPlayer->clear();
+
+	//
+	MediaPlayer->integratePlugins(CPlugins::I_TYPE_MULTIMEDIA);
 	
 	//
 	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);

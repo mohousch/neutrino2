@@ -80,8 +80,13 @@ void CNeutrinoApp::mainMenu(void)
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("mainmenu");
 	
-	if (widget == NULL)
+	if (widget)
 	{
+		nMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget();
 		nMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		nMenu->setWidgetMode(MODE_MENU);
@@ -99,56 +104,59 @@ void CNeutrinoApp::mainMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		nMenu->setFootButtons(&btn);
-			  
-		// tv modus
-		item = new ClistBoxItem(_("TV / Radio"), true, NULL, this, "tvradioswitch", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV);
-		nMenu->addItem(item, true);
-
-		// epg / sleeptimer
-		item = new ClistBoxItem(_("Timer / EPG"), true, NULL, new CEPGMenuHandler(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
-		nMenu->addItem(item);
-			
-#if defined (ENABLE_SCART)
-		// scart
-		item = new ClistBoxItem(_("Scart Mode"), true, NULL, this, "scart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCART);
-		nMenu->addItem(item);
-#endif
-
-		// features
-		item = new ClistBoxItem(_("Features"), true, NULL, this, "features", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FEATURES);
-		nMenu->addItem(item);
 		
-		// service
-		item = new ClistBoxItem(_("System"), true, NULL, new CServiceMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
-		nMenu->addItem(item);
-			
-		// main setting
-		nMenu->addItem(new ClistBoxItem(_("Settings"), true, NULL, new CMainSettingsMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SETTINGS));
-		
-		// osd
-		item = new ClistBoxItem(_("OSD"), true, NULL, new COSDSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
-		nMenu->addItem(item);
-		
-		//box info
-		item = new ClistBoxItem(_("Information"), true, NULL, new CInfoMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO);
-		nMenu->addItem(item);
-
-		// power menu
-		item = new ClistBoxItem(_("Power Menu"), true, NULL, new CPowerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_POWERMENU);
-		nMenu->addItem(item);
-		
-		// mediaplayer
-		item = new ClistBoxItem(_("Media Player"), true, NULL, new CMediaPlayerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
-		nMenu->addItem(item);
-		
-		//
-		widget = new CWidget(nMenu->getWindowsPos().iX, nMenu->getWindowsPos().iY, nMenu->getWindowsPos().iWidth, nMenu->getWindowsPos().iHeight);
+		widget->setPosition(nMenu->getWindowsPos().iX, nMenu->getWindowsPos().iY, nMenu->getWindowsPos().iWidth, nMenu->getWindowsPos().iHeight);
 		widget->name = "mainmenu";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		widget->addWidgetItem(nMenu);
 	}
+	
+	nMenu->clear();
+			  
+	// tv modus
+	item = new ClistBoxItem(_("TV / Radio"), true, NULL, this, "tvradioswitch", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV);
+	nMenu->addItem(item, true);
 
+	// epg / sleeptimer
+	item = new ClistBoxItem(_("Timer / EPG"), true, NULL, new CEPGMenuHandler(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
+	nMenu->addItem(item);
+			
+#if defined (ENABLE_SCART)
+	// scart
+	item = new ClistBoxItem(_("Scart Mode"), true, NULL, this, "scart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCART);
+	nMenu->addItem(item);
+#endif
+
+	// features
+	item = new ClistBoxItem(_("Features"), true, NULL, this, "features", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FEATURES);
+	nMenu->addItem(item);
+		
+	// service
+	item = new ClistBoxItem(_("System"), true, NULL, new CServiceMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
+	nMenu->addItem(item);
+			
+	// main setting
+	item = new ClistBoxItem(_("Settings"), true, NULL, new CMainSettingsMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SETTINGS);
+	nMenu->addItem(item);
+		
+	// osd
+	item = new ClistBoxItem(_("OSD"), true, NULL, new COSDSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
+	nMenu->addItem(item);
+		
+	//box info
+	item = new ClistBoxItem(_("Information"), true, NULL, new CInfoMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO);
+	nMenu->addItem(item);
+
+	// power menu
+	item = new ClistBoxItem(_("Power Menu"), true, NULL, new CPowerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_POWERMENU);
+	nMenu->addItem(item);
+		
+	// mediaplayer
+	item = new ClistBoxItem(_("Media Player"), true, NULL, new CMediaPlayerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
+	nMenu->addItem(item);
+
+	//
 	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 	widget->exec(NULL, "");
 }
@@ -279,6 +287,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 	}
 	else
 	{
+		widget = new CWidget();
 		menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
 		menu->setWidgetMode(MODE_MENU);
@@ -298,7 +307,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 		menu->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(menu->getWindowsPos().iX, menu->getWindowsPos().iY, menu->getWindowsPos().iWidth, menu->getWindowsPos().iHeight);
+		widget->setPosition(menu->getWindowsPos().iX, menu->getWindowsPos().iY, menu->getWindowsPos().iWidth, menu->getWindowsPos().iHeight);
 		widget->name = "features";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		

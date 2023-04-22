@@ -95,8 +95,13 @@ void COSDSettings::showMenu(void)
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("osd");
 	
-	if (widget == NULL)
+	if (widget)
 	{
+		osdSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget();
 		osdSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		osdSettings->setWidgetMode(MODE_MENU);
@@ -113,53 +118,52 @@ void COSDSettings::showMenu(void)
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
-		osdSettings->setFootButtons(&btn); 
-	
-		// skin manager
-		osdSettings->addItem( new ClistBoxItem(_("Skin select"), true, NULL, new CSkinManager(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
-		
-		// skin style
-		osdSettings->addItem(new ClistBoxItem(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
-
-		// Themes
-		osdSettings->addItem( new ClistBoxItem(_("Themes"), true, NULL, new CThemes(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
-
-		// menu colors
-		osdSettings->addItem( new ClistBoxItem(_("Menu"), true, NULL, new COSDMenuColorSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MENUCOLORS));
-
-		// infobar
-		osdSettings->addItem( new ClistBoxItem(_("Infobar"), true, NULL, new COSDInfoBarColorSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_INFOBARCOLORS));
-
-		// language
-		osdSettings->addItem(new ClistBoxItem(_("Language"), true, NULL, new CLanguageSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_LANGUAGE));
-		
-		// font
-		osdSettings->addItem(new ClistBoxItem(_("Font"), true, NULL, new CFontSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FONT));
-		
-		// osd timing
-		osdSettings->addItem(new ClistBoxItem(_("Timing"), true, NULL, new COSDTimingSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDTIMING));
-
-		// sceensetup
-		osdSettings->addItem(new ClistBoxItem(_("Screen"), true, NULL, new CScreenSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCREENSETUP));
-		
-		// alpha setup
-		//FIXME:
-		//CAlphaSetup * chAlphaSetup = new CAlphaSetup(_("Alpha"), &g_settings.gtx_alpha);
-		//osdSettings->addItem( new ClistBoxItem(_("Alpha Setup"), true, NULL, chAlphaSetup, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_ALPHASETUP));
-		
-		// diverses
-		osdSettings->addItem(new ClistBoxItem(_("Misc settings"), true, NULL, new COSDDiverses(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
-		
-		// skin style
-		//osdSettings->addItem(new ClistBoxItem(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+		osdSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(osdSettings->getWindowsPos().iX, osdSettings->getWindowsPos().iY, osdSettings->getWindowsPos().iWidth, osdSettings->getWindowsPos().iHeight);
+		widget->setPosition(osdSettings->getWindowsPos().iX, osdSettings->getWindowsPos().iY, osdSettings->getWindowsPos().iWidth, osdSettings->getWindowsPos().iHeight);
 		widget->name = "osd";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		widget->addWidgetItem(osdSettings);
 	}
+	
+	osdSettings->clear();
+	
+	// skin manager
+	osdSettings->addItem( new ClistBoxItem(_("Skin select"), true, NULL, new CSkinManager(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
+		
+	// skin style
+	osdSettings->addItem(new ClistBoxItem(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
+
+	// Themes
+	osdSettings->addItem( new ClistBoxItem(_("Themes"), true, NULL, new CThemes(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
+
+	// menu colors
+	osdSettings->addItem( new ClistBoxItem(_("Menu"), true, NULL, new COSDMenuColorSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MENUCOLORS));
+
+	// infobar
+	osdSettings->addItem( new ClistBoxItem(_("Infobar"), true, NULL, new COSDInfoBarColorSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_INFOBARCOLORS));
+
+	// language
+	osdSettings->addItem(new ClistBoxItem(_("Language"), true, NULL, new CLanguageSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_LANGUAGE));
+		
+	// font
+	osdSettings->addItem(new ClistBoxItem(_("Font"), true, NULL, new CFontSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FONT));
+		
+	// osd timing
+	osdSettings->addItem(new ClistBoxItem(_("Timing"), true, NULL, new COSDTimingSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDTIMING));
+
+	// sceensetup
+	osdSettings->addItem(new ClistBoxItem(_("Screen"), true, NULL, new CScreenSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCREENSETUP));
+		
+	// alpha setup
+	//FIXME:
+	//CAlphaSetup * chAlphaSetup = new CAlphaSetup(_("Alpha"), &g_settings.gtx_alpha);
+	//osdSettings->addItem( new ClistBoxItem(_("Alpha Setup"), true, NULL, chAlphaSetup, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_ALPHASETUP));
+		
+	// diverses
+	osdSettings->addItem(new ClistBoxItem(_("Misc settings"), true, NULL, new COSDDiverses(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
 	
 	//
 	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);

@@ -82,8 +82,13 @@ void CMainSettingsMenu::showMenu(void)
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("settings");
 	
-	if (widget == NULL)
+	if (widget)
 	{
+		mainSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget();
 		mainSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		mainSettings->setWidgetMode(MODE_MENU);
@@ -100,69 +105,71 @@ void CMainSettingsMenu::showMenu(void)
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
-		mainSettings->setFootButtons(&btn); 
-
-		// video settings
-		mainSettings->addItem(new ClistBoxItem(_("Video settings"), true, NULL, new CVideoSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_VIDEOSETTINGS));
-
-		// audio settings
-		mainSettings->addItem(new ClistBoxItem(_("Audio settings"), true, NULL, new CAudioSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_AUDIOSETTINGS));
-
-		// parentallock
-		mainSettings->addItem(new ClistBoxItem(_("Parentallock settings"), true, NULL, new CParentalLockSettings(), NULL, RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_PARENTALLOCKSETTINGS));
-
-		// network settings
-		mainSettings->addItem(new ClistBoxItem(_("Network settings"), true, NULL,  CNetworkSettings::getInstance(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_NETWORKSETTINGS));
-
-		// recording settings
-		mainSettings->addItem(new ClistBoxItem(_("Recording settings"), true, NULL, new CRecordingSettings(), NULL, RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_RECORDINGSETTINGS));
-
-		// movieplayer settings
-		mainSettings->addItem(new ClistBoxItem(_("Movieplayer settings"), true, NULL, new CMoviePlayerSettings(), NULL, RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_MOVIEPLAYERSETTINGS));
-
-		// vfd/lcd settings
-		if (CVFD::getInstance()->has_lcd)
-		mainSettings->addItem(new ClistBoxItem(_("Display settings"), true, NULL, new CLCDSettings(), NULL, RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_LCDSETTINGS));	
-
-		// remote control settings
-		mainSettings->addItem(new ClistBoxItem(_("Remote Control settings"), true, NULL, new CRemoteControlSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_REMOTECONTROLSETTINGS));
-
-		// audioplayer settings
-		mainSettings->addItem(new ClistBoxItem(_("Audioplayer settings"), true, NULL, new CAudioPlayerSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_AUDIOPLAYERSETTINGS));
+		mainSettings->setFootButtons(&btn);
 		
-		// pictureviewer settings
-		mainSettings->addItem(new ClistBoxItem(_("Pictureviewer settings"), true, NULL, new CPictureViewerSettings(), NULL, RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW, NEUTRINO_ICON_MENUITEM_PICTUREVIEWERSETTINGS));
-
-		//HDD settings
-		mainSettings->addItem(new ClistBoxItem(_("HDD settings"), true, NULL, new CHDDMenuHandler(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_HDDSETTINGS));
-		
-		//miscSettings general
-		mainSettings->addItem(new ClistBoxItem(_("Misc settings"), true, NULL, new CGeneralSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
-		
-		//channellist settings
-		mainSettings->addItem(new ClistBoxItem(_("Channellist settings"), true, NULL, new CChannelListSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CHANNELLISTSETTINGS));
-
-		// epg settings
-		mainSettings->addItem(new ClistBoxItem(_("EPG settings"), true, NULL, new CEPGSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_EPGSETTINGS));
-
-		// filebrowser settings
-		mainSettings->addItem(new ClistBoxItem(_("Filebrowser settings"), true, NULL, new CFileBrowserSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FILEBROWSERSETTINGS));
-		
-		// zapit setup (start channel)
-		mainSettings->addItem(new ClistBoxItem(_("Last Channel settings"), true, NULL, new CZapitSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STARTCHANNELSETTINGS));
-		
-		// psi setup
-		//FIXME:	
-		//CPSISetup * chPSISetup = new CPSISetup(_(PSI settings), &g_settings.contrast, &g_settings.saturation, &g_settings.brightness, &g_settings.tint);
-		//mainSettings->addItem( new ClistBoxItem(_("PSI settings"), true, NULL, chPSISetup, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_PSISETTINGS));
-	
 		//
-		widget = new CWidget(mainSettings->getWindowsPos().iX, mainSettings->getWindowsPos().iY, mainSettings->getWindowsPos().iWidth, mainSettings->getWindowsPos().iHeight);
+		widget->setPosition(mainSettings->getWindowsPos().iX, mainSettings->getWindowsPos().iY, mainSettings->getWindowsPos().iWidth, mainSettings->getWindowsPos().iHeight);
 		widget->name = "settings";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		widget->addWidgetItem(mainSettings);
 	}
+	
+	mainSettings->clear();
+
+	// video settings
+	mainSettings->addItem(new ClistBoxItem(_("Video settings"), true, NULL, new CVideoSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_VIDEOSETTINGS));
+
+	// audio settings
+	mainSettings->addItem(new ClistBoxItem(_("Audio settings"), true, NULL, new CAudioSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_AUDIOSETTINGS));
+
+	// parentallock
+	mainSettings->addItem(new ClistBoxItem(_("Parentallock settings"), true, NULL, new CParentalLockSettings(), NULL, RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_PARENTALLOCKSETTINGS));
+
+	// network settings
+	mainSettings->addItem(new ClistBoxItem(_("Network settings"), true, NULL,  CNetworkSettings::getInstance(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_NETWORKSETTINGS));
+
+	// recording settings
+	mainSettings->addItem(new ClistBoxItem(_("Recording settings"), true, NULL, new CRecordingSettings(), NULL, RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_RECORDINGSETTINGS));
+
+	// movieplayer settings
+	mainSettings->addItem(new ClistBoxItem(_("Movieplayer settings"), true, NULL, new CMoviePlayerSettings(), NULL, RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_MOVIEPLAYERSETTINGS));
+
+	// vfd/lcd settings
+	if (CVFD::getInstance()->has_lcd)
+		mainSettings->addItem(new ClistBoxItem(_("Display settings"), true, NULL, new CLCDSettings(), NULL, RC_nokey, NULL,  NEUTRINO_ICON_MENUITEM_LCDSETTINGS));	
+
+	// remote control settings
+	mainSettings->addItem(new ClistBoxItem(_("Remote Control settings"), true, NULL, new CRemoteControlSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_REMOTECONTROLSETTINGS));
+
+	// audioplayer settings
+	mainSettings->addItem(new ClistBoxItem(_("Audioplayer settings"), true, NULL, new CAudioPlayerSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_AUDIOPLAYERSETTINGS));
+		
+	// pictureviewer settings
+	mainSettings->addItem(new ClistBoxItem(_("Pictureviewer settings"), true, NULL, new CPictureViewerSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_PICTUREVIEWERSETTINGS));
+
+	//HDD settings
+	mainSettings->addItem(new ClistBoxItem(_("HDD settings"), true, NULL, new CHDDMenuHandler(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_HDDSETTINGS));
+		
+	//channellist settings
+	mainSettings->addItem(new ClistBoxItem(_("Channellist settings"), true, NULL, new CChannelListSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CHANNELLISTSETTINGS));
+
+	// epg settings
+	mainSettings->addItem(new ClistBoxItem(_("EPG settings"), true, NULL, new CEPGSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_EPGSETTINGS));
+
+	// filebrowser settings
+	mainSettings->addItem(new ClistBoxItem(_("Filebrowser settings"), true, NULL, new CFileBrowserSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FILEBROWSERSETTINGS));
+		
+	// zapit setup (start channel)
+	mainSettings->addItem(new ClistBoxItem(_("Last Channel settings"), true, NULL, new CZapitSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STARTCHANNELSETTINGS));
+		
+	// psi setup
+	//FIXME:	
+	//CPSISetup * chPSISetup = new CPSISetup(_(PSI settings), &g_settings.contrast, &g_settings.saturation, &g_settings.brightness, &g_settings.tint);
+	//mainSettings->addItem( new ClistBoxItem(_("PSI settings"), true, NULL, chPSISetup, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_PSISETTINGS));
+	
+	//miscSettings general
+	mainSettings->addItem(new ClistBoxItem(_("Misc settings"), true, NULL, new CGeneralSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
 	
 	//
 	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);

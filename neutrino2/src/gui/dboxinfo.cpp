@@ -521,8 +521,13 @@ void CInfoMenu::showMenu()
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("information");
 	
-	if (widget == NULL)
+	if (widget)
 	{
+		infoMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget();
 		infoMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		infoMenu->setWidgetMode(MODE_MENU);
@@ -539,27 +544,29 @@ void CInfoMenu::showMenu()
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
-		infoMenu->setFootButtons(&btn); 
-	
-		//
-		infoMenu->addItem( new ClistBoxItem(_("Information"), true, NULL, new CDBoxInfoWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
+		infoMenu->setFootButtons(&btn);
 		
 		//
-		infoMenu->addItem(new ClistBoxItem(_("Image info"),  true, NULL, new CImageInfo(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_IMAGEINFO), false);
-		
-		//
-		infoMenu->addItem(new ClistBoxItem(_("Stream information"), true, NULL, new CStreamInfo(), "", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
-		
-		//
-		infoMenu->integratePlugins(CPlugins::I_TYPE_MAIN);
-	
-		//
-		widget = new CWidget(infoMenu->getWindowsPos().iX, infoMenu->getWindowsPos().iY, infoMenu->getWindowsPos().iWidth, infoMenu->getWindowsPos().iHeight);
+		widget->setPosition(infoMenu->getWindowsPos().iX, infoMenu->getWindowsPos().iY, infoMenu->getWindowsPos().iWidth, infoMenu->getWindowsPos().iHeight);
 		widget->name = "information";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		widget->addWidgetItem(infoMenu);
 	}
+	
+	infoMenu->clear();
+	
+	//
+	infoMenu->addItem( new ClistBoxItem(_("Information"), true, NULL, new CDBoxInfoWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
+		
+	//
+	infoMenu->addItem(new ClistBoxItem(_("Image info"),  true, NULL, new CImageInfo(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_IMAGEINFO), false);
+		
+	//
+	infoMenu->addItem(new ClistBoxItem(_("Stream information"), true, NULL, new CStreamInfo(), "", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
+		
+	//
+	infoMenu->integratePlugins(CPlugins::I_TYPE_MAIN);
 	
 	//
 	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
