@@ -332,14 +332,14 @@ bool CNeutrinoApp::showUserMenu(int button)
 			// timerlist
 			case SNeutrinoSettings::ITEM_TIMERLIST:
 				keyhelper.get(&key, &icon, RC_yellow);
-				menu_item = new ClistBoxItem(_("Timerlist"), true, NULL, new CTimerList, "-1", key, icon, NEUTRINO_ICON_MENUITEM_TIMERLIST);
+				menu_item = new ClistBoxItem(_("Timerlist"), true, NULL, new CTimerList, "-1", key, NULL, NEUTRINO_ICON_MENUITEM_TIMERLIST);
 				menu->addItem(menu_item, false);
 				break;
 
 			// rclock
 			case SNeutrinoSettings::ITEM_REMOTE:
 				keyhelper.get(&key, &icon);
-				menu_item = new ClistBoxItem(_("Remote Control lock"), true, NULL, this->rcLock, "-1", key, icon, NEUTRINO_ICON_MENUITEM_PARENTALLOCKSETTINGS);
+				menu_item = new ClistBoxItem(_("Remote Control lock"), true, NULL, this->rcLock, "-1", key, NULL, NEUTRINO_ICON_MENUITEM_PARENTALLOCKSETTINGS);
 				menu->addItem(menu_item, false);
 				break;
 				
@@ -347,7 +347,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_VTXT:
 				{
 					keyhelper.get(&key, &icon);
-					menu_item = new ClistBoxItem(_("Teletext"), true, NULL, new CTuxtxtChangeExec, "-1", key, icon, NEUTRINO_ICON_MENUITEM_VTXT);
+					menu_item = new ClistBoxItem(_("Teletext"), true, NULL, new CTuxtxtChangeExec, "-1", key, NULL, NEUTRINO_ICON_MENUITEM_VTXT);
 					menu->addItem(menu_item, false);
 				}
 				break;	
@@ -356,7 +356,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_PLUGIN:
 				{
 					keyhelper.get(&key, &icon, RC_blue);
-					menu_item = new ClistBoxItem(_("Plugins"), true, NULL, new CPluginList(), "-1", key, icon, NEUTRINO_ICON_MENUITEM_PLUGIN);
+					menu_item = new ClistBoxItem(_("Plugins"), true, NULL, new CPluginList(), "-1", key, NULL, NEUTRINO_ICON_MENUITEM_PLUGIN);
 					menu->addItem(menu_item, false);
 				}
 				break;
@@ -365,7 +365,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_DELETE_ZAPIT:
 				{
 					keyhelper.get(&key, &icon);
-					menu_item = new ClistBoxItem(_("Delete channels"), true, NULL, this, "delete_zapit", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu_item = new ClistBoxItem(_("Delete channels"), true, NULL, this, "delete_zapit", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
 					menu->addItem(menu_item, false);
 				}
 				break;
@@ -374,7 +374,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_DELETE_WEBTV:
 				{
 					keyhelper.get(&key, &icon);
-					menu_item = new ClistBoxItem(_("Delete WebTV channels"), true, NULL, this, "delete_webtv", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu_item = new ClistBoxItem(_("Delete WebTV channels"), true, NULL, this, "delete_webtv", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
 					menu->addItem(menu_item, false);
 				}
 				break;
@@ -382,7 +382,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_FREEMEMORY:
 				{
 					keyhelper.get(&key, &icon);
-					menu_item = new ClistBoxItem(_("Free Memory"), true, NULL, this, "free_memory", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu_item = new ClistBoxItem(_("Free Memory"), true, NULL, this, "free_memory", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
 					menu->addItem(menu_item, false);
 				}
 				break;
@@ -390,7 +390,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_LOAD_ZAPIT:
 				{
 					keyhelper.get(&key, &icon);
-					menu_item = new ClistBoxItem(_("Reload channel lists"), true, NULL, this, "reloadchannels", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu_item = new ClistBoxItem(_("Reload channel lists"), true, NULL, this, "reloadchannels", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
 					menu->addItem(menu_item, false);
 				}
 				break;
@@ -398,7 +398,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_LOAD_XMLTV:
 				{
 					keyhelper.get(&key, &icon);
-					menu_item = new ClistBoxItem(_("Reload XMLTV EPG"), true, NULL, this, "reloadxmltvepg", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu_item = new ClistBoxItem(_("Reload XMLTV EPG"), true, NULL, this, "reloadxmltvepg", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
 					menu->addItem(menu_item, false);
 				}
 				break;
@@ -406,7 +406,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_LOAD_EPG:
 				{
 					keyhelper.get(&key, &icon);
-					menu_item = new ClistBoxItem(_("Reload EPG"), true, NULL, this, "reloadepg", key, icon, NEUTRINO_ICON_MENUITEM_SERVICE);
+					menu_item = new ClistBoxItem(_("Reload EPG"), true, NULL, this, "reloadepg", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
 					menu->addItem(menu_item, false);
 				}
 				break;

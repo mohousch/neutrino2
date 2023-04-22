@@ -44,7 +44,7 @@
 		<WINDOW posx="650" posy="50" width="520" height="520" paintframe="1" >
 		</WINDOW>
 		
-		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU"/>
+		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		
 		<LABEL name="label" id="2" posx="650" posy="600" width="520" height="60" text="EPG / Timer" halign="1" font="FONT_TYPE_MENU_TITLE2">
 		</LABEL>
@@ -78,7 +78,7 @@
 		<WINDOW posx="650" posy="50" width="520" height="520" paintframe="1" >
 		</WINDOW>
 		
-		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU"/>
+		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		
 		<LABEL name="label" id="2" posx="650" posy="600" width="520" height="60" text="System" halign="1" font="FONT_TYPE_MENU_TITLE2">
 		</LABEL>
@@ -100,7 +100,7 @@
 		<WINDOW posx="650" posy="50" width="520" height="520" paintframe="1" >
 		</WINDOW>
 		
-		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU"/>
+		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		
 		<LABEL name="label" id="2" posx="650" posy="600" width="520" height="60" text="Power Menu" halign="1" font="FONT_TYPE_MENU_TITLE2">
 		</LABEL>
@@ -122,7 +122,7 @@
 		<WINDOW posx="650" posy="50" width="520" height="520" paintframe="1" >
 		</WINDOW>
 		
-		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU"/>
+		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		
 		<LABEL name="label" id="2" posx="650" posy="600" width="520" height="60" text="Information" halign="1" font="FONT_TYPE_MENU_TITLE2">
 		</LABEL>
@@ -144,7 +144,7 @@
 		<WINDOW posx="650" posy="50" width="520" height="520" paintframe="1" >
 		</WINDOW>
 		
-		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU"/>
+		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		
 		<LABEL name="label" id="2" posx="650" posy="600" width="520" height="60" text="Media Player" halign="1" font="FONT_TYPE_MENU_TITLE2">
 		</LABEL>

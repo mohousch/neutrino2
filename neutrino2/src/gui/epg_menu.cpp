@@ -106,16 +106,16 @@ int CEPGMenuHandler::doMenu()
 	redMenu->clear();
 		
 	// eventlist
-	redMenu->addItem(new ClistBoxItem(_("Eventlist current programm"), true, NULL, new CEventListHandler(), "", RC_red, NEUTRINO_ICON_BUTTON_RED, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
+	redMenu->addItem(new ClistBoxItem(_("Eventlist current programm"), true, NULL, new CEventListHandler(), "", RC_red, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
 
 	// epg view
-	redMenu->addItem(new ClistBoxItem(_("Details current program"), true, NULL, new CEPGDataHandler(), "", RC_green, NEUTRINO_ICON_BUTTON_GREEN, NEUTRINO_ICON_MENUITEM_RESTART));
+	redMenu->addItem(new ClistBoxItem(_("Details current program"), true, NULL, new CEPGDataHandler(), "", RC_green, NULL, NEUTRINO_ICON_MENUITEM_RESTART));
 				
 	// epgplus
-	redMenu->addItem(new ClistBoxItem(_("Eventlist overview"), true, NULL, new CEPGplusHandler(), "", RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW, NEUTRINO_ICON_MENUITEM_STANDBY));
+	redMenu->addItem(new ClistBoxItem(_("Eventlist overview"), true, NULL, new CEPGplusHandler(), "", RC_yellow, NULL, NEUTRINO_ICON_MENUITEM_STANDBY));
 		
 	// timerlist
-	redMenu->addItem(new ClistBoxItem(_("Timerlist"), true, NULL, new CTimerList(), "", RC_1, NEUTRINO_ICON_BUTTON_1, NEUTRINO_ICON_MENUITEM_TIMERLIST));
+	redMenu->addItem(new ClistBoxItem(_("Timerlist"), true, NULL, new CTimerList(), "", RC_blue, NULL, NEUTRINO_ICON_MENUITEM_TIMERLIST));
 		
 	//
 	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);				
