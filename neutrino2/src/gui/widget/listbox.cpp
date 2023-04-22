@@ -1737,6 +1737,15 @@ ClistBox::ClistBox(CBox* position)
 ClistBox::~ClistBox()
 {
 	dprintf(DEBUG_INFO, "ClistBox:: del\n");
+	
+	//
+	for(unsigned int count = 0; count <items.size(); count++) 
+	{
+		CMenuItem * item = items[count];
+
+		delete item;
+		item = NULL;
+	}
 
 	items.clear();
 	
@@ -2682,6 +2691,18 @@ void ClistBox::hide()
 	{
 		delete [] items_background;
 		items_background = NULL;
+	}
+	
+	//
+	for(unsigned int count = 0; count <items.size(); count++) 
+	{
+		CMenuItem * item = items[count];
+
+		if (item->background)
+		{
+			delete [] item->background;
+			item->background = NULL;
+		}
 	}
 	
 	CFrameBuffer::getInstance()->blit();

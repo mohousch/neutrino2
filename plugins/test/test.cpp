@@ -3997,6 +3997,8 @@ void CTestMenu::testCMenuWidget1()
 
 	//
 	menuWidget->addKey(RC_setup, this, "lsetup");
+	
+	menuWidget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 
 	menuWidget->exec(NULL, "");
 
