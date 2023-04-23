@@ -817,11 +817,13 @@ void CMenuWidget::paintItemInfo(int pos)
 				else				
 					icon = g_settings.hints_dir + item->itemIcon.c_str() + ".png";
 				
+				//
+				itemsLine.setPosition(x, y + height - cFrameFootInfoHeight + 2, width, cFrameFootInfoHeight);
 				itemsLine.setMode(DL_HINT);
 				itemsLine.setHint(item->itemHint.c_str());
 				itemsLine.setIcon(icon.c_str());
 					
-				itemsLine.paint(x, y, width, height - cFrameFootInfoHeight, cFrameFootInfoHeight, item->getHeight(), item->getYPosition());
+				itemsLine.paint();
 				
 				// info button
 				int iw, ih = 0;
@@ -885,24 +887,26 @@ void CMenuWidget::paintItemInfo(int pos)
 					CMenuItem * item = items[pos];
 	
 					// 
+					itemsLine.setPosition(x, y + height - cFrameFootInfoHeight + 2, width, cFrameFootInfoHeight);
 					itemsLine.setMode(DL_INFO);
 					itemsLine.setInfo1(item->info1.c_str());
 					itemsLine.setOptionInfo1(item->option_info1.c_str());
 					itemsLine.setInfo2(item->info2.c_str());
 					itemsLine.setOptionInfo2(item->option_info2.c_str());
 					
-					itemsLine.paint(x, y, width, height - cFrameFootInfoHeight, cFrameFootInfoHeight, item->getHeight(), item->getYPosition());
+					itemsLine.paint();
 				}
 				else if (footInfoMode == ITEMINFO_HINT_MODE)
 				{
 					CMenuItem* item = items[pos];
 	
 					// detailslines|box
+					itemsLine.setPosition(x, y + height - cFrameFootInfoHeight + 2, width, cFrameFootInfoHeight);
 					itemsLine.setMode(DL_HINT);
 					itemsLine.setHint(item->itemHint.c_str());
 					itemsLine.setIcon(item->itemIcon.c_str());
 				
-					itemsLine.paint(x, y, width, height - cFrameFootInfoHeight, cFrameFootInfoHeight, item->getHeight(), item->getYPosition());
+					itemsLine.paint();
 				}
 				
 				// info button
@@ -1000,24 +1004,26 @@ void CMenuWidget::paintItemInfo(int pos)
 					CMenuItem * item = items[pos];
 	
 					// detailslines
+					itemsLine.setPosition(x, y + height - cFrameFootInfoHeight + 2, width, cFrameFootInfoHeight);
 					itemsLine.setMode(DL_INFO);
 					itemsLine.setInfo1(item->info1.c_str());
 					itemsLine.setOptionInfo1(item->option_info1.c_str());
 					itemsLine.setInfo2(item->info2.c_str());
 					itemsLine.setOptionInfo2(item->option_info2.c_str());
 					
-					itemsLine.paint(x, y, width, height - cFrameFootInfoHeight, cFrameFootInfoHeight, item->getHeight(), item->getYPosition());
+					itemsLine.paint();
 				}
 				else if (footInfoMode == ITEMINFO_HINT_MODE)
 				{
 					CMenuItem* item = items[pos];
 	
 					// detailslines
+					itemsLine.setPosition(x, y + height - cFrameFootInfoHeight + 2, width, cFrameFootInfoHeight);
 					itemsLine.setMode(DL_HINT);
 					itemsLine.setHint(item->itemHint.c_str());
 					itemsLine.setIcon(item->itemIcon.c_str());
 				
-					itemsLine.paint(x, y, width, height - cFrameFootInfoHeight, cFrameFootInfoHeight, item->getHeight(), item->getYPosition());
+					itemsLine.paint();
 				}
 				
 				// info button
@@ -1203,7 +1209,7 @@ void CMenuWidget::hideItemInfo()
 	{
 		if( (widgetType == TYPE_STANDARD) || (widgetType == TYPE_CLASSIC && widgetMode == MODE_LISTBOX) )
 		{
-			itemsLine.clear(x, y, width, height, cFrameFootInfoHeight);
+			itemsLine.hide();
 		}
 	}  
 }

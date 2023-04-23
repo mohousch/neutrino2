@@ -3467,7 +3467,7 @@ void CTestMenu::testClistBox8()
 // ClistBox9
 void CTestMenu::testClistBox9()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox9 (hinthint\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox9 (hinthint)\n");
 
 	CBox Box;
 	
@@ -3502,8 +3502,6 @@ void CTestMenu::testClistBox9()
 		item->setInfo2(m_vMovieInfo[i].epgInfo2.c_str());
 
 		item->setHintIcon(file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
-
-		item->set2lines();
 
 		std::string tmp = m_vMovieInfo[i].epgInfo1;
 		tmp += "\n";
@@ -3929,6 +3927,7 @@ void CTestMenu::testCMenuWidget1()
 	
 	item = new ClistBoxItem(_("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
+	item->setHint(_("Here you can switch between TV / Radio"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
 	item->setDirectKey(RC_red);
 	//item->setHidden(true);
@@ -3936,47 +3935,55 @@ void CTestMenu::testCMenuWidget1()
 
 	item = new ClistBoxItem(_("Timer / EPG"), true, NULL, new CEPGMenuHandler());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
+	item->setHint(_("Here you can set Timers and show EPG"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
 	item->setDirectKey(RC_green);
 	menuWidget->addItem(item);
 	
 	item = new ClistBoxItem(_("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
+	item->setHint(_("Here you can choose plugins"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
 	item->setDirectKey(RC_yellow);
 	menuWidget->addItem(item);
 	
 	item = new ClistBoxItem(_("Service"), true, NULL, new CServiceMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
+	item->setHint(_("Here you can set channel scan and more"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
 	item->setDirectKey(RC_blue);
 	menuWidget->addItem(item);
 	
 	item = new ClistBoxItem(_("Settings"), true, NULL, new CMainSettingsMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
+	item->setHint(_("Here you can setup your box"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
 	item->setDirectKey(RC_setup);
 	menuWidget->addItem(item);
 	
 	item = new ClistBoxItem(_("OSD"), true, NULL, new COSDSettings());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
+	item->setHint(_("Here you can setup OSD"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
 	menuWidget->addItem(item);
 	
 	item = new ClistBoxItem(_("Information"), true, NULL, new CInfoMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
+	item->setHint(_("Here you can get device Info"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
 	item->setDirectKey(RC_info);
 	menuWidget->addItem(item);
 
 	item = new ClistBoxItem(_("Power Menu"), true, NULL, new CPowerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
+	item->setHint(_("Here you can power off or standby your device"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
 	item->setDirectKey(RC_standby);
 	menuWidget->addItem(item);
 	
 	item = new ClistBoxItem(_("Media Player"), true, NULL, new CMediaPlayerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
+	item->setHint(_("Here you can play music / movies"));
 	item->setIconName(NEUTRINO_ICON_VIDEO);
 	item->setDirectKey(RC_video);
 	menuWidget->addItem(item);
@@ -3988,16 +3995,11 @@ void CTestMenu::testCMenuWidget1()
 	menuWidget->addWidgetType(TYPE_FRAME);
 	menuWidget->setItemsPerPage(6, 2);
 	menuWidget->enableShrinkMenu();
-
-	// head
 	menuWidget->enablePaintDate();
 	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
 	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-
-
-	//
+	menuWidget->enablePaintItemInfo();
 	menuWidget->addKey(RC_setup, this, "lsetup");
-	
 	menuWidget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
 
 	menuWidget->exec(NULL, "");

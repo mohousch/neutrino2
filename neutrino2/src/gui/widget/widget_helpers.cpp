@@ -134,18 +134,24 @@ void CCImage::paint()
 	if (scale)
 	{
 		// bg
-		if (paintframe) frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color);
+		if (paintframe) 
+			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color);
 				
 		// image
-		if (!imageName.empty()) frameBuffer->displayImage(imageName.c_str(), cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+		if (!imageName.empty()) 
+			frameBuffer->displayImage(imageName.c_str(), cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+			//frameBuffer->displayImage(imageName.c_str(), cCBox.iX + (cCBox.iWidth - iWidth)/2, cCBox.iY + (cCBox.iHeight - iHeight)/2, cCBox.iWidth, cCBox.iHeight);
 	}
 	else
 	{
 		// bg
-		if (paintframe) frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color);
+		if (paintframe) 
+			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color);
 				
 		// image
-		if (!imageName.empty()) frameBuffer->displayImage(imageName.c_str(), startPosX, cCBox.iY + (cCBox.iHeight - iHeight)/2, iWidth, iHeight);
+		if (!imageName.empty()) 
+			frameBuffer->displayImage(imageName.c_str(), startPosX, cCBox.iY + (cCBox.iHeight - iHeight)/2, iWidth, iHeight);
+			//frameBuffer->displayImage(imageName.c_str(), cCBox.iX + (cCBox.iWidth - iWidth)/2, cCBox.iY + (cCBox.iHeight - iHeight)/2, cCBox.iWidth, cCBox.iHeight);
 	}
 }
 
@@ -568,8 +574,9 @@ void CScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPag
 // detailsLine
 CItems2DetailsLine::CItems2DetailsLine()
 {
-	frameBuffer = CFrameBuffer::getInstance(); 
+	frameBuffer = CFrameBuffer::getInstance();
 	
+	//
 	mode = DL_INFO; 
 	info1 = "";
 	option_info1 = "";
@@ -599,29 +606,20 @@ CItems2DetailsLine::~CItems2DetailsLine()
 	icon.clear();
 }
 
-void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_height, int iheight, int iy)
+void CItems2DetailsLine::paint()
 {
-	dprintf(DEBUG_INFO, "CItems2DetailsLine::paint: x:%d y:%d width:%d height:%d\n", x, y, width, height);
+	dprintf(DEBUG_INFO, "CItems2DetailsLine::paint:\n");
 	
-	//
-	int ypos2 = y + height;
-
-	// border / frame
-	if ( (mode == DL_INFO) || (mode == DL_HINT) )
+	if (paintframe)
 	{
 		// border
-		if (g_settings.Hint_border) frameBuffer->paintBoxRel(x, ypos2, width, info_height, COL_MENUCONTENT_PLUS_6, g_settings.Hint_radius, g_settings.Hint_corner);
-		
+		if (g_settings.Hint_border) frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.Hint_radius, g_settings.Hint_corner);
+			
 		// infoBox
-		frameBuffer->paintBoxRel(g_settings.Hint_border? x + 2 : x, g_settings.Hint_border? ypos2 + 2 : ypos2, g_settings.Hint_border? width - 4 : width, g_settings.Hint_border? info_height - 4 : info_height, COL_MENUHINT_PLUS_0, g_settings.Hint_radius, g_settings.Hint_corner, g_settings.Hint_gradient);
+		frameBuffer->paintBoxRel(g_settings.Hint_border? cCBox.iX + 2 : cCBox.iX, g_settings.Hint_border? cCBox.iY + 2 : cCBox.iY, g_settings.Hint_border? cCBox.iWidth - 4 : cCBox.iWidth, g_settings.Hint_border? cCBox.iHeight - 4 : cCBox.iHeight, COL_MENUHINT_PLUS_0, g_settings.Hint_radius, g_settings.Hint_corner, g_settings.Hint_gradient);
 	}
 	
 	//
-	int DLx = x + 2;
-	int DLy = ypos2 + 2;
-	int DLwidth = width - 4;
-	int DLheight = info_height - 4;
-	
 	if (mode == DL_INFO)
 	{
 		// option_info1
@@ -630,7 +628,7 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 		{
 			l_ow1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(option_info1.c_str());
 
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString(DLx + DLwidth - BORDER_RIGHT - l_ow1, DLy + (DLheight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), DLwidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, option_info1.c_str(), COL_MENUHINT, 0, true);
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString(cCBox.iX + cCBox.iWidth - BORDER_RIGHT - l_ow1, cCBox.iY + (cCBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, option_info1.c_str(), COL_MENUHINT, 0, true);
 		}
 
 		// info1
@@ -639,7 +637,7 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 		{
 			l_w1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getRenderWidth(info1.c_str());
 
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(DLx + BORDER_LEFT, DLy + (DLheight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), DLwidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, info1.c_str(), COL_MENUHINT, 0, true);
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(cCBox.iX + BORDER_LEFT, cCBox.iY + (cCBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, info1.c_str(), COL_MENUHINT, 0, true);
 		}
 
 		// option_info2
@@ -648,7 +646,7 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 		{
 			l_ow2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(option_info2.c_str());
 
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(DLx + DLwidth - BORDER_RIGHT - l_ow2, DLy + DLheight/2 + (DLheight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), DLwidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, option_info2.c_str(), COL_MENUHINT, 0, true);
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(cCBox.iX + cCBox.iWidth - BORDER_RIGHT - l_ow2, cCBox.iY + cCBox.iHeight/2 + (cCBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, option_info2.c_str(), COL_MENUHINT, 0, true);
 		}
 
 		// info2
@@ -657,65 +655,74 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 		{
 			l_w2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(info2.c_str());
 
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString (DLx + BORDER_LEFT, DLy + DLheight/2 + (DLheight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), DLwidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, info2.c_str(), COL_MENUHINT, 0, true); // UTF-8
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString (cCBox.iX + BORDER_LEFT, cCBox.iY + cCBox.iHeight/2 + (cCBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, info2.c_str(), COL_MENUHINT, 0, true); // UTF-8
 		}
 	}
 	else if (mode == DL_HINT)
-	{	
-		CTextBox Dline(DLx, DLy, DLwidth, DLheight);
-		Dline.paintMainFrame(paintframe);
-		//Dline.setBorderMode(borderMode);
-		Dline.setCorner(g_settings.Hint_radius, g_settings.Hint_corner);
-		//Dline.setRadius(g_settings.Hint_radius);
-		Dline.setMode(AUTO_WIDTH);
-		
-		int iw = 100;
-		int ih = DLheight - 4;
+	{
+		//
+		int iw = 0;
+		int ih = 0;
 		int bpp = 0;
 		
-		frameBuffer->getSize(icon.c_str(), &iw, &iw, &bpp);
-		
-		if (iw > 100)
-			iw = 100;
-			
-		if (ih > (DLheight - 4))
-			ih = DLheight - 4;
-
-		// Hint
-		if(!hint.empty())
+		if (!icon.empty())
 		{
-			Dline.setText(hint.c_str(), !icon.empty()? icon.c_str() : NEUTRINO_ICON_MENUITEM_NOPREVIEW, iw, ih, PIC_LEFT);
+			frameBuffer->getSize(icon.c_str(), &iw, &iw, &bpp);
+			
+			if (iw > 100)
+				iw = 100;
+				
+			if (ih > (cCBox.iHeight - 4))
+				ih = cCBox.iHeight - 4;
+			
+			CCImage DImage(cCBox.iX + 2, cCBox.iY + 2, 100, cCBox.iHeight - 4);
+			DImage.setImage(icon.c_str());
+			DImage.setScaling(scale);
+			DImage.paintMainFrame(true);
+			DImage.setColor(color);
+			DImage.paint();
 		}
-					
+		
+		//
+		CCText Dline(cCBox.iX + iw + 10, cCBox.iY + 10, cCBox.iWidth - iw - 20, cCBox.iHeight - 20, true);
+		Dline.setFont(tFont);
+		Dline.setText(hint.c_str());			
 		Dline.paint();
 	}
 	else if (mode == DL_HINTITEM)
 	{
 		//
-		CTextBox Dline(x, y, width, height);
-		Dline.paintMainFrame(paintframe);
-		Dline.setMode(AUTO_WIDTH);
-		Dline.setFont(tFont);
-		Dline.setBorderMode(borderMode);
-		if (savescreen) Dline.enableSaveScreen();
-		Dline.setBackgroundColor(color);
-		//Dline.setCorner(g_settings.Hint_corner);
-		//Dline.setRadius(g_settings.Hint_radius);
+		int iw = 0;
+		int ih = 0;
 		
-		// scale icon
-		int pw = 0;
-		int ph = 0;
-
-		::scaleImage(icon, &pw, &ph);
-
-		// Hint
-		Dline.setText(hint.c_str(), icon.c_str(), pw, ph, PIC_CENTER);
-					
+		if (!icon.empty())
+		{
+			::scaleImage(icon, &iw, &ih);
+			
+			if (iw > cCBox.iWidth)
+				iw = cCBox.iWidth - 4;
+				
+			if (ih > (cCBox.iHeight - 4))
+				ih = (cCBox.iHeight - 4)/2;
+		
+			CCImage DImage(cCBox.iX + 2, cCBox.iY + 2, cCBox.iWidth - 4, ih - 4);
+			DImage.setImage(icon.c_str());
+			DImage.setScaling(scale);
+			DImage.paintMainFrame(true);
+			DImage.setColor(color);
+			DImage.paint();
+		}
+		
+		//
+		CCText Dline(cCBox.iX + 10, cCBox.iY + ih + 10, cCBox.iWidth - 20, cCBox.iHeight - ih - 20, true);
+		Dline.setFont(tFont);
+		Dline.setText(hint.c_str());			
 		Dline.paint();
+		
 	}
 	else if (mode == DL_HINTICON)	
 	{
-		CCImage DImage(x, y, width, height);
+		CCImage DImage(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 		DImage.setImage(icon.c_str());
 		DImage.setScaling(scale);
 		DImage.paintMainFrame(true);
@@ -724,23 +731,20 @@ void CItems2DetailsLine::paint(int x, int y, int width, int height, int info_hei
 	}
 	else if (mode == DL_HINTHINT)
 	{
-		CTextBox Dline(x, y, width, height);
-		Dline.paintMainFrame(paintframe);
-		Dline.setMode(AUTO_WIDTH);
+		CCText Dline(cCBox.iX + 10, cCBox.iY + 10, cCBox.iWidth - 20, cCBox.iHeight - 20, true);
 		Dline.setFont(tFont);
-		Dline.setBorderMode(borderMode);
-		if (savescreen) Dline.enableSaveScreen();
-		Dline.setBackgroundColor(color);
-		//Dline.setCorner(g_settings.Hint_corner);
-		//Dline.setRadius(g_settings.Hint_radius);
-
-		// Hint
-		Dline.setText(hint.c_str());
-					
+		Dline.setText(hint.c_str());			
 		Dline.paint();
 	}
 }
 
+//
+void CItems2DetailsLine::hide()
+{
+	frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+}
+
+////
 CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_NORMAL, "CCSlider::CCSlider\n");
@@ -773,20 +777,6 @@ void CCSlider::paint(const int spos, const char * const iconname, const bool sel
 
 	// slider icon
 	frameBuffer->paintIcon(selected ? iconname : NEUTRINO_ICON_VOLUMESLIDER2, cCBox.iX + spos, cCBox.iY);
-}
-
-//
-void CItems2DetailsLine::clear(int x, int y, int width, int height, int info_height)
-{
-	if ( (mode == DL_INFO) ||(mode == DL_HINT) )
-	{ 
-		// info box
-		frameBuffer->paintBackgroundBoxRel(x, y + height, width, info_height);
-	}
-	else if ( (mode == DL_HINTITEM) || (mode == DL_HINTICON) || (mode == DL_HINTHINT))
-	{
-		frameBuffer->paintBackgroundBoxRel(x, y, width, height);
-	}
 }
 
 // Hline
@@ -964,7 +954,7 @@ void CCLabel::paint()
 }
 
 //
-CCText::CCText(const int x, const int y, const int dx, const int dy)
+CCText::CCText(const int x, const int y, const int dx, const int dy, bool save)
 {
 	dprintf(DEBUG_INFO, "CCText::CCText: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
@@ -974,6 +964,21 @@ CCText::CCText(const int x, const int y, const int dx, const int dy)
 	cCBox.iY = y;
 	cCBox.iWidth = dx;
 	cCBox.iHeight = dy;
+	
+	background = NULL;
+	
+	//
+	savescreen = save;
+	
+	if (savescreen)
+	{
+		background = new fb_pixel_t[dx*dy];
+		
+		if (background)
+		{
+			frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+		}
+	}
 	
 	font = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
 	color = COL_MENUCONTENT;
@@ -988,7 +993,19 @@ CCText::CCText(const int x, const int y, const int dx, const int dy)
 	cc_type = CC_TEXT;
 }
 
-////
+CCText::~CCText()
+{
+	if (savescreen)
+	{
+		if (background)
+		{
+			delete [] background;
+			background = NULL;
+		}
+	}
+}
+
+//
 void CCText::addTextToArray(const std::string & text) // UTF-8
 {
 	if (text == " ")
@@ -1064,13 +1081,22 @@ void CCText::processTextToArray(std::string text) // UTF-8
 void CCText::paint()
 {
 	dprintf(DEBUG_INFO, "CCText::paint\n");
+	
+	//
+	if (savescreen)
+	{
+		if (background)
+		{
+			frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+		}
+	}
 
 	// recalculate
 	medlineheight = g_Font[font]->getHeight();
 	medlinecount = cCBox.iHeight / medlineheight;
 
 	int textSize = Text.size();
-	int y = cCBox.iY + 10;
+	int y = cCBox.iY;
 
 	for(int i = 0; i < textSize && i < medlinecount; i++, y += medlineheight)
 	{
@@ -1246,6 +1272,15 @@ CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 	cc_type = CC_TIME;
 }
 
+CCTime::~CCTime()
+{
+	if (background)
+	{
+		delete [] background; 
+		background = NULL;
+	}
+}
+
 void CCTime::setFormat(const char* const f)
 {
 	format = f? _(f) : "";
@@ -1296,6 +1331,17 @@ void CCTime::refresh()
 	g_Font[font]->RenderString(startPosX, cCBox.iY + (cCBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color, 0, true);
 }
 
+void CCTime::hide()
+{
+	dprintf(DEBUG_INFO, "CCTime::hide\n");
+	
+	if (background)
+	{
+		delete [] background; 
+		background = NULL;
+	}
+}
+
 // CCCounter
 CCCounter::CCCounter(const int x, const int y, const int dx, const int dy)
 {
@@ -1324,6 +1370,15 @@ CCCounter::CCCounter(const int x, const int y, const int dx, const int dy)
 	enableRepaint();
 	
 	cc_type = CC_COUNTER;
+}
+
+CCCounter::~CCCounter()
+{
+	if (background)
+	{
+		delete [] background; 
+		background = NULL;
+	}
 }
 
 void CCCounter::paint()
@@ -1366,6 +1421,17 @@ void CCCounter::refresh()
 	char totalTime[10];
 	strftime(totalTime, 10, "%T", gmtime(&total_time));//FIXME
 	g_Font[font]->RenderString(cCBox.iX + cCBox.iWidth/2, cCBox.iY + (cCBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), cCBox.iWidth/2, totalTime, color, 0, true);
+}
+
+void CCCounter::hide()
+{
+	dprintf(DEBUG_INFO, "CCCounter::hide\n");
+	
+	if (background)
+	{
+		delete [] background; 
+		background = NULL;
+	}
 }
 
 // CCSpinner

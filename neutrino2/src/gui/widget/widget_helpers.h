@@ -388,8 +388,12 @@ class CCText : public CComponent
 		bool paintBG;
 		
 		//
-		CCText(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
-		virtual ~CCText(){};
+		bool savescreen;
+		fb_pixel_t* background;
+		
+		//
+		CCText(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0, bool save = false);
+		virtual ~CCText();
 		
 		//
 		void setFont(unsigned int f){font = f;};
@@ -463,7 +467,7 @@ class CCTime : public CComponent
 		
 		//
 		CCTime(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
-		virtual ~CCTime(){delete [] background; background = NULL;};
+		virtual ~CCTime();
 		
 		//
 		void setColor(uint8_t col){color = col;};
@@ -473,7 +477,7 @@ class CCTime : public CComponent
 		
 		//
 		void paint();
-		void hide(){delete [] background; background = NULL;};
+		void hide();
 		
 		//
 		void refresh();
@@ -495,7 +499,7 @@ class CCCounter : public CComponent
 		
 		//
 		CCCounter(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
-		virtual ~CCCounter(){delete [] background; background = NULL;};
+		virtual ~CCCounter();
 		
 		//
 		void setColor(uint8_t col){color = col;};
@@ -506,7 +510,7 @@ class CCCounter : public CComponent
 		
 		//
 		void paint();
-		void hide(){delete [] background; background = NULL;};
+		void hide();
 		
 		//
 		void refresh();
@@ -616,8 +620,8 @@ class CItems2DetailsLine : public CComponent
 		virtual ~CItems2DetailsLine();
 		
 		//
-		void paint(int x, int y, int width, int height, int info_height = 0, int iheight = 0, int iy = 0);
-		void clear(int x, int y, int width, int height, int info_height);
+		void paint(/*int x, int y, int width, int height, int info_height = 0, int iheight = 0, int iy = 0*/);
+		void /*clear*/hide(/*int x, int y, int width, int height, int info_height*/);
 		
 		//
 		virtual void setMode(int m){mode = m;};
