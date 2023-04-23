@@ -820,10 +820,12 @@ int EventList::findEvents(void)
 				evt.eventID = 0;
 				evtlist.push_back(evt);
 			}
-		}            
+		}  
+		          
 		if (current_event == (unsigned int)-1)
 			current_event = 0;
-		selected= current_event;
+			
+		selected = current_event;
 		
 		name = _("Search");
 		name += ": '";
@@ -915,6 +917,7 @@ int CEventFinderMenu::exec(CMenuTarget * parent, const std::string &actionKey)
 			{
 				nNewChannel = bouquetList->Bouquets[nNewBouquet]->channelList->show();
 				//printf("nNewChannel %d\n",nNewChannel);
+				
 				if (nNewChannel > -1)
 				{
 					*m_search_bouquet_id = nNewBouquet;
@@ -935,7 +938,7 @@ int CEventFinderMenu::exec(CMenuTarget * parent, const std::string &actionKey)
 			}
 		}
 	}	
-	else if(actionKey =="4")
+	else if(actionKey == "4")
 	{
 		//printf("4\n");
 	}	
@@ -960,16 +963,16 @@ int CEventFinderMenu::showMenu(void)
 	}
 	else if(*m_search_list == EventList::SEARCH_LIST_ALL)
 	{
-		m_search_channelname =="";
+		m_search_channelname == "";
 	}
 	
 	CStringInputSMS stringInput(_("Keyword"), m_search_keyword->c_str());
+	ClistBoxItem * mf2 = new ClistBoxItem(_("Keyword"), true, m_search_keyword->c_str(), &stringInput);
 	
-	ClistBoxItem * mf2 = new ClistBoxItem(_("Keyword"), true, m_search_keyword->c_str(), &stringInput, NULL, RC_1 );
-	CMenuOptionChooser * mo0 = new CMenuOptionChooser(_("Search within"), m_search_list, SEARCH_LIST_OPTIONS, SEARCH_LIST_OPTION_COUNT, true, NULL, RC_2);
-	ClistBoxItem * mf1 = new ClistBoxItem("", *m_search_list != EventList::SEARCH_LIST_ALL, m_search_channelname.c_str(), this, "3", RC_3 );
-	CMenuOptionChooser * mo1 = new CMenuOptionChooser(_("Search in EPG"), m_search_epg_item, SEARCH_EPG_OPTIONS, SEARCH_EPG_OPTION_COUNT, true, NULL, RC_4);
-	ClistBoxItem * mf0 = new ClistBoxItem(_("Start Search"), true, NULL, this, "1", RC_5 );
+	CMenuOptionChooser * mo0 = new CMenuOptionChooser(_("Search within"), m_search_list, SEARCH_LIST_OPTIONS, SEARCH_LIST_OPTION_COUNT, true);
+	ClistBoxItem * mf1 = new ClistBoxItem("", *m_search_list != EventList::SEARCH_LIST_ALL, m_search_channelname.c_str(), this, "3");
+	CMenuOptionChooser * mo1 = new CMenuOptionChooser(_("Search in EPG"), m_search_epg_item, SEARCH_EPG_OPTIONS, SEARCH_EPG_OPTION_COUNT, true);
+	ClistBoxItem * mf0 = new ClistBoxItem(_("Start Search"), true, NULL, this, "1");
 	
 	//
 	CWidget* widget = NULL;
@@ -983,6 +986,7 @@ int CEventFinderMenu::showMenu(void)
 	}
 	else
 	{
+		widget = new CWidget();
 		searchMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
 		searchMenu->setWidgetMode(MODE_SETUP);
@@ -998,7 +1002,7 @@ int CEventFinderMenu::showMenu(void)
 		searchMenu->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->setPosition(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "epgsearch";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(searchMenu);
@@ -1006,29 +1010,15 @@ int CEventFinderMenu::showMenu(void)
 	
 	searchMenu->clearItems();
 
-        searchMenu->addItem(mf2, false);
+        searchMenu->addItem(mf2);
         searchMenu->addItem(new CMenuSeparator(LINE));
-        searchMenu->addItem(mo0, false);
-        searchMenu->addItem(mf1, false);
-        searchMenu->addItem(mo1, false);
+        searchMenu->addItem(mo0);
+        searchMenu->addItem(mf1);
+        searchMenu->addItem(mo1);
         searchMenu->addItem(new CMenuSeparator(LINE));
-        searchMenu->addItem(mf0, false);
+        searchMenu->addItem(mf0);
 	
-	res = widget->exec(NULL, "");
-	
-#ifdef TESTING
-	if (searchMenu)
-	{
-		delete searchMenu;
-		searchMenu = NULL;
-	}
-	
-	if (widget)
-	{
-		delete widget;
-		widget = NULL;
-	}
-#endif	
+	res = widget->exec(NULL, "");	
 	
 	return(res);
 }

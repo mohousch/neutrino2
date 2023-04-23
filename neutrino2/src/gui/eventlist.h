@@ -152,4 +152,3 @@ class CEventFinderMenu : public CMenuTarget
 
 #endif
 
-

@@ -227,22 +227,6 @@ int CBouquetList::activateBouquet( int id, bool bShowChannelList, bool zap)
 int CBouquetList::exec(bool bShowChannelList, bool zap, bool customMode)
 {
 	dprintf(DEBUG_NORMAL, "CBouquetList::exec: showChannelList:%s, zap:%s customMode:%s\n", bShowChannelList? "yes" : "no", zap? "yes" : "no", customMode? "yes" : "no");
-	
-	//
-	bqWidget = CNeutrinoApp::getInstance()->getWidget("bouquetlist");
-	
-	if (bqWidget)
-	{
-		listBox = (ClistBox*)bqWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		bqWidget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		bqWidget->name = "bouquetlist";
-		bqWidget->addWidgetItem(listBox);
-	}
 
 	// select bouquet to show
 	int res = show(customMode);
@@ -395,7 +379,23 @@ int CBouquetList::show(bool customMode)
 	neutrino_msg_data_t data;
 	int res = -1;
 	
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);	
+	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);
+	
+	//
+	bqWidget = CNeutrinoApp::getInstance()->getWidget("bouquetlist");
+	
+	if (bqWidget)
+	{
+		listBox = (ClistBox*)bqWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		bqWidget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		
+		bqWidget->name = "bouquetlist";
+		bqWidget->addWidgetItem(listBox);
+	}	
 
 	paint();
 	CFrameBuffer::getInstance()->blit();
