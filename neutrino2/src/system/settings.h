@@ -357,7 +357,7 @@ struct SNeutrinoSettings
 	int radiotext_enable;
 	
 	std::string logos_dir;
-	int epgplus_show_logo;
+	int logos_show_logo;
 
 	// channellist
 	int zap_cycle;

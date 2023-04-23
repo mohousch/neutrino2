@@ -839,9 +839,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	
 	// logos_dir
 	g_settings.logos_dir = configfile.getString("logos_dir", "/var/tuxbox/logos");
-	
-	// epgplus logos
-	g_settings.epgplus_show_logo = configfile.getBool("epgplus_show_logo", false);
+	g_settings.logos_show_logo = configfile.getBool("logos_show_logo", false);
 	
 	// vol
 	g_settings.volume_pos = configfile.getInt32( "volume_pos", 1);		//top_left
@@ -1294,9 +1292,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	
 	// logos_dir
 	configfile.setString("logos_dir", g_settings.logos_dir);
-	
-	// epgplus logos
-	configfile.setBool("epgplus_show_logo", g_settings.epgplus_show_logo);
+	configfile.setBool("logos_show_logo", g_settings.logos_show_logo);
 	
 	// record screenshot
 	configfile.setInt32("recording_screenshot", g_settings.recording_screenshot);

@@ -353,7 +353,7 @@ void EpgPlus::ChannelEntry::paint (bool isSelected, time_t selectedTime)
 	// display channel picon
 	bool logo_ok = false;
 	
-	if(g_settings.epgplus_show_logo)
+	if(g_settings.logos_show_logo)
 	{
 		int logo_w = this->width -2; 
 		int logo_h = this->font->getHeight() + 10 - 2;

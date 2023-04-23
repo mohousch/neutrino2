@@ -991,6 +991,22 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return ret;
 	}
+	else if(actionKey == "logos_dir") 
+	{
+		CFileBrowser b;
+		b.Dir_Mode = true;
+		
+		if (b.exec(g_settings.logos_dir.c_str())) 
+		{
+			g_settings.logos_dir = b.getSelectedFile()->Name;
+
+			dprintf(DEBUG_NORMAL, "COSDDiverses::exec: new logos dir %s\n", b.getSelectedFile()->Name.c_str());
+		}
+
+		getString() = g_settings.logos_dir;
+
+		return ret;
+	}
 	
 	showMenu();
 	
@@ -1103,6 +1119,15 @@ void COSDDiverses::showMenu()
 	
 	// spinner dir
 	osdDiverseSettings->addItem(new ClistBoxItem(_("Spinner Dir"), true, g_settings.spinner_dir.c_str(), this, "select_spinner_dir"));
+	
+	//
+	osdDiverseSettings->addItem(new CMenuSeparator(LINE));
+	
+	// logos
+	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Channel Logo"), &g_settings.logos_show_logo, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
+	
+	// logos dir
+	osdDiverseSettings->addItem( new ClistBoxItem(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" ) );
 
 	//
 	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);

@@ -455,7 +455,7 @@ void CInfoViewer::show(const int ChanNum, const std::string& Channel, const t_sa
 		// check logo
 		logo_ok = CChannellogo::getInstance()->checkLogo(channel_id);
 		
-		if(logo_ok)
+		if(logo_ok && g_settings.logos_show_logo)
 		{
 			// get logo size	
 			CChannellogo::getInstance()->getLogoSize(channel_id, &logo_w, &logo_h, &logo_bpp);

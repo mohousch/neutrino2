@@ -704,7 +704,7 @@ void EventList::paint(t_channel_id channel_id)
 
 	logo = CChannellogo::getInstance()->getLogoName(channel_id);
 
-	listBox->setTitle(name.c_str(), logo.c_str());
+	listBox->setTitle(name.c_str(), g_settings.logos_show_logo? logo.c_str() : NULL);
 	listBox->setHeadButtons(HeadButtons, 3);
 
 	// foot

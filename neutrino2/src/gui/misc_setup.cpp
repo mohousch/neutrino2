@@ -484,22 +484,6 @@ int CChannelListSettings::exec(CMenuTarget* parent, const std::string& actionKey
 		
 		return ret;
 	}
-	else if(actionKey == "logos_dir") 
-	{
-		CFileBrowser b;
-		b.Dir_Mode = true;
-		
-		if (b.exec(g_settings.logos_dir.c_str())) 
-		{
-			g_settings.logos_dir = b.getSelectedFile()->Name;
-
-			dprintf(DEBUG_NORMAL, "CMiscSettings::exec: new logos dir %s\n", b.getSelectedFile()->Name.c_str());
-		}
-
-		getString() = g_settings.logos_dir;
-
-		return ret;
-	}
 	
 	showMenu();
 	
@@ -580,12 +564,6 @@ void CChannelListSettings::showMenu()
 	
 	// channellist ca
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("HD / Crypt Icons"), &g_settings.channellist_ca, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
-	
-	// logos
-	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Channel Logo"), &g_settings.epgplus_show_logo, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
-	
-	// logos dir
-	miscSettingsChannelList->addItem( new ClistBoxItem(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" ) );
 	
 	//
 	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);

@@ -1732,7 +1732,7 @@ void CChannelList::paint()
 			}
 			
 			// logo
-			if (g_settings.epgplus_show_logo)
+			if (g_settings.logos_show_logo)
 			{
 				std::string logo;
 

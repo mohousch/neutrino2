@@ -470,7 +470,8 @@ void CEpgData::showHead(const t_channel_id channel_id)
 		headers->clear();
 		
 		headers->setTitle(text1.c_str());
-		headers->setIcon(logo.c_str());
+		if (g_settings.logos_show_logo)
+			headers->setIcon(logo.c_str());
 	}
 }
 
