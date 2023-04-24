@@ -378,7 +378,7 @@ int CHDDMenuHandler::hddMenu()
 		CWidget* PartMenuWidget[MAX_PARTS];
 		ClistBox* PartMenu[MAX_PARTS];
 		
-		for (int j = 1; j<= MAX_PARTS; j++)
+		for (int j = 1; j <= MAX_PARTS; j++)
 		{
 			bool mounted = false;
 			

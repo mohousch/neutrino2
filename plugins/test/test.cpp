@@ -2942,10 +2942,10 @@ void CTestMenu::testClistBox4()
 	rightWidget->setItemsPerPage(5,2);
 	rightWidget->enableShrinkMenu();
 	
-	rightWidget->paintMainFrame(false);
+	rightWidget->paintMainFrame(true);
 	
 	// head
-	//rightWidget->enablePaintHead();
+	rightWidget->enablePaintHead();
 	rightWidget->setTitle("ClistBox (FRAME)", NEUTRINO_ICON_MOVIE);
 	rightWidget->setTitleHAlign(CC_ALIGN_CENTER);
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
@@ -2953,7 +2953,7 @@ void CTestMenu::testClistBox4()
 	rightWidget->setHeadLine(true, true);
 	
 	// foot
-	//rightWidget->enablePaintFoot();
+	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->setFootLine(true, true);
 	

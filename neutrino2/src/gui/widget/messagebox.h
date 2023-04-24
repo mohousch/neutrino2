@@ -62,13 +62,13 @@ typedef enum result_
 	
 typedef enum buttons_
 {
-	mbYes = 0x01,
-	mbNo = 0x02,
+	mbYes	 = 0x01,
+	mbNo 	 = 0x02,
 	mbCancel = 0x04,
-	mbAll = 0x07,
-	mbBack = 0x08,
-	mbOk = 0x10,
-	mbNone = 0x20
+	mbAll    = 0x07,
+	mbBack   = 0x08,
+	mbOk     = 0x10,
+	mbNone   = 0x20
 } buttons;
 
 class CMessageBox
