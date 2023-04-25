@@ -103,7 +103,7 @@ typedef struct CA_MESSAGE
 	} Msg;
 } CA_MESSAGE;
 
-typedef void (*hal_messenger)(unsigned int msg, unsigned int data);
+//typedef void (*hal_messenger)(unsigned int msg, unsigned int data);
 
 typedef std::set<int> ca_map_t;
 typedef ca_map_t::iterator ca_map_iterator_t;

@@ -59,12 +59,13 @@ static cCA *pcCAInstance = NULL;
 /* nur diese Message wird vom CI aus neutrinoMessages.h benutzt */
 /* für den CamMsgHandler, darum hier einfach mal definiert */
 /* die Feinheiten werden ja in CA_MESSAGE verpackt */
-#if defined (__sh__)
-uint32_t EVT_CA_MESSAGE = 0x80000000 + 60;
-#else
-uintptr_t EVT_CA_MESSAGE = 0x80000000 + 60;
-#endif
+//#if defined (__sh__)
+//uint32_t EVT_CA_MESSAGE = 0x80000000 + 60;
+//#else
+//uintptr_t EVT_CA_MESSAGE = 0x80000000 + 60;
+//#endif
 
+/*
 static hal_messenger cam_messenger = NULL;
 
 void hal_register_messenger(hal_messenger messenger)
@@ -72,6 +73,7 @@ void hal_register_messenger(hal_messenger messenger)
 	cam_messenger = messenger;
 	return;
 }
+*/
 
 cCA::cCA(void)
 {
@@ -477,13 +479,13 @@ bool cCA::SendMessage(const CA_MESSAGE *msg)
 {
 	//hal_debug("%s\n", __func__);
 	//if (cam_messenger)
-#if defined (__sh__)
+//#if defined (__sh__)
 		//cam_messenger(EVT_CA_MESSAGE, (uint32_t) msg);
-		g_RCInput->postMsg(NeutrinoMessages::EVT_CA_MESSAGE, (uint32_t) msg);
-#else
-		//cam_messenger(EVT_CA_MESSAGE, (uintptr_t) msg);
-		g_RCInput->postMsg(NeutrinoMessages::EVT_CA_MESSAGE, (uintptr_t) msg);
-#endif
+		//g_RCInput->postMsg(NeutrinoMessages::EVT_CA_MESSAGE, (uint32_t) msg);
+//#else
+//		//cam_messenger(EVT_CA_MESSAGE, (uintptr_t) msg);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_CA_MESSAGE, (const neutrino_msg_data_t) msg);
+//#endif
 
 #if z_debug
 	printf("*******Message\n");
