@@ -119,7 +119,6 @@ extern cPlayback *playback;
 
 // ci
 #if defined (ENABLE_CI)
-//cDvbCi * ci = NULL;
 cCA *ci = NULL;
 #endif
 
@@ -4658,7 +4657,6 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 
 	//CI init
 #if defined (ENABLE_CI)	
-	//ci = cDvbCi::getInstance();
 	ci = cCA::GetInstance();
 	ci->Start();
 #endif	

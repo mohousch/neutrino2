@@ -935,6 +935,34 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.buttons_dir = configfile.getString("buttons_dir", DATADIR "/buttons/");
 	g_settings.spinner_dir = configfile.getString("spinner_dir", DATADIR "/spinner/");
 	
+#if defined (ENABLE_CI)
+	// ci settings
+	g_settings.ci_standby_reset = configfile.getInt32("ci_standby_reset", 0);
+	g_settings.ci_check_live = configfile.getInt32("ci_check_live", 0);
+	g_settings.ci_tuner = configfile.getInt32("ci_tuner", -1);
+	g_settings.ci_delay = configfile.getInt32("ci_delay", 128);
+
+	for (unsigned int i = 0; i < cCA::GetInstance()->GetNumberCISlots(); i++) 
+	{
+#if !defined (__sh__)
+		sprintf(cfg_key, "ci_clock_%d", i);
+		g_settings.ci_clock[i] = configfile.getInt32(cfg_key, 6);
+#else
+		sprintf(cfg_key, "ci_clock_%d", i);
+		g_settings.ci_clock[i] = configfile.getInt32(cfg_key, 9);
+#endif
+
+		sprintf(cfg_key, "ci_rpr_%d", i);
+		g_settings.ci_rpr[i] = configfile.getInt32(cfg_key, 9);
+		sprintf(cfg_key, "ci_ignore_messages_%d", i);
+		g_settings.ci_ignore_messages[i] = configfile.getInt32(cfg_key, 0);
+		sprintf(cfg_key, "ci_save_pincode_%d", i);
+		g_settings.ci_save_pincode[i] = configfile.getInt32(cfg_key, 0);
+		sprintf(cfg_key, "ci_pincode_%d", i);
+		g_settings.ci_pincode[i] = configfile.getString(cfg_key, "");
+	}
+#endif
+	
 	//set OSD resolution
 #define DEFAULT_X_OFF 35
 #define DEFAULT_Y_OFF 35
@@ -1158,8 +1186,6 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setString("font_file", g_settings.font_file);
 
 	// menue timing
-	//for (int i = 0; i < TIMING_SETTING_COUNT; i++)
-	//	configfile.setInt32(timing_setting_name[i], g_settings.timing[i]);
 	configfile.setInt32("timing_menu", g_settings.timing_menu);
 	configfile.setInt32("timing_channellist", g_settings.timing_channellist);
 	configfile.setInt32("timing_epg", g_settings.timing_epg);
@@ -1395,6 +1421,28 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setString("hints_dir", g_settings.hints_dir);	
 	configfile.setString("buttons_dir", g_settings.buttons_dir);
 	configfile.setString("spinner_dir", g_settings.spinner_dir);
+	
+	// ci settings
+#if defined (ENABLE_CI)
+	configfile.setInt32("ci_standby_reset", g_settings.ci_standby_reset);
+	configfile.setInt32("ci_check_live", g_settings.ci_check_live);
+	configfile.setInt32("ci_tuner", g_settings.ci_tuner);
+	configfile.setInt32("ci_delay", g_settings.ci_delay);
+
+	for (int i = 0; i < cCA::GetInstance()->GetNumberCISlots(); i++) 
+	{
+		sprintf(cfg_key, "ci_clock_%d", i);
+		configfile.setInt32(cfg_key, g_settings.ci_clock[i]);
+		sprintf(cfg_key, "ci_rpr_%d", i);
+		configfile.setInt32(cfg_key, g_settings.ci_rpr[i]);
+		sprintf(cfg_key, "ci_ignore_messages_%d", i);
+		configfile.setInt32(cfg_key, g_settings.ci_ignore_messages[i]);
+		sprintf(cfg_key, "ci_save_pincode_%d", i);
+		configfile.setInt32(cfg_key, g_settings.ci_save_pincode[i]);
+		sprintf(cfg_key, "ci_pincode_%d", i);
+		configfile.setString(cfg_key, g_settings.ci_pincode[i]);
+	}
+#endif
 
 	if(strcmp(fname, NEUTRINO_SETTINGS_FILE))
 		configfile.saveConfig(fname);

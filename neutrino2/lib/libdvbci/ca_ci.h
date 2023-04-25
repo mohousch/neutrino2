@@ -2,6 +2,7 @@
 #define __CA_CI_H__
 
 #include <config.h>
+
 #include <stdint.h>
 #include <asm/types.h>
 #include <pthread.h>
@@ -38,7 +39,7 @@ enum CA_SLOT_TYPE
 
 enum CA_MESSAGE_FLAGS
 {
-	CA_MESSAGE_EMPTY        = (1 << 0),
+	CA_MESSAGE_EMPTY            = (1 << 0),
 	CA_MESSAGE_HAS_PARAM1_DATA  = (1 << 1), /// Free after use!
 	CA_MESSAGE_HAS_PARAM1_INT   = (1 << 2),
 	CA_MESSAGE_HAS_PARAM1_PTR   = (1 << 3),
@@ -327,14 +328,10 @@ class cCA
 		/// Sets the frequency (in Hz) of the TS stream input (only valid for CI)
 		/// sh4 unused
 		void SetTSClock(u32 Speed, int slot = 0);
-
-#if BOXMODEL_VUPLUS_ALL
 		/// dvb wait delay for ci response
 		void SetCIDelay(int Delay);
 		/// relevant pids routing
 		void SetCIRelevantPidsRouting(int RPR, int slot = 0);
-#endif
-
 		/// Start the CA module
 		/// sh4 unused
 		bool Start(void);

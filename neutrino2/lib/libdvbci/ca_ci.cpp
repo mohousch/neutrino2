@@ -26,6 +26,9 @@
 #include "dvbci_mmi.h"
 #include "dvbci_ccmgr.h"
 
+#include <neutrinoMessages.h>
+#include <driver/rcinput.h>
+
 /* for some debug > set to 1 */
 #define x_debug 1
 #define y_debug 0
@@ -33,7 +36,7 @@
 #define tsb_debug 0
 #define wd_debug 0
 
-//#define hal_debug(args...) _hal_debug(HAL_DEBUG_CA, this, args)
+extern CRCInput *g_RCInput;
 
 static const char *FILENAME = "[ca_ci]";
 #if defined (__sh__)
@@ -46,9 +49,10 @@ static int last_source = -1;
 static bool checkLiveSlot = false;
 static bool CertChecked = false;
 static bool Cert_OK = false;
-static uint8_t NullPMT[50] = {0x9F, 0x80, 0x32, 0x2E, 0x03, 0x6E, 0xA7, 0x37, 0x00, 0x00, 0x1B, 0x15, 0x7D, 0x00, 0x00, 0x03, 0x15, 0x7E, 0x00, 0x00, 0x03, 0x15, 0x7F, 0x00,
-        0x00, 0x06, 0x15, 0x80, 0x00, 0x00, 0x06, 0x15, 0x82, 0x00, 0x00, 0x0B, 0x08, 0x7B, 0x00, 0x00, 0x05, 0x09, 0x42, 0x00, 0x00, 0x06, 0x15, 0x81, 0x00, 0x00
-    };
+static uint8_t NullPMT[50] = 
+{0x9F, 0x80, 0x32, 0x2E, 0x03, 0x6E, 0xA7, 0x37, 0x00, 0x00, 0x1B, 0x15, 0x7D, 0x00, 0x00, 0x03, 0x15, 0x7E, 0x00, 0x00, 0x03, 0x15, 0x7F, 0x00, 0x00, 0x06, 0x15, 0x80, 0x00, 0x00, 0x06, 0x15, 0x82, 0x00, 0x00, 0x0B, 0x08, 0x7B, 0x00, 0x00, 0x05, 0x09, 0x42, 0x00, 0x00, 0x06, 0x15, 0x81, 0x00, 0x00
+};
+
 static cCA *pcCAInstance = NULL;
 
 /* für callback */
@@ -68,8 +72,6 @@ void hal_register_messenger(hal_messenger messenger)
 	cam_messenger = messenger;
 	return;
 }
-
-//cCA *CA = cCA::GetInstance();
 
 cCA::cCA(void)
 {
@@ -484,11 +486,13 @@ void cCA::process_tpdu(eDVBCISlot *slot, unsigned char tpdu_tag, __u8 *data, int
 bool cCA::SendMessage(const CA_MESSAGE *msg)
 {
 	//hal_debug("%s\n", __func__);
-	if (cam_messenger)
+	//if (cam_messenger)
 #if defined (__sh__)
-		cam_messenger(EVT_CA_MESSAGE, (uint32_t) msg);
+		//cam_messenger(EVT_CA_MESSAGE, (uint32_t) msg);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_CA_MESSAGE, (uint32_t) msg);
 #else
-		cam_messenger(EVT_CA_MESSAGE, (uintptr_t) msg);
+		//cam_messenger(EVT_CA_MESSAGE, (uintptr_t) msg);
+		g_RCInput->postMsg(NeutrinoMessages::EVT_CA_MESSAGE, (uintptr_t) msg);
 #endif
 
 #if z_debug
@@ -1888,10 +1892,12 @@ SlotIt cCA::GetSlot(unsigned int slot)
 bool cCA::SendNullPMT(eDVBCISlot *slot)
 {
 	printf("%s > %s >**\n", FILENAME, __func__);
+	
 	if ((slot->fd > 0) && (slot->camIsReady) && (slot->hasCAManager))
 	{
 		slot->camgrSession->sendSPDU(0x90, 0, 0, NullPMT, 50);
 	}
+	
 	return true;
 }
 
@@ -1903,6 +1909,7 @@ bool cCA::CheckCerts(void)
 			Cert_OK = true;
 		CertChecked = true;
 	}
+	
 	return Cert_OK;
 }
 
@@ -1911,6 +1918,7 @@ bool cCA::checkChannelID(u64 chanID)
 	std::list<eDVBCISlot *>::iterator it;
 	u16 SID = (u16)(chanID & 0xFFFF);
 	u64 TP = chanID >> 16;
+	
 	for (it = slot_data.begin(); it != slot_data.end(); ++it)
 	{
 		for (int j = 0; j < CI_MAX_MULTI; j++)
@@ -1919,6 +1927,7 @@ bool cCA::checkChannelID(u64 chanID)
 				return true;
 		}
 	}
+	
 	return false;
 }
 
@@ -1958,7 +1967,6 @@ void cCA::SetTSClock(u32 Speed, int slot)
 	}
 }
 
-#if BOXMODEL_VUPLUS_ALL
 void cCA::SetCIDelay(int Delay)
 {
 	char buf[64];
@@ -1984,4 +1992,4 @@ void cCA::SetCIRelevantPidsRouting(int RPR, int slot)
 		fclose(ci);
 	}
 }
-#endif
+

@@ -337,7 +337,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		snprintf(str, sizeof(str), "%s %d", SlotType == CA_SLOT_TYPE_CI ? _("CI inserted") : _("Cam inserted"), (int)curslot+1);
 		
 		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
-		HintBox(_("Info"), str, 450, 3);
+		HintBox(_("Info"), str);
 		if (in_menu)
 			msgret = messages_return::cancel_all;
 	} 
@@ -346,7 +346,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		snprintf(str, sizeof(str), "%s %d", SlotType == CA_SLOT_TYPE_CI ? _("CI removed") : _("CAM removed"), (int)curslot+1);
 
 		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
-		HintBox(_("Info"), str, 450, 3);
+		HintBox(_("Info"), str);
 
 		if (in_menu)
 			msgret = messages_return::cancel_all;
@@ -360,7 +360,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		snprintf(str, sizeof(str), "%s %d: %s", SlotType == CA_SLOT_TYPE_CI ? _("CI Init OK") : _("CAM Init OK"), (int)curslot+1, name);
 		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
 		//CCamManager::getInstance()->Start(CZapit::getInstance()->GetCurrentChannelID(), CCamManager::PLAY, true);
-		HintBox(_("Info"), str, 450, 3);
+		HintBox(_("Info"), str);
 	} 
 	else if(MsgId == CA_MESSAGE_MSG_INIT_FAILED) 
 	{
@@ -371,7 +371,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		snprintf(str, sizeof(str), "%s %d: %s", SlotType == CA_SLOT_TYPE_CI ? _("CI Init failed") : _("CAM Init failed"), (int)curslot+1, name);
 
 		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
-		HintBox(_("Info"), str, 450, 3);
+		HintBox(_("Info"), str);
 	} 
 	else if(MsgId == CA_MESSAGE_MSG_MMI_MENU || MsgId == CA_MESSAGE_MSG_MMI_LIST) 
 	{
