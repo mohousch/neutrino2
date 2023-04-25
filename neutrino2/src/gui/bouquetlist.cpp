@@ -402,7 +402,7 @@ int CBouquetList::show(bool customMode)
 
 	int zapOnExit = false;
 
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
 
 	// add sec timer
 	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
@@ -418,7 +418,7 @@ int CBouquetList::show(bool customMode)
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 
 		if ( msg <= RC_MaxRC )
-			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
+			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
 
 		if ((msg == RC_timeout) || (msg == (neutrino_msg_t)g_settings.key_channelList_cancel))
 		{

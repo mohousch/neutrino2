@@ -111,7 +111,7 @@ int CAlphaSetup::exec(CMenuTarget * parent, const std::string &)
 	int selected = 0;
 	int max = 0;
 
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_MENU] == 0 ? 0xFFFF : g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_menu == 0 ? 0xFFFF : g_settings.timing_menu);
 
 	bool loop=true;
 	while (loop)
@@ -119,7 +119,7 @@ int CAlphaSetup::exec(CMenuTarget * parent, const std::string &)
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd, true );
 
 		if ( msg <= RC_MaxRC )
-			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_MENU] == 0 ? 0xFFFF : g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_menu == 0 ? 0xFFFF : g_settings.timing_menu);
 
 		switch ( msg )
 		{

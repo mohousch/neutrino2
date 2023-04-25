@@ -172,7 +172,7 @@ void CMainSettingsMenu::showMenu(void)
 	mainSettings->addItem(new ClistBoxItem(_("Misc settings"), true, NULL, new CGeneralSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 

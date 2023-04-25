@@ -559,7 +559,7 @@ int CMessageBox::exec(int timeout)
 	CFrameBuffer::getInstance()->blit();
 
 	if ( timeout == -1 )
-		timeout = g_settings.timing[SNeutrinoSettings::TIMING_EPG];
+		timeout = g_settings.timing_epg;
 		
 	dprintf(DEBUG_NORMAL, "CMessageBox::exec: timeout:%d\n", timeout);
 

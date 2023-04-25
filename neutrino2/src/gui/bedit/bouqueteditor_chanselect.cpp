@@ -233,14 +233,14 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 	// add sec timer
 	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_EPG]);
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_epg);
 	
 	while (loop)
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 
 		if ( msg <= RC_MaxRC )
-			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_EPG]);
+			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_epg);
 
 		if( msg == RC_ok)
 		{

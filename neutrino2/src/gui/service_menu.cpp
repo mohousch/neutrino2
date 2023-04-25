@@ -139,7 +139,7 @@ void CServiceMenu::showMenu(void)
 	service->integratePlugins(CPlugins::I_TYPE_SERVICE);
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 

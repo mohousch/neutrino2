@@ -118,7 +118,7 @@ int CEPGMenuHandler::doMenu()
 	redMenu->addItem(new ClistBoxItem(_("Timerlist"), true, NULL, new CTimerList(), "", RC_blue, NULL, NEUTRINO_ICON_MENUITEM_TIMERLIST));
 		
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);				
+	widget->setTimeOut(g_settings.timing_menu);				
 	res = widget->exec(NULL, "");
 	
 	return res;

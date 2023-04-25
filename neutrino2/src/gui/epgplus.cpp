@@ -803,7 +803,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		// add sec timer
 		sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 
-		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd (g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
+		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd (g_settings.timing_channellist);
 		bool loop = true;
 
 		while (loop) 
@@ -811,7 +811,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 	  		g_RCInput->getMsgAbsoluteTimeout (&msg, &data, &timeoutEnd);
 
 	  		if (msg <= RC_MaxRC)
-				timeoutEnd = CRCInput::calcTimeoutEnd (g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
+				timeoutEnd = CRCInput::calcTimeoutEnd (g_settings.timing_channellist);
 
 	  		if ((msg == RC_page_down) || (msg == RC_yellow)) 
 			{
@@ -1436,12 +1436,12 @@ EpgPlus::MenuOptionChooserSwitchSwapMode::MenuOptionChooserSwitchSwapMode (EpgPl
 {
 	this->epgPlus = _epgPlus;
 	this->oldSwapMode = _epgPlus->currentSwapMode;
-	this->oldTimingMenuSettings = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
+	this->oldTimingMenuSettings = g_settings.timing_menu;
 }
 
 EpgPlus::MenuOptionChooserSwitchSwapMode::~MenuOptionChooserSwitchSwapMode ()
 {
-	g_settings.timing[SNeutrinoSettings::TIMING_MENU] = this->oldTimingMenuSettings;
+	g_settings.timing_menu = this->oldTimingMenuSettings;
 	
 	if (this->epgPlus->currentSwapMode != this->oldSwapMode) 
 	{
@@ -1467,7 +1467,7 @@ int EpgPlus::MenuOptionChooserSwitchSwapMode::exec(CMenuTarget* parent)
 	dprintf(DEBUG_NORMAL, "EpgPlus::MenuOptionChooserSwitchSwapMode::exec:\n");
 
 	// change time out settings temporary
-	g_settings.timing[SNeutrinoSettings::TIMING_MENU] = 1;
+	g_settings.timing_menu = 1;
 	
 	CMenuOptionChooser::exec(parent);
 	
@@ -1484,12 +1484,12 @@ EpgPlus::MenuOptionChooserSwitchViewMode::MenuOptionChooserSwitchViewMode (EpgPl
 :CMenuOptionChooser (_("view mode"), (int *) &epgPlus->currentViewMode, menuOptionChooserSwitchViewModes, sizeof (menuOptionChooserSwitchViewModes) / sizeof (keyval)
 					  , true, NULL, RC_blue, NEUTRINO_ICON_BUTTON_BLUE) 
 {
-  	this->oldTimingMenuSettings = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
+  	this->oldTimingMenuSettings = g_settings.timing_menu;
 }
 
 EpgPlus::MenuOptionChooserSwitchViewMode::~MenuOptionChooserSwitchViewMode ()
 {
-  	g_settings.timing[SNeutrinoSettings::TIMING_MENU] = this->oldTimingMenuSettings;
+  	g_settings.timing_menu = this->oldTimingMenuSettings;
 }
 
 int EpgPlus::MenuOptionChooserSwitchViewMode::exec(CMenuTarget* parent)
@@ -1497,7 +1497,7 @@ int EpgPlus::MenuOptionChooserSwitchViewMode::exec(CMenuTarget* parent)
 	dprintf(DEBUG_NORMAL, "EpgPlus::MenuOptionChooserSwitchViewMode::exec:\n");
 
 	// change time out settings temporary
-	g_settings.timing[SNeutrinoSettings::TIMING_MENU] = 1;
+	g_settings.timing_menu = 1;
 	
 	CMenuOptionChooser::exec(parent);
 	

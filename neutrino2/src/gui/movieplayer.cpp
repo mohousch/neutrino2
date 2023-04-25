@@ -307,7 +307,7 @@ void CMoviePlayerGui::removeFromPlaylist(long pos)
 void CMoviePlayerGui::startMovieInfoViewer(void)
 {
 	if(sec_timer_id == 0)
-		sec_timer_id = g_RCInput->addTimer(g_settings.timing[SNeutrinoSettings::TIMING_INFOBAR]*1000*1000);
+		sec_timer_id = g_RCInput->addTimer(g_settings.timing_infobar*1000*1000);
 }
 
 void CMoviePlayerGui::killMovieInfoViewer(void)

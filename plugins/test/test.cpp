@@ -4000,7 +4000,7 @@ void CTestMenu::testCMenuWidget1()
 	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	menuWidget->enablePaintItemInfo();
 	menuWidget->addKey(RC_setup, this, "lsetup");
-	menuWidget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	menuWidget->setTimeOut(g_settings.timing_menu);
 
 	menuWidget->exec(NULL, "");
 

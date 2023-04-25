@@ -256,7 +256,7 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->addItem(new ClistBoxItem(_("Settings restore"), true, NULL, resetNotifier, "restore"));
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 
@@ -407,13 +407,20 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 		if(audioDecoder)
 			audioDecoder->SetHdmiDD(g_settings.hdmi_dd );
 
-		CNeutrinoApp::getInstance()->setupTiming();
+		//
+		g_settings.timing_menu = DEFAULT_TIMING_MENU;
+		g_settings.timing_channellist = DEFAULT_TIMING_CHANNELLIST;
+		g_settings.timing_epg = DEFAULT_TIMING_EPG;
+		g_settings.timing_infobar = DEFAULT_TIMING_INFOBAR;
+		g_settings.timing_filebrowser = DEFAULT_TIMING_FILEBROWSER;
+		g_settings.timing_numericzap = DEFAULT_TIMING_NUMERICZAP;
 
 		return true;
 	}
 	else if(actionKey == "backup") 
 	{
 		fileBrowser.Dir_Mode = true;
+		
 		if (fileBrowser.exec("/media") == true) 
 		{
 			char  fname[256];
@@ -440,6 +447,7 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 	{
 		fileFilter.addFilter("tar");
 		fileBrowser.Filter = &fileFilter;
+		
 		if (fileBrowser.exec("/media") == true) 
 		{
 			int result = MessageBox(_("Settings restore"), _("Do you want to restore the previous settings?"), mbrNo, mbYes | mbNo);
@@ -566,7 +574,7 @@ void CChannelListSettings::showMenu()
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("HD / Crypt Icons"), &g_settings.channellist_ca, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 
@@ -778,7 +786,7 @@ void CEPGSettings::showMenu()
 	
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 
 	delete epg_IP;
@@ -954,7 +962,7 @@ void CFileBrowserSettings::showMenu()
 	miscSettingsFileBrowser->addItem(new CMenuOptionChooser(_("Absolute start directory"), &g_settings.filebrowser_denydirectoryleave, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true));
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 

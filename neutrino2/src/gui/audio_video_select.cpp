@@ -301,7 +301,7 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	// video format bestfit/letterbox/panscan/non
 	AVPIDSelector->addItem(new CMenuOptionChooser(_("Video Format"), &g_settings.video_Format, VIDEOMENU_VIDEOFORMAT_OPTIONS, VIDEOMENU_VIDEOFORMAT_OPTION_COUNT, true, CVideoSettings::getInstance()->videoSetupNotifier, RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
 	
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 

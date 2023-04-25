@@ -99,13 +99,6 @@ class CFontSettings : public CMenuTarget
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
-// timing setup notifier
-class CTimingSettingsNotifier : public CChangeObserver
-{
-	public:
-		bool changeNotify(const std::string& OptionName, void *);
-};
-
 // osd timing settings
 class COSDTimingSettings : public CMenuTarget
 {

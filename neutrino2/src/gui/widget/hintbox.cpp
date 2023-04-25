@@ -262,7 +262,7 @@ int CHintBox::exec(int timeout)
 	CFrameBuffer::getInstance()->blit();
 
 	if ( timeout == -1 )
-		timeout = g_settings.timing[SNeutrinoSettings::TIMING_INFOBAR];
+		timeout = g_settings.timing_infobar;
 		
 	dprintf(DEBUG_NORMAL, "CHintBox::exec: timeout:%d\n", timeout);
 

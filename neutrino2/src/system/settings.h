@@ -205,19 +205,13 @@ struct SNeutrinoSettings
 	unsigned char infobar_colored_events_blue;
 
 	char	font_file[100];
-
-#define TIMING_SETTING_COUNT 6
-	enum TIMING_SETTINGS {
-		TIMING_MENU        = 0,
-		TIMING_CHANLIST    = 1,
-		TIMING_EPG         = 2,
-		TIMING_INFOBAR     = 3,
-		TIMING_FILEBROWSER = 4,
-		TIMING_NUMERICZAP  = 5
-	};
-
-	int  timing[TIMING_SETTING_COUNT]   ;
-	char timing_string[TIMING_SETTING_COUNT][4];
+	
+	int timing_menu;
+	int timing_channellist;
+	int timing_epg;
+	int timing_infobar;
+	int timing_filebrowser;
+	int timing_numericzap;
 
 #define FONT_TYPE_COUNT 23
 	enum FONT_TYPES {
@@ -491,8 +485,14 @@ struct SNeutrinoSettings
 };
 
 //
-extern const int default_timing[TIMING_SETTING_COUNT];
-extern const char* const timing_setting_name[TIMING_SETTING_COUNT];
+//extern const int default_timing[TIMING_SETTING_COUNT];
+//extern const char* const timing_setting_name[TIMING_SETTING_COUNT];
+#define DEFAULT_TIMING_MENU			0
+#define DEFAULT_TIMING_CHANNELLIST		60
+#define DEFAULT_TIMING_EPG			240
+#define DEFAULT_TIMING_INFOBAR			6
+#define DEFAULT_TIMING_FILEBROWSER		60
+#define DEFAULT_TIMING_NUMERICZAP		3	
 
 // lcdd
 #if defined(ENABLE_LCD) && (defined(PLATFORM_DREAMBOX) || defined(PLATFORM_GIGABLUE) || defined(PLATFORM_VUPLUS))

@@ -543,7 +543,7 @@ int CInfoBox::exec(int timeout)
 	CFrameBuffer::getInstance()->blit();
 
 	if ( timeout == -1 )
-		timeout = g_settings.timing[SNeutrinoSettings::TIMING_EPG];
+		timeout = g_settings.timing_epg;
 		
 	dprintf(DEBUG_NORMAL, "CInfoBox::exec: timeout:%d\n", timeout);
 

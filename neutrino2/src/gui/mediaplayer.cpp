@@ -105,7 +105,7 @@ void CMediaPlayerMenu::showMenu()
 	MediaPlayer->integratePlugins(CPlugins::I_TYPE_MULTIMEDIA);
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 

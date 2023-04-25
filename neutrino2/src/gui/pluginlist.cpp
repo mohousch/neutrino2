@@ -170,7 +170,7 @@ void CPluginList::showMenu()
 	pWidget->addKey(RC_ok, this, CRCInput::getSpecialKeyName(RC_ok));
 	
 	//
-	pWidget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_FILEBROWSER]);
+	pWidget->setTimeOut(g_settings.timing_filebrowser);
 	pWidget->exec(NULL, "");
 }
 

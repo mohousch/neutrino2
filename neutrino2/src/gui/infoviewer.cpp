@@ -613,7 +613,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 		bool hideIt = true;
 		virtual_zap_mode = false;
 
-		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd (g_settings.timing[SNeutrinoSettings::TIMING_INFOBAR] == 0 ? 0xFFFF : g_settings.timing[SNeutrinoSettings::TIMING_INFOBAR]);
+		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd (g_settings.timing_infobar == 0 ? 0xFFFF : g_settings.timing_infobar);
 
 		int res = messages_return::none;
 		

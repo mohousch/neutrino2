@@ -248,7 +248,7 @@ void CAudioSelectMenuHandler::doMenu()
 			g_RemoteControl->current_PIDs.APIDs[count].desc));
 	}
 
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 
 	delete audioSetupNotifierVolPercent;

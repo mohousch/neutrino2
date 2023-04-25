@@ -193,7 +193,7 @@ int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	// add sec timer
 	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_EPG]);
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_epg);
 
 	bool loop = true;
 	while (loop)
@@ -201,7 +201,7 @@ int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 
 		if ( msg <= RC_MaxRC )
-			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_EPG]);
+			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_epg);
 
 		if ((msg == RC_timeout) || (msg == (neutrino_msg_t)g_settings.key_channelList_cancel))
 		{

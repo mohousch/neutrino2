@@ -777,7 +777,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 
 		bool loop = true;
 
-		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_EPG]);
+		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_epg);
 
 		while(loop)
 		{

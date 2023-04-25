@@ -372,7 +372,7 @@ bool CFileBrowser::exec(const char * const dirname)
 	// add sec timer
 	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_FILEBROWSER]);
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_infobar);
 
 	bool loop = true;
 	while (loop)
@@ -381,7 +381,7 @@ bool CFileBrowser::exec(const char * const dirname)
 		neutrino_msg_t msg_repeatok = msg & ~RC_Repeat;
 
 		if ( msg <= RC_MaxRC )
-			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_FILEBROWSER]);
+			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_infobar);
 
 		if(!CRCInput::isNumeric(msg))
 		{

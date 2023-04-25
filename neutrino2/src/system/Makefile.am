@@ -33,10 +33,15 @@ noinst_LIBRARIES = libneutrino2_system.a
 
 libneutrino2_system_a_SOURCES = \
 	safe_system.c \
-	localize.cpp setting_helpers.cpp debug.cpp \
-	ping.c flashtool.cpp httptool.cpp \
-	settings.cpp lastchannel.cpp \
-	configure_network.cpp fsmounter.cpp \
+	localize.cpp \
+	setting_helpers.cpp \
+	debug.cpp \
+	ping.c \
+	flashtool.cpp \
+	httptool.cpp \
+	lastchannel.cpp \
+	configure_network.cpp \
+	fsmounter.cpp \
 	helpers.cpp \
 	channellogo.cpp \
 	tmdbparser.cpp \

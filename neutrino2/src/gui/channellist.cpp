@@ -670,7 +670,7 @@ int CChannelList::show(bool zap, bool customMode)
 	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 
 	// loop control
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
 
 	// add sec timer
 	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
@@ -681,7 +681,7 @@ int CChannelList::show(bool zap, bool customMode)
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd );
 		
 		if ( msg <= RC_MaxRC )
-			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
+			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
 
 		if ( ( msg == RC_timeout ) || ( msg == (neutrino_msg_t)g_settings.key_channelList_cancel) ) 
 		{
@@ -1379,7 +1379,7 @@ int CChannelList::numericZap(int key)
 			lastchan = chn;
 		}
 
-		g_RCInput->getMsg( &msg, &data, g_settings.timing[SNeutrinoSettings::TIMING_NUMERICZAP] * 10 );
+		g_RCInput->getMsg( &msg, &data, g_settings.timing_numericzap * 10 );
 
 		if ( msg == RC_timeout ) 
 		{
@@ -1460,7 +1460,7 @@ int CChannelList::numericZap(int key)
 	if ( doZap ) 
 	{
 		// kill infobar
-		if(g_settings.timing[SNeutrinoSettings::TIMING_INFOBAR] == 0)
+		if(g_settings.timing_infobar == 0)
 			g_InfoViewer->killTitle();
 		
 		// zapto selected channel
@@ -1586,7 +1586,7 @@ void CChannelList::virtual_zap_mode(bool up)
 
         if ( doZap )
         {
-		if(g_settings.timing[SNeutrinoSettings::TIMING_INFOBAR] == 0)
+		if(g_settings.timing_infobar == 0)
 			g_InfoViewer->killTitle();
 
                 zapTo(chn);

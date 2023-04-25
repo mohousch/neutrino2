@@ -648,8 +648,14 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	strcpy( g_settings.font_file, configfile.getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
 
 	// menue timing
-	for (int i = 0; i < TIMING_SETTING_COUNT; i++)
-		g_settings.timing[i] = configfile.getInt32(timing_setting_name[i], default_timing[i]);
+	//for (int i = 0; i < TIMING_SETTING_COUNT; i++)
+	//	g_settings.timing[i] = configfile.getInt32(timing_setting_name[i], default_timing[i]);
+	g_settings.timing_menu = configfile.getInt32("timing_menu", DEFAULT_TIMING_MENU);
+	g_settings.timing_channellist = configfile.getInt32("timing_channellist", DEFAULT_TIMING_CHANNELLIST);
+	g_settings.timing_epg = configfile.getInt32("timing_epg", DEFAULT_TIMING_EPG);
+	g_settings.timing_infobar = configfile.getInt32("timing_infobar", DEFAULT_TIMING_INFOBAR);
+	g_settings.timing_filebrowser = configfile.getInt32("timing_filebrowser", DEFAULT_TIMING_FILEBROWSER);
+	g_settings.timing_numericzap = configfile.getInt32("timing_numericzap", DEFAULT_TIMING_NUMERICZAP);
 
 	// screen setup
 	g_settings.screen_StartX = configfile.getInt32( "screen_StartX", 35 );	
@@ -1150,8 +1156,14 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setString("font_file", g_settings.font_file);
 
 	// menue timing
-	for (int i = 0; i < TIMING_SETTING_COUNT; i++)
-		configfile.setInt32(timing_setting_name[i], g_settings.timing[i]);
+	//for (int i = 0; i < TIMING_SETTING_COUNT; i++)
+	//	configfile.setInt32(timing_setting_name[i], g_settings.timing[i]);
+	configfile.setInt32("timing_menu", g_settings.timing_menu);
+	configfile.setInt32("timing_channellist", g_settings.timing_channellist);
+	configfile.setInt32("timing_epg", g_settings.timing_epg);
+	configfile.setInt32("timing_infobar", g_settings.timing_infobar);
+	configfile.setInt32("timing_filebrowser", g_settings.timing_filebrowser);
+	configfile.setInt32("timing_numericzap", g_settings.timing_numericzap);
 	
 	//
 	configfile.setString("preferred_skin", g_settings.preferred_skin);
@@ -1812,15 +1824,6 @@ void CNeutrinoApp::setupFonts(const char* font_file)
 		g_InfoViewer->start();
 }
 
-// setup the menu timeouts
-void CNeutrinoApp::setupTiming()
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupTiming\n");
-
-	for (int i = 0; i < TIMING_SETTING_COUNT; i++)
-		sprintf(g_settings.timing_string[i], "%d", g_settings.timing[i]);
-};
-
 // setup recording device
 void CNeutrinoApp::setupRecordingDevice(void)
 {
@@ -2313,9 +2316,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	// setup fonts
 	setupFonts(g_settings.font_file);
-	
-	// setup menue timing
-	setupTiming();
 	
 	// setup color
 	colorSetupNotifier = new CColorSetupNotifier;
@@ -3256,7 +3256,7 @@ void CNeutrinoApp::realRun(void)
 			}			
 			else if((msg == RC_info) || ( msg == NeutrinoMessages::SHOW_INFOBAR ))
 			{
-				bool show_info = ((msg != NeutrinoMessages::SHOW_INFOBAR) || (g_InfoViewer->is_visible || g_settings.timing[SNeutrinoSettings::TIMING_INFOBAR] != 0));
+				bool show_info = ((msg != NeutrinoMessages::SHOW_INFOBAR) || (g_InfoViewer->is_visible || g_settings.timing_infobar != 0));
 					
 				// turn on LCD display
 				CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
@@ -4891,7 +4891,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if(actionKey == "savesettings") 
 	{
-		if (MessageBox(_("Information"), _("Save settings now?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		//if (MessageBox(_("Information"), _("Save settings now?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
 			saveSetup(NEUTRINO_SETTINGS_FILE);
 
@@ -4906,7 +4906,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if (actionKey == "saveskinsettings")
 	{
-		if (MessageBox(_("Information"), _("Save Skin settings now?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		//if (MessageBox(_("Information"), _("Save Skin settings now?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
 			// fetch skin config file
 			std::string skinConfig = CONFIGDIR "/skins/";
@@ -4924,7 +4924,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if (actionKey == "defaultskinsettings")
 	{
-		if (MessageBox(_("Information"), _("load default skin configuration?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		//if (MessageBox(_("Information"), _("load default skin configuration?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
 			std::string skinDefaultConfigFile = CONFIGDIR "/skins/";
 			skinDefaultConfigFile += g_settings.preferred_skin.c_str();
@@ -4936,7 +4936,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if(actionKey == "reloadchannels")
 	{
-		if (MessageBox(_("Information"), _("do you want to reload channel lists?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		//if (MessageBox(_("Information"), _("do you want to reload channel lists?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
 			HintBox(_("Information"), _("Reloading channel lists, please be patient."));
 			CZapit::getInstance()->reinitChannels();
@@ -4944,7 +4944,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if (actionKey == "reloadepg")
 	{
-		if (MessageBox(_("Information"), _("do you want to reload EPG?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		//if (MessageBox(_("Information"), _("do you want to reload EPG?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
 			HintBox(_("Information"), _("Reloading EPG, please be patient."));
 			
@@ -4953,7 +4953,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if (actionKey == "reloadxmltvepg")
 	{
-		if (MessageBox(_("Information"), _("do you want to reload XMLTV EPG?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		//if (MessageBox(_("Information"), _("do you want to reload XMLTV EPG?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
 			HintBox(_("Information"), _("Reloading XMLTV EPG, please be patient."));
 			
@@ -5195,7 +5195,7 @@ void CNeutrinoApp::selectNVOD()
 		//
                 if(getNVODMenu(NVODSelector))
                 {
-                	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+                	widget->setTimeOut(g_settings.timing_menu);
                         widget->exec(NULL, "");
                 }	
         }

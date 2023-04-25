@@ -151,7 +151,6 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		//
 		void saveSetup(const char * fname);
 		int loadSetup(const char * fname);
-		void setupTiming();
 		void setupFonts(const char* font_file);
 		
 		// skin

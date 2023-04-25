@@ -166,7 +166,7 @@ void COSDSettings::showMenu(void)
 	osdSettings->addItem(new ClistBoxItem(_("Misc settings"), true, NULL, new COSDDiverses(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 
@@ -399,7 +399,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Hint_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 
@@ -529,7 +529,7 @@ void COSDInfoBarColorSettings::showMenu()
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Satellite display on infobar"), &g_settings.infobar_sat_display, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 
@@ -659,7 +659,7 @@ void CLanguageSettings::showMenu()
 	}
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 
@@ -788,13 +788,11 @@ void CFontSettings::showMenu()
 	fontSettings->addItem(new CMenuOptionNumberChooser(_("Vertikal (in %)"), &g_settings.screen_yres, true, 50, 200, NULL) );
 		
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 
 // osd timing settings
-static CTimingSettingsNotifier timingsettingsnotifier;
-
 int COSDTimingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDTimingSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -803,13 +801,15 @@ int COSDTimingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if(parent)
 		parent->hide();
-	
+		
 	if(actionKey == "osd.def") 
 	{
-		for (int i = 0; i < TIMING_SETTING_COUNT; i++)
-			g_settings.timing[i] = default_timing[i];
-
-		CNeutrinoApp::getInstance()->setupTiming();
+		g_settings.timing_menu = DEFAULT_TIMING_MENU;
+		g_settings.timing_channellist = DEFAULT_TIMING_CHANNELLIST;
+		g_settings.timing_epg = DEFAULT_TIMING_EPG;
+		g_settings.timing_infobar = DEFAULT_TIMING_INFOBAR;
+		g_settings.timing_filebrowser = DEFAULT_TIMING_FILEBROWSER;
+		g_settings.timing_numericzap = DEFAULT_TIMING_NUMERICZAP;
 		
 		return ret;
 	}
@@ -865,36 +865,20 @@ void COSDTimingSettings::showMenu()
 	osdTimingSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	osdTimingSettings->addItem(new CMenuSeparator(LINE));
 
-	for (int i = 0; i < TIMING_SETTING_COUNT; i++)
-	{
-		CStringInput * colorSettings_timing_item = new CStringInput(timing_setting_name[i], g_settings.timing_string[i], 3, _("Time in sec. After this time the"), _("infobar will be faded out."), "0123456789 ", &timingsettingsnotifier);
-
-		osdTimingSettings->addItem(new ClistBoxItem(timing_setting_name[i], true, g_settings.timing_string[i], colorSettings_timing_item));
-	}
+	osdTimingSettings->addItem(new CMenuOptionNumberChooser(_("Menu"), &g_settings.timing_menu, true, 0, 600));
+	osdTimingSettings->addItem(new CMenuOptionNumberChooser(_("Channellist"), &g_settings.timing_channellist, true, 0, 600));
+	osdTimingSettings->addItem(new CMenuOptionNumberChooser(_("EPG"), &g_settings.timing_epg, true, 0, 600));
+	osdTimingSettings->addItem(new CMenuOptionNumberChooser(_("Infobar"), &g_settings.timing_infobar, true, 0, 600));
+	osdTimingSettings->addItem(new CMenuOptionNumberChooser(_("Filebrowser"), &g_settings.timing_filebrowser, true, 0, 600));
+	osdTimingSettings->addItem(new CMenuOptionNumberChooser(_("Numericzap"), &g_settings.timing_numericzap, true, 0, 600));
+	
 
 	osdTimingSettings->addItem(new CMenuSeparator(LINE));
 	osdTimingSettings->addItem(new ClistBoxItem(_("Default"), true, NULL, this, "osd.def"));
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
-}
-
-// timing settings notifier
-bool CTimingSettingsNotifier::changeNotify(const std::string& OptionName, void *)
-{
-	dprintf(DEBUG_NORMAL, "CTimingSettingsNotifier::changeNotify:\n");
-		
-	for (int i = 0; i < TIMING_SETTING_COUNT; i++)
-	{
-		if (OptionName == timing_setting_name[i])
-		{
-			g_settings.timing[i] = atoi(g_settings.timing_string[i]);
-			return true;
-		}
-	}
-
-	return false;
 }
 
 // diverses
@@ -910,8 +894,6 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 	if(actionKey == "savesettings")
 	{
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		
-		//HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
 		return ret;
 	}
@@ -1130,7 +1112,7 @@ void COSDDiverses::showMenu()
 	osdDiverseSettings->addItem( new ClistBoxItem(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" ) );
 
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 
@@ -1219,7 +1201,7 @@ void CSkinManager::showMenu()
 	}
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 
@@ -1355,7 +1337,7 @@ void CSkinSettings::showMenu()
 		free(namelist);
 	}
 	
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 

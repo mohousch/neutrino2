@@ -50,7 +50,7 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	//
 	menu_position = MENU_POSITION_NONE;
 
-	timeout = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
+	timeout = g_settings.timing_menu;
 	sec_timer_id = 0;
 	
 	//
@@ -80,7 +80,7 @@ CWidget::CWidget(CBox *position)
 	//
 	menu_position = MENU_POSITION_NONE;
 
-	timeout = g_settings.timing[SNeutrinoSettings::TIMING_MENU];
+	timeout = g_settings.timing_menu;
 	sec_timer_id = 0;
 	
 	//

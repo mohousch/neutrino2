@@ -120,7 +120,7 @@ void CPowerMenu::showMenu(void)
 	powerMenu->integratePlugins(CPlugins::I_TYPE_POWER);
 	
 	//
-	widget->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_MENU]);
+	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 }
 

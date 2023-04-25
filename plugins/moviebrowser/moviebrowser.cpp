@@ -1123,7 +1123,7 @@ int CMovieBrowser::exec(const char * path)
 		return res;// paint failed due to less memory , exit 
 
 	if ( timeout == -1 )
-		timeout = g_settings.timing[SNeutrinoSettings::TIMING_FILEBROWSER];
+		timeout = g_settings.timing_filebrowser;
 
 	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd( timeout );
 

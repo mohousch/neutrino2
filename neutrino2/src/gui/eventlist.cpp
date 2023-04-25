@@ -275,7 +275,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 
 	int oldselected = selected;
 
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
 
 	bool loop = true;
 	while (loop)
@@ -283,7 +283,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 
 		if ( msg <= RC_MaxRC )
-			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
+			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
 
 		if (msg == RC_up)
 		{
@@ -550,7 +550,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		else if ( msg == RC_green )
 		{
 			in_search = findEvents();
-			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
+			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
 		}
 		else if (msg == RC_sat || msg == RC_favorites)
 		{
