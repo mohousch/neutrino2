@@ -239,13 +239,8 @@ static bool transmitData(eDVBCISlot *slot, unsigned char *d, int len)
 {
 	printf("%s -> %s len(%d)\n", FILENAME, __func__, len);
 
-#if 0 //!defined (__sh__)//BOXMODEL_VUSOLO4K || BOXMODEL_VUDUO4K || BOXMODEL_VUDUO4KSE || BOXMODEL_VUULTIMO4K || BOXMODEL_VUZERO4K
-//#if y_debug
-//	for (int i = 0; i < len; i++)
-//		printf("%02x ", d[i]);
-//	printf("\n");
-//#endif
-	int res = write(slot->fd, d, len);
+#if 1
+	int res = ::write(slot->fd, d, len);
 	printf("send: %d len: %d\n", res, len);
 
 	free(d);
@@ -256,11 +251,6 @@ static bool transmitData(eDVBCISlot *slot, unsigned char *d, int len)
 		return false;
 	}
 #else
-//#if y_debug
-//	for (int i = 0; i < len; i++)
-//		printf("%02x ", d[i]);
-//	printf("\n");
-//#endif
 	slot->sendqueue.push(queueData(d, len));
 #endif
 	return true;
