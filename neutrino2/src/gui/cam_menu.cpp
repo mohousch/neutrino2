@@ -309,7 +309,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 
 	msgret = messages_return::handled;
 
-	rMsg	= (CA_MESSAGE *)data;
+	rMsg = (CA_MESSAGE *)data;
 	if (!rMsg)
 		return -1;
 
@@ -322,7 +322,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 
 	printf("CCAMMenuHandler::handleCamMsg: CA msg %x from %s\n", MsgId, from_menu ? "menu" : "neutrino");
 
-	if (/*g_settings.ci_ignore_messages[curslot] &&*/ !from_menu && MsgId != CA_MESSAGE_MSG_MMI_REQ_INPUT
+	if (g_settings.ci_ignore_messages[curslot] && !from_menu && MsgId != CA_MESSAGE_MSG_MMI_REQ_INPUT
 	&& MsgId != CA_MESSAGE_MSG_MMI_CLOSE && MsgId != CA_MESSAGE_MSG_INIT_OK
 	&& MsgId != CA_MESSAGE_MSG_INSERTED && MsgId != CA_MESSAGE_MSG_REMOVED)
 		return 1;
@@ -393,17 +393,18 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		
 		if(pMenu->choice_nb && from_menu) 
 		{
-			/*
 			CMenuWidget* menu = new CMenuWidget(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_SETTINGS);
-			menu->enableSaveScreen(true);
+			menu->enableSaveScreen();
 
-			CMenuSelectorTarget * selector = new CMenuSelectorTarget(&selected);
+			//CMenuSelectorTarget * selector = new CMenuSelectorTarget(&selected);
 			int slen = strlen(pMenu->subtitle);
+			
 			if(slen) 
 			{
 				char * sptr = pMenu->subtitle;
 				char * tptr = sptr;
 				int bpos = 0;
+				
 				for(int li = 0; li < slen; li++) 
 				{
 					if((tptr[li] == 0x8A) || ((bpos > 38) && (tptr[li] == 0x20)) ) 
@@ -411,7 +412,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 						bpos = 0;
 						tptr[li] = 0;
 						printf("CCAMMenuHandler::handleCamMsg: subtitle: %s\n", sptr);
-						menu->addItem(new CMenuForwarder(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
+						menu->addItem(new ClistBoxItem(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
 						sptr = &tptr[li+1];
 					}
 					bpos++;
@@ -420,7 +421,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				if(strlen(sptr)) 
 				{
 					printf("CCAMMenuHandler::handleCamMsg: subtitle: %s\n", sptr);
-					menu->addItem(new CMenuForwarder(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
+					menu->addItem(new ClistBoxItem(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
 				}
 			}
 			
@@ -428,22 +429,21 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			{
 				snprintf(cnt, sizeof(cnt), "%d", i);
 				if(sublevel)
-					menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, selector, cnt));
+					menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, this, cnt));
 				else
-					menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, selector, cnt, CRCInput::convertDigitToKey(i+1)));
+					menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, this, cnt));
 			}
 			
 			slen = strlen(pMenu->bottom);
 			if(slen) 
 			{
 				printf("CCAMMenuHandler::handleCamMsg: bottom: %s\n", pMenu->bottom);
-				menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->bottom, slen, 0).c_str(), false));
+				menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->bottom, slen, 0).c_str(), false));
 			}
 
+			selected = menu->getSelected();
 			menuret = menu->exec(NULL, "");
 			delete menu;
-			delete selector;
-			*/
 		} 
 		else 
 		{
@@ -490,8 +490,8 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		printf("CCAMMenuHandler::handleCamMsg: slot %d input request, text %s\n", curslot, convertDVBUTF8(pMmiEnquiry->enquiryText, strlen(pMmiEnquiry->enquiryText), 0).c_str());
 
 		std::string ENQAnswer;
-#if 0
-		if (/* !from_menu && */ /*g_settings.ci_save_pincode[curslot] &&*/ pMmiEnquiry->blind != 0 && (int) g_settings.ci_pincode[curslot].length() == pMmiEnquiry->answerlen) 
+#if 1
+		if (/* !from_menu && */ g_settings.ci_save_pincode[curslot] && pMmiEnquiry->blind != 0 && (int) g_settings.ci_pincode[curslot].length() == pMmiEnquiry->answerlen) 
 		{
 			static int acount = 0;
 			static time_t last_ask = 0;
