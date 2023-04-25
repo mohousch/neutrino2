@@ -112,6 +112,7 @@ struct NeutrinoMessages {
 		EVT_PMT_CHANGED				 = RC_Events + 40,
 
 		/* NEVER CHANGE THIS */
+		#if 0
 		EVT_CI_INSERTED				 = RC_Events + 60, /* data = slot num */
 		EVT_CI_REMOVED				 = RC_Events + 61, /* data = slot num */
 		EVT_CI_INIT_OK				 = RC_Events + 62, /* data = slot num */
@@ -120,6 +121,10 @@ struct NeutrinoMessages {
 		EVT_CI_MMI_TEXT				 = RC_Events + 65,
 		EVT_CI_MMI_REQUEST_INPUT		 = RC_Events + 66,
 		EVT_CI_MMI_CLOSE			 = RC_Events + 67,
+		#endif
+		EVT_CA_MESSAGE                           = RC_Events + 60, /* data = CA_MESSAGE pointer */
+		//EVT_SUBT_MESSAGE                         = RC_Events + 61, /* data = subtitles pointer */
+		//EVT_AUTO_SET_VIDEOSYSTEM                 = RC_Events + 62, /* data = new video system */
 		/* END */
 
 		EVT_CURRENTEPG                           = RC_WithData +  1,

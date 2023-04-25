@@ -166,7 +166,9 @@
 #include <cs_api.h>
 #endif
 
-#include <libdvbci/dvb-ci.h>
+#if defined (ENABLE_CI)
+#include <libdvbci/ca_ci.h>
+#endif
 
 #if defined ENABLE_GSTREAMER
 #include <gst/gst.h>
@@ -2649,7 +2651,9 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 // Cam-Ci
 #if defined (ENABLE_CI)	
-	cDvbCi::getInstance()->SetHook(CISendMessage);	
+	//cDvbCi::getInstance()->SetHook(CISendMessage);
+	cCA::GetInstance()->Ready(true);
+	//cCA::GetInstance()->setCheckLiveSlot(g_settings.ci_check_live);	
 #endif	
 	
 	// init shutdown count

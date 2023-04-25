@@ -5,14 +5,16 @@
 
 class eDVBCIDateTimeSession: public eDVBCISession
 {
-	enum {
-		stateFinal=statePrivate, stateSendDateTime
-	};
-	int receivedAPDU(const unsigned char *tag, const void *data, int len);
-	int doAction();
-public:
-	eDVBCIDateTimeSession(tSlot *tslot);
-	~eDVBCIDateTimeSession();
+		enum
+		{
+			stateFinal = statePrivate, stateSendDateTime
+		};
+		int receivedAPDU(const unsigned char *tag, const void *data, int len);
+		int doAction();
+	public:
+		eDVBCIDateTimeSession(eDVBCISlot *tslot);
+		~eDVBCIDateTimeSession();
+		void sendDateTime();
 };
 
 #endif

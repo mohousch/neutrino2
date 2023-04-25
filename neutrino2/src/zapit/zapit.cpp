@@ -78,7 +78,7 @@
 #include <audio_cs.h>
 #include <video_cs.h>
 #if defined (ENABLE_CI)
-#include <dvb-ci.h>
+#include <ca_ci.h>
 #endif
 
 #include <playback_cs.h>
@@ -119,7 +119,8 @@ extern cPlayback *playback;
 
 // ci
 #if defined (ENABLE_CI)
-cDvbCi * ci = NULL;
+//cDvbCi * ci = NULL;
+cCA *ci = NULL;
 #endif
 
 // audio conf
@@ -1077,8 +1078,8 @@ void CZapit::sendCaPmtRecordStop(void)
 		{
 			cam0->setCaPmt(live_channel, live_channel->getCaPmt(), demux_index, ca_mask, true); // cam0 update
 #if defined (ENABLE_CI)
-			if(live_fe != NULL)
-				ci->SendCaPMT(NULL, live_fe->fenumber);
+			//if(live_fe != NULL)
+			//	ci->SendCaPMT(NULL, live_fe->fenumber);
 #endif
 		}
 	} 
@@ -1089,8 +1090,8 @@ void CZapit::sendCaPmtRecordStop(void)
 #if defined (ENABLE_CI)
 		if(rec_channel != NULL)
 		{
-			if(record_fe != NULL)
-				ci->SendCaPMT(NULL, record_fe->fenumber);
+			//if(record_fe != NULL)
+			//	ci->SendCaPMT(NULL, record_fe->fenumber);
 		}
 #endif
 	}
@@ -1099,8 +1100,8 @@ void CZapit::sendCaPmtRecordStop(void)
 #if defined (ENABLE_CI)
 	if(live_channel != NULL)
 	{
-		if(live_fe != NULL)
-			ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
+		//if(live_fe != NULL)
+		//	ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
 	}
 #endif
 }
@@ -1428,8 +1429,8 @@ tune_again:
 #if defined (ENABLE_CI)	
 		if(live_channel != NULL)
 		{
-			if(live_fe != NULL)
-				ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
+			//if(live_fe != NULL)
+			//	ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
 		}
 #endif		
 	
@@ -1497,8 +1498,8 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 #if defined (ENABLE_CI)	
 	if(rec_channel != NULL)
 	{
-		if(record_fe != NULL)
-			ci->SendCaPMT(rec_channel->getCaPmt(), record_fe->fenumber);
+		//if(record_fe != NULL)
+		//	ci->SendCaPMT(rec_channel->getCaPmt(), record_fe->fenumber);
 	}
 #endif		
 	
@@ -3247,8 +3248,8 @@ void *CZapit::updatePMTFilter(void *)
 #if defined (ENABLE_CI)
 						if(live_channel != NULL)
 						{
-							if(live_fe != NULL)
-								ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
+							//if(live_fe != NULL)
+							//	ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
 						}
 #endif	
 
@@ -3331,8 +3332,8 @@ void CZapit::unlockPlayBack()
 #if defined (ENABLE_CI)	
 	if(live_channel != NULL)
 	{
-		if(live_fe != NULL)
-			ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
+		//if(live_fe != NULL)
+		//	ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
 	}
 #endif					
 
@@ -4657,7 +4658,9 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 
 	//CI init
 #if defined (ENABLE_CI)	
-	ci = cDvbCi::getInstance();
+	//ci = cDvbCi::getInstance();
+	ci = cCA::GetInstance();
+	ci->Start();
 #endif	
 	
 	//globals
@@ -4751,6 +4754,17 @@ void CZapit::Stop()
 	// stop pmt update filter thread
 	//pthread_cancel(tpmt);
 	//pthread_join(tpmt, NULL);
+	
+	////
+#if defined (ENABLE_CI)
+	if (ci) 
+	{
+
+		ci->Stop();
+		delete ci;
+	}
+#endif
+	////
 
 	if (pmtDemux)
 		delete pmtDemux;

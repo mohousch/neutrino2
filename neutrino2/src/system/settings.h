@@ -479,6 +479,17 @@ struct SNeutrinoSettings
 	std::string hints_dir;
 	std::string buttons_dir;
 	std::string spinner_dir;
+	
+	// cicam
+	int ci_standby_reset;
+	int ci_clock[4];
+	int ci_delay;
+	int ci_rpr[4];
+	int ci_ignore_messages[4];
+	int ci_save_pincode[4];
+	std::string ci_pincode[4];
+	int ci_check_live;
+	int ci_tuner;
 
 #define FILESYSTEM_ENCODING_TO_UTF8(a) (g_settings.filesystem_is_utf8 ? (a) : Latin1_to_UTF8(a).c_str())
 #define UTF8_TO_FILESYSTEM_ENCODING(a) (g_settings.filesystem_is_utf8 ? (a) : UTF8_to_Latin1(a).c_str())	

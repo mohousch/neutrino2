@@ -1877,3 +1877,15 @@
 /neutrino2/src/system/.deps/channellogo.Po
 /neutrino2/src/system/channellogo.o
 /neutrino2/src/nhttpd/tuxboxapi/.deps/lcdapi.Tpo
+/neutrino2/lib/libdvbci/.deps/aes_xcbc_mac.Po
+/neutrino2/lib/libdvbci/.deps/ca_ci.Po
+/neutrino2/lib/libdvbci/.deps/descrambler.Po
+/neutrino2/lib/libdvbci/.deps/dh_rsa_misc.Po
+/neutrino2/lib/libdvbci/.deps/dvbci_ccmgr.Po
+/neutrino2/lib/libdvbci/.deps/misc.Po
+/neutrino2/lib/libdvbci/aes_xcbc_mac.o
+/neutrino2/lib/libdvbci/ca_ci.o
+/neutrino2/lib/libdvbci/descrambler.o
+/neutrino2/lib/libdvbci/dh_rsa_misc.o
+/neutrino2/lib/libdvbci/dvbci_ccmgr.o
+/neutrino2/lib/libdvbci/misc.o

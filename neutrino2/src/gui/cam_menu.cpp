@@ -1,23 +1,14 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 
-	Copyright (C) 2001 Steffen Hehn 'McClean'
-	Homepage: http://dbox.cyberphoria.org/
+	Copyright (C) 2010, 2012 Stefan Seyfried
+	Copyright (C) 2011 CoolStream International Ltd
 
-	Kommentar:
-
-	Diese GUI wurde von Grund auf neu programmiert und sollte nun vom
-	Aufbau und auch den Ausbaumoeglichkeiten gut aussehen. Neutrino basiert
-	auf der Client-Server Idee, diese GUI ist also von der direkten DBox-
-	Steuerung getrennt. Diese wird dann von Daemons uebernommen.
-
-
-	License: GPL
+	License: GPLv2
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
+	the Free Software Foundation;
 
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,6 +24,8 @@
 #include <config.h>
 #endif
 
+#include "cam_menu.h"
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -41,581 +34,573 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
 #include <dirent.h>
 #include <dlfcn.h>
 #include <sys/mount.h>
 
 #include <global.h>
 #include <neutrino2.h>
+#include "widget/icons.h"
+#include "widget/stringinput.h"
 
-#include <gui/widget/icons.h>
-#include "gui/widget/stringinput.h"
-#include "gui/widget/messagebox.h"
-#include "gui/widget/hintbox.h"
-#include "gui/widget/progresswindow.h"
+#include "widget/progresswindow.h"
 
-#include "system/setting_helpers.h"
-#include "system/settings.h"
-#include "system/debug.h"
+#include <system/setting_helpers.h>
+#include <system/settings.h>
+#include <system/debug.h>
 
-#include <gui/cam_menu.h>
-
+//#include <mymenu.h>
 #include <sectionsd/edvbstring.h>
-#include <libdvbci/dvb-ci.h>
 
+//#include <zapit/capmt.h>
+#include <zapit/zapit.h>
+#include <sectionsd/abstime.h>
 
-extern cDvbCi * ci;
+#if BOXMODEL_VUPLUS_ALL
+#define CI_CLOCK_OPTION_COUNT 3
+static const keyval CI_CLOCK_OPTIONS[CI_CLOCK_OPTION_COUNT] = 
+{
+	{  6, _("CI Clock normal") },
+	{  7, _("CI Clock high") },
+	{ 12, _("CI Clock high extra") }
+};
+
+#define CI_DELAY_OPTION_COUNT 5
+static const keyval CI_DELAY_OPTIONS[CI_DELAY_OPTION_COUNT] = 
+{
+	{  16, "16"  },
+	{  32, "32"  },
+	{  64, "64"  },
+	{ 128, "128" },
+	{ 256, "256" }
+};
+#else
+#define CI_CLOCK_OPTION_COUNT 2
+static const keyval CI_CLOCK_OPTIONS[CI_CLOCK_OPTION_COUNT] = 
+{
+	{ 6, _("CI Clock normal") },
+	{ 7, _("CI Clock high") }
+};
+#endif
 
 void CCAMMenuHandler::init(void)
 {
 	hintBox = NULL;
+	ca = cCA::GetInstance();
+	close_timer = 0;
+	in_menu = false;
+	menu_type = menu_slot = -1;
 }
 
-int CCAMMenuHandler::exec(CMenuTarget * parent, const std::string &actionKey)
+int CCAMMenuHandler::exec(CMenuTarget* parent, const std::string &actionkey)
 {
-	dprintf(DEBUG_NORMAL, "CCAMMenuHandler::exec: actionkey %s\n", actionKey.c_str());
+	std::string::size_type loc;
+	int slot;
 
-	int ret = RETURN_REPAINT;
-
+	printf("CCAMMenuHandler::exec: actionkey %s\n", actionkey.c_str());
+	
         if (parent)
                 parent->hide();
 
-	if(actionKey == "cam1") 
+	if ((loc = actionkey.find("ca_ci_reset", 0)) != std::string::npos) 
 	{
-		return doMenu(0);
-	}	
-	else if(actionKey == "cam2") 
-	{
-		return doMenu(1);
-	}	
-	if(actionKey == "reset1") 
-	{
-		ci->reset(0);
-		return RETURN_EXIT_ALL;
-	}	
-	if(actionKey == "reset2") 
-	{
-		ci->reset(1);
-		return RETURN_EXIT_ALL;
-	}	
+		slot = actionkey.at(11) - '0';
 
-	doMainMenu();
+		if(ca && ca->ModulePresent(CA_SLOT_TYPE_CI, slot))
+			ca->ModuleReset(CA_SLOT_TYPE_CI, slot);
+			
+		return RETURN_EXIT;
+	} else if ((loc = actionkey.find("ca_ci", 0)) != std::string::npos) 
+	{
+		slot = actionkey.at(5) - '0';
+		printf("CCAMMenuHandler::exec: actionkey %s for slot %d\n", actionkey.c_str(), slot);
+		
+		return doMenu(slot, CA_SLOT_TYPE_CI);
+	} else if ((loc = actionkey.find("ca_sc_reset", 0)) != std::string::npos) 
+	{
+		slot = actionkey.at(11) - '0';
 
-	return ret;
+		if(ca && ca->ModulePresent(CA_SLOT_TYPE_SMARTCARD, slot))
+			ca->ModuleReset(CA_SLOT_TYPE_SMARTCARD, slot);
+			
+		return RETURN_EXIT;
+	} else if ((loc = actionkey.find("ca_sc", 0)) != std::string::npos) 
+	{
+		slot = actionkey.at(5) - '0';
+		printf("CCAMMenuHandler::exec: actionkey %s for slot %d\n", actionkey.c_str(), slot);
+		return doMenu(slot, CA_SLOT_TYPE_SMARTCARD);
+	}
+
+	if(!parent)
+		return 0;
+
+	return doMainMenu();
 }
 
-void CCAMMenuHandler::doMainMenu()
+int CCAMMenuHandler::doMainMenu()
 {
-	dprintf(DEBUG_NORMAL, "CCAMMenuHandler::doMainMenu\n");
+#if 0
+	int ret, cnt;
+	char name1[255]={0};
+	char str1[255]={0};
 
-	char name[255];
-	char str[255];
-	
-	//
-	CWidget* widget = NULL;
-	ClistBox* cammenu = NULL; 
-	
-	widget = CNeutrinoApp::getInstance()->getWidget("cammenu");
-	
-	if (widget)
-	{
-		cammenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	CMenuWidget* cammenu = new CMenuWidget(LOCALE_CI_SETTINGS, NEUTRINO_ICON_SETTINGS);
+	cammenu->addIntroItems();
+
+	int CiSlots = ca ? ca->GetNumberCISlots() : 0;
+	if(CiSlots) {
+#if BOXMODEL_VUPLUS_ALL
+		cammenu->addItem(new CMenuOptionChooser(LOCALE_CI_DELAY, &g_settings.ci_delay, CI_DELAY_OPTIONS, CI_DELAY_OPTION_COUNT, true, this));
+#endif
+		cammenu->addItem(new CMenuOptionChooser(LOCALE_CI_RESET_STANDBY, &g_settings.ci_standby_reset, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 	}
-	else
-	{
-		cammenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	cammenu->addItem(new CMenuOptionChooser(LOCALE_CI_CHECK_LIVE_SLOT, &g_settings.ci_check_live, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this));
 
-		cammenu->setWidgetMode(MODE_SETUP);
-		cammenu->enableShrinkMenu();
-		
-		cammenu->enablePaintHead();
-		cammenu->setTitle(_("CI Cam settings"), NEUTRINO_ICON_CI);
+	cammenu->addItem( GenericMenuSeparatorLine );
 
-		cammenu->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-		cammenu->setFootButtons(&btn);
-		
-		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "cammenu";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->addWidgetItem(cammenu);
-	}
-	
-	cammenu->clearItems();
-	
-	// intros
-	cammenu->addItem(new ClistBoxItem(_("back")));
+	CMenuWidget * tempMenu;
+	int i = 0;
 
-	//
-	CWidget* tempMenuWidget = NULL;
-	ClistBox* tempMenu = NULL;
-	
-	for (int i = 0; i < ci->ci_num; i++)
-	{
-		if(ci->CamPresent(i)) 
-		{
-			ci->GetName(i, name);
-			
-			dprintf(DEBUG_NORMAL, "CCAMMenuHandler::doMenu cam %d name %s\n", i, name);
-			
-			char CAM[255];
-			sprintf(CAM, "cam%d", i + 1);
+	cnt = 0;
+	printf("CCAMMenuHandler::doMainMenu CI slots: %d\n", CiSlots);
+	while (i < CiSlots && i < 2) {
+		if (ca->ModulePresent(CA_SLOT_TYPE_CI, i)) {
+			ca->ModuleName(CA_SLOT_TYPE_CI, i, name1);
+			printf("CCAMMenuHandler::doMainMenu cam%d name %s\n", i, name1);
+			char tmp[32];
+			snprintf(tmp, sizeof(tmp), "ca_ci%d", i);
 
-			cammenu->addItem(new ClistBoxItem(name, true, NULL, this, CAM, RC_nokey));
-
-			char RESET[32];
-			sprintf(RESET, "reset%d", i + 1);
-
-			cammenu->addItem(new CMenuSeparator(LINE));
-			cammenu->addItem(new ClistBoxItem(_("CI cam reset"), true, NULL, this, RESET, RC_nokey));
-		} 
-		else 
-		{
-			sprintf(str, "%s %d", _("No CAM in slot"), i + 1);
-			
-			/*
-			if (CNeutrinoApp::getInstance()->widget_exists("tempcam2"))
-			{
-				tempMenuWidget = CNeutrinoApp::getInstance()->getWidget("tempcam2");
-				tempMenu = (ClistBox*)tempMenuWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-				
-				if (tempMenu->hasHead())
-				{
-					tempMenu->setTitle(str, NEUTRINO_ICON_CI);
-				}
-			}
-			else
-			*/
-			{
-				tempMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-
-				tempMenu->setWidgetMode(MODE_SETUP);
-				tempMenu->enableShrinkMenu();
-				
-				//
-				tempMenu->enablePaintHead();
-				tempMenu->setTitle(str, NEUTRINO_ICON_CI);
-				
-				//
-				tempMenu->enablePaintFoot();		
-				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
-				tempMenu->setFootButtons(&btn);
-				
-				//
-				tempMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				tempMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
-				tempMenuWidget->enableSaveScreen();
-				tempMenuWidget->addWidgetItem(tempMenu);
-			}
-			
-			//
-			tempMenu->clear();
-
-			//
-			cammenu->addItem(new CMenuSeparator(LINE));
-			cammenu->addItem(new ClistBoxItem(str, false, NULL, tempMenuWidget));
+			cammenu->addItem(new CMenuForwarder(name1, true, NULL, this, tmp, CRCInput::RC_1 + cnt++));
+			snprintf(tmp, sizeof(tmp), "ca_ci_reset%d", i);
+			cammenu->addItem(new CMenuForwarder(LOCALE_CI_RESET, true, NULL, this, tmp));
+			memset(name1,0,sizeof(name1));
+#if HAVE_ARM_HARDWARE || HAVE_MIPS_HARDWARE
+			cammenu->addItem(new CMenuOptionChooser(LOCALE_CI_CLOCK, &g_settings.ci_clock[i], CI_CLOCK_OPTIONS, CI_CLOCK_OPTION_COUNT, true, this));
+#else
+#if !HAVE_SH4_HARDWARE
+			cammenu->addItem(new CMenuOptionNumberChooser(LOCALE_CI_CLOCK, &g_settings.ci_clock[i], true, 6, 12, this));
+#endif
+#endif
+#if BOXMODEL_VUPLUS_ALL
+			cammenu->addItem(new CMenuOptionChooser(LOCALE_CI_RPR, &g_settings.ci_rpr[i], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this));
+#endif
+			cammenu->addItem(new CMenuOptionChooser(LOCALE_CI_IGNORE_MSG, &g_settings.ci_ignore_messages[i], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+			cammenu->addItem(new CMenuOptionChooser(LOCALE_CI_SAVE_PINCODE, &g_settings.ci_save_pincode[i], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this));
+		} else {
+			snprintf(str1, sizeof(str1), "%s %d", g_Locale->getText(LOCALE_CI_EMPTY), i+1);
+			tempMenu = new CMenuWidget(str1, NEUTRINO_ICON_SETTINGS);
+			cammenu->addItem(new CMenuDForwarder(str1, false, NULL, tempMenu));
+			memset(str1,0,sizeof(str1));
 		}
-	}	
+		if (i < (CiSlots - 1))
+			cammenu->addItem( GenericMenuSeparatorLine );
+		i++;
+	}
 
-	//
-	widget->exec(NULL, "");
+	i = 0;
+	int ScNum = ca ? ca->GetNumberSmartCardSlots() : 0;
+	printf("CCAMMenuHandler::doMainMenu sc slots: %d\n", ScNum);
+
+	if(ScNum && CiSlots)
+		cammenu->addItem( GenericMenuSeparatorLine );
+
+	while (i < ScNum && i < 2) {
+		if (ca->ModulePresent(CA_SLOT_TYPE_SMARTCARD, i)) {
+			ca->ModuleName(CA_SLOT_TYPE_SMARTCARD, i, name1);
+			printf("CCAMMenuHandler::doMainMenu cam%d name %s\n", i, name1);
+			char tmp[32];
+			snprintf(tmp, sizeof(tmp), "ca_sc%d", i);
+
+			cammenu->addItem(new CMenuForwarder(name1, true, NULL, this, tmp, CRCInput::RC_1 + cnt++));
+			memset(name1,0,sizeof(name1));
+		} else {
+			snprintf(str1, sizeof(str1), "%s %d", g_Locale->getText(LOCALE_SC_EMPTY), i);
+			tempMenu = new CMenuWidget(str1, NEUTRINO_ICON_SETTINGS);
+			cammenu->addItem(new CMenuDForwarder(str1, false, NULL, tempMenu));
+			memset(str1,0,sizeof(str1));
+		}
+		if (i < (ScNum - 1))
+			cammenu->addItem( GenericMenuSeparatorLine );
+		i++;
+	}
+	in_menu = true;
+	ret = cammenu->exec(NULL, "");
+	delete cammenu;
+	in_menu = false;
+	return ret;
+#endif
+	return RETURN_REPAINT;
 }
 
 #define CI_MSG_TIME 5
 int CCAMMenuHandler::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
-	int ret = messages_return::handled;
-
-	int camret = handleCamMsg(msg, data);
-	
-	if(camret < 0) 
-	{
-		ret = messages_return::unhandled;
-	}
-	
-	return ret;
+	//printf("CCAMMenuHandler::handleMsg: msg 0x%x data 0x%x\n", msg, data);
+	int msgret;
+	handleCamMsg(msg, data, msgret);
+	return msgret;
 }
 
-int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t data, bool from_menu)
+void CCAMMenuHandler::showHintBox(const char *const Caption, const char * const Text, uint32_t timeout)
 {
-	int ret = 0;
-	char str[255];
+	hideHintBox();
+	
+	hintBox = new CHintBox(Caption, Text);
+	
+	hintBox->paint();
+	
+	if(timeout > 0) 
+	{
+		sleep(timeout);
+		hideHintBox();
+	}
+}
+
+void CCAMMenuHandler::hideHintBox(void)
+{
+	if(hintBox != NULL) 
+	{
+		hintBox->hide();
+		delete hintBox;
+		hintBox = NULL;
+	}
+}
+
+int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t data, int &msgret, bool from_menu)
+{
+	char str[269];
+	char cnt[5];
 	int i;
 	MMI_MENU_LIST_INFO Menu;
-	MMI_ENGUIRY_INFO MmiEnquiry;
-	int curslot;
-	MMI_MENU_LIST_INFO * pMenu = &Menu;
-	MMI_ENGUIRY_INFO * pMmiEnquiry = &MmiEnquiry;
+	MMI_ENQUIRY_INFO MmiEnquiry;
+	MMI_MENU_LIST_INFO *pMenu = &Menu;
+	MMI_ENQUIRY_INFO *pMmiEnquiry = &MmiEnquiry;
+	CA_MESSAGE Msg, *rMsg;
 
-	if(msg == NeutrinoMessages::EVT_CI_INSERTED) 
+	//printf("CCAMMenuHandler::handleCamMsg: msg %x data %x from %s\n", msg, data, from_menu ? "menu" : "neutrino");
+	
+	msgret = messages_return::unhandled;
+
+	if ((msg == NeutrinoMessages::EVT_TIMER) && (data == close_timer)) 
 	{
-		if(hintBox != NULL) 
-		{
-			hintBox->hide();
-			delete hintBox;
-			hintBox = NULL;
-		}
-		
-		sprintf(str, "%s %d", _("CAM inserted in slot"), (int) data + 1);
-
-		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleMsg: %s\n", str);
-		
-		hintBox = new CHintBox(_("Information"), str);
-
-		if(hintBox != NULL) 
-			hintBox->paint();
-
-		sleep(CI_MSG_TIME);
-
-		if(hintBox != NULL) 
-		{
-			hintBox->hide();
-			delete hintBox;
-			hintBox = NULL;
-		}
-
-	} 
-	else if (msg == NeutrinoMessages::EVT_CI_REMOVED) 
-	{
-		if(hintBox != NULL) 
-		{
-			hintBox->hide();
-			delete hintBox;
-			hintBox = NULL;
-		}
-
-		sprintf(str, "%s %d", _("CAM removed from slot"), (int) data + 1);
-
-		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleMsg: %s\n", str);
-		
-		hintBox = new CHintBox(_("Information"), str);
-
-		if(hintBox != NULL) 
-			hintBox->paint();
-
-		sleep(CI_MSG_TIME);
-
-		if(hintBox != NULL) 
-		{
-			hintBox->hide();
-			delete hintBox;
-			hintBox = NULL;	
-		}
-	} 
-	else if(msg == NeutrinoMessages::EVT_CI_INIT_OK) 
-	{
-		if(hintBox != NULL) 
-		{
-			hintBox->hide();
-			delete hintBox;
-			hintBox = NULL;
-		}
-		char name[255] = "Unknown";
-		
-		ci->GetName((int) data, name);
-		sprintf(str, "%s %d: %s", _("CAM init complete"), (int) data+1, name);
-
-		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleMsg: %s\n", str);
-		
-		hintBox = new CHintBox(_("Information"), str);
-
-		if(hintBox != NULL) 
-			hintBox->paint();
-
-		sleep(CI_MSG_TIME);
-
-		if(hintBox != NULL) 
-		{
-			hintBox->hide();
-			delete hintBox;
-			hintBox = NULL;
-		}
+		printf("CCAMMenuHandler::handleCamMsg: EVT_TIMER close_timer %d\n", close_timer);
+		g_RCInput->killTimer(close_timer);
+		msgret = messages_return::cancel_info;
 	}
-	else if(msg == NeutrinoMessages::EVT_CI_MMI_MENU || msg == NeutrinoMessages::EVT_CI_MMI_LIST) 
+
+	if (msg != NeutrinoMessages::EVT_CA_MESSAGE)
+		return 1;
+
+	msgret = messages_return::handled;
+
+	rMsg	= (CA_MESSAGE *)data;
+	if (!rMsg)
+		return -1;
+
+	Msg = *rMsg;
+	delete rMsg;
+
+	u32 MsgId             = Msg.MsgId;
+	CA_SLOT_TYPE SlotType = Msg.SlotType;
+	int curslot           = Msg.Slot;
+
+	printf("CCAMMenuHandler::handleCamMsg: CA msg %x from %s\n", MsgId, from_menu ? "menu" : "neutrino");
+
+	if (/*g_settings.ci_ignore_messages[curslot] &&*/ !from_menu && MsgId != CA_MESSAGE_MSG_MMI_REQ_INPUT
+	&& MsgId != CA_MESSAGE_MSG_MMI_CLOSE && MsgId != CA_MESSAGE_MSG_INIT_OK
+	&& MsgId != CA_MESSAGE_MSG_INSERTED && MsgId != CA_MESSAGE_MSG_REMOVED)
+		return 1;
+
+	hideHintBox();
+
+	if (SlotType != CA_SLOT_TYPE_SMARTCARD && SlotType != CA_SLOT_TYPE_CI)
+		return -1;
+
+	if(MsgId == CA_MESSAGE_MSG_INSERTED) 
+	{
+		snprintf(str, sizeof(str), "%s %d", SlotType == CA_SLOT_TYPE_CI ? _("CI inserted") : _("Cam inserted"), (int)curslot+1);
+		
+		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
+		HintBox(_("Info"), str, 450, 3);
+		if (in_menu)
+			msgret = messages_return::cancel_all;
+	} 
+	else if (MsgId == CA_MESSAGE_MSG_REMOVED) 
+	{
+		snprintf(str, sizeof(str), "%s %d", SlotType == CA_SLOT_TYPE_CI ? _("CI removed") : _("CAM removed"), (int)curslot+1);
+
+		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
+		HintBox(_("Info"), str, 450, 3);
+
+		if (in_menu)
+			msgret = messages_return::cancel_all;
+	} 
+	else if(MsgId == CA_MESSAGE_MSG_INIT_OK) 
+	{
+		char name[255] = "Unknown";
+		if (ca)
+			ca->ModuleName(SlotType, curslot, name);
+
+		snprintf(str, sizeof(str), "%s %d: %s", SlotType == CA_SLOT_TYPE_CI ? _("CI Init OK") : _("CAM Init OK"), (int)curslot+1, name);
+		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
+		//CCamManager::getInstance()->Start(CZapit::getInstance()->GetCurrentChannelID(), CCamManager::PLAY, true);
+		HintBox(_("Info"), str, 450, 3);
+	} 
+	else if(MsgId == CA_MESSAGE_MSG_INIT_FAILED) 
+	{
+		char name[255] = "Unknown";
+		if (ca)
+			ca->ModuleName(SlotType, curslot, name);
+
+		snprintf(str, sizeof(str), "%s %d: %s", SlotType == CA_SLOT_TYPE_CI ? _("CI Init failed") : _("CAM Init failed"), (int)curslot+1, name);
+
+		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
+		HintBox(_("Info"), str, 450, 3);
+	} 
+	else if(MsgId == CA_MESSAGE_MSG_MMI_MENU || MsgId == CA_MESSAGE_MSG_MMI_LIST) 
 	{
 		bool sublevel = false;
-		if(msg != NeutrinoMessages::EVT_CI_MMI_MENU)
+
+		if(MsgId != CA_MESSAGE_MSG_MMI_MENU)
 			sublevel = true;
-		
-		memcpy(pMenu, (MMI_MENU_LIST_INFO*) data, sizeof(MMI_MENU_LIST_INFO));
-		free((void *)data);
 
-		curslot = pMenu->slot;
+		if (!(Msg.Flags & CA_MESSAGE_HAS_PARAM1_DATA))
+			return -1;
 
-		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: slot %d menu ready, title %s choices %d\n", curslot, convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), pMenu->choice_nb);
+		memmove(pMenu, (MMI_MENU_LIST_INFO*)Msg.Msg.Data[0], sizeof(MMI_MENU_LIST_INFO));
+		free((void *)Msg.Msg.Data[0]);
 
-		if(hintBox) 
-			hintBox->hide();
+		printf("CCAMMenuHandler::handleCamMsg: slot %d menu ready, title %s choices %d\n", curslot, convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), pMenu->choice_nb);
 
+		int menuret = RETURN_REPAINT;
 		int selected = -1;
-		
-		if(pMenu->choice_nb) 
+		if(pMenu->choice_nb && from_menu) 
 		{
-			//
-			CWidget* menuWidget = NULL;
-			ClistBox* menu = NULL;
-			
 			/*
-			if (CNeutrinoApp::getInstance()->widget_exists("tempcam"))
-			{
-				menuWidget = CNeutrinoApp::getInstance()->getWidget("tempcam");
-				menu = (ClistBox*)menuWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-				
-				if (menu->hasHead())
-					menu->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);
-			}
-			else
-			*/
-			{
-				menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			CMenuWidget* menu = new CMenuWidget(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_SETTINGS);
+			menu->enableSaveScreen(true);
 
-				menu->setWidgetMode(MODE_SETUP);
-				menu->enableShrinkMenu();
-				
-				//
-				menu->enablePaintHead();
-				menu->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);
-				
-				//
-				menu->enablePaintFoot();		
-				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
-				menu->setFootButtons(&btn);
-				
-				//
-				menuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				menuWidget->setMenuPosition(MENU_POSITION_CENTER);
-				menuWidget->enableSaveScreen();
-				menuWidget->addWidgetItem(menu);
-			}
-			
-			menu->clear();
-
+			CMenuSelectorTarget * selector = new CMenuSelectorTarget(&selected);
 			int slen = strlen(pMenu->subtitle);
-			
 			if(slen) 
 			{
 				char * sptr = pMenu->subtitle;
 				char * tptr = sptr;
 				int bpos = 0;
-				for(int i1 = 0; i1 < slen; i1++) 
+				for(int li = 0; li < slen; li++) 
 				{
-					if((tptr[i1] == 0x8A) || ((bpos >= 38) && (tptr[i1] == 0x20)) ) 
+					if((tptr[li] == 0x8A) || ((bpos > 38) && (tptr[li] == 0x20)) ) 
 					{
 						bpos = 0;
-						tptr[i1] = 0;
-						
-						dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: subtitle: %s\n", sptr);
-						
-						menu->addItem(new ClistBoxItem(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
-						sptr = &tptr[i1+1];
+						tptr[li] = 0;
+						printf("CCAMMenuHandler::handleCamMsg: subtitle: %s\n", sptr);
+						menu->addItem(new CMenuForwarder(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
+						sptr = &tptr[li+1];
 					}
 					bpos++;
 				}
 				
 				if(strlen(sptr)) 
 				{
-					dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: subtitle: %s\n", sptr);
-					
-					menu->addItem(new ClistBoxItem(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
+					printf("CCAMMenuHandler::handleCamMsg: subtitle: %s\n", sptr);
+					menu->addItem(new CMenuForwarder(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
 				}
 			}
 			
-			for(i = 0; i < pMenu->choice_nb; i++) 
+			for(i = 0; (i < pMenu->choice_nb) && (i < MAX_MMI_ITEMS); i++) 
 			{
+				snprintf(cnt, sizeof(cnt), "%d", i);
 				if(sublevel)
-					menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str()));
+					menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, selector, cnt));
 				else
-					menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, NULL, NULL, CRCInput::convertDigitToKey(i+1)));
+					menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, selector, cnt, CRCInput::convertDigitToKey(i+1)));
 			}
-			slen = strlen(pMenu->bottom);
 			
+			slen = strlen(pMenu->bottom);
 			if(slen) 
 			{
-				dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: bottom: %s\n", pMenu->bottom);
-				
-				menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->bottom, slen, 0).c_str(), false));
+				printf("CCAMMenuHandler::handleCamMsg: bottom: %s\n", pMenu->bottom);
+				menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->bottom, slen, 0).c_str(), false));
 			}
 
-			menuWidget->exec(NULL, "");
-			selected = menu->getSelected();
+			menuret = menu->exec(NULL, "");
+			delete menu;
+			delete selector;
+			*/
 		} 
 		else 
 		{
-			char _str[255];
-			snprintf(_str, 255, "%s\n%s\n%s", pMenu->title, pMenu->subtitle, pMenu->bottom);
-			
-			if(hintBox)
-			{
-				delete hintBox;
-				hintBox = NULL;
-			}
+			char lstr[255];
+			int slen = 0;
 
-			hintBox = new CHintBox(_("Information"), _(convertDVBUTF8(_str, strlen(_str), 0).c_str()));
-			if(hintBox != NULL) 
-				hintBox->paint();
+			if(strlen(pMenu->title))
+				slen += snprintf(&lstr[slen], 255-slen, "%s\n", pMenu->title);
+			if(strlen(pMenu->subtitle))
+				slen += snprintf(&lstr[slen], 255-slen, "%s\n", pMenu->subtitle);
 
-			sleep(4);//FIXME
-			
-			if(!from_menu) 
-			{
-				if(hintBox != NULL) 
-				{
-					delete hintBox;
-					hintBox = NULL;
-				}
-			}
-			return 1;
+			for(i = 0; (i < pMenu->choice_nb) && (i < MAX_MMI_ITEMS); i++)
+				slen += snprintf(&lstr[slen], 255-slen, "%s\n", pMenu->choice_item[i]);
+
+			if(strlen(pMenu->bottom))
+				slen += snprintf(&lstr[slen], 255-slen, "%s\n", pMenu->bottom);
+
+			HintBox(_("Info"), convertDVBUTF8(lstr, slen, 0).c_str());
+			return 0;
 		}
 
 		if(sublevel)
-			return 0;
+			return menuret == RETURN_EXIT_ALL ? 3 : 0;
 
 		if(selected >= 0) 
 		{
-			dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: selected %d:%s sublevel %s\n", selected, pMenu->choice_item[i], sublevel ? "yes" : "no");
-
-			ci->CI_MenuAnswer(curslot, selected + 1);
-
+			printf("CCAMMenuHandler::handleCamMsg: selected %d:%s sublevel %s\n", selected, pMenu->choice_item[i], sublevel ? "yes" : "no");
+			ca->MenuAnswer(SlotType, curslot, selected+1);
 			timeoutEnd = CRCInput::calcTimeoutEnd(10);
 			return 1;
 		} 
 		else 
 		{
-			return 2;
+			return menuret == RETURN_EXIT_ALL ? 3 : 2;
 		}
 	}
-	else if(msg == NeutrinoMessages::EVT_CI_MMI_REQUEST_INPUT) 
+	else if(MsgId == CA_MESSAGE_MSG_MMI_REQ_INPUT) 
 	{
-		memcpy(pMmiEnquiry, (MMI_ENGUIRY_INFO*) data, sizeof(MMI_ENGUIRY_INFO));
-		free((void *)data);
-		curslot = pMmiEnquiry->slot;
-		
-		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: slot %d input request, text %s\n", curslot, convertDVBUTF8(pMmiEnquiry->enguiryText, strlen(pMmiEnquiry->enguiryText), 0).c_str());
-		
-		if(hintBox)
-			hintBox->hide();
+		if (!(Msg.Flags & CA_MESSAGE_HAS_PARAM1_DATA))
+			return -1;
 
-		char cPIN[pMmiEnquiry->answerlen+1];
-		cPIN[0] = 0;
+		memmove(pMmiEnquiry, (MMI_ENQUIRY_INFO *)Msg.Msg.Data[0], sizeof(MMI_ENQUIRY_INFO));
+		free((void *)Msg.Msg.Data[0]);
+		printf("CCAMMenuHandler::handleCamMsg: slot %d input request, text %s\n", curslot, convertDVBUTF8(pMmiEnquiry->enquiryText, strlen(pMmiEnquiry->enquiryText), 0).c_str());
 
-		CPINInput *PINInput = new CPINInput((char *) convertDVBUTF8(pMmiEnquiry->enguiryText, strlen(pMmiEnquiry->enguiryText), 0).c_str(), cPIN, 4);
-		PINInput->exec(NULL, "");
-		delete PINInput;
-
-		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: input=[%s]\n", cPIN);
-
-		if((int) strlen(cPIN) != pMmiEnquiry->answerlen) 
+		std::string ENQAnswer;
+#if 0
+		if (/* !from_menu && */ /*g_settings.ci_save_pincode[curslot] &&*/ pMmiEnquiry->blind != 0 && (int) g_settings.ci_pincode[curslot].length() == pMmiEnquiry->answerlen) 
 		{
-			dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: wrong input len\n");
+			static int acount = 0;
+			static time_t last_ask = 0;
 
-			ci->CI_Answer(curslot, (unsigned char *) cPIN, 0);
+			ENQAnswer = g_settings.ci_pincode[curslot];
+			printf("CCAMMenuHandler::handleCamMsg: using saved answer [%s] (#%d, time diff %d)\n", ENQAnswer.c_str(), acount, (int) (time_monotonic() - last_ask));
+			if ((time_monotonic() - last_ask) < 10) 
+			{
+				acount++;
+				if (acount > 4)
+					g_settings.ci_pincode[curslot].clear();
+			} else 
+			{
+				last_ask = time_monotonic();
+				acount = 0;
+			}
+		} 
+		else 
+#endif
+		{
+			//CEnquiryInput *Inquiry = new CEnquiryInput((char *)convertDVBUTF8(pMmiEnquiry->enquiryText, strlen(pMmiEnquiry->enquiryText), 0).c_str(), &ENQAnswer, pMmiEnquiry->answerlen, pMmiEnquiry->blind != 0, _(" "));
+			//Inquiry->exec(NULL, "");
+			//delete Inquiry;
+			//g_settings.ci_pincode[curslot] = ENQAnswer;
+		}
 
-			return 0;
+		printf("CCAMMenuHandler::handleCamMsg: input=[%s]\n", ENQAnswer.c_str());
+
+		if((int) ENQAnswer.length() != pMmiEnquiry->answerlen) 
+		{
+			printf("CCAMMenuHandler::handleCamMsg: wrong input len\n");
+			ca->InputAnswer(SlotType, curslot, (unsigned char *)ENQAnswer.c_str(), 0);
+			return 1; //FIXME
 		} 
 		else 
 		{
-			ci->CI_Answer(curslot, (unsigned char *) cPIN, pMmiEnquiry->answerlen);
-
+			ca->InputAnswer(SlotType, curslot, (unsigned char *)ENQAnswer.c_str(), pMmiEnquiry->answerlen);
 			return 1;
 		}
 	}
-	else if(msg == NeutrinoMessages::EVT_CI_MMI_CLOSE) 
+	else if(MsgId == CA_MESSAGE_MSG_MMI_CLOSE) 
 	{
-		curslot = (int) data;
-		
-		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: close request slot: %d\n", curslot);
-
-		ci->CI_CloseMMI(curslot);
-
+		int timeout = 0;
+		if (Msg.Flags & CA_MESSAGE_HAS_PARAM1_INT)
+			timeout = Msg.Msg.Param[0];
+		printf("CCAMMenuHandler::handleCamMsg: close request slot: %d (timeout %d)\n", curslot, timeout);
+		//ca->MenuClose(SlotType, curslot);
+		if (timeout)
+			close_timer = g_RCInput->addTimer(timeout*1000*1000, true);
+		else
+			msgret = messages_return::cancel_info;
 		return 0;
 	}
-	else if(msg == NeutrinoMessages::EVT_CI_MMI_TEXT) 
+	else if(MsgId == CA_MESSAGE_MSG_MMI_TEXT) 
 	{
-		curslot = (int) data;
-		
-		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::handleCamMsg: text\n");
+		printf("CCAMMenuHandler::handleCamMsg: text\n");
+	}
+	else if(MsgId == CA_MESSAGE_MSG_CHANNEL_CHANGE) 
+	{
+		if (!(Msg.Flags & CA_MESSAGE_HAS_PARAM1_LONG))
+			return -1;
+/*
+		t_channel_id chid = Msg.Msg.ParamLong[0];
+		printf("CCAMMenuHandler::handleCamMsg: CA_MESSAGE_MSG_CHANNEL_CHANGE: %" PRIx64 "\n", chid);
+		CZapitChannel * channel = CServiceManager::getInstance()->FindChannel48(chid);
+		if (!channel) {
+			printf("CCAMMenuHandler::handleCamMsg: channel %" PRIx64 "not found\n", chid);
+			return -1;
+		}
+		CNeutrinoApp::getInstance()->zapTo(channel->getChannelID());
+*/
 	} 
-	else
-		ret = -1;
-
-	return ret;
+	return 1;
 }
 
-int CCAMMenuHandler::doMenu(int slot)
+int CCAMMenuHandler::doMenu(int slot, CA_SLOT_TYPE slotType)
 {
 	int res = RETURN_REPAINT;
 	neutrino_msg_t msg;
 	neutrino_msg_data_t data;
 	bool doexit = false;
 
+	menu_slot = slot;
+	menu_type = slotType;
+	
 	while(!doexit) 
 	{
-		dprintf(DEBUG_NORMAL, "CCAMMenuHandler::doMenu: slot %d\n", slot);
-
+		printf("CCAMMenuHandler::doMenu: enter menu for slot %d\n", slot);
 		timeoutEnd = CRCInput::calcTimeoutEnd(10);
 
-		ci->CI_EnterMenu(slot);
-
+		ca->MenuEnter(slotType, slot);
+		
 		while(true) 
 		{
-			if(hintBox)
-			{
-				delete hintBox;
-				hintBox = NULL;
-			}
-			
-			hintBox = new CHintBox(_("Information"), _("Waiting for CI answer"));
+			showHintBox(_("Info"), slotType == CA_SLOT_TYPE_CI ? _("CI waiting") : _("CAM waiting"));
 
-			if(hintBox != NULL) 
-				hintBox->paint();
-
-			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
-			
+			g_RCInput->getMsgAbsoluteTimeout (&msg, &data, &timeoutEnd);
+			printf("CCAMMenuHandler::doMenu: msg %lx data %lx\n", msg, data);
 			if (msg == RC_timeout) 
 			{
-				if(hintBox)
-				{
-					delete hintBox;
-					hintBox = NULL;
-				}
-
-				hintBox = new CHintBox(_("Information"), _("Timeout waiting CI menu ready"));
-				
-				if(hintBox != NULL) 
-					hintBox->paint();
-
-				dprintf(DEBUG_NORMAL, "CCAMMenuHandler::doMenu: menu timeout\n");
-				
-				sleep(5);
-
-				if(hintBox != NULL) 
-				{
-					delete hintBox;
-					hintBox = NULL;
-				}
-
-				ci->CI_CloseMMI(slot);
-
+				printf("CCAMMenuHandler::doMenu: menu timeout\n");
+				hideHintBox();
+				HintBox(_("Info"), slotType == CA_SLOT_TYPE_CI ? _("CI Timeout") : _("CAM Timeout"), 450, 3);
+				ca->MenuClose(slotType, slot);
 				return RETURN_REPAINT;
-			} 
+			}
+			/* -1 = not our event, 0 = back to top menu, 1 = continue loop, 2 = quit , 3 = quit all*/
+			int msgret;
+			int ret = handleCamMsg(msg, data, msgret, true);
+			printf("CCAMMenuHandler::doMenu: handleCamMsg ret: %d\n", ret);
 			
-			/* -1 = not our event, 0 = back to top menu, 1 = continue loop, 2 = quit */
-			int ret = handleCamMsg(msg, data, true);
-			if(ret < 0 && (msg > RC_Messages)) 
+			if((msgret & messages_return::unhandled) && (msg > RC_Events)) 
 			{
-				if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & ( messages_return::cancel_all | messages_return::cancel_info ) )
+				if (CNeutrinoApp::getInstance()->handleMsg(msg, data) & (messages_return::cancel_all | messages_return::cancel_info))
 				{
 					doexit = true;
 					res = RETURN_EXIT_ALL;
+					break;
 				}
-			} 
-			else if (ret == 1) 
+			}
+			
+			if (ret == 1) 
 			{
-				timeoutEnd = CRCInput::calcTimeoutEnd(10);
+				/* workaround: dont cycle here on timers */
+				if (msg != NeutrinoMessages::EVT_TIMER)
+					timeoutEnd = CRCInput::calcTimeoutEnd(10);
 				continue;
 			} 
 			else if (ret == 2) 
@@ -623,24 +608,76 @@ int CCAMMenuHandler::doMenu(int slot)
 				doexit = true;
 				break;
 			} 
-			else 
+			else if (ret == 3) 
 			{
+				res = RETURN_EXIT_ALL;
+				doexit = true;
+				break;
+			} 
+			else 
+			{ // ret == 0
 				break;
 			}
 		}
 	}
-
-	ci->CI_CloseMMI(slot);
-
-	if(hintBox) 
-	{
-		delete hintBox;
-		hintBox = NULL;
-	}
-	
-	dprintf(DEBUG_NORMAL, "CCAMMenuHandler::doMenu: return\n");
-	
-	return res; 
+	ca->MenuClose(slotType, slot);
+	hideHintBox();
+	menu_type = menu_slot = -1;
+	printf("CCAMMenuHandler::doMenu: return\n");
+	return res;
 }
 
-
+bool CCAMMenuHandler::changeNotify(const std::string& OptionName, void * Data)
+{
+#if 0
+#if BOXMODEL_VUPLUS_ALL
+	if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_DELAY)) 
+	{
+		printf("CCAMMenuHandler::changeNotify: ci_delay %d\n", g_settings.ci_delay);
+		ca->SetCIDelay(g_settings.ci_delay);
+		return true;
+	}
+	else if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_RPR)) 
+	{
+		for (unsigned int i = 0; i < ca->GetNumberCISlots(); i++) 
+		{
+			printf("CCAMMenuHandler::changeNotify: ci_rpr[%d] %d\n", i, g_settings.ci_rpr[i]);
+			ca->SetCIRelevantPidsRouting(g_settings.ci_rpr[i], i);
+		}
+		return true;
+	}
+	else
+#endif
+	if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_CLOCK)) 
+	{
+		for (unsigned int i = 0; i < ca->GetNumberCISlots(); i++) 
+		{
+			printf("CCAMMenuHandler::changeNotify: ci_clock[%d] %d\n", i, g_settings.ci_clock[i]);
+			ca->SetTSClock(g_settings.ci_clock[i] * 1000000, i);
+		}
+		return true;
+	}
+	else if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_SAVE_PINCODE)) 
+	{
+		int enabled = *(int *) Data;
+		if (!enabled) {
+			for (unsigned int i = 0; i < ca->GetNumberCISlots(); i++) 
+			{
+				printf("CCAMMenuHandler::changeNotify: clear saved pincode[%d]\n", i);
+				g_settings.ci_pincode[i].clear();
+			}
+		}
+	}
+	else if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_CHECK_LIVE_SLOT)) 
+	{
+		ca->setCheckLiveSlot(g_settings.ci_check_live);
+	}
+	else if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_TUNER)) 
+	{
+		printf("CCAMMenuHandler::changeNotify: bind CI to tuner %d\n", g_settings.ci_tuner);
+		CCamManager::getInstance()->SetCITuner(g_settings.ci_tuner);
+	}
+#endif
+	
+	return false;
+}

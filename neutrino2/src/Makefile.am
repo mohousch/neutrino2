@@ -111,7 +111,7 @@ neutrino2_LDFLAGS = -Wl,--export-dynamic
 if !BOXTYPE_COOLSTREAM
 neutrino2_LDADD += $(top_builddir)/lib/libdvbapi/libdvbapi.a
 if ENABLE_CI
-neutrino2_LDADD += $(top_builddir)/lib/libdvbci/libdvbci.a
+neutrino2_LDADD += $(top_builddir)/lib/libdvbci/libdvbci.a -lcrypto -lssl
 endif
 endif
 
