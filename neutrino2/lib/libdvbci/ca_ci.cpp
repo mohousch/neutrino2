@@ -55,16 +55,6 @@ static uint8_t NullPMT[50] =
 
 static cCA *pcCAInstance = NULL;
 
-/* für callback */
-/* nur diese Message wird vom CI aus neutrinoMessages.h benutzt */
-/* für den CamMsgHandler, darum hier einfach mal definiert */
-/* die Feinheiten werden ja in CA_MESSAGE verpackt */
-#if defined (__sh__)
-uint32_t EVT_CA_MESSAGE = 0x80000000 + 60;
-#else
-uintptr_t EVT_CA_MESSAGE = 0x80000000 + 60;
-#endif
-
 cCA::cCA(void)
 {
 	printf("%s -> %s\n", FILENAME, __func__);
@@ -234,7 +224,7 @@ static bool transmitData(eDVBCISlot *slot, unsigned char *d, int len)
 {
 	printf("%s -> %s len(%d)\n", FILENAME, __func__, len);
 
-#if 1
+#if !defined (__sh__)
 	int res = write(slot->fd, d, len);
 	
 	printf("send: %d len: %d\n", res, len);
@@ -484,19 +474,9 @@ bool cCA::SendMessage(const CA_MESSAGE *msg)
 	printf("%s\n", __func__);
 	
 #if defined (__sh__)
-	//cam_messenger(EVT_CA_MESSAGE, (uint32_t) msg);
-	g_RCInput->postMsg(EVT_CA_MESSAGE, (uint32_t) msg);
+	g_RCInput->postMsg(NeutrinoMessages::EVT_CA_MESSAGE, (uint32_t) msg);
 #else
-	//cam_messenger(EVT_CA_MESSAGE, (uintptr_t) msg);
-	g_RCInput->postMsg(EVT_CA_MESSAGE, (uintptr_t) msg);
-#endif
-
-#if z_debug
-	printf("*******Message\n");
-	printf("msg: %p\n", msg);
-	printf("MSGID: %x\n", msg->MsgId);
-	printf("SlotType: %x\n", msg->SlotType);
-	printf("Slot: %x\n", msg->Slot);
+	g_RCInput->postMsg(NeutrinoMessages::EVT_CA_MESSAGE, (uintptr_t) msg);
 #endif
 
 	return true;

@@ -772,7 +772,7 @@ do_current:
 		findTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
 		
 		xmlFreeDoc(parser);
-		//unlink(CURRENTSERVICES_XML);
+		unlink(CURRENTSERVICES_XML);
 		
 		if(newfound)
 			saveServices(true);
