@@ -73,8 +73,8 @@ const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
 #define MESSAGEBOX_NO_YES_OPTION_COUNT 2
 const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 {
-	{ 0, _("No") },
-	{ 1, _("Yes") }
+	{ 0, _("no") },
+	{ 1, _("yes") }
 };
 
 // misc settings
@@ -647,9 +647,9 @@ int CEPGSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 #define EPG_SERVERBOX_TYPE_OPTION_COUNT 3
 const keyval EPG_SERVERBOX_TYPE_OPTIONS[EPG_SERVERBOX_TYPE_OPTION_COUNT] =
 {
-	{ DVB_C, _("Cable") },
-	{ DVB_S, _("Sat") },
-	{ DVB_T, _("Terrestrial") }
+	{ DVB_C, _("cable") },
+	{ DVB_S, _("sat") },
+	{ DVB_T, _("terrestrial") }
 };
 
 #define EPG_SERVERBOX_GUI_OPTION_COUNT 3

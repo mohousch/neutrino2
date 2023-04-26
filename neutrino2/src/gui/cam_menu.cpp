@@ -49,10 +49,8 @@
 #include <system/settings.h>
 #include <system/debug.h>
 
-//#include <mymenu.h>
 #include <sectionsd/edvbstring.h>
 
-//#include <zapit/capmt.h>
 #include <zapit/zapit.h>
 #include <sectionsd/abstime.h>
 
@@ -60,17 +58,16 @@
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
 {
-        { 0, _("Off") },
-        { 1, _("On") }
+        { 0, _("off") },
+        { 1, _("on") }
 };
 
-#if 0
 #define CI_CLOCK_OPTION_COUNT 3
 static const keyval CI_CLOCK_OPTIONS[CI_CLOCK_OPTION_COUNT] = 
 {
-	{  6, _("CI Clock normal") },
-	{  7, _("CI Clock high") },
-	{ 12, _("CI Clock high extra") }
+	{  6, _("CI clock normal") },
+	{  7, _("CI clock high") },
+	{ 12, _("CI clock high extra") }
 };
 
 #define CI_DELAY_OPTION_COUNT 5
@@ -82,14 +79,6 @@ static const keyval CI_DELAY_OPTIONS[CI_DELAY_OPTION_COUNT] =
 	{ 128, "128" },
 	{ 256, "256" }
 };
-#else
-#define CI_CLOCK_OPTION_COUNT 2
-static const keyval CI_CLOCK_OPTIONS[CI_CLOCK_OPTION_COUNT] = 
-{
-	{ 6, _("CI Clock normal") },
-	{ 7, _("CI Clock high") }
-};
-#endif
 
 void CCAMMenuHandler::init(void)
 {
@@ -158,14 +147,14 @@ int CCAMMenuHandler::doMainMenu()
 	
 	if(CiSlots) 
 	{
-		//cammenu->addItem(new CMenuOptionChooser(_("CI Delay"), &g_settings.ci_delay, CI_DELAY_OPTIONS, CI_DELAY_OPTION_COUNT, true, this));
+		cammenu->addItem(new CMenuOptionChooser(_("CI Delay"), &g_settings.ci_delay, CI_DELAY_OPTIONS, CI_DELAY_OPTION_COUNT, true, this));
 
 		cammenu->addItem(new CMenuOptionChooser(_("Reset CI (Standby)"), &g_settings.ci_standby_reset, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
-	}
 	
-	cammenu->addItem(new CMenuOptionChooser(_("Check live Slot"), &g_settings.ci_check_live, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this));
+		cammenu->addItem(new CMenuOptionChooser(_("Check live Slot"), &g_settings.ci_check_live, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this));
 
-	cammenu->addItem(new CMenuSeparator(LINE));
+		cammenu->addItem(new CMenuSeparator(LINE));
+	}
 
 	CMenuWidget * tempMenu;
 	int i = 0;
@@ -178,7 +167,9 @@ int CCAMMenuHandler::doMainMenu()
 		if (ca->ModulePresent(CA_SLOT_TYPE_CI, i)) 
 		{
 			ca->ModuleName(CA_SLOT_TYPE_CI, i, name1);
+			
 			printf("CCAMMenuHandler::doMainMenu cam%d name %s\n", i, name1);
+			
 			char tmp[32];
 			snprintf(tmp, sizeof(tmp), "ca_ci%d", i);
 
@@ -187,11 +178,9 @@ int CCAMMenuHandler::doMainMenu()
 			cammenu->addItem(new ClistBoxItem(_("CI Reset"), true, NULL, this, tmp));
 			memset(name1, 0, sizeof(name1));
 
-			//cammenu->addItem(new CMenuOptionChooser(LOCALE_CI_CLOCK, &g_settings.ci_clock[i], CI_CLOCK_OPTIONS, CI_CLOCK_OPTION_COUNT, true, this));
+			cammenu->addItem(new CMenuOptionChooser(_("CI clock"), &g_settings.ci_clock[i], CI_CLOCK_OPTIONS, CI_CLOCK_OPTION_COUNT, true, this));
 
-			//cammenu->addItem(new CMenuOptionNumberChooser(LOCALE_CI_CLOCK, &g_settings.ci_clock[i], true, 6, 12, this));
-
-			//cammenu->addItem(new CMenuOptionChooser(LOCALE_CI_RPR, &g_settings.ci_rpr[i], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this));
+			cammenu->addItem(new CMenuOptionChooser(_("CI rpr"), &g_settings.ci_rpr[i], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this));
 
 			cammenu->addItem(new CMenuOptionChooser(_("CI ignore message"), &g_settings.ci_ignore_messages[i], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 			cammenu->addItem(new CMenuOptionChooser(_("CI save pincode"), &g_settings.ci_save_pincode[i], OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this));

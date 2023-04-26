@@ -76,8 +76,8 @@ extern int FrontendCount;			// defined in zapit.cpp
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
 {
-        { 0, _("Off") },
-        { 1, _("On") }
+        { 0, _("off") },
+        { 1, _("on") }
 };
 
 // option off1 on0
@@ -101,9 +101,9 @@ const keyval SCANTS_BOUQUET_OPTIONS[SCANTS_BOUQUET_OPTION_COUNT] =
 const keyval SCANTS_ZAPIT_SCANTYPE[SCANTS_ZAPIT_SCANTYPE_COUNT] =
 {
 	{  CZapit::ST_TVRADIO, _("TV & Radio") },
-	{  CZapit::ST_TV, _("Only tv") },
-	{  CZapit::ST_RADIO, _("Only radio") },
-	{  CZapit::ST_ALL, _("All services") }
+	{  CZapit::ST_TV, _("only tv") },
+	{  CZapit::ST_RADIO, _("only radio") },
+	{  CZapit::ST_ALL, _("all services") }
 };
 
 #define SATSETUP_DISEQC_OPTION_COUNT 8

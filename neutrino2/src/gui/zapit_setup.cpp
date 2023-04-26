@@ -59,7 +59,6 @@ const keyval OPTIONS_LASTMODE_OPTIONS[OPTIONS_LASTMODE_OPTION_COUNT] =
 {
 	{ NeutrinoMessages::mode_tv, "TV" },
         { NeutrinoMessages::mode_radio, "Radio" },
-	//{ NeutrinoMessages::mode_webtv, "WEBTV" }
 };
 
 CZapitSetup::CZapitSetup()

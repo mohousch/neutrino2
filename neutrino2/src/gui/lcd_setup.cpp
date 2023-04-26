@@ -53,29 +53,29 @@ const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
 #define LCDMENU_STATUSLINE_OPTION_COUNT 4
 const keyval LCDMENU_STATUSLINE_OPTIONS[LCDMENU_STATUSLINE_OPTION_COUNT] =
 {
-	{ 0, _("Playtime")   },
-	{ 1, _("Volume")     },
-	{ 2, _("Volume / Playtime")       },
-	{ 3, _("Volume / Playtime / Audio") }
+	{ 0, _("playtime")   },
+	{ 1, _("volume")     },
+	{ 2, _("volume / playtime")       },
+	{ 3, _("volume / playtime / audio") }
 };
 
 #if defined (ENABLE_LCD)
 #define LCDMENU_EPG_OPTION_COUNT 6
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
-	{ 1, _("Channel")		},
-	{ 2, _("Title")		},
-	{ 3, _("Channel / Title")	},
-	{ 7, _("Channel / Sep.-Line / Title") },
-	{ 11, _("Channel (short) / Title") },
-	{ 15, _("Channel (short) / Sep.-Line / Title") }
+	{ 1, _("channel")		},
+	{ 2, _("title")		},
+	{ 3, _("channel / title")	},
+	{ 7, _("channel / sep.-line / title") },
+	{ 11, _("channel (short) / title") },
+	{ 15, _("channel (short) / sep.-line / title") }
 };
 #else
 #define LCDMENU_EPG_OPTION_COUNT 2
 const keyval LCDMENU_EPG_OPTIONS[LCDMENU_EPG_OPTION_COUNT] =
 {
-	{ 0, _("Channel")	},
-	{ 1, _("Time")			}
+	{ 0, _("channel")	},
+	{ 1, _("time")			}
 };
 #endif
 

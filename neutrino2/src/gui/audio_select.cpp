@@ -64,8 +64,8 @@ extern int tuxtx_subtitle_running(int * pid, int * page, int * running);
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
 {
-        { 0, _("Off") },
-        { 1, _("On") }
+        { 0, _("off") },
+        { 1, _("on") }
 }; 
 
 #define AUDIOMENU_ANALOGOUT_OPTION_COUNT 3

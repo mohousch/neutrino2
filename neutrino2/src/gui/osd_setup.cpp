@@ -175,17 +175,17 @@ void COSDSettings::showMenu(void)
 const keyval COLOR_GRADIENT_TYPE_OPTIONS[COLOR_GRADIENT_TYPE_OPTION_COUNT] =
 {
 	{ NOGRADIENT, _("no gradient") },
-	{ DARK2LIGHT, _("Dark to Light") },
-	{ LIGHT2DARK, _("Light to Dark") },
-	{ DARK2LIGHT2DARK, _("Dark to Light to Dark") },
-	{ LIGHT2DARK2LIGHT, _("Light to Dark to Light") }
+	{ DARK2LIGHT, _("dark to light") },
+	{ LIGHT2DARK, _("light to dark") },
+	{ DARK2LIGHT2DARK, _("dark to light to dark") },
+	{ LIGHT2DARK2LIGHT, _("light to dark to light") }
 };
 
 #define GRADIENT_DIRECTION_TYPE_OPTION_COUNT	2
 const keyval GRADIENT_DIRECTION_TYPE_OPTIONS[GRADIENT_DIRECTION_TYPE_OPTION_COUNT] =
 {
-	{ GRADIENT_HORIZONTAL, _("Horizontal") },
-	{ GRADIENT_VERTICAL, _("Vertical") }
+	{ GRADIENT_HORIZONTAL, _("horizontal") },
+	{ GRADIENT_VERTICAL, _("vertical") }
 };
 
 #define CORNER_TYPE_OPTION_COUNT	10

@@ -56,8 +56,8 @@ const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
 #define MESSAGEBOX_NO_YES_OPTION_COUNT 2
 const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 {
-	{ 0, _("No") },
-	{ 1, _("Yes") }
+	{ 0, _("no") },
+	{ 1, _("yes") }
 };
 
 // recording settings

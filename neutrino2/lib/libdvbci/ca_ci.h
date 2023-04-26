@@ -14,6 +14,7 @@
 #include "mmi.h"
 #include "cs_types.h"
 
+
 /* constants taken from dvb-apps */
 #define T_SB                0x80    // sb                           primitive   h<--m
 #define T_RCV               0x81    // receive                      primitive   h-->m
@@ -103,24 +104,21 @@ typedef struct CA_MESSAGE
 	} Msg;
 } CA_MESSAGE;
 
-//typedef void (*hal_messenger)(unsigned int msg, unsigned int data);
-
 typedef std::set<int> ca_map_t;
 typedef ca_map_t::iterator ca_map_iterator_t;
 
-typedef std::vector<u16>            bSIDVector;
+typedef std::vector<u16>            		bSIDVector;
+typedef std::vector<u16>            		CaIdVector;
+typedef std::vector<u16>::iterator      	CaIdVectorIterator;
+typedef std::vector<u16>::const_iterator	CaIdVectorConstIterator;
 
-typedef std::vector<u16>            CaIdVector;
-typedef std::vector<u16>::iterator      CaIdVectorIterator;
-typedef std::vector<u16>::const_iterator    CaIdVectorConstIterator;
-
-#define CA_MESSAGE_SIZE     sizeof(CA_MESSAGE)
-#define CA_MESSAGE_ENTRIES  256
+#define CA_MESSAGE_SIZE     	sizeof(CA_MESSAGE)
+#define CA_MESSAGE_ENTRIES  	256
 #define CA_MESSAGE_ENTRIES_CI   128
 #define CA_MESSAGE_ENTRIES_SC   64
 
 #ifndef CS_CA_PDATA
-#define CS_CA_PDATA     void
+#define CS_CA_PDATA     	void
 #endif
 
 typedef enum
@@ -266,7 +264,7 @@ class cCA
 {
 	private:
 		/// Static instance of the CA module
-//	static cCA *inst;
+		//static cCA *inst;
 		/// Private constructor (singleton method)
 		cCA(void);
 		/// Private data for the CA module
@@ -377,3 +375,4 @@ class cCA
 };
 
 #endif // __CA_CI_H__
+

@@ -1476,8 +1476,8 @@ int EpgPlus::MenuOptionChooserSwitchSwapMode::exec(CMenuTarget* parent)
 
 struct keyval menuOptionChooserSwitchViewModes[] = 
 {
-  	{EpgPlus::ViewMode_Scroll, _("Stretch Mode")},
-  	{EpgPlus::ViewMode_Stretch, _("Scroll Mode")}
+  	{EpgPlus::ViewMode_Scroll, _("stretch mode")},
+  	{EpgPlus::ViewMode_Stretch, _("scroll mode")}
 };
 
 EpgPlus::MenuOptionChooserSwitchViewMode::MenuOptionChooserSwitchViewMode (EpgPlus * epgPlus)

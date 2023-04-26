@@ -76,7 +76,7 @@ const keyval AUDIOMENU_AVSYNC_OPTIONS[AUDIOMENU_AVSYNC_OPTION_COUNT] =
 {
         { AVSYNC_OFF, _("off") },
         { AVSYNC_ON, _("on") },
-        { AVSYNC_AM, _("Audio master") }
+        { AVSYNC_AM, _("audio master") }
 };
 #endif
 

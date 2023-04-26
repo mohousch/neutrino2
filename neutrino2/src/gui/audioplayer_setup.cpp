@@ -45,8 +45,8 @@
 #define MESSAGEBOX_NO_YES_OPTION_COUNT 2
 const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 {
-	{ 0, _("No") },
-	{ 1, _("Yes") }
+	{ 0, _("no") },
+	{ 1, _("yes") }
 };
 
 CAudioPlayerSettings::CAudioPlayerSettings()

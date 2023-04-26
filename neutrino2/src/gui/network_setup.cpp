@@ -54,8 +54,8 @@
 #include <system/setting_helpers.h>
 #include <system/helpers.h>
 
-extern "C" int pinghost( const char *hostname );
 
+extern "C" int pinghost( const char *hostname );
 
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =

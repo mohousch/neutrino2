@@ -68,10 +68,10 @@ const keyval VIDEOMENU_HDMI_COLOR_SPACE_OPTIONS[VIDEOMENU_HDMI_COLOR_SPACE_OPTIO
 #define VIDEOMENU_HDMI_COLOR_SPACE_OPTION_COUNT 4
 const keyval VIDEOMENU_HDMI_COLOR_SPACE_OPTIONS[VIDEOMENU_HDMI_COLOR_SPACE_OPTION_COUNT] =
 {
-	 { HDMI_AUTO, "Edid(Auto)" },
-	 { HDMI_RGB, "Hdmi_Rgb" } ,
-	 { HDMI_ITU_R_BT_709, "Itu_R_BT_709" },
-	 { HDMI_UNKNOW, "Unknow" }
+	 { HDMI_AUTO, "edid(Auto)" },
+	 { HDMI_RGB, "hdmi_Rgb" } ,
+	 { HDMI_ITU_R_BT_709, "itu_R_BT_709" },
+	 { HDMI_UNKNOW, "unknow" }
 };
 #endif
 #endif // !coolstream
@@ -93,8 +93,8 @@ const keyval VIDEOMENU_ANALOGUE_MODE_OPTIONS[VIDEOMENU_ANALOGUE_MODE_OPTION_COUN
 {
 	{ ANALOG_SD_RGB_SCART, "RGB"   }, /* composite + RGB */
 	{ ANALOG_SD_YPRPB_SCART, "YPbPr" }, /* YPbPr SCART */
-	{ ANALOG_HD_RGB_SCART, "RGB Scart"   },
-	{ ANALOG_HD_YPRPB_SCART, "YPbPr Scart" },
+	{ ANALOG_HD_RGB_SCART, "RGB scart"   },
+	{ ANALOG_HD_YPRPB_SCART, "YPbPr scart" },
 };
 #else
 //rgb/cvbs/yuv
@@ -143,19 +143,19 @@ const keyval VIDEOMENU_VIDEORATIO_OPTIONS[VIDEOMENU_VIDEORATIO_OPTION_COUNT] =
 #define VIDEOMENU_VIDEOFORMAT_OPTION_COUNT 4
 const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] = 
 {
-	{ VIDEOFORMAT_LETTERBOX, "Letterbox" },
-	{ VIDEOFORMAT_PANSCAN, "Panscan" },
-	{ VIDEOFORMAT_FULLSCREEN, _("Fullscreen") },
-	{ VIDEOFORMAT_PANSCAN2, "Bestfit" }
+	{ VIDEOFORMAT_LETTERBOX, "letterbox" },
+	{ VIDEOFORMAT_PANSCAN, "panscan" },
+	{ VIDEOFORMAT_FULLSCREEN, _("fullscreen") },
+	{ VIDEOFORMAT_PANSCAN2, "bestfit" }
 };
 #elif defined (PLATFORM_COOLSTREAM)
 #define VIDEOMENU_VIDEOFORMAT_OPTION_COUNT 4
 const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] = 
 {
-	{ DISPLAY_AR_MODE_PANSCAN, "Panscan" },
-	{ DISPLAY_AR_MODE_PANSCAN2, "Bestfit" },
-	{ DISPLAY_AR_MODE_LETTERBOX, "Letterbox" },
-	{ DISPLAY_AR_MODE_NONE, _("Fullscreen") }
+	{ DISPLAY_AR_MODE_PANSCAN, "panscan" },
+	{ DISPLAY_AR_MODE_PANSCAN2, "bestfit" },
+	{ DISPLAY_AR_MODE_LETTERBOX, "letterbox" },
+	{ DISPLAY_AR_MODE_NONE, _("fullscreen") }
 };
 #else
 // giga
@@ -168,10 +168,10 @@ const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] =
 #define VIDEOMENU_VIDEOFORMAT_OPTION_COUNT 4
 const keyval VIDEOMENU_VIDEOFORMAT_OPTIONS[VIDEOMENU_VIDEOFORMAT_OPTION_COUNT] = 
 {
-	{ VIDEOFORMAT_LETTERBOX, "Letterbox" },
-	{ VIDEOFORMAT_PANSCAN, "Panscan" },
-	{ VIDEOFORMAT_PANSCAN2, "Bestfit" },
-	{ VIDEOFORMAT_FULLSCREEN, _("Fullscreen") }
+	{ VIDEOFORMAT_LETTERBOX, "letterbox" },
+	{ VIDEOFORMAT_PANSCAN, "panscan" },
+	{ VIDEOFORMAT_PANSCAN2, "bestfit" },
+	{ VIDEOFORMAT_FULLSCREEN, _("fullscreen") }
 };
 #endif
 
@@ -274,9 +274,9 @@ const keyval VIDEOMENU_VIDEOMODE_OPTIONS[VIDEOMENU_VIDEOMODE_OPTION_COUNT] =
 #define VIDEOMENU_WSS_OPTION_COUNT 3
 const keyval VIDEOMENU_WSS_OPTIONS[VIDEOMENU_WSS_OPTION_COUNT] =
 {
-	{ WSS_OFF, "Off" },
-	{ WSS_AUTO, "Auto" },
-	{ WSS_43_OFF, "Auto(4:3_off)" },
+	{ WSS_OFF, "off" },
+	{ WSS_AUTO, "auto" },
+	{ WSS_43_OFF, "auto(4:3_off)" },
 };
 #else
 // giga
@@ -296,9 +296,9 @@ const keyval VIDEOMENU_WSS_OPTIONS[VIDEOMENU_WSS_OPTION_COUNT] =
 #define VIDEOMENU_WSS_OPTION_COUNT 11
 const keyval VIDEOMENU_WSS_OPTIONS[VIDEOMENU_WSS_OPTION_COUNT] =
 {
-	{ WSS_OFF, "Off" },
-	{ WSS_AUTO, "Auto" },
-	{ WSS_43_OFF, "Auto(4:3_off)" },
+	{ WSS_OFF, "off" },
+	{ WSS_AUTO, "auto" },
+	{ WSS_43_OFF, "auto(4:3_off)" },
 	{ WSS_43_FULL, "4:3(full_format)" },
 	{ WSS_169_FULL, "16:9(full_format)" },
 	{ WSS_149_LETTERBOX_CENTER, "14:9(letterbox-center)" },
