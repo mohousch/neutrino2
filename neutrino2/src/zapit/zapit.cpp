@@ -1079,6 +1079,7 @@ void CZapit::sendCaPmtRecordStop(void)
 #if defined (ENABLE_CI)
 			//if(live_fe != NULL)
 			//	ci->SendCaPMT(NULL, live_fe->fenumber);
+			//SendCaPmt(live_channel_id, NULL, 0, CA_SLOT_TYPE_ALL);
 #endif
 		}
 	} 

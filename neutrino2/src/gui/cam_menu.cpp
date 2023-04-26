@@ -305,18 +305,18 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 	Msg = *rMsg;
 	delete rMsg;
 
-	u32 MsgId             = Msg.MsgId;
-	CA_SLOT_TYPE SlotType = Msg.SlotType;
-	int curslot           = Msg.Slot;
+	uint32_t MsgId		= Msg.MsgId;
+	CA_SLOT_TYPE SlotType	= Msg.SlotType;
+	int curslot		= Msg.Slot;
 
-	printf("CCAMMenuHandler::handleCamMsg: CA msg %x from %s\n", MsgId, from_menu ? "menu" : "neutrino");
+	//printf("CCAMMenuHandler::handleCamMsg: CA msg %x from %s\n", MsgId, from_menu ? "menu" : "neutrino");
 
-	if (g_settings.ci_ignore_messages[curslot] && !from_menu && MsgId != CA_MESSAGE_MSG_MMI_REQ_INPUT
-	&& MsgId != CA_MESSAGE_MSG_MMI_CLOSE && MsgId != CA_MESSAGE_MSG_INIT_OK
-	&& MsgId != CA_MESSAGE_MSG_INSERTED && MsgId != CA_MESSAGE_MSG_REMOVED)
-		return 1;
+	//if (g_settings.ci_ignore_messages[curslot] && !from_menu && MsgId != CA_MESSAGE_MSG_MMI_REQ_INPUT
+	//&& MsgId != CA_MESSAGE_MSG_MMI_CLOSE && MsgId != CA_MESSAGE_MSG_INIT_OK
+	//&& MsgId != CA_MESSAGE_MSG_INSERTED && MsgId != CA_MESSAGE_MSG_REMOVED)
+	//	return 1;
 
-	hideHintBox();
+	//hideHintBox();
 
 	if (SlotType != CA_SLOT_TYPE_SMARTCARD && SlotType != CA_SLOT_TYPE_CI)
 		return -1;

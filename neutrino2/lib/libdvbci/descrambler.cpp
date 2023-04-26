@@ -170,7 +170,6 @@ int descrambler_set_pid(int index, int enable, int pid)
 	return 0;
 }
 
-
 bool descrambler_open(void)
 {
 	if (desc_fd > 0)

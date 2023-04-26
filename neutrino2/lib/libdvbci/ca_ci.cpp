@@ -17,8 +17,6 @@
 #include <queue>
 
 #include "ca_ci.h"
-//#include "hal_debug.h"
-//#include "hardware_caps.h"
 
 #include "dvbci_session.h"
 #include "dvbci_appmgr.h"
@@ -31,11 +29,11 @@
 
 extern CRCInput *g_RCInput;
 
-#if !defined (__sh__)
-uintptr_t EVT_CA_MESSAGE = 0x80000000 + 60;
-#else
-uint32_t EVT_CA_MESSAGE = 0x80000000 + 60;
-#endif
+//#if !defined (__sh__)
+//uintptr_t EVT_CA_MESSAGE = 0x80000000 + 60;
+//#else
+//uint32_t EVT_CA_MESSAGE = 0x80000000 + 60;
+//#endif
 
 /* for some debug > set to 1 */
 #define x_debug 1
@@ -77,7 +75,6 @@ cCA *cCA::GetInstance()
 	{
 		printf("%s -> %s\n", FILENAME, __FUNCTION__);
 
-		//hw_caps_t *caps = get_hwcaps();
 		pcCAInstance = new cCA(4);
 	}
 	return pcCAInstance;
@@ -230,21 +227,21 @@ static bool transmitData(eDVBCISlot *slot, unsigned char *d, int len)
 {
 	printf("%s -> %s len(%d)\n", FILENAME, __func__, len);
 
-#if !defined (__sh__)
-	int res = write(slot->fd, d, len);
+//#if !defined (__sh__)
+//	int res = write(slot->fd, d, len);
 	
-	printf("send: %d len: %d\n", res, len);
+//	printf("send: %d len: %d\n", res, len);
 
-	free(d);
+//	free(d);
 	
-	if (res < 0 || res != len)
-	{
-		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
-		return false;
-	}
-#else
+//	if (res < 0 || res != len)
+//	{
+//		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
+//		return false;
+//	}
+//#else
 	slot->sendqueue.push(queueData(d, len));
-#endif
+//#endif
 	return true;
 }
 
@@ -479,13 +476,13 @@ bool cCA::SendMessage(const CA_MESSAGE *msg)
 {
 	printf("%s\n", __func__);
 	
-#if defined (__sh__)
+//#if defined (__sh__)
 	if (g_RCInput)
-		g_RCInput->postMsg(EVT_CA_MESSAGE, (uint32_t) msg);
-#else
-	if (g_RCInput)
-		g_RCInput->postMsg(EVT_CA_MESSAGE, (uintptr_t) msg);
-#endif
+		g_RCInput->postMsg(NeutrinoMessages::EVT_CA_MESSAGE, (const neutrino_msg_data_t) msg);
+//#else
+//	if (g_RCInput)
+//		g_RCInput->postMsg(EVT_CA_MESSAGE, (uintptr_t) msg);
+//#endif
 
 	return true;
 }
@@ -584,6 +581,7 @@ uint32_t cCA::GetNumberSmartCardSlots(void)
 void cCA::ModuleName(enum CA_SLOT_TYPE, uint32_t slot, char *Name)
 {
 	std::list<eDVBCISlot *>::iterator it;
+	
 	for (it = slot_data.begin(); it != slot_data.end(); ++it)
 	{
 		if ((*it)->slot == slot)
@@ -612,6 +610,7 @@ bool cCA::ModulePresent(enum CA_SLOT_TYPE, uint32_t slot)
 int cCA::GetCAIDS(CaIdVector &Caids)
 {
 	std::list<eDVBCISlot *>::iterator it;
+	
 	for (it = slot_data.begin(); it != slot_data.end(); ++it)
 	{
 		if ((*it)->camIsReady)
@@ -629,6 +628,7 @@ bool cCA::StopLiveCI(u64 TP, u16 SID, u8 source, u32 calen)
 	printf("%s -> %s\n", FILENAME, __func__);
 	
 	std::list<eDVBCISlot *>::iterator it;
+	
 	for (it = slot_data.begin(); it != slot_data.end(); ++it)
 	{
 		for (int j = 0; j < CI_MAX_MULTI; j++)
@@ -650,6 +650,7 @@ bool cCA::StopRecordCI(u64 TP, u16 SID, u8 source, u32 calen)
 	printf("%s -> %s\n", FILENAME, __func__);
 	
 	std::list<eDVBCISlot *>::iterator it;
+	
 	for (it = slot_data.begin(); it != slot_data.end(); ++it)
 	{
 		for (int j = 0; j < CI_MAX_MULTI; j++)
@@ -1431,7 +1432,7 @@ void cCA::ModuleReset(enum CA_SLOT_TYPE, uint32_t slot)
 
 void cCA::ci_inserted(eDVBCISlot *slot)
 {
-	printf("1. cam (%d) status changed ->cam now present\n", slot->slot);
+	printf("cCA::ci_inserted: 1. cam (%d) status changed ->cam now present\n", slot->slot);
 
 	slot->mmiSession = NULL;
 	slot->hasMMIManager = false;
@@ -1460,7 +1461,7 @@ void cCA::ci_inserted(eDVBCISlot *slot)
 
 void cCA::ci_removed(eDVBCISlot *slot)
 {
-	printf("cam (%d) status changed ->cam now _not_ present\n", slot->slot);
+	printf("cCA::ci_removed: cam (%d) status changed ->cam now _not_ present\n", slot->slot);
 	
 #if !defined (__sh__)
 	last_source = (int)slot->source;
