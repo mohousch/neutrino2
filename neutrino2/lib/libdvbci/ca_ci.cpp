@@ -224,7 +224,7 @@ static bool transmitData(eDVBCISlot *slot, unsigned char *d, int len)
 {
 	printf("%s -> %s len(%d)\n", FILENAME, __func__, len);
 
-#if !defined (__sh__)
+#if 0
 	int res = write(slot->fd, d, len);
 	
 	printf("send: %d len: %d\n", res, len);
