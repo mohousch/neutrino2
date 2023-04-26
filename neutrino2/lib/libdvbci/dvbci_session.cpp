@@ -292,7 +292,7 @@ void eDVBCISession::receiveData(eDVBCISlot *slot, const unsigned char *ptr, size
 	unsigned char tag = *pkt++;
 	int llen, hlen;
 
-	printf("[CI SESS] receiveData slot: %p > ", slot);
+	printf("[CI SESS] receiveData slot: %p > \n", slot);
 
 #if 0
 	for (unsigned int i = 0; i < len; i++)

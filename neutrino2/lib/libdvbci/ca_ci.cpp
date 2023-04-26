@@ -29,14 +29,20 @@
 #include <neutrinoMessages.h>
 #include <driver/rcinput.h>
 
+extern CRCInput *g_RCInput;
+
+#if !defined (__sh__)
+uintptr_t EVT_CA_MESSAGE = 0x80000000 + 60;
+#else
+uint32_t EVT_CA_MESSAGE = 0x80000000 + 60;
+#endif
+
 /* for some debug > set to 1 */
 #define x_debug 1
 #define y_debug 0
 #define z_debug 0
 #define tsb_debug 0
 #define wd_debug 0
-
-extern CRCInput *g_RCInput;
 
 static const char *FILENAME = "[ca_ci]";
 #if defined (__sh__)
@@ -224,7 +230,7 @@ static bool transmitData(eDVBCISlot *slot, unsigned char *d, int len)
 {
 	printf("%s -> %s len(%d)\n", FILENAME, __func__, len);
 
-#if 0
+#if !defined (__sh__)
 	int res = write(slot->fd, d, len);
 	
 	printf("send: %d len: %d\n", res, len);
@@ -474,9 +480,11 @@ bool cCA::SendMessage(const CA_MESSAGE *msg)
 	printf("%s\n", __func__);
 	
 #if defined (__sh__)
-	g_RCInput->postMsg(NeutrinoMessages::EVT_CA_MESSAGE, (uint32_t) msg);
+	if (g_RCInput)
+		g_RCInput->postMsg(EVT_CA_MESSAGE, (uint32_t) msg);
 #else
-	g_RCInput->postMsg(NeutrinoMessages::EVT_CA_MESSAGE, (uintptr_t) msg);
+	if (g_RCInput)
+		g_RCInput->postMsg(EVT_CA_MESSAGE, (uintptr_t) msg);
 #endif
 
 	return true;
