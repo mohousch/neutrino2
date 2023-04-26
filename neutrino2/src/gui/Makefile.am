@@ -92,8 +92,7 @@ libneutrino2_gui_a_SOURCES = \
 	motorcontrol.cpp \
 	alphasetup.cpp \
 	psisetup.cpp \
-	vfdcontroler.cpp \
-	cec_setup.cpp
+	vfdcontroler.cpp
 
 if ENABLE_CI
 libneutrino2_gui_a_SOURCES += cam_menu.cpp
