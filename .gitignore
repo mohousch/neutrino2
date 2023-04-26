@@ -1889,3 +1889,7 @@
 /neutrino2/lib/libdvbci/dh_rsa_misc.o
 /neutrino2/lib/libdvbci/dvbci_ccmgr.o
 /neutrino2/lib/libdvbci/misc.o
+/neutrino2/src/driver/.deps/hdmi_cec.Po
+/neutrino2/src/driver/hdmi_cec.o
+/neutrino2/src/gui/.deps/cec_setup.Po
+/neutrino2/src/gui/cec_setup.o

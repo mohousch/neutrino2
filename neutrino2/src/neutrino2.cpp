@@ -962,6 +962,13 @@ int CNeutrinoApp::loadSetup(const char * fname)
 		g_settings.ci_pincode[i] = configfile.getString(cfg_key, "");
 	}
 #endif
+
+	// cec
+	g_settings.hdmi_cec_mode = configfile.getInt32("hdmi_cec_mode", 0); // default off
+	g_settings.hdmi_cec_view_on = configfile.getInt32("hdmi_cec_view_on", 0); // default off
+	g_settings.hdmi_cec_standby = configfile.getInt32("hdmi_cec_standby", 0); // default off
+	g_settings.hdmi_cec_volume = configfile.getInt32("hdmi_cec_volume", 0);
+	g_settings.hdmi_cec_broadcast = configfile.getInt32("hdmi_cec_broadcast", 0); // default off
 	
 	//set OSD resolution
 #define DEFAULT_X_OFF 35
@@ -1443,6 +1450,13 @@ void CNeutrinoApp::saveSetup(const char * fname)
 		configfile.setString(cfg_key, g_settings.ci_pincode[i]);
 	}
 #endif
+
+	// cec
+	configfile.setInt32( "hdmi_cec_mode", g_settings.hdmi_cec_mode );
+	configfile.setInt32( "hdmi_cec_view_on", g_settings.hdmi_cec_view_on );
+	configfile.setInt32( "hdmi_cec_standby", g_settings.hdmi_cec_standby );
+	configfile.setInt32( "hdmi_cec_volume", g_settings.hdmi_cec_volume );
+	configfile.setInt32( "hdmi_cec_broadcast", g_settings.hdmi_cec_broadcast );
 
 	if(strcmp(fname, NEUTRINO_SETTINGS_FILE))
 		configfile.saveConfig(fname);

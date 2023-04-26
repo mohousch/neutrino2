@@ -49,6 +49,7 @@
 #include <gui/misc_setup.h>
 #include <gui/hdd_menu.h>
 #include <gui/zapit_setup.h>
+#include <gui/cec_setup.h>
 
 #include <system/debug.h>
 #include <system/setting_helpers.h>
@@ -167,6 +168,9 @@ void CMainSettingsMenu::showMenu(void)
 	//FIXME:	
 	//CPSISetup * chPSISetup = new CPSISetup(_(PSI settings), &g_settings.contrast, &g_settings.saturation, &g_settings.brightness, &g_settings.tint);
 	//mainSettings->addItem( new ClistBoxItem(_("PSI settings"), true, NULL, chPSISetup, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_PSISETTINGS));
+	
+	// cec setup
+	mainSettings->addItem(new ClistBoxItem(_("CEC settings"), true, NULL, new CCECSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
 	
 	//miscSettings general
 	mainSettings->addItem(new ClistBoxItem(_("Misc settings"), true, NULL, new CGeneralSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
