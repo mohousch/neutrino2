@@ -59,7 +59,7 @@ CCECSetup::CCECSetup()
 
 int CCECSetup::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
-	printf("[neutrino] init cec setup...\n");
+	dprintf(DEBUG_NORMAL, "CCECSetup::exec:\n");
 	
 	int   res = RETURN_REPAINT;
 
@@ -107,6 +107,14 @@ int CCECSetup::showMenu()
 {
 	//menue init
 	CMenuWidget *cec = new CMenuWidget(_("CEC Setup"), NEUTRINO_ICON_SETTINGS);
+	
+	// intros
+	cec->addItem(new ClistBoxItem(_("back")));
+	cec->addItem( new CMenuSeparator(LINE) );
+	
+	// save settings
+	cec->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	cec->addItem(new CMenuSeparator(LINE));
 
 	//cec
 #if defined (__sh__)
@@ -116,13 +124,12 @@ int CCECSetup::showMenu()
 	cec2 = new CMenuOptionChooser(_("CEC broadcast"), &g_settings.hdmi_cec_broadcast, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
 #else
 	CMenuOptionChooser *cec_ch = new CMenuOptionChooser(_("CEC mode"), &g_settings.hdmi_cec_mode, VIDEOMENU_HDMI_CEC_MODE_OPTIONS, VIDEOMENU_HDMI_CEC_MODE_OPTION_COUNT, true, this);
-	//cec_ch->setHint("", LOCALE_MENU_HINT_CEC_MODE);
+	
 	cec1 = new CMenuOptionChooser(_("CEC view on"), &g_settings.hdmi_cec_view_on, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
-	//cec1->setHint("", LOCALE_MENU_HINT_CEC_VIEW_ON);
+	
 	cec2 = new CMenuOptionChooser(_("CEC standby"), &g_settings.hdmi_cec_standby, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
-	//cec2->setHint("", LOCALE_MENU_HINT_CEC_STANDBY);
+	
 	cec3 = new CMenuOptionChooser(_("CEC volume"), &g_settings.hdmi_cec_volume, VIDEOMENU_HDMI_CEC_VOL_OPTIONS, VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
-	//cec3->setHint("", LOCALE_MENU_HINT_CEC_VOLUME);
 #endif
 
 	cec->addItem(cec_ch);
@@ -138,7 +145,7 @@ int CCECSetup::showMenu()
 	return res;
 }
 
-#if defined (__SH__)
+#if defined (__sh__)
 void CCECSetup::setCECSettings(bool b)
 {	
 	printf("[neutrino CEC Settings] %s init CEC settings...\n", __FUNCTION__);
