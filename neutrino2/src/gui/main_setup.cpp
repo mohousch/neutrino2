@@ -170,7 +170,9 @@ void CMainSettingsMenu::showMenu(void)
 	//mainSettings->addItem( new ClistBoxItem(_("PSI settings"), true, NULL, chPSISetup, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_PSISETTINGS));
 	
 	// cec setup
-	//mainSettings->addItem(new ClistBoxItem(_("CEC settings"), true, NULL, new CCECSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
+#if !defined (__sh__)
+	mainSettings->addItem(new ClistBoxItem(_("CEC settings"), true, NULL, new CCECSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
+#endif
 	
 	//miscSettings general
 	mainSettings->addItem(new ClistBoxItem(_("Misc settings"), true, NULL, new CGeneralSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));

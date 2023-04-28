@@ -68,7 +68,36 @@ libneutrino2_driver_a_SOURCES += vfd.cpp
 endif
 
 if USE_OPENGL
-libneutrino2_driver_a_SOURCES += \
-	glthread.cpp
+libneutrino2_driver_a_SOURCES += glthread.cpp
+endif
+
+if !BOXTYPE_DGS 
+if !BOXTYPE_FULAN 
+if !BOXTYPE_KATHREIN 
+if !BOXTYPE_IPBOX
+if !BOXTYPE_HL101 
+if !BOXTYPE_TOPFIELD 
+if !BOXTYPE_FORTIS_HDBOX 
+if !BOXMODEL_OCTAGON_1008 
+if !BOXTYPE_ATEVIO 
+if !BOXTYPE_ADB_BOX 
+if !BOXTYPE_WHITEBOX 
+if !BOXTYPE_VIP 
+if !BOXTYPE_HOMECAST 
+if !BOXTYPE_TECHNOMATE
+libneutrino2_driver_a_SOURCES += hdmi_cec.cpp
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
 endif
 

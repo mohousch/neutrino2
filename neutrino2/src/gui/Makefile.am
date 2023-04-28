@@ -98,5 +98,33 @@ if ENABLE_CI
 libneutrino2_gui_a_SOURCES += cam_menu.cpp
 endif
 
-
+if !BOXTYPE_DGS 
+if !BOXTYPE_FULAN 
+if !BOXTYPE_KATHREIN 
+if !BOXTYPE_IPBOX
+if !BOXTYPE_HL101 
+if !BOXTYPE_TOPFIELD 
+if !BOXTYPE_FORTIS_HDBOX 
+if !BOXMODEL_OCTAGON_1008 
+if !BOXTYPE_ATEVIO 
+if !BOXTYPE_ADB_BOX 
+if !BOXTYPE_WHITEBOX 
+if !BOXTYPE_VIP 
+if !BOXTYPE_HOMECAST 
+if !BOXTYPE_TECHNOMATE
+libneutrino2_gui_a_SOURCES += cec_setup.cpp
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
 

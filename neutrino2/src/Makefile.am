@@ -147,12 +147,3 @@ neutrino2_LDADD += interfaces/lua/libneutrino2_interfaces_lua.a \
 	@LUA_LIB@
 endif
 
-
-
-
-
-
-	
-
-
-
