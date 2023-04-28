@@ -136,7 +136,6 @@ int CCAMMenuHandler::exec(CMenuTarget* parent, const std::string &actionkey)
 
 int CCAMMenuHandler::doMainMenu()
 {
-#if 1
 	int ret, cnt;
 	char name1[255] = {0};
 	char str1[255]={0};
@@ -147,6 +146,14 @@ int CCAMMenuHandler::doMainMenu()
 	
 	if(CiSlots) 
 	{
+		// intros
+		cammenu->addItem(new ClistBoxItem(_("back")));
+		cammenu->addItem( new CMenuSeparator(LINE) );
+		
+		// save settings
+		cammenu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+		cammenu->addItem(new CMenuSeparator(LINE));
+	
 		cammenu->addItem(new CMenuOptionChooser(_("CI Delay"), &g_settings.ci_delay, CI_DELAY_OPTIONS, CI_DELAY_OPTION_COUNT, true, this));
 
 		cammenu->addItem(new CMenuOptionChooser(_("Reset CI (Standby)"), &g_settings.ci_standby_reset, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
@@ -234,15 +241,16 @@ int CCAMMenuHandler::doMainMenu()
 	in_menu = false;
 	
 	return ret;
-#endif
 }
 
 #define CI_MSG_TIME 5
 int CCAMMenuHandler::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
 	//printf("CCAMMenuHandler::handleMsg: msg 0x%x data 0x%x\n", msg, data);
+	
 	int msgret;
 	handleCamMsg(msg, data, msgret);
+	
 	return msgret;
 }
 
@@ -309,21 +317,21 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 	CA_SLOT_TYPE SlotType	= Msg.SlotType;
 	int curslot		= Msg.Slot;
 
-	//printf("CCAMMenuHandler::handleCamMsg: CA msg %x from %s\n", MsgId, from_menu ? "menu" : "neutrino");
+	printf("CCAMMenuHandler::handleCamMsg: CA msg %x from %s\n", MsgId, from_menu ? "menu" : "neutrino");
 
-	//if (g_settings.ci_ignore_messages[curslot] && !from_menu && MsgId != CA_MESSAGE_MSG_MMI_REQ_INPUT
-	//&& MsgId != CA_MESSAGE_MSG_MMI_CLOSE && MsgId != CA_MESSAGE_MSG_INIT_OK
-	//&& MsgId != CA_MESSAGE_MSG_INSERTED && MsgId != CA_MESSAGE_MSG_REMOVED)
-	//	return 1;
+	if (g_settings.ci_ignore_messages[curslot] && !from_menu && MsgId != CA_MESSAGE_MSG_MMI_REQ_INPUT
+	&& MsgId != CA_MESSAGE_MSG_MMI_CLOSE && MsgId != CA_MESSAGE_MSG_INIT_OK
+	&& MsgId != CA_MESSAGE_MSG_INSERTED && MsgId != CA_MESSAGE_MSG_REMOVED)
+		return 1;
 
-	//hideHintBox();
+	hideHintBox();
 
 	if (SlotType != CA_SLOT_TYPE_SMARTCARD && SlotType != CA_SLOT_TYPE_CI)
 		return -1;
 
 	if(MsgId == CA_MESSAGE_MSG_INSERTED) 
 	{
-		snprintf(str, sizeof(str), "%s %d", SlotType == CA_SLOT_TYPE_CI ? _("CI inserted") : _("Cam inserted"), (int)curslot+1);
+		snprintf(str, sizeof(str), "%s %d", SlotType == CA_SLOT_TYPE_CI ? _("CI inserted") : _("Cam inserted"), (int)curslot + 1);
 		
 		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
 		HintBox(_("Info"), str);
@@ -332,7 +340,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 	} 
 	else if (MsgId == CA_MESSAGE_MSG_REMOVED) 
 	{
-		snprintf(str, sizeof(str), "%s %d", SlotType == CA_SLOT_TYPE_CI ? _("CI removed") : _("CAM removed"), (int)curslot+1);
+		snprintf(str, sizeof(str), "%s %d", SlotType == CA_SLOT_TYPE_CI ? _("CI removed") : _("CAM removed"), (int)curslot + 1);
 
 		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
 		HintBox(_("Info"), str);
@@ -346,7 +354,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		if (ca)
 			ca->ModuleName(SlotType, curslot, name);
 
-		snprintf(str, sizeof(str), "%s %d: %s", SlotType == CA_SLOT_TYPE_CI ? _("CI Init OK") : _("CAM Init OK"), (int)curslot+1, name);
+		snprintf(str, sizeof(str), "%s %d: %s", SlotType == CA_SLOT_TYPE_CI ? _("CI Init OK") : _("CAM Init OK"), (int)curslot + 1, name);
 		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
 		//CCamManager::getInstance()->Start(CZapit::getInstance()->GetCurrentChannelID(), CCamManager::PLAY, true);
 		HintBox(_("Info"), str);
@@ -357,7 +365,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		if (ca)
 			ca->ModuleName(SlotType, curslot, name);
 
-		snprintf(str, sizeof(str), "%s %d: %s", SlotType == CA_SLOT_TYPE_CI ? _("CI Init failed") : _("CAM Init failed"), (int)curslot+1, name);
+		snprintf(str, sizeof(str), "%s %d: %s", SlotType == CA_SLOT_TYPE_CI ? _("CI Init failed") : _("CAM Init failed"), (int)curslot + 1, name);
 
 		printf("CCAMMenuHandler::handleCamMsg: %s\n", str);
 		HintBox(_("Info"), str);
@@ -526,7 +534,9 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 		int timeout = 0;
 		if (Msg.Flags & CA_MESSAGE_HAS_PARAM1_INT)
 			timeout = Msg.Msg.Param[0];
+			
 		printf("CCAMMenuHandler::handleCamMsg: close request slot: %d (timeout %d)\n", curslot, timeout);
+		
 		//ca->MenuClose(SlotType, curslot);
 		if (timeout)
 			close_timer = g_RCInput->addTimer(timeout*1000*1000, true);
@@ -544,15 +554,20 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			return -1;
 /*
 		t_channel_id chid = Msg.Msg.ParamLong[0];
+		
 		printf("CCAMMenuHandler::handleCamMsg: CA_MESSAGE_MSG_CHANNEL_CHANGE: %" PRIx64 "\n", chid);
+		
 		CZapitChannel * channel = CServiceManager::getInstance()->FindChannel48(chid);
-		if (!channel) {
+		
+		if (!channel) 
+		{
 			printf("CCAMMenuHandler::handleCamMsg: channel %" PRIx64 "not found\n", chid);
 			return -1;
 		}
 		CNeutrinoApp::getInstance()->zapTo(channel->getChannelID());
 */
 	} 
+	
 	return 1;
 }
 
@@ -635,35 +650,34 @@ int CCAMMenuHandler::doMenu(int slot, CA_SLOT_TYPE slotType)
 
 bool CCAMMenuHandler::changeNotify(const std::string& OptionName, void * Data)
 {
-#if 0
-#if BOXMODEL_VUPLUS_ALL
-	if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_DELAY)) 
+	if (OptionName == _("CI Delay")) 
 	{
 		printf("CCAMMenuHandler::changeNotify: ci_delay %d\n", g_settings.ci_delay);
 		ca->SetCIDelay(g_settings.ci_delay);
+		
 		return true;
 	}
-	else if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_RPR)) 
+	else if (OptionName == _("CI rpr")) 
 	{
 		for (unsigned int i = 0; i < ca->GetNumberCISlots(); i++) 
 		{
 			printf("CCAMMenuHandler::changeNotify: ci_rpr[%d] %d\n", i, g_settings.ci_rpr[i]);
 			ca->SetCIRelevantPidsRouting(g_settings.ci_rpr[i], i);
 		}
+		
 		return true;
 	}
-	else
-#endif
-	if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_CLOCK)) 
+	else if (OptionName == _("CI Clock")) 
 	{
 		for (unsigned int i = 0; i < ca->GetNumberCISlots(); i++) 
 		{
 			printf("CCAMMenuHandler::changeNotify: ci_clock[%d] %d\n", i, g_settings.ci_clock[i]);
 			ca->SetTSClock(g_settings.ci_clock[i] * 1000000, i);
 		}
+		
 		return true;
 	}
-	else if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_SAVE_PINCODE)) 
+	else if (OptionName == _("CI save pincode")) 
 	{
 		int enabled = *(int *) Data;
 		if (!enabled) {
@@ -674,16 +688,16 @@ bool CCAMMenuHandler::changeNotify(const std::string& OptionName, void * Data)
 			}
 		}
 	}
-	else if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_CHECK_LIVE_SLOT)) 
+	else if (OptionName == _("CI check live slot")) 
 	{
 		ca->setCheckLiveSlot(g_settings.ci_check_live);
 	}
-	else if (ARE_LOCALES_EQUAL(OptionName, LOCALE_CI_TUNER)) 
+	else if (OptionName == _("CI Tuner")) 
 	{
 		printf("CCAMMenuHandler::changeNotify: bind CI to tuner %d\n", g_settings.ci_tuner);
-		CCamManager::getInstance()->SetCITuner(g_settings.ci_tuner);
+		//CCamManager::getInstance()->SetCITuner(g_settings.ci_tuner);
 	}
-#endif
 	
 	return false;
 }
+
