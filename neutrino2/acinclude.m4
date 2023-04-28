@@ -5,11 +5,6 @@ AM_MAINTAINER_MODE
 AC_GNU_SOURCE
 AC_SYS_LARGEFILE
 
-AC_ARG_WITH(targetprefix,
-	AS_HELP_STRING([--with-targetprefix=PATH], [prefix relative to target root (only applicable in cdk mode)]),
-	[TARGET_PREFIX="$withval"],
-	[TARGET_PREFIX=""])
-
 AC_ARG_WITH(debug,
 	[  --without-debug         disable debugging code],
 	[DEBUG="$withval"],[DEBUG="yes"])
@@ -24,7 +19,7 @@ if test "$CFLAGS" = "" -a "$CXXFLAGS" = ""; then
 	CXXFLAGS="-Wall -O2 -pipe $DEBUG_CFLAGS"
 fi
 
-if test "$prefix" = "NONE"; then
+if test "$prefix" = "NONE" -o "$prefix" = "/usr" ; then
 	prefix="/usr"
 	
 	# workaround
