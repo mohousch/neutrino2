@@ -1854,7 +1854,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	restTime.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	
 	// text
-	CCText text(winTopBox.iX + 10, winTopBox.iY + 10 + 60 + 10 + 10, winTopBox.iWidth - 20, winTopBox.iHeight - 100);
+	CCText text(winTopBox.iX + 10, winTopBox.iY + 10 + 60 + 10 + 30, winTopBox.iWidth - 20, winTopBox.iHeight - 120);
 	text.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	text.setText(p_event->text.c_str());
 	
@@ -1918,7 +1918,6 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	nextText.setText(p_event->text.c_str());
 	
 	//
-	//winTop->paint();
 	epgTitle.paint();
 	pb.reset();
 	pb.paint(runningPercent);
@@ -1926,7 +1925,6 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	restTime.paint();
 	text.paint();
 	//
-	//winBottom->paint();
 	nextTitle.paint();
 	nextTime.paint();
 	nextText.paint();
