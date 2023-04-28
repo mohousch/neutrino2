@@ -212,7 +212,7 @@ AC_ARG_WITH(boxtype,
 			BOXTYPE="atevio"
 			BOXMODEL="$withval"
 			;;
-		oct*)
+		oct*|sf*|sx*)
 			BOXTYPE="octagon"
 			BOXMODEL="$withval"
 			;;
@@ -334,7 +334,7 @@ AC_ARG_WITH(boxmodel,
 				valid for ipbox: ipbox55, ipbox99, ipbox9900
 				valid for hl: hl101
 				valid for atevio: atevio700,atevio7000,atevio7500,atevio7600
-				valid for octagon: octagon1008
+				valid for octagon: octagon1008 sf4008 sf8008 sf8008m sfx6008 sx88v2 sx998
 				valid for topfield: tf7700
 				valid for vuplus: vusolo,vuduo,vuuno,vuultimo,vuduo2,vusolo2,vusolo4k,vusolose,vuzero,vuduo4k
 				valid for azbox: azboxhd,azboxme,azboxminime
@@ -428,7 +428,7 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
-		octagon1008)
+		octagon1008|sf4008|sf8008|sf8008m|sfx6008|sx88v2|sx988)
 			if test "$BOXTYPE" = "octagon"; then
 				BOXMODEL="$withval"
 			else
@@ -731,7 +731,13 @@ AM_CONDITIONAL(BOXMODEL_ATEVIO7000, test "$BOXMODEL" = "atevio7000")
 AM_CONDITIONAL(BOXMODEL_ATEVIO7500, test "$BOXMODEL" = "atevio7500")
 AM_CONDITIONAL(BOXMODEL_ATEVIO7600, test "$BOXMODEL" = "atevio7600")
 
-AM_CONDITIONAL(BOXMODEL_OCTAGON_1008, test "$BOXMODEL" = "octagon1008")
+AM_CONDITIONAL(BOXMODEL_OCTAGON1008, test "$BOXMODEL" = "octagon1008")
+AM_CONDITIONAL(BOXMODEL_OCTAGONSF4008, test "$BOXMODEL" = "octagonsf4008")
+AM_CONDITIONAL(BOXMODEL_OCTAGONSF8008, test "$BOXMODEL" = "octagonsf8008")
+AM_CONDITIONAL(BOXMODEL_OCTAGONSF008M, test "$BOXMODEL" = "octagonsf8008m")
+AM_CONDITIONAL(BOXMODEL_OCTAGONSFX6008, test "$BOXMODEL" = "octagonsfx6008")
+AM_CONDITIONAL(BOXMODEL_OCTAGONSX88V2, test "$BOXMODEL" = "octagonsx88v2")
+AM_CONDITIONAL(BOXMODEL_OCTAGONSX988, test "$BOXMODEL" = "octagonsx988")
 
 AM_CONDITIONAL(BOXMODEL_VUSOLO2, test "$BOXMODEL" = "vusolo2")
 AM_CONDITIONAL(BOXMODEL_VUDUO2, test "$BOXMODEL" = "vuduo2")
@@ -1025,7 +1031,19 @@ elif test "$BOXMODEL" = "atevio7600"; then
 	AC_DEFINE(BOXMODEL_ATEVIO7600, 1, [building for atevio7600])
 
 elif test "$BOXMODEL" = "octagon1008"; then
-	AC_DEFINE(BOXMODEL_OCTAGON_1008, 1, [building for octagon1008])
+	AC_DEFINE(BOXMODEL_OCTAGON1008, 1, [building for octagon1008])
+elif test "$BOXMODEL" = "octagonsf4008"; then
+	AC_DEFINE(BOXMODEL_OCTAGONSF4008, 1, [building for octagonsf4008])
+elif test "$BOXMODEL" = "octagonsf8008"; then
+	AC_DEFINE(BOXMODEL_OCTAGONSF8008, 1, [building for octagonsf8008])
+elif test "$BOXMODEL" = "octagonsf8008m"; then
+	AC_DEFINE(BOXMODEL_OCTAGONSF8008M, 1, [building for octagonsf8008m])
+elif test "$BOXMODEL" = "octagonsfx6008"; then
+	AC_DEFINE(BOXMODEL_OCTAGONSFX6008, 1, [building for octagonsfx6008])
+elif test "$BOXMODEL" = "octagonsx88v2"; then
+	AC_DEFINE(BOXMODEL_OCTAGONSX88V2, 1, [building for octagonsx88v2])
+elif test "$BOXMODEL" = "octagonsx988"; then
+	AC_DEFINE(BOXMODEL_OCTAGONSX988, 1, [building for octagonsx988])
 
 elif test "$BOXMODEL" = "vusolo2"; then
 	AC_DEFINE(BOXMODEL_VUSOLO2, 1, [vuplus solo2])

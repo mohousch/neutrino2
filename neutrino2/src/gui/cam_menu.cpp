@@ -144,16 +144,16 @@ int CCAMMenuHandler::doMainMenu()
 
 	int CiSlots = ca ? ca->GetNumberCISlots() : 0;
 	
-	if(CiSlots) 
-	{
-		// intros
-		cammenu->addItem(new ClistBoxItem(_("back")));
-		cammenu->addItem( new CMenuSeparator(LINE) );
+	// intros
+	cammenu->addItem(new ClistBoxItem(_("back")));
+	cammenu->addItem( new CMenuSeparator(LINE) );
 		
-		// save settings
-		cammenu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	// save settings
+	cammenu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 		cammenu->addItem(new CMenuSeparator(LINE));
 	
+	if(CiSlots) 
+	{
 		cammenu->addItem(new CMenuOptionChooser(_("CI Delay"), &g_settings.ci_delay, CI_DELAY_OPTIONS, CI_DELAY_OPTION_COUNT, true, this));
 
 		cammenu->addItem(new CMenuOptionChooser(_("Reset CI (Standby)"), &g_settings.ci_standby_reset, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
