@@ -61,9 +61,6 @@ const keyval PARENTALLOCK_LOCKAGE_OPTIONS[PARENTALLOCK_LOCKAGE_OPTION_COUNT] =
 
 CParentalLockSettings::CParentalLockSettings()
 {
-	widget = NULL;
-	listBox = NULL;
-	item = NULL;
 }
 
 CParentalLockSettings::~CParentalLockSettings()
@@ -79,13 +76,6 @@ int CParentalLockSettings::exec(CMenuTarget* parent, const std::string& actionKe
 	if(parent)
 		parent->hide();
 	
-	if(actionKey == "savesettings")
-	{
-		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		
-		return ret;
-	}
-	
 	showMenu();
 	
 	return ret;
@@ -94,6 +84,10 @@ int CParentalLockSettings::exec(CMenuTarget* parent, const std::string& actionKe
 void CParentalLockSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CParentalLockSettings::showMenu:\n");
+	
+	CWidget *widget = NULL;
+	ClistBox *listBox = NULL;
+	CMenuItem *item = NULL;
 	
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("parentallocksetup");
@@ -147,6 +141,11 @@ void CParentalLockSettings::showMenu()
 	
 	//
 	widget->exec(NULL, "");
+	
+	delete listBox;
+	listBox = NULL;
+	delete widget;
+	widget = NULL;
 }
 
 

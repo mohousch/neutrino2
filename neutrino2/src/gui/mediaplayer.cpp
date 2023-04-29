@@ -62,54 +62,54 @@ void CMediaPlayerMenu::showMenu()
 
 	//
 	CWidget* widget = NULL;
-	ClistBox* MediaPlayer = NULL;
+	ClistBox* mediaPlayer = NULL;
 	
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("mediaplayer");
 	
 	if (widget)
 	{
-		MediaPlayer = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		mediaPlayer = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
 	{
-		MediaPlayer = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		mediaPlayer = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
-		MediaPlayer->setWidgetMode(MODE_MENU);
-		MediaPlayer->setWidgetType(TYPE_CLASSIC);
-		MediaPlayer->enableShrinkMenu();
-		
-		//
-		MediaPlayer->enablePaintHead();
-		MediaPlayer->setTitle(_("Media Player"), NEUTRINO_ICON_MULTIMEDIA);
-		MediaPlayer->enablePaintDate();
+		mediaPlayer->setWidgetMode(MODE_MENU);
+		mediaPlayer->setWidgetType(TYPE_CLASSIC);
+		mediaPlayer->enableShrinkMenu();
 		
 		//
-		MediaPlayer->enablePaintFoot();
+		mediaPlayer->enablePaintHead();
+		mediaPlayer->setTitle(_("Media Player"), NEUTRINO_ICON_MULTIMEDIA);
+		mediaPlayer->enablePaintDate();
+		
+		//
+		mediaPlayer->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
-		MediaPlayer->setFootButtons(&btn); 
+		mediaPlayer->setFootButtons(&btn); 
 		
 		//
-		widget = new CWidget(MediaPlayer->getWindowsPos().iX, MediaPlayer->getWindowsPos().iY, MediaPlayer->getWindowsPos().iWidth, MediaPlayer->getWindowsPos().iHeight);
+		widget = new CWidget(mediaPlayer->getWindowsPos().iX, mediaPlayer->getWindowsPos().iY, mediaPlayer->getWindowsPos().iWidth, mediaPlayer->getWindowsPos().iHeight);
 		widget->name = "mediaplayer";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
-		widget->addWidgetItem(MediaPlayer);
+		widget->addWidgetItem(mediaPlayer);
 	}
 	
-	MediaPlayer->clear();
+	mediaPlayer->clear();
 
 	//
-	MediaPlayer->integratePlugins(CPlugins::I_TYPE_MULTIMEDIA);
+	mediaPlayer->integratePlugins(CPlugins::I_TYPE_MULTIMEDIA);
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete MediaPlayer;
-	MediaPlayer = NULL;
+	delete mediaPlayer;
+	mediaPlayer = NULL;
 	delete widget;
 	widget = NULL;
 }

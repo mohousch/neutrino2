@@ -303,6 +303,9 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete AVPIDSelector;
+	AVPIDSelector = NULL;
 	delete widget;
         widget = NULL;
 }

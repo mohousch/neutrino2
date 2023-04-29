@@ -161,6 +161,11 @@ void CPictureViewerSettings::showMenu()
 	
 	//
 	widget->exec(NULL, "");
+	
+	delete PicViewerSettings;
+	PicViewerSettings = NULL;
+	delete widget;
+	widget = NULL;
 }
 
 

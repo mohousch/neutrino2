@@ -250,6 +250,9 @@ void CAudioSelectMenuHandler::doMenu()
 
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete AudioSelector;
+	AudioSelector = NULL;
 	delete widget;
         widget = NULL;
 

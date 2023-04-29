@@ -2499,7 +2499,7 @@ void CNeutrinoApp::parseKey(_xmlNodePtr node, CWidget* widget)
 // parseCWidget
 CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *const skinfilename, bool data)
 {
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::getWidget: <<%s>>\n", widgetname);
+	dprintf(DEBUG_NORMAL, "\n\033[1;32mCNeutrinoApp::getWidget: <<%s>>\033[0m\n", widgetname);
 	
 	CWidget *ret = NULL;
 	

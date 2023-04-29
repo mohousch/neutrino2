@@ -167,6 +167,8 @@ int CDVBSubSelectMenuHandler::doMenu()
 
 	res = widget->exec(NULL, "");
 	
+	delete DVBSubSelector;
+	DVBSubSelector = NULL;
 	delete widget;
 	widget = NULL;
 	
