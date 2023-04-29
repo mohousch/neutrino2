@@ -61,7 +61,7 @@ class CBouquetManager
 		void writeBouquetHeader(FILE * bouq_fd, uint32_t i, const char * bouquetName);
 		void writeBouquetFooter(FILE * bouq_fd);
 		void writeBouquetChannels(FILE * bouq_fd, uint32_t i);
-		void makeBouquetfromCurrentservices (const _xmlNodePtr root);
+		void makeBouquetfromCurrentservices (const xmlNodePtr root);
 
 	public:
 		CBouquetManager() { remainChannels = NULL; };

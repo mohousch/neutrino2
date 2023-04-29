@@ -163,20 +163,20 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		CWidget *getWidget(const char *const widgetname, const char *const skinfilename = NULL, const bool data = false);
 		
 		//
-		void parseClistBox(_xmlNodePtr node, CWidget* widget);
-		void parseCWindow(_xmlNodePtr node, CWidget* widget);
-		void parseCHead(_xmlNodePtr node, CWidget* widget);
-		void parseCFoot(_xmlNodePtr node, CWidget* widget);
-		void parseCTextBox(_xmlNodePtr node, CWidget* widget);
-		void parseCFrameBox(_xmlNodePtr node, CWidget* widget){};
-		void parseCCLabel(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCImage(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCButtons(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCHline(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCVline(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCPig(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseKey(_xmlNodePtr node, CWidget* widget);
+		void parseClistBox(xmlNodePtr node, CWidget* widget);
+		void parseCWindow(xmlNodePtr node, CWidget* widget);
+		void parseCHead(xmlNodePtr node, CWidget* widget);
+		void parseCFoot(xmlNodePtr node, CWidget* widget);
+		void parseCTextBox(xmlNodePtr node, CWidget* widget);
+		void parseCFrameBox(xmlNodePtr node, CWidget* widget){};
+		void parseCCLabel(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
+		void parseCCImage(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
+		void parseCCTime(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
+		void parseCCButtons(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
+		void parseCCHline(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
+		void parseCCVline(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
+		void parseCCPig(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
+		void parseKey(xmlNodePtr node, CWidget* widget);
 		//
 		CMenuTarget* convertTarget(const std::string& name);
 		uint32_t convertColor(const char* const color);

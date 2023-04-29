@@ -1706,11 +1706,11 @@ void *CSectionsd::insertEventsfromFile(void *)
 {
 	dprintf(DEBUG_INFO, "[sectionsd] insertEventsfromFile: tid %ld\n", syscall(__NR_gettid));
 
-	_xmlDocPtr event_parser = NULL;
-	_xmlNodePtr eventfile = NULL;
-	_xmlNodePtr service = NULL;
-	_xmlNodePtr event = NULL;
-	_xmlNodePtr node = NULL;
+	xmlDocPtr event_parser = NULL;
+	xmlNodePtr eventfile = NULL;
+	xmlNodePtr service = NULL;
+	xmlNodePtr event = NULL;
+	xmlNodePtr node = NULL;
 	t_original_network_id onid = 0;
 	t_transport_stream_id tsid = 0;
 	t_service_id sid = 0;
@@ -1729,7 +1729,7 @@ void *CSectionsd::insertEventsfromFile(void *)
 	{
 		indexname = epg_dir + "index.xml";
 
-		_xmlDocPtr index_parser = parseXmlFile(indexname.c_str());
+		xmlDocPtr index_parser = parseXmlFile(indexname.c_str());
 
 		if (index_parser != NULL) 
 		{
@@ -1922,11 +1922,11 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 		return 0;
 	
 	//
-	_xmlNodePtr event = NULL;
-	_xmlNodePtr node = NULL;
+	xmlNodePtr event = NULL;
+	xmlNodePtr node = NULL;
 
 	//
-	_xmlDocPtr index_parser = parseXmlFile(answer.c_str());
+	xmlDocPtr index_parser = parseXmlFile(answer.c_str());
 
 	if (index_parser != NULL) 
 	{
@@ -1965,7 +1965,7 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 							e.table_id = 0x50;
 							e.times.insert(SItime(start_time, duration));
 								
-							_xmlNodePtr _node = node->xmlChildrenNode;	
+							xmlNodePtr _node = node->xmlChildrenNode;	
 							while ((_node = xmlGetNextOccurence(_node, "title")))
 							{
 								const char *title = xmlGetData(_node);
@@ -2133,11 +2133,11 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 		*/
 
 		//
-		_xmlNodePtr event = NULL;
-		_xmlNodePtr node = NULL;
+		xmlNodePtr event = NULL;
+		xmlNodePtr node = NULL;
 
 		//
-		_xmlDocPtr index_parser = parseXmlFile(answer.c_str());
+		xmlDocPtr index_parser = parseXmlFile(answer.c_str());
 
 		if (index_parser != NULL) 
 		{
@@ -2289,11 +2289,11 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 		*/
 
 		//
-		_xmlNodePtr event = NULL;
-		_xmlNodePtr node = NULL;
+		xmlNodePtr event = NULL;
+		xmlNodePtr node = NULL;
 
 		//
-		_xmlDocPtr index_parser = parseXmlFile(answer.c_str());
+		xmlDocPtr index_parser = parseXmlFile(answer.c_str());
 
 		if (index_parser != NULL) 
 		{
@@ -2440,11 +2440,11 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 		*/
 
 		//
-		_xmlNodePtr event = NULL;
-		_xmlNodePtr node = NULL;
+		xmlNodePtr event = NULL;
+		xmlNodePtr node = NULL;
 
 		//
-		_xmlDocPtr index_parser = parseXmlFile(answer.c_str());
+		xmlDocPtr index_parser = parseXmlFile(answer.c_str());
 
 		if (index_parser != NULL) 
 		{
@@ -4210,7 +4210,7 @@ void CSectionsd::readEPGFilter(void)
 {
 	dprintf(DEBUG_NORMAL, "[sectionsd] CSectionsd::readEPGFilter:\n");
 	
-	_xmlDocPtr filter_parser = parseXmlFile(epg_filter_dir.c_str());
+	xmlDocPtr filter_parser = parseXmlFile(epg_filter_dir.c_str());
 
 	t_original_network_id onid = 0;
 	t_transport_stream_id tsid = 0;
@@ -4220,7 +4220,7 @@ void CSectionsd::readEPGFilter(void)
 	{
 		dprintf(DEBUG_DEBUG, "[sectionsd] Reading EPGFilters\n");
 
-		_xmlNodePtr filter = xmlDocGetRootElement(filter_parser);
+		xmlNodePtr filter = xmlDocGetRootElement(filter_parser);
 		if (xmlGetNumericAttribute(filter, "is_whitelist", 10) == 1)
 			epg_filter_is_whitelist = true;
 		if (xmlGetNumericAttribute(filter, "except_current_next", 10) == 1)
@@ -4247,7 +4247,7 @@ void CSectionsd::readDVBTimeFilter(void)
 {
 	dprintf(DEBUG_NORMAL, "[sectionsd] CSectionsd::readDVBTimeFilter:\n");
 	
-	_xmlDocPtr filter_parser = parseXmlFile(dvbtime_filter_dir.c_str());
+	xmlDocPtr filter_parser = parseXmlFile(dvbtime_filter_dir.c_str());
 
 	t_original_network_id onid = 0;
 	t_transport_stream_id tsid = 0;
@@ -4257,7 +4257,7 @@ void CSectionsd::readDVBTimeFilter(void)
 	{
 		dprintf(DEBUG_DEBUG, "[sectionsd] Reading DVBTimeFilters\n");
 
-		_xmlNodePtr filter = xmlDocGetRootElement(filter_parser);
+		xmlNodePtr filter = xmlDocGetRootElement(filter_parser);
 		filter = filter->xmlChildrenNode;
 
 		while (filter) 

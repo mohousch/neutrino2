@@ -96,9 +96,6 @@
 
 
 //
-//_xmlDocPtr parser = NULL;
-
-//
 CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::convertTarget: %s\n", name.c_str());
@@ -1190,7 +1187,7 @@ int CNeutrinoApp::convertBool(const char* const value)
 }
 
 // ClistBox
-void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
+void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseClistBox:\n");
 	
@@ -1248,9 +1245,9 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 	unsigned int item2lines = 0;
 	
 	//
-	_xmlNodePtr listboxitem_node = NULL;
-	_xmlNodePtr listboxintegration_node = NULL;
-	_xmlNodePtr buttonlabel_node = NULL;
+	xmlNodePtr listboxitem_node = NULL;
+	xmlNodePtr listboxintegration_node = NULL;
+	xmlNodePtr buttonlabel_node = NULL;
 				
 	while ((node = xmlGetNextOccurence(node, "LISTBOX")) != NULL) 
 	{
@@ -1546,7 +1543,7 @@ void CNeutrinoApp::parseClistBox(_xmlNodePtr node, CWidget* widget)
 }
 
 // CWindow
-void CNeutrinoApp::parseCWindow(_xmlNodePtr node, CWidget* widget)
+void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCWindow\n");
 	
@@ -1655,7 +1652,7 @@ void CNeutrinoApp::parseCWindow(_xmlNodePtr node, CWidget* widget)
 }
 
 // CHead
-void CNeutrinoApp::parseCHead(_xmlNodePtr node, CWidget* widget)
+void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCHead:\n");
 	
@@ -1683,7 +1680,7 @@ void CNeutrinoApp::parseCHead(_xmlNodePtr node, CWidget* widget)
 	unsigned int paintdate = 0;
 	char* format = NULL;
 	
-	_xmlNodePtr buttonlabel_node = NULL;
+	xmlNodePtr buttonlabel_node = NULL;
 	
 	while ((node = xmlGetNextOccurence(node, "HEAD")) != NULL) 
 	{
@@ -1779,7 +1776,7 @@ void CNeutrinoApp::parseCHead(_xmlNodePtr node, CWidget* widget)
 }
 
 // CFoot
-void CNeutrinoApp::parseCFoot(_xmlNodePtr node, CWidget* widget)
+void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCFoot:\n");
 	
@@ -1799,7 +1796,7 @@ void CNeutrinoApp::parseCFoot(_xmlNodePtr node, CWidget* widget)
 	unsigned int foot_line = 0;
 	char * foot_line_gradient = NULL;
 	
-	_xmlNodePtr buttonlabel_node = NULL;
+	xmlNodePtr buttonlabel_node = NULL;
 	
 	while ((node = xmlGetNextOccurence(node, "FOOT")) != NULL) 
 	{		
@@ -1879,7 +1876,7 @@ void CNeutrinoApp::parseCFoot(_xmlNodePtr node, CWidget* widget)
 }
 
 // CTextBox
-void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
+void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCTextBox:\n");
 	
@@ -2009,7 +2006,7 @@ void CNeutrinoApp::parseCTextBox(_xmlNodePtr node, CWidget* widget)
 }
 
 // CCLabel
-void CNeutrinoApp::parseCCLabel(_xmlNodePtr node, CWidget* widget, CWindow* window)
+void CNeutrinoApp::parseCCLabel(xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCLabel:\n");
 	
@@ -2088,7 +2085,7 @@ void CNeutrinoApp::parseCCLabel(_xmlNodePtr node, CWidget* widget, CWindow* wind
 }
 
 // CCImage
-void CNeutrinoApp::parseCCImage(_xmlNodePtr node, CWidget* widget, CWindow* window)
+void CNeutrinoApp::parseCCImage(xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCImage:\n");
 	
@@ -2156,7 +2153,7 @@ void CNeutrinoApp::parseCCImage(_xmlNodePtr node, CWidget* widget, CWindow* wind
 }
 
 // CCTime
-void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* window)
+void CNeutrinoApp::parseCCTime(xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCTime:\n");
 	
@@ -2232,7 +2229,7 @@ void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* windo
 }
 
 // CCButton
-void CNeutrinoApp::parseCCButtons(_xmlNodePtr node, CWidget* widget, CWindow* window)
+void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCButtons:\n");
 	
@@ -2246,7 +2243,7 @@ void CNeutrinoApp::parseCCButtons(_xmlNodePtr node, CWidget* widget, CWindow* wi
 	unsigned int head = 0;
 	unsigned int mode = BUTTON_BUTTON;
 	
-	_xmlNodePtr buttonlabel_node = NULL;
+	xmlNodePtr buttonlabel_node = NULL;
 	
 	while ((node = xmlGetNextOccurence(node, "BUTTON")) != NULL) 
 	{
@@ -2312,7 +2309,7 @@ void CNeutrinoApp::parseCCButtons(_xmlNodePtr node, CWidget* widget, CWindow* wi
 }
 
 // CCHline
-void CNeutrinoApp::parseCCHline(_xmlNodePtr node, CWidget* widget, CWindow* window)
+void CNeutrinoApp::parseCCHline(xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCHline:\n");
 	
@@ -2368,7 +2365,7 @@ void CNeutrinoApp::parseCCHline(_xmlNodePtr node, CWidget* widget, CWindow* wind
 }
 
 // CCVline
-void CNeutrinoApp::parseCCVline(_xmlNodePtr node, CWidget* widget, CWindow* window)
+void CNeutrinoApp::parseCCVline(xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCVline:\n");
 	
@@ -2423,7 +2420,7 @@ void CNeutrinoApp::parseCCVline(_xmlNodePtr node, CWidget* widget, CWindow* wind
 }
 
 // CCPig
-void CNeutrinoApp::parseCCPig(_xmlNodePtr node, CWidget* widget, CWindow* window)
+void CNeutrinoApp::parseCCPig(xmlNodePtr node, CWidget* widget, CWindow* window)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCPig:\n");
 	
@@ -2470,7 +2467,7 @@ void CNeutrinoApp::parseCCPig(_xmlNodePtr node, CWidget* widget, CWindow* window
 }
 
 // widget key
-void CNeutrinoApp::parseKey(_xmlNodePtr node, CWidget* widget)
+void CNeutrinoApp::parseKey(xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseKey:\n");
 	
@@ -2523,7 +2520,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 	char *position = NULL;
 	
 	//
-	_xmlDocPtr parser = NULL;
+	xmlDocPtr parser = NULL;
 	
 	//
 	if (skinfilename != NULL)
@@ -2556,7 +2553,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 	//	
 	if (parser)
 	{
-		_xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
+		xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
 			
 		while ( (search = xmlGetNextOccurence(search, "WIDGET")) != NULL ) 
 		{

@@ -384,16 +384,16 @@ void CBouquetManager::sortBouquets(void)
 
 void CBouquetManager::parseBouquetsXml(const char *fname, bool bUser)
 {
-	_xmlDocPtr parser = NULL;
+	xmlDocPtr parser = NULL;
 
 	parser = parseXmlFile(fname);
 
 	if (parser == NULL)
 		return;
 
-	_xmlNodePtr root = xmlDocGetRootElement(parser);
-	_xmlNodePtr search = root->xmlChildrenNode;
-	_xmlNodePtr channel_node;
+	xmlNodePtr root = xmlDocGetRootElement(parser);
+	xmlNodePtr search = root->xmlChildrenNode;
+	xmlNodePtr channel_node;
 
 	if (search) 
 	{
@@ -462,9 +462,9 @@ void CBouquetManager::parseBouquetsXml(const char *fname, bool bUser)
 	parser = NULL;
 }
 
-void CBouquetManager::makeBouquetfromCurrentservices(const _xmlNodePtr root)
+void CBouquetManager::makeBouquetfromCurrentservices(const xmlNodePtr root)
 {
-	_xmlNodePtr provider = root->xmlChildrenNode;
+	xmlNodePtr provider = root->xmlChildrenNode;
 	
 	// TODO: use locales
 	CZapitBouquet * newBouquet = addBouquet("New channel");
@@ -479,11 +479,11 @@ void CBouquetManager::makeBouquetfromCurrentservices(const _xmlNodePtr root)
 	
 	while (provider) 
 	{	
-		_xmlNodePtr transponder = provider->xmlChildrenNode;
+		xmlNodePtr transponder = provider->xmlChildrenNode;
 		
 		while (xmlGetNextOccurence(transponder, "transponder") != NULL) 
 		{
-			_xmlNodePtr channel_node = transponder->xmlChildrenNode;
+			xmlNodePtr channel_node = transponder->xmlChildrenNode;
 			
 			while (xmlGetNextOccurence(channel_node, "channel") != NULL) 
 			{
@@ -517,7 +517,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 
 	dprintf(DEBUG_INFO, "CBouquetManager::parseWebTVBouquet: parsing %s\n", filename.c_str());
 
-	_xmlDocPtr parser = NULL;
+	xmlDocPtr parser = NULL;
 	
 	// check for extension
 	bool iptv = false;
@@ -620,8 +620,8 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 		
 		if (parser) 
 		{
-			_xmlNodePtr l0 = NULL;
-			_xmlNodePtr l1 = NULL;
+			xmlNodePtr l0 = NULL;
+			xmlNodePtr l1 = NULL;
 			l0 = xmlDocGetRootElement(parser);
 			l1 = l0->xmlChildrenNode;
 			
@@ -919,7 +919,7 @@ void CBouquetManager::loadBouquets(bool loadCurrentBouquet)
 	// current bouquets
 	if(loadCurrentBouquet)
 	{
-		_xmlDocPtr parser = NULL;
+		xmlDocPtr parser = NULL;
 		parser = parseXmlFile(CURRENTSERVICES_XML);
 		if (parser != NULL)
 		{

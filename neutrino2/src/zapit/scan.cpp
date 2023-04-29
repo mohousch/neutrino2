@@ -64,7 +64,7 @@ extern t_channel_id live_channel_id;
 extern CZapit::bouquetMode _bouquetMode;
 extern CEventServer *eventServer;
 extern CFrontend * live_fe;
-extern _xmlDocPtr scanInputParser;
+extern xmlDocPtr scanInputParser;
 
 //
 int prov_found = 0;
@@ -319,7 +319,7 @@ _repeat:
 	return true;
 }
 
-bool CScan::scanTransponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, int feindex)
+bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, int feindex)
 {
 	dprintf(DEBUG_INFO, "CScan::scanTransponder:\n");
 	
@@ -390,11 +390,11 @@ bool CScan::scanTransponder(_xmlNodePtr transponder, uint8_t diseqc_pos, t_satel
 	return true;
 }
 
-bool CScan::scanProvider(_xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
+bool CScan::scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
 {
 	dprintf(DEBUG_NORMAL, "CScan::%s:\n", __FUNCTION__);
 	
-	_xmlNodePtr tps = NULL;
+	xmlNodePtr tps = NULL;
 	found_transponders = 0;
 	processed_transponders = 0;
 

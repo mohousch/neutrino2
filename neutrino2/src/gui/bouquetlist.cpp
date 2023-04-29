@@ -394,21 +394,6 @@ int CBouquetList::show(bool customMode)
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);
 	
 	//
-	bqWidget = CNeutrinoApp::getInstance()->getWidget("bouquetlist");
-	
-	if (bqWidget)
-	{
-		listBox = (ClistBox*)bqWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		bqWidget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		bqWidget->name = "bouquetlist";
-		bqWidget->addWidgetItem(listBox);
-	}	
-
 	paint();
 	CFrameBuffer::getInstance()->blit();
 
@@ -580,6 +565,22 @@ const struct button_label CBouquetListButtons[4] =
 void CBouquetList::paint()
 {
 	dprintf(DEBUG_NORMAL, "CBouquetList::paint\n");
+	
+	//
+	bqWidget = CNeutrinoApp::getInstance()->getWidget("bouquetlist");
+	
+	if (bqWidget)
+	{
+		listBox = (ClistBox*)bqWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		bqWidget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		
+		bqWidget->name = "bouquetlist";
+		bqWidget->addWidgetItem(listBox);
+	}	
 
 	listBox->clear();
 

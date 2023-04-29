@@ -65,7 +65,7 @@ class CInternetRadio : public CMenuTarget
 		void addUrl2Playlist(const char *url, const char *name = NULL, const time_t bitrate = 0);
 		void processPlaylistUrl(const char *url, const char *name = NULL, const time_t bitrate = 0);
 		void scanXmlFile(std::string filename);
-		void scanXmlData(_xmlDocPtr answer_parser, const char *nametag, const char *urltag, const char *bitratetag = NULL, bool usechild = false);
+		void scanXmlData(xmlDocPtr answer_parser, const char *nametag, const char *urltag, const char *bitratetag = NULL, bool usechild = false);
 
 		//
 		void GetMetaData(CAudiofile& File);
@@ -263,12 +263,12 @@ void CInternetRadio::scanXmlFile(std::string filename)
 {
 	dprintf(DEBUG_NORMAL, "CInternetRadio::scanXmlFile: %s\n", filename.c_str());
 
-	_xmlDocPtr answer_parser = parseXmlFile(filename.c_str());
+	xmlDocPtr answer_parser = parseXmlFile(filename.c_str());
 
 	scanXmlData(answer_parser, "name", "url");
 }
 
-void CInternetRadio::scanXmlData(_xmlDocPtr answer_parser, const char *nametag, const char *urltag, const char *bitratetag, bool usechild)
+void CInternetRadio::scanXmlData(xmlDocPtr answer_parser, const char *nametag, const char *urltag, const char *bitratetag, bool usechild)
 {
 	dprintf(DEBUG_NORMAL, "CInternetRadio::scanXmlData\n");
 	
@@ -276,9 +276,9 @@ void CInternetRadio::scanXmlData(_xmlDocPtr answer_parser, const char *nametag, 
 
 	if (answer_parser != NULL) 
 	{
-		_xmlNodePtr element = xmlDocGetRootElement(answer_parser);
+		xmlNodePtr element = xmlDocGetRootElement(answer_parser);
 		element = element->xmlChildrenNode;
-		_xmlNodePtr element_tmp = element;
+		xmlNodePtr element_tmp = element;
 		
 		if (element == NULL) 
 		{
@@ -326,7 +326,7 @@ void CInternetRadio::scanXmlData(_xmlDocPtr answer_parser, const char *nametag, 
 
 				if (usechild) 
 				{
-					_xmlNodePtr child = element->xmlChildrenNode;
+					xmlNodePtr child = element->xmlChildrenNode;
 					while (child) 
 					{
 						if (strcmp(xmlGetName(child), nametag) == 0)

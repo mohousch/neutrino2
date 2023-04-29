@@ -174,7 +174,7 @@ CZapitChannel * live_channel = NULL;
 CZapitChannel * rec_channel = NULL;
 
 // transponder scan xml input
-_xmlDocPtr scanInputParser = NULL;
+xmlDocPtr scanInputParser = NULL;
 
 // bouquet manager
 CBouquetManager * g_bouquetManager = NULL;
@@ -4255,7 +4255,7 @@ void * CZapit::scanThread(void * data)
 	// get provider position and name
 	CZapit::getInstance()->parseScanInputXml(CZapit::getInstance()->getFE(feindex)->getInfo()->type);
 	
-	_xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
+	xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
 
 	// read all sat or cable sections
 	while ( (search = xmlGetNextOccurence(search, frontendType)) != NULL ) 

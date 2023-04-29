@@ -74,7 +74,7 @@ class CIceCast : public CMenuTarget
 		void addUrl2Playlist(const char *url, const char *name = NULL, const time_t bitrate = 0);
 		void processPlaylistUrl(const char *url, const char *name = NULL, const time_t bitrate = 0);
 		void scanXmlFile(std::string filename);
-		void scanXmlData(_xmlDocPtr answer_parser, const char *nametag, const char *urltag, const char *bitratetag = NULL, bool usechild = false);
+		void scanXmlData(xmlDocPtr answer_parser, const char *nametag, const char *urltag, const char *bitratetag = NULL, bool usechild = false);
 
 		//
 		void GetMetaData(CAudiofile& File);
@@ -272,12 +272,12 @@ void CIceCast::scanXmlFile(std::string filename)
 {
 	dprintf(DEBUG_NORMAL, "CIceCast::scanXmlFile: %s\n", filename.c_str());
 
-	_xmlDocPtr answer_parser = parseXmlFile(filename.c_str());
+	xmlDocPtr answer_parser = parseXmlFile(filename.c_str());
 
 	scanXmlData(answer_parser, "name", "url");
 }
 
-void CIceCast::scanXmlData(_xmlDocPtr answer_parser, const char *nametag, const char *urltag, const char *bitratetag, bool usechild)
+void CIceCast::scanXmlData(xmlDocPtr answer_parser, const char *nametag, const char *urltag, const char *bitratetag, bool usechild)
 {
 	dprintf(DEBUG_NORMAL, "CIceCast::scanXmlData\n");
 	
@@ -285,9 +285,9 @@ void CIceCast::scanXmlData(_xmlDocPtr answer_parser, const char *nametag, const 
 
 	if (answer_parser != NULL) 
 	{
-		_xmlNodePtr element = xmlDocGetRootElement(answer_parser);
+		xmlNodePtr element = xmlDocGetRootElement(answer_parser);
 		element = element->xmlChildrenNode;
-		_xmlNodePtr element_tmp = element;
+		xmlNodePtr element_tmp = element;
 		
 		if (element == NULL) 
 		{
@@ -337,7 +337,7 @@ void CIceCast::scanXmlData(_xmlDocPtr answer_parser, const char *nametag, const 
 
 				if (usechild) 
 				{
-					_xmlNodePtr child = element->xmlChildrenNode;
+					xmlNodePtr child = element->xmlChildrenNode;
 					while (child) 
 					{
 						if (strcmp(xmlGetName(child), nametag) == 0)
@@ -657,7 +657,7 @@ void CIceCast::loadPlaylist(void)
 
 	if(::getUrl(icecasturl, answer, " ", GET_ICECAST_TIMEOUT))
 	{
-		_xmlDocPtr answer_parser = parseXml(answer.c_str());
+		xmlDocPtr answer_parser = parseXml(answer.c_str());
 		
 		scanXmlData(answer_parser, "server_name", "listen_url", "bitrate", true);
 	}

@@ -187,14 +187,14 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("Startup to standby"), &g_settings.power_standby, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	// timezone
-	_xmlDocPtr parser;
+	xmlDocPtr parser;
 
 	parser = parseXmlFile("/etc/timezone.xml");
 	if (parser != NULL) 
 	{	
 		tzSelect = new CMenuOptionStringChooser(_("Time Zone"), g_settings.timezone, true, new CTZChangeNotifier(), RC_nokey, "", true);
 
-		_xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
+		xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
 		bool found = false;
 
 		while (search) 
@@ -305,11 +305,11 @@ bool CTZChangeNotifier::changeNotify(const std::string&, void * Data)
 	
 	dprintf(DEBUG_NORMAL, "CTZChangeNotifier::changeNotify: %s\n", (char *) Data);
 
-        _xmlDocPtr parser = parseXmlFile("/etc/timezone.xml");
+        xmlDocPtr parser = parseXmlFile("/etc/timezone.xml");
 	
         if (parser != NULL) 
 	{
-                _xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
+                xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
                 while (search) 
 		{
                         if (!strcmp(xmlGetName(search), "zone")) 

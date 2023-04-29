@@ -51,7 +51,7 @@
 #include <driver/encoding.h>
 
 
-extern _xmlDocPtr scanInputParser;				// defined in zapit.cpp
+extern xmlDocPtr scanInputParser;				// defined in zapit.cpp
 extern transponder_list_t transponders;				// defined in zapit.cpp
 extern tallchans allchans;					// defined in zapit.cpp
 extern int scanSDT;						// defined in zapit.cpp
@@ -67,7 +67,7 @@ satellite_map_t satellitePositions;				// satellite position as specified in sat
 std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats liste
 
 // parse transponder from services.xml
-void CServices::parseTransponders(_xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system)
+void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system)
 {
 	dprintf(DEBUG_INFO, "CServices::parseTransponders:\n");
 
@@ -150,7 +150,7 @@ void CServices::parseTransponders(_xmlNodePtr node, t_satellite_position satelli
 	return;
 }
 
-void CServices::parseChannels(_xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation)
+void CServices::parseChannels(xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation)
 {
 	dprintf(DEBUG_DEBUG, "CServices::parseChannels:\n");
 
@@ -251,7 +251,7 @@ void CServices::parseChannels(_xmlNodePtr node, const t_transport_stream_id tran
 }
 
 // scan services.xml
-void CServices::findTransponder(_xmlNodePtr search)
+void CServices::findTransponder(xmlNodePtr search)
 {
 	dprintf(DEBUG_INFO, "CServices::findTransponder:\n");
 
@@ -329,7 +329,7 @@ void CServices::findTransponder(_xmlNodePtr search)
 }
 
 // parse sat transponder from satellites/cables/terrestrials.xml/atsc.xml
-void CServices::parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search, t_satellite_position satellitePosition)
+void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_satellite_position satellitePosition)
 {
 	dprintf(DEBUG_DEBUG, "CServices::parseSatTransponders:\n");
 
@@ -342,7 +342,7 @@ void CServices::parseSatTransponders(fe_type_t frontendType, _xmlNodePtr search,
     	fake_nid = 0;
     	delivery_system_t fake_system = DVB_S;
 
-	_xmlNodePtr tps = search->xmlChildrenNode;
+	xmlNodePtr tps = search->xmlChildrenNode;
 
 	while ((tps = xmlGetNextOccurence(tps, "transponder")) != NULL) 
 	{
@@ -549,7 +549,7 @@ int CServices::loadTransponders()
 			
 		if ( scanInputParser != NULL ) 
 		{
-			_xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
+			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
 
 			while (search) 
 			{
@@ -590,7 +590,7 @@ int CServices::loadTransponders()
 			
 		if ( scanInputParser != NULL ) 
 		{
-			_xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
+			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
 
 			while (search) 
 			{
@@ -629,7 +629,7 @@ int CServices::loadTransponders()
 			
 		if ( scanInputParser != NULL ) 
 		{
-			_xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
+			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
 
 			while (search) 
 			{
@@ -668,7 +668,7 @@ int CServices::loadTransponders()
 			
 		if ( scanInputParser != NULL ) 
 		{
-			_xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
+			xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
 
 			while (search) 
 			{
@@ -706,7 +706,7 @@ int CServices::loadTransponders()
 // load services
 int CServices::loadServices(bool only_current)
 {
-	_xmlDocPtr parser;
+	xmlDocPtr parser;
 	scnt = 0;
 
 	dprintf(DEBUG_INFO, "CServices::loadServices:\n");
@@ -719,7 +719,7 @@ int CServices::loadServices(bool only_current)
 
 	if (parser != NULL) 
 	{
-		_xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
+		xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
 
 		while (search) 
 		{

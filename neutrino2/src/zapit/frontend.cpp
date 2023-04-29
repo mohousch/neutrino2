@@ -1401,7 +1401,7 @@ int CFrontend::setParameters(TP_params * TP, bool /*nowait*/)
 		}
 
 		/* calculate freq for sat */
-		TP->feparams.frequency = abs(TP->feparams.frequency - freq_offset);
+		TP->feparams.frequency = abs((int)(TP->feparams.frequency - freq_offset));
 		
 		/* set Sec for Sat */
 		setSec(TP->diseqc, TP->polarization, high_band);

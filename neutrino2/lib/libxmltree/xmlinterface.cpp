@@ -44,7 +44,7 @@
 #endif /* USE_LIBXML */
 
 
-unsigned long xmlGetNumericAttribute(const _xmlNodePtr node, const char *name, const int base)
+unsigned long xmlGetNumericAttribute(const xmlNodePtr node, const char *name, const int base)
 {
 	char *ptr = xmlGetAttribute(node, name);
 
@@ -54,7 +54,7 @@ unsigned long xmlGetNumericAttribute(const _xmlNodePtr node, const char *name, c
 	return strtoul(ptr, 0, base);
 }
 
-long xmlGetSignedNumericAttribute(const _xmlNodePtr node, const char *name, const int base)
+long xmlGetSignedNumericAttribute(const xmlNodePtr node, const char *name, const int base)
 {
 	char *ptr = xmlGetAttribute(node, name);
 
@@ -64,10 +64,11 @@ long xmlGetSignedNumericAttribute(const _xmlNodePtr node, const char *name, cons
 	return strtol(ptr, 0, base);
 }
 
-_xmlNodePtr xmlGetNextOccurence(_xmlNodePtr cur, const char * s)
+xmlNodePtr xmlGetNextOccurence(xmlNodePtr cur, const char * s)
 {
 	while ((cur != NULL) && (strcmp(xmlGetName(cur), s) != 0))
 		cur = cur->xmlNextNode;
+		
 	return cur;
 }
 
@@ -77,10 +78,12 @@ std::string Unicode_Character_to_UTF8(const int character)
 #ifdef USE_LIBXML
 	xmlChar buf[5];
 	int length = xmlCopyChar(4, buf, character);
+	
 	return std::string((char*)buf, length);
 #else  /* USE_LIBXML */
 	char buf[XML_UTF8_ENCODE_MAX];
 	int length = XmlUtf8Encode(character, buf);
+	
 	return std::string(buf, length);
 #endif /* USE_LIBXML */
 }
@@ -95,7 +98,7 @@ xmlDocPtr parseXml(const char * data)
 
 	if (doc == NULL)
 	{
-		printf("Error parsing XML Data");
+		//printf("Error parsing XML Data");
 		return NULL;
 	}
 	else
@@ -112,7 +115,7 @@ xmlDocPtr parseXml(const char * data)
 	}
 }
 
-xmlDocPtr parseXmlFile(const char * filename, bool warning_by_nonexistence /* = true */)
+xmlDocPtr parseXmlFile(const char * filename, bool warning_by_nonexistence)
 {
 	xmlDocPtr doc;
 	xmlNodePtr cur;
@@ -121,7 +124,7 @@ xmlDocPtr parseXmlFile(const char * filename, bool warning_by_nonexistence /* = 
 
 	if (doc == NULL)
 	{
-		fprintf(stderr, "%s: Error parsing \"%s\"", __FUNCTION__, filename);
+		//fprintf(stderr, "%s: Error parsing \"%s\"", __FUNCTION__, filename);
 		return NULL;
 	}
 	else
@@ -138,7 +141,7 @@ xmlDocPtr parseXmlFile(const char * filename, bool warning_by_nonexistence /* = 
 	}
 }
 #else /* USE_LIBXML */
-_xmlDocPtr parseXml(const char * data)
+xmlDocPtr parseXml(const char * data)
 {
 	XMLTreeParser* tree_parser;
 
@@ -146,24 +149,23 @@ _xmlDocPtr parseXml(const char * data)
 
 	if (!tree_parser->Parse(data, strlen(data), true))
 	{
-			printf("Error parsing XML Data: %s at line %d\n",
-			       tree_parser->ErrorString(tree_parser->GetErrorCode()),
-			       tree_parser->GetCurrentLineNumber());
+		//printf("Error parsing XML Data: %s at line %d\n", tree_parser->ErrorString(tree_parser->GetErrorCode()), tree_parser->GetCurrentLineNumber());
 
-			delete tree_parser;
-			return NULL;
-		}
-
-	if (!tree_parser->RootNode())
-	{
-        printf("Error: No Root Node\n");
 		delete tree_parser;
 		return NULL;
 	}
+
+	if (!tree_parser->RootNode())
+	{
+        	printf("Error: No Root Node\n");
+		delete tree_parser;
+		return NULL;
+	}
+	
 	return tree_parser;
 }
 
-_xmlDocPtr parseXmlFile(const char * filename, bool warning_by_nonexistence /* = true */)
+xmlDocPtr parseXmlFile(const char * filename, bool warning_by_nonexistence)
 {
 	char buffer[2048];
 	XMLTreeParser* tree_parser;
@@ -212,3 +214,4 @@ _xmlDocPtr parseXmlFile(const char * filename, bool warning_by_nonexistence /* =
 	return tree_parser;
 }
 #endif /* USE_LIBXML */
+
