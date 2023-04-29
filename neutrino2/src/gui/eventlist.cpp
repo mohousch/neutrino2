@@ -1018,7 +1018,9 @@ int CEventFinderMenu::showMenu(void)
         searchMenu->addItem(new CMenuSeparator(LINE));
         searchMenu->addItem(mf0);
 	
-	res = widget->exec(NULL, "");	
+	res = widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;	
 	
 	return(res);
 }

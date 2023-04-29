@@ -167,6 +167,9 @@ int CDVBSubSelectMenuHandler::doMenu()
 
 	res = widget->exec(NULL, "");
 	
+	delete widget;
+	widget = NULL;
+	
 	return res;
 }
 

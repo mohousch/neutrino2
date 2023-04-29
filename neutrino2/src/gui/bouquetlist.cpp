@@ -95,6 +95,18 @@ CBouquetList::~CBouquetList()
         }
         
 	Bouquets.clear();
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (bqWidget)
+	{
+		delete bqWidget;
+		bqWidget = NULL;
+	}
 }
 
 CBouquet * CBouquetList::addBouquet(CZapitBouquet* zapitBouquet)
@@ -541,6 +553,18 @@ void CBouquetList::hide()
 		CFrameBuffer::getInstance()->clearFrameBuffer();
 		
 	frameBuffer->blit();
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (bqWidget)
+	{
+		delete bqWidget;
+		bqWidget = NULL;
+	}
 }
 
 const struct button_label HButton = {NEUTRINO_ICON_BUTTON_SETUP, " " };

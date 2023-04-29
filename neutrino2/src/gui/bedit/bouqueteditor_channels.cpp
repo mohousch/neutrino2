@@ -87,6 +87,21 @@ CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bou
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 }
 
+CBEChannelWidget::~CBEChannelWidget()
+{
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+}
+
 #define BUTTONS_COUNT 4
 const struct button_label CBEChannelWidgetButtons[BUTTONS_COUNT] =
 {
@@ -99,6 +114,24 @@ const struct button_label CBEChannelWidgetButtons[BUTTONS_COUNT] =
 void CBEChannelWidget::paint()
 {
 	dprintf(DEBUG_NORMAL, "CBEChannelWidget::paint:\n");
+	
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("bqeditch");
+	
+	if (widget)
+	{
+		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+		
+		widget->addWidgetItem(listBox);
+	}	
 
 	listBox->clear();
 
@@ -148,6 +181,18 @@ void CBEChannelWidget::paint()
 void CBEChannelWidget::hide()
 {
 	widget->hide();
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
@@ -166,25 +211,8 @@ int CBEChannelWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		Channels = &(g_bouquetManager->Bouquets[bouquet]->tvChannels);
 	else if (mode == CZapit::MODE_RADIO)
 		Channels = &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
-		
+	
 	//
-	widget = CNeutrinoApp::getInstance()->getWidget("bqeditch");
-	
-	if (widget)
-	{
-		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		widget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		listBox->enablePaintHead();
-		listBox->enablePaintDate();
-		
-		widget->addWidgetItem(listBox);
-	}	
-	
 	paint();
 	frameBuffer->blit();	
 

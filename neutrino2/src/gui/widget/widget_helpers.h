@@ -423,11 +423,10 @@ class CCGrid : public CComponent
 
 		//
 		void init();
-		void setPosition(const int x, const int y, const int dx, const int dy);
-		void setPosition(CBox* position);
 		void setColor(fb_pixel_t col){rgb = col;};
 		void setInterFrame(int iframe = 15){inter_frame = iframe;};
 
+		//
 		void paint();
 		void hide();
 };
@@ -445,9 +444,6 @@ class CCPig : public CComponent
 
 		//
 		void init();
-		void setPosition(const int x, const int y, const int dx, const int dy);
-		void setPosition(CBox* position);
-
 		void paint();
 		void hide();
 };

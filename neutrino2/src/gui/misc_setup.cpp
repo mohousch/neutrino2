@@ -256,6 +256,9 @@ void CGeneralSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete miscSettingsGeneral;
+	miscSettingsGeneral = NULL;
 	delete widget;
 	widget = NULL;
 }
@@ -486,13 +489,6 @@ int CChannelListSettings::exec(CMenuTarget* parent, const std::string& actionKey
 	if(parent)
 		parent->hide();
 	
-	if(actionKey == "savesettings")
-	{
-		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		
-		return ret;
-	}
-	
 	showMenu();
 	
 	return ret;
@@ -576,6 +572,9 @@ void CChannelListSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete miscSettingsChannelList;
+	miscSettingsChannelList = NULL;
 	delete widget;
 	widget = NULL;
 }
@@ -790,6 +789,9 @@ void CEPGSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete miscSettingsEPG;
+	miscSettingsEPG = NULL;
 	delete widget;
 	widget = NULL;
 
@@ -895,13 +897,6 @@ int CFileBrowserSettings::exec(CMenuTarget* parent, const std::string& actionKey
 	
 	if(parent)
 		parent->hide();
-
-	if(actionKey == "savesettings")
-	{
-		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		
-		return ret;
-	}
 	
 	showMenu();
 	
@@ -968,6 +963,9 @@ void CFileBrowserSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete miscSettingsFileBrowser;
+	miscSettingsFileBrowser = NULL;
 	delete widget;
 	widget = NULL;
 }

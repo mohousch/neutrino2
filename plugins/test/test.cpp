@@ -6720,25 +6720,36 @@ void CTestMenu::showMenu()
 	CWidget* mWidget = NULL;
 	ClistBox* mainMenu = NULL;
 	
-	mWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	mWidget->setMenuPosition(MENU_POSITION_CENTER);
-		
-	mWidget->name = "Test Menu";
-		
-	mainMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	std::string skin = PLUGINDIR "/test/test.xml";
+	
+	mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str());
+	
+	if (mWidget)
+	{
+		mainMenu = (ClistBox*)mWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		mWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		mWidget->setMenuPosition(MENU_POSITION_CENTER);
+			
+		mWidget->name = "Test Menu";
+			
+		mainMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
-	mainMenu->enablePaintHead();
-	mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
-	mainMenu->setWidgetMode(MODE_MENU);
-	mainMenu->enableShrinkMenu(),
-	mainMenu->enablePaintDate();
-	mainMenu->enablePaintFoot();
-		
-	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-		
-	mainMenu->setFootButtons(&btn);
-		
-	mWidget->addWidgetItem(mainMenu);
+		mainMenu->enablePaintHead();
+		mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
+		mainMenu->setWidgetMode(MODE_MENU);
+		mainMenu->enableShrinkMenu(),
+		mainMenu->enablePaintDate();
+		mainMenu->enablePaintFoot();
+			
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+			
+		mainMenu->setFootButtons(&btn);
+			
+		mWidget->addWidgetItem(mainMenu);
+	}
 	
 	mainMenu->clear();
 	

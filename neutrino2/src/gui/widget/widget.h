@@ -194,7 +194,5 @@ class CWidget : public CMenuTarget
 		CComponent* getCCItem(const int type, const std::string& name = "");
 };
 
-typedef std::vector<CWidget*> WIDGETLIST;
-
 #endif // WIDGET_H_
 

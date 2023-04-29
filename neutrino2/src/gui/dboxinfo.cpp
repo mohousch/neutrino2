@@ -493,6 +493,8 @@ void CDBoxInfoWidget::showInfo()
 	}
 	
 	dboxInfoWidget->exec(NULL, "");
+	delete dboxInfoWidget;
+	dboxInfoWidget = NULL;
 }
 
 //
@@ -571,6 +573,9 @@ void CInfoMenu::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete infoMenu;
+	infoMenu = NULL;
 	delete widget;
 	widget = NULL;
 }

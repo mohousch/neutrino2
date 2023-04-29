@@ -5263,6 +5263,9 @@ void CNeutrinoApp::selectNVOD()
                 {
                 	widget->setTimeOut(g_settings.timing_menu);
                         widget->exec(NULL, "");
+                        
+                        delete NVODSelector;
+                        NVODSelector = NULL;
                         delete widget;
                         widget = NULL;
                 }	

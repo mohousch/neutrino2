@@ -93,11 +93,40 @@ CBEBouquetWidget::CBEBouquetWidget()
 
 CBEBouquetWidget::~CBEBouquetWidget()
 {
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 void CBEBouquetWidget::paint()
 {
 	dprintf(DEBUG_NORMAL, "CBEBouquetWidget::paint:\n");
+	
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("bqeditbq");
+	
+	if (widget)
+	{
+		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+	
+		widget->addWidgetItem(listBox);
+	}	
 
 	listBox->clear();
 
@@ -164,6 +193,18 @@ void CBEBouquetWidget::paint()
 void CBEBouquetWidget::hide()
 {
 	widget->hide();
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
@@ -179,24 +220,6 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		parent->hide();
 	
 	Bouquets = &g_bouquetManager->Bouquets;
-	
-	//
-	widget = CNeutrinoApp::getInstance()->getWidget("bqeditbq");
-	
-	if (widget)
-	{
-		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		widget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		listBox->enablePaintHead();
-		listBox->enablePaintDate();
-	
-		widget->addWidgetItem(listBox);
-	}	
 	
 	//
 	paint();

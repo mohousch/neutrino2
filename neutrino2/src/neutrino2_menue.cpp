@@ -159,6 +159,9 @@ void CNeutrinoApp::mainMenu(void)
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete nMenu;
+	nMenu = NULL;
 	delete widget;
 	widget = NULL;
 }
@@ -444,6 +447,9 @@ bool CNeutrinoApp::showUserMenu(int button)
 	//
 	widget->setTimeOut(g_settings.timing_menu);	
 	widget->exec(NULL, "");
+	
+	delete menu;
+	menu = NULL;
 	delete widget;
 	widget = NULL;
 

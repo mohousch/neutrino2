@@ -168,6 +168,9 @@ void COSDSettings::showMenu(void)
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete osdSettings;
+	osdSettings = NULL;
 	delete widget;
 	widget = NULL;
 }
@@ -403,6 +406,9 @@ void COSDMenuColorSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete OSDmenuColorsSettings;
+	OSDmenuColorsSettings = NULL;
 	delete widget;
 	widget = NULL;
 }
@@ -535,6 +541,9 @@ void COSDInfoBarColorSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete OSDinfobarColorSettings;
+	OSDinfobarColorSettings = NULL;
 	delete widget;
 	widget = NULL;
 }
@@ -667,6 +676,9 @@ void CLanguageSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete languageSettings;
+	languageSettings = NULL;
 	delete widget;
 	widget = NULL;
 }
@@ -798,6 +810,9 @@ void CFontSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete fontSettings;
+	fontSettings = NULL;
 	delete widget;
 	widget = NULL;
 }
@@ -889,6 +904,9 @@ void COSDTimingSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete osdTimingSettings;
+	osdTimingSettings = NULL;
 	delete widget;
 	widget = NULL;
 }
@@ -1126,6 +1144,9 @@ void COSDDiverses::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete osdDiverseSettings;
+	osdDiverseSettings = NULL;
 	delete widget;
 	widget = NULL;
 }
@@ -1217,6 +1238,9 @@ void CSkinManager::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete skinMenu;
+	skinMenu = NULL;
 	delete widget;
 	widget = NULL;
 }
@@ -1237,7 +1261,6 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 		{
 			g_settings.preferred_skin = "neutrino2";
 			
-			CNeutrinoApp::getInstance()->unloadSkin();
 			CNeutrinoApp::getInstance()->exec(NULL, "restart");
 		}
 		
@@ -1247,7 +1270,6 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		if (MessageBox(_("Skin Select"), _("this need GUI restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
-			CNeutrinoApp::getInstance()->unloadSkin();
 			g_settings.preferred_skin = actionKey;
 			
 			usleep(1000);
@@ -1355,6 +1377,9 @@ void CSkinSettings::showMenu()
 	
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete skinSettings;
+	skinSettings = NULL;
 	delete widget;
 	widget = NULL;
 }

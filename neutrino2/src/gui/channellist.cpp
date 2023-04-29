@@ -167,6 +167,48 @@ CChannelList::~CChannelList()
 {
 	chanlist.clear();
 	events.clear();
+	
+	if (hline)
+	{
+		delete hline;
+		hline = NULL;
+	}
+	
+	if (vline)
+	{
+		delete vline;
+		vline = NULL;
+	}
+	
+	if (foot)
+	{
+		delete foot;
+		foot = NULL;
+	}
+	
+	if (head)
+	{
+		delete head;
+		head = NULL;
+	}
+	
+	if (window)
+	{
+		delete window;
+		window = NULL;
+	}
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (chWidget)
+	{
+		delete chWidget;
+		chWidget = NULL;
+	}
 }
 
 void CChannelList::ClearList(void)
@@ -1001,6 +1043,50 @@ void CChannelList::hide()
 		CFrameBuffer::getInstance()->clearFrameBuffer();
 		
 	frameBuffer->blit();
+	
+	////
+	if (hline)
+	{
+		delete hline;
+		hline = NULL;
+	}
+	
+	if (vline)
+	{
+		delete vline;
+		vline = NULL;
+	}
+	
+	if (foot)
+	{
+		delete foot;
+		foot = NULL;
+	}
+	
+	if (head)
+	{
+		delete head;
+		head = NULL;
+	}
+	
+	if (window)
+	{
+		delete window;
+		window = NULL;
+	}
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (chWidget)
+	{
+		delete chWidget;
+		chWidget = NULL;
+	}
+	////
 }
 
 bool CChannelList::showInfo(int pos, int epgpos)

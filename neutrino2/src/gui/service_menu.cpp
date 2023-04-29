@@ -141,6 +141,9 @@ void CServiceMenu::showMenu(void)
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	
+	delete service;
+	service = NULL;
 	delete widget;
 	widget = NULL;
 }

@@ -88,6 +88,21 @@ CBEChannelSelectWidget::CBEChannelSelectWidget(const std::string& Caption, unsig
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;	
 }
 
+CBEChannelSelectWidget::~CBEChannelSelectWidget()
+{
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+}
+
 bool CBEChannelSelectWidget::isChannelInBouquet(int index)
 {
 	for (unsigned int i = 0; i < bouquetChannels->size(); i++)
@@ -114,6 +129,23 @@ const struct button_label Buttons[BUTTONS_COUNT] =
 void CBEChannelSelectWidget::paint()
 {
 	dprintf(DEBUG_DEBUG, "CBEChannelSelectWidget::paint\n");
+	
+	widget = CNeutrinoApp::getInstance()->getWidget("bqeditchselect");
+	
+	if (widget)
+	{
+		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+		
+		widget->addWidgetItem(listBox);
+	}	
 
 	listBox->clear();
 
@@ -167,6 +199,18 @@ void CBEChannelSelectWidget::paint()
 void CBEChannelSelectWidget::hide()
 {
 	widget->hide();
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionKey)
@@ -207,23 +251,6 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 		parent->hide();
 		
 	//
-	widget = CNeutrinoApp::getInstance()->getWidget("bqeditchselect");
-	
-	if (widget)
-	{
-		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		widget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		listBox->enablePaintHead();
-		listBox->enablePaintDate();
-		
-		widget->addWidgetItem(listBox);
-	}	
-
 	paint();
 	frameBuffer->blit();
 

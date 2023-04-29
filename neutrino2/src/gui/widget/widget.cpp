@@ -113,6 +113,12 @@ CWidget::~CWidget()
 	{
 		CCItems.clear();
 	}
+	
+	if (background)
+	{
+		delete [] background;
+		background = NULL;
+	}
 }
 
 void CWidget::addWidgetItem(CWidgetItem *widgetItem, const bool defaultselected)
@@ -299,7 +305,7 @@ void CWidget::hide()
 	}
 	else
 	{
-		//if (paintframe)
+		// always clear buffer also if we dont paintmainframe
 		frameBuffer->paintBackgroundBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 	}
 

@@ -420,7 +420,16 @@ class ClistBoxItem : public CMenuItem
 	public:
 		ClistBoxItem(const char* const Text, const bool Active = true, const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
 		
-		~ClistBoxItem(){};
+		~ClistBoxItem()
+		{
+			if (background)
+			{
+				dprintf(DEBUG_INFO, "ClistBoxItem::del (%s)\n", textString.c_str());
+				
+				delete [] background;
+				background = NULL;
+			}
+		};
 		
 		int paint(bool selected = false, bool AfterPulldown = false);
 		int getHeight(void) const;

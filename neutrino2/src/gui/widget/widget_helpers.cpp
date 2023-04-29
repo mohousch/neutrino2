@@ -140,7 +140,6 @@ void CCImage::paint()
 		// image
 		if (!imageName.empty()) 
 			frameBuffer->displayImage(imageName.c_str(), cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
-			//frameBuffer->displayImage(imageName.c_str(), cCBox.iX + (cCBox.iWidth - iWidth)/2, cCBox.iY + (cCBox.iHeight - iHeight)/2, cCBox.iWidth, cCBox.iHeight);
 	}
 	else
 	{
@@ -151,7 +150,6 @@ void CCImage::paint()
 		// image
 		if (!imageName.empty()) 
 			frameBuffer->displayImage(imageName.c_str(), startPosX, cCBox.iY + (cCBox.iHeight - iHeight)/2, iWidth, iHeight);
-			//frameBuffer->displayImage(imageName.c_str(), cCBox.iX + (cCBox.iWidth - iWidth)/2, cCBox.iY + (cCBox.iHeight - iHeight)/2, cCBox.iWidth, cCBox.iHeight);
 	}
 }
 
@@ -1139,23 +1137,6 @@ void CCGrid::init()
 	cc_type = CC_GRID;
 }
 
-void CCGrid::setPosition(const int x, const int y, const int dx, const int dy)
-{
-	dprintf(DEBUG_DEBUG, "CGrid::%s\n", __FUNCTION__);
-	
-	cCBox.iX = x;
-	cCBox.iY = y;
-	cCBox.iWidth = dx;
-	cCBox.iHeight = dy;
-}
-
-void CCGrid::setPosition(CBox* position)
-{
-	dprintf(DEBUG_DEBUG, "CGrid::%s\n", __FUNCTION__);
-	
-	cCBox = *position;
-}
-
 void CCGrid::paint()
 {
 	dprintf(DEBUG_INFO, "CCGrid::paint\n");
@@ -1208,23 +1189,6 @@ void CCPig::init()
 {
 	//
 	cc_type = CC_PIG;
-}
-
-void CCPig::setPosition(const int x, const int y, const int dx, const int dy)
-{
-	dprintf(DEBUG_DEBUG, "CPig::%s\n", __FUNCTION__);
-	
-	cCBox.iX = x;
-	cCBox.iY = y;
-	cCBox.iWidth = dx;
-	cCBox.iHeight = dy;
-}
-
-void CCPig::setPosition(CBox* position)
-{
-	dprintf(DEBUG_DEBUG, "CPig::%s\n", __FUNCTION__);
-	
-	cCBox = *position;
 }
 
 void CCPig::paint()
@@ -1941,7 +1905,6 @@ void CFooters::paint()
 	
 	// paint horizontal line buttom
 	if (foot_line)
-		//CFrameBuffer::getInstance()->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - itemBox.iHeight + 2, COL_MENUCONTENT_PLUS_5);
 		frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 
 	int buttonWidth = 0;

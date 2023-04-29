@@ -81,6 +81,7 @@ class CBEChannelSelectWidget : public CMenuTarget
 
 	public:
 		CBEChannelSelectWidget(const std::string& Caption, unsigned int Bouquet, CZapit::channelsMode Mode);
+		~CBEChannelSelectWidget();
 		int exec(CMenuTarget *parent, const std::string &actionKey);
 		void hide();
 		

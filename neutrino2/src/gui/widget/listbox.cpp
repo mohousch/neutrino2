@@ -1736,7 +1736,7 @@ ClistBox::ClistBox(CBox* position)
 
 ClistBox::~ClistBox()
 {
-	dprintf(DEBUG_INFO, "ClistBox:: del\n");
+	dprintf(DEBUG_INFO, "ClistBox:: del (%s)\n", l_name.c_str());
 	
 	//
 	for(unsigned int count = 0; count <items.size(); count++) 
@@ -1772,7 +1772,7 @@ bool ClistBox::hasItem()
 
 void ClistBox::initFrames()
 {
-	dprintf(DEBUG_INFO, "ClistBox::initFrames:\n");
+	dprintf(DEBUG_DEBUG, "ClistBox::initFrames:\n");
 	
 	// reinit position
 	itemBox.iHeight = wanted_height;
@@ -2003,7 +2003,7 @@ void ClistBox::paint()
 
 void ClistBox::paintItems()
 {
-	dprintf(DEBUG_INFO, "ClistBox::paintItems:\n");
+	dprintf(DEBUG_DEBUG, "ClistBox::paintItems:\n");
 
 	if(widgetType == TYPE_FRAME)
 	{
@@ -2171,7 +2171,7 @@ void ClistBox::paintHead()
 {
 	if(paintTitle)
 	{
-		dprintf(DEBUG_INFO, "ClistBox::paintHead:\n");
+		dprintf(DEBUG_DEBUG, "ClistBox::paintHead:\n");
 		
 		if(widgetType == TYPE_FRAME)
 		{
@@ -2332,7 +2332,7 @@ void ClistBox::paintFoot()
 {
 	if(paint_Foot)
 	{
-		dprintf(DEBUG_INFO, "ClistBox::paintFoot:\n");
+		dprintf(DEBUG_DEBUG, "ClistBox::paintFoot:\n");
 		
 		if(widgetType == TYPE_FRAME)
 		{
@@ -2457,7 +2457,7 @@ void ClistBox::paintItemInfo(int pos)
 	{
 		if(paintFootInfo)
 		{
-			dprintf(DEBUG_INFO, "ClistBox::paintItemInfo:\n"); //FIXME:
+			dprintf(DEBUG_DEBUG, "ClistBox::paintItemInfo:\n"); //FIXME:
 			
 			if (footInfoMode == ITEMINFO_INFO_MODE)
 			{
@@ -2544,7 +2544,7 @@ void ClistBox::paintItemInfo(int pos)
 	}	
 	else if(widgetType == TYPE_EXTENDED)
 	{
-		dprintf(DEBUG_INFO, "ClistBox::paintItemInfo:\n"); 
+		dprintf(DEBUG_DEBUG, "ClistBox::paintItemInfo:\n"); 
 		
 		if (paintFootInfo)
 		{
@@ -2578,7 +2578,7 @@ void ClistBox::paintItemInfo(int pos)
 	{
 		if (paintFrame && paintFootInfo)
 		{
-			dprintf(DEBUG_INFO, "ClistBox::paintItemInfo:\n"); //FIXME:
+			dprintf(DEBUG_DEBUG, "ClistBox::paintItemInfo:\n"); //FIXME:
 			
 			// refresh
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight, itemBox.iWidth, cFrameFootInfoHeight, COL_MENUCONTENT_PLUS_0);
@@ -2608,7 +2608,7 @@ void ClistBox::paintItemInfo(int pos)
 
 void ClistBox::hideItemInfo()
 {
-	dprintf(DEBUG_INFO, "ClistBox::hideItemInfo:\n");
+	dprintf(DEBUG_DEBUG, "ClistBox::hideItemInfo:\n");
 	
 	if (paintFootInfo)
 	{

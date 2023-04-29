@@ -66,6 +66,8 @@ CImageInfo::CImageInfo()
 
 CImageInfo::~CImageInfo()
 { 
+	delete widget;
+	widget = NULL;
 }
 
 int CImageInfo::exec(CMenuTarget *parent, const std::string&)

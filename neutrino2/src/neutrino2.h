@@ -154,35 +154,21 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		void setupFonts(const char* font_file);
 		
 		// skin
-		WIDGETLIST widgets;
-		WIDGETLIST getWidgets(){return widgets;};
-		
-		//
-		//CWidget* getWidget(const char* const name);
-		CWidget *getWidget(const char *const widgetname, const char *const skinfile = NULL, const bool data = false);
-		bool hasWidgets(){return widgets.size();};
-		bool eraseWidget(const char* const name);
-		//
-		int execSkinWidget(const char* const name, CMenuTarget* parent, const std::string &actionKey);
-		bool paintSkinWidget(const char* const name);
-		bool hideSkinWidget(const char* const name);
-		//
 		void loadSkin(std::string skinName);
-		void unloadSkin();
 		bool skin_exists(const char* const filename);
 		void readSkinConfig(const char* const filename);
 		void saveSkinConfig(const char* const filename);
 		
 		//
-		//bool parseSkin(const char* const filename, bool xml_data = false);
-		// 
-		CWidget *parseCWidget(const char * const filename, const char * const widgetName, bool data = false);
+		CWidget *getWidget(const char *const widgetname, const char *const skinfilename = NULL, const bool data = false);
+		
+		//
 		void parseClistBox(_xmlNodePtr node, CWidget* widget);
 		void parseCWindow(_xmlNodePtr node, CWidget* widget);
 		void parseCHead(_xmlNodePtr node, CWidget* widget);
 		void parseCFoot(_xmlNodePtr node, CWidget* widget);
 		void parseCTextBox(_xmlNodePtr node, CWidget* widget);
-		//
+		void parseCFrameBox(_xmlNodePtr node, CWidget* widget){};
 		void parseCCLabel(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
 		void parseCCImage(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
 		void parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
@@ -190,7 +176,6 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		void parseCCHline(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
 		void parseCCVline(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
 		void parseCCPig(_xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		//
 		void parseKey(_xmlNodePtr node, CWidget* widget);
 		//
 		CMenuTarget* convertTarget(const std::string& name);

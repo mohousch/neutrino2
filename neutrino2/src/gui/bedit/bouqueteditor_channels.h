@@ -89,6 +89,7 @@ class CBEChannelWidget : public CMenuTarget
 
 	public:
 		CBEChannelWidget( const std::string & Caption, unsigned int Bouquet);
+		~CBEChannelWidget();
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 
 		bool hasChanged();

@@ -139,6 +139,7 @@ void CAudioPlayerSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
-
 

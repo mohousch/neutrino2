@@ -2043,7 +2043,7 @@ void CNeutrinoApp::parseCCLabel(_xmlNodePtr node, CWidget* widget, CWindow* wind
 						
 		cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
 		
-		//font_size = xmlGetSignedNumericAttribute(node, "font", 0);
+		//
 		font_size = xmlGetAttribute(node, (char *)"font");
 		font_color = xmlGetAttribute(node, (char*)"fontcolor");
 		
@@ -2188,7 +2188,7 @@ void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* windo
 		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
 		cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
 		
-		//font_size = xmlGetSignedNumericAttribute(node, "font", 0);
+		//
 		font_size = xmlGetAttribute(node, (char *)"font");
 		font_color = xmlGetAttribute(node, (char*)"fontcolor");
 		
@@ -2217,7 +2217,7 @@ void CNeutrinoApp::parseCCTime(_xmlNodePtr node, CWidget* widget, CWindow* windo
 							
 		if (cc_format != NULL) time->setFormat(_(cc_format));
 		if (cc_refresh) time->enableRepaint();
-		//if (font_size) time->setFont(font_size);
+		//
 		int fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
 		if (font_size) fs = convertFontSize(font_size);
 		time->setFont(fs);
@@ -2497,9 +2497,9 @@ void CNeutrinoApp::parseKey(_xmlNodePtr node, CWidget* widget)
 }
 
 // parseCWidget
-CWidget *CNeutrinoApp::parseCWidget(const char * const filename, const char * const widgetName, bool data)
+CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *const skinfilename, bool data)
 {
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::parseCWidget: %s\n", widgetName);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::getWidget: <<%s>>\n", widgetname);
 	
 	CWidget *ret = NULL;
 	
@@ -2523,24 +2523,37 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const filename, const char * co
 	char *position = NULL;
 	
 	//
-	//parseSkinInputXml(filename, data);
 	_xmlDocPtr parser = NULL;
 	
-	if(parser) 
+	//
+	if (skinfilename != NULL)
 	{
-		delete parser;
-		parser = NULL;
-	}
-
-	if (data)
-	{
-		parser = parseXml(filename);
+		if (data)
+		{
+			parser = parseXml(skinfilename);
+		}
+		else
+		{
+			parser = parseXmlFile(skinfilename);
+		}
 	}
 	else
 	{
-		parser = parseXmlFile(filename);
+		std::string filename = CONFIGDIR "/skins/";
+		filename += g_settings.preferred_skin.c_str();
+		filename += "/skin.xml";
+		
+		if (data)
+		{
+			parser = parseXml(filename.c_str());
+		}
+		else
+		{
+			parser = parseXmlFile(filename.c_str());
+		}
 	}
-	
+
+	//	
 	if (parser)
 	{
 		_xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
@@ -2553,7 +2566,7 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const filename, const char * co
 			name = xmlGetAttribute(search, (char*)"name");
 			
 			//
-			if (!strcmp(name, widgetName) )
+			if (!strcmp(name, widgetname) )
 			{	
 				x = xmlGetSignedNumericAttribute(search, "posx", 0);
 				y = xmlGetSignedNumericAttribute(search, "posy", 0);
@@ -2667,270 +2680,6 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const filename, const char * co
 	return ret;
 }
 
-/*
-bool CNeutrinoApp::parseSkinInputXml(const char* const filename, bool xml_data)
-{
-	dprintf(DEBUG_INFO, "CNeutrinoApp::parseSkinInputXml: %s\n", filename);
-	
-	bool ret = false;
-	
-	//
-	if(parser) 
-	{
-		delete parser;
-		parser = NULL;
-	}
-
-	if (xml_data)
-	{
-		parser = parseXml(filename);
-		ret = true;
-	}
-	else
-	{
-		parser = parseXmlFile(filename);
-		ret = true;
-	}
-	
-	return ret;
-}
-*/
-
-// parseSkin
-/*
-bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::parseSkin: %s\n", filename);
-	
-	//parseSkinInputXml(filename, xml_data);
-	_xmlDocPtr parser = NULL;
-	
-	if(parser) 
-	{
-		delete parser;
-		parser = NULL;
-	}
-
-	if (xml_data)
-	{
-		parser = parseXml(filename);
-	}
-	else
-	{
-		parser = parseXmlFile(filename);
-	}
-	
-	if (parser)
-	{			
-		_xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode; //WIDGET
-		
-		if (search) 
-		{
-			while ((search = xmlGetNextOccurence(search, "WIDGET")) != NULL) 
-			{
-				//
-				CWidget* wdg = NULL;
-				
-				//
-				char* name = NULL;
-				
-				//		
-				unsigned int x = 0;
-				unsigned int y = 0;
-				unsigned int dx = 0;
-				unsigned int dy = 0;
-				
-				char* color = NULL;
-				char * gradient = NULL;
-				char * corner = NULL;
-				char * radius = NULL;
-				char * border = NULL;
-				
-				unsigned int paintframe = 0;
-				unsigned int savescreen = 0;
-				char * position = NULL;
-				unsigned int timeout = 0;
-				
-				//
-				name = xmlGetAttribute(search, (char*)"name");
-				
-				//
-				x = xmlGetSignedNumericAttribute(search, "posx", 0);
-				y = xmlGetSignedNumericAttribute(search, "posy", 0);
-				dx = xmlGetSignedNumericAttribute(search, "width", 0);
-				dy = xmlGetSignedNumericAttribute(search, "height", 0);
-				
-				color = xmlGetAttribute(search, (char*)"color");
-				gradient = xmlGetAttribute(search, (char *)"gradient");
-				corner = xmlGetAttribute(search, (char *)"corner");
-				radius = xmlGetAttribute(search, (char *)"radius");
-				border = xmlGetAttribute(search, (char *)"border");
-				paintframe = xmlGetSignedNumericAttribute(search, "paintframe", 0);
-				savescreen = xmlGetSignedNumericAttribute(search, "savescreen", 0);
-				timeout = xmlGetSignedNumericAttribute(search, "timeout", 0);
-				position = xmlGetAttribute(search, (char *)"position");
-
-				//				
-				wdg = new CWidget(x, y, dx, dy);
-				
-				// name
-				if (name != NULL) wdg->name = name;
-				
-				// paintframe
-				wdg->paintMainFrame(paintframe);
-				
-				// color
-				uint32_t wColor = COL_MENUCONTENT_PLUS_0;	
-				if (color != NULL) wColor = convertColor(color);
-				wdg->setColor(wColor);
-				
-				// gradient
-				int gr = NOGRADIENT;
-				if (gradient) gr = convertGradient(gradient);
-				wdg->setGradient(gr);
-				
-				// corner / radius
-				int co = CORNER_NONE;
-				int ra = NO_RADIUS;
-				if (corner) co = convertCorner(corner);
-				if (radius) ra = convertRadius(radius);
-				wdg->setCorner(ra, co);
-
-				// border
-				int br = BORDER_NO;
-				if (border) br = convertBorder(border);
-				wdg->setBorderMode(br);
-				
-				// savescreen
-				if (savescreen) wdg->enableSaveScreen();
-				
-				// timeout
-				wdg->setTimeOut(timeout);
-				
-				// position
-				int pos = MENU_POSITION_NONE;
-				if (position) pos = convertMenuPosition(position);
-				wdg->setMenuPosition(pos);
-				
-				// WINDOW
-				parseCWindow(search->xmlChildrenNode, wdg);
-				
-				// HEAD
-				parseCHead(search->xmlChildrenNode, wdg);
-				
-				// FOOT
-				parseCFoot(search->xmlChildrenNode, wdg);
-				
-				// LISTBOX
-				parseClistBox(search->xmlChildrenNode, wdg);
-				
-				// TEXTBOX
-				parseCTextBox(search->xmlChildrenNode, wdg);
-				
-				// LABEL
-				parseCCLabel(search->xmlChildrenNode, wdg);
-				
-				// IMAGE
-				parseCCImage(search->xmlChildrenNode, wdg);
-				
-				// TIME
-				parseCCTime(search->xmlChildrenNode, wdg);
-				
-				// BUTTONS
-				parseCCButtons(search->xmlChildrenNode, wdg);
-				
-				// HLINE
-				parseCCHline(search->xmlChildrenNode, wdg);
-				
-				// VLINE
-				parseCCVline(search->xmlChildrenNode, wdg);
-				
-				// PIG
-				parseCCPig(search->xmlChildrenNode, wdg);
-				
-				// KEY
-				parseKey(search->xmlChildrenNode, wdg);
-				
-				//
-				widgets.push_back(wdg);				
-							
-				//
-				search = search->xmlNextNode;		
-			}
-		}
-		
-		xmlFreeDoc(parser);
-		parser = NULL;
-	}
-	
-	//
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::parseSkin: widgets count:%d\n", (int)widgets.size());
-	
-	return true;
-}
-*/
-
-// getWidget
-/*
-CWidget* CNeutrinoApp::getWidget(const char* const name)
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::getWidget: %s\n", name);
-	
-	CWidget* ret = NULL;
-	
-	for (unsigned int i = 0; i < (unsigned int )widgets.size(); i++)
-	{
-		if ( (widgets[i] != NULL) && (widgets[i]->name == name) )
-		{
-			ret = widgets[i];
-			break;
-		}
-	}
-	
-	return ret;
-}
-*/
-
-CWidget *CNeutrinoApp::getWidget(const char *const widgetname, const char *const skinfile, const bool data)
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::getWidget: %s\n", widgetname);
-	
-	CWidget* ret = NULL;
-	
-	if (skinfile != NULL)
-		ret = parseCWidget(skinfile, widgetname, data);
-	else
-	{
-		std::string skinFileName = CONFIGDIR "/skins/";
-		skinFileName += g_settings.preferred_skin.c_str();
-		skinFileName += "/skin.xml";
-		
-		ret = parseCWidget(skinFileName.c_str(), widgetname);
-	}
-	
-	return ret;
-}
-
-// eraseWidget
-bool CNeutrinoApp::eraseWidget(const char* const name)
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::eraseWidget: %s\n", name);
-	
-	bool ret = false;
-	
-	for (unsigned int i = 0; i < (unsigned int )widgets.size(); i++)
-	{
-		if ( (widgets[i] != NULL) && (widgets[i]->name == name) )
-		{
-			widgets.erase(widgets.begin() + i);
-			ret = true;
-			break;
-		}
-	}
-	
-	return ret;
-}
-
 //
 void CNeutrinoApp::loadSkin(std::string skinName)
 {
@@ -2951,150 +2700,147 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	std::string skinFileName = skinPath.c_str();
 	skinFileName += "/skin.xml";
 	
-	//if (parseSkin(skinFileName.c_str()))
+	// read skin font/icons/buttons/hints
+	std::string fontFileName;
+		
+	struct dirent **namelist;
+	int i = 0;
+		
+	if (CNeutrinoApp::getInstance()->skin_exists(skinName.c_str()))
 	{
-		// read skin font/icons/buttons/hints
-		std::string fontFileName;
-		
-		struct dirent **namelist;
-		int i = 0;
-		
-		if (CNeutrinoApp::getInstance()->skin_exists(skinName.c_str()))
-		{
-			// setup font
-			std::string fontPath = skinPath.c_str();
-			fontPath += "/fonts";
+		// setup font
+		std::string fontPath = skinPath.c_str();
+		fontPath += "/fonts";
 			
-			i = scandir(fontPath.c_str(), &namelist, 0, 0);
+		i = scandir(fontPath.c_str(), &namelist, 0, 0);
 
-			if (i > 0)
-			{
-				while(i--)
-				{
-					if( (strcmp(namelist[i]->d_name, ".") != 0) && (strcmp(namelist[i]->d_name, "..") != 0) )
-					{
-						std::string filename = fontPath.c_str();
-						filename += "/";
-						filename += namelist[i]->d_name;
-						
-						std::string extension = getFileExt(filename);
-							
-						if ( strcasecmp("ttf", extension.c_str()) == 0)
-							fontFileName = filename;
-						
-						filename.clear();			
-					}
-					free(namelist[i]);
-				}
-				free(namelist);
-			}
-			 
-			strcpy( g_settings.font_file, fontFileName.c_str() );
-			
-			CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
-			
-			// setIconPath
-			std::string iconsDir = CONFIGDIR "/skins/";
-			iconsDir += skinName.c_str();
-			iconsDir += "/icons/";
-			
-			// check if not empty
-			i = scandir(iconsDir.c_str(), &namelist, 0, 0);
-			if(i < 0)
-			{
-				g_settings.icons_dir = DATADIR "/icons/"; //fallback to default if empty
-			}
-			else
-			{
-				g_settings.icons_dir = iconsDir;
-				free(namelist);
-			}
-			
-			frameBuffer->setIconBasePath(g_settings.icons_dir);
-			
-			// setButtonPath
-			std::string buttonsDir = CONFIGDIR "/skins/";
-			buttonsDir += skinName.c_str();
-			buttonsDir += "/buttons/";
-			
-			// check if not empty
-			i = scandir(buttonsDir.c_str(), &namelist, 0, 0);
-			if(i < 0)
-			{
-				g_settings.buttons_dir = DATADIR "/buttons/"; //fallback to default if empty
-			}
-			else
-			{
-				g_settings.buttons_dir = buttonsDir;
-				free(namelist);
-			}
-			
-			frameBuffer->setButtonBasePath(g_settings.buttons_dir);
-			
-			// setHintPath
-			std::string hintsDir = CONFIGDIR "/skins/";
-			hintsDir += skinName.c_str();
-			hintsDir += "/hints/";
-			
-			// check if not empty
-			i = scandir(hintsDir.c_str(), &namelist, 0, 0);
-			if(i < 0)
-			{
-				g_settings.hints_dir = DATADIR "/hints/"; //fallback to default if empty
-			}
-			else
-			{
-				g_settings.hints_dir = hintsDir;
-				free(namelist);
-			}
-			
-			frameBuffer->setHintBasePath(g_settings.hints_dir);
-			
-			// setSpinnerPath
-			std::string spinnerDir = CONFIGDIR "/skins/";
-			hintsDir += skinName.c_str();
-			hintsDir += "/spinner/";
-			
-			// check if not empty
-			i = scandir(spinnerDir.c_str(), &namelist, 0, 0);
-			if(i < 0)
-			{
-				g_settings.spinner_dir = DATADIR "/spinner/"; //fallback to default if empty
-			}
-			else
-			{
-				g_settings.spinner_dir = spinnerDir;
-				free(namelist);
-			}
-			
-			frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
-			
-			// setup colors / corners / position
-			std::string skinConfigFile = CONFIGDIR "/skins/";
-			skinConfigFile += skinName.c_str();
-			skinConfigFile += "/";
-			skinConfigFile += skinName.c_str();
-			skinConfigFile += ".config";
-			
-			readSkinConfig(skinConfigFile.c_str());
-		}
-		else //fallback to default (neutrino intern)
+		if (i > 0)
 		{
-			strcpy( g_settings.font_file, DATADIR "/fonts/arial.ttf");
-			
-			CNeutrinoApp::getInstance()->setupFonts(DATADIR "/fonts/arial.ttf");
-			
-			g_settings.icons_dir = DATADIR "/icons/";
-			g_settings.buttons_dir = DATADIR "/buttons/";
-			g_settings.hints_dir = DATADIR "/hints/";
-			g_settings.spinner_dir = DATADIR "/spinner/";
-			
-			frameBuffer->setIconBasePath(DATADIR "/icons/");
-			frameBuffer->setButtonBasePath(DATADIR "/buttons/");
-			frameBuffer->setHintBasePath(DATADIR "/hints/");
-			frameBuffer->setSpinnerBasePath(DATADIR "/spinner/");
+			while(i--)
+			{
+				if( (strcmp(namelist[i]->d_name, ".") != 0) && (strcmp(namelist[i]->d_name, "..") != 0) )
+				{
+					std::string filename = fontPath.c_str();
+					filename += "/";
+					filename += namelist[i]->d_name;
+						
+					std::string extension = getFileExt(filename);
+							
+					if ( strcasecmp("ttf", extension.c_str()) == 0)
+						fontFileName = filename;
+						
+					filename.clear();			
+				}
+				free(namelist[i]);
+			}
+			free(namelist);
 		}
-	}	
+			 
+		strcpy( g_settings.font_file, fontFileName.c_str() );
+			
+		CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
+			
+		// setIconPath
+		std::string iconsDir = CONFIGDIR "/skins/";
+		iconsDir += skinName.c_str();
+		iconsDir += "/icons/";
+			
+		// check if not empty
+		i = scandir(iconsDir.c_str(), &namelist, 0, 0);
+		if(i < 0)
+		{
+			g_settings.icons_dir = DATADIR "/icons/"; //fallback to default if empty
+		}
+		else
+		{
+			g_settings.icons_dir = iconsDir;
+			free(namelist);
+		}
+			
+		frameBuffer->setIconBasePath(g_settings.icons_dir);
+			
+		// setButtonPath
+		std::string buttonsDir = CONFIGDIR "/skins/";
+		buttonsDir += skinName.c_str();
+		buttonsDir += "/buttons/";
+			
+		// check if not empty
+		i = scandir(buttonsDir.c_str(), &namelist, 0, 0);
+		if(i < 0)
+		{
+			g_settings.buttons_dir = DATADIR "/buttons/"; //fallback to default if empty
+		}
+		else
+		{
+			g_settings.buttons_dir = buttonsDir;
+			free(namelist);
+		}
+			
+		frameBuffer->setButtonBasePath(g_settings.buttons_dir);
+			
+		// setHintPath
+		std::string hintsDir = CONFIGDIR "/skins/";
+		hintsDir += skinName.c_str();
+		hintsDir += "/hints/";
+			
+		// check if not empty
+		i = scandir(hintsDir.c_str(), &namelist, 0, 0);
+		if(i < 0)
+		{
+			g_settings.hints_dir = DATADIR "/hints/"; //fallback to default if empty
+		}
+		else
+		{
+			g_settings.hints_dir = hintsDir;
+			free(namelist);
+		}
+			
+		frameBuffer->setHintBasePath(g_settings.hints_dir);
+			
+		// setSpinnerPath
+		std::string spinnerDir = CONFIGDIR "/skins/";
+		hintsDir += skinName.c_str();
+		hintsDir += "/spinner/";
+			
+		// check if not empty
+		i = scandir(spinnerDir.c_str(), &namelist, 0, 0);
+		if(i < 0)
+		{
+			g_settings.spinner_dir = DATADIR "/spinner/"; //fallback to default if empty
+		}
+		else
+		{
+			g_settings.spinner_dir = spinnerDir;
+			free(namelist);
+		}
+			
+		frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
+			
+		// setup colors / corners / position
+		std::string skinConfigFile = CONFIGDIR "/skins/";
+		skinConfigFile += skinName.c_str();
+		skinConfigFile += "/";
+		skinConfigFile += skinName.c_str();
+		skinConfigFile += ".config";
+			
+		readSkinConfig(skinConfigFile.c_str());
+	}
+	else //fallback to default (neutrino intern)
+	{
+		strcpy( g_settings.font_file, DATADIR "/fonts/arial.ttf");
+			
+		CNeutrinoApp::getInstance()->setupFonts(DATADIR "/fonts/arial.ttf");
+			
+		g_settings.icons_dir = DATADIR "/icons/";
+		g_settings.buttons_dir = DATADIR "/buttons/";
+		g_settings.hints_dir = DATADIR "/hints/";
+		g_settings.spinner_dir = DATADIR "/spinner/";
+			
+		frameBuffer->setIconBasePath(DATADIR "/icons/");
+		frameBuffer->setButtonBasePath(DATADIR "/buttons/");
+		frameBuffer->setHintBasePath(DATADIR "/hints/");
+		frameBuffer->setSpinnerBasePath(DATADIR "/spinner/");
+	}
 }
 
 //
@@ -3112,21 +2858,6 @@ bool CNeutrinoApp::skin_exists(const char* const filename)
 		ret = true;
 	
 	return ret;
-}
-
-void CNeutrinoApp::unloadSkin()
-{
-	// clear all skin widgets
-	for (unsigned int i = 0; i < (unsigned int) widgets.size(); i++)
-	{
-		if (widgets[i])
-		{
-			delete widgets[i];
-			widgets[i] = NULL;
-		}
-	}
-	
-	widgets.clear();
 }
 
 //
@@ -3365,60 +3096,4 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	if (!skinConfig->saveConfig(filename))
 		printf("CNeutrinoApp::saveSkinConfig %s write error\n", filename);
 }
-
-//// helpers methods
-//
-int CNeutrinoApp::execSkinWidget(const char* const name, CMenuTarget* parent, const std::string &actionKey)
-{
-	dprintf(DEBUG_INFO, "CNeutrinoApp::execSkinWidget: actionKey: (%s)\n", actionKey.c_str());
-	
-	int ret = RETURN_REPAINT;
-	CWidget * widget = NULL;
-	
-	widget = getWidget(name);
-	
-	if (widget)
-	{
-		ret = widget->exec(parent, actionKey);
-	}
-	
-	return ret;	
-}
-
-bool CNeutrinoApp::paintSkinWidget(const char* const name)
-{
-	dprintf(DEBUG_INFO, "CNeutrinoApp::paintSkinWidget:\n");
-	
-	bool ret = false;
-	CWidget * widget = NULL;
-	
-	widget = getWidget(name);
-	
-	if (widget)
-	{
-		widget->paint();
-		ret = true;
-	}
-	
-	return ret;	
-}
-
-bool CNeutrinoApp::hideSkinWidget(const char* const name)
-{
-	dprintf(DEBUG_INFO, "CNeutrinoApp::hideSkinWidget:\n");
-	
-	bool ret = false;
-	CWidget * widget = NULL;
-	
-	widget = getWidget(name);
-	
-	if (widget)
-	{
-		widget->hide();
-		ret = true;
-	}
-	
-	return ret;	
-}
-
 
