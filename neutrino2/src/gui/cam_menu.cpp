@@ -141,6 +141,7 @@ int CCAMMenuHandler::doMainMenu()
 	char str1[255]={0};
 
 	CMenuWidget* cammenu = new CMenuWidget(_("CI-CAM"), NEUTRINO_ICON_SETTINGS);
+	cammenu->setWidgetMode(MODE_SETUP);
 
 	int CiSlots = ca ? ca->GetNumberCISlots() : 0;
 	
@@ -150,7 +151,7 @@ int CCAMMenuHandler::doMainMenu()
 		
 	// save settings
 	cammenu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-		cammenu->addItem(new CMenuSeparator(LINE));
+	cammenu->addItem(new CMenuSeparator(LINE));
 	
 	if(CiSlots) 
 	{

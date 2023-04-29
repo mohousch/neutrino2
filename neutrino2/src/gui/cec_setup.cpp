@@ -107,6 +107,7 @@ int CCECSetup::showMenu()
 {
 	//menue init
 	CMenuWidget *cec = new CMenuWidget(_("CEC Setup"), NEUTRINO_ICON_SETTINGS);
+	cec->setWidgetMode(MODE_SETUP);
 	
 	// intros
 	cec->addItem(new ClistBoxItem(_("back")));
