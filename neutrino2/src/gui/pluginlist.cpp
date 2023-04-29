@@ -95,6 +95,7 @@ void CPluginList::showMenu()
 	dprintf(DEBUG_NORMAL, "CPluginList::showMenu\n");
 	
 	pWidget = CNeutrinoApp::getInstance()->getWidget("plugins");
+	//widget = getWidget(g_settings.preferred_skin.c_str(), "plugins");
 
 	//
 	if (pWidget)
@@ -172,6 +173,8 @@ void CPluginList::showMenu()
 	//
 	pWidget->setTimeOut(g_settings.timing_filebrowser);
 	pWidget->exec(NULL, "");
+	delete pWidget;
+	pWidget = NULL;
 }
 
 int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)

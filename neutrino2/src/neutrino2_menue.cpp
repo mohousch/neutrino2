@@ -159,6 +159,8 @@ void CNeutrinoApp::mainMenu(void)
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 // User menu
@@ -280,6 +282,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 	ClistBox* menu = NULL;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("features");
+	//widget = getWidget(g_settings.preferred_skin.c_str(), "features");
 	
 	if (widget)
 	{
@@ -438,8 +441,11 @@ bool CNeutrinoApp::showUserMenu(int button)
 		selected[button] = menu->getSelected();
 	}
 	
+	//
 	widget->setTimeOut(g_settings.timing_menu);	
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 
 	return 0;
 }

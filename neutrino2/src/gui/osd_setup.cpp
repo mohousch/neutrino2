@@ -168,6 +168,8 @@ void COSDSettings::showMenu(void)
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 // osd menucolor settings
@@ -401,6 +403,8 @@ void COSDMenuColorSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 // osd infobarcolor settings
@@ -531,6 +535,8 @@ void COSDInfoBarColorSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 // osd language settings
@@ -661,6 +667,8 @@ void CLanguageSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 bool CLanguageSettings::changeNotify(const std::string& OptionName, void */*data*/)
@@ -790,6 +798,8 @@ void CFontSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 // osd timing settings
@@ -879,6 +889,8 @@ void COSDTimingSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 // diverses
@@ -1114,6 +1126,8 @@ void COSDDiverses::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 //// skinManager
@@ -1203,6 +1217,8 @@ void CSkinManager::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
@@ -1339,6 +1355,8 @@ void CSkinSettings::showMenu()
 	
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)

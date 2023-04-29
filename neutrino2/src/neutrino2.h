@@ -158,8 +158,8 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		WIDGETLIST getWidgets(){return widgets;};
 		
 		//
-		CWidget* getWidget(const char* const name);
-		//bool widget_exists(const char* const name);
+		//CWidget* getWidget(const char* const name);
+		CWidget *getWidget(const char *const widgetname, const char *const skinfile = NULL, const bool data = false);
 		bool hasWidgets(){return widgets.size();};
 		bool eraseWidget(const char* const name);
 		//
@@ -174,10 +174,9 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		void saveSkinConfig(const char* const filename);
 		
 		//
-		bool parseSkinInputXml(const char* const filename, bool xml_data = false);
-		bool parseSkin(const char* const filename, bool xml_data = false);
+		//bool parseSkin(const char* const filename, bool xml_data = false);
 		// 
-		//CWidget *parseCWidget(const char * const filename, const char * const widgetName, bool data = false);
+		CWidget *parseCWidget(const char * const filename, const char * const widgetName, bool data = false);
 		void parseClistBox(_xmlNodePtr node, CWidget* widget);
 		void parseCWindow(_xmlNodePtr node, CWidget* widget);
 		void parseCHead(_xmlNodePtr node, CWidget* widget);

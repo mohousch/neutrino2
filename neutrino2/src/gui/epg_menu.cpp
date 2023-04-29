@@ -120,6 +120,8 @@ int CEPGMenuHandler::doMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);				
 	res = widget->exec(NULL, "");
+	delete widget;
+        widget = NULL;
 	
 	return res;
 }

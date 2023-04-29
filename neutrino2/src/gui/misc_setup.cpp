@@ -79,8 +79,6 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 
 // misc settings
 extern Zapit_config zapitCfg;			//defined in neutrino.cpp
-//void setZapitConfig(Zapit_config * Cfg);
-//void getZapitConfig(Zapit_config *Cfg);
 
 // option off1 on0
 #define OPTIONS_OFF1_ON0_OPTION_COUNT 2
@@ -258,6 +256,8 @@ void CGeneralSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 //
@@ -576,6 +576,8 @@ void CChannelListSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 //
@@ -788,6 +790,8 @@ void CEPGSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 
 	delete epg_IP;
 	epg_IP = NULL;
@@ -964,6 +968,8 @@ void CFileBrowserSettings::showMenu()
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
+	delete widget;
+	widget = NULL;
 }
 
 // misc notifier

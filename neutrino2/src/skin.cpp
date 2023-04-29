@@ -96,7 +96,7 @@
 
 
 //
-_xmlDocPtr parser = NULL;
+//_xmlDocPtr parser = NULL;
 
 //
 CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
@@ -2497,7 +2497,6 @@ void CNeutrinoApp::parseKey(_xmlNodePtr node, CWidget* widget)
 }
 
 // parseCWidget
-/*
 CWidget *CNeutrinoApp::parseCWidget(const char * const filename, const char * const widgetName, bool data)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::parseCWidget: %s\n", widgetName);
@@ -2524,7 +2523,23 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const filename, const char * co
 	char *position = NULL;
 	
 	//
-	parseSkinInputXml(filename, data);
+	//parseSkinInputXml(filename, data);
+	_xmlDocPtr parser = NULL;
+	
+	if(parser) 
+	{
+		delete parser;
+		parser = NULL;
+	}
+
+	if (data)
+	{
+		parser = parseXml(filename);
+	}
+	else
+	{
+		parser = parseXmlFile(filename);
+	}
 	
 	if (parser)
 	{
@@ -2549,7 +2564,7 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const filename, const char * co
 				gradient = xmlGetAttribute(search, (char *)"gradient");
 				corner = xmlGetAttribute(search, (char *)"corner");
 				radius = xmlGetAttribute(search, (char *)"radius");
-				border = xmlGetSignedNumericAttribute(search, "border", 0);
+				border = xmlGetAttribute(search, (char *)"border");
 					
 				paintframe = xmlGetSignedNumericAttribute(search, "paintframe", 0);
 				savescreen = xmlGetSignedNumericAttribute(search, "savescreen", 0);
@@ -2564,20 +2579,37 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const filename, const char * co
 				widget = new CWidget(x, y, dx, dy);
 					
 				if (name != NULL) widget->name = name;
+				
+				// paintmainframe
 				widget->paintMainFrame(paintframe);
+				
+				// color
 				if (color != NULL) widget->setColor(wColor);
+				
+				// gradient
 				int gr = NOGRADIENT;
 				if (gradient) gr = convertGradient(gradient);
 				widget->setGradient(gr);
 
+				// corner / radius
 				int co = CORNER_NONE;
 				int ra = NO_RADIUS;
 				if (corner) co = convertCorner(corner);
 				if (radius) ra = convertRadius(radius);
 				widget->setCorner(ra, co);
-				widget->setBorderMode(border);
+				
+				// border
+				int br = BORDER_NO;
+				if (border) br = convertBorder(border);
+				widget->setBorderMode(br);
+				
+				// saveScreen
 				if (savescreen) widget->enableSaveScreen();
+				
+				// timeout
 				widget->setTimeOut(timeout);
+				
+				// menuposition
 				int pos = MENU_POSITION_NONE;
 				if (position) pos = convertMenuPosition(position);
 				widget->setMenuPosition(pos);
@@ -2634,9 +2666,8 @@ CWidget *CNeutrinoApp::parseCWidget(const char * const filename, const char * co
 	
 	return ret;
 }
-*/
 
-//
+/*
 bool CNeutrinoApp::parseSkinInputXml(const char* const filename, bool xml_data)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseSkinInputXml: %s\n", filename);
@@ -2663,13 +2694,31 @@ bool CNeutrinoApp::parseSkinInputXml(const char* const filename, bool xml_data)
 	
 	return ret;
 }
+*/
 
 // parseSkin
+/*
 bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::parseSkin: %s\n", filename);
 	
-	parseSkinInputXml(filename, xml_data);
+	//parseSkinInputXml(filename, xml_data);
+	_xmlDocPtr parser = NULL;
+	
+	if(parser) 
+	{
+		delete parser;
+		parser = NULL;
+	}
+
+	if (xml_data)
+	{
+		parser = parseXml(filename);
+	}
+	else
+	{
+		parser = parseXmlFile(filename);
+	}
 	
 	if (parser)
 	{			
@@ -2819,8 +2868,10 @@ bool CNeutrinoApp::parseSkin(const char* const filename, bool xml_data)
 	
 	return true;
 }
+*/
 
 // getWidget
+/*
 CWidget* CNeutrinoApp::getWidget(const char* const name)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::getWidget: %s\n", name);
@@ -2838,25 +2889,28 @@ CWidget* CNeutrinoApp::getWidget(const char* const name)
 	
 	return ret;
 }
-/*
-bool CNeutrinoApp::widget_exists(const char* const name)
+*/
+
+CWidget *CNeutrinoApp::getWidget(const char *const widgetname, const char *const skinfile, const bool data)
 {
-	bool ret = false;
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::getWidget: %s\n", widgetname);
 	
-	for (unsigned int i = 0; i < (unsigned int )widgets.size(); i++)
+	CWidget* ret = NULL;
+	
+	if (skinfile != NULL)
+		ret = parseCWidget(skinfile, widgetname, data);
+	else
 	{
-		if ( (widgets[i] != NULL) && (widgets[i]->name == name) )
-		{
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::widget_exists: (%s)\n", name);
-			
-			ret = true;
-			break;
-		}
+		std::string skinFileName = CONFIGDIR "/skins/";
+		skinFileName += g_settings.preferred_skin.c_str();
+		skinFileName += "/skin.xml";
+		
+		ret = parseCWidget(skinFileName.c_str(), widgetname);
 	}
 	
 	return ret;
 }
-*/
+
 // eraseWidget
 bool CNeutrinoApp::eraseWidget(const char* const name)
 {
@@ -2897,7 +2951,7 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	std::string skinFileName = skinPath.c_str();
 	skinFileName += "/skin.xml";
 	
-	if (parseSkin(skinFileName.c_str()))
+	//if (parseSkin(skinFileName.c_str()))
 	{
 		// read skin font/icons/buttons/hints
 		std::string fontFileName;
