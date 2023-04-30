@@ -41,8 +41,6 @@
 class CProxySetup : public CMenuTarget
 {
 	private:
-		//int width;
-
 		std::string menue_title;
 		std::string menue_icon;
 
