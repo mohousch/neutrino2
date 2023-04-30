@@ -263,6 +263,18 @@ bool CFlashUpdate::selectHttpImage(void)
 	}
 		
 	widget->exec(NULL, "");
+	
+	if (SelectionWidget)
+	{
+		delete SelectionWidget;
+		SelectionWidget = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 
 	if (selected == -1)
 		return false;
@@ -744,6 +756,18 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 	
 	//
 	widget->exec(NULL, "");
+	
+	if (mtdselector)
+	{
+		delete mtdselector;
+		mtdselector = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 void CFlashExpert::showFileSelector(const std::string & actionkey)
@@ -814,6 +838,18 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 
 	//
 	widget->exec(NULL, "");
+	
+	if (fileselector)
+	{
+		delete fileselector;
+		fileselector = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 int CFlashExpert::exec(CMenuTarget* parent, const std::string & actionKey)
@@ -876,14 +912,6 @@ int CFlashExpert::exec(CMenuTarget* parent, const std::string & actionKey)
 }
 
 //
-CUpdateSettings::CUpdateSettings()
-{
-}
-
-CUpdateSettings::~CUpdateSettings()
-{
-}
-
 int CUpdateSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CUpdateSettings::exec: actionKey:%s\n", actionKey.c_str());
@@ -893,13 +921,7 @@ int CUpdateSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	if(parent)
 		parent->hide();
 	
-	if(actionKey == "savesettings")
-	{
-		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		
-		return ret;
-	}
-	else if (actionKey == "update_dir")
+	if (actionKey == "update_dir")
 	{
 		if(parent)
 			parent->hide();
@@ -972,7 +994,7 @@ void CUpdateSettings::showMenu()
 	updateSettings->addItem(new CMenuSeparator(LINE));
 	
 	// save settings
-	updateSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	updateSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	updateSettings->addItem( new CMenuSeparator(LINE) );
 
 	// 
@@ -1071,6 +1093,30 @@ void CUpdateSettings::showMenu()
 	
 	//
 	widget->exec(NULL, "");
+	
+	if (mtdexpert)
+	{
+		delete mtdexpert;
+		mtdexpert = NULL;
+	}
+	
+	if (mtdexpertWidget)
+	{
+		delete mtdexpertWidget;
+		mtdexpertWidget = NULL;
+	}
+	
+	if (updateSettings)
+	{
+		delete updateSettings;
+		updateSettings = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 	
 	delete fe;
 }

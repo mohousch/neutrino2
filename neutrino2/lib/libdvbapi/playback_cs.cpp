@@ -453,7 +453,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 #if defined (USE_OPENGL) //FIXME: ???	
 		case GST_MESSAGE_ELEMENT:
 		{
-#if 0
+#ifdef USE_OVERLAY
 #if GST_VERSION_MAJOR < 1
 			if( gst_structure_has_name(gst_message_get_structure(msg), "prepare-xwindow-id") || gst_structure_has_name(gst_message_get_structure(msg), "have-xwindow-id") )
 #else

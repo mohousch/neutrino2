@@ -349,6 +349,18 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	widget->getString();
 
         widget->exec(NULL, "");
+        
+        if (menu)
+        {
+        	delete menu;
+        	menu = NULL;
+        }
+        
+        if (widget)
+        {
+        	delete widget;
+        	widget = NULL;
+        }
 
         return RETURN_REPAINT;
 }

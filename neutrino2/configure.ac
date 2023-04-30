@@ -56,6 +56,15 @@ PKG_CHECK_MODULES(GL, gl)
 PKG_CHECK_MODULES(GLEW, glew)
 fi
 
+# gstreamer / opengl overlay
+AC_ARG_ENABLE(overlay,
+	AS_HELP_STRING(--enable-overlay, include gstreamer overlay window into opengl window),
+	,[enable_overlay=no])
+	
+if test "$enable_overlay" = "yes"; then
+AC_DEFINE(USE_OVERLAY,1,[include overlay])
+fi
+
 # gstreamer
 AC_ARG_ENABLE(gstreamer,
 	AS_HELP_STRING(--enable-gstreamer,include gstreamer as player engine support),

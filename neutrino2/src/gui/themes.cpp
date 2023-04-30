@@ -254,6 +254,18 @@ int CThemes::Show()
 
 	int res = widget->exec(NULL, "");
 	
+	if (themes)
+	{
+		delete themes;
+		themes = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	} 
+	
 	return res;
 }
 

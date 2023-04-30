@@ -48,9 +48,6 @@ class CStreamInfo : public CMenuTarget
 		int height;
 		int hheight,iheight,sheight; 	// head/info/small font height
 
-		//int  max_height;	// Frambuffer 0.. max
-		//int  max_width;	
-
 		int yypos;
 		int  paint_mode;
 

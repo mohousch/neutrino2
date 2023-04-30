@@ -108,7 +108,11 @@ CStreamInfo::CStreamInfo()
 
 CStreamInfo::~CStreamInfo()
 {
-	//videoDecoder->Pig(-1, -1, -1, -1);
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 int CStreamInfo::exec(CMenuTarget * parent, const std::string&)
@@ -119,24 +123,6 @@ int CStreamInfo::exec(CMenuTarget * parent, const std::string&)
 		parent->hide();
 		
 	//
-	widget = CNeutrinoApp::getInstance()->getWidget("streaminfo");
-	
-	if (widget == NULL)
-	{
-		widget = new CWidget(x, y, width, height);
-		widget->name = "streaminfo";
-		widget->paintMainFrame(true);
-	}
-	
-	// recalculate
-	if (widget)
-	{
-		x = widget->getWindowsPos().iX;
-		y = widget->getWindowsPos().iY;
-		width = widget->getWindowsPos().iWidth;
-		height = widget->getWindowsPos().iHeight;
-	}
-
 	paint(paint_mode);
 	doSignalStrengthLoop();
 	
@@ -341,6 +327,12 @@ int CStreamInfo::doSignalStrengthLoop()
 void CStreamInfo::hide ()
 {
 	widget->hide();
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 void CStreamInfo::paint_signal_fe_box(int _x, int _y, int w, int h)
@@ -501,6 +493,25 @@ void CStreamInfo::paint(int /*mode*/)
 	const char * head_string;
 	int ypos = y + 5;
 	int xpos = x + 10;
+	
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("streaminfo");
+	
+	if (widget == NULL)
+	{
+		widget = new CWidget(x, y, width, height);
+		widget->name = "streaminfo";
+		widget->paintMainFrame(true);
+	}
+	
+	// recalculate
+	if (widget)
+	{
+		x = widget->getWindowsPos().iX;
+		y = widget->getWindowsPos().iY;
+		width = widget->getWindowsPos().iWidth;
+		height = widget->getWindowsPos().iHeight;
+	}
 	
 	//
 	widget->paint();

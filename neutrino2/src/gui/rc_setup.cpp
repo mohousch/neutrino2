@@ -217,6 +217,18 @@ void CRemoteControlSettings::showMenu()
 	
 	//
 	widget->exec(NULL, "");
+	
+	if (remoteControlSettings)
+	{
+		delete remoteControlSettings;
+		remoteControlSettings = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 // keys binding settings
@@ -376,6 +388,18 @@ void CKeysBindingSettings::showMenu()
 	
 	//
 	widget->exec(NULL, "");
+	
+	if (bindSettings)
+	{
+		delete bindSettings;
+		bindSettings = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 // key setup notifier

@@ -74,7 +74,6 @@ class CFlashUpdate : public CMenuTarget
 	public:
 		CFlashUpdate(int uMode);
 		int exec( CMenuTarget * parent, const std::string & actionKey );
-
 };
 
 // CFlashExppert
@@ -103,10 +102,11 @@ class CUpdateSettings : public CMenuTarget
 		void showMenu();
 	
 	public:
-		CUpdateSettings();
-		~CUpdateSettings();
+		CUpdateSettings(){};
+		~CUpdateSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
 #endif
+
