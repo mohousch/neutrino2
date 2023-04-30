@@ -193,6 +193,7 @@ void GLThreadObj::setupOSDBuffer()
 
 void GLThreadObj::setupGLObjects()
 {
+	// osd
 	glGenTextures(1, &mState.osdtex);
 	glGenTextures(1, &mState.displaytex);
 	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
@@ -201,6 +202,7 @@ void GLThreadObj::setupGLObjects()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
+	// display
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex); /* we do not yet know the size so will set that inline */
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -208,6 +210,13 @@ void GLThreadObj::setupGLObjects()
 
 	glGenBuffers(1, &mState.osdpbo);
 	glGenBuffers(1, &mState.displaypbo);
+	
+	//
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER, mOSDBuffer.size(), &mOSDBuffer[0], GL_STREAM_DRAW_ARB);
+	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 }
 
 void GLThreadObj::releaseGLObjects()
@@ -286,9 +295,6 @@ void GLThreadObj::render()
 	
 	if(mX != glutGet(GLUT_WINDOW_WIDTH) && mY != glutGet(GLUT_WINDOW_HEIGHT))
 		glutReshapeWindow(mX, mY);
-	
-	// video display
-	bltDisplayBuffer();
 
 	// OSD
 	if (mState.blit) 
@@ -319,7 +325,7 @@ void GLThreadObj::render()
 	}
 
 	// simply limit to 30 Hz, if anyone wants to do this properly, feel free
-	usleep(sleep_us);
+	//usleep(sleep_us);
 	
 	glutPostRedisplay();
 }
@@ -382,7 +388,7 @@ void GLThreadObj::waitInit()
 {
 	while(!mInitDone)
 	{
-		usleep(1);
+		//usleep(1);
 	}
 }
 
@@ -397,24 +403,6 @@ void GLThreadObj::bltOSDBuffer()
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mState.width, mState.height, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-}
-
-void GLThreadObj::bltDisplayBuffer()
-{
-	// set displayer buffer
-	mDisplayBuffer.resize(5*1024*1024);
-
-	//dprintf(DEBUG_NORMAL, "GLThreadObj::bltDisplayBuffer: DisplayBuffer set to %d bytes\n", 5*1024*1024);
-	
-	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
-	glBufferData(GL_PIXEL_UNPACK_BUFFER, mDisplayBuffer.size(), &mDisplayBuffer[0], GL_STREAM_DRAW_ARB);
-
-	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mState.width, mState.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-
-	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-	
-	sleep_us = 1;
 }
 
 void GLThreadObj::clear()

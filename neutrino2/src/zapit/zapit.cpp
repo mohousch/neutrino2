@@ -173,9 +173,6 @@ CZapitChannel * live_channel = NULL;
 // record channel
 CZapitChannel * rec_channel = NULL;
 
-// transponder scan xml input
-xmlDocPtr scanInputParser = NULL;
-
 // bouquet manager
 CBouquetManager * g_bouquetManager = NULL;
 
@@ -1810,38 +1807,6 @@ int CZapit::prepareChannels()
 	g_bouquetManager->loadBouquets();		// 2004.08.02 g_bouquetManager->storeBouquets();
 
 	return 0;
-}
-
-void CZapit::parseScanInputXml(fe_type_t fe_type)
-{
-	if(scanInputParser) 
-	{
-		delete scanInputParser;
-		scanInputParser = NULL;
-	}
-		
-	switch (fe_type) 
-	{
-		case FE_QPSK:
-			scanInputParser = parseXmlFile(SATELLITES_XML);
-			break;
-				
-		case FE_QAM:
-			scanInputParser = parseXmlFile(CABLES_XML);
-			break;
-
-		case FE_OFDM:
-			scanInputParser = parseXmlFile(TERRESTRIALS_XML);
-			break;
-
-		case FE_ATSC:
-		    	scanInputParser = parseXmlFile(ATSC_XML);
-		    	break;
-			
-		default:
-			dprintf(DEBUG_INFO, "CZapit::parseScanInputXml: Unknown type %d\n", fe_type);
-			return;
-	}
 }
 
 //
@@ -4234,102 +4199,113 @@ void * CZapit::scanThread(void * data)
 	dprintf(DEBUG_NORMAL, "CZapit::scanThread: fe(%d) scan mode %s, satellites %s\n", feindex, scanMode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
 
 	fake_tid = fake_nid = 0;
+	
+	//
+	xmlDocPtr scanInputParser = NULL;
 
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 	{
 		frontendType = (char *) "cable";
+		scanInputParser = parseXmlFile(CABLES_XML);
 	}
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
 		frontendType = (char *) "terrestrial";
+		scanInputParser = parseXmlFile(TERRESTRIALS_XML);
 	}
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 	{
 		frontendType = (char *) "sat";
+		scanInputParser = parseXmlFile(SATELLITES_XML);
 	}
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 	{
 		frontendType = (char *) "atsc";
+		scanInputParser = parseXmlFile(ATSC_XML);
 	}
 	
 	// get provider position and name
-	CZapit::getInstance()->parseScanInputXml(CZapit::getInstance()->getFE(feindex)->getInfo()->type);
-	
-	xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
-
-	// read all sat or cable sections
-	while ( (search = xmlGetNextOccurence(search, frontendType)) != NULL ) 
+	if (scanInputParser)
 	{
-		t_satellite_position position = xmlGetSignedNumericAttribute(search, "position", 10);
-	
-		if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC) )
-		{
-			strcpy(providerName, xmlGetAttribute(search, const_cast<char*>("name")));
-			
-			for (spI = scanProviders.begin(); spI != scanProviders.end(); spI++)
-			{
-				if (!strcmp(spI->second.c_str(), providerName))
-				{
-					// position needed because multi tuner if pos == 0 scan_provider() will abort
-					position = spI->first;
+		xmlNodePtr search = xmlDocGetRootElement(scanInputParser)->xmlChildrenNode;
 
-					break;
+		// read all sat or cable sections
+		while ( (search = xmlGetNextOccurence(search, frontendType)) != NULL ) 
+		{
+			t_satellite_position position = xmlGetSignedNumericAttribute(search, "position", 10);
+		
+			if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) || ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC) )
+			{
+				strcpy(providerName, xmlGetAttribute(search, const_cast<char*>("name")));
+				
+				for (spI = scanProviders.begin(); spI != scanProviders.end(); spI++)
+				{
+					if (!strcmp(spI->second.c_str(), providerName))
+					{
+						// position needed because multi tuner if pos == 0 scan_provider() will abort
+						position = spI->first;
+
+						break;
+					}
+				}
+			} 
+			else //sat
+			{
+				for (spI = scanProviders.begin(); spI != scanProviders.end(); spI++)
+				{
+					if(spI->first == position)
+						break;
 				}
 			}
-		} 
-		else //sat
-		{
-			for (spI = scanProviders.begin(); spI != scanProviders.end(); spI++)
+
+			// provider is not wanted - jump to the next one
+			if (spI != scanProviders.end()) 
 			{
-				if(spI->first == position)
+				// get name of current satellite oder cable provider
+				strcpy(providerName, xmlGetAttribute(search,  "name"));
+
+				// satfeed
+				if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) && xmlGetAttribute(search, "satfeed") )
+				{
+					if (!strcmp(xmlGetAttribute(search, "satfeed"), "true"))
+						satfeed = true;
+				}
+
+				// increase sat counter
+				curr_sat++;
+
+				scantransponders.clear();
+				scanedtransponders.clear();
+				nittransponders.clear();
+
+				dprintf(DEBUG_INFO, "CZapit::scanThread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
+					
+				if ( !CScan::getInstance()->scanProvider(search, position, diseqc_pos, satfeed, feindex) )
+				{
+					found_channels = 0;
 					break;
+				}
+						
+				if(abort_scan) 
+				{
+					found_channels = 0;
+					break;
+				}
+
+				if(scanBouquetManager->Bouquets.size() > 0) 
+				{
+					scanBouquetManager->saveBouquets(_bouquetMode, providerName);
+				}
+						
+				scanBouquetManager->clearAll();
 			}
+
+			// go to next satellite
+			search = search->xmlNextNode;
 		}
-
-		// provider is not wanted - jump to the next one
-		if (spI != scanProviders.end()) 
-		{
-			// get name of current satellite oder cable provider
-			strcpy(providerName, xmlGetAttribute(search,  "name"));
-
-			// satfeed
-			if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) && xmlGetAttribute(search, "satfeed") )
-			{
-				if (!strcmp(xmlGetAttribute(search, "satfeed"), "true"))
-					satfeed = true;
-			}
-
-			// increase sat counter
-			curr_sat++;
-
-			scantransponders.clear();
-			scanedtransponders.clear();
-			nittransponders.clear();
-
-			dprintf(DEBUG_INFO, "CZapit::scanThread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
-				
-			if ( !CScan::getInstance()->scanProvider(search, position, diseqc_pos, satfeed, feindex) )
-			{
-				found_channels = 0;
-				break;
-			}
-					
-			if(abort_scan) 
-			{
-				found_channels = 0;
-				break;
-			}
-
-			if(scanBouquetManager->Bouquets.size() > 0) 
-			{
-				scanBouquetManager->saveBouquets(_bouquetMode, providerName);
-			}
-					
-			scanBouquetManager->clearAll();
-		}
-
-		// go to next satellite
-		search = search->xmlNextNode;
+		
+		xmlFreeDoc(scanInputParser);
+		scanInputParser = NULL;
 	}
 
 	// report status

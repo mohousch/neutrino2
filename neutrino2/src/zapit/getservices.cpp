@@ -51,7 +51,7 @@
 #include <driver/encoding.h>
 
 
-extern xmlDocPtr scanInputParser;				// defined in zapit.cpp
+//
 extern transponder_list_t transponders;				// defined in zapit.cpp
 extern tallchans allchans;					// defined in zapit.cpp
 extern int scanSDT;						// defined in zapit.cpp
@@ -542,10 +542,13 @@ int CServices::loadTransponders()
 		satellitePositions.clear();
 
 	satcleared = 1;
+	
+	xmlDocPtr scanInputParser = NULL;
 		
 	if (have_s)
 	{
-		CZapit::getInstance()->parseScanInputXml(FE_QPSK);
+		//CZapit::getInstance()->parseScanInputXml(FE_QPSK);
+		scanInputParser = parseXmlFile(SATELLITES_XML);
 			
 		if ( scanInputParser != NULL ) 
 		{
@@ -581,12 +584,16 @@ int CServices::loadTransponders()
 				
 				search = search->xmlNextNode;
 			}
+			
+			xmlFreeDoc(scanInputParser);
+			scanInputParser = NULL;
 		}
 	}
 	
 	if (have_c)
 	{
-		CZapit::getInstance()->parseScanInputXml(FE_QAM);
+		//CZapit::getInstance()->parseScanInputXml(FE_QAM);
+		scanInputParser = parseXmlFile(CABLES_XML);
 			
 		if ( scanInputParser != NULL ) 
 		{
@@ -620,12 +627,16 @@ int CServices::loadTransponders()
 				
 				search = search->xmlNextNode;
 			}
+			
+			xmlFreeDoc(scanInputParser);
+			scanInputParser = NULL;
 		}
 	}
 	
 	if (have_t)
 	{
-		CZapit::getInstance()->parseScanInputXml(FE_OFDM);
+		//CZapit::getInstance()->parseScanInputXml(FE_OFDM);
+		scanInputParser = parseXmlFile(TERRESTRIALS_XML);
 			
 		if ( scanInputParser != NULL ) 
 		{
@@ -659,12 +670,16 @@ int CServices::loadTransponders()
 				
 				search = search->xmlNextNode;
 			}
+			
+			xmlFreeDoc(scanInputParser);
+			scanInputParser = NULL;
 		}
 	}
 	
 	if (have_a)
 	{
-		CZapit::getInstance()->parseScanInputXml(FE_ATSC);
+		//CZapit::getInstance()->parseScanInputXml(FE_ATSC);
+		scanInputParser = parseXmlFile(ATSC_XML);
 			
 		if ( scanInputParser != NULL ) 
 		{
@@ -697,6 +712,9 @@ int CServices::loadTransponders()
 				
 				search = search->xmlNextNode;
 			}
+			
+			xmlFreeDoc(scanInputParser);
+			scanInputParser = NULL;
 		}
 	}
 	

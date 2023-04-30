@@ -567,6 +567,19 @@ void CBouquetList::paint()
 	dprintf(DEBUG_NORMAL, "CBouquetList::paint\n");
 	
 	//
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (bqWidget)
+	{
+		delete bqWidget;
+		bqWidget = NULL;
+	}
+	
+	//
 	bqWidget = CNeutrinoApp::getInstance()->getWidget("bouquetlist");
 	
 	if (bqWidget)

@@ -328,8 +328,6 @@ class CZapit
 		void setZapitConfig(Zapit_config * Cfg);
 		void getZapitConfig(Zapit_config *Cfg);
 		
-		void parseScanInputXml(fe_type_t fe_type);
-		
 		bool CanZap(CZapitChannel * thischannel);
 		
 		//

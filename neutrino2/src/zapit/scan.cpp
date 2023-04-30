@@ -64,7 +64,6 @@ extern t_channel_id live_channel_id;
 extern CZapit::bouquetMode _bouquetMode;
 extern CEventServer *eventServer;
 extern CFrontend * live_fe;
-extern xmlDocPtr scanInputParser;
 
 //
 int prov_found = 0;

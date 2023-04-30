@@ -579,6 +579,7 @@ void EventList::hide()
 {
 	evlWidget->hide();
 	
+	//
 	if (listBox)
 	{
 		delete listBox;
@@ -635,6 +636,19 @@ struct button_label HeadButtons[3] =
 void EventList::paint(t_channel_id channel_id)
 {
 	dprintf(DEBUG_NORMAL, "EventList::paint\n");
+	
+	//
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (evlWidget)
+	{
+		delete evlWidget;
+		evlWidget = NULL;
+	}
 	
 	//
 	evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");

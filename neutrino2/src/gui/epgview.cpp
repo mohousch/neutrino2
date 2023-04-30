@@ -466,6 +466,43 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	 
 	if(a_startzeit)
 		startzeit = *a_startzeit;
+		
+	//
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+	
+	if (textBox)
+	{
+		delete textBox;
+		textBox = NULL;
+	}
+	
+	if (headers)
+	{
+		delete headers;
+		headers = NULL;
+	}
+	
+	if (footers)
+	{
+		delete footers;
+		footers = NULL;
+	}
+	
+	if (cFollowScreeningWindow)
+	{
+		delete cFollowScreeningWindow;
+		cFollowScreeningWindow = NULL;
+	}
+	
+	if (audioIcon)
+	{
+		delete audioIcon;
+		audioIcon = NULL;
+	}
 	
 	id = a_id;
 

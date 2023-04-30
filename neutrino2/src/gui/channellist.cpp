@@ -981,7 +981,7 @@ void CChannelList::hide()
 		
 	frameBuffer->blit();
 	
-	////
+	//
 	if (hline)
 	{
 		delete hline;
@@ -1023,7 +1023,6 @@ void CChannelList::hide()
 		delete chWidget;
 		chWidget = NULL;
 	}
-	////
 }
 
 bool CChannelList::showInfo(int pos, int epgpos)
@@ -1674,7 +1673,49 @@ void CChannelList::paint()
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::paint\n");
 	
-	////
+	//
+	if (hline)
+	{
+		delete hline;
+		hline = NULL;
+	}
+	
+	if (vline)
+	{
+		delete vline;
+		vline = NULL;
+	}
+	
+	if (foot)
+	{
+		delete foot;
+		foot = NULL;
+	}
+	
+	if (head)
+	{
+		delete head;
+		head = NULL;
+	}
+	
+	if (window)
+	{
+		delete window;
+		window = NULL;
+	}
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (chWidget)
+	{
+		delete chWidget;
+		chWidget = NULL;
+	}
+	
 	//
 	chWidget = CNeutrinoApp::getInstance()->getWidget("channellist");
 	
