@@ -66,8 +66,17 @@ CImageInfo::CImageInfo()
 
 CImageInfo::~CImageInfo()
 { 
-	delete widget;
-	widget = NULL;
+	if (window)
+	{
+		delete window;
+		window = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 int CImageInfo::exec(CMenuTarget *parent, const std::string&)
@@ -77,7 +86,59 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 	if (parent)
  		parent->hide();
  		
- 	//
+	//
+	paint();
+
+	frameBuffer->blit();	
+
+	widget->exec(NULL, "");
+
+	hide();
+
+	return RETURN_REPAINT;
+}
+
+void CImageInfo::hide()
+{
+	widget->hide();
+	
+	if (window)
+	{
+		delete window;
+		window = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+}
+
+void CImageInfo::paintLine(int xpos, int font, const char* text)
+{
+	char buf[100];
+	sprintf((char*) buf, "%s", text);
+	
+	g_Font[font]->RenderString(xpos, ypos, width - BORDER_RIGHT, buf, COL_INFOBAR, 0, true);
+}
+
+void CImageInfo::paint()
+{
+	//
+	if (window)
+	{
+		delete window;
+		window = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+	
+	//
  	widget = CNeutrinoApp::getInstance()->getWidget("imageinfo");
  	
 	if (widget == NULL)
@@ -99,33 +160,7 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 		
 		window->setPosition(x, y, width, height);
 	}
-
-	paint();
-
-	frameBuffer->blit();	
-
-	widget->exec(NULL, "");
-
-	hide();
-
-	return RETURN_REPAINT;
-}
-
-void CImageInfo::hide()
-{
-	widget->hide();
-}
-
-void CImageInfo::paintLine(int xpos, int font, const char* text)
-{
-	char buf[100];
-	sprintf((char*) buf, "%s", text);
 	
-	g_Font[font]->RenderString(xpos, ypos, width - BORDER_RIGHT, buf, COL_INFOBAR, 0, true);
-}
-
-void CImageInfo::paint()
-{
 	const char * head_string;
  	int  xpos = x + 10;
 	int x_offset = g_Font[font_info]->getRenderWidth(_("Home page:")) + 10;
@@ -180,11 +215,6 @@ void CImageInfo::paint()
 	paintLine(xpos, font_info, _("Built date: "));
 	paintLine(xpos + x_offset, font_info, _(__DATE__));
 	paintLine(xpos + x_offset + x_offset, font_info, _(__TIME__));
-
-	// git rev
-	//ypos += iheight;
-	//paintLine(xpos, font_info, GIT_REV);
-	//paintLine(xpos + x_offset, font_info, gitrev );	
 	
 	// image type
 	ypos += iheight;

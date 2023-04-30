@@ -61,14 +61,6 @@ const keyval OPTIONS_LASTMODE_OPTIONS[OPTIONS_LASTMODE_OPTION_COUNT] =
         { NeutrinoMessages::mode_radio, "Radio" },
 };
 
-CZapitSetup::CZapitSetup()
-{
-}
-
-CZapitSetup::~CZapitSetup()
-{
-}
-
 int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CZapitSetup::exec: actionKey:%s\n", actionKey.c_str());
@@ -197,7 +189,17 @@ void CZapitSetup::showMenu()
 	//
 	widget->exec(NULL, "");
 	
-	delete zapit;
+	if (zapit)
+	{
+		delete zapit;
+		zapit = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 //

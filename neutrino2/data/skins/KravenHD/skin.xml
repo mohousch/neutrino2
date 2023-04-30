@@ -5,149 +5,76 @@
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
 	<WIDGET name="mainmenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LABEL posx="640" posy="50" width="640" height="50" text="Main Menu" halign="1">
-		</LABEL>
-		
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-		
+		<LABEL posx="640" posy="50" width="640" height="50" text="Main Menu" halign="1"/>
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1"/>
 	</WIDGET>
 	
 	<WIDGET name="settings" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LABEL posx="640" posy="50" width="640" height="50" text="Settings" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-		
+		<LABEL posx="640" posy="50" width="640" height="50" text="Settings" halign="1"/>	
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1"/>
 	</WIDGET>
 	
 	<WIDGET name="osd" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LABEL posx="640" posy="50" width="640" height="50" text="OSD" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-		
+		<LABEL posx="640" posy="50" width="640" height="50" text="OSD" halign="1"/>	
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1"/>
 	</WIDGET>
 	
 	<WIDGET name="epgtimer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LABEL posx="640" posy="50" width="640" height="50" text="EPG / Timer" halign="1">
-		</LABEL>
-		
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-		
+		<LABEL posx="640" posy="50" width="640" height="50" text="EPG / Timer" halign="1"/>
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1"/>
 	</WIDGET>
 	
 	<WIDGET name="features" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LABEL posx="640" posy="50" width="640" height="50" text="Features" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-		
+		<LABEL posx="640" posy="50" width="640" height="50" text="Features" halign="1"/>	
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" itemlines="1"/>
 		<KEY name="RC_blue" target="neutrino" actionkey="plugins"> 
 		</KEY>
 	</WIDGET>
 	
 	<WIDGET name="system" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LABEL posx="640" posy="50" width="640" height="50" text="System" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-		
+		<LABEL posx="640" posy="50" width="640" height="50" text="System" halign="1"/>	
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1"/>
 	</WIDGET>
 	
 	<WIDGET name="powermenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LABEL posx="640" posy="50" width="640" height="50" text="Power Menu" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-		
+		<LABEL posx="640" posy="50" width="640" height="50" text="Power Menu" halign="1"/>	
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1"/>
 	</WIDGET>
 	
 	<WIDGET name="information" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LABEL posx="640" posy="50" width="640" height="50" text="Information" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-		
+		<LABEL posx="640" posy="50" width="640" height="50" text="Information" halign="1"/>	
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1"/>
 	</WIDGET>
 	
 	<WIDGET name="mediaplayer" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LABEL posx="640" posy="50" width="640" height="50" text="Media Player" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
-		
+		<LABEL posx="640" posy="50" width="640" height="50" text="Media Player" halign="1"/>	
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1"/>
 	</WIDGET>
 	
@@ -196,35 +123,19 @@
 	</WIDGET>
 	
 	<WIDGET name="tunersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="Servicescan" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1"/>
+		<LABEL posx="640" posy="50" width="640" height="50" text="Servicescan" halign="1"/>
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="scansetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="Scan transponder" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1"/>
+		<LABEL posx="640" posy="50" width="640" height="50" text="Scan transponder" halign="1"/>	
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="transponder" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
@@ -768,19 +679,11 @@
 	</WIDGET>
 	
 	<WIDGET name="zapitsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="Start Channel settings" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1"/>
+		<LABEL posx="640" posy="50" width="640" height="50" text="Start Channel settings" halign="1"/>	
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="filebrowsersetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
@@ -1024,98 +927,53 @@
 	</WIDGET>
 	
 	<WIDGET name="optionstringchooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="600" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1" painthead="1">
-		</LISTBOX>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="600" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1" painthead="1"/>
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="optionchooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="600" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1" painthead="1">
-		</LISTBOX>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="600" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1" painthead="1"/>	
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="keychooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="600" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1" painthead="1">
-		</LISTBOX>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="600" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1" painthead="1"/>
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="mountchooser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="600" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1" painthead="1">
-		</LISTBOX>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="600" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1" painthead="1"/>
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="usermenu" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" itemborder="1" painthead="1">
-		</LISTBOX>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="540" height="620" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" itemborder="1" painthead="1"/>
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="bouquetlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" itemborder="1">
-		</LISTBOX>
-			
-		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" itemborder="1"/>	
+		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
+		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="channellist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" itemborder="1"/>
-		
 		<HEAD posx="50" posy="0" width="1180" height="50" paintframe="0" line="1"/>
 		<FOOT posx="50" posy="670" width="1180" height="50" paintframe="0" line="1"/>
-		
 		<WINDOW posx="890" posy="50" width="340" height="620"/>
-		<HLINE posx="900" posy="360" width="320" height="2" gradient="DARK2LIGHT2DARK"/>
-			
+		<HLINE posx="900" posy="360" width="320" height="2" gradient="DARK2LIGHT2DARK"/>	
 		<VLINE posx="890" posy="60" width="2" height="600" gradient="DARK2LIGHT2DARK"/>
 	</WIDGET>
 	
@@ -1159,17 +1017,10 @@
 	</WIDGET>
 	
 	<WIDGET name="filebrowser" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" itemborder="1">
-		</LISTBOX>
-			
-		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" itemborder="1"/>	
+		<IMAGE posx="890" posy="150" width="390" height="300" image="background/logo.png"/>
+		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
 	<WIDGET name="boxinfo" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">

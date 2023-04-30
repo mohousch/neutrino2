@@ -46,6 +46,8 @@
 
 CMountChooser::CMountChooser(const char* const Name, const std::string& Icon, int* chosenIndex, char* chosenLocalDir, const char* const selectedLocalDir, const int mwidth, const int mheight)
 {
+	dprintf(DEBUG_NORMAL, "CMountChooser::CMountChooser: name (%s)\n", Name);
+	
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("mountchooser");
 		
@@ -103,6 +105,23 @@ CMountChooser::CMountChooser(const char* const Name, const std::string& Icon, in
 	}	
 }
 
+CMountChooser::~CMountChooser()
+{
+	dprintf(DEBUG_NORMAL, "CMountChooser::~CMountChooser: del\n\n");
+	
+	if (menu)
+	{
+		delete menu;
+		menu = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+}
+
 int CMountChooser::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMountChooser::exec: actionKey:%s\n", actionKey.c_str());
@@ -135,7 +154,7 @@ int CMountChooser::exec(CMenuTarget* parent, const std::string& actionKey)
 
 void CMountChooser::setSelectedItem(int selection)
 {
-	//selected = selection;
+	menu->setSelected(selection);
 }
 
 bool CMountChooser::hasItem()
@@ -150,6 +169,4 @@ bool CMountChooser::hasItem()
 	
 	return ret;
 }
-
-
 

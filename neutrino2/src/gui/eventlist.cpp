@@ -44,9 +44,6 @@
 
 #include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
-#include <gui/widget/mountchooser.h>
-
-//#include <gui/pictureviewer.h>
 
 #include <global.h>
 #include <neutrino2.h>
@@ -126,6 +123,18 @@ EventList::EventList()
 EventList::~EventList()
 {
 	evtlist.clear();
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (evlWidget)
+	{
+		delete evlWidget;
+		evlWidget = NULL;
+	}
 }
 
 void EventList::readEvents(const t_channel_id channel_id)
@@ -246,25 +255,6 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 	
 	//
 	readEvents(channel_id);
-	
-	//
-	evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
-	
-	if (evlWidget)
-	{
-		listBox = (ClistBox*)evlWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		evlWidget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		listBox->enablePaintHead();
-		listBox->enablePaintDate();
-		
-		evlWidget->name = "eventlist";
-		evlWidget->addWidgetItem(listBox);
-	}
 
 	//
 	paint(channel_id);
@@ -588,6 +578,18 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 void EventList::hide()
 {
 	evlWidget->hide();
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (evlWidget)
+	{
+		delete evlWidget;
+		evlWidget = NULL;
+	}
 }
 
 CTimerd::CTimerEventTypes EventList::isScheduled(t_channel_id channel_id, CChannelEvent * event, int * tID)
@@ -633,6 +635,25 @@ struct button_label HeadButtons[3] =
 void EventList::paint(t_channel_id channel_id)
 {
 	dprintf(DEBUG_NORMAL, "EventList::paint\n");
+	
+	//
+	evlWidget = CNeutrinoApp::getInstance()->getWidget("eventlist");
+	
+	if (evlWidget)
+	{
+		listBox = (ClistBox*)evlWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		evlWidget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+		
+		evlWidget->name = "eventlist";
+		evlWidget->addWidgetItem(listBox);
+	}
 
 	listBox->clear();
 
@@ -1019,6 +1040,9 @@ int CEventFinderMenu::showMenu(void)
         searchMenu->addItem(mf0);
 	
 	res = widget->exec(NULL, "");
+	
+	delete searchMenu;
+	searchMenu = NULL;
 	delete widget;
 	widget = NULL;	
 	

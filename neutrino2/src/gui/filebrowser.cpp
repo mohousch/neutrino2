@@ -200,6 +200,17 @@ void CFileBrowser::commonInit()
 
 CFileBrowser::~CFileBrowser()
 {
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 CFile * CFileBrowser::getSelectedFile()
@@ -337,22 +348,6 @@ bool CFileBrowser::exec(const char * const dirname)
 
 	bool res = false;
 	exit_pressed = false;
-
-	//
-	widget = CNeutrinoApp::getInstance()->getWidget("filebrowser");
-	
-	if (widget)
-	{
-		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		widget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		widget->name = "filebrowser";
-		widget->addWidgetItem(listBox);
-	}	
 
 	name = dirname;
 	std::replace(name.begin(), name.end(), '\\', '/');
@@ -693,12 +688,21 @@ void CFileBrowser::addRecursiveDir(CFileList * re_filelist, std::string rpath, b
 void CFileBrowser::hide()
 {
 	dprintf(DEBUG_NORMAL, "CFileBrowser::hide:\n");
-
-	frameBuffer->paintBackgroundBoxRel(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
-	//listBox->hide();
+	
 	widget->hide();
 	
-	frameBuffer->blit();
+	//
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 const struct button_label FileBrowserButtons[4] =
@@ -718,6 +722,34 @@ const struct button_label HButtons[2] =
 void CFileBrowser::paint()
 {
 	dprintf(DEBUG_NORMAL, "CFileBrowser::paint:\n");
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+	
+	//
+	widget = CNeutrinoApp::getInstance()->getWidget("filebrowser");
+	
+	if (widget)
+	{
+		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		widget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		
+		widget->name = "filebrowser";
+		widget->addWidgetItem(listBox);
+	}	
 
 	listBox->clear();
 
@@ -863,7 +895,8 @@ void CFileBrowser::paint()
 
 	//
 	listBox->setSelected(selected);
-	//listBox->paint();
+	
+	//
 	widget->paint();
 }
 
@@ -923,3 +956,4 @@ void CFileBrowser::recursiveDelete(const char *file)
 	else
 		perror(file);
 }
+

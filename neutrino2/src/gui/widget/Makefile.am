@@ -28,7 +28,8 @@ libneutrino2_gui_widget_a_SOURCES = \
 	listframe.cpp \
 	listbox.cpp \
 	framebox.cpp \
-	widget.cpp
+	widget.cpp \
+	menue.cpp
 
 libneutrino2_gui_widget2_a_SOURCES = \
 	drawable.cpp \
@@ -43,7 +44,3 @@ libneutrino2_gui_widget2_a_SOURCES = \
 	keychooser.cpp \
 	mountchooser.cpp
 	
-libneutrino2_gui_widget2_a_SOURCES += \
-	menue.cpp
-
-

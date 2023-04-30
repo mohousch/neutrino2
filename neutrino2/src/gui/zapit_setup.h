@@ -34,8 +34,8 @@ class CZapitSetup : public CMenuTarget
 		void showMenu();
 
 	public:
-		CZapitSetup();
-		~CZapitSetup();
+		CZapitSetup(){};
+		~CZapitSetup(){};
 		
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 };

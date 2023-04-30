@@ -300,6 +300,11 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		
 		if(select >= 0) 
 			*optionValue = options[select].key;
+			
+		delete menu;
+		menu = NULL;
+		delete widget;
+		widget = NULL;
 	} 
 	else 
 	{
@@ -685,6 +690,11 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		
 		if(select >= 0)
 			strcpy(optionValue, options[select].c_str());
+			
+		delete menu;
+		menu = NULL;
+		delete widget;
+		widget = NULL;
 	} 
 	else 
 	{

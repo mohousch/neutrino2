@@ -188,6 +188,19 @@ CMessageBox::~CMessageBox(void)
 	}
 	
 	hide();
+	
+	//
+	if (headers)
+	{
+		delete headers;
+		headers = NULL;
+	}
+	
+	if (m_cBoxWindow)
+	{
+		delete m_cBoxWindow;
+		m_cBoxWindow = NULL;
+	}
 }
 
 void CMessageBox::init(const char * const Caption, const int Width, const char * const Icon)

@@ -49,7 +49,6 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 {
 	//
 	widget = NULL;
-	//m_cBoxWindow = NULL;
 	headers = NULL;
 		
 	//
@@ -160,6 +159,18 @@ CHintBox::~CHintBox(void)
 	dprintf(DEBUG_INFO, "CHintBox::del: (%s)\n", caption.c_str());
 
 	free(message);
+	
+	if (headers)
+	{
+		delete headers;
+		headers = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 void CHintBox::paint(void)

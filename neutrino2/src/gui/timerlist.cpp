@@ -36,6 +36,8 @@
 #include <config.h>
 #endif
 
+#include <string.h>
+
 #include <global.h>
 #include <neutrino2.h>
 
@@ -76,9 +78,6 @@
 
 
 extern char recDir[255];			// defined in neutrino.cpp
-
-#include <string.h>
-
 
 class CTimerListNewNotifier : public CChangeObserver
 {
@@ -293,6 +292,18 @@ CTimerList::~CTimerList()
 	timerlist.clear();
 
 	delete plugin_chooser;
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (timerlistWidget)
+	{
+		delete timerlistWidget;
+		timerlistWidget = NULL;
+	}
 }
 
 int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
@@ -494,35 +505,6 @@ int CTimerList::show()
 	updateEvents();
 	
 	//
-	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
-	
-	if (timerlistWidget)
-	{
-		listBox = (ClistBox*)timerlistWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		//
-		listBox = new ClistBox(&cFrameBox);
-		
-		// head
-		listBox->enablePaintHead();
-		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
-		listBox->enablePaintDate();
-		listBox->setHeadButtons(&CTimerListHeadButtons, 1);
-
-		// foot
-		listBox->enablePaintFoot();
-		listBox->setFootButtons(TimerListButtons, 4);
-		
-		//
-		timerlistWidget = new CWidget(&cFrameBox);
-		timerlistWidget->name = "timerlist";
-		timerlistWidget->setMenuPosition(MENU_POSITION_CENTER);
-		timerlistWidget->addWidgetItem(listBox);
-	}
-	
-	//
 	paint();
 
 	// add sec timer
@@ -666,11 +648,52 @@ void CTimerList::hide()
 		
 		visible = false;
 	}
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (timerlistWidget)
+	{
+		delete timerlistWidget;
+		timerlistWidget = NULL;
+	}
 }
 
 void CTimerList::paint()
 {
 	dprintf(DEBUG_NORMAL, "CTimerList::paint\n");
+	
+	//
+	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
+	
+	if (timerlistWidget)
+	{
+		listBox = (ClistBox*)timerlistWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		//
+		listBox = new ClistBox(&cFrameBox);
+		
+		// head
+		listBox->enablePaintHead();
+		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
+		listBox->enablePaintDate();
+		listBox->setHeadButtons(&CTimerListHeadButtons, 1);
+
+		// foot
+		listBox->enablePaintFoot();
+		listBox->setFootButtons(TimerListButtons, 4);
+		
+		//
+		timerlistWidget = new CWidget(&cFrameBox);
+		timerlistWidget->name = "timerlist";
+		timerlistWidget->setMenuPosition(MENU_POSITION_CENTER);
+		timerlistWidget->addWidgetItem(listBox);
+	}
 
 	if (listBox) listBox->clearItems();
 
@@ -914,6 +937,7 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 
 int CTimerList::modifyTimer()
 {
+	int res = RETURN_REPAINT;
 	selected = listBox->getSelected();
 
 	CTimerd::responseGetTimer* timer = &timerlist[selected];
@@ -1005,6 +1029,7 @@ int CTimerList::modifyTimer()
 	
 	bool recDirEnabled = recDirs.hasItem() && (timer->eventType == CTimerd::TIMER_RECORD) && (recDir != NULL);
 	ClistBoxItem *m6 = new ClistBoxItem(_("Recording directory"), recDirEnabled, timer->recordingDir, &recDirs);
+	//ClistBoxItem *m6 = new ClistBoxItem(_("Recording directory"), true, timer->recordingDir, this, "recording_dir");
 
 	timerSettings->addItem(new CMenuSeparator(LINE));
 	timerSettings->addItem(m3);
@@ -1059,11 +1084,27 @@ int CTimerList::modifyTimer()
 		timerSettings->addItem( new ClistBoxItem(_("Audio PIDs"), true, NULL, timerSettings_apidsWidget ));
 	}
 
-	return widget->exec(this, "");
+	res = widget->exec(this, "");
+	
+	if (timerSettings)
+	{
+		delete timerSettings;
+		timerSettings = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+	
+	return res;
 }
 
 int CTimerList::newTimer()
 {
+	int res = RETURN_REPAINT;
+	
 	// Defaults
 	timerNew.eventType = CTimerd::TIMER_RECORD ;
 	timerNew.eventRepeat = CTimerd::TIMERREPEAT_ONCE ;
@@ -1184,9 +1225,21 @@ int CTimerList::newTimer()
 	timerSettings->addItem( m10);
 
 	//int ret = timerSettings.exec(this, "");
-	int ret = widget->exec(this, "");
+	res = widget->exec(this, "");
+	
+	if (timerSettings)
+	{
+		delete timerSettings;
+		timerSettings = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 
-	return ret;
+	return res;
 }
 
 bool askUserOnTimerConflict(time_t announceTime, time_t stopTime)
@@ -1235,5 +1288,4 @@ bool askUserOnTimerConflict(time_t announceTime, time_t stopTime)
 
 	return (MessageBox(_("Information"), timerbuf.c_str(), mbrNo, mbNo | mbYes) == mbrYes);
 }
-
 

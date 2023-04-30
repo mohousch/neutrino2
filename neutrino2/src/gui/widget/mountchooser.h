@@ -54,6 +54,7 @@ class CMountChooser : public CMenuTarget
 
 	public:
 		CMountChooser(const char * const Name,  const std::string & Icon = "", int * chosenIndex = NULL, char * chosenLocalDir = NULL, const char * const selectedLocalDir = "", const int mwidth = MENU_WIDTH, const int mheight = MENU_HEIGHT);
+		~CMountChooser();
 
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 		void setSelectedItem(int selection);

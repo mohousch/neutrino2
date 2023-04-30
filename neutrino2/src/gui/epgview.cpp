@@ -43,7 +43,7 @@
 #include <gui/widget/hintbox.h>
 #include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
-#include <gui/widget/mountchooser.h>
+
 #include <gui/timerlist.h>
 
 #include <global.h>
@@ -166,68 +166,49 @@ CEpgData::CEpgData()
 	
 	//
 	initFrames();
-
-	/*
-	widget = CNeutrinoApp::getInstance()->getWidget("epgview");
-	
-	if (widget)
-	{
-		textBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
-		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
-		footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
-		cFollowScreeningWindow = (CWindow*)widget->getWidgetItem(WIDGETITEM_WINDOW, "screening");
-	}
-	else
-	{
-		textBox = new CTextBox(&cTextBox);
-		headers = new CHeaders(&cHeadBox);
-		footers = new CFooters(&cFootBox);
-		cFollowScreeningWindow = new CWindow(&cFollowScreeningBox);
-		
-		// head
-		headers->enablePaintDate();
-		headers->setFormat("%d.%m.%Y %H:%M:%S");
-		
-		// foot
-		
-		widget = new CWidget(&cFrameBox);
-		widget->name = "epgview";
-		
-		widget->addWidgetItem(textBox);
-		widget->addWidgetItem(headers);
-		widget->addWidgetItem(footers);
-		widget->addWidgetItem(cFollowScreeningWindow);
-	}
-	
-	//
-	if (cFollowScreeningWindow)
-		cFollowScreeningBox = cFollowScreeningWindow->getWindowsPos();
-		
-	int timeScaleWidth = TIMESCALE_W;
-	int timeScaleHeight = TIMESCALE_H;
-	
-	// recalculate timeScale width
-	timeScaleWidth = cFollowScreeningBox.iWidth - 20 - 4*g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">") - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("0000000000000") - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("0000000000");
-	
-	if (timeScaleWidth > TIMESCALE_W)
-		timeScaleWidth = TIMESCALE_W;
-		
-	timescale = new CProgressBar(cFollowScreeningBox.iX + (cFollowScreeningBox.iWidth - timeScaleWidth)/2, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - timeScaleHeight)/2, timeScaleWidth, timeScaleHeight);
-
-	//
-	if (textBox) 
-	{
-		textBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
-		textBox->setMode(SCROLL);
-		textBox->enableSaveScreen();
-	}
-	*/
 }
 
 CEpgData::~CEpgData()
 {
 	epgBuffer.clear();
 	evtlist.clear();
+	
+	//
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+	
+	if (textBox)
+	{
+		delete textBox;
+		textBox = NULL;
+	}
+	
+	if (headers)
+	{
+		delete headers;
+		headers = NULL;
+	}
+	
+	if (footers)
+	{
+		delete footers;
+		footers = NULL;
+	}
+	
+	if (cFollowScreeningWindow)
+	{
+		delete cFollowScreeningWindow;
+		cFollowScreeningWindow = NULL;
+	}
+	
+	if (audioIcon)
+	{
+		delete audioIcon;
+		audioIcon = NULL;
+	}
 }
 
 void CEpgData::initFrames()
@@ -616,7 +597,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		FollowScreenings(channel_id, epgData.title);
 	}
 	
-	////
+	//
 	widget = CNeutrinoApp::getInstance()->getWidget("epgview");
 	
 	if (widget)
@@ -670,7 +651,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		textBox->setMode(SCROLL);
 		textBox->enableSaveScreen();
 	}
-	////
 
 	// head
 	showHead(channel_id);
@@ -934,6 +914,43 @@ void CEpgData::hide()
 
 	//
 	epgBuffer.clear();
+	
+	//
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+	
+	if (textBox)
+	{
+		delete textBox;
+		textBox = NULL;
+	}
+	
+	if (headers)
+	{
+		delete headers;
+		headers = NULL;
+	}
+	
+	if (footers)
+	{
+		delete footers;
+		footers = NULL;
+	}
+	
+	if (cFollowScreeningWindow)
+	{
+		delete cFollowScreeningWindow;
+		cFollowScreeningWindow = NULL;
+	}
+	
+	if (audioIcon)
+	{
+		delete audioIcon;
+		audioIcon = NULL;
+	}
 }
 
 void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* startzeit, bool clear)
