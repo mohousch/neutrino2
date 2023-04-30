@@ -76,6 +76,17 @@ init:
 		2|*) echo "MEDIAFW=gstreamer" > config.local;; \
 	esac; \
 	echo ""
+# gstreamer opengl overlay
+	@echo -e "\ngstreamer overlay:"
+	@echo "   1) yes"
+	@echo -e "   \033[01;32m2) no\033[00m"
+	@read -p "Select overlay (1-2)?" OVERLAY; \
+	OVERLAY=$${OVERLAY}; \
+	case "$$OVERLAY" in \
+		1) echo "OVERLAY=overlay" > config.local;; \
+		2|*) echo "OVERLAY=" > config.local;; \
+	esac; \
+	echo ""
 # lua
 	@echo -e "\nlua support ?:"
 	@echo -e "   \033[01;32m1) yes\033[00m"
@@ -188,6 +199,13 @@ MEDIAFW ?= gstreamer
 
 ifeq ($(MEDIAFW), gstreamer)
 NHD2_OPTS += --enable-gstreamer --with-gstversion=1.0
+endif
+
+# OVERLAY
+OVERLAY ?= 
+
+ifeq ($(OVERLAY), overlay)
+NHD2_OPTS += --enable-overlay
 endif
 
 # python
