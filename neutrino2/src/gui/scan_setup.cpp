@@ -372,7 +372,7 @@ void CScanSetup::showScanService()
 		widget->addWidgetItem(scansetup);
 	}
 
-	scansetup->clearItems();
+	//scansetup->clearItems();
 	
 	// 
 	dmode = CZapit::getInstance()->getFE(feindex)->diseqcType;
@@ -522,6 +522,10 @@ void CScanSetup::showScanService()
 		// intros
 		satOnOff->addItem(new ClistBoxItem(_("back")));
 		satOnOff->addItem(new CMenuSeparator(LINE));
+		
+		//
+		CWidget* tempsatWidget = NULL;
+		ClistBox* tempsat = NULL;
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
@@ -532,10 +536,6 @@ void CScanSetup::showScanService()
 				dprintf(DEBUG_DEBUG, "[neutrino] fe(%d) Adding sat menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
 
 				//
-				CWidget* tempsatWidget = NULL;
-				ClistBox* tempsat = NULL;
-				
-				/*
 				tempsatWidget = CNeutrinoApp::getInstance()->getWidget("tempsat");
 				
 				if (tempsatWidget)
@@ -546,7 +546,6 @@ void CScanSetup::showScanService()
 						tempsat->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
 				}
 				else
-				*/
 				{
 					tempsat = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
@@ -570,7 +569,7 @@ void CScanSetup::showScanService()
 					tempsatWidget->addWidgetItem(tempsat);
 				}
 				
-				tempsat->clear();
+				//tempsat->clear();
 				
 				//
 				tempsat->addItem(new ClistBoxItem(_("back")));
@@ -584,16 +583,16 @@ void CScanSetup::showScanService()
 				CMenuOptionChooser * inuse = new CMenuOptionChooser(sit->second.name.c_str(),  &sit->second.use_in_scan, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 
 				// diseqc
-				CMenuOptionNumberChooser * diseqc = new CMenuOptionNumberChooser(_("Diseqc input"), &sit->second.diseqc, ((dmode != NO_DISEQC) && (dmode != DISEQC_ADVANCED)), -1, 15, NULL, 1, -1, _("Off"));
+				CMenuOptionNumberChooser * diseqc = new CMenuOptionNumberChooser(_("Diseqc input"), &sit->second.diseqc, ((dmode != NO_DISEQC) && (dmode != DISEQC_ADVANCED)), -1, 15, NULL, 1, -1);
 
 				// commited input
-				CMenuOptionNumberChooser * comm = new CMenuOptionNumberChooser(_("Commited/Uncommited"), &sit->second.commited, dmode == DISEQC_ADVANCED, -1, 15, NULL, 1, -1, _("Off"));
+				CMenuOptionNumberChooser * comm = new CMenuOptionNumberChooser(_("Commited/Uncommited"), &sit->second.commited, dmode == DISEQC_ADVANCED, -1, 15, NULL, 1, -1);
 
 				// uncommited input
-				CMenuOptionNumberChooser * uncomm = new CMenuOptionNumberChooser(_("Uncommited/Commited"), &sit->second.uncommited, dmode == DISEQC_ADVANCED, -1, 15, NULL, 1, -1, _("Off"));
+				CMenuOptionNumberChooser * uncomm = new CMenuOptionNumberChooser(_("Uncommited/Commited"), &sit->second.uncommited, dmode == DISEQC_ADVANCED, -1, 15, NULL, 1, -1);
 
 				// motor position
-				CMenuOptionNumberChooser * motor = new CMenuOptionNumberChooser(_("Rotor position"), &sit->second.motor_position, true, 0, 64, NULL, 0, 0, _("Off"));
+				CMenuOptionNumberChooser * motor = new CMenuOptionNumberChooser(_("Rotor position"), &sit->second.motor_position, true, 0, 64);
 
 				// usals
 				CMenuOptionChooser * usals = new CMenuOptionChooser(_("Use gotoXX"),  &sit->second.use_usals, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
@@ -620,6 +619,18 @@ void CScanSetup::showScanService()
 				// sat setup
 				satSetup->addItem(new ClistBoxItem(sit->second.name.c_str(), true, NULL, tempsatWidget));
 			}
+		}
+		
+		if (tempsat)
+		{
+			delete tempsat;
+			tempsat = NULL;
+		}
+		
+		if (tempsatWidget)
+		{
+			delete tempsatWidget;
+			tempsatWidget = NULL;
 		}
 	} 
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) 
@@ -740,7 +751,7 @@ void CScanSetup::showScanService()
 		motorMenu->addItem(new ClistBoxItem(_("Longitude"), true, zapit_long, taff));
 		
 		// usals repeat
-		motorMenu->addItem(new CMenuOptionNumberChooser(_("USALS command repeat"), (int *)&CZapit::getInstance()->getFE(feindex)->repeatUsals, true, 0, 10, NULL, 0, 0, _("Off")) );
+		motorMenu->addItem(new CMenuOptionNumberChooser(_("USALS command repeat"), (int *)&CZapit::getInstance()->getFE(feindex)->repeatUsals, true, 0, 10) );
 		
 		// rotor swap east/west
 		motorMenu->addItem( new CMenuOptionChooser(_("Swap rotor east/west"), &g_settings.rotor_swap, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
@@ -824,6 +835,7 @@ void CScanSetup::showScanService()
 	}
 	
 	//
+	#if 1
 	CWidget* manualScanWidget = NULL;
 	ClistBox* manualScan = NULL;
 	
@@ -871,6 +883,7 @@ void CScanSetup::showScanService()
 
 	// sat select
 	manualScan->addItem(satSelect);
+	#endif
 		
 	// TP select
 	CTPSelectHandler * tpSelect = new CTPSelectHandler(feindex);	
@@ -1100,12 +1113,27 @@ void CScanSetup::showScanService()
 		scansetup->addItem(fautoScanAll);
 	}
 
+	//
 	widget->exec(NULL, "");
+	
+	if (scansetup)
+	{
+		delete scansetup;
+		scansetup = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 int CScanSetup::showUnicableSetup()
 {
 	dprintf(DEBUG_INFO, "CScanSetup::showUnicableSetup\n");
+	
+	int ret = RETURN_REPAINT;
 	
 	//
 	CWidget* uniWidget = NULL;
@@ -1140,14 +1168,14 @@ int CScanSetup::showUnicableSetup()
 		uniWidget->addWidgetItem(uni_setup);
 	}
 	
-	uni_setup->clearItems();
+	//uni_setup->clearItems();
 
 	uni_setup->addItem(new ClistBoxItem(_("back")));
 	uni_setup->addItem(new CMenuSeparator(LINE));
 
 	// uni_scr
 	CMenuOptionNumberChooser * uniscr = new CMenuOptionNumberChooser(_("Unicable SCR address"), &CZapit::getInstance()->getFE(feindex)->uni_scr, true, \
-		-1, dmode == DISEQC_UNICABLE ? 7 : 31, NULL, 0, -1, _("Off"));
+		-1, dmode == DISEQC_UNICABLE ? 7 : 31);
 	uni_setup->addItem(uniscr);
 
 	// uni_qrg
@@ -1156,10 +1184,216 @@ int CScanSetup::showUnicableSetup()
 	uni_setup->addItem(uniqrg);
 
 	//
-	uniWidget->exec(NULL, "");
+	ret = uniWidget->exec(NULL, "");
+	
+	if (uni_setup)
+	{
+		delete uni_setup;
+		uni_setup = NULL;
+	}
+	
+	if (uniWidget)
+	{
+		delete uniWidget;
+		uniWidget = NULL;
+	}
 
-	return RETURN_REPAINT;
+	return ret;
 }
+
+// manualscansetup
+#if 0
+int CScanSetup::showManualScanSetup(fe_type_t fe_type)
+{
+	dprintf(DEBUG_NORMAL, "showManualScanSetup\n");
+	
+	int ret = RETURN_REPAINT;
+	
+	//
+	CWidget* manualScanWidget = NULL;
+	ClistBox* manualScan = NULL;
+	
+	manualScanWidget = CNeutrinoApp::getInstance()->getWidget("manualscan");
+	
+	if (manualScanWidget)
+	{
+		manualScan = (ClistBox*)manualScanWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		manualScan = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+
+		manualScan->setWidgetMode(MODE_SETUP);
+		manualScan->enableShrinkMenu();
+		
+		manualScan->enablePaintHead();
+		manualScan->setTitle(_("Manual frequency scan / Test signal"), NEUTRINO_ICON_SCAN);
+
+		manualScan->enablePaintFoot();
+			
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+			
+		manualScan->setFootButtons(&btn);
+		
+		//
+		manualScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		manualScanWidget->name = "manualscan";
+		manualScanWidget->setMenuPosition(MENU_POSITION_CENTER);
+		manualScanWidget->addWidgetItem(manualScan);
+	}
+	
+	//manualScan->clearItems();
+
+	//
+	CScanTs * scanTs = new CScanTs(feindex);
+
+	// intros
+	manualScan->addItem(new ClistBoxItem(_("back")));
+	manualScan->addItem(new CMenuSeparator(LINE));
+	
+	// save settings
+	manualScan->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	manualScan->addItem(new CMenuSeparator(LINE));
+
+	// sat select
+	manualScan->addItem(satSelect); //???
+		
+	// TP select
+	CTPSelectHandler * tpSelect = new CTPSelectHandler(feindex);	
+	manualScan->addItem(new ClistBoxItem(_("Select transponder"), true, NULL, tpSelect));
+		
+	// frequency
+	int freq_length = 8;
+
+	switch (CZapit::getInstance()->getFE(feindex)->getInfo()->type)
+	{
+		case FE_QPSK:
+		freq_length = 8;
+		break;
+		
+		case FE_QAM:
+		freq_length = 6;
+		break;
+		
+		case FE_OFDM:
+        case FE_ATSC:
+		freq_length = 9;
+		break;
+		
+		default:
+		freq_length = 8;
+		break;
+	}
+	
+	CStringInput * freq = new CStringInput(_("Frequency"), (char *) scanSettings->TP_freq, freq_length, NULL, NULL, "0123456789");
+	ClistBoxItem * Freq = new ClistBoxItem(_("Frequency"), true, scanSettings->TP_freq, freq);
+		
+	manualScan->addItem(Freq);
+		
+	// modulation(t/c)/polarisation(sat)
+	CMenuOptionChooser * mod_pol = NULL;
+
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
+	{
+		mod_pol = new CMenuOptionChooser(_("Polarization"), (int *)&scanSettings->TP_pol, SATSETUP_SCANTP_POL, SATSETUP_SCANTP_POL_COUNT, true);
+	}
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
+	{
+		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_mod, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
+	}
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+	{
+		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_const, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
+	}
+    	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+	{
+		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_const, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
+	}
+
+	manualScan->addItem(mod_pol);
+
+	// symbol rate
+	CStringInput * rate = new CStringInput(_("Symbol rate"), (char *) scanSettings->TP_rate, 8, NULL, NULL, "0123456789");
+	ClistBoxItem * Rate = new ClistBoxItem(_("Symbol rate"), true, scanSettings->TP_rate, rate);
+
+	// fec
+	int fec_count = ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
+	CMenuOptionChooser * fec = new CMenuOptionChooser(_("FEC"), (int *)&scanSettings->TP_fec, SATSETUP_SCANTP_FEC, fec_count, true);
+		
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM && CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_ATSC)
+	{
+		// Rate
+		manualScan->addItem(Rate);
+			
+		// fec
+		manualScan->addItem(fec);
+	}
+
+	// band/hp/lp/
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+	{
+		// Band
+		CMenuOptionChooser * Band = new CMenuOptionChooser(_("Bandwidth"), (int *)&scanSettings->TP_band, SATSETUP_SCANTP_BAND, SATSETUP_SCANTP_BAND_COUNT, true);
+		manualScan->addItem(Band);
+
+		// HP
+		CMenuOptionChooser * HP = new CMenuOptionChooser(_("Code Rate HP"), (int *)&scanSettings->TP_HP, SATSETUP_SCANTP_FEC, fec_count, true);
+		manualScan->addItem(HP);
+
+		// LP
+		CMenuOptionChooser * LP = new CMenuOptionChooser(_("Code Rate LP"), (int *)&scanSettings->TP_LP, SATSETUP_SCANTP_FEC, fec_count, true);
+		manualScan->addItem(LP);
+		
+		// transmition mode
+		CMenuOptionChooser * TM = new CMenuOptionChooser(_("Transmission mode"), (int *)&scanSettings->TP_trans, TERRESTRIALSETUP_TRANSMIT_MODE, TERRESTRIALSETUP_TRANSMIT_MODE_COUNT, true);
+		manualScan->addItem(TM);
+		
+		// guard intervall
+		CMenuOptionChooser * GI = new CMenuOptionChooser(_("Guard Interval"), (int *)&scanSettings->TP_guard, TERRESTRIALSETUP_GUARD_INTERVAL, TERRESTRIALSETUP_GUARD_INTERVAL_COUNT, true);
+		manualScan->addItem(GI);
+		
+		// hierarchy
+		CMenuOptionChooser * HR = new CMenuOptionChooser(_("Hierarchy"), (int *)&scanSettings->TP_hierarchy, TERRESTRIALSETUP_HIERARCHY, TERRESTRIALSETUP_HIERARCHY_COUNT, true);
+		manualScan->addItem(HR);
+	}	
+
+	manualScan->addItem(new CMenuSeparator(LINE));
+		
+	// test signal
+	manualScan->addItem(new ClistBoxItem(_("Test signal"), true, NULL, scanTs, "test") );
+		
+	// scan
+	manualScan->addItem(new ClistBoxItem(_("Start scan"), true, NULL, scanTs, "manual") );
+		
+	//ClistBoxItem * manScan = new ClistBoxItem(_("Manual frequency scan / Test signal"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, manualScanWidget, "");
+	
+	//feModeNotifier->addItem(0, manScan);
+	//scansetup->addItem(manScan);
+	
+	ret = manualScanWidget->exec(NULL, "");
+	
+	if (manualScan)
+	{
+		delete manualScan;
+		manualScan = NULL;
+	}
+	
+	if (manualScanWidget)
+	{
+		delete manualScanWidget;
+		manualScanWidget = NULL;
+	}
+	
+	return ret;
+}
+#endif
+
+// autoscansetup
+#if 0
+int CScanSetup::showAutoScanSetup(fe_type_t fe_type)
+{
+}
+#endif
 
 // TPSelectHandler
 CTPSelectHandler::CTPSelectHandler(int num)
@@ -1233,7 +1467,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		tpWidget->addWidgetItem(menu);
 	}
 	
-	menu->clearItems();
+	//menu->clearItems();
 	
 	//
 	i = 0;
@@ -1293,6 +1527,18 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	select = menu->getSelected();
 
 	int retval = tpWidget->exec(NULL, "");
+	
+	if (menu)
+	{
+		delete menu;
+		menu = NULL;
+	}
+	
+	if (tpWidget)
+	{
+		delete tpWidget;
+		tpWidget = NULL;
+	}
 
 	if(select >= 0) 
 	{

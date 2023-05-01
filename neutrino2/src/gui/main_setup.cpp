@@ -115,8 +115,6 @@ void CMainSettingsMenu::showMenu(void)
 		
 		widget->addWidgetItem(mainSettings);
 	}
-	
-	mainSettings->clear();
 
 	// video settings
 	mainSettings->addItem(new ClistBoxItem(_("Video settings"), true, NULL, new CVideoSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_VIDEOSETTINGS));

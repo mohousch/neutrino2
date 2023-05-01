@@ -48,6 +48,7 @@ extern CPlugins * g_PluginList;    // defined in neutrino.cpp
 CMenuItem::CMenuItem()
 {
 	x = -1;
+	menuItem_type = -1;
 	directKey = RC_nokey;
 	iconName = "";
 	can_arrow = false;
@@ -198,7 +199,7 @@ CMenuOptionChooser::CMenuOptionChooser(const char * const OptionName, int* const
 {
 	height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;
 
-	optionNameString = OptionName;
+	itemName = OptionName? OptionName : "";
 	
 	options = Options;
 	active = Active;
@@ -225,7 +226,7 @@ int CMenuOptionChooser::getOptionValue(void) const
 
 int CMenuOptionChooser::exec(CMenuTarget*)
 {
-	dprintf(DEBUG_NORMAL, "CMenuOptionChooser::exec: (%s)\n", optionNameString.c_str());
+	dprintf(DEBUG_NORMAL, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
 
 	bool wantsRepaint = false;
 	int ret = RETURN_REPAINT;
@@ -250,7 +251,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			// head title
 			if (menu->hasHead())
 			{
-				menu->setTitle(optionNameString.c_str());
+				menu->setTitle(itemName.c_str());
 			}
 		}
 		else
@@ -261,7 +262,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			menu->enableShrinkMenu();
 			
 			menu->enablePaintHead();
-			menu->setTitle(optionNameString.c_str());
+			menu->setTitle(itemName.c_str());
 			
 			//
 			menu->enablePaintFoot();		
@@ -276,7 +277,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			widget->addWidgetItem(menu);
 		}
 		
-		menu->clear();
+		//menu->clear();
 
 		//
 		for(unsigned int count = 0; count < number_of_options; count++) 
@@ -290,7 +291,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			if(options[count].valname != 0)
 				l_option = options[count].valname;
 			
-			menu->addItem(new ClistBoxItem(_(l_option)), selected);
+			menu->addItem(new ClistBoxItem(l_option), selected);
 		}
 		
 		widget->exec(NULL, "");
@@ -330,7 +331,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	paint(true);
 	
 	if(observ)
-		wantsRepaint = observ->changeNotify(optionNameString, optionValue);
+		wantsRepaint = observ->changeNotify(itemName, optionValue);
 
 	if ( wantsRepaint )
 		ret = RETURN_REPAINT;
@@ -433,17 +434,17 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(x + BORDER_LEFT, y + height, height, CRCInput::getKeyName(directKey), color, height);
         }
 
-	int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_(l_option.c_str()), true); // FIXME: i18n
+	int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(l_option.c_str(), true); // FIXME: i18n
 	int stringstartposName = x + BORDER_LEFT + icon_w + ICON_OFFSET;
 	int stringstartposOption = x + dx - (stringwidth + BORDER_RIGHT); //
 
 	// locale
-	const char * l_name = optionNameString.c_str();
+	const char * l_name = itemName.c_str();
 	
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposName, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposName - x), l_name, color, 0, true); // UTF-8
 	
 	// option
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_LEFT - (stringstartposOption - x), _(l_option.c_str()), color, 0, true); // FIXME: i18n
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_LEFT - (stringstartposOption - x), l_option.c_str(), color, 0, true); // FIXME: i18n
 
 	// vfd
 	if (selected && !AfterPulldown)
@@ -458,11 +459,11 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 }
 
 //CMenuOptionNumberChooser
-CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int * const OptionValue, const bool Active, const int min_value, const int max_value, CChangeObserver * const Observ, const int print_offset, const int special_value, const char * non_localized_name)
+CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int * const OptionValue, const bool Active, const int min_value, const int max_value, CChangeObserver * const Observ, const int print_offset, const int special_value)
 {
 	height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;
 
-	nameString  = Name;
+	itemName  = Name;
 	
 	active = Active;
 	optionValue = OptionValue;
@@ -473,8 +474,6 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 	display_offset = print_offset;
 
 	localized_value = special_value;
-
-	optionString = non_localized_name;
 	
 	can_arrow = true;
 	observ = Observ;
@@ -484,7 +483,7 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 
 int CMenuOptionNumberChooser::exec(CMenuTarget*)
 {
-	dprintf(DEBUG_NORMAL, "CMenuOptionNumberChooser::exec: (%s)\n", nameString.c_str());
+	dprintf(DEBUG_NORMAL, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
 
 	if( msg == RC_left ) 
 	{
@@ -504,7 +503,7 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 	paint(true);
 	
 	if(observ)
-		observ->changeNotify(nameString, optionValue);
+		observ->changeNotify(itemName, optionValue);
 
 	return RETURN_REPAINT;
 }
@@ -560,22 +559,20 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 		
 	}
 
-	int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_(l_option.c_str()), true); // UTF-8
+	int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(l_option.c_str(), true); // UTF-8
 	int stringstartposName = x + BORDER_LEFT + ICON_OFFSET;
 	int stringstartposOption = x + dx - stringwidth - BORDER_RIGHT; //
 
 	// locale
 	const char * l_name;
 	
-	l_name = nameString.c_str();
-	
-	l_name = (optionString != NULL) ? optionString : l_name;
+	l_name = itemName.c_str();
 
 	// locale
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposName, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposName - x), l_name, color, 0, true); // UTF-8
 	
 	// option value
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_LEFT - (stringstartposOption - x), _(l_option.c_str()), color, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_LEFT - (stringstartposOption - x), l_option.c_str(), color, 0, true); // UTF-8
 	
 	// vfd
 	if(selected)
@@ -594,7 +591,7 @@ CMenuOptionStringChooser::CMenuOptionStringChooser(const char * const Name, char
 {
 	height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;
 
-	nameString = Name;
+	itemName = Name? Name : "";
 	active = Active;
 	optionValue = OptionValue;
 	observ = Observ;
@@ -620,7 +617,7 @@ void CMenuOptionStringChooser::addOption(const char * const value)
 
 int CMenuOptionStringChooser::exec(CMenuTarget *)
 {
-	dprintf(DEBUG_NORMAL, "CMenuOptionStringChooser::exec: (%s)\n", nameString.c_str());
+	dprintf(DEBUG_NORMAL, "CMenuOptionStringChooser::exec: (%s)\n", itemName.c_str());
 
 	bool wantsRepaint = false;
 	int ret = RETURN_REPAINT; 
@@ -645,7 +642,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			
 			// title
 			if (menu->hasHead())
-				menu->setTitle(nameString.c_str());
+				menu->setTitle(itemName.c_str());
 		}
 		else
 		{
@@ -656,7 +653,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			
 			//
 			menu->enablePaintHead();
-			menu->setTitle(nameString.c_str());
+			menu->setTitle(itemName.c_str());
 			
 			//
 			menu->enablePaintFoot();		
@@ -671,7 +668,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			widget->addWidgetItem(menu);
 		}
 		
-		menu->clear();
+		//menu->clear();
 		
 		//
 		for(unsigned int count = 0; count < options.size(); count++) 
@@ -721,7 +718,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	paint(true, true);
 	
 	if(observ) 
-		wantsRepaint = observ->changeNotify(nameString.c_str(), optionValue);
+		wantsRepaint = observ->changeNotify(itemName.c_str(), optionValue);
 	
 	if (wantsRepaint)
 		ret = RETURN_REPAINT;
@@ -806,11 +803,11 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
         // locale text
 	const char * l_name;
 	
-	l_name = nameString.c_str();
+	l_name = itemName.c_str();
 	
 	int stringstartposName = x + BORDER_LEFT + icon_w + ICON_OFFSET;
 	
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposName, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposName - x),  l_name, color, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposName, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposName - x), l_name, color, 0, true); // UTF-8
 	
 	// option value
 	int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(optionValue, true);
@@ -835,7 +832,7 @@ CMenuSeparator::CMenuSeparator(const int Type, const char * const Text)
 	directKey = RC_nokey;
 	iconName = "";
 	type = Type;
-	textString = Text;
+	itemName = Text? Text : "";
 
 	menuItem_type = MENUITEM_SEPARATOR;
 }
@@ -852,7 +849,7 @@ int CMenuSeparator::getWidth(void) const
 
 const char * CMenuSeparator::getString(void)
 {
-	return textString;
+	return itemName.c_str();
 }
 
 int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
@@ -871,7 +868,7 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 		// string
 		if (type & STRING)
 		{
-			if(textString != NULL)
+			if(!itemName.empty())
 			{
 				int stringstartposX;
 
@@ -898,7 +895,7 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 		{
 			if (type & STRING)
 			{
-				if(textString != NULL)
+				if(!itemName.empty())
 				{
 					const char * l_text = getString();
 					int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(l_text, true); // UTF-8
@@ -984,7 +981,7 @@ bool CZapProtection::check()
 //ClistBoxItem
 ClistBoxItem::ClistBoxItem(const char * const Text, const bool Active, const char * const Option, CMenuTarget* Target, const char * const ActionKey, const neutrino_msg_t DirectKey, const char * const IconName, const char* const ItemIcon, const char* const Hint)
 {
-	textString = Text? Text : "";
+	itemName = Text? Text : "";
 
 	option = Option? Option : "";
 
@@ -996,12 +993,9 @@ ClistBoxItem::ClistBoxItem(const char * const Text, const bool Active, const cha
 
 	iconName = IconName ? IconName : "";
 	itemIcon = ItemIcon? ItemIcon : "";
-	itemName = Text? Text : "";
 	itemHint = Hint? Hint : "";
 	
 	runningPercent = 0;
-	
-	optionValueString = "";
 
 	menuItem_type = MENUITEM_LISTBOXITEM;
 }
@@ -1058,7 +1052,7 @@ int ClistBoxItem::getWidth(void) const
 	}
 	else
 	{
-		int tw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(textString); //FIXME:
+		int tw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(itemName.c_str()); //FIXME:
 
 		return tw;
 	}
@@ -1076,7 +1070,7 @@ int ClistBoxItem::exec(CMenuTarget* target)
 
 		if(ret) 
 		{
-			optionValueString = jumpTarget->getString().c_str();
+			//option = jumpTarget->getString().c_str(); //FIXME: think again about this
 		}
 	}
 	else
@@ -1089,16 +1083,14 @@ const char * ClistBoxItem::getName(void)
 {
 	const char * l_name;
 	
-	l_name = textString.c_str();
+	l_name = itemName.c_str();
 	
 	return l_name;
 }
 
 const char * ClistBoxItem::getOption(void)
 {
-	if(!optionValueString.empty())
-		return optionValueString.c_str();
-	else if(!option.empty())
+	if(!option.empty())
 		return option.c_str();
 	else
 		return NULL;

@@ -99,8 +99,6 @@ void CPowerMenu::showMenu(void)
 		widget->addWidgetItem(powerMenu);
 	}
 	
-	powerMenu->clear();
-	
 	// sleep timer
 	powerMenu->addItem(new ClistBoxItem(_("Sleeptimer"), true, NULL, new CSleepTimerWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
 

@@ -158,8 +158,6 @@ void CGeneralSettings::showMenu()
 		widget->addWidgetItem(miscSettingsGeneral);
 	}
 	
-	miscSettingsGeneral->clearItems();
-	
 	// intros
 	miscSettingsGeneral->addItem(new ClistBoxItem(_("back")));
 	miscSettingsGeneral->addItem( new CMenuSeparator(LINE) );
@@ -532,8 +530,6 @@ void CChannelListSettings::showMenu()
 		widget->addWidgetItem(miscSettingsChannelList);
 	}
 	
-	miscSettingsChannelList->clearItems();
-	
 	// intros
 	miscSettingsChannelList->addItem(new ClistBoxItem(_("back")));
 	miscSettingsChannelList->addItem( new CMenuSeparator(LINE) );
@@ -697,8 +693,6 @@ void CEPGSettings::showMenu()
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(miscSettingsEPG);
 	}
-	
-	miscSettingsEPG->clearItems();
 	
 	// intros
 	miscSettingsEPG->addItem(new ClistBoxItem(_("back")));
@@ -940,8 +934,6 @@ void CFileBrowserSettings::showMenu()
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(miscSettingsFileBrowser);
 	}
-	
-	miscSettingsFileBrowser->clearItems();
 	
 	// intros
 	miscSettingsFileBrowser->addItem(new ClistBoxItem(_("back")));

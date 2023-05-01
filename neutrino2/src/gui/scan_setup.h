@@ -93,6 +93,8 @@ class CScanSetup : public CMenuTarget
 		void hide();
 		void showScanService();
 		int showUnicableSetup();
+		//int showManualScanSetup(fe_type_t fe_type);
+		//int showAutoScanSetup(fe_type_t fe_type);
 		
 	public:
 		CScanSetup(int num = 0);

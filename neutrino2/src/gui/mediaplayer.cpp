@@ -98,8 +98,6 @@ void CMediaPlayerMenu::showMenu()
 		
 		widget->addWidgetItem(mediaPlayer);
 	}
-	
-	mediaPlayer->clear();
 
 	//
 	mediaPlayer->integratePlugins(CPlugins::I_TYPE_MULTIMEDIA);

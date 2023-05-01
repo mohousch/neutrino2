@@ -556,8 +556,6 @@ void CInfoMenu::showMenu()
 		widget->addWidgetItem(infoMenu);
 	}
 	
-	infoMenu->clear();
-	
 	//
 	infoMenu->addItem( new ClistBoxItem(_("Information"), true, NULL, new CDBoxInfoWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO));
 		

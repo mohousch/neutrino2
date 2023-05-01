@@ -119,7 +119,8 @@ class CMenuItem
 		bool active;
 		bool marked;
 		bool hidden;
-		
+		//
+		int menuItem_type;
 		//
 		neutrino_msg_t directKey;
 		neutrino_msg_t msg;
@@ -137,9 +138,6 @@ class CMenuItem
 		int number;
 		unsigned int runningPercent;
 		bool pb;
-
-		//
-		int menuItem_type;
 		
 		//
 		int widgetType;
@@ -183,6 +181,8 @@ class CMenuItem
 				delete [] background;
 				background = NULL;
 			}
+			
+			option.clear();
 		};
 
 		virtual void init(const int X, const int Y, const int DX, const int OFFX);
@@ -274,9 +274,6 @@ class CMenuOptionChooser : public CMenuItem
 		const struct keyval* options;
 		unsigned number_of_options;
 		CChangeObserver* observ;
-		
-		std::string optionNameString;
-		
 		bool pulldown;
 
 	public:
@@ -295,16 +292,10 @@ class CMenuOptionChooser : public CMenuItem
 // CMenuOptionNumberChooser
 class CMenuOptionNumberChooser : public CMenuItem
 {
-	const char* optionString;
-
 	int lower_bound;
 	int upper_bound;
-
 	int display_offset;
-
 	int localized_value;
-	
-	std::string nameString;
 
 	protected:
 		int height;
@@ -327,7 +318,7 @@ class CMenuOptionNumberChooser : public CMenuItem
 		CChangeObserver * observ;
 
 	public:
-		CMenuOptionNumberChooser(const char * const Name, int * const OptionValue, const bool Active, const int min_value, const int max_value, CChangeObserver * const Observ = NULL, const int print_offset = 0, const int special_value = 0, const char * non_localized_name = NULL);
+		CMenuOptionNumberChooser(const char * const Name, int * const OptionValue, const bool Active, const int min_value, const int max_value, CChangeObserver * const Observ = NULL, const int print_offset = 0, const int special_value = 0);
 
 		~CMenuOptionNumberChooser(){};
 		
@@ -339,7 +330,6 @@ class CMenuOptionNumberChooser : public CMenuItem
 // CMenuOptionStringChooser
 class CMenuOptionStringChooser : public CMenuItem
 {
-	std::string nameString;
 	int height;
 	char * optionValue;
 	std::vector<std::string> options;
@@ -367,8 +357,6 @@ class CMenuSeparator : public CMenuItem
 	int type;
 
 	public:
-		const char * textString;
-
 		CMenuSeparator(const int Type = EMPTY, const char * const Text = NULL);
 		~CMenuSeparator(){};
 
@@ -407,13 +395,9 @@ class CZapProtection : public CPINProtection
 // CMenulistBoxItem
 class ClistBoxItem : public CMenuItem
 {
-	std::string optionValueString;
+	//std::string optionValueString;
 
 	protected:
-		//
-		std::string textString;
-
-		//
 		virtual const char *getName(void);
 		virtual const char *getOption(void);
 
@@ -424,11 +408,13 @@ class ClistBoxItem : public CMenuItem
 		{
 			if (background)
 			{
-				dprintf(DEBUG_INFO, "ClistBoxItem::del (%s)\n", textString.c_str());
+				dprintf(DEBUG_INFO, "ClistBoxItem::del (%s)\n", itemName.c_str());
 				
 				delete [] background;
 				background = NULL;
 			}
+			
+			option.clear();
 		};
 		
 		int paint(bool selected = false, bool AfterPulldown = false);
@@ -438,7 +424,7 @@ class ClistBoxItem : public CMenuItem
 		int exec(CMenuTarget* target);
 		bool isSelectable(void) const {return active;};
 		
-		void setName(const char * const name){textString = name;};
+		void setName(const char * const name){itemName = name;};
 };
 
 // CLockedlistBoxItem

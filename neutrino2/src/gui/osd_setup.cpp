@@ -128,8 +128,6 @@ void COSDSettings::showMenu(void)
 		widget->addWidgetItem(osdSettings);
 	}
 	
-	osdSettings->clear();
-	
 	// skin manager
 	osdSettings->addItem( new ClistBoxItem(_("Skin select"), true, NULL, new CSkinManager(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
 		
@@ -288,8 +286,6 @@ void COSDMenuColorSettings::showMenu()
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(OSDmenuColorsSettings);
 	}
-	
-	OSDmenuColorsSettings->clearItems();
 	
 	// intros
 	OSDmenuColorsSettings->addItem(new ClistBoxItem(_("back")));
@@ -483,8 +479,6 @@ void COSDInfoBarColorSettings::showMenu()
 		widget->addWidgetItem(OSDinfobarColorSettings);
 	}
 	
-	OSDinfobarColorSettings->clearItems();
-	
 	// intros
 	OSDinfobarColorSettings->addItem(new ClistBoxItem(_("back")));
 
@@ -625,8 +619,6 @@ void CLanguageSettings::showMenu()
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(languageSettings);
 	}
-	
-	languageSettings->clearItems();
 	
 	// intros
 	languageSettings->addItem(new ClistBoxItem(_("back")));
@@ -790,8 +782,6 @@ void CFontSettings::showMenu()
 		widget->addWidgetItem(fontSettings);
 	}
 	
-	fontSettings->clearItems();
-	
 	// intros
 	fontSettings->addItem(new ClistBoxItem(_("back")));
 	fontSettings->addItem(new CMenuSeparator(LINE));
@@ -880,8 +870,6 @@ void COSDTimingSettings::showMenu()
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(osdTimingSettings);
 	}
-	
-	osdTimingSettings->clearItems();
 	
 	// intros
 	osdTimingSettings->addItem(new ClistBoxItem(_("back")));
@@ -1091,8 +1079,6 @@ void COSDDiverses::showMenu()
 		widget->addWidgetItem(osdDiverseSettings);
 	}
 	
-	osdDiverseSettings->clearItems();
-	
 	// intros
 	osdDiverseSettings->addItem(new ClistBoxItem(_("back")));
 	osdDiverseSettings->addItem(new CMenuSeparator(LINE));
@@ -1190,8 +1176,6 @@ void CSkinManager::showMenu()
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(skinMenu);
 	}
-	
-	skinMenu->clearItems();
 	
 	//
 	std::string skinPath = CONFIGDIR "/skins";
@@ -1322,8 +1306,6 @@ void CSkinSettings::showMenu()
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(skinSettings);
 	}
-	
-	skinSettings->clearItems();
 	
 	// intros
 	skinSettings->addItem(new ClistBoxItem(_("back")));

@@ -242,10 +242,7 @@ void CAudioSelectMenuHandler::doMenu()
 			AudioSelector->addItem(new CMenuSeparator(LINE | STRING, _("Volume adjustment (in %)")));
 		}
 		
-		AudioSelector->addItem(new CMenuOptionNumberChooser("", &percent[count],
-			is_active,
-			0, 100, audioSetupNotifierVolPercent, 0, 0,
-			g_RemoteControl->current_PIDs.APIDs[count].desc));
+		AudioSelector->addItem(new CMenuOptionNumberChooser(g_RemoteControl->current_PIDs.APIDs[count].desc, &percent[count], is_active, 0, 100, audioSetupNotifierVolPercent));
 	}
 
 	widget->setTimeOut(g_settings.timing_menu);

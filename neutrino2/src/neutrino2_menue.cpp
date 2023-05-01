@@ -111,8 +111,6 @@ void CNeutrinoApp::mainMenu(void)
 		
 		widget->addWidgetItem(nMenu);
 	}
-	
-	nMenu->clear();
 			  
 	// tv modus
 	item = new ClistBoxItem(_("TV / Radio"), true, NULL, this, "tvradioswitch", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV);
@@ -321,8 +319,6 @@ bool CNeutrinoApp::showUserMenu(int button)
 	}	
 
 	widget->addKey(RC_blue, this, "plugins");
-	
-	menu->clearItems();	
 
 	// go through any postition number
 	for(int pos = 0; pos < SNeutrinoSettings::ITEM_MAX ; pos++) 

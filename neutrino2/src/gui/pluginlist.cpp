@@ -132,9 +132,6 @@ void CPluginList::showMenu()
 		
 		pWidget->addWidgetItem(plist);
 	}
-	
-	//
-	plist->clearItems();
 
 	//
 	for(unsigned int count = 0; count < (unsigned int)g_PluginList->getNumberOfPlugins(); count++)

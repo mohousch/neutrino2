@@ -102,8 +102,6 @@ int CEPGMenuHandler::doMenu()
 		
 		widget->addWidgetItem(redMenu);
 	}
-	
-	redMenu->clear();
 		
 	// eventlist
 	redMenu->addItem(new ClistBoxItem(_("Eventlist current programm"), true, NULL, new CEventListHandler(), "", RC_red, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER));
