@@ -59,7 +59,7 @@ class CSysInfoWidget : public CMenuTarget
 		void cpuinfo();
 		void ps();
 
-		void readList();
+		void readList(const char * const filename);
 	public:
 		CSysInfoWidget(int m = SYSINFO);
 		~CSysInfoWidget();

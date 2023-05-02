@@ -93,7 +93,7 @@ enum
 typedef struct keyval
 {
 	int key;
-	const char* valname;
+	const char *valname;
 } keyval_struct;
 
 // CChangeObserver
@@ -271,7 +271,7 @@ class CMenuOptionChooser : public CMenuItem
 		}
 
 	private:
-		const struct keyval* options;
+		const struct keyval *options;
 		unsigned number_of_options;
 		CChangeObserver* observ;
 		bool pulldown;

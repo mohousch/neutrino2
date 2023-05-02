@@ -276,8 +276,6 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			widget->enableSaveScreen();
 			widget->addWidgetItem(menu);
 		}
-		
-		//menu->clear();
 
 		//
 		for(unsigned int count = 0; count < number_of_options; count++) 
@@ -316,9 +314,9 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 				if( msg == RC_left ) 
 				{
 					if(count > 0)
-						*optionValue = options[(count-1) % number_of_options].key;
+						*optionValue = options[(count - 1) % number_of_options].key;
 					else
-						*optionValue = options[number_of_options-1].key;
+						*optionValue = options[number_of_options - 1].key;
 				} 
 				else
 					*optionValue = options[(count+1) % number_of_options].key;
@@ -392,14 +390,6 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 		}
 	}
 
-	if(l_option.empty()) 
-	{
-		*optionValue = options[0].key;
-
-		if(options[0].valname != 0)
-			l_option = options[0].valname;
-	}
-
 	// paint icon (left)
 	int icon_w = 0;
 	int icon_h = 0;
@@ -434,7 +424,7 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(x + BORDER_LEFT, y + height, height, CRCInput::getKeyName(directKey), color, height);
         }
 
-	int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(l_option.c_str(), true); // FIXME: i18n
+	int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(_(l_option.c_str()), true); // FIXME: i18n
 	int stringstartposName = x + BORDER_LEFT + icon_w + ICON_OFFSET;
 	int stringstartposOption = x + dx - (stringwidth + BORDER_RIGHT); //
 
@@ -444,7 +434,7 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposName, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_RIGHT - (stringstartposName - x), l_name, color, 0, true); // UTF-8
 	
 	// option
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_LEFT - (stringstartposOption - x), l_option.c_str(), color, 0, true); // FIXME: i18n
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposOption, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - BORDER_LEFT - (stringstartposOption - x), _(l_option.c_str()), color, 0, true); // FIXME: i18n
 
 	// vfd
 	if (selected && !AfterPulldown)
@@ -667,8 +657,6 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			widget->enableSaveScreen();
 			widget->addWidgetItem(menu);
 		}
-		
-		//menu->clear();
 		
 		//
 		for(unsigned int count = 0; count < options.size(); count++) 

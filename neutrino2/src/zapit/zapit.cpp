@@ -299,7 +299,7 @@ void CZapit::initFrontend()
 
 				// check if isusbtuner/vtuner
 				char devicename[256];
-				snprintf(devicename, sizeof(devicename), "/sys/class/dvb/dvb0.frontend%d", fe->fenumber);
+				snprintf(devicename, sizeof(devicename), "/sys/class/dvb/dvb%d.frontend%d", fe->fe_adapter, fe->fenumber);
 
 				if(access(devicename, X_OK) < 0)
 				{

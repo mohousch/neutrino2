@@ -410,7 +410,7 @@ void CSysInfoWidget::sysinfo()
 	fclose(f);
 
 	//
-	readList();
+	readList("/tmp/sysinfo");
 }
 
 void CSysInfoWidget::cpuinfo()
@@ -450,28 +450,29 @@ void CSysInfoWidget::cpuinfo()
 	system("cat /proc/cpuinfo >> /tmp/sysinfo");
 	unlink("/tmp/systmp");
 	
-	readList();
+	readList("/tmp/sysinfo");
 }
 
 void CSysInfoWidget::dmesg()
 {
-	system("dmesg > /tmp/sysinfo");
+	//system("dmesg > /tmp/sysinfo");
 
-	readList();
+	//readList();
+	readList("/proc/kmsg");
 }
 
 void CSysInfoWidget::ps()
 {
 	system("ps -A > /tmp/sysinfo");
 
-	readList();
+	readList("/tmp/sysinfo");
 }
 
 // read infos
-void CSysInfoWidget::readList()
+void CSysInfoWidget::readList(const char * const filename)
 {
 	buffer.clear();
-				
+	/*			
 	char buf[60000];
 
 	int fd = open("/tmp/sysinfo", O_RDONLY);
@@ -479,6 +480,8 @@ void CSysInfoWidget::readList()
 	close(fd);
 	buf[bytes] = 0;
 	buffer = buf;
+	*/
+	buffer = readFile(filename).c_str();
 }
 
 //

@@ -378,7 +378,7 @@ void CNetworkSettings::showMenu()
 
 		//key
 		CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
-		ClistBoxItem *m10 = new ClistBoxItem(_("Key"), /*networkConfig->wireless*/true, network_key.c_str(), networkSettings_key );
+		ClistBoxItem *m10 = new ClistBoxItem(_("Key"), true, network_key.c_str(), networkSettings_key );
 
 		wlanEnable[0] = m9;
 		wlanEnable[1] = m10;

@@ -178,8 +178,6 @@ void CAudioSettings::showMenu()
 		widget->addWidgetItem(audioSettings);
 	}
 	
-	audioSettings->clearItems();
-	
 	// intros
 	audioSettings->addItem(new ClistBoxItem(_("back")));
 	audioSettings->addItem( new CMenuSeparator(LINE) );
