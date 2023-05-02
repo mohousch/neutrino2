@@ -1,13 +1,13 @@
 # German translations for neutrino2 package.
 # Copyright (C) 2022 THE neutrino2'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the neutrino-hd2 package.
+# This file is distributed under the same license as the neutrino2 package.
 # Automatically generated, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-10 16:41+0200\n"
+"POT-Creation-Date: 2023-05-02 23:31+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -53,7 +53,7 @@ msgstr "(relativ, in Sekunden)"
 
 #, c-format
 msgid "(starting in %d min)"
-msgstr "(Beginn in %d Min.)"
+msgstr "(Begint in %d Min.)"
 
 msgid "(type)"
 msgstr "(Typ)"
@@ -62,16 +62,16 @@ msgid "0 for unlimited repeats"
 msgstr "0 fuer unbegrenzte Anzahl"
 
 msgid "12 years"
-msgstr ""
+msgstr "12 Jahre"
 
 msgid "16 years"
-msgstr ""
+msgstr "16 Jahre"
 
 msgid "18 years"
-msgstr ""
+msgstr "18 Jahre"
 
 msgid "6 years"
-msgstr ""
+msgstr "6 Jhare"
 
 msgid "?"
 msgstr ""
@@ -113,7 +113,7 @@ msgid "Additional paths"
 msgstr ""
 
 msgid "Adult movie / Drama"
-msgstr ""
+msgstr "Erwachsenen Film / Drama"
 
 msgid "Advanced"
 msgstr "Erweiterte Auswahl"
@@ -130,13 +130,6 @@ msgstr "Alarmzeit"
 msgid "All Services"
 msgstr "Alle"
 
-msgid "All services"
-msgstr "Alle"
-
-#, fuzzy
-msgid "Alpha"
-msgstr "Alpha Einstellungen"
-
 msgid "Alpha Setup"
 msgstr "Alpha Einstellungen"
 
@@ -147,7 +140,7 @@ msgid "Antenna positioning"
 msgstr "Antennenpositionierung"
 
 msgid "Arabic"
-msgstr ""
+msgstr "Arabisch"
 
 msgid "Are you sure ?"
 msgstr "Sind Sie sicher ?"
@@ -156,22 +149,22 @@ msgid "Are you sure to format ? You will lost all data "
 msgstr "Alle Daten auf dem Datenträger werden gelöscht! Formatierung starten?"
 
 msgid "Are you sure to init ?"
-msgstr ""
+msgstr "sind Sie sicher zu initialisieren ?"
 
 msgid "Artist: "
 msgstr ""
 
 msgid "Arts / Culture"
-msgstr ""
+msgstr "Art / Kultur"
 
 msgid "Arts / Culture magazines"
-msgstr ""
+msgstr "Art / Kultur Zeitschriften"
 
 msgid "Aspect Ratio"
 msgstr "Bildschirmformat"
 
 msgid "Athletics"
-msgstr ""
+msgstr "Athletik"
 
 msgid "Atsc:"
 msgstr ""
@@ -207,9 +200,8 @@ msgstr "Audioplayer Einstellungen"
 msgid "Audiotype"
 msgstr ""
 
-#, fuzzy
 msgid "Auto Play"
-msgstr "Audio Playliste"
+msgstr ""
 
 msgid "Auto select audio"
 msgstr "Tonwahl automatisch"
@@ -323,23 +315,132 @@ msgstr ""
 msgid "Buttons Line"
 msgstr ""
 
-msgid "CAM init complete"
+msgid "CAM Init OK"
+msgstr ""
+
+#, fuzzy
+msgid "CAM Init failed"
 msgstr "CI Modul initalisiert"
 
-msgid "CAM inserted in slot"
-msgstr "CI Modul hinzugefügt"
+msgid "CAM Timeout"
+msgstr ""
 
-msgid "CAM removed from slot"
+#, fuzzy
+msgid "CAM removed"
 msgstr "CI Modul entfernt"
+
+msgid "CAM waiting"
+msgstr ""
+
+#, fuzzy
+msgid "CEC Setup"
+msgstr "Alpha Einstellungen"
+
+msgid "CEC broadcast"
+msgstr ""
+
+msgid "CEC mode"
+msgstr ""
+
+msgid "CEC mode off"
+msgstr ""
+
+msgid "CEC mode recorder"
+msgstr ""
+
+msgid "CEC mode tuner"
+msgstr ""
+
+#, fuzzy
+msgid "CEC settings"
+msgstr "EPG Einstellungen"
+
+msgid "CEC standby"
+msgstr ""
+
+msgid "CEC standby no timer"
+msgstr ""
+
+msgid "CEC view on"
+msgstr ""
+
+msgid "CEC volume"
+msgstr ""
+
+msgid "CEC volume TV"
+msgstr ""
+
+msgid "CEC volume audiosystem"
+msgstr ""
+
+msgid "CEC volume off"
+msgstr ""
 
 msgid "CI Cam"
 msgstr "CI Cam"
 
-msgid "CI Cam settings"
+msgid "CI Clock"
+msgstr ""
+
+#, fuzzy
+msgid "CI Delay"
+msgstr "AC3 Verzögerung"
+
+msgid "CI Init OK"
+msgstr ""
+
+msgid "CI Init failed"
+msgstr ""
+
+msgid "CI Reset"
+msgstr ""
+
+msgid "CI Timeout"
+msgstr ""
+
+msgid "CI Tuner"
+msgstr ""
+
+msgid "CI check live slot"
+msgstr ""
+
+msgid "CI clock"
+msgstr ""
+
+msgid "CI clock high"
+msgstr ""
+
+msgid "CI clock high extra"
+msgstr ""
+
+msgid "CI clock normal"
+msgstr ""
+
+msgid "CI empty"
+msgstr ""
+
+msgid "CI ignore message"
+msgstr ""
+
+#, fuzzy
+msgid "CI inserted"
+msgstr "CI Modul hinzugefügt"
+
+msgid "CI removed"
+msgstr ""
+
+msgid "CI rpr"
+msgstr ""
+
+msgid "CI save pincode"
+msgstr ""
+
+#, fuzzy
+msgid "CI waiting"
 msgstr "CI Cam Einstellungen"
 
-msgid "CI cam reset"
-msgstr "CI Modul neu starten"
+msgid "CI-CAM"
+msgstr ""
 
 msgid "CIFS"
 msgstr ""
@@ -362,6 +463,10 @@ msgstr "Kabel"
 msgid "Cable:"
 msgstr "Kabel:"
 
+#, fuzzy
+msgid "Cam inserted"
+msgstr "CI Modul hinzugefügt"
+
 msgid "Cancel"
 msgstr "Abbruch"
 
@@ -380,24 +485,8 @@ msgstr "Reihenfolge ändern"
 msgid "Channel"
 msgstr "Sender"
 
-msgid "Channel (short) / Sep.-Line / Title"
-msgstr ""
-
-msgid "Channel (short) / Title"
-msgstr ""
-
-msgid "Channel / Sep.-Line / Title"
-msgstr ""
-
-msgid "Channel / Title"
-msgstr "Sender / Titel"
-
 msgid "Channel Logo"
 msgstr "Sender logo"
-
-#, fuzzy
-msgid "Channel Number"
-msgstr "Sender Liste"
 
 #, fuzzy
 msgid "Channel direct selection"
@@ -430,6 +519,9 @@ msgid "Channellist settings"
 msgstr "Sender Liste Einstellungen"
 
 msgid "Check filesystem"
+msgstr ""
+
+msgid "Check live Slot"
 msgstr ""
 
 msgid "Children / Juvenile program"
@@ -528,12 +620,6 @@ msgstr ""
 
 msgid "DHCP"
 msgstr ""
-
-msgid "Dark to Light"
-msgstr "Dunkel zu Hell"
-
-msgid "Dark to Light to Dark"
-msgstr "Dunkel zu Hell zu Dunkel"
 
 msgid "Data"
 msgstr ""
@@ -970,9 +1056,6 @@ msgstr "Freitag"
 msgid "Frontend:"
 msgstr ""
 
-msgid "Fullscreen"
-msgstr ""
-
 msgid "Further education"
 msgstr ""
 
@@ -1090,7 +1173,34 @@ msgstr ""
 msgid "Help"
 msgstr "Hilfe"
 
+msgid "Here you can choose plugins"
+msgstr ""
+
+msgid "Here you can get device Info"
+msgstr ""
+
+msgid "Here you can play music / movies"
+msgstr ""
+
+msgid "Here you can power off or standby your device"
+msgstr ""
+
 msgid "Here you can select a skin from the following list."
+msgstr ""
+
+msgid "Here you can set Timers and show EPG"
+msgstr ""
+
+msgid "Here you can set channel scan and more"
+msgstr ""
+
+msgid "Here you can setup OSD"
+msgstr ""
+
+msgid "Here you can setup your box"
+msgstr ""
+
+msgid "Here you can switch between TV / Radio"
 msgstr ""
 
 #, fuzzy
@@ -1113,9 +1223,6 @@ msgid "History"
 msgstr ""
 
 msgid "Home page:"
-msgstr ""
-
-msgid "Horizontal"
 msgstr ""
 
 msgid "Horizontal (in %)"
@@ -1314,12 +1421,6 @@ msgid "Length (Min)"
 msgstr "Spiel Dauer (Min)"
 
 msgid "License:"
-msgstr ""
-
-msgid "Light to Dark"
-msgstr ""
-
-msgid "Light to Dark to Light"
 msgstr ""
 
 msgid "Line"
@@ -1655,9 +1756,6 @@ msgstr ""
 msgid "No"
 msgstr "Nein"
 
-msgid "No CAM in slot"
-msgstr "Kein CAM im Slot"
-
 msgid "No End bookmark defined!"
 msgstr ""
 
@@ -1720,7 +1818,7 @@ msgstr ""
 msgid "Number of lines last record"
 msgstr ""
 
-msgid "Numeric Zap"
+msgid "Numericzap"
 msgstr ""
 
 msgid "OK"
@@ -1735,24 +1833,12 @@ msgstr ""
 msgid "OSD"
 msgstr ""
 
-msgid "Off"
-msgstr "Aus"
-
-msgid "On"
-msgstr "Ein"
-
 msgid ""
 "One or several recording processes are active.\n"
 "If you encounter this message and no recording is active, please restart Neutrino."
 msgstr ""
 
 msgid "Online Software Manager"
-msgstr ""
-
-msgid "Only radio"
-msgstr ""
-
-msgid "Only tv"
 msgstr ""
 
 msgid "Options"
@@ -1829,9 +1915,6 @@ msgstr "Bildbetrachter Einstellungen"
 #, fuzzy
 msgid "Play"
 msgstr "Audio Playliste"
-
-msgid "Playtime"
-msgstr ""
 
 msgid "Please enter jump target"
 msgstr ""
@@ -2078,6 +2161,9 @@ msgstr ""
 msgid "Reread image (no scaling)"
 msgstr ""
 
+msgid "Reset CI (Standby)"
+msgstr ""
+
 msgid "Reset settings to defaults"
 msgstr ""
 
@@ -2165,10 +2251,6 @@ msgstr "Samstag"
 msgid "Save RC configuration"
 msgstr ""
 
-#, fuzzy
-msgid "Save Skin settings now?"
-msgstr "Einstellungen jetzt speichern"
-
 msgid "Save Timer"
 msgstr "Timer speichern"
 
@@ -2194,10 +2276,6 @@ msgid "Save in channel dir"
 msgstr ""
 
 msgid "Save settings now"
-msgstr "Einstellungen jetzt speichern"
-
-#, fuzzy
-msgid "Save settings now?"
 msgstr "Einstellungen jetzt speichern"
 
 msgid "Save timer"
@@ -2276,9 +2354,6 @@ msgid "Screen Setup"
 msgstr "Bildschirm Einstellungen"
 
 msgid "Screenshot"
-msgstr ""
-
-msgid "Scroll Mode"
 msgstr ""
 
 msgid "Scroll down"
@@ -2568,9 +2643,6 @@ msgstr ""
 msgid "Stream information"
 msgstr "Technische Information"
 
-msgid "Stretch Mode"
-msgstr ""
-
 msgid "Subchannel display"
 msgstr ""
 
@@ -2770,9 +2842,6 @@ msgstr "Zeit"
 msgid "Time Zone"
 msgstr "Zeit Zone"
 
-msgid "Time in sec. After this time the"
-msgstr ""
-
 msgid "Time-Syncronisation"
 msgstr "Zeit Synchronization"
 
@@ -2782,9 +2851,6 @@ msgstr "Zeit"
 
 msgid "Timed Step Mode"
 msgstr ""
-
-msgid "Timeout waiting CI menu ready"
-msgstr "CI Modul Timeout"
 
 msgid "Timer / EPG"
 msgstr ""
@@ -2972,9 +3038,6 @@ msgstr ""
 msgid "Version:"
 msgstr ""
 
-msgid "Vertical"
-msgstr ""
-
 msgid "Vertikal (in %)"
 msgstr ""
 
@@ -2993,15 +3056,6 @@ msgstr ""
 msgid "Virtual zap"
 msgstr ""
 
-msgid "Volume"
-msgstr ""
-
-msgid "Volume / Playtime"
-msgstr ""
-
-msgid "Volume / Playtime / Audio"
-msgstr ""
-
 msgid "Volume Step Size"
 msgstr ""
 
@@ -3013,9 +3067,6 @@ msgstr ""
 
 msgid "Wait a few seconds for abort"
 msgstr ""
-
-msgid "Waiting for CI answer"
-msgstr "Warte auf CI Modul"
 
 msgid "Waiting for time..."
 msgstr "Warte auf Zeit"
@@ -3118,6 +3169,10 @@ msgstr ""
 msgid "advanced"
 msgstr ""
 
+#, fuzzy
+msgid "all services"
+msgstr "Alle"
+
 msgid "alpha"
 msgstr ""
 
@@ -3141,6 +3196,10 @@ msgstr ""
 
 msgid "approx. 5 minutes back"
 msgstr ""
+
+#, fuzzy
+msgid "audio master"
+msgstr "Audio Playliste"
 
 msgid "back"
 msgstr "zurück"
@@ -3171,6 +3230,10 @@ msgstr ""
 msgid "by page"
 msgstr ""
 
+#, fuzzy
+msgid "cable"
+msgstr "Kabel"
+
 msgid "can't get update list"
 msgstr ""
 
@@ -3188,6 +3251,25 @@ msgstr ""
 
 msgid "center"
 msgstr ""
+
+#, fuzzy
+msgid "channel"
+msgstr "Sender"
+
+msgid "channel (short) / sep.-line / title"
+msgstr ""
+
+#, fuzzy
+msgid "channel (short) / title"
+msgstr "Sender / Titel"
+
+#, fuzzy
+msgid "channel / sep.-line / title"
+msgstr "Sender / Titel"
+
+#, fuzzy
+msgid "channel / title"
+msgstr "Sender / Titel"
 
 msgid "checking version"
 msgstr ""
@@ -3213,6 +3295,14 @@ msgstr ""
 msgid "daily"
 msgstr ""
 
+#, fuzzy
+msgid "dark to light"
+msgstr "Dunkel zu Hell"
+
+#, fuzzy
+msgid "dark to light to dark"
+msgstr "Dunkel zu Hell zu Dunkel"
+
 msgid "default audio streams"
 msgstr ""
 
@@ -3233,17 +3323,6 @@ msgstr ""
 
 msgid "dmesg"
 msgstr ""
-
-msgid "do you want to reload EPG?"
-msgstr ""
-
-#, fuzzy
-msgid "do you want to reload XMLTV EPG?"
-msgstr "Kanallisten neu laden"
-
-#, fuzzy
-msgid "do you want to reload channel lists?"
-msgstr "Kanallisten neu laden"
 
 msgid "don't care"
 msgstr ""
@@ -3293,6 +3372,10 @@ msgstr ""
 msgid "from 18 years up"
 msgstr ""
 
+#, fuzzy
+msgid "fullscreen"
+msgstr "Bildschirm"
+
 msgid "getting update list"
 msgstr ""
 
@@ -3311,13 +3394,13 @@ msgstr ""
 msgid "higher center"
 msgstr ""
 
+msgid "horizontal"
+msgstr ""
+
 msgid "image has errors"
 msgstr ""
 
 msgid "info"
-msgstr ""
-
-msgid "infobar will be faded out."
 msgstr ""
 
 msgid "internet Radio"
@@ -3366,8 +3449,12 @@ msgid "left"
 msgstr ""
 
 #, fuzzy
-msgid "load default skin configuration?"
-msgstr "Satelliten Einstellungen"
+msgid "light to dark"
+msgstr "Dunkel zu Hell zu Dunkel"
+
+#, fuzzy
+msgid "light to dark to light"
+msgstr "Dunkel zu Hell"
 
 msgid "local dir"
 msgstr ""
@@ -3488,6 +3575,12 @@ msgstr ""
 msgid "once"
 msgstr ""
 
+msgid "only radio"
+msgstr ""
+
+msgid "only tv"
+msgstr ""
+
 msgid "package has errors"
 msgstr ""
 
@@ -3505,6 +3598,10 @@ msgstr ""
 
 msgid "password"
 msgstr ""
+
+#, fuzzy
+msgid "playtime"
+msgstr "Alarmzeit"
 
 msgid "prev bouquet"
 msgstr ""
@@ -3563,6 +3660,9 @@ msgstr ""
 msgid "row width"
 msgstr ""
 
+msgid "sat"
+msgstr ""
+
 msgid "save play list"
 msgstr ""
 
@@ -3579,6 +3679,9 @@ msgstr "Warte auf Zeit"
 
 msgid "schedule"
 msgstr "Umschalten"
+
+msgid "scroll mode"
+msgstr ""
 
 msgid "search"
 msgstr "Suche"
@@ -3638,10 +3741,16 @@ msgstr ""
 msgid "stop on good signal(stopped)"
 msgstr ""
 
+msgid "stretch mode"
+msgstr ""
+
 msgid "swap mode"
 msgstr ""
 
 msgid "switch off after"
+msgstr ""
+
+msgid "terrestrial"
 msgstr ""
 
 msgid "the filesize is 0 Bytes"
@@ -3661,8 +3770,16 @@ msgstr ""
 "Diese Einstellung braucht Neutrino neu Start\n"
 "willst Du wirklich Neutrino neu starten?"
 
+#, fuzzy
+msgid "time"
+msgstr "Neuer Timer"
+
 msgid "time (in minutes) to switch from standby"
 msgstr ""
+
+#, fuzzy
+msgid "title"
+msgstr "EPG Titel"
 
 msgid "tmdb Info"
 msgstr ""
@@ -3692,6 +3809,9 @@ msgstr ""
 msgid "username"
 msgstr ""
 
+msgid "vertical"
+msgstr ""
+
 msgid "very large"
 msgstr ""
 
@@ -3699,6 +3819,15 @@ msgid "view count"
 msgstr ""
 
 msgid "view mode"
+msgstr ""
+
+msgid "volume"
+msgstr ""
+
+msgid "volume / playtime"
+msgstr ""
+
+msgid "volume / playtime / audio"
 msgstr ""
 
 msgid "waiting for EPG..."

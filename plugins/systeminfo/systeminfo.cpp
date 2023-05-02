@@ -455,10 +455,9 @@ void CSysInfoWidget::cpuinfo()
 
 void CSysInfoWidget::dmesg()
 {
-	//system("dmesg > /tmp/sysinfo");
+	system("dmesg > /tmp/sysinfo");
 
-	//readList();
-	readList("/proc/kmsg");
+	readList("/tmp/sysinfo");
 }
 
 void CSysInfoWidget::ps()
@@ -472,15 +471,6 @@ void CSysInfoWidget::ps()
 void CSysInfoWidget::readList(const char * const filename)
 {
 	buffer.clear();
-	/*			
-	char buf[60000];
-
-	int fd = open("/tmp/sysinfo", O_RDONLY);
-	int bytes = read(fd, buf, 60000 - 1);
-	close(fd);
-	buf[bytes] = 0;
-	buffer = buf;
-	*/
 	buffer = readFile(filename).c_str();
 }
 

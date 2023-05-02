@@ -228,7 +228,7 @@ CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 	}
 	else if (name == "alphasetup")
 	{		
-		parent = new CAlphaSetup(_("Alpha"), &g_settings.gtx_alpha);;
+		parent = new CAlphaSetup(_("Alpha Setup"), &g_settings.gtx_alpha);;
 	}
 	else if (name == "skinstyleselectionsetup")
 	{		
