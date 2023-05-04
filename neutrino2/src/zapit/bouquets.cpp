@@ -420,7 +420,7 @@ void CBouquetManager::parseBouquetsXml(const char *fname, bool bUser)
 
 			while ((channel_node = xmlGetNextOccurence(channel_node, "S")) != NULL) 
 			{
-				std::string  name1 = xmlGetAttribute(channel_node, (char *) "n");
+				std::string  service_name = xmlGetAttribute(channel_node, (char *) "n");
 				GET_ATTR(channel_node, (char *) "i", "%hx", service_id);
 				GET_ATTR(channel_node, (char *) "on", "%hx", original_network_id);
 				GET_ATTR(channel_node, (char *) "t", "%hx", transport_stream_id);
@@ -434,7 +434,8 @@ void CBouquetManager::parseBouquetsXml(const char *fname, bool bUser)
 						freq = it->second.getFreqId();
 					}
 				}
-
+				
+				//
 				CZapitChannel *chan = findChannelByChannelID(CREATE_CHANNEL_ID);
 
 				if (chan != NULL) 
@@ -1116,6 +1117,7 @@ void CBouquetManager::clearAll()
 CZapitChannel *CBouquetManager::findChannelByChannelID(const t_channel_id channel_id)
 {
 	tallchans_iterator itChannel = allchans.find(channel_id);
+	
 	if (itChannel != allchans.end())
 		return &(itChannel->second);
 
