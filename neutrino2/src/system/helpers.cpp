@@ -896,12 +896,9 @@ bool downloadUrl(std::string url, std::string file, std::string userAgent, unsig
 	curl_easy_setopt(curl_handle, CURLOPT_CONNECTTIMEOUT, (long)timeout);
 	curl_easy_setopt(curl_handle, CURLOPT_NOSIGNAL, (long)1);
 	curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 0L);
-	
 	curl_easy_setopt(curl_handle, CURLOPT_ACCEPT_ENCODING, "");//
 	curl_easy_setopt(curl_handle, CURLOPT_COOKIE, "");//
-	
 	curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, userAgent.c_str());
-	
 	curl_easy_setopt(curl_handle, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);//
 
 	if(strcmp(g_settings.softupdate_proxyserver, "") != 0)
