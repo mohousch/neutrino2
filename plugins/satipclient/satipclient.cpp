@@ -129,7 +129,7 @@ bool CSatIPClient::unloadVTuner()
 
 bool CSatIPClient::startSatIPClient() 
 {
-	std::string cmd = "/var/bin/satip_client";
+	std::string cmd = "satip_client";
 	cmd += " -s ";
 	cmd += SatIPServerIP;
 	cmd += " -t ";

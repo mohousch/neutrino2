@@ -296,17 +296,6 @@ void CZapit::initFrontend()
 				{
 				    have_a = true;
 				}
-
-				// check if isusbtuner/vtuner
-				char devicename[256];
-				snprintf(devicename, sizeof(devicename), "/sys/class/dvb/dvb%d.frontend%d", fe->fe_adapter, fe->fenumber);
-
-				if(access(devicename, X_OK) < 0)
-				{
-					fe->isvtuner = true;
-
-					dprintf(DEBUG_NORMAL, "CZapit::initFrontend: fe(%d,%d) is assigned as vtuner\n", fe->fe_adapter, fe->fenumber);
-				}
 				
 				// set it to standby
 				fe->Close(); //FIXME: do we need this???
@@ -387,21 +376,6 @@ CFrontend * CZapit::getFE(int index)
 	dprintf(DEBUG_INFO, "CZapit::getFE: Frontend #%d not found\n", index);
 	
 	return NULL;
-}
-
-CFrontend * CZapit::getVTuner()
-{
-	CFrontend * vtuner = NULL;
-
-	for(fe_map_iterator_t it = femap.begin(); it != femap.end(); it++) 
-	{
-		CFrontend * fe = it->second;
-		
-		if (fe->isvtuner)
-			vtuner = fe;
-	}
-
-	return vtuner;
 }
 
 void CZapit::setFEMode(fe_mode_t newmode, int feindex)
@@ -2964,203 +2938,6 @@ void * CZapit::sdtThread(void */*arg*/)
 	return 0;
 }
 
-// vtuner
-/*
-#ifdef TUNER_VUSOLO4K
-#define VTUNER_GET_MESSAGE  11
-#define VTUNER_SET_RESPONSE 12
-#define VTUNER_SET_NAME     13
-#define VTUNER_SET_TYPE     14
-#define VTUNER_SET_HAS_OUTPUTS 15
-#define VTUNER_SET_FE_INFO  16
-#define VTUNER_SET_NUM_MODES 17
-#define VTUNER_SET_MODES 18
-#else
-*/
-#define VTUNER_GET_MESSAGE  1
-#define VTUNER_SET_RESPONSE 2
-#define VTUNER_SET_NAME     3
-#define VTUNER_SET_TYPE     4
-#define VTUNER_SET_HAS_OUTPUTS 5
-#define VTUNER_SET_FE_INFO  6
-#define VTUNER_SET_NUM_MODES 7
-#define VTUNER_SET_MODES 8
-//#endif
-#define VTUNER_SET_DELSYS 32
-#define VTUNER_SET_ADAPTER 33
-
-#define MSG_SET_FRONTEND         1
-#define MSG_GET_FRONTEND         2
-#define MSG_READ_STATUS          3
-#define MSG_READ_BER             4
-#define MSG_READ_SIGNAL_STRENGTH 5
-#define MSG_READ_SNR             6
-#define MSG_READ_UCBLOCKS        7
-#define MSG_SET_TONE             8
-#define MSG_SET_VOLTAGE          9
-#define MSG_ENABLE_HIGH_VOLTAGE  10
-#define MSG_SEND_DISEQC_MSG      11
-#define MSG_SEND_DISEQC_BURST    13
-#define MSG_PIDLIST              14
-#define MSG_TYPE_CHANGED         15
-#define MSG_SET_PROPERTY         16
-#define MSG_GET_PROPERTY         17
-
-struct vtuner_message
-{
-	__s32 type;
-	union
-	{
-		struct dvb_frontend_parameters dvb_frontend_parameters;
-#if DVB_API_VERSION >= 5
-		struct dtv_property prop;
-#endif
-		fe_status_t status;
-		__u32 ber;
-		__u16 ss, snr;
-		__u32 ucb;
-		fe_sec_tone_mode_t tone;
-		fe_sec_voltage_t voltage;
-		struct dvb_diseqc_master_cmd diseqc_master_cmd;
-		fe_sec_mini_cmd_t burst;
-		__u16 pidlist[30];
-		unsigned char pad[72];
-		__u32 type_changed;
-	} body;
-};
-
-pthread_t eventthread = 0;
-pthread_t pumpthread = 0;
-int running = 1;
-static int demuxFD = -1;
-static int vtunerFD = -1;
-static int frontendFD = -1;
-unsigned char buffer[(188 / 4) * 4096];
-__u16 pidlist[30];
-#define BUFFER_SIZE ((188 / 4) * 4096) 			/* multiple of ts packet and page size */
-#define DEMUX_BUFFER_SIZE (8 * ((188 / 4) * 4096)) 	/* 1.5MB */
-
-void *pump_proc(void *ptr)
-{
-	dprintf(DEBUG_INFO, "CZapit::pump_proc: starting... tid %ld\n", syscall(__NR_gettid));
-
-	while (running)
-	{
-		struct timeval tv;
-		fd_set rset;
-		FD_ZERO(&rset);
-		FD_SET(demuxFD, &rset);
-		tv.tv_sec = 1;
-		tv.tv_usec = 0;
-
-		if (_select(demuxFD + 1, &rset, NULL, NULL, &tv) > 0)
-		{
-			int size = _read(demuxFD, buffer, BUFFER_SIZE);
-			if (_writeall(vtunerFD, buffer, size) <= 0)
-			{
-				break;
-			}
-		}
-	}
-
-	return NULL;
-}
-
-void *event_proc(void *ptr)
-{
-	dprintf(DEBUG_INFO, "CZapit::event_proc: starting... tid %ld\n", syscall(__NR_gettid));
-
-	int i, j;
-
-	while (running)
-	{
-		struct timeval tv;
-		fd_set xset;
-		FD_ZERO(&xset);
-		FD_SET(vtunerFD, &xset);
-		tv.tv_sec = 1;
-		tv.tv_usec = 0;
-
-		if (_select(vtunerFD + 1, NULL, NULL, &xset, &tv) > 0)
-		{
-			struct vtuner_message message;
-			ioctl(vtunerFD, VTUNER_GET_MESSAGE, &message);
-
-			switch (message.type)
-			{
-			case MSG_PIDLIST:
-				// remove old pids
-				for (i = 0; i < 30; i++)
-				{
-					int found = 0;
-					if (pidlist[i] == 0xffff) continue;
-					for (j = 0; j < 30; j++)
-					{
-						if (pidlist[i] == message.body.pidlist[j])
-						{
-							found = 1;
-							break;
-						}
-					}
-
-					if (found) continue;
-
-					printf("DMX_REMOVE_PID %x\n", pidlist[i]);
-#if DVB_API_VERSION > 3
-					ioctl(demuxFD, DMX_REMOVE_PID, &pidlist[i]);
-#else
-					ioctl(demuxFD, DMX_REMOVE_PID, pidlist[i]);
-#endif
-				}
-
-				// add new pids
-				for (i = 0; i < 30; i++)
-				{
-					int found = 0;
-					if (message.body.pidlist[i] == 0xffff) continue;
-					for (j = 0; j < 30; j++)
-					{
-						if (message.body.pidlist[i] == pidlist[j])
-						{
-							found = 1;
-							break;
-						}
-					}
-
-					if (found) continue;
-
-					printf("DMX_ADD_PID %x\n", message.body.pidlist[i]);
-#if DVB_API_VERSION > 3
-					ioctl(demuxFD, DMX_ADD_PID, &message.body.pidlist[i]);
-#else
-					ioctl(demuxFD, DMX_ADD_PID, message.body.pidlist[i]);
-#endif
-				}
-
-				// copy pids
-				for (i = 0; i < 30; i++)
-				{
-					pidlist[i] = message.body.pidlist[i];
-				}
-				break;
-
-			default:
-				printf("Unknown vtuner message type: %d\n", message.type);
-				break;
-			}
-
-			if (message.type != MSG_PIDLIST)
-			{
-				message.type = 0;
-				ioctl(vtunerFD, VTUNER_SET_RESPONSE, &message);
-			}
-		}
-	}
-
-//error:
-	return NULL;
-}
-
 //
 void *CZapit::updatePMTFilter(void *)
 {
@@ -4712,16 +4489,6 @@ void CZapit::Stop()
 	
 	// stop playback (stop capmt)
 	stopPlayBack();
-
-	// stop vtuner pump thread
-	//if (getVTuner() != NULL)
-	{
-		pthread_cancel(eventthread);
-		pthread_join(eventthread, NULL);
-		
-		pthread_cancel(pumpthread);
-		pthread_join(pumpthread, NULL);
-	}
 	
 	// stop std thread
 	//pthread_cancel(tsdt);

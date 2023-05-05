@@ -143,9 +143,6 @@ class CFrontend
 
 		/* file descriptor */
 		int fd;
-
-		/* vtuner/faketuner flag */
-		bool isvtuner;
 	  
 	private:
 		/* slave */

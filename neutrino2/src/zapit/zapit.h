@@ -233,7 +233,6 @@ class CZapit
 		void initFrontend();
 		void OpenFE();
 		void CloseFE();
-		CFrontend * getVTuner();
 		bool loopCanTune(CFrontend * fe, CZapitChannel * thischannel);
 		CFrontend * getPreferredFrontend(CZapitChannel * thischannel);
 		CFrontend * getFrontend(CZapitChannel * thischannel);
@@ -256,7 +255,6 @@ class CZapit
 		bool parseChannelPatPmt(CZapitChannel * thischannel, CFrontend * fe);
 		void restoreChannelPids(CZapitChannel * thischannel);
 		int zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate = 0);
-		//int zapToRecordID(const t_channel_id channel_id);
 		void setPidVolume(t_channel_id channel_id, int pid, int percent);
 		int getPidVolume(t_channel_id channel_id, int pid, bool ac3);
 		void setVolumePercent(int percent);
