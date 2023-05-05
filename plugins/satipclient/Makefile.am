@@ -34,6 +34,14 @@ uninstall-local:
 	-rm $(DESTDIR)$(PLUGINDIR)/satipclient/satipclient.png
 	-rm $(DESTDIR)$(PLUGINDIR)/satipclient/satip-client.conf
 	-rmdir $(DESTDIR)$(PLUGINDIR)/satipclient
+	
+bin_PROGRAMS = satip_client
+
+satip_client_SOURCES = log.c polltimer.c satip_config.c satip_main.c satip_rtp.c satip_rtsp.c satip_vtuner.c
+
+satip_client_LDADD = -lrt -lpthread
+
+
 
 	
 

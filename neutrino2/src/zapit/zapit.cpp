@@ -2965,6 +2965,7 @@ void * CZapit::sdtThread(void */*arg*/)
 }
 
 // vtuner
+/*
 #ifdef TUNER_VUSOLO4K
 #define VTUNER_GET_MESSAGE  11
 #define VTUNER_SET_RESPONSE 12
@@ -2975,6 +2976,7 @@ void * CZapit::sdtThread(void */*arg*/)
 #define VTUNER_SET_NUM_MODES 17
 #define VTUNER_SET_MODES 18
 #else
+*/
 #define VTUNER_GET_MESSAGE  1
 #define VTUNER_SET_RESPONSE 2
 #define VTUNER_SET_NAME     3
@@ -2983,7 +2985,7 @@ void * CZapit::sdtThread(void */*arg*/)
 #define VTUNER_SET_FE_INFO  6
 #define VTUNER_SET_NUM_MODES 7
 #define VTUNER_SET_MODES 8
-#endif
+//#endif
 #define VTUNER_SET_DELSYS 32
 #define VTUNER_SET_ADAPTER 33
 
@@ -4476,33 +4478,6 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::Start\n");
 	
-	//scan for dvb adapter/frontend and feed them in map
-	initFrontend();
-	
-	// load frontend config
-	loadFrontendConfig();
-		
-	// video/audio decoder
-	int video_mode = ZapStart_arg->video_mode;
-	
-	// video decoder
-#if defined (PLATFORM_COOLSTREAM)
-	videoDecoder = new cVideo(video_mode, videoDemux->getChannel(), videoDemux->getBuffer());
-	videoDecoder->Standby(false);
-	
-	audioDecoder = new cAudio(audioDemux->getBuffer(), videoDecoder->GetTVEnc(), NULL);
-	videoDecoder->SetAudioHandle(audioDecoder->GetHandle());
-#else	
-	videoDecoder = new cVideo();
-		
-	// set video system
-	if(videoDecoder)
-		videoDecoder->SetVideoSystem(video_mode);	
-	
-	// audio decoder
-	audioDecoder = new cAudio();
-#endif	
-	
 #if defined (__sh__)
 	if(FrontendCount > 1)
 	{
@@ -4529,66 +4504,65 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	}
 #endif
 
-	// init vtuner
-	if (getVTuner() != NULL)
+	// init vtuner / usbtuner adapters
+	#if 0
+	char type[8];
+	struct dmx_pes_filter_params filter;
+	struct dvb_frontend_info fe_info;
+	char frontend_filename[256], demux_filename[256], vtuner_filename[256];
+
+	dprintf(DEBUG_NORMAL, "linking adapter%d/frontend0 to vtuner0\n", 1);
+
+	sprintf(frontend_filename, "/dev/dvb/adapter%d/frontend0", 1);
+	sprintf(demux_filename, "/dev/dvb/adapter%d/demux0", 1);
+	sprintf(vtuner_filename, "/dev/vtunerc0"); //FIXME: think about this (/dev/misc/vtuner%)
+
+	dprintf(DEBUG_NORMAL, "CZapit::Start: linking %s to %s\n", frontend_filename, vtuner_filename);
+
+	frontendFD = open(frontend_filename, O_RDWR);
+	if (frontendFD < 0)
 	{
-		char type[8];
-		struct dmx_pes_filter_params filter;
-		struct dvb_frontend_info fe_info;
-		char frontend_filename[256], demux_filename[256], vtuner_filename[256];
+		perror(frontend_filename);
+	}
 
-		dprintf(DEBUG_NORMAL, "linking adapter%d/frontend0 to vtuner0\n", getVTuner()->fe_adapter);
+	demuxFD = open(demux_filename, O_RDONLY | O_NONBLOCK);
+	if (demuxFD < 0)
+	{
+		perror(demux_filename);
+	}
 
-		sprintf(frontend_filename, "/dev/dvb/adapter%d/frontend0", getVTuner()->fe_adapter);
-		sprintf(demux_filename, "/dev/dvb/adapter%d/demux0", getVTuner()->fe_adapter);
-		sprintf(vtuner_filename, "/dev/vtunerc0"); //FIXME: think about this (/dev/misc/vtuner%)
+	vtunerFD = open(vtuner_filename, O_RDWR);
+	if (vtunerFD < 0)
+	{
+		perror(vtuner_filename);
+	}
 
-		dprintf(DEBUG_NORMAL, "CZapit::Start: linking %s to %s\n", frontend_filename, vtuner_filename);
+	if (ioctl(frontendFD, FE_GET_INFO, &fe_info) < 0)
+	{
+		perror("FE_GET_INFO");
+	}
 
-		frontendFD = open(frontend_filename, O_RDWR);
-		if (frontendFD < 0)
-		{
-			perror(frontend_filename);
-		}
+	close(frontendFD);
+	frontendFD = -1;
 
-		demuxFD = open(demux_filename, O_RDONLY | O_NONBLOCK);
-		if (demuxFD < 0)
-		{
-			perror(demux_filename);
-		}
-
-		vtunerFD = open(vtuner_filename, O_RDWR);
-		if (vtunerFD < 0)
-		{
-			perror(vtuner_filename);
-		}
-
-		if (ioctl(frontendFD, FE_GET_INFO, &fe_info) < 0)
-		{
-			perror("FE_GET_INFO");
-		}
-
-		close(frontendFD);
-		frontendFD = -1;
-
-		filter.input = DMX_IN_FRONTEND;
-		filter.flags = 0;
+	filter.input = DMX_IN_FRONTEND;
+	filter.flags = 0;
 #if DVB_API_VERSION > 3
-		filter.pid = 0;
-		filter.output = DMX_OUT_TSDEMUX_TAP;
-		filter.pes_type = DMX_PES_OTHER;
+	filter.pid = 0;
+	filter.output = DMX_OUT_TSDEMUX_TAP;
+	filter.pes_type = DMX_PES_OTHER;
 #else
-		filter.pid = -1;
-		filter.output = DMX_OUT_TAP;
-		filter.pes_type = DMX_TAP_TS;
+	filter.pid = -1;
+	filter.output = DMX_OUT_TAP;
+	filter.pes_type = DMX_TAP_TS;
 #endif
 
-		ioctl(demuxFD, DMX_SET_BUFFER_SIZE, DEMUX_BUFFER_SIZE);
-		ioctl(demuxFD, DMX_SET_PES_FILTER, &filter);
-		ioctl(demuxFD, DMX_START);
+	ioctl(demuxFD, DMX_SET_BUFFER_SIZE, DEMUX_BUFFER_SIZE);
+	ioctl(demuxFD, DMX_SET_PES_FILTER, &filter);
+	ioctl(demuxFD, DMX_START);
 
-		switch (fe_info.type)
-		{
+	switch (fe_info.type)
+	{
 			case FE_QPSK:
 				strcpy(type,"DVB-S2");
 				break;
@@ -4603,34 +4577,61 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 				break;
 			default:
 				printf("Frontend type 0x%x not supported\n", fe_info.type);
-		}
+	}
 
-		ioctl(vtunerFD, VTUNER_SET_NAME, "virtuel tuner");
-		ioctl(vtunerFD, VTUNER_SET_TYPE, type);
-		ioctl(vtunerFD, VTUNER_SET_FE_INFO, &fe_info);
-		ioctl(vtunerFD, VTUNER_SET_HAS_OUTPUTS, "no");
-		ioctl(vtunerFD, VTUNER_SET_ADAPTER, 1);
+	ioctl(vtunerFD, VTUNER_SET_NAME, "virtuel tuner");
+	ioctl(vtunerFD, VTUNER_SET_TYPE, type);
+	ioctl(vtunerFD, VTUNER_SET_FE_INFO, &fe_info);
+	ioctl(vtunerFD, VTUNER_SET_HAS_OUTPUTS, "no");
+	ioctl(vtunerFD, VTUNER_SET_ADAPTER, 1);
 
 #if DVB_API_VERSION > 5 || DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 5
-		{
-			struct dtv_properties props;
-			struct dtv_property p[1];
-			props.num = 1;
-			props.props = p;
-			p[0].cmd = DTV_ENUM_DELSYS;
+	{
+		struct dtv_properties props;
+		struct dtv_property p[1];
+		props.num = 1;
+		props.props = p;
+		p[0].cmd = DTV_ENUM_DELSYS;
 
-			if (ioctl(frontendFD, FE_GET_PROPERTY, &props) >= 0)
-			{
-				ioctl(vtunerFD, VTUNER_SET_DELSYS, p[0].u.buffer.data);
-			}
+		if (ioctl(frontendFD, FE_GET_PROPERTY, &props) >= 0)
+		{
+			ioctl(vtunerFD, VTUNER_SET_DELSYS, p[0].u.buffer.data);
 		}
+	}
 #endif
 
-		memset(pidlist, 0xff, sizeof(pidlist));
+	memset(pidlist, 0xff, sizeof(pidlist));
 
-		pthread_create(&eventthread, NULL, event_proc, (void*)NULL);
-		pthread_create(&pumpthread, NULL, pump_proc, (void*)NULL);
-	}	
+	pthread_create(&eventthread, NULL, event_proc, (void*)NULL);
+	pthread_create(&pumpthread, NULL, pump_proc, (void*)NULL);
+	#endif	
+	
+	//scan for dvb adapter/frontend and feed them in map
+	initFrontend();
+	
+	// load frontend config
+	loadFrontendConfig();
+		
+	// video/audio decoder
+	int video_mode = ZapStart_arg->video_mode;
+	
+	// video decoder
+#if defined (PLATFORM_COOLSTREAM)
+	videoDecoder = new cVideo(video_mode, videoDemux->getChannel(), videoDemux->getBuffer());
+	videoDecoder->Standby(false);
+	
+	audioDecoder = new cAudio(audioDemux->getBuffer(), videoDecoder->GetTVEnc(), NULL);
+	videoDecoder->SetAudioHandle(audioDecoder->GetHandle());
+#else	
+	videoDecoder = new cVideo();
+		
+	// set video system
+	if(videoDecoder)
+		videoDecoder->SetVideoSystem(video_mode);	
+	
+	// audio decoder
+	audioDecoder = new cAudio();
+#endif	
 
 	//CI init
 #if defined (ENABLE_CI)	

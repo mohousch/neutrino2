@@ -106,8 +106,7 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 
 	dprintf(DEBUG_INFO, "cDemux::Open %s type:%s BufferSize:%d source(%d)\n", devname, aDMXCHANNELTYPE[Type], uBufferSize, demux_source);
 
-	// set demux source
-//#if !defined (USE_OPENGL)	
+	// set demux source	
 	if (!init[demux_num])
 	{
 		int n = DMX_SOURCE_FRONT0 + demux_source;
@@ -120,8 +119,7 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 		}
 		else
 			init[demux_num] = true;
-	}
-//#endif	
+	}	
 
 	// set demux buffer size
 	if (uBufferSize > 0)
