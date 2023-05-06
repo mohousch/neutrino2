@@ -41,7 +41,6 @@ class CSatIPClient : public CMenuTarget
 		~CSatIPClient(){};
 		
 		int exec(CMenuTarget* parent,  const std::string& actionkey);
-		void hide();
 
 		//
 		void readSettings();
