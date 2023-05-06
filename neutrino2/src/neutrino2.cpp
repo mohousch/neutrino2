@@ -650,8 +650,6 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	strcpy( g_settings.font_file, configfile.getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
 
 	// menue timing
-	//for (int i = 0; i < TIMING_SETTING_COUNT; i++)
-	//	g_settings.timing[i] = configfile.getInt32(timing_setting_name[i], default_timing[i]);
 	g_settings.timing_menu = configfile.getInt32("timing_menu", DEFAULT_TIMING_MENU);
 	g_settings.timing_channellist = configfile.getInt32("timing_channellist", DEFAULT_TIMING_CHANNELLIST);
 	g_settings.timing_epg = configfile.getInt32("timing_epg", DEFAULT_TIMING_EPG);
