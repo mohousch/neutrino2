@@ -281,7 +281,7 @@ void plugin_init(void)
 	CSatIPClient * SatIPClientHandler = new CSatIPClient();
 	SatIPClientHandler->readSettings();
 
-	if(SatIPEnabled == 1)
+	if(SatIPEnabled)
 	{
 		// load vtuner driver
 		SatIPClientHandler->loadVTuner();
