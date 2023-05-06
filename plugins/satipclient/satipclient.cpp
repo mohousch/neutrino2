@@ -208,7 +208,6 @@ void CSatIPClient::showMenu()
 	satIPClientMenu->addItem(m2);
 
 	satIPClientMenu->exec(NULL, "");
-	satIPClientMenu->hide();
 	
 	delete satIPClientMenu;
 	satIPClientMenu = NULL;
