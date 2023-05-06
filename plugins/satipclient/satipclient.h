@@ -28,8 +28,6 @@
 
 class CSatIPClient : public CMenuTarget
 {
-	//public:
-	//	int SatIPEnabled;
 	private:
 		std::string SatIPServerIP;
 		std::string SatIPServerPort;
@@ -39,10 +37,8 @@ class CSatIPClient : public CMenuTarget
 
 		void showMenu();
         public:
-		CMenuWidget * satIPClientMenu;
-		int selected;
-		CSatIPClient();
-		~CSatIPClient();
+		CSatIPClient(){};
+		~CSatIPClient(){};
 		
 		int exec(CMenuTarget* parent,  const std::string& actionkey);
 		void hide();

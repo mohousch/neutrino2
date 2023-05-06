@@ -54,23 +54,9 @@ const keyval SATIP_DEBUG_LEVEL_OPTIONS[SATIP_DEBUG_LEVEL_OPTION_COUNT] =
 	{ 4, _("Debug") }
 };
 
-int SatIPEnabled;
+int SatIPEnabled = 0;
 
-CSatIPClient::CSatIPClient()
-{
-	selected = 0;
-}
-
-CSatIPClient::~CSatIPClient()
-{
-}
-
-void CSatIPClient::hide()
-{
-	CFrameBuffer::getInstance()->paintBackground();
-	CFrameBuffer::getInstance()->blit();
-}
-
+//
 void CSatIPClient::readSettings() 
 {
 	dprintf(DEBUG_NORMAL, "CSatIPClient::loadSettings\n");
@@ -176,12 +162,10 @@ void CSatIPClient::showMenu()
 	readSettings();
 	
 	// create menu
-	satIPClientMenu = new CMenuWidget("SatIP Client", NEUTRINO_ICON_SETTINGS);
+	CMenuWidget * satIPClientMenu = new CMenuWidget("SatIP Client", NEUTRINO_ICON_SETTINGS);
 
 	satIPClientMenu->setWidgetMode(MODE_SETUP);
 	satIPClientMenu->enableShrinkMenu();
-
-	satIPClientMenu->setSelected(selected);
 
 	//
 	ClistBoxItem *m1= new ClistBoxItem(_("Start SatIP Client"), SatIPEnabled, NULL, this, "start", RC_green, NEUTRINO_ICON_BUTTON_GREEN);
