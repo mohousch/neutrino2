@@ -54,6 +54,8 @@ const keyval SATIP_DEBUG_LEVEL_OPTIONS[SATIP_DEBUG_LEVEL_OPTION_COUNT] =
 	{ 4, _("Debug") }
 };
 
+int SatIPEnabled;
+
 CSatIPClient::CSatIPClient()
 {
 	selected = 0;
@@ -69,8 +71,10 @@ void CSatIPClient::hide()
 	CFrameBuffer::getInstance()->blit();
 }
 
-void CSatIPClient::ReadSettings() 
+void CSatIPClient::readSettings() 
 {
+	dprintf(DEBUG_NORMAL, "CSatIPClient::loadSettings\n");
+	
 	CConfigFile *satipclient_config = new CConfigFile(',');
 	satipclient_config->clear();
 	satipclient_config->loadConfig(CONFIG_FILE);
@@ -78,7 +82,7 @@ void CSatIPClient::ReadSettings()
 	// enabled
 	SatIPEnabled = satipclient_config->getInt32("ENABLED", 0);
 	// satip server ip
-	SatIPServerIP = satipclient_config->getString("SATIPSERVER", "192.168.0.12");
+	SatIPServerIP = satipclient_config->getString("SATIPSERVER", "");
 	// satip server port default 554
 	SatIPServerPort = satipclient_config->getString("SATIPPORT", "554");
 	// frontend typ
@@ -89,8 +93,10 @@ void CSatIPClient::ReadSettings()
 	SatIPDebug = satipclient_config->getInt32("LOGLEVEL", 1);
 }
 
-bool CSatIPClient::SaveSettings() 
+bool CSatIPClient::saveSettings() 
 {
+	dprintf(DEBUG_NORMAL, "CSatIPClient::saveSettings\n");
+	
 	CConfigFile *satipclient_config = new CConfigFile(',');
 	
 	// satip disabled
@@ -113,7 +119,10 @@ bool CSatIPClient::SaveSettings()
 
 bool CSatIPClient::loadVTuner() 
 {
-	std::string cmd = "insmod /var/lib/modules/vtunerc.ko devices=1 debug=0";
+	dprintf(DEBUG_NORMAL, "CSatIPClient::loadVTuner\n");
+	
+	//std::string cmd = "insmod /var/lib/modules/vtunerc.ko devices=1 debug=0";
+	std::string cmd = "modprobe vtunerc devices=1 debug=0";
 	system(cmd.c_str());
 
 	return true;
@@ -121,6 +130,8 @@ bool CSatIPClient::loadVTuner()
 
 bool CSatIPClient::unloadVTuner() 
 {
+	dprintf(DEBUG_NORMAL, "CSatIPClient::unloadVTuner\n");
+	
 	std::string cmd = "rmmod vtunerc";
 	system(cmd.c_str());
 
@@ -129,6 +140,8 @@ bool CSatIPClient::unloadVTuner()
 
 bool CSatIPClient::startSatIPClient() 
 {
+	dprintf(DEBUG_NORMAL, "CSatIPClient::startSatIPClient\n");
+	
 	std::string cmd = "satip_client";
 	cmd += " -s ";
 	cmd += SatIPServerIP;
@@ -147,6 +160,8 @@ bool CSatIPClient::startSatIPClient()
 
 bool CSatIPClient::stopSatIPClient() 
 {
+	dprintf(DEBUG_NORMAL, "CSatIPClient::stopSatIPClient\n");
+	
 	std::string cmd = "killall -9 satip_client";
 	system(cmd.c_str());
 
@@ -155,8 +170,10 @@ bool CSatIPClient::stopSatIPClient()
 
 void CSatIPClient::showMenu()
 {
+	dprintf(DEBUG_NORMAL, "CSatIPClient::showMenu\n");
+	
 	// read settings
-	ReadSettings();
+	readSettings();
 	
 	// create menu
 	satIPClientMenu = new CMenuWidget("SatIP Client", NEUTRINO_ICON_SETTINGS);
@@ -166,13 +183,19 @@ void CSatIPClient::showMenu()
 
 	satIPClientMenu->setSelected(selected);
 
+	//
+	ClistBoxItem *m1= new ClistBoxItem(_("Start SatIP Client"), SatIPEnabled, NULL, this, "start", RC_green, NEUTRINO_ICON_BUTTON_GREEN);
+	ClistBoxItem *m2 = new ClistBoxItem(_("Stop SatIP Client"), SatIPEnabled, NULL, this, "stop", RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW);
+	
+	//
 	satIPClientMenu->addItem(new ClistBoxItem(_("back"), true, NULL, NULL, NULL, RC_nokey, NEUTRINO_ICON_BUTTON_LEFT));
 	satIPClientMenu->addItem(new CMenuSeparator(LINE));
 	satIPClientMenu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	satIPClientMenu->addItem(new CMenuSeparator(LINE));
 
 	// enabled
-	satIPClientMenu->addItem(new CMenuOptionChooser(_("SatIP Client enabled"), &SatIPEnabled, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, NULL));
+	CSatIPClientNotifier satIPNotifier(m1, m2);
+	satIPClientMenu->addItem(new CMenuOptionChooser(_("SatIP Client enabled"), &SatIPEnabled, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, &satIPNotifier));
 	
 	// satipserver ip
 	CIPInput * SATIPSERVER_IP = new CIPInput("SatIP Server IP", SatIPServerIP);
@@ -195,10 +218,10 @@ void CSatIPClient::showMenu()
 	satIPClientMenu->addItem(new CMenuSeparator(LINE));
 
 	// start satipclient
-	satIPClientMenu->addItem(new ClistBoxItem(_("Start SatIP Client"), SatIPEnabled, NULL, this, "start", RC_green, NEUTRINO_ICON_BUTTON_GREEN));
+	satIPClientMenu->addItem(m1);
 
 	// stop satipclient
-	satIPClientMenu->addItem(new ClistBoxItem(_("Stop SatIP Client"), SatIPEnabled, NULL, this, "stop", RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
+	satIPClientMenu->addItem(m2);
 
 	satIPClientMenu->exec(NULL, "");
 	satIPClientMenu->hide();
@@ -209,16 +232,20 @@ void CSatIPClient::showMenu()
 
 int CSatIPClient::exec(CMenuTarget* parent, const std::string &actionKey)
 {
+	dprintf(DEBUG_NORMAL, "CSatIPClient::exec: actionKey: %s\n", actionKey.c_str());
+	
+	int ret = RETURN_REPAINT;
+	
 	if(parent)
 		parent->hide();
 	
 	if(actionKey == "save")
 	{
 		//SaveSettings();
-		if(this->SaveSettings())
+		if(this->saveSettings())
 		 	HintBox(_("Information"), _("Save settings now"));
 
-		return RETURN_REPAINT;
+		return ret;
 	}
 	else if(actionKey == "start")
 	{
@@ -227,6 +254,8 @@ int CSatIPClient::exec(CMenuTarget* parent, const std::string &actionKey)
 
 		// start satip_client
 		startSatIPClient();
+		
+		return ret;
 	}
 	else if(actionKey == "stop")
 	{
@@ -235,19 +264,40 @@ int CSatIPClient::exec(CMenuTarget* parent, const std::string &actionKey)
 
 		// unload vtuner driver
 		unloadVTuner();
+		
+		return ret;
 	}
 	
 	showMenu();
 
-	return RETURN_EXIT_ALL;
+	return ret;
 }
 
+//
+CSatIPClientNotifier::CSatIPClientNotifier(ClistBoxItem *m1, ClistBoxItem *m2)
+{
+	item1 = m1;
+	item2 = m2;
+}
+
+bool CSatIPClientNotifier::changeNotify(const std::string& OptionName, void *)
+{
+	if (OptionName == _("SatIP Client enabled"))
+	{
+		item1->setActive(SatIPEnabled);
+		item2->setActive(SatIPEnabled);
+	}
+
+	return true;
+}
+
+//
 void plugin_init(void)
 {
 	CSatIPClient * SatIPClientHandler = new CSatIPClient();
-	SatIPClientHandler->ReadSettings();
+	SatIPClientHandler->readSettings();
 
-	if(SatIPClientHandler->SatIPEnabled == 1)
+	if(SatIPEnabled == 1)
 	{
 		// load vtuner driver
 		SatIPClientHandler->loadVTuner();

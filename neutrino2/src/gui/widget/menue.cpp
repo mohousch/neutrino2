@@ -237,7 +237,7 @@ void CMenuWidget::initFrames()
 		CMenuItem * item = items[count];
 
 		item->widgetType = widgetType;
-		//item->widgetMode = widgetMode;
+		item->widgetMode = widgetMode;
 	} 
 
 	// init frames

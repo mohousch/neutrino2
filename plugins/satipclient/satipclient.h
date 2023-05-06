@@ -28,8 +28,8 @@
 
 class CSatIPClient : public CMenuTarget
 {
-	public:
-		int SatIPEnabled;
+	//public:
+	//	int SatIPEnabled;
 	private:
 		std::string SatIPServerIP;
 		std::string SatIPServerPort;
@@ -48,8 +48,8 @@ class CSatIPClient : public CMenuTarget
 		void hide();
 
 		//
-		void ReadSettings();
-		bool SaveSettings();
+		void readSettings();
+		bool saveSettings();
 
 		bool loadVTuner();
 		bool unloadVTuner();
@@ -58,4 +58,14 @@ class CSatIPClient : public CMenuTarget
 		bool stopSatIPClient();
 };
 
+class CSatIPClientNotifier : public CChangeObserver
+{
+	private:
+		ClistBoxItem *item1, *item2;
+	public:
+		CSatIPClientNotifier(ClistBoxItem *m1, ClistBoxItem *m2);
+		bool changeNotify(const std::string&, void * data);
+};
+
 #endif
+
