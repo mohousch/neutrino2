@@ -24,8 +24,8 @@
 #include <plugin.h>
 
 
-#define CONFIG_FILE		"/etc/satip-client.conf"
-
+//#define CONFIG_FILE		"/etc/satip-client.conf"
+#define CONFIG_FILE		PLUGINDIR "/satipclient/satip-client.conf"
 class CSatIPClient : public CMenuTarget
 {
 	private:

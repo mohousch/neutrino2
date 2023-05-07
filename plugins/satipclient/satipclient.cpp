@@ -26,12 +26,12 @@ extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
 
-// option off1_on0
-#define OPTIONS_OFF1_ON0_OPTION_COUNT 2
-const keyval OPTIONS_OFF1_ON0_OPTIONS[OPTIONS_OFF1_ON0_OPTION_COUNT] =
+// option off0_on1
+#define OPTIONS_OFF0_ON1_OPTION_COUNT 2
+const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
 {
-        { 1, _("off") },
-        { 0, _("on") }
+        { 0, _("off") },
+        { 1, _("on") }
 };
 
 // frontend typ
@@ -75,8 +75,8 @@ void CSatIPClient::readSettings()
 	satipclient_config->clear();
 	satipclient_config->loadConfig(CONFIG_FILE);
 	
-	// enabled
-	SatIPEnabled = satipclient_config->getInt32("DISABLED", 0);
+	// disabled
+	SatIPEnabled = satipclient_config->getInt32("ENABLED", 0);
 	// satip server ip
 	SatIPServerIP = satipclient_config->getString("SATIPSERVER0", "");
 	// satip server port default 554
@@ -98,7 +98,7 @@ bool CSatIPClient::saveSettings()
 	CConfigFile *satipclient_config = new CConfigFile(',');
 	
 	// satip disabled
-	satipclient_config->setInt32("DISABLED", SatIPEnabled);
+	satipclient_config->setInt32("ENABLED", SatIPEnabled);
 	// satipserver ip
 	satipclient_config->setString("SATIPSERVER0", SatIPServerIP);
 	// satipserver port
@@ -196,7 +196,7 @@ void CSatIPClient::showMenu()
 
 	// enabled
 	CSatIPClientNotifier satIPNotifier(m1, m2);
-	satIPClientMenu->addItem(new CMenuOptionChooser(_("SatIP Client disabled"), &SatIPEnabled, OPTIONS_OFF1_ON0_OPTIONS, OPTIONS_OFF1_ON0_OPTION_COUNT, true, &satIPNotifier));
+	satIPClientMenu->addItem(new CMenuOptionChooser(_("SatIP Client enabled"), &SatIPEnabled, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, &satIPNotifier));
 	
 	// satipserver ip
 	CIPInput * SATIPSERVER_IP = new CIPInput("SatIP Server IP", SatIPServerIP);
@@ -287,8 +287,8 @@ bool CSatIPClientNotifier::changeNotify(const std::string& OptionName, void *)
 {
 	if (OptionName == _("SatIP Client enabled"))
 	{
-		item1->setActive(!SatIPEnabled);
-		item2->setActive(!SatIPEnabled);
+		item1->setActive(SatIPEnabled);
+		item2->setActive(SatIPEnabled);
 	}
 
 	return true;
