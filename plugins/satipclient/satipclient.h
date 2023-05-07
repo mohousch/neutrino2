@@ -24,7 +24,7 @@
 #include <plugin.h>
 
 
-#define CONFIG_FILE		PLUGINDIR "/satipclient/satip-client.conf"
+#define CONFIG_FILE		"/etc/satip-client.conf"
 
 class CSatIPClient : public CMenuTarget
 {
@@ -34,6 +34,7 @@ class CSatIPClient : public CMenuTarget
 		int SatIPFrontendTyp;
 		std::string SatIPVtunerDevice;
 		int SatIPDebug;
+		int SatIPWorkaround;
 
 		void showMenu();
         public:

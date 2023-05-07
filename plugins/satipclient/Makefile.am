@@ -41,6 +41,14 @@ satip_client_SOURCES = log.c polltimer.c satip_config.c satip_main.c satip_rtp.c
 
 satip_client_LDADD = -lrt -lpthread
 
+installdir = $(bindir)
+
+install_DATA = \
+	satip-client.sh
+
+install-data-hook:
+	chmod 0755 $(DESTDIR)$(bindir)/satip-client.sh
+
 
 
 	
