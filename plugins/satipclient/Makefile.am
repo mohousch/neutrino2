@@ -26,13 +26,13 @@ install-exec-local:
 	install .libs/satipclient.so $(DESTDIR)$(PLUGINDIR)/satipclient
 	install -m 0644 satipclient.cfg $(DESTDIR)$(PLUGINDIR)/satipclient
 	install -m 0644 satipclient.png $(DESTDIR)$(PLUGINDIR)/satipclient
-	install -m 0644 satip-client.conf $(DESTDIR)$(PLUGINDIR)/satipclient
+	install -m 0644 satip-client.conf $(DESTDIR)/etc
 
 uninstall-local:
 	-rm $(DESTDIR)$(PLUGINDIR)/satipclient/satipclient.so
 	-rm $(DESTDIR)$(PLUGINDIR)/satipclient/satipclient.cfg
 	-rm $(DESTDIR)$(PLUGINDIR)/satipclient/satipclient.png
-	-rm $(DESTDIR)$(PLUGINDIR)/satipclient/satip-client.conf
+	-rm $(DESTDIR)/etc/satip-client.conf
 	-rmdir $(DESTDIR)$(PLUGINDIR)/satipclient
 	
 bin_PROGRAMS = satip_client
