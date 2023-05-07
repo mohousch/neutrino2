@@ -287,8 +287,8 @@ bool CSatIPClientNotifier::changeNotify(const std::string& OptionName, void *)
 {
 	if (OptionName == _("SatIP Client enabled"))
 	{
-		item1->setActive(SatIPEnabled);
-		item2->setActive(SatIPEnabled);
+		item1->setActive(!SatIPEnabled);
+		item2->setActive(!SatIPEnabled);
 	}
 
 	return true;
