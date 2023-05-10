@@ -63,6 +63,9 @@ run-debug:
 run-gdb:
 	gdb -ex run $(DEST)/bin/neutrino2
 	
+run-valgrind:
+	valgrind --leak-check=full --track-origins=yes --error-limit=no --log-file="logfile.out" -v $(DEST)/bin/neutrino2
+	
 # init	
 init:
 # Media framework
@@ -83,8 +86,8 @@ init:
 	@read -p "Select overlay (1-2)?" OVERLAY; \
 	OVERLAY=$${OVERLAY}; \
 	case "$$OVERLAY" in \
-		1) echo "OVERLAY=overlay" > config.local;; \
-		2|*) echo "OVERLAY=" > config.local;; \
+		1) echo "OVERLAY=overlay" >> config.local;; \
+		2|*) echo "OVERLAY=" >> config.local;; \
 	esac; \
 	echo ""
 # lua
