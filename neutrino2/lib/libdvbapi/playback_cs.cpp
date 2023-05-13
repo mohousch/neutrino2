@@ -1164,15 +1164,13 @@ bool cPlayback::SetPosition(int position)
 	dprintf(DEBUG_NORMAL, "%s:%s position: %d msec\n", FILENAME, __FUNCTION__, position);
 	
 #if ENABLE_GSTREAMER
-	gint64 time_nanoseconds = 0;
+	gint64 time_nanoseconds = position * 1000000.0;
+
+	if(time_nanoseconds < 0) 
+		time_nanoseconds = 0;
 		
 	if(m_gst_playbin)
 	{
-		time_nanoseconds = position * 1000000.0;
-
-		if(time_nanoseconds < 0) 
-			time_nanoseconds = 0;
-		
 		gst_element_seek(m_gst_playbin, 1.0, GST_FORMAT_TIME, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_ACCURATE), GST_SEEK_TYPE_SET, time_nanoseconds, GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE);
 	}
 #else
