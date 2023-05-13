@@ -1105,30 +1105,14 @@ int CNeutrinoApp::convertCMenuItemID(const char * const id)
 		{
 			i = MENUITEM_OPTION_STRING_CHOOSER;
 		}
-		else if ( strcmp(id, "MENUITEM_OPTION_LANGUAGE_CHOOSER") == 0)
-		{
-			i = MENUITEM_OPTION_LANGUAGE_CHOOSER;
-		}
 		else if ( strcmp(id, "MENUITEM_SEPARATOR") == 0)
 		{
 			i = MENUITEM_SEPARATOR;
-		}
-		else if ( strcmp(id, "MENUITEM_FORWARDER") == 0)
-		{
-			i = MENUITEM_FORWARDER;
-		}
-		else if ( strcmp(id, "MENUITEM_LOCKED_FORWARDER") == 0)
-		{
-			i = MENUITEM_LOCKED_FORWARDER;
 		}
 		else if ( strcmp(id, "MENUITEM_LISTBOXITEM") == 0)
 		{
 			i = MENUITEM_LISTBOXITEM;
 		}
-		else if ( strcmp(id, "MENUITEM_PLUGINITEM") == 0)
-		{
-			i = MENUITEM_PLUGINITEM;
-		}	
 	}
 	
 	return i;

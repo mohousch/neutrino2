@@ -26,7 +26,6 @@
 #endif
 
 #include <gui/widget/widget_helpers.h>
-#include <gui/widget/listbox.h>
 
 
 //
@@ -54,6 +53,19 @@ class CMenuTarget
 		virtual void hide(){valueString->clear();};
 		virtual int exec(CMenuTarget* parent, const std::string& actionKey) = 0;
 		virtual std::string& getString(void) { return *valueString; };
+};
+
+// CChangeObserver
+class CChangeObserver
+{
+	public:
+		CChangeObserver(){}
+		virtual ~CChangeObserver(){}
+		
+		virtual bool changeNotify(const std::string&, void *)
+		{
+			return false;
+		}
 };
 
 //

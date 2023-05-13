@@ -46,13 +46,8 @@ enum
 	MENUITEM_OPTION_CHOOSER = 0,
 	MENUITEM_OPTION_NUMBER_CHOOSER,
 	MENUITEM_OPTION_STRING_CHOOSER,
-	MENUITEM_OPTION_LANGUAGE_CHOOSER,
 	MENUITEM_SEPARATOR,
-	MENUITEM_FORWARDER,
-	MENUITEM_LOCKED_FORWARDER,
-	//
-	MENUITEM_LISTBOXITEM,
-	MENUITEM_PLUGINITEM
+	MENUITEM_LISTBOXITEM
 };
 
 enum
@@ -95,19 +90,6 @@ typedef struct keyval
 	int key;
 	const char *valname;
 } keyval_struct;
-
-// CChangeObserver
-class CChangeObserver
-{
-	public:
-		CChangeObserver(){}
-		virtual ~CChangeObserver(){}
-		
-		virtual bool changeNotify(const std::string&, void *)
-		{
-			return false;
-		}
-};
 
 // CMenuItem
 class CMenuItem
@@ -395,8 +377,6 @@ class CZapProtection : public CPINProtection
 // CMenulistBoxItem
 class ClistBoxItem : public CMenuItem
 {
-	//std::string optionValueString;
-
 	protected:
 		virtual const char *getName(void);
 		virtual const char *getOption(void);
@@ -560,7 +540,6 @@ class ClistBox : public CWidgetItem
 		
 		//
 		int widgetMode;
-		//int menu_position;
 		
 		// item
 		int itemBorderMode;
