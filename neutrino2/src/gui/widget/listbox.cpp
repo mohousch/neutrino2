@@ -1738,6 +1738,7 @@ ClistBox::~ClistBox()
 	}
 
 	items.clear();
+	page_start.clear();
 	
 	if (items_background)
 	{

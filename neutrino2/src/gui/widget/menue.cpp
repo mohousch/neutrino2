@@ -187,15 +187,6 @@ void CMenuWidget::move(int xoff, int yoff)
 CMenuWidget::~CMenuWidget()
 {
 	dprintf(DEBUG_INFO, "CMenuWidget:: del (%s)\n", l_name.c_str());
-	
-	//
-	for(unsigned int count = 0; count <items.size(); count++) 
-	{
-		CMenuItem * item = items[count];
-
-		delete item;
-		item = NULL;
-	}
 
 	//
 	items.clear();

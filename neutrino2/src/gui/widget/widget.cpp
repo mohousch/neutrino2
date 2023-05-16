@@ -614,35 +614,7 @@ void CWidget::onUpKeyPressed()
 	
 	if(hasWidgetItem() && selected >= 0)
 	{
-#if 0
-		if( ((items[selected]->widgetItem_type == WIDGETITEM_FRAMEBOX) ) /*|| ((items[selected]->widgetItem_type == WIDGETITEM_LISTBOX) && (items[selected]->getWidgetType() == WIDGET_TYPE_FRAME) )*/ )
-		{
-			for (unsigned int count = 1; count < items.size(); count++) 
-			{
-				pos = (selected - count)%items.size();
-
-				if ( pos < 0 )
-					pos += items.size();
-
-				CWidgetItem * item = items[pos];
-
-				if(item->isSelectable() && item->hasItem())
-				{
-					items[selected]->setOutFocus();
-					items[selected]->paint();
-
-					item->setOutFocus(false);
-					item->paint();
-
-					selected = pos;
-
-					break;
-				}
-			}
-		}
-		else
-#endif
-			items[selected]->scrollLineUp();
+		items[selected]->scrollLineUp();
 	}
 }
 
@@ -652,40 +624,7 @@ void CWidget::onDownKeyPressed()
 	
 	if(hasWidgetItem() && selected >= 0)
 	{
-#if 0
-		if( ((items[selected]->widgetItem_type == WIDGETITEM_FRAMEBOX) ) /*|| ((items[selected]->widgetItem_type == WIDGETITEM_LISTBOX) && (items[selected]->getWidgetType() == WIDGET_TYPE_FRAME) )*/ )
-		{
-			//onYellowKeyPressed();
-			for (unsigned int count = 1; count < items.size(); count++) 
-			{
-				pos = (selected + count)%items.size();
-
-				if (pos >= (int)items.size())
-					pos = 0;
-
-				printf("CWidget::onDownKeyPressed: (pos:%d) (selected:%d)\n", pos, selected);
-
-				CWidgetItem * item = items[pos];
-
-				if(item->isSelectable())
-				{
-					items[selected]->setOutFocus();
-					items[selected]->paint();
-
-					item->setOutFocus(false);
-					item->paint();
-
-					selected = pos;
-
-					break;
-				}
-			}
-		}
-		else
-#endif
-		{
-			items[selected]->scrollLineDown();
-		}
+		items[selected]->scrollLineDown();
 	}
 }
 
@@ -695,32 +634,7 @@ void CWidget::onRightKeyPressed()
 	
 	if(hasWidgetItem() && selected >= 0)
 	{
-	/*
-		if( (items[selected]->widgetItem_type == WIDGETITEM_LISTBOX) && ( (items[selected]->getWidgetType() != WIDGET_TYPE_FRAME) && (items[selected]->getWidgetType() != WIDGET_TYPE_EXTENDED)) )
-		{
-			for (unsigned int count = 1; count < (unsigned int)items.size(); count++) 
-			{
-				pos = (selected + count)%items.size();
-
-				CWidgetItem * item = items[pos];
-
-				if(item->isSelectable() && item->hasItem())
-				{
-					items[selected]->setOutFocus();
-					items[selected]->paint();
-
-					selected = pos;
-
-					item->setOutFocus(false);
-					item->paint();
-
-					break;
-				}
-			}
-		}
-		else
-		*/
-			items[selected]->swipRight();
+		items[selected]->swipRight();
 	}
 }
 
@@ -730,32 +644,7 @@ void CWidget::onLeftKeyPressed()
 	
 	if(hasWidgetItem() && selected >= 0)
 	{
-	/*
-		if( (items[selected]->widgetItem_type == WIDGETITEM_LISTBOX) && ((items[selected]->getWidgetType() != WIDGET_TYPE_FRAME) && (items[selected]->getWidgetType() != WIDGET_TYPE_EXTENDED)) )
-		{
-			for (unsigned int count = 1; count < (unsigned int)items.size(); count++) 
-			{
-				pos = (selected - count)%items.size();
-
-				CWidgetItem * item = items[pos];
-
-				if(item->isSelectable() && item->hasItem())
-				{
-					items[selected]->setOutFocus();
-					items[selected]->paint();
-
-					selected = pos;
-
-					item->setOutFocus(false);
-					item->paint();
-
-					break;
-				}
-			}
-		}
-		else
-		*/
-			items[selected]->swipLeft();
+		items[selected]->swipLeft();
 	}
 }
 

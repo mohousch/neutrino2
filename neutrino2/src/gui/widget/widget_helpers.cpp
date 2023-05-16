@@ -673,16 +673,16 @@ void CItems2DetailsLine::paint()
 			if (ih > (cCBox.iHeight - 4))
 				ih = cCBox.iHeight - 4;
 			
-			CCImage DImage(cCBox.iX + 2, cCBox.iY + 2, 100, cCBox.iHeight - 4);
+			CCImage DImage(cCBox.iX + 5, cCBox.iY + 2, 100, cCBox.iHeight - 4);
 			DImage.setImage(icon.c_str());
 			DImage.setScaling(scale);
-			DImage.paintMainFrame(true);
+			//DImage.paintMainFrame(true);
 			DImage.setColor(color);
 			DImage.paint();
 		}
 		
 		//
-		CCText Dline(cCBox.iX + iw + 10, cCBox.iY + 10, cCBox.iWidth - iw - 20, cCBox.iHeight - 20, true);
+		CCText Dline(cCBox.iX + iw + 15, cCBox.iY + 10, cCBox.iWidth - iw - 20, cCBox.iHeight - 20, true);
 		Dline.setFont(tFont);
 		Dline.setText(hint.c_str());			
 		Dline.paint();
