@@ -30,6 +30,7 @@
 #include <set>
 #include <algorithm>
 #include <string>
+#include <ctime>
 
 #include <sectionsd/sectionsdtypes.h>
 #include <sectionsd/edvbstring.h>
