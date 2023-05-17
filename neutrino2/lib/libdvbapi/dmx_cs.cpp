@@ -108,12 +108,8 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 
 	// set demux source	
 	if (!init[demux_num])
-	{
-		int n = DMX_SOURCE_FRONT0 + demux_source;
-		
-		printf("%s: setting %s to source %d\n", __FUNCTION__, devname, demux_source);
-		
-		if (ioctl(demux_fd, DMX_SET_SOURCE, &n) < 0)
+	{	
+		if (ioctl(demux_fd, DMX_SET_SOURCE, (dmx_source_t)demux_source) < 0)
 		{
 			perror("DMX_SET_SOURCE");
 		}

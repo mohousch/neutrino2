@@ -5410,7 +5410,7 @@ int main(int argc, char *argv[])
 	signal(SIGHUP, sighandler);
 	signal(SIGPIPE, SIG_IGN);
 	
-	// initlocale
+	// init locale
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE_NAME, LOCALEDIR);
 	bind_textdomain_codeset(PACKAGE_NAME, "UTF8");
