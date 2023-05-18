@@ -57,14 +57,14 @@ static const char * aDMXCHANNELTYPE[] = {
 	"DMX_PCR_ONLY_CHANNEL"
 };
 
-cDemux::cDemux(int /*num*/)
+cDemux::cDemux(int)
 {  
 	// dmx file descriptor
 	demux_fd = -1;
 	
 	demux_adapter = 0;
 	demux_num = 0;
-	demux_source = 0;
+	demux_source = DMX_SOURCE_FRONT0;
 }
 
 cDemux::~cDemux()
@@ -98,7 +98,7 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 	// open/reopen
 	sprintf(devname, "/dev/dvb/adapter%d/demux%d", demux_adapter, demux_num);
 
-	demux_fd = open(devname, flags);
+	demux_fd = ::open(devname, flags);
 
 	// can not open
 	if (demux_fd < 0)
@@ -109,7 +109,7 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 	// set demux source	
 	if (!init[demux_num])
 	{	
-		if (ioctl(demux_fd, DMX_SET_SOURCE, (dmx_source_t)demux_source) < 0)
+		if (::ioctl(demux_fd, DMX_SET_SOURCE, &demux_source) < 0)
 		{
 			perror("DMX_SET_SOURCE");
 		}
@@ -120,7 +120,7 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 	// set demux buffer size
 	if (uBufferSize > 0)
 	{
-		if (ioctl(demux_fd, DMX_SET_BUFFER_SIZE, uBufferSize) < 0)
+		if (::ioctl(demux_fd, DMX_SET_BUFFER_SIZE, uBufferSize) < 0)
 			perror("DMX_SET_BUFFER_SIZE");
 	}
 
@@ -147,7 +147,7 @@ bool cDemux::Start(void)
 	dprintf(DEBUG_INFO, "%s:%s dmx(%d,%d) type=%s Pid 0x%x\n", FILENAME, __FUNCTION__, demux_adapter, demux_num, aDMXCHANNELTYPE[type], pid);
 
 #if !defined (__sh__)
-        if (ioctl(demux_fd , DMX_START) < 0)
+        if (::ioctl(demux_fd , DMX_START) < 0)
                 perror("DMX_START"); 
 #endif      
 
@@ -161,7 +161,7 @@ bool cDemux::Stop(void)
 	
 	dprintf(DEBUG_INFO, "%s:%s dmx(%d,%d) type=%s Pid 0x%x\n", FILENAME, __FUNCTION__, demux_adapter, demux_num, aDMXCHANNELTYPE[type], pid);
 	
-	if( ioctl(demux_fd, DMX_STOP) < 0)
+	if( ::ioctl(demux_fd, DMX_STOP) < 0)
 		perror("DMX_STOP");
 	
 	return true;
