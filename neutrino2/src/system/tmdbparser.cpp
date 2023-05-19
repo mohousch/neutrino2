@@ -559,7 +559,7 @@ bool CTmdb::getVideoInfo(std::string mtype, int id, int s_nr)
 		url = "http://api.themoviedb.org/3/movie/" + to_string(id) + "/videos?api_key=" +
  key + "&language=" + lang + "&append_to_response=credits";
 
-	dprintf(DEBUG_NORMAL, "CTmdb::getVideoInfo: %s\n", url.c_str())
+	dprintf(DEBUG_NORMAL, "CTmdb::getVideoInfo: %s\n", url.c_str());
 
 	std::string answer;
 
