@@ -25,11 +25,11 @@ extern "C" {
 #include "driver/framebuffer.h"
 #include "Debug.hpp"
 
-//#if LIBAVCODEC_VERSION_INT <= AV_VERSION_INT(57, 1, 99)
-//	#define CODEC_DVB_SUB CODEC_ID_DVB_SUBTITLE
-//#else
-	#define CODEC_DVB_SUB AV_CODEC_ID_DVB_SUBTITLE
-//#endif
+#if LIBAVCODEC_VERSION_INT <= AV_VERSION_INT(57, 1, 99)
+#define CODEC_DVB_SUB CODEC_ID_DVB_SUBTITLE
+#else
+#define CODEC_DVB_SUB AV_CODEC_ID_DVB_SUBTITLE
+#endif
 
 // Set these to 'true' for debug output:
 static bool DebugConverter = false;
@@ -63,6 +63,8 @@ cDvbSubtitleBitmaps::cDvbSubtitleBitmaps(int64_t pPts)
 cDvbSubtitleBitmaps::~cDvbSubtitleBitmaps()
 {
 	dbgconverter("cDvbSubtitleBitmaps::delete: PTS: %lld rects %d\n", pts, Count());
+	
+	/*
 	int i;
 	
 	if(sub.rects) 
@@ -78,6 +80,8 @@ cDvbSubtitleBitmaps::~cDvbSubtitleBitmaps()
 	}
 
 	memset(&sub, 0, sizeof(AVSubtitle));
+	*/
+	avsubtitle_free(&sub);
 }
 
 fb_pixel_t * simple_resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, int oy, int dx, int dy)
@@ -133,7 +137,12 @@ void cDvbSubtitleBitmaps::Draw(int &min_x, int &min_y, int &max_x, int &max_y)
 		//NOTE remove me
 		//printf("color:%d width:%d height:%d at x:%d y:%d\n", sub.rects[i]->nb_colors, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->x, sub.rects[i]->y);
 		
-		uint32_t * colors = (uint32_t *) sub.rects[i]->pict.data[1];
+		//uint32_t * colors = (uint32_t *) sub.rects[i]->pict.data[1];
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
+		uint32_t *colors = (uint32_t *) sub.rects[i]->pict.data[1];
+#else
+		uint32_t *colors = (uint32_t *) sub.rects[i]->data[1];
+#endif
 		int width = sub.rects[i]->w;
 		int height = sub.rects[i]->h;
 
@@ -147,7 +156,12 @@ void cDvbSubtitleBitmaps::Draw(int &min_x, int &min_y, int &max_x, int &max_y)
 		dbgconverter("cDvbSubtitleBitmaps::Draw: #%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
 
 		// resize color to 32 bit
-		fb_pixel_t * newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+		//fb_pixel_t * newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
+		fb_pixel_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+#else
+		fb_pixel_t *newdata = simple_resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+#endif
 		
 		// blit2fb
 		CFrameBuffer::getInstance()->blit2FB(newdata, nw, nh, xoff, yoff, 0, 0, true);
