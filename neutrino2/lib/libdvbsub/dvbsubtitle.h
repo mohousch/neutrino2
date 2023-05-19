@@ -12,6 +12,8 @@
 #ifndef __DVBSUBTITLE_H
 #define __DVBSUBTITLE_H
 
+#include <pthread.h>
+
 extern "C" {
 #include <unistd.h>
 #include <linux/fb.h>
