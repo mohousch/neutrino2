@@ -27,7 +27,7 @@ if !ENABLE_GSTREAMER
 AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include
 endif
 
-AM_CXXFLAGS = -fno-rtti -fno-exceptions
+AM_CXXFLAGS = -fno-rtti -fno-exceptions -std=c++98
 
 noinst_LIBRARIES = libneutrino2_system.a
 
@@ -47,6 +47,4 @@ libneutrino2_system_a_SOURCES = \
 	tmdbparser.cpp \
 	ytparser.cpp \
 	weather.cpp
-
-
 

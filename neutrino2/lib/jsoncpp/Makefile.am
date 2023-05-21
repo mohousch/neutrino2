@@ -3,7 +3,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir) \
 	-I$(srcdir)/include
 
-AM_CXXFLAGS = -fno-rtti -std=c++11
+AM_CXXFLAGS = -fno-rtti -std=c++98
 
 noinst_LIBRARIES = libjsoncpp.a
 
