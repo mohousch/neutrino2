@@ -567,56 +567,57 @@ unsigned long long getcurrenttime()
 	return (unsigned long long) tv.tv_usec + (unsigned long long)((unsigned long long) tv.tv_sec * (unsigned long long) 1000000);
 }
 
-std::string to_string(int i)
+//
+std::string toString(int i)
 {
 	std::stringstream s;
 	s << i;
 	return s.str();
 }
 
-std::string to_string(unsigned int i)
+std::string toString(unsigned int i)
 {
 	std::stringstream s;
 	s << i;
 	return s.str();
 }
 
-std::string to_string(long i)
+std::string toString(long i)
 {
 	std::stringstream s;
 	s << i;
 	return s.str();
 }
 
-std::string to_string(unsigned long i)
+std::string toString(unsigned long i)
 {
 	std::stringstream s;
 	s << i;
 	return s.str();
 }
 
-std::string to_string(long long i)
+std::string toString(long long i)
 {
 	std::stringstream s;
 	s << i;
 	return s.str();
 }
 
-std::string to_string(unsigned long long i)
+std::string toString(unsigned long long i)
 {
 	std::stringstream s;
 	s << i;
 	return s.str();
 }
 
-std::string to_string(float i)
+std::string toString(float i)
 {
 	std::stringstream s;
 	s << i;
 	return s.str();
 }
 
-std::string to_hexstring(unsigned long long i)
+std::string toHexString(unsigned long long i)
 {
 	std::stringstream s;
 	s.setf ( std::ios::hex, std::ios::basefield );
@@ -1142,32 +1143,32 @@ int proc_put(const char *path, std::string value)
 
 int proc_put(const char *path, int value)
 {
-	return proc_put(path, to_string(value).c_str());
+	return proc_put(path, toString(value).c_str());
 }
 
 int proc_put(const char *path, unsigned int value)
 {
-	return proc_put(path, to_string(value).c_str());
+	return proc_put(path, toString(value).c_str());
 }
 
 int proc_put(const char *path, long value)
 {
-	return proc_put(path, to_string(value).c_str());
+	return proc_put(path, toString(value).c_str());
 }
 
 int proc_put(const char *path, unsigned long value)
 {
-	return proc_put(path, to_string(value).c_str());
+	return proc_put(path, toString(value).c_str());
 }
 
 int proc_put(const char *path, long long value)
 {
-	return proc_put(path, to_string(value).c_str());
+	return proc_put(path, toString(value).c_str());
 }
 
 int proc_put(const char *path, unsigned long long value)
 {
-	return proc_put(path, to_string(value).c_str());
+	return proc_put(path, toString(value).c_str());
 }
 
 int proc_put(const char *path, bool state)

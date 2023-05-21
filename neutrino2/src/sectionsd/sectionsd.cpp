@@ -2043,13 +2043,13 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 		evUrl += g_settings.epg_serverbox_ip;
 		evUrl += "/web/epgservice?sRef=1:0:"; 
 
-		evUrl += to_hexstring(1);
+		evUrl += toHexString(1);
 		evUrl += ":";
-		evUrl += to_hexstring(GET_SERVICE_ID_FROM_CHANNEL_ID(epgid)); //sid
+		evUrl += toHexString(GET_SERVICE_ID_FROM_CHANNEL_ID(epgid)); //sid
 		evUrl += ":";
-		evUrl += to_hexstring(GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(epgid)); //tsid
+		evUrl += toHexString(GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(epgid)); //tsid
 		evUrl += ":";
-		evUrl += to_hexstring(GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(epgid)); //onid
+		evUrl += toHexString(GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(epgid)); //onid
 		evUrl += ":";
 
 		if(g_settings.epg_serverbox_type == DVB_C)
@@ -2063,7 +2063,7 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 		else if (g_settings.epg_serverbox_type == DVB_S)
 		{
 			// namenspace for sat
-			evUrl += to_hexstring(satellitePosition); //satpos
+			evUrl += toHexString(satellitePosition); //satpos
 		}
 
 		evUrl += "0000";
@@ -2076,7 +2076,7 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 		evUrl += g_settings.epg_serverbox_ip;
 		evUrl += "/control/epg?channelid=";
 
-         	evUrl += to_hexstring(epgid);
+         	evUrl += toHexString(epgid);
 
 		evUrl += "&xml=true&details=true";
 	}
@@ -2707,7 +2707,7 @@ void CSectionsd::writeSI2XML(const char *epgxmlname)
 			chid = create_channel_id(sid, onid, tsid);
 			
 			//snprintf(eventname, 17, "%04x%04x%04x.xml", onid, tsid, sid);
-			sprintf(eventname, "%s.xml", to_hexstring(chid).c_str());
+			sprintf(eventname, "%s.xml", toHexString(chid).c_str());
 			sprintf(filename, "%s/%s", epgdir, eventname);
 
 			if (!(eventfile = fopen(filename, "w"))) 
@@ -2734,7 +2734,7 @@ void CSectionsd::writeSI2XML(const char *epgxmlname)
 					fclose(eventfile);
 					
 					//snprintf(eventname, 17, "%04x%04x%04x.xml", onid, tsid, sid);
-					sprintf(eventname, "%s.xml", to_hexstring(chid).c_str());
+					sprintf(eventname, "%s.xml", toHexString(chid).c_str());
 					sprintf(filename, "%s/%s", epgdir, eventname);
 					
 					if (!(eventfile = fopen(filename, "w"))) 

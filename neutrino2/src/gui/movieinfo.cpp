@@ -150,7 +150,7 @@ static void XML_ADD_TAG_UNSIGNED(std::string &_xml_text_, const char *_tag_name_
 	_xml_text_ += "\t\t<";
 	_xml_text_ += _tag_name_;
 	_xml_text_ += ">";
-	_xml_text_ += to_string(_tag_content_);
+	_xml_text_ += toString(_tag_content_);
 	_xml_text_ += "</";
 	_xml_text_ += _tag_name_;
 	_xml_text_ += ">\n";
@@ -161,7 +161,7 @@ static void XML_ADD_TAG_LONG(std::string &_xml_text_, const char *_tag_name_, ui
 	_xml_text_ += "\t\t<";
 	_xml_text_ += _tag_name_;
 	_xml_text_ += ">";\
-	_xml_text_ += to_string(_tag_content_);
+	_xml_text_ += toString(_tag_content_);
 	_xml_text_ += "</";
 	_xml_text_ += _tag_name_;
 	_xml_text_ += ">\n";
@@ -986,7 +986,7 @@ void CMovieInfo::showMovieInfo(MI_MOVIE_INFO &movie_info)
 	// prepare print buffer 
 	if(movie_info.vote_count != 0)
 	{
-		print_buffer = "Vote: " + to_string(movie_info.vote_average) + "/10 Votecount: " + to_string(movie_info.vote_count);
+		print_buffer = "Vote: " + toString(movie_info.vote_average) + "/10 Votecount: " + toString(movie_info.vote_count);
 
 		print_buffer += "\n";
 	}
@@ -1055,7 +1055,7 @@ void CMovieInfo::showMovieInfo(MI_MOVIE_INFO &movie_info)
 		print_buffer += (std::string)_("Year of production") + " : ";
 		//snprintf(date_char, 12, "%4d", movie_info.productionDate + 1900);
 		//print_buffer += date_char;
-		print_buffer += to_string(movie_info.productionDate);
+		print_buffer += toString(movie_info.productionDate);
 
 		print_buffer += "\n";
 	}
@@ -1873,13 +1873,13 @@ void CMovieInfoWidget::funArt()
 	std::string l_buffer = "";
 	if (movieFile.length != 0)
 	{
-		l_buffer = to_string(movieFile.length);
+		l_buffer = toString(movieFile.length);
 		l_buffer += " Min";
 	}
 	
 	if (movieFile.productionDate)
 	{
-		l_buffer += " " + to_string(movieFile.productionDate);
+		l_buffer += " " + toString(movieFile.productionDate);
 	}
 	
 	if (!movieFile.genres.empty())

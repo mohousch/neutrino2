@@ -123,7 +123,7 @@ bool CTmdb::getMovieInfo(std::string text)
 	}
 
 	// credits infos
-	url = "http://api.themoviedb.org/3/" + tmp.media_type + "/" + to_string(tmp.id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
+	url = "http://api.themoviedb.org/3/" + tmp.media_type + "/" + toString(tmp.id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
 
 	answer.clear();
 	if (!::getUrl(url, answer, "", 90))
@@ -217,7 +217,7 @@ std::string CTmdb::createInfoText()
 
 	std::string infoText;
 
-	infoText = "Vote: " + to_string(minfo[0].vote_average) + "/10 Votecount: " + to_string(minfo[0].vote_count);
+	infoText = "Vote: " + toString(minfo[0].vote_average) + "/10 Votecount: " + toString(minfo[0].vote_count);
 	infoText += "\n\n";
 	infoText += minfo[0].overview;
 	infoText += "\n";
@@ -228,7 +228,7 @@ std::string CTmdb::createInfoText()
 	}
 	else
 	{
-		infoText += (std::string)_("Length") + ": " + to_string(minfo[0].runtime);
+		infoText += (std::string)_("Length") + ": " + toString(minfo[0].runtime);
 	}
 
 	infoText += "\n";
@@ -242,7 +242,7 @@ std::string CTmdb::createInfoText()
 
 	if (minfo[0].media_type == "tv")
 	{
-		infoText += "Seasons/Episodes: " + to_string(minfo[0].seasons) + "/" + to_string(minfo[0].episodes);
+		infoText += "Seasons/Episodes: " + toString(minfo[0].seasons) + "/" + toString(minfo[0].episodes);
 		infoText += "\n";
 	}
 
@@ -260,7 +260,7 @@ bool CTmdb::getMovieTVList(std::string mtype, std::string list, int page)
 
 	std::string url	= "http://api.themoviedb.org/3/";
 
-	url += mtype + "/" + encodeUrl(list) + "?api_key=" + key + "&language=" + lang + "&page=" + to_string(page);
+	url += mtype + "/" + encodeUrl(list) + "?api_key=" + key + "&language=" + lang + "&page=" + toString(page);
 
 	std::string answer;
 
@@ -378,7 +378,7 @@ bool CTmdb::getGenreMovieList(const int id)
 
 	std::string url	= "http://api.themoviedb.org/3/list/";
 
-	url += to_string(id) + "?api_key=" + key + "&language=" + lang;
+	url += toString(id) + "?api_key=" + key + "&language=" + lang;
 
 	std::string answer;
 
@@ -446,7 +446,7 @@ bool CTmdb::getSeasonsList(int id)
 
 	seasonList.clear();
 
-	std::string url = "http://api.themoviedb.org/3/tv/" + to_string(id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
+	std::string url = "http://api.themoviedb.org/3/tv/" + toString(id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
 
 	std::string answer;
 
@@ -499,7 +499,7 @@ bool CTmdb::getEpisodesList(int id, int nr)
 
 	episodeList.clear();
 
-	std::string url = "http://api.themoviedb.org/3/tv/" + to_string(id) + "/season/" + to_string(nr) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
+	std::string url = "http://api.themoviedb.org/3/tv/" + toString(id) + "/season/" + toString(nr) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
 
 	std::string answer;
 
@@ -554,9 +554,9 @@ bool CTmdb::getVideoInfo(std::string mtype, int id, int s_nr)
 	std::string url;
 
 	if(mtype == "tv")
-		url = "http://api.themoviedb.org/3/tv/" + to_string(id) + "/season/" + to_string(s_nr) + "/videos?api_key=" + key + "&language=" + lang;
+		url = "http://api.themoviedb.org/3/tv/" + toString(id) + "/season/" + toString(s_nr) + "/videos?api_key=" + key + "&language=" + lang;
 	else
-		url = "http://api.themoviedb.org/3/movie/" + to_string(id) + "/videos?api_key=" +
+		url = "http://api.themoviedb.org/3/movie/" + toString(id) + "/videos?api_key=" +
  key + "&language=" + lang + "&append_to_response=credits";
 
 	dprintf(DEBUG_NORMAL, "CTmdb::getVideoInfo: %s\n", url.c_str());
@@ -605,7 +605,7 @@ bool CTmdb::getMovieTVInfo(std::string mtype, int id)
 
 	movieInfo.clear();
 
-	std::string url = "http://api.themoviedb.org/3/" + mtype + "/" + to_string(id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
+	std::string url = "http://api.themoviedb.org/3/" + mtype + "/" + toString(id) + "?api_key=" + key + "&language=" + lang + "&append_to_response=credits";
 
 	std::string answer;
 

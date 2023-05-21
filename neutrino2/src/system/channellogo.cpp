@@ -81,7 +81,7 @@ bool CChannellogo::checkLogo(t_channel_id logo_id)
 	{
 		logo_name = g_settings.logos_dir;
 		logo_name += "/";
-		logo_name += to_hexstring(logo_id & 0xFFFFFFFFFFFFULL);
+		logo_name += toHexString(logo_id & 0xFFFFFFFFFFFFULL);
 		logo_name += strLogoExt[i].c_str();
 
 		if(!access(logo_name.c_str(), F_OK)) 
@@ -108,7 +108,7 @@ void CChannellogo::getLogoSize(t_channel_id logo_id, int * width, int * height, 
 	{
 		logo_name = g_settings.logos_dir;
 		logo_name += "/";
-		logo_name += to_hexstring(logo_id & 0xFFFFFFFFFFFFULL);
+		logo_name += toHexString(logo_id & 0xFFFFFFFFFFFFULL);
 		logo_name += strLogoExt[i].c_str();
 
 		if(!access(logo_name.c_str(), F_OK)) 
@@ -146,7 +146,7 @@ bool CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int wid
 	{
 		logo_name = g_settings.logos_dir;
 		logo_name += "/";
-		logo_name += to_hexstring(logo_id & 0xFFFFFFFFFFFFULL);
+		logo_name += toHexString(logo_id & 0xFFFFFFFFFFFFULL);
 		logo_name += strLogoExt[i].c_str();
 
 		if(!access(logo_name.c_str(), F_OK)) 
@@ -206,7 +206,7 @@ std::string CChannellogo::getLogoName(t_channel_id logo_id)
 	{
 		logo_name = g_settings.logos_dir;
 		logo_name += "/";
-		logo_name += to_hexstring(logo_id & 0xFFFFFFFFFFFFULL);
+		logo_name += toHexString(logo_id & 0xFFFFFFFFFFFFULL);
 		logo_name += strLogoExt[i].c_str();
 
 		if(!access(logo_name.c_str(), F_OK)) 
@@ -243,7 +243,7 @@ void CChannellogo::run()
 			std::string logo_name;
 			logo_name = g_settings.logos_dir;
 			logo_name += "/";
-			logo_name += to_hexstring(it->second.getLogoID() & 0xFFFFFFFFFFFFULL);
+			logo_name += toHexString(it->second.getLogoID() & 0xFFFFFFFFFFFFULL);
 			logo_name += ".png";
 								
 			if(access(logo_name.c_str(), F_OK))

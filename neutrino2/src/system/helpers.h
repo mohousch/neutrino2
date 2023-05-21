@@ -80,16 +80,16 @@ void strReplace(std::string & orig, const char *fstr, const std::string rstr);
 std::string& htmlEntityDecode(std::string& text, bool removeTags = false);
 
 //
-std::string to_string(int);
-std::string to_string(unsigned int);
-std::string to_string(long);
-std::string to_string(unsigned long);
-std::string to_string(long long);
-std::string to_string(unsigned long long);
-std::string to_string(float);
+std::string toString(int);
+std::string toString(unsigned int);
+std::string toString(long);
+std::string toString(unsigned long);
+std::string toString(long long);
+std::string toString(unsigned long long);
+std::string toString(float);
 
 //
-std::string to_hexstring(unsigned long long);
+std::string toHexString(unsigned long long);
 
 //
 std::string Lang2I18N(std::string lang);
