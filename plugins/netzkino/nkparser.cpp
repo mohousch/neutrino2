@@ -144,7 +144,7 @@ bool cNKFeedParser::parseFeedJSON(std::string &answer)
 		v = flick.get("id", "");
 		if (v.type() == Json::intValue || v.type() == Json::uintValue) 
 		{
-			vinfo.id = to_string(v.asInt());
+			vinfo.id = toString(v.asInt());
 			vinfo.tfile = thumbnail_dir + "/" + vinfo.id + ".jpg";
 		}
 		
@@ -232,12 +232,12 @@ bool cNKFeedParser::ParseFeed(nk_feed_mode_t mode, std::string search, int categ
 	else if (mode == CATEGORY && category > 0) 
 	{
 		//url += "get_category_posts";
-        	//url += "?count=" + to_string(max_results);
-		//url += "&id=" + to_string(category);
+        	//url += "?count=" + toString(max_results);
+		//url += "&id=" + toString(category);
         	url += "categories/";
-        	url += to_string(category);
+        	url += toString(category);
         	url += ".json?d=www&count=";
-        	url += to_string(max_results);
+        	url += toString(max_results);
         	url += "d&page=1";
 	} 
 	else
