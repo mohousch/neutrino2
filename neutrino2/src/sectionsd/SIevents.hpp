@@ -443,7 +443,7 @@ class SIevent
 		// Der Operator zum sortieren
 		bool operator < (const SIevent& e) const 
 		{
-		  return uniqueKey()<e.uniqueKey();
+			return uniqueKey()<e.uniqueKey();
 		}
 		int saveXML(FILE *file) const { // saves the event
 			return saveXML0(file) || saveXML2(file);

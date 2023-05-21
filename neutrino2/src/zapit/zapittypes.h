@@ -31,7 +31,6 @@
 
 #include <inttypes.h>
 #include <string>
-#include <map>
 
 #include <linux/dvb/frontend.h>
 

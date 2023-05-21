@@ -51,11 +51,6 @@
 #include <gui/movieinfo.h>
 
 
-#if !defined (_FILE_OFFSET_BITS) && !defined (__USE_FILE_OFFSET64) && !defined (_DARWIN_USE_64_BIT_INODE)
-#error not using 64 bit file offsets
-#endif /* __USE_FILE__OFFSET64 */
-
-
 //
 class CMoviePlayerGui : public CMenuTarget
 {

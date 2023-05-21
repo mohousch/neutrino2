@@ -17,7 +17,7 @@ else
 AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbapi
 endif
 
-AM_CPPFLAGS += -fno-rtti
+AM_CXXFLAGS = -fno-rtti -std=c++11
 
 noinst_LIBRARIES = libsectionsd.a
 

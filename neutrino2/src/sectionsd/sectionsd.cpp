@@ -373,7 +373,7 @@ struct OrderServiceUniqueKeyFirstStartTimeEventUniqueKey
 
 typedef std::set<SIeventPtr, OrderServiceUniqueKeyFirstStartTimeEventUniqueKey> MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
 
-static MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
+/*static*/ MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
 
 struct OrderFirstEndTimeServiceIDEventUniqueKey
 {
@@ -516,6 +516,7 @@ void CSectionsd::addNoDVBTimelist(t_original_network_id onid, t_transport_stream
 // Loescht ein Event aus allen Mengen
 bool CSectionsd::deleteEvent(const event_id_t uniqueKey)
 {
+	bool ret = false;
 	writeLockEvents();
 	MySIeventsOrderUniqueKey::iterator e = mySIeventsOrderUniqueKey.find(uniqueKey);
 
@@ -531,17 +532,12 @@ bool CSectionsd::deleteEvent(const event_id_t uniqueKey)
 
 		mySIeventsOrderUniqueKey.erase(uniqueKey);
 		mySIeventsNVODorderUniqueKey.erase(uniqueKey);
-
-		//printf("Deleting: %04x\n", (int) uniqueKey);
 		
-		unlockEvents();
-		return true;
+		ret = true;
 	}
-	else
-	{
-		unlockEvents();
-		return false;
-	}
+	unlockEvents();
+	
+	return ret;
 }
 
 // Fuegt ein Event in alle Mengen ein
