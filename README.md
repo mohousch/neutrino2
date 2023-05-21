@@ -44,7 +44,7 @@ $:~ make distclean
 * tested with:
  debian 8 Jessie, 9 Stretch and 11 Bullseye
  linuxmint 20.1 Ulyssa, 20.2 Uma, 20.3 Una and LMDE 5 Elsie
- Ubuntu 20.04 Focal Fossa
+ Ubuntu 20.04 Focal Fossa and 23.04 lunar lobster
 
 ## how to build neutrino2 for sh4/arm/mips boxes ##
 see:

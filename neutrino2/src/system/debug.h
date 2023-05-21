@@ -34,13 +34,7 @@ extern int debug;
 
 void setDebugLevel( int level );
 
-//#define dprintf(debuglevel, fmt, args...) {if(debug>=debuglevel) printf(fmt, ## args);}
-//#define dperror(str) {perror("[neutrino2] " str);}
-#define dprintf(debuglevel, fmt, args...) \
-	do { \
-		if (debug >= debuglevel) \
-			printf("[neutrino] " fmt, ## args); \
-	} while(0)
+#define dprintf(debuglevel, fmt, args...) {if(debug>=debuglevel) printf(fmt, ## args);}
 
 #endif
 
