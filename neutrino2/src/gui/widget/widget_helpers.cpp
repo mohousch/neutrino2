@@ -29,6 +29,7 @@
 #include <driver/color.h>
 #include <system/settings.h>
 #include <system/debug.h>
+#include <system/helpers.h>
 
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/textbox.h>
@@ -1450,7 +1451,7 @@ void CCSpinner::paint()
 	}
 	//
 	
-	filename += to_string(count);
+	filename += toString(count);
 		
 	//count = (count + 1) % 9;
 	
@@ -1487,7 +1488,7 @@ void CCSpinner::refresh()
 		
 	count = (count + 1) % 9;
 	
-	filename += to_string(count);
+	filename += toString(count);
 	
 	frameBuffer->paintIcon(filename, cCBox.iX, cCBox.iY);
 }

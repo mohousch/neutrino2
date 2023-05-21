@@ -2201,12 +2201,12 @@ void CMoviePlayerGui::doTMDB(MI_MOVIE_INFO& movieFile)
 		buffer += "\n\n";
 	
 		// prepare print buffer  
-		buffer += "Vote: " + to_string(minfo_list[0].vote_average) + "/10 Votecount: " + to_string(minfo_list[0].vote_count);
+		buffer += "Vote: " + toString(minfo_list[0].vote_average) + "/10 Votecount: " + toString(minfo_list[0].vote_count);
 		buffer += "\n\n";
 		buffer += minfo_list[0].overview;
 		buffer += "\n";
 
-		buffer += (std::string)_("Length (Min)") + ": " + to_string(minfo_list[0].runtime);
+		buffer += (std::string)_("Length (Min)") + ": " + toString(minfo_list[0].runtime);
 		buffer += "\n";
 
 		buffer += (std::string)_("Genre") + ": " + minfo_list[0].genres;

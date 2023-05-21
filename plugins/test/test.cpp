@@ -1512,7 +1512,7 @@ void CTestMenu::testCListFrameWidget()
 
 		snprintf(duration, 8, "(%ld:%02ld)", AudioPlaylist[i].MetaData.total_time / 60, AudioPlaylist[i].MetaData.total_time % 60);
 
-		listFrameLines.lineArray[0].push_back(to_string(i + 1));
+		listFrameLines.lineArray[0].push_back(toString(i + 1));
 		listFrameLines.lineArray[1].push_back(title);
 		listFrameLines.lineArray[2].push_back(duration);
 		listFrameLines.lineArray[3].push_back(genre);
@@ -2525,7 +2525,7 @@ void CTestMenu::testCListFrame()
 
 		snprintf(duration, 8, "(%ld:%02ld)", AudioPlaylist[i].MetaData.total_time / 60, AudioPlaylist[i].MetaData.total_time % 60);
 
-		listFrameLines.lineArray[0].push_back(to_string(i + 1));
+		listFrameLines.lineArray[0].push_back(toString(i + 1));
 		listFrameLines.lineArray[1].push_back(title);
 		listFrameLines.lineArray[2].push_back(duration);
 		listFrameLines.lineArray[3].push_back(genre);
