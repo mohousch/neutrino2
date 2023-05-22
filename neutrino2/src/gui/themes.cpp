@@ -74,28 +74,29 @@ int CThemes::exec(CMenuTarget * parent, const std::string& actionKey)
 	{
 		if(actionKey == "saveCurrentTheme")
 		{
-			if (MessageBox(_("Information"), _("Save current theme"), mbrNo, mbYes | mbNo, NULL, 600, 30, true) == mbrYes) 
-			{
-				std::string file_name = "";
-				CStringInputSMS * nameInput = new CStringInputSMS(_("Theme name"), file_name.c_str());
+			std::string file_name = "";
+			CStringInputSMS * nameInput = new CStringInputSMS(_("Theme name"), file_name.c_str());
 
-				nameInput->exec(NULL, "");
+			nameInput->exec(NULL, "");
 				
-				//
-				if (!nameInput->getExitPressed())
-				{
-					HintBox(_("Save current theme"), _("Saving current theme!"));
+			//
+			if (!nameInput->getExitPressed())
+			{
+				HintBox(_("Save current theme"), _("Saving current theme!"));
 					
-					saveFile((char*)((std::string)USERDIR + nameInput->getString().c_str() + FILE_PREFIX).c_str());
-				}
-
-				file_name.clear();
-
-				delete nameInput;
-				nameInput = NULL;
+				saveFile((char*)((std::string)USERDIR + nameInput->getString().c_str() + FILE_PREFIX).c_str());
 			}
 
-			return res;
+			file_name.clear();
+
+			delete nameInput;
+			nameInput = NULL;
+
+			//
+			hide();
+			Show();
+			
+			return RETURN_EXIT;
 		}
 		else if (actionKey == "theme_default")
 		{

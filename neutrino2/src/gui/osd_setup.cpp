@@ -1379,34 +1379,33 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		if (actionKey == "savecurrentstyle")
 		{
-			if (MessageBox(_("Information"), _("Save current style"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+			std::string file_name = "";
+			CStringInputSMS * nameInput = new CStringInputSMS(_("Skin Style name"), file_name.c_str());
+
+			nameInput->exec(NULL, "");
+				
+			//
+			if (!nameInput->getExitPressed())
 			{
-				std::string file_name = "";
-				CStringInputSMS * nameInput = new CStringInputSMS(_("Skin Style name"), file_name.c_str());
-
-				nameInput->exec(NULL, "");
-				
-				//
-				if (!nameInput->getExitPressed())
-				{
-					HintBox(_("Save current style"), _("Saving current style!"));
+				HintBox(_("Save current style"), _("Saving current style!"));
 					
-					std::string skinConfig = CONFIGDIR "/skins/";
-					skinConfig += g_settings.preferred_skin.c_str();
-					skinConfig += "/";
-					skinConfig += nameInput->getString().c_str();
-					skinConfig += ".config";
+				std::string skinConfig = CONFIGDIR "/skins/";
+				skinConfig += g_settings.preferred_skin.c_str();
+				skinConfig += "/";
+				skinConfig += nameInput->getString().c_str();
+				skinConfig += ".config";
 				
-					CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
-				}
-
-				file_name.clear();
-
-				delete nameInput;
-				nameInput = NULL;
+				CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
 			}
 
-			return ret;
+			file_name.clear();
+
+			delete nameInput;
+			nameInput = NULL;
+
+			hide();
+			showMenu();
+			return RETURN_EXIT_ALL;
 		}
 		else
 		{
