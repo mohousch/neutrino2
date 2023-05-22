@@ -40,19 +40,14 @@ enum
 //
 class CMenuTarget
 {
-	protected:
-		std::string *valueString;
-		std::string valueStringTmp;
-
-	public:
-		std::string name;
+	//public:
+	//	std::string name;
 		
 	public:
-		CMenuTarget(){ valueStringTmp = std::string(); valueString = &valueStringTmp; name = "";};
+		CMenuTarget(){/*name = "";*/};
 		virtual ~CMenuTarget(){};
-		virtual void hide(){valueString->clear();};
+		virtual void hide(){};
 		virtual int exec(CMenuTarget* parent, const std::string& actionKey) = 0;
-		virtual std::string& getString(void) { return *valueString; };
 };
 
 // CChangeObserver
@@ -78,7 +73,10 @@ enum {
 
 //
 class CWidget : public CMenuTarget
-{	
+{
+	public:
+		std::string name;
+			
 	protected:
 		CFrameBuffer *frameBuffer;
 		CBox mainFrameBox;

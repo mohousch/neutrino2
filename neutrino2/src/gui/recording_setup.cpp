@@ -131,9 +131,10 @@ int CRecordingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			}
 		}
 
-		getString() = g_settings.network_nfs_recordingdir;
+		hide();
+		showMenu();
 		
-		return ret;
+		return RETURN_EXIT;
 	}
 	
 	showMenu();
@@ -171,8 +172,8 @@ void CRecordingSettings::showMenu()
 	dprintf(DEBUG_NORMAL, "CRecordingSettings::showMenu:\n");
 	
 	//
-	CWidget* widget = NULL;
-	ClistBox* recordingSettings = NULL; 
+	ClistBox *recordingSettings = NULL;
+	CWidget *widget = NULL;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("recordingsetup");
 	

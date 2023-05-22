@@ -66,9 +66,10 @@ int CMoviePlayerSettings::exec(CMenuTarget* parent, const std::string& actionKey
 		if (b.exec(g_settings.network_nfs_moviedir))
 			strncpy(g_settings.network_nfs_moviedir, b.getSelectedFile()->Name.c_str(), sizeof(g_settings.network_nfs_moviedir)-1);
 
-		getString() = g_settings.network_nfs_moviedir;
+		hide();
+		showMenu();
 		
-		return ret;
+		return RETURN_EXIT;
 	}
 	
 	showMenu();

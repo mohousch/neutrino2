@@ -37,7 +37,6 @@ class CRecordingSettings : public CMenuTarget, CChangeObserver
 {
 	private:
 		void showMenu();
-		
 		bool changeNotify(const std::string& OptionName, void *);
 		
 	public:

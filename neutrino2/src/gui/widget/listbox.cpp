@@ -1055,11 +1055,6 @@ int ClistBoxItem::exec(CMenuTarget* target)
 	if(jumpTarget)
 	{
 		ret = jumpTarget->exec(target, actionKey);
-
-		if(ret) 
-		{
-			//option = jumpTarget->getString().c_str(); //FIXME: think again about this
-		}
 	}
 	else
 		ret = RETURN_EXIT;

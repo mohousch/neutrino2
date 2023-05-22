@@ -66,6 +66,8 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 
 	//
 	actionKey = "";
+	
+	name = "";
 }
 
 CWidget::CWidget(CBox *position)
@@ -96,6 +98,8 @@ CWidget::CWidget(CBox *position)
 
 	//
 	actionKey = "";
+	
+	name = "";
 }
 
 CWidget::~CWidget()

@@ -735,9 +735,10 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
 		}
 		
-		getString() = g_settings.font_file;
+		hide();
+		showMenu();
 		
-		return ret;
+		return RETURN_EXIT;
 	}
 		
 	showMenu();
@@ -930,9 +931,10 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 			//CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
 		}
 		
-		getString() = g_settings.icons_dir;
+		hide();
+		showMenu();
 		
-		return ret;
+		return RETURN_EXIT;
 	}
 	else if(actionKey == "select_buttons_dir")
 	{
@@ -949,9 +951,10 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 			//CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
 		}
 		
-		getString() = g_settings.buttons_dir;
+		hide();
+		showMenu();
 		
-		return ret;
+		return RETURN_EXIT;
 	}
 	else if(actionKey == "select_hints_dir")
 	{
@@ -968,9 +971,10 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 			//CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
 		}
 		
-		getString() = g_settings.hints_dir;
+		hide();
+		showMenu();
 		
-		return ret;
+		return RETURN_EXIT;
 	}
 	else if(actionKey == "select_spinner_dir")
 	{
@@ -987,9 +991,10 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 			//CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
 		}
 		
-		getString() = g_settings.spinner_dir;
+		hide();
+		showMenu();
 		
-		return ret;
+		return RETURN_EXIT;
 	}
 	else if(actionKey == "logos_dir") 
 	{
@@ -1003,9 +1008,10 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 			dprintf(DEBUG_NORMAL, "COSDDiverses::exec: new logos dir %s\n", b.getSelectedFile()->Name.c_str());
 		}
 
-		getString() = g_settings.logos_dir;
-
-		return ret;
+		hide();
+		showMenu();
+		
+		return RETURN_EXIT;
 	}
 	
 	showMenu();

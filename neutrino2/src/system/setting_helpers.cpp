@@ -346,8 +346,6 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
                 menu->addItem( new CMenuOptionChooser(text, &g_settings.usermenu[button][item], USERMENU_ITEM_OPTIONS, USERMENU_ITEM_OPTION_COUNT,true, NULL, RC_nokey, "", true ));
         }
 
-	widget->getString();
-
         widget->exec(NULL, "");
         
         if (menu)

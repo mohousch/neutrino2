@@ -93,9 +93,10 @@ int CPictureViewerSettings::exec(CMenuTarget* parent, const std::string& actionK
 		if (b.exec(g_settings.network_nfs_picturedir))
 			strncpy(g_settings.network_nfs_picturedir, b.getSelectedFile()->Name.c_str(), sizeof(g_settings.network_nfs_picturedir)-1);
 
-		getString() = g_settings.network_nfs_picturedir;
+		hide();
+		showMenu();
 		
-		return ret;
+		return RETURN_EXIT;
 	}
 	
 	showMenu();

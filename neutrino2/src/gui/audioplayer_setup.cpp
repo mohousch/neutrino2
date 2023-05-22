@@ -72,9 +72,10 @@ int CAudioPlayerSettings::exec(CMenuTarget* parent, const std::string& actionKey
 		if (b.exec(g_settings.network_nfs_audioplayerdir))
 			strncpy(g_settings.network_nfs_audioplayerdir, b.getSelectedFile()->Name.c_str(), sizeof(g_settings.network_nfs_audioplayerdir) - 1);
 
-		getString() = g_settings.network_nfs_audioplayerdir;
+		hide();
+		showMenu();
 		
-		return RETURN_REPAINT;
+		return RETURN_EXIT;
 	}
 	
 	showMenu();

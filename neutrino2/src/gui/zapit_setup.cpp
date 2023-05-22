@@ -67,6 +67,7 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 	
 	int   res = RETURN_REPAINT;
 	CSelectChannelWidget*  CSelectChannelWidgetHandler;
+	std::string chanName;
 	
 	if (parent)
 		parent->hide();
@@ -80,12 +81,16 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		g_settings.StartChannelTV = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		g_settings.startchanneltv_nr = CZapit::getInstance()->getChannelNumber(CSelectChannelWidgetHandler->getChannelID()) - 1;
 
-		this->getString() = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
+		/*this->getString()*/chanName = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
 		
-		return RETURN_REPAINT;
+		//return RETURN_REPAINT;
+		hide();
+		showMenu();
+		
+		return RETURN_EXIT;
 	}
 	else if(actionKey == "radio")
 	{
@@ -96,12 +101,16 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		g_settings.StartChannelRadio = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		g_settings.startchannelradio_nr = CZapit::getInstance()->getChannelNumber(CSelectChannelWidgetHandler->getChannelID()) - 1;
 
-		this->getString() = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
+		/*this->getString()*/chanName = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
 		
-		return RETURN_REPAINT;
+		//return RETURN_REPAINT;
+		hide();
+		showMenu();
+		
+		return RETURN_EXIT;
 	}
 
 	showMenu();

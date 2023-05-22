@@ -314,6 +314,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		parent->hide();
 
 	const char * key = actionKey.c_str();
+	std::string chanName;
 	
 	CSelectChannelWidget * CSelectChannelWidgetHandler = NULL;
 	
@@ -325,7 +326,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
 		timerNew_channel_name = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 
-		this->getString() = timerNew_channel_name;
+		//this->getString() = timerNew_channel_name;
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
@@ -343,7 +344,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
 
-		this->getString() = timerNew_channel_name;
+		//this->getString() = timerNew_channel_name;
 		
 		return RETURN_REPAINT;
 	}
@@ -355,7 +356,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		if (b.exec(g_settings.network_nfs_recordingdir))
 			strncpy(timerNew.recordingDir, b.getSelectedFile()->Name.c_str(), sizeof(timerNew.recordingDir) - 1);
 
-		this->getString() = g_settings.network_nfs_recordingdir;
+		//this->getString() = g_settings.network_nfs_recordingdir;
 
 		return RETURN_REPAINT;
 	}
@@ -440,11 +441,11 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		{
 			if (strcmp(timerNew.pluginName, "") == 0)
 			{
-				plugin_chooser->getString() = timerNew.pluginName;
+				//plugin_chooser->getString() = timerNew.pluginName;
 				return RETURN_REPAINT;
 			}
 
-			plugin_chooser->getString() = timerNew.pluginName;
+			//plugin_chooser->getString() = timerNew.pluginName;
 			
 			data = timerNew.pluginName;
 		}

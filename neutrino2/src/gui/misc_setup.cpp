@@ -631,9 +631,10 @@ int CEPGSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			}
 		}
 
-		getString() = g_settings.epg_dir;
-
-		return ret;
+		hide();
+		showMenu();
+		
+		return RETURN_EXIT_ALL;
 	}
 	
 	showMenu();
