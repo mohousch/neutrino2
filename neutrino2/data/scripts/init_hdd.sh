@@ -9,17 +9,6 @@
 
 echo "This command will initialize you hard disk. It will irrevocably"
 echo "ERASE ALL DATA on the disk!! If this is what you want to do,"
-echo "enter 3.1415926 to continue."
-
-#read ans
-#if [ $ans = "3.1415926" ] ; then
- #   echo Continuing...
-#else
- #   echo "Bye!"
-  #  exit 1
-#fi
-
-#umount /hdd
 
 HDD=$1
 
