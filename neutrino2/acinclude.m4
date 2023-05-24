@@ -303,7 +303,7 @@ AC_ARG_WITH(boxtype,
 			BOXMODEL="$withval"
 			;;
 			
-		e*hd)
+		e*)
 			BOXTYPE="axas"
 			BOXMODEL="$withval"
 			;;
