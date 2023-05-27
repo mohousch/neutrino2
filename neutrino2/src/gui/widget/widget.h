@@ -39,12 +39,9 @@ enum
 
 //
 class CMenuTarget
-{
-	//public:
-	//	std::string name;
-		
+{	
 	public:
-		CMenuTarget(){/*name = "";*/};
+		CMenuTarget(){};
 		virtual ~CMenuTarget(){};
 		virtual void hide(){};
 		virtual int exec(CMenuTarget* parent, const std::string& actionKey) = 0;
