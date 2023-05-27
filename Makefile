@@ -40,8 +40,8 @@ export TOPDIR LC_ALL LANG
 
 BOXTYPE = generic
 DEST = $(PWD)/$(BOXTYPE)
-N_SRC  = $(PWD)/neutrino2
-NHD2_OPTS = --with-boxtype=$(BOXTYPE)
+N2_SRC  = $(PWD)/neutrino2
+N2_OPTS = --with-boxtype=$(BOXTYPE)
 
 CFLAGS = -Wall -O2 -fno-strict-aliasing -O0
 CXXFLAGS = $(CFLAGS)
@@ -194,85 +194,85 @@ init-clean:
 OPENGL ?= opengl
 
 ifeq ($(OPENGL), opengl)
-NHD2_OPTS += --enable-opengl
+N2_OPTS += --enable-opengl
 endif	
 
 # MEDIAFW
 MEDIAFW ?= gstreamer
 
 ifeq ($(MEDIAFW), gstreamer)
-NHD2_OPTS += --enable-gstreamer --with-gstversion=1.0
+N2_OPTS += --enable-gstreamer --with-gstversion=1.0
 endif
 
 # OVERLAY
 OVERLAY ?= 
 
 ifeq ($(OVERLAY), overlay)
-NHD2_OPTS += --enable-overlay
+N2_OPTS += --enable-overlay
 endif
 
 # python
 PYTHON ?=
 
 ifeq ($(PYTHON), python)
-NHD2_OPTS += --enable-python
+N2_OPTS += --enable-python
 endif
 
 # lua
 LUA ?= lua
 
 ifeq ($(LUA), lua)
-NHD2_OPTS += --enable-lua
+N2_OPTS += --enable-lua
 endif
 
 # CICAM
 CICAM ?=
 
 ifeq ($(CICAM), cicam)
-NHD2_OPTS += --enable-ci
+N2_OPTS += --enable-ci
 endif
 
 # SCART
 SCART ?=
 
 ifeq ($(SCART), scart)
-NHD2_OPTS += --enable-scart
+N2_OPTS += --enable-scart
 endif
 
 # LCD 
 LCD ?=
 
 ifeq ($(LCD), lcd)
-NHD2_OPTS += --enable-lcd
+N2_OPTS += --enable-lcd
 endif
 
 ifeq ($(LCD), 4-digits)
-NHD2_OPTS += --enable-4digits
+N2_OPTS += --enable-4digits
 endif
 
 ifeq ($(LCD), tftlcd)
-NHD2_OPTS += --enable-lcd --enable-tftlcd
+N2_OPTS += --enable-lcd --enable-tftlcd
 endif
 
 # FKEYS
 FKEY ?=
 
 ifeq ($(FKEYS), fkeys)
-NHD2_OPTS += --enable-functionkeys
+N2_OPTS += --enable-functionkeys
 endif
 
 # FAKETUNER
 FAKETUNER ?=
 
 ifeq ($(FAKETUNER), faketuner)
-NHD2_OPTS += --enable-fake_tuner
+N2_OPTS += --enable-fake_tuner
 endif
 
 # test plugins
 TESTING ?=
 
 ifeq ($(TESTING), testing)
-NHD2_OPTS += --enable-testing
+N2_OPTS += --enable-testing
 endif
 
 #
@@ -305,33 +305,33 @@ help:
 #
 # neutrino2
 #
-neutrino: $(N_SRC)/config.status
-	$(MAKE) -C $(N_SRC) install
+neutrino: $(N2_SRC)/config.status
+	$(MAKE) -C $(N2_SRC) install
 
-$(N_SRC)/config.status: | $(N_SRC) $(DEST)
-	$(N_SRC)/autogen.sh
-	set -e; cd $(N_SRC); \
-		$(N_SRC)/configure \
+$(N2_SRC)/config.status: | $(N2_SRC) $(DEST)
+	$(N2_SRC)/autogen.sh
+	set -e; cd $(N2_SRC); \
+		$(N2_SRC)/configure \
 			--prefix=$(DEST) \
 			--build=i686-pc-linux-gnu \
 			--enable-silent-rules \
 			--enable-maintainer-mode \
-			$(NHD2_OPTS)
+			$(N2_OPTS)
 			
 $(DEST):
 	mkdir $@
 
-$(N_SRC):
+$(N2_SRC):
 	git pull
 
-neutrino2-checkout: $(N_SRC)
+neutrino2-checkout: $(N2_SRC)
 
 neutrino2-clean:
-	$(MAKE) -C $(N_SRC) clean
+	$(MAKE) -C $(N2_SRC) clean
 
 neutrino2-distclean:
-	$(MAKE) -C $(N_SRC) distclean
-	rm -f $(N_SRC)/config.status
+	$(MAKE) -C $(N2_SRC) distclean
+	rm -f $(N2_SRC)/config.status
 
 #
 # plugins
@@ -342,7 +342,7 @@ $(PLUGINS_SRC):
 
 plugins-checkout: $(PLUGINS_SRC)
 
-plugins: $(PLUGINS_SRC)/config.status $(N_SRC)/config.status
+plugins: $(PLUGINS_SRC)/config.status $(N2_SRC)/config.status
 	$(MAKE) -C $(PLUGINS_SRC) install
 
 $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
@@ -354,7 +354,7 @@ $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
 			--enable-silent-rules \
 			--enable-maintainer-mode \
 			--without-debug \
-			$(NHD2_OPTS)
+			$(N2_OPTS)
 
 plugins-clean:
 	$(MAKE) -C $(PLUGINS_SRC) clean
