@@ -143,6 +143,11 @@ class CFrontend
 
 		/* file descriptor */
 		int fd;
+		
+		//
+		uint32_t deliverySystemMask;
+		bool fe_can_multistream;
+		bool hybrid;
 	  
 	private:
 		/* slave */
@@ -237,6 +242,7 @@ class CFrontend
 		
                 void Close();
 		bool Open();
+		void getFEInfo(void);
 		void Init(void);
 		void setMasterSlave(bool _slave);
 		
@@ -250,9 +256,13 @@ class CFrontend
 
 		struct dvb_frontend_event getEvent(void);
 		
+		//
 		int getDeliverySystem();
-		bool getHighBand(){ return (int) getFrequency() >= lnbSwitch; }
+		bool isHybrid(void){ return hybrid;};
+		void forceDelSys(int i);
 		
+		//
+		bool getHighBand(){ return (int) getFrequency() >= lnbSwitch; }
 		void setMasterSlave();
 };
 

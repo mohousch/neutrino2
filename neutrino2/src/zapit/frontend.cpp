@@ -32,8 +32,11 @@
 #include <cstdio>
 #include <cstring>
 
+#include <fstream>
+
 /* system */
 #include <system/debug.h>
+#include <system/helpers.h>
 
 /* zapit */
 #include <zapit/settings.h>
@@ -75,7 +78,20 @@ extern transponder_list_t transponders;		// defined in zapit.cpp
 	if(tmax < timer_msec) tmax = timer_msec;	\
 	 printf("%s: %u msec (min %u max %u)\n",	\
 		 label, timer_msec, tmin, tmax);
+		 
+//S2API
+#define MAXFRONTENDCMDS 16
+dtv_property Frontend[MAXFRONTENDCMDS];
+dtv_properties CmdSeq;
 
+#define SETCMD(c, d) { Frontend[CmdSeq.num].cmd = (c);\
+                       Frontend[CmdSeq.num].u.data = (d);\
+                       if (CmdSeq.num++ > MAXFRONTENDCMDS) {\
+                          return;\
+                          }\
+                     }
+                     
+#define MAX_DELSYS 	8
 
 CFrontend::CFrontend(int num, int adap)
 {
@@ -118,6 +134,11 @@ CFrontend::CFrontend(int num, int adap)
 	// to allow Open() switch it off
 	currentVoltage = SEC_VOLTAGE_OFF; //SEC_VOLTAGE_13;
 	currentToneMode = SEC_TONE_ON;
+	
+	//
+	deliverySystemMask = UNDEFINED;
+	fe_can_multistream = false;
+	hybrid = false;
 }
 
 CFrontend::~CFrontend(void)
@@ -145,10 +166,8 @@ bool CFrontend::Open()
 		}
 		
 		/* get frontend info */
-		if(ioctl(fd, FE_GET_INFO, &info) < 0)
-			perror("FE_GET_INFO");
-		
-		dprintf(DEBUG_NORMAL, "CFrontend::Open %s %s\n", filename, info.name);
+		getFEInfo();
+		dprintf(DEBUG_NORMAL, "CFrontend::Open %s %s (type: %d) (delsys: 0x%4x)\n", filename, info.name, info.type, deliverySystemMask);
 	}
 	
 	currentTransponder.TP_id = 0;
@@ -157,6 +176,156 @@ bool CFrontend::Open()
 	
 	return true;
 }
+
+////
+void CFrontend::getFEInfo(void)
+{
+	if(ioctl(fd, FE_GET_INFO, &info) < 0)
+		perror("FE_GET_INFO");
+	
+	bool legacy = true;
+
+	deliverySystemMask = UNDEFINED;
+
+#if !defined (__sh__)
+	std::ifstream in;
+	if (fe_adapter == 0)
+		in.open("/proc/bus/nim_sockets");
+		
+	if (in.is_open())
+	{
+		std::string line;
+		bool found = false;
+		
+		while (getline(in, line))
+		{
+			if (line.find("NIM Socket " + toString(fenumber) + ":") != std::string::npos)
+				found = true;
+
+			if ((line.find("Name:") != std::string::npos) && found)
+			{
+				//printf("NIM SOCKET: %s\n",line.substr(line.find_first_of(":")+2).c_str());
+//#if BOXMODEL_VUPLUS_ALL
+//				sprintf(info.name,"%s", line.substr(line.find_first_of(":") + 9).c_str());
+//#else
+				std::string tmp = info.name;
+				sprintf(info.name,"%s (%s)", tmp.c_str(), line.substr(line.find_first_of(":") + 2).c_str());
+//#endif
+				break;
+			}
+		}
+		
+		in.close();
+	}
+#endif
+
+#if HAVE_DVB_API_VERSION >= 5
+	memset(Frontend, 0, sizeof(Frontend));
+	memset(&CmdSeq, 0, sizeof(CmdSeq));
+	CmdSeq.props = Frontend;
+	
+	SETCMD(DTV_CLEAR, 0);
+
+	SETCMD(DTV_ENUM_DELSYS, 0);
+	int ret = ioctl(fd, FE_GET_PROPERTY, &CmdSeq);
+	
+	printf("RET: %d\n", ret);
+	
+	if (ret >= 0) 
+	{
+		for (uint32_t i = 0; i < Frontend[0].u.buffer.len; i++) 
+		{
+			if (i >= MAX_DELSYS) 
+			{
+				printf("[fe%d/%d] ERROR: too many delivery systems\n", fe_adapter, fenumber);
+				break;
+			}
+
+			switch ((fe_delivery_system_t)Frontend[0].u.buffer.data[i]) 
+			{
+				case SYS_DVBC_ANNEX_A:
+				case SYS_DVBC_ANNEX_B:
+				case SYS_DVBC_ANNEX_C:
+					deliverySystemMask |= DVB_C;
+					printf("[fe%d/%d] add delivery system DVB-C (delivery_system: %d)\n", fe_adapter, fenumber, (fe_delivery_system_t)Frontend[0].u.buffer.data[i]);
+					break;
+				case SYS_DVBT:
+					deliverySystemMask |= DVB_T;
+					printf("[fe%d/%d] add delivery system DVB-T (delivery_system: %d)\n", fe_adapter, fenumber, (fe_delivery_system_t)Frontend[0].u.buffer.data[i]);
+					break;
+				case SYS_DVBT2:
+					deliverySystemMask |= DVB_T2;
+					fe_can_multistream = info.caps & FE_CAN_MULTISTREAM;
+					printf("[fe%d/%d] add delivery system DVB-T2 (delivery_system: %d / Multistream: %s)\n", fe_adapter, fenumber, (fe_delivery_system_t)Frontend[0].u.buffer.data[i], fe_can_multistream ? "yes" :"no");
+					break;
+				case SYS_DVBS:
+					deliverySystemMask |= DVB_S;
+					printf("[fe%d/%d] add delivery system DVB-S (delivery_system: %d)\n", fe_adapter, fenumber, (fe_delivery_system_t)Frontend[0].u.buffer.data[i]);
+					break;
+				case SYS_DVBS2:
+#if !defined (__sh__) //!defined (HAVE_SH4_HARDWARE) && !defined (HAVE_MIPS_HARDWARE)
+				//case SYS_DVBS2X:
+#endif
+					deliverySystemMask |= DVB_S2;
+					fe_can_multistream = info.caps & FE_CAN_MULTISTREAM;
+					printf("[fe%d/%d] add delivery system DVB-S2 (delivery_system: %d / Multistream: %s)\n", fe_adapter, fenumber, (fe_delivery_system_t)Frontend[0].u.buffer.data[i], fe_can_multistream ? "yes" :"no");
+#if !defined (__sh__)//!defined (HAVE_SH4_HARDWARE) && !defined (HAVE_MIPS_HARDWARE)
+					if (fe_can_multistream)
+					{
+						deliverySystemMask |= DVB_S2X;
+						printf("[fe%d/%d] add delivery system DVB-S2X (delivery_system: %d / Multistream: %s)\n", fe_adapter, fenumber, (fe_delivery_system_t)Frontend[0].u.buffer.data[i], fe_can_multistream ? "yes" :"no");
+					}
+#endif
+					break;
+				case SYS_DTMB:
+					deliverySystemMask |= DVB_DTMB;
+					printf("[fe%d/%d] add delivery system DTMB (delivery_system: %d)\n", fe_adapter, fenumber, (fe_delivery_system_t)Frontend[0].u.buffer.data[i]);
+					break;
+				default:
+					printf("[fe%d/%d] ERROR: delivery system unknown (delivery_system: %d)\n", fe_adapter, fenumber, (fe_delivery_system_t)Frontend[0].u.buffer.data[i]);
+					continue;
+			}
+
+		}
+		
+		legacy = false;
+	} 
+	else 
+	{
+		printf("WARNING: can't query delivery systems on frontend %d/%d - falling back to legacy mode\n", fe_adapter, fenumber);
+	}
+#endif
+
+	if (legacy) 
+	{
+		// Legacy mode (DVB-API < 5.5):
+		switch (info.type) 
+		{
+			case FE_QPSK:
+				deliverySystemMask |= DVB_S;
+				deliverySystemMask |= DVB_S2;
+				deliverySystemMask |= DVB_S2X;
+				break;
+			case FE_OFDM:
+				deliverySystemMask |= DVB_T;
+#ifdef SYS_DVBT2
+				if (info.caps & FE_CAN_2G_MODULATION)
+					deliverySystemMask |= DVB_T2;
+#endif
+				break;
+			case FE_QAM:
+				deliverySystemMask |= DVB_C;
+				break;
+			default:
+				printf("ERROR: unknown frontend type %d on frontend %d/%d", info.type, fe_adapter, fenumber);
+		}
+	}
+	
+	//
+	if ( (deliverySystemMask == DVB_C | DVB_T) || (deliverySystemMask == DVB_C | DVB_T2) )
+		hybrid = true;
+}
+////
 
 void CFrontend::Init(void)
 {	
@@ -819,19 +988,11 @@ void CFrontend::setFrontend(const struct dvb_frontend_parameters *feparams, bool
 	
 	getDelSys(fec_inner, modulation, f, s, m);
 
-	//S2API
-#define MAXFRONTENDCMDS 16
-#define SETCMD(c, d) { Frontend[CmdSeq.num].cmd = (c);\
-                       Frontend[CmdSeq.num].u.data = (d);\
-                       if (CmdSeq.num++ > MAXFRONTENDCMDS) {\
-                          return;\
-                          }\
-                     }
-
-	dtv_property Frontend[MAXFRONTENDCMDS];
+	//
+	//dtv_property Frontend[MAXFRONTENDCMDS];
 	memset(&Frontend, 0, sizeof(Frontend));
 
-	dtv_properties CmdSeq;
+	//dtv_properties CmdSeq;
   	memset(&CmdSeq, 0, sizeof(CmdSeq));
 
   	CmdSeq.props = Frontend;
@@ -2074,5 +2235,4 @@ int CFrontend::getDeliverySystem()
 	
 	return system;
 }
-
 

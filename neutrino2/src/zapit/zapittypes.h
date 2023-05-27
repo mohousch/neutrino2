@@ -203,10 +203,16 @@ typedef enum {
 
 /* dvb transmission types */
 typedef enum {
-	DVB_C,
-	DVB_S,
-	DVB_T,
-    	DVB_A
+	UNDEFINED 	= 0x0000,
+	DVB_S 		= 0x0001,
+	DVB_S2		= 0x0002,
+	DVB_C 		= 0x0004,
+	DVB_C2 		= 0x0008,
+	DVB_T 		= 0x0010,
+	DVB_T2		= 0x0020,
+	DVB_A 		= 0x0040,
+	DVB_DTMB	= 0x0080,
+	DVB_S2X		= 0x0100
 } delivery_system_t;
 
 /* service types */
