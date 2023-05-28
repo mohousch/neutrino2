@@ -92,31 +92,31 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 		// DVB-C
 		if(system == DVB_C)
 		{
-			feparams.u.qam.symbol_rate = xmlGetNumericAttribute(node, "sr", 0);
-			feparams.u.qam.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(node, "fec", 0);
-			feparams.u.qam.modulation = (fe_modulation_t) xmlGetNumericAttribute(node, "mod", 0);
+			feparams.symbol_rate = xmlGetNumericAttribute(node, "sr", 0);
+			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(node, "fec", 0);
+			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(node, "mod", 0);
 		}
 		// DVB-T
 		else if(system == DVB_T)
 		{
-			feparams.u.ofdm.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(node, "band", 0);
-			feparams.u.ofdm.code_rate_HP = (fe_code_rate_t) xmlGetNumericAttribute(node, "HP", 0);
-			feparams.u.ofdm.code_rate_LP = (fe_code_rate_t) xmlGetNumericAttribute(node, "LP", 0);
-			feparams.u.ofdm.constellation = (fe_modulation_t) xmlGetNumericAttribute(node, "const", 0);
-			feparams.u.ofdm.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(node, "trans", 0);
-			feparams.u.ofdm.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(node, "guard", 0);
-			feparams.u.ofdm.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(node, "hierarchy", 0);
+			feparams.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(node, "band", 0);
+			feparams.code_rate_HP = (fe_code_rate_t) xmlGetNumericAttribute(node, "HP", 0);
+			feparams.code_rate_LP = (fe_code_rate_t) xmlGetNumericAttribute(node, "LP", 0);
+			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(node, "const", 0);
+			feparams.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(node, "trans", 0);
+			feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(node, "guard", 0);
+			feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(node, "hierarchy", 0);
 		}
 		// DVB-S
 		else if(system == DVB_S)
 		{
-			feparams.u.qpsk.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(node, "fec", 0);
-			feparams.u.qpsk.symbol_rate = xmlGetNumericAttribute(node, "sr", 0);
+			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(node, "fec", 0);
+			feparams.symbol_rate = xmlGetNumericAttribute(node, "sr", 0);
 			polarization = xmlGetNumericAttribute(node, "pol", 0);
 
             		// ???
-			if(feparams.u.qpsk.symbol_rate < 50000) 
-				feparams.u.qpsk.symbol_rate = feparams.u.qpsk.symbol_rate * 1000;
+			if(feparams.symbol_rate < 50000) 
+				feparams.symbol_rate = feparams.symbol_rate * 1000;
 			
 			// ???
 			if(feparams.frequency < 20000) 
@@ -361,21 +361,21 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 
 		if (frontendType == FE_QAM) 		//DVB-C
 		{
-			feparams.u.qam.symbol_rate = xmlGetNumericAttribute(tps, "symbol_rate", 0);
-			feparams.u.qam.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(tps, "fec_inner", 0);
-			feparams.u.qam.modulation = (fe_modulation_t) xmlGetNumericAttribute(tps, "modulation", 0);
+			feparams.symbol_rate = xmlGetNumericAttribute(tps, "symbol_rate", 0);
+			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(tps, "fec_inner", 0);
+			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(tps, "modulation", 0);
 
             		fake_system = DVB_C;
 		}
 		else if (frontendType == FE_OFDM)	//DVB-T
 		{
-			feparams.u.ofdm.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(tps, "bandwidth", 0);
-			feparams.u.ofdm.code_rate_HP = (fe_code_rate_t) xmlGetNumericAttribute(tps, "code_rate_hp", 0);
-			feparams.u.ofdm.code_rate_LP = (fe_code_rate_t) xmlGetNumericAttribute(tps, "code_rate_lp", 0);
-			feparams.u.ofdm.constellation = (fe_modulation_t) xmlGetNumericAttribute(tps, "constellation", 0);
-			feparams.u.ofdm.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(tps, "transmission_mode", 0);
-			feparams.u.ofdm.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(tps, "guard_interval", 0);
-			feparams.u.ofdm.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(tps, "hierarchy_information", 0);
+			feparams.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(tps, "bandwidth", 0);
+			feparams.code_rate_HP = (fe_code_rate_t) xmlGetNumericAttribute(tps, "code_rate_hp", 0);
+			feparams.code_rate_LP = (fe_code_rate_t) xmlGetNumericAttribute(tps, "code_rate_lp", 0);
+			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(tps, "constellation", 0);
+			feparams.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(tps, "transmission_mode", 0);
+			feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(tps, "guard_interval", 0);
+			feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(tps, "hierarchy_information", 0);
 			feparams.inversion = (fe_spectral_inversion_t)xmlGetNumericAttribute(tps, "inversion", 0);
 
             		system = xmlGetNumericAttribute(tps, "system", 0);
@@ -384,7 +384,7 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 		}
 		else if (frontendType == FE_QPSK) 	//DVB-S
 		{
-			feparams.u.qpsk.symbol_rate = xmlGetNumericAttribute(tps, "symbol_rate", 0);
+			feparams.symbol_rate = xmlGetNumericAttribute(tps, "symbol_rate", 0);
 			polarization = xmlGetNumericAttribute(tps, "polarization", 0);
 			system = xmlGetNumericAttribute(tps, "system", 0);
 			modulation = xmlGetNumericAttribute(tps, "modulation", 0);
@@ -396,13 +396,13 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 			if(modulation == 2)
 				xml_fec += 9;
 
-			feparams.u.qpsk.fec_inner = (fe_code_rate_t)xml_fec;
+			feparams.fec_inner = (fe_code_rate_t)xml_fec;
 
             		fake_system = DVB_S;
 		}
 		else if (frontendType == FE_ATSC)
 		{
-		    feparams.u.vsb.modulation = (fe_modulation_t) xmlGetNumericAttribute(tps, "modulation", 0);
+		    feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(tps, "modulation", 0);
 
 		    fake_system = DVB_A;
 		}
@@ -870,7 +870,7 @@ void CServices::saveServices(bool tocopy)
 					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" pol=\"%hu\">\n",
 							tI->second.transport_stream_id, tI->second.original_network_id,
 							tI->second.feparams.frequency, tI->second.feparams.inversion,
-							tI->second.feparams.u.qpsk.symbol_rate, tI->second.feparams.u.qpsk.fec_inner,
+							tI->second.feparams.symbol_rate, tI->second.feparams.fec_inner,
 							tI->second.polarization);
 					break;
 
@@ -878,16 +878,16 @@ void CServices::saveServices(bool tocopy)
 					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" mod=\"%hu\">\n",
 							tI->second.transport_stream_id, tI->second.original_network_id,
 							tI->second.feparams.frequency, tI->second.feparams.inversion,
-							tI->second.feparams.u.qam.symbol_rate, tI->second.feparams.u.qam.fec_inner,
-							tI->second.feparams.u.qam.modulation);
+							tI->second.feparams.symbol_rate, tI->second.feparams.fec_inner,
+							tI->second.feparams.modulation);
 					break;
 
 				case DVB_T:
 					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" band=\"%hu\" HP=\"%hu\" LP=\"%hu\" const=\"%hu\" trans=\"%hu\" guard=\"%hu\" hierarchy=\"%hu\">\n",
                                         tI->second.transport_stream_id, tI->second.original_network_id,
                                         tI->second.feparams.frequency, tI->second.feparams.inversion,
-                                        tI->second.feparams.u.ofdm.bandwidth, tI->second.feparams.u.ofdm.code_rate_HP,
-                                        tI->second.feparams.u.ofdm.code_rate_LP, tI->second.feparams.u.ofdm.constellation,tI->second.feparams.u.ofdm.transmission_mode, tI->second.feparams.u.ofdm.guard_interval, tI->second.feparams.u.ofdm.hierarchy_information);
+                                        tI->second.feparams.bandwidth, tI->second.feparams.code_rate_HP,
+                                        tI->second.feparams.code_rate_LP, tI->second.feparams.modulation,tI->second.feparams.transmission_mode, tI->second.feparams.guard_interval, tI->second.feparams.hierarchy_information);
 					break;
 
 				default:

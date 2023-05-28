@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if ! [ -x /usr/bin/satip_client]; then
+if ! [ -x /usr/bin/satip_client ]; then
         exit 0
 fi
 

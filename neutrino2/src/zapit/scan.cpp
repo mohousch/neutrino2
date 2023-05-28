@@ -200,7 +200,7 @@ int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, ui
 		return 0;
 	}
 	else
-		tI->second.feparams.u.qpsk.fec_inner = feparams->u.qpsk.fec_inner;
+		tI->second.feparams.fec_inner = feparams->fec_inner;
 
 	return 1;
 }
@@ -235,7 +235,7 @@ _repeat:
 		// by sat send pol to neutrino
 		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 		{
-			actual_polarisation = ((tI->second.feparams.u.qpsk.symbol_rate/1000) << 16) | (tI->second.feparams.u.qpsk.fec_inner << 8) | (uint)tI->second.polarization;
+			actual_polarisation = ((tI->second.feparams.symbol_rate/1000) << 16) | (tI->second.feparams.fec_inner << 8) | (uint)tI->second.polarization;
 
 			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, CEventServer::INITID_NEUTRINO, &actual_polarisation,sizeof(actual_polarisation));
 		}
@@ -275,7 +275,7 @@ _repeat:
 		if(stI == transponders.end())
 			transponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder(tI->second.transport_stream_id,tI->second.feparams,tI->second.polarization,tI->second.original_network_id)));
 		else
-			stI->second.feparams.u.qpsk.fec_inner = tI->second.feparams.u.qpsk.fec_inner;
+			stI->second.feparams.fec_inner = tI->second.feparams.fec_inner;
 		
 		// parse nit
 		if(!scanMode) 
@@ -346,27 +346,27 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 		
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)	//DVB-C
 	{
-		feparams.u.qam.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
-		feparams.u.qam.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(transponder, "fec_inner", 0);
-		feparams.u.qam.modulation = (fe_modulation_t) xmlGetNumericAttribute(transponder, "modulation", 0);
+		feparams.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
+		feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(transponder, "fec_inner", 0);
+		feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(transponder, "modulation", 0);
 		diseqc_pos = 0;
 	}
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
-		feparams.u.ofdm.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(transponder, "bandwidth", 0);
-		feparams.u.ofdm.code_rate_HP = (fe_code_rate_t) xmlGetNumericAttribute(transponder, "code_rate_hp", 0);
-		feparams.u.ofdm.code_rate_LP = (fe_code_rate_t) xmlGetNumericAttribute(transponder, "code_rate_lp", 0);
-		feparams.u.ofdm.constellation = (fe_modulation_t) xmlGetNumericAttribute(transponder, "constellation", 0);
-		feparams.u.ofdm.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(transponder, "transmission_mode", 0);
-		feparams.u.ofdm.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(transponder, "guard_interval", 0);
-		feparams.u.ofdm.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(transponder, "hierarchy_information", 0);
+		feparams.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(transponder, "bandwidth", 0);
+		feparams.code_rate_HP = (fe_code_rate_t) xmlGetNumericAttribute(transponder, "code_rate_hp", 0);
+		feparams.code_rate_LP = (fe_code_rate_t) xmlGetNumericAttribute(transponder, "code_rate_lp", 0);
+		feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(transponder, "constellation", 0);
+		feparams.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(transponder, "transmission_mode", 0);
+		feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(transponder, "guard_interval", 0);
+		feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(transponder, "hierarchy_information", 0);
 		feparams.inversion = (fe_spectral_inversion_t)xmlGetNumericAttribute(transponder, "inversion", 0);
 			
 		diseqc_pos = 0;
 	}
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) 
 	{
-		feparams.u.qpsk.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
+		feparams.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
 		polarization = xmlGetNumericAttribute(transponder, "polarization", 0);
 		system = xmlGetNumericAttribute(transponder, "system", 0);
 		modulation = xmlGetNumericAttribute(transponder, "modulation", 0); 
@@ -377,7 +377,7 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 		if(modulation == 2)		// S2_8PSK
 			xml_fec += 9;
 
-		feparams.u.qpsk.fec_inner = (fe_code_rate_t) xml_fec;
+		feparams.fec_inner = (fe_code_rate_t) xml_fec;
 	}
 	// FIXME: add atsc
 

@@ -78,7 +78,7 @@ cAudio::~cAudio(void)
 bool cAudio::Open(CFrontend * fe)
 { 
 	if(fe)
-		audio_adapter = fe->fe_adapter;
+		audio_adapter = fe->feadapter;
 	
 	char devname[32];
 

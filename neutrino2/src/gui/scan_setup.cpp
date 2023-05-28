@@ -1488,23 +1488,23 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		{
 			case FE_QPSK:
 			{
-				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.u.qpsk.fec_inner, dvbs_get_modulation(tI->second.feparams.u.qpsk.fec_inner),  f, s, m);
+				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f, s, m);
 
-				snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.polarization ? 'V' : 'H', tI->second.feparams.u.qpsk.symbol_rate/1000, f, s, m);
+				snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate/1000, f, s, m);
 			}
 			break;
 
 			case FE_QAM:
 			{
-				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.u.qam.fec_inner, tI->second.feparams.u.qam.modulation, f, s, m);
+				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f, s, m);
 
-				snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.u.qam.symbol_rate/1000, f, s, m);
+				snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.symbol_rate/1000, f, s, m);
 			}
 			break;
 
 			case FE_OFDM:
 			{
-				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.u.ofdm.code_rate_HP, tI->second.feparams.u.ofdm.constellation, f, s, m);
+				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f, s, m);
 
 				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
 			}
@@ -1512,7 +1512,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				
 			case FE_ATSC:
             		{
-				CZapit::getInstance()->getFE(feindex)->getDelSys(FEC_NONE, tI->second.feparams.u.vsb.modulation, f, s, m);
+				CZapit::getInstance()->getFE(feindex)->getDelSys(FEC_NONE, tI->second.feparams.modulation, f, s, m);
 
 				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
 			}
@@ -1550,43 +1550,35 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		
 		switch( CZapit::getInstance()->getFE(feindex)->getInfo()->type) 
 		{
-			case FE_QPSK:
-				//printf("CTPSelectHandler::exec: fe(%d) selected TP: freq %d pol %d SR %d fec %d\n", feindex, tmpI->second.feparams.frequency, tmpI->second.polarization, tmpI->second.feparams.u.qpsk.symbol_rate, tmpI->second.feparams.u.qpsk.fec_inner);
-					
-				sprintf(scanSettings->TP_rate, "%d", tmpI->second.feparams.u.qpsk.symbol_rate);
-				scanSettings->TP_fec = tmpI->second.feparams.u.qpsk.fec_inner;
+			case FE_QPSK:	
+				sprintf(scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
+				scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
 				scanSettings->TP_pol = tmpI->second.polarization;
 				break;
 
-			case FE_QAM:
-				//printf("CTPSelectHandler::exec: fe(%d) selected TP: freq %d SR %d fec %d mod %d\n", feindex, tmpI->second.feparams.frequency, tmpI->second.feparams.u.qpsk.symbol_rate, tmpI->second.feparams.u.qam.fec_inner, tmpI->second.feparams.u.qam.modulation);
-					
-				sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.u.qam.symbol_rate);
-				scanSettings->TP_fec = tmpI->second.feparams.u.qam.fec_inner;
-				scanSettings->TP_mod = tmpI->second.feparams.u.qam.modulation;
+			case FE_QAM:	
+				sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
+				scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
+				scanSettings->TP_mod = tmpI->second.feparams.modulation;
 				break;
 
 			case FE_OFDM:
-			{
-				//printf("CTPSelectHandler::exec: fe(%d) selected TP: freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, tmpI->second.feparams.frequency, tmpI->second.feparams.u.ofdm.bandwidth, tmpI->second.feparams.u.ofdm.code_rate_HP, tmpI->second.feparams.u.ofdm.code_rate_LP, tmpI->second.feparams.u.ofdm.constellation, tmpI->second.feparams.u.ofdm.transmission_mode, tmpI->second.feparams.u.ofdm.guard_interval, tmpI->second.feparams.u.ofdm.hierarchy_information);
-					
-				scanSettings->TP_band = tmpI->second.feparams.u.ofdm.bandwidth;
-				scanSettings->TP_HP = tmpI->second.feparams.u.ofdm.code_rate_HP;
-				scanSettings->TP_LP = tmpI->second.feparams.u.ofdm.code_rate_LP;
-				scanSettings->TP_const = tmpI->second.feparams.u.ofdm.constellation;
-				scanSettings->TP_trans = tmpI->second.feparams.u.ofdm.transmission_mode;
-				scanSettings->TP_guard = tmpI->second.feparams.u.ofdm.guard_interval;
-				scanSettings->TP_hierarchy = tmpI->second.feparams.u.ofdm.hierarchy_information;
+			{	
+				scanSettings->TP_band = tmpI->second.feparams.bandwidth;
+				scanSettings->TP_HP = tmpI->second.feparams.code_rate_HP;
+				scanSettings->TP_LP = tmpI->second.feparams.code_rate_LP;
+				scanSettings->TP_const = tmpI->second.feparams.modulation;
+				scanSettings->TP_trans = tmpI->second.feparams.transmission_mode;
+				scanSettings->TP_guard = tmpI->second.feparams.guard_interval;
+				scanSettings->TP_hierarchy = tmpI->second.feparams.hierarchy_information;
 			}
 			break;
 
 			case FE_ATSC:
-            		{
-                		//printf("CTPSelectHandler::exec: fe(%d) selected TP: freq %d SR %d fec %d mod %d\n", feindex, tmpI->second.feparams.frequency, tmpI->second.feparams.u.qpsk.symbol_rate, tmpI->second.feparams.u.qam.fec_inner, tmpI->second.feparams.u.qam.modulation);
-					
-				//sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.u.qam.symbol_rate);
-				//scanSettings->TP_fec = tmpI->second.feparams.u.qam.fec_inner;
-				scanSettings->TP_mod = tmpI->second.feparams.u.qam.modulation;
+            		{	
+				//sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
+				//scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
+				scanSettings->TP_mod = tmpI->second.feparams.modulation;
 			}
 			break;
 		}	

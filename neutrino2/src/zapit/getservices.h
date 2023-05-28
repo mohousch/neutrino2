@@ -53,12 +53,12 @@ struct transponder
 {
 	t_transport_stream_id transport_stream_id;
 	t_original_network_id original_network_id;
-	struct dvb_frontend_parameters feparams;
+	FrontendParameters feparams;
 	unsigned char polarization;
 	bool updated;
     	delivery_system_t system;
 
-	transponder(t_transport_stream_id p_transport_stream_id, struct dvb_frontend_parameters p_feparams, delivery_system_t _system = DVB_S)
+	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams, delivery_system_t _system = DVB_S)
 	{
 		transport_stream_id = p_transport_stream_id;
 		feparams = p_feparams;
@@ -68,7 +68,7 @@ struct transponder
         	system = _system;
 	}
 
-	transponder(const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, const struct dvb_frontend_parameters p_feparams, const uint8_t p_polarization = 0, delivery_system_t _system = DVB_S)
+	transponder(const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, const FrontendParameters p_feparams, const uint8_t p_polarization = 0, delivery_system_t _system = DVB_S)
 	{
 		transport_stream_id = p_transport_stream_id;
 		original_network_id = p_original_network_id;
@@ -78,7 +78,7 @@ struct transponder
 		system = _system;
 	}
 
-	transponder(t_transport_stream_id p_transport_stream_id, struct dvb_frontend_parameters p_feparams, unsigned short p_polarization, t_original_network_id p_original_network_id, delivery_system_t _system = DVB_S)
+	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams, unsigned short p_polarization, t_original_network_id p_original_network_id, delivery_system_t _system = DVB_S)
 	{
 		transport_stream_id = p_transport_stream_id;
 		feparams = p_feparams;

@@ -65,7 +65,7 @@
 #define BAR_HEIGHT 8//(13 + BAR_BORDER*2)
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-TP_params TP;
+//TP_params TP;
 extern CScanSettings * scanSettings;		// defined in scan_setup.cpp
 extern t_channel_id live_channel_id; 		//defined in zapit.cpp
 
@@ -170,31 +170,31 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		
 		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
 		{
-			TP.feparams.u.qpsk.symbol_rate = atoi(scanSettings->TP_rate);
-			TP.feparams.u.qpsk.fec_inner = (fe_code_rate_t) scanSettings->TP_fec;
+			TP.feparams.symbol_rate = atoi(scanSettings->TP_rate);
+			TP.feparams.fec_inner = (fe_code_rate_t) scanSettings->TP_fec;
 			TP.polarization = scanSettings->TP_pol;
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d rate %d fec %d pol %d\n", feindex, TP.feparams.frequency, TP.feparams.u.qpsk.symbol_rate, TP.feparams.u.qpsk.fec_inner, TP.polarization);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d rate %d fec %d pol %d\n", feindex, TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.polarization);
 		} 
 		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
 		{
-			TP.feparams.u.qam.symbol_rate	= atoi(scanSettings->TP_rate);
-			TP.feparams.u.qam.fec_inner	= (fe_code_rate_t)scanSettings->TP_fec;
-			TP.feparams.u.qam.modulation	= (fe_modulation_t) scanSettings->TP_mod;
+			TP.feparams.symbol_rate	= atoi(scanSettings->TP_rate);
+			TP.feparams.fec_inner	= (fe_code_rate_t)scanSettings->TP_fec;
+			TP.feparams.modulation	= (fe_modulation_t) scanSettings->TP_mod;
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP.feparams.frequency, TP.feparams.u.qam.symbol_rate, TP.feparams.u.qam.fec_inner, TP.feparams.u.qam.modulation);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.modulation);
 		}
 		else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM )
 		{
-			TP.feparams.u.ofdm.bandwidth =  (fe_bandwidth_t)scanSettings->TP_band;
-			TP.feparams.u.ofdm.code_rate_HP = (fe_code_rate_t)scanSettings->TP_HP; 
-			TP.feparams.u.ofdm.code_rate_LP = (fe_code_rate_t)scanSettings->TP_LP; 
-			TP.feparams.u.ofdm.constellation = (fe_modulation_t)scanSettings->TP_const; 
-			TP.feparams.u.ofdm.transmission_mode = (fe_transmit_mode_t)scanSettings->TP_trans;
-			TP.feparams.u.ofdm.guard_interval = (fe_guard_interval_t)scanSettings->TP_guard;
-			TP.feparams.u.ofdm.hierarchy_information = (fe_hierarchy_t)scanSettings->TP_hierarchy;
+			TP.feparams.bandwidth =  (fe_bandwidth_t)scanSettings->TP_band;
+			TP.feparams.code_rate_HP = (fe_code_rate_t)scanSettings->TP_HP; 
+			TP.feparams.code_rate_LP = (fe_code_rate_t)scanSettings->TP_LP; 
+			TP.feparams.modulation = (fe_modulation_t)scanSettings->TP_const; 
+			TP.feparams.transmission_mode = (fe_transmit_mode_t)scanSettings->TP_trans;
+			TP.feparams.guard_interval = (fe_guard_interval_t)scanSettings->TP_guard;
+			TP.feparams.hierarchy_information = (fe_hierarchy_t)scanSettings->TP_hierarchy;
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP.feparams.frequency, TP.feparams.u.ofdm.bandwidth, TP.feparams.u.ofdm.code_rate_HP, TP.feparams.u.ofdm.code_rate_LP, TP.feparams.u.ofdm.constellation, TP.feparams.u.ofdm.transmission_mode, TP.feparams.u.ofdm.guard_interval, TP.feparams.u.ofdm.hierarchy_information);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP.feparams.frequency, TP.feparams.bandwidth, TP.feparams.code_rate_HP, TP.feparams.code_rate_LP, TP.feparams.modulation, TP.feparams.transmission_mode, TP.feparams.guard_interval, TP.feparams.hierarchy_information);
 		}
 	} 
 	else 
@@ -215,10 +215,11 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	
 	success = false;
 	
-	/*
 	// send fe mode
-	CZapit::getInstance()->setFEMode((fe_mode_t)scanSettings->femode, feindex);
+	//CZapit::getInstance()->setFEMode((fe_mode_t)scanSettings->femode, feindex);
 
+	/*
+	// diseqc / diseqc repeat
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
 	{
 		// send diseqc type to zapit
@@ -284,7 +285,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		msg.scanmode = scan_mode;
 		msg.feindex = feindex;
 	
-		success = CZapit::getInstance()->scanTP(/*TP, scan_mode, feindex*/msg);
+		success = CZapit::getInstance()->scanTP(msg);
 	}
 	else
 	{
@@ -293,7 +294,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		msg.scanmode = scan_mode;
 		msg.feindex = feindex;
 	
-		success = CZapit::getInstance()->startScan(/*scan_mode, feindex*/msg);
+		success = CZapit::getInstance()->startScan(msg);
 	}
 
 	// poll for messages

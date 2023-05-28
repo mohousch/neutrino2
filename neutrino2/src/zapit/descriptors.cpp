@@ -306,7 +306,7 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 	modulationType = (buffer[8]) & 0x03; 	// 1=QPSK, 2=M8PSK
 
 	//rate
-	feparams.u.qpsk.symbol_rate =
+	feparams.symbol_rate =
 		(
 		 ((buffer[9] >> 4)	* 100000000) +
 		 ((buffer[9] & 0x0F)	* 10000000) +
@@ -323,7 +323,7 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 	if(modulationType == 2)
 		fec_inner += 9;
 
-	feparams.u.qpsk.fec_inner = (fe_code_rate_t) fec_inner;
+	feparams.fec_inner = (fe_code_rate_t) fec_inner;
 
 	//pol
 	polarization = (buffer[8] >> 5) & 0x03;
@@ -332,14 +332,14 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 	if (feparams.frequency >= 100000000)
 		feparams.frequency /= 10;
 
-	if (feparams.u.qpsk.symbol_rate >= 50000000)
-		feparams.u.qpsk.symbol_rate /= 10;
+	if (feparams.symbol_rate >= 50000000)
+		feparams.symbol_rate /= 10;
 
 	freq = feparams.frequency/1000;
 
 	if(feparams.frequency > 15000000) 
 	{
-		printf("[NIT] Bogus TP: freq %d SR %d fec %d pol %d\n", feparams.frequency, feparams.u.qpsk.symbol_rate, fec_inner, polarization);
+		printf("[NIT] Bogus TP: freq %d SR %d fec %d pol %d\n", feparams.frequency, feparams.symbol_rate, fec_inner, polarization);
 		return 0;
 	}
 
@@ -379,7 +379,7 @@ int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const b
 	feparams.inversion = INVERSION_AUTO;
 
 	//rate
-	feparams.u.qam.symbol_rate =
+	feparams.symbol_rate =
 	(
 		((buffer[9] >> 4)	* 100000000) +
 		((buffer[9] & 0x0F)	* 10000000) +
@@ -394,10 +394,10 @@ int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const b
                 feparams.frequency /= 1000;
 
 	//fec
-	feparams.u.qam.fec_inner = CFrontend::getCodeRate(buffer[12] & 0x0F);
+	feparams.fec_inner = CFrontend::getCodeRate(buffer[12] & 0x0F);
 
 	//mod
-	feparams.u.qam.modulation = CFrontend::getModulation(buffer[8]);
+	feparams.modulation = CFrontend::getModulation(buffer[8]);
 
 	freq = feparams.frequency/100;
 
@@ -911,25 +911,25 @@ int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * c
 	feparams.frequency *= 10;
 	
 	/* band */
-	feparams.u.ofdm.bandwidth = (fe_bandwidth_t)((buffer[6] >> 5) & 0x07);
+	feparams.bandwidth = (fe_bandwidth_t)((buffer[6] >> 5) & 0x07);
 	
 	/* const */
-	feparams.u.ofdm.constellation = CFrontend::getModulation((buffer[7] >> 6) & 0x03);
+	feparams.modulation = CFrontend::getModulation((buffer[7] >> 6) & 0x03);
 	
 	/* hierarchy */
-	feparams.u.ofdm.hierarchy_information = (fe_hierarchy_t)((buffer[7] >> 3) & 0x07);
+	feparams.hierarchy_information = (fe_hierarchy_t)((buffer[7] >> 3) & 0x07);
 	
 	/* HP */
-	feparams.u.ofdm.code_rate_HP = CFrontend::getCodeRate(buffer[7] & 0x07);
+	feparams.code_rate_HP = CFrontend::getCodeRate(buffer[7] & 0x07);
 	
 	/* LP */
-	feparams.u.ofdm.code_rate_LP = CFrontend::getCodeRate((buffer[8] >> 5) & 0x07);
+	feparams.code_rate_LP = CFrontend::getCodeRate((buffer[8] >> 5) & 0x07);
 	
 	/* guard */
-	feparams.u.ofdm.guard_interval = (fe_guard_interval_t)((buffer[8] >> 3) & 0x03);
+	feparams.guard_interval = (fe_guard_interval_t)((buffer[8] >> 3) & 0x03);
 	 
 	/* trans */
-	feparams.u.ofdm.transmission_mode = (fe_transmit_mode_t)((buffer[8] >> 1) & 0x03);
+	feparams.transmission_mode = (fe_transmit_mode_t)((buffer[8] >> 1) & 0x03);
 
 	freq = feparams.frequency/1000000;
 

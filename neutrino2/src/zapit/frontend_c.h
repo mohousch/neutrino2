@@ -87,8 +87,6 @@ static inline fe_rolloff_t dvbs_get_rolloff(fe_delivery_system_t delsys)
 }
 #endif
 
-typedef struct dvb_frontend_parameters FrontendParameters;
-
 #define MAX_LNBS	64	/* due to Diseqc 1.1  (2003-01-10 rasc) */
 
 
@@ -96,7 +94,7 @@ class CFrontend
 {
 	public:
 		int fenumber;
-		int fe_adapter;
+		int feadapter;
 
         	/* information about the used frontend type */
 		struct dvb_frontend_info info;
@@ -171,9 +169,9 @@ class CFrontend
 		/* current Transponderdata */
 		TP_params currentTransponder;
 		
-		struct dvb_frontend_parameters curfe;
+		FrontendParameters curfe;
 		uint32_t getDiseqcReply(const int timeout_ms) const;
-		struct dvb_frontend_parameters	getFrontend(void) const;
+		FrontendParameters getFrontend(void) const;
 
 		void secResetOverload(void);
 		void secSetTone(const fe_sec_tone_mode_t mode, const uint32_t ms);
@@ -188,7 +186,7 @@ class CFrontend
 		void sendDiseqcStandby(void);
 		void sendDiseqcZeroByteCommand(const uint8_t frm, const uint8_t addr, const uint8_t cmd);
 		void sendToneBurst(const fe_sec_mini_cmd_t burst, const uint32_t ms);
-		void setFrontend(const struct dvb_frontend_parameters *feparams, bool nowait = false);
+		void setFrontend(const FrontendParameters *feparams, bool nowait = false);
 		void setSec(const uint8_t sat_no, const uint8_t pol, const bool high_band);
 		void set12V(bool enable);
 		void reset(void);
@@ -208,7 +206,7 @@ class CFrontend
 		static fe_modulation_t getModulation(const uint8_t modulation);
 		uint8_t getPolarization(void) const;
 		const struct dvb_frontend_info *getInfo(void) const { return &info; };
-		const struct dvb_frontend_parameters * getfeparams(void) const {return &curfe;}
+		const FrontendParameters * getfeparams(void) const {return &curfe;}
 
 		uint32_t getBitErrorRate(void) const;
 		uint16_t getSignalNoiseRatio(void) const;
@@ -222,7 +220,7 @@ class CFrontend
 		void setDiseqcRepeats(const uint8_t repeats)	{ diseqcRepeats = repeats; }
 		void setDiseqcType(const diseqc_t type);
 		int setParameters(TP_params *TP, bool nowait = 0);
-		int tuneFrequency (struct dvb_frontend_parameters * feparams, uint8_t polarization, bool nowait = 0);
+		int tuneFrequency (FrontendParameters * feparams, uint8_t polarization, bool nowait = 0);
 		const TP_params* getParameters(void) const { return &currentTransponder; };
 		void setCurrentSatellitePosition(int32_t satellitePosition) {currentSatellitePosition = satellitePosition; }
 
@@ -259,7 +257,7 @@ class CFrontend
 		//
 		int getDeliverySystem();
 		bool isHybrid(void){ return hybrid;};
-		void forceDelSys(int i);
+		//void forceDelSys(int i);
 		
 		//
 		bool getHighBand(){ return (int) getFrequency() >= lnbSwitch; }

@@ -211,9 +211,13 @@ typedef enum {
 	DVB_T 		= 0x0010,
 	DVB_T2		= 0x0020,
 	DVB_A 		= 0x0040,
-	DVB_DTMB	= 0x0080,
+//	DVB_DTMB	= 0x0080,
 	DVB_S2X		= 0x0100
 } delivery_system_t;
+
+#define IS_SAT(ds)		(ds & (DVB_S | DVB_S2 | DVB_S2X) != 0)
+#define IS_CABLE(ds)		(ds & (DVB_C | DVB_C2) != 0))
+#define IS_TERRESTRIAL(ds)	(ds & (DVB_T | DVB_T2) != 0)
 
 /* service types */
 typedef enum {
@@ -259,15 +263,41 @@ typedef enum {
 	/* 0xFF: reserved for future use*/
 } service_type_t;
 
+//
+typedef struct {
+	delivery_system_t	delsys;
+	uint32_t		frequency;
+	fe_modulation_t		modulation;
+	uint8_t			polarization;
+
+	fe_spectral_inversion_t	inversion;
+	fe_code_rate_t		fec_inner;
+	fe_transmit_mode_t	transmission_mode;
+	fe_bandwidth_t		bandwidth;
+	fe_guard_interval_t	guard_interval;
+	fe_hierarchy_t		hierarchy_information;
+	uint32_t		symbol_rate;
+	fe_code_rate_t		code_rate_HP;
+	fe_code_rate_t		code_rate_LP;
+	
+	fe_rolloff_t		rolloff;
+
+	//zapit_pilot_t		pilot;
+//#if _HAVE_DVB57
+//	enum fe_interleaving	interleaving;
+//#endif
+//	unsigned int		plp_id; //0-255
+//	fe_pls_mode_t	pls_mode;
+//	uint32_t		pls_code; //0-262142
+} FrontendParameters;
+
 // complete transponder-parameters in a struct
 typedef struct TP_parameter
 {
-	uint64_t TP_id;					// diseqc<<24 | feparams->frequency>>8
+	uint64_t TP_id;	// diseqc<<24 | feparams->frequency>>8
 	uint8_t polarization;
 	uint8_t diseqc;
-	//int scanmode;
-	
-	struct dvb_frontend_parameters feparams;
+	FrontendParameters feparams;
 } TP_params;
  
 typedef struct Zapit_config {

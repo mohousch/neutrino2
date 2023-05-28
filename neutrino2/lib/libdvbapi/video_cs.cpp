@@ -77,7 +77,7 @@ cVideo::~cVideo(void)
 bool cVideo::Open(CFrontend * fe)
 { 
 	if(fe)
-		video_adapter = fe->fe_adapter;
+		video_adapter = fe->feadapter;
 	
 	char devname[32];
 

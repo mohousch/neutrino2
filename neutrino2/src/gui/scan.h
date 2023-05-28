@@ -38,6 +38,9 @@
 #include <gui/widget/widget_helpers.h>
 #include <string>
 
+#include <zapit/zapittypes.h>
+
+
 #define NEUTRINO_SCAN_SETTINGS_FILE	CONFIGDIR "/scan.conf"
 
 class CScanTs : public CMenuTarget
@@ -79,6 +82,7 @@ class CScanTs : public CMenuTarget
 		void showSNR();
 		
 		int feindex;
+		TP_params TP;
 
 	public:
 		CScanTs(int num=0);

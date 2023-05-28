@@ -392,7 +392,7 @@ void CZapit::setFEMode(fe_mode_t newmode, int feindex)
 	
 	if(setslave)
 	{
-		dprintf(DEBUG_INFO, "CZapit::setFEMode: Frontend (%d,%d) as slave: %s\n", getFE(feindex)->fe_adapter, getFE(feindex)->fenumber, setslave ? "yes" : "no");
+		dprintf(DEBUG_INFO, "CZapit::setFEMode: Frontend (%d,%d) as slave: %s\n", getFE(feindex)->feadapter, getFE(feindex)->fenumber, setslave ? "yes" : "no");
 		getFE(feindex)->setMasterSlave(setslave);
 	}
 }
@@ -401,7 +401,7 @@ void CZapit::initTuner(CFrontend * fe)
 {
 	if(fe->standby)
 	{
-		dprintf(DEBUG_INFO, "CZapit::initTuner: Frontend (%d,%d)\n", fe->fe_adapter, fe->fenumber);
+		dprintf(DEBUG_INFO, "CZapit::initTuner: Frontend (%d,%d)\n", fe->feadapter, fe->fenumber);
 		
 		// open frontend
 		fe->Open();
@@ -409,7 +409,7 @@ void CZapit::initTuner(CFrontend * fe)
 		// set loop frontend as slave 
 		bool setslave = ( fe->mode == FE_LOOP );
 		
-		dprintf(DEBUG_INFO, "CZapit::initTuner: Frontend (%d,%d) as slave: %s\n", fe->fe_adapter, fe->fenumber, setslave ? "yes" : "no");
+		dprintf(DEBUG_INFO, "CZapit::initTuner: Frontend (%d,%d) as slave: %s\n", fe->feadapter, fe->fenumber, setslave ? "yes" : "no");
 					
 		if(setslave)
 			fe->setMasterSlave(setslave);
@@ -436,7 +436,7 @@ bool CZapit::loopCanTune(CFrontend * fe, CZapitChannel * thischannel)
 	uint8_t tp_pol = thischannel->polarization & 1;
 	uint8_t fe_pol = fe->getPolarization() & 1;
 
-	dprintf(DEBUG_DEBUG, "CZapit::loopCanTune: fe(%d,%d): locked %d pol:band %d:%d vs %d:%d (%d:%d)\n", fe->fe_adapter, fe->fenumber, fe->locked, fe_pol, fe->getHighBand(), tp_pol, tp_band, fe->getFrequency(), thischannel->getFreqId()*1000);
+	dprintf(DEBUG_DEBUG, "CZapit::loopCanTune: fe(%d,%d): locked %d pol:band %d:%d vs %d:%d (%d:%d)\n", fe->feadapter, fe->fenumber, fe->locked, fe_pol, fe->getHighBand(), tp_pol, tp_band, fe->getFrequency(), thischannel->getFreqId()*1000);
 		
 	if(!fe->tuned || (fe_pol == tp_pol && fe->getHighBand() == tp_band))
 		return true;
@@ -459,7 +459,7 @@ CFrontend * CZapit::getPreferredFrontend(CZapitChannel * thischannel)
 		CFrontend * fe = fe_it->second;
 		
 		dprintf(DEBUG_DEBUG, "CZapit::getPreferredFrontend: fe(%d,%d): tuned:%d (locked:%d) fe_freq: %d fe_TP: %llx - chan_freq: %d chan_TP: %llx sat-position: %d sat-name:%s input-type:%d\n",
-				fe->fe_adapter,
+				fe->feadapter,
 				fe->fenumber,
 				fe->tuned,
 				fe->locked,
@@ -536,7 +536,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		CFrontend * fe = fe_it->second;
 		
 		dprintf(DEBUG_INFO, "CZapit::getFrontend: fe(%d,%d): (%s) tuned:%d (locked:%d) fe_freq: %d fe_TP: %llx - chan_freq: %d chan_TP: %llx sat-position: %d sat-name:%s input-type:%d\n",
-				fe->fe_adapter,
+				fe->feadapter,
 				fe->fenumber,
 				FEMODE[fe->mode],
 				fe->tuned,
@@ -572,7 +572,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	
 	if(free_frontend)
 	{
-		printf("%s Selected fe: (%d,%d)\n", __FUNCTION__, free_frontend->fe_adapter, free_frontend->fenumber);
+		printf("%s Selected fe: (%d,%d)\n", __FUNCTION__, free_frontend->feadapter, free_frontend->fenumber);
 		
 		if(free_frontend->standby)
 			initTuner(free_frontend);
@@ -605,7 +605,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 		CFrontend * fe = fe_it->second;
 		
 		dprintf(DEBUG_INFO, "CZapit::getRecordFrontend: fe(%d,%d): (%s) tuned:%d (locked:%d) fe_freq: %d fe_TP: %llx - chan_freq: %d chan_TP: %llx sat-position: %d sat-name:%s input-type:%d\n",
-				fe->fe_adapter,
+				fe->feadapter,
 				fe->fenumber,
 				FEMODE[fe->mode],
 				fe->tuned,
@@ -647,7 +647,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 	
 	if(rec_frontend)
 	{
-		printf("%s Selected fe: (%d,%d)\n", __FUNCTION__, rec_frontend->fe_adapter, rec_frontend->fenumber);
+		printf("%s Selected fe: (%d,%d)\n", __FUNCTION__, rec_frontend->feadapter, rec_frontend->fenumber);
 		
 		if(rec_frontend->standby)
 			initTuner(rec_frontend);
@@ -1339,7 +1339,7 @@ int CZapit::zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate)
 	
 		live_fe = fe;
 	
-		dprintf(DEBUG_NORMAL, "CZapit::zapit: zap to %s(%llx) fe(%d,%d)\n", live_channel->getName().c_str(), live_channel_id, live_fe->fe_adapter, live_fe->fenumber );
+		dprintf(DEBUG_NORMAL, "CZapit::zapit: zap to %s(%llx) fe(%d,%d)\n", live_channel->getName().c_str(), live_channel_id, live_fe->feadapter, live_fe->fenumber );
 
 		// tune live frontend
 		if(!tuneToChannel(live_fe, live_channel, transponder_change))
@@ -1474,7 +1474,7 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 	}
 #endif		
 	
-	dprintf(DEBUG_NORMAL, "CZapit::zapToRecordID: zapped to %s (%llx) fe(%d,%d)\n", rec_channel->getName().c_str(), rec_channel_id, record_fe->fe_adapter, record_fe->fenumber);
+	dprintf(DEBUG_NORMAL, "CZapit::zapToRecordID: zapped to %s (%llx) fe(%d,%d)\n", rec_channel->getName().c_str(), rec_channel_id, record_fe->feadapter, record_fe->fenumber);
 	
 	return 0;
 }
@@ -2781,7 +2781,7 @@ void * CZapit::sdtThread(void */*arg*/)
 						sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" pol=\"%hu\">\n",
 						tI->second.transport_stream_id, tI->second.original_network_id,
 						tI->second.feparams.frequency, tI->second.feparams.inversion,
-						tI->second.feparams.u.qpsk.symbol_rate, tI->second.feparams.u.qpsk.fec_inner,
+						tI->second.feparams.symbol_rate, tI->second.feparams.fec_inner,
 						tI->second.polarization);
 						delsys = "</sat>";
 						break;
@@ -2791,8 +2791,8 @@ void * CZapit::sdtThread(void */*arg*/)
 						sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" mod=\"%hu\">\n",
 						tI->second.transport_stream_id, tI->second.original_network_id,
 						tI->second.feparams.frequency, tI->second.feparams.inversion,
-						tI->second.feparams.u.qam.symbol_rate, tI->second.feparams.u.qam.fec_inner,
-						tI->second.feparams.u.qam.modulation);
+						tI->second.feparams.symbol_rate, tI->second.feparams.fec_inner,
+						tI->second.feparams.modulation);
 						delsys = "</cable>";
 						break;
 						
@@ -2801,8 +2801,8 @@ void * CZapit::sdtThread(void */*arg*/)
 						sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" band=\"%hu\" HP=\"%hu\" LP=\"%hu\" const=\"%hu\" trans=\"%hu\" guard=\"%hu\" hierarchy=\"%hu\">\n",
 						tI->second.transport_stream_id, tI->second.original_network_id,
 						tI->second.feparams.frequency, tI->second.feparams.inversion,
-						tI->second.feparams.u.ofdm.bandwidth, tI->second.feparams.u.ofdm.code_rate_HP,
-						tI->second.feparams.u.ofdm.code_rate_LP, tI->second.feparams.u.ofdm.constellation,tI->second.feparams.u.ofdm.transmission_mode, tI->second.feparams.u.ofdm.guard_interval, tI->second.feparams.u.ofdm.hierarchy_information);
+						tI->second.feparams.bandwidth, tI->second.feparams.code_rate_HP,
+						tI->second.feparams.code_rate_LP, tI->second.feparams.modulation,tI->second.feparams.transmission_mode, tI->second.feparams.guard_interval, tI->second.feparams.hierarchy_information);
 						delsys = "</terrestrial>";
 						break;
 
@@ -3460,7 +3460,7 @@ void CZapit::sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t cmd, uin
 	if(cmdtype > 0x20)
 		getFE(feindex)->sendMotorCommand(cmdtype, address, cmd, num_parameters, param1, param2);
 }
-
+/*
 delivery_system_t CZapit::getDeliverySystem(int feindex)
 {
 	delivery_system_t system;
@@ -3490,6 +3490,7 @@ delivery_system_t CZapit::getDeliverySystem(int feindex)
 	
 	return system;
 }
+*/
 
 bool CZapit::reZap()
 {
@@ -3742,19 +3743,19 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 	{
 		case FE_QPSK:
 		{
-			dprintf(DEBUG_INFO, "CZapit::tuneTP: tune to sat %s freq %d rate %d fec %d pol %d\n", name, TP.feparams.frequency, TP.feparams.u.qpsk.symbol_rate, TP.feparams.u.qpsk.fec_inner, TP.polarization);
+			dprintf(DEBUG_INFO, "CZapit::tuneTP: tune to sat %s freq %d rate %d fec %d pol %d\n", name, TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.polarization);
 			if (getFE(feindex))
 				getFE(feindex)->driveToSatellitePosition(satellitePosition);
 			break;
 		}
 		
 		case FE_QAM:
-			dprintf(DEBUG_INFO, "CZapit::tuneTP: tune to cable %s freq %d rate %d fec %d\n", name, TP.feparams.frequency * 1000, TP.feparams.u.qam.symbol_rate, TP.feparams.u.qam.fec_inner);
+			dprintf(DEBUG_INFO, "CZapit::tuneTP: tune to cable %s freq %d rate %d fec %d\n", name, TP.feparams.frequency * 1000, TP.feparams.symbol_rate, TP.feparams.fec_inner);
 		
 			break;
 		
 		case FE_OFDM:
-			dprintf(DEBUG_INFO, "CZapit::tuneTP: tune to terrestrial %s freq %d band %d HP %d LP %d const %d transmission_mode %d guard_interval %d hierarchy_infomation %d\n", name, TP.feparams.frequency * 1000, TP.feparams.u.ofdm.bandwidth, TP.feparams.u.ofdm.code_rate_HP, TP.feparams.u.ofdm.code_rate_LP, TP.feparams.u.ofdm.constellation, TP.feparams.u.ofdm.transmission_mode, TP.feparams.u.ofdm.guard_interval, TP.feparams.u.ofdm.hierarchy_information);
+			dprintf(DEBUG_INFO, "CZapit::tuneTP: tune to terrestrial %s freq %d band %d HP %d LP %d const %d transmission_mode %d guard_interval %d hierarchy_infomation %d\n", name, TP.feparams.frequency * 1000, TP.feparams.bandwidth, TP.feparams.code_rate_HP, TP.feparams.code_rate_LP, TP.feparams.modulation, TP.feparams.transmission_mode, TP.feparams.guard_interval, TP.feparams.hierarchy_information);
 			break;
 		
 		default:
@@ -4171,20 +4172,19 @@ void * CZapit::scanTransponderThread(void * data)
 	
 	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, providerName, strlen(providerName) + 1);
 
-	//scanMode = TP->scanmode;
 	TP->feparams.inversion = INVERSION_AUTO;
 
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP->feparams.frequency, TP->feparams.u.qam.symbol_rate, TP->feparams.u.qam.fec_inner, TP->feparams.u.qam.modulation);
+		dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP->feparams.frequency, TP->feparams.symbol_rate, TP->feparams.fec_inner, TP->feparams.modulation);
 	}
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP->feparams.frequency, TP->feparams.u.ofdm.bandwidth, TP->feparams.u.ofdm.code_rate_HP, TP->feparams.u.ofdm.code_rate_LP, TP->feparams.u.ofdm.constellation, TP->feparams.u.ofdm.transmission_mode, TP->feparams.u.ofdm.guard_interval, TP->feparams.u.ofdm.hierarchy_information);
+		dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP->feparams.frequency, TP->feparams.bandwidth, TP->feparams.code_rate_HP, TP->feparams.code_rate_LP, TP->feparams.modulation, TP->feparams.transmission_mode, TP->feparams.guard_interval, TP->feparams.hierarchy_information);
 	}
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: fe(%d) freq %d rate %d fec %d pol %d NIT %s\n", feindex, TP->feparams.frequency, TP->feparams.u.qpsk.symbol_rate, TP->feparams.u.qpsk.fec_inner, TP->polarization, scanMode ? "no" : "yes");
+		dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: fe(%d) freq %d rate %d fec %d pol %d NIT %s\n", feindex, TP->feparams.frequency, TP->feparams.symbol_rate, TP->feparams.fec_inner, TP->polarization, scanMode ? "no" : "yes");
 	}
 
 	freq_id_t freq;
