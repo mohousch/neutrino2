@@ -234,8 +234,8 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	// pulldown
 	if( (msg == RC_ok) && pulldown ) 
 	{
-		if (parent)
-			parent->hide();
+		if (parent->parent)
+			parent->parent->hide();
 			
 		int select = -1;
 
@@ -617,8 +617,8 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	{
 		int select = -1;
 		
-		if (parent)
-			parent->hide();
+		if (parent->parent)
+			parent->parent->hide();
 		
 		//
 		CWidget* widget = NULL;
@@ -1744,11 +1744,14 @@ ClistBox::~ClistBox()
 
 void ClistBox::addItem(CMenuItem * menuItem, const bool defaultselected)
 {
-	if (defaultselected)
-		selected = items.size();
-	
-	items.push_back(menuItem);
-	menuItem->setParent(this);
+	if (menuItem != NULL)
+	{
+		if (defaultselected)
+			selected = items.size();
+		
+		items.push_back(menuItem);
+		menuItem->setParent(this);
+	}
 }
 
 bool ClistBox::hasItem()

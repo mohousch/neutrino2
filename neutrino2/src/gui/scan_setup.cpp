@@ -404,9 +404,6 @@ void CScanSetup::showScanService()
 	// 
 	dmode = CZapit::getInstance()->getFE(feindex)->diseqcType;
 	
-	//sat list iterator
-	//sat_iterator_t sit;
-	
 	// load frontend config
 	CZapit::getInstance()->loadFrontendConfig();
 	
