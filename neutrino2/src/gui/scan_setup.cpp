@@ -825,6 +825,23 @@ void CScanSetup::showScanService()
 	
 	// frontend delsys
 	scansetup->addItem(new CMenuOptionChooser(_("Tuner type"),  (int *)&CZapit::getInstance()->getFE(feindex)->forcedDelSys, FRONTEND_DELSYS_OPTIONS, FRONTEND_DELSYS_OPTION_COUNT, true, feDelSysNotifier));
+	/*
+	CMenuOptionStringChooser *tunerType = new CMenuOptionStringChooser(_("Tuner type"), NULL, true, feDelSysNotifier);
+	
+	for (unsigned int i = 0; CZapit::getInstance()->getFE(feindex)->deliverySystemMask.size(); i++)
+	{
+		
+		if (CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_S || CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_S2)
+			tunerType->addOption("DVBS/S2");
+		if (CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_C || CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_C2)
+			tunerType->addOption("DVBC/C2");
+		if (CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_T || CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_T2 || CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_DTMB)
+			tunerType->addOption("DVBT/T2");
+		if (CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_A)
+			tunerType->addOption("DVBA");
+	}
+	scansetup->addItem(tunerType);
+	*/
 	
 	scansetup->addItem( new CMenuSeparator(LINE) );
 

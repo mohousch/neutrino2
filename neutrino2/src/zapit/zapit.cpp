@@ -296,6 +296,19 @@ void CZapit::initFrontend()
 					have_t = true;
 					have_a = true;
 				}
+				/*
+				for (unsigned int i = 0; fe->deliverySystemMask.size(); i++)
+				{
+					if (fe->deliverySystemMask[i] == DVB_S || fe->deliverySystemMask[i] == DVB_S2)
+						have_s = true;
+					if (fe->deliverySystemMask[i] == DVB_C || fe->deliverySystemMask[i] == DVB_C2)
+						have_c = true;
+					if (fe->deliverySystemMask[i] == DVB_T || fe->deliverySystemMask[i] == DVB_T2 || fe->deliverySystemMask[i] == DVB_DTMB)
+						have_t = true;
+					if (fe->deliverySystemMask[i] == DVB_A)
+						have_a = true;
+				}
+				*/
 #else
 				if (fe->info.type == FE_QPSK)
 				{

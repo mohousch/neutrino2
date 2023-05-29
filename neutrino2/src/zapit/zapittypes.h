@@ -264,8 +264,8 @@ typedef enum {
 } service_type_t;
 
 //
-typedef struct {
-	delivery_system_t	delsys;
+typedef struct 
+{
 	uint32_t		frequency;
 	fe_modulation_t		modulation;
 	uint8_t			polarization;
@@ -280,21 +280,19 @@ typedef struct {
 	fe_code_rate_t		code_rate_HP;
 	fe_code_rate_t		code_rate_LP;
 	
-	fe_rolloff_t		rolloff;
-
-	//zapit_pilot_t		pilot;
-//#if _HAVE_DVB57
+//	delivery_system_t	delsys;
+//	fe_rolloff_t		rolloff;
+//	uint32_t		pilot;
 //	enum fe_interleaving	interleaving;
-//#endif
 //	unsigned int		plp_id; //0-255
-//	fe_pls_mode_t	pls_mode;
+//	fe_pls_mode_t		pls_mode;
 //	uint32_t		pls_code; //0-262142
 } FrontendParameters;
 
 // complete transponder-parameters in a struct
 typedef struct TP_parameter
 {
-	uint64_t TP_id;	// diseqc<<24 | feparams->frequency>>8
+	uint64_t TP_id;
 	uint8_t polarization;
 	uint8_t diseqc;
 	FrontendParameters feparams;

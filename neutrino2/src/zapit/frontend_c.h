@@ -23,6 +23,7 @@
 #define __zapit_frontend_h__
 
 #include <inttypes.h>
+#include <vector>
 
 #include <config.h>
 
@@ -145,6 +146,7 @@ class CFrontend
 		//
 		uint32_t forcedDelSys;
 		uint32_t deliverySystemMask;
+		//std::vector<uint32_t>deliverySystemMask;
 		bool fe_can_multistream;
 		bool hybrid;
 	  
@@ -228,8 +230,8 @@ class CFrontend
 		
 		//
 		bool tuneChannel(CZapitChannel *channel, bool nvod);
-		int setParameters(TP_params *TP, bool nowait = 0);
-		int tuneFrequency (FrontendParameters * feparams, uint8_t polarization, bool nowait = 0);
+		int setParameters(TP_params *TP, bool nowait = false);
+		int tuneFrequency (FrontendParameters * feparams, uint8_t polarization, bool nowait = false);
 
 		//
 		fe_code_rate_t getCFEC ();

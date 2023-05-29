@@ -115,7 +115,6 @@ CFrontend::CFrontend(int num, int adap)
 	curfe.fec_inner = FEC_3_4;
 	curfe.fec_inner = FEC_3_4;
 	curfe.modulation = QAM_64;
-	//curfe.delsys = UNDEFINED;
 	
 	tuned = false;
 	
@@ -187,6 +186,7 @@ void CFrontend::getFEInfo(void)
 	bool legacy = true;
 
 	deliverySystemMask = UNDEFINED;
+	//deliverySystemMask.clear();
 
 #if HAVE_DVB_API_VERSION >= 5
 	struct dtv_property Frontend[1];
@@ -215,22 +215,26 @@ void CFrontend::getFEInfo(void)
 				case SYS_DVBC_ANNEX_B:
 				case SYS_DVBC_ANNEX_C:
 					deliverySystemMask |= DVB_C;
+					//deliverySystemMask.push_back(DVB_C);
 					printf("(fe%d:%d) add delivery system DVB-C (delivery_system: %x)\n", feadapter, fenumber, DVB_C);
 					break;
 					
 				case SYS_DVBT:
 					deliverySystemMask |= DVB_T;
+					//deliverySystemMask.push_back(DVB_T);
 					printf("(fe%d:%d) add delivery system DVB-T (delivery_system: %x)\n", feadapter, fenumber, DVB_T);
 					break;
 					
 				case SYS_DVBT2:
 					deliverySystemMask |= DVB_T2;
+					//deliverySystemMask.push_back(DVB_T2);
 					fe_can_multistream = info.caps & FE_CAN_MULTISTREAM;
 					printf("(fe%d:%d) add delivery system DVB-T2 (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_T2, fe_can_multistream ? "yes" :"no");
 					break;
 					
 				case SYS_DVBS:
 					deliverySystemMask |= DVB_S;
+					//deliverySystemMask.push_back(DVB_S);
 					printf("(fe%d:%d) add delivery system DVB-S (delivery_system: %x)\n", feadapter, fenumber, DVB_S);
 					break;
 					
@@ -239,12 +243,14 @@ void CFrontend::getFEInfo(void)
 				case SYS_DVBS2X:
 #endif
 					deliverySystemMask |= DVB_S2;
+					//deliverySystemMask.push_back(DVB_S2);
 					fe_can_multistream = info.caps & FE_CAN_MULTISTREAM;
 					printf("(fe%d:%d) add delivery system DVB-S2 (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_S2, fe_can_multistream ? "yes" :"no");
 #if !defined (__sh__)
 					if (fe_can_multistream)
 					{
 						deliverySystemMask |= DVB_S2X;
+						//deliverySystemMask.push_back(DVB_S2);
 						printf("(fe%d:%d) add delivery system DVB-S2X (delivery_system: %x / Multistream: %s)\n", feadapter, fenumber, DVB_S2X, fe_can_multistream ? "yes" :"no");
 					}
 #endif
@@ -252,6 +258,7 @@ void CFrontend::getFEInfo(void)
 					
 				case SYS_DTMB:
 					deliverySystemMask |= DVB_DTMB;
+					//deliverySystemMask.push_back(DVB_DTMB);
 					printf("(fe%d:%d) add delivery system DTMB (delivery_system: %x)\n", feadapter, fenumber, DVB_DTMB);
 					break;
 				
@@ -278,17 +285,25 @@ void CFrontend::getFEInfo(void)
 			case FE_QPSK:
 				deliverySystemMask |= DVB_S;
 				deliverySystemMask |= DVB_S2;
-				deliverySystemMask |= DVB_S2X;
+				//deliverySystemMask.push_back(DVB_S);
+				//deliverySystemMask.push_back(DVB_S2);
+				
+				if (info.caps & FE_CAN_MULTISTREAM)
+					deliverySystemMask |= DVB_S2X;
+					//deliverySystemMask.push_back(DVB_S2X);
 				break;
 			case FE_OFDM:
 				deliverySystemMask |= DVB_T;
+				//deliverySystemMask.push_back(DVB_T2);
 #ifdef SYS_DVBT2
 				if (info.caps & FE_CAN_2G_MODULATION)
 					deliverySystemMask |= DVB_T2;
+					//deliverySystemMask.push_back(DVB_T2);
 #endif
 				break;
 			case FE_QAM:
 				deliverySystemMask |= DVB_C;
+				//deliverySystemMask.push_back(DVB_C);
 				break;
 			default:
 				printf("ERROR: unknown frontend type %d on frontend (%d:%d)", info.type, feadapter, fenumber);
@@ -350,7 +365,6 @@ void CFrontend::Close()
 
 void CFrontend::reset(void)
 {
-#if 1
 	if (fd >= 0)
 	{
 		close(fd);
@@ -369,7 +383,6 @@ void CFrontend::reset(void)
 		perror(filename);
 	
 	usleep(150000);
-#endif
 }
 
 void CFrontend::setMasterSlave()
@@ -403,7 +416,8 @@ fe_code_rate_t CFrontend::getCFEC()
 * FEC 9/10 => fec_inner=9 
 */
 // only for dvb-s/dvb-s2
-typedef enum dvb_fec {
+typedef enum dvb_fec 
+{
 	fAuto,
 	f1_2,
 	f2_3,
@@ -830,7 +844,7 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 	return event;
 }
 
-/* set frontend */
+// set frontend
 /// S2API ///
 #if HAVE_DVB_API_VERSION >= 5
 void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
@@ -841,7 +855,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 	fe_rolloff_t rolloff = ROLLOFF_35;
 
 	// decode the needed settings
-	switch (info.type) 
+	switch (info.type)
 	{
 		case FE_QPSK:		  
 			fec_inner = feparams->fec_inner;
@@ -1503,7 +1517,7 @@ int CFrontend::tuneFrequency(FrontendParameters * feparams, uint8_t polarization
 	return setParameters(&TP, nowait);
 }
 
-int CFrontend::setParameters(TP_params * TP, bool /*nowait*/)
+int CFrontend::setParameters(TP_params * TP, bool nowait)
 {
 	int freq_offset = 0;
 	
@@ -1552,7 +1566,7 @@ int CFrontend::setParameters(TP_params * TP, bool /*nowait*/)
 	do {
 		tuned = false;
 
-		setFrontend(&TP->feparams);
+		setFrontend(&TP->feparams, nowait);
 		
 		getEvent();
 	} while (0);
@@ -1618,16 +1632,8 @@ bool CFrontend::setDiseqcSimple(int sat_no, const uint8_t pol, const uint32_t fr
 		sendDiseqcCommand(&cmd, 100);
 		return true;
 	}
+	
 	return false;
-#if 0				
-	//do we need this in advanced setup ?
-	if (diseqcType == SMATV_REMOTE_TUNING)
-		sendDiseqcSmatvRemoteTuningCommand(frequency);
-
-	if (diseqcType == MINI_DISEQC)
-		sendToneBurst(b, 15);
-	currentTransponder.diseqc = sat_no;
-#endif
 }
 
 void CFrontend::setDiseqc(int sat_no, const uint8_t pol, const uint32_t frequency)
@@ -2202,10 +2208,10 @@ int CFrontend::getDeliverySystem()
 
 bool CFrontend::changeDelSys(uint32_t delsys)
 {
-	dprintf(DEBUG_NORMAL, "CFrontend::changeDelSys: fe(%d:%d) delsys:%x (forceddelsys:%x) (new delsys:%x)\n", feadapter, fenumber, deliverySystemMask, forcedDelSys, delsys);
+	dprintf(DEBUG_NORMAL, "CFrontend::changeDelSys: fe(%d:%d) (forceddelsys:%x) (new delsys:%x)\n", feadapter, fenumber, forcedDelSys, delsys);
 	
-	if (deliverySystemMask == delsys)
-		return true;
+	//if (deliverySystemMask == delsys)
+	//	return true;
 	
 #if HAVE_DVB_API_VERSION >= 5
 	struct dtv_property p[2];
