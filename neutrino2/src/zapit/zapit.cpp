@@ -279,7 +279,24 @@ void CZapit::initFrontend()
 				femap.insert(std::pair <unsigned short, CFrontend*> (index, fe));
 				
 				live_fe = fe;
-    
+
+#if HAVE_DVB_API_VERSION >= 5
+				if (fe->getDelSysMasked() == DVB_S)
+					have_s = true;
+				else if (fe->getDelSysMasked() == DVB_C)
+					have_c = true;
+				else if (fe->getDelSysMasked() == DVB_T)
+					have_t = true;
+				else if (fe->getDelSysMasked() == DVB_A)
+					have_a = true;
+				else if (fe->isHybrid())
+				{
+					have_s = true;
+					have_c = true;
+					have_t = true;
+					have_a = true;
+				}
+#else
 				if (fe->info.type == FE_QPSK)
 				{
 				    have_s = true;
@@ -296,6 +313,7 @@ void CZapit::initFrontend()
 				{
 				    have_a = true;
 				}
+#endif
 				
 				// set it to standby
 				fe->Close();

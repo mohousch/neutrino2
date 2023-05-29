@@ -306,7 +306,11 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::exec: error while saving scan-settings!\n");
 		
 		// send directly diseqc
-		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+#else
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+#endif
 		{
 			CServices::getInstance()->saveMotorPositions();
 			
@@ -334,7 +338,11 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		delete hintBox;
 		hintBox = NULL;
 		
-		return RETURN_REPAINT;
+		//return RETURN_REPAINT;
+		hide();
+		showScanService();
+		
+		return RETURN_EXIT_ALL;
 	}
 	else if(actionKey == "unisetup") 
 	{
@@ -403,10 +411,14 @@ void CScanSetup::showScanService()
 	CZapit::getInstance()->loadFrontendConfig();
 	
 	//
-	//CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
+	CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
 	
 	// load motor position
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) 
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+#else
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+#endif
 		CServices::getInstance()->loadMotorPositions();
 	
 	// intros
@@ -503,7 +515,6 @@ void CScanSetup::showScanService()
 	CWidget* satOnOffWidget = NULL;
 	ClistBox* satOnOfflistBox = NULL;
 	
-	// scan setup SAT
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
 #else
@@ -676,7 +687,7 @@ void CScanSetup::showScanService()
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
 #else
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
 #endif
@@ -800,7 +811,8 @@ void CScanSetup::showScanService()
 	// mode loop can be used if we hat twice sat tuner, otherwise direct connected or not connected
 	// FIXME:
 	bool have_twin = false;
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+	
+	//if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
 		for(int i = 0; i < FrontendCount; i++) 
 		{
@@ -843,7 +855,11 @@ void CScanSetup::showScanService()
 	ClistBoxItem * fmotorMenu = NULL;
 	ClistBoxItem * uniSetup = NULL;
 
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+#else
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+#endif
 	{
 		// diseqc
 		ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&CZapit::getInstance()->getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, ( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP) ), satNotify, RC_nokey, "", true);
@@ -959,19 +975,35 @@ void CScanSetup::showScanService()
 	// modulation(t/c)/polarisation(sat)
 	CMenuOptionChooser * mod_pol = NULL;
 
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+#else
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+#endif
 	{
 		mod_pol = new CMenuOptionChooser(_("Polarization"), (int *)&scanSettings->TP_pol, SATSETUP_SCANTP_POL, SATSETUP_SCANTP_POL_COUNT, true);
 	}
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
+#if HAVE_DVB_API_VERSION >= 5 
+	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C2)
+#else
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+#endif
 	{
 		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_mod, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
 	}
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+#if HAVE_DVB_API_VERSION >= 5
+	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+#else
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+#endif
 	{
 		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_const, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
 	}
-    	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+#if HAVE_DVB_API_VERSION >= 5
+    	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+#else
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+#endif
 	{
 		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_const, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
 	}
@@ -996,7 +1028,11 @@ void CScanSetup::showScanService()
 	}
 
 	// band/hp/lp/
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+#else
+	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+#endif
 	{
 		// Band
 		CMenuOptionChooser * Band = new CMenuOptionChooser(_("Bandwidth"), (int *)&scanSettings->TP_band, SATSETUP_SCANTP_BAND, SATSETUP_SCANTP_BAND_COUNT, true);
@@ -1095,7 +1131,11 @@ void CScanSetup::showScanService()
 	//// scan all sats
 	ClistBoxItem * fautoScanAll = NULL;
 		
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+#else
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+#endif
 	{
 		//
 		CWidget* autoScanAllWidget = NULL;
@@ -1247,200 +1287,6 @@ int CScanSetup::showUnicableSetup()
 
 	return ret;
 }
-
-// manualscansetup
-#if 0
-int CScanSetup::showManualScanSetup(fe_type_t fe_type)
-{
-	dprintf(DEBUG_NORMAL, "showManualScanSetup\n");
-	
-	int ret = RETURN_REPAINT;
-	
-	//
-	CWidget* manualScanWidget = NULL;
-	ClistBox* manualScan = NULL;
-	
-	manualScanWidget = CNeutrinoApp::getInstance()->getWidget("manualscan");
-	
-	if (manualScanWidget)
-	{
-		manualScan = (ClistBox*)manualScanWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		manualScan = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-
-		manualScan->setWidgetMode(MODE_SETUP);
-		manualScan->enableShrinkMenu();
-		
-		manualScan->enablePaintHead();
-		manualScan->setTitle(_("Manual frequency scan / Test signal"), NEUTRINO_ICON_SCAN);
-
-		manualScan->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-		manualScan->setFootButtons(&btn);
-		
-		//
-		manualScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		manualScanWidget->name = "manualscan";
-		manualScanWidget->setMenuPosition(MENU_POSITION_CENTER);
-		manualScanWidget->addWidgetItem(manualScan);
-	}
-	
-	//manualScan->clearItems();
-
-	//
-	CScanTs * scanTs = new CScanTs(feindex);
-
-	// intros
-	manualScan->addItem(new ClistBoxItem(_("back")));
-	manualScan->addItem(new CMenuSeparator(LINE));
-	
-	// save settings
-	manualScan->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	manualScan->addItem(new CMenuSeparator(LINE));
-
-	// sat select
-	manualScan->addItem(satSelect); //???
-		
-	// TP select
-	CTPSelectHandler * tpSelect = new CTPSelectHandler(feindex);	
-	manualScan->addItem(new ClistBoxItem(_("Select transponder"), true, NULL, tpSelect));
-		
-	// frequency
-	int freq_length = 8;
-
-	switch (CZapit::getInstance()->getFE(feindex)->getInfo()->type)
-	{
-		case FE_QPSK:
-		freq_length = 8;
-		break;
-		
-		case FE_QAM:
-		freq_length = 6;
-		break;
-		
-		case FE_OFDM:
-        case FE_ATSC:
-		freq_length = 9;
-		break;
-		
-		default:
-		freq_length = 8;
-		break;
-	}
-	
-	CStringInput * freq = new CStringInput(_("Frequency"), (char *) scanSettings->TP_freq, freq_length, NULL, NULL, "0123456789");
-	ClistBoxItem * Freq = new ClistBoxItem(_("Frequency"), true, scanSettings->TP_freq, freq);
-		
-	manualScan->addItem(Freq);
-		
-	// modulation(t/c)/polarisation(sat)
-	CMenuOptionChooser * mod_pol = NULL;
-
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK )
-	{
-		mod_pol = new CMenuOptionChooser(_("Polarization"), (int *)&scanSettings->TP_pol, SATSETUP_SCANTP_POL, SATSETUP_SCANTP_POL_COUNT, true);
-	}
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM)
-	{
-		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_mod, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
-	}
-	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
-	{
-		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_const, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
-	}
-    	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
-	{
-		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_const, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
-	}
-
-	manualScan->addItem(mod_pol);
-
-	// symbol rate
-	CStringInput * rate = new CStringInput(_("Symbol rate"), (char *) scanSettings->TP_rate, 8, NULL, NULL, "0123456789");
-	ClistBoxItem * Rate = new ClistBoxItem(_("Symbol rate"), true, scanSettings->TP_rate, rate);
-
-	// fec
-	int fec_count = ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
-	CMenuOptionChooser * fec = new CMenuOptionChooser(_("FEC"), (int *)&scanSettings->TP_fec, SATSETUP_SCANTP_FEC, fec_count, true);
-		
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM && CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_ATSC)
-	{
-		// Rate
-		manualScan->addItem(Rate);
-			
-		// fec
-		manualScan->addItem(fec);
-	}
-
-	// band/hp/lp/
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
-	{
-		// Band
-		CMenuOptionChooser * Band = new CMenuOptionChooser(_("Bandwidth"), (int *)&scanSettings->TP_band, SATSETUP_SCANTP_BAND, SATSETUP_SCANTP_BAND_COUNT, true);
-		manualScan->addItem(Band);
-
-		// HP
-		CMenuOptionChooser * HP = new CMenuOptionChooser(_("Code Rate HP"), (int *)&scanSettings->TP_HP, SATSETUP_SCANTP_FEC, fec_count, true);
-		manualScan->addItem(HP);
-
-		// LP
-		CMenuOptionChooser * LP = new CMenuOptionChooser(_("Code Rate LP"), (int *)&scanSettings->TP_LP, SATSETUP_SCANTP_FEC, fec_count, true);
-		manualScan->addItem(LP);
-		
-		// transmition mode
-		CMenuOptionChooser * TM = new CMenuOptionChooser(_("Transmission mode"), (int *)&scanSettings->TP_trans, TERRESTRIALSETUP_TRANSMIT_MODE, TERRESTRIALSETUP_TRANSMIT_MODE_COUNT, true);
-		manualScan->addItem(TM);
-		
-		// guard intervall
-		CMenuOptionChooser * GI = new CMenuOptionChooser(_("Guard Interval"), (int *)&scanSettings->TP_guard, TERRESTRIALSETUP_GUARD_INTERVAL, TERRESTRIALSETUP_GUARD_INTERVAL_COUNT, true);
-		manualScan->addItem(GI);
-		
-		// hierarchy
-		CMenuOptionChooser * HR = new CMenuOptionChooser(_("Hierarchy"), (int *)&scanSettings->TP_hierarchy, TERRESTRIALSETUP_HIERARCHY, TERRESTRIALSETUP_HIERARCHY_COUNT, true);
-		manualScan->addItem(HR);
-	}	
-
-	manualScan->addItem(new CMenuSeparator(LINE));
-		
-	// test signal
-	manualScan->addItem(new ClistBoxItem(_("Test signal"), true, NULL, scanTs, "test") );
-		
-	// scan
-	manualScan->addItem(new ClistBoxItem(_("Start scan"), true, NULL, scanTs, "manual") );
-		
-	//ClistBoxItem * manScan = new ClistBoxItem(_("Manual frequency scan / Test signal"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, manualScanWidget, "");
-	
-	//feModeNotifier->addItem(0, manScan);
-	//scansetup->addItem(manScan);
-	
-	ret = manualScanWidget->exec(NULL, "");
-	
-	if (manualScan)
-	{
-		delete manualScan;
-		manualScan = NULL;
-	}
-	
-	if (manualScanWidget)
-	{
-		delete manualScanWidget;
-		manualScanWidget = NULL;
-	}
-	
-	return ret;
-}
-#endif
-
-// autoscansetup
-#if 0
-int CScanSetup::showAutoScanSetup(fe_type_t fe_type)
-{
-}
-#endif
 
 // TPSelectHandler
 CTPSelectHandler::CTPSelectHandler(int num)

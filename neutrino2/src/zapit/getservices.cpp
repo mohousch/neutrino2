@@ -547,7 +547,6 @@ int CServices::loadTransponders()
 		
 	if (have_s)
 	{
-		//CZapit::getInstance()->parseScanInputXml(FE_QPSK);
 		scanInputParser = parseXmlFile(SATELLITES_XML);
 			
 		if ( scanInputParser != NULL ) 
@@ -592,7 +591,6 @@ int CServices::loadTransponders()
 	
 	if (have_c)
 	{
-		//CZapit::getInstance()->parseScanInputXml(FE_QAM);
 		scanInputParser = parseXmlFile(CABLES_XML);
 			
 		if ( scanInputParser != NULL ) 
@@ -635,7 +633,6 @@ int CServices::loadTransponders()
 	
 	if (have_t)
 	{
-		//CZapit::getInstance()->parseScanInputXml(FE_OFDM);
 		scanInputParser = parseXmlFile(TERRESTRIALS_XML);
 			
 		if ( scanInputParser != NULL ) 
@@ -678,7 +675,6 @@ int CServices::loadTransponders()
 	
 	if (have_a)
 	{
-		//CZapit::getInstance()->parseScanInputXml(FE_ATSC);
 		scanInputParser = parseXmlFile(ATSC_XML);
 			
 		if ( scanInputParser != NULL ) 
