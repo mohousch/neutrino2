@@ -776,9 +776,22 @@ void CZapit::loadFrontendConfig()
 		fe->mode = (fe_mode_t)getConfigValue(fe_it->first, "mode", (fe_mode_t)FE_SINGLE);
 		
 		// delsys
-		fe->forcedDelSys = (delivery_system_t)getConfigValue(fe_it->first, "delsys", (delivery_system_t)UNDEFINED);
-		
-		//fe->changeDelSys(fe->forcedDelSys);
+		if (fe->info.type == FE_QPSK)
+		{
+			fe->forcedDelSys = (delivery_system_t)getConfigValue(fe_it->first, "delsys", (delivery_system_t)DVB_S);
+		}
+		else if (fe->info.type == FE_QAM)
+		{
+			fe->forcedDelSys = (delivery_system_t)getConfigValue(fe_it->first, "delsys", (delivery_system_t)DVB_C);
+		}
+		else if (fe->info.type == FE_OFDM)
+		{
+			fe->forcedDelSys = (delivery_system_t)getConfigValue(fe_it->first, "delsys", (delivery_system_t)DVB_T);
+		}
+		else if (fe->info.type == FE_ATSC)
+		{
+			fe->forcedDelSys = (delivery_system_t)getConfigValue(fe_it->first, "delsys", (delivery_system_t)DVB_A);
+		}
 		
 		// sat
 		if(fe->getInfo()->type == FE_QPSK)

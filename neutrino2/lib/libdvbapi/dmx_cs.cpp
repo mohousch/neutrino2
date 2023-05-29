@@ -79,7 +79,11 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 	if(fe)
 	{
 		demux_adapter = fe->feadapter;
+#ifdef USE_OPENGL
+		demux_num = 0;
+#else
 		demux_num = fe->fenumber;
+#endif
 		demux_source = fe->fenumber;
 	}
 	
