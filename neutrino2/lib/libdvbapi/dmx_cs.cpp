@@ -79,11 +79,7 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 	if(fe)
 	{
 		demux_adapter = fe->feadapter;
-#ifdef USE_OPENGL
-		demux_num = 0;
-#else
 		demux_num = fe->fenumber;
-#endif
 		demux_source = fe->fenumber;
 	}
 	
@@ -105,10 +101,17 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 	demux_fd = ::open(devname, flags);
 
 	// can not open
+	if (demux_fd < 0 && demux_num > 0)
+	{
+		sprintf(devname, "/dev/dvb/adapter%d/demux0", demux_adapter);
+		
+		demux_fd = ::open(devname, flags);
+	}
+	
 	if (demux_fd < 0)
 		return false;
 
-	dprintf(DEBUG_INFO, "cDemux::Open %s type:%s BufferSize:%d source(%d)\n", devname, aDMXCHANNELTYPE[Type], uBufferSize, demux_source);
+	dprintf(DEBUG_NORMAL, "cDemux::Open %s type:%s BufferSize:%d source(%d)\n", devname, aDMXCHANNELTYPE[Type], uBufferSize, demux_source);
 
 	// set demux source	
 	if (!init[demux_num])

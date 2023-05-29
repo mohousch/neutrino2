@@ -230,7 +230,7 @@ class CZapit
 		
 	private:
 		//
-		void initFrontend();
+		//void initFrontend();
 		void OpenFE();
 		void CloseFE();
 		bool loopCanTune(CFrontend * fe, CZapitChannel * thischannel);
@@ -318,6 +318,7 @@ class CZapit
 		};
 		
 		//
+		void initFrontend();
 		CFrontend * getFE(int index);
 		void initTuner(CFrontend * fe);
 		void saveFrontendConfig(int feindex);

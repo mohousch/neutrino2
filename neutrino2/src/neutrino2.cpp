@@ -1914,6 +1914,11 @@ int startOpenGLplayback()
 		return 0;
 
 	eventinfo.channel_id = live_channel_id;
+	eventinfo.epgID = 0;
+	eventinfo.epg_starttime = 0;
+	strcpy(eventinfo.epgTitle, "");
+	eventinfo.apids = TIMERD_APIDS_CONF;
+		
 	CEPGData epgData;
 	
 	if (CSectionsd::getInstance()->getActualEPGServiceKey(live_channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
@@ -1923,14 +1928,6 @@ int startOpenGLplayback()
 		strncpy(eventinfo.epgTitle, epgData.title.c_str(), EPG_TITLE_MAXLEN-1);
 		eventinfo.epgTitle[EPG_TITLE_MAXLEN - 1] = 0;
 	}
-	else 
-	{
-		eventinfo.epgID = 0;
-		eventinfo.epg_starttime = 0;
-		strcpy(eventinfo.epgTitle, "");
-	}
-
-	eventinfo.apids = TIMERD_APIDS_CONF;
 
 	(static_cast<CVCRControl::CFileDevice*>(recordingdevice))->Directory = timeshiftDir;
 

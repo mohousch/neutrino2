@@ -789,14 +789,14 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 
 		if (ret == 0) 
 		{
-			TIMER_STOP("poll timeout, time");
+			TIMER_STOP("CFrontend::getEvent: poll timeout, time");
 			msec += TIME_STEP;
 			continue;
 		}		
 
 		if (pfd.revents & (POLLIN | POLLPRI)) 
 		{
-			TIMER_STOP("poll has event after");
+			TIMER_STOP("CFrontend::getEvent: poll has event after");
 
 			memset(&event, 0, sizeof(struct dvb_frontend_event));
 
@@ -836,7 +836,7 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 		} 
 		else if (pfd.revents & POLLHUP) 
 		{
-			TIMER_STOP("poll hup after");
+			TIMER_STOP("CFrontend::getEvent: poll hup after");
 			reset();
 		}
 	}
