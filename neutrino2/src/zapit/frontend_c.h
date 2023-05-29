@@ -184,10 +184,12 @@ class CFrontend
 		void sendDiseqcStandby(void);
 		void sendDiseqcZeroByteCommand(const uint8_t frm, const uint8_t addr, const uint8_t cmd);
 		void sendToneBurst(const fe_sec_mini_cmd_t burst, const uint32_t ms);
-		void setFrontend(const FrontendParameters *feparams, bool nowait = false);
 		void setSec(const uint8_t sat_no, const uint8_t pol, const bool high_band);
 		void set12V(bool enable);
 		void reset(void);
+		
+		//
+		void setFrontend(const FrontendParameters *feparams, bool nowait = false);
 		
 	public:
 		CFrontend(int num = 0, int adap = 0);
@@ -217,8 +219,6 @@ class CFrontend
 
 		void setDiseqcRepeats(const uint8_t repeats)	{ diseqcRepeats = repeats; }
 		void setDiseqcType(const diseqc_t type);
-		int setParameters(TP_params *TP, bool nowait = 0);
-		int tuneFrequency (FrontendParameters * feparams, uint8_t polarization, bool nowait = 0);
 		const TP_params* getParameters(void) const { return &currentTransponder; };
 		void setCurrentSatellitePosition(int32_t satellitePosition) {currentSatellitePosition = satellitePosition; }
 
@@ -226,15 +226,18 @@ class CFrontend
 		void sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t command, uint8_t num_parameters, uint8_t parameter1, uint8_t parameter2, int repeat = 0);
 		void gotoXX(t_satellite_position pos);
 		
+		//
 		bool tuneChannel(CZapitChannel *channel, bool nvod);
+		int setParameters(TP_params *TP, bool nowait = 0);
+		int tuneFrequency (FrontendParameters * feparams, uint8_t polarization, bool nowait = 0);
 
 		//
 		fe_code_rate_t getCFEC ();
 		transponder_id_t getTsidOnid()    { return currentTransponder.TP_id; }
-		bool sameTsidOnid(transponder_id_t tpid){ return (currentTransponder.TP_id == 0) || (tpid == currentTransponder.TP_id);}
-						
+		bool sameTsidOnid(transponder_id_t tpid){ return (currentTransponder.TP_id == 0) || (tpid == currentTransponder.TP_id);}				
 		uint32_t getRate();
 		
+		//
                 void Close();
 		bool Open();
 		void getFEInfo(void);
@@ -242,6 +245,7 @@ class CFrontend
 		void setMasterSlave(bool _slave);
 		void setMasterSlave();
 		
+		//
 		bool sendUncommittedSwitchesCommand(int input);
 		bool setInput(CZapitChannel *channel, bool nvod);
 		void setInput(t_satellite_position satellitePosition, uint32_t frequency, uint8_t polarization);
@@ -250,6 +254,7 @@ class CFrontend
 		int driveToSatellitePosition(t_satellite_position satellitePosition, bool from_scan = false);
 		void setLnbOffsets(int32_t _lnbOffsetLow, int32_t _lnbOffsetHigh, int32_t _lnbSwitch);
 
+		//
 		struct dvb_frontend_event getEvent(void);
 		bool getHighBand(){ return (int) getFrequency() >= lnbSwitch; };
 		
@@ -266,5 +271,4 @@ typedef std::map<unsigned short, CFrontend*> fe_map_t;
 typedef fe_map_t::iterator fe_map_iterator_t;
 
 #endif /* __zapit_frontend_h__ */
-
 

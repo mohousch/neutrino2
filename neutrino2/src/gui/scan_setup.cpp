@@ -403,7 +403,7 @@ void CScanSetup::showScanService()
 	CZapit::getInstance()->loadFrontendConfig();
 	
 	//
-	CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
+	//CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
 	
 	// load motor position
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) 

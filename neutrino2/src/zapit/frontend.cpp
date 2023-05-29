@@ -1473,7 +1473,7 @@ uint32_t CFrontend::sendEN50607TuningCommand(const uint32_t frequency, const int
 //
 bool CFrontend::tuneChannel(CZapitChannel * channel, bool nvod)
 {
-	dprintf(DEBUG_INFO, "CFrontend::tuneChannel: fe(%d:%d) tpid %llx (channel_tp:%llx nvod:%s)\n", feadapter, fenumber, currentTransponder.TP_id, channel->getTransponderId(), nvod? "true" : "false");
+	dprintf(DEBUG_NORMAL, "CFrontend::tuneChannel: fe(%d:%d) tpid %llx (channel_tp:%llx nvod:%s)\n", feadapter, fenumber, currentTransponder.TP_id, channel->getTransponderId(), nvod? "true" : "false");
 
 	transponder_list_t::iterator transponder = transponders.find(currentTransponder.TP_id);
 
@@ -1486,6 +1486,8 @@ bool CFrontend::tuneChannel(CZapitChannel * channel, bool nvod)
 //
 int CFrontend::tuneFrequency(FrontendParameters * feparams, uint8_t polarization, bool nowait)
 {
+	dprintf(DEBUG_NORMAL, "CFrontend::tuneFrequency: fe(%d:%d)\n", feadapter, fenumber);
+	
 	TP_params TP;
 
 	// save current feparams
