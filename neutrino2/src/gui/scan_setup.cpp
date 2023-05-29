@@ -255,6 +255,22 @@ const keyval FRONTEND_MODE_OPTIONS[FRONTEND_MODE_TWIN_OPTION_COUNT] =
 	{ (fe_mode_t)FE_LOOP, _("loop") },
 };
 
+//
+#define FRONTEND_DELSYS_OPTION_COUNT 10
+const keyval FRONTEND_DELSYS_OPTIONS[FRONTEND_DELSYS_OPTION_COUNT]
+{
+	{ (delivery_system_t)UNDEFINED, "UNDEFINED" },
+	{ (delivery_system_t)DVB_S, "DVBS" },
+	{ (delivery_system_t)DVB_S2, "DVBS2" },
+	{ (delivery_system_t)DVB_C, "DVBC" },
+	{ (delivery_system_t)DVB_C2, "DVBC2" },
+	{ (delivery_system_t)DVB_T, "DVBT" },
+	{ (delivery_system_t)DVB_T2, "DVBT2" },
+	{ (delivery_system_t)DVB_A, "DVBA" },
+	{ (delivery_system_t)DVB_DTMB, "DVBDTMB" },
+	{ (delivery_system_t)DVB_S2X, "DVBS2X" }
+};
+
 CScanSetup::CScanSetup(int num)
 {
 	feindex = num;
@@ -307,6 +323,9 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		
 		// set fe mode
 		CZapit::getInstance()->setFEMode(CZapit::getInstance()->getFE(feindex)->mode, feindex);
+		
+		// set fe delsys
+		CZapit::getInstance()->getFE(feindex)->changeDelSys(CZapit::getInstance()->getFE(feindex)->forcedDelSys);
 		
 		// save frontend.conf
 		CZapit::getInstance()->saveFrontendConfig(feindex);
@@ -376,10 +395,12 @@ void CScanSetup::showScanService()
 	
 	// 
 	dmode = CZapit::getInstance()->getFE(feindex)->diseqcType;
-	//int shortcut = 1;
 	
 	//sat list iterator
 	sat_iterator_t sit;
+	
+	////TEST
+	//CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
 	
 	// load frontend config
 	CZapit::getInstance()->loadFrontendConfig();
@@ -399,6 +420,7 @@ void CScanSetup::showScanService()
 	// init satNotify
 	CSatelliteSetupNotifier * satNotify = new CSatelliteSetupNotifier(feindex);
 	CScanSetupNotifier * feModeNotifier = new CScanSetupNotifier(feindex);
+	CScanSetupDelSysNotifier * feDelSysNotifier = new CScanSetupDelSysNotifier(feindex);
 	
 	// satsetup
 	CWidget* satSetupWidget = NULL;
@@ -483,7 +505,9 @@ void CScanSetup::showScanService()
 	ClistBox* satOnOff = NULL;
 	
 	// scan setup SAT
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) 
+	//if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+	//if( IS_SAT(CZapit::getInstance()->getFE(feindex)->getDelSysMasked()) )
+	if (CZapit::getInstance()->getFE(feindex)->forcedDelSys == DVB_S ||CZapit::getInstance()->getFE(feindex)->forcedDelSys == DVB_S2) 
 	{
 		satSelect = new CMenuOptionStringChooser(_("Satellite"), scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
 			
@@ -633,7 +657,9 @@ void CScanSetup::showScanService()
 			tempsatWidget = NULL;
 		}
 	} 
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) 
+	//else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+	//else if (  IS_CABLE( CZapit::getInstance()->getFE(feindex)->getDelSysMasked() )  ) 
+	else if (CZapit::getInstance()->getFE(feindex)->forcedDelSys == DVB_C || CZapit::getInstance()->getFE(feindex)->forcedDelSys == DVB_C2)
 	{
 		satSelect = new CMenuOptionStringChooser(_("Cable"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
 
@@ -646,7 +672,9 @@ void CScanSetup::showScanService()
 			}
 		}
 	}
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+	//else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+	//else if( IS_TERRESTRIAL(CZapit::getInstance()->getFE(feindex)->getDelSysMasked()))
+	if (CZapit::getInstance()->getFE(feindex)->forcedDelSys == DVB_T || CZapit::getInstance()->getFE(feindex)->forcedDelSys == DVB_T2)
 	{
 		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
 
@@ -659,7 +687,8 @@ void CScanSetup::showScanService()
 			}
 		}
 	}
-    	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC) 
+    	//else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+    	if (CZapit::getInstance()->getFE(feindex)->forcedDelSys == DVB_A)
 	{
 		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
 
@@ -775,6 +804,9 @@ void CScanSetup::showScanService()
 	}
 	
 	scansetup->addItem(new CMenuOptionChooser(_("Tuner mode"),  (int *)&CZapit::getInstance()->getFE(feindex)->mode, FRONTEND_MODE_OPTIONS, have_twin? FRONTEND_MODE_TWIN_OPTION_COUNT:FRONTEND_MODE_SINGLE_OPTION_COUNT, true, feModeNotifier));
+	
+	// frontend delsys
+	scansetup->addItem(new CMenuOptionChooser(_("Tuner type"),  (int *)&CZapit::getInstance()->getFE(feindex)->forcedDelSys, FRONTEND_DELSYS_OPTIONS, FRONTEND_DELSYS_OPTION_COUNT, true, feDelSysNotifier));
 	
 	scansetup->addItem( new CMenuSeparator(LINE) );
 
@@ -994,7 +1026,7 @@ void CScanSetup::showScanService()
 		
 	ClistBoxItem * manScan = new ClistBoxItem(_("Manual frequency scan / Test signal"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, manualScanWidget, "");
 	feModeNotifier->addItem(0, manScan);
-	scansetup->addItem(manScan);
+	scansetup->addItem(manScan); //TEST
 		
 	// auto scan menu
 	CWidget* autoScanWidget = NULL;
@@ -2081,5 +2113,9 @@ void CTunerSetup::showMenu()
 	widget->exec(NULL, "");
 }
 
-
+bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
+{
+	CZapit::getInstance()->getFE(feindex)->changeDelSys(CZapit::getInstance()->getFE(feindex)->forcedDelSys);
+	return true;
+}
 

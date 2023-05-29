@@ -298,7 +298,7 @@ void CZapit::initFrontend()
 				}
 				
 				// set it to standby
-				fe->Close(); //FIXME: do we need this???
+				fe->Close();
 				
 				usleep(150000);
 			}
@@ -420,6 +420,9 @@ void CZapit::initTuner(CFrontend * fe)
 		fe->setDiseqcRepeats( fe->diseqcRepeats );
 		fe->setCurrentSatellitePosition( fe->lastSatellitePosition );
 		//fe->setDiseqcType( fe->diseqcType );
+		
+		//
+		fe->changeDelSys(fe->forcedDelSys);
 	}
 }
 
@@ -702,8 +705,11 @@ void CZapit::saveFrontendConfig(int feindex)
 	
 	for(feindex = 0; feindex < FrontendCount; feindex++)
 	{
-		// common
+		// mode
 		setConfigValue(feindex, "mode", getFE(feindex)->mode);
+		
+		// delsys
+		setConfigValue(feindex, "delsys", getFE(feindex)->forcedDelSys);
 			
 		// sat
 		if(getFE(feindex)->getInfo()->type == FE_QPSK)
@@ -748,8 +754,13 @@ void CZapit::loadFrontendConfig()
 	{
 		CFrontend * fe = fe_it->second;
 		
-		// common
+		// mode
 		fe->mode = (fe_mode_t)getConfigValue(fe_it->first, "mode", (fe_mode_t)FE_SINGLE);
+		
+		// delsys
+		fe->forcedDelSys = (delivery_system_t)getConfigValue(fe_it->first, "delsys", (delivery_system_t)UNDEFINED);
+		
+		//fe->changeDelSys(fe->forcedDelSys);
 		
 		// sat
 		if(fe->getInfo()->type == FE_QPSK)

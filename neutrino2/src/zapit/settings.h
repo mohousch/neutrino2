@@ -53,8 +53,8 @@
 #define VOLUME_CONFIG_FILE 		CONFIGDIR "/zapit/audiovolume.conf"
 #define AUDIO_CONFIG_FILE 		CONFIGDIR "/zapit/audio.conf"
 
-#define DVBADAPTER_MAX			2	// needed for twin on generic HW
-#define FRONTEND_MAX			4
+#define DVBADAPTER_MAX			2	// 
+#define FRONTEND_MAX			8	// fbc
 
 #define CAMD_UDS_NAME  			"/tmp/camd.socket"
 

@@ -211,12 +211,12 @@ typedef enum {
 	DVB_T 		= 0x0010,
 	DVB_T2		= 0x0020,
 	DVB_A 		= 0x0040,
-//	DVB_DTMB	= 0x0080,
+	DVB_DTMB	= 0x0080,
 	DVB_S2X		= 0x0100
 } delivery_system_t;
 
 #define IS_SAT(ds)		(ds & (DVB_S | DVB_S2 | DVB_S2X) != 0)
-#define IS_CABLE(ds)		(ds & (DVB_C | DVB_C2) != 0))
+#define IS_CABLE(ds)		(ds & (DVB_C | DVB_C2) != 0)
 #define IS_TERRESTRIAL(ds)	(ds & (DVB_T | DVB_T2) != 0)
 
 /* service types */
@@ -326,3 +326,4 @@ typedef enum {
 } fe_mode_t;
 
 #endif /* __zapittypes_h__ */
+

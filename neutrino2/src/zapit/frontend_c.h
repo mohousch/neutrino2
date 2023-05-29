@@ -96,12 +96,12 @@ class CFrontend
 		int fenumber;
 		int feadapter;
 
-        	/* information about the used frontend type */
+        	// information about the used frontend type
 		struct dvb_frontend_info info;
 		
 		fe_mode_t mode;
 		
-		/* usals config */
+		// usals config
 		int useGotoXX;
 		double gotoXXLatitude;
 		double gotoXXLongitude;
@@ -112,61 +112,59 @@ class CFrontend
 		
 		int32_t lastSatellitePosition;
 		
-		/* how often to repeat DiSEqC 1.1 commands */
+		// how often to repeat DiSEqC 1.1 commands
 		int diseqcRepeats;
 		
-		/* DiSEqC type of attached hardware */
+		// DiSEqC type of attached hardware
 		diseqc_t diseqcType;
 
-		/* the unicable switch or lnb channel */
+		// the unicable switch or lnb channel
 		int uni_scr;
-		/* the unicable frequency in MHz */
+		// the unicable frequency in MHz
 		int uni_qrg;
-		/* the input (0/1/2/3) of a multi-position switch */
+		// the input (0/1/2/3) of a multi-position switch
 		int uni_lnb;
 		
-		/* tuning finished flag */
+		// tuning finished flag
 		bool tuned;
 		
-		/* tuned to record flag */
+		// tuned to record flag
 		bool locked;
 		
-		/* lnb offsets */
+		// lnb offsets
 		int32_t lnbOffsetLow;
 		int32_t lnbOffsetHigh;
 		int32_t lnbSwitch;
 		
-		/* standby flag */
+		// standby flag
 		bool standby;
 
-		/* file descriptor */
+		// file descriptor
 		int fd;
 		
 		//
+		uint32_t forcedDelSys;
 		uint32_t deliverySystemMask;
 		bool fe_can_multistream;
 		bool hybrid;
 	  
 	private:
-		/* slave */
+		// slave
 		bool slave;
 		
-		/* information about the used frontend type */
-		//struct dvb_frontend_info info;
-		
-		/* current 22kHz tone mode */
+		// current 22kHz tone mode
 		fe_sec_tone_mode_t currentToneMode;
 		int currentDiseqc;
 		fe_sec_voltage_t currentVoltage;
 		
-		/* current satellite position */
+		// current satellite position
 		int32_t currentSatellitePosition;
 		
-		/* diseqc */
+		// diseqc
 		int diseqc;
 		uint8_t uncommitedInput;
 
-		/* current Transponderdata */
+		// current Transponderdata
 		TP_params currentTransponder;
 		
 		FrontendParameters curfe;
@@ -228,10 +226,9 @@ class CFrontend
 		void sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t command, uint8_t num_parameters, uint8_t parameter1, uint8_t parameter2, int repeat = 0);
 		void gotoXX(t_satellite_position pos);
 		
-		bool tuneChannel (CZapitChannel *channel, bool nvod);
-		bool retuneChannel (void);
-		bool retuneTP (bool nowait = true);
+		bool tuneChannel(CZapitChannel *channel, bool nvod);
 
+		//
 		fe_code_rate_t getCFEC ();
 		transponder_id_t getTsidOnid()    { return currentTransponder.TP_id; }
 		bool sameTsidOnid(transponder_id_t tpid){ return (currentTransponder.TP_id == 0) || (tpid == currentTransponder.TP_id);}
@@ -243,6 +240,7 @@ class CFrontend
 		void getFEInfo(void);
 		void Init(void);
 		void setMasterSlave(bool _slave);
+		void setMasterSlave();
 		
 		bool sendUncommittedSwitchesCommand(int input);
 		bool setInput(CZapitChannel *channel, bool nvod);
@@ -253,15 +251,13 @@ class CFrontend
 		void setLnbOffsets(int32_t _lnbOffsetLow, int32_t _lnbOffsetHigh, int32_t _lnbSwitch);
 
 		struct dvb_frontend_event getEvent(void);
+		bool getHighBand(){ return (int) getFrequency() >= lnbSwitch; };
 		
 		//
 		int getDeliverySystem();
 		bool isHybrid(void){ return hybrid;};
-		//void forceDelSys(int i);
-		
-		//
-		bool getHighBand(){ return (int) getFrequency() >= lnbSwitch; }
-		void setMasterSlave();
+		bool changeDelSys(uint32_t delsys);
+		uint32_t getDelSysMasked(void){return deliverySystemMask;};
 };
 
 // multi frontend stuff

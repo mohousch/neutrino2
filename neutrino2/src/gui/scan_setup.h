@@ -136,6 +136,15 @@ class CScanSetupNotifier : public CChangeObserver
 		bool changeNotify(const std::string&, void * Data);
 };
 
+class CScanSetupDelSysNotifier : public CChangeObserver
+{
+	private:
+		int feindex;
+	public:
+		CScanSetupDelSysNotifier(int num = 0){feindex = num;};
+		bool changeNotify(const std::string&, void *Data);
+};
+
 class CTunerSetup : public CMenuTarget
 {
 	private:
