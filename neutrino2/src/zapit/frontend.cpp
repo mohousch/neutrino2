@@ -2254,8 +2254,36 @@ bool CFrontend::changeDelSys(uint32_t delsys)
 		return false;
 	}
 #else
-	// proc methode
+	std::string dest = "/proc/stb/frontend/";
+	dest += fenumber;
 	
+	switch (delsys)
+	{
+		case DVB_S:
+		case DVB_S2:
+		case DVB_S2X:
+			proc_put(dest.c_str(), "2");
+			break;
+			
+		case DVB_T:
+		case DVB_T2:
+		case DVB_DTMB:
+			proc_put(dest.c_str(), "1");
+			break;
+			
+		case DVB_C:
+		case DVB_C2:
+			secSetVoltage(SEC_VOLTAGE_OFF, 0);
+			proc_put(dest.c_str(), "0");
+			break;
+			
+		case DVB_A:
+			proc_put(dest.c_str(), "3");
+			break;
+		
+		default:
+			break;
+	}
 #endif
 
 	forcedDelSys = delsys;

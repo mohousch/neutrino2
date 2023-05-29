@@ -37,16 +37,6 @@
 #include <zapit/settings.h>  //zapit/settings.h
 
 
-class CTPSelectHandler : public CMenuTarget
-{
-	private:
-		int feindex;
-	
-	public:
-		CTPSelectHandler(int num = 0);
-		int exec(CMenuTarget* parent,  const std::string &actionkey);
-};
-
 class CScanSettings
 {
 	private:
@@ -85,16 +75,27 @@ class CScanSettings
 		bool saveSettings(const char * const fileName, int index = 0);
 };
 
+class CTPSelectHandler : public CMenuTarget
+{
+	private:
+		int feindex;
+	
+	public:
+		CTPSelectHandler(int num = 0);
+		int exec(CMenuTarget* parent,  const std::string &actionkey);
+};
+
 class CScanSetup : public CMenuTarget
 {
 	private:
 		int feindex;
+		sat_iterator_t sit;
 
 		void hide();
 		void showScanService();
 		int showUnicableSetup();
-		//int showManualScanSetup(fe_type_t fe_type);
-		//int showAutoScanSetup(fe_type_t fe_type);
+		//int showManualScanSetup(CMenuOptionStringChooser *item);
+		//int showAutoScanSetup(CMenuOptionStringChooser *item);
 		
 	public:
 		CScanSetup(int num = 0);

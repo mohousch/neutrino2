@@ -258,6 +258,7 @@ class CFrontend
 		bool isHybrid(void){ return hybrid;};
 		bool changeDelSys(uint32_t delsys);
 		uint32_t getDelSysMasked(void){return deliverySystemMask;};
+		uint32_t getForcedDelSys(void){return forcedDelSys;};
 };
 
 // multi frontend stuff
