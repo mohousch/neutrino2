@@ -56,36 +56,32 @@ struct transponder
 	FrontendParameters feparams;
 	unsigned char polarization;
 	bool updated;
-    	delivery_system_t system;
 
-	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams, delivery_system_t _system = DVB_S)
+	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams)
 	{
 		transport_stream_id = p_transport_stream_id;
 		feparams = p_feparams;
 		polarization = 0;
 		original_network_id = 0;
 		updated = 0;
-        	system = _system;
 	}
 
-	transponder(const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, const FrontendParameters p_feparams, const uint8_t p_polarization = 0, delivery_system_t _system = DVB_S)
+	transponder(const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, const FrontendParameters p_feparams, const uint8_t p_polarization = 0)
 	{
 		transport_stream_id = p_transport_stream_id;
 		original_network_id = p_original_network_id;
 		feparams            = p_feparams;
 		polarization        = p_polarization;
 		updated = 0;
-		system = _system;
 	}
 
-	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams, unsigned short p_polarization, t_original_network_id p_original_network_id, delivery_system_t _system = DVB_S)
+	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams, unsigned short p_polarization, t_original_network_id p_original_network_id)
 	{
 		transport_stream_id = p_transport_stream_id;
 		feparams = p_feparams;
 		polarization = p_polarization;
 		original_network_id = p_original_network_id;
 		updated = 0;
-        	system = _system;
 	}
 };
 
@@ -121,7 +117,7 @@ class CServices
 		};
 		
 		//
-		void parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system );
+		void parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, uint32_t system );
 		void parseChannels(xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation );
 		void findTransponder(xmlNodePtr root);
 		void parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_satellite_position satellitePosition);

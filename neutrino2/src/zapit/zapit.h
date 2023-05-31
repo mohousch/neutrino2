@@ -209,7 +209,7 @@ class CZapit
 			uint8_t motorPosition;
 			int satDiseqc;
 
-			delivery_system_t system;
+			uint32_t system;
 		};
 		
 		typedef std::vector<responseGetSatelliteList> SatelliteList;
@@ -230,9 +230,9 @@ class CZapit
 		
 	private:
 		//
-		//void initFrontend();
-		void OpenFE();
-		void CloseFE();
+		void OpenFE(void);
+		void CloseFE(void);
+		void resetFE(void);
 		bool loopCanTune(CFrontend * fe, CZapitChannel * thischannel);
 		CFrontend * getPreferredFrontend(CZapitChannel * thischannel);
 		CFrontend * getFrontend(CZapitChannel * thischannel);
@@ -385,7 +385,6 @@ class CZapit
 
 		// frontend
 		void sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t cmd, uint8_t num_parameters, uint8_t param1, uint8_t param2, int feindex = 0);
-		//delivery_system_t getDeliverySystem(int feindex = 0);
 
 		// audio / video
 		void muteAudio(const bool mute);

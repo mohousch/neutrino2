@@ -256,19 +256,18 @@ const keyval FRONTEND_MODE_OPTIONS[FRONTEND_MODE_TWIN_OPTION_COUNT] =
 };
 
 //
-#define FRONTEND_DELSYS_OPTION_COUNT 10
+#define FRONTEND_DELSYS_OPTION_COUNT 3
 const keyval FRONTEND_DELSYS_OPTIONS[FRONTEND_DELSYS_OPTION_COUNT]
 {
-	{ (delivery_system_t)UNDEFINED, "UNDEFINED" },
-	{ (delivery_system_t)DVB_S, "DVBS" },
-	{ (delivery_system_t)DVB_S2, "DVBS2" },
-	{ (delivery_system_t)DVB_C, "DVBC" },
-	{ (delivery_system_t)DVB_C2, "DVBC2" },
-	{ (delivery_system_t)DVB_T, "DVBT" },
-	{ (delivery_system_t)DVB_T2, "DVBT2" },
-	{ (delivery_system_t)DVB_A, "DVBA" },
-	{ (delivery_system_t)DVB_DTMB, "DVBDTMB" },
-	{ (delivery_system_t)DVB_S2X, "DVBS2X" }
+//	{ UNDEFINED, "UNDEFINED" },
+//	{ DVB_S, "DVBS" },
+//	{ DVB_S2, "DVBS2" },
+//	{ DVB_S2X, "DVBS2X" },
+	{ DVB_C, "DVBC" },
+	{ DVB_T, "DVBT" },
+	{ DVB_T2, "DVBT2" },
+//	{ DVB_DTMB, "DVBDTMB" },
+//	{ DVB_A, "DVBA" }
 };
 
 CScanSetup::CScanSetup(int num)
@@ -329,7 +328,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		CZapit::getInstance()->setFEMode(CZapit::getInstance()->getFE(feindex)->mode, feindex);
 		
 		// set fe delsys
-		CZapit::getInstance()->getFE(feindex)->changeDelSys(CZapit::getInstance()->getFE(feindex)->forcedDelSys);
+		//CZapit::getInstance()->getFE(feindex)->changeDelSys(CZapit::getInstance()->getFE(feindex)->forcedDelSys);
 		
 		// save frontend.conf
 		CZapit::getInstance()->saveFrontendConfig(feindex);
@@ -667,7 +666,7 @@ void CScanSetup::showScanService()
 		}
 	} 
 #if HAVE_DVB_API_VERSION >= 5 
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C2)
+	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
 #else
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
 #endif
@@ -824,24 +823,8 @@ void CScanSetup::showScanService()
 	scansetup->addItem(new CMenuOptionChooser(_("Tuner mode"),  (int *)&CZapit::getInstance()->getFE(feindex)->mode, FRONTEND_MODE_OPTIONS, have_twin? FRONTEND_MODE_TWIN_OPTION_COUNT:FRONTEND_MODE_SINGLE_OPTION_COUNT, true, feModeNotifier));
 	
 	// frontend delsys
-	scansetup->addItem(new CMenuOptionChooser(_("Tuner type"),  (int *)&CZapit::getInstance()->getFE(feindex)->forcedDelSys, FRONTEND_DELSYS_OPTIONS, FRONTEND_DELSYS_OPTION_COUNT, true, feDelSysNotifier));
-	/*
-	CMenuOptionStringChooser *tunerType = new CMenuOptionStringChooser(_("Tuner type"), NULL, true, feDelSysNotifier);
-	
-	for (unsigned int i = 0; CZapit::getInstance()->getFE(feindex)->deliverySystemMask.size(); i++)
-	{
-		
-		if (CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_S || CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_S2)
-			tunerType->addOption("DVBS/S2");
-		if (CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_C || CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_C2)
-			tunerType->addOption("DVBC/C2");
-		if (CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_T || CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_T2 || CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_DTMB)
-			tunerType->addOption("DVBT/T2");
-		if (CZapit::getInstance()->getFE(feindex)->deliverySystemMask[i] == DVB_A)
-			tunerType->addOption("DVBA");
-	}
-	scansetup->addItem(tunerType);
-	*/
+	//if (CZapit::getInstance()->getFE(feindex)->isHybrid())
+		scansetup->addItem(new CMenuOptionChooser(_("Tuner type"),  (int *)&CZapit::getInstance()->getFE(feindex)->forcedDelSys, FRONTEND_DELSYS_OPTIONS, FRONTEND_DELSYS_OPTION_COUNT, true, feDelSysNotifier));
 	
 	scansetup->addItem( new CMenuSeparator(LINE) );
 
@@ -998,7 +981,7 @@ void CScanSetup::showScanService()
 		mod_pol = new CMenuOptionChooser(_("Polarization"), (int *)&scanSettings->TP_pol, SATSETUP_SCANTP_POL, SATSETUP_SCANTP_POL_COUNT, true);
 	}
 #if HAVE_DVB_API_VERSION >= 5 
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C2)
+	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
 #else
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
 #endif
@@ -1391,6 +1374,45 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		char buf[128];
 		char * f, *s, *m;
 		
+#if HAVE_DVB_API_VERSION >= 5
+		switch( CZapit::getInstance()->getFE(feindex)->getForcedDelSys()) 
+		{
+			case DVB_S:
+			case DVB_S2:
+			{
+				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f, s, m);
+
+				snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate/1000, f, s, m);
+			}
+			break;
+
+			case DVB_C:
+			{
+				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.fec_inner, tI->second.feparams.modulation, f, s, m);
+
+				snprintf(buf, sizeof(buf), "%d %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.symbol_rate/1000, f, s, m);
+			}
+			break;
+
+			case DVB_T:
+			case DVB_T2:
+			case DVB_DTMB:
+			{
+				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.code_rate_HP, tI->second.feparams.modulation, f, s, m);
+
+				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
+			}
+			break;
+				
+			case DVB_A:
+            		{
+				CZapit::getInstance()->getFE(feindex)->getDelSys(FEC_NONE, tI->second.feparams.modulation, f, s, m);
+
+				snprintf(buf, sizeof(buf), "%d %s %s %s ", tI->second.feparams.frequency/100000, f, s, m);
+			}
+			break;
+		}
+#else
 		switch( CZapit::getInstance()->getFE(feindex)->getInfo()->type) 
 		{
 			case FE_QPSK:
@@ -1425,6 +1447,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 			}
 			break;
 		}
+#endif
 		
 		menu->addItem(new ClistBoxItem(buf), old_selected == i);
 		tmplist.insert(std::pair <int, transponder>(i, tI->second));
@@ -1455,6 +1478,45 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 
 		sprintf( scanSettings->TP_freq, "%d", tmpI->second.feparams.frequency);
 		
+#if HAVE_DVB_API_VERSION >= 5
+		switch( CZapit::getInstance()->getFE(feindex)->getForcedDelSys()) 
+		{
+			case DVB_S:
+			case DVB_S2:	
+				sprintf(scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
+				scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
+				scanSettings->TP_pol = tmpI->second.polarization;
+				break;
+
+			case DVB_C:	
+				sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
+				scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
+				scanSettings->TP_mod = tmpI->second.feparams.modulation;
+				break;
+
+			case DVB_T:
+			case DVB_T2:
+			case DVB_DTMB:
+			{	
+				scanSettings->TP_band = tmpI->second.feparams.bandwidth;
+				scanSettings->TP_HP = tmpI->second.feparams.code_rate_HP;
+				scanSettings->TP_LP = tmpI->second.feparams.code_rate_LP;
+				scanSettings->TP_const = tmpI->second.feparams.modulation;
+				scanSettings->TP_trans = tmpI->second.feparams.transmission_mode;
+				scanSettings->TP_guard = tmpI->second.feparams.guard_interval;
+				scanSettings->TP_hierarchy = tmpI->second.feparams.hierarchy_information;
+			}
+			break;
+
+			case DVB_A:
+            		{	
+				//sprintf( scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
+				//scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
+				scanSettings->TP_mod = tmpI->second.feparams.modulation;
+			}
+			break;
+		}
+#else
 		switch( CZapit::getInstance()->getFE(feindex)->getInfo()->type) 
 		{
 			case FE_QPSK:	
@@ -1488,7 +1550,8 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				scanSettings->TP_mod = tmpI->second.feparams.modulation;
 			}
 			break;
-		}	
+		}
+#endif	
 	}
 	
 	if(retval == RETURN_EXIT_ALL)
@@ -1501,12 +1564,16 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 CScanSettings::CScanSettings( int num)
 	: configfile('\t')
 {
+	feindex = num;
+	
+	//
 	//satNameNoDiseqc[0] = 0;
 	strcpy(satNameNoDiseqc, "none");
-	bouquetMode     = CZapit::BM_UPDATEBOUQUETS;
-	//scanType = CServiceScan::SCAN_TVRADIO;
+	bouquetMode = CZapit::BM_UPDATEBOUQUETS;
+	//scanType = CZapit::ST_TVRADIO;
 	
-	feindex = num;
+	//
+	scan_mode = 1;
 }
 
 // borrowed from cst neutrino-hd (femanager.cpp)
@@ -1541,12 +1608,12 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	// common
 	scanType = (CZapit::scanType) getConfigValue(index, "scanType", CZapit::ST_ALL);
 	bouquetMode = (CZapit::bouquetMode) getConfigValue(index, "bouquetMode", CZapit::BM_UPDATEBOUQUETS);
+	scan_mode = getConfigValue(index, "scan_mode", 1); // NIT (0) or fast (1)
 	
+	//
 	char cfg_key[81];
 	sprintf(cfg_key, "fe%d_satNameNoDiseqc", index);
 	strcpy(satNameNoDiseqc, configfile.getString(cfg_key, "none").c_str());
-	
-	scan_mode = getConfigValue(index, "scan_mode", 1); // NIT (0) or fast (1)
 	
 	// freq
 	sprintf(cfg_key, "fe%d_TP_freq", index);
@@ -1600,12 +1667,12 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 	// common
 	setConfigValue(index, "scanType", scanType );
 	setConfigValue(index, "bouquetMode", bouquetMode );
+	setConfigValue(index, "scan_mode", scan_mode);
 	
+	//
 	char cfg_key[81];
 	sprintf(cfg_key, "fe%d_satNameNoDiseqc", index);
 	configfile.setString(cfg_key, satNameNoDiseqc );
-	
-	setConfigValue(index, "scan_mode", scan_mode);
 	
 	// freq
 	sprintf(cfg_key, "fe%d_TP_freq", index);
@@ -1991,6 +2058,8 @@ void CTunerSetup::showMenu()
 bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 {
 	CZapit::getInstance()->getFE(feindex)->changeDelSys(CZapit::getInstance()->getFE(feindex)->forcedDelSys);
+	CZapit::getInstance()->getFE(feindex)->reset();
+	
 	return true;
 }
 

@@ -1908,6 +1908,7 @@ void CNeutrinoApp::setupRecordingDevice(void)
 #if defined (USE_OPENGL) // opengl playback
 int startOpenGLplayback()
 {
+#if 0
 	CTimerd::RecordingInfo eventinfo;
 
 	if( !CVCRControl::getInstance()->isDeviceRegistered() )
@@ -1955,13 +1956,15 @@ int startOpenGLplayback()
 		usleep(10000000);
 		playback->Open();
 		playback->Start(fname);
-	} 
+	}
+#endif
 	
 	return 0;
 }
 
 void stopOpenGLplayback()
 {
+#if 0
 	// stop playback
 	playback->Close();
 	
@@ -1981,6 +1984,7 @@ void stopOpenGLplayback()
 		system(buf);
 		unlink(buf1);
 	}
+#endif
 }
 #endif
 

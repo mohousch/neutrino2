@@ -82,10 +82,9 @@ class CScanTs : public CMenuTarget
 		void showSNR();
 		
 		int feindex;
-		TP_params TP;
 
 	public:
-		CScanTs(int num=0);
+		CScanTs(int num = 0);
 		void hide();
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 };

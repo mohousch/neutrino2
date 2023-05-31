@@ -188,7 +188,7 @@ enum SiDescriptorTag {
 	FORBIDDEN_DESCRIPTOR				= 0xFF
 };
 
-/* diseqc types */
+// diseqc types
 typedef enum {
 	NO_DISEQC,
 	MINI_DISEQC,
@@ -201,25 +201,20 @@ typedef enum {
 	DISEQC_UNICABLE2
 } diseqc_t;
 
-/* dvb transmission types */
+// dvb transmission types
 typedef enum {
 	UNDEFINED 	= 0x0000,
 	DVB_S 		= 0x0001,
 	DVB_S2		= 0x0002,
-	DVB_C 		= 0x0004,
-	DVB_C2 		= 0x0008,
+	DVB_S2X		= 0x0004,
+	DVB_C 		= 0x0008,
 	DVB_T 		= 0x0010,
 	DVB_T2		= 0x0020,
-	DVB_A 		= 0x0040,
-	DVB_DTMB	= 0x0080,
-	DVB_S2X		= 0x0100
+	DVB_DTMB	= 0x0040,
+	DVB_A 		= 0x0080
 } delivery_system_t;
 
-#define IS_SAT(ds)		(ds & (DVB_S | DVB_S2 | DVB_S2X) != 0)
-#define IS_CABLE(ds)		(ds & (DVB_C | DVB_C2) != 0)
-#define IS_TERRESTRIAL(ds)	(ds & (DVB_T | DVB_T2) != 0)
-
-/* service types */
+// service types
 typedef enum {
 	ST_RESERVED,
 	ST_DIGITAL_TELEVISION_SERVICE,
@@ -280,7 +275,7 @@ typedef struct
 	fe_code_rate_t		code_rate_HP;
 	fe_code_rate_t		code_rate_LP;
 	
-//	delivery_system_t	delsys;
+	uint32_t		delsys;
 //	fe_rolloff_t		rolloff;
 //	uint32_t		pilot;
 //	enum fe_interleaving	interleaving;

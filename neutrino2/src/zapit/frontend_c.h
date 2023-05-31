@@ -146,7 +146,6 @@ class CFrontend
 		//
 		uint32_t forcedDelSys;
 		uint32_t deliverySystemMask;
-		//std::vector<uint32_t>deliverySystemMask;
 		bool fe_can_multistream;
 		bool hybrid;
 	  
@@ -173,22 +172,22 @@ class CFrontend
 		uint32_t getDiseqcReply(const int timeout_ms) const;
 		FrontendParameters getFrontend(void) const;
 
+		//
 		void secResetOverload(void);
 		void secSetTone(const fe_sec_tone_mode_t mode, const uint32_t ms);
 		void secSetVoltage(const fe_sec_voltage_t voltage, const uint32_t ms);
+		
+		//
 		void sendDiseqcCommand(const struct dvb_diseqc_master_cmd *cmd, const uint32_t ms);
 		void sendDiseqcPowerOn(void);
 		void sendDiseqcReset(void);
 		void sendDiseqcSmatvRemoteTuningCommand(const uint32_t frequency);
-
 		uint32_t sendEN50494TuningCommand(const uint32_t frequency, const int high_band, const int horizontal, const int bank);
 		uint32_t sendEN50607TuningCommand(const uint32_t frequency, const int high_band, const int horizontal, const int bank);
 		void sendDiseqcStandby(void);
 		void sendDiseqcZeroByteCommand(const uint8_t frm, const uint8_t addr, const uint8_t cmd);
 		void sendToneBurst(const fe_sec_mini_cmd_t burst, const uint32_t ms);
 		void setSec(const uint8_t sat_no, const uint8_t pol, const bool high_band);
-		void set12V(bool enable);
-		void reset(void);
 		
 		//
 		void setFrontend(const FrontendParameters *feparams, bool nowait = false);
@@ -243,6 +242,7 @@ class CFrontend
                 void Close();
 		bool Open();
 		void getFEInfo(void);
+		void reset(void);
 		void Init(void);
 		void setMasterSlave(bool _slave);
 		void setMasterSlave();
@@ -261,7 +261,7 @@ class CFrontend
 		bool getHighBand(){ return (int) getFrequency() >= lnbSwitch; };
 		
 		//
-		int getDeliverySystem();
+		uint32_t getDeliverySystem();
 		bool isHybrid(void){ return hybrid;};
 		bool changeDelSys(uint32_t delsys);
 		uint32_t getDelSysMasked(void){return deliverySystemMask;};

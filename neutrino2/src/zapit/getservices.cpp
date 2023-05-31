@@ -67,7 +67,7 @@ satellite_map_t satellitePositions;				// satellite position as specified in sat
 std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats liste
 
 // parse transponder from services.xml
-void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, delivery_system_t system)
+void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, uint32_t system)
 {
 	dprintf(DEBUG_INFO, "CServices::parseTransponders:\n");
 
@@ -88,6 +88,7 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 		original_network_id = xmlGetNumericAttribute(node, "on", 16);
 		feparams.frequency = xmlGetNumericAttribute(node, "frq", 0);
 		feparams.inversion = (fe_spectral_inversion) xmlGetNumericAttribute(node, "inv", 0);
+		feparams.delsys = system;
 
 		// DVB-C
 		if(system == DVB_C)
@@ -135,7 +136,7 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 
 		pair<map<transponder_id_t, transponder>::iterator, bool> ret;
 
-		ret = transponders.insert(std::pair <transponder_id_t, transponder> ( tid, transponder(transport_stream_id, feparams, polarization, original_network_id, system)));
+		ret = transponders.insert(std::pair <transponder_id_t, transponder> ( tid, transponder(transport_stream_id, feparams, polarization, original_network_id/*, system*/)));
 		
 		if (ret.second == false)
 			printf("[getservices] duplicate transponder id %llx freq %d\n", tid, feparams.frequency);
@@ -256,7 +257,7 @@ void CServices::findTransponder(xmlNodePtr search)
 	dprintf(DEBUG_INFO, "CServices::findTransponder:\n");
 
 	t_satellite_position satellitePosition = 0;
-    	delivery_system_t system = DVB_S;
+    	uint32_t system = DVB_S;
 	newtpid = 0xC000;
 	
 	while (search) 
@@ -340,7 +341,6 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 	FrontendParameters feparams;
 	fake_tid = 0;
     	fake_nid = 0;
-    	delivery_system_t fake_system = DVB_S;
 
 	xmlNodePtr tps = search->xmlChildrenNode;
 
@@ -364,8 +364,7 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 			feparams.symbol_rate = xmlGetNumericAttribute(tps, "symbol_rate", 0);
 			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(tps, "fec_inner", 0);
 			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(tps, "modulation", 0);
-
-            		fake_system = DVB_C;
+            		feparams.delsys = DVB_C;
 		}
 		else if (frontendType == FE_OFDM)	//DVB-T
 		{
@@ -380,7 +379,10 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 
             		system = xmlGetNumericAttribute(tps, "system", 0);
 
-            		fake_system = DVB_T;
+            		if (system == 0)
+            			feparams.delsys = DVB_T;
+            		else if (system == 1)
+            			feparams.delsys = DVB_T2;
 		}
 		else if (frontendType == FE_QPSK) 	//DVB-S
 		{
@@ -398,13 +400,15 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 
 			feparams.fec_inner = (fe_code_rate_t)xml_fec;
 
-            		fake_system = DVB_S;
+            		if (system == 0)
+            			feparams.delsys = DVB_S;
+            		else if (system == 1)
+            			feparams.delsys = DVB_S2;
 		}
 		else if (frontendType == FE_ATSC)
 		{
 		    feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(tps, "modulation", 0);
-
-		    fake_system = DVB_A;
+		    feparams.delsys = DVB_A;
 		}
 		
 		if (frontendType == FE_QAM) 
@@ -419,7 +423,7 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 		polarization &= 7;
 		
 		// insert TPs list
-		select_transponders.insert( std::pair <transponder_id_t, transponder> (tid, transponder(fake_tid, feparams, polarization, fake_nid, fake_system)));
+		select_transponders.insert( std::pair <transponder_id_t, transponder> (tid, transponder(fake_tid, feparams, polarization, fake_nid)));
 		
 		fake_nid ++; 
 		fake_tid ++;
@@ -524,7 +528,7 @@ void CServices::init_sat(t_satellite_position position)
 	satellitePositions[position].use_usals = 0;
 }
 
-// load transponders
+// load transponders from satellites/cables/terrestrial/atsc.xml
 int CServices::loadTransponders()
 {
 	bool satcleared = 0;

@@ -133,7 +133,7 @@ class CScanSetupNotifier : public CChangeObserver
 		int feindex;
 	public:
 		CScanSetupNotifier(int num = 0);
-		void addItem(int list , CMenuItem *item);
+		void addItem(int list, CMenuItem *item);
 		bool changeNotify(const std::string&, void * Data);
 };
 

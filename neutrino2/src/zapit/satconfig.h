@@ -34,7 +34,7 @@ typedef struct sat_config {
 	int use_usals;
 	std::string name;
 	int have_channels;
-    	delivery_system_t system;
+    	uint32_t system;
 } sat_config_t;
 
 typedef enum diseqc_cmd_order {
