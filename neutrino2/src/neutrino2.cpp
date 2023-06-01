@@ -672,7 +672,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.screen_yres = configfile.getInt32("screen_yres", 100);
 	
 	//
-	g_settings.preferred_skin = configfile.getString("preferred_skin", "neutrino2");
+	g_settings.preferred_skin = configfile.getString("preferred_skin", "pandora");
 
 	// keysbinding
 	strcpy(g_settings.repeat_blocker, configfile.getString("repeat_blocker", "250").c_str());
