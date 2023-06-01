@@ -188,6 +188,7 @@ void CFrontend::getFEInfo(void)
 	deliverySystemMask = UNDEFINED;
 
 #if HAVE_DVB_API_VERSION >= 5
+#ifdef DTV_ENUM_DELSYS
 	struct dtv_property Frontend[1];
 	Frontend[0].cmd = DTV_ENUM_DELSYS;
 	struct dtv_properties CmdSeq;
@@ -267,6 +268,7 @@ void CFrontend::getFEInfo(void)
 	{
 		dprintf(DEBUG_INFO, "CFrontend::getFEInfo: can't query delivery systems on frontend (%d:%d) - falling back to legacy mode\n", feadapter, fenumber);
 	}
+#endif
 #endif
 
 	if (legacy) 
