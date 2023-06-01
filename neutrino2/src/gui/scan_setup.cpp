@@ -823,7 +823,7 @@ void CScanSetup::showScanService()
 	scansetup->addItem(new CMenuOptionChooser(_("Tuner mode"),  (int *)&CZapit::getInstance()->getFE(feindex)->mode, FRONTEND_MODE_OPTIONS, have_twin? FRONTEND_MODE_TWIN_OPTION_COUNT:FRONTEND_MODE_SINGLE_OPTION_COUNT, true, feModeNotifier));
 	
 	// frontend delsys
-	//if (CZapit::getInstance()->getFE(feindex)->isHybrid())
+	if (CZapit::getInstance()->getFE(feindex)->isHybrid())
 		scansetup->addItem(new CMenuOptionChooser(_("Tuner type"),  (int *)&CZapit::getInstance()->getFE(feindex)->forcedDelSys, FRONTEND_DELSYS_OPTIONS, FRONTEND_DELSYS_OPTION_COUNT, true, feDelSysNotifier));
 	
 	scansetup->addItem( new CMenuSeparator(LINE) );

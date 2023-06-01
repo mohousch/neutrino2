@@ -79,6 +79,11 @@ DMX::~DMX()
 	pthread_cond_destroy (&change_cond);
 	//closefd();
 	close();
+	if(dmx)
+	{
+		delete dmx;
+		dmx = NULL;
+	}
 }
 
 ssize_t DMX::read(char * const /*buf*/, const size_t /*buflength*/, const unsigned /*timeoutMInSeconds*/)
@@ -88,9 +93,9 @@ ssize_t DMX::read(char * const /*buf*/, const size_t /*buflength*/, const unsign
 
 void DMX::close(void)
 {
-	if(dmx)
-		delete dmx;
-	dmx = NULL;
+//	if(dmx)
+//		delete dmx;
+//	dmx = NULL;
 }
 
 void DMX::closefd(void)

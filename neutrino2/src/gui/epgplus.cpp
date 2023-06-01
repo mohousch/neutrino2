@@ -1067,7 +1067,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		  			this->paintChannelEntry (this->selectedChannelEntry->index - this->channelListStartIndex);
 				}
 	  		} 
-			else if ((msg == RC_timeout) || (msg == (neutrino_msg_t) g_settings.key_channelList_cancel)) 
+			else if ((msg == RC_timeout) || (msg == RC_home) || (msg == RC_epg)) 
 			{
 				loop = false;
 	  		}

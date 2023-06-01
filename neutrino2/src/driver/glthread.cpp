@@ -88,6 +88,7 @@ void GLThreadObj::initKeys()
 	mKeyMap[0x1b] = RC_home;
 	mKeyMap['i']  = RC_info;
 	mKeyMap['m']  = RC_setup;
+	mKeyMap['e']  = RC_epg;
 
 	mKeyMap['s']  = RC_spkr;
 	mKeyMap['+']  = RC_plus;

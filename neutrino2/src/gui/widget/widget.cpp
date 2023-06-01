@@ -461,6 +461,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 					break;
 
 				case (RC_home):
+				case (RC_setup):
 					onHomeKeyPressed();
 					break;
 
