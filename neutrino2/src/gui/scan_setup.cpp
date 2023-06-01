@@ -1570,7 +1570,7 @@ CScanSettings::CScanSettings( int num)
 	//satNameNoDiseqc[0] = 0;
 	strcpy(satNameNoDiseqc, "none");
 	bouquetMode = CZapit::BM_UPDATEBOUQUETS;
-	//scanType = CZapit::ST_TVRADIO;
+	scanType = CZapit::ST_TVRADIO;
 	
 	//
 	scan_mode = 1;
@@ -1585,7 +1585,7 @@ uint32_t CScanSettings::getConfigValue(int num, const char * name, uint32_t defv
 	return configfile.getInt32(cfg_key, defval);
 }
 
-// borrowed from cst neutrino-hd (femanger.cpp)
+//
 void CScanSettings::setConfigValue(int num, const char * name, uint32_t val)
 {
 	char cfg_key[81];
@@ -1623,13 +1623,21 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	sprintf(cfg_key, "fe%d_TP_rate", index);
 	strcpy(TP_rate, configfile.getString(cfg_key, "27500000").c_str());
 	
+#if HAVE_DVB_API_VERSION >= 5
+	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_S || CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_S2)
+#else
 	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QPSK)
+#endif
 	{
 		TP_fec = getConfigValue(index, "TP_fec", 1);
 		TP_pol = getConfigValue(index, "TP_pol", 0);
 	}
-		
+	
+#if HAVE_DVB_API_VERSION >= 5
+	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_C)
+#else	
 	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QAM)
+#endif
 	{
 		TP_mod = getConfigValue(index, "TP_mod", 3);
 		TP_fec = getConfigValue(index, "TP_fec", 1);
@@ -1640,8 +1648,12 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 		TP_fec = 5;
 #endif
 
-	//DVB-T
+	//
+#if HAVE_DVB_API_VERSION >= 5
+	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_T2)
+#else
 	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_OFDM)
+#endif
 	{
 		TP_band = getConfigValue(index, "TP_band", 0);
 		TP_HP = getConfigValue(index, "TP_HP", 2);
@@ -1652,7 +1664,11 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 		TP_hierarchy = getConfigValue(index, "TP_hierarchy", 0);
 	}
 
+#if HAVE_DVB_API_VERSION >= 5
+	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_A)
+#else
     	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_ATSC)
+#endif
 	{
 		TP_mod = getConfigValue(index, "TP_mod", 3);
 	}
@@ -1682,19 +1698,31 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 	sprintf(cfg_key, "fe%d_TP_rate", index);
 	configfile.setString(cfg_key, TP_rate);
 	
+#if HAVE_DVB_API_VERSION >= 5
+	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_S || CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_S2)
+#else
 	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QPSK)
+#endif
 	{
 		setConfigValue(index, "TP_pol", TP_pol);
 		setConfigValue(index, "TP_fec", TP_fec);
 	}
 	
+#if HAVE_DVB_API_VERSION >= 5
+	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_C)
+#else
 	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QAM)
+#endif
 	{
 		setConfigValue(index, "TP_mod", TP_mod);
 		setConfigValue(index, "TP_fec", TP_fec);
 	}
 
+#if HAVE_DVB_API_VERSION >= 5
+	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_T2)
+#else
 	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_OFDM)
+#endif
 	{
 		setConfigValue(index, "TP_band", TP_band);
 		setConfigValue(index, "TP_HP", TP_HP);
@@ -1705,7 +1733,11 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 		setConfigValue(index, "TP_hierarchy", TP_hierarchy);
 	}
 
+#if HAVE_DVB_API_VERSION >= 5
+	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_A)
+#else
     	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_ATSC)
+#endif
 	{
 		setConfigValue(index, "TP_mod", TP_mod);
 	}

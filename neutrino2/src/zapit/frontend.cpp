@@ -836,16 +836,16 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 #if HAVE_DVB_API_VERSION >= 5
 void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 {
+	dprintf(DEBUG_NORMAL, "CFontend::setFrontend: fe(%d:%d) delsys:0x%x (feparams.delsys:0x%x)\n", feadapter, fenumber, forcedDelSys, feparams->delsys);
+	
 	fe_delivery_system delsys = SYS_DVBS;
 	fe_modulation_t modulation = QPSK;
 	fe_code_rate_t fec_inner;
 	fe_rolloff_t rolloff = ROLLOFF_35;
 
 	// decode the needed settings
-	//switch (info.type)
 	switch (feparams->delsys)
 	{
-		//case FE_QPSK:
 		case DVB_S:
 		case DVB_S2:
 		case DVB_S2X:		  
@@ -867,7 +867,6 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 			modulation = feparams->modulation;
 			break;
 
-		//case FE_OFDM:
 		case DVB_T:
 		case DVB_T2:
 		case DVB_DTMB:
@@ -876,7 +875,6 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 			fec_inner = feparams->code_rate_HP;
 			break;
 			
-		//case FE_ATSC:
 		case DVB_A:
 			delsys = SYS_ATSC;
 			modulation = feparams->modulation;
@@ -892,8 +890,6 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 	int fec;
 	fe_pilot_t pilot = PILOT_OFF;
 	
-	//if(info.type == FE_QPSK)
-	//if (forcedDelSys == DVB_S)
 	if (feparams->delsys == DVB_S || feparams->delsys == DVB_S2)
 	{
 		switch ((int)fec_inner) 
@@ -1016,9 +1012,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 	
 	dprintf(DEBUG_INFO, "CFrontend::setFrontend: fe(%d:%d) DEMOD: FEC %s system %s modulation %s\n", feadapter, fenumber, f, s, m);
 
-	//tune to
-	//if(info.type == FE_QPSK)
-	//if (forcedDelSys == DVB_S)
+	//
 	if (feparams->delsys == DVB_S || feparams->delsys == DVB_S2)
 	{
 		// common for DVB-S and DVB-S2
@@ -1036,7 +1030,6 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 			SETCMD(DTV_PILOT, pilot);		
 		}
 	}
-	//else if(info.type == FE_QAM)
 	else if (feparams->delsys == DVB_C)
 	{
 		SETCMD(DTV_DELIVERY_SYSTEM, delsys);
@@ -1046,7 +1039,6 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 		SETCMD(DTV_INNER_FEC, fec_inner);
      		SETCMD(DTV_MODULATION, modulation);
 	}
-	//else if(info.type == FE_OFDM)
 	else if (feparams->delsys == DVB_T || feparams->delsys == DVB_T2)
 	{
 		SETCMD(DTV_DELIVERY_SYSTEM, delsys);
@@ -1081,7 +1073,9 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 }
 #else //api3
 void CFrontend::setFrontend(const FrontendParameters * feparams, bool nowait)
-{	
+{
+	dprintf(DEBUG_NORMAL, "CFontend::setFrontend: fe(%d:%d)\n", feadapter, fenumber);
+		
 	fe_modulation_t modulation = QAM_16;
 	fe_code_rate_t fec_inner = FEC_3_4;
 	
@@ -1508,7 +1502,7 @@ bool CFrontend::tuneChannel(CZapitChannel * channel, bool nvod)
 //
 int CFrontend::tuneFrequency(FrontendParameters * feparams, uint8_t polarization, bool nowait)
 {
-	dprintf(DEBUG_NORMAL, "CFrontend::tuneFrequency: fe(%d:%d) delsys:0x%x\n", feadapter, fenumber, forcedDelSys);
+	dprintf(DEBUG_NORMAL, "CFrontend::tuneFrequency: fe(%d:%d) delsys:0x%x (params.delsys:0x%x)\n", feadapter, fenumber, forcedDelSys, feparams->delsys);
 	
 	TP_params TP;
 
