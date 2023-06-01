@@ -509,7 +509,7 @@ int CInfoBox::exec(int timeout)
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 
-		if (((msg == RC_timeout) || (msg == RC_home)))
+		if ( (msg == RC_timeout) || (msg == RC_home) || (msg == RC_info))
 		{
 			loop = false;
 		}
@@ -524,10 +524,6 @@ int CInfoBox::exec(int timeout)
 		else if(msg == RC_ok)
 		{
 			loop = false;
-		}
-		else if(msg == RC_info)
-		{
-			setBigFonts();
 		}
 		else if (CNeutrinoApp::getInstance()->handleMsg(msg, data) & messages_return::cancel_all)
 		{
