@@ -382,7 +382,10 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
             		if (system == 0)
             			feparams.delsys = DVB_T;
             		else if (system == 1)
+            		{
             			feparams.delsys = DVB_T2;
+            			feparams.plp_id = xmlGetNumericAttribute(tps, "plp_id", 0);
+            		}
 		}
 		else if (frontendType == FE_QPSK) 	//DVB-S
 		{

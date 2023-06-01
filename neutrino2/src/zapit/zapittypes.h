@@ -276,12 +276,7 @@ typedef struct
 	fe_code_rate_t		code_rate_LP;
 	
 	uint32_t		delsys;
-//	fe_rolloff_t		rolloff;
-//	uint32_t		pilot;
-//	enum fe_interleaving	interleaving;
-//	unsigned int		plp_id; //0-255
-//	fe_pls_mode_t		pls_mode;
-//	uint32_t		pls_code; //0-262142
+	uint32_t		plp_id;
 } FrontendParameters;
 
 // complete transponder-parameters in a struct

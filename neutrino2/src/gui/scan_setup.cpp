@@ -1054,6 +1054,16 @@ void CScanSetup::showScanService()
 		// hierarchy
 		CMenuOptionChooser * HR = new CMenuOptionChooser(_("Hierarchy"), (int *)&scanSettings->TP_hierarchy, TERRESTRIALSETUP_HIERARCHY, TERRESTRIALSETUP_HIERARCHY_COUNT, true);
 		manualScanlistBox->addItem(HR);
+		
+		// plp_id
+#if HAVE_DVB_API_VERSION >= 5
+		if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+		{
+			CStringInput * plp = new CStringInput(_("PLP ID"), (char *) scanSettings->TP_plp_id, 3);
+			ClistBoxItem * plp_id = new ClistBoxItem(_("PLP ID"), true, scanSettings->TP_plp_id, plp);
+			manualScanlistBox->addItem(plp_id);
+		}
+#endif
 	}	
 
 	manualScanlistBox->addItem(new CMenuSeparator(LINE));
@@ -1505,6 +1515,9 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				scanSettings->TP_trans = tmpI->second.feparams.transmission_mode;
 				scanSettings->TP_guard = tmpI->second.feparams.guard_interval;
 				scanSettings->TP_hierarchy = tmpI->second.feparams.hierarchy_information;
+				
+				if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+					sprintf( scanSettings->TP_plp_id, "%d", tmpI->second.feparams.plp_id);
 			}
 			break;
 
@@ -1662,6 +1675,9 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 		TP_trans = getConfigValue(index, "TP_trans", 1);
 		TP_guard = getConfigValue(index, "TP_guard", 3);
 		TP_hierarchy = getConfigValue(index, "TP_hierarchy", 0);
+		//TP_plp_id = getConfigValue(index, "TP_plp_id", 0);
+		sprintf(cfg_key, "fe%d_TP_plp_id", index);
+		strcpy(TP_plp_id, configfile.getString(cfg_key, "000").c_str());
 	}
 
 #if HAVE_DVB_API_VERSION >= 5
@@ -1731,6 +1747,9 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 		setConfigValue(index, "TP_trans", TP_trans);
 		setConfigValue(index, "TP_guard", TP_guard);
 		setConfigValue(index, "TP_hierarchy", TP_hierarchy);
+		//setConfigValue(index, "TP_plp_id", TP_plp_id);
+		sprintf(cfg_key, "fe%d_TP_plp_id", index);
+		configfile.setString(cfg_key, TP_plp_id);
 	}
 
 #if HAVE_DVB_API_VERSION >= 5

@@ -209,6 +209,11 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.guard_interval = (fe_guard_interval_t)scanSettings->TP_guard;
 			TP.feparams.hierarchy_information = (fe_hierarchy_t)scanSettings->TP_hierarchy;
 			TP.feparams.delsys = DVB_T;
+			
+#if HAVE_DVB_API_VERSION >= 5
+			if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+				TP.feparams.plp_id = atoi(scanSettings->TP_plp_id);
+#endif
 
 			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP.feparams.frequency, TP.feparams.bandwidth, TP.feparams.code_rate_HP, TP.feparams.code_rate_LP, TP.feparams.modulation, TP.feparams.transmission_mode, TP.feparams.guard_interval, TP.feparams.hierarchy_information);
 		}

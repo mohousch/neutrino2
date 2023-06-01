@@ -48,26 +48,27 @@ class CScanSettings
 	public:
 		CConfigFile	configfile;
 		
-		int		bouquetMode;
-		int		scanType;
-		char            satNameNoDiseqc[50];
+		unsigned int		bouquetMode;
+		unsigned int		scanType;
+		char            	satNameNoDiseqc[50];
 		
 		//
-		int		scan_mode;
-		int		TP_fec;
-		int		TP_pol;
-		int		TP_mod;
-		char		TP_freq[10];
-		char		TP_rate[9];
+		unsigned int		scan_mode;
+		unsigned int		TP_fec;
+		unsigned int		TP_pol;
+		unsigned int		TP_mod;
+		char			TP_freq[10];
+		char			TP_rate[9];
 	
 		//DVB-T
-		int		TP_band;
-		int 		TP_HP;
-		int 		TP_LP;
-		int		TP_const;
-		int		TP_trans;
-		int		TP_guard;
-		int		TP_hierarchy;
+		unsigned int		TP_band;
+		unsigned int 		TP_HP;
+		unsigned int 		TP_LP;
+		unsigned int		TP_const;
+		unsigned int		TP_trans;
+		unsigned int		TP_guard;
+		unsigned int		TP_hierarchy;
+		char			TP_plp_id[4];
 	
 		CScanSettings(int num = 0);
 	

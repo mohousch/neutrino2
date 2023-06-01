@@ -1055,6 +1055,16 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
      		SETCMD(DTV_TRANSMISSION_MODE, feparams->transmission_mode);
      		SETCMD(DTV_GUARD_INTERVAL, feparams->guard_interval);
      		SETCMD(DTV_HIERARCHY, feparams->hierarchy_information);
+     		
+     		//
+     		if (feparams->delsys == DVB_T2)
+     		{
+#if defined DTV_STREAM_ID
+			SETCMD(DTV_STREAM_ID, feparams->plp_id);
+#elif defined DTV_DVBT2_PLP_ID
+			SETCMD(DTV_DVBT2_PLP_ID, feparams->plp_id);
+#endif
+		}
 	}
 	else
 	{
