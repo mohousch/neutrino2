@@ -246,11 +246,13 @@ void CFrontend::getFEInfo(void)
 					}
 #endif
 					break;
-					
+				
+#ifdef SYS_DTMB	
 				case SYS_DTMB:
 					deliverySystemMask |= DVB_DTMB;
 					dprintf(DEBUG_INFO, "(fe%d:%d) add delivery system DTMB (delivery_system: %x)\n", feadapter, fenumber, DVB_DTMB);
 					break;
+#endif
 				
 				default:
 					dprintf(DEBUG_INFO, "(fe%d:%d) ERROR: delivery system unknown (delivery_system: %d)\n", feadapter, fenumber, Frontend[0].u.buffer.data[i]);
@@ -2263,10 +2265,12 @@ bool CFrontend::changeDelSys(uint32_t delsys)
 		case DVB_T2:
 			p[1].u.data = SYS_DVBT2;
 			break;
-			
+		
+#ifdef SYS_DTMB	
 		case DVB_DTMB:
 			p[1].u.data = SYS_DTMB;
 			break;
+#endif
 			
 		case DVB_C:
 			secSetVoltage(SEC_VOLTAGE_OFF, 0);
