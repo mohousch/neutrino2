@@ -249,17 +249,15 @@ class CMenuOptionChooser : public CMenuItem
 		
 		bool isSelectable(void) const
 		{
-			return active;
+			return (active && !hidden);
 		}
 
 	private:
 		const struct keyval *options;
 		unsigned number_of_options;
-		CChangeObserver* observ;
-		bool pulldown;
 
 	public:
-		CMenuOptionChooser(const char* const OptionName, int * const OptionValue, const struct keyval * const Options, const unsigned Number_Of_Options, const bool Active = false, CChangeObserver * const Observ = NULL, const neutrino_msg_t DirectKey = RC_nokey, const std::string& IconName= "", bool Pulldown = false);
+		CMenuOptionChooser(const char* const Name, int * const OptionValue, const struct keyval * const Options, const unsigned Number_Of_Options, const bool Active = false, CChangeObserver * const Observ = NULL, const neutrino_msg_t DirectKey = RC_nokey, const std::string& IconName= "", bool Pulldown = false);
 
 		~CMenuOptionChooser(){};
 
@@ -293,11 +291,8 @@ class CMenuOptionNumberChooser : public CMenuItem
 		
 		bool isSelectable(void) const
 		{
-			return active;
+			return (active && !hidden);
 		}
-
-	private:
-		CChangeObserver * observ;
 
 	public:
 		CMenuOptionNumberChooser(const char * const Name, int * const OptionValue, const bool Active, const int min_value, const int max_value, CChangeObserver * const Observ = NULL, const int print_offset = 0, const int special_value = 0);
@@ -315,8 +310,6 @@ class CMenuOptionStringChooser : public CMenuItem
 	int height;
 	char * optionValue;
 	std::vector<std::string> options;
-	CChangeObserver * observ;
-	bool pulldown;
 
 	public:
 		CMenuOptionStringChooser(const char* const Name, char * OptionValue, bool Active = false, CChangeObserver* Observ = NULL, const neutrino_msg_t DirectKey = RC_nokey, const std::string & IconName= "", bool Pulldown = false);
@@ -328,7 +321,7 @@ class CMenuOptionStringChooser : public CMenuItem
 		int paint(bool selected, bool AfterPulldown = false);
 		int getHeight(void) const {if (hidden) return 0; else return height;}
 
-		bool isSelectable(void) const {return active;}
+		bool isSelectable(void) const {return (active && !hidden);}
 
 		int exec(CMenuTarget* target);
 };
@@ -377,6 +370,8 @@ class CZapProtection : public CPINProtection
 // CMenulistBoxItem
 class ClistBoxItem : public CMenuItem
 {
+	std::string optionValueString;
+	
 	protected:
 		virtual const char *getName(void);
 		virtual const char *getOption(void);
@@ -402,7 +397,7 @@ class ClistBoxItem : public CMenuItem
 		int getWidth(void) const;
 
 		int exec(CMenuTarget* target);
-		bool isSelectable(void) const {return active;};
+		bool isSelectable(void) const {return (active && !hidden);};
 		
 		void setName(const char * const name){itemName = name;};
 };

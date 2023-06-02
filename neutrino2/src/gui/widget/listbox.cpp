@@ -195,11 +195,11 @@ void CMenuItem::refreshItemBox(int dy, fb_pixel_t col)
 }
 
 // CMenuOptionChooser
-CMenuOptionChooser::CMenuOptionChooser(const char * const OptionName, int* const OptionValue, const struct keyval *const Options, const unsigned Number_Of_Options, const bool Active, CChangeObserver* const Observ, const neutrino_msg_t DirectKey, const std::string & IconName, bool Pulldown)
+CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const OptionValue, const struct keyval *const Options, const unsigned Number_Of_Options, const bool Active, CChangeObserver* const Observ, const neutrino_msg_t DirectKey, const std::string & IconName, bool Pulldown)
 {
 	height = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;
 
-	itemName = OptionName? OptionName : "";
+	itemName = Name? Name : "";
 	
 	options = Options;
 	active = Active;
@@ -972,6 +972,8 @@ ClistBoxItem::ClistBoxItem(const char * const Text, const bool Active, const cha
 	itemName = Text? Text : "";
 
 	option = Option? Option : "";
+	
+	optionValueString = "";
 
 	active = Active;
 	jumpTarget = Target;
@@ -1048,16 +1050,19 @@ int ClistBoxItem::getWidth(void) const
 
 int ClistBoxItem::exec(CMenuTarget* target)
 {
-	dprintf(DEBUG_NORMAL, "ClistBoxItem::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
+	dprintf(DEBUG_INFO, "ClistBoxItem::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
 
 	int ret = RETURN_EXIT;
 
 	if(jumpTarget)
 	{
 		ret = jumpTarget->exec(target, actionKey);
+		
+		if(ret) 
+		{
+			optionValueString = jumpTarget->getString().c_str();
+		}
 	}
-	else
-		ret = RETURN_EXIT;
 
 	return ret;
 }
@@ -1073,7 +1078,9 @@ const char * ClistBoxItem::getName(void)
 
 const char * ClistBoxItem::getOption(void)
 {
-	if(!option.empty())
+	if(!optionValueString.empty())
+		return optionValueString.c_str();
+	else if(!option.empty())
 		return option.c_str();
 	else
 		return NULL;

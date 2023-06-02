@@ -162,6 +162,15 @@ void CWidget::initFrames()
 	// sanity check
 	if(mainFrameBox.iWidth > (int)frameBuffer->getScreenWidth(true))
 		mainFrameBox.iWidth = frameBuffer->getScreenWidth(true);
+	
+	if (menu_position)
+	{	
+		if(mainFrameBox.iHeight > ((int)frameBuffer->getScreenHeight()))
+			mainFrameBox.iHeight = frameBuffer->getScreenHeight();
+
+		if(mainFrameBox.iWidth > (int)frameBuffer->getScreenWidth())
+			mainFrameBox.iWidth = frameBuffer->getScreenWidth();
+	}
 		
 	// menu position (x/y)
 	if(menu_position == MENU_POSITION_CENTER)
@@ -310,6 +319,7 @@ void CWidget::hide()
 	else
 	{
 		// always clear buffer also if we dont paintmainframe
+		//if (paintframe)
 		frameBuffer->paintBackgroundBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 	}
 
@@ -539,7 +549,7 @@ void CWidget::refresh()
 // events
 void CWidget::onOKKeyPressed(neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_INFO, "CWidget::onOKKeyPressed:0x%x\n", _msg);
+	dprintf(DEBUG_INFO, "CWidget::onOKKeyPressed:0x%lx\n", _msg);
 	
 	if(hasWidgetItem() && selected >= 0)
 	{

@@ -61,16 +61,42 @@ const keyval OPTIONS_LASTMODE_OPTIONS[OPTIONS_LASTMODE_OPTION_COUNT] =
         { NeutrinoMessages::mode_radio, "Radio" },
 };
 
+CZapitSetup::CZapitSetup()
+{
+	selected = 0;
+	widget = NULL;
+	zapit = NULL;
+	m3 = NULL;
+	m4 = NULL;
+}
+
+CZapitSetup::~CZapitSetup()
+{
+
+	if (zapit)
+	{
+		delete zapit;
+		zapit = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+}
+
 int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CZapitSetup::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int   res = RETURN_REPAINT;
-	CSelectChannelWidget*  CSelectChannelWidgetHandler;
-	std::string chanName;
+	int res = RETURN_REPAINT;
+	CSelectChannelWidget*  CSelectChannelWidgetHandler = NULL;
 	
 	if (parent)
 		parent->hide();
+		
+	if (zapit) selected = zapit->getSelected();
 	
 	if(actionKey == "tv")
 	{
@@ -80,17 +106,14 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		g_settings.startchanneltv_id = CSelectChannelWidgetHandler->getChannelID();
 		g_settings.StartChannelTV = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		g_settings.startchanneltv_nr = CZapit::getInstance()->getChannelNumber(CSelectChannelWidgetHandler->getChannelID()) - 1;
-
-		/*this->getString()*/chanName = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
 		
-		//return RETURN_REPAINT;
-		hide();
-		showMenu();
+		//
+		if (m3) m3->setOption(g_settings.StartChannelTV.c_str());
 		
-		return RETURN_EXIT;
+		return RETURN_REPAINT;
 	}
 	else if(actionKey == "radio")
 	{
@@ -100,17 +123,14 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		g_settings.startchannelradio_id = CSelectChannelWidgetHandler->getChannelID();
 		g_settings.StartChannelRadio = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		g_settings.startchannelradio_nr = CZapit::getInstance()->getChannelNumber(CSelectChannelWidgetHandler->getChannelID()) - 1;
-
-		/*this->getString()*/chanName = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
 		
-		//return RETURN_REPAINT;
-		hide();
-		showMenu();
+		//
+		if (m4) m4->setOption(g_settings.StartChannelRadio.c_str());
 		
-		return RETURN_EXIT;
+		return RETURN_REPAINT;
 	}
 
 	showMenu();
@@ -123,10 +143,8 @@ void CZapitSetup::showMenu()
 	dprintf(DEBUG_NORMAL, "CZapitSetup::showMenu:\n");
 	
 	//
-	CWidget* widget = NULL;
-	ClistBox* zapit = NULL;
-	
-	widget = CNeutrinoApp::getInstance()->getWidget("zapitsetup");
+	if (widget == NULL)
+		widget = CNeutrinoApp::getInstance()->getWidget("zapitsetup");
 	
 	if (widget)
 	{
@@ -155,7 +173,8 @@ void CZapitSetup::showMenu()
 		widget->addWidgetItem(zapit);
 	}
 	
-	zapit->clearItems();
+	//
+	zapit->clear();
 	
 	// intros
 	zapit->addItem(new ClistBoxItem(_("back")));
@@ -175,10 +194,10 @@ void CZapitSetup::showMenu()
 		activRadio = true;
 
 	// last TV channel
-	ClistBoxItem * m3 = new ClistBoxItem(_("TV Channel"), activTV, g_settings.StartChannelTV.c_str(), this, "tv");
+	m3 = new ClistBoxItem(_("TV Channel"), activTV, g_settings.StartChannelTV.c_str(), this, "tv");
 
 	// last radio channel
-	ClistBoxItem * m4 = new ClistBoxItem(_("Radio Channel"), activRadio, g_settings.StartChannelRadio.c_str(), this, "radio");
+	m4 = new ClistBoxItem(_("Radio Channel"), activRadio, g_settings.StartChannelRadio.c_str(), this, "radio");
 
 	// last mode
 	CZapitSetupModeNotifier zapitSetupModeNotifier((int *)&g_settings.lastChannelMode, m3, m4);
@@ -194,6 +213,8 @@ void CZapitSetup::showMenu()
 	zapit->addItem(m2);
 	zapit->addItem(m3);
 	zapit->addItem(m4);
+	
+	zapit->setSelected(selected);
 
 	//
 	widget->exec(NULL, "");
@@ -265,7 +286,4 @@ bool CZapitSetupModeNotifier::changeNotify(const std::string&, void *)
 
 	return true;
 }
-
-
-
 

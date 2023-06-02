@@ -31,11 +31,16 @@
 class CZapitSetup : public CMenuTarget
 {
 	private:
+		int selected;
+		CWidget* widget;
+		ClistBox* zapit;
+		ClistBoxItem * m3, *m4;
+		
 		void showMenu();
 
 	public:
-		CZapitSetup(){};
-		~CZapitSetup(){};
+		CZapitSetup();
+		~CZapitSetup();
 		
 		int exec(CMenuTarget* parent, const std::string & actionKey);
 };
@@ -61,5 +66,4 @@ class CZapitSetupModeNotifier : public CChangeObserver
 };
 
 #endif
-
 

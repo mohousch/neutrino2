@@ -36,9 +36,9 @@ void setDebugLevel( int level );
 
 #define dprintf(debuglevel, fmt, args...) {if(debug>=debuglevel) printf(fmt, ## args);}
 #define dprintfcolored(debuglevel, fmt, args...) {if (debug >= debuglevel) { \
-			printf("%c[%d;%d;%dm", 0x1B, 1, 31, 40);\
+			printf("[%d;%d;%dm", 1, 31, 40);\
 			printf(fmt, ## args); \
-			printf("%c[%dm\n", 0x1B, 0); \
+			printf("[%dm\n", 0); \
 		}}
 
 #endif
