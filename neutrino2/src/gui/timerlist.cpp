@@ -293,6 +293,8 @@ CTimerList::CTimerList()
 
 	plugin_chooser = NULL;
 	strcpy(timerNew.pluginName, "");
+	strncpy(timerNew.recordingDir, g_settings.network_nfs_recordingdir, sizeof(timerNew.recordingDir));
+	strcpy(timerNew.message, "");
 
 	// box	
 	cFrameBox.iWidth = frameBuffer->getScreenWidth() / 20 * 17;
@@ -1028,7 +1030,7 @@ int CTimerList::modifyTimer()
 	CTimerd::getInstance()->setWeekdaysToStr(timer->eventRepeat, (char *)m_weekdaysStr.c_str());
 	timer->eventRepeat = (CTimerd::CTimerEventRepeat)(((int)timer->eventRepeat) & 0x1FF);
 	CStringInput timerSettings_weekdays(_("on weekdays"), (char *)m_weekdaysStr.c_str(), 7, _("Mo Tu We Th Fr Sa Su"), _("'X'=timer '-' no timer"), "-X");
-	ClistBoxItem *m4 = new ClistBoxItem(_("on weekdays"), ((int)timer->eventRepeat) >= (int)CTimerd::TIMERREPEAT_WEEKDAYS, m_weekdaysStr.c_str(), &timerSettings_weekdays );
+	ClistBoxItem *m4 = new ClistBoxItem(_("on weekdays"), /*((int)timer->eventRepeat) >= (int)CTimerd::TIMERREPEAT_WEEKDAYS*/true, m_weekdaysStr.c_str(), &timerSettings_weekdays );
 	CIntInput timerSettings_repeatCount(_("repeats"), (int&)timer->repeatCount,3, _("amount of timer repeats"), _("0 for unlimited repeats"));
 
 	ClistBoxItem *m5 = new ClistBoxItem(_("repeats"), timer->eventRepeat != (int)CTimerd::TIMERREPEAT_ONCE, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
@@ -1038,21 +1040,19 @@ int CTimerList::modifyTimer()
 	CMenuOptionChooser * m3 = new CMenuOptionChooser(_("Repeat"), (int *)&timer->eventRepeat, TIMERLIST_REPEAT_OPTIONS, TIMERLIST_REPEAT_OPTION_COUNT, true, &notifier);
 
 	// recdir
-	//printf("TIMER: rec dir %s len %s\n", timer->recordingDir, strlen(timer->recordingDir));
-
-	if(!strlen(timer->recordingDir))
+	//if(!strlen(timer->recordingDir))
 		strncpy(timer->recordingDir, g_settings.network_nfs_recordingdir, sizeof(timer->recordingDir));
 
-	CMountChooser recDirs(_("recording directory"), NEUTRINO_ICON_SETTINGS, NULL, timer->recordingDir, g_settings.network_nfs_recordingdir);
+	//CMountChooser recDirs(_("recording directory"), NEUTRINO_ICON_SETTINGS, NULL, timer->recordingDir, g_settings.network_nfs_recordingdir);
 
-	if (!recDirs.hasItem())
-	{
-		dprintf(DEBUG_NORMAL, "CTimerList::modifyTimer: warning: no network devices available\n");
-	}
+	//if (!recDirs.hasItem())
+	//{
+	//	dprintf(DEBUG_NORMAL, "CTimerList::modifyTimer: warning: no network devices available\n");
+	//}
 	
-	bool recDirEnabled = recDirs.hasItem() && (timer->eventType == CTimerd::TIMER_RECORD) && (recDir != NULL);
-	ClistBoxItem *m6 = new ClistBoxItem(_("Recording directory"), recDirEnabled, timer->recordingDir, &recDirs);
-	//ClistBoxItem *m6 = new ClistBoxItem(_("Recording directory"), true, timer->recordingDir, this, "recording_dir");
+	//bool recDirEnabled = recDirs.hasItem() && (timer->eventType == CTimerd::TIMER_RECORD) && (recDir != NULL);
+	//ClistBoxItem *m6 = new ClistBoxItem(_("Recording directory"), recDirEnabled, timer->recordingDir, &recDirs);
+	ClistBoxItem *m6 = new ClistBoxItem(_("Recording directory"), true, timer->recordingDir, this, "recording_dir");
 
 	timerSettings->addItem(new CMenuSeparator(LINE));
 	timerSettings->addItem(m3);
@@ -1212,12 +1212,12 @@ int CTimerList::newTimer()
 	ClistBoxItem *m6 = new ClistBoxItem(_("Channel"), true, timerNew_channel_name.c_str(), this, CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_tv? "tv" : "radio");
 
 	// recording dir
-	CMountChooser recDirs(_("recording directory"), NEUTRINO_ICON_SETTINGS, NULL, timerNew.recordingDir, g_settings.network_nfs_recordingdir);
+	//CMountChooser recDirs(_("recording directory"), NEUTRINO_ICON_SETTINGS, NULL, timerNew.recordingDir, g_settings.network_nfs_recordingdir);
 
-	if (!recDirs.hasItem())
-	{
-		dprintf(DEBUG_NORMAL, "CTimerList::newTimer: warning: no network devices available\n");
-	}
+	//if (!recDirs.hasItem())
+	//{
+	//	dprintf(DEBUG_NORMAL, "CTimerList::newTimer: warning: no network devices available\n");
+	//}
 
 	ClistBoxItem* m7 = new ClistBoxItem(_("Recording directory"), true, timerNew.recordingDir, this, "recording_dir");
 

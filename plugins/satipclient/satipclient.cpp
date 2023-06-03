@@ -182,11 +182,13 @@ void CSatIPClient::showMenu()
 	CMenuWidget * satIPClientMenu = new CMenuWidget("SatIP Client", NEUTRINO_ICON_SETTINGS);
 
 	satIPClientMenu->setWidgetMode(MODE_SETUP);
-	satIPClientMenu->enableShrinkMenu();
+	//satIPClientMenu->enableShrinkMenu();
 
 	//
-	ClistBoxItem *m1= new ClistBoxItem(_("Start SatIP Client"), SatIPEnabled, NULL, this, "start", RC_green, NEUTRINO_ICON_BUTTON_GREEN);
-	ClistBoxItem *m2 = new ClistBoxItem(_("Stop SatIP Client"), SatIPEnabled, NULL, this, "stop", RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW);
+	ClistBoxItem *m1= new ClistBoxItem(_("Start SatIP Client"), /*SatIPEnabled*/true, NULL, this, "start", RC_green, NEUTRINO_ICON_BUTTON_GREEN);
+	m1->setHidden(!SatIPEnabled);
+	ClistBoxItem *m2 = new ClistBoxItem(_("Stop SatIP Client"), /*SatIPEnabled*/true, NULL, this, "stop", RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW);
+	m2->setHidden(!SatIPEnabled);
 	
 	//
 	satIPClientMenu->addItem(new ClistBoxItem(_("back"), true, NULL, NULL, NULL, RC_nokey, NEUTRINO_ICON_BUTTON_LEFT));
@@ -287,8 +289,10 @@ bool CSatIPClientNotifier::changeNotify(const std::string& OptionName, void *)
 {
 	if (OptionName == _("SatIP Client enabled"))
 	{
-		item1->setActive(SatIPEnabled);
-		item2->setActive(SatIPEnabled);
+		//item1->setActive(SatIPEnabled);
+		//item2->setActive(SatIPEnabled);
+		item1->setHidden(!SatIPEnabled);
+		item2->setHidden(!SatIPEnabled);
 	}
 
 	return true;
