@@ -89,7 +89,7 @@ class CExtendedInput : public CMenuTarget
 		void addInputField( CExtendedInput_Item* );
 
 		bool getExitPressed(){return *cancel;};
-		virtual std::string& getString(void) { return valueString; };
+		virtual std::string& getValueString(void) { return valueString; };
 };
 
 

@@ -39,17 +39,18 @@ enum
 
 //
 class CMenuTarget
-{		
+{
+	private:
+		std::string valueString;		
 	public:
-		//
-		std::string valueString;
-		
-		//
 		CMenuTarget(){valueString.clear();};
 		virtual ~CMenuTarget(){};
 		virtual void hide(){};
 		virtual int exec(CMenuTarget* parent, const std::string& actionKey) = 0;
-		virtual std::string& getString() {return valueString;};
+		
+		//
+		virtual std::string& getValueString() {return valueString;};
+		virtual void setValueString(const char *const value){valueString = value;};
 };
 
 // CChangeObserver

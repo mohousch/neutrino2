@@ -111,7 +111,7 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		CSelectChannelWidgetHandler = NULL;
 		
 		//
-		valueString = g_settings.StartChannelTV.c_str();
+		setValueString(g_settings.StartChannelTV.c_str());
 		
 		return RETURN_REPAINT;
 	}
@@ -128,7 +128,7 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		CSelectChannelWidgetHandler = NULL;
 		
 		//
-		valueString = g_settings.StartChannelRadio.c_str();
+		setValueString(g_settings.StartChannelRadio.c_str());
 		
 		return RETURN_REPAINT;
 	}

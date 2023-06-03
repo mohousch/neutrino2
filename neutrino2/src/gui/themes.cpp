@@ -84,7 +84,7 @@ int CThemes::exec(CMenuTarget * parent, const std::string& actionKey)
 			{
 				HintBox(_("Save current theme"), _("Saving current theme!"));
 					
-				saveFile((char*)((std::string)USERDIR + nameInput->getString().c_str() + FILE_PREFIX).c_str());
+				saveFile((char*)((std::string)USERDIR + nameInput->getValueString().c_str() + FILE_PREFIX).c_str());
 			}
 
 			file_name.clear();

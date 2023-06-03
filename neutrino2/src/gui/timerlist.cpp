@@ -345,7 +345,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
 		timerNew_channel_name = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
-		valueString = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
+		setValueString(CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID()).c_str());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
@@ -360,7 +360,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
 		timerNew_channel_name = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
-		valueString = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
+		setValueString(CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID()).c_str());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
@@ -375,7 +375,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		if (b.exec(g_settings.network_nfs_recordingdir))
 			strncpy(timerNew.recordingDir, b.getSelectedFile()->Name.c_str(), sizeof(timerNew.recordingDir) - 1);
 
-		valueString = b.getSelectedFile()->Name.c_str();
+		setValueString(b.getSelectedFile()->Name.c_str());
 
 		return RETURN_REPAINT;
 	}
@@ -385,7 +385,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		plugin_chooser->exec(NULL, "");
 		
-		valueString = timerNew.pluginName;
+		setValueString(timerNew.pluginName);
 		
 		return RETURN_REPAINT;
 	}
@@ -471,7 +471,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		else if (timerNew.eventType == CTimerd::TIMER_EXEC_PLUGIN)
 		{	
 			data = timerNew.pluginName;
-			plugin_chooser->valueString = timerNew.pluginName;
+			plugin_chooser->setValueString(timerNew.pluginName);
 		}
 		
 		if(timerNew.eventRepeat >= CTimerd::TIMERREPEAT_WEEKDAYS)

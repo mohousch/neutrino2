@@ -228,9 +228,9 @@ class CFrontend
 		void gotoXX(t_satellite_position pos);
 		
 		//
-		bool tuneChannel(CZapitChannel *channel, bool nvod);
-		int setParameters(TP_params *TP, bool nowait = false);
-		int tuneFrequency (FrontendParameters * feparams, uint8_t polarization, bool nowait = false);
+		//bool tuneChannel(CZapitChannel *channel, bool nvod);
+		//int setParameters(TP_params *TP, bool nowait = false);
+		//int tuneFrequency (FrontendParameters * feparams, uint8_t polarization, bool nowait = false);
 
 		//
 		fe_code_rate_t getCFEC ();
@@ -246,6 +246,11 @@ class CFrontend
 		void Init(void);
 		void setMasterSlave(bool _slave);
 		void setMasterSlave();
+		
+		//
+		bool tuneChannel(CZapitChannel *channel, bool nvod);
+		int setParameters(TP_params *TP, bool nowait = false);
+		int tuneFrequency (FrontendParameters * feparams, uint8_t polarization, bool nowait = false);
 		
 		//
 		bool sendUncommittedSwitchesCommand(int input);

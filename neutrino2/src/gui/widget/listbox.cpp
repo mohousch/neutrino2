@@ -1058,7 +1058,7 @@ int ClistBoxItem::exec(CMenuTarget* target)
 		
 		if(ret) 
 		{
-			setOption(jumpTarget->getString().c_str());
+			setOption(jumpTarget->getValueString().c_str());
 		}
 	}
 

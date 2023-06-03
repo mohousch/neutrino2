@@ -135,7 +135,7 @@ void COSDSettings::showMenu(void)
 	osdSettings->addItem(new ClistBoxItem(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
 
 	// Themes
-	osdSettings->addItem( new ClistBoxItem(_("Themes"), true, NULL, new CThemes(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
+	//osdSettings->addItem( new ClistBoxItem(_("Themes"), true, NULL, new CThemes(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
 
 	// menu colors
 	osdSettings->addItem( new ClistBoxItem(_("Menu"), true, NULL, new COSDMenuColorSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MENUCOLORS));
@@ -1398,7 +1398,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 				std::string skinConfig = CONFIGDIR "/skins/";
 				skinConfig += g_settings.preferred_skin.c_str();
 				skinConfig += "/";
-				skinConfig += nameInput->getString().c_str();
+				skinConfig += nameInput->getValueString().c_str();
 				skinConfig += ".config";
 				
 				CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());

@@ -1428,78 +1428,6 @@ void CFrontend::setInput(t_satellite_position satellitePosition, uint32_t freque
 	}
 }
 
-/* frequency is the IF-frequency (950-2100), what a stupid spec...
-   high_band, horizontal, bank are actually bool (0/1)
-   bank specifies the "switch bank" (as in Mini-DiSEqC A/B) */
-uint32_t CFrontend::sendEN50494TuningCommand(const uint32_t frequency, const int high_band, const int horizontal, const int bank)
-{
-	uint32_t bpf = uni_qrg;
-
-	struct dvb_diseqc_master_cmd cmd = {
-		{0xe0, 0x10, 0x5a, 0x00, 0x00, 0x00}, 5
-	};
-	unsigned int t = (frequency / 1000 + bpf + 2) / 4 - 350;
-	if (t < 1024 && uni_scr >= 0 && uni_scr < 8)
-	{
-		uint32_t ret = (t + 350) * 4000 - frequency;
-		dprintf(DEBUG_NORMAL, "[unicable] 18V=%d TONE=%d, freq=%d qrg=%d scr=%d bank=%d ret=%d\n", currentVoltage == SEC_VOLTAGE_18, currentToneMode == SEC_TONE_ON, frequency, bpf, uni_scr, bank, ret);
-		
-		if ( !slave && info.type == FE_QPSK) 
-		{
-			cmd.msg[3] = (t >> 8)			|	/* highest 3 bits of t */
-					(uni_scr << 5)		|	/* adress */
-					(bank << 4)		|	/* input 0/1 */
-					(horizontal << 3)	|	/* horizontal == 0x08 */
-					(high_band) << 2;		/* high_band  == 0x04 */
-
-			cmd.msg[4] = t & 0xFF;
-			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_18);
-			usleep(15 * 1000);		/* en50494 says: >4ms and < 22 ms */
-			sendDiseqcCommand(&cmd, 50);	/* en50494 says: >2ms and < 60 ms */
-			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13);
-		}
-		
-		return (t + 350) * 4000 - frequency;
-	}
-	dprintf(DEBUG_NORMAL, "ooops. t > 1024? (%d) or uni_scr out of range? (%d)", t, uni_scr);
-	
-	return 0;
-}
-
-uint32_t CFrontend::sendEN50607TuningCommand(const uint32_t frequency, const int high_band, const int horizontal, const int bank)
-{
-	uint32_t bpf = uni_qrg;
-	struct dvb_diseqc_master_cmd cmd = { {0x70, 0x00, 0x00, 0x00, 0x00, 0x00}, 4 };
-
-	unsigned int t = frequency / 1000 - 100;
-	if (t < 0x800 && uni_scr >= 0 && uni_scr < 32)
-	{
-		uint32_t ret = bpf * 1000;
-		dprintf(DEBUG_NORMAL, "[unicable-JESS] 18V=%d TONE=%d, freq=%d qrg=%d scr=%d bank=%d ret=%d\n", currentVoltage == SEC_VOLTAGE_18, currentToneMode == SEC_TONE_ON, frequency, bpf, uni_scr, bank, ret);
-		if (!slave && info.type == FE_QPSK)
-		{
-			cmd.msg[1] = ((uni_scr & 0x1F) << 3)		|	/* user band adress ( 0 to 31) */
-			/* max. possible tuning word = 0x7FF */
-				((t >> 8) & 0x07);				/* highest 3 bits of t (MSB) */
-			cmd.msg[2] = t & 0xFF;					/* tuning word (LSB) */
-			cmd.msg[3] = (0 << 4)				|	/* no uncommited switch */
-			/* I really don't know if the combines of option and position bits are right here,
-			because I can'test it, assuming here 4 sat positions */
-				((bank & 0x03) << 2)			|	/* input 0/1/2/3 */
-				(horizontal << 1)			|	/* horizontal == 0x02 */
-				high_band;					/* high_band  == 0x01 */
-			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_18);
-			usleep(15 * 1000);					/* en50494 says: >4ms and < 22 ms */
-			sendDiseqcCommand(&cmd, 50);				/* en50494 says: >2ms and < 60 ms */
-			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13);
-		}
-		return ret;
-	}
-	dprintf(DEBUG_NORMAL, "ooops. t > 2047? (%d) or uni_scr out of range? (%d)", t, uni_scr);
-	
-	return 0;
-}
-
 //
 bool CFrontend::tuneChannel(CZapitChannel * channel, bool nvod)
 {
@@ -1612,6 +1540,79 @@ int CFrontend::setParameters(TP_params * TP, bool nowait)
 
 	return tuned;
 }
+
+/* frequency is the IF-frequency (950-2100), what a stupid spec...
+   high_band, horizontal, bank are actually bool (0/1)
+   bank specifies the "switch bank" (as in Mini-DiSEqC A/B) */
+uint32_t CFrontend::sendEN50494TuningCommand(const uint32_t frequency, const int high_band, const int horizontal, const int bank)
+{
+	uint32_t bpf = uni_qrg;
+
+	struct dvb_diseqc_master_cmd cmd = {
+		{0xe0, 0x10, 0x5a, 0x00, 0x00, 0x00}, 5
+	};
+	unsigned int t = (frequency / 1000 + bpf + 2) / 4 - 350;
+	if (t < 1024 && uni_scr >= 0 && uni_scr < 8)
+	{
+		uint32_t ret = (t + 350) * 4000 - frequency;
+		dprintf(DEBUG_NORMAL, "[unicable] 18V=%d TONE=%d, freq=%d qrg=%d scr=%d bank=%d ret=%d\n", currentVoltage == SEC_VOLTAGE_18, currentToneMode == SEC_TONE_ON, frequency, bpf, uni_scr, bank, ret);
+		
+		if ( !slave && info.type == FE_QPSK) 
+		{
+			cmd.msg[3] = (t >> 8)			|	/* highest 3 bits of t */
+					(uni_scr << 5)		|	/* adress */
+					(bank << 4)		|	/* input 0/1 */
+					(horizontal << 3)	|	/* horizontal == 0x08 */
+					(high_band) << 2;		/* high_band  == 0x04 */
+
+			cmd.msg[4] = t & 0xFF;
+			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_18);
+			usleep(15 * 1000);		/* en50494 says: >4ms and < 22 ms */
+			sendDiseqcCommand(&cmd, 50);	/* en50494 says: >2ms and < 60 ms */
+			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13);
+		}
+		
+		return (t + 350) * 4000 - frequency;
+	}
+	dprintf(DEBUG_NORMAL, "ooops. t > 1024? (%d) or uni_scr out of range? (%d)", t, uni_scr);
+	
+	return 0;
+}
+
+uint32_t CFrontend::sendEN50607TuningCommand(const uint32_t frequency, const int high_band, const int horizontal, const int bank)
+{
+	uint32_t bpf = uni_qrg;
+	struct dvb_diseqc_master_cmd cmd = { {0x70, 0x00, 0x00, 0x00, 0x00, 0x00}, 4 };
+
+	unsigned int t = frequency / 1000 - 100;
+	if (t < 0x800 && uni_scr >= 0 && uni_scr < 32)
+	{
+		uint32_t ret = bpf * 1000;
+		dprintf(DEBUG_NORMAL, "[unicable-JESS] 18V=%d TONE=%d, freq=%d qrg=%d scr=%d bank=%d ret=%d\n", currentVoltage == SEC_VOLTAGE_18, currentToneMode == SEC_TONE_ON, frequency, bpf, uni_scr, bank, ret);
+		if (!slave && info.type == FE_QPSK)
+		{
+			cmd.msg[1] = ((uni_scr & 0x1F) << 3)		|	/* user band adress ( 0 to 31) */
+			/* max. possible tuning word = 0x7FF */
+				((t >> 8) & 0x07);				/* highest 3 bits of t (MSB) */
+			cmd.msg[2] = t & 0xFF;					/* tuning word (LSB) */
+			cmd.msg[3] = (0 << 4)				|	/* no uncommited switch */
+			/* I really don't know if the combines of option and position bits are right here,
+			because I can'test it, assuming here 4 sat positions */
+				((bank & 0x03) << 2)			|	/* input 0/1/2/3 */
+				(horizontal << 1)			|	/* horizontal == 0x02 */
+				high_band;					/* high_band  == 0x01 */
+			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_18);
+			usleep(15 * 1000);					/* en50494 says: >4ms and < 22 ms */
+			sendDiseqcCommand(&cmd, 50);				/* en50494 says: >2ms and < 60 ms */
+			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13);
+		}
+		return ret;
+	}
+	dprintf(DEBUG_NORMAL, "ooops. t > 2047? (%d) or uni_scr out of range? (%d)", t, uni_scr);
+	
+	return 0;
+}
+
 
 bool CFrontend::sendUncommittedSwitchesCommand(int input)
 {
