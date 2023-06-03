@@ -981,7 +981,7 @@ int CTimerList::modifyTimer()
 		timerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
 		timerSettings->setWidgetMode(MODE_SETUP);
-		timerSettings->enableShrinkMenu();
+		//timerSettings->enableShrinkMenu();
 		
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("Modify timer"), NEUTRINO_ICON_TIMER);
@@ -1068,7 +1068,7 @@ int CTimerList::modifyTimer()
 	timerSettings_apids = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
 	timerSettings_apids->setWidgetMode(MODE_SETUP);
-	timerSettings_apids->enableShrinkMenu();
+	//timerSettings_apids->enableShrinkMenu();
 					
 	timerSettings_apids->enablePaintHead();
 	timerSettings_apids->setTitle(_("Audio PIDs"), NEUTRINO_ICON_TIMER);
@@ -1155,7 +1155,7 @@ int CTimerList::newTimer()
 		timerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
 		timerSettings->setWidgetMode(MODE_SETUP);
-		timerSettings->enableShrinkMenu();
+		//timerSettings->enableShrinkMenu();
 		
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("New timer"), NEUTRINO_ICON_TIMER);
