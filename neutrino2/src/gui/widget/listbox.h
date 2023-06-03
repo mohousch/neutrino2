@@ -370,8 +370,6 @@ class CZapProtection : public CPINProtection
 // CMenulistBoxItem
 class ClistBoxItem : public CMenuItem
 {
-	std::string optionValueString;
-	
 	protected:
 		virtual const char *getName(void);
 		virtual const char *getOption(void);

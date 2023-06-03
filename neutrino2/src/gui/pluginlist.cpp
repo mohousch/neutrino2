@@ -239,7 +239,7 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_ok")
 	{
-		selected = plist->getSelected();
+		//selected = plist->getSelected();
 
 		if(pluginSelected() == close)
 			return RETURN_EXIT_ALL;

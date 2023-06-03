@@ -76,7 +76,7 @@ class CPluginList : public CMenuTarget
 
 class CPluginChooser : public CPluginList
 {
-	private:
+	public:
 		char *selected_plugin;
 		
 	protected:

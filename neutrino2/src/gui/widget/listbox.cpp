@@ -972,8 +972,6 @@ ClistBoxItem::ClistBoxItem(const char * const Text, const bool Active, const cha
 	itemName = Text? Text : "";
 
 	option = Option? Option : "";
-	
-	optionValueString = "";
 
 	active = Active;
 	jumpTarget = Target;
@@ -1060,7 +1058,7 @@ int ClistBoxItem::exec(CMenuTarget* target)
 		
 		if(ret) 
 		{
-			optionValueString = jumpTarget->getString().c_str();
+			setOption(jumpTarget->getString().c_str());
 		}
 	}
 
@@ -1078,9 +1076,7 @@ const char * ClistBoxItem::getName(void)
 
 const char * ClistBoxItem::getOption(void)
 {
-	if(!optionValueString.empty())
-		return optionValueString.c_str();
-	else if(!option.empty())
+	if(!option.empty())
 		return option.c_str();
 	else
 		return NULL;
@@ -1440,7 +1436,8 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 					else
 					{
 						int stringwidth = g_Font[optionFont]->getRenderWidth(option_text, true);
-						int stringstartposOption = std::max(x + BORDER_LEFT + icon_w + ICON_OFFSET + g_Font[nameFont]->getRenderWidth(l_text, true) + ICON_OFFSET, x + dx - (stringwidth + BORDER_RIGHT)); //
+						//int stringstartposOption = std::max(x + BORDER_LEFT + icon_w + ICON_OFFSET + g_Font[nameFont]->getRenderWidth(l_text, true) + ICON_OFFSET, x + dx - (stringwidth + BORDER_RIGHT)); //
+						int stringstartposOption = x + dx - (stringwidth + BORDER_RIGHT); //
 
 						g_Font[optionFont]->RenderString(stringstartposOption, y + (height - g_Font[optionFont]->getHeight())/2 + g_Font[optionFont]->getHeight(), dx - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - l_text_width - icon_w, option_text, (selected || !active)? color : optionFontColor, 0, true);
 					}

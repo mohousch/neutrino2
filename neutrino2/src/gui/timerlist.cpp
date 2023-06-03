@@ -116,42 +116,54 @@ class CTimerListNewNotifier : public CChangeObserver
 				sprintf( display, "%02d.%02d.%04d %02d:%02d", tmTime2->tm_mday, tmTime2->tm_mon + 1,
 							tmTime2->tm_year + 1900,
 							tmTime2->tm_hour, tmTime2->tm_min);
-				m1->setActive(true);
-				m6->setActive((recDir != NULL)? true: false);
+				//m1->setActive(true);
+				m1->setHidden(false);
+				//m6->setActive((recDir != NULL)? true: false);
+				m6->setHidden((recDir != NULL)? false : true);
 			}
 			else
 			{
 				*stopTime = 0;
 				strcpy(display,"                ");
-				m1->setActive (false);
-				m6->setActive(false);
+				//m1->setActive (false);
+				m1->setHidden(true);
+				//m6->setActive(false);
+				m6->setHidden(true);
 			}
 			
 			if(type == CTimerd::TIMER_RECORD ||
 				type == CTimerd::TIMER_ZAPTO ||
 				type == CTimerd::TIMER_NEXTPROGRAM)
 			{
-				m2->setActive(true);
+				//m2->setActive(true);
+				m2->setHidden(false);
 			}
 			else
 			{
-				m2->setActive(false);
+				//m2->setActive(false);
+				m2->setHidden(true);
 			}
 			
 			if(type == CTimerd::TIMER_STANDBY)
-				m3->setActive(true);
+				//m3->setActive(true);
+				m3->setHidden(false);
 			else
-				m3->setActive(false);
+				//m3->setActive(false);
+				m3->setHidden(true);
 			
 			if(type == CTimerd::TIMER_REMIND)
-				m4->setActive(true);
+				//m4->setActive(true);
+				m4->setHidden(false);
 			else
-				m4->setActive(false);
+				//m4->setActive(false);
+				m4->setHidden(true);
 			
 			if(type == CTimerd::TIMER_EXEC_PLUGIN)
-				m5->setActive(true);
+				//m5->setActive(true);
+				m5->setHidden(false);
 			else
-				m5->setActive(false);
+				//m5->setActive(false);
+				m5->setHidden(true);
 			
 			return true;
 		}
@@ -175,14 +187,18 @@ class CTimerListRepeatNotifier : public CChangeObserver
 		bool changeNotify(const std::string& /*OptionName*/, void *)
 		{
 			if(*iRepeat >= (int)CTimerd::TIMERREPEAT_WEEKDAYS)
-				m1->setActive (true);
+				//m1->setActive (true);
+				m1->setHidden(false);
 			else
-				m1->setActive (false);
+				//m1->setActive (false);
+				m1->setHidden(true);
 			
 			if (*iRepeat != (int)CTimerd::TIMERREPEAT_ONCE)
-				m2->setActive(true);
+				//m2->setActive(true);
+				m2->setHidden(false);
 			else
-				m2->setActive(false);
+				//m2->setActive(false);
+				m2->setHidden(true);
 			
 			return true;
 		}
@@ -276,6 +292,7 @@ CTimerList::CTimerList()
 	sec_timer_id = 0;
 
 	plugin_chooser = NULL;
+	strcpy(timerNew.pluginName, "");
 
 	// box	
 	cFrameBox.iWidth = frameBuffer->getScreenWidth() / 20 * 17;
@@ -325,8 +342,8 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
 		timerNew_channel_name = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
-
-		//this->getString() = timerNew_channel_name;
+		
+		valueString = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
@@ -341,10 +358,10 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		timerNew_chan_id = CSelectChannelWidgetHandler->getChannelID();
 		timerNew_channel_name = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
 		
+		valueString = CZapit::getInstance()->getChannelName(CSelectChannelWidgetHandler->getChannelID());
+		
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
-
-		//this->getString() = timerNew_channel_name;
 		
 		return RETURN_REPAINT;
 	}
@@ -356,8 +373,18 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		if (b.exec(g_settings.network_nfs_recordingdir))
 			strncpy(timerNew.recordingDir, b.getSelectedFile()->Name.c_str(), sizeof(timerNew.recordingDir) - 1);
 
-		//this->getString() = g_settings.network_nfs_recordingdir;
+		valueString = b.getSelectedFile()->Name.c_str();
 
+		return RETURN_REPAINT;
+	}
+	else if (actionKey == "plugin_chooser")
+	{
+		plugin_chooser = new CPluginChooser(timerNew.pluginName);
+		
+		plugin_chooser->exec(NULL, "");
+		
+		valueString = timerNew.pluginName;
+		
 		return RETURN_REPAINT;
 	}
 	else if (strcmp(key, "modifytimer") == 0)
@@ -436,18 +463,13 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 			}
 		}
 		else if(timerNew.eventType == CTimerd::TIMER_REMIND)
-			data = timerNew.message;
-		else if (timerNew.eventType == CTimerd::TIMER_EXEC_PLUGIN)
 		{
-			if (strcmp(timerNew.pluginName, "") == 0)
-			{
-				//plugin_chooser->getString() = timerNew.pluginName;
-				return RETURN_REPAINT;
-			}
-
-			//plugin_chooser->getString() = timerNew.pluginName;
-			
+			data = timerNew.message;
+		}
+		else if (timerNew.eventType == CTimerd::TIMER_EXEC_PLUGIN)
+		{	
 			data = timerNew.pluginName;
+			plugin_chooser->valueString = timerNew.pluginName;
 		}
 		
 		if(timerNew.eventRepeat >= CTimerd::TIMERREPEAT_WEEKDAYS)
@@ -939,7 +961,7 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 int CTimerList::modifyTimer()
 {
 	int res = RETURN_REPAINT;
-	selected = listBox->getSelected();
+	if (listBox) selected = listBox->getSelected();
 
 	CTimerd::responseGetTimer* timer = &timerlist[selected];
 
@@ -1164,18 +1186,22 @@ int CTimerList::newTimer()
 	// alarm time
 	CDateInput timerSettings_alarmTime(_("Alarm time"), &(timerNew.alarmTime) , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
 	ClistBoxItem *m1 = new ClistBoxItem(_("Alarm time"), true, timerSettings_alarmTime.getValue(), &timerSettings_alarmTime );
+	m1->setHidden(false);
 
 	// stop time
 	CDateInput timerSettings_stopTime(_("Stop time"), &(timerNew.stopTime) , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
 	ClistBoxItem *m2 = new ClistBoxItem(_("Stop time"), true, timerSettings_stopTime.getValue(), &timerSettings_stopTime );
+	m2->setHidden(false);
 
 	// weeks
 	CStringInput timerSettings_weekdays(_("on weekdays"), (char *)m_weekdaysStr.c_str(), 7, _("Mo Tu We Th Fr Sa Su"), _("'X'=timer '-' no timer"), "-X");
-	ClistBoxItem *m4 = new ClistBoxItem(_("on weekdays"), false, m_weekdaysStr.c_str(), &timerSettings_weekdays);
+	ClistBoxItem *m4 = new ClistBoxItem(_("on weekdays"), /*false*/true, m_weekdaysStr.c_str(), &timerSettings_weekdays);
+	m4->setHidden(true);
 
 	// repeat count
 	CIntInput timerSettings_repeatCount(_("repeats"), (int&)timerNew.repeatCount, 3, _("amount of timer repeats"), _("0 for unlimited repeats"));
-	ClistBoxItem *m5 = new ClistBoxItem(_("repeats"), false, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
+	ClistBoxItem *m5 = new ClistBoxItem(_("repeats"), /*false*/true, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
+	m5->setHidden(true);
 
 	CTimerListRepeatNotifier notifier((int *)&timerNew.eventRepeat, m4, m5);
 	
@@ -1195,16 +1221,19 @@ int CTimerList::newTimer()
 
 	ClistBoxItem* m7 = new ClistBoxItem(_("Recording directory"), true, timerNew.recordingDir, this, "recording_dir");
 
-	// sb
-	CMenuOptionChooser* m8 = new CMenuOptionChooser(_("SB mode"), &timerNew_standby_on, TIMERLIST_STANDBY_OPTIONS, TIMERLIST_STANDBY_OPTION_COUNT, false);
+	// sb mode
+	CMenuOptionChooser* m8 = new CMenuOptionChooser(_("SB mode"), &timerNew_standby_on, TIMERLIST_STANDBY_OPTIONS, TIMERLIST_STANDBY_OPTION_COUNT, /*false*/true);
+	m8->setHidden(true);
 
 	// message
 	CStringInputSMS timerSettings_msg(_("Message"), timerNew.message);
-	ClistBoxItem *m9 = new ClistBoxItem(_("Message"), false, timerNew.message, &timerSettings_msg );
+	ClistBoxItem *m9 = new ClistBoxItem(_("Message"), /*false*/true, timerNew.message, &timerSettings_msg );
+	m9->setHidden(true);
 
 	// plugin
-	plugin_chooser = new CPluginChooser(timerNew.pluginName);
-	ClistBoxItem *m10 = new ClistBoxItem(_("Plugin"), false, timerNew.pluginName, plugin_chooser);
+	//plugin_chooser = new CPluginChooser(timerNew.pluginName);
+	ClistBoxItem *m10 = new ClistBoxItem(_("Plugin"), /*false*/true, timerNew.pluginName, /*plugin_chooser*/this, "plugin_chooser");
+	m10->setHidden(true);
 
 	CTimerListNewNotifier notifier2((int *)&timerNew.eventType,
 					&timerNew.stopTime, m2, m6, m8, m9, m10, m7,
