@@ -50,6 +50,8 @@
 #include <string>
 #include <vector>
 
+#include <daemonc/remotecontrol.h>
+
 
 enum {
 	LIST_MODE_FAV,
@@ -92,7 +94,7 @@ class CChannelList
 
 		std::string name;
 		std::vector<CZapitChannel*> chanlist;
-		CZapProtection* zapProtection;
+		CZapProtection *zapProtection;
 		CChannelEventList events;
 
 		bool historyMode;

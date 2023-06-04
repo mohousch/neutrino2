@@ -341,6 +341,20 @@ void CCButtons::setButtons(const struct button_label *button_label, const int bu
 	head = _head;
 }
 
+void CCButtons::addButton(const char *btn, const char *lname, fb_pixel_t col)
+{
+	dprintf(DEBUG_NORMAL, "CCButtons::addButton: btn:%s name:%s\n", btn, lname);
+	
+	button_label_struct button;
+	
+	button.button = btn;
+	button.localename = lname;
+	button.color = col;
+	
+	buttons.push_back(button);
+	count++;
+}
+
 void CCButtons::paint()
 {
 	dprintf(DEBUG_INFO, "CCButtons::CCButtons:paint:\n");
@@ -1731,6 +1745,20 @@ void CHeaders::setButtons(const struct button_label* _hbutton_labels, const int 
 	}
 
 	hbutton_count = hbutton_labels.size();
+}
+
+void CHeaders::addButton(const char *btn, const char *lname, fb_pixel_t col)
+{
+	dprintf(DEBUG_NORMAL, "CHeaders::addButton: btn:%s name:%s\n", btn, lname);
+	
+	button_label_struct button;
+	
+	button.button = btn;
+	button.localename = lname;
+	button.color = col;
+	
+	hbutton_labels.push_back(button);
+	hbutton_count++;
 }		
 
 void CHeaders::paint()
@@ -1742,7 +1770,6 @@ void CHeaders::paint()
 		CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient);
 	
 	if (head_line)
-		//CFrameBuffer::getInstance()->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + itemBox.iHeight - 2, COL_MENUCONTENT_PLUS_5);
 		frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 
 	// left icon
@@ -1894,6 +1921,20 @@ void CFooters::setButtons(const struct button_label *button_label, const int but
 
 	fcount = fbuttons.size();
 	fbutton_width = (_fbutton_width == 0)? itemBox.iWidth : _fbutton_width;	
+}
+
+void CFooters::addButton(const char *btn, const char *lname, fb_pixel_t col)
+{
+	dprintf(DEBUG_NORMAL, "CFooters::addButton: btn:%s name:%s\n", btn, lname);
+	
+	button_label_struct button;
+	
+	button.button = btn;
+	button.localename = lname;
+	button.color = col;
+	
+	fbuttons.push_back(button);
+	fcount++;
 }
 
 void CFooters::paint()

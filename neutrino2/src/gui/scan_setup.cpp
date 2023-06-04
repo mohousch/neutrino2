@@ -161,7 +161,6 @@ const keyval CABLETERRESTRIALSETUP_SCANTP_MOD[CABLETERRESTRIALSETUP_SCANTP_MOD_C
 	{ QAM_64, "QAM/64" },
 	{ QAM_128, "QAM/128" },
 	{ QAM_256, "QAM/256" },
-	
 	{ QAM_AUTO, "QAM_AUTO" }
 };
 
@@ -1675,7 +1674,6 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 		TP_trans = getConfigValue(index, "TP_trans", 1);
 		TP_guard = getConfigValue(index, "TP_guard", 3);
 		TP_hierarchy = getConfigValue(index, "TP_hierarchy", 0);
-		//TP_plp_id = getConfigValue(index, "TP_plp_id", 0);
 		sprintf(cfg_key, "fe%d_TP_plp_id", index);
 		strcpy(TP_plp_id, configfile.getString(cfg_key, "000").c_str());
 	}

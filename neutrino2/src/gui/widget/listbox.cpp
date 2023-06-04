@@ -44,6 +44,24 @@
 
 extern CPlugins * g_PluginList;    // defined in neutrino.cpp
 
+// CPINProtection
+bool CPINProtection::check()
+{
+	char cPIN[5];
+	std::string hint = " ";
+	
+	do
+	{
+		cPIN[0] = 0;
+		CPINInput * PINInput = new CPINInput(_("Youth protection"), cPIN, 4, hint.c_str());
+		PINInput->exec(getParent(), "");
+		delete PINInput;
+		hint = "PIN-Code was wrong! Try again.";
+	} while ((strncmp(cPIN, validPIN, 4) != 0) && (cPIN[0] != 0));
+	
+	return ( strncmp(cPIN, validPIN, 4) == 0);
+}
+
 // CMenuItem
 CMenuItem::CMenuItem()
 {
@@ -201,7 +219,14 @@ CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const Optio
 
 	itemName = Name? Name : "";
 	
-	options = Options;
+	//options = Options;
+	if (Number_Of_Options)
+	{
+		for (unsigned int i = 0; i < (unsigned int)Number_Of_Options; i++)
+		{
+			options.push_back(Options[i]);
+		}
+	}
 	active = Active;
 	optionValue = OptionValue;
 	number_of_options = Number_Of_Options;
@@ -214,14 +239,18 @@ CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const Optio
 	menuItem_type = MENUITEM_OPTION_CHOOSER;
 }
 
-void CMenuOptionChooser::setOptionValue(const int newvalue)
+void CMenuOptionChooser::addOption(const char *optionname, const int optionvalue)
 {
-	*optionValue = newvalue;
-}
-
-int CMenuOptionChooser::getOptionValue(void) const
-{
-	return *optionValue;
+	dprintf(DEBUG_NORMAL, "CMenuOptionChooser::addOption: %s %d\n", optionname, optionvalue);
+	
+	keyval_struct option;
+	
+	option.valname = optionname;
+	option.key = optionvalue;
+	
+	options.push_back(option);
+	
+	number_of_options++;
 }
 
 int CMenuOptionChooser::exec(CMenuTarget*)
@@ -922,48 +951,6 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 	}
 
 	return y + height;
-}
-
-bool CPINProtection::check()
-{
-	char cPIN[5];
-	std::string hint = " ";
-	
-	do
-	{
-		cPIN[0] = 0;
-		CPINInput * PINInput = new CPINInput(_("Youth protection"), cPIN, 4, hint.c_str());
-		PINInput->exec(getParent(), "");
-		delete PINInput;
-		hint = "PIN-Code was wrong! Try again.";
-	} while ((strncmp(cPIN, validPIN, 4) != 0) && (cPIN[0] != 0));
-	
-	return ( strncmp(cPIN, validPIN, 4) == 0);
-}
-
-bool CZapProtection::check()
-{
-	int res;
-	char cPIN[5];
-	std::string hint2 = " ";
-	
-	do
-	{
-		cPIN[0] = 0;
-
-		CPLPINInput* PINInput = new CPLPINInput(_("Youth protection"), cPIN, 4, hint2.c_str(), fsk);
-
-		res = PINInput->exec(getParent(), "");
-		delete PINInput;
-
-		hint2 = "PIN-Code was wrong! Try again.";
-	} while ( (strncmp(cPIN,validPIN, 4) != 0) &&
-		  (cPIN[0] != 0) &&
-		  ( res == RETURN_REPAINT ) &&
-		  ( fsk >= g_settings.parentallock_lockage ) );
-		  
-	return ( ( strncmp(cPIN, validPIN, 4) == 0 ) ||
-			 ( fsk < g_settings.parentallock_lockage ) );
 }
 
 //ClistBoxItem

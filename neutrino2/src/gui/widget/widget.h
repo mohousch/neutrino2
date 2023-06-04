@@ -52,7 +52,7 @@ class CMenuTarget
 		virtual std::string& getValueString() {return valueString;};
 		virtual void setValueString(const char *const value){valueString = value;};
 };
-
+/*
 // CChangeObserver
 class CChangeObserver
 {
@@ -65,6 +65,7 @@ class CChangeObserver
 			return false;
 		}
 };
+*/
 
 //
 enum {

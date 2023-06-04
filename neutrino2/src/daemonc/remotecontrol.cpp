@@ -57,6 +57,33 @@ extern bool autoshift;
 extern uint32_t scrambled_timer;
 void stopAutoRecord();
 
+// class CZapProtection
+bool CZapProtection::check()
+{
+	int res;
+	char cPIN[5];
+	std::string hint2 = " ";
+	
+	do
+	{
+		cPIN[0] = 0;
+
+		CPLPINInput* PINInput = new CPLPINInput(_("Youth protection"), cPIN, 4, hint2.c_str(), fsk);
+
+		res = PINInput->exec(getParent(), "");
+		delete PINInput;
+
+		hint2 = "PIN-Code was wrong! Try again.";
+	} while ( (strncmp(cPIN,validPIN, 4) != 0) &&
+		  (cPIN[0] != 0) &&
+		  ( res == RETURN_REPAINT ) &&
+		  ( fsk >= g_settings.parentallock_lockage ) );
+		  
+	return ( ( strncmp(cPIN, validPIN, 4) == 0 ) ||
+			 ( fsk < g_settings.parentallock_lockage ) );
+}
+
+// class CSubService
 CSubService::CSubService(const t_original_network_id anoriginal_network_id, const t_service_id aservice_id, const t_transport_stream_id atransport_stream_id, const std::string &asubservice_name)
 {
 	service.original_network_id = anoriginal_network_id;

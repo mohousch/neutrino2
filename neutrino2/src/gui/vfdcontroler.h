@@ -41,6 +41,7 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/window.h>
 #include <gui/widget/widget_helpers.h>
+#include <gui/widget/listbox.h>
 
 #include <string>
 

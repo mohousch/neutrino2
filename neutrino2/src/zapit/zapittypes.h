@@ -188,32 +188,6 @@ enum SiDescriptorTag {
 	FORBIDDEN_DESCRIPTOR				= 0xFF
 };
 
-// diseqc types
-typedef enum {
-	NO_DISEQC,
-	MINI_DISEQC,
-	SMATV_REMOTE_TUNING,
-	DISEQC_1_0,
-	DISEQC_1_1,
-	DISEQC_1_2,
-	DISEQC_ADVANCED,
-	DISEQC_UNICABLE,
-	DISEQC_UNICABLE2
-} diseqc_t;
-
-// dvb transmission types
-typedef enum {
-	UNDEFINED 	= 0x0000,
-	DVB_S 		= 0x0001,
-	DVB_S2		= 0x0002,
-	DVB_S2X		= 0x0004,
-	DVB_C 		= 0x0008,
-	DVB_T 		= 0x0010,
-	DVB_T2		= 0x0020,
-	DVB_DTMB	= 0x0040,
-	DVB_A 		= 0x0080
-} delivery_system_t;
-
 // service types
 typedef enum {
 	ST_RESERVED,
@@ -257,6 +231,32 @@ typedef enum {
 	/* 0x80 - 0xFE: user defined*/
 	/* 0xFF: reserved for future use*/
 } service_type_t;
+
+// diseqc types
+typedef enum {
+	NO_DISEQC,
+	MINI_DISEQC,
+	SMATV_REMOTE_TUNING,
+	DISEQC_1_0,
+	DISEQC_1_1,
+	DISEQC_1_2,
+	DISEQC_ADVANCED,
+	DISEQC_UNICABLE,
+	DISEQC_UNICABLE2
+} diseqc_t;
+
+// dvb transmission types
+typedef enum {
+	UNDEFINED 	= 0x0000,
+	DVB_S 		= 0x0001,
+	DVB_S2		= 0x0002,
+	DVB_S2X		= 0x0004,
+	DVB_C 		= 0x0008,
+	DVB_T 		= 0x0010,
+	DVB_T2		= 0x0020,
+	DVB_DTMB	= 0x0040,
+	DVB_A 		= 0x0080
+} delivery_system_t;
 
 //
 typedef struct 

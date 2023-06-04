@@ -43,7 +43,24 @@
 #include <vector>
 #include <string>
 
+#include <gui/widget/listbox.h>
+#include <gui/widget/stringinput.h>
 
+
+// CZapProtection
+class CZapProtection : public CPINProtection
+{
+	protected:
+		virtual CMenuTarget * getParent() { return( NULL);};
+	public:
+		int fsk;
+
+		CZapProtection(char * validpin, int FSK) : CPINProtection(validpin){ fsk = FSK; };
+		~CZapProtection(){};
+		bool check();
+};
+
+//
 class CSubService
 {
 	private:

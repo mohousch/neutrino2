@@ -91,6 +91,33 @@ typedef struct keyval
 	const char *valname;
 } keyval_struct;
 
+typedef std::vector<keyval_struct> keyval_list_t;
+
+// CChangeObserver
+class CChangeObserver
+{
+	public:
+		CChangeObserver(){}
+		virtual ~CChangeObserver(){}
+		
+		virtual bool changeNotify(const std::string&, void *)
+		{
+			return false;
+		}
+};
+
+// CPINProtection
+class CPINProtection
+{
+	protected:
+		char * validPIN;
+		bool check();
+		virtual CMenuTarget * getParent() = 0;
+	public:
+		CPINProtection( char *validpin){ validPIN = validpin;};
+		virtual ~CPINProtection(){}
+};
+
 // CMenuItem
 class CMenuItem
 {
@@ -230,6 +257,7 @@ class CMenuItem
 		//
 		virtual void setChangeObserver(CChangeObserver* c){observ = c;};
 		virtual void enablePullDown(){pulldown = true;};
+		virtual void addOption(const char *opt, const int val = 0){};
 };
 
 // CMenuOptionChooser
@@ -253,16 +281,16 @@ class CMenuOptionChooser : public CMenuItem
 		}
 
 	private:
-		const struct keyval *options;
+		keyval_list_t options;
 		unsigned number_of_options;
 
 	public:
-		CMenuOptionChooser(const char* const Name, int * const OptionValue, const struct keyval * const Options, const unsigned Number_Of_Options, const bool Active = false, CChangeObserver * const Observ = NULL, const neutrino_msg_t DirectKey = RC_nokey, const std::string& IconName= "", bool Pulldown = false);
+		CMenuOptionChooser(const char* const Name, int * const OptionValue, const struct keyval * const Options = NULL, const unsigned Number_Of_Options = 0, const bool Active = false, CChangeObserver * const Observ = NULL, const neutrino_msg_t DirectKey = RC_nokey, const std::string& IconName= "", bool Pulldown = false);
 
 		~CMenuOptionChooser(){};
 
-		void setOptionValue(const int newvalue);
-		int getOptionValue(void) const;
+		//
+		void addOption(const char *optionname, const int optionvalue);
 
 		int paint(bool selected, bool AfterPulldown = false);
 
@@ -340,31 +368,6 @@ class CMenuSeparator : public CMenuItem
 		int getWidth(void) const;
 
 		virtual const char * getString(void);
-};
-
-// CPINProtection
-class CPINProtection
-{
-	protected:
-		char * validPIN;
-		bool check();
-		virtual CMenuTarget * getParent() = 0;
-	public:
-		CPINProtection( char *validpin){ validPIN = validpin;};
-		virtual ~CPINProtection(){}
-};
-
-// CZapProtection
-class CZapProtection : public CPINProtection
-{
-	protected:
-		virtual CMenuTarget * getParent() { return( NULL);};
-	public:
-		int fsk;
-
-		CZapProtection(char * validpin, int FSK) : CPINProtection(validpin){ fsk = FSK; };
-		~CZapProtection(){};
-		bool check();
 };
 
 // CMenulistBoxItem
