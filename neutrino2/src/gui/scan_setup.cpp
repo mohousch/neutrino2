@@ -90,8 +90,8 @@ const keyval OPTIONS_OFF1_ON0_OPTIONS[OPTIONS_OFF1_ON0_OPTION_COUNT] =
 #define SCANTS_SCANMODE_OPTION_COUNT 2
 const keyval SCANTS_SCANMODE_OPTIONS[SCANTS_SCANMODE_OPTION_COUNT] =
 {
-	{ CZapit::SM_FAST, _("Fast") },
-	{ CZapit::SM_NIT, _("Network") }
+	{ CZapit::SM_NIT, _("Network") },
+	{ CZapit::SM_FAST, _("Fast") }
 };
 
 #define SCANTS_BOUQUET_OPTION_COUNT 4
