@@ -87,6 +87,12 @@ const keyval OPTIONS_OFF1_ON0_OPTIONS[OPTIONS_OFF1_ON0_OPTION_COUNT] =
         { 1, _("off") },
         { 0, _("on") }
 };
+#define SCANTS_SCANMODE_OPTION_COUNT 2
+const keyval SCANTS_SCANMODE_OPTIONS[SCANTS_SCANMODE_OPTION_COUNT] =
+{
+	{ CZapit::SM_FAST, _("Fast") },
+	{ CZapit::SM_NIT, _("Network") }
+};
 
 #define SCANTS_BOUQUET_OPTION_COUNT 4
 const keyval SCANTS_BOUQUET_OPTIONS[SCANTS_BOUQUET_OPTION_COUNT] =
@@ -837,8 +843,8 @@ void CScanSetup::showScanService()
 	feModeNotifier->addItem(0, ojBouquets);
 	scansetup->addItem(ojBouquets);
 	
-	// NIT
-	CMenuOptionChooser * useNit = new CMenuOptionChooser(_("Use NIT"), (int *)&scanSettings->scan_mode, OPTIONS_OFF1_ON0_OPTIONS, OPTIONS_OFF1_ON0_OPTION_COUNT, ( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP) ));
+	// scanmode
+	CMenuOptionChooser * useNit = new CMenuOptionChooser(_("Scan Mode"), (int *)&scanSettings->scan_mode, SCANTS_SCANMODE_OPTIONS, SCANTS_SCANMODE_OPTION_COUNT, ( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP) ));
 	feModeNotifier->addItem(0, useNit);
 	scansetup->addItem(useNit);
 		
@@ -1620,7 +1626,7 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	// common
 	scanType = (CZapit::scanType) getConfigValue(index, "scanType", CZapit::ST_ALL);
 	bouquetMode = (CZapit::bouquetMode) getConfigValue(index, "bouquetMode", CZapit::BM_UPDATEBOUQUETS);
-	scan_mode = getConfigValue(index, "scan_mode", 1); // NIT (0) or fast (1)
+	scan_mode = getConfigValue(index, "scan_mode", CZapit::SM_FAST); // NIT (0) or fast (1)
 	
 	//
 	char cfg_key[81];

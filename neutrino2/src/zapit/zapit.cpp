@@ -94,7 +94,7 @@ extern uint32_t  found_data_chans;
 extern std::map <transponder_id_t, transponder> scantransponders;		// TP list to scan
 extern std::map <transponder_id_t, transponder> scanedtransponders;		// global TP list for current scan
 extern std::map <transponder_id_t, transponder> nittransponders;
-extern int scanMode;
+extern int scanmode;								//
 extern int scan_sat_mode;
 extern uint32_t fake_tid, fake_nid;
 extern int prov_found;
@@ -3971,10 +3971,10 @@ void * CZapit::scanThread(void * data)
 	scanedtransponders.clear();
 	nittransponders.clear();
 
-	scanMode = mode & 0xFF;	// NIT (0) or fast (1)
+	scanmode = mode & 0xFF;	// NIT (0) or fast (1)
 	scan_sat_mode = mode & 0xFF00; 	// single = 0, all = 1
 
-	dprintf(DEBUG_NORMAL, "CZapit::scanThread: fe(%d) scan mode %s, satellites %s\n", feindex, scanMode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
+	dprintf(DEBUG_NORMAL, "CZapit::scanThread: fe(%d) scan mode %s, satellites %s\n", feindex, scanmode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
 
 	fake_tid = fake_nid = 0;
 	
@@ -4159,7 +4159,7 @@ void * CZapit::scanTransponderThread(void * data)
 	CZapit::commandScanTP params = *(CZapit::commandScanTP*)data;
 	
 	TP_params * TP = &params.TP;
-	scanMode = params.scanmode;
+	scanmode = params.scanmode;
 	int feindex = params.feindex;
 	
 	char providerName[32] = "";
@@ -4216,7 +4216,7 @@ void * CZapit::scanTransponderThread(void * data)
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: fe(%d) freq %d rate %d fec %d pol %d NIT %s\n", feindex, TP->feparams.frequency, TP->feparams.symbol_rate, TP->feparams.fec_inner, TP->polarization, scanMode ? "no" : "yes");
+		dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: fe(%d) freq %d rate %d fec %d pol %d NIT %s\n", feindex, TP->feparams.frequency, TP->feparams.symbol_rate, TP->feparams.fec_inner, TP->polarization, scanmode ? "no" : "yes");
 	}
 
 	freq_id_t freq;

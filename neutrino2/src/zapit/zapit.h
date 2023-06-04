@@ -69,6 +69,12 @@ class CZapit
   			ST_RADIO,
   			ST_ALL
   		};
+  		
+  		enum scanMode
+  		{
+  			SM_NIT,
+  			SM_FAST
+  		};
 
 		typedef enum channelsMode_
 		{
