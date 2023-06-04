@@ -70,17 +70,16 @@ bool CZapProtection::check()
 
 		CPLPINInput* PINInput = new CPLPINInput(_("Youth protection"), cPIN, 4, hint2.c_str(), fsk);
 
-		res = PINInput->exec(getParent(), "");
+		res = PINInput->exec(NULL, "");
 		delete PINInput;
 
-		hint2 = "PIN-Code was wrong! Try again.";
+		hint2 = _("PIN-Code was wrong! Try again.");
 	} while ( (strncmp(cPIN,validPIN, 4) != 0) &&
 		  (cPIN[0] != 0) &&
 		  ( res == RETURN_REPAINT ) &&
 		  ( fsk >= g_settings.parentallock_lockage ) );
 		  
-	return ( ( strncmp(cPIN, validPIN, 4) == 0 ) ||
-			 ( fsk < g_settings.parentallock_lockage ) );
+	return ( ( strncmp(cPIN, validPIN, 4) == 0 ) || ( fsk < g_settings.parentallock_lockage ) );
 }
 
 // class CSubService

@@ -48,14 +48,14 @@
 
 
 // CZapProtection
-class CZapProtection : public CPINProtection
+class CZapProtection
 {
 	protected:
-		virtual CMenuTarget * getParent() { return( NULL);};
+		char * validPIN;
 	public:
 		int fsk;
 
-		CZapProtection(char * validpin, int FSK) : CPINProtection(validpin){ fsk = FSK; };
+		CZapProtection(char * validpin, int FSK){ validPIN = validpin; fsk = FSK; };
 		~CZapProtection(){};
 		bool check();
 };

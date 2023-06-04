@@ -148,4 +148,3 @@ void CParentalLockSettings::showMenu()
 	widget = NULL;
 }
 
-

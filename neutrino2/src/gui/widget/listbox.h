@@ -106,28 +106,22 @@ class CChangeObserver
 		}
 };
 
-// CPINProtection
-class CPINProtection
-{
-	protected:
-		char * validPIN;
-		bool check();
-		virtual CMenuTarget * getParent() = 0;
-	public:
-		CPINProtection( char *validpin){ validPIN = validpin;};
-		virtual ~CPINProtection(){}
-};
-
 // CMenuItem
 class CMenuItem
 {
 	protected:
 		int x, y, dx, offx;
 		
+		// pinprotection
+		bool AlwaysAsk;
+		char * validPIN;
+		bool check();
+		
 	public:
 		bool active;
 		bool marked;
 		bool hidden;
+		bool locked;
 		//
 		int menuItem_type;
 		//
@@ -258,6 +252,9 @@ class CMenuItem
 		virtual void setChangeObserver(CChangeObserver* c){observ = c;};
 		virtual void enablePullDown(){pulldown = true;};
 		virtual void addOption(const char *opt, const int val = 0){};
+		
+		// locked
+		virtual void setLocked(char *validpin = NULL){ locked = true; AlwaysAsk = true; validPIN = validpin? validpin : (char *)"";};
 };
 
 // CMenuOptionChooser
@@ -401,23 +398,6 @@ class ClistBoxItem : public CMenuItem
 		bool isSelectable(void) const {return (active && !hidden);};
 		
 		void setName(const char * const name){itemName = name;};
-};
-
-// CLockedlistBoxItem
-class CLockedlistBoxItem : public ClistBoxItem, public CPINProtection
-{
-	CMenuTarget * Parent;
-	bool AlwaysAsk;
-
-	protected:
-		virtual CMenuTarget* getParent(){ return Parent;};
-		
-	public:   
-		CLockedlistBoxItem(const char * const Text, char * _validPIN, bool alwaysAsk = false, const bool Active = true, char * Option = NULL, CMenuTarget * Target = NULL, const char * const ActionKey = NULL, neutrino_msg_t DirectKey = RC_nokey, const char * const IconName = NULL, const char * const ItemIcon = NULL, const char* const Hint = NULL)
-		 : ClistBoxItem(Text, Active, Option, Target, ActionKey, DirectKey, IconName, ItemIcon, Hint),
-		   CPINProtection( _validPIN){AlwaysAsk = alwaysAsk;};
-
-		virtual int exec(CMenuTarget* target);
 };
 
 //

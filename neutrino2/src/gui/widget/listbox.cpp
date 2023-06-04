@@ -44,24 +44,6 @@
 
 extern CPlugins * g_PluginList;    // defined in neutrino.cpp
 
-// CPINProtection
-bool CPINProtection::check()
-{
-	char cPIN[5];
-	std::string hint = " ";
-	
-	do
-	{
-		cPIN[0] = 0;
-		CPINInput * PINInput = new CPINInput(_("Youth protection"), cPIN, 4, hint.c_str());
-		PINInput->exec(getParent(), "");
-		delete PINInput;
-		hint = "PIN-Code was wrong! Try again.";
-	} while ((strncmp(cPIN, validPIN, 4) != 0) && (cPIN[0] != 0));
-	
-	return ( strncmp(cPIN, validPIN, 4) == 0);
-}
-
 // CMenuItem
 CMenuItem::CMenuItem()
 {
@@ -100,6 +82,8 @@ CMenuItem::CMenuItem()
 	active = true;
 	marked = false;
 	hidden = false;
+	locked = false;
+	AlwaysAsk = false;
 
 	jumpTarget = NULL;
 	actionKey = "";
@@ -154,6 +138,24 @@ void CMenuItem::setHidden(const bool Hidden)
 			
 		paint();
 	}
+}
+
+// locked
+bool CMenuItem::check()
+{
+	char cPIN[5];
+	std::string hint = " ";
+	
+	do
+	{
+		cPIN[0] = 0;
+		CPINInput * PINInput = new CPINInput(_("Youth protection"), cPIN, 4, hint.c_str());
+		PINInput->exec(parent->parent, "");
+		delete PINInput;
+		hint = _("PIN-Code was wrong! Try again.");
+	} while ((strncmp(cPIN, validPIN, 4) != 0) && (cPIN[0] != 0));
+	
+	return ( strncmp(cPIN, validPIN, 4) == 0);
 }
 
 void CMenuItem::paintItemBox(int dy, fb_pixel_t col)
@@ -259,6 +261,20 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 
 	bool wantsRepaint = false;
 	int ret = RETURN_REPAINT;
+	
+	//
+	if (locked)
+	{
+		if( (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER) || AlwaysAsk )
+		{
+			if (!check())
+			{
+				return RETURN_REPAINT;
+			}
+		}
+		
+		locked = false;
+	}
 
 	// pulldown
 	if( (msg == RC_ok) && pulldown ) 
@@ -503,7 +519,22 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 int CMenuOptionNumberChooser::exec(CMenuTarget*)
 {
 	dprintf(DEBUG_NORMAL, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
+	
+	//
+	if (locked)
+	{
+		if( (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER) || AlwaysAsk )
+		{
+			if (!check())
+			{
+				return RETURN_REPAINT;
+			}
+		}
+		
+		locked = false;
+	}
 
+	//
 	if( msg == RC_left ) 
 	{
 		if (((*optionValue) > upper_bound) || ((*optionValue) <= lower_bound))
@@ -639,7 +670,21 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	dprintf(DEBUG_NORMAL, "CMenuOptionStringChooser::exec: (%s)\n", itemName.c_str());
 
 	bool wantsRepaint = false;
-	int ret = RETURN_REPAINT; 
+	int ret = RETURN_REPAINT;
+	
+	//
+	if (locked)
+	{
+		if( (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER) || AlwaysAsk )
+		{
+			if (!check())
+			{
+				return RETURN_REPAINT;
+			}
+		}
+		
+		locked = false;
+	}
 
 	// pulldown
 	if( (msg == RC_ok) && pulldown) 
@@ -1038,6 +1083,20 @@ int ClistBoxItem::exec(CMenuTarget* target)
 	dprintf(DEBUG_NORMAL, "ClistBoxItem::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
 
 	int ret = RETURN_EXIT;
+	
+	//
+	if (locked)
+	{
+		if( (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER) || AlwaysAsk )
+		{
+			if (!check())
+			{
+				return RETURN_REPAINT;
+			}
+		}
+		
+		locked = false;
+	}
 
 	if(jumpTarget)
 	{
@@ -1440,27 +1499,6 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 		
 		return y + height;
 	}
-}
-
-// CLockedlistBoxItem
-int CLockedlistBoxItem::exec(CMenuTarget * target)
-{
-	dprintf(DEBUG_NORMAL, "CLockedlistBoxItem::exec\n");
-
-	Parent = target;
-	
-	if( (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER) || AlwaysAsk )
-	{
-		if (!check())
-		{
-			Parent = NULL;
-			return RETURN_REPAINT;
-		}
-	}
-
-	Parent = NULL;
-	
-	return ClistBoxItem::exec(target);
 }
 
 //// ClistBox

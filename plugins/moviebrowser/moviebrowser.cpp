@@ -3306,10 +3306,10 @@ bool CMovieBrowser::showMenu()
 	optionsMenu.addItem( new ClistBoxItem(_("Paths"), true, NULL, &optionsMenuDir,NULL, RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
 	optionsMenu.addItem( new CMenuSeparator(LINE));
 	
-	if(m_parentalLock != MB_PARENTAL_LOCK_OFF)
-		optionsMenu.addItem( new CLockedlistBoxItem(_("Parental Lock"), g_settings.parentallock_pincode, true,  true, NULL, &parentalMenu, NULL, RC_nokey, NULL));
-	else
-		optionsMenu.addItem( new ClistBoxItem(_("Parental Lock"),   true, NULL, &parentalMenu, NULL, RC_nokey, NULL));
+	//if(m_parentalLock != MB_PARENTAL_LOCK_OFF)
+	//	optionsMenu.addItem( new CLockedlistBoxItem(_("Parental Lock"), g_settings.parentallock_pincode, true,  true, NULL, &parentalMenu, NULL, RC_nokey, NULL));
+	//else
+	optionsMenu.addItem( new ClistBoxItem(_("Parental Lock"),   true, NULL, &parentalMenu, NULL, RC_nokey, NULL));
 	
 	optionsMenu.addItem( new CMenuSeparator(LINE));
 	optionsMenu.addItem( new CMenuOptionChooser(_("Reload movie info at start"), (int*)(&m_settings.reload), MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true ));
