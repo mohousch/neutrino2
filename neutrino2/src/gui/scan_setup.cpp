@@ -1641,7 +1641,7 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QPSK)
 #endif
 	{
-		TP_fec = getConfigValue(index, "TP_fec", 1);
+		TP_fec = getConfigValue(index, "TP_fec", FEC_AUTO);
 		TP_pol = getConfigValue(index, "TP_pol", 0);
 	}
 	
@@ -1651,8 +1651,8 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QAM)
 #endif
 	{
-		TP_mod = getConfigValue(index, "TP_mod", 3);
-		TP_fec = getConfigValue(index, "TP_fec", 1);
+		TP_mod = getConfigValue(index, "TP_mod", QAM_AUTO);
+		TP_fec = getConfigValue(index, "TP_fec", FEC_NONE);
 	}
 	
 #if HAVE_DVB_API_VERSION >= 3
@@ -1667,13 +1667,13 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_OFDM)
 #endif
 	{
-		TP_band = getConfigValue(index, "TP_band", 0);
-		TP_HP = getConfigValue(index, "TP_HP", 2);
-		TP_LP = getConfigValue(index, "TP_LP", 1);
-		TP_const = getConfigValue(index, "TP_const", 1);
-		TP_trans = getConfigValue(index, "TP_trans", 1);
-		TP_guard = getConfigValue(index, "TP_guard", 3);
-		TP_hierarchy = getConfigValue(index, "TP_hierarchy", 0);
+		TP_band = getConfigValue(index, "TP_band", BANDWIDTH_AUTO);
+		TP_HP = getConfigValue(index, "TP_HP", FEC_AUTO);
+		TP_LP = getConfigValue(index, "TP_LP", FEC_AUTO);
+		TP_const = getConfigValue(index, "TP_const", QAM_AUTO);
+		TP_trans = getConfigValue(index, "TP_trans", TRANSMISSION_MODE_AUTO);
+		TP_guard = getConfigValue(index, "TP_guard", GUARD_INTERVAL_AUTO);
+		TP_hierarchy = getConfigValue(index, "TP_hierarchy", HIERARCHY_AUTO);
 		sprintf(cfg_key, "fe%d_TP_plp_id", index);
 		strcpy(TP_plp_id, configfile.getString(cfg_key, "000").c_str());
 	}
@@ -1684,7 +1684,7 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
     	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_ATSC)
 #endif
 	{
-		TP_mod = getConfigValue(index, "TP_mod", 3);
+		TP_mod = getConfigValue(index, "TP_mod", QAM_AUTO);
 	}
 
 	return true;
