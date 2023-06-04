@@ -261,20 +261,6 @@ const keyval FRONTEND_MODE_OPTIONS[FRONTEND_MODE_TWIN_OPTION_COUNT] =
 };
 
 //
-#define FRONTEND_DELSYS_OPTION_COUNT 3
-const keyval FRONTEND_DELSYS_OPTIONS[FRONTEND_DELSYS_OPTION_COUNT]
-{
-//	{ UNDEFINED, "UNDEFINED" },
-//	{ DVB_S, "DVBS" },
-//	{ DVB_S2, "DVBS2" },
-//	{ DVB_S2X, "DVBS2X" },
-	{ DVB_C, "DVBC" },
-	{ DVB_T, "DVBT" },
-	{ DVB_T2, "DVBT2" },
-//	{ DVB_DTMB, "DVBDTMB" },
-//	{ DVB_A, "DVBA" }
-};
-
 CScanSetup::CScanSetup(int num)
 {
 	feindex = num;
@@ -829,7 +815,24 @@ void CScanSetup::showScanService()
 	
 	// frontend delsys
 	if (CZapit::getInstance()->getFE(feindex)->isHybrid())
-		scansetup->addItem(new CMenuOptionChooser(_("Tuner type"),  (int *)&CZapit::getInstance()->getFE(feindex)->forcedDelSys, FRONTEND_DELSYS_OPTIONS, FRONTEND_DELSYS_OPTION_COUNT, true, feDelSysNotifier));
+	{
+		CMenuItem *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&CZapit::getInstance()->getFE(feindex)->forcedDelSys);
+		tunerType->setActive(true);
+		tunerType->setChangeObserver(feDelSysNotifier);
+		
+		if (CZapit::getInstance()->getFE(feindex)->getDeliverySystem() & DVB_S)
+			tunerType->addOption("DVBS", DVB_S);
+		if (CZapit::getInstance()->getFE(feindex)->getDeliverySystem() & DVB_S2)
+			tunerType->addOption("DVBS2", DVB_S2);
+		if (CZapit::getInstance()->getFE(feindex)->getDeliverySystem() & DVB_C)
+			tunerType->addOption("DVBC", DVB_C);
+		if (CZapit::getInstance()->getFE(feindex)->getDeliverySystem() & DVB_T)
+			tunerType->addOption("DVBT", DVB_T);
+		if (CZapit::getInstance()->getFE(feindex)->getDeliverySystem() & DVB_T2)
+			tunerType->addOption("DVBT2", DVB_T2);
+			
+		scansetup->addItem(tunerType);
+	}
 	
 	scansetup->addItem( new CMenuSeparator(LINE) );
 
