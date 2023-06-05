@@ -206,13 +206,13 @@ void CRemoteControlSettings::showMenu()
         remoteControlSettings->addItem(new CMenuSeparator(LINE | STRING, _("User menu")));
 
 	// blue
-        remoteControlSettings->addItem(new ClistBoxItem(_("User menu blue"), true, NULL, new CUserMenuMenu(_("User menu blue"), 0)));
+        remoteControlSettings->addItem(new ClistBoxItem(_("User menu blue"), true, NULL, new CUserMenuMenu(_("User menu blue"), SNeutrinoSettings::BUTTON_BLUE)));
 
 #if defined (ENABLE_FUNCTIONKEYS)	
-	remoteControlSettings->addItem(new ClistBoxItem(_("User menu F1"), true, NULL, new CUserMenuMenu(_("User menu F1"), 1) ));
-        remoteControlSettings->addItem(new ClistBoxItem(_("User menu F2"), true, NULL, new CUserMenuMenu(_("User menu F2"), 2) ));
-        remoteControlSettings->addItem(new ClistBoxItem(_("User menu F3"), true, NULL, new CUserMenuMenu(_("User menu F3"), 3) ));
-        remoteControlSettings->addItem(new ClistBoxItem(_("User menu F4"), true, NULL, new CUserMenuMenu(_("User menu F4"), 4) ));	
+	remoteControlSettings->addItem(new ClistBoxItem(_("User menu F1"), true, NULL, new CUserMenuMenu(_("User menu F1"), SNeutrinoSettings::BUTTON_F1) ));
+        remoteControlSettings->addItem(new ClistBoxItem(_("User menu F2"), true, NULL, new CUserMenuMenu(_("User menu F2"), SNeutrinoSettings::BUTTON_F2) ));
+        remoteControlSettings->addItem(new ClistBoxItem(_("User menu F3"), true, NULL, new CUserMenuMenu(_("User menu F3"), SNeutrinoSettings::BUTTON_F3) ));
+        remoteControlSettings->addItem(new ClistBoxItem(_("User menu F4"), true, NULL, new CUserMenuMenu(_("User menu F4"), SNeutrinoSettings::BUTTON_F4) ));	
 #endif
 	
 	//

@@ -1067,7 +1067,7 @@ void COSDDiverses::showMenu()
 	}
 	else
 	{
-		osdDiverseSettings = new ClistBox(0, 0, 800, MENU_HEIGHT);
+		osdDiverseSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
 		osdDiverseSettings->setWidgetMode(MODE_SETUP);
 		osdDiverseSettings->enableShrinkMenu();
@@ -1082,7 +1082,7 @@ void COSDDiverses::showMenu()
 		osdDiverseSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, 800, MENU_HEIGHT);
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "osdmiscsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(osdDiverseSettings);
@@ -1164,7 +1164,7 @@ void CSkinManager::showMenu()
 	}
 	else
 	{
-		skinMenu = new ClistBox(0, 0, 800, MENU_HEIGHT);
+		skinMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
 		skinMenu->setWidgetMode(MODE_LISTBOX);
 		skinMenu->setWidgetType(TYPE_CLASSIC);
@@ -1180,7 +1180,7 @@ void CSkinManager::showMenu()
 		skinMenu->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, 800, MENU_HEIGHT);
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "skinsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(skinMenu);
@@ -1295,7 +1295,7 @@ void CSkinSettings::showMenu()
 	}
 	else
 	{
-		skinSettings = new ClistBox(0, 0, 800, 600);
+		skinSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
 		skinSettings->setWidgetMode(MODE_SETUP);
 		skinSettings->enableShrinkMenu();
@@ -1310,7 +1310,7 @@ void CSkinSettings::showMenu()
 		skinSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, 800, 600);
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "skinstyleselectionsetup";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(skinSettings);

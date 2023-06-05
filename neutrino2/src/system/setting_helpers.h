@@ -85,7 +85,7 @@ class CTuxtxtChangeExec : public CMenuTarget
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
-// USERMENU
+// usermenu
 class CUserMenuMenu : public CMenuTarget
 {
         private:
@@ -98,3 +98,4 @@ class CUserMenuMenu : public CMenuTarget
 };
 
 #endif
+

@@ -283,7 +283,7 @@ const keyval USERMENU_ITEM_OPTIONS[USERMENU_ITEM_OPTION_COUNT] =
 
 int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 {
-	dprintf(DEBUG_NORMAL , "%s::exec: %s\n", __FUNCTION__, actionKey.c_str());
+	dprintf(DEBUG_NORMAL , "CUserMenuMenu::exec: %s\n", actionKey.c_str());
 	
         if(parent)
                 parent->hide();
@@ -296,7 +296,7 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if (widget)
 	{	
-		menu = (ClistBox*)CNeutrinoApp::getInstance()->getWidget("usermenu")->getWidgetItem(WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 		
 		//
 		if (menu->hasHead())
@@ -329,6 +329,14 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 		
 	menu->clear();
+	
+	// intros
+	menu->addItem(new ClistBoxItem(_("back")));
+	menu->addItem( new CMenuSeparator(LINE) );
+	
+	// save settings
+	menu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	menu->addItem( new CMenuSeparator(LINE) );
 
 	//
         CStringInputSMS name(_("User menu"), g_settings.usermenu_text[button].c_str());
@@ -343,7 +351,7 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
                 snprintf(text, 10, "%d:", item);
                 text[9] = 0;// terminate for sure
                 
-                menu->addItem( new CMenuOptionChooser(text, &g_settings.usermenu[button][item], USERMENU_ITEM_OPTIONS, USERMENU_ITEM_OPTION_COUNT,true, NULL, RC_nokey, "", true ));
+                menu->addItem( new CMenuOptionChooser(text, &g_settings.usermenu[button][item], USERMENU_ITEM_OPTIONS, USERMENU_ITEM_OPTION_COUNT, true, NULL, RC_nokey, "", true ));
         }
 
         widget->exec(NULL, "");
