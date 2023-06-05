@@ -154,6 +154,10 @@ void CMenuItem::setState(int state)
 			setHidden(true);
 			break;
 			
+		case ITEM_MARKED:
+			setMarked(true);
+			break;
+			
 		case ITEM_INACTIVE:
 			setActive(false);
 			break;

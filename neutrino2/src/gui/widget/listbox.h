@@ -91,6 +91,7 @@ enum
 	ITEM_ACTIVE,
 	ITEM_LOCKED,
 	ITEM_HIDDEN,
+	ITEM_MARKED,
 	ITEM_INACTIVE
 };
 
@@ -266,7 +267,7 @@ class CMenuItem
 		// locked
 		virtual void setLocked(char *validpin = NULL){ locked = true; AlwaysAsk = true; validPIN = validpin? validpin : (char *)"";};
 		
-		// status : active/hidden/locked
+		// state : active/locked/hidden/marked/inactive
 		virtual void setState(int state);
 };
 
