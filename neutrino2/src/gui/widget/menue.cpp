@@ -270,15 +270,7 @@ void CMenuWidget::initFrames()
 
 		//
 		item_width = width/itemsPerX;
-		item_height = (height - hheight - cFrameFootInfoHeight - (fbutton_count? fheight : 0) - 20)/itemsPerY; // 10 pixels for hlines top 10 pixels bottom
-
-		for (unsigned int count = 0; count < items.size(); count++) 
-		{
-			CMenuItem * item = items[count];
-
-			item->item_width = item_width;
-			item->item_height = item_height;
-		}		 
+		item_height = (height - hheight - cFrameFootInfoHeight - (fbutton_count? fheight : 0) - 20)/itemsPerY; // 10 pixels for hlines top 10 pixels bottom	 
 	}
 	else
 	{
@@ -323,18 +315,6 @@ void CMenuWidget::initFrames()
 
 		heightFirstPage = std::max(heightCurrPage, heightFirstPage);
 		page_start.push_back(items.size());
-
-		// icon offset
-		iconOffset = 0;
-
-		for (unsigned int i = 0; i < items.size(); i++) 
-		{
-			if ((!(items[i]->iconName.empty())) || CRCInput::isNumeric(items[i]->directKey))
-			{
-				iconOffset = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
-				break;
-			}
-		}
 
 		// shrink menu if less items
 		if(shrinkMenu)
@@ -675,7 +655,7 @@ void CMenuWidget::paintItems()
 				{
 					CMenuItem * item = items[count];
 
-					item->init(x + _x*item_width, item_start_y + _y*item_height, item_width, iconOffset);
+					item->init(x + _x*item_width, item_start_y + _y*item_height, item_width, item_height);
 
 					if( (item->isSelectable()) && (selected == -1)) 
 					{
@@ -762,7 +742,7 @@ void CMenuWidget::paintItems()
 
 			if ((count >= page_start[current_page]) && (count < page_start[current_page + 1])) 
 			{
-				item->init(xpos, ypos, items_width, iconOffset);
+				item->init(xpos, ypos, items_width, item->getHeight());
 
 				if( (item->isSelectable()) && (selected == -1)) 
 				{

@@ -67,7 +67,6 @@ class CMenuWidget : public CMenuTarget
 		int x;
 		int y;
 		int offx, offy;
-		int iconOffset;
 		int wanted_height;
 		int wanted_width;
 

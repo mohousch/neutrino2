@@ -115,7 +115,7 @@ void CNeutrinoApp::mainMenu(void)
 	// tv modus
 	item = new ClistBoxItem(_("TV / Radio"), true, NULL, this, "tvradioswitch", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV);
 	item->setState(g_settings.personalize_tvradio);
-	nMenu->addItem(item, true);
+	nMenu->addItem(item);
 
 	// epg / sleeptimer
 	item = new ClistBoxItem(_("Timer / EPG"), true, NULL, new CEPGMenuHandler(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER);

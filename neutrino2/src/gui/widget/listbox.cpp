@@ -105,12 +105,12 @@ CMenuItem::CMenuItem()
 	pulldown = false;
 }
 
-void CMenuItem::init(const int X, const int Y, const int DX, const int OFFX)
+void CMenuItem::init(const int X, const int Y, const int DX, const int DY)
 {
 	x    = X;
 	y    = Y;
 	dx   = DX;
-	offx = OFFX;
+	dy = DY;
 }
 
 void CMenuItem::setActive(const bool Active)
@@ -1060,7 +1060,7 @@ int ClistBoxItem::getHeight(void) const
 
 	if(widgetType == TYPE_FRAME)
 	{
-		ih = item_height;
+		ih = dy;
 	}
 	else if(widgetType == TYPE_CLASSIC)
 	{
@@ -1097,7 +1097,7 @@ int ClistBoxItem::getWidth(void) const
 {
 	if(widgetType == TYPE_FRAME)
 	{
-		return item_width;
+		return dx;
 	}
 	else
 	{
@@ -1214,11 +1214,11 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 					background = NULL;
 				}
 									
-				background = new fb_pixel_t[item_width*item_height];
+				background = new fb_pixel_t[dx*dy];
 						
 				if (background)
 				{
-					frameBuffer->saveScreen(x, y, item_width, item_height, background);
+					frameBuffer->saveScreen(x, y, dx, dy, background);
 				}
 			}
 				
@@ -1226,25 +1226,25 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 			{
 				if (parent->inFocus)
 				{	
-					frameBuffer->paintBoxRel(x, y, item_width, item_height, bgcolor);
+					frameBuffer->paintBoxRel(x, y, dx, dy, bgcolor);
 
 					if(!itemIcon.empty())
-						frameBuffer->paintHintIcon(itemIcon, x + 2, y + 2, item_width - 4, item_height - 4);
+						frameBuffer->paintHintIcon(itemIcon, x + 2, y + 2, dx - 4, dy - 4);
 				}
 				else
 				{
-					frameBuffer->paintBoxRel(x, y, item_width, item_height, bgcolor); //FIXME:
+					frameBuffer->paintBoxRel(x, y, dx, dy, bgcolor); //FIXME:
 
 					if(!itemIcon.empty())
-						frameBuffer->paintHintIcon(itemIcon, x + 4*ICON_OFFSET, y + 4*ICON_OFFSET, item_width - 8*ICON_OFFSET, item_height - 8*ICON_OFFSET);
+						frameBuffer->paintHintIcon(itemIcon, x + 4*ICON_OFFSET, y + 4*ICON_OFFSET, dx - 8*ICON_OFFSET, dy - 8*ICON_OFFSET);
 				}
 			}
 			else
 			{
-				frameBuffer->paintBoxRel(x, y, item_width, item_height, bgcolor);
+				frameBuffer->paintBoxRel(x, y, dx, dy, bgcolor);
 
 				if(!itemIcon.empty())
-					frameBuffer->paintHintIcon(itemIcon, x + 2, y + 2, item_width - 4, item_height - 4);
+					frameBuffer->paintHintIcon(itemIcon, x + 2, y + 2, dx - 4, dy - 4);
 			}
 		}
 		else
@@ -1252,13 +1252,13 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 			// refresh
 			if (paintFrame)
 			{
-				frameBuffer->paintBoxRel(x, y, item_width, item_height, bgcolor);
+				frameBuffer->paintBoxRel(x, y, dx, dy, bgcolor);
 			}
 			else
 			{
 				if (background)
 				{
-					frameBuffer->restoreScreen(x, y, item_width, item_height, background);
+					frameBuffer->restoreScreen(x, y, dx, dy, background);
 							
 					delete [] background;
 					background = NULL;
@@ -1266,7 +1266,7 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 			}
 			
 			if(!itemIcon.empty())
-				frameBuffer->paintHintIcon(itemIcon, x + 4*ICON_OFFSET, y + 4*ICON_OFFSET, item_width - 8*ICON_OFFSET, item_height - 8*ICON_OFFSET);
+				frameBuffer->paintHintIcon(itemIcon, x + 4*ICON_OFFSET, y + 4*ICON_OFFSET, dx - 8*ICON_OFFSET, dy - 8*ICON_OFFSET);
 		}
 
 		// vfd
@@ -1641,7 +1641,6 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	
 	item_height = 0;
 	item_width = 0;
-	iconOffset = 0;
 	items_width = 0;
 	items_height = 0;
 	
@@ -1764,7 +1763,6 @@ ClistBox::ClistBox(CBox* position)
 	//
 	item_height = 0;
 	item_width = 0;
-	iconOffset = 0;
 	items_width = 0;
 	items_height = 0;
 	itemBorderMode = BORDER_NO;
@@ -1894,16 +1892,7 @@ void ClistBox::initFrames()
 
 		//
 		item_width = itemBox.iWidth/itemsPerX;
-		item_height = (itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - 20)/itemsPerY; //
-
-		// HACK:
-		for (unsigned int count = 0; count < items.size(); count++) 
-		{
-			CMenuItem * item = items[count];
-
-			item->item_width = item_width;
-			item->item_height = item_height;
-		}		
+		item_height = (itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - 20)/itemsPerY; //	
 	}
 	else 
 	{
@@ -1943,18 +1932,6 @@ void ClistBox::initFrames()
 
 		heightFirstPage = std::max(heightCurrPage, heightFirstPage); //FIXME:
 		page_start.push_back(items.size());
-
-		// icon offset
-		iconOffset = 0;
-
-		for (unsigned int i = 0; i < items.size(); i++) 
-		{
-			if ((!(items[i]->iconName.empty())) || CRCInput::isNumeric(items[i]->directKey))
-			{
-				iconOffset = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
-				break;
-			}
-		}
 
 		// recalculate height
 		if(shrinkMenu && hasItem())
@@ -2079,12 +2056,14 @@ void ClistBox::paintItems()
 				current_page++;
 		}
 
+		// init
 		for (unsigned int i = 0; i < items.size(); i++) 
 		{
 			CMenuItem * item = items[i];	
 			item->init(-1, 0, 0, 0);
 		}
 
+		// paint
 		int count = (int)page_start[current_page];
 
 		if(items.size() > 0)
@@ -2095,7 +2074,7 @@ void ClistBox::paintItems()
 				{
 					CMenuItem * item = items[count];
 					
-					item->init(itemBox.iX + _x*item_width, item_start_y + _y*item_height, items_width, iconOffset);
+					item->init(itemBox.iX + _x*item_width, item_start_y + _y*item_height, item_width, item_height);
 
 					if((item->isSelectable()) && (selected == -1)) 
 					{
@@ -2188,7 +2167,7 @@ void ClistBox::paintItems()
 			if ((count >= page_start[current_page]) && (count < page_start[current_page + 1])) 
 			{
 				//
-				item->init(xpos, ypos, items_width, iconOffset);
+				item->init(xpos, ypos, items_width, item->getHeight());
 				
 			
 				if((item->isSelectable()) && (selected == -1)) 
@@ -2227,7 +2206,6 @@ void ClistBox::paintHead()
 
 			// head line
 			if (head_line)
-				//frameBuffer->paintHLineRel(itemBox.iX + BORDER_LEFT, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, itemBox.iY + hheight - 2, COL_MENUCONTENT_PLUS_5);
 				frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + hheight - 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 
 			// icon

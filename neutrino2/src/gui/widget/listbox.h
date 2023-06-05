@@ -50,6 +50,7 @@ enum
 	MENUITEM_LISTBOXITEM
 };
 
+// widget type
 enum
 {
 	TYPE_STANDARD = 0,
@@ -58,6 +59,7 @@ enum
 	TYPE_FRAME
 };
 
+// listBox mode
 enum 
 {
 	MODE_LISTBOX = 0,
@@ -65,6 +67,7 @@ enum
 	MODE_SETUP
 };
 
+// iteminfo mode
 enum
 {
 	ITEMINFO_INFO_MODE = 0,
@@ -95,6 +98,7 @@ enum
 	ITEM_INACTIVE
 };
 
+//
 typedef struct keyval
 {
 	int key;
@@ -120,7 +124,7 @@ class CChangeObserver
 class CMenuItem
 {
 	protected:
-		int x, y, dx, offx;
+		int x, y, dx, dy;
 		
 		// pinprotection
 		bool AlwaysAsk;
@@ -156,10 +160,6 @@ class CMenuItem
 		int widgetType;
 		int widgetMode;
 		bool isPlugin;
-		
-		// HACK for TYPE_FRAME
-		int item_height;
-		int item_width;
 
 		//
 		unsigned int nameFont;
@@ -199,7 +199,7 @@ class CMenuItem
 			option.clear();
 		};
 
-		virtual void init(const int X, const int Y, const int DX, const int OFFX);
+		virtual void init(const int X, const int Y, const int DX, const int DY);
 		virtual void paintItemBox(int dy, fb_pixel_t col);
 		virtual void refreshItemBox(int dy, fb_pixel_t col);
 		virtual int paint(bool selected = false, bool AfterPulldown = false) = 0;
@@ -438,7 +438,6 @@ class ClistBox : public CWidgetItem
 		unsigned int total_pages;
 		int sb_width;
 		int listmaxshow;
-		int iconOffset;
 		int pos;
 		unsigned int item_start_y;
 		int items_height;
