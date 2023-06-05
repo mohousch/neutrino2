@@ -149,8 +149,8 @@ const char* const sortByNames[FILEBROWSER_NUMBER_OF_SORT_VARIANTS] =
 	_("(filename)"),
 	_("(filename2)"),
 	_("(type)"),
-	_("(Date)"),
-	_("(Size)")
+	_("(date)"),
+	_("(size)")
 };
 
 CFileBrowser::CFileBrowser()
@@ -187,7 +187,6 @@ void CFileBrowser::commonInit()
 	listBox = NULL;
 	item = NULL;
 	widget = NULL;
-	
 	sec_timer_id = 0;
 
 	// box	
@@ -291,6 +290,7 @@ void CFileBrowser::ChangeDir(const std::string& filename, int selection)
 	sort(filelist.begin(), filelist.end(), sortBy[g_settings.filebrowser_sortmethod]);
 
 	selected = 0;
+	
 	if ((selection != -1) && (selection < (int)filelist.size()))
 		selected = selection;
 }
@@ -791,9 +791,9 @@ void CFileBrowser::paint()
 
 		item->setIconName(fileicon.c_str());
 
+		// optionInfo
 		std::string tmp;
 
-		//
 		if( S_ISREG(filelist[count].Mode) )
 		{
 			if (g_settings.filebrowser_showrights != 0)

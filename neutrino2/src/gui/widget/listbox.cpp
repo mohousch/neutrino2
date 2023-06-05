@@ -147,7 +147,7 @@ void CMenuItem::setState(int state)
 	switch (state)
 	{
 		case ITEM_LOCKED:
-			setLocked("0000");
+			setLocked(g_settings.parentallock_pincode);
 			break;
 			
 		case ITEM_HIDDEN:
