@@ -114,24 +114,29 @@ void CNeutrinoApp::mainMenu(void)
 			  
 	// tv modus
 	item = new ClistBoxItem(_("TV / Radio"), true, NULL, this, "tvradioswitch", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV);
+	item->setState(g_settings.personalize_tvradio);
 	nMenu->addItem(item, true);
 
 	// epg / sleeptimer
 	item = new ClistBoxItem(_("Timer / EPG"), true, NULL, new CEPGMenuHandler(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
+	item->setState(g_settings.personalize_epgtimer);
 	nMenu->addItem(item);
 			
 #if defined (ENABLE_SCART)
 	// scart
 	item = new ClistBoxItem(_("Scart Mode"), true, NULL, this, "scart", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCART);
+	item->setState(g_settings.personalize_scart);
 	nMenu->addItem(item);
 #endif
 
 	// features
 	item = new ClistBoxItem(_("Features"), true, NULL, this, "features", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FEATURES);
+	item->setState(g_settings.personalize_features);
 	nMenu->addItem(item);
 		
 	// service
 	item = new ClistBoxItem(_("System"), true, NULL, new CServiceMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
+	item->setState(g_settings.personalize_system);
 	nMenu->addItem(item);
 			
 	// main setting
@@ -144,14 +149,17 @@ void CNeutrinoApp::mainMenu(void)
 		
 	//box info
 	item = new ClistBoxItem(_("Information"), true, NULL, new CInfoMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOXINFO);
+	item->setState(g_settings.personalize_information);
 	nMenu->addItem(item);
 
 	// power menu
 	item = new ClistBoxItem(_("Power Menu"), true, NULL, new CPowerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_POWERMENU);
+	item->setState(g_settings.personalize_powermenu);
 	nMenu->addItem(item);
 		
 	// mediaplayer
 	item = new ClistBoxItem(_("Media Player"), true, NULL, new CMediaPlayerMenu(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
+	item->setState(g_settings.personalize_mediaplayer);
 	nMenu->addItem(item);
 
 	//

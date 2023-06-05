@@ -83,6 +83,8 @@ CMenuItem::CMenuItem()
 	marked = false;
 	hidden = false;
 	locked = false;
+	
+	//
 	AlwaysAsk = false;
 
 	jumpTarget = NULL;
@@ -137,6 +139,29 @@ void CMenuItem::setHidden(const bool Hidden)
 			parent->initFrames();
 			
 		paint();
+	}
+}
+
+void CMenuItem::setState(int state)
+{
+	switch (state)
+	{
+		case ITEM_LOCKED:
+			setLocked("0000");
+			break;
+			
+		case ITEM_HIDDEN:
+			setHidden(true);
+			break;
+			
+		case ITEM_INACTIVE:
+			setActive(false);
+			break;
+			
+		case ITEM_ACTIVE:
+		default:
+			setActive(true);
+			break;
 	}
 }
 
@@ -243,7 +268,7 @@ CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const Optio
 
 void CMenuOptionChooser::addOption(const char *optionname, const int optionvalue)
 {
-	dprintf(DEBUG_NORMAL, "CMenuOptionChooser::addOption: %s %d\n", optionname, optionvalue);
+	dprintf(DEBUG_INFO, "CMenuOptionChooser::addOption: %s %d\n", optionname, optionvalue);
 	
 	keyval_struct option;
 	
@@ -1775,7 +1800,7 @@ void ClistBox::addItem(CMenuItem * menuItem, const bool defaultselected)
 {
 	if (menuItem != NULL)
 	{
-		if (defaultselected)
+		if (defaultselected && (!menuItem->hidden || !menuItem->active))
 			selected = items.size();
 		
 		items.push_back(menuItem);

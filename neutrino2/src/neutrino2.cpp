@@ -968,6 +968,16 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.hdmi_cec_volume = configfile.getInt32("hdmi_cec_volume", 0);
 	g_settings.hdmi_cec_broadcast = configfile.getInt32("hdmi_cec_broadcast", 0); // default off
 	
+	// personalize
+	g_settings.personalize_tvradio = configfile.getInt32("personalize_tvradio", ITEM_ACTIVE);
+	g_settings.personalize_epgtimer = configfile.getInt32("personalize_epgtimer", ITEM_ACTIVE);
+	g_settings.personalize_scart = configfile.getInt32("personalize_scart", ITEM_ACTIVE);
+	g_settings.personalize_features = configfile.getInt32("personalize_features", ITEM_ACTIVE);
+	g_settings.personalize_system = configfile.getInt32("personalize_system", ITEM_ACTIVE);
+	g_settings.personalize_information = configfile.getInt32("personalize_information", ITEM_ACTIVE);
+	g_settings.personalize_powermenu = configfile.getInt32("personalize_powermenu", ITEM_ACTIVE);
+	g_settings.personalize_mediaplayer = configfile.getInt32("personalize_mediaplayer", ITEM_ACTIVE);
+	
 	//set OSD resolution
 #define DEFAULT_X_OFF 35
 #define DEFAULT_Y_OFF 35
@@ -1455,6 +1465,16 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32( "hdmi_cec_standby", g_settings.hdmi_cec_standby );
 	configfile.setInt32( "hdmi_cec_volume", g_settings.hdmi_cec_volume );
 	configfile.setInt32( "hdmi_cec_broadcast", g_settings.hdmi_cec_broadcast );
+	
+	// personalize
+	configfile.setInt32("personalize_tvradio", g_settings.personalize_tvradio);
+	configfile.setInt32("personalize_epgtimer", g_settings.personalize_epgtimer);
+	configfile.setInt32("personalize_scart", g_settings.personalize_scart);
+	configfile.setInt32("personalize_features", g_settings.personalize_features);
+	configfile.setInt32("personalize_system", g_settings.personalize_system);
+	configfile.setInt32("personalize_information", g_settings.personalize_information);
+	configfile.setInt32("personalize_powermenu", g_settings.personalize_powermenu);
+	configfile.setInt32("personalize_mediaplayer", g_settings.personalize_mediaplayer);
 
 	if(strcmp(fname, NEUTRINO_SETTINGS_FILE))
 		configfile.saveConfig(fname);

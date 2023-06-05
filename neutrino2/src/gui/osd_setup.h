@@ -150,4 +150,16 @@ class CSkinSettings : public CMenuTarget
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
+class CPersonalisation : public CMenuTarget
+{
+	private:
+		void showMenu(void);
+		
+	public:
+		CPersonalisation(){};
+		~CPersonalisation(){};
+		
+		int exec(CMenuTarget* parent, const std::string& actionKey);
+};
+
 #endif //__osd_setup__

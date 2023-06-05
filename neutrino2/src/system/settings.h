@@ -499,7 +499,18 @@ struct SNeutrinoSettings
 	int hdmi_cec_broadcast;
 	
 	// frontend
-	uint32_t delsys;
+	//uint32_t delsys;
+	
+	// personalisation
+	int  personalize_tvradio;
+	int  personalize_epgtimer;
+	int  personalize_scart;
+	int  personalize_features;
+	int  personalize_system;
+	int  personalize_information;
+	int  personalize_powermenu;
+	int  personalize_mediaplayer;
+	std::string personalize_pincode;
 
 #define FILESYSTEM_ENCODING_TO_UTF8(a) (g_settings.filesystem_is_utf8 ? (a) : Latin1_to_UTF8(a).c_str())
 #define UTF8_TO_FILESYSTEM_ENCODING(a) (g_settings.filesystem_is_utf8 ? (a) : UTF8_to_Latin1(a).c_str())	

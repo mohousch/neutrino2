@@ -159,6 +159,9 @@ void COSDSettings::showMenu(void)
 	//FIXME:
 	//CAlphaSetup * chAlphaSetup = new CAlphaSetup(_("Alpha"), &g_settings.gtx_alpha);
 	//osdSettings->addItem( new ClistBoxItem(_("Alpha Setup"), true, NULL, chAlphaSetup, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_ALPHASETUP));
+	
+	// personalize
+	osdSettings->addItem(new ClistBoxItem(_("Personalisation"), true, NULL, new CPersonalisation(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
 		
 	// diverses
 	osdSettings->addItem(new ClistBoxItem(_("Misc settings"), true, NULL, new COSDDiverses(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
@@ -1446,5 +1449,116 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	showMenu();
 	
 	return ret;
+}
+
+// personalize
+int CPersonalisation::exec(CMenuTarget *parent, const std::string &actionKey)
+{
+	dprintf(DEBUG_NORMAL, "CPersonalisation::exec: actionKey:%s\n", actionKey.c_str());
+	
+	int ret = RETURN_REPAINT;
+	
+	if (parent)
+		parent->hide();
+		
+	showMenu();
+	
+	return ret;
+}
+
+void CPersonalisation::showMenu(void)
+{
+	dprintf(DEBUG_NORMAL, "CSkinSettings::showMenu:\n");
+	
+	//
+	CMenuItem* item = NULL;
+	CWidget* widget = NULL;
+	ClistBox* personalizeSettings = NULL;
+	
+	widget = CNeutrinoApp::getInstance()->getWidget("personalisation");
+	
+	if (widget)
+	{
+		personalizeSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		personalizeSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+
+		personalizeSettings->setWidgetMode(MODE_SETUP);
+		personalizeSettings->enableShrinkMenu();
+		
+		personalizeSettings->enablePaintHead();
+		personalizeSettings->setTitle(_("Personalisation"), NEUTRINO_ICON_COLORS);
+
+		personalizeSettings->enablePaintFoot();
+			
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+			
+		personalizeSettings->setFootButtons(&btn);
+		
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "personalisation";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->addWidgetItem(personalizeSettings);
+	}
+	
+	personalizeSettings->clear();
+	
+	// intros
+	personalizeSettings->addItem(new ClistBoxItem(_("back")));
+	personalizeSettings->addItem( new CMenuSeparator(LINE) );
+	personalizeSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	personalizeSettings->addItem(new CMenuSeparator(LINE));
+	
+	// mainmenu
+	// tv / radio
+	CMenuItem *m1 = new CMenuOptionChooser(_("TV / Radio"), &g_settings.personalize_tvradio);
+	m1->setActive(true);
+	m1->addOption(_("active"), ITEM_ACTIVE);
+	m1->addOption(_("locked"), ITEM_LOCKED);
+	m1->addOption(_("hidden"), ITEM_HIDDEN);
+	m1->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(m1);
+	
+	// epg / timer
+	CMenuItem *m2 = new CMenuOptionChooser(_("Timer / EPG"), &g_settings.personalize_epgtimer);
+	m2->setActive(true);
+	m2->addOption(_("active"), ITEM_ACTIVE);
+	m2->addOption(_("locked"), ITEM_LOCKED);
+	m2->addOption(_("hidden"), ITEM_HIDDEN);
+	m2->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(m2);
+	
+	// scart
+	CMenuItem *m3 = new CMenuOptionChooser(_("Scart"), &g_settings.personalize_scart);
+	m3->setActive(true);
+	m3->addOption(_("active"), ITEM_ACTIVE);
+	m3->addOption(_("locked"), ITEM_LOCKED);
+	m3->addOption(_("hidden"), ITEM_HIDDEN);
+	m3->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(m3);
+	
+	// features
+	CMenuItem *m4 = new CMenuOptionChooser(_("Features"), &g_settings.personalize_features);
+	m4->setActive(true);
+	m4->addOption(_("active"), ITEM_ACTIVE);
+	m4->addOption(_("locked"), ITEM_LOCKED);
+	m4->addOption(_("hidden"), ITEM_HIDDEN);
+	m4->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(m4);
+	
+	// service
+	
+	// settings
+	
+	widget->setTimeOut(g_settings.timing_menu);
+	widget->exec(NULL, "");
+	
+	delete personalizeSettings;
+	personalizeSettings = NULL;
+	delete widget;
+	widget = NULL;
 }
 

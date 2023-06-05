@@ -85,6 +85,15 @@ enum
 	ALIGN_RIGHT = 16
 };
 
+// state
+enum
+{
+	ITEM_ACTIVE,
+	ITEM_LOCKED,
+	ITEM_HIDDEN,
+	ITEM_INACTIVE
+};
+
 typedef struct keyval
 {
 	int key;
@@ -175,7 +184,8 @@ class CMenuItem
 		//
 		CChangeObserver* observ;
 		bool pulldown;
-
+		
+		//
 		CMenuItem();
 		virtual ~CMenuItem()
 		{
@@ -255,6 +265,9 @@ class CMenuItem
 		
 		// locked
 		virtual void setLocked(char *validpin = NULL){ locked = true; AlwaysAsk = true; validPIN = validpin? validpin : (char *)"";};
+		
+		// status : active/hidden/locked
+		virtual void setState(int state);
 };
 
 // CMenuOptionChooser
