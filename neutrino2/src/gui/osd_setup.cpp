@@ -1471,7 +1471,7 @@ void CPersonalisation::showMenu(void)
 	dprintf(DEBUG_NORMAL, "CSkinSettings::showMenu:\n");
 	
 	//
-	CMenuItem* item = NULL;
+	CMenuItem *item = NULL;
 	CWidget* widget = NULL;
 	ClistBox* personalizeSettings = NULL;
 	
@@ -1514,45 +1514,82 @@ void CPersonalisation::showMenu(void)
 	
 	// mainmenu
 	// tv / radio
-	CMenuItem *m1 = new CMenuOptionChooser(_("TV / Radio"), &g_settings.personalize_tvradio);
-	m1->setActive(true);
-	m1->addOption(_("active"), ITEM_ACTIVE);
-	m1->addOption(_("locked"), ITEM_LOCKED);
-	m1->addOption(_("hidden"), ITEM_HIDDEN);
-	m1->addOption(_("inactive"), ITEM_INACTIVE);
-	personalizeSettings->addItem(m1);
+	item = new CMenuOptionChooser(_("TV / Radio"), &g_settings.personalize_tvradio);
+	item->setActive(true);
+	item->addOption(_("active"), ITEM_ACTIVE);
+	item->addOption(_("locked"), ITEM_LOCKED);
+	item->addOption(_("hidden"), ITEM_HIDDEN);
+	item->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(item);
 	
 	// epg / timer
-	CMenuItem *m2 = new CMenuOptionChooser(_("Timer / EPG"), &g_settings.personalize_epgtimer);
-	m2->setActive(true);
-	m2->addOption(_("active"), ITEM_ACTIVE);
-	m2->addOption(_("locked"), ITEM_LOCKED);
-	m2->addOption(_("hidden"), ITEM_HIDDEN);
-	m2->addOption(_("inactive"), ITEM_INACTIVE);
-	personalizeSettings->addItem(m2);
+	item = new CMenuOptionChooser(_("Timer / EPG"), &g_settings.personalize_epgtimer);
+	item->setActive(true);
+	item->addOption(_("active"), ITEM_ACTIVE);
+	item->addOption(_("locked"), ITEM_LOCKED);
+	item->addOption(_("hidden"), ITEM_HIDDEN);
+	item->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(item);
 	
 	// scart
-	CMenuItem *m3 = new CMenuOptionChooser(_("Scart"), &g_settings.personalize_scart);
-	m3->setActive(true);
-	m3->addOption(_("active"), ITEM_ACTIVE);
-	m3->addOption(_("locked"), ITEM_LOCKED);
-	m3->addOption(_("hidden"), ITEM_HIDDEN);
-	m3->addOption(_("inactive"), ITEM_INACTIVE);
-	personalizeSettings->addItem(m3);
+#ifdef ENABLE_SCART
+	item = new CMenuOptionChooser(_("Scart"), &g_settings.personalize_scart);
+	item->setActive(true);
+	item->addOption(_("active"), ITEM_ACTIVE);
+	item->addOption(_("locked"), ITEM_LOCKED);
+	item->addOption(_("hidden"), ITEM_HIDDEN);
+	item->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(item);
+#endif
 	
 	// features
-	CMenuItem *m4 = new CMenuOptionChooser(_("Features"), &g_settings.personalize_features);
-	m4->setActive(true);
-	m4->addOption(_("active"), ITEM_ACTIVE);
-	m4->addOption(_("locked"), ITEM_LOCKED);
-	m4->addOption(_("hidden"), ITEM_HIDDEN);
-	m4->addOption(_("inactive"), ITEM_INACTIVE);
-	personalizeSettings->addItem(m4);
+	item = new CMenuOptionChooser(_("Features"), &g_settings.personalize_features);
+	item->setActive(true);
+	item->addOption(_("active"), ITEM_ACTIVE);
+	item->addOption(_("locked"), ITEM_LOCKED);
+	item->addOption(_("hidden"), ITEM_HIDDEN);
+	item->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(item);
 	
-	// service
+	// system
+	item = new CMenuOptionChooser(_("System"), &g_settings.personalize_system);
+	item->setActive(true);
+	item->addOption(_("active"), ITEM_ACTIVE);
+	item->addOption(_("locked"), ITEM_LOCKED);
+	item->addOption(_("hidden"), ITEM_HIDDEN);
+	item->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(item);
 	
 	// settings
 	
+	// information
+	item = new CMenuOptionChooser(_("Information"), &g_settings.personalize_information);
+	item->setActive(true);
+	item->addOption(_("active"), ITEM_ACTIVE);
+	item->addOption(_("locked"), ITEM_LOCKED);
+	item->addOption(_("hidden"), ITEM_HIDDEN);
+	item->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(item);
+	
+	// powermenu
+	item = new CMenuOptionChooser(_("Power Menu"), &g_settings.personalize_powermenu);
+	item->setActive(true);
+	item->addOption(_("active"), ITEM_ACTIVE);
+	item->addOption(_("locked"), ITEM_LOCKED);
+	item->addOption(_("hidden"), ITEM_HIDDEN);
+	item->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(item);
+	
+	// mediaplayer
+	item = new CMenuOptionChooser(_("Media Player"), &g_settings.personalize_mediaplayer);
+	item->setActive(true);
+	item->addOption(_("active"), ITEM_ACTIVE);
+	item->addOption(_("locked"), ITEM_LOCKED);
+	item->addOption(_("hidden"), ITEM_HIDDEN);
+	item->addOption(_("inactive"), ITEM_INACTIVE);
+	personalizeSettings->addItem(item);
+	
+	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
