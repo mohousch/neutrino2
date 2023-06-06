@@ -116,18 +116,15 @@ class CTimerListNewNotifier : public CChangeObserver
 				sprintf( display, "%02d.%02d.%04d %02d:%02d", tmTime2->tm_mday, tmTime2->tm_mon + 1,
 							tmTime2->tm_year + 1900,
 							tmTime2->tm_hour, tmTime2->tm_min);
-				//m1->setActive(true);
+
 				m1->setHidden(false);
-				//m6->setActive((recDir != NULL)? true: false);
 				m6->setHidden((recDir != NULL)? false : true);
 			}
 			else
 			{
 				*stopTime = 0;
 				strcpy(display,"                ");
-				//m1->setActive (false);
 				m1->setHidden(true);
-				//m6->setActive(false);
 				m6->setHidden(true);
 			}
 			
@@ -135,34 +132,26 @@ class CTimerListNewNotifier : public CChangeObserver
 				type == CTimerd::TIMER_ZAPTO ||
 				type == CTimerd::TIMER_NEXTPROGRAM)
 			{
-				//m2->setActive(true);
 				m2->setHidden(false);
 			}
 			else
 			{
-				//m2->setActive(false);
 				m2->setHidden(true);
 			}
 			
 			if(type == CTimerd::TIMER_STANDBY)
-				//m3->setActive(true);
 				m3->setHidden(false);
 			else
-				//m3->setActive(false);
 				m3->setHidden(true);
 			
 			if(type == CTimerd::TIMER_REMIND)
-				//m4->setActive(true);
 				m4->setHidden(false);
 			else
-				//m4->setActive(false);
 				m4->setHidden(true);
 			
 			if(type == CTimerd::TIMER_EXEC_PLUGIN)
-				//m5->setActive(true);
 				m5->setHidden(false);
 			else
-				//m5->setActive(false);
 				m5->setHidden(true);
 			
 			return true;
@@ -187,17 +176,13 @@ class CTimerListRepeatNotifier : public CChangeObserver
 		bool changeNotify(const std::string& /*OptionName*/, void *)
 		{
 			if(*iRepeat >= (int)CTimerd::TIMERREPEAT_WEEKDAYS)
-				//m1->setActive (true);
 				m1->setHidden(false);
 			else
-				//m1->setActive (false);
 				m1->setHidden(true);
 			
 			if (*iRepeat != (int)CTimerd::TIMERREPEAT_ONCE)
-				//m2->setActive(true);
 				m2->setHidden(false);
 			else
-				//m2->setActive(false);
 				m2->setHidden(true);
 			
 			return true;
@@ -983,11 +968,8 @@ int CTimerList::modifyTimer()
 		timerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
 		timerSettings->setWidgetMode(MODE_SETUP);
-		//timerSettings->enableShrinkMenu();
-		
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("Modify timer"), NEUTRINO_ICON_TIMER);
-
 		timerSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
@@ -1030,7 +1012,7 @@ int CTimerList::modifyTimer()
 	CTimerd::getInstance()->setWeekdaysToStr(timer->eventRepeat, (char *)m_weekdaysStr.c_str());
 	timer->eventRepeat = (CTimerd::CTimerEventRepeat)(((int)timer->eventRepeat) & 0x1FF);
 	CStringInput timerSettings_weekdays(_("on weekdays"), (char *)m_weekdaysStr.c_str(), 7, _("Mo Tu We Th Fr Sa Su"), _("'X'=timer '-' no timer"), "-X");
-	ClistBoxItem *m4 = new ClistBoxItem(_("on weekdays"), /*((int)timer->eventRepeat) >= (int)CTimerd::TIMERREPEAT_WEEKDAYS*/true, m_weekdaysStr.c_str(), &timerSettings_weekdays );
+	ClistBoxItem *m4 = new ClistBoxItem(_("on weekdays"), true, m_weekdaysStr.c_str(), &timerSettings_weekdays );
 	CIntInput timerSettings_repeatCount(_("repeats"), (int&)timer->repeatCount,3, _("amount of timer repeats"), _("0 for unlimited repeats"));
 
 	ClistBoxItem *m5 = new ClistBoxItem(_("repeats"), timer->eventRepeat != (int)CTimerd::TIMERREPEAT_ONCE, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
@@ -1040,18 +1022,7 @@ int CTimerList::modifyTimer()
 	CMenuOptionChooser * m3 = new CMenuOptionChooser(_("Repeat"), (int *)&timer->eventRepeat, TIMERLIST_REPEAT_OPTIONS, TIMERLIST_REPEAT_OPTION_COUNT, true, &notifier);
 
 	// recdir
-	//if(!strlen(timer->recordingDir))
-		strncpy(timer->recordingDir, g_settings.network_nfs_recordingdir, sizeof(timer->recordingDir));
-
-	//CMountChooser recDirs(_("recording directory"), NEUTRINO_ICON_SETTINGS, NULL, timer->recordingDir, g_settings.network_nfs_recordingdir);
-
-	//if (!recDirs.hasItem())
-	//{
-	//	dprintf(DEBUG_NORMAL, "CTimerList::modifyTimer: warning: no network devices available\n");
-	//}
-	
-	//bool recDirEnabled = recDirs.hasItem() && (timer->eventType == CTimerd::TIMER_RECORD) && (recDir != NULL);
-	//ClistBoxItem *m6 = new ClistBoxItem(_("Recording directory"), recDirEnabled, timer->recordingDir, &recDirs);
+	strncpy(timer->recordingDir, g_settings.network_nfs_recordingdir, sizeof(timer->recordingDir));
 	ClistBoxItem *m6 = new ClistBoxItem(_("Recording directory"), true, timer->recordingDir, this, "recording_dir");
 
 	timerSettings->addItem(new CMenuSeparator(LINE));
@@ -1067,12 +1038,9 @@ int CTimerList::modifyTimer()
 				
 	timerSettings_apids = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
-	timerSettings_apids->setWidgetMode(MODE_SETUP);
-	//timerSettings_apids->enableShrinkMenu();
-					
+	timerSettings_apids->setWidgetMode(MODE_SETUP);				
 	timerSettings_apids->enablePaintHead();
 	timerSettings_apids->setTitle(_("Audio PIDs"), NEUTRINO_ICON_TIMER);
-
 	timerSettings_apids->enablePaintFoot();
 						
 	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
@@ -1155,11 +1123,8 @@ int CTimerList::newTimer()
 		timerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
 		timerSettings->setWidgetMode(MODE_SETUP);
-		//timerSettings->enableShrinkMenu();
-		
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("New timer"), NEUTRINO_ICON_TIMER);
-
 		timerSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
@@ -1195,12 +1160,12 @@ int CTimerList::newTimer()
 
 	// weeks
 	CStringInput timerSettings_weekdays(_("on weekdays"), (char *)m_weekdaysStr.c_str(), 7, _("Mo Tu We Th Fr Sa Su"), _("'X'=timer '-' no timer"), "-X");
-	ClistBoxItem *m4 = new ClistBoxItem(_("on weekdays"), /*false*/true, m_weekdaysStr.c_str(), &timerSettings_weekdays);
+	ClistBoxItem *m4 = new ClistBoxItem(_("on weekdays"), true, m_weekdaysStr.c_str(), &timerSettings_weekdays);
 	m4->setHidden(true);
 
 	// repeat count
 	CIntInput timerSettings_repeatCount(_("repeats"), (int&)timerNew.repeatCount, 3, _("amount of timer repeats"), _("0 for unlimited repeats"));
-	ClistBoxItem *m5 = new ClistBoxItem(_("repeats"), /*false*/true, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
+	ClistBoxItem *m5 = new ClistBoxItem(_("repeats"), true, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
 	m5->setHidden(true);
 
 	CTimerListRepeatNotifier notifier((int *)&timerNew.eventRepeat, m4, m5);
@@ -1212,13 +1177,6 @@ int CTimerList::newTimer()
 	ClistBoxItem *m6 = new ClistBoxItem(_("Channel"), true, timerNew_channel_name.c_str(), this, CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_tv? "tv" : "radio");
 
 	// recording dir
-	//CMountChooser recDirs(_("recording directory"), NEUTRINO_ICON_SETTINGS, NULL, timerNew.recordingDir, g_settings.network_nfs_recordingdir);
-
-	//if (!recDirs.hasItem())
-	//{
-	//	dprintf(DEBUG_NORMAL, "CTimerList::newTimer: warning: no network devices available\n");
-	//}
-
 	ClistBoxItem* m7 = new ClistBoxItem(_("Recording directory"), true, timerNew.recordingDir, this, "recording_dir");
 
 	// sb mode
@@ -1227,12 +1185,11 @@ int CTimerList::newTimer()
 
 	// message
 	CStringInputSMS timerSettings_msg(_("Message"), timerNew.message);
-	ClistBoxItem *m9 = new ClistBoxItem(_("Message"), /*false*/true, timerNew.message, &timerSettings_msg );
+	ClistBoxItem *m9 = new ClistBoxItem(_("Message"), true, timerNew.message, &timerSettings_msg );
 	m9->setHidden(true);
 
 	// plugin
-	//plugin_chooser = new CPluginChooser(timerNew.pluginName);
-	ClistBoxItem *m10 = new ClistBoxItem(_("Plugin"), /*false*/true, timerNew.pluginName, /*plugin_chooser*/this, "plugin_chooser");
+	ClistBoxItem *m10 = new ClistBoxItem(_("Plugin"), true, timerNew.pluginName, this, "plugin_chooser");
 	m10->setHidden(true);
 
 	CTimerListNewNotifier notifier2((int *)&timerNew.eventType,
@@ -1254,7 +1211,7 @@ int CTimerList::newTimer()
 	timerSettings->addItem( m9);
 	timerSettings->addItem( m10);
 
-	//int ret = timerSettings.exec(this, "");
+	//
 	res = widget->exec(this, "");
 	
 	if (timerSettings)
@@ -1275,11 +1232,10 @@ int CTimerList::newTimer()
 bool askUserOnTimerConflict(time_t announceTime, time_t stopTime)
 {
 	CTimerd::TimerList overlappingTimers = CTimerd::getInstance()->getOverlappingTimers(announceTime,stopTime);
-	
-	//printf("[CTimerdClient] attention\n%d\t%d\t%d conflicts with:\n",timerNew.announceTime,timerNew.alarmTime,timerNew.stopTime);
 
 	std::string timerbuf = _("Timer conflict. Create the timer anyway?");
 	timerbuf += "\n";
+	
 	for (CTimerd::TimerList::iterator it = overlappingTimers.begin(); it != overlappingTimers.end(); it++)
 	{
 		timerbuf += CTimerList::convertTimerType2String(it->eventType);
