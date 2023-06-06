@@ -180,7 +180,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.polarization = scanSettings->TP_pol;
 			TP.feparams.delsys = DVB_S;
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d rate %d fec %d pol %d\n", feindex, TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.polarization);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq %d rate %d fec %d pol %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.polarization);
 		} 
 #if HAVE_DVB_API_VERSION >= 5 
 		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
@@ -193,7 +193,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.modulation	= (fe_modulation_t) scanSettings->TP_mod;
 			TP.feparams.delsys = DVB_C;
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d rate %d fec %d mod %d\n", feindex, TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.modulation);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:=x%x) freq %d rate %d fec %d mod %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.modulation);
 		}
 #if HAVE_DVB_API_VERSION >= 5
 		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
@@ -215,7 +215,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 				TP.feparams.plp_id = atoi(scanSettings->TP_plp_id);
 #endif
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, TP.feparams.frequency, TP.feparams.bandwidth, TP.feparams.code_rate_HP, TP.feparams.code_rate_LP, TP.feparams.modulation, TP.feparams.transmission_mode, TP.feparams.guard_interval, TP.feparams.hierarchy_information);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.bandwidth, TP.feparams.code_rate_HP, TP.feparams.code_rate_LP, TP.feparams.modulation, TP.feparams.transmission_mode, TP.feparams.guard_interval, TP.feparams.hierarchy_information);
 		}
 #if HAVE_DVB_API_VERSION >= 5 
 		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
@@ -226,7 +226,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.modulation	= (fe_modulation_t) scanSettings->TP_mod;
 			TP.feparams.delsys = DVB_A;
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d) freq:%d mod %d\n", feindex, TP.feparams.frequency, TP.feparams.modulation);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq:%d mod %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.modulation);
 		}
 	} 
 	else 
@@ -310,6 +310,13 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		msg.TP = TP;
 		msg.scanmode = scan_mode;
 		msg.feindex = feindex;
+		
+		if (scanSettings->deleteServices)
+		{
+			my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/zapit/*.xml");
+			CZapit::getInstance()->reinitChannels();
+			CNeutrinoApp::getInstance()->channelsInit();
+		}
 	
 		success = CZapit::getInstance()->scanTP(msg);
 	}
@@ -319,6 +326,13 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		
 		msg.scanmode = scan_mode;
 		msg.feindex = feindex;
+		
+		if (scanSettings->deleteServices)
+		{
+			my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/zapit/*.xml");
+			CZapit::getInstance()->reinitChannels();
+			CNeutrinoApp::getInstance()->channelsInit();
+		}
 	
 		success = CZapit::getInstance()->startScan(msg);
 	}

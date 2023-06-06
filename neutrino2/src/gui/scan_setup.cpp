@@ -325,11 +325,10 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		delete hintBox;
 		hintBox = NULL;
 		
-		//return RETURN_REPAINT;
-		hide();
-		showScanService();
-		
-		return RETURN_EXIT_ALL;
+		return RETURN_REPAINT;
+		//hide();
+		//showScanService();
+		//return RETURN_EXIT_ALL;
 	}
 	else if(actionKey == "unisetup") 
 	{
@@ -847,6 +846,10 @@ void CScanSetup::showScanService()
 	CMenuOptionChooser * useNit = new CMenuOptionChooser(_("Scan Mode"), (int *)&scanSettings->scan_mode, SCANTS_SCANMODE_OPTIONS, SCANTS_SCANMODE_OPTION_COUNT, ( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP) ));
 	feModeNotifier->addItem(0, useNit);
 	scansetup->addItem(useNit);
+	
+	// delete bevor scan
+	CMenuOptionChooser * del = new CMenuOptionChooser(_("delete bevor scan"), (int *)&scanSettings->deleteServices, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
+	scansetup->addItem(del);
 		
 	scansetup->addItem(new CMenuSeparator(LINE));
 		
@@ -1589,9 +1592,8 @@ CScanSettings::CScanSettings( int num)
 	strcpy(satNameNoDiseqc, "none");
 	bouquetMode = CZapit::BM_UPDATEBOUQUETS;
 	scanType = CZapit::ST_TVRADIO;
-	
-	//
-	scan_mode = 1;
+	deleteServices = 0;
+	scan_mode = CZapit::SM_FAST;
 }
 
 // borrowed from cst neutrino-hd (femanager.cpp)
@@ -1622,14 +1624,18 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	
 	if( !CZapit::getInstance()->getFE(index) )
 		return false;
+		
+	char cfg_key[81];
 	
 	// common
 	scanType = (CZapit::scanType) getConfigValue(index, "scanType", CZapit::ST_ALL);
 	bouquetMode = (CZapit::bouquetMode) getConfigValue(index, "bouquetMode", CZapit::BM_UPDATEBOUQUETS);
 	scan_mode = getConfigValue(index, "scan_mode", CZapit::SM_FAST); // NIT (0) or fast (1)
+	//sprintf(cfg_key, "fe%d_delete", index);
+	//deleteServices = configfile.getBool(cfg_key, false);
+	deleteServices = getConfigValue(index, "delete", 0);
 	
 	//
-	char cfg_key[81];
 	sprintf(cfg_key, "fe%d_satNameNoDiseqc", index);
 	strcpy(satNameNoDiseqc, configfile.getString(cfg_key, "none").c_str());
 	
@@ -1700,13 +1706,17 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 {
 	printf("CScanSettings::saveSettings: fe%d\n", index);
 	
+	char cfg_key[81];
+	
 	// common
 	setConfigValue(index, "scanType", scanType );
 	setConfigValue(index, "bouquetMode", bouquetMode );
 	setConfigValue(index, "scan_mode", scan_mode);
+	//sprintf(cfg_key, "fe%d_delete", index);
+	//configfile.setBool(cfg_key, deleteServices);
+	setConfigValue(index, "delete", deleteServices);
 	
 	//
-	char cfg_key[81];
 	sprintf(cfg_key, "fe%d_satNameNoDiseqc", index);
 	configfile.setString(cfg_key, satNameNoDiseqc );
 	

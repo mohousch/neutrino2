@@ -51,6 +51,7 @@ class CScanSettings
 		unsigned int		bouquetMode;
 		unsigned int		scanType;
 		char            	satNameNoDiseqc[50];
+		unsigned int		deleteServices;
 		
 		//
 		unsigned int		scan_mode;
