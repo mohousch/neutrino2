@@ -3753,7 +3753,7 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 			
 	t_satellite_position satellitePosition = scanProviders.begin()->first;
 	
-	dprintf(DEBUG_NORMAL, "CZapit::tuneTP: satname:%s satpos:%d\n", name, satellitePosition);
+	dprintf(DEBUG_NORMAL, "CZapit::tuneTP: (fe:%d delsys:0x%x) satname:%s satpos:%d (TP.delsys:0x%x)\n", feindex, getFE(feindex)->getForcedDelSys(), name, satellitePosition, TP.feparams.delsys);
 	
 	// tune
 	getFE(feindex)->setInput(satellitePosition, TP.feparams.frequency, TP.polarization);
@@ -4184,7 +4184,7 @@ void * CZapit::scanTransponderThread(void * data)
 	// satpos
 	satellitePosition = scanProviders.begin()->first;
 	
-	dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: scanning sat: %s position: %d fe(%d)\n", providerName, satellitePosition, feindex);
+	dprintf(DEBUG_NORMAL, "CZapit::scanTransponderThread: (fe:%d delsys:0x%x) scanning sat: %s position: %d fe(%d)\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), providerName, satellitePosition, feindex);
 	
 	eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, providerName, strlen(providerName) + 1);
 

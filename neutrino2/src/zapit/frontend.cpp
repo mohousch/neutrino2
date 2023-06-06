@@ -2247,10 +2247,10 @@ uint32_t CFrontend::getDeliverySystem()
 
 bool CFrontend::changeDelSys(uint32_t delsys)
 {
-	dprintf(DEBUG_NORMAL, "CFrontend::changeDelSys: fe(%d:%d) (forceddelsys:%x) (new delsys:%x)\n", feadapter, fenumber, forcedDelSys, delsys);
+	dprintf(DEBUG_NORMAL, "CFrontend::changeDelSys: fe(%d:%d) to delsys:%x\n", feadapter, fenumber, delsys);
 	
-	//if (deliverySystemMask == delsys)
-	//	return true;
+	if ( !(deliverySystemMask & delsys) )
+		return true;
 	
 #if HAVE_DVB_API_VERSION >= 5
 	struct dtv_property p[2];

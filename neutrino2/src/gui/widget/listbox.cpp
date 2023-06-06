@@ -48,8 +48,12 @@ extern CPlugins * g_PluginList;    // defined in neutrino.cpp
 CMenuItem::CMenuItem()
 {
 	x = -1;
+	y = 0;
+	dx = 0;
+	dy = 0;
 	menuItem_type = -1;
 	directKey = RC_nokey;
+	msg = 0;
 	iconName = "";
 	can_arrow = false;
 	itemIcon = "";
@@ -187,6 +191,7 @@ bool CMenuItem::check()
 	return ( strncmp(cPIN, validPIN, 4) == 0);
 }
 
+//
 void CMenuItem::paintItemBox(int dy, fb_pixel_t col)
 {
 	if (!paintFrame)

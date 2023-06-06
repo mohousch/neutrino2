@@ -318,9 +318,6 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		// set fe mode
 		CZapit::getInstance()->setFEMode(CZapit::getInstance()->getFE(feindex)->mode, feindex);
 		
-		// set fe delsys
-		//CZapit::getInstance()->getFE(feindex)->changeDelSys(CZapit::getInstance()->getFE(feindex)->forcedDelSys);
-		
 		// save frontend.conf
 		CZapit::getInstance()->saveFrontendConfig(feindex);
 		
@@ -354,6 +351,23 @@ void CScanSetup::showScanService()
 	//load scan settings 
 	if( !scanSettings->loadSettings(NEUTRINO_SCAN_SETTINGS_FILE, feindex) ) 
 		dprintf(DEBUG_NORMAL, "CScanSetup::CScanSetup: Loading of scan settings failed. Using defaults.\n");
+		
+	// 
+	dmode = CZapit::getInstance()->getFE(feindex)->diseqcType;
+	
+	// load frontend config
+	CZapit::getInstance()->loadFrontendConfig();
+	
+	//
+	//CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
+	
+	// load motor position
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+#else
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+#endif
+		CServices::getInstance()->loadMotorPositions();
 	
 	//
 	CWidget* widget = NULL;
@@ -389,24 +403,7 @@ void CScanSetup::showScanService()
 		widget->addWidgetItem(scansetup);
 	}
 
-	scansetup->clearItems();
-	
-	// 
-	dmode = CZapit::getInstance()->getFE(feindex)->diseqcType;
-	
-	// load frontend config
-	CZapit::getInstance()->loadFrontendConfig();
-	
-	//
-	CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
-	
-	// load motor position
-#if HAVE_DVB_API_VERSION >= 5
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
-#else
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
-#endif
-		CServices::getInstance()->loadMotorPositions();
+	scansetup->clear();
 	
 	// intros
 	scansetup->addItem(new ClistBoxItem(_("back")));
@@ -454,7 +451,7 @@ void CScanSetup::showScanService()
 		satSetupWidget->addWidgetItem(satSetup);
 	}
 
-	satSetup->clearItems();
+	satSetup->clear();
 	
 	satSetup->addItem(new ClistBoxItem(_("back")));
 	satSetup->addItem(new CMenuSeparator(LINE));
@@ -492,7 +489,7 @@ void CScanSetup::showScanService()
 		satfindMenuWidget->addWidgetItem(satfindMenu);
 	}
 	
-	satfindMenu->clearItems();
+	satfindMenu->clear();
 
 	satfindMenu->addItem(new ClistBoxItem(_("back")));
 	satfindMenu->addItem(new CMenuSeparator(LINE));
@@ -556,7 +553,7 @@ void CScanSetup::showScanService()
 			if(sit->second.system == DVB_S)
 			{
 				satSelect->addOption(sit->second.name.c_str());
-				dprintf(DEBUG_DEBUG, "[neutrino] fe(%d) Adding sat menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
+				dprintf(DEBUG_DEBUG, "scanSetup::showMenu: fe(%d) Adding sat menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
 
 				//
 				tempsatWidget = CNeutrinoApp::getInstance()->getWidget("tempsat");
@@ -712,7 +709,7 @@ void CScanSetup::showScanService()
 	//
 	satfindMenu->addItem(satSelect);
 
-	// motor menu/diseqc
+	//// motor menu/diseqc
 	CWidget* motorMenuWidget = NULL;
 	ClistBox* motorMenu = NULL;
 
@@ -853,7 +850,7 @@ void CScanSetup::showScanService()
 		
 	scansetup->addItem(new CMenuSeparator(LINE));
 		
-	// diseqc/diseqcrepeat/unisetup/lnb/motor
+	//// diseqc/diseqcrepeat/unisetup/lnb/motor
 	CMenuOptionChooser * ojDiseqc = NULL;
 	CMenuOptionNumberChooser * ojDiseqcRepeats = NULL;
 	ClistBoxItem * fsatSetup = NULL;
@@ -929,7 +926,7 @@ void CScanSetup::showScanService()
 		manualScanWidget->addWidgetItem(manualScanlistBox);
 	}
 	
-	manualScanlistBox->clearItems();
+	manualScanlistBox->clear();
 
 	//
 	CScanTs * scanTs = new CScanTs(feindex);
@@ -955,21 +952,21 @@ void CScanSetup::showScanService()
 	switch (CZapit::getInstance()->getFE(feindex)->getInfo()->type)
 	{
 		case FE_QPSK:
-		freq_length = 8;
-		break;
+			freq_length = 8;
+			break;
 		
 		case FE_QAM:
-		freq_length = 6;
-		break;
+			freq_length = 6;
+			break;
 		
 		case FE_OFDM:
-        case FE_ATSC:
-		freq_length = 9;
-		break;
+		case FE_ATSC:
+			freq_length = 9;
+			break;
 		
 		default:
-		freq_length = 8;
-		break;
+			freq_length = 8;
+			break;
 	}
 	
 	CStringInput * freq = new CStringInput(_("Frequency"), (char *) scanSettings->TP_freq, freq_length, NULL, NULL, "0123456789");
@@ -1010,7 +1007,7 @@ void CScanSetup::showScanService()
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 #endif
 	{
-		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_const, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
+		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_mod, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
 	}
 
 	manualScanlistBox->addItem(mod_pol);
@@ -1032,7 +1029,7 @@ void CScanSetup::showScanService()
 		manualScanlistBox->addItem(fec);
 	}
 
-	// band/hp/lp/
+	// band/hp/lp/transmode/guard/hierarchy/plp_id
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
 #else
@@ -1120,7 +1117,7 @@ void CScanSetup::showScanService()
 		autoScanWidget->addWidgetItem(autoScanlistBox);
 	}
 	
-	autoScanlistBox->clearItems();
+	autoScanlistBox->clear();
 	
 	// intros
 	autoScanlistBox->addItem(new ClistBoxItem(_("back")));
