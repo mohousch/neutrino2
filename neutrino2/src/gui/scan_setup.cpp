@@ -880,10 +880,6 @@ void CScanSetup::showScanService()
 	CMenuOptionChooser * useNit = new CMenuOptionChooser(_("Scan Mode"), (int *)&scanSettings->scan_mode, SCANTS_SCANMODE_OPTIONS, SCANTS_SCANMODE_OPTION_COUNT, ( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP) ));
 	feModeNotifier->addItem(0, useNit);
 	scansetup->addItem(useNit);
-	
-	// delete bevor scan
-	CMenuOptionChooser * del = new CMenuOptionChooser(_("delete bevor scan"), (int *)&scanSettings->deleteServices, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
-	scansetup->addItem(del);
 		
 	scansetup->addItem(new CMenuSeparator(LINE));
 		
@@ -1626,7 +1622,6 @@ CScanSettings::CScanSettings( int num)
 	strcpy(satNameNoDiseqc, "none");
 	bouquetMode = CZapit::BM_UPDATEBOUQUETS;
 	scanType = CZapit::ST_TVRADIO;
-	deleteServices = 0;
 	scan_mode = CZapit::SM_FAST;
 }
 
@@ -1665,7 +1660,6 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	scanType = (CZapit::scanType) getConfigValue(index, "scanType", CZapit::ST_ALL);
 	bouquetMode = (CZapit::bouquetMode) getConfigValue(index, "bouquetMode", CZapit::BM_UPDATEBOUQUETS);
 	scan_mode = getConfigValue(index, "scan_mode", CZapit::SM_FAST); // NIT (0) or fast (1)
-	deleteServices = getConfigValue(index, "delete", 0);
 	
 	// satname
 	sprintf(cfg_key, "fe%d_satNameNoDiseqc", index);
@@ -1728,7 +1722,6 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 	setConfigValue(index, "scanType", scanType );
 	setConfigValue(index, "bouquetMode", bouquetMode );
 	setConfigValue(index, "scan_mode", scan_mode);
-	setConfigValue(index, "delete", deleteServices);
 	
 	//
 	sprintf(cfg_key, "fe%d_satNameNoDiseqc", index);

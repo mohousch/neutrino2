@@ -99,7 +99,7 @@ CScanTs::CScanTs(int num)
 
 int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 {
-	dprintfred(DEBUG_NORMAL, "CScanTs::exec: actionKey: %s\n", actionKey.c_str());
+	dprintf(DEBUG_NORMAL, "CScanTs::exec: actionKey: %s\n", actionKey.c_str());
 
 	if(parent)
 		parent->hide();

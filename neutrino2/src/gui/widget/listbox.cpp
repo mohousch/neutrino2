@@ -388,7 +388,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	{
 		for(unsigned int count = 0; count < number_of_options; count++) 
 		{
-			if (options[count].key == (*optionValue)) 
+			if ( options[count].key == (*optionValue) ) 
 			{
 				if( msg == RC_left ) 
 				{
@@ -443,7 +443,6 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 	else if (!active)
 	{
 		color = COL_MENUCONTENTINACTIVE;
-		//bgcolor = COL_MENUCONTENTINACTIVE_PLUS_0;
 	}
 	
 	// paint item
@@ -619,7 +618,6 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 	else if (!active)
 	{
 		color = COL_MENUCONTENTINACTIVE;
-		//bgcolor = COL_MENUCONTENTINACTIVE_PLUS_0;
 	}
 	
 	// paint item
@@ -794,7 +792,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		//select next value
 		for(unsigned int count = 0; count < options.size(); count++) 
 		{
-			if (strcmp(options[count].c_str(), optionValue) == 0) 
+			if (strcmp(options[count].c_str(), optionValue) == 0) //FIXME
 			{
 				if( msg == RC_left ) 
 				{
@@ -849,7 +847,6 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 	else if (!active) 
 	{
 		color = COL_MENUCONTENTINACTIVE;
-		//bgcolor = COL_MENUCONTENTINACTIVE_PLUS_0;
 	}
 	
 	// paint item
@@ -1203,7 +1200,6 @@ int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
 	else if (!active)
 	{
 		color = COL_MENUCONTENTINACTIVE;
-		//bgcolor = COL_MENUCONTENTINACTIVE_PLUS_0;
 	}
 
 	if(widgetType == TYPE_FRAME)

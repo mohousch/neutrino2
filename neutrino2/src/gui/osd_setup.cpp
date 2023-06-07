@@ -1520,6 +1520,7 @@ void CPersonalisation::showMenu(void)
 	item->addOption(_("locked"), ITEM_LOCKED);
 	item->addOption(_("hidden"), ITEM_HIDDEN);
 	item->addOption(_("inactive"), ITEM_INACTIVE);
+	item->enablePullDown();
 	personalizeSettings->addItem(item);
 	
 	// epg / timer
