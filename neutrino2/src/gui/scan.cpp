@@ -99,7 +99,7 @@ CScanTs::CScanTs(int num)
 
 int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 {
-	dprintf(DEBUG_INFO, "CScanTs::exec: actionKey: %s\n", actionKey.c_str());
+	dprintfred(DEBUG_NORMAL, "CScanTs::exec: actionKey: %s\n", actionKey.c_str());
 
 	if(parent)
 		parent->hide();
@@ -204,7 +204,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.bandwidth =  (fe_bandwidth_t)scanSettings->TP_band;
 			TP.feparams.code_rate_HP = (fe_code_rate_t)scanSettings->TP_HP; 
 			TP.feparams.code_rate_LP = (fe_code_rate_t)scanSettings->TP_LP; 
-			TP.feparams.modulation = (fe_modulation_t)scanSettings->TP_const; 
+			TP.feparams.modulation = (fe_modulation_t)scanSettings->TP_mod; 
 			TP.feparams.transmission_mode = (fe_transmit_mode_t)scanSettings->TP_trans;
 			TP.feparams.guard_interval = (fe_guard_interval_t)scanSettings->TP_guard;
 			TP.feparams.hierarchy_information = (fe_hierarchy_t)scanSettings->TP_hierarchy;
@@ -293,7 +293,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
 #endif
 		{
-			CZapit::getInstance()->getFE(feindex)->getDelSys(scanSettings->TP_HP, scanSettings->TP_const, f, s, m);
+			CZapit::getInstance()->getFE(feindex)->getDelSys(scanSettings->TP_HP, scanSettings->TP_mod, f, s, m);
 
 			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq)/1000, f, s, m);
 		}
@@ -310,13 +310,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		msg.TP = TP;
 		msg.scanmode = scan_mode;
 		msg.feindex = feindex;
-		
-		if (scanSettings->deleteServices)
-		{
-			my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/zapit/*.xml");
-			CZapit::getInstance()->reinitChannels();
-			CNeutrinoApp::getInstance()->channelsInit();
-		}
 	
 		success = CZapit::getInstance()->scanTP(msg);
 	}
@@ -326,13 +319,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		
 		msg.scanmode = scan_mode;
 		msg.feindex = feindex;
-		
-		if (scanSettings->deleteServices)
-		{
-			my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/zapit/*.xml");
-			CZapit::getInstance()->reinitChannels();
-			CNeutrinoApp::getInstance()->channelsInit();
-		}
 	
 		success = CZapit::getInstance()->startScan(msg);
 	}

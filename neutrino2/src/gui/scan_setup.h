@@ -52,20 +52,16 @@ class CScanSettings
 		unsigned int		scanType;
 		char            	satNameNoDiseqc[50];
 		unsigned int		deleteServices;
-		
-		//
 		unsigned int		scan_mode;
 		unsigned int		TP_fec;
 		unsigned int		TP_pol;
 		unsigned int		TP_mod;
 		char			TP_freq[10];
 		char			TP_rate[9];
-	
-		//DVB-T
 		unsigned int		TP_band;
 		unsigned int 		TP_HP;
 		unsigned int 		TP_LP;
-		unsigned int		TP_const;
+		//unsigned int		TP_const;
 		unsigned int		TP_trans;
 		unsigned int		TP_guard;
 		unsigned int		TP_hierarchy;
@@ -154,8 +150,8 @@ class CTunerSetup : public CMenuTarget
 		void showMenu();
 		
 	public:
-		CTunerSetup();
-		~CTunerSetup();
+		CTunerSetup(){};
+		~CTunerSetup(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };

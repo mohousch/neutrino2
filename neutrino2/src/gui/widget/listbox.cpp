@@ -398,7 +398,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 						*optionValue = options[number_of_options - 1].key;
 				} 
 				else
-					*optionValue = options[(count+1) % number_of_options].key;
+					*optionValue = options[(count + 1) % number_of_options].key;
 				
 				break;
 			}

@@ -357,9 +357,6 @@ void CScanSetup::showScanService()
 	// load frontend config
 	CZapit::getInstance()->loadFrontendConfig();
 	
-	//
-	//CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
-	
 	// load motor position
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
@@ -545,6 +542,39 @@ void CScanSetup::showScanService()
 		//
 		CWidget* tempsatWidget = NULL;
 		ClistBox* tempsatlistBox = NULL;
+		
+		tempsatWidget = CNeutrinoApp::getInstance()->getWidget("tempsat");
+				
+		if (tempsatWidget)
+		{
+			tempsatlistBox = (ClistBox*)tempsatWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+					
+			//if (tempsatlistBox->hasHead())
+			//	tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
+		}
+		else
+		{
+			tempsatlistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+
+			tempsatlistBox->setWidgetMode(MODE_SETUP);
+			tempsatlistBox->enableShrinkMenu();
+					
+			//
+			tempsatlistBox->enablePaintHead();
+			//tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
+					
+			//
+			tempsatlistBox->enablePaintFoot();		
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+			tempsatlistBox->setFootButtons(&btn);
+					
+			//
+			tempsatWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			tempsatWidget->name = "tempsat";
+			tempsatWidget->setMenuPosition(MENU_POSITION_CENTER);
+			tempsatWidget->enableSaveScreen();
+			tempsatWidget->addWidgetItem(tempsatlistBox);
+		}
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
@@ -554,7 +584,7 @@ void CScanSetup::showScanService()
 				satSelect->addOption(sit->second.name.c_str());
 				dprintf(DEBUG_DEBUG, "scanSetup::showMenu: fe(%d) Adding sat menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
 
-				//
+				/*
 				tempsatWidget = CNeutrinoApp::getInstance()->getWidget("tempsat");
 				
 				if (tempsatWidget)
@@ -587,6 +617,10 @@ void CScanSetup::showScanService()
 					tempsatWidget->enableSaveScreen();
 					tempsatWidget->addWidgetItem(tempsatlistBox);
 				}
+				*/
+				
+				if (tempsatlistBox->hasHead())
+					tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
 				
 				tempsatlistBox->clear();
 				
@@ -1002,7 +1036,7 @@ void CScanSetup::showScanService()
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
 #endif
 	{
-		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_const, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
+		mod_pol = new CMenuOptionChooser(_("Modulation"), (int *)&scanSettings->TP_mod, CABLETERRESTRIALSETUP_SCANTP_MOD, CABLETERRESTRIALSETUP_SCANTP_MOD_COUNT, true);
 	}
 #if HAVE_DVB_API_VERSION >= 5
     	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
@@ -1519,7 +1553,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				scanSettings->TP_band = tmpI->second.feparams.bandwidth;
 				scanSettings->TP_HP = tmpI->second.feparams.code_rate_HP;
 				scanSettings->TP_LP = tmpI->second.feparams.code_rate_LP;
-				scanSettings->TP_const = tmpI->second.feparams.modulation;
+				scanSettings->TP_mod = tmpI->second.feparams.modulation;
 				scanSettings->TP_trans = tmpI->second.feparams.transmission_mode;
 				scanSettings->TP_guard = tmpI->second.feparams.guard_interval;
 				scanSettings->TP_hierarchy = tmpI->second.feparams.hierarchy_information;
@@ -1557,7 +1591,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				scanSettings->TP_band = tmpI->second.feparams.bandwidth;
 				scanSettings->TP_HP = tmpI->second.feparams.code_rate_HP;
 				scanSettings->TP_LP = tmpI->second.feparams.code_rate_LP;
-				scanSettings->TP_const = tmpI->second.feparams.modulation;
+				scanSettings->TP_mod = tmpI->second.feparams.modulation;
 				scanSettings->TP_trans = tmpI->second.feparams.transmission_mode;
 				scanSettings->TP_guard = tmpI->second.feparams.guard_interval;
 				scanSettings->TP_hierarchy = tmpI->second.feparams.hierarchy_information;
@@ -1631,11 +1665,9 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	scanType = (CZapit::scanType) getConfigValue(index, "scanType", CZapit::ST_ALL);
 	bouquetMode = (CZapit::bouquetMode) getConfigValue(index, "bouquetMode", CZapit::BM_UPDATEBOUQUETS);
 	scan_mode = getConfigValue(index, "scan_mode", CZapit::SM_FAST); // NIT (0) or fast (1)
-	//sprintf(cfg_key, "fe%d_delete", index);
-	//deleteServices = configfile.getBool(cfg_key, false);
 	deleteServices = getConfigValue(index, "delete", 0);
 	
-	//
+	// satname
 	sprintf(cfg_key, "fe%d_satNameNoDiseqc", index);
 	strcpy(satNameNoDiseqc, configfile.getString(cfg_key, "none").c_str());
 	
@@ -1647,57 +1679,41 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	sprintf(cfg_key, "fe%d_TP_rate", index);
 	strcpy(TP_rate, configfile.getString(cfg_key, "27500000").c_str());
 	
-#if HAVE_DVB_API_VERSION >= 5
-	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_S || CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_S2)
-#else
-	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QPSK)
-#endif
-	{
-		TP_fec = getConfigValue(index, "TP_fec", FEC_AUTO);
-		TP_pol = getConfigValue(index, "TP_pol", 0);
-	}
-	
-#if HAVE_DVB_API_VERSION >= 5
-	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_C)
-#else	
-	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QAM)
-#endif
-	{
-		TP_mod = getConfigValue(index, "TP_mod", QAM_AUTO);
-		TP_fec = getConfigValue(index, "TP_fec", FEC_NONE);
-	}
+	// modulation
+	TP_mod = (fe_code_rate_t)getConfigValue(index, "TP_mod", (fe_code_rate_t)QAM_AUTO);
+
+	// fec
+	TP_fec = (fe_code_rate_t)getConfigValue(index, "TP_fec", (fe_code_rate_t)FEC_AUTO);
+		
+	// pol
+	TP_pol = getConfigValue(index, "TP_pol", 0);
 	
 #if HAVE_DVB_API_VERSION >= 3
 	if(TP_fec == 4) 
 		TP_fec = 5;
 #endif
 
-	//
-#if HAVE_DVB_API_VERSION >= 5
-	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_T2)
-#else
-	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_OFDM)
-#endif
-	{
-		TP_band = getConfigValue(index, "TP_band", BANDWIDTH_AUTO);
-		TP_HP = getConfigValue(index, "TP_HP", FEC_AUTO);
-		TP_LP = getConfigValue(index, "TP_LP", FEC_AUTO);
-		TP_const = getConfigValue(index, "TP_const", QAM_AUTO);
-		TP_trans = getConfigValue(index, "TP_trans", TRANSMISSION_MODE_AUTO);
-		TP_guard = getConfigValue(index, "TP_guard", GUARD_INTERVAL_AUTO);
-		TP_hierarchy = getConfigValue(index, "TP_hierarchy", HIERARCHY_AUTO);
-		sprintf(cfg_key, "fe%d_TP_plp_id", index);
-		strcpy(TP_plp_id, configfile.getString(cfg_key, "000").c_str());
-	}
-
-#if HAVE_DVB_API_VERSION >= 5
-	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_A)
-#else
-    	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_ATSC)
-#endif
-	{
-		TP_mod = getConfigValue(index, "TP_mod", QAM_AUTO);
-	}
+	// band
+	TP_band = (fe_bandwidth_t)getConfigValue(index, "TP_band", (fe_bandwidth_t)BANDWIDTH_AUTO);
+		
+	// HP
+	TP_HP = (fe_code_rate_t)getConfigValue(index, "TP_HP", (fe_code_rate_t)FEC_AUTO);
+		
+	// LP
+	TP_LP = (fe_code_rate_t)getConfigValue(index, "TP_LP", (fe_code_rate_t)FEC_AUTO);
+		
+	// trams
+	TP_trans = (fe_transmit_mode_t)getConfigValue(index, "TP_trans", (fe_transmit_mode_t)TRANSMISSION_MODE_AUTO);
+		
+	// guard
+	TP_guard = (fe_guard_interval_t)getConfigValue(index, "TP_guard", (fe_guard_interval_t)GUARD_INTERVAL_AUTO);
+		
+	// hierarchy
+	TP_hierarchy = (fe_hierarchy_t)getConfigValue(index, "TP_hierarchy", (fe_hierarchy_t)HIERARCHY_AUTO);
+		
+	// plp_id
+	sprintf(cfg_key, "fe%d_TP_plp_id", index);
+	strcpy(TP_plp_id, configfile.getString(cfg_key, "000").c_str());
 
 	return true;
 }
@@ -1712,8 +1728,6 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 	setConfigValue(index, "scanType", scanType );
 	setConfigValue(index, "bouquetMode", bouquetMode );
 	setConfigValue(index, "scan_mode", scan_mode);
-	//sprintf(cfg_key, "fe%d_delete", index);
-	//configfile.setBool(cfg_key, deleteServices);
 	setConfigValue(index, "delete", deleteServices);
 	
 	//
@@ -1728,54 +1742,38 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 	sprintf(cfg_key, "fe%d_TP_rate", index);
 	configfile.setString(cfg_key, TP_rate);
 	
-#if HAVE_DVB_API_VERSION >= 5
-	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_S || CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_S2)
-#else
-	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QPSK)
-#endif
-	{
-		setConfigValue(index, "TP_pol", TP_pol);
-		setConfigValue(index, "TP_fec", TP_fec);
-	}
-	
-#if HAVE_DVB_API_VERSION >= 5
-	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_C)
-#else
-	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_QAM)
-#endif
-	{
-		setConfigValue(index, "TP_mod", TP_mod);
-		setConfigValue(index, "TP_fec", TP_fec);
-	}
+	// modulation
+	setConfigValue(index, "TP_mod", TP_mod);
 
-#if HAVE_DVB_API_VERSION >= 5
-	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_T2)
-#else
-	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_OFDM)
-#endif
-	{
-		setConfigValue(index, "TP_band", TP_band);
-		setConfigValue(index, "TP_HP", TP_HP);
-		setConfigValue(index, "TP_LP", TP_LP);
-		setConfigValue(index, "TP_const", TP_const);
-		setConfigValue(index, "TP_trans", TP_trans);
-		setConfigValue(index, "TP_guard", TP_guard);
-		setConfigValue(index, "TP_hierarchy", TP_hierarchy);
-		//setConfigValue(index, "TP_plp_id", TP_plp_id);
-		sprintf(cfg_key, "fe%d_TP_plp_id", index);
-		configfile.setString(cfg_key, TP_plp_id);
-	}
+	// pol
+	setConfigValue(index, "TP_pol", TP_pol);
+		
+	// fec
+	setConfigValue(index, "TP_fec", TP_fec);
 
-#if HAVE_DVB_API_VERSION >= 5
-	if(CZapit::getInstance()->getFE(index)->getForcedDelSys() == DVB_A)
-#else
-    	if(CZapit::getInstance()->getFE(index)->getInfo()->type == FE_ATSC)
-#endif
-	{
-		setConfigValue(index, "TP_mod", TP_mod);
-	}
+	// band
+	setConfigValue(index, "TP_band", TP_band);
+		
+	// HP
+	setConfigValue(index, "TP_HP", TP_HP);
+		
+	// LP
+	setConfigValue(index, "TP_LP", TP_LP);
+		
+	// trans
+	setConfigValue(index, "TP_trans", TP_trans);
+		
+	// guard
+	setConfigValue(index, "TP_guard", TP_guard);
+		
+	// hierarchy
+	setConfigValue(index, "TP_hierarchy", TP_hierarchy);
+		
+	// plp
+	sprintf(cfg_key, "fe%d_TP_plp_id", index);
+	configfile.setString(cfg_key, TP_plp_id);
 
-	if(configfile.getModifiedFlag())
+	//if(configfile.getModifiedFlag())
 	{
 		// save neu configuration
 		configfile.saveConfig(fileName);
@@ -2038,15 +2036,7 @@ void CScanSetupNotifier::addItem(int list, CMenuItem *item)
 	}
 }
 
-//
-CTunerSetup::CTunerSetup()
-{
-}
-
-CTunerSetup::~CTunerSetup()
-{
-}
-
+// TunerSetup
 int CTunerSetup::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CTunerSetup::exec: actionKey:%s\n", actionKey.c_str());
@@ -2079,7 +2069,6 @@ void CTunerSetup::showMenu()
 		TunerSetup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		TunerSetup->setWidgetMode(MODE_MENU);
-		//TunerSetup->setWidgetType(TYPE_CLASSIC);
 		TunerSetup->enableShrinkMenu();
 		
 		//
@@ -2118,6 +2107,12 @@ void CTunerSetup::showMenu()
 	}
 	
 	widget->exec(NULL, "");
+	
+	delete TunerSetup;
+	TunerSetup = NULL;
+	
+	delete widget;
+	widget = NULL;
 }
 
 bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
