@@ -1893,6 +1893,7 @@
 /neutrino2/src/driver/hdmi_cec.o
 /neutrino2/src/gui/.deps/cec_setup.Po
 /neutrino2/src/gui/cec_setup.o
+/neutrino2/configure~
 /plugins/satipclient/.deps/log.Po
 /plugins/satipclient/.deps/polltimer.Po
 /plugins/satipclient/.deps/satip_config.Po
@@ -1984,3 +1985,4 @@
 /plugins/satipclient.test/vtuner_blackbox7405.h
 /plugins/satipclient.test/vtuner_vuplus.h
 /plugins/autom*
+/plugins/configure~

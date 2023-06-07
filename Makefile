@@ -162,17 +162,6 @@ init:
 		2|*) echo "FKEYS=" >> config.local;; \
 	esac; \
 	echo ""		
-# fake tuner for testing
-	@echo -e "\nFake Tuner support ?:"
-	@echo "   1)  yes"
-	@echo -e "   \033[01;32m2) no\033[00m"
-	@read -p "Select FAKETUNER support (1-2)?" FAKETUNER; \
-	FAKETUNER=$${FAKETUNER}; \
-	case "$$FAKETUNER" in \
-		1) echo "FAKETUNER=faketuner" >> config.local;; \
-		2|*) echo "FAKETUNER=" >> config.local;; \
-	esac; \
-	echo ""
 # testing
 	@echo -e "\nTesting support ?:"
 	@echo "   1)  yes"
@@ -183,7 +172,18 @@ init:
 		1) echo "TESTING=testing" >> config.local;; \
 		2|*) echo "TESTING=" >> config.local;; \
 	esac; \
-	echo ""				
+	echo ""	
+# fake tuner for testing
+	@echo -e "\nFake Tuner support ?:"
+	@echo "   1)  yes"
+	@echo -e "   \033[01;32m2) no\033[00m"
+	@read -p "Select FAKETUNER support (1-2)?" FAKETUNER; \
+	FAKETUNER=$${FAKETUNER}; \
+	case "$$FAKETUNER" in \
+		1) echo "FAKETUNER=faketuner" >> config.local;; \
+		2|*) echo "FAKETUNER=" >> config.local;; \
+	esac; \
+	echo ""			
 
 init-clean:
 	rm -f config.local
