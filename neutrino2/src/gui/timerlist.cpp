@@ -1015,7 +1015,7 @@ int CTimerList::modifyTimer()
 	ClistBoxItem *m4 = new ClistBoxItem(_("on weekdays"), true, m_weekdaysStr.c_str(), &timerSettings_weekdays );
 	CIntInput timerSettings_repeatCount(_("repeats"), (int&)timer->repeatCount,3, _("amount of timer repeats"), _("0 for unlimited repeats"));
 
-	ClistBoxItem *m5 = new ClistBoxItem(_("repeats"), timer->eventRepeat != (int)CTimerd::TIMERREPEAT_ONCE, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
+	ClistBoxItem *m5 = new ClistBoxItem(_("repeats"), /*timer->eventRepeat != (int)CTimerd::TIMERREPEAT_ONCE*/true, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
 
 	// repeat
 	CTimerListRepeatNotifier notifier((int *)&timer->eventRepeat, m4, m5);
@@ -1030,7 +1030,10 @@ int CTimerList::modifyTimer()
 	timerSettings->addItem(m4);
 	timerSettings->addItem(m5);
 	timerSettings->addItem(new CMenuSeparator(LINE));
-	timerSettings->addItem(m6);
+	if (timer->eventType == CTimerd::TIMER_RECORD)
+	{
+		timerSettings->addItem(m6);
+	}
 	
 	//
 	CWidget* timerSettings_apidsWidget = NULL;
