@@ -510,25 +510,29 @@ void CScanSetup::showScanService()
 		CMenuOptionStringChooser * satSelect = NULL;
 		
 		// diseqc
-		CMenuOptionChooser *ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&CZapit::getInstance()->getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, ( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP) ), satNotify, RC_nokey, "", true);
+		CMenuOptionChooser *ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&CZapit::getInstance()->getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, /*( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP) )*/true, satNotify, RC_nokey, "", true);
 		feModeNotifier->addItem(1, ojDiseqc);
 		
 		// diseqc repeat
-		CMenuOptionNumberChooser *ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &CZapit::getInstance()->getFE(feindex)->diseqcRepeats, (dmode != NO_DISEQC) && (dmode < DISEQC_ADVANCED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP), 0, 2, NULL);
+		CMenuOptionNumberChooser *ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &CZapit::getInstance()->getFE(feindex)->diseqcRepeats, /*(dmode != NO_DISEQC) && (dmode < DISEQC_ADVANCED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP)*/true, 0, 2, NULL);
+		ojDiseqcRepeats->setHidden((dmode == NO_DISEQC) || (dmode > DISEQC_ADVANCED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == FE_LOOP));
 		satNotify->addItem(4, ojDiseqcRepeats);
 		feModeNotifier->addItem(4, ojDiseqcRepeats);
 
 		// unicablesetup
-		ClistBoxItem *uniSetup = new ClistBoxItem(_("Unicable Setup"), (dmode > DISEQC_ADVANCED ? true : false), NULL, this, "unisetup");
+		ClistBoxItem *uniSetup = new ClistBoxItem(_("Unicable Setup"), /*(dmode > DISEQC_ADVANCED ? true : false)*/true, NULL, this, "unisetup");
+		uniSetup->setHidden((dmode > DISEQC_ADVANCED ? false : true));
 		satNotify->addItem(3, uniSetup);
 		feModeNotifier->addItem(3, uniSetup);
 
 		// lnbsetup
-		ClistBoxItem *fsatSetup = new ClistBoxItem(_("Setup satellites input / LNB"), (CZapit::getInstance()->getFE(feindex)->mode != FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "lnbsetup");
+		ClistBoxItem *fsatSetup = new ClistBoxItem(_("Setup satellites input / LNB"), /*(CZapit::getInstance()->getFE(feindex)->mode != FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)*/true, NULL, this, "lnbsetup");
+		fsatSetup->setHidden((CZapit::getInstance()->getFE(feindex)->mode == FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP));
 		feModeNotifier->addItem(1, fsatSetup);
 		
 		// motorsetup
-		ClistBoxItem *fmotorMenu = new ClistBoxItem(_("Motor settings"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "motorsetup");
+		ClistBoxItem *fmotorMenu = new ClistBoxItem(_("Motor settings"), /*(CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)*/true, NULL, this, "motorsetup");
+		fmotorMenu->setHidden((CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP));
 		feModeNotifier->addItem(1, fmotorMenu);
 		
 		scansetup->addItem(ojDiseqc);
@@ -1923,108 +1927,128 @@ bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 	{
 		for(it = items1.begin(); it != items1.end(); it++)
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++)
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++)
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++)
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++)
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 	}
 	else if(type < DISEQC_ADVANCED) 
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++) 
 		{
-			(*it)->setActive(true);
+			//(*it)->setActive(true);
+			(*it)->setHidden(false);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++) 
 		{
-			(*it)->setActive(true);
+			//(*it)->setActive(true);
+			(*it)->setHidden(false);
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++) 
 		{
-			(*it)->setActive(true);
+			//(*it)->setActive(true);
+			(*it)->setHidden(false);
 		}
 	}
 	else if(type == DISEQC_ADVANCED) 
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
-			(*it)->setActive(true);
+			//(*it)->setActive(true);
+			(*it)->setHidden(false);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++) 
 		{
-			(*it)->setActive(true);
+			//(*it)->setActive(true);
+			(*it)->setHidden(false);
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 	}
 	else if(type > DISEQC_ADVANCED) 
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++) 
 		{
-			(*it)->setActive(true);
+			//(*it)->setActive(true);
+			(*it)->setHidden(false);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++) 
 		{
-			(*it)->setActive(true);
+			//(*it)->setActive(true);
+			(*it)->setHidden(false);
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++) 
 		{
-			(*it)->setActive(true);
+			//(*it)->setActive(true);
+			(*it)->setHidden(false);
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 	}
 
@@ -2081,57 +2105,67 @@ bool CScanSetupNotifier::changeNotify(const std::string&, void * Data)
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++) 
 		{
-			(*it)->setActive(false);
+			//(*it)->setActive(false);
+			(*it)->setHidden(true);
 		}
 	}
 	else
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
-			(*it)->setActive(true);
+			//(*it)->setActive(true);
+			(*it)->setHidden(false);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++) 
 		{
-			(*it)->setActive(true);
+			//(*it)->setActive(true);
+			(*it)->setHidden(false);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++) 
 		{
 			if (dmode != NO_DISEQC)
-				(*it)->setActive(true);
+				//(*it)->setActive(true);
+				(*it)->setHidden(false);
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++) 
 		{
 			if (dmode > DISEQC_ADVANCED)
-				(*it)->setActive(true);
+				//(*it)->setActive(true);
+				(*it)->setHidden(false);
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++) 
 		{
 			if (dmode != NO_DISEQC && dmode < DISEQC_ADVANCED)
-				(*it)->setActive(true);
+				//(*it)->setActive(true);
+				(*it)->setHidden(false);
 		}
 	}
 
