@@ -32,11 +32,14 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 
+#include <gui/scan.h>
+
 #include <driver/framebuffer.h>
 
-#include <zapit/settings.h>  //zapit/settings.h
+#include <zapit/settings.h>
 
 
+//
 class CScanSettings
 {
 	private:
@@ -60,7 +63,6 @@ class CScanSettings
 		unsigned int		TP_band;
 		unsigned int 		TP_HP;
 		unsigned int 		TP_LP;
-		//unsigned int		TP_const;
 		unsigned int		TP_trans;
 		unsigned int		TP_guard;
 		unsigned int		TP_hierarchy;
@@ -72,6 +74,7 @@ class CScanSettings
 		bool saveSettings(const char * const fileName, int index = 0);
 };
 
+//
 class CTPSelectHandler : public CMenuTarget
 {
 	private:
@@ -79,25 +82,7 @@ class CTPSelectHandler : public CMenuTarget
 	
 	public:
 		CTPSelectHandler(int num = 0);
-		int exec(CMenuTarget* parent,  const std::string &actionkey);
-};
-
-class CScanSetup : public CMenuTarget
-{
-	private:
-		int feindex;
-		sat_iterator_t sit;
-
-		void hide();
-		void showScanService();
-		int showUnicableSetup();
-		//int showManualScanSetup(CMenuOptionStringChooser *item);
-		//int showAutoScanSetup(CMenuOptionStringChooser *item);
-		
-	public:
-		CScanSetup(int num = 0);
-		~CScanSetup();
-		int exec(CMenuTarget* parent, const std::string & actionKey);
+		int exec(CMenuTarget *parent, const std::string &actionkey);
 };
 
 // sat setup notifuer
@@ -134,6 +119,7 @@ class CScanSetupNotifier : public CChangeObserver
 		bool changeNotify(const std::string&, void * Data);
 };
 
+//
 class CScanSetupDelSysNotifier : public CChangeObserver
 {
 	private:
@@ -143,6 +129,35 @@ class CScanSetupDelSysNotifier : public CChangeObserver
 		bool changeNotify(const std::string&, void *Data);
 };
 
+// scansetup
+class CScanSetup : public CMenuTarget
+{
+	private:
+		int feindex;
+		sat_iterator_t sit;
+		CScanTs *scanTs;
+		CSatelliteSetupNotifier *satNotify;
+		CScanSetupNotifier *feModeNotifier;
+		CScanSetupDelSysNotifier *feDelSysNotifier;
+		CTPSelectHandler *tpSelect;
+
+		void hide();
+		void showScanService();
+		int showUnicableSetup();
+		int showManualScanSetup();
+		int showAutoScanSetup();
+		int showAllAutoScanSetup();
+		int showMotorSetup();
+		int showLNBSetup();
+		int showSatOnOffSetup();
+		
+	public:
+		CScanSetup(int num = 0);
+		~CScanSetup();
+		int exec(CMenuTarget* parent, const std::string & actionKey);
+};
+
+//
 class CTunerSetup : public CMenuTarget
 {
 	private:
@@ -156,3 +171,4 @@ class CTunerSetup : public CMenuTarget
 };
 
 #endif
+

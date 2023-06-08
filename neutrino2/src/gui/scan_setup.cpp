@@ -266,10 +266,20 @@ CScanSetup::CScanSetup(int num)
 	feindex = num;
 	
 	scanSettings = new CScanSettings(feindex);
+	scanTs = new CScanTs(feindex);
+	tpSelect = NULL;
+	satNotify = new CSatelliteSetupNotifier(feindex);
+	feModeNotifier = new CScanSetupNotifier(feindex);
+	feDelSysNotifier = new CScanSetupDelSysNotifier(feindex);
 }
 
 CScanSetup::~CScanSetup()
-{	
+{
+	if (scanTs)
+	{
+		delete scanTs;
+		scanTs = NULL;
+	}
 }
 
 void CScanSetup::hide()
@@ -334,6 +344,30 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 	{
 		return showUnicableSetup();
 	}
+	else if (actionKey == "allautoscansetup")
+	{
+		return showAllAutoScanSetup();
+	}
+	else if (actionKey == "autoscan")
+	{
+		return showAutoScanSetup();
+	}
+	else if (actionKey == "manualscan")
+	{
+		return showManualScanSetup();
+	}
+	else if (actionKey == "motorsetup")
+	{
+		return showMotorSetup();
+	}
+	else if (actionKey == "lnbsetup")
+	{
+		return showLNBSetup();
+	}
+	else if (actionKey == "satonoffsetup")
+	{
+		return showSatOnOffSetup();
+	}
 	
 	showScanService();
 	
@@ -347,17 +381,17 @@ void CScanSetup::showScanService()
 	if(!CZapit::getInstance()->getFE(feindex))
 		return;
 	
-	//load scan settings 
+	//load scansettings 
 	if( !scanSettings->loadSettings(NEUTRINO_SCAN_SETTINGS_FILE, feindex) ) 
 		dprintf(DEBUG_NORMAL, "CScanSetup::CScanSetup: Loading of scan settings failed. Using defaults.\n");
 		
 	// 
 	dmode = CZapit::getInstance()->getFE(feindex)->diseqcType;
 	
-	// load frontend config
+	// load frontendconfig
 	CZapit::getInstance()->loadFrontendConfig();
 	
-	// load motor position
+	// load motorposition
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
 #else
@@ -408,428 +442,11 @@ void CScanSetup::showScanService()
 	//save settings
 	scansetup->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	scansetup->addItem(new CMenuSeparator(LINE));
-			
-	// init satNotify
-	CSatelliteSetupNotifier * satNotify = new CSatelliteSetupNotifier(feindex);
-	CScanSetupNotifier * feModeNotifier = new CScanSetupNotifier(feindex);
-	CScanSetupDelSysNotifier * feDelSysNotifier = new CScanSetupDelSysNotifier(feindex);
 	
-	// satsetup
-	CWidget* satSetupWidget = NULL;
-	ClistBox* satSetup = NULL;
-	
-	satSetupWidget = CNeutrinoApp::getInstance()->getWidget("satsetup");
-	
-	if (satSetupWidget)
-	{
-		satSetup = (ClistBox*)satSetupWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		satSetup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-
-		satSetup->setWidgetMode(MODE_SETUP);
-		satSetup->enableShrinkMenu();
-		
-		satSetup->enablePaintHead();
-		satSetup->setTitle(_("Sat settings"), NEUTRINO_ICON_SCAN);
-
-		satSetup->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-		satSetup->setFootButtons(&btn);
-		
-		//
-		satSetupWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		satSetupWidget->name = "satsetup";
-		satSetupWidget->setMenuPosition(MENU_POSITION_CENTER);
-		satSetupWidget->addWidgetItem(satSetup);
-	}
-
-	satSetup->clear();
-	
-	satSetup->addItem(new ClistBoxItem(_("back")));
-	satSetup->addItem(new CMenuSeparator(LINE));
-
-	// motor settings
-	CWidget* satfindMenuWidget = NULL;
-	ClistBox* satfindMenu = NULL;
-	
-	satfindMenuWidget = CNeutrinoApp::getInstance()->getWidget("satfindMenu");
-	
-	if (satfindMenuWidget)
-	{
-		satfindMenu = (ClistBox*)satfindMenuWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		satfindMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-
-		satfindMenu->setWidgetMode(MODE_SETUP);
-		satfindMenu->enableShrinkMenu();
-		
-		satfindMenu->enablePaintHead();
-		satfindMenu->setTitle(_("Motor settings"), NEUTRINO_ICON_SCAN);
-
-		satfindMenu->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-		satfindMenu->setFootButtons(&btn);
-		
-		//
-		satfindMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		satfindMenuWidget->name = "satfindMenu";
-		satfindMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
-		satfindMenuWidget->addWidgetItem(satfindMenu);
-	}
-	
-	satfindMenu->clear();
-
-	satfindMenu->addItem(new ClistBoxItem(_("back")));
-	satfindMenu->addItem(new CMenuSeparator(LINE));
-		
-	//// satselect (list)
-	CMenuOptionStringChooser * satSelect = NULL;
-	CWidget* satOnOffWidget = NULL;
-	ClistBox* satOnOfflistBox = NULL;
-	
-#if HAVE_DVB_API_VERSION >= 5
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
-#else
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
-#endif 
-	{
-		satSelect = new CMenuOptionStringChooser(_("Satellite"), scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
-			
-		//
-		satOnOffWidget = CNeutrinoApp::getInstance()->getWidget("satOnOff");
-		
-		if (satOnOffWidget)
-		{
-			satOnOfflistBox = (ClistBox*)satOnOffWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-		}
-		else
-		{
-			satOnOfflistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-
-			satOnOfflistBox->setWidgetMode(MODE_SETUP);
-			satOnOfflistBox->enableShrinkMenu();
-			
-			satOnOfflistBox->enablePaintHead();
-			satOnOfflistBox->setTitle(_("Satellite"), NEUTRINO_ICON_SCAN);
-
-			satOnOfflistBox->enablePaintFoot();
-				
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-				
-			satOnOfflistBox->setFootButtons(&btn);
-			
-			//
-			satOnOffWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			satOnOffWidget->name = "satOnOff";
-			satOnOffWidget->setMenuPosition(MENU_POSITION_CENTER);
-			satOnOffWidget->addWidgetItem(satOnOfflistBox);
-		}
-		
-		satOnOfflistBox->clearItems();
-	
-		// intros
-		satOnOfflistBox->addItem(new ClistBoxItem(_("back")));
-		satOnOfflistBox->addItem(new CMenuSeparator(LINE));
-		
-		//
-		CWidget* tempsatWidget = NULL;
-		ClistBox* tempsatlistBox = NULL;
-		
-		tempsatWidget = CNeutrinoApp::getInstance()->getWidget("tempsat");
-				
-		if (tempsatWidget)
-		{
-			tempsatlistBox = (ClistBox*)tempsatWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-					
-			//if (tempsatlistBox->hasHead())
-			//	tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
-		}
-		else
-		{
-			tempsatlistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-
-			tempsatlistBox->setWidgetMode(MODE_SETUP);
-			tempsatlistBox->enableShrinkMenu();
-					
-			//
-			tempsatlistBox->enablePaintHead();
-			//tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
-					
-			//
-			tempsatlistBox->enablePaintFoot();		
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
-			tempsatlistBox->setFootButtons(&btn);
-					
-			//
-			tempsatWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			tempsatWidget->name = "tempsat";
-			tempsatWidget->setMenuPosition(MENU_POSITION_CENTER);
-			tempsatWidget->enableSaveScreen();
-			tempsatWidget->addWidgetItem(tempsatlistBox);
-		}
-
-		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
-		{
-			// satname
-			if(sit->second.system == DVB_S)
-			{
-				satSelect->addOption(sit->second.name.c_str());
-				dprintf(DEBUG_DEBUG, "scanSetup::showMenu: fe(%d) Adding sat menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
-
-				/*
-				tempsatWidget = CNeutrinoApp::getInstance()->getWidget("tempsat");
-				
-				if (tempsatWidget)
-				{
-					tempsatlistBox = (ClistBox*)tempsatWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-					
-					if (tempsatlistBox->hasHead())
-						tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
-				}
-				else
-				{
-					tempsatlistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-
-					tempsatlistBox->setWidgetMode(MODE_SETUP);
-					tempsatlistBox->enableShrinkMenu();
-					
-					//
-					tempsatlistBox->enablePaintHead();
-					tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
-					
-					//
-					tempsatlistBox->enablePaintFoot();		
-					const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
-					tempsatlistBox->setFootButtons(&btn);
-					
-					//
-					tempsatWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-					tempsatWidget->name = "tempsat";
-					tempsatWidget->setMenuPosition(MENU_POSITION_CENTER);
-					tempsatWidget->enableSaveScreen();
-					tempsatWidget->addWidgetItem(tempsatlistBox);
-				}
-				*/
-				
-				if (tempsatlistBox->hasHead())
-					tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
-				
-				tempsatlistBox->clear();
-				
-				//
-				tempsatlistBox->addItem(new ClistBoxItem(_("back")));
-				tempsatlistBox->addItem(new CMenuSeparator(LINE));
-				
-				// savesettings
-				tempsatlistBox->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-				tempsatlistBox->addItem(new CMenuSeparator(LINE));
-
-				// satname
-				CMenuOptionChooser * inuse = new CMenuOptionChooser(sit->second.name.c_str(),  &sit->second.use_in_scan, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
-
-				// diseqc
-				CMenuOptionNumberChooser * diseqc = new CMenuOptionNumberChooser(_("Diseqc input"), &sit->second.diseqc, ((dmode != NO_DISEQC) && (dmode != DISEQC_ADVANCED)), -1, 15, NULL, 1, -1);
-
-				// commited input
-				CMenuOptionNumberChooser * comm = new CMenuOptionNumberChooser(_("Commited/Uncommited"), &sit->second.commited, dmode == DISEQC_ADVANCED, -1, 15, NULL, 1, -1);
-
-				// uncommited input
-				CMenuOptionNumberChooser * uncomm = new CMenuOptionNumberChooser(_("Uncommited/Commited"), &sit->second.uncommited, dmode == DISEQC_ADVANCED, -1, 15, NULL, 1, -1);
-
-				// motor position
-				CMenuOptionNumberChooser * motor = new CMenuOptionNumberChooser(_("Rotor position"), &sit->second.motor_position, true, 0, 64);
-
-				// usals
-				CMenuOptionChooser * usals = new CMenuOptionChooser(_("Use gotoXX"),  &sit->second.use_usals, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
-
-				satNotify->addItem(1, diseqc);
-				satNotify->addItem(0, comm);
-				satNotify->addItem(0, uncomm);
-
-				CIntInput* lofL = new CIntInput(_("LNB Low Offset"), (int&) sit->second.lnbOffsetLow, 5);
-				CIntInput* lofH = new CIntInput(_("LNB High Offset"), (int&) sit->second.lnbOffsetHigh, 5);
-				CIntInput* lofS = new CIntInput(_("LNB switch Offset"), (int&) sit->second.lnbSwitch, 5);
-
-				satOnOfflistBox->addItem(inuse);
-					
-				tempsatlistBox->addItem(diseqc);
-				tempsatlistBox->addItem(comm);
-				tempsatlistBox->addItem(uncomm);
-				tempsatlistBox->addItem(motor);
-				tempsatlistBox->addItem(usals);
-				tempsatlistBox->addItem(new ClistBoxItem(_("LNB Low Offset"), true, lofL->getValue(), lofL ));
-				tempsatlistBox->addItem(new ClistBoxItem(_("LNB High Offset"), true, lofH->getValue(), lofH ));
-				tempsatlistBox->addItem(new ClistBoxItem(_("LNB switch Offset"), true, lofS->getValue(), lofS));
-					
-				// sat setup
-				satSetup->addItem(new ClistBoxItem(sit->second.name.c_str(), true, NULL, tempsatWidget));
-			}
-		}
-		
-		if (tempsatlistBox)
-		{
-			delete tempsatlistBox;
-			tempsatlistBox = NULL;
-		}
-		
-		if (tempsatWidget)
-		{
-			delete tempsatWidget;
-			tempsatWidget = NULL;
-		}
-	} 
-#if HAVE_DVB_API_VERSION >= 5 
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
-#else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
-#endif
-	{
-		satSelect = new CMenuOptionStringChooser(_("Cable"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
-
-		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
-		{
-			if(sit->second.system == DVB_C)
-			{
-				satSelect->addOption(sit->second.name.c_str());
-				dprintf(DEBUG_DEBUG, "[neutrino] fe(%d) Adding cable menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
-			}
-		}
-	}
-#if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
-#else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
-#endif
-	{
-		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
-
-		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
-		{
-			if(sit->second.system == DVB_T)
-			{
-				satSelect->addOption(sit->second.name.c_str());
-				dprintf(DEBUG_DEBUG, "CNeutrinoApp::InitScanSettings fe(%d) Adding terrestrial menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
-			}
-		}
-	}
-#if HAVE_DVB_API_VERSION >= 5
-    	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
-#else
-	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
-#endif
-	{
-		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
-
-		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
-		{
-			if(sit->second.system == DVB_A)
-			{
-				satSelect->addOption(sit->second.name.c_str());
-				dprintf(DEBUG_DEBUG, "CNeutrinoApp::InitScanSettings fe(%d) Adding atsc menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
-			}
-		}
-	}
-	////
-
-	//
-	satfindMenu->addItem(satSelect);
-
-	//// motor menu/diseqc
-	CWidget* motorMenuWidget = NULL;
-	ClistBox* motorMenu = NULL;
-
-	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) 
-	{
-		satfindMenu->addItem(new ClistBoxItem(_("Motor settings"), true, NULL, new CMotorControl(feindex)));
-		
-		//
-		motorMenuWidget = CNeutrinoApp::getInstance()->getWidget("motorsetup");
-		
-		if (motorMenuWidget)
-		{
-			motorMenu = (ClistBox*)motorMenuWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-		}
-		else
-		{
-			motorMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-
-			motorMenu->setWidgetMode(MODE_SETUP);
-			motorMenu->enableShrinkMenu();
-			
-			motorMenu->enablePaintHead();
-			motorMenu->setTitle(_("Motor settings"), NEUTRINO_ICON_SCAN);
-
-			motorMenu->enablePaintFoot();
-				
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-				
-			motorMenu->setFootButtons(&btn);
-			
-			//
-			motorMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			motorMenuWidget->name = "motorsetup";
-			motorMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
-			motorMenuWidget->addWidgetItem(motorMenu);
-		}
-
-		motorMenu->clearItems();
-		
-		// intros
-		motorMenu->addItem(new CMenuSeparator(LINE));
-		motorMenu->addItem(new ClistBoxItem(_("back")));
-
-		// save settings
-		motorMenu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-
-		motorMenu->addItem(new ClistBoxItem(_("Motor settings"), true, NULL, satfindMenuWidget, ""));
-
-		motorMenu->addItem(new CMenuSeparator(LINE));
-
-		motorMenu->addItem(new CMenuOptionNumberChooser(_("moving speed (10 = 1deg/sec)"), (int *)&CZapit::getInstance()->getFE(feindex)->motorRotationSpeed, true, 0, 64, NULL) );
-
-		motorMenu->addItem(new CMenuOptionChooser(_("Use gotoXX"),  (int *)&CZapit::getInstance()->getFE(feindex)->useGotoXX, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
-
-		CStringInput * toff;
-		CStringInput * taff;
-		sprintf(zapit_lat, "%3.6f", CZapit::getInstance()->getFE(feindex)->gotoXXLatitude);
-		sprintf(zapit_long, "%3.6f", CZapit::getInstance()->getFE(feindex)->gotoXXLongitude);
-
-		// gotoxxladirection
-		motorMenu->addItem(new CMenuOptionChooser(_("LaDirection"),  (int *)&CZapit::getInstance()->getFE(feindex)->gotoXXLaDirection, OPTIONS_SOUTH0_NORTH1_OPTIONS, OPTIONS_SOUTH0_NORTH1_OPTION_COUNT, true));
-
-		// latitude
-		toff = new CStringInput(_("Latitude"), (char *) zapit_lat, 10, NULL, NULL, "0123456789.");
-		motorMenu->addItem(new ClistBoxItem(_("Latitude"), true, zapit_lat, toff));
-
-		// gotoxx lodirection
-		motorMenu->addItem(new CMenuOptionChooser(_("LoDirection"),  (int *)&CZapit::getInstance()->getFE(feindex)->gotoXXLoDirection, OPTIONS_EAST0_WEST1_OPTIONS, OPTIONS_EAST0_WEST1_OPTION_COUNT, true));
-
-		// longitude
-		taff = new CStringInput(_("Longitude"), (char *) zapit_long, 10, NULL, NULL, "0123456789.");
-		motorMenu->addItem(new ClistBoxItem(_("Longitude"), true, zapit_long, taff));
-		
-		// usals repeat
-		motorMenu->addItem(new CMenuOptionNumberChooser(_("USALS command repeat"), (int *)&CZapit::getInstance()->getFE(feindex)->repeatUsals, true, 0, 10) );
-		
-		// rotor swap east/west
-		motorMenu->addItem( new CMenuOptionChooser(_("Swap rotor east/west"), &g_settings.rotor_swap, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
-	}
-	
-	// frontend mode
-	// check for twin
-	// mode loop can be used if we hat twice sat tuner, otherwise direct connected or not connected
-	// FIXME:
+	// tuner mode
 	bool have_twin = false;
 	
-	//if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
 		for(int i = 0; i < FrontendCount; i++) 
 		{
@@ -843,7 +460,7 @@ void CScanSetup::showScanService()
 	
 	scansetup->addItem(new CMenuOptionChooser(_("Tuner mode"),  (int *)&CZapit::getInstance()->getFE(feindex)->mode, FRONTEND_MODE_OPTIONS, have_twin? FRONTEND_MODE_TWIN_OPTION_COUNT:FRONTEND_MODE_SINGLE_OPTION_COUNT, true, feModeNotifier));
 	
-	// frontend delsys
+	// tunertype (forced delsys)
 	if (CZapit::getInstance()->getFE(feindex)->isHybrid())
 	{
 		CMenuItem *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&CZapit::getInstance()->getFE(feindex)->forcedDelSys);
@@ -866,12 +483,12 @@ void CScanSetup::showScanService()
 	
 	scansetup->addItem( new CMenuSeparator(LINE) );
 
-	// scan type
+	// scantype
 	CMenuOptionChooser * ojScantype = new CMenuOptionChooser(_("Scan for services"), (int *)&scanSettings->scanType, SCANTS_ZAPIT_SCANTYPE, SCANTS_ZAPIT_SCANTYPE_COUNT, ((CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)));
 	feModeNotifier->addItem(0, ojScantype);
 	scansetup->addItem(ojScantype);
 		
-	// bqts
+	// bqtsmode
 	CMenuOptionChooser * ojBouquets = new CMenuOptionChooser(_("Bouquet"), (int *)&scanSettings->bouquetMode, SCANTS_BOUQUET_OPTIONS, SCANTS_BOUQUET_OPTION_COUNT, ((CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)));
 	feModeNotifier->addItem(0, ojBouquets);
 	scansetup->addItem(ojBouquets);
@@ -882,51 +499,503 @@ void CScanSetup::showScanService()
 	scansetup->addItem(useNit);
 		
 	scansetup->addItem(new CMenuSeparator(LINE));
+	
+	//
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+#else
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+#endif 
+	{
+		CMenuOptionStringChooser * satSelect = NULL;
 		
-	//// diseqc/diseqcrepeat/unisetup/lnb/motor
-	CMenuOptionChooser * ojDiseqc = NULL;
-	CMenuOptionNumberChooser * ojDiseqcRepeats = NULL;
-	ClistBoxItem * fsatSetup = NULL;
-	ClistBoxItem * fmotorMenu = NULL;
-	ClistBoxItem * uniSetup = NULL;
+		// diseqc
+		CMenuOptionChooser *ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&CZapit::getInstance()->getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, ( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP) ), satNotify, RC_nokey, "", true);
+		feModeNotifier->addItem(1, ojDiseqc);
+		
+		// diseqc repeat
+		CMenuOptionNumberChooser *ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &CZapit::getInstance()->getFE(feindex)->diseqcRepeats, (dmode != NO_DISEQC) && (dmode < DISEQC_ADVANCED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP), 0, 2, NULL);
+		satNotify->addItem(4, ojDiseqcRepeats);
+		feModeNotifier->addItem(4, ojDiseqcRepeats);
 
+		// unicablesetup
+		ClistBoxItem *uniSetup = new ClistBoxItem(_("Unicable Setup"), (dmode > DISEQC_ADVANCED ? true : false), NULL, this, "unisetup");
+		satNotify->addItem(3, uniSetup);
+		feModeNotifier->addItem(3, uniSetup);
+
+		// lnbsetup
+		ClistBoxItem *fsatSetup = new ClistBoxItem(_("Setup satellites input / LNB"), (CZapit::getInstance()->getFE(feindex)->mode != FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "lnbsetup");
+		feModeNotifier->addItem(1, fsatSetup);
+		
+		// motorsetup
+		ClistBoxItem *fmotorMenu = new ClistBoxItem(_("Motor settings"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "motorsetup");
+		feModeNotifier->addItem(1, fmotorMenu);
+		
+		scansetup->addItem(ojDiseqc);
+		scansetup->addItem(ojDiseqcRepeats);
+		scansetup->addItem(uniSetup);		// unicablesetup
+		scansetup->addItem(fsatSetup);		// lnbsetup
+		scansetup->addItem(fmotorMenu); 	// motorsetup
+	}
+	
+	//// manual scan	
+	ClistBoxItem * manScan = new ClistBoxItem(_("Manual frequency scan / Test signal"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "manualscan");
+	feModeNotifier->addItem(0, manScan);
+	scansetup->addItem(manScan);
+		
+	//// autoscan
+	ClistBoxItem * auScan = new ClistBoxItem(_("Auto-Scan"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "autoscan");
+	feModeNotifier->addItem(0, auScan);
+	
+	scansetup->addItem(auScan);
+
+	//// allautoscan	
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
 #else
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif
 	{
-		// diseqc
-		ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&CZapit::getInstance()->getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, ( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP) ), satNotify, RC_nokey, "", true);
-		feModeNotifier->addItem(1, ojDiseqc);
+		ClistBoxItem *fautoScanAll = new ClistBoxItem(_("Auto-Scan multiple Satellites"), ( (dmode != NO_DISEQC) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)), NULL, this, "allautoscansetup" );
+		satNotify->addItem(2, fautoScanAll);
+		feModeNotifier->addItem(2, fautoScanAll);
 		
-		// diseqc repeat
-		ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &CZapit::getInstance()->getFE(feindex)->diseqcRepeats, (dmode != NO_DISEQC) && \
-			(dmode < DISEQC_ADVANCED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP), 0, 2, NULL);
-		satNotify->addItem(4, ojDiseqcRepeats);
-		feModeNotifier->addItem(4, ojDiseqcRepeats);
+		scansetup->addItem(fautoScanAll);
+	}
 
-		// unicable setup
-		uniSetup = new ClistBoxItem(_("Unicable Setup"), (dmode > DISEQC_ADVANCED ? true : false), NULL, this, "unisetup", RC_nokey);
-		satNotify->addItem(3, uniSetup);
-		feModeNotifier->addItem(3, uniSetup);
-
-		// lnb setup
-		fsatSetup = new ClistBoxItem(_("Setup satellites input / LNB"), (CZapit::getInstance()->getFE(feindex)->mode != FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, satSetupWidget, "", RC_nokey);
-		feModeNotifier->addItem(1, fsatSetup);
-		
-		// motor settings
-		fmotorMenu = new ClistBoxItem(_("Motor settings"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, motorMenuWidget, "", RC_nokey);
-		feModeNotifier->addItem(1, fmotorMenu);
-		
-		scansetup->addItem(ojDiseqc);
-		scansetup->addItem(ojDiseqcRepeats);
-		scansetup->addItem(uniSetup);
-		scansetup->addItem(fsatSetup);
-		scansetup->addItem(fmotorMenu);
+	//
+	widget->exec(NULL, "");
+	
+	//
+	if (scansetup)
+	{
+		delete scansetup;
+		scansetup = NULL;
 	}
 	
-	//// manual scan
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+}
+
+//
+int CScanSetup::showMotorSetup()
+{
+	dprintfblue(DEBUG_NORMAL, "CScanSetup::showMotorSetup\n");
+	
+	int ret = RETURN_REPAINT;
+	
+	CWidget* motorMenuWidget = NULL;
+	ClistBox* motorMenu = NULL;
+		
+	//
+	motorMenuWidget = CNeutrinoApp::getInstance()->getWidget("motorsetup");
+		
+	if (motorMenuWidget)
+	{
+		motorMenu = (ClistBox*)motorMenuWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		motorMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+
+		motorMenu->setWidgetMode(MODE_SETUP);
+		motorMenu->enableShrinkMenu();
+			
+		motorMenu->enablePaintHead();
+		motorMenu->setTitle(_("Motor settings"), NEUTRINO_ICON_SCAN);
+
+		motorMenu->enablePaintFoot();
+				
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+				
+		motorMenu->setFootButtons(&btn);
+			
+		//
+		motorMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		motorMenuWidget->name = "motorsetup";
+		motorMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
+		motorMenuWidget->addWidgetItem(motorMenu);
+	}
+
+	motorMenu->clear();
+		
+	// intros
+	motorMenu->addItem(new CMenuSeparator(LINE));
+	motorMenu->addItem(new ClistBoxItem(_("back")));
+
+	// save settings
+	motorMenu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	motorMenu->addItem(new CMenuSeparator(LINE));
+
+	// speed
+	motorMenu->addItem(new CMenuOptionNumberChooser(_("moving speed (10 = 1deg/sec)"), (int *)&CZapit::getInstance()->getFE(feindex)->motorRotationSpeed, true, 0, 64, NULL) );
+
+	// gotoxx
+	motorMenu->addItem(new CMenuOptionChooser(_("Use gotoXX"),  (int *)&CZapit::getInstance()->getFE(feindex)->useGotoXX, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+
+	CStringInput * toff;
+	CStringInput * taff;
+	sprintf(zapit_lat, "%3.6f", CZapit::getInstance()->getFE(feindex)->gotoXXLatitude);
+	sprintf(zapit_long, "%3.6f", CZapit::getInstance()->getFE(feindex)->gotoXXLongitude);
+
+	// gotoxxladirection
+	motorMenu->addItem(new CMenuOptionChooser(_("LaDirection"),  (int *)&CZapit::getInstance()->getFE(feindex)->gotoXXLaDirection, OPTIONS_SOUTH0_NORTH1_OPTIONS, OPTIONS_SOUTH0_NORTH1_OPTION_COUNT, true));
+
+	// latitude
+	toff = new CStringInput(_("Latitude"), (char *) zapit_lat, 10, NULL, NULL, "0123456789.");
+	motorMenu->addItem(new ClistBoxItem(_("Latitude"), true, zapit_lat, toff));
+
+	// gotoxx lodirection
+	motorMenu->addItem(new CMenuOptionChooser(_("LoDirection"),  (int *)&CZapit::getInstance()->getFE(feindex)->gotoXXLoDirection, OPTIONS_EAST0_WEST1_OPTIONS, OPTIONS_EAST0_WEST1_OPTION_COUNT, true));
+
+	// longitude
+	taff = new CStringInput(_("Longitude"), (char *) zapit_long, 10, NULL, NULL, "0123456789.");
+	motorMenu->addItem(new ClistBoxItem(_("Longitude"), true, zapit_long, taff));
+		
+	// usals repeat
+	motorMenu->addItem(new CMenuOptionNumberChooser(_("USALS command repeat"), (int *)&CZapit::getInstance()->getFE(feindex)->repeatUsals, true, 0, 10) );
+		
+	// rotor swap east/west
+	motorMenu->addItem( new CMenuOptionChooser(_("Swap rotor east/west"), &g_settings.rotor_swap, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
+	
+	//
+	motorMenu->addItem(new CMenuSeparator(LINE));
+	motorMenu->addItem(new ClistBoxItem(_("Motor settings"), true, NULL, new CMotorControl(feindex)));
+	
+	ret = motorMenuWidget->exec(NULL, "");
+	
+	delete motorMenu;
+	motorMenu = NULL;
+	
+	delete motorMenuWidget;
+	motorMenuWidget = NULL;
+	
+	return ret;
+}
+
+//
+int CScanSetup::showUnicableSetup()
+{
+	dprintfblue(DEBUG_NORMAL, "CScanSetup::showUnicableSetup\n");
+	
+	int ret = RETURN_REPAINT;
+	
+	//
+	CWidget* uniWidget = NULL;
+	ClistBox* uni_setup = NULL;
+	
+	uniWidget = CNeutrinoApp::getInstance()->getWidget("unicablesetup");
+	
+	if (uniWidget)
+	{
+		uni_setup = (ClistBox*)uniWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		uni_setup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+
+		uni_setup->setWidgetMode(MODE_SETUP);
+		uni_setup->enableShrinkMenu();
+		
+		uni_setup->enablePaintHead();
+		uni_setup->setTitle(_("Unicable settings"), NEUTRINO_ICON_SCAN);
+
+		uni_setup->enablePaintFoot();
+			
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+			
+		uni_setup->setFootButtons(&btn);
+		
+		//
+		uniWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		uniWidget->name = "unicablesetup";
+		uniWidget->setMenuPosition(MENU_POSITION_CENTER);
+		uniWidget->addWidgetItem(uni_setup);
+	}
+	
+	uni_setup->clear();
+
+	uni_setup->addItem(new ClistBoxItem(_("back")));
+	uni_setup->addItem(new CMenuSeparator(LINE));
+
+	// uni_scr
+	CMenuOptionNumberChooser * uniscr = new CMenuOptionNumberChooser(_("Unicable SCR address"), &CZapit::getInstance()->getFE(feindex)->uni_scr, true, -1, dmode == DISEQC_UNICABLE ? 7 : 31);
+	uni_setup->addItem(uniscr);
+
+	// uni_qrg
+	CIntInput *uni_qrg = new CIntInput(_("Unicable frequency"), (int&) CZapit::getInstance()->getFE(feindex)->uni_qrg, 4);
+	ClistBoxItem * uniqrg = new ClistBoxItem(_("Unicable frequency"), true, uni_qrg->getValue(), uni_qrg);
+	uni_setup->addItem(uniqrg);
+
+	//
+	ret = uniWidget->exec(NULL, "");
+	
+	if (uni_setup)
+	{
+		delete uni_setup;
+		uni_setup = NULL;
+	}
+	
+	if (uniWidget)
+	{
+		delete uniWidget;
+		uniWidget = NULL;
+	}
+
+	return ret;
+}
+
+//
+int CScanSetup::showLNBSetup()
+{
+	dprintfblue(DEBUG_NORMAL, "CScanSetup::showManualScanSetup\n");
+	
+	int ret = RETURN_REPAINT;
+	
+	//
+	CWidget* satSetupWidget = NULL;
+	ClistBox* satSetup = NULL;
+		
+	satSetupWidget = CNeutrinoApp::getInstance()->getWidget("satsetup");
+		
+	if (satSetupWidget)
+	{
+		satSetup = (ClistBox*)satSetupWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		satSetup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+
+		satSetup->setWidgetMode(MODE_SETUP);
+		satSetup->enableShrinkMenu();
+			
+		satSetup->enablePaintHead();
+		satSetup->setTitle(_("Sat settings"), NEUTRINO_ICON_SCAN);
+
+		satSetup->enablePaintFoot();
+				
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+				
+		satSetup->setFootButtons(&btn);
+			
+		//
+		satSetupWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		satSetupWidget->name = "satsetup";
+		satSetupWidget->setMenuPosition(MENU_POSITION_CENTER);
+		satSetupWidget->addWidgetItem(satSetup);
+	}
+
+	satSetup->clear();
+		
+	satSetup->addItem(new ClistBoxItem(_("back")));
+	satSetup->addItem(new CMenuSeparator(LINE));
+		
+	// tmpSat
+	CWidget* tempsatWidget = NULL;
+	ClistBox* tempsatlistBox = NULL;
+		
+	tempsatWidget = CNeutrinoApp::getInstance()->getWidget("tempsat");
+				
+	if (tempsatWidget)
+	{
+		tempsatlistBox = (ClistBox*)tempsatWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		tempsatlistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+
+		tempsatlistBox->setWidgetMode(MODE_SETUP);
+		tempsatlistBox->enableShrinkMenu();
+					
+		//
+		tempsatlistBox->enablePaintHead();
+					
+		//
+		tempsatlistBox->enablePaintFoot();		
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
+		tempsatlistBox->setFootButtons(&btn);
+					
+		//
+		tempsatWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		tempsatWidget->name = "tempsat";
+		tempsatWidget->setMenuPosition(MENU_POSITION_CENTER);
+		tempsatWidget->enableSaveScreen();
+		tempsatWidget->addWidgetItem(tempsatlistBox);
+	}
+
+	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
+	{
+		// satname
+		if(sit->second.system == DVB_S)
+		{	
+			//
+			if (tempsatlistBox->hasHead())
+				tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
+			tempsatlistBox->setWidgetMode(MODE_SETUP);
+				
+			tempsatlistBox->clear();
+				
+			//
+			tempsatlistBox->addItem(new ClistBoxItem(_("back")));
+			tempsatlistBox->addItem(new CMenuSeparator(LINE));
+				
+			// savesettings
+			tempsatlistBox->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+			tempsatlistBox->addItem(new CMenuSeparator(LINE));
+
+			// diseqc
+			CMenuOptionNumberChooser * diseqc = new CMenuOptionNumberChooser(_("Diseqc input"), &sit->second.diseqc, ((dmode != NO_DISEQC) && (dmode != DISEQC_ADVANCED)), -1, 15, NULL, 1, -1);
+
+			// commited input
+			CMenuOptionNumberChooser * comm = new CMenuOptionNumberChooser(_("Commited/Uncommited"), &sit->second.commited, dmode == DISEQC_ADVANCED, -1, 15, NULL, 1, -1);
+
+			// uncommited input
+			CMenuOptionNumberChooser * uncomm = new CMenuOptionNumberChooser(_("Uncommited/Commited"), &sit->second.uncommited, dmode == DISEQC_ADVANCED, -1, 15, NULL, 1, -1);
+
+			// motor position
+			CMenuOptionNumberChooser * motor = new CMenuOptionNumberChooser(_("Rotor position"), &sit->second.motor_position, true, 0, 64);
+
+			// usals
+			CMenuOptionChooser * usals = new CMenuOptionChooser(_("Use gotoXX"),  &sit->second.use_usals, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
+
+			satNotify->addItem(1, diseqc);
+			satNotify->addItem(0, comm);
+			satNotify->addItem(0, uncomm);
+
+			CIntInput* lofL = new CIntInput(_("LNB Low Offset"), (int&) sit->second.lnbOffsetLow, 5);
+			CIntInput* lofH = new CIntInput(_("LNB High Offset"), (int&) sit->second.lnbOffsetHigh, 5);
+			CIntInput* lofS = new CIntInput(_("LNB switch Offset"), (int&) sit->second.lnbSwitch, 5);
+					
+			tempsatlistBox->addItem(diseqc);
+			tempsatlistBox->addItem(comm);
+			tempsatlistBox->addItem(uncomm);
+			tempsatlistBox->addItem(motor);
+			tempsatlistBox->addItem(usals);
+			tempsatlistBox->addItem(new ClistBoxItem(_("LNB Low Offset"), true, lofL->getValue(), lofL ));
+			tempsatlistBox->addItem(new ClistBoxItem(_("LNB High Offset"), true, lofH->getValue(), lofH ));
+			tempsatlistBox->addItem(new ClistBoxItem(_("LNB switch Offset"), true, lofS->getValue(), lofS));
+		}
+		
+		// sat setup
+		satSetup->addItem(new ClistBoxItem(sit->second.name.c_str(), true, NULL, tempsatWidget));
+	}
+	
+	ret = satSetupWidget->exec(NULL, "");
+	
+	if (tempsatlistBox)
+	{
+		delete tempsatlistBox;
+		tempsatlistBox = NULL;
+	}
+		
+	if (tempsatWidget)
+	{
+		delete tempsatWidget;
+		tempsatWidget = NULL;
+	}
+	
+	if (satSetup)
+	{
+		delete satSetup;
+		satSetup = NULL;
+	}
+	
+	if (satSetupWidget)
+	{
+		delete satSetupWidget;
+		satSetupWidget = NULL;
+	}
+	
+	return ret;
+}
+
+//
+int CScanSetup::showSatOnOffSetup()
+{
+	dprintfblue(DEBUG_NORMAL, "CScanSetup::showSatOnOffSetup\n");
+	
+	int ret = RETURN_REPAINT;
+	
+	//
+	CWidget *satOnOffWidget = NULL;
+	ClistBox *satOnOfflistBox = NULL;
+			
+	//
+	satOnOffWidget = CNeutrinoApp::getInstance()->getWidget("satOnOff");
+		
+	if (satOnOffWidget)
+	{
+		satOnOfflistBox = (ClistBox*)satOnOffWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		satOnOfflistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+
+		satOnOfflistBox->setWidgetMode(MODE_SETUP);
+		satOnOfflistBox->enableShrinkMenu();
+			
+		satOnOfflistBox->enablePaintHead();
+		satOnOfflistBox->setTitle(_("Satellite"), NEUTRINO_ICON_SCAN);
+
+		satOnOfflistBox->enablePaintFoot();
+				
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+				
+		satOnOfflistBox->setFootButtons(&btn);
+			
+		//
+		satOnOffWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		satOnOffWidget->name = "satOnOff";
+		satOnOffWidget->setMenuPosition(MENU_POSITION_CENTER);
+		satOnOffWidget->addWidgetItem(satOnOfflistBox);
+	}
+		
+	satOnOfflistBox->clearItems();
+	
+	// intros
+	satOnOfflistBox->addItem(new ClistBoxItem(_("back")));
+	satOnOfflistBox->addItem(new CMenuSeparator(LINE));
+	
+	//
+	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
+	{
+		// satname
+		if(sit->second.system == DVB_S)
+		{
+			// inuse
+			CMenuOptionChooser * inuse = new CMenuOptionChooser(sit->second.name.c_str(),  &sit->second.use_in_scan, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
+			
+			satOnOfflistBox->addItem(inuse);
+		}
+	}
+	
+	ret = satOnOffWidget->exec(NULL, "");
+	
+	if (satOnOfflistBox)
+	{
+		delete satOnOfflistBox;
+		satOnOfflistBox = NULL;
+	}
+	
+	if (satOnOffWidget)
+	{
+		delete satOnOffWidget;
+		satOnOffWidget = NULL;
+	}
+	
+	return ret;
+}
+
+//
+int CScanSetup::showManualScanSetup()
+{
+	dprintfblue(DEBUG_NORMAL, "CScanSetup::showManualScanSetup\n");
+	
+	int ret = RETURN_REPAINT;
+	
 	CWidget* manualScanWidget = NULL;
 	ClistBox* manualScanlistBox = NULL;
 	
@@ -961,9 +1030,6 @@ void CScanSetup::showScanService()
 	
 	manualScanlistBox->clear();
 
-	//
-	CScanTs * scanTs = new CScanTs(feindex);
-
 	// intros
 	manualScanlistBox->addItem(new ClistBoxItem(_("back")));
 	manualScanlistBox->addItem(new CMenuSeparator(LINE));
@@ -973,10 +1039,75 @@ void CScanSetup::showScanService()
 	manualScanlistBox->addItem(new CMenuSeparator(LINE));
 
 	// sat select
+	CMenuOptionStringChooser * satSelect = NULL;
+#if HAVE_DVB_API_VERSION >= 5 
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
+#else
+	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+#endif
+	{
+		satSelect = new CMenuOptionStringChooser(_("Cable"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+
+		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
+		{
+			if(sit->second.system == DVB_C)
+			{
+				satSelect->addOption(sit->second.name.c_str());
+			}
+		}
+	}
+#if HAVE_DVB_API_VERSION >= 5
+	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+#else
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+#endif
+	{
+		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+
+		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
+		{
+			if(sit->second.system == DVB_T)
+			{
+				satSelect->addOption(sit->second.name.c_str());
+			}
+		}
+	}
+#if HAVE_DVB_API_VERSION >= 5
+    	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+#else
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+#endif
+	{
+		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+
+		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
+		{
+			if(sit->second.system == DVB_A)
+			{
+				satSelect->addOption(sit->second.name.c_str());
+			}
+		}
+	}
+#if HAVE_DVB_API_VERSION >= 5
+	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+#else
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+#endif 
+	{
+		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
+		{
+			// satname
+			if(sit->second.system == DVB_S)
+			{
+				satSelect->addOption(sit->second.name.c_str());
+			}
+		}
+	}
+	
 	manualScanlistBox->addItem(satSelect);
 		
 	// TP select
-	CTPSelectHandler * tpSelect = new CTPSelectHandler(feindex);	
+	tpSelect = new CTPSelectHandler(feindex);	
 	manualScanlistBox->addItem(new ClistBoxItem(_("Select transponder"), true, NULL, tpSelect));
 		
 	// frequency
@@ -1111,13 +1242,24 @@ void CScanSetup::showScanService()
 		
 	// scan
 	manualScanlistBox->addItem(new ClistBoxItem(_("Start scan"), true, NULL, scanTs, "manual") );
-	////
-		
-	ClistBoxItem * manScan = new ClistBoxItem(_("Manual frequency scan / Test signal"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, manualScanWidget, "");
-	feModeNotifier->addItem(0, manScan);
-	scansetup->addItem(manScan);
-		
-	//// autoscan
+	
+	ret = manualScanWidget->exec(NULL, "");
+	
+	delete manualScanlistBox;
+	manualScanlistBox = NULL;
+	delete manualScanWidget;
+	manualScanWidget = NULL;
+
+	return ret;
+}
+
+//
+int CScanSetup::showAutoScanSetup()
+{
+	dprintfblue(DEBUG_NORMAL, "CScanSetup::showAutoScanSetup\n");
+	
+	int ret = RETURN_REPAINT;
+	
 	CWidget* autoScanWidget = NULL;
 	ClistBox* autoScanlistBox = NULL;
 	
@@ -1161,174 +1303,153 @@ void CScanSetup::showScanService()
 	autoScanlistBox->addItem(new CMenuSeparator(LINE));
 		
 	// satselect
+	CMenuOptionStringChooser * satSelect = NULL;
+#if HAVE_DVB_API_VERSION >= 5 
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
+#else
+	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
+#endif
+	{
+		satSelect = new CMenuOptionStringChooser(_("Cable"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+
+		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
+		{
+			if(sit->second.system == DVB_C)
+			{
+				satSelect->addOption(sit->second.name.c_str());
+				dprintf(DEBUG_DEBUG, "[neutrino] fe(%d) Adding cable menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
+			}
+		}
+	}
+#if HAVE_DVB_API_VERSION >= 5
+	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+#else
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
+#endif
+	{
+		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+
+		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
+		{
+			if(sit->second.system == DVB_T)
+			{
+				satSelect->addOption(sit->second.name.c_str());
+				dprintf(DEBUG_DEBUG, "CNeutrinoApp::InitScanSettings fe(%d) Adding terrestrial menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
+			}
+		}
+	}
+#if HAVE_DVB_API_VERSION >= 5
+    	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+#else
+	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+#endif
+	{
+		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+
+		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
+		{
+			if(sit->second.system == DVB_A)
+			{
+				satSelect->addOption(sit->second.name.c_str());
+				dprintf(DEBUG_DEBUG, "CNeutrinoApp::InitScanSettings fe(%d) Adding atsc menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
+			}
+		}
+	}
+#if HAVE_DVB_API_VERSION >= 5
+	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+#else
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+#endif 
+	{
+		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
+		{
+			// satname
+			if(sit->second.system == DVB_S)
+			{
+				satSelect->addOption(sit->second.name.c_str());
+				dprintf(DEBUG_DEBUG, "CNeutrinoApp::InitScanSettings fe(%d) Adding sat menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
+			}
+		}
+	}
+	
 	autoScanlistBox->addItem(satSelect);
 		
 	// scan
 	autoScanlistBox->addItem(new ClistBoxItem(_("Start scan"), true, NULL, scanTs, "auto") );
-	////
-		
-	//
-	ClistBoxItem * auScan = new ClistBoxItem(_("Auto-Scan"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, autoScanWidget, "");
-	feModeNotifier->addItem(0, auScan);
 	
-	scansetup->addItem(auScan);
-
-	//// scan all sats
-	ClistBoxItem * fautoScanAll = NULL;
-		
-#if HAVE_DVB_API_VERSION >= 5
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
-#else
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
-#endif
-	{
-		//
-		CWidget* autoScanAllWidget = NULL;
-		ClistBox* autoScanAlllistBox = NULL;
-		
-		autoScanAllWidget = CNeutrinoApp::getInstance()->getWidget("autoscanall");
-		
-		if (autoScanAllWidget)
-		{
-			autoScanAlllistBox = (ClistBox*)autoScanAllWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-		}
-		else
-		{
-			autoScanAlllistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-
-			autoScanAlllistBox->setWidgetMode(MODE_SETUP);
-			autoScanAlllistBox->enableShrinkMenu();
-			
-			autoScanAlllistBox->enablePaintHead();
-			autoScanAlllistBox->setTitle(_("Auto-Scan multiple Satellites"), NEUTRINO_ICON_SCAN);
-
-			autoScanAlllistBox->enablePaintFoot();
-				
-			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-				
-			autoScanAlllistBox->setFootButtons(&btn);
-			
-			//
-			autoScanAllWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			autoScanAllWidget->name = "autoscanall";
-			autoScanAllWidget->setMenuPosition(MENU_POSITION_CENTER);
-			autoScanAllWidget->addWidgetItem(autoScanAlllistBox);
-		}
-		
-		autoScanAlllistBox->clearItems();
-			
-		//fautoScanAll = new ClistBoxItem(_("Auto-Scan multiple Satellites"), ( (dmode != NO_DISEQC) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)), NULL, autoScanAllWidget );
-		//satNotify->addItem(2, fautoScanAll);
-		//feModeNotifier->addItem(2, fautoScanAll);
-
-		// intros
-		autoScanAlllistBox->addItem(new ClistBoxItem(_("back")));
-		autoScanAlllistBox->addItem(new CMenuSeparator(LINE));
-		
-		// save settings
-		autoScanAlllistBox->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-		autoScanAlllistBox->addItem(new CMenuSeparator(LINE));
-		
-		// sat
-		autoScanAlllistBox->addItem(new ClistBoxItem(_("Satellite"), true, NULL, satOnOffWidget));
-			
-		// scan
-		autoScanAlllistBox->addItem(new ClistBoxItem(_("Start scan"), true, NULL, scanTs, "all") );
-		////
-
-		// add item
-		fautoScanAll = new ClistBoxItem(_("Auto-Scan multiple Satellites"), ( (dmode != NO_DISEQC) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)), NULL, autoScanAllWidget );
-		satNotify->addItem(2, fautoScanAll);
-		feModeNotifier->addItem(2, fautoScanAll);
-		scansetup->addItem(fautoScanAll);
-	}
-	////
-
-	//
-	widget->exec(NULL, "");
+	ret = autoScanWidget->exec(NULL, "");
 	
-	//
-	if (scansetup)
-	{
-		delete scansetup;
-		scansetup = NULL;
-	}
-	
-	if (widget)
-	{
-		delete widget;
-		widget = NULL;
-	}
+	delete autoScanlistBox;
+	autoScanlistBox = NULL;
+	delete autoScanWidget;
+	autoScanWidget = NULL;
+
+	return ret;
 }
 
-int CScanSetup::showUnicableSetup()
+//
+int CScanSetup::showAllAutoScanSetup()
 {
-	dprintf(DEBUG_INFO, "CScanSetup::showUnicableSetup\n");
+	dprintfblue(DEBUG_NORMAL, "CScanSetup::showAllAutoScanSetup\n");
 	
 	int ret = RETURN_REPAINT;
 	
 	//
-	CWidget* uniWidget = NULL;
-	ClistBox* uni_setup = NULL;
-	
-	uniWidget = CNeutrinoApp::getInstance()->getWidget("unicablesetup");
-	
-	if (uniWidget)
+	CWidget* autoScanAllWidget = NULL;
+	ClistBox* autoScanAlllistBox = NULL;
+		
+	autoScanAllWidget = CNeutrinoApp::getInstance()->getWidget("autoscanall");
+		
+	if (autoScanAllWidget)
 	{
-		uni_setup = (ClistBox*)uniWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		autoScanAlllistBox = (ClistBox*)autoScanAllWidget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
 	{
-		uni_setup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		autoScanAlllistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
 
-		uni_setup->setWidgetMode(MODE_SETUP);
-		uni_setup->enableShrinkMenu();
-		
-		uni_setup->enablePaintHead();
-		uni_setup->setTitle(_("Unicable settings"), NEUTRINO_ICON_SCAN);
-
-		uni_setup->enablePaintFoot();
+		autoScanAlllistBox->setWidgetMode(MODE_SETUP);
+		autoScanAlllistBox->enableShrinkMenu();
 			
+		autoScanAlllistBox->enablePaintHead();
+		autoScanAlllistBox->setTitle(_("Auto-Scan multiple Satellites"), NEUTRINO_ICON_SCAN);
+
+		autoScanAlllistBox->enablePaintFoot();
+				
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+				
+		autoScanAlllistBox->setFootButtons(&btn);
 			
-		uni_setup->setFootButtons(&btn);
-		
 		//
-		uniWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		uniWidget->name = "unicablesetup";
-		uniWidget->setMenuPosition(MENU_POSITION_CENTER);
-		uniWidget->addWidgetItem(uni_setup);
+		autoScanAllWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		autoScanAllWidget->name = "autoscanall";
+		autoScanAllWidget->setMenuPosition(MENU_POSITION_CENTER);
+		autoScanAllWidget->addWidgetItem(autoScanAlllistBox);
 	}
+		
+	autoScanAlllistBox->clear();
+			
+	// intros
+	autoScanAlllistBox->addItem(new ClistBoxItem(_("back")));
+	autoScanAlllistBox->addItem(new CMenuSeparator(LINE));
+		
+	// save settings
+	autoScanAlllistBox->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	autoScanAlllistBox->addItem(new CMenuSeparator(LINE));
+		
+	// satonoff
+	autoScanAlllistBox->addItem(new ClistBoxItem(_("Satellite"), true, NULL, this, "satonoffsetup"));
+			
+	// scants
+	autoScanAlllistBox->addItem(new ClistBoxItem(_("Start scan"), true, NULL, scanTs, "all") );
 	
-	//uni_setup->clearItems();
+	ret = autoScanAllWidget->exec(NULL, "");
 
-	uni_setup->addItem(new ClistBoxItem(_("back")));
-	uni_setup->addItem(new CMenuSeparator(LINE));
-
-	// uni_scr
-	CMenuOptionNumberChooser * uniscr = new CMenuOptionNumberChooser(_("Unicable SCR address"), &CZapit::getInstance()->getFE(feindex)->uni_scr, true, \
-		-1, dmode == DISEQC_UNICABLE ? 7 : 31);
-	uni_setup->addItem(uniscr);
-
-	// uni_qrg
-	CIntInput *uni_qrg = new CIntInput(_("Unicable frequency"), (int&) CZapit::getInstance()->getFE(feindex)->uni_qrg, 4);
-	ClistBoxItem * uniqrg = new ClistBoxItem(_("Unicable frequency"), true, uni_qrg->getValue(), uni_qrg);
-	uni_setup->addItem(uniqrg);
-
-	//
-	ret = uniWidget->exec(NULL, "");
+	delete autoScanAlllistBox;
+	autoScanAlllistBox = NULL;
 	
-	if (uni_setup)
-	{
-		delete uni_setup;
-		uni_setup = NULL;
-	}
-	
-	if (uniWidget)
-	{
-		delete uniWidget;
-		uniWidget = NULL;
-	}
+	delete autoScanAllWidget;
+	autoScanAllWidget = NULL;
 
 	return ret;
 }
@@ -1342,6 +1463,8 @@ CTPSelectHandler::CTPSelectHandler(int num)
 //
 int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
+	dprintf(DEBUG_NORMAL, "CTPSelectHandler::exec\n");
+	
 	transponder_list_t::iterator tI;
 	sat_iterator_t sit;
 	t_satellite_position position = 0;
@@ -1355,7 +1478,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	if (parent)
 		parent->hide();
 
-	//loop throught satpos
+	//get satposition (loop throught satpos)
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 	{
 		if(!strcmp(sit->second.name.c_str(), scanSettings->satNameNoDiseqc)) 
@@ -1405,7 +1528,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		tpWidget->addWidgetItem(menu);
 	}
 	
-	//menu->clearItems();
+	menu->clear();
 	
 	//
 	i = 0;
@@ -1645,7 +1768,7 @@ void CScanSettings::setConfigValue(int num, const char * name, uint32_t val)
 
 bool CScanSettings::loadSettings(const char * const fileName, int index)
 {
-	printf("CScanSettings::loadSettings: fe%d\n", index);
+	dprintfyellow(DEBUG_NORMAL, "CScanSettings::loadSettings: fe%d\n", index);
 	
 	// if scan.conf not exists load default
 	if(!configfile.loadConfig(fileName))
@@ -1714,7 +1837,7 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 
 bool CScanSettings::saveSettings(const char * const fileName, int index)
 {
-	printf("CScanSettings::saveSettings: fe%d\n", index);
+	dprintfyellow(DEBUG_NORMAL, "CScanSettings::saveSettings: fe%d\n", index);
 	
 	char cfg_key[81];
 	
@@ -1787,6 +1910,8 @@ CSatelliteSetupNotifier::CSatelliteSetupNotifier(int num)
 // item5: diseqc repeats
 bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 {
+	//dprintfmagenta(DEBUG_NORMAL, "CSatelliteSetupNotifier::changeNotify\n");
+	
 	std::vector<CMenuItem*>::iterator it;
 	int type = *((int*) Data);
 
@@ -1908,6 +2033,8 @@ bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 
 void CSatelliteSetupNotifier::addItem(int list, CMenuItem* item)
 {
+	//dprintfmagenta(DEBUG_NORMAL, "CSatelliteSetupNotifier::addItem\n");
+	
 	switch(list) 
 	{
 		case 0:
@@ -1939,6 +2066,8 @@ CScanSetupNotifier::CScanSetupNotifier(int num)
 // items1 enabled for advanced diseqc settings, items2 for diseqc != NO_DISEQC, items3 disabled for NO_DISEQC
 bool CScanSetupNotifier::changeNotify(const std::string&, void * Data)
 {
+	//dprintfmagenta(DEBUG_NORMAL, "CScanSetupNotifier::changeNotify\n");
+	
 	std::vector<CMenuItem*>::iterator it;
 	int FeMode = *((int*) Data);
 	
@@ -2007,6 +2136,8 @@ bool CScanSetupNotifier::changeNotify(const std::string&, void * Data)
 
 void CScanSetupNotifier::addItem(int list, CMenuItem *item)
 {
+	//dprintfmagenta(DEBUG_NORMAL, "CScanSetupNotifier::addItem\n");
+	
 	switch(list) 
 	{
 		case 0:
@@ -2027,6 +2158,17 @@ void CScanSetupNotifier::addItem(int list, CMenuItem *item)
 		default:
 			break;
 	}
+}
+
+//
+bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
+{
+	//dprintfmagenta(DEBUG_NORMAL, "CScanSetupDelSysNotifier::changeNotify\n");
+	
+	CZapit::getInstance()->getFE(feindex)->changeDelSys(CZapit::getInstance()->getFE(feindex)->forcedDelSys);
+	CZapit::getInstance()->getFE(feindex)->reset();
+	
+	return true;
 }
 
 // TunerSetup
@@ -2106,13 +2248,5 @@ void CTunerSetup::showMenu()
 	
 	delete widget;
 	widget = NULL;
-}
-
-bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
-{
-	CZapit::getInstance()->getFE(feindex)->changeDelSys(CZapit::getInstance()->getFE(feindex)->forcedDelSys);
-	CZapit::getInstance()->getFE(feindex)->reset();
-	
-	return true;
 }
 
