@@ -534,7 +534,7 @@ void CScanSetup::showScanService()
 		scansetup->addItem(ojDiseqc);
 		scansetup->addItem(ojDiseqcRepeats);
 		scansetup->addItem(uniSetup);		// unicablesetup
-		scansetup->addItem(fsatSetup);		// lnbsetup
+		scansetup->addItem(fsatSetup);	// lnbsetup
 		scansetup->addItem(fmotorMenu); 	// motorsetup
 	}
 	
@@ -751,7 +751,7 @@ int CScanSetup::showUnicableSetup()
 //
 int CScanSetup::showLNBSetup()
 {
-	dprintfblue(DEBUG_NORMAL, "CScanSetup::showManualScanSetup\n");
+	dprintfblue(DEBUG_NORMAL, "CScanSetup::showLNBSetup\n");
 	
 	int ret = RETURN_REPAINT;
 	
@@ -1094,6 +1094,8 @@ int CScanSetup::showManualScanSetup()
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif 
 	{
+		satSelect = new CMenuOptionStringChooser(_("Satellite"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+		
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
 			// satname
@@ -1361,6 +1363,8 @@ int CScanSetup::showAutoScanSetup()
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif 
 	{
+		satSelect = new CMenuOptionStringChooser(_("Satellite"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+		
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
 			// satname

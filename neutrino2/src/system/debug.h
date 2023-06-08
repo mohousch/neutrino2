@@ -70,7 +70,7 @@ void setDebugLevel( int level );
 		}}
 		
 #define dprintfmagenta(debuglevel, fmt, args...) {if (debug >= debuglevel) { \
-			printf(ANSI_COLOR_BLUE);\
+			printf(ANSI_COLOR_MAGENTA);\
 			printf(fmt, ## args); \
 			printf(ANSI_COLOR_RESET); \
 		}}

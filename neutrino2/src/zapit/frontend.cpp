@@ -2247,7 +2247,7 @@ uint32_t CFrontend::getDeliverySystem()
 
 bool CFrontend::changeDelSys(uint32_t delsys)
 {
-	dprintf(DEBUG_NORMAL, "CFrontend::changeDelSys: fe(%d:%d) to delsys:%x\n", feadapter, fenumber, delsys);
+	dprintf(DEBUG_NORMAL, "CFrontend::changeDelSys: fe(%d:%d) to delsys:0x%x\n", feadapter, fenumber, delsys);
 	
 	if ( !(deliverySystemMask & delsys) )
 		return true;
