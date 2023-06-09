@@ -510,35 +510,35 @@ void CScanSetup::showScanService()
 		CMenuOptionStringChooser * satSelect = NULL;
 		
 		// diseqc
-		CMenuOptionChooser *ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&CZapit::getInstance()->getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, /*( (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP) )*/true, satNotify, RC_nokey, "", true);
+		CMenuOptionChooser *ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&CZapit::getInstance()->getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, true, satNotify, RC_nokey, "", true);
 		feModeNotifier->addItem(1, ojDiseqc);
 		
 		// diseqc repeat
-		CMenuOptionNumberChooser *ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &CZapit::getInstance()->getFE(feindex)->diseqcRepeats, /*(dmode != NO_DISEQC) && (dmode < DISEQC_ADVANCED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != FE_LOOP)*/true, 0, 2, NULL);
+		CMenuOptionNumberChooser *ojDiseqcRepeats = new CMenuOptionNumberChooser(_("DiSEqC-repeats"), &CZapit::getInstance()->getFE(feindex)->diseqcRepeats, true, 0, 2, NULL);
 		ojDiseqcRepeats->setHidden((dmode == NO_DISEQC) || (dmode > DISEQC_ADVANCED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == FE_LOOP));
 		satNotify->addItem(4, ojDiseqcRepeats);
 		feModeNotifier->addItem(4, ojDiseqcRepeats);
 
 		// unicablesetup
-		ClistBoxItem *uniSetup = new ClistBoxItem(_("Unicable Setup"), /*(dmode > DISEQC_ADVANCED ? true : false)*/true, NULL, this, "unisetup");
+		ClistBoxItem *uniSetup = new ClistBoxItem(_("Unicable Setup"), true, NULL, this, "unisetup");
 		uniSetup->setHidden((dmode > DISEQC_ADVANCED ? false : true));
 		satNotify->addItem(3, uniSetup);
 		feModeNotifier->addItem(3, uniSetup);
 
 		// lnbsetup
-		ClistBoxItem *fsatSetup = new ClistBoxItem(_("Setup satellites input / LNB"), /*(CZapit::getInstance()->getFE(feindex)->mode != FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)*/true, NULL, this, "lnbsetup");
+		ClistBoxItem *fsatSetup = new ClistBoxItem(_("Setup satellites input / LNB"), true, NULL, this, "lnbsetup");
 		fsatSetup->setHidden((CZapit::getInstance()->getFE(feindex)->mode == FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP));
 		feModeNotifier->addItem(1, fsatSetup);
 		
 		// motorsetup
-		ClistBoxItem *fmotorMenu = new ClistBoxItem(_("Motor settings"), /*(CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)*/true, NULL, this, "motorsetup");
+		ClistBoxItem *fmotorMenu = new ClistBoxItem(_("Motor settings"), true, NULL, this, "motorsetup");
 		fmotorMenu->setHidden((CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP));
 		feModeNotifier->addItem(1, fmotorMenu);
 		
 		scansetup->addItem(ojDiseqc);
 		scansetup->addItem(ojDiseqcRepeats);
 		scansetup->addItem(uniSetup);		// unicablesetup
-		scansetup->addItem(fsatSetup);	// lnbsetup
+		scansetup->addItem(fsatSetup);		// lnbsetup
 		scansetup->addItem(fmotorMenu); 	// motorsetup
 	}
 	
@@ -560,7 +560,8 @@ void CScanSetup::showScanService()
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif
 	{
-		ClistBoxItem *fautoScanAll = new ClistBoxItem(_("Auto-Scan multiple Satellites"), ( (dmode != NO_DISEQC) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)), NULL, this, "allautoscansetup" );
+		ClistBoxItem *fautoScanAll = new ClistBoxItem(_("Auto-Scan multiple Satellites"), true, NULL, this, "allautoscansetup" );
+		fautoScanAll->setHidden(( (dmode == NO_DISEQC) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP)));
 		satNotify->addItem(2, fautoScanAll);
 		feModeNotifier->addItem(2, fautoScanAll);
 		
