@@ -80,13 +80,7 @@ const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
         { 1, _("on") }
 };
 
-// option off1 on0
-#define OPTIONS_OFF1_ON0_OPTION_COUNT 2
-const keyval OPTIONS_OFF1_ON0_OPTIONS[OPTIONS_OFF1_ON0_OPTION_COUNT] =
-{
-        { 1, _("off") },
-        { 0, _("on") }
-};
+//
 #define SCANTS_SCANMODE_OPTION_COUNT 2
 const keyval SCANTS_SCANMODE_OPTIONS[SCANTS_SCANMODE_OPTION_COUNT] =
 {
@@ -125,8 +119,8 @@ const keyval SATSETUP_DISEQC_OPTIONS[SATSETUP_DISEQC_OPTION_COUNT] =
 	{ SMATV_REMOTE_TUNING, _("SMATV Remote Tuning") }
 };
 
-#define SATSETUP_SCANTP_FEC_COUNT 24
-#define CABLESETUP_SCANTP_FEC_COUNT 6
+#define SATSETUP_SCANTP_FEC_COUNT 28
+#define CABLESETUP_SCANTP_FEC_COUNT 10
 const keyval SATSETUP_SCANTP_FEC[SATSETUP_SCANTP_FEC_COUNT] =
 {
 	{ FEC_NONE, _("FEC_NONE") },
@@ -134,8 +128,12 @@ const keyval SATSETUP_SCANTP_FEC[SATSETUP_SCANTP_FEC_COUNT] =
         { FEC_1_2, "1/2" },
         { FEC_2_3, "2/3" },
         { FEC_3_4, "3/4" },
+        { FEC_4_5, "4/5" },
         { FEC_5_6, "5/6" },
+        { FEC_6_7, "6/7" },
         { FEC_7_8, "7/8" },
+        { FEC_8_9, "8/9" },
+        { FEC_AUTO, "AUTO" },
 
         { FEC_S2_QPSK_1_2, "1/2 s2 qpsk" },
         { FEC_S2_QPSK_2_3, "3/2 s2 qpsk" },
@@ -182,26 +180,35 @@ const keyval SATSETUP_SCANTP_MOD[SATSETUP_SCANTP_MOD_COUNT] =
 #endif
 };
 
-#define SATSETUP_SCANTP_BAND_COUNT 4
+#define SATSETUP_SCANTP_BAND_COUNT 7
 const keyval SATSETUP_SCANTP_BAND[SATSETUP_SCANTP_BAND_COUNT] =
 {
 	{ BANDWIDTH_8_MHZ, "BAND_8" },
 	{ BANDWIDTH_7_MHZ, "BAND_7" },
 	{ BANDWIDTH_6_MHZ, "BAND_6" },
-	{ BANDWIDTH_AUTO, "BAND_AUTO"}
+	{ BANDWIDTH_AUTO, "BAND_AUTO" },
+	{ BANDWIDTH_5_MHZ, "BAND_5" },
+	{ BANDWIDTH_10_MHZ, "BAND_10" },
+	{ BANDWIDTH_1_712_MHZ, "BAND_712" }
 };
 
 // transmition mode
-#define TERRESTRIALSETUP_TRANSMIT_MODE_COUNT 3
+#define TERRESTRIALSETUP_TRANSMIT_MODE_COUNT 9
 const keyval TERRESTRIALSETUP_TRANSMIT_MODE[TERRESTRIALSETUP_TRANSMIT_MODE_COUNT] =
 {
 	{ TRANSMISSION_MODE_2K, "2K" },
 	{ TRANSMISSION_MODE_8K, "8K" },
 	{ TRANSMISSION_MODE_AUTO, "AUTO" },
+	{ TRANSMISSION_MODE_4K, "4K" },
+	{ TRANSMISSION_MODE_1K, "1K" },
+	{ TRANSMISSION_MODE_16K, "16K" },
+	{ TRANSMISSION_MODE_32K, "32K" },
+	{ TRANSMISSION_MODE_C1, "C1" },
+	{ TRANSMISSION_MODE_C3780, "C3780" }
 };
 
 // guard interval
-#define TERRESTRIALSETUP_GUARD_INTERVAL_COUNT 5
+#define TERRESTRIALSETUP_GUARD_INTERVAL_COUNT 11
 const keyval TERRESTRIALSETUP_GUARD_INTERVAL[TERRESTRIALSETUP_GUARD_INTERVAL_COUNT] =
 {
 	{ GUARD_INTERVAL_1_32, "1_32" },
@@ -209,6 +216,12 @@ const keyval TERRESTRIALSETUP_GUARD_INTERVAL[TERRESTRIALSETUP_GUARD_INTERVAL_COU
 	{ GUARD_INTERVAL_1_8, "1_8" },
 	{ GUARD_INTERVAL_1_4, "1_4"},
 	{ GUARD_INTERVAL_AUTO, "AUTO"},
+	{ GUARD_INTERVAL_1_128, "1_128" },
+	{ GUARD_INTERVAL_19_128, "19_128" },
+	{ GUARD_INTERVAL_19_256, "19_256" },
+	{ GUARD_INTERVAL_PN420, "PN420" },
+	{ GUARD_INTERVAL_PN595, "PN595" },
+	{ GUARD_INTERVAL_PN945, "PN945" }
 };
 
 // hierarchy
@@ -1094,7 +1107,7 @@ int CScanSetup::showManualScanSetup()
 		}
 	}
 #if HAVE_DVB_API_VERSION >= 5
-	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
 #else
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif 
@@ -1212,13 +1225,17 @@ int CScanSetup::showManualScanSetup()
 	ClistBoxItem * Rate = new ClistBoxItem(_("Symbol rate"), true, scanSettings->TP_rate, rate);
 
 	// fec
+#if HAVE_DVB_API_VERSION >= 5
+	int fec_count = (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
+#else
 	int fec_count = ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
+#endif
 	CMenuOptionChooser * fec = new CMenuOptionChooser(_("FEC"), (int *)&scanSettings->TP_fec, SATSETUP_SCANTP_FEC, fec_count, true);
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T && CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T2 && CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T2 || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
 #else	
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM && CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_ATSC)
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_ATSC)
 #endif
 	{
 		// Rate
