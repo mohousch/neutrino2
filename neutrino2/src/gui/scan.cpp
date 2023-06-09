@@ -169,6 +169,8 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		// freq
 		TP.feparams.frequency = atoi(scanSettings->TP_freq);
 		
+		// inversion ???
+		
 #if HAVE_DVB_API_VERSION >= 5
 		if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
 #else

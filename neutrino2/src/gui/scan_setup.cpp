@@ -1120,6 +1120,29 @@ int CScanSetup::showManualScanSetup()
 	// frequency
 	int freq_length = 8;
 
+#if HAVE_DVB_API_VERSION >= 5
+	switch (CZapit::getInstance()->getFE(feindex)->getForcedDelSys())
+	{
+		case DVB_S:
+		case DVB_S2:
+			freq_length = 8;
+			break;
+		
+		case DVB_C:
+			freq_length = 6;
+			break;
+		
+		case DVB_T:
+		case DVB_T2:
+		case DVB_A:
+			freq_length = 9;
+			break;
+		
+		default:
+			freq_length = 8;
+			break;
+	}
+#else
 	switch (CZapit::getInstance()->getFE(feindex)->getInfo()->type)
 	{
 		case FE_QPSK:
@@ -1139,6 +1162,7 @@ int CScanSetup::showManualScanSetup()
 			freq_length = 8;
 			break;
 	}
+#endif
 	
 	CStringInput * freq = new CStringInput(_("Frequency"), (char *) scanSettings->TP_freq, freq_length, NULL, NULL, "0123456789");
 	ClistBoxItem * Freq = new ClistBoxItem(_("Frequency"), true, scanSettings->TP_freq, freq);
@@ -1190,8 +1214,12 @@ int CScanSetup::showManualScanSetup()
 	// fec
 	int fec_count = ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK) ? SATSETUP_SCANTP_FEC_COUNT : CABLESETUP_SCANTP_FEC_COUNT;
 	CMenuOptionChooser * fec = new CMenuOptionChooser(_("FEC"), (int *)&scanSettings->TP_fec, SATSETUP_SCANTP_FEC, fec_count, true);
-		
+	
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T && CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T2 && CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+#else	
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM && CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_ATSC)
+#endif
 	{
 		// Rate
 		manualScanlistBox->addItem(Rate);
