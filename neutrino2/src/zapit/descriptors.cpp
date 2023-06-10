@@ -277,8 +277,15 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 	transponder_id_t TsidOnid;
 	int modulationSystem, modulationType, rollOff, fec_inner;
 
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+#else
 	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_QPSK)
+#endif
 		return -1;
+		
+	// delsys
+	feparams.delsys = DVB_S;
 
 	//freq
 	feparams.frequency =
@@ -301,6 +308,9 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 
 	//mod system
 	modulationSystem = (buffer[8] >> 2) & 0x01; 	// 1= DVB_S2
+	
+	if (modulationSystem == 1)
+		feparams.delsys = DVB_S2;
 
 	//mod
 	modulationType = (buffer[8]) & 0x03; 	// 1=QPSK, 2=M8PSK
@@ -361,6 +371,9 @@ int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const b
 		return -1;
 
 	FrontendParameters feparams;
+	
+	// delsys
+	feparams.delsys = DVB_C;
 
 	//freq
 	feparams.frequency =
@@ -903,32 +916,35 @@ int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * c
 	FrontendParameters feparams;
 	transponder_id_t TsidOnid;
 	
-	/* inv */
+	// delsys
+	feparams.delsys = DVB_T;
+	
+	// inv
 	feparams.inversion = INVERSION_AUTO;
 	
-	/* freq */
+	// freq
 	feparams.frequency = UINT32(&buffer[2]);
 	feparams.frequency *= 10;
 	
-	/* band */
+	// band
 	feparams.bandwidth = (fe_bandwidth_t)((buffer[6] >> 5) & 0x07);
 	
-	/* const */
+	// const
 	feparams.modulation = CFrontend::getModulation((buffer[7] >> 6) & 0x03);
 	
-	/* hierarchy */
+	// hierarchy
 	feparams.hierarchy_information = (fe_hierarchy_t)((buffer[7] >> 3) & 0x07);
 	
-	/* HP */
+	// HP
 	feparams.code_rate_HP = CFrontend::getCodeRate(buffer[7] & 0x07);
 	
-	/* LP */
+	// LP
 	feparams.code_rate_LP = CFrontend::getCodeRate((buffer[8] >> 5) & 0x07);
 	
-	/* guard */
+	// guard
 	feparams.guard_interval = (fe_guard_interval_t)((buffer[8] >> 3) & 0x03);
 	 
-	/* trans */
+	// trans
 	feparams.transmission_mode = (fe_transmit_mode_t)((buffer[8] >> 1) & 0x03);
 
 	freq = feparams.frequency/1000000;
