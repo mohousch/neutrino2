@@ -4063,7 +4063,7 @@ void * CZapit::scanThread(void * data)
 
 				// satfeed
 #if HAVE_DVB_API_VERSION >= 5
-    				if ( (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C) || (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T) || (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2) || (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A) && xmlGetAttribute(search, "satfeed") )
+    				if ( (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2 || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A) && xmlGetAttribute(search, "satfeed") )
 #else
 				if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) && xmlGetAttribute(search, "satfeed") )
 #endif
