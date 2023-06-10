@@ -546,10 +546,10 @@ struct SNeutrinoSettings
 
 // corners (osd)
 #define NO_RADIUS				0
-#define RADIUS_SMALL    			2
-#define RADIUS_MID      			4
-#define RADIUS_LARGE    			8
-#define RADIUS_VERYLARGE			10
+#define RADIUS_SMALL    			5
+#define RADIUS_MID      			10
+#define RADIUS_LARGE    			15
+#define RADIUS_VERYLARGE			20
 
 //
 #define BORDER_LEFT				10
