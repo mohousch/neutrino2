@@ -3739,7 +3739,7 @@ void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channe
 // scan
 bool CZapit::tuneTP(TP_params TP, int feindex)
 {
-	dprintfmagenta(DEBUG_NORMAL, "CZapit::tuneTP:\n");
+	dprintfmagenta(DEBUG_NORMAL, "CZapit::tuneTP: fe(%d)\n", feindex);
 	
 	bool ret = false;
 	
@@ -3772,7 +3772,7 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 //
 bool CZapit::scanTP(commandScanTP &msg)
 {
-	printf("CZapit::scanTP fe:(%d) scanmode:%d\n", msg.feindex, msg.scanmode);
+	dprintfmagenta(DEBUG_NORMAL, "CZapit::scanTP fe:(%d) scanmode:%d\n", msg.feindex, msg.scanmode);
 	
 	bool ret = true;
 	

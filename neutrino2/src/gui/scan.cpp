@@ -231,7 +231,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq:%d mod %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.modulation);
 		}
 	}
-	else if (!scan_all)
+	else if (!scan_all) // auto
 	{
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{

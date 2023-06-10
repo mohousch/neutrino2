@@ -1233,9 +1233,9 @@ int CScanSetup::showManualScanSetup()
 	CMenuOptionChooser * fec = new CMenuOptionChooser(_("FEC"), (int *)&scanSettings->TP_fec, SATSETUP_SCANTP_FEC, fec_count, true);
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T2 || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T && CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T2 && CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
 #else	
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_ATSC)
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM && CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_ATSC)
 #endif
 	{
 		// Rate
@@ -1369,7 +1369,6 @@ int CScanSetup::showAutoScanSetup()
 			if(sit->second.system == DVB_C)
 			{
 				satSelect->addOption(sit->second.name.c_str());
-				dprintf(DEBUG_DEBUG, "[neutrino] fe(%d) Adding cable menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
 			}
 		}
 	}
@@ -1386,7 +1385,6 @@ int CScanSetup::showAutoScanSetup()
 			if(sit->second.system == DVB_T)
 			{
 				satSelect->addOption(sit->second.name.c_str());
-				dprintf(DEBUG_DEBUG, "CNeutrinoApp::InitScanSettings fe(%d) Adding terrestrial menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
 			}
 		}
 	}
@@ -1403,7 +1401,6 @@ int CScanSetup::showAutoScanSetup()
 			if(sit->second.system == DVB_A)
 			{
 				satSelect->addOption(sit->second.name.c_str());
-				dprintf(DEBUG_DEBUG, "CNeutrinoApp::InitScanSettings fe(%d) Adding atsc menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
 			}
 		}
 	}
@@ -1421,7 +1418,6 @@ int CScanSetup::showAutoScanSetup()
 			if(sit->second.system == DVB_S)
 			{
 				satSelect->addOption(sit->second.name.c_str());
-				dprintf(DEBUG_DEBUG, "CNeutrinoApp::InitScanSettings fe(%d) Adding sat menu for %s position %d\n", feindex, sit->second.name.c_str(), sit->first);
 			}
 		}
 	}
@@ -1517,7 +1513,7 @@ CTPSelectHandler::CTPSelectHandler(int num)
 //
 int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
-	dprintf(DEBUG_NORMAL, "CTPSelectHandler::exec\n");
+	dprintfmagenta(DEBUG_NORMAL, "CTPSelectHandler::exec\n");
 	
 	transponder_list_t::iterator tI;
 	sat_iterator_t sit;
@@ -1701,7 +1697,8 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 
 		tmpI = tmplist.find(select);
 
-		sprintf( scanSettings->TP_freq, "%d", tmpI->second.feparams.frequency);
+		// freq
+		sprintf(scanSettings->TP_freq, "%d", tmpI->second.feparams.frequency);
 		
 #if HAVE_DVB_API_VERSION >= 5
 		switch( CZapit::getInstance()->getFE(feindex)->getForcedDelSys()) 
