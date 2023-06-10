@@ -366,7 +366,7 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(tps, "modulation", 0);
             		feparams.delsys = DVB_C;
 		}
-		else if (frontendType == FE_OFDM)	//DVB-T
+		else if (frontendType == FE_OFDM)	//DVB-T/T2
 		{
 			feparams.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(tps, "bandwidth", 0);
 			feparams.code_rate_HP = (fe_code_rate_t) xmlGetNumericAttribute(tps, "code_rate_hp", 0);
@@ -387,7 +387,7 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
             			feparams.plp_id = xmlGetNumericAttribute(tps, "plp_id", 0);
             		}
 		}
-		else if (frontendType == FE_QPSK) 	//DVB-S
+		else if (frontendType == FE_QPSK) 	//DVB-S/S2/S2X
 		{
 			feparams.symbol_rate = xmlGetNumericAttribute(tps, "symbol_rate", 0);
 			polarization = xmlGetNumericAttribute(tps, "polarization", 0);

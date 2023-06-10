@@ -152,7 +152,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	// refill sat list and set feparams for manuel scan
 	satList.clear();
 
-	if(manual || !scan_all) 
+	if(manual) 
 	{
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
@@ -169,7 +169,11 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		// freq
 		TP.feparams.frequency = atoi(scanSettings->TP_freq);
 		
-		// inversion ???
+		// delsys
+		TP.feparams.delsys = CZapit::getInstance()->getFE(feindex)->getForcedDelSys();
+		
+		// inversion
+		TP.feparams.inversion = INVERSION_AUTO;
 		
 #if HAVE_DVB_API_VERSION >= 5
 		if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
@@ -180,7 +184,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.symbol_rate = atoi(scanSettings->TP_rate);
 			TP.feparams.fec_inner = (fe_code_rate_t) scanSettings->TP_fec;
 			TP.polarization = scanSettings->TP_pol;
-			TP.feparams.delsys = DVB_S;
 
 			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq %d rate %d fec %d pol %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.polarization);
 		} 
@@ -193,7 +196,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.symbol_rate	= atoi(scanSettings->TP_rate);
 			TP.feparams.fec_inner	= (fe_code_rate_t)scanSettings->TP_fec;
 			TP.feparams.modulation	= (fe_modulation_t) scanSettings->TP_mod;
-			TP.feparams.delsys = DVB_C;
 
 			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:=x%x) freq %d rate %d fec %d mod %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.modulation);
 		}
@@ -210,7 +212,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.transmission_mode = (fe_transmit_mode_t)scanSettings->TP_trans;
 			TP.feparams.guard_interval = (fe_guard_interval_t)scanSettings->TP_guard;
 			TP.feparams.hierarchy_information = (fe_hierarchy_t)scanSettings->TP_hierarchy;
-			TP.feparams.delsys = DVB_T;
 			
 #if HAVE_DVB_API_VERSION >= 5
 			if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
@@ -226,12 +227,25 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 #endif
 		{
 			TP.feparams.modulation	= (fe_modulation_t) scanSettings->TP_mod;
-			TP.feparams.delsys = DVB_A;
 
 			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq:%d mod %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.modulation);
 		}
-	} 
-	else 
+	}
+	else if (!scan_all)
+	{
+		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
+		{
+			if(!strcmp(sit->second.name.c_str(), scanSettings->satNameNoDiseqc)) 
+			{
+				sat.position = sit->first;
+				strncpy(sat.satName, scanSettings->satNameNoDiseqc, 50);
+			
+				satList.push_back(sat);
+				break;
+			}
+		}
+	}
+	else if (scan_all) // all
 	{
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
@@ -315,7 +329,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	
 		success = CZapit::getInstance()->scanTP(msg);
 	}
-	else
+	else // auto / all
 	{
 		CZapit::commandScanProvider msg;
 		

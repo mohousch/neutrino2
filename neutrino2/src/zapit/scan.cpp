@@ -127,7 +127,7 @@ bool CScan::tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_
 
 int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit, int feindex)
 {
-	dprintf(DEBUG_NORMAL, "CScan::addToScan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, polarity, TsidOnid, fromnit, feindex);
+	dprintfyellow(DEBUG_NORMAL, "CScan::addToScan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, polarity, TsidOnid, fromnit, feindex);
 
 	freq_id_t freq;
 
@@ -181,7 +181,7 @@ int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, ui
 
 			freq++;
 			
-			TsidOnid = CREATE_TRANSPONDER_ID( freq1, satellitePosition, original_network_id, transport_stream_id);
+			TsidOnid = CREATE_TRANSPONDER_ID(freq1, satellitePosition, original_network_id, transport_stream_id);
 
 			dprintf(DEBUG_INFO, "CScan::addToScan: SAME freq %d pol1 %d pol2 %d tpid %llx\n", feparams->frequency, poltmp1, poltmp2, TsidOnid);
 
@@ -230,7 +230,7 @@ bool CScan::getSDTS(t_satellite_position satellitePosition, int feindex)
 	stiterator stI;
 	std::map <transponder_id_t, transponder>::iterator sT;
 
-	dprintf(DEBUG_NORMAL, "CScan::getSDTS: scanning tp from sat/service\n");
+	dprintfyellow(DEBUG_NORMAL, "CScan::getSDTS: scanning tp from sat/service\n");
 
 _repeat:
 	for (tI = scantransponders.begin(); tI != scantransponders.end(); tI++) 
@@ -297,7 +297,7 @@ _repeat:
 			freq = tI->second.feparams.frequency/1000000;
 			
 		// parse sdt
-		dprintf(DEBUG_NORMAL, "CScan::getSDTS: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
+		dprintfyellow(DEBUG_NORMAL, "CScan::getSDTS: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
 		
 		if(CSdt::getInstance()->parseSDT(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
 		{
@@ -356,10 +356,11 @@ _repeat:
 
 bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, int feindex)
 {
-	dprintf(DEBUG_INFO, "CScan::scanTransponder:\n");
+	dprintfyellow(DEBUG_INFO, "CScan::scanTransponder:\n");
 	
 	uint8_t polarization = 0;
-	uint8_t system = 0, modulation = 1;
+	uint8_t system = 0;
+	uint8_t modulation = 1;
 	int xml_fec;
 	FrontendParameters feparams;
 	
@@ -367,8 +368,9 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 
 	freq_id_t freq;
 	feparams.inversion = INVERSION_AUTO;
-	feparams.delsys = CZapit::getInstance()->getFE(feindex)->getForcedDelSys(); //
+	feparams.delsys = CZapit::getInstance()->getFE(feindex)->getForcedDelSys(); // ???
 
+	//frequency
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
 #else
@@ -378,6 +380,7 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 	else
 		feparams.frequency = xmlGetNumericAttribute(transponder, "frequency", 0);
 
+	// freq
 #if HAVE_DVB_API_VERSION >= 5 
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
 #else
@@ -402,7 +405,8 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 #endif
 		freq = feparams.frequency/1000000;
-		
+	
+	// 	
 #if HAVE_DVB_API_VERSION >= 5 
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)
 #else
@@ -412,6 +416,7 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 		feparams.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
 		feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(transponder, "fec_inner", 0);
 		feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(transponder, "modulation", 0);
+		feparams.delsys = DVB_C;
 		diseqc_pos = 0;
 	}
 #if HAVE_DVB_API_VERSION >= 5
@@ -428,6 +433,15 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 		feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(transponder, "guard_interval", 0);
 		feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(transponder, "hierarchy_information", 0);
 		feparams.inversion = (fe_spectral_inversion_t)xmlGetNumericAttribute(transponder, "inversion", 0);
+		system = xmlGetNumericAttribute(transponder, "system", 0);
+		
+		if (system == 0)
+            		feparams.delsys = DVB_T;
+            	else if (system == 1)
+            	{
+            		feparams.delsys = DVB_T2;
+            		feparams.plp_id = xmlGetNumericAttribute(transponder, "plp_id", 0);
+            	}
 			
 		diseqc_pos = 0;
 	}
@@ -449,8 +463,19 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 			xml_fec += 9;
 
 		feparams.fec_inner = (fe_code_rate_t) xml_fec;
+		
+		if (system == 0)
+            		feparams.delsys = DVB_S;
+            	else if (system == 1)
+            		feparams.delsys = DVB_S2;
 	}
-	// FIXME: add atsc
+#if HAVE_DVB_API_VERSION >= 5
+	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+#else
+	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
+#endif
+	{
+	}
 
 	// read network information table
 	fake_tid++; fake_nid++;
@@ -462,7 +487,7 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 
 bool CScan::scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
 {
-	dprintf(DEBUG_NORMAL, "CScan::%s:\n", __FUNCTION__);
+	dprintfyellow(DEBUG_NORMAL, "CScan::scanProvider:\n");
 	
 	xmlNodePtr tps = NULL;
 	found_transponders = 0;
