@@ -1232,7 +1232,7 @@ int CScanSetup::showManualScanSetup()
 	CMenuOptionChooser * fec = new CMenuOptionChooser(_("FEC"), (int *)&scanSettings->TP_fec, SATSETUP_SCANTP_FEC, fec_count, true);
 	
 #if HAVE_DVB_API_VERSION >= 5
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T && CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T2 && CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T && CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_T2 && CZapit::getInstance()->getFE(feindex)->getForcedDelSys() != DVB_A)
 #else	
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM && CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_ATSC)
 #endif
