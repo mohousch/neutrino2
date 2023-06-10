@@ -4224,9 +4224,8 @@ void * CZapit::scanTransponderThread(void * data)
 	CScan::getInstance()->addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, feindex);
 
 	// scanSDTS
-	int ret = CScan::getInstance()->getSDTS(satellitePosition, feindex);
-	
-	dprintfmagenta(DEBUG_NORMAL, "CZapit::scanTransponderThread: %d\n", ret);
+	if (!CScan::getInstance()->getSDTS(satellitePosition, feindex))
+		found_channels = 0;
 
 	if(abort_scan)
 		found_channels = 0;

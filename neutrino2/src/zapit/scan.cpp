@@ -301,7 +301,7 @@ _repeat:
 		
 		if(CSdt::getInstance()->parseSDT(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
 		{
-			dprintf(DEBUG_INFO, "CScan::getSDTS: SDT failed !\n");
+			dprintf(DEBUG_NORMAL, "CScan::getSDTS: SDT failed !\n");
 			continue;
 		}
 
