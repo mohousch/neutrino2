@@ -140,6 +140,7 @@ CFrontend::CFrontend(int num, int adap)
 	forcedDelSys = UNDEFINED;
 	fe_can_multistream = false;
 	hybrid = false;
+	powered = false;
 }
 
 CFrontend::~CFrontend(void)
@@ -1179,6 +1180,8 @@ void CFrontend::secSetTone(const fe_sec_tone_mode_t toneMode, const uint32_t ms)
 
 void CFrontend::secSetVoltage(const fe_sec_voltage_t voltage, const uint32_t ms)
 {
+	dprintf(DEBUG_NORMAL, "CFrontend::secSetVoltage: fe(%d:%d) voltage %s\n", feadapter, fenumber, voltage == SEC_VOLTAGE_OFF ? "OFF" : voltage == SEC_VOLTAGE_13 ? "13" : "18");
+	
 	if ( slave || info.type != FE_QPSK)
 		return;
 	
@@ -1194,7 +1197,7 @@ void CFrontend::secSetVoltage(const fe_sec_voltage_t voltage, const uint32_t ms)
 		return;
 	}
 
-	dprintf(DEBUG_INFO, "CFrontend::secSetVoltage: fe(%d:%d) voltage %s\n", feadapter, fenumber, voltage == SEC_VOLTAGE_OFF ? "OFF" : voltage == SEC_VOLTAGE_13 ? "13" : "18");
+	//dprintf(DEBUG_INFO, "CFrontend::secSetVoltage: fe(%d:%d) voltage %s\n", feadapter, fenumber, voltage == SEC_VOLTAGE_OFF ? "OFF" : voltage == SEC_VOLTAGE_13 ? "13" : "18");
 
 	if (ioctl(fd, FE_SET_VOLTAGE, voltage) == 0) 
 	{
@@ -1517,6 +1520,9 @@ int CFrontend::setParameters(TP_params * TP, bool nowait)
 		// freq convert to hz cable freq are in cables.xml in khz
 		if (TP->feparams.frequency < 1000*1000)
 			TP->feparams.frequency = TP->feparams.frequency * 1000;
+			
+		//
+		secSetVoltage(powered ? SEC_VOLTAGE_13 : SEC_VOLTAGE_OFF, 100);
 			
 		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d:%d) freq= %d band=%d HP=%d LP=%d const=%d trans=%d guard=%d hierarchy=%d inv= %d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.bandwidth, TP->feparams.code_rate_HP, TP->feparams.code_rate_LP, TP->feparams.modulation, TP->feparams.transmission_mode, TP->feparams.guard_interval, TP->feparams.hierarchy_information, TP->feparams.inversion);
 	}

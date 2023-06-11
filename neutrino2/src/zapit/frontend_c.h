@@ -100,6 +100,7 @@ class CFrontend
         	// information about the used frontend type
 		struct dvb_frontend_info info;
 		
+		//
 		fe_mode_t mode;
 		
 		// usals config
@@ -148,6 +149,9 @@ class CFrontend
 		uint32_t deliverySystemMask;
 		bool fe_can_multistream;
 		bool hybrid;
+		
+		// powered
+		bool powered;
 	  
 	private:
 		// slave
@@ -226,11 +230,6 @@ class CFrontend
 		void positionMotor(uint8_t motorPosition);
 		void sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t command, uint8_t num_parameters, uint8_t parameter1, uint8_t parameter2, int repeat = 0);
 		void gotoXX(t_satellite_position pos);
-		
-		//
-		//bool tuneChannel(CZapitChannel *channel, bool nvod);
-		//int setParameters(TP_params *TP, bool nowait = false);
-		//int tuneFrequency (FrontendParameters * feparams, uint8_t polarization, bool nowait = false);
 
 		//
 		fe_code_rate_t getCFEC ();

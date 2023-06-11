@@ -494,6 +494,18 @@ void CScanSetup::showScanService()
 	}
 	
 	scansetup->addItem( new CMenuSeparator(LINE) );
+	
+//
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+#else
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+#endif
+	{
+		scansetup->addItem(new CMenuOptionChooser(_("5 Volt"), (int *)&CZapit::getInstance()->getFE(feindex)->powered, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	
+		scansetup->addItem( new CMenuSeparator(LINE) );
+	}
 
 	// scantype
 	CMenuOptionChooser * ojScantype = new CMenuOptionChooser(_("Scan for services"), (int *)&scanSettings->scanType, SCANTS_ZAPIT_SCANTYPE, SCANTS_ZAPIT_SCANTYPE_COUNT, ((CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)));

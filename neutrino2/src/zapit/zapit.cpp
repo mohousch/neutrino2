@@ -729,6 +729,9 @@ void CZapit::saveFrontendConfig(int feindex)
 		// mode
 		setConfigValue(feindex, "mode", getFE(feindex)->mode);
 		
+		// mode
+		setConfigValue(feindex, "powered", getFE(feindex)->powered);
+		
 		// delsys
 		setConfigValue(feindex, "delsys", getFE(feindex)->forcedDelSys);
 			
@@ -777,6 +780,8 @@ void CZapit::loadFrontendConfig()
 		
 		// mode
 		fe->mode = (fe_mode_t)getConfigValue(fe_it->first, "mode", (fe_mode_t)FE_SINGLE);
+		
+		fe->powered = getConfigValue(fe_it->first, "powered", 0);
 		
 		// delsys
 		if (fe->info.type == FE_QPSK)
@@ -4276,8 +4281,7 @@ void * CZapit::scanTransponderThread(void * data)
 //
 void CZapit::Start(Z_start_arg *ZapStart_arg)
 {
-	dprintf(DEBUG_NORMAL, "CZapit::Start\n");
-		
+	dprintf(DEBUG_NORMAL, "CZapit::Start\n");	
 	
 	//scan for dvb adapter/frontend and feed them in map
 	initFrontend();
