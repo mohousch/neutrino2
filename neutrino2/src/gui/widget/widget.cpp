@@ -400,7 +400,6 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 							msg = RC_timeout;
 							break;
 						case RETURN_REPAINT:
-							//hide();
 							paint();
 							break;
 					}
@@ -568,7 +567,6 @@ void CWidget::onOKKeyPressed(neutrino_msg_t _msg)
 					msg = RC_timeout;
 					break;
 				case RETURN_REPAINT:
-					//hide();
 					paint();
 					break;
 			}

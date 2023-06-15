@@ -52,20 +52,6 @@ class CMenuTarget
 		virtual std::string& getValueString() {return valueString;};
 		virtual void setValueString(const char *const value){valueString = value;};
 };
-/*
-// CChangeObserver
-class CChangeObserver
-{
-	public:
-		CChangeObserver(){}
-		virtual ~CChangeObserver(){}
-		
-		virtual bool changeNotify(const std::string&, void *)
-		{
-			return false;
-		}
-};
-*/
 
 //
 enum {
@@ -146,6 +132,7 @@ class CWidget : public CMenuTarget
 		WIDGETITEMLIST getWidgetItems(){return items;};
 		
 		void setSelected(unsigned int _new) {selected = _new; if (selected < 0) selected = 0;};
+		int getSelected(){return exit_pressed ? -1 : selected;};
 		
 		// CCITEMS
 		virtual void addCCItem(CComponent* CCItem);
@@ -177,15 +164,14 @@ class CWidget : public CMenuTarget
 		//
 		void enableSaveScreen();
 		void setMenuPosition(int p){menu_position = p;};
-
+		
 		// lua compatibility
-		int getSelected(){return exit_pressed ? -1 : selected;};
 		std::string getActionKey(){return actionKey;};
 		neutrino_msg_t getKey(){return msg;};
-		inline CBox getWindowsPos(void){return(mainFrameBox);};
 		bool getExitPressed(){return exit_pressed;};
 		
 		//
+		inline CBox getWindowsPos(void){return(mainFrameBox);};
 		int getMenuPosition(){return menu_position;};
 
 		// events
