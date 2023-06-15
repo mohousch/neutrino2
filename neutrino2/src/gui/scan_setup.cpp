@@ -59,6 +59,26 @@
 #include <zapit/satconfig.h>
 
 
+#ifndef TRANSMISSION_MODE_C1
+#define TRANSMISSION_MODE_C1	7
+#endif
+
+#ifndef TRANSMISSION_MODE_C3780
+#define TRANSMISSION_MODE_C3780		8
+#endif
+
+#ifndef GUARD_INTERVAL_PN420
+#define GUARD_INTERVAL_PN420	8
+#endif
+
+#ifndef GUARD_INTERVAL_PN595 
+#define GUARD_INTERVAL_PN595	9
+#endif
+
+#ifndef GUARD_INTERVAL_PN945
+#define GUARD_INTERVAL_PN945	10
+#endif
+
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern std::map<transponder_id_t, transponder> select_transponders;		// defined in getservices.cpp
 
