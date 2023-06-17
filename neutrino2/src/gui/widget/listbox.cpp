@@ -922,10 +922,13 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 // CMenuSeparator
 CMenuSeparator::CMenuSeparator(const int Type, const char * const Text)
 {
-	directKey = RC_nokey;
-	iconName = "";
+	//
 	type = Type;
 	itemName = Text? Text : "";
+	
+	//
+	color = COL_MENUCONTENTDARK_PLUS_0;
+	gradient = NOGRADIENT;
 
 	menuItem_type = MENUITEM_SEPARATOR;
 }
@@ -955,6 +958,7 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 
 	if(widgetType != TYPE_FRAME)
 	{
+		// paint item
 		if (paintFrame)
 			frameBuffer->paintBoxRel(x, y, dx, height, COL_MENUCONTENT_PLUS_0);
 
@@ -968,7 +972,7 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 				const char * l_text = getString();
 				int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(l_text, true); // UTF-8
 
-				// if no alignment is specified, align centered
+				// 
 				if (type & ALIGN_LEFT)
 					stringstartposX = x + BORDER_LEFT;
 				else if (type & ALIGN_RIGHT)
@@ -979,7 +983,7 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 				if (paintFrame)
 					frameBuffer->paintBoxRel(stringstartposX - 5, y, stringwidth + 10, height, COL_MENUCONTENT_PLUS_0);
 
-				g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposX, y + height, dx - (stringstartposX - x) , l_text, COL_MENUCONTENTINACTIVE, 0, true); // UTF-8
+				g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposX, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - (stringstartposX - x) , l_text, COL_MENUCONTENTINACTIVE, 0, true); // UTF-8
 			}
 		}
 		
@@ -993,35 +997,30 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 					const char * l_text = getString();
 					int stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(l_text, true); // UTF-8
 
-					// if no alignment is specified, align centered
+					// 
 					if (type & ALIGN_LEFT)
 					{
 						//
-						frameBuffer->paintHLineRel(x + BORDER_LEFT + stringwidth + BORDER_LEFT, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, y + (height >> 1), COL_MENUCONTENTDARK_PLUS_0 );
-						frameBuffer->paintHLineRel(x + BORDER_LEFT + stringwidth + BORDER_LEFT, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, y + (height >> 1) + 1, COL_MENUCONTENTDARK_PLUS_0 );
+						frameBuffer->paintBoxRel(x + BORDER_LEFT + stringwidth + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, 2, color, 0, CORNER_NONE, gradient, GRADIENT_VERTICAL);
 					}
 					else if (type & ALIGN_RIGHT)
 					{
 						//
-						frameBuffer->paintHLineRel(x + BORDER_LEFT, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, y + (height >> 1), COL_MENUCONTENTDARK_PLUS_0 );
-						frameBuffer->paintHLineRel(x + BORDER_LEFT, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, y + (height >> 1) + 1, COL_MENUCONTENTDARK_PLUS_0 );
+						frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, 2, color, 0, CORNER_NONE, gradient, GRADIENT_VERTICAL);
 					}
 					else // ALIGN_CENTER
 					{
 						// left
-						frameBuffer->paintHLineRel(x + BORDER_LEFT, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_LEFT, y + (height >> 1), COL_MENUCONTENTDARK_PLUS_0 );
-						frameBuffer->paintHLineRel(x + BORDER_LEFT, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_LEFT, y + (height >> 1) + 1, COL_MENUCONTENTDARK_PLUS_0 );
+						frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_LEFT, 2, color, 0, CORNER_NONE, gradient, GRADIENT_VERTICAL);
 						
 						// right
-						frameBuffer->paintHLineRel(x + (dx + stringwidth)/2 + BORDER_LEFT, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_RIGHT, y + (height >> 1), COL_MENUCONTENTDARK_PLUS_0 );
-						frameBuffer->paintHLineRel(x + (dx + stringwidth)/2 + BORDER_LEFT, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_RIGHT, y + (height >> 1) + 1, COL_MENUCONTENTDARK_PLUS_0 );
+						frameBuffer->paintBoxRel(x + (dx + stringwidth)/2 + BORDER_LEFT, y + (height - 2)/2, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_RIGHT, 2, color, 0, CORNER_NONE, gradient, GRADIENT_VERTICAL);
 					}
 				}
 			}
 			else
 			{
-				frameBuffer->paintHLineRel(x + BORDER_LEFT, dx - BORDER_LEFT - BORDER_RIGHT, y + (height >> 1), COL_MENUCONTENTDARK_PLUS_0 );
-				frameBuffer->paintHLineRel(x + BORDER_LEFT, dx - BORDER_LEFT - BORDER_RIGHT, y + (height >> 1) + 1, COL_MENUCONTENTDARK_PLUS_0 );
+				frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT, 2, color, 0, CORNER_NONE, gradient, GRADIENT_VERTICAL);
 			}	
 		}
 	}

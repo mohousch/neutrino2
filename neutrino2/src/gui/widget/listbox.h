@@ -369,15 +369,23 @@ class CMenuOptionStringChooser : public CMenuItem
 class CMenuSeparator : public CMenuItem
 {
 	int type;
+	fb_pixel_t color;
+	int gradient;
 
 	public:
 		CMenuSeparator(const int Type = EMPTY, const char * const Text = NULL);
 		~CMenuSeparator(){};
 
+		//
 		int paint(bool selected = false, bool AfterPulldown = false);
 		int getHeight(void) const;
 		int getWidth(void) const;
+		
+		//
+		void setGradient(int gr){ gradient = gr;};
+		void setColor(fb_pixel_t col){ color = col;};
 
+		//
 		virtual const char * getString(void);
 };
 
