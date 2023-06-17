@@ -51,17 +51,24 @@
 #include <OpenThreads/Thread>
 
 
+//
 int my_system(const char * cmd);
 int my_system(int argc, const char *arg, ...); /* argc is number of arguments including command */
 
+//
 FILE* my_popen( pid_t& pid, const char *cmdstring, const char *type);
 
+//
 int safe_mkdir(const char * path);
 inline int safe_mkdir(std::string path) { return safe_mkdir(path.c_str()); }
 off_t file_size(const char *filename);
 bool file_exists(const char *filename);
+
+//
 void wakeup_hdd(const char *hdd_dir);
 int check_dir(const char * dir, bool allow_tmp = false);
+
+//
 bool get_fs_usage(const char * dir, uint64_t &btotal, uint64_t &bused, long *bsize=NULL);
 bool get_mem_usage(unsigned long &total, unsigned long &free);
 

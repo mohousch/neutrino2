@@ -47,7 +47,6 @@
 #include <driver/color.h>
 #include <gui/infoviewer.h>
 
-//#include <gui/widget/menue.h>
 #include <gui/widget/listbox.h>
 
 #include <system/settings.h>
@@ -133,3 +132,4 @@ class CFileBrowser
 };
 
 #endif
+

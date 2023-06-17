@@ -3744,7 +3744,7 @@ void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channe
 // scan
 bool CZapit::tuneTP(TP_params TP, int feindex)
 {
-	dprintfmagenta(DEBUG_NORMAL, "CZapit::tuneTP: fe(%d)\n", feindex);
+	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::tuneTP: fe(%d)\n", feindex);
 	
 	bool ret = false;
 	
@@ -3777,7 +3777,7 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 //
 bool CZapit::scanTP(commandScanTP &msg)
 {
-	dprintfmagenta(DEBUG_NORMAL, "CZapit::scanTP fe:(%d) scanmode:%d\n", msg.feindex, msg.scanmode);
+	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::scanTP fe:(%d) scanmode:%d\n", msg.feindex, msg.scanmode);
 	
 	bool ret = true;
 	
@@ -3904,7 +3904,7 @@ void CZapit::setScanMotorPosList( ScanMotorPosList& motorPosList )
 //
 bool CZapit::startScan(commandScanProvider &msg)
 {		
-	dprintfmagenta(DEBUG_NORMAL, "CZapit::startScan: fe(%d) scanmode: %d\n", msg.feindex, msg.scanmode);
+	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::startScan: fe(%d) scanmode: %d\n", msg.feindex, msg.scanmode);
 	
 	bool ret = true;
 	
@@ -3949,7 +3949,7 @@ bool CZapit::stopScan()
 //
 void * CZapit::scanThread(void * data)
 {
-	dprintfmagenta(DEBUG_NORMAL, "CZapit::scanThread: starting... tid %ld\n", syscall(__NR_gettid));
+	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::scanThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	CZapit::commandScanProvider params = *(CZapit::commandScanProvider*)data;
 	
@@ -3978,7 +3978,7 @@ void * CZapit::scanThread(void * data)
 	scanmode = mode & 0xFF;	// NIT (0) or fast (1)
 	scan_sat_mode = mode & 0xFF00; 	// single = 0, all = 1
 
-	dprintfmagenta(DEBUG_NORMAL, "CZapit::scanThread: fe(%d) scan mode %s, satellites %s\n", feindex, scanmode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
+	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::scanThread: fe(%d) scan mode %s, satellites %s\n", feindex, scanmode ? "fast" : "NIT", scan_sat_mode ? "all" : "single");
 
 	fake_tid = fake_nid = 0;
 	
@@ -4166,7 +4166,7 @@ void * CZapit::scanThread(void * data)
 //
 void * CZapit::scanTransponderThread(void * data)
 {
-	dprintfmagenta(DEBUG_NORMAL, "CZapit::scanTransponderThread: starting... tid %ld\n", syscall(__NR_gettid));
+	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::scanTransponderThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
 	CZapit::commandScanTP params = *(CZapit::commandScanTP*)data;
 	

@@ -259,6 +259,8 @@ int CBouquetList::exec(bool bShowChannelList, bool zap, bool customMode)
 
 int CBouquetList::doMenu()
 {
+	dprintf(DEBUG_NORMAL, "CBouquetList::doMenu\n");
+	
 	int i = 0;
 	int select = -1;
 	static int old_selected = 0;
@@ -454,11 +456,16 @@ int CBouquetList::show(bool customMode)
 		}
 		else if ( msg == RC_setup ) 
 		{
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 
 			if (!Bouquets[selected]->zapitBouquet->bWebTV)
 			{
-				int ret = doMenu();
+				int ret = 0;
+				
+				ret = doMenu();
+				
+				dprintf(DEBUG_NORMAL, "RC_setup: doMenu: %d\n", ret);
+				
 				if(ret) 
 				{
 					res = -4;

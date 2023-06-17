@@ -61,7 +61,7 @@ hdmi_cec *CEC = hdmi_cec::getInstance();
 
 hdmi_cec::hdmi_cec()
 {
-	standby_cec_activ = autoview_cec_activ = standby = muted = false;
+	standby_cec_activ = autoview_cec_activ = standby = muted = running = false;
 	hdmiFd = -1;
 	volume = 0;
 	fallback = false;
@@ -84,7 +84,6 @@ hdmi_cec *hdmi_cec::getInstance()
 	if (hdmi_cec_instance == NULL)
 	{
 		hdmi_cec_instance = new hdmi_cec();
-		//hal_info_c(GREEN "[CEC] new instance created \n" NORMAL);
 	}
 	return hdmi_cec_instance;
 }
@@ -98,7 +97,6 @@ bool hdmi_cec::SetCECMode(VIDEO_HDMI_CEC_MODE _deviceType)
 	if (_deviceType == VIDEO_HDMI_CEC_MODE_OFF)
 	{
 		Stop();
-		//info(GREEN "[CEC] switch off %s\n" NORMAL, __func__);
 		return false;
 	}
 	else

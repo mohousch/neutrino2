@@ -127,7 +127,7 @@ bool CScan::tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_
 
 int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit, int feindex)
 {
-	dprintfyellow(DEBUG_NORMAL, "CScan::addToScan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, polarity, TsidOnid, fromnit, feindex);
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CScan::addToScan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, polarity, TsidOnid, fromnit, feindex);
 
 	freq_id_t freq;
 
@@ -230,7 +230,7 @@ bool CScan::getSDTS(t_satellite_position satellitePosition, int feindex)
 	stiterator stI;
 	std::map <transponder_id_t, transponder>::iterator sT;
 
-	dprintfyellow(DEBUG_NORMAL, "CScan::getSDTS: scanning tp from sat/service\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CScan::getSDTS: scanning tp from sat/service\n");
 
 _repeat:
 	for (tI = scantransponders.begin(); tI != scantransponders.end(); tI++) 
@@ -297,7 +297,7 @@ _repeat:
 			freq = tI->second.feparams.frequency/1000000;
 			
 		// parse sdt
-		dprintfyellow(DEBUG_NORMAL, "CScan::getSDTS: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
+		dprintf(DEBUG_NORMAL, ANSI_YELLOW "CScan::getSDTS: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
 		
 		if(CSdt::getInstance()->parseSDT(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
 		{
@@ -356,7 +356,7 @@ _repeat:
 
 bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, int feindex)
 {
-	dprintfyellow(DEBUG_INFO, "CScan::scanTransponder:\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CScan::scanTransponder:\n");
 	
 	uint8_t polarization = 0;
 	uint8_t system = 0;
@@ -487,7 +487,7 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 
 bool CScan::scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
 {
-	dprintfyellow(DEBUG_NORMAL, "CScan::scanProvider:\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CScan::scanProvider:\n");
 	
 	xmlNodePtr tps = NULL;
 	found_transponders = 0;

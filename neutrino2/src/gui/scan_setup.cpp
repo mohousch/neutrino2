@@ -632,7 +632,7 @@ void CScanSetup::showScanService()
 //
 int CScanSetup::showMotorSetup()
 {
-	dprintfblue(DEBUG_NORMAL, "CScanSetup::showMotorSetup\n");
+	dprintf(DEBUG_NORMAL, "CScanSetup::showMotorSetup\n");
 	
 	int ret = RETURN_REPAINT;
 	
@@ -728,7 +728,7 @@ int CScanSetup::showMotorSetup()
 //
 int CScanSetup::showUnicableSetup()
 {
-	dprintfblue(DEBUG_NORMAL, "CScanSetup::showUnicableSetup\n");
+	dprintf(DEBUG_NORMAL, "CScanSetup::showUnicableSetup\n");
 	
 	int ret = RETURN_REPAINT;
 	
@@ -800,7 +800,7 @@ int CScanSetup::showUnicableSetup()
 //
 int CScanSetup::showLNBSetup()
 {
-	dprintfblue(DEBUG_NORMAL, "CScanSetup::showLNBSetup\n");
+	dprintf(DEBUG_NORMAL, "CScanSetup::showLNBSetup\n");
 	
 	int ret = RETURN_REPAINT;
 	
@@ -964,7 +964,7 @@ int CScanSetup::showLNBSetup()
 //
 int CScanSetup::showSatOnOffSetup()
 {
-	dprintfblue(DEBUG_NORMAL, "CScanSetup::showSatOnOffSetup\n");
+	dprintf(DEBUG_NORMAL, "CScanSetup::showSatOnOffSetup\n");
 	
 	int ret = RETURN_REPAINT;
 	
@@ -1041,7 +1041,7 @@ int CScanSetup::showSatOnOffSetup()
 //
 int CScanSetup::showManualScanSetup()
 {
-	dprintfblue(DEBUG_NORMAL, "CScanSetup::showManualScanSetup\n");
+	dprintf(DEBUG_NORMAL, "CScanSetup::showManualScanSetup\n");
 	
 	int ret = RETURN_REPAINT;
 	
@@ -1339,7 +1339,7 @@ int CScanSetup::showManualScanSetup()
 //
 int CScanSetup::showAutoScanSetup()
 {
-	dprintfblue(DEBUG_NORMAL, "CScanSetup::showAutoScanSetup\n");
+	dprintf(DEBUG_NORMAL, "CScanSetup::showAutoScanSetup\n");
 	
 	int ret = RETURN_REPAINT;
 	
@@ -1471,7 +1471,7 @@ int CScanSetup::showAutoScanSetup()
 //
 int CScanSetup::showAllAutoScanSetup()
 {
-	dprintfblue(DEBUG_NORMAL, "CScanSetup::showAllAutoScanSetup\n");
+	dprintf(DEBUG_NORMAL, "CScanSetup::showAllAutoScanSetup\n");
 	
 	int ret = RETURN_REPAINT;
 	
@@ -1544,7 +1544,7 @@ CTPSelectHandler::CTPSelectHandler(int num)
 //
 int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
-	dprintfmagenta(DEBUG_NORMAL, "CTPSelectHandler::exec\n");
+	dprintf(DEBUG_NORMAL, "CTPSelectHandler::exec\n");
 	
 	transponder_list_t::iterator tI;
 	sat_iterator_t sit;
@@ -1850,7 +1850,7 @@ void CScanSettings::setConfigValue(int num, const char * name, uint32_t val)
 
 bool CScanSettings::loadSettings(const char * const fileName, int index)
 {
-	dprintfyellow(DEBUG_NORMAL, "CScanSettings::loadSettings: fe%d\n", index);
+	dprintf(DEBUG_NORMAL, "CScanSettings::loadSettings: fe%d\n", index);
 	
 	// if scan.conf not exists load default
 	if(!configfile.loadConfig(fileName))
@@ -1919,7 +1919,7 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 
 bool CScanSettings::saveSettings(const char * const fileName, int index)
 {
-	dprintfyellow(DEBUG_NORMAL, "CScanSettings::saveSettings: fe%d\n", index);
+	dprintf(DEBUG_NORMAL, "CScanSettings::saveSettings: fe%d\n", index);
 	
 	char cfg_key[81];
 	
@@ -1992,8 +1992,6 @@ CSatelliteSetupNotifier::CSatelliteSetupNotifier(int num)
 // item5: diseqc repeats
 bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 {
-	//dprintfmagenta(DEBUG_NORMAL, "CSatelliteSetupNotifier::changeNotify\n");
-	
 	std::vector<CMenuItem*>::iterator it;
 	int type = *((int*) Data);
 
@@ -2135,8 +2133,6 @@ bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 
 void CSatelliteSetupNotifier::addItem(int list, CMenuItem* item)
 {
-	//dprintfmagenta(DEBUG_NORMAL, "CSatelliteSetupNotifier::addItem\n");
-	
 	switch(list) 
 	{
 		case 0:
@@ -2168,8 +2164,6 @@ CScanSetupNotifier::CScanSetupNotifier(int num)
 // items1 enabled for advanced diseqc settings, items2 for diseqc != NO_DISEQC, items3 disabled for NO_DISEQC
 bool CScanSetupNotifier::changeNotify(const std::string&, void * Data)
 {
-	//dprintfmagenta(DEBUG_NORMAL, "CScanSetupNotifier::changeNotify\n");
-	
 	std::vector<CMenuItem*>::iterator it;
 	int FeMode = *((int*) Data);
 	
@@ -2248,8 +2242,6 @@ bool CScanSetupNotifier::changeNotify(const std::string&, void * Data)
 
 void CScanSetupNotifier::addItem(int list, CMenuItem *item)
 {
-	//dprintfmagenta(DEBUG_NORMAL, "CScanSetupNotifier::addItem\n");
-	
 	switch(list) 
 	{
 		case 0:
@@ -2275,8 +2267,6 @@ void CScanSetupNotifier::addItem(int list, CMenuItem *item)
 //
 bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 {
-	//dprintfmagenta(DEBUG_NORMAL, "CScanSetupDelSysNotifier::changeNotify\n");
-	
 	CZapit::getInstance()->getFE(feindex)->changeDelSys(CZapit::getInstance()->getFE(feindex)->forcedDelSys);
 	CZapit::getInstance()->getFE(feindex)->reset();
 	
