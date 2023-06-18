@@ -34,12 +34,12 @@
 class CImageInfo : public CMenuTarget
 {
 	private:
-		//CConfigFile     * configfile;
 		CFrameBuffer	*frameBuffer;
 		
 		//
 		CWidget *widget;
-		CWindow *window;
+		CHeaders *head;
+		uint32_t sec_timer_id;
 		
 		//
 		int x;
@@ -48,11 +48,8 @@ class CImageInfo : public CMenuTarget
 		int height;
 
 		int ypos;
-		int hheight, iheight, sheight; 	// head/info/small font height
-
-		int font_head;
+		int iheight;
 		int font_info;
-		int font_small;
 
 		void paint();
 		void paintLine(int xpos, int font, const char* text);

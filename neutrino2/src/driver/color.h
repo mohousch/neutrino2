@@ -104,7 +104,7 @@
 // head color
 #define COL_MENUHEAD_PLUS_0             	CFrameBuffer::getInstance()->realcolor[COL_MENUHEAD + 0]
 
-// menu
+// menucontent
 #define COL_MENUCONTENT_PLUS_0          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 0]
 #define COL_MENUCONTENT_PLUS_1          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 1] // scrollbar
 #define COL_MENUCONTENT_PLUS_2          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 2] // progressbar
@@ -113,14 +113,14 @@
 #define COL_MENUCONTENT_PLUS_5          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 5] // epgplus
 #define COL_MENUCONTENT_PLUS_6          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 6] // shadow
 
-// CMenuwidgetExtended
-#define COL_MENUCONTENTDARK_PLUS_0      	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTDARK + 0]
+// menucontentdark
+#define COL_MENUCONTENTDARK_PLUS_0      	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTDARK + 0] //
 
-// menu selected
+// menuselected
 #define COL_MENUCONTENTSELECTED_PLUS_0  	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTSELECTED + 0]
 #define COL_MENUCONTENTSELECTED_PLUS_1  	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTSELECTED + 1] // marked
 
-// menu inactive
+// menuinactive
 #define COL_MENUCONTENTINACTIVE_PLUS_0  	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTINACTIVE + 0]
 
 // foot

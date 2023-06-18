@@ -596,7 +596,9 @@
 		<FOOT posx="60" posy="600" width="1160" height="60" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="imageinfo" posx="50" posy="50" width="1180" height="620" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL"/>
+	<WIDGET name="imageinfo" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+		<HEAD posx="60" posy="60" width="1160" height="60" title="Image Info" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
+	</WIDGET>
 	
 	<WIDGET name="streaminfo" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK"/>
 	

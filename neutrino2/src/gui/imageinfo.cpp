@@ -46,15 +46,12 @@ CImageInfo::CImageInfo()
 	
 	//
 	widget = NULL;
-	window = NULL;
+	head = NULL;
+	sec_timer_id = 0;
 
-	font_head   = SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME;
-	font_small  = SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL;
 	font_info   = SNeutrinoSettings::FONT_TYPE_MENU;
 
-	hheight     = g_Font[font_head]->getHeight();
 	iheight     = g_Font[font_info]->getHeight();
-	sheight     = g_Font[font_small]->getHeight();
 
 	//
 	width = frameBuffer->getScreenWidth() - 10;
@@ -65,11 +62,11 @@ CImageInfo::CImageInfo()
 }
 
 CImageInfo::~CImageInfo()
-{ 
-	if (window)
+{ 	
+	if (head)
 	{
-		delete window;
-		window = NULL;
+		delete head;
+		head = NULL;
 	}
 	
 	if (widget)
@@ -82,6 +79,9 @@ CImageInfo::~CImageInfo()
 int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 {
 	dprintf(DEBUG_NORMAL, "CImageInfo::exec:\n");
+	
+	neutrino_msg_t msg;
+	neutrino_msg_data_t data;
 
 	if (parent)
  		parent->hide();
@@ -91,9 +91,30 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 
 	frameBuffer->blit();	
 
-	widget->exec(NULL, "");
+	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	bool loop = true;
+	
+	while(loop)
+	{
+		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
+		
+		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+		{
+			widget->refresh();
+		} 
+		else if (msg == RC_home) 
+		{
+			loop = false;
+		}
+		
+		frameBuffer->blit();
+	}
 
 	hide();
+	
+	g_RCInput->killTimer(sec_timer_id);
+	sec_timer_id = 0;
 
 	return RETURN_REPAINT;
 }
@@ -102,10 +123,10 @@ void CImageInfo::hide()
 {
 	widget->hide();
 	
-	if (window)
+	if (head)
 	{
-		delete window;
-		window = NULL;
+		delete head;
+		head = NULL;
 	}
 	
 	if (widget)
@@ -125,11 +146,10 @@ void CImageInfo::paintLine(int xpos, int font, const char* text)
 
 void CImageInfo::paint()
 {
-	//
-	if (window)
+	if (head)
 	{
-		delete window;
-		window = NULL;
+		delete head;
+		head = NULL;
 	}
 	
 	if (widget)
@@ -141,16 +161,7 @@ void CImageInfo::paint()
 	//
  	widget = CNeutrinoApp::getInstance()->getWidget("imageinfo");
  	
-	if (widget == NULL)
-	{
-		widget = new CWidget(x, y, width, height);
-		
-		widget->name = "imageinfo";
-	}
-	
-	window = new CWindow(x, y, width, height);
-	
-	// recalculate
+	//
 	if (widget)
 	{
 		x = widget->getWindowsPos().iX;
@@ -158,47 +169,43 @@ void CImageInfo::paint()
 		width = widget->getWindowsPos().iWidth;
 		height = widget->getWindowsPos().iHeight;
 		
-		window->setPosition(x, y, width, height);
+		head = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+	}
+	else
+	{
+		widget = new CWidget(x, y, width, height);
+		
+		widget->name = "imageinfo";
+		widget->paintMainFrame(true);
+		
+		// head
+		head = new CHeaders(x, y, width, 40, _("Image Info"), NEUTRINO_ICON_INFO);
+		head->enablePaintDate();
+		head->setFormat("%d.%m.%Y %H:%M:%S");
+		
+		widget->addWidgetItem(head);
+
 	}
 	
-	const char * head_string;
+	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8, _("Image info"));
+	
  	int  xpos = x + 10;
 	int x_offset = g_Font[font_info]->getRenderWidth(_("Home page:")) + 10;
 
-	ypos = y + 5;
-
-	head_string = _("Image info:");
-
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8, head_string);
+	ypos = head? y + head->getWindowsPos().iHeight + 10 : 60;
 
 	//
-	window->paint();
+	widget->paint();
 	
-	// title
-	g_Font[font_head]->RenderString(xpos, ypos + hheight + 10, width, head_string, COL_MENUHEAD, 0, true);
-
-	ypos += hheight;
+	//
 	ypos += (iheight >>1);
 
-
-	//CConfigFile config('\t');
-	//config.loadConfig("/etc/.version");
-
 	const char * imagename = PACKAGE_NAME;
-	//imagename = config.getString("imagename", "neutrino-HD2").c_str();
 	const char * homepage = "https://github.com/mohousch/neutrino2";
-	//homepage = config.getString("homepage", "http://gitorious.org/open-duckbox-project-sh4").c_str();
 	const char * docs = "https://github.com/mohousch/neutrino2";
-	//docs = config.getString("docs", "http://wiki.neutrino-hd.de").c_str();
 	const char * forum = "https://forum.mbremer.de/viewforum.php?f=86";
-	//forum = config.getString("forum", "http://gitorious.org/open-duckbox-project-sh4").c_str();
-	//const char * version = config.getString("version", "1202201602031021").c_str();
-	
-	//static CFlashVersionInfo versionInfo(version);
 	const char * releaseCycle = PACKAGE_VERSION;
-	//releaseCycle = versionInfo.getReleaseCycle();
 	const char * imageType = "Snapshot"; //FIXME:
-	//imageType = versionInfo.getType();
 
 	// image name
 	ypos += iheight;
@@ -251,5 +258,4 @@ void CImageInfo::paint()
 	
 	licence.paint();
 }
-
 
