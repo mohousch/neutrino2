@@ -234,7 +234,7 @@ void CMenuItem::paintItemBox(int dy, fb_pixel_t col)
 
 void CMenuItem::refreshItemBox(int dy, fb_pixel_t col)
 {
-	if (paintFrame)
+	if (paintFrame || marked)
 		CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, col);
 	else
 	{
