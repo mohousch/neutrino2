@@ -600,10 +600,12 @@
 		<HEAD posx="60" posy="60" width="1160" height="60" title="Image Info" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="streaminfo" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK"/>
+	<WIDGET name="streaminfo" posx="50" posy="50" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+		<HEAD posx="60" posy="60" width="1160" height="60" title="Stream Infomation" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
+	</WIDGET>
 	
 	<WIDGET name="personalisation" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Personalisation" icon="audio" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+		<LISTBOX posx="30" posy="100" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Personalisation" icon="colors" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>

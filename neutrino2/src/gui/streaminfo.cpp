@@ -68,15 +68,17 @@ CStreamInfo::CStreamInfo()
 	
 	//
 	widget = NULL;
+	head = NULL;
+	sec_timer_id = 0;
 
 	//
 	font_head = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
 	font_info = SNeutrinoSettings::FONT_TYPE_MENU;
 	font_small = SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL;
 
-	hheight = g_Font[font_head]->getHeight ();
-	iheight = g_Font[font_info]->getHeight ();
-	sheight = g_Font[font_small]->getHeight ();
+	hheight = g_Font[font_head]->getHeight();
+	iheight = g_Font[font_info]->getHeight();
+	sheight = g_Font[font_small]->getHeight();
   
   	//
 	width =  frameBuffer->getScreenWidth();
@@ -108,6 +110,12 @@ CStreamInfo::CStreamInfo()
 
 CStreamInfo::~CStreamInfo()
 {
+	if (head)
+	{
+		delete head;
+		head = NULL;
+	}
+	
 	if (widget)
 	{
 		delete widget;
@@ -166,6 +174,9 @@ int CStreamInfo::doSignalStrengthLoop()
 	//CZapit::CCurrentServiceInfo si = CZapit::getInstance()->getCurrentServiceInfo();
 	
 	ts_setup();
+	
+	//
+	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 
 	while (1) 
 	{
@@ -230,7 +241,7 @@ int CStreamInfo::doSignalStrengthLoop()
 					//g_Font[font_info]->RenderString (dx1+offset_tmp+((sw)*i), yypos+(dheight*4), offset, tmp_str, COL_MENUCONTENTDARK, 0, true);
 					
 					sprintf(currate, "%5llu.%03llu", tmp_rate / 1000ULL, tmp_rate % 1000ULL);
-					frameBuffer->paintBoxRel (dx1+offset+5+((sw+mm)*i), yypos+(dheight*3), sw, dheight, /*COL_MENUHEAD_PLUS_0*/ COL_MENUCONTENTDARK_PLUS_0);
+					frameBuffer->paintBoxRel (dx1+offset+5+((sw+mm)*i), yypos+(dheight*3), sw, dheight, COL_MENUCONTENTDARK_PLUS_0);
 					
 					// bitrate values max/min
 					//g_Font[font_info]->RenderString (dx1+offset+10+((sw+mm)*i), yypos+(dheight*4), sw - 10, currate, COL_MENUCONTENTDARK);
@@ -277,6 +288,11 @@ int CStreamInfo::doSignalStrengthLoop()
 		signal.old_sig = signal.sig;
 		signal.old_snr = signal.snr;
 		signal.old_ber = signal.ber;
+		
+		if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+		{
+			widget->refresh();
+		} 
 
 		// switch paint mode
 		//FIXME picture info
@@ -320,6 +336,9 @@ int CStreamInfo::doSignalStrengthLoop()
 	}
 
 	ts_close();
+	
+	g_RCInput->killTimer(sec_timer_id);
+	sec_timer_id = 0;
 
 	return msg;
 }
@@ -327,6 +346,12 @@ int CStreamInfo::doSignalStrengthLoop()
 void CStreamInfo::hide ()
 {
 	widget->hide();
+	
+	if (head)
+	{
+		delete head;
+		head = NULL;
+	}
 	
 	if (widget)
 	{
@@ -352,7 +377,7 @@ void CStreamInfo::paint_signal_fe_box(int _x, int _y, int w, int h)
 		frameBuffer->paintBoxRel(sigBox_x, sigBox_y, sigBox_w + 2, sigBox_h, COL_BLACK_PLUS_0);
 
 		y1 = _y + h + iheight + iheight + iheight - 8;
-		y2 = _y + h - sheight+8;
+		y2 = _y + h - sheight + 8;
 		
 		frameBuffer->paintBoxRel(_x+xd*0, y2 - 12, 16, 2, COL_RED_PLUS_0); //red
 		g_Font[font_small]->RenderString(_x+20+xd*0, y2, 50, "BER", COL_MENUCONTENTDARK, 0, true);
@@ -490,31 +515,58 @@ void CStreamInfo::SignalRenderStr(unsigned int value, int _x, int _y)
 
 void CStreamInfo::paint(int /*mode*/)
 {
-	const char * head_string;
-	int ypos = y + 5;
-	int xpos = x + 10;
-	
 	//
-	widget = CNeutrinoApp::getInstance()->getWidget("streaminfo");
-	
-	if (widget == NULL)
+	if (head)
 	{
-		widget = new CWidget(x, y, width, height);
-		widget->name = "streaminfo";
-		widget->paintMainFrame(true);
+		delete head;
+		head = NULL;
 	}
 	
-	// recalculate
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+	
+	widget = CNeutrinoApp::getInstance()->getWidget("streaminfo");
+	
+	//
 	if (widget)
 	{
 		x = widget->getWindowsPos().iX;
 		y = widget->getWindowsPos().iY;
 		width = widget->getWindowsPos().iWidth;
 		height = widget->getWindowsPos().iHeight;
+		
+		head = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+	}
+	else
+	{
+		widget = new CWidget(x, y, width, height);
+		
+		widget->name = "imageinfo";
+		widget->paintMainFrame(true);
+		
+		// head
+		head = new CHeaders(x, y, width, 40, _("Stream information"), NEUTRINO_ICON_INFO);
+		head->enablePaintDate();
+		head->setFormat("%d.%m.%Y %H:%M:%S");
+		
+		if (paint_mode == 0) 
+			widget->addWidgetItem(head);
+
 	}
 	
 	//
+	if (paint_mode != 0) 
+		widget->clearWidgetItems();
+		
 	widget->paint();
+	
+	const char * head_string;
+	int ypos = y;
+	int xpos = x + 10;
+	hheight = head? head->getWindowsPos().iHeight : g_Font[font_head]->getHeight();
 
 	if (paint_mode == 0) 
 	{
@@ -523,8 +575,7 @@ void CStreamInfo::paint(int /*mode*/)
 
 		CVFD::getInstance ()->setMode (CVFD::MODE_MENU_UTF8, head_string);
 
-		g_Font[font_head]->RenderString (xpos, ypos + hheight + 1, width, head_string, COL_MENUHEAD, 0, true);	// UTF-8
-		ypos += hheight;
+		ypos += hheight + 20;
 
 		// Info Output
 		paint_techinfo(xpos, ypos);
@@ -701,7 +752,7 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 		spaceoffset = g_Font[font_small]->getRenderWidth("VTXTpid:") + 5;
 
 		// onid
-		ypos+= sheight;
+		ypos += sheight;
 		sprintf((char*) buf, "0x%04x (%i)", si.onid, si.onid);
 		g_Font[font_small]->RenderString(xpos, ypos, width*2/3-10, "ONid:" , COL_MENUCONTENTDARK, 0, true); // UTF-8
 		g_Font[font_small]->RenderString(xpos + spaceoffset, ypos, width*2/3-10, buf, COL_MENUCONTENTDARK, 0, true); // UTF-8

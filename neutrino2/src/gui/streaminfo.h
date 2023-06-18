@@ -40,13 +40,15 @@ class CStreamInfo : public CMenuTarget
 		
 		//
 		CWidget *widget;
+		CHeaders *head;
+		uint32_t sec_timer_id;
 		
 		//
 		int x;
 		int y;
 		int width;
 		int height;
-		int hheight,iheight,sheight; 	// head/info/small font height
+		int hheight, iheight, sheight; 	// head/info/small font height
 
 		int yypos;
 		int  paint_mode;
