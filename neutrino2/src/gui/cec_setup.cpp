@@ -110,11 +110,11 @@ int CCECSetup::showMenu()
 	cec->setWidgetMode(MODE_SETUP);
 	
 	// intros
-	cec->addItem(new ClistBoxItem(_("back")));
+	cec->addItem(new CMenuForwarder(_("back")));
 	cec->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	cec->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	cec->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	cec->addItem(new CMenuSeparator(LINE));
 
 	//cec

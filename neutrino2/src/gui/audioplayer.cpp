@@ -1354,7 +1354,7 @@ void CAudioPlayerGui::showPlaylist()
 		}
 
 		//
-		item = new ClistBoxItem(title.c_str(), true, desc.c_str());
+		item = new CMenuForwarder(title.c_str(), true, desc.c_str());
 			
 		item->setOptionInfo(duration);
 		item->setNumber(i + 1);

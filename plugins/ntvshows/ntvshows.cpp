@@ -306,7 +306,7 @@ void CTVShows::showMenu()
 		tmp += " ";
 		tmp += m_vMovieInfo[i].epgInfo1;
 
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, new CNSeasons(season_id), NULL, RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, new CNSeasons(season_id), NULL, RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->setHint(tmp.c_str());
 
@@ -345,10 +345,10 @@ int CTVShows::showCategoriesMenu()
 	menu->setWidgetMode(MODE_MENU);
 	menu->enableShrinkMenu();
 
-	menu->addItem(new ClistBoxItem("Heute auf Sendung", true, NULL, new CTVShows("airing_today"), "airing_today"));
-	menu->addItem(new ClistBoxItem("Auf Sendung", true, NULL, new CTVShows("on_the_air"), "on_the_air"));
-	menu->addItem(new ClistBoxItem("Am populärsten", true, NULL, new CTVShows("popular"), "popular"));
-	menu->addItem(new ClistBoxItem("Am besten bewertet", true, NULL, new CTVShows("top_rated"), "top_rated"));
+	menu->addItem(new CMenuForwarder("Heute auf Sendung", true, NULL, new CTVShows("airing_today"), "airing_today"));
+	menu->addItem(new CMenuForwarder("Auf Sendung", true, NULL, new CTVShows("on_the_air"), "on_the_air"));
+	menu->addItem(new CMenuForwarder("Am populärsten", true, NULL, new CTVShows("popular"), "popular"));
+	menu->addItem(new CMenuForwarder("Am besten bewertet", true, NULL, new CTVShows("top_rated"), "top_rated"));
 
 	menu->exec(NULL, "");
 	menu->hide();

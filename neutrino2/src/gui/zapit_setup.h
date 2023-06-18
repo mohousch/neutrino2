@@ -34,7 +34,7 @@ class CZapitSetup : public CMenuTarget
 		int selected;
 		CWidget* widget;
 		ClistBox* zapit;
-		ClistBoxItem * m3, *m4;
+		CMenuForwarder * m3, *m4;
 		
 		void showMenu();
 
@@ -49,9 +49,9 @@ class CZapitSetupNotifier : public CChangeObserver
 {
 	private:
 		CMenuOptionChooser * zapit1;
-		ClistBoxItem * zapit2, * zapit3;
+		CMenuForwarder * zapit2, * zapit3;
 	public:
-		CZapitSetupNotifier(CMenuOptionChooser* m1, ClistBoxItem* m2, ClistBoxItem* m3);
+		CZapitSetupNotifier(CMenuOptionChooser* m1, CMenuForwarder* m2, CMenuForwarder* m3);
 		bool changeNotify(const std::string&, void * data);
 };
 

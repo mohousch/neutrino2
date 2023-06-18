@@ -149,7 +149,7 @@ void CPluginList::showMenu()
 		// skip hidden plugins
 		if (!g_PluginList->isHidden(count))
 		{	
-			item = new ClistBoxItem(_(g_PluginList->getName(count)), enabled, _(g_PluginList->getDescription(count).c_str()), CPluginsExec::getInstance(), g_PluginList->getFileName(count));
+			item = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, _(g_PluginList->getDescription(count).c_str()), CPluginsExec::getInstance(), g_PluginList->getFileName(count));
 			
 			item->setHintIcon(file_exists(IconName.c_str())? IconName.c_str() : NEUTRINO_ICON_MENUITEM_PLUGIN);
 

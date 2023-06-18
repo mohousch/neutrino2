@@ -255,7 +255,7 @@ void CNetworkSettings::showMenu()
 	MyIPChanger = new CIPChangeNotifier;
 	
 	//eth id
-	ClistBoxItem* mac = new ClistBoxItem("MAC address", false, mac_addr.c_str());
+	CMenuForwarder* mac = new CMenuForwarder("MAC address", false, mac_addr.c_str());
 	
 	CIPInput * networkSettings_NetworkIP = new CIPInput(_("IP address"), networkConfig->address, _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"), MyIPChanger);
 
@@ -275,23 +275,23 @@ void CNetworkSettings::showMenu()
         CStringInputSMS * networkSettings_NtpServer = new CStringInputSMS(_("NTP-Server"), g_settings.network_ntpserver.c_str(), MAX_INPUT_CHARS, _("NTP-Server example: ntp1.ptb.de"), _("need reboot or epg-reset"), "abcdefghijklmnopqrstuvwxyz0123456789-. ", sectionsdConfigNotifier);
         CStringInput * networkSettings_NtpRefresh = new CStringInput(_("NTP/DVB-Refresh"), g_settings.network_ntprefresh.c_str(), 3, _("NTP/DVB-Time-Sync in minutes"), _("need reboot or epg-reset"), "0123456789 ", sectionsdConfigNotifier);
 
-	ClistBoxItem * m0 = new ClistBoxItem(_("Setup network now"), true, NULL, this, "network");
+	CMenuForwarder * m0 = new CMenuForwarder(_("Setup network now"), true, NULL, this, "network");
 
-	ClistBoxItem * m1 = new ClistBoxItem(_("IP address"), networkConfig->inet_static, networkConfig->address.c_str(), networkSettings_NetworkIP);
+	CMenuForwarder * m1 = new CMenuForwarder(_("IP address"), networkConfig->inet_static, networkConfig->address.c_str(), networkSettings_NetworkIP);
 
-	ClistBoxItem * m2 = new ClistBoxItem(_("Netmask"), networkConfig->inet_static, networkConfig->netmask.c_str(), networkSettings_NetMask);
+	CMenuForwarder * m2 = new CMenuForwarder(_("Netmask"), networkConfig->inet_static, networkConfig->netmask.c_str(), networkSettings_NetMask);
 
-	ClistBoxItem * m3 = new ClistBoxItem(_("Broadcast"), networkConfig->inet_static, networkConfig->broadcast.c_str(), networkSettings_Broadcast );
+	CMenuForwarder * m3 = new CMenuForwarder(_("Broadcast"), networkConfig->inet_static, networkConfig->broadcast.c_str(), networkSettings_Broadcast );
 
-	ClistBoxItem * m4 = new ClistBoxItem(_("Default gateway"), networkConfig->inet_static, networkConfig->gateway.c_str(), networkSettings_Gateway   );
+	CMenuForwarder * m4 = new CMenuForwarder(_("Default gateway"), networkConfig->inet_static, networkConfig->gateway.c_str(), networkSettings_Gateway   );
 
-	ClistBoxItem * m5 = new ClistBoxItem(_("Name server"), networkConfig->inet_static, networkConfig->nameserver.c_str(), networkSettings_NameServer);
+	CMenuForwarder * m5 = new CMenuForwarder(_("Name server"), networkConfig->inet_static, networkConfig->nameserver.c_str(), networkSettings_NameServer);
 
-        ClistBoxItem * m6 = new ClistBoxItem(_("NTP-Server"), true, g_settings.network_ntpserver.c_str(), networkSettings_NtpServer );
+        CMenuForwarder * m6 = new CMenuForwarder(_("NTP-Server"), true, g_settings.network_ntpserver.c_str(), networkSettings_NtpServer );
 
-        ClistBoxItem * m7 = new ClistBoxItem(_("NTP/DVB-Refresh"), true, g_settings.network_ntprefresh.c_str(), networkSettings_NtpRefresh );
+        CMenuForwarder * m7 = new CMenuForwarder(_("NTP/DVB-Refresh"), true, g_settings.network_ntprefresh.c_str(), networkSettings_NtpRefresh );
 	
-	ClistBoxItem * m8 = new ClistBoxItem(_("Hostname"), true, network_hostname.c_str(), networkSettings_Hostname);
+	CMenuForwarder * m8 = new CMenuForwarder(_("Hostname"), true, network_hostname.c_str(), networkSettings_Hostname);
 
 	CDHCPNotifier * dhcpNotifier = new CDHCPNotifier(m1, m2, m3, m4, m5);
 
@@ -299,21 +299,21 @@ void CNetworkSettings::showMenu()
 	CMenuOptionChooser * oj = new CMenuOptionChooser(_("Setup network on startup"), &network_automatic_start, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 
 	// intros
-	networkSettings->addItem(new ClistBoxItem(_("back"), true));
+	networkSettings->addItem(new CMenuForwarder(_("back"), true));
 	networkSettings->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	networkSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	networkSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	networkSettings->addItem( new CMenuSeparator(LINE) );
 	
 	// setup network on start
 	networkSettings->addItem( oj );
 
 	// test network now
-	networkSettings->addItem(new ClistBoxItem(_("Test network now"), true, NULL, this, "networktest"));
+	networkSettings->addItem(new CMenuForwarder(_("Test network now"), true, NULL, this, "networktest"));
 
 	// show active network settings
-	networkSettings->addItem(new ClistBoxItem(_("Show active network settings"), true, NULL, this, "networkshow"));
+	networkSettings->addItem(new CMenuForwarder(_("Show active network settings"), true, NULL, this, "networkshow"));
 	
 	// setup network now
 	networkSettings->addItem( m0 );
@@ -378,7 +378,7 @@ void CNetworkSettings::showMenu()
 
 		//key
 		CStringInputSMS *networkSettings_key = new CStringInputSMS(_("Key"), network_key.c_str());
-		ClistBoxItem *m10 = new ClistBoxItem(_("Key"), true, network_key.c_str(), networkSettings_key );
+		CMenuForwarder *m10 = new CMenuForwarder(_("Key"), true, network_key.c_str(), networkSettings_key );
 
 		wlanEnable[0] = m9;
 		wlanEnable[1] = m10;
@@ -409,14 +409,14 @@ void CNetworkSettings::showMenu()
 	
 	//proxyserver submenu
 	networkSettings->addItem(new CMenuSeparator(LINE));
-	networkSettings->addItem(new ClistBoxItem(_("Proxyserver"), true, NULL, new CProxySetup()));
+	networkSettings->addItem(new CMenuForwarder(_("Proxyserver"), true, NULL, new CProxySetup()));
 
 	// mount manager
 	networkSettings->addItem(new CMenuSeparator(LINE | STRING, _("Network Mount Manager")));
 
-	networkSettings->addItem(new ClistBoxItem(_("Mount network volume"), true, NULL, new CNFSMountGui()));
+	networkSettings->addItem(new CMenuForwarder(_("Mount network volume"), true, NULL, new CNFSMountGui()));
 
-	networkSettings->addItem(new ClistBoxItem(_("Umount network volume"), true, NULL, new CNFSUmountGui()));
+	networkSettings->addItem(new CMenuForwarder(_("Umount network volume"), true, NULL, new CNFSUmountGui()));
 	
 	//
 	widget->exec(NULL, "");
@@ -466,7 +466,7 @@ bool CIPChangeNotifier::changeNotify(const std::string& locale, void * Data)
 }
 
 // dhcp notifier
-CDHCPNotifier::CDHCPNotifier( ClistBoxItem* a1, ClistBoxItem* a2, ClistBoxItem* a3, ClistBoxItem* a4, ClistBoxItem* a5)
+CDHCPNotifier::CDHCPNotifier( CMenuForwarder* a1, CMenuForwarder* a2, CMenuForwarder* a3, CMenuForwarder* a4, CMenuForwarder* a5)
 {
 	toDisable[0] = a1;
 	toDisable[1] = a2;

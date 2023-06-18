@@ -43,11 +43,11 @@ class ClistBox;
 // item type
 enum 
 {
-	MENUITEM_OPTION_CHOOSER = 0,
-	MENUITEM_OPTION_NUMBER_CHOOSER,
-	MENUITEM_OPTION_STRING_CHOOSER,
+	MENUITEM_OPTIONCHOOSER = 0,
+	MENUITEM_OPTIONNUMBERCHOOSER,
+	MENUITEM_OPTIONSTRINGCHOOSER,
 	MENUITEM_SEPARATOR,
-	MENUITEM_LISTBOXITEM
+	MENUITEM_FORWARDER
 };
 
 // widget type
@@ -389,21 +389,21 @@ class CMenuSeparator : public CMenuItem
 		virtual const char * getString(void);
 };
 
-// CMenulistBoxItem
-class ClistBoxItem : public CMenuItem
+// CMenuForwarder
+class CMenuForwarder : public CMenuItem
 {
 	protected:
 		virtual const char *getName(void);
 		virtual const char *getOption(void);
 
 	public:
-		ClistBoxItem(const char* const Text, const bool Active = true, const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
+		CMenuForwarder(const char* const Text, const bool Active = true, const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
 		
-		~ClistBoxItem()
+		~CMenuForwarder()
 		{
 			if (background)
 			{
-				dprintf(DEBUG_INFO, "ClistBoxItem::del (%s)\n", itemName.c_str());
+				dprintf(DEBUG_INFO, "CMenuForwarder::del (%s)\n", itemName.c_str());
 				
 				delete [] background;
 				background = NULL;

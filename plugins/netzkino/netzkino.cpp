@@ -186,7 +186,7 @@ void CNKMovies::showMenu()
 	//leftWidget->enableShrinkMenu();
 	leftWidget->setOutFocus();
 
-	leftWidget->addItem(new ClistBoxItem("Suche", true, nksearch.c_str(), this, "search"));
+	leftWidget->addItem(new CMenuForwarder("Suche", true, nksearch.c_str(), this, "search"));
 	leftWidget->addItem(new CMenuSeparator(LINE));
 
 	if(cats.empty())
@@ -195,7 +195,7 @@ void CNKMovies::showMenu()
 	// categories
 	for (unsigned i = 0; i < cats.size(); i++)
 	{
-		leftWidget->addItem(new ClistBoxItem(cats[i].title.c_str(), true, NULL, new CNKMovies(cNKFeedParser::CATEGORY, cats[i].id, cats[i].title), "", RC_nokey, NEUTRINO_ICON_NETZKINO_SMALL));
+		leftWidget->addItem(new CMenuForwarder(cats[i].title.c_str(), true, NULL, new CNKMovies(cNKFeedParser::CATEGORY, cats[i].id, cats[i].title), "", RC_nokey, NEUTRINO_ICON_NETZKINO_SMALL));
 	}
 
 	leftWidget->addItem(new CMenuSeparator(LINE));
@@ -205,7 +205,7 @@ void CNKMovies::showMenu()
 	leftWidget->addItem(new CMenuSeparator());
 	leftWidget->addItem(new CMenuSeparator());
 	leftWidget->addItem(new CMenuSeparator(LINE));
-	leftWidget->addItem(new ClistBoxItem("Beenden", true, NULL, this, "exit", RC_nokey, NEUTRINO_ICON_BUTTON_POWER));
+	leftWidget->addItem(new CMenuForwarder("Beenden", true, NULL, this, "exit", RC_nokey, NEUTRINO_ICON_BUTTON_POWER));
 
 	// rightwidget
 	rightBox.iWidth = mainWidget->getWindowsPos().iWidth - INTER_FRAME_SPACE - leftBox.iWidth;
@@ -223,7 +223,7 @@ void CNKMovies::showMenu()
 
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "play", RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "play", RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->setHint(m_vMovieInfo[i].epgInfo2.c_str());
 

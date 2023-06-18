@@ -482,10 +482,10 @@ int CChannelList::doChannelMenu(void)
 	menu->clearItems();
 
 
-	menu->addItem(new ClistBoxItem(_("delete")), old_selected == i++);
-	menu->addItem(new ClistBoxItem(_("Move")), old_selected == i++);
-	menu->addItem(new ClistBoxItem(_("Add to Bouquets")), old_selected == i++);
-	menu->addItem(new ClistBoxItem(_("add channel to my favorites")), old_selected == i++);
+	menu->addItem(new CMenuForwarder(_("delete")), old_selected == i++);
+	menu->addItem(new CMenuForwarder(_("Move")), old_selected == i++);
+	menu->addItem(new CMenuForwarder(_("Add to Bouquets")), old_selected == i++);
+	menu->addItem(new CMenuForwarder(_("add channel to my favorites")), old_selected == i++);
 
 	widget->exec(NULL, "");
 	select = menu->getSelected();
@@ -1843,7 +1843,7 @@ void CChannelList::paint()
 				option += p_event->description.c_str();
 			}
 
-			item = new ClistBoxItem(chanlist[i]->name.c_str(), true, option.c_str());
+			item = new CMenuForwarder(chanlist[i]->name.c_str(), true, option.c_str());
 
 			// channel number
 			item->setNumber(chanlist[i]->number);

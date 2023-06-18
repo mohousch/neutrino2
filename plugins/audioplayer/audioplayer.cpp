@@ -372,7 +372,7 @@ void CMP3Player::showMenu()
 		}
 
 		//
-		item = new ClistBoxItem(title.c_str(), true, desc.c_str(), this, "aplay");
+		item = new CMenuForwarder(title.c_str(), true, desc.c_str(), this, "aplay");
 			
 		item->setOptionInfo(duration);
 		item->setNumber(i + 1);

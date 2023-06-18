@@ -158,11 +158,11 @@ void CLCDSettings::showMenu()
 	lcdSettings->clearItems();
 	
 	// intros
-	lcdSettings->addItem(new ClistBoxItem(_("back")));
+	lcdSettings->addItem(new CMenuForwarder(_("back")));
 	lcdSettings->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	lcdSettings->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	lcdSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	lcdSettings->addItem(new CMenuSeparator(LINE));
 	
 	CLcdNotifier * lcdnotifier = new CLcdNotifier();
@@ -190,7 +190,7 @@ void CLCDSettings::showMenu()
 	
 	// dimm-time
 	CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");
-	lcdSettings->addItem(new ClistBoxItem(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
+	lcdSettings->addItem(new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
 
 	// dimm brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, 15));
@@ -199,7 +199,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuSeparator(LINE));
 	
 	// lcd controller
-	lcdSettings->addItem(new ClistBoxItem(_("Contrast / Brightness"), true, NULL, lcdsliders));
+	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));
 #else
 	// lcd_power
 #if defined (PLATFORM_GIGABLUE)	
@@ -214,14 +214,14 @@ void CLCDSettings::showMenu()
 #if !defined (PLATFORM_CUBEREVO_250HD) && !defined (PLATFORM_SPARK) && !defined (PLATFORM_GIGABLUE)	
 	// dimm-time
 	CStringInput * dim_time = new CStringInput(_("Dim timeout"), g_settings.lcd_setting_dim_time, 3, NULL, NULL, "0123456789 ");
-	lcdSettings->addItem(new ClistBoxItem(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
+	lcdSettings->addItem(new CMenuForwarder(_("Dim timeout"), true, g_settings.lcd_setting_dim_time, dim_time));
 
 	// dimm brightness
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, 15));
 
 	// vfd controller
 	lcdSettings->addItem(new CMenuSeparator(LINE));
-	lcdSettings->addItem(new ClistBoxItem(_("Contrast / Brightness"), true, NULL, lcdsliders));	
+	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));	
 #endif	
 #endif	
 	

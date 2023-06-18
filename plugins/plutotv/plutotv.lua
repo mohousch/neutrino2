@@ -216,7 +216,7 @@ function cat_menu(_id)
 					genre = item_detail.genre;
 				}
 					
-				item = neutrino2.ClistBoxItem(conv_utf8(item_detail.name))
+				item = neutrino2.CMenuForwarder(conv_utf8(item_detail.name))
 				item:setHintIcon(tfile)
 				item:setHint(item_detail.desc)
 				
@@ -278,7 +278,7 @@ function season_menu(_id)
 			episodelist = {}
 			local count = 1
 			for i=1, #jd.seasons do
-				item = neutrino2.ClistBoxItem("Season "..i)
+				item = neutrino2.CMenuForwarder("Season "..i)
 				item:setActionKey(null, "episode_menu")
 				
 				sm:addItem(item)
@@ -385,7 +385,7 @@ function episode_menu(s)
 					eptitle = episode_detail.name;
 				}
 				
-				item = neutrino2.ClistBoxItem(episode_detail.name)
+				item = neutrino2.CMenuForwarder(episode_detail.name)
 				item:setHintIcon(tfile)
 				item:setHint(episode_detail.desc)
 				item:setActionKey(null, "info")
@@ -476,7 +476,7 @@ function categories_menu()
 	m:addKey(neutrino2.RC_red, null, "update")
 	
 	for _id,_name in pairs(catlist) do
-		item = neutrino2.ClistBoxItem(conv_utf8(_name))
+		item = neutrino2.CMenuForwarder(conv_utf8(_name))
 		item:setActionKey(null, "cat_menu")
 		
 		m:addItem(item)

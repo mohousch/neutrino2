@@ -146,11 +146,11 @@ int CCAMMenuHandler::doMainMenu()
 	int CiSlots = ca ? ca->GetNumberCISlots() : 0;
 	
 	// intros
-	cammenu->addItem(new ClistBoxItem(_("back")));
+	cammenu->addItem(new CMenuForwarder(_("back")));
 	cammenu->addItem( new CMenuSeparator(LINE) );
 		
 	// save settings
-	cammenu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	cammenu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	cammenu->addItem(new CMenuSeparator(LINE));
 	
 	if(CiSlots) 
@@ -181,9 +181,9 @@ int CCAMMenuHandler::doMainMenu()
 			char tmp[32];
 			snprintf(tmp, sizeof(tmp), "ca_ci%d", i);
 
-			cammenu->addItem(new ClistBoxItem(name1, true, NULL, this, tmp));
+			cammenu->addItem(new CMenuForwarder(name1, true, NULL, this, tmp));
 			snprintf(tmp, sizeof(tmp), "ca_ci_reset%d", i);
-			cammenu->addItem(new ClistBoxItem(_("CI Reset"), true, NULL, this, tmp));
+			cammenu->addItem(new CMenuForwarder(_("CI Reset"), true, NULL, this, tmp));
 			memset(name1, 0, sizeof(name1));
 
 			cammenu->addItem(new CMenuOptionChooser(_("CI clock"), &g_settings.ci_clock[i], CI_CLOCK_OPTIONS, CI_CLOCK_OPTION_COUNT, true, this));
@@ -197,7 +197,7 @@ int CCAMMenuHandler::doMainMenu()
 		{
 			snprintf(str1, sizeof(str1), "%s %d", _("CI empty"), i+1);
 			tempMenu = new CMenuWidget(str1, NEUTRINO_ICON_SETTINGS);
-			cammenu->addItem(new ClistBoxItem(str1, false, NULL, tempMenu));
+			cammenu->addItem(new CMenuForwarder(str1, false, NULL, tempMenu));
 			memset(str1,0,sizeof(str1));
 		}
 		if (i < (CiSlots - 1))
@@ -221,14 +221,14 @@ int CCAMMenuHandler::doMainMenu()
 			char tmp[32];
 			snprintf(tmp, sizeof(tmp), "ca_sc%d", i);
 
-			cammenu->addItem(new ClistBoxItem(name1, true, NULL, this, tmp));
+			cammenu->addItem(new CMenuForwarder(name1, true, NULL, this, tmp));
 			memset(name1,0,sizeof(name1));
 		} 
 		else 
 		{
 			snprintf(str1, sizeof(str1), "%s %d", _("CI empty"), i);
 			tempMenu = new CMenuWidget(str1, NEUTRINO_ICON_SETTINGS);
-			cammenu->addItem(new ClistBoxItem(str1, false, NULL, tempMenu));
+			cammenu->addItem(new CMenuForwarder(str1, false, NULL, tempMenu));
 			memset(str1,0,sizeof(str1));
 		}
 		if (i < (ScNum - 1))
@@ -410,7 +410,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 						bpos = 0;
 						tptr[li] = 0;
 						printf("CCAMMenuHandler::handleCamMsg: subtitle: %s\n", sptr);
-						menu->addItem(new ClistBoxItem(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
+						menu->addItem(new CMenuForwarder(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
 						sptr = &tptr[li+1];
 					}
 					bpos++;
@@ -419,7 +419,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				if(strlen(sptr)) 
 				{
 					printf("CCAMMenuHandler::handleCamMsg: subtitle: %s\n", sptr);
-					menu->addItem(new ClistBoxItem(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
+					menu->addItem(new CMenuForwarder(convertDVBUTF8(sptr, strlen(sptr), 0).c_str(), false));
 				}
 			}
 			
@@ -427,16 +427,16 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			{
 				snprintf(cnt, sizeof(cnt), "%d", i);
 				if(sublevel)
-					menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, this, cnt));
+					menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, this, cnt));
 				else
-					menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, this, cnt));
+					menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->choice_item[i], strlen(pMenu->choice_item[i]), 0).c_str(), true, NULL, this, cnt));
 			}
 			
 			slen = strlen(pMenu->bottom);
 			if(slen) 
 			{
 				printf("CCAMMenuHandler::handleCamMsg: bottom: %s\n", pMenu->bottom);
-				menu->addItem(new ClistBoxItem(convertDVBUTF8(pMenu->bottom, slen, 0).c_str(), false));
+				menu->addItem(new CMenuForwarder(convertDVBUTF8(pMenu->bottom, slen, 0).c_str(), false));
 			}
 
 			selected = menu->getSelected();

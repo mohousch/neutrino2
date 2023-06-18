@@ -78,9 +78,9 @@ class CNetworkSettings : public CMenuTarget, CChangeObserver
 class CDHCPNotifier : public CChangeObserver
 {
 	private:
-		ClistBoxItem * toDisable[5];
+		CMenuForwarder * toDisable[5];
 	public:
-		CDHCPNotifier(ClistBoxItem*, ClistBoxItem*, ClistBoxItem*, ClistBoxItem*, ClistBoxItem*);
+		CDHCPNotifier(CMenuForwarder*, CMenuForwarder*, CMenuForwarder*, CMenuForwarder*, CMenuForwarder*);
 		bool changeNotify(const std::string&, void * data);
 };
 

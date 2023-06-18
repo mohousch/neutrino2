@@ -57,9 +57,9 @@ class CSatIPClient : public CMenuTarget
 class CSatIPClientNotifier : public CChangeObserver
 {
 	private:
-		ClistBoxItem *item1, *item2;
+		CMenuForwarder *item1, *item2;
 	public:
-		CSatIPClientNotifier(ClistBoxItem *m1, ClistBoxItem *m2);
+		CSatIPClientNotifier(CMenuForwarder *m1, CMenuForwarder *m2);
 		bool changeNotify(const std::string&, void * data);
 };
 

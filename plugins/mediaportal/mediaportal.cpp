@@ -191,7 +191,7 @@ void CMediaPortal::showMenu(void)
 	// youtube
 	if (g_PluginList->plugin_exists("youtube"))
 	{
-		item = new ClistBoxItem("You Tube", true, NULL, this, "youtube", RC_nokey, NULL, PLUGINDIR "/youtube/youtube.png");
+		item = new CMenuForwarder("You Tube", true, NULL, this, "youtube", RC_nokey, NULL, PLUGINDIR "/youtube/youtube.png");
 		item->setHint(g_PluginList->getDescription(g_PluginList->find_plugin("youtube")).c_str());
 		mediaPortal->addItem(item);
 	}
@@ -199,7 +199,7 @@ void CMediaPortal::showMenu(void)
 	// netzkino
 	if (g_PluginList->plugin_exists("netzkino"))
 	{
-		item = new ClistBoxItem("NetzKino", true, NULL, this, "netzkino", RC_nokey, NULL, PLUGINDIR "/netzkino/netzkino.png");
+		item = new CMenuForwarder("NetzKino", true, NULL, this, "netzkino", RC_nokey, NULL, PLUGINDIR "/netzkino/netzkino.png");
 		item->setHint(g_PluginList->getDescription(g_PluginList->find_plugin("netzkino")).c_str());
 		mediaPortal->addItem(item);
 	}
@@ -207,7 +207,7 @@ void CMediaPortal::showMenu(void)
 	// icecast
 	if (g_PluginList->plugin_exists("icecast"))
 	{
-		item = new ClistBoxItem("Ice Cast", true, NULL, this, "icecast", RC_nokey, NULL, PLUGINDIR "/icecast/icecast.png");
+		item = new CMenuForwarder("Ice Cast", true, NULL, this, "icecast", RC_nokey, NULL, PLUGINDIR "/icecast/icecast.png");
 		item->setHint(g_PluginList->getDescription(g_PluginList->find_plugin("icecast")).c_str());
 		mediaPortal->addItem(item);
 	}
@@ -215,7 +215,7 @@ void CMediaPortal::showMenu(void)
 	// internetradio
 	if (g_PluginList->plugin_exists("internetradio"))
 	{
-		item = new ClistBoxItem("Internet Radio", true, NULL, this, "internetradio", RC_nokey, NULL,  PLUGINDIR "/internetradio/internetradio.png");
+		item = new CMenuForwarder("Internet Radio", true, NULL, this, "internetradio", RC_nokey, NULL,  PLUGINDIR "/internetradio/internetradio.png");
 		item->setHint(g_PluginList->getDescription(g_PluginList->find_plugin("internetradio")).c_str());
 		mediaPortal->addItem(item);
 	}
@@ -223,7 +223,7 @@ void CMediaPortal::showMenu(void)
 	// nFilm
 	if (g_PluginList->plugin_exists("nfilm"))
 	{
-		item = new ClistBoxItem("Movie Trailer", true, NULL, this, "nfilm", RC_nokey, NULL, PLUGINDIR "/nfilm/nfilm.png");
+		item = new CMenuForwarder("Movie Trailer", true, NULL, this, "nfilm", RC_nokey, NULL, PLUGINDIR "/nfilm/nfilm.png");
 		item->setHint(g_PluginList->getDescription(g_PluginList->find_plugin("nfilm")).c_str());
 		mediaPortal->addItem(item);
 	}
@@ -231,7 +231,7 @@ void CMediaPortal::showMenu(void)
 	// nTVShows
 	if (g_PluginList->plugin_exists("ntvshows"))
 	{
-		item = new ClistBoxItem("Serien Trailer", true, NULL, this, "ntvshows", RC_nokey, NULL, PLUGINDIR "/ntvshows/ntvshows.png");
+		item = new CMenuForwarder("Serien Trailer", true, NULL, this, "ntvshows", RC_nokey, NULL, PLUGINDIR "/ntvshows/ntvshows.png");
 		item->setHint(g_PluginList->getDescription(g_PluginList->find_plugin("ntvshows")).c_str());
 		mediaPortal->addItem(item);
 	}
@@ -239,7 +239,7 @@ void CMediaPortal::showMenu(void)
 	// arte concert
 	if (g_PluginList->plugin_exists("arte_concert"))
 	{
-		item = new ClistBoxItem("Arte Concert", true, NULL, this, "arte_concert", RC_nokey, NULL, PLUGINDIR "/arte_concert/arte_concert_hint.png");
+		item = new CMenuForwarder("Arte Concert", true, NULL, this, "arte_concert", RC_nokey, NULL, PLUGINDIR "/arte_concert/arte_concert_hint.png");
 		item->setHint(g_PluginList->getDescription(g_PluginList->find_plugin("arte_concert")).c_str());
 		mediaPortal->addItem(item);
 	}
@@ -247,7 +247,7 @@ void CMediaPortal::showMenu(void)
 	// media_one
 	if (g_PluginList->plugin_exists("media_one"))
 	{
-		item = new ClistBoxItem("Media One", true, NULL, this, "media_one", RC_nokey, NULL, PLUGINDIR "/media_one/media_one.png");
+		item = new CMenuForwarder("Media One", true, NULL, this, "media_one", RC_nokey, NULL, PLUGINDIR "/media_one/media_one.png");
 		item->setHint(g_PluginList->getDescription(g_PluginList->find_plugin("media_one")).c_str());
 		mediaPortal->addItem(item);
 	}
@@ -255,7 +255,7 @@ void CMediaPortal::showMenu(void)
 	// mtv
 	if (g_PluginList->plugin_exists("mtv"))
 	{
-		item = new ClistBoxItem("MTV", true, NULL, this, "mtv", RC_nokey, NULL, PLUGINDIR "/mtv/mtv_hint.png");
+		item = new CMenuForwarder("MTV", true, NULL, this, "mtv", RC_nokey, NULL, PLUGINDIR "/mtv/mtv_hint.png");
 		item->setHint(g_PluginList->getDescription(g_PluginList->find_plugin("mtv")).c_str());
 		mediaPortal->addItem(item);
 	}
@@ -263,7 +263,7 @@ void CMediaPortal::showMenu(void)
 	// netzkino_hd
 	if (g_PluginList->plugin_exists("netzkino_hd"))
 	{
-		item = new ClistBoxItem("Netzkino HD", true, NULL, this, "netzkino_hd", RC_nokey, NULL, PLUGINDIR "/netzkino_hd/netzkino.png");
+		item = new CMenuForwarder("Netzkino HD", true, NULL, this, "netzkino_hd", RC_nokey, NULL, PLUGINDIR "/netzkino_hd/netzkino.png");
 		item->setHint(g_PluginList->getDescription(g_PluginList->find_plugin("netzkino_hd")).c_str());
 		mediaPortal->addItem(item);
 	}
@@ -271,7 +271,7 @@ void CMediaPortal::showMenu(void)
 	// plutotv
 	if (g_PluginList->plugin_exists("plutotv"))
 	{
-		item = new ClistBoxItem("Pluto TV VOD", true, NULL, this, "plutotv", RC_nokey, NULL, PLUGINDIR "/plutotv/plutotv.png");
+		item = new CMenuForwarder("Pluto TV VOD", true, NULL, this, "plutotv", RC_nokey, NULL, PLUGINDIR "/plutotv/plutotv.png");
 		item->setHint(g_PluginList->getDescription(g_PluginList->find_plugin("plutotv")).c_str());
 		mediaPortal->addItem(item);
 	}

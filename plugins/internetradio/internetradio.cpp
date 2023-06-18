@@ -678,7 +678,7 @@ void CInternetRadio::showMenu()
 		std::string cover = playlist[i].MetaData.cover.empty()? DATADIR "/icons/no_coverArt.png" : playlist[i].MetaData.cover;
 
 		//
-		item = new ClistBoxItem(tmp.c_str(), true, NULL, this, "iplay");
+		item = new CMenuForwarder(tmp.c_str(), true, NULL, this, "iplay");
 			
 		item->setOptionInfo(duration);
 		item->setNumber(i + 1);

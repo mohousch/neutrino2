@@ -305,7 +305,7 @@ function select_playitem()
 
 	local item = nil
   	for i,r in  ipairs(p) do
-		item = neutrino2.ClistBoxItem(r.title)
+		item = neutrino2.CMenuForwarder(r.title)
 		item:setHint(r.epg)
 		--item:setHintIcon(arte_concert)
 
@@ -425,7 +425,7 @@ function selectmenu()
 	sm = neutrino2.CMenuWidget("Arte Konzerte", arte_concert)
 	
 	for i,v in  ipairs(subs) do
-		item = neutrino2.ClistBoxItem(v[2], true, "", nil, v[1])
+		item = neutrino2.CMenuForwarder(v[2], true, "", nil, v[1])
 
 		sm:addItem(item)
 	end

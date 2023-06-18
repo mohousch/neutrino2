@@ -155,7 +155,7 @@ void CThemes::readThemes(ClistBox* themes)
 	bool hasCVSThemes, hasUserThemes;
 	hasCVSThemes = hasUserThemes = false;
 	std::string userThemeFile = "";
-	ClistBoxItem* oj;
+	CMenuForwarder* oj;
 
 	for(int p = 0; p < 2; p++)
 	{
@@ -186,10 +186,10 @@ void CThemes::readThemes(ClistBox* themes)
 					if ( p == 1 ) 
 					{
 						userThemeFile = "{U}" + (std::string)file;
-						oj = new ClistBoxItem((char*)file, true, "", this, userThemeFile.c_str());
+						oj = new CMenuForwarder((char*)file, true, "", this, userThemeFile.c_str());
 					} 
 					else
-						oj = new ClistBoxItem((char*)file, true, "", this, file);
+						oj = new CMenuForwarder((char*)file, true, "", this, file);
 					
 					themes->addItem( oj );
 				}
@@ -240,15 +240,15 @@ int CThemes::Show()
 	themes->clearItems();
 
 	// intros
-	themes->addItem(new ClistBoxItem(_("back")));
+	themes->addItem(new CMenuForwarder(_("back")));
 	themes->addItem( new CMenuSeparator(LINE) );
 
 	// save current theme
-	themes->addItem(new ClistBoxItem(_("Save current theme"), true , NULL, this, "saveCurrentTheme", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	themes->addItem(new CMenuForwarder(_("Save current theme"), true , NULL, this, "saveCurrentTheme", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	
 	//set default theme
 	themes->addItem( new CMenuSeparator(LINE) );
-	themes->addItem(new ClistBoxItem(_("Neutrino2"), true, NULL, this, "theme_default"));
+	themes->addItem(new CMenuForwarder(_("Neutrino2"), true, NULL, this, "theme_default"));
 
 	//	
 	readThemes(themes);

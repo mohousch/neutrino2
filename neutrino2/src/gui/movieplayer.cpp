@@ -781,11 +781,11 @@ void CMoviePlayerGui::PlayFile(void)
 	
 	bookStartMenu->clearItems();
 
-	bookStartMenu->addItem(new ClistBoxItem(_("New Bookmark")));
-	bookStartMenu->addItem(new ClistBoxItem(_("Repeat")));
-	bookStartMenu->addItem(new ClistBoxItem(_("Jump over")));
-	bookStartMenu->addItem(new ClistBoxItem(_("Movie start:")));
-	bookStartMenu->addItem(new ClistBoxItem(_("Movie end:")));
+	bookStartMenu->addItem(new CMenuForwarder(_("New Bookmark")));
+	bookStartMenu->addItem(new CMenuForwarder(_("Repeat")));
+	bookStartMenu->addItem(new CMenuForwarder(_("Jump over")));
+	bookStartMenu->addItem(new CMenuForwarder(_("Movie start:")));
+	bookStartMenu->addItem(new CMenuForwarder(_("Movie end:")));
 	
 	////FIXME:
 	//showMovieInfo();
@@ -1753,19 +1753,19 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	// bookmark start
 	if(playlist[selected].bookmarks.start != 0)
 	{
-		startPosSelectionMenu->addItem(new ClistBoxItem(_("Movie start:"), true, start_pos));
+		startPosSelectionMenu->addItem(new CMenuForwarder(_("Movie start:"), true, start_pos));
 		position[menu_nr++] = playlist[selected].bookmarks.start;
 	}
 	
 	// bookmark laststop
 	if(playlist[selected].bookmarks.lastPlayStop != 0) 
 	{
-		startPosSelectionMenu->addItem(new ClistBoxItem(_("Last play stop:"), true, play_pos));
+		startPosSelectionMenu->addItem(new CMenuForwarder(_("Last play stop:"), true, play_pos));
 		position[menu_nr++] = playlist[selected].bookmarks.lastPlayStop;
 	}
 	
 	// movie start
-	startPosSelectionMenu->addItem(new ClistBoxItem(_("Movie start"), true, NULL));
+	startPosSelectionMenu->addItem(new CMenuForwarder(_("Movie start"), true, NULL));
 
 	position[menu_nr++] = 0;
 
@@ -1784,7 +1784,7 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 
 			dprintf(DEBUG_NORMAL, "CMoviePlayerGui::showStartPosSelectionMenu adding boomark menu N %d, position %d sec\n", menu_nr, position[menu_nr]);
 			
-			startPosSelectionMenu->addItem(new ClistBoxItem(playlist[selected].bookmarks.user[i].name.c_str(), true, book[i]));
+			startPosSelectionMenu->addItem(new CMenuForwarder(playlist[selected].bookmarks.user[i].name.c_str(), true, book[i]));
 			menu_nr++;
 		}
 	}
@@ -2063,7 +2063,7 @@ void CMoviePlayerGui::showPlaylist()
 
 	for(unsigned int i = 0; i < playlist.size(); i++)
 	{
-		item = new ClistBoxItem(playlist[i].epgTitle.c_str());
+		item = new CMenuForwarder(playlist[i].epgTitle.c_str());
 
 		item->setOption(playlist[i].epgChannel.c_str());
 

@@ -1271,7 +1271,7 @@ function rssurlmenu(url)
 			title = title .. " "
 		end
 		--m:addItem{type="forwarder", name=title, action="showMenuItem", id=i, directkey=dkey }
-		item = neutrino2.ClistBoxItem(title)
+		item = neutrino2.CMenuForwarder(title)
 		--item:setHint(glob.feedpersed.entries[i].content)
 
 		m:addItem(item)
@@ -1374,7 +1374,7 @@ function exec_submenu(id, title)
 				--d = d + 1
 				--local dkey = godirectkey(d)
 				--subm:addItem{type="forwarder", name=w.name, action="exec_urlsub", id=v, directkey=dkey }
-			subm:addItem(neutrino2.ClistBoxItem(w.name))
+			subm:addItem(neutrino2.CMenuForwarder(w.name))
 			--end
 		--end
 	end
@@ -1481,7 +1481,7 @@ function start()
 	for v, w in ipairs(feedentries) do
 		if w and w.grup and w.submenu and check_if_double(grupmenus,w.grup) then
 			grupmenus[#grupmenus+1] = w.grup
-			sm:addItem(neutrino2.ClistBoxItem(w.grup))
+			sm:addItem(neutrino2.CMenuForwarder(w.grup))
 		end
 	end
 
@@ -1492,7 +1492,7 @@ function start()
 	for v, w in ipairs(feedentries) do
 		if w and w.submenu and w.grup == nil and check_if_double(submenus,w.submenu) then
 			submenus[#submenus+1]=w.submenu
-			sm:addItem(ClistBoxItem(w.submenu))
+			sm:addItem(CMenuForwarder(w.submenu))
 		end
 	end
 
@@ -1507,7 +1507,7 @@ function start()
 			elseif w.exec == "SEPARATORLINE" then
 				sm:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
 			else
-				sm:addItem(neutrino2.ClistBoxItem(w.name))
+				sm:addItem(neutrino2.CMenuForwarder(w.name))
 			end
 		end
 	end

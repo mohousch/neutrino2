@@ -187,7 +187,7 @@ void CPicViewer::showMenu()
 		char timestring[18];
 		strftime(timestring, 18, "%d-%m-%Y %H:%M", gmtime(&playlist[i].Date));
 
-		item = new ClistBoxItem(tmp.c_str(), true, NULL, this, "view");
+		item = new CMenuForwarder(tmp.c_str(), true, NULL, this, "view");
 		
 		item->setNumber(i + 1);	
 		item->setOptionInfo(timestring);

@@ -331,17 +331,17 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	menu->clear();
 	
 	// intros
-	menu->addItem(new ClistBoxItem(_("back")));
+	menu->addItem(new CMenuForwarder(_("back")));
 	menu->addItem( new CMenuSeparator(LINE) );
 	
 	// save settings
-	menu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	menu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	menu->addItem( new CMenuSeparator(LINE) );
 
 	//
         CStringInputSMS name(_("User menu"), g_settings.usermenu_text[button].c_str());
         
-        menu->addItem(new ClistBoxItem(_("Name"), true, g_settings.usermenu_text[button].c_str(), &name));
+        menu->addItem(new CMenuForwarder(_("Name"), true, g_settings.usermenu_text[button].c_str(), &name));
         menu->addItem(new CMenuSeparator(LINE));
 
         char text[10];

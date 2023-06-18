@@ -272,7 +272,7 @@ CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const Optio
 	can_arrow = true;
 	pulldown = Pulldown;
 
-	menuItem_type = MENUITEM_OPTION_CHOOSER;
+	menuItem_type = MENUITEM_OPTIONCHOOSER;
 }
 
 void CMenuOptionChooser::addOption(const char *optionname, const int optionvalue)
@@ -368,7 +368,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			if(options[count].valname != 0)
 				l_option = options[count].valname;
 			
-			menu->addItem(new ClistBoxItem(l_option), selected);
+			menu->addItem(new CMenuForwarder(l_option), selected);
 		}
 		
 		widget->exec(NULL, "");
@@ -546,7 +546,7 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 	can_arrow = true;
 	observ = Observ;
 
-	menuItem_type = MENUITEM_OPTION_NUMBER_CHOOSER;
+	menuItem_type = MENUITEM_OPTIONNUMBERCHOOSER;
 }
 
 int CMenuOptionNumberChooser::exec(CMenuTarget*)
@@ -684,7 +684,7 @@ CMenuOptionStringChooser::CMenuOptionStringChooser(const char * const Name, char
 	
 	pulldown = Pulldown;
 
-	menuItem_type = MENUITEM_OPTION_STRING_CHOOSER;
+	menuItem_type = MENUITEM_OPTIONSTRINGCHOOSER;
 }
 
 CMenuOptionStringChooser::~CMenuOptionStringChooser()
@@ -771,7 +771,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			if (strcmp(options[count].c_str(), optionValue) == 0)
 				selected = true;
 
-			menu->addItem(new ClistBoxItem(options[count].c_str()), selected);
+			menu->addItem(new CMenuForwarder(options[count].c_str()), selected);
 		}
 		
 		widget->exec(NULL, "");
@@ -1028,8 +1028,8 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 	return y + height;
 }
 
-//ClistBoxItem
-ClistBoxItem::ClistBoxItem(const char * const Text, const bool Active, const char * const Option, CMenuTarget* Target, const char * const ActionKey, const neutrino_msg_t DirectKey, const char * const IconName, const char* const ItemIcon, const char* const Hint)
+//CMenuForwarder
+CMenuForwarder::CMenuForwarder(const char * const Text, const bool Active, const char * const Option, CMenuTarget* Target, const char * const ActionKey, const neutrino_msg_t DirectKey, const char * const IconName, const char* const ItemIcon, const char* const Hint)
 {
 	itemName = Text? Text : "";
 
@@ -1047,10 +1047,10 @@ ClistBoxItem::ClistBoxItem(const char * const Text, const bool Active, const cha
 	
 	runningPercent = 0;
 
-	menuItem_type = MENUITEM_LISTBOXITEM;
+	menuItem_type = MENUITEM_FORWARDER;
 }
 
-int ClistBoxItem::getHeight(void) const
+int CMenuForwarder::getHeight(void) const
 {
 	int iw = 0;
 	int ih = 0;
@@ -1094,7 +1094,7 @@ int ClistBoxItem::getHeight(void) const
 	return std::max(ih, g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight()) + 6;
 }
 
-int ClistBoxItem::getWidth(void) const
+int CMenuForwarder::getWidth(void) const
 {
 	if(widgetType == TYPE_FRAME)
 	{
@@ -1108,9 +1108,9 @@ int ClistBoxItem::getWidth(void) const
 	}
 }
 
-int ClistBoxItem::exec(CMenuTarget* target)
+int CMenuForwarder::exec(CMenuTarget* target)
 {
-	dprintf(DEBUG_NORMAL, "ClistBoxItem::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
+	dprintf(DEBUG_NORMAL, "CMenuForwarder::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
 
 	int ret = RETURN_EXIT;
 	
@@ -1141,7 +1141,7 @@ int ClistBoxItem::exec(CMenuTarget* target)
 	return ret;
 }
 
-const char * ClistBoxItem::getName(void)
+const char * CMenuForwarder::getName(void)
 {
 	const char * l_name;
 	
@@ -1150,7 +1150,7 @@ const char * ClistBoxItem::getName(void)
 	return l_name;
 }
 
-const char * ClistBoxItem::getOption(void)
+const char * CMenuForwarder::getOption(void)
 {
 	if(!option.empty())
 		return option.c_str();
@@ -1158,9 +1158,9 @@ const char * ClistBoxItem::getOption(void)
 		return NULL;
 }
 
-int ClistBoxItem::paint(bool selected, bool /*AfterPulldown*/)
+int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 {
-	dprintf(DEBUG_DEBUG, "ClistBoxItem::paint:\n");
+	dprintf(DEBUG_DEBUG, "CMenuForwarder::paint:\n");
 
 	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
 
@@ -3240,7 +3240,7 @@ void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned i
 			neutrino_msg_t dk = (shortcut != RC_nokey) ? CRCInput::convertDigitToKey(sc++) : RC_nokey;
 
 			//FIXME: iconName
-			ClistBoxItem *fw_plugin = new ClistBoxItem(g_PluginList->getName(count), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());
+			CMenuForwarder *fw_plugin = new CMenuForwarder(g_PluginList->getName(count), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());
 
 			fw_plugin->setHint(g_PluginList->getDescription(count).c_str());
 			fw_plugin->setWidgetType(itype);

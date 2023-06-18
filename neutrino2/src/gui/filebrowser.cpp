@@ -755,7 +755,7 @@ void CFileBrowser::paint()
 
 	for (unsigned int count = 0; count < filelist.size(); count++)
 	{
-		item = new ClistBoxItem(FILESYSTEM_ENCODING_TO_UTF8(std::string(filelist[count].getFileName()).c_str()));
+		item = new CMenuForwarder(FILESYSTEM_ENCODING_TO_UTF8(std::string(filelist[count].getFileName()).c_str()));
 
 		// marked
 		if (filelist[count].Marked)

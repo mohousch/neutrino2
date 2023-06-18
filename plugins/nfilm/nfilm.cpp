@@ -364,7 +364,7 @@ void CNFilm::paintLeftWidgetItems(ClistBox *listBox, bool genre)
 	{
 		for (unsigned int count = 0; count < genres.size(); count++) 
 		{
-			listBox->addItem(new ClistBoxItem(genres[count].title.c_str(), true, NULL, new CNFilm(genres[count].id, true)));
+			listBox->addItem(new CMenuForwarder(genres[count].title.c_str(), true, NULL, new CNFilm(genres[count].id, true)));
 		}
 
 		delete tmdb;
@@ -372,17 +372,17 @@ void CNFilm::paintLeftWidgetItems(ClistBox *listBox, bool genre)
 	}
 	else
 	{
-		ClistBoxItem *item1 = new ClistBoxItem("In den Kinos", true, NULL, this, "movie_in_cinema");
-		ClistBoxItem *item2 = new ClistBoxItem("Am", true, NULL, this, "movie_popular");
+		CMenuForwarder *item1 = new CMenuForwarder("In den Kinos", true, NULL, this, "movie_in_cinema");
+		CMenuForwarder *item2 = new CMenuForwarder("Am", true, NULL, this, "movie_popular");
 		item2->setOption("populärsten");
 		item2->set2lines();
-		ClistBoxItem *item3 = new ClistBoxItem("Am besten", true, NULL, this, "movie_top_rated");
+		CMenuForwarder *item3 = new CMenuForwarder("Am besten", true, NULL, this, "movie_top_rated");
 		item3->setOption("bewertet");
 		item3->set2lines();
-		ClistBoxItem *item4 = new ClistBoxItem("Neue Filme", true, NULL, this, "movie_new");
-		ClistBoxItem *item5 = new ClistBoxItem("Beenden", true, NULL, this, "exit");
+		CMenuForwarder *item4 = new CMenuForwarder("Neue Filme", true, NULL, this, "movie_new");
+		CMenuForwarder *item5 = new CMenuForwarder("Beenden", true, NULL, this, "exit");
 	
-		listBox->addItem(new ClistBoxItem("Suche", true, tmdbsearch.c_str(), this, "search"));
+		listBox->addItem(new CMenuForwarder("Suche", true, tmdbsearch.c_str(), this, "search"));
 		listBox->addItem(new CMenuSeparator(LINE));
 		listBox->addItem(item1);
 		listBox->addItem(new CMenuSeparator(LINE));
@@ -392,7 +392,7 @@ void CNFilm::paintLeftWidgetItems(ClistBox *listBox, bool genre)
 		listBox->addItem(new CMenuSeparator(LINE));
 		listBox->addItem(item4);
 		listBox->addItem(new CMenuSeparator(LINE));
-		listBox->addItem(new ClistBoxItem("Genres", true, NULL, this, "genres"));
+		listBox->addItem(new CMenuForwarder("Genres", true, NULL, this, "genres"));
 		listBox->addItem(new CMenuSeparator(LINE));
 		listBox->addItem(item5);
 	}
@@ -406,7 +406,7 @@ void CNFilm::paintRightWidgetItems(ClistBox *listBox)
 		tmp += " ";
 		tmp += m_vMovieInfo[i].epgInfo1;
 
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mplay", RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mplay", RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->setHint(tmp.c_str());
 

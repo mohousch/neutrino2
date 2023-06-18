@@ -100,11 +100,11 @@ class CEPGlangSelectNotifier : public CChangeObserver
 class COnlineEPGNotifier : public CChangeObserver
 {
 	private:
-		ClistBoxItem* item1;
+		CMenuForwarder* item1;
 		CMenuOptionChooser* item2;
 		CMenuOptionChooser* item3;
         public:
-		COnlineEPGNotifier(ClistBoxItem* m1, CMenuOptionChooser* m2, CMenuOptionChooser* m3);
+		COnlineEPGNotifier(CMenuForwarder* m1, CMenuOptionChooser* m2, CMenuOptionChooser* m3);
                 bool changeNotify(const std::string&, void *);
 };
 

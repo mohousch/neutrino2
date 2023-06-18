@@ -1089,29 +1089,29 @@ int CNeutrinoApp::convertCMenuItemID(const char * const id)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::convertCMenuItemID: id: %s\n", id);
 	
-	int i = MENUITEM_LISTBOXITEM;
+	int i = MENUITEM_FORWARDER;
 	
 	if (id != NULL)
 	{
-		if ( strcmp(id, "MENUITEM_OPTION_CHOOSER") == 0)
+		if ( strcmp(id, "MENUITEM_OPTIONCHOOSER") == 0)
 		{
-			i = MENUITEM_OPTION_CHOOSER;
+			i = MENUITEM_OPTIONCHOOSER;
 		}
-		else if ( strcmp(id, "MENUITEM_OPTION_NUMBER_CHOOSER") == 0)
+		else if ( strcmp(id, "MENUITEM_OPTIONNUMBERCHOOSER") == 0)
 		{
-			i = MENUITEM_OPTION_NUMBER_CHOOSER;
+			i = MENUITEM_OPTIONNUMBERCHOOSER;
 		}
-		else if ( strcmp(id, "MENUITEM_OPTION_STRING_CHOOSER") == 0)
+		else if ( strcmp(id, "MENUITEM_OPTIONSTRINGCHOOSER") == 0)
 		{
-			i = MENUITEM_OPTION_STRING_CHOOSER;
+			i = MENUITEM_OPTIONSTRINGCHOOSER;
 		}
 		else if ( strcmp(id, "MENUITEM_SEPARATOR") == 0)
 		{
 			i = MENUITEM_SEPARATOR;
 		}
-		else if ( strcmp(id, "MENUITEM_LISTBOXITEM") == 0)
+		else if ( strcmp(id, "MENUITEM_FORWARDER") == 0)
 		{
-			i = MENUITEM_LISTBOXITEM;
+			i = MENUITEM_FORWARDER;
 		}
 	}
 	
@@ -1412,11 +1412,11 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 			if (item_localename) itemName = _(item_localename);
 						
 			//
-			int id = MENUITEM_LISTBOXITEM;
+			int id = MENUITEM_FORWARDER;
 			if (item_id) id = convertCMenuItemID(item_id);
 			
-			if (id == MENUITEM_LISTBOXITEM)
-				menuItem = new ClistBoxItem(itemName.c_str());
+			if (id == MENUITEM_FORWARDER)
+				menuItem = new CMenuForwarder(itemName.c_str());
 						
 			if (item_actionkey) actionKey = item_actionkey;
 			

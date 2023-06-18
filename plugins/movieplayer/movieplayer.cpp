@@ -418,7 +418,7 @@ void CMoviePlayer::showMenu()
 
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new ClistBoxItem(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mplay");
+		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mplay");
 
 		item->setHintIcon(m_vMovieInfo[i].tfile.c_str());
 	

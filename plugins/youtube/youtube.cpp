@@ -148,7 +148,7 @@ void CYTBrowser::showMenu()
 	{
 		itemTitle = m_vMovieInfo[i].epgTitle + " (" + to_string(m_vMovieInfo[i].length) + " Min)";
 
-		item = new ClistBoxItem(itemTitle.c_str(), true, NULL, this, "play", RC_nokey, NULL,  file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+		item = new CMenuForwarder(itemTitle.c_str(), true, NULL, this, "play", RC_nokey, NULL,  file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->setHint(m_vMovieInfo[i].epgInfo2.c_str());
  
@@ -343,12 +343,12 @@ int CYTBrowser::showCategoriesMenu(void)
 	mainMenu.setWidgetMode(MODE_MENU);
 	mainMenu.enableShrinkMenu();
 
-	mainMenu.addItem(new ClistBoxItem(_("Most popular today"), true, NULL, new CYTBrowser(cYTFeedParser::MOST_POPULAR), NULL));
+	mainMenu.addItem(new CMenuForwarder(_("Most popular today"), true, NULL, new CYTBrowser(cYTFeedParser::MOST_POPULAR), NULL));
 
 	mainMenu.addItem(new CMenuSeparator(LINE));
 	
 	// search
-	mainMenu.addItem(new ClistBoxItem(_("Search keyword"), true, ytsearch.c_str(), this, "search", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	mainMenu.addItem(new CMenuForwarder(_("Search keyword"), true, ytsearch.c_str(), this, "search", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	
 	// ytorder
 	mainMenu.addItem(new CMenuOptionChooser(_("Order by"), &m_settings.ytorderby, YT_ORDERBY_OPTIONS, YT_ORDERBY_OPTION_COUNT, true, NULL, RC_green, NEUTRINO_ICON_BUTTON_GREEN, true));

@@ -5341,14 +5341,14 @@ bool CNeutrinoApp::getNVODMenu(ClistBox* menu)
 				nvod_time_x[0] = 0;
 
 			sprintf(nvod_s, "%s - %s %s", nvod_time_a, nvod_time_e, nvod_time_x);
-			menu->addItem(new ClistBoxItem(nvod_s, true, NULL, NVODChanger, nvod_id), (count == g_RemoteControl->selected_subchannel));
+			menu->addItem(new CMenuForwarder(nvod_s, true, NULL, NVODChanger, nvod_id), (count == g_RemoteControl->selected_subchannel));
 		} 
 		else 
 		{
 			if (count == 0)
-				menu->addItem(new ClistBoxItem(Latin1_to_UTF8(e->subservice_name.c_str()).c_str(), true, NULL, NVODChanger, nvod_id, RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
+				menu->addItem(new CMenuForwarder(Latin1_to_UTF8(e->subservice_name.c_str()).c_str(), true, NULL, NVODChanger, nvod_id, RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
 			else
-				menu->addItem(new ClistBoxItem(Latin1_to_UTF8(e->subservice_name.c_str()).c_str(), true, NULL, NVODChanger, nvod_id, CRCInput::convertDigitToKey(count)), (count == g_RemoteControl->selected_subchannel));
+				menu->addItem(new CMenuForwarder(Latin1_to_UTF8(e->subservice_name.c_str()).c_str(), true, NULL, NVODChanger, nvod_id, CRCInput::convertDigitToKey(count)), (count == g_RemoteControl->selected_subchannel));
 		}
 
 		count++;

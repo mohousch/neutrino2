@@ -161,7 +161,7 @@ function get_categories_menu()
 
 	for index, category_detail in pairs(categories) do
 		local count = "(" .. category_detail.post_count .. ")"
-		item = neutrino2.ClistBoxItem(category_detail.title)
+		item = neutrino2.CMenuForwarder(category_detail.title)
 		item:setOptionInfo(count)
 		item:setIconName(netzkino_png)
 
@@ -321,7 +321,7 @@ function get_movies_menu(_id)
 	
 	local item = nil
 	for _id, movie_detail in pairs(movies) do
-		item = neutrino2.ClistBoxItem(conv_utf8(movie_detail.title))
+		item = neutrino2.CMenuForwarder(conv_utf8(movie_detail.title))
 		item:setHintIcon(movie_detail.cover)
 		--item:setHint(conv_utf8(movie_detail.content))
 		item:setActionKey(null, "play")

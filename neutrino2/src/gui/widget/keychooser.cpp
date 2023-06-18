@@ -116,10 +116,10 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 	//
 	menu->addItem(new CKeyValue());
 	menu->addItem(new CMenuSeparator(LINE));
-	menu->addItem(new ClistBoxItem(_("back")));
+	menu->addItem(new CMenuForwarder(_("back")));
 	menu->addItem(new CMenuSeparator(LINE));
-	menu->addItem(new ClistBoxItem(_("Setup new key"), true, NULL, keyChooser));
-	menu->addItem(new ClistBoxItem(_("No key"), true, NULL, keyDeleter));
+	menu->addItem(new CMenuForwarder(_("Setup new key"), true, NULL, keyChooser));
+	menu->addItem(new CMenuForwarder(_("No key"), true, NULL, keyDeleter));
 	
 	//
 	menu->enableShrinkMenu();
@@ -129,10 +129,10 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 	
 	addItem(new CKeyValue());
 	addItem(new CMenuSeparator(LINE));
-	addItem(new ClistBoxItem(_("back")));
+	addItem(new CMenuForwarder(_("back")));
 	addItem(new CMenuSeparator(LINE));
-	addItem(new ClistBoxItem(_("Setup new key"), true, NULL, keyChooser));
-	addItem(new ClistBoxItem(_("No key"), true, NULL, keyDeleter));
+	addItem(new CMenuForwarder(_("Setup new key"), true, NULL, keyChooser));
+	addItem(new CMenuForwarder(_("No key"), true, NULL, keyDeleter));
 }
 
 CKeyChooser::~CKeyChooser()

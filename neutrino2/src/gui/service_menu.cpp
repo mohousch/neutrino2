@@ -123,18 +123,18 @@ void CServiceMenu::showMenu(void)
 	service->clear();
 	
 	// tuner/scan setup
-	service->addItem(new ClistBoxItem(_("Scan transponder"), true, NULL, new CTunerSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCANSETTINGS));
+	service->addItem(new CMenuForwarder(_("Scan transponder"), true, NULL, new CTunerSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCANSETTINGS));
 		
 	// Bouquets Editor
-	service->addItem(new ClistBoxItem(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));
+	service->addItem(new CMenuForwarder(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));
 		
 	// CI Cam 	
 #if defined (ENABLE_CI)
-	service->addItem(new ClistBoxItem(_("CI Cam"), true, NULL, g_CamHandler, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CICAM));
+	service->addItem(new CMenuForwarder(_("CI Cam"), true, NULL, g_CamHandler, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CICAM));
 #endif
 		
 	// software update
-	service->addItem(new ClistBoxItem(_("Software update"), true, NULL, new CUpdateSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SOFTUPDATE));
+	service->addItem(new CMenuForwarder(_("Software update"), true, NULL, new CUpdateSettings(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SOFTUPDATE));
 
 	service->integratePlugins(CPlugins::I_TYPE_SERVICE);
 	

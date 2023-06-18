@@ -673,7 +673,7 @@ void EventList::paint(t_channel_id channel_id)
 
 	for (unsigned int count = 0; count < evtlist.size(); count++)
 	{
-		item = new ClistBoxItem(evtlist[count].description.c_str());
+		item = new CMenuForwarder(evtlist[count].description.c_str());
 
 		//
 		std::string datetime1_str, datetime2_str, duration_str;
@@ -1002,12 +1002,12 @@ int CEventFinderMenu::showMenu(void)
 	}
 	
 	CStringInputSMS stringInput(_("Keyword"), m_search_keyword->c_str());
-	ClistBoxItem * mf2 = new ClistBoxItem(_("Keyword"), true, m_search_keyword->c_str(), &stringInput);
+	CMenuForwarder * mf2 = new CMenuForwarder(_("Keyword"), true, m_search_keyword->c_str(), &stringInput);
 	
 	CMenuOptionChooser * mo0 = new CMenuOptionChooser(_("Search within"), m_search_list, SEARCH_LIST_OPTIONS, SEARCH_LIST_OPTION_COUNT, true);
-	ClistBoxItem * mf1 = new ClistBoxItem("", *m_search_list != EventList::SEARCH_LIST_ALL, m_search_channelname.c_str(), this, "3");
+	CMenuForwarder * mf1 = new CMenuForwarder("", *m_search_list != EventList::SEARCH_LIST_ALL, m_search_channelname.c_str(), this, "3");
 	CMenuOptionChooser * mo1 = new CMenuOptionChooser(_("Search in EPG"), m_search_epg_item, SEARCH_EPG_OPTIONS, SEARCH_EPG_OPTION_COUNT, true);
-	ClistBoxItem * mf0 = new ClistBoxItem(_("Start Search"), true, NULL, this, "1");
+	CMenuForwarder * mf0 = new CMenuForwarder(_("Start Search"), true, NULL, this, "1");
 	
 	//
 	CWidget* widget = NULL;

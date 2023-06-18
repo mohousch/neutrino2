@@ -468,11 +468,11 @@ void CScanSetup::showScanService()
 	scansetup->clear();
 	
 	// intros
-	scansetup->addItem(new ClistBoxItem(_("back")));
+	scansetup->addItem(new CMenuForwarder(_("back")));
 	scansetup->addItem(new CMenuSeparator(LINE));
 	
 	//save settings
-	scansetup->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	scansetup->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	scansetup->addItem(new CMenuSeparator(LINE));
 	
 	// tuner mode
@@ -564,18 +564,18 @@ void CScanSetup::showScanService()
 		feModeNotifier->addItem(4, ojDiseqcRepeats);
 
 		// unicablesetup
-		ClistBoxItem *uniSetup = new ClistBoxItem(_("Unicable Setup"), true, NULL, this, "unisetup");
+		CMenuForwarder *uniSetup = new CMenuForwarder(_("Unicable Setup"), true, NULL, this, "unisetup");
 		uniSetup->setHidden((dmode > DISEQC_ADVANCED ? false : true));
 		satNotify->addItem(3, uniSetup);
 		feModeNotifier->addItem(3, uniSetup);
 
 		// lnbsetup
-		ClistBoxItem *fsatSetup = new ClistBoxItem(_("Setup satellites input / LNB"), true, NULL, this, "lnbsetup");
+		CMenuForwarder *fsatSetup = new CMenuForwarder(_("Setup satellites input / LNB"), true, NULL, this, "lnbsetup");
 		fsatSetup->setHidden((CZapit::getInstance()->getFE(feindex)->mode == FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP));
 		feModeNotifier->addItem(1, fsatSetup);
 		
 		// motorsetup
-		ClistBoxItem *fmotorMenu = new ClistBoxItem(_("Motor settings"), true, NULL, this, "motorsetup");
+		CMenuForwarder *fmotorMenu = new CMenuForwarder(_("Motor settings"), true, NULL, this, "motorsetup");
 		fmotorMenu->setHidden((CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP));
 		feModeNotifier->addItem(1, fmotorMenu);
 		
@@ -587,12 +587,12 @@ void CScanSetup::showScanService()
 	}
 	
 	//// manual scan	
-	ClistBoxItem * manScan = new ClistBoxItem(_("Manual frequency scan / Test signal"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "manualscan");
+	CMenuForwarder * manScan = new CMenuForwarder(_("Manual frequency scan / Test signal"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "manualscan");
 	feModeNotifier->addItem(0, manScan);
 	scansetup->addItem(manScan);
 		
 	//// autoscan
-	ClistBoxItem * auScan = new ClistBoxItem(_("Auto-Scan"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "autoscan");
+	CMenuForwarder * auScan = new CMenuForwarder(_("Auto-Scan"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "autoscan");
 	feModeNotifier->addItem(0, auScan);
 	
 	scansetup->addItem(auScan);
@@ -604,7 +604,7 @@ void CScanSetup::showScanService()
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif
 	{
-		ClistBoxItem *fautoScanAll = new ClistBoxItem(_("Auto-Scan multiple Satellites"), true, NULL, this, "allautoscansetup" );
+		CMenuForwarder *fautoScanAll = new CMenuForwarder(_("Auto-Scan multiple Satellites"), true, NULL, this, "allautoscansetup" );
 		fautoScanAll->setHidden(( (dmode == NO_DISEQC) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP)));
 		satNotify->addItem(2, fautoScanAll);
 		feModeNotifier->addItem(2, fautoScanAll);
@@ -673,10 +673,10 @@ int CScanSetup::showMotorSetup()
 		
 	// intros
 	motorMenu->addItem(new CMenuSeparator(LINE));
-	motorMenu->addItem(new ClistBoxItem(_("back")));
+	motorMenu->addItem(new CMenuForwarder(_("back")));
 
 	// save settings
-	motorMenu->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	motorMenu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	motorMenu->addItem(new CMenuSeparator(LINE));
 
 	// speed
@@ -695,14 +695,14 @@ int CScanSetup::showMotorSetup()
 
 	// latitude
 	toff = new CStringInput(_("Latitude"), (char *) zapit_lat, 10, NULL, NULL, "0123456789.");
-	motorMenu->addItem(new ClistBoxItem(_("Latitude"), true, zapit_lat, toff));
+	motorMenu->addItem(new CMenuForwarder(_("Latitude"), true, zapit_lat, toff));
 
 	// gotoxx lodirection
 	motorMenu->addItem(new CMenuOptionChooser(_("LoDirection"),  (int *)&CZapit::getInstance()->getFE(feindex)->gotoXXLoDirection, OPTIONS_EAST0_WEST1_OPTIONS, OPTIONS_EAST0_WEST1_OPTION_COUNT, true));
 
 	// longitude
 	taff = new CStringInput(_("Longitude"), (char *) zapit_long, 10, NULL, NULL, "0123456789.");
-	motorMenu->addItem(new ClistBoxItem(_("Longitude"), true, zapit_long, taff));
+	motorMenu->addItem(new CMenuForwarder(_("Longitude"), true, zapit_long, taff));
 		
 	// usals repeat
 	motorMenu->addItem(new CMenuOptionNumberChooser(_("USALS command repeat"), (int *)&CZapit::getInstance()->getFE(feindex)->repeatUsals, true, 0, 10) );
@@ -712,7 +712,7 @@ int CScanSetup::showMotorSetup()
 	
 	//
 	motorMenu->addItem(new CMenuSeparator(LINE));
-	motorMenu->addItem(new ClistBoxItem(_("Motor settings"), true, NULL, new CMotorControl(feindex)));
+	motorMenu->addItem(new CMenuForwarder(_("Motor settings"), true, NULL, new CMotorControl(feindex)));
 	
 	ret = motorMenuWidget->exec(NULL, "");
 	
@@ -767,7 +767,7 @@ int CScanSetup::showUnicableSetup()
 	
 	uni_setup->clear();
 
-	uni_setup->addItem(new ClistBoxItem(_("back")));
+	uni_setup->addItem(new CMenuForwarder(_("back")));
 	uni_setup->addItem(new CMenuSeparator(LINE));
 
 	// uni_scr
@@ -776,7 +776,7 @@ int CScanSetup::showUnicableSetup()
 
 	// uni_qrg
 	CIntInput *uni_qrg = new CIntInput(_("Unicable frequency"), (int&) CZapit::getInstance()->getFE(feindex)->uni_qrg, 4);
-	ClistBoxItem * uniqrg = new ClistBoxItem(_("Unicable frequency"), true, uni_qrg->getValue(), uni_qrg);
+	CMenuForwarder * uniqrg = new CMenuForwarder(_("Unicable frequency"), true, uni_qrg->getValue(), uni_qrg);
 	uni_setup->addItem(uniqrg);
 
 	//
@@ -839,7 +839,7 @@ int CScanSetup::showLNBSetup()
 
 	satSetup->clear();
 		
-	satSetup->addItem(new ClistBoxItem(_("back")));
+	satSetup->addItem(new CMenuForwarder(_("back")));
 	satSetup->addItem(new CMenuSeparator(LINE));
 		
 	// tmpSat
@@ -888,11 +888,11 @@ int CScanSetup::showLNBSetup()
 			tempsatlistBox->clear();
 				
 			//
-			tempsatlistBox->addItem(new ClistBoxItem(_("back")));
+			tempsatlistBox->addItem(new CMenuForwarder(_("back")));
 			tempsatlistBox->addItem(new CMenuSeparator(LINE));
 				
 			// savesettings
-			tempsatlistBox->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+			tempsatlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 			tempsatlistBox->addItem(new CMenuSeparator(LINE));
 
 			// diseqc
@@ -923,13 +923,13 @@ int CScanSetup::showLNBSetup()
 			tempsatlistBox->addItem(uncomm);
 			tempsatlistBox->addItem(motor);
 			tempsatlistBox->addItem(usals);
-			tempsatlistBox->addItem(new ClistBoxItem(_("LNB Low Offset"), true, lofL->getValue(), lofL ));
-			tempsatlistBox->addItem(new ClistBoxItem(_("LNB High Offset"), true, lofH->getValue(), lofH ));
-			tempsatlistBox->addItem(new ClistBoxItem(_("LNB switch Offset"), true, lofS->getValue(), lofS));
+			tempsatlistBox->addItem(new CMenuForwarder(_("LNB Low Offset"), true, lofL->getValue(), lofL ));
+			tempsatlistBox->addItem(new CMenuForwarder(_("LNB High Offset"), true, lofH->getValue(), lofH ));
+			tempsatlistBox->addItem(new CMenuForwarder(_("LNB switch Offset"), true, lofS->getValue(), lofS));
 		}
 		
 		// sat setup
-		satSetup->addItem(new ClistBoxItem(sit->second.name.c_str(), true, NULL, tempsatWidget));
+		satSetup->addItem(new CMenuForwarder(sit->second.name.c_str(), true, NULL, tempsatWidget));
 	}
 	
 	ret = satSetupWidget->exec(NULL, "");
@@ -1005,7 +1005,7 @@ int CScanSetup::showSatOnOffSetup()
 	satOnOfflistBox->clearItems();
 	
 	// intros
-	satOnOfflistBox->addItem(new ClistBoxItem(_("back")));
+	satOnOfflistBox->addItem(new CMenuForwarder(_("back")));
 	satOnOfflistBox->addItem(new CMenuSeparator(LINE));
 	
 	//
@@ -1080,11 +1080,11 @@ int CScanSetup::showManualScanSetup()
 	manualScanlistBox->clear();
 
 	// intros
-	manualScanlistBox->addItem(new ClistBoxItem(_("back")));
+	manualScanlistBox->addItem(new CMenuForwarder(_("back")));
 	manualScanlistBox->addItem(new CMenuSeparator(LINE));
 	
 	// save settings
-	manualScanlistBox->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	manualScanlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	manualScanlistBox->addItem(new CMenuSeparator(LINE));
 
 	// sat select
@@ -1159,7 +1159,7 @@ int CScanSetup::showManualScanSetup()
 		
 	// TP select
 	tpSelect = new CTPSelectHandler(feindex);	
-	manualScanlistBox->addItem(new ClistBoxItem(_("Select transponder"), true, NULL, tpSelect));
+	manualScanlistBox->addItem(new CMenuForwarder(_("Select transponder"), true, NULL, tpSelect));
 		
 	// frequency
 	int freq_length = 8;
@@ -1209,7 +1209,7 @@ int CScanSetup::showManualScanSetup()
 #endif
 	
 	CStringInput * freq = new CStringInput(_("Frequency"), (char *) scanSettings->TP_freq, freq_length, NULL, NULL, "0123456789");
-	ClistBoxItem * Freq = new ClistBoxItem(_("Frequency"), true, scanSettings->TP_freq, freq);
+	CMenuForwarder * Freq = new CMenuForwarder(_("Frequency"), true, scanSettings->TP_freq, freq);
 		
 	manualScanlistBox->addItem(Freq);
 		
@@ -1253,7 +1253,7 @@ int CScanSetup::showManualScanSetup()
 
 	// symbol rate
 	CStringInput * rate = new CStringInput(_("Symbol rate"), (char *) scanSettings->TP_rate, 8, NULL, NULL, "0123456789");
-	ClistBoxItem * Rate = new ClistBoxItem(_("Symbol rate"), true, scanSettings->TP_rate, rate);
+	CMenuForwarder * Rate = new CMenuForwarder(_("Symbol rate"), true, scanSettings->TP_rate, rate);
 
 	// fec
 #if HAVE_DVB_API_VERSION >= 5
@@ -1312,7 +1312,7 @@ int CScanSetup::showManualScanSetup()
 		if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
 		{
 			CStringInput * plp = new CStringInput(_("PLP ID"), (char *) scanSettings->TP_plp_id, 3);
-			ClistBoxItem * plp_id = new ClistBoxItem(_("PLP ID"), true, scanSettings->TP_plp_id, plp);
+			CMenuForwarder * plp_id = new CMenuForwarder(_("PLP ID"), true, scanSettings->TP_plp_id, plp);
 			manualScanlistBox->addItem(plp_id);
 		}
 #endif
@@ -1321,10 +1321,10 @@ int CScanSetup::showManualScanSetup()
 	manualScanlistBox->addItem(new CMenuSeparator(LINE));
 		
 	// testsignal
-	manualScanlistBox->addItem(new ClistBoxItem(_("Test signal"), true, NULL, scanTs, "test") );
+	manualScanlistBox->addItem(new CMenuForwarder(_("Test signal"), true, NULL, scanTs, "test") );
 		
 	// scan
-	manualScanlistBox->addItem(new ClistBoxItem(_("Start scan"), true, NULL, scanTs, "manual") );
+	manualScanlistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "manual") );
 	
 	ret = manualScanWidget->exec(NULL, "");
 	
@@ -1378,11 +1378,11 @@ int CScanSetup::showAutoScanSetup()
 	autoScanlistBox->clear();
 	
 	// intros
-	autoScanlistBox->addItem(new ClistBoxItem(_("back")));
+	autoScanlistBox->addItem(new CMenuForwarder(_("back")));
 	autoScanlistBox->addItem(new CMenuSeparator(LINE));
 	
 	// savesettings
-	autoScanlistBox->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	autoScanlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	autoScanlistBox->addItem(new CMenuSeparator(LINE));
 		
 	// satselect
@@ -1456,7 +1456,7 @@ int CScanSetup::showAutoScanSetup()
 	autoScanlistBox->addItem(satSelect);
 		
 	// scan
-	autoScanlistBox->addItem(new ClistBoxItem(_("Start scan"), true, NULL, scanTs, "auto") );
+	autoScanlistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "auto") );
 	
 	ret = autoScanWidget->exec(NULL, "");
 	
@@ -1511,18 +1511,18 @@ int CScanSetup::showAllAutoScanSetup()
 	autoScanAlllistBox->clear();
 			
 	// intros
-	autoScanAlllistBox->addItem(new ClistBoxItem(_("back")));
+	autoScanAlllistBox->addItem(new CMenuForwarder(_("back")));
 	autoScanAlllistBox->addItem(new CMenuSeparator(LINE));
 		
 	// save settings
-	autoScanAlllistBox->addItem(new ClistBoxItem(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	autoScanAlllistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	autoScanAlllistBox->addItem(new CMenuSeparator(LINE));
 		
 	// satonoff
-	autoScanAlllistBox->addItem(new ClistBoxItem(_("Satellite"), true, NULL, this, "satonoffsetup"));
+	autoScanAlllistBox->addItem(new CMenuForwarder(_("Satellite"), true, NULL, this, "satonoffsetup"));
 			
 	// scants
-	autoScanAlllistBox->addItem(new ClistBoxItem(_("Start scan"), true, NULL, scanTs, "all") );
+	autoScanAlllistBox->addItem(new CMenuForwarder(_("Start scan"), true, NULL, scanTs, "all") );
 	
 	ret = autoScanAllWidget->exec(NULL, "");
 
@@ -1701,7 +1701,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		}
 #endif
 		
-		menu->addItem(new ClistBoxItem(buf), old_selected == i);
+		menu->addItem(new CMenuForwarder(buf), old_selected == i);
 		tmplist.insert(std::pair <int, transponder>(i, tI->second));
 		i++;
 	}
@@ -2331,7 +2331,7 @@ void CTunerSetup::showMenu()
 	TunerSetup->clearItems();
 		
 	// intros
-	TunerSetup->addItem(new ClistBoxItem(_("back")));
+	TunerSetup->addItem(new CMenuForwarder(_("back")));
 	TunerSetup->addItem( new CMenuSeparator(LINE) );
 				
 	for(int i = 0; i < FrontendCount; i++)
@@ -2340,7 +2340,7 @@ void CTunerSetup::showMenu()
 		char tbuf[255];
 				
 		sprintf(tbuf, "Tuner-%d: %s", i + 1, fe->getInfo()->name);
-		TunerSetup->addItem(new ClistBoxItem(tbuf, true, NULL, new CScanSetup(i) ));
+		TunerSetup->addItem(new CMenuForwarder(tbuf, true, NULL, new CScanSetup(i) ));
 	}
 	
 	widget->exec(NULL, "");
