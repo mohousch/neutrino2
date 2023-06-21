@@ -370,7 +370,7 @@ static int writeData(void* _call)
 		return 0;
 	}
 
-#if 1 //defined (__sh__)
+#if defined (__sh__)
 	/*AnnexA*/
 	if ((call->len > 3) && ((call->data[0] == 0x00 && call->data[1] == 0x00 && call->data[2] == 0x00 && call->data[3] == 0x01) || (call->data[0] == 0xff && call->data[1] == 0xff && call->data[2] == 0xff && call->data[3] == 0xff)))
 	{
