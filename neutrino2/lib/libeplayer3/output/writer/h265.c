@@ -53,7 +53,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define H265_DEBUG
+//#define H265_DEBUG
 
 #ifdef H265_DEBUG
 

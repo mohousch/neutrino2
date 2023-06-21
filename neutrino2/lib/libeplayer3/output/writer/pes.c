@@ -100,12 +100,9 @@ int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsi
 
 	PutBits(&ld2,0x0  ,8);
 	PutBits(&ld2,0x0  ,8);
-	PutBits(&ld2,0x1  ,8);  // Start Code
-	PutBits(&ld2,stream_id ,8);  // Stream_id = Audio Stream
+	PutBits(&ld2,0x1  ,8);  	// Start Code
+	PutBits(&ld2,stream_id ,8);  	// Stream_id = Audio Stream
 	//4
-#if defined (__sh__)
-	PutBits(&ld2, size + 3 + (pts != INVALID_PTS_VALUE ? 5:0) + (pic_start_code ? (5) : 0), 16); // PES_packet_length
-#else
 	if (size > 0) 
     	{
         	size += 3 + (pts != INVALID_PTS_VALUE ? 5:0) + (pic_start_code ? (5) : 0);
@@ -115,10 +112,7 @@ int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsi
     	{
         	size = 0; // unbounded
     	}
-
-    	//4
     	PutBits(&ld2, size, 16); // PES_packet_length
-#endif
 	//6 = 4+2
 	PutBits(&ld2,0x2  ,2);  // 10
 	PutBits(&ld2,0x0  ,2);  // PES_Scrambling_control
@@ -126,13 +120,11 @@ int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsi
 	PutBits(&ld2,0x0  ,1);  // data_alignment_indicator
 	PutBits(&ld2,0x0  ,1);  // Copyright
 	PutBits(&ld2,0x0  ,1);  // Original or Copy
-	
 	//7 = 6+1
 	if (pts != INVALID_PTS_VALUE)
 		PutBits(&ld2,0x2 ,2);
 	else
 		PutBits(&ld2,0x0 ,2);  // PTS_DTS flag
-
 	//
 	PutBits(&ld2,0x0 ,1);  // ESCR_flag
 	PutBits(&ld2,0x0 ,1);  // ES_rate_flag
@@ -164,9 +156,9 @@ int InsertPesHeader(unsigned char *data, int size, unsigned char stream_id, unsi
 	{
 		PutBits(&ld2,0x0 ,8);
 		PutBits(&ld2,0x0 ,8);
-		PutBits(&ld2,0x1 ,8);  // Start Code
-		PutBits(&ld2,pic_start_code & 0xff ,8);  // 00, for picture start
-		PutBits(&ld2,(pic_start_code >> 8 )&0xff,8);  // For any extra information (like in mpeg4p2, the pic_start_code)
+		PutBits(&ld2,0x1 ,8);  				// Start Code
+		PutBits(&ld2,pic_start_code & 0xff ,8);  	// 00, for picture start
+		PutBits(&ld2,(pic_start_code >> 8 )&0xff,8);  	// For any extra information (like in mpeg4p2, the pic_start_code)
 		//14 + 4 = 18
 	}
 
