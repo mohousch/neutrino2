@@ -621,7 +621,7 @@ uint32_t CFrontend::getUncorrectedBlocks(void) const
 
 void CFrontend::getDelSys(int f, int m, char *&fec, char *&sys, char *&mod)
 {
-	/* sys/mod */
+	// sys/mod
 	if (info.type == FE_QPSK) 
 	{
 		if (f < FEC_S2_QPSK_1_2) 
@@ -646,8 +646,8 @@ void CFrontend::getDelSys(int f, int m, char *&fec, char *&sys, char *&mod)
 			sys = (char *)"DVB-C";
 		else if (info.type == FE_OFDM ) 
 			sys = (char *)"DVB-T";
-        else if (info.type == FE_ATSC)
-            sys = (char *)"DVB_A";
+		else if (info.type == FE_ATSC)
+        		sys = (char *)"DVB_A";
 
 		switch (m) 
 		{
@@ -673,7 +673,7 @@ void CFrontend::getDelSys(int f, int m, char *&fec, char *&sys, char *&mod)
 		}
 	}
 
-	/* fec */
+	// fec
 	switch (f) 
 	{
 		case FEC_NONE:
@@ -845,7 +845,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 	
 	fe_delivery_system delsys = SYS_DVBS;
 	fe_modulation_t modulation = QPSK;
-	fe_code_rate_t fec_inner;
+	fe_code_rate_t fec_inner = FEC_AUTO; 
 	fe_rolloff_t rolloff = ROLLOFF_35;
 
 	// decode the needed settings
@@ -860,14 +860,13 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 			rolloff = dvbs_get_rolloff(delsys);
 			break;
 
-		//case FE_QAM:
 		case DVB_C:   
 			delsys = SYS_DVBC_ANNEX_AC;
-//#ifdef SYS_DVBC_ANNEX_A
-//			delsys = SYS_DVBC_ANNEX_A;
-//#else
-//			delsys = SYS_DVBC_ANNEX_AC;
-//#endif
+#ifdef SYS_DVBC_ANNEX_A
+			delsys = SYS_DVBC_ANNEX_A;
+#else
+			delsys = SYS_DVBC_ANNEX_AC;
+#endif
 			fec_inner = feparams->fec_inner;
 			modulation = feparams->modulation;
 			break;
@@ -875,7 +874,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 		case DVB_T:	
 		case DVB_T2:	
 		case DVB_DTMB:
-			delsys = /*SYS_DVBT2*/getFEDeliverySystem(feparams->delsys);
+			delsys = getFEDeliverySystem(feparams->delsys);
 			modulation = feparams->modulation;
 			fec_inner = feparams->code_rate_HP;
 			break;
@@ -891,7 +890,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 			return;
 	}
 
-	// decode fec_inner
+	// decode fec_inner for DVB_S/S2
 	int fec;
 	fe_pilot_t pilot = PILOT_OFF;
 	
@@ -928,7 +927,6 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 				fec = FEC_3_5;
 
 				if (modulation == PSK_8)
-
 					pilot = PILOT_ON;
 				break;				
 
@@ -969,7 +967,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 				break;
 				
 			default:
-				dprintf(DEBUG_INFO, "CFrontend::setFrontend: fe(%d:%d) DEMOD: unknown FEC: %d\n", feadapter, fenumber, fec_inner);
+				dprintf(DEBUG_NORMAL, "CFrontend::setFrontend: fe(%d:%d) DEMOD: unknown FEC: %d\n", feadapter, fenumber, fec_inner);
 			
 			case FEC_AUTO:			  
 			case FEC_S2_AUTO:			  
@@ -978,10 +976,10 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 		}
 	}
 	
-	// getDelSys
-	char *f, *s, *m;
-	
-	getDelSys(fec_inner, modulation, f, s, m);
+	// getDelSys (for debug)
+	//char *f, *s, *m;
+	//getDelSys(fec_inner, modulation, f, s, m);
+	//dprintf(DEBUG_NORMAL, "CFrontend::setFrontend: fe(%d:%d) (feparams.delsys:0x%x) DEMOD: FEC %s system %s modulation %s\n", feadapter, fenumber, feparams->delsys, f, s, m);
 
 	//
 	memset(&Frontend, 0, sizeof(Frontend));
@@ -1000,7 +998,6 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
   	CmdSeq.num = 0;
 
 	// check frontend status
-	/*
 	struct dvb_frontend_event ev;
 
 	struct pollfd pfd;
@@ -1015,9 +1012,6 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 		if (ioctl(fd, FE_GET_EVENT, &ev) < 0)
 			tuned = false;
 	}
-	*/
-	
-	dprintf(DEBUG_INFO, "CFrontend::setFrontend: fe(%d:%d) DEMOD: FEC %s system %s modulation %s\n", feadapter, fenumber, f, s, m);
 
 	//
 	if (feparams->delsys == DVB_S || feparams->delsys == DVB_S2)
@@ -1048,16 +1042,16 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 	}
 	else if (feparams->delsys == DVB_T || feparams->delsys == DVB_T2)
 	{
-		SETCMD(DTV_DELIVERY_SYSTEM, delsys);
+     		SETCMD(DTV_DELIVERY_SYSTEM, delsys);
      		SETCMD(DTV_FREQUENCY, feparams->frequency);
-     		SETCMD(DTV_INVERSION, feparams->inversion);
-     		SETCMD(DTV_BANDWIDTH_HZ, feparams->bandwidth);
-		SETCMD(DTV_CODE_RATE_HP, fec_inner);
      		SETCMD(DTV_CODE_RATE_LP, feparams->code_rate_LP);
-		SETCMD(DTV_MODULATION, modulation);
+     		SETCMD(DTV_CODE_RATE_HP, fec_inner);
+     		SETCMD(DTV_MODULATION, modulation);
      		SETCMD(DTV_TRANSMISSION_MODE, feparams->transmission_mode);
      		SETCMD(DTV_GUARD_INTERVAL, feparams->guard_interval);
      		SETCMD(DTV_HIERARCHY, feparams->hierarchy_information);
+     		SETCMD(DTV_BANDWIDTH_HZ, feparams->bandwidth);
+     		SETCMD(DTV_INVERSION, feparams->inversion);
      		
      		//
      		if (feparams->delsys == DVB_T2)
@@ -1074,15 +1068,20 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 		dprintf(DEBUG_INFO, "CFrontend::setFrontend: Unknow Frontend Type\n");
 	}
 
-	if (diseqcType == DISEQC_UNICABLE)
-		SETCMD(DTV_FREQUENCY, sendEN50494TuningCommand(feparams->frequency, currentToneMode == SEC_TONE_ON, currentVoltage == SEC_VOLTAGE_18, !!uni_lnb));
+	//
+	if (feparams->delsys == DVB_S || feparams->delsys == DVB_S2)
+	{
+		if (diseqcType == DISEQC_UNICABLE)
+			SETCMD(DTV_FREQUENCY, sendEN50494TuningCommand(feparams->frequency, currentToneMode == SEC_TONE_ON, currentVoltage == SEC_VOLTAGE_18, !!uni_lnb));
 
-	if (diseqcType == DISEQC_UNICABLE2)
-		SETCMD(DTV_FREQUENCY, sendEN50607TuningCommand(feparams->frequency, currentToneMode == SEC_TONE_ON, currentVoltage == SEC_VOLTAGE_18, uni_lnb));
+		if (diseqcType == DISEQC_UNICABLE2)
+			SETCMD(DTV_FREQUENCY, sendEN50607TuningCommand(feparams->frequency, currentToneMode == SEC_TONE_ON, currentVoltage == SEC_VOLTAGE_18, uni_lnb));
+	}
 
-	//tune
+	//
 	SETCMD(DTV_TUNE, 0);
 
+	// tune
   	if (ioctl(fd, FE_SET_PROPERTY, &CmdSeq) < 0) 
 	{
 		perror("FE_SET_PROPERTY");
@@ -1115,16 +1114,14 @@ void CFrontend::setFrontend(const FrontendParameters * feparams, bool nowait)
 			
 		case FE_ATSC:
 		default:
-			dprintf(DEBUG_INFO, "CFrontend::setFrontend: unknown frontend type, exiting\n");
+			dprintf(DEBUG_NORMAL, "CFrontend::setFrontend: unknown frontend type, exiting\n");
 			break;
 	}
 	
 	// getDelSys
-	char *f, *s, *m;
-	
-	getDelSys(fec_inner, modulation, f, s, m);
-	
-	dprintf(DEBUG_INFO, "cFrontend::setFrontend fe(%d:%d) DEMOD: FEC %s system %s modulation %s\n", feadapter, fenumber, f, s, m);
+	//char *f, *s, *m;
+	//getDelSys(fec_inner, modulation, f, s, m);
+	//dprintf(DEBUG_INFO, "cFrontend::setFrontend fe(%d:%d) DEMOD: FEC %s system %s modulation %s\n", feadapter, fenumber, f, s, m);
 
 	// clear event queue
 	struct dvb_frontend_event event;
@@ -1142,7 +1139,7 @@ void CFrontend::setFrontend(const FrontendParameters * feparams, bool nowait)
 		if(ioctl(fd, FE_GET_EVENT, &event) < 0)
 			perror("FE_GET_EVENT");
 		
-		dprintf(DEBUG_INFO, "CFrontend::setFrontend: fe(%d:%d) CLEAR DEMOD: event status %d\n", feadapter, fenumber, event.status);
+		dprintf(DEBUG_NORMAL, "CFrontend::setFrontend: fe(%d:%d) CLEAR DEMOD: event status %d\n", feadapter, fenumber, event.status);
 	}
 
 	// set frontend
