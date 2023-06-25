@@ -117,13 +117,13 @@ class CServices
 		};
 		
 		//
-		void parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, uint32_t system );
+		void parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, fe_type_t frontendType);
 		void parseChannels(xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation );
 		void findTransponder(xmlNodePtr root);
 		void parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_satellite_position satellitePosition);
 		int loadMotorPositions(void);
 		void saveMotorPositions();
-		void init_sat(t_satellite_position position);
+		void initSat(t_satellite_position position);
 		int loadTransponders();
 		int loadServices(bool only_current);
 		void saveServices(bool tocopy=false);

@@ -303,7 +303,7 @@ void CFrontend::getFEInfo(void)
 	if ( (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T) || (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T2) || (deliverySystemMask & DVB_C) && (deliverySystemMask & DVB_T) && (deliverySystemMask & DVB_T2) )
 	{
 		hybrid = true;
-		dprintf(DEBUG_NORMAL, "frontend: (%d:%d) %s isHybrid:%s\n", feadapter, fenumber, info.name, hybrid? "true" : "false");
+		dprintf(DEBUG_NORMAL, "frontend: (%d:%d) %s (delsys:0x%x) isHybrid:%s\n", feadapter, fenumber, info.name, deliverySystemMask, hybrid? "true" : "false");
 	}
 }
 
@@ -841,7 +841,7 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 #if HAVE_DVB_API_VERSION >= 5
 void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 {
-	dprintf(DEBUG_NORMAL, "CFontend::setFrontend: fe(%d:%d) delsys:0x%x (feparams.delsys:0x%x)\n", feadapter, fenumber, forcedDelSys, feparams->delsys);
+	dprintf(DEBUG_NORMAL, "CFontend::setFrontend: fe(%d:%d) delsys:0x%x (feparams.delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask, feparams->delsys);
 	
 	fe_delivery_system delsys = SYS_DVBS;
 	fe_modulation_t modulation = QPSK;
@@ -872,10 +872,10 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 			modulation = feparams->modulation;
 			break;
 
-		case DVB_T:
-		case DVB_T2:
+		case DVB_T:	
+		case DVB_T2:	
 		case DVB_DTMB:
-			delsys = SYS_DVBT;
+			delsys = /*SYS_DVBT2*/getFEDeliverySystem(feparams->delsys);
 			modulation = feparams->modulation;
 			fec_inner = feparams->code_rate_HP;
 			break;
@@ -1000,6 +1000,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
   	CmdSeq.num = 0;
 
 	// check frontend status
+	/*
 	struct dvb_frontend_event ev;
 
 	struct pollfd pfd;
@@ -1014,6 +1015,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 		if (ioctl(fd, FE_GET_EVENT, &ev) < 0)
 			tuned = false;
 	}
+	*/
 	
 	dprintf(DEBUG_INFO, "CFrontend::setFrontend: fe(%d:%d) DEMOD: FEC %s system %s modulation %s\n", feadapter, fenumber, f, s, m);
 
@@ -1392,10 +1394,10 @@ void CFrontend::setInput(t_satellite_position satellitePosition, uint32_t freque
 
 	if (info.type == FE_QPSK)
 	{
-		dprintf(DEBUG_NORMAL, "CFrontend::setInput: fe(%d:%d) (delsys:0x&x) SatellitePosition %d -> %d\n", feadapter, fenumber, forcedDelSys, currentSatellitePosition, satellitePosition);
+		dprintf(DEBUG_NORMAL, "CFrontend::setInput: fe(%d:%d) (delsys:0x&x) SatellitePosition %d -> %d\n", feadapter, fenumber, deliverySystemMask, currentSatellitePosition, satellitePosition);
 	}
 	else
-		dprintf(DEBUG_NORMAL, "CFrontend::setInput: fe(%d:%d)(delsys:0x%x)\n", feadapter, fenumber, forcedDelSys);
+		dprintf(DEBUG_NORMAL, "CFrontend::setInput: fe(%d:%d)(delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask);
 
 	// unicable uses diseqc parameter for input selection
 	uni_lnb = sit->second.diseqc;
@@ -1434,7 +1436,7 @@ void CFrontend::setInput(t_satellite_position satellitePosition, uint32_t freque
 //
 bool CFrontend::tuneChannel(CZapitChannel * channel, bool nvod)
 {
-	dprintf(DEBUG_NORMAL, "CFrontend::tuneChannel: fe(%d:%d) delsys:0x%x tpid %llx (channel_tp:%llx nvod:%s)\n", feadapter, fenumber, forcedDelSys, currentTransponder.TP_id, channel->getTransponderId(), nvod? "true" : "false");
+	dprintf(DEBUG_NORMAL, "CFrontend::tuneChannel: fe(%d:%d) delsys:0x%x tpid %llx (channel_tp:%llx nvod:%s)\n", feadapter, fenumber, deliverySystemMask, currentTransponder.TP_id, channel->getTransponderId(), nvod? "true" : "false");
 
 	transponder_list_t::iterator transponder = transponders.find(currentTransponder.TP_id);
 
@@ -1447,7 +1449,7 @@ bool CFrontend::tuneChannel(CZapitChannel * channel, bool nvod)
 //
 int CFrontend::tuneFrequency(FrontendParameters * feparams, uint8_t polarization, bool nowait)
 {
-	dprintf(DEBUG_NORMAL, "CFrontend::tuneFrequency: fe(%d:%d) delsys:0x%x (params.delsys:0x%x)\n", feadapter, fenumber, forcedDelSys, feparams->delsys);
+	dprintf(DEBUG_NORMAL, "CFrontend::tuneFrequency: fe(%d:%d) delsys:0x%x (params.delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask, feparams->delsys);
 	
 	TP_params TP;
 
@@ -1521,7 +1523,7 @@ int CFrontend::setParameters(TP_params * TP, bool nowait)
 		if (TP->feparams.frequency < 1000*1000)
 			TP->feparams.frequency = TP->feparams.frequency * 1000;
 			
-		//
+		// setSecVoltage
 		secSetVoltage(powered ? SEC_VOLTAGE_13 : SEC_VOLTAGE_OFF, 100);
 			
 		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d:%d) freq= %d band=%d HP=%d LP=%d const=%d trans=%d guard=%d hierarchy=%d inv= %d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.bandwidth, TP->feparams.code_rate_HP, TP->feparams.code_rate_LP, TP->feparams.modulation, TP->feparams.transmission_mode, TP->feparams.guard_interval, TP->feparams.hierarchy_information, TP->feparams.inversion);
@@ -2249,6 +2251,45 @@ uint32_t CFrontend::getDeliverySystem()
 #endif
 	
 	return system;
+}
+
+fe_delivery_system_t CFrontend::getFEDeliverySystem(uint32_t sys)
+{
+	fe_delivery_system_t delsys;
+
+	switch (sys) 
+	{
+		case DVB_S:
+			delsys = SYS_DVBS;
+			break;
+			
+		case DVB_S2:
+		case DVB_S2X:
+			delsys = SYS_DVBS2;
+			break;
+			
+		case DVB_T:
+			delsys = SYS_DVBT;
+			break;
+
+		case DVB_T2:
+			delsys = SYS_DVBT2;
+			break;
+
+		case DVB_C:
+			delsys = SYS_DVBC_ANNEX_A;
+			break;
+
+		case DVB_DTMB:
+			delsys = SYS_DTMB;
+			break;
+
+		default:
+			delsys = SYS_UNDEFINED;
+			break;
+	}
+
+	return delsys;
 }
 
 bool CFrontend::changeDelSys(uint32_t delsys)

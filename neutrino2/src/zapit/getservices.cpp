@@ -67,7 +67,7 @@ satellite_map_t satellitePositions;				// satellite position as specified in sat
 std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats liste
 
 // parse transponder from services.xml
-void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, uint32_t system)
+void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, fe_type_t frontendType)
 {
 	dprintf(DEBUG_INFO, "CServices::parseTransponders:\n");
 
@@ -88,32 +88,34 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 		original_network_id = xmlGetNumericAttribute(node, "on", 16);
 		feparams.frequency = xmlGetNumericAttribute(node, "frq", 0);
 		feparams.inversion = (fe_spectral_inversion) xmlGetNumericAttribute(node, "inv", 0);
-		feparams.delsys = system;
 
 		// DVB-C
-		if(system == DVB_C)
+		if (frontendType == FE_QAM)
 		{
 			feparams.symbol_rate = xmlGetNumericAttribute(node, "sr", 0);
 			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(node, "fec", 0);
 			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(node, "mod", 0);
+			feparams.delsys = DVB_C;
 		}
 		// DVB-T
-		else if(system == DVB_T)
+		else if (frontendType == FE_OFDM)
 		{
-			feparams.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(node, "band", 0);
-			feparams.code_rate_HP = (fe_code_rate_t) xmlGetNumericAttribute(node, "HP", 0);
-			feparams.code_rate_LP = (fe_code_rate_t) xmlGetNumericAttribute(node, "LP", 0);
-			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(node, "const", 0);
-			feparams.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(node, "trans", 0);
-			feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(node, "guard", 0);
-			feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(node, "hierarchy", 0);
+			feparams.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(node, "bw", 0);
+			feparams.code_rate_HP = (fe_code_rate_t) xmlGetNumericAttribute(node, "hp", 0);
+			feparams.code_rate_LP = (fe_code_rate_t) xmlGetNumericAttribute(node, "lp", 0);
+			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(node, "con", 0);
+			feparams.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(node, "tm", 0);
+			feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(node, "gi", 0);
+			feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(node, "hi", 0);
+			feparams.delsys = (uint32_t) xmlGetNumericAttribute(node, "sys", 0);
 		}
 		// DVB-S
-		else if(system == DVB_S)
+		else if (frontendType == FE_QPSK)
 		{
 			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(node, "fec", 0);
 			feparams.symbol_rate = xmlGetNumericAttribute(node, "sr", 0);
 			polarization = xmlGetNumericAttribute(node, "pol", 0);
+			feparams.delsys = (uint32_t) xmlGetNumericAttribute(node, "sys", 0);
 
             		// ???
 			if(feparams.symbol_rate < 50000) 
@@ -124,11 +126,11 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 				feparams.frequency = feparams.frequency*1000;
 		}
 
-		if(system == DVB_C)
+		if (frontendType == FE_QAM)
 			freq = feparams.frequency/100;
-		else if(system == DVB_S)
+		else if (frontendType == FE_QPSK)
 			freq = feparams.frequency/1000;
-		else if(system == DVB_T || system == DVB_A)
+		else if (frontendType == FE_OFDM || frontendType == FE_ATSC)
 			freq = feparams.frequency/100000;
 
 		// add current transponder to TP list
@@ -136,7 +138,7 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 
 		pair<map<transponder_id_t, transponder>::iterator, bool> ret;
 
-		ret = transponders.insert(std::pair <transponder_id_t, transponder> ( tid, transponder(transport_stream_id, feparams, polarization, original_network_id/*, system*/)));
+		ret = transponders.insert(std::pair <transponder_id_t, transponder> ( tid, transponder(transport_stream_id, feparams, polarization, original_network_id)));
 		
 		if (ret.second == false)
 			printf("[getservices] duplicate transponder id %llx freq %d\n", tid, feparams.frequency);
@@ -257,14 +259,14 @@ void CServices::findTransponder(xmlNodePtr search)
 	dprintf(DEBUG_INFO, "CServices::findTransponder:\n");
 
 	t_satellite_position satellitePosition = 0;
-    	uint32_t system = DVB_S;
+    	fe_type_t type = FE_QPSK;
 	newtpid = 0xC000;
 	
 	while (search) 
 	{
 		if ( !(strcmp(xmlGetName(search), "cable")) && have_c)
 		{
-			system = DVB_C;
+			type = FE_QAM;
 			
 			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
 			{
@@ -279,7 +281,7 @@ void CServices::findTransponder(xmlNodePtr search)
 		}
 		else if ( !(strcmp(xmlGetName(search), "terrestrial")) && have_t)
 		{
-			system = DVB_T;
+			type = FE_OFDM;
 			
 			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
 			{
@@ -294,7 +296,7 @@ void CServices::findTransponder(xmlNodePtr search)
 		}
 		else if ( !(strcmp(xmlGetName(search), "atsc")) && have_a)
 		{
-			system = DVB_A;
+			type = FE_ATSC;
 			
 			for (sat_iterator_t spos_it = satellitePositions.begin(); spos_it != satellitePositions.end(); spos_it++) 
 			{
@@ -309,7 +311,7 @@ void CServices::findTransponder(xmlNodePtr search)
 		}
 		else if ( !(strcmp(xmlGetName(search), "sat")) && have_s) 
 		{
-			system = DVB_S;
+			type = FE_QPSK;
 			satellitePosition = xmlGetSignedNumericAttribute(search, "position", 10);
 			
 			dprintf(DEBUG_INFO, "CServices::findTransponder: going to parse dvb-%c provider %s position %d\n", xmlGetName(search)[0], xmlGetAttribute(search, "name"), satellitePosition);
@@ -320,8 +322,8 @@ void CServices::findTransponder(xmlNodePtr search)
 			continue;
 		}
 		
-		// parse TP
-		parseTransponders(search->xmlChildrenNode, satellitePosition, system);
+		// parseTP
+		parseTransponders(search->xmlChildrenNode, satellitePosition, type);
 
 		newfound++;
 		
@@ -377,14 +379,22 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 			feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(tps, "hierarchy_information", 0);
 			feparams.inversion = (fe_spectral_inversion_t)xmlGetNumericAttribute(tps, "inversion", 0);
 
-            		system = xmlGetNumericAttribute(tps, "system", 0);
+			if (xmlGetAttribute(tps, (char *)"system"))
+			{
+		    		system = xmlGetNumericAttribute(tps, "system", 0);
 
-            		if (system == 0)
-            			feparams.delsys = DVB_T;
-            		else if (system == 1)
+		    		if (system == 0)
+		    			feparams.delsys = DVB_T;
+		    		else if (system == 1)
+		    		{
+		    			feparams.delsys = DVB_T2;
+		    			feparams.plp_id = (unsigned int) xmlGetNumericAttribute(tps, "plp_id", 0);
+		    		}
+            		}
+            		else
             		{
             			feparams.delsys = DVB_T2;
-            			feparams.plp_id = xmlGetNumericAttribute(tps, "plp_id", 0);
+            			feparams.plp_id = (unsigned int) xmlGetNumericAttribute(tps, "plp_id", 0);
             		}
 		}
 		else if (frontendType == FE_QPSK) 	//DVB-S/S2/S2X
@@ -514,9 +524,9 @@ void CServices::saveMotorPositions()
 	fclose(fd);
 }
 
-void CServices::init_sat(t_satellite_position position)
+void CServices::initSat(t_satellite_position position)
 {
-	dprintf(DEBUG_DEBUG, "CServices::init_sat:\n");
+	dprintf(DEBUG_DEBUG, "CServices::initSat:\n");
 
 	satellitePositions[position].position = 0;
 	satellitePositions[position].diseqc = -1;
@@ -573,13 +583,13 @@ int CServices::loadTransponders()
 
 					if(satellitePositions.find(position) == satellitePositions.end()) 
 					{
-						init_sat(position);
+						initSat(position);
 					}
 
 					// name
 					satellitePositions[position].name = name;
 					
-					// type
+					// delsys
 					satellitePositions[position].system = DVB_S;
 				}
 				
@@ -615,13 +625,13 @@ int CServices::loadTransponders()
 
 					if(satellitePositions.find(position) == satellitePositions.end()) 
 					{
-						init_sat(position);
+						initSat(position);
 					}
 
 					// name
 					satellitePositions[position].name = name;
 					
-					// type
+					// delsys
 					satellitePositions[position].system = DVB_C;
 				}
 
@@ -657,13 +667,13 @@ int CServices::loadTransponders()
 
 					if(satellitePositions.find(position) == satellitePositions.end()) 
 					{
-						init_sat(position);
+						initSat(position);
 					}
 
 					// name
 					satellitePositions[position].name = name;
 					
-					// type
+					// delsys
 					satellitePositions[position].system = DVB_T;
 				}
 
@@ -698,13 +708,13 @@ int CServices::loadTransponders()
 
 					if(satellitePositions.find(position) == satellitePositions.end()) 
 					{
-						init_sat(position);
+						initSat(position);
 					}
 
 					// name
 					satellitePositions[position].name = name;
 					
-					// type
+					// delsys
 					satellitePositions[position].system = DVB_A;
 				}
 
@@ -754,7 +764,7 @@ int CServices::loadServices(bool only_current)
 
 				if(satellitePositions.find(position) == satellitePositions.end()) 
 				{
-					init_sat(position);
+					initSat(position);
 				}
                 
                 		satellitePositions[position].name = name;
@@ -870,11 +880,12 @@ void CServices::saveServices(bool tocopy)
 			switch(spos_it->second.system)
 			{
 				case DVB_S:
-					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" pol=\"%hu\">\n",
+					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" pol=\"%hu\" sys=\"%hu\">\n",
 							tI->second.transport_stream_id, tI->second.original_network_id,
 							tI->second.feparams.frequency, tI->second.feparams.inversion,
 							tI->second.feparams.symbol_rate, tI->second.feparams.fec_inner,
-							tI->second.polarization);
+							tI->second.polarization,
+							tI->second.feparams.delsys);
 					break;
 
 				case DVB_C:
@@ -886,11 +897,12 @@ void CServices::saveServices(bool tocopy)
 					break;
 
 				case DVB_T:
-					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" band=\"%hu\" HP=\"%hu\" LP=\"%hu\" const=\"%hu\" trans=\"%hu\" guard=\"%hu\" hierarchy=\"%hu\">\n",
+					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" bw=\"%hu\" hp=\"%hu\" lp=\"%hu\" con=\"%hu\" tm=\"%hu\" gi=\"%hu\" hi=\"%hu\" sys=\"%hu\">\n",
                                         tI->second.transport_stream_id, tI->second.original_network_id,
                                         tI->second.feparams.frequency, tI->second.feparams.inversion,
                                         tI->second.feparams.bandwidth, tI->second.feparams.code_rate_HP,
-                                        tI->second.feparams.code_rate_LP, tI->second.feparams.modulation,tI->second.feparams.transmission_mode, tI->second.feparams.guard_interval, tI->second.feparams.hierarchy_information);
+                                        tI->second.feparams.code_rate_LP, tI->second.feparams.modulation,tI->second.feparams.transmission_mode, tI->second.feparams.guard_interval, tI->second.feparams.hierarchy_information, 
+                                        tI->second.feparams.delsys);
 					break;
 
 				default:
@@ -964,8 +976,9 @@ void CServices::saveServices(bool tocopy)
 					processed++;
 				}
 			}
+			
 			if(tpdone) 
-                fprintf(fd, "\t\t</TS>\n");
+                		fprintf(fd, "\t\t</TS>\n");
 		}
 
 		if(satdone) 
@@ -988,6 +1001,7 @@ void CServices::saveServices(bool tocopy)
 			}
 		}
 	}
+	
 	fprintf(fd, "</zapit>\n");
 	fclose(fd);
 	

@@ -435,9 +435,17 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 		feparams.inversion = (fe_spectral_inversion_t)xmlGetNumericAttribute(transponder, "inversion", 0);
 		system = xmlGetNumericAttribute(transponder, "system", 0);
 		
-		if (system == 0)
-            		feparams.delsys = DVB_T;
-            	else if (system == 1)
+		if (xmlGetAttribute(transponder, (char *)"system"))
+		{
+			if (system == 0)
+		    		feparams.delsys = DVB_T;
+		    	else if (system == 1)
+		    	{
+		    		feparams.delsys = DVB_T2;
+		    		feparams.plp_id = xmlGetNumericAttribute(transponder, "plp_id", 0);
+		    	}
+            	}
+            	else
             	{
             		feparams.delsys = DVB_T2;
             		feparams.plp_id = xmlGetNumericAttribute(transponder, "plp_id", 0);

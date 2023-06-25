@@ -277,7 +277,7 @@ void CZapit::initFrontend()
 
 #if HAVE_DVB_API_VERSION >= 5
 				//
-				if (fe->getDelSysMasked() & DVB_S|| fe->getDelSysMasked() & DVB_S2 || fe->getDelSysMasked() & DVB_S2X)
+				if (fe->getDelSysMasked() & DVB_S || fe->getDelSysMasked() & DVB_S2 || fe->getDelSysMasked() & DVB_S2X)
 					have_s = true;
 				if (fe->getDelSysMasked() & DVB_C)
 					have_c = true;
@@ -442,7 +442,7 @@ void CZapit::initTuner(CFrontend * fe)
 		//fe->setDiseqcType( fe->diseqcType );
 		
 		//
-		fe->changeDelSys(fe->forcedDelSys);
+		//fe->changeDelSys(fe->forcedDelSys); //FIXME:???
 	}
 }
 
@@ -562,7 +562,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: fe(%d:%d): (delsys:0x%x) (%s) tuned:%d (locked:%d) fe_TP: %llx - %d chan_TP: %llx\n",
 				fe->feadapter,
 				fe->fenumber,
-				fe->forcedDelSys,
+				fe->deliverySystemMask,
 				FEMODE[fe->mode],
 				fe->tuned,
 				fe->locked,
@@ -4085,7 +4085,8 @@ void * CZapit::scanThread(void * data)
 				nittransponders.clear();
 
 				dprintf(DEBUG_INFO, "CZapit::scanThread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
-					
+				
+				// this invoke addToScan	
 				if ( !CScan::getInstance()->scanProvider(search, position, diseqc_pos, satfeed, feindex) )
 				{
 					found_channels = 0;
