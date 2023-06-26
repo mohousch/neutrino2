@@ -1879,7 +1879,7 @@ bool CScanSettings::loadSettings(const char * const fileName, int index)
 	strcpy(TP_rate, configfile.getString(cfg_key, "27500000").c_str());
 	
 	// modulation
-	TP_mod = (fe_code_rate_t)getConfigValue(index, "TP_mod", (fe_code_rate_t)QAM_AUTO);
+	TP_mod = (fe_code_rate_t)getConfigValue(index, "TP_mod", (fe_modulation_t) QAM_AUTO);
 
 	// fec
 	TP_fec = (fe_code_rate_t)getConfigValue(index, "TP_fec", (fe_code_rate_t)FEC_AUTO);

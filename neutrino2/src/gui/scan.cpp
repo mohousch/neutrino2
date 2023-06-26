@@ -311,7 +311,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		{
 			CZapit::getInstance()->getFE(feindex)->getDelSys(scanSettings->TP_HP, scanSettings->TP_mod, f, s, m);
 
-			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq)/1000, f, s, m);
+			sprintf(buffer, "%u %s %s %s", atoi(scanSettings->TP_freq), f, s, m);
 		}
 
 		paintLine(xpos2, ypos_cur_satellite, w - 95, scanSettings->satNameNoDiseqc);
@@ -469,7 +469,6 @@ int CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 				
 				sprintf(buffer, " %c %d %s %s %s", pol == 0 ? 'H' : 'V', rate, f, s, m);
 				
-				//(pol == 0) ? sprintf(buffer, "-H") : sprintf(buffer, "-V");
 				paintLine(xpos2 + xpos_frequency, ypos_frequency, w - xpos_frequency - 80, buffer);
 			}
 			break;

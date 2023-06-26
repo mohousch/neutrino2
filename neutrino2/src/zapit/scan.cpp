@@ -255,7 +255,7 @@ _repeat:
 		{
 			actual_polarisation = ((tI->second.feparams.symbol_rate/1000) << 16) | (tI->second.feparams.fec_inner << 8) | (uint)tI->second.polarization;
 
-			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, CEventServer::INITID_NEUTRINO, &actual_polarisation,sizeof(actual_polarisation));
+			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, CEventServer::INITID_NEUTRINO, &actual_polarisation, sizeof(actual_polarisation));
 		}
 		
 		// tune TP
@@ -268,7 +268,7 @@ _repeat:
 		if(abort_scan)
 			return false;
 
-		//
+		// parseSDT
 		freq_id_t freq;
 
 #if HAVE_DVB_API_VERSION >= 5 
@@ -354,6 +354,7 @@ _repeat:
 	return true;
 }
 
+//
 bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, int feindex)
 {
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CScan::scanTransponder:\n");

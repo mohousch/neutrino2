@@ -1459,6 +1459,7 @@ int CFrontend::tuneFrequency(FrontendParameters * feparams, uint8_t polarization
 	return setParameters(&TP, nowait);
 }
 
+//
 int CFrontend::setParameters(TP_params * TP, bool nowait)
 {
 	int freq_offset = 0;
@@ -1518,7 +1519,7 @@ int CFrontend::setParameters(TP_params * TP, bool nowait)
 		// setSecVoltage
 		secSetVoltage(powered ? SEC_VOLTAGE_13 : SEC_VOLTAGE_OFF, 100);
 			
-		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d:%d) freq= %d band=%d HP=%d LP=%d const=%d trans=%d guard=%d hierarchy=%d inv= %d plp_id=%d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.bandwidth, TP->feparams.code_rate_HP, TP->feparams.code_rate_LP, TP->feparams.modulation, TP->feparams.transmission_mode, TP->feparams.guard_interval, TP->feparams.hierarchy_information, TP->feparams.inversion, TP->feparams.plp_id);
+		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d:%d) freq= %d band=%d HP=%d LP=%d const=%d trans=%d guard=%d hierarchy=%d inv= %d plp_id=%d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.bandwidth, TP->feparams.code_rate_HP, TP->feparams.code_rate_LP, TP->feparams.modulation, TP->feparams.transmission_mode, TP->feparams.guard_interval, TP->feparams.hierarchy_information, TP->feparams.inversion, (TP->feparams.delsys = DVB_T2)?TP->feparams.plp_id : 0);
 	}
 	
 	do {
