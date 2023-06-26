@@ -440,9 +440,6 @@ void CZapit::initTuner(CFrontend * fe)
 		fe->setDiseqcRepeats( fe->diseqcRepeats );
 		fe->setCurrentSatellitePosition( fe->lastSatellitePosition );
 		//fe->setDiseqcType( fe->diseqcType );
-		
-		//
-		//fe->changeDelSys(fe->forcedDelSys); //FIXME:???
 	}
 }
 
