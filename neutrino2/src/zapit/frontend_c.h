@@ -210,6 +210,7 @@ class CFrontend
 		uint32_t getFrequency(void) const;
 		static fe_modulation_t getModulation(const uint8_t modulation);
 		uint8_t getPolarization(void) const;
+		uint32_t getFEBandwidth(fe_bandwidth_t bandwidth);
 		const struct dvb_frontend_info *getInfo(void) const { return &info; };
 		const FrontendParameters * getfeparams(void) const {return &curfe;}
 

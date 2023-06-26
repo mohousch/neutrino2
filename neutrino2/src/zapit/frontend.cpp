@@ -746,6 +746,46 @@ void CFrontend::getDelSys(int f, int m, char *&fec, char *&sys, char *&mod)
 	}
 }
 
+//
+uint32_t CFrontend::getFEBandwidth(fe_bandwidth_t bandwidth)
+{
+	uint32_t bandwidth_hz = 0;
+
+	switch (bandwidth) 
+	{
+		case BANDWIDTH_8_MHZ:
+		default:
+			bandwidth_hz  = 8000000;
+			break;
+			
+		case BANDWIDTH_7_MHZ:
+			bandwidth_hz  = 7000000;
+			break;
+			
+		case BANDWIDTH_6_MHZ:
+			bandwidth_hz  = 6000000;
+			break;
+
+		case BANDWIDTH_5_MHZ:
+			bandwidth_hz  = 5000000;
+			break;
+			
+		case BANDWIDTH_1_712_MHZ:
+			bandwidth_hz  = 1712000;
+			break;
+			
+		case BANDWIDTH_10_MHZ:
+			bandwidth_hz  = 10000000;
+			break;
+
+		case BANDWIDTH_AUTO:
+			bandwidth_hz  = 0;
+	}
+
+	return bandwidth_hz;
+}
+
+//
 #define TIME_STEP 		200
 #define TIMEOUT_MAX_MS		9000
 
@@ -1056,7 +1096,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
      		SETCMD(DTV_TRANSMISSION_MODE, feparams->transmission_mode);
      		SETCMD(DTV_GUARD_INTERVAL, feparams->guard_interval);
      		SETCMD(DTV_HIERARCHY, feparams->hierarchy_information);
-     		SETCMD(DTV_BANDWIDTH_HZ, feparams->bandwidth);
+     		SETCMD(DTV_BANDWIDTH_HZ, getFEBandwidth(feparams->bandwidth));
      		SETCMD(DTV_INVERSION, feparams->inversion);
      		
      		//
