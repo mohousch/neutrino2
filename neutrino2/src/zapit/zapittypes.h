@@ -276,7 +276,7 @@ typedef struct
 	fe_code_rate_t		code_rate_LP;
 	
 	uint32_t		delsys;
-	uint32_t		plp_id;
+	unsigned int		plp_id;
 } FrontendParameters;
 
 // complete transponder-parameters in a struct

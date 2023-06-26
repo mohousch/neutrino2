@@ -107,6 +107,7 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 			feparams.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(node, "tm", 0);
 			feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(node, "gi", 0);
 			feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(node, "hi", 0);
+			feparams.plp_id = (unsigned int) xmlGetNumericAttribute(node, "pli", 0);
 			feparams.delsys = (uint32_t) xmlGetNumericAttribute(node, "sys", 0);
 		}
 		// DVB-S

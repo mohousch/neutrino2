@@ -215,7 +215,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			
 #if HAVE_DVB_API_VERSION >= 5
 			if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
-				TP.feparams.plp_id = atoi(scanSettings->TP_plp_id);
+				TP.feparams.plp_id = (unsigned int) atoi(scanSettings->TP_plp_id);
 #endif
 
 			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq %d band %d HP %d LP %d const %d trans %d guard %d hierarchy %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.bandwidth, TP.feparams.code_rate_HP, TP.feparams.code_rate_LP, TP.feparams.modulation, TP.feparams.transmission_mode, TP.feparams.guard_interval, TP.feparams.hierarchy_information);
@@ -223,7 +223,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 #if HAVE_DVB_API_VERSION >= 5 
 		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A)
 #else
-		else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_A )
+		else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC )
 #endif
 		{
 			TP.feparams.modulation	= (fe_modulation_t) scanSettings->TP_mod;

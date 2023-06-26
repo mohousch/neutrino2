@@ -975,11 +975,6 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 				break;
 		}
 	}
-	
-	// getDelSys (for debug)
-	//char *f, *s, *m;
-	//getDelSys(fec_inner, modulation, f, s, m);
-	//dprintf(DEBUG_NORMAL, "CFrontend::setFrontend: fe(%d:%d) (feparams.delsys:0x%x) DEMOD: FEC %s system %s modulation %s\n", feadapter, fenumber, feparams->delsys, f, s, m);
 
 	//
 	memset(&Frontend, 0, sizeof(Frontend));
@@ -1018,7 +1013,18 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 	{
 		// common for DVB-S and DVB-S2
 		SETCMD(DTV_DELIVERY_SYSTEM, delsys);
-		SETCMD(DTV_FREQUENCY, feparams->frequency);
+		if (diseqcType == DISEQC_UNICABLE)
+		{
+			SETCMD(DTV_FREQUENCY, sendEN50494TuningCommand(feparams->frequency, currentToneMode == SEC_TONE_ON, currentVoltage == SEC_VOLTAGE_18, !!uni_lnb));
+		}
+		else if (diseqcType == DISEQC_UNICABLE2)
+		{
+			SETCMD(DTV_FREQUENCY, sendEN50607TuningCommand(feparams->frequency, currentToneMode == SEC_TONE_ON, currentVoltage == SEC_VOLTAGE_18, uni_lnb));
+		}
+		else
+		{
+			SETCMD(DTV_FREQUENCY, feparams->frequency);
+		}
 		SETCMD(DTV_MODULATION, modulation);
 		SETCMD(DTV_SYMBOL_RATE, feparams->symbol_rate);
 		SETCMD(DTV_INNER_FEC, fec );
@@ -1040,13 +1046,13 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 		SETCMD(DTV_INNER_FEC, fec_inner);
      		SETCMD(DTV_MODULATION, modulation);
 	}
-	else if (feparams->delsys == DVB_T || feparams->delsys == DVB_T2)
+	else if (feparams->delsys == DVB_T || feparams->delsys == DVB_T2 || feparams->delsys == DVB_DTMB)
 	{
-     		SETCMD(DTV_DELIVERY_SYSTEM, delsys);
+     		SETCMD(DTV_DELIVERY_SYSTEM, getFEDeliverySystem(feparams->delsys));
      		SETCMD(DTV_FREQUENCY, feparams->frequency);
      		SETCMD(DTV_CODE_RATE_LP, feparams->code_rate_LP);
-     		SETCMD(DTV_CODE_RATE_HP, fec_inner);
-     		SETCMD(DTV_MODULATION, modulation);
+     		SETCMD(DTV_CODE_RATE_HP, feparams->code_rate_HP);
+     		SETCMD(DTV_MODULATION, feparams->modulation);
      		SETCMD(DTV_TRANSMISSION_MODE, feparams->transmission_mode);
      		SETCMD(DTV_GUARD_INTERVAL, feparams->guard_interval);
      		SETCMD(DTV_HIERARCHY, feparams->hierarchy_information);
@@ -1066,16 +1072,6 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 	else
 	{
 		dprintf(DEBUG_INFO, "CFrontend::setFrontend: Unknow Frontend Type\n");
-	}
-
-	//
-	if (feparams->delsys == DVB_S || feparams->delsys == DVB_S2)
-	{
-		if (diseqcType == DISEQC_UNICABLE)
-			SETCMD(DTV_FREQUENCY, sendEN50494TuningCommand(feparams->frequency, currentToneMode == SEC_TONE_ON, currentVoltage == SEC_VOLTAGE_18, !!uni_lnb));
-
-		if (diseqcType == DISEQC_UNICABLE2)
-			SETCMD(DTV_FREQUENCY, sendEN50607TuningCommand(feparams->frequency, currentToneMode == SEC_TONE_ON, currentVoltage == SEC_VOLTAGE_18, uni_lnb));
 	}
 
 	//
@@ -1516,14 +1512,13 @@ int CFrontend::setParameters(TP_params * TP, bool nowait)
 	if (info.type == FE_OFDM) 
 #endif
 	{
-		// freq convert to hz cable freq are in cables.xml in khz
 		if (TP->feparams.frequency < 1000*1000)
 			TP->feparams.frequency = TP->feparams.frequency * 1000;
 			
 		// setSecVoltage
 		secSetVoltage(powered ? SEC_VOLTAGE_13 : SEC_VOLTAGE_OFF, 100);
 			
-		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d:%d) freq= %d band=%d HP=%d LP=%d const=%d trans=%d guard=%d hierarchy=%d inv= %d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.bandwidth, TP->feparams.code_rate_HP, TP->feparams.code_rate_LP, TP->feparams.modulation, TP->feparams.transmission_mode, TP->feparams.guard_interval, TP->feparams.hierarchy_information, TP->feparams.inversion);
+		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d:%d) freq= %d band=%d HP=%d LP=%d const=%d trans=%d guard=%d hierarchy=%d inv= %d plp_id=%d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.bandwidth, TP->feparams.code_rate_HP, TP->feparams.code_rate_LP, TP->feparams.modulation, TP->feparams.transmission_mode, TP->feparams.guard_interval, TP->feparams.hierarchy_information, TP->feparams.inversion, TP->feparams.plp_id);
 	}
 	
 	do {

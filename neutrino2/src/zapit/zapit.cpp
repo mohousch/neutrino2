@@ -596,7 +596,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	
 	if(free_frontend)
 	{
-		printf("%s Selected fe: (%d,%d) (delsys:0x%x)\n", __FUNCTION__, free_frontend->feadapter, free_frontend->fenumber,free_frontend->forcedDelSys);
+		printf("%s Selected fe: (%d:%d) (delsys:0x%x)\n", __FUNCTION__, free_frontend->feadapter, free_frontend->fenumber,free_frontend->deliverySystemMask);
 		
 		if(free_frontend->standby)
 			initTuner(free_frontend);
@@ -1335,7 +1335,7 @@ int CZapit::zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate)
 	bool failed = false;
 	CZapitChannel * newchannel;
 
-	dprintf(DEBUG_NORMAL, "CZapit::zapit: channel id %llx nvod %d\n", channel_id, in_nvod);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapit: channel id %llx nvod %d\n", channel_id, in_nvod);
 
 	// find channel to zap
 	if( (newchannel = findChannelToZap(channel_id, in_nvod)) == NULL ) 
@@ -1389,7 +1389,7 @@ int CZapit::zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate)
 	
 		live_fe = fe;
 	
-		dprintf(DEBUG_NORMAL, "CZapit::zapit: zap to %s(%llx) fe(%d,%d)\n", live_channel->getName().c_str(), live_channel_id, live_fe->feadapter, live_fe->fenumber );
+		dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapit: zap to %s(%llx) fe(%d:%d)\n", live_channel->getName().c_str(), live_channel_id, live_fe->feadapter, live_fe->fenumber );
 
 		// tune live frontend
 		if(!tuneToChannel(live_fe, live_channel, transponder_change))
@@ -2642,7 +2642,7 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 {
 	unsigned int result = 0;
 
-	dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: chid %llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapToChannelID: chid %llx\n", channel_id);
 
 	if (zapit(channel_id, isSubService) < 0) 
 	{
