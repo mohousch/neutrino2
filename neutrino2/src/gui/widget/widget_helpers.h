@@ -617,8 +617,8 @@ class CItems2DetailsLine : public CComponent
 		virtual ~CItems2DetailsLine();
 		
 		//
-		void paint(/*int x, int y, int width, int height, int info_height = 0, int iheight = 0, int iy = 0*/);
-		void /*clear*/hide(/*int x, int y, int width, int height, int info_height*/);
+		void paint();
+		void hide();
 		
 		//
 		virtual void setMode(int m){mode = m;};

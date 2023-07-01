@@ -33,5 +33,3 @@ AM_CFLAGS += \
 # silence ffmpeg deprecation warnings
 AM_CPPFLAGS += -Dattribute_deprecated=''
 
-LIBEPLAYER3_LIBS = libeplayer3.a -lpthread -lavformat -lavcodec -lavutil -lz -lm -lpng -lass
-
