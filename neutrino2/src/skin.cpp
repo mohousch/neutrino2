@@ -2798,13 +2798,13 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 		frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
 			
 		// setup colors / corners / position
-		std::string skinConfigFile = CONFIGDIR "/skins/";
-		skinConfigFile += skinName.c_str();
-		skinConfigFile += "/";
-		skinConfigFile += skinName.c_str();
-		skinConfigFile += ".config";
+		//std::string skinConfigFile = CONFIGDIR "/skins/";
+		//skinConfigFile += skinName.c_str();
+		//skinConfigFile += "/";
+		//skinConfigFile += skinName.c_str();
+		//skinConfigFile += ".config";
 			
-		readSkinConfig(skinConfigFile.c_str());
+		//readSkinConfig(skinConfigFile.c_str());
 	}
 	else //fallback to default (neutrino intern)
 	{
