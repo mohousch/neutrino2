@@ -517,13 +517,11 @@ struct SNeutrinoSettings
 };
 
 //
-//extern const int default_timing[TIMING_SETTING_COUNT];
-//extern const char* const timing_setting_name[TIMING_SETTING_COUNT];
-#define DEFAULT_TIMING_MENU			0
+#define DEFAULT_TIMING_MENU			600
 #define DEFAULT_TIMING_CHANNELLIST		60
 #define DEFAULT_TIMING_EPG			240
 #define DEFAULT_TIMING_INFOBAR			6
-#define DEFAULT_TIMING_FILEBROWSER		60
+#define DEFAULT_TIMING_FILEBROWSER		300
 #define DEFAULT_TIMING_NUMERICZAP		3	
 
 // lcdd

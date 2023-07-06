@@ -1303,6 +1303,12 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 				
 			if (posy < widget->getWindowsPos().iY)
 				posy = widget->getWindowsPos().iY;
+				
+			if (width > widget->getWindowsPos().iWidth)
+				width = widget->getWindowsPos().iWidth;
+				
+			if (height > widget->getWindowsPos().iHeight)
+				height = widget->getWindowsPos().iHeight;
 		}
 					
 		listBox = new ClistBox(posx, posy, width, height);
@@ -1590,6 +1596,12 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 				
 			if (posy < widget->getWindowsPos().iY)
 				posy = widget->getWindowsPos().iY;
+				
+			if (width > widget->getWindowsPos().iWidth)
+				width = widget->getWindowsPos().iWidth;
+				
+			if (height > widget->getWindowsPos().iHeight)
+				height = widget->getWindowsPos().iHeight;
 		}
 					
 		window = new CWindow(posx, posy, width, height);
@@ -1702,6 +1714,12 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 				
 			if (posy < widget->getWindowsPos().iY)
 				posy = widget->getWindowsPos().iY;
+				
+			if (width > widget->getWindowsPos().iWidth)
+				width = widget->getWindowsPos().iWidth;
+				
+			if (height > widget->getWindowsPos().iHeight)
+				height = widget->getWindowsPos().iHeight;
 		}
 
 		head = new CHeaders(posx, posy, width, height);
@@ -1811,6 +1829,12 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 			// FIXME:	
 			if (posy < widget->getWindowsPos().iY)
 				posy = widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - height;
+				
+			if (width > widget->getWindowsPos().iWidth)
+				width = widget->getWindowsPos().iWidth;
+				
+			if (height > widget->getWindowsPos().iHeight)
+				height = widget->getWindowsPos().iHeight;
 		}
 						
 		foot = new CFooters(posx, posy, width, height);
@@ -1940,6 +1964,12 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 				
 			if (posy < widget->getWindowsPos().iY)
 				posy = widget->getWindowsPos().iY;
+				
+			if (width > widget->getWindowsPos().iWidth)
+				width = widget->getWindowsPos().iWidth;
+				
+			if (height > widget->getWindowsPos().iHeight)
+				height = widget->getWindowsPos().iHeight;
 		}
 						
 		textBox = new CTextBox(posx, posy, width, height);
@@ -2045,6 +2075,12 @@ void CNeutrinoApp::parseCCLabel(xmlNodePtr node, CWidget* widget, CWindow* windo
 				
 			if (cc_y < widget->getWindowsPos().iY)
 				cc_y = widget->getWindowsPos().iY;
+				
+			if (cc_dx > widget->getWindowsPos().iWidth)
+				cc_dx = widget->getWindowsPos().iWidth;
+				
+			if (cc_dy > widget->getWindowsPos().iHeight)
+				cc_dy = widget->getWindowsPos().iHeight;
 		}
 							
 		label = new CCLabel(cc_x, cc_y, cc_dx, cc_dy);
@@ -2109,6 +2145,12 @@ void CNeutrinoApp::parseCCImage(xmlNodePtr node, CWidget* widget, CWindow* windo
 				
 			if (cc_y < widget->getWindowsPos().iY)
 				cc_y = widget->getWindowsPos().iY;
+				
+			if (cc_dx > widget->getWindowsPos().iWidth)
+				cc_dx = widget->getWindowsPos().iWidth;
+				
+			if (cc_dy > widget->getWindowsPos().iHeight)
+				cc_dy = widget->getWindowsPos().iHeight;
 		}
 							
 		pic = new CCImage(cc_x, cc_y, cc_dx, cc_dy);
@@ -2189,6 +2231,12 @@ void CNeutrinoApp::parseCCTime(xmlNodePtr node, CWidget* widget, CWindow* window
 				
 			if (cc_y < widget->getWindowsPos().iY)
 				cc_y = widget->getWindowsPos().iY;
+				
+			if (cc_dx > widget->getWindowsPos().iWidth)
+				cc_dx = widget->getWindowsPos().iWidth;
+				
+			if (cc_dy > widget->getWindowsPos().iHeight)
+				cc_dy = widget->getWindowsPos().iHeight;
 		}
 							
 		time = new CCTime(cc_x, cc_y, cc_dx, cc_dy);
@@ -2249,6 +2297,12 @@ void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget, CWindow* win
 				
 			if (cc_y < widget->getWindowsPos().iY)
 				cc_y = widget->getWindowsPos().iY;
+				
+			if (cc_dx > widget->getWindowsPos().iWidth)
+				cc_dx = widget->getWindowsPos().iWidth;
+				
+			if (cc_dy > widget->getWindowsPos().iHeight)
+				cc_dy = widget->getWindowsPos().iHeight;
 		}
 				
 		cButton = new CCButtons(cc_x, cc_y, cc_dx, cc_dy);
@@ -2330,6 +2384,12 @@ void CNeutrinoApp::parseCCHline(xmlNodePtr node, CWidget* widget, CWindow* windo
 				
 			if (cc_y < widget->getWindowsPos().iY)
 				cc_y = widget->getWindowsPos().iY;
+				
+			if (cc_dx > widget->getWindowsPos().iWidth)
+				cc_dx = widget->getWindowsPos().iWidth;
+				
+			if (cc_dy > widget->getWindowsPos().iHeight)
+				cc_dy = widget->getWindowsPos().iHeight;
 		}
 				
 		hline = new CCHline(cc_x, cc_y, cc_dx, cc_dy);
@@ -2385,6 +2445,12 @@ void CNeutrinoApp::parseCCVline(xmlNodePtr node, CWidget* widget, CWindow* windo
 				
 			if (cc_y < widget->getWindowsPos().iY)
 				cc_y = widget->getWindowsPos().iY;
+				
+			if (cc_dx > widget->getWindowsPos().iWidth)
+				cc_dx = widget->getWindowsPos().iWidth;
+				
+			if (cc_dy > widget->getWindowsPos().iHeight)
+				cc_dy = widget->getWindowsPos().iHeight;
 		}
 		
 		vline = new CCVline(cc_x, cc_y, cc_dx, cc_dy);
@@ -2436,6 +2502,12 @@ void CNeutrinoApp::parseCCPig(xmlNodePtr node, CWidget* widget, CWindow* window)
 				
 			if (cc_y < widget->getWindowsPos().iY)
 				cc_y = widget->getWindowsPos().iY;
+				
+			if (cc_dx > widget->getWindowsPos().iWidth)
+				cc_dx = widget->getWindowsPos().iWidth;
+				
+			if (cc_dy > widget->getWindowsPos().iHeight)
+				cc_dy = widget->getWindowsPos().iHeight;
 		}
 				
 		pig = new CCPig(cc_x, cc_y, cc_dx, cc_dy);
@@ -2500,7 +2572,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 			
 	unsigned int paintframe = 0;
 	unsigned int savescreen = 0;
-	unsigned int timeout = 0;
+	unsigned int timeout = 300;
 	char *position = NULL;
 	
 	//
@@ -2562,7 +2634,10 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 					
 				paintframe = xmlGetSignedNumericAttribute(search, "paintframe", 0);
 				savescreen = xmlGetSignedNumericAttribute(search, "savescreen", 0);
-				timeout = xmlGetSignedNumericAttribute(search, "timeout", 0);
+				if (xmlGetAttribute(search, (char *)"timeout"))
+				{
+					timeout = xmlGetSignedNumericAttribute(search, "timeout", 0);
+				}
 				position = xmlGetAttribute(search, (char *)"position");
 					
 				// parse color
