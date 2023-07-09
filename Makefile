@@ -212,7 +212,7 @@ N2_OPTS += --enable-overlay
 endif
 
 # python
-PYTHON ?=
+PYTHON ?= python
 
 ifeq ($(PYTHON), python)
 N2_OPTS += --enable-python
@@ -226,21 +226,21 @@ N2_OPTS += --enable-lua
 endif
 
 # CICAM
-CICAM ?=
+CICAM ?= cicam
 
 ifeq ($(CICAM), cicam)
 N2_OPTS += --enable-ci
 endif
 
 # SCART
-SCART ?=
+SCART ?= scart
 
 ifeq ($(SCART), scart)
 N2_OPTS += --enable-scart
 endif
 
 # LCD 
-LCD ?=
+LCD ?= lcd
 
 ifeq ($(LCD), lcd)
 N2_OPTS += --enable-lcd
@@ -269,7 +269,7 @@ N2_OPTS += --enable-fake_tuner
 endif
 
 # test plugins
-TESTING ?=
+TESTING ?= testing
 
 ifeq ($(TESTING), testing)
 N2_OPTS += --enable-testing
@@ -373,3 +373,4 @@ PHONY = neutrino2-checkout plugins-checkout
 .PHONY: $(PHONY)
 
 endif
+
