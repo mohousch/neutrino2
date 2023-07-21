@@ -170,7 +170,7 @@ function cat_menu(_id)
 	cm:enablePaintItemInfo(70)
 	cm:setItemsPerPage(6, 2)
 	cm:enablePaintDate()
-	cm:clearAll()
+	cm:clear()
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
@@ -273,7 +273,7 @@ function season_menu(_id)
 		local jd = json:decode(c_data)
 		if jd then
 			sm = neutrino2.CMenuWidget(jd.name, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
-			sm:clearAll()
+			sm:clear()
 			
 			episodelist = {}
 			local count = 1
@@ -337,7 +337,7 @@ function episode_menu(s)
 	em:enablePaintItemInfo(70)
 	em:setItemsPerPage(6, 2)
 	em:enablePaintDate()
-	em:clearAll()
+	em:clear()
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
@@ -465,7 +465,7 @@ function categories_menu()
 	m:enableShrinkMenu()
 	m:enablePaintDate()
 	m:setTitleHAlign(neutrino2.CC_ALIGN_CENTER)
-	m:clearAll()
+	m:clear()
 	
 	local red = neutrino2.button_label_struct()
 	red.button = neutrino2.NEUTRINO_ICON_BUTTON_RED
