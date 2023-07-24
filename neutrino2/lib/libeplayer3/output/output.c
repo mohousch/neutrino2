@@ -31,7 +31,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define OUTPUT_DEBUG
+//#define OUTPUT_DEBUG
 
 #ifdef OUTPUT_DEBUG
 

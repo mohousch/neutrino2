@@ -42,7 +42,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define SUBTITLE_DEBUG
+//#define SUBTITLE_DEBUG
 
 #ifdef SUBTITLE_DEBUG
 
