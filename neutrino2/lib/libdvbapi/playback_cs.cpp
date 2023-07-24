@@ -537,7 +537,7 @@ bool cPlayback::Open()
 	out.screen_height = CFrameBuffer::getInstance()->getScreenHeight();
 	out.framebufferFD = CFrameBuffer::getInstance()->getFileHandle();
 	out.destination   = (unsigned char *)CFrameBuffer::getInstance()->getFrameBufferPointer();
-	out.destStride    = CFrameBuffer::getInstance()->getStride();;
+	out.destStride    = CFrameBuffer::getInstance()->getStride();
 	out.shareFramebuffer = 1;
     
 	player->output->subtitle->Command(player, (OutputCmd_t)OUTPUT_SET_SUBTITLE_OUTPUT, (void*) &out);

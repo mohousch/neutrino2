@@ -101,7 +101,7 @@ void CNeutrinoApp::mainMenu(void)
 		// foot
 		nMenu->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
 			
 		nMenu->setFootButtons(&btn);
 		
@@ -314,7 +314,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 		//
 		menu->enablePaintFoot();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
 			
 		menu->setFootButtons(&btn);
 		
