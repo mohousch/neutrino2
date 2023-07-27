@@ -503,15 +503,15 @@
 	</WIDGET>
 	
 	<WIDGET name="bqeditchselect" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<LISTBOX posx="100" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
+		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="bqeditch" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<LISTBOX posx="100" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1"/>
 	</WIDGET>
 	
 	<WIDGET name="bqeditbq" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<LISTBOX posx="100" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
+		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="eventlist" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
@@ -526,7 +526,7 @@
 	</WIDGET>
 	
 	<WIDGET name="filebrowser" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<LISTBOX posx="100" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
+		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="audioselect" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
@@ -578,11 +578,11 @@
 		<FOOT posx="10" posy="550" width="1160" height="60" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="hintbox" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="hintbox" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<HEAD posx="60" posy="60" width="1160" height="60" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="messagebox" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="messagebox" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<HEAD posx="60" posy="60" width="1160" height="60" line="1"/>
 	</WIDGET>
 	
