@@ -78,9 +78,14 @@ int CEPGMenuHandler::doMenu()
 	}
 	else
 	{
-		widget = new CWidget();
-		redMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "epgtimer";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		redMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		
 		redMenu->setWidgetMode(MODE_MENU);
 		redMenu->setWidgetType(TYPE_CLASSIC);
 		redMenu->enableShrinkMenu();
@@ -96,10 +101,6 @@ int CEPGMenuHandler::doMenu()
 		redMenu->setFootButtons(&btn);
 		
 		//
-		widget->setPosition(redMenu->getWindowsPos().iX, redMenu->getWindowsPos().iY, redMenu->getWindowsPos().iWidth, redMenu->getWindowsPos().iHeight);
-		widget->name = "epgtimer";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		
 		widget->addWidgetItem(redMenu);
 	}
 		

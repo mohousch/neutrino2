@@ -659,13 +659,17 @@ void EventList::paint(t_channel_id channel_id)
 	}
 	else
 	{
+		//
 		evlWidget = new CWidget(&cFrameBox);
+		evlWidget->name = "eventlist";
+		
+		//
 		listBox = new ClistBox(&cFrameBox);
 		
 		listBox->enablePaintHead();
 		listBox->enablePaintDate();
 		
-		evlWidget->name = "eventlist";
+		//
 		evlWidget->addWidgetItem(listBox);
 	}
 

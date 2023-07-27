@@ -335,7 +335,14 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		}
 		else
 		{
-			menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			//
+			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			widget->name = "optionchooser";
+			widget->setMenuPosition(MENU_POSITION_CENTER);
+			widget->enableSaveScreen();
+			
+			//
+			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 			menu->setWidgetMode(MODE_SETUP);
 			menu->enableShrinkMenu();
@@ -349,10 +356,6 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			menu->setFootButtons(&btn);
 			
 			//
-			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			widget->name = "optionchooser";
-			widget->setMenuPosition(MENU_POSITION_CENTER);
-			widget->enableSaveScreen();
 			widget->addWidgetItem(menu);
 		}
 
@@ -742,7 +745,14 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		}
 		else
 		{
-			menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			//
+			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			widget->name = "optionstringchooser";
+			widget->setMenuPosition(MENU_POSITION_CENTER);
+			widget->enableSaveScreen();
+			
+			//
+			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 			menu->setWidgetMode(MODE_SETUP);
 			menu->enableShrinkMenu();
@@ -757,10 +767,6 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			menu->setFootButtons(&btn);
 			
 			//
-			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			widget->name = "optionstringchooser";
-			widget->setMenuPosition(MENU_POSITION_CENTER);
-			widget->enableSaveScreen();
 			widget->addWidgetItem(menu);
 		}
 		
@@ -1936,6 +1942,9 @@ void ClistBox::initFrames()
 			{
 				itemBox.iHeight = std::min(itemBox.iHeight, hheight + heightFirstPage + fheight + cFrameFootInfoHeight);
 			}
+			
+			//FIXME:
+			itemBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - itemBox.iHeight) >> 1 );
 		}
 		
 		// sanity check after recalculating height
@@ -1949,26 +1958,6 @@ void ClistBox::initFrames()
 		//
 		full_height = itemBox.iHeight;
 		full_width = itemBox.iWidth;
-		
-		// menu position
-		if (parent && parent->getMenuPosition())
-		{
-			if(parent->getMenuPosition() == MENU_POSITION_CENTER)
-			{
-				itemBox.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - full_width ) >> 1 );
-				itemBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
-			}
-			else if(parent->getMenuPosition() == MENU_POSITION_LEFT)
-			{
-				itemBox.iX = frameBuffer->getScreenX();
-				itemBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
-			}
-			else if(parent->getMenuPosition() == MENU_POSITION_RIGHT)
-			{
-				itemBox.iX = frameBuffer->getScreenX() + frameBuffer->getScreenWidth() - full_width;
-				itemBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
-			}
-		}
 	}
 }
 

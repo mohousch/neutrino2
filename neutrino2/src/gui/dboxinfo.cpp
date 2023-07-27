@@ -159,7 +159,7 @@ void CDBoxInfoWidget::showInfo()
 		head->enablePaintDate();
 		head->setFormat("%d.%m.%Y %H:%M:%S");
 		
-		dboxInfoWidget->name = "boxinfo";
+		//
 		dboxInfoWidget->addWidgetItem(head);
 
 	}

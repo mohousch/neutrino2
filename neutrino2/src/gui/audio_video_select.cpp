@@ -182,8 +182,14 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 		AVPIDSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
-	{			
-		AVPIDSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	{
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "avselect";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//			
+		AVPIDSelector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		AVPIDSelector->setWidgetMode(MODE_SETUP);
 		AVPIDSelector->enableShrinkMenu();
@@ -198,9 +204,6 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 		AVPIDSelector->setFootButtons(&btn);
 						
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "avselect";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(AVPIDSelector);
 	}
 	

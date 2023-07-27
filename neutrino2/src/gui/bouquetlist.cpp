@@ -290,7 +290,13 @@ int CBouquetList::doMenu()
 	}
 	else
 	{
-		menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "bqedit";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		menu->setWidgetMode(MODE_MENU);
 		menu->enableShrinkMenu();
@@ -305,8 +311,6 @@ int CBouquetList::doMenu()
 		menu->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(menu);
 	}
 	

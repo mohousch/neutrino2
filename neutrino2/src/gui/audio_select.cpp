@@ -117,8 +117,14 @@ void CAudioSelectMenuHandler::doMenu()
 		AudioSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
-	{			
-		AudioSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	{
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "audioselect";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//			
+		AudioSelector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		AudioSelector->setWidgetMode(MODE_SETUP);
 		AudioSelector->enableShrinkMenu();
@@ -133,9 +139,6 @@ void CAudioSelectMenuHandler::doMenu()
 		AudioSelector->setFootButtons(&btn);
 						
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "audioselect";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(AudioSelector);
 	}
 	

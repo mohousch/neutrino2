@@ -95,7 +95,6 @@ void CPluginList::showMenu()
 	dprintf(DEBUG_NORMAL, "CPluginList::showMenu\n");
 	
 	pWidget = CNeutrinoApp::getInstance()->getWidget("plugins");
-	//widget = getWidget(g_settings.preferred_skin.c_str(), "plugins");
 
 	//
 	if (pWidget)
@@ -108,11 +107,10 @@ void CPluginList::showMenu()
 		pWidget = new CWidget(0, 0, CFrameBuffer::getInstance()->getScreenWidth() / 20 * 17, CFrameBuffer::getInstance()->getScreenHeight() / 20 * 18);
 		
 		pWidget->name = "plugins";
-		
 		pWidget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		//
-		plist = new ClistBox(0, 0, CFrameBuffer::getInstance()->getScreenWidth() / 20 * 17, CFrameBuffer::getInstance()->getScreenHeight() / 20 * 18);
+		plist = new ClistBox(pWidget->getWindowsPos().iX, pWidget->getWindowsPos().iY, pWidget->getWindowsPos().iWidth, pWidget->getWindowsPos().iHeight);
 		
 		plist->setWidgetType(TYPE_CLASSIC);
 		plist->setWidgetMode(MODE_MENU);

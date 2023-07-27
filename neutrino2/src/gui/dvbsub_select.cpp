@@ -79,8 +79,14 @@ int CDVBSubSelectMenuHandler::doMenu()
 		DVBSubSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
-	{			
-		DVBSubSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	{
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "subselect";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//			
+		DVBSubSelector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		DVBSubSelector->setWidgetMode(MODE_SETUP);
 		DVBSubSelector->enableShrinkMenu();
@@ -95,9 +101,6 @@ int CDVBSubSelectMenuHandler::doMenu()
 		DVBSubSelector->setFootButtons(&btn);
 						
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "subselect";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(DVBSubSelector);
 	}
 	

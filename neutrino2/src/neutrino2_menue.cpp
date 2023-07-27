@@ -86,8 +86,13 @@ void CNeutrinoApp::mainMenu(void)
 	}
 	else
 	{
-		widget = new CWidget();
-		nMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "mainmenu";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		nMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		nMenu->setWidgetMode(MODE_MENU);
 		nMenu->setWidgetType(TYPE_CLASSIC);
@@ -105,10 +110,7 @@ void CNeutrinoApp::mainMenu(void)
 			
 		nMenu->setFootButtons(&btn);
 		
-		widget->setPosition(nMenu->getWindowsPos().iX, nMenu->getWindowsPos().iY, nMenu->getWindowsPos().iWidth, nMenu->getWindowsPos().iHeight);
-		widget->name = "mainmenu";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		
+		//
 		widget->addWidgetItem(nMenu);
 	}
 			  
@@ -291,7 +293,6 @@ bool CNeutrinoApp::showUserMenu(int button)
 	ClistBox* menu = NULL;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("features");
-	//widget = getWidget(g_settings.preferred_skin.c_str(), "features");
 	
 	if (widget)
 	{
@@ -299,8 +300,13 @@ bool CNeutrinoApp::showUserMenu(int button)
 	}
 	else
 	{
-		widget = new CWidget();
-		menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "features";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		menu->setWidgetMode(MODE_MENU);
 		menu->setWidgetType(TYPE_CLASSIC);
@@ -319,10 +325,6 @@ bool CNeutrinoApp::showUserMenu(int button)
 		menu->setFootButtons(&btn);
 		
 		//
-		widget->setPosition(menu->getWindowsPos().iX, menu->getWindowsPos().iY, menu->getWindowsPos().iWidth, menu->getWindowsPos().iHeight);
-		widget->name = "features";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		
 		widget->addWidgetItem(menu);
 	}	
 

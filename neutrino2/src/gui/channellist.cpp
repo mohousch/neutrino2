@@ -458,7 +458,13 @@ int CChannelList::doChannelMenu(void)
 	}
 	else
 	{
-		menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "channellistedit";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		menu->setWidgetMode(MODE_MENU);
 		menu->enableShrinkMenu();
@@ -473,8 +479,6 @@ int CChannelList::doChannelMenu(void)
 		menu->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(menu);
 	}
 	
@@ -1778,7 +1782,6 @@ void CChannelList::paint()
 	winBottomBox.iY = window->getWindowsPos().iY + window->getWindowsPos().iHeight/2 + 2;
 	winBottomBox.iWidth = window->getWindowsPos().iWidth - 4;
 	winBottomBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
-	////
 
 	if (head) 
 		head->clear();
@@ -1789,6 +1792,7 @@ void CChannelList::paint()
 	if (foot) 
 		foot->clear();
 	
+	//
 	CChannelEvent * p_event = NULL;
 	time_t jetzt = time(NULL);
 	unsigned int runningPercent = 0;

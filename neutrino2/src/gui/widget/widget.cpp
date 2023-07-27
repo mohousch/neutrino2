@@ -159,18 +159,8 @@ void CWidget::initFrames()
 	if(mainFrameBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
 		mainFrameBox.iHeight = frameBuffer->getScreenHeight(true);
 
-	// sanity check
 	if(mainFrameBox.iWidth > (int)frameBuffer->getScreenWidth(true))
 		mainFrameBox.iWidth = frameBuffer->getScreenWidth(true);
-	
-	if (menu_position)
-	{	
-		if(mainFrameBox.iHeight > ((int)frameBuffer->getScreenHeight()))
-			mainFrameBox.iHeight = frameBuffer->getScreenHeight();
-
-		if(mainFrameBox.iWidth > (int)frameBuffer->getScreenWidth())
-			mainFrameBox.iWidth = frameBuffer->getScreenWidth();
-	}
 		
 	// menu position (x/y)
 	if(menu_position == MENU_POSITION_CENTER)

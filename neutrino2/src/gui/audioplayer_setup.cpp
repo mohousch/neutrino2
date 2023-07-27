@@ -100,7 +100,13 @@ void CAudioPlayerSettings::showMenu()
 	}
 	else
 	{
-		audioPlayerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "audioplayersetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		audioPlayerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		audioPlayerSettings->setWidgetMode(MODE_SETUP);
 		audioPlayerSettings->enableShrinkMenu();
@@ -115,9 +121,6 @@ void CAudioPlayerSettings::showMenu()
 		audioPlayerSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "audioplayersetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(audioPlayerSettings);
 	}
 	

@@ -646,6 +646,11 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	}
 	else
 	{
+		//
+		widget = new CWidget(&cFrameBox);
+		widget->name = "epgview";
+		
+		//
 		textBox = new CTextBox(&cTextBox);
 		headers = new CHeaders(&cHeadBox);
 		footers = new CFooters(&cFootBox);
@@ -655,11 +660,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		headers->enablePaintDate();
 		headers->setFormat("%d.%m.%Y %H:%M:%S");
 		
-		// foot
-		
-		widget = new CWidget(&cFrameBox);
-		widget->name = "epgview";
-		
+		//
 		widget->addWidgetItem(textBox);
 		widget->addWidgetItem(headers);
 		widget->addWidgetItem(footers);

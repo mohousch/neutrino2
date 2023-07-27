@@ -163,7 +163,7 @@ class CWidget : public CMenuTarget
 		void setBorderMode(int sm){borderMode = sm;};
 		//
 		void enableSaveScreen();
-		void setMenuPosition(int p){menu_position = p;};
+		void setMenuPosition(int p){menu_position = p; initFrames();};
 		
 		// lua compatibility
 		std::string getActionKey(){return actionKey;};

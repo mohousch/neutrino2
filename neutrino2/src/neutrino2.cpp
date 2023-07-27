@@ -5254,9 +5254,12 @@ void CNeutrinoApp::selectNVOD()
 		}
 		else
                 {
-                	widget = new CWidget();
+                	//
+                	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			widget->name = "nvodselect";
+			widget->setMenuPosition(MENU_POSITION_CENTER);
                 	
-			NVODSelector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			NVODSelector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 			NVODSelector->setWidgetMode(MODE_SETUP);
 			NVODSelector->enableShrinkMenu();
 							
@@ -5270,9 +5273,6 @@ void CNeutrinoApp::selectNVOD()
 			NVODSelector->setFootButtons(&btn);
 			
 			//
-			widget->setPosition(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			widget->name = "nvodselect";
-			widget->setMenuPosition(MENU_POSITION_CENTER);
 			widget->addWidgetItem(NVODSelector);
 		}
 		
