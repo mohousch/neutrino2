@@ -72,11 +72,6 @@ CWindow::~CWindow()
 		delete[] background;
 		background = NULL;
 	}
-	
-	if (hasCCItem())
-	{
-		CCItems.clear();
-	}
 }
 
 void CWindow::init()
@@ -209,12 +204,6 @@ void CWindow::paint()
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + 2, itemBox.iWidth, itemBox.iHeight - 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 	}
-		
-	//CCItems
-	if (hasCCItem())
-	{
-		paintCCItems();
-	}
 }
 
 void CWindow::hide()
@@ -226,66 +215,6 @@ void CWindow::hide()
 	else
 		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 		
-	// ??? CCPIG
-	if (hasCCItem())
-	{
-		for (unsigned int i = 0; i < (unsigned int)CCItems.size(); i++) 
-		{
-			if ( (CCItems[i]->getCCType() == CC_PIG) || (CCItems[i]->getCCType() == CC_SPINNER) )
-			{
-				CCItems[i]->hide();
-				break;
-			}
-		}
-	}
-		
 	CFrameBuffer::getInstance()->blit();
 }
-
-//
-void CWindow::addCCItem(CComponent* CCItem)
-{
-	CCItems.push_back(CCItem);
-}
-
-//
-void CWindow::paintCCItems()
-{
-	dprintf(DEBUG_INFO, "CWindow::paintCCItems:\n");
-
-	for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
-	{
-		CCItems[count]->paint();
-	}
-}
-
-//
-void CWindow::refresh(void)
-{
-	for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
-	{
-		if (CCItems[count]->update())
-		{
-			CCItems[count]->refresh();
-		}
-	}
-}
-
-//
-bool CWindow::update() const
-{
-	bool ret = false;
-	
-	for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
-	{
-		if (CCItems[count]->update())
-		{
-			ret = true;
-		}
-	}
-	
-	return ret;
-}
-
-
 

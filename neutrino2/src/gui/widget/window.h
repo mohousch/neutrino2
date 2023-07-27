@@ -56,9 +56,6 @@ class CWindow : public CWidgetItem
 		//
 		int borderMode;
 		bool paintFrame;
-		
-		//
-		std::vector<CComponent*> CCItems;
 
 	public:
 		CWindow(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
@@ -84,17 +81,7 @@ class CWindow : public CWidgetItem
 		//
 		void paint(void);
 		void hide(void);
-		void refresh(void);
-		bool update() const;
-		
-		//
-		void addCCItem(CComponent* CCItem);
-		bool hasCCItem(){return !CCItems.empty();};
-		int getCCItemsCount(){return CCItems.size();};
-		void clearCCItems(){CCItems.clear();};
-		void paintCCItems();
 };
 
 #endif
-
 

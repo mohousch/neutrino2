@@ -6,9 +6,6 @@
 	
 	<WIDGET name="mainmenu" posx="0" posy="0" width="1280" height="720">
 		<WINDOW posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		
-		<!--<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" paintiteminfo="1" iteminfomode="3" iteminfoframe="0" iteminfocolor="COL_MENUCONTENTSELECTED_PLUS_0" iteminfoposx="300" iteminfoposy="50" iteminfowidth="300" iteminfoheight="300" itemlines="1"/>-->
-		
 		<LISTBOX posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
 		<WINDOW posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<IMAGE name="image" id="1" posx="300" posy="20" width="300" height="300" image="picon_default.png"/>

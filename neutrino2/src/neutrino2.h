@@ -169,13 +169,13 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		void parseCFoot(xmlNodePtr node, CWidget* widget);
 		void parseCTextBox(xmlNodePtr node, CWidget* widget);
 		void parseCFrameBox(xmlNodePtr node, CWidget* widget){};
-		void parseCCLabel(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCImage(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCTime(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCButtons(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCHline(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCVline(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
-		void parseCCPig(xmlNodePtr node, CWidget* widget, CWindow* window = NULL);
+		void parseCCLabel(xmlNodePtr node, CWidget* widget);
+		void parseCCImage(xmlNodePtr node, CWidget* widget);
+		void parseCCTime(xmlNodePtr node, CWidget* widget);
+		void parseCCButtons(xmlNodePtr node, CWidget* widget);
+		void parseCCHline(xmlNodePtr node, CWidget* widget);
+		void parseCCVline(xmlNodePtr node, CWidget* widget);
+		void parseCCPig(xmlNodePtr node, CWidget* widget);
 		void parseKey(xmlNodePtr node, CWidget* widget);
 		//
 		CMenuTarget* convertTarget(const std::string& name);

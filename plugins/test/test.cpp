@@ -1640,7 +1640,7 @@ void CTestMenu::testClistBoxWidget()
 void CTestMenu::testMultiWidget()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testMultiWidget\n");
-
+#if 0
 	CBox mainBox(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
 
 	CBox headBox;
@@ -1817,6 +1817,7 @@ void CTestMenu::testMultiWidget()
 	
 	delete windowWidget;
 	windowWidget = NULL;
+#endif
 }
 
 // CIcon
@@ -2227,7 +2228,7 @@ void CTestMenu::testCWindowCustomColor()
 void CTestMenu::testCWindowCComponent()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCWindowCComponent\n");
-
+#if 0
 	// CBox
 	CBox Box;
 	Box.iX = g_settings.screen_StartX + 50;
@@ -2397,6 +2398,7 @@ void CTestMenu::testCWindowCComponent()
 		delete windowWidget;
 		windowWidget = NULL;
 	}
+#endif
 }
 
 // CTextBox
