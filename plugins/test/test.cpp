@@ -4176,32 +4176,36 @@ void CTestMenu::testCInfoBox()
 	loadMoviePlaylist();
 	
 	std::string buffer;
-	buffer = m_vMovieInfo[0].epgInfo1;
-	buffer += "\n";
-	buffer += m_vMovieInfo[0].epgInfo2;
+	
+	if (!m_vMovieInfo.empty())
+	{
+		buffer = m_vMovieInfo[0].epgInfo1;
+		buffer += "\n";
+		buffer += m_vMovieInfo[0].epgInfo2;
+	}
 	
 	// scale pic
 	int p_w = 0;
 	int p_h = 0;
 
-	scaleImage(m_vMovieInfo[0].tfile, &p_w, &p_h);
+	if (!m_vMovieInfo.empty())
+		scaleImage(m_vMovieInfo[0].tfile, &p_w, &p_h);
 	
 	CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
 	
 	CInfoBox * infoBox = new CInfoBox(&position, "CInfoBox", NEUTRINO_ICON_INFO);	
 	
 	infoBox->setBorderMode(BORDER_ALL);
-	infoBox->setBackgroundColor(/*make16color(0xBEBEBE)*/COL_SILVER_PLUS_0);
-	infoBox->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h, PIC_RIGHT, true, true);
-	infoBox->setTextColor(COL_LIME);
-	
-	infoBox->setHeadColor(COL_NOBEL_PLUS_0);
-	infoBox->setHeadCorner(NO_RADIUS, CORNER_NONE);
-	infoBox->setHeadGradient(NOGRADIENT);
-	
-	infoBox->setFootColor(COL_NOBEL_PLUS_0);
-	infoBox->setFootCorner(NO_RADIUS, CORNER_NONE);
-	infoBox->setFootGradient(NOGRADIENT);
+	//infoBox->setBackgroundColor(/*make16color(0xBEBEBE)*/COL_SILVER_PLUS_0);
+	if (!m_vMovieInfo.empty())
+		infoBox->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h, PIC_RIGHT, true, true);
+	//infoBox->setTextColor(COL_LIME);
+	//infoBox->setHeadColor(COL_NOBEL_PLUS_0);
+	//infoBox->setHeadCorner(NO_RADIUS, CORNER_NONE);
+	//infoBox->setHeadGradient(NOGRADIENT);
+	//infoBox->setFootColor(COL_NOBEL_PLUS_0);
+	//infoBox->setFootCorner(NO_RADIUS, CORNER_NONE);
+	//infoBox->setFootGradient(NOGRADIENT);
 	
 	infoBox->exec();
 	
