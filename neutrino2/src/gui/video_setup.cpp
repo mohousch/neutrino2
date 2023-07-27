@@ -365,7 +365,13 @@ void CVideoSettings::showMenu()
 	}
 	else
 	{
-		videoSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "videosetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		videoSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		videoSettings->setWidgetMode(MODE_SETUP);
 		videoSettings->enableShrinkMenu();
@@ -380,9 +386,6 @@ void CVideoSettings::showMenu()
 		videoSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "videosetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(videoSettings);
 	}
 	

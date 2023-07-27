@@ -444,10 +444,16 @@ void CScanSetup::showScanService()
 	}
 	else
 	{
-		scansetup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "scansetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		scansetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		scansetup->setWidgetMode(MODE_SETUP);
-		scansetup->enableShrinkMenu();
+		//scansetup->enableShrinkMenu(); // dont use this
 		
 		scansetup->enablePaintHead();
 		scansetup->setTitle(_("Scan transponder"), NEUTRINO_ICON_SCAN);
@@ -459,9 +465,6 @@ void CScanSetup::showScanService()
 		scansetup->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "scansetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(scansetup);
 	}
 
@@ -648,7 +651,13 @@ int CScanSetup::showMotorSetup()
 	}
 	else
 	{
-		motorMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		motorMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		motorMenuWidget->name = "motorsetup";
+		motorMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		motorMenu = new ClistBox(motorMenuWidget->getWindowsPos().iX, motorMenuWidget->getWindowsPos().iY, motorMenuWidget->getWindowsPos().iWidth, motorMenuWidget->getWindowsPos().iHeight);
 
 		motorMenu->setWidgetMode(MODE_SETUP);
 		motorMenu->enableShrinkMenu();
@@ -663,9 +672,6 @@ int CScanSetup::showMotorSetup()
 		motorMenu->setFootButtons(&btn);
 			
 		//
-		motorMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		motorMenuWidget->name = "motorsetup";
-		motorMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
 		motorMenuWidget->addWidgetItem(motorMenu);
 	}
 
@@ -744,7 +750,13 @@ int CScanSetup::showUnicableSetup()
 	}
 	else
 	{
-		uni_setup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		uniWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		uniWidget->name = "unicablesetup";
+		uniWidget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		uni_setup = new ClistBox(uniWidget->getWindowsPos().iX, uniWidget->getWindowsPos().iY, uniWidget->getWindowsPos().iWidth, uniWidget->getWindowsPos().iHeight);
 
 		uni_setup->setWidgetMode(MODE_SETUP);
 		uni_setup->enableShrinkMenu();
@@ -759,9 +771,6 @@ int CScanSetup::showUnicableSetup()
 		uni_setup->setFootButtons(&btn);
 		
 		//
-		uniWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		uniWidget->name = "unicablesetup";
-		uniWidget->setMenuPosition(MENU_POSITION_CENTER);
 		uniWidget->addWidgetItem(uni_setup);
 	}
 	
@@ -816,7 +825,13 @@ int CScanSetup::showLNBSetup()
 	}
 	else
 	{
-		satSetup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		satSetupWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		satSetupWidget->name = "satsetup";
+		satSetupWidget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		satSetup = new ClistBox(satSetupWidget->getWindowsPos().iX, satSetupWidget->getWindowsPos().iY, satSetupWidget->getWindowsPos().iWidth, satSetupWidget->getWindowsPos().iHeight);
 
 		satSetup->setWidgetMode(MODE_SETUP);
 		satSetup->enableShrinkMenu();
@@ -831,9 +846,6 @@ int CScanSetup::showLNBSetup()
 		satSetup->setFootButtons(&btn);
 			
 		//
-		satSetupWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		satSetupWidget->name = "satsetup";
-		satSetupWidget->setMenuPosition(MENU_POSITION_CENTER);
 		satSetupWidget->addWidgetItem(satSetup);
 	}
 
@@ -854,7 +866,14 @@ int CScanSetup::showLNBSetup()
 	}
 	else
 	{
-		tempsatlistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		tempsatWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		tempsatWidget->name = "tempsat";
+		tempsatWidget->setMenuPosition(MENU_POSITION_CENTER);
+		tempsatWidget->enableSaveScreen();
+		
+		//
+		tempsatlistBox = new ClistBox(tempsatWidget->getWindowsPos().iX, tempsatWidget->getWindowsPos().iY, tempsatWidget->getWindowsPos().iWidth, tempsatWidget->getWindowsPos().iHeight);
 
 		tempsatlistBox->setWidgetMode(MODE_SETUP);
 		tempsatlistBox->enableShrinkMenu();
@@ -868,10 +887,6 @@ int CScanSetup::showLNBSetup()
 		tempsatlistBox->setFootButtons(&btn);
 					
 		//
-		tempsatWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		tempsatWidget->name = "tempsat";
-		tempsatWidget->setMenuPosition(MENU_POSITION_CENTER);
-		tempsatWidget->enableSaveScreen();
 		tempsatWidget->addWidgetItem(tempsatlistBox);
 	}
 
@@ -981,7 +996,13 @@ int CScanSetup::showSatOnOffSetup()
 	}
 	else
 	{
-		satOnOfflistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		satOnOffWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		satOnOffWidget->name = "satOnOff";
+		satOnOffWidget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		satOnOfflistBox = new ClistBox(satOnOffWidget->getWindowsPos().iX, satOnOffWidget->getWindowsPos().iY, satOnOffWidget->getWindowsPos().iWidth, satOnOffWidget->getWindowsPos().iHeight);
 
 		satOnOfflistBox->setWidgetMode(MODE_SETUP);
 		satOnOfflistBox->enableShrinkMenu();
@@ -996,9 +1017,6 @@ int CScanSetup::showSatOnOffSetup()
 		satOnOfflistBox->setFootButtons(&btn);
 			
 		//
-		satOnOffWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		satOnOffWidget->name = "satOnOff";
-		satOnOffWidget->setMenuPosition(MENU_POSITION_CENTER);
 		satOnOffWidget->addWidgetItem(satOnOfflistBox);
 	}
 		
@@ -1056,7 +1074,13 @@ int CScanSetup::showManualScanSetup()
 	}
 	else
 	{
-		manualScanlistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		manualScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		manualScanWidget->name = "manualscan";
+		manualScanWidget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		manualScanlistBox = new ClistBox(manualScanWidget->getWindowsPos().iX, manualScanWidget->getWindowsPos().iY, manualScanWidget->getWindowsPos().iWidth, manualScanWidget->getWindowsPos().iHeight);
 
 		manualScanlistBox->setWidgetMode(MODE_SETUP);
 		manualScanlistBox->enableShrinkMenu();
@@ -1071,9 +1095,6 @@ int CScanSetup::showManualScanSetup()
 		manualScanlistBox->setFootButtons(&btn);
 		
 		//
-		manualScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		manualScanWidget->name = "manualscan";
-		manualScanWidget->setMenuPosition(MENU_POSITION_CENTER);
 		manualScanWidget->addWidgetItem(manualScanlistBox);
 	}
 	
@@ -1354,7 +1375,13 @@ int CScanSetup::showAutoScanSetup()
 	}
 	else
 	{
-		autoScanlistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		autoScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		autoScanWidget->name = "autoscan";
+		autoScanWidget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		autoScanlistBox = new ClistBox(autoScanWidget->getWindowsPos().iX, autoScanWidget->getWindowsPos().iY, autoScanWidget->getWindowsPos().iWidth, autoScanWidget->getWindowsPos().iHeight);
 
 		autoScanlistBox->setWidgetMode(MODE_SETUP);
 		autoScanlistBox->enableShrinkMenu();
@@ -1369,9 +1396,6 @@ int CScanSetup::showAutoScanSetup()
 		autoScanlistBox->setFootButtons(&btn);
 		
 		//
-		autoScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		autoScanWidget->name = "autoscan";
-		autoScanWidget->setMenuPosition(MENU_POSITION_CENTER);
 		autoScanWidget->addWidgetItem(autoScanlistBox);
 	}
 	
@@ -1487,7 +1511,13 @@ int CScanSetup::showAllAutoScanSetup()
 	}
 	else
 	{
-		autoScanAlllistBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		autoScanAllWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		autoScanAllWidget->name = "autoscanall";
+		autoScanAllWidget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		autoScanAlllistBox = new ClistBox(autoScanAllWidget->getWindowsPos().iX, autoScanAllWidget->getWindowsPos().iY, autoScanAllWidget->getWindowsPos().iWidth, autoScanAllWidget->getWindowsPos().iHeight);
 
 		autoScanAlllistBox->setWidgetMode(MODE_SETUP);
 		autoScanAlllistBox->enableShrinkMenu();
@@ -1502,9 +1532,6 @@ int CScanSetup::showAllAutoScanSetup()
 		autoScanAlllistBox->setFootButtons(&btn);
 			
 		//
-		autoScanAllWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		autoScanAllWidget->name = "autoscanall";
-		autoScanAllWidget->setMenuPosition(MENU_POSITION_CENTER);
 		autoScanAllWidget->addWidgetItem(autoScanAlllistBox);
 	}
 		
@@ -1587,7 +1614,13 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	}
 	else
 	{
-		menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		tpWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		tpWidget->name = "transponder";
+		tpWidget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		menu = new ClistBox(tpWidget->getWindowsPos().iX, tpWidget->getWindowsPos().iY, tpWidget->getWindowsPos().iWidth, tpWidget->getWindowsPos().iHeight);
 
 		menu->setWidgetMode(MODE_SETUP);
 		
@@ -1603,9 +1636,6 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		menu->setFootButtons(&btn);
 		
 		//
-		tpWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		tpWidget->name = "transponder";
-		tpWidget->setMenuPosition(MENU_POSITION_CENTER);
 		tpWidget->addWidgetItem(menu);
 	}
 	
@@ -2303,7 +2333,13 @@ void CTunerSetup::showMenu()
 	}
 	else
 	{
-		TunerSetup = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "tunersetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		TunerSetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		TunerSetup->setWidgetMode(MODE_MENU);
 		TunerSetup->enableShrinkMenu();
@@ -2320,11 +2356,7 @@ void CTunerSetup::showMenu()
 			
 		TunerSetup->setFootButtons(&btn);
 		
-		//
-		widget = new CWidget(TunerSetup->getWindowsPos().iX, TunerSetup->getWindowsPos().iY, TunerSetup->getWindowsPos().iWidth, TunerSetup->getWindowsPos().iHeight);
-		widget->name = "tunersetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		
+		//		
 		widget->addWidgetItem(TunerSetup);
 	}
 	

@@ -172,8 +172,11 @@ void CMediaPortal::showMenu(void)
 {
 	const struct button_label HButtons = { NEUTRINO_ICON_BUTTON_MUTE_SMALL, "" };
 	
-	widget = new CWidget();
-	mediaPortal = new ClistBox(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
+	//
+	widget = new CWidget(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
+	
+	//
+	mediaPortal = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 	mediaPortal->setWidgetMode(MODE_LISTBOX);
 	mediaPortal->setWidgetType(TYPE_FRAME);
@@ -277,7 +280,6 @@ void CMediaPortal::showMenu(void)
 	}
 	
 	widget->addWidgetItem(mediaPortal);
-	//widget->addKey(RC_spkr, this, "delete");
 
 	widget->exec(NULL, "");
 	

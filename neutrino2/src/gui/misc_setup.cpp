@@ -137,7 +137,13 @@ void CGeneralSettings::showMenu()
 	}
 	else
 	{
-		miscSettingsGeneral = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "miscsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		miscSettingsGeneral = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		miscSettingsGeneral->setWidgetMode(MODE_SETUP);
 		miscSettingsGeneral->enableShrinkMenu();
@@ -152,9 +158,6 @@ void CGeneralSettings::showMenu()
 		miscSettingsGeneral->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "miscsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(miscSettingsGeneral);
 	}
 	
@@ -509,7 +512,13 @@ void CChannelListSettings::showMenu()
 	}
 	else
 	{
-		miscSettingsChannelList = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "channelssetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		miscSettingsChannelList = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		miscSettingsChannelList->setWidgetMode(MODE_SETUP);
 		miscSettingsChannelList->enableShrinkMenu();
@@ -524,9 +533,6 @@ void CChannelListSettings::showMenu()
 		miscSettingsChannelList->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "channelssetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(miscSettingsChannelList);
 	}
 	
@@ -674,7 +680,13 @@ void CEPGSettings::showMenu()
 	}
 	else
 	{
-		miscSettingsEPG = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "epgsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		miscSettingsEPG = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		miscSettingsEPG->setWidgetMode(MODE_SETUP);
 		miscSettingsEPG->enableShrinkMenu();
@@ -689,9 +701,6 @@ void CEPGSettings::showMenu()
 		miscSettingsEPG->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "epgsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(miscSettingsEPG);
 	}
 	
@@ -915,7 +924,13 @@ void CFileBrowserSettings::showMenu()
 	}
 	else
 	{
-		miscSettingsFileBrowser = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "filebrowsersetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		miscSettingsFileBrowser = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		miscSettingsFileBrowser->setWidgetMode(MODE_SETUP);
 		miscSettingsFileBrowser->enableShrinkMenu();
@@ -930,9 +945,6 @@ void CFileBrowserSettings::showMenu()
 		miscSettingsFileBrowser->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "filebrowsersetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(miscSettingsFileBrowser);
 	}
 	

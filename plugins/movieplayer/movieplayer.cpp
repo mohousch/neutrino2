@@ -411,8 +411,11 @@ const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 
 void CMoviePlayer::showMenu()
 {
-	widget = new CWidget();
-	mlist = new ClistBox(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
+	//
+	widget = new CWidget(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
+	
+	//
+	mlist = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 	mlist->clear();
 

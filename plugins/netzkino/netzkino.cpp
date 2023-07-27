@@ -148,8 +148,6 @@ void CNKMovies::showMenu()
 
 	mainWidget->enableSaveScreen();
 	mainWidget->setSelected(selected);
-	//mainWidget->setBackgroundColor(COL_DARK_TURQUOISE);
-	//mainWidget->enablePaintMainFrame();
 
 	// headwidget
 	headBox.iWidth = frameBuffer->getScreenWidth();

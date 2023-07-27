@@ -128,6 +128,7 @@ void CPluginList::showMenu()
 		plist->enablePaintFoot();
 		plist->setFootButtons(CPluginListButtons, NUM_LIST_BUTTONS);
 		
+		//
 		pWidget->addWidgetItem(plist);
 	}
 

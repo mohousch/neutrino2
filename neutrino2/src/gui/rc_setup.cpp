@@ -150,7 +150,13 @@ void CRemoteControlSettings::showMenu()
 	}
 	else
 	{
-		remoteControlSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "rcsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		remoteControlSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		remoteControlSettings->setWidgetMode(MODE_SETUP);
 		remoteControlSettings->enableShrinkMenu();
@@ -165,9 +171,6 @@ void CRemoteControlSettings::showMenu()
 		remoteControlSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "rcsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(remoteControlSettings);
 	}
 	
@@ -325,7 +328,13 @@ void CKeysBindingSettings::showMenu()
 	}
 	else
 	{
-		bindSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "rcbinding";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		bindSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		bindSettings->setWidgetMode(MODE_SETUP);
 		bindSettings->enableShrinkMenu();
@@ -340,9 +349,6 @@ void CKeysBindingSettings::showMenu()
 		bindSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "rcbinding";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(bindSettings);
 	}
 	

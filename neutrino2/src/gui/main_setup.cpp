@@ -89,8 +89,13 @@ void CMainSettingsMenu::showMenu(void)
 	}
 	else
 	{
-		widget = new CWidget();
-		mainSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "settings";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		mainSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		mainSettings->setWidgetMode(MODE_MENU);
 		mainSettings->setWidgetType(TYPE_CLASSIC);
@@ -109,10 +114,6 @@ void CMainSettingsMenu::showMenu(void)
 		mainSettings->setFootButtons(&btn);
 		
 		//
-		widget->setPosition(mainSettings->getWindowsPos().iX, mainSettings->getWindowsPos().iY, mainSettings->getWindowsPos().iWidth, mainSettings->getWindowsPos().iHeight);
-		widget->name = "settings";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		
 		widget->addWidgetItem(mainSettings);
 	}
 
@@ -168,7 +169,8 @@ void CMainSettingsMenu::showMenu(void)
 	//mainSettings->addItem( new CMenuForwarder(_("PSI settings"), true, NULL, chPSISetup, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_PSISETTINGS));
 	
 	// cec setup
-#if 0 //!defined (__sh__) //FIXME:
+#if 0 //!defined (__sh__) 
+	//FIXME:
 	mainSettings->addItem(new CMenuForwarder(_("CEC settings"), true, NULL, new CCECSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_GENERALSETTINGS));
 #endif
 	

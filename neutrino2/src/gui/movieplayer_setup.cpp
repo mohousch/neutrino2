@@ -93,7 +93,13 @@ void CMoviePlayerSettings::showMenu()
 	}
 	else
 	{
-		moviePlayerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "movieplayersetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		moviePlayerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		moviePlayerSettings->setWidgetMode(MODE_SETUP);
 		moviePlayerSettings->enableShrinkMenu();
@@ -108,9 +114,6 @@ void CMoviePlayerSettings::showMenu()
 		moviePlayerSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "movieplayersetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(moviePlayerSettings);
 	}
 	

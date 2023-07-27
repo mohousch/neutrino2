@@ -965,7 +965,13 @@ int CTimerList::modifyTimer()
 	}
 	else
 	{
-		timerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "modifytimer";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		timerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		timerSettings->setWidgetMode(MODE_SETUP);
 		timerSettings->enablePaintHead();
@@ -977,9 +983,6 @@ int CTimerList::modifyTimer()
 		timerSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "modifytimer";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(timerSettings);
 	}
 	
@@ -1038,8 +1041,14 @@ int CTimerList::modifyTimer()
 	//
 	CWidget* timerSettings_apidsWidget = NULL;
 	ClistBox* timerSettings_apids = NULL;
-				
-	timerSettings_apids = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	
+	//
+	timerSettings_apidsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	timerSettings_apidsWidget->name = "apidstimerlist";
+	timerSettings_apidsWidget->setMenuPosition(MENU_POSITION_CENTER);
+	
+	//			
+	timerSettings_apids = new ClistBox(timerSettings_apidsWidget->getWindowsPos().iX, timerSettings_apidsWidget->getWindowsPos().iY, timerSettings_apidsWidget->getWindowsPos().iWidth, timerSettings_apidsWidget->getWindowsPos().iHeight);
 
 	timerSettings_apids->setWidgetMode(MODE_SETUP);				
 	timerSettings_apids->enablePaintHead();
@@ -1051,8 +1060,6 @@ int CTimerList::modifyTimer()
 	timerSettings_apids->setFootButtons(&btn);
 					
 	//
-	timerSettings_apidsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	timerSettings_apidsWidget->setMenuPosition(MENU_POSITION_CENTER);
 	timerSettings_apidsWidget->addWidgetItem(timerSettings_apids);
 
 	CTimerListApidNotifier apid_notifier(&timer_apids_dflt, &timer_apids_std, &timer_apids_ac3, &timer_apids_alt);
@@ -1123,7 +1130,13 @@ int CTimerList::newTimer()
 	}
 	else
 	{
-		timerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "newtimer";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		timerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		timerSettings->setWidgetMode(MODE_SETUP);
 		timerSettings->enablePaintHead();
@@ -1135,9 +1148,6 @@ int CTimerList::newTimer()
 		timerSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "newtimer";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(timerSettings);
 	}
 	

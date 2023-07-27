@@ -433,8 +433,9 @@ void CNFilm::showMenu(bool genre)
 
 	mainWidget->enableSaveScreen();
 	mainWidget->setSelected(selected);
-	//mainWidget->enablePaintMainFrame();
-	//mainWidget->setBackgroundColor(COL_DARK_TURQUOISE);
+	mainWidget->paintMainFrame(true);
+	mainWidget->setColor(COL_BLUE_PLUS_0);
+	mainWidget->setCorner(g_settings.Head_radius, g_settings.Head_corner | g_settings.Foot_corner);
 
 	// headwidget
 	headBox.iWidth = frameBuffer->getScreenWidth();
@@ -446,9 +447,6 @@ void CNFilm::showMenu(bool genre)
 
 	headersWidget->setButtons(&HeadButtons, 1);
 	headersWidget->enablePaintDate();
-	//headersWidget->setColor(COL_BLUE);
-	//headersWidget->setGradient(NOGRADIENT);
-	//headersWidget->setCorner(NO_RADIUS);
 
 	// foot
 	footBox.iWidth = frameBuffer->getScreenWidth();
@@ -458,10 +456,7 @@ void CNFilm::showMenu(bool genre)
 
 	footersWidget = new CFooters(footBox.iX, footBox.iY, footBox.iWidth, footBox.iHeight);
 
-	//footersWidget->setColor(COL_BLUE);
 	footersWidget->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	//footersWidget->setGradient(NOGRADIENT);
-	//footersWidget->setCorner(NO_RADIUS);
 
 	// leftwidget
 	leftBox.iWidth = 250;
@@ -472,7 +467,6 @@ void CNFilm::showMenu(bool genre)
 	leftWidget = new ClistBox(&leftBox);
 
 	leftWidget->setSelected(left_selected);
-	//leftWidget->setBackgroundColor(COL_BLUE);
 	leftWidget->setOutFocus();
 
 	loadGenreList(genre);

@@ -93,8 +93,13 @@ void CServiceMenu::showMenu(void)
 	}
 	else
 	{
-		widget = new CWidget();
-		service = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "system";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		service = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		service->setWidgetMode(MODE_MENU);
 		service->setWidgetType(TYPE_CLASSIC);
@@ -113,10 +118,6 @@ void CServiceMenu::showMenu(void)
 		service->setFootButtons(&btn);
 		
 		//
-		widget->setPosition(service->getWindowsPos().iX, service->getWindowsPos().iY, service->getWindowsPos().iWidth, service->getWindowsPos().iHeight);
-		widget->name = "system";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		
 		widget->addWidgetItem(service);
 	}
 	
@@ -129,7 +130,8 @@ void CServiceMenu::showMenu(void)
 	service->addItem(new CMenuForwarder(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));
 		
 	// CI Cam 	
-#if 0 //defined (ENABLE_CI) FIXME:
+#if 0 //defined (ENABLE_CI) 
+	//FIXME:
 	service->addItem(new CMenuForwarder(_("CI Cam"), true, NULL, g_CamHandler, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CICAM));
 #endif
 		

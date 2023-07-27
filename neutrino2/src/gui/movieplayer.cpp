@@ -758,7 +758,13 @@ void CMoviePlayerGui::PlayFile(void)
 	}
 	else
 	{
-		bookStartMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "bookmark";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		bookStartMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		bookStartMenu->setWidgetMode(MODE_MENU);
 		bookStartMenu->enableShrinkMenu();
@@ -773,9 +779,6 @@ void CMoviePlayerGui::PlayFile(void)
 		bookStartMenu->setFootButtons(&btn);
 			
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "bookmark";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(bookStartMenu);
 	}
 	
@@ -1727,8 +1730,13 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	}
 	else
 	{
-		startPosSelectionMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		//startPosSelectionMenu->setMenuPosition(MENU_POSITION_CENTER);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "startpos";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		startPosSelectionMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		startPosSelectionMenu->setWidgetMode(MODE_SETUP);
 		startPosSelectionMenu->enableShrinkMenu();
 			
@@ -1742,9 +1750,6 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 		startPosSelectionMenu->setFootButtons(&btn);
 			
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "startpos";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(startPosSelectionMenu);
 	}
 	

@@ -216,7 +216,13 @@ int CThemes::Show()
 	}
 	else
 	{
-		themes = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "themessetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		themes = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		themes->setWidgetMode(MODE_SETUP);
 		themes->enableShrinkMenu();
@@ -231,9 +237,6 @@ int CThemes::Show()
 		themes->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "themessetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(themes);
 	}
 	

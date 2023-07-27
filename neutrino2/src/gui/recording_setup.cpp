@@ -183,7 +183,13 @@ void CRecordingSettings::showMenu()
 	}
 	else
 	{
-		recordingSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "recordingsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		recordingSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		recordingSettings->setWidgetMode(MODE_SETUP);
 		recordingSettings->enableShrinkMenu();
@@ -198,9 +204,6 @@ void CRecordingSettings::showMenu()
 		recordingSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "recordingsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(recordingSettings);
 	}
 	

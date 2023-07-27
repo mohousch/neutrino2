@@ -200,7 +200,13 @@ int CNFSMountGui::menu()
 	}
 	else
 	{
-		mountMenuW = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "nfs";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		mountMenuW = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		mountMenuW->setWidgetMode(MODE_SETUP);
 		mountMenuW->enableShrinkMenu();
@@ -215,9 +221,6 @@ int CNFSMountGui::menu()
 		mountMenuW->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "nfs";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(mountMenuW);
 	}
 	
@@ -319,8 +322,13 @@ int CNFSMountGui::menuEntry(int nr)
 	}
 	else
 	{
-		mountMenuEntryW = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		//mountMenuEntryW->setMenuPosition(MENU_POSITION_CENTER);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "mountvolume";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		mountMenuEntryW = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		mountMenuEntryW->setWidgetMode(MODE_SETUP);
 		mountMenuEntryW->enableShrinkMenu();
 		
@@ -334,9 +342,6 @@ int CNFSMountGui::menuEntry(int nr)
 		mountMenuEntryW->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "mountvolume";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(mountMenuEntryW);
 	}
 	
@@ -434,8 +439,13 @@ int CNFSUmountGui::menu()
 	}
 	else
 	{
-		umountMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		//umountMenu->setMenuPosition(MENU_POSITION_CENTER);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "umountvolume";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		umountMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		umountMenu->setWidgetMode(MODE_SETUP);
 		umountMenu->enableShrinkMenu();
 		
@@ -449,9 +459,6 @@ int CNFSUmountGui::menu()
 		umountMenu->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "umountvolume";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(umountMenu);
 	}
 	
@@ -510,8 +517,13 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 		}
 		else
 		{
-			menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			//menu->setMenuPosition(MENU_POSITION_CENTER);
+			//
+			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			widget->name = "nfssmall";
+			widget->setMenuPosition(MENU_POSITION_CENTER);
+			
+			//
+			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 			menu->setWidgetMode(MODE_SETUP);
 			menu->enableShrinkMenu();
 			
@@ -525,9 +537,6 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 			menu->setFootButtons(&btn);
 			
 			//
-			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			widget->name = "nfssmall";
-			widget->setMenuPosition(MENU_POSITION_CENTER);
 			widget->addWidgetItem(menu);
 		}
 		

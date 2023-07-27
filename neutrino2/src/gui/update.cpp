@@ -162,7 +162,13 @@ bool CFlashUpdate::selectHttpImage(void)
 	}
 	else
 	{
-		SelectionWidget = new ClistBox(0, 0, 600, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, 600, MENU_HEIGHT);
+		widget->name = "selecthttpimage";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		SelectionWidget = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		SelectionWidget->setWidgetMode(MODE_SETUP);
 		SelectionWidget->enableShrinkMenu();
@@ -177,9 +183,6 @@ bool CFlashUpdate::selectHttpImage(void)
 		SelectionWidget->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, 600, MENU_HEIGHT);
-		widget->name = "selecthttpimage";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(SelectionWidget);
 	}
 	
@@ -683,7 +686,13 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 	}
 	else
 	{
-		mtdselector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "mtdselector";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		mtdselector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		mtdselector->setWidgetMode(MODE_SETUP);
 		mtdselector->enableShrinkMenu();
@@ -698,9 +707,6 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 		mtdselector->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "mtdselector";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(mtdselector);
 	}
 	
@@ -784,7 +790,13 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 	}
 	else
 	{
-		fileselector = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "fileselector";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		fileselector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		fileselector->setWidgetMode(MODE_SETUP);
 		fileselector->enableShrinkMenu();
@@ -799,9 +811,6 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 		fileselector->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "fileselector";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(fileselector);
 	}
 	
@@ -966,7 +975,13 @@ void CUpdateSettings::showMenu()
 	}
 	else
 	{
-		updateSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "updatesetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		updateSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		updateSettings->setWidgetMode(MODE_SETUP);
 		updateSettings->enableShrinkMenu();
@@ -981,9 +996,6 @@ void CUpdateSettings::showMenu()
 		updateSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "updatesetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(updateSettings);
 	}
 	
@@ -1009,7 +1021,13 @@ void CUpdateSettings::showMenu()
 	}
 	else
 	{
-		mtdexpert = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		mtdexpertWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		mtdexpertWidget->name = "flashexpert";
+		mtdexpertWidget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		mtdexpert = new ClistBox(mtdexpertWidget->getWindowsPos().iX, mtdexpertWidget->getWindowsPos().iY, mtdexpertWidget->getWindowsPos().iWidth, mtdexpertWidget->getWindowsPos().iHeight);
 
 		mtdexpert->setWidgetMode(MODE_SETUP);
 		mtdexpert->enableShrinkMenu();
@@ -1024,9 +1042,6 @@ void CUpdateSettings::showMenu()
 		mtdexpert->setFootButtons(&btn);
 		
 		//
-		mtdexpertWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		mtdexpertWidget->name = "flashexpert";
-		mtdexpertWidget->setMenuPosition(MENU_POSITION_CENTER);
 		mtdexpertWidget->addWidgetItem(mtdexpert);
 	}
 	

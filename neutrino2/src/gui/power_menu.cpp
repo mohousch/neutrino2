@@ -72,8 +72,12 @@ void CPowerMenu::showMenu(void)
 	}
 	else
 	{
-		widget = new CWidget();
-		powerMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "powermenu";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		powerMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		powerMenu->setWidgetMode(MODE_MENU);
 		powerMenu->setWidgetType(TYPE_CLASSIC);
@@ -92,10 +96,6 @@ void CPowerMenu::showMenu(void)
 		powerMenu->setFootButtons(&btn); 
 		
 		//
-		widget->setPosition(powerMenu->getWindowsPos().iX, powerMenu->getWindowsPos().iY, powerMenu->getWindowsPos().iWidth, powerMenu->getWindowsPos().iHeight);
-		widget->name = "powermenu";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		
 		widget->addWidgetItem(powerMenu);
 	}
 	

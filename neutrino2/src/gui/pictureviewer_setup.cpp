@@ -120,7 +120,13 @@ void CPictureViewerSettings::showMenu()
 	}
 	else
 	{
-		PicViewerSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "pictureviewersetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		PicViewerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		PicViewerSettings->setWidgetMode(MODE_SETUP);
 		PicViewerSettings->enableShrinkMenu();
@@ -135,9 +141,6 @@ void CPictureViewerSettings::showMenu()
 		PicViewerSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "pictureviewersetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(PicViewerSettings);
 	}
 	

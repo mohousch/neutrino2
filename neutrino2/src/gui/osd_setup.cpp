@@ -101,8 +101,13 @@ void COSDSettings::showMenu(void)
 	}
 	else
 	{
-		widget = new CWidget();
-		osdSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "osd";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		osdSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		osdSettings->setWidgetMode(MODE_MENU);
 		osdSettings->setWidgetType(TYPE_CLASSIC);
@@ -121,10 +126,6 @@ void COSDSettings::showMenu(void)
 		osdSettings->setFootButtons(&btn);
 		
 		//
-		widget->setPosition(osdSettings->getWindowsPos().iX, osdSettings->getWindowsPos().iY, osdSettings->getWindowsPos().iWidth, osdSettings->getWindowsPos().iHeight);
-		widget->name = "osd";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		
 		widget->addWidgetItem(osdSettings);
 	}
 	
@@ -267,7 +268,13 @@ void COSDMenuColorSettings::showMenu()
 	}
 	else
 	{
-		OSDmenuColorsSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "menusetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		OSDmenuColorsSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		OSDmenuColorsSettings->setWidgetMode(MODE_SETUP);
 		OSDmenuColorsSettings->enableShrinkMenu();
@@ -284,9 +291,6 @@ void COSDMenuColorSettings::showMenu()
 		OSDmenuColorsSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "menusetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(OSDmenuColorsSettings);
 	}
 	
@@ -461,7 +465,13 @@ void COSDInfoBarColorSettings::showMenu()
 	}
 	else
 	{
-		OSDinfobarColorSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "infobarsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		OSDinfobarColorSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		OSDinfobarColorSettings->setWidgetMode(MODE_SETUP);
 		OSDinfobarColorSettings->enableShrinkMenu();
@@ -476,9 +486,6 @@ void COSDInfoBarColorSettings::showMenu()
 		OSDinfobarColorSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "infobarsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(OSDinfobarColorSettings);
 	}
 	
@@ -602,7 +609,13 @@ void CLanguageSettings::showMenu()
 	}
 	else
 	{
-		languageSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "languagesetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		languageSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		languageSettings->setWidgetMode(MODE_SETUP);
 		languageSettings->enableShrinkMenu();
@@ -617,9 +630,6 @@ void CLanguageSettings::showMenu()
 		languageSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "languagesetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(languageSettings);
 	}
 	
@@ -765,7 +775,13 @@ void CFontSettings::showMenu()
 	}
 	else
 	{
-		fontSettings = new ClistBox(0, 0, 700, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, 700, MENU_HEIGHT);
+		widget->name = "fontsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		fontSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		fontSettings->setWidgetMode(MODE_SETUP);
 		fontSettings->enableShrinkMenu();
@@ -780,9 +796,6 @@ void CFontSettings::showMenu()
 		fontSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, 700, MENU_HEIGHT);
-		widget->name = "fontsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(fontSettings);
 	}
 	
@@ -854,7 +867,13 @@ void COSDTimingSettings::showMenu()
 	}
 	else
 	{
-		osdTimingSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "osdtimingsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		osdTimingSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		osdTimingSettings->setWidgetMode(MODE_SETUP);
 		osdTimingSettings->enableShrinkMenu();
@@ -869,9 +888,6 @@ void COSDTimingSettings::showMenu()
 		osdTimingSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "osdtimingsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(osdTimingSettings);
 	}
 	
@@ -1067,7 +1083,13 @@ void COSDDiverses::showMenu()
 	}
 	else
 	{
-		osdDiverseSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "osdmiscsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		osdDiverseSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		osdDiverseSettings->setWidgetMode(MODE_SETUP);
 		osdDiverseSettings->enableShrinkMenu();
@@ -1082,9 +1104,6 @@ void COSDDiverses::showMenu()
 		osdDiverseSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "osdmiscsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(osdDiverseSettings);
 	}
 	
@@ -1164,7 +1183,13 @@ void CSkinManager::showMenu()
 	}
 	else
 	{
-		skinMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "skinsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		skinMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		skinMenu->setWidgetMode(MODE_LISTBOX);
 		skinMenu->setWidgetType(TYPE_CLASSIC);
@@ -1180,9 +1205,6 @@ void CSkinManager::showMenu()
 		skinMenu->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "skinsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(skinMenu);
 	}
 	
@@ -1295,7 +1317,13 @@ void CSkinSettings::showMenu()
 	}
 	else
 	{
-		skinSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "skinstyleselectionsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		skinSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		skinSettings->setWidgetMode(MODE_SETUP);
 		skinSettings->enableShrinkMenu();
@@ -1310,9 +1338,6 @@ void CSkinSettings::showMenu()
 		skinSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "skinstyleselectionsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(skinSettings);
 	}
 	
@@ -1483,7 +1508,13 @@ void CPersonalisation::showMenu(void)
 	}
 	else
 	{
-		personalizeSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "personalisation";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		personalizeSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		personalizeSettings->setWidgetMode(MODE_SETUP);
 		personalizeSettings->enableShrinkMenu();
@@ -1498,9 +1529,6 @@ void CPersonalisation::showMenu(void)
 		personalizeSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "personalisation";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(personalizeSettings);
 	}
 	

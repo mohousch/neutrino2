@@ -98,7 +98,13 @@ void CParentalLockSettings::showMenu()
 	}
 	else
 	{
-		listBox = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "parentallocksetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		listBox = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		listBox->setWidgetMode(MODE_SETUP);
 		listBox->enableShrinkMenu();
@@ -113,9 +119,6 @@ void CParentalLockSettings::showMenu()
 		listBox->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "parentallocksetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(listBox);
 	}
 	

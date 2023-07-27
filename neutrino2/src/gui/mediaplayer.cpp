@@ -73,7 +73,13 @@ void CMediaPlayerMenu::showMenu()
 	}
 	else
 	{
-		mediaPlayer = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "mediaplayer";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		mediaPlayer = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		mediaPlayer->setWidgetMode(MODE_MENU);
 		mediaPlayer->setWidgetType(TYPE_CLASSIC);
@@ -92,10 +98,6 @@ void CMediaPlayerMenu::showMenu()
 		mediaPlayer->setFootButtons(&btn); 
 		
 		//
-		widget = new CWidget(mediaPlayer->getWindowsPos().iX, mediaPlayer->getWindowsPos().iY, mediaPlayer->getWindowsPos().iWidth, mediaPlayer->getWindowsPos().iHeight);
-		widget->name = "mediaplayer";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		
 		widget->addWidgetItem(mediaPlayer);
 	}
 

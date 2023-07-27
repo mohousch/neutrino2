@@ -134,7 +134,13 @@ void CLCDSettings::showMenu()
 	}
 	else
 	{
-		lcdSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "lcdsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		lcdSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		lcdSettings->setWidgetMode(MODE_SETUP);
 		lcdSettings->enableShrinkMenu();
@@ -149,9 +155,6 @@ void CLCDSettings::showMenu()
 		lcdSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "lcdsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(lcdSettings);
 	}
 	

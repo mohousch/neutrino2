@@ -73,7 +73,13 @@ int CProxySetup::showProxySetup()
 	}
 	else
 	{
-		mn = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "proxysetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		mn = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		mn->setWidgetMode(MODE_SETUP);
 		mn->enableShrinkMenu();
@@ -88,9 +94,6 @@ int CProxySetup::showProxySetup()
 		mn->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "proxysetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(mn);
 	}
 	

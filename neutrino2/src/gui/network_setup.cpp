@@ -200,7 +200,13 @@ void CNetworkSettings::showMenu()
 	}
 	else
 	{
-		networkSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "networksetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		networkSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		networkSettings->setWidgetMode(MODE_SETUP);
 		networkSettings->enableShrinkMenu();
@@ -215,9 +221,6 @@ void CNetworkSettings::showMenu()
 		networkSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "networksetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(networkSettings);
 	}
 	

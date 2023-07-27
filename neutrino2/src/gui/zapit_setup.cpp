@@ -152,7 +152,13 @@ void CZapitSetup::showMenu()
 	}
 	else
 	{
-		zapit = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "zapitsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		zapit = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		zapit->setWidgetMode(MODE_SETUP);
 		zapit->enableShrinkMenu();
@@ -167,9 +173,6 @@ void CZapitSetup::showMenu()
 		zapit->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "zapitsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(zapit);
 	}
 	
