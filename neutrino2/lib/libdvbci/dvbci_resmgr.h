@@ -5,17 +5,14 @@
 
 class eDVBCIResourceManagerSession: public eDVBCISession
 {
-		enum
-		{
-			stateFirstProfileEnquiry = statePrivate,
-			stateProfileChange,
-			stateProfileEnquiry,
-			stateFinal
-		};
-		int receivedAPDU(const unsigned char *tag, const void *data, int len);
-		int doAction();
-	public:
-
+	enum {
+		stateFirstProfileEnquiry=statePrivate,
+		stateProfileChange,
+		stateProfileEnquiry,
+		stateFinal };
+	int receivedAPDU(const unsigned char *tag, const void *data, int len);
+	int doAction();
+public:
 };
 
 #endif

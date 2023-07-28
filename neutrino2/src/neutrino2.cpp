@@ -76,6 +76,7 @@
 #include <driver/shutdown_count.h>
 #include <driver/color.h>
 #include <driver/streamts.h>
+#include <driver/hdmi_cec.h>
 
 #include <gui/epgplus.h>
 #include <gui/streaminfo.h>
@@ -167,7 +168,7 @@
 #endif
 
 #if defined (ENABLE_CI)
-#include <libdvbci/ca_ci.h>
+#include <libdvbci/dvb-ci.h>
 #endif
 
 #if defined ENABLE_GSTREAMER
@@ -940,6 +941,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.ci_tuner = configfile.getInt32("ci_tuner", -1);
 	g_settings.ci_delay = configfile.getInt32("ci_delay", 128);
 
+	/*
 	for (unsigned int i = 0; i < cCA::GetInstance()->GetNumberCISlots(); i++) 
 	{
 #if !defined (__sh__)
@@ -959,6 +961,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 		sprintf(cfg_key, "ci_pincode_%d", i);
 		g_settings.ci_pincode[i] = configfile.getString(cfg_key, "");
 	}
+	*/
 #endif
 
 	// cec
@@ -1444,6 +1447,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("ci_tuner", g_settings.ci_tuner);
 	configfile.setInt32("ci_delay", g_settings.ci_delay);
 
+	/*
 	for (int i = 0; i < cCA::GetInstance()->GetNumberCISlots(); i++) 
 	{
 		sprintf(cfg_key, "ci_clock_%d", i);
@@ -1457,6 +1461,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 		sprintf(cfg_key, "ci_pincode_%d", i);
 		configfile.setString(cfg_key, g_settings.ci_pincode[i]);
 	}
+	*/
 #endif
 
 	// cec
@@ -2733,9 +2738,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 // Cam-Ci
 #if defined (ENABLE_CI)	
-	//cDvbCi::getInstance()->SetHook(CISendMessage);
-	cCA::GetInstance()->Ready(true);
-	//cCA::GetInstance()->setCheckLiveSlot(g_settings.ci_check_live);	
+	cDvbCi::getInstance()->SetHook(CISendMessage);	
 #endif	
 	
 	// init shutdown count
@@ -4153,6 +4156,22 @@ skip_message:
 
 		channelList->adjustToChannelID(live_channel_id);
 	}
+#if !defined (__sh__)
+	else if (msg == NeutrinoMessages::EVT_HDMI_CEC_VIEW_ON) 
+	{
+		if(g_settings.hdmi_cec_view_on)
+			hdmi_cec::getInstance()->SetCECAutoView(g_settings.hdmi_cec_view_on);
+
+		return messages_return::handled;
+	}
+	else if (msg == NeutrinoMessages::EVT_HDMI_CEC_STANDBY) 
+	{
+		if(g_settings.hdmi_cec_standby)
+			  hdmi_cec::getInstance()->SetCECAutoStandby(g_settings.hdmi_cec_standby);
+
+		return messages_return::handled;
+	}
+#endif
 
 	if ((msg >= RC_WithData) && (msg < RC_WithData + 0x10000000))
 		delete[] (unsigned char*) data;

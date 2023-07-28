@@ -130,7 +130,7 @@ void CServiceMenu::showMenu(void)
 	service->addItem(new CMenuForwarder(_("Bouquet Editor"), true, NULL, new CBEBouquetWidget(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_BOUQUETSEDITOR));
 		
 	// CI Cam 	
-#if 0 //defined (ENABLE_CI) 
+#if defined (ENABLE_CI) 
 	//FIXME:
 	service->addItem(new CMenuForwarder(_("CI Cam"), true, NULL, g_CamHandler, NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_CICAM));
 #endif

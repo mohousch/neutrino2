@@ -1029,20 +1029,21 @@
 		<TIME posx="890" posy="450" width="390" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
+	
 	<WIDGET name="personalisation" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
-		<LISTBOX posx="50" posy="50" width="600" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1">
-		</LISTBOX>
-		<LABEL posx="640" posy="50" width="640" height="50" text="Personalisation" halign="1">
-		</LABEL>
-			
-		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png">
-		</IMAGE>
-		
-		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y">
-		</TIME>
-		
-		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S">
-		</TIME>
+		<LISTBOX posx="50" posy="50" width="600" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1"/>
+		<LABEL posx="640" posy="50" width="640" height="50" text="Personalisation" halign="1"/>
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
+	</WIDGET>
+	
+	<WIDGET name="cecsetup" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
+		<LISTBOX posx="50" posy="50" width="600" height="620" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1" itemborder="1"/>
+		<LABEL posx="640" posy="50" width="640" height="50" text="CEC Setup" halign="1"/>	
+		<IMAGE posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
+		<TIME posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
+		<TIME posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 </skin>
 

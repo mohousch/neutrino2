@@ -567,6 +567,14 @@
 			<BUTTON_LABEL name="information"/>
 		</FOOT>
 	</WIDGET>
+	
+	<WIDGET name="cecsetup" posx="0" posy="0" width="700" height="720" paintframe="1">
+		<LISTBOX posx="30" posy="100" width="640" height="520" paintframe="1" type="TYPE_STANDARD" mode="MODE_SETUP" scrollbar="1"/>
+		<HEAD posx="30" posy="50" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" title="CEC Setup" icon="colors" paintframe="1"/>
+		<FOOT posx="30" posy="630" width="640" height="40" gradient="DARK2LIGHT2DARK" corner="CORNER_ALL" radius="RADIUS_MID" paintframe="1">
+			<BUTTON_LABEL name="information"/>
+		</FOOT>
+	</WIDGET>
 </skin>
 
 

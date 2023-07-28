@@ -46,9 +46,6 @@
 
 #include <system/debug.h>
 
-#include <video_cs.h>
-
-extern cVideo * videoDecoder;		//libdvbapi (video_cs.cpp)
 
 CCECSetup::CCECSetup()
 {
@@ -106,8 +103,43 @@ const keyval VIDEOMENU_HDMI_CEC_VOL_OPTIONS[VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT]
 int CCECSetup::showMenu()
 {
 	//menue init
-	CMenuWidget *cec = new CMenuWidget(_("CEC Setup"), NEUTRINO_ICON_SETTINGS);
-	cec->setWidgetMode(MODE_SETUP);
+	//CMenuWidget *cec = new CMenuWidget(_("CEC Setup"), NEUTRINO_ICON_SETTINGS);
+	CWidget *widget = NULL;
+	ClistBox *cec = NULL;
+	
+	widget = CNeutrinoApp::getInstance()->getWidget("cecsetup");
+	
+	if (widget)
+	{
+		cec = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "audioplayersetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		cec = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+
+		cec->setWidgetMode(MODE_SETUP);
+		cec->enableShrinkMenu();
+		
+		cec->enablePaintHead();
+		cec->setTitle(_("CEC Setup"), NEUTRINO_ICON_SETTINGS);
+
+		cec->enablePaintFoot();
+			
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+			
+		cec->setFootButtons(&btn);
+		
+		//
+		widget->addWidgetItem(cec);
+	}
+	
+	cec->clearItems();
 	
 	// intros
 	cec->addItem(new CMenuForwarder(_("back")));
@@ -121,7 +153,9 @@ int CCECSetup::showMenu()
 #if defined (__sh__)
 	g_settings.hdmi_cec_mode = true;
 	CMenuOptionChooser *cec_ch = new CMenuOptionChooser(_("CEC mode"), &g_settings.hdmi_cec_mode, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this);
+	
 	cec1 = new CMenuOptionChooser(_("CEC standby"), &g_settings.hdmi_cec_standby, VIDEOMENU_HDMI_CEC_STANDBY_OPTIONS, VIDEOMENU_HDMI_CEC_STANDBY_OPTION_COUNT, g_settings.hdmi_cec_mode != 0, this);
+	
 	cec2 = new CMenuOptionChooser(_("CEC broadcast"), &g_settings.hdmi_cec_broadcast, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.hdmi_cec_mode != VIDEO_HDMI_CEC_MODE_OFF, this);
 #else
 	CMenuOptionChooser *cec_ch = new CMenuOptionChooser(_("CEC mode"), &g_settings.hdmi_cec_mode, VIDEOMENU_HDMI_CEC_MODE_OPTIONS, VIDEOMENU_HDMI_CEC_MODE_OPTION_COUNT, true, this);
@@ -140,8 +174,16 @@ int CCECSetup::showMenu()
 	cec->addItem(cec3);
 #endif
 
-	int res = cec->exec(NULL, "");
+	widget->setTimeOut(g_settings.timing_menu);
+	
+	int res = widget->exec(NULL, "");
+	
+	//
 	delete cec;
+	cec = NULL;
+	
+	delete widget;
+	widget = NULL;
 
 	return res;
 }

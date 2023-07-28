@@ -187,7 +187,13 @@ int CHDDMenuHandler::hddMenu()
 	}
 	else
 	{
-		hddmenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "hddsetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		hddmenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		hddmenu->setWidgetMode(MODE_SETUP);
 		hddmenu->enableShrinkMenu();
@@ -202,9 +208,6 @@ int CHDDMenuHandler::hddMenu()
 		hddmenu->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "hddsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(hddmenu);
 	}
 	
@@ -337,7 +340,13 @@ int CHDDMenuHandler::hddMenu()
 		else
 		*/
 		{
-			tempMenu[i] = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			//
+			tempMenuWidget[i] = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+			tempMenuWidget[i]->setMenuPosition(MENU_POSITION_CENTER);
+			tempMenuWidget[i]->enableSaveScreen();
+			
+			//
+			tempMenu[i] = new ClistBox(tempMenuWidget[i]->getWindowsPos().iX, tempMenuWidget[i]->getWindowsPos().iY, tempMenuWidget[i]->getWindowsPos().iWidth, tempMenuWidget[i]->getWindowsPos().iHeight);
 
 			tempMenu[i]->setWidgetMode(MODE_SETUP);
 			tempMenu[i]->enableShrinkMenu();
@@ -352,9 +361,6 @@ int CHDDMenuHandler::hddMenu()
 			tempMenu[i]->setFootButtons(&btn);
 			
 			//
-			tempMenuWidget[i] = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			tempMenuWidget[i]->setMenuPosition(MENU_POSITION_CENTER);
-			tempMenuWidget[i]->enableSaveScreen();
 			tempMenuWidget[i]->addWidgetItem(tempMenu[i]);
 		}
 		
@@ -415,7 +421,13 @@ int CHDDMenuHandler::hddMenu()
 			else
 			*/
 			{
-				PartMenu[j] = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+				//
+				PartMenuWidget[j] = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+				PartMenuWidget[j]->setMenuPosition(MENU_POSITION_CENTER);
+				PartMenuWidget[j]->enableSaveScreen();
+				
+				//
+				PartMenu[j] = new ClistBox(PartMenuWidget[j]->getWindowsPos().iX, PartMenuWidget[j]->getWindowsPos().iY, PartMenuWidget[j]->getWindowsPos().iWidth, PartMenuWidget[j]->getWindowsPos().iHeight);
 
 				PartMenu[j]->setWidgetMode(MODE_SETUP);
 				PartMenu[j]->enableShrinkMenu();
@@ -430,9 +442,6 @@ int CHDDMenuHandler::hddMenu()
 				PartMenu[j]->setFootButtons(&btn);
 				
 				//
-				PartMenuWidget[j] = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				PartMenuWidget[j]->setMenuPosition(MENU_POSITION_CENTER);
-				PartMenuWidget[j]->enableSaveScreen();
 				PartMenuWidget[j]->addWidgetItem(PartMenu[j]);
 			}
 			

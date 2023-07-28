@@ -7,22 +7,18 @@
 
 class eDVBCICAManagerSession: public eDVBCISession
 {
-		enum
-		{
-			stateFinal = statePrivate
-		};
-		std::vector<uint16_t> caids;
-		int receivedAPDU(const unsigned char *tag, const void *data, int len);
-		int doAction();
-	public:
-		eDVBCICAManagerSession(eDVBCISlot *tslot);
-		~eDVBCICAManagerSession();
+	enum {
+		stateFinal=statePrivate
+	};
+	std::vector<uint16_t> caids;
+	int receivedAPDU(const unsigned char *tag, const void *data, int len);
+	int doAction();
+public:
+	eDVBCICAManagerSession(tSlot *tslot);
+	~eDVBCICAManagerSession();
 
-		const std::vector<uint16_t> &getCAIDs() const
-		{
-			return caids;
-		}
-		int sendCAPMT(unsigned char *pmt, int len);
+	const std::vector<uint16_t> &getCAIDs() const { return caids; }
+	int sendCAPMT(unsigned char *pmt, int len);
 };
 
 #endif
