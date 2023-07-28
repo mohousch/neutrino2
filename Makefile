@@ -115,13 +115,14 @@ init:
 	echo ""
 # cicam
 	@echo -e "\nCICAM support ?:"
-	@echo "   1)  yes"
-	@echo -e "   \033[01;32m2) no\033[00m"
+	@echo -e "   \033[01;32m1)  yes\033[00m"
+	@echo "   2) no"
 	@read -p "Select CI-CAM support (1-2)?" CICAM; \
 	CICAM=$${CICAM}; \
 	case "$$CICAM" in \
 		1) echo "CICAM=cicam" >> config.local;; \
-		2|*) echo "CICAM=" >> config.local;; \
+		2) echo "CICAM=" >> config.local;; \
+		*) echo "CICAM=cicam" >> config.local;; \
 	esac; \
 	echo ""
 # vfd / 4digits / lcd / tftlcd
