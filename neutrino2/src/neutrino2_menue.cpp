@@ -113,6 +113,8 @@ void CNeutrinoApp::mainMenu(void)
 		//
 		widget->addWidgetItem(nMenu);
 	}
+	
+	nMenu->clear();
 			  
 	// tv modus
 	item = new CMenuForwarder(_("TV / Radio"), true, NULL, this, "tvradioswitch", RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_TV);
@@ -328,7 +330,8 @@ bool CNeutrinoApp::showUserMenu(int button)
 		widget->addWidgetItem(menu);
 	}	
 
-	widget->addKey(RC_blue, this, "plugins");
+	//
+	menu->clear();
 
 	// go through any postition number
 	for(int pos = 0; pos < SNeutrinoSettings::ITEM_MAX ; pos++) 
@@ -451,6 +454,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 	}
 	
 	//
+	widget->addKey(RC_blue, this, "plugins");
 	widget->setTimeOut(g_settings.timing_menu);	
 	widget->exec(NULL, "");
 	

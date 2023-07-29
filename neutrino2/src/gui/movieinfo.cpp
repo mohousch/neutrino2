@@ -1939,6 +1939,9 @@ void CMovieInfoWidget::funArt()
 	testFrameBox->addFrame(infoFrame, true);
 
 	widget->addWidgetItem(testFrameBox);
+	
+	//
+	widget->setTimeOut(g_settings.timing_filebrowser);
 	widget->exec(NULL, "");
 
 	delete widget;
