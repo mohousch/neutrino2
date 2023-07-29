@@ -135,7 +135,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-
+// vorbis
 static WriterCaps_t caps_vorbis = {
 	"vorbis",
 	eAudio,

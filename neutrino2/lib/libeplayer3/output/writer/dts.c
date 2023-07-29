@@ -151,7 +151,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-
+// dts
 static WriterCaps_t caps = {
 	"dts",
 	eAudio,

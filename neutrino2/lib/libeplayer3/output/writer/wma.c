@@ -167,7 +167,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer Definition            */
 /* ***************************** */
-
+// wma
 static WriterCaps_t caps = {
 	"wma",
 	eAudio,

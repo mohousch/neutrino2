@@ -154,7 +154,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-
+// mp3
 static WriterCaps_t caps_mp3 = {
 	"mp3",
 	eAudio,
@@ -169,6 +169,7 @@ struct Writer_s WriterAudioMP3 = {
 	&caps_mp3
 };
 
+// mpegl3
 static WriterCaps_t caps_mpegl3 = {
 	"mpeg/l3",
 	eAudio,

@@ -323,7 +323,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-
+// pcm
 static WriterCaps_t caps_pcm = {
 	"pcm",
 	eAudio,
@@ -338,6 +338,7 @@ struct Writer_s WriterAudioPCM = {
 	&caps_pcm
 };
 
+// ipcm
 static WriterCaps_t caps_ipcm = {
 	"ipcm",
 	eAudio,

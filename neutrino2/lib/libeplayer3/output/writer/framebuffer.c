@@ -182,6 +182,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
+// framebuffer
 static WriterCaps_t caps = {
 	"framebuffer",
 	eGfx,

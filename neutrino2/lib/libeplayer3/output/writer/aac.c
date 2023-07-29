@@ -315,7 +315,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-
+// aac
 static WriterCaps_t caps = {
 	"aac",
 	eAudio,

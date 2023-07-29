@@ -135,7 +135,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-
+// ac3
 static WriterCaps_t caps_ac3 = {
 	"ac3",
 	eAudio,
@@ -150,6 +150,7 @@ struct Writer_s WriterAudioAC3 = {
 	&caps_ac3,
 };
 
+// eac3
 static WriterCaps_t caps_eac3 = {
 	"eac3",
 	eAudio,

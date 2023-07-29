@@ -208,7 +208,8 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		
 		case AV_CODEC_ID_AVS:
 			return "V_AVS";
-			
+		
+		/* audio */	
 		case AV_CODEC_ID_MP2:
 			return "A_MPEG/L3";
 			
@@ -221,12 +222,15 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_AC3:
 			return "A_AC3";
 			
+		case AV_CODEC_ID_EAC3:
+			return "A_EAC3";
+			
 		case AV_CODEC_ID_DTS:
 			return "A_DTS";			
 			
 		case AV_CODEC_ID_WMAV1:
 		case AV_CODEC_ID_WMAV2:
-		case 86056: //CODEC_ID_WMAPRO
+		//case 86056: //CODEC_ID_WMAPRO
 			return "A_WMA";
 			
 		case AV_CODEC_ID_MLP:
@@ -239,10 +243,28 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return "A_RMA";
 			
 		case AV_CODEC_ID_VORBIS:
-			return "A_IPCM"; //return "A_VORBIS";
+			//return "A_IPCM"; 
+			return "A_VORBIS"; //FIXME:
 			
 		case AV_CODEC_ID_FLAC: //86030
-			return "A_IPCM"; //return "A_FLAC";
+			//return "A_IPCM"; 
+			return "A_FLAC"; //FIXME:
+			
+		case AV_CODEC_ID_PCM_S8:
+		case AV_CODEC_ID_PCM_U8:
+		case AV_CODEC_ID_PCM_S16LE:
+		case AV_CODEC_ID_PCM_S16BE:
+		case AV_CODEC_ID_PCM_U16LE:
+		case AV_CODEC_ID_PCM_U16BE:
+		case AV_CODEC_ID_PCM_S24LE:
+		case AV_CODEC_ID_PCM_S24BE:
+		case AV_CODEC_ID_PCM_U24LE:
+		case AV_CODEC_ID_PCM_U24BE:
+		case AV_CODEC_ID_PCM_S32LE:
+		case AV_CODEC_ID_PCM_S32BE:
+		case AV_CODEC_ID_PCM_U32LE:
+		case AV_CODEC_ID_PCM_U32BE:
+			return	"A_IPCM";  //FIXME: rewrite pcm writer
 			
 		/* subtitle */
 		case AV_CODEC_ID_SSA:
