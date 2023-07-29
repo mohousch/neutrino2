@@ -2848,8 +2848,8 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 			
 		// setSpinnerPath
 		std::string spinnerDir = CONFIGDIR "/skins/";
-		hintsDir += skinName.c_str();
-		hintsDir += "/spinner/";
+		spinnerDir += skinName.c_str();
+		spinnerDir += "/spinner/";
 			
 		// check if not empty
 		i = scandir(spinnerDir.c_str(), &namelist, 0, 0);
