@@ -178,7 +178,6 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_MSMPEG4V1:
 		case AV_CODEC_ID_MSMPEG4V2:
 		case AV_CODEC_ID_MSMPEG4V3:
-			//return "V_MSCOMP";
 			return "V_MPEG4";
 			
 		case AV_CODEC_ID_WMV1:

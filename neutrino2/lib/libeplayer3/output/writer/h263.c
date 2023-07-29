@@ -174,7 +174,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-//
+// h263
 static WriterCaps_t caps_h263 = {
 	"h263",
 	eVideo,
@@ -189,7 +189,7 @@ struct Writer_s WriterVideoH263 = {
 	&caps_h263,
 };
 
-//
+// flv
 static WriterCaps_t caps_flv = {
 	"FLV",
 	eVideo,
@@ -204,7 +204,7 @@ struct Writer_s WriterVideoFLV = {
 	&caps_flv,
 };
 
-//
+// mpeg4
 static WriterCaps_t mpeg4p2_caps = {
     	"mpeg4p2",
     	eVideo,

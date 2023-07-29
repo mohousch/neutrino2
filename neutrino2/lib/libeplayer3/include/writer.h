@@ -124,7 +124,8 @@ static Writer_t * AvailableWriter[] =
 	&WriterVideoWMV,
 	&WriterVideoH263,
 	&WriterVideoFLV,
-	&WriterVideoVC1,   
+	&WriterVideoVC1,
+	//   
 	&WriterFramebuffer,   
 	NULL
 };

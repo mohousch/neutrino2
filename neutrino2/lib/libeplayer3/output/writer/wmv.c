@@ -271,7 +271,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-
+// wmv
 static WriterCaps_t caps = {
 	"wmv",
 	eVideo,

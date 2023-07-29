@@ -281,7 +281,7 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-
+// vc1
 static WriterCaps_t caps = {
 	"vc1",
 	eVideo,
