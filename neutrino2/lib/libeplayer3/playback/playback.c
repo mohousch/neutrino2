@@ -323,7 +323,7 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 
 			context->playback->uri += 7; // jump over upnp://
 
-			getUPNPExtension(uri+7, &extension);
+			getUPNPExtension(uri + 7, &extension);
 
 			if(!extension)
 				return cERR_PLAYBACK_ERROR;

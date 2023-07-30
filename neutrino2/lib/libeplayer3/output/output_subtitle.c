@@ -782,29 +782,36 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 
     subtitle_printf(50, "%d\n", command);
 
-    switch(command) {
-	    case OUTPUT_OPEN: {
+    switch(command) 
+    {
+	    case OUTPUT_OPEN: 
+	    {
 		ret = subtitle_Open(context);
 		break;
 	    }
-	    case OUTPUT_CLOSE: {
+	    case OUTPUT_CLOSE: 
+	    {
 		ret = subtitle_Close(context);
 		break;
 	    }
-	    case OUTPUT_PLAY: {
+	    case OUTPUT_PLAY: 
+	    {
 		ret = subtitle_Play(context);
 		break;
 	    }
-	    case OUTPUT_STOP: {
+	    case OUTPUT_STOP: 
+	    {
 		ret = subtitle_Stop(context);
 		break;
 	    }
-	    case OUTPUT_SWITCH: {
+	    case OUTPUT_SWITCH: 
+	    {
 		subtitle_err("Subtitle Switch not implemented\n");
 		ret = cERR_SUBTITLE_ERROR;
 		break;
 	    }
-	    case OUTPUT_GET_SUBTITLE_OUTPUT: {
+	    case OUTPUT_GET_SUBTITLE_OUTPUT: 
+	    {
 		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
 		out->screen_width = screen_width;
 		out->screen_height = screen_height;
@@ -814,7 +821,8 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		out->destStride = destStride;
 		break;
 	    }
-	    case OUTPUT_SET_SUBTITLE_OUTPUT: {
+	    case OUTPUT_SET_SUBTITLE_OUTPUT: 
+	    {
 		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
 		screen_width = out->screen_width;
 		screen_height = out->screen_height;
@@ -824,25 +832,30 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		destStride = out->destStride;
 		break;
 	    }
-	    case OUTPUT_SUBTITLE_REGISTER_FUNCTION: {
+	    case OUTPUT_SUBTITLE_REGISTER_FUNCTION: 
+	    {
 		subtitle_SignalConnect(argument);
 		break;
 	    }
-	    case OUTPUT_SUBTITLE_REGISTER_BUFFER: {
+	    case OUTPUT_SUBTITLE_REGISTER_BUFFER: 
+	    {
 		subtitle_SignalConnectBuffer(argument);
 		break;
 	    }
-	    case OUTPUT_FLUSH: {
+	    case OUTPUT_FLUSH: 
+	    {
 		subtitle_err("Subtitle Flush not implemented\n");
 		ret = cERR_SUBTITLE_ERROR;
 		break;
 	    }
-	    case OUTPUT_PAUSE: {
+	    case OUTPUT_PAUSE: 
+	    {
 		subtitle_err("Subtitle Pause not implemented\n");
 		ret = cERR_SUBTITLE_ERROR;
 	    	break;
 	    }
-	    case OUTPUT_CONTINUE: {
+	    case OUTPUT_CONTINUE: 
+	    {
 		subtitle_err("Subtitle Continue not implemented\n");
 		ret = cERR_SUBTITLE_ERROR;
 	    	break;

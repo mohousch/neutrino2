@@ -1986,3 +1986,7 @@
 /plugins/satipclient.test/vtuner_vuplus.h
 /plugins/autom*
 /plugins/configure~
+/neutrino2/lib/libeplayer3/container/.deps/container_srt.Po
+/neutrino2/lib/libeplayer3/container/.deps/container_ssa.Po
+/neutrino2/lib/libeplayer3/container/container_srt.o
+/neutrino2/lib/libeplayer3/container/container_ssa.o
