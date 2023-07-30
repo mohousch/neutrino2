@@ -260,10 +260,11 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 
 			if (context->container && context->container->textSsaContainer)
 				context->container->textSsaContainer->Command(context, CONTAINER_INIT, uri + 7);
-			*/
 
 			if (context->container && context->container->assContainer)
-				context->container->assContainer->Command(context, CONTAINER_INIT, NULL);  
+				context->container->assContainer->Command(context, CONTAINER_INIT, NULL); 
+			*/
+			ASSContainer.Command(context, CONTAINER_INIT, NULL); 
 		} 
 		else if( (!strncmp("http://", uri, 7)) || (!strncmp("https://", uri, 8)) )
 		{
