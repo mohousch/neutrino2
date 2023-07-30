@@ -549,7 +549,8 @@ int container_ass_init(Context_t *context)
 
     ass_library = ass_library_init();
 
-    if (!ass_library) {
+    if (!ass_library) 
+    {
         ass_err("ass_library_init failed!\n");
         return cERR_CONTAINER_ASS_ERROR;
     }
@@ -624,7 +625,7 @@ int container_ass_init(Context_t *context)
 
     ass_set_hinting(ass_renderer, ASS_HINTING_LIGHT);
     ass_set_line_spacing(ass_renderer, ass_line_spacing);
-    ass_set_fonts(ass_renderer, ASS_FONT, "Arial", 0, NULL, 1);
+    ass_set_fonts(ass_renderer, ASS_FONT, "arial", 0, NULL, 1);
 
     if(threeDMode == 0)
     {

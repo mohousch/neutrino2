@@ -92,6 +92,111 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* ***************************** */
 /* Writer Functions              */
 /* ***************************** */
+// stmfb
+#ifdef __sh__
+#include <linux/stmfb.h>
+#endif
+
+#ifndef FBIO_BLIT
+#define FBIO_SET_MANUAL_BLIT _IOW('F', 0x21, __u8)
+#define FBIO_BLIT 0x22
+#endif
+
+void blit(int fd)
+{	
+#if defined (__sh__)
+	STMFBIO_BLT_DATA  bltData; 
+	memset(&bltData, 0, sizeof(STMFBIO_BLT_DATA)); 
+
+	bltData.operation  = BLT_OP_COPY;
+	bltData.ulFlags |= BLT_OP_FLAGS_BLEND_SRC_ALPHA | BLT_OP_FLAGS_BLEND_DST_COLOR;
+
+	// src
+	bltData.srcOffset  = 1920 *1080 * 4;
+	bltData.srcPitch   = xRes * 4; // stride
+
+	bltData.src_left   = 0; 
+	bltData.src_top    = 0; 
+	bltData.src_right  = xRes; 
+	bltData.src_bottom = yRes;
+
+		
+	bltData.srcFormat = SURF_ARGB8888;
+	bltData.srcMemBase = STMFBGP_FRAMEBUFFER;
+	
+	// get variable screeninfo
+	if (ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo) == -1)
+	{
+		perror("frameBuffer <FBIOGET_VSCREENINFO>");
+	}
+
+	// dst
+	bltData.dstOffset  = 0; 
+	bltData.dstPitch   = screeninfo.xres * 4;
+
+	bltData.dst_left   = 0; 
+	bltData.dst_top    = 0;
+	
+	// right
+	if(mode3d == THREE_SIDE_BY_SIDE)
+		bltData.dst_right  = screeninfo.xres/2; 
+	else
+		bltData.dst_right  = screeninfo.xres; 
+	
+	// buttom
+	if(mode3d == THREE_TOP_AND_BUTTOM)
+		bltData.dst_bottom = screeninfo.yres/2;
+	else
+		bltData.dst_bottom = screeninfo.yres;
+
+	bltData.dstFormat = SURF_ARGB8888;		
+	bltData.dstMemBase = STMFBGP_FRAMEBUFFER;
+
+	if ( (bltData.dst_right > screeninfo.xres) || (bltData.dst_bottom > screeninfo.yres) )
+	{
+		printf("CFrameBuffer::blit: values out of range desXb:%d desYb:%d\n", bltData.dst_right, bltData.dst_bottom);
+	}
+
+	if (ioctl(fd, STMFBIO_BLT, &bltData ) < 0) 
+		perror("STMFBIO_BLIT");
+	
+	// sync bliter
+	if(ioctl(fd, STMFBIO_SYNC_BLITTER) < 0)
+		perror("ioctl STMFBIO_SYNC_BLITTER");
+	
+	if(mode3d != 0)
+	{
+		if(mode3d == THREE_SIDE_BY_SIDE)
+			bltData.dst_left = screeninfo.xres/2;
+		if(mode3d == THREE_TOP_AND_BUTTOM)
+			bltData.dst_top = screeninfo.yres/2;
+		
+		
+		bltData.dst_right  = screeninfo.xres;
+		bltData.dst_bottom = screeninfo.yres;
+
+		if (ioctl(fd, STMFBIO_BLT, &bltData) < 0)
+			perror("ioctl STMFBIO_BLT");
+		
+		if(ioctl(fd, STMFBIO_SYNC_BLITTER) < 0)
+			perror("ioctl STMFBIO_SYNC_BLITTER");
+	}
+#else
+	// blit
+	unsigned char tmp = 1;
+	
+	if (ioctl(fd, FBIO_SET_MANUAL_BLIT, &tmp) < 0) 
+	{
+		perror("FB: FBIO_SET_MANUAL_BLIT");
+		printf("FB: failed\n");
+	}
+	else 
+	{
+		if (ioctl(fd, FBIO_BLIT) < 0)
+			perror("FBIO_BLIT");		
+	}
+#endif	
+}
 
 static int reset()
 {
@@ -174,6 +279,8 @@ static int writeData(void* _call)
 		for (y = 0; y < call->Height; y++)
 			memset(call->destination + ((call->y + y) * call->destStride) + call->x * 4, 0, call->Width * 4);
 	}
+	
+	blit(call->fd);
     
 	fb_printf(100, "< %d\n", res);
 	return res;
