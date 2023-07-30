@@ -165,11 +165,11 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_VP5:
 		case AV_CODEC_ID_VP6:
 		case AV_CODEC_ID_VP6F:
-			return "V_VP6";
+			return "V_VP6"; //FIXME: not handled yet
 			
 		case AV_CODEC_ID_RV10:
 		case AV_CODEC_ID_RV20:
-			return "V_RMV";
+			return "V_RMV"; //FIXME: not handled yet
 			
 		case AV_CODEC_ID_MPEG4:
 #if LIBAVCODEC_VERSION_MAJOR < 53
@@ -207,7 +207,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 #endif
 		
 		case AV_CODEC_ID_AVS:
-			return "V_AVS";
+			return "V_AVS"; //FIXME: not handled yet
 		
 		/* audio */	
 		case AV_CODEC_ID_MP2:
@@ -230,25 +230,28 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			
 		case AV_CODEC_ID_WMAV1:
 		case AV_CODEC_ID_WMAV2:
-		//case 86056: //CODEC_ID_WMAPRO
+		case AV_CODEC_ID_WMAPRO:
 			return "A_WMA";
 			
 		case AV_CODEC_ID_MLP:
-			return "A_MLP";
+			//return "A_MLP"; //FIXME: not handled yet
+			return "A_IPCM";
 			
 		case AV_CODEC_ID_RA_144:
-			return "A_RMA";
+			//return "A_RMA"; //FIXME: not handled yet
+			return "A_IPCM";
 			
 		case AV_CODEC_ID_RA_288:
-			return "A_RMA";
+			//return "A_RMA"; //FIXME: not handled yet
+			return "A_IPCM";
 			
 		case AV_CODEC_ID_VORBIS:
-			//return "A_IPCM"; 
-			return "A_VORBIS"; //FIXME:
+			return "A_IPCM"; 
+			//return "A_VORBIS"; //FIXME:
 			
 		case AV_CODEC_ID_FLAC: //86030
-			//return "A_IPCM"; 
-			return "A_FLAC"; //FIXME:
+			return "A_IPCM"; 
+			//return "A_FLAC"; //FIXME:
 			
 		case AV_CODEC_ID_PCM_S8:
 		case AV_CODEC_ID_PCM_U8:
@@ -264,6 +267,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_PCM_S32BE:
 		case AV_CODEC_ID_PCM_U32LE:
 		case AV_CODEC_ID_PCM_U32BE:
+			//return "A_PCM";
 			return	"A_IPCM";  //FIXME: rewrite pcm writer
 			
 		/* subtitle */
@@ -404,7 +408,7 @@ static void FFMPEGThread(Context_t *context)
 	int           err = 0, gotlastPts = 0, audioMute = 0;
 	AudioVideoOut_t avOut;
 
-	/* Softdecoding buffer*/
+	/* Softdecoding buffer */
 	unsigned char *samples = NULL;
 
 	ffmpeg_printf(10, "\n");
@@ -414,6 +418,7 @@ static void FFMPEGThread(Context_t *context)
 		ffmpeg_err("Thread waiting for end of init phase...\n");
 		usleep(1000);
 	}
+	
 	ffmpeg_printf(10, "Running!\n");
 
 	while ( context && context->playback && context->playback->isPlaying ) 
@@ -669,7 +674,7 @@ static void FFMPEGThread(Context_t *context)
 			{
 				if (subtitleTrack->Id == index) 
 				{
-					float duration=3.0;
+					float duration = 3.0;
 					ffmpeg_printf(100, "subtitleTrack->stream %p \n", subtitleTrack->stream);
 
 					pts = calcPts(subtitleTrack->stream, &packet);
@@ -789,6 +794,7 @@ static void FFMPEGThread(Context_t *context)
 		    releaseMutex(FILENAME, __FUNCTION__,__LINE__);
 		    break;
 		}
+		
 		releaseMutex(FILENAME, __FUNCTION__,__LINE__);		
 	} /* while */
 
@@ -858,6 +864,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 		ffmpeg_err("Cause: %s\n", error);
 
 		releaseMutex(FILENAME, __FUNCTION__,__LINE__);
+		
 		return cERR_CONTAINER_FFMPEG_OPEN;
 	}
 	
@@ -1111,9 +1118,10 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					track.have_aacheader = 1;
 				} 
 				// wma
-				else if(stream->codec->codec_id == AV_CODEC_ID_WMAV1 || stream->codec->codec_id == AV_CODEC_ID_WMAV2 || 86056 ) //CODEC_ID_WMAPRO) //if (stream->codec->extradata_size > 0)
+				else if(stream->codec->codec_id == AV_CODEC_ID_WMAV1 || stream->codec->codec_id == AV_CODEC_ID_WMAV2 || stream->codec->codec_id == AV_CODEC_ID_WMAPRO ) //if (stream->codec->extradata_size > 0)
 				{
 					ffmpeg_printf(10,"Create WMA ExtraData\n");
+					
 					track.aacbuflen = 104 + stream->codec->extradata_size;
 					track.aacbuf = malloc(track.aacbuflen);
 					memset (track.aacbuf, 0, track.aacbuflen);
@@ -1154,7 +1162,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					switch(stream->codec->codec_id) 
 					{
 						//TODO: What code for lossless ?
-						case 86056/*CODEC_ID_WMAPRO*/:
+						case AV_CODEC_ID_WMAPRO:
 							codec_id = WMA_VERSION_9_PRO;
 							break;
 						case AV_CODEC_ID_WMAV2:
@@ -1215,7 +1223,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 			break;
 	    
 			// subtitle
-#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
 			case AVMEDIA_TYPE_SUBTITLE:
 			{
 #if LIBAVCODEC_VERSION_MAJOR < 54
@@ -1289,8 +1296,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 			case AVMEDIA_TYPE_NB:
 			default:
 				ffmpeg_err("not handled or unknown codec_type %d\n", stream->codec->codec_type);
-				break;	 
-#endif	 
+				break;	 	 
 		} /* switch (stream->codec->codec_type) */
 
 	} /* for */
