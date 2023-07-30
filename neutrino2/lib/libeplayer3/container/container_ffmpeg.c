@@ -751,7 +751,8 @@ static void FFMPEGThread(Context_t *context)
 							data.pts       = pts;
 							data.duration  = duration;
 
-							context->container->/*ass*/selectedContainer->Command(context, CONTAINER_DATA, &data);
+							//context->container->assContainer->Command(context, CONTAINER_DATA, &data);
+							ASSContainer.Command(context, CONTAINER_DATA, &data);
 						}
 						else
 						{
@@ -769,7 +770,8 @@ static void FFMPEGThread(Context_t *context)
 							data.pts       = pts;
 							data.duration  = duration;
 
-							context->container->/*ass*/selectedContainer->Command(context, CONTAINER_DATA, &data);
+							//context->container->assContainer->Command(context, CONTAINER_DATA, &data);
+							ASSContainer.Command(context, CONTAINER_DATA, &data);
 							free(line);
 						}
 					} /* duration */

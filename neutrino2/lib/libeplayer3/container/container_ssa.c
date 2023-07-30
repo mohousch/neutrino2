@@ -198,7 +198,8 @@ static void* SsaSubtitleThread(void *data)
                 data.extralen  = strlen(head);
                 data.pts       = 0;
                 data.duration  = 0.0;
-                context->container->/*ass*/selectedContainer->Command(context, CONTAINER_DATA, &data);
+                //context->container->assContainer->Command(context, CONTAINER_DATA, &data);
+                ASSContainer.Command(context, CONTAINER_DATA, &data);
         }
         free(line);
         line = NULL;

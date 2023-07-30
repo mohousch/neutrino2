@@ -123,7 +123,8 @@ void data_to_manager(Context_t *context, char* Text, unsigned long long int Pts,
             data.pts       = Pts*90;
             data.duration  = Duration;
 
-            context->container->/*ass*/selectedContainer->Command(context, CONTAINER_DATA, &data);
+            //context->container->assContainer->Command(context, CONTAINER_DATA, &data);
+            ASSContainer.Command(context, CONTAINER_DATA, &data);
             free(line);
     }
 

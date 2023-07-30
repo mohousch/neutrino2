@@ -128,23 +128,7 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
 	return ret;
 }
 
-/*
-extern Container_t SrtContainer;
-extern Container_t SsaContainer;
-extern Container_t ASSContainer;
-extern Container_t FFMPEGContainer;
-
-ContainerHandler_t ContainerHandler = 
-{
-	"Output",
-	//NULL,
-	&FFMPEGContainer,  
-	&SrtContainer,
-	&SsaContainer,
-	&ASSContainer,    
-	Command,
-};
-*/
+//
 ContainerHandler_t ContainerHandler = 
 {
 	"Output",
