@@ -226,6 +226,10 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 
 	if (!context->playback->isPlaying) 
 	{
+		//
+		ASSContainer.Command(context, CONTAINER_INIT, NULL);
+		
+		//
 		if (!strncmp("file://", uri, 7)) 
 		{
 			char * extension = NULL;
@@ -264,7 +268,8 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 			if (context->container && context->container->assContainer)
 				context->container->assContainer->Command(context, CONTAINER_INIT, NULL); 
 			*/
-			ASSContainer.Command(context, CONTAINER_INIT, NULL); 
+			SrtContainer.Command(context, CONTAINER_INIT, uri + 7);
+			SsaContainer.Command(context, CONTAINER_INIT, uri + 7);
 		} 
 		else if( (!strncmp("http://", uri, 7)) || (!strncmp("https://", uri, 8)) )
 		{
@@ -978,19 +983,22 @@ static int PlaybackSwitchSubtitle(Context_t  *context, int* track)
 			/* konfetti: I make this hack a little bit nicer,
 			* but its still a hack in my opinion ;)
 			*/
-			if (context->container && context->container->/*ass*/selectedContainer)
-				context->container->/*ass*/selectedContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+			//if (context->container && context->container->assContainer)
+			//	context->container->assContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+			ASSContainer.Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
 
 			if (trackid >= TEXTSRTOFFSET)
 			{
-				if (context->container && context->container->/*textSrt*/selectedContainer)
-					context->container->/*textSrt*/selectedContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+				//if (context->container && context->container->textSrtContainer)
+				//	context->container->textSrtContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+				SrtContainer.Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
 			}
 			
 			if (trackid >= TEXTSSAOFFSET)
 			{
-				if (context->container && context->container->/*textSsa*/selectedContainer)
-					context->container->/*textSsa*/selectedContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+				//if (context->container && context->container->textSsaContainer)
+				//	context->container->textSsaContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+				SsaContainer.Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
 			}  
 		} 
 		else
@@ -1037,7 +1045,6 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 	int ret = cERR_PLAYBACK_NO_ERROR;
 
 	playback_printf(20, "Command %d\n", command);
-
 
 	switch(command) 
 	{
