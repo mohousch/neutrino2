@@ -500,6 +500,7 @@ bool cPlayback::Open()
 	dprintf(DEBUG_NORMAL, "%s:%s\n", FILENAME, __FUNCTION__ );
 	
 	mAudioStream = 0;
+	mSubStream = -1;
 	mSpeed = 0;
 	playing = false;
 	
@@ -862,6 +863,26 @@ bool cPlayback::SetAPid(unsigned short pid, int /*_ac3*/)
 				player->playback->Command(player, PLAYBACK_SWITCH_AUDIO, (void*)&track);
 
 		mAudioStream = pid;
+	}
+#endif	
+
+	return true;
+}
+
+//
+bool cPlayback::SetSubPid(unsigned short pid)
+{
+	dprintf(DEBUG_NORMAL, "%s:%s curpid:%d nextpid:%d\n", FILENAME, __FUNCTION__, mSubStream, pid);
+	
+#if !ENABLE_GSTREAMER
+	int track = pid;
+
+	if(pid != mSubStream)
+	{
+		if(player && player->playback)
+				player->playback->Command(player, PLAYBACK_SWITCH_SUBTITLE, (void*)&track);
+
+		mSubStream = pid;
 	}
 #endif	
 
@@ -1272,10 +1293,11 @@ void cPlayback::FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t 
 		*numpida = i;
 	}
 #else
+	char ** TrackList = NULL;
+	
 	// audio pids
 	if(player && player->manager && player->manager->audio) 
 	{
-		char ** TrackList = NULL;
 		player->manager->audio->Command(player, MANAGER_LIST, &TrackList);
 
 		if (TrackList != NULL) 
@@ -1287,7 +1309,7 @@ void cPlayback::FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t 
 			{
 				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
 				apids[j] = j;
-
+				
 				if( (!strncmp("A_MPEG/L3", TrackList[i + 1], 9)) || (!strncmp("A_MP3", TrackList[i + 1], 5)) )
 					ac3flags[j] = 4;
 				else if(!strncmp("A_AC3", TrackList[i + 1], 5))
@@ -1317,4 +1339,37 @@ void cPlayback::FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t 
 #endif	
 }
 
+// subs pids
+void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *language)
+{
+	dprintf(DEBUG_NORMAL, "%s:%s\n", FILENAME, __FUNCTION__);
+
+#if !defined (ENABLE_GSTREAMER)
+	char ** TrackList = NULL;
+	
+	if(player && player->manager && player->manager->subtitle) 
+	{
+		player->manager->subtitle->Command(player, MANAGER_LIST, &TrackList);
+
+		if (TrackList != NULL) 
+		{
+			printf("cPlayback::FindAllSubPids: SubTrack List\n");
+			int i = 0, j = 0;
+
+			for (i = 0, j = 0; TrackList[i] != NULL; i += 2, j++) 
+			{
+				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
+				apids[j] = j;
+
+				language[j] = TrackList[i];
+				
+				free(TrackList[i]);
+				free(TrackList[i + 1]);
+			}
+			free(TrackList);
+			*numpida = j;
+		}
+	}
+#endif
+}
 

@@ -63,10 +63,17 @@ unsigned short vpid = 0;
 unsigned short vtype = 0;
 std::string language[10];
 
+//
 unsigned int currentapid = 0;
 unsigned int currentac3 = 0;
 
+//
 unsigned int ac3state = CInfoViewer::NO_AC3;
+
+//
+unsigned short spids[10];
+//unsigned short numpids = 0;
+unsigned int currentspid = 0;
 
 // aspect ratio
 #if defined (__sh__)
@@ -153,6 +160,26 @@ int CAVPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKe
 }
 
 //
+int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKey)
+{
+	dprintf(DEBUG_NORMAL, "CAVSubPIDSelectWidget::exec: %s (currentspid:%d)\n", actionKey.c_str(), currentspid);
+	
+	unsigned int sel = atoi(actionKey.c_str());
+
+	if (currentspid != spids[sel]) 
+	{
+		currentspid = spids[sel];
+		
+		if(playback)
+			playback->SetSubPid(currentspid);
+		
+		dprintf(DEBUG_NORMAL, "CAVSubPIDSelect::exec: spid changed to %d\n", currentspid);
+	}
+	
+	return RETURN_EXIT;
+}
+
+//
 int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::exec: %s\n", actionKey.c_str());
@@ -209,6 +236,7 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	
 	AVPIDSelector->clearItems();
 	
+	// audio pids
 	CAVPIDChangeExec AVPIDChanger;
 	
 	if(playback)
@@ -304,6 +332,48 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	// video format bestfit/letterbox/panscan/non
 	AVPIDSelector->addItem(new CMenuOptionChooser(_("Video Format"), &g_settings.video_Format, VIDEOMENU_VIDEOFORMAT_OPTIONS, VIDEOMENU_VIDEOFORMAT_OPTION_COUNT, true, CVideoSettings::getInstance()->videoSetupNotifier, RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
 	
+	// subs
+	CAVSubPIDChangeExec AVSubPIDChanger;
+	
+	if(playback)
+		playback->FindAllSubPids(spids, &numpida, language);
+	
+	if (numpida > 0) 
+	{
+		AVPIDSelector->addItem(new CMenuSeparator(LINE));
+		
+		bool enabled;
+
+		for (unsigned int count = 0; count < numpida; count++) 
+		{
+			bool name_ok = false;
+			char spidnumber[10];
+			sprintf(spidnumber, "%d", count);
+			enabled = true;
+			
+			std::string spidtitle = "Sub ";
+
+			// language
+			if (!language[count].empty())
+			{
+				spidtitle = language[count];
+				name_ok = true;
+			}
+
+			if (!name_ok)
+			{
+				spidtitle = "Sub ";
+				name_ok = true;
+			}
+
+			if (!name_ok)
+				spidtitle.append(spidnumber);
+
+			AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), enabled, NULL, &AVSubPIDChanger, spidnumber, CRCInput::convertDigitToKey(count + 1)));
+		}
+	} 
+
+	//	
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	

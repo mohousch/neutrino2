@@ -31,6 +31,7 @@ class cPlayback
 	private:
 		int mSpeed;
 		int mAudioStream;
+		int mSubStream;
 		
 	public:
 		bool playing;
@@ -42,6 +43,7 @@ class cPlayback
 		bool Play(void);
 		bool Stop(void);
 		bool SetAPid(unsigned short pid, int _ac = 0);
+		bool SetSubPid(unsigned short pid);
 
 #if ENABLE_GSTREAMER
 		void trickSeek(double ratio);
@@ -52,6 +54,7 @@ class cPlayback
 		bool GetPosition(int &position, int &duration);
 		bool SetPosition(int position);
 		void FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t *numpida, std::string *language);
+		void FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *language);
 
 		cPlayback(int num = 0);
 		~cPlayback();	
