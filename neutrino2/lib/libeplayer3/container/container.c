@@ -44,6 +44,7 @@ if (debug_level >= level) printf(x); } while (0)
 
 static const char FILENAME[] = __FILE__;
 
+//
 static void printContainerCapabilities() 
 {
 	int i, j;
@@ -58,6 +59,7 @@ static void printContainerCapabilities()
 	 container_printf(10, "\n");
 }
 
+//
 static int selectContainer(Context_t  *context, char * extension) 
 {
 	int i, j;
@@ -68,6 +70,7 @@ static int selectContainer(Context_t  *context, char * extension)
 	for (i = 0; AvailableContainer[i] != NULL; i++)
 	{
 		for (j = 0; AvailableContainer[i]->Capabilities[j] != NULL; j++)
+		{
 			if (!strcasecmp(AvailableContainer[i]->Capabilities[j], extension)) 
 			{
 				context->container->selectedContainer = AvailableContainer[i];
@@ -76,6 +79,7 @@ static int selectContainer(Context_t  *context, char * extension)
 				ret = 0;
 				break;
 			}
+		}
 			
 		if (ret == 0)
 			break;
@@ -124,17 +128,28 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
 	return ret;
 }
 
+/*
 extern Container_t SrtContainer;
 extern Container_t SsaContainer;
 extern Container_t ASSContainer;
+extern Container_t FFMPEGContainer;
 
 ContainerHandler_t ContainerHandler = 
 {
 	"Output",
-	NULL,   
+	//NULL,
+	&FFMPEGContainer,  
 	&SrtContainer,
 	&SsaContainer,
 	&ASSContainer,    
 	Command,
 };
+*/
+ContainerHandler_t ContainerHandler = 
+{
+	"Output",
+	NULL,
+	Command
+};
+
 

@@ -240,26 +240,30 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 
 			if(context->container->Command(context, CONTAINER_ADD, extension) < 0)
 				return cERR_PLAYBACK_ERROR;
-			if (context->container->selectedContainer != NULL) 
+				
+			if (context->container->selectedContainer != NULL)
 			{
 				if(context->container->selectedContainer->Command(context, CONTAINER_INIT, uri) < 0)
 					return cERR_PLAYBACK_ERROR;
-			} else 
+			} 
+			else 
 			{
 				return cERR_PLAYBACK_ERROR;
 			}
 
 			free(extension);
 
-			//CHECK FOR SUBTITLES	    
+			//CHECK FOR SUBTITLES
+			/*	    
 			if (context->container && context->container->textSrtContainer)
-				context->container->textSrtContainer->Command(context, CONTAINER_INIT, uri+7);
+				context->container->textSrtContainer->Command(context, CONTAINER_INIT, uri + 7);
 
 			if (context->container && context->container->textSsaContainer)
-				context->container->textSsaContainer->Command(context, CONTAINER_INIT, uri+7);
+				context->container->textSsaContainer->Command(context, CONTAINER_INIT, uri + 7);
 
 			if (context->container && context->container->assContainer)
-				context->container->assContainer->Command(context, CONTAINER_INIT, NULL);    
+				context->container->assContainer->Command(context, CONTAINER_INIT, NULL);
+			*/  
 		} 
 		else if( (!strncmp("http://", uri, 7)) || (!strncmp("https://", uri, 8)) )
 		{
@@ -274,7 +278,8 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 			{
 				if(context->container->selectedContainer->Command(context, CONTAINER_INIT, context->playback->uri) < 0)
 					return cERR_PLAYBACK_ERROR;
-			} else 
+			} 
+			else 
 			{
 				return cERR_PLAYBACK_ERROR;
 			}
@@ -303,7 +308,8 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 			{
 				if(context->container->selectedContainer->Command(context, CONTAINER_INIT, context->playback->uri) < 0)
 				      return cERR_PLAYBACK_ERROR;
-			} else 
+			} 
+			else 
 			{
 				return cERR_PLAYBACK_ERROR;
 			}
@@ -327,6 +333,7 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 				playback_err("container CONTAINER_ADD failed\n");
 				return cERR_PLAYBACK_ERROR;
 			}
+			
 			if (context->container->selectedContainer != NULL) 
 			{
 				if(context->container->selectedContainer->Command(context, CONTAINER_INIT, uri+7) < 0)
@@ -334,7 +341,8 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 					playback_err("container CONTAINER_INIT failed\n");
 					return cERR_PLAYBACK_ERROR;
 				}
-			} else 
+			} 
+			else 
 			{
 				playback_err("selected container is null\n");
 				return cERR_PLAYBACK_ERROR;
@@ -383,7 +391,7 @@ static int PlaybackClose(Context_t  *context)
 
 	context->manager->audio->Command(context, MANAGER_DEL, NULL);
 	context->manager->video->Command(context, MANAGER_DEL, NULL);    
-	//context->manager->subtitle->Command(context, MANAGER_DEL, NULL);   
+	context->manager->subtitle->Command(context, MANAGER_DEL, NULL);   
 
 	context->playback->isPaused     = 0;
 	context->playback->isPlaying    = 0;
@@ -457,6 +465,7 @@ static int PlaybackPlay(Context_t * context)
 			context->playback->isCreationPhase = 0;	// allow thread to go into next state
 
 			ret = context->container->selectedContainer->Command(context, CONTAINER_PLAY, NULL);
+			
 			if (ret != 0) 
 			{
 				playback_err("CONTAINER_PLAY failed!\n");
@@ -927,15 +936,11 @@ static int PlaybackSwitchAudio(Context_t  *context, int* track)
 
 		if(nextrackid != curtrackid) 
 		{
-			//PlaybackPause(context);
-
 			if (context->output && context->output->audio)
 				context->output->audio->Command(context, OUTPUT_SWITCH, (void*)"audio");
 
 			if (context->container && context->container->selectedContainer)
 				context->container->selectedContainer->Command(context, CONTAINER_SWITCH_AUDIO, &nextrackid);
-
-			//PlaybackContinue(context);
 		}
 	} 
 	else
@@ -972,18 +977,19 @@ static int PlaybackSwitchSubtitle(Context_t  *context, int* track)
 			/* konfetti: I make this hack a little bit nicer,
 			* but its still a hack in my opinion ;)
 			*/
-			if (context->container && context->container->assContainer)
-				context->container->assContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+			if (context->container && context->container->/*ass*/selectedContainer)
+				context->container->/*ass*/selectedContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
 
 			if (trackid >= TEXTSRTOFFSET)
 			{
-				if (context->container && context->container->textSrtContainer)
-					context->container->textSrtContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+				if (context->container && context->container->/*textSrt*/selectedContainer)
+					context->container->/*textSrt*/selectedContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
 			}
+			
 			if (trackid >= TEXTSSAOFFSET)
 			{
-				if (context->container && context->container->textSsaContainer)
-					context->container->textSsaContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+				if (context->container && context->container->/*textSsa*/selectedContainer)
+					context->container->/*textSsa*/selectedContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
 			}  
 		} 
 		else

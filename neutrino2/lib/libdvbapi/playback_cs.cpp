@@ -525,9 +525,9 @@ bool cPlayback::Open()
 	// registration of output devices
 	if(player && player->output) 
 	{
-		player->output->Command(player,OUTPUT_ADD, (void*)"audio");
-		player->output->Command(player,OUTPUT_ADD, (void*)"video");		
-		player->output->Command(player,OUTPUT_ADD, (void*)"subtitle");		
+		player->output->Command(player, OUTPUT_ADD, (void*)"audio");
+		player->output->Command(player, OUTPUT_ADD, (void*)"video");		
+		player->output->Command(player, OUTPUT_ADD, (void*)"subtitle");		
 	}
 
 	// subtitle
@@ -611,7 +611,7 @@ void cPlayback::Close(void)
 		player->output->Command(player, OUTPUT_CLOSE, NULL);
 		player->output->Command(player,OUTPUT_DEL, (void*)"audio");
 		player->output->Command(player,OUTPUT_DEL, (void*)"video");		
-		//player->output->Command(player,OUTPUT_DEL, (void*)"subtitle");	
+		player->output->Command(player,OUTPUT_DEL, (void*)"subtitle");	
 	}
 
 	if(player && player->playback)

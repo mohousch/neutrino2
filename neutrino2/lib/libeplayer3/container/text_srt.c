@@ -123,7 +123,7 @@ void data_to_manager(Context_t *context, char* Text, unsigned long long int Pts,
             data.pts       = Pts*90;
             data.duration  = Duration;
 
-            context->container->assContainer->Command(context, CONTAINER_DATA, &data);
+            context->container->/*ass*/selectedContainer->Command(context, CONTAINER_DATA, &data);
             free(line);
     }
 
@@ -477,20 +477,27 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
     
     srt_printf(10, "\n");
 
-    switch(command) {
-	    case CONTAINER_INIT: {
+    switch(command) 
+    {
+	    case CONTAINER_INIT: 
+	    {
 		char * filename = (char *)argument;
 		ret = SrtGetSubtitle(context, filename);
 		break;
 	    }
-	    case CONTAINER_DEL: {
+	    
+	    case CONTAINER_DEL: 
+	    {
 		ret = SrtDel(context);
 		break;
 	    }
-	    case CONTAINER_SWITCH_SUBTITLE: {
+	    
+	    case CONTAINER_SWITCH_SUBTITLE: 
+	    {
 		ret = SrtSwitchSubtitle(context, (int*) argument);
 		break;
 	    }
+	    
 	    default:
 		srt_err("ConatinerCmd not supported! %d\n", command);
 		break;
@@ -501,7 +508,12 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
     return 0;
 }
 
-static char *SrtCapabilities[] = { "srt", NULL };
+//
+static char *SrtCapabilities[] = 
+{ 
+	"srt", 
+	NULL 
+};
 
 Container_t SrtContainer = 
 {

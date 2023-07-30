@@ -830,22 +830,26 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
 		ret = container_ass_init(context);
 		break;
 	    }
+	    
 	    case CONTAINER_STOP:  
 	    {
 		ret = container_ass_stop(context);
 		break;
 	    }
+	    
 	    case CONTAINER_SWITCH_SUBTITLE: 
 	    {
 		ret = container_ass_switch_subtitle(context, (int*) argument);
 		break;
 	    }
+	    
 	    case CONTAINER_DATA: 
 	    {
 		SubtitleData_t* data = (SubtitleData_t*) argument;
 		ret = container_ass_process_data(context, data);
 		break;
 	    }
+	    
 	    default:
 		ass_err("ContainerCmd %d not supported!\n", command);
 		ret = cERR_CONTAINER_ASS_ERROR;
@@ -857,7 +861,12 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
     return ret;
 }
 
-static char *ASS_Capabilities[] = {"ass", NULL };
+//
+static char *ASS_Capabilities[] = 
+{
+	"ass", 
+	NULL 
+};
 
 Container_t ASSContainer = 
 {

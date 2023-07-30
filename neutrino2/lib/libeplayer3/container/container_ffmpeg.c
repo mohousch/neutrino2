@@ -278,21 +278,11 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_DVD_SUBTITLE:
 		case AV_CODEC_ID_DVB_SUBTITLE:
 		case AV_CODEC_ID_XSUB:
-		case AV_CODEC_ID_MOV_TEXT:
-//#if LIBAVCODEC_VERSION_INT > AV_VERSION_INT(56, 72, 2)      
+		case AV_CODEC_ID_MOV_TEXT:      
 		case AV_CODEC_ID_HDMV_PGS_SUBTITLE:
-//#endif
-
-//#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52,38,1)
 		case AV_CODEC_ID_DVB_TELETEXT:
-		case AV_CODEC_ID_SRT:
-//#endif      
+		case AV_CODEC_ID_SRT:      
 			return "S_TEXT/SRT"; /* fixme */
-		
-//#if LIBAVCODEC_VERSION_INT > AV_VERSION_INT(52, 72, 2)
-//		case AV_CODEC_ID_SRT:
-//			return "S_TEXT/SRT"; /* fixme */
-//#endif 
 
 		default:
 			if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
@@ -761,7 +751,7 @@ static void FFMPEGThread(Context_t *context)
 							data.pts       = pts;
 							data.duration  = duration;
 
-							context->container->assContainer->Command(context, CONTAINER_DATA, &data);
+							context->container->/*ass*/selectedContainer->Command(context, CONTAINER_DATA, &data);
 						}
 						else
 						{
@@ -779,7 +769,7 @@ static void FFMPEGThread(Context_t *context)
 							data.pts       = pts;
 							data.duration  = duration;
 
-							context->container->assContainer->Command(context, CONTAINER_DATA, &data);
+							context->container->/*ass*/selectedContainer->Command(context, CONTAINER_DATA, &data);
 							free(line);
 						}
 					} /* duration */
@@ -1913,6 +1903,7 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
 	return ret;
 }
 
+//
 static char *FFMPEG_Capabilities[] = {
 	"avi", 
 	"mkv", 

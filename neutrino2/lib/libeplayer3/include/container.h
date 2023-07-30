@@ -33,6 +33,7 @@ typedef struct Container_s
 // ffmpeg
 extern Container_t FFMPEGContainer;
 
+//
 static Container_t * AvailableContainer[] = 
 {
 	&FFMPEGContainer,
@@ -41,13 +42,20 @@ static Container_t * AvailableContainer[] =
 
 typedef struct ContainerHandler_s 
 {
+	#if 0
 	char * Name;
-	Container_t * selectedContainer;    
+	Container_t * selectedContainer;
+	//Container_t * ffmpegContainer;  
 	Container_t * textSrtContainer;
 	Container_t * textSsaContainer;
 	Container_t * assContainer;   
 
 	int (* Command) (/*Context_t*/void  *, ContainerCmd_t, void *);
+	#endif
+	char * Name;
+    	Container_t * selectedContainer;
+
+    	int (* Command) (/*Context_t*/void  *, ContainerCmd_t, void *);
 } ContainerHandler_t;
 
 #endif

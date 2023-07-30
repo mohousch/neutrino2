@@ -198,7 +198,7 @@ static void* SsaSubtitleThread(void *data)
                 data.extralen  = strlen(head);
                 data.pts       = 0;
                 data.duration  = 0.0;
-                context->container->assContainer->Command(context, CONTAINER_DATA, &data);
+                context->container->/*ass*/selectedContainer->Command(context, CONTAINER_DATA, &data);
         }
         free(line);
         line = NULL;
@@ -484,20 +484,27 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
     
     ssa_printf(10, "\n");
 
-    switch(command) {
-	    case CONTAINER_INIT: {
+    switch(command) 
+    {
+	    case CONTAINER_INIT: 
+	    {
 		char * filename = (char *)argument;
 		ret = SsaGetSubtitle(context, filename);
 		break;
 	    }
-	    case CONTAINER_DEL: {
+	    
+	    case CONTAINER_DEL: 
+	    {
 		ret = SsaDel(context);
 		break;
 	    }
-	    case CONTAINER_SWITCH_SUBTITLE: {
+	    
+	    case CONTAINER_SWITCH_SUBTITLE: 
+	    {
 		ret = SsaSwitchSubtitle(context, (int*) argument);
 		break;
 	    }
+	    
 	    default:
 		ssa_err("ConatinerCmd not supported! %d\n", command);
 		break;
@@ -508,7 +515,12 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
     return 0;
 }
 
-static char *SsaCapabilities[] = { "ssa", NULL };
+//
+static char *SsaCapabilities[] = 
+{ 
+	"ssa", 
+	NULL 
+};
 
 Container_t SsaContainer = 
 {
