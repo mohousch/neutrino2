@@ -279,19 +279,20 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_DVB_SUBTITLE:
 		case AV_CODEC_ID_XSUB:
 		case AV_CODEC_ID_MOV_TEXT:
-#if LIBAVCODEC_VERSION_INT > AV_VERSION_INT(56, 72, 2)      
+//#if LIBAVCODEC_VERSION_INT > AV_VERSION_INT(56, 72, 2)      
 		case AV_CODEC_ID_HDMV_PGS_SUBTITLE:
-#endif
+//#endif
 
-#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52,38,1)
+//#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52,38,1)
 		case AV_CODEC_ID_DVB_TELETEXT:
-#endif      
+		case AV_CODEC_ID_SRT:
+//#endif      
 			return "S_TEXT/SRT"; /* fixme */
 		
-#if LIBAVCODEC_VERSION_INT > AV_VERSION_INT(52, 72, 2)
-		case AV_CODEC_ID_SRT:
-			return "S_TEXT/SRT"; /* fixme */
-#endif 
+//#if LIBAVCODEC_VERSION_INT > AV_VERSION_INT(52, 72, 2)
+//		case AV_CODEC_ID_SRT:
+//			return "S_TEXT/SRT"; /* fixme */
+//#endif 
 
 		default:
 			if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
