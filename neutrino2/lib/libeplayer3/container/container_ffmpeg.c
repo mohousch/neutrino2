@@ -809,6 +809,7 @@ static void FFMPEGThread(Context_t *context)
 int container_ffmpeg_init(Context_t *context, char * filename)
 {
 	int n, err;
+	int foundSubs = 0;
 
 	ffmpeg_printf(10, ">\n");
 
@@ -1269,7 +1270,10 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				}
 
 				if (track.Name)
+				{
+					foundSubs = 1;
 					ffmpeg_printf(10, "FOUND SUBTITLE %s\n", track.Name);
+				}
 
 				if (context->manager->subtitle)
 				{
@@ -1297,6 +1301,13 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	/* init */
 	latestPts = 0;
 	isContainerRunning = 1;
+	
+	//
+	if (foundSubs)
+	{
+		// init assContainer
+		ASSContainer.Command(context, CONTAINER_INIT, NULL);
+	}
 
 	releaseMutex(FILENAME, __FUNCTION__,__LINE__);
 

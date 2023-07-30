@@ -124,13 +124,18 @@ int LinuxDvbOpen(Context_t  *context, char * type)
 	
 	if (audio && audiofd == -1) 
 	{
+#ifndef USE_OPENGL
 		audiofd = open(AUDIODEV, O_RDWR);
+#endif
 
 		if (audiofd <= 0)
 		{
 			// fallback
 			sleep(1);
+			
+#ifndef USE_OPENGL
 			audiofd = open(AUDIODEV, O_RDWR);
+#endif
 	    
 			if (audiofd <= 0)
 			{
@@ -163,14 +168,18 @@ int LinuxDvbOpen(Context_t  *context, char * type)
 
 	if (video && videofd == -1) 
 	{
+#ifndef USE_OPENGL
 		videofd = open(VIDEODEV, O_RDWR);
+#endif
 
 		if (videofd <= 0)
 		{
 			// fallback
 			sleep(1);
 	     
+#ifndef USE_OPENGL
 			videofd = open(VIDEODEV, O_RDWR);
+#endif
 	    
 			if (videofd <= 0)
 			{

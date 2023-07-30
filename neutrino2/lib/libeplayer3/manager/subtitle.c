@@ -32,7 +32,7 @@
 /* ***************************** */
 #define TRACKWRAP 20
 
-#define SUBTITLE_MGR_DEBUG
+//#define SUBTITLE_MGR_DEBUG
 
 #ifdef SUBTITLE_MGR_DEBUG
 
