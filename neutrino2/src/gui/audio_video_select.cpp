@@ -72,8 +72,8 @@ unsigned int ac3state = CInfoViewer::NO_AC3;
 
 //
 unsigned short spids[10];
-//unsigned short numpids = 0;
-unsigned int currentspid = 0;
+unsigned short numpids = 0;
+unsigned int currentspid = -1;
 
 // aspect ratio
 #if defined (__sh__)
@@ -336,20 +336,17 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	CAVSubPIDChangeExec AVSubPIDChanger;
 	
 	if(playback)
-		playback->FindAllSubPids(spids, &numpida, language);
+		playback->FindAllSubPids(spids, &numpids, language);
 	
 	if (numpida > 0) 
 	{
 		AVPIDSelector->addItem(new CMenuSeparator(LINE));
-		
-		bool enabled;
 
-		for (unsigned int count = 0; count < numpida; count++) 
+		for (unsigned int count = 0; count < numpids; count++) 
 		{
 			bool name_ok = false;
 			char spidnumber[10];
 			sprintf(spidnumber, "%d", count);
-			enabled = true;
 			
 			std::string spidtitle = "Sub ";
 
@@ -369,7 +366,7 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 			if (!name_ok)
 				spidtitle.append(spidnumber);
 
-			AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), enabled, NULL, &AVSubPIDChanger, spidnumber, CRCInput::convertDigitToKey(count + 1)));
+			AVPIDSelector->addItem(new CMenuForwarder(spidtitle.c_str(), currentspid == count? false : true, NULL, &AVSubPIDChanger, spidnumber, CRCInput::convertDigitToKey(count + 1)));
 		}
 	} 
 

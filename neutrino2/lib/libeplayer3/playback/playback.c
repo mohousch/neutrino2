@@ -342,7 +342,7 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 			
 			if (context->container->selectedContainer != NULL) 
 			{
-				if(context->container->selectedContainer->Command(context, CONTAINER_INIT, uri+7) < 0)
+				if(context->container->selectedContainer->Command(context, CONTAINER_INIT, uri + 7) < 0)
 				{
 					playback_err("container CONTAINER_INIT failed\n");
 					return cERR_PLAYBACK_ERROR;
