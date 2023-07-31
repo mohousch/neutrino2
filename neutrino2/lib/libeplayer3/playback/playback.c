@@ -947,6 +947,17 @@ static int PlaybackSwitchSubtitle(Context_t *context, int* track)
 	{
 		if (context->manager && context->manager->subtitle) 
 		{
+			int trackid;
+			
+			if (context->manager->subtitle->Command(context, MANAGER_SET, track) < 0)
+			{
+				playback_err("manager set track failed\n");
+			}
+
+			context->manager->subtitle->Command(context, MANAGER_GET, &trackid);
+
+			ASSContainer.Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+			/*
 			context->manager->subtitle->Command(context, MANAGER_GET, &curtrackid);
 		    	context->manager->subtitle->Command(context, MANAGER_SET, track);
 		    	context->manager->subtitle->Command(context, MANAGER_GET, &nextrackid);
@@ -962,7 +973,8 @@ static int PlaybackSwitchSubtitle(Context_t *context, int* track)
 				{
 				    context->container->selectedContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &nextrackid);
 				}
-		    	}  
+		    	}
+		    	*/ 
 		} 
 		else
 		{
