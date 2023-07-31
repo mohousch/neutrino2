@@ -752,7 +752,11 @@ static void FFMPEGThread(Context_t *context)
 							data.duration  = duration;
 
 							//context->container->assContainer->Command(context, CONTAINER_DATA, &data);
-							ASSContainer.Command(context, CONTAINER_DATA, &data);
+							//ASSContainer.Command(context, CONTAINER_DATA, &data);
+							if (context->output->subtitle->Write(context, &data) < 0) 
+							{
+								ffmpeg_err("writing data to subtitle failed\n");
+							}
 						}
 						else
 						{
@@ -771,7 +775,13 @@ static void FFMPEGThread(Context_t *context)
 							data.duration  = duration;
 
 							//context->container->assContainer->Command(context, CONTAINER_DATA, &data);
-							ASSContainer.Command(context, CONTAINER_DATA, &data);
+							//ASSContainer.Command(context, CONTAINER_DATA, &data);
+							if (context->output->subtitle->Write(context, &data) < 0) 
+							{
+								ffmpeg_err("writing data to subtitle failed\n");
+							}
+							
+							//
 							free(line);
 						}
 					} /* duration */
@@ -841,6 +851,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	// initialize ffmpeg 
 	avcodec_register_all();
 	av_register_all();
+	avformat_network_init();
 
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	if ((err = av_open_input_file(&avContext, filename, NULL, 0, NULL)) != 0) 
@@ -1302,12 +1313,20 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	latestPts = 0;
 	isContainerRunning = 1;
 	
-	//
+	/*
 	if (foundSubs)
 	{
 		// init assContainer
 		ASSContainer.Command(context, CONTAINER_INIT, NULL);
 	}
+	
+	//
+	if (!strncmp("file://", filename, 7))
+	{
+		SrtContainer.Command(context, CONTAINER_INIT, filename + 7);
+		SsaContainer.Command(context, CONTAINER_INIT, filename + 7);
+	}
+	*/
 
 	releaseMutex(FILENAME, __FUNCTION__,__LINE__);
 

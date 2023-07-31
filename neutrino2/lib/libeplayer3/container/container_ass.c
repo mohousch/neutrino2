@@ -465,6 +465,7 @@ static void ASSThread(Context_t *context)
                             if(context && context->playback && context->playback->isPlaying && writer)
                             {
                                 writer->writeData(&out);
+                                
                                 if(threeDMode == 1)
                                 {
 			            out.x = screen_width/2 + img->dst_x;
@@ -504,9 +505,9 @@ static void ASSThread(Context_t *context)
                             out.u.gfx.Height = img->h;
                             out.u.gfx.x      = img->dst_x;
                             out.u.gfx.y      = img->dst_y;
-                            if(context && context->playback && context->playback->isPlaying &&
-                               context->output && context->output->subtitle)
-                                context->output->subtitle->Write(context, &out);
+                            
+                            if(context && context->playback && context->playback->isPlaying && context->output && context->output->subtitle)
+                            	context->output->subtitle->Write(context, &out);
                         }
                     }
 
@@ -578,7 +579,7 @@ int container_ass_init(Context_t *context)
 
     context->output->subtitle->Command(context, OUTPUT_GET_SUBTITLE_OUTPUT, &output);
 
-    modefd=open("/proc/stb/video/3d_mode", O_RDWR);
+    modefd = open("/proc/stb/video/3d_mode", O_RDWR);
     if(modefd > 0)
     {
         read(modefd, buf, 15);
@@ -625,7 +626,7 @@ int container_ass_init(Context_t *context)
 
     ass_set_hinting(ass_renderer, ASS_HINTING_LIGHT);
     ass_set_line_spacing(ass_renderer, ass_line_spacing);
-    ass_set_fonts(ass_renderer, ASS_FONT, "arial", 0, NULL, 1);
+    ass_set_fonts(ass_renderer, ASS_FONT, NULL, 0, NULL, 1);
 
     if(threeDMode == 0)
     {

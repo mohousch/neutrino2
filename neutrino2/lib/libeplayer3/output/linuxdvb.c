@@ -1087,7 +1087,6 @@ static int Write(void* _context, void* _out)
 			call.FrameRate      = out->frameRate;
 			call.FrameScale     = out->timeScale;
 			call.Version        = 0; /* -1; unsigned char cannot be negative */
-			//call.WriteV         = writev_with_retry;
 #if defined __sh__
 			call.WriteV	  = writev;
 #else

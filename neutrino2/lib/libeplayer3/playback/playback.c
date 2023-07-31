@@ -253,13 +253,6 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 			}
 
 			free(extension);
-
-			// init assContainer
-			//ASSContainer.Command(context, CONTAINER_INIT, NULL);
-			
-			//
-			//SrtContainer.Command(context, CONTAINER_INIT, uri + 7);
-			//SsaContainer.Command(context, CONTAINER_INIT, uri + 7);
 		} 
 		else if( (!strncmp("http://", uri, 7)) || (!strncmp("https://", uri, 8)) )
 		{
@@ -279,9 +272,6 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 			{
 				return cERR_PLAYBACK_ERROR;
 			}
-			
-			//
-			//ASSContainer.Command(context, CONTAINER_INIT, NULL);
 		}
 		else if (!strncmp("mms://", uri, 6) || !strncmp("rtsp://", uri, 7) || !strncmp("rtmp://", uri, 7)) 
 		{
@@ -312,9 +302,6 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 			{
 				return cERR_PLAYBACK_ERROR;
 			}
-			
-			//
-			//ASSContainer.Command(context, CONTAINER_INIT, NULL);
 		}
 		else if (!strncmp("upnp://", uri, 7)) 
 		{
@@ -351,9 +338,6 @@ static int PlaybackOpen(Context_t  *context, char * uri)
 			}
 
 			free(extension);
-
-			//
-			//ASSContainer.Command(context, CONTAINER_INIT, NULL);
 		}
 		else 
 		{

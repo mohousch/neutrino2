@@ -42,7 +42,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-//#define SUBTITLE_DEBUG
+#define SUBTITLE_DEBUG
 
 #ifdef SUBTITLE_DEBUG
 
@@ -174,7 +174,6 @@ void replace_all(char ** string, char * search, char * replace)
         *string = strdup(newString);
     else
         *string = strdup(tempString);
-
 }
 
 int subtitle_ParseASS (char **Line) 
@@ -195,8 +194,8 @@ int subtitle_ParseASS (char **Line)
 
     ptr1 = Text;
     
-    for (i=0; i < 9 && *ptr1 != '\0'; ptr1++) {
-
+    for (i=0; i < 9 && *ptr1 != '\0'; ptr1++) 
+    {
         subtitle_printf(20, "%s",ptr1);
 
         if (*ptr1 == ',')
@@ -220,7 +219,6 @@ int subtitle_ParseASS (char **Line)
 
 int subtitle_ParseSRT (char **Line) 
 {
-
     if ((Line == NULL) || (*Line == NULL))
     {
         subtitle_err("null pointer passed\n");
@@ -248,7 +246,6 @@ int subtitle_ParseSRT (char **Line)
 
 int subtitle_ParseSSA (char **Line) 
 {
-
     if ((Line == NULL) || (*Line == NULL))
     {
         subtitle_err("null pointer passed\n");
@@ -274,7 +271,7 @@ int subtitle_ParseSSA (char **Line)
     return cERR_SUBTITLE_NO_ERROR;
 }
 
-void addSub(Context_t  *context, char * text, unsigned long long int pts, unsigned long int milliDuration) 
+void addSub(Context_t *context, char * text, unsigned long long int pts, unsigned long int milliDuration) 
 {
     int count = 20;
     
@@ -307,7 +304,6 @@ void addSub(Context_t  *context, char * text, unsigned long long int pts, unsign
     while (subPuffer[writePointer].text != NULL) 
     {
         //List is full, wait till we got some free space
-
         if(context && context->playback && !context->playback->isPlaying)
         {
             subtitle_err("2. aborting ->no playback\n");
@@ -346,6 +342,7 @@ void addSub(Context_t  *context, char * text, unsigned long long int pts, unsign
         {
             if (subPuffer[i].text != NULL)
                free(subPuffer[i].text);
+               
             subPuffer[i].text          = NULL;
             subPuffer[i].pts           = 0;
             subPuffer[i].milliDuration = 0;
@@ -451,10 +448,8 @@ static void* SubtitleThread(void* data)
 
     subtitle_printf(10, "done\n");
 
-    while ( context &&
-            context->playback &&
-            context->playback->isPlaying) 
-   {
+    while ( context && context->playback && context->playback->isPlaying) 
+    {
 
         int curtrackid = -1;
         
@@ -473,24 +468,23 @@ static void* SubtitleThread(void* data)
 
             if (context && context->playback)
                 context->playback->Command(context, PLAYBACK_PTS, &Pts);
-            else return NULL;
+            else 
+            	return NULL;
 
             if(Pts > subPts) 
             {
                 subtitle_printf(10,"subtitle is to late, ignoring\n");
+                
                 if(subText != NULL)
                     free(subText);
+                    
                 continue;
             }
 
-            subtitle_printf(20, "Pts:%llu < subPts%llu duration %ld\n", Pts, subPts,subMilliDuration);
+            subtitle_printf(20, "Pts:%llu < subPts%llu duration %ld\n", Pts, subPts, subMilliDuration);
 
-            while ( context &&
-                    context->playback &&
-                    context->playback->isPlaying &&
-                    Pts < subPts) 
+            while ( context && context->playback && context->playback->isPlaying && Pts < subPts) 
             {
-
                 unsigned long int diff = subPts - Pts;
                 diff = (diff*1000)/90.0;
 
@@ -509,11 +503,8 @@ static void* SubtitleThread(void* data)
                 subtitle_printf(20, "cur: %llu wanted: %llu\n", Pts, subPts);
             }
 
-            if (    context &&
-                    context->playback &&
-                    context->playback->isPlaying &&
-                    subText != NULL ) {
-
+            if (context && context->playback && context->playback->isPlaying && subText != NULL ) 
+            {
                 if(clientFunction != NULL)
                     clientFunction(subMilliDuration, strlen(subText), subText, clientData);
                 else
@@ -541,7 +532,7 @@ static void* SubtitleThread(void* data)
 
 static int Write(void* _context, void *data) 
 {
-    Context_t  * context = (Context_t  *) _context;
+    Context_t * context = (Context_t  *) _context;
     char * Encoding = NULL;
     char * Text;
     SubtitleOut_t * out;
@@ -562,7 +553,8 @@ static int Write(void* _context, void *data)
     if (out->type == eSub_Txt)
     {
         Text = strdup((const char*) out->u.text.data);
-    } else
+    } 
+    else
     {
 /* fixme handle gfx subs from container_ass and send it to
  * the callback. this must be implemented also in e2/neutrino
@@ -582,21 +574,17 @@ static int Write(void* _context, void *data)
     {
        subtitle_err("encoding unknown\n");
        free(Text);
+       
        return cERR_SUBTITLE_ERROR;
     }
     
     subtitle_printf(20, "Encoding:%s Text:%s Len:%d\n", Encoding,Text, DataLength);
 
-    if (    !strncmp("S_TEXT/SSA",  Encoding, 10) ||
-            !strncmp("S_SSA",       Encoding, 5))
+    if (!strncmp("S_TEXT/SSA", Encoding, 10) || !strncmp("S_SSA", Encoding, 5))
         subtitle_ParseSSA(&Text);
-    
-    else if(!strncmp("S_TEXT/ASS",  Encoding, 10) ||
-            !strncmp("S_AAS",       Encoding, 5))
+    else if(!strncmp("S_TEXT/ASS", Encoding, 10) || !strncmp("S_AAS", Encoding, 5))
         subtitle_ParseASS(&Text);
-    
-    else if(!strncmp("S_TEXT/SRT",  Encoding, 10) ||
-            !strncmp("S_SRT",       Encoding, 5))
+    else if(!strncmp("S_TEXT/SRT", Encoding, 10) || !strncmp("S_SRT", Encoding, 5))
         subtitle_ParseSRT(&Text);
     else
     {
@@ -616,7 +604,8 @@ static int Write(void* _context, void *data)
     return cERR_SUBTITLE_NO_ERROR;
 }
 
-static int subtitle_Open(context) {
+static int subtitle_Open(context) 
+{
     int i;
 
     subtitle_printf(10, "\n");
@@ -633,7 +622,8 @@ static int subtitle_Open(context) {
     readPointer = 0;
     writePointer = 0;
 
-    for (i = 0; i < PUFFERSIZE; i++) {
+    for (i = 0; i < PUFFERSIZE; i++) 
+    {
         subPuffer[i].text          = NULL;
         subPuffer[i].pts           = 0;
         subPuffer[i].milliDuration = 0;
@@ -695,7 +685,8 @@ static int subtitle_Play(Context_t* context)
         {
            subtitle_err("Error creating thread\n");
            hasThreadStarted = 0;
-        } else
+        } 
+        else
         {
            subtitle_printf(10, "Created thread\n");
            hasThreadStarted = 1;
