@@ -54,7 +54,7 @@ typedef struct PlaybackHandler_s
 	unsigned char isAudio;    
 	unsigned char isSubtitle;    
 
-	int (* Command) (/*Context_t*/void  *, PlaybackCmd_t, void *);
+	int (* Command) (void  *, PlaybackCmd_t, void *);
 	char * uri;
 	off_t size;
 } PlaybackHandler_t;

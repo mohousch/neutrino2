@@ -425,9 +425,7 @@ int cDvbSubtitleConverter::Action(void)
 
 					sb->Draw(min_x, min_y, max_x, max_y);
 
-#if !defined USE_OPENGL
 					CFrameBuffer::getInstance()->blit();
-#endif
 
 					Timeout.Set(sb->Timeout());
 				}
@@ -459,3 +457,4 @@ int cDvbSubtitleConverter::Action(void)
 
 	return WaitMs*1000;
 }
+

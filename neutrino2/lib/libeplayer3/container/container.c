@@ -53,14 +53,18 @@ static void printContainerCapabilities()
 	container_printf(10, "Capabilities: ");
 
 	for (i = 0; AvailableContainer[i] != NULL; i++)
+	{
 		for (j = 0; AvailableContainer[i]->Capabilities[j] != NULL; j++)
+		{
 			container_printf(10, "%s ", AvailableContainer[i]->Capabilities[j]);
+		}
+	}
 		
 	 container_printf(10, "\n");
 }
 
 //
-static int selectContainer(Context_t  *context, char * extension) 
+static int selectContainer(Context_t *context, char * extension) 
 {
 	int i, j;
 	int ret = -1;

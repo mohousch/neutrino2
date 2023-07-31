@@ -238,6 +238,7 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	
 	// audio pids
 	CAVPIDChangeExec AVPIDChanger;
+	numpida = 0;
 	
 	if(playback)
 		playback->FindAllPids(apids, ac3flags, &numpida, language);
@@ -335,10 +336,12 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 	// subs
 	CAVSubPIDChangeExec AVSubPIDChanger;
 	
+	numpids = 0;
+	
 	if(playback)
 		playback->FindAllSubPids(spids, &numpids, language);
 	
-	if (numpida > 0) 
+	if (numpids > 0) 
 	{
 		AVPIDSelector->addItem(new CMenuSeparator(LINE));
 

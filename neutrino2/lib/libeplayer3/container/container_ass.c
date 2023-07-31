@@ -580,6 +580,7 @@ int container_ass_init(Context_t *context)
     context->output->subtitle->Command(context, OUTPUT_GET_SUBTITLE_OUTPUT, &output);
 
     modefd = open("/proc/stb/video/3d_mode", O_RDWR);
+    
     if(modefd > 0)
     {
         read(modefd, buf, 15);

@@ -56,6 +56,8 @@
 
 #include <config.h>
 
+#include <ass/ass.h>
+
 
 #if LIBAVCODEC_VERSION_MAJOR > 54
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000 // 1 second of 48khz 32bit audio
@@ -116,6 +118,94 @@ static AVFormatContext *avContext = NULL;
 static unsigned char isContainerRunning = 0;
 
 static long long int latestPts = 0;
+
+#if 0
+// ass
+#define ASS_RING_SIZE 5
+
+#define ASS_FONT "/usr/share/fonts/FreeSans.ttf"
+
+typedef struct ass_s 
+{
+	unsigned char* data;
+	int            len;
+	unsigned char* extradata;
+	int            extralen;
+    
+	long long int  pts;
+	float          duration;
+} ass_t;
+
+typedef struct region_s
+{
+	unsigned int x;
+	unsigned int y;
+	unsigned int w;
+	unsigned int h;
+	time_t       undisplay;
+    
+	struct region_s* next;
+} region_t;
+
+static ASS_Library *ass_library;
+static ASS_Renderer *ass_renderer;
+
+static float ass_font_scale = 0.7;
+static float ass_line_spacing = 0.7;
+
+static ASS_Track* ass_track = NULL;
+
+static region_t* firstRegion = NULL;
+
+static unsigned int screen_width     = 0;
+static unsigned int screen_height    = 0;
+static int          shareFramebuffer = 0;
+static int          framebufferFD    = -1;
+static unsigned char* destination    = NULL;
+static int            destStride       = 0;
+static int	      threeDMode       =0;
+
+int process_ass_data(Context_t *context, SubtitleData_t* data)
+{
+    int first_kiss;
+    
+    ffmpeg_printf(20, ">\n");
+
+    if (!isContainerRunning)
+    {  
+        ffmpeg_err("Container not running\n");
+        return cERR_CONTAINER_FFMPEG_ERR;
+    }
+
+    if (ass_track == NULL)
+    {
+        first_kiss = 1;
+        ass_track = ass_new_track(ass_library);
+
+        if (ass_track == NULL)
+        {
+            ffmpeg_err("error creating ass_track\n");
+            return cERR_CONTAINER_FFMPEG_ERR;
+        }
+    }
+
+    if ((data->extradata) && (first_kiss))
+    {
+        ffmpeg_printf(30,"processing private %d bytes\n", data->extralen);
+        ass_process_codec_private(ass_track, (char*) data->extradata, data->extralen);
+        ffmpeg_printf(30,"processing private done\n");
+    } 
+
+    if (data->data)
+    {
+        ffmpeg_printf(30,"processing data %d bytes\n",data->len);
+        ass_process_data(ass_track, (char*) data->data, data->len);
+        ffmpeg_printf(30,"processing data done\n");
+    }
+    
+    return cERR_CONTAINER_FFMPEG_NO_ERROR;
+}
+#endif
 
 /* ***************************** */
 /* Prototypes                    */
@@ -246,12 +336,12 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return "A_IPCM";
 			
 		case AV_CODEC_ID_VORBIS:
-			return "A_IPCM"; 
-			//return "A_VORBIS"; //FIXME:
+			//return "A_IPCM"; 
+			return "A_VORBIS"; //FIXME:
 			
 		case AV_CODEC_ID_FLAC: //86030
-			return "A_IPCM"; 
-			//return "A_FLAC"; //FIXME:
+			//return "A_IPCM"; 
+			return "A_FLAC"; //FIXME:
 			
 		case AV_CODEC_ID_PCM_S8:
 		case AV_CODEC_ID_PCM_U8:
@@ -736,6 +826,8 @@ static void FFMPEGThread(Context_t *context)
 									ffmpeg_printf(0, "ass %s\n", sub.rects[i]->ass);
 									//pict ->AVPicture
 								}
+								
+								//FIXME:
 							}
 						}
 						else if(((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_SSA)
@@ -752,16 +844,20 @@ static void FFMPEGThread(Context_t *context)
 							data.duration  = duration;
 
 							//context->container->assContainer->Command(context, CONTAINER_DATA, &data);
-							//ASSContainer.Command(context, CONTAINER_DATA, &data);
+							ASSContainer.Command(context, CONTAINER_DATA, &data);
+							
+							/*
+							process_ass_data(context, &data);
+							
 							if (context->output->subtitle->Write(context, &data) < 0) 
 							{
 								ffmpeg_err("writing data to subtitle failed\n");
 							}
+							*/
 						}
 						else
 						{
 							/* hopefully native text ;) */
-
 							unsigned char* line = text_to_ass((char *)packet.data,pts/90,duration);
 							ffmpeg_printf(50,"text line is %s\n",(char *)packet.data);
 							ffmpeg_printf(50,"Sub line is %s\n",line);
@@ -775,11 +871,16 @@ static void FFMPEGThread(Context_t *context)
 							data.duration  = duration;
 
 							//context->container->assContainer->Command(context, CONTAINER_DATA, &data);
-							//ASSContainer.Command(context, CONTAINER_DATA, &data);
+							ASSContainer.Command(context, CONTAINER_DATA, &data);
+							
+							/*
+							process_ass_data(context, &data);
+							
 							if (context->output->subtitle->Write(context, &data) < 0) 
 							{
 								ffmpeg_err("writing data to subtitle failed\n");
 							}
+							*/
 							
 							//
 							free(line);
@@ -1313,20 +1414,103 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	latestPts = 0;
 	isContainerRunning = 1;
 	
+	// init_ass
 	/*
-	if (foundSubs)
+	int modefd;
+    	char buf[16];
+    	SubtitleOutputDef_t output;
+
+    	ass_library = ass_library_init();
+
+    	if (!ass_library) 
+    	{
+        	ffmpeg_err("ass_library_init failed!\n");
+    	}    
+    
+    	ass_set_extract_fonts( ass_library, 1 );
+    	ass_set_style_overrides( ass_library, NULL );
+    
+    	ass_renderer = ass_renderer_init(ass_library);
+    
+    	if (!ass_renderer) 
+   	{
+        	ffmpeg_err("ass_renderer_init failed!\n");
+
+        	if (ass_library)
+            		ass_library_done(ass_library);
+        	ass_library = NULL;
+    	}
+
+    	context->output->subtitle->Command(context, OUTPUT_GET_SUBTITLE_OUTPUT, &output);
+
+    	modefd = open("/proc/stb/video/3d_mode", O_RDWR);
+    
+    	if(modefd > 0)
+    	{
+        	read(modefd, buf, 15);
+        	buf[15]='\0';
+		close(modefd);
+    	}
+    	else 
+    		threeDMode = 0;
+
+	if(strncmp(buf,"sbs",3)==0)threeDMode = 1;
+	else if(strncmp(buf,"tab",3)==0)threeDMode = 2;
+	else threeDMode = 0;
+
+    	screen_width     = output.screen_width;
+    	screen_height    = output.screen_height;
+    	shareFramebuffer = output.shareFramebuffer;
+    	framebufferFD    = output.framebufferFD;
+    	destination      = output.destination;
+    	destStride       = output.destStride;
+    
+    	ffmpeg_printf(10, "width %d, height %d, share %d, fd %d, 3D %d\n", screen_width, screen_height, shareFramebuffer, framebufferFD, threeDMode);
+
+    	if(threeDMode == 0)
+    	{
+        	ass_set_frame_size(ass_renderer, screen_width, screen_height);
+        	ass_set_margins(ass_renderer, (int)(0.03 * screen_height), (int)(0.03 * screen_height) ,
+                                      (int)(0.03 * screen_width ), (int)(0.03 * screen_width )  );
+    	}
+    	else if(threeDMode == 1)
+    	{
+        	ass_set_frame_size(ass_renderer, screen_width/2, screen_height);
+        	ass_set_margins(ass_renderer, (int)(0.03 * screen_height), (int)(0.03 * screen_height) ,
+                                      (int)(0.03 * screen_width/2 ), (int)(0.03 * screen_width/2 )  );
+    	}
+    	else if(threeDMode == 2)
+    	{
+        	ass_set_frame_size(ass_renderer, screen_width, screen_height/2);
+        	ass_set_margins(ass_renderer, (int)(0.03 * screen_height/2), (int)(0.03 * screen_height/2) ,
+                                      (int)(0.03 * screen_width ), (int)(0.03 * screen_width )  );
+    	}
+    
+    	ass_set_use_margins(ass_renderer, 0 );
+    	ass_set_font_scale(ass_renderer, ass_font_scale);
+
+    	ass_set_hinting(ass_renderer, ASS_HINTING_LIGHT);
+    	ass_set_line_spacing(ass_renderer, ass_line_spacing);
+    	ass_set_fonts(ass_renderer, ASS_FONT, NULL, 0, NULL, 1);
+
+    	if(threeDMode == 0)
+    	{
+        	ass_set_aspect_ratio( ass_renderer, 1.0, 1.0);
+    	}
+    	else if(threeDMode == 1)
+    	{
+        	ass_set_aspect_ratio( ass_renderer, 0.5, 1.0);
+    	}
+    	else if(threeDMode == 2)
+    	{
+        	ass_set_aspect_ratio( ass_renderer, 1.0, 0.5);
+    	}
+    	*/
+    	if (foundSubs)
 	{
 		// init assContainer
 		ASSContainer.Command(context, CONTAINER_INIT, NULL);
 	}
-	
-	//
-	if (!strncmp("file://", filename, 7))
-	{
-		SrtContainer.Command(context, CONTAINER_INIT, filename + 7);
-		SsaContainer.Command(context, CONTAINER_INIT, filename + 7);
-	}
-	*/
 
 	releaseMutex(FILENAME, __FUNCTION__,__LINE__);
 
@@ -1961,7 +2145,9 @@ static char *FFMPEG_Capabilities[] = {
 	"trp", 
 	"mts", 
 	"vdr", 
-	"ogg",  
+	"ogg",
+	"m3u8",
+	"webm", 
 	NULL 
 };
 

@@ -25,24 +25,19 @@ typedef enum
 typedef struct Container_s 
 {
 	char * Name;
-	int (* Command) (/*Context_t*/void  *, ContainerCmd_t, void *);
+	int (* Command) (void  *, ContainerCmd_t, void *);
 	char ** Capabilities;
 
 } Container_t;
 
-// ffmpeg
+//
 extern Container_t FFMPEGContainer;
-//extern Container_t ASSContainer;
-//extern Container_t SrtContainer;
-//extern Container_t SsaContainer;
+extern Container_t ASSContainer;
 
 //
 static Container_t * AvailableContainer[] = 
 {
 	&FFMPEGContainer,
-	//&ASSContainer,
-	//&SrtContainer,
-	//&SsaContainer,
 	NULL
 };
 
@@ -51,7 +46,7 @@ typedef struct ContainerHandler_s
 	char * Name;
     	Container_t * selectedContainer;
 
-    	int (* Command) (/*Context_t*/void  *, ContainerCmd_t, void *);
+    	int (* Command) (void  *, ContainerCmd_t, void *);
 } ContainerHandler_t;
 
 #endif

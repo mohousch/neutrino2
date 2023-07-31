@@ -368,15 +368,7 @@ static int PlaybackClose(Context_t  *context)
 		playback_err("container delete failed\n");
 	}
 
-	//FIXME KILLED BY signal 7 or 11
-	/*
-	if (context->container && context->container->textSrtContainer)
-		context->container->textSrtContainer->Command(context, CONTAINER_DEL, NULL);
-
-	if (context->container && context->container->textSsaContainer)
-		context->container->textSsaContainer->Command(context, CONTAINER_DEL, NULL);
-	*/   
-
+	//
 	context->manager->audio->Command(context, MANAGER_DEL, NULL);
 	context->manager->video->Command(context, MANAGER_DEL, NULL);    
 	context->manager->subtitle->Command(context, MANAGER_DEL, NULL);   
@@ -955,37 +947,6 @@ static int PlaybackSwitchSubtitle(Context_t *context, int* track)
 	{
 		if (context->manager && context->manager->subtitle) 
 		{
-			#if 0
-			int trackid;
-			
-			if (context->manager->subtitle->Command(context, MANAGER_SET, track) < 0)
-			{
-				playback_err("manager set track failed\n");
-			}
-
-			context->manager->subtitle->Command(context, MANAGER_GET, &trackid);
-
-			/* konfetti: I make this hack a little bit nicer,
-			* but its still a hack in my opinion ;)
-			*/
-			//if (context->container && context->container->assContainer)
-			//	context->container->assContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
-			ASSContainer.Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
-
-			if (trackid >= TEXTSRTOFFSET)
-			{
-				//if (context->container && context->container->textSrtContainer)
-				//	context->container->textSrtContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
-				SrtContainer.Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
-			}
-			
-			if (trackid >= TEXTSSAOFFSET)
-			{
-				//if (context->container && context->container->textSsaContainer)
-				//	context->container->textSsaContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
-				SsaContainer.Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
-			}
-			#endif
 			context->manager->subtitle->Command(context, MANAGER_GET, &curtrackid);
 		    	context->manager->subtitle->Command(context, MANAGER_SET, track);
 		    	context->manager->subtitle->Command(context, MANAGER_GET, &nextrackid);
@@ -1186,3 +1147,4 @@ PlaybackHandler_t PlaybackHandler = {
 	"",
 	0
 };
+

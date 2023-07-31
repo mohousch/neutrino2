@@ -37,6 +37,7 @@
 #include "common.h"
 #include "output.h"
 #include "subtitle.h"
+#include "writer.h"
 
 /* ***************************** */
 /* Makros/Constants              */
@@ -111,6 +112,7 @@ static int            destStride       = 0;
 static int            shareFramebuffer = 0;
 static int            framebufferFD    = -1;
 static unsigned char* destination      = NULL;
+static int	      threeDMode       = 0;
 
 /* ***************************** */
 /* Prototypes                    */
@@ -437,6 +439,8 @@ static void* SubtitleThread(void* data)
     long int                subMilliDuration    = 0;
     unsigned long long int  subPts              = 0;
     unsigned long long int  Pts                 = 0;
+    
+    Writer_t* writer = NULL;
 
     subtitle_printf(10, "\n");
 
@@ -447,6 +451,14 @@ static void* SubtitleThread(void* data)
     }
 
     subtitle_printf(10, "done\n");
+    
+    //
+    writer = getDefaultFramebufferWriter();
+
+    if (writer == NULL)
+    {
+        subtitle_err("no framebuffer writer found!\n");
+    }
 
     while ( context && context->playback && context->playback->isPlaying) 
     {
@@ -555,14 +567,10 @@ static int Write(void* _context, void *data)
         Text = strdup((const char*) out->u.text.data);
     } 
     else
-    {
-/* fixme handle gfx subs from container_ass and send it to
- * the callback. this must be implemented also in e2/neutrino
- * then.
- */    
+    {    
         subtitle_err("subtitle gfx currently not handled\n");
         return cERR_SUBTITLE_ERROR;
-    } 
+    }
 
     DataLength = out->u.text.len;
     Pts = out->pts;
@@ -797,7 +805,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    }
 	    case OUTPUT_SWITCH: 
 	    {
-		subtitle_err("Subtitle Switch not implemented\n");
+		//subtitle_err("Subtitle Switch not implemented\n");
 		ret = cERR_SUBTITLE_ERROR;
 		break;
 	    }

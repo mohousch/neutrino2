@@ -153,4 +153,3 @@ static inline uint16_t ReadUInt16(uint8_t *buffer)
 
 #endif
 
-

@@ -55,3 +55,4 @@ static inline int aac_get_sample_rate_index (uint32_t sample_rate)
 }
 
 #endif
+

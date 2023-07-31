@@ -92,7 +92,7 @@ static void printOutputCapabilities()
 /* Output Functions              */
 /* ***************************** */
 
-static void OutputAdd(Context_t  *context, char * port) 
+static void OutputAdd(Context_t *context, char * port) 
 {
 	int i, j;
 

@@ -10,7 +10,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libdvbapi
 
 libeplayer3_a_SOURCES =  \
-	container/container.c container/container_ffmpeg.c \
+	container/container.c container/container_ffmpeg.c container/container_ass.c \
 	manager/manager.c manager/audio.c manager/video.c manager/subtitle.c \
 	output/linuxdvb.c output/output_subtitle.c output/output.c \
 	output/writer/writer.c output/writer/misc.c \

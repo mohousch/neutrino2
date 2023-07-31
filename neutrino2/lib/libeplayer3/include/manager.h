@@ -68,7 +68,7 @@ typedef struct Track_s
 typedef struct Manager_s 
 {
 	char * Name;
-	int (* Command) (/*Context_t*/void  *, ManagerCmd_t, void *);
+	int (* Command) (void  *, ManagerCmd_t, void *);
 	char ** Capabilities;
 } Manager_t;
 
