@@ -106,6 +106,7 @@ static int writePointer = 0;
 static int hasThreadStarted = 0;
 static int isSubtitleOpened = 0;
 
+/*
 static int            screen_width     = 0;
 static int            screen_height    = 0;
 static int            destStride       = 0;
@@ -113,6 +114,7 @@ static int            shareFramebuffer = 0;
 static int            framebufferFD    = -1;
 static unsigned char* destination      = NULL;
 static int	      threeDMode       = 0;
+*/
 
 /* ***************************** */
 /* Prototypes                    */

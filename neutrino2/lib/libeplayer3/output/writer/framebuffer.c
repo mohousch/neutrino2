@@ -198,6 +198,91 @@ void blit(int fd)
 #endif	
 }
 
+//
+uint32_t * simple_resize32(uint8_t * origin, uint32_t * colors, int nb_colors, int ox, int oy, int dx, int dy)
+{
+	uint32_t  *cr, *l;
+	int i, j, k, ip;
+
+	cr = (uint32_t *) malloc(dx * dy * sizeof(uint32_t));
+
+	if(cr == NULL) 
+	{
+		printf("Error: malloc\n");
+		return NULL;
+	}
+	
+	l = cr;
+
+	for(j = 0; j < dy; j++, l += dx)
+	{
+		uint8_t * p = origin + (j*oy/dy*ox);
+		
+		for(i = 0, k = 0; i < dx; i++, k++) 
+		{
+			ip = i*ox/dx;
+			
+			int idx = p[ip];
+			if(idx < nb_colors)
+				l[k] = colors[idx];
+		}
+	}
+	
+	return(cr);
+}
+
+//
+void blit2FB(void * fbbuff, uint32_t width, uint32_t height, uint32_t xoff, uint32_t yoff, uint32_t xp, uint32_t yp, bool transp )
+{ 
+	fb_printf(10, "frameBuffer::blit2FB: width:%d height:%d xoff:%d yoff:%d xp:%d yp:%d\n", width, height, xoff, yoff, xp, yp);
+	
+	int xc = (width > 1280) ? 1280 : width;
+	int yc = (height > 720) ? 720 : height;
+	
+	uint32_t * data = (uint32_t *) fbbuff;
+
+	uint8_t * d = ((uint8_t *)destination) + xoff * sizeof(uint32_t) + destStride * yoff;
+	uint32_t * d2;
+
+	for (int count = 0; count < yc; count++ ) 
+	{
+		uint32_t * pixpos = &data[(count + yp) * width];
+		d2 = (uint32_t *) d;
+		
+		for (int count2 = 0; count2 < xc; count2++ ) 
+		{
+			uint32_t pix = *(pixpos + xp);
+			
+			if (!transp || (pix & 0xff000000) == 0xff000000)
+				*d2 = pix;
+			else //alpha blending
+			{
+				uint8_t *in = (uint8_t *)(pixpos + xp);
+				uint8_t *out = (uint8_t *)d2;
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+				int a = in[3];
+#elif __BYTE_ORDER == __BIG_ENDIAN
+				int a = in[0];
+				out++; 
+				in++;
+#else
+#error neither big nor little endian???
+#endif				
+				*out = (*out + ((*in - *out) * a) / 256);
+				in++; out++;
+				*out = (*out + ((*in - *out) * a) / 256);
+				in++; out++;
+				*out = (*out + ((*in - *out) * a) / 256);
+			}
+			
+			d2++;
+			pixpos++;
+		}
+		d += destStride;
+	}	
+}
+
+//
 static int reset()
 {
     return 0;

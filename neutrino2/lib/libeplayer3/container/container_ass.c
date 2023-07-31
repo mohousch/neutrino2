@@ -120,14 +120,6 @@ static ASS_Renderer *ass_renderer;
 static float ass_font_scale = 0.7;
 static float ass_line_spacing = 0.7;
 
-static unsigned int screen_width     = 0;
-static unsigned int screen_height    = 0;
-static int          shareFramebuffer = 0;
-static int          framebufferFD    = -1;
-static unsigned char* destination    = NULL;
-static int            destStride       = 0;
-static int	      threeDMode       =0;
-
 static ASS_Track* ass_track = NULL;
 
 static region_t* firstRegion = NULL;
@@ -554,12 +546,7 @@ int container_ass_init(Context_t *context)
     {
         ass_err("ass_library_init failed!\n");
         return cERR_CONTAINER_ASS_ERROR;
-    }
-
-#ifdef ASS_DEBUG
-    if (debug_level >= 100)
-        ass_set_message_cb(ass_library, ass_msg_callback, NULL);
-#endif    
+    }   
     
     ass_set_extract_fonts( ass_library, 1 );
     ass_set_style_overrides( ass_library, NULL );

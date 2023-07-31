@@ -124,8 +124,7 @@ void cDvbSubtitleBitmaps::Draw(int &min_x, int &min_y, int &max_x, int &max_y)
 	int wd = CFrameBuffer::getInstance()->getScreenWidth();
 	int xstart = CFrameBuffer::getInstance()->getScreenX();
 	int yend = CFrameBuffer::getInstance()->getScreenY() + CFrameBuffer::getInstance()->getScreenHeight();
-	//int ystart = CFrameBuffer::getInstance()->getScreenY();
-	//uint32_t *sublfb = CFrameBuffer::getInstance()->getFrameBufferPointer();
+	int ystart = CFrameBuffer::getInstance()->getScreenY();
 
 	dbgconverter("cDvbSubtitleBitmaps::Draw: %d bitmaps, x= %d, width= %d yend=%d stride %d\n", Count(), xstart, wd, yend, stride);
 
@@ -134,10 +133,6 @@ void cDvbSubtitleBitmaps::Draw(int &min_x, int &min_y, int &max_x, int &max_y)
 
 	for (i = 0; i < Count(); i++) 
 	{
-		//NOTE remove me
-		//printf("color:%d width:%d height:%d at x:%d y:%d\n", sub.rects[i]->nb_colors, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->x, sub.rects[i]->y);
-		
-		//uint32_t * colors = (uint32_t *) sub.rects[i]->pict.data[1];
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
 		uint32_t *colors = (uint32_t *) sub.rects[i]->pict.data[1];
 #else
@@ -156,7 +151,6 @@ void cDvbSubtitleBitmaps::Draw(int &min_x, int &min_y, int &max_x, int &max_y)
 		dbgconverter("cDvbSubtitleBitmaps::Draw: #%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
 
 		// resize color to 32 bit
-		//fb_pixel_t * newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
 		fb_pixel_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
 #else
