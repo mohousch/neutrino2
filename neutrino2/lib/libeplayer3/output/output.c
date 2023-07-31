@@ -354,6 +354,8 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 				    return context->output->audio->Command(context, OUTPUT_SWITCH, "audio");
 			    if (context->playback->isVideo)
 				    return context->output->video->Command(context, OUTPUT_SWITCH, "video");
+			    if (context->playback->isSubtitle)
+				    return context->output->subtitle->Command(context, OUTPUT_SWITCH, "subtitle");	
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;

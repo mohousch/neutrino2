@@ -311,7 +311,7 @@ int CHintBox::exec(int timeout)
 			//FIXME:
 			if (res & messages_return::unhandled)
 			{
-				dprintf(DEBUG_NORMAL, "CHintBox::exec: message unhandled\n");
+				dprintf(DEBUG_DEBUG, "CHintBox::exec: message unhandled\n");
 
 				//res = messages_return::cancel_info;
 				//g_RCInput->postMsg(msg, data);

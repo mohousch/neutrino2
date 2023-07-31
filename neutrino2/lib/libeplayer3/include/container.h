@@ -32,17 +32,18 @@ typedef struct Container_s
 
 // ffmpeg
 extern Container_t FFMPEGContainer;
-extern Container_t ASSContainer;
-extern Container_t SrtContainer;
-extern Container_t SsaContainer;
+//extern Container_t ASSContainer;
+//extern Container_t SrtContainer;
+//extern Container_t SsaContainer;
 
 //
 static Container_t * AvailableContainer[] = 
 {
 	&FFMPEGContainer,
-	&ASSContainer,
-	&SrtContainer,
-	&SsaContainer
+	//&ASSContainer,
+	//&SrtContainer,
+	//&SsaContainer,
+	NULL
 };
 
 typedef struct ContainerHandler_s 

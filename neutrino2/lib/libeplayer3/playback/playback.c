@@ -943,9 +943,11 @@ static int PlaybackSwitchAudio(Context_t  *context, int* track)
 }
 
 // switch subtitle
-static int PlaybackSwitchSubtitle(Context_t  *context, int* track)
+static int PlaybackSwitchSubtitle(Context_t *context, int* track)
 {
 	int ret = cERR_PLAYBACK_NO_ERROR;
+	int curtrackid = 0;
+	int nextrackid = 0;
 
 	playback_printf(10, "Track: %d\n", *track);
 
@@ -953,6 +955,7 @@ static int PlaybackSwitchSubtitle(Context_t  *context, int* track)
 	{
 		if (context->manager && context->manager->subtitle) 
 		{
+			#if 0
 			int trackid;
 			
 			if (context->manager->subtitle->Command(context, MANAGER_SET, track) < 0)
@@ -981,7 +984,24 @@ static int PlaybackSwitchSubtitle(Context_t  *context, int* track)
 				//if (context->container && context->container->textSsaContainer)
 				//	context->container->textSsaContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
 				SsaContainer.Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
-			}  
+			}
+			#endif
+			context->manager->subtitle->Command(context, MANAGER_GET, &curtrackid);
+		    	context->manager->subtitle->Command(context, MANAGER_SET, track);
+		    	context->manager->subtitle->Command(context, MANAGER_GET, &nextrackid);
+		  
+		    	if (curtrackid != nextrackid && nextrackid > -1)
+		    	{
+				if (context->output && context->output->subtitle)
+				{
+				    context->output->subtitle->Command(context, OUTPUT_SWITCH, (void*)"subtitle");
+				}
+
+				if (context->container && context->container->selectedContainer)
+				{
+				    context->container->selectedContainer->Command(context, CONTAINER_SWITCH_SUBTITLE, &nextrackid);
+				}
+		    	}  
 		} 
 		else
 		{
@@ -1030,87 +1050,104 @@ static int Command(void* _context, PlaybackCmd_t command, void * argument)
 
 	switch(command) 
 	{
-		case PLAYBACK_OPEN: {
+		case PLAYBACK_OPEN: 
+		{
 			ret = PlaybackOpen(context, (char*)argument);
 			break;
 		}
 		
-		case PLAYBACK_CLOSE: {
+		case PLAYBACK_CLOSE: 
+		{
 			ret = PlaybackClose(context);
 			break;
 		}
 		
-		case PLAYBACK_PLAY: {
+		case PLAYBACK_PLAY: 
+		{
 			ret = PlaybackPlay(context);
 			break;
 		}
 		
-		case PLAYBACK_STOP: {
+		case PLAYBACK_STOP: 
+		{
 			ret = PlaybackStop(context);
 			break;
 		}
 		
-		case PLAYBACK_PAUSE: {	// 4
+		case PLAYBACK_PAUSE: 
+		{	// 4
 			ret = PlaybackPause(context);
 			break;
 		}
 		
-		case PLAYBACK_CONTINUE: {
+		case PLAYBACK_CONTINUE: 
+		{
 		    ret = PlaybackContinue(context);
 		    break;
 		}
 		
-		case PLAYBACK_TERM: {
+		case PLAYBACK_TERM: 
+		{
 			ret = PlaybackTerminate(context);
 			break;
 		}
 		
-		case PLAYBACK_FASTFORWARD: {
+		case PLAYBACK_FASTFORWARD: 
+		{
 			ret = PlaybackFastForward(context,(int*)argument);
 			break;
 		}
 		
-		case PLAYBACK_SEEK: {
+		case PLAYBACK_SEEK: 
+		{
 			ret = PlaybackSeek(context, (float*)argument);
 			break;
 		}
 		
-		case PLAYBACK_PTS: { // 10
+		case PLAYBACK_PTS: 
+		{ // 10
 			ret = PlaybackPts(context, (unsigned long long int*)argument);
 			break;
 		}
 		
-		case PLAYBACK_LENGTH: { // 11
+		case PLAYBACK_LENGTH: 
+		{ // 11
 			ret = PlaybackLength(context, (double*)argument);
 			break;
 		}
 		
-		case PLAYBACK_SWITCH_AUDIO: {
+		case PLAYBACK_SWITCH_AUDIO: 
+		{
 			ret = PlaybackSwitchAudio(context, (int*)argument);
 			break;
 		} 
 		
-		case PLAYBACK_SWITCH_SUBTITLE: {
+		case PLAYBACK_SWITCH_SUBTITLE: 
+		{
 			ret = PlaybackSwitchSubtitle(context, (int*)argument);
 			break;
 		} 
 		
-		case PLAYBACK_INFO: {
+		case PLAYBACK_INFO: 
+		{
 			ret = PlaybackInfo(context, (char**)argument);
 			break;
 		}
 		
-		case PLAYBACK_SLOWMOTION: {
+		case PLAYBACK_SLOWMOTION: 
+		{
 			ret = PlaybackSlowMotion(context,(int*)argument);
 			break;
 		}
 		
-		case PLAYBACK_FASTBACKWARD: {
+		case PLAYBACK_FASTBACKWARD: 
+		{
 			ret = PlaybackFastBackward(context,(int*)argument);
 			break;
 		}
 		
-		case PLAYBACK_GET_FRAME_COUNT: { // 10
+		case PLAYBACK_GET_FRAME_COUNT: 
+		{ // 17
 			ret = PlaybackGetFrameCount(context, (unsigned long long int*)argument);
 			break;
 		}

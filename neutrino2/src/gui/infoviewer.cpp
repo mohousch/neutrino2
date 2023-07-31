@@ -693,7 +693,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 						
 					if (res & messages_return::unhandled) 
 					{
-						dprintf(DEBUG_NORMAL, "CInfoViewer::show: message unhandled\n");
+						dprintf(DEBUG_DEBUG, "CInfoViewer::show: message unhandled\n");
 
 						//res = messages_return::cancel_info; //FIXME:
 						//g_RCInput->postMsg(msg, data);
