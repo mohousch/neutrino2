@@ -801,10 +801,6 @@ static int subtitle_Open(context)
     }
 
     getMutex(__LINE__);
-    
-    // init ass
-    //ass_init(context);
-    
 
     //Reset all
     readPointer = 0;

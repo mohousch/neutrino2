@@ -113,12 +113,12 @@ void blit(int fd)
 
 	// src
 	bltData.srcOffset  = 1920 *1080 * 4;
-	bltData.srcPitch   = xRes * 4; // stride
+	bltData.srcPitch   = 1280 * 4; // stride
 
 	bltData.src_left   = 0; 
 	bltData.src_top    = 0; 
-	bltData.src_right  = xRes; 
-	bltData.src_bottom = yRes;
+	bltData.src_right  = 1280; 
+	bltData.src_bottom = 720;
 
 		
 	bltData.srcFormat = SURF_ARGB8888;
@@ -138,16 +138,10 @@ void blit(int fd)
 	bltData.dst_top    = 0;
 	
 	// right
-	if(mode3d == THREE_SIDE_BY_SIDE)
-		bltData.dst_right  = screeninfo.xres/2; 
-	else
-		bltData.dst_right  = screeninfo.xres; 
+	bltData.dst_right  = screeninfo.xres; 
 	
 	// buttom
-	if(mode3d == THREE_TOP_AND_BUTTOM)
-		bltData.dst_bottom = screeninfo.yres/2;
-	else
-		bltData.dst_bottom = screeninfo.yres;
+	bltData.dst_bottom = screeninfo.yres;
 
 	bltData.dstFormat = SURF_ARGB8888;		
 	bltData.dstMemBase = STMFBGP_FRAMEBUFFER;
@@ -163,24 +157,6 @@ void blit(int fd)
 	// sync bliter
 	if(ioctl(fd, STMFBIO_SYNC_BLITTER) < 0)
 		perror("ioctl STMFBIO_SYNC_BLITTER");
-	
-	if(mode3d != 0)
-	{
-		if(mode3d == THREE_SIDE_BY_SIDE)
-			bltData.dst_left = screeninfo.xres/2;
-		if(mode3d == THREE_TOP_AND_BUTTOM)
-			bltData.dst_top = screeninfo.yres/2;
-		
-		
-		bltData.dst_right  = screeninfo.xres;
-		bltData.dst_bottom = screeninfo.yres;
-
-		if (ioctl(fd, STMFBIO_BLT, &bltData) < 0)
-			perror("ioctl STMFBIO_BLT");
-		
-		if(ioctl(fd, STMFBIO_SYNC_BLITTER) < 0)
-			perror("ioctl STMFBIO_SYNC_BLITTER");
-	}
 #else
 	// blit
 	unsigned char tmp = 1;
