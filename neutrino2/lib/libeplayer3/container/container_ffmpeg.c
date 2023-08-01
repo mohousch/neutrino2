@@ -274,6 +274,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return	"A_IPCM";  //FIXME: rewrite pcm writer
 			
 		/* subtitle */
+		#if 0
 		case AV_CODEC_ID_SSA:
 			return "S_TEXT/ASS"; /* Hellmaster1024: seems to be ASS instead of SSA */
 			
@@ -287,6 +288,36 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_SRT: 
 		case AV_CODEC_ID_ASS:     
 			return "S_TEXT/SRT"; /* fixme */
+		#endif
+		case AV_CODEC_ID_SSA:
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55, 3, 100)
+    		case AV_CODEC_ID_ASS:
+#endif
+        		return "S_TEXT/ASS"; /* Hellmaster1024: seems to be ASS instead of SSA */
+        		
+    		case AV_CODEC_ID_DVD_SUBTITLE:
+    		case AV_CODEC_ID_MOV_TEXT:
+    		case AV_CODEC_ID_DVB_TELETEXT:
+    		case AV_CODEC_ID_TEXT: ///< raw UTF-8 text
+        		return "S_TEXT/UTF-8";
+        		
+    		case AV_CODEC_ID_SRT:
+        		return "S_TEXT/SRT";
+        		
+    		case AV_CODEC_ID_SUBRIP:
+        		return "S_TEXT/SUBRIP"; 
+        		
+    		case AV_CODEC_ID_WEBVTT:
+        		return "S_TEXT/WEBVTT";
+        		
+    		case AV_CODEC_ID_HDMV_PGS_SUBTITLE:
+        		return "S_GRAPHIC/PGS";
+        		
+    		case AV_CODEC_ID_DVB_SUBTITLE:
+        		return "S_GRAPHIC/DVB";
+        		
+    		case AV_CODEC_ID_XSUB:
+        		return "S_GRAPHIC/XSUB";
 
 		default:
 			if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
