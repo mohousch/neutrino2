@@ -732,6 +732,10 @@ static void FFMPEGThread(Context_t *context)
 							
 						context->output->subtitle->Command(context, OUTPUT_DATA, &data);
 					}
+					else
+					{
+						ffmpeg_err("no subtitle codec found\n");
+					}
 					////
 					#if 0
 					if (duration > 0.0)
