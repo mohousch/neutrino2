@@ -187,7 +187,7 @@ int ass_init(Context_t *context)
 {
     int modefd;
     char buf[16];
-    SubtitleOutputDef_t output;
+    //SubtitleOutputDef_t output;
     
     subtitle_printf(10, ">\n");
 
@@ -215,8 +215,6 @@ int ass_init(Context_t *context)
         return cERR_SUBTITLE_ERROR;
     }
 
-    //context->output->subtitle->Command(context, OUTPUT_GET_SUBTITLE_OUTPUT, &output);
-
     modefd = open("/proc/stb/video/3d_mode", O_RDWR);
     
     if(modefd > 0)
@@ -234,15 +232,6 @@ int ass_init(Context_t *context)
     	threeDMode = 2;
     else 
     	threeDMode = 0;
-
-/*
-    screen_width     = output.screen_width;
-    screen_height    = output.screen_height;
-    shareFramebuffer = output.shareFramebuffer;
-    framebufferFD    = output.framebufferFD;
-    destination      = output.destination;
-    destStride       = output.destStride;
-*/
     
     subtitle_printf(10, "width %d, height %d, share %d, fd %d, 3D %d\n", screen_width, screen_height, shareFramebuffer, framebufferFD, threeDMode);
 
@@ -933,11 +922,11 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 
     switch(command) 
     {
-    		case OUTPUT_INIT:
-    		{
-    			ret = ass_init(context);
-    			break;
-    		}
+    	    case OUTPUT_INIT:
+    	    {
+    		ret = ass_init(context);
+    		break;
+    	    }
     		
 	    case OUTPUT_OPEN: 
 	    {
@@ -966,7 +955,8 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    case OUTPUT_SWITCH: 
 	    {
 		//subtitle_err("Subtitle Switch not implemented\n");
-		ret = cERR_SUBTITLE_ERROR;
+		//ret = cERR_SUBTITLE_ERROR;
+		ret = subtitle_Play(context);
 		break;
 	    }
 	    
