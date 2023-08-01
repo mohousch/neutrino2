@@ -284,7 +284,8 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_MOV_TEXT:      
 		case AV_CODEC_ID_HDMV_PGS_SUBTITLE:
 		case AV_CODEC_ID_DVB_TELETEXT:
-		case AV_CODEC_ID_SRT:      
+		case AV_CODEC_ID_SRT: 
+		case AV_CODEC_ID_ASS:     
 			return "S_TEXT/SRT"; /* fixme */
 
 		default:
@@ -700,6 +701,39 @@ static void FFMPEGThread(Context_t *context)
 					* is zero (start end and are really the same in text). I think it make's
 					* no sense to pass those.
 					*/
+					////
+					AVCodec *codec = avcodec_find_decoder(((AVStream*) subtitleTrack->stream)->codec->codec_id);
+					if (codec != NULL)
+					{
+
+						if (((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_DVB_SUBTITLE)
+						{				
+							ffmpeg_err("subtitle not handled\n");
+						}
+						else if (((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_DVB_TELETEXT)
+						{
+							ffmpeg_err("subtitle not handled\n");
+						}
+						else if (((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_SSA || ((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_SRT || ((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_ASS)
+						{
+							ffmpeg_err("subtitle not handled\n");
+						}
+						
+						SubtitleData_t data;
+						
+						ffmpeg_printf(10, "videoPts %lld\n", currentVideoPts);
+
+						data.data      = packet.data;
+						data.len       = packet.size;
+						data.extradata = subtitleTrack->extraData;
+						data.extralen  = subtitleTrack->extraSize;
+						data.pts       = pts;
+						data.duration  = duration;
+							
+						context->output->subtitle->Command(context, OUTPUT_DATA, &data);
+					}
+					////
+					#if 0
 					if (duration > 0.0)
 					{
 						/* is there a decoder ? */
@@ -839,6 +873,7 @@ static void FFMPEGThread(Context_t *context)
 							free(line);
 						}
 					} /* duration */
+					#endif
 				}
 			}            
 
@@ -873,7 +908,6 @@ static void FFMPEGThread(Context_t *context)
 int container_ffmpeg_init(Context_t *context, char * filename)
 {
 	int n, err;
-	int foundSubs = 0;
 
 	ffmpeg_printf(10, ">\n");
 
@@ -1336,7 +1370,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 				if (track.Name)
 				{
-					foundSubs = 1;
 					ffmpeg_printf(10, "FOUND SUBTITLE %s\n", track.Name);
 				}
 
@@ -1366,13 +1399,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	/* init */
 	latestPts = 0;
 	isContainerRunning = 1;
-	
-	//
-    	if (foundSubs)
-	{
-		// init assContainer
-		ASSContainer.Command(context, CONTAINER_INIT, NULL);
-	}
 
 	releaseMutex(FILENAME, __FUNCTION__,__LINE__);
 

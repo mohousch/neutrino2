@@ -34,6 +34,8 @@
 #include <pthread.h>
 #include <errno.h>
 
+#include <ass/ass.h>
+
 #include "common.h"
 #include "output.h"
 #include "subtitle.h"
@@ -106,16 +108,6 @@ static int writePointer = 0;
 static int hasThreadStarted = 0;
 static int isSubtitleOpened = 0;
 
-/*
-static int            screen_width     = 0;
-static int            screen_height    = 0;
-static int            destStride       = 0;
-static int            shareFramebuffer = 0;
-static int            framebufferFD    = -1;
-static unsigned char* destination      = NULL;
-static int	      threeDMode       = 0;
-*/
-
 /* ***************************** */
 /* Prototypes                    */
 /* ***************************** */
@@ -178,6 +170,158 @@ void replace_all(char ** string, char * search, char * replace)
         *string = strdup(newString);
     else
         *string = strdup(tempString);
+}
+
+//
+#define ASS_FONT "/usr/share/fonts/FreeSans.ttf"
+
+static ASS_Library *ass_library;
+static ASS_Renderer *ass_renderer;
+
+static float ass_font_scale = 0.7;
+static float ass_line_spacing = 0.7;
+
+static ASS_Track* ass_track = NULL;
+
+int ass_init(Context_t *context)
+{
+    int modefd;
+    char buf[16];
+    SubtitleOutputDef_t output;
+    
+    subtitle_printf(10, ">\n");
+
+    ass_library = ass_library_init();
+
+    if (!ass_library) 
+    {
+        subtitle_err("ass_library_init failed!\n");
+        return cERR_SUBTITLE_ERROR;
+    }   
+    
+    ass_set_extract_fonts( ass_library, 1 );
+    ass_set_style_overrides( ass_library, NULL );
+    
+    ass_renderer = ass_renderer_init(ass_library);
+    
+    if (!ass_renderer) 
+    {
+        subtitle_err("ass_renderer_init failed!\n");
+
+        if (ass_library)
+            ass_library_done(ass_library);
+        ass_library = NULL;
+
+        return cERR_SUBTITLE_ERROR;
+    }
+
+    //context->output->subtitle->Command(context, OUTPUT_GET_SUBTITLE_OUTPUT, &output);
+
+    modefd = open("/proc/stb/video/3d_mode", O_RDWR);
+    
+    if(modefd > 0)
+    {
+        read(modefd, buf, 15);
+        buf[15]='\0';
+	close(modefd);
+    }
+    else 
+    	threeDMode = 0;
+
+    if(strncmp(buf,"sbs",3)==0)
+    	threeDMode = 1;
+    else if(strncmp(buf,"tab",3)==0)
+    	threeDMode = 2;
+    else 
+    	threeDMode = 0;
+
+/*
+    screen_width     = output.screen_width;
+    screen_height    = output.screen_height;
+    shareFramebuffer = output.shareFramebuffer;
+    framebufferFD    = output.framebufferFD;
+    destination      = output.destination;
+    destStride       = output.destStride;
+*/
+    
+    subtitle_printf(10, "width %d, height %d, share %d, fd %d, 3D %d\n", screen_width, screen_height, shareFramebuffer, framebufferFD, threeDMode);
+
+    if(threeDMode == 0)
+    {
+        ass_set_frame_size(ass_renderer, screen_width, screen_height);
+        ass_set_margins(ass_renderer, (int)(0.03 * screen_height), (int)(0.03 * screen_height) ,
+                                      (int)(0.03 * screen_width ), (int)(0.03 * screen_width )  );
+    }
+    else if(threeDMode == 1)
+    {
+        ass_set_frame_size(ass_renderer, screen_width/2, screen_height);
+        ass_set_margins(ass_renderer, (int)(0.03 * screen_height), (int)(0.03 * screen_height) ,
+                                      (int)(0.03 * screen_width/2 ), (int)(0.03 * screen_width/2 )  );
+    }
+    else if(threeDMode == 2)
+    {
+        ass_set_frame_size(ass_renderer, screen_width, screen_height/2);
+        ass_set_margins(ass_renderer, (int)(0.03 * screen_height/2), (int)(0.03 * screen_height/2) ,
+                                      (int)(0.03 * screen_width ), (int)(0.03 * screen_width )  );
+    }
+    
+    ass_set_use_margins(ass_renderer, 0 );
+    ass_set_font_scale(ass_renderer, ass_font_scale);
+
+    ass_set_hinting(ass_renderer, ASS_HINTING_LIGHT);
+    ass_set_line_spacing(ass_renderer, ass_line_spacing);
+    ass_set_fonts(ass_renderer, ASS_FONT, "Arial", 0, NULL, 1);
+
+    if(threeDMode == 0)
+    {
+        ass_set_aspect_ratio( ass_renderer, 1.0, 1.0);
+    }
+    else if(threeDMode == 1)
+    {
+        ass_set_aspect_ratio( ass_renderer, 0.5, 1.0);
+    }
+    else if(threeDMode == 2)
+    {
+        ass_set_aspect_ratio( ass_renderer, 1.0, 0.5);
+    }
+
+    return cERR_SUBTITLE_NO_ERROR;
+}
+
+//
+int process_ass_data(Context_t *context, SubtitleData_t* data)
+{
+    int first_kiss;
+    
+    subtitle_printf(20, ">\n");
+
+    if (ass_track == NULL)
+    {
+        first_kiss = 1;
+        ass_track = ass_new_track(ass_library);
+
+        if (ass_track == NULL)
+        {
+            subtitle_err("error creating ass_track\n");
+            return cERR_SUBTITLE_ERROR;
+        }
+    }
+
+    if ((data->extradata) && (first_kiss))
+    {
+        subtitle_printf(30,"processing private %d bytes\n",data->extralen);
+        ass_process_codec_private(ass_track, (char*) data->extradata, data->extralen);
+        subtitle_printf(30,"processing private done\n");
+    } 
+
+    if (data->data)
+    {
+        subtitle_printf(30,"processing data %d bytes\n",data->len);
+        ass_process_data(ass_track, (char*) data->data, data->len);
+        subtitle_printf(30,"processing data done\n");
+    }
+    
+    return cERR_SUBTITLE_NO_ERROR;
 }
 
 int subtitle_ParseASS (char **Line) 
@@ -627,6 +771,10 @@ static int subtitle_Open(context)
     }
 
     getMutex(__LINE__);
+    
+    // init ass
+    ass_init(context);
+    
 
     //Reset all
     readPointer = 0;
@@ -785,32 +933,43 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 
     switch(command) 
     {
+    		case OUTPUT_INIT:
+    		{
+    			ret = ass_init(context);
+    			break;
+    		}
+    		
 	    case OUTPUT_OPEN: 
 	    {
 		ret = subtitle_Open(context);
 		break;
 	    }
+	    
 	    case OUTPUT_CLOSE: 
 	    {
 		ret = subtitle_Close(context);
 		break;
 	    }
+	    
 	    case OUTPUT_PLAY: 
 	    {
 		ret = subtitle_Play(context);
 		break;
 	    }
+	    
 	    case OUTPUT_STOP: 
 	    {
 		ret = subtitle_Stop(context);
 		break;
 	    }
+	    
 	    case OUTPUT_SWITCH: 
 	    {
 		//subtitle_err("Subtitle Switch not implemented\n");
 		ret = cERR_SUBTITLE_ERROR;
 		break;
 	    }
+	    
 	    case OUTPUT_GET_SUBTITLE_OUTPUT: 
 	    {
 		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
@@ -822,6 +981,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		out->destStride = destStride;
 		break;
 	    }
+	    
 	    case OUTPUT_SET_SUBTITLE_OUTPUT: 
 	    {
 		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
@@ -833,33 +993,45 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		destStride = out->destStride;
 		break;
 	    }
+	    
 	    case OUTPUT_SUBTITLE_REGISTER_FUNCTION: 
 	    {
 		subtitle_SignalConnect(argument);
 		break;
 	    }
+	    
 	    case OUTPUT_SUBTITLE_REGISTER_BUFFER: 
 	    {
 		subtitle_SignalConnectBuffer(argument);
 		break;
 	    }
+	    
 	    case OUTPUT_FLUSH: 
 	    {
 		subtitle_err("Subtitle Flush not implemented\n");
 		ret = cERR_SUBTITLE_ERROR;
 		break;
 	    }
+	    
 	    case OUTPUT_PAUSE: 
 	    {
 		subtitle_err("Subtitle Pause not implemented\n");
 		ret = cERR_SUBTITLE_ERROR;
 	    	break;
 	    }
+	    
 	    case OUTPUT_CONTINUE: 
 	    {
 		subtitle_err("Subtitle Continue not implemented\n");
 		ret = cERR_SUBTITLE_ERROR;
 	    	break;
+	    }
+	    
+	    case OUTPUT_DATA: 
+	    {
+		SubtitleData_t* data = (SubtitleData_t*) argument;
+		ret = process_ass_data(context, data);
+		break;
 	    }
 
 	    default:
@@ -874,7 +1046,11 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 }
 
 
-static char *SubtitleCapabilitis[] = { "subtitle", NULL };
+static char *SubtitleCapabilitis[] = 
+{ 
+	"subtitle", 
+	NULL 
+};
 
 struct Output_s SubtitleOutput = {
     "Subtitle",
