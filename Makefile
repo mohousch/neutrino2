@@ -213,8 +213,6 @@ N2_OPTS += --enable-overlay
 endif
 
 # python
-PYTHON ?= python
-
 ifeq ($(PYTHON), python)
 N2_OPTS += --enable-python
 endif
