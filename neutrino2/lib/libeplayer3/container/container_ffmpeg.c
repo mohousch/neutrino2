@@ -733,6 +733,28 @@ static void FFMPEGThread(Context_t *context)
 					* no sense to pass those.
 					*/
 					////
+					if (duration > 0 || duration == -1)
+					{
+					    	SubtitleData_t data;
+						
+					    	ffmpeg_printf(10, "videoPts %lld\n", currentVideoPts);
+
+						data.data      = packet.data;
+						data.len       = packet.size;
+						data.extradata = subtitleTrack->extraData;
+						data.extralen  = subtitleTrack->extraSize;
+						data.pts       = pts;
+						data.duration  = duration;
+						data.width     = subtitleTrack->width;;
+                   				data.height    = subtitleTrack->height;;
+							
+						if (context->output->subtitle->Write(context, &data) < 0) 
+						{
+							ffmpeg_err("writing data to subtitle failed\n");
+						}
+					}
+					////
+					#if 0
 					AVCodec *codec = avcodec_find_decoder(((AVStream*) subtitleTrack->stream)->codec->codec_id);
 					if (codec != NULL)
 					{
@@ -767,6 +789,7 @@ static void FFMPEGThread(Context_t *context)
 					{
 						ffmpeg_err("no subtitle codec found\n");
 					}
+					#endif
 					////
 					#if 0
 					if (duration > 0.0)

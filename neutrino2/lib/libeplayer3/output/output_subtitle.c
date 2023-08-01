@@ -696,7 +696,7 @@ static int Write(void* _context, void *data)
     }
 
     out = (SubtitleOut_t*) data;
-    
+    /*
     if (out->type == eSub_Txt)
     {
         Text = strdup((const char*) out->u.text.data);
@@ -710,19 +710,21 @@ static int Write(void* _context, void *data)
     DataLength = out->u.text.len;
     Pts = out->pts;
     Duration = out->duration;
+    */
     
     context->manager->subtitle->Command(context, MANAGER_GETENCODING, &Encoding);
 
     if (Encoding == NULL)
     {
        subtitle_err("encoding unknown\n");
-       free(Text);
+       //free(Text);
        
        return cERR_SUBTITLE_ERROR;
     }
     
-    subtitle_printf(20, "Encoding:%s Text:%s Len:%d\n", Encoding,Text, DataLength);
-
+    subtitle_printf(20, "Encoding:%s\n", Encoding);
+    
+/*
     if (!strncmp("S_TEXT/SSA", Encoding, 10) || !strncmp("S_SSA", Encoding, 5))
         subtitle_ParseSSA(&Text);
     else if(!strncmp("S_TEXT/ASS", Encoding, 10) || !strncmp("S_AAS", Encoding, 5))
@@ -734,12 +736,51 @@ static int Write(void* _context, void *data)
         subtitle_err("unknown encoding %s\n", Encoding);
         return  cERR_SUBTITLE_ERROR;
     }
-    
+
     subtitle_printf(10, "Text:%s Duration:%f\n", Text,Duration);
 
     addSub(context, Text, Pts, Duration * 1000);
     
     free(Text);
+*/
+    
+    //
+    if(!strncmp("S_TEXT/SUBRIP", Encoding, 13))
+    {
+    	subtitle_printf(10, "FIXME: S_TEXT/SUBRIP\n");
+    }
+    else if (!strncmp("S_TEXT/ASS", Encoding, 10))
+    {
+    	subtitle_printf(10, "FIXME: S_TEXT/ASS\n");
+    	
+    	//
+    	ass_init(context);
+    	
+    	//
+    	process_ass_data(context, data);
+    	
+    }
+    else if (!strncmp("S_TEXT/WEBVTT", Encoding, 18))
+    {
+    	subtitle_printf(10, "FIXME: S_TEXT/WEBVTT\n");
+    }
+    else if (!strncmp("S_GRAPHIC/PGS", Encoding, 13))
+    {
+    	subtitle_printf(10, "FIXME: S_GRAPHIC/PGS\n");
+    }
+    else if (!strncmp("S_GRAPHIC/DVB", Encoding, 13))
+    {
+    	subtitle_printf(10, "FIXME: S_GRAPHIC/DVB\n");
+    }
+    else if (!strncmp("S_GRAPHIC/XSUB", Encoding, 14))
+    {
+    	subtitle_printf(10, "FIXME: S_GRAPHIC/XSUB\n");
+    }
+    else if (!strncmp("S_TEXT/UTF-8", Encoding, 12))
+    {
+    	subtitle_printf(10, "FIXME: S_TEXT/UTF-8\n");
+    }
+    
     free(Encoding);
 
     subtitle_printf(10, "<\n");
@@ -762,7 +803,7 @@ static int subtitle_Open(context)
     getMutex(__LINE__);
     
     // init ass
-    ass_init(context);
+    //ass_init(context);
     
 
     //Reset all

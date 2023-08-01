@@ -91,6 +91,7 @@ typedef struct
 	unsigned int   color;
 } SubGfx_t;
 
+
 typedef struct
 {
 	SubType_t      type;
@@ -114,6 +115,9 @@ typedef struct
 	
 	long long int  pts;
 	float          duration;
+	
+	int          width;
+    	int          height;
 } SubtitleData_t;
 
 typedef struct
