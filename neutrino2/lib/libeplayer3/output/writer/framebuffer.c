@@ -39,6 +39,8 @@
 #include <errno.h>
 #include <sys/mman.h>
 
+#include <linux/fb.h>
+
 #include "common.h"
 #include "output.h"
 #include "debug.h"
