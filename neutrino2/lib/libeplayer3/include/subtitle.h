@@ -36,8 +36,9 @@ Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 static inline unsigned char* text_to_ass(char *text, long long int pts, double duration)
 {
 	char buf[1024];
-	int x,pos=0;
-	for(x=0;x<strlen(text);x++)
+	int x, pos = 0;
+	
+	for(x = 0; x < strlen(text); x++)
 	{
 		if(text[x]=='\n')
 		{
@@ -67,46 +68,11 @@ static inline unsigned char* text_to_ass(char *text, long long int pts, double d
 
 }
 
-typedef enum
-{
-	eSub_Gfx,
-	eSub_Txt
-} SubType_t;
-
-
+//
 typedef struct
 {
-	unsigned char* data;
-	int            len;
-} SubText_t;
-
-typedef struct
-{
-	unsigned char* data;
-	unsigned int   Width;
-	unsigned int   Height;
-	unsigned int   Stride;
-	unsigned int   x;
-	unsigned int   y;
-	unsigned int   color;
-} SubGfx_t;
-
-
-typedef struct
-{
-	SubType_t      type;
-	long long int  pts;
-	float          duration;
+	int id;
 	
-	union
-	{
-		SubText_t text;
-		SubGfx_t  gfx;
-	} u;
-} SubtitleOut_t;
-
-typedef struct
-{
 	unsigned char* data;
 	int            len;
 

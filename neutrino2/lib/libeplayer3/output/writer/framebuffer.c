@@ -298,7 +298,7 @@ static int writeData(void* _call)
 	{
 		blit2FB(call->data, call->Width, call->Height, call->x, call->y, 0, 0, false);
 	}
-	
+	/*
 	if (call->data != NULL)
 	{
 		unsigned int opacity = 255 - ((unsigned int)_a(call->color));
@@ -343,7 +343,8 @@ static int writeData(void* _call)
 			dst += dst_delta;
 			src += src_stride;
 		}
-	} 
+	}
+	*/ 
 	else
 	{
 		for (y = 0; y < call->Height; y++)

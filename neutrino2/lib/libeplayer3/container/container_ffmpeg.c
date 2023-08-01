@@ -732,12 +732,11 @@ static void FFMPEGThread(Context_t *context)
 					* is zero (start end and are really the same in text). I think it make's
 					* no sense to pass those.
 					*/
-					////
 					if (duration > 0 || duration == -1)
 					{
 					    	SubtitleData_t data;
 						
-					    	ffmpeg_printf(10, "videoPts %lld\n", currentVideoPts);
+					    	ffmpeg_printf(100, "videoPts %lld\n", currentVideoPts);
 
 						data.data      = packet.data;
 						data.len       = packet.size;
@@ -745,193 +744,14 @@ static void FFMPEGThread(Context_t *context)
 						data.extralen  = subtitleTrack->extraSize;
 						data.pts       = pts;
 						data.duration  = duration;
-						data.width     = subtitleTrack->width;;
-                   				data.height    = subtitleTrack->height;;
+						data.width     = subtitleTrack->width;
+                   				data.height    = subtitleTrack->height;
 							
 						if (context->output->subtitle->Write(context, &data) < 0) 
 						{
 							ffmpeg_err("writing data to subtitle failed\n");
 						}
 					}
-					////
-					#if 0
-					AVCodec *codec = avcodec_find_decoder(((AVStream*) subtitleTrack->stream)->codec->codec_id);
-					if (codec != NULL)
-					{
-
-						if (((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_DVB_SUBTITLE)
-						{				
-							ffmpeg_err("subtitle not handled\n");
-						}
-						else if (((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_DVB_TELETEXT)
-						{
-							ffmpeg_err("subtitle not handled\n");
-						}
-						else if (((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_SSA || ((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_SRT || ((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_ASS)
-						{
-							ffmpeg_err("subtitle not handled\n");
-						}
-						
-						SubtitleData_t data;
-						
-						ffmpeg_printf(10, "videoPts %lld\n", currentVideoPts);
-
-						data.data      = packet.data;
-						data.len       = packet.size;
-						data.extradata = subtitleTrack->extraData;
-						data.extralen  = subtitleTrack->extraSize;
-						data.pts       = pts;
-						data.duration  = duration;
-							
-						context->output->subtitle->Command(context, OUTPUT_DATA, &data);
-					}
-					else
-					{
-						ffmpeg_err("no subtitle codec found\n");
-					}
-					#endif
-					////
-					#if 0
-					if (duration > 0.0)
-					{
-						/* is there a decoder ? */
-						if (avcodec_find_decoder(((AVStream*) subtitleTrack->stream)->codec->codec_id) != NULL)
-						{
-							AVSubtitle sub;
-							int got_sub_ptr;
-
-#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
-							if (avcodec_decode_subtitle2(((AVStream*) subtitleTrack->stream)->codec, &sub, &got_sub_ptr, &packet) < 0)
-#else
-							if (avcodec_decode_subtitle( ((AVStream*) subtitleTrack->stream)->codec, &sub, &got_sub_ptr, packet.data, packet.size ) < 0)
-#endif
-							{
-							    ffmpeg_err("error decoding subtitle\n");
-							} 
-							else
-							{
-								int i;
-
-								ffmpeg_printf(0, "format %d\n", sub.format);
-								ffmpeg_printf(0, "start_display_time %d\n", sub.start_display_time);
-								ffmpeg_printf(0, "end_display_time %d\n", sub.end_display_time);
-								ffmpeg_printf(0, "num_rects %d\n", sub.num_rects);
-								//ffmpeg_printf(0, "pts %lld\n", sub.pts);
-								
-								switch (sub.rects[0]->type)
-								{
-									case SUBTITLE_TEXT:
-									case SUBTITLE_ASS:
-										//FIXME:
-										break;
-									case SUBTITLE_BITMAP:
-									{
-										for (i = 0; i < sub.num_rects; i++)
-										{
-
-											ffmpeg_printf(10, "x %d\n", sub.rects[i]->x);
-											ffmpeg_printf(10, "y %d\n", sub.rects[i]->y);
-											ffmpeg_printf(10, "w %d\n", sub.rects[i]->w);
-											ffmpeg_printf(10, "h %d\n", sub.rects[i]->h);
-											ffmpeg_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
-											ffmpeg_printf(10, "type %d\n", sub.rects[i]->type);
-											ffmpeg_printf(10, "text %s\n", sub.rects[i]->text);
-											ffmpeg_printf(10, "ass %s\n", sub.rects[i]->ass);
-											//pict ->AVPicture
-											
-											////
-		#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
-											uint32_t *colors = (uint32_t *) sub.rects[i]->pict.data[1];
-		#else
-											uint32_t *colors = (uint32_t *) sub.rects[i]->data[1];
-		#endif
-											int width = sub.rects[i]->w;
-											int height = sub.rects[i]->h;
-
-											int h2 = (width == 1280) ? 720 : 576;
-				
-											int xoff = sub.rects[i]->x * 1280 / width;
-											int yoff = sub.rects[i]->y * 720 / h2;
-											int nw = width * 1280 / width;
-											int nh = height * 720 / h2;
-
-											ffmpeg_printf(10, "cDvbSubtitleBitmaps::Draw: #%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
-
-											// resize color to 32 bit
-		#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-											uint32_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
-		#else
-											uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
-		#endif
-				
-											// blit2fb
-											blit2FB(newdata, nw, nh, xoff, yoff, 0, 0, true);
-
-											blit(framebufferFD);
-
-											free(newdata);
-										}
-										
-										break;
-									}
-									default:
-										break;
-								}
-							}
-						}
-						else if(((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_SSA)
-						{
-							SubtitleData_t data;
-
-							ffmpeg_printf(10, "videoPts %lld\n", currentVideoPts);
-
-							data.data      = packet.data;
-							data.len       = packet.size;
-							data.extradata = subtitleTrack->extraData;
-							data.extralen  = subtitleTrack->extraSize;
-							data.pts       = pts;
-							data.duration  = duration;
-
-							//
-							ASSContainer.Command(context, CONTAINER_DATA, &data);
-							
-							/*
-							if (context->output->subtitle->Write(context, &data) < 0) 
-							{
-								ffmpeg_err("writing data to subtitle failed\n");
-							}
-							*/
-						}
-						else
-						{
-							/* hopefully native text ;) */
-							unsigned char* line = text_to_ass((char *)packet.data,pts/90,duration);
-							ffmpeg_printf(50,"text line is %s\n",(char *)packet.data);
-							ffmpeg_printf(50,"Sub line is %s\n",line);
-							ffmpeg_printf(20, "videoPts %lld %f\n", currentVideoPts,currentVideoPts/90000.0);
-							SubtitleData_t data;
-							data.data      = line;
-							data.len       = strlen((char*)line);
-							data.extradata = (unsigned char *) DEFAULT_ASS_HEAD;
-							data.extralen  = strlen(DEFAULT_ASS_HEAD);
-							data.pts       = pts;
-							data.duration  = duration;
-
-							//
-							ASSContainer.Command(context, CONTAINER_DATA, &data);
-							
-							/*
-							if (context->output->subtitle->Write(context, &data) < 0) 
-							{
-								ffmpeg_err("writing data to subtitle failed\n");
-							}
-							*/
-							
-							//
-							free(line);
-						}
-					} /* duration */
-					#endif
 				}
 			}            
 

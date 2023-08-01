@@ -90,6 +90,28 @@ struct sub_t
     unsigned long int      milliDuration;
 };
 
+// ass
+typedef struct ass_s 
+{
+	unsigned char* data;
+	int            len;
+	unsigned char* extradata;
+	int            extralen;
+    
+	long long int  pts;
+	float          duration;
+} ass_t;
+
+typedef struct region_s
+{
+	unsigned int x;
+	unsigned int y;
+	unsigned int w;
+	unsigned int h;
+	time_t       undisplay;
+    
+	struct region_s* next;
+} region_t;
 
 /* ***************************** */
 /* Varaibles                     */
@@ -107,6 +129,9 @@ static int readPointer = 0;
 static int writePointer = 0;
 static int hasThreadStarted = 0;
 static int isSubtitleOpened = 0;
+
+// ass
+static region_t* firstRegion = NULL;
 
 /* ***************************** */
 /* Prototypes                    */
@@ -172,7 +197,7 @@ void replace_all(char ** string, char * search, char * replace)
         *string = strdup(tempString);
 }
 
-//
+// ass
 #define ASS_FONT "/usr/share/fonts/FreeSans.ttf"
 
 static ASS_Library *ass_library;
@@ -187,7 +212,6 @@ int ass_init(Context_t *context)
 {
     int modefd;
     char buf[16];
-    //SubtitleOutputDef_t output;
     
     subtitle_printf(10, ">\n");
 
@@ -313,6 +337,363 @@ int process_ass_data(Context_t *context, SubtitleData_t* data)
     return cERR_SUBTITLE_NO_ERROR;
 }
 
+/* ********************************* */
+/* Region Undisplay handling         */
+/* ********************************* */
+
+/* release and undisplay all saved regions
+ */
+void releaseRegions()
+{
+    region_t* next, *old;
+    Writer_t* writer;
+    
+    if (firstRegion == NULL)
+        return;
+
+    writer = getDefaultFramebufferWriter();
+
+    if (writer == NULL)
+    {
+        subtitle_err("no framebuffer writer found!\n");
+    }
+
+    next = firstRegion;
+    while (next != NULL)
+    {
+        if (writer)
+        {
+             WriterFBCallData_t out;
+                    
+             subtitle_printf(100, "release: w %d h %d x %d y %d\n", next->w, next->h, next->x, next->y);
+
+             out.fd            = framebufferFD;
+             out.data          = NULL;
+             out.Width         = next->w;
+             out.Height        = next->h;
+             out.x             = next->x;
+             out.y             = next->y;
+
+             out.Screen_Width  = screen_width; 
+             out.Screen_Height = screen_height; 
+             out.destination   = destination;
+             out.destStride    = destStride;
+
+             writer->writeData(&out);
+             if(threeDMode == 1)
+             {
+                 out.x = screen_width/2 + next->x;
+                 writer->writeData(&out);
+             }
+             else if(threeDMode == 2)
+             {
+                 out.y = screen_height/2 + next->y;
+                 writer->writeData(&out);
+             }
+        }
+        old  = next;         
+        next = next->next;
+        free(old);
+    }
+    
+    firstRegion = NULL;  
+}
+
+/* check for regions which should be undisplayed. 
+ * we are very tolerant on time here, because
+ * regions are also released when new regions are
+ * detected (see ETSI EN 300 743 Chapter Page Composition)
+ */
+void checkRegions()
+{
+#define cDeltaTime 2
+    region_t* next, *old, *prev;
+    Writer_t* writer;
+    time_t now = time(NULL);
+    
+    if (firstRegion == NULL)
+        return;
+
+    writer = getDefaultFramebufferWriter();
+
+    if (writer == NULL)
+    {
+        subtitle_err("no framebuffer writer found!\n");
+    }
+
+    prev = next = firstRegion;
+    while (next != NULL)
+    {
+        if (now > next->undisplay + cDeltaTime)
+        {
+           subtitle_printf(100, "undisplay: %ld > %ld\n", now, next->undisplay + cDeltaTime);
+
+           if (writer)
+           {
+                WriterFBCallData_t out;
+
+                subtitle_printf(100, "release: w %d h %d x %d y %d\n", 
+                                    next->w, next->h, next->x, next->y);
+
+                out.fd            = framebufferFD;
+                out.data          = NULL;
+                out.Width         = next->w;
+                out.Height        = next->h;
+                out.x             = next->x;
+                out.y             = next->y;
+                
+                out.Screen_Width  = screen_width; 
+                out.Screen_Height = screen_height; 
+                out.destination   = destination;
+                out.destStride    = destStride;
+
+                writer->writeData(&out);
+                if(threeDMode == 1)
+                {
+                    out.x = screen_width/2 + next->x;
+                    writer->writeData(&out);
+                }
+                else if(threeDMode == 2)
+                {
+                    out.y = screen_height/2 + next->y;
+                    writer->writeData(&out);
+               }
+           }
+           
+           old = next;
+           next = prev->next = next->next;
+
+           if (old == firstRegion)
+               firstRegion = next;
+           free(old);
+        } 
+        else
+        {
+            prev = next;
+            next = next->next;
+        }
+    }
+}
+
+/* store a display region for later release */
+void storeRegion(unsigned int x, unsigned int y, unsigned int w, unsigned int h, time_t undisplay)
+{
+    region_t* new;
+    
+    subtitle_printf(100, "%d %d %d %d %ld\n", x, y, w, h, undisplay);
+    
+    if (firstRegion == NULL)
+    {
+        firstRegion = malloc(sizeof(region_t));
+        new = firstRegion;
+    } 
+    else
+    {
+        new = firstRegion;
+        while (new->next != NULL)
+            new = new->next;
+    
+        new->next = malloc(sizeof(region_t));
+        new = new->next;
+    }
+
+    new->next      = NULL;
+    new->x         = x;
+    new->y         = y;
+    new->w         = w;
+    new->h         = h;
+    new->undisplay = undisplay;
+}
+
+
+// ass_write
+static void ass_write(Context_t *context) 
+{
+    Writer_t* writer;
+    
+    subtitle_printf(10, "\n");
+
+    writer = getDefaultFramebufferWriter();
+
+    if (writer == NULL)
+    {
+        subtitle_err("no framebuffer writer found!\n");
+    }
+
+    while ( context && context->playback && context->playback->isPlaying ) 
+    {
+        //IF MOVIE IS PAUSED, WAIT
+        if (context->playback->isPaused) 
+        {
+            subtitle_printf(20, "paused\n");
+
+            usleep(100000);
+            continue;
+        }
+
+        if (context->playback->isSeeking) 
+        {
+            subtitle_printf(10, "seeking\n");
+
+            usleep(100000);
+            continue;
+        }
+
+        if (ass_track)
+        {
+            ASS_Image *       img   = NULL;
+            int               change = 0;
+            unsigned long int playPts;
+            
+            if (context && context->playback)
+            {
+                if (context->playback->Command(context, PLAYBACK_PTS, &playPts) < 0)
+                    continue;
+            }
+
+            getMutex(__LINE__);
+            
+            //FIXME: durch den sleep bleibt die cpu usage zw. 5 und 13%, ohne
+            //       steigt sie bei Verwendung von subtiteln bis auf 95%.
+            //       ich hoffe dadurch gehen keine subtitle verloren, wenn die playPts
+            //       durch den sleep verschlafen wird. Besser w�re es den n�chsten
+            //       subtitel zeitpunkt zu bestimmen und solange zu schlafen.
+            usleep(1000);
+
+            img = ass_render_frame(ass_renderer, ass_track, playPts / 90.0, &change);
+
+            subtitle_printf(150, "img %p pts %lu %f\n", img, playPts, playPts / 90.0);
+
+            if(img != NULL && ass_renderer && ass_track)
+            {
+                /* the spec says, that if a new set of regions is present
+                 * the complete display switches to the new state. So lets
+                 * release the old regions on display.
+                 */
+                if (change != 0)
+                    releaseRegions();
+
+                while (context && context->playback && context->playback->isPlaying && (img) && (change != 0))
+                {
+                    WriterFBCallData_t out;
+                    time_t now = time(NULL);
+                    time_t undisplay = now + 10;
+
+                    if (ass_track && ass_track->events)
+                    {
+                        undisplay = now + ass_track->events->Duration / 1000 + 0.5;
+                    }
+
+                    subtitle_printf(100, "w %d h %d s %d x %d y %d c %d chg %d now %ld und %ld\n", 
+                                 img->w, img->h, img->stride, 
+                                 img->dst_x, img->dst_y, img->color, 
+                                 change, now, undisplay);
+
+                    /* api docu said w and h can be zero which
+                     * means image should not be rendered
+                     */
+                    if ((img->w != 0) && (img->h != 0) && (writer)) 
+                    {
+                        out.fd            = framebufferFD;
+                        out.data          = img->bitmap;
+                        out.Width         = img->w;
+                        out.Height        = img->h;
+                        out.Stride        = img->stride;
+                        out.x             = img->dst_x;
+                        out.y             = img->dst_y;
+                        out.color         = img->color;
+                        
+                        out.Screen_Width  = screen_width; 
+                        out.Screen_Height = screen_height; 
+                        out.destination   = destination;
+                        out.destStride    = destStride;
+
+                        storeRegion(img->dst_x, img->dst_y, img->w, img->h, undisplay);
+                                    
+                        if (shareFramebuffer)
+                        {
+                            if(context && context->playback && context->playback->isPlaying && writer)
+                            {
+                                writer->writeData(&out);
+                                
+                                if(threeDMode == 1)
+                                {
+			            out.x = screen_width/2 + img->dst_x;
+			            writer->writeData(&out);
+                                }
+                                else if(threeDMode == 2)
+                                {
+                                    out.y = screen_height/2 + img->dst_y;
+                                    writer->writeData(&out);
+                                }
+                            }
+                        }
+                    }
+
+                    /* Next image */
+                    img = img->next;
+                }
+            }
+            else
+            {
+               /* noop */
+            }
+
+            releaseMutex(__LINE__);
+        } 
+        else
+        {
+            usleep(1000);
+        }
+        
+        /* cleanup no longer used but not overwritten regions */
+        checkRegions();
+    } /* while */
+
+    subtitle_printf(10, "terminating\n");
+}
+
+// 
+static int ass_stop(Context_t *context) 
+{
+    int ret = cERR_SUBTITLE_NO_ERROR;
+    int wait_time = 20;
+    Writer_t* writer;
+
+    subtitle_printf(10, "\n");
+
+    getMutex(__LINE__);
+
+    //releaseRegions();
+
+    if (ass_track)
+        ass_free_track(ass_track);
+
+    ass_track = NULL;
+
+    if (ass_renderer)
+        ass_renderer_done(ass_renderer);
+    ass_renderer = NULL;
+
+    if (ass_library)
+        ass_library_done(ass_library);
+    ass_library = NULL;
+
+    writer = getDefaultFramebufferWriter();
+
+    if (writer != NULL)
+    {
+        writer->reset();
+    }
+
+    releaseMutex(__LINE__);
+
+    subtitle_printf(10, "ret %d\n", ret);
+    
+    return ret;
+}
+
+//
 int subtitle_ParseASS (char **Line) 
 {
     char* Text;
@@ -682,7 +1063,7 @@ static int Write(void* _context, void *data)
     Context_t * context = (Context_t  *) _context;
     char * Encoding = NULL;
     char * Text;
-    SubtitleOut_t * out;
+    SubtitleData_t * out;
     int DataLength;
     unsigned long long int Pts;
     float Duration;
@@ -695,7 +1076,8 @@ static int Write(void* _context, void *data)
         return cERR_SUBTITLE_ERROR;
     }
 
-    out = (SubtitleOut_t*) data;
+    out = (SubtitleData_t*) data;
+    
     /*
     if (out->type == eSub_Txt)
     {
@@ -758,6 +1140,9 @@ static int Write(void* _context, void *data)
     	
     	//
     	process_ass_data(context, data);
+    	
+    	// write
+    	ass_write(context) ;
     	
     }
     else if (!strncmp("S_TEXT/WEBVTT", Encoding, 18))
