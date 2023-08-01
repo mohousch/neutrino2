@@ -316,6 +316,11 @@ static int writeData(void* _call)
 	
 	if (call->data != NULL)
 	{
+		blit2FB(call->data, call->Width, call->Height, call->x, call->y, 0, 0, false);
+	}
+	
+	if (call->data != NULL)
+	{
 		unsigned int opacity = 255 - ((unsigned int)_a(call->color));
 		unsigned int r = (unsigned int)_r(call->color);
 		unsigned int g = (unsigned int)_g(call->color);

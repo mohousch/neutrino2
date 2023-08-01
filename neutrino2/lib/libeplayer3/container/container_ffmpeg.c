@@ -725,52 +725,65 @@ static void FFMPEGThread(Context_t *context)
 								ffmpeg_printf(0, "end_display_time %d\n", sub.end_display_time);
 								ffmpeg_printf(0, "num_rects %d\n", sub.num_rects);
 								//ffmpeg_printf(0, "pts %lld\n", sub.pts);
-
-								for (i = 0; i < sub.num_rects; i++)
+								
+								switch (sub.rects[0]->type)
 								{
+									case SUBTITLE_TEXT:
+									case SUBTITLE_ASS:
+										//FIXME:
+										break;
+									case SUBTITLE_BITMAP:
+									{
+										for (i = 0; i < sub.num_rects; i++)
+										{
 
-									ffmpeg_printf(10, "x %d\n", sub.rects[i]->x);
-									ffmpeg_printf(10, "y %d\n", sub.rects[i]->y);
-									ffmpeg_printf(10, "w %d\n", sub.rects[i]->w);
-									ffmpeg_printf(10, "h %d\n", sub.rects[i]->h);
-									ffmpeg_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
-									ffmpeg_printf(10, "type %d\n", sub.rects[i]->type);
-									ffmpeg_printf(10, "text %s\n", sub.rects[i]->text);
-									ffmpeg_printf(10, "ass %s\n", sub.rects[i]->ass);
-									//pict ->AVPicture
-									
-									////
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
-									uint32_t *colors = (uint32_t *) sub.rects[i]->pict.data[1];
-#else
-									uint32_t *colors = (uint32_t *) sub.rects[i]->data[1];
-#endif
-									int width = sub.rects[i]->w;
-									int height = sub.rects[i]->h;
+											ffmpeg_printf(10, "x %d\n", sub.rects[i]->x);
+											ffmpeg_printf(10, "y %d\n", sub.rects[i]->y);
+											ffmpeg_printf(10, "w %d\n", sub.rects[i]->w);
+											ffmpeg_printf(10, "h %d\n", sub.rects[i]->h);
+											ffmpeg_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
+											ffmpeg_printf(10, "type %d\n", sub.rects[i]->type);
+											ffmpeg_printf(10, "text %s\n", sub.rects[i]->text);
+											ffmpeg_printf(10, "ass %s\n", sub.rects[i]->ass);
+											//pict ->AVPicture
+											
+											////
+		#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
+											uint32_t *colors = (uint32_t *) sub.rects[i]->pict.data[1];
+		#else
+											uint32_t *colors = (uint32_t *) sub.rects[i]->data[1];
+		#endif
+											int width = sub.rects[i]->w;
+											int height = sub.rects[i]->h;
 
-									int h2 = (width == 1280) ? 720 : 576;
-		
-									int xoff = sub.rects[i]->x * 1280 / width;
-									int yoff = sub.rects[i]->y * 720 / h2;
-									int nw = width * 1280 / width;
-									int nh = height * 720 / h2;
+											int h2 = (width == 1280) ? 720 : 576;
+				
+											int xoff = sub.rects[i]->x * 1280 / width;
+											int yoff = sub.rects[i]->y * 720 / h2;
+											int nw = width * 1280 / width;
+											int nh = height * 720 / h2;
 
-									ffmpeg_printf(10, "cDvbSubtitleBitmaps::Draw: #%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
+											ffmpeg_printf(10, "cDvbSubtitleBitmaps::Draw: #%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
 
-									// resize color to 32 bit
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-									uint32_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
-#else
-									uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
-#endif
-		
-									// blit2fb
-									blit2FB(newdata, nw, nh, xoff, yoff, 0, 0, true);
+											// resize color to 32 bit
+		#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
+											uint32_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+		#else
+											uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+		#endif
+				
+											// blit2fb
+											blit2FB(newdata, nw, nh, xoff, yoff, 0, 0, true);
 
-									blit(framebufferFD);
+											blit(framebufferFD);
 
-									free(newdata);
-									////
+											free(newdata);
+										}
+										
+										break;
+									}
+									default:
+										break;
 								}
 							}
 						}

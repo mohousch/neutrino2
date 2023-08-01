@@ -957,6 +957,7 @@ static int PlaybackSwitchSubtitle(Context_t *context, int* track)
 			context->manager->subtitle->Command(context, MANAGER_GET, &trackid);
 
 			ASSContainer.Command(context, CONTAINER_SWITCH_SUBTITLE, &trackid);
+			
 			/*
 			context->manager->subtitle->Command(context, MANAGER_GET, &curtrackid);
 		    	context->manager->subtitle->Command(context, MANAGER_SET, track);

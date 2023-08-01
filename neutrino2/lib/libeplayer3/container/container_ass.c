@@ -193,8 +193,7 @@ void releaseRegions()
         {
              WriterFBCallData_t out;
                     
-             ass_printf(100, "release: w %d h %d x %d y %d\n", 
-                                 next->w, next->h, next->x, next->y);
+             ass_printf(100, "release: w %d h %d x %d y %d\n", next->w, next->h, next->x, next->y);
 
              out.fd            = framebufferFD;
              out.data          = NULL;
@@ -449,8 +448,7 @@ static void ASSThread(Context_t *context)
                         out.destination   = destination;
                         out.destStride    = destStride;
 
-                        storeRegion(img->dst_x, img->dst_y, 
-                                    img->w, img->h, undisplay);
+                        storeRegion(img->dst_x, img->dst_y, img->w, img->h, undisplay);
                                     
                         if (shareFramebuffer)
                         {
@@ -587,8 +585,7 @@ int container_ass_init(Context_t *context)
     destination      = output.destination;
     destStride       = output.destStride;
     
-    ass_printf(10, "width %d, height %d, share %d, fd %d, 3D %d\n", 
-              screen_width, screen_height, shareFramebuffer, framebufferFD, threeDMode);
+    ass_printf(10, "width %d, height %d, share %d, fd %d, 3D %d\n", screen_width, screen_height, shareFramebuffer, framebufferFD, threeDMode);
 
     if(threeDMode == 0)
     {
@@ -614,7 +611,7 @@ int container_ass_init(Context_t *context)
 
     ass_set_hinting(ass_renderer, ASS_HINTING_LIGHT);
     ass_set_line_spacing(ass_renderer, ass_line_spacing);
-    ass_set_fonts(ass_renderer, ASS_FONT, NULL, 0, NULL, 1);
+    ass_set_fonts(ass_renderer, ASS_FONT, "Arial", 0, NULL, 1);
 
     if(threeDMode == 0)
     {
