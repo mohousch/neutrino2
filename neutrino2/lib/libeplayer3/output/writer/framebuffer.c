@@ -107,6 +107,8 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 void blit(int fd)
 {	
 #if defined (__sh__)
+	struct fb_var_screeninfo screeninfo;
+	
 	STMFBIO_BLT_DATA  bltData; 
 	memset(&bltData, 0, sizeof(STMFBIO_BLT_DATA)); 
 
