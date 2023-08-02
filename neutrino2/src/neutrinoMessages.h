@@ -124,8 +124,6 @@ struct NeutrinoMessages {
 		EVT_CI_MMI_TEXT				 = RC_Events + 65,
 		EVT_CI_MMI_REQUEST_INPUT		 = RC_Events + 66,
 		EVT_CI_MMI_CLOSE			 = RC_Events + 67,
-		
-		//EVT_CA_MESSAGE                           = RC_Events + 60, /* data = CA_MESSAGE pointer */
 
 		/**/
 		EVT_CURRENTEPG                           = RC_WithData +  1,

@@ -269,14 +269,6 @@ class CRCInput
 			neutrino_msg_data_t data;
 			void *buf;
 		};
-		
-		/*
-		struct pevent
-		{
-			neutrino_msg_t msg;
-			void *data;
-		};
-		*/
 
 		struct timer
 		{

@@ -455,6 +455,27 @@ void CInfoBox::setFont(unsigned int font_text)
 }
 
 //////////////////////////////////////////////////////////////////////
+// Function Name:	SetText	
+// Description:		
+// Parameters:		
+// Data IN/OUT:		
+// Return:		
+// Notes:		
+//////////////////////////////////////////////////////////////////////
+bool CInfoBox::setText(const char * const newText, const char * const _thumbnail, int _tw, int _th, int tmode, bool enable_frame, const bool useBackground)
+{
+	bool _result = false;
+	
+	// update text in textbox if there is one
+	if(m_pcTextBox != NULL && newText != NULL)
+	{
+		_result = m_pcTextBox->setText(newText, _thumbnail, _tw, _th, tmode, enable_frame, useBackground);
+	}
+	
+	return(_result);
+}
+
+//////////////////////////////////////////////////////////////////////
 // Function Name:	Paint	
 // Description:		
 // Parameters:		
@@ -537,27 +558,6 @@ int CInfoBox::exec(int timeout)
 	hide();
 	
 	return res;
-}
-
-//////////////////////////////////////////////////////////////////////
-// Function Name:	SetText	
-// Description:		
-// Parameters:		
-// Data IN/OUT:		
-// Return:		
-// Notes:		
-//////////////////////////////////////////////////////////////////////
-bool CInfoBox::setText(const char * const newText, const char * const _thumbnail, int _tw, int _th, int tmode, bool enable_frame, const bool useBackground)
-{
-	bool _result = false;
-	
-	// update text in textbox if there is one
-	if(m_pcTextBox != NULL && newText != NULL)
-	{
-		_result = m_pcTextBox->setText(newText, _thumbnail, _tw, _th, tmode, enable_frame, useBackground);
-	}
-	
-	return(_result);
 }
 
 //

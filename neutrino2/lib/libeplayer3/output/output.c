@@ -410,8 +410,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 					return context->output->video->Command(context, OUTPUT_GET_FRAME_COUNT, argument);
 				if (context->playback->isAudio)
 					return context->output->audio->Command(context, OUTPUT_GET_FRAME_COUNT, argument);
-				if (context->playback->isSubtitle)
-					return context->output->subtitle->Command(context, OUTPUT_GET_FRAME_COUNT, "subtitle");
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;

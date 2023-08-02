@@ -845,7 +845,7 @@ int LinuxDvbGetFrameCount(Context_t  *context, unsigned long long int* frameCoun
 {
 	int ret = cERR_LINUXDVB_NO_ERROR;
 	
-#if 0
+#if defined (__sh__)
 	dvb_play_info_t playInfo;  //???
 
 	linuxdvb_printf(50, "\n");

@@ -962,7 +962,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		/*/
 		if(FD_ISSET(fd_pipe_event[0], &rfds))
 		{
-			struct pevent buf;
+			struct event buf;
 
 			read(fd_pipe_event[0], &buf, sizeof(buf));
 			
@@ -1894,7 +1894,7 @@ void CRCInput::sendEvent(const neutrino_msg_t event, void *data, const unsigned 
 	dprintf(DEBUG_NORMAL, "CRCInput::sendEvent >\n");
 		
 	//
-	struct pevent buf;
+	struct event buf;
 	
 	buf.msg  = event;
 	buf.data = data;
