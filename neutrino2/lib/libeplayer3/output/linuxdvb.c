@@ -43,6 +43,10 @@
 #include "misc.h"
 #include "pes.h"
 
+#if defined (__sh__)
+#include <linux/dvb/stm_ioctls.h>
+#endif
+
 
 /* ***************************** */
 /* Makros/Constants              */
