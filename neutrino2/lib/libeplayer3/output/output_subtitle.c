@@ -121,9 +121,6 @@ static pthread_mutex_t mutex;
 
 static pthread_t thread_sub;
 
-void* clientData = NULL;
-void  (*clientFunction) (long int, size_t, char *, void *);
-
 static struct sub_t subPuffer[PUFFERSIZE];
 static int readPointer = 0;
 static int writePointer = 0;
@@ -978,83 +975,6 @@ static void* SubtitleThread(void* data)
 
     while ( context && context->playback && context->playback->isPlaying) 
     {
-	#if 0
-        int curtrackid = -1;
-        
-        if (context && context->manager && context->manager->subtitle)
-            context->manager->subtitle->Command(context, MANAGER_GET, &curtrackid);
-
-        subtitle_printf(50, "curtrackid %d\n", curtrackid);
-
-        if (curtrackid >= 0) 
-        {
-            if (getNextSub(&subText, &subPts, &subMilliDuration) != 0) 
-            {
-                usleep(500000);
-                continue;
-            }
-
-            if (context && context->playback)
-                context->playback->Command(context, PLAYBACK_PTS, &Pts);
-            else 
-            	return NULL;
-
-            if(Pts > subPts) 
-            {
-                subtitle_printf(10,"subtitle is to late, ignoring\n");
-                
-                if(subText != NULL)
-                    free(subText);
-                    
-                continue;
-            }
-
-            subtitle_printf(20, "Pts:%llu < subPts%llu duration %ld\n", Pts, subPts, subMilliDuration);
-
-            while ( context && context->playback && context->playback->isPlaying && Pts < subPts) 
-            {
-                unsigned long int diff = subPts - Pts;
-                diff = (diff*1000)/90.0;
-
-                subtitle_printf(50, "DIFF: %lud\n", diff);
-
-                if(diff > 100)
-                    usleep(diff);
-
-                if (context && context->playback)
-                    context->playback->Command(context, PLAYBACK_PTS, &Pts);
-                else
-                { 
-                   subtitle_err("no playback ? terminated?\n");
-                   break;
-                }
-                subtitle_printf(20, "cur: %llu wanted: %llu\n", Pts, subPts);
-            }
-            
-            // ass
-            if (context && context->playback && context->playback->isPlaying && ass_track != NULL)
-            {
-            	// write
-    		ass_write(context);
-            }
-
-	    //
-            if (context && context->playback && context->playback->isPlaying && subText != NULL) 
-            {
-                if(clientFunction != NULL)
-                    clientFunction(subMilliDuration, strlen(subText), subText, clientData);
-                else
-                    subtitle_printf(10, "writing Sub failed (%ld) (%d) \"%s\"\n", subMilliDuration, strlen(subText), subText);
-
-                free(subText);
-            }
-
-        } /* trackID >= 0 */
-        else //Wait
-            usleep(500000);
-        #endif
-        
-        ////
         //IF MOVIE IS PAUSED, WAIT
         if (context->playback->isPaused) 
         {
@@ -1183,8 +1103,6 @@ static void* SubtitleThread(void* data)
         
         /* cleanup no longer used but not overwritten regions */
         checkRegions();
-        ////
-
     } /* outer while */
     
     subtitle_printf(0, "has ended\n");
@@ -1218,22 +1136,6 @@ static int Write(void* _context, void *data)
 
     out = (SubtitleData_t*) data;
     
-    /*
-    if (out->type == eSub_Txt)
-    {
-        Text = strdup((const char*) out->u.text.data);
-    } 
-    else
-    {    
-        subtitle_err("subtitle gfx currently not handled\n");
-        return cERR_SUBTITLE_ERROR;
-    }
-
-    DataLength = out->u.text.len;
-    Pts = out->pts;
-    Duration = out->duration;
-    */
-    
     context->manager->subtitle->Command(context, MANAGER_GETENCODING, &Encoding);
 
     if (Encoding == NULL)
@@ -1245,26 +1147,6 @@ static int Write(void* _context, void *data)
     }
     
     subtitle_printf(20, "Encoding:%s\n", Encoding);
-    
-/*
-    if (!strncmp("S_TEXT/SSA", Encoding, 10) || !strncmp("S_SSA", Encoding, 5))
-        subtitle_ParseSSA(&Text);
-    else if(!strncmp("S_TEXT/ASS", Encoding, 10) || !strncmp("S_AAS", Encoding, 5))
-        subtitle_ParseASS(&Text);
-    else if(!strncmp("S_TEXT/SRT", Encoding, 10) || !strncmp("S_SRT", Encoding, 5))
-        subtitle_ParseSRT(&Text);
-    else
-    {
-        subtitle_err("unknown encoding %s\n", Encoding);
-        return  cERR_SUBTITLE_ERROR;
-    }
-
-    subtitle_printf(10, "Text:%s Duration:%f\n", Text,Duration);
-
-    addSub(context, Text, Pts, Duration * 1000);
-    
-    free(Text);
-*/
     
     //
     if(!strncmp("S_TEXT/SUBRIP", Encoding, 13))
@@ -1364,6 +1246,12 @@ static int subtitle_Close(Context_t* context)
         subPuffer[i].pts           = 0;
         subPuffer[i].milliDuration = 0;
     }
+    
+    //
+     if (ass_track)
+        ass_free_track(ass_track);
+
+    ass_track = NULL;
 
     isSubtitleOpened = 0;
 
@@ -1496,20 +1384,6 @@ static int subtitle_Stop(context)
     return cERR_SUBTITLE_NO_ERROR;
 }
 
-void subtitle_SignalConnect(void (*fkt) (long int, size_t, char *, void *))
-{
-    subtitle_printf(10, "%p\n", fkt);
-
-    clientFunction = fkt;
-}
-
-void subtitle_SignalConnectBuffer(void* data)
-{
-    subtitle_printf(10, "%p\n", data);
-
-    clientData = data;
-}
-
 static int Command(void  *_context, OutputCmd_t command, void * argument) 
 {
     Context_t  *context = (Context_t*) _context;
@@ -1576,18 +1450,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		framebufferFD = out->framebufferFD;
 		destination = out->destination;
 		destStride = out->destStride;
-		break;
-	    }
-	    
-	    case OUTPUT_SUBTITLE_REGISTER_FUNCTION: 
-	    {
-		subtitle_SignalConnect(argument);
-		break;
-	    }
-	    
-	    case OUTPUT_SUBTITLE_REGISTER_BUFFER: 
-	    {
-		subtitle_SignalConnectBuffer(argument);
 		break;
 	    }
 	    
