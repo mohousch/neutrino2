@@ -1116,3 +1116,4 @@ int tuxtxt_stop_thread()
 #endif
 	return 1;
 }
+

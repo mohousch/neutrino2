@@ -1030,8 +1030,16 @@ static void* SubtitleThread(void* data)
                 }
                 subtitle_printf(20, "cur: %llu wanted: %llu\n", Pts, subPts);
             }
+            
+            // ass
+            if (context && context->playback && context->playback->isPlaying && ass_track != NULL)
+            {
+            	// write
+    		ass_write(context);
+            }
 
-            if (context && context->playback && context->playback->isPlaying && subText != NULL ) 
+	    //
+            if (context && context->playback && context->playback->isPlaying && subText != NULL) 
             {
                 if(clientFunction != NULL)
                     clientFunction(subMilliDuration, strlen(subText), subText, clientData);
@@ -1133,17 +1141,13 @@ static int Write(void* _context, void *data)
     }
     else if (!strncmp("S_TEXT/ASS", Encoding, 10))
     {
-    	subtitle_printf(10, "FIXME: S_TEXT/ASS\n");
+    	subtitle_printf(10, "Write: S_TEXT/ASS\n");
     	
     	//
     	ass_init(context);
     	
     	//
     	process_ass_data(context, data);
-    	
-    	// write
-    	ass_write(context) ;
-    	
     }
     else if (!strncmp("S_TEXT/WEBVTT", Encoding, 18))
     {
@@ -1276,6 +1280,7 @@ static int subtitle_Stop(context)
 {
     int wait_time = 20;
     int i;
+    Writer_t* writer;
     
     subtitle_printf(10, "\n");
 
@@ -1299,6 +1304,29 @@ static int subtitle_Stop(context)
      */
 
     getMutex(__LINE__);
+    
+    // ass
+    releaseRegions();
+
+    if (ass_track)
+        ass_free_track(ass_track);
+
+    ass_track = NULL;
+
+    if (ass_renderer)
+        ass_renderer_done(ass_renderer);
+    ass_renderer = NULL;
+
+    if (ass_library)
+        ass_library_done(ass_library);
+    ass_library = NULL;
+    
+    writer = getDefaultFramebufferWriter();
+
+    if (writer != NULL)
+    {
+        writer->reset();
+    }
 
     //Reset all
     readPointer = 0;

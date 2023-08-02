@@ -32,7 +32,6 @@ typedef struct Container_s
 
 //
 extern Container_t FFMPEGContainer;
-extern Container_t ASSContainer;
 
 //
 static Container_t * AvailableContainer[] = 
