@@ -188,22 +188,27 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		}
 		
 		case OUTPUT_PLAY: 
-		{ // 4
+		{ 	
+			// 4
 			if (context && context->playback ) 
 			{
 				if (context->playback->isVideo)
+				{
 					ret = context->output->video->Command(context, OUTPUT_PLAY, "video");
+				}
 
 				if (!ret) 
 				{	// success or not executed, dunn care
 					if (context->playback->isAudio)
-						ret = context->output->audio->Command(context, OUTPUT_PLAY, "audio");
-					if (!ret) 
-					{	// success or not executed, dunn care
-						if (context->playback->isSubtitle)
-							ret = context->output->subtitle->Command(context, OUTPUT_PLAY, "subtitle");
-					}                
+						ret = context->output->audio->Command(context, OUTPUT_PLAY, "audio");             
 				}
+				
+				if (!ret) 
+				{	
+					// FIXME: not needed
+					if (context->playback->isSubtitle)
+						ret = context->output->subtitle->Command(context, OUTPUT_PLAY, "subtitle");
+				}   
 			} 
 			else
 				ret = cERR_OUTPUT_INTERNAL_ERROR;
@@ -226,7 +231,8 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 			break;
 		}
 		
-		case OUTPUT_FLUSH: {
+		case OUTPUT_FLUSH: 
+		{
 			if (context && context->playback ) 
 			{
 				if (context->playback->isVideo)
@@ -273,7 +279,8 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 			break;
 		}
 		
-		case OUTPUT_REVERSE: {
+		case OUTPUT_REVERSE: 
+		{
 			if (context && context->playback ) 
 			{
 				if (context->playback->isVideo)

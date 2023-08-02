@@ -63,7 +63,7 @@ static int hasThreadStarted = 0;
 /* ***************************** */
 /* Prototypes                    */
 /* ***************************** */
-static int PlaybackTerminate(Context_t  *context);
+static int PlaybackTerminate(Context_t *context);
 
 static int8_t dieNow = 0;
 static PlaybackDieNowCallback playbackDieNowCallbacks[MAX_PLAYBACK_DIE_NOW_CALLBACKS] = {NULL};
@@ -82,6 +82,7 @@ int8_t PlaybackDieNow(int8_t val)
 	{
 		uint32_t i = 0;
 		dieNow = 1;
+		
 		while (i < MAX_PLAYBACK_DIE_NOW_CALLBACKS)
 		{
 			if (playbackDieNowCallbacks[i] == NULL)
@@ -96,6 +97,7 @@ int8_t PlaybackDieNow(int8_t val)
 	{
 		dieNow = 0;
 	}
+	
 	return dieNow;
 }
 
@@ -938,7 +940,7 @@ static int PlaybackSwitchAudio(Context_t  *context, int* track)
 static int PlaybackSwitchSubtitle(Context_t *context, int* track)
 {
 	int ret = cERR_PLAYBACK_NO_ERROR;
-	int curtrackid = 0;
+	int curtrackid = -1;
 	int nextrackid = 0;
 
 	playback_printf(10, "Track: %d\n", *track);
