@@ -322,16 +322,16 @@ int process_ass_data(Context_t *context, SubtitleData_t* data)
 
     if ((data->extradata) && (first_kiss))
     {
-        subtitle_printf(30,"processing private %d bytes\n",data->extralen);
+        subtitle_printf(20,"processing private %d bytes\n",data->extralen);
         ass_process_codec_private(ass_track, (char*) data->extradata, data->extralen);
-        subtitle_printf(30,"processing private done\n");
+        subtitle_printf(20,"processing private done\n");
     } 
 
     if (data->data)
     {
-        subtitle_printf(30,"processing data %d bytes\n",data->len);
+        subtitle_printf(20,"processing data %d bytes\n",data->len);
         ass_process_data(ass_track, (char*) data->data, data->len);
-        subtitle_printf(30,"processing data done\n");
+        subtitle_printf(20,"processing data done\n");
     }
     
     return cERR_SUBTITLE_NO_ERROR;
@@ -978,7 +978,7 @@ static void* SubtitleThread(void* data)
 
     while ( context && context->playback && context->playback->isPlaying) 
     {
-
+	#if 0
         int curtrackid = -1;
         
         if (context && context->manager && context->manager->subtitle)
@@ -1052,6 +1052,138 @@ static void* SubtitleThread(void* data)
         } /* trackID >= 0 */
         else //Wait
             usleep(500000);
+        #endif
+        
+        ////
+        //IF MOVIE IS PAUSED, WAIT
+        if (context->playback->isPaused) 
+        {
+            subtitle_printf(20, "paused\n");
+
+            usleep(100000);
+            continue;
+        }
+
+        if (context->playback->isSeeking) 
+        {
+            subtitle_printf(10, "seeking\n");
+
+            usleep(100000);
+            continue;
+        }
+
+	// ass
+        if (ass_track)
+        {
+            ASS_Image *       img   = NULL;
+            int               change = 0;
+            unsigned long int playPts;
+            
+            if (context && context->playback)
+            {
+                if (context->playback->Command(context, PLAYBACK_PTS, &playPts) < 0)
+                    continue;
+            }
+
+            getMutex(__LINE__);
+            
+            //FIXME: durch den sleep bleibt die cpu usage zw. 5 und 13%, ohne
+            //       steigt sie bei Verwendung von subtiteln bis auf 95%.
+            //       ich hoffe dadurch gehen keine subtitle verloren, wenn die playPts
+            //       durch den sleep verschlafen wird. Besser w�re es den n�chsten
+            //       subtitel zeitpunkt zu bestimmen und solange zu schlafen.
+            usleep(1000);
+
+            img = ass_render_frame(ass_renderer, ass_track, playPts / 90.0, &change);
+
+            subtitle_printf(150, "img %p pts %lu %f\n", img, playPts, playPts / 90.0);
+
+            if(img != NULL && ass_renderer && ass_track)
+            {
+                /* the spec says, that if a new set of regions is present
+                 * the complete display switches to the new state. So lets
+                 * release the old regions on display.
+                 */
+                if (change != 0)
+                    releaseRegions();
+
+                while (context && context->playback && context->playback->isPlaying &&
+                       (img) && (change != 0))
+                {
+                    WriterFBCallData_t out;
+                    time_t now = time(NULL);
+                    time_t undisplay = now + 10;
+
+                    if (ass_track && ass_track->events)
+                    {
+                        undisplay = now + ass_track->events->Duration / 1000 + 0.5;
+                    }
+
+                    subtitle_printf(100, "w %d h %d s %d x %d y %d c %d chg %d now %ld und %ld\n", 
+                                 img->w, img->h, img->stride, 
+                                 img->dst_x, img->dst_y, img->color, 
+                                 change, now, undisplay);
+
+                    /* api docu said w and h can be zero which
+                     * means image should not be rendered
+                     */
+                    if ((img->w != 0) && (img->h != 0) && (writer)) 
+                    {
+                        out.fd            = framebufferFD;
+                        out.data          = img->bitmap;
+                        out.Width         = img->w;
+                        out.Height        = img->h;
+                        out.Stride        = img->stride;
+                        out.x             = img->dst_x;
+                        out.y             = img->dst_y;
+                        out.color         = img->color;
+                        
+                        out.Screen_Width  = screen_width; 
+                        out.Screen_Height = screen_height; 
+                        out.destination   = destination;
+                        out.destStride    = destStride;
+
+                        storeRegion(img->dst_x, img->dst_y, img->w, img->h, undisplay);
+                                    
+                        if (shareFramebuffer)
+                        {
+                            if(context && context->playback && context->playback->isPlaying && writer)
+                            {
+                                writer->writeData(&out);
+                                
+                                if(threeDMode == 1)
+                                {
+			            out.x = screen_width/2 + img->dst_x;
+			            writer->writeData(&out);
+                                }
+                                else if(threeDMode == 2)
+                                {
+                                    out.y = screen_height/2 + img->dst_y;
+                                    writer->writeData(&out);
+                                }
+                            }
+                        }
+                    }
+
+                    /* Next image */
+                    img = img->next;
+                }
+            }
+            else
+            {
+               /* noop */
+            }
+
+            releaseMutex(__LINE__);
+        } 
+        else
+        {
+            usleep(1000);
+        }
+        
+        /* cleanup no longer used but not overwritten regions */
+        checkRegions();
+        ////
 
     } /* outer while */
     
@@ -1076,7 +1208,7 @@ static int Write(void* _context, void *data)
     unsigned long long int Pts;
     float Duration;
     
-    subtitle_printf(10, "\n");
+    subtitle_printf(20, "\n");
 
     if (data == NULL)
     {
@@ -1137,42 +1269,39 @@ static int Write(void* _context, void *data)
     //
     if(!strncmp("S_TEXT/SUBRIP", Encoding, 13))
     {
-    	subtitle_printf(10, "FIXME: S_TEXT/SUBRIP\n");
+    	subtitle_printf(20, "FIXME: S_TEXT/SUBRIP\n");
     }
     else if (!strncmp("S_TEXT/ASS", Encoding, 10))
     {
-    	subtitle_printf(10, "Write: S_TEXT/ASS\n");
-    	
-    	//
-    	ass_init(context);
+    	subtitle_printf(20, "Write: S_TEXT/ASS\n");
     	
     	//
     	process_ass_data(context, data);
     }
     else if (!strncmp("S_TEXT/WEBVTT", Encoding, 18))
     {
-    	subtitle_printf(10, "FIXME: S_TEXT/WEBVTT\n");
+    	subtitle_printf(20, "FIXME: S_TEXT/WEBVTT\n");
     }
     else if (!strncmp("S_GRAPHIC/PGS", Encoding, 13))
     {
-    	subtitle_printf(10, "FIXME: S_GRAPHIC/PGS\n");
+    	subtitle_printf(20, "FIXME: S_GRAPHIC/PGS\n");
     }
     else if (!strncmp("S_GRAPHIC/DVB", Encoding, 13))
     {
-    	subtitle_printf(10, "FIXME: S_GRAPHIC/DVB\n");
+    	subtitle_printf(20, "FIXME: S_GRAPHIC/DVB\n");
     }
     else if (!strncmp("S_GRAPHIC/XSUB", Encoding, 14))
     {
-    	subtitle_printf(10, "FIXME: S_GRAPHIC/XSUB\n");
+    	subtitle_printf(20, "FIXME: S_GRAPHIC/XSUB\n");
     }
     else if (!strncmp("S_TEXT/UTF-8", Encoding, 12))
     {
-    	subtitle_printf(10, "FIXME: S_TEXT/UTF-8\n");
+    	subtitle_printf(20, "FIXME: S_TEXT/UTF-8\n");
     }
     
     free(Encoding);
 
-    subtitle_printf(10, "<\n");
+    subtitle_printf(20, "<\n");
 
     return cERR_SUBTITLE_NO_ERROR;
 }
@@ -1190,6 +1319,9 @@ static int subtitle_Open(context)
     }
 
     getMutex(__LINE__);
+    
+    // ass
+    ass_init(context);
 
     //Reset all
     readPointer = 0;
@@ -1244,12 +1376,12 @@ static int subtitle_Close(Context_t* context)
 
 static int subtitle_Play(Context_t* context) 
 {
+	 pthread_attr_t attr;
+	 
     subtitle_printf(10, "\n");
 
     if (hasThreadStarted == 0)
-    {
-        pthread_attr_t attr;
-        
+    {  
         pthread_attr_init(&attr);
         
         pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
@@ -1270,6 +1402,21 @@ static int subtitle_Play(Context_t* context)
         subtitle_err("thread already created.\n");
         return cERR_SUBTITLE_ERROR;
     }
+    
+    // ass
+    getMutex(__LINE__);
+
+    releaseRegions();
+
+    /* free the track so extradata will be written next time
+     * process_data is called.
+     */
+    if (ass_track)
+        ass_free_track(ass_track);
+
+    ass_track = NULL;
+
+    releaseMutex(__LINE__);
 
     subtitle_printf(10, "<\n");
 
@@ -1392,7 +1539,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    
 	    case OUTPUT_PLAY: 
 	    {
-		ret = subtitle_Play(context);
+		//ret = subtitle_Play(context);
 		break;
 	    }
 	    
@@ -1404,8 +1551,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    
 	    case OUTPUT_SWITCH: 
 	    {
-		//subtitle_err("Subtitle Switch not implemented\n");
-		//ret = cERR_SUBTITLE_ERROR;
 		ret = subtitle_Play(context);
 		break;
 	    }
@@ -1469,8 +1614,12 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    
 	    case OUTPUT_DATA: 
 	    {
+	    	ret = cERR_SUBTITLE_ERROR;
+	    	
 		SubtitleData_t* data = (SubtitleData_t*) argument;
-		ret = process_ass_data(context, data);
+		
+		if (data != NULL)
+			ret = cERR_SUBTITLE_NO_ERROR;
 		break;
 	    }
 

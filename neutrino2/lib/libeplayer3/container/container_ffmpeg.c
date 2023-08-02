@@ -274,21 +274,6 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return	"A_IPCM";  //FIXME: rewrite pcm writer
 			
 		/* subtitle */
-		#if 0
-		case AV_CODEC_ID_SSA:
-			return "S_TEXT/ASS"; /* Hellmaster1024: seems to be ASS instead of SSA */
-			
-		case AV_CODEC_ID_TEXT: /* Hellmaster1024: i dont have most of this, but lets hope it is normal text :-) */
-		case AV_CODEC_ID_DVD_SUBTITLE:
-		case AV_CODEC_ID_DVB_SUBTITLE:
-		case AV_CODEC_ID_XSUB:
-		case AV_CODEC_ID_MOV_TEXT:      
-		case AV_CODEC_ID_HDMV_PGS_SUBTITLE:
-		case AV_CODEC_ID_DVB_TELETEXT:
-		case AV_CODEC_ID_SRT: 
-		case AV_CODEC_ID_ASS:     
-			return "S_TEXT/SRT"; /* fixme */
-		#endif
 		case AV_CODEC_ID_SSA:
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55, 3, 100)
     		case AV_CODEC_ID_ASS:
@@ -734,18 +719,38 @@ static void FFMPEGThread(Context_t *context)
 					*/
 					if (duration > 0 || duration == -1)
 					{
-					    	SubtitleData_t data;
+						SubtitleData_t data;
 						
-					    	ffmpeg_printf(100, "videoPts %lld\n", currentVideoPts);
+						if(((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_ASS)
+						{
+							unsigned char* line = text_to_ass((char *)packet.data, pts/90, duration);
+							
+							ffmpeg_printf(50,"text line is %s\n",(char *)packet.data);
+							ffmpeg_printf(50,"Sub line is %s\n",line);
+							ffmpeg_printf(20, "videoPts %lld %f\n", currentVideoPts,currentVideoPts/90000.0);
 
-						data.data      = packet.data;
-						data.len       = packet.size;
-						data.extradata = subtitleTrack->extraData;
-						data.extralen  = subtitleTrack->extraSize;
-						data.pts       = pts;
-						data.duration  = duration;
-						data.width     = subtitleTrack->width;
-                   				data.height    = subtitleTrack->height;
+							data.data      = line;
+							data.len       = strlen((char*)line);
+							data.extradata = (unsigned char *) DEFAULT_ASS_HEAD;
+							data.extralen  = strlen(DEFAULT_ASS_HEAD);
+							data.pts       = pts;
+							data.duration  = duration;
+							data.width     = subtitleTrack->width;
+                   					data.height    = subtitleTrack->height;
+						}
+						else
+						{
+						    	ffmpeg_printf(100, "videoPts %lld\n", currentVideoPts);
+
+							data.data      = packet.data;
+							data.len       = packet.size;
+							data.extradata = subtitleTrack->extraData;
+							data.extralen  = subtitleTrack->extraSize;
+							data.pts       = pts;
+							data.duration  = duration;
+							data.width     = subtitleTrack->width;
+		           				data.height    = subtitleTrack->height;
+                   				}
 							
 						if (context->output->subtitle->Write(context, &data) < 0) 
 						{
