@@ -200,7 +200,7 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
         		audio_mgr_printf(20, "%s::%s MANAGER_GET\n", FILENAME, __FUNCTION__);
 
         		if ((TrackCount > 0) && (CurrentTrack >=0))
-            			*((int*)argument) = (int)Tracks[CurrentTrack].Id;
+            			*((int*)argument) = (int)Tracks[CurrentTrack].Index;
         		else
             			*((int*)argument) = (int)-1;
         		break;

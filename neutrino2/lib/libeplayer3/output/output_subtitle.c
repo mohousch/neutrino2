@@ -664,6 +664,104 @@ static int ass_stop(Context_t *context)
 }
 
 //
+static void dvbsub_write(Context_t *context, SubtitleData_t* out) 
+{
+    	Writer_t* writer;
+    
+    	subtitle_printf(20, "\n");
+
+    	writer = getDefaultFramebufferWriter();
+
+    	if (writer == NULL)
+    	{
+        	subtitle_err("no framebuffer writer found!\n");
+    	}
+
+	//
+    	AVSubtitle sub;
+    	memset(&sub, 0, sizeof(sub));
+
+    	AVPacket packet;
+    	av_init_packet(&packet);
+    	
+    	packet.data = out->data;
+    	packet.size = out->len;
+    	packet.pts  = out->pts;
+    		
+    	//
+    	const AVCodec *codec;
+    		
+    	codec = avcodec_find_decoder(out->avCodecId);
+    	AVCodecContext *c = avcodec_alloc_context3(codec);
+    		
+    	int got_sub_ptr = 0;
+    		
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
+	if (c && avcodec_decode_subtitle2(c, &sub, &got_sub_ptr, &packet) < 0)
+#else
+	if (c && avcodec_decode_subtitle(c, &sub, &got_sub_ptr, packet.data, packet.size ) < 0)
+#endif
+	{
+		subtitle_err("error decoding subtitle\n");
+	} 
+	else
+	{
+		int i;
+
+		subtitle_printf(10, "format %d\n", sub.format);
+		subtitle_printf(10, "start_display_time %d\n", sub.start_display_time);
+		subtitle_printf(10, "end_display_time %d\n", sub.end_display_time);
+		subtitle_printf(10, "num_rects %d\n", sub.num_rects);
+								
+		for (i = 0; i < sub.num_rects; i++)
+		{
+
+			subtitle_printf(10, "x %d\n", sub.rects[i]->x);
+			subtitle_printf(10, "y %d\n", sub.rects[i]->y);
+			subtitle_printf(10, "w %d\n", sub.rects[i]->w);
+			subtitle_printf(10, "h %d\n", sub.rects[i]->h);
+			subtitle_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
+			subtitle_printf(10, "type %d\n", sub.rects[i]->type);
+			subtitle_printf(10, "text %s\n", sub.rects[i]->text);
+			subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
+											
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
+			uint32_t *colors = (uint32_t *) sub.rects[i]->pict.data[1];
+#else
+			uint32_t *colors = (uint32_t *) sub.rects[i]->data[1];
+#endif
+			int width = sub.rects[i]->w;
+			int height = sub.rects[i]->h;
+
+			int h2 = (width == 1280) ? 720 : 576;
+				
+			int xoff = sub.rects[i]->x * 1280 / width;
+			int yoff = sub.rects[i]->y * 720 / h2;
+			int nw = width * 1280 / width;
+			int nh = height * 720 / h2;
+
+			subtitle_printf(10, "cDvbSubtitleBitmaps::Draw: #%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
+
+			// resize color to 32 bit
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
+			uint32_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+#else
+			uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+#endif
+				
+			// blit2fb
+			blit2FB(newdata, nw, nh, xoff, yoff, 0, 0, true);
+
+			blit(framebufferFD);
+
+			free(newdata);
+		} //for
+	}
+
+    	subtitle_printf(10, "terminating\n");
+}
+
+//
 int subtitle_ParseASS (char **Line) 
 {
     char* Text;
@@ -1091,7 +1189,7 @@ static void* SubtitleThread(void* data)
 static int Write(void* _context, void *data) 
 {
     Context_t * context = (Context_t  *) _context;
-    char * Encoding = NULL;
+    //char * Encoding = NULL;
     SubtitleData_t * out;
     
     subtitle_printf(20, "\n");
@@ -1104,6 +1202,7 @@ static int Write(void* _context, void *data)
 
     out = (SubtitleData_t*) data;
     
+    /*
     context->manager->subtitle->Command(context, MANAGER_GETENCODING, &Encoding);
 
     if (Encoding == NULL)
@@ -1144,7 +1243,7 @@ static int Write(void* _context, void *data)
     	
     	//
     }
-    else if (!strncmp("S_GRAPHIC/TELETEXT", Encoding, 13))
+    else if (!strncmp("S_GRAPHIC/TELETEXT", Encoding, 18))
     {
     	subtitle_printf(20, "FIXME: S_GRAPHIC/TELETEXT: %s\n", (char *)out->data);
     }
@@ -1158,6 +1257,123 @@ static int Write(void* _context, void *data)
     }
     
     free(Encoding);
+    */
+    switch (out->avCodecId)
+    {
+    	case AV_CODEC_ID_SSA:
+    	case AV_CODEC_ID_ASS:
+    	{
+    		subtitle_printf(10, "Write: S_TEXT/ASS: %s\n", (char *)out->data);
+    	
+    		//
+    		process_ass_data(context, data);
+    	
+    		//
+    		ass_write(context);
+    		break;
+    	}
+    		
+    	case AV_CODEC_ID_DVB_TELETEXT:
+    	{
+    		subtitle_printf(10, "Write: S_GRAPHIC/TELETEXT: %s\n", (char *)out->data);
+    		break;
+    	}
+    		
+    	case AV_CODEC_ID_DVB_SUBTITLE:
+    	{
+    		subtitle_printf(10, "Write: S_GRAPHIC/DVB: %s\n", (char *)out->data);
+    		
+    		dvbsub_write(context, out);
+    		
+    		//// process_data
+    		/*
+    		AVSubtitle sub;
+    		memset(&sub, 0, sizeof(sub));
+
+    		AVPacket packet;
+    		av_init_packet(&packet);
+    		packet.data = out->data;
+    		packet.size = out->len;
+    		packet.pts  = out->pts;
+    		
+    		//
+    		const AVCodec *codec;
+    		
+    		codec = avcodec_find_decoder(out->avCodecId);
+    		AVCodecContext *context = avcodec_alloc_context3(codec);
+    		////
+    		
+    		int got_sub_ptr = 0;
+    		
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
+		if (context && avcodec_decode_subtitle2(context, &sub, &got_sub_ptr, &packet) < 0)
+#else
+		if (context && avcodec_decode_subtitle(context, &sub, &got_sub_ptr, packet.data, packet.size ) < 0)
+#endif
+		{
+			subtitle_err("error decoding subtitle\n");
+		} 
+		else
+		{
+			int i;
+
+			subtitle_printf(10, "format %d\n", sub.format);
+			subtitle_printf(10, "start_display_time %d\n", sub.start_display_time);
+			subtitle_printf(10, "end_display_time %d\n", sub.end_display_time);
+			subtitle_printf(10, "num_rects %d\n", sub.num_rects);
+								
+			for (i = 0; i < sub.num_rects; i++)
+			{
+
+				subtitle_printf(10, "x %d\n", sub.rects[i]->x);
+				subtitle_printf(10, "y %d\n", sub.rects[i]->y);
+				subtitle_printf(10, "w %d\n", sub.rects[i]->w);
+				subtitle_printf(10, "h %d\n", sub.rects[i]->h);
+				subtitle_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
+				subtitle_printf(10, "type %d\n", sub.rects[i]->type);
+				subtitle_printf(10, "text %s\n", sub.rects[i]->text);
+				subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
+											
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
+				uint32_t *colors = (uint32_t *) sub.rects[i]->pict.data[1];
+#else
+				uint32_t *colors = (uint32_t *) sub.rects[i]->data[1];
+#endif
+				int width = sub.rects[i]->w;
+				int height = sub.rects[i]->h;
+
+				int h2 = (width == 1280) ? 720 : 576;
+				
+				int xoff = sub.rects[i]->x * 1280 / width;
+				int yoff = sub.rects[i]->y * 720 / h2;
+				int nw = width * 1280 / width;
+				int nh = height * 720 / h2;
+
+				subtitle_printf(10, "cDvbSubtitleBitmaps::Draw: #%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
+
+				// resize color to 32 bit
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
+				uint32_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+#else
+				uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
+#endif
+				
+				// blit2fb
+				blit2FB(newdata, nw, nh, xoff, yoff, 0, 0, true);
+
+				blit(framebufferFD);
+
+				free(newdata);
+			} //for
+		}
+		*/
+    		////
+    		break;
+    	}
+    	
+    	default:
+    		break;
+    }
 
     subtitle_printf(20, "<\n");
 

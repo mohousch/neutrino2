@@ -195,7 +195,7 @@ static int Command(void  *_context, ManagerCmd_t command, void * argument)
 	    	case MANAGER_GET: 
 		{
 			if ((TrackCount > 0) && (CurrentTrack >=0))
-		    		*((int*)argument) = (int)Tracks[CurrentTrack].Id;
+		    		*((int*)argument) = (int)Tracks[CurrentTrack].Index;
 			else
 		    		*((int*)argument) = (int)-1;
 			break;

@@ -1,6 +1,8 @@
 #ifndef _subtitle_123
 #define _subtitle_123
 
+#include <libavcodec/avcodec.h>
+
 /*
  * Interface File for subtitle handling (container input and output).
  *
@@ -71,8 +73,10 @@ static inline unsigned char* text_to_ass(char *text, long long int pts, double d
 //
 typedef struct
 {
-	int id;
+	//
+	enum AVCodecID 	      avCodecId;
 	
+	//
 	unsigned char* data;
 	int            len;
 

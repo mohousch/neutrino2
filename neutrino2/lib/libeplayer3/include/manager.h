@@ -27,7 +27,7 @@ typedef struct Track_s
 {
 	char *                Name;
 	char *                Encoding;
-	int                   Id;
+	int                   Index;  // 
 
 	/* 
 	*new field for ffmpeg - add at the end so no problem

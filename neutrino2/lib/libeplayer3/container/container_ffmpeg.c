@@ -295,7 +295,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
         		return "S_TEXT/WEBVTT";
         		
         	case AV_CODEC_ID_DVB_TELETEXT:
-        		return "S_GRAPHIC_TELETEXT";
+        		return "S_GRAPHIC/TELETEXT";
         		
     		case AV_CODEC_ID_HDMV_PGS_SUBTITLE:
         		return "S_GRAPHIC/PGS";
@@ -528,7 +528,7 @@ static void FFMPEGThread(Context_t *context)
 			// video
 			if (videoTrack != NULL) 
 			{
-				if (videoTrack->Id == index) 
+				if (videoTrack->Index == index) 
 				{
 					currentVideoPts = videoTrack->pts = pts = calcPts(videoTrack->stream, &packet);
 
@@ -560,7 +560,7 @@ static void FFMPEGThread(Context_t *context)
 			// audio
 			if (audioTrack != NULL) 
 			{
-				if (audioTrack->Id == index) 
+				if (audioTrack->Index == index) 
 				{
 					currentAudioPts = audioTrack->pts = pts = calcPts(audioTrack->stream, &packet);
 
@@ -685,7 +685,7 @@ static void FFMPEGThread(Context_t *context)
 			// subtitle
 			if (subtitleTrack != NULL) 
 			{
-				if (subtitleTrack->Id == index) 
+				if (subtitleTrack->Index == index) 
 				{
 					float duration = 3.0;
 					ffmpeg_printf(100, "subtitleTrack->stream %p \n", subtitleTrack->stream);
@@ -721,82 +721,11 @@ static void FFMPEGThread(Context_t *context)
 					*/
 					if (duration > 0 || duration == -1)
 					{
-						//// AV_CODEC_ID_DVB_SUBTITLE
-						if (((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_DVB_SUBTITLE)
-						{				
-							AVSubtitle sub;
-							int got_sub_ptr;
-
-#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
-							if (avcodec_decode_subtitle2(((AVStream*) subtitleTrack->stream)->codec, &sub, &got_sub_ptr, &packet) < 0)
-#else
-							if (avcodec_decode_subtitle( ((AVStream*) subtitleTrack->stream)->codec, &sub, &got_sub_ptr, packet.data, packet.size ) < 0)
-#endif
-							{
-							    ffmpeg_err("error decoding subtitle\n");
-							} 
-							else
-							{
-								int i;
-
-								ffmpeg_printf(10, "format %d\n", sub.format);
-								ffmpeg_printf(10, "start_display_time %d\n", sub.start_display_time);
-								ffmpeg_printf(10, "end_display_time %d\n", sub.end_display_time);
-								ffmpeg_printf(10, "num_rects %d\n", sub.num_rects);
-								
-								for (i = 0; i < sub.num_rects; i++)
-								{
-
-									ffmpeg_printf(10, "x %d\n", sub.rects[i]->x);
-									ffmpeg_printf(10, "y %d\n", sub.rects[i]->y);
-									ffmpeg_printf(10, "w %d\n", sub.rects[i]->w);
-									ffmpeg_printf(10, "h %d\n", sub.rects[i]->h);
-									ffmpeg_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
-									ffmpeg_printf(10, "type %d\n", sub.rects[i]->type);
-									ffmpeg_printf(10, "text %s\n", sub.rects[i]->text);
-									ffmpeg_printf(10, "ass %s\n", sub.rects[i]->ass);
-											
-
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
-									uint32_t *colors = (uint32_t *) sub.rects[i]->pict.data[1];
-#else
-									uint32_t *colors = (uint32_t *) sub.rects[i]->data[1];
-#endif
-									int width = sub.rects[i]->w;
-									int height = sub.rects[i]->h;
-
-									int h2 = (width == 1280) ? 720 : 576;
-				
-									int xoff = sub.rects[i]->x * 1280 / width;
-									int yoff = sub.rects[i]->y * 720 / h2;
-									int nw = width * 1280 / width;
-									int nh = height * 720 / h2;
-
-									ffmpeg_printf(10, "cDvbSubtitleBitmaps::Draw: #%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
-
-									// resize color to 32 bit
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-									uint32_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
-#else
-									uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
-#endif
-				
-									// blit2fb
-									blit2FB(newdata, nw, nh, xoff, yoff, 0, 0, true);
-
-									blit(framebufferFD);
-
-									free(newdata);
-								} //for
-							}
-						}
-						else
-						////
-						{
 						SubtitleData_t data;
 						
 						ffmpeg_printf(100, "videoPts %lld\n", currentVideoPts);
-
+						
+						data.avCodecId = ((AVStream*)subtitleTrack->stream)->codec->codec_id;
 						data.data      = packet.data;
 						data.len       = packet.size;
 						data.extradata = subtitleTrack->extraData;
@@ -809,7 +738,6 @@ static void FFMPEGThread(Context_t *context)
 						if (context->output->subtitle->Write(context, &data) < 0) 
 						{
 							ffmpeg_err("writing data to subtitle failed\n");
-						}
 						}
 					}
 				}
@@ -998,7 +926,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 				track.Name      = "und";
 				track.Encoding  = encoding;
-				track.Id        = n;
+				track.Index        = n;
 
 				track.stream    = stream;
 
@@ -1060,7 +988,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				ffmpeg_printf(10, "Language %s\n", track.Name);
 
 				track.Encoding       = encoding;
-				track.Id             = n;
+				track.Index             = n;
 
 				track.stream         = stream;
 				track.duration       = (double)stream->duration * av_q2d(stream->time_base) * 1000.0;
@@ -1255,7 +1183,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	    
 			// subtitle
 			case AVMEDIA_TYPE_SUBTITLE:
-			{
+			{	
 #if LIBAVCODEC_VERSION_MAJOR < 54
 				AVMetadataTag * lang;
 #else
@@ -1277,7 +1205,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				ffmpeg_printf(10, "Language %s\n", track.Name);
 
 				track.Encoding       = encoding;
-				track.Id             = n;
+				track.Index             = n;
 
 				track.stream         = stream;
 				track.duration       = (double)stream->duration * av_q2d(stream->time_base) * 1000.0;
