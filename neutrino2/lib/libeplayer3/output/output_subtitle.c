@@ -419,6 +419,7 @@ void checkRegions()
     }
 
     prev = next = firstRegion;
+    
     while (next != NULL)
     {
         if (now > next->undisplay + cDeltaTime)
@@ -429,8 +430,7 @@ void checkRegions()
            {
                 WriterFBCallData_t out;
 
-                subtitle_printf(100, "release: w %d h %d x %d y %d\n", 
-                                    next->w, next->h, next->x, next->y);
+                subtitle_printf(100, "release: w %d h %d x %d y %d\n", next->w, next->h, next->x, next->y);
 
                 out.fd            = framebufferFD;
                 out.data          = NULL;
@@ -502,13 +502,12 @@ void storeRegion(unsigned int x, unsigned int y, unsigned int w, unsigned int h,
     new->undisplay = undisplay;
 }
 
-
 // ass_write
 static void ass_write(Context_t *context) 
 {
     	Writer_t* writer;
     
-    	subtitle_printf(10, "\n");
+    	subtitle_printf(20, "\n");
 
     	writer = getDefaultFramebufferWriter();
 
@@ -1119,34 +1118,43 @@ static int Write(void* _context, void *data)
     //
     if(!strncmp("S_TEXT/SUBRIP", Encoding, 13))
     {
-    	subtitle_printf(20, "FIXME: S_TEXT/SUBRIP\n");
+    	subtitle_printf(20, "FIXME: S_TEXT/SUBRIP: %s\n", (char *)out->data);
     }
     else if (!strncmp("S_TEXT/ASS", Encoding, 10))
     {
-    	subtitle_printf(20, "Write: S_TEXT/ASS\n");
+    	subtitle_printf(20, "Write: S_TEXT/ASS: %s\n", (char *)out->data);
     	
     	//
     	process_ass_data(context, data);
+    	
+    	//
+    	ass_write(context);
     }
     else if (!strncmp("S_TEXT/WEBVTT", Encoding, 18))
     {
-    	subtitle_printf(20, "FIXME: S_TEXT/WEBVTT\n");
+    	subtitle_printf(20, "FIXME: S_TEXT/WEBVTT: %s\n", (char *)out->data);
     }
     else if (!strncmp("S_GRAPHIC/PGS", Encoding, 13))
     {
-    	subtitle_printf(20, "FIXME: S_GRAPHIC/PGS\n");
+    	subtitle_printf(20, "FIXME: S_GRAPHIC/PGS: %s\n", (char *)out->data);
     }
     else if (!strncmp("S_GRAPHIC/DVB", Encoding, 13))
     {
-    	subtitle_printf(20, "FIXME: S_GRAPHIC/DVB\n");
+    	subtitle_printf(20, "FIXME: S_GRAPHIC/DVB: %s\n", (char *)out->data);
+    	
+    	//
+    }
+    else if (!strncmp("S_GRAPHIC/TELETEXT", Encoding, 13))
+    {
+    	subtitle_printf(20, "FIXME: S_GRAPHIC/TELETEXT: %s\n", (char *)out->data);
     }
     else if (!strncmp("S_GRAPHIC/XSUB", Encoding, 14))
     {
-    	subtitle_printf(20, "FIXME: S_GRAPHIC/XSUB\n");
+    	subtitle_printf(20, "FIXME: S_GRAPHIC/XSUB: %s\n", (char *)out->data);
     }
     else if (!strncmp("S_TEXT/UTF-8", Encoding, 12))
     {
-    	subtitle_printf(20, "FIXME: S_TEXT/UTF-8\n");
+    	subtitle_printf(20, "FIXME: S_TEXT/UTF-8: %s\n", (char *)out->data);
     }
     
     free(Encoding);
@@ -1387,7 +1395,8 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    
 	    case OUTPUT_SWITCH: 
 	    {
-		ret = subtitle_Play(context);
+		//ret = subtitle_Play(context);
+		ret = subtitle_Stop(context);
 		break;
 	    }
 	    
