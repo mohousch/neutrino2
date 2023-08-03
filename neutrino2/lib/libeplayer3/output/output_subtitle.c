@@ -83,13 +83,6 @@ Number, Style, Name,, MarginL, MarginR, MarginV, Effect,, Text
 /* Types                         */
 /* ***************************** */
 
-struct sub_t 
-{
-    char *                 text;
-    unsigned long long int pts;
-    unsigned long int      milliDuration;
-};
-
 // ass
 typedef struct ass_s 
 {
@@ -121,9 +114,6 @@ static pthread_mutex_t mutex;
 
 static pthread_t thread_sub;
 
-static struct sub_t subPuffer[PUFFERSIZE];
-static int readPointer = 0;
-static int writePointer = 0;
 static int hasThreadStarted = 0;
 static int isSubtitleOpened = 0;
 
@@ -761,257 +751,6 @@ static void dvbsub_write(Context_t *context, SubtitleData_t* out)
     	subtitle_printf(10, "terminating\n");
 }
 
-//
-int subtitle_ParseASS (char **Line) 
-{
-    char* Text;
-    int   i;
-    char* ptr1;
-
-    if ((Line == NULL) || (*Line == NULL))
-    {
-        subtitle_err("null pointer passed\n");
-        return cERR_SUBTITLE_ERROR;
-    }
-    
-    Text = strdup(*Line);
-
-    subtitle_printf(10, "-> Text = %s\n", *Line);
-
-    ptr1 = Text;
-    
-    for (i=0; i < 9 && *ptr1 != '\0'; ptr1++) 
-    {
-        subtitle_printf(20, "%s",ptr1);
-
-        if (*ptr1 == ',')
-            i++;
-    }
-
-    free(*Line);
-
-    *Line = strdup(ptr1);
-    free(Text);
-
-    replace_all(Line, "\\N", "\n");
-
-    replace_all(Line, "{\\i1}", "<i>");
-    replace_all(Line, "{\\i0}", "</i>");
-
-    subtitle_printf(10, "<- Text=%s\n", *Line);
-
-    return cERR_SUBTITLE_NO_ERROR;
-}
-
-int subtitle_ParseSRT (char **Line) 
-{
-    if ((Line == NULL) || (*Line == NULL))
-    {
-        subtitle_err("null pointer passed\n");
-        return cERR_SUBTITLE_ERROR;
-    }
-
-    subtitle_printf(20, "-> Text=%s\n", *Line);
-
-    replace_all(Line, "\x0d", "");
-    replace_all(Line, "\n\n", "\\N");
-    replace_all(Line, "\n", "");
-    replace_all(Line, "\\N", "\n");
-    replace_all(Line, "�", "oe");
-    replace_all(Line, "�", "ae");
-    replace_all(Line, "�", "ue");
-    replace_all(Line, "�", "Oe");
-    replace_all(Line, "�", "Ae");
-    replace_all(Line, "�", "Ue");
-    replace_all(Line, "�", "ss");
-
-    subtitle_printf(10, "<- Text=%s\n", *Line);
-
-    return cERR_SUBTITLE_NO_ERROR;
-}
-
-int subtitle_ParseSSA (char **Line) 
-{
-    if ((Line == NULL) || (*Line == NULL))
-    {
-        subtitle_err("null pointer passed\n");
-        return cERR_SUBTITLE_ERROR;
-    }
-
-    subtitle_printf(20, "-> Text=%s\n", *Line);
-
-    replace_all(Line, "\x0d", "");
-    replace_all(Line, "\n\n", "\\N");
-    replace_all(Line, "\n", "");
-    replace_all(Line, "\\N", "\n");
-    replace_all(Line, "�", "oe");
-    replace_all(Line, "�", "ae");
-    replace_all(Line, "�", "ue");
-    replace_all(Line, "�", "Oe");
-    replace_all(Line, "�", "Ae");
-    replace_all(Line, "�", "Ue");
-    replace_all(Line, "�", "ss");
-
-    subtitle_printf(10, "<- Text=%s\n", *Line);
-
-    return cERR_SUBTITLE_NO_ERROR;
-}
-
-void addSub(Context_t *context, char * text, unsigned long long int pts, unsigned long int milliDuration) 
-{
-    int count = 20;
-    
-    subtitle_printf(50, "index %d\n", writePointer);
-
-    if(context && context->playback && !context->playback->isPlaying)
-    {
-        subtitle_err("1. aborting ->no playback\n");
-        return;
-    }
-    
-    if (text == NULL)
-    {
-        subtitle_err("null pointer passed\n");
-        return;
-    }
-
-    if (pts == 0)
-    {
-        subtitle_err("pts 0\n");
-        return;
-    }
-
-    if (milliDuration == 0)
-    {
-        subtitle_err("duration 0\n");
-        return;
-    }
-    
-    while (subPuffer[writePointer].text != NULL) 
-    {
-        //List is full, wait till we got some free space
-        if(context && context->playback && !context->playback->isPlaying)
-        {
-            subtitle_err("2. aborting ->no playback\n");
-            return;
-        }
-
-/* konfetti: we dont want to block forever here. if no buffer
- * is available we start ring from the beginning and loose some stuff
- * which is acceptable!
- */
-        subtitle_printf(10, "waiting on free buffer %d - %d (%d) ...\n", writePointer, readPointer, count);
-        usleep(10000);
-        count--;
-        
-        if (count == 0)
-        {
-            subtitle_err("abort waiting on buffer...\n");
-            break;
-        }
-    }
-    
-    subtitle_printf(20, "from mkv: %s pts:%lld milliDuration:%lud\n",text,pts,milliDuration);
-
-    getMutex(__LINE__);
-
-    if (count == 0)
-    {
-        int i;
-        subtitle_err("freeing not delivered data\n");
-        
-        //Reset all
-        readPointer = 0;
-        writePointer = 0;
-
-        for (i = 0; i < PUFFERSIZE; i++) 
-        {
-            if (subPuffer[i].text != NULL)
-               free(subPuffer[i].text);
-               
-            subPuffer[i].text          = NULL;
-            subPuffer[i].pts           = 0;
-            subPuffer[i].milliDuration = 0;
-        }
-    }
-
-    subPuffer[writePointer].text = strdup(text);
-    subPuffer[writePointer].pts = pts;
-    subPuffer[writePointer].milliDuration = milliDuration;
-
-    writePointer++;
-    
-    if (writePointer == PUFFERSIZE)
-        writePointer = 0;
-
-    if (writePointer == readPointer)
-    {
-        /* this should not happen, and means that there is nor reader or
-         * the reader has performance probs ;)
-         * the recovery is done at startup of this function - but next time
-         */
-        subtitle_err("ups something went wrong. no more readers? \n");
-    }
-
-    releaseMutex(__LINE__);
-
-    subtitle_printf(10, "<\n");
-}
-
-int getNextSub(char ** text, unsigned long long int * pts, long int * milliDuration) 
-{
-    subtitle_printf(50, "index %d\n", readPointer);
-
-    if (text == NULL)
-    {
-        subtitle_err("null pointer passed\n");
-        return cERR_SUBTITLE_ERROR;
-    }
-
-    getMutex(__LINE__);
-
-    if (subPuffer[readPointer].text == NULL)
-    {
-        /* this is acutally not an error, because it may happen
-         * that there is no subtitle for a while
-         */
-        subtitle_printf(200, "null in subPuffer\n");
-        releaseMutex(__LINE__);
-        return cERR_SUBTITLE_ERROR;
-    }
-    
-    *text = strdup(subPuffer[readPointer].text);
-    free(subPuffer[readPointer].text);
-    subPuffer[readPointer].text = NULL;
-
-    *pts = subPuffer[readPointer].pts;
-    subPuffer[readPointer].pts = 0;
-
-    *milliDuration = subPuffer[readPointer].milliDuration;
-    subPuffer[readPointer].milliDuration = 0;
-
-    readPointer++;
-
-    if (readPointer == PUFFERSIZE)
-        readPointer = 0;
-
-    if (writePointer == readPointer)
-    {
-        /* this may happen, in normal case the reader is ones ahead the 
-         * writer. So this is the normal case that we eat the data
-         * and have the reader reached.
-         */
-        subtitle_printf(20, "ups something went wrong. no more writers? \n");
-    }
-
-    releaseMutex(__LINE__);
-
-    subtitle_printf(20, "readPointer %d\n",readPointer);
-    subtitle_printf(10, "<\n");
-
-    return cERR_SUBTITLE_NO_ERROR;
-}
-
 /* **************************** */
 /* Worker Thread                */
 /* **************************** */
@@ -1019,11 +758,6 @@ int getNextSub(char ** text, unsigned long long int * pts, long int * milliDurat
 static void* SubtitleThread(void* data) 
 {
     Context_t *context = (Context_t*) data;
-    char *                  subText             = NULL;
-    long int                subMilliDuration    = 0;
-    unsigned long long int  subPts              = 0;
-    unsigned long long int  Pts                 = 0;
-    
     Writer_t* writer = NULL;
 
     subtitle_printf(10, "\n");
@@ -1189,7 +923,6 @@ static void* SubtitleThread(void* data)
 static int Write(void* _context, void *data) 
 {
     Context_t * context = (Context_t  *) _context;
-    //char * Encoding = NULL;
     SubtitleData_t * out;
     
     subtitle_printf(20, "\n");
@@ -1202,62 +935,6 @@ static int Write(void* _context, void *data)
 
     out = (SubtitleData_t*) data;
     
-    /*
-    context->manager->subtitle->Command(context, MANAGER_GETENCODING, &Encoding);
-
-    if (Encoding == NULL)
-    {
-       subtitle_err("encoding unknown\n");
-       
-       return cERR_SUBTITLE_ERROR;
-    }
-    
-    subtitle_printf(20, "Encoding:%s\n", Encoding);
-    
-    //
-    if(!strncmp("S_TEXT/SUBRIP", Encoding, 13))
-    {
-    	subtitle_printf(20, "FIXME: S_TEXT/SUBRIP: %s\n", (char *)out->data);
-    }
-    else if (!strncmp("S_TEXT/ASS", Encoding, 10))
-    {
-    	subtitle_printf(20, "Write: S_TEXT/ASS: %s\n", (char *)out->data);
-    	
-    	//
-    	process_ass_data(context, data);
-    	
-    	//
-    	ass_write(context);
-    }
-    else if (!strncmp("S_TEXT/WEBVTT", Encoding, 18))
-    {
-    	subtitle_printf(20, "FIXME: S_TEXT/WEBVTT: %s\n", (char *)out->data);
-    }
-    else if (!strncmp("S_GRAPHIC/PGS", Encoding, 13))
-    {
-    	subtitle_printf(20, "FIXME: S_GRAPHIC/PGS: %s\n", (char *)out->data);
-    }
-    else if (!strncmp("S_GRAPHIC/DVB", Encoding, 13))
-    {
-    	subtitle_printf(20, "FIXME: S_GRAPHIC/DVB: %s\n", (char *)out->data);
-    	
-    	//
-    }
-    else if (!strncmp("S_GRAPHIC/TELETEXT", Encoding, 18))
-    {
-    	subtitle_printf(20, "FIXME: S_GRAPHIC/TELETEXT: %s\n", (char *)out->data);
-    }
-    else if (!strncmp("S_GRAPHIC/XSUB", Encoding, 14))
-    {
-    	subtitle_printf(20, "FIXME: S_GRAPHIC/XSUB: %s\n", (char *)out->data);
-    }
-    else if (!strncmp("S_TEXT/UTF-8", Encoding, 12))
-    {
-    	subtitle_printf(20, "FIXME: S_TEXT/UTF-8: %s\n", (char *)out->data);
-    }
-    
-    free(Encoding);
-    */
     switch (out->avCodecId)
     {
     	case AV_CODEC_ID_SSA:
@@ -1283,91 +960,7 @@ static int Write(void* _context, void *data)
     	{
     		subtitle_printf(10, "Write: S_GRAPHIC/DVB: %s\n", (char *)out->data);
     		
-    		dvbsub_write(context, out);
-    		
-    		//// process_data
-    		/*
-    		AVSubtitle sub;
-    		memset(&sub, 0, sizeof(sub));
-
-    		AVPacket packet;
-    		av_init_packet(&packet);
-    		packet.data = out->data;
-    		packet.size = out->len;
-    		packet.pts  = out->pts;
-    		
-    		//
-    		const AVCodec *codec;
-    		
-    		codec = avcodec_find_decoder(out->avCodecId);
-    		AVCodecContext *context = avcodec_alloc_context3(codec);
-    		////
-    		
-    		int got_sub_ptr = 0;
-    		
-#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)			   
-		if (context && avcodec_decode_subtitle2(context, &sub, &got_sub_ptr, &packet) < 0)
-#else
-		if (context && avcodec_decode_subtitle(context, &sub, &got_sub_ptr, packet.data, packet.size ) < 0)
-#endif
-		{
-			subtitle_err("error decoding subtitle\n");
-		} 
-		else
-		{
-			int i;
-
-			subtitle_printf(10, "format %d\n", sub.format);
-			subtitle_printf(10, "start_display_time %d\n", sub.start_display_time);
-			subtitle_printf(10, "end_display_time %d\n", sub.end_display_time);
-			subtitle_printf(10, "num_rects %d\n", sub.num_rects);
-								
-			for (i = 0; i < sub.num_rects; i++)
-			{
-
-				subtitle_printf(10, "x %d\n", sub.rects[i]->x);
-				subtitle_printf(10, "y %d\n", sub.rects[i]->y);
-				subtitle_printf(10, "w %d\n", sub.rects[i]->w);
-				subtitle_printf(10, "h %d\n", sub.rects[i]->h);
-				subtitle_printf(10, "nb_colors %d\n", sub.rects[i]->nb_colors);
-				subtitle_printf(10, "type %d\n", sub.rects[i]->type);
-				subtitle_printf(10, "text %s\n", sub.rects[i]->text);
-				subtitle_printf(10, "ass %s\n", sub.rects[i]->ass);
-											
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
-				uint32_t *colors = (uint32_t *) sub.rects[i]->pict.data[1];
-#else
-				uint32_t *colors = (uint32_t *) sub.rects[i]->data[1];
-#endif
-				int width = sub.rects[i]->w;
-				int height = sub.rects[i]->h;
-
-				int h2 = (width == 1280) ? 720 : 576;
-				
-				int xoff = sub.rects[i]->x * 1280 / width;
-				int yoff = sub.rects[i]->y * 720 / h2;
-				int nw = width * 1280 / width;
-				int nh = height * 720 / h2;
-
-				subtitle_printf(10, "cDvbSubtitleBitmaps::Draw: #%d at %d,%d size %dx%d colors %d (x=%d y=%d w=%d h=%d) \n", i+1, sub.rects[i]->x, sub.rects[i]->y, sub.rects[i]->w, sub.rects[i]->h, sub.rects[i]->nb_colors, xoff, yoff, nw, nh);
-
-				// resize color to 32 bit
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 5, 0)
-				uint32_t *newdata = simple_resize32(sub.rects[i]->pict.data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
-#else
-				uint32_t *newdata = simple_resize32(sub.rects[i]->data[0], colors, sub.rects[i]->nb_colors, width, height, nw, nh);
-#endif
-				
-				// blit2fb
-				blit2FB(newdata, nw, nh, xoff, yoff, 0, 0, true);
-
-				blit(framebufferFD);
-
-				free(newdata);
-			} //for
-		}
-		*/
-    		////
+    		//dvbsub_write(context, out); //FIXME: segfault
     		break;
     	}
     	
@@ -1397,17 +990,6 @@ static int subtitle_Open(context)
     // ass
     ass_init(context);
 
-    //Reset all
-    readPointer = 0;
-    writePointer = 0;
-
-    for (i = 0; i < PUFFERSIZE; i++) 
-    {
-        subPuffer[i].text          = NULL;
-        subPuffer[i].pts           = 0;
-        subPuffer[i].milliDuration = 0;
-    }
-
     isSubtitleOpened = 1;
 
     releaseMutex(__LINE__);
@@ -1424,20 +1006,6 @@ static int subtitle_Close(Context_t* context)
     subtitle_printf(10, "\n");
 
     getMutex(__LINE__);
-
-    //Reset all
-    readPointer = 0;
-    writePointer = 0;
-
-    for (i = 0; i < PUFFERSIZE; i++) 
-    {
-        if (subPuffer[i].text != NULL)
-           free(subPuffer[i].text);
-
-        subPuffer[i].text          = NULL;
-        subPuffer[i].pts           = 0;
-        subPuffer[i].milliDuration = 0;
-    }
     
     //
      if (ass_track)
@@ -1553,20 +1121,6 @@ static int subtitle_Stop(context)
     if (writer != NULL)
     {
         writer->reset();
-    }
-
-    //Reset all
-    readPointer = 0;
-    writePointer = 0;
-
-    for (i = 0; i < PUFFERSIZE; i++) 
-    {
-        if (subPuffer[i].text != NULL)
-           free(subPuffer[i].text);
-
-        subPuffer[i].text          = NULL;
-        subPuffer[i].pts           = 0;
-        subPuffer[i].milliDuration = 0;
     }
 
     releaseMutex(__LINE__);
