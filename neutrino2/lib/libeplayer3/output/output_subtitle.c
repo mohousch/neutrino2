@@ -506,137 +506,112 @@ void storeRegion(unsigned int x, unsigned int y, unsigned int w, unsigned int h,
 // ass_write
 static void ass_write(Context_t *context) 
 {
-    Writer_t* writer;
+    	Writer_t* writer;
     
-    subtitle_printf(10, "\n");
+    	subtitle_printf(10, "\n");
 
-    writer = getDefaultFramebufferWriter();
+    	writer = getDefaultFramebufferWriter();
 
-    if (writer == NULL)
-    {
-        subtitle_err("no framebuffer writer found!\n");
-    }
+    	if (writer == NULL)
+    	{
+        	subtitle_err("no framebuffer writer found!\n");
+    	}
 
-    while ( context && context->playback && context->playback->isPlaying ) 
-    {
-        //IF MOVIE IS PAUSED, WAIT
-        if (context->playback->isPaused) 
-        {
-            subtitle_printf(20, "paused\n");
+	if (ass_track)
+    	{
+		ASS_Image *       img   = NULL;
+            	int               change = 0;
+            	unsigned long int playPts;
 
-            usleep(100000);
-            continue;
-        }
-
-        if (context->playback->isSeeking) 
-        {
-            subtitle_printf(10, "seeking\n");
-
-            usleep(100000);
-            continue;
-        }
-
-        if (ass_track)
-        {
-            ASS_Image *       img   = NULL;
-            int               change = 0;
-            unsigned long int playPts;
+            	getMutex(__LINE__);
             
-            if (context && context->playback)
-            {
-                if (context->playback->Command(context, PLAYBACK_PTS, &playPts) < 0)
-                    continue;
-            }
+            	//FIXME: durch den sleep bleibt die cpu usage zw. 5 und 13%, ohne
+            	//       steigt sie bei Verwendung von subtiteln bis auf 95%.
+            	//       ich hoffe dadurch gehen keine subtitle verloren, wenn die playPts
+            	//       durch den sleep verschlafen wird. Besser w�re es den n�chsten
+            	//       subtitel zeitpunkt zu bestimmen und solange zu schlafen.
+            	usleep(1000);
 
-            getMutex(__LINE__);
-            
-            //FIXME: durch den sleep bleibt die cpu usage zw. 5 und 13%, ohne
-            //       steigt sie bei Verwendung von subtiteln bis auf 95%.
-            //       ich hoffe dadurch gehen keine subtitle verloren, wenn die playPts
-            //       durch den sleep verschlafen wird. Besser w�re es den n�chsten
-            //       subtitel zeitpunkt zu bestimmen und solange zu schlafen.
-            usleep(1000);
+            	img = ass_render_frame(ass_renderer, ass_track, playPts / 90.0, &change);
 
-            img = ass_render_frame(ass_renderer, ass_track, playPts / 90.0, &change);
+            	subtitle_printf(150, "img %p pts %lu %f\n", img, playPts, playPts / 90.0);
 
-            subtitle_printf(150, "img %p pts %lu %f\n", img, playPts, playPts / 90.0);
+            	if(img != NULL && ass_renderer && ass_track)
+            	{
+                	/* the spec says, that if a new set of regions is present
+                 	* the complete display switches to the new state. So lets
+                 	* release the old regions on display.
+                 	*/
+                	if (change != 0)
+                    		releaseRegions();
 
-            if(img != NULL && ass_renderer && ass_track)
-            {
-                /* the spec says, that if a new set of regions is present
-                 * the complete display switches to the new state. So lets
-                 * release the old regions on display.
-                 */
-                if (change != 0)
-                    releaseRegions();
+                	while (context && context->playback && context->playback->isPlaying && (img) && (change != 0))
+                	{
+                    		WriterFBCallData_t out;
+                    		time_t now = time(NULL);
+                    		time_t undisplay = now + 10;
 
-                while (context && context->playback && context->playback->isPlaying && (img) && (change != 0))
-                {
-                    WriterFBCallData_t out;
-                    time_t now = time(NULL);
-                    time_t undisplay = now + 10;
+                    		if (ass_track && ass_track->events)
+                    		{
+                        		undisplay = now + ass_track->events->Duration / 1000 + 0.5;
+                    		}
 
-                    if (ass_track && ass_track->events)
-                    {
-                        undisplay = now + ass_track->events->Duration / 1000 + 0.5;
-                    }
-
-                    subtitle_printf(100, "w %d h %d s %d x %d y %d c %d chg %d now %ld und %ld\n", 
+                    		subtitle_printf(100, "w %d h %d s %d x %d y %d c %d chg %d now %ld und %ld\n", 
                                  img->w, img->h, img->stride, 
                                  img->dst_x, img->dst_y, img->color, 
                                  change, now, undisplay);
 
-                    /* api docu said w and h can be zero which
-                     * means image should not be rendered
-                     */
-                    if ((img->w != 0) && (img->h != 0) && (writer)) 
-                    {
-                        out.fd            = framebufferFD;
-                        out.data          = img->bitmap;
-                        out.Width         = img->w;
-                        out.Height        = img->h;
-                        out.Stride        = img->stride;
-                        out.x             = img->dst_x;
-                        out.y             = img->dst_y;
-                        out.color         = img->color;
+                    		/* api docu said w and h can be zero which
+                     		* means image should not be rendered
+                     		*/
+                    		if ((img->w != 0) && (img->h != 0) && (writer)) 
+                    		{
+                        		out.fd            = framebufferFD;
+                        		out.data          = img->bitmap;
+                        		out.Width         = img->w;
+                        		out.Height        = img->h;
+                        		out.Stride        = img->stride;
+                        		out.x             = img->dst_x;
+                        		out.y             = img->dst_y;
+                        		out.color         = img->color;
                         
-                        out.Screen_Width  = screen_width; 
-                        out.Screen_Height = screen_height; 
-                        out.destination   = destination;
-                        out.destStride    = destStride;
+                        		out.Screen_Width  = screen_width; 
+                        		out.Screen_Height = screen_height; 
+                        		out.destination   = destination;
+                        		out.destStride    = destStride;
 
-                        storeRegion(img->dst_x, img->dst_y, img->w, img->h, undisplay);
+                        		storeRegion(img->dst_x, img->dst_y, img->w, img->h, undisplay);
                                     
-                        if (shareFramebuffer)
-                        {
-                            if(context && context->playback && context->playback->isPlaying && writer)
-                            {
-                                writer->writeData(&out);
+                        		if (shareFramebuffer)
+                        		{
+                            			if(context && context->playback && context->playback->isPlaying && writer)
+                            			{
+                                			writer->writeData(&out);
                                 
-                                if(threeDMode == 1)
-                                {
-			            out.x = screen_width/2 + img->dst_x;
-			            writer->writeData(&out);
-                                }
-                                else if(threeDMode == 2)
-                                {
-                                    out.y = screen_height/2 + img->dst_y;
-                                    writer->writeData(&out);
-                                }
-                            }
-                        }
-                    }
+                                			if(threeDMode == 1)
+                                			{
+			            				out.x = screen_width/2 + img->dst_x;
+			            				writer->writeData(&out);
+                                			}
+                                			else if(threeDMode == 2)
+                                			{
+                                    				out.y = screen_height/2 + img->dst_y;
+                                    				writer->writeData(&out);
+                                			}
+                            			}
+                        		}
+                    		}
 
-                    /* Next image */
-                    img = img->next;
-                }
-            }
-            else
-            {
-               /* noop */
-            }
+                    		/* Next image */
+                    		img = img->next;
+                	}
+            	}
+            	else
+            	{
+               		/* noop */
+            	}
 
-            releaseMutex(__LINE__);
+            	releaseMutex(__LINE__);
         } 
         else
         {
@@ -645,9 +620,8 @@ static void ass_write(Context_t *context)
         
         /* cleanup no longer used but not overwritten regions */
         checkRegions();
-    } /* while */
 
-    subtitle_printf(10, "terminating\n");
+    	subtitle_printf(10, "terminating\n");
 }
 
 // 
@@ -661,7 +635,7 @@ static int ass_stop(Context_t *context)
 
     getMutex(__LINE__);
 
-    //releaseRegions();
+    releaseRegions();
 
     if (ass_track)
         ass_free_track(ass_track);
@@ -1027,8 +1001,7 @@ static void* SubtitleThread(void* data)
                 if (change != 0)
                     releaseRegions();
 
-                while (context && context->playback && context->playback->isPlaying &&
-                       (img) && (change != 0))
+                while (context && context->playback && context->playback->isPlaying && (img) && (change != 0))
                 {
                     WriterFBCallData_t out;
                     time_t now = time(NULL);
@@ -1120,11 +1093,7 @@ static int Write(void* _context, void *data)
 {
     Context_t * context = (Context_t  *) _context;
     char * Encoding = NULL;
-    char * Text;
     SubtitleData_t * out;
-    int DataLength;
-    unsigned long long int Pts;
-    float Duration;
     
     subtitle_printf(20, "\n");
 
@@ -1141,7 +1110,6 @@ static int Write(void* _context, void *data)
     if (Encoding == NULL)
     {
        subtitle_err("encoding unknown\n");
-       //free(Text);
        
        return cERR_SUBTITLE_ERROR;
     }
@@ -1264,7 +1232,7 @@ static int subtitle_Close(Context_t* context)
 
 static int subtitle_Play(Context_t* context) 
 {
-	 pthread_attr_t attr;
+    pthread_attr_t attr;
 	 
     subtitle_printf(10, "\n");
 
@@ -1392,13 +1360,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
     subtitle_printf(50, "%d\n", command);
 
     switch(command) 
-    {
-    	    case OUTPUT_INIT:
-    	    {
-    		ret = ass_init(context);
-    		break;
-    	    }
-    		
+    {	
 	    case OUTPUT_OPEN: 
 	    {
 		ret = subtitle_Open(context);
@@ -1432,6 +1394,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    case OUTPUT_GET_SUBTITLE_OUTPUT: 
 	    {
 		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
+		
 		out->screen_width = screen_width;
 		out->screen_height = screen_height;
 		out->shareFramebuffer = shareFramebuffer;
@@ -1444,6 +1407,7 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 	    case OUTPUT_SET_SUBTITLE_OUTPUT: 
 	    {
 		SubtitleOutputDef_t* out = (SubtitleOutputDef_t*)argument;
+		
 		screen_width = out->screen_width;
 		screen_height = out->screen_height;
 		shareFramebuffer = out->shareFramebuffer;
@@ -1472,17 +1436,6 @@ static int Command(void  *_context, OutputCmd_t command, void * argument)
 		subtitle_err("Subtitle Continue not implemented\n");
 		ret = cERR_SUBTITLE_ERROR;
 	    	break;
-	    }
-	    
-	    case OUTPUT_DATA: 
-	    {
-	    	ret = cERR_SUBTITLE_ERROR;
-	    	
-		SubtitleData_t* data = (SubtitleData_t*) argument;
-		
-		if (data != NULL)
-			ret = cERR_SUBTITLE_NO_ERROR;
-		break;
 	    }
 
 	    default:
