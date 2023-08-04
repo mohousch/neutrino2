@@ -78,7 +78,7 @@ static int CurrentTrack = -1; //no as default.
 
 static int ManagerAdd(Context_t  *context, Track_t track) 
 {
-    	subtitle_mgr_printf(10, "%s::%s %s %s %d\n", FILENAME, __FUNCTION__, track.Name, track.Encoding, track.Id);
+    	subtitle_mgr_printf(10, "%s::%s %s %s %d\n", FILENAME, __FUNCTION__, track.Name, track.Encoding, track.Index);
 
     	if (Tracks == NULL) 
 	{

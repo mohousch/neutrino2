@@ -79,7 +79,7 @@ static int CurrentTrack = 0; //TRACK[0] as default.
 static int ManagerAdd(Context_t  *context, Track_t track) 
 {
 
-    	audio_mgr_printf(10, "%s::%s name=\"%s\" encoding=\"%s\" id=%d\n", FILENAME, __FUNCTION__, track.Name, 	track.Encoding, track.Id);
+    	audio_mgr_printf(10, "%s::%s name=\"%s\" encoding=\"%s\" id=%d\n", FILENAME, __FUNCTION__, track.Name, 	track.Encoding, track.Index);
 
     	if (Tracks == NULL) 
 	{
