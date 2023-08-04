@@ -55,9 +55,9 @@
 #include "subtitle.h"
 #include "writer.h"
 
-#include <config.h>
+//#include <config.h>
 
-#include <ass/ass.h>
+//#include <ass/ass.h>
 
 
 #if LIBAVCODEC_VERSION_MAJOR > 54
@@ -166,22 +166,43 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return "V_FLV";
 			
 		case AV_CODEC_ID_VP5:
-		case AV_CODEC_ID_VP6:
-		case AV_CODEC_ID_VP6F:
-			return "V_VP6"; //FIXME: not handled yet
-			
-		case AV_CODEC_ID_RV10:
-		case AV_CODEC_ID_RV20:
-			return "V_RMV"; //FIXME: not handled yet
+    		case AV_CODEC_ID_VP6:
+    		case AV_CODEC_ID_VP6F:
+        		return "V_VP6";
+        		
+    		case AV_CODEC_ID_VP8:
+        		return "V_VP8";
+        
+#if LIBAVCODEC_VERSION_MAJOR > 54
+    		case AV_CODEC_ID_VP9:
+        		return "V_VP9";
+#endif
+		
+		case AV_CODEC_ID_MJPEG:
+        		return "V_MJPEG";
+        	
+		case AV_CODEC_ID_RV30:
+        		return "V_RV30";
+        		
+    		case AV_CODEC_ID_RV40:
+        		return "V_RV40";
+        		
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(58, 21, 100)
+    		case AV_CODEC_ID_AVS2:
+        		return "V_AVS2";
+#endif
 			
 		case AV_CODEC_ID_MPEG4:
+			return "V_MPEG4";
+			
 #if LIBAVCODEC_VERSION_MAJOR < 53
 		case CODEC_ID_XVID:
 #endif
 		case AV_CODEC_ID_MSMPEG4V1:
 		case AV_CODEC_ID_MSMPEG4V2:
 		case AV_CODEC_ID_MSMPEG4V3:
-			return "V_MPEG4";
+			//return "V_MPEG4";
+			return "V_DIVX3";
 			
 		case AV_CODEC_ID_WMV1:
 			*version = 1;
@@ -209,9 +230,6 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
         		return "V_HEVC";
 #endif
 		
-		case AV_CODEC_ID_AVS:
-			return "V_AVS"; //FIXME: not handled yet
-		
 		/* audio */	
 		case AV_CODEC_ID_MP2:
 			return "A_MPEG/L3";
@@ -237,23 +255,18 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return "A_WMA";
 			
 		case AV_CODEC_ID_MLP:
-			//return "A_MLP"; //FIXME: not handled yet
 			return "A_IPCM";
 			
 		case AV_CODEC_ID_RA_144:
-			//return "A_RMA"; //FIXME: not handled yet
 			return "A_IPCM";
 			
 		case AV_CODEC_ID_RA_288:
-			//return "A_RMA"; //FIXME: not handled yet
 			return "A_IPCM";
 			
 		case AV_CODEC_ID_VORBIS:
-			//return "A_IPCM"; 
 			return "A_VORBIS"; //FIXME:
 			
 		case AV_CODEC_ID_FLAC: //86030
-			//return "A_IPCM"; 
 			return "A_FLAC"; //FIXME:
 			
 		case AV_CODEC_ID_PCM_S8:
@@ -272,6 +285,10 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_PCM_U32BE:
 			//return "A_PCM";
 			return	"A_IPCM";  //FIXME: rewrite pcm writer
+			
+		case AV_CODEC_ID_AMR_NB:
+    		case AV_CODEC_ID_AMR_WB:
+        		return "A_AMR";
 			
 		/* subtitle */
 		case AV_CODEC_ID_SSA:
@@ -1901,7 +1918,7 @@ static char *FFMPEG_Capabilities[] = {
 	"vdr", 
 	"ogg",
 	"m3u8",
-	"webm", 
+	"amr", 
 	NULL 
 };
 

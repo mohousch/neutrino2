@@ -34,7 +34,11 @@ typedef enum {
 	VIDEO_STREAMTYPE_DIVX5 		= 15,
 	VIDEO_STREAMTYPE_AVS 		= 16,
 	VIDEO_STREAMTYPE_VB6 		= 18,
-	VIDEO_STREAMTYPE_SPARK 		= 21
+	VIDEO_STREAMTYPE_SPARK 		= 21,
+	VIDEO_STREAMTYPE_MJPEG 		= 30,
+	VIDEO_STREAMTYPE_RV30 		= 31,  /* rv30: RealVideo 8, suspected to based largely on an early draft of H.264 (included with RealPlayer 8)*/
+	VIDEO_STREAMTYPE_RV40 		= 32, /* RealVideo 9, RealVideo 10*/
+	VIDEO_STREAMTYPE_AVS2 		= 40
 }VIDEO_FORMAT;
 
 // audio stream type
@@ -56,6 +60,8 @@ typedef enum {
 	AUDIO_STREAMTYPE_EAC3 		= 0x22,
 #endif
 	AUDIO_STREAMTYPE_AMR 		= 0x23,
+	AUDIO_STREAMTYPE_OPUS 		= 0x24,
+	AUDIO_STREAMTYPE_VORBIS 	= 0x25,
 	AUDIO_STREAMTYPE_RAW 		= 0x30
 }AUDIO_FORMAT;
 

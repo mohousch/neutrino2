@@ -31,6 +31,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
+#include <sys/uio.h>
 #include <linux/dvb/video.h>
 #include <linux/dvb/audio.h>
 #include <memory.h>
@@ -38,6 +39,7 @@
 #include <pthread.h>
 #include <errno.h>
 
+#include "debug.h"
 #include "common.h"
 #include "output.h"
 #include "debug.h"
@@ -48,25 +50,6 @@
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
-
-
-//#define VORBIS_DEBUG
-
-#ifdef VORBIS_DEBUG
-
-static short debug_level = 10;
-
-#define vorbis_printf(level, fmt, x...) do { \
-if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
-#else
-#define vorbis_printf(level, fmt, x...)
-#endif
-
-#ifndef VORBIS_SILENT
-#define vorbis_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
-#else
-#define vorbis_err(fmt, x...)
-#endif
 
 /* ***************************** */
 /* Types                         */
@@ -86,67 +69,77 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 
 static int reset()
 {
-	return 0;
+    return 0;
 }
 
-static int writeData(void* _call)
+static int writeData(void *_call)
 {
-	WriterAVCallData_t* call = (WriterAVCallData_t*) _call;
+    WriterAVCallData_t* call = (WriterAVCallData_t*) _call;
 
-	unsigned char  PesHeader[PES_MAX_HEADER_SIZE];
+    uint8_t PesHeader[PES_MAX_HEADER_SIZE + 4 + 9];
 
-	vorbis_printf(10, "\n");
+    amr_printf(10, "\n");
 
-	if (call == NULL)
-	{
-		vorbis_err("call data is NULL...\n");
-		return 0;
-	}
+    if (call == NULL || call->data == NULL || call->len <= 0 || call->fd < 0) {
+        amr_err("call error wrong data call: %p, data: %p, len: %d, fd: %d\n", call, call->data, call->len, call->fd);
+        return 0;
+    }
+    
+    amr_printf(10, "AudioPts %lld\n", call->Pts);
 
-	vorbis_printf(10, "AudioPts %lld\n", call->Pts);
+    size_t payload_len = call->len;
+    bool hasCodecData = true;
+    if(NULL != call->private_data && call->private_size >= 17)
+    {
+        amr_err("wrong private_data. ignoring ...\n");
+        hasCodecData = false;
+    }
 
-	if ((call->data == NULL) || (call->len <= 0))
-	{
-		vorbis_err("parsing NULL Data. ignoring...\n");
-		return 0;
-	}
+    if(hasCodecData) {
+        payload_len += 9;
+    }
 
-	if (call->fd < 0)
-	{
-		vorbis_err("file pointer < 0. ignoring ...\n");
-		return 0;
-	}
+    payload_len += 4;
 
-	int HeaderLength = InsertPesHeader (PesHeader, call->len , MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
+    uint32_t headerSize = InsertPesHeader(PesHeader, payload_len, MPEG_AUDIO_PES_START_CODE, call->Pts, 0);
 
-	unsigned char* PacketStart = malloc(call->len + HeaderLength);
+    PesHeader[headerSize++] = (payload_len >> 24) & 0xff;
+    PesHeader[headerSize++] = (payload_len >> 16) & 0xff;
+    PesHeader[headerSize++] = (payload_len >> 8)  & 0xff;
+    PesHeader[headerSize++] = payload_len & 0xff;
 
-	memcpy (PacketStart, PesHeader, HeaderLength);
-	memcpy (PacketStart + HeaderLength, call->data, call->len);
+    if (hasCodecData) {
+        memcpy(&PesHeader[headerSize], call->private_data + 8, 9);
+    }
 
-	int len = write(call->fd, PacketStart, call->len + HeaderLength);
+    struct iovec iov[2];
+    iov[0].iov_base = PesHeader;
+    iov[0].iov_len = headerSize;
+    iov[1].iov_base = call->data;
+    iov[1].iov_len = call->len;
+    
+    int len = call->WriteV(call->fd, iov, 2);
 
-	free(PacketStart);
-
-	vorbis_printf(10, "vorbis_Write-< len=%d\n", len);
-	return len;
+    amr_printf(10, "amr_Write-< len=%d\n", len);
+    return len;
 }
 
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-// vorbis
-static WriterCaps_t caps_vorbis = {
-	"vorbis",
-	eAudio,
-	"A_VORBIS",
-	AUDIO_STREAMTYPE_VORBIS
+
+static WriterCaps_t caps_amr = {
+    "amr",
+    eAudio,
+    "A_AMR",
+    AUDIO_STREAMTYPE_AMR
 };
 
-struct Writer_s WriterAudioVORBIS = {
-	&reset,
-	&writeData,
-	NULL,
-	&caps_vorbis,
+struct Writer_s WriterAudioAMR = {
+    &reset,
+    &writeData,
+    NULL,
+    &caps_amr
 };
+
 

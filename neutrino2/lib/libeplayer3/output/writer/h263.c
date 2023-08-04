@@ -190,6 +190,7 @@ struct Writer_s WriterVideoH263 = {
 };
 
 // flv
+/*
 static WriterCaps_t caps_flv = {
 	"FLV",
 	eVideo,
@@ -203,6 +204,7 @@ struct Writer_s WriterVideoFLV = {
 	NULL,
 	&caps_flv,
 };
+*/
 
 // mpeg4
 static WriterCaps_t mpeg4p2_caps = {

@@ -81,6 +81,7 @@ extern Writer_t WriterAudioDTS;
 extern Writer_t WriterAudioWMA;
 extern Writer_t WriterAudioFLAC;
 extern Writer_t WriterAudioVORBIS;
+extern Writer_t WriterAudioAMR;
 
 // video
 extern Writer_t WriterVideoMPEG1;
@@ -94,8 +95,16 @@ extern Writer_t WriterVideoDIVX;
 extern Writer_t WriterVideoFOURCC;
 extern Writer_t WriterVideoMSCOMP;
 extern Writer_t WriterVideoH263;
-extern Writer_t WriterVideoFLV;
+extern Writer_t WriterVideoFLV;  // ???
 extern Writer_t WriterVideoVC1;
+extern Writer_t WriterVideoDIVX3;
+extern Writer_t WriterVideoMJPEG;
+extern Writer_t WriterVideoRV30;
+extern Writer_t WriterVideoRV40;
+extern Writer_t WriterVideoAVS2;
+extern Writer_t WriterVideoVP6;
+extern Writer_t WriterVideoVP8;
+extern Writer_t WriterVideoVP9;
 
 // subtitle
 extern Writer_t WriterFramebuffer;
