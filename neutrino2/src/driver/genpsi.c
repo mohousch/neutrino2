@@ -121,18 +121,18 @@ void transfer_pids(uint16_t pid,uint16_t pidart,short isAC3)
 	switch(pidart)
 	{
 		case EN_TYPE_VIDEO:
-			avPids.vpid=pid;
+			avPids.vpid = pid;
 			avPids.vtype = ES_TYPE_MPEG12;
 			break;
 			
 		case EN_TYPE_AVC:
-			avPids.vpid=pid;
+			avPids.vpid = pid;
 			avPids.vtype = ES_TYPE_AVC;
 			break;
 			
 		case EN_TYPE_AUDIO:
-			avPids.apid[avPids.nba]=pid;
-			avPids.isAC3[avPids.nba]=isAC3;
+			avPids.apid[avPids.nba] = pid;
+			avPids.isAC3[avPids.nba] = isAC3;
 			avPids.nba++;
 			break;
 			

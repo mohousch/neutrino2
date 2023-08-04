@@ -1990,3 +1990,11 @@
 /neutrino2/lib/libeplayer3/container/.deps/container_ssa.Po
 /neutrino2/lib/libeplayer3/container/container_srt.o
 /neutrino2/lib/libeplayer3/container/container_ssa.o
+/neutrino2/lib/libeplayer3/output/writer/.deps/amr.Po
+/neutrino2/lib/libeplayer3/output/writer/.deps/divx3.Po
+/neutrino2/lib/libeplayer3/output/writer/.deps/mjpeg.Po
+/neutrino2/lib/libeplayer3/output/writer/.deps/vp.Po
+/neutrino2/lib/libeplayer3/output/writer/amr.o
+/neutrino2/lib/libeplayer3/output/writer/divx3.o
+/neutrino2/lib/libeplayer3/output/writer/mjpeg.o
+/neutrino2/lib/libeplayer3/output/writer/vp.o

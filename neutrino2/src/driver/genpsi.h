@@ -35,5 +35,6 @@ void transfer_pids(uint16_t pid,uint16_t pidart,short isAC3);
 #define EN_TYPE_TELTEX          0x02
 #define EN_TYPE_PCR             0x03
 #define EN_TYPE_AVC           	0x04
+#define EN_TYPE_DVBSUB		0x06
 
 #endif

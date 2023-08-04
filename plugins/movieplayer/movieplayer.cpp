@@ -43,7 +43,6 @@ class CMoviePlayer : public CMenuTarget
 		CFileFilter fileFilter;
 		CFileList filelist;
 		std::string Path;
-		//CMoviePlayerGui tmpMoviePlayerGui;
 
 		//
 		void loadPlaylist();
@@ -462,6 +461,7 @@ void CMoviePlayer::showMenu()
 	
 	//
 	widget->addWidgetItem(mlist);
+	widget->setTimeOut(g_settings.timing_menu);
 
 	widget->exec(NULL, "");
 	
