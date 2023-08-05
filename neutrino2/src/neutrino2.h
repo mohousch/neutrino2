@@ -227,8 +227,9 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		
 		//
 		bool doGuiRecord(char * preselectedDir, bool addTimer = false);
-		void setupRecordingDevice(void);
 		void startNextRecording();
+		int startAutoRecord(bool addTimer);
+		void stopAutoRecord();
 		
 		//
 		int recordingstatus;

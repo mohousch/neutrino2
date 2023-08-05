@@ -64,8 +64,8 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 extern char recDir[255];			// defined in neutrino.cpp
 extern char timeshiftDir[255];			// defined in neutrino.cpp
 extern bool autoshift;				// defined in neutrino.cpp
-extern int startAutoRecord(bool addTimer);	// defined in neutrino.cpp
-extern void stopAutoRecord();			// defined in neutrino.cpp
+//extern int startAutoRecord(bool addTimer);	// defined in neutrino.cpp
+//extern void stopAutoRecord();			// defined in neutrino.cpp
 
 CRecordingSettings::CRecordingSettings()
 {
@@ -90,6 +90,7 @@ int CRecordingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return ret;
 	}
+	/*
 	else if(actionKey == "recording")
 	{
 		CHintBox * hintBox = new CHintBox(_("Information"), _("Save settings now")); // UTF-8
@@ -103,6 +104,7 @@ int CRecordingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return ret;
 	}
+	*/
 	else if(actionKey == "recordingdir")
 	{
 		if(parent)
@@ -149,12 +151,12 @@ bool CRecordingSettings::changeNotify(const std::string& OptionName, void */*dat
 	if(OptionName == _("Permanent timeshift")) 
 	{	  
 		if(g_settings.auto_timeshift)
-			startAutoRecord(true);
+			CNeutrinoApp::getInstance()->startAutoRecord(true);
 		else
 		{
 			if(autoshift) 
 			{
-				stopAutoRecord();
+				CNeutrinoApp::getInstance()->stopAutoRecord();
 				
 				CNeutrinoApp::getInstance()->recordingstatus = 0;
 				CNeutrinoApp::getInstance()->timeshiftstatus = 0;
@@ -259,7 +261,7 @@ void CRecordingSettings::showMenu()
 	
 	// save settings
 	recordingSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	recordingSettings->addItem(new CMenuForwarder(_("Activate changes"), true, NULL, this, "recording"));
+	//recordingSettings->addItem(new CMenuForwarder(_("Activate changes"), true, NULL, this, "recording"));
 
 	recordingSettings->addItem(new CMenuSeparator(LINE | STRING, _("Timer settings")));
 	recordingSettings->addItem(fTimerBefore);

@@ -55,7 +55,6 @@ extern tallchans allchans;	// defined in bouquets.h
 //FIXME: auto-timeshift
 extern bool autoshift;
 extern uint32_t scrambled_timer;
-void stopAutoRecord();
 
 // class CZapProtection
 bool CZapProtection::check()
@@ -772,7 +771,7 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::st
 		
 		if(autoshift) 
 		{
-			stopAutoRecord();
+			CNeutrinoApp::getInstance()->stopAutoRecord();
 			CNeutrinoApp::getInstance()->recordingstatus = 0;
 		}
 		

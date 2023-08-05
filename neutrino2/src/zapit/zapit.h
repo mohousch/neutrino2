@@ -363,6 +363,9 @@ class CZapit
 		//unsigned int zapTo_record(const t_channel_id channel_id);
 		int zapToRecordID(const t_channel_id channel_id);
 
+		//
+		CZapitChannel* findChannelByChannelID(const t_channel_id channel_id);
+		CZapitChannel* findChannelByName(std::string name, const t_service_id sid);
 		std::string getChannelName(const t_channel_id channel_id);
 		int getChannelNumber(const t_channel_id channel_id);
 		std::string getChannelURL(const t_channel_id channel_id);

@@ -500,7 +500,7 @@ int CGenPsi::genpsi(int fd)
 	vtxtpid = 0;
 	neac3 = 0;
 	fdatasync(fd);
+	
 	return 1;
-
 }
 

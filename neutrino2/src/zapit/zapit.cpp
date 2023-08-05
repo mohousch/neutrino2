@@ -108,12 +108,6 @@ CZapit::bouquetMode _bouquetMode = CZapit::BM_UPDATEBOUQUETS;
 CZapit::scanType _scanType = CZapit::ST_TVRADIO;
 scan_list_t scanProviders;
 
-// opengl liveplayback
-#if defined (USE_OPENGL)
-int startOpenGLplayback();
-void stopOpenGLplayback();
-#endif
-
 // webtv
 extern cPlayback *playback;
 
@@ -2423,10 +2417,6 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 #endif	
 			}
 		}
-
-#if defined (USE_OPENGL) // opengl playback
-		startOpenGLplayback();
-#endif
 	}
 
 	playing = true;
@@ -2485,10 +2475,6 @@ int CZapit::stopPlayBack(bool sendPmt)
 			delete pcrDemux; //destructor closes dmx
 			pcrDemux = NULL;
 		}
-
-#if defined (USE_OPENGL) // opengl playback
-		stopOpenGLplayback();
-#endif
 	
 		// stop tuxtxt subtitle
 		tuxtx_stop_subtitle();
@@ -3225,16 +3211,30 @@ unsigned int CZapit::zapToSubServiceID(const t_channel_id channel_id)
 	return zapStatus;
 }
 
-/*
-unsigned int CZapit::zapTo_record(const t_channel_id channel_id)
+//
+CZapitChannel *CZapit::findChannelByChannelID(const t_channel_id channel_id)
 {
-	unsigned int zapStatus = 0;
-			
-	zapStatus = zapToRecordID(channel_id);
-		
-	return zapStatus;
+	tallchans_iterator itChannel = allchans.find(channel_id);
+	
+	if (itChannel != allchans.end())
+		return &(itChannel->second);
+
+	return NULL;
 }
-*/
+
+CZapitChannel *CZapit::findChannelByName(std::string name, const t_service_id sid)
+{
+	for (tallchans_iterator itChannel = allchans.begin(); itChannel != allchans.end(); ++itChannel) 
+	{
+		if( (itChannel->second.getName().length() == name.length() && !strcasecmp(itChannel->second.getName().c_str(), name.c_str()) ) && (itChannel->second.getServiceId() == sid) ) 
+		{
+			return &itChannel->second;
+		}
+	}
+	
+	return NULL;
+}
+
 
 std::string CZapit::getChannelName(const t_channel_id channel_id)
 {

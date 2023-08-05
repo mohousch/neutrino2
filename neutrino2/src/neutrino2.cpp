@@ -71,7 +71,6 @@
 #include <driver/framebuffer.h>
 #include <driver/fontrenderer.h>
 #include <driver/rcinput.h>
-//#include <driver/stream2file.h>
 #include <driver/vcrcontrol.h>
 #include <driver/shutdown_count.h>
 #include <driver/color.h>
@@ -188,12 +187,12 @@
 //
 cPlayback* playback = NULL;
 
-extern char rec_filename[1024];				// defined in stream2file.cpp
-
-extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+//
+extern satellite_map_t satellitePositions;		// defined in getServices.cpp
 extern tallchans allchans;				// defined in zapit.cpp
 extern CBouquetManager * g_bouquetManager;		// defined in zapit.cpp
 
+// zap
 int old_b_id = -1;
 
 // record and timeshift
@@ -202,6 +201,7 @@ uint32_t shift_timer;
 uint32_t scrambled_timer;
 char recDir[255];
 char timeshiftDir[255];
+extern char rec_filename[1024];
 
 // tuxtxt
 //extern int  tuxtxt_init();
@@ -282,8 +282,6 @@ const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] = {
 	"f4"
 #endif
 };
-
-//CVCRControl::CDevice * recordingdevice = NULL;
 
 // init globals
 static void initGlobals(void)
@@ -1912,115 +1910,13 @@ void CNeutrinoApp::setupFonts(const char* font_file)
 		g_InfoViewer->start();
 }
 
-// setup recording device
-void CNeutrinoApp::setupRecordingDevice(void)
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupRecordingDevice\n");
-
-/*
-	if (recDir != NULL)
-	{
-		recordingdevice = new CVCRControl::CFileDevice(g_settings.network_nfs_recordingdir );
-
-		CVCRControl::getInstance()->registerDevice(recordingdevice);
-	}
-	else
-	{
-		if (CVCRControl::getInstance()->isDeviceRegistered())
-			CVCRControl::getInstance()->unregisterDevice();
-	}
-*/
-}
-
-#if defined (USE_OPENGL) // opengl playback
-int startOpenGLplayback()
-{
-#if 0
-	CTimerd::RecordingInfo eventinfo;
-
-	if( !CVCRControl::getInstance()->isDeviceRegistered() )
-		return 0;
-
-	eventinfo.channel_id = live_channel_id;
-	eventinfo.epgID = 0;
-	eventinfo.epg_starttime = 0;
-	strcpy(eventinfo.epgTitle, "");
-	eventinfo.apids = TIMERD_APIDS_CONF;
-		
-	CEPGData epgData;
-	
-	if (CSectionsd::getInstance()->getActualEPGServiceKey(live_channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
-	{
-		eventinfo.epgID = epgData.eventID;
-		eventinfo.epg_starttime = epgData.epg_times.startzeit;
-		strncpy(eventinfo.epgTitle, epgData.title.c_str(), EPG_TITLE_MAXLEN-1);
-		eventinfo.epgTitle[EPG_TITLE_MAXLEN - 1] = 0;
-	}
-
-	(static_cast<CVCRControl::CFileDevice*>(recordingdevice))->Directory = timeshiftDir;
-
-	if( CVCRControl::getInstance()->Record(&eventinfo))
-		CNeutrinoApp::getInstance()->playbackstatus = 1;
-	else
-		CNeutrinoApp::getInstance()->playbackstatus = 0;
-	
-	// start playback	
-	char fname[255];
-	int cnt = 10 * 1000000;
-
-	while (!strlen(rec_filename)) 
-	{
-			usleep(1000);
-			cnt -= 1000;
-			if (!cnt)
-				break;
-	}
-
-	if(strlen(rec_filename))
-	{
-		sprintf(fname, "%s.ts", rec_filename);
-		
-		usleep(10000000);
-		playback->Open();
-		playback->Start(fname);
-	}
-#endif
-	
-	return 0;
-}
-
-void stopOpenGLplayback()
-{
-#if 0
-	// stop playback
-	playback->Close();
-	
-	// stop recording
-	if(CNeutrinoApp::getInstance()->playbackstatus) 
-	{
-		CNeutrinoApp::getInstance()->playbackstatus = 0;
-		
-		CVCRControl::getInstance()->Stop();
-
-		char buf[1024];
-		char buf1[1024];
-
-		sprintf(buf, "rm -f %s.ts &", rec_filename);
-		sprintf(buf1, "%s.xml", rec_filename);
-
-		system(buf);
-		unlink(buf1);
-	}
-#endif
-}
-#endif
 
 // start auto record (permanent/temp timeshift)
-int startAutoRecord(bool addTimer)
+int CNeutrinoApp::startAutoRecord(bool addTimer)
 {
 	CTimerd::RecordingInfo eventinfo;
 
-	if(CNeutrinoApp::getInstance()->recordingstatus /*|| !CVCRControl::getInstance()->isDeviceRegistered()*/ )
+	if(CNeutrinoApp::getInstance()->recordingstatus)
 		return 0;
 
 	eventinfo.channel_id = live_channel_id;
@@ -2044,7 +1940,6 @@ int startAutoRecord(bool addTimer)
 	
 	dprintf(DEBUG_NORMAL, "startAutoRecord: dir %s\n", timeshiftDir);
 
-	//(static_cast<CVCRControl::CFileDevice*>(recordingdevice))->Directory = timeshiftDir;
 	CVCRControl::getInstance()->Directory = timeshiftDir;
 
 	autoshift = 1;
@@ -2071,7 +1966,7 @@ int startAutoRecord(bool addTimer)
 }
 
 // stop auto record
-void stopAutoRecord()
+void CNeutrinoApp::stopAutoRecord()
 {
 	if(autoshift && CNeutrinoApp::getInstance()->recordingstatus) 
 	{
@@ -2101,7 +1996,7 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 	CTimerd::RecordingInfo eventinfo;
 	bool refreshGui = false;
 
-	//if(CVCRControl::getInstance()->isDeviceRegistered()) 
+	if (recDir != NULL) 
 	{
 		// stop auto record
 		if(autoshift) 
@@ -2147,7 +2042,6 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 			// rec dir
 			strcpy(recDir, (preselectedDir != NULL) ? preselectedDir : g_settings.network_nfs_recordingdir);
 				
-			//(static_cast<CVCRControl::CFileDevice*>(recordingdevice))->Directory = recDir;
 			CVCRControl::getInstance()->Directory = recDir;
 			
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::doGuiRecord: start record to dir %s\n", recDir);
@@ -2178,9 +2072,6 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 
 		return refreshGui;
 	}
-	//else
-	//	puts("CNeutrinoApp::doGuiRecord: no recording devices");
-
 
 	return false;
 }
@@ -2192,7 +2083,7 @@ void CNeutrinoApp::startNextRecording()
 	{
 		bool doRecord = true;
 		
-		//if (CVCRControl::getInstance()->isDeviceRegistered()) 
+		if (recDir != NULL)
 		{
 			recording_id = nextRecordingInfo->eventID;
 			
@@ -2245,7 +2136,6 @@ void CNeutrinoApp::startNextRecording()
 					}
 				}
 
-				//(static_cast<CVCRControl::CFileDevice*>(recordingdevice))->Directory = std::string(lrecDir);
 				CVCRControl::getInstance()->Directory = lrecDir;
 				dprintf(DEBUG_NORMAL, "CNeutrinoApp::startNextRecording: start to dir %s\n", lrecDir);
 
@@ -2257,8 +2147,6 @@ void CNeutrinoApp::startNextRecording()
 			else
 				recordingstatus = 0;
 		}
-		//else
-		//	puts("CNeutrinoApp::startNextRecording: no recording devices");
 
 		/* Note: CTimerd::RecordingInfo is a class!
 		 * What a brilliant idea to send classes via the eventserver!
@@ -2342,9 +2230,6 @@ void CNeutrinoApp::initZapper()
 	{
 		// channellist adjust to channeliD
 		channelList->adjustToChannelID(live_channel_id);
-
-		// show service name in vfd
-		//CVFD::getInstance()->showServicename(channelList->getActiveChannelName(), true, channelList->getActiveChannelNumber());
 
 		// start epg scanning
 		CSectionsd::getInstance()->pauseScanning(false);
@@ -2623,9 +2508,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
 	// init rclock
 	rcLock = new CRCLock();
-
-	// setup recording device
-	setupRecordingDevice();
 
 	//
 	CVFD::getInstance()->setPower(g_settings.lcd_power);
@@ -3395,11 +3277,9 @@ void CNeutrinoApp::realRun(void)
 				if( mode == mode_scart ) 
 				{
 					//wenn VCR Aufnahme dann stoppen
-					//if(CVCRControl::getInstance()->isDeviceRegistered()) 
+					if (recDir != NULL)
 					{
-						if (/*(CVCRControl::getInstance()->Device->getDeviceType() == CVCRControl::DEVICE_VCR) &&*/
-						    (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD ||
-						     CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_PAUSE))
+						if ((CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD || CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_PAUSE))
 						{
 							CVCRControl::getInstance()->Stop();
 							recordingstatus = 0;
@@ -3742,7 +3622,7 @@ _repeat:
 	{
 		if(((CTimerd::RecordingStopInfo*)data)->eventID == recording_id)
 		{ 
-			//if (CVCRControl::getInstance()->isDeviceRegistered()) 
+			if (recDir != NULL)
 			{
 				if ((CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD) || (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_PAUSE ))
 				{
@@ -3760,8 +3640,6 @@ _repeat:
 				else
 					printf("CNeutrinoApp::handleMsg: wrong state\n");
 			}
-			//else
-			//	puts("CNeutrinoApp::handleMsg: no recording devices");
 
 			startNextRecording();
 

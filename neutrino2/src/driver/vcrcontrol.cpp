@@ -81,24 +81,17 @@
 extern bool autoshift;
 extern bool autoshift_delete;
 
-//#define SA struct sockaddr
-//#define SAI struct sockaddr_in
-//extern "C" {
-//#include <driver/genpsi.h>
-//}
-
-
 CMovieInfo * g_cMovieInfo;
 MI_MOVIE_INFO * g_movieInfo;
 
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
 
-////
+//
 static cRecord * record = NULL;
 
 extern CFrontend * record_fe;
-extern t_channel_id live_channel_id;
-extern t_channel_id rec_channel_id;
+//extern t_channel_id live_channel_id;
+//extern t_channel_id rec_channel_id;
 
 //extern bool autoshift;
 extern int timeshift;
@@ -109,8 +102,8 @@ extern char timeshiftDir[255];
 static stream2file_status_t exit_flag = STREAM2FILE_STATUS_IDLE;
 
 char rec_filename[FILENAMEBUFFERSIZE];
-////
 
+//
 static CVCRControl vcrControl;
 
 CVCRControl * CVCRControl::getInstance()
@@ -559,7 +552,6 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 	// vpid
 	if (si.vpid != 0)
-		//transfer_pids(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0);
 		psi.addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0);
 
 	// apids
@@ -569,34 +561,33 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
         for(APIDList::iterator it = apid_list.begin(); it != apid_list.end(); it++) 
 	{
                 pids[numpids++] = it->apid;
-		//transfer_pids(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
 		psi.addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
         }
         
+        CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(channel_id);
+        
         //
-        if (live_channel)
+        if (channel)
         {
-        	for (int i = 0 ; i < (int)live_channel->getSubtitleCount() ; ++i) 
+        	for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
 		{
-			CZapitAbsSub* s = live_channel->getChannelSub(i);
+			CZapitAbsSub* s = channel->getChannelSub(i);
 			
 			//dvbsub
 			if (s->thisSubType == CZapitAbsSub::DVB) 
 			{
 				CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
-				printf("vcrcontrol: adding DVB subtitle %s pid 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
+				dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding DVB subtitle %s pid 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
 				
-				//transfer_pids(sd->pId, EN_TYPE_DVBSUB, 0);
-				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0);
+				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
 			}
 			
 			if (s->thisSubType == CZapitAbsSub::TTX) 
 			{
 				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
-				printf("vcrcontrol adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
+				dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
 				
-				//transfer_pids(sd->pId, EN_TYPE_TELTEX, 0);
-				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0);
+				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
 			}
 		}
         }
@@ -1076,7 +1067,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 
 	sprintf(buf, "%s.ts", filename);
 
-	//dprintf(DEBUG_NORMAL, "[Stream2File] Record start: file %s vpid 0x%x apid 0x%x\n", buf, vpid, pids[0]);
+	dprintf(DEBUG_NORMAL, "CVCRControl::startRecording: file %s vpid 0x%x apid 0x%x\n", buf, vpid, pids[0]);
 
 	fd = open(buf, O_CREAT | O_RDWR | O_LARGEFILE | O_TRUNC , S_IRWXO | S_IRWXG | S_IRWXU);
 	if(fd < 0) 
@@ -1140,7 +1131,7 @@ stream2file_error_msg_t CVCRControl::startFileRecording(const char * const filen
 		strcpy(&(file[pos]), filename);
 	}
 
-	dprintf(DEBUG_NORMAL, "[Stream2File] Record start: file:%s (filename:%s)\n", file, filename);
+	dprintf(DEBUG_NORMAL, "CVCRControl::startFileRecording: file:%s (filename:%s)\n", file, filename);
 
 	// write stream information (should wakeup the disk from standby, too)
 	sprintf(buf, "%s.xml", file);
@@ -1170,7 +1161,7 @@ stream2file_error_msg_t CVCRControl::startFileRecording(const char * const filen
 	//TODO: get extension from uri
 	std::string ext =  getFileExt(uri);
 	
-	dprintf(DEBUG_NORMAL, "start_file_recording: extension:%s\n", ext.c_str());
+	dprintf(DEBUG_NORMAL, "CVCRControl::startFileRecording: extension:%s\n", ext.c_str());
 
 	// check for extension
 	CFileFilter fileFilter;
@@ -1200,6 +1191,7 @@ stream2file_error_msg_t CVCRControl::startFileRecording(const char * const filen
 	fileFilter.addFilter("mp3");
 	fileFilter.addFilter("wma");
 	fileFilter.addFilter("ogg");
+	fileFilter.addFilter("m3u8");
 
 	if(!fileFilter.matchFilter(uri))
 		return STREAM2FILE_INVALID_PID;
@@ -1207,7 +1199,7 @@ stream2file_error_msg_t CVCRControl::startFileRecording(const char * const filen
 	sprintf(buf, "%s.%s", file, ext.c_str());
 	sprintf(rec_filename, "%s.%s", file, ext.c_str());
 
-	dprintf(DEBUG_NORMAL, "[Stream2File] Record start: rec_filename: %s\n", rec_filename);
+	dprintf(DEBUG_NORMAL, "CVCRControl::startFileRecording: rec_filename: %s\n", rec_filename);
 
 	fd = open(buf, O_CREAT | O_RDWR | O_LARGEFILE | O_TRUNC , S_IRWXO | S_IRWXG | S_IRWXU);
 	if(fd < 0) 
@@ -1242,7 +1234,7 @@ stream2file_error_msg_t CVCRControl::stopRecording(const char * const info, bool
 	int fd;
 	stream2file_error_msg_t ret;
 
-	dprintf(DEBUG_NORMAL, "[Stream2File] stop Record\n");	
+	dprintf(DEBUG_NORMAL, "CVCRControl::stopRecording:\n");	
 
 	sprintf(buf, "%s.xml", rec_filename);
 	
