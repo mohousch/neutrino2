@@ -71,7 +71,7 @@
 #include <driver/framebuffer.h>
 #include <driver/fontrenderer.h>
 #include <driver/rcinput.h>
-#include <driver/stream2file.h>
+//#include <driver/stream2file.h>
 #include <driver/vcrcontrol.h>
 #include <driver/shutdown_count.h>
 #include <driver/color.h>
@@ -283,7 +283,7 @@ const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] = {
 #endif
 };
 
-CVCRControl::CDevice * recordingdevice = NULL;
+//CVCRControl::CDevice * recordingdevice = NULL;
 
 // init globals
 static void initGlobals(void)
@@ -1917,6 +1917,7 @@ void CNeutrinoApp::setupRecordingDevice(void)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupRecordingDevice\n");
 
+/*
 	if (recDir != NULL)
 	{
 		recordingdevice = new CVCRControl::CFileDevice(g_settings.network_nfs_recordingdir );
@@ -1928,6 +1929,7 @@ void CNeutrinoApp::setupRecordingDevice(void)
 		if (CVCRControl::getInstance()->isDeviceRegistered())
 			CVCRControl::getInstance()->unregisterDevice();
 	}
+*/
 }
 
 #if defined (USE_OPENGL) // opengl playback
@@ -2018,7 +2020,7 @@ int startAutoRecord(bool addTimer)
 {
 	CTimerd::RecordingInfo eventinfo;
 
-	if(CNeutrinoApp::getInstance()->recordingstatus || !CVCRControl::getInstance()->isDeviceRegistered() )
+	if(CNeutrinoApp::getInstance()->recordingstatus /*|| !CVCRControl::getInstance()->isDeviceRegistered()*/ )
 		return 0;
 
 	eventinfo.channel_id = live_channel_id;
@@ -2042,7 +2044,8 @@ int startAutoRecord(bool addTimer)
 	
 	dprintf(DEBUG_NORMAL, "startAutoRecord: dir %s\n", timeshiftDir);
 
-	(static_cast<CVCRControl::CFileDevice*>(recordingdevice))->Directory = timeshiftDir;
+	//(static_cast<CVCRControl::CFileDevice*>(recordingdevice))->Directory = timeshiftDir;
+	CVCRControl::getInstance()->Directory = timeshiftDir;
 
 	autoshift = 1;
 	CNeutrinoApp::getInstance()->recordingstatus = 1;
@@ -2098,7 +2101,7 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 	CTimerd::RecordingInfo eventinfo;
 	bool refreshGui = false;
 
-	if(CVCRControl::getInstance()->isDeviceRegistered()) 
+	//if(CVCRControl::getInstance()->isDeviceRegistered()) 
 	{
 		// stop auto record
 		if(autoshift) 
@@ -2144,7 +2147,8 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 			// rec dir
 			strcpy(recDir, (preselectedDir != NULL) ? preselectedDir : g_settings.network_nfs_recordingdir);
 				
-			(static_cast<CVCRControl::CFileDevice*>(recordingdevice))->Directory = recDir;
+			//(static_cast<CVCRControl::CFileDevice*>(recordingdevice))->Directory = recDir;
+			CVCRControl::getInstance()->Directory = recDir;
 			
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::doGuiRecord: start record to dir %s\n", recDir);
 
@@ -2174,8 +2178,8 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 
 		return refreshGui;
 	}
-	else
-		puts("CNeutrinoApp::doGuiRecord: no recording devices");
+	//else
+	//	puts("CNeutrinoApp::doGuiRecord: no recording devices");
 
 
 	return false;
@@ -2188,7 +2192,7 @@ void CNeutrinoApp::startNextRecording()
 	{
 		bool doRecord = true;
 		
-		if (CVCRControl::getInstance()->isDeviceRegistered()) 
+		//if (CVCRControl::getInstance()->isDeviceRegistered()) 
 		{
 			recording_id = nextRecordingInfo->eventID;
 			
@@ -2241,7 +2245,8 @@ void CNeutrinoApp::startNextRecording()
 					}
 				}
 
-				(static_cast<CVCRControl::CFileDevice*>(recordingdevice))->Directory = std::string(lrecDir);
+				//(static_cast<CVCRControl::CFileDevice*>(recordingdevice))->Directory = std::string(lrecDir);
+				CVCRControl::getInstance()->Directory = lrecDir;
 				dprintf(DEBUG_NORMAL, "CNeutrinoApp::startNextRecording: start to dir %s\n", lrecDir);
 
 				CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
@@ -2252,8 +2257,8 @@ void CNeutrinoApp::startNextRecording()
 			else
 				recordingstatus = 0;
 		}
-		else
-			puts("CNeutrinoApp::startNextRecording: no recording devices");
+		//else
+		//	puts("CNeutrinoApp::startNextRecording: no recording devices");
 
 		/* Note: CTimerd::RecordingInfo is a class!
 		 * What a brilliant idea to send classes via the eventserver!
@@ -3390,9 +3395,9 @@ void CNeutrinoApp::realRun(void)
 				if( mode == mode_scart ) 
 				{
 					//wenn VCR Aufnahme dann stoppen
-					if(CVCRControl::getInstance()->isDeviceRegistered()) 
+					//if(CVCRControl::getInstance()->isDeviceRegistered()) 
 					{
-						if ((CVCRControl::getInstance()->Device->getDeviceType() == CVCRControl::DEVICE_VCR) &&
+						if (/*(CVCRControl::getInstance()->Device->getDeviceType() == CVCRControl::DEVICE_VCR) &&*/
 						    (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD ||
 						     CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_PAUSE))
 						{
@@ -3737,7 +3742,7 @@ _repeat:
 	{
 		if(((CTimerd::RecordingStopInfo*)data)->eventID == recording_id)
 		{ 
-			if (CVCRControl::getInstance()->isDeviceRegistered()) 
+			//if (CVCRControl::getInstance()->isDeviceRegistered()) 
 			{
 				if ((CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD) || (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_PAUSE ))
 				{
@@ -3755,8 +3760,8 @@ _repeat:
 				else
 					printf("CNeutrinoApp::handleMsg: wrong state\n");
 			}
-			else
-				puts("CNeutrinoApp::handleMsg: no recording devices");
+			//else
+			//	puts("CNeutrinoApp::handleMsg: no recording devices");
 
 			startNextRecording();
 
@@ -4013,11 +4018,11 @@ _repeat:
 		if (mode != mode_scart) 
 		{
 			std::string msgbody;
-			if ((* (stream2file_status2_t *) data).status == STREAM2FILE_STATUS_BUFFER_OVERFLOW)
+			if ((* (CVCRControl::stream2file_status2_t *) data).status == STREAM2FILE_STATUS_BUFFER_OVERFLOW)
 				msgbody = "The recording was aborted,\nsince the data could not be written fast enough.";
-			else if ((* (stream2file_status2_t *) data).status == STREAM2FILE_STATUS_WRITE_OPEN_FAILURE)
+			else if ((* (CVCRControl::stream2file_status2_t *) data).status == STREAM2FILE_STATUS_WRITE_OPEN_FAILURE)
 				msgbody = "The recording was aborted,\nbecause the target file could not be opened.";
-			else if ((* (stream2file_status2_t *) data).status == STREAM2FILE_STATUS_WRITE_FAILURE)
+			else if ((* (CVCRControl::stream2file_status2_t *) data).status == STREAM2FILE_STATUS_WRITE_FAILURE)
 				msgbody = "The recording was aborted,\nsince an error occured during the writing process.";
 			else
 				goto skip_message;
@@ -4028,10 +4033,10 @@ skip_message:
 			;
 		}
 		
-		if ((* (stream2file_status2_t *) data).status != STREAM2FILE_STATUS_IDLE) 
+		if ((* (CVCRControl::stream2file_status2_t *) data).status != STREAM2FILE_STATUS_IDLE) 
 		{
 			// restart recording
-			//FIXME doGuiRecord((*(stream2file_status2_t *) data).dir);
+			//FIXME doGuiRecord((*(CVCRControl::stream2file_status2_t *) data).dir);
 			//changeNotify(_("start"), data);
 		}
 

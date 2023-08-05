@@ -44,6 +44,28 @@
 /*zapit includes*/
 #include <zapit/zapit.h>
 
+//#include <driver/stream2file.h>
+enum stream2file_error_msg_t
+		{
+			STREAM2FILE_OK                        =  0,
+			STREAM2FILE_BUSY                      = -1,
+			STREAM2FILE_INVALID_DIRECTORY         = -2,
+			STREAM2FILE_INVALID_PID               = -3,
+			STREAM2FILE_PES_FILTER_FAILURE        = -4,
+			STREAM2FILE_DVR_OPEN_FAILURE          = -5,
+			STREAM2FILE_RECORDING_THREADS_FAILED  = -6,
+		};
+
+		enum stream2file_status_t
+		{
+			STREAM2FILE_STATUS_RUNNING            =  0,
+			STREAM2FILE_STATUS_IDLE               =  1,
+			STREAM2FILE_STATUS_BUFFER_OVERFLOW    = -1,
+			STREAM2FILE_STATUS_WRITE_OPEN_FAILURE = -2,
+			STREAM2FILE_STATUS_WRITE_FAILURE      = -3,
+			STREAM2FILE_STATUS_READ_FAILURE = -4
+		};
+
 
 class CVCRControl
 {
@@ -58,139 +80,74 @@ class CVCRControl
 			CMD_VCR_AVAILABLE =	5
 		} CVCRCommand;
 	
-		enum CVCRDevices
-		{
-			DEVICE_VCR,
-			DEVICE_SERVER,
-			DEVICE_FILE
-		};
-
-		class CDevice			// basisklasse f�r die devices
-		{
-			public:
-				//int sock_fd;
-				int last_mode;
-				time_t start_time;
-				virtual CVCRDevices getDeviceType(void) const = 0;
-				CVCRStates  deviceState;
-				virtual bool Stop() = 0;
-				virtual bool Record(const t_channel_id channel_id = 0, int mode = 1, const event_id_t epgid = 0, const std::string& epgTitle = "", unsigned char apids = 0, const time_t epg_time=0) = 0; // epg_time added for .xml (MovieBrowser)
-				virtual bool Pause() = 0;
-				virtual bool Resume() = 0;
-				virtual bool IsAvailable() = 0;
-				CDevice() { deviceState = CMD_VCR_STOP; };
-				virtual ~CDevice(){};
+		int last_mode;
+		time_t start_time;
+		CVCRStates  deviceState;
 				
-				typedef struct {
-					unsigned short apid;
-					unsigned int index;
-					bool ac3;
-				} APIDDesc;
-				typedef std::list<APIDDesc> APIDList;
+		typedef struct {
+			unsigned short apid;
+			unsigned int index;
+			bool ac3;
+		} APIDDesc;
+		typedef std::list<APIDDesc> APIDList;
 				
-				virtual void getAPIDs(const unsigned char apids, APIDList & apid_list);
-		};
-
-		class CVCRDevice : public CDevice		// VCR per IR
-		{
-			public:
-				bool  SwitchToScart;
+		virtual void getAPIDs(const unsigned char apids, APIDList & apid_list);
+		
+		bool  SwitchToScart;
+		
+		bool Stop(); 
+		bool Pause();
+		bool Resume();
+		
+		//
+		unsigned short g_vpid;
+		unsigned short g_vtype;
+		unsigned short g_apids[10];
+		unsigned short g_ac3flags[10];
+		unsigned short g_numpida;
+		unsigned int g_currentapid, g_currentac3;
+		
+		//
+		std::string  Directory;
 				
-				virtual CVCRDevices getDeviceType(void) const
-				{
-					return DEVICE_VCR;
-				};
-				
-				virtual bool Stop(); 
-				virtual bool Record(const t_channel_id channel_id = 0, int mode = 1, const event_id_t epgid = 0, const std::string& epgTitle = "", unsigned char apids = 0, const time_t epg_time=0); // epg_time added for .xml (MovieBrowser)
-				virtual bool Pause();
-				virtual bool Resume();
-				virtual bool IsAvailable() { return true; };
-				CVCRDevice(bool switchtoscart) { SwitchToScart = switchtoscart; };
-				virtual ~CVCRDevice(){};
-		};
+		unsigned long long            record_EPGid;
+		unsigned long long            record_next_EPGid;
+		CZapit::responseGetPIDs pids;
+		void processAPIDnames();
 
-		class CFileAndServerDevice : public CDevice
-		{
-			protected:
-				void RestoreNeutrino(void);
-				void CutBackNeutrino(const t_channel_id channel_id, const int mode);
-				std::string getCommandString(const CVCRCommand command, const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, unsigned char apids);
-				std::string getMovieInfoString(const CVCRCommand command, const t_channel_id channel_id,const event_id_t epgid, const std::string& epgTitle, APIDList apid_list, const time_t epg_time);
+		bool doRecord(const t_channel_id channel_id = 0, int mode = 1, const event_id_t epgid = 0, const std::string& epgTitle = "", unsigned char apids = 0, const time_t epg_time=0); // epg_time added for .xml (MovieBrowser)
 
-			public:
-				virtual bool Pause()
-				{
-					return false;
-				};
-
-				virtual bool Resume()
-				{
-					return false;
-				};
-
-				virtual bool IsAvailable()
-				{
-					return true;
-				};
-				
-				//
-				unsigned short g_vpid;
-				unsigned short g_vtype;
-				unsigned short g_apids[10];
-				unsigned short g_ac3flags[10];
-				unsigned short g_numpida;
-				unsigned int g_currentapid, g_currentac3;
-				//
-				
-				unsigned long long            record_EPGid;
-				unsigned long long            record_next_EPGid;
-				CZapit::responseGetPIDs pids;
-				void processAPIDnames();
-		};
-
-		class CFileDevice : public CFileAndServerDevice
-		{
-			public:
-				std::string  Directory;
+	protected:
+		void RestoreNeutrino(void);
+		void CutBackNeutrino(const t_channel_id channel_id, const int mode);
+		std::string getCommandString(const CVCRCommand command, const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, unsigned char apids);
+		std::string getMovieInfoString(const CVCRCommand command, const t_channel_id channel_id,const event_id_t epgid, const std::string& epgTitle, APIDList apid_list, const time_t epg_time);
 	
-				virtual CVCRDevices getDeviceType(void) const
-				{
-					return DEVICE_FILE;
-				};
-					
-				virtual bool Stop(); 
-				virtual bool Record(const t_channel_id channel_id = 0, int mode = 1, const event_id_t epgid = 0, const std::string& epgTitle = "", unsigned char apids = 0, const time_t epg_time=0); // epg_time added for .xml (MovieBrowser)
-	
-				// file
-				CFileDevice(const char * const directory )
-				{
-					Directory          = directory;
-				};
-
-				virtual ~CFileDevice()
-				{
-				};
-		};
-
 	public:
 		CVCRControl();
 		~CVCRControl();
 		static CVCRControl * getInstance();
 
-		CDevice * Device;
-			
-		void registerDevice(CDevice * const device);
-		void unregisterDevice();
-
-		inline bool isDeviceRegistered(void) const { return (Device != NULL); };
-
-		inline CVCRStates getDeviceState(void) const { return Device->deviceState; };
-		bool Stop(){return Device->Stop();};
+		inline CVCRStates getDeviceState(void) const { return /*Device->*/deviceState; };
 		bool Record(const CTimerd::RecordingInfo * const eventinfo);
-		bool Pause(){return Device->Pause();};
-		bool Resume(){return Device->Resume();};
 		bool Screenshot(const t_channel_id channel_id, char * fname = NULL);
+		
+		////
+		struct stream2file_status2_t
+		{
+			stream2file_status_t status;
+			char dir[100];
+		};
+
+		stream2file_error_msg_t startRecording(const char * const filename,
+					const char * const info,
+					const unsigned short vpid,
+					const unsigned short * const apids,
+					const unsigned int numpids);
+		stream2file_error_msg_t startFileRecording(const char* const filename, const char* const info, std::string uri = "");
+					
+		stream2file_error_msg_t stopRecording(const char * const info, bool file_recording = false);
+		////
 };
 
 #endif

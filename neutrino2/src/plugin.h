@@ -62,7 +62,7 @@
 #include <driver/framebuffer.h>
 #include <driver/fontrenderer.h>
 #include <driver/rcinput.h>
-#include <driver/stream2file.h>
+//#include <driver/stream2file.h>
 #include <driver/vcrcontrol.h>
 #include <driver/shutdown_count.h>
 #include <driver/audioplay.h>
@@ -272,7 +272,7 @@ extern SMSKeyInput 		* c_SMSKeyInput;	//defined in filebrowser and used in Chann
 extern CPictureViewer 		* g_PicViewer;
 //extern CCAMMenuHandler 	* g_CamHandler;
 
-extern CVCRControl::CDevice * recordingdevice;
+//extern CVCRControl::CDevice * recordingdevice;
 
 //
 extern cPlayback *playback;

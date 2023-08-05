@@ -45,7 +45,6 @@ libneutrino2_driver_a_SOURCES = \
 	rcinput.cpp \
 	vcrcontrol.cpp \
 	audioplay.cpp \
-	stream2file.cpp \
 	file.cpp \
 	audiometadata.cpp \
 	audiofile.cpp \

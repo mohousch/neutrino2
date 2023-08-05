@@ -36,7 +36,6 @@
 #endif
 
 #include <driver/rcinput.h>
-#include <driver/stream2file.h>
 
 #include <stdio.h>
 #include <asm/types.h>
@@ -66,6 +65,8 @@
 #include <timerd/timerd.h>
 
 #include <system/debug.h>
+
+#include <driver/vcrcontrol.h>
 
 
 #define ENABLE_REPEAT_CHECK
@@ -1008,7 +1009,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					{					  
 						//dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from NEUTRINO %x %x\n", emsg.eventID, *(unsigned*) p);					
 						
-						if ((emsg.eventID == NeutrinoMessages::EVT_RECORDING_ENDED) && (read_bytes == sizeof(stream2file_status2_t)))
+						if ((emsg.eventID == NeutrinoMessages::EVT_RECORDING_ENDED) && (read_bytes == sizeof(CVCRControl::stream2file_status2_t)))
 						{
 							*msg  = NeutrinoMessages::EVT_RECORDING_ENDED;
 							*data = (neutrino_msg_data_t) p;

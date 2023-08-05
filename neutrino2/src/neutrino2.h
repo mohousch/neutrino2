@@ -134,7 +134,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		
 		void cmdParser(int argc, char **argv);
 	
-		bool doGuiRecord(char * preselectedDir, bool addTimer = false);
+		//bool doGuiRecord(char * preselectedDir, bool addTimer = false);
 		
 		CNeutrinoApp();
 
@@ -225,6 +225,8 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		int getLastMode() { return lastMode; };
 		int getChMode(){return chmode;};
 		
+		//
+		bool doGuiRecord(char * preselectedDir, bool addTimer = false);
 		void setupRecordingDevice(void);
 		void startNextRecording();
 		
