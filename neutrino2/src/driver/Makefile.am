@@ -50,7 +50,7 @@ libneutrino2_driver_a_SOURCES = \
 	audiometadata.cpp \
 	audiofile.cpp \
 	shutdown_count.cpp \
-	genpsi.c \
+	genpsi.cpp \
 	streamts.cpp \
 	radiotext.cpp \
 	radiotools.cpp \

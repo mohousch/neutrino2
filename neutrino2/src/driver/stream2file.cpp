@@ -64,9 +64,9 @@
 #include <system/debug.h>
 #include <system/httptool.h>
 
-extern "C" {
+//extern "C" {
 #include <driver/genpsi.h>
-}
+//}
 
 #include <neutrino2.h>
 #include <driver/vcrcontrol.h>
@@ -135,8 +135,9 @@ stream2file_error_msg_t start_recording(const char * const filename, const char 
 		return STREAM2FILE_INVALID_DIRECTORY;
 	}
 	
-	genpsi(fd);
-
+	//genpsi(fd);
+	CGenPsi psi;
+	psi.genpsi(fd);
 	// init record
 	if(!record)
 		record = new cRecord();

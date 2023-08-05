@@ -79,9 +79,9 @@ extern bool autoshift_delete;
 
 #define SA struct sockaddr
 #define SAI struct sockaddr_in
-extern "C" {
+//extern "C" {
 #include <driver/genpsi.h>
-}
+//}
 
 
 CMovieInfo * g_cMovieInfo;
@@ -563,10 +563,13 @@ bool CVCRControl::CFileDevice::Record(const t_channel_id channel_id, int mode, c
 	si = CZapit::getInstance()->getRecordServiceInfo();
 
 	numpids = 0;
+	
+	CGenPsi psi;
 
 	// vpid
 	if (si.vpid != 0)
-		transfer_pids(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0);
+		//transfer_pids(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0);
+		psi.addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0);
 
 	// apids
         APIDList apid_list;
@@ -575,11 +578,37 @@ bool CVCRControl::CFileDevice::Record(const t_channel_id channel_id, int mode, c
         for(APIDList::iterator it = apid_list.begin(); it != apid_list.end(); it++) 
 	{
                 pids[numpids++] = it->apid;
-		transfer_pids(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
+		//transfer_pids(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
+		psi.addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
         }
         
-        //CZapit::responseGetPIDs allpids;
-	//CZapit::getInstance()->getRecordPIDS(allpids);
+        //
+        if (live_channel)
+        {
+        	for (int i = 0 ; i < (int)live_channel->getSubtitleCount() ; ++i) 
+		{
+			CZapitAbsSub* s = live_channel->getChannelSub(i);
+			
+			//dvbsub
+			if (s->thisSubType == CZapitAbsSub::DVB) 
+			{
+				CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
+				printf("vcrcontrol: adding DVB subtitle %s pid 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
+				
+				//transfer_pids(sd->pId, EN_TYPE_DVBSUB, 0);
+				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0);
+			}
+			
+			if (s->thisSubType == CZapitAbsSub::TTX) 
+			{
+				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
+				printf("vcrcontrol adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
+				
+				//transfer_pids(sd->pId, EN_TYPE_TELTEX, 0);
+				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0);
+			}
+		}
+        }
 
 	//record file name format
 	char filename[512]; // UTF-8

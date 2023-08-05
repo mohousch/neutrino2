@@ -776,10 +776,7 @@ static void FFMPEGThread(Context_t *context)
 	// Freeing the allocated buffer for softdecoding
 	if (samples != NULL) 
 	{
-		//free(samples);
-		//av_frame_unref(samples);
 		av_frame_free(&samples);
-		//samples = NULL;
 	}
 
 	hasPlayThreadStarted = 0;
