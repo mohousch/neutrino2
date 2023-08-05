@@ -55,9 +55,7 @@
 #include "subtitle.h"
 #include "writer.h"
 
-//#include <config.h>
-
-//#include <ass/ass.h>
+#include <config.h>
 
 
 #if LIBAVCODEC_VERSION_MAJOR > 54
@@ -439,7 +437,8 @@ static void FFMPEGThread(Context_t *context)
 	AudioVideoOut_t avOut;
 
 	/* Softdecoding buffer */
-	unsigned char *samples = NULL;
+	//unsigned char *samples = NULL;
+	AVFrame *samples = NULL;
 
 	ffmpeg_printf(10, "\n");
 
@@ -565,12 +564,12 @@ static void FFMPEGThread(Context_t *context)
 					avOut.height     = videoTrack->height;
 					avOut.type       = "video";
 
-					#ifndef USE_OPENGL
+#ifndef USE_OPENGL
 					if (context->output->video->Write(context, &avOut) < 0) 
 					{
 						ffmpeg_err("writing data to video device failed\n");
 					}
-					#endif
+#endif
 				}
 			}
 
@@ -588,32 +587,33 @@ static void FFMPEGThread(Context_t *context)
 
 					if (audioTrack->inject_as_pcm == 1)
 					{
+						AVCodecContext *c = ((AVStream *)(audioTrack->stream))->codec;
 						int      bytesDone = 0;
-						unsigned int samples_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
-						AVPacket avpkt;
-						avpkt = packet;
-
-						// This way the buffer is only allocated if we really need it
+						
+						
 						if(samples == NULL)
-							samples = (unsigned char *)malloc(samples_size);
+							samples = av_frame_alloc();
+						else
+							av_frame_unref(samples);
 
-						while(avpkt.size > 0)
+						while(packet.size > 0)
 						{
-							int decoded_data_size = samples_size;
-
+							//
+							int decoded_data_size = 0; //AVCODEC_MAX_AUDIO_FRAME_SIZE;
+							
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 1, 99)
-							bytesDone = avcodec_decode_audio4(( (AVStream*) audioTrack->stream)->codec, (short *)(samples), &decoded_data_size, &avpkt);
+							bytesDone = avcodec_decode_audio4(c, samples, &decoded_data_size, &packet);
 #elif LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
-							bytesDone = avcodec_decode_audio3(( (AVStream*) audioTrack->stream)->codec, (short *)(samples), &decoded_data_size, &avpkt);
+							bytesDone = avcodec_decode_audio3(c, samples, &decoded_data_size, &packet);
 #else
-							bytesDone = avcodec_decode_audio2(( (AVStream*) audioTrack->stream)->codec, (short *)(samples), &decoded_data_size, avpkt.data, avpkt.size);
+							bytesDone = avcodec_decode_audio2(c, samples, &decoded_data_size, packet.data, packet.size);
 #endif
 
 							if(bytesDone < 0) // Error Happend
 							    break;
 
-							avpkt.data += bytesDone;
-							avpkt.size -= bytesDone;
+							packet.data += bytesDone;
+							packet.size -= bytesDone;
 
 							if(decoded_data_size <= 0)
 							    continue;
@@ -636,7 +636,7 @@ static void FFMPEGThread(Context_t *context)
 							avOut.height     = 0;
 							avOut.type       = "audio";
 
-							#ifndef USE_OPENGL
+#ifndef USE_OPENGL
 							if (!context->playback->BackWard)
 							{
 								if (context->output->audio->Write(context, &avOut) < 0)
@@ -644,7 +644,7 @@ static void FFMPEGThread(Context_t *context)
 									ffmpeg_err("writing data to audio device failed\n");
 								}
 							}
-							#endif
+#endif
 						}
 					}
 					else if (audioTrack->have_aacheader == 1)
@@ -662,7 +662,7 @@ static void FFMPEGThread(Context_t *context)
 						avOut.height     = 0;
 						avOut.type       = "audio";
 
-						#ifndef USE_OPENGL
+#ifndef USE_OPENGL
 						if (!context->playback->BackWard)
 						{
 							if (context->output->audio->Write(context, &avOut) < 0)
@@ -670,7 +670,7 @@ static void FFMPEGThread(Context_t *context)
 								ffmpeg_err("(aac) writing data to audio device failed\n");
 							}
 						}
-						#endif
+#endif
 					}
 					else
 					{
@@ -686,7 +686,7 @@ static void FFMPEGThread(Context_t *context)
 						avOut.height     = 0;
 						avOut.type       = "audio";
 
-						#ifndef USE_OPENGL
+#ifndef USE_OPENGL
 						if (!context->playback->BackWard)
 						{
 							if (context->output->audio->Write(context, &avOut) < 0)
@@ -694,7 +694,7 @@ static void FFMPEGThread(Context_t *context)
 								ffmpeg_err("writing data to audio device failed\n");
 							}
 						}
-						#endif
+#endif
 					}
 				}
 			}
@@ -776,8 +776,10 @@ static void FFMPEGThread(Context_t *context)
 	// Freeing the allocated buffer for softdecoding
 	if (samples != NULL) 
 	{
-		free(samples);
-		samples = NULL;
+		//free(samples);
+		//av_frame_unref(samples);
+		av_frame_free(&samples);
+		//samples = NULL;
 	}
 
 	hasPlayThreadStarted = 0;

@@ -578,9 +578,8 @@ bool CVCRControl::CFileDevice::Record(const t_channel_id channel_id, int mode, c
 		transfer_pids(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
         }
         
-        CZapit::responseGetPIDs allpids;
-
-	CZapit::getInstance()->getRecordPIDS(allpids);
+        //CZapit::responseGetPIDs allpids;
+	//CZapit::getInstance()->getRecordPIDS(allpids);
 
 	//record file name format
 	char filename[512]; // UTF-8
