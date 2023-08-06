@@ -78,7 +78,16 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* ***************************** */
 
 static int initialHeader = 1;
+////
+static uint8_t codec_data[18];
+static uint64_t fixed_buffertimestamp;
+static uint64_t fixed_bufferduration;
+static uint32_t fixed_buffersize;
+static uint8_t *fixed_buffer;
+static uint32_t fixed_bufferfilled;
+////
 
+//
 static unsigned int SubFrameLen = 0;
 static unsigned int SubFramesPerPES = 0;
 
@@ -191,7 +200,11 @@ static int writeData(void* _call)
 {
 	WriterAVCallData_t* call = (WriterAVCallData_t*) _call;
 
+#if defined (__sh__)
 	unsigned char  PesHeader[PES_MAX_HEADER_SIZE];
+#else
+	static uint8_t  PesHeader[PES_MAX_HEADER_SIZE + 22];
+#endif
 
 	pcm_printf(10, "\n");
 
@@ -216,106 +229,279 @@ static int writeData(void* _call)
 	}
 
 	pcmPrivateData_t*         pcmPrivateData          = (pcmPrivateData_t*)call->private_data;
+	
+#if !defined (__sh__)
+	uint8_t *buffer = call->data;
+	uint32_t   size = call->len;
+#endif
 
-	if (initialHeader) 
+#if defined (__sh__)
+	if (initialHeader)
 	{
+		uint32_t codecID = (uint32_t)call->avCodecId;
+		uint8_t LE = 0;
+		switch (codecID)
+		{
+			case AV_CODEC_ID_PCM_S8:
+			case AV_CODEC_ID_PCM_U8:
+				break;
+			case AV_CODEC_ID_PCM_S16LE:
+			case AV_CODEC_ID_PCM_U16LE:
+				LE = 1;
+			case AV_CODEC_ID_PCM_S16BE:
+			case AV_CODEC_ID_PCM_U16BE:
+				break;
+			case AV_CODEC_ID_PCM_S24LE:
+			case AV_CODEC_ID_PCM_U24LE:
+				LE = 1;
+			case AV_CODEC_ID_PCM_S24BE:
+			case AV_CODEC_ID_PCM_U24BE:
+				break;
+			case AV_CODEC_ID_PCM_S32LE:
+			case AV_CODEC_ID_PCM_U32LE:
+				LE = 1;
+			case AV_CODEC_ID_PCM_S32BE:
+			case AV_CODEC_ID_PCM_U32BE:
+				break;
+			default:
+				break;
+		}
 		initialHeader = 0;
-		prepareClipPlay(pcmPrivateData->uNoOfChannels, pcmPrivateData->uSampleRate, pcmPrivateData->uBitsPerSample, pcmPrivateData->bLittleEndian);
+		prepareClipPlay(pcmPrivateData->uNoOfChannels, pcmPrivateData->uSampleRate, pcmPrivateData->uBitsPerSample, LE);
 	}
 
-	unsigned char * buffer = call->data;
-	int size = call->len;
-	//pcm_printf(10, "PCM %d size SubFrameLen=%d\n", size, SubFrameLen);
+	uint8_t *buffer = call->data;
+	uint32_t size = call->len;
 
-	unsigned int qty;
-	unsigned int n;
-	unsigned int injectBufferSize = sizeof(lpcm_pes) + sizeof(lpcm_prv) + SubFrameLen;
-	unsigned char * injectBuffer = (unsigned char *)malloc(sizeof(unsigned char)*injectBufferSize);
-	unsigned char * injectBufferDataPointer = &injectBuffer[sizeof(lpcm_pes)+sizeof(lpcm_prv)];
-	int pos;
+	uint32_t n;
+	uint8_t *injectBuffer = malloc(SubFrameLen);
+	uint32_t pos;
 
-	for(pos = 0; pos < size; )
+	for (pos = 0; pos < size;)
 	{
 		//printf("PCM %s - Position=%d\n", __FUNCTION__, pos);
-		if((size - pos) < SubFrameLen)
+		if ((size - pos) < SubFrameLen)
 		{
 			breakBufferFillSize = size - pos;
-			memcpy(breakBuffer, &buffer[pos], sizeof(unsigned char) * breakBufferFillSize);
+			memcpy(breakBuffer, &buffer[pos], sizeof(uint8_t) * breakBufferFillSize);
 			//printf("PCM %s - Unplayed=%d\n", __FUNCTION__, breakBufferFillSize);
 			break;
 		}
 
-                //get first PES's worth
-		if(breakBufferFillSize > 0)
+		//get first PES's worth
+		if (breakBufferFillSize > 0)
 		{
-			memcpy(injectBufferDataPointer, breakBuffer, sizeof(unsigned char)*breakBufferFillSize);
-			memcpy(&injectBufferDataPointer[breakBufferFillSize], &buffer[pos], sizeof(unsigned char)*(SubFrameLen - breakBufferFillSize));
+			memcpy(injectBuffer, breakBuffer, sizeof(uint8_t)*breakBufferFillSize);
+			memcpy(&injectBuffer[breakBufferFillSize], &buffer[pos], sizeof(unsigned char) * (SubFrameLen - breakBufferFillSize));
 			pos += (SubFrameLen - breakBufferFillSize);
 			breakBufferFillSize = 0;
-		} 
+		}
 		else
 		{
-		        memcpy(injectBufferDataPointer, &buffer[pos], sizeof(unsigned char)*SubFrameLen);
+			memcpy(injectBuffer, &buffer[pos], sizeof(uint8_t)*SubFrameLen);
 			pos += SubFrameLen;
 		}
 
-		//write the PES header
-		memcpy(injectBuffer, lpcm_pes, sizeof(lpcm_pes));
+		struct iovec iov[3];
+		iov[0].iov_base = PesHeader;
+		iov[1].iov_base = lpcm_prv;
+		iov[1].iov_len = sizeof(lpcm_prv);
 
-		//write the private data area
-		memcpy(&injectBuffer[sizeof(lpcm_pes)], lpcm_prv, sizeof(lpcm_prv));
+		iov[2].iov_base = injectBuffer;
+		iov[2].iov_len = SubFrameLen;
 
 		//write the PCM data
-		if(pcmPrivateData->uBitsPerSample == 16) 
+		if (16 == pcmPrivateData->uBitsPerSample)
 		{
-			for(n = 0; n < SubFrameLen; n += 2) 
+			for (n = 0; n < SubFrameLen; n += 2)
 			{
-				unsigned char tmp;
-				tmp = injectBufferDataPointer[n];
-				injectBufferDataPointer[n] = injectBufferDataPointer[n + 1];
-				injectBufferDataPointer[n + 1] = tmp;
+				uint8_t tmp;
+				tmp = injectBuffer[n];
+				injectBuffer[n] = injectBuffer[n + 1];
+				injectBuffer[n + 1] = tmp;
 			}
-		} 
-		else 
+		}
+		else
 		{
-			//A1cA1bA1a-B1cB1bB1a-A2cA2bA2a-B2cB2bB2a to A1aA1bB1aB1b.A2aA2bB2aB2b-A1cB1cA2cB2c
-			for(n = 0; n < SubFrameLen; n += 12) 
+			//      0   1   2   3   4   5   6   7   8   9  10  11
+			//    A1c A1b A1a-B1c B1b B1a-A2c A2b A2a-B2c B2b B2a
+			// to A1a A1b B1a B1b.A2a A2b B2a B2b-A1c B1c A2c B2c
+			for (n = 0; n < SubFrameLen; n += 12)
 			{
-				unsigned char tmp[12];
-				tmp[ 0]=injectBufferDataPointer[n+2];
-				tmp[ 1]=injectBufferDataPointer[n+1];
-				tmp[ 8]=injectBufferDataPointer[n+0];
-				tmp[ 2]=injectBufferDataPointer[n+5];
-				tmp[ 3]=injectBufferDataPointer[n+4];
-				tmp[ 9]=injectBufferDataPointer[n+3];
-				tmp[ 4]=injectBufferDataPointer[n+8];
-				tmp[ 5]=injectBufferDataPointer[n+7];
-				tmp[10]=injectBufferDataPointer[n+6];
-				tmp[ 7]=injectBufferDataPointer[n+11];
-				tmp[ 8]=injectBufferDataPointer[n+10];
-				tmp[11]=injectBufferDataPointer[n+9];
-				memcpy(&injectBufferDataPointer[n],tmp,12);
+				unsigned char t, *p = &injectBuffer[n];
+				t = p[0];
+				p[ 0] = p[ 2];
+				p[ 2] = p[ 5];
+				p[ 5] = p[ 7];
+				p[ 7] = p[11];
+				p[11] = p[ 9];
+				p[ 9] = p[ 3];
+				p[ 3] = p[ 4];
+				p[ 4] = p[ 8];
+				p[ 8] = t;
 			}
 		}
 
 		//increment err... subframe count?
-		lpcm_prv[1] = ((lpcm_prv[1]+SubFramesPerPES) & 0x1F);
+		lpcm_prv[1] = ((lpcm_prv[1] + SubFramesPerPES) & 0x1F);
 
-	        //disable PES to save calculating correct values
-	        lpcm_pes[7] = 0x01;
-
-	        //kill off first A_PKT only fields in PES header
-	        lpcm_pes[14] = 0xFF;
-	        lpcm_pes[15] = 0xFF;
-	        lpcm_pes[16] = 0xFF;
-
-		write(call->fd, injectBuffer, injectBufferSize);
-
-		//printf("PCM %d bytes injected\n", injectBufferSize);
-		//Hexdump(injectBuffer, 126);
+		iov[0].iov_len = InsertPesHeader(PesHeader, iov[1].iov_len + iov[2].iov_len, PCM_PES_START_CODE, call->Pts, 0);
+		int32_t len = call->WriteV(call->fd, iov, 3);
+		if (len < 0)
+		{
+			break;
+		}
 	}
-	
 	free(injectBuffer);
+#else
+	if (/*pcmPrivateData->bResampling ||*/ NULL == fixed_buffer)
+	{
+		int32_t width = 0;
+		int32_t depth = 0;
+		int32_t rate = (uint64_t)pcmPrivateData->uSampleRate;
+		int32_t channels = (uint8_t) pcmPrivateData->uNoOfChannels;
+		int32_t block_align = 0;
+		int32_t byterate = 0;
+
+		uint32_t codecID = (uint32_t)call->avCodecId;
+
+		//uint8_t dataPrecision = 0;
+		uint8_t LE = 0;
+		switch (codecID)
+		{
+			case AV_CODEC_ID_PCM_S8:
+			case AV_CODEC_ID_PCM_U8:
+				width = depth = 8;
+				break;
+			case AV_CODEC_ID_PCM_S16LE:
+			case AV_CODEC_ID_PCM_U16LE:
+				LE = 1;
+			// fall through
+			case AV_CODEC_ID_PCM_S16BE:
+			case AV_CODEC_ID_PCM_U16BE:
+				width = depth = 16;
+				break;
+			case AV_CODEC_ID_PCM_S24LE:
+			case AV_CODEC_ID_PCM_U24LE:
+				LE = 1;
+			// fall through
+			case AV_CODEC_ID_PCM_S24BE:
+			case AV_CODEC_ID_PCM_U24BE:
+				width = depth = 24;
+				break;
+			case AV_CODEC_ID_PCM_S32LE:
+			case AV_CODEC_ID_PCM_U32LE:
+				LE = 1;
+			// fall through
+			case AV_CODEC_ID_PCM_S32BE:
+			case AV_CODEC_ID_PCM_U32BE:
+				width = depth = 32;
+				break;
+			default:
+				break;
+		}
+
+		uint8_t *data = codec_data;
+		uint16_t format = LE ? 0x0001 : 0x0100;
+
+		byterate = channels * rate * width / 8;
+		block_align = channels * width / 8;
+		memset(data, 0, sizeof(codec_data));
+		/* format tag */
+		*(data++) = format & 0xff;
+		*(data++) = (format >> 8) & 0xff;
+		/* channels */
+		*(data++) = channels & 0xff;
+		*(data++) = (channels >> 8) & 0xff;
+		/* sample rate */
+		*(data++) = rate & 0xff;
+		*(data++) = (rate >> 8) & 0xff;
+		*(data++) = (rate >> 16) & 0xff;
+		*(data++) = (rate >> 24) & 0xff;
+		/* byte rate */
+		*(data++) = byterate & 0xff;
+		*(data++) = (byterate >> 8) & 0xff;
+		*(data++) = (byterate >> 16) & 0xff;
+		*(data++) = (byterate >> 24) & 0xff;
+		/* block align */
+		*(data++) = block_align & 0xff;
+		*(data++) = (block_align >> 8) & 0xff;
+		/* word size */
+		*(data++) = depth & 0xff;
+		*(data++) = (depth >> 8) & 0xff;
+
+		uint32_t nfixed_buffersize = rate * 30 / 1000;
+		nfixed_buffersize *= channels * depth / 8;
+		fixed_buffertimestamp = call->Pts;
+		fixed_bufferduration = 90000 * nfixed_buffersize /  byterate;
+
+		if (fixed_buffersize != nfixed_buffersize || NULL == fixed_buffer)
+		{
+			fixed_buffersize = nfixed_buffersize;
+			if (NULL != fixed_buffer)
+			{
+				free(fixed_buffer);
+			}
+			fixed_buffer = malloc(fixed_buffersize);
+		}
+		fixed_bufferfilled = 0;
+		/* avoid compiler warning */
+		if (LE) {}
+		pcm_printf(40, "PCM fixed_buffersize [%u] [%s]\n", fixed_buffersize, LE ? "LE" : "BE");
+	}
+
+	while (size > 0)
+	{
+		uint32_t cpSize = (fixed_buffersize - fixed_bufferfilled);
+		if (cpSize > size)
+		{
+			memcpy(fixed_buffer + fixed_bufferfilled, buffer, size);
+			fixed_bufferfilled += size;
+			return size;
+		}
+
+		memcpy(fixed_buffer + fixed_bufferfilled, buffer, cpSize);
+		fixed_bufferfilled = 0;
+		buffer += cpSize;
+		size -= cpSize;
+
+		uint32_t addHeaderSize = 0;
+		
+		//if (STB_DREAMBOX == GetSTBType())
+		//{
+		//	addHeaderSize = 4;
+		//}
+		
+		uint32_t headerSize = InsertPesHeader(PesHeader, fixed_buffersize + 4 + addHeaderSize + sizeof(codec_data), MPEG_AUDIO_PES_START_CODE, fixed_buffertimestamp, 0);
+		
+		// dreamboxes
+		//if (STB_DREAMBOX == GetSTBType())
+		//{
+		//	PesHeader[headerSize++] = 0x42; // B
+		//	PesHeader[headerSize++] = 0x43; // C
+		//	PesHeader[headerSize++] = 0x4D; // M
+		//	PesHeader[headerSize++] = 0x41; // A
+		//}
+
+		PesHeader[headerSize++] = (fixed_buffersize >> 24) & 0xff;
+		PesHeader[headerSize++] = (fixed_buffersize >> 16) & 0xff;
+		PesHeader[headerSize++] = (fixed_buffersize >> 8)  & 0xff;
+		PesHeader[headerSize++] = fixed_buffersize & 0xff;
+
+		memcpy(PesHeader + headerSize, codec_data, sizeof(codec_data));
+		headerSize += sizeof(codec_data);
+
+		PesHeader[6] |= 1;
+
+		struct iovec iov[2];
+		iov[0].iov_base = PesHeader;
+		iov[0].iov_len  = headerSize;
+		iov[1].iov_base = fixed_buffer;
+		iov[1].iov_len  = fixed_buffersize;
+		call->WriteV(call->fd, iov, 2);
+		fixed_buffertimestamp += fixed_bufferduration;
+	}
+#endif
 
 	return size;
 }

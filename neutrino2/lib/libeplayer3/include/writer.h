@@ -7,6 +7,9 @@
 #include "common.h"
 
 
+#include <libavcodec/avcodec.h>
+
+
 typedef enum 
 { 
 	eNone, 
@@ -19,6 +22,10 @@ typedef ssize_t (* WriteV_t)(int, const struct iovec *, int);
 
 typedef struct 
 {
+	//
+	enum AVCodecID 	      avCodecId;
+	
+	//
 	int                    fd;
 	unsigned char*         data;
 	unsigned int           len;

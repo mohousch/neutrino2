@@ -482,7 +482,6 @@ bool CVCRControl::Stop()
 std::string ext_channel_name;
 bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_id_t epgid, const std::string& epgTitle, unsigned char apids, const time_t epg_time) 
 {
-	////TEST
 	// leave menu (if in any)
 	g_RCInput->postMsg(RC_timeout, 0);
 	
@@ -534,7 +533,8 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	}
 
 	deviceState = CMD_VCR_RECORD;
-	////
+	
+	//
 	#define MAXPIDS		64
 	unsigned short pids[MAXPIDS];
 	unsigned int numpids = 0;
@@ -552,7 +552,14 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 	// vpid
 	if (si.vpid != 0)
-		psi.addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0);
+	{
+		psi.addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0); //FIXME:
+		
+		// pcr pid
+		//FIXME:
+	}
+		
+		
 
 	// apids
         APIDList apid_list;
@@ -578,7 +585,8 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 			{
 				CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
 				dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding DVB subtitle %s pid 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
-				numpids++;
+
+				pids[numpids++] = sd->pId;
 				
 				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
 			}
@@ -588,7 +596,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
 				dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
 				
-				numpids++;
+				pids[numpids++] = sd->pId;
 				
 				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
 			}
