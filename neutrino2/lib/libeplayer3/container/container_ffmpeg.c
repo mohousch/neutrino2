@@ -830,14 +830,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	if ((err = avformat_open_input(&avContext, filename, NULL, 0)) != 0)
 #endif
 	{
-		char error[512];
-
-#if LIBAVCODEC_VERSION_MAJOR < 54
-		ffmpeg_err("av_open_input_file failed %d (%s)\n", err, filename);
-#else
 		ffmpeg_err("avformat_open_input failed %d (%s)\n", err, filename);
-#endif
-		ffmpeg_err("Cause: %s\n", error);
 
 		releaseMutex(FILENAME, __FUNCTION__,__LINE__);
 		
@@ -846,27 +839,20 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 	
 	avContext->flags |= AVFMT_FLAG_GENPTS;
 
-	if (strstr(filename, ":31339") || strstr(filename, ":8001/"))
-		avContext->max_analyze_duration = 5;
-	
-	if ( strstr(filename, ".ts") )
+	if (strstr(filename, ":31339") || strstr(filename, ":8001/") || strstr(filename, ".ts"))
 		avContext->max_analyze_duration = 5;
 
-	ffmpeg_printf(20, "find_streaminfo\n");
-
+	// find stream info
 #if LIBAVCODEC_VERSION_MAJOR < 54
-	if (av_find_stream_info(avContext) < 0) 
-	{
-		ffmpeg_err("Error av_find_stream_info\n");
+	if (av_find_stream_info(avContext) < 0)
 #else
 	if (avformat_find_stream_info(avContext, NULL) < 0) 
+#endif
 	{
 		ffmpeg_err("Error avformat_find_stream_info\n");
-#endif
 	}
 
-	ffmpeg_printf(20, "dump format\n");
-
+	// dump format
 #if LIBAVCODEC_VERSION_MAJOR < 54
 	dump_format(avContext, 0, filename, 0);
 #else
@@ -1089,8 +1075,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					track.aacbuf[5] = 0x1F;
 					track.aacbuf[6] = 0xFC;
 
-					//ffmpeg_printf(10, "AAC_HEADER -> ");
-					//Hexdump(track.aacbuf,7);
 					track.have_aacheader = 1;
 				} 
 				// wma
@@ -1175,10 +1159,6 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 					memcpy(track.aacbuf + 96, stream->codec->extradata, stream->codec->extradata_size);
 		    
 					ffmpeg_printf(1, "aacbuf:\n");
-					
-					//Hexdump(track.aacbuf, track.aacbuflen);
-					//ffmpeg_printf(1, "priv_data:\n");
-					//Hexdump(stream->codec->priv_data, track.aacbuflen);
 
 					track.have_aacheader = 1;
 				}
