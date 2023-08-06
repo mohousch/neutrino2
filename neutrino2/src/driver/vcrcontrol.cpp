@@ -590,7 +590,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 				
 				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
 			}
-			
+			/*
 			if (s->thisSubType == CZapitAbsSub::TTX) 
 			{
 				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
@@ -600,6 +600,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 				
 				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
 			}
+			*/
 		}
         }
 
