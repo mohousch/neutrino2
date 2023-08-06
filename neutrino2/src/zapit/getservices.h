@@ -54,32 +54,28 @@ struct transponder
 	t_transport_stream_id transport_stream_id;
 	t_original_network_id original_network_id;
 	FrontendParameters feparams;
-	unsigned char polarization;
 	bool updated;
 
 	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams)
 	{
 		transport_stream_id = p_transport_stream_id;
 		feparams = p_feparams;
-		polarization = 0;
 		original_network_id = 0;
 		updated = 0;
 	}
 
-	transponder(const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, const FrontendParameters p_feparams, const uint8_t p_polarization = 0)
+	transponder(const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, const FrontendParameters p_feparams)
 	{
 		transport_stream_id = p_transport_stream_id;
 		original_network_id = p_original_network_id;
 		feparams            = p_feparams;
-		polarization        = p_polarization;
 		updated = 0;
 	}
 
-	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams, unsigned short p_polarization, t_original_network_id p_original_network_id)
+	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams, t_original_network_id p_original_network_id)
 	{
 		transport_stream_id = p_transport_stream_id;
 		feparams = p_feparams;
-		polarization = p_polarization;
 		original_network_id = p_original_network_id;
 		updated = 0;
 	}
@@ -118,7 +114,7 @@ class CServices
 		
 		//
 		void parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, fe_type_t frontendType);
-		void parseChannels(xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation );
+		void parseChannels(xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq);
 		void findTransponder(xmlNodePtr root);
 		void parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_satellite_position satellitePosition);
 		int loadMotorPositions(void);

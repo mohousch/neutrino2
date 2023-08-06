@@ -1664,7 +1664,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 			{
 				CZapit::getInstance()->getFE(feindex)->getDelSys(tI->second.feparams.fec_inner, dvbs_get_modulation(tI->second.feparams.fec_inner),  f, s, m);
 
-				snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate/1000, f, s, m);
+				snprintf(buf, sizeof(buf), "%d %c %d %s %s %s ", tI->second.feparams.frequency/1000, tI->second.feparams.polarization ? 'V' : 'H', tI->second.feparams.symbol_rate/1000, f, s, m);
 			}
 			break;
 
@@ -1768,7 +1768,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 			case DVB_S2:	
 				sprintf(scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
 				scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
-				scanSettings->TP_pol = tmpI->second.polarization;
+				scanSettings->TP_pol = tmpI->second.feparams.polarization;
 				break;
 
 			case DVB_C:	
@@ -1808,7 +1808,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 			case FE_QPSK:	
 				sprintf(scanSettings->TP_rate, "%d", tmpI->second.feparams.symbol_rate);
 				scanSettings->TP_fec = tmpI->second.feparams.fec_inner;
-				scanSettings->TP_pol = tmpI->second.polarization;
+				scanSettings->TP_pol = tmpI->second.feparams.polarization;
 				break;
 
 			case FE_QAM:	

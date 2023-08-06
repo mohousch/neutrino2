@@ -445,9 +445,17 @@ bool CZapit::loopCanTune(CFrontend * fe, CZapitChannel * thischannel)
 
 	if(fe->tuned && (fe->getCurrentSatellitePosition() != thischannel->getSatellitePosition()))
 		return false;
+		
+	////FIXME:TEST
+	transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
+
+	if (transponder == transponders.end())
+		return false;
+	////
 
 	bool tp_band = ((int)thischannel->getFreqId()*1000 >= fe->lnbSwitch);
-	uint8_t tp_pol = thischannel->polarization & 1;
+	//uint8_t tp_pol = thischannel->polarization & 1;
+	uint8_t tp_pol = transponder->second.feparams.polarization & 1;
 	uint8_t fe_pol = fe->getPolarization() & 1;
 
 	dprintf(DEBUG_DEBUG, "CZapit::loopCanTune: fe(%d,%d): locked %d pol:band %d:%d vs %d:%d (%d:%d)\n", fe->feadapter, fe->fenumber, fe->locked, fe_pol, fe->getHighBand(), tp_pol, tp_band, fe->getFrequency(), thischannel->getFreqId()*1000);
@@ -527,6 +535,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	// check for frontend
 	CFrontend * free_frontend = NULL;
 	
+	////FIXME:TEST
 	//t_satellite_position satellitePosition = thischannel->getSatellitePosition();
 	//sat_iterator_t sit = satellitePositions.find(satellitePosition);
 	transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
@@ -2890,7 +2899,7 @@ void * CZapit::sdtThread(void */*arg*/)
 						tI->second.transport_stream_id, tI->second.original_network_id,
 						tI->second.feparams.frequency, tI->second.feparams.inversion,
 						tI->second.feparams.symbol_rate, tI->second.feparams.fec_inner,
-						tI->second.polarization);
+						tI->second.feparams.polarization);
 						delsys = "</sat>";
 						break;
 
@@ -3487,11 +3496,13 @@ CZapit::CCurrentServiceInfo CZapit::getServiceInfo(t_channel_id chid)
 		msgCurrentServiceInfo.pcrpid = channel->getPcrPid();
 		msgCurrentServiceInfo.vtype = channel->videoType;
 		
-		// tsfrequency
-		// rate
-		// fec
-		// polarisation
-		// diseqc
+		//
+		transponder_list_t::iterator transponder = transponders.find(channel->getTransponderId());
+		
+		msgCurrentServiceInfo.tsfrequency = transponder->second.feparams.frequency;
+		msgCurrentServiceInfo.rate = transponder->second.feparams.symbol_rate;
+		msgCurrentServiceInfo.fec = transponder->second.feparams.fec_inner;
+		msgCurrentServiceInfo.polarisation = transponder->second.feparams.polarization;
 	}
 			
 	if(!msgCurrentServiceInfo.fec)
@@ -3894,14 +3905,14 @@ bool CZapit::tuneTP(TP_params TP, int feindex)
 	dprintf(DEBUG_NORMAL, "CZapit::tuneTP: (fe:%d delsys:0x%x) satname:%s satpos:%d (TP.delsys:0x%x)\n", feindex, getFE(feindex)->getForcedDelSys(), name, satellitePosition, TP.feparams.delsys);
 	
 	// setinput
-	getFE(feindex)->setInput(satellitePosition, TP.feparams.frequency, TP.polarization);
+	getFE(feindex)->setInput(satellitePosition, TP.feparams.frequency, TP.feparams.polarization);
 	
 	// drivetosatpos
 	if (getFE(feindex)->getInfo()->type == FE_QPSK)
 		getFE(feindex)->driveToSatellitePosition(satellitePosition);
 		
 	// tuneFreq
-	ret = getFE(feindex)->tuneFrequency(&TP.feparams, TP.polarization, true);
+	ret = getFE(feindex)->tuneFrequency(&TP.feparams, true);
 			
 	// set retune flag
 	retune = true;
@@ -4362,7 +4373,7 @@ void * CZapit::scanTransponderThread(void * data)
 	fake_tid++; 
 	fake_nid++;
 
-	CScan::getInstance()->addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, TP->polarization, false, feindex);
+	CScan::getInstance()->addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &TP->feparams, false, feindex);
 
 	// scanSDTS
 	if (!CScan::getInstance()->getSDTS(satellitePosition, feindex))

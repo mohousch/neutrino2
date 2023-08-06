@@ -250,7 +250,7 @@ class CFrontend
 		//
 		bool tuneChannel(CZapitChannel *channel, bool nvod);
 		int setParameters(TP_params *TP, bool nowait = false);
-		int tuneFrequency (FrontendParameters * feparams, uint8_t polarization, bool nowait = false);
+		int tuneFrequency (FrontendParameters * feparams, bool nowait = false);
 		
 		//
 		bool sendUncommittedSwitchesCommand(int input);

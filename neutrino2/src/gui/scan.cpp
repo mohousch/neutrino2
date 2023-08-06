@@ -183,9 +183,9 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		{
 			TP.feparams.symbol_rate = atoi(scanSettings->TP_rate);
 			TP.feparams.fec_inner = (fe_code_rate_t) scanSettings->TP_fec;
-			TP.polarization = scanSettings->TP_pol;
+			TP.feparams.polarization = scanSettings->TP_pol;
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq %d rate %d fec %d pol %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.polarization);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq %d rate %d fec %d pol %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.polarization);
 		} 
 #if HAVE_DVB_API_VERSION >= 5 
 		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C)

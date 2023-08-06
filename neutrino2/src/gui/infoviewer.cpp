@@ -83,7 +83,7 @@ extern fe_map_t femap;					// zapit.cpp
 extern CFrontend * getFE(int index);			// zapit.cpp
 extern int FrontendCount;				// defined in zapit.cpp
 extern bool autoshift;
-extern uint32_t shift_timer;
+extern uint32_t shift_timer;				// defined in neutrino2.cpp
 extern std::string ext_channel_name;			// defined in vcrcontrol.cpp
 extern bool timeset;					// defined in sectionsd.cpp
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp

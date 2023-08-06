@@ -91,7 +91,7 @@ std::map <transponder_id_t, transponder> nittransponders;
 	msec = tv2.tv_sec - tv.tv_sec;		\
         printf("%s: %d sec\n", label, msec)
 
-bool CScan::tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_satellite_position satellitePosition, int feindex)
+bool CScan::tuneFrequency(FrontendParameters *feparams, t_satellite_position satellitePosition, int feindex)
 {
 	dprintf(DEBUG_NORMAL, "CScan::%s:\n", __FUNCTION__);
 	
@@ -99,7 +99,7 @@ bool CScan::tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_
 	CZapit::getInstance()->initTuner(CZapit::getInstance()->getFE(feindex));
 	
 	// setInput
-	CZapit::getInstance()->getFE(feindex)->setInput(satellitePosition, feparams->frequency, polarization);
+	CZapit::getInstance()->getFE(feindex)->setInput(satellitePosition, feparams->frequency, feparams->polarization);
 
 	// driveToSatPos
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
@@ -122,12 +122,12 @@ bool CScan::tuneFrequency(FrontendParameters *feparams, uint8_t polarization, t_
 		}
 	}
 
-	return CZapit::getInstance()->getFE(feindex)->tuneFrequency(feparams, polarization, false);
+	return CZapit::getInstance()->getFE(feindex)->tuneFrequency(feparams, false);
 }
 
-int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, uint8_t polarity, bool fromnit, int feindex)
+int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit, int feindex)
 {
-	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CScan::addToScan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, polarity, TsidOnid, fromnit, feindex);
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CScan::addToScan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, feparams->polarization, TsidOnid, fromnit, feindex);
 
 	freq_id_t freq;
 
@@ -156,7 +156,7 @@ int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, ui
 #endif
 		freq = feparams->frequency / 1000000;
 
-	uint8_t poltmp1 = polarity & 1;
+	uint8_t poltmp1 = feparams->polarization & 1;
 	uint8_t poltmp2;
 
 	stiterator tI;
@@ -165,7 +165,7 @@ int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, ui
 
 	if (tI != scanedtransponders.end()) 
 	{
-		poltmp2 = tI->second.polarization & 1;
+		poltmp2 = tI->second.feparams.polarization & 1;
 
 		if(poltmp2 != poltmp1) 
 		{
@@ -191,7 +191,7 @@ int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, ui
 	}
         else for (tI = scanedtransponders.begin(); tI != scanedtransponders.end(); tI++) 
 	{
-		poltmp2 = tI->second.polarization & 1;
+		poltmp2 = tI->second.feparams.polarization & 1;
 		
 		if((abs(GET_FREQ_FROM_TRANSPONDER_ID(tI->first) - freq) <= 3))
 			if(poltmp2 == poltmp1)
@@ -204,15 +204,15 @@ int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, ui
 		{
 			if(nittransponders.find(TsidOnid) == nittransponders.end()) 
 			{
-				nittransponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder ( (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams, polarity)));
+				nittransponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder ( (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams)));
 			}
 		}
 		else 
 		{
 			found_transponders++;
-			scantransponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder ( (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams, polarity)));
+			scantransponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder ( (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams)));
 
-			scanedtransponders.insert (std::pair <transponder_id_t, transponder> ( TsidOnid, transponder ( (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams, polarity)));
+			scanedtransponders.insert (std::pair <transponder_id_t, transponder> ( TsidOnid, transponder ( (TsidOnid >> 16) &0xFFFF, TsidOnid &0xFFFF, *feparams)));
 		}
 		
 		return 0;
@@ -253,13 +253,13 @@ _repeat:
 		// by sat send pol to neutrino
 		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 		{
-			actual_polarisation = ((tI->second.feparams.symbol_rate/1000) << 16) | (tI->second.feparams.fec_inner << 8) | (uint)tI->second.polarization;
+			actual_polarisation = ((tI->second.feparams.symbol_rate/1000) << 16) | (tI->second.feparams.fec_inner << 8) | (uint)tI->second.feparams.polarization;
 
 			eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, CEventServer::INITID_NEUTRINO, &actual_polarisation, sizeof(actual_polarisation));
 		}
 		
 		// tune TP
-		if (!tuneFrequency(&(tI->second.feparams), tI->second.polarization, satellitePosition, feindex)) 
+		if (!tuneFrequency(&(tI->second.feparams), satellitePosition, feindex)) 
 		{
 			failed_transponders++;
 			continue;
@@ -309,7 +309,7 @@ _repeat:
 
 		stI = transponders.find(TsidOnid);
 		if(stI == transponders.end())
-			transponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder(tI->second.transport_stream_id, tI->second.feparams, tI->second.polarization, tI->second.original_network_id)));
+			transponders.insert (std::pair <transponder_id_t, transponder> (TsidOnid, transponder(tI->second.transport_stream_id, tI->second.feparams, tI->second.original_network_id)));
 		else
 			stI->second.feparams.fec_inner = tI->second.feparams.fec_inner;
 		
@@ -336,7 +336,7 @@ _repeat:
 		
 		for (tI = nittransponders.begin(); tI != nittransponders.end(); tI++) 
 		{
-			addToScan(tI->first, &tI->second.feparams, tI->second.polarization, false, feindex);
+			addToScan(tI->first, &tI->second.feparams, false, feindex);
 		}
 
 		nittransponders.clear();
@@ -489,7 +489,7 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 	// read network information table
 	fake_tid++; fake_nid++;
 
-	addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &feparams, polarization, false, feindex);
+	addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &feparams, /*polarization,*/ false, feindex);
 
 	return true;
 }

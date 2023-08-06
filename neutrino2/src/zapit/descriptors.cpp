@@ -336,7 +336,7 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 	feparams.fec_inner = (fe_code_rate_t) fec_inner;
 
 	//pol
-	polarization = (buffer[8] >> 5) & 0x03;
+	feparams.polarization = (buffer[8] >> 5) & 0x03;
 
 	/* workarounds for braindead broadcasters (e.g. on Telstar 12 at 15.0W) */
 	if (feparams.frequency >= 100000000)
@@ -355,7 +355,7 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 
 	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-	CScan::getInstance()->addToScan(TsidOnid, &feparams, polarization, true, feindex);
+	CScan::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
 
 	return 0;
 }
@@ -416,7 +416,7 @@ int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const b
 
        TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-        CScan::getInstance()->addToScan(TsidOnid, &feparams, 0, true, feindex);
+        CScan::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
 
 	return 0;
 }
@@ -951,7 +951,7 @@ int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * c
 
 	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-	CScan::getInstance()->addToScan(TsidOnid, &feparams, 0, true, feindex);
+	CScan::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
 
 	return 0;
 }

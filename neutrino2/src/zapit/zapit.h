@@ -203,7 +203,6 @@ class CZapit
 				unsigned short  pmt_version;
 				unsigned int	tsfrequency;
 				unsigned char	polarisation;
-				unsigned char	diseqc;
 				uint32_t	rate;
 				fe_code_rate	fec;
 		};

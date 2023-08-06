@@ -147,7 +147,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 	TP.feparams.frequency = atoi( scanSettings->TP_freq);
 	TP.feparams.symbol_rate = atoi( scanSettings->TP_rate);
 	TP.feparams.fec_inner = (fe_code_rate_t) scanSettings->TP_fec;
-	TP.polarization = scanSettings->TP_pol;
+	TP.feparams.polarization = scanSettings->TP_pol;
 
 	CZapit::getInstance()->stopPlayBack();
 	CZapit::getInstance()->tuneTP(TP, feindex);

@@ -74,7 +74,6 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 	t_transport_stream_id transport_stream_id;
 	t_original_network_id original_network_id;
 	FrontendParameters feparams;
-	uint8_t polarization = 0;
 	freq_id_t freq;
 	tcnt = 0;
 
@@ -115,7 +114,7 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 		{
 			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(node, "fec", 0);
 			feparams.symbol_rate = xmlGetNumericAttribute(node, "sr", 0);
-			polarization = xmlGetNumericAttribute(node, "pol", 0);
+			feparams.polarization = xmlGetNumericAttribute(node, "pol", 0);
 			feparams.delsys = (uint32_t) xmlGetNumericAttribute(node, "sys", 0);
 
             		// ???
@@ -139,13 +138,13 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 
 		pair<map<transponder_id_t, transponder>::iterator, bool> ret;
 
-		ret = transponders.insert(std::pair <transponder_id_t, transponder> ( tid, transponder(transport_stream_id, feparams, polarization, original_network_id)));
+		ret = transponders.insert(std::pair <transponder_id_t, transponder> ( tid, transponder(transport_stream_id, feparams, original_network_id)));
 		
 		if (ret.second == false)
 			printf("[getservices] duplicate transponder id %llx freq %d\n", tid, feparams.frequency);
 
 		// read channels that belong to the current transponder
-		parseChannels(node->xmlChildrenNode, transport_stream_id, original_network_id, satellitePosition, freq, polarization);
+		parseChannels(node->xmlChildrenNode, transport_stream_id, original_network_id, satellitePosition, freq);
 
 		// hop to next transponder
 		node = node->xmlNextNode;
@@ -154,7 +153,7 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 	return;
 }
 
-void CServices::parseChannels(xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, uint8_t polarisation)
+void CServices::parseChannels(xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq)
 {
 	dprintf(DEBUG_DEBUG, "CServices::parseChannels:\n");
 
@@ -234,7 +233,6 @@ void CServices::parseChannels(xmlNodePtr node, const t_transport_stream_id trans
 
 			cit1->second.scrambled = scrambled;
 			service_type = cit1->second.getServiceType();
-			cit1->second.polarization = polarisation;
 
 			if(pmtpid != 0 && (((service_type == ST_DIGITAL_RADIO_SOUND_SERVICE) && (apid > 0)) || ( (service_type == ST_DIGITAL_TELEVISION_SERVICE)  && (vpid > 0) && (apid > 0))) ) 
 			{			
@@ -437,7 +435,7 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 		polarization &= 7;
 		
 		// insert TPs list
-		select_transponders.insert( std::pair <transponder_id_t, transponder> (tid, transponder(fake_tid, feparams, polarization, fake_nid)));
+		select_transponders.insert( std::pair <transponder_id_t, transponder> (tid, transponder(fake_tid, feparams, /*polarization,*/ fake_nid)));
 		
 		fake_nid ++; 
 		fake_tid ++;
@@ -885,7 +883,7 @@ void CServices::saveServices(bool tocopy)
 							tI->second.transport_stream_id, tI->second.original_network_id,
 							tI->second.feparams.frequency, tI->second.feparams.inversion,
 							tI->second.feparams.symbol_rate, tI->second.feparams.fec_inner,
-							tI->second.polarization,
+							tI->second.feparams.polarization,
 							tI->second.feparams.delsys);
 					break;
 

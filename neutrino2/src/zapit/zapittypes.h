@@ -294,7 +294,7 @@ typedef struct
 typedef struct TP_parameter
 {
 	uint64_t TP_id;
-	uint8_t polarization;
+	//uint8_t polarization;
 	uint8_t diseqc;
 	FrontendParameters feparams;
 } TP_params;
