@@ -170,7 +170,7 @@ class CFrontend
 		uint8_t uncommitedInput;
 
 		// current Transponderdata
-		TP_params currentTransponder;
+		transponder currentTransponder;
 		
 		FrontendParameters curfe;
 		uint32_t getDiseqcReply(const int timeout_ms) const;
@@ -220,12 +220,29 @@ class CFrontend
 		fe_status_t getStatus(void) const;
 		uint32_t getUncorrectedBlocks(void) const;
 		void getDelSys(int f, int m, char * &fec, char * &sys, char * &mod);
+		fe_code_rate_t getCFEC ();
+		uint32_t getRate();
 
+		//
 		int32_t getCurrentSatellitePosition() { return currentSatellitePosition; }
+		const transponder* getParameters(void) const { return &currentTransponder; };
+		transponder_id_t getTsidOnid()    { return currentTransponder.TP_id; }
+		
+		//
+		struct dvb_frontend_event getEvent(void);
+		bool getHighBand(){ return (int) getFrequency() >= lnbSwitch; };
+		
+		//
+		uint32_t getDeliverySystem();
+		fe_delivery_system_t getFEDeliverySystem(uint32_t sys);
+		bool isHybrid(void){ return hybrid;};
+		bool changeDelSys(uint32_t delsys);
+		uint32_t getDelSysMasked(void){return deliverySystemMask;};
+		uint32_t getForcedDelSys(void){return forcedDelSys;};
 
+		//
 		void setDiseqcRepeats(const uint8_t repeats)	{ diseqcRepeats = repeats; }
 		void setDiseqcType(const diseqc_t type);
-		const TP_params* getParameters(void) const { return &currentTransponder; };
 		void setCurrentSatellitePosition(int32_t satellitePosition) {currentSatellitePosition = satellitePosition; }
 
 		void positionMotor(uint8_t motorPosition);
@@ -233,10 +250,7 @@ class CFrontend
 		void gotoXX(t_satellite_position pos);
 
 		//
-		fe_code_rate_t getCFEC ();
-		transponder_id_t getTsidOnid()    { return currentTransponder.TP_id; }
 		bool sameTsidOnid(transponder_id_t tpid){ return (currentTransponder.TP_id == 0) || (tpid == currentTransponder.TP_id);}				
-		uint32_t getRate();
 		
 		//
                 void Close();
@@ -249,7 +263,7 @@ class CFrontend
 		
 		//
 		bool tuneChannel(CZapitChannel *channel, bool nvod);
-		int setParameters(TP_params *TP, bool nowait = false);
+		int setParameters(transponder *TP, bool nowait = false);
 		int tuneFrequency (FrontendParameters * feparams, bool nowait = false);
 		
 		//
@@ -260,18 +274,6 @@ class CFrontend
 		void setDiseqc(int sat_no, const uint8_t pol, const uint32_t frequency);
 		int driveToSatellitePosition(t_satellite_position satellitePosition, bool from_scan = false);
 		void setLnbOffsets(int32_t _lnbOffsetLow, int32_t _lnbOffsetHigh, int32_t _lnbSwitch);
-
-		//
-		struct dvb_frontend_event getEvent(void);
-		bool getHighBand(){ return (int) getFrequency() >= lnbSwitch; };
-		
-		//
-		uint32_t getDeliverySystem();
-		fe_delivery_system_t getFEDeliverySystem(uint32_t sys);
-		bool isHybrid(void){ return hybrid;};
-		bool changeDelSys(uint32_t delsys);
-		uint32_t getDelSysMasked(void){return deliverySystemMask;};
-		uint32_t getForcedDelSys(void){return forcedDelSys;};
 };
 
 // multi frontend stuff

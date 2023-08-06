@@ -32,6 +32,8 @@
 #include <inttypes.h>
 #include <string>
 
+#include <map>
+
 #include <linux/dvb/frontend.h>
 #include <linux/dvb/version.h>
 
@@ -290,15 +292,55 @@ typedef struct
 	unsigned int		plp_id;
 } FrontendParameters;
 
-// complete transponder-parameters in a struct
-typedef struct TP_parameter
+// transponder
+struct transponder
 {
-	uint64_t TP_id;
-	//uint8_t polarization;
-	uint8_t diseqc;
+	t_transport_stream_id transport_stream_id;
+	t_original_network_id original_network_id;
 	FrontendParameters feparams;
-} TP_params;
- 
+	bool updated;
+	uint64_t TP_id;
+	uint8_t diseqc;
+	
+	//
+	transponder()
+	{
+		memset(&feparams, 0, sizeof(FrontendParameters));
+		TP_id	= 0;
+		transport_stream_id = 0;
+		original_network_id = 0;
+		diseqc = 255;
+		updated = false;
+	}
+
+	//
+	transponder(const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, const FrontendParameters p_feparams)
+	{
+		transport_stream_id = p_transport_stream_id;
+		original_network_id = p_original_network_id;
+		feparams            = p_feparams;
+		updated = 0;
+		TP_id = 0;
+		diseqc = 255;
+	}
+
+	//
+	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams, t_original_network_id p_original_network_id)
+	{
+		transport_stream_id = p_transport_stream_id;
+		feparams = p_feparams;
+		original_network_id = p_original_network_id;
+		updated = 0;
+		TP_id = 0;
+		diseqc = 255;
+	}
+};
+
+typedef std::map<transponder_id_t, transponder> transponder_list_t;
+typedef std::map <transponder_id_t, transponder>::iterator stiterator;  // used in scan.cpp
+typedef std::map<transponder_id_t, bool> sdt_tp_t; 			// used in zapit.cpp sdtthread
+
+//
 typedef struct Zapit_config {
 	int makeRemainingChannelsBouquet;
 	int saveLastChannel;
@@ -316,8 +358,8 @@ typedef struct ZAPIT_start_arg
 	int uselastchannel;
 	int video_mode;
 } Z_start_arg;
-//
 
+// fetype
 typedef enum {
 	FE_SINGLE,	//CONNECTED
 	FE_LOOP,

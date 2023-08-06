@@ -126,6 +126,8 @@ CFrontend::CFrontend(int num, int adap)
 	uni_qrg = 0;
 	uncommitedInput = 255;
 	diseqc = 255;
+	
+	// currentTP
 	currentTransponder.feparams.polarization = 1;
 	currentTransponder.feparams.frequency = 0;
 	currentTransponder.TP_id = 0;
@@ -1485,7 +1487,7 @@ int CFrontend::tuneFrequency(FrontendParameters * feparams, bool nowait)
 {
 	dprintf(DEBUG_NORMAL, "CFrontend::tuneFrequency: fe(%d:%d) delsys:0x%x (params.delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask, feparams->delsys);
 	
-	TP_params TP;
+	transponder TP;
 
 	// save current feparams
 	memcpy(&curfe, feparams, sizeof(FrontendParameters));
@@ -1494,14 +1496,14 @@ int CFrontend::tuneFrequency(FrontendParameters * feparams, bool nowait)
 	memcpy(&TP.feparams, feparams, sizeof(FrontendParameters));
 
 	//FIXME:pol für Sat TEST
-	//if(info.type == FE_QPSK)
-	//	TP.feparams.polarization = feparams->polarization;
+	if(info.type == FE_QPSK)
+		TP.feparams.polarization = feparams->polarization;
 
 	return setParameters(&TP, nowait);
 }
 
 //
-int CFrontend::setParameters(TP_params * TP, bool nowait)
+int CFrontend::setParameters(transponder * TP, bool nowait)
 {
 	int freq_offset = 0;
 	

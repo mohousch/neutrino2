@@ -46,45 +46,6 @@
 #include <libxmltree/xmlinterface.h>
 
 
-#define zapped_chan_is_nvod 0x80
-
-// transponder
-struct transponder
-{
-	t_transport_stream_id transport_stream_id;
-	t_original_network_id original_network_id;
-	FrontendParameters feparams;
-	bool updated;
-
-	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams)
-	{
-		transport_stream_id = p_transport_stream_id;
-		feparams = p_feparams;
-		original_network_id = 0;
-		updated = 0;
-	}
-
-	transponder(const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, const FrontendParameters p_feparams)
-	{
-		transport_stream_id = p_transport_stream_id;
-		original_network_id = p_original_network_id;
-		feparams            = p_feparams;
-		updated = 0;
-	}
-
-	transponder(t_transport_stream_id p_transport_stream_id, FrontendParameters p_feparams, t_original_network_id p_original_network_id)
-	{
-		transport_stream_id = p_transport_stream_id;
-		feparams = p_feparams;
-		original_network_id = p_original_network_id;
-		updated = 0;
-	}
-};
-
-typedef std::map<transponder_id_t, transponder> transponder_list_t;
-typedef std::map <transponder_id_t, transponder>::iterator stiterator;  // used in scan.cpp
-typedef std::map<transponder_id_t, bool> sdt_tp_t; 			// used in zapit.cpp
-
 //
 class CServices
 {

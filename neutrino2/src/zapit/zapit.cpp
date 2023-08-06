@@ -3440,7 +3440,7 @@ int32_t CZapit::getCurrentSatellitePosition()
 	return (live_channel != 0)? live_channel->getSatellitePosition() : live_fe->getCurrentSatellitePosition();
 }
 
-bool CZapit::getCurrentTP(TP_params *TP)
+bool CZapit::getCurrentTP(transponder *TP)
 {
 	//#FIXME:
 	return true;
@@ -3888,7 +3888,7 @@ void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channe
 }
 
 // scan
-bool CZapit::tuneTP(TP_params TP, int feindex)
+bool CZapit::tuneTP(transponder TP, int feindex)
 {
 	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::tuneTP: fe(%d)\n", feindex);
 	
@@ -4317,7 +4317,7 @@ void * CZapit::scanTransponderThread(void * data)
 	
 	CZapit::commandScanTP params = *(CZapit::commandScanTP*)data;
 	
-	TP_params * TP = &params.TP;
+	transponder * TP = &params.TP;
 	scanmode = params.scanmode;
 	int feindex = params.feindex;
 	

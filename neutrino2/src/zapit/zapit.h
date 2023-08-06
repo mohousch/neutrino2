@@ -222,7 +222,7 @@ class CZapit
 		//
 		struct commandScanTP
 		{
-			TP_params TP;
+			transponder TP;
 			int scanmode;
 			int feindex;
 		};
@@ -375,7 +375,7 @@ class CZapit
 		// current service
 		t_channel_id getCurrentServiceID();
 		int32_t getCurrentSatellitePosition();
-		bool getCurrentTP(TP_params *TP);
+		bool getCurrentTP(transponder *TP);
 		CZapit::CCurrentServiceInfo getCurrentServiceInfo();
 		void getCurrentPIDS(responseGetPIDs &pids);
 
@@ -435,7 +435,7 @@ class CZapit
 		void removeChannelFromBouquet(const unsigned int bouquet, const t_channel_id channel_id);
 
 		// scan
-		bool tuneTP(TP_params TP, int feindex = 0);
+		bool tuneTP(transponder TP, int feindex = 0);
 		bool scanTP(commandScanTP &msg);
 		bool isScanReady(unsigned int &satellite, unsigned int &processed_transponder, unsigned int &transponder, unsigned int &services );
 		void getScanSatelliteList( SatelliteList &satelliteList );

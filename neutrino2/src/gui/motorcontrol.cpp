@@ -107,7 +107,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
-	TP_params TP;
+	transponder TP;
 	int wasgrow = 0;
 	last_snr = 0;
 	moving = 0;

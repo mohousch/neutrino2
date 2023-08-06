@@ -65,9 +65,8 @@
 #define BAR_HEIGHT 8//(13 + BAR_BORDER*2)
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-//TP_params TP;
 extern CScanSettings * scanSettings;		// defined in scan_setup.cpp
-extern t_channel_id live_channel_id; 		//defined in zapit.cpp
+//extern t_channel_id live_channel_id; 		//defined in zapit.cpp
 
 //
 CScanTs::CScanTs(int num)
@@ -115,7 +114,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	sat_iterator_t sit;
 	CZapit::ScanSatelliteList satList;
 	CZapit::commandSetScanSatelliteList sat;
-	TP_params TP;
+	transponder TP;
 
 	// window size
 	int _iw, _ih;
@@ -197,7 +196,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			TP.feparams.fec_inner	= (fe_code_rate_t)scanSettings->TP_fec;
 			TP.feparams.modulation	= (fe_modulation_t) scanSettings->TP_mod;
 
-			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:=x%x) freq %d rate %d fec %d mod %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.modulation);
+			dprintf(DEBUG_NORMAL, "CScanTs::exec: fe(%d delsys:0x%x) freq %d rate %d fec %d mod %d\n", feindex, CZapit::getInstance()->getFE(feindex)->getForcedDelSys(), TP.feparams.frequency, TP.feparams.symbol_rate, TP.feparams.fec_inner, TP.feparams.modulation);
 		}
 #if HAVE_DVB_API_VERSION >= 5
 		else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
