@@ -46,6 +46,8 @@
 #include "writer.h"
 #include "pcm.h"
 
+#include <libavcodec/avcodec.h>
+
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
@@ -238,7 +240,7 @@ static int writeData(void* _call)
 #if defined (__sh__)
 	if (initialHeader)
 	{
-		uint32_t codecID = (uint32_t)call->avCodecId;
+		uint32_t codecID = (uint32_t)pcmPrivateData->avCodecId;
 		uint8_t LE = 0;
 		switch (codecID)
 		{
@@ -363,7 +365,7 @@ static int writeData(void* _call)
 		int32_t block_align = 0;
 		int32_t byterate = 0;
 
-		uint32_t codecID = (uint32_t)call->avCodecId;
+		uint32_t codecID = (uint32_t)pcmPrivateData->avCodecId;
 
 		//uint8_t dataPrecision = 0;
 		uint8_t LE = 0;

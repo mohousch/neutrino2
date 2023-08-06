@@ -20,12 +20,18 @@
 #ifndef pcm_h_
 #define pcm_h_
 
+
 typedef struct pcmPrivateData_s
 {
 	int uNoOfChannels;
 	int uSampleRate;
 	int uBitsPerSample;
 	int bLittleEndian;
+	
+	//
+	uint8_t bResampling;
+	int32_t avCodecId;
+	
 } pcmPrivateData_t;
 
 #endif

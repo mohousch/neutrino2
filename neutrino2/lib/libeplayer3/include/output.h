@@ -3,8 +3,6 @@
 
 #include <stdio.h>
 
-#include <libavcodec/avcodec.h>
-
 
 typedef enum {
 	OUTPUT_INIT,
@@ -35,9 +33,6 @@ typedef enum {
 
 typedef struct
 {
-	//
-	enum AVCodecID 	      avCodecId;
-	
 	//
 	unsigned char*         data;
 	unsigned int           len;

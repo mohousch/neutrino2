@@ -553,7 +553,6 @@ static void FFMPEGThread(Context_t *context)
 
 					ffmpeg_printf(200, "VideoTrack index = %d %lld\n",index, currentVideoPts);
 
-					avOut.avCodecId = ((AVStream*)subtitleTrack->stream)->codec->codec_id;
 					avOut.data       = packet.data;
 					avOut.len        = packet.size;
 					avOut.pts        = pts;
@@ -625,7 +624,7 @@ static void FFMPEGThread(Context_t *context)
 							extradata.uBitsPerSample = 16;
 							extradata.bLittleEndian = 1;
 							
-							avOut.avCodecId = ((AVStream*)subtitleTrack->stream)->codec->codec_id;
+							extradata.avCodecId = ((AVStream*)subtitleTrack->stream)->codec->codec_id;
 
 							avOut.data       = samples;
 							avOut.len        = decoded_data_size;
@@ -654,7 +653,6 @@ static void FFMPEGThread(Context_t *context)
 					{
 						ffmpeg_printf(200,"write audio aac\n");
 
-						avOut.avCodecId = ((AVStream*)subtitleTrack->stream)->codec->codec_id;
 						avOut.data       = packet.data;
 						avOut.len        = packet.size;
 						avOut.pts        = pts;
@@ -678,7 +676,6 @@ static void FFMPEGThread(Context_t *context)
 					}
 					else
 					{
-						avOut.avCodecId = ((AVStream*)subtitleTrack->stream)->codec->codec_id;
 						avOut.data       = packet.data;
 						avOut.len        = packet.size;
 						avOut.pts        = pts;
