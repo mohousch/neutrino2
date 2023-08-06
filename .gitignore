@@ -1998,3 +1998,5 @@
 /neutrino2/lib/libeplayer3/output/writer/divx3.o
 /neutrino2/lib/libeplayer3/output/writer/mjpeg.o
 /neutrino2/lib/libeplayer3/output/writer/vp.o
+/neutrino2/lib/libeplayer3/output/writer/.deps/lpcm.Po
+/neutrino2/lib/libeplayer3/output/writer/lpcm.o
