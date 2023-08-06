@@ -351,17 +351,18 @@ class CZapit
 		bool isPlayBackActive();
 		void setStandby(bool enable);
 
+		//
 		bool isChannelTVChannel(const t_channel_id channel_id);
 		bool isChannelWEBTVChannel(const t_channel_id channel_id);
 		bool isChannelRadioChannel(const t_channel_id channel_id);
 
+		//
 		void zapToServiceIDNOWAIT(const t_channel_id channel_id);
 		void zapToSubServiceIDNOWAIT(const t_channel_id channel_id);
 		unsigned int zapTo(const unsigned int bouquet, const unsigned int channel);
 		unsigned int zapTo(const unsigned int channel);
 		unsigned int zapToServiceID(const t_channel_id channel_id);
 		unsigned int zapToSubServiceID(const t_channel_id channel_id);
-		//unsigned int zapTo_record(const t_channel_id channel_id);
 		int zapToRecordID(const t_channel_id channel_id);
 
 		//

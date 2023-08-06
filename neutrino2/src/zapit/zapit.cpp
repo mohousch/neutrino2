@@ -3443,6 +3443,8 @@ int32_t CZapit::getCurrentSatellitePosition()
 bool CZapit::getCurrentTP(transponder *TP)
 {
 	//#FIXME:
+	transponder_list_t::iterator transponder = transponders.find(live_channel->getTransponderId());
+	TP = &transponder->second;
 	return true;
 }
 
