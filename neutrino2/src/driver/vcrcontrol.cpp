@@ -578,6 +578,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 			{
 				CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
 				dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding DVB subtitle %s pid 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
+				numpids++;
 				
 				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
 			}
@@ -586,6 +587,8 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 			{
 				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
 				dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
+				
+				numpids++;
 				
 				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
 			}
@@ -715,16 +718,13 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 	if (IS_WEBTV(channel_id))
 	{
-		error_msg = startFileRecording(filename,
-			      getMovieInfoString(CMD_VCR_RECORD, channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), CZapit::getInstance()->getChannelURL(channel_id));
+		//error_msg = startFileRecording(filename, getMovieInfoString(CMD_VCR_RECORD, channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), CZapit::getInstance()->getChannelURL(channel_id));
+		
+		error_msg = STREAM2FILE_RECORDING_THREADS_FAILED;
 	}
 	else
 	{
-		error_msg = startRecording(filename,
-			      getMovieInfoString(CMD_VCR_RECORD, channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), 
-			      si.vpid, 
-			      pids, 
-			      numpids);
+		error_msg = startRecording(filename, getMovieInfoString(CMD_VCR_RECORD, channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), si.vpid, pids, numpids);
 	}
 
 	if (error_msg == STREAM2FILE_OK) 
@@ -1102,6 +1102,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	return STREAM2FILE_OK;
 }
 
+/*
 stream2file_error_msg_t CVCRControl::startFileRecording(const char * const filename, const char* const info, std::string uri)
 {
 	int fd;
@@ -1226,6 +1227,7 @@ stream2file_error_msg_t CVCRControl::startFileRecording(const char * const filen
 
 	return STREAM2FILE_OK;
 }
+*/
 
 stream2file_error_msg_t CVCRControl::stopRecording(const char * const info, bool file_recording)
 {

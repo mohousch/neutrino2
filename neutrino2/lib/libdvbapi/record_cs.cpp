@@ -55,10 +55,6 @@ cRecord::cRecord(int /*num*/)
 	record_thread_running = false;
 	file_fd = -1;
 	exit_flag = RECORD_STOPPED;
-
-	//
-	fp = NULL;
-	url.clear();
 }
 
 cRecord::~cRecord()
@@ -114,32 +110,6 @@ bool cRecord::Start(int fd, unsigned short vpid, unsigned short * apids, int num
 	return true;
 }
 
-bool cRecord::Start(int fd, std::string uri)
-{
-	dprintf(DEBUG_INFO, "%s %s\n", FILENAME, __FUNCTION__);
-
-	url = uri;
-	int i = 0;
-
-	file_fd = fd;
-	exit_flag = RECORD_RUNNING;
-
-	i = pthread_create(&record_thread, 0, execute_record_thread, this);
-
-	if (i != 0)
-	{
-		exit_flag = RECORD_FAILED_READ;
-		errno = i;
-		dprintf(DEBUG_INFO, "cRecord::Start: error creating thread!\n");
-		
-		return false;
-	}
-
-	record_thread_running = true;
-	
-	return true;
-}
-
 bool cRecord::Stop(void)
 {
 	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
@@ -163,12 +133,6 @@ bool cRecord::Stop(void)
 		close(file_fd);
 		file_fd = -1;
 	}
-
-	if(fp != NULL)
-	{
-		fclose(fp);
-		fp = NULL;
-	}
 	
 	return true;
 }
@@ -178,132 +142,86 @@ void cRecord::RecordThread()
 #define BUFSIZE (1 << 20) /* 1024 kB */
 #define READSIZE (BUFSIZE / 16)
 
-	if (!url.empty())
+	ssize_t r = 0;
+	int buf_pos = 0;
+	uint8_t * buf;
+	buf = (uint8_t *)malloc(BUFSIZE);
+
+	if (!buf)
 	{
-#define FILENAMEBUFFERSIZE 1024
-		extern char rec_filename[FILENAMEBUFFERSIZE];
-
-		CURL * curl_handle = curl_easy_init();
-
-		fp = fopen(rec_filename, "wb");
-		if (fp == NULL) 
-		{
-			perror(rec_filename);
-			return;
-		}
-
-		curl_easy_setopt(curl_handle, CURLOPT_URL, url.c_str());
-		curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, NULL);
-		curl_easy_setopt(curl_handle, CURLOPT_FILE, fp);
-		curl_easy_setopt(curl_handle, CURLOPT_FAILONERROR, 1);
-		curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, 0);
-		curl_easy_setopt(curl_handle, CURLOPT_NOSIGNAL, (long)1);
-		curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, false);
-		curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "");
-
-		if(strcmp(g_settings.softupdate_proxyserver, "") != 0)
-		{
-			curl_easy_setopt(curl_handle, CURLOPT_PROXY, g_settings.softupdate_proxyserver);
-		
-			if(strcmp(g_settings.softupdate_proxyusername, "") != 0)
-			{
-				char tmp[200];
-				strcpy(tmp, g_settings.softupdate_proxyusername);
-				strcat(tmp, ":");
-				strcat(tmp, g_settings.softupdate_proxypassword);
-				curl_easy_setopt(curl_handle, CURLOPT_PROXYUSERPWD, tmp);
-			}
-		}
-
-		char cerror[CURL_ERROR_SIZE];
-		curl_easy_setopt(curl_handle, CURLOPT_ERRORBUFFER, cerror);
-
-		CURLcode httpres = curl_easy_perform(curl_handle);
-
-		double dsize;
-		curl_easy_getinfo(curl_handle, CURLINFO_SIZE_DOWNLOAD, &dsize);
-		curl_easy_cleanup(curl_handle);
+		exit_flag = RECORD_FAILED_MEMORY;
+		dprintf(DEBUG_INFO, "unable to allocate buffer! (out of memory)\n");
 	}
-	else
-	{
-		ssize_t r = 0;
-		int buf_pos = 0;
-		uint8_t * buf;
-		buf = (uint8_t *)malloc(BUFSIZE);
 
-		if (!buf)
-		{
-			exit_flag = RECORD_FAILED_MEMORY;
-			dprintf(DEBUG_INFO, "unable to allocate buffer! (out of memory)\n");
-		}
-
-		if(dmx)
-			dmx->Start();
+	if(dmx)
+		dmx->Start();
 	
-		while (exit_flag == RECORD_RUNNING)
+	while (exit_flag == RECORD_RUNNING)
+	{
+		if (buf_pos < BUFSIZE)
 		{
-			if (buf_pos < BUFSIZE)
-			{
-				int toread = BUFSIZE - buf_pos;
-				if (toread > READSIZE)
-					toread = READSIZE;
+			int toread = BUFSIZE - buf_pos;
+			if (toread > READSIZE)
+				toread = READSIZE;
 			
-				r = dmx->Read(buf + buf_pos, toread, 50);
+			r = dmx->Read(buf + buf_pos, toread, 50);
 
-				if (r < 0)
-				{
-					if (errno != EAGAIN && errno != EOVERFLOW )
-					{
-						dprintf(DEBUG_INFO, "read failed\n");
-						exit_flag = RECORD_FAILED_READ;
-						break;
-					}
-				
-					printf("%s: %s\n", __FUNCTION__, errno == EOVERFLOW ? "EOVERFLOW" : "EAGAIN");
-				}
-				else
-				{
-					buf_pos += r;
-				}
-			}
-		
-			// start writeout
-			if (buf_pos > (BUFSIZE / 3))
+			if (r < 0)
 			{
-				size_t towrite = BUFSIZE / 2;
-				if (buf_pos < BUFSIZE / 2)
-					towrite = buf_pos;
-				r = write(file_fd, buf, towrite);
-				if (r < 0)
+				if (errno != EAGAIN && errno != EOVERFLOW )
 				{
-					exit_flag = RECORD_FAILED_FILE;
-
+					dprintf(DEBUG_INFO, "read failed\n");
+					exit_flag = RECORD_FAILED_READ;
 					break;
 				}
-				buf_pos -= r;
-				memmove(buf, buf + r, buf_pos);
+				
+				printf("%s: %s\n", __FUNCTION__, errno == EOVERFLOW ? "EOVERFLOW" : "EAGAIN");
+			}
+			else
+			{
+				buf_pos += r;
 			}
 		}
-	
-		if(dmx)
-			dmx->Stop();
-	
-		// write
-		while (buf_pos > 0)
+		
+		// start writeout
+		if (buf_pos > (BUFSIZE / 3))
 		{
-			r = write(file_fd, buf, buf_pos);
+			size_t towrite = BUFSIZE / 2;
+			if (buf_pos < BUFSIZE / 2)
+				towrite = buf_pos;
+				
+			r = write(file_fd, buf, towrite);
 			if (r < 0)
 			{
 				exit_flag = RECORD_FAILED_FILE;
-				dprintf(DEBUG_INFO, "write error\n");
+
 				break;
 			}
 			buf_pos -= r;
 			memmove(buf, buf + r, buf_pos);
 		}
-	
-		free(buf);
 	}
+	
+	if(dmx)
+		dmx->Stop();
+	
+	// write
+	while (buf_pos > 0)
+	{
+		r = write(file_fd, buf, buf_pos);
+		
+		if (r < 0)
+		{
+			exit_flag = RECORD_FAILED_FILE;
+			dprintf(DEBUG_INFO, "write error\n");
+			break;
+		}
+		
+		buf_pos -= r;
+		memmove(buf, buf + r, buf_pos);
+	}
+	
+	free(buf);
 	
 	pthread_exit(NULL);
 }

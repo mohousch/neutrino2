@@ -63,7 +63,7 @@ enum stream2file_status_t
 	STREAM2FILE_STATUS_BUFFER_OVERFLOW    = -1,
 	STREAM2FILE_STATUS_WRITE_OPEN_FAILURE = -2,
 	STREAM2FILE_STATUS_WRITE_FAILURE      = -3,
-	STREAM2FILE_STATUS_READ_FAILURE = -4
+	STREAM2FILE_STATUS_READ_FAILURE       = -4
 };
 
 class CVCRControl
@@ -143,10 +143,9 @@ class CVCRControl
 					const unsigned short vpid,
 					const unsigned short * const apids,
 					const unsigned int numpids);
-		stream2file_error_msg_t startFileRecording(const char* const filename, const char* const info, std::string uri = "");
+		//stream2file_error_msg_t startFileRecording(const char* const filename, const char* const info, std::string uri = "");
 					
 		stream2file_error_msg_t stopRecording(const char * const info, bool file_recording = false);
-		////
 };
 
 #endif
