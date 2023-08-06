@@ -38,12 +38,12 @@ class CGenPsi
 {
 	private:
 		static const unsigned int pmt_pid = 0xcc;
-		short  nba, nsub, neac3, naac, naacp;
+		short  nba, nsub, neac3, naac, naacp, ntxt;
 		uint16_t       vpid;
 		uint8_t        vtype;
 		uint16_t       pcrpid;
-		uint16_t       vtxtpid;
-		char           vtxtlang[3];
+		uint16_t       vtxtpid[10];
+		char           vtxtlang[10][3];
 		uint16_t       apid[10];
 		short          atypes[10];
 		char           apid_lang[10][3];

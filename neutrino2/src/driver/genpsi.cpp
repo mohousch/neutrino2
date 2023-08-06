@@ -96,7 +96,7 @@ CGenPsi::CGenPsi()
 	vtype = 0;
 
 	pcrpid = 0;
-	vtxtpid = 0;
+	//vtxtpid = 0;
 	memset(apid, 0, sizeof(apid));
 	memset(atypes, 0, sizeof(atypes));
 	nsub = 0;
@@ -107,6 +107,8 @@ CGenPsi::CGenPsi()
 	memset(aac_pid, 0, sizeof(aac_pid));
 	naacp = 0;
 	memset(aacp_pid, 0, sizeof(aacp_pid));
+	ntxt = 0;
+	memset(vtxtpid, 0, sizeof(vtxtpid));
 }
 
 uint32_t CGenPsi::calc_crc32psi(uint8_t *dst, const uint8_t *src, uint32_t len)
@@ -165,20 +167,23 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 			nba++;
 			break;
 		case EN_TYPE_TELTEX:
-			vtxtpid = pid;
+			//vtxtpid = pid;
+			vtxtpid[ntxt] = pid;
 			if (data != NULL)
 			{
-				vtxtlang[0] = data[0];
-				vtxtlang[1] = data[1];
-				vtxtlang[2] = data[2];
+				vtxtlang[ntxt][0] = data[0];
+				vtxtlang[ntxt][1] = data[1];
+				vtxtlang[ntxt][2] = data[2];
 			}
 			else
 			{
-				vtxtlang[0] = 'u';
-				vtxtlang[1] = 'n';
-				vtxtlang[2] = 'k';
+				vtxtlang[ntxt][0] = 'u';
+				vtxtlang[ntxt][1] = 'n';
+				vtxtlang[ntxt][2] = 'k';
 			}
+			ntxt++;
 			break;
+			
 		case EN_TYPE_DVBSUB:
 			dvbsubpid[nsub] = pid;
 			if (data != NULL)
@@ -195,6 +200,7 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 			}
 			nsub++;
 			break;
+			
 		case EN_TYPE_AUDIO_EAC3:
 			eac3_pid[neac3] = pid;
 			if (data != NULL)
@@ -361,6 +367,7 @@ void CGenPsi::build_pmt(uint8_t *buffer)
 		buffer[off++] = apid_lang[index][2];
 		buffer[off++] = 0x00; // audio type
 	}
+	
 	// eac3 audio
 	for (int index = 0; index < neac3 && off < (TS_DATA_LEN - 18); index++)
 	{
@@ -451,11 +458,12 @@ void CGenPsi::build_pmt(uint8_t *buffer)
 	}
 
 	// TeleText streams
-	if (vtxtpid && off < (TS_DATA_LEN - 15))
+	//if (vtxtpid && off < (TS_DATA_LEN - 15))
+	for (int index = 0; index < ntxt && off < (TS_DATA_LEN - 15); index++)
 	{
 		buffer[off++] = 0x06;		//teletext stream type;
-		buffer[off++] = 0xE0 | vtxtpid >> 8;
-		buffer[off++] = vtxtpid & 0xff;
+		buffer[off++] = 0xE0 | vtxtpid[index] >> 8;
+		buffer[off++] = vtxtpid[index] & 0xff;
 		buffer[off++] = 0xf0;
 		buffer[off++] = 0x0A;		// ES_info_length
 		buffer[off++] = 0x52;		//DVB-DescriptorTag: 82 (0x52)  [= stream_identifier_descriptor]
@@ -463,12 +471,14 @@ void CGenPsi::build_pmt(uint8_t *buffer)
 		buffer[off++] = 0x03;		//component_tag
 		buffer[off++] = 0x56;		// DVB teletext tag
 		buffer[off++] = 0x05;		// descriptor length
-		buffer[off++] = vtxtlang[0];	//language code[0]
-		buffer[off++] = vtxtlang[1];	//language code[1]
-		buffer[off++] = vtxtlang[2];	//language code[2]
+		buffer[off++] = vtxtlang[index][0];	//language code[0]
+		buffer[off++] = vtxtlang[index][1];	//language code[1]
+		buffer[off++] = vtxtlang[index][2];	//language code[2]
 		buffer[off++] = (/*descriptor_magazine_number*/ 0x01 & 0x06) | ((/*descriptor_type*/ 0x01 << 3) & 0xF8);
 		buffer[off++] = 0x00 ;		//Teletext_page_number
 	}
+	
+	//
 	off--;
 	buffer[0x07] = off - 3; // update section_length
 
@@ -497,8 +507,10 @@ int CGenPsi::genpsi(int fd)
 	pcrpid = 0;
 	nba = 0;
 	nsub = 0;
-	vtxtpid = 0;
+	ntxt = 0;
 	neac3 = 0;
+	
+	//
 	fdatasync(fd);
 	
 	return 1;
