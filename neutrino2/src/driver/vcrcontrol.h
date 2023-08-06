@@ -44,28 +44,27 @@
 /*zapit includes*/
 #include <zapit/zapit.h>
 
-//#include <driver/stream2file.h>
+
 enum stream2file_error_msg_t
-		{
-			STREAM2FILE_OK                        =  0,
-			STREAM2FILE_BUSY                      = -1,
-			STREAM2FILE_INVALID_DIRECTORY         = -2,
-			STREAM2FILE_INVALID_PID               = -3,
-			STREAM2FILE_PES_FILTER_FAILURE        = -4,
-			STREAM2FILE_DVR_OPEN_FAILURE          = -5,
-			STREAM2FILE_RECORDING_THREADS_FAILED  = -6,
-		};
+{
+	STREAM2FILE_OK                        =  0,
+	STREAM2FILE_BUSY                      = -1,
+	STREAM2FILE_INVALID_DIRECTORY         = -2,
+	STREAM2FILE_INVALID_PID               = -3,
+	STREAM2FILE_PES_FILTER_FAILURE        = -4,
+	STREAM2FILE_DVR_OPEN_FAILURE          = -5,
+	STREAM2FILE_RECORDING_THREADS_FAILED  = -6,
+};
 
-		enum stream2file_status_t
-		{
-			STREAM2FILE_STATUS_RUNNING            =  0,
-			STREAM2FILE_STATUS_IDLE               =  1,
-			STREAM2FILE_STATUS_BUFFER_OVERFLOW    = -1,
-			STREAM2FILE_STATUS_WRITE_OPEN_FAILURE = -2,
-			STREAM2FILE_STATUS_WRITE_FAILURE      = -3,
-			STREAM2FILE_STATUS_READ_FAILURE = -4
-		};
-
+enum stream2file_status_t
+{
+	STREAM2FILE_STATUS_RUNNING            =  0,
+	STREAM2FILE_STATUS_IDLE               =  1,
+	STREAM2FILE_STATUS_BUFFER_OVERFLOW    = -1,
+	STREAM2FILE_STATUS_WRITE_OPEN_FAILURE = -2,
+	STREAM2FILE_STATUS_WRITE_FAILURE      = -3,
+	STREAM2FILE_STATUS_READ_FAILURE = -4
+};
 
 class CVCRControl
 {

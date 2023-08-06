@@ -423,7 +423,7 @@ std::string CVCRControl::getCommandString(const CVCRCommand command, const t_cha
 	// audio desc
 	processAPIDnames();
 
-	for(unsigned int i= 0; i< pids.APIDs.size(); i++)
+	for(unsigned int i= 0; i < pids.APIDs.size(); i++)
 	{
 		extMessage += "\t\t\t<audio pid=\"";
 		sprintf(tmp, "%u", pids.APIDs[i].pid);

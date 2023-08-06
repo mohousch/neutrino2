@@ -1839,7 +1839,7 @@ void CZapit::addChannelToBouquet(const unsigned int bouquet, const t_channel_id 
 		printf("channel_id not found in channellist\n");
 }
 
-void CZapit::sendAPIDs(APIDList &apids)
+void CZapit::sendCurrentAPIDs(APIDList &apids)
 {
 	for (uint32_t  i = 0; i < live_channel->getAudioChannelCount(); i++) 
 	{
@@ -1866,7 +1866,7 @@ void CZapit::sendAPIDs(APIDList &apids)
 	}
 }
 
-void CZapit::sendSubPIDs(SubPIDList &subpids)
+void CZapit::sendCurrentSubPIDs(SubPIDList &subpids)
 {
 	for (int i = 0 ; i < (int)live_channel->getSubtitleCount() ; ++i) 
 	{
@@ -1966,6 +1966,82 @@ void CZapit::sendRecordSubPIDs(SubPIDList &subpids)
 		subpids.push_back(response);
 	}
 }
+
+////
+void CZapit::sendAPIDs(t_channel_id chid, APIDList &apids)
+{
+	CZapitChannel * channel = findChannelByChannelID(chid);
+	
+	if (channel)
+	{
+		for (uint32_t  i = 0; i < channel->getAudioChannelCount(); i++) 
+		{
+			responseGetAPIDs response;
+			response.pid = channel->getAudioPid(i);
+			strncpy(response.desc, channel->getAudioChannel(i)->description.c_str(), 25);
+
+			response.is_ac3 = 0;
+			
+			if (channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AC3
+				|| channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AAC
+				|| channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::AACPLUS
+				|| channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::EAC3
+				|| channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTS
+				|| channel->getAudioChannel(i)->audioChannelType == CZapitAudioChannel::DTSHD
+				) 
+			{
+				response.is_ac3 = 1;
+			} 
+			
+			response.component_tag = channel->getAudioChannel(i)->componentTag;
+			
+			apids.push_back(response);
+		}
+	}
+}
+
+void CZapit::sendSubPIDs(t_channel_id chid, SubPIDList &subpids)
+{
+	CZapitChannel * channel = findChannelByChannelID(chid);
+	
+	if (channel)
+	{
+		for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
+		{
+			responseGetSubPIDs response;
+			CZapitAbsSub* s = channel->getChannelSub(i);
+			CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
+			CZapitTTXSub* st = reinterpret_cast<CZapitTTXSub*>(s);
+
+			response.pid = sd->pId;
+			strncpy(response.desc, sd->ISO639_language_code.c_str(), 4);
+			
+			if (s->thisSubType == CZapitAbsSub::DVB) 
+			{
+				response.composition_page = sd->composition_page_id;
+				response.ancillary_page = sd->ancillary_page_id;
+				if (sd->subtitling_type >= 0x20) 
+				{
+					response.hearingImpaired = true;
+				} 
+				else 
+				{
+					response.hearingImpaired = false;
+				}
+			} 
+			else if (s->thisSubType == CZapitAbsSub::TTX) 
+			{
+				response.composition_page = (st->teletext_magazine_number * 100) + ((st->teletext_page_number >> 4) * 10) + (st->teletext_page_number & 0xf);
+				response.ancillary_page = 0;
+				response.hearingImpaired = st->hearingImpaired;
+			}
+			
+			subpids.push_back(response);
+		}
+	}
+}
+
+////
 
 void CZapit::internalSendChannels(ZapitChannelList *channels, const unsigned int first_channel_nr, BouquetChannelList &Bchannels)
 {
@@ -3280,7 +3356,7 @@ std::string CZapit::getChannelDescription(const t_channel_id channel_id)
 	return desc;
 }
 
-void CZapit::getPIDS( responseGetPIDs &pids )
+void CZapit::getCurrentPIDS( responseGetPIDs &pids )
 {
 	if (live_channel) 
 	{
@@ -3295,8 +3371,8 @@ void CZapit::getPIDS( responseGetPIDs &pids )
 		responseGetOtherPIDs.selected_apid = live_channel->getAudioChannelIndex();
 		responseGetOtherPIDs.privatepid = live_channel->getPrivatePid();
 		
-		sendAPIDs(apids);
-		sendSubPIDs(subpids);
+		sendCurrentAPIDs(apids);
+		sendCurrentSubPIDs(subpids);
 		
 		//
 		pids.PIDs = responseGetOtherPIDs;
@@ -3359,6 +3435,69 @@ bool CZapit::getCurrentTP(TP_params *TP)
 {
 	//#FIXME:
 	return true;
+}
+
+//
+void CZapit::getPIDS( t_channel_id chid, responseGetPIDs &pids )
+{
+	CZapitChannel * channel = findChannelByChannelID(chid);
+	
+	if (channel) 
+	{
+		responseGetOtherPIDs responseGetOtherPIDs;
+		APIDList apids;
+		SubPIDList subpids;
+		
+		responseGetOtherPIDs.vpid = channel->getVideoPid();
+		responseGetOtherPIDs.vtxtpid = channel->getTeletextPid();
+		responseGetOtherPIDs.pmtpid = channel->getPmtPid();
+		responseGetOtherPIDs.pcrpid = channel->getPcrPid();
+		responseGetOtherPIDs.selected_apid = channel->getAudioChannelIndex();
+		responseGetOtherPIDs.privatepid = channel->getPrivatePid();
+		
+		sendAPIDs(chid, apids);
+		sendSubPIDs(chid, subpids);
+		
+		//
+		pids.PIDs = responseGetOtherPIDs;
+		pids.APIDs = apids;
+		pids.SubPIDs = subpids;
+	}
+}
+
+CZapit::CCurrentServiceInfo CZapit::getServiceInfo(t_channel_id chid)
+{
+	CCurrentServiceInfo msgCurrentServiceInfo;
+	memset(&msgCurrentServiceInfo, 0, sizeof(CCurrentServiceInfo));
+	
+	CZapitChannel * channel = findChannelByChannelID(chid);
+	
+	if (channel) 
+	{
+		msgCurrentServiceInfo.onid = channel->getOriginalNetworkId();
+		msgCurrentServiceInfo.sid = channel->getServiceId();
+		msgCurrentServiceInfo.tsid = channel->getTransportStreamId();
+		msgCurrentServiceInfo.vpid = channel->getVideoPid();
+		msgCurrentServiceInfo.apid = channel->getAudioPid();
+		msgCurrentServiceInfo.vtxtpid = channel->getTeletextPid();
+		msgCurrentServiceInfo.pmtpid = channel->getPmtPid();
+				
+		msgCurrentServiceInfo.pmt_version = (channel->getCaPmt() != NULL) ? channel->getCaPmt()->version_number : 0xff;
+				
+		msgCurrentServiceInfo.pcrpid = channel->getPcrPid();
+		msgCurrentServiceInfo.vtype = channel->videoType;
+		
+		// tsfrequency
+		// rate
+		// fec
+		// polarisation
+		// diseqc
+	}
+			
+	if(!msgCurrentServiceInfo.fec)
+		msgCurrentServiceInfo.fec = (fe_code_rate)3;
+		
+	return msgCurrentServiceInfo;
 }
 
 void CZapit::setSubServices( subServiceList& subServices )

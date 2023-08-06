@@ -509,7 +509,7 @@ std::string  CNeutrinoYParser::func_get_video_pids(CyhookHandler *, std::string 
 
 	if(para != "")
 		apid_no = atoi(para.c_str());
-	CZapit::getInstance()->getPIDS(pids);
+	CZapit::getInstance()->getCurrentPIDS(pids);
 
 	if( apid_no < (int)pids.APIDs.size())
 		apid_idx=apid_no;
@@ -524,9 +524,9 @@ std::string  CNeutrinoYParser::func_get_video_pids(CyhookHandler *, std::string 
 std::string  CNeutrinoYParser::func_get_radio_pid(CyhookHandler *, std::string)
 {
 	CZapit::responseGetPIDs pids;
-	int apid=0;
+	int apid = 0;
 
-	CZapit::getInstance()->getPIDS(pids);
+	CZapit::getInstance()->getCurrentPIDS(pids);
 	if(!pids.APIDs.empty())
 		apid = pids.APIDs[0].pid;
 
@@ -555,7 +555,7 @@ std::string  CNeutrinoYParser::func_get_audio_pids_as_dropdown(CyhookHandler *, 
 
 	CSectionsd::ComponentTagList tags;
 	pids.PIDs.vpid = 0;
-	CZapit::getInstance()->getPIDS(pids);
+	CZapit::getInstance()->getCurrentPIDS(pids);
 
 	t_channel_id current_channel = live_channel_id; //CZapit::getInstance()->getCurrentServiceID();
 	CSectionsd::CurrentNextInfo currentNextInfo;

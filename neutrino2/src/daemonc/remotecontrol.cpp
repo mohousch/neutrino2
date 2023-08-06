@@ -293,7 +293,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				{
 					// ist nur ein neues Programm, kein neuer Kanal
 					// PIDs neu holen
-					CZapit::getInstance()->getPIDS( current_PIDs );
+					CZapit::getInstance()->getCurrentPIDS( current_PIDs );
 					
 					// APID Bearbeitung neu anstossen
 					has_unresolved_ctags = true;
@@ -354,7 +354,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			CSectionsd::getInstance()->setServiceChanged( current_channel_id, false );
 			
 			// get pids
-			CZapit::getInstance()->getPIDS(current_PIDs );
+			CZapit::getInstance()->getCurrentPIDS(current_PIDs );
 
 			t_channel_id * p = new t_channel_id;
 			*p = current_channel_id;
@@ -373,7 +373,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	}
 	else if (msg == NeutrinoMessages::EVT_PMT_CHANGED) 
 	{
-		CZapit::getInstance()->getPIDS(current_PIDs);
+		CZapit::getInstance()->getCurrentPIDS(current_PIDs);
 		processAPIDnames();
 		
 		return messages_return::unhandled;

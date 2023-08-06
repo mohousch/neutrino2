@@ -2236,7 +2236,7 @@ void CNeutrinoApp::initZapper()
 		CSectionsd::getInstance()->setServiceChanged(live_channel_id, true );
 		
 		// process apids
-		CZapit::getInstance()->getPIDS(g_RemoteControl->current_PIDs);
+		CZapit::getInstance()->getCurrentPIDS(g_RemoteControl->current_PIDs);
 		g_RemoteControl->processAPIDnames();
 				
 		// permenant timeshift

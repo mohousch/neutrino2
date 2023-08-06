@@ -1505,7 +1505,7 @@ void CControlAPI::SendcurrentVAPid(CyhookHandler *hh)
 {
 	CZapit::responseGetPIDs pids;
 	pids.PIDs.vpid=0;
-	CZapit::getInstance()->getPIDS(pids);
+	CZapit::getInstance()->getCurrentPIDS(pids);
 
 	hh->printf("%u\n", pids.PIDs.vpid);
 	if(!pids.APIDs.empty())
@@ -1528,7 +1528,7 @@ void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 
 	CSectionsd::ComponentTagList tags;
 	pids.PIDs.vpid=0;
-	CZapit::getInstance()->getPIDS(pids);
+	CZapit::getInstance()->getCurrentPIDS(pids);
 
 	hh->printf("%05u\n", pids.PIDs.vpid);
 
@@ -1912,7 +1912,7 @@ void CControlAPI::YWeb_SendVideoStreamingPids(CyhookHandler *hh, int apid_no)
 	CZapit::responseGetPIDs pids;
 	int apid=0,apid_idx=0;
 	pids.PIDs.vpid=0;
-	CZapit::getInstance()->getPIDS(pids);
+	CZapit::getInstance()->getCurrentPIDS(pids);
 
 	if( apid_no < (int)pids.APIDs.size())
 		apid_idx=apid_no;
@@ -1941,7 +1941,7 @@ void CControlAPI::YWeb_SendRadioStreamingPid(CyhookHandler *hh)
 {
 	CZapit::responseGetPIDs pids;
 	int apid=0;
-	CZapit::getInstance()->getPIDS(pids);
+	CZapit::getInstance()->getCurrentPIDS(pids);
 
 	if(!pids.APIDs.empty())
 		apid = pids.APIDs[0].pid;
@@ -2413,7 +2413,7 @@ void CControlAPI::build_live_url(CyhookHandler *hh)
 
 		if(hh->ParamList["audio_no"] !="")
 			apid_no = atoi(hh->ParamList["audio_no"].c_str());
-		CZapit::getInstance()->getPIDS(pids);
+		CZapit::getInstance()->getCurrentPIDS(pids);
 
 		if( apid_no < (int)pids.APIDs.size())
 			apid_idx=apid_no;
@@ -2431,7 +2431,7 @@ void CControlAPI::build_live_url(CyhookHandler *hh)
 		CZapit::responseGetPIDs pids;
 		int apid=0;
 
-		CZapit::getInstance()->getPIDS(pids);
+		CZapit::getInstance()->getCurrentPIDS(pids);
 		if(!pids.APIDs.empty())
 			apid = pids.APIDs[0].pid;
 

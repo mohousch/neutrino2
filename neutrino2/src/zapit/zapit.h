@@ -180,6 +180,13 @@ class CZapit
 			uint		pmtpid;
 			uint		privatepid;
 		};
+		
+		struct responseGetPIDs
+		{
+			responseGetOtherPIDs	PIDs;
+			APIDList		APIDs;
+			SubPIDList  		SubPIDs;
+		};
 
 		class CCurrentServiceInfo
 		{
@@ -192,20 +199,13 @@ class CZapit
 				unsigned short	apid;
 				unsigned short	pcrpid;
 				unsigned short	vtxtpid;
+				unsigned short  pmtpid;
+				unsigned short  pmt_version;
 				unsigned int	tsfrequency;
 				unsigned char	polarisation;
 				unsigned char	diseqc;
-				unsigned short  pmtpid;
-				unsigned short  pmt_version;
 				uint32_t	rate;
 				fe_code_rate	fec;
-		};
-
-		struct responseGetPIDs
-		{
-			responseGetOtherPIDs	PIDs;
-			APIDList		APIDs;
-			SubPIDList  		SubPIDs;
 		};
 
 		struct responseGetSatelliteList
@@ -274,10 +274,12 @@ class CZapit
 		unsigned int zapToChannelID(const t_channel_id channel_id, const bool isSubService);
 
 		//
-		void sendAPIDs(APIDList &apids);
-		void sendSubPIDs(SubPIDList &subpids);
+		void sendCurrentAPIDs(APIDList &apids);
+		void sendCurrentSubPIDs(SubPIDList &subpids);
 		void sendRecordAPIDs(APIDList &apids);
 		void sendRecordSubPIDs(SubPIDList &subpids);
+		void sendAPIDs(t_channel_id chid, APIDList &apids);
+		void sendSubPIDs(t_channel_id chid, SubPIDList &subpids);
 		
 		//
 		void internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, BouquetChannelList &Bchannels);
@@ -372,11 +374,11 @@ class CZapit
 		std::string getChannelDescription(const t_channel_id channel_id);
 
 		// current service
-		void getPIDS(responseGetPIDs &pids);
 		t_channel_id getCurrentServiceID();
-		CZapit::CCurrentServiceInfo getCurrentServiceInfo();
 		int32_t getCurrentSatellitePosition();
 		bool getCurrentTP(TP_params *TP);
+		CZapit::CCurrentServiceInfo getCurrentServiceInfo();
+		void getCurrentPIDS(responseGetPIDs &pids);
 
 		// novd
 		void setSubServices( subServiceList& subServices );
@@ -387,6 +389,11 @@ class CZapit
 		t_channel_id getRecordServiceID();
 		CZapit::CCurrentServiceInfo getRecordServiceInfo();
 		void getRecordPIDS(responseGetPIDs &pids);
+		
+		//
+		CZapit::CCurrentServiceInfo getServiceInfo(t_channel_id chid);
+		void getPIDS(t_channel_id chid, responseGetPIDs &pids);
+		
 
 		void reinitChannels();
 		void reloadCurrentServices();
