@@ -1996,84 +1996,79 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 	CTimerd::RecordingInfo eventinfo;
 	bool refreshGui = false;
 
-	if (recDir != NULL) 
+	// stop auto record
+	if(autoshift) 
+		stopAutoRecord();
+
+	//
+	if(recordingstatus == 1) 
 	{
-		// stop auto record
-		if(autoshift) 
-			stopAutoRecord();
-
 		//
-		if(recordingstatus == 1) 
+		time_t now = time(NULL);
+		int record_end = now + g_settings.record_hours*60*60;
+		int pre = 0, post = 0;
+
+		// get EPG info
+		eventinfo.channel_id = live_channel_id;
+
+		CEPGData epgData;
+
+		if (CSectionsd::getInstance()->getActualEPGServiceKey(eventinfo.channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
 		{
-			//
-			time_t now = time(NULL);
-			int record_end = now + g_settings.record_hours*60*60;
-			int pre = 0, post = 0;
-
-			// get EPG info
-			eventinfo.channel_id = live_channel_id;
-
-			CEPGData epgData;
-
-			if (CSectionsd::getInstance()->getActualEPGServiceKey(eventinfo.channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
-			{
-				eventinfo.epgID = epgData.eventID;
-				eventinfo.epg_starttime = epgData.epg_times.startzeit;
-				strncpy(eventinfo.epgTitle, epgData.title.c_str(), EPG_TITLE_MAXLEN-1);
-				eventinfo.epgTitle[EPG_TITLE_MAXLEN - 1] = 0;
+			eventinfo.epgID = epgData.eventID;
+			eventinfo.epg_starttime = epgData.epg_times.startzeit;
+			strncpy(eventinfo.epgTitle, epgData.title.c_str(), EPG_TITLE_MAXLEN-1);
+			eventinfo.epgTitle[EPG_TITLE_MAXLEN - 1] = 0;
 				
-				// record end time
-				CTimerd::getInstance()->getRecordingSafety(pre, post);
+			// record end time
+			CTimerd::getInstance()->getRecordingSafety(pre, post);
 				
-				if (epgData.epg_times.startzeit > 0)
-					record_end = epgData.epg_times.startzeit + epgData.epg_times.dauer + post;
-			}
-			else 
-			{
-				eventinfo.epgID = 0;
-				eventinfo.epg_starttime = 0;
-				strcpy(eventinfo.epgTitle, "");
-			}
-
-			eventinfo.apids = TIMERD_APIDS_CONF;
-
-			bool doRecord = true;
-
-			// rec dir
-			strcpy(recDir, (preselectedDir != NULL) ? preselectedDir : g_settings.network_nfs_recordingdir);
-				
-			CVCRControl::getInstance()->Directory = recDir;
-			
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::doGuiRecord: start record to dir %s\n", recDir);
-
-			// start to record 
-			if( !doRecord || (CVCRControl::getInstance()->Record(&eventinfo) == false ) ) 
-			{
-				recordingstatus = 0;
-
-				if(doRecord)
-					return true;// try to refresh gui if record was not ok ?
-
-				return refreshGui;
-			}
-			else if (addTimer) // add timer
-			{
-				recording_id = CTimerd::getInstance()->addImmediateRecordTimerEvent(eventinfo.channel_id, now, record_end, eventinfo.epgID, eventinfo.epg_starttime, eventinfo.apids);
-			}
-		} 
+			if (epgData.epg_times.startzeit > 0)
+				record_end = epgData.epg_times.startzeit + epgData.epg_times.dauer + post;
+		}
 		else 
 		{
-			CTimerd::getInstance()->stopTimerEvent(recording_id);
-			
-			startNextRecording();
+			eventinfo.epgID = 0;
+			eventinfo.epg_starttime = 0;
+			strcpy(eventinfo.epgTitle, "");
 		}
-		
-		CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
 
-		return refreshGui;
+		eventinfo.apids = TIMERD_APIDS_CONF;
+
+		bool doRecord = true;
+
+		// rec dir
+		strcpy(recDir, (preselectedDir != NULL) ? preselectedDir : g_settings.network_nfs_recordingdir);
+				
+		CVCRControl::getInstance()->Directory = recDir;
+			
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::doGuiRecord: start record to dir %s\n", recDir);
+
+		// start to record 
+		if( !doRecord || (CVCRControl::getInstance()->Record(&eventinfo) == false ) ) 
+		{
+			recordingstatus = 0;
+
+			if(doRecord)
+				return true;// try to refresh gui if record was not ok ?
+
+			return refreshGui;
+		}
+		else if (addTimer) // add timer
+		{
+			recording_id = CTimerd::getInstance()->addImmediateRecordTimerEvent(eventinfo.channel_id, now, record_end, eventinfo.epgID, eventinfo.epg_starttime, eventinfo.apids);
+		}
+	} 
+	else 
+	{
+		CTimerd::getInstance()->stopTimerEvent(recording_id);
+			
+		startNextRecording();
 	}
+		
+	CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
 
-	return false;
+	return refreshGui;
 }
 
 // start next recording
@@ -2083,70 +2078,63 @@ void CNeutrinoApp::startNextRecording()
 	{
 		bool doRecord = true;
 		
+		recording_id = nextRecordingInfo->eventID;
+			
 		if (recDir != NULL)
 		{
-			recording_id = nextRecordingInfo->eventID;
-			
-			if (recDir != NULL)
+			char *lrecDir = strlen(nextRecordingInfo->recordingDir) > 0 ? nextRecordingInfo->recordingDir : g_settings.network_nfs_recordingdir;
+
+			if (!CFSMounter::isMounted(lrecDir)) 
 			{
-				char *lrecDir = strlen(nextRecordingInfo->recordingDir) > 0 ? nextRecordingInfo->recordingDir : g_settings.network_nfs_recordingdir;
-
-				if (!CFSMounter::isMounted(lrecDir)) 
+				doRecord = false;
+					
+				for(int i = 0 ; i < NETWORK_NFS_NR_OF_ENTRIES ; i++) 
 				{
-					doRecord = false;
-					
-					for(int i = 0 ; i < NETWORK_NFS_NR_OF_ENTRIES ; i++) 
+					if (strcmp(g_settings.network_nfs_local_dir[i], lrecDir) == 0) 
 					{
-						if (strcmp(g_settings.network_nfs_local_dir[i], lrecDir) == 0) 
-						{
-							CFSMounter::MountRes mres =
-								CFSMounter::mount(g_settings.network_nfs_ip[i].c_str(), g_settings.network_nfs_dir[i],
-										  g_settings.network_nfs_local_dir[i], (CFSMounter::FSType) g_settings.network_nfs_type[i],
-										  g_settings.network_nfs_username[i], g_settings.network_nfs_password[i],
-										  g_settings.network_nfs_mount_options1[i], g_settings.network_nfs_mount_options2[i]);
+						CFSMounter::MountRes mres = CFSMounter::mount(g_settings.network_nfs_ip[i].c_str(), g_settings.network_nfs_dir[i], g_settings.network_nfs_local_dir[i], (CFSMounter::FSType) g_settings.network_nfs_type[i], g_settings.network_nfs_username[i], g_settings.network_nfs_password[i], g_settings.network_nfs_mount_options1[i], g_settings.network_nfs_mount_options2[i]);
 										  
-							if (mres == CFSMounter::MRES_OK) 
-							{
-								doRecord = true;
-							} 
-							else 
-							{
-								const char * merr = mntRes2Str(mres);
-								int msglen = strlen(merr) + strlen(nextRecordingInfo->recordingDir) + 7;
-								char msg[msglen];
-								strcpy(msg, merr);
-								strcat(msg, "\nDir: ");
-								strcat(msg, nextRecordingInfo->recordingDir);
+						if (mres == CFSMounter::MRES_OK) 
+						{
+							doRecord = true;
+						} 
+						else 
+						{
+							const char * merr = mntRes2Str(mres);
+							int msglen = strlen(merr) + strlen(nextRecordingInfo->recordingDir) + 7;
+							char msg[msglen];
+							strcpy(msg, merr);
+							strcat(msg, "\nDir: ");
+							strcat(msg, nextRecordingInfo->recordingDir);
 
-								HintBox(_("Error"), _(msg)); // UTF-8
-								doRecord = false;
-							}
-							break;
+							HintBox(_("Error"), _(msg)); // UTF-8
+							doRecord = false;
 						}
-					}
-
-					if (!doRecord) 
-					{
-						// recording dir does not seem to exist in config anymore
-						// or an error occured while mounting
-						// -> try default dir
-						lrecDir = g_settings.network_nfs_recordingdir;
-					
-						doRecord = true;
+						break;
 					}
 				}
 
-				CVCRControl::getInstance()->Directory = lrecDir;
-				dprintf(DEBUG_NORMAL, "CNeutrinoApp::startNextRecording: start to dir %s\n", lrecDir);
-
-				CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
+				if (!doRecord) 
+				{
+					// recording dir does not seem to exist in config anymore
+					// or an error occured while mounting
+					// -> try default dir
+					lrecDir = g_settings.network_nfs_recordingdir;
+					
+					doRecord = true;
+				}
 			}
-			
-			if(doRecord && CVCRControl::getInstance()->Record(nextRecordingInfo))
-				recordingstatus = 1;
-			else
-				recordingstatus = 0;
+
+			CVCRControl::getInstance()->Directory = lrecDir;
+			dprintf(DEBUG_NORMAL, "CNeutrinoApp::startNextRecording: start to dir %s\n", lrecDir);
+
+			CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
 		}
+			
+		if(doRecord && CVCRControl::getInstance()->Record(nextRecordingInfo))
+			recordingstatus = 1;
+		else
+			recordingstatus = 0;
 
 		/* Note: CTimerd::RecordingInfo is a class!
 		 * What a brilliant idea to send classes via the eventserver!
@@ -2343,7 +2331,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_CA_FTA, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_CA_ID, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	//eventServer->registerEvent2(NeutrinoMessages::EVT_RECORDMODE_DEACTIVATED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
@@ -3277,15 +3264,13 @@ void CNeutrinoApp::realRun(void)
 				if( mode == mode_scart ) 
 				{
 					//wenn VCR Aufnahme dann stoppen
-					if (recDir != NULL)
+					if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
 					{
-						if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
-						{
-							CVCRControl::getInstance()->Stop();
-							recordingstatus = 0;
-							startNextRecording();
-						}
+						CVCRControl::getInstance()->Stop();
+						recordingstatus = 0;
+						startNextRecording();
 					}
+
 					// Scart-Mode verlassen
 					scartMode( false );
 				}
@@ -3329,7 +3314,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			shift_timer = g_RCInput->addTimer( delay*1000*1000, true );
 			
 			// infoviewer handle msg
-			g_InfoViewer->handleMsg(NeutrinoMessages::EVT_RECORDMODE, recording_id);
+			g_InfoViewer->handleMsg(NeutrinoMessages::EVT_RECORDMODE, recordingstatus);
 		}	
 
 		// scrambled timer
@@ -3580,7 +3565,7 @@ _repeat:
 
 		return messages_return::handled;
 	}
-	else if( msg == NeutrinoMessages::EVT_RECORDMODE ) 
+	else if( msg == NeutrinoMessages::EVT_RECORDMODE) 
 	{
 		// sent by rcinput, then got msg from zapit about record activated/deactivated
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: recordmode %s\n", ( data ) ? "on" : "off" );
@@ -3622,24 +3607,22 @@ _repeat:
 	{
 		if(((CTimerd::RecordingStopInfo*)data)->eventID == recording_id)
 		{ 
-			if (recDir != NULL)
+			
+			if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
 			{
-				if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
+				CVCRControl::getInstance()->Stop();
+					
+				recordingstatus = 0;
+				autoshift = 0;
+					
+				if(timeshiftstatus)
 				{
-					CVCRControl::getInstance()->Stop();
-					
-					recordingstatus = 0;
-					autoshift = 0;
-					
-					if(timeshiftstatus)
-					{
-						// set timeshift status to false
-						timeshiftstatus = 0;
-					}
+					// set timeshift status to false
+					timeshiftstatus = 0;
 				}
-				else
-					printf("CNeutrinoApp::handleMsg: wrong state\n");
 			}
+			else
+				printf("CNeutrinoApp::handleMsg: wrong state\n");
 
 			startNextRecording();
 

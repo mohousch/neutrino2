@@ -1025,11 +1025,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 								*data = *(bool*)p;
 								break;
 								
-							//case NeutrinoMessages::EVT_RECORDMODE_DEACTIVATED:
-							//	*msg  = NeutrinoMessages::EVT_RECORDMODE;
-							//	*data = false;
-							//	break;
-								
 							case NeutrinoMessages::EVT_ZAP_COMPLETE:
 								*msg = NeutrinoMessages::EVT_ZAP_COMPLETE;
 								break;

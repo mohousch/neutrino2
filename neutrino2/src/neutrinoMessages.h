@@ -88,7 +88,7 @@ struct NeutrinoMessages {
 		EVT_SHUTDOWN                             = RC_Events + 19,
 		EVT_TIMER                                = RC_Events + 20,
 		EVT_PROGRAMLOCKSTATUS                    = RC_Events + 22,
-		EVT_RECORDMODE                           = RC_Events + 24,
+		EVT_RECORDMODE				 = RC_Events + 24,
 		
 		EVT_ZAP_CA_ID				 = RC_Events + 50,
 		EVT_ZAP_CA_CLEAR                         = RC_Events + 26,

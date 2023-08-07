@@ -264,8 +264,8 @@ class CZapit
 		int getPidVolume(t_channel_id channel_id, int pid, bool ac3);
 		void setVolumePercent(int percent);
 		int changeAudioPid(uint8_t index);
-		void setRecordMode(void);
-		void unsetRecordMode(void);
+		void enableRecordMode(void);
+		void disableRecordMode(void);
 		void setRadioMode(void);
 		void setTVMode(void);
 		int prepareChannels();

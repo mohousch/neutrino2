@@ -1765,9 +1765,9 @@ int CZapit::getMode(void)
 	return mode;
 }
 
-void CZapit::setRecordMode(void)
+void CZapit::enableRecordMode(void)
 {
-	dprintf(DEBUG_NORMAL, "CZapit::setRecordMode:\n");
+	dprintf(DEBUG_NORMAL, "CZapit::enableRecordMode:\n");
 	
 	if(currentMode & RECORD_MODE) 
 		return;
@@ -1780,8 +1780,10 @@ void CZapit::setRecordMode(void)
 	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, (void *)true, sizeof(bool) );
 }
 
-void CZapit::unsetRecordMode(void)
+void CZapit::disableRecordMode(void)
 {
+	dprintf(DEBUG_NORMAL, "CZapit::disableRecordMode:\n");
+	
 	if(!(currentMode & RECORD_MODE)) 
 		return;
 	
@@ -3552,9 +3554,9 @@ void CZapit::setSubServices( subServiceList& subServices )
 void CZapit::setRecordMode(const bool activate)
 {		
 	if (activate)
-		setRecordMode();
+		enableRecordMode();
 	else
-		unsetRecordMode();
+		disableRecordMode();
 }
 
 bool CZapit::isRecordModeActive()

@@ -321,21 +321,25 @@ void CInfoViewer::showRecordIcon(const bool show)
 		
 		if (show) 
 		{
+			// rec icon
 			frameBuffer->paintIcon(autoshift ? NEUTRINO_ICON_AUTO_SHIFT : NEUTRINO_ICON_REC, BoxStartX + BORDER_LEFT, BoxStartY - 30);
 
+			// channel name
+			/*
 			if(!autoshift && !shift_timer) 
 			{
 				// border
-				//if (g_settings.infobar_border)
-				//	frameBuffer->paintBoxRel(BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, BoxStartY - 30, icon_w_rec, icon_h_rec, COL_MENUCONTENT_PLUS_6);
+				if (g_settings.infobar_border)
+					frameBuffer->paintBoxRel(BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, BoxStartY - 30, icon_w_rec, icon_h_rec, COL_MENUCONTENT_PLUS_6);
 				
 				// box
-				//frameBuffer->paintBoxRel(g_settings.infobar_border? BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + 1 : BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, g_settings.infobar_border? BoxStartY - 30 + 1 : BoxStartY - 30, g_settings.infobar_border? icon_w_rec - 2 : icon_w_rec, g_settings.infobar_border? icon_h_rec - 2 : icon_h_rec, COL_INFOBAR_PLUS_0);
+				frameBuffer->paintBoxRel(g_settings.infobar_border? BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + 1 : BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, g_settings.infobar_border? BoxStartY - 30 + 1 : BoxStartY - 30, g_settings.infobar_border? icon_w_rec - 2 : icon_w_rec, g_settings.infobar_border? icon_h_rec - 2 : icon_h_rec, COL_INFOBAR_PLUS_0);
 
 				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString (BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + BORDER_LEFT, BoxStartY - 8, REC_INFOBOX_WIDTH, ext_channel_name.c_str(), COL_INFOBAR, 0, true);
 			} 
 			else
 				frameBuffer->paintBackgroundBoxRel(BoxStartX + BORDER_LEFT, BoxStartY - 30, icon_w_rec, icon_h_rec);
+			*/
 		} 
 		else 
 			frameBuffer->paintBackgroundBoxRel(BoxStartX + BORDER_LEFT, BoxStartY - 30, icon_w_rec, icon_h_rec);
@@ -1270,7 +1274,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		recordModeActive = data;
 		
 		if(is_visible) 
-			showRecordIcon(true);		
+			showRecordIcon(recordModeActive);		
   	} 
 	else if (msg == NeutrinoMessages::EVT_ZAP_GOTAPIDS) 
 	{
