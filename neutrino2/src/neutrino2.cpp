@@ -2326,10 +2326,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_SUB_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_MOTOR, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_CA_CLEAR, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_CA_LOCK, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_CA_FTA, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_CA_ID, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
@@ -3872,37 +3868,6 @@ _repeat:
 			MessageBox(_("Information"), (const char *) data, mbrBack, mbBack, NEUTRINO_ICON_INFO); // UTF-8
 			
 		delete[] (unsigned char*) data;
-		return messages_return::handled;
-	}
-	else if (msg == NeutrinoMessages::EVT_RECORDING_ENDED) 
-	{
-		if (mode != mode_scart) 
-		{
-			std::string msgbody;
-			if ((* (CVCRControl::stream2file_status2_t *) data).status == STREAM2FILE_STATUS_BUFFER_OVERFLOW)
-				msgbody = "The recording was aborted,\nsince the data could not be written fast enough.";
-			else if ((* (CVCRControl::stream2file_status2_t *) data).status == STREAM2FILE_STATUS_WRITE_OPEN_FAILURE)
-				msgbody = "The recording was aborted,\nbecause the target file could not be opened.";
-			else if ((* (CVCRControl::stream2file_status2_t *) data).status == STREAM2FILE_STATUS_WRITE_FAILURE)
-				msgbody = "The recording was aborted,\nsince an error occured during the writing process.";
-			else
-				goto skip_message;
-
-			MessageBox(_("Information"), _(msgbody.c_str()), mbrBack, mbBack, NEUTRINO_ICON_INFO, MESSAGEBOX_WIDTH, 5);
-
-skip_message:
-			;
-		}
-		
-		if ((* (CVCRControl::stream2file_status2_t *) data).status != STREAM2FILE_STATUS_IDLE) 
-		{
-			// restart recording
-			//FIXME doGuiRecord((*(CVCRControl::stream2file_status2_t *) data).dir);
-			//changeNotify(_("start"), data);
-		}
-
-		delete[] (unsigned char*) data;
-		
 		return messages_return::handled;
 	}
 	else if( msg == NeutrinoMessages::REMIND) 

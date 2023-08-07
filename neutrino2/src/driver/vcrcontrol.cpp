@@ -60,6 +60,7 @@
 #include <driver/encoding.h>
 
 #include <gui/widget/messagebox.h>
+#include <gui/widget/hintbox.h>
 
 #include <daemonc/remotecontrol.h>
 
@@ -94,7 +95,7 @@ extern CFrontend * record_fe;
 #define FILENAMEBUFFERSIZE 	1024
 #define MAXPIDS			64
 
-static stream2file_status_t exit_flag = STREAM2FILE_STATUS_IDLE;
+//static stream2file_status_t exit_flag = STREAM2FILE_STATUS_IDLE;
 
 char rec_filename[FILENAMEBUFFERSIZE];
 
@@ -110,21 +111,30 @@ CVCRControl * CVCRControl::getInstance()
 
 CVCRControl::CVCRControl()
 {
+	exit_flag = STREAM2FILE_STATUS_IDLE;
+	channel_id = 0;
 }
 
 CVCRControl::~CVCRControl()
 {
+	channel_id = 0;
 }
 
 bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
 {
+	dprintf(DEBUG_NORMAL, "CVCRControl::Record: channel_id:%llx\n", eventinfo->channel_id);
+	
 	int mode = CNeutrinoApp::getInstance()->getMode();
+	
+	channel_id = eventinfo->channel_id;
 
 	return doRecord(eventinfo->channel_id, mode, eventinfo->epgID, eventinfo->epgTitle, eventinfo->apids, eventinfo->epg_starttime); 
 }
 
 void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap, APIDList & apid_list)
 {
+	dprintf(DEBUG_NORMAL, "CVCRControl::getAPIDs\n");
+	
         unsigned char apids = ap;
 
         if (apids == TIMERD_APIDS_CONF)
@@ -244,29 +254,36 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
 //
 void CVCRControl::RestoreNeutrino(void)
 {
+	dprintf(DEBUG_NORMAL, "CVCRControl::RestoreNeutrino\n");
+	
 	CZapit::getInstance()->setRecordMode( false );
 
-	// start playback
-	if (!CZapit::getInstance()->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
-		CZapit::getInstance()->startPlayBack(live_channel);
-
-	// alten mode wieder herstellen (ausser wen zwischenzeitlich auf oder aus sb geschalten wurde)
-	if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
+	if (!IS_WEBTV(channel_id))
 	{
-		if(!autoshift) 
-			g_RCInput->postMsg( NeutrinoMessages::CHANGEMODE , last_mode);
-	}
+		// start playback
+		if (!CZapit::getInstance()->isPlayBackActive() && (CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby))
+			CZapit::getInstance()->startPlayBack(live_channel);
 
-	if(last_mode == NeutrinoMessages::mode_standby && CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby )
-	{
-		//Wenn vorher und jetzt standby, dann die zapit wieder auf sb schalten
-		CZapit::getInstance()->setStandby(true);
+		// alten mode wieder herstellen (ausser wen zwischenzeitlich auf oder aus sb geschalten wurde)
+		if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
+		{
+			if(!autoshift) 
+				g_RCInput->postMsg( NeutrinoMessages::CHANGEMODE , last_mode);
+		}
+
+		if(last_mode == NeutrinoMessages::mode_standby && CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby )
+		{
+			//Wenn vorher und jetzt standby, dann die zapit wieder auf sb schalten
+			CZapit::getInstance()->setStandby(true);
+		}
 	}	
 }
 
 //
 void CVCRControl::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 {
+	dprintf(DEBUG_NORMAL, "CVCRControl::CutBackNeutrino\n");
+	
 	last_mode = CNeutrinoApp::getInstance()->getMode();
 
 	if (!IS_WEBTV(channel_id))
@@ -290,18 +307,20 @@ void CVCRControl::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 			CZapit::getInstance()->zapToRecordID(channel_id);
 		}
 
-		// after this zapit send EVT_RECORDMODE_ACTIVATED, so neutrino getting NeutrinoMessages::EVT_RECORDMODE
-		CZapit::getInstance()->setRecordMode( true );
-
 		// stop playback im standby
 		if( last_mode == NeutrinoMessages::mode_standby )
 			CZapit::getInstance()->stopPlayBack();
 	}
+	
+	// after this zapit send EVT_RECORDMODE_ACTIVATED, so neutrino getting NeutrinoMessages::EVT_RECORDMODE
+	CZapit::getInstance()->setRecordMode( true );
 }
 
 //
 bool CVCRControl::Stop()
 {
+	dprintf(DEBUG_NORMAL, "CVCRControl::Stop\n");
+	
 	std::string extMessage = " ";
 	time_t end_time = time(0);
 		
@@ -335,6 +354,8 @@ bool CVCRControl::Stop()
 //
 bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_id_t epgid, const std::string& epgTitle, unsigned char apids, const time_t epg_time) 
 {
+	dprintf(DEBUG_NORMAL, "CVCRControl::doRecord\n");
+	
 	// leave menu (if in any)
 	g_RCInput->postMsg(RC_timeout, 0);
 	
@@ -596,7 +617,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	{
 		RestoreNeutrino();
 
-		MessageBox(_("Error"), error_msg == STREAM2FILE_BUSY ? _("One or several recording processes are active.\nIf you encounter this message and no recording is active, please restart Neutrino.") : error_msg == STREAM2FILE_INVALID_DIRECTORY ? _("The recording directory is not writable.\nRecording will not work.") : _("The recording was aborted,\nbecause the target file could not be opened."), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+		HintBox(_("Error"), error_msg == STREAM2FILE_BUSY ? _("One or several recording processes are active.\nIf you encounter this message and no recording is active, please restart Neutrino.") : error_msg == STREAM2FILE_INVALID_DIRECTORY ? _("The recording directory is not writable.\nRecording will not work.") : _("The recording was aborted,\nbecause the target file could not be opened.")/*, mbrCancel, mbCancel, NEUTRINO_ICON_ERROR*/);
 
 		return false;
 	}
@@ -604,6 +625,8 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname) 
 {
+	dprintf(DEBUG_NORMAL, "CVCRControl::Screenshot\n");
+	
 	//FIXME:
 	char filename[512]; // UTF-8
 	char cmd[512];
@@ -707,6 +730,8 @@ bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname)
 
 std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, APIDList apid_list, const time_t epg_time)
 {
+	dprintf(DEBUG_NORMAL, "CVCRControl::getMovieInfoString\n");
+	
 	std::string extMessage;
 	std::string apids10;
 	std::string info1, info2;
@@ -829,6 +854,8 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 
 void CVCRControl::processAPIDnames()
 {
+	dprintf(DEBUG_NORMAL, "CVCRControl::processAPIDnames\n");
+	
 	bool has_unresolved_ctags = false;
 	//bool has_ac3 = false; //FIXME what this variable suppoused to do ?? seems unused
 	int ac3_found = -1;
@@ -894,6 +921,8 @@ void CVCRControl::processAPIDnames()
 //
 stream2file_error_msg_t CVCRControl::startRecording(const char * const filename, const char * const info, const unsigned short vpid, const unsigned short * const pids, const unsigned int numpids)
 {
+	dprintf(DEBUG_NORMAL, "CVCRControl::startRecording\n");
+	
 	int fd;
 	char buf[FILENAMEBUFFERSIZE];
 	struct statfs s;
@@ -966,141 +995,14 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	return STREAM2FILE_OK;
 }
 
-/*
-stream2file_error_msg_t CVCRControl::startFileRecording(const char * const filename, const char* const info, std::string uri)
-{
-	int fd;
-	char buf[FILENAMEBUFFERSIZE];
-	struct statfs s;
-
-	//
-	char file[512];
-	unsigned int pos = 0;
-
-	std::string Dir = g_settings.network_nfs_recordingdir;
-
-	pos = Dir.size();
-	strcpy(file, Dir.c_str());
-
-	if ((pos == 0) || (file[pos - 1] != '/')) 
-	{
-		file[pos] = '/';
-		pos++;
-		file[pos] = '\0';
-	}
-
-	pos = strlen(file);
-	
-	if (filename != NULL)
-	{
-		strcpy(&(file[pos]), filename);
-	}
-
-	dprintf(DEBUG_NORMAL, "CVCRControl::startFileRecording: file:%s (filename:%s)\n", file, filename);
-
-	// write stream information (should wakeup the disk from standby, too)
-	sprintf(buf, "%s.xml", file);
-
-	char * dir = strdup(buf);
-	int ret = statfs(dirname(dir), &s);
-	free(dir);
-
-	if((ret != 0) || (s.f_type == 0x72b6) || (s.f_type == 0x24051905)) 
-	{
-		return STREAM2FILE_INVALID_DIRECTORY;
-	}
-
-	if ((fd = open(buf, O_SYNC | O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) >= 0) 
-	{
-		write(fd, info, strlen(info));
-		fdatasync(fd);
-		close(fd);
-	} 
-	else 
-	{
-		return STREAM2FILE_INVALID_DIRECTORY;
-	}
-
-	exit_flag = STREAM2FILE_STATUS_RUNNING;
-
-	//TODO: get extension from uri
-	std::string ext =  getFileExt(uri);
-	
-	dprintf(DEBUG_NORMAL, "CVCRControl::startFileRecording: extension:%s\n", ext.c_str());
-
-	// check for extension
-	CFileFilter fileFilter;
-	
-	fileFilter.addFilter("ts");
-	fileFilter.addFilter("mpg");
-	fileFilter.addFilter("mpeg");
-	fileFilter.addFilter("divx");
-	fileFilter.addFilter("avi");
-	fileFilter.addFilter("mkv");
-	fileFilter.addFilter("asf");
-	fileFilter.addFilter("aiff");
-	fileFilter.addFilter("m2p");
-	fileFilter.addFilter("mpv");
-	fileFilter.addFilter("m2ts");
-	fileFilter.addFilter("vob");
-	fileFilter.addFilter("mp4");
-	fileFilter.addFilter("mov");	
-	fileFilter.addFilter("flv");	
-	fileFilter.addFilter("dat");
-	fileFilter.addFilter("trp");
-	fileFilter.addFilter("vdr");
-	fileFilter.addFilter("mts");
-	fileFilter.addFilter("wmv");
-	fileFilter.addFilter("wav");
-	fileFilter.addFilter("flac");
-	fileFilter.addFilter("mp3");
-	fileFilter.addFilter("wma");
-	fileFilter.addFilter("ogg");
-	fileFilter.addFilter("m3u8");
-
-	if(!fileFilter.matchFilter(uri))
-		return STREAM2FILE_INVALID_PID;
-
-	sprintf(buf, "%s.%s", file, ext.c_str());
-	sprintf(rec_filename, "%s.%s", file, ext.c_str());
-
-	dprintf(DEBUG_NORMAL, "CVCRControl::startFileRecording: rec_filename: %s\n", rec_filename);
-
-	fd = open(buf, O_CREAT | O_RDWR | O_LARGEFILE | O_TRUNC , S_IRWXO | S_IRWXG | S_IRWXU);
-	if(fd < 0) 
-	{
-		perror(buf);
-		return STREAM2FILE_INVALID_DIRECTORY;
-	}
-
-	// init record
-	if(!record)
-		record = new cRecord();
-	
-	// open
-	record->Open();
-
-	// start_recording
-	if(!record->Start(fd, uri)) 
-	{
-			record->Stop();
-			delete record;
-			record = NULL;
-			return STREAM2FILE_INVALID_DIRECTORY;
-	}
-
-	return STREAM2FILE_OK;
-}
-*/
-
 stream2file_error_msg_t CVCRControl::stopRecording(const char * const info, bool file_recording)
 {
+	dprintf(DEBUG_NORMAL, "CVCRControl::stopRecording\n");
+	
 	char buf[FILENAMEBUFFERSIZE];
 	char buf1[FILENAMEBUFFERSIZE];
 	int fd;
 	stream2file_error_msg_t ret;
-
-	dprintf(DEBUG_NORMAL, "CVCRControl::stopRecording:\n");	
 
 	// savexml
 	sprintf(buf, "%s.xml", rec_filename);

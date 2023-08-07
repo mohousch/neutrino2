@@ -94,19 +94,23 @@ CGenPsi::CGenPsi()
 	nba = 0;
 	vpid = 0;
 	vtype = 0;
-
 	pcrpid = 0;
-	//vtxtpid = 0;
+
 	memset(apid, 0, sizeof(apid));
 	memset(atypes, 0, sizeof(atypes));
+	
 	nsub = 0;
 	memset(dvbsubpid, 0, sizeof(dvbsubpid));
+	
 	neac3 = 0;
 	memset(eac3_pid, 0, sizeof(eac3_pid));
+	
 	naac = 0;
 	memset(aac_pid, 0, sizeof(aac_pid));
+	
 	naacp = 0;
 	memset(aacp_pid, 0, sizeof(aacp_pid));
+	
 	ntxt = 0;
 	memset(vtxtpid, 0, sizeof(vtxtpid));
 }
@@ -138,17 +142,21 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 			pcrpid = vpid = pid;
 			vtype = ES_TYPE_MPEG12;
 			break;
+			
 		case EN_TYPE_AVC:
 			pcrpid = vpid = pid;
 			vtype = ES_TYPE_AVC;
 			break;
+			
 		case EN_TYPE_HEVC:
 			pcrpid = vpid = pid;
 			vtype = ES_TYPE_HEVC;
 			break;
+			
 		case EN_TYPE_PCR:
 			pcrpid = pid;
 			break;
+			
 		case EN_TYPE_AUDIO:
 			apid[nba] = pid;
 			atypes[nba] = isAC3;
@@ -166,8 +174,8 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 			}
 			nba++;
 			break;
+			
 		case EN_TYPE_TELTEX:
-			//vtxtpid = pid;
 			vtxtpid[ntxt] = pid;
 			if (data != NULL)
 			{
@@ -217,6 +225,7 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 			}
 			neac3++;
 			break;
+			
 		case EN_TYPE_AUDIO_AAC:
 			aac_pid[naac] = pid;
 			if (data != NULL)
@@ -233,6 +242,7 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 			}
 			naac++;
 			break;
+			
 		case EN_TYPE_AUDIO_AACP:
 			aacp_pid[naacp] = pid;
 			if (data != NULL)
@@ -249,6 +259,7 @@ void CGenPsi::addPid(uint16_t pid, uint16_t pidtype, short isAC3, const char *da
 			}
 			naacp++;
 			break;
+			
 		default:
 			break;
 	}
@@ -458,7 +469,6 @@ void CGenPsi::build_pmt(uint8_t *buffer)
 	}
 
 	// TeleText streams
-	//if (vtxtpid && off < (TS_DATA_LEN - 15))
 	for (int index = 0; index < ntxt && off < (TS_DATA_LEN - 15); index++)
 	{
 		buffer[off++] = 0x06;		//teletext stream type;
@@ -496,9 +506,11 @@ int CGenPsi::genpsi(int fd)
 {
 	uint8_t   buffer[SIZE_TS_PKT];
 
+	//
 	build_pat(buffer);
 	write(fd, buffer, SIZE_TS_PKT);
 
+	//
 	build_pmt(buffer);
 	write(fd, buffer, SIZE_TS_PKT);
 

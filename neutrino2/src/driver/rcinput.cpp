@@ -1007,22 +1007,15 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 					if (emsg.initiatorID == CEventServer::INITID_NEUTRINO)
 					{					  
-						//dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from NEUTRINO %x %x\n", emsg.eventID, *(unsigned*) p);					
-						
-						if ((emsg.eventID == NeutrinoMessages::EVT_RECORDING_ENDED) && (read_bytes == sizeof(CVCRControl::stream2file_status2_t)))
-						{
-							*msg  = NeutrinoMessages::EVT_RECORDING_ENDED;
-							*data = (neutrino_msg_data_t) p;
-							dont_delete_p = true;
-						}
-						
+						//dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from NEUTRINO %x %x\n", emsg.eventID, *(unsigned*) p);	
+										
 						//
 						switch(emsg.eventID)
 						{
 							// zapit
 							case NeutrinoMessages::EVT_RECORDMODE:
 								*msg  = NeutrinoMessages::EVT_RECORDMODE;
-								*data = *(bool*)p;
+								*data = *(unsigned *)p;
 								break;
 								
 							case NeutrinoMessages::EVT_ZAP_COMPLETE:
@@ -1112,21 +1105,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 							case NeutrinoMessages::EVT_SERVICESCHANGED:
 								*msg  = NeutrinoMessages::EVT_SERVICESCHANGED;
 								*data = 0;
-								break;
-								
-							case NeutrinoMessages::EVT_ZAP_CA_CLEAR:
-								*msg  = NeutrinoMessages::EVT_ZAP_CA_CLEAR;
-								*data = *(unsigned*) p;
-								break;
-								
-							case NeutrinoMessages::EVT_ZAP_CA_LOCK:
-								*msg  = NeutrinoMessages::EVT_ZAP_CA_LOCK;
-								*data = *(unsigned*) p;
-								break;
-								
-							case NeutrinoMessages::EVT_ZAP_CA_FTA:
-								*msg  = NeutrinoMessages::EVT_ZAP_CA_FTA;
-								*data = *(unsigned*) p;
 								break;
 							
 							case NeutrinoMessages::EVT_ZAP_CA_ID :

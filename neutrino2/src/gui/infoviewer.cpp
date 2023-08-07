@@ -1404,21 +1404,6 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	{
 		gotTime = true;
 		return messages_return::handled;
-  	} 
-	else if (msg == NeutrinoMessages::EVT_ZAP_CA_CLEAR) 
-	{
-		Set_CA_Status(false);
-		return messages_return::handled;
-  	} 
-	else if (msg == NeutrinoMessages::EVT_ZAP_CA_LOCK) 
-	{
-		Set_CA_Status(true);
-		return messages_return::handled;
-  	} 
-	else if (msg == NeutrinoMessages::EVT_ZAP_CA_FTA) 
-	{
-		Set_CA_Status(false);
-		return messages_return::handled;
   	}
 	else if (msg == NeutrinoMessages::EVT_ZAP_CA_ID) 
 	{

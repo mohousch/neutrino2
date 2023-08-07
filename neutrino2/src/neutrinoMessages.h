@@ -90,10 +90,7 @@ struct NeutrinoMessages {
 		EVT_PROGRAMLOCKSTATUS                    = RC_Events + 22,
 		EVT_RECORDMODE				 = RC_Events + 24,
 		
-		EVT_ZAP_CA_ID				 = RC_Events + 50,
-		EVT_ZAP_CA_CLEAR                         = RC_Events + 26,
-		EVT_ZAP_CA_LOCK                          = RC_Events + 27,
-		EVT_ZAP_CA_FTA                           = RC_Events + 28,
+		EVT_ZAP_CA_ID				 = RC_Events + 25,
 		
 		EVT_SCAN_FAILED                          = RC_Events + 29,
 		EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS = RC_Events + 30,
@@ -156,10 +153,7 @@ struct NeutrinoMessages {
 		/* "zapit" events triggered by neutrino */
 		EVT_ZAP_GOT_SUBSERVICES                  = RC_WithData + 19, /* data: (t_channel_id *) */
 		EVT_ZAP_GOTAPIDS                         = RC_WithData + 20, /* data: (t_channel_id *) */
-		EVT_ZAP_GOTPIDS                          = RC_WithData + 21, /* data: (t_channel_id *) */
-
-		/* neutrino */
-		EVT_RECORDING_ENDED                      = RC_WithData + 22
+		EVT_ZAP_GOTPIDS                          = RC_WithData + 21 /* data: (t_channel_id *) */
 	};
 
 	enum

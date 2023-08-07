@@ -81,6 +81,9 @@ class CVCRControl
 		CVCRStates  deviceState;
 		
 		std::string  Directory;
+		
+		stream2file_status_t exit_flag;
+		t_channel_id channel_id;
 				
 		typedef struct {
 			unsigned short apid;
@@ -120,9 +123,7 @@ class CVCRControl
 					const char * const info,
 					const unsigned short vpid,
 					const unsigned short * const apids,
-					const unsigned int numpids);
-		//stream2file_error_msg_t startFileRecording(const char* const filename, const char* const info, std::string uri = "");
-					
+					const unsigned int numpids);			
 		stream2file_error_msg_t stopRecording(const char * const info, bool file_recording = false);
 
 	protected:

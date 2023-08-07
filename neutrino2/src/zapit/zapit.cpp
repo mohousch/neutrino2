@@ -1776,8 +1776,10 @@ void CZapit::enableRecordMode(void)
 	
 	// lock frontend
 	lockFrontend(record_fe);
+	
+	int status = 1;
 	 
-	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, (void *)true, sizeof(bool) );
+	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, &status, sizeof(int) );
 }
 
 void CZapit::disableRecordMode(void)
@@ -1798,8 +1800,10 @@ void CZapit::disableRecordMode(void)
 
 	// zapit mode
 	currentMode &= ~RECORD_MODE;
+	
+	int status = 0;
  
-	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, (void *)false, sizeof(bool) );
+	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, &status, sizeof(int) );
 }
 
 int CZapit::prepareChannels()
