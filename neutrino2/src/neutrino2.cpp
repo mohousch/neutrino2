@@ -3279,7 +3279,7 @@ void CNeutrinoApp::realRun(void)
 					//wenn VCR Aufnahme dann stoppen
 					if (recDir != NULL)
 					{
-						if ((CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD || CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_PAUSE))
+						if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
 						{
 							CVCRControl::getInstance()->Stop();
 							recordingstatus = 0;
@@ -3329,7 +3329,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			shift_timer = g_RCInput->addTimer( delay*1000*1000, true );
 			
 			// infoviewer handle msg
-			g_InfoViewer->handleMsg(NeutrinoMessages::EVT_RECORDMODE, 1);
+			g_InfoViewer->handleMsg(NeutrinoMessages::EVT_RECORDMODE, recording_id);
 		}	
 
 		// scrambled timer
@@ -3624,7 +3624,7 @@ _repeat:
 		{ 
 			if (recDir != NULL)
 			{
-				if ((CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD) || (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_PAUSE ))
+				if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
 				{
 					CVCRControl::getInstance()->Stop();
 					

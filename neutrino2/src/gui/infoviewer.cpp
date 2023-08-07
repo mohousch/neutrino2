@@ -313,7 +313,7 @@ void CInfoViewer::paintTime(int posx, int posy, unsigned int timeFont)
 
 void CInfoViewer::showRecordIcon(const bool show)
 { 
-	recordModeActive = CNeutrinoApp::getInstance()->recordingstatus || shift_timer;
+	recordModeActive = CNeutrinoApp::getInstance()->recordingstatus;
 
 	if (recordModeActive && is_visible) 
 	{

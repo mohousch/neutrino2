@@ -90,18 +90,15 @@ extern CZapitChannel * live_channel;			// defined in zapit.cpp
 static cRecord * record = NULL;
 
 extern CFrontend * record_fe;
-//extern t_channel_id live_channel_id;
-//extern t_channel_id rec_channel_id;
 
-//extern bool autoshift;
-extern int timeshift;
-extern char timeshiftDir[255];
-
-#define FILENAMEBUFFERSIZE 1024
+#define FILENAMEBUFFERSIZE 	1024
+#define MAXPIDS			64
 
 static stream2file_status_t exit_flag = STREAM2FILE_STATUS_IDLE;
 
 char rec_filename[FILENAMEBUFFERSIZE];
+
+std::string ext_channel_name;
 
 //
 static CVCRControl vcrControl;
@@ -126,7 +123,7 @@ bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
 	return doRecord(eventinfo->channel_id, mode, eventinfo->epgID, eventinfo->epgTitle, eventinfo->apids, eventinfo->epg_starttime); 
 }
 
-void CVCRControl::getAPIDs(const unsigned char ap, APIDList & apid_list)
+void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap, APIDList & apid_list)
 {
         unsigned char apids = ap;
 
@@ -136,7 +133,7 @@ void CVCRControl::getAPIDs(const unsigned char ap, APIDList & apid_list)
         apid_list.clear();
         CZapit::responseGetPIDs allpids;
 	
-	CZapit::getInstance()->getRecordPIDS(allpids);
+	CZapit::getInstance()->getPIDS(channel_id, allpids);
 
         // assume smallest apid ist std apid
         if (apids & TIMERD_APIDS_STD)
@@ -160,6 +157,7 @@ void CVCRControl::getAPIDs(const unsigned char ap, APIDList & apid_list)
                 }
         }
 
+	// alternate
         if (apids & TIMERD_APIDS_ALT)
         {
                 uint32_t apid_min=UINT_MAX;
@@ -183,6 +181,7 @@ void CVCRControl::getAPIDs(const unsigned char ap, APIDList & apid_list)
                 }
         }
 
+	// ac3
         if (apids & TIMERD_APIDS_AC3)
         {
                 bool ac3_found = false;
@@ -242,16 +241,7 @@ void CVCRControl::getAPIDs(const unsigned char ap, APIDList & apid_list)
         }
 }
 
-bool CVCRControl::Pause()
-{
-	return true;
-}
-
-bool CVCRControl::Resume()
-{
-	return true;
-}
-
+//
 void CVCRControl::RestoreNeutrino(void)
 {
 	CZapit::getInstance()->setRecordMode( false );
@@ -274,6 +264,7 @@ void CVCRControl::RestoreNeutrino(void)
 	}	
 }
 
+//
 void CVCRControl::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 {
 	last_mode = CNeutrinoApp::getInstance()->getMode();
@@ -309,142 +300,6 @@ void CVCRControl::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 }
 
 //
-std::string CVCRControl::getCommandString(const CVCRCommand command, const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, unsigned char apids)
-{
-	char tmp[40];
-	std::string apids_selected;
-	const char * extCommand;
-	std::string info1, info2;
-
-	std::string extMessage = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<neutrino commandversion=\"1\">\n\t<record command=\"";
-	
-	switch(command)
-	{
-		case CMD_VCR_RECORD:
-			extCommand = "record";
-			break;
-		case CMD_VCR_STOP:
-			extCommand = "stop";
-			break;
-		case CMD_VCR_PAUSE:
-			extCommand = "pause";
-			break;
-		case CMD_VCR_RESUME:
-			extCommand = "resume";
-			break;
-		case CMD_VCR_AVAILABLE:
-			extCommand = "available";
-			break;
-		case CMD_VCR_UNKNOWN:
-		default:
-			extCommand = "unknown";
-			printf("[CVCRControl] Unknown Command\n");
-	}
-
-	extMessage += extCommand;
-	extMessage += 
-		"\">\n"
-		"\t\t<channelname>";
-	
-	//
-	CZapit::responseGetPIDs pids;
-	CZapit::getInstance()->getRecordPIDS(pids);
-
-	//
-	CZapit::CCurrentServiceInfo si;
-	si = CZapit::getInstance()->getRecordServiceInfo();
-
-        APIDList apid_list;
-        getAPIDs(apids, apid_list);
-        apids_selected = "";
-	
-        for(APIDList::iterator it = apid_list.begin(); it != apid_list.end(); it++)
-        {
-                if(it != apid_list.begin())
-                        apids_selected += " ";
-                sprintf(tmp, "%u", it->apid);
-                apids_selected += tmp;
-        }
-
-	std::string tmpstring;
-	tmpstring = CZapit::getInstance()->getChannelName(channel_id);
-
-	if (tmpstring.empty())
-		extMessage += "unknown";
-	else
-		extMessage += UTF8_to_UTF8XML(tmpstring.c_str());
-	
-	extMessage += "</channelname>\n\t\t<epgtitle>";
-	
-	tmpstring = "not available";
-	if (epgid != 0)
-	{
-		CShortEPGData epgdata;
-
-		if(CSectionsd::getInstance()->getEPGidShort(epgid, &epgdata)) 
-		{
-			//#warning fixme sectionsd should deliver data in UTF-8 format
-			tmpstring = epgdata.title;
-			info1 = epgdata.info1;
-			info2 = epgdata.info2;
-		}
-	} 
-	else if (!epgTitle.empty()) 
-	{
-		tmpstring = epgTitle;
-	}
-
-	extMessage += UTF8_to_UTF8XML(tmpstring.c_str());
-	
-	extMessage += "</epgtitle>\n\t\t<id>";
-	
-	sprintf(tmp, "%llx", channel_id);
-	extMessage += tmp;
-	
-	extMessage += "</id>\n\t\t<info1>";
-	extMessage += UTF8_to_UTF8XML(info1.c_str());
-	extMessage += "</info1>\n\t\t<info2>";
-	extMessage += UTF8_to_UTF8XML(info2.c_str());
-	extMessage += "</info2>\n\t\t<epgid>";
-	sprintf(tmp, "%llu", epgid);
-	extMessage += tmp;
-	extMessage += "</epgid>\n\t\t<mode>";
-
-	sprintf(tmp, "%d", CZapit::getInstance()->getMode());
-	extMessage += tmp;
-	extMessage += "</mode>\n\t\t<videopid>";
-	sprintf(tmp, "%u", si.vpid);
-	extMessage += tmp;
-	extMessage += "</videopid>\n\t\t<audiopids selected=\"";
-	extMessage += apids_selected;
-
-	extMessage += "\">\n";
-	
-	// audio desc
-	processAPIDnames();
-
-	for(unsigned int i= 0; i < pids.APIDs.size(); i++)
-	{
-		extMessage += "\t\t\t<audio pid=\"";
-		sprintf(tmp, "%u", pids.APIDs[i].pid);
-		extMessage += tmp;
-		extMessage += "\" name=\"";
-		extMessage += UTF8_to_UTF8XML(pids.APIDs[i].desc);
-		extMessage += "\"/>\n";
-	}
-	extMessage += 
-		"\t\t</audiopids>\n"
-		"\t\t<vtxtpid>";
-	sprintf(tmp, "%u", si.vtxtpid);
-	extMessage += tmp;
-	extMessage +=
-		"</vtxtpid>\n"
-		"\t</record>\n"
-		"</neutrino>\n";
-
-	return extMessage;
-}
-
 bool CVCRControl::Stop()
 {
 	std::string extMessage = " ";
@@ -460,16 +315,14 @@ bool CVCRControl::Stop()
 
 	deviceState = CMD_VCR_STOP;
 	
-	////TEST
-	//deviceState = CMD_VCR_STOP;
-
+	// set lastmode
 	if(last_mode != NeutrinoMessages::mode_scart)
 	{
 		g_RCInput->postMsg( NeutrinoMessages::VCR_OFF, 0 );
 		g_RCInput->postMsg( NeutrinoMessages::CHANGEMODE , last_mode);
 	}
-	////
-
+	
+	// cleanup
 	g_movieInfo->audioPids.clear();
 	delete g_movieInfo;
 	g_movieInfo = NULL;
@@ -479,7 +332,7 @@ bool CVCRControl::Stop()
 	return return_value;
 }
 
-std::string ext_channel_name;
+//
 bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_id_t epgid, const std::string& epgTitle, unsigned char apids, const time_t epg_time) 
 {
 	// leave menu (if in any)
@@ -506,7 +359,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 		if(! (apids & TIMERD_APIDS_STD)) // nicht std apid
 		{
 		        APIDList apid_list;
-		        getAPIDs(apids, apid_list);
+		        getAPIDs(channel_id, apids, apid_list);
 
 		        if(!apid_list.empty())
 		        {
@@ -535,7 +388,6 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	deviceState = CMD_VCR_RECORD;
 	
 	//
-	#define MAXPIDS		64
 	unsigned short pids[MAXPIDS];
 	unsigned int numpids = 0;
 	unsigned int pos = 0;
@@ -543,10 +395,9 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	// cut neutrino
 	CutBackNeutrino(channel_id, mode);
 
+	//
 	CZapit::CCurrentServiceInfo si;
-	si = CZapit::getInstance()->getRecordServiceInfo();
-
-	numpids = 0;
+	si = CZapit::getInstance()->getServiceInfo(channel_id);
 	
 	CGenPsi psi;
 
@@ -563,7 +414,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 	// apids
         APIDList apid_list;
-        getAPIDs(apids, apid_list);
+        getAPIDs(channel_id, apids, apid_list);
 
         for(APIDList::iterator it = apid_list.begin(); it != apid_list.end(); it++) 
 	{
@@ -727,13 +578,13 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 	if (IS_WEBTV(channel_id))
 	{
-		//error_msg = startFileRecording(filename, getMovieInfoString(CMD_VCR_RECORD, channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), CZapit::getInstance()->getChannelURL(channel_id));
+		//error_msg = startFileRecording(filename, getMovieInfoString(channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), CZapit::getInstance()->getChannelURL(channel_id));
 		
 		error_msg = STREAM2FILE_RECORDING_THREADS_FAILED;
 	}
 	else
 	{
-		error_msg = startRecording(filename, getMovieInfoString(CMD_VCR_RECORD, channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), si.vpid, pids, numpids);
+		error_msg = startRecording(filename, getMovieInfoString(channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), si.vpid, pids, numpids);
 	}
 
 	if (error_msg == STREAM2FILE_OK) 
@@ -854,7 +705,7 @@ bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname)
 	return true;
 }
 
-std::string CVCRControl::getMovieInfoString(const CVCRCommand command, const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, APIDList apid_list, const time_t epg_time)
+std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, APIDList apid_list, const time_t epg_time)
 {
 	std::string extMessage;
 	std::string apids10;
@@ -862,18 +713,20 @@ std::string CVCRControl::getMovieInfoString(const CVCRCommand command, const t_c
 
 	if(!g_cMovieInfo)
 		g_cMovieInfo = new CMovieInfo();
+		
 	if(!g_movieInfo)
 		g_movieInfo = new MI_MOVIE_INFO();
 
 	g_cMovieInfo->clearMovieInfo(g_movieInfo);
 
-	CZapit::getInstance()->getRecordPIDS(pids);
+	CZapit::getInstance()->getPIDS(channel_id, pids);
 
-
+	//
 	CZapit::CCurrentServiceInfo si;
 
-	si = CZapit::getInstance()->getRecordServiceInfo();
+	si = CZapit::getInstance()->getServiceInfo(channel_id);
 
+	//
 	std::string tmpstring;
 
 	tmpstring = CZapit::getInstance()->getChannelName(channel_id);
@@ -901,13 +754,14 @@ std::string CVCRControl::getMovieInfoString(const CVCRCommand command, const t_c
 				
 			g_movieInfo->length = epgdata.epg_times.dauer	/ 60;
 				
-			printf("[CVCRControl] fsk:%d, Genre:%d, Dauer: %d min\r\n",g_movieInfo->parentalLockAge,g_movieInfo->genreMajor,g_movieInfo->length);	
+			dprintf(DEBUG_NORMAL, "CVCRControl::getMovieInfoString: fsk:%d, Genre:%d, Dauer: %d min\r\n",g_movieInfo->parentalLockAge,g_movieInfo->genreMajor,g_movieInfo->length);	
 		}
 	} 
 	else if (!epgTitle.empty()) 
 	{
 		tmpstring = epgTitle;
 	}
+	
 	g_movieInfo->epgTitle		= UTF8_to_UTF8XML(tmpstring.c_str());
 	g_movieInfo->epgId		= channel_id;
 	g_movieInfo->epgInfo1		= UTF8_to_UTF8XML(info1.c_str());
@@ -925,9 +779,9 @@ std::string CVCRControl::getMovieInfoString(const CVCRCommand command, const t_c
 	memset(g_ac3flags, 0, sizeof(unsigned short)*10);
 	g_numpida = 0;
 
+	// get apids desc
 	EPG_AUDIO_PIDS audio_pids;
 	
-	// get apids desc
 	processAPIDnames();
 
 	APIDList::iterator it;
@@ -976,12 +830,12 @@ std::string CVCRControl::getMovieInfoString(const CVCRCommand command, const t_c
 void CVCRControl::processAPIDnames()
 {
 	bool has_unresolved_ctags = false;
-	bool has_ac3 = false; //FIXME what this variable suppoused to do ?? seems unused
+	//bool has_ac3 = false; //FIXME what this variable suppoused to do ?? seems unused
 	int ac3_found = -1;
 
 	for(unsigned int count = 0; count < pids.APIDs.size(); count++)
 	{
-		printf("CVCRControl::CFileAndServerDevice::processAPIDnames: apid name= %s (%s) pid= 0x%x\n", pids.APIDs[count].desc, getISO639Description( pids.APIDs[count].desc ), pids.APIDs[count].pid);
+		dprintf(DEBUG_NORMAL, "CVCRControl::processAPIDnames: apid name= %s (%s) pid= 0x%x\n", pids.APIDs[count].desc, getISO639Description( pids.APIDs[count].desc ), pids.APIDs[count].pid);
 		
 		if ( pids.APIDs[count].component_tag != 0xFF )
 		{
@@ -997,7 +851,7 @@ void CVCRControl::processAPIDnames()
 		if ( pids.APIDs[count].is_ac3 )
 		{
 			//strncat(pids.APIDs[count].desc, " (Dolby Digital)", 25);
-			has_ac3 = true;
+			//has_ac3 = true;
 			if((strlen( pids.APIDs[count].desc ) == 3) && (ac3_found < 0))
 				ac3_found = count;
 		}
@@ -1013,7 +867,7 @@ void CVCRControl::processAPIDnames()
 			{
 				has_unresolved_ctags = false;
 
-				for (unsigned int i=0; i< tags.size(); i++)
+				for (unsigned int i = 0; i < tags.size(); i++)
 				{
 					for (unsigned int j=0; j< pids.APIDs.size(); j++)
 					{
@@ -1037,6 +891,7 @@ void CVCRControl::processAPIDnames()
 	}
 }
 
+//
 stream2file_error_msg_t CVCRControl::startRecording(const char * const filename, const char * const info, const unsigned short vpid, const unsigned short * const pids, const unsigned int numpids)
 {
 	int fd;
@@ -1122,10 +977,10 @@ stream2file_error_msg_t CVCRControl::startFileRecording(const char * const filen
 	char file[512];
 	unsigned int pos = 0;
 
-	std::string Directory = g_settings.network_nfs_recordingdir;
+	std::string Dir = g_settings.network_nfs_recordingdir;
 
-	pos = Directory.size();
-	strcpy(file, Directory.c_str());
+	pos = Dir.size();
+	strcpy(file, Dir.c_str());
 
 	if ((pos == 0) || (file[pos - 1] != '/')) 
 	{
@@ -1247,6 +1102,7 @@ stream2file_error_msg_t CVCRControl::stopRecording(const char * const info, bool
 
 	dprintf(DEBUG_NORMAL, "CVCRControl::stopRecording:\n");	
 
+	// savexml
 	sprintf(buf, "%s.xml", rec_filename);
 	
 	if ((fd = open(buf, O_SYNC | O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) >= 0) 
