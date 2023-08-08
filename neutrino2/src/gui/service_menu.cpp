@@ -121,8 +121,6 @@ void CServiceMenu::showMenu(void)
 		widget->addWidgetItem(service);
 	}
 	
-	service->clear();
-	
 	// tuner/scan setup
 	service->addItem(new CMenuForwarder(_("Scan transponder"), true, NULL, new CTunerSetup(), NULL, RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_SCANSETTINGS));
 		

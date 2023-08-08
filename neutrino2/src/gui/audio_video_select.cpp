@@ -234,8 +234,6 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 		widget->addWidgetItem(AVPIDSelector);
 	}
 	
-	AVPIDSelector->clearItems();
-	
 	// audio pids
 	CAVPIDChangeExec AVPIDChanger;
 	numpida = 0;

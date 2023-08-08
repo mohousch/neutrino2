@@ -446,8 +446,11 @@ void cDemux::addPid(unsigned short Pid)
 { 
 	if(demux_fd <= 0)
 		return;
+		
+	if (type != DMX_TP_CHANNEL)
+		return;
 	
-	dprintf(DEBUG_INFO, "%s:%s type=%s Pid=0x%x\n", FILENAME, __FUNCTION__, aDMXCHANNELTYPE[type], Pid);
+	dprintf(DEBUG_NORMAL, "%s:%s type=%s Pid=0x%x\n", FILENAME, __FUNCTION__, aDMXCHANNELTYPE[type], Pid);
 
 	if (ioctl(demux_fd, DMX_ADD_PID, &Pid) < 0)
 		perror("DMX_ADD_PID");

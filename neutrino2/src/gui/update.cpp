@@ -186,8 +186,6 @@ bool CFlashUpdate::selectHttpImage(void)
 		widget->addWidgetItem(SelectionWidget);
 	}
 	
-	SelectionWidget->clearItems();
-	
 	// intros
 	SelectionWidget->addItem(new CMenuForwarder(_("back")));
 
@@ -710,8 +708,6 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 		widget->addWidgetItem(mtdselector);
 	}
 	
-	mtdselector->clearItems();
-	
 	// intros
 	mtdselector->addItem(new CMenuForwarder(_("Cancel")));
 	mtdselector->addItem(new CMenuSeparator(LINE));
@@ -813,8 +809,6 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 		//
 		widget->addWidgetItem(fileselector);
 	}
-	
-	fileselector->clearItems();
 	
 	// intros
 	fileselector->addItem(new CMenuForwarder(_("Cancel")));
@@ -998,8 +992,6 @@ void CUpdateSettings::showMenu()
 		//
 		widget->addWidgetItem(updateSettings);
 	}
-	
-	updateSettings->clearItems();
 		
 	// intros
 	updateSettings->addItem(new CMenuForwarder(_("back")));
@@ -1044,8 +1036,6 @@ void CUpdateSettings::showMenu()
 		//
 		mtdexpertWidget->addWidgetItem(mtdexpert);
 	}
-	
-	mtdexpert->clearItems();
 		
 	// intros
 	mtdexpert->addItem(new CMenuForwarder(_("back")));

@@ -327,8 +327,6 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 		widget->enableSaveScreen();
 		widget->addWidgetItem(menu);
 	}
-		
-	menu->clear();
 	
 	// intros
 	menu->addItem(new CMenuForwarder(_("back")));

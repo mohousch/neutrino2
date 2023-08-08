@@ -483,9 +483,8 @@ int CChannelList::doChannelMenu(void)
 	}
 	
 	widget->enableSaveScreen();
-	menu->clearItems();
-
-
+	
+	//
 	menu->addItem(new CMenuForwarder(_("delete")), old_selected == i++);
 	menu->addItem(new CMenuForwarder(_("Move")), old_selected == i++);
 	menu->addItem(new CMenuForwarder(_("Add to Bouquets")), old_selected == i++);
@@ -493,6 +492,12 @@ int CChannelList::doChannelMenu(void)
 
 	widget->exec(NULL, "");
 	select = menu->getSelected();
+	
+	delete menu;
+	menu = NULL;
+	
+	delete widget;
+	widget = NULL;
 
 	if(select >= 0) 
 	{

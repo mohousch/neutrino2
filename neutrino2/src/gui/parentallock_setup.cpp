@@ -122,8 +122,6 @@ void CParentalLockSettings::showMenu()
 		widget->addWidgetItem(listBox);
 	}
 	
-	listBox->clearItems();
-	
 	// intro
 	listBox->addItem(new CMenuForwarder(_("back")));
 	listBox->addItem( new CMenuSeparator(LINE) );

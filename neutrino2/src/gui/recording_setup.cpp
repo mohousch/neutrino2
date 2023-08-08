@@ -209,8 +209,6 @@ void CRecordingSettings::showMenu()
 		widget->addWidgetItem(recordingSettings);
 	}
 	
-	recordingSettings->clearItems();
-	
 	//
 	int rec_pre = 0;
 	int rec_post = 0;

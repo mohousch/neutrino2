@@ -144,8 +144,6 @@ void CPictureViewerSettings::showMenu()
 		widget->addWidgetItem(PicViewerSettings);
 	}
 	
-	PicViewerSettings->clearItems();
-	
 	// intros
 	PicViewerSettings->addItem(new CMenuForwarder(_("back")));
 	PicViewerSettings->addItem( new CMenuSeparator(LINE) );

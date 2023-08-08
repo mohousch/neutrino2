@@ -110,8 +110,6 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 		widget->enableSaveScreen();
 		widget->addWidgetItem(menu);
 	}
-		
-	menu->clear();
 
 	//
 	menu->addItem(new CKeyValue());

@@ -117,8 +117,6 @@ void CMoviePlayerSettings::showMenu()
 		widget->addWidgetItem(moviePlayerSettings);
 	}
 	
-	moviePlayerSettings->clearItems();
-	
 	// intros
 	moviePlayerSettings->addItem(new CMenuForwarder(_("back")));
 	moviePlayerSettings->addItem( new CMenuSeparator(LINE) );

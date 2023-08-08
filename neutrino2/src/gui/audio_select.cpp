@@ -142,8 +142,6 @@ void CAudioSelectMenuHandler::doMenu()
 		widget->addWidgetItem(AudioSelector);
 	}
 	
-	AudioSelector->clearItems();
-	
 	//
 	unsigned int count;
 	

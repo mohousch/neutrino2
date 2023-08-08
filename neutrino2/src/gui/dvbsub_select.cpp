@@ -104,8 +104,6 @@ int CDVBSubSelectMenuHandler::doMenu()
 		widget->addWidgetItem(DVBSubSelector);
 	}
 	
-	DVBSubSelector->clearItems();
-	
 	CSubtitleChangeExec SubtitleChanger;
 	unsigned int count;
 

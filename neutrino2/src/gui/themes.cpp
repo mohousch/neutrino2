@@ -239,8 +239,6 @@ int CThemes::Show()
 		//
 		widget->addWidgetItem(themes);
 	}
-	
-	themes->clearItems();
 
 	// intros
 	themes->addItem(new CMenuForwarder(_("back")));

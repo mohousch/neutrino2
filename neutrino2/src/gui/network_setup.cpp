@@ -224,8 +224,6 @@ void CNetworkSettings::showMenu()
 		widget->addWidgetItem(networkSettings);
 	}
 	
-	networkSettings->clearItems();
-	
 	//
 	struct dirent **namelist;
 

@@ -124,8 +124,6 @@ void CAudioPlayerSettings::showMenu()
 		widget->addWidgetItem(audioPlayerSettings);
 	}
 	
-	audioPlayerSettings->clearItems();
-	
 	// intros
 	audioPlayerSettings->addItem(new CMenuForwarder(_("back")));
 	audioPlayerSettings->addItem( new CMenuSeparator(LINE) );

@@ -781,8 +781,6 @@ void CMoviePlayerGui::PlayFile(void)
 		//
 		widget->addWidgetItem(bookStartMenu);
 	}
-	
-	bookStartMenu->clearItems();
 
 	bookStartMenu->addItem(new CMenuForwarder(_("New Bookmark")));
 	bookStartMenu->addItem(new CMenuForwarder(_("Repeat")));

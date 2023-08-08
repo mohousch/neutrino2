@@ -5125,8 +5125,6 @@ void CNeutrinoApp::selectNVOD()
 			//
 			widget->addWidgetItem(NVODSelector);
 		}
-		
-		NVODSelector->clearItems();
 
 		//
                 if(getNVODMenu(NVODSelector))

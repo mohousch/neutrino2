@@ -174,8 +174,6 @@ void CRemoteControlSettings::showMenu()
 		widget->addWidgetItem(remoteControlSettings);
 	}
 	
-	remoteControlSettings->clearItems();
-	
 	// intros
 	remoteControlSettings->addItem(new CMenuForwarder(_("back")));
 	remoteControlSettings->addItem( new CMenuSeparator(LINE) );
@@ -351,8 +349,6 @@ void CKeysBindingSettings::showMenu()
 		//
 		widget->addWidgetItem(bindSettings);
 	}
-	
-	bindSettings->clearItems();
 	
 	// intros
 	bindSettings->addItem(new CMenuForwarder(_("back")));

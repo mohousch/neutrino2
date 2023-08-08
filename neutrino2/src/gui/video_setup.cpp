@@ -389,8 +389,6 @@ void CVideoSettings::showMenu()
 		widget->addWidgetItem(videoSettings);
 	}
 	
-	videoSettings->clearItems();
-	
 	// intros
 	videoSettings->addItem(new CMenuForwarder(_("back")));
 	videoSettings->addItem( new CMenuSeparator(LINE) );

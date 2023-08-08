@@ -315,13 +315,18 @@ int CBouquetList::doMenu()
 	}
 	
 	widget->enableSaveScreen();
-	menu->clearItems();
 
 	if(!zapitBouquet->bUser) 
 	{
 		menu->addItem(new CMenuForwarder(_("Copy bouquet to Favorites")), old_selected == i ++);
 		ret = widget->exec(NULL, "");
 		select = menu->getSelected();
+		
+		delete menu;
+		menu = NULL;
+		
+		delete widget;
+		widget = NULL;
 		
 		dprintf(DEBUG_NORMAL, "CBouquetList::doMenu: %d selected\n", select);
 

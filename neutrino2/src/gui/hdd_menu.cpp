@@ -211,8 +211,6 @@ int CHDDMenuHandler::hddMenu()
 		widget->addWidgetItem(hddmenu);
 	}
 	
-	hddmenu->clearItems();
-	
 	hddmenu->addItem(new CMenuForwarder(_("back")));
 	hddmenu->addItem(new CMenuSeparator(LINE));
 	
@@ -241,7 +239,6 @@ int CHDDMenuHandler::hddMenu()
 			drive_mask = 0xffc0; /* hda: 0x0300, hdb: 0x0340, sda: 0x0800, sdb: 0x0810 */
 		root_dev = (s.st_dev & drive_mask);
 	}
-	//printf("HDD: root_dev: 0x%04x\n", root_dev);
 	
 	//hdd manage
 	CWidget* tempMenuWidget[n];
@@ -489,6 +486,12 @@ int CHDDMenuHandler::hddMenu()
 	
 	// no parts found
 	ret = widget->exec(NULL, "");
+	
+	delete hddmenu;
+	hddmenu = NULL;
+	
+	delete widget;
+	widget = NULL;
 
 	return ret;
 }

@@ -1532,8 +1532,6 @@ void CPersonalisation::showMenu(void)
 		widget->addWidgetItem(personalizeSettings);
 	}
 	
-	personalizeSettings->clear();
-	
 	// intros
 	personalizeSettings->addItem(new CMenuForwarder(_("back")));
 	personalizeSettings->addItem( new CMenuSeparator(LINE) );

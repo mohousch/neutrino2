@@ -467,8 +467,6 @@ void CScanSetup::showScanService()
 		//
 		widget->addWidgetItem(scansetup);
 	}
-
-	scansetup->clear();
 	
 	// intros
 	scansetup->addItem(new CMenuForwarder(_("back")));
@@ -674,8 +672,6 @@ int CScanSetup::showMotorSetup()
 		//
 		motorMenuWidget->addWidgetItem(motorMenu);
 	}
-
-	motorMenu->clear();
 		
 	// intros
 	motorMenu->addItem(new CMenuSeparator(LINE));
@@ -773,8 +769,6 @@ int CScanSetup::showUnicableSetup()
 		//
 		uniWidget->addWidgetItem(uni_setup);
 	}
-	
-	uni_setup->clear();
 
 	uni_setup->addItem(new CMenuForwarder(_("back")));
 	uni_setup->addItem(new CMenuSeparator(LINE));
@@ -848,8 +842,6 @@ int CScanSetup::showLNBSetup()
 		//
 		satSetupWidget->addWidgetItem(satSetup);
 	}
-
-	satSetup->clear();
 		
 	satSetup->addItem(new CMenuForwarder(_("back")));
 	satSetup->addItem(new CMenuSeparator(LINE));
@@ -1019,8 +1011,6 @@ int CScanSetup::showSatOnOffSetup()
 		//
 		satOnOffWidget->addWidgetItem(satOnOfflistBox);
 	}
-		
-	satOnOfflistBox->clearItems();
 	
 	// intros
 	satOnOfflistBox->addItem(new CMenuForwarder(_("back")));
@@ -1097,8 +1087,6 @@ int CScanSetup::showManualScanSetup()
 		//
 		manualScanWidget->addWidgetItem(manualScanlistBox);
 	}
-	
-	manualScanlistBox->clear();
 
 	// intros
 	manualScanlistBox->addItem(new CMenuForwarder(_("back")));
@@ -1399,8 +1387,6 @@ int CScanSetup::showAutoScanSetup()
 		autoScanWidget->addWidgetItem(autoScanlistBox);
 	}
 	
-	autoScanlistBox->clear();
-	
 	// intros
 	autoScanlistBox->addItem(new CMenuForwarder(_("back")));
 	autoScanlistBox->addItem(new CMenuSeparator(LINE));
@@ -1534,8 +1520,6 @@ int CScanSetup::showAllAutoScanSetup()
 		//
 		autoScanAllWidget->addWidgetItem(autoScanAlllistBox);
 	}
-		
-	autoScanAlllistBox->clear();
 			
 	// intros
 	autoScanAlllistBox->addItem(new CMenuForwarder(_("back")));
@@ -1638,8 +1622,6 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		//
 		tpWidget->addWidgetItem(menu);
 	}
-	
-	menu->clear();
 	
 	//
 	i = 0;

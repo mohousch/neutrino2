@@ -176,9 +176,6 @@ void CZapitSetup::showMenu()
 		widget->addWidgetItem(zapit);
 	}
 	
-	//
-	zapit->clear();
-	
 	// intros
 	zapit->addItem(new CMenuForwarder(_("back")));
 	zapit->addItem(new CMenuSeparator(LINE));

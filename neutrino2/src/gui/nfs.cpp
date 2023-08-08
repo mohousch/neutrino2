@@ -224,8 +224,6 @@ int CNFSMountGui::menu()
 		widget->addWidgetItem(mountMenuW);
 	}
 	
-	mountMenuW->clearItems();
-	
 	// intros
 	mountMenuW->addItem(new CMenuForwarder(_("back")));
 	mountMenuW->addItem(new CMenuSeparator(LINE));
@@ -249,6 +247,9 @@ int CNFSMountGui::menu()
 	}
 	
 	int ret = widget->exec(this, "");
+	
+	delete widget;
+	widget = NULL;
 
 	return ret;
 }
@@ -345,8 +346,6 @@ int CNFSMountGui::menuEntry(int nr)
 		widget->addWidgetItem(mountMenuEntryW);
 	}
 	
-	mountMenuEntryW->clearItems();
-	
 	// intros
 	mountMenuEntryW->addItem(new CMenuForwarder(_("back")));
 	mountMenuEntryW->addItem(new CMenuSeparator(LINE));
@@ -395,6 +394,10 @@ int CNFSMountGui::menuEntry(int nr)
 	mountMenuEntryW->addItem(new CMenuForwarder(_("mount now"), true, NULL, this, cmd ));
 
 	int ret = widget->exec(this, "");
+	
+	delete widget;
+	widget = NULL;
+	
 	return ret;
 }
 
@@ -539,8 +542,6 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 			//
 			widget->addWidgetItem(menu);
 		}
-		
-		menu->clearItems();
 
 		CNFSMountGui mountGui;
 		CNFSUmountGui umountGui;

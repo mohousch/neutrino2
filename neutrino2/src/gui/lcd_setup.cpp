@@ -158,8 +158,6 @@ void CLCDSettings::showMenu()
 		widget->addWidgetItem(lcdSettings);
 	}
 	
-	lcdSettings->clearItems();
-	
 	// intros
 	lcdSettings->addItem(new CMenuForwarder(_("back")));
 	lcdSettings->addItem( new CMenuSeparator(LINE) );

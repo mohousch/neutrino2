@@ -148,8 +148,6 @@ void CCAMMenuHandler::doMainMenu()
 		widget->addWidgetItem(cammenu);
 	}
 	
-	cammenu->clearItems();
-	
 	// intros
 	cammenu->addItem(new CMenuForwarder(_("back")));
 
@@ -230,6 +228,12 @@ void CCAMMenuHandler::doMainMenu()
 
 	//
 	widget->exec(NULL, "");
+	
+	delete cammenu;
+	cammenu = NULL;
+	
+	delete widget;
+	widget = NULL;
 }
 
 #define CI_MSG_TIME 5

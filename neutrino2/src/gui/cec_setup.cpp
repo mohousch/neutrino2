@@ -103,7 +103,6 @@ const keyval VIDEOMENU_HDMI_CEC_VOL_OPTIONS[VIDEOMENU_HDMI_CEC_VOL_OPTION_COUNT]
 int CCECSetup::showMenu()
 {
 	//menue init
-	//CMenuWidget *cec = new CMenuWidget(_("CEC Setup"), NEUTRINO_ICON_SETTINGS);
 	CWidget *widget = NULL;
 	ClistBox *cec = NULL;
 	
@@ -138,8 +137,6 @@ int CCECSetup::showMenu()
 		//
 		widget->addWidgetItem(cec);
 	}
-	
-	cec->clearItems();
 	
 	// intros
 	cec->addItem(new CMenuForwarder(_("back")));
