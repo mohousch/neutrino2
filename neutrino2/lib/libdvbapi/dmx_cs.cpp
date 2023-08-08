@@ -373,7 +373,7 @@ bool cDemux::pesFilter(const unsigned short Pid, const dmx_input_t Input)
 	if (demux_fd < 0)
 		return false;
 	
-	dprintf(DEBUG_INFO, "%s:%s dmx(%d,%d) type=%s Pid=0x%x\n", FILENAME, __FUNCTION__, demux_adapter, demux_num, aDMXCHANNELTYPE[type], Pid);
+	dprintf(DEBUG_NORMAL, "%s:%s dmx(%d,%d) type=%s Pid=0x%x\n", FILENAME, __FUNCTION__, demux_adapter, demux_num, aDMXCHANNELTYPE[type], Pid);
 	
 	if ((Pid >= 0x0002 && Pid <= 0x000f) || Pid >= 0x1fff)
 		return false;
