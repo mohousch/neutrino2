@@ -121,9 +121,9 @@ class CVCRControl
 
 		stream2file_error_msg_t startRecording(const char * const filename,
 					const char * const info,
-					const unsigned short vpid,
-					const unsigned short * const apids,
-					const unsigned int numpids);			
+					unsigned short vpid,
+					unsigned short * apids,
+					int numpids);			
 		stream2file_error_msg_t stopRecording(const char * const info, bool file_recording = false);
 
 	protected:

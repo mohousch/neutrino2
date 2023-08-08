@@ -920,7 +920,7 @@ void CVCRControl::processAPIDnames()
 }
 
 //
-stream2file_error_msg_t CVCRControl::startRecording(const char * const filename, const char * const info, const unsigned short vpid, const unsigned short * const pids, const unsigned int numpids)
+stream2file_error_msg_t CVCRControl::startRecording(const char * const filename, const char * const info, unsigned short vpid, unsigned short * pids, int numpids)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::startRecording\n");
 	
@@ -983,9 +983,9 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 
 	// start_recording
 #if defined (PLATFORM_COOLSTREAM)
-	if(!record->Start(fd, (unsigned short ) vpid, (unsigned short *) pids, numpids, 0))
+	if(!record->Start(fd, vpid, pids, numpids, 0))
 #else	  
-	if(!record->Start(fd, (unsigned short ) vpid, (unsigned short *) pids, numpids, record_fe)) 
+	if(!record->Start(fd, vpid, pids, numpids, record_fe)) 
 #endif	  
 	{
 		record->Stop();
