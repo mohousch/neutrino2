@@ -255,7 +255,7 @@ static WriterCaps_t caps_lpcm =
 struct Writer_s WriterAudioLPCM = 
 {
     &reset,
-    &writeData, /* writeDataLPCM */
+    &writeData,
     NULL,
     &caps_lpcm
 };
