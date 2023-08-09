@@ -72,6 +72,8 @@ CCIcon::CCIcon(const int x, const int y, const int dx, const int dy)
 	iWidth = 0; 
 	iHeight = 0; 
 	
+	background = NULL;
+	
 	cc_type = CC_ICON;
 }
 
@@ -81,6 +83,12 @@ void CCIcon::setIcon(const char* const icon)
 	iconName = icon? icon : ""; 
 	
 	if (!iconName.empty()) frameBuffer->getIconSize(iconName.c_str(), &iWidth, &iHeight);
+	
+	if (iWidth > cCBox.iWidth)
+		iWidth = cCBox.iWidth;
+		
+	if (iHeight > cCBox.iHeight)
+		iHeight = cCBox.iHeight;
 }
 
 //
@@ -88,8 +96,49 @@ void CCIcon::paint()
 {
 	dprintf(DEBUG_INFO, "CCIcon::paint\n");
 	
+	//
+	if(background)
+	{
+		delete[] background;
+		background = NULL;
+	}
+
+	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
+		
+	if(background)
+	{
+		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+	
 	if (!iconName.empty()) frameBuffer->paintIcon(iconName.c_str(), cCBox.iX + (cCBox.iWidth - iWidth)/2, cCBox.iY + (cCBox.iHeight - iHeight)/2);
 };
+
+void CCIcon::hide()
+{
+	dprintf(DEBUG_DEBUG, "CCIcon::hide\n");
+	
+	if(background) 
+	{
+		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+		
+		delete[] background;
+		background = NULL;
+	}
+	else //FIXME:
+		frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+}
+
+void CCIcon::refresh()
+{
+	dprintf(DEBUG_NORMAL, "CCIcon::refresh\n");
+	
+	if (background)
+	{
+		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+	
+	if (!iconName.empty()) frameBuffer->paintIcon(iconName.c_str(), cCBox.iX + (cCBox.iWidth - iWidth)/2, cCBox.iY + (cCBox.iHeight - iHeight)/2);
+}
 
 // CCImage
 CCImage::CCImage(const int x, const int y, const int dx, const int dy)
@@ -1463,7 +1512,6 @@ void CCSpinner::paint()
 	{
 		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
 	}
-	//
 	
 	filename += toString(count);
 		

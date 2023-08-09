@@ -195,6 +195,8 @@ class CCIcon : public CComponent
 		int iWidth;
 		int iHeight;
 		
+		fb_pixel_t* background;
+		
 		//
 		std::string iconName;
 
@@ -206,6 +208,10 @@ class CCIcon : public CComponent
 
 		// h/v aligned
 		void paint();
+		
+		//
+		void hide();
+		void refresh();
 };
 
 class CCImage : public CComponent

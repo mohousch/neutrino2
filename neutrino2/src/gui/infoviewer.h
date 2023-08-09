@@ -59,16 +59,16 @@ class CInfoViewer
 		
 		//
 		bool gotTime;
+		
+		//
 		CCTime* timer;
-		////
+		CCIcon* recIcon;
 		CCLabel* currentLabel;
 		CCLabel* currentStartTime;
 		CCLabel* currentPlayTime;
-		
 		CCLabel* nextLabel;
 		CCLabel* nextStartTime;
 		CCLabel* nextPlayTime;
-		////
 		
 		//
 		bool recordModeActive;
@@ -189,7 +189,8 @@ class CInfoViewer
 		void showIcon_RadioText(bool rt_available) const;		
 		void showIcon_CA_Status(int);
 		void showIcon_VTXT()      const;
-		void showRecordIcon(const bool show);
+		void showRecordIcon(bool show);
+		void paintRecordIcon(int posx, int posy);
 		void showIcon_SubT() const;
 		void showIcon_Resolution() const;
 		void showFailure();
@@ -202,7 +203,7 @@ class CInfoViewer
 		//
 		void getCurrentNextEPG(t_channel_id ChannelID, bool newChan = false, int EPGPos = 0);
 
- public:
+ 	public:
 		bool chanready;
 		bool is_visible;
 

@@ -172,7 +172,7 @@ void CInfoViewer::Init()
 	timescale = new CProgressBar(timescale_posx, timescale_posy, BoxWidth - BORDER_LEFT - BORDER_RIGHT, TIMESCALE_BAR_HEIGHT);	//5? see in code
 	
 	timer = NULL;
-	
+	recIcon = NULL;
 	runningPercent = 0;
 	
 	sec_timer_id = 0;
@@ -311,38 +311,31 @@ void CInfoViewer::paintTime(int posx, int posy, unsigned int timeFont)
 	}
 }
 
-void CInfoViewer::showRecordIcon(const bool show)
+void CInfoViewer::showRecordIcon(bool show)
+{ 
+	recordModeActive = show;
+	
+	dprintf(DEBUG_NORMAL, "CInfoViewer::showRecordIcon: %s\n", recordModeActive? "true" : "false");
+}
+
+void CInfoViewer::paintRecordIcon(int posx, int posy)
 { 
 	recordModeActive = CNeutrinoApp::getInstance()->recordingstatus;
+	
+	dprintf(DEBUG_NORMAL, "CInfoViewer::paintRecordIcon: %s\n", recordModeActive? "true" : "false");
 
 	if (recordModeActive && is_visible) 
-	{
-		dprintf(DEBUG_INFO, "CInfoViewer::showRecordIcon:\n");
+	{	
+		int iw = 0;
+		int ih = 0;
 		
-		if (show) 
-		{
-			// rec icon
-			frameBuffer->paintIcon(autoshift ? NEUTRINO_ICON_AUTO_SHIFT : NEUTRINO_ICON_REC, BoxStartX + BORDER_LEFT, BoxStartY - 30);
-
-			// channel name
-			/*
-			if(!autoshift && !shift_timer) 
-			{
-				// border
-				if (g_settings.infobar_border)
-					frameBuffer->paintBoxRel(BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, BoxStartY - 30, icon_w_rec, icon_h_rec, COL_MENUCONTENT_PLUS_6);
-				
-				// box
-				frameBuffer->paintBoxRel(g_settings.infobar_border? BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + 1 : BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET, g_settings.infobar_border? BoxStartY - 30 + 1 : BoxStartY - 30, g_settings.infobar_border? icon_w_rec - 2 : icon_w_rec, g_settings.infobar_border? icon_h_rec - 2 : icon_h_rec, COL_INFOBAR_PLUS_0);
-
-				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString (BoxStartX + BORDER_LEFT + icon_w_rec + ICON_OFFSET + BORDER_LEFT, BoxStartY - 8, REC_INFOBOX_WIDTH, ext_channel_name.c_str(), COL_INFOBAR, 0, true);
-			} 
-			else
-				frameBuffer->paintBackgroundBoxRel(BoxStartX + BORDER_LEFT, BoxStartY - 30, icon_w_rec, icon_h_rec);
-			*/
-		} 
-		else 
-			frameBuffer->paintBackgroundBoxRel(BoxStartX + BORDER_LEFT, BoxStartY - 30, icon_w_rec, icon_h_rec);
+		frameBuffer->getIconSize(NEUTRINO_ICON_REC, &iw, &ih);
+		
+		recIcon = new CCIcon();
+		recIcon->setPosition(posx - iw, posy + 4, iw, ih);
+		recIcon->setIcon(autoshift ? NEUTRINO_ICON_AUTO_SHIFT : NEUTRINO_ICON_REC);
+		recIcon->paint();
+		recIcon->enableRepaint();	
 	}	
 }
 
@@ -582,7 +575,8 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 	}
 
 	// record icon
-	showRecordIcon(show_dot);
+	int timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth("00:00:00");
+	paintRecordIcon(BoxEndX - BORDER_RIGHT - timestr_len, ChanNameY);
 	
 	// other buttonbar
 	if( showButtonBar )
@@ -645,8 +639,13 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 			} 			
 			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 			{
-				showRecordIcon(show_dot);
-				show_dot = !show_dot;
+				//showRecordIcon(show_dot);
+				//show_dot = !show_dot;
+				
+				if (recordModeActive)
+				{
+					recIcon->refresh();
+				}
 				
 				//
 				timer->refresh();
@@ -1273,8 +1272,13 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	{	  
 		recordModeActive = data;
 		
-		if(is_visible) 
-			showRecordIcon(recordModeActive);		
+		if(is_visible)
+		{ 
+			if (recordModeActive)
+				recIcon->paint();
+			else
+				recIcon->hide();
+		}		
   	} 
 	else if (msg == NeutrinoMessages::EVT_ZAP_GOTAPIDS) 
 	{
@@ -1875,6 +1879,12 @@ void CInfoViewer::killTitle()
 	{
 		delete timer;
 		timer = NULL;
+	}
+	
+	if (recIcon)
+	{
+		delete recIcon;
+		recIcon = NULL;
 	}
 		
 	if (currentLabel)
