@@ -127,20 +127,10 @@ class CComponent
 		
 		//
 		bool rePaint;
-		//fb_pixel_t* background;
 		
 		//
 		CComponent();
-		virtual ~CComponent()
-		{
-		/*
-			if (background)
-			{
-				delete [] background; 
-				background = NULL;
-			}
-		*/
-		};
+		virtual ~CComponent(){};
 		
 		virtual bool isSelectable(void){return false;};
 		
@@ -264,7 +254,6 @@ class CCImage : public CComponent
 };
 
 // CCButtons
-//
 enum {
 	BUTTON_BUTTON,
 	BUTTON_FRAME_COLORED,
@@ -565,7 +554,6 @@ class CCSpinner : public CComponent
 		void refresh();
 };
 
-////
 //CScrollBar
 class CScrollBar : public CComponent
 {
@@ -897,3 +885,4 @@ class CFooters : public CWidgetItem
 };
 
 #endif /* __gui_widget_helpers_h__ */
+

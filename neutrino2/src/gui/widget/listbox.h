@@ -482,7 +482,7 @@ class ClistBox : public CWidgetItem
 		bool paintDate;
 		int thalign;
 		bool head_line;
-		int head_line_gradient;
+		bool head_line_gradient;
 		const char* format;
 		CCTime* timer;
 

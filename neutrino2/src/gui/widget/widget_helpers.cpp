@@ -52,7 +52,6 @@ CComponent::CComponent()
 	
 	//
 	rePaint = false; 
-	//background = NULL;
 	
 	//
 	halign = CC_ALIGN_LEFT;
@@ -811,7 +810,7 @@ void CItems2DetailsLine::hide()
 	frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 }
 
-////
+//
 CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_NORMAL, "CCSlider::CCSlider\n");
@@ -1520,8 +1519,6 @@ void CCSpinner::paint()
 	}
 	
 	filename += toString(count);
-		
-	//count = (count + 1) % 9;
 	
 	frameBuffer->paintIcon(filename, cCBox.iX, cCBox.iY);
 }
