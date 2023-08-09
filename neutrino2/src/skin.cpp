@@ -1206,7 +1206,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	const char* format = NULL;
 	unsigned int halign = 0;
 	unsigned int head_line = 0;
-	unsigned head_line_gradient = 0;
+	unsigned int head_line_gradient = 0;
 				
 	// foot
 	unsigned int paintfoot = 0;
@@ -1342,8 +1342,6 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 			//if (format) listBox->setFormat(format); //FIXME:
 			listBox->setTitleHAlign(halign);
 			//
-			int head_line_gr = NOGRADIENT;
-			//if (head_line_gradient) head_line_gr = convertGradient(head_line_gradient);
 			listBox->setHeadLine(head_line, head_line_gradient);
 		}
 				
@@ -1351,9 +1349,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		if (paintfoot)
 		{
 			listBox->enablePaintFoot();
-			//
-			int foot_line_gr = NOGRADIENT;
-			//if (foot_line_gradient) foot_line_gr = convertGradient(foot_line_gradient);
+			
 			listBox->setFootLine(foot_line, foot_line_gradient);
 		}
 				
@@ -1851,8 +1847,6 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 		if (corner) co = convertCorner(corner);
 		if (radius) ra = convertRadius(radius);
 		foot->setCorner(ra, co);
-		int foot_line_gr = NOGRADIENT;
-		//if (foot_line_gradient) gr = convertGradient(foot_line_gradient);
 		foot->setFootLine(foot_line, foot_line_gradient);
 					
 		// BUTTON_LABEL

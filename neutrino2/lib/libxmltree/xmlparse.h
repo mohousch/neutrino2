@@ -98,7 +98,7 @@ enum XML_Error {
 
 #define INIT_TAG_BUF_SIZE 32  /* must be a multiple of sizeof(XML_Char) */
 #define INIT_DATA_BUF_SIZE 1024
-#define INIT_ATTS_SIZE 16
+#define INIT_ATTS_SIZE 32  //
 #define INIT_BLOCK_SIZE 1024
 #define INIT_BUFFER_SIZE 1024
 
