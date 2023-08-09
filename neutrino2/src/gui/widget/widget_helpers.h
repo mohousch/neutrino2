@@ -127,19 +127,32 @@ class CComponent
 		
 		//
 		bool rePaint;
+		//fb_pixel_t* background;
 		
 		//
 		CComponent();
-		virtual ~CComponent(){};
+		virtual ~CComponent()
+		{
+		/*
+			if (background)
+			{
+				delete [] background; 
+				background = NULL;
+			}
+		*/
+		};
 		
 		virtual bool isSelectable(void){return false;};
 		
 		//
 		virtual void paint(void){};
 		virtual void hide(void){};
-		virtual void refresh(void){};
+		
+		//
 		virtual void enableRepaint(){rePaint = true;};
 		virtual bool update() const {return rePaint;};
+		virtual void refresh(void){};
+		virtual void blink(bool){};
 		
 		//
 		virtual int getCCType(){return cc_type;};
@@ -201,17 +214,24 @@ class CCIcon : public CComponent
 		std::string iconName;
 
 		CCIcon(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
-		virtual ~CCIcon(){};
+		virtual ~CCIcon()
+		{
+			if (background)
+			{
+				delete [] background; 
+				background = NULL;
+			}
+		};
 		
 		//
 		void setIcon(const char* const icon);
 
 		// h/v aligned
 		void paint();
+		void hide();
 		
 		//
-		void hide();
-		void refresh();
+		void blink(bool show);
 };
 
 class CCImage : public CComponent
@@ -713,9 +733,11 @@ class CWidgetItem
 		//
 		virtual void paint(void){painted = true;};
 		virtual void hide(void){painted = false;};
-		virtual void refresh(void){};
+		
+		//
 		virtual void enableRepaint(){rePaint = true;};
 		virtual bool update() const {return rePaint;};
+		virtual void refresh(void){};
 
 		//
 		virtual void scrollLineDown(const int lines = 1){};

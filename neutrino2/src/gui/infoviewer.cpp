@@ -332,10 +332,11 @@ void CInfoViewer::paintRecordIcon(int posx, int posy)
 		frameBuffer->getIconSize(NEUTRINO_ICON_REC, &iw, &ih);
 		
 		recIcon = new CCIcon();
-		recIcon->setPosition(posx - iw, posy + 4, iw, ih);
+		recIcon->setPosition(posx - iw, posy + 5, iw, ih);
 		recIcon->setIcon(autoshift ? NEUTRINO_ICON_AUTO_SHIFT : NEUTRINO_ICON_REC);
-		recIcon->paint();
-		recIcon->enableRepaint();	
+		recIcon->enableRepaint();
+		
+		recIcon->paint();	
 	}	
 }
 
@@ -640,11 +641,12 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 			{
 				//showRecordIcon(show_dot);
-				//show_dot = !show_dot;
+				show_dot = !show_dot;
 				
 				if (recordModeActive)
 				{
-					recIcon->refresh();
+					//recIcon->refresh();
+					recIcon->blink(show_dot);
 				}
 				
 				//

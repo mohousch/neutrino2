@@ -50,7 +50,11 @@ CComponent::CComponent()
 	cCBox.iWidth = 0;
 	cCBox.iHeight = 0;
 	
+	//
 	rePaint = false; 
+	//background = NULL;
+	
+	//
 	halign = CC_ALIGN_LEFT;
 	
 	cc_type = -1;
@@ -97,6 +101,8 @@ void CCIcon::paint()
 	dprintf(DEBUG_INFO, "CCIcon::paint\n");
 	
 	//
+	if (rePaint)
+	{
 	if(background)
 	{
 		delete[] background;
@@ -109,13 +115,14 @@ void CCIcon::paint()
 	{
 		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
 	}
+	}
 	
 	if (!iconName.empty()) frameBuffer->paintIcon(iconName.c_str(), cCBox.iX + (cCBox.iWidth - iWidth)/2, cCBox.iY + (cCBox.iHeight - iHeight)/2);
 };
 
 void CCIcon::hide()
 {
-	dprintf(DEBUG_DEBUG, "CCIcon::hide\n");
+	dprintf(DEBUG_INFO, "CCIcon::hide\n");
 	
 	if(background) 
 	{
@@ -128,16 +135,14 @@ void CCIcon::hide()
 		frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 }
 
-void CCIcon::refresh()
+void CCIcon::blink(bool show)
 {
-	dprintf(DEBUG_NORMAL, "CCIcon::refresh\n");
+	dprintf(DEBUG_DEBUG, "CCIcon::blinl\n");
 	
-	if (background)
-	{
-		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-	}
-	
-	if (!iconName.empty()) frameBuffer->paintIcon(iconName.c_str(), cCBox.iX + (cCBox.iWidth - iWidth)/2, cCBox.iY + (cCBox.iHeight - iHeight)/2);
+	if (show)
+		paint();
+	else
+		hide();
 }
 
 // CCImage
@@ -1302,6 +1307,7 @@ CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 
 CCTime::~CCTime()
 {
+
 	if (background)
 	{
 		delete [] background; 
@@ -1454,7 +1460,7 @@ void CCCounter::refresh()
 void CCCounter::hide()
 {
 	dprintf(DEBUG_INFO, "CCCounter::hide\n");
-	
+
 	if (background)
 	{
 		delete [] background; 
