@@ -1,7 +1,5 @@
 /*
- * $Id: widget_helpers.h 2016/01/12 mohousch Exp $
- *
- * (C) 2003 by thegoodguy <thegoodguy@berlios.de>
+ * $Id: widget_helpers.h 10.08.2023 mohousch Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,6 +100,7 @@ class CBox
 			iWidth =_iWidth; 
 			iHeight =_iHeight;
 		};
+		
 		inline ~CBox(){};
 };
 
@@ -140,6 +139,8 @@ class CComponent
 		
 		//
 		bool rePaint;
+		bool savescreen;
+		bool paintBG;
 		
 		//
 		CComponent();
@@ -178,7 +179,7 @@ class CComponent
 		};
 		
 		//
-		virtual inline CBox getWindowsPos(void){return (cCBox);};
+		virtual inline CBox getWindowsPos(void){return cCBox;};
 		
 		//
 		virtual void init(){};
@@ -190,14 +191,15 @@ class CComponent
 		virtual void setButtons(const struct button_label *button_label, const int button_count = 1){};
 		virtual void setFont(unsigned int f){};
 		virtual void setText(const char* text){};
-		virtual void enablePaintBG(){};
-		virtual void setHAlign(int h){};
+		virtual void enablePaintBG(){paintBG = true;};
+		virtual void setHAlign(int h){halign = h;};
 		virtual void setMode(int m){};
 		virtual void useBackground(void){};
 		virtual void setFormat(const char* f){};
 		virtual void setInterFrame(int iframe = 15){};
 		virtual void setTotalTime(time_t tot_time){};
 		virtual void setPlayTime(time_t p_time){};
+		virtual void enableSaveScreen(void){savescreen = true;};
 };
 
 typedef std::vector<CComponent*> CCITEMLIST;
@@ -376,25 +378,23 @@ class CCLabel : public CComponent
 		uint8_t color;
 		unsigned int font;
 		std::string label;
-		bool paintBG;
 		
 		//
-		bool savescreen;
 		fb_pixel_t* background;
 		
 		//
-		CCLabel(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0, bool save = false);
+		CCLabel(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
 		virtual ~CCLabel();
 		
 		//
 		void setColor(uint8_t col){color = col;};
 		void setFont(unsigned int f){font = f;};
 		void setText(const char* const text){label = text? text : "";};
-		void enablePaintBG(){paintBG = true;};
-		void setHAlign(int h){halign = h;};
+		void enableSaveScreen();
 		
 		//
 		void paint();
+		void hide();
 };
 
 //CText
@@ -414,24 +414,23 @@ class CCText : public CComponent
 		unsigned int font;
 		std::vector<std::string> Text;
 		uint8_t color;
-		bool paintBG;
 		
 		//
-		bool savescreen;
 		fb_pixel_t* background;
 		
 		//
-		CCText(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0, bool save = false);
+		CCText(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
 		virtual ~CCText();
 		
 		//
 		void setFont(unsigned int f){font = f;};
 		void setColor(uint8_t col){color = col;};
 		void setText(const char* const text){processTextToArray(text);};
-		void enablePaintBG(){paintBG = true;};
+		void enableSaveScreen();
 		
 		//
 		void paint();
+		void hide();
 };
 
 //
@@ -498,7 +497,6 @@ class CCTime : public CComponent
 		void setColor(uint8_t col){color = col;};
 		void setFont(unsigned int f){font = f;};
 		void setFormat(const char* const f);
-		void setHAlign(int h){halign = h;};
 		
 		//
 		void paint();
@@ -529,7 +527,6 @@ class CCCounter : public CComponent
 		//
 		void setColor(uint8_t col){color = col;};
 		void setFont(unsigned int f){font = f;};
-		void setHAlign(int h){halign = h;};
 		void setTotalTime(time_t tot_time){total_time = tot_time;};
 		void setPlayTime(time_t p_time){play_time = p_time;};
 		
@@ -634,7 +631,6 @@ class CItems2DetailsLine : public CComponent
 		// cutom mode
 		unsigned int tFont;
 		int borderMode;
-		bool savescreen;
 		bool paintframe;
 		uint32_t color;
 		bool scale;
@@ -659,7 +655,6 @@ class CItems2DetailsLine : public CComponent
 		// custom mode
 		void setFont(unsigned int f){tFont = f;};
 		void setBorderMode(int m){borderMode = m;};
-		void enableSaveScreen(){savescreen = true;};
 		void paintFrame(bool p){paintframe = p;};
 		void setColor(uint32_t col){color = col;};
 		void setScaling(bool s){scale = s;};
@@ -706,6 +701,8 @@ class CWidgetItem
 		//
 		bool inFocus;
 		bool rePaint;
+		
+		//
 		std::string actionKey; // lua
 		
 		//
@@ -761,7 +758,7 @@ class CWidgetItem
 			itemBox.iHeight = dy;
 		};
 		virtual void setPosition(CBox* position){itemBox = *position;};
-		virtual inline CBox getWindowsPos(void){return (itemBox);};
+		virtual inline CBox getWindowsPos(void){return itemBox;};
 
 		//
 		virtual int getWidgetType(){return (4);};

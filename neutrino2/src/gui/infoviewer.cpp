@@ -332,7 +332,7 @@ void CInfoViewer::paintRecordIcon(int posx, int posy)
 		frameBuffer->getIconSize(NEUTRINO_ICON_REC, &iw, &ih);
 		
 		recIcon = new CCIcon();
-		recIcon->setPosition(posx - iw, posy + 5, iw, ih);
+		recIcon->setPosition(posx - ICON_OFFSET - iw, posy + 5, iw, ih);
 		recIcon->setIcon(autoshift ? NEUTRINO_ICON_AUTO_SHIFT : NEUTRINO_ICON_REC);
 		recIcon->enableRepaint();
 		
@@ -378,27 +378,33 @@ void CInfoViewer::show(const int ChanNum, const std::string& Channel, const t_sa
 	unsigned int r_w = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth("00:00:00");
   	
   	//
-  	currentLabel = new CCLabel(ChanInfoX, ChanInfoY, BoxEndX - ChanInfoX - r_w - 10, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight(), true);
+  	currentLabel = new CCLabel(ChanInfoX, ChanInfoY, BoxEndX - ChanInfoX - r_w - 10, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	currentLabel->enableSaveScreen();
   	currentLabel->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
   	
   	//
-  	currentStartTime = new CCLabel(BoxStartX + 10, ChanInfoY, ChanInfoX - BoxStartX, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight(), true);
+  	currentStartTime = new CCLabel(BoxStartX + 10, ChanInfoY, ChanInfoX - BoxStartX, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	currentStartTime->enableSaveScreen();
   	currentStartTime->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
   	
   	//
-  	currentPlayTime = new CCLabel(BoxEndX - 10 - r_w, ChanInfoY, r_w, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight(), true);
+  	currentPlayTime = new CCLabel(BoxEndX - 10 - r_w, ChanInfoY, r_w, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	currentPlayTime->enableSaveScreen();
   	currentPlayTime->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
   	
   	//
-  	nextLabel = new CCLabel(ChanInfoX, ChanInfoY + ChanInfoHeight, BoxEndX - ChanInfoX - r_w - 10, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight(), true);
+  	nextLabel = new CCLabel(ChanInfoX, ChanInfoY + ChanInfoHeight, BoxEndX - ChanInfoX - r_w - 10, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	nextLabel->enableSaveScreen();
   	nextLabel->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
   	
   	//
-  	nextStartTime = new CCLabel(BoxStartX + 10, ChanInfoY + ChanInfoHeight, ChanInfoX - BoxStartX, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight(), true);
+  	nextStartTime = new CCLabel(BoxStartX + 10, ChanInfoY + ChanInfoHeight, ChanInfoX - BoxStartX, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	nextStartTime->enableSaveScreen();
   	nextStartTime->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
   	
   	//
-  	nextPlayTime = new CCLabel(BoxEndX - 10 - r_w, ChanInfoY + ChanInfoHeight, r_w, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight(), true);
+  	nextPlayTime = new CCLabel(BoxEndX - 10 - r_w, ChanInfoY + ChanInfoHeight, r_w, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	nextPlayTime->enableSaveScreen();
   	nextPlayTime->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
 
 	//sat name

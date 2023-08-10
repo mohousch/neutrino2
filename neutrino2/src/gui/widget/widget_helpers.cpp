@@ -1,7 +1,5 @@
 /*
- * $Id: widget_helpers.cpp 27.02.2019 mohousch Exp $
- *
- * (C) 2003 by thegoodguy <thegoodguy@berlios.de>
+ * $Id: widget_helpers.cpp 10.08.2023 mohousch Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +49,9 @@ CComponent::CComponent()
 	cCBox.iHeight = 0;
 	
 	//
-	rePaint = false; 
+	rePaint = false;
+	savescreen = false;
+	paintBG = false;
 	
 	//
 	halign = CC_ALIGN_LEFT;
@@ -102,18 +102,18 @@ void CCIcon::paint()
 	//
 	if (rePaint)
 	{
-	if(background)
-	{
-		delete[] background;
-		background = NULL;
-	}
+		if(background)
+		{
+			delete[] background;
+			background = NULL;
+		}
 
-	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
-		
-	if(background)
-	{
-		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-	}
+		background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
+			
+		if(background)
+		{
+			frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+		}
 	}
 	
 	if (!iconName.empty()) frameBuffer->paintIcon(iconName.c_str(), cCBox.iX + (cCBox.iWidth - iWidth)/2, cCBox.iY + (cCBox.iHeight - iHeight)/2);
@@ -130,8 +130,8 @@ void CCIcon::hide()
 		delete[] background;
 		background = NULL;
 	}
-	else //FIXME:
-		frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+	//else
+	//	frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 }
 
 void CCIcon::blink(bool show)
@@ -750,9 +750,10 @@ void CItems2DetailsLine::paint()
 		}
 		
 		//
-		CCText Dline(cCBox.iX + iw + 15, cCBox.iY + 10, cCBox.iWidth - iw - 20, cCBox.iHeight - 20, true);
+		CCText Dline(cCBox.iX + iw + 15, cCBox.iY + 10, cCBox.iWidth - iw - 20, cCBox.iHeight - 20);
 		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());			
+		Dline.setText(hint.c_str());
+		Dline.enableSaveScreen();			
 		Dline.paint();
 	}
 	else if (mode == DL_HINTITEM)
@@ -780,9 +781,10 @@ void CItems2DetailsLine::paint()
 		}
 		
 		//
-		CCText Dline(cCBox.iX + 10, cCBox.iY + ih + 10, cCBox.iWidth - 20, cCBox.iHeight - ih - 20, true);
+		CCText Dline(cCBox.iX + 10, cCBox.iY + ih + 10, cCBox.iWidth - 20, cCBox.iHeight - ih - 20);
 		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());			
+		Dline.setText(hint.c_str());
+		Dline.enableSaveScreen();			
 		Dline.paint();
 		
 	}
@@ -797,9 +799,10 @@ void CItems2DetailsLine::paint()
 	}
 	else if (mode == DL_HINTHINT)
 	{
-		CCText Dline(cCBox.iX + 10, cCBox.iY + 10, cCBox.iWidth - 20, cCBox.iHeight - 20, true);
+		CCText Dline(cCBox.iX + 10, cCBox.iY + 10, cCBox.iWidth - 20, cCBox.iHeight - 20);
 		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());			
+		Dline.setText(hint.c_str());
+		Dline.enableSaveScreen();			
 		Dline.paint();
 	}
 }
@@ -934,7 +937,7 @@ void CCFrameLine::paint()
 }
 
 // CLabel
-CCLabel::CCLabel(const int x, const int y, const int dx, const int dy, bool save)
+CCLabel::CCLabel(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_INFO, "CCLabel::CCLabel: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
@@ -948,25 +951,8 @@ CCLabel::CCLabel(const int x, const int y, const int dx, const int dy, bool save
 	background = NULL;
 	
 	//
-	savescreen = save;
-	
-	if (savescreen)
-	{
-		background = new fb_pixel_t[dx*dy];
-		
-		if (background)
-		{
-			frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-		}
-	}
-	
-	
-	//
 	color = COL_MENUCONTENT;
-	paintBG = false; 
 	font = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
-	
-	halign = CC_ALIGN_LEFT;
 	
 	label = "";
 	
@@ -975,13 +961,24 @@ CCLabel::CCLabel(const int x, const int y, const int dx, const int dy, bool save
 
 CCLabel::~CCLabel()
 {
-	if (savescreen)
+	hide();
+}
+
+void CCLabel::enableSaveScreen()
+{
+	savescreen = true;
+	
+	if (background)
 	{
-		if (background)
-		{
-			delete [] background;
-			background = NULL;
-		}
+		delete [] background;
+		background = NULL;
+	}
+		
+	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
+		
+	if (background)
+	{
+		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
 	}
 }
 
@@ -1019,8 +1016,20 @@ void CCLabel::paint()
 	g_Font[font]->RenderString(startPosX, cCBox.iY + height + (cCBox.iHeight - height)/2, cCBox.iWidth, label.c_str(), color, 0, true, paintBG);
 }
 
+void CCLabel::hide()
+{
+	if (savescreen)
+	{
+		if (background)
+		{
+			delete [] background;
+			background = NULL;
+		}
+	}
+}
+
 //
-CCText::CCText(const int x, const int y, const int dx, const int dy, bool save)
+CCText::CCText(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_INFO, "CCText::CCText: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
@@ -1033,22 +1042,8 @@ CCText::CCText(const int x, const int y, const int dx, const int dy, bool save)
 	
 	background = NULL;
 	
-	//
-	savescreen = save;
-	
-	if (savescreen)
-	{
-		background = new fb_pixel_t[dx*dy];
-		
-		if (background)
-		{
-			frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-		}
-	}
-	
 	font = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
 	color = COL_MENUCONTENT;
-	paintBG = false; 
 	
 	//
 	Text.clear();
@@ -1059,16 +1054,27 @@ CCText::CCText(const int x, const int y, const int dx, const int dy, bool save)
 	cc_type = CC_TEXT;
 }
 
+void CCText::enableSaveScreen()
+{
+	savescreen = true;
+	
+	if (background)
+	{
+		delete [] background;
+		background = NULL;
+	}
+		
+	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
+		
+	if (background)
+	{
+		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+}
+
 CCText::~CCText()
 {
-	if (savescreen)
-	{
-		if (background)
-		{
-			delete [] background;
-			background = NULL;
-		}
-	}
+	hide();
 }
 
 //
@@ -1140,6 +1146,7 @@ void CCText::processTextToArray(std::string text) // UTF-8
 		}
 		text_++;
 	}
+	
 	//add the rest
 	addTextToArray( aktLine + aktWord );
 }
@@ -1167,6 +1174,18 @@ void CCText::paint()
 	for(int i = 0; i < textSize && i < medlinecount; i++, y += medlineheight)
 	{
 		g_Font[font]->RenderString(cCBox.iX, y + medlineheight, cCBox.iWidth, Text[i], color, 0, true, paintBG); // UTF-8
+	}
+}
+
+void CCText::hide()
+{
+	if (savescreen)
+	{
+		if (background)
+		{
+			delete [] background;
+			background = NULL;
+		}
 	}
 }
 

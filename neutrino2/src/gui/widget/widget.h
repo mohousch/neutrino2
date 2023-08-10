@@ -171,7 +171,7 @@ class CWidget : public CMenuTarget
 		bool getExitPressed(){return exit_pressed;};
 		
 		//
-		inline CBox getWindowsPos(void){return(mainFrameBox);};
+		inline CBox getWindowsPos(void){return mainFrameBox;};
 		int getMenuPosition(){return menu_position;};
 
 		// events
