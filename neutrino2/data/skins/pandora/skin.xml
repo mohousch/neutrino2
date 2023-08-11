@@ -495,6 +495,10 @@
 		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
+	<WIDGET name="bqedit" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
+	</WIDGET>
+	
 	<WIDGET name="channellist" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<HEAD posx="50" posy="50" width="1080" height="50" paintframe="0" line="1"/>
 		<LISTBOX posx="50" posy="100" width="700" height="420" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" scrollbar="1"/>
@@ -502,6 +506,10 @@
 		<FOOT posx="50" posy="520" width="1080" height="50" paintframe="0" line="1"/>
 		<HLINE posx="790" posy="310" width="360" height="360" gradient="DARK2LIGHT2DARK"/>
 		<VLINE posx="750" posy="110" width="3" height="400" gradient="DARK2LIGHT2DARK"/>
+	</WIDGET>
+	
+	<WIDGET name="channellistedit" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
 	<WIDGET name="bqeditchselect" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">

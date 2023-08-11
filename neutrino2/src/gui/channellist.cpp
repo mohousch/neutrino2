@@ -482,6 +482,8 @@ int CChannelList::doChannelMenu(void)
 		widget->addWidgetItem(menu);
 	}
 	
+	widget->setPosition(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	widget->setMenuPosition(MENU_POSITION_CENTER);
 	widget->enableSaveScreen();
 	
 	//
