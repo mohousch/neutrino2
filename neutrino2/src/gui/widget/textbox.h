@@ -165,7 +165,7 @@ class CTextBox : public CWidgetItem
 		void setMode(const int mode);
 		void paintMainFrame(bool p){paintframe = p;};
 		void setBorderMode(int m = BORDER_ALL){borderMode = m;};
-		void enableSaveScreen(){savescreen = true;};
+		void enableSaveScreen(){savescreen = true; initFramesRel(); saveScreen();};
 
 		void paint(void);
 		void hide(void);

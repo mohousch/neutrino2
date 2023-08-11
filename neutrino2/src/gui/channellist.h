@@ -70,8 +70,7 @@ class CChannelList
 		CBox winTopBox;
 		CBox winBottomBox;
 		
-		CWidget* chWidget;
-		
+		CWidget* widget;
 		ClistBox *listBox;
 		CMenuItem *item;
 		CHeaders* head;

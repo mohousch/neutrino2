@@ -56,6 +56,9 @@ class CWindow : public CWidgetItem
 		//
 		int borderMode;
 		bool paintFrame;
+		
+		//
+		void initFrames();
 
 	public:
 		CWindow(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
@@ -63,7 +66,7 @@ class CWindow : public CWidgetItem
 		virtual ~CWindow();
 
 		//
-		void init();
+		//void initFrames();
 		void setPosition(const int x, const int y, const int dx, const int dy);
 		void setPosition(CBox* position);
 		
@@ -73,6 +76,7 @@ class CWindow : public CWidgetItem
 		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_ONECOLOR){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setBorderMode(int sm){borderMode = sm;};
+		
 		//
 		void enableSaveScreen();
 		void saveScreen();

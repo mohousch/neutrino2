@@ -178,9 +178,6 @@ void CWidget::initFrames()
 		mainFrameBox.iX = frameBuffer->getScreenX() + frameBuffer->getScreenWidth() - mainFrameBox.iWidth;
 		mainFrameBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainFrameBox.iHeight) >> 1 );
 	}
-
-	if(savescreen) 
-		saveScreen();
 }
 
 void CWidget::paintWidgetItems()
@@ -267,10 +264,9 @@ void CWidget::restoreScreen()
 {
 	dprintf(DEBUG_INFO, "CWidget::restoreScreen\n");
 	
-	if(background) 
+	if(savescreen && background) 
 	{
-		if(savescreen)
-			frameBuffer->restoreScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);
+		frameBuffer->restoreScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);
 	}
 }
 
@@ -278,11 +274,11 @@ void CWidget::enableSaveScreen()
 {
 	savescreen = true;
 	
-	if(!savescreen && background) 
-	{
-		delete[] background;
-		background = NULL;
-	}
+	//
+	initFrames();
+	
+	//
+	saveScreen();
 }
 
 void CWidget::hide()

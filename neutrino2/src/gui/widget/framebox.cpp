@@ -669,12 +669,6 @@ void CFrameBox::enableSaveScreen()
 	
 	savescreen = true;
 	
-	if(!savescreen && background) 
-	{
-		delete[] background;
-		background = NULL;
-	}
-	
 	saveScreen();
 }
 
@@ -691,7 +685,7 @@ void CFrameBox::hide()
 				if(videoDecoder)  
 					videoDecoder->Pig(-1, -1, -1, -1);
 					
-				CFrameBuffer::getInstance()->paintBackgroundBoxRel(frames[i]->window.getWindowsPos().iX, frames[i]->window.getWindowsPos().iY, frames[i]->window.getWindowsPos().iWidth, frames[i]->window.getWindowsPos().iHeight);
+				//CFrameBuffer::getInstance()->paintBackgroundBoxRel(frames[i]->window.getWindowsPos().iX, frames[i]->window.getWindowsPos().iY, frames[i]->window.getWindowsPos().iWidth, frames[i]->window.getWindowsPos().iHeight);
 			}
 		}
 	}

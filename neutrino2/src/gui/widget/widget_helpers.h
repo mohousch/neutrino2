@@ -554,7 +554,14 @@ class CCSpinner : public CComponent
 		
 		//
 		CCSpinner(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
-		virtual ~CCSpinner(){};
+		virtual ~CCSpinner()
+		{
+			if(background)
+			{
+				delete[] background;
+				background = NULL;
+			}
+		};
 		
 		//
 		void paint();

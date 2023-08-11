@@ -127,8 +127,8 @@ void CCIcon::hide()
 	{
 		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
 		
-		delete[] background;
-		background = NULL;
+		//delete[] background;
+		//background = NULL;
 	}
 	//else
 	//	frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
@@ -1342,6 +1342,12 @@ void CCTime::paint()
 {
 	dprintf(DEBUG_INFO, "CCTime::paint\n");
 	
+	if (background)
+	{
+		delete [] background; 
+		background = NULL;
+	}
+	
 	//
 	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
 	
@@ -1436,6 +1442,12 @@ CCCounter::~CCCounter()
 void CCCounter::paint()
 {
 	dprintf(DEBUG_INFO, "CCCounter::paint\n");
+	
+	if (background)
+	{
+		delete [] background; 
+		background = NULL;
+	}
 	
 	//
 	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
@@ -1550,8 +1562,8 @@ void CCSpinner::hide()
 	{
 		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
 		
-		delete[] background;
-		background = NULL;
+		//delete[] background;
+		//background = NULL;
 	}
 	else //FIXME:
 		frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);

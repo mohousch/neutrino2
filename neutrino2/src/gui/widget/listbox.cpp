@@ -2649,10 +2649,9 @@ void ClistBox::restoreScreen()
 {
 	dprintf(DEBUG_INFO, "ClistBox::restoreScreen:\n");
 	
-	if(background) 
+	if(savescreen && background) 
 	{
-		if(savescreen)
-			frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, wanted_width, wanted_height, background);
+		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, wanted_width, wanted_height, background);
 	}
 }
 
@@ -2661,12 +2660,6 @@ void ClistBox::enableSaveScreen()
 	dprintf(DEBUG_INFO, "ClistBox::enableSaveScreen:\n");
 	
 	savescreen = true;
-	
-	if(!savescreen && background) 
-	{
-		delete[] background;
-		background = NULL;
-	}
 	
 	saveScreen();
 }
@@ -2679,7 +2672,6 @@ void ClistBox::hide()
 		restoreScreen();
 	else
 		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, wanted_width, wanted_height);
-		//frameBuffer->paintBackgroundBoxRel(itemBox.iX - 2, itemBox.iY - 2, full_width + 4, full_height + 4);
 		
 	//
 	hideItemInfo(); 

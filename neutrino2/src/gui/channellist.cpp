@@ -140,7 +140,7 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	events.clear();
 
 	//
-	chWidget = NULL;
+	widget = NULL;
 	
 	listBox = NULL;
 	item = NULL;
@@ -204,10 +204,10 @@ CChannelList::~CChannelList()
 		listBox = NULL;
 	}
 	
-	if (chWidget)
+	if (widget)
 	{
-		delete chWidget;
-		chWidget = NULL;
+		delete widget;
+		widget = NULL;
 	}
 }
 
@@ -983,8 +983,8 @@ void CChannelList::hide()
 	dprintf(DEBUG_NORMAL, "CChannelList::hide\n");
 
 	
-	if (chWidget) 
-		chWidget->hide();
+	if (widget) 
+		widget->hide();
 	else
 		CFrameBuffer::getInstance()->clearFrameBuffer();
 		
@@ -1027,10 +1027,10 @@ void CChannelList::hide()
 		listBox = NULL;
 	}
 	
-	if (chWidget)
+	if (widget)
 	{
-		delete chWidget;
-		chWidget = NULL;
+		delete widget;
+		widget = NULL;
 	}
 }
 
@@ -1719,61 +1719,61 @@ void CChannelList::paint()
 		listBox = NULL;
 	}
 	
-	if (chWidget)
+	if (widget)
 	{
-		delete chWidget;
-		chWidget = NULL;
+		delete widget;
+		widget = NULL;
 	}
 	
 	//
-	chWidget = CNeutrinoApp::getInstance()->getWidget("channellist");
+	widget = CNeutrinoApp::getInstance()->getWidget("channellist");
 	
-	if (chWidget)
+	if (widget)
 	{
-		listBox = (ClistBox*)chWidget->getWidgetItem(WIDGETITEM_LISTBOX);
-		head = (CHeaders*)chWidget->getWidgetItem(WIDGETITEM_HEAD);
-		foot = (CFooters*)chWidget->getWidgetItem(WIDGETITEM_FOOT);
-		window = (CWindow*)chWidget->getWidgetItem(WIDGETITEM_WINDOW);
-		vline = (CCVline*)chWidget->getCCItem(CC_VLINE);
-		hline = (CCHline*)chWidget->getCCItem(CC_HLINE);
+		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		head = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+		foot = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
+		window = (CWindow*)widget->getWidgetItem(WIDGETITEM_WINDOW);
+		vline = (CCVline*)widget->getCCItem(CC_VLINE);
+		hline = (CCHline*)widget->getCCItem(CC_HLINE);
 	}
 	else
 	{
-		chWidget = new CWidget(&cFrameBox);
-		chWidget->name = "channellist";
-		chWidget->paintMainFrame(true);
+		widget = new CWidget(&cFrameBox);
+		widget->name = "channellist";
+		widget->paintMainFrame(true);
 		
 		// listBox
-		listBox = new ClistBox(chWidget->getWindowsPos().iX, chWidget->getWindowsPos().iY + 50, (chWidget->getWindowsPos().iWidth/3)*2, chWidget->getWindowsPos().iHeight - 100);
+		listBox = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, (widget->getWindowsPos().iWidth/3)*2, widget->getWindowsPos().iHeight - 100);
 		listBox->paintMainFrame(false);
 		
 		//
-		head = new CHeaders(chWidget->getWindowsPos().iX, chWidget->getWindowsPos().iY, chWidget->getWindowsPos().iWidth, 50);
+		head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 		head->setTitle(name.c_str());
 		head->enablePaintDate();
 		
 		// foot
-		foot = new CFooters(chWidget->getWindowsPos().iX, chWidget->getWindowsPos().iY + chWidget->getWindowsPos().iHeight - 50, chWidget->getWindowsPos().iWidth, 50);
+		foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 		
 		//
-		window = new CWindow(chWidget->getWindowsPos().iX + (chWidget->getWindowsPos().iWidth/3)*2, chWidget->getWindowsPos().iY + 50, chWidget->getWindowsPos().iWidth/3, chWidget->getWindowsPos().iHeight - 100);
+		window = new CWindow(widget->getWindowsPos().iX + (widget->getWindowsPos().iWidth/3)*2, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth/3, widget->getWindowsPos().iHeight - 100);
 		
 		// vline
-		vline = new CCVline(chWidget->getWindowsPos().iX + (chWidget->getWindowsPos().iWidth/3)*2, chWidget->getWindowsPos().iY + 60, 2, chWidget->getWindowsPos().iHeight - 120);
+		vline = new CCVline(widget->getWindowsPos().iX + (widget->getWindowsPos().iWidth/3)*2, widget->getWindowsPos().iY + 60, 2, widget->getWindowsPos().iHeight - 120);
 		vline->setGradient(3);
 			
 		// hline
-		hline = new CCHline(chWidget->getWindowsPos().iX + (chWidget->getWindowsPos().iWidth/3)*2 + 10, chWidget->getWindowsPos().iY + 50 + (chWidget->getWindowsPos().iHeight - 100)/2, chWidget->getWindowsPos().iWidth/3 - 20, 2);
+		hline = new CCHline(widget->getWindowsPos().iX + (widget->getWindowsPos().iWidth/3)*2 + 10, widget->getWindowsPos().iY + 50 + (widget->getWindowsPos().iHeight - 100)/2, widget->getWindowsPos().iWidth/3 - 20, 2);
 		hline->setGradient(3);
 		
-		chWidget->addWidgetItem(listBox);
-		chWidget->addWidgetItem(head);
-		chWidget->addWidgetItem(foot);
-		chWidget->addWidgetItem(window);
+		widget->addWidgetItem(listBox);
+		widget->addWidgetItem(head);
+		widget->addWidgetItem(foot);
+		widget->addWidgetItem(window);
 		
 		//	
-		chWidget->addCCItem(vline);
-		chWidget->addCCItem(hline);
+		widget->addCCItem(vline);
+		widget->addCCItem(hline);
 	}
 	
 	// wionTop
@@ -1908,13 +1908,14 @@ void CChannelList::paint()
 	//
 	if (listBox) listBox->setSelected(selected);
 	
-	if (chWidget) chWidget->paint();
+	if (widget) widget->paint();
 	
 	//
-	if (window) window->saveScreen();
-	
-	if(chanlist.size())
-		paintCurrentNextEvent(selected);
+	if (window) 
+	{
+		window->enableSaveScreen();
+		//window->saveScreen();
+	}
 }
 
 void CChannelList::paintCurrentNextEvent(int _selected)
@@ -1923,7 +1924,8 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 		return;
 		
 	if (window)
-	{	window->restoreScreen(); 
+	{	//window->restoreScreen(); 
+		window->hide();
 		window->paint();
 	}
 	
@@ -1944,7 +1946,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	
 	// title
 	CCLabel epgTitle(winTopBox.iX + 10, winTopBox.iY + 10, winTopBox.iWidth - 20, 60);
-	
+	//epgTitle.enableSaveScreen();
 	epgTitle.setText(p_event->description.c_str());
 	epgTitle.setHAlign(CC_ALIGN_CENTER);
 	epgTitle.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
@@ -1982,17 +1984,20 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	}
 	
 	CCLabel startTime(winTopBox.iX + 10, winTopBox.iY + 10 + 60 + 10, 80, 20);
+	//startTime.enableSaveScreen();
 	startTime.setText(cSeit);
 	startTime.setHAlign(CC_ALIGN_CENTER);
 	startTime.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	
 	CCLabel restTime(winTopBox.iX + 100 + winTopBox.iWidth - 200 + 10, winTopBox.iY + 10 + 60 + 10, 80, 20);
+	//restTime.enableSaveScreen();
 	restTime.setText(cNoch);
 	restTime.setHAlign(CC_ALIGN_CENTER);
 	restTime.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	
 	// text
 	CCText text(winTopBox.iX + 10, winTopBox.iY + 10 + 60 + 10 + 30, winTopBox.iWidth - 20, winTopBox.iHeight - 120);
+	//text.enableSaveScreen();
 	text.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	text.setText(p_event->text.c_str());
 	
@@ -2020,6 +2025,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	
 	//
 	CCLabel nextTitle(winBottomBox.iX + 10, winBottomBox.iY + 10, winBottomBox.iWidth - 20, 20);
+	//nextTitle.enableSaveScreen();
 	nextTitle.setText(p_event->description.c_str());
 	nextTitle.setHAlign(CC_ALIGN_CENTER);
 	nextTitle.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
@@ -2027,6 +2033,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	// vom/bis
 	std::string fromto = "";
 	CCLabel nextTime(winBottomBox.iX + 10, winBottomBox.iY + 10 + 30, winBottomBox.iWidth - 20, 20);
+	//nextTime.enableSaveScreen();
 	nextTime.setHAlign(CC_ALIGN_CENTER);
 	nextTime.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	
@@ -2052,6 +2059,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	
 	// nextText
 	CCText nextText(winBottomBox.iX + 10, winBottomBox.iY + 10 + 60, winBottomBox.iWidth - 20, winBottomBox.iHeight - 80);
+	//nextText.enableSaveScreen();
 	nextText.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	nextText.setText(p_event->text.c_str());
 	

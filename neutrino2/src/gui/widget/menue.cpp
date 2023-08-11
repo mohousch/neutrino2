@@ -349,9 +349,6 @@ void CMenuWidget::initFrames()
 			y = offy + frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
 		}
 	}
-	
-	if(savescreen)
-		saveScreen();
 }
 
 void CMenuWidget::paintHead()
@@ -604,7 +601,7 @@ void CMenuWidget::paint()
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8 );
 	
 	//
-	initFrames();
+	//initFrames();
 	
 	//
 	paintHead();
@@ -1251,10 +1248,9 @@ void CMenuWidget::restoreScreen()
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::restoreScreen:\n");
 	
-	if(background) 
+	if(savescreen && background) 
 	{
-		if(savescreen)
-			frameBuffer->restoreScreen(x, y, full_width, full_height, background);
+		frameBuffer->restoreScreen(x, y, full_width, full_height, background);
 	}
 }
 
@@ -1264,11 +1260,11 @@ void CMenuWidget::enableSaveScreen()
 	
 	savescreen = true;
 	
-	if(!savescreen && background) 
-	{
-		delete[] background;
-		background = NULL;
-	}
+	//
+	initFrames();
+	
+	//
+	saveScreen();
 }
 
 void CMenuWidget::hide()
@@ -1385,6 +1381,9 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 
 	if (parent)
 		parent->hide();
+	
+	//	
+	initFrames();
 
 	//
 	paint();

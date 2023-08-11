@@ -51,7 +51,7 @@ CWindow::CWindow(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 
-	init();
+	initFrames();
 }
 
 CWindow::CWindow(CBox* position)
@@ -62,7 +62,7 @@ CWindow::CWindow(CBox* position)
 	
 	itemBox = *position;
 
-	init();
+	initFrames();
 }
 
 CWindow::~CWindow()
@@ -74,7 +74,7 @@ CWindow::~CWindow()
 	}
 }
 
-void CWindow::init()
+void CWindow::initFrames()
 {
 	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
 
@@ -156,7 +156,7 @@ void CWindow::setPosition(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 	
-	init();
+	initFrames();
 }
 
 void CWindow::setPosition(CBox* position)
@@ -165,7 +165,7 @@ void CWindow::setPosition(CBox* position)
 	
 	itemBox = *position;
 	
-	init();
+	initFrames();
 }
 
 void CWindow::paint()
