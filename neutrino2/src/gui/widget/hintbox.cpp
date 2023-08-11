@@ -142,7 +142,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	}
 	
-	widget->enableSaveScreen();
+	//widget->enableSaveScreen();
 	widget->paintMainFrame(true);
 	
 	// HG
@@ -196,6 +196,9 @@ void CHintBox::refresh(void)
 	
 	widget->setPosition(&cFrameBox);
 	widget->setBorderMode(borderMode);
+	
+	if (current_page == 0)
+		widget->enableSaveScreen();
 	
 	widget->addWidgetItem(headers);
 

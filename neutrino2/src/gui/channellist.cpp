@@ -447,24 +447,24 @@ int CChannelList::doChannelMenu(void)
 		return 0;
 	
 	//
-	CWidget* widget = NULL;
+	CWidget* mWidget = NULL;
 	ClistBox* menu = NULL;
 	
-	widget = CNeutrinoApp::getInstance()->getWidget("channellistedit");
+	mWidget = CNeutrinoApp::getInstance()->getWidget("channellistedit");
 	
-	if (widget)
+	if (mWidget)
 	{
-		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)mWidget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "channellistedit";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		mWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		mWidget->name = "channellistedit";
+		mWidget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		//
-		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		menu = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
 
 		menu->setWidgetMode(MODE_MENU);
 		menu->enableShrinkMenu();
@@ -479,12 +479,12 @@ int CChannelList::doChannelMenu(void)
 		menu->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(menu);
+		mWidget->addWidgetItem(menu);
 	}
 	
-	widget->setPosition(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	widget->setMenuPosition(MENU_POSITION_CENTER);
-	widget->enableSaveScreen();
+	//mWidget->setPosition(0, 0, MENU_WIDTH, MENU_HEIGHT);
+	//mWidget->setMenuPosition(MENU_POSITION_CENTER);
+	mWidget->enableSaveScreen();
 	
 	//
 	menu->addItem(new CMenuForwarder(_("delete")), old_selected == i++);
@@ -492,14 +492,14 @@ int CChannelList::doChannelMenu(void)
 	menu->addItem(new CMenuForwarder(_("Add to Bouquets")), old_selected == i++);
 	menu->addItem(new CMenuForwarder(_("add channel to my favorites")), old_selected == i++);
 
-	widget->exec(NULL, "");
+	mWidget->exec(NULL, "");
 	select = menu->getSelected();
 	
 	delete menu;
 	menu = NULL;
 	
-	delete widget;
-	widget = NULL;
+	delete mWidget;
+	mWidget = NULL;
 
 	if(select >= 0) 
 	{

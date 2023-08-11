@@ -350,7 +350,7 @@ void CMessageBox::initFrames(void)
 		m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	}
 
-	m_cBoxWindow->enableSaveScreen();
+	//m_cBoxWindow->enableSaveScreen();
 	m_cBoxWindow->paintMainFrame(true);
 }
 
@@ -368,6 +368,8 @@ void CMessageBox::refresh()
 	// 
 	m_cBoxWindow->setPosition(&cFrameBox);
 	m_cBoxWindow->setBorderMode(borderMode);
+	if (m_currentPage == 0)
+		m_cBoxWindow->enableSaveScreen();
 
 	// title
 	headers->setPosition(borderMode? CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1) + 2 : CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1), borderMode? CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + 2 : CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2), borderMode? m_width - 4 : m_width, m_theight/*, m_caption.c_str(), m_iconfile.c_str()*/);
