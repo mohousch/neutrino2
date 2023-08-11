@@ -105,6 +105,10 @@ class CWidget : public CMenuTarget
 		int borderMode;
 		
 		//
+		unsigned int current_page;
+		unsigned int total_pages;
+		
+		//
 		void initFrames();
 
 	public:

@@ -58,6 +58,10 @@ class CWindow : public CWidgetItem
 		bool paintFrame;
 		
 		//
+		unsigned int current_page;
+		unsigned int total_pages;
+		
+		//
 		void initFrames();
 
 	public:
@@ -66,7 +70,6 @@ class CWindow : public CWidgetItem
 		virtual ~CWindow();
 
 		//
-		//void initFrames();
 		void setPosition(const int x, const int y, const int dx, const int dy);
 		void setPosition(CBox* position);
 		

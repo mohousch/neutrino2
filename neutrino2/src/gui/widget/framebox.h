@@ -193,6 +193,10 @@ class CFrameBox : public CWidgetItem
 		int fbutton_width;
 		button_label_list_t fbutton_labels;
 		bool paint_Foot;
+		
+		//
+		unsigned int current_page;
+		unsigned int total_pages;
 
 	public:
 		CFrameBox(const int x = 0, int const y = 0, const int dx = 0, const int dy = 0);

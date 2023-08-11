@@ -92,6 +92,9 @@ void CWindow::initFrames()
 
 	savescreen = false;
 	background = NULL;
+	
+	current_page = 0;
+	total_pages = 1;
 
 	// sanity check
 	if(itemBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))

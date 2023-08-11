@@ -736,6 +736,11 @@ class CWidgetItem
 		virtual bool hasItem(){return false;};
 
 		//
+		virtual void initFrames(){};
+		virtual void paintHead(){};
+		virtual void paintFoot(){};
+		virtual void paintItemInfo(int ){};
+		virtual void hideItemInfo(){};
 		virtual void paint(void){painted = true;};
 		virtual void hide(void){painted = false;};
 		

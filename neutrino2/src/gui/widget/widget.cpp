@@ -63,6 +63,10 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	radius = NO_RADIUS;
 	corner = CORNER_NONE;
 	borderMode = BORDER_NO;
+	
+	//
+	current_page = 0;
+	total_pages = 1;
 
 	//
 	actionKey = "";
@@ -95,6 +99,10 @@ CWidget::CWidget(CBox *position)
 	radius = RADIUS_MID;
 	corner = CORNER_ALL;
 	borderMode = BORDER_NO;
+	
+	//
+	current_page = 0;
+	total_pages = 1;
 
 	//
 	actionKey = "";

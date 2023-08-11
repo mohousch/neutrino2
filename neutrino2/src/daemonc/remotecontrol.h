@@ -80,6 +80,7 @@ class CSubService
 
 typedef std::vector<CSubService> CSubServiceListSorted;
 
+// CRemoteControl
 class CRemoteControl
 {
 	unsigned int            current_programm_timer;
@@ -135,3 +136,4 @@ class CRemoteControl
 };
 
 #endif
+

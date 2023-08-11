@@ -502,6 +502,10 @@ CFrameBox::CFrameBox(const int x, int const y, const int dx, const int dy)
 	footCorner = CORNER_BOTTOM;
 	footGradient = DARK2LIGHT;
 	fheight = 0;
+	
+	//
+	current_page = 0;
+	total_pages = 1;
 }
 
 CFrameBox::CFrameBox(CBox* position)
@@ -554,6 +558,10 @@ CFrameBox::CFrameBox(CBox* position)
 	footCorner = CORNER_BOTTOM;
 	footGradient = DARK2LIGHT;
 	fheight = 0;
+	
+	//
+	current_page = 0;
+	total_pages = 1;
 }
 
 CFrameBox::~CFrameBox()
