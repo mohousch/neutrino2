@@ -2541,7 +2541,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 {
 	dprintf(DEBUG_NORMAL, ANSI_GREEN"CNeutrinoApp::getWidget: <<%s>>\n", widgetname);
 	
-	CWidget *ret = NULL;
+	CWidget *widget = NULL;
 	
 	//
 	char* name = NULL;
@@ -2600,8 +2600,6 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 			
 		while ( (search = xmlGetNextOccurence(search, "WIDGET")) != NULL ) 
 		{
-			CWidget *widget = NULL;
-			
 			//
 			name = xmlGetAttribute(search, (char*)"name");
 			
@@ -2709,8 +2707,6 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 					
 				// KEY
 				parseKey(search->xmlChildrenNode, widget);
-				
-				ret = widget;
 			}
 							
 			//
@@ -2721,7 +2717,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 		parser = NULL;
 	}
 	
-	return ret;
+	return widget;
 }
 
 //

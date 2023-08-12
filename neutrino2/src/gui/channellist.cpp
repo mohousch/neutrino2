@@ -719,7 +719,7 @@ int CChannelList::show(bool zap, bool customMode)
 		{
 			selected = listBox->getSelected();
 			
-			if (!IS_WEBTV(chanlist[selected]->channel_id))
+			if (chanlist.size() && !IS_WEBTV(chanlist[selected]->channel_id))
 			{
 				// channellist setup (add/move)
 				old_b_id = bouquetList->getActiveBouquetNumber();
