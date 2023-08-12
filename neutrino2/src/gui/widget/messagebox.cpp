@@ -659,12 +659,12 @@ int CMessageBox::exec(int timeout)
 }
 
 // helpers
-int MessageBox(const char * const Caption, const char * const Text, const result_ Default, const uint32_t ShowButtons, const char * const Icon, const int Width, const int timeout, bool returnDefaultOnTimeout, const int border, fb_pixel_t bcol)
+int MessageBox(const char * const Caption, const char * const Text, const result_ Default, const uint32_t ShowButtons, const char * const Icon, const int Width, const int timeout, bool returnDefaultOnTimeout, const int border)
 {
    	CMessageBox * messageBox = new CMessageBox(Caption, Text, Width, Icon, Default, ShowButtons);
 	messageBox->returnDefaultValueOnTimeout(returnDefaultOnTimeout);
 	messageBox->setBorderMode(border);
-	messageBox->setBorderColor(bcol);
+	//messageBox->setBorderColor(bcol);
 	messageBox->exec(timeout);
 	
 	int res = messageBox->result;
