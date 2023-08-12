@@ -4125,6 +4125,8 @@ void CTestMenu::testCHelpBox()
 
 	//
 	helpBox->addLine("Huhu :-)");
+	
+	helpBox->addPagebreak();
 
 	//
 	helpBox->addLine(NEUTRINO_ICON_BUTTON_BLUE, "neutrinoHD2 the best GUI :-P", g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1], COL_YELLOW, true);

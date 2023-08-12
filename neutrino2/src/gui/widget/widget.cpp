@@ -355,6 +355,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 	}
 
 	paint();
+	saveScreen();
 	CFrameBuffer::getInstance()->blit();
 
 	// add sec timer
