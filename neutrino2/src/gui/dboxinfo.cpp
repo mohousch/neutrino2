@@ -189,7 +189,7 @@ void CDBoxInfoWidget::showInfo()
 	dboxInfoWidget->addCCItem(cpuLabel);
 	
 	//
-	yPos += cpuIcon->iHeight + 10;
+	yPos += cpuIcon->height + 10;
 	
 	FILE* fd = fopen("/proc/cpuinfo", "rt");
 
@@ -344,17 +344,17 @@ void CDBoxInfoWidget::showInfo()
 	{
 		yPos += 10;
 		
-		hddIcon->setPosition(Box.iX + 10, yPos, hddIcon->iWidth, hddIcon->iHeight);
+		hddIcon->setPosition(Box.iX + 10, yPos, hddIcon->width, hddIcon->height);
 		dboxInfoWidget->addCCItem(hddIcon);
 		
 		hddLabel = new CCLabel();
 		hddLabel->setText(_("HDD Devices:"));
 		hddLabel->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 		hddLabel->setColor(COL_MENUHEAD);
-		hddLabel->setPosition(Box.iX + 10 + hddIcon->iWidth + 10, yPos, g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getRenderWidth("HDD Devices:"), 40);
+		hddLabel->setPosition(Box.iX + 10 + hddIcon->width + 10, yPos, g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getRenderWidth("HDD Devices:"), 40);
 		dboxInfoWidget->addCCItem(hddLabel);
 		
-		yPos += hddIcon->iHeight + 10;
+		yPos += hddIcon->height + 10;
 	}
 	
 	for(int i1 = 0; i1 < n; i1++) 
@@ -471,7 +471,7 @@ void CDBoxInfoWidget::showInfo()
 		tunerLabel->setPosition(Box.iX + 10 + 100 + 10, yPos, g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getRenderWidth("Frontend:"), 40);
 		dboxInfoWidget->addCCItem(tunerLabel);
 		
-		yPos += tunerIcon->iHeight + 10;
+		yPos += tunerIcon->height + 10;
 	}
 	
 	for(int i2 = 0; i2 < FrontendCount; i2++)

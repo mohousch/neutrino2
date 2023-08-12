@@ -176,6 +176,27 @@ CHintBox::~CHintBox(void)
 void CHintBox::paint(void)
 {
 	dprintf(DEBUG_NORMAL, "CHintBox::paint: (%s)\n", caption.c_str());
+	
+	////
+	// title
+	cFrameBoxTitle.iX = borderMode? cFrameBox.iX + 2 : cFrameBox.iX;
+	cFrameBoxTitle.iY = borderMode? cFrameBox.iY + 2 : cFrameBox.iY;
+	cFrameBoxTitle.iWidth = borderMode? cFrameBox.iWidth - 4 : cFrameBox.iWidth;
+
+	headers->setPosition(&cFrameBoxTitle);
+	
+	headers->setTitle(caption.c_str());
+	headers->setIcon(iconfile.c_str());
+	
+	widget->setPosition(&cFrameBox);
+	widget->setBorderMode(borderMode);
+	
+	widget->enableSaveScreen();
+	
+	widget->addWidgetItem(headers);
+
+	widget->paint();
+	////
 
 	refresh();
 	
@@ -184,6 +205,7 @@ void CHintBox::paint(void)
 
 void CHintBox::refresh(void)
 {
+	/*
 	// title
 	cFrameBoxTitle.iX = borderMode? cFrameBox.iX + 2 : cFrameBox.iX;
 	cFrameBoxTitle.iY = borderMode? cFrameBox.iY + 2 : cFrameBox.iY;
@@ -203,6 +225,7 @@ void CHintBox::refresh(void)
 	widget->addWidgetItem(headers);
 
 	widget->paint();
+	*/
 
 	// body text
 	int count = entries_per_page;

@@ -72,8 +72,8 @@ CCIcon::CCIcon(const int x, const int y, const int dx, const int dy)
 	cCBox.iHeight = dy;
 	
 	iconName = ""; 
-	iWidth = 0; 
-	iHeight = 0; 
+	width = 0; 
+	height = 0; 
 	
 	background = NULL;
 	
@@ -85,13 +85,13 @@ void CCIcon::setIcon(const char* const icon)
 {
 	iconName = icon? icon : ""; 
 	
-	if (!iconName.empty()) frameBuffer->getIconSize(iconName.c_str(), &iWidth, &iHeight);
+	if (!iconName.empty()) frameBuffer->getIconSize(iconName.c_str(), &width, &height);
 	
-	if (iWidth > cCBox.iWidth)
-		iWidth = cCBox.iWidth;
+	if (width > cCBox.iWidth && cCBox.iWidth != 0)
+		width = cCBox.iWidth;
 		
-	if (iHeight > cCBox.iHeight)
-		iHeight = cCBox.iHeight;
+	if (height > cCBox.iHeight && cCBox.iHeight != 0)
+		height = cCBox.iHeight;
 }
 
 //
@@ -116,7 +116,7 @@ void CCIcon::paint()
 		}
 	}
 	
-	if (!iconName.empty()) frameBuffer->paintIcon(iconName.c_str(), cCBox.iX + (cCBox.iWidth - iWidth)/2, cCBox.iY + (cCBox.iHeight - iHeight)/2);
+	if (!iconName.empty()) frameBuffer->paintIcon(iconName.c_str(), cCBox.iX + (cCBox.iWidth - width)/2, cCBox.iY + (cCBox.iHeight - height)/2);
 };
 
 void CCIcon::hide()
@@ -180,8 +180,10 @@ void CCImage::paint()
 {
 	dprintf(DEBUG_INFO, "CCImage::paint\n");
 	
-	if (iWidth > cCBox.iWidth) iWidth = cCBox.iWidth;
-	if (iHeight > cCBox.iHeight) iHeight = cCBox.iHeight;
+	if (iWidth > cCBox.iWidth && cCBox.iWidth != 0) 
+		iWidth = cCBox.iWidth;
+	if (iHeight > cCBox.iHeight && cCBox.iHeight != 0) 
+		iHeight = cCBox.iHeight;
 			
 	int startPosX = cCBox.iX + (cCBox.iWidth - iWidth)/2;
 			
@@ -766,10 +768,10 @@ void CItems2DetailsLine::paint()
 		{
 			::scaleImage(icon, &iw, &ih);
 			
-			if (iw > cCBox.iWidth)
+			if (iw > cCBox.iWidth && cCBox.iWidth != 0)
 				iw = cCBox.iWidth - 4;
 				
-			if (ih > (cCBox.iHeight - 4))
+			if (ih > (cCBox.iHeight - 4) && cCBox.iHeight != 0)
 				ih = (cCBox.iHeight - 4)/2;
 		
 			CCImage DImage(cCBox.iX + 2, cCBox.iY + 2, cCBox.iWidth - 4, ih - 4);
@@ -987,12 +989,9 @@ void CCLabel::paint()
 	dprintf(DEBUG_INFO, "CCLabel::paint\n");
 	
 	//
-	if (savescreen)
+	if (savescreen && background)
 	{
-		if (background)
-		{
-			frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-		}
+		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
 	}
 	
 	//
@@ -1003,7 +1002,7 @@ void CCLabel::paint()
 	
 	if (!label.empty()) stringWidth = g_Font[font]->getRenderWidth(label.c_str());
 	
-	if (stringWidth > cCBox.iWidth)
+	if (stringWidth > cCBox.iWidth && cCBox.iWidth != 0)
 		stringWidth = cCBox.iWidth;
 		
 	int startPosX = cCBox.iX;
@@ -1361,7 +1360,7 @@ void CCTime::paint()
 		
 	int timestr_len = g_Font[font]->getRenderWidth(timestr.c_str(), true); // UTF-8
 	
-	if (timestr_len > cCBox.iWidth)
+	if (timestr_len > cCBox.iWidth && cCBox.iWidth != 0)
 		timestr_len = cCBox.iWidth;
 		
 	int startPosX = cCBox.iX + (cCBox.iWidth - timestr_len)/2;
@@ -1381,7 +1380,7 @@ void CCTime::refresh()
 		
 	int timestr_len = g_Font[font]->getRenderWidth(timestr.c_str(), true); // UTF-8
 	
-	if (timestr_len > cCBox.iWidth)
+	if (timestr_len > cCBox.iWidth && cCBox.iWidth != 0)
 		timestr_len = cCBox.iWidth;
 		
 	int startPosX = cCBox.iX + (cCBox.iWidth - timestr_len)/2;

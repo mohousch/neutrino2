@@ -357,6 +357,22 @@ void CMessageBox::initFrames(void)
 void CMessageBox::paint(void)
 {
 	dprintf(DEBUG_INFO, "CMessageBox::paint\n");
+	
+	// 
+	m_cBoxWindow->setPosition(&cFrameBox);
+	m_cBoxWindow->setBorderMode(borderMode);
+	m_cBoxWindow->enableSaveScreen();
+
+	// title
+	headers->setPosition(borderMode? CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1) + 2 : CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - m_width ) >> 1), borderMode? CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + 2 : CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2), borderMode? m_width - 4 : m_width, m_theight/*, m_caption.c_str(), m_iconfile.c_str()*/);
+	
+	headers->setTitle(m_caption.c_str());
+	headers->setIcon(m_iconfile.c_str());
+	
+	//headers.paint();
+	m_cBoxWindow->addWidgetItem(headers);
+	
+	m_cBoxWindow->paint();
 
 	refresh();
 }
@@ -365,6 +381,7 @@ void CMessageBox::refresh()
 {
 	dprintf(DEBUG_INFO, "CMessageBox::refresh\n");
 	
+	#if 0
 	// 
 	m_cBoxWindow->setPosition(&cFrameBox);
 	m_cBoxWindow->setBorderMode(borderMode);
@@ -381,7 +398,7 @@ void CMessageBox::refresh()
 	m_cBoxWindow->addWidgetItem(headers);
 	
 	m_cBoxWindow->paint();
-	
+	#endif
 
 	//TextBody
 	int yPos  = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + m_theight /*+ (m_fheight >> 1)*/;

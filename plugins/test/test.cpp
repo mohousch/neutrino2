@@ -1131,7 +1131,7 @@ void CTestMenu::testCComponentWidget()
 	// icon
 	CCIcon testIcon;
 	testIcon.setIcon(NEUTRINO_ICON_BUTTON_RED);
-	testIcon.setPosition(Box.iX + 150, Box.iY + 150, testIcon.iWidth, testIcon.iHeight);
+	testIcon.setPosition(Box.iX + 150, Box.iY + 150, testIcon.width, testIcon.height);
 	
 	testWidget->addCCItem(&testIcon);
 	
@@ -1180,7 +1180,7 @@ void CTestMenu::testCComponentWidget()
 	
 	// CCFrameLine
 	CCFrameLine testFrameLine;
-	testFrameLine.setPosition(Box.iX + 10, Box.iY + 140, testIcon.iWidth + 100, testIcon.iHeight + 20);
+	testFrameLine.setPosition(Box.iX + 10, Box.iY + 140, testIcon.width + 100, testIcon.height + 20);
 	
 	testWidget->addCCItem(&testFrameLine);
 	
@@ -1194,14 +1194,14 @@ void CTestMenu::testCComponentWidget()
 
 	// grid
 	CCGrid testGrid;
-	testGrid.setPosition(Box.iX + 180 + testIcon.iWidth + 100 + 20, Box.iY + 100, 200, 160);
+	testGrid.setPosition(Box.iX + 180 + testIcon.width + 100 + 20, Box.iY + 100, 200, 160);
 	testGrid.setColor(COL_PURPLE_PLUS_0);
 	
 	testWidget->addCCItem(&testGrid);
 	
 	// pig
 	CCPig testPig;
-	testPig.setPosition(Box.iX + 180 + testIcon.iWidth + 100 + 20 + 200 + 10, Box.iY + 100, 300, 160);
+	testPig.setPosition(Box.iX + 180 + testIcon.width + 100 + 20 + 200 + 10, Box.iY + 100, 300, 160);
 	
 	testWidget->addCCItem(&testPig);
 	
@@ -1740,7 +1740,7 @@ void CTestMenu::testMultiWidget()
 	// icon
 	CCIcon testIcon;
 	testIcon.setIcon(NEUTRINO_ICON_BUTTON_RED);
-	testIcon.setPosition(Box.iX + 150, Box.iY + 150, testIcon.iWidth, testIcon.iHeight);
+	testIcon.setPosition(Box.iX + 150, Box.iY + 150, testIcon.width, testIcon.height);
 	
 	testWidget->addCCItem(&testIcon);
 	
@@ -1784,28 +1784,24 @@ void CTestMenu::testMultiWidget()
 	testWidget->addCCItem(&testVline);
 	
 	// CCFrameLine
-	CCFrameLine testFrameLine(Box.iX + 10, Box.iY + 140, testIcon.iWidth + 100, testIcon.iHeight + 20);
-	//testFrameLine.setPosition(Box.iX + 10, Box.iY + 140, testIcon.iWidth + 100, testIcon.iHeight + 20);
+	CCFrameLine testFrameLine(Box.iX + 10, Box.iY + 140, testIcon.width + 100, testIcon.height + 20);
 	
 	testWidget->addCCItem(&testFrameLine);
 	
 	// text
 	CCText testText(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
-	//testText.setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
 	testText.setText(buffer.c_str());
 	
 	testWidget->addCCItem(&testText);
 
 	// grid
-	CCGrid testGrid(Box.iX + 180 + testIcon.iWidth + 100 + 20, Box.iY + 100, 200, 160);
-	//testGrid.setPosition(Box.iX + 180 + testIcon.iWidth + 100 + 20, Box.iY + 100, 200, 160);
+	CCGrid testGrid(Box.iX + 180 + testIcon.width + 100 + 20, Box.iY + 100, 200, 160);
 	testGrid.setColor(COL_PURPLE_PLUS_0);
 	
 	testWidget->addCCItem(&testGrid);
 	
 	// pig
-	CCPig testPig(Box.iX + 180 + testIcon.iWidth + 100 + 20 + 200 + 10, Box.iY + 100, 300, 160);
-	//testPig.setPosition(Box.iX + 180 + testIcon.iWidth + 100 + 20 + 200 + 10, Box.iY + 100, 300, 160);
+	CCPig testPig(Box.iX + 180 + testIcon.width + 100 + 20 + 200 + 10, Box.iY + 100, 300, 160);
 	
 	testWidget->addCCItem(&testPig);
 	
@@ -1833,9 +1829,9 @@ void CTestMenu::testCIcon()
 	// paint testIcon
 	testIcon.setIcon(NEUTRINO_ICON_BUTTON_RED);
 	
-	dprintf(DEBUG_NORMAL, "\ntestCIcon: icon:%s iw:%d ih:%d\n", testIcon.iconName.c_str(), testIcon.iWidth, testIcon.iHeight);
+	dprintf(DEBUG_NORMAL, "\ntestCIcon: icon:%s iw:%d ih:%d\n", testIcon.iconName.c_str(), testIcon.width, testIcon.height);
 	
-	testIcon.setPosition(150 + BORDER_LEFT, 150, testIcon.iWidth, testIcon.iHeight);
+	testIcon.setPosition(150 + BORDER_LEFT, 150, testIcon.width, testIcon.height);
 
 	testIcon.paint();
 

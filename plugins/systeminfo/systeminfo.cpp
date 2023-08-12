@@ -38,7 +38,7 @@ CSysInfoWidget::CSysInfoWidget(int m)
 	
 	//head height
 	titleIcon.setIcon(NEUTRINO_ICON_SETTINGS);
-	cFrameBoxTitle.iHeight = std::max(g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), titleIcon.iHeight) + 6;
+	cFrameBoxTitle.iHeight = std::max(g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), titleIcon.height) + 6;
        
 	//foot height
 	cFrameBoxFoot.iHeight = cFrameBoxTitle.iHeight;

@@ -210,8 +210,8 @@ class CCIcon : public CComponent
 		CFrameBuffer* frameBuffer;
 		
 		//		
-		int iWidth;
-		int iHeight;
+		int width;
+		int height;
 		
 		fb_pixel_t* background;
 		
@@ -231,7 +231,7 @@ class CCIcon : public CComponent
 		//
 		void setIcon(const char* const icon);
 
-		// h/v aligned
+		//
 		void paint();
 		void hide();
 		
