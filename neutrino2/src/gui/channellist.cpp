@@ -482,10 +482,6 @@ int CChannelList::doChannelMenu(void)
 		mWidget->addWidgetItem(menu);
 	}
 	
-	//mWidget->setPosition(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	//mWidget->setMenuPosition(MENU_POSITION_CENTER);
-	mWidget->enableSaveScreen();
-	
 	//
 	menu->addItem(new CMenuForwarder(_("delete")), old_selected == i++);
 	menu->addItem(new CMenuForwarder(_("Move")), old_selected == i++);
@@ -725,7 +721,7 @@ int CChannelList::show(bool zap, bool customMode)
 			
 			if (!IS_WEBTV(chanlist[selected]->channel_id))
 			{
-				// chan list setup (add/move)
+				// channellist setup (add/move)
 				old_b_id = bouquetList->getActiveBouquetNumber();
 				int ret = doChannelMenu();
 		

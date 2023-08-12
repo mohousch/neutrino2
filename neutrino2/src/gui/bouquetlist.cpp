@@ -264,7 +264,7 @@ int CBouquetList::doMenu()
 	int i = 0;
 	int select = -1;
 	static int old_selected = 0;
-	int ret = RETURN_NONE;
+	//int ret = RETURN_NONE;
 	signed int bouquet_id;
 	CZapitBouquet * tmp, * zapitBouquet;
 	ZapitChannelList * channels;
@@ -286,7 +286,7 @@ int CBouquetList::doMenu()
 	
 	if (widget)
 	{
-		menu = (ClistBox*)CNeutrinoApp::getInstance()->getWidget("bqedit")->getWidgetItem(WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
 	}
 	else
 	{
@@ -313,15 +313,11 @@ int CBouquetList::doMenu()
 		//
 		widget->addWidgetItem(menu);
 	}
-	
-	//widget->setPosition(0, 0, MENU_WIDTH, MENU_HEIGHT);
-	//widget->setMenuPosition(MENU_POSITION_CENTER);
-	widget->enableSaveScreen();
 
 	if(!zapitBouquet->bUser) 
 	{
 		menu->addItem(new CMenuForwarder(_("Copy bouquet to Favorites")), old_selected == i ++);
-		ret = widget->exec(NULL, "");
+		widget->exec(NULL, "");
 		select = menu->getSelected();
 		
 		delete menu;
@@ -363,10 +359,10 @@ int CBouquetList::doMenu()
 			}
 		}
 	} 
-	else if(!zapitBouquet->bWebTV) 
+	else //if(!zapitBouquet->bWebTV) 
 	{
 		menu->addItem(new CMenuForwarder(_("Delete")), old_selected == i ++);
-		ret = widget->exec(NULL, "");
+		widget->exec(NULL, "");
 		select = menu->getSelected();
 		
 		dprintf(DEBUG_NORMAL, "CBouquetList::doMenu: %d selected\n", select);
@@ -392,7 +388,7 @@ int CBouquetList::doMenu()
 		}
 	}
 	
-	return ret;
+	return 0;
 }
 
 // bShowChannelList default to true, returns new bouquet or -1/-2
@@ -471,9 +467,8 @@ int CBouquetList::show(bool customMode)
 
 			if (!Bouquets[selected]->zapitBouquet->bWebTV)
 			{
-				int ret = 0;
-				
-				ret = doMenu();
+				//
+				int ret = doMenu();
 				
 				dprintf(DEBUG_NORMAL, "RC_setup: doMenu: %d\n", ret);
 				
@@ -482,6 +477,11 @@ int CBouquetList::show(bool customMode)
 					res = -4;
 					loop = false;
 				}
+				else
+				{
+					paint();
+				}
+				//
 			}
 		}
 		else if ( msg == (neutrino_msg_t) g_settings.key_list_start ) 

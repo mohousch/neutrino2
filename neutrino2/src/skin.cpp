@@ -2617,6 +2617,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				gradient = xmlGetAttribute(search, (char *)"gradient");
 				corner = xmlGetAttribute(search, (char *)"corner");
 				radius = xmlGetAttribute(search, (char *)"radius");
+				
 				border = xmlGetAttribute(search, (char *)"border");
 					
 				paintframe = xmlGetSignedNumericAttribute(search, "paintframe", 0);
