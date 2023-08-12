@@ -465,7 +465,7 @@ int CBouquetList::show(bool customMode)
 		{
 			selected = listBox? listBox->getSelected() : 0;
 
-			if (Bouquets.size() && !Bouquets[selected]->zapitBouquet->bWebTV)
+			if (Bouquets.size() && Bouquets[selected]->channelList->getSize() && !Bouquets[selected]->zapitBouquet->bWebTV)
 			{
 				//
 				int ret = doMenu();
@@ -481,7 +481,6 @@ int CBouquetList::show(bool customMode)
 				{
 					paint();
 				}
-				//
 			}
 		}
 		else if ( msg == (neutrino_msg_t) g_settings.key_list_start ) 
