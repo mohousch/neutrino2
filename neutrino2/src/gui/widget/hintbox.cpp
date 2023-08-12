@@ -62,7 +62,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 
 	cFrameBoxTitle.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight();
 	cFrameBoxItem.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
-	cFrameBox.iHeight = cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight;
+	cFrameBox.iHeight = cFrameBoxTitle.iHeight + 2*cFrameBoxItem.iHeight;
 
 	caption = Caption;
 
@@ -142,7 +142,6 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	}
 	
-	//widget->enableSaveScreen();
 	widget->paintMainFrame(true);
 	
 	// HG
@@ -177,7 +176,6 @@ void CHintBox::paint(void)
 {
 	dprintf(DEBUG_NORMAL, "CHintBox::paint: (%s)\n", caption.c_str());
 	
-	////
 	// title
 	cFrameBoxTitle.iX = borderMode? cFrameBox.iX + 2 : cFrameBox.iX;
 	cFrameBoxTitle.iY = borderMode? cFrameBox.iY + 2 : cFrameBox.iY;
@@ -195,9 +193,7 @@ void CHintBox::paint(void)
 	
 	widget->addWidgetItem(headers);
 
-	widget->paint();
-	////
-
+	//
 	refresh();
 	
 	CFrameBuffer::getInstance()->blit();
@@ -205,28 +201,9 @@ void CHintBox::paint(void)
 
 void CHintBox::refresh(void)
 {
-	/*
-	// title
-	cFrameBoxTitle.iX = borderMode? cFrameBox.iX + 2 : cFrameBox.iX;
-	cFrameBoxTitle.iY = borderMode? cFrameBox.iY + 2 : cFrameBox.iY;
-	cFrameBoxTitle.iWidth = borderMode? cFrameBox.iWidth - 4 : cFrameBox.iWidth;
-
-	headers->setPosition(&cFrameBoxTitle);
-	
-	headers->setTitle(caption.c_str());
-	headers->setIcon(iconfile.c_str());
-	
-	widget->setPosition(&cFrameBox);
-	widget->setBorderMode(borderMode);
-	
-	if (current_page == 0)
-		widget->enableSaveScreen();
-	
-	widget->addWidgetItem(headers);
-
+	//
 	widget->paint();
-	*/
-
+	
 	// body text
 	int count = entries_per_page;
 	int ypos  = cFrameBoxTitle.iY + cFrameBoxTitle.iHeight + (cFrameBoxItem.iHeight >> 1);

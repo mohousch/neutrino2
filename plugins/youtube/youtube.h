@@ -66,8 +66,8 @@ class CYTBrowser : public CMenuTarget
 		int showCategoriesMenu(void);
 
 		void playMovie(void);
-		void showMovieInfo(void);
-		void recordMovie(void);
+		void showMovieInfo(MI_MOVIE_INFO& movie);
+		void recordMovie(MI_MOVIE_INFO& movie);
 
 		void showMenu();
 		

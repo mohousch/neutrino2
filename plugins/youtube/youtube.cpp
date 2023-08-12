@@ -215,20 +215,44 @@ void CYTBrowser::playMovie(void)
 	}
 }
 
-void CYTBrowser::showMovieInfo(void)
-{
-	if (m_vMovieInfo.empty())
-		return;
-		
-	m_movieInfo.showMovieInfo(m_vMovieInfo[moviesMenu->getSelected()]);
+void CYTBrowser::showMovieInfo(MI_MOVIE_INFO& movie)
+{	
+	m_movieInfo.showMovieInfo(movie);
 }
 
-void CYTBrowser::recordMovie(void)
+void CYTBrowser::recordMovie(MI_MOVIE_INFO& movie)
 {
 	if (m_vMovieInfo.empty())
 		return;
 		
-	::start_file_recording(m_vMovieInfo[moviesMenu->getSelected()].epgTitle.c_str(), m_vMovieInfo[moviesMenu->getSelected()].epgInfo2.c_str(), m_vMovieInfo[moviesMenu->getSelected()].file.Name.c_str());
+	//::start_file_recording(m_vMovieInfo[moviesMenu->getSelected()].epgTitle.c_str(), m_vMovieInfo[moviesMenu->getSelected()].epgInfo2.c_str(), m_vMovieInfo[moviesMenu->getSelected()].file.Name.c_str());
+	
+	CHTTPTool httpTool;
+	httpTool.setTitle("Youtube: downloading...");
+
+	std::string target = g_settings.network_nfs_recordingdir;
+	target += "/";
+	target += movie.epgTitle.c_str();
+	target += "." + getFileExt(movie.file.Name);
+
+	if (httpTool.downloadFile(movie.file.Name.c_str(), target.c_str(), 100))
+	{
+		// write .xml
+		movie.file.Name = target;
+		m_movieInfo.saveMovieInfo(movie);
+		
+		// write thumbnail
+		string tfile = g_settings.network_nfs_recordingdir;
+		tfile += "/";
+		tfile += movie.epgTitle.c_str();
+		tfile += ".jpg";
+		
+		CFileHelpers::getInstance()->copyFile(movie.tfile.c_str(), tfile.c_str());
+	}
+	else
+	{
+		HintBox("Netzkino", "Movie download failed");
+	}
 }
 
 void CYTBrowser::loadYTTitles(int mode, std::string search, std::string id, bool show_hint)
@@ -407,7 +431,7 @@ int CYTBrowser::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_info")
 	{
-		showMovieInfo();
+		showMovieInfo(m_vMovieInfo[moviesMenu->getSelected()]);
 
 		return RETURN_REPAINT;
 	}
@@ -458,7 +482,7 @@ int CYTBrowser::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_record")
 	{
-		recordMovie();
+		recordMovie(m_vMovieInfo[moviesMenu->getSelected()]);
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "search")

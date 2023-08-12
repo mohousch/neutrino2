@@ -691,7 +691,7 @@ void CTextBox::paint(void)
 	initFramesRel();
 	
 	//
-	//saveScreen();
+	saveScreen(); //FIXME:
 	
 	//
 	refresh();	
