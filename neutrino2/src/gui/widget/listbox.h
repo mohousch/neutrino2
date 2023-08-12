@@ -528,7 +528,7 @@ class ClistBox : public CWidgetItem
 		std::string actionKey; // lua
 		
 		//
-		bool paintFrame;
+		//bool paintFrame;
 		fb_pixel_t bgcolor;
 		int radius;
 		int corner;

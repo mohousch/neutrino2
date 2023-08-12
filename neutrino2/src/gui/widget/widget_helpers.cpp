@@ -1600,6 +1600,8 @@ CWidgetItem::CWidgetItem()
 	rePaint = false; 
 	
 	painted = false;
+	savescreen = false;
+	paintFrame = true;
 	
 	actionKey = ""; 
 	parent = NULL; 

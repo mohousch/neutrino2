@@ -708,6 +708,8 @@ class CWidgetItem
 		//
 		bool inFocus;
 		bool rePaint;
+		bool paintFrame;
+		bool savescreen;
 		
 		//
 		std::string actionKey; // lua
@@ -734,15 +736,22 @@ class CWidgetItem
 
 		virtual bool isSelectable(void){return false;}
 		virtual bool hasItem(){return false;};
-
+		
 		//
 		virtual void initFrames(){};
+		virtual void saveScreen(){};
+		virtual void restoreScreen(){};
+
+		//
 		virtual void paintHead(){};
 		virtual void paintFoot(){};
 		virtual void paintItemInfo(int ){};
 		virtual void hideItemInfo(){};
 		virtual void paint(void){painted = true;};
 		virtual void hide(void){painted = false;};
+		
+		//
+		virtual void enableSaveScreen(){savescreen = true; initFrames(); saveScreen();};
 		
 		//
 		virtual void enableRepaint(){rePaint = true;};

@@ -59,7 +59,7 @@ CTextBox::CTextBox(const int x, const int y, const int dx, const int dy)
 	itemBox.iHeight = dy;
 	
 	//
-	initFramesRel();
+	initFrames();
 }
 
 CTextBox::CTextBox(CBox* position)
@@ -76,7 +76,7 @@ CTextBox::CTextBox(CBox* position)
 	}
 	
 	//
-	initFramesRel();
+	initFrames();
 }
 
 CTextBox::~CTextBox()
@@ -158,7 +158,7 @@ void CTextBox::setPosition(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 
-	initFramesRel();
+	initFrames();
 }
 
 void CTextBox::setPosition(const CBox * position)
@@ -168,7 +168,7 @@ void CTextBox::setPosition(const CBox * position)
 		itemBox = *position;
 	}
 
-	initFramesRel();
+	initFrames();
 }
 
 void CTextBox::setMode(const int mode)
@@ -214,7 +214,7 @@ void CTextBox::reSizeTextFrameWidth(int textWidth)
 	m_cFrameTextRel.iWidth	= iNewWindowWidth;
 
 	// Re-Init the children frames due to new main window
-	initFramesRel();
+	initFrames();
 }
 
 void CTextBox::reSizeTextFrameHeight(int textHeight)
@@ -231,12 +231,12 @@ void CTextBox::reSizeTextFrameHeight(int textHeight)
 	m_cFrameTextRel.iHeight = iNewWindowHeight;
 
 	// reinit the children frames due to new main window
-	initFramesRel();
+	initFrames();
 }
 
-void CTextBox::initFramesRel(void)
+void CTextBox::initFrames(void)
 {
-	dprintf(DEBUG_DEBUG, "CTextBox::InitFramesRel:\r\n");
+	dprintf(DEBUG_DEBUG, "CTextBox::InitFrames:\r\n");
 
 	m_cFrameTextRel.iX = itemBox.iX + BORDER_LEFT;
 	m_cFrameTextRel.iY = itemBox.iY + 10;
@@ -688,7 +688,7 @@ void CTextBox::paint(void)
 	dprintf(DEBUG_INFO, "CTextBox::paint:\n");
 	
 	//
-	initFramesRel();
+	initFrames();
 	
 	//
 	saveScreen(); //FIXME:
