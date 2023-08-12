@@ -88,6 +88,7 @@ void CWindow::initFrames()
 
 	//
 	borderMode = BORDER_NO;
+	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	paintFrame = true;
 
 	savescreen = false;
@@ -185,7 +186,7 @@ void CWindow::paint()
 		else if (borderMode == BORDER_ALL)
 		{
 			// border
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_6, radius, corner);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, radius, corner);
 			
 			// frame
 			frameBuffer->paintBoxRel(itemBox.iX + 2, itemBox.iY + 2, itemBox.iWidth - 4, itemBox.iHeight - 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
@@ -193,7 +194,7 @@ void CWindow::paint()
 		else if (borderMode == BORDER_LEFTRIGHT)
 		{
 			// border
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_6, radius, corner);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, radius, corner);
 			
 			// frame
 			frameBuffer->paintBoxRel(itemBox.iX + 2, itemBox.iY, itemBox.iWidth - 4, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
@@ -201,7 +202,7 @@ void CWindow::paint()
 		else if (borderMode == BORDER_TOPBOTTOM)
 		{
 			// border
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_6, radius, corner);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, borderColor, radius, corner);
 			
 			// frame
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + 2, itemBox.iWidth, itemBox.iHeight - 4, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);

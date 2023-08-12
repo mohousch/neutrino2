@@ -96,6 +96,7 @@ CMenuItem::CMenuItem()
 	
 	paintFrame = true;
 	borderMode = BORDER_NO;
+	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	itemGradient = NOGRADIENT;
 	
 	//
@@ -211,7 +212,7 @@ void CMenuItem::paintItemBox(int dy, fb_pixel_t col)
 	}	
 		
 	// border
-	CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, COL_MENUCONTENT_PLUS_6);
+	CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, borderColor);
 				
 	// itemBox
 	if (borderMode == BORDER_NO)
@@ -1645,13 +1646,13 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	scrollbar = true;
 	items_background = NULL;
 	
+	//
 	item_height = 0;
 	item_width = 0;
 	items_width = 0;
 	items_height = 0;
-	
-	//
 	itemBorderMode = BORDER_NO;
+	itemBorderColor = COL_MENUCONTENT_PLUS_6;
 	itemGradient = NOGRADIENT;
 	item2Lines = false;
 	
@@ -1772,6 +1773,7 @@ ClistBox::ClistBox(CBox* position)
 	items_width = 0;
 	items_height = 0;
 	itemBorderMode = BORDER_NO;
+	itemBorderColor = COL_MENUCONTENT_PLUS_6;
 	itemGradient = NOGRADIENT;
 	item2Lines = false;
 	
@@ -1840,6 +1842,7 @@ void ClistBox::initFrames()
 		item->widgetMode = widgetMode;
 		item->paintFrame = paintFrame;
 		if (itemBorderMode) item->setBorderMode(itemBorderMode);
+		item->setBorderColor(itemBorderColor);
 		if (itemGradient) item->setGradient(itemGradient);
 		if (item2Lines) item->set2lines();
 	} 

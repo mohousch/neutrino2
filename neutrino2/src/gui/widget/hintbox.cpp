@@ -151,6 +151,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	
 	//
 	borderMode = BORDER_NO;
+	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 }
 
 CHintBox::~CHintBox(void)
@@ -188,6 +189,7 @@ void CHintBox::paint(void)
 	
 	widget->setPosition(&cFrameBox);
 	widget->setBorderMode(borderMode);
+	widget->setBorderColor(borderColor);
 	
 	widget->enableSaveScreen();
 	
@@ -339,12 +341,13 @@ int CHintBox::exec(int timeout)
 	return res;
 }
 
-int HintBox(const char * const Caption, const char * const Text, const int Width, int timeout, const char * const Icon, const int border)
+int HintBox(const char * const Caption, const char * const Text, const int Width, int timeout, const char * const Icon, const int border, fb_pixel_t bcol)
 {
 	int res = messages_return::none;
 
  	CHintBox * hintBox = new CHintBox(Caption, Text, Width, Icon);
 	hintBox->setBorderMode(border);
+	hintBox->setBorderColor(bcol);
 	res = hintBox->exec(timeout);
 		
 	delete hintBox;

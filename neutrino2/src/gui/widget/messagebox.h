@@ -110,6 +110,7 @@ class CMessageBox
 		
 		//
 		int borderMode;
+		fb_pixel_t borderColor;
 
 	private:
 		uint32_t showbuttons;
@@ -130,11 +131,12 @@ class CMessageBox
 		~CMessageBox(void);
 		
 		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
+		void setBorderColor(fb_pixel_t col){borderColor = col;};
 
 		int exec(int timeout = -1);
 		void returnDefaultValueOnTimeout(bool returnDefault);
 };
 
-int MessageBox(const char * const Caption, const char * const Text, const result_ Default, const uint32_t ShowButtons, const char * const Icon = NULL, const int Width = MENU_WIDTH, const int timeout = -1, bool returnDefaultOnTimeout = false, const int border = BORDER_NO); // UTF-8
+int MessageBox(const char * const Caption, const char * const Text, const result_ Default, const uint32_t ShowButtons, const char * const Icon = NULL, const int Width = MENU_WIDTH, const int timeout = -1, bool returnDefaultOnTimeout = false, const int border = BORDER_NO, fb_pixel_t bcol = COL_INFOBAR_SHADOW_PLUS_0); // UTF-8
 
 #endif

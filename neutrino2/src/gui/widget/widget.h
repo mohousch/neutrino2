@@ -103,6 +103,7 @@ class CWidget : public CMenuTarget
 		int radius;
 		int corner;
 		int borderMode;
+		fb_pixel_t borderColor;
 		
 		//
 		unsigned int current_page;
@@ -164,7 +165,8 @@ class CWidget : public CMenuTarget
 		void setColor(fb_pixel_t col) {backgroundColor = col;};
 		void setGradient(int gra){gradient = gra;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
-		void setBorderMode(int sm){borderMode = sm;};
+		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
+		void setBorderColor(fb_pixel_t col){borderColor = col;};
 		//
 		void enableSaveScreen();
 		void setMenuPosition(int p){menu_position = p; initFrames();};

@@ -109,6 +109,7 @@ CMessageBox::CMessageBox(const char* const Caption, const char * const Text, con
 		
 	//
 	borderMode = BORDER_NO;
+	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 		
 	// initFrames
 	initFrames();
@@ -361,6 +362,7 @@ void CMessageBox::paint(void)
 	// 
 	m_cBoxWindow->setPosition(&cFrameBox);
 	m_cBoxWindow->setBorderMode(borderMode);
+	m_cBoxWindow->setBorderColor(borderColor);
 	m_cBoxWindow->enableSaveScreen();
 
 	// title
@@ -657,11 +659,12 @@ int CMessageBox::exec(int timeout)
 }
 
 // helpers
-int MessageBox(const char * const Caption, const char * const Text, const result_ Default, const uint32_t ShowButtons, const char * const Icon, const int Width, const int timeout, bool returnDefaultOnTimeout, const int border)
+int MessageBox(const char * const Caption, const char * const Text, const result_ Default, const uint32_t ShowButtons, const char * const Icon, const int Width, const int timeout, bool returnDefaultOnTimeout, const int border, fb_pixel_t bcol)
 {
    	CMessageBox * messageBox = new CMessageBox(Caption, Text, Width, Icon, Default, ShowButtons);
 	messageBox->returnDefaultValueOnTimeout(returnDefaultOnTimeout);
 	messageBox->setBorderMode(border);
+	messageBox->setBorderColor(bcol);
 	messageBox->exec(timeout);
 	
 	int res = messageBox->result;

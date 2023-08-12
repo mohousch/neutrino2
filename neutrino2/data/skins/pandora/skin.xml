@@ -510,7 +510,7 @@
 		<VLINE posx="750" posy="110" width="3" height="400" gradient="DARK2LIGHT2DARK"/>
 	</WIDGET>
 	
-	<WIDGET name="channellistedit" posx="0" posy="0" width="600" height="500" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER" border="BORDER_ALL" savescreen="1">
+	<WIDGET name="channellistedit" posx="0" posy="0" width="600" height="500" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER" border="BORDER_ALL" bordercolor="COL_INFOBAR_SHADOW_PLUS_0" savescreen="1">
 		<LISTBOX posx="50" posy="50" width="500" height="400" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" title="Edit" icon="settings" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>

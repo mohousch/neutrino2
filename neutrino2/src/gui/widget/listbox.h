@@ -174,6 +174,7 @@ class CMenuItem
 		//
 		bool paintFrame;
 		int borderMode;
+		fb_pixel_t borderColor;
 		int itemGradient;
 		
 		//
@@ -250,6 +251,7 @@ class CMenuItem
 		virtual void set2lines(void){nLinesItem = true;};
 		virtual void setWidgetType(int type){widgetType = type;};
 		virtual void setBorderMode(int m = BORDER_ALL){borderMode = m;};
+		virtual void setBorderColor(fb_pixel_t col){borderColor = col;};
 		virtual void setGradient(int gr){itemGradient = gr;};
 
 		//
@@ -540,6 +542,7 @@ class ClistBox : public CWidgetItem
 		
 		// item
 		int itemBorderMode;
+		fb_pixel_t itemBorderColor;
 		int itemGradient;
 		bool item2Lines;
 		
@@ -656,6 +659,7 @@ class ClistBox : public CWidgetItem
 		
 		// item
 		void setItemBorderMode(int m = BORDER_ALL){itemBorderMode = m;};
+		void setItemBorderColor(fb_pixel_t col){itemBorderColor = col;};
 		void setItemGradient(int gr = NOGRADIENT){itemGradient = gr;};
 		void setItem2Lines(){item2Lines = true;};
 

@@ -63,6 +63,7 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	radius = NO_RADIUS;
 	corner = CORNER_NONE;
 	borderMode = BORDER_NO;
+	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	
 	//
 	current_page = 0;
@@ -99,6 +100,7 @@ CWidget::CWidget(CBox *position)
 	radius = RADIUS_MID;
 	corner = CORNER_ALL;
 	borderMode = BORDER_NO;
+	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	
 	//
 	current_page = 0;
@@ -230,8 +232,8 @@ void CWidget::paint()
 			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient);
 		else
 		{
-			// paint always border all
-			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, COL_MENUCONTENT_PLUS_6, radius, corner);
+			// border
+			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, borderColor, radius, corner);
 			
 			// mainframe
 			frameBuffer->paintBoxRel(mainFrameBox.iX + 2, mainFrameBox.iY + 2, mainFrameBox.iWidth - 4, mainFrameBox.iHeight - 4, backgroundColor, radius, corner, gradient);
