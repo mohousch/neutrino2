@@ -100,6 +100,6 @@ class CHintBox
 		int exec(int timeout = -1);
 };
 
-int HintBox(const char * const Caption, const char * const Text, const int Width = HINTBOX_WIDTH, int timeout = -1, const char * const Icon = NEUTRINO_ICON_INFO, const int border = BORDER_NO, fb_pixel_t bcol = COL_INFOBAR_SHADOW_PLUS_0);
+int HintBox(const char * const Caption, const char * const Text, const int Width = HINTBOX_WIDTH, int timeout = -1, const char * const Icon = NEUTRINO_ICON_INFO, const int border = BORDER_NO);
 
 #endif
