@@ -2035,7 +2035,7 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 
 		eventinfo.apids = TIMERD_APIDS_CONF;
 
-		bool doRecord = true;
+		//bool doRecord = true;
 
 		// rec dir
 		strcpy(recDir, (preselectedDir != NULL) ? preselectedDir : g_settings.network_nfs_recordingdir);
@@ -2045,12 +2045,12 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::doGuiRecord: start record to dir %s\n", recDir);
 
 		// start to record 
-		if( !doRecord || (CVCRControl::getInstance()->Record(&eventinfo) == false ) ) 
+		if( /*!doRecord ||*/ (CVCRControl::getInstance()->Record(&eventinfo) == false ) ) 
 		{
 			recordingstatus = 0;
 
-			if(doRecord)
-				return true;// try to refresh gui if record was not ok ?
+			//if(doRecord)
+			//	return true;// try to refresh gui if record was not ok ?
 
 			return refreshGui;
 		}
@@ -2851,7 +2851,8 @@ void CNeutrinoApp::realRun(void)
 								recordingstatus = 1;
 									
 								timeshiftstatus = recordingstatus;
-									doGuiRecord(timeshiftDir, true);
+								
+								doGuiRecord(timeshiftDir, true);
 							}
 
 							// freeze audio/video

@@ -601,13 +601,12 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 	stream2file_error_msg_t error_msg = STREAM2FILE_BUSY;
 
-	/*
+	//
 	if (IS_WEBTV(channel_id))
 	{
 		error_msg = STREAM2FILE_RECORDING_THREADS_FAILED;
 	}
 	else
-	*/
 	{
 		error_msg = startRecording(filename, getMovieInfoString(channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), si.vpid, pids, numpids);
 	}
@@ -860,7 +859,8 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 	{
 		if ((!tmdb->getDescription().empty())) 
 		{
-			std::string tname = g_movieInfo->file.getPath();
+			std::string tname = Directory.c_str();
+			tname += "/";
 			tname += g_movieInfo->epgTitle;
 			tname += ".jpg";
 
