@@ -513,6 +513,7 @@ int CChannelList::doChannelMenu(void)
 	}
 	
 	//
+	mWidget->setCorner(g_settings.Head_radius > g_settings.Foot_radius? g_settings.Head_radius : g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	mWidget->setBorderMode();
 	mWidget->paintMainFrame(true);
 	mWidget->enableSaveScreen();

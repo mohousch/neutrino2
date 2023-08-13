@@ -315,6 +315,7 @@ int CBouquetList::doMenu()
 	}
 	
 	//
+	widget->setCorner(g_settings.Head_radius > g_settings.Foot_radius? g_settings.Head_radius : g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	widget->setBorderMode();
 	widget->paintMainFrame(true);
 	widget->enableSaveScreen();
