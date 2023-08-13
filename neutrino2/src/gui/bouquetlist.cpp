@@ -313,6 +313,8 @@ int CBouquetList::doMenu()
 		//
 		widget->addWidgetItem(menu);
 	}
+	
+	widget->enableSaveScreen();
 
 	if(!zapitBouquet->bUser) 
 	{

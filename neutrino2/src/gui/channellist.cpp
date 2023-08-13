@@ -482,6 +482,8 @@ int CChannelList::doChannelMenu(void)
 		mWidget->addWidgetItem(menu);
 	}
 	
+	mWidget->enableSaveScreen();
+	
 	//
 	menu->addItem(new CMenuForwarder(_("delete")), old_selected == i++);
 	menu->addItem(new CMenuForwarder(_("Move")), old_selected == i++);

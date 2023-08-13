@@ -1025,8 +1025,13 @@ int CEventFinderMenu::showMenu(void)
 	}
 	else
 	{
-		widget = new CWidget();
-		searchMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "epgsearch";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		searchMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		searchMenu->setWidgetMode(MODE_SETUP);
 		searchMenu->enableShrinkMenu();
@@ -1041,13 +1046,8 @@ int CEventFinderMenu::showMenu(void)
 		searchMenu->setFootButtons(&btn);
 		
 		//
-		widget->setPosition(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "epgsearch";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(searchMenu);
 	}
-	
-	searchMenu->clearItems();
 
         searchMenu->addItem(mf2);
         searchMenu->addItem(new CMenuSeparator(LINE));
