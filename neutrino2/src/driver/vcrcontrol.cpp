@@ -483,20 +483,17 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	char filename[512]; // UTF-8
 
 	// Create filename for recording
-	if (!IS_WEBTV(channel_id))
-	{
-		pos = Directory.size();
-		strcpy(filename, Directory.c_str());
+	pos = Directory.size();
+	strcpy(filename, Directory.c_str());
 	
-		if ((pos == 0) || (filename[pos - 1] != '/')) 
-		{
-			filename[pos] = '/';
-			pos++;
-			filename[pos] = '\0';
-		}
-
-		pos = strlen(filename);
+	if ((pos == 0) || (filename[pos - 1] != '/')) 
+	{
+		filename[pos] = '/';
+		pos++;
+		filename[pos] = '\0';
 	}
+
+	pos = strlen(filename);
 
 	ext_channel_name = CZapit::getInstance()->getChannelName(channel_id);
 

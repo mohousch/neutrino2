@@ -2252,7 +2252,7 @@ void CMoviePlayerGui::doTMDB(MI_MOVIE_INFO& movieFile)
 			std::string tname = movieFile.file.Name;
 			changeFileNameExt(tname, ".jpg");
 
-			if(tmdb->getBigCover(minfo_list[0].poster_path, tname)) 
+			if(tmdb->getSmallCover(minfo_list[0].poster_path, tname)) 
 				movieFile.tfile = tname;
 
 			// epgInfo1
