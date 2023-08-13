@@ -111,10 +111,11 @@ struct button_label CChannelListButtons[NUM_LIST_BUTTONS] =
 	{ NEUTRINO_ICON_BUTTON_BLUE, _("EPG Plus")},
 };
 
-#define HEAD_BUTTONS_COUNT	3
+#define HEAD_BUTTONS_COUNT	4
 const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 {
 	{ NEUTRINO_ICON_BUTTON_HELP, " " },
+	{ NEUTRINO_ICON_BUTTON_EPG, " " },
 	{ NEUTRINO_ICON_BUTTON_SETUP, " " },
 	{ NEUTRINO_ICON_BUTTON_MUTE_ZAP_INACTIVE, " " }
 };
@@ -122,6 +123,7 @@ const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 const struct button_label HeadNewModeButtons[HEAD_BUTTONS_COUNT] =
 {
 	{ NEUTRINO_ICON_BUTTON_HELP, " " },
+	{ NEUTRINO_ICON_BUTTON_EPG, " " },
 	{ NEUTRINO_ICON_BUTTON_SETUP, " " },
 	{ NEUTRINO_ICON_BUTTON_MUTE_ZAP_ACTIVE, " " }
 };
