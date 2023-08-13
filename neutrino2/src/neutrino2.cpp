@@ -1927,7 +1927,7 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 		eventinfo.epgID = epgData.eventID;
 		eventinfo.epg_starttime = epgData.epg_times.startzeit;
 		strncpy(eventinfo.epgTitle, epgData.title.c_str(), EPG_TITLE_MAXLEN-1);
-		eventinfo.epgTitle[EPG_TITLE_MAXLEN-1]=0;
+		eventinfo.epgTitle[EPG_TITLE_MAXLEN - 1] = 0;
 	}
 	else 
 	{
@@ -2071,7 +2071,7 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 	return refreshGui;
 }
 
-// start next recording
+// startNextRecording
 void CNeutrinoApp::startNextRecording()
 {
 	if ( nextRecordingInfo != NULL ) 
@@ -3618,8 +3618,6 @@ _repeat:
 					timeshiftstatus = 0;
 				}
 			}
-			else
-				printf("CNeutrinoApp::handleMsg: wrong state\n");
 
 			startNextRecording();
 
@@ -3727,7 +3725,7 @@ _repeat:
 
 				name += zAddData;
 			}
-			HintBox(_("Information"), _(name.c_str()) );
+			HintBox(_("Information"), _(name.c_str()), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
 		}
 
 		return messages_return::handled;
@@ -3763,14 +3761,14 @@ _repeat:
 		delete[] (unsigned char*) data;
 		
 		if( mode != mode_scart )
-			HintBox(_("Information"), _("Recording starts in a few minutes"));
+			HintBox(_("Information"), _("Recording starts in a few minutes"), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
 		
 		return messages_return::handled;
 	}
 	else if( msg == NeutrinoMessages::ANNOUNCE_SLEEPTIMER) 
 	{
 		if( mode != mode_scart )
-			HintBox(_("Information"), _("Sleeptimer in 1 min") );
+			HintBox(_("Information"), _("Sleeptimer in 1 min"), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
 		
 		return messages_return::handled;
 	}
@@ -3815,7 +3813,7 @@ _repeat:
 	else if( msg == NeutrinoMessages::ANNOUNCE_SHUTDOWN) 
 	{
 		if( mode != mode_scart )
-			skipShutdownTimer = (MessageBox(_("Information"), _("Box will shutdown in 1 min.\nCancel Sutdown ?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 5) == mbrYes);
+			skipShutdownTimer = (MessageBox(_("Information"), _("Box will shutdown in 1 min.\nCancel Sutdown ?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 5, false, BORDER_ALL) == mbrYes);
 	}
 	else if( msg == NeutrinoMessages::SHUTDOWN ) 
 	{

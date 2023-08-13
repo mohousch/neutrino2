@@ -291,15 +291,15 @@ int CBouquetList::doMenu()
 	else
 	{
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget = new CWidget(0, 0, 500, 150);
 		widget->name = "bqedit";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		//
-		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		menu = new ClistBox(widget->getWindowsPos().iX + 2, widget->getWindowsPos().iY + 2, widget->getWindowsPos().iWidth - 4, widget->getWindowsPos().iHeight - 4);
 
 		menu->setWidgetMode(MODE_MENU);
-		menu->enableShrinkMenu();
+		//menu->enableShrinkMenu();
 		
 		menu->enablePaintHead();
 		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
@@ -314,8 +314,12 @@ int CBouquetList::doMenu()
 		widget->addWidgetItem(menu);
 	}
 	
+	//
+	widget->setBorderMode();
+	widget->paintMainFrame(true);
 	widget->enableSaveScreen();
 
+	//
 	if(!zapitBouquet->bUser) 
 	{
 		menu->addItem(new CMenuForwarder(_("Copy bouquet to Favorites")), old_selected == i ++);

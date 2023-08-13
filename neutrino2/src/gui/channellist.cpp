@@ -489,15 +489,15 @@ int CChannelList::doChannelMenu(void)
 	else
 	{
 		//
-		mWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		mWidget = new CWidget(0, 0, 500, 250);
 		mWidget->name = "channellistedit";
 		mWidget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		//
-		menu = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
+		menu = new ClistBox(mWidget->getWindowsPos().iX + 2, mWidget->getWindowsPos().iY + 2, mWidget->getWindowsPos().iWidth - 4, mWidget->getWindowsPos().iHeight - 4);
 
 		menu->setWidgetMode(MODE_MENU);
-		menu->enableShrinkMenu();
+		//menu->enableShrinkMenu();
 		
 		menu->enablePaintHead();
 		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
@@ -512,6 +512,9 @@ int CChannelList::doChannelMenu(void)
 		mWidget->addWidgetItem(menu);
 	}
 	
+	//
+	mWidget->setBorderMode();
+	mWidget->paintMainFrame(true);
 	mWidget->enableSaveScreen();
 	
 	//
