@@ -153,6 +153,7 @@ class CWidget : public CMenuTarget
 		virtual void hide();
 		virtual int exec(CMenuTarget *parent, const std::string &actionKey);
 		virtual void refresh();
+		//virtual void checkOverlappingItems(){};
 
 		//
 		void setTimeOut(uint64_t to = 0){timeout = to;};

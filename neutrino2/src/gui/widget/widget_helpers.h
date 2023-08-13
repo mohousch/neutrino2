@@ -749,6 +749,7 @@ class CWidgetItem
 		virtual void hideItemInfo(){};
 		virtual void paint(void){painted = true;};
 		virtual void hide(void){painted = false;};
+		//virtual void checkOverlappingItems(){};
 		
 		//
 		virtual void enableSaveScreen(){savescreen = true; initFrames(); saveScreen();};

@@ -72,6 +72,7 @@
 
 #include <system/helpers.h>
 #include <system/debug.h>
+#include <system/tmdbparser.h>
 
 #include <driver/vcrcontrol.h>
 #include <driver/genpsi.h>
@@ -600,12 +601,13 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 	stream2file_error_msg_t error_msg = STREAM2FILE_BUSY;
 
-	//
+	/*
 	if (IS_WEBTV(channel_id))
 	{
 		error_msg = STREAM2FILE_RECORDING_THREADS_FAILED;
 	}
 	else
+	*/
 	{
 		error_msg = startRecording(filename, getMovieInfoString(channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), si.vpid, pids, numpids);
 	}
@@ -613,6 +615,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	if (error_msg == STREAM2FILE_OK) 
 	{
 		deviceState = CMD_VCR_RECORD;
+		
 		return true;
 	}
 	else 
@@ -849,6 +852,27 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 		g_movieInfo->audioPids.push_back(audio_pids);
 	}
 	g_movieInfo->epgVTXPID = si.vtxtpid;
+	
+	// cover
+	CTmdb * tmdb = new CTmdb();
+
+	if(tmdb->getMovieInfo(g_movieInfo->epgTitle))
+	{
+		if ((!tmdb->getDescription().empty())) 
+		{
+			std::string tname = g_movieInfo->file.getPath();
+			tname += g_movieInfo->epgTitle;
+			tname += ".jpg";
+
+			tmdb->getSmallCover(tmdb->getPosterPath(), tname);
+
+			if(!tname.empty())
+				g_movieInfo->tfile = tname;
+		}
+	}
+
+	delete tmdb;
+	tmdb = NULL;
 
 	g_cMovieInfo->encodeMovieInfoXml(&extMessage, g_movieInfo);
 
@@ -924,7 +948,7 @@ void CVCRControl::processAPIDnames()
 //
 stream2file_error_msg_t CVCRControl::startRecording(const char * const filename, const char * const info, unsigned short vpid, unsigned short * pids, int numpids)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::startRecording\n");
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::startRecording: %s\n", filename);
 	
 	int fd;
 	char buf[FILENAMEBUFFERSIZE];
@@ -936,7 +960,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	else
 		sprintf(rec_filename, "%s", filename);
 
-	// write stream information (should wakeup the disk from standby, too)
+	// saveXML()
 	sprintf(buf, "%s.xml", filename);
 
 	char * dir = strdup(buf);
@@ -958,6 +982,8 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	{
 		return STREAM2FILE_INVALID_DIRECTORY;
 	}
+	
+	// saveCover
 
 	exit_flag = STREAM2FILE_STATUS_RUNNING;
 
