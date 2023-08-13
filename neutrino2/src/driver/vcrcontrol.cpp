@@ -366,7 +366,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 		CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , mode | NeutrinoMessages::norezap );
 	}
 	
-	//
+	// zaptoRecordChannel
 	if (!IS_WEBTV(channel_id))
 	{
 		// zapit
@@ -416,7 +416,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	// cut neutrino
 	CutBackNeutrino(channel_id, mode);
 
-	//
+	// getRecordChannelInfo
 	CZapit::CCurrentServiceInfo si;
 	si = CZapit::getInstance()->getServiceInfo(channel_id);
 	
@@ -445,6 +445,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
         
         CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(channel_id);
         
+        // subs
         /*
         if (channel)
         {
@@ -594,14 +595,14 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	time_t t = time(NULL);
 	strftime(&(filename[pos]), sizeof(filename) - pos - 1, "%Y%m%d_%H%M%S", localtime(&t));
 
+	// startRecording
 	start_time = time(0);
 
 	stream2file_error_msg_t error_msg = STREAM2FILE_BUSY;
 
+	//
 	if (IS_WEBTV(channel_id))
 	{
-		//error_msg = startFileRecording(filename, getMovieInfoString(channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), CZapit::getInstance()->getChannelURL(channel_id));
-		
 		error_msg = STREAM2FILE_RECORDING_THREADS_FAILED;
 	}
 	else
@@ -618,7 +619,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	{
 		RestoreNeutrino();
 
-		HintBox(_("Error"), error_msg == STREAM2FILE_BUSY ? _("One or several recording processes are active.\nIf you encounter this message and no recording is active, please restart Neutrino.") : error_msg == STREAM2FILE_INVALID_DIRECTORY ? _("The recording directory is not writable.\nRecording will not work.") : _("The recording was aborted,\nbecause the target file could not be opened.")/*, mbrCancel, mbCancel, NEUTRINO_ICON_ERROR*/);
+		MessageBox(_("Error"), error_msg == STREAM2FILE_BUSY ? _("One or several recording processes are active.\nIf you encounter this message and no recording is active, please restart Neutrino.") : error_msg == STREAM2FILE_INVALID_DIRECTORY ? _("The recording directory is not writable.\nRecording will not work.") : _("The recording was aborted,\nbecause the target file could not be opened."), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
 
 		return false;
 	}
@@ -729,6 +730,7 @@ bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname)
 	return true;
 }
 
+//
 std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const event_id_t epgid, const std::string& epgTitle, APIDList apid_list, const time_t epg_time)
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::getMovieInfoString\n");
@@ -970,7 +972,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 		return STREAM2FILE_INVALID_DIRECTORY;
 	}
 	
-	//genpsi(fd);
+	//
 	CGenPsi psi;
 	psi.genpsi(fd);
 	

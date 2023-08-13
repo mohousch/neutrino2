@@ -98,7 +98,6 @@ class CChannelList
 
 		bool historyMode;
 		bool vlist; 		// "virtual" list, not bouquet
-		bool displayNext;
 
 		SMSKeyInput c_SMSKeyInput;
 
@@ -127,6 +126,7 @@ class CChannelList
 		bool zapToChannelID(const t_channel_id channel_id, bool rezap = false);
 		bool adjustToChannelID(const t_channel_id channel_id, bool bToo = true);
 		bool showInfo(int pos, int epgpos = 0);
+		void getTMDBInfo(const char * const text);
 		void updateEvents(void);
 		int numericZap(int key);
 		int show(bool zap = true, bool customMode = false);

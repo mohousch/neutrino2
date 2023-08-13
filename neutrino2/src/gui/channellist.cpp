@@ -51,11 +51,13 @@
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
+#include <gui/widget/infobox.h>
 
 #include <system/settings.h>
 #include <system/lastchannel.h>
 #include <system/debug.h>
 #include <system/channellogo.h>
+#include <system/tmdbparser.h>
 
 #include <gui/filebrowser.h>
 
@@ -104,7 +106,7 @@ extern int old_b_id;
 struct button_label CChannelListButtons[NUM_LIST_BUTTONS] =
 {
 	{ NEUTRINO_ICON_BUTTON_RED, _("Event list")},
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("Next")},
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("TMDB info")},
 	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Bouquets")},
 	{ NEUTRINO_ICON_BUTTON_BLUE, _("EPG Plus")},
 };
@@ -134,8 +136,6 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	zapProtection = NULL;
 	this->historyMode = _historyMode;
 	vlist = _vlist;
-
-	displayNext = false;
 	
 	events.clear();
 
@@ -233,74 +233,104 @@ void CChannelList::addChannel(CZapitChannel * channel, int num)
 void CChannelList::updateEvents(void)
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::updateEvents\n");
-
-	//CChannelEventList events;
 	
 	events.clear();
 
-	if (displayNext) 
-	{
-		if (chanlist.size()) 
-		{
-			time_t atime = time(NULL);
-			unsigned int count;
-			
-			for (count = 0; count < chanlist.size(); count++)
-			{		
-				events.clear();
+	//
+	t_channel_id *p_requested_channels = NULL;
+	int size_requested_channels = 0;
 
-				CSectionsd::getInstance()->getEventsServiceKey(chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL, events);
-				chanlist[count]->nextEvent.startTime = (long)0x7fffffff;
-				
-				for ( CChannelEventList::iterator e = events.begin(); e != events.end(); ++e ) 
+	if (chanlist.size()) 
+	{
+		size_requested_channels = chanlist.size()*sizeof(t_channel_id);
+		p_requested_channels = (t_channel_id*)malloc(size_requested_channels);
+			
+		for (uint32_t count = 0; count < chanlist.size(); count++)
+		{
+			p_requested_channels[count] = chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL;
+		}
+
+		CChannelEventList pevents;
+
+		pevents.clear();
+			
+		CSectionsd::getInstance()->getChannelEvents(pevents, (CNeutrinoApp::getInstance()->getMode()) != NeutrinoMessages::mode_radio, p_requested_channels, size_requested_channels);
+			
+		for (uint32_t count = 0; count < chanlist.size(); count++) 
+		{
+			for ( CChannelEventList::iterator e = pevents.begin(); e != pevents.end(); ++e )
+			{
+				if ((chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL) == (e->channelID & 0xFFFFFFFFFFFFULL))//FIXME: get_channel_id()
 				{
-					if (((long)(e->startTime) > atime) && ((e->startTime) < (long)(chanlist[count]->nextEvent.startTime)))
-					{
-						chanlist[count]->nextEvent= *e;
-					
-						break;
-					}
+					chanlist[count]->currentEvent = *e;
+
+					break;
 				}
 			}
 		}
-	} 
-	else 
+
+		if (p_requested_channels != NULL) 
+			free(p_requested_channels);
+	}
+}
+
+void CChannelList::getTMDBInfo(const char * const text)
+{
+	dprintf(DEBUG_NORMAL, "CChannelList::getTMDBInfo: %s\n", text);
+	
+	if(text != NULL)
 	{
-		t_channel_id *p_requested_channels = NULL;
-		int size_requested_channels = 0;
+		CTmdb * tmdb = new CTmdb();
 
-		if (chanlist.size()) 
+		if(tmdb->getMovieInfo(text))
 		{
-			size_requested_channels = chanlist.size()*sizeof(t_channel_id);
-			p_requested_channels = (t_channel_id*)malloc(size_requested_channels);
-			
-			for (uint32_t count = 0; count < chanlist.size(); count++)
+			if ((!tmdb->getDescription().empty())) 
 			{
-				p_requested_channels[count] = chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL;
+				std::string buffer;
+
+				buffer = text;
+				buffer += "\n";
+	
+				// prepare print buffer  
+				buffer += tmdb->createInfoText();
+
+				// thumbnail
+				std::string tname = tmdb->getThumbnailDir();
+				tname += "/";
+				tname += text;
+				tname += ".jpg";
+
+				tmdb->getSmallCover(tmdb->getPosterPath(), tname);
+
+				// scale pic
+				int p_w = 0;
+				int p_h = 0;
+
+				::scaleImage(tname, &p_w, &p_h);
+	
+				CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
+	
+				CInfoBox * infoBox = new CInfoBox(&position, text, NEUTRINO_ICON_TMDB);
+
+				infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
+				infoBox->setMode(SCROLL);
+				infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
+				infoBox->exec();
+				delete infoBox;
 			}
-
-			CChannelEventList pevents;
-
-			pevents.clear();
-			
-			CSectionsd::getInstance()->getChannelEvents(pevents, (CNeutrinoApp::getInstance()->getMode()) != NeutrinoMessages::mode_radio, p_requested_channels, size_requested_channels);
-			
-			for (uint32_t count = 0; count < chanlist.size(); count++) 
+			else
 			{
-				for ( CChannelEventList::iterator e = pevents.begin(); e != pevents.end(); ++e )
-				{
-					if ((chanlist[count]->channel_id & 0xFFFFFFFFFFFFULL) == (e->channelID & 0xFFFFFFFFFFFFULL))//FIXME: get_channel_id()
-					{
-						chanlist[count]->currentEvent= *e;
-
-						break;
-					}
-				}
+				MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 			}
-
-			if (p_requested_channels != NULL) 
-				free(p_requested_channels);
 		}
+		else
+		{
+			MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
+		}
+
+		delete tmdb;
+		tmdb = NULL;	
+
 	}
 }
 
@@ -606,8 +636,6 @@ int CChannelList::doChannelMenu(void)
 int CChannelList::exec(bool zap)
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::exec: zap:%s\n", zap? "yes" : "no");
-
-	displayNext = false; // always start with current events
 	
 	// show list
 	int nNewChannel = show(zap);
@@ -639,8 +667,6 @@ int CChannelList::show(bool zap, bool customMode)
 
 	// display channame in vfd	
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);	
-
-	displayNext = false;
 	
 	// update events
 	updateEvents();
@@ -919,10 +945,11 @@ int CChannelList::show(bool zap, bool customMode)
 		else if ( msg == RC_green ) //next
 		{
 			selected = listBox->getSelected();
-
-			displayNext = !displayNext;
-
-			updateEvents();
+			
+			hide();
+			
+			//
+			getTMDBInfo(chanlist[selected]->currentEvent.description.c_str());
 
 			paint();
 		} 
@@ -1813,16 +1840,10 @@ void CChannelList::paint()
 			jetzt = time(NULL);
 			runningPercent = 0;
 
+			// desc
 			std::string desc = chanlist[i]->description;
 
-			if (displayNext) 
-			{
-				p_event = &chanlist[i]->nextEvent;
-			} 
-			else 
-			{
-				p_event = &chanlist[i]->currentEvent;
-			}
+			p_event = &chanlist[i]->currentEvent;
 
 			// runningPercent	
 			if (((jetzt - p_event->startTime + 30) / 60) < 0 )
@@ -1880,7 +1901,7 @@ void CChannelList::paint()
 			}
 			
 			// option font color
-			if (!displayNext) item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS);
+			item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS);
 			
 
 			if (listBox) listBox->addItem(item);
@@ -1891,16 +1912,6 @@ void CChannelList::paint()
 	if (head) head->setTitle(_(name.c_str()));
 	if (head) head->enablePaintDate();
 	if (head) head->setButtons(new_mode_active? HeadNewModeButtons : HeadButtons, HEAD_BUTTONS_COUNT);
-	
-	//
-	if (displayNext) 
-	{
-		CChannelListButtons[1].localename = _("Now");
-	} 
-	else 
-	{
-		CChannelListButtons[1].localename = _("Next");
-	}
 
 	// foot
 	if (foot) foot->setButtons(CChannelListButtons, NUM_LIST_BUTTONS);
@@ -1914,8 +1925,10 @@ void CChannelList::paint()
 	if (window) 
 	{
 		window->enableSaveScreen();
-		//window->saveScreen();
 	}
+	
+	//
+	paintCurrentNextEvent(selected);
 }
 
 void CChannelList::paintCurrentNextEvent(int _selected)
@@ -1924,7 +1937,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 		return;
 		
 	if (window)
-	{	//window->restoreScreen(); 
+	{
 		window->hide();
 		window->paint();
 	}
@@ -1946,7 +1959,6 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	
 	// title
 	CCLabel epgTitle(winTopBox.iX + 10, winTopBox.iY + 10, winTopBox.iWidth - 20, 60);
-	//epgTitle.enableSaveScreen();
 	epgTitle.setText(p_event->description.c_str());
 	epgTitle.setHAlign(CC_ALIGN_CENTER);
 	epgTitle.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
@@ -1984,25 +1996,22 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	}
 	
 	CCLabel startTime(winTopBox.iX + 10, winTopBox.iY + 10 + 60 + 10, 80, 20);
-	//startTime.enableSaveScreen();
 	startTime.setText(cSeit);
 	startTime.setHAlign(CC_ALIGN_CENTER);
 	startTime.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	
 	CCLabel restTime(winTopBox.iX + 100 + winTopBox.iWidth - 200 + 10, winTopBox.iY + 10 + 60 + 10, 80, 20);
-	//restTime.enableSaveScreen();
 	restTime.setText(cNoch);
 	restTime.setHAlign(CC_ALIGN_CENTER);
 	restTime.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	
 	// text
 	CCText text(winTopBox.iX + 10, winTopBox.iY + 10 + 60 + 10 + 30, winTopBox.iWidth - 20, winTopBox.iHeight - 120);
-	//text.enableSaveScreen();
 	text.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	text.setText(p_event->text.c_str());
 	
 	// next
-	CChannelEventList events;
+	//CChannelEventList events;
 
 	time_t atime = time(NULL);
 					
@@ -2025,7 +2034,6 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	
 	//
 	CCLabel nextTitle(winBottomBox.iX + 10, winBottomBox.iY + 10, winBottomBox.iWidth - 20, 20);
-	//nextTitle.enableSaveScreen();
 	nextTitle.setText(p_event->description.c_str());
 	nextTitle.setHAlign(CC_ALIGN_CENTER);
 	nextTitle.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
@@ -2033,7 +2041,6 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	// vom/bis
 	std::string fromto = "";
 	CCLabel nextTime(winBottomBox.iX + 10, winBottomBox.iY + 10 + 30, winBottomBox.iWidth - 20, 20);
-	//nextTime.enableSaveScreen();
 	nextTime.setHAlign(CC_ALIGN_CENTER);
 	nextTime.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	
@@ -2059,18 +2066,17 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	
 	// nextText
 	CCText nextText(winBottomBox.iX + 10, winBottomBox.iY + 10 + 60, winBottomBox.iWidth - 20, winBottomBox.iHeight - 80);
-	//nextText.enableSaveScreen();
 	nextText.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	nextText.setText(p_event->text.c_str());
 	
-	//
+	// current
 	epgTitle.paint();
 	pb.reset();
 	pb.paint(runningPercent);
 	startTime.paint();
 	restTime.paint();
 	text.paint();
-	//
+	// next
 	nextTitle.paint();
 	nextTime.paint();
 	nextText.paint();

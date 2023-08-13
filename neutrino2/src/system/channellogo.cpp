@@ -219,6 +219,7 @@ std::string CChannellogo::getLogoName(t_channel_id logo_id)
 	return logo_name;
 }
 
+//
 bool CChannellogo::loadWebTVlogos()
 {
 	dprintf(DEBUG_NORMAL, "CChannellogo::loadWebTVlogos:\n");

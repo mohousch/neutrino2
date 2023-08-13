@@ -232,6 +232,66 @@ void EventList::readEvents(const t_channel_id channel_id)
 	return;
 }
 
+void EventList::getTMDBInfo(const char * const text)
+{
+	dprintf(DEBUG_NORMAL, "EventList::getTMDBInfo: %s\n", text);
+	
+	if(text != NULL)
+	{
+		CTmdb * tmdb = new CTmdb();
+
+		if(tmdb->getMovieInfo(text))
+		{
+			if ((!tmdb->getDescription().empty())) 
+			{
+				std::string buffer;
+
+				buffer = text;
+				buffer += "\n";
+	
+				// prepare print buffer  
+				buffer += tmdb->createInfoText();
+
+				// thumbnail
+				std::string tname = tmdb->getThumbnailDir();
+				tname += "/";
+				tname += text;
+				tname += ".jpg";
+
+				tmdb->getSmallCover(tmdb->getPosterPath(), tname);
+
+				// scale pic
+				int p_w = 0;
+				int p_h = 0;
+
+				::scaleImage(tname, &p_w, &p_h);
+	
+				CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
+	
+				CInfoBox * infoBox = new CInfoBox(&position, text, NEUTRINO_ICON_TMDB);
+
+				infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
+				infoBox->setMode(SCROLL);
+				infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
+				infoBox->exec();
+				delete infoBox;
+			}
+			else
+			{
+				MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
+			}
+		}
+		else
+		{
+			MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
+		}
+
+		delete tmdb;
+		tmdb = NULL;	
+
+	}
+}
+
 int EventList::exec(const t_channel_id channel_id, const std::string& channelname) // UTF-8
 {
 	neutrino_msg_t      msg;
@@ -477,62 +537,9 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 			if ( evtlist[selected].eventID != 0 )
 			{
 				hide();
-
+				
 				//
-				if(!evtlist[selected].description.empty())
-				{
-					CTmdb * tmdb = new CTmdb();
-
-					if(tmdb->getMovieInfo(evtlist[selected].description))
-					{
-						if ((!tmdb->getDescription().empty())) 
-						{
-							std::string buffer;
-
-							buffer = evtlist[selected].description;
-							buffer += "\n";
-	
-							// prepare print buffer  
-							buffer += tmdb->createInfoText();
-
-							// thumbnail
-							std::string tname = tmdb->getThumbnailDir();
-							tname += "/";
-							tname += evtlist[selected].description;
-							tname += ".jpg";
-
-							tmdb->getSmallCover(tmdb->getPosterPath(), tname);
-
-							// scale pic
-							int p_w = 0;
-							int p_h = 0;
-
-							::scaleImage(tname, &p_w, &p_h);
-	
-							CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
-	
-							CInfoBox * infoBox = new CInfoBox(&position, evtlist[selected].description.c_str(), NEUTRINO_ICON_TMDB);
-
-							infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-							infoBox->setMode(SCROLL);
-							infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
-							infoBox->exec();
-							delete infoBox;
-						}
-						else
-						{
-							MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
-						}
-					}
-					else
-					{
-						MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
-					}
-
-					delete tmdb;
-					tmdb = NULL;	
-
-				}
+				getTMDBInfo(evtlist[selected].description.c_str());
 
 				paint(channel_id);
 			}	

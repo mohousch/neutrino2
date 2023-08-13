@@ -117,6 +117,8 @@ class EventList
 		int sort_mode;
 
 		CTimerd::CTimerEventTypes isScheduled(t_channel_id channel_id, CChannelEvent * event, int * tID = NULL);
+		
+		void getTMDBInfo(const char * const text);
 
 	public:
 		EventList();
