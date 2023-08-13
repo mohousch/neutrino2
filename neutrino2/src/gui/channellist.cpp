@@ -499,7 +499,6 @@ int CChannelList::doChannelMenu(void)
 		menu = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
 
 		menu->setWidgetMode(MODE_MENU);
-		//menu->enableShrinkMenu();
 		
 		menu->enablePaintHead();
 		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);

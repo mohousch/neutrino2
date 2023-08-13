@@ -968,6 +968,12 @@
 		<TIME posx="890" posy="500" width="390" height="100" refresh="1" format="%H:%M:%S"/>
 	</WIDGET>
 	
+	<WIDGET name="bouquetlistedit" posx="0" posy="0" width="600" height="500" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER">
+		<LISTBOX posx="50" posy="50" width="500" height="400" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" paintframe="0" painthead="1" title="Edit" icon="settings" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+			<FOOT_BUTTON_LABEL name="information"/>
+		</LISTBOX>
+	</WIDGET>
+	
 	<WIDGET name="channellist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" itemborder="1"/>
 		<HEAD posx="50" posy="0" width="1180" height="50" paintframe="0" line="1"/>
@@ -975,6 +981,12 @@
 		<WINDOW posx="890" posy="50" width="340" height="620"/>
 		<HLINE posx="900" posy="360" width="320" height="2" gradient="DARK2LIGHT2DARK"/>	
 		<VLINE posx="890" posy="60" width="2" height="600" gradient="DARK2LIGHT2DARK"/>
+	</WIDGET>
+	
+	<WIDGET name="channellistedit" posx="0" posy="0" width="600" height="500" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER">
+		<LISTBOX posx="50" posy="50" width="500" height="400" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" paintframe="0" painthead="1" title="Edit" icon="settings" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
+			<FOOT_BUTTON_LABEL name="information"/>
+		</LISTBOX>
 	</WIDGET>
 	
 	<WIDGET name="eventlist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">

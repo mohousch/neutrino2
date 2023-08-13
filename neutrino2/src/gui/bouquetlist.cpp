@@ -282,7 +282,7 @@ int CBouquetList::doMenu()
 	CWidget* widget = NULL;
 	ClistBox* menu = NULL;
 	
-	widget = CNeutrinoApp::getInstance()->getWidget("bqedit");
+	widget = CNeutrinoApp::getInstance()->getWidget("bouquetlistedit");
 	
 	if (widget)
 	{
@@ -292,14 +292,13 @@ int CBouquetList::doMenu()
 	{
 		//
 		widget = new CWidget(0, 0, 500, 150);
-		widget->name = "bqedit";
+		widget->name = "bouquetlistedit";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		//
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		menu->setWidgetMode(MODE_MENU);
-		//menu->enableShrinkMenu();
 		
 		menu->enablePaintHead();
 		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
