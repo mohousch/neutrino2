@@ -470,7 +470,7 @@ void CCButtons::paint()
 						CFrame frame;
 						
 						frame.setPosition(startx, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight -2);
-						frame.enableBorder();
+						frame.setBorderMode();
 						frame.paintMainFrame(true);
 						//frame.setColor(buttons[i].color);
 						frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
@@ -486,7 +486,7 @@ void CCButtons::paint()
 						CFrame frame;
 						
 						frame.setPosition(startx, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight -2);
-						frame.enableBorder();
+						frame.setBorderMode();
 						frame.paintMainFrame(true);
 						frame.setColor(buttons[i].color);
 						frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
@@ -551,7 +551,7 @@ void CCButtons::paint()
 						CFrame frame;
 						
 						frame.setPosition(cCBox.iX + BORDER_LEFT + i*buttonWidth, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight - 2);
-						frame.enableBorder();
+						frame.setBorderMode();
 						frame.paintMainFrame(true);
 						//frame.setColor(buttons[i].color);
 						frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
@@ -564,7 +564,7 @@ void CCButtons::paint()
 						//
 						CFrame frame;
 						frame.setPosition(cCBox.iX + BORDER_LEFT + i*buttonWidth, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight - 2);
-						frame.enableBorder();
+						frame.setBorderMode();
 						frame.paintMainFrame(true);
 						frame.setColor(buttons[i].color);
 						frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);

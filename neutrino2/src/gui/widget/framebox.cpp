@@ -45,7 +45,8 @@ CFrame::CFrame()
 	caption = "";
 	mode = FRAME_BOX;
 
-	border = false;
+	borderMode = BORDER_NO;
+	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	paintFrame = true;
 	pluginOrigName = false;
 
@@ -80,7 +81,6 @@ void CFrame::setMode(int m)
 			
 	if ( (mode == FRAME_HLINE) || (mode == FRAME_VLINE) ) 
 	{
-		//border = false;
 		paintFrame = false;
 		
 		setActive(false);
@@ -180,9 +180,10 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 	// paint frameBackground
 	if (paintFrame)
 	{
-		window.setBorderMode(border? BORDER_ALL : BORDER_NO);
+		window.setBorderMode(borderMode);
+		window.setBorderColor(borderColor);
 		window.setColor(bgcolor);
-		//window.setCorner(radius, corner); //FIXME:
+		window.setCorner(radius, corner); //FIXME:
 		window.setGradient(gradient);
 		
 		window.paint();
@@ -357,13 +358,14 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 	}
 	else if (mode == FRAME_TEXT)
 	{
-		CTextBox textBox(window.getWindowsPos().iX + 1, window.getWindowsPos().iY + 1, window.getWindowsPos().iWidth - 2, window.getWindowsPos().iHeight - 2);
+		//CTextBox textBox(window.getWindowsPos().iX + 1, window.getWindowsPos().iY + 1, window.getWindowsPos().iWidth - 2, window.getWindowsPos().iHeight - 2);
+		CCText textBox(window.getWindowsPos().iX, window.getWindowsPos().iY, window.getWindowsPos().iWidth, window.getWindowsPos().iHeight);
 
-		textBox.paintMainFrame(false);
-		textBox.setMode(AUTO_WIDTH);
+		//textBox.paintMainFrame(false);
+		//textBox.setMode(AUTO_WIDTH);
 		textBox.setFont(captionFont);
 		textBox.enableSaveScreen();
-		textBox.setBorderMode(border? BORDER_ALL : BORDER_NO);
+		//textBox.setBorderMode(border? BORDER_ALL : BORDER_NO);
 
 		// caption
 		if(!caption.empty())
@@ -664,10 +666,9 @@ void CFrameBox::restoreScreen()
 {
 	dprintf(DEBUG_NORMAL, "CFrameBox::restoreScreen:\n");
 	
-	if(background) 
+	if(savescreen && background) 
 	{
-		if(savescreen)
-			frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
 }
 

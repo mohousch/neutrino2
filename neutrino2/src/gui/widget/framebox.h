@@ -77,7 +77,8 @@ class CFrame
 		bool marked;
 
 		int mode;	//frame mode
-		bool border;
+		int borderMode;
+		fb_pixel_t borderColor;
 		bool paintFrame;
 		bool pluginOrigName;
 		
@@ -126,7 +127,9 @@ class CFrame
 			return active;				
 		}
 
-		virtual void enableBorder(void){border = true;};
+		//virtual void enableBorder(void){border = true;};
+		virtual void setBorderMode(int b = BORDER_ALL){borderMode =b;};
+		virtual void setBorderColor(fb_pixel_t col){borderColor = col;};
 		virtual void paintMainFrame(bool p){paintFrame = p;};
 		virtual void setPosition(int x, int y, int dx, int dy){window.setPosition(x, y, dx, dy);};
 		virtual void setPosition(CBox *position){window.setPosition(position);};

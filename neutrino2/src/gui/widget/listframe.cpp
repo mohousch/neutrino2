@@ -109,7 +109,7 @@ CListFrame::CListFrame(LF_LINES * lines, CFont * font_text, const int _mode, con
 	m_nFontTitleHeight = m_pcFontTitle->getHeight();
 
 	//initialise the window frames first
-	initFramesRel();
+	initFrames();
 
 	//than refresh text line array
 	onNewLineArray();
@@ -131,7 +131,7 @@ CListFrame::CListFrame(LF_LINES* lines)
 	}
 
 	// initialise the window frames first
-	initFramesRel();
+	initFrames();
 
 	// than refresh text line array
 	onNewLineArray();
@@ -142,7 +142,7 @@ CListFrame::CListFrame()
 	dprintf(DEBUG_DEBUG, "CListFrame::CListFrame\r\n");
 	
 	initVar();
-	initFramesRel();
+	initFrames();
 	
 	m_pLines = NULL;
 }
@@ -207,7 +207,7 @@ void CListFrame::reSizeMainFrameWidth(int textWidth)
 	itemBox.iWidth	= iNewWindowWidth;
 
 	// renit the children frames due to new main window
-	initFramesRel();
+	initFrames();
 }
 
 void CListFrame::reSizeMainFrameHeight(int textHeight)
@@ -225,12 +225,12 @@ void CListFrame::reSizeMainFrameHeight(int textHeight)
 	itemBox.iHeight = iNewWindowHeight;
 
 	// reinit the children frames due to new main window
-	initFramesRel();
+	initFrames();
 }
 
-void CListFrame::initFramesRel(void)
+void CListFrame::initFrames(void)
 {
-	dprintf(DEBUG_DEBUG, "CListFrame::InitFramesRel\r\n");
+	dprintf(DEBUG_DEBUG, "CListFrame::InitFrames\r\n");
 
 	if(m_nMode & TITLE)
 	{

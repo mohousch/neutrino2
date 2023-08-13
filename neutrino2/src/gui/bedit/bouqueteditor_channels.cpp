@@ -407,7 +407,7 @@ void CBEChannelWidget::deleteChannel()
 	if (selected >= Channels->size()) /* Channels.size() might be 0 */
 		return;
 
-	if (MessageBox(_("Delete"), (*Channels)[selected]->getName().c_str(), mbrNo, mbYes|mbNo) != mbrYes)
+	if (MessageBox(_("Delete"), (*Channels)[selected]->getName().c_str(), mbrNo, mbYes|mbNo, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL) != mbrYes)
 		return;
 
 	g_bouquetManager->Bouquets[bouquet]->removeService((*Channels)[selected]->channel_id);

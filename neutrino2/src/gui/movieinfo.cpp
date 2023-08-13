@@ -1923,7 +1923,7 @@ void CMovieInfoWidget::funArt()
 	playFrame->setTitle("Movie abspielen");
 	playFrame->setIconName(NEUTRINO_ICON_PLAY);
 	playFrame->setActionKey(this, "playMovie");
-	playFrame->enableBorder();
+	playFrame->setBorderMode();
 
 	testFrameBox->addFrame(playFrame);
 
@@ -1934,7 +1934,7 @@ void CMovieInfoWidget::funArt()
 	infoFrame->setTitle("Movie Details");
 	infoFrame->setIconName(NEUTRINO_ICON_INFO);
 	infoFrame->setActionKey(this, "MovieInfo");
-	infoFrame->enableBorder();
+	infoFrame->setBorderMode();
 
 	testFrameBox->addFrame(infoFrame, true);
 

@@ -296,7 +296,7 @@ int CBouquetList::doMenu()
 		widget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		//
-		menu = new ClistBox(widget->getWindowsPos().iX + 2, widget->getWindowsPos().iY + 2, widget->getWindowsPos().iWidth - 4, widget->getWindowsPos().iHeight - 4);
+		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		menu->setWidgetMode(MODE_MENU);
 		//menu->enableShrinkMenu();

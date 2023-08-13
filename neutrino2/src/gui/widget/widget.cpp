@@ -167,10 +167,10 @@ void CWidget::initFrames()
 	
 	// sanity check
 	if(mainFrameBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
-		mainFrameBox.iHeight = frameBuffer->getScreenHeight(true);
+		mainFrameBox.iHeight = frameBuffer->getScreenHeight(true) - 4; // 4 pixel reserved for border
 
 	if(mainFrameBox.iWidth > (int)frameBuffer->getScreenWidth(true))
-		mainFrameBox.iWidth = frameBuffer->getScreenWidth(true);
+		mainFrameBox.iWidth = frameBuffer->getScreenWidth(true) - 4; // 4 pixel reserved for border
 		
 	// menu position (x/y)
 	if(menu_position == MENU_POSITION_CENTER)
@@ -233,10 +233,10 @@ void CWidget::paint()
 		else
 		{
 			// border
-			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, borderColor, radius, corner);
+			frameBuffer->paintBoxRel(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, borderColor, radius, corner);
 			
 			// mainframe
-			frameBuffer->paintBoxRel(mainFrameBox.iX + 2, mainFrameBox.iY + 2, mainFrameBox.iWidth - 4, mainFrameBox.iHeight - 4, backgroundColor, radius, corner, gradient);
+			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient);
 		}
 	}
 
@@ -262,11 +262,14 @@ void CWidget::saveScreen()
 		background = NULL;
 	}
 
-	background = new fb_pixel_t[mainFrameBox.iWidth*mainFrameBox.iHeight];
+	background = new fb_pixel_t[borderMode? (mainFrameBox.iWidth + 4)* (mainFrameBox.iHeight + 4) : mainFrameBox.iWidth*mainFrameBox.iHeight];
 	
 	if(background)
 	{
-		frameBuffer->saveScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);
+		if (borderMode)
+			frameBuffer->saveScreen(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, background);
+		else
+			frameBuffer->saveScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);		
 	}
 }
 
@@ -276,7 +279,10 @@ void CWidget::restoreScreen()
 	
 	if(savescreen && background) 
 	{
-		frameBuffer->restoreScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);
+		if (borderMode)
+			frameBuffer->restoreScreen(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, background);
+		else
+			frameBuffer->restoreScreen(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, background);
 	}
 }
 
@@ -314,9 +320,10 @@ void CWidget::hide()
 	}
 	else
 	{
-		// always clear buffer also if we dont paintmainframe
-		//if (paintframe)
-		frameBuffer->paintBackgroundBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
+		if (borderMode)
+			frameBuffer->paintBackgroundBoxRel(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4);
+		else
+			frameBuffer->paintBackgroundBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight);
 	}
 
 	frameBuffer->blit();

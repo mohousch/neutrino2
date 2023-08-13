@@ -496,7 +496,7 @@ int CChannelList::doChannelMenu(void)
 		mWidget->setMenuPosition(MENU_POSITION_CENTER);
 		
 		//
-		menu = new ClistBox(mWidget->getWindowsPos().iX + 2, mWidget->getWindowsPos().iY + 2, mWidget->getWindowsPos().iWidth - 4, mWidget->getWindowsPos().iHeight - 4);
+		menu = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
 
 		menu->setWidgetMode(MODE_MENU);
 		//menu->enableShrinkMenu();

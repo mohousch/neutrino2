@@ -2349,7 +2349,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_NEXTPROGRAM, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	//eventServer->registerEvent2(NeutrinoMessages::NEXTPROGRAM, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_RECORD, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);

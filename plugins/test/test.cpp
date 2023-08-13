@@ -946,7 +946,7 @@ void CTestMenu::testCWidget()
 	frame->setTitle("Filme");
 	frame->setActionKey(this, "movie");
 	frame->setHAlign(CC_ALIGN_CENTER);
-	frame->enableBorder();
+	frame->setBorderMode();
 	frameBoxWidget->addFrame(frame);
 	
 	frame = new CFrame();
@@ -954,7 +954,7 @@ void CTestMenu::testCWidget()
 	frame->setTitle("Serien");
 	frame->setHAlign(CC_ALIGN_CENTER);
 	frame->setActionKey(this, "tv");
-	frame->enableBorder();
+	frame->setBorderMode();
 	frameBoxWidget->addFrame(frame);
 
 	frame = new CFrame();
@@ -963,7 +963,7 @@ void CTestMenu::testCWidget()
 	frame->setHAlign(CC_ALIGN_CENTER);
 	frame->setOption(tmdbsearch.c_str());
 	frame->setActionKey(this, "search");
-	frame->enableBorder();
+	frame->setBorderMode();
 	frameBoxWidget->addFrame(frame);
 
 	frameBoxWidget->setSelected(top_selected); 
@@ -3628,22 +3628,24 @@ void CTestMenu::testCFrameBox1()
 	// infoFrame
 	CFrame * infoFrame = new CFrame();
 	infoFrame->setPosition(playBox.iX + 300 + 10, playBox.iY, 300, 60);
+	infoFrame->setCorner(10, CORNER_ALL);
 	infoFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 	infoFrame->setTitle("Movie Details");
 	infoFrame->setIconName(NEUTRINO_ICON_INFO);
 	infoFrame->setActionKey(this, "winfo");
-	infoFrame->enableBorder();
+	infoFrame->setBorderMode();
 
 	frameBoxWidget->addFrame(infoFrame);
 
 	// play
 	CFrame *playFrame = new CFrame();
 	playFrame->setPosition(&playBox);
+	playFrame->setCorner(10, CORNER_ALL);
 	playFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 	playFrame->setTitle("Movie abspielen");
 	playFrame->setIconName(NEUTRINO_ICON_PLAY);
 	playFrame->setActionKey(this, "wplay");
-	playFrame->enableBorder();
+	playFrame->setBorderMode();
 
 	frameBoxWidget->addFrame(playFrame);
 

@@ -844,11 +844,12 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_INFO, "\n\033[1;32mCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%x) data:(0x%x) <\033[0m\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us:got event from high-pri pipe msg=(0x%x) data:(0x%x) <\n", *msg, *data );
 
 			return;
 		}
 
+		// keyboard
 #ifdef KEYBOARD_INSTEAD_OF_REMOTE_CONTROL
 		if (FD_ISSET(fd_keyb, &rfds))
 		{
@@ -1003,12 +1004,10 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				{
 					read_bytes = recv(fd_eventclient, p, emsg.dataSize, MSG_WAITALL);
 					
-					dprintf(DEBUG_INFO, "\n\033[1;32mCRCInput::getMsg_us:got event from fd_event msg=(0x%x) data:(0x%x) <\033[0m\n", emsg.eventID, *(unsigned*) p);
+					dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us:got event from fd_event msg=(0x%x) data:(0x%x) <\n", emsg.eventID, *(unsigned*) p);
 
 					if (emsg.initiatorID == CEventServer::INITID_NEUTRINO)
-					{					  
-						//dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from NEUTRINO %x %x\n", emsg.eventID, *(unsigned*) p);	
-										
+					{					  				
 						//
 						switch(emsg.eventID)
 						{
@@ -1290,8 +1289,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					}
 					else if (emsg.initiatorID == CEventServer::INITID_GENERIC_INPUT_EVENT_PROVIDER)
 					{					  
-						//dprintf(DEBUG_INFO, "CRCInput::getMsg_us: event - from GENERIC_INPUT_EVENT_PROVIDER %x %x\n", emsg.eventID, *(unsigned*) p);						
-						
 						if (read_bytes == sizeof(int))
 						{
 							*msg  = *(int *)p;
@@ -1334,11 +1331,10 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 				if(ret != sizeof(t_input_event)) 
 				{
-					//dprintf(DEBUG_INFO, "CRCInput::getMsg_us: read event %d != %ld\n", ret, sizeof(t_input_event) );	
 					continue;
 				}
 								
-				dprintf(DEBUG_INFO, "\n\033[1;32mCRCInput::getMsg_us:got event from device type: 0x%X key: 0x%X value %d, translate: 0x%X -%s<\033[0m\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
+				dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us:got event from device type: 0x%X key: 0x%X value %d, translate: 0x%X -%s<\n", ev.type, ev.code, ev.value, translate(ev.code, i), getKeyName(translate(ev.code, i)).c_str() );
 
 				uint32_t trkey = translate(ev.code, i);
 
@@ -1424,7 +1420,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_INFO, "\n\033[1;32mCRCInput::getMsg_us:got event from low-pri pipe msg=(0x%x) data:(0x%x) <\033[0m\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, ANSI_RED"CRCInput::getMsg_us:got event from low-pri pipe msg=(0x%x) data:(0x%x) <\n", *msg, *data );
 
 			return;
 		}

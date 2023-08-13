@@ -85,7 +85,7 @@ class CListFrame : public CWidgetItem
 		// Functions 
 		void onNewLineArray(void);
 		void initVar(void);
-		void initFramesRel(void);
+		void initFrames(void);
 		void refreshTitle(void);
 		void refreshScroll(void);
 		void refreshList(void);
