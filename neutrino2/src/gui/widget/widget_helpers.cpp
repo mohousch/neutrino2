@@ -1361,7 +1361,6 @@ CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 
 CCTime::~CCTime()
 {
-
 	if (background)
 	{
 		delete [] background; 
@@ -1378,19 +1377,8 @@ void CCTime::paint()
 {
 	dprintf(DEBUG_INFO, "CCTime::paint\n");
 	
-	if (background)
-	{
-		delete [] background; 
-		background = NULL;
-	}
-	
 	//
-	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
-	
-	if (background)
-	{
-		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-	}
+	saveScreen();
 	
 	//
 	std::string timestr = getNowTimeStr(format.c_str());
@@ -1407,10 +1395,8 @@ void CCTime::paint()
 
 void CCTime::refresh()
 {
-	if (background)
-	{
-		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-	}
+	//
+	restoreScreen();
 	
 	//
 	std::string timestr = getNowTimeStr(format.c_str());
@@ -1433,6 +1419,31 @@ void CCTime::hide()
 	{
 		delete [] background; 
 		background = NULL;
+	}
+}
+
+void CCTime::saveScreen(void)
+{
+	if (background)
+	{
+		delete [] background; 
+		background = NULL;
+	}
+	
+	//
+	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
+	
+	if (background)
+	{
+		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+}
+
+void CCTime::restoreScreen(void)
+{
+	if (background)
+	{
+		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
 	}
 }
 
@@ -1479,19 +1490,8 @@ void CCCounter::paint()
 {
 	dprintf(DEBUG_INFO, "CCCounter::paint\n");
 	
-	if (background)
-	{
-		delete [] background; 
-		background = NULL;
-	}
-	
 	//
-	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
-	
-	if (background)
-	{
-		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-	}
+	saveScreen();
 	
 	// play_time
 	char playTime[11];
@@ -1507,10 +1507,8 @@ void CCCounter::paint()
 
 void CCCounter::refresh()
 {
-	if (background)
-	{
-		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-	}
+	//
+	restoreScreen();
 	
 	// play_time
 	char playTime[11];
@@ -1531,6 +1529,31 @@ void CCCounter::hide()
 	{
 		delete [] background; 
 		background = NULL;
+	}
+}
+
+void CCCounter::saveScreen(void)
+{
+	if (background)
+	{
+		delete [] background; 
+		background = NULL;
+	}
+	
+	//
+	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
+	
+	if (background)
+	{
+		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+}
+
+void CCCounter::restoreScreen(void)
+{
+	if (background)
+	{
+		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
 	}
 }
 
@@ -1572,18 +1595,7 @@ void CCSpinner::paint()
 	dprintf(DEBUG_DEBUG, "CCSpinner::paint\n");
 	
 	//
-	if(background)
-	{
-		delete[] background;
-		background = NULL;
-	}
-
-	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
-		
-	if(background)
-	{
-		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-	}
+	saveScreen();
 	
 	filename += toString(count);
 	
@@ -1597,9 +1609,6 @@ void CCSpinner::hide()
 	if(background) 
 	{
 		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-		
-		//delete[] background;
-		//background = NULL;
 	}
 	else //FIXME:
 		frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
@@ -1613,16 +1622,38 @@ void CCSpinner::refresh()
 	
 	filename = "hourglass";
 	
-	if (background)
-	{
-		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
-	}
+	//
+	restoreScreen();
 		
 	count = (count + 1) % 9;
 	
 	filename += toString(count);
 	
 	frameBuffer->paintIcon(filename, cCBox.iX, cCBox.iY);
+}
+
+void CCSpinner::saveScreen(void)
+{
+	if(background)
+	{
+		delete[] background;
+		background = NULL;
+	}
+
+	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
+		
+	if(background)
+	{
+		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+}
+
+void CCSpinner::restoreScreen(void)
+{
+	if (background)
+	{
+		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
 }
 
 // CWidgetItem

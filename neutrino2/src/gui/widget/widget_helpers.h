@@ -501,6 +501,8 @@ class CCTime : public CComponent
 		std::string format;
 		
 		fb_pixel_t* background;
+		void saveScreen(void);
+		void restoreScreen(void);
 		
 		//
 		CCTime(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
@@ -532,6 +534,8 @@ class CCCounter : public CComponent
 		time_t play_time;
 		
 		fb_pixel_t* background;
+		void saveScreen(void);
+		void restoreScreen(void);
 		
 		//
 		CCCounter(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
@@ -564,6 +568,8 @@ class CCSpinner : public CComponent
 		std::string filename;
 		int count;
 		fb_pixel_t* background;
+		void saveScreen(void);
+		void restoreScreen(void);
 		
 		//
 		CCSpinner(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
