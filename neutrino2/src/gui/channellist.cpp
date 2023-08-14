@@ -95,7 +95,6 @@ extern t_channel_id live_channel_id;
 bool pip_selected = false;
 extern bool autoshift;
 int info_height = 0;
-bool new_mode_active = 0;
 extern int FrontendCount;				// defined in zapit.cpp
 extern CBouquetManager * g_bouquetManager;
 extern cVideo * videoDecoder;
@@ -111,21 +110,21 @@ struct button_label CChannelListButtons[NUM_LIST_BUTTONS] =
 	{ NEUTRINO_ICON_BUTTON_BLUE, _("EPG Plus")},
 };
 
-#define HEAD_BUTTONS_COUNT	4
+#define HEAD_BUTTONS_COUNT	3
 const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 {
 	{ NEUTRINO_ICON_BUTTON_HELP, " " },
 	{ NEUTRINO_ICON_BUTTON_EPG, " " },
-	{ NEUTRINO_ICON_BUTTON_SETUP, " " },
-	{ NEUTRINO_ICON_BUTTON_MUTE_ZAP_INACTIVE, " " }
+	{ NEUTRINO_ICON_BUTTON_SETUP, " " }
+	//{ NEUTRINO_ICON_BUTTON_MUTE_ZAP_INACTIVE, " " }
 };
 
 const struct button_label HeadNewModeButtons[HEAD_BUTTONS_COUNT] =
 {
 	{ NEUTRINO_ICON_BUTTON_HELP, " " },
 	{ NEUTRINO_ICON_BUTTON_EPG, " " },
-	{ NEUTRINO_ICON_BUTTON_SETUP, " " },
-	{ NEUTRINO_ICON_BUTTON_MUTE_ZAP_ACTIVE, " " }
+	{ NEUTRINO_ICON_BUTTON_SETUP, " " }
+	//{ NEUTRINO_ICON_BUTTON_MUTE_ZAP_ACTIVE, " " }
 };
 
 CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vlist)
@@ -665,10 +664,7 @@ int CChannelList::show(bool zap, bool customMode)
 
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
-	bool actzap = 0;
 	int res = -1;
-
-	new_mode_active = 0;
 
 	// display channame in vfd	
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);	
@@ -704,8 +700,7 @@ int CChannelList::show(bool zap, bool customMode)
 
 		if ( ( msg == RC_timeout ) || ( msg == (neutrino_msg_t)g_settings.key_channelList_cancel) ) 
 		{
-			if(!actzap)
-				selected = oldselected;
+			selected = oldselected;
 			
 			loop = false;
 			res = -1;
@@ -776,24 +771,12 @@ int CChannelList::show(bool zap, bool customMode)
 			selected = 0;
 
 			paint();
-			
-			if(new_mode_active) 
-			{ 
-				actzap = true; 
-				zapTo(selected); 
-			}
 		}
 		else if (msg == (neutrino_msg_t) g_settings.key_list_end) 
 		{
 			selected = chanlist.size() - 1;
 
 			paint();
-			
-			if(new_mode_active) 
-			{ 
-				actzap = true; 
-				zapTo(selected); 
-			}
 		}
                 else if (msg == RC_up)
                 {
@@ -803,12 +786,6 @@ int CChannelList::show(bool zap, bool customMode)
 				
 			//
 			paintCurrentNextEvent(selected);
-
-			if(new_mode_active) 
-			{
-				actzap = true; 
-				zapTo(selected); 
-			}
                 }
 		else if ( msg == RC_page_up || (int) msg == g_settings.key_channelList_pageup)
                 {
@@ -818,12 +795,6 @@ int CChannelList::show(bool zap, bool customMode)
 				
 			//
 			paintCurrentNextEvent(selected);
-
-			if(new_mode_active) 
-			{
-				actzap = true; 
-				zapTo(selected); 
-			}
                 }
                 else if (msg == RC_down)
                 {
@@ -833,12 +804,6 @@ int CChannelList::show(bool zap, bool customMode)
 				
 			//
 			paintCurrentNextEvent(selected);
-
-			if(new_mode_active) 
-			{ 
-				actzap = true; 
-				zapTo(selected); 
-			}
                 }
 		else if (msg == RC_page_down || (int) msg == g_settings.key_channelList_pagedown)
                 {
@@ -848,12 +813,6 @@ int CChannelList::show(bool zap, bool customMode)
 				
 			//
 			paintCurrentNextEvent(selected);
-
-			if(new_mode_active) 
-			{ 
-				actzap = true; 
-				zapTo(selected); 
-			}
                 }
 		else if ((msg == (neutrino_msg_t)g_settings.key_bouquet_up) && (bouquetList != NULL)) 
 		{
@@ -925,12 +884,6 @@ int CChannelList::show(bool zap, bool customMode)
 			
 			loop = false;
 		}
-		else if ( msg == RC_spkr ) 
-		{
-			new_mode_active = (new_mode_active ? 0 : 1);
-			
-			paint();
-		}
 		else if (CRCInput::isNumeric(msg) && this->historyMode) 
 		{ 
 			if (this->historyMode) 
@@ -992,8 +945,6 @@ int CChannelList::show(bool zap, bool customMode)
 	}
 	
 	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
-	
-	new_mode_active = 0;
 
 	//
 	g_RCInput->killTimer(sec_timer_id);
@@ -1258,24 +1209,19 @@ void CChannelList::zapTo(int pos, bool rezap)
 		{
 			CNeutrinoApp::getInstance()->channelList->adjustToChannelID(chan->channel_id);
 		}
-		
-		if(new_mode_active)
-			selected = pos;
 	}
 
-	if(!new_mode_active) 
+	//
+	selected = pos;
+
+	// remove recordModeActive from infobar
+	if(g_settings.auto_timeshift && !CNeutrinoApp::getInstance()->recordingstatus) 
 	{
-		selected = pos;
-
-		// remove recordModeActive from infobar
-		if(g_settings.auto_timeshift && !CNeutrinoApp::getInstance()->recordingstatus) 
-		{
-			g_InfoViewer->handleMsg(NeutrinoMessages::EVT_RECORDMODE, 0);
-		}
-		
-		//
-		g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+		g_InfoViewer->handleMsg(NeutrinoMessages::EVT_RECORDMODE, 0);
 	}
+		
+	//
+	g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 }
 
 // -1: channellist not found
@@ -1916,7 +1862,7 @@ void CChannelList::paint()
 	// head
 	if (head) head->setTitle(_(name.c_str()));
 	if (head) head->enablePaintDate();
-	if (head) head->setButtons(new_mode_active? HeadNewModeButtons : HeadButtons, HEAD_BUTTONS_COUNT);
+	if (head) head->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
 	// foot
 	if (foot) foot->setButtons(CChannelListButtons, NUM_LIST_BUTTONS);
