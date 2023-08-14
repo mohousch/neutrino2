@@ -87,7 +87,7 @@ class CInfoBox
 		//
 		bool hide(void);
 		void initVar(void);
-		void initFramesRel(void);
+		void initFrames(void);
 		void refreshTitle(void);
 		void refreshFoot(void);
 

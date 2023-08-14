@@ -521,7 +521,6 @@ class ClistBox : public CWidgetItem
 
 		//
 		fb_pixel_t * background;
-		bool savescreen;
 		void saveScreen();
 		void restoreScreen();
 		int full_height;
@@ -530,12 +529,10 @@ class ClistBox : public CWidgetItem
 		std::string actionKey; // lua
 		
 		//
-		//bool paintFrame;
 		fb_pixel_t bgcolor;
 		int radius;
 		int corner;
 		bool scrollbar;
-		fb_pixel_t* items_background;
 		
 		//
 		int widgetMode;
@@ -614,8 +611,6 @@ class ClistBox : public CWidgetItem
 
 		// mainFrame
 		void enableShrinkMenu(){shrinkMenu = true;};
-		void enableSaveScreen();
-		void paintMainFrame(bool p){paintFrame = p;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void paintScrollBar(bool sb){scrollbar = sb;};

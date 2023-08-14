@@ -586,10 +586,10 @@
 	</WIDGET>
 	
 	<WIDGET name="epgview" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<HEAD posx="10" posy="10" width="1160" height="60" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
-		<TEXTBOX posx="10" posy="70" width="1160" height="440"/>
-		<WINDOW name="screening" posx="10" posy="520" width="1160" height="30"/>
-		<FOOT posx="10" posy="550" width="1160" height="60" line="1"/>
+		<HEAD posx="10" posy="10" width="1160" height="60" paintframe="0" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
+		<TEXTBOX posx="10" posy="70" width="1160" height="440" paintframe="0"/>
+		<WINDOW name="screening" posx="10" posy="520" width="1160" height="30" paintframe="0"/>
+		<FOOT posx="10" posy="550" width="1160" height="60" paintframe="0" line="1"/>
 	</WIDGET>
 	
 	<WIDGET name="hintbox" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">

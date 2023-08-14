@@ -69,7 +69,7 @@ class CHintBox
 
 		CScrollBar scrollBar;
 		
-		void refresh(void);
+		void refreshPage(void);
 		
 		// hourglass
 		bool paintHG;

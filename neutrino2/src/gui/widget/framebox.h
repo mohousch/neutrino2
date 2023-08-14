@@ -127,7 +127,7 @@ class CFrame
 			return active;				
 		}
 
-		//virtual void enableBorder(void){border = true;};
+		//
 		virtual void setBorderMode(int b = BORDER_ALL){borderMode =b;};
 		virtual void setBorderColor(fb_pixel_t col){borderColor = col;};
 		virtual void paintMainFrame(bool p){paintFrame = p;};
@@ -159,14 +159,12 @@ class CFrameBox : public CWidgetItem
 		std::string actionKey;
 		
 		//
-		bool paintFrame;
 		fb_pixel_t bgcolor;
 		int radius;
 		int corner;
 		
 		//
 		fb_pixel_t * background;
-		bool savescreen;
 		void saveScreen();
 		void restoreScreen();
 		
@@ -238,11 +236,8 @@ class CFrameBox : public CWidgetItem
 		int getSelected(){return selected;};
 		
 		//
-		void paintMainFrame(bool p){paintFrame = p;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
-		//
-		void enableSaveScreen();
 
 		//
 		bool isSelectable(void);

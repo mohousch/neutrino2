@@ -373,15 +373,13 @@ void CMessageBox::paint(void)
 	
 	//headers.paint();
 	m_cBoxWindow->addWidgetItem(headers);
-	
-	//m_cBoxWindow->paint();
 
-	refresh();
+	refreshPage();
 }
 
-void CMessageBox::refresh()
+void CMessageBox::refreshPage()
 {
-	dprintf(DEBUG_INFO, "CMessageBox::refresh\n");
+	dprintf(DEBUG_INFO, "CMessageBox::refreshPage\n");
 	
 	//
 	m_cBoxWindow->paint();
@@ -426,7 +424,7 @@ void CMessageBox::scroll_up(void)
 	if (m_currentPage > 0)
 	{
 		m_currentPage--;
-		refresh();
+		refreshPage();
 	}
 }
 
@@ -435,7 +433,7 @@ void CMessageBox::scroll_down(void)
 	if (m_currentPage + 1 < m_startEntryOfPage.size() - 1)
 	{
 		m_currentPage++;
-		refresh();
+		refreshPage();
 	}
 }
 

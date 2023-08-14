@@ -599,7 +599,7 @@ void CListFrame::scrollPageDown(const int pages)
 	
 	dprintf(DEBUG_DEBUG, "[CListFrame]  m_nCurrentLine: %d, m_nCurrentPage: %d \r\n", m_nCurrentLine,m_nCurrentPage);
 	
-	refresh();
+	refreshPage();
 };
 
 void CListFrame::scrollPageUp(const int pages)
@@ -629,12 +629,12 @@ void CListFrame::scrollPageUp(const int pages)
 	}
 	
 	dprintf(DEBUG_DEBUG, "[CListFrame]  m_nCurrentLine: %d, m_nCurrentPage: %d \r\n", m_nCurrentLine, m_nCurrentPage);
-	refresh();
+	refreshPage();
 }
 
-void CListFrame::refresh(void)
+void CListFrame::refreshPage(void)
 {
-	dprintf(DEBUG_DEBUG, "CListFrame::Refresh\r\n");
+	dprintf(DEBUG_DEBUG, "CListFrame::RefreshPage\r\n");
 	
 	if( frameBuffer == NULL) 
 		return;
@@ -659,7 +659,7 @@ bool CListFrame::setLines(LF_LINES* lines)
 		m_nNrOfRows = LF_MAX_ROWS;
 	
 	onNewLineArray();
-	refresh();
+	refreshPage();
 	
 	return(true);
 }
@@ -723,6 +723,6 @@ void CListFrame::paint(void)
 	dprintf(DEBUG_NORMAL, "CListFrame::paint: %s\n", m_textTitle.c_str());
 
 	frameBuffer = CFrameBuffer::getInstance();
-	refresh();
+	refreshPage();
 }
 

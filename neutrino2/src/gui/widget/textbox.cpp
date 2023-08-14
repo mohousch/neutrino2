@@ -83,14 +83,17 @@ CTextBox::~CTextBox()
 {
 	dprintf(DEBUG_INFO, "CTextBox::~CTextBox\r\n");
 	
+	//
 	m_cLineArray.clear();
 	
+	//
 	if (bigFonts) 
 	{
 		bigFonts = false;
 		g_Font[m_pcFontText]->setSize((int)(g_Font[m_pcFontText]->getSize() / BIG_FONT_FAKTOR));
 	}
 	
+	//
 	if(background)
 	{
 		delete[] background;
@@ -144,7 +147,6 @@ void CTextBox::initVar(void)
 	useBG = false;
 	borderMode = BORDER_NO;
 	
-	savescreen = false;
 	background = NULL;
 	
 	//
@@ -197,7 +199,7 @@ void CTextBox::setBigFonts()
 	}
 
 	refreshTextLineArray();
-	refresh();
+	refreshPage();
 }
 
 void CTextBox::reSizeTextFrameWidth(int textWidth)
@@ -264,27 +266,23 @@ void CTextBox::initFrames(void)
 
 void CTextBox::saveScreen()
 {
-	//
-	if (savescreen)
+	if(background)
 	{
-		if(background)
-		{
-			delete[] background;
-			background = NULL;
-		}
+		delete[] background;
+		background = NULL;
+	}
 
-		background = new fb_pixel_t[itemBox.iWidth*itemBox.iHeight];
+	background = new fb_pixel_t[itemBox.iWidth*itemBox.iHeight];
 		
-		if(background)
-		{
-			frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
-		}
+	if(background)
+	{
+		frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
 }
 
 void CTextBox::restoreScreen()
 {
-	if(savescreen && background) 
+	if (background)
 	{
 		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
@@ -478,11 +476,10 @@ void CTextBox::refreshText(void)
 {
 	dprintf(DEBUG_DEBUG, "CTextBox::refreshText:\r\n");
 
-	// restore screen
-	restoreScreen();
-	
-	// paint background	
-	if(paintframe)
+	// restoreScreen/paint background	
+	if (!paintframe)
+		restoreScreen();
+	else if(paintframe)
 	{
 		// border
 		CFrameBuffer::getInstance()->paintFrameBox(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_6);
@@ -562,7 +559,7 @@ void CTextBox::scrollPageDown(const int pages)
 	}
 	
 	m_nCurrentLine = m_nCurrentPage * m_nLinesPerPage; 
-	refresh();
+	refreshPage();
 }
 
 void CTextBox::scrollPageUp(const int pages)
@@ -585,12 +582,12 @@ void CTextBox::scrollPageUp(const int pages)
 	}
 	
 	m_nCurrentLine = m_nCurrentPage * m_nLinesPerPage; 
-	refresh();
+	refreshPage();
 }
 
-void CTextBox::refresh(void)
+void CTextBox::refreshPage(void)
 {
-	dprintf(DEBUG_DEBUG, "CTextBox::Refresh:\r\n");	
+	dprintf(DEBUG_DEBUG, "CTextBox::RefreshPage:\r\n");	
 
 	// paint text
 	refreshText();
@@ -691,10 +688,11 @@ void CTextBox::paint(void)
 	initFrames();
 	
 	//
-	saveScreen(); //FIXME:
+	if (!paintframe)
+		saveScreen();
 	
 	//
-	refresh();	
+	refreshPage();	
 	
 	painted = true;
 }
@@ -709,9 +707,10 @@ void CTextBox::hide(void)
 		g_Font[m_pcFontText]->setSize((int)(g_Font[m_pcFontText]->getSize() / BIG_FONT_FAKTOR));
 	}
 	
-	if(savescreen && background) 
+	//
+	if (!paintframe)
 	{
-		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+		restoreScreen();
 	}
 	else if (paintframe)
 		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);

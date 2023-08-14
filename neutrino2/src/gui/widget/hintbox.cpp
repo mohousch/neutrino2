@@ -196,12 +196,12 @@ void CHintBox::paint(void)
 	widget->addWidgetItem(headers);
 
 	//
-	refresh();
+	refreshPage();
 	
 	CFrameBuffer::getInstance()->blit();
 }
 
-void CHintBox::refresh(void)
+void CHintBox::refreshPage(void)
 {
 	//
 	widget->paint();
@@ -234,7 +234,7 @@ void CHintBox::scroll_up(void)
 	if (current_page > 0)
 	{
 		current_page--;
-		refresh();
+		refreshPage();
 	}
 }
 
@@ -243,7 +243,7 @@ void CHintBox::scroll_down(void)
 	if ((entries_per_page * (current_page + 1)) <= line.size())
 	{
 		current_page++;
-		refresh();
+		refreshPage();
 	}
 }
 

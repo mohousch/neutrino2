@@ -178,13 +178,14 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 	}
 
 	// paint frameBackground
-	if (paintFrame)
+	//if (paintFrame)
 	{
 		window.setBorderMode(borderMode);
 		window.setBorderColor(borderColor);
 		window.setColor(bgcolor);
 		window.setCorner(radius, corner); //FIXME:
 		window.setGradient(gradient);
+		window.paintMainFrame(paintFrame);
 		
 		window.paint();
 	}
@@ -273,7 +274,7 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 		if(!caption.empty())
 			c_h = g_Font[captionFont]->getHeight() + 20;
 
-		// refresh
+		// refresh:FIXME:
 		window.setColor(bgcolor);
 		window.paint();
 
@@ -301,7 +302,7 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 
 		if (selected)
 		{
-			// refresh
+			// refresh:FIXME:
 			window.setColor(bgcolor);
 			window.paint();
 
@@ -358,14 +359,10 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 	}
 	else if (mode == FRAME_TEXT)
 	{
-		//CTextBox textBox(window.getWindowsPos().iX + 1, window.getWindowsPos().iY + 1, window.getWindowsPos().iWidth - 2, window.getWindowsPos().iHeight - 2);
 		CCText textBox(window.getWindowsPos().iX, window.getWindowsPos().iY, window.getWindowsPos().iWidth, window.getWindowsPos().iHeight);
 
-		//textBox.paintMainFrame(false);
-		//textBox.setMode(AUTO_WIDTH);
 		textBox.setFont(captionFont);
 		textBox.enableSaveScreen();
-		//textBox.setBorderMode(border? BORDER_ALL : BORDER_NO);
 
 		// caption
 		if(!caption.empty())
@@ -468,7 +465,7 @@ CFrameBox::CFrameBox(const int x, int const y, const int dx, const int dy)
 	inFocus = true;
 
 	widgetItem_type = WIDGETITEM_FRAMEBOX;
-	paintFrame = true;
+	paintframe = true;
 
 	actionKey = "";
 	
@@ -478,7 +475,6 @@ CFrameBox::CFrameBox(const int x, int const y, const int dx, const int dy)
 	corner = CORNER_NONE;
 	
 	//
-	savescreen = false;
 	background = NULL;
 	
 	// head
@@ -524,7 +520,7 @@ CFrameBox::CFrameBox(CBox* position)
 	inFocus = true;
 
 	widgetItem_type = WIDGETITEM_FRAMEBOX;
-	paintFrame = true;
+	paintframe = true;
 
 	actionKey = "";
 	
@@ -534,7 +530,6 @@ CFrameBox::CFrameBox(CBox* position)
 	corner = CORNER_NONE;
 	
 	//
-	savescreen = false;
 	background = NULL;
 	
 	// head
@@ -629,8 +624,11 @@ void CFrameBox::paint()
 	//
 	initFrames();
 
-	//
-	if (paintFrame)
+	if (!paintframe)
+	{
+		saveScreen();
+	}
+	else if (paintframe)
 	{
 		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, NOGRADIENT);		
 	}
@@ -644,9 +642,6 @@ void CFrameBox::paint()
 void CFrameBox::saveScreen()
 {
 	dprintf(DEBUG_NORMAL, "CFrameBox::saveScreen:\n");
-	
-	if(!savescreen)
-		return;
 
 	if(background)
 	{
@@ -666,19 +661,10 @@ void CFrameBox::restoreScreen()
 {
 	dprintf(DEBUG_NORMAL, "CFrameBox::restoreScreen:\n");
 	
-	if(savescreen && background) 
+	if(background) 
 	{
 		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
-}
-
-void CFrameBox::enableSaveScreen()
-{
-	dprintf(DEBUG_NORMAL, "CFrameBox::enableSaveScreen:\n");
-	
-	savescreen = true;
-	
-	saveScreen();
 }
 
 void CFrameBox::hide()
@@ -699,7 +685,7 @@ void CFrameBox::hide()
 		}
 	}
 	
-	if( savescreen && background)
+	if(!paintframe && background)
 	{
 		restoreScreen();
 	}
@@ -839,7 +825,8 @@ void CFrameBox::paintHead()
 	if(paintTitle)
 	{
 		// paint head
-		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, hheight, headColor, headRadius, headCorner, headGradient);
+		if (paintframe)
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, hheight, headColor, headRadius, headCorner, headGradient);
 		
 		//paint icon (left)
 		int i_w = 0;
@@ -909,7 +896,8 @@ void CFrameBox::paintFoot()
 {
 	if(paint_Foot)
 	{
-		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, fheight, footColor, footRadius, footCorner, footGradient);
+		if (paintframe)
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth, fheight, footColor, footRadius, footCorner, footGradient);
 
 		// buttons
 		int buttonWidth = 0;
@@ -951,4 +939,3 @@ void CFrameBox::setFootButtons(const struct button_label* _fbutton_labels, const
 		fbutton_width = (_fbutton_width == 0)? itemBox.iWidth : _fbutton_width;
 	}
 }
-

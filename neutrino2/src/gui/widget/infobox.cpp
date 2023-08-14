@@ -79,7 +79,7 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 		m_cBoxFrame = *position;
 
 	// initialise the window frames first
-	initFramesRel();
+	initFrames();
 
 	//
 	m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - m_cBoxFrame.iWidth) >>1);
@@ -119,8 +119,6 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 	{
 		m_pcTextBox->setPosition(&m_cBoxFrameText);
 		m_pcTextBox->setMode(SCROLL);
-		m_pcTextBox->enableSaveScreen();
-		//m_pcTextBox->setFont(m_pcFontText);
 	}
 	
 	if (headers)
@@ -158,7 +156,7 @@ CInfoBox::CInfoBox()
 	m_cBoxFrame = position;
 
 	// initialise the window frames first
-	initFramesRel();
+	initFrames();
 
 	//
 	m_cBoxFrame.iX = g_settings.screen_StartX + ((g_settings.screen_EndX - g_settings.screen_StartX - m_cBoxFrame.iWidth) >>1);
@@ -199,8 +197,6 @@ CInfoBox::CInfoBox()
 	{
 		m_pcTextBox->setPosition(&m_cBoxFrameText);
 		m_pcTextBox->setMode(SCROLL);
-		m_pcTextBox->enableSaveScreen();
-		//m_pcTextBox->setFont(m_pcFontText);
 	}
 	
 	if (headers)
@@ -293,14 +289,14 @@ void CInfoBox::initVar(void)
 }
 
 //////////////////////////////////////////////////////////////////////
-// Function Name:	InitFramesRel	
+// Function Name:	InitFrames
 // Description:		
 // Parameters:		
 // Data IN/OUT:		
 // Return:		
 // Notes:		
 //////////////////////////////////////////////////////////////////////
-void CInfoBox::initFramesRel(void)
+void CInfoBox::initFrames(void)
 {
 	// init the title frame
 	m_cBoxFrameTitleRel.iX		= m_cBoxFrame.iX;

@@ -1567,7 +1567,7 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 	unsigned int gradient_intensity = 0;
 	unsigned int gradient_type = 0;
 	
-	unsigned int refresh = 0;
+	//unsigned int refresh = 0;
 	
 	while ((node = xmlGetNextOccurence(node, "WINDOW")) != NULL) 
 	{
@@ -1594,7 +1594,7 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 		gradient_type = xmlGetSignedNumericAttribute(node, "type", 0);
 				
 		// 		
-		refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
+		//refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
 		
 		// recalculate posx / posy
 		int x = posx;
@@ -1619,25 +1619,28 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 					
 		window->paintMainFrame(paintframe);
 		
-		if (!paintframe) window->enableSaveScreen();
+		//if (!paintframe) window->enableSaveScreen();
 		
 		// color
 		uint32_t finalColor = COL_MENUCONTENT_PLUS_0;
 				
-		if (color) 
+		if (color != NULL) 
 		{
 			finalColor = convertColor(color);
 			window->setColor(finalColor);
 		}
 		
 		// refresh
-		if (refresh) window->enableRepaint();
+		//if (refresh) window->enableRepaint();
 
+		// corner/radius
 		int co = CORNER_NONE;
 		int ra = NO_RADIUS;
 		if (corner) co = convertCorner(corner);
 		if (radius) ra = convertRadius(radius);
 		window->setCorner(ra, co);
+
+		// border
 		window->setBorderMode(border);
 		
 		// bordercolor
@@ -1648,6 +1651,7 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 			window->setBorderColor(bColor);
 		}
 
+		// gradient
 		int gr = NOGRADIENT;
 		if (gradient) gr = convertGradient(gradient);
 		window->setGradient(gr, gradient_direction, gradient_intensity, gradient_type);
@@ -1906,13 +1910,12 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	unsigned int height = 0;
 				
 	unsigned int paintframe = 1;
-	unsigned int savescreen = 0;
+	//unsigned int savescreen = 0;
 	char* color = NULL;
 	char * corner = NULL;
 	char * radius = NULL;
 	
 	char* textColor = NULL;
-	//unsigned int font = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
 	char *font = NULL;
 	unsigned int fontbg = 0;
 	unsigned int mode = SCROLL;
@@ -1938,15 +1941,10 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 		height = xmlGetSignedNumericAttribute(node, "height", 0);
 				
 		paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);
-		savescreen = xmlGetSignedNumericAttribute(node, "savescreen", 0);		
+		//savescreen = xmlGetSignedNumericAttribute(node, "savescreen", 0);		
 		color = xmlGetAttribute(node, (char*)"color");
 		corner = xmlGetAttribute(node, (char *)"corner");
 		radius = xmlGetAttribute(node, (char *)"radius");
-				
-		// parse color
-		uint32_t finalColor = COL_MENUCONTENT_PLUS_0;
-				
-		if (color) finalColor = convertColor(color);
 		
 		textColor = xmlGetAttribute(node, (char*)"textcolor");
 		//font = xmlGetSignedNumericAttribute(node, "font", 0);
@@ -1984,8 +1982,13 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 		
 		textBox->widgetItem_type = WIDGETITEM_TEXTBOX;
 		if (name) textBox->widgetItem_name = name;
-					
-		if (color != NULL) textBox->setBackgroundColor(finalColor);
+		// color
+		uint32_t finalColor = COL_MENUCONTENT_PLUS_0;			
+		if (color != NULL) 
+		{
+			finalColor = convertColor(color);
+			textBox->setBackgroundColor(finalColor);
+		}
 		
 		//
 		int co = CORNER_NONE;
@@ -1994,7 +1997,7 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 		if (radius) ra = convertRadius(radius);
 		textBox->setCorner(ra, co);
 		textBox->paintMainFrame(paintframe);
-		if (savescreen || paintframe == 0) textBox->enableSaveScreen();
+		//if (savescreen || paintframe == 0) textBox->enableSaveScreen();
 					
 		textBox->setTextColor(textColor? convertFontColor(textColor) : COL_MENUCONTENT);
 		//

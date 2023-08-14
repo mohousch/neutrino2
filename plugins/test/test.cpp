@@ -2172,7 +2172,7 @@ void CTestMenu::testCWindowShadow()
 	window->setColor(COL_MENUCONTENT_PLUS_0);
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setBorderMode(BORDER_ALL);
-	window->enableSaveScreen();
+	window->paintMainFrame(true);
 
 	window->paint();
 	CFrameBuffer::getInstance()->blit();
@@ -2206,7 +2206,7 @@ void CTestMenu::testCWindowCustomColor()
 	window->setColor(COL_ORANGE_PLUS_0); // or use like make16color(0x76A5AF)
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setBorderMode(BORDER_ALL);
-	window->enableSaveScreen();
+	window->paintMainFrame(true);
 
 	window->paint();
 	CFrameBuffer::getInstance()->blit();
@@ -3402,7 +3402,7 @@ void CTestMenu::testClistBox9()
 
 void CTestMenu::testCFrameBox()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::CTestMenu::testCFrameBox\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCFrameBox\n");
 
 	// frameBox
 	CBox topBox;
@@ -3413,8 +3413,7 @@ void CTestMenu::testCFrameBox()
 	topBox.iY = g_settings.screen_StartY + 10;
 
 	frameBoxWidget = new CFrameBox(&topBox);
-	frameBoxWidget->enableSaveScreen();
-	frameBoxWidget->setColor(0);
+	frameBoxWidget->paintMainFrame(false);
 
 	CFrame * frame = NULL;
 
@@ -3445,6 +3444,7 @@ void CTestMenu::testCFrameBox()
 	frame->setActionKey(this, "help");
 	frame->setColor(COL_NOBEL_PLUS_0);
 	frame->setHAlign(CC_ALIGN_CENTER);
+	//frame->paintMainFrame(false);
 	frameBoxWidget->addFrame(frame);
 	
 	// pic
@@ -3453,6 +3453,7 @@ void CTestMenu::testCFrameBox()
 	frame->setPosition(topBox.iX + 10, topBox.iY + 3*(10 + 60) +50, topBox.iWidth - 20, 200);
 	//frame->setActive(false);
 	frame->setIconName(DATADIR "/icons/nopreview.jpg");
+	frame->paintMainFrame(false);
 	frameBoxWidget->addFrame(frame);
 
 	frame = new CFrame();
@@ -3502,6 +3503,7 @@ void CTestMenu::testCFrameBox1()
 	box.iHeight = CFrameBuffer::getInstance()->getScreenHeight() - 80;
 
 	frameBoxWidget = new CFrameBox(&box);
+	frameBoxWidget->setCorner(g_settings.Head_radius > g_settings.Foot_radius? g_settings.Head_radius : g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 
 	CHintBox loadBox("CFrameBox", _("Scan for Movies ..."));
 	loadBox.paint();

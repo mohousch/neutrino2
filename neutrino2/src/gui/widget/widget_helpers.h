@@ -182,11 +182,11 @@ class CComponent
 		virtual inline CBox getWindowsPos(void){return cCBox;};
 		
 		//
-		virtual void init(){};
+		virtual void initFrames(){};
 		virtual void setIcon(const char* const icon){};
 		virtual void setImage(const char* const image){};
 		virtual void setScaling(bool s){};
-		virtual void paintMainFrame(bool p){};
+		//virtual void paintMainFrame(bool p){};
 		virtual void setColor(uint32_t col){};
 		virtual void setButtons(const struct button_label *button_label, const int button_count = 1){};
 		virtual void setFont(unsigned int f){};
@@ -199,6 +199,10 @@ class CComponent
 		virtual void setInterFrame(int iframe = 15){};
 		virtual void setTotalTime(time_t tot_time){};
 		virtual void setPlayTime(time_t p_time){};
+
+		//
+		virtual void saveScreen(void){};
+		virtual void restoreScreen(void){};
 		virtual void enableSaveScreen(void){savescreen = true;};
 };
 
@@ -236,6 +240,8 @@ class CCIcon : public CComponent
 		void hide();
 		
 		//
+		void saveScreen(void);
+		void restoreScreen(void);
 		void blink(bool show);
 };
 
@@ -253,7 +259,7 @@ class CCImage : public CComponent
 		std::string imageName;
 		bool scale;
 		uint32_t color;
-		bool paintframe;
+		//bool paintframe;
 
 		CCImage(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
 		virtual ~CCImage(){};
@@ -261,7 +267,7 @@ class CCImage : public CComponent
 		//
 		void setImage(const char* const image);
 		void setScaling(bool s){scale = s;};
-		void paintMainFrame(bool p){paintframe = p;};
+		//void paintMainFrame(bool p){paintframe = p;};
 		void setColor(uint32_t col){color = col;};
 		
 		// h/v aligned
@@ -390,6 +396,9 @@ class CCLabel : public CComponent
 		void setColor(uint8_t col){color = col;};
 		void setFont(unsigned int f){font = f;};
 		void setText(const char* const text){label = text? text : "";};
+
+		void saveScreen(void);
+		void restoreScreen(void);
 		void enableSaveScreen();
 		
 		//
@@ -426,7 +435,11 @@ class CCText : public CComponent
 		void setFont(unsigned int f){font = f;};
 		void setColor(uint8_t col){color = col;};
 		void setText(const char* const text){processTextToArray(text);};
+
+		//
 		void enableSaveScreen();
+		void saveScreen(void);
+		void restoreScreen(void);
 		
 		//
 		void paint();
@@ -638,7 +651,7 @@ class CItems2DetailsLine : public CComponent
 		// cutom mode
 		unsigned int tFont;
 		int borderMode;
-		bool paintframe;
+		//bool paintframe;
 		uint32_t color;
 		bool scale;
 		
@@ -662,7 +675,7 @@ class CItems2DetailsLine : public CComponent
 		// custom mode
 		void setFont(unsigned int f){tFont = f;};
 		void setBorderMode(int m){borderMode = m;};
-		void paintFrame(bool p){paintframe = p;};
+		//void paintFrame(bool p){paintframe = p;};
 		void setColor(uint32_t col){color = col;};
 		void setScaling(bool s){scale = s;};
 };
@@ -708,8 +721,7 @@ class CWidgetItem
 		//
 		bool inFocus;
 		bool rePaint;
-		bool paintFrame;
-		bool savescreen;
+		bool paintframe;
 		
 		//
 		std::string actionKey; // lua
@@ -750,9 +762,7 @@ class CWidgetItem
 		virtual void paint(void){painted = true;};
 		virtual void hide(void){painted = false;};
 		//virtual void checkOverlappingItems(){};
-		
-		//
-		virtual void enableSaveScreen(){savescreen = true; initFrames(); saveScreen();};
+		virtual void paintMainFrame(bool p){paintframe = p;};
 		
 		//
 		virtual void enableRepaint(){rePaint = true;};
@@ -819,7 +829,6 @@ class CHeaders : public CWidgetItem
 		CFrameBuffer* frameBuffer;
 		
 		//
-		bool paintFrame;
 		fb_pixel_t bgcolor;
 		int radius;
 		int corner;
@@ -842,9 +851,6 @@ class CHeaders : public CWidgetItem
 		CHeaders(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES, const char * const title = NULL, const char * const icon = NULL);
 		CHeaders(CBox* position, const char * const title = NULL, const char * const icon = NULL);
 		virtual ~CHeaders(){};
-		
-		//
-		void paintMainFrame(bool p){paintFrame = p;};
 
 		//
 		void setTitle(const char * const title){htitle.clear(); if (title) htitle = title;};
@@ -882,8 +888,7 @@ class CFooters : public CWidgetItem
 		int fbutton_width;
 		button_label_list_t fbuttons;
 		
-		bool paintFrame;
-
+		//
 		fb_pixel_t fbgcolor;
 		int fradius;
 		int fcorner;
@@ -897,8 +902,6 @@ class CFooters : public CWidgetItem
 		virtual ~CFooters(){};
 		
 		//
-		void paintMainFrame(bool p){paintFrame = p;};
-
 		void setColor(fb_pixel_t col){fbgcolor = col;};
 		void setGradient(const int grad){fgradient = grad;};
 		void setCorner(int ra, int co){fradius = ra; fcorner = co;};

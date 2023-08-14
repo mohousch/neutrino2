@@ -116,10 +116,8 @@ class CTextBox : public CWidgetItem
 
 		bool bigFonts;
 		bool painted;
-		bool paintframe;
 		int borderMode;
 		
-		//bool savescreen;
 		fb_pixel_t* background;
 		void saveScreen();
 		void restoreScreen();
@@ -130,6 +128,7 @@ class CTextBox : public CWidgetItem
 		void initFrames(void);
 		void refreshScroll(void);
 		void refreshText(void);
+		void refreshPage(void);
 		void reSizeTextFrameWidth(int maxTextWidth);
 		void reSizeTextFrameHeight(int maxTextHeight);
 
@@ -161,13 +160,10 @@ class CTextBox : public CWidgetItem
 		void setTextColor(uint8_t col){m_textColor = col;};
 		void setFont(unsigned int font_text){m_pcFontText = font_text;};
 		void setMode(const int mode);
-		void paintMainFrame(bool p){paintframe = p;};
 		void setBorderMode(int m = BORDER_ALL){borderMode = m;};
-		void enableSaveScreen(){savescreen = true; initFrames(); saveScreen();};
 
 		void paint(void);
 		void hide(void);
-		void refresh(void);
 
 		void setBigFonts();
 

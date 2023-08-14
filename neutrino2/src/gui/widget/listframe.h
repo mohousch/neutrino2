@@ -148,7 +148,7 @@ class CListFrame : public CWidgetItem
 		virtual ~CListFrame();
 
 		// Functions
-		void    refresh(void);
+		void    refreshPage(void);
 		void    refreshLine(int line);
 		void    scrollPageDown(const int pages = 1);
 		void    scrollPageUp(const int pages = 1);				

@@ -96,7 +96,7 @@ class CMessageBox
 
 		CScrollBar scrollBar;
 		
-		void refresh();
+		void refreshPage();
 
 		void init(const char* const Caption, const int Width, const char * const Icon);
 		void initFrames(void);

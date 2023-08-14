@@ -225,7 +225,7 @@ void CKeyChooserItem::paint()
 
 	//box
 	m_cBoxWindow.setPosition(&m_cBox);
-	m_cBoxWindow.enableSaveScreen();
+	//m_cBoxWindow.enableSaveScreen();
 	m_cBoxWindow.setColor(COL_MENUCONTENT_PLUS_0);
 	m_cBoxWindow.paint();
 

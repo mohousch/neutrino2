@@ -51,12 +51,10 @@ class CWindow : public CWidgetItem
 		
 		//
 		fb_pixel_t * background;
-		bool savescreen;
 
 		//
 		int borderMode;
 		fb_pixel_t borderColor;
-		bool paintFrame;
 		
 		//
 		unsigned int current_page;
@@ -64,6 +62,10 @@ class CWindow : public CWidgetItem
 		
 		//
 		void initFrames();
+		void saveScreen();
+		void restoreScreen();
+		void paintPage(void);
+
 
 	public:
 		CWindow(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
@@ -75,17 +77,11 @@ class CWindow : public CWidgetItem
 		void setPosition(CBox* position);
 		
 		//
-		void paintMainFrame(bool p){paintFrame = p;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_ONECOLOR){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setBorderMode(int sm){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};
-		
-		//
-		void enableSaveScreen();
-		void saveScreen();
-		void restoreScreen();
 
 		//
 		void paint(void);

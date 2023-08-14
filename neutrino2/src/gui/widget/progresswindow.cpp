@@ -167,7 +167,7 @@ void CProgressWindow::paint()
 	int ypos = y;
 
 	// box
-	m_cBoxWindow.enableSaveScreen();
+	//m_cBoxWindow.enableSaveScreen();
 	m_cBoxWindow.setCorner(g_settings.Head_radius, CORNER_ALL);
 	m_cBoxWindow.paint();
 	
