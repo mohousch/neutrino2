@@ -65,6 +65,7 @@ class CWindow : public CWidgetItem
 		void saveScreen();
 		void restoreScreen();
 		void paintPage(void);
+		void refresh(void);
 
 
 	public:

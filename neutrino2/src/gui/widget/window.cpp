@@ -42,7 +42,7 @@
 
 CWindow::CWindow(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -56,7 +56,7 @@ CWindow::CWindow(const int x, const int y, const int dx, const int dy)
 
 CWindow::CWindow(CBox* position)
 {
-	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -76,7 +76,7 @@ CWindow::~CWindow()
 
 void CWindow::initFrames()
 {
-	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
 
 	radius = NO_RADIUS;
 	corner = CORNER_NONE;
@@ -110,7 +110,7 @@ void CWindow::initFrames()
 
 void CWindow::saveScreen()
 {
-	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
 
 	if(background)
 	{
@@ -131,7 +131,7 @@ void CWindow::saveScreen()
 
 void CWindow::restoreScreen()
 {
-	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
 	
 	if(background) 
 	{
@@ -142,20 +142,9 @@ void CWindow::restoreScreen()
 	}
 }
 
-/*
-void CWindow::enableSaveScreen()
-{
-	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
-	
-	savescreen = true;
-	
-	saveScreen();
-}
-*/
-
 void CWindow::setPosition(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
 	
 	itemBox.iX = x;
 	itemBox.iY = y;
@@ -167,7 +156,7 @@ void CWindow::setPosition(const int x, const int y, const int dx, const int dy)
 
 void CWindow::setPosition(CBox* position)
 {
-	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
 	
 	itemBox = *position;
 	
@@ -176,7 +165,7 @@ void CWindow::setPosition(CBox* position)
 
 void CWindow::paintPage(void)
 {
-	dprintf(DEBUG_NORMAL, "CWindow::paintPage:\n");
+	dprintf(DEBUG_INFO, "CWindow::paintPage:\n");
 
 	if (borderMode == BORDER_NO)
 	{
@@ -211,7 +200,7 @@ void CWindow::paintPage(void)
 
 void CWindow::paint()
 {
-	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
 
 	//
 	if (!paintframe)
@@ -232,7 +221,7 @@ void CWindow::paint()
 
 void CWindow::hide()
 {
-	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
 	
 	if(!paintframe)
 		restoreScreen();
@@ -245,4 +234,12 @@ void CWindow::hide()
 	}
 		
 	CFrameBuffer::getInstance()->blit();
+}
+
+void CWindow::refresh(void)
+{
+	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
+
+	hide();
+	paint();
 }

@@ -1869,15 +1869,6 @@ void CChannelList::paint()
 
 	//
 	if (listBox) listBox->setSelected(selected);
-	
-	//if (widget) widget->paint();
-	
-	//
-	//if (window) 
-//	{
-		//window->enableSaveScreen();
-		//window->paintMainFrame(false);
-//	}
 
 	if (widget) widget->paint();
 	
