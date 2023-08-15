@@ -660,9 +660,8 @@ CItems2DetailsLine::CItems2DetailsLine()
 	
 	// hintitem / hinticon
 	tFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
-	borderMode = BORDER_NO;
+	borderMode = g_settings.Hint_border;
 	savescreen = false;
-	//paintframe = true;
 	color = COL_MENUCONTENT_PLUS_0;
 	scale = false;
 	
@@ -683,14 +682,12 @@ void CItems2DetailsLine::paint()
 {
 	dprintf(DEBUG_INFO, "CItems2DetailsLine::paint:\n");
 	
-	//if (paintframe)
-	{
-		// border
-		if (g_settings.Hint_border) frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.Hint_radius, g_settings.Hint_corner);
+	// border
+	if (borderMode) 
+		frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.Hint_radius, g_settings.Hint_corner);
 			
-		// infoBox
-		frameBuffer->paintBoxRel(g_settings.Hint_border? cCBox.iX + 2 : cCBox.iX, g_settings.Hint_border? cCBox.iY + 2 : cCBox.iY, g_settings.Hint_border? cCBox.iWidth - 4 : cCBox.iWidth, g_settings.Hint_border? cCBox.iHeight - 4 : cCBox.iHeight, COL_MENUHINT_PLUS_0, g_settings.Hint_radius, g_settings.Hint_corner, g_settings.Hint_gradient);
-	}
+	// infoBox
+	frameBuffer->paintBoxRel(borderMode? cCBox.iX + 2 : cCBox.iX, borderMode? cCBox.iY + 2 : cCBox.iY, borderMode? cCBox.iWidth - 4 : cCBox.iWidth, borderMode? cCBox.iHeight - 4 : cCBox.iHeight, color, g_settings.Hint_radius, g_settings.Hint_corner, g_settings.Hint_gradient);
 	
 	//
 	if (mode == DL_INFO)
@@ -751,7 +748,6 @@ void CItems2DetailsLine::paint()
 			CCImage DImage(cCBox.iX + 5, cCBox.iY + 2, 100, cCBox.iHeight - 4);
 			DImage.setImage(icon.c_str());
 			DImage.setScaling(scale);
-			//DImage.paintMainFrame(true);
 			DImage.setColor(color);
 			DImage.paint();
 		}
@@ -782,7 +778,6 @@ void CItems2DetailsLine::paint()
 			CCImage DImage(cCBox.iX + 2, cCBox.iY + 2, cCBox.iWidth - 4, ih - 4);
 			DImage.setImage(icon.c_str());
 			DImage.setScaling(scale);
-			//DImage.paintMainFrame(true);
 			DImage.setColor(color);
 			DImage.paint();
 		}
@@ -800,7 +795,6 @@ void CItems2DetailsLine::paint()
 		CCImage DImage(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 		DImage.setImage(icon.c_str());
 		DImage.setScaling(scale);
-		//DImage.paintMainFrame(true);
 		DImage.setColor(color);
 		DImage.paint();
 	}
