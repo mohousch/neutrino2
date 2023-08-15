@@ -52,6 +52,8 @@ CWindow::CWindow(const int x, const int y, const int dx, const int dy)
 	itemBox.iHeight = dy;
 
 	initFrames();
+
+	initVars();
 }
 
 CWindow::CWindow(CBox* position)
@@ -63,6 +65,8 @@ CWindow::CWindow(CBox* position)
 	itemBox = *position;
 
 	initFrames();
+
+	initVars();
 }
 
 CWindow::~CWindow()
@@ -74,7 +78,7 @@ CWindow::~CWindow()
 	}
 }
 
-void CWindow::initFrames()
+void CWindow::initVars()
 {
 	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
 
@@ -95,6 +99,14 @@ void CWindow::initFrames()
 	
 	current_page = 0;
 	total_pages = 1;
+	
+	//
+	widgetItem_type = WIDGETITEM_WINDOW;
+}
+
+void CWindow::initFrames()
+{
+	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
 
 	// sanity check
 	if(itemBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
@@ -103,9 +115,6 @@ void CWindow::initFrames()
 	// sanity check
 	if(itemBox.iWidth > (int)frameBuffer->getScreenWidth(true))
 		itemBox.iWidth = frameBuffer->getScreenWidth(true) - 4;
-	
-	//
-	widgetItem_type = WIDGETITEM_WINDOW;
 }
 
 void CWindow::saveScreen()

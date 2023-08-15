@@ -178,17 +178,18 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 	}
 
 	// paint frameBackground
-	//if (paintFrame)
-	{
-		window.setBorderMode(borderMode);
-		window.setBorderColor(borderColor);
-		window.setColor(bgcolor);
-		window.setCorner(radius, corner); //FIXME:
-		window.setGradient(gradient);
-		window.paintMainFrame(paintFrame);
-		
+	window.setBorderMode(borderMode);
+	window.setBorderColor(borderColor);
+	window.setColor(bgcolor);
+	window.setCorner(radius, corner);
+	window.setGradient(gradient);
+	window.paintMainFrame(paintFrame);
+	
+	//
+	if (selected)	
 		window.paint();
-	}
+	else
+		window.refresh();
 
 	// icon
 	int iw = 0;
@@ -274,43 +275,15 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 		if(!caption.empty())
 			c_h = g_Font[captionFont]->getHeight() + 20;
 
-		// refresh:FIXME:
-		window.setColor(bgcolor);
-		window.paint();
-
-		if(!iconName.empty())
-		{
-			CFrameBuffer::getInstance()->displayImage(iconName, window.getWindowsPos().iX + 10, window.getWindowsPos().iY + 10, window.getWindowsPos().iWidth - 20, window.getWindowsPos().iHeight - c_h - 20);
-			
-			if (!active)
-			{
-				CFrameBuffer::getInstance()->displayImage(iconName, window.getWindowsPos().iX, window.getWindowsPos().iY, window.getWindowsPos().iWidth, window.getWindowsPos().iHeight - c_h);
-			}
-		}
-
-		if(!caption.empty())
-		{
-			c_w = g_Font[captionFont]->getRenderWidth(caption);
-			
-			if (c_w > window.getWindowsPos().iWidth)
-				c_w = window.getWindowsPos().iWidth;
-				
-			stringStartPosX = window.getWindowsPos().iX + (window.getWindowsPos().iWidth >> 1) - (c_w >> 1);
-
-			g_Font[captionFont]->RenderString(stringStartPosX, window.getWindowsPos().iY + window.getWindowsPos().iHeight - 5, window.getWindowsPos().iWidth - 6, caption.c_str(), color);
-		}
-
 		if (selected)
 		{
-			// refresh:FIXME:
-			window.setColor(bgcolor);
-			window.paint();
-
+			//
 			if(!iconName.empty())
 			{
 				CFrameBuffer::getInstance()->displayImage(iconName, window.getWindowsPos().iX + 2, window.getWindowsPos().iY + 2, window.getWindowsPos().iWidth - 4, window.getWindowsPos().iHeight - c_h - 4);
 			}
 
+			//
 			if(!caption.empty())
 			{
 				c_w = g_Font[captionFont]->getRenderWidth(caption);
@@ -321,6 +294,32 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 				stringStartPosX = window.getWindowsPos().iX + (window.getWindowsPos().iWidth >> 1) - (c_w >> 1);
 
 				g_Font[captionFont]->RenderString(stringStartPosX, window.getWindowsPos().iY + window.getWindowsPos().iHeight, window.getWindowsPos().iWidth - 6, caption.c_str(), color);
+			}
+		}
+		else
+		{
+			//
+			if(!iconName.empty())
+			{
+				CFrameBuffer::getInstance()->displayImage(iconName, window.getWindowsPos().iX + 10, window.getWindowsPos().iY + 10, window.getWindowsPos().iWidth - 20, window.getWindowsPos().iHeight - c_h - 20);
+				
+				if (!active)
+				{
+					CFrameBuffer::getInstance()->displayImage(iconName, window.getWindowsPos().iX, window.getWindowsPos().iY, window.getWindowsPos().iWidth, window.getWindowsPos().iHeight - c_h);
+				}
+			}
+
+			//
+			if(!caption.empty())
+			{
+				c_w = g_Font[captionFont]->getRenderWidth(caption);
+				
+				if (c_w > window.getWindowsPos().iWidth)
+					c_w = window.getWindowsPos().iWidth;
+					
+				stringStartPosX = window.getWindowsPos().iX + (window.getWindowsPos().iWidth >> 1) - (c_w >> 1);
+
+				g_Font[captionFont]->RenderString(stringStartPosX, window.getWindowsPos().iY + window.getWindowsPos().iHeight - 5, window.getWindowsPos().iWidth - 6, caption.c_str(), color);
 			}
 		}
 	}

@@ -1878,7 +1878,7 @@ void CChannelList::paint()
 
 void CChannelList::paintCurrentNextEvent(int _selected)
 {
-	if (_selected < 0)
+	if (_selected < 0 || chanlist.size() == 0)
 		return;
 		
 	if (window)

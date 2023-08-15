@@ -61,6 +61,7 @@ class CWindow : public CWidgetItem
 		unsigned int total_pages;
 		
 		//
+		void initVars(void);
 		void initFrames();
 		void saveScreen();
 		void restoreScreen();

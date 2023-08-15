@@ -186,7 +186,6 @@ class CComponent
 		virtual void setIcon(const char* const icon){};
 		virtual void setImage(const char* const image){};
 		virtual void setScaling(bool s){};
-		//virtual void paintMainFrame(bool p){};
 		virtual void setColor(uint32_t col){};
 		virtual void setButtons(const struct button_label *button_label, const int button_count = 1){};
 		virtual void setFont(unsigned int f){};
@@ -259,7 +258,6 @@ class CCImage : public CComponent
 		std::string imageName;
 		bool scale;
 		uint32_t color;
-		//bool paintframe;
 
 		CCImage(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
 		virtual ~CCImage(){};
@@ -267,7 +265,6 @@ class CCImage : public CComponent
 		//
 		void setImage(const char* const image);
 		void setScaling(bool s){scale = s;};
-		//void paintMainFrame(bool p){paintframe = p;};
 		void setColor(uint32_t col){color = col;};
 		
 		// h/v aligned
@@ -485,6 +482,8 @@ class CCPig : public CComponent
 
 		//
 		void init();
+
+		//
 		void paint();
 		void hide();
 };
@@ -657,7 +656,6 @@ class CItems2DetailsLine : public CComponent
 		// cutom mode
 		unsigned int tFont;
 		int borderMode;
-		//bool paintframe;
 		uint32_t color;
 		bool scale;
 		
@@ -681,7 +679,6 @@ class CItems2DetailsLine : public CComponent
 		// custom mode
 		void setFont(unsigned int f){tFont = f;};
 		void setBorderMode(int m){borderMode = m;};
-		//void paintFrame(bool p){paintframe = p;};
 		void setColor(uint32_t col){color = col;};
 		void setScaling(bool s){scale = s;};
 };

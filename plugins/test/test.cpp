@@ -3444,14 +3444,12 @@ void CTestMenu::testCFrameBox()
 	frame->setActionKey(this, "help");
 	frame->setColor(COL_NOBEL_PLUS_0);
 	frame->setHAlign(CC_ALIGN_CENTER);
-	//frame->paintMainFrame(false);
 	frameBoxWidget->addFrame(frame);
 	
 	// pic
 	frame = new CFrame();
 	frame->setMode(FRAME_PICTURE);
 	frame->setPosition(topBox.iX + 10, topBox.iY + 3*(10 + 60) +50, topBox.iWidth - 20, 200);
-	//frame->setActive(false);
 	frame->setIconName(DATADIR "/icons/nopreview.jpg");
 	frame->paintMainFrame(false);
 	frameBoxWidget->addFrame(frame);
