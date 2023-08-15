@@ -65,9 +65,7 @@ class CWindow : public CWidgetItem
 		void saveScreen();
 		void restoreScreen();
 		void paintPage(void);
-		void refresh(void);
-
-
+		
 	public:
 		CWindow(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
 		CWindow(CBox* position);
@@ -87,6 +85,9 @@ class CWindow : public CWidgetItem
 		//
 		void paint(void);
 		void hide(void);
+
+		//
+		void refresh(void);
 };
 
 #endif

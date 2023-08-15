@@ -1883,8 +1883,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 		
 	if (window)
 	{
-		window->hide();
-		window->paint();
+		window->refresh();
 	}
 	
 	if (hline) 
