@@ -908,7 +908,9 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				
 				//
 				menuWidgetActionsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+				menuWidgetActionsWidget->name = "epgplusactions";
 				menuWidgetActionsWidget->setMenuPosition(MENU_POSITION_CENTER);
+				menuWidgetActionsWidget->setBorderMode();
 				menuWidgetActionsWidget->enableSaveScreen();
 				
 				//
@@ -964,6 +966,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				
 				//
 				menuWidgetOptionsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+				menuWidgetOptionsWidget->name = "epgplusoptions";
 				menuWidgetOptionsWidget->setMenuPosition(MENU_POSITION_CENTER);
 				menuWidgetOptionsWidget->enableSaveScreen();
 				

@@ -286,6 +286,7 @@ void CWidget::restoreScreen()
 	}
 }
 
+//
 void CWidget::enableSaveScreen()
 {
 	savescreen = true;
@@ -363,8 +364,9 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 		}
 	}
 
-	paint();
+	initFrames();
 	saveScreen();
+	paint();
 	CFrameBuffer::getInstance()->blit();
 
 	// add sec timer

@@ -351,7 +351,6 @@ void CMessageBox::initFrames(void)
 		m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 	}
 
-	//m_cBoxWindow->enableSaveScreen();
 	m_cBoxWindow->paintMainFrame(true);
 }
 
