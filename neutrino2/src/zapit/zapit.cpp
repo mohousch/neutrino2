@@ -1148,7 +1148,7 @@ CZapitChannel * CZapit::findChannelToZap(const t_channel_id channel_id, bool in_
 {
 	tallchans_iterator cit;
 	
-	if (in_nvod) //nvod
+	if (in_nvod)
 	{
 		current_is_nvod = true;
 

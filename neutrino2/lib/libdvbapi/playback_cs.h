@@ -38,7 +38,7 @@ class cPlayback
 
 		bool Open();
 		void Close(void);
-		bool Start(char * filename);
+		bool Start(char * filename, const char *const suburi = NULL);
 		
 		bool Play(void);
 		bool Stop(void);

@@ -628,7 +628,7 @@ void cPlayback::Close(void)
 }
 
 // start
-bool cPlayback::Start(char *filename)
+bool cPlayback::Start(char *filename, const char * const suburi)
 {
 	dprintf(DEBUG_NORMAL, "%s:%s - filename=%s\n", FILENAME, __FUNCTION__, filename);
 
@@ -710,7 +710,7 @@ bool cPlayback::Start(char *filename)
 		g_object_set(G_OBJECT (m_gst_playbin), "uri", uri, NULL);
 
 		// subsink
-		#if 0
+		#if 1
 		GstElement *subsink = gst_element_factory_make("subsink", "subtitle_sink");
 		if (!subsink)
 		{

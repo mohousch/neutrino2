@@ -255,7 +255,7 @@ class CZapit
 		void sendcapmtPlayBackStop(bool _sendPmt);
 		void sendCaPmtRecordStop(void);
 		void saveChannelPids(CZapitChannel * thischannel);
-		CZapitChannel * findChannelToZap(const t_channel_id channel_id, bool in_nvod);
+		CZapitChannel * findChannelToZap(const t_channel_id channel_id, bool in_nvod = false);
 		bool tuneToChannel(CFrontend * frontend, CZapitChannel * thischannel, bool &transponder_change);
 		bool parseChannelPatPmt(CZapitChannel * thischannel, CFrontend * fe);
 		void restoreChannelPids(CZapitChannel * thischannel);

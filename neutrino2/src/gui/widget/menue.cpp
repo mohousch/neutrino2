@@ -431,7 +431,7 @@ void CMenuWidget::paintHead()
 	else
 	{
 		// headBox
-		frameBuffer->paintBoxRel(x, y, width, hheight, def_headColor? COL_MENUHEAD_PLUS_0 : headColor, g_settings.Head_radius, g_settings.Head_corner, g_settings.Head_gradient);
+		frameBuffer->paintBoxRel(x, y, width, hheight, def_headColor? COL_MENUHEAD_PLUS_0 : headColor, headRadius, headCorner, headGradient);
 		
 		// paint horizontal line top
 		if (head_line)
@@ -553,7 +553,7 @@ void CMenuWidget::paintFoot()
 	else
 	{
 		// footBox	
-		frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, g_settings.Foot_radius, g_settings.Foot_corner, g_settings.Foot_gradient);
+		frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, footRadius, footCorner, footGradient);
 		
 		// paint horizontal line buttom
 		if (foot_line)
@@ -599,9 +599,6 @@ void CMenuWidget::paint()
 	dprintf(DEBUG_INFO, "CMenuWidget::paint: (%s)\n", l_name.c_str());
 
 	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8 );
-	
-	//
-	//initFrames();
 	
 	//
 	paintHead();
@@ -799,7 +796,7 @@ void CMenuWidget::paintItemInfo(int pos)
 				if(fbutton_count == 0)
 				{
 					// refresh box
-					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, g_settings.Foot_radius, g_settings.Foot_corner, def_footGradient? g_settings.Foot_gradient : footGradient);
+					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, footRadius, footCorner, def_footGradient? g_settings.Foot_gradient : footGradient);
 					
 					// paint horizontal line buttom
 					if (foot_line)
@@ -822,7 +819,7 @@ void CMenuWidget::paintItemInfo(int pos)
 					CMenuItem* item = items[pos];
 
 					// refresh box
-					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, g_settings.Foot_radius, g_settings.Foot_corner, def_footGradient? g_settings.Foot_gradient : footGradient);
+					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, footRadius, footCorner, def_footGradient? g_settings.Foot_gradient : footGradient);
 					
 					// paint horizontal line buttom
 					if (foot_line)
@@ -883,7 +880,7 @@ void CMenuWidget::paintItemInfo(int pos)
 				if(fbutton_count == 0)
 				{
 					// refresh box
-					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, g_settings.Foot_radius, g_settings.Foot_corner, def_footGradient? g_settings.Foot_gradient : footGradient);
+					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, footRadius, footCorner, def_footGradient? g_settings.Foot_gradient : footGradient);
 					
 					// paint horizontal line buttom
 					if (foot_line)
@@ -906,7 +903,7 @@ void CMenuWidget::paintItemInfo(int pos)
 					CMenuItem* item = items[pos];
 
 					// refresh box
-					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, g_settings.Foot_radius, g_settings.Foot_corner, def_footGradient? g_settings.Foot_gradient : footGradient);
+					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, footRadius, footCorner, def_footGradient? g_settings.Foot_gradient : footGradient);
 					
 					// paint horizontal line buttom
 					if (foot_line)
@@ -940,7 +937,7 @@ void CMenuWidget::paintItemInfo(int pos)
 				CMenuItem* item = items[pos];
 
 				// refresh box
-				frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, g_settings.Foot_radius, g_settings.Foot_corner, def_footGradient? g_settings.Foot_gradient : footGradient);
+				frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, footRadius, footCorner, def_footGradient? g_settings.Foot_gradient : footGradient);
 					
 				// paint horizontal line buttom
 				if (foot_line)
@@ -1000,7 +997,7 @@ void CMenuWidget::paintItemInfo(int pos)
 				if(fbutton_count == 0)
 				{
 					// refresh box
-					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, g_settings.Foot_radius, g_settings.Foot_corner, def_footGradient? g_settings.Foot_gradient : footGradient);
+					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, footRadius, footCorner, def_footGradient? g_settings.Foot_gradient : footGradient);
 					
 					// paint horizontal line buttom
 					if (foot_line)
@@ -1023,7 +1020,7 @@ void CMenuWidget::paintItemInfo(int pos)
 					CMenuItem* item = items[pos];
 
 					// refresh box
-					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, g_settings.Foot_radius, g_settings.Foot_corner, def_footGradient? g_settings.Foot_gradient : footGradient);
+					frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, footRadius, footCorner, def_footGradient? g_settings.Foot_gradient : footGradient);
 					
 					// paint horizontal line buttom
 					if (foot_line)
@@ -1060,7 +1057,7 @@ void CMenuWidget::paintItemInfo(int pos)
 			if(fbutton_count == 0)
 			{
 				// refresh box
-				frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, g_settings.Foot_radius, g_settings.Foot_corner, def_footGradient? g_settings.Foot_gradient : footGradient);
+				frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, footRadius, footCorner, def_footGradient? g_settings.Foot_gradient : footGradient);
 				
 				// paint horizontal line buttom
 				if (foot_line)
@@ -1125,7 +1122,7 @@ void CMenuWidget::paintItemInfo(int pos)
 			if(fbutton_count == 0)
 			{
 				// refresh box
-				frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, g_settings.Foot_radius, g_settings.Foot_corner, def_footGradient? g_settings.Foot_gradient : footGradient);
+				frameBuffer->paintBoxRel(x, y + height - cFrameFootInfoHeight - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor, footRadius, footCorner, def_footGradient? g_settings.Foot_gradient : footGradient);
 				
 				// paint horizontal line buttom
 				if (foot_line)

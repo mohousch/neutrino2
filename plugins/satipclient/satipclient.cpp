@@ -182,7 +182,12 @@ void CSatIPClient::showMenu()
 	CMenuWidget * satIPClientMenu = new CMenuWidget("SatIP Client", NEUTRINO_ICON_SETTINGS);
 
 	satIPClientMenu->setWidgetMode(MODE_SETUP);
-	//satIPClientMenu->enableShrinkMenu();
+	satIPClientMenu->setHeadGradient(DARK2LIGHT2DARK);
+	satIPClientMenu->setFootGradient(DARK2LIGHT2DARK);
+	satIPClientMenu->setHeadLine(false);
+	satIPClientMenu->setFootLine(false);
+	satIPClientMenu->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
+	satIPClientMenu->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
 
 	//
 	CMenuForwarder *m1= new CMenuForwarder(_("Start SatIP Client"), /*SatIPEnabled*/true, NULL, this, "start", RC_green, NEUTRINO_ICON_BUTTON_GREEN);

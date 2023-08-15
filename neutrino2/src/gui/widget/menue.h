@@ -233,6 +233,7 @@ class CMenuWidget : public CMenuTarget
 		void setFootColor(fb_pixel_t col) {footColor = col; def_footColor = false;};
 		void setFootCorner(int ra, int co){footRadius = ra; footCorner = co; def_footRadius = false; def_footCorner = false;};
 		void setFootGradient(int grad){footGradient = grad; def_footGradient = false;};
+		void setFootLine(bool l){foot_line = l;};
 
 		// head
 		void setTitle(const char* title = "", const char* icon = NULL){l_name = title; if(icon != NULL) iconfile = icon;};
@@ -243,6 +244,7 @@ class CMenuWidget : public CMenuTarget
 		void setHeadColor(fb_pixel_t col) {headColor = col; def_headColor = false;};
 		void setHeadCorner(int ra, int co){headRadius = ra; headCorner = co; def_headRadius = false; def_headCorner = false;};
 		void setHeadGradient(int grad){headGradient = grad; def_headGradient = false;};
+		void setHeadLine(bool l){head_line = l;};
 
 		// itemInfo
 		void enablePaintItemInfo(int fh = 70){paintFootInfo = true; footInfoHeight = fh; /*initFrames();*/};
