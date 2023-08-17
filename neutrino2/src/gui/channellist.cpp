@@ -72,7 +72,9 @@
 #include <zapit/frontend_c.h>
 
 #include <video_cs.h>
-#include <misc_setup.h>
+#include <gui/misc_setup.h>
+
+#include <timerd/timerd.h>
 
 
 extern CRemoteControl * g_RemoteControl; 		// neutrino.cpp	
@@ -94,20 +96,21 @@ extern t_channel_id rec_channel_id;
 extern t_channel_id live_channel_id;
 bool pip_selected = false;
 extern bool autoshift;
-int info_height = 0;
+//int info_height = 0;
 extern int FrontendCount;				// defined in zapit.cpp
 extern CBouquetManager * g_bouquetManager;
 extern cVideo * videoDecoder;
 extern CZapitChannel * live_channel;
 extern int old_b_id;
+extern char recDir[255];			// defined in neutrino.cpp
 
 #define NUM_LIST_BUTTONS 4
 struct button_label CChannelListButtons[NUM_LIST_BUTTONS] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("Event list")},
+	{ NEUTRINO_ICON_BUTTON_RED, _("Record")},
 	{ NEUTRINO_ICON_BUTTON_GREEN, _("TMDB info")},
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Bouquets")},
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("EPG Plus")},
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule")},
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("Bouquets")},
 };
 
 #define HEAD_BUTTONS_COUNT	3
@@ -116,7 +119,6 @@ const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 	{ NEUTRINO_ICON_BUTTON_HELP, " " },
 	{ NEUTRINO_ICON_BUTTON_EPG, " " },
 	{ NEUTRINO_ICON_BUTTON_SETUP, " " }
-	//{ NEUTRINO_ICON_BUTTON_MUTE_ZAP_INACTIVE, " " }
 };
 
 const struct button_label HeadNewModeButtons[HEAD_BUTTONS_COUNT] =
@@ -124,7 +126,6 @@ const struct button_label HeadNewModeButtons[HEAD_BUTTONS_COUNT] =
 	{ NEUTRINO_ICON_BUTTON_HELP, " " },
 	{ NEUTRINO_ICON_BUTTON_EPG, " " },
 	{ NEUTRINO_ICON_BUTTON_SETUP, " " }
-	//{ NEUTRINO_ICON_BUTTON_MUTE_ZAP_ACTIVE, " " }
 };
 
 CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vlist)
@@ -705,7 +706,7 @@ int CChannelList::show(bool zap, bool customMode)
 			loop = false;
 			res = -1;
 		}
-		else if ((msg == RC_red) || (msg == RC_epg)) // epg
+		else if (msg == RC_epg) // epg
 		{
 			selected = listBox->getSelected();
 
@@ -716,24 +717,43 @@ int CChannelList::show(bool zap, bool customMode)
 				res = -2;
 				loop = false;
 			}
-
+			
 			paint();
 		}
-		else if ( msg == RC_yellow && ( bouquetList != NULL ) ) //bouquets
+		else if (msg == RC_red) // record
+		{
+			selected = listBox->getSelected();
+
+			hide();
+			
+			if (CTimerd::getInstance()->isTimerdAvailable()) 
+			{
+				CTimerd::getInstance()->addRecordTimerEvent(chanlist[selected]->channel_id, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime + chanlist[selected]->currentEvent.duration, chanlist[selected]->currentEvent.eventID, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime - (ANNOUNCETIME + 120) , TIMERD_APIDS_CONF, true);
+
+				MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);	// UTF-8
+			} 
+			
+			paint();
+		}
+		else if ( msg == RC_blue && ( bouquetList != NULL ) )
 		{
 			//FIXME: show bqt list
 			bShowBouquetList = true;
 
 			loop = false;
 		}
-		else if( msg == RC_blue ) //epgplus
+		else if( msg == RC_yellow )
 		{
 			selected = listBox->getSelected();
 
 			hide();
 			
-			CEPGplusHandler eplus;
-			eplus.exec(NULL, "");
+			if (CTimerd::getInstance()->isTimerdAvailable ()) 
+			{
+				CTimerd::getInstance()->addZaptoTimerEvent (chanlist[selected]->channel_id, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime - ANNOUNCETIME, 0, chanlist[selected]->currentEvent.eventID, chanlist[selected]->currentEvent.startTime, 0);
+		
+				MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);	// UTF-8
+			} 
 
 			paint();
 		}

@@ -1466,8 +1466,6 @@ int EpgPlus::MenuTargetAddRecordTimer::exec(CMenuTarget */*parent*/, const std::
 
 			MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);	// UTF-8
 		} 
-		else
-			printf ("timerd not available\n");
 	}
 
 	return RETURN_EXIT_ALL;
