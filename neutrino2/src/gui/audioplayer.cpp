@@ -386,7 +386,12 @@ void CAudioPlayerGui::playFile()
 		}
 		else if(msg == RC_info)
 		{
+			hide();
+
 			showHelp();
+
+			paintInfo(m_playlist[m_current]);
+			update_t = true;
 		}
 		else if( ((msg == RC_setup) || (msg == RC_vfdmenu)))
 		{
@@ -396,8 +401,10 @@ void CAudioPlayerGui::playFile()
 			CAudioPlayerSettings * audioPlayerSettingsMenu = new CAudioPlayerSettings();
 
 			audioPlayerSettingsMenu->exec(this, "");
+
 			delete audioPlayerSettingsMenu;
 			audioPlayerSettingsMenu = NULL;
+
 			paintInfo(m_playlist[m_current]);
 			update_t = true;					
 		}
@@ -1302,7 +1309,6 @@ void CAudioPlayerGui::showHelp()
 	helpbox.addLine(NEUTRINO_ICON_BUTTON_SETUP, _("Audioplayer settings"));
 	helpbox.addLine(NEUTRINO_ICON_BUTTON_OKAY, _("show playlist"));
 
-	hide();
 	helpbox.show(_("Information"));
 }
 
