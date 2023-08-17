@@ -4,34 +4,34 @@
 <!-- AUTHOR: mohousch -->
 <!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
-	<WIDGET name="mainmenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="mainmenu" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" position="MENU_POSITION_CENTER" itemborder="1" painthead="1" title="Main Menu" icon="mainmenu" paintdate="1" head_line="1" head_line_gradient="1" paintfoot="1" foot_line="1" foot_line_gradient="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="settings" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="settings" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Settings" icon="settings" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 
-	<WIDGET name="osd" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="osd" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="OSD" icon="colors" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="epgtimer" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="epgtimer" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="EPG / Timer" icon="epg" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="features" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="features" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Features" icon="features" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
@@ -41,35 +41,35 @@
 		</KEY>
 	</WIDGET>
 	
-	<WIDGET name="system" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="system" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="System" icon="softupdate" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="powermenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="powermenu" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Power Menu" icon="power" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="information" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="information" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Information" icon="information" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="mediaplayer" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="mediaplayer" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Media Player" icon="multimedia" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="plugins" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="plugins" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Plugins" icon="features" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="btn_red" localename="Delete"/>
@@ -79,7 +79,7 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="timerlist" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="timerlist" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Timerlist" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="btn_red" localename="Delete"/>
 			<FOOT_BUTTON_LABEL name="btn_green" localename="New timer"/>
@@ -88,420 +88,420 @@
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="newtimer" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="newtimer" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="New timer" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="modifytimer" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="modifytimer" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Modify timer" icon="timer" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="tunersetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="tunersetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Servicescan" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="scansetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="scansetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Scan transponder" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="transponder" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="transponder" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Select transponder" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="unicablesetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="unicablesetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Unicable settings" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="manualscan" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="manualscan" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Manual frequency scan / Test signal" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="autoscan" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="autoscan" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Auto scan" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="autoscanall" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="autoscanall" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Auto scan multiple Satellite" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="satsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="satsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Sat settings" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="motorsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="motorsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="DiSEqC settings" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="satfindMenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="satfindMenu" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Motor settings" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="satOnOff" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="satOnOff" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Satellite" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="tempsat" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="tempsat" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" head_line="1" paintfoot="1" foot_line="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="updatesetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="updatesetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Software update" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="flashexpert" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="flashexpert" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Expert functions" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="mtdselector" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="mtdselector" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Partition selector" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="fileselector" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="fileselector" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="File selector" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="cammenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="cammenu" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="CI CAM settings" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="tempcam" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="tempcam" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="tempcam2" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="tempcam2" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="videosetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="videosetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Video settings" icon="video" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="audiosetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="audiosetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Audio settings" icon="audio" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="parentallocksetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="parentallocksetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Parentallock settings" icon="lock" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="networksetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="networksetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Network settings" icon="network" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="proxysetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="proxysetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Proxy server" icon="network" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="nfs" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="nfs" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Mount newtork volume" icon="network" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="mountvolume" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="mountvolume" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Mount network volume" icon="network" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="umountvolume" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="umountvolume" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Umount network volume" icon="network" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="nsfsmall" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="nsfsmall" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Network Mount Manager" icon="network" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="recordingsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="recordingsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Recording settings" icon="recording" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="movieplayersetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="movieplayersetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Movieplayer settings" icon="movie" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="audioplayersetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="audioplayersetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Audioplayer settings" icon="mp3" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="pictureviewersetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="pictureviewersetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Pictureviewer settings" icon="picture" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="lcdsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="lcdsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Display settings" icon="lcd" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="zapitsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="zapitsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Start Channel settings" icon="softupdate" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="hddsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="hddsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="HDD settings" icon="settings" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="temphdd" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="temphdd" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="temphdd2" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="temphdd2" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="miscsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="miscsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Misc settings" icon="settings" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="channelssetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="channelssetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Channellist settings" icon="settings" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="epgsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="epgsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="EPG settings" icon="settings" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="filebrowsersetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="filebrowsersetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Filenrowser settings" icon="settings" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="menusetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="menusetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Menu" icon="colors" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="skinsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="skinsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_LISTBOX" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Skin Select" icon="colors" head_line="1" paintfoot="1" foot_line="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="themesetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="themesetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Themes" icon="colors" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="skinstyleselectionsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="skinstyleselectionsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Skin Style" icon="colors" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="infobarsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="infobarsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Infobar" icon="colors" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="languagesetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="languagesetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Language" icon="language" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="fontsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="fontsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Font" icon="colors" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="osdtimingsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="osdtimingsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Timing" icon="timer" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="osdmiscsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="osdmiscsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Misc settings" icon="colors" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="rcsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="rcsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Keybinding settings" icon="keybinding" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="rcbinding" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="rcbinding" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Hot Keys mapping" icon="keybinding" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="optionstringchooser" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="optionstringchooser" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" head_line="1" paintfoot="1" foot_line="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="optionchooser" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="optionchooser" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" head_line="1" paintfoot="1" foot_line="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="keychooser" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="keychooser" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" head_line="1" paintfoot="1" foot_line="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="mountchooser" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="mountchooser" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" head_line="1" paintfoot="1" foot_line="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="usermenu" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="usermenu" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="bouquetlist" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="bouquetlist" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
-	<WIDGET name="bouquetlistedit" posx="0" posy="0" width="500" height="400" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="bouquetlistedit" width="500" height="400" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<LISTBOX posx="50" posy="50" width="400" height="300" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" title="Edit" icon="settings" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="channellist" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="channellist" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<HEAD posx="50" posy="50" width="1080" height="50" paintframe="0" line="1"/>
 		<LISTBOX posx="50" posy="100" width="700" height="420" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" scrollbar="1"/>
 		<WINDOW posx="750" posy="100" width="380" height="420" paintframe="0"/>
@@ -510,122 +510,122 @@
 		<VLINE posx="750" posy="110" width="3" height="400" gradient="DARK2LIGHT2DARK"/>
 	</WIDGET>
 	
-	<WIDGET name="channellistedit" posx="0" posy="0" width="600" height="500" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="channellistedit" width="600" height="500" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<LISTBOX posx="50" posy="50" width="500" height="400" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" title="Edit" icon="settings" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="bqeditchselect" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="bqeditchselect" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
-	<WIDGET name="bqeditch" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="bqeditch" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="bqeditbq" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="bqeditbq" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
-	<WIDGET name="eventlist" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="eventlist" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" painthead="1" head_line="1" paintdate="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
-	<WIDGET name="epgsearch" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="epgsearch" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Search in EPG" icon="features" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="filebrowser" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="filebrowser" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<LISTBOX posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" painthead="1" head_line="1" paintfoot="1" foot_line="1" scrollbar="1"/>
 	</WIDGET>
 	
-	<WIDGET name="audioselect" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="audioselect" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Select language" icon="audio" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="avselect" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="avselect" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="AV Select" icon="audio" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="subselect" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="subselect" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Subtitle Select" icon="audio" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="nvodselect" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="nvodselect" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Select Subservice / starting-time" icon="audio" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="bookmark" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="bookmark" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Bookmarks" icon="audio" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="startpos" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="startpos" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Start movie from:" icon="audio" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="epgview" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="epgview" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<HEAD posx="10" posy="10" width="1160" height="60" paintframe="0" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
 		<TEXTBOX posx="10" posy="70" width="1160" height="440" paintframe="0"/>
 		<WINDOW name="screening" posx="10" posy="520" width="1160" height="30" paintframe="0"/>
 		<FOOT posx="10" posy="550" width="1160" height="60" paintframe="0" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="hintbox" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="hintbox" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<HEAD posx="60" posy="60" width="1160" height="60" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="messagebox" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="messagebox" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<HEAD posx="60" posy="60" width="1160" height="60" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="infobox" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="infobox" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<TEXTBOX posx="60" posy="120" width="1160" height="1060"/>
 		<HEAD posx="60" posy="60" width="1160" height="60" line="1"/>
 		<FOOT posx="60" posy="600" width="1160" height="60" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="boxinfo" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="boxinfo" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<HEAD posx="10" posy="10" width="1160" height="60" title="Box Info" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="imageinfo" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="imageinfo" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<HEAD posx="10" posy="10" width="1160" height="60" title="Image Info" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="streaminfo" posx="0" posy="0" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
+	<WIDGET name="streaminfo" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
 		<HEAD posx="10" posy="10" width="1160" height="60" title="Stream Infomation" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
 	</WIDGET>
 	
-	<WIDGET name="personalisation" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="personalisation" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="Personalisation" icon="colors" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
 		</LISTBOX>
 	</WIDGET>
 	
-	<WIDGET name="cecsetup" posx="0" posy="0" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<WIDGET name="cecsetup" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" position="MENU_POSITION_CENTER" painthead="1" title="CEC Setup" icon="colors" head_line="1" paintfoot="1" foot_line="1" scrollbar="1">
 		
 			<FOOT_BUTTON_LABEL name="information"/>
