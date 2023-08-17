@@ -503,7 +503,7 @@ struct button_label buttonLabels[] = {
 	{NEUTRINO_ICON_BUTTON_RED, _("Record") },
 	{NEUTRINO_ICON_BUTTON_GREEN, _("Refresh EPG") },
 	{NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule") },
-	{NEUTRINO_ICON_BUTTON_BLUE, _("Options") }
+	{NEUTRINO_ICON_BUTTON_BLUE, _("TMDB info") }
 };
 
 void EpgPlus::Footer::paintButtons(button_label * _buttonLabels, int numberOfButtons)
