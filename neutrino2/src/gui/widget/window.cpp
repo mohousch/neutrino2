@@ -42,7 +42,7 @@
 
 CWindow::CWindow(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -58,7 +58,7 @@ CWindow::CWindow(const int x, const int y, const int dx, const int dy)
 
 CWindow::CWindow(CBox* position)
 {
-	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -80,7 +80,7 @@ CWindow::~CWindow()
 
 void CWindow::initVars()
 {
-	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
 
 	radius = NO_RADIUS;
 	corner = CORNER_NONE;
@@ -106,7 +106,7 @@ void CWindow::initVars()
 
 void CWindow::initFrames()
 {
-	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
 
 	// sanity check
 	if(itemBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
@@ -119,7 +119,7 @@ void CWindow::initFrames()
 
 void CWindow::saveScreen()
 {
-	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
 
 	if(background)
 	{
@@ -140,7 +140,7 @@ void CWindow::saveScreen()
 
 void CWindow::restoreScreen()
 {
-	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
 	
 	if(background) 
 	{
@@ -153,7 +153,7 @@ void CWindow::restoreScreen()
 
 void CWindow::setPosition(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
 	
 	itemBox.iX = x;
 	itemBox.iY = y;
@@ -165,7 +165,7 @@ void CWindow::setPosition(const int x, const int y, const int dx, const int dy)
 
 void CWindow::setPosition(CBox* position)
 {
-	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
 	
 	itemBox = *position;
 	
@@ -174,7 +174,7 @@ void CWindow::setPosition(CBox* position)
 
 void CWindow::paintPage(void)
 {
-	dprintf(DEBUG_INFO, "CWindow::paintPage:\n");
+	dprintf(DEBUG_DEBUG, "CWindow::paintPage:\n");
 
 	if (paintframe)
 	{
@@ -212,7 +212,7 @@ void CWindow::paintPage(void)
 
 void CWindow::paint()
 {
-	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
 
 	//
 	if (!paintframe)
@@ -226,7 +226,7 @@ void CWindow::paint()
 
 void CWindow::hide()
 {
-	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
 	
 	if(!paintframe)
 		restoreScreen();
@@ -243,7 +243,7 @@ void CWindow::hide()
 
 void CWindow::refresh(void)
 {
-	dprintf(DEBUG_NORMAL, "CWindow::%s\n", __FUNCTION__);
+	dprintf(DEBUG_INFO, "CWindow::%s\n", __FUNCTION__);
 
 	restoreScreen();
 	paintPage();

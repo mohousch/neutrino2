@@ -3150,7 +3150,7 @@ void ClistBox::directKeyPressed(neutrino_msg_t _msg)
 //
 void ClistBox::changeWidgetType()
 {
-	dprintf(DEBUG_NORMAL, "ClistBox::changeWidgetType:\n");
+	dprintf(DEBUG_INFO, "ClistBox::changeWidgetType:\n");
 
 	if(widget.size())
 	{

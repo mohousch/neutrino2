@@ -871,14 +871,14 @@ void CFileBrowser::paint()
 	listBox->setTitle(l_name, NEUTRINO_ICON_FILEBROWSER);
 	listBox->enablePaintDate();
 	listBox->setHeadGradient(g_settings.Head_gradient);
-	listBox->setHeadRadius(g_settings.Head_radius);
+	listBox->setHeadCorner(g_settings.Head_radius, g_settings.Head_corner);
 	listBox->setHeadLine(g_settings.Head_line);
 	listBox->setHeadButtons(HButtons, 2);
 
 	// foot
 	listBox->enablePaintFoot();
 	listBox->setFootGradient(g_settings.Foot_gradient);
-	listBox->setFootRadius(g_settings.Foot_radius);
+	listBox->setFootCorner(g_settings.Foot_radius, g_settings.Foot_corner);
 	listBox->setFootLine(g_settings.Foot_line);
 
 	struct button_label Button[4];

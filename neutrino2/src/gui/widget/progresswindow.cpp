@@ -168,7 +168,7 @@ void CProgressWindow::paint()
 
 	// box
 	//m_cBoxWindow.enableSaveScreen();
-	m_cBoxWindow.setCorner(g_settings.Head_radius, CORNER_ALL);
+	m_cBoxWindow.setCorner(RADIUS_SMALL, CORNER_ALL);
 	m_cBoxWindow.paint();
 	
 	// title
@@ -179,6 +179,9 @@ void CProgressWindow::paint()
 		l_caption = captionString.c_str();
 
 		CHeaders headers(x, y, width, hheight, l_caption, NEUTRINO_ICON_INFO);
+		headers.setCorner(RADIUS_SMALL, CORNER_TOP);
+		headers.setGradient(DARK2LIGHT2DARK);
+		headers.setHeadLine(false);
 		
 		if (paintCancelIcon)
 			headers.setButtons(&cancelBtn, 1);

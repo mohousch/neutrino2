@@ -720,7 +720,7 @@ void CListFrame::hide(void)
 
 void CListFrame::paint(void)
 {
-	dprintf(DEBUG_NORMAL, "CListFrame::paint: %s\n", m_textTitle.c_str());
+	dprintf(DEBUG_INFO, "CListFrame::paint: %s\n", m_textTitle.c_str());
 
 	frameBuffer = CFrameBuffer::getInstance();
 	refreshPage();

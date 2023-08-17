@@ -403,7 +403,7 @@ void CCButtons::setButtons(const struct button_label *button_label, const int bu
 
 void CCButtons::addButton(const char *btn, const char *lname, fb_pixel_t col)
 {
-	dprintf(DEBUG_NORMAL, "CCButtons::addButton: btn:%s name:%s\n", btn, lname);
+	dprintf(DEBUG_DEBUG, "CCButtons::addButton: btn:%s name:%s\n", btn, lname);
 	
 	button_label_struct button;
 	
@@ -817,7 +817,7 @@ void CItems2DetailsLine::hide()
 //
 CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_NORMAL, "CCSlider::CCSlider\n");
+	dprintf(DEBUG_INFO, "CCSlider::CCSlider\n");
 	
 	//
 	frameBuffer = CFrameBuffer::getInstance();
@@ -834,7 +834,7 @@ CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 
 void CCSlider::paint(const int spos, const char * const iconname, const bool selected)
 {
-	dprintf(DEBUG_NORMAL, "CCSlider::paint:\n");
+	dprintf(DEBUG_INFO, "CCSlider::paint:\n");
 	
 	// volumebox box
 	int icon_w = 120;
@@ -1790,7 +1790,7 @@ bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
 
 void CWidgetItem::exec(int timeout)
 {
-	dprintf(DEBUG_NORMAL, "CWidgetItem::exec: timeout:%d\n", timeout);
+	dprintf(DEBUG_INFO, "CWidgetItem::exec: timeout:%d\n", timeout);
 	
 	// loop
 	neutrino_msg_t msg;
@@ -1899,7 +1899,7 @@ void CHeaders::setButtons(const struct button_label* _hbutton_labels, const int 
 
 void CHeaders::addButton(const char *btn, const char *lname, fb_pixel_t col)
 {
-	dprintf(DEBUG_NORMAL, "CHeaders::addButton: btn:%s name:%s\n", btn, lname);
+	dprintf(DEBUG_DEBUG, "CHeaders::addButton: btn:%s name:%s\n", btn, lname);
 	
 	button_label_struct button;
 	
@@ -2075,7 +2075,7 @@ void CFooters::setButtons(const struct button_label *button_label, const int but
 
 void CFooters::addButton(const char *btn, const char *lname, fb_pixel_t col)
 {
-	dprintf(DEBUG_NORMAL, "CFooters::addButton: btn:%s name:%s\n", btn, lname);
+	dprintf(DEBUG_DEBUG, "CFooters::addButton: btn:%s name:%s\n", btn, lname);
 	
 	button_label_struct button;
 	

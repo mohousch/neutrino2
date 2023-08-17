@@ -573,8 +573,7 @@ class ClistBox : public CWidgetItem
 		void setTitleHAlign(const int m){thalign = m;};
 		void setHeadButtons(const struct button_label *_hbutton_label, const int _hbutton_count = 1);
 		void setHeadColor(fb_pixel_t col) {headColor = col;};
-		void setHeadRadius(int ra){headRadius = ra;};
-		void setHeadCorner(int co){headCorner = co;};
+		void setHeadCorner(int ra, int co){headRadius = ra; headCorner = co;};
 		void setHeadGradient(int grad){headGradient = grad;};
 		void setHeadLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
 		void setFormat(const char* f){format = f;};
@@ -583,8 +582,7 @@ class ClistBox : public CWidgetItem
 		void enablePaintFoot(){paint_Foot = true;};
 		void setFootButtons(const struct button_label *_fbutton_label, const int _fbutton_count = 1, const int _fbutton_width = 0);
 		void setFootColor(fb_pixel_t col) {footColor = col;};
-		void setFootRadius(int ra){footRadius = ra;};
-		void setFootCorner(int co){footCorner = co;};
+		void setFootCorner(int ra, int co){footRadius = ra; footCorner = co;};
 		void setFootGradient(int grad){footGradient = grad;};
 		void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
 

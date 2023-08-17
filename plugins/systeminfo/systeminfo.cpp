@@ -101,6 +101,9 @@ void CSysInfoWidget::paintHead()
 	// title
 	CHeaders headers(&cFrameBoxTitle, buf, titleIcon.iconName.c_str());
 	headers.enablePaintDate();
+	headers.setCorner(RADIUS_SMALL, CORNER_TOP);
+	headers.setGradient(DARK2LIGHT2DARK);
+	headers.setHeadLine(false);
 	headers.paint();
 }
 
@@ -122,7 +125,9 @@ void CSysInfoWidget::paintFoot()
 	cFrameBoxFoot.iWidth = cFrameBox.iWidth;
 
 	CFooters footers(&cFrameBoxFoot);
-
+	footers.setCorner(RADIUS_SMALL, CORNER_BOTTOM);
+	footers.setGradient(DARK2LIGHT2DARK);
+	footers.setFootLine(false);
 	footers.setButtons(Buttons, 4);
 	footers.paint();
 }

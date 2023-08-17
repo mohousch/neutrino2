@@ -50,7 +50,6 @@ CImageInfo::CImageInfo()
 	sec_timer_id = 0;
 
 	font_info   = SNeutrinoSettings::FONT_TYPE_MENU;
-
 	iheight     = g_Font[font_info]->getHeight();
 
 	//
@@ -221,7 +220,7 @@ void CImageInfo::paint()
 	ypos += iheight;
 	paintLine(xpos, font_info, _("Built date: "));
 	paintLine(xpos + x_offset, font_info, _(__DATE__));
-	paintLine(xpos + x_offset + x_offset, font_info, _(__TIME__));
+	paintLine(xpos + x_offset + x_offset + 10, font_info, _(__TIME__));
 	
 	// image type
 	ypos += iheight;

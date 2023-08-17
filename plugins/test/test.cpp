@@ -1829,7 +1829,7 @@ void CTestMenu::testCIcon()
 	// paint testIcon
 	testIcon.setIcon(NEUTRINO_ICON_BUTTON_RED);
 	
-	dprintf(DEBUG_NORMAL, "\ntestCIcon: icon:%s iw:%d ih:%d\n", testIcon.iconName.c_str(), testIcon.width, testIcon.height);
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCIcon: icon:%s iw:%d ih:%d\n", testIcon.iconName.c_str(), testIcon.width, testIcon.height);
 	
 	testIcon.setPosition(150 + BORDER_LEFT, 150, testIcon.width, testIcon.height);
 
@@ -1843,7 +1843,7 @@ void CTestMenu::testCIcon()
 	delete testWidget;
 	testWidget = NULL;
 
-	hide();
+	//hide();
 }
 
 // CImage
@@ -1857,7 +1857,7 @@ void CTestMenu::testCImage()
 	// paint testImage
 	testImage.setImage(DATADIR "/icons/nopreview.jpg");
 	
-	dprintf(DEBUG_NORMAL, "\ntestCImahe: image:%s iw:%d ih:%d nbp:%d\n", testImage.imageName.c_str(), testImage.iWidth, testImage.iHeight, testImage.iNbp);
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCImage: image:%s iw:%d ih:%d nbp:%d\n", testImage.imageName.c_str(), testImage.iWidth, testImage.iHeight, testImage.iNbp);
 	
 	testImage.setPosition(150 + BORDER_LEFT, 150, testImage.iWidth, testImage.iHeight);
 	testImage.paint();
@@ -1870,7 +1870,7 @@ void CTestMenu::testCImage()
 	delete testWidget;
 	testWidget = NULL;
 	
-	hide();
+	//hide();
 }
 
 // CProgressBar
@@ -1984,7 +1984,7 @@ void CTestMenu::testCButtons()
 	delete testWidget;
 	testWidget = NULL;
 	
-	hide();
+	//hide();
 }
 
 // CButtons
@@ -2026,14 +2026,14 @@ void CTestMenu::testCHButtons()
 	delete testWidget;
 	testWidget = NULL;
 	
-	hide();
+	//hide();
 }
 
 void CTestMenu::testCSpinner()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCCSpinner:");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCSpinner:\n");
 	
-	testWidget = new CWidget(10, 10, 20, 20);
+	testWidget = new CWidget();
 	
 	CCSpinner testSpinner(10, 10, 20, 20);
 	
@@ -6548,7 +6548,7 @@ void CTestMenu::showMenu()
 	
 	std::string skin = PLUGINDIR "/test/test.xml";
 	
-	mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str());
+	//mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str());
 	
 	if (mWidget)
 	{
@@ -6561,7 +6561,7 @@ void CTestMenu::showMenu()
 			
 		mWidget->name = "Test Menu";
 			
-		mainMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		mainMenu = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
 
 		mainMenu->enablePaintHead();
 		mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
@@ -6569,6 +6569,14 @@ void CTestMenu::showMenu()
 		mainMenu->enableShrinkMenu(),
 		mainMenu->enablePaintDate();
 		mainMenu->enablePaintFoot();
+
+		mainMenu->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
+		mainMenu->setHeadGradient(DARK2LIGHT2DARK);
+		mainMenu->setHeadLine(false);
+
+		mainMenu->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
+		mainMenu->setFootGradient(DARK2LIGHT2DARK);
+		mainMenu->setFootLine(false);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			

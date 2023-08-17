@@ -697,7 +697,13 @@ void CInternetRadio::showMenu()
 	//ilist->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
 	ilist->setSelected(selected);
 
+	ilist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
+	ilist->setHeadGradient(DARK2LIGHT2DARK);
+	ilist->setHeadLine(false);
 	ilist->setHeadButtons(&HeadButtons);
+	ilist->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
+	ilist->setFootGradient(DARK2LIGHT2DARK);
+	ilist->setFootLine(false);
 	ilist->setFootButtons(AudioPlayerButtons, FOOT_BUTTONS_COUNT);
 	
 	ilist->enablePaintDate();

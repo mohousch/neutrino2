@@ -449,7 +449,7 @@ int CFrame::exec(CMenuTarget *parent)
 // CFrameBox
 CFrameBox::CFrameBox(const int x, int const y, const int dx, const int dy)
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::CFrameBox:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::CFrameBox:\n");
 
 	frameBuffer = CFrameBuffer::getInstance();
 
@@ -507,7 +507,7 @@ CFrameBox::CFrameBox(const int x, int const y, const int dx, const int dy)
 
 CFrameBox::CFrameBox(CBox* position)
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::CFrameBox:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::CFrameBox:\n");
 
 	frameBuffer = CFrameBuffer::getInstance();
 
@@ -581,7 +581,7 @@ bool CFrameBox::hasItem()
 
 void CFrameBox::initFrames()
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::initFrames:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::initFrames:\n");
 	
 	// head
 	if(paintTitle)
@@ -598,7 +598,7 @@ void CFrameBox::initFrames()
 
 void CFrameBox::paintFrames()
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::paintFrames:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::paintFrames:\n");
 
 	for (unsigned int count = 0; count < (unsigned int)frames.size(); count++) 
 	{
@@ -618,7 +618,7 @@ void CFrameBox::paintFrames()
 
 void CFrameBox::paint()
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::paint:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::paint:\n");
 	
 	//
 	initFrames();
@@ -640,7 +640,7 @@ void CFrameBox::paint()
 
 void CFrameBox::saveScreen()
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::saveScreen:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::saveScreen:\n");
 
 	if(background)
 	{
@@ -658,7 +658,7 @@ void CFrameBox::saveScreen()
 
 void CFrameBox::restoreScreen()
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::restoreScreen:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::restoreScreen:\n");
 	
 	if(background) 
 	{
@@ -668,7 +668,7 @@ void CFrameBox::restoreScreen()
 
 void CFrameBox::hide()
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::hide:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::hide:\n");
 	
 	if (hasItem())
 	{
@@ -712,7 +712,7 @@ bool CFrameBox::isSelectable(void)
 
 void CFrameBox::swipRight()
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::swipRight:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::swipRight:\n");
 
 	for (unsigned int count = 1; count < frames.size(); count++) 
 	{
@@ -734,7 +734,7 @@ void CFrameBox::swipRight()
 
 void CFrameBox::swipLeft()
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::swipLeft:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::swipLeft:\n");
 
 	for (unsigned int count = 1; count < frames.size(); count++) 
 	{
@@ -758,7 +758,7 @@ void CFrameBox::swipLeft()
 
 void CFrameBox::scrollLineDown(const int lines)
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::scrollLineDown:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::scrollLineDown:\n");
 
 	for (unsigned int count = 1; count < frames.size(); count++) 
 	{
@@ -780,7 +780,7 @@ void CFrameBox::scrollLineDown(const int lines)
 
 void CFrameBox::scrollLineUp(const int lines)
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::scrollLineUp:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::scrollLineUp:\n");
 
 	for (unsigned int count = 1; count < frames.size(); count++) 
 	{
@@ -804,7 +804,7 @@ void CFrameBox::scrollLineUp(const int lines)
 
 int CFrameBox::oKKeyPressed(CMenuTarget *_parent, neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_NORMAL, "CFrameBox::okKeyPressed:\n");
+	dprintf(DEBUG_INFO, "CFrameBox::okKeyPressed:\n");
 	
 	int ret = RETURN_EXIT;
 
