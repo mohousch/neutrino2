@@ -255,7 +255,7 @@ class CFrameBox : public CWidgetItem
 		void setTitle(const char* title = "", const char* icon = NULL, bool logo_ok = false){l_name = title; if(icon != NULL) iconfile = icon; logo = logo_ok;};
 		void setHeadButtons(const struct button_label *_hbutton_label, const int _hbutton_count = 1);
 		void setHeadColor(fb_pixel_t col) {headColor = col;};
-		void setHeadCorner(int ra, int co){headRadius = ra; headCorner = co;};
+		void setHeadCorner(int ra, int co = CORNER_TOP){headRadius = ra; headCorner = co;};
 		void setHeadGradient(int grad){headGradient = grad;};
 		void setFormat(const char* f){format = f;};
 		
@@ -264,7 +264,7 @@ class CFrameBox : public CWidgetItem
 		virtual void paintFoot();
 		void setFootButtons(const struct button_label *_fbutton_label, const int _fbutton_count = 1, const int _fbutton_width = 0);
 		void setFootColor(fb_pixel_t col) {footColor = col;};
-		void setFootCorner(int ra, int co){footRadius = ra; footCorner = co;};
+		void setFootCorner(int ra, int co = CORNER_BOTTOM){footRadius = ra; footCorner = co;};
 		void setFootGradient(int grad){footGradient = grad;};
 };
 

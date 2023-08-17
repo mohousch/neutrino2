@@ -1369,11 +1369,17 @@ void CAudioPlayerGui::showPlaylist()
 	alist->setSelected(m_current);
 	
 	//
+	alist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
+	alist->setHeadGradient(DARK2LIGHT2DARK);
+	alist->setHeadLine(false);
 	alist->enablePaintHead();
 	alist->setTitle(_("Audio Playlist"), NEUTRINO_ICON_MP3);
 	alist->enablePaintDate();
 	
 	//
+	alist->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
+	alist->setFootGradient(DARK2LIGHT2DARK);
+	alist->setFootLine(false);
 	alist->enablePaintFoot();
 	alist->setFootButtons(AudioPlayerButtons, FOOT_BUTTONS_COUNT);
 	

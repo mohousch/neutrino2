@@ -1904,7 +1904,7 @@ void CHeaders::addButton(const char *btn, const char *lname, fb_pixel_t col)
 	button_label_struct button;
 	
 	button.button = btn;
-	button.localename = lname;
+	button.localename = lname? lname : "";
 	button.color = col;
 	
 	hbutton_labels.push_back(button);
@@ -2080,7 +2080,7 @@ void CFooters::addButton(const char *btn, const char *lname, fb_pixel_t col)
 	button_label_struct button;
 	
 	button.button = btn;
-	button.localename = lname;
+	button.localename = lname? lname : "";
 	button.color = col;
 	
 	fbuttons.push_back(button);

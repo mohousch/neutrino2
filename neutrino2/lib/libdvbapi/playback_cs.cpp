@@ -710,11 +710,10 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 		g_object_set(G_OBJECT (m_gst_playbin), "uri", uri, NULL);
 
 		// subsink
-		#if 1
 		GstElement *subsink = gst_element_factory_make("subsink", "subtitle_sink");
 		if (!subsink)
 		{
-			dprintf(DEBUG_NORMAL, "sorry, can't play: missing gst-plugin-subsink\n");
+			dprintf(DEBUG_NORMAL, "cPlayback::Start: sorry, can't play subs: missing gst-plugin-subsink\n");
 		}
 		else
 		{
@@ -726,8 +725,7 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 #endif
 			g_object_set (G_OBJECT (m_gst_playbin), "text-sink", subsink, NULL);
 			//g_object_set (G_OBJECT (m_gst_playbin), "current-text", m_currentSubtitleStream, NULL);
-		}
-		#endif	
+		}	
 		
 		//gstbus handler
 		bus = gst_pipeline_get_bus(GST_PIPELINE (m_gst_playbin));
@@ -750,7 +748,7 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 
 		m_gst_playbin = 0;
 		
-		dprintf(DEBUG_NORMAL, "failed to create GStreamer pipeline!, sorry we can not play\n");
+		dprintf(DEBUG_NORMAL, "cPlayback::Start: failed to create GStreamer pipeline!, sorry we can not play\n");
 		playing = false;
 	}
 	
@@ -774,7 +772,7 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 	}
 	else
 	{
-		dprintf(DEBUG_NORMAL, "[playback_cs.cpp]: failed to start playing file, sorry we can not play\n");
+		dprintf(DEBUG_NORMAL, "cPlayback::Start: failed to start playing file, sorry we can not play\n");
 		playing = false;
 	}
 #endif

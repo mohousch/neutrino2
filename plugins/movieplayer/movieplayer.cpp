@@ -413,11 +413,11 @@ void CMoviePlayer::showMenu()
 {
 	//
 	widget = new CWidget(frameBuffer->getScreenX(), frameBuffer->getScreenY(), frameBuffer->getScreenWidth(), frameBuffer->getScreenHeight());
+	widget->name = "movieplayer";
 	
 	//
 	mlist = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-	mlist->clear();
 
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
@@ -438,7 +438,6 @@ void CMoviePlayer::showMenu()
 	//
 	mlist->enablePaintHead();
 	mlist->setTitle(_("Movie Player"), NEUTRINO_ICON_MOVIE);
-	//mlist->setTitleHAlign(CC_ALIGN_CENTER);
 	mlist->enablePaintDate();
 	mlist->setFormat("%A %d.%m.%Y %H:%M:%S");
 	mlist->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);

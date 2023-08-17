@@ -40,6 +40,7 @@
 #include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/stringinput.h>
+#include <gui/widget/infobox.h>
 
 #include <gui/bouquetlist.h>
 
@@ -50,6 +51,7 @@
 
 #include <system/debug.h>
 #include <system/channellogo.h>
+#include <system/tmdbparser.h>
 
 
 #define COL_MENUCONTENT_P1                 254-8*4+1
@@ -106,8 +108,14 @@ void EpgPlus::Header::init()
 void EpgPlus::Header::paint()
 {
 	CHeaders head(this->x, this->y, this->width, /*this->font->getHeight() + 10*/40, _("Eventlist overview"), NEUTRINO_ICON_BUTTON_EPG);
+
+	head.setCorner(RADIUS_SMALL, CORNER_TOP);
+	head.setGradient(DARK2LIGHT2DARK);
+	head.setLine(false);
 	head.enablePaintDate();
 	head.setFormat("%d.%m.%Y %H:%M:%S");
+	head.addButton(NEUTRINO_ICON_BUTTON_HELP);
+	head.addButton(NEUTRINO_ICON_BUTTON_SETUP);
 	head.paint();
 }
 
@@ -492,15 +500,19 @@ void EpgPlus::Footer::paintEventDetails (const std::string & description, const 
 }
 
 struct button_label buttonLabels[] = {
-	{NEUTRINO_ICON_BUTTON_RED, _("Actions") },
-	{NEUTRINO_ICON_BUTTON_GREEN, _("page down") },
-	{NEUTRINO_ICON_BUTTON_YELLOW, _("page up") },
+	{NEUTRINO_ICON_BUTTON_RED, _("Record") },
+	{NEUTRINO_ICON_BUTTON_GREEN, _("Refresh EPG") },
+	{NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule") },
 	{NEUTRINO_ICON_BUTTON_BLUE, _("Options") }
 };
 
 void EpgPlus::Footer::paintButtons(button_label * _buttonLabels, int numberOfButtons)
 {
 	CFooters foot(this->x, this->y + this->getUsedHeight() - (/*this->fontButtons->getHeight() + 10*/40), this->width, /*this->fontButtons->getHeight() + 10*/40);
+
+	foot.setCorner(RADIUS_SMALL, CORNER_BOTTOM);
+	foot.setGradient(DARK2LIGHT2DARK);
+	foot.setLine(false);
 	foot.setButtons(buttonLabels, numberOfButtons);
 	foot.paint();
 }
@@ -750,6 +762,11 @@ void EpgPlus::init()
 	this->timeLine = new TimeLine (this->frameBuffer, this->timeLineX, this->timeLineY, this->timeLineWidth, this->eventsTableX, this->eventsTableWidth);
 	
 	this->footer = new Footer (this->frameBuffer, this->footerX, this->footerY, this->footerWidth);
+	
+	//
+	this->refreshEpg = new MenuTargetRefreshEpg(this);
+	this->addRecordTimer = new MenuTargetAddRecordTimer(this);
+	this->addReminder = new MenuTargetAddReminder(this);
 }
 
 void EpgPlus::free()
@@ -813,7 +830,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 	  		if (msg <= RC_MaxRC)
 				timeoutEnd = CRCInput::calcTimeoutEnd (g_settings.timing_channellist);
 
-	  		if ((msg == RC_page_down) || (msg == RC_yellow)) 
+	  		if (msg == RC_page_down) 
 			{
 				switch (this->currentSwapMode) 
 				{
@@ -857,7 +874,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		  			break;
 				}
 	  		}
-	  		else if ((msg == RC_page_up) || (msg == RC_green)) 
+	  		else if (msg == RC_page_up) 
 			{
 				switch (this->currentSwapMode) 
 				{
@@ -902,65 +919,36 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 	  		} 
 			else if (msg == (neutrino_msg_t) RC_red) 
 			{
-				//
-				CWidget* menuWidgetActionsWidget = NULL;
-				ClistBox* menuWidgetActions = NULL;
-				
-				//
-				menuWidgetActionsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				menuWidgetActionsWidget->name = "epgplusactions";
-				menuWidgetActionsWidget->setMenuPosition(MENU_POSITION_CENTER);
-				menuWidgetActionsWidget->setBorderMode();
-				menuWidgetActionsWidget->enableSaveScreen();
-				
-				//
-				menuWidgetActions = new ClistBox(menuWidgetActionsWidget->getWindowsPos().iX, menuWidgetActionsWidget->getWindowsPos().iY, menuWidgetActionsWidget->getWindowsPos().iWidth, menuWidgetActionsWidget->getWindowsPos().iHeight);
-
-				menuWidgetActions->setWidgetMode(MODE_SETUP);
-				menuWidgetActions->enableShrinkMenu();
-					
-				menuWidgetActions->enablePaintHead();
-				menuWidgetActions->setTitle(_("Actions"), NEUTRINO_ICON_BUTTON_EPG);
-
-				menuWidgetActions->enablePaintFoot();
-						
-				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-						
-				menuWidgetActions->setFootButtons(&btn);
-					
-				//
-				menuWidgetActionsWidget->addWidgetItem(menuWidgetActions);
-
-				// record
-		  		menuWidgetActions->addItem (new CMenuForwarder(_("Record"), true, NULL, new MenuTargetAddRecordTimer(this), NULL, RC_red, NEUTRINO_ICON_BUTTON_RED), false);
-
-				// refresh
-				menuWidgetActions->addItem (new CMenuForwarder(_("Refresh EPG"), true, NULL, new MenuTargetRefreshEpg(this), NULL, RC_green, NEUTRINO_ICON_BUTTON_GREEN), false);
-
-				// shedulde
-				menuWidgetActions->addItem (new CMenuForwarder(_("Schedule"), true, NULL, new MenuTargetAddReminder(this), NULL, RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW), false);
-
-				menuWidgetActionsWidget->exec (NULL, "");
-				
-#ifdef TESTING
-				if (menuWidgetActions)
-				{
-					delete menuWidgetActions;
-					menuWidgetActions = NULL;
-				}
-				
-				if (menuWidgetActionsWidget)
-				{
-					delete menuWidgetActionsWidget;
-					menuWidgetActionsWidget = NULL;
-				}
-#endif
-
-		  		//this->refreshAll = true;
+				this->addRecordTimer->exec(NULL, "");
 	  		} 
+	  		else if (msg == (neutrino_msg_t) RC_green) 
+	  		{
+	  			this->refreshEpg->exec(NULL, "");
+	  		}
+	  		else if (msg == (neutrino_msg_t) RC_yellow) 
+	  		{
+	  			this->addReminder->exec(NULL, "");
+	  		}
 			else if (msg == (neutrino_msg_t) RC_blue) 
 			{
-				//
+				TCChannelEventEntries::const_iterator It = this->getSelectedEvent ();
+
+				if (It != this->selectedChannelEntry->channelEventEntries.end ()) 
+				{
+		  			if ((*It)->channelEvent.eventID != 0) 
+					{
+						this->hide ();
+						
+						getTMDBInfo((*It)->channelEvent.description.c_str());
+						
+						this->header->paint ();
+		  				this->footer->paintButtons (buttonLabels, sizeof (buttonLabels) / sizeof (button_label));
+						this->paint ();
+					}
+				}
+	  		}
+	  		else if (msg == (neutrino_msg_t) RC_setup) 
+			{
 				CWidget* menuWidgetOptionsWidget = NULL;
 				ClistBox* menuWidgetOptions = NULL;
 				
@@ -978,8 +966,14 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 					
 				menuWidgetOptions->enablePaintHead();
 				menuWidgetOptions->setTitle(_("Options"), NEUTRINO_ICON_BUTTON_EPG);
+				menuWidgetOptions->setHeadCorner(RADIUS_SMALL);
+				menuWidgetOptions->setHeadGradient(DARK2LIGHT2DARK);
+				menuWidgetOptions->setHeadLine(false);
 
 				menuWidgetOptions->enablePaintFoot();
+				menuWidgetOptions->setFootCorner(RADIUS_SMALL);
+				menuWidgetOptions->setFootGradient(DARK2LIGHT2DARK);
+				menuWidgetOptions->setFootLine(false);
 						
 				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 						
@@ -993,7 +987,6 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 
 				menuWidgetOptionsWidget->exec (NULL, "");
 				
-#ifdef TESTING
 				if (menuWidgetOptions)
 				{
 					delete menuWidgetOptions;
@@ -1005,7 +998,6 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 					delete menuWidgetOptionsWidget;
 					menuWidgetOptionsWidget = NULL;
 				}
-#endif
 	  		} 
 			else if (CRCInput::isNumeric (msg)) 
 			{	//numeric zap
@@ -1305,6 +1297,67 @@ std::string EpgPlus::getTimeString (const time_t & time, const std::string & for
 	return tmpstr;
 }
 
+////
+void EpgPlus::getTMDBInfo(const char * const text)
+{
+	dprintf(DEBUG_NORMAL, "EpgPlus::getTMDBInfo: %s\n", text);
+	
+	if(text != NULL)
+	{
+		CTmdb * tmdb = new CTmdb();
+
+		if(tmdb->getMovieInfo(text))
+		{
+			if ((!tmdb->getDescription().empty())) 
+			{
+				std::string buffer;
+
+				buffer = text;
+				buffer += "\n";
+	
+				// prepare print buffer  
+				buffer += tmdb->createInfoText();
+
+				// thumbnail
+				std::string tname = tmdb->getThumbnailDir();
+				tname += "/";
+				tname += text;
+				tname += ".jpg";
+
+				tmdb->getSmallCover(tmdb->getPosterPath(), tname);
+
+				// scale pic
+				int p_w = 0;
+				int p_h = 0;
+
+				::scaleImage(tname, &p_w, &p_h);
+	
+				CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
+	
+				CInfoBox * infoBox = new CInfoBox(&position, text, NEUTRINO_ICON_TMDB);
+
+				infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
+				infoBox->setMode(SCROLL);
+				infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
+				infoBox->exec();
+				delete infoBox;
+			}
+			else
+			{
+				MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
+			}
+		}
+		else
+		{
+			MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
+		}
+
+		delete tmdb;
+		tmdb = NULL;	
+
+	}
+}
+
 void EpgPlus::paint()
 {
 	// clear
@@ -1375,7 +1428,7 @@ int EpgPlus::MenuTargetAddReminder::exec(CMenuTarget */*parent*/, const std::str
 
 	TCChannelEventEntries::const_iterator It = this->epgPlus->getSelectedEvent ();
 	
-	if ((It != this->epgPlus->selectedChannelEntry->channelEventEntries.end ())
+	if ((It != this->epgPlus->selectedChannelEntry->channelEventEntries.end ()) 
 		&& (!(*It)->channelEvent.description.empty ())
 		) 
 	{

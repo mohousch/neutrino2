@@ -506,6 +506,14 @@ class EpgPlus
 
 		//
 		uint32_t sec_timer_id;
+		
+		//
+		MenuTargetRefreshEpg *refreshEpg;
+		MenuTargetAddRecordTimer *addRecordTimer;
+		MenuTargetAddReminder *addReminder;
+		
+		//
+		void getTMDBInfo(const char * const text);
 };
 
 class CEPGplusHandler : public CMenuTarget

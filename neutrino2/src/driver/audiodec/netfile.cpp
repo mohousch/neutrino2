@@ -260,8 +260,6 @@ int ConnectToServer(char *hostname, int port)
 	int fd, addr;
 	struct pollfd pfd;
 
-	//fprintf(stderr, "looking up hostname: %s\n", hostname);
-
 	host = gethostbyname(hostname);
 
 	if(host == NULL)
@@ -271,12 +269,6 @@ int ConnectToServer(char *hostname, int port)
 	}
 
 	addr = htonl(*(int *)host->h_addr);
-
-	/*fprintf(stderr, "connecting to %s [%d.%d.%d.%d], port %d\n", host->h_name,
-			(addr & 0xff000000) >> 24,
-			(addr & 0x00ff0000) >> 16,
-			(addr & 0x0000ff00) >>  8,
-			(addr & 0x000000ff), port);*/
 
 	fd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -304,6 +296,7 @@ int ConnectToServer(char *hostname, int port)
 			return -1;
 		}
 	}
+
 	dprintf(DEBUG_INFO, "connected to %s\n", hostname);
 	pfd.fd = fd;
 	//pfd.events = POLLIN | POLLPRI;
@@ -846,7 +839,7 @@ FILE *f_open(const char *filename, const char *acctype)
 	/* now lets see what we have ... */
 	parseURL_url(url);
 
-	fprintf(stderr, "netfile: URL  to open: %s, access mode %s%s\n",
+	dprintf(DEBUG_INFO, "netfile: URL  to open: %s, access mode %s%s\n",
 		url.url,
 		(url.access_mode == MODE_HTTP)  ? 	"HTTP" :
 		(url.access_mode == MODE_SCAST) ? 	"SHOUTCAST" :
@@ -859,7 +852,7 @@ FILE *f_open(const char *filename, const char *acctype)
 		(url.proto_version == SHOUTCAST) ? 	"/SHOUTCAST" :
 									"") : "" );
 
-	fprintf(stderr, "netfile: FILE to open: %s, access mode: %d\n", url.file, url.access_mode);
+	dprintf(DEBUG_INFO, "netfile: FILE to open: %s, access mode: %d\n", url.file, url.access_mode);
 
 	switch(url.access_mode)
 	{

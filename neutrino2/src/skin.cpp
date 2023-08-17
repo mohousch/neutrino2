@@ -1757,9 +1757,8 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 		if (radius) ra = convertRadius(radius);
 		head->setCorner(ra, co);
 		
-		//int head_line_gr = NOGRADIENT;
-		//if (head_line_gradient) head_line_gr = convertGradient(head_line_gradient);
-		head->setHeadLine(head_line, head_line_gradient);
+		// line
+		head->setLine(head_line, head_line_gradient);
 		
 		if (paintdate) head->enablePaintDate();
 		if (format != NULL) head->setFormat(_(format));
@@ -1865,7 +1864,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 		if (corner) co = convertCorner(corner);
 		if (radius) ra = convertRadius(radius);
 		foot->setCorner(ra, co);
-		foot->setFootLine(foot_line, foot_line_gradient);
+		foot->setLine(foot_line, foot_line_gradient);
 					
 		// BUTTON_LABEL
 		buttonlabel_node = node->xmlChildrenNode;

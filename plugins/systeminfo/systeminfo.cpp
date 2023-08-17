@@ -103,7 +103,7 @@ void CSysInfoWidget::paintHead()
 	headers.enablePaintDate();
 	headers.setCorner(RADIUS_SMALL, CORNER_TOP);
 	headers.setGradient(DARK2LIGHT2DARK);
-	headers.setHeadLine(false);
+	headers.setLine(false);
 	headers.paint();
 }
 
@@ -127,7 +127,7 @@ void CSysInfoWidget::paintFoot()
 	CFooters footers(&cFrameBoxFoot);
 	footers.setCorner(RADIUS_SMALL, CORNER_BOTTOM);
 	footers.setGradient(DARK2LIGHT2DARK);
-	footers.setFootLine(false);
+	footers.setLine(false);
 	footers.setButtons(Buttons, 4);
 	footers.paint();
 }

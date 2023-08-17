@@ -861,14 +861,14 @@ class CHeaders : public CWidgetItem
 		void setHAlign(const int m){thalign = m;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
 		void setGradient(const int grad){gradient = grad;};
-		void setCorner(int ra, int co){radius = ra; corner = co;};
+		void setCorner(int ra, int co = CORNER_TOP){radius = ra; corner = co;};
 		void enablePaintDate(void){paintDate = true;};
 		void setFormat(const char* f){if (f) format.clear(); format = f;};
-		void setHeadLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
+		void setLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
 		
 		//
 		void setButtons(const struct button_label* _hbutton_labels, const int _hbutton_count = 1);
-		void addButton(const char *btn, const char *lname, fb_pixel_t col);
+		void addButton(const char *btn, const char *lname = NULL, fb_pixel_t col = COL_BACKGROUND_PLUS_0);
 
 		//
 		void paint();
@@ -907,12 +907,12 @@ class CFooters : public CWidgetItem
 		//
 		void setColor(fb_pixel_t col){fbgcolor = col;};
 		void setGradient(const int grad){fgradient = grad;};
-		void setCorner(int ra, int co){fradius = ra; fcorner = co;};
-		void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
+		void setCorner(int ra, int co = CORNER_BOTTOM){fradius = ra; fcorner = co;};
+		void setLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
 		
 		//
 		void setButtons(const struct button_label *button_label, const int button_count = 1, const int _fbutton_width = 0);
-		void addButton(const char *btn, const char *lname, fb_pixel_t col);
+		void addButton(const char *btn, const char *lname = NULL, fb_pixel_t col = COL_BACKGROUND_PLUS_0);
 		
 		//
 		void paint();
