@@ -298,7 +298,7 @@ class CCButtons : public CComponent
 		
 		//
 		void setButtons(const struct button_label *button_label, const int button_count = 1, bool _head = false);
-		void addButton(const char *btn, const char *lname, fb_pixel_t col);
+		void addButton(const char *btn, const char *lname, const fb_pixel_t col);
 		
 		//
 		void paint();
@@ -868,7 +868,7 @@ class CHeaders : public CWidgetItem
 		
 		//
 		void setButtons(const struct button_label* _hbutton_labels, const int _hbutton_count = 1);
-		void addButton(const char *btn, const char *lname = NULL, fb_pixel_t col = COL_BACKGROUND_PLUS_0);
+		void addButton(const char *btn, const char *lname = NULL, const fb_pixel_t col = COL_BACKGROUND_PLUS_0);
 
 		//
 		void paint();
@@ -912,7 +912,7 @@ class CFooters : public CWidgetItem
 		
 		//
 		void setButtons(const struct button_label *button_label, const int button_count = 1, const int _fbutton_width = 0);
-		void addButton(const char *btn, const char *lname = NULL, fb_pixel_t col = COL_BACKGROUND_PLUS_0);
+		void addButton(const char *btn, const char *lname = NULL, const fb_pixel_t col = COL_BACKGROUND_PLUS_0);
 		
 		//
 		void paint();

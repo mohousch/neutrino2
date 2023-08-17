@@ -401,14 +401,14 @@ void CCButtons::setButtons(const struct button_label *button_label, const int bu
 	head = _head;
 }
 
-void CCButtons::addButton(const char *btn, const char *lname, fb_pixel_t col)
+void CCButtons::addButton(const char *btn, const char *lname, const fb_pixel_t col)
 {
 	dprintf(DEBUG_DEBUG, "CCButtons::addButton: btn:%s name:%s\n", btn, lname);
 	
 	button_label_struct button;
 	
 	button.button = btn;
-	button.localename = lname;
+	button.localename = lname? lname : "";
 	button.color = col;
 	
 	buttons.push_back(button);
@@ -1897,7 +1897,7 @@ void CHeaders::setButtons(const struct button_label* _hbutton_labels, const int 
 	hbutton_count = hbutton_labels.size();
 }
 
-void CHeaders::addButton(const char *btn, const char *lname, fb_pixel_t col)
+void CHeaders::addButton(const char *btn, const char *lname, const fb_pixel_t col)
 {
 	dprintf(DEBUG_DEBUG, "CHeaders::addButton: btn:%s name:%s\n", btn, lname);
 	
@@ -2073,7 +2073,7 @@ void CFooters::setButtons(const struct button_label *button_label, const int but
 	fbutton_width = (_fbutton_width == 0)? itemBox.iWidth : _fbutton_width;	
 }
 
-void CFooters::addButton(const char *btn, const char *lname, fb_pixel_t col)
+void CFooters::addButton(const char *btn, const char *lname, const fb_pixel_t col)
 {
 	dprintf(DEBUG_DEBUG, "CFooters::addButton: btn:%s name:%s\n", btn, lname);
 	
