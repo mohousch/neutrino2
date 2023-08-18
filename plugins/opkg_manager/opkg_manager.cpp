@@ -203,6 +203,13 @@ bool COPKGManager::showPkgMenu(const int pkg_content_id)
 		
 	CMenuWidget menu(_("OPKG-Manager"), NEUTRINO_ICON_UPDATE, MENU_WIDTH + 50);
 	
+	menu.setHeadCorner(RADIUS_SMALL);
+	menu.setHeadGradient(DARK2LIGHT2DARK);
+	menu.setHeadLine(false);
+	menu.setFootCorner(RADIUS_SMALL);
+	menu.setFootGradient(DARK2LIGHT2DARK);
+	menu.setFootLine(false);
+	
 	if(!getPkgData(pkg_content_id))
 	{
 		loadingBox->hide();
