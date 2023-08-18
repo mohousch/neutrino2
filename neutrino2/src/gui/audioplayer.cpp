@@ -278,23 +278,28 @@ void CAudioPlayerGui::playFile()
 		}
 		else if (msg == RC_left || msg == RC_prev)
 		{
-			playPrev();
+			if (alist && !alist->isPainted())
+				playPrev();
 		}
 		else if (msg == RC_right || msg == RC_next)
 		{
-			playNext();
+			if (alist && !alist->isPainted())
+				playNext();
 		}
 		else if (msg == RC_stop)
 		{
-			stop();
+			if (alist && !alist->isPainted())
+				stop();
 		}
 		else if( msg == RC_pause)
 		{
-			pause();
+			if (alist && !alist->isPainted())
+				pause();
 		}
 		else if(msg == RC_play)
 		{
-			play(m_current);
+			if (alist && !alist->isPainted())
+				play(m_current);
 		}
 		else if(msg == RC_loop)
 		{
@@ -321,11 +326,13 @@ void CAudioPlayerGui::playFile()
 		}
 		else if(msg == RC_forward)
 		{
-			ff(1);
+			if (alist && !alist->isPainted())
+				ff(1);
 		}
 		else if(msg == RC_rewind)
 		{
-			rev(1);
+			if (alist && !alist->isPainted())
+				rev(1);
 		}
 		else if(msg == RC_red)
 		{
@@ -1361,7 +1368,22 @@ void CAudioPlayerGui::showPlaylist()
 
 		//
 		item = new CMenuForwarder(title.c_str(), true, desc.c_str());
-			
+		
+		const char* icon = NEUTRINO_ICON_PLAY;
+		
+		switch(m_state)
+		{
+			case CAudioPlayerGui::PAUSE: icon = NEUTRINO_ICON_PAUSE; break;
+			case CAudioPlayerGui::PLAY: icon = NEUTRINO_ICON_PLAY; break;
+			case CAudioPlayerGui::REV: icon = NEUTRINO_ICON_REW; break;
+			case CAudioPlayerGui::FF: icon = NEUTRINO_ICON_FF; break;
+			case CAudioPlayerGui::STOP: icon = NEUTRINO_ICON_BUTTON_STOP_SMALL; break;
+		}
+		
+		
+		if (i == m_current)
+			item->setIconName(icon);
+				
 		item->setOptionInfo(duration);
 		item->setNumber(i + 1);
 
