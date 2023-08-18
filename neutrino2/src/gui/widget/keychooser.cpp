@@ -248,6 +248,9 @@ void CKeyChooserItem::paint()
 	m_cTitle.iY = m_cBox.iY;
 
 	CHeaders headers(&m_cTitle, name.c_str(), NEUTRINO_ICON_KEYBINDING);
+	headers.setCorner(RADIUS_SMALL);
+	headers.setGradient(DARK2LIGHT2DARK);
+	headers.setLine(false);
 	headers.paint();
 
 	//paint msg...
