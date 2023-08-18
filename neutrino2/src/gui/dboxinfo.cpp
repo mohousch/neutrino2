@@ -529,8 +529,12 @@ void CInfoMenu::showMenu()
 	}
 	else
 	{
-		widget = new CWidget();
-		infoMenu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "information";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		infoMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		infoMenu->setWidgetMode(MODE_MENU);
 		infoMenu->setWidgetType(TYPE_CLASSIC);
@@ -549,10 +553,6 @@ void CInfoMenu::showMenu()
 		infoMenu->setFootButtons(&btn);
 		
 		//
-		widget->setPosition(infoMenu->getWindowsPos().iX, infoMenu->getWindowsPos().iY, infoMenu->getWindowsPos().iWidth, infoMenu->getWindowsPos().iHeight);
-		widget->name = "information";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		
 		widget->addWidgetItem(infoMenu);
 	}
 	
