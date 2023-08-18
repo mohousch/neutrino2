@@ -709,14 +709,13 @@ void CInternetRadio::showMenu()
 	ilist->enablePaintDate();
 
 	ilist->addKey(RC_setup, this, CRCInput::getSpecialKeyName(RC_setup));
-	//ilist->addKey(RC_info, this, CRCInput::getSpecialKeyName(RC_info));
 	ilist->addKey(RC_red, this, CRCInput::getSpecialKeyName(RC_red));
 	ilist->addKey(RC_green, this, CRCInput::getSpecialKeyName(RC_green));
 	ilist->addKey(RC_yellow, this, CRCInput::getSpecialKeyName(RC_yellow));
 	ilist->addKey(RC_blue, this, CRCInput::getSpecialKeyName(RC_blue));
 
 	ilist->exec(NULL, "");
-	//ilist->hide();
+	
 	delete ilist;
 	ilist = NULL;
 }
