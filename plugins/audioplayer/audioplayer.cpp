@@ -385,6 +385,7 @@ void CMP3Player::showMenu()
 	}
 	
 	alist->setWidgetMode(MODE_LISTBOX);
+	alist->enableShrinkMenu();
 
 	//
 	alist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);

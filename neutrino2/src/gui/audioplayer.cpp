@@ -244,10 +244,11 @@ void CAudioPlayerGui::playFile()
 		
 		if ((m_state != CAudioPlayerGui::STOP) && (CAudioPlayer::getInstance()->getState() == CBaseDec::STOP) && (!m_playlist.empty()))
 		{
+			// refresh background
 			m_frameBuffer->useBackground(false);
 			m_frameBuffer->paintBackground();
 			
-			// last track
+			// lasttrack
 			if(m_current == ((int)m_playlist.size() - 1) && repeatMode != REPEAT_ALL)
 			{
 				loop = false;	
@@ -255,7 +256,16 @@ void CAudioPlayerGui::playFile()
 
 			// playNext or repeat
 			if(m_playlist[m_current].FileExtension != CFile::EXTENSION_URL)
+			{
 				playNext();
+			}
+				
+			// refresh playlist if shown
+			if (alist && alist->isPainted())
+			{
+				showPlaylist();
+				update_t = false;
+			}
 		}
 
 		updateTimes(false, update_t);
@@ -390,6 +400,12 @@ void CAudioPlayerGui::playFile()
 		else if(msg == RC_blue)
 		{
 			shufflePlaylist();
+			
+			if (alist && alist->isPainted())
+			{
+				hide();
+				showPlaylist();
+			}
 		}
 		else if(msg == RC_info)
 		{
@@ -1395,6 +1411,9 @@ void CAudioPlayerGui::showPlaylist()
 	}
 	
 	alist->setSelected(m_current);
+	
+	//
+	alist->enableShrinkMenu();
 	
 	//
 	alist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
