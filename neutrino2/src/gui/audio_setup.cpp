@@ -157,7 +157,13 @@ void CAudioSettings::showMenu()
 	}
 	else
 	{
-		audioSettings = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "audiosetup";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		
+		//
+		audioSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		audioSettings->setWidgetMode(MODE_SETUP);
 		audioSettings->enableShrinkMenu();
@@ -172,9 +178,6 @@ void CAudioSettings::showMenu()
 		audioSettings->setFootButtons(&btn);
 		
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "audiosetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
 		widget->addWidgetItem(audioSettings);
 	}
 	
