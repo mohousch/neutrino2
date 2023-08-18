@@ -669,12 +669,14 @@ void CUpnpBrowserGui::showMenuDevice()
 	listBox->enablePaintDate();
 	listBox->setHeadCorner(RADIUS_SMALL);
 	listBox->setHeadGradient(DARK2LIGHT2DARK);
+	listBox->setHeadLine(false);
 
 	// foot
 	listBox->enablePaintFoot();
 	listBox->setFootButtons(RescanButton, 4);
 	listBox->setFootCorner(RADIUS_SMALL);
 	listBox->setFootGradient(DARK2LIGHT2DARK);
+	listBox->setFootLine(false);
 
 	// foot info
 	listBox->enablePaintItemInfo(70);

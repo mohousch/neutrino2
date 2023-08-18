@@ -274,8 +274,7 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 
 	hide();
 
-	//if(observer)
-	//	observer->changeNotify(name, NULL);
+	//
 	notifier = new CColorSetupNotifier();
 	notifier->changeNotify("", NULL);
 	delete notifier;
@@ -308,6 +307,10 @@ void CColorChooser::paint()
 
 	CHeaders headers(&cFrameBoxTitle, name.c_str(), NEUTRINO_ICON_COLORS);
 
+	headers.setCorner(RADIUS_SMALL);
+	headers.setGradient(DARK2LIGHT2DARK);
+	headers.setLine(false);
+	
 	headers.paint();
 
 	// slider
@@ -335,9 +338,6 @@ void CColorChooser::paintSlider(int _x, int _y, unsigned char *spos, const char*
 		return;
 
 	//
-	//int r_w = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(colorchooser_names[0]);
-	//int g_w = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(colorchooser_names[1]);
-	//int b_w = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(colorchooser_names[2]);
 	int a_w = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(colorchooser_names[3]);
 	
 	// volumebox box

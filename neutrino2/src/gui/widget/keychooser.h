@@ -117,3 +117,4 @@ class CKeyChooserItemNoKey : public CMenuTarget
 };
 
 #endif
+

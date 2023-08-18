@@ -211,7 +211,7 @@ void CMessageBox::init(const char * const Caption, const int Width, const char *
 	m_width = Width;
 	int nw = 0;
 	m_theight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
-	m_fheight = (showbuttons & mbNone)? 0 : g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
+	m_fheight = /*(showbuttons & mbNone)? 0 :*/ g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 	m_iheight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight();
 	m_height  = m_theight + m_fheight;
 	m_maxEntriesPerPage = 0;

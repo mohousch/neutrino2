@@ -48,6 +48,7 @@
 class CKeyValue : public CMenuSeparator
 {
 	std::string the_text;
+	
 	public:
 		int         keyvalue;
 
@@ -60,6 +61,7 @@ class CKeyValue : public CMenuSeparator
 			the_text  = _("Current key");
 			the_text += ": ";
 			the_text += CRCInput::getKeyName(keyvalue);
+			
 			return the_text.c_str();
 		};
 };
@@ -89,10 +91,15 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 	}
 	else
 	{
-		menu = new ClistBox(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		//menu->setMenuPosition(MENU_POSITION_CENTER);
-		menu->setWidgetMode(MODE_SETUP);
-		menu->enableShrinkMenu();
+		//
+		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
+		widget->name = "keychooser";
+		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->enableSaveScreen();
+		
+		//
+		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		menu->setWidgetMode(MODE_MENU);
 		
 		//	
 		menu->enablePaintHead();
@@ -104,10 +111,6 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 		menu->setFootButtons(&btn);
 			
 		//
-		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->name = "keychooser";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->enableSaveScreen();
 		widget->addWidgetItem(menu);
 	}
 
@@ -124,6 +127,12 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 	*/
 	
 	enableShrinkMenu();
+	setHeadCorner(RADIUS_SMALL);
+	setHeadGradient(DARK2LIGHT2DARK);
+	setHeadLine(false);
+	setFootCorner(RADIUS_SMALL);
+	setFootGradient(DARK2LIGHT2DARK);
+	setFootLine(false);
 	
 	addItem(new CKeyValue());
 	addItem(new CMenuSeparator(LINE));
@@ -137,6 +146,9 @@ CKeyChooser::~CKeyChooser()
 {
 	delete keyChooser;
 	delete keyDeleter;
+	
+	//delete menu;
+	//delete widget;
 }
 
 void CKeyChooser::paint()
