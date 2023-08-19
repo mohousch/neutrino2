@@ -691,7 +691,7 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 	
 	fd = fopen(vmpeg_left, "w");
 	
-	if(fd > 0)
+	if(fd)
 	{
 		fprintf(fd, "%x", _x);
 		fclose(fd);
@@ -702,7 +702,7 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 	
 	fd = fopen(vmpeg_top, "w");
 	
-	if(fd > 0)
+	if(fd)
 	{
 		fprintf(fd, "%x", _y);
 		fclose(fd);
@@ -713,7 +713,7 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 	
 	fd = fopen(vmpeg_width, "w");
 	
-	if(fd > 0)
+	if(fd)
 	{
 		fprintf(fd, "%x", _w);
 		fclose(fd);
@@ -724,7 +724,7 @@ void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 	
 	fd = fopen(vmpeg_height, "w");
 	
-	if(fd > 0)
+	if(fd)
 	{
 		fprintf(fd, "%x", _h);
 		fclose(fd);

@@ -68,6 +68,17 @@ run-valgrind:
 	
 # init	
 init:
+# opengl
+	@echo -e "\nopengl:"
+	@echo "   1) no"
+	@echo -e "   \033[01;32m2) yes\033[00m"
+	@read -p "opengl (1-2)?" OPENGL; \
+	OPENGL=$${OPENGL}; \
+	case "$$OPENGL" in \
+		1) echo "OPENGL=" > config.local;; \
+		2|*) echo "OPENGL=opengl" > config.local;; \
+	esac; \
+	echo ""
 # Media framework
 	@echo -e "\nMedia Framework:"
 	@echo "   1) buildinplayer (revisited libeplayer3 without playback)"
@@ -75,8 +86,8 @@ init:
 	@read -p "Select media framework (1-2)?" MEDIAFW; \
 	MEDIAFW=$${MEDIAFW}; \
 	case "$$MEDIAFW" in \
-		1) echo "MEDIAFW=buildinplayer" > config.local;; \
-		2|*) echo "MEDIAFW=gstreamer" > config.local;; \
+		1) echo "MEDIAFW=buildinplayer" >> config.local;; \
+		2|*) echo "MEDIAFW=gstreamer" >> config.local;; \
 	esac; \
 	echo ""
 # gstreamer opengl overlay
