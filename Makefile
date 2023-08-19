@@ -291,6 +291,7 @@ endif
 printenv:
 	@echo
 	@echo '================================================================================'
+	@echo "OPENGL			: $(OPENGL)"
 	@echo "MEDIAFW			: $(MEDIAFW)"
 	@echo "PYTHON			: $(PYTHON)"
 	@echo "LUA			: $(LUA)"
