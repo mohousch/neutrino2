@@ -315,14 +315,14 @@ void CInfoViewer::showRecordIcon(bool show)
 { 
 	recordModeActive = show;
 	
-	dprintf(DEBUG_NORMAL, "CInfoViewer::showRecordIcon: %s\n", recordModeActive? "true" : "false");
+	dprintf(DEBUG_INFO, "CInfoViewer::showRecordIcon: %s\n", recordModeActive? "true" : "false");
 }
 
 void CInfoViewer::paintRecordIcon(int posx, int posy)
 { 
 	recordModeActive = CNeutrinoApp::getInstance()->recordingstatus;
 	
-	dprintf(DEBUG_NORMAL, "CInfoViewer::paintRecordIcon: %s\n", recordModeActive? "true" : "false");
+	dprintf(DEBUG_INFO, "CInfoViewer::paintRecordIcon: %s\n", recordModeActive? "true" : "false");
 
 	if (recordModeActive && is_visible) 
 	{	
@@ -342,7 +342,7 @@ void CInfoViewer::paintRecordIcon(int posx, int posy)
 
 void CInfoViewer::show(const int ChanNum, const std::string& Channel, const t_satellite_position satellitePosition)
 {
-	dprintf(DEBUG_NORMAL, "CInfoViewer::show:\n");
+	dprintf(DEBUG_INFO, "CInfoViewer::show:\n");
 	
 	std::string ChannelName = Channel; //FIXME:
 	
@@ -1250,8 +1250,6 @@ void CInfoViewer::showRadiotext()
 
 int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
-	//dprintf(DEBUG_DEBUG, "CInfoViewer::handleMsg: msg:%s\n", CRCInput::getSpecialKeyName(msg));
-
  	if ((msg == NeutrinoMessages::EVT_CURRENTNEXT_EPG) || (msg == NeutrinoMessages::EVT_NEXTPROGRAM)) 
 	{
 	  	getEPG(*(t_channel_id *)data & 0xFFFFFFFFFFFFULL, info_CurrentNext);
@@ -1427,8 +1425,6 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 
 		return messages_return::handled;
   	}
-
-	//dprintf(DEBUG_DEBUG, "CInfoViewer::handleMsg: messages_return::unhandled\n");
 
   	return messages_return::unhandled;
 }
