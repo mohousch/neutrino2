@@ -81,27 +81,14 @@
 
 extern bool autoshift;
 extern bool autoshift_delete;
-
-CMovieInfo * g_cMovieInfo;
-MI_MOVIE_INFO * g_movieInfo;
-
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
-
-//
 static cRecord * record = NULL;
-
 extern CFrontend * record_fe;
 
 #define FILENAMEBUFFERSIZE 	1024
 #define MAXPIDS			64
 
-//static stream2file_status_t exit_flag = STREAM2FILE_STATUS_IDLE;
-
 char rec_filename[FILENAMEBUFFERSIZE];
-
-std::string ext_channel_name;
-
-//
 static CVCRControl vcrControl;
 
 CVCRControl * CVCRControl::getInstance()
@@ -113,11 +100,19 @@ CVCRControl::CVCRControl()
 {
 	exit_flag = STREAM2FILE_STATUS_IDLE;
 	channel_id = 0;
+	
+	////
+	g_cMovieInfo = NULL;
+	g_movieInfo = NULL;
 }
 
 CVCRControl::~CVCRControl()
 {
 	channel_id = 0;
+	
+	////
+	g_cMovieInfo = NULL;
+	g_movieInfo = NULL;
 }
 
 bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
@@ -327,7 +322,7 @@ bool CVCRControl::Stop()
 	g_movieInfo->length = (int) round((double) (end_time - start_time) / (double) 60);
 	g_cMovieInfo->encodeMovieInfoXml(&extMessage, g_movieInfo);	
 
-	bool return_value = (stopRecording(extMessage.c_str()) == STREAM2FILE_OK);
+	bool return_value = (stopRecording(/*extMessage.c_str()*/) == STREAM2FILE_OK);
 
 	//
 	RestoreNeutrino();
@@ -431,8 +426,6 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 		//FIXME:
 	}
 		
-		
-
 	// apids
         APIDList apid_list;
         getAPIDs(channel_id, apids, apid_list);
@@ -496,17 +489,21 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 	ext_channel_name = CZapit::getInstance()->getChannelName(channel_id);
 
-	if (!(ext_channel_name.empty()))
+	if (!ext_channel_name.empty())
 	{
 		strcpy(&(filename[pos]), UTF8_TO_FILESYSTEM_ENCODING(ext_channel_name.c_str()));
 		char * p_act = &(filename[pos]);
-		do {
-			p_act += strcspn(p_act, "/ \"%&-\t`'�!,:;");
-			if (*p_act) 
-			{
-				*p_act++ = '_';
-			}
-		} while (*p_act);
+		
+		if (!IS_WEBTV(channel_id)) //FIXME:
+		{
+			do {
+				p_act += strcspn(p_act, "/ \"%&-\t`'�!,:;");
+				if (*p_act) 
+				{
+					*p_act++ = '_';
+				}
+			} while (*p_act);
+		}
 
 		// save channel name dir
 		if (!autoshift && g_settings.recording_save_in_channeldir)
@@ -563,14 +560,18 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 				{
 					strcpy(&(filename[pos]), epgdata.title.c_str());
 					char * p_act = &(filename[pos]);
-					do {
-						p_act +=  strcspn(p_act, "/ \"%&-\t`'~<>!,:;?^�$\\=*#@�|");
+					
+					if (!IS_WEBTV(channel_id)) //FIXME:
+					{
+						do {
+							p_act +=  strcspn(p_act, "/ \"%&-\t`'~<>!,:;?^�$\\=*#@�|");
 
-						if (*p_act) 
-						{
-							*p_act++ = '_';
-						}
-					} while (*p_act);
+							if (*p_act) 
+							{
+								*p_act++ = '_';
+							}
+						} while (*p_act);
+					}
 				}
 			}
 		} 
@@ -578,13 +579,17 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 		{
 			strcpy(&(filename[pos]), epgTitle.c_str());
 			char * p_act = &(filename[pos]);
-			do {
-				p_act +=  strcspn(p_act, "/ \"%&-\t`'~<>!,:;?^�$\\=*#@�|");
-				if (*p_act) 
-				{
-					*p_act++ = '_';
-				}
-			} while (*p_act);
+			
+			if (!IS_WEBTV(channel_id))
+			{
+				do {
+					p_act +=  strcspn(p_act, "/ \"%&-\t`'~<>!,:;?^�$\\=*#@�|");
+					if (*p_act) 
+					{
+						*p_act++ = '_';
+					}
+				} while (*p_act);
+			}
 		}
 	}
 
@@ -956,7 +961,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	else
 		sprintf(rec_filename, "%s", filename);
 
-	// saveXML()
+	// saveXML/cover
 	sprintf(buf, "%s.xml", filename);
 
 	char * dir = strdup(buf);
@@ -978,9 +983,8 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	{
 		return STREAM2FILE_INVALID_DIRECTORY;
 	}
-	
-	// saveCover
 
+	// record
 	exit_flag = STREAM2FILE_STATUS_RUNNING;
 
 	sprintf(buf, "%s.ts", filename);
@@ -1021,34 +1025,19 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	return STREAM2FILE_OK;
 }
 
-stream2file_error_msg_t CVCRControl::stopRecording(const char * const info, bool file_recording)
+stream2file_error_msg_t CVCRControl::stopRecording()
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::stopRecording\n");
 	
 	char buf[FILENAMEBUFFERSIZE];
 	char buf1[FILENAMEBUFFERSIZE];
-	int fd;
 	stream2file_error_msg_t ret;
-
-	// savexml
-	sprintf(buf, "%s.xml", rec_filename);
 	
-	if ((fd = open(buf, O_SYNC | O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) >= 0) 
+	if(record) 
 	{
-		write(fd, info, strlen(info));
-		fdatasync(fd);
-		close(fd);
-	} 
-
-	//FIXME: not working now
-	if (!file_recording)
-	{
-		if(record) 
-		{
-			record->Stop();
-			delete record;
-			record = NULL;
-		}
+		record->Stop();
+		delete record;
+		record = NULL;
 	}
 
 	if (exit_flag == STREAM2FILE_STATUS_RUNNING) 

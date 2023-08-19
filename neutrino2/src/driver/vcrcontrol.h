@@ -41,6 +41,8 @@
 
 #include <neutrinoMessages.h>
 
+#include <gui/movieinfo.h>
+
 /*zapit includes*/
 #include <zapit/zapit.h>
 
@@ -84,6 +86,12 @@ class CVCRControl
 		
 		stream2file_status_t exit_flag;
 		t_channel_id channel_id;
+		
+		////
+		CMovieInfo * g_cMovieInfo;
+		MI_MOVIE_INFO * g_movieInfo;
+		
+		std::string ext_channel_name;
 				
 		typedef struct {
 			unsigned short apid;
@@ -124,7 +132,7 @@ class CVCRControl
 					unsigned short vpid,
 					unsigned short * apids,
 					int numpids);			
-		stream2file_error_msg_t stopRecording(const char * const info, bool file_recording = false);
+		stream2file_error_msg_t stopRecording();
 
 	protected:
 		void RestoreNeutrino(void);
