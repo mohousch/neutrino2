@@ -258,6 +258,13 @@ int COPKGManager::showMenu()
 	dprintf(DEBUG_NORMAL, "COPKGManager::showMenu\n");
 
 	CMenuWidget * menu = new CMenuWidget("OPKG-Manager", NEUTRINO_ICON_UPDATE);
+	
+	menu->setHeadCorner(RADIUS_SMALL);
+	menu->setHeadGradient(DARK2LIGHT2DARK);
+	menu->setHeadLine(false);
+	menu->setFootCorner(RADIUS_SMALL);
+	menu->setFootGradient(DARK2LIGHT2DARK);
+	menu->setFootLine(false);
 
 	menu->setWidgetMode(MODE_SETUP);
 	menu->enableShrinkMenu();
