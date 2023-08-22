@@ -200,6 +200,13 @@ CInfoViewer::~CInfoViewer()
 		timescale = NULL;
 	}
 	
+	if (timer)
+	{
+		timer->hide();
+		delete timer;
+		timer = NULL;
+	}
+	
 	evtlist.clear();
 }
 
@@ -291,7 +298,7 @@ void CInfoViewer::start()
 
 void CInfoViewer::paintTime(int posx, int posy, unsigned int timeFont)
 {
-	dprintf(DEBUG_INFO, "CInfoViewer::paintTime:\n");
+	dprintf(DEBUG_NORMAL, "CInfoViewer::paintTime:\n");
 	
 	int time_left_width = 2 * g_Font[timeFont]->getRenderWidth(widest_number);
 	int time_dot_width = g_Font[timeFont]->getRenderWidth(":");
@@ -300,15 +307,20 @@ void CInfoViewer::paintTime(int posx, int posy, unsigned int timeFont)
 
 	int timestr_len = g_Font[timeFont]->getRenderWidth("00:00:00");
 	
-	//if (gotTime && is_visible) 
+	if (timer)
 	{
-		timer = new CCTime();
-		timer->setPosition(posx - BORDER_RIGHT - timestr_len, posy, timestr_len, time_height);
-		timer->setFont(timeFont);
-		timer->setColor(COL_INFOBAR);
-		timer->setFormat("%H:%M:%S");
-		timer->paint();		
+		timer->hide();
+		delete timer;
+		timer = NULL;
 	}
+
+	timer = new CCTime(posx - BORDER_RIGHT - timestr_len, posy, timestr_len, time_height);
+	
+	timer->setFont(timeFont);
+	timer->setColor(COL_INFOBAR);
+	timer->setFormat("%H:%M:%S");
+	
+	timer->paint();		
 }
 
 void CInfoViewer::showRecordIcon(bool show)
@@ -340,9 +352,10 @@ void CInfoViewer::paintRecordIcon(int posx, int posy)
 	}	
 }
 
+/*
 void CInfoViewer::show(const int ChanNum, const std::string& Channel, const t_satellite_position satellitePosition)
 {
-	dprintf(DEBUG_INFO, "CInfoViewer::show:\n");
+	dprintf(DEBUG_NORMAL, "CInfoViewer::show:\n");
 	
 	std::string ChannelName = Channel; //FIXME:
 	
@@ -510,11 +523,12 @@ void CInfoViewer::show(const int ChanNum, const std::string& Channel, const t_sa
 
 	g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(BoxStartX + BORDER_LEFT + icon_red_w + ICON_TO_ICON_OFFSET + asize + icon_green_w + ICON_TO_ICON_OFFSET + asize + icon_yellow_w + ICON_TO_ICON_OFFSET + asize + icon_blue_w + ICON_TO_ICON_OFFSET, buttonBarStartY + (buttonBarHeight - g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight(), asize - ICON_TO_ICON_OFFSET - icon_blue_w, _("Features"), COL_INFOBAR_SHADOW, 0, true); // UTF-8
 }
+*/
 
 //
 void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id, const bool _calledFromNumZap, int _epgpos)
 {
-	dprintf(DEBUG_NORMAL, "CInfoViewer::showTitle: channel:%llx\n", _new_channel_id);
+	dprintf(DEBUG_NORMAL, "CInfoViewer::showTitle: channel:%llx callFromNumZap:%s\n", _new_channel_id, _calledFromNumZap? "true" : "false");
 	
 	//
 	std::string ChannelName = _ChannelName;
@@ -555,8 +569,166 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 	} 
 
 	//
-	show(_ChanNum, ChannelName, _satellitePosition);
+	int col_NumBoxText;
+	int col_NumBox;
+
+	if (virtual_zap_mode) 
+	{
+		col_NumBoxText = COL_MENUHEAD;
+		col_NumBox = COL_MENUHEAD_PLUS_0;
+	} 
+	else 
+	{
+		col_NumBoxText = COL_INFOBAR;
+		col_NumBox = COL_INFOBAR_PLUS_0;
+	}
 	
+	// shadow
+	if (g_settings.infobar_border)
+		frameBuffer->paintBoxRel(BoxStartX, BoxStartY, BoxWidth, BoxHeight + buttonBarHeight, COL_MENUCONTENT_PLUS_6, g_settings.infobar_radius, g_settings.infobar_corner);
+	
+	// box
+	frameBuffer->paintBoxRel(g_settings.infobar_border? BoxStartX + 2: BoxStartX, g_settings.infobar_border? BoxStartY + 2 : BoxStartY, g_settings.infobar_border? BoxWidth - 4 : BoxWidth, g_settings.infobar_border? BoxHeight + buttonBarHeight - 4 : BoxHeight + buttonBarHeight, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner, g_settings.infobar_gradient, g_settings.infobar_gradient_direction);
+
+	// painttime
+	if (gotTime)
+		paintTime(BoxEndX, ChanNameY, SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME);
+	
+	// just after paintinng bg to save bg for labels
+	unsigned int r_w = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth("00:00:00");
+  	
+  	//
+  	currentLabel = new CCLabel(ChanInfoX, ChanInfoY, BoxEndX - ChanInfoX - r_w - 10, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	currentLabel->enableSaveScreen();
+  	currentLabel->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
+  	
+  	//
+  	currentStartTime = new CCLabel(BoxStartX + 10, ChanInfoY, ChanInfoX - BoxStartX, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	currentStartTime->enableSaveScreen();
+  	currentStartTime->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
+  	
+  	//
+  	currentPlayTime = new CCLabel(BoxEndX - 10 - r_w, ChanInfoY, r_w, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	currentPlayTime->enableSaveScreen();
+  	currentPlayTime->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
+  	
+  	//
+  	nextLabel = new CCLabel(ChanInfoX, ChanInfoY + ChanInfoHeight, BoxEndX - ChanInfoX - r_w - 10, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	nextLabel->enableSaveScreen();
+  	nextLabel->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
+  	
+  	//
+  	nextStartTime = new CCLabel(BoxStartX + 10, ChanInfoY + ChanInfoHeight, ChanInfoX - BoxStartX, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	nextStartTime->enableSaveScreen();
+  	nextStartTime->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
+  	
+  	//
+  	nextPlayTime = new CCLabel(BoxEndX - 10 - r_w, ChanInfoY + ChanInfoHeight, r_w, g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight());
+  	nextPlayTime->enableSaveScreen();
+  	nextPlayTime->setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO);
+
+	//sat name
+	char strChanNum[10];
+	sprintf(strChanNum, "%d", _ChanNum); //FIXME:
+
+	if (satellitePositions.size() && (!IS_WEBTV(channel_id)) ) 
+	{
+		sat_iterator_t sit = satellitePositions.find(_satellitePosition);
+
+		if(sit != satellitePositions.end()) 
+		{
+			satNameWidth = g_SignalFont->getRenderWidth(sit->second.name);
+			
+			// 
+			if (satNameWidth > ((BoxEndX - BoxStartX) / 3) ) 
+				satNameWidth = (BoxEndX - BoxStartX) / 3;
+			
+			//	
+			g_SignalFont->RenderString( BoxStartX + BORDER_LEFT, BoxStartY + (SAT_INFOBOX_HEIGHT - satNameHeight)/2 + satNameHeight, satNameWidth, sit->second.name, COL_INFOBAR );
+		}
+	}
+
+	//
+	if (IS_WEBTV(channel_id))
+	{
+		satNameWidth = g_SignalFont->getRenderWidth("WebTV");
+			
+		if (satNameWidth > ((BoxEndX - BoxStartX) / 3) ) 
+			satNameWidth = (BoxEndX - BoxStartX) / 3;
+				
+		g_SignalFont->RenderString( BoxStartX + BORDER_LEFT, BoxStartY + (SAT_INFOBOX_HEIGHT - satNameHeight)/2 + satNameHeight, satNameWidth, "WebTV", COL_INFOBAR );
+	}
+
+	// channel number/logo/name
+	if ( (_satellitePosition != 0 && satellitePositions.size()) || (IS_WEBTV(channel_id))) 
+	{
+		// ChannelNumber
+		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->RenderString(ChanNumberX, ChanNameY + ChanNameHeight, CHANNUMBER_WIDTH, strChanNum, col_NumBoxText);
+		
+		ChanNameWidth = BoxWidth - (ICON_OFFSET + 30 + CHANNUMBER_WIDTH + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth(ChannelName, true));
+
+		// display channel picon
+		bool logo_ok = false;
+		
+		//
+		logo_w = pic_w; 
+		logo_h = pic_h;
+		logo_bpp = 0;
+		
+		// check logo
+		logo_ok = CChannellogo::getInstance()->checkLogo(channel_id);
+		
+		if(logo_ok && g_settings.logos_show_logo)
+		{
+			// get logo size	
+			CChannellogo::getInstance()->getLogoSize(channel_id, &logo_w, &logo_h, &logo_bpp);
+		
+			// display logo
+			CChannellogo::getInstance()->displayLogo(channel_id, pic_x, pic_y, pic_w, pic_h, (logo_h > pic_h)? true : false, false, true);
+
+			// recalculate ChanNameWidth //FIXME: timewidth
+			ChanNameWidth = BoxWidth - (30 + CHANNUMBER_WIDTH + pic_w + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth(ChannelName, true));
+			
+			// ChannelName
+			g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->RenderString(pic_x + pic_w + 5, ChanNameY + ChanNameHeight, ChanNameWidth, ChannelName, COL_INFOBAR, 0, true);	// UTF-8
+		}
+		else
+		{
+			// ChannelName
+			g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->RenderString( BoxStartX + CHANNUMBER_WIDTH + BORDER_LEFT, ChanNameY + ChanNameHeight, ChanNameWidth, ChannelName, COL_INFOBAR, 0, true);	// UTF-8
+		}
+	}
+		
+	// show date
+	std::string datestr= getNowTimeStr("%d.%m.%Y");
+			
+	dateWidth = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getRenderWidth(datestr.c_str(), true); //UTF-8
+	dateHeight = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->getHeight();
+			
+	g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO]->RenderString(BoxEndX - BORDER_RIGHT - dateWidth, BoxStartY + (SAT_INFOBOX_HEIGHT - dateHeight)/2 + dateHeight, dateWidth, datestr.c_str(), COL_INFOBAR, 0, true); // UTF-8
+		
+	// botton bar
+	if (g_settings.infobar_buttonbar)
+	{
+		frameBuffer->paintBoxRel(g_settings.infobar_border? buttonBarStartX + 2 : buttonBarStartX, buttonBarStartY, g_settings.infobar_border? BoxWidth - 4 : BoxWidth, g_settings.infobar_border? buttonBarHeight - 2 : buttonBarHeight, COL_INFOBAR_SHADOW_PLUS_1, g_settings.infobar_radius, g_settings.infobar_radius? CORNER_BOTTOM : CORNER_NONE);
+	}
+	
+	// botton line
+	if(g_settings.infobar_buttonline)
+	{
+		CCHline hline(buttonBarStartX + BORDER_LEFT, buttonBarStartY, BoxWidth - BORDER_LEFT - BORDER_RIGHT, buttonBarHeight);
+		
+		hline.setColor(COL_INFOBAR_SHADOW_PLUS_1);
+		hline.setGradient(3);
+		hline.paint();
+	}
+
+	// blue button
+	frameBuffer->paintIcon(NEUTRINO_ICON_BUTTON_BLUE, BoxStartX + BORDER_LEFT + icon_red_w + ICON_TO_ICON_OFFSET + asize + icon_green_w + ICON_TO_ICON_OFFSET + asize + icon_yellow_w + ICON_TO_ICON_OFFSET + asize, buttonBarStartY + 1, 0, true, icon_blue_w, buttonBarHeight - 2);
+
+	g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(BoxStartX + BORDER_LEFT + icon_red_w + ICON_TO_ICON_OFFSET + asize + icon_green_w + ICON_TO_ICON_OFFSET + asize + icon_yellow_w + ICON_TO_ICON_OFFSET + asize + icon_blue_w + ICON_TO_ICON_OFFSET, buttonBarStartY + (buttonBarHeight - g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight(), asize - ICON_TO_ICON_OFFSET - icon_blue_w, _("Features"), COL_INFOBAR_SHADOW, 0, true); // UTF-8
+	
+	//
 	timescale->paint(runningPercent);
 
 	// get CN epg
@@ -581,17 +753,17 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 			showIcon_RadioText(false);
 	}
 
-	// record icon
+	// recordicon
 	int timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME]->getRenderWidth("00:00:00");
 	paintRecordIcon(BoxEndX - BORDER_RIGHT - timestr_len, ChanNameY);
 	
 	// other buttonbar
 	if( showButtonBar )
 	{
-		// green
+		// green button
 		showButton_Audio();
 			
-		// yellow
+		// yellow button
 		showButton_SubServices();
 		
 		//	
@@ -618,13 +790,15 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 		bool hideIt = true;
 		virtual_zap_mode = false;
 
-		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd (g_settings.timing_infobar == 0 ? 0xFFFF : g_settings.timing_infobar);
+		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd( (g_settings.timing_infobar == 0)? DEFAULT_TIMING_INFOBAR : g_settings.timing_infobar );
 
 		int res = messages_return::none;
 		
 		while (!(res & (messages_return::cancel_info | messages_return::cancel_all))) 
 		{
 			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
+			
+			printf("CInofViewer::showTitle: msg:(0x%X) data:(0x%X)\n", msg, data); //FIXME:TEST
 
 			if ((msg == RC_sat) || (msg == RC_favorites) || (msg == RC_setup) || (msg == RC_red) || (msg == RC_green) || (msg == RC_yellow) || (msg == RC_blue) || (msg == RC_ok) || (msg == RC_text) || (msg == RC_epg) || (msg == RC_record) || (msg == RC_play) || (msg == RC_pause) || (msg == RC_dvbsub) || (msg == RC_mode) || (msg == RC_audio))
 			{
@@ -646,12 +820,12 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 			} 			
 			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 			{
-				//showRecordIcon(show_dot);
+				//
 				show_dot = !show_dot;
 				
 				if (recordModeActive)
 				{
-					//recIcon->refresh();
+					//
 					recIcon->blink(show_dot);
 				}
 				
@@ -662,22 +836,32 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 					
 				// radiotext		
 				if ((g_settings.radiotext_enable) && (CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_radio))
-					showRadiotext();			
+					showRadiotext();		
 			} 
 			else if ( g_settings.virtual_zap_mode && ((msg == RC_right) || msg == RC_left)) 
 			{
 				virtual_zap_mode = true;
 				res = messages_return::cancel_all;
-				//hideIt = true;
+				hideIt = true;
 			} 
+			//
 			else if (msg == NeutrinoMessages::EVT_TIMESET) 
 			{
 				// Handle anyway!
-				neutrino->handleMsg(msg, data);
-				g_RCInput->postMsg (NeutrinoMessages::SHOW_INFOBAR, 0);
-				hideIt = false;
+				//neutrino->handleMsg(msg, data);
+				g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR, 0);
+				hideIt = true;
 				res = messages_return::cancel_all;
 			}
+			/*
+			else if (msg = 0x80000014) // which message is this???
+			{
+				neutrino->handleMsg(msg, data);
+				g_RCInput->postMsg (NeutrinoMessages::SHOW_INFOBAR, 0);
+				hideIt = true;
+				res = messages_return::cancel_all;
+			}
+			*/
 			else if ( !CNeutrinoApp::getInstance()->timeshiftstatus) 
 			{
 				if ((msg == (neutrino_msg_t) g_settings.key_quickzap_up) || (msg == (neutrino_msg_t) g_settings.key_quickzap_down) || (msg == RC_0) || (msg == NeutrinoMessages::SHOW_INFOBAR)) 
@@ -704,10 +888,10 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 						
 					if (res & messages_return::unhandled) 
 					{
-						dprintf(DEBUG_DEBUG, "CInfoViewer::show: message unhandled\n");
+						dprintf(DEBUG_NORMAL, "CInfoViewer::show: message unhandled\n");
 
-						//res = messages_return::cancel_info; //FIXME:
-						//g_RCInput->postMsg(msg, data);
+						res = messages_return::cancel_info; //FIXME:
+						g_RCInput->postMsg(msg, data);
 					}
 				}
 			}
@@ -931,11 +1115,13 @@ void CInfoViewer::showSubchan()
 		frameBuffer->restoreScreen(x - borderwidth, y - borderwidth, dx + 2 * borderwidth, dy + 2 * borderwidth, pixbuf);
 		frameBuffer->blit();	
   		
-	} 
+	}
+	/*
 	else 
 	{
-		//g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR, 0);
+		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR, 0);
   	}
+  	*/
 }
 
 // radiotext
@@ -1402,14 +1588,17 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		chanready = 0;
 		showMotorMoving(data);
 		return messages_return::handled;
-  	} 
+  	}
+  	//FIXME:
+  	/* 
 	else if (msg == NeutrinoMessages::EVT_MODECHANGED) 
 	{
 		if ( is_visible && showButtonBar )
 	  		showIcon_16_9();
 
 		return messages_return::handled;
-  	} 
+  	}
+  	*/
 	else if (msg == NeutrinoMessages::EVT_TIMESET) 
 	{
 		gotTime = true;
@@ -1879,8 +2068,10 @@ void CInfoViewer::killTitle()
 		frameBuffer->blit();		
   	}
   	
+  	//
   	if (timer)
 	{
+		timer->hide();
 		delete timer;
 		timer = NULL;
 	}
@@ -1927,7 +2118,7 @@ void CInfoViewer::killTitle()
 		nextPlayTime = NULL;
 	}
 	
-	evtlist.clear();		
+	evtlist.clear();	
 }
 
 void CInfoViewer::Set_CA_Status(int Status)
@@ -1990,21 +2181,6 @@ void CInfoViewer::showIcon_CA_Status(int notfirst)
 			
 			return;
 		}
-	}
-}
-
-void CInfoViewer::showEpgInfo()   //message on event change
-{
-	dprintf(DEBUG_INFO, "CInfoViewer::showEpgInfo:\n");
-	
-	int mode = CNeutrinoApp::getInstance()->getMode();
-	
-	// show epg info only if we in TV- or Radio mode and current event is not the same like before
-	if ((eventname != info_CurrentNext.current_name) && (mode == NeutrinoMessages::mode_tv || mode == NeutrinoMessages::mode_radio))
-	{
-		eventname = info_CurrentNext.current_name;
-		
-		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR , 0);
 	}
 }
 

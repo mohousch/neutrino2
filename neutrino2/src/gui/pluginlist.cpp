@@ -299,4 +299,3 @@ int CPluginsExec::exec(CMenuTarget* parent, const std::string& actionKey)
 	return RETURN_REPAINT;
 }
 
-

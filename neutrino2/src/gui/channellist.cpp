@@ -1201,6 +1201,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	{
 		if (FrontendCount >= 1) 
 			MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> System)"), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+			
 		return;
 	}
 
@@ -1241,7 +1242,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	}
 		
 	//
-	g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+	//g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 }
 
 // -1: channellist not found
@@ -1881,7 +1882,6 @@ void CChannelList::paint()
 	
 	// head
 	if (head) head->setTitle(_(name.c_str()));
-	if (head) head->enablePaintDate();
 	if (head) head->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
 	// foot
@@ -1975,8 +1975,6 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	text.setText(p_event->text.c_str());
 	
 	// next
-	//CChannelEventList events;
-
 	time_t atime = time(NULL);
 					
 	events.clear();

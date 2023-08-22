@@ -119,22 +119,14 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		fb_pixel_t * vol_pixbuf;
 
 		void firstChannel();
-		
 		void tvMode( bool rezap = true );
 		void radioMode( bool rezap = true );
 		void standbyMode( bool bOnOff );
 		void scartMode( bool bOnOff );		// not used
-		
-		void setvol(int vol);
-		
 		void realRun(void);
 		void initZapper();
-
 		void setupFrameBuffer();
-		
 		void cmdParser(int argc, char **argv);
-	
-		//bool doGuiRecord(char * preselectedDir, bool addTimer = false);
 		
 		CNeutrinoApp();
 
@@ -235,11 +227,8 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		int recordingstatus;
 		int timeshiftstatus;
 		int recording_id;
-		
-#if defined (USE_OPENGL) // opengl playback
-		int playbackstatus;
-#endif		
-		
+				
+		//
 		void sendSectionsdConfig(void);
 
 		//

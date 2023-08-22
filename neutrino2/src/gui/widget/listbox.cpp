@@ -110,6 +110,17 @@ CMenuItem::CMenuItem()
 	pulldown = false;
 }
 
+CMenuItem::~CMenuItem()
+{
+	if (background)
+	{
+		delete [] background;
+		background = NULL;
+	}
+			
+	option.clear();
+}
+
 void CMenuItem::init(const int X, const int Y, const int DX, const int DY)
 {
 	x    = X;
@@ -1057,6 +1068,13 @@ CMenuForwarder::CMenuForwarder(const char * const Text, const bool Active, const
 	menuItem_type = MENUITEM_FORWARDER;
 }
 
+CMenuForwarder::~CMenuForwarder()
+{
+	dprintf(DEBUG_INFO, "CMenuForwarder::del (%s)\n", itemName.c_str());
+			
+	option.clear();
+}
+
 int CMenuForwarder::getHeight(void) const
 {
 	int iw = 0;
@@ -1781,6 +1799,7 @@ ClistBox::~ClistBox()
 {
 	dprintf(DEBUG_INFO, "ClistBox:: del (%s)\n", l_name.c_str());
 
+	//
 	items.clear();
 	page_start.clear();
 
@@ -1802,6 +1821,18 @@ ClistBox::~ClistBox()
 			item->background = NULL;
 		}
 	}
+	
+	//
+	if (timer)
+	{
+		timer->hide();
+		delete timer;
+		timer = NULL;
+	}
+	
+	//
+	hbutton_labels.clear();
+	fbutton_labels.clear();
 }
 
 void ClistBox::addItem(CMenuItem * menuItem, const bool defaultselected)
@@ -2220,11 +2251,19 @@ void ClistBox::paintHead()
 				std::string timestr = getNowTimeStr(format);
 				
 				timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
+				
+				if (timer)
+				{
+					timer->hide();
+					delete timer;
+					timer = NULL;
+				}
 			
 				timer = new CCTime(xstartPos - timestr_len, itemBox.iY, timestr_len, hheight);
 
 				timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 				timer->setFormat(format);
+				
 				timer->paint();
 			}
 
@@ -2296,6 +2335,13 @@ void ClistBox::paintHead()
 				std::string timestr = getNowTimeStr(format);
 				
 				timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
+				
+				if (timer)
+				{
+					timer->hide();
+					delete timer;
+					timer = NULL;
+				}
 			
 				timer = new CCTime(xstartPos - timestr_len, itemBox.iY, timestr_len, hheight);
 
@@ -2653,6 +2699,14 @@ void ClistBox::hide()
 	{
 		delete textBox;
 		textBox = NULL;
+	}
+	
+	//
+	if (timer)
+	{
+		timer->hide();
+		delete timer;
+		timer = NULL;
 	}
 	
 	CFrameBuffer::getInstance()->blit();

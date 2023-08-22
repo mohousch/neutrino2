@@ -189,21 +189,15 @@ class CMenuItem
 		
 		//
 		CMenuItem();
-		virtual ~CMenuItem()
-		{
-			if (background)
-			{
-				delete [] background;
-				background = NULL;
-			}
-			
-			option.clear();
-		};
+		virtual ~CMenuItem();
 
+		//
 		virtual void init(const int X, const int Y, const int DX, const int DY);
 		virtual void paintItemBox(int dy, fb_pixel_t col);
 		virtual void refreshItemBox(int dy, fb_pixel_t col);
 		virtual int paint(bool selected = false, bool AfterPulldown = false) = 0;
+		
+		//
 		virtual int getHeight(void) const = 0;
 		virtual int getWidth(void) const
 		{
@@ -401,18 +395,7 @@ class CMenuForwarder : public CMenuItem
 	public:
 		CMenuForwarder(const char * const Text, const bool Active = true, const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
 		
-		~CMenuForwarder()
-		{
-			if (background)
-			{
-				dprintf(DEBUG_INFO, "CMenuForwarder::del (%s)\n", itemName.c_str());
-				
-				delete [] background;
-				background = NULL;
-			}
-			
-			option.clear();
-		};
+		~CMenuForwarder();
 		
 		int paint(bool selected = false, bool AfterPulldown = false);
 		int getHeight(void) const;

@@ -1107,7 +1107,7 @@
 		<WINDOW posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		
 		<LISTBOX posx="60" posy="120" width="715" height="480" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1"/>
-		<HEAD posx="60" posy="60" width="715" height="50" line="1" line_gradient="DARK2LIGHT"/>
+		<HEAD posx="60" posy="60" width="715" height="50" paintdate="1" line="1" line_gradient="DARK2LIGHT"/>
 		<FOOT posx="60" posy="620" width="715" height="50" line="1" line_gradient="DARK2LIGHT"/>
 		
 		<WINDOW posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">

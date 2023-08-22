@@ -950,7 +950,7 @@ void CMoviePlayerGui::PlayFile(void)
 		}
 		
 		// loop msg
-		g_RCInput->getMsg(&msg, &data, 10);	// 1 secs
+		g_RCInput->getMsg(&msg, &data, 1);	// 1 secs
 		
 		if (msg == RC_stop) 
 		{

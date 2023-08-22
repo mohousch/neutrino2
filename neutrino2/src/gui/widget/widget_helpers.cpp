@@ -28,6 +28,7 @@
 #include <system/settings.h>
 #include <system/debug.h>
 #include <system/helpers.h>
+#include <system/set_threadname.h>
 
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/textbox.h>
@@ -166,8 +167,6 @@ CCImage::CCImage(const int x, const int y, const int dx, const int dy)
 	iHeight = 0; 
 	iNbp = 0; 
 	scale = false;
-	color = COL_MENUCONTENT_PLUS_0;
-	//paintframe = false; 
 	
 	cc_type = CC_IMAGE;
 }
@@ -193,21 +192,13 @@ void CCImage::paint()
 	int startPosX = cCBox.iX + (cCBox.iWidth - iWidth)/2;
 			
 	if (scale)
-	{
-		// bg
-		//if (paintframe) 
-		//	frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color);
-				
+	{		
 		// image
 		if (!imageName.empty()) 
 			frameBuffer->displayImage(imageName.c_str(), cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 	}
 	else
-	{
-		// bg
-		//if (paintframe) 
-		//	frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color);
-				
+	{		
 		// image
 		if (!imageName.empty()) 
 			frameBuffer->displayImage(imageName.c_str(), startPosX, cCBox.iY + (cCBox.iHeight - iHeight)/2, iWidth, iHeight);
@@ -1348,13 +1339,23 @@ CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 	
 	format = "%d.%m.%Y %H:%M";
 	
-	enableRepaint();
+	rePaint = true;
 	
 	cc_type = CC_TIME;
+	
+	////
+	//started = false;
 }
 
 CCTime::~CCTime()
 {
+	dprintf(DEBUG_INFO, "CCTime::~CCTime\n");
+	
+	////
+	//join();
+	//started = false;
+	
+	//
 	if (background)
 	{
 		delete [] background; 
@@ -1369,7 +1370,7 @@ void CCTime::setFormat(const char* const f)
 
 void CCTime::paint()
 {
-	dprintf(DEBUG_INFO, "CCTime::paint\n");
+	dprintf(DEBUG_INFO, "CCTime::paint: x:%d y:%d dx:%d dy:%d\n", cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 	
 	//
 	saveScreen();
@@ -1385,8 +1386,12 @@ void CCTime::paint()
 	int startPosX = cCBox.iX + (cCBox.iWidth - timestr_len)/2;
 	
 	g_Font[font]->RenderString(startPosX, cCBox.iY + (cCBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color, 0, true);
+	
+	////
+	//Start();
 }
 
+//
 void CCTime::refresh()
 {
 	//
@@ -1405,15 +1410,60 @@ void CCTime::refresh()
 	g_Font[font]->RenderString(startPosX, cCBox.iY + (cCBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color, 0, true);
 }
 
+/*
+void CCTime::run()
+{	
+	while (started)
+	{
+		dprintf(DEBUG_NORMAL, "CCTime::run: x:%d y:%d dx:%d dy:%d\n", cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+		
+		sleep(1);
+		
+		// restorescreen
+		restoreScreen();
+		
+		// painttime
+		std::string timestr = getNowTimeStr(format.c_str());
+			
+		int timestr_len = g_Font[font]->getRenderWidth(timestr.c_str(), true); // UTF-8
+		
+		if (timestr_len > cCBox.iWidth && cCBox.iWidth != 0)
+			timestr_len = cCBox.iWidth;
+			
+		int startPosX = cCBox.iX + (cCBox.iWidth - timestr_len)/2;
+		
+		g_Font[font]->RenderString(startPosX, cCBox.iY + (cCBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color, 0, true);
+	}
+}
+
+void CCTime::Start()
+{
+	started = true;
+	start();
+}
+
+void CCTime::Stop()
+{	
+	started = false;
+	join();
+}
+*/
+
 void CCTime::hide()
 {
 	dprintf(DEBUG_INFO, "CCTime::hide\n");
+	
+	////
+	//Stop();
 	
 	if (background)
 	{
 		delete [] background; 
 		background = NULL;
 	}
+	
+	////
+	//CFrameBuffer::getInstance()->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 }
 
 void CCTime::saveScreen(void)
@@ -1466,7 +1516,7 @@ CCCounter::CCCounter(const int x, const int y, const int dx, const int dy)
 	cCBox.iHeight = g_Font[font]->getHeight();
 	
 	//
-	enableRepaint();
+	rePaint = true;
 	
 	cc_type = CC_COUNTER;
 }
@@ -1578,10 +1628,26 @@ CCSpinner::CCSpinner(const int x, const int y, const int dx, const int dy)
 	count = 0;
 	background = NULL;
 	
-	enableRepaint();
+	rePaint = true;
 	
 	//
 	cc_type = CC_SPINNER;
+	
+	////
+	//started = false;
+}
+
+CCSpinner::~CCSpinner()
+{
+	////
+	//OpenThreads::Thread::join();
+	//started = false;
+	
+	if(background)
+	{
+		delete[] background;
+		background = NULL;
+	}
 }
 
 void CCSpinner::paint()
@@ -1594,11 +1660,18 @@ void CCSpinner::paint()
 	filename += toString(count);
 	
 	frameBuffer->paintIcon(filename, cCBox.iX, cCBox.iY);
+	
+	////
+	//OpenThreads::Thread::start();
 }
 
 void CCSpinner::hide()
 {
 	dprintf(DEBUG_DEBUG, "CCSpinner::hide\n");
+	
+	////
+	//started = false;
+	//OpenThreads::Thread::join();
 	
 	if(background) 
 	{
@@ -1608,6 +1681,7 @@ void CCSpinner::hide()
 		frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 }
 
+//
 void CCSpinner::refresh()
 {
 	dprintf(DEBUG_DEBUG, "CCSpinner::refresh\n");
@@ -1649,6 +1723,31 @@ void CCSpinner::restoreScreen(void)
 		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
 	}
 }
+
+/*
+void CCSpinner::run()
+{
+	filename.clear();
+	
+	filename = "hourglass";
+	
+	//
+	while (started)
+	{
+		dprintf(DEBUG_NORMAL, "CCSpinner::run: x:%d y:%d dx:%d dy:%d\n", cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+		
+		sleep(0.15);
+		
+		restoreScreen();
+			
+		count = (count + 1) % 9;
+		
+		filename += toString(count);
+		
+		frameBuffer->paintIcon(filename, cCBox.iX, cCBox.iY);
+	}
+}
+*/
 
 // CWidgetItem
 CWidgetItem::CWidgetItem()
@@ -1798,8 +1897,8 @@ void CWidgetItem::exec(int timeout)
 	bool loop = true;
 
 	//
-	//paint();
-	//CFrameBuffer::getInstance()->blit();
+	paint();
+	CFrameBuffer::getInstance()->blit();
 	
 	if ( timeout == -1 )
 		timeout = 0xFFFF;
@@ -1815,7 +1914,7 @@ void CWidgetItem::exec(int timeout)
 		CFrameBuffer::getInstance()->blit();
 	}
 
-	//hide();		
+	hide();		
 }
 
 // headers
@@ -1882,6 +1981,18 @@ CHeaders::CHeaders(CBox* position, const char * const title, const char * const 
 	thalign = CC_ALIGN_LEFT;
 
 	widgetItem_type = WIDGETITEM_HEAD;
+}
+
+CHeaders::~CHeaders()
+{
+	if (timer)
+	{
+		timer->hide();
+		delete timer;
+		timer = NULL;
+	}
+	
+	hbutton_labels.clear();
 }
 
 void CHeaders::setButtons(const struct button_label* _hbutton_labels, const int _hbutton_count)		
@@ -1976,11 +2087,19 @@ void CHeaders::paint()
 		std::string timestr = getNowTimeStr(format.c_str());
 		
 		timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
+		
+		if (timer)
+		{
+			timer->hide();
+			delete timer;
+			timer = NULL;
+		}
 	
-		timer = new CCTime();
-		timer->setPosition(startx - timestr_len, itemBox.iY, timestr_len, itemBox.iHeight);
+		timer = new CCTime(startx - timestr_len, itemBox.iY, timestr_len, itemBox.iHeight);
+
 		timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 		timer->setFormat(format.c_str());
+		
 		timer->paint();
 	}
 	
@@ -1994,6 +2113,16 @@ void CHeaders::paint()
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET - timestr_len, htitle, COL_MENUHEAD);
 }
 
+void CHeaders::stopRefresh()
+{
+	if (timer)
+	{
+		timer->hide();
+		delete timer;
+		timer = NULL;
+	}
+}
+
 void CHeaders::hide()
 {
 	dprintf(DEBUG_INFO, "CHeaders::hide:\n");
@@ -2003,6 +2132,7 @@ void CHeaders::hide()
 		
 	if (timer)
 	{
+		timer->hide();
 		delete timer;
 		timer = NULL;
 	}
@@ -2057,6 +2187,11 @@ CFooters::CFooters(CBox* position)
 	foot_line_gradient = false;
 
 	widgetItem_type = WIDGETITEM_FOOT;
+}
+
+CFooters::~CFooters()
+{
+	fbuttons.clear();
 }
 
 void CFooters::setButtons(const struct button_label *button_label, const int button_count, const int _fbutton_width)

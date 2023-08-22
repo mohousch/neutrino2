@@ -976,7 +976,7 @@
 	
 	<WIDGET name="channellist" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">
 		<LISTBOX posx="50" posy="50" width="840" height="620" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" itemborder="1"/>
-		<HEAD posx="50" posy="0" width="1180" height="50" paintframe="0" line="1"/>
+		<HEAD posx="50" posy="0" width="1180" height="50" paintframe="0" paintdate="1" line="1"/>
 		<FOOT posx="50" posy="670" width="1180" height="50" paintframe="0" line="1"/>
 		<WINDOW posx="890" posy="50" width="340" height="620"/>
 		<HLINE posx="900" posy="360" width="320" height="2" gradient="DARK2LIGHT2DARK"/>	

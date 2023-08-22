@@ -53,14 +53,20 @@ struct messages_return
 struct NeutrinoMessages {
 	enum
 	{
+		/* infoviewer */
 		SHOW_EPG				 = RC_Messages + 1,
 		SHOW_INFOBAR				 = RC_Messages + 2,
+		
+		/* vcrcontrol */
 		VCR_ON					 = RC_Messages + 3,
 		VCR_OFF					 = RC_Messages + 4,
+		
+		/* nhttpd */
 		STANDBY_ON				 = RC_Messages + 5,
 		STANDBY_OFF				 = RC_Messages + 6,
-		STANDBY_TOGGLE				 = RC_Messages + 7,
 		SHUTDOWN				 = RC_Messages + 8,
+		
+		/* timerd */
 		ANNOUNCE_SHUTDOWN			 = RC_Messages + 9,
 		ANNOUNCE_ZAPTO				 = RC_Messages + 10,
 		ZAPTO					 = RC_Messages + 11,
@@ -69,29 +75,35 @@ struct NeutrinoMessages {
 		RECORD_STOP				 = RC_Messages + 14,
 		ANNOUNCE_SLEEPTIMER			 = RC_Messages + 15,
 		SLEEPTIMER				 = RC_Messages + 16,
+		
+		/* nhttpd / vcrcontrol */
 		CHANGEMODE				 = RC_Messages + 17,
+		
+		/* timerd */
 		REMIND					 = RC_Messages + 18,
+		
+		/* nhttpd */
 		LOCK_RC                 		 = RC_Messages + 19,
 		UNLOCK_RC               		 = RC_Messages + 20,
 		REBOOT					 = RC_Messages + 21,
 		RESTART					 = RC_Messages + 22,
-
-		EVT_VOLCHANGED                           = RC_Events + 1,
-		EVT_MUTECHANGED                          = RC_Events + 2,
-		EVT_VCRCHANGED                           = RC_Events + 3,
-		EVT_MODECHANGED                          = RC_Events + 4,
+		
+		/* zapit */ 
 		EVT_BOUQUETSCHANGED                      = RC_Events + 6,
 		EVT_SERVICESCHANGED                      = RC_Events + 7,
 		EVT_SCAN_COMPLETE                        = RC_Events + 16,
 		EVT_SCAN_NUM_TRANSPONDERS                = RC_Events + 17,
 		EVT_SCAN_NUM_CHANNELS                    = RC_Events + 18,
-		EVT_SHUTDOWN                             = RC_Events + 19,
+		
+		/* triggered from userland / rcinput */
 		EVT_TIMER                                = RC_Events + 20,
+		
+		/* remotecontrol */
 		EVT_PROGRAMLOCKSTATUS                    = RC_Events + 22,
+		
+		/* zapit */
 		EVT_RECORDMODE				 = RC_Events + 24,
-		
 		EVT_ZAP_CA_ID				 = RC_Events + 25,
-		
 		EVT_SCAN_FAILED                          = RC_Events + 29,
 		EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS = RC_Events + 30,
  		EVT_SCAN_REPORT_FREQUENCY                = RC_Events + 31,
@@ -100,9 +112,9 @@ struct NeutrinoMessages {
  		EVT_SCAN_FOUND_TV_CHAN                   = RC_Events + 34,
  		EVT_SCAN_REPORT_FREQUENCYP               = RC_Events + 36,
  		EVT_ZAP_MOTOR                            = RC_Events + 37,
-
- 		/* sectionsd */
 		EVT_SERVICES_UPD                         = RC_Events + 38,
+		
+		/* sectionsd */
 		EVT_SI_FINISHED                          = RC_Events + 39,
 		
 		/* zapit */
@@ -112,7 +124,7 @@ struct NeutrinoMessages {
 		EVT_HDMI_CEC_VIEW_ON                     = RC_Events + 41,
 		EVT_HDMI_CEC_STANDBY                     = RC_Events + 42,
 
-		/* NEVER CHANGE THIS */
+		/* cicam */
 		EVT_CI_INSERTED				 = RC_Events + 60, /* data = slot num */
 		EVT_CI_REMOVED				 = RC_Events + 61, /* data = slot num */
 		EVT_CI_INIT_OK				 = RC_Events + 62, /* data = slot num */
@@ -122,9 +134,11 @@ struct NeutrinoMessages {
 		EVT_CI_MMI_REQUEST_INPUT		 = RC_Events + 66,
 		EVT_CI_MMI_CLOSE			 = RC_Events + 67,
 
-		/**/
+		/* infoviewer */
 		EVT_CURRENTEPG                           = RC_WithData +  1,
 		EVT_NEXTEPG                              = RC_WithData +  2,
+		
+		/* nhttpd */
 		EVT_POPUP                                = RC_WithData +  3,
 		EVT_EXTMSG                               = RC_WithData +  4,
 		EVT_START_PLUGIN                         = RC_WithData +  5,
@@ -133,10 +147,10 @@ struct NeutrinoMessages {
 		EVT_CURRENTNEXT_EPG                      = RC_WithData +  6, /* data: (t_channel_id *) */
 		EVT_TIMESET                              = RC_WithData +  7, /* data: (long long *)    */
 
-		/* "sectionsd" events triggered by neutrino */
+		/* infoviewer */
 		EVT_NOEPG_YET                            = RC_WithData +  8, /* data: (t_channel_id *) */
 
-		/* "timerd" events triggered by neutrino */
+		/* timerd */
 		EVT_NEXTPROGRAM                          = RC_WithData +  9, /* data: (t_channel_id *) */
 
 		/* zapit */
@@ -150,10 +164,10 @@ struct NeutrinoMessages {
 		EVT_ZAP_SUB_COMPLETE                     = RC_WithData + 17, /* data: (t_channel_id *) */
 		EVT_ZAP_SUB_FAILED                       = RC_WithData + 18, /* data: (t_channel_id *) */
 
-		/* "zapit" events triggered by neutrino */
+		/* remotecontrol */
 		EVT_ZAP_GOT_SUBSERVICES                  = RC_WithData + 19, /* data: (t_channel_id *) */
 		EVT_ZAP_GOTAPIDS                         = RC_WithData + 20, /* data: (t_channel_id *) */
-		EVT_ZAP_GOTPIDS                          = RC_WithData + 21 /* data: (t_channel_id *) */
+		EVT_ZAP_GOTPIDS                          = RC_WithData + 21  /* data: (t_channel_id *) */
 	};
 
 	enum

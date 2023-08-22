@@ -104,6 +104,27 @@ void CWindow::initVars()
 	widgetItem_type = WIDGETITEM_WINDOW;
 }
 
+void CWindow::setPosition(const int x, const int y, const int dx, const int dy)
+{
+	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
+	
+	itemBox.iX = x;
+	itemBox.iY = y;
+	itemBox.iWidth = dx;
+	itemBox.iHeight = dy;
+	
+	initFrames();
+}
+
+void CWindow::setPosition(CBox* position)
+{
+	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
+	
+	itemBox = *position;
+	
+	initFrames();
+}
+
 void CWindow::initFrames()
 {
 	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
@@ -149,27 +170,6 @@ void CWindow::restoreScreen()
 		else
 			frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
 	}
-}
-
-void CWindow::setPosition(const int x, const int y, const int dx, const int dy)
-{
-	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
-	
-	itemBox.iX = x;
-	itemBox.iY = y;
-	itemBox.iWidth = dx;
-	itemBox.iHeight = dy;
-	
-	initFrames();
-}
-
-void CWindow::setPosition(CBox* position)
-{
-	dprintf(DEBUG_DEBUG, "CWindow::%s\n", __FUNCTION__);
-	
-	itemBox = *position;
-	
-	initFrames();
 }
 
 void CWindow::paintPage(void)
@@ -248,3 +248,4 @@ void CWindow::refresh(void)
 	restoreScreen();
 	paintPage();
 }
+

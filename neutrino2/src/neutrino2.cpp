@@ -326,9 +326,6 @@ CNeutrinoApp::CNeutrinoApp()
 	//
 	recordingstatus = 0;
 	timeshiftstatus = 0;
-#if defined (USE_OPENGL) // opengl playback
-	playbackstatus = 0;
-#endif
 
 	mute_pixbuf = NULL;
 	vol_pixbuf = NULL;
@@ -818,7 +815,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	
 	// xml
 	//g_settings.xmltv.clear();
-	g_settings.epg_xmltv		= configfile.getBool("epg_xmltv", true);
+	g_settings.epg_xmltv = configfile.getBool("epg_xmltv", true);
 	//
 	
 	// channellist 
@@ -1705,7 +1702,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	//
 	setChannelMode( g_settings.channel_mode, mode);
 	
-	// load webtv logos
+	// loadwebtvlogos
 	if (g_settings.logos_show_logo)
 		CChannellogo::getInstance()->loadWebTVlogos();
 }
@@ -2181,7 +2178,14 @@ void CNeutrinoApp::initZapper()
 
 	// read saved epg
 	if (g_settings.epg_save)
+	{
 		readEPG();
+		
+		for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
+		{
+			CSectionsd::getInstance()->readSIfromXMLTV(g_settings.xmltv[i].c_str());
+		}
+	}
 
 	// first channel
 	firstChannel();
@@ -2232,10 +2236,9 @@ void CNeutrinoApp::initZapper()
 			startAutoRecord(true);
 		
 		// show infobar
-		g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR, 0);
+		//g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR, 0);
 		
 		selectSubtitles();
-		
 		startSubtitles();
 	}
 }
@@ -2306,7 +2309,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	eventServer->registerEvent2(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::STANDBY_TOGGLE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_POPUP, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_EXTMSG, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
@@ -2389,7 +2391,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
 	current_volume = g_settings.current_volume;
 
-	// zapit
 	CZapit::getInstance()->Start(&ZapStart_arg);
 	
 	// dvbsub thread
@@ -2491,7 +2492,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// init rclock
 	rcLock = new CRCLock();
 
-	//
+	// LCD
 	CVFD::getInstance()->setPower(g_settings.lcd_power);
 	CVFD::getInstance()->setlcdparameter();
 	
@@ -2654,7 +2655,7 @@ void CNeutrinoApp::realRun(void)
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::realRun: initialized everything\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::realRun:\n");
 
 	// clear msg 
 	g_RCInput->clearRCMsg();
@@ -2665,12 +2666,12 @@ void CNeutrinoApp::realRun(void)
 		standbyMode(true);
 	}
 
-	// neutrino run loop
+	// neutrino main run loop
 	while( true ) 
 	{
-		g_RCInput->getMsg(&msg, &data, 100);	// 10 secs..
+		g_RCInput->getMsg(&msg, &data, 10);	// 10 secs..
 		
-		dprintf(DEBUG_DEBUG, "CNeutrinoApp::realRun: msg:%s\n", CRCInput::getSpecialKeyName(msg));		
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::realRun: msg:(0x%X) data:(0x%X)\n", msg, data);		
 
 		// mode TV/Radio/IPTV
 		if( (mode == mode_tv) || (mode == mode_radio) ) 
@@ -3284,6 +3285,8 @@ void CNeutrinoApp::realRun(void)
 int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
 	int res = 0;
+	
+	dprintf(DEBUG_INFO, ANSI_MAGENTA"CNeutrinoApp::handleMsg: msg:(0x%X) data:(0x%X)\n", msg, data);
 
 	// zap complete event
 	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE) 
@@ -3529,17 +3532,6 @@ _repeat:
 		
 		return messages_return::handled;
 	}	
-	// event messages
-	else if (msg == NeutrinoMessages::EVT_VOLCHANGED) 
-	{
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::EVT_MUTECHANGED ) 
-	{
-		delete[] (unsigned char*) data;
-
-		return messages_return::handled;
-	}
 	else if( msg == NeutrinoMessages::EVT_SERVICESCHANGED ) 
 	{
 		channelsInit();
@@ -3780,13 +3772,6 @@ _repeat:
 		
 		return messages_return::handled;
 	}
-	else if( msg == NeutrinoMessages::STANDBY_TOGGLE ) 
-	{
-		standbyMode( !(mode & mode_standby) );
-		g_RCInput->clearRCMsg();
-		
-		return messages_return::handled;
-	}
 	else if( msg == NeutrinoMessages::STANDBY_ON ) 
 	{
 		if( mode != mode_standby ) 
@@ -3873,7 +3858,7 @@ _repeat:
 		std::string text = (char*)data;
 		std::string::size_type pos;
 		
-		while((pos=text.find('/')) != std::string::npos)
+		while((pos = text.find('/')) != std::string::npos)
 		{
 			text[pos] = '\n';
 		}
@@ -4002,10 +3987,11 @@ _repeat:
 	}
 #endif
 
+	////
+	//0x80000014 which and where??? (this is unhandled
+
 	if ((msg >= RC_WithData) && (msg < RC_WithData + 0x10000000))
 		delete[] (unsigned char*) data;
-
-	//dprintf(DEBUG_DEBUG, "CNeutrinoApp::handleMsg: messages_return::unhandled\n");
 
 	return messages_return::unhandled;
 }
@@ -4169,7 +4155,7 @@ void CNeutrinoApp::saveEpg()
 
 		while( true ) 
 		{
-			g_RCInput->getMsg(&msg, &data, 300); // 30 secs
+			g_RCInput->getMsg(&msg, &data, 30); // 30 secs
 			
 			if (( msg == RC_timeout ) || (msg == NeutrinoMessages::EVT_SI_FINISHED)) 
 			{
@@ -4231,13 +4217,6 @@ void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 		
 		frameBuffer->blit();	
 	}
-}
-
-// set vol
-void CNeutrinoApp::setvol(int vol)
-{
-	if(audioDecoder)
-		audioDecoder->setVolume(vol, vol);
 }
 
 // set volume
@@ -4357,17 +4336,15 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint, bool
 				break;
 			}
 
-			setvol(g_settings.current_volume);	
+			//setvol(g_settings.current_volume);
+			if(audioDecoder)
+				audioDecoder->setVolume(g_settings.current_volume, g_settings.current_volume);	
 			
 			//FIXME
 			if (current_muted && msg == RC_plus)
 				audioMute(0, true);
 
 			timeoutEnd = CRCInput::calcTimeoutEnd(nowait ? 5 : 10);
-		}
-		else if (msg == NeutrinoMessages::EVT_VOLCHANGED) 
-		{
-			timeoutEnd = CRCInput::calcTimeoutEnd(5);
 		}
 		else if (handleMsg(msg, data) & messages_return::unhandled) 
 		{
@@ -4765,7 +4742,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 
 		startSubtitles();
 		
-		g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+		//g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 	}
 }
 
@@ -4825,76 +4802,58 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if(actionKey == "savesettings") 
 	{
-		//if (MessageBox(_("Information"), _("Save settings now?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
-		{
-			saveSetup(NEUTRINO_SETTINGS_FILE);
+		saveSetup(NEUTRINO_SETTINGS_FILE);
 
-			tuxtxt_close();
+		tuxtxt_close();
 			
-			zapitCfg.saveLastChannel = g_settings.uselastchannel;
-			CZapit::getInstance()->setZapitConfig(&zapitCfg);
+		zapitCfg.saveLastChannel = g_settings.uselastchannel;
+		CZapit::getInstance()->setZapitConfig(&zapitCfg);
 
-			//
-			HintBox(_("Information"), _("Saving settings now, please be patient."));
-		}
+		//
+		HintBox(_("Information"), _("Saving settings now, please be patient."));
 	}
 	else if (actionKey == "saveskinsettings")
 	{
-		//if (MessageBox(_("Information"), _("Save Skin settings now?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
-		{
-			// fetch skin config file
-			std::string skinConfig = CONFIGDIR "/skins/";
-			skinConfig += g_settings.preferred_skin.c_str();
-			skinConfig += "/";
-			skinConfig += g_settings.preferred_skin.c_str();
-			skinConfig += ".config";
+		// fetch skin config file
+		std::string skinConfig = CONFIGDIR "/skins/";
+		skinConfig += g_settings.preferred_skin.c_str();
+		skinConfig += "/";
+		skinConfig += g_settings.preferred_skin.c_str();
+		skinConfig += ".config";
 				
-			saveSkinConfig(skinConfig.c_str());
+		saveSkinConfig(skinConfig.c_str());
 				
-			//tuxtxt_close();
+		//tuxtxt_close();
 				
-			HintBox(_("Information"), _("Saving Skin settings now, please be patient.\n this needs GUI restart."));
-		}
+		HintBox(_("Information"), _("Saving Skin settings now, please be patient.\n this needs GUI restart."));
 	}
 	else if (actionKey == "defaultskinsettings")
 	{
-		//if (MessageBox(_("Information"), _("load default skin configuration?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
-		{
-			std::string skinDefaultConfigFile = CONFIGDIR "/skins/";
-			skinDefaultConfigFile += g_settings.preferred_skin.c_str();
-			skinDefaultConfigFile += "/";
-			skinDefaultConfigFile += "default.config";
+		std::string skinDefaultConfigFile = CONFIGDIR "/skins/";
+		skinDefaultConfigFile += g_settings.preferred_skin.c_str();
+		skinDefaultConfigFile += "/";
+		skinDefaultConfigFile += "default.config";
 			
-			readSkinConfig(skinDefaultConfigFile.c_str());
-		}
+		readSkinConfig(skinDefaultConfigFile.c_str());
 	}
 	else if(actionKey == "reloadchannels")
 	{
-		//if (MessageBox(_("Information"), _("do you want to reload channel lists?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
-		{
-			HintBox(_("Information"), _("Reloading channel lists, please be patient."));
-			CZapit::getInstance()->reinitChannels();
-		}
+		HintBox(_("Information"), _("Reloading channel lists, please be patient."));
+		CZapit::getInstance()->reinitChannels();
 	}
 	else if (actionKey == "reloadepg")
 	{
-		//if (MessageBox(_("Information"), _("do you want to reload EPG?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
-		{
-			HintBox(_("Information"), _("Reloading EPG, please be patient."));
+		HintBox(_("Information"), _("Reloading EPG, please be patient."));
 			
-			CSectionsd::getInstance()->readSIfromXML(g_settings.epg_dir.c_str());
-		}
+		CSectionsd::getInstance()->readSIfromXML(g_settings.epg_dir.c_str());
 	}
 	else if (actionKey == "reloadxmltvepg")
 	{
-		//if (MessageBox(_("Information"), _("do you want to reload XMLTV EPG?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
-		{
-			HintBox(_("Information"), _("Reloading XMLTV EPG, please be patient."));
+		HintBox(_("Information"), _("Reloading XMLTV EPG, please be patient."));
 			
-			for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
-			{
-				CSectionsd::getInstance()->readSIfromXMLTV(g_settings.xmltv[i].c_str());
-			}
+		for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
+		{
+			CSectionsd::getInstance()->readSIfromXMLTV(g_settings.xmltv[i].c_str());
 		}
 	}
 	else if (actionKey == "delete_zapit")

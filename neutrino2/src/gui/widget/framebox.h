@@ -225,9 +225,8 @@ class CFrameBox : public CWidgetItem
 		virtual void hide();
 		void refresh(){if (paintDate && paintTitle) timer->refresh();};
 		bool update() const {return paintDate;};
-		//virtual void checkOverlappingItems(){};
 
-
+		//
 		virtual void swipRight();
 		virtual void swipLeft();
 		virtual void scrollLineDown(const int lines = 1);

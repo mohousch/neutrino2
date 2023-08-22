@@ -168,10 +168,17 @@ void CNeutrinoApp::mainMenu(void)
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete nMenu;
-	nMenu = NULL;
-	delete widget;
-	widget = NULL;
+	if (nMenu)
+	{
+		delete nMenu;
+		nMenu = NULL;
+	}
+	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 // User menu

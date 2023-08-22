@@ -563,6 +563,22 @@ CFrameBox::CFrameBox(CBox* position)
 CFrameBox::~CFrameBox()
 {
 	frames.clear();
+	
+	if (timer)
+	{
+		timer->hide();
+		delete timer;
+		timer = NULL;
+	}
+	
+	hbutton_labels.clear();
+	fbutton_labels.clear();
+	
+	if (background)
+	{
+		delete[] background;
+		background = NULL;
+	}
 }
 
 void CFrameBox::addFrame(CFrame *frame, const bool defaultselected)
@@ -678,8 +694,6 @@ void CFrameBox::hide()
 			{
 				if(videoDecoder)  
 					videoDecoder->Pig(-1, -1, -1, -1);
-					
-				//CFrameBuffer::getInstance()->paintBackgroundBoxRel(frames[i]->window.getWindowsPos().iX, frames[i]->window.getWindowsPos().iY, frames[i]->window.getWindowsPos().iWidth, frames[i]->window.getWindowsPos().iHeight);
 			}
 		}
 	}
@@ -862,10 +876,18 @@ void CFrameBox::paintHead()
 			
 			timestr_len = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(timestr.c_str(), true); // UTF-8
 			
+			if (timer)
+			{
+				timer->hide();
+				delete timer;
+				timer = NULL;
+			}
+			
 			timer = new CCTime(xstartPos - timestr_len, itemBox.iY, timestr_len, hheight);
 				
 			timer->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 			timer->setFormat(format);
+			
 			timer->paint();
 		}
 		

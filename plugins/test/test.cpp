@@ -2065,11 +2065,11 @@ void CTestMenu::testCHeaders()
 	headers->setFormat("%d.%m.%Y %H:%M:%S");
 	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	headers->setHAlign(CC_ALIGN_CENTER);
-	//headers->setRadius(4);
-	headers->setCorner(RADIUS_VERYLARGE, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
+	headers->setCorner(RADIUS_SMALL, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
+	headers->setGradient(LIGHT2DARK);
 		
-	headers->paint();
-	CFrameBuffer::getInstance()->blit();
+	//headers->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = 0;
@@ -2079,7 +2079,7 @@ void CTestMenu::testCHeaders()
 	
 	headers->setSecTimer(sec_timer_id);
 	headers->exec(10);
-	headers->hide();
+	//headers->hide();
 
 	g_RCInput->killTimer(sec_timer_id);
 	sec_timer_id = 0;
@@ -2104,15 +2104,16 @@ void CTestMenu::testCFooters()
 	//
 	footers = new CFooters(&footBox);
 	
-	footers->setCorner(RADIUS_VERYLARGE, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
+	footers->setCorner(RADIUS_SMALL, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
+	footers->setGradient(LIGHT2DARK);
 	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 		
-	footers->paint();
-	CFrameBuffer::getInstance()->blit();
+	//footers->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	footers->exec(10);
-	footers->hide();
+	//footers->hide();
 
 	if(footers)
 	{
@@ -2140,12 +2141,12 @@ void CTestMenu::testCWindow()
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setGradient(LIGHT2DARK2LIGHT, GRADIENT_HORIZONTAL);
 
-	window->paint();
-	CFrameBuffer::getInstance()->blit();
+	//window->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	window->exec();
-	window->hide();
+	//window->hide();
 	
 	if (window)
 	{
@@ -2174,12 +2175,12 @@ void CTestMenu::testCWindowShadow()
 	window->setBorderMode(BORDER_ALL);
 	window->paintMainFrame(true);
 
-	window->paint();
-	CFrameBuffer::getInstance()->blit();
+	//window->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	window->exec();
-	window->hide();
+	//window->hide();
 	
 	if (window)
 	{
@@ -2208,12 +2209,12 @@ void CTestMenu::testCWindowCustomColor()
 	window->setBorderMode(BORDER_ALL);
 	window->paintMainFrame(true);
 
-	window->paint();
-	CFrameBuffer::getInstance()->blit();
+	//window->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	window->exec();
-	window->hide();
+	//window->hide();
 	
 	if (window)
 	{
@@ -2259,12 +2260,12 @@ void CTestMenu::testCTextBox()
 	textBoxWidget->addKey(RC_ok, this, "winfo");
 	
 	//	
-	textBoxWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//textBoxWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 	
 	// loop
 	textBoxWidget->exec();
-	textBoxWidget->hide();
+	//textBoxWidget->hide();
 	
 	if (textBoxWidget)
 	{
@@ -2364,8 +2365,8 @@ void CTestMenu::testCListFrame()
 	listFrame->addKey(RC_info, this, "ainfo");
 	
 	// paint
-	listFrame->paint();
-	CFrameBuffer::getInstance()->blit();
+	//listFrame->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	CAudioPlayer::getInstance()->init();
 	
@@ -2378,7 +2379,7 @@ void CTestMenu::testCListFrame()
 		listFrameLines.lineArray[i].clear();
 	}
 
-	listFrame->hide();
+	//listFrame->hide();
 	
 	delete listFrame;
 	listFrame = NULL;
@@ -2436,8 +2437,7 @@ void CTestMenu::testClistBox()
 
 	// mode
 	rightWidget->addWidgetType(TYPE_STANDARD);
-	//rightWidget->enableShrinkMenu();
-	//rightWidget->paintMainFrame(true);
+	rightWidget->enableShrinkMenu();
 
 	// head
 	rightWidget->enablePaintHead();
@@ -2452,6 +2452,9 @@ void CTestMenu::testClistBox()
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->setFootLine(true, true);
+	
+	rightWidget->setHeadGradient(LIGHT2DARK);
+	rightWidget->setFootGradient(DARK2LIGHT);
 
 	// itemInfo
 	//rightWidget->enablePaintItemInfo(70);
@@ -2470,15 +2473,15 @@ void CTestMenu::testClistBox()
 	rightWidget->addKey(RC_info, this, "linfo");
 	//rightWidget->addKey(RC_setup, this, "lsetup");
 	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//rightWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();
-	rightWidget->hide();		
+	//rightWidget->hide();		
 	
 	if (sec_timer_id)
 	{
@@ -2563,6 +2566,9 @@ void CTestMenu::testClistBox2()
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->setFootLine(true, true);
+	
+	rightWidget->setHeadGradient(LIGHT2DARK);
+	rightWidget->setFootGradient(DARK2LIGHT);
 
 	// footinfo
 	//rightWidget->enablePaintItemInfo(70);
@@ -2571,23 +2577,19 @@ void CTestMenu::testClistBox2()
 	//rightWidget->setSelected(selected);
 	
 	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	//
 	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//rightWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	rightWidget->hide();
+	//rightWidget->hide();
 	
 	if (sec_timer_id)
 	{
@@ -2672,29 +2674,28 @@ void CTestMenu::testClistBox3()
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->setFootLine(true, true);
 
+	rightWidget->setHeadGradient(LIGHT2DARK);
+	rightWidget->setFootGradient(DARK2LIGHT);
+	
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
 
 	//rightWidget->setSelected(selected);
-	
-	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
 
 	//
 	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//rightWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	rightWidget->hide();
+	//rightWidget->hide();
 	
 	if (sec_timer_id)
 	{
@@ -2779,25 +2780,21 @@ void CTestMenu::testClistBox4()
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->setFootLine(true, true);
-	
-	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
 
 	//
 	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//rightWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	rightWidget->hide();
+	//rightWidget->hide();
 	
 	if (sec_timer_id)
 	{
@@ -2894,25 +2891,21 @@ void CTestMenu::testClistBox5()
 	rightWidget->setItemInfoMode(ITEMINFO_INFO_MODE);
 
 	//rightWidget->setSelected(selected);
-	
-	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
 
 	//
 	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//rightWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	rightWidget->hide();
+	//rightWidget->hide();
 	
 	if (sec_timer_id)
 	{
@@ -3013,25 +3006,21 @@ void CTestMenu::testClistBox6()
 	rightWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
 
 	//rightWidget->setSelected(selected);
-	
-	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
 
 	//
 	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//rightWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	rightWidget->hide();
+	//rightWidget->hide();
 	
 	if (sec_timer_id)
 	{
@@ -3133,25 +3122,21 @@ void CTestMenu::testClistBox7()
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//rightWidget->setSelected(selected);
-	
-	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
 
 	//
 	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//rightWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	rightWidget->hide();
+	//rightWidget->hide();
 	
 	if (sec_timer_id)
 	{
@@ -3253,25 +3238,21 @@ void CTestMenu::testClistBox8()
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//rightWidget->setSelected(selected);
-	
-	//
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
 
 	//
 	rightWidget->addKey(RC_ok, this, "wplay");
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//rightWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	rightWidget->hide();
+	//rightWidget->hide();
 	
 	if (sec_timer_id)
 	{
@@ -3375,15 +3356,15 @@ void CTestMenu::testClistBox9()
 	rightWidget->addKey(RC_info, this, "linfo");
 	rightWidget->addKey(RC_setup, this, "lsetup");
 	
-	rightWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//rightWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();
-	rightWidget->hide();		
+	//rightWidget->hide();		
 	
 	if (sec_timer_id)
 	{
@@ -3465,15 +3446,15 @@ void CTestMenu::testCFrameBox()
 
 	frameBoxWidget->setSelected(selected);
 
-	frameBoxWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//frameBoxWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	frameBoxWidget->setSecTimer(sec_timer_id);
 	frameBoxWidget->exec();
-	frameBoxWidget->hide();		
+	//frameBoxWidget->hide();		
 	
 	if (sec_timer_id)
 	{
@@ -3654,8 +3635,8 @@ void CTestMenu::testCFrameBox1()
 	frameBoxWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
 	//
-	frameBoxWidget->paint();
-	CFrameBuffer::getInstance()->blit();
+	//frameBoxWidget->paint();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
 	uint32_t sec_timer_id = 0;
@@ -3665,7 +3646,7 @@ void CTestMenu::testCFrameBox1()
 	
 	frameBoxWidget->setSecTimer(sec_timer_id);
 	frameBoxWidget->exec();
-	frameBoxWidget->hide();
+	//frameBoxWidget->hide();
 	
 	if (sec_timer_id)
 	{
@@ -6556,11 +6537,12 @@ void CTestMenu::showMenu()
 	}
 	else
 	{
+		//
 		mWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		mWidget->setMenuPosition(MENU_POSITION_CENTER);
-			
-		mWidget->name = "Test Menu";
-			
+		mWidget->setMenuPosition(MENU_POSITION_CENTER);	
+		mWidget->name = "testmenu";
+		
+		//	
 		mainMenu = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
 
 		mainMenu->enablePaintHead();
@@ -6608,13 +6590,14 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("ClistBox(classic)", true, NULL, this, "listbox2"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(extended)", true, NULL, this, "listbox3"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(Frame)", true, NULL, this, "listbox4"));
+	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
+	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "singleWidget"));
+	mainMenu->addItem(new CMenuSeparator(LINE));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_INFO)", true, NULL, this, "listbox5"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINT)", true, NULL, this, "listbox6"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTITEM)", true, NULL, this, "listbox7"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTICON)", true, NULL, this, "listbox8"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTHINT)", true, NULL, this, "listbox9"));
-	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
-	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "singleWidget"));
 	
 	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistFrame|CHead|CFoot)", true, NULL, this, "listframewidget"));
@@ -6714,6 +6697,12 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET3", true, NULL, this, "skin3"));
 	
 	mWidget->exec(NULL, "");
+	
+	if (mWidget)
+	{
+		delete mWidget;
+		mWidget = NULL;
+	}
 }
 
 void plugin_init(void)

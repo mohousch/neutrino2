@@ -31,6 +31,8 @@
 #include <string>
 #include <vector>
 
+#include <OpenThreads/Thread>
+
 #include <driver/fontrenderer.h>
 #include <driver/framebuffer.h>
 #include <driver/color.h>
@@ -257,7 +259,6 @@ class CCImage : public CComponent
 		//
 		std::string imageName;
 		bool scale;
-		uint32_t color;
 
 		CCImage(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
 		virtual ~CCImage(){};
@@ -265,9 +266,8 @@ class CCImage : public CComponent
 		//
 		void setImage(const char* const image);
 		void setScaling(bool s){scale = s;};
-		void setColor(uint32_t col){color = col;};
 		
-		// h/v aligned
+		//
 		void paint();
 };
 
@@ -489,7 +489,7 @@ class CCPig : public CComponent
 };
 
 // CCTime
-class CCTime : public CComponent
+class CCTime : public CComponent/*, public OpenThreads::Thread*/
 {
 	public:
 		CFrameBuffer* frameBuffer;
@@ -518,6 +518,12 @@ class CCTime : public CComponent
 		
 		//
 		void refresh();
+		
+		////
+		//bool started;
+		//void run(void);
+		//void Start();
+		//void Stop();
 };
 
 // CCCounter
@@ -558,7 +564,7 @@ class CCCounter : public CComponent
 };
 
 // CCSpinner
-class CCSpinner : public CComponent
+class CCSpinner : public CComponent/*, public OpenThreads::Thread*/
 {
 	public:
 		CFrameBuffer* frameBuffer;
@@ -572,14 +578,7 @@ class CCSpinner : public CComponent
 		
 		//
 		CCSpinner(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
-		virtual ~CCSpinner()
-		{
-			if(background)
-			{
-				delete[] background;
-				background = NULL;
-			}
-		};
+		virtual ~CCSpinner();
 		
 		//
 		void paint();
@@ -587,6 +586,10 @@ class CCSpinner : public CComponent
 		
 		//
 		void refresh();
+		
+		////
+		//bool started;
+		//void run();
 };
 
 //CScrollBar
@@ -764,13 +767,13 @@ class CWidgetItem
 		virtual void hideItemInfo(){};
 		virtual void paint(void){painted = true;};
 		virtual void hide(void){painted = false;};
-		//virtual void checkOverlappingItems(){};
 		virtual void paintMainFrame(bool p){paintframe = p;};
 		
 		//
 		virtual void enableRepaint(){rePaint = true;};
 		virtual bool update() const {return rePaint;};
 		virtual void refresh(void){};
+		virtual void stopRefresh(){};
 
 		//
 		virtual void scrollLineDown(const int lines = 1){};
@@ -810,7 +813,7 @@ class CWidgetItem
 		virtual void setParent(CWidget* p){parent = p;};
 		//
 		virtual void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
-		virtual void setSecTimer(uint32_t sec){sec_timer_id = sec;};
+		virtual void setSecTimer(uint32_t id){sec_timer_id = id;};
 		
 		//
 		virtual bool onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data);
@@ -853,7 +856,7 @@ class CHeaders : public CWidgetItem
 	public:
 		CHeaders(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES, const char * const title = NULL, const char * const icon = NULL);
 		CHeaders(CBox* position, const char * const title = NULL, const char * const icon = NULL);
-		virtual ~CHeaders(){};
+		virtual ~CHeaders();
 
 		//
 		void setTitle(const char * const title){htitle.clear(); if (title) htitle = title;};
@@ -875,6 +878,7 @@ class CHeaders : public CWidgetItem
 		void hide();
 		void refresh(void){if (paintDate) timer->refresh();};
 		bool update() const {return paintDate;};
+		void stopRefresh();
 		
 		//
 		void clear(){hbutton_labels.clear();};
@@ -902,7 +906,7 @@ class CFooters : public CWidgetItem
 	public:
 		CFooters(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
 		CFooters(CBox* position);
-		virtual ~CFooters(){};
+		virtual ~CFooters();
 		
 		//
 		void setColor(fb_pixel_t col){fbgcolor = col;};

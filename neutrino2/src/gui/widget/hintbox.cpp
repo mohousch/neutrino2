@@ -264,7 +264,7 @@ int CHintBox::exec(int timeout)
 	neutrino_msg_data_t data;
 	
 	// HG
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	sec_timer_id = g_RCInput->addTimer(0.15*1000*1000, false);
 
 	paint();
 	

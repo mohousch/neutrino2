@@ -270,7 +270,7 @@ void CAudioPlayerGui::playFile()
 
 		updateTimes(false, update_t);
 		
-		g_RCInput->getMsg(&msg, &data, 10); // 1 sec timeout to update play/stop state display
+		g_RCInput->getMsg(&msg, &data, 1); // 1 sec timeout to update play/stop state display
 
 		if (msg == RC_home)
 		{

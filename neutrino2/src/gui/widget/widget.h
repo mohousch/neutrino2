@@ -86,6 +86,9 @@ class CWidget : public CMenuTarget
 		std::map<neutrino_msg_t, keyAction> keyActionMap;
 		uint64_t timeout;
 		uint32_t sec_timer_id;
+		uint64_t sec_timer_interval;
+		
+		//
 		std::string actionKey; // for lua
 		
 		// screen
@@ -153,10 +156,10 @@ class CWidget : public CMenuTarget
 		virtual void hide();
 		virtual int exec(CMenuTarget *parent, const std::string &actionKey);
 		virtual void refresh();
-		//virtual void checkOverlappingItems(){};
 
 		//
 		void setTimeOut(uint64_t to = 0){timeout = to;};
+		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;};
 		
 		//
 		void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");

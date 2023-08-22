@@ -337,8 +337,6 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 		{
 			int mode = NeutrinoMessages::mode_radio;
 			eventServer->sendEvent(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_NEUTRINO, (void *)&mode, sizeof(int));
-			//FIXME:
-			//g_RCInput->sendEvent(NeutrinoMessages::CHANGEMODE, (void *)mode, sizeof(int));
 			sleep(1);
 			NeutrinoAPI->UpdateBouquets();
 		}
@@ -346,8 +344,6 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 		{
 			int mode = NeutrinoMessages::mode_tv;
 			eventServer->sendEvent(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_NEUTRINO, (void *)&mode, sizeof(int));
-			//FIXME:
-			//g_RCInput->sendEvent(NeutrinoMessages::CHANGEMODE, (void *)mode, sizeof(int));
 			sleep(1);
 			NeutrinoAPI->UpdateBouquets();
 		}
@@ -447,15 +443,11 @@ void CControlAPI::StandbyCGI(CyhookHandler *hh)
 		if (hh->ParamList["1"] == "on")	// standby mode on
 		{
 			eventServer->sendEvent(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_NEUTRINO);
-			//FIXME:
-			//g_RCInput->sendEvent(NeutrinoMessages::STANDBY_ON);
 			hh->SendOk();
 		}
 		else if (hh->ParamList["1"] == "off")// standby mode off
 		{
 			eventServer->sendEvent(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO);
-			//FIXME:
-			//g_RCInput->sendEvent(NeutrinoMessages::STANDBY_OFF);
 			hh->SendOk();
 		}
 		else
@@ -472,12 +464,8 @@ void CControlAPI::RCCGI(CyhookHandler *hh)
 	{
 		if (hh->ParamList["1"] == "lock")	// lock remote control
 			eventServer->sendEvent(NeutrinoMessages::LOCK_RC, CEventServer::INITID_NEUTRINO);
-			//FIXME:
-			//g_RCInput->sendEvent(NeutrinoMessages::LOCK_RC);
 		else if (hh->ParamList["1"] == "unlock")// unlock remote control
 			eventServer->sendEvent(NeutrinoMessages::UNLOCK_RC, CEventServer::INITID_NEUTRINO);
-			//FIXME:
-			//g_RCInput->sendEvent(NeutrinoMessages::UNLOCK_RC);
 		else
 			hh->SendError();
 	}
@@ -575,8 +563,6 @@ void CControlAPI::MessageCGI(CyhookHandler *hh)
 	{
 		message = decodeString(message);
 		eventServer->sendEvent(event, CEventServer::INITID_NEUTRINO, (void *) message.c_str(), message.length() + 1);
-		//FIXME:
-		//g_RCInput->sendEvent(event, (void *)message.c_str(), message.length() + 1);
 		hh->SendOk();
 	}
 	else
@@ -609,8 +595,6 @@ void CControlAPI::ShutdownCGI(CyhookHandler *hh)
 	if (hh->ParamList.empty())
 	{
 		eventServer->sendEvent(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO);
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::SHUTDOWN);
 		hh->SendOk();
 	}
 	else
@@ -623,8 +607,6 @@ void CControlAPI::RebootCGI(CyhookHandler *hh)
 	if (hh->ParamList.empty())
 	{
 		eventServer->sendEvent(NeutrinoMessages::REBOOT, CEventServer::INITID_NEUTRINO);
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::REBOOT);
 		hh->SendOk();
 	}
 	else
@@ -637,8 +619,6 @@ void CControlAPI::RestartCGI(CyhookHandler *hh)
 	if (hh->ParamList.empty())
 	{
 		eventServer->sendEvent(NeutrinoMessages::RESTART, CEventServer::INITID_NEUTRINO);
-		//FIXME:
-		//g_RCInput->sendEvent(NeutrinoMessages::RESTART);
 		hh->SendOk();
 	}
 	else
@@ -1414,8 +1394,6 @@ void CControlAPI::StartPluginCGI(CyhookHandler *hh)
 			pluginname = hh->ParamList["name"];
 			pluginname = decodeString(pluginname);
 			eventServer->sendEvent(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, (void *) pluginname.c_str(), pluginname.length() + 1);
-			//FIXME:
-			//g_RCInput->sendEvent(NeutrinoMessages::EVT_START_PLUGIN, (void *)pluginname.c_str(), pluginname.length() + 1);
 
 			hh->SendOk();
 		}

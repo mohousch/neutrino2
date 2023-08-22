@@ -184,9 +184,9 @@ void CPictureViewerGui::show()
 		}
 		else
 		{
-			timeout = (int)(m_time + g_settings.picviewer_slide_time - (long)time(NULL))*10;
+			timeout = (int)(m_time + g_settings.picviewer_slide_time - (long)time(NULL));
 			if(timeout < 0 )
-				timeout = 1;
+				timeout = 10;
 			else if(timeout >= 999)
 				timeout = 999;
 		}

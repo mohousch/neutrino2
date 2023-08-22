@@ -228,8 +228,6 @@ enum
 	RC_f2		= KEY_F2,
 	RC_f3		= KEY_F3,
 	RC_f4		= KEY_F4,
-			
-	//RC_aspect	= 0x40,
 
 	/* frontpanel */
 	RC_vfdup	= VFD_UP,
@@ -283,7 +281,6 @@ class CRCInput
 
 		int fd_pipe_high_priority[2];
 		int fd_pipe_low_priority[2];
-		//int fd_pipe_event[2];
 
 #define NUMBER_OF_EVENT_DEVICES 4
 
@@ -342,15 +339,10 @@ class CRCInput
 		neutrino_msg_t key_video;
 			
 		neutrino_msg_t key_text;
-
-		neutrino_msg_t key_info;				
-			
-		neutrino_msg_t key_epg;
-			
+		neutrino_msg_t key_info;					
+		neutrino_msg_t key_epg;	
 		neutrino_msg_t key_recall;		
-
 		neutrino_msg_t key_favorites;
-
 		neutrino_msg_t key_sat;
 			
 		neutrino_msg_t key_record;
@@ -360,8 +352,7 @@ class CRCInput
 		neutrino_msg_t key_rewind;
 		neutrino_msg_t key_stop;
 			
-		neutrino_msg_t key_timeshift;
-						
+		neutrino_msg_t key_timeshift;				
 		neutrino_msg_t key_mode;			
 
 		neutrino_msg_t key_next;
@@ -388,8 +379,6 @@ class CRCInput
 		neutrino_msg_t key_f2;
 		neutrino_msg_t key_f3;
 		neutrino_msg_t key_f4;
-		
-		//neutrino_msg_t key_aspect;
 			
 		neutrino_msg_t key_vfdup;
 		neutrino_msg_t key_vfddown;
@@ -433,16 +422,13 @@ class CRCInput
 
 		//
 		void getMsgAbsoluteTimeout(neutrino_msg_t* msg, neutrino_msg_data_t * data, uint64_t* TimeoutEnd, bool bAllowRepeatLR = false);
-		void getMsg(neutrino_msg_t* msg, neutrino_msg_data_t * data, int Timeout, bool bAllowRepeatLR = false);          //get message, timeout in 1/10 secs :)
+		void getMsg(neutrino_msg_t* msg, neutrino_msg_data_t * data, int Timeout, bool bAllowRepeatLR = false);          //get message, timeout in secs :)
 		void getMsg_ms(neutrino_msg_t* msg, neutrino_msg_data_t * data, int Timeout, bool bAllowRepeatLR = false);         //get message, timeout in msecs :)
-		void getMsg_us(neutrino_msg_t* msg, neutrino_msg_data_t * data, uint64_t Timeout, bool bAllowRepeatLR = false);	//get message, timeout in �secs :)
+		void getMsg_us(neutrino_msg_t* msg, neutrino_msg_data_t * data, uint64_t Timeout, bool bAllowRepeatLR = false);	//get message, timeout in usecs :)
 		
 		//
 		void postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority = true);  // push message back into buffer
 		void clearRCMsg();
-
-		//
-		//void sendEvent(const neutrino_msg_t event, void *data = NULL, const unsigned int datalen = 0);
 };
 
 // Converts input of numeric keys to SMS style char input

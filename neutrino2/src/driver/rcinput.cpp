@@ -232,8 +232,6 @@ bool CRCInput::loadRCConfig(const char * const fileName)
 	key_f2 = configfile.getInt32("key_f2", 0x3C);
 	key_f3 = configfile.getInt32("key_f3", 0x3D);
 	key_f4 = configfile.getInt32("key_f4", 0x3E);
-	
-	//key_aspect = configfile.getInt32("key_aspect", 0x40);	
 			
 	key_vfdup = configfile.getInt32("key_vfdup", VFD_UP);
 	key_vfddown = configfile.getInt32("key_vfddown", VFD_DOWN);
@@ -338,8 +336,6 @@ bool CRCInput::saveRCConfig(const char * const fileName)
 	configfile.setInt32("key_f2", key_f2);
 	configfile.setInt32("key_f3", key_f3);
 	configfile.setInt32("key_f4", key_f4);
-	
-	//configfile.setInt32("key_aspect", key_aspect);
 					
 	configfile.setInt32("key_vfdup", key_vfdup);
 	configfile.setInt32("key_vfddown", key_vfddown);
@@ -382,18 +378,6 @@ CRCInput::CRCInput() : configfile('\t')
 
 	fcntl(fd_pipe_low_priority[0], F_SETFL, O_NONBLOCK );
 	fcntl(fd_pipe_low_priority[1], F_SETFL, O_NONBLOCK );
-	
-	// pipe_event
-	/*
-	if (pipe(fd_pipe_event) < 0)
-	{
-		perror("fd_pipe_event");
-		exit(-1);
-	}
-
-	fcntl(fd_pipe_event[0], F_SETFL, O_NONBLOCK );
-	fcntl(fd_pipe_event[1], F_SETFL, O_NONBLOCK );
-	*/
 
 	// open event-library
 	fd_event = 0;
@@ -522,11 +506,6 @@ void CRCInput::calculateMaxFd()
 	
 	if(fd_pipe_low_priority[0] > fd_max)
 		fd_max = fd_pipe_low_priority[0];
-		
-	/*
-	if(fd_pipe_event[0] > fd_max)
-		fd_max = fd_pipe_event[0];
-	*/
 }
 
 CRCInput::~CRCInput()
@@ -546,14 +525,6 @@ CRCInput::~CRCInput()
 	
 	if(fd_pipe_low_priority[1])
 		::close(fd_pipe_low_priority[1]);
-
-	/*
-	if(fd_pipe_event[0])
-		::close(fd_pipe_event[0]);
-	
-	if(fd_pipe_event[1])
-		::close(fd_pipe_event[1]);
-	*/
 		
 	//
 	if(fd_event)
@@ -724,7 +695,7 @@ void CRCInput::getMsgAbsoluteTimeout(neutrino_msg_t * msg, neutrino_msg_data_t *
 
 void CRCInput::getMsg(neutrino_msg_t * msg, neutrino_msg_data_t * data, int Timeout, bool bAllowRepeatLR)
 {
-	getMsg_us(msg, data, (uint64_t) Timeout * 100 * 1000, bAllowRepeatLR);
+	getMsg_us(msg, data, (uint64_t) Timeout * 1000 * 1000, bAllowRepeatLR);
 }
 
 void CRCInput::getMsg_ms(neutrino_msg_t * msg, neutrino_msg_data_t * data, int Timeout, bool bAllowRepeatLR)
@@ -757,10 +728,12 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 	{
 		timer_id = 0;
 
+		// check timers
 		if ( timers.size()> 0 )
 		{
 			gettimeofday( &tv, NULL );
 			uint64_t t_n = (uint64_t) tv.tv_usec + (uint64_t)((uint64_t) tv.tv_sec * (uint64_t) 1000000);
+			
 			if ( timers[0].times_out < t_n )
 			{
 				timer_id = checkTimers();
@@ -799,8 +772,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 		FD_SET(fd_event, &rfds);
 		FD_SET(fd_pipe_high_priority[0], &rfds);
 		FD_SET(fd_pipe_low_priority[0], &rfds);
-		//
-		//FD_SET(fd_pipe_event[0], &rfds);
 
 		int status = select(fd_max + 1, &rfds, NULL, NULL, &tvselect);
 
@@ -960,25 +931,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			}
 		}
 #endif /* KEYBOARD_INSTEAD_OF_REMOTE_CONTROL */
-
-		/*/
-		if(FD_ISSET(fd_pipe_event[0], &rfds))
-		{
-			struct event buf;
-
-			read(fd_pipe_event[0], &buf, sizeof(buf));
-			
-			unsigned char* p;
-			p = new unsigned char[ sizeof(buf) + 1];
-
-			*msg  = buf.msg;
-			*data = (const neutrino_msg_data_t) p;
-
-			dprintf(DEBUG_NORMAL, "\033[1;32mCRCInput::getMsg_us:got event from event pipe msg=(0x%x) data:(0x%x) <\033[0m\n", *msg, *data );
-
-			return;
-		}
-		*/
 
 		// fd_eventclient
 		if(FD_ISSET(fd_event, &rfds)) 
@@ -1177,14 +1129,9 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 								dont_delete_p = true;
 								break;
 								
-							case NeutrinoMessages::CHANGEMODE :	// Change
+							case NeutrinoMessages::CHANGEMODE :
 								*msg = NeutrinoMessages::CHANGEMODE;
 								*data = *(size_t*) p;
-								break;
-								
-							case NeutrinoMessages::STANDBY_TOGGLE :
-								*msg = NeutrinoMessages::STANDBY_TOGGLE;
-								*data = 0;
 								break;
 								
 							case NeutrinoMessages::LOCK_RC :
@@ -1262,7 +1209,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 								*msg = NeutrinoMessages::STANDBY_OFF;
 								*data = 0;
 								break;
-								
+							//	
 							case NeutrinoMessages::REMIND :
 								*msg = NeutrinoMessages::REMIND;
 								*data = (size_t) p;
@@ -1706,10 +1653,7 @@ const char * CRCInput::getSpecialKeyName(const unsigned long key)
 			return "RC_f3";
 			
 		case RC_f4:
-			return "RC_f4";
-			
-		//case RC_aspect:
-		//	return "RC_aspect";			
+			return "RC_f4";			
 				
 		/* VFD Tasten the generic values are from cuberevo so fix it */
 		case RC_vfdup:
@@ -1838,8 +1782,6 @@ int CRCInput::translate(unsigned int code, int num)
 	else if (code == key_pipswap) return RC_pipswap;
 	else if (code == key_pipsubch) return RC_pipsubch;
 	
-	//else if (code == key_aspect) return RC_aspect;
-	
 	// functions
 	else if (code == key_f1) return RC_f1;
 	else if (code == key_f2) return RC_f2;
@@ -1858,22 +1800,7 @@ int CRCInput::translate(unsigned int code, int num)
 	else return RC_nokey;
 }
 
-/*
-void CRCInput::sendEvent(const neutrino_msg_t event, void *data, const unsigned int datalen)
-{
-	dprintf(DEBUG_NORMAL, "CRCInput::sendEvent >\n");
-		
-	//
-	struct event buf;
-	
-	buf.msg  = event;
-	buf.data = data;
-
-	write(fd_pipe_event[1], &buf, sizeof(buf));
-}
-*/
-
-//
+////
 #define SMSKEY_TIMEOUT 2000
 
 SMSKeyInput::SMSKeyInput()
@@ -2030,5 +1957,4 @@ void SMSKeyInput::setTimeout(int timeout)
 {
 	m_timeout = timeout;
 }
-
 

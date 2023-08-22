@@ -696,7 +696,7 @@ void CStringInputSMS::paint()
 	frameBuffer->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
 	int ButtonHeight = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight() + 6;
 
-	frameBuffer->paintBoxRel(x, y + height - ButtonHeight, width, ButtonHeight, COL_MENUFOOT_PLUS_0, g_settings.Foot_radius, g_settings.Foot_corner, g_settings.Foot_gradient);
+	frameBuffer->paintBoxRel(x, y + height - ButtonHeight, width, ButtonHeight, COL_MENUFOOT_PLUS_0, RADIUS_SMALL, CORNER_BOTTOM, DARK2LIGHT2DARK);
 
 	// foot buttons
 	buttons.setPosition(x, y + height - ButtonHeight, width, ButtonHeight);

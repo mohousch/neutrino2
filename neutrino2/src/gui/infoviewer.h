@@ -51,6 +51,21 @@
 
 class CInfoViewer
 {
+	public:
+		enum
+		{
+			NO_AC3,
+			AC3_AVAILABLE,
+			AC3_ACTIVE
+		};
+		
+		bool chanready;
+		bool is_visible;
+
+#if defined (ENABLE_LCD)
+		uint32_t lcdUpdateTimer;
+#endif		
+		
 	private:
 		void Init(void);
 		void initFrames(void);
@@ -179,8 +194,8 @@ class CInfoViewer
 		CChannelEventList::iterator eli;
 
 		CProgressBar *snrscale, *sigscale, *timescale;
-		std::string eventname;
-
+		
+		//
 		void show_Data(bool calledFromEvent = false);
 		void paintTime(int posx, int posy, unsigned int timeFont);
 		void showButton_Audio();
@@ -199,47 +214,27 @@ class CInfoViewer
 		void showSNR();
 		void showAktivTuner();
 		void Set_CA_Status(int Status);
-
-		//
 		void getCurrentNextEPG(t_channel_id ChannelID, bool newChan = false, int EPGPos = 0);
 
  	public:
-		bool chanready;
-		bool is_visible;
-
-#if defined (ENABLE_LCD)
-		uint32_t lcdUpdateTimer;
-#endif		
-
 		CInfoViewer();
 		~CInfoViewer();
 
 		void start();
-
-		void show(const int ChanNum, const std::string& ChannelName, const t_satellite_position satellitePosition); // Channel must be UTF-8 encoded
-
-		void showTitle(const int _ChanNum, const std::string& _ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id = 0, const bool _calledFromNumZap = false, int _epgpos = 0); // Channel must be UTF-8 encoded
-
-		enum
-		{
-			NO_AC3,
-			AC3_AVAILABLE,
-			AC3_ACTIVE
-		};
-
+		void showTitle(const int _ChanNum, const std::string& _ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id = 0, const bool _calledFromNumZap = false, int _epgpos = 0);
 		void killTitle();
-		
-		void getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info); // needed by CSleepTimerWidget
-		CSectionsd::CurrentNextInfo getCurrentNextInfo() { return info_CurrentNext; }
 	
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
-		void clearVirtualZapMode() {virtual_zap_mode = false;}
+		void clearVirtualZapMode() {virtual_zap_mode = false;}	// used in channellist.cpp
 		
 		//
 		void showRadiotext(); 	// needed in radiotext
 		void killRadiotext(); 	// needed in radiotext
 		void showSubchan(); 	// needed in CNVODChangeExec
-		void showEpgInfo(); 	// neede in remotecontrol
+		
+		//
+		void getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info); // needed by CSleepTimerWidget
+		CSectionsd::CurrentNextInfo getCurrentNextInfo() { return info_CurrentNext; }
 };
 
 class CInfoViewerHandler : public CMenuTarget

@@ -443,7 +443,7 @@
 	</WIDGET>
 	
 	<WIDGET name="channellist" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<HEAD posx="50" posy="50" width="1080" height="50" paintframe="0" line="1"/>
+		<HEAD posx="50" posy="50" width="1080" height="50" paintframe="0" paintdate="1" line="1"/>
 		<LISTBOX posx="50" posy="100" width="700" height="420" paintframe="0" type="TYPE_STANDARD" mode="MODE_LISTBOX" itemborder="1" scrollbar="1"/>
 		<WINDOW posx="750" posy="100" width="380" height="420" paintframe="0"/>
 		<FOOT posx="50" posy="520" width="1080" height="50" paintframe="0" line="1"/>

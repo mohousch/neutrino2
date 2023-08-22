@@ -50,8 +50,10 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	//
 	menu_position = MENU_POSITION_NONE;
 
+	//
 	timeout = g_settings.timing_menu;
 	sec_timer_id = 0;
+	sec_timer_interval = 1;
 	
 	//
 	selected = -1;
@@ -87,8 +89,10 @@ CWidget::CWidget(CBox *position)
 	//
 	menu_position = MENU_POSITION_NONE;
 
+	//
 	timeout = g_settings.timing_menu;
 	sec_timer_id = 0;
+	sec_timer_interval = 1;
 	
 	//
 	selected = -1;
@@ -116,18 +120,27 @@ CWidget::~CWidget()
 {
 	dprintf(DEBUG_NORMAL, "CWidget::del (%s)\n", name.c_str());
 
-	// WIDGETITEMS
-	if (hasWidgetItem())
+	////
+	/*
+	for(unsigned int i = 0; i < (unsigned int)items.size(); i++)
 	{
-		items.clear();
+		items[i]->stopRefresh();
 	}
-		
-	// CCITEMS
-	if (hasCCItem())
+
+	//
+	for(unsigned int i = 0; i < (unsigned int)CCItems.size(); i++)
 	{
-		CCItems.clear();
+		CCItems[i]->hide();
 	}
+	*/	
 	
+	//	
+	items.clear();
+		
+	//
+	CCItems.clear();
+	
+	//
 	if (background)
 	{
 		delete [] background;
@@ -301,17 +314,26 @@ void CWidget::enableSaveScreen()
 void CWidget::hide()
 {
 	dprintf(DEBUG_NORMAL, "CWidget::hide (%s)\n", name.c_str());
+	
+	//
+	if (hasWidgetItem())
+	{
+		for(unsigned int i = 0; i < (unsigned int)items.size(); i++)
+		{
+			items[i]->stopRefresh();
+		}
+	}
 
 	//
 	if (hasCCItem())
 	{
 		for(unsigned int i = 0; i < (unsigned int)CCItems.size(); i++)
 		{
-			if ( (CCItems[i]->getCCType() == CC_PIG) || (CCItems[i]->getCCType() == CC_SPINNER) )
-			{
+			//if ( (CCItems[i]->getCCType() == CC_PIG) || (CCItems[i]->getCCType() == CC_SPINNER) )
+			//{
 				CCItems[i]->hide();
-				break;
-			}
+				//break;
+			//}
 		}
 	}	
 
@@ -370,7 +392,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 	CFrameBuffer::getInstance()->blit();
 
 	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	sec_timer_id = g_RCInput->addTimer(sec_timer_interval*1000*1000, false);
 	
 	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
 
@@ -518,8 +540,11 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 	hide();
 
 	//
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;	
+	if (sec_timer_id)
+	{
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
 
 	// vfd
 	if(!parent)
