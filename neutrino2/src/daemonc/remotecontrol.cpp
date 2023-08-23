@@ -182,9 +182,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			current_channel_id = new_id;
 			
 			//
-			//if (g_InfoViewer->is_visible)
-			//	g_InfoViewer->killTitle();
-
 			g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);
 
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
@@ -234,9 +231,6 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
 				
 				//
-				//if (g_InfoViewer->is_visible)
-				//	g_InfoViewer->killTitle();
-
 				g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);	
 			}
 
@@ -300,10 +294,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 					has_unresolved_ctags = true;
 				}
 				
-				//
-				//if (g_InfoViewer->is_visible)
-				//	g_InfoViewer->killTitle();
-					
+				//	
 				g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);
 
 				current_EPGid = info_CN.current_uniqueKey;

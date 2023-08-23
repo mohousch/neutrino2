@@ -3987,9 +3987,7 @@ _repeat:
 	}
 #endif
 
-	////
-	//0x80000014 which and where??? (this is unhandled
-
+	//
 	if ((msg >= RC_WithData) && (msg < RC_WithData + 0x10000000))
 		delete[] (unsigned char*) data;
 

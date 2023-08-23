@@ -853,15 +853,6 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 				hideIt = true;
 				res = messages_return::cancel_all;
 			}
-			/*
-			else if (msg = 0x80000014) // which message is this???
-			{
-				neutrino->handleMsg(msg, data);
-				g_RCInput->postMsg (NeutrinoMessages::SHOW_INFOBAR, 0);
-				hideIt = true;
-				res = messages_return::cancel_all;
-			}
-			*/
 			else if ( !CNeutrinoApp::getInstance()->timeshiftstatus) 
 			{
 				if ((msg == (neutrino_msg_t) g_settings.key_quickzap_up) || (msg == (neutrino_msg_t) g_settings.key_quickzap_down) || (msg == RC_0) || (msg == NeutrinoMessages::SHOW_INFOBAR)) 
@@ -888,10 +879,10 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 						
 					if (res & messages_return::unhandled) 
 					{
-						dprintf(DEBUG_NORMAL, "CInfoViewer::show: message unhandled\n");
+						dprintf(DEBUG_DEBUG, "CInfoViewer::show: message unhandled\n");
 
-						res = messages_return::cancel_info; //FIXME:
-						g_RCInput->postMsg(msg, data);
+						//res = messages_return::cancel_info; //FIXME:
+						//g_RCInput->postMsg(msg, data);
 					}
 				}
 			}

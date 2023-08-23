@@ -43,8 +43,8 @@ DEST = $(PWD)/$(BOXTYPE)
 N2_SRC  = $(PWD)/neutrino2
 N2_OPTS = --with-boxtype=$(BOXTYPE)
 
-CFLAGS = -Wall -O2 -fno-strict-aliasing -O0
-CXXFLAGS = $(CFLAGS)
+CFLAGS = -Wall -O2 -fno-strict-aliasing -O0 -std=c++11
+CXXFLAGS = $(CFLAGS) 
 
 export CFLAGS CXXFLAGS
 
