@@ -1778,32 +1778,6 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 	g_settings.channel_mode = newmode;
 }
 
-// CNeutrinoApp -  run, the main runloop
-void CNeutrinoApp::cmdParser(int argc, char **argv)
-{
-        global_argv = new char *[argc + 1];
-	
-        for (int i = 0; i < argc; i++)
-                global_argv[i] = argv[i];
-	
-        global_argv[argc] = NULL;
-
-	for(int x = 1; x < argc; x++) 
-	{
-		if (((!strcmp(argv[x], "-v")) || (!strcmp(argv[x], "--verbose"))) && (x + 1 < argc)) 
-		{
-			int dl = atoi(argv[x + 1]);
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::cmdParser: set debuglevel: %d\n", dl);
-			setDebugLevel(dl);
-			x++;
-		}
-		else 
-		{
-			dprintf(DEBUG_NORMAL, "Usage: neutrino [-v | --verbose 0..2]\n");
-		}
-	}
-}
-
 // setup the framebuffer
 void CNeutrinoApp::setupFrameBuffer()
 {
@@ -1906,7 +1880,6 @@ void CNeutrinoApp::setupFonts(const char* font_file)
 	if (g_InfoViewer)
 		g_InfoViewer->start();
 }
-
 
 // start auto record (permanent/temp timeshift)
 int CNeutrinoApp::startAutoRecord(bool addTimer)
@@ -2235,9 +2208,6 @@ void CNeutrinoApp::initZapper()
 		if(g_settings.auto_timeshift)
 			startAutoRecord(true);
 		
-		// show infobar
-		//g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR, 0);
-		
 		selectSubtitles();
 		startSubtitles();
 	}
@@ -2255,373 +2225,6 @@ void CISendMessage(uint32_t msg, uint32_t data)
 {
 	if (g_RCInput)
 	      g_RCInput->postMsg(msg, data);
-}
-
-int CNeutrinoApp::run(int argc, char **argv)
-{
-	dprintf( DEBUG_NORMAL, "CNeutrinoApp::run:\n");
-
-	cmdParser(argc, argv);
-	
-#if defined (PLATFORM_COOLSTREAM)
-	cs_api_init();
-	cs_register_messenger(CSSendMessage);
-#endif
-	
-	// font
-	font.name = NULL;
-	font.filename = NULL;
-
-	// load settings
-	int loadSettingsErg = loadSetup(NEUTRINO_SETTINGS_FILE);
-
-	// check locale language
-	g_Locale->loadLocale(Lang2I18N(g_settings.language).c_str());
-
-	// icons/buttons/hints path
-	frameBuffer->setIconBasePath(g_settings.icons_dir);
-	frameBuffer->setButtonBasePath(g_settings.buttons_dir);
-	frameBuffer->setHintBasePath(g_settings.hints_dir);
-	frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
-
-	// setup fonts
-	setupFonts(g_settings.font_file);
-	
-	// setup color
-	colorSetupNotifier = new CColorSetupNotifier;
-	colorSetupNotifier->changeNotify("", NULL);
-
-	// init vfd/lcd display
-#if ENABLE_LCD
-	CVFD::getInstance()->init(font.filename, font.name);
-#else	
-	CVFD::getInstance()->init();
-#endif	
-
-	// VFD clear	
-	CVFD::getInstance()->Clear();	
-
-	// show startup msg in vfd
-	CVFD::getInstance()->ShowText( (char *)"N2");
-	
-	// register events
-	// httpd
-	eventServer->registerEvent2(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_POPUP, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_EXTMSG, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::LOCK_RC, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::UNLOCK_RC, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::REBOOT, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::RESTART, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	// sectionsd
-	eventServer->registerEvent2(NeutrinoMessages::EVT_TIMESET, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_CURRENTNEXT_EPG, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SI_FINISHED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	// zapit
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_ISNVOD, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_SUB_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_MOTOR, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_NUM_CHANNELS, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_PROVIDER, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SERVICESCHANGED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_SERVICENAME, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_A_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SERVICES_UPD, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_PMT_CHANGED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	// timerd
-	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_NEXTPROGRAM, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_RECORD, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::RECORD_START, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::RECORD_STOP, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_ZAPTO, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::ZAPTO, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::SLEEPTIMER, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_SLEEPTIMER, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::REMIND, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-
-	// rc 
-	g_RCInput = new CRCInput;
-	g_RCInput->setRepeat(atoi(g_settings.repeat_blocker), atoi(g_settings.repeat_genericblocker));
-
-	// playback
-	playback = new cPlayback();
-
-	// plugins
-	g_PluginList = new CPlugins;
-	g_PluginList->setPluginDir(PLUGINDIR);
-	g_PluginList->loadPlugins();
-	
-	// load selected skin
-	loadSkin(g_settings.preferred_skin);
-	
-	// zapit	
-	Z_start_arg ZapStart_arg;
-	
-	ZapStart_arg.lastchannelmode = g_settings.lastChannelMode;
-	ZapStart_arg.startchanneltv_id = g_settings.startchanneltv_id;
-	ZapStart_arg.startchannelradio_id = g_settings.startchannelradio_id;
-	ZapStart_arg.startchanneltv_nr = g_settings.startchanneltv_nr;
-	ZapStart_arg.startchannelradio_nr = g_settings.startchannelradio_nr;
-	ZapStart_arg.uselastchannel = g_settings.uselastchannel;
-	ZapStart_arg.video_mode = g_settings.video_Mode;
-	
-	current_volume = g_settings.current_volume;
-
-	CZapit::getInstance()->Start(&ZapStart_arg);
-	
-	// dvbsub thread
-	dvbsub_init();
-
-	// audio volume (default)
-	if(audioDecoder)
-		audioDecoder->setVolume(g_settings.current_volume, g_settings.current_volume);
-
-	// video format
-	if(videoDecoder)
-		videoDecoder->setAspectRatio(g_settings.video_Ratio, g_settings.video_Format);
-	
-	// wss
-	if(videoDecoder)
-		videoDecoder->SetWideScreen(g_settings.wss_mode);
-	
-	// avsync
-#if defined (PLATFORM_COOLSTREAM)
-	videoDecoder->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-	audioDecoder->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-	videoDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-	audioDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-	pcrDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-#else
-	if(videoDecoder)
-		videoDecoder->SetSyncMode(g_settings.avsync);			
-		
-	if(audioDecoder)
-		audioDecoder->SetSyncMode(g_settings.avsync);
-#endif
-
-	if(audioDecoder)
-	{
-		// hdmi_dd
-		audioDecoder->SetHdmiDD(g_settings.hdmi_dd );
-
-		// ac3 delay
-		audioDecoder->setHwAC3Delay(g_settings.ac3_delay);
-
-		// pcm delay 
-		audioDecoder->setHwPCMDelay(g_settings.pcm_delay);
-	}
-
-	// timerd
-	CTimerd::getInstance()->Start();
-
-	// nhttpd
-	Cyhttpd::getInstance()->Start();
-
-	// streamts
-	CStreamTS::getInstance()->Start();	
-
-	// sectionsd
-	CSectionsd::getInstance()->Start();
-
-	// for boxes with lcd :-)
-#if ENABLE_LCD	
-	CVFD::getInstance()->showVolume(g_settings.current_volume);
-	CVFD::getInstance()->setMuted(current_muted);
-#endif
-	
-	// remote control
-	g_RemoteControl = new CRemoteControl;
-	
-	// epg view
-	g_EpgData = new CEpgData;
-	
-	// channel infoviewer
-	g_InfoViewer = new CInfoViewer;
-	
-	// event list
-	g_EventList = new EventList;
-
-	// Ci Cam handler
-#if defined (ENABLE_CI)	
-	g_CamHandler = new CCAMMenuHandler();
-	g_CamHandler->init();	
-#endif
-	
-	// init network at startup
-	CNetworkSettings::getInstance()->readNetworkSettings(g_settings.ifname);
-
-	if (CNetworkSettings::getInstance()->network_automatic_start == 1)
-		CNetworkSettings::getInstance()->setNetwork();	
-	
-	// mount shares before scanning for plugins
-	CFSMounter::automount();
-
-	// assuming that mdev/fstab has mounted devices
-	CHDDDestExec * hdd = new CHDDDestExec();
-	hdd->exec(NULL, "");
-	delete hdd;
-	hdd = NULL;
-	
-	// init nvod changer
-	NVODChanger = new CNVODChangeExec;
-	
-	// init rclock
-	rcLock = new CRCLock();
-
-	// LCD
-	CVFD::getInstance()->setPower(g_settings.lcd_power);
-	CVFD::getInstance()->setlcdparameter();
-	
-	// start assistant
-	if(loadSettingsErg) 
-	{
-		int tvmode = CZapit::getInstance()->getMode();
-
-		if (tvmode == CZapit::MODE_TV)
-			mode = NeutrinoMessages::mode_tv;
-		else if (tvmode == CZapit::MODE_RADIO)
-			mode = NeutrinoMessages::mode_radio;
-
-		// startup pic : FIXME
-		//frameBuffer->loadBackgroundPic("start.jpg");	
-		//frameBuffer->blit();
-	
-		// setup languages
-		CLanguageSettings* languageSettings = new CLanguageSettings(true);
-		int ret = languageSettings->exec(NULL, "");
-	
-		// video setup wizard
-		if(ret != RETURN_EXIT_ALL)
-		{
-			CVideoSettings videoSettings;
-			videoSettings.exec(NULL, "");
-		}
-		
-		 // audio setup wizard
-		if(ret != RETURN_EXIT_ALL)
-		{
-			CAudioSettings audioSettings;
-			audioSettings.exec(NULL, "");
-		}		
-
-		// setup color
-		if(ret != RETURN_EXIT_ALL)
-		{
-			COSDSettings colorSettings;
-			colorSettings.exec(NULL, "");
-		}
-
-		// setup timezone
-		if(ret != RETURN_EXIT_ALL)
-		{
-			if(tzSelect)
-				tzSelect->exec(NULL);
-		}
-
-		// setup network
-		if(ret != RETURN_EXIT_ALL)
-		{
-			CNetworkSettings networkSettings;
-			networkSettings.exec(NULL, "");
-		}
-		
-		// recordingsettings
-		if(ret != RETURN_EXIT_ALL)
-		{
-			CRecordingSettings recordingSettings;
-			recordingSettings.exec(NULL, "");
-		}
-		
-		// movieplayer settings
-		if(ret != RETURN_EXIT_ALL)
-		{
-			CMoviePlayerSettings moviePlayerSettings;
-			moviePlayerSettings.exec(NULL, "");
-		}
-		
-		// audioplayersettings
-		if(ret != RETURN_EXIT_ALL)
-		{
-			CAudioPlayerSettings audioPlayerSettings;
-			audioPlayerSettings.exec(NULL, "");
-		}
-		
-		// picviewersettings
-		if(ret != RETURN_EXIT_ALL)
-		{
-			CPictureViewerSettings picViewerSettings;
-			picViewerSettings.exec(NULL, "");
-		}
-		
-		// keysettings
-		if(ret != RETURN_EXIT_ALL)
-		{
-			CRemoteControlSettings bindSettings;
-			bindSettings.exec(NULL, "");
-		}
-		
-		// service settings
-		if(ret != RETURN_EXIT_ALL)
-		{
-			CServiceMenu service;
-			service.exec(NULL, "");
-		}
-
-		dprintf(DEBUG_INFO, "config file or options missing\n");
-
-		HintBox(_("Information"), loadSettingsErg ==  1 ? _("No neutrino-settings found, Using defaults.") : _("The neutrino-settings have been updated.\nNew Options will be set to default."));
-		
-		configfile.setModifiedFlag(true);
-
-		saveSetup(NEUTRINO_SETTINGS_FILE);
-	}
-	
-	// zapper
-	initZapper();
-	
-	// audio mute
-	audioMute(current_muted, true);	
-
-// Cam-Ci
-#if defined (ENABLE_CI)	
-	cDvbCi::getInstance()->SetHook(CISendMessage);	
-#endif	
-	
-	// init shutdown count
-	SHTDCNT::getInstance()->init();
-
-	// realRun loop ;-)
-	realRun();
-
-	// exitRun
-	exitRun(SHUTDOWN);
-
-	// never reached
-	return 0;
 }
 
 // quickZap
@@ -2647,1351 +2250,6 @@ void CNeutrinoApp::showInfo()
 	g_InfoViewer->showTitle(channelList->getActiveChannelNumber(), channelList->getActiveChannelName(), channelList->getActiveSatellitePosition(), channelList->getActiveChannel_ChannelID());
 
 	startSubtitles();
-}
-
-// real run
-void CNeutrinoApp::realRun(void)
-{
-	neutrino_msg_t      msg;
-	neutrino_msg_data_t data;
-
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::realRun:\n");
-
-	// clear msg 
-	g_RCInput->clearRCMsg();
-
-	// if start to standby
-	if(g_settings.power_standby)
-	{
-		standbyMode(true);
-	}
-
-	// neutrino main run loop
-	while( true ) 
-	{
-		g_RCInput->getMsg(&msg, &data, 10);	// 10 secs..
-		
-		dprintf(DEBUG_INFO, "CNeutrinoApp::realRun: msg:(0x%X) data:(0x%X)\n", msg, data);		
-
-		// mode TV/Radio/IPTV
-		if( (mode == mode_tv) || (mode == mode_radio) ) 
-		{
-			if(msg == NeutrinoMessages::SHOW_EPG) 
-			{
-				//
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-
-				g_EpgData->show(live_channel_id);
-
-				startSubtitles();
-			}
-			else if(msg == RC_epg) 
-			{
-				//
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-
-				g_EventList->exec(live_channel_id, channelList->getActiveChannelName());
-
-				startSubtitles();
-			}
-			else if( msg == RC_text ) 
-			{
-				//
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				g_RCInput->clearRCMsg();
-
-				stopSubtitles();
-				
-				tuxtx_stop_subtitle();
-
-				tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0, live_fe?live_fe->fenumber : 0 );
-
-				frameBuffer->paintBackground();
-
-				frameBuffer->blit();
-				
-				g_RCInput->clearRCMsg();
-				
-				audioMute(current_muted, true);
-
-				startSubtitles();
-			}			
-			else if(msg == (neutrino_msg_t)g_settings.key_timerlist) //timerlist
-			{
-				//
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				
-				CTimerList* Timerlist = new CTimerList;
-				Timerlist->exec(NULL, "");
-				delete Timerlist;
-				Timerlist = NULL;
-				
-				startSubtitles();
-			}		
-			else if( msg == RC_setup ) 
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-
-				//
-				mainMenu();
-
-				// restore mute symbol
-				audioMute(current_muted, true);
-
-				startSubtitles();
-			}
-			else if( msg == (neutrino_msg_t) g_settings.key_tvradio_mode)
-			{
-				if( mode == mode_tv )
-					radioMode();
-				else if( mode == mode_radio )
-					tvMode();
-			}
-			else if(( msg == (neutrino_msg_t) g_settings.key_quickzap_up ) || ( msg == (neutrino_msg_t) g_settings.key_quickzap_down ))
-			{
-				quickZap(msg);
-			}
-			else if( msg == (neutrino_msg_t) g_settings.key_subchannel_up ) 
-			{
-			   	if(g_RemoteControl->subChannels.size() > 0) 
-				{
-					stopSubtitles();
-					g_RemoteControl->subChannelUp();
-					g_InfoViewer->showSubchan(); 
-			    	} 
-			    	else if(g_settings.virtual_zap_mode) 
-				{
-					if(channelList->getSize()) 
-						showInfo();	
-				}
-				else
-				{
-					quickZap(msg);
-				}
-			}
-			else if( msg == (neutrino_msg_t) g_settings.key_subchannel_down ) 
-			{
-			   	if(g_RemoteControl->subChannels.size()> 0) 
-				{
-					stopSubtitles();
-					g_RemoteControl->subChannelDown();
-					g_InfoViewer->showSubchan();
-			    	} 
-			    	else if(g_settings.virtual_zap_mode) 
-				{
-					if(channelList->getSize()) 
-						showInfo();	
-				}
-				else
-				{
-					quickZap(msg);
-				}
-			}
-			// in case key_subchannel_up/down redefined
-			else if((msg == RC_left || msg == RC_right)) 
-			{
-				if(channelList->getSize()) 
-				{
-					showInfo();
-				}
-			}
-			else if( msg == (neutrino_msg_t) g_settings.key_zaphistory) 
-			{
-				stopSubtitles();
-				
-				// Zap-History "Bouquet"
-				int res = channelList->numericZap( msg );
-
-				startSubtitles(res < 0);
-			}
-			else if(msg == (neutrino_msg_t) g_settings.key_lastchannel) 
-			{
-				stopSubtitles();
-				
-				// Quick Zap
-				int res = channelList->numericZap( msg );
-
-				startSubtitles(res < 0);
-			}
-			else if(msg == RC_pause) // start timeshift recording
-			{
-				if (IS_WEBTV(live_channel_id))
-				{
-					CZapit::getInstance()->pausePlayBack();
-					timeshiftstatus = 1;
-				}
-				else
-				{
-					if (recDir != NULL)
-					{
-						if(g_RemoteControl->is_video_started) 
-						{		
-							// ptimeshift
-							if(recordingstatus) 
-							{
-								timeshiftstatus = recordingstatus;
-							} 
-							else
-							{
-								// timeshift
-								recordingstatus = 1;
-									
-								timeshiftstatus = recordingstatus;
-								
-								doGuiRecord(timeshiftDir, true);
-							}
-
-							// freeze audio/video
-							audioDecoder->Stop();
-							videoDecoder->Stop(false); // dont blank
-						}
-					}
-				}
-			}
-			else if( ((msg == RC_play) && timeshiftstatus)) // play timeshift
-			{
-				
-				if (IS_WEBTV(live_channel_id))
-				{
-					CZapit::getInstance()->continuePlayBack();
-					timeshiftstatus = 0;
-				}
-				else
-				{		
-					if(g_RemoteControl->is_video_started) 
-					{
-						CMoviePlayerGui tmpMoviePlayerGui;
-						CMovieInfo cMovieInfo;
-						MI_MOVIE_INFO mfile;
-
-						//
-						char fname[255];
-						int cnt = 10*1000000;
-
-						while (!strlen(rec_filename)) 
-						{
-							usleep(1000);
-							cnt -= 1000;
-
-							if (!cnt)
-								break;
-						}
-
-						if (!strlen(rec_filename))
-							return;
-
-						sprintf(fname, "%s.ts", rec_filename);
-			
-						//
-						cMovieInfo.clearMovieInfo(&mfile);
-
-						mfile.file.Name = fname;
-			
-						// extract channel epg infos
-						CEPGData epgData;
-						event_id_t epgid = 0;
-			
-						if(CSectionsd::getInstance()->getActualEPGServiceKey(live_channel_id & 0xFFFFFFFFFFFFULL, &epgData))
-							epgid = epgData.eventID;
-
-						if(epgid != 0) 
-						{
-							CShortEPGData epgdata;
-				
-							if(CSectionsd::getInstance()->getEPGidShort(epgid, &epgdata)) 
-							{
-								if (!(epgdata.title.empty())) 
-									mfile.epgTitle = epgdata.title;
-					
-								if(!(epgdata.info1.empty()))
-									mfile.epgInfo1 = epgdata.info1;
-					
-								if(!(epgdata.info2.empty()))
-									mfile.epgInfo2 = epgdata.info2;
-							}
-						}
-
-						// epgTitle
-						if(mfile.epgTitle.empty())
-						{
-							std::string Title = mfile.file.getFileName();
-							removeExtension(Title);
-							mfile.epgTitle = Title;
-						}
-
-						mfile.ytid = "timeshift";
-
-						tmpMoviePlayerGui.addToPlaylist(mfile);
-						tmpMoviePlayerGui.exec(NULL, "urlplayback");
-					}
-				}
-			}
-			else if( (msg == RC_record || msg == RC_stop) ) 
-			{
-				dprintf(DEBUG_NORMAL, "CNeutrinoApp::realRun\n");
-				
-				if(autoshift) 
-				{
-					stopAutoRecord();
-					recordingstatus = 0;
-					timeshiftstatus = 0;
-				}
-
-				// stop record if recording
-				if( recordingstatus ) 
-				{
-					if(MessageBox(_("Information"), _("You really want to to stop record ?"), mbrYes, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes)
-					{
-						CTimerd::getInstance()->stopTimerEvent(recording_id);
-						recordingstatus = 0; //FIXME???
-						CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
-					}
-				} 
-				// start record
-				else if(msg != RC_stop )
-				{
-					recordingstatus = 1;
-					doGuiRecord( g_settings.network_nfs_recordingdir, true );
-				}
-			}
-			else if( msg == RC_red ) 
-			{
-				//
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				//
-				stopSubtitles();
-				
-				//	
-				CEPGMenuHandler* redMenu = new CEPGMenuHandler();
-							
-				redMenu->exec(NULL, "");
-							
-				delete redMenu;
-				redMenu = NULL;
-				
-				//
-				startSubtitles();
-			}
-			else if( ( msg == RC_green) || ( msg == RC_audio) )
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				if (IS_WEBTV(live_channel_id))
-				{
-					CAVPIDSelectWidget * AVSelectHandler = new CAVPIDSelectWidget();
-					AVSelectHandler->exec(NULL, "");
-							
-					delete AVSelectHandler;
-					AVSelectHandler = NULL;
-				}
-				else
-				{
-					stopSubtitles();
-
-					// audio handler
-					CAudioSelectMenuHandler* audioSelectMenuHandler = new CAudioSelectMenuHandler();
-
-					audioSelectMenuHandler->exec(NULL, "");
-							
-					delete audioSelectMenuHandler;
-					audioSelectMenuHandler = NULL;
-
-					startSubtitles();
-				}
-			}
-			else if( (msg == RC_yellow || msg == RC_multifeed) )
-			{ 
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-
-				// select NVODs
-				if (!IS_WEBTV(live_channel_id))
-				{
-					selectNVOD();
-				}
-
-				startSubtitles();
-			}
-			else if( msg == RC_blue ) 
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-
-				// features
-				showUserMenu(SNeutrinoSettings::BUTTON_BLUE);
-
-				startSubtitles();
-			}
-#if defined (ENABLE_FUNCTIONKEYS)			
-			else if( msg == RC_f1 ) 
-			{
-				//
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				showUserMenu(SNeutrinoSettings::BUTTON_F1);
-				startSubtitles();
-			}
-			else if( msg == RC_f2 )
-			{
-				//
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				showUserMenu(SNeutrinoSettings::BUTTON_F2);
-				startSubtitles();
-			}
-			else if( msg == RC_f3 ) 
-			{
-				//
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
- 
-				stopSubtitles();
-				showUserMenu(SNeutrinoSettings::BUTTON_F3);
-				startSubtitles();
-			}
-			else if( msg == RC_f4 ) 
-			{
-				//
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				showUserMenu(SNeutrinoSettings::BUTTON_F4);
-				startSubtitles();
-			}
-#endif			
-			else if( msg == RC_dvbsub )
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				
-				// show list only if we have subs
-				if(live_channel)
-				{
-					if(live_channel->getSubtitleCount() > 0)
-					{
-						CDVBSubSelectMenuHandler tmpDVBSubSelectMenuHandler;
-						tmpDVBSubSelectMenuHandler.exec(NULL, "");
-					}
-				}
-				
-				startSubtitles();
-			}
-			else if( msg == (neutrino_msg_t)g_settings.key_audioplayer ) 
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				g_PluginList->startPlugin("audioplayer");
-				startSubtitles();
-			}
-			else if( msg == (neutrino_msg_t)g_settings.key_inetradio ) 	// internet radio
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-	  
-				stopSubtitles();
-				g_PluginList->startPlugin("internetradio");
-				startSubtitles();	
-			}			
-			else if( msg == (neutrino_msg_t)g_settings.key_movieplayer )	// recordsbrowser
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				g_PluginList->startPlugin("movieplayer");
-				startSubtitles();			
-			}
-			else if( msg == (neutrino_msg_t)g_settings.key_moviebrowser )	// moviebrowser
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				g_PluginList->startPlugin("moviebrowser");
-				startSubtitles();	
-			}
-			else if( msg == (neutrino_msg_t)g_settings.key_filebrowser )	// filebrowser player
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				g_PluginList->startPlugin("mediaplayer");
-				startSubtitles();	
-			}
-			else if( msg == (neutrino_msg_t)g_settings.key_pictureviewer ) 	// picture viewer
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				g_PluginList->startPlugin("picviewer");
-				startSubtitles();
-			}			
-			else if ( CRCInput::isNumeric(msg) && g_RemoteControl->director_mode ) 
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				
-				g_RemoteControl->setSubChannel(CRCInput::getNumericValue(msg));
-				
-				g_InfoViewer->showSubchan();
-				
-				startSubtitles();
-			}
-			else if (CRCInput::isNumeric(msg)) 
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				
-				channelList->numericZap( msg );
-				
-				startSubtitles();
-			}			
-			else if (CRCInput::isNumeric(msg) && (mode == mode_radio && g_settings.radiotext_enable && g_Radiotext != NULL && g_Radiotext->Rass_Show) ) 
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				// convert msg to int
-				int QKey = 0;
-				if(msg == RC_0)
-					QKey = 0;
-				else if(msg == RC_1)
-					QKey = 1;
-				else if(msg == RC_2)
-					QKey = 2;
-				else if(msg == RC_3)
-					QKey = 3;
-				else if(msg == RC_4)
-					QKey = 4;
-				else if(msg == RC_5)
-					QKey = 5;
-				else if(msg == RC_6)
-					QKey = 6;
-				else if(msg == RC_7)
-					QKey = 7;
-				else if(msg == RC_8)
-					QKey = 8;
-				else if(msg == RC_9)
-					QKey = 9;
-
-				//FIXME: think about gallery i.e QKey > 9
-
-				g_Radiotext->RassImage(0, QKey, true);
-			}			
-			else if((msg == RC_info) || ( msg == NeutrinoMessages::SHOW_INFOBAR ))
-			{
-				bool show_info = ((msg != NeutrinoMessages::SHOW_INFOBAR) || (g_InfoViewer->is_visible || g_settings.timing_infobar != 0));
-					
-				// turn on LCD display
-				CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
-					
-				if(show_info && channelList->getSize()) 
-				{
-					showInfo();
-				}
-			}
-			else if(msg == (neutrino_msg_t) g_settings.key_pip)
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				stopSubtitles();
-				
-				// first step show channels from the same TP
-				channelList->numericZap( msg );
-				
-				startSubtitles();
-			}
-			else 
-			{
-				if ( msg == RC_home )
-				{ 
-					if(g_InfoViewer->is_visible)
-						g_InfoViewer->killTitle();
-
-  					CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
-				}
-
-				//
-				handleMsg(msg, data);
-			}
-		}
-		else //other modes
-		{
-			if( msg == RC_home ) 
-			{
-				if(g_InfoViewer->is_visible)
-					g_InfoViewer->killTitle();
-
-				if( mode == mode_scart ) 
-				{
-					//wenn VCR Aufnahme dann stoppen
-					if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
-					{
-						CVCRControl::getInstance()->Stop();
-						recordingstatus = 0;
-						startNextRecording();
-					}
-
-					// Scart-Mode verlassen
-					scartMode( false );
-				}
-			}
-			else 
-			{
-				//
-				handleMsg(msg, data);
-			}
-		}
-	}
-}
-
-// handle msg
-int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
-{
-	int res = 0;
-
-	// zap complete event
-	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE) 
-	{
-		// set audio map after channel zap
-		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
-
-		if(g_settings.audio_AnalogMode < 0 || g_settings.audio_AnalogMode > 2)
-			g_settings.audio_AnalogMode = 0;
-
-		// kill shifttimer
-		if(shift_timer) 
-		{
-			g_RCInput->killTimer(shift_timer);
-			shift_timer = 0;
-		}	
-
-		// auto timeshift
-		if (!recordingstatus && g_settings.auto_timeshift) 		  
-		{
-			int delay = g_settings.auto_timeshift;
-			
-			// add shift timer
-			shift_timer = g_RCInput->addTimer( delay*1000*1000, true );
-			
-			// infoviewer handle msg
-			g_InfoViewer->handleMsg(NeutrinoMessages::EVT_RECORDMODE, recordingstatus);
-		}	
-
-		// scrambled timer
-		if(scrambled_timer) 
-		{
-			g_RCInput->killTimer(scrambled_timer);
-			scrambled_timer = 0;
-		}
-
-		scrambled_timer = g_RCInput->addTimer(10*1000*1000, true);
-		
-		// select subtitle
-		selectSubtitles();
-		
-		startSubtitles(!g_InfoViewer->is_visible);
-	}
-
-	// timer event
-	if ((msg == NeutrinoMessages::EVT_TIMER)) 
-	{
-		if(data == shift_timer) 
-		{
-			shift_timer = 0;
-			startAutoRecord(true);
-			
-			return messages_return::handled;
-		} 
-		else if(data == scrambled_timer) 
-		{
-			scrambled_timer = 0;
-			
-/*
-			if(true && (videoDecoder->getBlank() && videoDecoder->getPlayState())) 
-			{
-				const char * text = _("Scrambled channel");
-				HintBox(_("Information"), _(text), g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth (text, true) + 10, 5);
-			}
-*/
-
-			return messages_return::handled;	
-		}
-	}
-
-	// handle msg with remotecontrol/Infoviewer/Channellist/cicam
-	res = res | g_RemoteControl->handleMsg(msg, data);
-	res = res | g_InfoViewer->handleMsg(msg, data);
-	res = res | channelList->handleMsg(msg, data);
-	
-	if( res != messages_return::unhandled ) 
-	{
-		if( ( msg >= RC_WithData ) && ( msg < RC_WithData + 0x10000000 ) )
-			delete [] (unsigned char*) data;
-
-		return( res & ( 0xFFFFFFFF - messages_return::unhandled ) );
-	}
-
-	// we assume g_CamHandler free/delete data if needed
-#if defined (ENABLE_CI)	
-	res = g_CamHandler->handleMsg(msg, data);
-	if( res != messages_return::unhandled ) 
-	{
-		return(res & (0xFFFFFFFF - messages_return::unhandled));
-	}
-#endif	
-
-	// handle Keys
-	if( msg == RC_ok || msg == RC_sat || msg == RC_favorites)
-	{
-		if(g_InfoViewer->is_visible)
-			g_InfoViewer->killTitle();
-
-		if( (mode == mode_tv) || (mode == mode_radio))
-		{
-			stopSubtitles();
-
-			// pre-selected channel-num/bouquet-num/channel-mode
-			int nNewChannel = -1;
-			int old_num = 0;
-			int old_b = bouquetList->getActiveBouquetNumber();
-			int old_mode = g_settings.channel_mode;
-
-			dprintf(DEBUG_NORMAL, "\nCNeutrinoApp::handleMsg: ZAP START:\n");
-
-			if(bouquetList->Bouquets.size()) 
-			{
-				old_num = bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber();
-			}
-
-			if( msg == RC_ok ) 
-			{
-				if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
-					nNewChannel = bouquetList->Bouquets[old_b]->channelList->exec();	//with ZAP!
-				else
-					nNewChannel = bouquetList->exec(true, true);	//with zap
-			}
-			else if(msg == RC_sat) 
-			{
-				setChannelMode(LIST_MODE_SAT, mode);
-				nNewChannel = bouquetList->exec(true, true);
-			}
-			else if(msg == RC_favorites) 
-			{
-				setChannelMode(LIST_MODE_FAV, mode);
-				nNewChannel = bouquetList->exec(true, true);
-			}
-_repeat:
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP RES: nNewChannel %d\n", nNewChannel);
-
-			if(nNewChannel == -1) // on cancel
-			{
-				// restore orig. bouquet and selected channel on cancel
-				setChannelMode(old_mode, mode);
-				bouquetList->activateBouquet(old_b, false);
-				
-				if(bouquetList->Bouquets.size())
-					bouquetList->Bouquets[old_b]->channelList->setSelected(old_num - 1);
-				
-				startSubtitles(mode == mode_tv);
-			}
-			else if(nNewChannel == -3) // list mode changed
-			{ 
-				nNewChannel = bouquetList->exec(true, true);
-				goto _repeat;
-			}
-			else if(nNewChannel == -4) // list edited
-			{
-				if(old_b_id < 0) 
-					old_b_id = old_b;
-
-				CZapit::getInstance()->saveBouquets();
-			}
-
-			return messages_return::handled;
-		}
-	}
-	else if (msg == RC_standby ) 
-	{
-		if (data == 0) 
-		{
-			neutrino_msg_t new_msg;
-
-			gettimeofday(&standby_pressed_at, NULL);
-
-			if ((mode != mode_standby) && (g_settings.shutdown_real)) 
-			{
-				new_msg = NeutrinoMessages::SHUTDOWN;
-			}
-			else 
-			{
-				new_msg = (mode == mode_standby) ? NeutrinoMessages::STANDBY_OFF : NeutrinoMessages::STANDBY_ON;
-				
-				if ((g_settings.shutdown_real_rcdelay)) 
-				{
-					neutrino_msg_t      lmsg;
-					neutrino_msg_data_t ldata;
-					struct timeval      endtime;
-					time_t              seconds;
-
-					int timeout = 0;
-					int timeout1 = 0;
-
-					sscanf(g_settings.repeat_blocker, "%d", &timeout);
-					sscanf(g_settings.repeat_genericblocker, "%d", &timeout1);
-
-					if (timeout1 > timeout)
-						timeout = timeout1;
-
-					timeout += 500;
-
-					while(true) 
-					{
-						g_RCInput->getMsg_ms(&lmsg, &ldata, timeout);
-						
-						if (lmsg == RC_timeout)
-							break;
-
-						gettimeofday(&endtime, NULL);
-						seconds = endtime.tv_sec - standby_pressed_at.tv_sec;
-						
-						if (endtime.tv_usec < standby_pressed_at.tv_usec)
-							seconds--;
-						
-						if (seconds >= 1) 
-						{
-							if ( lmsg == RC_standby )
-								new_msg = NeutrinoMessages::SHUTDOWN;
-							break;
-						}
-					}
-				}
-			}
-			
-			g_RCInput->postMsg(new_msg, 0);
-			return messages_return::cancel_all | messages_return::handled;
-		}
-		
-		return messages_return::handled;
-	}
-	else if ( (msg == RC_plus) || (msg == RC_minus) )
-	{
-		setVolume(msg, (mode != mode_scart));
-		return messages_return::handled;
-	}
-	else if( msg == RC_spkr ) 
-	{
-		if( mode == mode_standby ) 
-		{
-			//switch lcd off/on
-			CVFD::getInstance()->togglePower();
-		}
-		else 
-		{
-			//mute
-			audioMute( !current_muted, true);
-		}
-		
-		return messages_return::handled;
-	}	
-	else if( msg == NeutrinoMessages::EVT_SERVICESCHANGED ) 
-	{
-		channelsInit();
-
-		channelList->adjustToChannelID(live_channel_id);
-		
-		if(old_b_id >= 0) 
-		{
-			bouquetList->activateBouquet(old_b_id, false);
-			old_b_id = -1;
-			g_RCInput->postMsg(RC_ok, 0);
-		}
-	}
-	else if( msg == NeutrinoMessages::EVT_BOUQUETSCHANGED ) 
-	{
-		channelsInit();
-
-		channelList->adjustToChannelID(live_channel_id);
-
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::EVT_RECORDMODE) 
-	{
-		// sent by rcinput, then got msg from zapit about record activated/deactivated
-		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: recordmode %s\n", ( data ) ? "on" : "off" );
-		
-		if(!recordingstatus && (!data)) 
-		{
-			if( mode == mode_standby )
-			{
-				// set standby
-				CZapit::getInstance()->setStandby(true);				
-			}
-		}
-		
-		recordingstatus = data;
-		
-		if( ( !g_InfoViewer->is_visible ) && data && !autoshift)
-			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
-
-		return messages_return::handled;
-	}
-	else if (msg == NeutrinoMessages::RECORD_START) 
-	{
-		if(autoshift) 
-		{
-			stopAutoRecord();
-			recordingstatus = 0;
-			timeshiftstatus = 0;
-		}
-
-		if (nextRecordingInfo != NULL)
-			delete[] (unsigned char *) nextRecordingInfo;
-
-		nextRecordingInfo = (CTimerd::RecordingInfo *) data;
-		startNextRecording();
-
-		return messages_return::handled | messages_return::cancel_all;
-	}
-	else if( msg == NeutrinoMessages::RECORD_STOP) 
-	{
-		if(((CTimerd::RecordingStopInfo*)data)->eventID == recording_id)
-		{ 
-			
-			if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
-			{
-				CVCRControl::getInstance()->Stop();
-					
-				recordingstatus = 0;
-				autoshift = 0;
-					
-				if(timeshiftstatus)
-				{
-					// set timeshift status to false
-					timeshiftstatus = 0;
-				}
-			}
-
-			startNextRecording();
-
-			if ( recordingstatus == 0 ) 
-			{
-				CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false);
-			}
-		}
-		else if(nextRecordingInfo != NULL) 
-		{
-			if(((CTimerd::RecordingStopInfo*)data)->eventID == nextRecordingInfo->eventID) 
-			{
-				delete[] (unsigned char *) nextRecordingInfo;
-				nextRecordingInfo = NULL;
-			}
-		}
-		
-		delete[] (unsigned char*) data;
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::EVT_PMT_CHANGED) 
-	{
-		res = messages_return::handled;
-
-		return res;
-	}
-	else if( msg == NeutrinoMessages::ZAPTO ) 
-	{
-		CTimerd::EventInfo * eventinfo;
-		eventinfo = (CTimerd::EventInfo *) data;
-		
-		if(recordingstatus == 0) 
-		{
-			bool isTVMode = CZapit::getInstance()->isChannelTVChannel(eventinfo->channel_id);
-			bool isRadioMode = CZapit::getInstance()->isChannelRadioChannel(eventinfo->channel_id);
-			bool isWEBTVMode = CZapit::getInstance()->isChannelWEBTVChannel(eventinfo->channel_id);
-
-			dvbsub_stop();
-
-			if ((isRadioMode) && (mode != mode_radio)) 
-			{
-				radioMode(false);
-			}
-			else if ( (isTVMode || isWEBTVMode) && (mode != mode_tv)) 
-			{
-				tvMode(false);
-			}
-			
-			channelList->zapToChannelID(eventinfo->channel_id);
-			//CZapit::getInstance()->zapToServiceIDNOWAIT(eventinfo->channel_id);
-		}
-		
-		delete[] (unsigned char*) data;
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::ANNOUNCE_ZAPTO) 
-	{
-		if( mode == mode_standby ) 
-		{
-			standbyMode( false );
-		}
-		
-		if( mode != mode_scart ) 
-		{
-			std::string name = _("Zapto timer in one minute");
-
-			CTimerd::TimerList tmpTimerList;
-
-			tmpTimerList.clear();
-			CTimerd::getInstance()->getTimerList( tmpTimerList );
-
-			if(tmpTimerList.size() > 0) 
-			{
-				sort( tmpTimerList.begin(), tmpTimerList.end() );
-
-				CTimerd::responseGetTimer &timer = tmpTimerList[0];
-
-				name += "\n";
-
-				std::string zAddData = CZapit::getInstance()->getChannelName( timer.channel_id ); // UTF-8
-				
-				if( zAddData.empty()) 
-				{
-					zAddData = _("Program unknown");
-				}
-
-				if(timer.epgID != 0) 
-				{
-					CEPGData epgdata;
-					zAddData += " :\n";
-					
-					if (CSectionsd::getInstance()->getEPGid(timer.epgID, timer.epg_starttime, &epgdata)) 
-					{
-						zAddData += epgdata.title;
-					}
-					else if(strlen(timer.epgTitle)!=0) 
-					{
-						zAddData += timer.epgTitle;
-					}
-				}
-				else if(strlen(timer.epgTitle)!=0) 
-				{
-					zAddData += timer.epgTitle;
-				}
-
-				name += zAddData;
-			}
-			HintBox(_("Information"), _(name.c_str()), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
-		}
-
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::ANNOUNCE_RECORD) 
-	{
-		char * lrecDir = ((CTimerd::RecordingInfo*)data)->recordingDir;
-
-		// ether-wake
-		for(int i = 0 ; i < NETWORK_NFS_NR_OF_ENTRIES ; i++) 
-		{
-			if (strcmp(g_settings.network_nfs_local_dir[i], lrecDir) == 0) 
-			{
-				dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: waking up %s (%s)\n",g_settings.network_nfs_ip[i].c_str(),lrecDir);
-					
-				std::string command = "etherwake ";
-				command += g_settings.network_nfs_mac[i];
-
-				if(system(command.c_str()) != 0)
-					perror("etherwake failed");
-				break;
-			}
-		}
-
-		//stop autoshift
-		if(autoshift) 
-		{
-			stopAutoRecord();
-			recordingstatus = 0;
-			timeshiftstatus = 0;
-		}
-
-		delete[] (unsigned char*) data;
-		
-		if( mode != mode_scart )
-			HintBox(_("Information"), _("Recording starts in a few minutes"), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
-		
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::ANNOUNCE_SLEEPTIMER) 
-	{
-		if( mode != mode_scart )
-			HintBox(_("Information"), _("Sleeptimer in 1 min"), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
-		
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::SLEEPTIMER) 
-	{
-		if(g_settings.shutdown_real)
-			exitRun(SHUTDOWN);
-		else
-			standbyMode( true );
-		
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::STANDBY_ON ) 
-	{
-		if( mode != mode_standby ) 
-		{
-			standbyMode( true );
-		}
-		
-		g_RCInput->clearRCMsg();
-		
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::STANDBY_OFF ) 
-	{
-		if( mode == mode_standby ) 
-		{
-			standbyMode( false );
-		}
-		
-		g_RCInput->clearRCMsg();
-		
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::ANNOUNCE_SHUTDOWN) 
-	{
-		if( mode != mode_scart )
-			skipShutdownTimer = (MessageBox(_("Information"), _("Box will shutdown in 1 min.\nCancel Sutdown ?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 5, false, BORDER_ALL) == mbrYes);
-	}
-	else if( msg == NeutrinoMessages::SHUTDOWN ) 
-	{
-		if(!skipShutdownTimer) 
-		{
-			exitRun(SHUTDOWN);
-		}
-		else 
-		{
-			skipShutdownTimer = false;
-		}
-		
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::REBOOT ) 
-	{
-		if(!skipShutdownTimer) 
-		{
-			exitRun(REBOOT);
-		}
-		else 
-		{
-			skipShutdownTimer = false;
-		}
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::RESTART ) 
-	{
-		if(!skipShutdownTimer) 
-		{
-			exitRun(RESTART);
-		}
-		else 
-		{
-			skipShutdownTimer = false;
-		}
-		return messages_return::handled;
-	}
-	else if ( msg == NeutrinoMessages::EVT_POPUP ) 
-	{
-		if (mode != mode_scart)
-			HintBox(_("Information"), (const char *) data); // UTF-8
-		
-		delete[] (unsigned char*) data;
-		
-		return messages_return::handled;
-	}
-	else if (msg == NeutrinoMessages::EVT_EXTMSG) 
-	{
-		if (mode != mode_scart)
-			MessageBox(_("Information"), (const char *) data, mbrBack, mbBack, NEUTRINO_ICON_INFO); // UTF-8
-			
-		delete[] (unsigned char*) data;
-		
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::REMIND) 
-	{
-		std::string text = (char*)data;
-		std::string::size_type pos;
-		
-		while((pos = text.find('/')) != std::string::npos)
-		{
-			text[pos] = '\n';
-		}
-		
-		if( mode != mode_scart )
-			MessageBox(_("Reminder"), text.c_str(), mbrBack, mbBack, NEUTRINO_ICON_INFO); // UTF-8
-			
-		delete[] (unsigned char*) data;
-		
-		return messages_return::handled;
-	}
-	else if (msg == NeutrinoMessages::LOCK_RC) 
-	{
-		this->rcLock->exec(NULL, CRCLock::NO_USER_INPUT);
-
-		return messages_return::handled;
-	}
-	else if( msg == NeutrinoMessages::CHANGEMODE ) 
-	{
-		if((data & mode_mask) != mode_radio)
-		{		  
-			if (g_Radiotext)
-			{
-				delete g_Radiotext;
-				g_Radiotext = NULL;
-			}
-		}
-
-		if((data & mode_mask) == mode_radio) 
-		{
-			if( mode != mode_radio ) 
-			{
-				if((data & norezap) == norezap)
-					radioMode(false);
-				else
-					radioMode(true);
-	
-				//FIXME: this sucks when no DVB device is present
-				if (g_settings.radiotext_enable && g_Radiotext)
-					g_Radiotext->setPid(g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].pid);				
-			}
-		}
-		
-		if((data & mode_mask) == mode_tv) 
-		{
-			if( mode != mode_tv ) 
-			{
-				if((data & norezap) == norezap)
-					tvMode(false);
-				else
-					tvMode(true);
-			}
-		}
-		
-		if((data &mode_mask) == mode_standby) 
-		{
-			if(mode != mode_standby)
-				standbyMode( true );
-		}
-		
-		if((data &mode_mask) == mode_audio) 
-		{
-			lastMode = mode;
-			mode = mode_audio;
-		}
-		
-		if((data &mode_mask) == mode_pic) 
-		{
-			lastMode = mode;
-			mode = mode_pic;
-		}
-		
-		if((data &mode_mask) == mode_ts) 
-		{
-			lastMode = mode;
-			mode = mode_ts;
-		}
-	}	
-	else if( msg == NeutrinoMessages::VCR_ON ) 
-	{
-		if( mode != mode_scart ) 
-		{
-			scartMode( true );
-		}
-		else
-		{
-			CVFD::getInstance()->setMode(CVFD::MODE_SCART);
-		}
-	}	
-	else if( msg == NeutrinoMessages::VCR_OFF ) 
-	{
-		if( mode == mode_scart ) 
-		{
-			scartMode( false );
-		}
-	}	
-	else if (msg == NeutrinoMessages::EVT_START_PLUGIN) 
-	{
-		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: start Plugin: %s\n", (char *)data);
-		
-		g_PluginList->startPlugin((const char *)data);
-		
-		delete[] (unsigned char*) data;
-		return messages_return::handled;
-	}
-	else if (msg == NeutrinoMessages::EVT_SERVICES_UPD) 
-	{
-		channelsInit();
-
-		channelList->adjustToChannelID(live_channel_id);
-	}
-#if !defined (__sh__)
-	else if (msg == NeutrinoMessages::EVT_HDMI_CEC_VIEW_ON) 
-	{
-		if(g_settings.hdmi_cec_view_on)
-			hdmi_cec::getInstance()->SetCECAutoView(g_settings.hdmi_cec_view_on);
-
-		return messages_return::handled;
-	}
-	else if (msg == NeutrinoMessages::EVT_HDMI_CEC_STANDBY) 
-	{
-		if(g_settings.hdmi_cec_standby)
-			  hdmi_cec::getInstance()->SetCECAutoStandby(g_settings.hdmi_cec_standby);
-
-		return messages_return::handled;
-	}
-#endif
-
-	//
-	if ((msg >= RC_WithData) && (msg < RC_WithData + 0x10000000))
-		delete[] (unsigned char*) data;
-
-	return messages_return::unhandled;
 }
 
 // exit run
@@ -4739,8 +2997,6 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		wasshift = false;
 
 		startSubtitles();
-		
-		//g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 	}
 }
 
@@ -4886,7 +3142,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 				
 		return RETURN_REPAINT;	
 	}
-	if(actionKey == "plugins")
+	else if(actionKey == "plugins")
 	{
 		if(parent)
 			parent->hide();
@@ -4904,28 +3160,6 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 
 	return returnval;
-}
-
-// changeNotify - features menu recording start / stop
-bool CNeutrinoApp::changeNotify(const std::string& OptionName, void */*data*/)
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::changeNotify\n");
-
-	if ( (OptionName == _("Start"))  || (OptionName == _("Recording")) )
-	{
-		if(g_RemoteControl->is_video_started) 
-		{
-			bool res = doGuiRecord(NULL, (OptionName == _("Recording")));
-			return res;
-		}
-		else 
-		{
-			recordingstatus = 0;
-			return false;
-		}
-	}
-
-	return false;
 }
 
 // stop subtitle
@@ -5189,6 +3423,1745 @@ void CNeutrinoApp::unlockPlayBack(void)
 
 	// start subtitles
 	startSubtitles();
+}
+
+// handle msg
+int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
+{
+	int res = 0;
+
+	// zap complete event
+	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE) 
+	{
+		// set audio map after channel zap
+		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
+
+		if(g_settings.audio_AnalogMode < 0 || g_settings.audio_AnalogMode > 2)
+			g_settings.audio_AnalogMode = 0;
+
+		// kill shifttimer
+		if(shift_timer) 
+		{
+			g_RCInput->killTimer(shift_timer);
+			shift_timer = 0;
+		}	
+
+		// auto timeshift
+		if (!recordingstatus && g_settings.auto_timeshift) 		  
+		{
+			int delay = g_settings.auto_timeshift;
+			
+			// add shift timer
+			shift_timer = g_RCInput->addTimer( delay*1000*1000, true );
+			
+			// infoviewer handle msg
+			g_InfoViewer->handleMsg(NeutrinoMessages::EVT_RECORDMODE, recordingstatus);
+		}	
+
+		// scrambled timer
+		if(scrambled_timer) 
+		{
+			g_RCInput->killTimer(scrambled_timer);
+			scrambled_timer = 0;
+		}
+
+		scrambled_timer = g_RCInput->addTimer(10*1000*1000, true);
+		
+		// select subtitle
+		selectSubtitles();
+		
+		startSubtitles(!g_InfoViewer->is_visible);
+	}
+
+	// timer event
+	if ((msg == NeutrinoMessages::EVT_TIMER)) 
+	{
+		if(data == shift_timer) 
+		{
+			shift_timer = 0;
+			startAutoRecord(true);
+			
+			return messages_return::handled;
+		} 
+		else if(data == scrambled_timer) 
+		{
+			scrambled_timer = 0;
+			
+#ifdef USE_SCRAMBLED_TIMER
+			if(true && (videoDecoder->getBlank() && videoDecoder->getPlayState())) 
+			{
+				const char * text = _("Scrambled channel");
+				HintBox(_("Information"), _(text), g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth (text, true) + 10, 5);
+			}
+#endif
+
+			return messages_return::handled;	
+		}
+	}
+
+	// handle msg with remotecontrol/Infoviewer/Channellist/cicam
+	res = res | g_RemoteControl->handleMsg(msg, data);
+	res = res | g_InfoViewer->handleMsg(msg, data);
+	res = res | channelList->handleMsg(msg, data);
+	
+	if( res != messages_return::unhandled ) 
+	{
+		if( ( msg >= RC_WithData ) && ( msg < RC_WithData + 0x10000000 ) )
+			delete [] (unsigned char*) data;
+
+		return( res & ( 0xFFFFFFFF - messages_return::unhandled ) );
+	}
+
+	// we assume g_CamHandler free/delete data if needed
+#if defined (ENABLE_CI)	
+	res = g_CamHandler->handleMsg(msg, data);
+	if( res != messages_return::unhandled ) 
+	{
+		return(res & (0xFFFFFFFF - messages_return::unhandled));
+	}
+#endif	
+
+	// handle Keys
+	if( msg == RC_ok || msg == RC_sat || msg == RC_favorites)
+	{
+		if(g_InfoViewer->is_visible)
+			g_InfoViewer->killTitle();
+
+		if( (mode == mode_tv) || (mode == mode_radio))
+		{
+			stopSubtitles();
+
+			// pre-selected channel-num/bouquet-num/channel-mode
+			int nNewChannel = -1;
+			int old_num = 0;
+			int old_b = bouquetList->getActiveBouquetNumber();
+			int old_mode = g_settings.channel_mode;
+
+			dprintf(DEBUG_NORMAL, "\nCNeutrinoApp::handleMsg: ZAP START:\n");
+
+			if(bouquetList->Bouquets.size()) 
+			{
+				old_num = bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber();
+			}
+
+			if( msg == RC_ok ) 
+			{
+				if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
+					nNewChannel = bouquetList->Bouquets[old_b]->channelList->exec();	//with ZAP!
+				else
+					nNewChannel = bouquetList->exec(true, true);	//with zap
+			}
+			else if(msg == RC_sat) 
+			{
+				setChannelMode(LIST_MODE_SAT, mode);
+				nNewChannel = bouquetList->exec(true, true);
+			}
+			else if(msg == RC_favorites) 
+			{
+				setChannelMode(LIST_MODE_FAV, mode);
+				nNewChannel = bouquetList->exec(true, true);
+			}
+_repeat:
+			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP RES: nNewChannel %d\n", nNewChannel);
+
+			if(nNewChannel == -1) // on cancel
+			{
+				// restore orig. bouquet and selected channel on cancel
+				setChannelMode(old_mode, mode);
+				bouquetList->activateBouquet(old_b, false);
+				
+				if(bouquetList->Bouquets.size())
+					bouquetList->Bouquets[old_b]->channelList->setSelected(old_num - 1);
+				
+				startSubtitles(mode == mode_tv);
+			}
+			else if(nNewChannel == -3) // list mode changed
+			{ 
+				nNewChannel = bouquetList->exec(true, true);
+				goto _repeat;
+			}
+			else if(nNewChannel == -4) // list edited
+			{
+				if(old_b_id < 0) 
+					old_b_id = old_b;
+
+				CZapit::getInstance()->saveBouquets();
+			}
+
+			return messages_return::handled;
+		}
+	}
+	else if (msg == RC_standby ) 
+	{
+		if (data == 0) 
+		{
+			neutrino_msg_t new_msg;
+
+			gettimeofday(&standby_pressed_at, NULL);
+
+			if ((mode != mode_standby) && (g_settings.shutdown_real)) 
+			{
+				new_msg = NeutrinoMessages::SHUTDOWN;
+			}
+			else 
+			{
+				new_msg = (mode == mode_standby) ? NeutrinoMessages::STANDBY_OFF : NeutrinoMessages::STANDBY_ON;
+				
+				if ((g_settings.shutdown_real_rcdelay)) 
+				{
+					neutrino_msg_t      lmsg;
+					neutrino_msg_data_t ldata;
+					struct timeval      endtime;
+					time_t              seconds;
+
+					int timeout = 0;
+					int timeout1 = 0;
+
+					sscanf(g_settings.repeat_blocker, "%d", &timeout);
+					sscanf(g_settings.repeat_genericblocker, "%d", &timeout1);
+
+					if (timeout1 > timeout)
+						timeout = timeout1;
+
+					timeout += 500;
+
+					while(true) 
+					{
+						g_RCInput->getMsg_ms(&lmsg, &ldata, timeout);
+						
+						if (lmsg == RC_timeout)
+							break;
+
+						gettimeofday(&endtime, NULL);
+						seconds = endtime.tv_sec - standby_pressed_at.tv_sec;
+						
+						if (endtime.tv_usec < standby_pressed_at.tv_usec)
+							seconds--;
+						
+						if (seconds >= 1) 
+						{
+							if ( lmsg == RC_standby )
+								new_msg = NeutrinoMessages::SHUTDOWN;
+							break;
+						}
+					}
+				}
+			}
+			
+			g_RCInput->postMsg(new_msg, 0);
+			return messages_return::cancel_all | messages_return::handled;
+		}
+		
+		return messages_return::handled;
+	}
+	else if ( (msg == RC_plus) || (msg == RC_minus) )
+	{
+		setVolume(msg, (mode != mode_scart));
+		return messages_return::handled;
+	}
+	else if( msg == RC_spkr ) 
+	{
+		if( mode == mode_standby ) 
+		{
+			//switch lcd off/on
+			CVFD::getInstance()->togglePower();
+		}
+		else 
+		{
+			//mute
+			audioMute( !current_muted, true);
+		}
+		
+		return messages_return::handled;
+	}	
+	else if( msg == NeutrinoMessages::EVT_SERVICESCHANGED ) 
+	{
+		channelsInit();
+
+		channelList->adjustToChannelID(live_channel_id);
+		
+		if(old_b_id >= 0) 
+		{
+			bouquetList->activateBouquet(old_b_id, false);
+			old_b_id = -1;
+			g_RCInput->postMsg(RC_ok, 0);
+		}
+	}
+	else if( msg == NeutrinoMessages::EVT_BOUQUETSCHANGED ) 
+	{
+		channelsInit();
+
+		channelList->adjustToChannelID(live_channel_id);
+
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::EVT_RECORDMODE) 
+	{
+		// sent by rcinput, then got msg from zapit about record activated/deactivated
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: recordmode %s\n", ( data ) ? "on" : "off" );
+		
+		if(!recordingstatus && (!data)) 
+		{
+			if( mode == mode_standby )
+			{
+				// set standby
+				CZapit::getInstance()->setStandby(true);				
+			}
+		}
+		
+		recordingstatus = data;
+		
+		if( ( !g_InfoViewer->is_visible ) && data && !autoshift)
+			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
+
+		return messages_return::handled;
+	}
+	else if (msg == NeutrinoMessages::RECORD_START) 
+	{
+		if(autoshift) 
+		{
+			stopAutoRecord();
+			recordingstatus = 0;
+			timeshiftstatus = 0;
+		}
+
+		if (nextRecordingInfo != NULL)
+			delete[] (unsigned char *) nextRecordingInfo;
+
+		nextRecordingInfo = (CTimerd::RecordingInfo *) data;
+		startNextRecording();
+
+		return messages_return::handled | messages_return::cancel_all;
+	}
+	else if( msg == NeutrinoMessages::RECORD_STOP) 
+	{
+		if(((CTimerd::RecordingStopInfo*)data)->eventID == recording_id)
+		{ 
+			
+			if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
+			{
+				CVCRControl::getInstance()->Stop();
+					
+				recordingstatus = 0;
+				autoshift = 0;
+					
+				if(timeshiftstatus)
+				{
+					// set timeshift status to false
+					timeshiftstatus = 0;
+				}
+			}
+
+			startNextRecording();
+
+			if ( recordingstatus == 0 ) 
+			{
+				CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false);
+			}
+		}
+		else if(nextRecordingInfo != NULL) 
+		{
+			if(((CTimerd::RecordingStopInfo*)data)->eventID == nextRecordingInfo->eventID) 
+			{
+				delete[] (unsigned char *) nextRecordingInfo;
+				nextRecordingInfo = NULL;
+			}
+		}
+		
+		delete[] (unsigned char*) data;
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::EVT_PMT_CHANGED) 
+	{
+		res = messages_return::handled;
+
+		return res;
+	}
+	else if( msg == NeutrinoMessages::ZAPTO ) 
+	{
+		CTimerd::EventInfo * eventinfo;
+		eventinfo = (CTimerd::EventInfo *) data;
+		
+		if(recordingstatus == 0) 
+		{
+			bool isTVMode = CZapit::getInstance()->isChannelTVChannel(eventinfo->channel_id);
+			bool isRadioMode = CZapit::getInstance()->isChannelRadioChannel(eventinfo->channel_id);
+			bool isWEBTVMode = CZapit::getInstance()->isChannelWEBTVChannel(eventinfo->channel_id);
+
+			dvbsub_stop();
+
+			if ((isRadioMode) && (mode != mode_radio)) 
+			{
+				radioMode(false);
+			}
+			else if ( (isTVMode || isWEBTVMode) && (mode != mode_tv)) 
+			{
+				tvMode(false);
+			}
+			
+			channelList->zapToChannelID(eventinfo->channel_id);
+			//CZapit::getInstance()->zapToServiceIDNOWAIT(eventinfo->channel_id);
+		}
+		
+		delete[] (unsigned char*) data;
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::ANNOUNCE_ZAPTO) 
+	{
+		if( mode == mode_standby ) 
+		{
+			standbyMode( false );
+		}
+		
+		if( mode != mode_scart ) 
+		{
+			std::string name = _("Zapto timer in one minute");
+
+			CTimerd::TimerList tmpTimerList;
+
+			tmpTimerList.clear();
+			CTimerd::getInstance()->getTimerList( tmpTimerList );
+
+			if(tmpTimerList.size() > 0) 
+			{
+				sort( tmpTimerList.begin(), tmpTimerList.end() );
+
+				CTimerd::responseGetTimer &timer = tmpTimerList[0];
+
+				name += "\n";
+
+				std::string zAddData = CZapit::getInstance()->getChannelName( timer.channel_id ); // UTF-8
+				
+				if( zAddData.empty()) 
+				{
+					zAddData = _("Program unknown");
+				}
+
+				if(timer.epgID != 0) 
+				{
+					CEPGData epgdata;
+					zAddData += " :\n";
+					
+					if (CSectionsd::getInstance()->getEPGid(timer.epgID, timer.epg_starttime, &epgdata)) 
+					{
+						zAddData += epgdata.title;
+					}
+					else if(strlen(timer.epgTitle)!=0) 
+					{
+						zAddData += timer.epgTitle;
+					}
+				}
+				else if(strlen(timer.epgTitle)!=0) 
+				{
+					zAddData += timer.epgTitle;
+				}
+
+				name += zAddData;
+			}
+			HintBox(_("Information"), _(name.c_str()), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
+		}
+
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::ANNOUNCE_RECORD) 
+	{
+		char * lrecDir = ((CTimerd::RecordingInfo*)data)->recordingDir;
+
+		// ether-wake
+		for(int i = 0 ; i < NETWORK_NFS_NR_OF_ENTRIES ; i++) 
+		{
+			if (strcmp(g_settings.network_nfs_local_dir[i], lrecDir) == 0) 
+			{
+				dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: waking up %s (%s)\n",g_settings.network_nfs_ip[i].c_str(),lrecDir);
+					
+				std::string command = "etherwake ";
+				command += g_settings.network_nfs_mac[i];
+
+				if(system(command.c_str()) != 0)
+					perror("etherwake failed");
+				break;
+			}
+		}
+
+		//stop autoshift
+		if(autoshift) 
+		{
+			stopAutoRecord();
+			recordingstatus = 0;
+			timeshiftstatus = 0;
+		}
+
+		delete[] (unsigned char*) data;
+		
+		if( mode != mode_scart )
+			HintBox(_("Information"), _("Recording starts in a few minutes"), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
+		
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::ANNOUNCE_SLEEPTIMER) 
+	{
+		if( mode != mode_scart )
+			HintBox(_("Information"), _("Sleeptimer in 1 min"), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
+		
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::SLEEPTIMER) 
+	{
+		if(g_settings.shutdown_real)
+			exitRun(SHUTDOWN);
+		else
+			standbyMode( true );
+		
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::STANDBY_ON ) 
+	{
+		if( mode != mode_standby ) 
+		{
+			standbyMode( true );
+		}
+		
+		g_RCInput->clearRCMsg();
+		
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::STANDBY_OFF ) 
+	{
+		if( mode == mode_standby ) 
+		{
+			standbyMode( false );
+		}
+		
+		g_RCInput->clearRCMsg();
+		
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::ANNOUNCE_SHUTDOWN) 
+	{
+		if( mode != mode_scart )
+			skipShutdownTimer = (MessageBox(_("Information"), _("Box will shutdown in 1 min.\nCancel Sutdown ?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 5, false, BORDER_ALL) == mbrYes);
+	}
+	else if( msg == NeutrinoMessages::SHUTDOWN ) 
+	{
+		if(!skipShutdownTimer) 
+		{
+			exitRun(SHUTDOWN);
+		}
+		else 
+		{
+			skipShutdownTimer = false;
+		}
+		
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::REBOOT ) 
+	{
+		if(!skipShutdownTimer) 
+		{
+			exitRun(REBOOT);
+		}
+		else 
+		{
+			skipShutdownTimer = false;
+		}
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::RESTART ) 
+	{
+		if(!skipShutdownTimer) 
+		{
+			exitRun(RESTART);
+		}
+		else 
+		{
+			skipShutdownTimer = false;
+		}
+		return messages_return::handled;
+	}
+	else if ( msg == NeutrinoMessages::EVT_POPUP ) 
+	{
+		if (mode != mode_scart)
+			HintBox(_("Information"), (const char *) data); // UTF-8
+		
+		delete[] (unsigned char*) data;
+		
+		return messages_return::handled;
+	}
+	else if (msg == NeutrinoMessages::EVT_EXTMSG) 
+	{
+		if (mode != mode_scart)
+			MessageBox(_("Information"), (const char *) data, mbrBack, mbBack, NEUTRINO_ICON_INFO); // UTF-8
+			
+		delete[] (unsigned char*) data;
+		
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::REMIND) 
+	{
+		std::string text = (char*)data;
+		std::string::size_type pos;
+		
+		while((pos = text.find('/')) != std::string::npos)
+		{
+			text[pos] = '\n';
+		}
+		
+		if( mode != mode_scart )
+			MessageBox(_("Reminder"), text.c_str(), mbrBack, mbBack, NEUTRINO_ICON_INFO); // UTF-8
+			
+		delete[] (unsigned char*) data;
+		
+		return messages_return::handled;
+	}
+	else if (msg == NeutrinoMessages::LOCK_RC) 
+	{
+		this->rcLock->exec(NULL, CRCLock::NO_USER_INPUT);
+
+		return messages_return::handled;
+	}
+	else if( msg == NeutrinoMessages::CHANGEMODE ) 
+	{
+		if((data & mode_mask) != mode_radio)
+		{		  
+			if (g_Radiotext)
+			{
+				delete g_Radiotext;
+				g_Radiotext = NULL;
+			}
+		}
+
+		if((data & mode_mask) == mode_radio) 
+		{
+			if( mode != mode_radio ) 
+			{
+				if((data & norezap) == norezap)
+					radioMode(false);
+				else
+					radioMode(true);
+	
+				//FIXME: this sucks when no DVB device is present
+				if (g_settings.radiotext_enable && g_Radiotext)
+					g_Radiotext->setPid(g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].pid);				
+			}
+		}
+		
+		if((data & mode_mask) == mode_tv) 
+		{
+			if( mode != mode_tv ) 
+			{
+				if((data & norezap) == norezap)
+					tvMode(false);
+				else
+					tvMode(true);
+			}
+		}
+		
+		if((data &mode_mask) == mode_standby) 
+		{
+			if(mode != mode_standby)
+				standbyMode( true );
+		}
+		
+		if((data &mode_mask) == mode_audio) 
+		{
+			lastMode = mode;
+			mode = mode_audio;
+		}
+		
+		if((data &mode_mask) == mode_pic) 
+		{
+			lastMode = mode;
+			mode = mode_pic;
+		}
+		
+		if((data &mode_mask) == mode_ts) 
+		{
+			lastMode = mode;
+			mode = mode_ts;
+		}
+	}	
+	else if( msg == NeutrinoMessages::VCR_ON ) 
+	{
+		if( mode != mode_scart ) 
+		{
+			scartMode( true );
+		}
+		else
+		{
+			CVFD::getInstance()->setMode(CVFD::MODE_SCART);
+		}
+	}	
+	else if( msg == NeutrinoMessages::VCR_OFF ) 
+	{
+		if( mode == mode_scart ) 
+		{
+			scartMode( false );
+		}
+	}	
+	else if (msg == NeutrinoMessages::EVT_START_PLUGIN) 
+	{
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: start Plugin: %s\n", (char *)data);
+		
+		g_PluginList->startPlugin((const char *)data);
+		
+		delete[] (unsigned char*) data;
+		return messages_return::handled;
+	}
+	else if (msg == NeutrinoMessages::EVT_SERVICES_UPD) 
+	{
+		channelsInit();
+
+		channelList->adjustToChannelID(live_channel_id);
+	}
+#if !defined (__sh__)
+	else if (msg == NeutrinoMessages::EVT_HDMI_CEC_VIEW_ON) 
+	{
+		if(g_settings.hdmi_cec_view_on)
+			hdmi_cec::getInstance()->SetCECAutoView(g_settings.hdmi_cec_view_on);
+
+		return messages_return::handled;
+	}
+	else if (msg == NeutrinoMessages::EVT_HDMI_CEC_STANDBY) 
+	{
+		if(g_settings.hdmi_cec_standby)
+			  hdmi_cec::getInstance()->SetCECAutoStandby(g_settings.hdmi_cec_standby);
+
+		return messages_return::handled;
+	}
+#endif
+
+	//
+	if ((msg >= RC_WithData) && (msg < RC_WithData + 0x10000000))
+		delete[] (unsigned char*) data;
+
+	return messages_return::unhandled;
+}
+
+// real run
+void CNeutrinoApp::realRun(void)
+{
+	neutrino_msg_t      msg;
+	neutrino_msg_data_t data;
+
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::realRun:\n");
+
+	// clear msg 
+	g_RCInput->clearRCMsg();
+
+	// if start to standby
+	if(g_settings.power_standby)
+	{
+		standbyMode(true);
+	}
+
+	// neutrino main run loop
+	while( true ) 
+	{
+		g_RCInput->getMsg(&msg, &data, 10);	// 10 secs..
+		
+		dprintf(DEBUG_INFO, "CNeutrinoApp::realRun: msg:(0x%X) data:(0x%X)\n", msg, data);		
+
+		// mode TV/Radio/IPTV
+		if( (mode == mode_tv) || (mode == mode_radio) ) 
+		{
+			if(msg == NeutrinoMessages::SHOW_EPG) 
+			{
+				//
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+
+				g_EpgData->show(live_channel_id);
+
+				startSubtitles();
+			}
+			else if(msg == RC_epg) 
+			{
+				//
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+
+				g_EventList->exec(live_channel_id, channelList->getActiveChannelName());
+
+				startSubtitles();
+			}
+			else if( msg == RC_text ) 
+			{
+				//
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				g_RCInput->clearRCMsg();
+
+				stopSubtitles();
+				
+				tuxtx_stop_subtitle();
+
+				tuxtx_main(g_RemoteControl->current_PIDs.PIDs.vtxtpid, 0, live_fe?live_fe->fenumber : 0 );
+
+				frameBuffer->paintBackground();
+
+				frameBuffer->blit();
+				
+				g_RCInput->clearRCMsg();
+				
+				audioMute(current_muted, true);
+
+				startSubtitles();
+			}			
+			else if(msg == (neutrino_msg_t)g_settings.key_timerlist) //timerlist
+			{
+				//
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				
+				CTimerList* Timerlist = new CTimerList;
+				Timerlist->exec(NULL, "");
+				delete Timerlist;
+				Timerlist = NULL;
+				
+				startSubtitles();
+			}		
+			else if( msg == RC_setup ) 
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+
+				//
+				mainMenu();
+
+				// restore mute symbol
+				audioMute(current_muted, true);
+
+				startSubtitles();
+			}
+			else if( msg == (neutrino_msg_t) g_settings.key_tvradio_mode)
+			{
+				if( mode == mode_tv )
+					radioMode();
+				else if( mode == mode_radio )
+					tvMode();
+			}
+			else if(( msg == (neutrino_msg_t) g_settings.key_quickzap_up ) || ( msg == (neutrino_msg_t) g_settings.key_quickzap_down ))
+			{
+				quickZap(msg);
+			}
+			else if( msg == (neutrino_msg_t) g_settings.key_subchannel_up ) 
+			{
+			   	if(g_RemoteControl->subChannels.size() > 0) 
+				{
+					stopSubtitles();
+					g_RemoteControl->subChannelUp();
+					g_InfoViewer->showSubchan(); 
+			    	} 
+			    	else if(g_settings.virtual_zap_mode) 
+				{
+					if(channelList->getSize()) 
+						showInfo();	
+				}
+				else
+				{
+					quickZap(msg);
+				}
+			}
+			else if( msg == (neutrino_msg_t) g_settings.key_subchannel_down ) 
+			{
+			   	if(g_RemoteControl->subChannels.size()> 0) 
+				{
+					stopSubtitles();
+					g_RemoteControl->subChannelDown();
+					g_InfoViewer->showSubchan();
+			    	} 
+			    	else if(g_settings.virtual_zap_mode) 
+				{
+					if(channelList->getSize()) 
+						showInfo();	
+				}
+				else
+				{
+					quickZap(msg);
+				}
+			}
+			// in case key_subchannel_up/down redefined
+			else if((msg == RC_left || msg == RC_right)) 
+			{
+				if(channelList->getSize()) 
+				{
+					showInfo();
+				}
+			}
+			else if( msg == (neutrino_msg_t) g_settings.key_zaphistory) 
+			{
+				stopSubtitles();
+				
+				// Zap-History "Bouquet"
+				int res = channelList->numericZap( msg );
+
+				startSubtitles(res < 0);
+			}
+			else if(msg == (neutrino_msg_t) g_settings.key_lastchannel) 
+			{
+				stopSubtitles();
+				
+				// Quick Zap
+				int res = channelList->numericZap( msg );
+
+				startSubtitles(res < 0);
+			}
+			else if(msg == RC_pause) // start timeshift recording
+			{
+				if (IS_WEBTV(live_channel_id))
+				{
+					CZapit::getInstance()->pausePlayBack();
+					timeshiftstatus = 1;
+				}
+				else
+				{
+					if (recDir != NULL)
+					{
+						if(g_RemoteControl->is_video_started) 
+						{		
+							// ptimeshift
+							if(recordingstatus) 
+							{
+								timeshiftstatus = recordingstatus;
+							} 
+							else
+							{
+								// timeshift
+								recordingstatus = 1;
+									
+								timeshiftstatus = recordingstatus;
+								
+								doGuiRecord(timeshiftDir, true);
+							}
+
+							// freeze audio/video
+							audioDecoder->Stop();
+							videoDecoder->Stop(false); // dont blank
+						}
+					}
+				}
+			}
+			else if( ((msg == RC_play) && timeshiftstatus)) // play timeshift
+			{
+				
+				if (IS_WEBTV(live_channel_id))
+				{
+					CZapit::getInstance()->continuePlayBack();
+					timeshiftstatus = 0;
+				}
+				else
+				{		
+					if(g_RemoteControl->is_video_started) 
+					{
+						CMoviePlayerGui tmpMoviePlayerGui;
+						CMovieInfo cMovieInfo;
+						MI_MOVIE_INFO mfile;
+
+						//
+						char fname[255];
+						int cnt = 10*1000000;
+
+						while (!strlen(rec_filename)) 
+						{
+							usleep(1000);
+							cnt -= 1000;
+
+							if (!cnt)
+								break;
+						}
+
+						if (!strlen(rec_filename))
+							return;
+
+						sprintf(fname, "%s.ts", rec_filename);
+			
+						//
+						cMovieInfo.clearMovieInfo(&mfile);
+
+						mfile.file.Name = fname;
+			
+						// extract channel epg infos
+						CEPGData epgData;
+						event_id_t epgid = 0;
+			
+						if(CSectionsd::getInstance()->getActualEPGServiceKey(live_channel_id & 0xFFFFFFFFFFFFULL, &epgData))
+							epgid = epgData.eventID;
+
+						if(epgid != 0) 
+						{
+							CShortEPGData epgdata;
+				
+							if(CSectionsd::getInstance()->getEPGidShort(epgid, &epgdata)) 
+							{
+								if (!(epgdata.title.empty())) 
+									mfile.epgTitle = epgdata.title;
+					
+								if(!(epgdata.info1.empty()))
+									mfile.epgInfo1 = epgdata.info1;
+					
+								if(!(epgdata.info2.empty()))
+									mfile.epgInfo2 = epgdata.info2;
+							}
+						}
+
+						// epgTitle
+						if(mfile.epgTitle.empty())
+						{
+							std::string Title = mfile.file.getFileName();
+							removeExtension(Title);
+							mfile.epgTitle = Title;
+						}
+
+						mfile.ytid = "timeshift";
+
+						tmpMoviePlayerGui.addToPlaylist(mfile);
+						tmpMoviePlayerGui.exec(NULL, "urlplayback");
+					}
+				}
+			}
+			else if( (msg == RC_record || msg == RC_stop) ) 
+			{
+				dprintf(DEBUG_NORMAL, "CNeutrinoApp::realRun\n");
+				
+				if(autoshift) 
+				{
+					stopAutoRecord();
+					recordingstatus = 0;
+					timeshiftstatus = 0;
+				}
+
+				// stop record if recording
+				if( recordingstatus ) 
+				{
+					if(MessageBox(_("Information"), _("You really want to to stop record ?"), mbrYes, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes)
+					{
+						CTimerd::getInstance()->stopTimerEvent(recording_id);
+						recordingstatus = 0; //FIXME???
+						CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
+					}
+				} 
+				// start record
+				else if(msg != RC_stop )
+				{
+					recordingstatus = 1;
+					doGuiRecord( g_settings.network_nfs_recordingdir, true );
+				}
+			}
+			else if( msg == RC_red ) 
+			{
+				//
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				//
+				stopSubtitles();
+				
+				//	
+				CEPGMenuHandler* redMenu = new CEPGMenuHandler();
+							
+				redMenu->exec(NULL, "");
+							
+				delete redMenu;
+				redMenu = NULL;
+				
+				//
+				startSubtitles();
+			}
+			else if( ( msg == RC_green) || ( msg == RC_audio) )
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				if (IS_WEBTV(live_channel_id))
+				{
+					CAVPIDSelectWidget * AVSelectHandler = new CAVPIDSelectWidget();
+					AVSelectHandler->exec(NULL, "");
+							
+					delete AVSelectHandler;
+					AVSelectHandler = NULL;
+				}
+				else
+				{
+					stopSubtitles();
+
+					// audio handler
+					CAudioSelectMenuHandler* audioSelectMenuHandler = new CAudioSelectMenuHandler();
+
+					audioSelectMenuHandler->exec(NULL, "");
+							
+					delete audioSelectMenuHandler;
+					audioSelectMenuHandler = NULL;
+
+					startSubtitles();
+				}
+			}
+			else if( (msg == RC_yellow || msg == RC_multifeed) )
+			{ 
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+
+				// select NVODs
+				if (!IS_WEBTV(live_channel_id))
+				{
+					selectNVOD();
+				}
+
+				startSubtitles();
+			}
+			else if( msg == RC_blue ) 
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+
+				// features
+				showUserMenu(SNeutrinoSettings::BUTTON_BLUE);
+
+				startSubtitles();
+			}
+#if defined (ENABLE_FUNCTIONKEYS)			
+			else if( msg == RC_f1 ) 
+			{
+				//
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				showUserMenu(SNeutrinoSettings::BUTTON_F1);
+				startSubtitles();
+			}
+			else if( msg == RC_f2 )
+			{
+				//
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				showUserMenu(SNeutrinoSettings::BUTTON_F2);
+				startSubtitles();
+			}
+			else if( msg == RC_f3 ) 
+			{
+				//
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+ 
+				stopSubtitles();
+				showUserMenu(SNeutrinoSettings::BUTTON_F3);
+				startSubtitles();
+			}
+			else if( msg == RC_f4 ) 
+			{
+				//
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				showUserMenu(SNeutrinoSettings::BUTTON_F4);
+				startSubtitles();
+			}
+#endif			
+			else if( msg == RC_dvbsub )
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				
+				// show list only if we have subs
+				if(live_channel)
+				{
+					if(live_channel->getSubtitleCount() > 0)
+					{
+						CDVBSubSelectMenuHandler tmpDVBSubSelectMenuHandler;
+						tmpDVBSubSelectMenuHandler.exec(NULL, "");
+					}
+				}
+				
+				startSubtitles();
+			}
+			else if( msg == (neutrino_msg_t)g_settings.key_audioplayer ) 
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				g_PluginList->startPlugin("audioplayer");
+				startSubtitles();
+			}
+			else if( msg == (neutrino_msg_t)g_settings.key_inetradio ) 	// internet radio
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+	  
+				stopSubtitles();
+				g_PluginList->startPlugin("internetradio");
+				startSubtitles();	
+			}			
+			else if( msg == (neutrino_msg_t)g_settings.key_movieplayer )	// recordsbrowser
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				g_PluginList->startPlugin("movieplayer");
+				startSubtitles();			
+			}
+			else if( msg == (neutrino_msg_t)g_settings.key_moviebrowser )	// moviebrowser
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				g_PluginList->startPlugin("moviebrowser");
+				startSubtitles();	
+			}
+			else if( msg == (neutrino_msg_t)g_settings.key_filebrowser )	// filebrowser player
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				g_PluginList->startPlugin("mediaplayer");
+				startSubtitles();	
+			}
+			else if( msg == (neutrino_msg_t)g_settings.key_pictureviewer ) 	// picture viewer
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				g_PluginList->startPlugin("picviewer");
+				startSubtitles();
+			}			
+			else if ( CRCInput::isNumeric(msg) && g_RemoteControl->director_mode ) 
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				
+				g_RemoteControl->setSubChannel(CRCInput::getNumericValue(msg));
+				
+				g_InfoViewer->showSubchan();
+				
+				startSubtitles();
+			}
+			else if (CRCInput::isNumeric(msg)) 
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				
+				channelList->numericZap( msg );
+				
+				startSubtitles();
+			}			
+			else if (CRCInput::isNumeric(msg) && (mode == mode_radio && g_settings.radiotext_enable && g_Radiotext != NULL && g_Radiotext->Rass_Show) ) 
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				// convert msg to int
+				int QKey = 0;
+				if(msg == RC_0)
+					QKey = 0;
+				else if(msg == RC_1)
+					QKey = 1;
+				else if(msg == RC_2)
+					QKey = 2;
+				else if(msg == RC_3)
+					QKey = 3;
+				else if(msg == RC_4)
+					QKey = 4;
+				else if(msg == RC_5)
+					QKey = 5;
+				else if(msg == RC_6)
+					QKey = 6;
+				else if(msg == RC_7)
+					QKey = 7;
+				else if(msg == RC_8)
+					QKey = 8;
+				else if(msg == RC_9)
+					QKey = 9;
+
+				//FIXME: think about gallery i.e QKey > 9
+
+				g_Radiotext->RassImage(0, QKey, true);
+			}			
+			else if((msg == RC_info) || ( msg == NeutrinoMessages::SHOW_INFOBAR ))
+			{
+				bool show_info = ((msg != NeutrinoMessages::SHOW_INFOBAR) || (g_InfoViewer->is_visible || g_settings.timing_infobar != 0));
+					
+				// turn on LCD display
+				CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+					
+				if(show_info && channelList->getSize()) 
+				{
+					showInfo();
+				}
+			}
+			else if(msg == (neutrino_msg_t) g_settings.key_pip)
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				stopSubtitles();
+				
+				// first step show channels from the same TP
+				channelList->numericZap( msg );
+				
+				startSubtitles();
+			}
+			else 
+			{
+				if ( msg == RC_home )
+				{ 
+					if(g_InfoViewer->is_visible)
+						g_InfoViewer->killTitle();
+
+  					CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+				}
+
+				//
+				handleMsg(msg, data);
+			}
+		}
+		else //other modes
+		{
+			if( msg == RC_home ) 
+			{
+				if(g_InfoViewer->is_visible)
+					g_InfoViewer->killTitle();
+
+				if( mode == mode_scart ) 
+				{
+					//wenn VCR Aufnahme dann stoppen
+					if (CVCRControl::getInstance()->getDeviceState() == CVCRControl::CMD_VCR_RECORD)
+					{
+						CVCRControl::getInstance()->Stop();
+						recordingstatus = 0;
+						startNextRecording();
+					}
+
+					// Scart-Mode verlassen
+					scartMode( false );
+				}
+			}
+			else 
+			{
+				//
+				handleMsg(msg, data);
+			}
+		}
+	}
+}
+
+// CNeutrinoApp -  run, the main runloop
+void CNeutrinoApp::cmdParser(int argc, char **argv)
+{
+        global_argv = new char *[argc + 1];
+	
+        for (int i = 0; i < argc; i++)
+                global_argv[i] = argv[i];
+	
+        global_argv[argc] = NULL;
+
+	for(int x = 1; x < argc; x++) 
+	{
+		if (((!strcmp(argv[x], "-v")) || (!strcmp(argv[x], "--verbose"))) && (x + 1 < argc)) 
+		{
+			int dl = atoi(argv[x + 1]);
+			dprintf(DEBUG_NORMAL, "CNeutrinoApp::cmdParser: set debuglevel: %d\n", dl);
+			setDebugLevel(dl);
+			x++;
+		}
+		else 
+		{
+			dprintf(DEBUG_NORMAL, "Usage: neutrino [-v | --verbose 0..2]\n");
+		}
+	}
+}
+
+//
+int CNeutrinoApp::run(int argc, char **argv)
+{
+	dprintf( DEBUG_NORMAL, "CNeutrinoApp::run:\n");
+
+	cmdParser(argc, argv);
+	
+#if defined (PLATFORM_COOLSTREAM)
+	cs_api_init();
+	cs_register_messenger(CSSendMessage);
+#endif
+	
+	// font
+	font.name = NULL;
+	font.filename = NULL;
+
+	// load settings
+	int loadSettingsErg = loadSetup(NEUTRINO_SETTINGS_FILE);
+
+	// check locale language
+	g_Locale->loadLocale(Lang2I18N(g_settings.language).c_str());
+
+	// icons/buttons/hints path
+	frameBuffer->setIconBasePath(g_settings.icons_dir);
+	frameBuffer->setButtonBasePath(g_settings.buttons_dir);
+	frameBuffer->setHintBasePath(g_settings.hints_dir);
+	frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
+
+	// setup fonts
+	setupFonts(g_settings.font_file);
+	
+	// setup color
+	colorSetupNotifier = new CColorSetupNotifier;
+	colorSetupNotifier->changeNotify("", NULL);
+
+	// init vfd/lcd display
+#if ENABLE_LCD
+	CVFD::getInstance()->init(font.filename, font.name);
+#else	
+	CVFD::getInstance()->init();
+#endif	
+
+	// VFD clear	
+	CVFD::getInstance()->Clear();	
+
+	// show startup msg in vfd
+	CVFD::getInstance()->ShowText( (char *)"N2");
+	
+	// register events
+	// httpd
+	eventServer->registerEvent2(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_POPUP, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_EXTMSG, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::LOCK_RC, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::UNLOCK_RC, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::REBOOT, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::RESTART, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	// sectionsd
+	eventServer->registerEvent2(NeutrinoMessages::EVT_TIMESET, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_CURRENTNEXT_EPG, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SI_FINISHED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	// zapit
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_ISNVOD, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_SUB_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_ZAP_MOTOR, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_COMPLETE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_SATELLITE, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_NUM_CHANNELS, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_PROVIDER, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SERVICESCHANGED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_SERVICENAME, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_A_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_SERVICES_UPD, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_PMT_CHANGED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	// timerd
+	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::SHUTDOWN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_NEXTPROGRAM, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::STANDBY_ON, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::STANDBY_OFF, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_RECORD, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::RECORD_START, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::RECORD_STOP, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_ZAPTO, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::ZAPTO, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::SLEEPTIMER, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::ANNOUNCE_SLEEPTIMER, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::REMIND, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+	eventServer->registerEvent2(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
+
+	// rc 
+	g_RCInput = new CRCInput;
+	g_RCInput->setRepeat(atoi(g_settings.repeat_blocker), atoi(g_settings.repeat_genericblocker));
+
+	// playback
+	playback = new cPlayback();
+
+	// plugins
+	g_PluginList = new CPlugins;
+	g_PluginList->setPluginDir(PLUGINDIR);
+	g_PluginList->loadPlugins();
+	
+	// load selected skin
+	loadSkin(g_settings.preferred_skin);
+	
+	// zapit	
+	Z_start_arg ZapStart_arg;
+	
+	ZapStart_arg.lastchannelmode = g_settings.lastChannelMode;
+	ZapStart_arg.startchanneltv_id = g_settings.startchanneltv_id;
+	ZapStart_arg.startchannelradio_id = g_settings.startchannelradio_id;
+	ZapStart_arg.startchanneltv_nr = g_settings.startchanneltv_nr;
+	ZapStart_arg.startchannelradio_nr = g_settings.startchannelradio_nr;
+	ZapStart_arg.uselastchannel = g_settings.uselastchannel;
+	ZapStart_arg.video_mode = g_settings.video_Mode;
+	
+	current_volume = g_settings.current_volume;
+
+	CZapit::getInstance()->Start(&ZapStart_arg);
+	
+	// dvbsub thread
+	dvbsub_init();
+
+	// audio volume (default)
+	if(audioDecoder)
+		audioDecoder->setVolume(g_settings.current_volume, g_settings.current_volume);
+
+	// video format
+	if(videoDecoder)
+		videoDecoder->setAspectRatio(g_settings.video_Ratio, g_settings.video_Format);
+	
+	// wss
+	if(videoDecoder)
+		videoDecoder->SetWideScreen(g_settings.wss_mode);
+	
+	// avsync
+#if defined (PLATFORM_COOLSTREAM)
+	videoDecoder->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
+	audioDecoder->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
+	videoDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
+	audioDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
+	pcrDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
+#else
+	if(videoDecoder)
+		videoDecoder->SetSyncMode(g_settings.avsync);			
+		
+	if(audioDecoder)
+		audioDecoder->SetSyncMode(g_settings.avsync);
+#endif
+
+	if(audioDecoder)
+	{
+		// hdmi_dd
+		audioDecoder->SetHdmiDD(g_settings.hdmi_dd );
+
+		// ac3 delay
+		audioDecoder->setHwAC3Delay(g_settings.ac3_delay);
+
+		// pcm delay 
+		audioDecoder->setHwPCMDelay(g_settings.pcm_delay);
+	}
+
+	// timerd
+	CTimerd::getInstance()->Start();
+
+	// nhttpd
+	Cyhttpd::getInstance()->Start();
+
+	// streamts
+	CStreamTS::getInstance()->Start();	
+
+	// sectionsd
+	CSectionsd::getInstance()->Start();
+
+	// for boxes with lcd :-)
+#if ENABLE_LCD	
+	CVFD::getInstance()->showVolume(g_settings.current_volume);
+	CVFD::getInstance()->setMuted(current_muted);
+#endif
+	
+	// remote control
+	g_RemoteControl = new CRemoteControl;
+	
+	// epg view
+	g_EpgData = new CEpgData;
+	
+	// channel infoviewer
+	g_InfoViewer = new CInfoViewer;
+	
+	// event list
+	g_EventList = new EventList;
+
+	// Ci Cam handler
+#if defined (ENABLE_CI)	
+	g_CamHandler = new CCAMMenuHandler();
+	g_CamHandler->init();	
+#endif
+	
+	// init network at startup
+	CNetworkSettings::getInstance()->readNetworkSettings(g_settings.ifname);
+
+	if (CNetworkSettings::getInstance()->network_automatic_start == 1)
+		CNetworkSettings::getInstance()->setNetwork();	
+	
+	// mount shares before scanning for plugins
+	CFSMounter::automount();
+
+	// assuming that mdev/fstab has mounted devices
+	CHDDDestExec * hdd = new CHDDDestExec();
+	hdd->exec(NULL, "");
+	delete hdd;
+	hdd = NULL;
+	
+	// init nvod changer
+	NVODChanger = new CNVODChangeExec;
+	
+	// init rclock
+	rcLock = new CRCLock();
+
+	// LCD
+	CVFD::getInstance()->setPower(g_settings.lcd_power);
+	CVFD::getInstance()->setlcdparameter();
+	
+	// start assistant
+	if(loadSettingsErg) 
+	{
+		int tvmode = CZapit::getInstance()->getMode();
+
+		if (tvmode == CZapit::MODE_TV)
+			mode = NeutrinoMessages::mode_tv;
+		else if (tvmode == CZapit::MODE_RADIO)
+			mode = NeutrinoMessages::mode_radio;
+
+		// startup pic : FIXME
+		//frameBuffer->loadBackgroundPic("start.jpg");	
+		//frameBuffer->blit();
+	
+		// setup languages
+		CLanguageSettings* languageSettings = new CLanguageSettings(true);
+		int ret = languageSettings->exec(NULL, "");
+	
+		// video setup wizard
+		if(ret != RETURN_EXIT_ALL)
+		{
+			CVideoSettings videoSettings;
+			videoSettings.exec(NULL, "");
+		}
+		
+		 // audio setup wizard
+		if(ret != RETURN_EXIT_ALL)
+		{
+			CAudioSettings audioSettings;
+			audioSettings.exec(NULL, "");
+		}		
+
+		// setup color
+		if(ret != RETURN_EXIT_ALL)
+		{
+			COSDSettings colorSettings;
+			colorSettings.exec(NULL, "");
+		}
+
+		// setup timezone
+		if(ret != RETURN_EXIT_ALL)
+		{
+			if(tzSelect)
+				tzSelect->exec(NULL);
+		}
+
+		// setup network
+		if(ret != RETURN_EXIT_ALL)
+		{
+			CNetworkSettings networkSettings;
+			networkSettings.exec(NULL, "");
+		}
+		
+		// recordingsettings
+		if(ret != RETURN_EXIT_ALL)
+		{
+			CRecordingSettings recordingSettings;
+			recordingSettings.exec(NULL, "");
+		}
+		
+		// movieplayer settings
+		if(ret != RETURN_EXIT_ALL)
+		{
+			CMoviePlayerSettings moviePlayerSettings;
+			moviePlayerSettings.exec(NULL, "");
+		}
+		
+		// audioplayersettings
+		if(ret != RETURN_EXIT_ALL)
+		{
+			CAudioPlayerSettings audioPlayerSettings;
+			audioPlayerSettings.exec(NULL, "");
+		}
+		
+		// picviewersettings
+		if(ret != RETURN_EXIT_ALL)
+		{
+			CPictureViewerSettings picViewerSettings;
+			picViewerSettings.exec(NULL, "");
+		}
+		
+		// keysettings
+		if(ret != RETURN_EXIT_ALL)
+		{
+			CRemoteControlSettings bindSettings;
+			bindSettings.exec(NULL, "");
+		}
+		
+		// service settings
+		if(ret != RETURN_EXIT_ALL)
+		{
+			CServiceMenu service;
+			service.exec(NULL, "");
+		}
+
+		dprintf(DEBUG_INFO, "config file or options missing\n");
+
+		HintBox(_("Information"), loadSettingsErg ==  1 ? _("No neutrino-settings found, Using defaults.") : _("The neutrino-settings have been updated.\nNew Options will be set to default."));
+		
+		configfile.setModifiedFlag(true);
+
+		saveSetup(NEUTRINO_SETTINGS_FILE);
+	}
+	
+	// zapper
+	initZapper();
+	
+	// audio mute
+	audioMute(current_muted, true);	
+
+// Cam-Ci
+#if defined (ENABLE_CI)	
+	cDvbCi::getInstance()->SetHook(CISendMessage);	
+#endif	
+	
+	// init shutdown count
+	SHTDCNT::getInstance()->init();
+
+	// realRun loop ;-)
+	realRun();
+
+	// exitRun
+	exitRun(SHUTDOWN);
+
+	// never reached
+	return 0;
 }
 
 // signal handler

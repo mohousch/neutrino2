@@ -74,7 +74,7 @@ typedef struct neutrino_font_descr
 	int          size_offset;
 } neutrino_font_descr_struct;
 
-class CNeutrinoApp : public CMenuTarget, CChangeObserver
+class CNeutrinoApp : public CMenuTarget
 {
  	private:
 		CFrameBuffer * frameBuffer;
@@ -138,7 +138,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 		
 		//onchange
-		bool changeNotify(const std::string& OptionName, void *);
+		//bool changeNotify(const std::string& OptionName, void *);
 		
 		//
 		void saveSetup(const char * fname);
@@ -213,6 +213,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		int run(int argc, char **argv);
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
 
+		//
 		int getMode() { return mode; };
 		int getLastMode() { return lastMode; };
 		int getChMode(){return chmode;};
@@ -235,7 +236,7 @@ class CNeutrinoApp : public CMenuTarget, CChangeObserver
 		int getChannelMode(void) { return g_settings.channel_mode; };
 		void setChannelMode(int newmode, int nMode);
 		
-		//dvb/txt subs
+		// dvb/txt subs
 		void quickZap(int msg);
 		void showInfo();
 		void stopSubtitles();
