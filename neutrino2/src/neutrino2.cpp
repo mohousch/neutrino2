@@ -2671,7 +2671,7 @@ void CNeutrinoApp::realRun(void)
 	{
 		g_RCInput->getMsg(&msg, &data, 10);	// 10 secs..
 		
-		dprintf(DEBUG_NORMAL, "CNeutrinoApp::realRun: msg:(0x%X) data:(0x%X)\n", msg, data);		
+		dprintf(DEBUG_INFO, "CNeutrinoApp::realRun: msg:(0x%X) data:(0x%X)\n", msg, data);		
 
 		// mode TV/Radio/IPTV
 		if( (mode == mode_tv) || (mode == mode_radio) ) 
@@ -3248,6 +3248,7 @@ void CNeutrinoApp::realRun(void)
   					CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
 				}
 
+				//
 				handleMsg(msg, data);
 			}
 		}
@@ -3274,7 +3275,7 @@ void CNeutrinoApp::realRun(void)
 			}
 			else 
 			{
-				// hier geht es weiter
+				//
 				handleMsg(msg, data);
 			}
 		}
@@ -3285,8 +3286,6 @@ void CNeutrinoApp::realRun(void)
 int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
 	int res = 0;
-	
-	dprintf(DEBUG_INFO, ANSI_MAGENTA"CNeutrinoApp::handleMsg: msg:(0x%X) data:(0x%X)\n", msg, data);
 
 	// zap complete event
 	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE) 
@@ -3357,7 +3356,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		}
 	}
 
-	// handle msg with remotecontrol/Infoviewer/Channellist
+	// handle msg with remotecontrol/Infoviewer/Channellist/cicam
 	res = res | g_RemoteControl->handleMsg(msg, data);
 	res = res | g_InfoViewer->handleMsg(msg, data);
 	res = res | channelList->handleMsg(msg, data);
@@ -3851,6 +3850,7 @@ _repeat:
 			MessageBox(_("Information"), (const char *) data, mbrBack, mbBack, NEUTRINO_ICON_INFO); // UTF-8
 			
 		delete[] (unsigned char*) data;
+		
 		return messages_return::handled;
 	}
 	else if( msg == NeutrinoMessages::REMIND) 
@@ -4334,7 +4334,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint, bool
 				break;
 			}
 
-			//setvol(g_settings.current_volume);
+			//
 			if(audioDecoder)
 				audioDecoder->setVolume(g_settings.current_volume, g_settings.current_volume);	
 			

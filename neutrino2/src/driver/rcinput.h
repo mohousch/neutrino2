@@ -422,12 +422,14 @@ class CRCInput
 
 		//
 		void getMsgAbsoluteTimeout(neutrino_msg_t* msg, neutrino_msg_data_t * data, uint64_t* TimeoutEnd, bool bAllowRepeatLR = false);
-		void getMsg(neutrino_msg_t* msg, neutrino_msg_data_t * data, int Timeout, bool bAllowRepeatLR = false);          //get message, timeout in secs :)
-		void getMsg_ms(neutrino_msg_t* msg, neutrino_msg_data_t * data, int Timeout, bool bAllowRepeatLR = false);         //get message, timeout in msecs :)
-		void getMsg_us(neutrino_msg_t* msg, neutrino_msg_data_t * data, uint64_t Timeout, bool bAllowRepeatLR = false);	//get message, timeout in usecs :)
+		void getMsg(neutrino_msg_t* msg, neutrino_msg_data_t * data, int Timeout, bool bAllowRepeatLR = false);
+		void getMsg_ms(neutrino_msg_t* msg, neutrino_msg_data_t * data, int Timeout, bool bAllowRepeatLR = false);
+		void getMsg_us(neutrino_msg_t* msg, neutrino_msg_data_t * data, uint64_t Timeout, bool bAllowRepeatLR = false);
 		
 		//
-		void postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority = true);  // push message back into buffer
+		void postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority = true);
+		
+		//
 		void clearRCMsg();
 };
 

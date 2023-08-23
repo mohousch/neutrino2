@@ -759,7 +759,7 @@ int CChannelList::show(bool zap, bool customMode)
 		}
 		else if ( msg == RC_sat || msg == RC_favorites)
 		{
-			g_RCInput->postMsg (msg, 0);
+			g_RCInput->postMsg(msg, 0);
 			loop = false;
 			res = -1;
 		}

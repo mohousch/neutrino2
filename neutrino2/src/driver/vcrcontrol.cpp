@@ -263,7 +263,7 @@ void CVCRControl::RestoreNeutrino(void)
 		if(CNeutrinoApp::getInstance()->getMode() != last_mode && CNeutrinoApp::getInstance()->getMode() != NeutrinoMessages::mode_standby && last_mode != NeutrinoMessages::mode_standby)
 		{
 			if(!autoshift) 
-				g_RCInput->postMsg( NeutrinoMessages::CHANGEMODE , last_mode);
+				g_RCInput->postMsg(NeutrinoMessages::CHANGEMODE, last_mode);
 		}
 
 		if(last_mode == NeutrinoMessages::mode_standby && CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby )
