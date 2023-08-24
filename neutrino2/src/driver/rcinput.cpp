@@ -685,12 +685,6 @@ void CRCInput::getMsgAbsoluteTimeout(neutrino_msg_t * msg, neutrino_msg_data_t *
 		diff = ( *TimeoutEnd - timeNow );
 	
 	getMsg_us( msg, data, diff, bAllowRepeatLR );
-
-	if ( *msg == NeutrinoMessages::EVT_TIMESET )
-	{
-		// recalculate timeout....
-		*TimeoutEnd = *TimeoutEnd + *(int64_t*) *data;
-	}
 }
 
 void CRCInput::getMsg(neutrino_msg_t * msg, neutrino_msg_data_t * data, int Timeout, bool bAllowRepeatLR)
