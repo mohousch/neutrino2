@@ -228,6 +228,7 @@ void CAudioSelectMenuHandler::doMenu()
 	}
 	
 	// volume percent
+#if 0 //FIXME:
 	CAudioSetupNotifierVolPercent * audioSetupNotifierVolPercent = new CAudioSetupNotifierVolPercent;
 	int percent[g_RemoteControl->current_PIDs.APIDs.size()];
 	
@@ -244,6 +245,7 @@ void CAudioSelectMenuHandler::doMenu()
 		
 		AudioSelector->addItem(new CMenuOptionNumberChooser(g_RemoteControl->current_PIDs.APIDs[count].desc, &percent[count], is_active, 0, 100, audioSetupNotifierVolPercent));
 	}
+#endif
 
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
