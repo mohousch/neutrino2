@@ -4182,7 +4182,7 @@ void CNeutrinoApp::realRun(void)
 	{
 		g_RCInput->getMsg(&msg, &data, 10);	// 10 secs..
 		
-		dprintf(DEBUG_INFO, "CNeutrinoApp::realRun: msg:(0x%X) data:(0x%X)\n", msg, data);		
+		dprintf(DEBUG_DEBUG, "CNeutrinoApp::realRun: msg:(0x%X) data:(0x%X)\n", msg, data);		
 
 		// mode TV/Radio/IPTV
 		if( (mode == mode_tv) || (mode == mode_radio) ) 

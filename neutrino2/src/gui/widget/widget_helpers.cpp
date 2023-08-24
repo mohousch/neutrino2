@@ -63,7 +63,7 @@ CComponent::CComponent()
 // CCIcon
 CCIcon::CCIcon(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCIcon::CCIcon: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCIcon::CCIcon: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -122,7 +122,7 @@ void CCIcon::restoreScreen(void)
 //
 void CCIcon::paint()
 {
-	dprintf(DEBUG_INFO, "CCIcon::paint\n");
+	dprintf(DEBUG_DEBUG, "CCIcon::paint\n");
 	
 	//
 	if (rePaint)
@@ -135,7 +135,7 @@ void CCIcon::paint()
 
 void CCIcon::hide()
 {
-	dprintf(DEBUG_INFO, "CCIcon::hide\n");
+	dprintf(DEBUG_DEBUG, "CCIcon::hide\n");
 	
 	restoreScreen();
 }
@@ -153,7 +153,7 @@ void CCIcon::blink(bool show)
 // CCImage
 CCImage::CCImage(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCImage::CCImage: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCImage::CCImage: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -182,7 +182,7 @@ void CCImage::setImage(const char* const image)
 //
 void CCImage::paint()
 {
-	dprintf(DEBUG_INFO, "CCImage::paint\n");
+	dprintf(DEBUG_DEBUG, "CCImage::paint\n");
 	
 	if (iWidth > cCBox.iWidth && cCBox.iWidth != 0) 
 		iWidth = cCBox.iWidth;
@@ -208,7 +208,7 @@ void CCImage::paint()
 // progressbar
 CProgressBar::CProgressBar(int x, int y, int w, int h, int r, int g, int b, bool inv)
 {
-	dprintf(DEBUG_INFO, "CProgressBar::CProgressBar: x:%d y;%d dx:%d dy:%d\n", x, y, w, h);
+	dprintf(DEBUG_DEBUG, "CProgressBar::CProgressBar: x:%d y;%d dx:%d dy:%d\n", x, y, w, h);
 	
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -243,7 +243,7 @@ CProgressBar::CProgressBar(int x, int y, int w, int h, int r, int g, int b, bool
 
 CProgressBar::CProgressBar(const CBox* position, int r, int g, int b, bool inv)
 {
-	dprintf(DEBUG_INFO, "CProgressBar::CProgressBar: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
+	dprintf(DEBUG_DEBUG, "CProgressBar::CProgressBar: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -361,7 +361,7 @@ void CProgressBar::reset()
 // CCButtons
 CCButtons::CCButtons(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCButtons::CCButtons: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCButtons::CCButtons: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -408,11 +408,11 @@ void CCButtons::addButton(const char *btn, const char *lname, const fb_pixel_t c
 
 void CCButtons::paint()
 {
-	dprintf(DEBUG_INFO, "CCButtons::CCButtons:paint:\n");
+	dprintf(DEBUG_DEBUG, "CCButtons::CCButtons:paint:\n");
 
 	count = buttons.size();
 	
-	dprintf(DEBUG_INFO, "CCButtons::CCButtons:paint: count: %d\n", count);
+	dprintf(DEBUG_DEBUG, "CCButtons::CCButtons:paint: count: %d\n", count);
 	
 	//
 	int buttonWidth = 0;
@@ -671,7 +671,7 @@ CItems2DetailsLine::~CItems2DetailsLine()
 
 void CItems2DetailsLine::paint()
 {
-	dprintf(DEBUG_INFO, "CItems2DetailsLine::paint:\n");
+	dprintf(DEBUG_DEBUG, "CItems2DetailsLine::paint:\n");
 	
 	// border
 	if (borderMode) 
@@ -808,7 +808,7 @@ void CItems2DetailsLine::hide()
 //
 CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCSlider::CCSlider\n");
+	dprintf(DEBUG_DEBUG, "CCSlider::CCSlider\n");
 	
 	//
 	frameBuffer = CFrameBuffer::getInstance();
@@ -825,7 +825,7 @@ CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 
 void CCSlider::paint(const int spos, const char * const iconname, const bool selected)
 {
-	dprintf(DEBUG_INFO, "CCSlider::paint:\n");
+	dprintf(DEBUG_DEBUG, "CCSlider::paint:\n");
 	
 	// volumebox box
 	int icon_w = 120;
@@ -843,7 +843,7 @@ void CCSlider::paint(const int spos, const char * const iconname, const bool sel
 // Hline
 CCHline::CCHline(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCHline::CCHline: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCHline::CCHline: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -863,7 +863,7 @@ CCHline::CCHline(const int x, const int y, const int dx, const int dy)
 
 void CCHline::paint()
 {
-	dprintf(DEBUG_INFO, "CCHline::paint\n");
+	dprintf(DEBUG_DEBUG, "CCHline::paint\n");
 	
 	if (cCBox.iHeight > 2)
 		cCBox.iHeight = 2;
@@ -875,7 +875,7 @@ void CCHline::paint()
 // Vline
 CCVline::CCVline(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCVline::CCVline: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCVline::CCVline: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -895,7 +895,7 @@ CCVline::CCVline(const int x, const int y, const int dx, const int dy)
 
 void CCVline::paint()
 {
-	dprintf(DEBUG_INFO, "CCVline::paint\n");
+	dprintf(DEBUG_DEBUG, "CCVline::paint\n");
 	
 	if (cCBox.iWidth > 2)
 		cCBox.iWidth = 2;
@@ -907,7 +907,7 @@ void CCVline::paint()
 // CFrameLine
 CCFrameLine::CCFrameLine(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCFrameLine::CCFrameLine: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCFrameLine::CCFrameLine: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -923,7 +923,7 @@ CCFrameLine::CCFrameLine(const int x, const int y, const int dx, const int dy)
 //
 void CCFrameLine::paint()
 {
-	dprintf(DEBUG_INFO, "CCFrameLine::paint\n");
+	dprintf(DEBUG_DEBUG, "CCFrameLine::paint\n");
 	
 	frameBuffer->paintFrameBox(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color);
 }
@@ -931,7 +931,7 @@ void CCFrameLine::paint()
 // CLabel
 CCLabel::CCLabel(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCLabel::CCLabel: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCLabel::CCLabel: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance();
 	
@@ -997,7 +997,7 @@ void CCLabel::enableSaveScreen()
 
 void CCLabel::paint()
 {
-	dprintf(DEBUG_INFO, "CCLabel::paint\n");
+	dprintf(DEBUG_DEBUG, "CCLabel::paint\n");
 	
 	//
 	restoreScreen();
@@ -1038,7 +1038,7 @@ void CCLabel::hide()
 //
 CCText::CCText(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCText::CCText: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCText::CCText: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -1180,7 +1180,7 @@ void CCText::processTextToArray(std::string text) // UTF-8
 
 void CCText::paint()
 {
-	dprintf(DEBUG_INFO, "CCText::paint\n");
+	dprintf(DEBUG_DEBUG, "CCText::paint\n");
 	
 	//
 	restoreScreen();
@@ -1213,7 +1213,7 @@ void CCText::hide()
 // grid
 CCGrid::CCGrid(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCGrid::CCGrid: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCGrid::CCGrid: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -1227,7 +1227,7 @@ CCGrid::CCGrid(const int x, const int y, const int dx, const int dy)
 
 CCGrid::CCGrid(CBox* position)
 {
-	dprintf(DEBUG_INFO, "CCGrid::CCGrid:\n");
+	dprintf(DEBUG_DEBUG, "CCGrid::CCGrid:\n");
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -1247,7 +1247,7 @@ void CCGrid::init()
 
 void CCGrid::paint()
 {
-	dprintf(DEBUG_INFO, "CCGrid::paint\n");
+	dprintf(DEBUG_DEBUG, "CCGrid::paint\n");
 	
 	// hlines grid
 	for(int count = 0; count < cCBox.iHeight; count += inter_frame)
@@ -1268,7 +1268,7 @@ void CCGrid::hide()
 // pig
 CCPig::CCPig(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCPig::CCPig: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCPig::CCPig: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -1283,7 +1283,7 @@ CCPig::CCPig(const int x, const int y, const int dx, const int dy)
 
 CCPig::CCPig(CBox* position)
 {
-	dprintf(DEBUG_INFO, "CCPig::CCPig:\n");
+	dprintf(DEBUG_DEBUG, "CCPig::CCPig:\n");
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -1301,7 +1301,7 @@ void CCPig::init()
 
 void CCPig::paint()
 {
-	dprintf(DEBUG_INFO, "CCPig::paint\n");
+	dprintf(DEBUG_DEBUG, "CCPig::paint\n");
 	
 	frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);	
 		
@@ -1323,7 +1323,7 @@ void CCPig::hide()
 // CCTime
 CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCTime::CCTime: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCTime::CCTime: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -1349,7 +1349,7 @@ CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 
 CCTime::~CCTime()
 {
-	dprintf(DEBUG_INFO, "CCTime::~CCTime\n");
+	dprintf(DEBUG_DEBUG, "CCTime::~CCTime\n");
 	
 	////
 	//join();
@@ -1370,7 +1370,7 @@ void CCTime::setFormat(const char* const f)
 
 void CCTime::paint()
 {
-	dprintf(DEBUG_INFO, "CCTime::paint: x:%d y:%d dx:%d dy:%d\n", cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+	dprintf(DEBUG_DEBUG, "CCTime::paint: x:%d y:%d dx:%d dy:%d\n", cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 	
 	//
 	saveScreen();
@@ -1415,7 +1415,7 @@ void CCTime::run()
 {	
 	while (started)
 	{
-		dprintf(DEBUG_NORMAL, "CCTime::run: x:%d y:%d dx:%d dy:%d\n", cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+		dprintf(DEBUG_DEBUG, "CCTime::run: x:%d y:%d dx:%d dy:%d\n", cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 		
 		sleep(1);
 		
@@ -1451,7 +1451,7 @@ void CCTime::Stop()
 
 void CCTime::hide()
 {
-	dprintf(DEBUG_INFO, "CCTime::hide\n");
+	dprintf(DEBUG_DEBUG, "CCTime::hide\n");
 	
 	////
 	//Stop();
@@ -1494,7 +1494,7 @@ void CCTime::restoreScreen(void)
 // CCCounter
 CCCounter::CCCounter(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CCCounter::CCCounter: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCCounter::CCCounter: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -1532,7 +1532,7 @@ CCCounter::~CCCounter()
 
 void CCCounter::paint()
 {
-	dprintf(DEBUG_INFO, "CCCounter::paint\n");
+	dprintf(DEBUG_DEBUG, "CCCounter::paint\n");
 	
 	//
 	saveScreen();
@@ -1567,7 +1567,7 @@ void CCCounter::refresh()
 
 void CCCounter::hide()
 {
-	dprintf(DEBUG_INFO, "CCCounter::hide\n");
+	dprintf(DEBUG_DEBUG, "CCCounter::hide\n");
 
 	if (background)
 	{
@@ -1734,7 +1734,7 @@ void CCSpinner::run()
 	//
 	while (started)
 	{
-		dprintf(DEBUG_NORMAL, "CCSpinner::run: x:%d y:%d dx:%d dy:%d\n", cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+		dprintf(DEBUG_DEBUG, "CCSpinner::run: x:%d y:%d dx:%d dy:%d\n", cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
 		
 		sleep(0.15);
 		
@@ -1920,7 +1920,7 @@ void CWidgetItem::exec(int timeout)
 // headers
 CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const char * const title, const char * const icon)
 {
-	dprintf(DEBUG_INFO, "CHeaders::CHeaders: x:%d y:%d dx:%d dy:%d title:%s icon:%s\n", x, y, dx, dy, title, icon);
+	dprintf(DEBUG_INFO, "CHeaders::CHeaders: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -1954,7 +1954,7 @@ CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const c
 
 CHeaders::CHeaders(CBox* position, const char * const title, const char * const icon)
 {
-	dprintf(DEBUG_INFO, "CHeaders::CHeaders: x:%d y:%d dx:%d dy:%d title:%s icon:%s\n", position->iX, position->iY, position->iWidth, position->iHeight, title, icon);
+	dprintf(DEBUG_INFO, "CHeaders::CHeaders: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
