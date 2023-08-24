@@ -2213,6 +2213,7 @@ void CNeutrinoApp::initZapper()
 		if(g_settings.auto_timeshift)
 			startAutoRecord(true);
 		
+		//
 		selectSubtitles();
 		startSubtitles();
 	}

@@ -196,7 +196,7 @@ class CInfoViewer
 		CProgressBar *snrscale, *sigscale, *timescale;
 		
 		//
-		void show_Data(bool calledFromEvent = false);
+		void showEPGData(bool calledFromEvent = false);
 		void paintTime(int posx, int posy, unsigned int timeFont);
 		void showButton_Audio();
 		void showButton_SubServices();

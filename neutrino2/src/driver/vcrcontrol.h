@@ -141,7 +141,7 @@ class CVCRControl
 	
 	public:
 		CVCRControl();
-		~CVCRControl();
+		virtual ~CVCRControl();
 		static CVCRControl * getInstance();
 
 		inline CVCRStates getDeviceState(void) const { return deviceState; };

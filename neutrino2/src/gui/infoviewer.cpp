@@ -798,7 +798,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 		{
 			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 			
-			dprintf(DEBUG_INFO, "CInofViewer::showTitle: msg:(0x%X) data:(0x%X)\n", msg, data);
+			dprintf(DEBUG_NORMAL, "CInofViewer::showTitle: msg:(0x%X) data:(0x%X)\n", msg, data);
 
 			if ((msg == RC_sat) || (msg == RC_favorites) || (msg == RC_setup) || (msg == RC_red) || (msg == RC_green) || (msg == RC_yellow) || (msg == RC_blue) || (msg == RC_ok) || (msg == RC_text) || (msg == RC_epg) || (msg == RC_record) || (msg == RC_play) || (msg == RC_pause) || (msg == RC_dvbsub) || (msg == RC_mode) || (msg == RC_audio))
 			{
@@ -832,7 +832,8 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 				//
 				timer->refresh();
 				
-				show_Data(_calledFromNumZap);
+				//
+				showEPGData(_calledFromNumZap);
 					
 				// radiotext		
 				if ((g_settings.radiotext_enable) && (CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_radio))
@@ -847,12 +848,11 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 			//
 			else if (msg == NeutrinoMessages::EVT_TIMESET) 
 			{
-				// Handle anyway!
-				//neutrino->handleMsg(msg, data);
 				g_RCInput->postMsg(NeutrinoMessages::SHOW_INFOBAR, 0);
 				hideIt = true;
 				res = messages_return::cancel_all;
 			}
+			//
 			else if ( !CNeutrinoApp::getInstance()->timeshiftstatus) 
 			{
 				if ((msg == (neutrino_msg_t) g_settings.key_quickzap_up) || (msg == (neutrino_msg_t) g_settings.key_quickzap_down) || (msg == RC_0) || (msg == NeutrinoMessages::SHOW_INFOBAR)) 
@@ -971,6 +971,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 		}
 	}
 
+	//
 	if (!(info_CurrentNext.flags & (CSectionsd::epgflags::has_later | CSectionsd::epgflags::has_current | CSectionsd::epgflags::not_broadcast))) 
 	{
 		// nicht gefunden / noch nicht geladen
@@ -978,7 +979,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 	}
 	else
 	{
-		show_Data();
+		showEPGData();
 	}		
 }
 
@@ -1432,7 +1433,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	  	getEPG(*(t_channel_id *)data & 0xFFFFFFFFFFFFULL, info_CurrentNext);
 	  	
 	  	if ( is_visible )
-			show_Data(true);
+			showEPGData(true);
 			
 #if ENABLE_LCD			
 	  	showLcdPercentOver();
@@ -1524,7 +1525,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		if ((*(t_channel_id *)data) == channel_id)
 		{
 	  		if ( is_visible && showButtonBar && (!g_RemoteControl->are_subchannels))
-				show_Data(true);
+				showEPGData(true);
 		}
 
 #if ENABLE_LCD
@@ -1580,16 +1581,6 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		showMotorMoving(data);
 		return messages_return::handled;
   	}
-  	//FIXME:
-  	/* 
-	else if (msg == NeutrinoMessages::EVT_MODECHANGED) 
-	{
-		if ( is_visible && showButtonBar )
-	  		showIcon_16_9();
-
-		return messages_return::handled;
-  	}
-  	*/
 	else if (msg == NeutrinoMessages::EVT_TIMESET) 
 	{
 		gotTime = true;
@@ -1812,9 +1803,9 @@ void CInfoViewer::showAktivTuner()
   	*/
 }
 
-void CInfoViewer::show_Data(bool calledFromEvent)
+void CInfoViewer::showEPGData(bool calledFromEvent)
 {
-	dprintf(DEBUG_INFO, "CInfoViewer::show_data:\n");
+	dprintf(DEBUG_INFO, "CInfoViewer::showEPGData: calledFromEvent: %s\n", calledFromEvent? "true" : "false");
 	
   	char runningStart[10] = "";
   	char runningRest[20] = "";
