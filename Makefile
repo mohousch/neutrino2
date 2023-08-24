@@ -364,7 +364,6 @@ $(PLUGINS_SRC)/config.status: $(PLUGINS_SRC) $(DEST)
 			--build=i686-pc-linux-gnu \
 			--enable-silent-rules \
 			--enable-maintainer-mode \
-			--without-debug \
 			$(N2_OPTS)
 
 plugins-clean:

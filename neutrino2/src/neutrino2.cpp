@@ -185,6 +185,9 @@
 
 
 //
+int debug = DEBUG_NORMAL;
+
+//
 cPlayback* playback = NULL;
 
 //
@@ -1781,6 +1784,20 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 	}
 
 	g_settings.channel_mode = newmode;
+}
+
+//
+void CNeutrinoApp::setDebugLevel( int level )
+{	
+	debug = level;
+	
+	const char *DEBUGMODE[] = {
+		"DEBUG_NORMAL",
+		"DEBUG_INFO",
+		"DEBUG_DEBUG"
+	};
+	
+	printf("CNeutrinoApp::setDebugLevel: Debug level: %s\n", DEBUGMODE[debug]);
 }
 
 // setup the framebuffer
@@ -4775,39 +4792,10 @@ void CNeutrinoApp::realRun(void)
 	}
 }
 
-// CNeutrinoApp -  run, the main runloop
-void CNeutrinoApp::cmdParser(int argc, char **argv)
-{
-        global_argv = new char *[argc + 1];
-	
-        for (int i = 0; i < argc; i++)
-                global_argv[i] = argv[i];
-	
-        global_argv[argc] = NULL;
-
-	for(int x = 1; x < argc; x++) 
-	{
-		if (((!strcmp(argv[x], "-v")) || (!strcmp(argv[x], "--verbose"))) && (x + 1 < argc)) 
-		{
-			int dl = atoi(argv[x + 1]);
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::cmdParser: set debuglevel: %d\n", dl);
-			setDebugLevel(dl);
-			x++;
-		}
-		else 
-		{
-			dprintf(DEBUG_NORMAL, "Usage: neutrino [-v | --verbose 0..2]\n");
-		}
-	}
-}
-
 //
 int CNeutrinoApp::run(int argc, char **argv)
 {
 	dprintf( DEBUG_NORMAL, "CNeutrinoApp::run:\n");
-
-	// parse cmd
-	cmdParser(argc, argv);
 	
 	// init API
 #if defined (PLATFORM_COOLSTREAM)
@@ -4821,6 +4809,9 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	// load settings
 	int loadSettingsErg = loadSetup(NEUTRINO_SETTINGS_FILE);
+	
+	// set debug level
+	setDebugLevel(g_settings.debug_level);
 
 	// check / load locale language
 	g_Locale->loadLocale(Lang2I18N(g_settings.language).c_str());

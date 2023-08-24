@@ -798,7 +798,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 		{
 			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 			
-			dprintf(DEBUG_NORMAL, "CInofViewer::showTitle: msg:(0x%X) data:(0x%X)\n", msg, data);
+			dprintf(DEBUG_INFO, "CInofViewer::showTitle: msg:(0x%X) data:(0x%X)\n", msg, data);
 
 			if ((msg == RC_sat) || (msg == RC_favorites) || (msg == RC_setup) || (msg == RC_red) || (msg == RC_green) || (msg == RC_yellow) || (msg == RC_blue) || (msg == RC_ok) || (msg == RC_text) || (msg == RC_epg) || (msg == RC_record) || (msg == RC_play) || (msg == RC_pause) || (msg == RC_dvbsub) || (msg == RC_mode) || (msg == RC_audio))
 			{

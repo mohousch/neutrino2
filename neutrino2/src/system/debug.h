@@ -63,11 +63,9 @@ extern int debug;
 #define DEBUG_INFO	1
 #define DEBUG_DEBUG	2
 
-void setDebugLevel( int level );
-
 #define dprintf(debuglevel, fmt, args...) {if (debug >= debuglevel) { \
-			printf(fmt ANSI_RESET, ## args); \
-		}}
+	printf(fmt ANSI_RESET, ## args); \
+}}
 	
 #endif
 

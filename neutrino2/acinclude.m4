@@ -5,18 +5,9 @@ AM_MAINTAINER_MODE
 AC_GNU_SOURCE
 AC_SYS_LARGEFILE
 
-AC_ARG_WITH(debug,
-	[  --without-debug         disable debugging code],
-	[DEBUG="$withval"],[DEBUG="yes"])
-
-if test "$DEBUG" = "yes"; then
-	DEBUG_CFLAGS="-g3 -ggdb"
-	AC_DEFINE(DEBUG,1,[Enable debug messages])
-fi
-
 if test "$CFLAGS" = "" -a "$CXXFLAGS" = ""; then
-	CFLAGS="-Wall -O2 -pipe $DEBUG_CFLAGS"
-	CXXFLAGS="-Wall -O2 -pipe $DEBUG_CFLAGS"
+	CFLAGS="-Wall -O2 -pipe"
+	CXXFLAGS="-Wall -O2 -pipe"
 fi
 
 if test "$prefix" = "NONE" -o "$prefix" = "/usr" ; then

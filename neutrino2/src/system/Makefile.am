@@ -35,7 +35,6 @@ libneutrino2_system_a_SOURCES = \
 	safe_system.c \
 	localize.cpp \
 	setting_helpers.cpp \
-	debug.cpp \
 	ping.c \
 	flashtool.cpp \
 	httptool.cpp \

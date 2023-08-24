@@ -308,7 +308,7 @@ bool CGeneralSettings::changeNotify(const std::string& OptionName, void */*data*
 	}
 	else if (OptionName == _("Debug Level"))
 	{
-		setDebugLevel(g_settings.debug_level);
+		CNeutrinoApp::getInstance()->setDebugLevel(g_settings.debug_level);
 	}
 
 	return false;

@@ -126,13 +126,15 @@ class CNeutrinoApp : public CMenuTarget
 		void realRun(void);
 		void initZapper();
 		void setupFrameBuffer();
-		void cmdParser(int argc, char **argv);
 		
 		CNeutrinoApp();
 
 	public:
 		~CNeutrinoApp();
 		static CNeutrinoApp* getInstance();
+		
+		//
+		void setDebugLevel( int level );
 		
 		//callback stuff only....
 		int exec(CMenuTarget* parent, const std::string& actionKey);
