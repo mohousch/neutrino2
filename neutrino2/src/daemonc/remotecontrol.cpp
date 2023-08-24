@@ -182,7 +182,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			current_channel_id = new_id;
 			
 			//
-			g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);
+			//g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);
+			g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
 				g_RCInput->postMsg( NeutrinoMessages::EVT_PROGRAMLOCKSTATUS, 0x100, false );
@@ -231,7 +232,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				needs_nvods = (msg == NeutrinoMessages:: EVT_ZAP_ISNVOD);
 				
 				//
-				g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);	
+				//g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);
+				g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );	
 			}
 
 			if ((!is_video_started) && (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER))
@@ -295,7 +297,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 				}
 				
 				//	
-				g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);
+				//g_InfoViewer->showTitle(current_channel_number, current_channel_name, current_channel_satposition, current_channel_id);
+				g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 
 				current_EPGid = info_CN.current_uniqueKey;
 

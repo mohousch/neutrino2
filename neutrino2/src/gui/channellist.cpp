@@ -1240,9 +1240,6 @@ void CChannelList::zapTo(int pos, bool rezap)
 	{
 		g_InfoViewer->handleMsg(NeutrinoMessages::EVT_RECORDMODE, 0);
 	}
-		
-	//
-	//g_RCInput->postMsg( NeutrinoMessages::SHOW_INFOBAR, 0 );
 }
 
 // -1: channellist not found

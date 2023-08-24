@@ -102,6 +102,14 @@ const keyval SECTIONSD_SCAN_OPTIONS[SECTIONSD_SCAN_OPTIONS_COUNT] =
 	{ 1, _("on") }
 };
 
+#define DEBUG_LEVEL_OPTIONS_COUNT	3
+const keyval DEBUG_LEVEL_OPTIONS[DEBUG_LEVEL_OPTIONS_COUNT] =
+{
+	{ DEBUG_NORMAL, _("Normal") },
+	{ DEBUG_INFO, _("Info") },
+	{ DEBUG_DEBUG, _("Debug") }
+};
+
 //// general settings
 extern CRemoteControl * g_RemoteControl;	// defined neutrino.cpp
 CMenuOptionStringChooser * tzSelect;
@@ -225,6 +233,11 @@ void CGeneralSettings::showMenu()
 	
 	// radio text	
 	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("Radio Text"), &g_settings.radiotext_enable, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this ));
+	
+	// debug level
+	miscSettingsGeneral->addItem(new CMenuSeparator(LINE));
+	
+	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("Debug Level"), &g_settings.debug_level, DEBUG_LEVEL_OPTIONS, DEBUG_LEVEL_OPTIONS_COUNT, true, this ));
 
 	// online key
 	miscSettingsGeneral->addItem(new CMenuSeparator(LINE));
@@ -292,6 +305,10 @@ bool CGeneralSettings::changeNotify(const std::string& OptionName, void */*data*
 		}
 		
 		return true;
+	}
+	else if (OptionName == _("Debug Level"))
+	{
+		setDebugLevel(g_settings.debug_level);
 	}
 
 	return false;

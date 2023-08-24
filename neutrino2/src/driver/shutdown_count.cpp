@@ -26,16 +26,18 @@
 #include <config.h>
 #endif
 
-#include <driver/shutdown_count.h>
-
-#include <global.h>
-#include <neutrino2.h>
-#include <system/settings.h>
-
 #include <sys/timeb.h>
 #include <time.h>
 
 #include <unistd.h>
+
+#include <global.h>
+#include <neutrino2.h>
+
+#include <driver/shutdown_count.h>
+
+#include <system/settings.h>
+#include <system/debug.h>
 
 
 SHTDCNT::SHTDCNT()
@@ -65,7 +67,7 @@ void* SHTDCNT::TimeThread(void *)
 
 void SHTDCNT::init()
 {
-	if (pthread_create (&thrTime, NULL, TimeThread, NULL) != 0 )
+	if (pthread_create(&thrTime, NULL, TimeThread, NULL) != 0 )
 	{
 		perror("[SHTDCNT]: pthread_create(TimeThread)");
 		return ;
@@ -81,12 +83,12 @@ void SHTDCNT::shutdown_counter()
 			if (shutdown_cnt > 0 )
 			{
 				shutdown_cnt = shutdown_cnt - 1;
-				printf("[SHTDCNT] shutdown counter: %d sec to shutdown\n", shutdown_cnt);
+				dprintf(DEBUG_NORMAL, "[SHTDCNT] shutdown counter: %d sec to shutdown\n", shutdown_cnt);
 			}
 			else
 			{
 				// send shutdown message
-				printf("[SHTDCNT] shutdown counter send NeutrinoMessages::SHUTDOWN\n");
+				dprintf(DEBUG_NORMAL, "[SHTDCNT] shutdown counter send NeutrinoMessages::SHUTDOWN\n");
 				CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::SHUTDOWN, 0);
 			}
 		}

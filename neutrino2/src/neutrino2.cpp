@@ -789,6 +789,9 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	//timezone
 	strcpy(g_settings.timezone, configfile.getString("timezone", "(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Vienna").c_str());
 	
+	// debug
+	g_settings.debug_level = configfile.getInt32("debug_level", DEBUG_NORMAL);
+	
 	//zapit setup
 	g_settings.lastChannelMode = configfile.getInt32("lastChannelMode", 1);		//TV mode
 	g_settings.StartChannelTV = configfile.getString("startchanneltv", "");
@@ -1296,6 +1299,9 @@ void CNeutrinoApp::saveSetup(const char * fname)
 
 	//
 	configfile.setString("timezone", g_settings.timezone);
+	
+	// debug
+	configfile.setInt32( "debug_level", g_settings.debug_level );
 
 	// epg
 	configfile.setBool("epg_save", g_settings.epg_save);
@@ -1327,7 +1333,6 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	// scan/channellist
 	configfile.setInt32( "rotor_swap", g_settings.rotor_swap);
 	configfile.setInt32( "zap_cycle", g_settings.zap_cycle );
-	//configfile.setInt32( "sms_channel", g_settings.sms_channel );
 	configfile.setBool("virtual_zap_mode", g_settings.virtual_zap_mode);
 	
 	//zapit setup
@@ -4699,7 +4704,6 @@ void CNeutrinoApp::realRun(void)
 					QKey = 9;
 
 				//FIXME: think about gallery i.e QKey > 9
-
 				g_Radiotext->RassImage(0, QKey, true);
 			}			
 			else if((msg == RC_info) || ( msg == NeutrinoMessages::SHOW_INFOBAR ))
@@ -4801,8 +4805,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 {
 	dprintf( DEBUG_NORMAL, "CNeutrinoApp::run:\n");
 
+	// parse cmd
 	cmdParser(argc, argv);
 	
+	// init API
 #if defined (PLATFORM_COOLSTREAM)
 	cs_api_init();
 	cs_register_messenger(CSSendMessage);
@@ -4815,7 +4821,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// load settings
 	int loadSettingsErg = loadSetup(NEUTRINO_SETTINGS_FILE);
 
-	// check locale language
+	// check / load locale language
 	g_Locale->loadLocale(Lang2I18N(g_settings.language).c_str());
 
 	// icons/buttons/hints path
@@ -4903,7 +4909,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	eventServer->registerEvent2(NeutrinoMessages::REMIND, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 
-	// rc 
+	// rc set repeat
 	g_RCInput = new CRCInput;
 	g_RCInput->setRepeat(atoi(g_settings.repeat_blocker), atoi(g_settings.repeat_genericblocker));
 
@@ -5222,8 +5228,6 @@ int main(int argc, char *argv[])
 
 #if ENABLE_GSTREAMER
 	gst_init(NULL, NULL);
-	
-	dprintf(DEBUG_NORMAL, "main: gst initialized\n");
 #endif
 
 	// set python path

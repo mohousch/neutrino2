@@ -137,9 +137,6 @@ class CNeutrinoApp : public CMenuTarget
 		//callback stuff only....
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 		
-		//onchange
-		//bool changeNotify(const std::string& OptionName, void *);
-		
 		//
 		void saveSetup(const char * fname);
 		int loadSetup(const char * fname);

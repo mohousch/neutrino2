@@ -352,6 +352,8 @@ struct SNeutrinoSettings
 	
 	std::string logos_dir;
 	int logos_show_logo;
+	
+	int debug_level;
 
 	// channellist
 	int zap_cycle;
@@ -498,7 +500,7 @@ struct SNeutrinoSettings
 	int hdmi_cec_volume;
 	int hdmi_cec_broadcast;
 	
-	// frontend
+	// 
 	//uint32_t delsys;
 	
 	// personalisation
