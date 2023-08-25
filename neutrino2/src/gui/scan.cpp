@@ -513,7 +513,7 @@ int CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 		case RC_minus:
 		case RC_left:
 		case RC_right:
-			CNeutrinoApp::getInstance()->setVolume(msg, true, true);
+			CNeutrinoApp::getInstance()->setVolume(msg, true);
 			break;
 			
 		default:

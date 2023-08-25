@@ -2493,7 +2493,7 @@ void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 }
 
 // set volume
-void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint, bool nowait)
+void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp:setVolume:\n");
 	
@@ -2617,7 +2617,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint, bool
 			if (current_muted && msg == RC_plus)
 				audioMute(0, true);
 
-			timeoutEnd = CRCInput::calcTimeoutEnd(nowait ? 5 : 10);
+			timeoutEnd = CRCInput::calcTimeoutEnd(10);
 		}
 		else if (handleMsg(msg, data) & messages_return::unhandled) 
 		{

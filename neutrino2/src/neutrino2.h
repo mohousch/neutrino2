@@ -191,7 +191,7 @@ class CNeutrinoApp : public CMenuTarget
                 bool getNVODMenu(ClistBox* menu);
 
 		void audioMute( int newValue, bool isEvent= false );
-		void setVolume(const neutrino_msg_t key, const bool bDoPaint = true, bool nowait = false);
+		void setVolume(const neutrino_msg_t key, const bool bDoPaint = true);
 
 		// channellist
 		CChannelList* TVchannelList;
