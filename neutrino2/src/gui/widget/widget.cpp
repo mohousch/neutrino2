@@ -726,7 +726,7 @@ void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 //
 CWidgetItem* CWidget::getWidgetItem(const int type, const std::string& name)
 {
-	dprintf(DEBUG_INFO, "CWidget::getWidgetItem: (%d) (%s)\n", type, name.c_str());
+	dprintf(DEBUG_DEBUG, "CWidget::getWidgetItem: (%d) (%s)\n", type, name.c_str());
 	
 	CWidgetItem* ret = NULL;
 	
@@ -780,7 +780,7 @@ CWidgetItem* CWidget::getWidgetItem(const int type, const std::string& name)
 //
 CComponent* CWidget::getCCItem(const int type, const std::string& name)
 {
-	dprintf(DEBUG_INFO, "CWidget::getCCItem: (%d) (%s)\n", type, name.c_str());
+	dprintf(DEBUG_DEBUG, "CWidget::getCCItem: (%d) (%s)\n", type, name.c_str());
 	
 	CComponent* ret = NULL;
 	

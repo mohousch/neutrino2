@@ -98,7 +98,7 @@
 //
 CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertTarget: %s\n", name.c_str());
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertTarget: %s\n", name.c_str());
 	
 	CMenuTarget* parent = NULL;
 	
@@ -352,7 +352,7 @@ CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 //
 uint32_t CNeutrinoApp::convertColor(const char* const color)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertColor: color: %s\n", color);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertColor: color: %s\n", color);
 	
 	uint32_t rgba = COL_MENUCONTENT_PLUS_0;
 	
@@ -532,7 +532,7 @@ uint32_t CNeutrinoApp::convertColor(const char* const color)
 //
 uint8_t CNeutrinoApp::convertFontColor(const char* const color)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertFontColor: color: %s\n", color);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertFontColor: color: %s\n", color);
 	
 	uint8_t rgb = COL_MENUCONTENT;
 	
@@ -778,7 +778,7 @@ int CNeutrinoApp::convertFontSize(const char * const size)
 //
 int CNeutrinoApp::convertCorner(const char* const corner)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertCorner: corner: %s\n", corner);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertCorner: corner: %s\n", corner);
 	
 	int co = CORNER_NONE;
 	
@@ -836,7 +836,7 @@ int CNeutrinoApp::convertCorner(const char* const corner)
 //
 int CNeutrinoApp::convertRadius(const char* const radius)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertRadius: radius: %s\n", radius);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertRadius: radius: %s\n", radius);
 	
 	int ra = NO_RADIUS;
 	
@@ -870,7 +870,7 @@ int CNeutrinoApp::convertRadius(const char* const radius)
 //
 int CNeutrinoApp::convertGradient(const char* const gradient)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertGradient: gradient: %s\n", gradient);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertGradient: gradient: %s\n", gradient);
 	
 	int gr = NOGRADIENT;
 	
@@ -904,7 +904,7 @@ int CNeutrinoApp::convertGradient(const char* const gradient)
 //
 neutrino_msg_t CNeutrinoApp::convertKey(const char * const key)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertKey: key: %s\n", key);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertKey: key: %s\n", key);
 	
 	neutrino_msg_t msg = RC_nokey;
 	
@@ -1002,7 +1002,7 @@ neutrino_msg_t CNeutrinoApp::convertKey(const char * const key)
 //
 int CNeutrinoApp::convertMenuPosition(const char* const position)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertMenuPosition: position: %s\n", position);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertMenuPosition: position: %s\n", position);
 	
 	int pos = MENU_POSITION_NONE;
 	
@@ -1032,7 +1032,7 @@ int CNeutrinoApp::convertMenuPosition(const char* const position)
 //
 int CNeutrinoApp::convertClistBoxMode(const char * const mode)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertClistBoxMode: mode: %s\n", mode);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertClistBoxMode: mode: %s\n", mode);
 	
 	int m = MODE_LISTBOX;
 	
@@ -1058,7 +1058,7 @@ int CNeutrinoApp::convertClistBoxMode(const char * const mode)
 //
 int CNeutrinoApp::convertClistBoxType(const char * const type)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertClistBoxType: type: %s\n", type);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertClistBoxType: type: %s\n", type);
 	
 	int t = TYPE_STANDARD;
 	
@@ -1087,7 +1087,7 @@ int CNeutrinoApp::convertClistBoxType(const char * const type)
 
 int CNeutrinoApp::convertCMenuItemID(const char * const id)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertCMenuItemID: id: %s\n", id);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertCMenuItemID: id: %s\n", id);
 	
 	int i = MENUITEM_FORWARDER;
 	
@@ -1121,7 +1121,7 @@ int CNeutrinoApp::convertCMenuItemID(const char * const id)
 //
 int CNeutrinoApp::convertBorder(const char* const border)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertBorder: value: %s\n", border);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertBorder: value: %s\n", border);
 	
 	int bor = BORDER_NO;
 	
@@ -1151,7 +1151,7 @@ int CNeutrinoApp::convertBorder(const char* const border)
 //
 int CNeutrinoApp::convertBool(const char* const value)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::convertBool: value: %s\n", value);
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertBool: value: %s\n", value);
 	
 	int val = 0;
 	
@@ -1181,10 +1181,10 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	//
 	char* name = NULL;
 				
-	unsigned int posx = 0;
-	unsigned int posy = 0;
-	unsigned int width = 0;
-	unsigned int height = 0;
+	int posx = 0;
+	int posy = 0;
+	int width = 0;
+	int height = 0;
 				
 	unsigned int paintframe = 1;
 	char* color = NULL;
@@ -1192,8 +1192,8 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	char *corner = NULL;
 	char * radius = NULL;
 	
-	char * type = NULL;
-	char * mode = NULL;
+	char * listboxtype = NULL;
+	char * listboxmode = NULL;
 	unsigned int scrollbar = 1;
 	
 	unsigned int shrink = 0;
@@ -1234,312 +1234,307 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	xmlNodePtr listboxintegration_node = NULL;
 	xmlNodePtr buttonlabel_node = NULL;
 				
-	while ((node = xmlGetNextOccurence(node, "LISTBOX")) != NULL) 
-	{
-		//
-		name = xmlGetAttribute(node, (char*)"name");
+	//
+	name = xmlGetAttribute(node, (char*)"name");
 		
-		//			
-		posx = xmlGetSignedNumericAttribute(node, "posx", 0);
-		posy = xmlGetSignedNumericAttribute(node, "posy", 0);
-		width = xmlGetSignedNumericAttribute(node, "width", 0);
-		height = xmlGetSignedNumericAttribute(node, "height", 0);
+	//			
+	posx = xmlGetSignedNumericAttribute(node, "posx", 0);
+	posy = xmlGetSignedNumericAttribute(node, "posy", 0);
+	width = xmlGetSignedNumericAttribute(node, "width", 0);
+	height = xmlGetSignedNumericAttribute(node, "height", 0);
 				
-		paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);
-		color = xmlGetAttribute(node, (char*)"color");
-		gradient = xmlGetAttribute(node, (char *)"gradient");
-		corner = xmlGetAttribute(node, (char *)"corner");
-		radius = xmlGetAttribute(node, (char *)"radius");
-		type = xmlGetAttribute(node, (char *)"type");
-		mode = xmlGetAttribute(node, (char *)"mode");
-		scrollbar = xmlGetSignedNumericAttribute(node, "scrollbar", 0);
-		shrink = xmlGetSignedNumericAttribute(node, "shrink", 0);
+	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);
+	color = xmlGetAttribute(node, (char*)"color");
+	gradient = xmlGetAttribute(node, (char *)"gradient");
+	corner = xmlGetAttribute(node, (char *)"corner");
+	radius = xmlGetAttribute(node, (char *)"radius");
+	listboxtype = xmlGetAttribute(node, (char *)"type");
+	listboxmode = xmlGetAttribute(node, (char *)"mode");
+	scrollbar = xmlGetSignedNumericAttribute(node, "scrollbar", 0);
+	shrink = xmlGetSignedNumericAttribute(node, "shrink", 0);
 				
-		// head
-		painthead = xmlGetSignedNumericAttribute(node, "painthead", 0);
-		paintdate = xmlGetSignedNumericAttribute(node, "paintdate", 0);
-		title = xmlGetAttribute(node, "title");
-		icon = xmlGetAttribute(node, "icon");
-		//format = xmlGetAttribute(node, (char*)"format"); //FIXME:
-		halign = xmlGetSignedNumericAttribute(node, "halign", 0);
-		head_line = xmlGetSignedNumericAttribute(node, "head_line", 0);
-		head_line_gradient = xmlGetSignedNumericAttribute(node, "head_line_gradient", 0);
+	// head
+	painthead = xmlGetSignedNumericAttribute(node, "painthead", 0);
+	paintdate = xmlGetSignedNumericAttribute(node, "paintdate", 0);
+	title = xmlGetAttribute(node, "title");
+	icon = xmlGetAttribute(node, "icon");
+	//format = xmlGetAttribute(node, (char*)"format"); //FIXME:
+	halign = xmlGetSignedNumericAttribute(node, "halign", 0);
+	head_line = xmlGetSignedNumericAttribute(node, "head_line", 0);
+	head_line_gradient = xmlGetSignedNumericAttribute(node, "head_line_gradient", 0);
 				
-		// foot
-		paintfoot = xmlGetSignedNumericAttribute(node, "paintfoot", 0);
-		foot_line = xmlGetSignedNumericAttribute(node, "foot_line", 0);
-		foot_line_gradient = xmlGetSignedNumericAttribute(node, "foot_line_gradient", 0);
+	// foot
+	paintfoot = xmlGetSignedNumericAttribute(node, "paintfoot", 0);
+	foot_line = xmlGetSignedNumericAttribute(node, "foot_line", 0);
+	foot_line_gradient = xmlGetSignedNumericAttribute(node, "foot_line_gradient", 0);
 		
-		// item
-		itemborder = xmlGetSignedNumericAttribute(node, "itemborder", 0);
-		itembordercolor = xmlGetAttribute(node, (char *)"itembordercolor");
-		itemgradient = xmlGetAttribute(node, (char *)"itemgradient");
-		item2lines = xmlGetSignedNumericAttribute(node, "itemlines", 0);
+	// item
+	itemborder = xmlGetSignedNumericAttribute(node, "itemborder", 0);
+	itembordercolor = xmlGetAttribute(node, (char *)"itembordercolor");
+	itemgradient = xmlGetAttribute(node, (char *)"itemgradient");
+	item2lines = xmlGetSignedNumericAttribute(node, "itemlines", 0);
 				
-		// iteminfo
-		paintiteminfo = xmlGetSignedNumericAttribute(node, "paintiteminfo", 0);
-		iteminfomode = xmlGetSignedNumericAttribute(node, "iteminfomode", 0);
-		iteminfoframe = xmlGetSignedNumericAttribute(node, "iteminfoframe", 0);
-		iteminfo_posx = xmlGetSignedNumericAttribute(node, "iteminfoposx", 0);
-		iteminfo_posy = xmlGetSignedNumericAttribute(node, "iteminfoposy", 0);
-		iteminfo_width = xmlGetSignedNumericAttribute(node, "iteminfowidth", 0);
-		iteminfo_height = xmlGetSignedNumericAttribute(node, "iteminfoheight", 0);
+	// iteminfo
+	paintiteminfo = xmlGetSignedNumericAttribute(node, "paintiteminfo", 0);
+	iteminfomode = xmlGetSignedNumericAttribute(node, "iteminfomode", 0);
+	iteminfoframe = xmlGetSignedNumericAttribute(node, "iteminfoframe", 0);
+	iteminfo_posx = xmlGetSignedNumericAttribute(node, "iteminfoposx", 0);
+	iteminfo_posy = xmlGetSignedNumericAttribute(node, "iteminfoposy", 0);
+	iteminfo_width = xmlGetSignedNumericAttribute(node, "iteminfowidth", 0);
+	iteminfo_height = xmlGetSignedNumericAttribute(node, "iteminfoheight", 0);
 
-		iteminfo_color = xmlGetAttribute(node, (char*)"iteminfocolor");
-		uint32_t hintColor = COL_MENUCONTENT_PLUS_0;
+	iteminfo_color = xmlGetAttribute(node, (char*)"iteminfocolor");
+	uint32_t hintColor = COL_MENUCONTENT_PLUS_0;
 				
-		if (iteminfo_color) hintColor = convertColor(iteminfo_color);
+	if (iteminfo_color) hintColor = convertColor(iteminfo_color);
 		
-		// recalculate posx / posy
-		int x = posx;
-		int y = posy;
+	// recalculate posx / posy
+	int x = posx;
+	int y = posy;
 		
-		if (widget)
-		{			
-			x = widget->getWindowsPos().iX + posx;
-			y = widget->getWindowsPos().iY + posy;
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + posx;
+		y = widget->getWindowsPos().iY + posy;
 				
-			if (width > widget->getWindowsPos().iWidth)
-				width = widget->getWindowsPos().iWidth;
+		if (width > widget->getWindowsPos().iWidth)
+			width = widget->getWindowsPos().iWidth;
 				
-			if (height > widget->getWindowsPos().iHeight)
-				height = widget->getWindowsPos().iHeight;
-		}
-					
-		listBox = new ClistBox(x, y, width, height);
-		
-		listBox->widgetItem_type = WIDGETITEM_LISTBOX;
-		if (name) listBox->widgetItem_name = name;
-		
-		//
-		int t = TYPE_STANDARD;
-		if (type) t = convertClistBoxType(type);
-		listBox->setWidgetType(t);
-		//
-		int m = MODE_LISTBOX;
-		if (mode) m = convertClistBoxMode(mode);
-		listBox->setWidgetMode(m);
-		listBox->paintScrollBar(scrollbar);
-		listBox->paintMainFrame(paintframe);
-		
-		// color
-		uint32_t finalColor = COL_MENUCONTENT_PLUS_0;
-				
-		if (color != NULL) 
-		{
-			finalColor = convertColor(color);
-			listBox->setColor(finalColor);
-		}
-		// gradient
-		// corner
-		// radius
-		
-		if (shrink) listBox->enableShrinkMenu();
-				
-		// head
-		if (painthead)
-		{
-			listBox->enablePaintHead();
-			listBox->setTitle(_(title), icon);
-			if (paintdate) listBox->enablePaintDate();
-			//if (format) listBox->setFormat(format); //FIXME:
-			listBox->setTitleHAlign(halign);
-			//
-			listBox->setHeadLine(head_line, head_line_gradient);
-		}
-				
-		// foot
-		if (paintfoot)
-		{
-			listBox->enablePaintFoot();
-			
-			listBox->setFootLine(foot_line, foot_line_gradient);
-		}
-				
-		// iteminfo
-		if (paintiteminfo)
-		{
-			listBox->enablePaintItemInfo(70);
-			listBox->setItemInfoMode(iteminfomode);
-			
-			//FIXME:		
-			listBox->setItemInfoPos(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);
-			listBox->paintItemInfoFrame(iteminfoframe);
-			if (iteminfo_color) listBox->setItemInfoColor(hintColor);
-		}
-		
-		// item
-		// border
-		if (itemborder) listBox->setItemBorderMode(itemborder);
-		// bordercolor
-		uint32_t bColor = COL_MENUCONTENT_PLUS_6;
-				
-		if (itembordercolor != NULL) 
-		{
-			bColor = convertColor(itembordercolor);
-			listBox->setItemBorderColor(bColor);
-		}
-		// itemgradient
-		int item_gr = NOGRADIENT;
-		if (itemgradient) item_gr = convertGradient(itemgradient);
-		listBox->setItemGradient(item_gr);
-		// item2lines
-		if (item2lines) listBox->setItem2Lines();
-				
-		// ITEM	
-		listboxitem_node = node->xmlChildrenNode;
-		
-		//
-		char * item_id = NULL;
-						
-		char* item_localename = NULL;
-		char* item_option = NULL;
-		char* item_actionkey = NULL;
-		char* item_target = NULL;
-		char* item_hinticon = NULL;
-		char* item_hint = NULL;
-		char* item_icon = NULL;
-		char* item_directkey = NULL;
-		unsigned int item_lines = 0;
-		unsigned int item_border = 0;
-		unsigned int item_gradient = 0;
-					
-		while ((listboxitem_node = xmlGetNextOccurence(listboxitem_node, "ITEM")) != NULL) 
-		{	
-			item_id = xmlGetAttribute(listboxitem_node, (char *)"id");
-						
-			item_localename = xmlGetAttribute(listboxitem_node, (char*)"localename");
-			item_option = xmlGetAttribute(listboxitem_node, (char*)"option");
-			item_actionkey = xmlGetAttribute(listboxitem_node, (char*)"actionkey");
-			item_target = xmlGetAttribute(listboxitem_node, (char*)"target");
-			item_hinticon = xmlGetAttribute(listboxitem_node, (char*)"itemicon");
-			item_hint = xmlGetAttribute(listboxitem_node, (char*)"hint");
-			item_icon = xmlGetAttribute(listboxitem_node, (char*)"iconname");
-			item_directkey = xmlGetAttribute(listboxitem_node, (char*)"directkey");
-			item_lines = xmlGetSignedNumericAttribute(listboxitem_node, "lines", 0);
-			item_border = xmlGetSignedNumericAttribute(listboxitem_node, "border", 0);
-			item_gradient = xmlGetSignedNumericAttribute(listboxitem_node, "gradient", 0);
-						
-			CMenuTarget* parent = NULL;
-			std::string actionKey = "";
-			std::string itemName = "";
-			neutrino_msg_t key = RC_nokey;
-						
-			if (item_localename) itemName = _(item_localename);
-						
-			//
-			int id = MENUITEM_FORWARDER;
-			if (item_id) id = convertCMenuItemID(item_id);
-			
-			if (id == MENUITEM_FORWARDER)
-				menuItem = new CMenuForwarder(itemName.c_str());
-						
-			if (item_actionkey) actionKey = item_actionkey;
-			
-			if (item_target) parent = convertTarget(item_target);
-							
-			menuItem->setActionKey(parent, actionKey.c_str());
-					
-			//	
-			if (item_directkey)
-			{
-				key = convertKey(item_directkey);
-				menuItem->setDirectKey(key);
-			}
-			if (item_icon) menuItem->setIconName(item_icon);	
-			if (item_hint) menuItem->setHint(item_hint);
-			if (item_lines) menuItem->set2lines();
-			if (item_option) menuItem->setOption(item_option);
-			if (item_border) menuItem->setBorderMode(item_border);
-			if (item_gradient) menuItem->setGradient(item_gradient);
-					
-			if (item_hinticon)
-			{
-				std::string filename = CONFIGDIR "/skins/";
-				filename += g_settings.preferred_skin;
-				filename += "/";
-				filename += item_hinticon;
-						
-				if (file_exists(filename.c_str()))
-					menuItem->setHintIcon(filename.c_str());
-				else
-				{
-					menuItem->setHintIcon(item_hinticon);
-				}
-			}
-						
-			listBox->addItem(menuItem);
-				
-			listboxitem_node = listboxitem_node->xmlNextNode;
-		}
-				
-		// INTEGRATION
-		listboxintegration_node = node->xmlChildrenNode;
-		
-		CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED;
-		unsigned int mode = MODE_MENU;
-		unsigned int shortcut = RC_nokey;
-		unsigned int type = TYPE_STANDARD;
-		unsigned int i_lines = false;
-		unsigned int i_border = false;
-					
-		while ((listboxintegration_node = xmlGetNextOccurence(listboxintegration_node, "INTEGRATION")) != NULL) 
-		{	
-			integration = (CPlugins::i_type_t)xmlGetSignedNumericAttribute(listboxintegration_node, "id", 0);
-			mode = xmlGetSignedNumericAttribute(listboxintegration_node, "mode", 0);
-			shortcut = xmlGetSignedNumericAttribute(listboxintegration_node, "shortcut", 0);
-			type = xmlGetSignedNumericAttribute(listboxintegration_node, "type", 0);
-			i_lines = xmlGetSignedNumericAttribute(listboxintegration_node, "lines", 0);
-			i_border = xmlGetSignedNumericAttribute(listboxintegration_node, "border", 0);
-						
-			listBox->integratePlugins(integration, shortcut? shortcut : RC_nokey, true, mode, type, i_lines, i_border);
-				
-			listboxintegration_node = listboxintegration_node->xmlNextNode;
-		}
-				
-		// BUTTON_LABEL / FOOT
-		buttonlabel_node = node->xmlChildrenNode;
-		
-		char* button = NULL;
-		char* localename = NULL;
-					
-		while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "FOOT_BUTTON_LABEL")) != NULL) 
-		{	
-			button = xmlGetAttribute(buttonlabel_node, (char*)"name");
-			localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
-						
-			button_label_struct btn;
-			btn.button = " ";
-			if (button) btn.button = button;
-			btn.localename = " ";
-			if (localename) btn.localename = localename;
-						
-			listBox->setFootButtons(&btn);
-				
-			buttonlabel_node = buttonlabel_node->xmlNextNode;
-		}
-				
-		// BUTTON_LABEL / HEAD
-		while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "HEAD_BUTTON_LABEL")) != NULL) 
-		{	
-			button = xmlGetAttribute(buttonlabel_node, (char*)"name");
-			//localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
-						
-			button_label_struct btn;
-			btn.button = " ";
-			if (button) btn.button = button;
-			btn.localename = " ";
-			//if (localename) btn.localename = localename;
-						
-			listBox->setHeadButtons(&btn);
-				
-			buttonlabel_node = buttonlabel_node->xmlNextNode;
-		}
-		
-		if (widget) widget->addWidgetItem(listBox);
-			
-		node = node->xmlNextNode;
+		if (height > widget->getWindowsPos().iHeight)
+			height = widget->getWindowsPos().iHeight;
 	}
+					
+	listBox = new ClistBox(x, y, width, height);
+		
+	listBox->widgetItem_type = WIDGETITEM_LISTBOX;
+	if (name) listBox->widgetItem_name = name;
+		
+	//
+	int t = TYPE_STANDARD;
+	if (listboxtype) t = convertClistBoxType(listboxtype);
+	listBox->setWidgetType(t);
+	//
+	int m = MODE_LISTBOX;
+	if (listboxmode) m = convertClistBoxMode(listboxmode);
+	listBox->setWidgetMode(m);
+	listBox->paintScrollBar(scrollbar);
+	listBox->paintMainFrame(paintframe);
+		
+	// color
+	uint32_t finalColor = COL_MENUCONTENT_PLUS_0;
+				
+	if (color != NULL) 
+	{
+		finalColor = convertColor(color);
+		listBox->setColor(finalColor);
+	}
+	// gradient
+	// corner
+	// radius
+		
+	if (shrink) listBox->enableShrinkMenu();
+				
+	// head
+	if (painthead)
+	{
+		listBox->enablePaintHead();
+		listBox->setTitle(_(title), icon);
+		if (paintdate) listBox->enablePaintDate();
+		//if (format) listBox->setFormat(format); //FIXME:
+		listBox->setTitleHAlign(halign);
+		//
+		listBox->setHeadLine(head_line, head_line_gradient);
+	}
+				
+	// foot
+	if (paintfoot)
+	{
+		listBox->enablePaintFoot();
+			
+		listBox->setFootLine(foot_line, foot_line_gradient);
+	}
+				
+	// iteminfo
+	if (paintiteminfo)
+	{
+		listBox->enablePaintItemInfo(70);
+		listBox->setItemInfoMode(iteminfomode);
+			
+		//FIXME:		
+		listBox->setItemInfoPos(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);
+		listBox->paintItemInfoFrame(iteminfoframe);
+		if (iteminfo_color) listBox->setItemInfoColor(hintColor);
+	}
+		
+	// item
+	// border
+	if (itemborder) listBox->setItemBorderMode(itemborder);
+	// bordercolor
+	uint32_t bColor = COL_MENUCONTENT_PLUS_6;
+				
+	if (itembordercolor != NULL) 
+	{
+		bColor = convertColor(itembordercolor);
+		listBox->setItemBorderColor(bColor);
+	}
+	// itemgradient
+	int item_gr = NOGRADIENT;
+	if (itemgradient) item_gr = convertGradient(itemgradient);
+	listBox->setItemGradient(item_gr);
+	// item2lines
+	if (item2lines) listBox->setItem2Lines();
+				
+	// ITEM	
+	listboxitem_node = node->xmlChildrenNode;
+		
+	//
+	char * item_id = NULL;
+						
+	char* item_localename = NULL;
+	char* item_option = NULL;
+	char* item_actionkey = NULL;
+	char* item_target = NULL;
+	char* item_hinticon = NULL;
+	char* item_hint = NULL;
+	char* item_icon = NULL;
+	char* item_directkey = NULL;
+	unsigned int item_lines = 0;
+	unsigned int item_border = 0;
+	unsigned int item_gradient = 0;
+					
+	while ((listboxitem_node = xmlGetNextOccurence(listboxitem_node, "ITEM")) != NULL) 
+	{	
+		item_id = xmlGetAttribute(listboxitem_node, (char *)"id");
+						
+		item_localename = xmlGetAttribute(listboxitem_node, (char*)"localename");
+		item_option = xmlGetAttribute(listboxitem_node, (char*)"option");
+		item_actionkey = xmlGetAttribute(listboxitem_node, (char*)"actionkey");
+		item_target = xmlGetAttribute(listboxitem_node, (char*)"target");
+		item_hinticon = xmlGetAttribute(listboxitem_node, (char*)"itemicon");
+		item_hint = xmlGetAttribute(listboxitem_node, (char*)"hint");
+		item_icon = xmlGetAttribute(listboxitem_node, (char*)"iconname");
+		item_directkey = xmlGetAttribute(listboxitem_node, (char*)"directkey");
+		item_lines = xmlGetSignedNumericAttribute(listboxitem_node, "lines", 0);
+		item_border = xmlGetSignedNumericAttribute(listboxitem_node, "border", 0);
+		item_gradient = xmlGetSignedNumericAttribute(listboxitem_node, "gradient", 0);
+						
+		CMenuTarget* parent = NULL;
+		std::string actionKey = "";
+		std::string itemName = "";
+		neutrino_msg_t key = RC_nokey;
+						
+		if (item_localename) itemName = _(item_localename);
+						
+		//
+		int id = MENUITEM_FORWARDER;
+		if (item_id) id = convertCMenuItemID(item_id);
+			
+		if (id == MENUITEM_FORWARDER)
+			menuItem = new CMenuForwarder(itemName.c_str());
+						
+		if (item_actionkey) actionKey = item_actionkey;
+			
+		if (item_target) parent = convertTarget(item_target);
+							
+		menuItem->setActionKey(parent, actionKey.c_str());
+					
+		//	
+		if (item_directkey)
+		{
+			key = convertKey(item_directkey);
+			menuItem->setDirectKey(key);
+		}
+		if (item_icon) menuItem->setIconName(item_icon);	
+		if (item_hint) menuItem->setHint(item_hint);
+		if (item_lines) menuItem->set2lines();
+		if (item_option) menuItem->setOption(item_option);
+		if (item_border) menuItem->setBorderMode(item_border);
+		if (item_gradient) menuItem->setGradient(item_gradient);
+					
+		if (item_hinticon)
+		{
+			std::string filename = CONFIGDIR "/skins/";
+			filename += g_settings.preferred_skin;
+			filename += "/";
+			filename += item_hinticon;
+						
+			if (file_exists(filename.c_str()))
+				menuItem->setHintIcon(filename.c_str());
+			else
+			{
+				menuItem->setHintIcon(item_hinticon);
+			}
+		}
+						
+		listBox->addItem(menuItem);
+				
+		listboxitem_node = listboxitem_node->xmlNextNode;
+	}
+				
+	// INTEGRATION
+	listboxintegration_node = node->xmlChildrenNode;
+		
+	CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED;
+	unsigned int mode = MODE_MENU;
+	unsigned int shortcut = RC_nokey;
+	unsigned int type = TYPE_STANDARD;
+	unsigned int i_lines = false;
+	unsigned int i_border = false;
+					
+	while ((listboxintegration_node = xmlGetNextOccurence(listboxintegration_node, "INTEGRATION")) != NULL) 
+	{	
+		integration = (CPlugins::i_type_t)xmlGetSignedNumericAttribute(listboxintegration_node, "id", 0);
+		mode = xmlGetSignedNumericAttribute(listboxintegration_node, "mode", 0);
+		shortcut = xmlGetSignedNumericAttribute(listboxintegration_node, "shortcut", 0);
+		type = xmlGetSignedNumericAttribute(listboxintegration_node, "type", 0);
+		i_lines = xmlGetSignedNumericAttribute(listboxintegration_node, "lines", 0);
+		i_border = xmlGetSignedNumericAttribute(listboxintegration_node, "border", 0);
+						
+		listBox->integratePlugins(integration, shortcut? shortcut : RC_nokey, true, mode, type, i_lines, i_border);
+				
+		listboxintegration_node = listboxintegration_node->xmlNextNode;
+	}
+				
+	// BUTTON_LABEL / FOOT
+	buttonlabel_node = node->xmlChildrenNode;
+		
+	char* button = NULL;
+	char* localename = NULL;
+					
+	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "FOOT_BUTTON_LABEL")) != NULL) 
+	{	
+		button = xmlGetAttribute(buttonlabel_node, (char*)"name");
+		localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
+						
+		button_label_struct btn;
+		btn.button = " ";
+		if (button) btn.button = button;
+		btn.localename = " ";
+		if (localename) btn.localename = localename;
+						
+		listBox->setFootButtons(&btn);
+				
+		buttonlabel_node = buttonlabel_node->xmlNextNode;
+	}
+				
+	// BUTTON_LABEL / HEAD
+	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "HEAD_BUTTON_LABEL")) != NULL) 
+	{	
+		button = xmlGetAttribute(buttonlabel_node, (char*)"name");
+		//localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
+						
+		button_label_struct btn;
+		btn.button = " ";
+		if (button) btn.button = button;
+		btn.localename = " ";
+		//if (localename) btn.localename = localename;
+						
+		listBox->setHeadButtons(&btn);
+				
+		buttonlabel_node = buttonlabel_node->xmlNextNode;
+	}
+		
+	if (widget) widget->addWidgetItem(listBox);
 }
 
 // CWindow
@@ -1551,10 +1546,10 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 	
 	char* name = NULL;
 				
-	unsigned int posx = 0;
-	unsigned int posy = 0;
-	unsigned int width = 0;
-	unsigned int height = 0;
+	int posx = 0;
+	int posy = 0;
+	int width = 0;
+	int height = 0;
 				
 	unsigned int paintframe = 1;
 	char* color = NULL;
@@ -1567,99 +1562,84 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 	unsigned int gradient_intensity = 0;
 	unsigned int gradient_type = 0;
 	
-	//unsigned int refresh = 0;
-	
-	while ((node = xmlGetNextOccurence(node, "WINDOW")) != NULL) 
-	{
-		//
-		name = xmlGetAttribute(node, (char*)"name");
+	//
+	name = xmlGetAttribute(node, (char*)"name");
 		
-		//		
-		posx = xmlGetSignedNumericAttribute(node, "posx", 0);
-		posy = xmlGetSignedNumericAttribute(node, "posy", 0);
-		width = xmlGetSignedNumericAttribute(node, "width", 0);
-		height = xmlGetSignedNumericAttribute(node, "height", 0);
+	//		
+	posx = xmlGetSignedNumericAttribute(node, "posx", 0);
+	posy = xmlGetSignedNumericAttribute(node, "posy", 0);
+	width = xmlGetSignedNumericAttribute(node, "width", 0);
+	height = xmlGetSignedNumericAttribute(node, "height", 0);
 				
-		paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
-		color = xmlGetAttribute(node, (char*)"color");
+	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
+	color = xmlGetAttribute(node, (char*)"color");
 
-		corner = xmlGetAttribute(node, (char *)"corner");
-		radius = xmlGetAttribute(node, (char *)"radius");
-		border = xmlGetSignedNumericAttribute(node, "border", 0);
-		bordercolor = xmlGetAttribute(node, (char *)"bordercolor");
+	corner = xmlGetAttribute(node, (char *)"corner");
+	radius = xmlGetAttribute(node, (char *)"radius");
+	border = xmlGetSignedNumericAttribute(node, "border", 0);
+	bordercolor = xmlGetAttribute(node, (char *)"bordercolor");
 		
-		gradient = xmlGetAttribute(node, (char *)"gradient");
-		gradient_direction = xmlGetSignedNumericAttribute(node, "direction", 0);
-		gradient_intensity = xmlGetSignedNumericAttribute(node, "intensity", 0);
-		gradient_type = xmlGetSignedNumericAttribute(node, "type", 0);
+	gradient = xmlGetAttribute(node, (char *)"gradient");
+	gradient_direction = xmlGetSignedNumericAttribute(node, "direction", 0);
+	gradient_intensity = xmlGetSignedNumericAttribute(node, "intensity", 0);
+	gradient_type = xmlGetSignedNumericAttribute(node, "type", 0);
+		
+	// recalculate posx / posy
+	int x = posx;
+	int y = posy;
+		
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + posx;
+		y = widget->getWindowsPos().iY + posy;
 				
-		// 		
-		//refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
-		
-		// recalculate posx / posy
-		int x = posx;
-		int y = posy;
-		
-		if (widget)
-		{			
-			x = widget->getWindowsPos().iX + posx;
-			y = widget->getWindowsPos().iY + posy;
+		if (width > widget->getWindowsPos().iWidth)
+			width = widget->getWindowsPos().iWidth;
 				
-			if (width > widget->getWindowsPos().iWidth)
-				width = widget->getWindowsPos().iWidth;
-				
-			if (height > widget->getWindowsPos().iHeight)
-				height = widget->getWindowsPos().iHeight;
-		}
-					
-		window = new CWindow(x, y, width, height);
-		
-		window->widgetItem_type = WIDGETITEM_WINDOW;
-		if (name) window->widgetItem_name = name;
-					
-		window->paintMainFrame(paintframe);
-		
-		//if (!paintframe) window->enableSaveScreen();
-		
-		// color
-		uint32_t finalColor = COL_MENUCONTENT_PLUS_0;
-				
-		if (color != NULL) 
-		{
-			finalColor = convertColor(color);
-			window->setColor(finalColor);
-		}
-		
-		// refresh
-		//if (refresh) window->enableRepaint();
-
-		// corner/radius
-		int co = CORNER_NONE;
-		int ra = NO_RADIUS;
-		if (corner) co = convertCorner(corner);
-		if (radius) ra = convertRadius(radius);
-		window->setCorner(ra, co);
-
-		// border
-		window->setBorderMode(border);
-		
-		// bordercolor
-		fb_pixel_t bColor = COL_INFOBAR_SHADOW_PLUS_0;	
-		if (bordercolor != NULL)
-		{ 
-			bColor = convertColor(bordercolor);
-			window->setBorderColor(bColor);
-		}
-
-		// gradient
-		int gr = NOGRADIENT;
-		if (gradient) gr = convertGradient(gradient);
-		window->setGradient(gr, gradient_direction, gradient_intensity, gradient_type);
-					
-		if (widget) widget->addWidgetItem(window);
-			
-		node = node->xmlNextNode;
+		if (height > widget->getWindowsPos().iHeight)
+			height = widget->getWindowsPos().iHeight;
 	}
+					
+	window = new CWindow(x, y, width, height);
+		
+	window->widgetItem_type = WIDGETITEM_WINDOW;
+	if (name) window->widgetItem_name = name;
+					
+	window->paintMainFrame(paintframe);
+		
+	// color
+	uint32_t finalColor = COL_MENUCONTENT_PLUS_0;
+				
+	if (color != NULL) 
+	{
+		finalColor = convertColor(color);
+		window->setColor(finalColor);
+	}
+		
+	// corner/radius
+	int co = CORNER_NONE;
+	int ra = NO_RADIUS;
+	if (corner) co = convertCorner(corner);
+	if (radius) ra = convertRadius(radius);
+	window->setCorner(ra, co);
+
+	// border
+	window->setBorderMode(border);
+		
+	// bordercolor
+	fb_pixel_t bColor = COL_INFOBAR_SHADOW_PLUS_0;	
+	if (bordercolor != NULL)
+	{ 
+		bColor = convertColor(bordercolor);
+		window->setBorderColor(bColor);
+	}
+
+	// gradient
+	int gr = NOGRADIENT;
+	if (gradient) gr = convertGradient(gradient);
+	window->setGradient(gr, gradient_direction, gradient_intensity, gradient_type);
+					
+	if (widget) widget->addWidgetItem(window);
 }
 
 // CHead
@@ -1671,10 +1651,10 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	
 	char* name = NULL;
 				
-	unsigned int posx = 0;
-	unsigned int posy = 0;
-	unsigned int width = 0;
-	unsigned int height = 0;
+	int posx = 0;
+	int posy = 0;
+	int width = 0;
+	int height = 0;
 				
 	unsigned int paintframe = 1;
 	char* color = NULL;
@@ -1693,102 +1673,98 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	
 	xmlNodePtr buttonlabel_node = NULL;
 	
-	while ((node = xmlGetNextOccurence(node, "HEAD")) != NULL) 
-	{
-		name = xmlGetAttribute(node, (char*)"name");
+	//
+	name = xmlGetAttribute(node, (char*)"name");
 						
-		posx = xmlGetSignedNumericAttribute(node, "posx", 0);
-		posy = xmlGetSignedNumericAttribute(node, "posy", 0);
-		width = xmlGetSignedNumericAttribute(node, "width", 0);
-		height = xmlGetSignedNumericAttribute(node, "height", 0);
+	posx = xmlGetSignedNumericAttribute(node, "posx", 0);
+	posy = xmlGetSignedNumericAttribute(node, "posy", 0);
+	width = xmlGetSignedNumericAttribute(node, "width", 0);
+	height = xmlGetSignedNumericAttribute(node, "height", 0);
 				
-		paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
-		color = xmlGetAttribute(node, (char*)"color");
-		gradient = xmlGetAttribute(node, (char *)"gradient");
-		corner = xmlGetAttribute(node, (char *)"corner");
-		radius = xmlGetAttribute(node, (char *)"radius");
+	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
+	color = xmlGetAttribute(node, (char*)"color");
+	gradient = xmlGetAttribute(node, (char *)"gradient");
+	corner = xmlGetAttribute(node, (char *)"corner");
+	radius = xmlGetAttribute(node, (char *)"radius");
 				
-		// parse color
-		uint32_t finalColor = COL_MENUCONTENT_PLUS_0;		
-		if (color) finalColor = convertColor(color);
+	// parse color
+	uint32_t finalColor = COL_MENUCONTENT_PLUS_0;		
+	if (color) finalColor = convertColor(color);
 					
-		title = xmlGetAttribute(node, (char*)"title");
-		halign = xmlGetSignedNumericAttribute(node, "halign", 0);
-		icon = xmlGetAttribute(node, (char*)"icon");
-		head_line = xmlGetSignedNumericAttribute(node, "line", 0);
-		head_line_gradient = xmlGetSignedNumericAttribute(node, "line_gradient", 0);
+	title = xmlGetAttribute(node, (char*)"title");
+	halign = xmlGetSignedNumericAttribute(node, "halign", 0);
+	icon = xmlGetAttribute(node, (char*)"icon");
+	head_line = xmlGetSignedNumericAttribute(node, "line", 0);
+	head_line_gradient = xmlGetSignedNumericAttribute(node, "line_gradient", 0);
 		
-		paintdate = xmlGetSignedNumericAttribute(node, "paintdate", 0);
-		format = xmlGetAttribute(node, (char*)"format");
+	paintdate = xmlGetSignedNumericAttribute(node, "paintdate", 0);
+	format = xmlGetAttribute(node, (char*)"format");
 		
-		// recalculate posx / posy
-		int x = posx;
-		int y = posy;
+	// recalculate posx / posy
+	int x = posx;
+	int y = posy;
 		
-		if (widget)
-		{			
-			x = widget->getWindowsPos().iX + posx;
-			y = widget->getWindowsPos().iY + posy;
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + posx;
+		y = widget->getWindowsPos().iY + posy;
 				
-			if (width > widget->getWindowsPos().iWidth)
-				width = widget->getWindowsPos().iWidth;
+		if (width > widget->getWindowsPos().iWidth)
+			width = widget->getWindowsPos().iWidth;
 				
-			if (height > widget->getWindowsPos().iHeight)
-				height = widget->getWindowsPos().iHeight;
-		}
-
-		head = new CHeaders(x, y, width, height);
-		
-		head->widgetItem_type = WIDGETITEM_HEAD;
-		if (name) head->widgetItem_name = name;
-		
-		head->paintMainFrame(paintframe);
-	
-		if (title != NULL) head->setTitle(_(title));
-		head->setHAlign(halign);
-		if (icon != NULL) head->setIcon(icon);
-		if(color != NULL) head->setColor(finalColor);
-		int gr = NOGRADIENT;
-		if (gradient) gr = convertGradient(gradient);
-		head->setGradient(gr);
-		int co = CORNER_NONE;
-		int ra = NO_RADIUS;
-		if (corner) co = convertCorner(corner);
-		if (radius) ra = convertRadius(radius);
-		head->setCorner(ra, co);
-		
-		// line
-		head->setLine(head_line, head_line_gradient);
-		
-		if (paintdate) head->enablePaintDate();
-		if (format != NULL) head->setFormat(_(format));
-					
-		// BUTTON_LABEL
-		buttonlabel_node = node->xmlChildrenNode;
-		
-		char* button = NULL;
-		char* localename = NULL;
-					
-		while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "BUTTON_LABEL")) != NULL) 
-		{	
-			button = xmlGetAttribute(buttonlabel_node, (char*)"name");
-			localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
-						
-			button_label_struct btn;
-			btn.button = " ";
-			if (button) btn.button = button;
-			btn.localename = " ";
-			if (localename) btn.localename = localename;
-						
-			head->setButtons(&btn);
-				
-			buttonlabel_node = buttonlabel_node->xmlNextNode;
-		}
-					
-		if (widget) widget->addWidgetItem(head);
-			
-		node = node->xmlNextNode;
+		if (height > widget->getWindowsPos().iHeight)
+			height = widget->getWindowsPos().iHeight;
 	}
+
+	head = new CHeaders(x, y, width, height);
+		
+	head->widgetItem_type = WIDGETITEM_HEAD;
+	if (name) head->widgetItem_name = name;
+		
+	head->paintMainFrame(paintframe);
+	
+	if (title != NULL) head->setTitle(_(title));
+	head->setHAlign(halign);
+	if (icon != NULL) head->setIcon(icon);
+	if(color != NULL) head->setColor(finalColor);
+	int gr = NOGRADIENT;
+	if (gradient) gr = convertGradient(gradient);
+	head->setGradient(gr);
+	int co = CORNER_NONE;
+	int ra = NO_RADIUS;
+	if (corner) co = convertCorner(corner);
+	if (radius) ra = convertRadius(radius);
+	head->setCorner(ra, co);
+		
+	// line
+	head->setLine(head_line, head_line_gradient);
+		
+	if (paintdate) head->enablePaintDate();
+	if (format != NULL) head->setFormat(_(format));
+					
+	// BUTTON_LABEL
+	buttonlabel_node = node->xmlChildrenNode;
+		
+	char* button = NULL;
+	char* localename = NULL;
+					
+	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "BUTTON_LABEL")) != NULL) 
+	{	
+		button = xmlGetAttribute(buttonlabel_node, (char*)"name");
+		localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
+						
+		button_label_struct btn;
+		btn.button = " ";
+		if (button) btn.button = button;
+		btn.localename = " ";
+		if (localename) btn.localename = localename;
+						
+		head->setButtons(&btn);
+				
+		buttonlabel_node = buttonlabel_node->xmlNextNode;
+	}
+					
+	if (widget) widget->addWidgetItem(head);
 }
 
 // CFoot
@@ -1798,10 +1774,10 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	
 	CFooters* foot = NULL;
 	
-	unsigned int posx = 0;
-	unsigned int posy = 0;
-	unsigned int width = 0;
-	unsigned int height = 0;
+	int posx = 0;
+	int posy = 0;
+	int width = 0;
+	int height = 0;
 				
 	unsigned int paintframe = 1;
 	char* color = NULL;
@@ -1814,84 +1790,80 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	
 	xmlNodePtr buttonlabel_node = NULL;
 	
-	while ((node = xmlGetNextOccurence(node, "FOOT")) != NULL) 
-	{		
-		posx = xmlGetSignedNumericAttribute(node, "posx", 0);
-		posy = xmlGetSignedNumericAttribute(node, "posy", 0);
-		width = xmlGetSignedNumericAttribute(node, "width", 0);
-		height = xmlGetSignedNumericAttribute(node, "height", 0);
+	//		
+	posx = xmlGetSignedNumericAttribute(node, "posx", 0);
+	posy = xmlGetSignedNumericAttribute(node, "posy", 0);
+	width = xmlGetSignedNumericAttribute(node, "width", 0);
+	height = xmlGetSignedNumericAttribute(node, "height", 0);
 				
-		paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);	
-		color = xmlGetAttribute(node, (char*)"color");
-		gradient = xmlGetAttribute(node, (char *)"gradient");
-		corner = xmlGetAttribute(node, (char *)"corner");
-		radius = xmlGetAttribute(node, (char *)"radius");
+	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);	
+	color = xmlGetAttribute(node, (char*)"color");
+	gradient = xmlGetAttribute(node, (char *)"gradient");
+	corner = xmlGetAttribute(node, (char *)"corner");
+	radius = xmlGetAttribute(node, (char *)"radius");
 				
-		// parse color
-		uint32_t finalColor = COL_MENUCONTENT_PLUS_0;		
-		if (color) finalColor = convertColor(color);
+	// parse color
+	uint32_t finalColor = COL_MENUCONTENT_PLUS_0;		
+	if (color) finalColor = convertColor(color);
 				
-		foot_line = xmlGetSignedNumericAttribute(node, "line", 0);
-		foot_line_gradient = xmlGetSignedNumericAttribute(node, "line_gradient", 0);
+	foot_line = xmlGetSignedNumericAttribute(node, "line", 0);
+	foot_line_gradient = xmlGetSignedNumericAttribute(node, "line_gradient", 0);
 		
-		// recalculate posx / posy
-		int x = posx;
-		int y = posy;
+	// recalculate posx / posy
+	int x = posx;
+	int y = posy;
 		
-		if (widget)
-		{			
-			x = widget->getWindowsPos().iX + posx;
-			y = widget->getWindowsPos().iY + posy;
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + posx;
+		y = widget->getWindowsPos().iY + posy;
 				
-			if (width > widget->getWindowsPos().iWidth)
-				width = widget->getWindowsPos().iWidth;
+		if (width > widget->getWindowsPos().iWidth)
+			width = widget->getWindowsPos().iWidth;
 				
-			if (height > widget->getWindowsPos().iHeight)
-				height = widget->getWindowsPos().iHeight;
-		}
-						
-		foot = new CFooters(x, y, width, height);
-		
-		foot->widgetItem_type = WIDGETITEM_FOOT;
-		
-		foot->paintMainFrame(paintframe);			
-		if (color != NULL) foot->setColor(finalColor);
-		int gr = NOGRADIENT;
-		if (gradient) gr = convertGradient(gradient);
-		foot->setGradient(gr);
-		int co = CORNER_NONE;
-		int ra = NO_RADIUS;
-		if (corner) co = convertCorner(corner);
-		if (radius) ra = convertRadius(radius);
-		foot->setCorner(ra, co);
-		foot->setLine(foot_line, foot_line_gradient);
-					
-		// BUTTON_LABEL
-		buttonlabel_node = node->xmlChildrenNode;
-		
-		char* button = NULL;
-		char* localename = NULL;
-					
-		while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "BUTTON_LABEL")) != NULL) 
-		{	
-			button = xmlGetAttribute(buttonlabel_node, (char*)"name");
-			localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
-						
-			button_label_struct btn;
-			btn.button = " ";
-			if (button) btn.button = button;
-			btn.localename = " ";
-			if (localename) btn.localename = localename;
-						
-			foot->setButtons(&btn);
-				
-			buttonlabel_node = buttonlabel_node->xmlNextNode;
-		}
-					
-		if (widget) widget->addWidgetItem(foot);
-			
-		node = node->xmlNextNode;
+		if (height > widget->getWindowsPos().iHeight)
+			height = widget->getWindowsPos().iHeight;
 	}
+						
+	foot = new CFooters(x, y, width, height);
+		
+	foot->widgetItem_type = WIDGETITEM_FOOT;
+		
+	foot->paintMainFrame(paintframe);			
+	if (color != NULL) foot->setColor(finalColor);
+	int gr = NOGRADIENT;
+	if (gradient) gr = convertGradient(gradient);
+	foot->setGradient(gr);
+	int co = CORNER_NONE;
+	int ra = NO_RADIUS;
+	if (corner) co = convertCorner(corner);
+	if (radius) ra = convertRadius(radius);
+	foot->setCorner(ra, co);
+	foot->setLine(foot_line, foot_line_gradient);
+					
+	// BUTTON_LABEL
+	buttonlabel_node = node->xmlChildrenNode;
+		
+	char* button = NULL;
+	char* localename = NULL;
+					
+	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "BUTTON_LABEL")) != NULL) 
+	{	
+		button = xmlGetAttribute(buttonlabel_node, (char*)"name");
+		localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
+						
+		button_label_struct btn;
+		btn.button = " ";
+		if (button) btn.button = button;
+		btn.localename = " ";
+		if (localename) btn.localename = localename;
+						
+		foot->setButtons(&btn);
+				
+		buttonlabel_node = buttonlabel_node->xmlNextNode;
+	}
+					
+	if (widget) widget->addWidgetItem(foot);
 }
 
 // CTextBox
@@ -1903,13 +1875,12 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	
 	char* name = NULL;
 	
-	unsigned int posx = 0;
-	unsigned int posy = 0;
-	unsigned int width = 0;
-	unsigned int height = 0;
+	int posx = 0;
+	int posy = 0;
+	int width = 0;
+	int height = 0;
 				
 	unsigned int paintframe = 1;
-	//unsigned int savescreen = 0;
 	char* color = NULL;
 	char * corner = NULL;
 	char * radius = NULL;
@@ -1928,105 +1899,97 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	char* text = NULL;
 	char* pic = NULL;
 	
-	while ((node = xmlGetNextOccurence(node, "TEXTBOX")) != NULL) 
-	{
-		//
-		name = xmlGetAttribute(node, (char*)"name");
+	//
+	name = xmlGetAttribute(node, (char*)"name");
 		
-		//		
-		posx = xmlGetSignedNumericAttribute(node, "posx", 0);
-		posy = xmlGetSignedNumericAttribute(node, "posy", 0);
-		width = xmlGetSignedNumericAttribute(node, "width", 0);
-		height = xmlGetSignedNumericAttribute(node, "height", 0);
+	//		
+	posx = xmlGetSignedNumericAttribute(node, "posx", 0);
+	posy = xmlGetSignedNumericAttribute(node, "posy", 0);
+	width = xmlGetSignedNumericAttribute(node, "width", 0);
+	height = xmlGetSignedNumericAttribute(node, "height", 0);
 				
-		paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);
-		//savescreen = xmlGetSignedNumericAttribute(node, "savescreen", 0);		
-		color = xmlGetAttribute(node, (char*)"color");
-		corner = xmlGetAttribute(node, (char *)"corner");
-		radius = xmlGetAttribute(node, (char *)"radius");
+	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
+	color = xmlGetAttribute(node, (char*)"color");
+	corner = xmlGetAttribute(node, (char *)"corner");
+	radius = xmlGetAttribute(node, (char *)"radius");
 		
-		textColor = xmlGetAttribute(node, (char*)"textcolor");
-		//font = xmlGetSignedNumericAttribute(node, "font", 0);
-		font = xmlGetAttribute(node, (char *)"font");
-		fontbg = xmlGetSignedNumericAttribute(node, "fontbg", 0);
+	textColor = xmlGetAttribute(node, (char*)"textcolor");
+	font = xmlGetAttribute(node, (char *)"font");
+	fontbg = xmlGetSignedNumericAttribute(node, "fontbg", 0);
 		
-		mode = xmlGetSignedNumericAttribute(node, "mode", 0);
-		border = xmlGetSignedNumericAttribute(node, "border", 0);
+	mode = xmlGetSignedNumericAttribute(node, "mode", 0);
+	border = xmlGetSignedNumericAttribute(node, "border", 0);
 		
-		tmode = xmlGetSignedNumericAttribute(node, "tmode", 0);
-		tw = xmlGetSignedNumericAttribute(node, "twidth", 0);
-		th = xmlGetSignedNumericAttribute(node, "theight", 0);
-		tframe = xmlGetSignedNumericAttribute(node, "tframe", 0);
+	tmode = xmlGetSignedNumericAttribute(node, "tmode", 0);
+	tw = xmlGetSignedNumericAttribute(node, "twidth", 0);
+	th = xmlGetSignedNumericAttribute(node, "theight", 0);
+	tframe = xmlGetSignedNumericAttribute(node, "tframe", 0);
 		
-		text = xmlGetAttribute(node, (char*)"text");
-		pic = xmlGetAttribute(node, (char*)"pic");
+	text = xmlGetAttribute(node, (char*)"text");
+	pic = xmlGetAttribute(node, (char*)"pic");
 		
-		// recalculate posx / posy
-		int x = posx;
-		int y = posy;
+	// recalculate posx / posy
+	int x = posx;
+	int y = posy;
 		
-		if (widget)
-		{			
-			x = widget->getWindowsPos().iX + posx;
-			y = widget->getWindowsPos().iY + posy;
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + posx;
+		y = widget->getWindowsPos().iY + posy;
 				
-			if (width > widget->getWindowsPos().iWidth)
-				width = widget->getWindowsPos().iWidth;
+		if (width > widget->getWindowsPos().iWidth)
+			width = widget->getWindowsPos().iWidth;
 				
-			if (height > widget->getWindowsPos().iHeight)
-				height = widget->getWindowsPos().iHeight;
-		}
-						
-		textBox = new CTextBox(x, y, width, height);
-		
-		textBox->widgetItem_type = WIDGETITEM_TEXTBOX;
-		if (name) textBox->widgetItem_name = name;
-		// color
-		uint32_t finalColor = COL_MENUCONTENT_PLUS_0;			
-		if (color != NULL) 
-		{
-			finalColor = convertColor(color);
-			textBox->setBackgroundColor(finalColor);
-		}
-		
-		//
-		int co = CORNER_NONE;
-		int ra = NO_RADIUS;
-		if (corner) co = convertCorner(corner);
-		if (radius) ra = convertRadius(radius);
-		textBox->setCorner(ra, co);
-		textBox->paintMainFrame(paintframe);
-		//if (savescreen || paintframe == 0) textBox->enableSaveScreen();
-					
-		textBox->setTextColor(textColor? convertFontColor(textColor) : COL_MENUCONTENT);
-		//
-		int fs = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
-		if (font) fs = convertFontSize(font);
-		textBox->setFont(fs);
-		//
-		textBox->setMode(mode);
-		
-		/*
-		std::string filename = "";
-		std::string image = pic;
-		if (pic != NULL)
-		{
-			filename = CONFIGDIR "/skins/";
-			filename += g_settings.preferred_skin;
-			filename += "/";
-			filename += pic;
-					
-			if (file_exists(filename.c_str()))
-				image = filename.c_str();
-		}
-
-		if (text) textBox->setText(text, image.c_str(), tw, th, tmode, tframe, fontbg);
-		*/
-					
-		if (widget) widget->addWidgetItem(textBox);
-			
-		node = node->xmlNextNode;
+		if (height > widget->getWindowsPos().iHeight)
+			height = widget->getWindowsPos().iHeight;
 	}
+						
+	textBox = new CTextBox(x, y, width, height);
+		
+	textBox->widgetItem_type = WIDGETITEM_TEXTBOX;
+	if (name) textBox->widgetItem_name = name;
+	// color
+	uint32_t finalColor = COL_MENUCONTENT_PLUS_0;			
+	if (color != NULL) 
+	{
+		finalColor = convertColor(color);
+		textBox->setBackgroundColor(finalColor);
+	}
+		
+	//
+	int co = CORNER_NONE;
+	int ra = NO_RADIUS;
+	if (corner) co = convertCorner(corner);
+	if (radius) ra = convertRadius(radius);
+	textBox->setCorner(ra, co);
+	textBox->paintMainFrame(paintframe);
+					
+	textBox->setTextColor(textColor? convertFontColor(textColor) : COL_MENUCONTENT);
+	//
+	int fs = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
+	if (font) fs = convertFontSize(font);
+	textBox->setFont(fs);
+	//
+	textBox->setMode(mode);
+		
+	/*
+	std::string filename = "";
+	std::string image = pic;
+	if (pic != NULL)
+	{
+		filename = CONFIGDIR "/skins/";
+		filename += g_settings.preferred_skin;
+		filename += "/";
+		filename += pic;
+					
+		if (file_exists(filename.c_str()))
+			image = filename.c_str();
+	}
+
+	if (text) textBox->setText(text, image.c_str(), tw, th, tmode, tframe, fontbg);
+	*/
+					
+	if (widget) widget->addWidgetItem(textBox);
 }
 
 // CCLabel
@@ -2039,10 +2002,10 @@ void CNeutrinoApp::parseCCLabel(xmlNodePtr node, CWidget* widget)
 	//
 	char* name = NULL;
 				
-	unsigned int cc_x = 0;
-	unsigned int cc_y = 0;
-	unsigned int cc_dx = 0;
-	unsigned int cc_dy = 0;
+	int cc_x = 0;
+	int cc_y = 0;
+	int cc_dx = 0;
+	int cc_dy = 0;
 						
 	unsigned int cc_refresh = 0;
 	unsigned int l_halign = 0;
@@ -2051,66 +2014,61 @@ void CNeutrinoApp::parseCCLabel(xmlNodePtr node, CWidget* widget)
 	char * font_size = NULL;
 	char* font_color = NULL;
 	
-	while ((node = xmlGetNextOccurence(node, "LABEL")) != NULL) 
+	//
+	name = xmlGetAttribute(node, (char*)"name");
+		
+	//						
+	cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
+	cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
+	cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
+	cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
+						
+	cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
+		
+	//
+	font_size = xmlGetAttribute(node, (char *)"font");
+	font_color = xmlGetAttribute(node, (char*)"fontcolor");
+		
+	uint8_t color = COL_MENUCONTENT;
+		
+	if (font_color) color = convertFontColor(font_color);
+						
+	std::string text = "";
+							
+	text = xmlGetAttribute(node, (char*)"text");
+	l_halign = xmlGetSignedNumericAttribute(node, "halign", 0);
+		
+	// recalculate posx / posy
+	int x = cc_x;
+	int y = cc_y;
+		
+	if (widget)
 	{
-		//
-		name = xmlGetAttribute(node, (char*)"name");
-		
-		//						
-		cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
-		cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
-		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
-		cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
-						
-		cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
-		
-		//
-		font_size = xmlGetAttribute(node, (char *)"font");
-		font_color = xmlGetAttribute(node, (char*)"fontcolor");
-		
-		uint8_t color = COL_MENUCONTENT;
-		
-		if (font_color) color = convertFontColor(font_color);
-						
-		std::string text = "";
-							
-		text = xmlGetAttribute(node, (char*)"text");
-		l_halign = xmlGetSignedNumericAttribute(node, "halign", 0);
-		
-		// recalculate posx / posy
-		int x = cc_x;
-		int y = cc_y;
-		
-		if (widget)
-		{
-			x = widget->getWindowsPos().iX + cc_x;
-			y = widget->getWindowsPos().iY + cc_y;
+		x = widget->getWindowsPos().iX + cc_x;
+		y = widget->getWindowsPos().iY + cc_y;
 				
-			if (cc_dx > widget->getWindowsPos().iWidth)
-				cc_dx = widget->getWindowsPos().iWidth;
+		if (cc_dx > widget->getWindowsPos().iWidth)
+			cc_dx = widget->getWindowsPos().iWidth;
 				
-			if (cc_dy > widget->getWindowsPos().iHeight)
-				cc_dy = widget->getWindowsPos().iHeight;
-		}
-							
-		label = new CCLabel(x, y, cc_dx, cc_dy);
-		
-		label->cc_type = CC_LABEL;
-		if (name) label->cc_name = name;
-							
-		if (!text.empty()) label->setText(_(text.c_str()));
-		label->setHAlign(l_halign);
-		//if (font_size) label->setFont(font_size);
-		int fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
-		if (font_size) fs = convertFontSize(font_size);
-		label->setFont(fs);
-		//
-		if (font_color) label->setColor(color);
-							
-		if (widget) widget->addCCItem(label);
-			
-		node = node->xmlNextNode;
+		if (cc_dy > widget->getWindowsPos().iHeight)
+			cc_dy = widget->getWindowsPos().iHeight;
 	}
+							
+	label = new CCLabel(x, y, cc_dx, cc_dy);
+		
+	label->cc_type = CC_LABEL;
+	if (name) label->cc_name = name;
+							
+	if (!text.empty()) label->setText(_(text.c_str()));
+	label->setHAlign(l_halign);
+	//if (font_size) label->setFont(font_size);
+	int fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
+	if (font_size) fs = convertFontSize(font_size);
+	label->setFont(fs);
+	//
+	if (font_color) label->setColor(color);
+							
+	if (widget) widget->addCCItem(label);
 }
 
 // CCImage
@@ -2122,68 +2080,63 @@ void CNeutrinoApp::parseCCImage(xmlNodePtr node, CWidget* widget)
 	
 	char *name = NULL;
 				
-	unsigned int cc_x = 0;
-	unsigned int cc_y = 0;
-	unsigned int cc_dx = 0;
-	unsigned int cc_dy = 0;
+	int cc_x = 0;
+	int cc_y = 0;
+	int cc_dx = 0;
+	int cc_dy = 0;
 	
 	char* image = NULL;
 						
 	unsigned int cc_refresh = 0;
 	
-	while ((node = xmlGetNextOccurence(node, "IMAGE")) != NULL) 
-	{
-		//
-		name = xmlGetAttribute(node, (char*)"name");
+	//
+	name = xmlGetAttribute(node, (char*)"name");
 		
-		//				
-		cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
-		cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
-		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
-		cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
+	//				
+	cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
+	cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
+	cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
+	cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
 						
-		cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
+	cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
 				
-		image = xmlGetAttribute(node, (char*)"image");
+	image = xmlGetAttribute(node, (char*)"image");
 		
-		// recalculate posx / posy
-		int x = cc_x;
-		int y = cc_y;
+	// recalculate posx / posy
+	int x = cc_x;
+	int y = cc_y;
 		
-		if (widget)
-		{			
-			x = widget->getWindowsPos().iX + cc_x;
-			y = widget->getWindowsPos().iY + cc_y;
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + cc_x;
+		y = widget->getWindowsPos().iY + cc_y;
 				
-			if (cc_dx > widget->getWindowsPos().iWidth)
-				cc_dx = widget->getWindowsPos().iWidth;
+		if (cc_dx > widget->getWindowsPos().iWidth)
+			cc_dx = widget->getWindowsPos().iWidth;
 				
-			if (cc_dy > widget->getWindowsPos().iHeight)
-				cc_dy = widget->getWindowsPos().iHeight;
-		}
+		if (cc_dy > widget->getWindowsPos().iHeight)
+			cc_dy = widget->getWindowsPos().iHeight;
+	}
 							
-		pic = new CCImage(x, y, cc_dx, cc_dy);
+	pic = new CCImage(x, y, cc_dx, cc_dy);
 		
-		pic->cc_type = CC_IMAGE;
-		if (name) pic->cc_name = name;
+	pic->cc_type = CC_IMAGE;
+	if (name) pic->cc_name = name;
 							
-		if (image != NULL)
-		{
-			std::string filename = CONFIGDIR "/skins/";
-			filename += g_settings.preferred_skin;
-			filename += "/";
-			filename += image;
+	if (image != NULL)
+	{
+		std::string filename = CONFIGDIR "/skins/";
+		filename += g_settings.preferred_skin;
+		filename += "/";
+		filename += image;
 					
-			if (file_exists(filename.c_str()))
-				pic->setImage(filename.c_str());
-			else
-				pic->setImage(image);
-		}
+		if (file_exists(filename.c_str()))
+			pic->setImage(filename.c_str());
+		else
+			pic->setImage(image);
+	}
 							
-		if (widget) widget->addCCItem(pic);	
-			
-		node = node->xmlNextNode;
-	}	
+	if (widget) widget->addCCItem(pic);	
 }
 
 // CCTime
@@ -2195,10 +2148,10 @@ void CNeutrinoApp::parseCCTime(xmlNodePtr node, CWidget* widget)
 	
 	char *name = NULL;
 				
-	unsigned int cc_x = 0;
-	unsigned int cc_y = 0;
-	unsigned int cc_dx = 0;
-	unsigned int cc_dy = 0;
+	int cc_x = 0;
+	int cc_y = 0;
+	int cc_dx = 0;
+	int cc_dy = 0;
 	
 	//int font_size = -1;
 	char * font_size = NULL;
@@ -2208,63 +2161,58 @@ void CNeutrinoApp::parseCCTime(xmlNodePtr node, CWidget* widget)
 	
 	char* cc_format = NULL;
 	
-	while ((node = xmlGetNextOccurence(node, "TIME")) != NULL) 
-	{
-		//
-		name = xmlGetAttribute(node, (char*)"name");
+	//
+	name = xmlGetAttribute(node, (char*)"name");
 		
-		//				
-		cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
-		cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
-		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
-		cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
+	//				
+	cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
+	cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
+	cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
+	cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
 		
-		//
-		font_size = xmlGetAttribute(node, (char *)"font");
-		font_color = xmlGetAttribute(node, (char*)"fontcolor");
+	//
+	font_size = xmlGetAttribute(node, (char *)"font");
+	font_color = xmlGetAttribute(node, (char*)"fontcolor");
 		
-		uint8_t color = COL_MENUCONTENT;
+	uint8_t color = COL_MENUCONTENT;
 		
-		if (font_color) color = convertFontColor(font_color);
+	if (font_color) color = convertFontColor(font_color);
 						
-		cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
+	cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
 					
-		cc_format = xmlGetAttribute(node, (char*)"format");
+	cc_format = xmlGetAttribute(node, (char*)"format");
 		
-		// recalculate posx / posy
-		int x = cc_x;
-		int y = cc_y;
+	// recalculate posx / posy
+	int x = cc_x;
+	int y = cc_y;
 		
-		if (widget)
-		{			
-			x = widget->getWindowsPos().iX + cc_x;
-			y = widget->getWindowsPos().iY + cc_y;
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + cc_x;
+		y = widget->getWindowsPos().iY + cc_y;
 				
-			if (cc_dx > widget->getWindowsPos().iWidth)
-				cc_dx = widget->getWindowsPos().iWidth;
+		if (cc_dx > widget->getWindowsPos().iWidth)
+			cc_dx = widget->getWindowsPos().iWidth;
 				
-			if (cc_dy > widget->getWindowsPos().iHeight)
-				cc_dy = widget->getWindowsPos().iHeight;
-		}
-							
-		time = new CCTime(x, y, cc_dx, cc_dy);
-		
-		time->cc_type = CC_TIME;
-		if (name) time->cc_name = name;
-							
-		if (cc_format != NULL) time->setFormat(_(cc_format));
-		if (cc_refresh) time->enableRepaint();
-		//
-		int fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
-		if (font_size) fs = convertFontSize(font_size);
-		time->setFont(fs);
-		//
-		if (font_color) time->setColor(color);
-							
-		if (widget) widget->addCCItem(time);
-			
-		node = node->xmlNextNode;
+		if (cc_dy > widget->getWindowsPos().iHeight)
+			cc_dy = widget->getWindowsPos().iHeight;
 	}
+							
+	time = new CCTime(x, y, cc_dx, cc_dy);
+		
+	time->cc_type = CC_TIME;
+	if (name) time->cc_name = name;
+							
+	if (cc_format != NULL) time->setFormat(_(cc_format));
+	if (cc_refresh) time->enableRepaint();
+	//
+	int fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
+	if (font_size) fs = convertFontSize(font_size);
+	time->setFont(fs);
+	//
+	if (font_color) time->setColor(color);
+							
+	if (widget) widget->addCCItem(time);
 }
 
 // CCButton
@@ -2274,82 +2222,77 @@ void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget)
 	
 	CCButtons* cButton = NULL;
 	
-	unsigned int cc_x = 0;
-	unsigned int cc_y = 0;
-	unsigned int cc_dx = 0;
-	unsigned int cc_dy = 0;
+	int cc_x = 0;
+	int cc_y = 0;
+	int cc_dx = 0;
+	int cc_dy = 0;
 	
 	unsigned int head = 0;
 	unsigned int mode = BUTTON_BUTTON;
 	
 	xmlNodePtr buttonlabel_node = NULL;
 	
-	while ((node = xmlGetNextOccurence(node, "BUTTON")) != NULL) 
-	{
-		//
-		cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
-		cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
-		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
-		cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
+	//
+	cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
+	cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
+	cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
+	cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
 		
-		//
-		head = xmlGetSignedNumericAttribute(node, "head", 0);
-		mode = xmlGetSignedNumericAttribute(node, "mode", 0);
+	//
+	head = xmlGetSignedNumericAttribute(node, "head", 0);
+	mode = xmlGetSignedNumericAttribute(node, "mode", 0);
 		
-		// recalculate posx / posy
-		int x = cc_x;
-		int y = cc_y;
+	// recalculate posx / posy
+	int x = cc_x;
+	int y = cc_y;
 		
-		if (widget)
-		{			
-			x = widget->getWindowsPos().iX + cc_x;
-			y = widget->getWindowsPos().iY + cc_y;
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + cc_x;
+		y = widget->getWindowsPos().iY + cc_y;
 				
-			if (cc_dx > widget->getWindowsPos().iWidth)
-				cc_dx = widget->getWindowsPos().iWidth;
+		if (cc_dx > widget->getWindowsPos().iWidth)
+			cc_dx = widget->getWindowsPos().iWidth;
 				
-			if (cc_dy > widget->getWindowsPos().iHeight)
-				cc_dy = widget->getWindowsPos().iHeight;
-		}
-				
-		cButton = new CCButtons(x, y, cc_dx, cc_dy);
-		
-		cButton->setMode(mode);
-				
-		// BUTTON_LABEL
-		buttonlabel_node = node->xmlChildrenNode;
-		
-		char *button = NULL;
-		char *localename = NULL;
-		char *color = NULL;
-				
-		while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "BUTTON_LABEL")) != NULL) 
-		{		
-			button = xmlGetAttribute(buttonlabel_node, (char *)"name");
-			localename = xmlGetAttribute(buttonlabel_node, (char *)"localename");
-			color = xmlGetAttribute(buttonlabel_node, (char *)"color");
-							
-			button_label_struct btn;
-			btn.button = " ";
-			btn.localename = " ";
-			btn.color = COL_BACKGROUND_PLUS_0;
-			
-			//
-			if (button) btn.button = button;
-			if (localename) btn.localename = localename;
-			fb_pixel_t col = COL_BACKGROUND_PLUS_0;
-			if (color) col = convertColor(color);
-			btn.color = col;
-							
-			cButton->setButtons(&btn, 1, head);
-					
-			buttonlabel_node = buttonlabel_node->xmlNextNode;
-		}
-					
-		if (widget) widget->addCCItem(cButton);
-				
-		node = node->xmlNextNode;
+		if (cc_dy > widget->getWindowsPos().iHeight)
+			cc_dy = widget->getWindowsPos().iHeight;
 	}
+				
+	cButton = new CCButtons(x, y, cc_dx, cc_dy);
+		
+	cButton->setMode(mode);
+				
+	// BUTTON_LABEL
+	buttonlabel_node = node->xmlChildrenNode;
+		
+	char *button = NULL;
+	char *localename = NULL;
+	char *color = NULL;
+				
+	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "BUTTON_LABEL")) != NULL) 
+	{		
+		button = xmlGetAttribute(buttonlabel_node, (char *)"name");
+		localename = xmlGetAttribute(buttonlabel_node, (char *)"localename");
+		color = xmlGetAttribute(buttonlabel_node, (char *)"color");
+							
+		button_label_struct btn;
+		btn.button = " ";
+		btn.localename = " ";
+		btn.color = COL_BACKGROUND_PLUS_0;
+			
+		//
+		if (button) btn.button = button;
+		if (localename) btn.localename = localename;
+		fb_pixel_t col = COL_BACKGROUND_PLUS_0;
+		if (color) col = convertColor(color);
+		btn.color = col;
+							
+		cButton->setButtons(&btn, 1, head);
+					
+		buttonlabel_node = buttonlabel_node->xmlNextNode;
+	}
+					
+	if (widget) widget->addCCItem(cButton);
 }
 
 // CCHline
@@ -2361,56 +2304,51 @@ void CNeutrinoApp::parseCCHline(xmlNodePtr node, CWidget* widget)
 	
 	char *name = NULL;
 	
-	unsigned int cc_x = 0;
-	unsigned int cc_y = 0;
-	unsigned int cc_dx = 0;
-	unsigned int cc_dy = 0;
+	int cc_x = 0;
+	int cc_y = 0;
+	int cc_dx = 0;
+	int cc_dy = 0;
 	
 	//unsigned int gradient = 0;
 	char * gradient = NULL;
 	
-	while ((node = xmlGetNextOccurence(node, "HLINE")) != NULL) 
-	{
-		//
-		name = xmlGetAttribute(node, (char*)"name");
+	//
+	name = xmlGetAttribute(node, (char*)"name");
 		
-		//
-		cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
-		cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
-		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
-		cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
+	//
+	cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
+	cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
+	cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
+	cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
 		
-		gradient = xmlGetAttribute(node, (char *)"gradient");
+	gradient = xmlGetAttribute(node, (char *)"gradient");
 		
-		// recalculate posx / posy
-		int x = cc_x;
-		int y = cc_y;
+	// recalculate posx / posy
+	int x = cc_x;
+	int y = cc_y;
 		
-		if (widget)
-		{			
-			x = widget->getWindowsPos().iX + cc_x;
-			y = widget->getWindowsPos().iY + cc_y;
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + cc_x;
+		y = widget->getWindowsPos().iY + cc_y;
 				
-			if (cc_dx > widget->getWindowsPos().iWidth)
-				cc_dx = widget->getWindowsPos().iWidth;
+		if (cc_dx > widget->getWindowsPos().iWidth)
+			cc_dx = widget->getWindowsPos().iWidth;
 				
-			if (cc_dy > widget->getWindowsPos().iHeight)
-				cc_dy = widget->getWindowsPos().iHeight;
-		}
-				
-		hline = new CCHline(x, y, cc_dx, cc_dy);
-		
-		hline->cc_type = CC_HLINE;
-		if (name) hline->cc_name = name;
-		
-		int gr = NOGRADIENT;
-		if (gradient) gr = convertGradient(gradient);
-		hline->setGradient(gr);
-					
-		if (widget) widget->addCCItem(hline);
-				
-		node = node->xmlNextNode;
+		if (cc_dy > widget->getWindowsPos().iHeight)
+			cc_dy = widget->getWindowsPos().iHeight;
 	}
+				
+	hline = new CCHline(x, y, cc_dx, cc_dy);
+		
+	hline->cc_type = CC_HLINE;
+	if (name) hline->cc_name = name;
+		
+	int gr = NOGRADIENT;
+	if (gradient) gr = convertGradient(gradient);
+	hline->setGradient(gr);
+					
+	if (widget) widget->addCCItem(hline);
 }
 
 // CCVline
@@ -2422,55 +2360,50 @@ void CNeutrinoApp::parseCCVline(xmlNodePtr node, CWidget* widget)
 	
 	char *name = NULL;
 	
-	unsigned int cc_x = 0;
-	unsigned int cc_y = 0;
-	unsigned int cc_dx = 0;
-	unsigned int cc_dy = 0;
+	int cc_x = 0;
+	int cc_y = 0;
+	int cc_dx = 0;
+	int cc_dy = 0;
 	
 	char *gradient = NULL;
 	
-	while ((node = xmlGetNextOccurence(node, "VLINE")) != NULL) 
-	{
-		//
-		name = xmlGetAttribute(node, (char*)"name");
+	//
+	name = xmlGetAttribute(node, (char*)"name");
 		
-		//
-		cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
-		cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
-		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
-		cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
+	//
+	cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
+	cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
+	cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
+	cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
 		
-		gradient = xmlGetAttribute(node, (char *)"gradient");
+	gradient = xmlGetAttribute(node, (char *)"gradient");
 				
-		// recalculate posx / posy
-		int x = cc_x;
-		int y = cc_y;
+	// recalculate posx / posy
+	int x = cc_x;
+	int y = cc_y;
 		
-		if (widget)
-		{			
-			x = widget->getWindowsPos().iX + cc_x;
-			y = widget->getWindowsPos().iY + cc_y;
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + cc_x;
+		y = widget->getWindowsPos().iY + cc_y;
 				
-			if (cc_dx > widget->getWindowsPos().iWidth)
-				cc_dx = widget->getWindowsPos().iWidth;
+		if (cc_dx > widget->getWindowsPos().iWidth)
+			cc_dx = widget->getWindowsPos().iWidth;
 				
-			if (cc_dy > widget->getWindowsPos().iHeight)
-				cc_dy = widget->getWindowsPos().iHeight;
-		}
-		
-		vline = new CCVline(x, y, cc_dx, cc_dy);
-		
-		vline->cc_type = CC_VLINE;
-		if (name) vline->cc_name = name;
-		
-		int gr = NOGRADIENT;
-		if (gradient) gr = convertGradient(gradient);
-		vline->setGradient(gr);
-					
-		if (widget) widget->addCCItem(vline);
-				
-		node = node->xmlNextNode;
+		if (cc_dy > widget->getWindowsPos().iHeight)
+			cc_dy = widget->getWindowsPos().iHeight;
 	}
+		
+	vline = new CCVline(x, y, cc_dx, cc_dy);
+		
+	vline->cc_type = CC_VLINE;
+	if (name) vline->cc_name = name;
+		
+	int gr = NOGRADIENT;
+	if (gradient) gr = convertGradient(gradient);
+	vline->setGradient(gr);
+					
+	if (widget) widget->addCCItem(vline);
 }
 
 // CCPig
@@ -2482,47 +2415,42 @@ void CNeutrinoApp::parseCCPig(xmlNodePtr node, CWidget* widget)
 	
 	char *name = NULL;
 	
-	unsigned int cc_x = 0;
-	unsigned int cc_y = 0;
-	unsigned int cc_dx = 0;
-	unsigned int cc_dy = 0;
+	int cc_x = 0;
+	int cc_y = 0;
+	int cc_dx = 0;
+	int cc_dy = 0;
 	
-	while ((node = xmlGetNextOccurence(node, "PIG")) != NULL) 
-	{
-		//
-		name = xmlGetAttribute(node, (char*)"name");
+	//
+	name = xmlGetAttribute(node, (char*)"name");
 		
-		//
-		cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
-		cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
-		cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
-		cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
+	//
+	cc_x = xmlGetSignedNumericAttribute(node, "posx", 0);
+	cc_y = xmlGetSignedNumericAttribute(node, "posy", 0);
+	cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
+	cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
 		
-		// recalculate posx / posy
-		int x = cc_x;
-		int y = cc_y;
+	// recalculate posx / posy
+	int x = cc_x;
+	int y = cc_y;
 		
-		if (widget)
-		{			
-			x = widget->getWindowsPos().iX + cc_x;
-			y = widget->getWindowsPos().iY + cc_y;
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + cc_x;
+		y = widget->getWindowsPos().iY + cc_y;
 				
-			if (cc_dx > widget->getWindowsPos().iWidth)
-				cc_dx = widget->getWindowsPos().iWidth;
+		if (cc_dx > widget->getWindowsPos().iWidth)
+			cc_dx = widget->getWindowsPos().iWidth;
 				
-			if (cc_dy > widget->getWindowsPos().iHeight)
-				cc_dy = widget->getWindowsPos().iHeight;
-		}
-				
-		pig = new CCPig(x, y, cc_dx, cc_dy);
-		
-		pig->cc_type = CC_PIG;
-		if (name) pig->cc_name = name;
-					
-		if (widget) widget->addCCItem(pig);
-				
-		node = node->xmlNextNode;
+		if (cc_dy > widget->getWindowsPos().iHeight)
+			cc_dy = widget->getWindowsPos().iHeight;
 	}
+				
+	pig = new CCPig(x, y, cc_dx, cc_dy);
+		
+	pig->cc_type = CC_PIG;
+	if (name) pig->cc_name = name;
+					
+	if (widget) widget->addCCItem(pig);
 }
 
 // widget key
@@ -2534,22 +2462,18 @@ void CNeutrinoApp::parseKey(xmlNodePtr node, CWidget* widget)
 	char* key_actionkey = NULL;
 	char *key_target = NULL;
 	
-	while ((node = xmlGetNextOccurence(node, "KEY")) != NULL) 
-	{
-		key_name = xmlGetAttribute(node, (char*)"name");
-		key_actionkey = xmlGetAttribute(node, (char*)"actionkey");
-		key_target = xmlGetAttribute(node, (char*)"target");
+	key_name = xmlGetAttribute(node, (char*)"name");
+	key_actionkey = xmlGetAttribute(node, (char*)"actionkey");
+	key_target = xmlGetAttribute(node, (char*)"target");
 		
-		neutrino_msg_t key = RC_nokey;		
-		CMenuTarget* key_parent = NULL;
+	neutrino_msg_t key = RC_nokey;		
+	CMenuTarget* key_parent = NULL;
 		
-		if (key_name) key = convertKey(key_name);		
-		if (key_target) key_parent = convertTarget(key_target);
+	if (key_name) key = convertKey(key_name);		
+	if (key_target) key_parent = convertTarget(key_target);
 				
-		if (widget) widget->addKey(key, key_parent, key_actionkey);
+	if (widget) widget->addKey(key, key_parent, key_actionkey);
 			
-		node = node->xmlNextNode;
-	}
 }
 
 // parseCWidget
@@ -2581,6 +2505,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 	
 	//
 	xmlDocPtr parser = NULL;
+	xmlNodePtr item = NULL;
 	
 	//
 	if (skinfilename != NULL)
@@ -2621,7 +2546,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 			name = xmlGetAttribute(search, (char*)"name");
 			
 			//
-			if (!strcmp(name, widgetname) )
+			if ( !strcmp(name, widgetname) )
 			{	
 				x = xmlGetSignedNumericAttribute(search, "posx", 0);
 				y = xmlGetSignedNumericAttribute(search, "posy", 0);
@@ -2695,45 +2620,123 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				int pos = MENU_POSITION_NONE;
 				if (position) pos = convertMenuPosition(position);
 				widget->setMenuPosition(pos);
-					
+				
 				// WINDOW
-				parseCWindow(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "WINDOW")) != NULL) 
+				{
+					parseCWindow(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// HEAD
-				parseCHead(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "HEAD")) != NULL) 
+				{
+					parseCHead(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// FOOT
-				parseCFoot(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "FOOT")) != NULL) 
+				{
+					parseCFoot(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// LISTBOX
-				parseClistBox(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "LISTBOX")) != NULL) 
+				{
+					parseClistBox(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// TEXTBOX
-				parseCTextBox(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "TEXTBOX")) != NULL) 
+				{
+					parseCTextBox(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// LABEL
-				parseCCLabel(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "LABEL")) != NULL) 
+				{
+					parseCCLabel(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// IMAGE
-				parseCCImage(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "IMAGE")) != NULL) 
+				{
+					parseCCImage(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// TIME
-				parseCCTime(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "TIME")) != NULL) 
+				{
+					parseCCTime(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// BUTTONS
-				parseCCButtons(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "BUTTON")) != NULL) 
+				{
+					parseCCButtons(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// HLINE
-				parseCCHline(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "HLINE")) != NULL) 
+				{
+					parseCCHline(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// VLINE
-				parseCCVline(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "VLINE")) != NULL) 
+				{
+					parseCCVline(item, widget);
+					item = item->xmlNextNode;
+				}
 				
 				// PIG
-				parseCCPig(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "PIG")) != NULL) 
+				{
+					parseCCPig(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// KEY
-				parseKey(search->xmlChildrenNode, widget);
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "KEY")) != NULL) 
+				{
+					parseKey(item, widget);
+					item = item->xmlNextNode;
+				}
 			}
 							
 			//

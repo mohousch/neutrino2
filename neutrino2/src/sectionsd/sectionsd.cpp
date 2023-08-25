@@ -1555,8 +1555,6 @@ void CSectionsd::setServiceChanged(t_channel_id channel_id, bool requestEvent)
 		
 		// add localtv here
 		readSIfromLocalTV(messaging_current_servicekey);
-		// xmltv
-		//readSIfromXMLTV(messaging_current_servicekey);
 	}
 
 	return;

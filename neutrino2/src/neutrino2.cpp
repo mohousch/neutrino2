@@ -2244,12 +2244,6 @@ static void CSSendMessage(uint32_t msg, uint32_t data)
 }
 #endif
 
-void CISendMessage(uint32_t msg, uint32_t data)
-{
-	if (g_RCInput)
-	      g_RCInput->postMsg(msg, data);
-}
-
 // quickZap
 void CNeutrinoApp::quickZap(int msg)
 {
@@ -5142,12 +5136,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	initZapper();
 	
 	// audio mute
-	audioMute(current_muted, true);	
-
-// Cam-Ci
-#if defined (ENABLE_CI)	
-	cDvbCi::getInstance()->SetHook(CISendMessage);	
-#endif	
+	audioMute(current_muted, true);		
 	
 	// init shutdown count
 	SHTDCNT::getInstance()->init();
