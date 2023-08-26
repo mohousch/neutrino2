@@ -199,7 +199,6 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_MSMPEG4V1:
 		case AV_CODEC_ID_MSMPEG4V2:
 		case AV_CODEC_ID_MSMPEG4V3:
-			//return "V_MPEG4";
 			return "V_DIVX3";
 			
 		case AV_CODEC_ID_WMV1:
@@ -256,13 +255,13 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return "A_WMA";
 			
 		case AV_CODEC_ID_MLP:
-			return "A_IPCM";
+			return "A_PCM";
 			
 		case AV_CODEC_ID_RA_144:
-			return "A_IPCM";
+			return "A_PCM";
 			
 		case AV_CODEC_ID_RA_288:
-			return "A_IPCM";
+			return "A_PCM";
 			
 		case AV_CODEC_ID_VORBIS:
 			return "A_VORBIS"; //FIXME:
@@ -284,8 +283,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_PCM_S32BE:
 		case AV_CODEC_ID_PCM_U32LE:
 		case AV_CODEC_ID_PCM_U32BE:
-			//return "A_PCM";
-			return	"A_IPCM";  //FIXME: rewrite pcm writer
+			return	"A_PCM"; 
 			
 		case AV_CODEC_ID_AMR_NB:
     		case AV_CODEC_ID_AMR_WB:
@@ -296,7 +294,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55, 3, 100)
     		case AV_CODEC_ID_ASS:
 #endif
-        		return "S_TEXT/ASS"; /* Hellmaster1024: seems to be ASS instead of SSA */
+        		return "S_TEXT/ASS";
         		
     		case AV_CODEC_ID_DVD_SUBTITLE:
     		case AV_CODEC_ID_MOV_TEXT:
@@ -326,7 +324,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 
 		default:
 			if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
-				return "A_IPCM";
+				return "A_PCM";
 			else
 				ffmpeg_err("ERROR! CODEC NOT FOUND -> %d\n",codec->codec_id);
 	}

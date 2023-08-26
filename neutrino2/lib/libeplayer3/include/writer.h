@@ -88,15 +88,12 @@ extern Writer_t WriterAudioAMR;
 extern Writer_t WriterVideoMPEG1;
 extern Writer_t WriterVideoMPEG2;
 extern Writer_t WriterVideoMPEG4;
-extern Writer_t WriterVideoMPEG4H264;
 extern Writer_t WriterVideoH264;
 extern Writer_t WriterVideoH265;
 extern Writer_t WriterVideoWMV;
-extern Writer_t WriterVideoDIVX;
-extern Writer_t WriterVideoFOURCC;
-extern Writer_t WriterVideoMSCOMP;
+extern Writer_t WriterVideoDIVX; //mpeg4h264
 extern Writer_t WriterVideoH263;
-extern Writer_t WriterVideoFLV;  // ???
+extern Writer_t WriterVideoFLV;
 extern Writer_t WriterVideoVC1;
 extern Writer_t WriterVideoDIVX3;
 extern Writer_t WriterVideoMJPEG;
@@ -127,12 +124,9 @@ static Writer_t * AvailableWriter[] =
 	//
 	&WriterVideoMPEG1,
 	&WriterVideoMPEG2,
-	&WriterVideoMPEG4H264,
 	&WriterVideoH264,
 	&WriterVideoH265,
-	&WriterVideoDIVX,
-	&WriterVideoFOURCC,
-	&WriterVideoMSCOMP,
+	&WriterVideoDIVX,  //mpeg4h264
 	&WriterVideoWMV,
 	&WriterVideoH263,
 	&WriterVideoFLV,

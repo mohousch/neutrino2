@@ -262,36 +262,6 @@ static int writeData(void* _call)
 /* ***************************** */
 /* Writer  Definition            */
 /* ***************************** */
-// mscomp
-static WriterCaps_t mpeg4p2_caps = {
-	"mscomp",
-	eVideo,
-	"V_MPEG4",
-	VIDEO_STREAMTYPE_MPEG4_Part2
-};
-
-struct Writer_s WriterVideoMSCOMP = {
-	&reset,
-	&writeData,
-	NULL,
-	&mpeg4p2_caps,
-};
-
-// fourcc
-static WriterCaps_t fourcc_caps = {
-    "fourcc",
-    eVideo,
-    "V_MPEG4",
-    VIDEO_STREAMTYPE_MPEG4_Part2    
-};
-
-struct Writer_s WriterVideoFOURCC = {
-    &reset,
-    &writeData,
-    NULL,
-    &fourcc_caps,
-};
-
 // divx
 static WriterCaps_t divx_caps = {
     "divx",
