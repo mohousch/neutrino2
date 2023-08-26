@@ -65,7 +65,7 @@ struct NeutrinoMessages {
 		STANDBY_ON				 = RC_Messages + 5,
 		STANDBY_OFF				 = RC_Messages + 6,
 		
-		/* nhttpd / SHTDCNT */
+		/* nhttpd / SHTDCNT / timerd */
 		SHUTDOWN				 = RC_Messages + 8,
 		
 		/* timerd */

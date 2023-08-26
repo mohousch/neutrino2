@@ -1349,8 +1349,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	// foot
 	if (paintfoot)
 	{
-		listBox->enablePaintFoot();
-			
+		listBox->enablePaintFoot();	
 		listBox->setFootLine(foot_line, foot_line_gradient);
 	}
 				
@@ -1358,9 +1357,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	if (paintiteminfo)
 	{
 		listBox->enablePaintItemInfo(70);
-		listBox->setItemInfoMode(iteminfomode);
-			
-		//FIXME:		
+		listBox->setItemInfoMode(iteminfomode);		
 		listBox->setItemInfoPos(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);
 		listBox->paintItemInfoFrame(iteminfoframe);
 		if (iteminfo_color) listBox->setItemInfoColor(hintColor);
@@ -1428,7 +1425,8 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		//
 		int id = MENUITEM_FORWARDER;
 		if (item_id) id = convertCMenuItemID(item_id);
-			
+		
+		//FIXME: other items	
 		if (id == MENUITEM_FORWARDER)
 			menuItem = new CMenuForwarder(itemName.c_str());
 						
@@ -1444,6 +1442,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 			key = convertKey(item_directkey);
 			menuItem->setDirectKey(key);
 		}
+		
 		if (item_icon) menuItem->setIconName(item_icon);	
 		if (item_hint) menuItem->setHint(item_hint);
 		if (item_lines) menuItem->set2lines();
@@ -1495,7 +1494,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		listboxintegration_node = listboxintegration_node->xmlNextNode;
 	}
 				
-	// BUTTON_LABEL / FOOT
+	// BUTTON_LABEL FOOT
 	buttonlabel_node = node->xmlChildrenNode;
 		
 	char* button = NULL;
@@ -1517,7 +1516,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		buttonlabel_node = buttonlabel_node->xmlNextNode;
 	}
 				
-	// BUTTON_LABEL / HEAD
+	// BUTTON_LABEL HEAD
 	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "HEAD_BUTTON_LABEL")) != NULL) 
 	{	
 		button = xmlGetAttribute(buttonlabel_node, (char*)"name");
@@ -1533,7 +1532,8 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 				
 		buttonlabel_node = buttonlabel_node->xmlNextNode;
 	}
-		
+	
+	//	
 	if (widget) widget->addWidgetItem(listBox);
 }
 
@@ -1638,7 +1638,8 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 	int gr = NOGRADIENT;
 	if (gradient) gr = convertGradient(gradient);
 	window->setGradient(gr, gradient_direction, gradient_intensity, gradient_type);
-					
+	
+	//				
 	if (widget) widget->addWidgetItem(window);
 }
 
@@ -1763,7 +1764,8 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 				
 		buttonlabel_node = buttonlabel_node->xmlNextNode;
 	}
-					
+	
+	//				
 	if (widget) widget->addWidgetItem(head);
 }
 
@@ -1862,7 +1864,8 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 				
 		buttonlabel_node = buttonlabel_node->xmlNextNode;
 	}
-					
+	
+	//				
 	if (widget) widget->addWidgetItem(foot);
 }
 
@@ -1971,7 +1974,8 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	textBox->setFont(fs);
 	//
 	textBox->setMode(mode);
-		
+	
+	//FIXME:	
 	/*
 	std::string filename = "";
 	std::string image = pic;
@@ -1988,7 +1992,8 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 
 	if (text) textBox->setText(text, image.c_str(), tw, th, tmode, tframe, fontbg);
 	*/
-					
+	
+	//				
 	if (widget) widget->addWidgetItem(textBox);
 }
 
@@ -2067,7 +2072,8 @@ void CNeutrinoApp::parseCCLabel(xmlNodePtr node, CWidget* widget)
 	label->setFont(fs);
 	//
 	if (font_color) label->setColor(color);
-							
+	
+	//						
 	if (widget) widget->addCCItem(label);
 }
 
@@ -2211,7 +2217,8 @@ void CNeutrinoApp::parseCCTime(xmlNodePtr node, CWidget* widget)
 	time->setFont(fs);
 	//
 	if (font_color) time->setColor(color);
-							
+	
+	//						
 	if (widget) widget->addCCItem(time);
 }
 
@@ -2291,7 +2298,8 @@ void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget)
 					
 		buttonlabel_node = buttonlabel_node->xmlNextNode;
 	}
-					
+	
+	//				
 	if (widget) widget->addCCItem(cButton);
 }
 
@@ -2309,7 +2317,7 @@ void CNeutrinoApp::parseCCHline(xmlNodePtr node, CWidget* widget)
 	int cc_dx = 0;
 	int cc_dy = 0;
 	
-	//unsigned int gradient = 0;
+	//
 	char * gradient = NULL;
 	
 	//
@@ -2347,7 +2355,8 @@ void CNeutrinoApp::parseCCHline(xmlNodePtr node, CWidget* widget)
 	int gr = NOGRADIENT;
 	if (gradient) gr = convertGradient(gradient);
 	hline->setGradient(gr);
-					
+	
+	//				
 	if (widget) widget->addCCItem(hline);
 }
 
@@ -2402,7 +2411,8 @@ void CNeutrinoApp::parseCCVline(xmlNodePtr node, CWidget* widget)
 	int gr = NOGRADIENT;
 	if (gradient) gr = convertGradient(gradient);
 	vline->setGradient(gr);
-					
+	
+	//				
 	if (widget) widget->addCCItem(vline);
 }
 
@@ -2449,7 +2459,8 @@ void CNeutrinoApp::parseCCPig(xmlNodePtr node, CWidget* widget)
 		
 	pig->cc_type = CC_PIG;
 	if (name) pig->cc_name = name;
-					
+	
+	//				
 	if (widget) widget->addCCItem(pig);
 }
 
@@ -2471,12 +2482,13 @@ void CNeutrinoApp::parseKey(xmlNodePtr node, CWidget* widget)
 		
 	if (key_name) key = convertKey(key_name);		
 	if (key_target) key_parent = convertTarget(key_target);
-				
+	
+	//			
 	if (widget) widget->addKey(key, key_parent, key_actionkey);
 			
 }
 
-// parseCWidget
+// getWidget
 CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *const skinfilename, bool data)
 {
 	dprintf(DEBUG_NORMAL, ANSI_GREEN"\nCNeutrinoApp::getWidget: <<%s>>\n", widgetname);
@@ -2885,15 +2897,6 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 		}
 			
 		frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
-			
-		// setup colors / corners / position
-		//std::string skinConfigFile = CONFIGDIR "/skins/";
-		//skinConfigFile += skinName.c_str();
-		//skinConfigFile += "/";
-		//skinConfigFile += skinName.c_str();
-		//skinConfigFile += ".config";
-			
-		//readSkinConfig(skinConfigFile.c_str());
 	}
 	else //fallback to default (neutrino intern)
 	{

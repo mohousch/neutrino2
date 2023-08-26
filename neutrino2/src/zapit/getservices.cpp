@@ -778,8 +778,6 @@ int CServices::loadServices(bool only_current)
 		xmlFreeDoc(parser);
 	}
 
-	dprintf(DEBUG_INFO, "CServices::loadServices: services loaded (%d)...\n", scnt);
-
 	// load motor position
 	for(int i = 0; i < FrontendCount; i++)
 	{
@@ -791,13 +789,10 @@ int CServices::loadServices(bool only_current)
 	}
 
 do_current:
-	dprintf(DEBUG_DEBUG, "CServices::loadServices: loading current services\n");
 
 	if (scanSDT && (parser = parseXmlFile(CURRENTSERVICES_XML))) 
 	{
 		newfound = 0;
-		
-		dprintf(DEBUG_INFO, "CServices::loadServices: " CURRENTSERVICES_XML "  found.\n");
 		
 		findTransponder( xmlDocGetRootElement(parser)->xmlChildrenNode );
 		
@@ -819,8 +814,6 @@ do_current:
 			xmlFreeDoc(parser);
 		}
 	}
-
-	dprintf(DEBUG_INFO, "CServices::loadServices: services loaded (%d)...\n", allchans.size());
 
 	return 0;
 }

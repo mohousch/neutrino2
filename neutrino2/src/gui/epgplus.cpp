@@ -88,6 +88,8 @@ static EpgPlus::SizeSetting sizeSettingTable[] = {
 
 // Header
 CFont * EpgPlus::Header::font = NULL;
+CHeaders *EpgPlus::Header::head = NULL;
+
 EpgPlus::Header::Header(CFrameBuffer * _frameBuffer, int _x, int _y, int _width)
 {
 	this->frameBuffer = _frameBuffer;
@@ -98,25 +100,37 @@ EpgPlus::Header::Header(CFrameBuffer * _frameBuffer, int _x, int _y, int _width)
 
 EpgPlus::Header::~Header()
 {
+	if (head)
+	{
+		delete head;
+		head = NULL;
+	}
 }
 
 void EpgPlus::Header::init()
 {
   	font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE];
+  	head = NULL;
 }
 
 void EpgPlus::Header::paint()
 {
-	CHeaders head(this->x, this->y, this->width, /*this->font->getHeight() + 10*/40, _("Eventlist overview"), NEUTRINO_ICON_BUTTON_EPG);
+	head = new CHeaders(this->x, this->y, this->width, /*this->font->getHeight() + 10*/40, _("Eventlist overview"), NEUTRINO_ICON_BUTTON_EPG);
 
-	head.setCorner(RADIUS_SMALL, CORNER_TOP);
-	head.setGradient(DARK2LIGHT2DARK);
-	head.setLine(false);
-	head.enablePaintDate();
-	head.setFormat("%d.%m.%Y %H:%M:%S");
-	head.addButton(NEUTRINO_ICON_BUTTON_HELP);
-	head.addButton(NEUTRINO_ICON_BUTTON_SETUP);
-	head.paint();
+	head->setCorner(RADIUS_SMALL, CORNER_TOP);
+	head->setGradient(DARK2LIGHT2DARK);
+	head->setLine(false);
+	head->enablePaintDate();
+	head->setFormat("%d.%m.%Y %H:%M:%S");
+	head->addButton(NEUTRINO_ICON_BUTTON_HELP);
+	head->addButton(NEUTRINO_ICON_BUTTON_SETUP);
+	
+	head->paint();
+}
+
+void EpgPlus::Header::refresh()
+{
+	head->refresh();
 }
 
 int EpgPlus::Header::getUsedHeight()
@@ -1215,7 +1229,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 	 		}
 			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 			{
-				this->header->paint();
+				this->header->refresh();
 			} 
 	 		else 
 			{

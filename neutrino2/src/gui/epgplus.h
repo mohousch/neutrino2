@@ -104,6 +104,7 @@ class EpgPlus
 			public:
 				static void init();
 				void paint();
+				void refresh();
 				static int getUsedHeight();
 
 			//// attributes
@@ -115,6 +116,7 @@ class EpgPlus
 				int width;
 				
 				static CFont *font;
+				static CHeaders *head;
 		};
 
 		// timeline

@@ -2269,136 +2269,6 @@ void CNeutrinoApp::showInfo()
 	startSubtitles();
 }
 
-// exit run
-void CNeutrinoApp::exitRun(int retcode, bool save)
-{
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::exitRun: (retcode:%d)\n", retcode);
-	
-	// break silently autotimeshift
-	if(autoshift) 
-	{
-		stopAutoRecord();
-		recordingstatus = 0;
-		timeshiftstatus = 0;
-	}
-	
-	//
-	if (!recordingstatus || MessageBox(_("Information"), _("You really want to to stop record ?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes)  
-	{
-		// stop recording
-		if(recordingstatus) 
-		{
-			CVCRControl::getInstance()->Stop();
-			CTimerd::getInstance()->stopTimerEvent(recording_id);
-		}
-
-		if(retcode > RESTART)
-		{
-			// vfd mode shutdown
-			CVFD::getInstance()->setMode(CVFD::MODE_SHUTDOWN);
-		}
-
-		// stop playback
-		CZapit::getInstance()->stopPlayBack();
-
-		if(retcode > RESTART)
-		{
-			frameBuffer->loadBackgroundPic("shutdown.jpg");
-			frameBuffer->blit();
-		}
-
-		// network down
-		CNetworkSettings::getInstance()->networkConfig->automatic_start = (CNetworkSettings::getInstance()->network_automatic_start == 1);
-
-		CNetworkSettings::getInstance()->networkConfig->commitConfig();
-		
-		// save neutrino.conf
-		if (save)
-		{
-			// save neutrino.conf
-			saveSetup(NEUTRINO_SETTINGS_FILE);
-		}
-
-		// save epg
-		if(save && g_settings.epg_save ) 
-			saveEpg();
-
-		// stop dvbsub
-		dvbsub_close();
-
-		// stop txt
-		tuxtxt_stop();
-		tuxtxt_close();
-
-		tuxtx_stop_subtitle();
-		
-		dprintf(DEBUG_NORMAL, "CNeutrinoApp::exitRun: entering off state (retcode:%d)\n", retcode);
-			
-		// stop nhttpd		
-		Cyhttpd::getInstance()->Stop();
-		
-		// stop streamts
-		CStreamTS::getInstance()->Stop();	
-
-		// stop timerd	  
-		CTimerd::getInstance()->Stop();		
-
-		// stop sectionsd
-		CSectionsd::getInstance()->Stop();
-
-		// zapit stop	
-		CZapit::getInstance()->Stop();
-		
-		//
-#if !defined (USE_OPENGL)		
-		time_t t = time(NULL);
-	
-		struct tm *lt = localtime(&t);
-		
-		proc_put("/proc/stb/fp/rtc", t + lt->tm_gmtoff);
-#endif		
-
-#if defined (PLATFORM_COOLSTREAM)
-		CVFD::getInstance()->Clear();
-		cs_deregister_messenger();
-		cs_api_exit();
-#endif
-			
-		//
-		if(playback)
-			delete playback;
-			
-		if (g_RCInput != NULL)
-			delete g_RCInput;
-			
-		if(g_RemoteControl)
-			delete g_RemoteControl;
-			
-		if (g_EpgData)
-			delete g_EpgData;
-			
-		if (g_EventList)
-			delete g_EventList;
-			
-		if(g_fontRenderer)
-			delete g_fontRenderer;
-			
-		if (frameBuffer != NULL)
-			delete frameBuffer;
-
-		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
-		
-#if defined (USE_OPENGL)		
-		if(retcode == RESTART)
-		{		  
-			execvp(global_argv[0], global_argv); // no return if successful
-		}
-#endif		
-		
-		_exit(retcode);	
-	}
-}
-
 void CNeutrinoApp::readEPG()
 {
 	// read saved epg
@@ -3440,6 +3310,130 @@ void CNeutrinoApp::unlockPlayBack(void)
 
 	// start subtitles
 	startSubtitles();
+}
+
+// exit run
+void CNeutrinoApp::exitRun(int retcode, bool save)
+{
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::exitRun: (retcode:%d) (save:%s)\n", retcode, save? "true" :"false");
+	
+	// break silently autotimeshift
+	if(autoshift) 
+	{
+		stopAutoRecord();
+		recordingstatus = 0;
+		timeshiftstatus = 0;
+	}
+	
+	//
+	if (!recordingstatus || MessageBox(_("Information"), _("You really want to to stop record ?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes)  
+	{
+		// stop recording
+		if(recordingstatus) 
+		{
+			CVCRControl::getInstance()->Stop();
+			CTimerd::getInstance()->stopTimerEvent(recording_id);
+		}
+
+		// stop playback
+		CZapit::getInstance()->stopPlayBack();
+		
+		if(retcode > RESTART)
+		{
+			// vfd mode shutdown
+			CVFD::getInstance()->setMode(CVFD::MODE_SHUTDOWN);
+			
+			frameBuffer->loadBackgroundPic("shutdown.jpg");
+			frameBuffer->blit();
+		}
+
+		// network down
+		CNetworkSettings::getInstance()->networkConfig->automatic_start = (CNetworkSettings::getInstance()->network_automatic_start == 1);
+
+		CNetworkSettings::getInstance()->networkConfig->commitConfig();
+		
+		// save neutrino.conf
+		if (save)
+		{
+			// save neutrino.conf
+			saveSetup(NEUTRINO_SETTINGS_FILE);
+		}
+
+		// save epg
+		if(save && g_settings.epg_save ) 
+			saveEpg();
+
+		// stop dvbsub
+		dvbsub_close();
+
+		// stop txt
+		tuxtxt_stop();
+		tuxtxt_close();
+		tuxtx_stop_subtitle();
+			
+		// stop nhttpd		
+		Cyhttpd::getInstance()->Stop();
+		
+		// stop streamts
+		CStreamTS::getInstance()->Stop();	
+
+		// stop timerd	  
+		CTimerd::getInstance()->Stop();		
+
+		// stop sectionsd
+		CSectionsd::getInstance()->Stop();
+
+		// zapit stop	
+		CZapit::getInstance()->Stop();
+		
+		//
+#if !defined (USE_OPENGL)		
+		time_t t = time(NULL);
+	
+		struct tm *lt = localtime(&t);
+		
+		proc_put("/proc/stb/fp/rtc", t + lt->tm_gmtoff);
+#endif		
+
+#if defined (PLATFORM_COOLSTREAM)
+		CVFD::getInstance()->Clear();
+		cs_deregister_messenger();
+		cs_api_exit();
+#endif
+			
+		//
+		if(playback)
+			delete playback;
+			
+		if (g_RCInput != NULL)
+			delete g_RCInput;
+			
+		if(g_RemoteControl)
+			delete g_RemoteControl;
+			
+		if (g_EpgData)
+			delete g_EpgData;
+			
+		if (g_EventList)
+			delete g_EventList;
+			
+		if(g_fontRenderer)
+			delete g_fontRenderer;
+			
+		if (frameBuffer != NULL)
+			delete frameBuffer;
+
+		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
+		
+#if defined (USE_OPENGL)		
+		if(retcode == RESTART)
+		{		  
+			execvp(global_argv[0], global_argv); // no return if successful
+		}
+#endif		
+		
+		_exit(retcode);	
+	}
 }
 
 // handle msg

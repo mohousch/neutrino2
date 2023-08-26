@@ -1920,7 +1920,7 @@ void CWidgetItem::exec(int timeout)
 // headers
 CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const char * const title, const char * const icon)
 {
-	dprintf(DEBUG_INFO, "CHeaders::CHeaders: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CHeaders::CHeaders: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -1954,7 +1954,7 @@ CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const c
 
 CHeaders::CHeaders(CBox* position, const char * const title, const char * const icon)
 {
-	dprintf(DEBUG_INFO, "CHeaders::CHeaders: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
+	dprintf(DEBUG_DEBUG, "CHeaders::CHeaders: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -2141,7 +2141,7 @@ void CHeaders::hide()
 // footers
 CFooters::CFooters(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_INFO, "CFooters::CFooters: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CFooters::CFooters: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -2167,7 +2167,7 @@ CFooters::CFooters(const int x, const int y, const int dx, const int dy)
 
 CFooters::CFooters(CBox* position)
 {
-	dprintf(DEBUG_INFO, "CFooters::CFooters: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
+	dprintf(DEBUG_DEBUG, "CFooters::CFooters: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	

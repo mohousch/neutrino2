@@ -212,7 +212,6 @@ class CInfoViewer
 		void showMotorMoving(int duration);
 		void showLcdPercentOver();
 		void showSNR();
-		void showAktivTuner();
 		void Set_CA_Status(int Status);
 		void getCurrentNextEPG(t_channel_id ChannelID, bool newChan = false, int EPGPos = 0);
 
