@@ -273,7 +273,10 @@ CCAMMenuHandler* g_CamHandler;
 extern CMenuOptionStringChooser* tzSelect;
 
 bool parentallocked = false;
+
+#ifdef USE_OPENGL
 static char **global_argv;
+#endif
 
 //user menu
 const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] = {
@@ -4784,6 +4787,16 @@ void CNeutrinoApp::realRun(void)
 int CNeutrinoApp::run(int argc, char **argv)
 {
 	dprintf( DEBUG_NORMAL, "CNeutrinoApp::run:\n");
+	
+	//
+#ifdef USE_OPENGL	
+	global_argv = new char *[argc + 1];
+	
+        for (int i = 0; i < argc; i++)
+                global_argv[i] = argv[i];
+	
+        global_argv[argc] = NULL;
+#endif
 	
 	// init API
 #if defined (PLATFORM_COOLSTREAM)

@@ -400,6 +400,9 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 		// create default settings to stop wizard
 		CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
 		
+		// default skin
+		CNeutrinoApp::getInstance()->loadSkin(g_settings.preferred_skin);
+		
 		CFrameBuffer::getInstance()->paintBackground();
 
 		CFrameBuffer::getInstance()->blit();
@@ -435,6 +438,8 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 		g_settings.timing_infobar = DEFAULT_TIMING_INFOBAR;
 		g_settings.timing_filebrowser = DEFAULT_TIMING_FILEBROWSER;
 		g_settings.timing_numericzap = DEFAULT_TIMING_NUMERICZAP;
+		
+		CNeutrinoApp::getInstance()->exec(NULL, "restart");
 
 		return true;
 	}
