@@ -517,7 +517,7 @@ static WriterCaps_t caps_pcm = {
 	"pcm",
 	eAudio,
 	"A_PCM",
-	AUDIO_STREAMTYPE_RAW
+	AUDIO_STREAMTYPE_LPCMDVD
 };
 
 struct Writer_s WriterAudioPCM = {
@@ -532,7 +532,7 @@ static WriterCaps_t caps_ipcm = {
 	"ipcm",
 	eAudio,
 	"A_IPCM",
-	AUDIO_STREAMTYPE_RAW
+	AUDIO_STREAMTYPE_LPCMDVD
 };
 
 struct Writer_s WriterAudioIPCM = {
