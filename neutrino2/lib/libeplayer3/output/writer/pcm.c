@@ -53,7 +53,7 @@
 /* ***************************** */
 
 
-//#define PCM_DEBUG
+#define PCM_DEBUG
 
 #ifdef PCM_DEBUG
 
@@ -80,14 +80,14 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 /* ***************************** */
 
 static int initialHeader = 1;
-////
+
+//
 static uint8_t codec_data[18];
 static uint64_t fixed_buffertimestamp;
 static uint64_t fixed_bufferduration;
 static uint32_t fixed_buffersize;
 static uint8_t *fixed_buffer;
 static uint32_t fixed_bufferfilled;
-////
 
 //
 static unsigned int SubFrameLen = 0;
@@ -100,6 +100,7 @@ static const unsigned char clpcm_pes[18] = {   0x00, 0x00, 0x01, 0xBD, //start c
 					0x1E, 0x60, 0x0A,       //first pes only, 0xFF after
 					0xFF
 			};
+			
 static const unsigned char clpcm_prv[14] = {   0xA0,   //sub_stream_id
 					0, 0,   //resvd and UPC_EAN_ISRC stuff, unused
 					0x0A,   //private header length
@@ -230,18 +231,18 @@ static int writeData(void* _call)
 	    return 0;
 	}
 
-	pcmPrivateData_t*         pcmPrivateData          = (pcmPrivateData_t*)call->private_data;
+	//
+	pcmPrivateData_t* pcmPrivateData = (pcmPrivateData_t*)call->private_data;
 	
-#if !defined (__sh__)
 	uint8_t *buffer = call->data;
-	uint32_t   size = call->len;
-#endif
+	uint32_t size = call->len;
 
 #if defined (__sh__)
 	if (initialHeader)
 	{
 		uint32_t codecID = (uint32_t)pcmPrivateData->avCodecId;
 		uint8_t LE = 0;
+		
 		switch (codecID)
 		{
 			case AV_CODEC_ID_PCM_S8:
@@ -272,21 +273,17 @@ static int writeData(void* _call)
 		prepareClipPlay(pcmPrivateData->uNoOfChannels, pcmPrivateData->uSampleRate, pcmPrivateData->uBitsPerSample, LE);
 	}
 
-	uint8_t *buffer = call->data;
-	uint32_t size = call->len;
-
 	uint32_t n;
 	uint8_t *injectBuffer = malloc(SubFrameLen);
 	uint32_t pos;
 
 	for (pos = 0; pos < size;)
 	{
-		//printf("PCM %s - Position=%d\n", __FUNCTION__, pos);
+		//
 		if ((size - pos) < SubFrameLen)
 		{
 			breakBufferFillSize = size - pos;
 			memcpy(breakBuffer, &buffer[pos], sizeof(uint8_t) * breakBufferFillSize);
-			//printf("PCM %s - Unplayed=%d\n", __FUNCTION__, breakBufferFillSize);
 			break;
 		}
 
@@ -349,14 +346,16 @@ static int writeData(void* _call)
 
 		iov[0].iov_len = InsertPesHeader(PesHeader, iov[1].iov_len + iov[2].iov_len, PCM_PES_START_CODE, call->Pts, 0);
 		int32_t len = call->WriteV(call->fd, iov, 3);
+		
 		if (len < 0)
 		{
 			break;
 		}
 	}
+	
 	free(injectBuffer);
 #else
-	if (/*pcmPrivateData->bResampling ||*/ NULL == fixed_buffer)
+	if (NULL == fixed_buffer)
 	{
 		int32_t width = 0;
 		int32_t depth = 0;
@@ -451,7 +450,7 @@ static int writeData(void* _call)
 		if (LE) {}
 		pcm_printf(40, "PCM fixed_buffersize [%u] [%s]\n", fixed_buffersize, LE ? "LE" : "BE");
 	}
-
+	
 	while (size > 0)
 	{
 		uint32_t cpSize = (fixed_buffersize - fixed_bufferfilled);
@@ -500,7 +499,9 @@ static int writeData(void* _call)
 		iov[0].iov_len  = headerSize;
 		iov[1].iov_base = fixed_buffer;
 		iov[1].iov_len  = fixed_buffersize;
+		
 		call->WriteV(call->fd, iov, 2);
+		
 		fixed_buffertimestamp += fixed_bufferduration;
 	}
 #endif

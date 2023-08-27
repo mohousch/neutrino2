@@ -226,9 +226,6 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
     		case AV_CODEC_ID_HEVC:
         		return "V_HEVC";
 #endif
-
-		//case AV_CODEC_ID_THEORA:
-		//	return "V_THEORA";
 		
 		/* audio */	
 		case AV_CODEC_ID_MP2:
@@ -254,20 +251,13 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_WMAPRO:
 			return "A_WMA";
 			
-		case AV_CODEC_ID_MLP:
-			return "A_PCM";
-			
-		case AV_CODEC_ID_RA_144:
-			return "A_PCM";
-			
-		case AV_CODEC_ID_RA_288:
-			return "A_PCM";
-			
 		case AV_CODEC_ID_VORBIS:
-			return "A_VORBIS"; //FIXME:
+			//return "A_VORBIS"; //FIXME:
+			return "A_IPCM";
 			
 		case AV_CODEC_ID_FLAC: //86030
-			return "A_FLAC"; //FIXME:
+			//return "A_FLAC"; //FIXME:
+			return "A_IPCM";
 			
 		case AV_CODEC_ID_PCM_S8:
 		case AV_CODEC_ID_PCM_U8:
@@ -283,7 +273,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_PCM_S32BE:
 		case AV_CODEC_ID_PCM_U32LE:
 		case AV_CODEC_ID_PCM_U32BE:
-			return	"A_PCM"; 
+			return	"A_IPCM"; 
 			
 		case AV_CODEC_ID_AMR_NB:
     		case AV_CODEC_ID_AMR_WB:
@@ -324,7 +314,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 
 		default:
 			if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
-				return "A_PCM";
+				return "A_IPCM";
 			else
 				ffmpeg_err("ERROR! CODEC NOT FOUND -> %d\n",codec->codec_id);
 	}
@@ -586,10 +576,12 @@ static void FFMPEGThread(Context_t *context)
 
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
 
+					//FIXME:
+					/*
 					if (audioTrack->inject_as_pcm == 1)
 					{
 						AVCodecContext *c = ((AVStream *)(audioTrack->stream))->codec;
-						int      bytesDone = 0;
+						int bytesDone = 0;
 						
 						
 						if(samples == NULL)
@@ -650,7 +642,7 @@ static void FFMPEGThread(Context_t *context)
 #endif
 						}
 					}
-					else if (audioTrack->have_aacheader == 1)
+					else*/ if (audioTrack->have_aacheader == 1)
 					{
 						ffmpeg_printf(200,"write audio aac\n");
 
