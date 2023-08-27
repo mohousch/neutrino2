@@ -28,6 +28,8 @@ extern "C" void plugin_del(void);
 
 const long int GET_PLAYLIST_TIMEOUT = 10;
 
+#define SHOW_FILE_LOAD_LIMIT 50
+
 class CMP3Player : public CMenuTarget
 {
 	private:
@@ -339,10 +341,33 @@ void CMP3Player::openFileBrowser()
 
 	if (filebrowser.exec(Path.c_str()))
 	{
+		////
+		CProgressWindow progress;
+		long maxProgress = (filebrowser.getSelectedFiles().size() > 1) ? filebrowser.getSelectedFiles().size() - 1 : 1;
+		long currentProgress = -1;
+		
+		if (maxProgress > SHOW_FILE_LOAD_LIMIT)
+		{
+			progress.setTitle(_("Receiving list, please wait"));	
+			progress.paint();
+		}
+		////
+		
 		Path = filebrowser.getCurrentDir();
 		CFileList::const_iterator files = filebrowser.getSelectedFiles().begin();
 		for(; files != filebrowser.getSelectedFiles().end(); files++)
 		{
+			////
+			if (maxProgress > SHOW_FILE_LOAD_LIMIT)
+			{
+				currentProgress++;
+				// show status
+				int global = 100*currentProgress/maxProgress;
+				progress.showGlobalStatus(global);
+				progress.showStatusMessageUTF(files->Name);
+			}
+			////
+			
 			if ( (files->getExtension() == CFile::EXTENSION_CDR)
 					||  (files->getExtension() == CFile::EXTENSION_MP3)
 					||  (files->getExtension() == CFile::EXTENSION_WAV)
@@ -473,6 +498,9 @@ void CMP3Player::openFileBrowser()
 				infile.close();
 			}
 		}
+		
+		usleep(1000000);
+		progress.hide();
 	}
 }
 
