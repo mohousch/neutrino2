@@ -87,7 +87,6 @@ void CParentalLockSettings::showMenu()
 	
 	CWidget *widget = NULL;
 	ClistBox *listBox = NULL;
-	CMenuItem *item = NULL;
 	
 	//
 	widget = CNeutrinoApp::getInstance()->getWidget("parentallocksetup");

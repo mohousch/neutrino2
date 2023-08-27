@@ -302,6 +302,12 @@ function select_playitem()
 	
 	m:setWidgetType(neutrino2.TYPE_EXTENDED)
 	m:enableShrinkMenu()
+	m:setHeadCorner(neutrino2.RADIUS_SMALL)
+	m:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	m:setHeadLine(false)
+	m:setFootCorner(neutrino2.RADIUS_SMALL)
+	m:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	m:setFootLine(false)
 
 	local item = nil
   	for i,r in  ipairs(p) do
@@ -423,6 +429,12 @@ end
 function selectmenu()
 	local item = nil
 	sm = neutrino2.CMenuWidget("Arte Konzerte", arte_concert)
+	sm:setHeadCorner(neutrino2.RADIUS_SMALL)
+	sm:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	sm:setHeadLine(false)
+	sm:setFootCorner(neutrino2.RADIUS_SMALL)
+	sm:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	sm:setFootLine(false)
 	
 	for i,v in  ipairs(subs) do
 		item = neutrino2.CMenuForwarder(v[2], true, "", nil, v[1])

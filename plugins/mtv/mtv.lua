@@ -688,6 +688,12 @@ function chooser_menu(id)
 	end
 ]]
 	local menu = neutrino2.CMenuWidget(name, neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
+	menu:setHeadCorner(neutrino2.RADIUS_SMALL)
+	menu:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setHeadLine(false)
+	menu:setFootCorner(neutrino2.RADIUS_SMALL)
+	menu:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setFootLine(false)
 
 	--if id:sub(1,29) =="Erstelle Download Liste für " then
 		menu:addItem(neutrino2.CMenuForwarder("Download starten", true, "", null, "dlstart"))
@@ -727,6 +733,12 @@ function mtv_liste(id)
 	menu:setWidgetType(neutrino2.TYPE_FRAME)
 	menu:setItemsPerPage(3, 2)
 	menu:enablePaintDate()
+	menu:setHeadCorner(neutrino2.RADIUS_SMALL)
+	menu:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setHeadLine(false)
+	menu:setFootCorner(neutrino2.RADIUS_SMALL)
+	menu:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setFootLine(false)
 
 	--btn = neutrino2.button_label_struct()
 
@@ -786,6 +798,12 @@ function settings()
 	local item = nil
 	menu:setWidgetMode(neutrino2.MODE_SETUP)
 	menu:enableShrinkMenu()
+	menu:setHeadCorner(neutrino2.RADIUS_SMALL)
+	menu:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setHeadLine(false)
+	menu:setFootCorner(neutrino2.RADIUS_SMALL)
+	menu:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setFootLine(false)
 
 	menu:addItem(neutrino2.CMenuForwarder("zurück"))
 	menu:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
@@ -1009,6 +1027,12 @@ function searchliste(id)
 	local menu = neutrino2.CMenuWidget(glob.mtv_artist[id].name, neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
 	menu:setWidgetType(neutrino2.TYPE_FRAME)
 	menu:enablePaintDate()
+	menu:setHeadCorner(neutrino2.RADIUS_SMALL)
+	menu:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setHeadLine(false)
+	menu:setFootCorner(neutrino2.RADIUS_SMALL)
+	menu:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setFootLine(false)
 
 	--btn = neutrino2.button_label_struct()
 
@@ -1075,6 +1099,12 @@ function search_artists()
 	end
 
 	local menu = neutrino2.CMenuWidget(conf.search, neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
+	menu:setHeadCorner(neutrino2.RADIUS_SMALL)
+	menu:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setHeadLine(false)
+	menu:setFootCorner(neutrino2.RADIUS_SMALL)
+	menu:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setFootLine(false)
 
 	if glob.mtv_artist then
 		for i, v in ipairs(glob.mtv_artist) do
@@ -1123,9 +1153,14 @@ function mtv_listen_menu()
 	end
 
 	menu = neutrino2.CMenuWidget("MTV Listen", neutrino2.PLUGINDIR .. "/mtv/mtv_hint.png")
-
 	menu:enableShrinkMenu()
 	menu:enablePaintDate()
+	menu:setHeadCorner(neutrino2.RADIUS_SMALL)
+	menu:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setHeadLine(false)
+	menu:setFootCorner(neutrino2.RADIUS_SMALL)
+	menu:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setFootLine(false)
 
 	if selected_mtl < 0 then
 		selected_mtl = 0
@@ -1164,6 +1199,12 @@ function main_menu()
 	menu:setWidgetMode(neutrino2.MODE_MENU)
 	menu:enableShrinkMenu()
 	menu:enablePaintDate()
+	menu:setHeadCorner(neutrino2.RADIUS_SMALL)
+	menu:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setHeadLine(false)
+	menu:setFootCorner(neutrino2.RADIUS_SMALL)
+	menu:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	menu:setFootLine(false)
 
 	if selected_mm < 0 then
 		selected_mm = 0

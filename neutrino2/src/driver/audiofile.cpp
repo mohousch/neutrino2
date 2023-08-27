@@ -70,3 +70,4 @@ void CAudiofile::clear()
 	Filename.clear();
 	FileExtension = CFile::EXTENSION_UNKNOWN;
 }
+

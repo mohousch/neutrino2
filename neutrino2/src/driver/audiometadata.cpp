@@ -109,3 +109,4 @@ void CAudioMetaData::clear()
 	cover.clear();
 	changed = false;
 }
+

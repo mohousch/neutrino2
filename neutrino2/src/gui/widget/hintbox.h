@@ -47,8 +47,6 @@
 #include <gui/widget/widget_helpers.h>
 
 
-#define HINTBOX_WIDTH			650
-
 class CHintBox
 {
 	protected:

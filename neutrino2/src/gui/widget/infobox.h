@@ -100,10 +100,7 @@ class CInfoBox
 
 	public:
 		CInfoBox();
-		CInfoBox(
-				   const CBox* position, 
-				   const char * title,
-				   const char * icon = NEUTRINO_ICON_INFO);
+		CInfoBox(const CBox* position, const char * title = NULL, const char * icon = NEUTRINO_ICON_INFO);
 		virtual ~CInfoBox();
 
 		// head

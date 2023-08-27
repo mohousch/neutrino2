@@ -421,7 +421,7 @@ bool CFileBrowser::exec(const char * const dirname)
 		else if ( ( msg == RC_timeout ) )
 		{
 			selected = oldselected;
-			exit_pressed = true; //FIXME:
+			exit_pressed = true;
 			loop = false;
 		}
 		else if ( msg == RC_right )
@@ -745,9 +745,12 @@ void CFileBrowser::paint()
 	else
 	{
 		widget = new CWidget(&cFrameBox);
+		widget->name = "filebrowser";
+		
+		//
 		listBox = new ClistBox(&cFrameBox);
 		
-		widget->name = "filebrowser";
+		//
 		widget->addWidgetItem(listBox);
 	}	
 

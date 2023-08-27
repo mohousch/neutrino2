@@ -85,7 +85,7 @@ BROWSER:
 		
 				movieInfoWidget.exec(NULL, "");
 			}
-			else if(file->getType() == CFile::FILE_AUDIO)
+			else if(file->getType() == CFile::FILE_AUDIO || file->getType() == CFile::FILE_PLAYLIST)
 			{
 				tmpAudioPlayerGui.addToPlaylist(*file);
 				tmpAudioPlayerGui.exec(NULL, "urlplayback");

@@ -4,7 +4,6 @@ SUBDIRS = \
 	test \
 	systeminfo \
 	tuxcom \
-	fileplayer \
 	fileexplorer \
 	mediaportal \
 	icecast \
@@ -40,7 +39,4 @@ if ENABLE_TESTING
 	arte_concert
 endif	
 endif
-
-
-
 

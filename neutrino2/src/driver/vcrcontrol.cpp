@@ -603,11 +603,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	stream2file_error_msg_t error_msg = STREAM2FILE_BUSY;
 
 	//
-	if (IS_WEBTV(channel_id))
-	{
-		error_msg = STREAM2FILE_RECORDING_THREADS_FAILED;
-	}
-	else
+	if (!IS_WEBTV(channel_id))
 	{
 		error_msg = startRecording(filename, getMovieInfoString(channel_id, epgid, epgTitle, apid_list, epg_time).c_str(), si.vpid, pids, numpids);
 	}

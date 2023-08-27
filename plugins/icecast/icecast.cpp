@@ -73,6 +73,8 @@ class CIceCast : public CMenuTarget
 		//
 		void addUrl2Playlist(const char *url, const char *name = NULL, const time_t bitrate = 0);
 		void processPlaylistUrl(const char *url, const char *name = NULL, const time_t bitrate = 0);
+		
+		//
 		void scanXmlFile(std::string filename);
 		void scanXmlData(xmlDocPtr answer_parser, const char *nametag, const char *urltag, const char *bitratetag = NULL, bool usechild = false);
 
@@ -104,6 +106,7 @@ CIceCast::CIceCast()
 	fileFilter.addFilter("url");
 	fileFilter.addFilter("xml");
 	fileFilter.addFilter("m3u");
+	fileFilter.addFilter("m3u8");
 	fileFilter.addFilter("pls");
 
 	CAudioPlayer::getInstance()->init();
@@ -489,7 +492,7 @@ bool CIceCast::openFileBrowser(void)
 						char *url = strstr(cLine, "http://");
 						if (url != NULL) 
 						{
-							if (strstr(url, ".m3u") || strstr(url, ".pls"))
+							if (strstr(url, ".m3u") || strstr(url, ".m3u8") || strstr(url, ".pls"))
 								processPlaylistUrl(url);
 							else
 								addUrl2Playlist(url, name, duration);

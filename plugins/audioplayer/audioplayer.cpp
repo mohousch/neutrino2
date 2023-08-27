@@ -26,6 +26,8 @@ extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
+const long int GET_PLAYLIST_TIMEOUT = 10;
+
 class CMP3Player : public CMenuTarget
 {
 	private:
@@ -44,6 +46,11 @@ class CMP3Player : public CMenuTarget
 		void loadPlaylist();
 		void openFileBrowser();
 		void showTrackInfo(CAudiofile& file);
+		
+		//
+		void addUrl2Playlist(const char *url, const char *name = NULL, const time_t bitrate = 0);
+		void processPlaylistUrl(const char *url, const char *name = NULL, const time_t bitrate = 0);
+		void getMetaData(CAudiofile& File);
 
 		//
 		bool shufflePlaylist(void);
@@ -71,12 +78,17 @@ CMP3Player::CMP3Player()
 	fileFilter.addFilter("m2a");
 	fileFilter.addFilter("mpa");
 	fileFilter.addFilter("mp2");
-	fileFilter.addFilter("ogg");
 	fileFilter.addFilter("wav");
 	fileFilter.addFilter("flac");
 	fileFilter.addFilter("aac");
 	fileFilter.addFilter("dts");
 	fileFilter.addFilter("m4a");
+	
+	//
+	fileFilter.addFilter("url");
+	fileFilter.addFilter("m3u");
+	fileFilter.addFilter("m3u8");
+	fileFilter.addFilter("pls");
 
 	CAudioPlayer::getInstance()->init();
 }
@@ -122,6 +134,8 @@ bool CMP3Player::shufflePlaylist(void)
 
 void CMP3Player::loadPlaylist()
 {
+	dprintf(DEBUG_NORMAL, "CMP3Player::loadPlaylist\n");
+	
 	playlist.clear();
 
 	Path = g_settings.network_nfs_audioplayerdir;
@@ -141,35 +155,7 @@ void CMP3Player::loadPlaylist()
 			{
 				CAudiofile audiofile(files->Name, files->getExtension());
 
-				CAudioPlayer::getInstance()->init();
-
-				int ret = CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
-
-				if (!ret || (audiofile.MetaData.artist.empty() && audiofile.MetaData.title.empty() ))
-				{
-					//remove extension (.mp3)
-					std::string tmp = files->getFileName().substr(files->getFileName().rfind('/') + 1);
-					tmp = tmp.substr(0, tmp.length() - 4);	//remove extension (.mp3)
-
-					std::string::size_type i = tmp.rfind(" - ");
-		
-					if(i != std::string::npos)
-					{ 
-						audiofile.MetaData.title = tmp.substr(0, i);
-						audiofile.MetaData.artist = tmp.substr(i + 3);
-					}
-					else
-					{
-						i = tmp.rfind('-');
-						if(i != std::string::npos)
-						{
-							audiofile.MetaData.title = tmp.substr(0, i);
-							audiofile.MetaData.artist = tmp.substr(i + 1);
-						}
-						else
-							audiofile.MetaData.title = tmp;
-					}
-				}
+				getMetaData(audiofile);
 				
 				playlist.push_back(audiofile);
 			}
@@ -177,8 +163,174 @@ void CMP3Player::loadPlaylist()
 	}
 }
 
+//
+void CMP3Player::addUrl2Playlist(const char *url, const char *name, const time_t bitrate) 
+{
+	dprintf(DEBUG_NORMAL, "CMP3Player::addUrl2Playlist: name = %s, url = %s\n", name, url);
+	
+	CAudiofile mp3(url, CFile::EXTENSION_URL);
+	
+	getMetaData(mp3);
+	
+	if (name != NULL) 
+	{
+		mp3.MetaData.title = name;
+	} 
+	else 
+	{
+		std::string tmp = mp3.Filename.substr(mp3.Filename.rfind('/') + 1);
+		mp3.MetaData.title = tmp;
+	}
+	
+	if (bitrate)
+		mp3.MetaData.total_time = bitrate;
+	else
+		mp3.MetaData.total_time = 0;
+
+	if (url[0] != '#') 
+	{
+		playlist.push_back(mp3);
+	}
+}
+
+void CMP3Player::processPlaylistUrl(const char *url, const char *name, const time_t tim) 
+{
+	dprintf(DEBUG_NORMAL, "CMP3Player::processPlaylistUrl\n");
+	
+	CURL *curl_handle;
+	struct MemoryStruct chunk;
+	
+	chunk.memory = NULL; 	// we expect realloc(NULL, size) to work
+	chunk.size = 0;    	// no data at this point
+
+	curl_global_init(CURL_GLOBAL_ALL);
+
+	// init the curl session
+	curl_handle = curl_easy_init();
+
+	// specify URL to get
+	curl_easy_setopt(curl_handle, CURLOPT_URL, url);
+
+	// send all data to this function
+	curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
+
+	// we pass our 'chunk' struct to the callback function
+	curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, (void *)&chunk);
+
+	// some servers don't like requests that are made without a user-agent field, so we provide one
+	curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "libcurl-agent/1.0");
+
+	// don't use signal for timeout
+	curl_easy_setopt(curl_handle, CURLOPT_NOSIGNAL, (long)1);
+
+	// set timeout to 10 seconds
+	curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, GET_PLAYLIST_TIMEOUT);
+	
+	if(strcmp(g_settings.softupdate_proxyserver, "") != 0)
+	{
+		curl_easy_setopt(curl_handle, CURLOPT_PROXY, g_settings.softupdate_proxyserver);
+		
+		if(strcmp(g_settings.softupdate_proxyusername, "") != 0)
+		{
+			char tmp[200];
+			strcpy(tmp, g_settings.softupdate_proxyusername);
+			strcat(tmp, ":");
+			strcat(tmp, g_settings.softupdate_proxypassword);
+			curl_easy_setopt(curl_handle, CURLOPT_PROXYUSERPWD, tmp);
+		}
+	}
+
+	// get it! 
+	curl_easy_perform(curl_handle);
+
+	// cleanup curl stuff
+	curl_easy_cleanup(curl_handle);
+
+	long res_code;
+	if (curl_easy_getinfo(curl_handle, CURLINFO_HTTP_CODE, &res_code ) ==  CURLE_OK) 
+	{
+		if (200 == res_code) 
+		{
+			//printf("\nchunk = %s\n", chunk.memory);
+			std::istringstream iss;
+			iss.str (std::string(chunk.memory, chunk.size));
+			char line[512];
+			char *ptr;
+			
+			while (iss.rdstate() == std::ifstream::goodbit) 
+			{
+				iss.getline(line, 512);
+				if (line[0] != '#') 
+				{
+					//printf("chunk: line = %s\n", line);
+					ptr = strstr(line, "http://");
+					if (ptr != NULL) 
+					{
+						char *tmp;
+						// strip \n and \r characters from url
+						tmp = strchr(line, '\r');
+						if (tmp != NULL)
+							*tmp = '\0';
+						tmp = strchr(line, '\n');
+						if (tmp != NULL)
+							*tmp = '\0';
+						
+						addUrl2Playlist(ptr, name, tim);
+					}
+				}
+			}
+		}
+	}
+
+	if(chunk.memory)
+		free(chunk.memory);
+ 
+	// we're done with libcurl, so clean it up
+	curl_global_cleanup();
+}
+
+void CMP3Player::getMetaData(CAudiofile &File)
+{
+	dprintf(DEBUG_NORMAL, "CMP3Player::GetMetaData:\n");
+	
+	bool ret = 1;
+
+	ret = CAudioPlayer::getInstance()->readMetaData(&File, true);
+
+	if (!ret || (File.MetaData.artist.empty() && File.MetaData.title.empty() ))
+	{
+		//Set from Filename
+		std::string tmp = File.Filename.substr(File.Filename.rfind('/') + 1);
+		tmp = tmp.substr(0, tmp.length() - 4);	//remove extension (.mp3)
+		std::string::size_type i = tmp.rfind(" - ");
+		
+		if(i != std::string::npos)
+		{ 
+			// Trennzeichen " - " gefunden
+			File.MetaData.artist = tmp.substr(0, i);
+			File.MetaData.title = tmp.substr(i + 3);
+		}
+		else
+		{
+			i = tmp.rfind('-');
+			if(i != std::string::npos)
+			{ //Trennzeichen "-"
+				File.MetaData.artist = tmp.substr(0, i);
+				File.MetaData.title = tmp.substr(i + 1);
+			}
+			else
+				File.MetaData.title = tmp;
+		}
+		
+		File.MetaData.artist = FILESYSTEM_ENCODING_TO_UTF8(std::string(File.MetaData.artist).c_str());
+		File.MetaData.title  = FILESYSTEM_ENCODING_TO_UTF8(std::string(File.MetaData.title).c_str());
+	}
+}
+
 void CMP3Player::openFileBrowser()
 {
+	dprintf(DEBUG_NORMAL, "CMP3Player::openFileBrowser\n");
+	
 	CFileBrowser filebrowser((g_settings.filebrowser_denydirectoryleave) ? g_settings.network_nfs_picturedir : "");
 
 	filebrowser.Multi_Select = true;
@@ -205,37 +357,120 @@ void CMP3Player::openFileBrowser()
 						playlist.erase(playlist.begin() + i); 
 				}
 
-				CAudioPlayer::getInstance()->init();
-
-				int ret = CAudioPlayer::getInstance()->readMetaData(&audiofile, true);
-
-				if (!ret || (audiofile.MetaData.artist.empty() && audiofile.MetaData.title.empty() ))
-				{
-					//remove extension (.mp3)
-					std::string tmp = files->getFileName().substr(files->getFileName().rfind('/') + 1);
-					tmp = tmp.substr(0, tmp.length() - 4);
-
-					std::string::size_type i = tmp.rfind(" - ");
+				//
+				getMetaData(audiofile);
 		
-					if(i != std::string::npos)
-					{ 
-						audiofile.MetaData.title = tmp.substr(0, i);
-						audiofile.MetaData.artist = tmp.substr(i + 3);
+				playlist.push_back(audiofile);
+			}
+			else if(files->getType() == CFile::FILE_URL)
+			{
+				std::string filename = files->Name;
+				FILE *fd = fopen(filename.c_str(), "r");
+				
+				if(fd)
+				{
+					char buf[512];
+					unsigned int len = fread(buf, sizeof(char), 512, fd);
+					fclose(fd);
+
+					if (len && (strstr(buf, ".m3u") || strstr(buf, ".m3u8") || strstr(buf, ".pls")))
+					{
+						dprintf(DEBUG_NORMAL, "CMP3Player::openFilebrowser: m3u/pls Playlist found: %s\n", buf);
+						
+						filename = buf;
+						processPlaylistUrl(files->Name.c_str());
 					}
 					else
 					{
-						i = tmp.rfind('-');
-						if(i != std::string::npos)
-						{
-							audiofile.MetaData.title = tmp.substr(0, i);
-							audiofile.MetaData.artist = tmp.substr(i + 1);
-						}
-						else
-							audiofile.MetaData.title = tmp;
+						addUrl2Playlist(filename.c_str());
 					}
 				}
-		
-				playlist.push_back(audiofile);
+			}
+			else if(files->getType() == CFile::FILE_PLAYLIST)
+			{
+				std::string sPath = files->Name.substr(0, files->Name.rfind('/'));
+				std::ifstream infile;
+				char cLine[1024];
+				char name[1024] = { 0 };
+				int duration;
+				
+				infile.open(files->Name.c_str(), std::ifstream::in);
+
+				while (infile.good())
+				{
+					infile.getline(cLine, sizeof(cLine));
+					
+					// remove CR
+					if(cLine[strlen(cLine) - 1] == '\r')
+						cLine[strlen(cLine) - 1] = 0;
+					
+					sscanf(cLine, "#EXTINF:%d,%[^\n]\n", &duration, name);
+					
+					if(strlen(cLine) > 0 && cLine[0] != '#')
+					{
+						char *url = strstr(cLine, "http://");
+						
+						//
+						if (url != NULL) 
+						{
+							if (strstr(url, ".m3u") || strstr(url, ".m3u8") || strstr(url, ".pls"))
+								processPlaylistUrl(url);
+							else
+								addUrl2Playlist(url, name, duration);
+						} 
+						else if ((url = strstr(cLine, "icy://")) != NULL) 
+						{
+							addUrl2Playlist(url);
+						} 
+						else if ((url = strstr(cLine, "scast:://")) != NULL) 
+						{
+							addUrl2Playlist(url);
+						}
+						else
+						{
+							std::string filename = sPath + '/' + cLine;
+
+							std::string::size_type pos;
+							while((pos = filename.find('\\')) != std::string::npos)
+								filename[pos] = '/';
+
+							std::ifstream testfile;
+							testfile.open(filename.c_str(), std::ifstream::in);
+							
+							if(testfile.good())
+							{
+								//
+								if(strcasecmp(filename.substr(filename.length() - 3, 3).c_str(), "url") == 0)
+								{
+									addUrl2Playlist(filename.c_str());
+								}
+								else
+								{
+									CFile playlistItem;
+									playlistItem.Name = filename;
+									CFile::FileExtension fileExtension = playlistItem.getExtension();
+									
+									if (fileExtension == CFile::EXTENSION_CDR
+											|| fileExtension == CFile::EXTENSION_MP3
+											|| fileExtension == CFile::EXTENSION_WAV
+											|| fileExtension == CFile::EXTENSION_FLAC
+									)
+									{
+										CAudiofile audioFile(filename, fileExtension);
+										getMetaData(audioFile);
+										playlist.push_back(audioFile);
+									} 
+									else
+									{
+										dprintf(DEBUG_NORMAL, "CMP3Player::openFilebrowser: file type (%d) is *not* supported in playlists\n(%s)\n", fileExtension, filename.c_str());
+									}
+								}
+							}
+							testfile.close();
+						}
+					}
+				}
+				infile.close();
 			}
 		}
 	}
@@ -244,6 +479,8 @@ void CMP3Player::openFileBrowser()
 //
 void CMP3Player::showTrackInfo(CAudiofile& file)
 {
+	dprintf(DEBUG_NORMAL, "CMP3Player::showTrackInfo\n");
+	
 	std::string title;
 	std::string artist;
 	std::string genre;
@@ -342,11 +579,14 @@ void CMP3Player::showMenu()
 
 	for(unsigned int i = 0; i < (unsigned int)playlist.size(); i++)
 	{
+		//
 		std::string title;
 		std::string artist;
 		std::string genre;
 		std::string date;
 		char duration[9] = "";
+		
+		std::string desc;
 
 		title = playlist[i].MetaData.title;
 		artist = playlist[i].MetaData.artist;
@@ -355,15 +595,15 @@ void CMP3Player::showMenu()
 		std::string cover = playlist[i].MetaData.cover.empty()? DATADIR "/icons/no_coverArt.png" : playlist[i].MetaData.cover;
 
 		snprintf(duration, 8, "(%ld:%02ld)", playlist[i].MetaData.total_time / 60, playlist[i].MetaData.total_time % 60);
-		
-		std::string desc = artist.c_str();
-		
+			
+		desc = artist.c_str();
+			
 		if (!genre.empty())
 		{
 			desc += "   ";
 			desc += genre.c_str();
 		}
-		
+			
 		if (!date.empty())
 		{
 			desc += "   (";
@@ -385,7 +625,6 @@ void CMP3Player::showMenu()
 	}
 	
 	alist->setWidgetMode(MODE_LISTBOX);
-	alist->enableShrinkMenu();
 
 	//
 	alist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);

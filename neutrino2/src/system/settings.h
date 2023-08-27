@@ -518,12 +518,12 @@ struct SNeutrinoSettings
 #define UTF8_TO_FILESYSTEM_ENCODING(a) (g_settings.filesystem_is_utf8 ? (a) : UTF8_to_Latin1(a).c_str())	
 };
 
-//
+// default menu timing
 #define DEFAULT_TIMING_MENU			600
 #define DEFAULT_TIMING_CHANNELLIST		60
 #define DEFAULT_TIMING_EPG			240
 #define DEFAULT_TIMING_INFOBAR			6
-#define DEFAULT_TIMING_FILEBROWSER		300
+#define DEFAULT_TIMING_FILEBROWSER		600
 #define DEFAULT_TIMING_NUMERICZAP		3	
 
 // lcdd
@@ -567,10 +567,15 @@ struct SNeutrinoSettings
 // CHintBox
 #define HINTBOX_MAX_HEIGHT 			0.4*DEFAULT_XRES
 #define HINTBOX_MAX_WIDTH  			(g_settings.screen_EndX - g_settings.screen_StartX )
+#define HINTBOX_WIDTH				650
 
 // CMessageBox
 #define MESSAGEBOX_MAX_HEIGHT 			0.4*DEFAULT_XRES
 #define MESSAGEBOX_MAX_WIDTH  			(g_settings.screen_EndX - g_settings.screen_StartX )
+#define MESSAGEBOX_WIDTH			650
+
+// helpBox
+#define HELPBOX_WIDTH				650
 
 // 
 #define PIC_W 					0.25*DEFAULT_XRES  //320

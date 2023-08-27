@@ -1248,6 +1248,12 @@ function rssurlmenu(url)
 	local d = 0 -- directkey
 	--local m = menu.new{name=glob.feedpersed.feed.title, icon="icon_blue"}
 	local m = neutrino2.CMenuWidget(glob.feedpersed.feed.title, neutrino2.NEUTRINO_ICON_MOVIE, 2*neutrino2.MENU_WIDTH)
+	m:setHeadCorner(neutrino2.RADIUS_SMALL)
+	m:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	m:setHeadLine(false)
+	m:setFootCorner(neutrino2.RADIUS_SMALL)
+	m:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	m:setFootLine(false)
 	glob.m = m
 	--m:addKey{directkey=RC.home, id="home", action="home"}
 	--m:addKey{directkey=RC.info, id="FEED Version: " .. fp.version, action="info"}
@@ -1361,6 +1367,12 @@ function exec_submenu(id, title)
 ]]
 
 	local subm = neutrino2.CMenuWidget(title, neutrino2.NEUTRINO_ICON_MOVIE)
+	subm:setHeadCorner(neutrino2.RADIUS_SMALL)
+	subm:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	subm:setHeadLine(false)
+	subm:setFootCorner(neutrino2.RADIUS_SMALL)
+	subm:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	subm:setFootLine(false)
 	glob.subm = subm
 
 	for v, w in ipairs(feedentries) do
@@ -1474,6 +1486,12 @@ function start()
 ]]
 
 	local sm = neutrino2.CMenuWidget("Media One", neutrino2.NEUTRINO_ICON_MOVIE)
+	sm:setHeadCorner(neutrino2.RADIUS_SMALL)
+	sm:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
+	sm:setHeadLine(false)
+	sm:setFootCorner(neutrino2.RADIUS_SMALL)
+	sm:setFootGradient(neutrino2.DARK2LIGHT2DARK)
+	sm:setFootLine(false)
 	glob.sm = sm
 	sm:enableShrinkMenu()
 

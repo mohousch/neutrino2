@@ -95,6 +95,7 @@ CInternetRadio::CInternetRadio()
 	fileFilter.addFilter("url");
 	fileFilter.addFilter("xml");
 	fileFilter.addFilter("m3u");
+	fileFilter.addFilter("m3u8");
 	fileFilter.addFilter("pls");
 
 	CAudioPlayer::getInstance()->init();
@@ -477,7 +478,7 @@ bool CInternetRadio::openFileBrowser(void)
 						char *url = strstr(cLine, "http://");
 						if (url != NULL) 
 						{
-							if (strstr(url, ".m3u") || strstr(url, ".pls"))
+							if (strstr(url, ".m3u") || strstr(url, ".m3u8") || strstr(url, ".pls"))
 								processPlaylistUrl(url);
 							else
 								addUrl2Playlist(url, name, duration);
@@ -534,7 +535,7 @@ bool CInternetRadio::openFileBrowser(void)
 									} 
 									else
 									{
-										dprintf(DEBUG_NORMAL, "CInternetRadio::openFilebrowser: file type (%d) is *not* supported in playlists\n(%s)\n", fileExtension, filename.c_str());
+										dprintf(DEBUG_NORMAL, "CIceCast::openFilebrowser: file type (%d) is *not* supported in playlists\n(%s)\n", fileExtension, filename.c_str());
 									}
 								}
 							}

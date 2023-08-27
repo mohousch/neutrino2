@@ -49,8 +49,6 @@
 #include <gui/widget/widget_helpers.h>
 
 
-#define MESSAGEBOX_WIDTH			650
-
 typedef enum result_
 {
 	mbrYes    = 0,

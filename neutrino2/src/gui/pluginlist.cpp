@@ -104,7 +104,7 @@ void CPluginList::showMenu()
 	else
 	{
 		//
-		pWidget = new CWidget(0, 0, CFrameBuffer::getInstance()->getScreenWidth() / 20 * 17, CFrameBuffer::getInstance()->getScreenHeight() / 20 * 18);
+		pWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		pWidget->name = "plugins";
 		pWidget->setMenuPosition(MENU_POSITION_CENTER);
@@ -131,8 +131,6 @@ void CPluginList::showMenu()
 		//
 		pWidget->addWidgetItem(plist);
 	}
-	
-	plist->clear();
 
 	//
 	for(unsigned int count = 0; count < (unsigned int)g_PluginList->getNumberOfPlugins(); count++)

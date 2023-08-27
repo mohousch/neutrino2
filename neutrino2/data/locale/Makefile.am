@@ -17,7 +17,6 @@ neutrino2.pot: $(top_srcdir)/src/*.cpp \
 	$(top_srcdir)/../plugins/test/*.cpp \
 	$(top_srcdir)/../plugins/audioplayer/*.cpp \
 	$(top_srcdir)/../plugins/fileexplorer/*.cpp \
-	$(top_srcdir)/../plugins/fileplayer/*.cpp \
 	$(top_srcdir)/../plugins/icecast/*.cpp \
 	$(top_srcdir)/../plugins/internetradio/*.cpp \
 	$(top_srcdir)/../plugins/mediaportal/*.cpp \

@@ -357,7 +357,7 @@ void CMenuWidget::paintHead()
 	
 	if(widgetType == TYPE_FRAME)
 	{
-		// headBoxox
+		// headBox
 		frameBuffer->paintBoxRel(x, y, width, hheight, def_headColor? COL_MENUHEAD_PLUS_0 : headColor/*, headRadius, headCorner, headGradient*/);
 
 		// paint horizontal line top

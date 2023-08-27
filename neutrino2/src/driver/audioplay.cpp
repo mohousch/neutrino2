@@ -138,8 +138,6 @@ CAudioPlayer * CAudioPlayer::getInstance()
 
 void * CAudioPlayer::PlayThread( void * /*arg*/)
 {
-	//dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
-	
 	//
 	CBaseDec::RetCode Status = CBaseDec::DecoderBase(&getInstance()->m_Audiofile);
 

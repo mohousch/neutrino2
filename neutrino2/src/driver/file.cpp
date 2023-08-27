@@ -72,6 +72,8 @@ const char * const file_extension_list[] =
 	"m2ts",
 	"m3u",
 	
+	"m3u8",
+	
 	"m4a",
 	"mkv",
 	"mov",
@@ -90,15 +92,15 @@ const char * const file_extension_list[] =
 	"png",
 	"pls",
 	"sh",
-	//"trp"
-	
 	"ts",
+	
 	"txt",	
 	"url",
 	"vdr",
-	
-	"vob",  
+	"vob", 
+	 
 	"wav", 
+	"webm",
 	"wmv",
 	"xml"
 };
@@ -128,7 +130,9 @@ const CFile::FileExtension file_extension[] =
 	CFile::EXTENSION_M2A, 
 	CFile::EXTENSION_M2P,
 	CFile::EXTENSION_M2TS,
-	CFile::EXTENSION_M3U, 
+	CFile::EXTENSION_M3U,
+	
+	CFile::EXTENSION_M3U8, 
 	
 	CFile::EXTENSION_M4A,
 	CFile::EXTENSION_MKV,
@@ -148,15 +152,15 @@ const CFile::FileExtension file_extension[] =
 	CFile::EXTENSION_PNG, 
 	CFile::EXTENSION_PLS,
 	CFile::EXTENSION_SH,
-	//CFile::EXTENSION_TRP,
-	
 	CFile::EXTENSION_TS,
+	
 	CFile::EXTENSION_TEXT, 
 	CFile::EXTENSION_URL, 
 	CFile::EXTENSION_VDR,
-	
 	CFile::EXTENSION_VOB, 
-	CFile::EXTENSION_WAV, 
+	
+	CFile::EXTENSION_WAV,
+	CFile::EXTENSION_WEBM, 
 	CFile::EXTENSION_WMV,
 	CFile::EXTENSION_XML
 };
@@ -189,6 +193,8 @@ const CFile::FileType file_type_list[] =
 	CFile::FILE_PLAYLIST,
 	
 	CFile::FILE_PLAYLIST,
+	
+	CFile::FILE_VIDEO,
 	CFile::FILE_VIDEO,
 	CFile::FILE_VIDEO,
 	CFile::FILE_AUDIO,
@@ -206,15 +212,15 @@ const CFile::FileType file_type_list[] =
 	CFile::FILE_PICTURE, 
 	CFile::FILE_PLAYLIST,
 	CFile::FILE_TEXT,
-	//CFile::FILE_VIDEO,
-	
 	CFile::FILE_VIDEO,
-	CFile::FILE_TEXT, 
+	
+	CFile::FILE_TEXT,
 	CFile::FILE_URL, 
+	CFile::FILE_VIDEO, 
 	CFile::FILE_VIDEO,
 	
-	CFile::FILE_VIDEO, 
 	CFile::FILE_AUDIO, 
+	CFile::FILE_VIDEO, 
 	CFile::FILE_VIDEO,
 	CFile::FILE_XML
 };
