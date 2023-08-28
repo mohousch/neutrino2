@@ -1892,6 +1892,7 @@ static char *FFMPEG_Capabilities[] = {
 	"ogg",
 	"m3u8",
 	"amr", 
+	"webm",
 	NULL 
 };
 

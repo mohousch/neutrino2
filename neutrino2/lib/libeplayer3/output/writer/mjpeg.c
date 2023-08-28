@@ -50,6 +50,24 @@
 /* Makros/Constants              */
 /* ***************************** */
 
+#define MJPEG_DEBUG
+
+#ifdef MJPEG_DEBUG
+
+static short debug_level = 10;
+
+#define mjpeg_printf(level, fmt, x...) do { \
+if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define mjpeg_printf(level, fmt, x...)
+#endif
+
+#ifndef MJPEG_SILENT
+#define mjpeg_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define mjpeg_err(fmt, x...)
+#endif
+
 /* ***************************** */
 /* Types                         */
 /* ***************************** */

@@ -54,6 +54,25 @@
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
+
+#define LPCM_DEBUG
+
+#ifdef LPCM_DEBUG
+
+static short debug_level = 10;
+
+#define lpcm_printf(level, fmt, x...) do { \
+if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define lpcm_printf(level, fmt, x...)
+#endif
+
+#ifndef LPCM_SILENT
+#define lpcm_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define lpcm_err(fmt, x...)
+#endif
+
 #define LLPCM_VOB_HEADER_LEN (6)
 
 /* ***************************** */

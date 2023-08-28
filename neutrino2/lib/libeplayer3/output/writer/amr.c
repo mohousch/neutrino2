@@ -51,6 +51,24 @@
 /* Makros/Constants              */
 /* ***************************** */
 
+#define AMR_DEBUG
+
+#ifdef AMR_DEBUG
+
+static short debug_level = 10;
+
+#define amr_printf(level, fmt, x...) do { \
+if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define amr_printf(level, fmt, x...)
+#endif
+
+#ifndef AMR_SILENT
+#define amr_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define amr_err(fmt, x...)
+#endif
+
 /* ***************************** */
 /* Types                         */
 /* ***************************** */

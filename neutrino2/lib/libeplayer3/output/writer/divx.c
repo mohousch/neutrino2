@@ -49,10 +49,8 @@
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
-#define B_GET_BITS(w,e,b)  (((w)>>(b))&(((unsigned)(-1))>>((sizeof(unsigned))*8-(e+1-b))))
-#define B_SET_BITS(name,v,e,b)  (((unsigned)(v))<<(b))
 
-//#define DIVX_DEBUG
+#define DIVX_DEBUG
 
 #ifdef DIVX_DEBUG
 
@@ -69,6 +67,9 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #else
 #define divx_err(fmt, x...)
 #endif
+
+#define B_GET_BITS(w,e,b)  (((w)>>(b))&(((unsigned)(-1))>>((sizeof(unsigned))*8-(e+1-b))))
+#define B_SET_BITS(name,v,e,b)  (((unsigned)(v))<<(b))
 
 /* ***************************** */
 /* Types                         */
@@ -163,31 +164,7 @@ static int writeData(void* _call)
 	// microseconds per frame
 	FlushBits(&ld);
 
-/*
-	FakeHeaderLength    = (ld.Ptr - (FakeHeaders));
-
-	if (initialHeader) ExtraLength = call->private_size;
-
-	HeaderLength        = InsertPesHeader (PesHeader, call->len, MPEG_VIDEO_PES_START_CODE, call->Pts, FakeStartCode);
-	unsigned char* PacketStart = malloc(call->len + HeaderLength + FakeHeaderLength + ExtraLength);
-	memcpy (PacketStart, PesHeader, HeaderLength);
-	memcpy (PacketStart + HeaderLength, FakeHeaders, FakeHeaderLength);
-	
-	if (initialHeader) 
-	{
-		memcpy (PacketStart + HeaderLength + FakeHeaderLength, call->private_data, call->private_size);
-		initialHeader = 0;
-	}
-	memcpy (PacketStart + HeaderLength + FakeHeaderLength + ExtraLength, call->data, call->len);
-
-	int len = write(call->fd, PacketStart ,call->len + HeaderLength + FakeHeaderLength + ExtraLength);
-
-	free(PacketStart);
-
-	divx_printf(10, "xvid_Write < len=%d\n", len);
-
-	return len;
-*/
+	//
 	struct iovec iov[4];
 
 	int ic = 0;

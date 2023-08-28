@@ -49,13 +49,6 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define WMV3_PRIVATE_DATA_LENGTH        4
-
-#define METADATA_STRUCT_A_START             12
-#define METADATA_STRUCT_B_START             24
-#define METADATA_STRUCT_B_FRAMERATE_START   32
-#define METADATA_STRUCT_C_START             8
-
 //#define WMV_DEBUG
 
 #ifdef WMV_DEBUG
@@ -74,6 +67,12 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define wmv_err(fmt, x...)
 #endif
 
+#define WMV3_PRIVATE_DATA_LENGTH        4
+
+#define METADATA_STRUCT_A_START             12
+#define METADATA_STRUCT_B_START             24
+#define METADATA_STRUCT_B_FRAMERATE_START   32
+#define METADATA_STRUCT_C_START             8
 
 /* ***************************** */
 /* Types                         */

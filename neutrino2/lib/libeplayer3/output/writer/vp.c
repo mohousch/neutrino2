@@ -50,19 +50,22 @@
 /* Makros/Constants	      */
 /* ***************************** */
 
-#define VP_DEBUG_LEVEL 0
-#define VP_SILENT
+#define VP_DEBUG
 
-#if VP_DEBUG_LEVEL
-#define vp_printf(...) log_printf(VP_DEBUG_LEVEL, __VA_ARGS__)
+#ifdef VP_DEBUG
+
+static short debug_level = 10;
+
+#define vp_printf(level, fmt, x...) do { \
+if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
 #else
-#define vp_printf(...)
+#define vp_printf(level, fmt, x...)
 #endif
 
 #ifndef VP_SILENT
-#define vp_err(...) log_error(__VA_ARGS__)
+#define vp_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
 #else
-#define vp_err(...)
+#define vp_err(fmt, x...)
 #endif
 
 /* ***************************** */

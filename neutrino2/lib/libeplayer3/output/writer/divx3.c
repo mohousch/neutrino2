@@ -50,6 +50,25 @@
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
+
+#define DIVX3_DEBUG
+
+#ifdef DIVX3_DEBUG
+
+static short debug_level = 10;
+
+#define divx3_printf(level, fmt, x...) do { \
+if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define divx3_printf(level, fmt, x...)
+#endif
+
+#ifndef DIVX3_SILENT
+#define divx3_err(fmt, x...) do { printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
+#else
+#define divx3_err(fmt, x...)
+#endif
+
 #define B_GET_BITS(w,e,b)  (((w)>>(b))&(((unsigned)(-1))>>((sizeof(unsigned))*8-(e+1-b))))
 #define B_SET_BITS(name,v,e,b)  (((unsigned)(v))<<(b))
 
