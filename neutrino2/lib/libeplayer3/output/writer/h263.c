@@ -50,7 +50,7 @@
 /* ***************************** */
 
 
-//#define H263_DEBUG
+#define H263_DEBUG
 
 #ifdef H263_DEBUG
 
