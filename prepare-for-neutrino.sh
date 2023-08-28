@@ -117,8 +117,8 @@ PACKAGES="\
 	${UBUNTU:+u-boot-tools}												\
 	${UBUNTU:+android-sdk-libsparse-utils}										\
 	${UBUNTU:+lua5.2}                                                                                       	\
-	${UBUNTU:+lua5.2-dev}                                                                                       	\
-    	${UBUNTU:+python2-dev}                                                                                       	\
+	${UBUNTU:+liblua5.2-dev}                                                                                       	\
+    	${UBUNTU:+python-dev-is-python3}                                                                                       	\
     	${UBUNTU:+libfreetype6-dev}											\
     	${UBUNTU:+libid3tag0-dev}											\
     	${UBUNTU:+libmad0-dev}												\
