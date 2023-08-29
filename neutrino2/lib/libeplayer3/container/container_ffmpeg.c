@@ -253,11 +253,11 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			
 		case AV_CODEC_ID_VORBIS:
 			//return "A_VORBIS"; //FIXME:
-			return "A_PCM";
+			return "A_IPCM";
 			
 		case AV_CODEC_ID_FLAC: //86030
 			//return "A_FLAC"; //FIXME:
-			return "A_PCM";
+			return "A_IPCM";
 			
 		case AV_CODEC_ID_PCM_S8:
 		case AV_CODEC_ID_PCM_U8:
@@ -273,7 +273,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 		case AV_CODEC_ID_PCM_S32BE:
 		case AV_CODEC_ID_PCM_U32LE:
 		case AV_CODEC_ID_PCM_U32BE:
-			return	"A_PCM"; 
+			return	"A_IPCM"; 
 			
 		case AV_CODEC_ID_AMR_NB:
     		case AV_CODEC_ID_AMR_WB:
@@ -314,7 +314,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 
 		default:
 			if (codec->codec_type == AVMEDIA_TYPE_AUDIO)
-				return "A_PCM";
+				return "A_IPCM";
 			else
 				ffmpeg_err("ERROR! CODEC NOT FOUND -> %d\n",codec->codec_id);
 	}
