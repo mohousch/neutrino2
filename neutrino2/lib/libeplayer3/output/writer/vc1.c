@@ -49,17 +49,6 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define WMV3_PRIVATE_DATA_LENGTH                        4
-
-#define METADATA_STRUCT_A_START             12
-#define METADATA_STRUCT_B_START             24
-#define METADATA_STRUCT_B_FRAMERATE_START   32
-#define METADATA_STRUCT_C_START             8
-
-
-#define VC1_SEQUENCE_LAYER_METADATA_START_CODE          0x80
-#define VC1_FRAME_START_CODE                            0x0d
-
 //#define VC1_DEBUG
 
 #ifdef VC1_DEBUG
@@ -78,6 +67,16 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #define vc1_err(fmt, x...)
 #endif
 
+#define WMV3_PRIVATE_DATA_LENGTH                        4
+
+#define METADATA_STRUCT_A_START             12
+#define METADATA_STRUCT_B_START             24
+#define METADATA_STRUCT_B_FRAMERATE_START   32
+#define METADATA_STRUCT_C_START             8
+
+
+#define VC1_SEQUENCE_LAYER_METADATA_START_CODE          0x80
+#define VC1_FRAME_START_CODE                            0x0d
 
 /* ***************************** */
 /* Types                         */

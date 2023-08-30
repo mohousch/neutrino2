@@ -48,10 +48,6 @@
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
-#define PES_AUDIO_PRIVATE_HEADER_SIZE   16                                // consider maximum private header size.
-#define PES_AUDIO_HEADER_SIZE           (32 + PES_AUDIO_PRIVATE_HEADER_SIZE)
-#define PES_AUDIO_PACKET_SIZE           2028
-#define SPDIF_AUDIO_PACKET_SIZE         (1024 * sizeof(unsigned int) * 2) // stereo 32bit samples.
 
 //#define DTS_DEBUG
 
@@ -70,6 +66,11 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #else
 #define dts_err(fmt, x...)
 #endif
+
+#define PES_AUDIO_PRIVATE_HEADER_SIZE   16                                // consider maximum private header size.
+#define PES_AUDIO_HEADER_SIZE           (32 + PES_AUDIO_PRIVATE_HEADER_SIZE)
+#define PES_AUDIO_PACKET_SIZE           2028
+#define SPDIF_AUDIO_PACKET_SIZE         (1024 * sizeof(unsigned int) * 2) // stereo 32bit samples.
 
 /* ***************************** */
 /* Types                         */

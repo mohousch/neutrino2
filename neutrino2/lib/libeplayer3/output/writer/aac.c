@@ -49,19 +49,6 @@
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
-
-#define AAC_HEADER_LENGTH       7
-
-static inline int HasADTSHeader(uint8_t *data, int size)
-{
-	if (size >= AAC_HEADER_LENGTH && 0xFF == data[0] && 0xF0 == 0xF0 & data[1] && size == ((data[3] & 0x3) << 11 | data[4] << 3 | data[5] >> 5))
-	{
-		return 1;
-	}
-	    
-	return 0;
-}
-
 //#define AAC_DEBUG
 
 #ifdef AAC_DEBUG
@@ -79,6 +66,18 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #else
 #define aac_err(fmt, x...)
 #endif
+
+#define AAC_HEADER_LENGTH       7
+
+static inline int HasADTSHeader(uint8_t *data, int size)
+{
+	if (size >= AAC_HEADER_LENGTH && 0xFF == data[0] && 0xF0 == 0xF0 & data[1] && size == ((data[3] & 0x3) << 11 | data[4] << 3 | data[5] >> 5))
+	{
+		return 1;
+	}
+	    
+	return 0;
+}
 
 /* ***************************** */
 /* Types                         */

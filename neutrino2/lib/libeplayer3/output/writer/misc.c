@@ -45,6 +45,24 @@
 /* Makros/Constants              */
 /* ***************************** */
 
+//#define MISC_DEBUG
+
+#ifdef MISC_DEBUG
+
+static short debug_level = 10;
+
+#define misc_printf(level, x...) do { \
+if (debug_level >= level) printf(x); } while (0)
+#else
+#define misc_printf(level, x...)
+#endif
+
+#ifndef MISC_SILENT
+#define misc_err(x...) do { printf(x); } while (0)
+#else
+#define misc_err(x...)
+#endif
+
 /* ***************************** */
 /* Types                         */
 /* ***************************** */
@@ -69,10 +87,7 @@ void PutBits(BitPacker_t * ld, unsigned int code, unsigned int length)
 	bit_buf = ld->BitBuffer;
 	bit_left = ld->Remaining;
 
-#ifdef DEBUG_PUTBITS
-	if (ld->debug)
-		dprintf("code = %d, length = %d, bit_buf = 0x%x, bit_left = %d\n", code, length, bit_buf, bit_left);
-#endif /* DEBUG_PUTBITS */
+	misc_printf(100, "code = %d, length = %d, bit_buf = 0x%x, bit_left = %d\n", code, length, bit_buf, bit_left);
 
 	if (length < bit_left)
 	{
@@ -96,10 +111,7 @@ void PutBits(BitPacker_t * ld, unsigned int code, unsigned int length)
 		bit_buf = code;
 	}
 
-#ifdef DEBUG_PUTBITS
-	if (ld->debug)
-		dprintf("bit_left = %d, bit_buf = 0x%x\n", bit_left, bit_buf);
-#endif /* DEBUG_PUTBITS */
+	misc_printf(100, "bit_left = %d, bit_buf = 0x%x\n", bit_left, bit_buf);
 
 	/* writeback */
 	ld->BitBuffer = bit_buf;
@@ -112,10 +124,8 @@ void FlushBits(BitPacker_t * ld)
 	
 	while (ld->Remaining < 32)
 	{
-#ifdef DEBUG_PUTBITS
-		if (ld->debug)
-			dprintf("flushing 0x%2.2x\n", ld->BitBuffer >> 24);
-#endif /* DEBUG_PUTBITS */
+		misc_printf(100, "flushing 0x%2.2x\n", ld->BitBuffer >> 24);
+
 		*ld->Ptr++ = ld->BitBuffer >> 24;
 		ld->BitBuffer <<= 8;
 		ld->Remaining += 8;

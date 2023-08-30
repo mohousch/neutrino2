@@ -49,7 +49,6 @@
 /* ***************************** */
 /* Makros/Constants              */
 /* ***************************** */
-#define AC3_HEADER_LENGTH       7
 
 //#define AC3_DEBUG
 
@@ -68,6 +67,8 @@ if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); 
 #else
 #define ac3_err(fmt, x...)
 #endif
+
+#define AC3_HEADER_LENGTH       7
 
 /* ***************************** */
 /* Types                         */
