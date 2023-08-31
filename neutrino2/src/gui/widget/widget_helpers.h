@@ -808,6 +808,7 @@ class CWidgetItem
 		
 		//
 		virtual std::string getActionKey(void){ return actionKey;}; // lua
+		virtual int getSelected(void){return -1;};
 		
 		//
 		virtual void setParent(CWidget* p){parent = p;};

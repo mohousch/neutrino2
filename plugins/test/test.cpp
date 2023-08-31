@@ -5615,7 +5615,7 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 				tmpAudioPlayerGui.addToPlaylist(AudioPlaylist[i]);
 			}
 
-			tmpAudioPlayerGui.setCurrent(listFrame->getSelectedLine());
+			tmpAudioPlayerGui.setCurrent(listFrame->getSelected());
 			tmpAudioPlayerGui.exec(NULL, "");
 		}
 
@@ -5631,7 +5631,7 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			
 			if (listFrame)
 			{
-				selected = listFrame->getSelectedLine();
+				selected = listFrame->getSelected();
 			}
 			
 			std::string title;

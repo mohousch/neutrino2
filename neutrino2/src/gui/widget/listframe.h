@@ -165,6 +165,9 @@ class CListFrame : public CWidgetItem
 		inline  int     getLines(void)			{return(m_nNrOfLines);};
 		inline  int     getPages(void)			{return(m_nNrOfPages);};
 		inline int 	getLinesPerPage(void)		{return(LinesPerPage);};
+		
+		//
+		int getSelected(void){return(m_nSelectedLine);}; 
 
 		//
 		inline  void    showSelection(bool show = true)	{m_showSelection = show; refreshLine(m_nSelectedLine);};
