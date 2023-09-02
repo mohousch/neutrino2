@@ -43,7 +43,7 @@ neutrinoPython::neutrinoPython()
 	Py_Initialize();
 	PyEval_InitThreads();
 
-	//init_neutrino2();
+	//
 #if PY_VERSION_HEX >= 0x03000000
 	PyInit__neutrino2();
 #else
@@ -77,8 +77,12 @@ int neutrinoPython::execute(const std::string &moduleName, const std::string &fu
 	PyObject* pArgs;
 	PyObject* pValue;
 
-	//pName = PyString_FromString(moduleName.c_str());
+	//
+#if PY_VERSION_HEX >= 0x03000000
 	pName = PyUnicode_FromString(moduleName.c_str());
+#else
+	pName = PyString_FromString(moduleName.c_str());
+#endif
 
 	pModule = PyImport_Import(pName);
 	Py_DECREF(pName);
@@ -99,8 +103,12 @@ int neutrinoPython::execute(const std::string &moduleName, const std::string &fu
 
 			if (pValue)
 			{
-				//printf("Result of call: %ld\n", PyInt_AsLong(pValue));
+				//
+#if PY_VERSION_HEX >= 0x03000000
 				printf("Result of call: %ld\n", PyLong_Check(pValue));
+#else
+				printf("Result of call: %ld\n", PyInt_AsLong(pValue));
+#endif
 				Py_DECREF(pValue);
 			} 
 			else
