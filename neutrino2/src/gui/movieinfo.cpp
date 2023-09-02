@@ -1820,7 +1820,7 @@ void CMovieInfoWidget::funArt()
 	CWidget * widget = new CWidget(&box);
 
 	// artFrame
-	CFrame * artFrame = new CFrame();
+	CFrameItem * artFrame = new CFrameItem();
 	artFrame->setMode(FRAME_PICTURE);
 	artFrame->setPosition(&artBox);
 	artFrame->setIconName(movieFile.tfile.c_str());
@@ -1829,7 +1829,7 @@ void CMovieInfoWidget::funArt()
 	testFrameBox->addFrame(artFrame);
 
 	// title
-	CFrame *titleFrame = new CFrame();
+	CFrameItem *titleFrame = new CFrameItem();
 	titleFrame->setMode(FRAME_LABEL);
 	int t_w = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(movieFile.epgTitle);
 	if (t_w > box.iWidth)
@@ -1845,7 +1845,7 @@ void CMovieInfoWidget::funArt()
 	// vote
 	for (int i = 0; i < 5; i++)
 	{
-		CFrame *starOffFrame = new CFrame();
+		CFrameItem *starOffFrame = new CFrameItem();
 		starOffFrame->setMode(FRAME_ICON);
 		starOffFrame->setPosition(starBox.iX + i*25, starBox.iY, starBox.iWidth, starBox.iHeight);
 		starOffFrame->setIconName(NEUTRINO_ICON_STAR_OFF);
@@ -1859,7 +1859,7 @@ void CMovieInfoWidget::funArt()
 
 	for (int i = 0; i < average; i++)
 	{
-		CFrame *starOnFrame = new CFrame();
+		CFrameItem *starOnFrame = new CFrameItem();
 		starOnFrame->setMode(FRAME_ICON);
 		starOnFrame->setPosition(starBox.iX + i*25, starBox.iY, starBox.iWidth, starBox.iHeight);
 		starOnFrame->setIconName(NEUTRINO_ICON_STAR_ON);
@@ -1887,7 +1887,7 @@ void CMovieInfoWidget::funArt()
 		l_buffer += " (" + movieFile.genres + ")";
 	}
 	
-	CFrame *lengthFrame = new CFrame();
+	CFrameItem *lengthFrame = new CFrameItem();
 	lengthFrame->setMode(FRAME_LABEL);
 		
 	int l_w = g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getRenderWidth(l_buffer);
@@ -1902,7 +1902,7 @@ void CMovieInfoWidget::funArt()
 	testFrameBox->addFrame(lengthFrame);
 
 	// text
-	CFrame *textFrame = new CFrame();
+	CFrameItem *textFrame = new CFrameItem();
 	textFrame->setMode(FRAME_TEXT);
 	textFrame->setPosition(&textBox);
 	std::string buffer;
@@ -1917,7 +1917,7 @@ void CMovieInfoWidget::funArt()
 	testFrameBox->addFrame(textFrame);
 
 	// play
-	CFrame *playFrame = new CFrame();
+	CFrameItem *playFrame = new CFrameItem();
 	playFrame->setPosition(&playBox);
 	playFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 	playFrame->setTitle("Movie abspielen");
@@ -1928,7 +1928,7 @@ void CMovieInfoWidget::funArt()
 	testFrameBox->addFrame(playFrame);
 
 	// infoFrame
-	CFrame * infoFrame = new CFrame();
+	CFrameItem * infoFrame = new CFrameItem();
 	infoFrame->setPosition(&infoBox);
 	infoFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 	infoFrame->setTitle("Movie Details");
@@ -1978,6 +1978,4 @@ int CMovieInfoWidget::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	return RETURN_EXIT;
 }
-
-
 

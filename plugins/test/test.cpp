@@ -939,9 +939,9 @@ void CTestMenu::testCWidget()
 	frameBoxWidget = new CFrameBox(&topBox);
 	frameBoxWidget->setOutFocus();
 
-	CFrame * frame = NULL;
+	CFrameItem * frame = NULL;
 
-	frame = new CFrame();
+	frame = new CFrameItem();
 	frame->setPosition(topBox.iX, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Filme");
 	frame->setActionKey(this, "movie");
@@ -949,7 +949,7 @@ void CTestMenu::testCWidget()
 	frame->setBorderMode();
 	frameBoxWidget->addFrame(frame);
 	
-	frame = new CFrame();
+	frame = new CFrameItem();
 	frame->setPosition(topBox.iX + topBox.iWidth/3, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Serien");
 	frame->setHAlign(CC_ALIGN_CENTER);
@@ -957,7 +957,7 @@ void CTestMenu::testCWidget()
 	frame->setBorderMode();
 	frameBoxWidget->addFrame(frame);
 
-	frame = new CFrame();
+	frame = new CFrameItem();
 	frame->setPosition(topBox.iX + 2*topBox.iWidth/3, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Suche");
 	frame->setHAlign(CC_ALIGN_CENTER);
@@ -1299,7 +1299,7 @@ void CTestMenu::testCFrameBoxWidget()
 	loadBox.hide();
 
 	// home
-	CFrame *homeFrame = new CFrame();
+	CFrameItem *homeFrame = new CFrameItem();
 	homeFrame->setMode(FRAME_LABEL);
 	homeFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	int h_w = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth("Home");
@@ -1312,7 +1312,7 @@ void CTestMenu::testCFrameBoxWidget()
 	frameBoxWidget->addFrame(homeFrame);
 
 	// setup
-	CFrame *setupFrame = new CFrame();
+	CFrameItem *setupFrame = new CFrameItem();
 	setupFrame->setMode(FRAME_LABEL);
 	setupFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	int s_w = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth("Setup");
@@ -1325,7 +1325,7 @@ void CTestMenu::testCFrameBoxWidget()
 	frameBoxWidget->addFrame(setupFrame);
 
 	// help
-	CFrame *helpFrame = new CFrame();
+	CFrameItem *helpFrame = new CFrameItem();
 	helpFrame->setMode(FRAME_LABEL);
 	int i_w = 0;
 	int i_h = 0;
@@ -1341,7 +1341,7 @@ void CTestMenu::testCFrameBoxWidget()
 	if (!m_vMovieInfo.empty())
 	{
 		// title
-		CFrame * titleFrame = new CFrame();
+		CFrameItem * titleFrame = new CFrameItem();
 		titleFrame->setMode(FRAME_LABEL);
 		titleFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 		int t_w = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth(m_vMovieInfo[0].epgTitle);
@@ -1354,7 +1354,7 @@ void CTestMenu::testCFrameBoxWidget()
 		frameBoxWidget->addFrame(titleFrame);
 
 		// text
-		CFrame *textFrame = new CFrame();
+		CFrameItem *textFrame = new CFrameItem();
 		textFrame->setMode(FRAME_TEXT);
 		textFrame->setPosition(box.iX + 10, box.iY + 40 + h_h + 10 + t_h + 10, box.iWidth - 20 - pic_w - 20, 250 - t_h - 10 - 10);
 		std::string buffer;
@@ -1368,7 +1368,7 @@ void CTestMenu::testCFrameBoxWidget()
 		frameBoxWidget->addFrame(textFrame);
 
 		// pic
-		CFrame * artFrame = new CFrame();
+		CFrameItem * artFrame = new CFrameItem();
 		artFrame->setMode(FRAME_PICTURE);
 		artFrame->setPosition(box.iX + 10 + box.iWidth - 10 - pic_w - 20, box.iY + 40 + h_h + 10, pic_w - 20, 250);
 		artFrame->setIconName(m_vMovieInfo[0].tfile.c_str());
@@ -1379,7 +1379,7 @@ void CTestMenu::testCFrameBoxWidget()
 		
 
 		// other
-		CFrame *otherFrame = new CFrame();
+		CFrameItem *otherFrame = new CFrameItem();
 		otherFrame->setMode(FRAME_LABEL);
 		otherFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 		int o_w = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getRenderWidth("andere Filme:");
@@ -1392,10 +1392,10 @@ void CTestMenu::testCFrameBoxWidget()
 		frameBoxWidget->addFrame(otherFrame);
 
 		//
-		CFrame * art1Frame = NULL;
+		CFrameItem * art1Frame = NULL;
 		for (int i = 1; i < 7; i++)
 		{
-			art1Frame = new CFrame();
+			art1Frame = new CFrameItem();
 			art1Frame->setMode(FRAME_PICTURE);
 			art1Frame->setPosition(box.iX + 10 + (i - 1)*((box.iWidth - 20)/6) + 5, box.iY + 40 + h_h + 10 + 250 + 10 + o_h + 10, (box.iWidth - 20)/6 - 10,box.iHeight - 40 - h_h - 10 - 250 - 10 - 40);
 			art1Frame->setIconName(m_vMovieInfo[i].tfile.c_str());
@@ -3396,9 +3396,9 @@ void CTestMenu::testCFrameBox()
 	frameBoxWidget = new CFrameBox(&topBox);
 	frameBoxWidget->paintMainFrame(false);
 
-	CFrame * frame = NULL;
+	CFrameItem * frame = NULL;
 
-	frame = new CFrame();
+	frame = new CFrameItem();
 	frame->setPosition(topBox.iX + 10, topBox.iY + 10, topBox.iWidth - 20, 60);
 	frame->setTitle("Neu Filme");
 	frame->setIconName(NEUTRINO_ICON_MOVIE);
@@ -3409,7 +3409,7 @@ void CTestMenu::testCFrameBox()
 	frame->setHAlign(CC_ALIGN_CENTER);
 	frameBoxWidget->addFrame(frame);
 	
-	frame = new CFrame();
+	frame = new CFrameItem();
 	frame->setPosition(topBox.iX + 10, topBox.iY + 10 + 60 + 10, topBox.iWidth - 20, 60);
 	frame->setTitle("Im Kino");
 	frame->setActionKey(this, "help");
@@ -3418,7 +3418,7 @@ void CTestMenu::testCFrameBox()
 	frame->setHAlign(CC_ALIGN_CENTER);
 	frameBoxWidget->addFrame(frame);
 
-	frame = new CFrame();
+	frame = new CFrameItem();
 	frame->setPosition(topBox.iX + 10, topBox.iY + 2*(10 + 60) +10, topBox.iWidth - 20, 60);
 	frame->setTitle("Am populärsten");
 	frame->setOption("(2019)");
@@ -3428,14 +3428,14 @@ void CTestMenu::testCFrameBox()
 	frameBoxWidget->addFrame(frame);
 	
 	// pic
-	frame = new CFrame();
+	frame = new CFrameItem();
 	frame->setMode(FRAME_PICTURE);
 	frame->setPosition(topBox.iX + 10, topBox.iY + 3*(10 + 60) +50, topBox.iWidth - 20, 200);
 	frame->setIconName(DATADIR "/icons/nopreview.jpg");
 	frame->paintMainFrame(false);
 	frameBoxWidget->addFrame(frame);
 
-	frame = new CFrame();
+	frame = new CFrameItem();
 	frame->setPosition(topBox.iX + 10, topBox.iY + topBox.iHeight - 60 - 10, topBox.iWidth - 20, 60);
 	frame->setTitle("Exit");
 	frame->setActionKey(this, "exit");
@@ -3526,7 +3526,7 @@ void CTestMenu::testCFrameBox1()
 	frameBoxWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
 	// artFrame
-	CFrame * artFrame = new CFrame();
+	CFrameItem * artFrame = new CFrameItem();
 	artFrame->setMode(FRAME_PICTURE);
 	artFrame->setPosition(box.iX + box.iWidth/2, box.iY + 40, box.iWidth/2, box.iHeight - 2*40);
 	if (!m_vMovieInfo.empty())
@@ -3536,7 +3536,7 @@ void CTestMenu::testCFrameBox1()
 	frameBoxWidget->addFrame(artFrame);
 
 	// title
-	CFrame *titleFrame = new CFrame();
+	CFrameItem *titleFrame = new CFrameItem();
 	titleFrame->setMode(FRAME_LABEL);
 	titleFrame->setPosition(&titleBox);
 	titleFrame->paintMainFrame(false);
@@ -3548,7 +3548,7 @@ void CTestMenu::testCFrameBox1()
 	frameBoxWidget->addFrame(titleFrame);
 
 	// star1
-	CFrame *star1Frame = new CFrame();
+	CFrameItem *star1Frame = new CFrameItem();
 	star1Frame->setMode(FRAME_ICON);
 	star1Frame->setPosition(&starBox);
 	star1Frame->setIconName(NEUTRINO_ICON_STAR_ON);
@@ -3558,7 +3558,7 @@ void CTestMenu::testCFrameBox1()
 	frameBoxWidget->addFrame(star1Frame);
 
 	// star2
-	CFrame *star2Frame = new CFrame();
+	CFrameItem *star2Frame = new CFrameItem();
 	star2Frame->setMode(FRAME_ICON);
 	star2Frame->setPosition(starBox.iX + 25, starBox.iY, starBox.iWidth, starBox.iHeight);
 	star2Frame->setIconName(NEUTRINO_ICON_STAR_ON);
@@ -3568,7 +3568,7 @@ void CTestMenu::testCFrameBox1()
 	frameBoxWidget->addFrame(star2Frame);
 
 	// star3
-	CFrame *star3Frame = new CFrame();
+	CFrameItem *star3Frame = new CFrameItem();
 	star3Frame->setMode(FRAME_ICON);
 	star3Frame->setPosition(starBox.iX + 2*25, starBox.iY, starBox.iWidth, starBox.iHeight);
 	star3Frame->setIconName(NEUTRINO_ICON_STAR_ON);
@@ -3578,7 +3578,7 @@ void CTestMenu::testCFrameBox1()
 	frameBoxWidget->addFrame(star3Frame);
 
 	// star4
-	CFrame *star4Frame = new CFrame();
+	CFrameItem *star4Frame = new CFrameItem();
 	star4Frame->setMode(FRAME_ICON);
 	star4Frame->setPosition(starBox.iX + 3*25, starBox.iY, starBox.iWidth, starBox.iHeight);
 	star4Frame->setIconName(NEUTRINO_ICON_STAR_OFF);
@@ -3588,7 +3588,7 @@ void CTestMenu::testCFrameBox1()
 	frameBoxWidget->addFrame(star4Frame);
 
 	// text
-	CFrame *textFrame = new CFrame();
+	CFrameItem *textFrame = new CFrameItem();
 	textFrame->setMode(FRAME_TEXT);
 	textFrame->setPosition(&textBox);
 	std::string buffer;
@@ -3607,7 +3607,7 @@ void CTestMenu::testCFrameBox1()
 	frameBoxWidget->addFrame(textFrame);
 
 	// infoFrame
-	CFrame * infoFrame = new CFrame();
+	CFrameItem * infoFrame = new CFrameItem();
 	infoFrame->setPosition(playBox.iX + 300 + 10, playBox.iY, 300, 60);
 	infoFrame->setCorner(10, CORNER_ALL);
 	infoFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
@@ -3619,7 +3619,7 @@ void CTestMenu::testCFrameBox1()
 	frameBoxWidget->addFrame(infoFrame);
 
 	// play
-	CFrame *playFrame = new CFrame();
+	CFrameItem *playFrame = new CFrameItem();
 	playFrame->setPosition(&playBox);
 	playFrame->setCorner(10, CORNER_ALL);
 	playFrame->setCaptionFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);

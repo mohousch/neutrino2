@@ -463,7 +463,7 @@ void CCButtons::paint()
 						startx -= (maxButtonTextWidth + 10 + ICON_TO_ICON_OFFSET);
 							
 						//
-						CFrame frame;
+						CFrameItem frame;
 						
 						frame.setPosition(startx, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight -2);
 						frame.setBorderMode();
@@ -479,7 +479,7 @@ void CCButtons::paint()
 						startx -= (maxButtonTextWidth + 10 + ICON_TO_ICON_OFFSET);
 							
 						//
-						CFrame frame;
+						CFrameItem frame;
 						
 						frame.setPosition(startx, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight -2);
 						frame.setBorderMode();
@@ -544,7 +544,7 @@ void CCButtons::paint()
 					else if (mode == BUTTON_FRAME_BORDER)
 					{
 						//
-						CFrame frame;
+						CFrameItem frame;
 						
 						frame.setPosition(cCBox.iX + BORDER_LEFT + i*buttonWidth, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight - 2);
 						frame.setBorderMode();
@@ -558,7 +558,7 @@ void CCButtons::paint()
 					else if (mode == BUTTON_FRAME_COLORED)
 					{
 						//
-						CFrame frame;
+						CFrameItem frame;
 						frame.setPosition(cCBox.iX + BORDER_LEFT + i*buttonWidth, cCBox.iY - 1, maxButtonTextWidth + 10, cCBox.iHeight - 2);
 						frame.setBorderMode();
 						frame.paintMainFrame(true);

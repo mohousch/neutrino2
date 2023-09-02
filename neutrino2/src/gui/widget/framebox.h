@@ -52,7 +52,7 @@ enum {
 	//FRAME_SLIDER
 };
 
-class CFrame
+class CFrameItem
 {
 	public:
 		CWindow window;
@@ -92,8 +92,8 @@ class CFrame
 		CFrameBox* parent;
 		
 		//
-		CFrame();
-		virtual ~CFrame(){};
+		CFrameItem();
+		virtual ~CFrameItem(){};
 
 		int paint(bool selected = false, bool AfterPulldown = false);
 		
@@ -152,7 +152,7 @@ class CFrameBox : public CWidgetItem
 		int selected;
 		int pos;
 
-		std::vector<CFrame*> frames;
+		std::vector<CFrameItem*> frames;
 
 		virtual void paintFrames();
 
@@ -215,7 +215,7 @@ class CFrameBox : public CWidgetItem
 		};
 		void setPosition(CBox* position){itemBox = *position; initFrames();};
 
-		virtual void addFrame(CFrame *frame, const bool defaultselected = false);
+		virtual void addFrame(CFrameItem *frame, const bool defaultselected = false);
 		bool hasItem();
 		void clearFrames(void){frames.clear();};
 		void setSelected(unsigned int _new) { /*if(_new <= frames.size())*/ selected = _new; };

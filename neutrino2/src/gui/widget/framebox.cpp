@@ -36,8 +36,8 @@
 extern CPlugins * g_PluginList;    // defined in neutrino.cpp
 extern cVideo * videoDecoder;
 
-// CFrame
-CFrame::CFrame()
+// CFrameItem
+CFrameItem::CFrameItem()
 {
 	captionFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
 	optionFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
@@ -75,7 +75,7 @@ CFrame::CFrame()
 	parent = NULL;	
 }
 
-void CFrame::setMode(int m)
+void CFrameItem::setMode(int m)
 {
 	mode = m;
 			
@@ -87,7 +87,7 @@ void CFrame::setMode(int m)
 	}
 }
 
-void CFrame::setActive(const bool Active)
+void CFrameItem::setActive(const bool Active)
 {
 	active = Active;
 	
@@ -95,7 +95,7 @@ void CFrame::setActive(const bool Active)
 	//	paint();
 }
 
-void CFrame::setMarked(const bool Marked)
+void CFrameItem::setMarked(const bool Marked)
 {
 	marked = Marked;
 	
@@ -103,7 +103,7 @@ void CFrame::setMarked(const bool Marked)
 	//	paint();
 }
 
-void CFrame::setPlugin(const char * const pluginName)
+void CFrameItem::setPlugin(const char * const pluginName)
 {
 	if (mode == FRAME_PLUGIN)
 	{
@@ -143,9 +143,9 @@ void CFrame::setPlugin(const char * const pluginName)
 	}
 }
 
-int CFrame::paint(bool selected, bool /*AfterPulldown*/)
+int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
 {
-	dprintf(DEBUG_DEBUG, "CFrame::paint:\n");
+	dprintf(DEBUG_DEBUG, "CFrameItem::paint:\n");
 
 	uint8_t color = COL_MENUCONTENT;
 	fb_pixel_t bgcolor = marked? COL_MENUCONTENTSELECTED_PLUS_1 : fcolor;
@@ -432,9 +432,9 @@ int CFrame::paint(bool selected, bool /*AfterPulldown*/)
 	return 0;
 }
 
-int CFrame::exec(CMenuTarget *parent)
+int CFrameItem::exec(CMenuTarget *parent)
 {
-	dprintf(DEBUG_NORMAL, "CFrame::exec: actionKey:(%s)\n", actionKey.c_str());
+	dprintf(DEBUG_NORMAL, "CFrameItem::exec: actionKey:(%s)\n", actionKey.c_str());
 
 	int ret = RETURN_EXIT;
 
@@ -581,7 +581,7 @@ CFrameBox::~CFrameBox()
 	}
 }
 
-void CFrameBox::addFrame(CFrame *frame, const bool defaultselected)
+void CFrameBox::addFrame(CFrameItem *frame, const bool defaultselected)
 {
 	if (defaultselected)
 		selected = frames.size();
@@ -618,7 +618,7 @@ void CFrameBox::paintFrames()
 
 	for (unsigned int count = 0; count < (unsigned int)frames.size(); count++) 
 	{
-		CFrame *frame = frames[count];
+		CFrameItem *frame = frames[count];
 
 		// init frame
 
@@ -732,7 +732,7 @@ void CFrameBox::swipRight()
 	{
 		pos = (selected + count)%frames.size();
 
-		CFrame * frame = frames[pos];
+		CFrameItem * frame = frames[pos];
 
 		if(frame->isSelectable())
 		{
@@ -756,7 +756,7 @@ void CFrameBox::swipLeft()
 		if ( pos < 0 )
 			pos += frames.size();
 
-		CFrame * frame = frames[pos];
+		CFrameItem * frame = frames[pos];
 
 		if(frame->isSelectable())
 		{
@@ -778,7 +778,7 @@ void CFrameBox::scrollLineDown(const int lines)
 	{
 		pos = (selected + count)%frames.size();
 
-		CFrame * frame = frames[pos];
+		CFrameItem * frame = frames[pos];
 
 		if(frame->isSelectable())
 		{
@@ -802,7 +802,7 @@ void CFrameBox::scrollLineUp(const int lines)
 		if ( pos < 0 )
 			pos += frames.size();
 
-		CFrame * frame = frames[pos];
+		CFrameItem * frame = frames[pos];
 
 		if(frame->isSelectable())
 		{

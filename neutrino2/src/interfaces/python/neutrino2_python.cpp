@@ -31,14 +31,24 @@
 
 #include <interfaces/python/neutrino2_python.h>
 
+//extern "C" void init_neutrino2();
+#if PY_VERSION_HEX >= 0x03000000
+extern "C" void PyInit__neutrino2();
+#else
 extern "C" void init_neutrino2();
+#endif
 
 neutrinoPython::neutrinoPython()
 {
 	Py_Initialize();
 	PyEval_InitThreads();
 
+	//init_neutrino2();
+#if PY_VERSION_HEX >= 0x03000000
+	PyInit__neutrino2();
+#else
 	init_neutrino2();
+#endif
 }
 
 neutrinoPython::~neutrinoPython()
@@ -67,7 +77,8 @@ int neutrinoPython::execute(const std::string &moduleName, const std::string &fu
 	PyObject* pArgs;
 	PyObject* pValue;
 
-	pName = PyString_FromString(moduleName.c_str());
+	//pName = PyString_FromString(moduleName.c_str());
+	pName = PyUnicode_FromString(moduleName.c_str());
 
 	pModule = PyImport_Import(pName);
 	Py_DECREF(pName);
@@ -88,7 +99,8 @@ int neutrinoPython::execute(const std::string &moduleName, const std::string &fu
 
 			if (pValue)
 			{
-				printf("Result of call: %ld\n", PyInt_AsLong(pValue));
+				//printf("Result of call: %ld\n", PyInt_AsLong(pValue));
+				printf("Result of call: %ld\n", PyLong_Check(pValue));
 				Py_DECREF(pValue);
 			} 
 			else
@@ -110,5 +122,4 @@ int neutrinoPython::execute(const std::string &moduleName, const std::string &fu
 
 	return 0;
 }
-
 

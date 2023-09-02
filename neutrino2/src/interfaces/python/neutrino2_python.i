@@ -58,8 +58,7 @@
 #include <driver/pictureviewer/pictureviewer.h>
 #include <driver/audioplay.h>
 #include <driver/audiodec/basedec.h>
-//#include <driver/stream2file.h>
-#include <driver/vcrcontrol.h>
+//#include <driver/vcrcontrol.h>
 
 // system
 #include <system/settings.h>
@@ -91,7 +90,7 @@
 #include <gui/widget/widget.h>
 
 // gui
-#include <gui/movieinfo.h>
+//#include <gui/movieinfo.h>
 #include <gui/audioplayer.h>
 #include <gui/movieplayer.h>
 #include <gui/pictureviewer.h>
@@ -158,7 +157,7 @@
 %include <src/driver/audioplay.h>
 %include <src/driver/audiodec/basedec.h>
 //%include <src/driver/stream2file.h>
-%include <src/driver/vcrcontrol.h>
+//%include <src/driver/vcrcontrol.h>
 
 // system
 %include <src/system/settings.h>
@@ -186,11 +185,11 @@
 %include <src/gui/widget/listframe.h>
 %include <src/gui/widget/stringinput.h>
 %include <src/gui/widget/menue.h>
-%include <src/gui/widget/framebox.h>
+//%include <src/gui/widget/framebox.h>
 %include <src/gui/widget/widget.h>
 
 // gui
-%include <src/gui/movieinfo.h>
+//%include <src/gui/movieinfo.h>
 %include <src/gui/audioplayer.h>
 %include <src/gui/movieplayer.h>
 %include <src/gui/pictureviewer.h>
@@ -213,10 +212,4 @@
 
 // deamonc
 %include <src/daemonc/remotecontrol.h>
-
-
-
-
-
-
 
