@@ -82,11 +82,11 @@ void CMenuWidget::Init(const std::string &Icon, const int mwidth, const int mhei
         width = mwidth;
 	height = mheight;
 	
-        if(width > (int) frameBuffer->getScreenWidth() - 20)
-		width = frameBuffer->getScreenWidth() - 20;
+        if(width > (int) frameBuffer->getScreenWidth())
+		width = frameBuffer->getScreenWidth();
 
-	if(height > ((int)frameBuffer->getScreenHeight() - 20))
-		height = frameBuffer->getScreenHeight() - 20;
+	if(height > ((int)frameBuffer->getScreenHeight()))
+		height = frameBuffer->getScreenHeight();
 
 	full_width = width;
 	full_height = height;
@@ -111,7 +111,6 @@ void CMenuWidget::Init(const std::string &Icon, const int mwidth, const int mhei
 
 	// head
 	paintDate = false;
-	//timestr_len = 0;
 	format = "%d.%m.%Y %H:%M";
 	timer = NULL;
 	hbutton_count	= 0;

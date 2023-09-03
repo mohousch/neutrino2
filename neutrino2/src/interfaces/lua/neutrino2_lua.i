@@ -121,7 +121,6 @@
 #include <gui/cam_menu.h>
 #include <gui/hdd_menu.h>
 #include <gui/rc_lock.h>
-#include <gui/themes.h>
 #include <gui/vfdcontroler.h>
 
 //gui/setup
@@ -267,7 +266,6 @@
 //%include <src/gui/cam_menu.h>
 %include <src/gui/hdd_menu.h>
 %include <src/gui/rc_lock.h>
-%include <src/gui/themes.h>
 %include <src/gui/vfdcontroler.h>
 
 //gui/setup

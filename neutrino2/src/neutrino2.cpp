@@ -137,7 +137,6 @@
 #include <gui/vfdcontroler.h>
 #include <gui/dvbsub_select.h>
 #include <gui/movieinfo.h>
-#include <gui/themes.h>
 #include <gui/epg_menu.h>
 
 #include <system/setting_helpers.h>

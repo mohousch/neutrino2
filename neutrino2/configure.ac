@@ -262,7 +262,6 @@ data/config/Makefile
 data/lcd/Makefile
 data/lcd/icons/Makefile
 data/lcd/clock/Makefile
-data/themes/Makefile
 data/zapit/Makefile
 data/webtv/Makefile
 data/scripts/Makefile

@@ -51,7 +51,6 @@
 #include <gui/widget/hintbox.h>
 
 #include <gui/plugins.h>
-#include <gui/themes.h>
 //
 #include <gui/main_setup.h>
 #include <gui/epg_menu.h>
@@ -201,10 +200,6 @@ CMenuTarget* CNeutrinoApp::convertTarget(const std::string& name)
 	else if (name == "infobarsetup")
 	{		
 		parent = new COSDInfoBarColorSettings();
-	}
-	else if (name == "themesetup")
-	{		
-		parent = new CThemes();
 	}
 	else if (name == "languagesetup")
 	{		

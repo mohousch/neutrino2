@@ -159,7 +159,6 @@
 #include <gui/misc_setup.h>
 #include <gui/hdd_menu.h>
 #include <gui/vfdcontroler.h>
-#include <gui/themes.h>
 //
 #include <gui/mediaplayer.h>
 #include <gui/epg_menu.h>

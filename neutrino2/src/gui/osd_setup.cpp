@@ -44,7 +44,6 @@
 
 #include <gui/filebrowser.h>
 #include <gui/osd_setup.h>
-#include <gui/themes.h>
 #include <gui/screensetup.h>
 #include <gui/alphasetup.h>
 

@@ -66,7 +66,6 @@ libneutrino2_gui_a_SOURCES = \
 	scan_setup.cpp \
 	zapit_setup.cpp \
 	proxyserver_setup.cpp \
-	themes.cpp \
 	service_menu.cpp \
 	video_setup.cpp \
 	audio_setup.cpp \

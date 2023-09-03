@@ -1873,11 +1873,11 @@ void ClistBox::initFrames()
 	
 	// sanity check
 	if(itemBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
-		itemBox.iHeight = frameBuffer->getScreenHeight(true) - 4;
+		itemBox.iHeight = frameBuffer->getScreenHeight(true) - 4; // 4 pixels for border
 
 	// sanity check
 	if(itemBox.iWidth > (int)frameBuffer->getScreenWidth(true))
-		itemBox.iWidth = frameBuffer->getScreenWidth(true) - 4;
+		itemBox.iWidth = frameBuffer->getScreenWidth(true) - 4; // 4 pixels for border
 
 	// widgettype forwarded to item 
 	for (unsigned int count = 0; count < items.size(); count++) 
