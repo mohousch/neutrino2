@@ -333,17 +333,16 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		//
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
+		CHeaders *head = NULL;
+		CFooters *foot = NULL;
 		
 		widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
 		
 		if (widget)
 		{
 			menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-			// head title
-			if (menu->hasHead())
-			{
-				menu->setTitle(itemName.c_str());
-			}
+			head = (CHeaders *)widget->getWidgetItem(WIDGETITEM_HEAD);
+			foot = (CFooters *)widget->getWidgetItem(WIDGETITEM_FOOT);
 		}
 		else
 		{
@@ -354,22 +353,27 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			widget->enableSaveScreen();
 			
 			//
-			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
 
 			menu->setWidgetMode(MODE_SETUP);
-			menu->enableShrinkMenu();
-			
-			menu->enablePaintHead();
-			menu->setTitle(itemName.c_str());
 			
 			//
-			menu->enablePaintFoot();		
+			head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
+			
+			//	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
-			menu->setFootButtons(&btn);
+
+			foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
+			foot->setButtons(&btn);
 			
 			//
 			widget->addWidgetItem(menu);
+			widget->addWidgetItem(head);
+			widget->addWidgetItem(foot);
 		}
+		
+		if (head)
+			head->setTitle(itemName.c_str());
 
 		//
 		for(unsigned int count = 0; count < number_of_options; count++) 
@@ -744,16 +748,16 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		//
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
+		CHeaders *head = NULL;
+		CFooters *foot = NULL;
 		
 		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
 		
 		if (widget)
 		{
 			menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-			
-			// title
-			if (menu->hasHead())
-				menu->setTitle(itemName.c_str());
+			head = (CHeaders *)widget->getWidgetItem(WIDGETITEM_HEAD);
+			foot = (CFooters *)widget->getWidgetItem(WIDGETITEM_FOOT);
 		}
 		else
 		{
@@ -764,23 +768,27 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			widget->enableSaveScreen();
 			
 			//
-			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
 
 			menu->setWidgetMode(MODE_SETUP);
-			menu->enableShrinkMenu();
 			
 			//
-			menu->enablePaintHead();
-			menu->setTitle(itemName.c_str());
+			head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 			
-			//
-			menu->enablePaintFoot();		
+			//	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
-			menu->setFootButtons(&btn);
+
+			foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
+			foot->setButtons(&btn);
 			
 			//
 			widget->addWidgetItem(menu);
+			widget->addWidgetItem(head);
+			widget->addWidgetItem(foot);
 		}
+		
+		if (head)
+			head->setTitle(itemName.c_str());
 		
 		//
 		for(unsigned int count = 0; count < options.size(); count++) 

@@ -1745,7 +1745,6 @@ void CChannelList::paint()
 		
 		//
 		head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
-		head->setTitle(name.c_str());
 		head->enablePaintDate();
 		
 		// foot

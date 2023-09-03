@@ -285,24 +285,24 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL , "CUserMenuMenu::exec: %s\n", actionKey.c_str());
 	
+	int res = RETURN_REPAINT;
+	
         if(parent)
                 parent->hide();
 	
 	//
 	CWidget* widget = NULL;
 	ClistBox* menu = NULL;
+	CHeaders *head = NULL;
+	CFooters *foot = NULL;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("usermenu");
 	
 	if (widget)
 	{	
 		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-		
-		//
-		if (menu->hasHead())
-		{
-			menu->setTitle(local.c_str(), NEUTRINO_ICON_KEYBINDING);
-		}
+		head = (CHeaders *)widget->getWidgetItem(WIDGETITEM_HEAD);
+		foot = (CFooters *)widget->getWidgetItem(WIDGETITEM_FOOT);
 		
 	}
 	else
@@ -313,22 +313,29 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 		widget->enableSaveScreen();
 		
 		//
-		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
+		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
 		
 		menu->setWidgetMode(MODE_SETUP);
-		menu->enableShrinkMenu();
 		
 		//	
-		menu->enablePaintHead();
-		menu->setTitle(local.c_str(), NEUTRINO_ICON_KEYBINDING);
+		head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 			
-		//
-		menu->enablePaintFoot();		
+		//	
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
-		menu->setFootButtons(&btn);
+
+		foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
+		foot->setButtons(&btn);
 			
 		//
 		widget->addWidgetItem(menu);
+		widget->addWidgetItem(head);
+		widget->addWidgetItem(foot);
+	}
+	
+	if (head)
+	{
+		head->setTitle(local.c_str());
+		head->setIcon(NEUTRINO_ICON_KEYBINDING);
 	}
 	
 	// intros
@@ -355,7 +362,7 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
                 menu->addItem( new CMenuOptionChooser(text, &g_settings.usermenu[button][item], USERMENU_ITEM_OPTIONS, USERMENU_ITEM_OPTION_COUNT, true, NULL, RC_nokey, "", true ));
         }
 
-        widget->exec(NULL, "");
+        res = widget->exec(NULL, "");
         
         if (menu)
         {
@@ -369,7 +376,7 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
         	widget = NULL;
         }
 
-        return RETURN_REPAINT;
+        return res;
 }
 
 
