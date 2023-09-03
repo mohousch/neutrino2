@@ -65,9 +65,6 @@
 
 #include <syscall.h>
 
-#include <connection/basicsocket.h>
-#include <connection/basicserver.h>
-
 #include <libxmltree/xmlinterface.h>
 
 // zapit includes

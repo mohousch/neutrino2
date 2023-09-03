@@ -23,8 +23,9 @@
 
 #include <cstring>
 
+#include <messagetools.h>   /* write_length_field */
+
 #include <zapit/ci.h>
-#include <messagetools.h>	/* get_length_field_size */
 
 
 extern int curpmtpid;

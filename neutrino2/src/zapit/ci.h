@@ -27,7 +27,6 @@
 #include <zapit/channel.h>
 
 
-
 class CCaDescriptor
 {
 	private:

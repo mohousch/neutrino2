@@ -49,7 +49,6 @@
 
 // tuxbox headers
 #include <configfile.h>
-#include <connection/basicserver.h>
 
 // system
 #include <system/debug.h>

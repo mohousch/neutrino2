@@ -1200,6 +1200,7 @@ end:
 	return (*this);
 }
 
+//
 int CBouquetManager::ChannelIterator::getLowestChannelNumberWithChannelID(const t_channel_id channel_id)
 {
 	int i = 0;
@@ -1216,6 +1217,7 @@ int CBouquetManager::ChannelIterator::getLowestChannelNumberWithChannelID(const 
 	return -1; // not found
 }
 
+//
 int CBouquetManager::ChannelIterator::getNrofFirstChannelofBouquet(const unsigned int bouquet_nr)
 {
 	if (bouquet_nr >= Owner->Bouquets.size())

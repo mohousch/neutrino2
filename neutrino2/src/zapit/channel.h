@@ -185,9 +185,6 @@ class CZapitChannel
 		t_channel_id logoid;
 		unsigned char scrambled;
 		char * pname; //makeRemainingChannelsBouquet
-		
-		// delsys/pol/rate/fec/tsfreq
-		//uint8_t	polarization;
 
 		// webtv
 		std::string url;

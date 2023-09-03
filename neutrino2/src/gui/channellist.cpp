@@ -380,6 +380,7 @@ void CChannelList::SortSat(void)
 	sort(chanlist.begin(), chanlist.end(), CmpChannelBySat());
 }
 
+//
 CZapitChannel * CChannelList::getChannel(int number)
 {
 	for (uint32_t i = 0; i< chanlist.size();i++) 
@@ -391,6 +392,7 @@ CZapitChannel * CChannelList::getChannel(int number)
 	return(NULL);
 }
 
+//
 CZapitChannel * CChannelList::getChannel(t_channel_id channel_id)
 {
 	for (uint32_t i = 0; i< chanlist.size();i++) 
@@ -1367,7 +1369,6 @@ int CChannelList::numericZap(int key)
 		delete channelList;
 		return res;
 	}
-	//
 
 	int sx = 4 * g_Font[SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP]->getRenderWidth(widest_number) + 14;
 	int sy = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP]->getHeight() + 6;
