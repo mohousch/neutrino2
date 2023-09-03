@@ -56,7 +56,7 @@ int CEPGMenuHandler::exec(CMenuTarget* parent, const std::string &)
 	if (parent)
 		parent->hide();
 
-	doMenu();
+	res = doMenu();
 	
 	return res;
 }

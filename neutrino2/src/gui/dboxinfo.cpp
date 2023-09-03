@@ -136,9 +136,11 @@ void CDBoxInfoWidget::hide()
 	dprintf(DEBUG_NORMAL, "CDBoxInfoWidget::hide:\n");
 }
 
-void CDBoxInfoWidget::showInfo()
+int CDBoxInfoWidget::showInfo()
 {
 	dprintf(DEBUG_NORMAL, "CDBoxInfoWidget::showInfo:\n");
+	
+	int res = RETURN_REPAINT;
 	
 	dboxInfoWidget = CNeutrinoApp::getInstance()->getWidget("boxinfo");
 	
@@ -492,9 +494,11 @@ void CDBoxInfoWidget::showInfo()
 		
 	}
 	
-	dboxInfoWidget->exec(NULL, "");
+	res = dboxInfoWidget->exec(NULL, "");
 	delete dboxInfoWidget;
 	dboxInfoWidget = NULL;
+	
+	return res;
 }
 
 //
@@ -507,14 +511,16 @@ int CInfoMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	if (parent)
 		parent->hide();
 		
-	showMenu();
+	ret = showMenu();
 	
 	return ret;
 }
 
-void CInfoMenu::showMenu()
+int CInfoMenu::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CInfoMenu::showMenu:\n");
+	
+	int res = RETURN_REPAINT;
 	
 	//
 	widget = NULL; 
@@ -570,11 +576,13 @@ void CInfoMenu::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
 	
 	delete infoMenu;
 	infoMenu = NULL;
 	delete widget;
 	widget = NULL;
+	
+	return res;
 }
 

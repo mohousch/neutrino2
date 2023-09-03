@@ -61,7 +61,7 @@ class CPluginList : public CMenuTarget
 
 	private:
 		int selected;
-		void showMenu();
+		int showMenu();
 
 	protected:
 		virtual CPluginList::result_ pluginSelected();

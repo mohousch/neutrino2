@@ -37,7 +37,7 @@ class CAudioSelectMenuHandler : public CMenuTarget
 		~CAudioSelectMenuHandler(){};
 		
 		int exec( CMenuTarget * parent, const std::string &actionkey);
-		void doMenu();
+		int doMenu();
 };
 
 class CAPIDChangeExec : public CMenuTarget

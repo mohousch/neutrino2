@@ -36,7 +36,7 @@
 class CPowerMenu : public CMenuTarget
 {
 	private:
-		void showMenu(void);
+		int showMenu(void);
 		
 	public:
 		CPowerMenu(){};

@@ -766,18 +766,12 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	// prev <<<<
 	if (prev_id != 0)
 	{
-		//cLeftFWindow.setColor(COL_MENUCONTENT_PLUS_3);
-		//cLeftFWindow.paint();
-
 		g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningBox.iX + 10, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("<"), "<", COL_MENUCONTENT + 3);
 	}
 
 	// next >>>>
 	if (next_id != 0)
 	{
-		//cRightFWindow.setColor(COL_MENUCONTENT_PLUS_3);
-		//cRightFWindow.paint();
-
 		g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningBox.iX + cFollowScreeningBox.iWidth - 10 - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">"), cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">"), ">", COL_MENUCONTENT + 3);
 	}
 	
@@ -1142,10 +1136,7 @@ void CEpgData::showTimerEventBar(bool _show)
 	}
 }
 
-//  -- EPG Data Viewer Menu Handler Class
-//  -- to be used for calls from Menue
-//  -- (2004-03-06 rasc)
-
+//
 int CEPGDataHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CEPGDataHandler::exec:\n");
@@ -1161,7 +1152,7 @@ int CEPGDataHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 
 	channelList = CNeutrinoApp::getInstance()->channelList;
 
-	e->show(channelList->getActiveChannel_EPGID());
+	res = e->show(channelList->getActiveChannel_EPGID());
 	
 	delete e;
 

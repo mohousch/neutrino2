@@ -46,7 +46,7 @@ extern unsigned int currentapid;
 class CAVPIDSelectWidget : public CMenuTarget
 {
 	public:
-		void showAudioDialog(void);
+		int showAudioDialog(void);
 		int exec(CMenuTarget * parent, const std::string & actionKey);
 };
 

@@ -49,15 +49,17 @@ int CPowerMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	if(parent)
 		parent->hide();
 	
-	showMenu();
+	ret = showMenu();
 	
 	return ret;
 }
 
 // showmenu
-void CPowerMenu::showMenu(void)
+int CPowerMenu::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "CPowerMenu::showMenu:\n");
+	
+	int res = RETURN_REPAINT;
 
 	//
 	CWidget* widget = NULL;
@@ -119,11 +121,13 @@ void CPowerMenu::showMenu(void)
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
 	
 	delete powerMenu;
 	powerMenu = NULL;
 	delete widget;
 	widget = NULL;
+	
+	return res;
 }
 

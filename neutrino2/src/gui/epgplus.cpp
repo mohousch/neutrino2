@@ -876,7 +876,6 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 						if (bouquet->channelList->getSize () > 0) 
 						{
 			  				// select first channel of bouquet
-
 			  				_bouquetList->activateBouquet (currentBouquetNumber, false);
 
 			  				this->channelListStartIndex = (*bouquet->channelList)[0]->number - 1;
@@ -951,13 +950,13 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				{
 		  			if ((*It)->channelEvent.eventID != 0) 
 					{
-						this->hide ();
+						this->hide();
 						
 						getTMDBInfo((*It)->channelEvent.description.c_str());
 						
-						this->header->paint ();
-		  				this->footer->paintButtons (buttonLabels, sizeof (buttonLabels) / sizeof (button_label));
-						this->paint ();
+						this->header->paint();
+		  				this->footer->paintButtons(buttonLabels, sizeof (buttonLabels) / sizeof (button_label));
+						this->paint();
 					}
 				}
 	  		}
@@ -981,12 +980,12 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				menuWidgetOptions->enablePaintHead();
 				menuWidgetOptions->setTitle(_("Options"), NEUTRINO_ICON_BUTTON_EPG);
 				menuWidgetOptions->setHeadCorner(RADIUS_SMALL);
-				menuWidgetOptions->setHeadGradient(DARK2LIGHT2DARK);
+				menuWidgetOptions->setHeadGradient(LIGHT2DARK);
 				menuWidgetOptions->setHeadLine(false);
 
 				menuWidgetOptions->enablePaintFoot();
 				menuWidgetOptions->setFootCorner(RADIUS_SMALL);
-				menuWidgetOptions->setFootGradient(DARK2LIGHT2DARK);
+				menuWidgetOptions->setFootGradient(DARK2LIGHT);
 				menuWidgetOptions->setFootLine(false);
 						
 				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
@@ -1016,17 +1015,17 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 			else if (CRCInput::isNumeric (msg)) 
 			{	//numeric zap
 				this->hide ();
-				this->channelList->numericZap (msg);
+				this->channelList->numericZap(msg);
 
-				int selectedChannelEntryIndex = this->channelList->getSelectedChannelIndex ();
-				if (selectedChannelEntryIndex < this->channelList->getSize ()) 
+				int selectedChannelEntryIndex = this->channelList->getSelectedChannelIndex();
+				if (selectedChannelEntryIndex < this->channelList->getSize()) 
 				{
 		  			this->hide ();
-		  			this->createChannelEntries (selectedChannelEntryIndex);
+		  			this->createChannelEntries(selectedChannelEntryIndex);
 
-		  			this->header->paint ();
-		  			this->footer->paintButtons (buttonLabels, sizeof (buttonLabels) / sizeof (button_label));
-		  			this->paint ();
+		  			this->header->paint();
+		  			this->footer->paintButtons(buttonLabels, sizeof (buttonLabels) / sizeof (button_label));
+		  			this->paint();
 				}
 	  		} 
 			else if (msg == RC_up) 
@@ -1037,7 +1036,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				--selectedChannelEntryIndex;
 				if (selectedChannelEntryIndex < 0) 
 				{
-		  			selectedChannelEntryIndex = this->channelList->getSize () - 1;
+		  			selectedChannelEntryIndex = this->channelList->getSize() - 1;
 				}
 
 				int oldChannelListStartIndex = this->channelListStartIndex;
@@ -1048,7 +1047,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				{
 		  			this->createChannelEntries (selectedChannelEntryIndex);
 
-		  			this->paint ();
+		  			this->paint();
 				} 
 				else 
 				{
@@ -1185,7 +1184,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 	  		} 
 			else if (msg == RC_ok) 
 			{
-				this->channelList->zapTo (this->selectedChannelEntry->index);
+				this->channelList->zapTo(this->selectedChannelEntry->index);
 			} 
 			else if ( msg == RC_info ) 
 			{
@@ -1266,7 +1265,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
   	return res;
 }
 
-EpgPlus::TCChannelEventEntries::const_iterator EpgPlus::getSelectedEvent () const
+EpgPlus::TCChannelEventEntries::const_iterator EpgPlus::getSelectedEvent() const
 {
 	for (TCChannelEventEntries::const_iterator It = this->selectedChannelEntry->channelEventEntries.begin ();
 		It != this->selectedChannelEntry->channelEventEntries.end ();
@@ -1423,7 +1422,7 @@ int CEPGplusHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 
 	channelList = CNeutrinoApp::getInstance()->channelList;
 
-	e->exec(channelList, channelList->getSelectedChannelIndex(), bouquetList);
+	res = e->exec(channelList, channelList->getSelectedChannelIndex(), bouquetList);
 
 	delete e;
 	e = NULL;

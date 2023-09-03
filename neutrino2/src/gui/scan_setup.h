@@ -141,8 +141,8 @@ class CScanSetup : public CMenuTarget
 		CScanSetupDelSysNotifier *feDelSysNotifier;
 		CTPSelectHandler *tpSelect;
 
-		void hide();
-		void showScanService();
+		//
+		int showScanService();
 		int showUnicableSetup();
 		int showManualScanSetup();
 		int showAutoScanSetup();
@@ -155,6 +155,7 @@ class CScanSetup : public CMenuTarget
 		CScanSetup(int num = 0);
 		~CScanSetup();
 		int exec(CMenuTarget* parent, const std::string & actionKey);
+		void hide();
 };
 
 //

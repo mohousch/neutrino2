@@ -90,9 +90,11 @@ struct button_label CPluginListButtons[NUM_LIST_BUTTONS] =
 
 struct button_label CPluginListHeadButtons = {NEUTRINO_ICON_BUTTON_HELP_SMALL, "" };
 
-void CPluginList::showMenu()
+int CPluginList::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CPluginList::showMenu\n");
+	
+	int res = RETURN_REPAINT;
 	
 	pWidget = CNeutrinoApp::getInstance()->getWidget("plugins");
 
@@ -168,17 +170,21 @@ void CPluginList::showMenu()
 	
 	//
 	pWidget->setTimeOut(g_settings.timing_filebrowser);
-	pWidget->exec(NULL, "");
+	res = pWidget->exec(NULL, "");
 	
 	delete plist;
 	plist = NULL;
 	delete pWidget;
 	pWidget = NULL;
+	
+	return res;
 }
 
 int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPluginList::exec: actionKey:%s\n", actionKey.c_str());
+	
+	int res = RETURN_REPAINT;
 
 	if (parent)
 		parent->hide();
@@ -246,9 +252,9 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 			return RETURN_REPAINT;
 	}
 
-	showMenu();
+	res = showMenu();
 
-	return RETURN_REPAINT;
+	return res;
 }
 
 CPluginList::result_ CPluginList::pluginSelected()

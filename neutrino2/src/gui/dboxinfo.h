@@ -71,7 +71,7 @@ class CDBoxInfoWidget : public CMenuTarget
 		CCLabel* tunerLabel1;
 		
 		//
-		void showInfo();
+		int showInfo();
 
 	public:
 
@@ -88,7 +88,7 @@ class CInfoMenu : public CMenuTarget
 		CWidget* widget;
 		ClistBox* infoMenu;
 	
-		void showMenu();
+		int showMenu();
 		
 	public:
 		CInfoMenu(){};
@@ -99,3 +99,4 @@ class CInfoMenu : public CMenuTarget
 };
 
 #endif
+

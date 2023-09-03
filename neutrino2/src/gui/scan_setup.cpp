@@ -324,6 +324,8 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_DEBUG, "CScanSetup::exec: actionKey: %s\n", actionKey.c_str());
 	
+	int res = RETURN_REPAINT;
+	
 	if (parent)
 		parent->hide();
 
@@ -401,17 +403,19 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		return showSatOnOffSetup();
 	}
 	
-	showScanService();
+	res = showScanService();
 	
-	return RETURN_REPAINT;
+	return res;
 }
 
-void CScanSetup::showScanService()
+int CScanSetup::showScanService()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showScanService: Tuner: %d\n", feindex);
 	
+	int res = RETURN_REPAINT;
+	
 	if(!CZapit::getInstance()->getFE(feindex))
-		return;
+		return res;
 	
 	//load scansettings 
 	if( !scanSettings->loadSettings(NEUTRINO_SCAN_SETTINGS_FILE, feindex) ) 
@@ -614,7 +618,7 @@ void CScanSetup::showScanService()
 	}
 
 	//
-	widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
 	
 	//
 	if (scansetup)
@@ -628,6 +632,8 @@ void CScanSetup::showScanService()
 		delete widget;
 		widget = NULL;
 	}
+	
+	return res;
 }
 
 //

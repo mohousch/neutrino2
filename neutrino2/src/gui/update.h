@@ -99,7 +99,7 @@ class CFlashExpert : public CMenuTarget
 class CUpdateSettings : public CMenuTarget
 {
 	private:
-		void showMenu();
+		int showMenu();
 	
 	public:
 		CUpdateSettings(){};

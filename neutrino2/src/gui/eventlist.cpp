@@ -785,7 +785,7 @@ int CEventListHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*
 
 	channelList = CNeutrinoApp::getInstance()->channelList;
 
-	e->exec(channelList->getActiveChannel_ChannelID(), channelList->getActiveChannelName());
+	res = e->exec(channelList->getActiveChannel_ChannelID(), channelList->getActiveChannelName());
 
 	delete e;
 

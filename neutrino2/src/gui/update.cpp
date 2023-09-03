@@ -948,14 +948,16 @@ int CUpdateSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		return ret;
 	}
 	
-	showMenu();
+	ret = showMenu();
 	
 	return ret;
 }
 
-void CUpdateSettings::showMenu()
+int CUpdateSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CUpdateSettings::showMenu\n");
+	
+	int res = RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;
@@ -1097,7 +1099,7 @@ void CUpdateSettings::showMenu()
 	updateSettings->addItem(new CMenuForwarder(_("Online Software Manager"), true, NULL, new CFlashUpdate(CFlashUpdate::UPDATEMODE_INTERNET)));
 	
 	//
-	widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
 	
 	if (mtdexpert)
 	{
@@ -1124,5 +1126,7 @@ void CUpdateSettings::showMenu()
 	}
 	
 	delete fe;
+	
+	return res;
 }
 

@@ -57,7 +57,7 @@ class CMP3Player : public CMenuTarget
 		//
 		bool shufflePlaylist(void);
 
-		void showMenu();
+		int showMenu();
 		
 	public:
 		CMP3Player();
@@ -366,7 +366,6 @@ void CMP3Player::openFileBrowser()
 				progress.showGlobalStatus(global);
 				progress.showStatusMessageUTF(files->Name);
 			}
-			////
 			
 			if ( (files->getExtension() == CFile::EXTENSION_CDR)
 					||  (files->getExtension() == CFile::EXTENSION_MP3)
@@ -601,8 +600,10 @@ const struct button_label AudioPlayerButtons[FOOT_BUTTONS_COUNT] =
 	{ NEUTRINO_ICON_BUTTON_BLUE, _("Shuffle") }
 };
 
-void CMP3Player::showMenu()
-{	
+int CMP3Player::showMenu()
+{
+	int res = RETURN_REPAINT;
+		
 	alist = new CMenuWidget(_("Audio Player"), NEUTRINO_ICON_MP3, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
 
 	for(unsigned int i = 0; i < (unsigned int)playlist.size(); i++)
@@ -675,14 +676,18 @@ void CMP3Player::showMenu()
 	alist->addKey(RC_blue, this, CRCInput::getSpecialKeyName(RC_blue));
 	alist->addKey(RC_info, this, CRCInput::getSpecialKeyName(RC_info));
 
-	alist->exec(NULL, "");
+	res = alist->exec(NULL, "");
 	delete alist;
 	alist = NULL;
+	
+	return res;
 }
 
 int CMP3Player::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMP3Player::exec: actionKey:%s\n", actionKey.c_str());
+	
+	int res = RETURN_EXIT_ALL;
 	
 	if(parent)
 		hide();
@@ -755,9 +760,9 @@ int CMP3Player::exec(CMenuTarget* parent, const std::string& actionKey)
 
 	//
 	loadPlaylist();
-	showMenu();
+	res = showMenu();
 	
-	return RETURN_EXIT_ALL;
+	return res;
 }
 
 void plugin_init(void)

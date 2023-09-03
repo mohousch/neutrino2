@@ -189,14 +189,16 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 	if (parent) 
 		parent->hide();
 
-	showAudioDialog();
+	res = showAudioDialog();
 
 	return res;
 }
 
-void CAVPIDSelectWidget::showAudioDialog(void)
+int CAVPIDSelectWidget::showAudioDialog(void)
 {
 	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::showAudioDialog (currentapid:%d)\n", currentapid);
+	
+	int res = RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;
@@ -373,11 +375,13 @@ void CAVPIDSelectWidget::showAudioDialog(void)
 
 	//	
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
 	
 	delete AVPIDSelector;
 	AVPIDSelector = NULL;
 	delete widget;
         widget = NULL;
+        
+        return res;
 }
 

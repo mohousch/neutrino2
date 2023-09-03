@@ -95,15 +95,17 @@ int CAudioSelectMenuHandler::exec(CMenuTarget * parent, const std::string &/*act
 	if (parent) 
 		parent->hide();
 
-	doMenu();
+	res = doMenu();
 
 	return res;
 }
 
 //
-void CAudioSelectMenuHandler::doMenu()
+int CAudioSelectMenuHandler::doMenu()
 {
 	dprintf(DEBUG_NORMAL, "CAudioSelectMenuHandler::doMenu\n");
+	
+	int res = RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;
@@ -248,7 +250,7 @@ void CAudioSelectMenuHandler::doMenu()
 #endif
 
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
 	
 	delete AudioSelector;
 	AudioSelector = NULL;
@@ -256,6 +258,8 @@ void CAudioSelectMenuHandler::doMenu()
         widget = NULL;
 
 	//delete audioSetupNotifierVolPercent;
+	
+	return res;
 }
 
 // apid change notifier
