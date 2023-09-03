@@ -1222,7 +1222,7 @@ void CSkinManager::showMenu()
 		{
 			if(namelist[i]->d_type == DT_DIR && !strstr(namelist[i]->d_name, ".") && !strstr(namelist[i]->d_name, ".."))
 			{	
-				item = new CMenuForwarder((strcmp(namelist[i]->d_name, "neutrino2"))? namelist[i]->d_name : "default");
+				item = new CMenuForwarder(namelist[i]->d_name);
 				
 				item->setActionKey(this, namelist[i]->d_name);
 				
@@ -1269,19 +1269,7 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 	if (parent)
 		parent->hide();
 		
-		
-	if (actionKey == "neutrino2")
-	{
-		if (MessageBox(_("Skin Select"), _("this need GUI restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
-		{
-			g_settings.preferred_skin = "neutrino2";
-			
-			CNeutrinoApp::getInstance()->exec(NULL, "restart");
-		}
-		
-		return ret;
-	}
-	else if (!actionKey.empty())
+	if (!actionKey.empty())
 	{
 		if (MessageBox(_("Skin Select"), _("this need GUI restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{

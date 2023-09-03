@@ -1,6 +1,6 @@
 <skin>
 
-<!-- SKIN: pandora -->
+<!-- SKIN: neutrino2 -->
 <!-- AUTHOR: mohousch -->
 
 	<WIDGET name="mainmenu" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
