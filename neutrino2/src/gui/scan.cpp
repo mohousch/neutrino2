@@ -384,7 +384,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			
 		head.setButtons(&btn);
 		head.setCorner(RADIUS_SMALL);
-		head.setGradient(DARK2LIGHT2DARK);
+		head.setGradient(LIGHT2DARK);
 		
 		head.paint();
 			
@@ -573,7 +573,7 @@ void CScanTs::paint(bool fortest)
 			
 	head.setButtons(&btn);
 	head.setCorner(RADIUS_SMALL);
-	head.setGradient(DARK2LIGHT2DARK);
+	head.setGradient(LIGHT2DARK);
 	head.paint();
 	
 	// main box

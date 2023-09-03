@@ -180,7 +180,7 @@ void CProgressWindow::paint()
 
 		CHeaders headers(x, y, width, hheight, l_caption, NEUTRINO_ICON_INFO);
 		headers.setCorner(RADIUS_SMALL, CORNER_TOP);
-		headers.setGradient(DARK2LIGHT2DARK);
+		headers.setGradient(LIGHT2DARK);
 		headers.setLine(false);
 		
 		if (paintCancelIcon)

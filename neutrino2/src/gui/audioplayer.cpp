@@ -1417,7 +1417,7 @@ void CAudioPlayerGui::showPlaylist()
 	
 	//
 	alist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
-	alist->setHeadGradient(DARK2LIGHT2DARK);
+	alist->setHeadGradient(LIGHT2DARK);
 	alist->setHeadLine(false);
 	alist->enablePaintHead();
 	alist->setTitle(_("Audio Playlist"), NEUTRINO_ICON_MP3);
@@ -1425,7 +1425,7 @@ void CAudioPlayerGui::showPlaylist()
 	
 	//
 	alist->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
-	alist->setFootGradient(DARK2LIGHT2DARK);
+	alist->setFootGradient(DARK2LIGHT);
 	alist->setFootLine(false);
 	alist->enablePaintFoot();
 	alist->setFootButtons(AudioPlayerButtons, FOOT_BUTTONS_COUNT);

@@ -864,13 +864,13 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// head
 	g_settings.Head_corner = configfile.getInt32("Head_corner", CORNER_TOP);
 	g_settings.Head_radius = configfile.getInt32("Head_radius", RADIUS_MID);
-	g_settings.Head_gradient = configfile.getInt32("Head_gradient", DARK2LIGHT2DARK);
+	g_settings.Head_gradient = configfile.getInt32("Head_gradient", LIGHT2DARK);
 	g_settings.Head_line = configfile.getInt32("Head_line", false);
 	
-	//
+	// foot
 	g_settings.Foot_corner = configfile.getInt32("Foot_corner", CORNER_BOTTOM);
 	g_settings.Foot_radius = configfile.getInt32("Foot_radius", RADIUS_MID);
-	g_settings.Foot_gradient = configfile.getInt32("Foot_gradient", DARK2LIGHT2DARK);
+	g_settings.Foot_gradient = configfile.getInt32("Foot_gradient", DARK2LIGHT);
 	g_settings.Foot_line = configfile.getInt32("Foot_line", false);
 	
 	//

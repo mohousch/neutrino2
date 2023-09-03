@@ -118,7 +118,7 @@ void EpgPlus::Header::paint()
 	head = new CHeaders(this->x, this->y, this->width, /*this->font->getHeight() + 10*/40, _("Eventlist overview"), NEUTRINO_ICON_BUTTON_EPG);
 
 	head->setCorner(RADIUS_SMALL, CORNER_TOP);
-	head->setGradient(DARK2LIGHT2DARK);
+	head->setGradient(LIGHT2DARK);
 	head->setLine(false);
 	head->enablePaintDate();
 	head->setFormat("%d.%m.%Y %H:%M:%S");
@@ -525,7 +525,7 @@ void EpgPlus::Footer::paintButtons(button_label * _buttonLabels, int numberOfBut
 	CFooters foot(this->x, this->y + this->getUsedHeight() - (/*this->fontButtons->getHeight() + 10*/40), this->width, /*this->fontButtons->getHeight() + 10*/40);
 
 	foot.setCorner(RADIUS_SMALL, CORNER_BOTTOM);
-	foot.setGradient(DARK2LIGHT2DARK);
+	foot.setGradient(DARK2LIGHT);
 	foot.setLine(false);
 	foot.setButtons(buttonLabels, numberOfButtons);
 	foot.paint();

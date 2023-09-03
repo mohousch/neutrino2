@@ -128,10 +128,10 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 	
 	enableShrinkMenu();
 	setHeadCorner(RADIUS_SMALL);
-	setHeadGradient(DARK2LIGHT2DARK);
+	setHeadGradient(LIGHT2DARK);
 	setHeadLine(false);
 	setFootCorner(RADIUS_SMALL);
-	setFootGradient(DARK2LIGHT2DARK);
+	setFootGradient(DARK2LIGHT);
 	setFootLine(false);
 	
 	addItem(new CKeyValue());
@@ -249,7 +249,7 @@ void CKeyChooserItem::paint()
 
 	CHeaders headers(&m_cTitle, name.c_str(), NEUTRINO_ICON_KEYBINDING);
 	headers.setCorner(RADIUS_SMALL);
-	headers.setGradient(DARK2LIGHT2DARK);
+	headers.setGradient(LIGHT2DARK);
 	headers.setLine(false);
 	headers.paint();
 
