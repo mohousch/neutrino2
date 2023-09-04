@@ -2627,7 +2627,7 @@ void CNeutrinoApp::tvMode( bool rezap )
 	{
 		firstChannel();
 		channelList->tuned = 0xfffffff;
-		channelList->zapTo( firstchannel.channelNumber - 1 );
+		channelList->zapTo(firstchannel.channelNumber);
 	}
 }
 
@@ -2698,7 +2698,7 @@ void CNeutrinoApp::radioMode( bool rezap)
 	{
 		firstChannel();
 		channelList->tuned = 0xfffffff;
-		channelList->zapTo( firstchannel.channelNumber - 1 );
+		channelList->zapTo(firstchannel.channelNumber);
 	}	
 }
 
