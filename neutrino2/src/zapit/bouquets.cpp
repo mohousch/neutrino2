@@ -906,7 +906,7 @@ void CBouquetManager::loadWebTVBouquets(const std::string& dirname)
 //
 void CBouquetManager::loadBouquets(bool loadCurrentBouquet)
 {
-	dprintf(DEBUG_INFO, "CBouquetManager::loadBouquets:\n");
+	dprintf(DEBUG_NORMAL, "CBouquetManager::loadBouquets:\n");
 
 	clearAll();
 	
