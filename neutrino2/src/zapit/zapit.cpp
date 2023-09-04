@@ -1823,16 +1823,26 @@ int CZapit::prepareChannels()
     	CServices::getInstance()->loadTransponders();
 
 	// load services
-	if (CServices::getInstance()->loadServices(false) < 0)
-	{
-		dprintf(DEBUG_NORMAL, "CZapit::prepareChannels: loadServices: failed\n");
-		return -1;
-	}
-
-	dprintf(DEBUG_NORMAL, "CZapit::prepareChannels: loadServices: success\n");
+	CServices::getInstance()->loadServices(false);
 
 	// load bouquets
-	g_bouquetManager->loadBouquets();		// 2004.08.02 g_bouquetManager->storeBouquets();
+	g_bouquetManager->loadBouquets(); // this load also webtv services
+	
+	// renum services
+	int tvi = 1;
+	int ri = 1;
+	
+	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 
+	{
+		if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
+		{
+			it->second.setNumber(tvi++);
+		}
+		else if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE) 
+		{
+			it->second.setNumber(ri++);
+		}
+	}
 
 	return 0;
 }

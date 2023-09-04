@@ -1577,7 +1577,8 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	{
 		if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
 		{
-			TVchannelList->addChannel(&(it->second), tvi++);
+			TVchannelList->addChannel(&(it->second));
+			tvi++;
 
 			if(it->second.isHD()) 
 			{
@@ -1591,7 +1592,8 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 		}
 		else if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE) 
 		{
-			RADIOchannelList->addChannel(&(it->second), ri++);
+			RADIOchannelList->addChannel(&(it->second));
+			ri++;
 		}
 	}
 	
