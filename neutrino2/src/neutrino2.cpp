@@ -1684,8 +1684,6 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 	
 	if(g_settings.make_hd_list)
 		TVfavList->Bouquets.push_back(hdBouquet);
-	
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d TV bouquets\n", bnum);
 
 	// radio fav / provider list
 	bnum = 0;
@@ -1709,7 +1707,7 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 		}
 	}
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d RADIO bouquets\n", bnum);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::channelsInit: got %d bouquets\n", bnum);
 
 	//
 	setChannelMode( g_settings.channel_mode, mode);
