@@ -516,7 +516,7 @@ void CMenuWidget::paintFoot()
 			frameBuffer->paintBoxRel(x, y + height - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor/*, footRadius, footCorner, footGradient*/);
 
 			// paint horizontal line buttom
-			frameBuffer->paintHLineRel(x + BORDER_LEFT, width - BORDER_LEFT - BORDER_RIGHT, y + height - fheight + 2, COL_MENUCONTENT_PLUS_5);
+			frameBuffer->paintHLineRel(x + BORDER_LEFT, width - BORDER_LEFT - BORDER_RIGHT, y + height - fheight, COL_MENUCONTENT_PLUS_5);
 
 			// buttons
 			int buttonWidth = 0;
@@ -556,7 +556,7 @@ void CMenuWidget::paintFoot()
 		
 		// paint horizontal line buttom
 		if (foot_line)
-			frameBuffer->paintHLineRel(x + BORDER_LEFT, width - BORDER_LEFT - BORDER_RIGHT, y + height - cFrameFootInfoHeight - fheight + 2, COL_MENUCONTENT_PLUS_5);
+			frameBuffer->paintHLineRel(x + BORDER_LEFT, width - BORDER_LEFT - BORDER_RIGHT, y + height - cFrameFootInfoHeight - fheight, COL_MENUCONTENT_PLUS_5);
 		
 		// buttons
 		int buttonWidth = 0;
