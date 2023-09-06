@@ -647,6 +647,9 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	else
 	{
 		//
+		initFrames();
+		
+		//
 		widget = new CWidget(&cFrameBox);
 		widget->name = "epgview";
 		
@@ -668,19 +671,19 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	}
 	
 	//
-	if (cFollowScreeningWindow)
-		cFollowScreeningBox = cFollowScreeningWindow->getWindowsPos();
+	//if (cFollowScreeningWindow)
+	//	cFollowScreeningBox = cFollowScreeningWindow->getWindowsPos();
 		
 	int timeScaleWidth = TIMESCALE_W;
 	int timeScaleHeight = TIMESCALE_H;
 	
 	// recalculate timeScale width
-	timeScaleWidth = cFollowScreeningBox.iWidth - 20 - 4*g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">") - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("0000000000000") - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("0000000000");
+	timeScaleWidth = cFollowScreeningWindow->getWindowsPos().iWidth - 20 - 4*g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">") - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("0000000000000") - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("0000000000");
 	
 	if (timeScaleWidth > TIMESCALE_W)
 		timeScaleWidth = TIMESCALE_W;
 		
-	timescale = new CProgressBar(cFollowScreeningBox.iX + (cFollowScreeningBox.iWidth - timeScaleWidth)/2, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - timeScaleHeight)/2, timeScaleWidth, timeScaleHeight);
+	timescale = new CProgressBar(cFollowScreeningWindow->getWindowsPos().iX + (cFollowScreeningWindow->getWindowsPos().iWidth - timeScaleWidth)/2, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - timeScaleHeight)/2, timeScaleWidth, timeScaleHeight);
 
 	//
 	if (textBox) 
@@ -713,12 +716,12 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	//from-to
 	widthl = g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(fromto);
 	
-	g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningBox.iX + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("<") + 5, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthl, fromto, COL_MENUHEAD);
+	g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningWindow->getWindowsPos().iX + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("<") + 5, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthl, fromto, COL_MENUHEAD);
 	
 	//epg-date
 	widthr = g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(epg_date);
 	
-	g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningBox.iX + cFollowScreeningBox.iWidth - 10 - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">") - 5 - widthr, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthr, epg_date, COL_MENUHEAD);
+	g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningWindow->getWindowsPos().iX + cFollowScreeningWindow->getWindowsPos().iWidth - 10 - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">") - 5 - widthr, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthr, epg_date, COL_MENUHEAD);
 	
 	//show Content&Component for Dolby & 16:9 //FIXME:
         CSectionsd::ComponentTagList tags;
@@ -742,12 +745,12 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
                         {
                         	have_16_9 = true;
                         	
-                                frameBuffer->paintIcon(NEUTRINO_ICON_16_9, cFollowScreeningBox.iX + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("<") + 5 + widthl + 5, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - icon_h_aspect)/2);
+                                frameBuffer->paintIcon(NEUTRINO_ICON_16_9, cFollowScreeningWindow->getWindowsPos().iX + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("<") + 5 + widthl + 5, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - icon_h_aspect)/2);
                         }
                         
                         if( tags[i].streamContent == 2 && tags[i].componentType == 5 )
                         {
-                               frameBuffer->paintIcon(NEUTRINO_ICON_DD, cFollowScreeningBox.iX + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("<") + 5 + widthl + 5 + have_16_9? icon_w_aspect + 5 : 0, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - icon_h_dd)/2);
+                               frameBuffer->paintIcon(NEUTRINO_ICON_DD, cFollowScreeningWindow->getWindowsPos().iX + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("<") + 5 + widthl + 5 + have_16_9? icon_w_aspect + 5 : 0, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - icon_h_dd)/2);
                         }
                 }
         }
@@ -766,13 +769,13 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	// prev <<<<
 	if (prev_id != 0)
 	{
-		g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningBox.iX + 10, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("<"), "<", COL_MENUCONTENT + 3);
+		g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningWindow->getWindowsPos().iX + 10, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("<"), "<", COL_MENUCONTENT + 3);
 	}
 
 	// next >>>>
 	if (next_id != 0)
 	{
-		g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningBox.iX + cFollowScreeningBox.iWidth - 10 - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">"), cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">"), ">", COL_MENUCONTENT + 3);
+		g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningWindow->getWindowsPos().iX + cFollowScreeningWindow->getWindowsPos().iWidth - 10 - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">"), cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth(">"), ">", COL_MENUCONTENT + 3);
 	}
 	
 	// blit
@@ -822,7 +825,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 				case RC_left:
 					if (prev_id != 0)
 					{
-						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningBox.iX + 10, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthr, "<", COL_MENUCONTENT + 3);
+						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningWindow->getWindowsPos().iX + 10, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthr, "<", COL_MENUCONTENT + 3);
 
 						show(channel_id, prev_id, &prev_zeit, false);
 					}
@@ -831,7 +834,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 				case RC_right:
 					if (next_id != 0)
 					{
-						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningBox.iX + cFollowScreeningBox.iWidth - 10 - widthr, cFollowScreeningBox.iY + (cFollowScreeningBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthr, ">", COL_MENUCONTENT + 3);
+						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningWindow->getWindowsPos().iX + cFollowScreeningWindow->getWindowsPos().iWidth - 10 - widthr, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthr, ">", COL_MENUCONTENT + 3);
 
 						show(channel_id, next_id, &next_zeit, false);
 					}
