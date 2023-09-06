@@ -658,4 +658,3 @@ int CCAMMenuHandler::doMenu(int slot)
 	return res; 
 }
 
-

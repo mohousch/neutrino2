@@ -36,7 +36,7 @@
 class COSDSettings : public CMenuTarget
 {
 	private:
-		void showMenu(void);
+		int showMenu(void);
 		
 	public:
 		COSDSettings();
@@ -76,7 +76,7 @@ class CLanguageSettings : public CMenuTarget, CChangeObserver
 {
 	private:
 		bool fromStartWizzard;
-		void showMenu();
+		int showMenu();
 		
 	public:
 		CLanguageSettings(bool wizzard = false);
@@ -129,7 +129,7 @@ class COSDDiverses : public CMenuTarget
 class CSkinManager : public CMenuTarget
 {
 	private:
-		void showMenu();
+		int showMenu();
 		
 	public:
 		CSkinManager(){};
@@ -141,7 +141,7 @@ class CSkinManager : public CMenuTarget
 class CSkinSettings : public CMenuTarget
 {
 	private:
-		void showMenu();
+		int showMenu();
 		
 	public:
 		CSkinSettings(){};
@@ -153,7 +153,7 @@ class CSkinSettings : public CMenuTarget
 class CPersonalisation : public CMenuTarget
 {
 	private:
-		void showMenu(void);
+		int showMenu(void);
 		
 	public:
 		CPersonalisation(){};

@@ -77,15 +77,17 @@ int COSDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 	if(parent)
 		parent->hide();
 
-	showMenu();
+	ret = showMenu();
 	
 	return ret;
 }
 
 // showmenu
-void COSDSettings::showMenu(void)
+int COSDSettings::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "COSDSettings::showMenu:\n");
+	
+	int res = RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;
@@ -168,12 +170,14 @@ void COSDSettings::showMenu(void)
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
 	
 	delete osdSettings;
 	osdSettings = NULL;
 	delete widget;
 	widget = NULL;
+	
+	return res;
 }
 
 // osd menucolor settings
@@ -575,6 +579,7 @@ int CLanguageSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 		strcpy(g_settings.language, actionKey.c_str());
 		g_Locale->loadLocale(Lang2I18N(g_settings.language).c_str());
 		
+		/*
 		if (!fromStartWizzard)
 		{
 			if (MessageBox(_("Information"), _("this need GUI restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
@@ -582,18 +587,21 @@ int CLanguageSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 				CNeutrinoApp::getInstance()->exec(NULL, "restart");
 			}
 		}
-		
+		*/
+		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		return RETURN_EXIT;
 	}
 	
-	showMenu();
+	ret = showMenu();
 	
 	return ret;
 }
 
-void CLanguageSettings::showMenu()
+int CLanguageSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CLanguageSettings::showMenu:\n");
+	
+	int res = RETURN_REPAINT;
 	
 	//
 	CMenuItem* item = NULL;
@@ -679,12 +687,14 @@ void CLanguageSettings::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
 	
 	delete languageSettings;
 	languageSettings = NULL;
 	delete widget;
 	widget = NULL;
+	
+	return res;
 }
 
 bool CLanguageSettings::changeNotify(const std::string& OptionName, void */*data*/)
@@ -1165,9 +1175,11 @@ void COSDDiverses::showMenu()
 }
 
 //// skinManager
-void CSkinManager::showMenu()
+int CSkinManager::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CSkinManager::showMenu:\n");
+	
+	int res = RETURN_REPAINT;
 	
 	//
 	CMenuItem* item = NULL;
@@ -1251,12 +1263,14 @@ void CSkinManager::showMenu()
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
 	
 	delete skinMenu;
 	skinMenu = NULL;
 	delete widget;
 	widget = NULL;
+	
+	return res;
 }
 
 int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
@@ -1268,28 +1282,32 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 	if (parent)
 		parent->hide();
 		
-	if (!actionKey.empty())
+	if (!actionKey.empty() && actionKey != g_settings.preferred_skin)
 	{
-		if (MessageBox(_("Skin Select"), _("this need GUI restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+		//if (MessageBox(_("Skin Select"), _("this need GUI restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 		{
 			g_settings.preferred_skin = actionKey;
 			
-			usleep(1000);
-			CNeutrinoApp::getInstance()->exec(NULL, "restart");
+			//usleep(1000);
+			CNeutrinoApp::getInstance()->loadSkin(g_settings.preferred_skin.c_str());
+			//CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+			return RETURN_EXIT_ALL;
 		}
 		
-		return ret;
+		//return RETURN_REPAINT;
 	}
 		
-	showMenu();
+	ret = showMenu();
 	
 	return ret;
 }
 
 //// skinSettings
-void CSkinSettings::showMenu()
+int CSkinSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CSkinSettings::showMenu:\n");
+	
+	int res = RETURN_REPAINT;
 	
 	//
 	CMenuItem* item = NULL;
@@ -1379,12 +1397,14 @@ void CSkinSettings::showMenu()
 	}
 	
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
 	
 	delete skinSettings;
 	skinSettings = NULL;
 	delete widget;
 	widget = NULL;
+	
+	return res;
 }
 
 int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
@@ -1430,7 +1450,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		}
 		else
 		{
-			if (MessageBox(_("Skin Style"), _("this need GUI restart"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
+			//if (MessageBox(_("Skin Style"), _("this need GUI restart"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
 			{
 				// read skin config
 				std::string skinConfigFile = CONFIGDIR "/skins/";
@@ -1450,15 +1470,15 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 				CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
 				
 				// retsrat
-				usleep(1000);
-				CNeutrinoApp::getInstance()->exec(NULL, "restart");
+				//usleep(1000);
+				//CNeutrinoApp::getInstance()->exec(NULL, "restart");
 			}
-			
-			return ret;
+			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+			return RETURN_EXIT_ALL;
 		}
 	}
 		
-	showMenu();
+	ret = showMenu();
 	
 	return ret;
 }
@@ -1473,14 +1493,16 @@ int CPersonalisation::exec(CMenuTarget *parent, const std::string &actionKey)
 	if (parent)
 		parent->hide();
 		
-	showMenu();
+	ret = showMenu();
 	
 	return ret;
 }
 
-void CPersonalisation::showMenu(void)
+int CPersonalisation::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "CSkinSettings::showMenu:\n");
+	
+	int res = RETURN_REPAINT;
 	
 	//
 	CMenuItem *item = NULL;
@@ -1605,11 +1627,13 @@ void CPersonalisation::showMenu(void)
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
-	widget->exec(NULL, "");
+	res = widget->exec(NULL, "");
 	
 	delete personalizeSettings;
 	personalizeSettings = NULL;
 	delete widget;
 	widget = NULL;
+	
+	return res;
 }
 
