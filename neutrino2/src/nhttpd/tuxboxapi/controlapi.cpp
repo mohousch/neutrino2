@@ -562,7 +562,7 @@ void CControlAPI::MessageCGI(CyhookHandler *hh)
 	if (event != 0)
 	{
 		message = decodeString(message);
-		eventServer->sendEvent(event, CEventServer::INITID_NEUTRINO, (void *) message.c_str(), message.length() + 1);	
+		eventServer->sendEvent(event, CEventServer::INITID_NEUTRINO, (void *) message.c_str(), message.length() + 1);
 		hh->SendOk();
 	}
 	else

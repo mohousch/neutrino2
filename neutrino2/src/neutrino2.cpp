@@ -2266,7 +2266,8 @@ void CNeutrinoApp::showInfo()
 	
 	stopSubtitles();
 
-	g_InfoViewer->showTitle(channelList->getActiveChannelNumber(), channelList->getActiveChannelName(), channelList->getActiveSatellitePosition(), channelList->getActiveChannel_ChannelID());
+	//
+	g_InfoViewer->showTitle(live_channel->getNumber(), live_channel->getName(), live_channel->getSatellitePosition(), live_channel_id);
 
 	startSubtitles();
 }

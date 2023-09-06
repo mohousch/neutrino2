@@ -1356,7 +1356,7 @@ int CZapit::zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate)
 		CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
 	}
 	
-	// FIXME: how to stop ci_capmt or we dont need this???
+	//
 	stopPlayBack(!forupdate);
 
 	//
@@ -2738,12 +2738,6 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 	result |= ZAP_OK;
 
 	dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: zapit OK, chid %llx\n", channel_id);
-
-	//
-	if (IS_WEBTV(channel_id))
-	{
-		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: isWEBTV chid %llx\n", channel_id);
-	}
 	
 	if (isSubService) 
 	{
@@ -3405,6 +3399,12 @@ void CZapit::getCurrentPIDS( responseGetPIDs &pids )
 	}
 }
 
+// currentService
+CZapitChannel* CZapit::getCurrentService()
+{
+	return (live_channel != NULL) ? live_channel : NULL;
+}
+
 t_channel_id CZapit::getCurrentServiceID()
 {
 	return (live_channel != 0) ? live_channel->getChannelID() : 0;
@@ -3530,37 +3530,27 @@ CZapit::CCurrentServiceInfo CZapit::getServiceInfo(t_channel_id chid)
 
 void CZapit::setSubServices( subServiceList& subServices )
 {
-	//#FIXME:
-	#if 0
+	//
 	t_satellite_position  satellitePosition = 0;
 	freq_id_t freq = 0;
-
-	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
-	{
-		if(it->second.getServiceId() == subServices.service_id)
-		{
-			satellitePosition = it->second.getSatellitePosition();
-			freq = it->second.getFreqId();
-		}
-	}
-	
-	for (i = 0; i < subServices.size(); i++)
+		
+	for (int i = 0; i < subServices.size(); i++)
 	{
 		nvodchannels.insert (
 				std::pair <t_channel_id, CZapitChannel> (
-					CREATE_CHANNEL_ID(subServices.service_id, subServices.original_network_id, subServices.transport_stream_id, satellitePosition, freq),
+					create_channel_id(subServices[i].service_id, subServices[i].original_network_id, subServices[i].transport_stream_id, satellitePosition, freq),
 					CZapitChannel (
 					"NVOD",
-					subServices.service_id,
-					subServices.transport_stream_id,
-					subServices.original_network_id,
+					subServices[i].service_id,
+					subServices[i].transport_stream_id,
+					subServices[i].original_network_id,
 					ST_DIGITAL_TELEVISION_SERVICE,
 					satellitePosition,
-					freq) //FIXME: global for more than one tuner???
+					freq)
 				)
 				);
 	}
-	#endif
+
 	current_is_nvod = true;
 }
 

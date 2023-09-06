@@ -374,6 +374,7 @@ class CZapit
 		std::string getChannelDescription(const t_channel_id channel_id);
 
 		// current service
+		CZapitChannel* getCurrentService();
 		t_channel_id getCurrentServiceID();
 		int32_t getCurrentSatellitePosition();
 		bool getCurrentTP(transponder *TP);
