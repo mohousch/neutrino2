@@ -73,7 +73,7 @@ void CCaTable::addCaDescriptor(const unsigned char * const buffer)
 	info_length += dummy->getLength();
 }
 
-// ci
+//
 unsigned int CCaTable::writeToBuffer(unsigned char * const buffer) // returns number of bytes written
 {
 	buffer[0] = (reserved2 << 4) | (info_length >> 8);
@@ -92,7 +92,7 @@ unsigned int CCaTable::writeToBuffer(unsigned char * const buffer) // returns nu
 	return pos;
 }
 
-// cam
+/*
 unsigned int CCaTable::CamWriteToBuffer(unsigned char * const buffer) // returns number of bytes written
 { 
 	unsigned int pos = 0;
@@ -102,6 +102,7 @@ unsigned int CCaTable::CamWriteToBuffer(unsigned char * const buffer) // returns
 	
 	return pos;
 }
+*/
 
 CCaTable::~CCaTable(void)
 {
@@ -123,7 +124,7 @@ unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns num
 	return 3 + CCaTable::writeToBuffer(&(buffer[3]));
 }
 
-// cam
+/*
 unsigned int CEsInfo::CamWriteToBuffer(unsigned char * const buffer) // returns number of bytes written
 {
 	int len = 0;
@@ -132,7 +133,7 @@ unsigned int CEsInfo::CamWriteToBuffer(unsigned char * const buffer) // returns 
 	buffer[1] = ((reserved1 << 5) | (elementary_PID >> 8)) & 0xff;
 	buffer[2] = elementary_PID & 0xff;
 	
-	/* len! */
+	// len!
 	len = CCaTable::writeToBuffer(&(buffer[6]));
 	
 	if(len) 
@@ -146,6 +147,7 @@ unsigned int CEsInfo::CamWriteToBuffer(unsigned char * const buffer) // returns 
 	
 	return len + 5;	
 }
+*/
 
 /*
  * contitional access program map table
@@ -156,7 +158,7 @@ CCaPmt::~CCaPmt(void)
 		delete es_info[i];
 }
 
-// ci
+//
 unsigned int CCaPmt::writeToBuffer(unsigned char * const buffer, int /*demux*/, int /*camask*/) // returns number of bytes written
 {
 	unsigned int pos = 0;
@@ -181,7 +183,7 @@ unsigned int CCaPmt::writeToBuffer(unsigned char * const buffer, int /*demux*/, 
 	return pos;
 }
 
-// ci
+//
 unsigned int CCaPmt::getLength(void)  // the (3 + length_field()) initial bytes are not counted !
 {
 	unsigned int size = 4 + CCaTable::getLength();
@@ -192,7 +194,8 @@ unsigned int CCaPmt::getLength(void)  // the (3 + length_field()) initial bytes 
 	return size;	
 }
 
-// Cam
+//
+/*
 unsigned int CCaPmt::CamWriteToBuffer(CZapitChannel * thischannel, unsigned char * const buffer, int demux, int camask) // returns number of bytes written
 {
 	unsigned int i;
@@ -248,14 +251,18 @@ unsigned int CCaPmt::CamWriteToBuffer(CZapitChannel * thischannel, unsigned char
 
 	return wp;
 }
+*/
 
-// Cam
+//
+/*
 unsigned int CCaPmt::CamgetLength(void) 
 {
-	unsigned int size = 25 + CCaTable::getLength();
+	unsigned int size = 31 + CCaTable::getLength();
 	
 	for (unsigned int i = 0; i < es_info.size(); i++)
 		size += es_info[i]->getLength();
 
 	return size;	
 }
+*/
+

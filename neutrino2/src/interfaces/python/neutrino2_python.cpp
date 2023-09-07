@@ -31,7 +31,7 @@
 
 #include <interfaces/python/neutrino2_python.h>
 
-//extern "C" void init_neutrino2();
+//
 #if PY_VERSION_HEX >= 0x03000000
 extern "C" void PyInit__neutrino2();
 #else
