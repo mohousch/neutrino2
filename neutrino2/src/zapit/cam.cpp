@@ -72,11 +72,10 @@ bool CCam::setCaPmt(CZapitChannel * thischannel, CCaPmt * const caPmt, int demux
 
 	printf("CCam::setCaPmt: demux_index:(%d) camask:(%d) update:(%s)\n", demux, camask, update ? "yes" : "no" );
 	
-	//unsigned int size = caPmt->CamgetLength();
+	//
 	unsigned int size = caPmt->getLength();
 	unsigned char buffer[3 + get_length_field_size(size) + size];
-	//size_t pos = caPmt->CamWriteToBuffer(thischannel, buffer, demux, camask);
-	size_t pos = caPmt->writeToBuffer(buffer, demux, camask);
+	size_t pos = caPmt->writeToBuffer(thischannel, buffer, demux, camask);
 
 	return sendMessage((char *)buffer, pos, update);
 }

@@ -39,3 +39,4 @@ class CCam : public CBasicClient
 };
 
 #endif /* __cam_h__ */
+

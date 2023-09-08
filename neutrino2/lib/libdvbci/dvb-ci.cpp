@@ -730,7 +730,7 @@ bool cDvbCi::SendCaPMT(CCaPmt *caPmt, int source)
 			unsigned char buffer[3 + get_length_field_size(size) + size];
 			
 			// get len and fill buffer
-			int len = caPmt->writeToBuffer(buffer, 0, 0xff);
+			int len = caPmt->writeToBuffer(NULL, buffer, 0, 0xff);
 
 			if ((*it)->hasCAManager)
 				(*it)->camgrSession->sendSPDU(0x90, 0, 0, buffer, len);

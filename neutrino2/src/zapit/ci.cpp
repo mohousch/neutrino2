@@ -73,7 +73,7 @@ void CCaTable::addCaDescriptor(const unsigned char * const buffer)
 	info_length += dummy->getLength();
 }
 
-//
+/*
 unsigned int CCaTable::writeToBuffer(unsigned char * const buffer) // returns number of bytes written
 {
 	buffer[0] = (reserved2 << 4) | (info_length >> 8);
@@ -91,9 +91,10 @@ unsigned int CCaTable::writeToBuffer(unsigned char * const buffer) // returns nu
 	
 	return pos;
 }
+*/
 
-/*
-unsigned int CCaTable::CamWriteToBuffer(unsigned char * const buffer) // returns number of bytes written
+//
+unsigned int CCaTable::writeToBuffer(unsigned char * const buffer) // returns number of bytes written
 { 
 	unsigned int pos = 0;
 
@@ -102,7 +103,6 @@ unsigned int CCaTable::CamWriteToBuffer(unsigned char * const buffer) // returns
 	
 	return pos;
 }
-*/
 
 CCaTable::~CCaTable(void)
 {
@@ -114,7 +114,7 @@ CCaTable::~CCaTable(void)
 /*
  * elementary stream information
  */
-// ci
+/*
 unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns number of bytes written
 {
 	buffer[0] = stream_type;
@@ -123,9 +123,10 @@ unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns num
 	
 	return 3 + CCaTable::writeToBuffer(&(buffer[3]));
 }
+*/
 
-/*
-unsigned int CEsInfo::CamWriteToBuffer(unsigned char * const buffer) // returns number of bytes written
+//
+unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns number of bytes written
 {
 	int len = 0;
 	
@@ -147,7 +148,6 @@ unsigned int CEsInfo::CamWriteToBuffer(unsigned char * const buffer) // returns 
 	
 	return len + 5;	
 }
-*/
 
 /*
  * contitional access program map table
@@ -158,8 +158,8 @@ CCaPmt::~CCaPmt(void)
 		delete es_info[i];
 }
 
-//
-unsigned int CCaPmt::writeToBuffer(unsigned char * const buffer, int /*demux*/, int /*camask*/) // returns number of bytes written
+#if 0
+unsigned int CCaPmt::writeToBuffer(CZapitChannel *thisChannel, unsigned char * const buffer, int /*demux*/, int /*camask*/) // returns number of bytes written
 {
 	unsigned int pos = 0;
 	unsigned int i;
@@ -193,17 +193,17 @@ unsigned int CCaPmt::getLength(void)  // the (3 + length_field()) initial bytes 
 
 	return size;	
 }
+#endif
 
 //
-/*
-unsigned int CCaPmt::CamWriteToBuffer(CZapitChannel * thischannel, unsigned char * const buffer, int demux, int camask) // returns number of bytes written
+unsigned int CCaPmt::writeToBuffer(CZapitChannel * thisChannel, unsigned char * const buffer, int demux, int camask) // returns number of bytes written
 {
 	unsigned int i;
 
 	memcpy(buffer, "\x9f\x80\x32\x82\x00\x00", 6);
 
-	buffer[6] = ca_pmt_list_management; 						//6
-	buffer[7] = program_number >> 8; 						//7 
+	buffer[6] = ca_pmt_list_management; 						// 6
+	buffer[7] = program_number >> 8; 						// 7 
 	buffer[8] = program_number; 							// 8
 	buffer[9] = (reserved1 << 6) | (version_number << 1) | current_next_indicator;
 	buffer[10] = 0x00; 								// //reserved - prg-info len
@@ -212,14 +212,14 @@ unsigned int CCaPmt::CamWriteToBuffer(CZapitChannel * thischannel, unsigned char
 	buffer[13] = 0x81;  								// private descr.. dvbnamespace
 	buffer[14] = 0x08; 								//14
 	
-	buffer[15] = thischannel->getSatellitePosition() >> 8;				// getSatellitePosition() >> 8;	
-	buffer[16] = thischannel->getSatellitePosition() & 0xFF;			// getSatellitePosition() & 0xFF;
-	buffer[17] = thischannel->getFreqId() >> 8;					// getFreqId() >> 8;
-	buffer[18] = thischannel->getFreqId() & 0xFF;					// getFreqId() & 0xFF;
-	buffer[19] = thischannel->getTransportStreamId() >> 8;				// getTransportStreamId() >> 8;
-	buffer[20] = thischannel->getTransportStreamId() & 0xFF;			// getTransportStreamId() & 0xFF;
-	buffer[21] = thischannel->getOriginalNetworkId() >> 8;				// getOriginalNetworkId() >> 8;
-	buffer[22] = thischannel->getOriginalNetworkId() & 0xFF; 			// getOriginalNetworkId() & 0xFF;
+	buffer[15] = thisChannel->getSatellitePosition() >> 8;				// getSatellitePosition() >> 8;	
+	buffer[16] = thisChannel->getSatellitePosition() & 0xFF;			// getSatellitePosition() & 0xFF;
+	buffer[17] = thisChannel->getFreqId() >> 8;					// getFreqId() >> 8;
+	buffer[18] = thisChannel->getFreqId() & 0xFF;					// getFreqId() & 0xFF;
+	buffer[19] = thisChannel->getTransportStreamId() >> 8;				// getTransportStreamId() >> 8;
+	buffer[20] = thisChannel->getTransportStreamId() & 0xFF;			// getTransportStreamId() & 0xFF;
+	buffer[21] = thisChannel->getOriginalNetworkId() >> 8;				// getOriginalNetworkId() >> 8;
+	buffer[22] = thisChannel->getOriginalNetworkId() & 0xFF; 			// getOriginalNetworkId() & 0xFF;
 	
 	buffer[23] = 0x82;  								// demuxer kram..
 	buffer[24] = 0x02;
@@ -234,7 +234,7 @@ unsigned int CCaPmt::CamWriteToBuffer(CZapitChannel * thischannel, unsigned char
         int len = 19;
         int wp = 31;
 
-	i = CCaTable::CamWriteToBuffer(&(buffer[wp]));
+	i = CCaTable::writeToBuffer(&(buffer[wp]));
 	wp += i;
 	len += i;
 
@@ -251,11 +251,9 @@ unsigned int CCaPmt::CamWriteToBuffer(CZapitChannel * thischannel, unsigned char
 
 	return wp;
 }
-*/
 
 //
-/*
-unsigned int CCaPmt::CamgetLength(void) 
+unsigned int CCaPmt::getLength(void) 
 {
 	unsigned int size = 31 + CCaTable::getLength();
 	
@@ -264,5 +262,4 @@ unsigned int CCaPmt::CamgetLength(void)
 
 	return size;	
 }
-*/
 
