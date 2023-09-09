@@ -1899,10 +1899,6 @@ void CNeutrinoApp::setupFonts(const char* font_file)
 
 	// set signal font
 	g_SignalFont = g_fontRenderer->getFont(font.name, style[signal_font.style], signal_font.defaultsize + signal_font.size_offset * font.size_offset);
-
-	// recalculate infobar position
-	if (g_InfoViewer)
-		g_InfoViewer->start();
 }
 
 // start auto record (permanent/temp timeshift)
