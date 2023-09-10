@@ -1490,7 +1490,7 @@ void CInfoViewer::showSNR()
 	int posy = 0;
   	int barwidth = BAR_WIDTH;
 	
-  	if (g_settings.infobar_sat_display && (!IS_WEBTV(channel_id))) 
+  	if (g_settings.infobar_sat_display && (!IS_WEBTV(channel_id)) && channel_id != 0) 
 	{
 		if(is_visible)
 		{

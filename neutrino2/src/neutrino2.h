@@ -237,7 +237,7 @@ class CNeutrinoApp : public CMenuTarget
 		
 		// dvb/txt subs
 		void quickZap(int msg);
-		void showInfo();
+		void showInfo(const CZapitChannel *channel);
 		void stopSubtitles();
 		void startSubtitles(bool show = true);
 		void selectSubtitles();

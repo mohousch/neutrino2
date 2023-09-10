@@ -638,6 +638,7 @@ void CFrameBuffer::initQCircle()
 		204, 202, 200, 197, 195, 192, 190, 187, 184, 181, 179, 176, 173, 170, 167, 164, 160, 157, 154, 150,
 		147, 144, 140, 136, 132, 128, 124, 120, 115, 111, 105, 101,  95,  89,  83,  77,  69,  61,  52,  40,
 		 23};
+		 
 	if (q_circle == NULL)
 		q_circle = new int[sizeof(_q_circle) / sizeof(int)];
 	memcpy(q_circle, _q_circle, sizeof(_q_circle));

@@ -2256,14 +2256,14 @@ void CNeutrinoApp::quickZap(int msg)
 }
 
 // showInfo
-void CNeutrinoApp::showInfo()
+void CNeutrinoApp::showInfo(const CZapitChannel *channel)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::showInfo:\n");
 	
 	stopSubtitles();
 
 	//
-	g_InfoViewer->showTitle(live_channel->getNumber(), live_channel->getName(), live_channel->getSatellitePosition(), live_channel_id);
+	g_InfoViewer->showTitle(channel? channel->getNumber() : 0, channel? channel->getName() : "", channel? channel->getSatellitePosition() : 0, channel? channel->getChannelID() : 0);
 
 	startSubtitles();
 }
@@ -4273,8 +4273,7 @@ void CNeutrinoApp::realRun(void)
 			    	} 
 			    	else if(g_settings.virtual_zap_mode) 
 				{
-					if(channelList->getSize()) 
-						showInfo();	
+					showInfo(live_channel);	
 				}
 				else
 				{
@@ -4291,8 +4290,7 @@ void CNeutrinoApp::realRun(void)
 			    	} 
 			    	else if(g_settings.virtual_zap_mode) 
 				{
-					if(channelList->getSize()) 
-						showInfo();	
+					showInfo(live_channel);	
 				}
 				else
 				{
@@ -4302,10 +4300,7 @@ void CNeutrinoApp::realRun(void)
 			// in case key_subchannel_up/down redefined
 			else if((msg == RC_left || msg == RC_right)) 
 			{
-				if(channelList->getSize()) 
-				{
-					showInfo();
-				}
+				showInfo(live_channel);
 			}
 			else if( msg == (neutrino_msg_t) g_settings.key_zaphistory) 
 			{
@@ -4718,9 +4713,9 @@ void CNeutrinoApp::realRun(void)
 				// turn on LCD display
 				CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
 					
-				if(show_info && channelList->getSize()) 
+				if(show_info) 
 				{
-					showInfo();
+					showInfo(live_channel);
 				}
 			}
 			else if(msg == (neutrino_msg_t) g_settings.key_pip)
