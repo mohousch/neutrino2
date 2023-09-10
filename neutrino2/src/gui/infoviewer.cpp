@@ -1357,7 +1357,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		if ( is_visible && showButtonBar ) 
 			showIcon_Resolution();
 		
-		dprintf(DEBUG_DEBUG, "CInfoViewer::handleMsg: zap failed!\n");
+		dprintf(DEBUG_NORMAL, "CInfoViewer::handleMsg: zap failed!\n");
 		showFailure();
 
 #if ENABLE_LCD		
@@ -1377,7 +1377,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 
 		if ((*(t_channel_id *) data) == channel_id) 
 		{
-	  		dprintf(DEBUG_DEBUG, "CInfoViewer::handleMsg: zap failed!\n");
+	  		dprintf(DEBUG_NORMAL, "CInfoViewer::handleMsg: zap failed!\n");
 	  		showFailure();
 
 #if ENABLE_LCD			
