@@ -3438,6 +3438,8 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 // handle msg
 int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW"CNeutrinoApp::handleMsg: msg:(0x%X) data:(0x%X)\n", msg, data);
+	
 	int res = 0;
 
 	// zap complete event
@@ -4153,7 +4155,7 @@ void CNeutrinoApp::realRun(void)
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::realRun:\n");
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW"CNeutrinoApp::realRun:\n");
 
 	// clear msg 
 	g_RCInput->clearRCMsg();
