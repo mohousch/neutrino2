@@ -47,8 +47,6 @@
 #define NOVA		0x3ffe
 #define CANALDIGITAAL	0x3fff
 
-//#define DEBUG
-
 struct descr_generic_header 
 {
 	unsigned descriptor_tag			: 8;
@@ -178,14 +176,14 @@ void SIsectionEIT::parsePDCDescriptor(const uint8_t *buf, SIevent &e, unsigned m
 
 void SIsectionEIT::parseComponentDescriptor(const uint8_t *buf, SIevent &e, unsigned maxlen)
 {
-	if(maxlen>=sizeof(struct descr_component_header))
+	if(maxlen >= sizeof(struct descr_component_header))
 		e.components.insert(SIcomponent((const struct descr_component_header *)buf));
 }
 
 void SIsectionEIT::parseContentDescriptor(const uint8_t *buf, SIevent &e, unsigned maxlen)
 {
-	struct descr_generic_header *cont=(struct descr_generic_header *)buf;
-	if(cont->descriptor_length+sizeof(struct descr_generic_header)>maxlen)
+	struct descr_generic_header *cont = (struct descr_generic_header *)buf;
+	if(cont->descriptor_length + sizeof(struct descr_generic_header)>maxlen)
 		return; // defekt
 	const uint8_t *classification = buf + sizeof(struct descr_generic_header);
 	while(classification <= buf + sizeof(struct descr_generic_header) + cont->descriptor_length - 2) 
@@ -206,7 +204,7 @@ void SIsectionEIT::parseParentalRatingDescriptor(const uint8_t *buf, SIevent &e,
 		
 	const uint8_t *s = buf + sizeof(struct descr_generic_header);
 	
-	while(s<buf+sizeof(struct descr_generic_header)+cont->descriptor_length-4) 
+	while(s < buf + sizeof(struct descr_generic_header) + cont->descriptor_length - 4) 
 	{
 		e.ratings.insert(SIparentalRating(std::string((const char *)s, 3), *(s + 3)));
 		s += 4;

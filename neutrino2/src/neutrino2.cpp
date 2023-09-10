@@ -1794,9 +1794,9 @@ void CNeutrinoApp::setDebugLevel( int level )
 	debug = level;
 	
 	const char *DEBUGMODE[] = {
-		"DEBUG_NORMAL",
-		"DEBUG_INFO",
-		"DEBUG_DEBUG"
+		"NORMAL",
+		"INFO",
+		"DEBUG"
 	};
 	
 	printf("CNeutrinoApp::setDebugLevel: Debug level: %s\n", DEBUGMODE[debug]);

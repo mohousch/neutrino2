@@ -118,7 +118,7 @@ void SIlanguage::filter(const std::map<std::string, std::string>& s, int max, st
 
 bool SIlanguage::loadLanguages()
 {
-	dprintf(DEBUG_NORMAL, "[sectionsd] SIlanguage::loadLanguages:\n");
+	dprintf(DEBUG_NORMAL, "SIlanguage::loadLanguages:\n");
 	
 	pthread_mutex_lock(&languages_lock);
 	std::ifstream file(LANGUAGEFILE);
