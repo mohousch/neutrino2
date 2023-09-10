@@ -269,6 +269,7 @@ class CZapit
 		void setRadioMode(void);
 		void setTVMode(void);
 		int prepareChannels();
+		void renumServices(void);
 		
 		unsigned int zapToChannelID(const t_channel_id channel_id, const bool isSubService);
 
@@ -395,7 +396,7 @@ class CZapit
 		CZapit::CCurrentServiceInfo getServiceInfo(t_channel_id chid);
 		void getPIDS(t_channel_id chid, responseGetPIDs &pids);
 		
-
+		//
 		void reinitChannels();
 		void reloadCurrentServices();
 		bool reZap();

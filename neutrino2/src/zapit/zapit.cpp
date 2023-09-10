@@ -1805,6 +1805,26 @@ void CZapit::disableRecordMode(void)
 	eventServer->sendEvent(NeutrinoMessages::EVT_RECORDMODE, CEventServer::INITID_NEUTRINO, &status, sizeof(int) );
 }
 
+void CZapit::renumServices(void)
+{
+	dprintf(DEBUG_NORMAL, "CZapit::renumServices:\n");
+	
+	int tvi = 1;
+	int ri = 1;
+	
+	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 
+	{
+		if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
+		{
+			it->second.setNumber(tvi++);
+		}
+		else if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE) 
+		{
+			it->second.setNumber(ri++);
+		}
+	}
+}
+
 int CZapit::prepareChannels()
 {
 	dprintf(DEBUG_NORMAL, "CZapit::prepareChannels:\n");
@@ -1829,20 +1849,7 @@ int CZapit::prepareChannels()
 	g_bouquetManager->loadBouquets(); // this load also webtv services
 	
 	// renum services
-	int tvi = 1;
-	int ri = 1;
-	
-	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++) 
-	{
-		if ((it->second.getServiceType() == ST_DIGITAL_TELEVISION_SERVICE)) 
-		{
-			it->second.setNumber(tvi++);
-		}
-		else if (it->second.getServiceType() == ST_DIGITAL_RADIO_SOUND_SERVICE) 
-		{
-			it->second.setNumber(ri++);
-		}
-	}
+	renumServices();
 
 	return 0;
 }
