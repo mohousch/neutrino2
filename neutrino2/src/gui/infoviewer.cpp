@@ -298,7 +298,7 @@ void CInfoViewer::start()
 
 void CInfoViewer::paintTime(int posx, int posy, unsigned int timeFont)
 {
-	dprintf(DEBUG_NORMAL, "CInfoViewer::paintTime:\n");
+	dprintf(DEBUG_INFO, "CInfoViewer::paintTime:\n");
 	
 	int time_left_width = 2 * g_Font[timeFont]->getRenderWidth(widest_number);
 	int time_dot_width = g_Font[timeFont]->getRenderWidth(":");

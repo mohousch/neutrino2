@@ -3438,7 +3438,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 // handle msg
 int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
-	dprintf(DEBUG_NORMAL, ANSI_YELLOW"CNeutrinoApp::handleMsg: msg:(0x%X) data:(0x%X)\n", msg, data);
+	dprintf(DEBUG_INFO, ANSI_YELLOW"CNeutrinoApp::handleMsg: msg:(0x%X) data:(0x%X)\n", msg, data);
 	
 	int res = 0;
 
@@ -3549,7 +3549,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			int old_b = bouquetList->getActiveBouquetNumber();
 			int old_mode = g_settings.channel_mode;
 
-			dprintf(DEBUG_NORMAL, "\nCNeutrinoApp::handleMsg: ZAP START:\n");
+			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP START:\n");
 
 			if(bouquetList->Bouquets.size()) 
 			{
