@@ -73,7 +73,7 @@ void CCaTable::addCaDescriptor(const unsigned char * const buffer)
 	info_length += dummy->getLength();
 }
 
-/*
+//
 unsigned int CCaTable::writeToBuffer(unsigned char * const buffer) // returns number of bytes written
 {
 	buffer[0] = (reserved2 << 4) | (info_length >> 8);
@@ -91,9 +91,8 @@ unsigned int CCaTable::writeToBuffer(unsigned char * const buffer) // returns nu
 	
 	return pos;
 }
-*/
 
-//
+/*
 unsigned int CCaTable::writeToBuffer(unsigned char * const buffer) // returns number of bytes written
 { 
 	unsigned int pos = 0;
@@ -103,6 +102,7 @@ unsigned int CCaTable::writeToBuffer(unsigned char * const buffer) // returns nu
 	
 	return pos;
 }
+*/
 
 CCaTable::~CCaTable(void)
 {
@@ -114,7 +114,6 @@ CCaTable::~CCaTable(void)
 /*
  * elementary stream information
  */
-/*
 unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns number of bytes written
 {
 	buffer[0] = stream_type;
@@ -123,9 +122,8 @@ unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns num
 	
 	return 3 + CCaTable::writeToBuffer(&(buffer[3]));
 }
-*/
 
-//
+/*
 unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns number of bytes written
 {
 	int len = 0;
@@ -134,7 +132,7 @@ unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns num
 	buffer[1] = ((reserved1 << 5) | (elementary_PID >> 8)) & 0xff;
 	buffer[2] = elementary_PID & 0xff;
 	
-	// len!
+	//
 	len = CCaTable::writeToBuffer(&(buffer[6]));
 	
 	if(len) 
@@ -148,6 +146,7 @@ unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns num
 	
 	return len + 5;	
 }
+*/
 
 /*
  * contitional access program map table
@@ -158,7 +157,6 @@ CCaPmt::~CCaPmt(void)
 		delete es_info[i];
 }
 
-#if 0
 unsigned int CCaPmt::writeToBuffer(CZapitChannel *thisChannel, unsigned char * const buffer, int /*demux*/, int /*camask*/) // returns number of bytes written
 {
 	unsigned int pos = 0;
@@ -193,9 +191,8 @@ unsigned int CCaPmt::getLength(void)  // the (3 + length_field()) initial bytes 
 
 	return size;	
 }
-#endif
 
-//
+/*
 unsigned int CCaPmt::writeToBuffer(CZapitChannel * thisChannel, unsigned char * const buffer, int demux, int camask) // returns number of bytes written
 {
 	unsigned int i;
@@ -251,8 +248,9 @@ unsigned int CCaPmt::writeToBuffer(CZapitChannel * thisChannel, unsigned char * 
 
 	return wp;
 }
+*/
 
-//
+/*
 unsigned int CCaPmt::getLength(void) 
 {
 	unsigned int size = 31 + CCaTable::getLength();
@@ -262,4 +260,5 @@ unsigned int CCaPmt::getLength(void)
 
 	return size;	
 }
+*/
 

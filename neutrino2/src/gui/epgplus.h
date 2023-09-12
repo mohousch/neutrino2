@@ -513,9 +513,6 @@ class EpgPlus
 		MenuTargetRefreshEpg *refreshEpg;
 		MenuTargetAddRecordTimer *addRecordTimer;
 		MenuTargetAddReminder *addReminder;
-		
-		//
-		void getTMDBInfo(const char * const text);
 };
 
 class CEPGplusHandler : public CMenuTarget

@@ -55,7 +55,6 @@
 #include <gui/pictureviewer.h>
 
 #include <system/debug.h>
-#include <system/tmdbparser.h>
 #include <system/channellogo.h>
 
 
