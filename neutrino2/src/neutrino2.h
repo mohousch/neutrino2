@@ -66,7 +66,7 @@
 #include <zapit/zapit.h>
 
 
-// CNeutrinoApp -  main run-class
+//
 typedef struct neutrino_font_descr
 {
 	const char * name;
@@ -122,7 +122,7 @@ class CNeutrinoApp : public CMenuTarget
 		void tvMode( bool rezap = true );
 		void radioMode( bool rezap = true );
 		void standbyMode( bool bOnOff );
-		void scartMode( bool bOnOff );		// not used
+		void scartMode( bool bOnOff );
 		void realRun(void);
 		void initZapper();
 		void setupFrameBuffer();
@@ -136,7 +136,7 @@ class CNeutrinoApp : public CMenuTarget
 		//
 		void setDebugLevel( int level );
 		
-		//callback stuff only....
+		//
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 		
 		//
@@ -235,9 +235,11 @@ class CNeutrinoApp : public CMenuTarget
 		int getChannelMode(void) { return g_settings.channel_mode; };
 		void setChannelMode(int newmode, int nMode);
 		
-		// dvb/txt subs
+		//
 		void quickZap(int msg);
 		void showInfo(const CZapitChannel *channel);
+		
+		//
 		void stopSubtitles();
 		void startSubtitles(bool show = true);
 		void selectSubtitles();
