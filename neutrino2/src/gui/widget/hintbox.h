@@ -81,7 +81,7 @@ class CHintBox
 	public:
 		//
 		CHintBox(const char * Caption, const char * const Text, const int Width = HINTBOX_WIDTH, const char * const Icon = NEUTRINO_ICON_INFO);
-		~CHintBox(void);
+		virtual ~CHintBox(void);
 
 		bool has_scrollbar(void);
 		void scroll_up(void);

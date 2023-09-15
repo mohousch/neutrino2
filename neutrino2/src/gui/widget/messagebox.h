@@ -126,7 +126,7 @@ class CMessageBox
 		// Text & Caption are always UTF-8 encoded
 		CMessageBox(const char * const Caption, const char * const Text, const int Width = MESSAGEBOX_WIDTH, const char * const Icon = NULL, const result_ Default = mbrYes, const uint32_t ShowButtons = mbAll);
 
-		~CMessageBox(void);
+		virtual ~CMessageBox(void);
 		
 		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};

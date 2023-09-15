@@ -649,6 +649,9 @@ CItems2DetailsLine::CItems2DetailsLine()
 	hint = "";
 	icon = "";
 	
+	paintBG = false;
+	background = NULL;
+	
 	// hintitem / hinticon
 	tFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
 	borderMode = g_settings.Hint_border;
@@ -667,18 +670,35 @@ CItems2DetailsLine::~CItems2DetailsLine()
 	option_info2.clear();
 	hint.clear();
 	icon.clear();
+	
+	if (savescreen)
+	{
+		if (background)
+		{
+			delete [] background;
+			background = NULL;
+		}
+	}
 }
 
 void CItems2DetailsLine::paint()
 {
 	dprintf(DEBUG_DEBUG, "CItems2DetailsLine::paint:\n");
 	
+	//
+	//restoreScreen();
+	
 	// border
-	if (borderMode) 
-		frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.Hint_radius, g_settings.Hint_corner);
-			
-	// infoBox
-	frameBuffer->paintBoxRel(borderMode? cCBox.iX + 2 : cCBox.iX, borderMode? cCBox.iY + 2 : cCBox.iY, borderMode? cCBox.iWidth - 4 : cCBox.iWidth, borderMode? cCBox.iHeight - 4 : cCBox.iHeight, color, g_settings.Hint_radius, g_settings.Hint_corner, g_settings.Hint_gradient);
+	if (paintBG)
+	{
+		if (borderMode) 
+			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.Hint_radius, g_settings.Hint_corner);
+				
+		// infoBox
+		frameBuffer->paintBoxRel(borderMode? cCBox.iX + 2 : cCBox.iX, borderMode? cCBox.iY + 2 : cCBox.iY, borderMode? cCBox.iWidth - 4 : cCBox.iWidth, borderMode? cCBox.iHeight - 4 : cCBox.iHeight, color, g_settings.Hint_radius, g_settings.Hint_corner, g_settings.Hint_gradient);
+	}
+	else
+		restoreScreen();
 	
 	//
 	if (mode == DL_INFO)
@@ -746,8 +766,7 @@ void CItems2DetailsLine::paint()
 		//
 		CCText Dline(cCBox.iX + iw + 15, cCBox.iY + 10, cCBox.iWidth - iw - 20, cCBox.iHeight - 20);
 		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());
-		Dline.enableSaveScreen();			
+		Dline.setText(hint.c_str());		
 		Dline.paint();
 	}
 	else if (mode == DL_HINTITEM)
@@ -776,8 +795,7 @@ void CItems2DetailsLine::paint()
 		//
 		CCText Dline(cCBox.iX + 10, cCBox.iY + ih + 10, cCBox.iWidth - 20, cCBox.iHeight - ih - 20);
 		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());
-		Dline.enableSaveScreen();			
+		Dline.setText(hint.c_str());		
 		Dline.paint();
 		
 	}
@@ -793,8 +811,7 @@ void CItems2DetailsLine::paint()
 	{
 		CCText Dline(cCBox.iX + 10, cCBox.iY + 10, cCBox.iWidth - 20, cCBox.iHeight - 20);
 		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());
-		Dline.enableSaveScreen();			
+		Dline.setText(hint.c_str());		
 		Dline.paint();
 	}
 }
@@ -802,7 +819,52 @@ void CItems2DetailsLine::paint()
 //
 void CItems2DetailsLine::hide()
 {
-	frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+	if(background) 
+	{
+		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+	else //FIXME:
+		frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+}
+
+////
+void CItems2DetailsLine::saveScreen(void)
+{
+	dprintf(DEBUG_NORMAL, "CItems2DetailsLine::saveScreen\n");
+	
+	if (background)
+	{
+		delete [] background;
+		background = NULL;
+	}
+		
+	background = new fb_pixel_t[cCBox.iWidth*cCBox.iHeight];
+		
+	if (background)
+	{
+		frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+}
+
+void CItems2DetailsLine::restoreScreen(void)
+{
+	dprintf(DEBUG_NORMAL, "CItems2DetailsLine::restoreScreen\n");
+	
+	//
+	if (savescreen && background)
+	{
+		frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+}
+
+//
+void CItems2DetailsLine::enableSaveScreen()
+{
+	dprintf(DEBUG_NORMAL, "CItems2DetailsLine::enableSaveScreen\n");
+	
+	savescreen = true;
+	
+	saveScreen();
 }
 
 //

@@ -53,7 +53,7 @@ class CHelpBox
 		
 	public:
 		CHelpBox();
-		~CHelpBox();
+		virtual ~CHelpBox();
 
 		//
 		void addLine(std::string& text, CFont* font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint8_t col = COL_MENUCONTENT, const bool bg = false);

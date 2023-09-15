@@ -182,7 +182,7 @@ class CMenuWidget : public CMenuTarget
 		CMenuWidget();
 		CMenuWidget(const char * const Name, const std::string& Icon = "", const int mwidth = MENU_WIDTH, const int mheight = MENU_HEIGHT);
 		
-		~CMenuWidget();
+		virtual ~CMenuWidget();
 
 		virtual void addItem(CMenuItem * menuItem, const bool defaultselected = false);
 		virtual void removeItem(long pos);

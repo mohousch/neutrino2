@@ -294,7 +294,7 @@ class CMenuOptionChooser : public CMenuItem
 	public:
 		CMenuOptionChooser(const char* const Name, int * const OptionValue, const struct keyval * const Options = NULL, const unsigned Number_Of_Options = 0, const bool Active = false, CChangeObserver * const Observ = NULL, const neutrino_msg_t DirectKey = RC_nokey, const std::string& IconName= "", bool Pulldown = false);
 
-		~CMenuOptionChooser(){};
+		virtual ~CMenuOptionChooser(){};
 
 		//
 		void addOption(const char *optionname, const int optionvalue);
@@ -332,7 +332,7 @@ class CMenuOptionNumberChooser : public CMenuItem
 	public:
 		CMenuOptionNumberChooser(const char * const Name, int * const OptionValue, const bool Active, const int min_value, const int max_value, CChangeObserver * const Observ = NULL, const int print_offset = 0, const int special_value = 0);
 
-		~CMenuOptionNumberChooser(){};
+		virtual ~CMenuOptionNumberChooser(){};
 		
 		int paint(bool selected, bool AfterPulldown = false);
 
@@ -349,7 +349,7 @@ class CMenuOptionStringChooser : public CMenuItem
 	public:
 		CMenuOptionStringChooser(const char* const Name, char * OptionValue, bool Active = false, CChangeObserver* Observ = NULL, const neutrino_msg_t DirectKey = RC_nokey, const std::string & IconName= "", bool Pulldown = false);
 		
-		~CMenuOptionStringChooser();
+		virtual ~CMenuOptionStringChooser();
 
 		void addOption(const char * value);
 
@@ -370,7 +370,7 @@ class CMenuSeparator : public CMenuItem
 
 	public:
 		CMenuSeparator(const int Type = EMPTY, const char * const Text = NULL);
-		~CMenuSeparator(){};
+		virtual ~CMenuSeparator(){};
 
 		//
 		int paint(bool selected = false, bool AfterPulldown = false);
@@ -395,7 +395,7 @@ class CMenuForwarder : public CMenuItem
 	public:
 		CMenuForwarder(const char * const Text, const bool Active = true, const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
 		
-		~CMenuForwarder();
+		virtual ~CMenuForwarder();
 		
 		int paint(bool selected = false, bool AfterPulldown = false);
 		int getHeight(void) const;
@@ -420,8 +420,6 @@ class ClistBox : public CWidgetItem
 		int wanted_width;
 		int start_x;
 		int start_y;
-		
-		CTextBox * textBox;
 
 		int selected;
 
@@ -511,11 +509,12 @@ class ClistBox : public CWidgetItem
 
 		std::string actionKey; // lua
 		
-		//
+		// mainframe
 		fb_pixel_t bgcolor;
 		int radius;
 		int corner;
 		bool scrollbar;
+		int gradient;
 		
 		//
 		int widgetMode;
@@ -569,7 +568,7 @@ class ClistBox : public CWidgetItem
 		void setFootGradient(int grad){footGradient = grad;};
 		void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
 
-		// itemInfo
+		// itemInfo FIXME:
 		void enablePaintItemInfo(int fh = 0){paintFootInfo = true; footInfoHeight = fh;};
 		void setItemInfoMode(int mode){footInfoMode = mode;};
 		void setItemInfoPos(int x, int y, int dx, int dy)
@@ -595,6 +594,7 @@ class ClistBox : public CWidgetItem
 		void setColor(fb_pixel_t col){bgcolor = col;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void paintScrollBar(bool sb){scrollbar = sb;};
+		void setGradient(int grad){ gradient = grad;};
 
 		//
 		virtual void scrollLineDown(const int lines = 1);

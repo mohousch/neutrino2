@@ -146,7 +146,6 @@ class CNeutrinoApp : public CMenuTarget
 		
 		// skin
 		void loadSkin(std::string skinName);
-		bool skin_exists(const char* const filename);
 		void readSkinConfig(const char* const filename);
 		void saveSkinConfig(const char* const filename);
 		

@@ -186,6 +186,7 @@ class CComponent
 		//
 		virtual void initFrames(){};
 		virtual void setIcon(const char* const icon){};
+		virtual void setHint(const char * const hint){};
 		virtual void setImage(const char* const image){};
 		virtual void setScaling(bool s){};
 		virtual void setColor(uint32_t col){};
@@ -663,6 +664,9 @@ class CItems2DetailsLine : public CComponent
 		bool scale;
 		
 		//
+		fb_pixel_t *background;
+		
+		//
 		CItems2DetailsLine();
 		virtual ~CItems2DetailsLine();
 		
@@ -684,6 +688,11 @@ class CItems2DetailsLine : public CComponent
 		void setBorderMode(int m){borderMode = m;};
 		void setColor(uint32_t col){color = col;};
 		void setScaling(bool s){scale = s;};
+		
+		//
+		void saveScreen(void);
+		void restoreScreen(void);
+		void enableSaveScreen();
 };
 
 // CCSlider

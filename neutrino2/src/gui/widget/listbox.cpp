@@ -1660,14 +1660,13 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 
 	background = NULL;
 
-	textBox = NULL;
-
 	actionKey = "";
 	
 	bgcolor = COL_MENUCONTENT_PLUS_0;
 	radius = NO_RADIUS;
 	corner = CORNER_NONE;
 	scrollbar = true;
+	gradient = NOGRADIENT;
 	
 	//
 	item_height = 0;
@@ -1778,14 +1777,13 @@ ClistBox::ClistBox(CBox* position)
 
 	background = NULL;
 
-	textBox = NULL;
-
 	actionKey = "";
 	
 	bgcolor = COL_MENUCONTENT_PLUS_0;
 	radius = NO_RADIUS;
 	corner = CORNER_NONE;
 	scrollbar = true;
+	gradient = NOGRADIENT;
 	
 	//
 	item_height = 0;
@@ -2046,7 +2044,7 @@ void ClistBox::paintItems()
 
 		// items background
 		if (paintframe)
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, itemBox.iHeight - hheight - fheight, bgcolor, radius, corner);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, itemBox.iHeight - hheight - fheight, bgcolor, radius, corner, gradient);
 		else
 		{
 			restoreScreen();
@@ -2140,7 +2138,7 @@ void ClistBox::paintItems()
 		// paint items background
 		if (paintframe) //FIXME:
 		{
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, items_height, bgcolor, radius, corner);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, items_height, bgcolor, radius, corner, gradient);
 		}
 		else
 		{
@@ -2513,6 +2511,7 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setOptionInfo1(item->option_info1.c_str());
 				itemsLine.setInfo2(item->info2.c_str());
 				itemsLine.setOptionInfo2(item->option_info2.c_str());
+				itemsLine.enablePaintBG();
 					
 				itemsLine.paint();
 			}
@@ -2526,7 +2525,20 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setHint(item->itemHint.c_str());
 				
 				if (widgetType == TYPE_STANDARD)
-					itemsLine.setIcon(item->itemIcon.c_str());
+				{
+					std::string fname = item->itemIcon;
+					
+					if (widgetMode == MODE_MENU)
+					{
+						if (item->isPlugin)
+							fname = item->itemIcon;
+						else				
+							fname = g_settings.hints_dir + item->itemIcon.c_str() + ".png";
+					}
+			
+					itemsLine.setIcon(fname.c_str());
+				}
+				itemsLine.enablePaintBG();
 					
 				itemsLine.paint();
 			}
@@ -2539,12 +2551,24 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setMode(DL_HINTITEM);
 				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
-				//itemsLine.paintFrame(iteminfoframe);
 				itemsLine.setColor(iteminfocolor);
 				itemsLine.setFont(iteminfofont);
 				itemsLine.setScaling(iteminfoscale);
 				itemsLine.setHint(item->itemHint.c_str());
-				itemsLine.setIcon(item->itemIcon.c_str());
+				//
+				//itemsLine.setIcon(item->itemIcon.c_str());
+				std::string fname = item->itemIcon;
+					
+				if (widgetMode == MODE_MENU)
+				{
+					if (item->isPlugin)
+						fname = item->itemIcon;
+					else				
+						fname = g_settings.hints_dir + item->itemIcon.c_str() + ".png";
+				}
+			
+				itemsLine.setIcon(fname.c_str());
+				itemsLine.enablePaintBG();
 					
 				itemsLine.paint();
 			}
@@ -2557,11 +2581,22 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setMode(DL_HINTICON);
 				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
-				//itemsLine.paintFrame(iteminfoframe);
 				itemsLine.setColor(iteminfocolor);
 				itemsLine.setScaling(iteminfoscale);
-				//itemsLine.setHint(item->itemHint.c_str());
-				itemsLine.setIcon(item->itemIcon.c_str());
+				//
+				//itemsLine.setIcon(item->itemIcon.c_str());
+				std::string fname = item->itemIcon;
+					
+				if (widgetMode == MODE_MENU)
+				{
+					if (item->isPlugin)
+						fname = item->itemIcon;
+					else				
+						fname = g_settings.hints_dir + item->itemIcon.c_str() + ".png";
+				}
+			
+				itemsLine.setIcon(fname.c_str());
+				itemsLine.enablePaintBG();
 					
 				itemsLine.paint();
 			}
@@ -2574,12 +2609,11 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setMode(DL_HINTHINT);
 				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
-				//itemsLine.paintFrame(iteminfoframe);
 				itemsLine.setColor(iteminfocolor);
 				itemsLine.setFont(iteminfofont);
 				itemsLine.setScaling(iteminfoscale);
 				itemsLine.setHint(item->itemHint.c_str());
-				//itemsLine.setIcon(item->itemIcon.c_str());
+				itemsLine.enablePaintBG();
 					
 				itemsLine.paint();
 			}
@@ -2587,7 +2621,7 @@ void ClistBox::paintItemInfo(int pos)
 	}	
 	else if(widgetType == TYPE_EXTENDED)
 	{
-		dprintf(DEBUG_DEBUG, "ClistBox::paintItemInfo:\n"); 
+		dprintf(DEBUG_NORMAL, "ClistBox::paintItemInfo:\n"); 
 		
 		if (paintFootInfo)
 		{
@@ -2600,21 +2634,33 @@ void ClistBox::paintItemInfo(int pos)
 			std::string fname = item->itemIcon;
 
 			::scaleImage(fname, &p_w, &p_h);
-
-			if(textBox)
+			
+			//
+			itemsLine.setPosition(itemBox.iX + 2*(itemBox.iWidth/3), itemBox.iY + hheight, (itemBox.iWidth/3), items_height);
+			if (paintframe)
 			{
-				delete textBox;
-				textBox = NULL;
+				itemsLine.enablePaintBG();
+				itemsLine.setBorderMode(BORDER_NO);
 			}
-							
-			textBox = new CTextBox(itemBox.iX + 2*(itemBox.iWidth/3), itemBox.iY + hheight, (itemBox.iWidth/3), items_height);
-			//textBox->setMode(AUTO_WIDTH | ~SCROLL);
-					
-			textBox->setBackgroundColor(COL_MENUCONTENTDARK_PLUS_0);
-
-			// hint
-			textBox->setText(item->itemHint.c_str(), item->itemIcon.c_str(), p_w, p_h, PIC_CENTER);
-			textBox->paint();
+			else
+				itemsLine.enableSaveScreen();
+			
+			if (widgetMode == MODE_LISTBOX)
+				itemsLine.setMode(DL_HINTITEM);
+			else if (widgetMode == MODE_MENU)
+			{
+				itemsLine.setMode(DL_HINTICON);
+				
+				if (item->isPlugin)
+					fname = item->itemIcon;
+				else				
+					fname = g_settings.hints_dir + item->itemIcon.c_str() + ".png";
+			}
+				
+			itemsLine.setHint(item->itemHint.c_str());
+			itemsLine.setIcon(fname.c_str());
+			
+			itemsLine.paint();
 		}
 	}
 	else if(widgetType == TYPE_FRAME)
@@ -2701,13 +2747,6 @@ void ClistBox::hide()
 		
 	//
 	hideItemInfo(); 
-
-	//
-	if(textBox != NULL)
-	{
-		delete textBox;
-		textBox = NULL;
-	}
 	
 	//
 	if (timer)
@@ -3068,8 +3107,8 @@ void ClistBox::swipLeft()
 	}
 	else if (widgetType == TYPE_EXTENDED)
 	{
-		if(textBox)
-			textBox->scrollPageUp(1);
+		//if(textBox)
+		//	textBox->scrollPageUp(1);
 	}
 	else if(widgetType == TYPE_STANDARD)
 	{
@@ -3132,8 +3171,8 @@ void ClistBox::swipRight()
 	}
 	else if (widgetType == TYPE_EXTENDED)
 	{
-		if(textBox)
-			textBox->scrollPageDown(1);
+		//if(textBox)
+		//	textBox->scrollPageDown(1);
 	}
 	else if(widgetType == TYPE_STANDARD)
 	{

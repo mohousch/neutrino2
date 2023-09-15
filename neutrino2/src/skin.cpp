@@ -2773,159 +2773,119 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	
 	readSkinConfig(skinConfigFile.c_str());
 	
-	// parse skin
-	std::string skinFileName = skinPath.c_str();
-	skinFileName += "/skin.xml";
-	
 	// read skin font/icons/buttons/hints
 	std::string fontFileName;
 		
 	struct dirent **namelist;
 	int i = 0;
 		
-	if (CNeutrinoApp::getInstance()->skin_exists(skinName.c_str()))
-	{
-		// setup font
-		std::string fontPath = skinPath.c_str();
-		fontPath += "/fonts";
+	// setup font
+	std::string fontPath = skinPath.c_str();
+	fontPath += "/fonts";
 			
-		i = scandir(fontPath.c_str(), &namelist, 0, 0);
+	i = scandir(fontPath.c_str(), &namelist, 0, 0);
 
-		if (i > 0)
+	if (i > 0)
+	{
+		while(i--)
 		{
-			while(i--)
+			if( (strcmp(namelist[i]->d_name, ".") != 0) && (strcmp(namelist[i]->d_name, "..") != 0) )
 			{
-				if( (strcmp(namelist[i]->d_name, ".") != 0) && (strcmp(namelist[i]->d_name, "..") != 0) )
-				{
-					std::string filename = fontPath.c_str();
-					filename += "/";
-					filename += namelist[i]->d_name;
+				std::string filename = fontPath.c_str();
+				filename += "/";
+				filename += namelist[i]->d_name;
 						
-					std::string extension = getFileExt(filename);
+				std::string extension = getFileExt(filename);
 							
-					if ( strcasecmp("ttf", extension.c_str()) == 0)
-						fontFileName = filename;
+				if ( strcasecmp("ttf", extension.c_str()) == 0)
+					fontFileName = filename;
 						
-					filename.clear();			
-				}
-				free(namelist[i]);
+				filename.clear();			
 			}
-			free(namelist);
+			free(namelist[i]);
 		}
+		free(namelist);
+	}
 			 
-		strcpy( g_settings.font_file, fontFileName.c_str() );
+	strcpy( g_settings.font_file, fontFileName.c_str() );
 			
-		CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
+	CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
 			
-		// setIconPath
-		std::string iconsDir = CONFIGDIR "/skins/";
-		iconsDir += skinName.c_str();
-		iconsDir += "/icons/";
+	// setIconPath
+	std::string iconsDir = CONFIGDIR "/skins/";
+	iconsDir += skinName.c_str();
+	iconsDir += "/icons/";
 			
-		// check if not empty
-		i = scandir(iconsDir.c_str(), &namelist, 0, 0);
-		if(i < 0)
-		{
-			g_settings.icons_dir = DATADIR "/icons/"; //fallback to default if empty
-		}
-		else
-		{
-			g_settings.icons_dir = iconsDir;
-			free(namelist);
-		}
-			
-		frameBuffer->setIconBasePath(g_settings.icons_dir);
-			
-		// setButtonPath
-		std::string buttonsDir = CONFIGDIR "/skins/";
-		buttonsDir += skinName.c_str();
-		buttonsDir += "/buttons/";
-			
-		// check if not empty
-		i = scandir(buttonsDir.c_str(), &namelist, 0, 0);
-		if(i < 0)
-		{
-			g_settings.buttons_dir = DATADIR "/buttons/"; //fallback to default if empty
-		}
-		else
-		{
-			g_settings.buttons_dir = buttonsDir;
-			free(namelist);
-		}
-			
-		frameBuffer->setButtonBasePath(g_settings.buttons_dir);
-			
-		// setHintPath
-		std::string hintsDir = CONFIGDIR "/skins/";
-		hintsDir += skinName.c_str();
-		hintsDir += "/hints/";
-			
-		// check if not empty
-		i = scandir(hintsDir.c_str(), &namelist, 0, 0);
-		if(i < 0)
-		{
-			g_settings.hints_dir = DATADIR "/hints/"; //fallback to default if empty
-		}
-		else
-		{
-			g_settings.hints_dir = hintsDir;
-			free(namelist);
-		}
-			
-		frameBuffer->setHintBasePath(g_settings.hints_dir);
-			
-		// setSpinnerPath
-		std::string spinnerDir = CONFIGDIR "/skins/";
-		spinnerDir += skinName.c_str();
-		spinnerDir += "/spinner/";
-			
-		// check if not empty
-		i = scandir(spinnerDir.c_str(), &namelist, 0, 0);
-		if(i < 0)
-		{
-			g_settings.spinner_dir = DATADIR "/spinner/"; //fallback to default if empty
-		}
-		else
-		{
-			g_settings.spinner_dir = spinnerDir;
-			free(namelist);
-		}
-			
-		frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
-	}
-	else //fallback to default (neutrino intern)
+	// check if not empty
+	i = scandir(iconsDir.c_str(), &namelist, 0, 0);
+	if(i < 0)
 	{
-		strcpy( g_settings.font_file, DATADIR "/fonts/arial.ttf");
-			
-		CNeutrinoApp::getInstance()->setupFonts(DATADIR "/fonts/arial.ttf");
-			
-		g_settings.icons_dir = DATADIR "/icons/";
-		g_settings.buttons_dir = DATADIR "/buttons/";
-		g_settings.hints_dir = DATADIR "/hints/";
-		g_settings.spinner_dir = DATADIR "/spinner/";
-			
-		frameBuffer->setIconBasePath(DATADIR "/icons/");
-		frameBuffer->setButtonBasePath(DATADIR "/buttons/");
-		frameBuffer->setHintBasePath(DATADIR "/hints/");
-		frameBuffer->setSpinnerBasePath(DATADIR "/spinner/");
+		g_settings.icons_dir = DATADIR "/icons/"; //fallback to default if empty
 	}
-}
-
-//
-bool CNeutrinoApp::skin_exists(const char* const filename)
-{
-	dprintf(DEBUG_INFO, "CNeutrinoApp::skin_exists: %s\n", filename);
-	
-	bool ret = false;
-	
-	std::string skin = CONFIGDIR "/skins/";
-	skin += filename;
-	skin += "/skin.xml";
-	
-	if (::file_exists(skin.c_str()))
-		ret = true;
-	
-	return ret;
+	else
+	{
+		g_settings.icons_dir = iconsDir;
+		free(namelist);
+	}
+			
+	frameBuffer->setIconBasePath(g_settings.icons_dir);
+			
+	// setButtonPath
+	std::string buttonsDir = CONFIGDIR "/skins/";
+	buttonsDir += skinName.c_str();
+	buttonsDir += "/buttons/";
+			
+	// check if not empty
+	i = scandir(buttonsDir.c_str(), &namelist, 0, 0);
+	if(i < 0)
+	{
+		g_settings.buttons_dir = DATADIR "/buttons/"; //fallback to default if empty
+	}
+	else
+	{
+		g_settings.buttons_dir = buttonsDir;
+		free(namelist);
+	}
+			
+	frameBuffer->setButtonBasePath(g_settings.buttons_dir);
+			
+	// setHintPath
+	std::string hintsDir = CONFIGDIR "/skins/";
+	hintsDir += skinName.c_str();
+	hintsDir += "/hints/";
+			
+	// check if not empty
+	i = scandir(hintsDir.c_str(), &namelist, 0, 0);
+	if(i < 0)
+	{
+		g_settings.hints_dir = DATADIR "/hints/"; //fallback to default if empty
+	}
+	else
+	{
+		g_settings.hints_dir = hintsDir;
+		free(namelist);
+	}
+			
+	frameBuffer->setHintBasePath(g_settings.hints_dir);
+			
+	// setSpinnerPath
+	std::string spinnerDir = CONFIGDIR "/skins/";
+	spinnerDir += skinName.c_str();
+	spinnerDir += "/spinner/";
+			
+	// check if not empty
+	i = scandir(spinnerDir.c_str(), &namelist, 0, 0);
+	if(i < 0)
+	{
+		g_settings.spinner_dir = DATADIR "/spinner/"; //fallback to default if empty
+	}
+	else
+	{
+		g_settings.spinner_dir = spinnerDir;
+		free(namelist);
+	}
+			
+	frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
 }
 
 //
