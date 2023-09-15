@@ -3,6 +3,15 @@
   Welcome to neutrino2 software
 </h1>
 
+- the GUI is completely re/worked, this give us more simply tools to do any GUI work.
+- no socket communication between zapit / timed / nhttpd, all is neutrino
+- i18n localization.
+- skin support.
+- plugins interfaces: legacy, lua and python (exp) neutrino2 shares all his functionality with plugins.
+  and more...
+  
+  happy zapping
+
 ## How to build neutrino2 for PC (x86) ##
 
 ```bash

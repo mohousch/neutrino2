@@ -1,8 +1,8 @@
 - the GUI is completely re/worked, this give us more simply tools to do any GUI work.
+- no socket communication between zapit / timed / nhttpd, all is neutrino
 - i18n localization.
 - skin support.
 - plugins interfaces: legacy, lua and python (exp) neutrino2 shares all his functionality with plugins.
-- zapit, timerd and sectionsd are all part from neutrino without socket communication.
   and more...
   
   happy zapping
