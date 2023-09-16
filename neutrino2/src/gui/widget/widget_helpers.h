@@ -811,9 +811,9 @@ class CWidgetItem
 		virtual int getWidgetType(){return (4);};
 
 		//
-		virtual int oKKeyPressed(CMenuTarget* target){return 0;};
+		virtual int oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg = RC_ok){return 0;};
 		virtual void homeKeyPressed(){};
-		virtual void directKeyPressed(neutrino_msg_t ){};
+		virtual int directKeyPressed(neutrino_msg_t ){return 0;};
 		
 		//
 		virtual std::string getActionKey(void){ return actionKey;}; // lua

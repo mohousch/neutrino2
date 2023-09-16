@@ -643,9 +643,9 @@ class ClistBox : public CWidgetItem
 		bool isSelectable(void){return true;};
 
 		//
-		int oKKeyPressed(CMenuTarget* target);
+		int oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg = RC_ok);
 		void homeKeyPressed(){selected = -1;};
-		void directKeyPressed(neutrino_msg_t _msg);
+		int directKeyPressed(neutrino_msg_t _msg);
 
 		//
 		std::string getActionKey(void){return actionKey;}; // lua

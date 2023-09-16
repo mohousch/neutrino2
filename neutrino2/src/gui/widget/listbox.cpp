@@ -2498,7 +2498,7 @@ void ClistBox::paintItemInfo(int pos)
 	{
 		if(paintFootInfo)
 		{
-			dprintf(DEBUG_DEBUG, "ClistBox::paintItemInfo:\n"); //FIXME:
+			dprintf(DEBUG_INFO, "ClistBox::paintItemInfo:\n"); //FIXME:
 			
 			if (footInfoMode == ITEMINFO_INFO_MODE)
 			{
@@ -2621,7 +2621,7 @@ void ClistBox::paintItemInfo(int pos)
 	}	
 	else if(widgetType == TYPE_EXTENDED)
 	{
-		dprintf(DEBUG_NORMAL, "ClistBox::paintItemInfo:\n"); 
+		dprintf(DEBUG_INFO, "ClistBox::paintItemInfo:\n"); 
 		
 		if (paintFootInfo)
 		{
@@ -2667,7 +2667,7 @@ void ClistBox::paintItemInfo(int pos)
 	{
 		if (paintframe && paintFootInfo)
 		{
-			dprintf(DEBUG_DEBUG, "ClistBox::paintItemInfo:\n"); //FIXME:
+			dprintf(DEBUG_INFO, "ClistBox::paintItemInfo:\n"); //FIXME:
 			
 			// refresh
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight, itemBox.iWidth, cFrameFootInfoHeight, COL_MENUCONTENT_PLUS_0);
@@ -2697,7 +2697,7 @@ void ClistBox::paintItemInfo(int pos)
 
 void ClistBox::hideItemInfo()
 {
-	dprintf(DEBUG_DEBUG, "ClistBox::hideItemInfo:\n");
+	dprintf(DEBUG_INFO, "ClistBox::hideItemInfo:\n");
 	
 	if (paintFootInfo)
 	{
@@ -3110,8 +3110,7 @@ void ClistBox::swipLeft()
 			{
 				if((items[selected]->can_arrow)) 
 				{
-					items[selected]->msg = RC_left;
-					oKKeyPressed(parent);
+					oKKeyPressed(parent, RC_left);
 				}
 			} 
 		}
@@ -3172,8 +3171,7 @@ void ClistBox::swipRight()
 			{
 				if((items[selected]->can_arrow)) 
 				{
-					items[selected]->msg = RC_right;
-					oKKeyPressed(parent);
+					oKKeyPressed(parent, RC_right);
 				}
 			} 
 		}
@@ -3181,26 +3179,31 @@ void ClistBox::swipRight()
 }
 
 //
-int ClistBox::oKKeyPressed(CMenuTarget* target)
+int ClistBox::oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_INFO, "ClistBox::okKeyPressed:\n");
+	dprintf(DEBUG_INFO, "ClistBox::okKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = RETURN_EXIT;
 
 	if (hasItem() && selected >= 0 && items[selected]->isSelectable())
 	{
 		actionKey = items[selected]->actionKey;
+		items[selected]->msg = _msg;
 		
 		ret = items[selected]->exec(target);
-	}	
+	}
+	
+	printf("ClistBox::okKeyPressed: ret:%d\n", ret);
 	
 	return ret;
 }
 
 //
-void ClistBox::directKeyPressed(neutrino_msg_t _msg)
+int ClistBox::directKeyPressed(neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_DEBUG, "ClistBox::directKeyPressed: 0x%x\n", _msg);
+	dprintf(DEBUG_INFO, "ClistBox::directKeyPressed: 0x%x\n", _msg);
+	
+	int ret = RETURN_NONE;
 	
 	// 
 	for (unsigned int i = 0; i < items.size(); i++) 
@@ -3228,11 +3231,13 @@ void ClistBox::directKeyPressed(neutrino_msg_t _msg)
 				titem->paint(true);
 
 				//
-				oKKeyPressed(parent);
+				ret = oKKeyPressed(parent);
 			} 
 			break;
 		}
 	}
+	
+	return ret;
 }
 
 //

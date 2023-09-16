@@ -715,11 +715,26 @@ void CWidget::onPageDownKeyPressed()
 //
 void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_DEBUG, "CWidget::onDirectKeyPressed\n");
+	dprintf(DEBUG_INFO, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
 	
 	if(hasWidgetItem() && selected >= 0)
 	{
-		items[selected]->directKeyPressed(_msg);
+		int rv = items[selected]->directKeyPressed(_msg);
+
+		actionKey = items[selected]->getActionKey();
+
+		//
+		switch ( rv ) 
+		{
+			case RETURN_EXIT_ALL:
+				retval = RETURN_EXIT_ALL; //fall through
+			case RETURN_EXIT:
+				msg = RC_timeout;
+				break;
+			case RETURN_REPAINT:
+				paint();
+				break;
+		}
 	}
 }
 
