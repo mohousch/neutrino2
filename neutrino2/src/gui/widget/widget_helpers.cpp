@@ -764,7 +764,7 @@ void CItems2DetailsLine::paint()
 		}
 		
 		//
-		CCText Dline(cCBox.iX + iw + 15, cCBox.iY + 10, cCBox.iWidth - iw - 20, cCBox.iHeight - 20);
+		CCText Dline(cCBox.iX + 115, cCBox.iY + 10, cCBox.iWidth - iw - 20, cCBox.iHeight - 20);
 		Dline.setFont(tFont);
 		Dline.setText(hint.c_str());		
 		Dline.paint();
