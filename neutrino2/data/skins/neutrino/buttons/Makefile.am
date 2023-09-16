@@ -11,7 +11,7 @@ install_DATA = \
 	7.png \
 	8.png \
 	9.png \
-	blau.png \
+	btn_blue.png \
 	btn_backward.png \
 	btn_forward.png \
 	btn_pause.png \
@@ -22,8 +22,8 @@ install_DATA = \
 	down.png \
 	dummy.png \
 	dummy_small.png \
-	gelb.png \
-	gruen.png \
+	btn_yellow.png \
+	btn_green.png \
 	help.png \
 	help_small.png \
 	home.png \
@@ -39,6 +39,6 @@ install_DATA = \
 	ok.png \
 	power.png \
 	right.png \
-	rot.png \
+	btn_red.png \
 	up.png
 	

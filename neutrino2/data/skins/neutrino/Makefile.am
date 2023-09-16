@@ -1,3 +1,5 @@
+SUBDIRS = buttons hints
+
 installdir = $(CONFIGDIR)/skins/neutrino
 
 install_DATA = \

@@ -94,9 +94,9 @@ void CNeutrinoApp::mainMenu(void)
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "mainmenu";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->paintMainFrame(true);
-		widget->setCorner(RADIUS_SMALL, g_settings.Head_corner | g_settings.Foot_corner);
-		widget->setGradient(LIGHT2DARK);
+		//widget->paintMainFrame(true);
+		//widget->setCorner(RADIUS_SMALL, g_settings.Head_corner | g_settings.Foot_corner);
+		//widget->setGradient(LIGHT2DARK);
 		
 		//
 		nMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
@@ -104,17 +104,17 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu->setWidgetMode(MODE_MENU);
 		nMenu->setWidgetType(TYPE_CLASSIC);
 		nMenu->enableShrinkMenu();
-		nMenu->paintMainFrame(false);
+		nMenu->paintMainFrame(true);
 		
 		// head
 		nMenu->enablePaintHead();
 		nMenu->setTitle(_("Main Menu"), NEUTRINO_ICON_MAINMENU);
 		nMenu->enablePaintDate();
-		nMenu->setHeadLine(true);
+		nMenu->setHeadLine(true, true);
 		
 		// foot
 		nMenu->enablePaintFoot();
-		nMenu->setFootLine(true);
+		nMenu->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
 			
@@ -219,8 +219,8 @@ void CNeutrinoApp::mainMenu(void)
 	nMenu->addItem(item);
 	
 	//
-	if (resetWidget)
-		widget->setPosition(nMenu->getWindowsPos().iX - 5, nMenu->getWindowsPos().iY - 5, nMenu->getWindowsPos().iWidth + 10, nMenu->getWindowsPos().iHeight + 10);
+	//if (resetWidget)
+	//	widget->setPosition(nMenu->getWindowsPos().iX - 5, nMenu->getWindowsPos().iY - 5, nMenu->getWindowsPos().iWidth + 10, nMenu->getWindowsPos().iHeight + 10);
 
 	//
 	widget->setTimeOut(g_settings.timing_menu);
@@ -372,9 +372,9 @@ bool CNeutrinoApp::showUserMenu(int button)
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "features";
 		widget->setMenuPosition(MENU_POSITION_CENTER);
-		widget->paintMainFrame(true);
-		widget->setCorner(RADIUS_SMALL, g_settings.Head_corner | g_settings.Foot_corner);
-		widget->setGradient(LIGHT2DARK);
+		//widget->paintMainFrame(true);
+		//widget->setCorner(RADIUS_SMALL, g_settings.Head_corner | g_settings.Foot_corner);
+		//widget->setGradient(LIGHT2DARK);
 		
 		//
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
@@ -382,17 +382,17 @@ bool CNeutrinoApp::showUserMenu(int button)
 		menu->setWidgetMode(MODE_MENU);
 		menu->setWidgetType(TYPE_CLASSIC);
 		menu->enableShrinkMenu();
-		menu->paintMainFrame(false);
+		menu->paintMainFrame(true);
 		
 		//
 		menu->enablePaintHead();
 		menu->setTitle(txt.c_str(), NEUTRINO_ICON_FEATURES);
 		menu->enablePaintDate();
-		menu->setHeadLine(true);
+		menu->setHeadLine(true, true);
 		
 		//
 		menu->enablePaintFoot();
-		menu->setFootLine(true);
+		menu->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
 			
@@ -523,8 +523,8 @@ bool CNeutrinoApp::showUserMenu(int button)
 	}
 	
 	//
-	if (resetWidget)
-		widget->setPosition(menu->getWindowsPos().iX - 5, menu->getWindowsPos().iY - 5, menu->getWindowsPos().iWidth + 10, menu->getWindowsPos().iHeight + 10);
+	//if (resetWidget)
+	//	widget->setPosition(menu->getWindowsPos().iX - 5, menu->getWindowsPos().iY - 5, menu->getWindowsPos().iWidth + 10, menu->getWindowsPos().iHeight + 10);
 	
 	//
 	widget->addKey(RC_blue, this, "plugins");

@@ -267,6 +267,8 @@ data/webtv/Makefile
 data/scripts/Makefile
 data/skins/Makefile
 data/skins/neutrino/Makefile
+data/skins/neutrino/buttons/Makefile
+data/skins/neutrino/hints/Makefile
 data/skins/KravenHD/Makefile
 data/skins/KravenHD/background/Makefile
 data/skins/MetrixHD/Makefile
