@@ -2819,9 +2819,8 @@ void ClistBox::scrollLineDown(const int)
 					else 
 					{
 						selected = pos;
+						
 						paintItems();
-						//paint();
-						//
 						paintHead();
 						paintFoot();
 					}
@@ -2891,9 +2890,8 @@ void ClistBox::scrollLineUp(const int)
 					else 
 					{
 						selected = pos;
+						
 						paintItems();
-						//paint();
-						//
 						paintHead();
 						paintFoot();
 					}
@@ -2918,9 +2916,8 @@ void ClistBox::scrollPageDown(const int)
 				pos = (int) page_start[current_page] - 1;
 
 				selected = pos;
+				
 				paintItems();
-				//paint();
-				//
 				paintHead();
 				paintFoot();
 			}
@@ -2953,9 +2950,8 @@ void ClistBox::scrollPageDown(const int)
 					else 
 					{
 						selected = pos;
+						
 						paintItems();
-						//paint();
-						//
 						paintHead();
 						paintFoot();
 					}
@@ -2981,9 +2977,8 @@ void ClistBox::scrollPageUp(const int)
 				pos = items.size() - 1;
 
 			selected = pos;
+			
 			paintItems();
-			//paint();
-			//
 			paintHead();
 			paintFoot();
 		}
@@ -3013,9 +3008,8 @@ void ClistBox::scrollPageUp(const int)
 						else 
 						{
 							selected = pos;
+							
 							paintItems();
-							//paint();
-							//
 							paintHead();
 							paintFoot();
 						}
@@ -3045,9 +3039,8 @@ void ClistBox::scrollPageUp(const int)
 						else 
 						{
 							selected = pos;
+							
 							paintItems();
-							//paint();
-							//
 							paintHead();
 							paintFoot();
 						}
@@ -3093,9 +3086,8 @@ void ClistBox::swipLeft()
 					else 
 					{
 						selected = pos;
+						
 						paintItems();
-						//paint();
-						//
 						paintHead();
 						paintFoot();
 					}
@@ -3119,8 +3111,7 @@ void ClistBox::swipLeft()
 				if((items[selected]->can_arrow)) 
 				{
 					items[selected]->msg = RC_left;
-					
-					parent->onOKKeyPressed(RC_left);
+					oKKeyPressed(parent);
 				}
 			} 
 		}
@@ -3157,9 +3148,8 @@ void ClistBox::swipRight()
 					else 
 					{
 						selected = pos;
+						
 						paintItems();
-						//paint();
-						//
 						paintHead();
 						paintFoot();
 					}
@@ -3183,8 +3173,7 @@ void ClistBox::swipRight()
 				if((items[selected]->can_arrow)) 
 				{
 					items[selected]->msg = RC_right;
-					
-					parent->onOKKeyPressed(RC_right);
+					oKKeyPressed(parent);
 				}
 			} 
 		}
@@ -3192,7 +3181,7 @@ void ClistBox::swipRight()
 }
 
 //
-int ClistBox::oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg)
+int ClistBox::oKKeyPressed(CMenuTarget* target)
 {
 	dprintf(DEBUG_INFO, "ClistBox::okKeyPressed:\n");
 	
@@ -3201,7 +3190,6 @@ int ClistBox::oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg)
 	if (hasItem() && selected >= 0 && items[selected]->isSelectable())
 	{
 		actionKey = items[selected]->actionKey;
-		items[selected]->msg = _msg;
 		
 		ret = items[selected]->exec(target);
 	}	
@@ -3230,8 +3218,6 @@ void ClistBox::directKeyPressed(neutrino_msg_t _msg)
 				{
 					// different page
 					paintItems();
-					//paint();
-					//
 					paintHead();
 					paintFoot();
 				}
@@ -3240,8 +3226,9 @@ void ClistBox::directKeyPressed(neutrino_msg_t _msg)
 				pos = selected;
 				
 				titem->paint(true);
+
 				//
-				parent->onOKKeyPressed(_msg);
+				oKKeyPressed(parent);
 			} 
 			break;
 		}

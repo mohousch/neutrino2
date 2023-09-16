@@ -577,19 +577,19 @@ void CWidget::refresh()
 }
 
 // events
-void CWidget::onOKKeyPressed(neutrino_msg_t _msg)
+void CWidget::onOKKeyPressed()
 {
-	dprintf(DEBUG_INFO, "CWidget::onOKKeyPressed:0x%lx\n", _msg);
+	dprintf(DEBUG_INFO, "CWidget::onOKKeyPressed:\n");
 	
 	if(hasWidgetItem() && selected >= 0)
 	{
 		if (items[selected]->hasItem() && items[selected]->isSelectable())
 		{
-			int rv = items[selected]->oKKeyPressed(this, _msg);
+			int rv = items[selected]->oKKeyPressed(this);
 
 			actionKey = items[selected]->getActionKey();
 
-			//FIXME:review this
+			//
 			switch ( rv ) 
 			{
 				case RETURN_EXIT_ALL:

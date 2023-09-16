@@ -185,7 +185,7 @@ class CWidget : public CMenuTarget
 		int getMenuPosition(){return menu_position;};
 
 		// events
-		virtual void onOKKeyPressed(neutrino_msg_t _msg = RC_ok);
+		virtual void onOKKeyPressed();
 		virtual void onHomeKeyPressed();
 		virtual void onUpKeyPressed();
 		virtual void onDownKeyPressed();
