@@ -2942,18 +2942,19 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if(actionKey == "savesettings") 
 	{
+		HintBox(_("Information"), _("Saving settings now, please be patient."));
+		
 		saveSetup(NEUTRINO_SETTINGS_FILE);
 
 		tuxtxt_close();
 			
 		zapitCfg.saveLastChannel = g_settings.uselastchannel;
 		CZapit::getInstance()->setZapitConfig(&zapitCfg);
-
-		//
-		HintBox(_("Information"), _("Saving settings now, please be patient."));
 	}
 	else if (actionKey == "saveskinsettings")
 	{
+		HintBox(_("Information"), _("Saving Skin settings now, please be patient."));
+		
 		// fetch skin config file
 		std::string skinConfig = CONFIGDIR "/skins/";
 		skinConfig += g_settings.preferred_skin.c_str();
@@ -2962,13 +2963,11 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		skinConfig += ".config";
 				
 		saveSkinConfig(skinConfig.c_str());
-				
-		//tuxtxt_close();
-				
-		HintBox(_("Information"), _("Saving Skin settings now, please be patient.\n this needs GUI restart."));
 	}
 	else if (actionKey == "defaultskinsettings")
 	{
+		HintBox(_("Information"), _("Reloading Skin default style, please be patient."));
+		
 		std::string skinDefaultConfigFile = CONFIGDIR "/skins/";
 		skinDefaultConfigFile += g_settings.preferred_skin.c_str();
 		skinDefaultConfigFile += "/";

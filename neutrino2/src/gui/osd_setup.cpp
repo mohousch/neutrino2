@@ -1284,17 +1284,22 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 	if (!actionKey.empty() && actionKey != g_settings.preferred_skin)
 	{
-		//if (MessageBox(_("Skin Select"), _("this need GUI restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
-		{
-			g_settings.preferred_skin = actionKey;
-			
-			//usleep(1000);
-			CNeutrinoApp::getInstance()->loadSkin(g_settings.preferred_skin.c_str());
-			//CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-			return RETURN_EXIT_ALL;
-		}
+		std::string buffer;
+		buffer = "Loading skin ";
+		buffer += actionKey.c_str();
+		buffer += ", please be patient.";
 		
-		//return RETURN_REPAINT;
+		HintBox(_("Information"), _(buffer.c_str()));
+		
+		g_settings.preferred_skin = actionKey;
+			
+		//
+		CNeutrinoApp::getInstance()->loadSkin(g_settings.preferred_skin.c_str());
+		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+		
+		showMenu();
+		
+		return RETURN_EXIT_ALL;
 	}
 		
 	ret = showMenu();
@@ -1450,30 +1455,37 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		}
 		else
 		{
-			//if (MessageBox(_("Skin Style"), _("this need GUI restart"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
-			{
-				// read skin config
-				std::string skinConfigFile = CONFIGDIR "/skins/";
-				skinConfigFile += g_settings.preferred_skin.c_str();
-				skinConfigFile += "/";
-				skinConfigFile += actionKey.c_str();
+			//
+			std::string buffer;
+			buffer = "Loading skin style ";
+			buffer += actionKey.c_str();
+			buffer += ", please be patient.";
+			
+			HintBox(_("Information"), _(buffer.c_str()));
+		
+			// read skin config
+			std::string skinConfigFile = CONFIGDIR "/skins/";
+			skinConfigFile += g_settings.preferred_skin.c_str();
+			skinConfigFile += "/";
+			skinConfigFile += actionKey.c_str();
 				
-				CNeutrinoApp::getInstance()->readSkinConfig(skinConfigFile.c_str());
+			CNeutrinoApp::getInstance()->readSkinConfig(skinConfigFile.c_str());
 				
-				// save skin config
-				std::string skinConfig = CONFIGDIR "/skins/";
-				skinConfig += g_settings.preferred_skin.c_str();
-				skinConfig += "/";
-				skinConfig += g_settings.preferred_skin.c_str();
-				skinConfig += ".config";
+			// save skin config
+			std::string skinConfig = CONFIGDIR "/skins/";
+			skinConfig += g_settings.preferred_skin.c_str();
+			skinConfig += "/";
+			skinConfig += g_settings.preferred_skin.c_str();
+			skinConfig += ".config";
 				
-				CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
+			CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
 				
-				// retsrat
-				//usleep(1000);
-				//CNeutrinoApp::getInstance()->exec(NULL, "restart");
-			}
+			// 
 			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+			
+			hide();
+			showMenu();
+			
 			return RETURN_EXIT_ALL;
 		}
 	}
