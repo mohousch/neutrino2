@@ -110,6 +110,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	bool scan_all = actionKey == "all";
 	bool test = actionKey == "test";
 	bool manual = (actionKey == "manual") || test;
+	success = false;
 	
 	sat_iterator_t sit;
 	CZapit::ScanSatelliteList satList;
@@ -143,6 +144,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	if (!frameBuffer->getActive())
 		return RETURN_EXIT_ALL;
 
+	//
         CZapit::getInstance()->stopPlayBack();
 	CSectionsd::getInstance()->pauseScanning(true);
 
@@ -260,8 +262,6 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		}
 	}
 	
-	success = false;
-	
 	// send bouquets mode
 	CZapit::getInstance()->setScanBouquetMode( (CZapit::bouquetMode) scanSettings->bouquetMode);
 
@@ -276,7 +276,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	frameBuffer->blit();	
 
 	// go
-	if(test) 
+	if(test) //test signal
 	{
 		int w = x + width - xpos2;
 		char buffer[128];
@@ -318,7 +318,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 
 		success = CZapit::getInstance()->tuneTP(TP, feindex);
 	} 
-	else if(manual)
+	else if(manual) // manual
 	{
 		CZapit::commandScanTP msg;
 	
@@ -364,11 +364,13 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 				}
 			}
 			else
-				msg = handleMsg(msg, data);
+			{
+				handleMsg(msg, data);
+			}
+				
+			frameBuffer->blit();
 		}
 		while (!(msg == RC_timeout));
-		
-		frameBuffer->blit();	
 	}
 	
 	// to join scan thread
@@ -399,9 +401,9 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 				msg = RC_timeout;
 			else
 				CNeutrinoApp::getInstance()->handleMsg( msg, data );
+				
+			frameBuffer->blit();
 		} while (!(msg == RC_timeout));
-		
-		frameBuffer->blit();
 	}
 
 	hide();
@@ -420,7 +422,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	return RETURN_REPAINT;
 }
 
-int CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
+neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 {
 	int w = x + width - xpos2;
 	
@@ -534,6 +536,8 @@ void CScanTs::paintRadar(void)
 	sprintf(filename, "radar%d.raw", radar);
 	radar = (radar + 1) % 10;
 	frameBuffer->paintIcon8(filename, xpos_radar, ypos_radar, 17);
+	
+	frameBuffer->blit();
 }
 
 void CScanTs::hide()
@@ -577,7 +581,7 @@ void CScanTs::paint(bool fortest)
 	head.paint();
 	
 	// main box
-	frameBuffer->paintBoxRel(x, ypos + hheight, width, height - hheight, COL_MENUCONTENT_PLUS_0, g_settings.Foot_radius, CORNER_BOTTOM);
+	frameBuffer->paintBoxRel(x, ypos + hheight, width, height - hheight, COL_MENUCONTENT_PLUS_0, RADIUS_SMALL, CORNER_BOTTOM);
 	
 	// radar
 	frameBuffer->loadPal("radar.pal", 17, 37);
@@ -710,5 +714,7 @@ void CScanTs::showSNR()
 		frameBuffer->paintBoxRel(posx, posy - 2, sw, mheight, COL_MENUCONTENT_PLUS_0);
 		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT);
 	}
+	
+	frameBuffer->blit();
 }
 

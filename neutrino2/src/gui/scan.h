@@ -76,7 +76,7 @@ class CScanTs : public CMenuTarget
 		void paintLineLocale(int _x, int * _y, int _width, const char* const l);
 		void paintLine(int _x, int _y, int w, const char * const txt);
 		void paintRadar(void);
-		int handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data);
+		neutrino_msg_t handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data);
 		int greater_xpos(int xpos, const char* const txt);
 		bool freqready;
 		void showSNR();

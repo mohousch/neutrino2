@@ -2288,6 +2288,7 @@ uint32_t CFrontend::getDeliverySystem()
 	return system;
 }
 
+//
 fe_delivery_system_t CFrontend::getFEDeliverySystem(uint32_t sys)
 {
 	fe_delivery_system_t delsys;
@@ -2327,6 +2328,7 @@ fe_delivery_system_t CFrontend::getFEDeliverySystem(uint32_t sys)
 	return delsys;
 }
 
+//
 bool CFrontend::changeDelSys(uint32_t delsys)
 {
 	dprintf(DEBUG_NORMAL, "CFrontend::changeDelSys: fe(%d:%d) to delsys:0x%x\n", feadapter, fenumber, delsys);

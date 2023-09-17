@@ -245,8 +245,6 @@ int COSDMenuColorSettings::exec(CMenuTarget* parent, const std::string& actionKe
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 		
-		//HintBox(_("Information"), _("Saving settings now, please be patient."));
-		
 		return ret;
 	}
 	
@@ -441,8 +439,6 @@ int COSDInfoBarColorSettings::exec(CMenuTarget* parent, const std::string& actio
 	{
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
-		
-		//HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
 		return ret;
 	}
@@ -736,8 +732,6 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
-		
-		//HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
 		return ret;
 	}
@@ -1284,6 +1278,10 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 	if (!actionKey.empty() && actionKey != g_settings.preferred_skin)
 	{
+		// save current skin settings
+		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		
+		// load selected skin
 		std::string buffer;
 		buffer = "Loading skin ";
 		buffer += actionKey.c_str();
