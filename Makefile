@@ -335,8 +335,6 @@ $(DEST):
 $(N2_SRC):
 	git pull
 
-neutrino2-checkout: $(N2_SRC)
-
 neutrino2-clean:
 	$(MAKE) -C $(N2_SRC) clean
 
@@ -350,8 +348,6 @@ neutrino2-distclean:
 PLUGINS_SRC = $(PWD)/plugins
 $(PLUGINS_SRC):
 	git pull
-
-plugins-checkout: $(PLUGINS_SRC)
 
 plugins: $(PLUGINS_SRC)/config.status $(N2_SRC)/config.status
 	$(MAKE) -C $(PLUGINS_SRC) install
@@ -379,7 +375,7 @@ update:
 clean: neutrino2-clean plugins-clean
 distclean: neutrino2-distclean plugins-distclean
 
-PHONY = neutrino2-checkout plugins-checkout
+PHONY = clean distclean
 .PHONY: $(PHONY)
 
 endif
