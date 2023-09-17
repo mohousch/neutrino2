@@ -414,16 +414,12 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	// getRecordChannelInfo
 	CZapit::CCurrentServiceInfo si;
 	si = CZapit::getInstance()->getServiceInfo(channel_id);
-	
-	CGenPsi psi;
 
 	// vpid
 	if (si.vpid != 0)
 	{
-		psi.addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0); //FIXME:
-		
-		// pcr pid
-		//FIXME:
+		//psi.addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0); //FIXME:
+		::addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0);
 	}
 		
 	// apids
@@ -433,7 +429,8 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
         for(APIDList::iterator it = apid_list.begin(); it != apid_list.end(); it++) 
 	{
                 pids[numpids++] = it->apid;
-		psi.addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
+		//psi.addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
+		::addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
         }
         
         CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(channel_id);
@@ -453,7 +450,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 
 				pids[numpids++] = sd->pId;
 				
-				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
+				//psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
 			}
 			
 			// teletext sub
@@ -464,7 +461,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 				
 				pids[numpids++] = sd->pId;
 				
-				psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
+				//psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
 			}
 		}
         }
@@ -993,8 +990,9 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	}
 	
 	//
-	CGenPsi psi;
-	psi.genpsi(fd);
+	//CGenPsi psi;
+	//psi.genpsi(fd);
+	::genpsi(fd);
 	
 	// init record
 	if(!record)

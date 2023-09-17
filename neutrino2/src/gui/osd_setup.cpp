@@ -575,16 +575,12 @@ int CLanguageSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 		strcpy(g_settings.language, actionKey.c_str());
 		g_Locale->loadLocale(Lang2I18N(g_settings.language).c_str());
 		
-		/*
+		//
 		if (!fromStartWizzard)
 		{
-			if (MessageBox(_("Information"), _("this need GUI restart\ndo you really want to restart?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes) 
-			{
-				CNeutrinoApp::getInstance()->exec(NULL, "restart");
-			}
+			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		}
-		*/
-		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+		
 		return RETURN_EXIT;
 	}
 	
