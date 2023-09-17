@@ -121,8 +121,7 @@ bool CBasicClient::send_string(const char* data)
 		send_length = static_cast<uint8_t>(length);
 	}
 
-	return (send_data((char *)&send_length, sizeof(send_length)) &&
-		send_data(data, send_length));
+	return (send_data((char *)&send_length, sizeof(send_length)) && send_data(data, send_length));
 }
 
 bool CBasicClient::receive_data(char* data, const size_t size, bool use_max_timeout)
