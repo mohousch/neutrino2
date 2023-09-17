@@ -439,7 +439,6 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
         CZapitChannel *channel = CZapit::getInstance()->findChannelByChannelID(channel_id);
         
         // subs
-        /*
         if (channel)
         {
         	for (int i = 0 ; i < (int)channel->getSubtitleCount() ; ++i) 
@@ -469,7 +468,6 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 			}
 		}
         }
-        */
 
 	//record file name format
 	char filename[512]; // UTF-8

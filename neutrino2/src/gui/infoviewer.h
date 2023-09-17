@@ -164,9 +164,6 @@ class CInfoViewer
 		int dateWidth;
 		int dateHeight;
 		
-		// ca
-		int m_CA_Status;
-		
 		// dimensions of radiotext window		
 		int             rt_dx;
 		int             rt_dy;
@@ -202,7 +199,7 @@ class CInfoViewer
 		void showButton_SubServices();
 		void showIcon_16_9();		
 		void showIcon_RadioText(bool rt_available) const;		
-		void showIcon_CA_Status(int);
+		void showIcon_CA_Status() const;
 		void showIcon_VTXT()      const;
 		void showRecordIcon(bool show);
 		void paintRecordIcon(int posx, int posy);

@@ -200,7 +200,7 @@ int old_b_id = -1;
 // record and timeshift
 bool autoshift = false;
 uint32_t shift_timer = 0;
-uint32_t scrambled_timer;
+uint32_t scrambled_timer = 0;
 char recDir[255];
 char timeshiftDir[255];
 extern char rec_filename[1024];

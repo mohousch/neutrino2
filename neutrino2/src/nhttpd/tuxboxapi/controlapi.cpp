@@ -191,7 +191,7 @@ const CControlAPI::TyCgiCall CControlAPI::yCgiCallList[]=
 	{"vcroutput", 		&CControlAPI::VCROutputCGI,	 "text/plain"},
 	{"scartmode", 		&CControlAPI::ScartModeCGI,	 "text/plain"},
 	{"audio", 		&CControlAPI::AudioCGI,	 	 "text/plain"},
-	{"crypt", 		&CControlAPI::CryptCGI,	 	 "text/plain"},
+	//{"crypt", 		&CControlAPI::CryptCGI,	 	 "text/plain"},
 	// timer
 	{"timer", 		&CControlAPI::TimerCGI,	 	 "text/plain"},
 	// bouquet editing
@@ -830,7 +830,7 @@ void CControlAPI::VolumeCGI(CyhookHandler *hh)
 		hh->SendError();
 }
 
-//
+/*
 void CControlAPI::CryptCGI(CyhookHandler *hh)
 {
 	if (hh->ParamList.empty() || hh->ParamList["1"] == "info") 
@@ -840,6 +840,7 @@ void CControlAPI::CryptCGI(CyhookHandler *hh)
 	}
 	//TODO: more
 }
+*/
 
 //
 void CControlAPI::ChannellistCGI(CyhookHandler *hh)

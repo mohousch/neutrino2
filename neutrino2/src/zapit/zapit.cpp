@@ -1436,7 +1436,7 @@ tune_again:
 	// start playback (live)
 	int res = startPlayBack(live_channel);
 
-	//
+	// ci / cam
 	if  (IS_WEBTV(channel_id))
 		return res;
 	else
@@ -1451,12 +1451,12 @@ tune_again:
 			if(live_fe != NULL)
 				ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
 		}
-#endif		
-	
+#endif	
+
 		// send caid
 		int caid = 1;
 
-		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_CA_ID, CEventServer::INITID_NEUTRINO, &caid, sizeof(int));
+		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_CA_ID, CEventServer::INITID_NEUTRINO, &caid, sizeof(int));	
 
 		// start pmt update filter
 		CPmt::getInstance()->pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);

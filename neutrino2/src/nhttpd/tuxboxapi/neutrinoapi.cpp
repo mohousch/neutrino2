@@ -509,6 +509,7 @@ std::string CNeutrinoAPI::getAudioInfoAsString(void)
 #endif	
 }
 
+/*
 std::string CNeutrinoAPI::getCryptInfoAsString(void) 
 {
 	extern int pmt_caids[11];
@@ -527,6 +528,7 @@ std::string CNeutrinoAPI::getCryptInfoAsString(void)
 
 	return out.str();
 }
+*/
 
 std::string CNeutrinoAPI::getLogoFile(std::string _logoURL, t_channel_id channelId) 
 {

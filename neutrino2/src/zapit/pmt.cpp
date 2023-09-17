@@ -46,7 +46,6 @@
 extern int currentMode;
 extern short scan_runs;
 
-
 /*
  * Stream types
  * ------------
@@ -559,7 +558,7 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 		}
 	}
 
-	//caids[]
+	//
 	int ia, dpmtlen, pos;
 	unsigned char descriptor_length = 0;
 	
@@ -580,6 +579,7 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 				{
 					if(buffer[ia] == 0x09 && buffer[ia + 1] > 0) 
 					{
+						//
 						switch(buffer[ia+2]) 
 						{
 							case 0x06: pmt_caids[0] = 1;
@@ -743,6 +743,4 @@ int CPmt::pmt_stop_update_filter(int * fd)
 	
         return 0;
 }
-
-
 

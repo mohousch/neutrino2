@@ -520,21 +520,6 @@ fe_modulation_t CFrontend::getModulation(const uint8_t modulation)
 
 uint32_t CFrontend::getFrequency(void) const
 {
-	/*
-	switch (info.type) 
-	{
-		case FE_QPSK:
-			if (currentToneMode == SEC_TONE_OFF)
-				return curfe.frequency;
-			else
-				return curfe.frequency;
-	
-		case FE_QAM:
-		case FE_OFDM:
-		default:
-			return curfe.frequency;
-	}
-	*/
 	return curfe.frequency;
 }
 
@@ -573,16 +558,13 @@ FrontendParameters CFrontend::getFrontend(void) const
 {
 	FrontendParameters feparams;
 	
-	//if(ioctl(fd, FE_GET_FRONTEND, &feparams) < 0)
-	//	perror("FE_GET_FRONTEND");
-	
 	return feparams;
 	
 }
 
 uint32_t CFrontend::getBitErrorRate(void) const
 {
-	uint32_t ber;
+	uint32_t ber = 0;
 
 	if(ioctl(fd, FE_READ_BER, &ber) < 0)
 	      perror("FE_READ_BER");
@@ -592,7 +574,7 @@ uint32_t CFrontend::getBitErrorRate(void) const
 
 uint16_t CFrontend::getSignalStrength(void) const
 {
-	uint16_t strength;
+	uint16_t strength = 0;
 
 	if(ioctl(fd, FE_READ_SIGNAL_STRENGTH, &strength) < 0)
 	      perror("FE_READ_SIGNAL_STRENGHT");
@@ -602,7 +584,7 @@ uint16_t CFrontend::getSignalStrength(void) const
 
 uint16_t CFrontend::getSignalNoiseRatio(void) const
 {
-	uint16_t snr;
+	uint16_t snr = 0;
 
 	if(ioctl(fd, FE_READ_SNR, &snr) < 0)
 		perror("FE_READ_SNR");
@@ -612,7 +594,7 @@ uint16_t CFrontend::getSignalNoiseRatio(void) const
 
 uint32_t CFrontend::getUncorrectedBlocks(void) const
 {
-	uint32_t blocks;
+	uint32_t blocks = 0;
 
 	if( ioctl(fd, FE_READ_UNCORRECTED_BLOCKS, &blocks) < 0)
 		perror("FE_READ_UNCORRECTED_BLOCKS");

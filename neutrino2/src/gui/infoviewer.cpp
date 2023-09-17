@@ -364,6 +364,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 	new_chan = false;
 	showButtonBar = !_calledFromNumZap;
 	runningPercent = 0;
+	CA_Status = false;
 	
 	initFrames();
 
@@ -591,7 +592,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 		showButton_SubServices();
 		
 		//	
-		showIcon_CA_Status(0);
+		showIcon_CA_Status();
 		showIcon_16_9();
 		showIcon_VTXT();
 		showIcon_SubT();
@@ -1298,7 +1299,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			{
 				showIcon_VTXT();
 				showIcon_SubT();
-				showIcon_CA_Status(0);
+				showIcon_CA_Status();
 				showIcon_Resolution();
 				showIcon_16_9();
 	  		}
@@ -1873,13 +1874,12 @@ void CInfoViewer::killTitle()
 
 void CInfoViewer::Set_CA_Status(int Status)
 {
-	dprintf(DEBUG_INFO, "CInfoViewer::Set_CA_Status:\n");
+	dprintf(DEBUG_INFO, "CInfoViewer::Set_CA_Status: %d\n", Status);
 	
 	CA_Status = Status;
-	m_CA_Status = Status;
 
 	if ( is_visible && showButtonBar )
-		showIcon_CA_Status(1);
+		showIcon_CA_Status();
 }
 
 #if ENABLE_LCD
@@ -1905,17 +1905,17 @@ void CInfoViewer::showLcdPercentOver()
 
 extern int pmt_caids[11];
 
-void CInfoViewer::showIcon_CA_Status(int notfirst)
+void CInfoViewer::showIcon_CA_Status() const
 {
 	dprintf(DEBUG_INFO, "CInfoViewer::showIcon_CA_Status:\n");
 	
-	int i;
+	int i = 0;
 	int caids[] = { 0x0600, 0x1700, 0x0100, 0x0500, 0x1800, 0x0B00, 0x0D00, 0x0900, 0x2600, 0x4a00, 0x0E00 };
 	
 	if(is_visible)
 	{	
-		if(!notfirst) 
-		{
+		//if(!notfirst) 
+		{	
 			bool fta = true;
 			
 			for(i = 0; i < (int)(sizeof(caids)/sizeof(int)); i++) 
