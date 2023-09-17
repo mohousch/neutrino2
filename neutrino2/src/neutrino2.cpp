@@ -3437,7 +3437,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 // handle msg
 int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
-	dprintf(DEBUG_INFO, ANSI_YELLOW"CNeutrinoApp::handleMsg: msg:(0x%X) data:(0x%X)\n", msg, data);
+	dprintf(DEBUG_DEBUG, ANSI_YELLOW"CNeutrinoApp::handleMsg: msg:(0x%X) data:(0x%X)\n", msg, data);
 	
 	int res = 0;
 

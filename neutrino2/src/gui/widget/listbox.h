@@ -294,7 +294,7 @@ class CMenuOptionChooser : public CMenuItem
 	public:
 		CMenuOptionChooser(const char* const Name, int * const OptionValue, const struct keyval * const Options = NULL, const unsigned Number_Of_Options = 0, const bool Active = false, CChangeObserver * const Observ = NULL, const neutrino_msg_t DirectKey = RC_nokey, const std::string& IconName= "", bool Pulldown = false);
 
-		virtual ~CMenuOptionChooser(){};
+		virtual ~CMenuOptionChooser(){options.clear();};
 
 		//
 		void addOption(const char *optionname, const int optionvalue);

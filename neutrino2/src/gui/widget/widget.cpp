@@ -176,7 +176,7 @@ void CWidget::removeCCItem(long pos)
 //
 void CWidget::initFrames()
 {
-	dprintf(DEBUG_DEBUG, "CWidget::initFrames\n");
+	dprintf(DEBUG_INFO, "CWidget::initFrames\n");
 	
 	// sanity check
 	if(mainFrameBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
@@ -354,7 +354,7 @@ void CWidget::hide()
 
 void CWidget::addKey(neutrino_msg_t key, CMenuTarget *menue, const std::string & action)
 {
-	dprintf(DEBUG_DEBUG, "CWidget::addKey: %s\n", action.c_str());
+	dprintf(DEBUG_INFO, "CWidget::addKey: %s\n", action.c_str());
 	
 	keyActionMap[key].menue = menue;
 	keyActionMap[key].action = action;
@@ -587,7 +587,7 @@ void CWidget::onOKKeyPressed()
 		{
 			int rv = items[selected]->oKKeyPressed(this);
 
-			actionKey = items[selected]->getActionKey();
+			actionKey = items[selected]->getActionKey();	// for lua
 
 			//
 			switch ( rv ) 
@@ -610,7 +610,6 @@ void CWidget::onHomeKeyPressed()
 	dprintf(DEBUG_INFO, "CWidget::onHomeKeyPressed\n");
 	
 	exit_pressed = true;
-	dprintf(DEBUG_INFO, "CWidget::onHomeKeyPressed: exit_pressed\n");
 	msg = RC_timeout;
 	
 	if (hasWidgetItem())
@@ -721,7 +720,7 @@ void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 	{
 		int rv = items[selected]->directKeyPressed(_msg);
 
-		actionKey = items[selected]->getActionKey();
+		actionKey = items[selected]->getActionKey();	// lua
 
 		//
 		switch ( rv ) 
@@ -741,7 +740,7 @@ void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 //
 CWidgetItem* CWidget::getWidgetItem(const int type, const std::string& name)
 {
-	dprintf(DEBUG_DEBUG, "CWidget::getWidgetItem: (%d) (%s)\n", type, name.c_str());
+	dprintf(DEBUG_INFO, "CWidget::getWidgetItem: (%d) (%s)\n", type, name.c_str());
 	
 	CWidgetItem* ret = NULL;
 	
@@ -795,7 +794,7 @@ CWidgetItem* CWidget::getWidgetItem(const int type, const std::string& name)
 //
 CComponent* CWidget::getCCItem(const int type, const std::string& name)
 {
-	dprintf(DEBUG_DEBUG, "CWidget::getCCItem: (%d) (%s)\n", type, name.c_str());
+	dprintf(DEBUG_INFO, "CWidget::getCCItem: (%d) (%s)\n", type, name.c_str());
 	
 	CComponent* ret = NULL;
 	

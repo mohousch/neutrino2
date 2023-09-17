@@ -267,7 +267,7 @@ CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const Optio
 
 	itemName = Name? Name : "";
 	
-	//options = Options;
+	//
 	if (Number_Of_Options)
 	{
 		for (unsigned int i = 0; i < (unsigned int)Number_Of_Options; i++)
@@ -306,7 +306,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	dprintf(DEBUG_NORMAL, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
 
 	bool wantsRepaint = false;
-	int ret = RETURN_REPAINT;
+	int ret = RETURN_NONE;
 	
 	//
 	if (locked)
@@ -416,7 +416,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 					else
 						*optionValue = options[number_of_options - 1].key;
 				} 
-				else
+				else // RC_right / RC_ok
 					*optionValue = options[(count + 1) % number_of_options].key;
 				
 				break;
@@ -721,7 +721,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	dprintf(DEBUG_NORMAL, "CMenuOptionStringChooser::exec: (%s)\n", itemName.c_str());
 
 	bool wantsRepaint = false;
-	int ret = RETURN_REPAINT;
+	int ret = RETURN_NONE;
 	
 	//
 	if (locked)
@@ -1147,7 +1147,7 @@ int CMenuForwarder::exec(CMenuTarget* target)
 
 	int ret = RETURN_EXIT;
 	
-	//
+	// locked
 	if (locked)
 	{
 		if( (g_settings.parentallock_prompt != PARENTALLOCK_PROMPT_NEVER) || AlwaysAsk )
@@ -1161,6 +1161,7 @@ int CMenuForwarder::exec(CMenuTarget* target)
 		locked = false;
 	}
 
+	// exec
 	if(jumpTarget)
 	{
 		ret = jumpTarget->exec(target, actionKey);
@@ -1860,7 +1861,7 @@ bool ClistBox::hasItem()
 
 void ClistBox::initFrames()
 {
-	dprintf(DEBUG_DEBUG, "ClistBox::initFrames:\n");
+	dprintf(DEBUG_INFO, "ClistBox::initFrames:\n");
 	
 	// reinit position
 	itemBox.iHeight = wanted_height;
@@ -2034,7 +2035,7 @@ void ClistBox::paint()
 
 void ClistBox::paintItems()
 {
-	dprintf(DEBUG_DEBUG, "ClistBox::paintItems:\n");
+	dprintf(DEBUG_INFO, "ClistBox::paintItems:\n");
 
 	if(widgetType == TYPE_FRAME)
 	{
@@ -2198,7 +2199,7 @@ void ClistBox::paintHead()
 {
 	if(paintTitle)
 	{
-		dprintf(DEBUG_DEBUG, "ClistBox::paintHead:\n");
+		dprintf(DEBUG_INFO, "ClistBox::paintHead:\n");
 		
 		if(widgetType == TYPE_FRAME)
 		{
@@ -2372,7 +2373,7 @@ void ClistBox::paintFoot()
 {
 	if(paint_Foot)
 	{
-		dprintf(DEBUG_DEBUG, "ClistBox::paintFoot:\n");
+		dprintf(DEBUG_INFO, "ClistBox::paintFoot:\n");
 		
 		if(widgetType == TYPE_FRAME)
 		{
@@ -3110,7 +3111,11 @@ void ClistBox::swipLeft()
 			{
 				if((items[selected]->can_arrow)) 
 				{
-					oKKeyPressed(parent, RC_left);
+					CMenuItem * item = items[selected];
+					item->msg = RC_left;
+					actionKey = item->actionKey;
+					
+					if (parent) parent->onOKKeyPressed();
 				}
 			} 
 		}
@@ -3160,8 +3165,6 @@ void ClistBox::swipRight()
 	}
 	else if (widgetType == TYPE_EXTENDED)
 	{
-		//if(textBox)
-		//	textBox->scrollPageDown(1);
 	}
 	else if(widgetType == TYPE_STANDARD)
 	{
@@ -3171,7 +3174,11 @@ void ClistBox::swipRight()
 			{
 				if((items[selected]->can_arrow)) 
 				{
-					oKKeyPressed(parent, RC_right);
+					CMenuItem * item = items[selected];
+					item->msg = RC_right;
+					actionKey = item->actionKey;
+					
+					if (parent) parent->onOKKeyPressed();
 				}
 			} 
 		}
@@ -3187,13 +3194,12 @@ int ClistBox::oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg)
 
 	if (hasItem() && selected >= 0 && items[selected]->isSelectable())
 	{
-		actionKey = items[selected]->actionKey;
-		items[selected]->msg = _msg;
+		CMenuItem * item = items[selected];
+		item->msg = _msg;
+		actionKey = item->actionKey;
 		
-		ret = items[selected]->exec(target);
+		ret = item->exec(target);
 	}
-	
-	printf("ClistBox::okKeyPressed: ret:%d\n", ret);
 	
 	return ret;
 }
@@ -3201,7 +3207,7 @@ int ClistBox::oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg)
 //
 int ClistBox::directKeyPressed(neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_INFO, "ClistBox::directKeyPressed: 0x%x\n", _msg);
+	dprintf(DEBUG_INFO, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = RETURN_NONE;
 	
