@@ -724,9 +724,11 @@ bool CFrameBox::isSelectable(void)
 	return false;
 }
 
-void CFrameBox::swipRight()
+int CFrameBox::swipRight()
 {
 	dprintf(DEBUG_INFO, "CFrameBox::swipRight:\n");
+	
+	int ret = RETURN_NONE;
 
 	for (unsigned int count = 1; count < frames.size(); count++) 
 	{
@@ -744,11 +746,15 @@ void CFrameBox::swipRight()
 			break;
 		}
 	}
+	
+	return ret;
 }
 
-void CFrameBox::swipLeft()
+int CFrameBox::swipLeft()
 {
 	dprintf(DEBUG_INFO, "CFrameBox::swipLeft:\n");
+	
+	int ret = RETURN_NONE;
 
 	for (unsigned int count = 1; count < frames.size(); count++) 
 	{
@@ -768,6 +774,8 @@ void CFrameBox::swipLeft()
 			break;
 		}
 	}
+	
+	return ret;
 }
 
 void CFrameBox::scrollLineDown(const int lines)

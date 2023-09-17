@@ -227,8 +227,8 @@ class CFrameBox : public CWidgetItem
 		bool update() const {return paintDate;};
 
 		//
-		virtual void swipRight();
-		virtual void swipLeft();
+		virtual int swipRight();
+		virtual int swipLeft();
 		virtual void scrollLineDown(const int lines = 1);
 		virtual void scrollLineUp(const int lines = 1);
 

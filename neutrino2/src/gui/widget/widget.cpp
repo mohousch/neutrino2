@@ -677,7 +677,22 @@ void CWidget::onRightKeyPressed()
 	
 	if(hasWidgetItem() && selected >= 0)
 	{
-		items[selected]->swipRight();
+		int rv = items[selected]->swipRight();
+		
+		actionKey = items[selected]->getActionKey();	// lua
+
+		//
+		switch ( rv ) 
+		{
+			case RETURN_EXIT_ALL:
+				retval = RETURN_EXIT_ALL; //fall through
+			case RETURN_EXIT:
+				msg = RC_timeout;
+				break;
+			case RETURN_REPAINT:
+				paint();
+				break;
+		}
 	}
 }
 
@@ -687,7 +702,22 @@ void CWidget::onLeftKeyPressed()
 	
 	if(hasWidgetItem() && selected >= 0)
 	{
-		items[selected]->swipLeft();
+		int rv = items[selected]->swipLeft();
+		
+		actionKey = items[selected]->getActionKey();	// lua
+
+		//
+		switch ( rv ) 
+		{
+			case RETURN_EXIT_ALL:
+				retval = RETURN_EXIT_ALL; //fall through
+			case RETURN_EXIT:
+				msg = RC_timeout;
+				break;
+			case RETURN_REPAINT:
+				paint();
+				break;
+		}
 	}
 }
 

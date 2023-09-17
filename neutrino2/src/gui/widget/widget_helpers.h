@@ -789,8 +789,8 @@ class CWidgetItem
 		virtual void scrollLineUp(const int lines = 1){};
 		virtual void scrollPageDown(const int pages = 1){};
 		virtual void scrollPageUp(const int pages = 1){};
-		virtual void swipLeft(){};
-		virtual void swipRight(){};
+		virtual int swipLeft(){return 0;};
+		virtual int swipRight(){return 0;};
 
 		//
 		virtual void setOutFocus(bool focus = true){inFocus = !focus;};

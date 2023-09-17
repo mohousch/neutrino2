@@ -306,7 +306,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	dprintf(DEBUG_NORMAL, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
 
 	bool wantsRepaint = false;
-	int ret = RETURN_NONE;
+	int ret = RETURN_REPAINT;
 	
 	//
 	if (locked)
@@ -721,7 +721,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	dprintf(DEBUG_NORMAL, "CMenuOptionStringChooser::exec: (%s)\n", itemName.c_str());
 
 	bool wantsRepaint = false;
-	int ret = RETURN_NONE;
+	int ret = RETURN_REPAINT;
 	
 	//
 	if (locked)
@@ -3055,9 +3055,11 @@ void ClistBox::scrollPageUp(const int)
 }
 
 //
-void ClistBox::swipLeft()
+int ClistBox::swipLeft()
 {
 	dprintf(DEBUG_INFO, "ClistBox::swipLeft:\n");
+	
+	int ret = RETURN_NONE;
 
 	if(widgetType == TYPE_FRAME)
 	{
@@ -3098,11 +3100,6 @@ void ClistBox::swipLeft()
 			}
 		}
 	}
-	else if (widgetType == TYPE_EXTENDED)
-	{
-		//if(textBox)
-		//	textBox->scrollPageUp(1);
-	}
 	else if(widgetType == TYPE_STANDARD)
 	{
 		if(widgetMode == MODE_SETUP)
@@ -3115,17 +3112,21 @@ void ClistBox::swipLeft()
 					item->msg = RC_left;
 					actionKey = item->actionKey;
 					
-					if (parent) parent->onOKKeyPressed();
+					ret = item->exec(parent);
 				}
 			} 
 		}
 	}
+	
+	return ret;
 }
 
 //
-void ClistBox::swipRight()
+int ClistBox::swipRight()
 {
 	dprintf(DEBUG_INFO, "ClistBox::swipRight:\n");
+	
+	int ret = RETURN_NONE;
 
 	if(widgetType == TYPE_FRAME)
 	{
@@ -3163,9 +3164,6 @@ void ClistBox::swipRight()
 			}
 		}
 	}
-	else if (widgetType == TYPE_EXTENDED)
-	{
-	}
 	else if(widgetType == TYPE_STANDARD)
 	{
 		if(widgetMode == MODE_SETUP)
@@ -3178,11 +3176,14 @@ void ClistBox::swipRight()
 					item->msg = RC_right;
 					actionKey = item->actionKey;
 					
-					if (parent) parent->onOKKeyPressed();
+					//
+					ret = item->exec(parent);
 				}
 			} 
 		}
 	}
+	
+	return ret;
 }
 
 //
@@ -3237,7 +3238,7 @@ int ClistBox::directKeyPressed(neutrino_msg_t _msg)
 				titem->paint(true);
 
 				//
-				ret = oKKeyPressed(parent);
+				ret = titem->exec(parent);
 			} 
 			break;
 		}
