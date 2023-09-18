@@ -56,3 +56,4 @@ class CDVBString
 };
 
 #endif /* __dvbstring_h__ */
+

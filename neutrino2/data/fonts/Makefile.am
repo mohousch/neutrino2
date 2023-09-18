@@ -11,9 +11,6 @@ install_DATA = \
 	micron_italic.ttf \
 	micron_italic_old.ttf \
 	DejaVuLGCSansMono-Bold.ttf \
-	12.pcf.gz \
-	14B.pcf.gz \
-	15B.pcf.gz \
 	ae_AlMateen.ttf \
 	lcd.ttf \
 	nmsbd.ttf \

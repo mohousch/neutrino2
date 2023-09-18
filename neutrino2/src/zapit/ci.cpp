@@ -20,7 +20,6 @@
  */
 
 #include <stdio.h>
-
 #include <cstring>
 
 #include <messagetools.h>   /* write_length_field */

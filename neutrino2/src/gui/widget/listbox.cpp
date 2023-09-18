@@ -1341,7 +1341,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				icon1_w = 1.63*icon1_h;
 			}
 		
-			//frameBuffer->paintIcon(icon1, x + dx - BORDER_LEFT - icon1_w, y + (height - icon1_h)/2 );
+			//
 			frameBuffer->paintIcon(icon1, x + dx - BORDER_LEFT - icon1_w, y, height, true, icon1_w, icon1_h);
 		}
 
@@ -1395,6 +1395,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(numPosX, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), number_width + 5, tmp, color, 0, true); // UTF-8
 		}
 		
+		// hintIcon / iconName
 		int icon_w = 0;
 		int icon_h = 0;
 		int bpp = 0;
@@ -1545,8 +1546,9 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 					else
 					{
 						int stringwidth = g_Font[optionFont]->getRenderWidth(option_text, true);
-						//int stringstartposOption = std::max(x + BORDER_LEFT + icon_w + ICON_OFFSET + g_Font[nameFont]->getRenderWidth(l_text, true) + ICON_OFFSET, x + dx - (stringwidth + BORDER_RIGHT)); //
-						int stringstartposOption = x + dx - (stringwidth + BORDER_RIGHT); //
+						
+						int stringstartposOption = std::max(x + BORDER_LEFT + icon_w + ICON_OFFSET + g_Font[nameFont]->getRenderWidth(l_text, true) + ICON_OFFSET, x + dx - (stringwidth + BORDER_RIGHT)); //
+						//int stringstartposOption = x + dx - (stringwidth + BORDER_RIGHT); //
 
 						g_Font[optionFont]->RenderString(stringstartposOption, y + (height - g_Font[optionFont]->getHeight())/2 + g_Font[optionFont]->getHeight(), dx - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - l_text_width - icon_w, option_text, (selected || !active)? color : optionFontColor, 0, true);
 					}
