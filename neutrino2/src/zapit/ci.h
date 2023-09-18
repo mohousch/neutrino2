@@ -87,8 +87,8 @@ class CCaPmt : public CCaTable
 
 	public:
 		~CCaPmt(void);
-		unsigned getLength(void);
-		unsigned writeToBuffer(CZapitChannel * thisChannel, unsigned char * const buffer, int demux = 0, int camask = 1, bool addPrivate = true);
+		unsigned getLength(bool addPrivate = false);
+		unsigned writeToBuffer(CZapitChannel * thisChannel, unsigned char * const buffer, int demux = 0, int camask = 1, bool addPrivate = false);
 
 		unsigned ca_pmt_list_management	: 8;
 		unsigned program_number		: 16;

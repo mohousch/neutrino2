@@ -66,15 +66,13 @@ std::map <t_channel_id, uint8_t> service_types;
 
 extern CEventServer *eventServer;
 
-void CDescriptors::generic_descriptor(const unsigned char * const)
+void CDescriptors::generic_descriptor(const unsigned char * const buffer)
 {
-#if 0
 	dprintf(DEBUG_NORMAL, "generic descriptor dump:");
 
 	for (unsigned short i = 0; i < buffer[1] + 2; i++)
 		printf(" %02x", buffer[i]);
 	printf("\n");
-#endif
 }
 
 /* 0x02 */
@@ -223,9 +221,8 @@ void CDescriptors::FlexMuxTiming_descriptor(const unsigned char * const)
  */
 
 /* 0x40 */
-void CDescriptors::network_name_descriptor(const unsigned char * const /*buffer*/)
+void CDescriptors::network_name_descriptor(const unsigned char * const buffer)
 {
-#if 0
 	unsigned char tag = buffer[0];
 	unsigned char len = buffer[1];
 	char name[255];
@@ -234,8 +231,8 @@ void CDescriptors::network_name_descriptor(const unsigned char * const /*buffer*
 	for(i = 0; i < len; i++)
 		name[i] = buffer[2+i];
 	name[i] = 0;
-	printf("[nit] network name: %s\n", name);
-#endif
+	
+	dprintf(DEBUG_INFO, "CDescriptors::network_name_descriptor: network name: %s\n", name);
 }
 
 /* 0x41 */

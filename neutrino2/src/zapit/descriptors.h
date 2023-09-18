@@ -97,7 +97,7 @@ class CDescriptors
 
 		void country_availability_descriptor(const unsigned char * const buffer);
 		void linkage_descriptor(const unsigned char * const buffer);
-		int NVOD_reference_descriptor(const unsigned char * const buffer, const unsigned int num, t_transport_stream_id * const, t_original_network_id * const, t_service_id * const);
+		int NVOD_reference_descriptor(const unsigned char * const buffer, const unsigned int num, t_transport_stream_id * const tsid, t_original_network_id * const onid, t_service_id * const sid);
 		void time_shifted_service_descriptor(const unsigned char * const buffer);
 		void short_event_descriptor(const unsigned char * const buffer);
 		void extended_event_descriptor(const unsigned char * const buffer);

@@ -44,25 +44,26 @@ bool CCam::sendMessage(const char * const data, const size_t length, bool update
 	/* send_data return false without trying, if no opened connection */
 	if(update) 
 	{
-		if(!send_data(data, length)) 
+		if(!sendData(data, length)) 
 		{
-			if (!open_connection())
+			if (!openConnection())
 				return false;
-			return send_data(data, length);
+				
+			return sendData(data, length);
 		}
 		
 		return true;
 	}
 
-	close_connection();
+	closeConnection();
 
 	if(!length) 
 		return false;
 	
-	if (!open_connection())
+	if (!openConnection())
 		return false;
 
-	return send_data(data, length);
+	return sendData(data, length);
 }
 
 bool CCam::setCaPmt(CZapitChannel * thischannel, CCaPmt * const caPmt, int demux, int camask, bool update)
@@ -73,9 +74,9 @@ bool CCam::setCaPmt(CZapitChannel * thischannel, CCaPmt * const caPmt, int demux
 	printf("CCam::setCaPmt: demux_index:(%d) camask:(%d) update:(%s)\n", demux, camask, update ? "yes" : "no" );
 	
 	//
-	unsigned int size = caPmt->getLength();
+	unsigned int size = caPmt->getLength(true);
 	unsigned char buffer[3 + get_length_field_size(size) + size];
-	size_t pos = caPmt->writeToBuffer(thischannel, buffer, demux, camask);
+	size_t pos = caPmt->writeToBuffer(thischannel, buffer, demux, camask, true);
 
 	return sendMessage((char *)buffer, pos, update);
 }

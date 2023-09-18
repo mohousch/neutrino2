@@ -37,7 +37,6 @@ CZapitChannel::CZapitChannel(const std::string& p_name, t_service_id p_sid, t_tr
 
 	channel_id = CREATE_CHANNEL_ID;
 	caPmt = NULL;
-	rawPmt = NULL;
 	videoType = CHANNEL_VIDEO_MPEG2;
 	number = 0;
 	scrambled = 0;
@@ -73,7 +72,6 @@ CZapitChannel::CZapitChannel(const std::string& p_name, t_channel_id p_chid, con
 	satellitePosition = 0;
 	freq = 0;
 	caPmt = NULL;
-	rawPmt = NULL;
 	videoType = CHANNEL_VIDEO_MPEG2;
 	number = 0;
 	scrambled = 0;
@@ -93,7 +91,6 @@ CZapitChannel::~CZapitChannel(void)
 	resetPids();
 	
 	setCaPmt(NULL);
-	setRawPmt(NULL);
 }
 
 CZapitAudioChannel *CZapitChannel::getAudioChannel(unsigned char index)
@@ -384,14 +381,5 @@ void CZapitChannel::setCaPmt(CCaPmt *pCaPmt)
 		delete caPmt;
 	
 	caPmt = pCaPmt; 
-}
-
-void CZapitChannel::setRawPmt(unsigned char * pmt, int len)
-{
-	if(rawPmt)
-		delete[] rawPmt;
-	
-	rawPmt = pmt;
-	pmtLen = len;
 }
 

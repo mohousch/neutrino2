@@ -138,11 +138,9 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 						CDescriptors::getInstance()->ISO_639_language_descriptor(buffer + pos2);
 						break;
 	
-					/*
 					case 0x40:
 						CDescriptors::getInstance()->network_name_descriptor(buffer + pos2);
 						break;
-					*/
 
 					case 0x42:
 						CDescriptors::getInstance()->stuffing_descriptor(buffer + pos2);
@@ -164,9 +162,9 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 						CDescriptors::getInstance()->linkage_descriptor(buffer + pos2);
 						break;
 	
-					case 0x4B:
-						//CDescriptors::getInstance()->NVOD_reference_descriptor(buffer + pos2);
-						break;
+					//case 0x4B:
+					//	CDescriptors::getInstance()->NVOD_reference_descriptor(buffer + pos2);
+					//	break;
 	
 					case 0x4C:
 						CDescriptors::getInstance()->time_shifted_service_descriptor(buffer + pos2);
@@ -229,7 +227,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 						break;
 	
 					default:
-						//CDescriptors::getInstance()->generic_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->generic_descriptor(buffer + pos2);
 						break;
 				}
 			}
@@ -337,7 +335,7 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 						break;
 	
 					default:
-						//CDescriptors::getInstance()->generic_descriptor(buffer + pos2);
+						CDescriptors::getInstance()->generic_descriptor(buffer + pos2);
 						break;
 				}
 			}

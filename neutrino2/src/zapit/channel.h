@@ -165,8 +165,6 @@ class CZapitChannel
 
 		// the conditional access program map table of this channel
 		CCaPmt* caPmt;
-		unsigned char* rawPmt;
-		int pmtLen;
 
 		//
 		std::string ttx_language_code;
@@ -234,7 +232,6 @@ class CZapitChannel
 		unsigned short		getPreAudioPid(void)		{ return audioPid; }
 		bool			getPidsFlag(void)		{ return pidsFlag; }
 		CCaPmt *		getCaPmt(void)			{ return caPmt; }
-		unsigned char *		getRawPmt(int &len)		{ len = pmtLen; return rawPmt; };
 		unsigned short		getaitPid(void)			{return aitPid;};
 		//
 		std::string		getUrl(void)			{ return url;};
@@ -265,7 +262,6 @@ class CZapitChannel
 		void setPrivatePid(unsigned short pPrivatePid)		{ privatePid = pPrivatePid; }
 		void setPidsFlag(void)					{ pidsFlag = true; }
 		void setCaPmt(CCaPmt * pCaPmt);
-		void setRawPmt(unsigned char * pmt, int len = 0);
 		void setaitPid(unsigned short aitPID)			{ aitPid = aitPID; };
 		void setNumber(unsigned int num)			{ number = num; };
 		//

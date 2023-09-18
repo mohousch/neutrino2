@@ -37,9 +37,10 @@
 #include <zapit/zapit.h>
 #include <zapit/descriptors.h>
 #include <zapit/getservices.h>
-#include <dmx_cs.h>
 #include <zapit/nit.h>
 #include <zapit/scan.h>
+
+#include <dmx_cs.h>
 
 
 #define NIT_SIZE 1024

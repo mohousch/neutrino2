@@ -27,22 +27,23 @@
 #include <cstdio>
 #include <cstring>
 
+#include <linux/dvb/dmx.h>
+
 #include <system/debug.h>
 
-/* zapit */
+// zapit
 #include <zapit/settings.h>
 #include <zapit/descriptors.h>
 #include <zapit/pmt.h>
-#include <dmx_cs.h>
-
-#include <linux/dvb/dmx.h>
-
 #include <zapit/frontend_c.h>
+
+// libdvbapi
+#include <dmx_cs.h>
 
 
 #define PMT_SIZE 1024
-
 #define RECORD_MODE 0x4
+
 extern int currentMode;
 extern short scan_runs;
 
@@ -567,6 +568,7 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 	
 	dpmtlen = 0;
 	pos = 10;
+	
 	if(!scan_runs) 
 	{
 		while(pos + 2 < pmtlen) 
@@ -659,18 +661,12 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 	if(scan_runs) 
 	{
 		channel->setCaPmt(NULL);
-		channel->setRawPmt(NULL);
 		
 		delete caPmt;
 	} 
 	else 
 	{
 		channel->setCaPmt(caPmt);
-		
-		// setpmtraw
-		unsigned char * p = new unsigned char[pmtlen];
-		memmove(p, buffer, pmtlen);
-		channel->setRawPmt(p, pmtlen);
 	}
 
 	channel->setPidsFlag();

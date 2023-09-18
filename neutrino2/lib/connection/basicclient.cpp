@@ -44,9 +44,9 @@ CBasicClient::CBasicClient()
 	sock_fd = -1;
 }
 
-bool CBasicClient::open_connection()
+bool CBasicClient::openConnection()
 {
-	close_connection();
+	closeConnection();
 
 	struct sockaddr_un servaddr;
 	int clilen;
@@ -58,7 +58,6 @@ bool CBasicClient::open_connection()
 
 	if ((sock_fd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0)
 	{
-		printf("[CBasicClient] socket failed.\n");
 		perror(getSocketName());
 		sock_fd = -1;
 		return false;
@@ -66,16 +65,15 @@ bool CBasicClient::open_connection()
 
 	if (connect(sock_fd, (struct sockaddr*) &servaddr, clilen) < 0)
 	{
-		printf("[CBasicClient] connect failed.\n");
 		perror(getSocketName());
-		close_connection();
+		closeConnection();
 		return false;
 	}
 
 	return true;
 }
 
-void CBasicClient::close_connection()
+void CBasicClient::closeConnection()
 {
 	if (sock_fd != -1)
 	{
@@ -84,7 +82,7 @@ void CBasicClient::close_connection()
 	}
 }
 
-bool CBasicClient::send_data(const char* data, const size_t size)
+bool CBasicClient::sendData(const char* data, const size_t size)
 {
 	timeval timeout;
 
@@ -97,23 +95,22 @@ bool CBasicClient::send_data(const char* data, const size_t size)
 	if (::send_data(sock_fd, data, size, timeout) == false)
 	{
 		printf("[CBasicClient] send failed: %s\n", getSocketName());
-		close_connection();
+		closeConnection();
+		
 		return false;
 	}
-	
-	printf("[CBasicClient] send_data (%s)\n", getSocketName());
 
 	return true;
 }
 
-bool CBasicClient::send_string(const char* data)
+bool CBasicClient::sendString(const char* data)
 {
 	uint8_t send_length;
 	size_t length = strlen(data);
 
 	if (length > 255)
 	{
-		printf("[CBasicClient] string too long - sending only first 255 characters: %s\n", data);
+		printf("CBasicClient::sendString: string too long - sending only first 255 characters: %s\n", data);
 		send_length = 255;
 	}
 	else
@@ -121,10 +118,10 @@ bool CBasicClient::send_string(const char* data)
 		send_length = static_cast<uint8_t>(length);
 	}
 
-	return (send_data((char *)&send_length, sizeof(send_length)) && send_data(data, send_length));
+	return (sendData((char *)&send_length, sizeof(send_length)) && sendData(data, send_length));
 }
 
-bool CBasicClient::receive_data(char* data, const size_t size, bool use_max_timeout)
+bool CBasicClient::receiveData(char* data, const size_t size, bool use_max_timeout)
 {
 	timeval timeout;
 
@@ -145,7 +142,8 @@ bool CBasicClient::receive_data(char* data, const size_t size, bool use_max_time
 	if (::receive_data(sock_fd, data, size, timeout) == false)
 	{
 		printf("[CBasicClient] receive failed: %s\n", getSocketName());
-		close_connection();
+		closeConnection();
+		
 		return false;
 	}
 	
@@ -160,13 +158,13 @@ bool CBasicClient::send(const unsigned char command, const char* data, const uns
 	msgHead.version = getVersion();
 	msgHead.cmd     = command;
 
-	open_connection(); // if the return value is false, the next send_data call will return false, too
+	openConnection(); // if the return value is false, the next send_data call will return false, too
 
-	if (!send_data((char*)&msgHead, sizeof(msgHead)))
+	if (!sendData((char*)&msgHead, sizeof(msgHead)))
 	    return false;
 	
 	if (size != 0)
-	    return send_data(data, size);
+	    return sendData(data, size);
 
 	return true;
 }

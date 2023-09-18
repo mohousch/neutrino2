@@ -143,7 +143,7 @@ unsigned int CCaPmt::writeToBuffer(CZapitChannel * thisChannel, unsigned char * 
 	
 	//
 	if (addPrivate)
-	{										// ca pmt command id
+	{											// ca pmt command id
 		buffer[13] = 0x81;  								// private descr.. dvbnamespace
 		buffer[14] = 0x08; 								//14
 		
@@ -188,9 +188,9 @@ unsigned int CCaPmt::writeToBuffer(CZapitChannel * thisChannel, unsigned char * 
 	return wp;
 }
 
-unsigned int CCaPmt::getLength(void) 
+unsigned int CCaPmt::getLength(bool addPrivate) 
 {
-	unsigned int size = 4 + CCaTable::getLength();
+	unsigned int size = (addPrivate? 31 : 13) + CCaTable::getLength();
 	
 	for (unsigned int i = 0; i < es_info.size(); i++)
 		size += es_info[i]->getLength();
