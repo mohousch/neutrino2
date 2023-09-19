@@ -771,7 +771,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// pictureviewer
 	strcpy( g_settings.network_nfs_picturedir, configfile.getString( "network_nfs_picturedir", "/media/hdd/picture" ).c_str() );
 
-	g_settings.picviewer_slide_time = configfile.getInt32("picviewer_slide_time", 10);
+	g_settings.picviewer_slide_time = configfile.getInt32("picviewer_slide_time", 10);	// in sec
 	g_settings.picviewer_scaling = configfile.getInt32("picviewer_scaling", (int)SIMPLE);
 	// end pictureviewer
 
@@ -3089,10 +3089,10 @@ void CNeutrinoApp::startSubtitles(bool show)
 	if(!show)
 		return;
 	
-	//dvbsub
+	//start dvbsub
 	dvbsub_start(dvbsub_getpid());
 	
-	// tuxtxt
+	// start tuxtxt
 	tuxtx_pause_subtitle( false, live_fe?live_fe->fenumber:0 );
 }
 
@@ -3355,16 +3355,25 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		{
 			// save neutrino.conf
 			saveSetup(NEUTRINO_SETTINGS_FILE);
+			
+			// save skin config
+			std::string skinConfig = CONFIGDIR "/skins/";
+			skinConfig += g_settings.preferred_skin.c_str();
+			skinConfig += "/";
+			skinConfig += g_settings.preferred_skin.c_str();
+			skinConfig += ".config";
+				
+			saveSkinConfig(skinConfig.c_str());
 		}
 
 		// save epg
 		if(save && g_settings.epg_save ) 
 			saveEpg();
 
-		// stop dvbsub
+		// stop / close dvbsub
 		dvbsub_close();
 
-		// stop txt
+		// stop / close txt
 		tuxtxt_stop();
 		tuxtxt_close();
 		tuxtx_stop_subtitle();
@@ -4165,10 +4174,10 @@ void CNeutrinoApp::realRun(void)
 		standbyMode(true);
 	}
 
-	// neutrino main run loop
+	// main run loop
 	while( true ) 
 	{
-		g_RCInput->getMsg(&msg, &data, 10);	// 10 secs..
+		g_RCInput->getMsg(&msg, &data, 1);	// 10 secs..
 		
 		dprintf(DEBUG_DEBUG, "CNeutrinoApp::realRun: msg:(0x%X) data:(0x%X)\n", msg, data);		
 

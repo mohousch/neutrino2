@@ -186,12 +186,12 @@ void CPictureViewerGui::show()
 		{
 			timeout = (int)(m_time + g_settings.picviewer_slide_time - (long)time(NULL));
 			if(timeout < 0 )
-				timeout = 10;
+				timeout = 10;	// 10 sec
 			else if(timeout >= 999)
 				timeout = 999;
 		}
 
-		g_RCInput->getMsg(&msg, &data, timeout);
+		g_RCInput->getMsg(&msg, &data, timeout); // in sec
 
 		if( msg == RC_home)
 		{

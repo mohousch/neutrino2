@@ -101,7 +101,7 @@ class CNeutrinoApp : public CMenuTarget
 		// modes
 		int mode;
 		int lastMode;
-		int chmode;
+		int chmode;	// to custom channel/bouquet mode needed by channel_select widget.
 		
 		CTimerd::RecordingInfo *nextRecordingInfo;
 
@@ -214,7 +214,7 @@ class CNeutrinoApp : public CMenuTarget
 		//
 		int getMode() { return mode; };
 		int getLastMode() { return lastMode; };
-		int getChMode(){return chmode;};
+		int getChMode(){return chmode;};	// to custom channel/bouquet mode needed by channel_select widget.
 		
 		//
 		bool doGuiRecord(char * preselectedDir, bool addTimer = false);
