@@ -2318,7 +2318,7 @@ bool CFrontend::changeDelSys(uint32_t delsys)
 	if ( !(deliverySystemMask & delsys) )
 		return true;
 	
-#if HAVE_DVB_API_VERSION >= 5
+#if 0 //HAVE_DVB_API_VERSION >= 5
 	struct dtv_property p[2];
 	memset(p, 0, sizeof(p));
 	struct dtv_properties cmdseq;

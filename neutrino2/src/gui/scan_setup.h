@@ -124,8 +124,11 @@ class CScanSetupDelSysNotifier : public CChangeObserver
 {
 	private:
 		int feindex;
+		//CMenuItem *item;
+		std::vector<CMenuItem*> items;
 	public:
-		CScanSetupDelSysNotifier(int num = 0){feindex = num;};
+		CScanSetupDelSysNotifier(int num = 0);
+		void addItem(CMenuItem *m);
 		bool changeNotify(const std::string&, void *Data);
 };
 

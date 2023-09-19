@@ -497,12 +497,11 @@ int CScanSetup::showScanService()
 	
 	scansetup->addItem(new CMenuOptionChooser(_("Tuner mode"),  (int *)&CZapit::getInstance()->getFE(feindex)->mode, FRONTEND_MODE_OPTIONS, have_twin? FRONTEND_MODE_TWIN_OPTION_COUNT:FRONTEND_MODE_SINGLE_OPTION_COUNT, true, feModeNotifier));
 	
-	// tunertype (forced delsys)
+	// tunertype (forceddelsys)
 	if (CZapit::getInstance()->getFE(feindex)->isHybrid())
 	{
-		CMenuItem *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&CZapit::getInstance()->getFE(feindex)->forcedDelSys);
-		tunerType->setActive(true);
-		tunerType->setChangeObserver(feDelSysNotifier);
+		//
+		CMenuOptionChooser *tunerType = new CMenuOptionChooser(_("Tuner type"),  (int *)&CZapit::getInstance()->getFE(feindex)->forcedDelSys);
 		
 		if (CZapit::getInstance()->getFE(feindex)->getDeliverySystem() & DVB_S)
 			tunerType->addOption("DVBS", DVB_S);
@@ -515,22 +514,47 @@ int CScanSetup::showScanService()
 		if (CZapit::getInstance()->getFE(feindex)->getDeliverySystem() & DVB_T2)
 			tunerType->addOption("DVBT2", DVB_T2);
 			
+		tunerType->setChangeObserver(feDelSysNotifier);
+		tunerType->setActive(true);
+		
+		feModeNotifier->addItem(0, tunerType);
+		
 		scansetup->addItem(tunerType);
 	}
 	
-	scansetup->addItem( new CMenuSeparator(LINE) );
-	
-//
+	// voltage
+	bool hidden = true;
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
 #else
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 #endif
 	{
-		scansetup->addItem(new CMenuOptionChooser(_("5 Volt"), (int *)&CZapit::getInstance()->getFE(feindex)->powered, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
-	
-		scansetup->addItem( new CMenuSeparator(LINE) );
+		hidden = false;
 	}
+	
+	CMenuOptionChooser *ojVoltage = new CMenuOptionChooser(_("5 Volt"), (int *)&CZapit::getInstance()->getFE(feindex)->powered, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
+	ojVoltage->setHidden(hidden);
+	feDelSysNotifier->addItem(ojVoltage);
+#if HAVE_DVB_API_VERSION >= 5
+	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
+#else
+	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
+#endif
+	{
+		feModeNotifier->addItem(0, ojVoltage);
+	}
+	scansetup->addItem(ojVoltage);
+	
+	//
+	if (CZapit::getInstance()->getFE(feindex)->mode == FE_NOTCONNECTED)
+		hidden = true;
+		
+	CMenuItem *item = new CMenuSeparator(LINE);
+	item->setHidden(hidden);
+	feModeNotifier->addItem(0, item);
+	
+	scansetup->addItem(item);
 
 	// scantype
 	CMenuOptionChooser * ojScantype = new CMenuOptionChooser(_("Scan for services"), (int *)&scanSettings->scanType, SCANTS_ZAPIT_SCANTYPE, SCANTS_ZAPIT_SCANTYPE_COUNT, ((CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP)));
@@ -547,7 +571,10 @@ int CScanSetup::showScanService()
 	feModeNotifier->addItem(0, useNit);
 	scansetup->addItem(useNit);
 		
-	scansetup->addItem(new CMenuSeparator(LINE));
+	//
+	item = new CMenuSeparator(LINE);
+	item->setHidden(hidden);
+	feModeNotifier->addItem(0, item);
 	
 	//
 #if HAVE_DVB_API_VERSION >= 5
@@ -1998,6 +2025,7 @@ bool CScanSettings::saveSettings(const char * const fileName, int index)
 	return true;
 }
 
+// SatelliteSetupNotifier
 CSatelliteSetupNotifier::CSatelliteSetupNotifier(int num)
 {
 	feindex = num;
@@ -2282,9 +2310,44 @@ void CScanSetupNotifier::addItem(int list, CMenuItem *item)
 	}
 }
 
-//
+// CScanSetupDelSysNotifier
+CScanSetupDelSysNotifier::CScanSetupDelSysNotifier(int num)
+{
+	feindex = num;
+	//item = NULL;
+}
+
+void CScanSetupDelSysNotifier::addItem(CMenuItem *m)
+{
+	//item = m;
+	items.push_back(m);
+}
+
 bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 {
+	std::vector<CMenuItem*>::iterator it;
+	uint32_t delsys = *((uint32_t*) Data);
+	
+	if (delsys == DVB_T || delsys == DVB_T2)
+	{
+		//if (item)
+		//	item->setHidden(false);
+		for(it = items.begin(); it != items.end(); it++) 
+		{
+			(*it)->setHidden(false);
+		}
+	}
+	else
+	{
+		//if (item)
+		//	item->setHidden(true);
+		for(it = items.begin(); it != items.end(); it++) 
+		{
+			(*it)->setHidden(true);
+		}
+	}
+
+	//
 	CZapit::getInstance()->getFE(feindex)->changeDelSys(CZapit::getInstance()->getFE(feindex)->forcedDelSys);
 	CZapit::getInstance()->getFE(feindex)->reset();
 	

@@ -298,7 +298,7 @@ void CZapit::initFrontend()
 #endif
 				
 				// set it to standby
-				fe->Close();
+				//fe->Close();
 				
 				usleep(150000);
 			}

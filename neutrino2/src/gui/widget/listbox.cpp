@@ -961,6 +961,11 @@ CMenuSeparator::CMenuSeparator(const int Type, const char * const Text)
 
 int CMenuSeparator::getHeight(void) const
 {
+	////
+	if (hidden)
+		return 0;
+	else
+	////
 	return g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;	
 }
 
@@ -977,6 +982,9 @@ const char * CMenuSeparator::getString(void)
 int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 {
 	dprintf(DEBUG_DEBUG, "CMenuSeparator::paint:\n");
+	
+	if (hidden)
+		return y;
 
 	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
 
