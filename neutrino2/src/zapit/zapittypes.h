@@ -361,9 +361,9 @@ typedef struct ZAPIT_start_arg
 
 // fetype
 typedef enum {
-	FE_SINGLE,	//CONNECTED
+	FE_SINGLE,
 	FE_LOOP,
-	FE_NOTCONNECTED, // do we really need this
+	FE_NOTCONNECTED
 } fe_mode_t;
 
 #endif /* __zapittypes_h__ */

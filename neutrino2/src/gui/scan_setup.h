@@ -69,6 +69,7 @@ class CScanSettings
 		char			TP_plp_id[4];
 	
 		CScanSettings(int num = 0);
+		virtual ~CScanSettings(){};
 	
 		bool loadSettings(const char * const fileName, int index = 0);
 		bool saveSettings(const char * const fileName, int index = 0);
@@ -82,6 +83,7 @@ class CTPSelectHandler : public CMenuTarget
 	
 	public:
 		CTPSelectHandler(int num = 0);
+		virtual ~CTPSelectHandler(){};
 		int exec(CMenuTarget *parent, const std::string &actionkey);
 };
 
@@ -98,6 +100,7 @@ class CSatelliteSetupNotifier : public CChangeObserver
 		int feindex;
 	public:
 		CSatelliteSetupNotifier(int num = 0);
+		virtual ~CSatelliteSetupNotifier(){items1.clear(); items2.clear(); items3.clear(); items4.clear(); items5.clear();};
 		void addItem(int list, CMenuItem* item);
 		bool changeNotify(const std::string&, void * Data);
 };
@@ -115,6 +118,7 @@ class CScanSetupNotifier : public CChangeObserver
 		int feindex;
 	public:
 		CScanSetupNotifier(int num = 0);
+		virtual ~CScanSetupNotifier(){items1.clear(); items2.clear(); items3.clear(); items4.clear(); items5.clear();};
 		void addItem(int list, CMenuItem *item);
 		bool changeNotify(const std::string&, void * Data);
 };
@@ -124,8 +128,7 @@ class CScanSetupDelSysNotifier : public CChangeObserver
 {
 	private:
 		int feindex;
-		//CMenuItem *item;
-		std::vector<CMenuItem*> items;
+		CMenuItem *item;
 	public:
 		CScanSetupDelSysNotifier(int num = 0);
 		void addItem(CMenuItem *m);
@@ -158,14 +161,13 @@ class CScanSetup : public CMenuTarget
 		CScanSetup(int num = 0);
 		~CScanSetup();
 		int exec(CMenuTarget* parent, const std::string & actionKey);
-		void hide();
 };
 
 //
 class CTunerSetup : public CMenuTarget
 {
 	private:
-		void showMenu();
+		int showMenu();
 		
 	public:
 		CTunerSetup(){};

@@ -312,13 +312,38 @@ CScanSetup::~CScanSetup()
 		delete scanTs;
 		scanTs = NULL;
 	}
+	
+	if (scanSettings)
+	{
+		delete scanSettings;
+		scanSettings = NULL;
+	}
+	
+	if (satNotify)
+	{
+		delete satNotify;
+		satNotify = NULL;
+	}
+	
+	if (feModeNotifier)
+	{
+		delete feModeNotifier;
+		feModeNotifier = NULL;
+	}
+	
+	if (feDelSysNotifier)
+	{
+		delete feDelSysNotifier;
+		feDelSysNotifier = NULL;
+	}
 }
-
+/*
 void CScanSetup::hide()
 {
 	CFrameBuffer::getInstance()->paintBackground();
 	CFrameBuffer::getInstance()->blit();
 }
+*/
 
 int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 {
@@ -341,9 +366,9 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		
 		// send directly diseqc
 #if HAVE_DVB_API_VERSION >= 5
-	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+		if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
 #else
-	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif
 		{
 			CServices::getInstance()->saveMotorPositions();
@@ -370,9 +395,6 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		hintBox = NULL;
 		
 		return RETURN_REPAINT;
-		//hide();
-		//showScanService();
-		//return RETURN_EXIT_ALL;
 	}
 	else if(actionKey == "unisetup") 
 	{
@@ -433,7 +455,9 @@ int CScanSetup::showScanService()
 #else
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif
+	{
 		CServices::getInstance()->loadMotorPositions();
+	}
 	
 	//
 	CWidget* widget = NULL;
@@ -457,7 +481,6 @@ int CScanSetup::showScanService()
 		scansetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		scansetup->setWidgetMode(MODE_SETUP);
-		//scansetup->enableShrinkMenu(); // dont use this
 		
 		scansetup->enablePaintHead();
 		scansetup->setTitle(_("Scan transponder"), NEUTRINO_ICON_SCAN);
@@ -471,6 +494,9 @@ int CScanSetup::showScanService()
 		//
 		widget->addWidgetItem(scansetup);
 	}
+	
+	
+	scansetup->clear();
 	
 	// intros
 	scansetup->addItem(new CMenuForwarder(_("back")));
@@ -524,6 +550,7 @@ int CScanSetup::showScanService()
 	
 	// voltage
 	bool hidden = true;
+	
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
 #else
@@ -536,6 +563,8 @@ int CScanSetup::showScanService()
 	CMenuOptionChooser *ojVoltage = new CMenuOptionChooser(_("5 Volt"), (int *)&CZapit::getInstance()->getFE(feindex)->powered, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true);
 	ojVoltage->setHidden(hidden);
 	feDelSysNotifier->addItem(ojVoltage);
+	
+	/*
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
 #else
@@ -544,16 +573,18 @@ int CScanSetup::showScanService()
 	{
 		feModeNotifier->addItem(0, ojVoltage);
 	}
+	*/
 	scansetup->addItem(ojVoltage);
 	
-	//
+	// separartor
 	if (CZapit::getInstance()->getFE(feindex)->mode == FE_NOTCONNECTED)
 		hidden = true;
+	else
+		hidden = false;
 		
 	CMenuItem *item = new CMenuSeparator(LINE);
 	item->setHidden(hidden);
 	feModeNotifier->addItem(0, item);
-	
 	scansetup->addItem(item);
 
 	// scantype
@@ -571,20 +602,19 @@ int CScanSetup::showScanService()
 	feModeNotifier->addItem(0, useNit);
 	scansetup->addItem(useNit);
 		
-	//
+	// separator
 	item = new CMenuSeparator(LINE);
 	item->setHidden(hidden);
 	feModeNotifier->addItem(0, item);
+	scansetup->addItem(item);
 	
-	//
+	// DVB_S/ DVB_S2
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
 #else
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
-#endif 
+#endif
 	{
-		CMenuOptionStringChooser * satSelect = NULL;
-		
 		// diseqc
 		CMenuOptionChooser *ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&CZapit::getInstance()->getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, true, satNotify, RC_nokey, "", true);
 		feModeNotifier->addItem(1, ojDiseqc);
@@ -602,34 +632,34 @@ int CScanSetup::showScanService()
 		feModeNotifier->addItem(3, uniSetup);
 
 		// lnbsetup
-		CMenuForwarder *fsatSetup = new CMenuForwarder(_("Setup satellites input / LNB"), true, NULL, this, "lnbsetup");
-		fsatSetup->setHidden((CZapit::getInstance()->getFE(feindex)->mode == FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP));
-		feModeNotifier->addItem(1, fsatSetup);
+		CMenuForwarder *lnbSetup = new CMenuForwarder(_("Setup satellites input / LNB"), true, NULL, this, "lnbsetup");
+		lnbSetup->setHidden((CZapit::getInstance()->getFE(feindex)->mode == FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP));
+		feModeNotifier->addItem(1, lnbSetup);
 		
 		// motorsetup
-		CMenuForwarder *fmotorMenu = new CMenuForwarder(_("Motor settings"), true, NULL, this, "motorsetup");
-		fmotorMenu->setHidden((CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP));
-		feModeNotifier->addItem(1, fmotorMenu);
+		CMenuForwarder *motorSetup = new CMenuForwarder(_("Motor settings"), true, NULL, this, "motorsetup");
+		motorSetup->setHidden((CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_NOTCONNECTED) || (CZapit::getInstance()->getFE(feindex)->mode == (fe_mode_t)FE_LOOP));
+		feModeNotifier->addItem(1, motorSetup);
 		
-		scansetup->addItem(ojDiseqc);
-		scansetup->addItem(ojDiseqcRepeats);
+		scansetup->addItem(ojDiseqc);		// diseqc
+		scansetup->addItem(ojDiseqcRepeats);	// diseqcrepeat
 		scansetup->addItem(uniSetup);		// unicablesetup
-		scansetup->addItem(fsatSetup);		// lnbsetup
-		scansetup->addItem(fmotorMenu); 	// motorsetup
+		scansetup->addItem(lnbSetup);		// lnbsetup
+		scansetup->addItem(motorSetup); 	// motorsetup
 	}
 	
-	//// manual scan	
+	// manual scan	
 	CMenuForwarder * manScan = new CMenuForwarder(_("Manual frequency scan / Test signal"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "manualscan");
 	feModeNotifier->addItem(0, manScan);
 	scansetup->addItem(manScan);
 		
-	//// autoscan
+	// autoscan
 	CMenuForwarder * auScan = new CMenuForwarder(_("Auto-Scan"), (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_NOTCONNECTED) && (CZapit::getInstance()->getFE(feindex)->mode != (fe_mode_t)FE_LOOP), NULL, this, "autoscan");
 	feModeNotifier->addItem(0, auScan);
 	
 	scansetup->addItem(auScan);
 
-	//// allautoscan	
+	// allautoscan	
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
 #else
@@ -2045,128 +2075,108 @@ bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 	{
 		for(it = items1.begin(); it != items1.end(); it++)
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++)
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++)
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++)
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++)
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 	}
 	else if(type < DISEQC_ADVANCED) 
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++) 
 		{
-			//(*it)->setActive(true);
-			(*it)->setHidden(false);
+			if (*it) (*it)->setHidden(false);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++) 
 		{
-			//(*it)->setActive(true);
-			(*it)->setHidden(false);
+			if (*it) (*it)->setHidden(false);
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++) 
 		{
-			//(*it)->setActive(true);
-			(*it)->setHidden(false);
+			if (*it) (*it)->setHidden(false);
 		}
 	}
 	else if(type == DISEQC_ADVANCED) 
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
-			//(*it)->setActive(true);
-			(*it)->setHidden(false);
+			if (*it) (*it)->setHidden(false);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++) 
 		{
-			//(*it)->setActive(true);
-			(*it)->setHidden(false);
+			if (*it) (*it)->setHidden(false);
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 	}
 	else if(type > DISEQC_ADVANCED) 
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++) 
 		{
-			//(*it)->setActive(true);
-			(*it)->setHidden(false);
+			if (*it) (*it)->setHidden(false);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++) 
 		{
-			//(*it)->setActive(true);
-			(*it)->setHidden(false);
+			if (*it) (*it)->setHidden(false);
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++) 
 		{
-			//(*it)->setActive(true);
-			(*it)->setHidden(false);
+			if (*it) (*it)->setHidden(false);
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 	}
 
@@ -2177,6 +2187,11 @@ bool CSatelliteSetupNotifier::changeNotify(const std::string&, void * Data)
 	return true;
 }
 
+// list 0 =
+// list 1 =
+// list 2 =
+// list 3 =
+// list 4 =
 void CSatelliteSetupNotifier::addItem(int list, CMenuItem* item)
 {
 	switch(list) 
@@ -2207,7 +2222,11 @@ CScanSetupNotifier::CScanSetupNotifier(int num)
 	feindex = num;
 }
 
-// items1 enabled for advanced diseqc settings, items2 for diseqc != NO_DISEQC, items3 disabled for NO_DISEQC
+// items1 enabled for advanced diseqc settings
+// items2 for diseqc != NO_DISEQC
+// items3 disabled for NO_DISEQC
+// items4
+// items5
 bool CScanSetupNotifier::changeNotify(const std::string&, void * Data)
 {
 	std::vector<CMenuItem*>::iterator it;
@@ -2219,73 +2238,74 @@ bool CScanSetupNotifier::changeNotify(const std::string&, void * Data)
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++) 
 		{
-			//(*it)->setActive(false);
-			(*it)->setHidden(true);
+			if (*it) (*it)->setHidden(true);
 		}
 	}
 	else
 	{
 		for(it = items1.begin(); it != items1.end(); it++) 
 		{
-			//(*it)->setActive(true);
-			(*it)->setHidden(false);
+			if (*it) (*it)->setHidden(false);
 		}
 
 		for(it = items2.begin(); it != items2.end(); it++) 
 		{
-			//(*it)->setActive(true);
-			(*it)->setHidden(false);
+			if (*it) (*it)->setHidden(false);
 		}
 
 		for(it = items3.begin(); it != items3.end(); it++) 
 		{
 			if (dmode != NO_DISEQC)
-				//(*it)->setActive(true);
-				(*it)->setHidden(false);
+			{
+				if (*it) (*it)->setHidden(false);
+			}
 		}
 
 		for(it = items4.begin(); it != items4.end(); it++) 
 		{
 			if (dmode > DISEQC_ADVANCED)
-				//(*it)->setActive(true);
-				(*it)->setHidden(false);
+			{
+				if (*it) (*it)->setHidden(false);
+			}
 		}
 
 		for(it = items5.begin(); it != items5.end(); it++) 
 		{
 			if (dmode != NO_DISEQC && dmode < DISEQC_ADVANCED)
-				//(*it)->setActive(true);
-				(*it)->setHidden(false);
+			{
+				if (*it) (*it)->setHidden(false);
+			}
 		}
 	}
 
 	return true;
 }
 
+// list 0 = main
+// list 1 = diseqc
+// list 2 = unisetup
+// list 3 = diseqc rep
+// list 4 = ?
 void CScanSetupNotifier::addItem(int list, CMenuItem *item)
 {
 	switch(list) 
@@ -2314,13 +2334,12 @@ void CScanSetupNotifier::addItem(int list, CMenuItem *item)
 CScanSetupDelSysNotifier::CScanSetupDelSysNotifier(int num)
 {
 	feindex = num;
-	//item = NULL;
+	item = NULL;
 }
 
 void CScanSetupDelSysNotifier::addItem(CMenuItem *m)
 {
-	//item = m;
-	items.push_back(m);
+	item = m;
 }
 
 bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
@@ -2330,21 +2349,13 @@ bool CScanSetupDelSysNotifier::changeNotify(const std::string&, void *Data)
 	
 	if (delsys == DVB_T || delsys == DVB_T2)
 	{
-		//if (item)
-		//	item->setHidden(false);
-		for(it = items.begin(); it != items.end(); it++) 
-		{
-			(*it)->setHidden(false);
-		}
+		if (item)
+			item->setHidden(false);
 	}
 	else
 	{
-		//if (item)
-		//	item->setHidden(true);
-		for(it = items.begin(); it != items.end(); it++) 
-		{
-			(*it)->setHidden(true);
-		}
+		if (item)
+			item->setHidden(true);
 	}
 
 	//
@@ -2364,14 +2375,16 @@ int CTunerSetup::exec(CMenuTarget* parent, const std::string& actionKey)
 	if(parent)
 		parent->hide();
 	
-	showMenu();
+	ret = showMenu();
 	
 	return ret;
 }
 
-void CTunerSetup::showMenu()
+int CTunerSetup::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CTunerSetup::showMenu\n");
+	
+	int ret = RETURN_REPAINT;
 	
 	CWidget* widget = NULL;
 	ClistBox* TunerSetup = NULL;
@@ -2426,12 +2439,14 @@ void CTunerSetup::showMenu()
 		TunerSetup->addItem(new CMenuForwarder(tbuf, true, NULL, new CScanSetup(i) ));
 	}
 	
-	widget->exec(NULL, "");
+	ret = widget->exec(NULL, "");
 	
 	delete TunerSetup;
 	TunerSetup = NULL;
 	
 	delete widget;
 	widget = NULL;
+	
+	return ret;
 }
 

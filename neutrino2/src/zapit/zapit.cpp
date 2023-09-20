@@ -298,7 +298,7 @@ void CZapit::initFrontend()
 #endif
 				
 				// set it to standby
-				//fe->Close();
+				fe->Close();
 				
 				usleep(150000);
 			}
@@ -316,18 +316,24 @@ void CZapit::initFrontend()
 		{
 			fe->info.type = FE_QPSK;
 			strcpy(fe->info.name, "Sat Fake Tuner");
+			fe->deliverySystemMask |= DVB_S;
+			fe->deliverySystemMask |= DVB_S2;
+			fe->deliverySystemMask |= DVB_S2X;
 			have_s = true;
 		}
 		else if (j == 1)
 		{
 			fe->info.type = FE_QAM;
 			strcpy(fe->info.name, "Cable Fake Tuner");
+			fe->deliverySystemMask |= DVB_C;
 			have_c = true;
 		}
 		else if(j == 2)
 		{
 			fe->info.type = FE_OFDM;
 			strcpy(fe->info.name, "Terrestrial Fake Tuner");
+			fe->deliverySystemMask |= DVB_T;
+			fe->deliverySystemMask |= DVB_T2;
 			have_t = true;
 		}
 		else if (j == 3)
