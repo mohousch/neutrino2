@@ -4,7 +4,7 @@
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
 
-   $Id: timermanager.cpp,v 1.86 2006/03/04 09:51:47 zwen Exp $
+   	$Id: timermanager.cpp 20.09.2023 mohousch Exp $
 
 	License: GPL
 
@@ -209,9 +209,6 @@ void* CTimerManager::timerThread(void *data)
 				{
 					dprintf(DEBUG_INFO, "CTimerManager::timerThread: deleting event\n");
 					
-					//pos->second->printEvent();
-					//dprintf(DEBUG_DEBUG, "\n");
-					
 					delete pos->second;			// delete event
 					timerManager->events.erase(pos++);	// remove from list
 					
@@ -274,10 +271,6 @@ int CTimerManager::addEvent(CTimerEvent* evt, bool save)
 		
 	events[eventID] = evt;			// insert into events
 	m_saveEvents = m_saveEvents || save;
-	
-	dprintf(DEBUG_INFO, "CTimerManager::addEvent: adding event:\n");
-	evt->printEvent();
-	dprintf(DEBUG_DEBUG, "\n");
 	
 	pthread_mutex_unlock(&tm_eventsMutex);
 	
@@ -902,7 +895,7 @@ CTimerEvent::CTimerEvent( CTimerd::CTimerEventTypes evtype, int mon, int day, in
 	CTimerEvent(evtype, (time_t) 0, mktime(tmtime), (time_t)0, evrepeat, repeatcount);
 }
 
-CTimerEvent::CTimerEvent(CTimerd::CTimerEventTypes evtype,CConfigFile *config, int iId)
+CTimerEvent::CTimerEvent(CTimerd::CTimerEventTypes evtype, CConfigFile *config, int iId)
 {
 	dprintf(DEBUG_INFO, "CTimerEvent::CTimerEvent: CTimerEvent: constructor with config\n");
 	
@@ -910,22 +903,22 @@ CTimerEvent::CTimerEvent(CTimerd::CTimerEventTypes evtype,CConfigFile *config, i
 	ostr << iId;
 	std::string id = ostr.str();
 	
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: timer id: int %d string %s\n",iId,id.c_str());
+	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: timer id: int %d string %s\n", iId, id.c_str());
 	
-	time_t announcetime=config->getInt32("ANNOUNCE_TIME_"+id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read ANNOUNCE_TIME_%s %ld\n",id.c_str(),(long)announcetime);
+	time_t announcetime=config->getInt32("ANNOUNCE_TIME_" + id);
+	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read ANNOUNCE_TIME_%s %ld\n", id.c_str(), (long)announcetime);
 	
-	time_t alarmtime=config->getInt32("ALARM_TIME_"+id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read ALARM_TIME_%s %ld\n",id.c_str(),(long)alarmtime);
+	time_t alarmtime=config->getInt32("ALARM_TIME_" + id);
+	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read ALARM_TIME_%s %ld\n", id.c_str(), (long)alarmtime);
 	
-	time_t stoptime=config->getInt32("STOP_TIME_"+id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read STOP_TIME_%s %ld\n",id.c_str(),(long)stoptime);
+	time_t stoptime=config->getInt32("STOP_TIME_" + id);
+	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read STOP_TIME_%s %ld\n", id.c_str(), (long)stoptime);
 	
-	CTimerd::CTimerEventRepeat evrepeat=(CTimerd::CTimerEventRepeat)config->getInt32("EVENT_REPEAT_"+id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read EVENT_REPEAT_%s %d\n",id.c_str(),evrepeat);
+	CTimerd::CTimerEventRepeat evrepeat=(CTimerd::CTimerEventRepeat)config->getInt32("EVENT_REPEAT_" + id);
+	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read EVENT_REPEAT_%s %d\n", id.c_str(), evrepeat);
 	
-	uint32_t repeatcount = config->getInt32("REPEAT_COUNT_"+id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read REPEAT_COUNT_%s %d\n",id.c_str(),repeatcount);
+	uint32_t repeatcount = config->getInt32("REPEAT_COUNT_" + id);
+	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read REPEAT_COUNT_%s %d\n", id.c_str(), repeatcount);
 	
 	eventRepeat = evrepeat;
 	eventState = CTimerd::TIMERSTATE_SCHEDULED; 
@@ -934,12 +927,12 @@ CTimerEvent::CTimerEvent(CTimerd::CTimerEventTypes evtype,CConfigFile *config, i
 	alarmTime = alarmtime;
 	stopTime = stoptime;
 	repeatCount = repeatcount;
-	eventState = (CTimerd::CTimerEventStates ) config->getInt32 ("EVENT_STATE_"+id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read EVENT_STATE_%s %d\n",id.c_str(),eventState);
+	eventState = (CTimerd::CTimerEventStates ) config->getInt32 ("EVENT_STATE_" + id);
+	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read EVENT_STATE_%s %d\n", id.c_str(), eventState);
 	
 
-	previousState = (CTimerd::CTimerEventStates) config->getInt32("PREVIOUS_STATE_"+id);
-	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read PREVIOUS_STATE_%s %d\n",id.c_str(),previousState);
+	previousState = (CTimerd::CTimerEventStates) config->getInt32("PREVIOUS_STATE_" + id);
+	dprintf(DEBUG_DEBUG, "CTimerEvent::CTimerEvent: read PREVIOUS_STATE_%s %d\n", id.c_str(), previousState);
 }
 
 void CTimerEvent::Reschedule()
@@ -947,7 +940,7 @@ void CTimerEvent::Reschedule()
 	if(eventRepeat == CTimerd::TIMERREPEAT_ONCE)
 	{
 		eventState = CTimerd::TIMERSTATE_TERMINATED;
-		dprintf(DEBUG_NORMAL, "CTimerEvent::CTimerEvent: event %d not rescheduled, event will be terminated\n",eventID);
+		dprintf(DEBUG_NORMAL, "CTimerEvent::CTimerEvent: event %d not rescheduled, event will be terminated\n", eventID);
 	}
 	else
 	{
@@ -965,13 +958,13 @@ void CTimerEvent::Reschedule()
 					t->tm_mday++;
 					break;
 				case CTimerd::TIMERREPEAT_WEEKLY: 
-					t->tm_mday+=7;
+					t->tm_mday += 7;
 					break;
 				case CTimerd::TIMERREPEAT_BIWEEKLY: 
-					t->tm_mday+=14;
+					t->tm_mday += 14;
 					break;
 				case CTimerd::TIMERREPEAT_FOURWEEKLY: 
-					t->tm_mday+=28;
+					t->tm_mday += 28;
 					break;
 				case CTimerd::TIMERREPEAT_MONTHLY: 
 					t->tm_mon++;
@@ -986,14 +979,14 @@ void CTimerEvent::Reschedule()
 						if(weekdays > 0)
 						{
 							bool weekday_arr[7];
-							weekday_arr[0]=((weekdays & 0x40) > 0); //So
-							weekday_arr[1]=((weekdays & 0x1) > 0); //Mo
-							weekday_arr[2]=((weekdays & 0x2) > 0); //Di
-							weekday_arr[3]=((weekdays & 0x4) > 0); //Mi
-							weekday_arr[4]=((weekdays & 0x8) > 0); //Do
-							weekday_arr[5]=((weekdays & 0x10) > 0); //Fr
-							weekday_arr[6]=((weekdays & 0x20) > 0); //Sa
-							struct tm *lt= localtime(&alarmTime);
+							weekday_arr[0] = ((weekdays & 0x40) > 0); //So
+							weekday_arr[1] = ((weekdays & 0x1) > 0); //Mo
+							weekday_arr[2] = ((weekdays & 0x2) > 0); //Di
+							weekday_arr[3] = ((weekdays & 0x4) > 0); //Mi
+							weekday_arr[4] = ((weekdays & 0x8) > 0); //Do
+							weekday_arr[5] = ((weekdays & 0x10) > 0); //Fr
+							weekday_arr[6] = ((weekdays & 0x20) > 0); //Sa
+							struct tm *lt = localtime(&alarmTime);
 							int day;
 							for(day = 1 ; !weekday_arr[(lt->tm_wday + day)%7] ; day++){}
 							lt->tm_mday += day;
@@ -1008,13 +1001,13 @@ void CTimerEvent::Reschedule()
 			int isdst2 = t->tm_isdst;
 			if(isdst2 > isdst1) //change from winter to summer
 			{
-				diff-=3600;
-				alarmTime-=3600;
+				diff -= 3600;
+				alarmTime -= 3600;
 			}
 			else if(isdst1 > isdst2) //change from summer to winter
 			{
-				diff+=3600;
-				alarmTime+=3600;
+				diff += 3600;
+				alarmTime += 3600;
 			}
 			if(announceTime > 0)
 				announceTime += diff;
@@ -1029,61 +1022,13 @@ void CTimerEvent::Reschedule()
 	}
 }
 
-void CTimerEvent::printEvent(void)
-{
-//FIXME: _GI_localtime (t=0x30) at localtime.c:54
-#if 0
-	struct tm *alarmtime, *announcetime;
-	
-	dprintf(DEBUG_DEBUG, "CTimerEvent::printEvent: eventID: %03d type: %d state: %d repeat: %d ,repeatCount %d\n",eventID,eventType,eventState,((int)eventRepeat)&0x1FF,repeatCount);
-	
-	announcetime = localtime(&announceTime);
-	
-	dprintf(DEBUG_DEBUG, " CTimerEvent::printEvent: announce: %u %02d.%02d. %02d:%02d:%02d\n",(uint) announceTime, announcetime->tm_mday,announcetime->tm_mon + 1, announcetime->tm_hour, announcetime->tm_min, announcetime->tm_sec);
-	
-	alarmtime = localtime(&alarmTime);
-	
-	dprintf(DEBUG_DEBUG, " CTimerEvent::printEvent: alarm: %u %02d.%02d. %02d:%02d:%02d\n",(uint) alarmTime, alarmtime->tm_mday, alarmtime->tm_mon + 1, alarmtime->tm_hour, alarmtime->tm_min,alarmtime->tm_sec);
-	
-	switch(eventType)
-	{
-		case CTimerd::TIMER_ZAPTO :
-			dprintf(DEBUG_DEBUG, " CTimerEvent::printEvent: Zapto: "
-				PRINTF_CHANNEL_ID_TYPE
-				" epg: %llx\n",
-				static_cast<CTimerEvent_Zapto*>(this)->eventInfo.channel_id,
-				static_cast<CTimerEvent_Zapto*>(this)->eventInfo.epgID);
-			break;
-
-		case CTimerd::TIMER_RECORD :
-			dprintf(DEBUG_DEBUG, " CTimerEvent::printEvent: Record: "
-				PRINTF_CHANNEL_ID_TYPE
-				" epg: %s(%llx) apids: 0x%X\n dir: %s\n",
-					  static_cast<CTimerEvent_Record*>(this)->eventInfo.channel_id,
-					  static_cast<CTimerEvent_Record*>(this)->epgTitle.c_str(),
-					  static_cast<CTimerEvent_Record*>(this)->eventInfo.epgID,
-					  static_cast<CTimerEvent_Record*>(this)->eventInfo.apids,
-					  static_cast<CTimerEvent_Record*>(this)->recordingDir.c_str());
-			break;
-
-		case CTimerd::TIMER_STANDBY :
-			dprintf(DEBUG_DEBUG, " CTimerEvent::printEvent: standby: %s\n",(static_cast<CTimerEvent_Standby*>(this)->standby_on == 1)?"on":"off");
-			break;
-
-		default:
-			;
-	}
-	
-	dprintf(DEBUG_DEBUG, "\n");
-#endif	
-}
-
 void CTimerEvent::saveToConfig(CConfigFile *config)
 {
 	dprintf(DEBUG_INFO, "CTimerEvent::saveToConfig: CTimerEvent::saveToConfig\n");
 	
 	std::vector<int> allIDs;
 	allIDs.clear();
+	
 	if (!(config->getString("IDS").empty()))
 	{
 		// sonst bekommen wir den bloeden 0er

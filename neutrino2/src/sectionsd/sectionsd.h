@@ -1,7 +1,7 @@
 #ifndef __sectionsd__
 #define __sectionsd__
 /*
-  $Id: sectionsd.h 12022023 mohousch Exp $
+  $Id: sectionsd.h 20.09.2023 mohousch Exp $
 
   License: GPL
 
@@ -59,6 +59,7 @@ class CChannelEvent
 
 typedef std::vector<CChannelEvent> CChannelEventList;
 
+//
 class CSectionsd
 {
 	public:
@@ -76,13 +77,13 @@ class CSectionsd
 		{
 			enum
 			{
-				has_anything = 0x01,
-				has_later = 0x02,
-				has_current = 0x04,
-				not_broadcast = 0x08,
-				has_next = 0x10,
-				has_no_current= 0x20,
-				current_has_linkagedescriptors= 0x40
+				has_anything 			= 0x01,
+				has_later 			= 0x02,
+				has_current 			= 0x04,
+				not_broadcast 			= 0x08,
+				has_next 			= 0x10,
+				has_no_current			= 0x20,
+				current_has_linkagedescriptors	= 0x40
 			};
 		};
 
@@ -224,8 +225,8 @@ class CSectionsd
 		
 		//
 		void readSIfromXMLTV(const char *url);
-		//void readSIfromXMLTV(const t_channel_id chid);
 		void readSIfromLocalTV(const t_channel_id chid);
+		
 		//
 		void setConfig(const epg_config config);
 		void deleteSIexceptEPG();

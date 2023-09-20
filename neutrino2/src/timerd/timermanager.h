@@ -4,7 +4,7 @@
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
 
-	$Id: timermanager.h,v 1.46 2006/02/28 21:51:00 zwen Exp $
+	$Id: timermanager.h 20.09.2023 mohousch Exp $
 
 	License: GPL
 
@@ -48,14 +48,14 @@ class CTimerEvent
 		CTimerd::CTimerEventStates eventState;    // actual event state
 		CTimerd::CTimerEventStates previousState; // previous event state
 		CTimerd::CTimerEventRepeat eventRepeat;
-		uint32_t repeatCount;                         // how many times timer will be executed
+		uint32_t repeatCount;                     // how many times timer will be executed
 
 		// time values
 		time_t                     alarmTime;     // event start time
 		time_t                     stopTime;      // 0 = one time shot
 		time_t                     announceTime;  // when should event be announced (0=none)
 
-		//CTimerEvent();
+		//
 		CTimerEvent( CTimerd::CTimerEventTypes evtype, int mon = 0, int day = 0, int hour = 0, int min = 0, CTimerd::CTimerEventRepeat evrepeat = CTimerd::TIMERREPEAT_ONCE, uint32_t repeatcount = 1);
 		CTimerEvent( CTimerd::CTimerEventTypes evtype, time_t announcetime, time_t alarmtime, time_t stoptime, CTimerd::CTimerEventRepeat evrepeat = CTimerd::TIMERREPEAT_ONCE, uint32_t repeatcount = 1);
 		CTimerEvent( CTimerd::CTimerEventTypes evtype, CConfigFile *config, int iId);
@@ -63,7 +63,6 @@ class CTimerEvent
 		void setState(CTimerd::CTimerEventStates newstate){previousState = eventState; eventState = newstate;};
 
 		static int remain_min(const time_t t) {return (t - time(NULL)) / 60;};
-		void printEvent(void);
 		
 		virtual void Reschedule();
 		virtual void fireEvent(){};

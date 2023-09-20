@@ -1,7 +1,6 @@
 /*
- * $Id: zapittypes.h,v 1.23 2004/02/24 23:50:57 thegoodguy Exp $
+ * $Id: zapittypes.h 20.09.2023 mohousch Exp $
  *
- * zapit's types which are used by the clientlib - d-box2 linux project
  *
  * (C) 2002 by thegoodguy <thegoodguy@berlios.de>
  * (C) 2002, 2003 by Andreas Oberritter <obi@tuxbox.org>

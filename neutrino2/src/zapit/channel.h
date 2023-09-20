@@ -291,3 +291,4 @@ typedef std::map<t_channel_id, CZapitChannel> tallchans;
 typedef tallchans::iterator tallchans_iterator;
 
 #endif /* __zapit_channel_h__ */
+

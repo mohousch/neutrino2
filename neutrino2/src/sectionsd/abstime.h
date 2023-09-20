@@ -1,5 +1,6 @@
 #ifndef _ABS_TIME_H_
 #define _ABS_TIME_H_
+
 #ifdef __cplusplus
 extern "C"
 {

@@ -35,4 +35,3 @@ typedef uint64_t event_id_t;
 
 #endif /* __sectionsdtypes_h__ */
 
-

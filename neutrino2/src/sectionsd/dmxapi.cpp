@@ -101,7 +101,7 @@ bool getUTC(UTC_t * const UTC, const bool TDT)
 	char cUTC[5];
 	bool ret = true;
 
-	unsigned char buf[1023+3];
+	unsigned char buf[1023 + 3];
 
 	if(dmxUTC == NULL) 
 	{
@@ -163,6 +163,7 @@ bool getUTC(UTC_t * const UTC, const bool TDT)
 				cc[3] = 0;
 				memmove(cc, to->country_code, 3);
 				time_t t = changeUTCtoCtime(&b2[2+6],0);
+				
 				dprintf(DEBUG_DEBUG, "getUTC(TOT): len=%d cc=%s reg_id=%d "
 					"pol=%d offs=%04x new=%04x when=%s",
 					b2[1], cc, to->country_region_id,

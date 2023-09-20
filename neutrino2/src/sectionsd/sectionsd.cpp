@@ -2561,7 +2561,6 @@ void CSectionsd::readSIfromXML(const char *epgxmlname)
 // fromXMLTV
 //
 void CSectionsd::readSIfromXMLTV(const char *url)
-//void CSectionsd::readSIfromXMLTV(const t_channel_id chid)
 {
 	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromXMLTV: %s\n", url);
 
@@ -2569,12 +2568,6 @@ void CSectionsd::readSIfromXMLTV(const char *url)
 
 	if (!url)
 		return ;
-		
-	//if ( !chid && !IS_WEBTV(chid) )
-	//	return;
-		
-	//if(!g_settings.epg_xmltv)
-	//	return;
 
 	writeLockMessaging();
 	static std::string url_tmp = url;
@@ -2600,9 +2593,6 @@ void CSectionsd::readSIfromLocalTV(const t_channel_id chid)
 	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromLocalTV: %llx\n", chid);
 
 	pthread_t thrInsert;
-
-	//if ( !chid && !IS_WEBTV(chid) )
-	//	return;
 		
 	if(!g_settings.epg_enable_localtv_epg)
 		return;
@@ -5014,7 +5004,7 @@ void CSectionsd::Start(void)
 		dprintf(DEBUG_NORMAL, "CSectionsd::Start: failed to create housekeeping-thread (rc=%d)\n", rc);
 	}
 	
-	//
+	// readSIfromXMLTV
 	if (g_settings.epg_xmltv)
         {
         	for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)

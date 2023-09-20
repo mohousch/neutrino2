@@ -27,8 +27,7 @@ class huffTableEntry
 		char next;
 		huffTableEntry * nextEntry;
 	public: 
-		huffTableEntry(unsigned int Value, short Bits, char Next, huffTableEntry * NextEntry) : value(Value), bits(Bits), next(Next), nextEntry(NextEntry)
-		{ }
+		huffTableEntry(unsigned int Value, short Bits, char Next, huffTableEntry * NextEntry) : value(Value), bits(Bits), next(Next), nextEntry(NextEntry){ };
 };
 
 class freesatHuffmanDecoder 

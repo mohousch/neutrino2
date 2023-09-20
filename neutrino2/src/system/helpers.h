@@ -119,7 +119,8 @@ void splitString(std::string &str, std::string delim, std::map<std::string,std::
 std::string removeExtension(std::string& s);
 
 // curl
-struct MemoryStruct {
+struct MemoryStruct 
+{
 	char *memory;
 	size_t size;
 };
@@ -232,3 +233,4 @@ class cTimeMs
 };
 
 #endif
+

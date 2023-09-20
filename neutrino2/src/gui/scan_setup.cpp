@@ -2222,11 +2222,11 @@ CScanSetupNotifier::CScanSetupNotifier(int num)
 	feindex = num;
 }
 
-// items1 enabled for advanced diseqc settings
-// items2 for diseqc != NO_DISEQC
-// items3 disabled for NO_DISEQC
-// items4
-// items5
+// items1: enabled for advanced diseqc settings
+// items2: for diseqc != NO_DISEQC
+// items3: disabled for NO_DISEQC
+// items4:
+// items5:
 bool CScanSetupNotifier::changeNotify(const std::string&, void * Data)
 {
 	std::vector<CMenuItem*>::iterator it;
@@ -2301,11 +2301,11 @@ bool CScanSetupNotifier::changeNotify(const std::string&, void * Data)
 	return true;
 }
 
-// list 0 = main
-// list 1 = diseqc
-// list 2 = unisetup
-// list 3 = diseqc rep
-// list 4 = ?
+// list 0: main
+// list 1: diseqc
+// list 2: unisetup
+// list 3: diseqc rep
+// list 4: ?
 void CScanSetupNotifier::addItem(int list, CMenuItem *item)
 {
 	switch(list) 

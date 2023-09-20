@@ -34,8 +34,7 @@ class Cyhttpd
 		bool flag_threading_off; 		// switch of Connection Threading
 		static CStringList ConfigList; 		// Vars & Values from ReadConfig
 
-		// constructor & destructor
-		//Cyhttpd();
+		//
 		~Cyhttpd();
 
 		// Main Programm calls
@@ -60,6 +59,8 @@ class Cyhttpd
 		
 			return instance;
 		};
+		
+		//
 		void Start(void);
 		void Stop(void);
 };
