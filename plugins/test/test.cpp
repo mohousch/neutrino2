@@ -25,7 +25,8 @@ extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
-#define __(string) translateLocale(string, "test")
+//FIXME: make this global
+#define __(string) dgettext("test", string)
 
 class CTestMenu : public CMenuTarget
 {

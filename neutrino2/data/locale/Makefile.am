@@ -15,7 +15,7 @@ neutrino2.pot: $(top_srcdir)/src/*.cpp \
 	$(top_srcdir)/src/zapit/*.cpp \
 	$(top_srcdir)/src/sectionsd/*.cpp \
 	$(top_srcdir)/src/timerd/*.cpp
-	$(XGETTEXT) -L C++ --keyword=_ --keyword=N_ --from-code=utf-8 --no-wrap --add-comments="TRANSLATORS:" -d @PACKAGE_NAME@ -s -o $@ $^
+	$(XGETTEXT) -L C++ --keyword=_ --from-code=utf-8 --no-wrap --add-comments="TRANSLATORS:" -d @PACKAGE_NAME@ --package-name=@PACKAGE_NAME@ --package-version=@PACKAGE_VERSION@ --msgid-bugs-address='<see README>' -s -o $@ $^
 	$(SED) --in-place $@ --expression=s/CHARSET/UTF-8/
 	
 %.po: neutrino2.pot

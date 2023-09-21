@@ -42,13 +42,6 @@
 
 #define _(string) gettext(string)
 
-static const char *translateLocale(const char *const string, const char *const plugin)
-{
-	const char * l = dgettext(plugin, string);
-	
-	return l;
-}
-
 //
 void initialize_iso639_map(void);
 const char * getISO639Description(const char * const iso);
