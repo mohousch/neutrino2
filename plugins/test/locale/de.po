@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 4.8\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-22 00:14+0200\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-09-22 01:06+0200\n"
 "PO-Revision-Date: 2023-09-21 23:10+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "CMenuWidget(Menu Mode)"
-msgstr ""
+msgstr "Kazalla!"
 
 msgid "CWidget(CFrameBox/ClistBox)"
 msgstr "Verdammt das war nur ein Test"
@@ -54,7 +54,7 @@ msgid "Here you can setup your box"
 msgstr ""
 
 msgid "Here you can switch between TV / Radio"
-msgstr ""
+msgstr "Na Ihr pap Nasen!"
 
 msgid "IP:"
 msgstr ""

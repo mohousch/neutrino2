@@ -58,7 +58,7 @@ class CLocaleManager
 		void loadLocale(const char* const locale);
 		
 		// register plugins
-		void registerPlugin(const char * const plugin);
+		void registerPlugin(const char * const plugin, const char * const localedir);
 };
 
 #endif

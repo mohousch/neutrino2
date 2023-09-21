@@ -217,12 +217,16 @@ void CPlugins::loadPlugins()
 			pluginPath += "/";
 			pluginPath += namelist[i]->d_name;
 			
+			std::string localedir = pluginPath;
+			localedir += "/locale/";
+			
 			// i18register plugin
-			g_Locale->registerPlugin(namelist[i]->d_name);
+			g_Locale->registerPlugin(namelist[i]->d_name, localedir.c_str());
 			
 			//
 			addPlugin(pluginPath.c_str());
-			pluginPath.clear();			
+			pluginPath.clear();
+			localedir.clear();			
 		}
 		free(namelist[i]);
 	}

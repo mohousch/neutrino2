@@ -27,14 +27,13 @@ dist-hook: $(LANGPO)
 
 install-data-local: $(LANGMO)
 	for lang in $(LANGS); do \
-		$(mkinstalldirs) $(DESTDIR)$(LOCALEDIR)/$$lang/LC_MESSAGES; \
-		$(INSTALL_DATA) $$lang.mo $(DESTDIR)$(LOCALEDIR)/$$lang/LC_MESSAGES/test.mo; \
+		$(mkinstalldirs) $(DESTDIR)$(PLUGINDIR)/test/locale/$$lang/LC_MESSAGES; \
+		$(INSTALL_DATA) $$lang.mo $(DESTDIR)$(PLUGINDIR)/test/locale/$$lang/LC_MESSAGES/test.mo; \
 	done
 
 uninstall-local:
 	for lang in $(LANGS); do \
-		$(RM) $(DESTDIR)$(LOCALEDIR)/@PACKAGE_NAME@-$$lang.po; \
-		$(RM) $(DESTDIR)$(LOCALEDIR)/$$lang/LC_MESSAGES/test.mo; \
+		$(RM) $(DESTDIR)$(PLUGINDIR)/test/locale/$$lang/LC_MESSAGES/test.mo; \
 	done
 	
 	
