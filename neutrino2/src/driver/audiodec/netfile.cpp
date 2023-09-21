@@ -221,7 +221,7 @@ void getOpts()
 	else
 		got_opts = 1;
 
-	for(i=0; dirs[i] != NULL; i++)
+	for(i = 0; dirs[i] != NULL; i++)
 	{
 		sprintf(buf, "%s/.netfile", dirs[i]);
 		fd = fopen(buf, "r");
@@ -232,9 +232,6 @@ void getOpts()
 		return;
 	fread(buf, sizeof(char), 4095, fd);
 	fclose(fd);
-
-	//if(strstr(buf, "debug=1"))
-	//	debug = 1;
 
 	if((ptr = strstr(buf, "cachesize=")))
 		cache_size = atoi(strchr(ptr, '=') + 1);
@@ -289,7 +286,8 @@ int ConnectToServer(char *hostname, int port)
 
 	if( connect(fd, (struct sockaddr *)&sock, sizeof(sock)) == -1 )
 	{
-		if(errno != EINPROGRESS) {
+		if(errno != EINPROGRESS) 
+		{
 			close(fd);
 			strcpy(err_txt, strerror(errno));
 			dprintf(DEBUG_INFO, "error connecting to %s: %s\n", hostname, err_txt);
@@ -311,6 +309,7 @@ int ConnectToServer(char *hostname, int port)
 		close(fd);
 		return -1;
 	}
+	
 	if ((pfd.revents & POLLOUT) == POLLOUT) 
 	{
 		fcntl(fd, F_SETFL, flgs &~ O_NONBLOCK);
@@ -346,19 +345,21 @@ int request_file(URL *url)
 		strcpy(url->entity, ptr + 1);
 		*ptr = 0;
 	}
+	
 	switch(url->proto_version)
 	{
 		/* send a HTTP/1.0 request */
 		case HTTP10:	
 			{
-				snprintf(str, sizeof(str)-1, "GET http://%s:%d%s\n", url->host, url->port, url->file);
+				snprintf(str, sizeof(str) - 1, "GET http://%s:%d%s\n", url->host, url->port, url->file);
 				dprintf(DEBUG_INFO, "> %s", str);
 				send(url->fd, str, strlen(str), 0);
 			}
 			break;
 
 		/* send a HTTP/1.1 request */
-		case HTTP11:	{
+		case HTTP11:	
+			{
 				int meta_int;
 				CSTATE tmp;
 
@@ -422,9 +423,12 @@ int request_file(URL *url)
 
 				if(meta_int)
 				{
-					if (slot < 0){
+					if (slot < 0)
+					{
 						dprintf(DEBUG_INFO, "error: meta_int != 0 && slot < 0");
-					}else{
+					}
+					else
+					{
 						/* hook in the filter function if there is meta */
 						/* data present in the stream */
 						cache[slot].filter_arg = ShoutCAST_InitFilter(meta_int);
@@ -442,7 +446,7 @@ int request_file(URL *url)
 				push(url->stream, (char*)&id3, id3.len);
 #if 0
 				rval = parse_response(url, NULL, NULL);
-				dprintf(stderr, "server response parser: return value = %d\n", rval);
+				dprintf(DEBUG_NORMAL, "server response parser: return value = %d\n", rval);
 
 				/* if the header indicated a zero length document or an */
 				/* error, then close the cache, if there is any */
@@ -458,7 +462,8 @@ int request_file(URL *url)
 			break;
 
 		/* send a SHOUTCAST request */
-		case SHOUTCAST:{
+		case SHOUTCAST:
+		{
 			int meta_int;
 			CSTATE tmp;
 
@@ -664,7 +669,8 @@ int parse_response(URL *url, void * /*opt*/, CSTATE *state)
 	if(meta_interval < 0)
 		meta_interval = 0;
 
-	if (state != NULL) {
+	if (state != NULL) 
+	{
 		getHeaderStr("icy-genre:", state->genre);
 		getHeaderStr("icy-name:", state->station);
 		getHeaderStr("icy-url:", state->station_url);

@@ -651,7 +651,7 @@ int CChannelList::show(bool zap, bool customMode)
 
 			hide();
 
-			if ( g_EventList->exec(chanlist[selected]->epgid, chanlist[selected]->name) == RETURN_EXIT_ALL) 
+			if ( chanlist.size() && g_EventList->exec(chanlist[selected]->epgid, chanlist[selected]->name) == RETURN_EXIT_ALL) 
 			{
 				res = -2;
 				loop = false;
@@ -665,7 +665,7 @@ int CChannelList::show(bool zap, bool customMode)
 
 			hide();
 			
-			if (CTimerd::getInstance()->isTimerdAvailable()) 
+			if (chanlist.size() && CTimerd::getInstance()->isTimerdAvailable()) 
 			{
 				CTimerd::getInstance()->addRecordTimerEvent(chanlist[selected]->channel_id, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime + chanlist[selected]->currentEvent.duration, chanlist[selected]->currentEvent.eventID, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime - (ANNOUNCETIME + 120) , TIMERD_APIDS_CONF, true);
 
@@ -687,7 +687,7 @@ int CChannelList::show(bool zap, bool customMode)
 
 			hide();
 			
-			if (CTimerd::getInstance()->isTimerdAvailable ()) 
+			if (chanlist.size() && CTimerd::getInstance()->isTimerdAvailable ()) 
 			{
 				CTimerd::getInstance()->addZaptoTimerEvent (chanlist[selected]->channel_id, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime - ANNOUNCETIME, 0, chanlist[selected]->currentEvent.eventID, chanlist[selected]->currentEvent.startTime, 0);
 		
@@ -866,7 +866,8 @@ int CChannelList::show(bool zap, bool customMode)
 			hide();
 			
 			//
-			::getTMDBInfo(chanlist[selected]->currentEvent.description.c_str());
+			if (chanlist.size())
+				::getTMDBInfo(chanlist[selected]->currentEvent.description.c_str());
 
 			paint();
 		} 
@@ -875,7 +876,9 @@ int CChannelList::show(bool zap, bool customMode)
 			selected = listBox->getSelected();
 
 			hide();
-			g_EpgData->show(chanlist[selected]->epgid); 
+			
+			if (chanlist.size())
+				g_EpgData->show(chanlist[selected]->epgid); 
 
 			paint();
 		}
