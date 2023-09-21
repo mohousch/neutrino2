@@ -14,23 +14,7 @@ neutrino2.pot: $(top_srcdir)/src/*.cpp \
 	$(top_srcdir)/src/daemonc/*.cpp \
 	$(top_srcdir)/src/zapit/*.cpp \
 	$(top_srcdir)/src/sectionsd/*.cpp \
-	$(top_srcdir)/../plugins/test/*.cpp \
-	$(top_srcdir)/../plugins/audioplayer/*.cpp \
-	$(top_srcdir)/../plugins/fileexplorer/*.cpp \
-	$(top_srcdir)/../plugins/icecast/*.cpp \
-	$(top_srcdir)/../plugins/internetradio/*.cpp \
-	$(top_srcdir)/../plugins/mediaportal/*.cpp \
-	$(top_srcdir)/../plugins/moviebrowser/*.cpp \
-	$(top_srcdir)/../plugins/netzkino/*.cpp \
-	$(top_srcdir)/../plugins/nfilm/*.cpp \
-	$(top_srcdir)/../plugins/ntvshows/*.cpp \
-	$(top_srcdir)/../plugins/opkg_manager/*.cpp \
-	$(top_srcdir)/../plugins/picviewer/*.cpp \
-	$(top_srcdir)/../plugins/satipclient/*.cpp \
-	$(top_srcdir)/../plugins/systeminfo/*.cpp \
-	$(top_srcdir)/../plugins/movieplayer/*.cpp \
-	$(top_srcdir)/../plugins/upnp/*.cpp \
-	$(top_srcdir)/../plugins/youtube/*.cpp
+	$(top_srcdir)/src/timerd/*.cpp
 	$(XGETTEXT) -L C++ --keyword=_ --keyword=N_ --from-code=utf-8 --no-wrap --add-comments="TRANSLATORS:" -d @PACKAGE_NAME@ -s -o $@ $^
 	$(SED) --in-place $@ --expression=s/CHARSET/UTF-8/
 	
@@ -48,7 +32,7 @@ neutrino2.pot: $(top_srcdir)/src/*.cpp \
 BUILT_SOURCES = $(LANGMO)
 CLEANFILES = $(LANGMO) neutrino2.pot
 
-dist-hook: $(LANGPO)
+#dist-hook: $(LANGPO)
 
 install-data-local: $(LANGMO)
 	for lang in $(LANGS); do \

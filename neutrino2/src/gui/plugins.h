@@ -131,7 +131,6 @@ class CPlugins
 		//
 		void setPluginDir(const std::string& dir) { plugin_dir = dir; }
 		void addPlugin(const char *dir);
-		void addPlugin(std::string filename);
 		void loadPlugins();
 		
 		//

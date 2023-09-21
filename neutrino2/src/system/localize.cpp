@@ -99,3 +99,10 @@ void CLocaleManager::loadLocale(const char* const locale)
 	setlocale(LC_MESSAGES, locale);
 }
 
+void CLocaleManager::registerPlugin(const char *const plugin)
+{
+	dprintf(DEBUG_NORMAL, "CLocaleManager::registerPlugin: %s\n", plugin);
+	
+	bindtextdomain(plugin, LOCALEDIR);
+}
+

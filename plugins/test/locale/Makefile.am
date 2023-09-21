@@ -1,0 +1,40 @@
+LANGS = ar bs de fr it nl pl pt ru sk sv
+
+LANGMO = $(LANGS:=.mo)
+LANGPO = $(LANGS:=.po)
+
+EXTRA_DIST = $(LANGPO)
+
+test.pot: $(top_srcdir)/test/*.cpp
+	$(XGETTEXT) -L C++ --keyword=__ --keyword=N__ --from-code=utf-8 --no-wrap --add-comments="TRANSLATORS:" -d test -s -o $@ $^
+	$(SED) --in-place $@ --expression=s/CHARSET/UTF-8/
+	
+%.po: test.pot
+	if [ -f $@ ]; then \
+		$(MSGMERGE) --backup=none --no-wrap --no-location -s -U $@ $< && touch $@; \
+		$(MSGATTRIB) --no-wrap --no-obsolete $@ -o $@; \
+	else \
+		$(MSGINIT) -l $@ -o $@ -i $< --no-translator; \
+	fi
+
+.po.mo:
+	$(MSGFMT) -o $@ $<
+
+BUILT_SOURCES = $(LANGMO)
+CLEANFILES = $(LANGMO) test.pot
+
+dist-hook: $(LANGPO)
+
+install-data-local: $(LANGMO)
+	for lang in $(LANGS); do \
+		$(mkinstalldirs) $(DESTDIR)$(LOCALEDIR)/$$lang/LC_MESSAGES; \
+		$(INSTALL_DATA) $$lang.mo $(DESTDIR)$(LOCALEDIR)/$$lang/LC_MESSAGES/test.mo; \
+	done
+
+uninstall-local:
+	for lang in $(LANGS); do \
+		$(RM) $(DESTDIR)$(LOCALEDIR)/@PACKAGE_NAME@-$$lang.po; \
+		$(RM) $(DESTDIR)$(LOCALEDIR)/$$lang/LC_MESSAGES/test.mo; \
+	done
+	
+	

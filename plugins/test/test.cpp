@@ -25,6 +25,8 @@ extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
+#define __(string) translateLocale(string, "test")
+
 class CTestMenu : public CMenuTarget
 {
 	private:
@@ -1028,7 +1030,7 @@ void CTestMenu::testCWidget()
 	rightWidget->enablePaintItemInfo(80);
 
 	// loadPlaylist
-	CHintBox loadBox("CWidget(CFrameBox/ClistBox)", _("Scan for Movies ..."));
+	CHintBox loadBox(__("CWidget(CFrameBox/ClistBox)"), _("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadTMDBPlaylist();
@@ -1291,7 +1293,7 @@ void CTestMenu::testCFrameBoxWidget()
 	//frameBoxWidget->setRadius(RADIUS_MID);
 	frameBoxWidget->setCorner(RADIUS_MID, CORNER_ALL);
 
-	CHintBox loadBox("testCFrameBoxWidget", _("Scan for Movies ..."));
+	CHintBox loadBox("testCFrameBoxWidget", __("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadMoviePlaylist();
@@ -1487,7 +1489,7 @@ void CTestMenu::testCListFrameWidget()
 
 	listFrame = new CListFrame(&listFrameLines, NULL, CListFrame::CListFrame::HEADER_LINE | CListFrame::SCROLL, &listFrameBox);
 
-	CHintBox loadBox("ListFrame Widget", _("Scan for Movies ..."));
+	CHintBox loadBox("ListFrame Widget", __("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadAudioPlaylist();
@@ -1587,7 +1589,7 @@ void CTestMenu::testClistBoxWidget()
 	rightWidget->enableShrinkMenu();
 
 	// loadPlaylist
-	CHintBox loadBox("CWidget", _("Scan for Movies ..."));
+	CHintBox loadBox("CWidget", __("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadMoviePlaylist();
@@ -2325,7 +2327,7 @@ void CTestMenu::testCListFrame()
 	listFrame->setTitle("listFrame (AudioPlayer)", NEUTRINO_ICON_MP3);
 	
 	// fill lineArrays list
-	CHintBox loadBox("listFrame", _("Scan for Movies ..."));
+	CHintBox loadBox("listFrame", __("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadAudioPlaylist();
@@ -2406,7 +2408,7 @@ void CTestMenu::testClistBox()
 
 	rightWidget = new ClistBox(&Box);
 	
-	CHintBox loadBox("testClistBox(standard)", _("Scan for Movies ..."));
+	CHintBox loadBox("testClistBox(standard)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2518,7 +2520,7 @@ void CTestMenu::testClistBox2()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(classic)", _("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(classic)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2626,7 +2628,7 @@ void CTestMenu::testClistBox3()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(extended)", _("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(extended)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2732,7 +2734,7 @@ void CTestMenu::testClistBox4()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(frame)", _("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(frame)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2831,7 +2833,7 @@ void CTestMenu::testClistBox5()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(DL_INFO)", _("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(DL_INFO)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2942,7 +2944,7 @@ void CTestMenu::testClistBox6()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(DL_HINT)", _("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(DL_HINT)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -3057,7 +3059,7 @@ void CTestMenu::testClistBox7()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(DL_HINT)", _("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(DL_HINT)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -3173,7 +3175,7 @@ void CTestMenu::testClistBox8()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(DL_HINT)", _("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(DL_HINT)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -3289,7 +3291,7 @@ void CTestMenu::testClistBox9()
 
 	rightWidget = new ClistBox(&Box);
 	
-	CHintBox loadBox("testClistBox(standard)", _("Scan for Movies ..."));
+	CHintBox loadBox("testClistBox(standard)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -3484,7 +3486,7 @@ void CTestMenu::testCFrameBox1()
 	frameBoxWidget = new CFrameBox(&box);
 	frameBoxWidget->setCorner(g_settings.Head_radius > g_settings.Foot_radius? g_settings.Head_radius : g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 
-	CHintBox loadBox("CFrameBox", _("Scan for Movies ..."));
+	CHintBox loadBox("CFrameBox", __("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadMoviePlaylist();
@@ -3672,7 +3674,7 @@ void CTestMenu::testCMenuWidget()
 	menuWidget = new CMenuWidget("CMenuWidget(listBox Mode)", NEUTRINO_ICON_MOVIE, CFrameBuffer::getInstance()->getScreenWidth() / 20 * 17, CFrameBuffer::getInstance()->getScreenHeight() / 20 * 18);
 
 	//
-	CHintBox loadBox("CMenuWidget(listBox mode)", _("Scan for Movies ..."));
+	CHintBox loadBox("CMenuWidget(listBox mode)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -3729,67 +3731,67 @@ void CTestMenu::testCMenuWidget1()
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCMenuWidget (menu mode)\n");
 	
 	//
-	menuWidget = new CMenuWidget(_("CMenuWidget(Menu Mode)"), NEUTRINO_ICON_MAINMENU);
+	menuWidget = new CMenuWidget(__("CMenuWidget(Menu Mode)"), NEUTRINO_ICON_MAINMENU);
 	
-	item = new CMenuForwarder(_("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
+	item = new CMenuForwarder(__("TV / Radio"), true, NULL, CNeutrinoApp::getInstance(), "tvradioswitch");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
-	item->setHint(_("Here you can switch between TV / Radio"));
+	item->setHint(__("Here you can switch between TV / Radio"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
 	item->setDirectKey(RC_red);
 	//item->setHidden(true);
 	menuWidget->addItem(item);
 
-	item = new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler());
+	item = new CMenuForwarder(__("Timer / EPG"), true, NULL, new CEPGMenuHandler());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
-	item->setHint(_("Here you can set Timers and show EPG"));
+	item->setHint(__("Here you can set Timers and show EPG"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
 	item->setDirectKey(RC_green);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
+	item = new CMenuForwarder(__("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
-	item->setHint(_("Here you can choose plugins"));
+	item->setHint(__("Here you can choose plugins"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
 	item->setDirectKey(RC_yellow);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("Service"), true, NULL, new CServiceMenu());
+	item = new CMenuForwarder(__("Service"), true, NULL, new CServiceMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
-	item->setHint(_("Here you can set channel scan and more"));
+	item->setHint(__("Here you can set channel scan and more"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
 	item->setDirectKey(RC_blue);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu());
+	item = new CMenuForwarder(__("Settings"), true, NULL, new CMainSettingsMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
-	item->setHint(_("Here you can setup your box"));
+	item->setHint(__("Here you can setup your box"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
 	item->setDirectKey(RC_setup);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings());
+	item = new CMenuForwarder(__("OSD"), true, NULL, new COSDSettings());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
-	item->setHint(_("Here you can setup OSD"));
+	item->setHint(__("Here you can setup OSD"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu());
+	item = new CMenuForwarder(__("Information"), true, NULL, new CInfoMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
-	item->setHint(_("Here you can get device Info"));
+	item->setHint(__("Here you can get device Info"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
 	item->setDirectKey(RC_info);
 	menuWidget->addItem(item);
 
-	item = new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu());
+	item = new CMenuForwarder(__("Power Menu"), true, NULL, new CPowerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
-	item->setHint(_("Here you can power off or standby your device"));
+	item->setHint(__("Here you can power off or standby your device"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
 	item->setDirectKey(RC_standby);
 	menuWidget->addItem(item);
 	
-	item = new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu());
+	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
-	item->setHint(_("Here you can play music / movies"));
+	item->setHint(__("Here you can play music / movies"));
 	item->setIconName(NEUTRINO_ICON_VIDEO);
 	item->setDirectKey(RC_video);
 	menuWidget->addItem(item);
@@ -3907,7 +3909,7 @@ void CTestMenu::testCIPInput()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCIPInput\n");
 
 	std::string value;
-	CIPInput * ipInput = new CIPInput(_("IP:"), value);
+	CIPInput * ipInput = new CIPInput(__("IP:"), value);
 	
 	ipInput->exec(NULL, "");
 	ipInput->hide();
@@ -3949,7 +3951,7 @@ void CTestMenu::testCTimeInput()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCTimeInput\n");
 
 	std::string value;
-	CTimeInput * timeInput = new CTimeInput(_("Time:"), (char *)value.c_str());
+	CTimeInput * timeInput = new CTimeInput(__("Time:"), (char *)value.c_str());
 	
 	timeInput->exec(NULL, "");
 	timeInput->hide();
@@ -3964,7 +3966,7 @@ void CTestMenu::testCIntInput()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCIntInput\n");
 
 	int value;
-	CIntInput * intInput = new CIntInput(_("Test"), value);
+	CIntInput * intInput = new CIntInput(__("Test"), value);
 	
 	intInput->exec(NULL, "");
 	intInput->hide();
@@ -4022,7 +4024,7 @@ void CTestMenu::testCMessageBox()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
-	CMessageBox * messageBox = new CMessageBox(_("Information"), "testing CMessageBox"/*, 600, NEUTRINO_ICON_INFO, mbrYes, mbNone*/);
+	CMessageBox * messageBox = new CMessageBox(__("Information"), "testing CMessageBox"/*, 600, NEUTRINO_ICON_INFO, mbrYes, mbNone*/);
 	
 	int res = messageBox->exec();
 
@@ -4037,7 +4039,7 @@ void CTestMenu::testCMessageBoxInfoMsg()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
-	MessageBox(_("Information"), "testing CMessageBoxInfoMsg", mbrBack, mbBack, NEUTRINO_ICON_INFO);
+	MessageBox(__("Information"), "testing CMessageBoxInfoMsg", mbrBack, mbBack, NEUTRINO_ICON_INFO);
 }
 
 // MessageBox
@@ -4045,7 +4047,7 @@ void CTestMenu::testCMessageBoxErrorMsg()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
-	MessageBox(_("Error"), "testing CMessageBoxErrorMsg", mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+	MessageBox(__("Error"), "testing CMessageBoxErrorMsg", mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
 }
 
 // CHintBox

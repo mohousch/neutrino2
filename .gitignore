@@ -2006,3 +2006,17 @@
 /neutrino2/data/skins/neutrino/buttons/Makefile.in
 /neutrino2/data/skins/neutrino/hints/Makefile
 /neutrino2/data/skins/neutrino/hints/Makefile.in
+/plugins/test/locale/Makefile
+/plugins/test/locale/Makefile.in
+/plugins/test/locale/ar.mo
+/plugins/test/locale/bs.mo
+/plugins/test/locale/de.mo
+/plugins/test/locale/fr.mo
+/plugins/test/locale/it.mo
+/plugins/test/locale/nl.mo
+/plugins/test/locale/pl.mo
+/plugins/test/locale/pt.mo
+/plugins/test/locale/ru.mo
+/plugins/test/locale/sk.mo
+/plugins/test/locale/sv.mo
+/plugins/test/locale/test.pot

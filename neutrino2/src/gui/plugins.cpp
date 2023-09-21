@@ -101,6 +101,8 @@ bool CPlugins::pluginfile_exists(const std::string & filename)
 
 void CPlugins::addPlugin(const char * dir)
 {
+	dprintf(DEBUG_NORMAL, "CPlugins::addPlugin: %s\n", dir);
+	
 	PluginInit initPlugin;
 	void *handle = NULL;
 	char *error;
@@ -176,7 +178,7 @@ void CPlugins::addPlugin(const char * dir)
 					new_plugin.pluginfile.append(".lua");
 				}
 				
-				//
+				// add to list
 				if (!plugin_exists(new_plugin.filename))
 				{
 					plugin_list.push_back(new_plugin);
@@ -187,25 +189,7 @@ void CPlugins::addPlugin(const char * dir)
 	}
 }
 
-void CPlugins::addPlugin(std::string filename)
-{
-	dprintf(DEBUG_NORMAL, "CPlugins::addPlugin: %s\n", filename.c_str());
-	
-	plugin new_plugin;
-	
-	if (!filename.empty())
-	{
-		new_plugin.pluginfile = filename;
-		new_plugin.type = CPlugins::P_TYPE_LUA;
-		new_plugin.hide = true;
-		
-		new_plugin.filename = getBaseName(filename);
-		trim(new_plugin.filename, ".lua");
-	
-		plugin_list.push_back(new_plugin);
-	}
-}
-
+//
 void CPlugins::loadPlugins()
 {
 	dprintf(DEBUG_NORMAL, "CPlugins::loadPlugins\n");
@@ -233,6 +217,10 @@ void CPlugins::loadPlugins()
 			pluginPath += "/";
 			pluginPath += namelist[i]->d_name;
 			
+			// i18register plugin
+			g_Locale->registerPlugin(namelist[i]->d_name);
+			
+			//
 			addPlugin(pluginPath.c_str());
 			pluginPath.clear();			
 		}

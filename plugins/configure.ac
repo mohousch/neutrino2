@@ -47,6 +47,7 @@ AM_CONDITIONAL(ENABLE_LUA,test "$enable_lua" = "yes")
 AC_OUTPUT([
 Makefile
 test/Makefile
+test/locale/Makefile
 netzkino/Makefile
 youtube/Makefile
 systeminfo/Makefile

@@ -49,7 +49,7 @@ CXXFLAGS = $(CFLAGS)
 export CFLAGS CXXFLAGS
 
 # first target is default...
-default: neutrino plugins
+default: neutrino2 plugins
 
 run:
 	$(DEST)/bin/neutrino2
@@ -316,7 +316,7 @@ help:
 #
 # neutrino2
 #
-neutrino: $(N2_SRC)/config.status
+neutrino2: $(N2_SRC)/config.status
 	$(MAKE) -C $(N2_SRC) install
 
 $(N2_SRC)/config.status: | $(N2_SRC) $(DEST)
