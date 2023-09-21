@@ -34,8 +34,6 @@
 #define __locale__
 
 #include <string>
-
-//#include <system/locals.h>
 #include <time.h>
 #include <locale.h>
 #include <map>
@@ -44,27 +42,19 @@
 
 #define _(string) gettext(string)
 
+//
 void initialize_iso639_map(void);
 const char * getISO639Description(const char * const iso);
-extern std::map<std::string, std::string> iso639;
-extern std::map<std::string, std::string> iso639rev;
-
-#define ARE_LOCALES_EQUAL(a,b) (a == b)
+extern std::map<std::string, std::string> iso639;		// ???
+extern std::map<std::string, std::string> iso639rev;		// ???
 
 class CLocaleManager
 {	
 	public:
-		enum loadLocale_ret_t
-		{
-			ISO_8859_1_FONT =  0,
-			UNICODE_FONT    =  1,
-			NO_SUCH_LOCALE  = -1
-		};
-
 		CLocaleManager(){};
 		~CLocaleManager(){};
 
-		loadLocale_ret_t loadLocale(const char* const locale);
+		void loadLocale(const char* const locale);
 };
 
 #endif

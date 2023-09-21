@@ -876,7 +876,6 @@ void CVCRControl::processAPIDnames()
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::processAPIDnames\n");
 	
 	bool has_unresolved_ctags = false;
-	//bool has_ac3 = false; //FIXME what this variable suppoused to do ?? seems unused
 	int ac3_found = -1;
 
 	for(unsigned int count = 0; count < pids.APIDs.size(); count++)
@@ -896,8 +895,6 @@ void CVCRControl::processAPIDnames()
 
 		if ( pids.APIDs[count].is_ac3 )
 		{
-			//strncat(pids.APIDs[count].desc, " (Dolby Digital)", 25);
-			//has_ac3 = true;
 			if((strlen( pids.APIDs[count].desc ) == 3) && (ac3_found < 0))
 				ac3_found = count;
 		}
@@ -923,9 +920,6 @@ void CVCRControl::processAPIDnames()
 							if(!tags[i].component.empty())
 							{
 								strncpy(pids.APIDs[j].desc, tags[i].component.c_str(), 25);
-								
-								//if ( pids.APIDs[j].is_ac3)
-								//	strncat( pids.APIDs[j].desc, " (Dolby Digital)", 25);
 							}
 							pids.APIDs[j].component_tag = -1;
 							break;

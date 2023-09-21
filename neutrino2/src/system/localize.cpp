@@ -49,6 +49,7 @@
 #include <map>
 
 
+//
 static const char * iso639filename = DATADIR "/iso-codes/iso-639.tab";
 
 std::map<std::string, std::string> iso639;
@@ -88,18 +89,13 @@ const char * getISO639Description(const char * const iso)
 }
 
 //
-CLocaleManager::loadLocale_ret_t CLocaleManager::loadLocale(const char* const locale)
+void CLocaleManager::loadLocale(const char* const locale)
 {
 	dprintf(DEBUG_NORMAL, "CLocaleManager::loadLocale: %s\n", locale);
-
-	//
-	initialize_iso639_map();
 	
 	// set lang
 	setenv("LANG", locale, 1);
 	setenv("LANGUAGE", locale, 1);	
 	setlocale(LC_MESSAGES, locale);
-	
-	return UNICODE_FONT;
 }
 

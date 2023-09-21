@@ -4814,6 +4814,9 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
 	// set debug level
 	setDebugLevel(g_settings.debug_level);
+	
+	// init iso639
+	initialize_iso639_map();
 
 	// check / load locale language
 	g_Locale->loadLocale(Lang2I18N(g_settings.language).c_str());

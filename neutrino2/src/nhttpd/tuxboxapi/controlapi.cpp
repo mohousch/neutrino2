@@ -1496,12 +1496,6 @@ void CControlAPI::SendcurrentVAPid(CyhookHandler *hh)
 //
 void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 {
-	static bool init_iso=true;
-	if(init_iso)
-	{
-		if(_initialize_iso639_map())
-			init_iso=false;
-	}
 	bool eit_not_ok=true;
 	CZapit::responseGetPIDs pids;
 
@@ -1530,10 +1524,8 @@ void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 					}
 					else
 					{
-						if(!(init_iso))
-						{
-							strcpy( pids.APIDs[j].desc, _getISO639Description( pids.APIDs[j].desc ) );
-						}
+						strcpy( pids.APIDs[j].desc, getISO639Description( pids.APIDs[j].desc ) );
+
 			 			hh->printf("%05u %s %s\n",pids.APIDs[j].pid,pids.APIDs[j].desc,pids.APIDs[j].is_ac3 ? " (AC3)": " ");
 					}
 					eit_not_ok=false;
@@ -1548,10 +1540,8 @@ void CControlAPI::SendAllCurrentVAPid(CyhookHandler *hh)
 		unsigned short i = 0;
 		for (CZapit::APIDList::iterator it = pids.APIDs.begin(); it!=pids.APIDs.end(); it++)
 		{
-			if(!(init_iso))
-			{
-				strcpy( pids.APIDs[i].desc, _getISO639Description( pids.APIDs[i].desc ) );
-			}
+			strcpy( pids.APIDs[i].desc, getISO639Description( pids.APIDs[i].desc ) );
+
  			hh->printf("%05u %s %s\n",it->pid,pids.APIDs[i].desc,pids.APIDs[i].is_ac3 ? " (AC3)": " ");
 			i++;
 		}

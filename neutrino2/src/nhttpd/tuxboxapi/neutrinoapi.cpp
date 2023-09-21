@@ -65,52 +65,6 @@ extern CZapit::SatelliteList satList;
 #include "lcdapi.h"
 #endif
 
-// opengl liveplayback
-#if defined (USE_PLAYBACK)
-void stopOpenGLplayback();
-#endif
-
-//
-// No Class Helpers
-//
-
-#ifndef initialize_iso639_map
-bool _initialize_iso639_map(void)
-{
-	std::string s, t, u, v;
-
-	std::ifstream in("/share/iso-codes/iso-639.tab");
-
-	if(!in.is_open())
-		std::ifstream in("/usr/local/share/iso-codes/iso-639.tab");
-	
-	if (in.is_open())
-	{
-		while (in.peek() == '#')
-			getline(in, s);
-		while (in >> s >> t >> u >> std::ws)
-		{
-			getline(in, v);
-			iso639[s] = v;
-			if (s != t)
-				iso639[t] = v;
-		}
-		in.close();
-		return true;
-	}
- 	else
-		return false;
-}
-#endif
-
-const char * _getISO639Description(const char * const iso)
-{
-	std::map<std::string, std::string>::const_iterator it = iso639.find(std::string(iso));
-	if (it == iso639.end())
-		return iso;
-	else
-		return it->second.c_str();
-}
 
 //
 // Initialization of static variables
@@ -181,12 +135,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 	// standby modus
 	if(CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_standby)
 	{
-		CZapit::getInstance()->setStandby(false);
-		
-// opengl liveplayback
-#if defined (USE_PLAYBACK)
-		stopOpenGLplayback();
-#endif		
+		CZapit::getInstance()->setStandby(false);		
 	
 		if (channel_id != 0) 
 		{
@@ -200,12 +149,7 @@ void CNeutrinoAPI::ZapToChannelId(t_channel_id channel_id)
 	else
 	{
 		if ( channel_id == CZapit::getInstance()->getCurrentServiceID() )
-			return;
-		
-// opengl liveplayback
-#if defined (USE_PLAYBACK)
-		stopOpenGLplayback();
-#endif		
+			return;		
 
 		if (CZapit::getInstance()->zapToServiceID(channel_id) != CZapit::ZAP_INVALID_PARAM)
 		{
@@ -221,12 +165,7 @@ void CNeutrinoAPI::ZapToSubService(const char * const target)
 
 	sscanf(target,
 		"%llx",
-		&channel_id);
-		
-// opengl liveplayback
-#if defined (USE_PLAYBACK)
-	stopOpenGLplayback();
-#endif		
+		&channel_id);		
 
 	if (CZapit::getInstance()->zapToSubServiceID(channel_id) != CZapit::ZAP_INVALID_PARAM)
 		CSectionsd::getInstance()->setServiceChanged(channel_id, false);
