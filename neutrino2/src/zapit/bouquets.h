@@ -16,12 +16,10 @@
 #include <inttypes.h>
 
 #include "zapit.h"
-#include "zapit/channel.h"
+#include <zapit/channel.h>
 
 #include <libxmltree/xmlinterface.h>
 
-
-using namespace std;
 
 class CZapitBouquet
 {
@@ -49,10 +47,13 @@ class CZapitBouquet
 		void sortBouquet(void);
 };
 
-typedef vector<CZapitBouquet *> BouquetList;
+typedef std::vector<CZapitBouquet *> BouquetList;
 
 class CBouquetManager
 {
+	public:
+		BouquetList Bouquets;
+		
 	private:
 		CZapitBouquet* remainChannels;
 
@@ -64,7 +65,12 @@ class CBouquetManager
 		void makeBouquetfromCurrentservices (const xmlNodePtr root);
 
 	public:
-		CBouquetManager() { remainChannels = NULL; };
+		CBouquetManager() 
+		{ 
+			remainChannels = NULL; 
+			//Bouquets = NULL; 
+		};
+		
 		class ChannelIterator
 		{
 			private:
@@ -94,13 +100,9 @@ class CBouquetManager
 		ChannelIterator tvChannelsBegin() { return ChannelIterator(this, CZapit::MODE_TV); };
 		ChannelIterator radioChannelsBegin() { return ChannelIterator(this, CZapit::MODE_RADIO); };
 
-		BouquetList Bouquets;
-
 		void saveBouquets(void);
 		void saveUBouquets(void);
-		void saveBouquets(const CZapit::bouquetMode bouquetMode, const char * const providerName);
 		void loadBouquets(bool loadCurrentBouquet = false);
-
 		CZapitBouquet* addBouquet(const std::string& name, bool ub = false, bool webtvb = false);
 		CZapitBouquet* addBouquetIfNotExist(const std::string& name, bool ub = false, bool webtvb = false);
 		void deleteBouquet(const unsigned int id);
@@ -108,9 +110,14 @@ class CBouquetManager
 		int  existsBouquet(char const * const name);
 		void moveBouquet(const unsigned int oldId, const unsigned int newId);
 		bool existsChannelInBouquet(unsigned int bq_id, const t_channel_id channel_id);
+		void renameBouquet(const unsigned int bouquet, const char * const newName); // UTF-8 encoded
+		void setBouquetLock(const unsigned int bouquet, const bool lock);
+		void setBouquetHidden(const unsigned int bouquet, const bool hidden);
 
+		//
 		void clearAll();
 
+		//
 		CZapitChannel* findChannelByChannelID(const t_channel_id channel_id);
 		CZapitChannel* findChannelByName(std::string name, const t_service_id sid);
 
@@ -130,7 +137,7 @@ class CBouquetManager
  * Hence we need a compare function that considers the whole unicode charset.
  * For instance all countless variants of the letter a have to be regarded as the same letter.
  */ 
-struct CmpChannelByChName: public binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
+struct CmpChannelByChName: public std::binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
 {
 	static bool comparetolower(const char a, const char b)
 	{
@@ -143,7 +150,7 @@ struct CmpChannelByChName: public binary_function <const CZapitChannel * const, 
 	};
 };
 
-struct CmpBouquetByChName: public binary_function <const CZapitBouquet * const, const CZapitBouquet * const, bool>
+struct CmpBouquetByChName: public std::binary_function <const CZapitBouquet * const, const CZapitBouquet * const, bool>
 {
 	static bool comparetolower(const char a, const char b)
 	{

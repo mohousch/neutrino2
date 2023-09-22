@@ -2020,3 +2020,17 @@
 /plugins/test/locale/sk.mo
 /plugins/test/locale/sv.mo
 /plugins/test/locale/test.pot
+/plugins/audioplayer/locale/Makefile
+/plugins/audioplayer/locale/Makefile.in
+/plugins/audioplayer/locale/ar.mo
+/plugins/audioplayer/locale/audioplayer.pot
+/plugins/audioplayer/locale/bs.mo
+/plugins/audioplayer/locale/de.mo
+/plugins/audioplayer/locale/fr.mo
+/plugins/audioplayer/locale/it.mo
+/plugins/audioplayer/locale/nl.mo
+/plugins/audioplayer/locale/pl.mo
+/plugins/audioplayer/locale/pt.mo
+/plugins/audioplayer/locale/ru.mo
+/plugins/audioplayer/locale/sk.mo
+/plugins/audioplayer/locale/sv.mo

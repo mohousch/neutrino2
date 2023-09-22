@@ -387,7 +387,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			if(options[count].valname != 0)
 				l_option = options[count].valname;
 			
-			menu->addItem(new CMenuForwarder(l_option), selected);
+			menu->addItem(new CMenuForwarder(_(l_option)), selected);
 		}
 		
 		widget->exec(NULL, "");
@@ -797,7 +797,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			if (strcmp(options[count].c_str(), optionValue) == 0)
 				selected = true;
 
-			menu->addItem(new CMenuForwarder(options[count].c_str()), selected);
+			menu->addItem(new CMenuForwarder(_(options[count].c_str())), selected);
 		}
 		
 		widget->exec(NULL, "");

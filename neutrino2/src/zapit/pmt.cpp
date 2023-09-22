@@ -468,7 +468,6 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 	return ES_info_length;
 }
 
-int curpmtpid;
 int pmt_caids[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
@@ -534,14 +533,11 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 	
 	delete dmx;
 	
-	// current pmt pid
-	curpmtpid = channel->getPmtPid();
-
+	// pmt.tmp
 	int pmtlen;
 	
 	pmtlen = ((buffer[1]&0xf)<<8) + buffer[2] + 3;
 	
-	// pmt.tmp
 	FILE *fout;
 
 	if( !(currentMode & RECORD_MODE) && !scan_runs) 

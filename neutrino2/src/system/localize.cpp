@@ -101,8 +101,8 @@ void CLocaleManager::loadLocale(const char* const locale)
 
 void CLocaleManager::registerPlugin(const char *const plugin, const char * const localedir)
 {
-	dprintf(DEBUG_NORMAL, "CLocaleManager::registerPlugin: %s\n", plugin);
+	dprintf(DEBUG_DEBUG, "CLocaleManager::registerPlugin: %s\n", plugin);
 	
-	bindtextdomain(plugin, /*LOCALEDIR*/localedir);
+	bindtextdomain(plugin, localedir);
 }
 

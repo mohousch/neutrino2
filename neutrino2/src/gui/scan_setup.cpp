@@ -79,18 +79,16 @@
 #define GUARD_INTERVAL_PN945	10
 #endif
 
-extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-extern std::map<transponder_id_t, transponder> select_transponders;		// defined in getservices.cpp
-
-// global
+// globals
 CScanSettings * scanSettings;
 static int dmode = NO_DISEQC;
 
 char zapit_lat[20];				//defined neutrino.cpp
 char zapit_long[20];				//defined neutrino.cpp
 
-// frontend
-extern int FrontendCount;			// defined in zapit.cpp
+extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+extern std::map<transponder_id_t, transponder> select_transponders;		// defined in getservices.cpp
+extern int FrontendCount;							// defined in zapit.cpp
 
 // option off0_on1
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2

@@ -83,7 +83,7 @@ class CServices
 		void initSat(t_satellite_position position);
 		int loadTransponders();
 		int loadServices(bool only_current);
-		void saveServices(bool tocopy=false);
+		void saveServices(bool tocopy = false);
 };
 
 #endif /* __getservices_h__ */

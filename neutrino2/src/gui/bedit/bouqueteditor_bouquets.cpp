@@ -173,15 +173,15 @@ void CBEBouquetWidget::paint()
 	switch( blueFunction)
 	{
 		case beRename:
-			Button[3].localename = "Rename";
+			Button[3].localename = _("Rename");
 			break;
 			
 		case beHide:
-			Button[3].localename = "Hide";
+			Button[3].localename = _("Hide");
 			break;
 			
 		case beLock:
-			Button[3].localename = "Lock";
+			Button[3].localename = _("Lock");
 			break;
 	}
 
@@ -556,6 +556,7 @@ void CBEBouquetWidget::renameBouquet()
 		return;
 
 	std::string newName = inputName((*Bouquets)[selected]->Name.c_str(), _("Name of bouquets"));
+	
 	if (newName != (*Bouquets)[selected]->Name)
 	{
 		g_bouquetManager->Bouquets[selected]->Name = newName;

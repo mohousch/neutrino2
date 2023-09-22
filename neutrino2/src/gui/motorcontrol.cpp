@@ -49,11 +49,16 @@
 #include <zapit/frontend_c.h>
 
 
+// globals
 static int g_sig;
 static int g_snr;
 static int last_snr = 0;
 static int moving = 0;
+//
+extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+extern CScanSettings * scanSettings;
 
+// defines
 #define RED_BAR 40
 #define YELLOW_BAR 70
 #define GREEN_BAR 100
@@ -61,9 +66,6 @@ static int moving = 0;
 #define BAR_BORDER 2
 #define BAR_WIDTH 100
 #define BAR_HEIGHT 16 //(13 + BAR_BORDER*2)
-
-extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-extern CScanSettings * scanSettings;
 
 //
 CMotorControl::CMotorControl(int num)
@@ -168,17 +170,19 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 			showSNR();
 			//printf("SIG: %d SNR %d last %d\n", g_sig, g_snr, last_snr);
+			
 			if(moving && (stepMode == STEP_MODE_AUTO)) 
 			{
 				if(last_snr < g_snr) 
 				{
 					wasgrow = 1;
 				}
+				
 				//if((last_snr > g_snr) && last_snr > 37000) {
 				if(wasgrow && (last_snr > g_snr) && last_snr > 50) 
 				{
 					//printf("Must stop rotor!!!\n");
-					CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0, feindex);
+					CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0);
 					moving = 0;
 					paintStatus();
 					last_snr = 0;
@@ -195,7 +199,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 				{
 					case RC_ok:
 					case RC_0:
-						printf("[motorcontrol] 0 key received... goto userMenue\n");
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 0 key received... goto userMenue\n");
 						installerMenue = false;
 						paintMenu();
 						paintStatus();
@@ -203,71 +207,71 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 						
 					case RC_1:
 					case RC_right:
-						printf("[motorcontrol] left/1 key received... drive/Step motor west, stepMode: %d\n", stepMode);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] left/1 key received... drive/Step motor west, stepMode: %d\n", stepMode);
 						motorStepWest();
 						paintStatus();
 						break;
 					
 					case RC_red:
 					case RC_2:
-						printf("[motorcontrol] 2 key received... halt motor\n");
-						CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0, feindex);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 2 key received... halt motor\n");
+						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0);
 						moving = 0;
 						paintStatus();
 						break;
 
 					case RC_3:
 					case RC_left:
-						printf("[motorcontrol] right/3 key received... drive/Step motor east, stepMode: %d\n", stepMode);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] right/3 key received... drive/Step motor east, stepMode: %d\n", stepMode);
 						motorStepEast();
 						paintStatus();
 						break;
 						
 					case RC_4:
-						printf("[motorcontrol] 4 key received... set west (soft) limit\n");
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 4 key received... set west (soft) limit\n");
 						if(g_settings.rotor_swap) 
 							lim_cmd = 0x66;
 						else 
 							lim_cmd = 0x67;
 						
-						CZapit::getInstance()->sendMotorCommand(0xE1, 0x31, lim_cmd, 0, 0, 0, feindex);
+						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE1, 0x31, lim_cmd, 0, 0, 0);
 						break;
 						
 					case RC_5:
-						printf("[motorcontrol] 5 key received... disable (soft) limits\n");
-						CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, 0x63, 0, 0, 0, feindex);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 5 key received... disable (soft) limits\n");
+						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x63, 0, 0, 0);
 						break;
 					
 					case RC_6:
-						printf("[motorcontrol] 6 key received... set east (soft) limit\n");
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 6 key received... set east (soft) limit\n");
 						if(g_settings.rotor_swap) 
 							lim_cmd = 0x67;
 						else 
 							lim_cmd = 0x66;
 						
-						CZapit::getInstance()->sendMotorCommand(0xE1, 0x31, lim_cmd, 0, 0, 0, feindex);
+						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE1, 0x31, lim_cmd, 0, 0, 0);
 						break;
 					
 					case RC_7:
-						printf("[motorcontrol] 7 key received... goto reference position\n");
-						CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, 0x6B, 1, 0, 0, feindex);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 7 key received... goto reference position\n");
+						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x6B, 1, 0, 0);
 						satellitePosition = 0;
 						paintStatus();
 						break;
 					
 					case RC_8:
-						printf("[motorcontrol] 8 key received... enable (soft) limits\n");
-						CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, 0x6A, 1, 0, 0, feindex);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 8 key received... enable (soft) limits\n");
+						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x6A, 1, 0, 0);
 						break;
 					
 					case RC_9:
-						printf("[motorcontrol] 9 key received... (re)-calculate positions\n");
-						CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, 0x6F, 1, 0, 0, feindex);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 9 key received... (re)-calculate positions\n");
+						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x6F, 1, 0, 0);
 						break;
 					
 					case RC_plus:
 					case RC_up:
-						printf("[motorcontrol] up key received... increase satellite position: %d\n", ++motorPosition);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] up key received... increase satellite position: %d\n", ++motorPosition);
 						satellitePosition = 0;
 						paintStatus();
 						break;
@@ -275,7 +279,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 					case RC_minus:
 					case RC_down:
 						if (motorPosition > 1) motorPosition--;
-						printf("[motorcontrol] down key received... decrease satellite position: %d\n", motorPosition);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] down key received... decrease satellite position: %d\n", motorPosition);
 						satellitePosition = 0;
 						paintStatus();
 						break;
@@ -286,12 +290,12 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 						if (stepMode == STEP_MODE_OFF)
 							satellitePosition = 0;
 						last_snr = 0;
-						printf("[motorcontrol] red key received... toggle stepmode on/off: %d\n", stepMode);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] red key received... toggle stepmode on/off: %d\n", stepMode);
 						paintStatus();
 						break;
 					
 					default:
-						//printf("[motorcontrol] message received...\n");
+						//dprintf(DEBUG_NORMAL, "[motorcontrol] message received...\n");
 						if ((msg >= RC_WithData) && (msg < RC_WithData + 0x10000000)) 
 							delete (unsigned char*) data;
 						break;
@@ -303,7 +307,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 				{
 					case RC_ok:
 					case RC_0:
-						printf("[motorcontrol] 0 key received... goto installerMenue\n");
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 0 key received... goto installerMenue\n");
 						installerMenue = true;
 						paintMenu();
 						paintStatus();
@@ -311,53 +315,53 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 						
 					case RC_1:
 					case RC_right:
-						printf("[motorcontrol] left/1 key received... drive/Step motor west, stepMode: %d\n", stepMode);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] left/1 key received... drive/Step motor west, stepMode: %d\n", stepMode);
 						motorStepWest();
 						paintStatus();
 						break;
 					
 					case RC_red:
 					case RC_2:
-						printf("[motorcontrol] 2 key received... halt motor\n");
-						CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0, feindex);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 2 key received... halt motor\n");
+						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0);
 						break;
 
 					case RC_3:
 					case RC_left:
-						printf("[motorcontrol] right/3 key received... drive/Step motor east, stepMode: %d\n", stepMode);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] right/3 key received... drive/Step motor east, stepMode: %d\n", stepMode);
 						motorStepEast();
 						paintStatus();
 						break;
 					
 					case RC_green:
 					case RC_5:
-						printf("[motorcontrol] 5 key received... store present satellite number: %d\n", motorPosition);
-						CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, 0x6A, 1, motorPosition, 0, feindex);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 5 key received... store present satellite number: %d\n", motorPosition);
+						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x6A, 1, motorPosition, 0);
 						break;
 					
 					case RC_6:
 						if (stepSize < 0x7F) stepSize++;
-						printf("[motorcontrol] 6 key received... increase Step size: %d\n", stepSize);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 6 key received... increase Step size: %d\n", stepSize);
 						paintStatus();
 						break;
 					
 					case RC_yellow:
 					case RC_7:
-						printf("[motorcontrol] 7 key received... goto satellite number: %d\n", motorPosition);
-						CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, 0x6B, 1, motorPosition, 0, feindex);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 7 key received... goto satellite number: %d\n", motorPosition);
+						CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x6B, 1, motorPosition, 0);
 						satellitePosition = 0;
 						paintStatus();
 						break;
 					
 					case RC_9:
 						if (stepSize > 1) stepSize--;
-						printf("[motorcontrol] 9 key received... decrease Step size: %d\n", stepSize);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] 9 key received... decrease Step size: %d\n", stepSize);
 						paintStatus();
 						break;
 					
 					case RC_plus:
 					case RC_up:
-						printf("[motorcontrol] up key received... increase satellite position: %d\n", ++motorPosition);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] up key received... increase satellite position: %d\n", ++motorPosition);
 						satellitePosition = 0;
 						paintStatus();
 						break;
@@ -365,7 +369,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 					case RC_minus:
 					case RC_down:
 						if (motorPosition > 1) motorPosition--;
-						printf("[motorcontrol] down key received... decrease satellite position: %d\n", motorPosition);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] down key received... decrease satellite position: %d\n", motorPosition);
 						satellitePosition = 0;
 						paintStatus();
 						break;
@@ -375,17 +379,19 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 							stepMode = 0;
 						if (stepMode == STEP_MODE_OFF)
 							satellitePosition = 0;
-						printf("[motorcontrol] red key received... toggle stepmode on/off: %d\n", stepMode);
+						dprintf(DEBUG_NORMAL, "[motorcontrol] red key received... toggle stepmode on/off: %d\n", stepMode);
 						paintStatus();
 						break;
 					
 					default:
-						//printf("[motorcontrol] message received...\n");
+						//dprintf(DEBUG_NORMAL, "[motorcontrol] message received...\n");
 						if ((msg >= RC_WithData) && (msg < RC_WithData + 0x10000000)) 
 							delete (unsigned char*) data;
 						break;
 				}
 			}
+			
+			frameBuffer->blit();
 		}
 		
 		istheend = (msg == RC_home);
@@ -412,7 +418,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 void CMotorControl::motorStepWest(void)
 {
 	int cmd;
-	printf("[motorcontrol] motorStepWest\n");
+	
 	if(g_settings.rotor_swap) 
 		cmd = 0x68;
 	else 
@@ -421,14 +427,14 @@ void CMotorControl::motorStepWest(void)
 	switch(stepMode)
 	{
 		case STEP_MODE_ON:
-			CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, cmd, 1, (-1 * stepSize), 0, feindex);
+			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, (-1 * stepSize), 0);
 			satellitePosition += stepSize;
 			break;
 			
 		case STEP_MODE_TIMED:
-			CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0, feindex);
+			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
 			usleep(stepSize * stepDelay * 1000);
-			CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0, feindex); //halt motor
+			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0); //halt motor
 			satellitePosition += stepSize;
 			break;
 			
@@ -436,38 +442,37 @@ void CMotorControl::motorStepWest(void)
 			moving = 1;
 			paintStatus();
 		default:
-			CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0, feindex);
+			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
 	}
 }	
 
 void CMotorControl::motorStepEast(void)
 {
 	int cmd;
+	
 	if(g_settings.rotor_swap) 
 		cmd = 0x69;
 	else 
 		cmd = 0x68;
 	
-	printf("[motorcontrol] motorStepEast\n");
-	
 	switch(stepMode)
 	{
 		case STEP_MODE_ON:
-			CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, cmd, 1, (-1 * stepSize), 0, feindex);
+			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, (-1 * stepSize), 0);
 			satellitePosition -= stepSize;
 			break;
 			
 		case STEP_MODE_TIMED:
-			CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0, feindex);
+			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
 			usleep(stepSize * stepDelay * 1000);
-			CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0, feindex); //halt motor
+			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, 0x60, 0, 0, 0); //halt motor
 			satellitePosition -= stepSize;
 			break;
 			
 		case STEP_MODE_AUTO:
 			moving = 1;
 		default:
-			CZapit::getInstance()->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0, feindex);
+			CZapit::getInstance()->getFE(feindex)->sendMotorCommand(0xE0, 0x31, cmd, 1, 40, 0);
 	}
 }
 
@@ -477,7 +482,7 @@ void CMotorControl::hide()
 
 	frameBuffer->blit();
 
-	stopSatFind();
+	//stopSatFind();
 }
 
 void CMotorControl::paintLine(int _x, int * _y, int _width, char * txt)
@@ -669,10 +674,9 @@ void CMotorControl::paintMenu()
 	
 	ypos_status = ypos;
 }
-
+/*
 void CMotorControl::startSatFind(void)
 {
-#if 0
 	if (satfindpid != -1) 
 	{
 		kill(satfindpid, SIGKILL);
@@ -695,21 +699,22 @@ void CMotorControl::startSatFind(void)
 #endif
 				printf("[motorcontrol] execlp satfind failed.\n");		
 			break;
-	} /* switch */
-#endif
+	}
 }
-
+*/
+/*
 void CMotorControl::stopSatFind(void)
 {
 	
 	if (satfindpid != -1) 
 	{
-		printf("[motorcontrol] killing satfind...\n");
+		dprintf(DEBUG_NORMAL, "[motorcontrol] killing satfind...\n");
 		kill(satfindpid, SIGKILL);
 		waitpid(satfindpid, 0, 0);
 		satfindpid = -1;
 	}
 }
+*/
 
 #define BARWT 10 
 #define BAR_BL 2

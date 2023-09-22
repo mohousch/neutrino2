@@ -60,9 +60,9 @@
 #include <dirent.h>
 
 
+// globals
 extern tallchans allchans;   			//  defined in zapit.cpp
 extern CConfigFile config;   			//  defined in zapit.cpp
-extern CBouquetManager * g_bouquetManager;	//  defined in zapit.cpp
 
 #define GET_ATTR(node, name, fmt, arg)                                  \
         do {                                                            \
@@ -303,80 +303,7 @@ void CBouquetManager::saveUBouquets(void)
 	chmod(UBOUQUETS_XML, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 }
 
-void CBouquetManager::saveBouquets(const CZapit::bouquetMode bouquetMode, const char * const providerName)
-{
-	dprintf(DEBUG_NORMAL, "CBouquetManager::saveBouquets: mode:%d\n", bouquetMode);
-	
-	if (bouquetMode == CZapit::BM_DELETEBOUQUETS) 
-	{
-		g_bouquetManager->clearAll();
-		unlink(BOUQUETS_XML);
-	}
-	else if (bouquetMode == CZapit::BM_DONTTOUCHBOUQUETS)
-	{
-		return;
-	}
-	else if (bouquetMode == CZapit::BM_CREATESATELLITEBOUQUET) 
-	{
-		while (Bouquets.size() > 1) 
-		{
-			BouquetList::iterator it = Bouquets.begin() + 1;
-			Bouquets[0]->tvChannels.insert(Bouquets[0]->tvChannels.end(), (*it)->tvChannels.begin(), (*it)->tvChannels.end());
-			Bouquets[0]->radioChannels.insert(Bouquets[0]->radioChannels.end(), (*it)->radioChannels.begin(), (*it)->radioChannels.end());
-			delete (*it);
-			Bouquets.erase(it);
-		}
-
-		if(Bouquets.size() > 0)
-			Bouquets[0]->Name = providerName;
-	}
-	else if (bouquetMode == CZapit::BM_UPDATEBOUQUETS) 
-	{
-		while (!(Bouquets.empty())) 
-		{
-			CZapitBouquet * bouquet;
-			int dest = g_bouquetManager->existsBouquet(Bouquets[0]->Name.c_str());
-			
-			dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: dest %d for name %s\n", dest, Bouquets[0]->Name.c_str());
-
-			if(dest == -1) 
-			{
-				bouquet = g_bouquetManager->addBouquet(Bouquets[0]->Name.c_str());
-				dest = g_bouquetManager->existsBouquet(Bouquets[0]->Name.c_str());
-			}
-			else
-				bouquet = g_bouquetManager->Bouquets[dest];
-
-			// list from scanned exist in file
-			// tv bouquets
-			for(unsigned int i = 0; i < Bouquets[0]->tvChannels.size(); i++) 
-			{
-				if(!(g_bouquetManager->existsChannelInBouquet(dest, Bouquets[0]->tvChannels[i]->getChannelID()))) 
-				{
-					bouquet->addService(Bouquets[0]->tvChannels[i]);
-
-					dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: adding channel %s\n", Bouquets[0]->tvChannels[i]->getName().c_str());
-				}
-			}
-			
-			// radio bouquets
-			for(unsigned int i = 0; i < Bouquets[0]->radioChannels.size(); i++) 
-			{
-				if(!(g_bouquetManager->existsChannelInBouquet(dest, Bouquets[0]->radioChannels[i]->getChannelID()))) 
-				{
-					bouquet->addService(Bouquets[0]->radioChannels[i]);
-
-					dprintf(DEBUG_INFO, "CBouquetManager::saveBouquets: adding channel %s\n", Bouquets[0]->radioChannels[i]->getName().c_str());
-				}
-			}
-
-			bouquet->sortBouquet();
-			delete Bouquets[0];
-			Bouquets.erase(Bouquets.begin());
-		}
-	}
-}
-
+//
 void CBouquetManager::sortBouquets(void)
 {
 	sort(Bouquets.begin(), Bouquets.end(), CmpBouquetByChName());
@@ -586,9 +513,9 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 					{
 						id = create_channel_id(0, 0, 0, 0, 0, url.c_str());
 					
-						pair<map<t_channel_id, CZapitChannel>::iterator, bool> ret;
+						std::pair<std::map<t_channel_id, CZapitChannel>::iterator, bool> ret;
 
-						ret = allchans.insert (std::pair <t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
+						ret = allchans.insert (std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
 
 						CZapitChannel *chan = findChannelByChannelID(id);
 
@@ -653,8 +580,8 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 
 						id = create_channel_id(0, 0, 0, 0, 0, url);
 							
-						pair<map<t_channel_id, CZapitChannel>::iterator, bool> ret;
-						ret = allchans.insert(std::pair <t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
+						std::pair<std::map<t_channel_id, CZapitChannel>::iterator, bool> ret;
+						ret = allchans.insert(std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
 						
 						CZapitChannel * chan = findChannelByChannelID(id);
 
@@ -814,8 +741,8 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 						//
 						id = create_channel_id(0, 0, 0, 0, 0, url);
 							
-						pair<map<t_channel_id, CZapitChannel>::iterator, bool> ret;
-						ret = allchans.insert(std::pair <t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
+						std::pair<std::map<t_channel_id, CZapitChannel>::iterator, bool> ret;
+						ret = allchans.insert(std::pair<t_channel_id, CZapitChannel> (id, CZapitChannel(title, id, url, description)));
 					
 						CZapitChannel * chan = findChannelByChannelID(id);
 
@@ -942,7 +869,7 @@ void CBouquetManager::loadBouquets(bool loadCurrentBouquet)
 void CBouquetManager::makeRemainingChannelsBouquet(void)
 {
 	ZapitChannelList unusedChannels;
-	set<t_channel_id> chans_processed;
+	std::set<t_channel_id> chans_processed;
 	bool tomake = config.getBool("makeRemainingChannelsBouquet", true);
 	
 	//
@@ -951,10 +878,10 @@ void CBouquetManager::makeRemainingChannelsBouquet(void)
 		
 	remainChannels = NULL;
 
-	for (vector<CZapitBouquet*>::const_iterator it = Bouquets.begin(); it != Bouquets.end(); it++) 
+	for (std::vector<CZapitBouquet*>::const_iterator it = Bouquets.begin(); it != Bouquets.end(); it++) 
 	{
 		// tvChannels
-		for (vector<CZapitChannel*>::iterator jt = (*it)->tvChannels.begin(); jt != (*it)->tvChannels.end(); jt++) 
+		for (std::vector<CZapitChannel*>::iterator jt = (*it)->tvChannels.begin(); jt != (*it)->tvChannels.end(); jt++) 
 		{
 			if(tomake) 
 				chans_processed.insert((*jt)->getChannelID());
@@ -964,7 +891,7 @@ void CBouquetManager::makeRemainingChannelsBouquet(void)
 		}
 
 		// radioChannels
-		for (vector<CZapitChannel*>::iterator jt = (*it) ->radioChannels.begin(); jt != (*it)->radioChannels.end(); jt++) 
+		for (std::vector<CZapitChannel*>::iterator jt = (*it) ->radioChannels.begin(); jt != (*it)->radioChannels.end(); jt++) 
 		{
 			if(tomake) 
 				chans_processed.insert((*jt)->getChannelID());
@@ -1104,6 +1031,29 @@ void CBouquetManager::moveBouquet(const unsigned int oldId, const unsigned int n
 		Bouquets.insert(it, tmp);
 	}
 }
+
+////
+void CBouquetManager::renameBouquet(const unsigned int bouquet, const char * const newName)
+{
+	if (bouquet < Bouquets.size()) 
+	{
+		Bouquets[bouquet]->Name = newName;
+		Bouquets[bouquet]->bUser = true;
+	}
+}
+
+void CBouquetManager::setBouquetLock(const unsigned int bouquet, const bool lock)
+{
+	if (bouquet < Bouquets.size())
+		Bouquets[bouquet]->bLocked = lock;
+}
+
+void CBouquetManager::setBouquetHidden(const unsigned int bouquet, const bool hidden)
+{
+	if (bouquet < Bouquets.size())
+		Bouquets[bouquet]->bHidden = hidden;
+}
+////
 
 void CBouquetManager::clearAll()
 {

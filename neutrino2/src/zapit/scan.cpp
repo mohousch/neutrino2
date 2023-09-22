@@ -49,6 +49,22 @@
 #include <xmlinterface.h>
 
 
+// globals
+int prov_found = 0;
+short abort_scan;
+short scan_runs;
+short curr_sat;
+uint32_t processed_transponders;
+uint32_t failed_transponders;
+int scanmode = CZapit::SM_NIT;
+int scan_sat_mode = 0;
+uint32_t fake_tid = 0;
+uint32_t fake_nid = 0;
+std::map <transponder_id_t, transponder> scantransponders;		// TP list to scan
+std::map <transponder_id_t, transponder> scanedtransponders;		// global TP list for current scan
+std::map <transponder_id_t, transponder> nittransponders;
+
+//
 extern satellite_map_t satellitePositions;		// defined in getServices.cpp
 extern scan_list_t scanProviders;			// defined in zapit.cpp
 extern CBouquetManager *g_bouquetManager;
@@ -64,22 +80,6 @@ extern t_channel_id live_channel_id;
 extern CZapit::bouquetMode _bouquetMode;
 extern CEventServer *eventServer;
 extern CFrontend * live_fe;
-
-//
-int prov_found = 0;
-short abort_scan;
-short scan_runs;
-short curr_sat;
-uint32_t processed_transponders;
-uint32_t failed_transponders;
-int scanmode = CZapit::SM_NIT;
-int scan_sat_mode = 0;
-CBouquetManager *scanBouquetManager = NULL;
-uint32_t fake_tid = 0;
-uint32_t fake_nid = 0;
-std::map <transponder_id_t, transponder> scantransponders;		// TP list to scan
-std::map <transponder_id_t, transponder> scanedtransponders;		// global TP list for current scan
-std::map <transponder_id_t, transponder> nittransponders;
 
 #define TIMER_START()			\
         static struct timeval tv, tv2;	\

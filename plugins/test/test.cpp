@@ -1294,7 +1294,7 @@ void CTestMenu::testCFrameBoxWidget()
 	//frameBoxWidget->setRadius(RADIUS_MID);
 	frameBoxWidget->setCorner(RADIUS_MID, CORNER_ALL);
 
-	CHintBox loadBox("testCFrameBoxWidget", __("Scan for Movies ..."));
+	CHintBox loadBox("testCFrameBoxWidget", _("Scan for Movies ..."));
 	loadBox.paint();
 	
 	loadMoviePlaylist();

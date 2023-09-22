@@ -273,7 +273,7 @@ void CChannelList::updateEvents(void)
 	}
 }
 
-struct CmpChannelBySat: public binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
+struct CmpChannelBySat: public std::binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
 {
         static bool comparetolower(const char a, const char b)
         {
@@ -290,7 +290,7 @@ struct CmpChannelBySat: public binary_function <const CZapitChannel * const, con
 	};
 };
 
-struct CmpChannelByFreq: public binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
+struct CmpChannelByFreq: public std::binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
 {
         static bool comparetolower(const char a, const char b)
         {

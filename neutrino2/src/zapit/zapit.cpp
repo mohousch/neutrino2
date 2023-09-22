@@ -83,9 +83,7 @@
 #include <playback_cs.h>
 
 
-// scan
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-extern CBouquetManager *scanBouquetManager;
 extern uint32_t failed_transponders;
 extern uint32_t  found_tv_chans;
 extern uint32_t  found_radio_chans;
@@ -103,26 +101,48 @@ extern int found_channels;		// defined in descriptors.cpp
 extern short curr_sat;			// defined in scan.cpp
 extern short scan_runs;			// defined in scan.cpp
 extern short abort_scan;		// defined in scan.cpp
+//
+extern cPlayback *playback;
+//
+extern int current_volume;
+extern int current_muted;
+//
+extern CEventServer *eventServer;
+// Audio/Video Decoder
+extern cVideo * videoDecoder;			// defined in video_cs.pp (libdvbapi)
+extern cAudio * audioDecoder;			// defined in audio_cs.pp (libdvbapi)
+// Demuxes
+extern cDemux * audioDemux;			// defined in dmx_cs.pp (libdvbapi)
+extern cDemux * videoDemux;			// defined in dmx_cs.pp (libdvbapi)
+//
+extern cDemux * pmtDemux;			// defined in pmt.cpp
+// dvbsub
+extern int dvbsub_init();
+extern int dvbsub_pause();
+extern int dvbsub_stop();
+extern int dvbsub_getpid();
+extern void dvbsub_setpid(int pid);
+// tuxtxt
+extern void tuxtx_stop_subtitle();
+extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
+extern void tuxtx_set_pid(int pid, int page, const char * cc);
+
+// globals
+CBouquetManager *scanBouquetManager = NULL;
 CZapit::bouquetMode _bouquetMode = CZapit::BM_UPDATEBOUQUETS;
 CZapit::scanType _scanType = CZapit::ST_TVRADIO;
 scan_list_t scanProviders;
-
-// webtv
-extern cPlayback *playback;
-
 // ci
 #if defined (ENABLE_CI)
 cDvbCi * ci = NULL;
 #endif
-
 // audio conf
-map<t_channel_id, audio_map_set_t> audio_map;
-map<t_channel_id, audio_map_set_t>::iterator audio_map_it;
+std::map<t_channel_id, audio_map_set_t> audio_map;
+std::map<t_channel_id, audio_map_set_t>::iterator audio_map_it;
 unsigned int volume_left = 100;
 unsigned int volume_right = 100;
 int audio_mode = 0;
 int def_audio_mode = 0;
-
 // volume percent conf
 #define VOLUME_DEFAULT_PCM 0
 #define VOLUME_DEFAULT_AC3 25
@@ -132,52 +152,30 @@ typedef std::multimap<t_channel_id, pid_pair_t> volume_map_t;
 volume_map_t vol_map;
 typedef volume_map_t::iterator volume_map_iterator_t;
 typedef std::pair<volume_map_iterator_t, volume_map_iterator_t> volume_map_range_t;
-
 int volume_percent = 0;
-extern int current_volume;
-extern int current_muted;
-
 // live/record channel id
 t_channel_id live_channel_id = 0;
 t_channel_id rec_channel_id = 0;
-
 bool firstzap = true;
 bool playing = false;
 bool g_list_changed = false; 		// flag to indicate, allchans was changed
-
 // SDT
 int scanSDT = 0;
 bool sdt_wakeup = false;
 sdt_tp_t sdt_tp;			// defined in getservices.h
-
 // the conditional access module
 CCam * cam0 = NULL;
 CCam * cam1 = NULL;
-
 // the configuration file
 CConfigFile config(',', true);
-
-// the event server
-extern CEventServer *eventServer;
-
 // the current channel
 CZapitChannel * live_channel = NULL;
-
 // record channel
 CZapitChannel * rec_channel = NULL;
-
 // bouquet manager
 CBouquetManager * g_bouquetManager = NULL;
-
-// Audio/Video Decoder
-extern cVideo * videoDecoder;			// defined in video_cs.pp (libdvbapi)
-extern cAudio * audioDecoder;			// defined in audio_cs.pp (libdvbapi)
-
-// Demuxes
-extern cDemux * audioDemux;			// defined in dmx_cs.pp (libdvbapi)
-extern cDemux * videoDemux;			// defined in dmx_cs.pp (libdvbapi)
+//
 cDemux * pcrDemux = NULL;			// defined in dmx_cs.pp (libdvbapi)
-extern cDemux * pmtDemux;			// defined in pmt.cpp
 
 // zapit mode
 enum {
@@ -189,53 +187,33 @@ enum {
 int currentMode = 1;
 bool playbackStopForced = false;
 bool avDecoderOpen = false;
-
 // list of near video on demand
 tallchans nvodchannels;         	// tallchans defined in "bouquets.h"
 bool current_is_nvod = false;
-
 // list of all channels (services)
 tallchans allchans;             	// tallchans defined in "bouquets.h"
 tallchans curchans;             	// tallchans defined in "bouquets.h"
 transponder_list_t transponders;    	// from services.xml
-
 //
 bool standby = true;
-
 // zapit config
 bool saveLastChannel = true;
 int lastChannelMode = TV_MODE;
 uint32_t  lastChannelRadio = 0;
 uint32_t  lastChannelTV = 0;
 bool makeRemainingChannelsBouquet = false;
-
 // pmt update filter
 static int pmt_update_fd = -1;
-
-// dvbsub
-extern int dvbsub_init();
-extern int dvbsub_pause();
-extern int dvbsub_stop();
-extern int dvbsub_getpid();
-extern void dvbsub_setpid(int pid);
-
-// tuxtxt
-extern void tuxtx_stop_subtitle();
-extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
-extern void tuxtx_set_pid(int pid, int page, const char * cc);
-
 // multi frontend stuff
 int FrontendCount = 0;
 fe_map_t femap;
-
 // frontend config
 CConfigFile fe_configfile(',', false);
 CFrontend * live_fe = NULL;
 CFrontend * record_fe = NULL;
-
 //
 bool retune = false;
-
+//
 bool have_s = false;
 bool have_c = false;
 bool have_t = false;
@@ -1845,7 +1823,7 @@ int CZapit::prepareChannels()
 	// load frontend config
 	loadFrontendConfig();
         
-    	// load sats/tps
+    	// load tps
     	CServices::getInstance()->loadTransponders();
 
 	// load services
@@ -1861,21 +1839,6 @@ int CZapit::prepareChannels()
 }
 
 //
-void CZapit::addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id)
-{
-	CZapitChannel * chan = g_bouquetManager->findChannelByChannelID(channel_id);
-
-	if (chan != NULL)
-	{
-		if (bouquet < g_bouquetManager->Bouquets.size())
-			g_bouquetManager->Bouquets[bouquet]->addService(chan);
-		else
-			printf("bouquet not found\n");
-	}
-	else
-		printf("channel_id not found in channellist\n");
-}
-
 void CZapit::sendCurrentAPIDs(APIDList &apids)
 {
 	for (uint32_t  i = 0; i < live_channel->getAudioChannelCount(); i++) 
@@ -3550,7 +3513,7 @@ void CZapit::setSubServices( subServiceList& subServices )
 	for (int i = 0; i < subServices.size(); i++)
 	{
 		nvodchannels.insert (
-				std::pair <t_channel_id, CZapitChannel> (
+				std::pair<t_channel_id, CZapitChannel> (
 					create_channel_id(subServices[i].service_id, subServices[i].original_network_id, subServices[i].transport_stream_id, satellitePosition, freq),
 					CZapitChannel (
 					"NVOD",
@@ -3671,13 +3634,16 @@ void CZapit::reloadCurrentServices()
 	eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
 }
 
+// motorcontrol
+/*
 void CZapit::sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t cmd, uint8_t num_parameters, uint8_t param1, uint8_t param2, int feindex)
 {
 	if(cmdtype > 0x20)
 		getFE(feindex)->sendMotorCommand(cmdtype, address, cmd, num_parameters, param1, param2);
 }
+*/
 
-//
+/*
 bool CZapit::reZap()
 {
 	bool ret = false;
@@ -3690,6 +3656,7 @@ bool CZapit::reZap()
 	
 	return ret;
 }
+*/
 
 void CZapit::muteAudio(const bool mute)
 {
@@ -3815,6 +3782,84 @@ void CZapit::saveBouquets()
 	}
 }
 
+//
+void CZapit::saveBouquets(const CZapit::bouquetMode bouquetMode, const char * const providerName)
+{
+	dprintf(DEBUG_NORMAL, "CZapit::saveBouquets: mode:%d\n", bouquetMode);
+	
+	if (bouquetMode == CZapit::BM_DELETEBOUQUETS) // 0
+	{
+		g_bouquetManager->clearAll();
+		unlink(BOUQUETS_XML);
+	}
+	else if (bouquetMode == CZapit::BM_DONTTOUCHBOUQUETS) // 1
+	{
+		return;
+	}
+	else if (bouquetMode == CZapit::BM_UPDATEBOUQUETS) // 2
+	{
+		while (!(scanBouquetManager->Bouquets.empty())) 
+		{
+			CZapitBouquet * bouquet;
+			int dest = g_bouquetManager->existsBouquet(scanBouquetManager->Bouquets[0]->Name.c_str());
+			
+			dprintf(DEBUG_INFO, "CZapit::saveBouquets: dest %d for name %s\n", dest, scanBouquetManager->Bouquets[0]->Name.c_str());
+
+			if(dest == -1) 
+			{
+				bouquet = g_bouquetManager->addBouquet(scanBouquetManager->Bouquets[0]->Name.c_str());
+				dest = g_bouquetManager->existsBouquet(scanBouquetManager->Bouquets[0]->Name.c_str());
+			}
+			else
+				bouquet = g_bouquetManager->Bouquets[dest];
+
+			// list from scanned exist in file
+			// tv bouquets
+			for(unsigned int i = 0; i < scanBouquetManager->Bouquets[0]->tvChannels.size(); i++) 
+			{
+				if(!(g_bouquetManager->existsChannelInBouquet(dest, scanBouquetManager->Bouquets[0]->tvChannels[i]->getChannelID()))) 
+				{
+					bouquet->addService(scanBouquetManager->Bouquets[0]->tvChannels[i]);
+
+					dprintf(DEBUG_INFO, "CZapit::saveBouquets: adding channel %s\n", scanBouquetManager->Bouquets[0]->tvChannels[i]->getName().c_str());
+				}
+			}
+			
+			// radio bouquets
+			for(unsigned int i = 0; i < scanBouquetManager->Bouquets[0]->radioChannels.size(); i++) 
+			{
+				if(!(g_bouquetManager->existsChannelInBouquet(dest, scanBouquetManager->Bouquets[0]->radioChannels[i]->getChannelID()))) 
+				{
+					bouquet->addService(scanBouquetManager->Bouquets[0]->radioChannels[i]);
+
+					dprintf(DEBUG_INFO, "CZapit::saveBouquets: adding channel %s\n", scanBouquetManager->Bouquets[0]->radioChannels[i]->getName().c_str());
+				}
+			}
+
+			bouquet->sortBouquet();
+			delete scanBouquetManager->Bouquets[0];
+			scanBouquetManager->Bouquets.erase(scanBouquetManager->Bouquets.begin());
+		}
+	}
+	/*
+	else if (bouquetMode == CZapit::BM_CREATESATELLITEBOUQUET) //3
+	{
+		//FIXME:
+		while (scanBouquetManager->Bouquets.size() > 1) 
+		{
+			BouquetList::iterator it = scanBouquetManager->Bouquets.begin() + 1;
+			scanBouquetManager->Bouquets[0]->tvChannels.insert(scanBouquetManager->Bouquets[0]->tvChannels.end(), (*it)->tvChannels.begin(), (*it)->tvChannels.end());
+			scanBouquetManager->Bouquets[0]->radioChannels.insert(scanBouquetManager->Bouquets[0]->radioChannels.end(), (*it)->radioChannels.begin(), (*it)->radioChannels.end());
+			delete (*it);
+			scanBouquetManager->Bouquets.erase(it);
+		}
+
+		if(scanBouquetManager->Bouquets.size() > 0)
+			scanBouquetManager->Bouquets[0]->Name = providerName;
+	}
+	*/
+}
+
 void CZapit::restoreBouquets()
 {
 	if(g_list_changed) 
@@ -3829,17 +3874,18 @@ void CZapit::restoreBouquets()
 		g_bouquetManager->loadBouquets();
 	}
 }
-
-void CZapit::addBouquet(const char * const name)
+/*
+void CZapit::addBouquet(const char * const name, bool ub, bool webtvb)
 {
-	g_bouquetManager->addBouquet(name, true);
+	g_bouquetManager->addBouquet(name, ub, webtvb);
 }
 
 void CZapit::deleteBouquet(const unsigned int bouquet)
 {
 	g_bouquetManager->deleteBouquet(bouquet);
 }
-
+*/
+/*
 void CZapit::renameBouquet(const unsigned int bouquet, const char * const newName)
 {
 	if (bouquet < g_bouquetManager->Bouquets.size()) 
@@ -3848,12 +3894,14 @@ void CZapit::renameBouquet(const unsigned int bouquet, const char * const newNam
 		g_bouquetManager->Bouquets[bouquet]->bUser = true;
 	}
 }
-
+*/
+/*
 void CZapit::moveBouquet(const unsigned int bouquet, const unsigned int newPos)
 {
 	g_bouquetManager->moveBouquet(bouquet, newPos);
 }
-
+*/
+/*
 void CZapit::moveChannel(const unsigned int bouquet, unsigned int oldPos, unsigned int newPos, channelsMode mode)
 {
 	if (bouquet < g_bouquetManager->Bouquets.size())
@@ -3861,29 +3909,50 @@ void CZapit::moveChannel(const unsigned int bouquet, unsigned int oldPos, unsign
 						(((currentMode & RADIO_MODE) && mode == MODE_CURRENT)
 						|| (mode == MODE_RADIO)) ? 2 : 1);
 }
-
+*/
+/*
 signed int CZapit::existsBouquet(const char * const name)
 {
 	return g_bouquetManager->existsBouquet(name);
 }
-
+*/
+/*
 void CZapit::setBouquetLock(const unsigned int bouquet, const bool lock)
 {
 	if (bouquet < g_bouquetManager->Bouquets.size())
 		g_bouquetManager->Bouquets[bouquet]->bLocked = lock;
 }
-
+*/
+/*
 void CZapit::setBouquetHidden(const unsigned int bouquet, const bool hidden)
 {
 	if (bouquet < g_bouquetManager->Bouquets.size())
 		g_bouquetManager->Bouquets[bouquet]->bHidden = hidden;
 }
-
+*/
+/*
 bool CZapit::existsChannelInBouquet(const unsigned int bouquet, const t_channel_id channel_id)
 {
 	return g_bouquetManager->existsChannelInBouquet(bouquet, channel_id);
 }
+*/
+//
+void CZapit::addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id)
+{
+	CZapitChannel * chan = g_bouquetManager->findChannelByChannelID(channel_id);
 
+	if (chan != NULL)
+	{
+		if (bouquet < g_bouquetManager->Bouquets.size())
+			g_bouquetManager->Bouquets[bouquet]->addService(chan);
+		else
+			printf("bouquet not found\n");
+	}
+	else
+		printf("channel_id not found in channellist\n");
+}
+
+//
 void CZapit::removeChannelFromBouquet(const unsigned int bouquet, const t_channel_id channel_id)
 {
 	if (bouquet < g_bouquetManager->Bouquets.size())
@@ -4267,7 +4336,7 @@ void * CZapit::scanThread(void * data)
 
 				if(scanBouquetManager->Bouquets.size() > 0) 
 				{
-					scanBouquetManager->saveBouquets(_bouquetMode, providerName);
+					CZapit::getInstance()->saveBouquets(_bouquetMode, providerName);
 				}
 						
 				scanBouquetManager->clearAll();
@@ -4300,6 +4369,7 @@ void * CZapit::scanThread(void * data)
 		scan_runs = 0;
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_COMPLETE, CEventServer::INITID_NEUTRINO);
 		
+		//
 		if (scanBouquetManager) 
 		{
 			scanBouquetManager->clearAll();
@@ -4307,6 +4377,7 @@ void * CZapit::scanThread(void * data)
 			scanBouquetManager = NULL;
 		}
 
+		//
 		eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
 	} 
 	else 
@@ -4315,6 +4386,7 @@ void * CZapit::scanThread(void * data)
 		scan_runs = 0;
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
 		
+		//
 		if (scanBouquetManager) 
 		{
 			scanBouquetManager->clearAll();
@@ -4406,7 +4478,7 @@ void * CZapit::scanTransponderThread(void * data)
 	{
 		CServices::getInstance()->saveServices(true);
 		
-		scanBouquetManager->saveBouquets(_bouquetMode, providerName);
+		CZapit::getInstance()->saveBouquets(_bouquetMode, providerName);
 	        g_bouquetManager->saveBouquets();
 	        g_bouquetManager->clearAll();
 		g_bouquetManager->loadBouquets();
@@ -4415,6 +4487,7 @@ void * CZapit::scanTransponderThread(void * data)
 		scan_runs = 0;
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_COMPLETE, CEventServer::INITID_NEUTRINO);
 		
+		//
 		if (scanBouquetManager) 
 		{
 			scanBouquetManager->clearAll();
@@ -4430,6 +4503,7 @@ void * CZapit::scanTransponderThread(void * data)
 		scan_runs = 0;
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_FAILED, CEventServer::INITID_NEUTRINO);
 		
+		//
 		if (scanBouquetManager) 
 		{
 			scanBouquetManager->clearAll();

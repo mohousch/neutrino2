@@ -51,20 +51,22 @@
 #include <driver/encoding.h>
 
 
+// globals
+satellite_map_t satellitePositions;				// satellite position as specified in satellites.xml
+std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats liste
+
+static int newfound;
+
 //
 extern transponder_list_t transponders;				// defined in zapit.cpp
 extern tallchans allchans;					// defined in zapit.cpp
 extern int scanSDT;						// defined in zapit.cpp
-static int newfound;
-extern map<t_channel_id, audio_map_set_t> audio_map;		// defined in zapit.cpp
+extern std::map<t_channel_id, audio_map_set_t> audio_map;	// defined in zapit.cpp
 extern int FrontendCount;
 extern bool have_s;
 extern bool have_c;
 extern bool have_t;
 extern bool have_a;
-
-satellite_map_t satellitePositions;				// satellite position as specified in satellites.xml
-std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats liste
 
 // parse transponder from services.xml
 void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, fe_type_t frontendType)
@@ -136,9 +138,9 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 		// add current transponder to TP list
 		transponder_id_t tid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-		pair<map<transponder_id_t, transponder>::iterator, bool> ret;
+		std::pair<std::map<transponder_id_t, transponder>::iterator, bool> ret;
 
-		ret = transponders.insert(std::pair <transponder_id_t, transponder> ( tid, transponder(transport_stream_id, feparams, original_network_id)));
+		ret = transponders.insert(std::pair<transponder_id_t, transponder> ( tid, transponder(transport_stream_id, feparams, original_network_id)));
 		
 		if (ret.second == false)
 			printf("[getservices] duplicate transponder id %llx freq %d\n", tid, feparams.frequency);
@@ -203,7 +205,7 @@ void CServices::parseChannels(xmlNodePtr node, const t_transport_stream_id trans
 			continue;
 		}
 
-		map<t_channel_id, audio_map_set_t>::iterator audio_map_it;
+		std::map<t_channel_id, audio_map_set_t>::iterator audio_map_it;
 		audio_map_it = audio_map.find(chid);
 		
 		if((audio_map_it != audio_map.end()) && (audio_map_it->second.apid != 0)) 
@@ -212,9 +214,9 @@ void CServices::parseChannels(xmlNodePtr node, const t_transport_stream_id trans
 		}
 
 		// insert channels
-		pair<map<t_channel_id, CZapitChannel>::iterator, bool> ret;
+		std::pair<std::map<t_channel_id, CZapitChannel>::iterator, bool> ret;
 
-		ret = allchans.insert(std::pair <t_channel_id, CZapitChannel> (chid, CZapitChannel( name, 
+		ret = allchans.insert(std::pair<t_channel_id, CZapitChannel> (chid, CZapitChannel( name, 
 												     service_id, 
 												     transport_stream_id,
 												     original_network_id, 
@@ -435,7 +437,7 @@ void CServices::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, 
 		polarization &= 7;
 		
 		// insert TPs list
-		select_transponders.insert( std::pair <transponder_id_t, transponder> (tid, transponder(fake_tid, feparams, /*polarization,*/ fake_nid)));
+		select_transponders.insert( std::pair<transponder_id_t, transponder> (tid, transponder(fake_tid, feparams, fake_nid)));
 		
 		fake_nid ++; 
 		fake_tid ++;

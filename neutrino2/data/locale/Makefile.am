@@ -32,7 +32,7 @@ neutrino2.pot: $(top_srcdir)/src/*.cpp \
 BUILT_SOURCES = $(LANGMO)
 CLEANFILES = $(LANGMO) neutrino2.pot
 
-#dist-hook: $(LANGPO)
+dist-hook: $(LANGPO)
 
 install-data-local: $(LANGMO)
 	for lang in $(LANGS); do \
@@ -42,7 +42,6 @@ install-data-local: $(LANGMO)
 
 uninstall-local:
 	for lang in $(LANGS); do \
-		$(RM) $(DESTDIR)$(LOCALEDIR)/@PACKAGE_NAME@-$$lang.po; \
 		$(RM) $(DESTDIR)$(LOCALEDIR)/$$lang/LC_MESSAGES/@PACKAGE_NAME@.mo; \
 	done
 	

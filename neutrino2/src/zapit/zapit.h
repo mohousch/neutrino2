@@ -312,7 +312,8 @@ class CZapit
 		
 		CZapit(){};
 	public:
-		~CZapit(){};
+		virtual ~CZapit(){ };
+		
 		static CZapit *getInstance()
 		{
 			static CZapit * zapit = NULL;
@@ -399,10 +400,10 @@ class CZapit
 		//
 		void reinitChannels();
 		void reloadCurrentServices();
-		bool reZap();
+		//bool reZap();
 
-		// frontend
-		void sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t cmd, uint8_t num_parameters, uint8_t param1, uint8_t param2, int feindex = 0);
+		// motorcontrol
+		//void sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t cmd, uint8_t num_parameters, uint8_t param1, uint8_t param2, int feindex = 0);
 
 		// audio / video
 		void muteAudio(const bool mute);
@@ -424,17 +425,18 @@ class CZapit
 
 		// bouquetManager
 		void saveBouquets();
+		void saveBouquets(const CZapit::bouquetMode bouquetMode, const char * const providerName);
 		void restoreBouquets();
-		void addBouquet(const char * const name); // UTF-8 encoded
-		void deleteBouquet(const unsigned int bouquet);
-		void renameBouquet(const unsigned int bouquet, const char * const newName); // UTF-8 encoded
-		void moveBouquet(const unsigned int bouquet, const unsigned int newPos);
-		void moveChannel(const unsigned int bouquet, unsigned int oldPos, unsigned int newPos, channelsMode mode = MODE_CURRENT);
-		signed int existsBouquet(const char * const name); // UTF-8 encoded
-		void setBouquetLock(const unsigned int bouquet, const bool lock);
-		void setBouquetHidden(const unsigned int bouquet, const bool hidden);
+		//void addBouquet(const char * const name, bool ub = false, bool webtvb = false); // UTF-8 encoded
+		//void deleteBouquet(const unsigned int bouquet);
+		//void renameBouquet(const unsigned int bouquet, const char * const newName); // UTF-8 encoded
+		//void moveBouquet(const unsigned int bouquet, const unsigned int newPos);
+		//void moveChannel(const unsigned int bouquet, unsigned int oldPos, unsigned int newPos, channelsMode mode = MODE_CURRENT);
+		//signed int existsBouquet(const char * const name); // UTF-8 encoded
+		//void setBouquetLock(const unsigned int bouquet, const bool lock);
+		//void setBouquetHidden(const unsigned int bouquet, const bool hidden);
 		void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id);
-		bool existsChannelInBouquet(const unsigned int bouquet, const t_channel_id channel_id);
+		//bool existsChannelInBouquet(const unsigned int bouquet, const t_channel_id channel_id);
 		void removeChannelFromBouquet(const unsigned int bouquet, const t_channel_id channel_id);
 
 		// scan

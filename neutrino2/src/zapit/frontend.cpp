@@ -1330,14 +1330,16 @@ void CFrontend::sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t comma
 	int i;
 
 	dprintf(DEBUG_INFO, "CFrontend::sendMotorCommand: fe(%d:%d) sendMotorCommand: cmdtype   = %x, address = %x, cmd   = %x\n", feadapter, fenumber, cmdtype, address, command);
+	
 	dprintf(DEBUG_INFO, "CFrontend::sendMotorCommand fe(%d:%d) sendMotorCommand: num_parms = %d, parm1   = %x, parm2 = %x\n", feadapter, fenumber, num_parameters, parameter1, parameter2);
 
-	cmd.msg[0] = cmdtype;	//command type
-	cmd.msg[1] = address;	//address
-	cmd.msg[2] = command;	//command
+	cmd.msg[0] = cmdtype;		//command type
+	cmd.msg[1] = address;		//address
+	cmd.msg[2] = command;		//command
 	cmd.msg[3] = parameter1;
 	cmd.msg[4] = parameter2;
 	cmd.msg_len = 3 + num_parameters;
+	
 	secSetVoltage(SEC_VOLTAGE_13, 15);
 	secSetTone(SEC_TONE_OFF, 25);
 

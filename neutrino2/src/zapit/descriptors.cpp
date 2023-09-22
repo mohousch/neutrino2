@@ -49,11 +49,7 @@
 #include <math.h>
 
 
-extern CBouquetManager* scanBouquetManager;
-extern CBouquetManager *g_bouquetManager;
-extern CZapit::scanType _scanType;
-extern tallchans allchans;   			//  defined in zapit.cpp
-extern tallchans curchans;   			//  defined in zapit.cpp
+// globals
 std::string curr_chan_name;
 uint32_t  found_transponders;
 uint32_t  found_channels;
@@ -64,6 +60,11 @@ uint32_t  found_data_chans;
 std::string lastServiceName;
 std::map <t_channel_id, uint8_t> service_types;
 
+//
+extern CBouquetManager* scanBouquetManager;
+extern CZapit::scanType _scanType;
+extern tallchans allchans;   			//  defined in zapit.cpp
+extern tallchans curchans;   			//  defined in zapit.cpp
 extern CEventServer *eventServer;
 
 void CDescriptors::generic_descriptor(const unsigned char * const buffer)
@@ -567,7 +568,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 	transponder_id_t tpid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 	if(service_wr) 
 	{
-		pair<map<t_channel_id, CZapitChannel>::iterator,bool> ret;
+		std::pair<std::map<t_channel_id, CZapitChannel>::iterator,bool> ret;
 		
 		dprintf(DEBUG_DEBUG, "New channel %llx:::%llx %s\n", channel_id, tpid, serviceName.c_str());
 		
@@ -693,7 +694,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 				bouquetId = scanBouquetManager->existsBouquet(pname);
 
 				if (bouquetId == -1)
-					bouquet = scanBouquetManager->addBouquet(std::string(pname), false);
+					bouquet = scanBouquetManager->addBouquet(std::string(pname));
 				else
 					bouquet = scanBouquetManager->Bouquets[bouquetId];
 

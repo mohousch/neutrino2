@@ -27,7 +27,8 @@
 #include <zapit/ci.h>
 
 
-extern int curpmtpid;
+// globals
+//extern int curpmtpid;		// defined in pmt.cpp
 
 /*
  * conditional access descriptors
@@ -161,8 +162,8 @@ unsigned int CCaPmt::writeToBuffer(CZapitChannel * thisChannel, unsigned char * 
 		buffer[26] = demux; 								// get section data from demuxNum
 		buffer[27] = 0x84;  								// pmt pid
 		buffer[28] = 0x02;
-		buffer[29] = (curpmtpid >> 8) & 0xFF;
-		buffer[30] = curpmtpid & 0xFF;
+		buffer[29] = (thisChannel->getPmtPid() >> 8) & 0xFF;
+		buffer[30] = thisChannel->getPmtPid() & 0xFF;
 	}							// 30
 
         int lenpos = 10;

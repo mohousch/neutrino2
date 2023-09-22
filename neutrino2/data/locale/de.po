@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-22 00:14+0200\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-09-23 01:37+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -82,18 +82,17 @@ msgstr ""
 msgid "Absolute start directory"
 msgstr ""
 
-#, fuzzy
 msgid "Activate settings"
-msgstr "Display Einstellungen"
+msgstr "aktiviere Einstellungen"
 
 msgid "Actors"
 msgstr ""
 
 msgid "Add"
-msgstr ""
+msgstr "Einfügen"
 
 msgid "Add to Bouquets"
-msgstr ""
+msgstr "zu den Bouquets einfügen"
 
 msgid "Adult movie / Drama"
 msgstr ""
@@ -165,16 +164,14 @@ msgstr ""
 msgid "Audio master"
 msgstr ""
 
-#, fuzzy
 msgid "Audio settings"
-msgstr "Display Einstellungen"
+msgstr "Audio Einstellungen"
 
 msgid "Audioplayer"
 msgstr ""
 
-#, fuzzy
 msgid "Audioplayer settings"
-msgstr "Display Einstellungen"
+msgstr "Audioplayer Einstellungen"
 
 msgid "Audiotype"
 msgstr ""
@@ -234,17 +231,16 @@ msgid "Bouquet"
 msgstr ""
 
 msgid "Bouquet Editor"
-msgstr ""
+msgstr "Bouquet verwalten"
 
 msgid "Bouquet back"
-msgstr ""
+msgstr "Bouquet zurück"
 
 msgid "Bouquets"
-msgstr ""
+msgstr "Bouquet"
 
-#, fuzzy
 msgid "Box Info"
-msgstr "EPG Info1"
+msgstr "Box Information"
 
 msgid ""
 "Box will shutdown in 1 min.\n"
@@ -303,9 +299,8 @@ msgstr ""
 msgid "CEC mode tuner"
 msgstr ""
 
-#, fuzzy
 msgid "CEC settings"
-msgstr "Einstellungen"
+msgstr "CEC Einstellungen"
 
 msgid "CEC standby"
 msgstr ""
@@ -331,9 +326,8 @@ msgstr ""
 msgid "CI Cam"
 msgstr ""
 
-#, fuzzy
 msgid "CI Cam settings"
-msgstr "Display Einstellungen"
+msgstr "CI CAM Einstellungen"
 
 msgid "CI cam reset"
 msgstr ""
@@ -398,9 +392,8 @@ msgstr ""
 msgid "Channellist Number"
 msgstr ""
 
-#, fuzzy
 msgid "Channellist settings"
-msgstr "Display Einstellungen"
+msgstr "Kanal Liste Einstellungen"
 
 msgid "Check filesystem"
 msgstr ""
@@ -433,7 +426,7 @@ msgid "Cooking"
 msgstr ""
 
 msgid "Copy bouquet to Favorites"
-msgstr ""
+msgstr "Kopiere Bouquet zu Favoriten"
 
 msgid "Corner"
 msgstr ""
@@ -494,25 +487,25 @@ msgid "Delayed shutdown"
 msgstr ""
 
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 msgid "Delete WebTV channels"
-msgstr ""
+msgstr "WebTV Kanal Listen löschen"
 
 msgid "Delete all"
-msgstr ""
+msgstr "Alle löschen"
 
 msgid "Delete channel from bouquet?"
-msgstr ""
+msgstr "lösche Kanal vom Bouquet"
 
 msgid "Delete channels"
-msgstr ""
+msgstr "Kanal Listen löschen"
 
 msgid "Description: "
 msgstr ""
 
 msgid "Details current program"
-msgstr ""
+msgstr "Vorschau aktuelles Programm"
 
 msgid "Detective / Thriller"
 msgstr ""
@@ -562,9 +555,8 @@ msgstr ""
 msgid "Diseqc input"
 msgstr ""
 
-#, fuzzy
 msgid "Display image"
-msgstr "Display Einstellungen"
+msgstr "zeige Image"
 
 msgid "Display settings"
 msgstr "Display Einstellungen"
@@ -587,7 +579,7 @@ msgid "Do you want to overwrite this file:"
 msgstr ""
 
 msgid "Do you want to restore the previous settings?"
-msgstr ""
+msgstr "wollen Sie die bisherigen Einstellugen wiederherstellen?"
 
 msgid "Do you want to save the changes?"
 msgstr ""
@@ -653,9 +645,8 @@ msgstr ""
 msgid "EPG save path"
 msgstr ""
 
-#, fuzzy
 msgid "EPG settings"
-msgstr "Einstellungen"
+msgstr "EPG Einstellungen"
 
 msgid "EPG-Cache (Days)"
 msgstr ""
@@ -706,19 +697,19 @@ msgid "Event list"
 msgstr ""
 
 msgid "Eventlist Title"
-msgstr ""
+msgstr "Vorschau Titel"
 
 msgid "Eventlist current programm"
-msgstr ""
+msgstr "Vorschau aktuelles Programm"
 
 msgid "Eventlist date / time"
-msgstr ""
+msgstr "Vorschau Program Datum / Zeit"
 
 msgid "Eventlist large"
 msgstr ""
 
 msgid "Eventlist overview"
-msgstr ""
+msgstr "Vorschau alle Programm"
 
 msgid "Eventlist small"
 msgstr ""
@@ -777,9 +768,8 @@ msgstr ""
 msgid "Filebrowser item"
 msgstr ""
 
-#, fuzzy
 msgid "Filebrowser settings"
-msgstr "Display Einstellungen"
+msgstr "Filebrowser Einstellungen"
 
 msgid "Filename of the play list"
 msgstr ""
@@ -851,7 +841,7 @@ msgid "Framerate"
 msgstr ""
 
 msgid "Free Memory"
-msgstr ""
+msgstr "Speiche entleeren"
 
 msgid "French"
 msgstr ""
@@ -949,9 +939,8 @@ msgstr ""
 msgid "HDD mounted"
 msgstr ""
 
-#, fuzzy
 msgid "HDD settings"
-msgstr "Display Einstellungen"
+msgstr "HDD Einstellungen"
 
 msgid "HDD umount"
 msgstr ""
@@ -982,6 +971,9 @@ msgstr "Hilfe"
 
 msgid "Here you can select a skin from the following list."
 msgstr ""
+
+msgid "Hide"
+msgstr "Verstecken"
 
 #, fuzzy
 msgid "Hierarchy"
@@ -1103,7 +1095,7 @@ msgid "Key Repeat-blocker"
 msgstr ""
 
 msgid "Keybinding settings"
-msgstr ""
+msgstr "Tasten Einstellugen"
 
 msgid "Keyword"
 msgstr ""
@@ -1136,16 +1128,16 @@ msgid "LaDirection"
 msgstr ""
 
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 msgid "Languages"
-msgstr ""
+msgstr "Sprachen"
 
 msgid "Last Channel"
 msgstr ""
 
 msgid "Last Channel settings"
-msgstr ""
+msgstr "Letzte Kanal Einstellugen"
 
 msgid "Last play date"
 msgstr ""
@@ -1159,7 +1151,6 @@ msgstr ""
 msgid "Leave standby"
 msgstr ""
 
-#, fuzzy
 msgid "Length"
 msgstr "Spiel Dauer (Min)"
 
@@ -1188,8 +1179,11 @@ msgstr ""
 msgid "LocalTV EPG"
 msgstr ""
 
+msgid "Lock"
+msgstr "Sperren"
+
 msgid "Lock RC"
-msgstr ""
+msgstr "Fernbedienung sperren"
 
 msgid "Lock Remote Control"
 msgstr ""
@@ -1277,9 +1271,8 @@ msgstr ""
 msgid "Minutes"
 msgstr ""
 
-#, fuzzy
 msgid "Misc settings"
-msgstr "Display Einstellungen"
+msgstr "Diverse Einstellungen"
 
 msgid "Mo Tu We Th Fr Sa Su"
 msgstr ""
@@ -1303,12 +1296,11 @@ msgid "More Screenings on this Channel"
 msgstr ""
 
 msgid "Motor Control Settings"
-msgstr ""
+msgstr "Motor Einstellugen"
 
 msgid "Motor Setup"
 msgstr ""
 
-#, fuzzy
 msgid "Motor settings"
 msgstr "Einstellungen"
 
@@ -1325,7 +1317,7 @@ msgid "Mount options"
 msgstr ""
 
 msgid "Move"
-msgstr ""
+msgstr "Bewegen"
 
 msgid "Movie / Drama"
 msgstr ""
@@ -1345,9 +1337,8 @@ msgstr ""
 msgid "Movieplayer"
 msgstr ""
 
-#, fuzzy
 msgid "Movieplayer settings"
-msgstr "Display Einstellungen"
+msgstr "Movieplayer Einstellungen"
 
 msgid "Movies Browser"
 msgstr ""
@@ -1398,7 +1389,7 @@ msgid "Network Name"
 msgstr ""
 
 msgid "Network settings"
-msgstr ""
+msgstr "Netzwerk Einstellugen"
 
 msgid "New Bookmark"
 msgstr ""
@@ -1416,7 +1407,6 @@ msgstr ""
 msgid "New media"
 msgstr ""
 
-#, fuzzy
 msgid "New timer"
 msgstr "Neuer Timer"
 
@@ -1470,7 +1460,7 @@ msgid "No key"
 msgstr ""
 
 msgid "No neutrino-settings found, Using defaults."
-msgstr ""
+msgstr "Keine Einstellugen gefunden standard Werte werden benutzt."
 
 msgid "Noise"
 msgstr ""
@@ -1528,9 +1518,8 @@ msgstr ""
 msgid "PSI Setup"
 msgstr ""
 
-#, fuzzy
 msgid "PSI settings"
-msgstr "Einstellungen"
+msgstr "PSI Einstellungen"
 
 msgid "Package successfully installed"
 msgstr ""
@@ -1542,7 +1531,7 @@ msgid "Page Up"
 msgstr ""
 
 msgid "Parentallock settings"
-msgstr ""
+msgstr "Jugendschutz Einstellugen"
 
 msgid "Partition selector"
 msgstr ""
@@ -1566,7 +1555,7 @@ msgid "Pictureviewer"
 msgstr ""
 
 msgid "Pictureviewer settings"
-msgstr ""
+msgstr "Pictureviewer Einstellugen"
 
 msgid "Please enter jump target"
 msgstr ""
@@ -1611,13 +1600,13 @@ msgstr ""
 msgid "Prefer TMDB Infos"
 msgstr ""
 
-msgid "Prefered subtitle language"
-msgstr ""
-
 msgid "Preferred EPG language"
 msgstr ""
 
 msgid "Preferred language"
+msgstr ""
+
+msgid "Preferred subtitle language"
 msgstr ""
 
 msgid "Presenter"
@@ -1718,7 +1707,7 @@ msgid "Recording directory"
 msgstr ""
 
 msgid "Recording settings"
-msgstr ""
+msgstr "Aufnahme Einstellugen"
 
 msgid "Recording starts in a few minutes"
 msgstr ""
@@ -1733,28 +1722,28 @@ msgid "Religion"
 msgstr ""
 
 msgid "Reload"
-msgstr ""
+msgstr "erneut laden"
 
 msgid "Reload EPG"
-msgstr ""
+msgstr "EPG laden"
 
 msgid "Reload XMLTV EPG"
-msgstr ""
+msgstr "XMLTV EPG laden"
 
 msgid "Reload channel lists"
-msgstr ""
+msgstr "Kanal Listen laden"
 
 msgid "Reloading EPG, please be patient."
-msgstr ""
+msgstr "EPG wird geladen bitte warten..."
 
 msgid "Reloading Skin default style, please be patient."
-msgstr ""
+msgstr "Standard Skin wird geladen, bitte warten..."
 
 msgid "Reloading XMLTV EPG, please be patient."
-msgstr ""
+msgstr "XMLTV EPG wird geladen, bitte warten..."
 
 msgid "Reloading channel lists, please be patient."
-msgstr ""
+msgstr "Kanal Listen werden geladen, bitte warten..."
 
 msgid "Remarkable people"
 msgstr ""
@@ -1769,10 +1758,13 @@ msgid "Remote Control lock"
 msgstr ""
 
 msgid "Remote Control settings"
-msgstr ""
+msgstr "Tasten einstellugen"
 
 msgid "Remote control reactivated."
 msgstr ""
+
+msgid "Rename"
+msgstr "Umbennen"
 
 msgid "Repeat"
 msgstr ""
@@ -1787,7 +1779,7 @@ msgid "Reread image (no scaling)"
 msgstr ""
 
 msgid "Reset settings to defaults"
-msgstr ""
+msgstr "Reset Einstellugen zu Standard"
 
 msgid "Reset to defaults"
 msgstr ""
@@ -1819,9 +1811,8 @@ msgstr ""
 msgid "Same TP"
 msgstr ""
 
-#, fuzzy
 msgid "Sat settings"
-msgstr "Einstellungen"
+msgstr "Sat Einstellungen"
 
 msgid "Satellite"
 msgstr ""
@@ -1830,56 +1821,55 @@ msgid "Satellite Position (Step Mode):"
 msgstr ""
 
 msgid "Satellite display on infobar"
-msgstr ""
+msgstr "zeige Satellite auf dem Infobar"
 
 msgid "Satellite:"
-msgstr ""
+msgstr "Satellite:"
 
 msgid "Satellites"
-msgstr ""
+msgstr "Satelliten"
 
 msgid "Saturation"
-msgstr ""
+msgstr "Saturation"
 
 msgid "Saturday"
-msgstr ""
+msgstr "Samstag"
 
 msgid "Save RC configuration"
-msgstr ""
+msgstr "speichere RC Konfiguration"
 
 msgid "Save Timer"
-msgstr ""
+msgstr "speichere Timer"
 
 msgid "Save current skin style"
-msgstr ""
+msgstr "speichere aktualle Skin Style"
 
 msgid "Save current style"
-msgstr ""
+msgstr "speichere aktuelle Style"
 
 msgid "Save in channel dir"
-msgstr ""
+msgstr "speichere in Kanal Name Ordner"
 
-#, fuzzy
 msgid "Save settings now"
-msgstr "Einstellungen"
+msgstr "Einstellungen speichern"
 
 msgid "Save timer"
-msgstr ""
+msgstr "Timer speichern"
 
 msgid "Save/Restore epg on reboot"
-msgstr ""
+msgstr "EPG speichern / einlesen beim booten"
 
 msgid "Saving RC configuration, please wait..."
-msgstr ""
+msgstr "RC Konfiguration wird gespeichert, bitte warten..."
 
 msgid "Saving changes. Please be patient."
-msgstr ""
+msgstr "Änderungen werden gespeichert, bitte warten..."
 
 msgid "Saving current style!"
 msgstr ""
 
 msgid "Saving settings now, please be patient."
-msgstr ""
+msgstr "Einstellungen werden gespeichert, bitte warten..."
 
 msgid "Scaling"
 msgstr ""
@@ -1895,7 +1885,7 @@ msgid "Scan for services"
 msgstr "Warte auf Zeit"
 
 msgid "Scan transponder"
-msgstr ""
+msgstr "Kanal Suche"
 
 msgid "Scart"
 msgstr ""
@@ -2012,13 +2002,11 @@ msgstr ""
 msgid "Settings"
 msgstr "Einstellungen"
 
-#, fuzzy
 msgid "Settings backup"
-msgstr "Einstellungen"
+msgstr "Einstellungen backup"
 
-#, fuzzy
 msgid "Settings restore"
-msgstr "Einstellungen"
+msgstr "Einstellungen wiederherstellen"
 
 msgid "Setup New Key"
 msgstr ""
@@ -2048,7 +2036,7 @@ msgid "Show / Gameshow"
 msgstr ""
 
 msgid "Show active network settings"
-msgstr ""
+msgstr "zeige aktive Netzwerk Einstellugen"
 
 msgid "Show file rights"
 msgstr ""
@@ -2138,12 +2126,11 @@ msgid "Start Channel"
 msgstr ""
 
 msgid "Start Channel settings"
-msgstr ""
+msgstr "Start Kanal Einstellugen"
 
 msgid "Start Mode"
 msgstr ""
 
-#, fuzzy
 msgid "Start Search"
 msgstr "Suche"
 
@@ -2349,6 +2336,8 @@ msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
 msgstr ""
+"Einstellugen sind updated.\n"
+"Neu Parameter werden als Standard genommen"
 
 msgid ""
 "The recording directory is not writable.\n"
@@ -2385,7 +2374,6 @@ msgstr ""
 msgid "Timer conflict. Create the timer anyway?"
 msgstr ""
 
-#, fuzzy
 msgid "Timer settings"
 msgstr "Display Einstellungen"
 
@@ -2393,7 +2381,7 @@ msgid "Timer typ"
 msgstr ""
 
 msgid "Timerlist"
-msgstr ""
+msgstr "Timer Liste"
 
 msgid "Timescale"
 msgstr ""
@@ -2467,9 +2455,8 @@ msgstr ""
 msgid "Unicable frequency"
 msgstr ""
 
-#, fuzzy
 msgid "Unicable settings"
-msgstr "Display Einstellungen"
+msgstr "Unicable Einstellungen"
 
 msgid "Unicable2 (JESS)"
 msgstr ""
@@ -2525,9 +2512,8 @@ msgstr ""
 msgid "Video Resolution"
 msgstr ""
 
-#, fuzzy
 msgid "Video settings"
-msgstr "Display Einstellungen"
+msgstr "Video Einstellungen"
 
 msgid "Videotext"
 msgstr ""
@@ -2638,12 +2624,11 @@ msgid "active"
 msgstr ""
 
 msgid "add channel to my favorites"
-msgstr ""
+msgstr "Kanal zu meine Favoriten hinzufügen"
 
 msgid "advanced"
 msgstr ""
 
-#, fuzzy
 msgid "all services"
 msgstr "Alle"
 
@@ -2767,7 +2752,7 @@ msgid "default center"
 msgstr ""
 
 msgid "delete"
-msgstr ""
+msgstr "löschen"
 
 msgid "direct connected"
 msgstr ""

@@ -245,7 +245,7 @@ void CAudioSettings::showMenu()
 	CMenuOptionStringChooser * sublangSelect[3];
 	for(int i = 0; i < 3; i++) 
 	{
-		sublangSelect[i] = new CMenuOptionStringChooser(_("Prefered subtitle language"), g_settings.pref_subs[i], g_settings.auto_subs, NULL, RC_nokey, "", true);
+		sublangSelect[i] = new CMenuOptionStringChooser(_("Preferred subtitle language"), g_settings.pref_subs[i], g_settings.auto_subs, NULL, RC_nokey, "", true);
 		std::map<std::string, std::string>::const_iterator it;
 		
 		sublangSelect[i]->addOption("");

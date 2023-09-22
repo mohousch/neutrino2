@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-22 00:14+0200\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-09-23 01:37+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -964,6 +964,9 @@ msgstr ""
 msgid "Here you can select a skin from the following list."
 msgstr ""
 
+msgid "Hide"
+msgstr ""
+
 msgid "Hierarchy"
 msgstr ""
 
@@ -1160,6 +1163,9 @@ msgid "LoDirection"
 msgstr ""
 
 msgid "LocalTV EPG"
+msgstr ""
+
+msgid "Lock"
 msgstr ""
 
 msgid "Lock RC"
@@ -1577,13 +1583,13 @@ msgstr ""
 msgid "Prefer TMDB Infos"
 msgstr ""
 
-msgid "Prefered subtitle language"
-msgstr ""
-
 msgid "Preferred EPG language"
 msgstr ""
 
 msgid "Preferred language"
+msgstr ""
+
+msgid "Preferred subtitle language"
 msgstr ""
 
 msgid "Presenter"
@@ -1737,6 +1743,9 @@ msgid "Remote Control settings"
 msgstr ""
 
 msgid "Remote control reactivated."
+msgstr ""
+
+msgid "Rename"
 msgstr ""
 
 msgid "Repeat"

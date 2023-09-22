@@ -63,6 +63,7 @@ movieplayer/Makefile
 moviebrowser/Makefile
 picviewer/Makefile
 audioplayer/Makefile
+audioplayer/locale/Makefile
 opkg_manager/Makefile
 nfilm/Makefile
 ntvshows/Makefile
