@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-09-23 01:37+0200\n"
+"POT-Creation-Date: 2023-09-23 11:36+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -82,7 +82,6 @@ msgstr ""
 msgid "Absolute start directory"
 msgstr ""
 
-#, fuzzy
 msgid "Activate settings"
 msgstr "Настройки дисплея"
 
@@ -110,7 +109,6 @@ msgstr ""
 msgid "Alarm time"
 msgstr ""
 
-#, fuzzy
 msgid "All Services"
 msgstr "Servicescan"
 
@@ -165,15 +163,12 @@ msgstr ""
 msgid "Audio master"
 msgstr ""
 
-#, fuzzy
 msgid "Audio settings"
 msgstr "Настройки дисплея"
 
-#, fuzzy
 msgid "Audioplayer"
 msgstr "Медиаплеер"
 
-#, fuzzy
 msgid "Audioplayer settings"
 msgstr "Настройки дисплея"
 
@@ -243,7 +238,6 @@ msgstr ""
 msgid "Bouquets"
 msgstr ""
 
-#, fuzzy
 msgid "Box Info"
 msgstr "Инфобар"
 
@@ -285,7 +279,6 @@ msgstr ""
 msgid "CAM removed from slot"
 msgstr ""
 
-#, fuzzy
 msgid "CEC Setup"
 msgstr "PSI Setup"
 
@@ -304,7 +297,6 @@ msgstr ""
 msgid "CEC mode tuner"
 msgstr ""
 
-#, fuzzy
 msgid "CEC settings"
 msgstr "Настройки"
 
@@ -332,7 +324,6 @@ msgstr ""
 msgid "CI Cam"
 msgstr ""
 
-#, fuzzy
 msgid "CI Cam settings"
 msgstr "Настройки дисплея"
 
@@ -399,7 +390,6 @@ msgstr ""
 msgid "Channellist Number"
 msgstr ""
 
-#, fuzzy
 msgid "Channellist settings"
 msgstr "Настройки дисплея"
 
@@ -472,7 +462,6 @@ msgstr ""
 msgid "Data"
 msgstr ""
 
-#, fuzzy
 msgid "Date"
 msgstr "Дата"
 
@@ -563,7 +552,6 @@ msgstr ""
 msgid "Diseqc input"
 msgstr ""
 
-#, fuzzy
 msgid "Display image"
 msgstr "Настройки дисплея"
 
@@ -620,22 +608,18 @@ msgstr ""
 msgid "EPG / Timer"
 msgstr ""
 
-#, fuzzy
 msgid "EPG Date"
 msgstr "Дата"
 
-#, fuzzy
 msgid "EPG Info1"
 msgstr "Инфобар"
 
-#, fuzzy
 msgid "EPG Info2"
 msgstr "Инфобар"
 
 msgid "EPG Long Description (hours)"
 msgstr ""
 
-#, fuzzy
 msgid "EPG Title"
 msgstr "Название"
 
@@ -654,7 +638,6 @@ msgstr ""
 msgid "EPG save path"
 msgstr ""
 
-#, fuzzy
 msgid "EPG settings"
 msgstr "Настройки"
 
@@ -778,7 +761,6 @@ msgstr ""
 msgid "Filebrowser item"
 msgstr ""
 
-#, fuzzy
 msgid "Filebrowser settings"
 msgstr "Настройки дисплея"
 
@@ -884,7 +866,6 @@ msgstr ""
 msgid "Generic delay"
 msgstr ""
 
-#, fuzzy
 msgid "Genre"
 msgstr "Жанр"
 
@@ -951,7 +932,6 @@ msgstr ""
 msgid "HDD mounted"
 msgstr ""
 
-#, fuzzy
 msgid "HDD settings"
 msgstr "Настройки дисплея"
 
@@ -988,7 +968,6 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#, fuzzy
 msgid "Hierarchy"
 msgstr "Поиск"
 
@@ -1025,7 +1004,6 @@ msgstr ""
 msgid "How many events should be stored?"
 msgstr ""
 
-#, fuzzy
 msgid "IP address"
 msgstr "MAC адрес"
 
@@ -1050,11 +1028,9 @@ msgstr ""
 msgid "Increase Motor Position (a)"
 msgstr ""
 
-#, fuzzy
 msgid "Info"
 msgstr "Инфобар"
 
-#, fuzzy
 msgid "Infobar"
 msgstr "Инфобар"
 
@@ -1064,7 +1040,6 @@ msgstr ""
 msgid "Infobar Number"
 msgstr ""
 
-#, fuzzy
 msgid "Infobar info"
 msgstr "Информация"
 
@@ -1092,7 +1067,6 @@ msgstr ""
 msgid "Is this video mode working ok ?"
 msgstr ""
 
-#, fuzzy
 msgid "Item Info"
 msgstr "Инфобар"
 
@@ -1165,7 +1139,6 @@ msgstr ""
 msgid "Leave standby"
 msgstr ""
 
-#, fuzzy
 msgid "Length"
 msgstr "Длина (мин)"
 
@@ -1184,7 +1157,6 @@ msgstr ""
 msgid "List Start"
 msgstr ""
 
-#, fuzzy
 msgid "Literature"
 msgstr "Плагины"
 
@@ -1219,7 +1191,6 @@ msgstr ""
 msgid "Lower Right"
 msgstr ""
 
-#, fuzzy
 msgid "MAC address"
 msgstr "MAC адрес"
 
@@ -1229,7 +1200,6 @@ msgstr ""
 msgid "Magazines / Reports / Documentary"
 msgstr ""
 
-#, fuzzy
 msgid "Main Menu"
 msgstr "Меню"
 
@@ -1263,11 +1233,9 @@ msgstr ""
 msgid "Menu"
 msgstr "Меню"
 
-#, fuzzy
 msgid "Menu Info"
 msgstr "Инфобар"
 
-#, fuzzy
 msgid "Menu Text"
 msgstr "Меню"
 
@@ -1277,7 +1245,6 @@ msgstr ""
 msgid "Menu Title2"
 msgstr ""
 
-#, fuzzy
 msgid "Menu mode"
 msgstr "Меню"
 
@@ -1290,7 +1257,6 @@ msgstr ""
 msgid "Minutes"
 msgstr ""
 
-#, fuzzy
 msgid "Misc settings"
 msgstr "Настройки дисплея"
 
@@ -1318,11 +1284,9 @@ msgstr ""
 msgid "Motor Control Settings"
 msgstr ""
 
-#, fuzzy
 msgid "Motor Setup"
 msgstr "PSI Setup"
 
-#, fuzzy
 msgid "Motor settings"
 msgstr "Настройки"
 
@@ -1356,11 +1320,9 @@ msgstr ""
 msgid "Movie start:"
 msgstr ""
 
-#, fuzzy
 msgid "Movieplayer"
 msgstr "Медиаплеер"
 
-#, fuzzy
 msgid "Movieplayer settings"
 msgstr "Настройки дисплея"
 
@@ -1431,7 +1393,6 @@ msgstr ""
 msgid "New media"
 msgstr ""
 
-#, fuzzy
 msgid "New timer"
 msgstr "Новый таймер"
 
@@ -1450,7 +1411,6 @@ msgstr "Следующая страница"
 msgid "Next bouquet"
 msgstr ""
 
-#, fuzzy
 msgid "Next image"
 msgstr "Следующая страница"
 
@@ -1543,7 +1503,6 @@ msgstr ""
 msgid "PSI Setup"
 msgstr "PSI Setup"
 
-#, fuzzy
 msgid "PSI settings"
 msgstr "Настройки"
 
@@ -1604,7 +1563,6 @@ msgstr ""
 msgid "Plugins"
 msgstr ""
 
-#, fuzzy
 msgid "Polarization"
 msgstr "Информация"
 
@@ -1641,7 +1599,6 @@ msgstr ""
 msgid "Prev Page"
 msgstr "Prev Page"
 
-#, fuzzy
 msgid "Previous image"
 msgstr "Prev Page"
 
@@ -1678,7 +1635,6 @@ msgstr ""
 msgid "RIGHT"
 msgstr ""
 
-#, fuzzy
 msgid "Radio"
 msgstr "ТВ и Радио"
 
@@ -1838,7 +1794,6 @@ msgstr ""
 msgid "Same TP"
 msgstr ""
 
-#, fuzzy
 msgid "Sat settings"
 msgstr "Настройки"
 
@@ -1878,7 +1833,6 @@ msgstr ""
 msgid "Save in channel dir"
 msgstr ""
 
-#, fuzzy
 msgid "Save settings now"
 msgstr "Настройки"
 
@@ -1909,7 +1863,6 @@ msgstr ""
 msgid "Scan SDT for updates"
 msgstr ""
 
-#, fuzzy
 msgid "Scan for services"
 msgstr "Сканирование служб"
 
@@ -1940,7 +1893,6 @@ msgstr ""
 msgid "Screen"
 msgstr ""
 
-#, fuzzy
 msgid "Screen Setup"
 msgstr "PSI Setup"
 
@@ -1965,11 +1917,9 @@ msgstr "Поиск"
 msgid "Search for keyword in EPG..."
 msgstr ""
 
-#, fuzzy
 msgid "Search in EPG"
 msgstr "Поиск"
 
-#, fuzzy
 msgid "Search within"
 msgstr "Поиск"
 
@@ -2009,11 +1959,9 @@ msgstr ""
 msgid "Server Box type"
 msgstr ""
 
-#, fuzzy
 msgid "Server IP"
 msgstr "Servicescan"
 
-#, fuzzy
 msgid "Servicescan"
 msgstr "Servicescan"
 
@@ -2032,11 +1980,9 @@ msgstr ""
 msgid "Settings"
 msgstr "Настройки"
 
-#, fuzzy
 msgid "Settings backup"
 msgstr "Настройки"
 
-#, fuzzy
 msgid "Settings restore"
 msgstr "Настройки"
 
@@ -2163,7 +2109,6 @@ msgstr ""
 msgid "Start Mode"
 msgstr ""
 
-#, fuzzy
 msgid "Start Search"
 msgstr "Поиск"
 
@@ -2203,7 +2148,6 @@ msgstr ""
 msgid "Store Motor Position (a)"
 msgstr ""
 
-#, fuzzy
 msgid "Stream information"
 msgstr "Информация"
 
@@ -2216,7 +2160,6 @@ msgstr ""
 msgid "Subchannel up"
 msgstr ""
 
-#, fuzzy
 msgid "Subservices"
 msgstr "Servicescan"
 
@@ -2253,7 +2196,6 @@ msgstr ""
 msgid "System"
 msgstr ""
 
-#, fuzzy
 msgid "TMDB Infos"
 msgstr "TMDB info"
 
@@ -2284,11 +2226,9 @@ msgstr ""
 msgid "TV"
 msgstr ""
 
-#, fuzzy
 msgid "TV & Radio"
 msgstr "ТВ и Радио"
 
-#, fuzzy
 msgid "TV / Radio"
 msgstr "ТВ и Радио"
 
@@ -2298,11 +2238,9 @@ msgstr ""
 msgid "TV-System"
 msgstr ""
 
-#, fuzzy
 msgid "TV/Radio"
 msgstr "ТВ и Радио"
 
-#, fuzzy
 msgid "TV/Radio-mode"
 msgstr "ТВ и Радио"
 
@@ -2327,7 +2265,6 @@ msgstr ""
 msgid "Test network now"
 msgstr ""
 
-#, fuzzy
 msgid "Test signal"
 msgstr "Меню питания"
 
@@ -2388,7 +2325,6 @@ msgstr ""
 msgid "Thursday"
 msgstr ""
 
-#, fuzzy
 msgid "Time"
 msgstr "Время"
 
@@ -2404,18 +2340,15 @@ msgstr ""
 msgid "Timeout waiting CI menu ready"
 msgstr ""
 
-#, fuzzy
 msgid "Timer / EPG"
 msgstr "Timer typ"
 
 msgid "Timer conflict. Create the timer anyway?"
 msgstr ""
 
-#, fuzzy
 msgid "Timer settings"
 msgstr "Настройки дисплея"
 
-#, fuzzy
 msgid "Timer typ"
 msgstr "Timer typ"
 
@@ -2494,7 +2427,6 @@ msgstr ""
 msgid "Unicable frequency"
 msgstr ""
 
-#, fuzzy
 msgid "Unicable settings"
 msgstr "Настройки дисплея"
 
@@ -2552,7 +2484,6 @@ msgstr ""
 msgid "Video Resolution"
 msgstr ""
 
-#, fuzzy
 msgid "Video settings"
 msgstr "Настройки дисплея"
 
@@ -2577,7 +2508,6 @@ msgstr ""
 msgid "Waiting for CI answer"
 msgstr ""
 
-#, fuzzy
 msgid "Waiting for time..."
 msgstr "Сканирование служб"
 
@@ -2670,7 +2600,6 @@ msgstr ""
 msgid "advanced"
 msgstr ""
 
-#, fuzzy
 msgid "all services"
 msgstr "Servicescan"
 
@@ -2996,7 +2925,6 @@ msgstr ""
 msgid "next bouquet"
 msgstr ""
 
-#, fuzzy
 msgid "no"
 msgstr "Инфобар"
 
@@ -3111,7 +3039,6 @@ msgstr ""
 msgid "scroll mode"
 msgstr ""
 
-#, fuzzy
 msgid "search"
 msgstr "Поиск"
 
@@ -3190,7 +3117,6 @@ msgstr ""
 msgid "time (in minutes) to switch from standby"
 msgstr ""
 
-#, fuzzy
 msgid "title"
 msgstr "Название"
 

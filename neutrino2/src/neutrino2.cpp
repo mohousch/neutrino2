@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: neutrino2.cpp 19.11.2022 mohousch Exp $
+	$Id: neutrino2.cpp 23.09.2023 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
 	Homepage: http://dbox.cyberphoria.org/
