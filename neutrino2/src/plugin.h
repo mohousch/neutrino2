@@ -62,7 +62,6 @@
 #include <driver/framebuffer.h>
 #include <driver/fontrenderer.h>
 #include <driver/rcinput.h>
-//#include <driver/stream2file.h>
 #include <driver/vcrcontrol.h>
 #include <driver/shutdown_count.h>
 #include <driver/audioplay.h>
@@ -191,30 +190,20 @@
 
 // globals
 extern  SNeutrinoSettings g_settings;
-
 extern  FBFontRenderClass *g_fontRenderer;
-
 extern  CFont * g_Font[FONT_TYPE_COUNT];
 extern  CFont * g_SignalFont;
-
 extern  CRCInput *g_RCInput;
-
 extern  CEpgData *g_EpgData;
 extern  CInfoViewer *g_InfoViewer;
 extern  EventList *g_EventList;
-
 extern CLocaleManager *g_Locale;
-
 extern CRadioText *g_Radiotext;
-
 extern tallchans allchans;				// defined in zapit.cpp
 extern CBouquetManager * g_bouquetManager;		// defined in zapit.cpp
-
 extern bool has_hdd;					// defined in gui/hdd_menu.cpp
 
 // tuxtxt
-//extern int  tuxtxt_init();
-//extern void tuxtxt_start(int tpid, int source );
 extern int  tuxtxt_stop();
 extern void tuxtxt_close();
 extern void tuxtx_pause_subtitle(bool pause, int source);
@@ -224,8 +213,7 @@ extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
 extern int tuxtx_main(int pid, int page, int source );
 
 // dvbsub
-//extern int dvbsub_initialise();
-extern int dvbsub_init( /*int source*/);
+extern int dvbsub_init();
 extern int dvbsub_stop();
 extern int dvbsub_close();
 extern int dvbsub_start(int pid);
@@ -233,7 +221,6 @@ extern int dvbsub_pause();
 extern int dvbsub_getpid();
 extern void dvbsub_setpid(int pid);
 extern int dvbsub_terminate();
-
 // streamts thread
 extern int streamts_stop;				// defined in streamts.cpp
 // zapit thread
@@ -242,40 +229,30 @@ extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
 extern CFrontend * live_fe;
 extern CScanSettings * scanSettings;
-
 // sectionsd thread
 extern int sectionsd_stop;				// defined in sectionsd.cpp
 extern bool timeset;
-
 //Audio/Video Decoder
 extern cVideo 		* videoDecoder;		//libcoolstream (video_cs.cpp)
 extern cAudio 		* audioDecoder;		//libcoolstream (audio_cs.cpp)
-
 /* bouquets lists */
 extern CBouquetList   		* bouquetList; 				//current bqt list
-
 extern CBouquetList   		* TVbouquetList;
 extern CBouquetList   		* TVsatList;
 extern CBouquetList   		* TVfavList;
 extern CBouquetList   		* TVallList;
-
+//
 extern CBouquetList   		* RADIObouquetList;
 extern CBouquetList   		* RADIOsatList;
 extern CBouquetList   		* RADIOfavList;
 extern CBouquetList   		* RADIOallList;
-
+//
 extern CPlugins       		* g_PluginList;
 extern CRemoteControl 		* g_RemoteControl;
 extern SMSKeyInput 		* c_SMSKeyInput;	//defined in filebrowser and used in ChanneList
-//extern CMoviePlayerGui		* moviePlayerGui;
 extern CPictureViewer 		* g_PicViewer;
-//extern CCAMMenuHandler 	* g_CamHandler;
-
-//extern CVCRControl::CDevice * recordingdevice;
-
 //
 extern cPlayback *playback;
-
 // record and timeshift
 extern bool autoshift;
 extern uint32_t shift_timer;

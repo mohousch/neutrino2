@@ -78,19 +78,20 @@
 
 #include <record_cs.h>
 
-
+// defines
+#define FILENAMEBUFFERSIZE 	1024
+#define MAXPIDS			64
+// globals
+char rec_filename[FILENAMEBUFFERSIZE];
+static CVCRControl vcrControl;
+//
 extern bool autoshift;
 extern bool autoshift_delete;
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
 static cRecord * record = NULL;
 extern CFrontend * record_fe;
 
-#define FILENAMEBUFFERSIZE 	1024
-#define MAXPIDS			64
-
-char rec_filename[FILENAMEBUFFERSIZE];
-static CVCRControl vcrControl;
-
+//
 CVCRControl * CVCRControl::getInstance()
 {
 	return &vcrControl;

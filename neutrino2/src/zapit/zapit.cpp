@@ -83,51 +83,8 @@
 #include <playback_cs.h>
 
 
-extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-extern uint32_t failed_transponders;
-extern uint32_t  found_tv_chans;
-extern uint32_t  found_radio_chans;
-extern uint32_t  found_data_chans;
-extern std::map <transponder_id_t, transponder> scantransponders;		// TP list to scan
-extern std::map <transponder_id_t, transponder> scanedtransponders;		// global TP list for current scan
-extern std::map <transponder_id_t, transponder> nittransponders;
-extern int scanmode;								//
-extern int scan_sat_mode;
-extern uint32_t fake_tid, fake_nid;
-extern int prov_found;
-extern int found_transponders;		// defined in descriptors.cpp
-extern int processed_transponders;	// defined in scan.cpp
-extern int found_channels;		// defined in descriptors.cpp
-extern short curr_sat;			// defined in scan.cpp
-extern short scan_runs;			// defined in scan.cpp
-extern short abort_scan;		// defined in scan.cpp
-//
-extern cPlayback *playback;
-//
-extern int current_volume;
-extern int current_muted;
-//
-extern CEventServer *eventServer;
-// Audio/Video Decoder
-extern cVideo * videoDecoder;			// defined in video_cs.pp (libdvbapi)
-extern cAudio * audioDecoder;			// defined in audio_cs.pp (libdvbapi)
-// Demuxes
-extern cDemux * audioDemux;			// defined in dmx_cs.pp (libdvbapi)
-extern cDemux * videoDemux;			// defined in dmx_cs.pp (libdvbapi)
-//
-extern cDemux * pmtDemux;			// defined in pmt.cpp
-// dvbsub
-extern int dvbsub_init();
-extern int dvbsub_pause();
-extern int dvbsub_stop();
-extern int dvbsub_getpid();
-extern void dvbsub_setpid(int pid);
-// tuxtxt
-extern void tuxtx_stop_subtitle();
-extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
-extern void tuxtx_set_pid(int pid, int page, const char * cc);
-
 // globals
+// scan
 CBouquetManager *scanBouquetManager = NULL;
 CZapit::bouquetMode _bouquetMode = CZapit::BM_UPDATEBOUQUETS;
 CZapit::scanType _scanType = CZapit::ST_TVRADIO;
@@ -179,9 +136,9 @@ cDemux * pcrDemux = NULL;			// defined in dmx_cs.pp (libdvbapi)
 
 // zapit mode
 enum {
-	TV_MODE = 0x01,
-	RADIO_MODE = 0x02,
-	RECORD_MODE = 0x04,
+	TV_MODE 	= 0x01,
+	RADIO_MODE 	= 0x02,
+	RECORD_MODE 	= 0x04,
 };
 
 int currentMode = 1;
@@ -219,6 +176,48 @@ bool have_c = false;
 bool have_t = false;
 bool have_a = false;
 
+//
+extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+extern uint32_t failed_transponders;
+extern uint32_t  found_tv_chans;
+extern uint32_t  found_radio_chans;
+extern uint32_t  found_data_chans;
+extern std::map <transponder_id_t, transponder> scantransponders;		// TP list to scan
+extern std::map <transponder_id_t, transponder> scanedtransponders;		// global TP list for current scan
+extern std::map <transponder_id_t, transponder> nittransponders;
+extern int scanmode;								//
+extern int scan_sat_mode;
+extern uint32_t fake_tid, fake_nid;
+extern int prov_found;
+extern int found_transponders;		// defined in descriptors.cpp
+extern int processed_transponders;	// defined in scan.cpp
+extern int found_channels;		// defined in descriptors.cpp
+extern short curr_sat;			// defined in scan.cpp
+extern short scan_runs;			// defined in scan.cpp
+extern short abort_scan;		// defined in scan.cpp
+//
+extern int current_volume;
+extern int current_muted;
+// Audio/Video Decoder
+extern cVideo * videoDecoder;			// defined in video_cs.pp (libdvbapi)
+extern cAudio * audioDecoder;			// defined in audio_cs.pp (libdvbapi)
+// Demuxes
+extern cDemux * audioDemux;			// defined in dmx_cs.pp (libdvbapi)
+extern cDemux * videoDemux;			// defined in dmx_cs.pp (libdvbapi)
+//
+extern cDemux * pmtDemux;			// defined in pmt.cpp
+// dvbsub
+extern int dvbsub_init();
+extern int dvbsub_pause();
+extern int dvbsub_stop();
+extern int dvbsub_getpid();
+extern void dvbsub_setpid(int pid);
+// tuxtxt
+extern void tuxtx_stop_subtitle();
+extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
+extern void tuxtx_set_pid(int pid, int page, const char * cc);
+
+//
 void CZapit::initFrontend()
 {
 	dprintf(DEBUG_NORMAL, "CZapit::initFrontend\n");
@@ -3634,30 +3633,7 @@ void CZapit::reloadCurrentServices()
 	eventServer->sendEvent(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO);
 }
 
-// motorcontrol
-/*
-void CZapit::sendMotorCommand(uint8_t cmdtype, uint8_t address, uint8_t cmd, uint8_t num_parameters, uint8_t param1, uint8_t param2, int feindex)
-{
-	if(cmdtype > 0x20)
-		getFE(feindex)->sendMotorCommand(cmdtype, address, cmd, num_parameters, param1, param2);
-}
-*/
-
-/*
-bool CZapit::reZap()
-{
-	bool ret = false;
-	
-	if ( !(currentMode & RECORD_MODE) )
-	{		
-		if(live_channel)
-			ret = zapit(live_channel->getChannelID(), current_is_nvod);
-	}
-	
-	return ret;
-}
-*/
-
+//
 void CZapit::muteAudio(const bool mute)
 {
 	if(audioDecoder) 
@@ -3732,27 +3708,7 @@ void CZapit::setVideoSystem(int video_system)
 		videoDecoder->SetVideoSystem(video_system);
 }
 
-/*
-bool CZapit::getChannels(BouquetChannelList& channels, const channelsMode mode, const channelsOrder order, const bool utf_encoded)
-{
-#if 0
-	if (utf_encoded)
-		sendNChannels(channels, mode, order);
-	else
-		sendChannels(channels, mode, order);
-#endif
-	
-	return true;
-}
-*/
-
-/*
-void CZapit::getBouquets( BouquetList& bouquets, const bool emptyBouquetsToo, const bool utf_encoded, channelsMode mode)
-{
-	sendBouquets(bouquets, emptyBouquetsToo, mode);
-}
-*/
-
+//
 bool CZapit::getBouquetChannels(const unsigned int bouquet, BouquetChannelList& channels, const channelsMode mode, const bool utf_encoded)
 {
 	sendBouquetChannels(channels, bouquet, mode);
@@ -3874,68 +3830,7 @@ void CZapit::restoreBouquets()
 		g_bouquetManager->loadBouquets();
 	}
 }
-/*
-void CZapit::addBouquet(const char * const name, bool ub, bool webtvb)
-{
-	g_bouquetManager->addBouquet(name, ub, webtvb);
-}
 
-void CZapit::deleteBouquet(const unsigned int bouquet)
-{
-	g_bouquetManager->deleteBouquet(bouquet);
-}
-*/
-/*
-void CZapit::renameBouquet(const unsigned int bouquet, const char * const newName)
-{
-	if (bouquet < g_bouquetManager->Bouquets.size()) 
-	{
-		g_bouquetManager->Bouquets[bouquet]->Name = newName;
-		g_bouquetManager->Bouquets[bouquet]->bUser = true;
-	}
-}
-*/
-/*
-void CZapit::moveBouquet(const unsigned int bouquet, const unsigned int newPos)
-{
-	g_bouquetManager->moveBouquet(bouquet, newPos);
-}
-*/
-/*
-void CZapit::moveChannel(const unsigned int bouquet, unsigned int oldPos, unsigned int newPos, channelsMode mode)
-{
-	if (bouquet < g_bouquetManager->Bouquets.size())
-		g_bouquetManager->Bouquets[bouquet]->moveService(oldPos, newPos,
-						(((currentMode & RADIO_MODE) && mode == MODE_CURRENT)
-						|| (mode == MODE_RADIO)) ? 2 : 1);
-}
-*/
-/*
-signed int CZapit::existsBouquet(const char * const name)
-{
-	return g_bouquetManager->existsBouquet(name);
-}
-*/
-/*
-void CZapit::setBouquetLock(const unsigned int bouquet, const bool lock)
-{
-	if (bouquet < g_bouquetManager->Bouquets.size())
-		g_bouquetManager->Bouquets[bouquet]->bLocked = lock;
-}
-*/
-/*
-void CZapit::setBouquetHidden(const unsigned int bouquet, const bool hidden)
-{
-	if (bouquet < g_bouquetManager->Bouquets.size())
-		g_bouquetManager->Bouquets[bouquet]->bHidden = hidden;
-}
-*/
-/*
-bool CZapit::existsChannelInBouquet(const unsigned int bouquet, const t_channel_id channel_id)
-{
-	return g_bouquetManager->existsChannelInBouquet(bouquet, channel_id);
-}
-*/
 //
 void CZapit::addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id)
 {

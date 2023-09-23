@@ -57,8 +57,6 @@
 #include <system/helpers.h>
 	
 
-extern CPlugins * g_PluginList;    // defined in neutrino.cpp
-
 /// CMenuWidget
 CMenuWidget::CMenuWidget()
 {

@@ -52,28 +52,24 @@
 #include <gui/audio_setup.h>
 
 
-
-extern cPlayback *playback;
-
-//
+// globals
 unsigned short apids[10];
 unsigned short ac3flags[10];
 unsigned short numpida = 0;
 unsigned short vpid = 0;
 unsigned short vtype = 0;
 std::string language[10];
-
 //
 unsigned int currentapid = 0;
 unsigned int currentac3 = 0;
-
 //
 unsigned int ac3state = CInfoViewer::NO_AC3;
-
 //
 unsigned short spids[10];
 unsigned short numpids = 0;
 unsigned int currentspid = -1;
+//
+extern cPlayback *playback;
 
 // aspect ratio
 #if defined (__sh__)

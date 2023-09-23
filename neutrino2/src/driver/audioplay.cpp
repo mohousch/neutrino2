@@ -46,8 +46,6 @@
 #include <playback_cs.h>
 
 
-extern cPlayback *playback;
-
 void CAudioPlayer::stop()
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);

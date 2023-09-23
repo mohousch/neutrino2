@@ -67,6 +67,8 @@
 
 #include <libxmltree/xmlinterface.h>
 
+#include <global.h>
+
 // zapit includes
 #include <zapit/settings.h>
 #include <configfile.h>
@@ -96,28 +98,22 @@
 #include <zapit/frontend_c.h>
 
 
-extern CBouquetManager * g_bouquetManager;	// defined in der zapit.cpp
-extern tallchans allchans;	// defined in zapit.cpp.
+// globals
 int op_increase(int i) { return ++i; }
-
 // 60 Minuten Zyklus...
 #define TIME_EIT_SCHEDULED_PAUSE 60 * 60
 // -- 5 Minutes max. pause should improve behavior  (rasc, 2005-05-02)
 // Zeit die fuer die gewartet wird, bevor der Filter weitergeschaltet wird, falls es automatisch nicht klappt
 #define TIME_EIT_SKIPPING 90
-
 // a little more time for freesat epg
 #define TIME_FSEIT_SKIPPING 240
-
 static bool sectionsd_ready = false;
 static bool reader_ready = true;
-
 static unsigned int max_events;
 // sleep 5 minutes
 #define HOUSEKEEPING_SLEEP (5 * 60)
 // meta housekeeping after XX housekeepings - every 24h -
 #define META_HOUSEKEEPING (24 * 60 * 60) / HOUSEKEEPING_SLEEP
-
 // 12h Pause fr SDT
 // -- shorter time for pause should  result in better behavior  (rasc, 2005-05-02)
 #define TIME_SDT_SCHEDULED_PAUSE 2* 60* 60
@@ -131,7 +127,6 @@ static unsigned int max_events;
 #define MAX_SDTs 70
 //How many sections can a table consist off?
 #define MAX_SECTIONS 0x1f
-
 //Set pause for NIT
 #define TIME_NIT_SCHEDULED_PAUSE 2* 60* 60
 //We are very nice here. Start scanning for channels, if the user stays for XX secs on that channel
@@ -140,99 +135,85 @@ static unsigned int max_events;
 //How many other NITs shall we puzzle per transponder at the same time
 //How many other SDTs shall we assume per tranponder
 #define MAX_NIDs 10
-
 // Timeout bei tcp/ip connections in ms
 #define READ_TIMEOUT_IN_SECONDS  2
 #define WRITE_TIMEOUT_IN_SECONDS 2
-
 // Gibt die Anzahl Timeouts an, nach der die Verbindung zum DMX neu gestartet wird (wegen evtl. buffer overflow)
 // for NIT and SDT threads...
 #define RESTART_DMX_AFTER_TIMEOUTS 5
-
 // Timeout in ms for reading from dmx in EIT threads. Dont make this too long
 // since we are holding the start_stop lock during this read!
 #define EIT_READ_TIMEOUT 100
 // Number of DMX read timeouts, after which we check if there is an EIT at all
 // for EIT and PPT threads...
 #define CHECK_RESTART_DMX_AFTER_TIMEOUTS (2000 / EIT_READ_TIMEOUT) // 2 seconds
-
 // Time in seconds we are waiting for an EIT version number
 #define TIME_EIT_VERSION_WAIT		3
 // number of timeouts after which we stop waiting for an EIT version number
 #define TIMEOUTS_EIT_VERSION_WAIT	(2 * CHECK_RESTART_DMX_AFTER_TIMEOUTS)
-
 // the maximum length of a section (0x0fff) + header (3)
 //#define MAX_SECTION_LENGTH (0x0fff + 3)
-
 // Wieviele Sekunden EPG gecached werden sollen
 static long secondsToCache;
 static long secondsExtendedTextCache;
 // Ab wann ein Event als alt gilt (in Sekunden)
 static long oldEventsAre;
 int scanning = 1;
-
+//
 std::string epg_filter_dir = CONFIGDIR "/zapit/epgfilter.xml";
 static bool epg_filter_is_whitelist = false;
 static bool epg_filter_except_current_next = false;
 static bool messaging_zap_detected = false;
-
+//
 std::string dvbtime_filter_dir = CONFIGDIR "/zapit/dvbtimefilter.xml";
 static bool dvb_time_update = false;
-
 //NTP-Config
 #define CONF_FILE CONFIGDIR "/neutrino2.conf"
-
 std::string ntp_system_cmd_prefix = "ntpdate ";
-
 std::string ntp_system_cmd;
 CConfigFile ntp_config(',');
 std::string ntpserver;
 int ntprefresh;
 int ntpenable;
-
+//
 static int eit_update_fd = -1;
 static bool update_eit = true;
-
 /* messaging_current_servicekey does probably not need locking, since it is
    changed from one place */
 static t_channel_id    messaging_current_servicekey = 0;
 static bool channel_is_blacklisted = false;
 // EVENTS...
-
 /* messaging_eit_is_busy does not need locking, it is only written to from CN-Thread */
 static bool		messaging_eit_is_busy = false;
 static bool		messaging_need_eit_version = false;
 std::string epg_dir("");
-
-extern CEventServer *eventServer;
-
+//
 static pthread_rwlock_t eventsLock = PTHREAD_RWLOCK_INITIALIZER; // Unsere (fast-)mutex, damit nicht gleichzeitig in die Menge events geschrieben und gelesen wird
 static pthread_rwlock_t servicesLock = PTHREAD_RWLOCK_INITIALIZER; // Unsere (fast-)mutex, damit nicht gleichzeitig in die Menge services geschrieben und gelesen wird
 static pthread_rwlock_t transpondersLock = PTHREAD_RWLOCK_INITIALIZER; // Unsere (fast-)mutex, damit nicht gleichzeitig in die Menge transponders geschrieben und gelesen wird
 static pthread_rwlock_t bouquetsLock = PTHREAD_RWLOCK_INITIALIZER; // Unsere (fast-)mutex, damit nicht gleichzeitig in die Menge bouquets geschrieben und gelesen wird
 static pthread_rwlock_t messagingLock = PTHREAD_RWLOCK_INITIALIZER;
-
+//
 static pthread_cond_t timeThreadSleepCond = PTHREAD_COND_INITIALIZER;
 static pthread_mutex_t timeThreadSleepMutex = PTHREAD_MUTEX_INITIALIZER;
-
-extern CFrontend * live_fe;
-extern int FrontendCount;
-
-
+//
 static DMX dmxEIT(0x12, 3000 );
 static DMX dmxCN(0x12, 512, false);
-
 // freesat
 static DMX dmxFSEIT(3842, 320);
 //viasat
 static DMX dmxVIASAT(0x39, 3000);
-
-extern cDemux * dmxUTC;			// defined in dmxapi.cpp
-
 //
 int sectionsd_stop = 0;
-
+//
 static bool slow_addevent = true;
+
+//
+extern CBouquetManager * g_bouquetManager;	// defined in der zapit.cpp
+extern tallchans allchans;			// defined in zapit.cpp
+extern CFrontend * live_fe;
+extern int FrontendCount;
+extern cDemux * dmxUTC;				// defined in dmxapi.cpp
 
 inline void readLockServices(void)
 {

@@ -33,7 +33,7 @@
 #include <video_cs.h>
 
 
-extern CPlugins * g_PluginList;    // defined in neutrino.cpp
+// globals
 extern cVideo * videoDecoder;
 
 // CFrameItem

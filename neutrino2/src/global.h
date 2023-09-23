@@ -64,30 +64,33 @@
 
 #include <driver/radiotext.h>
 
+#include <src/daemonc/remotecontrol.h>
+
+#include <lib/libdvbapi/playback_cs.h>
+
+
 #ifndef NEUTRINO_CPP
-  #define NEUTRINO_CPP extern
+#define NEUTRINO_CPP 			extern
 #endif
 
 #define NEUTRINO_SETTINGS_FILE          CONFIGDIR "/neutrino2.conf"
 #define NEUTRINO_SCAN_SETTINGS_FILE     CONFIGDIR "/scan.conf"
 #define NEUTRINO_PARENTALLOCKED_FILE    DATADIR   "/neutrino/.plocked"
 
-
-
-NEUTRINO_CPP  SNeutrinoSettings	g_settings;
-
+// globals
+NEUTRINO_CPP  SNeutrinoSettings		g_settings;
 NEUTRINO_CPP  FBFontRenderClass		*g_fontRenderer;
-NEUTRINO_CPP  CFont 			* g_Font[FONT_TYPE_COUNT];
-NEUTRINO_CPP  CFont 			* g_SignalFont;
-
+NEUTRINO_CPP  CFont 			*g_Font[FONT_TYPE_COUNT];
+NEUTRINO_CPP  CFont 			*g_SignalFont;
 NEUTRINO_CPP  CRCInput			*g_RCInput;
-
 NEUTRINO_CPP  CEpgData			*g_EpgData;
 NEUTRINO_CPP  CInfoViewer		*g_InfoViewer;
 NEUTRINO_CPP  EventList			*g_EventList;
-
 NEUTRINO_CPP CLocaleManager		*g_Locale;
-
 NEUTRINO_CPP CRadioText			*g_Radiotext;
+NEUTRINO_CPP CEventServer 		*eventServer;
+NEUTRINO_CPP CPlugins			*g_PluginList;
+NEUTRINO_CPP CRemoteControl		*g_RemoteControl;
+NEUTRINO_CPP cPlayback			*playback;
 
 #endif /* __neutrino_global_h__ */

@@ -48,16 +48,12 @@
 #include <audio_cs.h>
 
 
+// globals
 extern t_channel_id live_channel_id;
-extern CRemoteControl * g_RemoteControl; 		/* defined neutrino.cpp */
-
 // dvbsub
 extern int dvbsub_getpid();				// defined in libdvbsub
-//extern int dvbsub_getpid(int * pid, int * running);	// defined in libdvbsub
-
 // tuxtxt
 extern int tuxtx_subtitle_running(int * pid, int * page, int * running);
-
 
 // -- this is a copy from neutrino.cpp!!
 /* option off0_on1 */

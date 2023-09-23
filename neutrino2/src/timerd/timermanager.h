@@ -30,6 +30,8 @@
 #include <stdlib.h>
 #include <map>
 
+#include <global.h>
+
 #include <configfile.h>
 #include <config.h>
 

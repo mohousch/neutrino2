@@ -32,6 +32,8 @@
 #include <sstream>
 #include <vector>
 
+#include <global.h>
+
 #include <timerd/timermanager.h>
 
 #include <sectionsd/sectionsd.h>
@@ -44,9 +46,10 @@
 #include <libeventserver/eventserver.h>
 
 
-extern bool timeset; // from sectionsd.cpp
-extern CEventServer *eventServer;
+// globals
 static pthread_mutex_t tm_eventsMutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+//
+extern bool timeset; 			// from sectionsd.cpp
 
 CTimerManager::CTimerManager()
 {

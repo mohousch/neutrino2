@@ -59,8 +59,6 @@
 #include <system/debug.h>
 
 
-extern CPlugins * g_PluginList;    /* neutrino.cpp */
-
 CPluginList::CPluginList()
 {
 	selected = 0;

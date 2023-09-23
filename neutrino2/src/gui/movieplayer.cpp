@@ -103,8 +103,6 @@
 #define BUTTON_BAR_HEIGHT	25
 #define TIMESCALE_BAR_HEIGHT	4
 
-extern cPlayback *playback;
-
 // movieplayer
 CMoviePlayerGui::CMoviePlayerGui()
 {

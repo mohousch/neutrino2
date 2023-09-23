@@ -51,7 +51,6 @@ extern tallchans allchans;
 extern CBouquetManager *g_bouquetManager;
 extern t_channel_id live_channel_id;
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
-extern CEventServer *eventServer;
 
 //=============================================================================
 // Initialization of static variables

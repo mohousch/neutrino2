@@ -42,8 +42,6 @@
 #include <system/debug.h>
 
 
-extern CPlugins * g_PluginList;    // defined in neutrino.cpp
-
 // CMenuItem
 CMenuItem::CMenuItem()
 {

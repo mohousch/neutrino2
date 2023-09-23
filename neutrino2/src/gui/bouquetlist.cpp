@@ -60,8 +60,10 @@
 #include <system/debug.h>
 
 
+// globals
 extern CBouquetManager * g_bouquetManager;
 
+//
 CBouquetList::CBouquetList(const char* const Name)
 {
 	frameBuffer = CFrameBuffer::getInstance();

@@ -183,63 +183,20 @@
 #include <nhttpd/yhttpd.h>
 
 
-//
+// globals
 int debug = DEBUG_NORMAL;
-
-//
-cPlayback* playback = NULL;
-
-//
-extern satellite_map_t satellitePositions;		// defined in getServices.cpp
-extern tallchans allchans;				// defined in zapit.cpp
-extern CBouquetManager * g_bouquetManager;		// defined in zapit.cpp
-
 // zap
 int old_b_id = -1;
-
 // record and timeshift
 bool autoshift = false;
 uint32_t shift_timer = 0;
 uint32_t scrambled_timer = 0;
 char recDir[255];
 char timeshiftDir[255];
-extern char rec_filename[1024];
-
-// tuxtxt
-//extern int  tuxtxt_init();
-//extern void tuxtxt_start(int tpid, int source );
-extern int  tuxtxt_stop();
-extern void tuxtxt_close();
-extern void tuxtx_pause_subtitle(bool pause, int source);
-extern void tuxtx_stop_subtitle();
-extern void tuxtx_set_pid(int pid, int page, const char * cc);
-extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
-extern int tuxtx_main(int pid, int page, int source );
-
-// dvbsub
-//extern int dvbsub_initialise();
-extern int dvbsub_init( /*int source*/);
-extern int dvbsub_stop();
-extern int dvbsub_close();
-extern int dvbsub_start(int pid);
-extern int dvbsub_pause();
-extern int dvbsub_getpid();
-extern void dvbsub_setpid(int pid);
-extern int dvbsub_terminate();
-
 // volume bar
 static CProgressBar * g_volscale;
-
 // zapit
-extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 Zapit_config zapitCfg;
-extern CZapitChannel * live_channel;			// defined in zapit.cpp
-extern CFrontend * live_fe;
-
-// Audio/Video Decoder
-extern cVideo* videoDecoder;		//libcoolstream (video_cs.cpp)
-extern cAudio* audioDecoder;		//libcoolstream (audio_cs.cpp)
-
 //
 int prev_video_Mode;
 int current_volume;
@@ -257,26 +214,16 @@ CBouquetList* RADIObouquetList;
 CBouquetList* RADIOsatList;
 CBouquetList* RADIOfavList;
 CBouquetList* RADIOallList;
-
 //
-CEventServer *eventServer = NULL;
-CPlugins* g_PluginList;
-CRemoteControl* g_RemoteControl;
-
 #if defined (ENABLE_CI)
 CCAMMenuHandler* g_CamHandler;
 #endif
-
-
-// timezone for wizard
-extern CMenuOptionStringChooser* tzSelect;
-
+//
 bool parentallocked = false;
-
+//
 #ifdef USE_OPENGL
 static char **global_argv;
 #endif
-
 //user menu
 const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] = {
 	"blue",
@@ -287,6 +234,39 @@ const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] = {
 	"f4"
 #endif
 };
+
+//
+extern char rec_filename[1024];
+//
+extern satellite_map_t satellitePositions;		// defined in getServices.cpp
+extern tallchans allchans;				// defined in zapit.cpp
+extern CBouquetManager * g_bouquetManager;		// defined in zapit.cpp
+// tuxtxt
+extern int  tuxtxt_stop();
+extern void tuxtxt_close();
+extern void tuxtx_pause_subtitle(bool pause, int source);
+extern void tuxtx_stop_subtitle();
+extern void tuxtx_set_pid(int pid, int page, const char * cc);
+extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
+extern int tuxtx_main(int pid, int page, int source );
+// dvbsub
+extern int dvbsub_init();
+extern int dvbsub_stop();
+extern int dvbsub_close();
+extern int dvbsub_start(int pid);
+extern int dvbsub_pause();
+extern int dvbsub_getpid();
+extern void dvbsub_setpid(int pid);
+extern int dvbsub_terminate();
+// zapit
+extern t_channel_id live_channel_id; 			//defined in zapit.cpp
+extern CZapitChannel * live_channel;			// defined in zapit.cpp
+extern CFrontend * live_fe;
+// Audio/Video Decoder
+extern cVideo* videoDecoder;
+extern cAudio* audioDecoder;
+// timezone for wizard
+extern CMenuOptionStringChooser* tzSelect;
 
 // init globals
 static void initGlobals(void)

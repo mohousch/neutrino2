@@ -67,8 +67,6 @@
 #include <driver/encoding.h>
 
 
-extern CPlugins * g_PluginList;    /* neutrino.cpp */
-
 // mainmenu
 void CNeutrinoApp::mainMenu(void)
 {

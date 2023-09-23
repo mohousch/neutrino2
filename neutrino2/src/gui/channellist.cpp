@@ -77,8 +77,19 @@
 #include <timerd/timerd.h>
 
 
+// globals
+bool pip_selected = false;
+//
+extern bool autoshift;
+extern int FrontendCount;				// defined in zapit.cpp
+extern CBouquetManager * g_bouquetManager;
+//extern cVideo * videoDecoder;
+extern CZapitChannel * live_channel;
+extern int old_b_id;
+//extern char recDir[255];				// defined in neutrino.cpp
+//
 extern CRemoteControl * g_RemoteControl; 		// neutrino.cpp	
-
+//
 extern CBouquetList * bouquetList;      		// neutrino.cpp
 extern CBouquetList   * TVbouquetList;
 extern CBouquetList   * TVsatList;
@@ -88,21 +99,9 @@ extern CBouquetList   * RADIObouquetList;
 extern CBouquetList   * RADIOsatList;
 extern CBouquetList   * RADIOfavList;
 extern CBouquetList   * RADIOallList;
-extern CBouquetList   * WEBTVbouquetList;
-extern CBouquetList   * WEBTVallList;
-extern CBouquetList   * WEBTVfavList;
-
+//
 extern t_channel_id rec_channel_id;
 extern t_channel_id live_channel_id;
-bool pip_selected = false;
-extern bool autoshift;
-//int info_height = 0;
-extern int FrontendCount;				// defined in zapit.cpp
-extern CBouquetManager * g_bouquetManager;
-extern cVideo * videoDecoder;
-extern CZapitChannel * live_channel;
-extern int old_b_id;
-extern char recDir[255];			// defined in neutrino.cpp
 
 #define NUM_LIST_BUTTONS 4
 struct button_label CChannelListButtons[NUM_LIST_BUTTONS] =
