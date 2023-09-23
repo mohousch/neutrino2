@@ -30,7 +30,7 @@ class CPat
 {
 	private:
 		CPat(){};
-		~CPat(){};
+		virtual ~CPat(){};
 		
 	public:
 		//

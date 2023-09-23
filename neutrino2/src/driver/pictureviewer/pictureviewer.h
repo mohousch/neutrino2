@@ -33,10 +33,8 @@
 
 #include <driver/framebuffer.h>
 
-// zapit types
-//#include <client/zapittypes.h>
 
-
+////
 class CPictureViewer
 {
 	private:

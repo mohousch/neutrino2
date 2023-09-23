@@ -35,8 +35,13 @@ class CScan
 		uint32_t actual_polarisation;
 		
 	private:
-		CScan(){actual_freq = 0; actual_polarisation = 0;};
-		~CScan(){};
+		CScan()
+		{
+			actual_freq = 0; 
+			actual_polarisation = 0;
+		};
+		
+		virtual ~CScan(){};
 		
 	public:
 		//

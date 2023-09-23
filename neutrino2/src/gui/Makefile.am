@@ -14,6 +14,7 @@ AM_CPPFLAGS += \
 	-I$(top_srcdir)/lib/libconfigfile \
 	-I$(top_srcdir)/lib/libxmltree \
 	-I$(top_srcdir)/lib/libupnpclient \
+	-I$(top_srcdir)/lib/connection \
 	@CURL_CFLAGS@ \
 	@FREETYPE_CFLAGS@ 
 

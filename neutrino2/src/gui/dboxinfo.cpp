@@ -62,8 +62,6 @@ static const int FSHIFT = 16;              	// nr of bits of precision
 #define LOAD_INT(x) ((x) >> FSHIFT)
 #define LOAD_FRAC(x) LOAD_INT(((x) & (FIXED_1-1)) * 100)
 
-extern int FrontendCount;
-
 // hdd
 #include <stdio.h>
 #include <unistd.h>
@@ -459,7 +457,7 @@ int CDBoxInfoWidget::showInfo()
 	tunerIcon = new CCIcon();
 	tunerIcon->setIcon(TUNER.c_str());
 	
-	if (FrontendCount)
+	if (CZapit::getInstance()->getFrontendCount())
 	{
 		yPos += 10;
 		
@@ -476,7 +474,7 @@ int CDBoxInfoWidget::showInfo()
 		yPos += tunerIcon->height + 10;
 	}
 	
-	for(int i2 = 0; i2 < FrontendCount; i2++)
+	for(int i2 = 0; i2 < CZapit::getInstance()->getFrontendCount(); i2++)
 	{
 		CFrontend * fe = CZapit::getInstance()->getFE(i2);
 		char tbuf[255];

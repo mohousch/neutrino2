@@ -36,6 +36,7 @@
 #include <zapit/descriptors.h>
 #include <zapit/pmt.h>
 #include <zapit/frontend_c.h>
+#include <zapit/zapit.h>
 
 // libdvbapi
 #include <dmx_cs.h>
@@ -44,7 +45,6 @@
 #define PMT_SIZE 1024
 #define RECORD_MODE 0x4
 
-extern int currentMode;
 extern short scan_runs;
 
 /*
@@ -540,7 +540,7 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 	
 	FILE *fout;
 
-	if( !(currentMode & RECORD_MODE) && !scan_runs) 
+	if( !(CZapit::getInstance()->currentMode & RECORD_MODE) && !scan_runs) 
 	{
 		// write /tmp/pmt.tmp
 		fout = fopen("/tmp/pmt.tmp","wb"); 

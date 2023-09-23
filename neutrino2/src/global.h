@@ -38,6 +38,7 @@
 
 // zapit includes
 #include <zapit/zapit.h>
+#include <zapit/bouquets.h>
 
 #include <sectionsd/sectionsd.h>
 #include <timerd/timerd.h>
@@ -88,9 +89,10 @@ NEUTRINO_CPP  CInfoViewer		*g_InfoViewer;
 NEUTRINO_CPP  EventList			*g_EventList;
 NEUTRINO_CPP CLocaleManager		*g_Locale;
 NEUTRINO_CPP CRadioText			*g_Radiotext;
-NEUTRINO_CPP CEventServer 		*eventServer;
 NEUTRINO_CPP CPlugins			*g_PluginList;
 NEUTRINO_CPP CRemoteControl		*g_RemoteControl;
+NEUTRINO_CPP CBouquetManager 		*g_bouquetManager;
+NEUTRINO_CPP CEventServer 		*eventServer;
 NEUTRINO_CPP cPlayback			*playback;
 
 #endif /* __neutrino_global_h__ */

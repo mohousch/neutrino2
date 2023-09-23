@@ -29,12 +29,11 @@ class CDescriptors
 {
 	private:
 		CDescriptors(){};
-		~CDescriptors(){};
+		virtual ~CDescriptors(){};
 		
 		uint8_t fix_service_type(uint8_t type);
 		
 	public:
-		//
 		//
 		static CDescriptors *getInstance()
 		{

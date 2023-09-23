@@ -39,6 +39,7 @@
 #include <zapit/zapittypes.h>
 #include <zapit/frontend_c.h>
 #include <zapit/channel.h>
+#include <zapit/cam.h>
 
 
 #define CHANNEL_NAME_SIZE 40
@@ -49,9 +50,9 @@ class CZapit
 	public:
 		enum zapStatus
 		{
-			ZAP_OK = 0x01,
-			ZAP_IS_NVOD = 0x02,
-			ZAP_INVALID_PARAM = 0x04
+			ZAP_OK 			= 0x01,
+			ZAP_IS_NVOD 		= 0x02,
+			ZAP_INVALID_PARAM 	= 0x04
 		};
 
 		enum bouquetMode
@@ -102,7 +103,6 @@ class CZapit
 		{
 			char satName[50];
 			int  position;
-			
 			int type;
 		};
 		
@@ -140,7 +140,7 @@ class CZapit
 			t_satellite_position satellitePosition;
 			unsigned char service_type;
 		};
-
+		
 		typedef std::vector<responseGetBouquetChannels> BouquetChannelList;
 
 		struct responseGetBouquetNChannels
@@ -233,6 +233,52 @@ class CZapit
 			int feindex;
 		};
 		
+		// zapit mode
+		enum {
+			TV_MODE 	= 0x01,
+			RADIO_MODE 	= 0x02,
+			RECORD_MODE 	= 0x04,
+		};
+		
+		//
+		CCam * cam0;
+		CCam * cam1;
+		//
+		bouquetMode _bouquetMode;
+		scanType _scanType;
+		//
+		fe_map_t femap;
+		//
+		bool standby;
+		bool retune;
+		//
+		int currentMode;
+		bool playbackStopForced;
+		bool avDecoderOpen;
+		//
+		int scanSDT;
+		bool sdt_wakeup;
+		sdt_tp_t sdt_tp;
+		//
+		bool firstzap;
+		bool playing;
+		bool g_list_changed;
+		//
+		bool current_is_nvod;
+		//
+		unsigned int volume_left;
+		unsigned int volume_right;
+		int audio_mode;
+		int def_audio_mode;
+		//
+		int volume_percent;
+		//
+		bool saveLastChannel;
+		int lastChannelMode;
+		uint32_t  lastChannelRadio;
+		uint32_t  lastChannelTV;
+		bool makeRemainingChannelsBouquet;
+		
 	private:
 		//
 		void OpenFE(void);
@@ -312,7 +358,45 @@ class CZapit
 		pthread_t tpmt;
 		static void *updatePMTFilter(void *);
 		
-		CZapit(){};
+		CZapit()
+		{
+			cam0 = NULL;
+			cam1 = NULL;
+			//
+			_bouquetMode = CZapit::BM_UPDATEBOUQUETS;
+			_scanType = CZapit::ST_TVRADIO;
+			//
+			femap.clear();
+			//
+			standby = false;
+			retune = false;
+			//
+			currentMode = TV_MODE;
+			playbackStopForced = false;
+			avDecoderOpen = false;
+			//
+			scanSDT = 0;
+			sdt_wakeup = false;
+			//
+			firstzap = true;
+			playing = false;
+			g_list_changed = false;
+			//
+			current_is_nvod = false;
+			//
+			volume_left = 100;
+			volume_right = 100;
+			audio_mode = 0;
+			def_audio_mode = 0;
+			//
+			volume_percent = 0;
+			//
+			saveLastChannel = true;
+			lastChannelMode = CZapit::TV_MODE;
+			lastChannelRadio = 0;
+			lastChannelTV = 0;
+			makeRemainingChannelsBouquet = false;
+		};
 	public:
 		virtual ~CZapit(){ };
 		
@@ -334,6 +418,7 @@ class CZapit
 		void initTuner(CFrontend * fe);
 		void saveFrontendConfig(int feindex);
 		void loadFrontendConfig();
+		int getFrontendCount(void){return femap.size();};
 		
 		//
 		void setZapitConfig(Zapit_config * Cfg);

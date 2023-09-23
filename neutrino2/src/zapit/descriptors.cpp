@@ -62,7 +62,6 @@ std::map <t_channel_id, uint8_t> service_types;
 
 //
 extern CBouquetManager* scanBouquetManager;
-extern CZapit::scanType _scanType;
 extern tallchans allchans;   			//  defined in zapit.cpp
 extern tallchans curchans;   			//  defined in zapit.cpp
 extern CEventServer *eventServer;
@@ -460,7 +459,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 	if(service_type == 0x11 || service_type == 0x19)
 		service_type = ST_DIGITAL_TELEVISION_SERVICE;
 
-	switch ( _scanType ) 
+	switch ( CZapit::getInstance()->_scanType ) 
 	{
 		case CZapit::ST_TVRADIO:
 			if ( (service_type == ST_DIGITAL_TELEVISION_SERVICE ) || (service_type == ST_DIGITAL_RADIO_SOUND_SERVICE) )

@@ -77,13 +77,10 @@
 #include <timerd/timerd.h>
 
 
-// globals
+//// globals
 bool pip_selected = false;
 //
 extern bool autoshift;
-extern int FrontendCount;				// defined in zapit.cpp
-extern CBouquetManager * g_bouquetManager;
-//extern cVideo * videoDecoder;
 extern CZapitChannel * live_channel;
 extern int old_b_id;
 //extern char recDir[255];				// defined in neutrino.cpp
@@ -1140,7 +1137,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	// show emty channellist error msg
 	if (chanlist.empty()) 
 	{
-		if (FrontendCount >= 1) 
+		if (CZapit::getInstance()->getFrontendCount() >= 1) 
 			MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> System)"), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
 			
 		return;
@@ -1195,7 +1192,7 @@ int CChannelList::numericZap(int key)
 
 	if (chanlist.empty()) 
 	{
-		if (FrontendCount >= 1) 
+		if (CZapit::getInstance()->getFrontendCount() >= 1) 
 			MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
 			
 		return res;
@@ -1457,7 +1454,7 @@ void CChannelList::virtual_zap_mode(bool up)
 
         if (chanlist.empty()) 
 	{
-		if (FrontendCount >= 1) 
+		if (CZapit::getInstance()->getFrontendCount() >= 1) 
 			MessageBox(_("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
 			
                 return;

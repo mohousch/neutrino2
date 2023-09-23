@@ -30,7 +30,7 @@ class CSdt
 {
 	private:
 		CSdt(){};
-		~CSdt(){};
+		virtual ~CSdt(){};
 		
 	public:
 		//

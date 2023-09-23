@@ -83,11 +83,9 @@
 #include <playback_cs.h>
 
 
-// globals
+//// globals
 // scan
 CBouquetManager *scanBouquetManager = NULL;
-CZapit::bouquetMode _bouquetMode = CZapit::BM_UPDATEBOUQUETS;
-CZapit::scanType _scanType = CZapit::ST_TVRADIO;
 scan_list_t scanProviders;
 // ci
 #if defined (ENABLE_CI)
@@ -96,11 +94,6 @@ cDvbCi * ci = NULL;
 // audio conf
 std::map<t_channel_id, audio_map_set_t> audio_map;
 std::map<t_channel_id, audio_map_set_t>::iterator audio_map_it;
-unsigned int volume_left = 100;
-unsigned int volume_right = 100;
-int audio_mode = 0;
-int def_audio_mode = 0;
-// volume percent conf
 #define VOLUME_DEFAULT_PCM 0
 #define VOLUME_DEFAULT_AC3 25
 typedef std::pair<int, int> pid_pair_t;
@@ -109,74 +102,34 @@ typedef std::multimap<t_channel_id, pid_pair_t> volume_map_t;
 volume_map_t vol_map;
 typedef volume_map_t::iterator volume_map_iterator_t;
 typedef std::pair<volume_map_iterator_t, volume_map_iterator_t> volume_map_range_t;
-int volume_percent = 0;
 // live/record channel id
 t_channel_id live_channel_id = 0;
 t_channel_id rec_channel_id = 0;
-bool firstzap = true;
-bool playing = false;
-bool g_list_changed = false; 		// flag to indicate, allchans was changed
-// SDT
-int scanSDT = 0;
-bool sdt_wakeup = false;
-sdt_tp_t sdt_tp;			// defined in getservices.h
-// the conditional access module
-CCam * cam0 = NULL;
-CCam * cam1 = NULL;
 // the configuration file
 CConfigFile config(',', true);
 // the current channel
 CZapitChannel * live_channel = NULL;
 // record channel
 CZapitChannel * rec_channel = NULL;
-// bouquet manager
-CBouquetManager * g_bouquetManager = NULL;
 //
 cDemux * pcrDemux = NULL;			// defined in dmx_cs.pp (libdvbapi)
-
-// zapit mode
-enum {
-	TV_MODE 	= 0x01,
-	RADIO_MODE 	= 0x02,
-	RECORD_MODE 	= 0x04,
-};
-
-int currentMode = 1;
-bool playbackStopForced = false;
-bool avDecoderOpen = false;
-// list of near video on demand
-tallchans nvodchannels;         	// tallchans defined in "bouquets.h"
-bool current_is_nvod = false;
 // list of all channels (services)
 tallchans allchans;             	// tallchans defined in "bouquets.h"
 tallchans curchans;             	// tallchans defined in "bouquets.h"
+tallchans nvodchannels;
 transponder_list_t transponders;    	// from services.xml
-//
-bool standby = true;
-// zapit config
-bool saveLastChannel = true;
-int lastChannelMode = TV_MODE;
-uint32_t  lastChannelRadio = 0;
-uint32_t  lastChannelTV = 0;
-bool makeRemainingChannelsBouquet = false;
 // pmt update filter
 static int pmt_update_fd = -1;
-// multi frontend stuff
-int FrontendCount = 0;
-fe_map_t femap;
 // frontend config
 CConfigFile fe_configfile(',', false);
 CFrontend * live_fe = NULL;
 CFrontend * record_fe = NULL;
 //
-bool retune = false;
-//
 bool have_s = false;
 bool have_c = false;
 bool have_t = false;
 bool have_a = false;
-
-//
+////
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern uint32_t failed_transponders;
 extern uint32_t  found_tv_chans;
@@ -217,7 +170,7 @@ extern void tuxtx_stop_subtitle();
 extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
 extern void tuxtx_set_pid(int pid, int page, const char * cc);
 
-//
+////
 void CZapit::initFrontend()
 {
 	dprintf(DEBUG_NORMAL, "CZapit::initFrontend\n");
@@ -324,8 +277,6 @@ void CZapit::initFrontend()
 		femap.insert(std::pair <unsigned short, CFrontend*> (index, fe));
 	}
 #endif
-
-	FrontendCount = femap.size();
 	
 	dprintf(DEBUG_INFO, "CZapit::initFrontend: found %d frontends\n", femap.size());
 }
@@ -393,6 +344,9 @@ void CZapit::setFEMode(fe_mode_t newmode, int feindex)
 
 void CZapit::initTuner(CFrontend * fe)
 {
+	if (!fe)
+		return;
+		
 	dprintf(DEBUG_NORMAL, "CZapit::initTuner: fe(%d:%d)\n", fe->feadapter, fe->fenumber);
 	
 	if(fe->standby)
@@ -422,6 +376,9 @@ void CZapit::initTuner(CFrontend * fe)
 // compare polarization and band with fe values
 bool CZapit::loopCanTune(CFrontend * fe, CZapitChannel * thischannel)
 {
+	if (!fe)
+		return false;
+		
 	if(fe->getInfo()->type != FE_QPSK)
 		return true;
 
@@ -706,7 +663,7 @@ void CZapit::saveFrontendConfig(int feindex)
 {
 	dprintf(DEBUG_INFO, "CZapit::saveFrontendConfig\n");
 	
-	for(feindex = 0; feindex < FrontendCount; feindex++)
+	for(feindex = 0; feindex < getFrontendCount(); feindex++)
 	{
 		// mode
 		setConfigValue(feindex, "mode", getFE(feindex)->mode);
@@ -2772,7 +2729,7 @@ void * CZapit::sdtThread(void */*arg*/)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::sdtThread: starting... tid %ld\n", syscall(__NR_gettid));
 	
-	if (!FrontendCount)
+	if (!CZapit::getInstance()->getFrontendCount())
 		return 0;
 	
 	time_t tstart, tcur, wtime = 0;
@@ -2789,7 +2746,7 @@ void * CZapit::sdtThread(void */*arg*/)
 
 	tcur = time(0);
 	tstart = time(0);
-	sdt_tp.clear();
+	CZapit::getInstance()->sdt_tp.clear();
 	
 	dprintf(DEBUG_INFO, "CZaoit::sdtThread: sdt monitor started\n");
 
@@ -2797,9 +2754,9 @@ void * CZapit::sdtThread(void */*arg*/)
 	{
 		sleep(1);
 
-		if(sdt_wakeup) 
+		if(CZapit::getInstance()->sdt_wakeup) 
 		{
-			sdt_wakeup = 0;
+			CZapit::getInstance()->sdt_wakeup = 0;
 
 			if(live_channel) 
 			{
@@ -2812,12 +2769,12 @@ void * CZapit::sdtThread(void */*arg*/)
 			}
 		}
 		
-		if(!scanSDT)
+		if(!CZapit::getInstance()->scanSDT)
 			continue;
 
 		tcur = time(0);
 		
-		if(wtime && ((tcur - wtime) > 2) && !sdt_wakeup) 
+		if(wtime && ((tcur - wtime) > 2) && !CZapit::getInstance()->sdt_wakeup) 
 		{
 			dprintf(DEBUG_INFO, "Czapit::sdtThread: sdt monitor wakeup...\n");
 			
@@ -2842,9 +2799,9 @@ void * CZapit::sdtThread(void */*arg*/)
 				dprintf(DEBUG_INFO, "CZapit::sdtThread: tp not found ?!\n");
 				continue;
 			}
-			stI = sdt_tp.find(tpid);
+			stI = CZapit::getInstance()->sdt_tp.find(tpid);
 
-			if((stI != sdt_tp.end()) && stI->second) 
+			if((stI != CZapit::getInstance()->sdt_tp.end()) && stI->second) 
 			{
 				dprintf(DEBUG_INFO, "CZapit::sdtThread: TP already updated.\n");
 				continue;
@@ -2856,7 +2813,7 @@ void * CZapit::sdtThread(void */*arg*/)
 					continue;
 			}
 
-			sdt_tp.insert(std::pair <transponder_id_t, bool> (tpid, true) );
+			CZapit::getInstance()->sdt_tp.insert(std::pair<transponder_id_t, bool> (tpid, true) );
 
 			char buffer[256];
 			fd = fopen(CURRENTSERVICES_TMP, "w");
@@ -3026,7 +2983,7 @@ void * CZapit::sdtThread(void */*arg*/)
 
 			rename(CURRENTSERVICES_TMP, CURRENTSERVICES_XML);
 
-			if(updated && (scanSDT == 1))
+			if(updated && (CZapit::getInstance()->scanSDT == 1))
 			{
 				CServices::getInstance()->loadServices(true);
 			  	eventServer->sendEvent(NeutrinoMessages::EVT_SERVICES_UPD, CEventServer::INITID_NEUTRINO);
@@ -3044,7 +3001,7 @@ void *CZapit::updatePMTFilter(void *)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::updatePMTFilter: tid %ld\n", syscall(__NR_gettid));
 	
-	if (!FrontendCount)
+	if (!CZapit::getInstance()->getFrontendCount())
 		return 0;
 	
 	while (true) 
@@ -3083,7 +3040,7 @@ void *CZapit::updatePMTFilter(void *)
 					
 					if(!apid_found || vpid != live_channel->getVideoPid()) 
 					{
-						CZapit::getInstance()->zapit(live_channel->getChannelID(), current_is_nvod, true);
+						CZapit::getInstance()->zapit(live_channel->getChannelID(), CZapit::getInstance()->current_is_nvod, true);
 					} 
 					else 
 					{
@@ -4214,7 +4171,7 @@ void * CZapit::scanThread(void * data)
 				scanedtransponders.clear();
 				nittransponders.clear();
 
-				dprintf(DEBUG_INFO, "CZapit::scanThread: scanning %s at %d bouquetMode %d\n", providerName, position, _bouquetMode);
+				dprintf(DEBUG_INFO, "CZapit::scanThread: scanning %s at %d bouquetMode %d\n", providerName, position, CZapit::getInstance()->_bouquetMode);
 				
 				// this invoke addToScan	
 				if ( !CScan::getInstance()->scanProvider(search, position, diseqc_pos, satfeed, feindex) )
@@ -4231,7 +4188,7 @@ void * CZapit::scanThread(void * data)
 
 				if(scanBouquetManager->Bouquets.size() > 0) 
 				{
-					CZapit::getInstance()->saveBouquets(_bouquetMode, providerName);
+					CZapit::getInstance()->saveBouquets(CZapit::getInstance()->_bouquetMode, providerName);
 				}
 						
 				scanBouquetManager->clearAll();
@@ -4373,7 +4330,7 @@ void * CZapit::scanTransponderThread(void * data)
 	{
 		CServices::getInstance()->saveServices(true);
 		
-		CZapit::getInstance()->saveBouquets(_bouquetMode, providerName);
+		CZapit::getInstance()->saveBouquets(CZapit::getInstance()->_bouquetMode, providerName);
 	        g_bouquetManager->saveBouquets();
 	        g_bouquetManager->clearAll();
 		g_bouquetManager->loadBouquets();
@@ -4423,7 +4380,7 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	initFrontend();
 	
 #if defined (__sh__)
-	if(FrontendCount > 1)
+	if(getFrontendCount() > 1)
 	{
 		//lib-stb-hal/libspark
 		/* 
@@ -4484,9 +4441,6 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 
 	// load configuration or set defaults if no configuration file exists
 	loadZapitSettings();
-
-	//create Bouquet Manager
-	g_bouquetManager = new CBouquetManager();
 	
 	// load services
 	prepareChannels();

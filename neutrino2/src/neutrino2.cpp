@@ -277,14 +277,15 @@ static void initGlobals(void)
 	g_EpgData       = NULL;
 	g_InfoViewer    = NULL;
 	g_EventList     = NULL;
-	g_Locale        = new CLocaleManager;
-	eventServer 	= new CEventServer;
 	g_PluginList    = NULL;
 #if defined (ENABLE_CI)	
 	g_CamHandler 	= NULL;
 #endif	
 
 	g_Radiotext     = NULL;
+	g_Locale        = new CLocaleManager;
+	eventServer 	= new CEventServer;
+	g_bouquetManager = new CBouquetManager();
 }
 
 // CNeutrinoApp - Constructor, initialize g_fontRenderer

@@ -27,7 +27,7 @@ class CNit
 {
 	private:
 		CNit(){};
-		~CNit(){};
+		virtual ~CNit(){};
 		
 	public:
 		//

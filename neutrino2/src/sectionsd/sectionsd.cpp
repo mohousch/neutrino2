@@ -212,7 +212,6 @@ static bool slow_addevent = true;
 extern CBouquetManager * g_bouquetManager;	// defined in der zapit.cpp
 extern tallchans allchans;			// defined in zapit.cpp
 extern CFrontend * live_fe;
-extern int FrontendCount;
 extern cDemux * dmxUTC;				// defined in dmxapi.cpp
 
 inline void readLockServices(void)
@@ -2914,7 +2913,7 @@ int eit_set_update_filter(int *fd)
 {
 	dprintf(DEBUG_DEBUG, "CSectionsd:: eit_set_update_filter\n");
 	
-	if (!FrontendCount)
+	if (!CZapit::getInstance()->getFrontendCount())
 		return 0;
 
 	unsigned char cur_eit = dmxCN.get_eit_version();
@@ -2968,7 +2967,7 @@ int eit_stop_update_filter(int *fd)
 {
 	printf("CSectionsd:: stop eit update filter\n");
 	
-	if(eitDmx && FrontendCount)
+	if(eitDmx && CZapit::getInstance()->getFrontendCount())
 	{
 		eitDmx->Stop();
 		
@@ -4064,7 +4063,7 @@ void *CSectionsd::houseKeepingThread(void *)
 	while (!sectionsd_stop)
 	{
 		//
-		if (FrontendCount)
+		if (CZapit::getInstance()->getFrontendCount())
 		{
 			if (eit_update_fd != -1) 
 			{
@@ -4942,7 +4941,7 @@ void CSectionsd::Start(void)
 		dprintf(DEBUG_NORMAL, "CSectionsd::Start: failed to create time-thread (rc=%d)\n", rc);
 	}
 
-	if(FrontendCount)
+	if(CZapit::getInstance()->getFrontendCount())
 	{
 		// EIT-Thread starten
 		rc = pthread_create(&threadEIT, 0, eitThread, 0);
@@ -4996,7 +4995,7 @@ void CSectionsd::Start(void)
 	
 	sectionsd_ready = true;
 	
-	//if(FrontendCount)
+	//if(CZapit::getInstance()->getFrontendCount())
 	eit_update_fd = -1;
 }
 
@@ -5011,7 +5010,7 @@ void CSectionsd::Stop(void)
 	pthread_cancel(threadTOT);
 	pthread_join(threadTOT, NULL);
 	
-	if(FrontendCount)
+	if(CZapit::getInstance()->getFrontendCount())
 	{
 		if(dmxUTC) 
 			delete dmxUTC;

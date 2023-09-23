@@ -79,16 +79,15 @@
 #define GUARD_INTERVAL_PN945	10
 #endif
 
-// globals
+//// globals
 CScanSettings * scanSettings;
 static int dmode = NO_DISEQC;
-
+//
 char zapit_lat[20];				//defined neutrino.cpp
 char zapit_long[20];				//defined neutrino.cpp
-
+////
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
-extern std::map<transponder_id_t, transponder> select_transponders;		// defined in getservices.cpp
-extern int FrontendCount;							// defined in zapit.cpp
+extern std::map<transponder_id_t, transponder> select_transponders;		// defined in zapit.cpp
 
 // option off0_on1
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
@@ -509,7 +508,7 @@ int CScanSetup::showScanService()
 	
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM)
 	{
-		for(int i = 0; i < FrontendCount; i++) 
+		for(int i = 0; i < CZapit::getInstance()->getFrontendCount(); i++) 
 		{
 			if( i != feindex && ( CZapit::getInstance()->getFE(i)->getInfo()->type == CZapit::getInstance()->getFE(feindex)->getInfo()->type) )
 			{
@@ -2428,7 +2427,7 @@ int CTunerSetup::showMenu()
 	TunerSetup->addItem(new CMenuForwarder(_("back")));
 	TunerSetup->addItem( new CMenuSeparator(LINE) );
 				
-	for(int i = 0; i < FrontendCount; i++)
+	for(int i = 0; i < CZapit::getInstance()->getFrontendCount(); i++)
 	{
 		CFrontend * fe = CZapit::getInstance()->getFE(i);
 		char tbuf[255];

@@ -51,18 +51,15 @@
 #include <driver/encoding.h>
 
 
-// globals
+//// globals
 satellite_map_t satellitePositions;				// satellite position as specified in satellites.xml
 std::map<transponder_id_t, transponder> select_transponders;	// TP map all tps from sats liste
-
-static int newfound;
-
 //
+static int newfound;
+////
 extern transponder_list_t transponders;				// defined in zapit.cpp
-extern tallchans allchans;					// defined in zapit.cpp
-extern int scanSDT;						// defined in zapit.cpp
+extern tallchans allchans;					// defined in zapit
 extern std::map<t_channel_id, audio_map_set_t> audio_map;	// defined in zapit.cpp
-extern int FrontendCount;
 extern bool have_s;
 extern bool have_c;
 extern bool have_t;
@@ -781,7 +778,7 @@ int CServices::loadServices(bool only_current)
 	}
 
 	// load motor position
-	for(int i = 0; i < FrontendCount; i++)
+	for(int i = 0; i < CZapit::getInstance()->getFrontendCount(); i++)
 	{
 		if( CZapit::getInstance()->getFE(i)->getInfo()->type == FE_QPSK)
 		{
@@ -792,7 +789,7 @@ int CServices::loadServices(bool only_current)
 
 do_current:
 
-	if (scanSDT && (parser = parseXmlFile(CURRENTSERVICES_XML))) 
+	if (CZapit::getInstance()->scanSDT && (parser = parseXmlFile(CURRENTSERVICES_XML))) 
 	{
 		newfound = 0;
 		

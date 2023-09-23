@@ -31,7 +31,7 @@ class CPmt
 {
 	private:
 		CPmt(){};
-		~CPmt(){};
+		virtual ~CPmt(){};
 		
 	public:
 		//

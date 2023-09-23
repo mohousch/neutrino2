@@ -49,7 +49,7 @@
 #include <xmlinterface.h>
 
 
-// globals
+//// globals
 int prov_found = 0;
 short abort_scan;
 short scan_runs;
@@ -63,11 +63,9 @@ uint32_t fake_nid = 0;
 std::map <transponder_id_t, transponder> scantransponders;		// TP list to scan
 std::map <transponder_id_t, transponder> scanedtransponders;		// global TP list for current scan
 std::map <transponder_id_t, transponder> nittransponders;
-
-//
+////
 extern satellite_map_t satellitePositions;		// defined in getServices.cpp
 extern scan_list_t scanProviders;			// defined in zapit.cpp
-extern CBouquetManager *g_bouquetManager;
 extern transponder_list_t transponders; 		//  defined in zapit.cpp
 extern tallchans allchans;  				//  defined in zapit.cpp
 extern int found_transponders;

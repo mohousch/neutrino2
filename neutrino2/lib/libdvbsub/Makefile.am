@@ -4,6 +4,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src \
 	-I$(top_srcdir)/lib \
 	-I$(top_srcdir)/lib/libconfigfile \
+	-I$(top_srcdir)/lib/connection \
 	@AVCODEC_CFLAGS@
 
 if BOXTYPE_COOLSTREAM
