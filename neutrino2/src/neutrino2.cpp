@@ -183,7 +183,7 @@
 #include <nhttpd/yhttpd.h>
 
 
-// globals
+//// globals
 int debug = DEBUG_NORMAL;
 // zap
 int old_b_id = -1;
@@ -201,15 +201,14 @@ Zapit_config zapitCfg;
 int prev_video_Mode;
 int current_volume;
 int current_muted;
-
 // bouquets lists
 CBouquetList* bouquetList; 				//current bqt list
-
+//
 CBouquetList* TVbouquetList;
 CBouquetList* TVsatList;
 CBouquetList* TVfavList;
 CBouquetList* TVallList;
-
+//
 CBouquetList* RADIObouquetList;
 CBouquetList* RADIOsatList;
 CBouquetList* RADIOfavList;
@@ -225,7 +224,8 @@ bool parentallocked = false;
 static char **global_argv;
 #endif
 //user menu
-const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] = {
+const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] = 
+{
 	"blue",
 #if defined (ENABLE_FUNCTIONKEYS)
 	"f1",
@@ -266,7 +266,7 @@ extern CFrontend * live_fe;
 extern cVideo* videoDecoder;
 extern cAudio* audioDecoder;
 // timezone for wizard
-extern CMenuOptionStringChooser* tzSelect;
+extern CMenuOptionStringChooser* tzSelect;		// defined in misc_setup.cpp
 
 // init globals
 static void initGlobals(void)

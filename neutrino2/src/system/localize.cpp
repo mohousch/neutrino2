@@ -3,6 +3,8 @@
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
+	
+	$Id: localize.cpp 23.09.2023 mohousch Exp $
 
 	Kommentar:
 

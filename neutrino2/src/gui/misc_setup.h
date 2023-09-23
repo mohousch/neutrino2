@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 
-	$id: misc_setup.h 2016.01.02 21:53:28 mohousch $
+	$id: misc_setup.h 23.09.2023 mohousch $
 	
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	and some other guys

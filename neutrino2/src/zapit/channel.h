@@ -1,5 +1,5 @@
 /*
- * $Id: channel.h 16.11.2020 mohousch Exp $
+ * $Id: channel.h 23.09.2023 mohousch Exp $
  *
  * (C) 2002 Steffen Hehn <mcclean@berlios.de>
  * (C) 2002-2003 Andreas Oberritter <obi@tuxbox.org>

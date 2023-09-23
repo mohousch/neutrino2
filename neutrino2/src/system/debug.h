@@ -3,6 +3,8 @@
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
+	
+	$Id: debug.h 23.09.2023 mohousch Exp $
 
 	License: GPL
 
@@ -57,7 +59,7 @@
 #define ANSI_bCYAN    "\33[46m"
 #define ANSI_bWHITE   "\33[47m"
 
-extern int debug;
+extern int debug;			// defined in neutrino2.cpp
 
 #define DEBUG_NORMAL	0
 #define DEBUG_INFO	1

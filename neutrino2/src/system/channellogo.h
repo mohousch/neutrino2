@@ -3,7 +3,10 @@
 #define __channellogo__
 
 /*
-	neutrino2
+	$Id: channellogo.h 23.09.2023 mohousch Exp $
+
+	Copyright (C) 2001 Steffen Hehn 'McClean' and some other guys
+	Homepage: http://dbox.cyberphoria.org/
 
 	License: GPL
 

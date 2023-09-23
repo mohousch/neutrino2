@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 
-	$id: misc_setup.cpp 2016.01.02 21:55:30 mohousch $
+	$id: misc_setup.cpp 23.09.2023 mohousch $
 	
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	and some other guys
@@ -59,9 +59,15 @@
 #include <video_cs.h>
 
 
+//// globals
+CMenuOptionStringChooser * tzSelect;
+//
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
 extern CFrontend * live_fe;
+//
+extern Zapit_config zapitCfg;			//defined in neutrino.cpp
+extern t_channel_id live_channel_id;
 
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
@@ -76,9 +82,6 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 	{ 0, _("no") },
 	{ 1, _("yes") }
 };
-
-// misc settings
-extern Zapit_config zapitCfg;			//defined in neutrino.cpp
 
 // option off1 on0
 #define OPTIONS_OFF1_ON0_OPTION_COUNT 2
@@ -111,9 +114,6 @@ const keyval DEBUG_LEVEL_OPTIONS[DEBUG_LEVEL_OPTIONS_COUNT] =
 };
 
 //// general settings
-extern CRemoteControl * g_RemoteControl;	// defined neutrino.cpp
-CMenuOptionStringChooser * tzSelect;
-
 int CGeneralSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CGeneralSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -362,11 +362,7 @@ bool CTZChangeNotifier::changeNotify(const std::string&, void * Data)
 	return true;
 }
 
-// data reset notifier
-extern Zapit_config zapitCfg;
-//void loadZapitSettings();
-//void getZapitConfig(Zapit_config *Cfg);
-
+//
 int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CDataResetNotifier::exec: %s\n", actionKey.c_str());
@@ -501,8 +497,6 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 
 
 //// channellist settings
-extern t_channel_id live_channel_id;
-
 int CChannelListSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CChannelListSettings::exec: actionKey: %s\n", actionKey.c_str());

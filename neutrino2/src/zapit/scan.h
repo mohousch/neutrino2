@@ -1,5 +1,5 @@
 /*
- * $Id: scan.h,v 1.14 2013/08/18 11:23:30 mohousch Exp $
+ * $Id: scan.h 23.09.2023 mohousch Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

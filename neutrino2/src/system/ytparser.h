@@ -1,5 +1,7 @@
 /*
         Copyright (C) 2013 CoolStream International Ltd
+        
+        $Id: ytparser.h 23.09.2023 mohousch Exp $
 
         License: GPLv2
 

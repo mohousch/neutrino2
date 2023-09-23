@@ -96,8 +96,10 @@ fb_pixel_t changeBrightnessRGBRel(fb_pixel_t color, int br, bool transp)
 {
 	int br_ = (int)getBrightnessRGB(color);
 	br_ += br;
+	
 	if (br_ < 0) br_ = 0;
 	if (br_ > 255) br_ = 255;
+	
 	return changeBrightnessRGB(color, (uint8_t)br_, transp);
 }
 
@@ -106,8 +108,10 @@ fb_pixel_t changeBrightnessRGB(fb_pixel_t color, uint8_t br, bool transp)
 	HsvColor hsv;
 	uint8_t tr = SysColor2Hsv(color, &hsv);
 	hsv.v = (float)br / (float)255;
+	
 	if (!transp)
 		tr = 0xFF;
+		
 	return Hsv2SysColor(&hsv, tr);
 }
 
@@ -115,6 +119,7 @@ fb_pixel_t Hsv2SysColor(HsvColor *hsv, uint8_t tr)
 {
 	RgbColor rgb;
 	Hsv2Rgb(hsv, &rgb);
+	
 	return (((tr    << 24) & 0xFF000000) |
 		((rgb.r << 16) & 0x00FF0000) |
 		((rgb.g <<  8) & 0x0000FF00) |
@@ -125,11 +130,14 @@ uint8_t SysColor2Hsv(fb_pixel_t color, HsvColor *hsv)
 {
 	uint8_t tr;
 	RgbColor rgb;
+	
 	tr     = (uint8_t)((color & 0xFF000000) >> 24);
 	rgb.r  = (uint8_t)((color & 0x00FF0000) >> 16);
 	rgb.g  = (uint8_t)((color & 0x0000FF00) >>  8);
 	rgb.b  = (uint8_t) (color & 0x000000FF);
+	
 	Rgb2Hsv(&rgb, hsv);
+	
 	return tr;
 }
 
@@ -138,17 +146,23 @@ void Hsv2Rgb(HsvColor *hsv, RgbColor *rgb)
 	float f_H = hsv->h;
 	float f_S = hsv->s;
 	float f_V = hsv->v;
-	if (fabsf(f_S) < FLT_EPSILON) {
+	
+	if (fabsf(f_S) < FLT_EPSILON) 
+	{
 		rgb->r = (uint8_t)(f_V * 255);
 		rgb->g = (uint8_t)(f_V * 255);
 		rgb->b = (uint8_t)(f_V * 255);
 
-	} else {
+	} 
+	else 
+	{
 		float f_R;
 		float f_G;
 		float f_B;
 		float hh = f_H;
+		
 		if (hh >= 360) hh = 0;
+		
 		hh /= 60;
 		int i = (int)hh;
 		float ff = hh - (float)i;
@@ -156,7 +170,8 @@ void Hsv2Rgb(HsvColor *hsv, RgbColor *rgb)
 		float q = f_V * (1 - (f_S * ff));
 		float t = f_V * (1 - (f_S * (1 - ff)));
 
-		switch (i) {
+		switch (i) 
+		{
 			case 0:
 				f_R = f_V; f_G = t; f_B = p;
 				break;
@@ -177,6 +192,7 @@ void Hsv2Rgb(HsvColor *hsv, RgbColor *rgb)
 				f_R = f_V; f_G = p; f_B = q;
 				break;
 		}
+		
 		rgb->r = (uint8_t)(f_R * 255);
 		rgb->g = (uint8_t)(f_G * 255);
 		rgb->b = (uint8_t)(f_B * 255);

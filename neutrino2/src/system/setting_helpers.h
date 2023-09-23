@@ -4,7 +4,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$id: setting_helpers.h 2015.12.22 15:24:30 mohousch $
+	$id: setting_helpers.h 23.09.2023 mohousch $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
