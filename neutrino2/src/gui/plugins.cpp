@@ -101,7 +101,7 @@ bool CPlugins::pluginfile_exists(const std::string & filename)
 
 void CPlugins::addPlugin(const char * dir)
 {
-	dprintf(DEBUG_NORMAL, "CPlugins::addPlugin: %s\n", dir);
+	dprintf(DEBUG_INFO, "CPlugins::addPlugin: %s\n", dir);
 	
 	PluginInit initPlugin;
 	void *handle = NULL;

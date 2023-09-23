@@ -2612,14 +2612,6 @@ void CZapit::leaveStandby(void)
 	
 	standby = false;
 	
-	// live cam
-	if (!cam0) 
-		cam0 = new CCam();
-	
-	// record cam
-	if(!cam1)
-		cam1 = new CCam();
-	
 #if !defined (PLATFORM_COOLSTREAM)	
 	openAVDecoder();
 #endif	
@@ -4432,7 +4424,13 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	//CI init
 #if defined (ENABLE_CI)	
 	ci = cDvbCi::getInstance();
-#endif	
+#endif
+
+	// init cam
+	cam0 = new CCam();
+	
+	// record cam
+	cam1 = new CCam();	
 	
 	//globals
 	scan_runs = 0;
