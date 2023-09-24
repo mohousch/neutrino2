@@ -43,9 +43,7 @@
 
 static const char * FILENAME = "[audio_cs.cpp]";
 
-//ugly most functions are done in proc
-cAudio * audioDecoder = NULL;
-
+////
 cAudio::cAudio(int num)
 {  
 	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);

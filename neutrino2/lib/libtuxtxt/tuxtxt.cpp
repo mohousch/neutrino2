@@ -1959,14 +1959,15 @@ int Init( int source )
 	StartX = sx+ (((ex-sx) - 40*fontwidth) / 2);
 	StartY = sy + (((ey-sy) - 25*fontheight) / 2);
 
+	//
 	if (usettf)
 	{
-		typettf.face_id = (FTC_FaceID) TUXTXTTTFVAR;
+		typettf.face_id = (FTC_FaceID) TUXTXTTTF;
 		typettf.height = (FT_UShort) fontheight * TTFHeightFactor16 / 16;
 	}
 	else
 	{
-		typettf.face_id = (FTC_FaceID) TUXTXTOTBVAR;
+		typettf.face_id = (FTC_FaceID) TUXTXTOTB;
 		typettf.width  = (FT_UShort) 23;
 		typettf.height = (FT_UShort) 23;
 	}

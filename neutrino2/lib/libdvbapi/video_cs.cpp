@@ -47,13 +47,9 @@
 #define AUDIO_FLUSH                     _IO('o',  71)
 #endif
 
-
 static const char * FILENAME = "[video_cs.cpp]";
 
-cVideo * videoDecoder = NULL;
-
-//ugly most functions are done in proc
-/* constructor & destructor */
+////
 cVideo::cVideo(int num)
 { 
 	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);

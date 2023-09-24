@@ -64,23 +64,6 @@ cDvbSubtitleBitmaps::~cDvbSubtitleBitmaps()
 {
 	dbgconverter("cDvbSubtitleBitmaps::delete: PTS: %lld rects %d\n", pts, Count());
 	
-	/*
-	int i;
-	
-	if(sub.rects) 
-	{
-		for (i = 0; i < Count(); i++)
-		{
-			av_freep(&sub.rects[i]->pict.data[0]);
-			av_freep(&sub.rects[i]->pict.data[1]);
-			av_freep(&sub.rects[i]);
-		}
-	
-		av_free(sub.rects);
-	}
-
-	memset(&sub, 0, sizeof(AVSubtitle));
-	*/
 	avsubtitle_free(&sub);
 }
 

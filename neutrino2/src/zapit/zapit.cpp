@@ -112,6 +112,8 @@ CZapitChannel * live_channel = NULL;
 // record channel
 CZapitChannel * rec_channel = NULL;
 //
+cDemux *videoDemux = NULL;
+cDemux *audioDemux = NULL;
 cDemux * pcrDemux = NULL;			// defined in dmx_cs.pp (libdvbapi)
 // list of all channels (services)
 tallchans allchans;             	// tallchans defined in "bouquets.h"
@@ -129,6 +131,9 @@ bool have_s = false;
 bool have_c = false;
 bool have_t = false;
 bool have_a = false;
+// Audio/Video Decoder
+cVideo * videoDecoder = NULL;
+cAudio * audioDecoder = NULL;
 ////
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern uint32_t failed_transponders;
@@ -151,12 +156,6 @@ extern short abort_scan;		// defined in scan.cpp
 //
 extern int current_volume;
 extern int current_muted;
-// Audio/Video Decoder
-extern cVideo * videoDecoder;			// defined in video_cs.pp (libdvbapi)
-extern cAudio * audioDecoder;			// defined in audio_cs.pp (libdvbapi)
-// Demuxes
-extern cDemux * audioDemux;			// defined in dmx_cs.pp (libdvbapi)
-extern cDemux * videoDemux;			// defined in dmx_cs.pp (libdvbapi)
 //
 extern cDemux * pmtDemux;			// defined in pmt.cpp
 // dvbsub

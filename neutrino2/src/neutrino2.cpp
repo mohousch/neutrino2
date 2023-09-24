@@ -235,12 +235,11 @@ const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] =
 #endif
 };
 
-//
+////
 extern char rec_filename[1024];
 //
 extern satellite_map_t satellitePositions;		// defined in getServices.cpp
 extern tallchans allchans;				// defined in zapit.cpp
-extern CBouquetManager * g_bouquetManager;		// defined in zapit.cpp
 // tuxtxt
 extern int  tuxtxt_stop();
 extern void tuxtxt_close();
@@ -288,7 +287,7 @@ static void initGlobals(void)
 	g_bouquetManager = new CBouquetManager();
 }
 
-// CNeutrinoApp - Constructor, initialize g_fontRenderer
+//
 CNeutrinoApp::CNeutrinoApp()
 : configfile('\t')
 {
@@ -2153,8 +2152,10 @@ void CNeutrinoApp::initZapper()
 	// read saved epg
 	if (g_settings.epg_save)
 	{
+		//
 		readEPG();
 		
+		//
 		for (unsigned long i = 0; i < g_settings.xmltv.size(); i++)
 		{
 			CSectionsd::getInstance()->readSIfromXMLTV(g_settings.xmltv[i].c_str());

@@ -34,15 +34,12 @@
 #include <system/debug.h>
 
 
-extern cVideo *videoDecoder;
+////
+extern cVideo *videoDecoder;		// defined in video_cs.cpp
 
 static const char * FILENAME = "[dmx_cs.cpp]";
 
-cDemux *videoDemux = NULL;
-cDemux *audioDemux = NULL;
-
-
-/* did we already DMX_SET_SOURCE on that demux device? */
+////
 #define NUM_DEMUXDEV 3
 static bool init[NUM_DEMUXDEV] = { false, false, false };
 
@@ -471,15 +468,15 @@ void cDemux::removePid(unsigned short Pid)
 
 void cDemux::getSTC(int64_t * STC)
 { 
-#if 0
+#if 1
 	if (demux_fd < 0)
 		return;
 	
 	dprintf(DEBUG_DEBUG, "%s:%s dmx(%d,%d) type=%s STC=\n", FILENAME, __FUNCTION__, demux_adapter, demux_num, aDMXCHANNELTYPE[type]);	
 	
 	struct dmx_stc stc;
-	memset(&stc, 0, sizeof(dmx_stc));
-	stc.num =  demux_num;	//num
+
+	stc.num =  demux_num;
 	stc.base = 1;
 	
 	if(ioctl(demux_fd, DMX_GET_STC, &stc) < 0 )
@@ -487,9 +484,6 @@ void cDemux::getSTC(int64_t * STC)
 	
 	*STC = (int64_t)stc.stc;
 #else
-	// seifes
-	/* apparently I can only get the PTS of the video decoder,
-	 * but that's good enough for dvbsub */
 	dprintf(DEBUG_DEBUG, "%s:%s dmx(%d,%d) type=%s STC=\n", FILENAME, __FUNCTION__, demux_adapter, demux_num, aDMXCHANNELTYPE[type]);	
 	
 	int64_t pts = 0;
