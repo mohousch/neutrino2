@@ -170,6 +170,47 @@ extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
 extern void tuxtx_set_pid(int pid, int page, const char * cc);
 
 ////
+CZapit::CZapit()
+{
+	cam0 = NULL;
+	cam1 = NULL;
+	//
+	_bouquetMode = CZapit::BM_UPDATEBOUQUETS;
+	_scanType = CZapit::ST_TVRADIO;
+	//
+	femap.clear();
+	//
+	standby = false;
+	retune = false;
+	//
+	currentMode = TV_MODE;
+	playbackStopForced = false;
+	avDecoderOpen = false;
+	//
+	scanSDT = 0;
+	sdt_wakeup = false;
+	//
+	firstzap = true;
+	playing = false;
+	g_list_changed = false;
+	//
+	current_is_nvod = false;
+	//
+	volume_left = 100;
+	volume_right = 100;
+	audio_mode = 0;
+	def_audio_mode = 0;
+	//
+	volume_percent = 0;
+	//
+	saveLastChannel = true;
+	lastChannelMode = CZapit::TV_MODE;
+	lastChannelRadio = 0;
+	lastChannelTV = 0;
+	makeRemainingChannelsBouquet = false;
+}
+		
+//
 void CZapit::initFrontend()
 {
 	dprintf(DEBUG_NORMAL, "CZapit::initFrontend\n");
@@ -2606,9 +2647,6 @@ void CZapit::leaveStandby(void)
 { 
 	dprintf(DEBUG_NORMAL, "CZapit::leaveStandby\n");
 	
-	if(!standby) 
-		return;
-	
 	standby = false;
 	
 #if !defined (PLATFORM_COOLSTREAM)	
@@ -4370,14 +4408,10 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	//scan for dvb adapter/frontend and feed them in map
 	initFrontend();
 	
+	// init SH4 HW
 #if defined (__sh__)
 	if(getFrontendCount() > 1)
 	{
-		//lib-stb-hal/libspark
-		/* 
-		* this is a strange hack: the drivers seem to only work correctly after
-		* demux0 has been used once. After that, we can use demux1,2,... 
-		*/
 		struct dmx_pes_filter_params p;
 		int dmx = open("/dev/dvb/adapter0/demux0", O_RDWR );
 		if (dmx < 0)

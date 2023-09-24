@@ -475,6 +475,8 @@ void cDemux::getSTC(int64_t * STC)
 	dprintf(DEBUG_DEBUG, "%s:%s dmx(%d,%d) type=%s STC=\n", FILENAME, __FUNCTION__, demux_adapter, demux_num, aDMXCHANNELTYPE[type]);	
 	
 	struct dmx_stc stc;
+	
+	memset(&stc, 0, sizeof(dmx_stc));
 
 	stc.num =  demux_num;
 	stc.base = 1;

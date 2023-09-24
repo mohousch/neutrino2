@@ -21,52 +21,34 @@
 #include <zapit/frontend_c.h>
 
 
-extern CFrontend * live_fe;
-
-#define Log2File	printf
-#define RECVBUFFER_STEPSIZE 1024
-
-enum {
-	NOERROR, 
-	NETWORK, 
-	DENIED, 
-	NOSERVICE, 
-	BOXTYPE, 
-	THREAD, 
-	ABOUT
-};
-
-enum {
-	GET_VOLUME, 
-	SET_VOLUME, 
-	SET_MUTE, 
-	SET_CHANNEL
-};
-
+//// globals
 Debug sub_debug;
 static PacketQueue packet_queue;
-//sem_t event_semaphore;
-
+//
 static pthread_t threadReader;
 static pthread_t threadDvbsub;
-
+//
 static pthread_cond_t readerCond = PTHREAD_COND_INITIALIZER;
 static pthread_mutex_t readerMutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t packetCond = PTHREAD_COND_INITIALIZER;
 static pthread_mutex_t packetMutex = PTHREAD_MUTEX_INITIALIZER;
-
+//
 static int reader_running;
 static int dvbsub_running;
 static int dvbsub_paused = true;
 static int dvbsub_pid;
 static int dvbsub_stopped;
 static int pid_change_req;
-
+//
 cDvbSubtitleConverter *dvbSubtitleConverter;
+//
 static void* reader_thread(void *arg);
 static void* dvbsub_thread(void* arg);
 static void clear_queue();
+////
+extern CFrontend * live_fe;
 
+//
 int dvbsub_init() 
 {
 	printf("dvbsub_init: starting... tid %ld\n", syscall(__NR_gettid));
@@ -81,7 +63,8 @@ int dvbsub_init()
 	
 	// reader-Thread starten
 	trc = pthread_create(&threadReader, 0, reader_thread, (void *) NULL);
-	if (trc) {
+	if (trc) 
+	{
 		fprintf(stderr, "[dvb-sub] failed to create reader-thread (rc=%d)\n", trc);
 		reader_running = false;
 		return -1;
@@ -133,11 +116,9 @@ int dvbsub_start(int pid)
 			pid_change_req = 1;
 		}
 	}
+	
 	printf("[dvb-sub] start, stopped %d pid %x\n", dvbsub_stopped, dvbsub_pid);
-#if 0
-	while(!dvbsub_stopped)
-		usleep(10);
-#endif
+
 	if(dvbsub_pid > 0) 
 	{
 		dvbsub_stopped = 0;
@@ -156,7 +137,9 @@ int dvbsub_start(int pid)
 int dvbsub_stop()
 {
 	dvbsub_pid = 0;
-	if(reader_running) {
+	
+	if(reader_running) 
+	{
 		dvbsub_stopped = 1;
 		dvbsub_pause();
 		pid_change_req = 1;
@@ -291,9 +274,7 @@ static void* reader_thread(void * /*arg*/)
 
 	while (reader_running) 
 	{
-		//dmx->Open(DMX_PES_CHANNEL, 64*1024, live_fe?live_fe->fenumber:0);	
-		
-		if(dvbsub_stopped /*dvbsub_paused*/) 
+		if(dvbsub_stopped) 
 		{
 			sub_debug.print(Debug::VERBOSE, "%s stopped\n", __FUNCTION__);
 			dmx->Stop();
@@ -325,7 +306,7 @@ static void* reader_thread(void * /*arg*/)
 #if defined (PLATFORM_COOLSTREAM)
 			dmx->Open(DMX_PES_CHANNEL);
 #else			
-			dmx->Open(DMX_PES_CHANNEL, 64*1024, live_fe/*?live_fe->fenumber:0*/);	
+			dmx->Open(DMX_PES_CHANNEL, 64*1024, live_fe);	
 #endif			
 			//
 			dmx->pesFilter(dvbsub_pid);
@@ -337,8 +318,6 @@ static void* reader_thread(void * /*arg*/)
 		count = 0;
 
 		len = dmx->Read(tmp, 6, 1000);
-		
-		//printf("\n[dvbsub] len: %d\n", len);
 		
 		if(len <= 0)
 			continue;
@@ -366,21 +345,9 @@ static void* reader_thread(void * /*arg*/)
 				count += len;
 			}
 		}
-#if 0
-		for(int i = 6; i < packlen - 4; i++) {
-			if(!memcmp(&buf[i], "\x00\x00\x01\xbd", 4)) {
-				int plen =  getbits(&buf[i], 4*8, 16) + 6;
-				printf("[subtitles] PES header at %d ?!\n", i);
-				printf("[subtitles] start code: %02x%02x%02x%02x len %d\n", buf[i+0], buf[i+1], buf[i+2], buf[i+3], plen);
-				free(buf);
-				continue;
-			}
-		}
-#endif
 
-		if(!dvbsub_stopped /*!dvbsub_paused*/ ) 
+		if(!dvbsub_stopped) 
 		{
-			//sub_debug.print(Debug::VERBOSE, "[subtitles] new packet, len %d buf 0x%x pts-stc diff %lld\n", count, buf, get_pts_stc_delta(get_pts(buf)));
 			/* Packet now in memory */
 			packet_queue.push(buf);
 			/* TODO: allocation exception */
@@ -425,12 +392,14 @@ static void* dvbsub_thread(void* /*arg*/)
 
 		int ret = 0;
 		now.tv_usec += (timeout == 0) ? 1000000 : timeout;   // add the timeout
+		
 		while (now.tv_usec >= 1000000) 
 		{   
 			// take care of an overflow
 			now.tv_sec++;
 			now.tv_usec -= 1000000;
 		}
+		
 		restartWait.tv_sec = now.tv_sec;          // seconds
 		restartWait.tv_nsec = now.tv_usec * 1000; // nano seconds
 
@@ -443,10 +412,9 @@ static void* dvbsub_thread(void* /*arg*/)
 		if(packet_queue.size() == 0) {
 			continue;
 		}
-#if 1
-		sub_debug.print(Debug::VERBOSE, "PES: Wakeup, queue size %d\n\n", packet_queue.size());
-#endif
-		if(dvbsub_stopped /*dvbsub_paused*/) 
+
+		//
+		if(dvbsub_stopped) 
 		{
 			clear_queue();
 			continue;
@@ -467,19 +435,8 @@ static void* dvbsub_thread(void* /*arg*/)
 		dataoffset = packet[8] + 8 + 1;
 		if (packet[dataoffset] != 0x20) 
 		{
-#if 1
-			sub_debug.print(Debug::VERBOSE, "Not a dvb subtitle packet, discard it (len %d)\n", packlen);
-
-			for(int i = 0; i < packlen; i++)
-				printf("%02X ", packet[i]);
-			printf("\n");
-#endif
 			goto next_round;
 		}
-
-#if 1
-		sub_debug.print(Debug::VERBOSE, "PES packet: len %d data len %d PTS=%Ld (%02d:%02d:%02d.%d) diff %lld\n", packlen, packlen - (dataoffset + 2), pts, (int)(pts/324000000), (int)((pts/5400000)%60), (int)((pts/90000)%60), (int)(pts%90000), get_pts_stc_delta(pts));
-#endif
 
 		if (packlen <= dataoffset + 3) 
 		{
@@ -507,3 +464,4 @@ next_round:
 	sub_debug.print(Debug::VERBOSE, "%s shutdown\n", __FUNCTION__);
 	pthread_exit(NULL);
 }
+

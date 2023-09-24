@@ -358,45 +358,8 @@ class CZapit
 		pthread_t tpmt;
 		static void *updatePMTFilter(void *);
 		
-		CZapit()
-		{
-			cam0 = NULL;
-			cam1 = NULL;
-			//
-			_bouquetMode = CZapit::BM_UPDATEBOUQUETS;
-			_scanType = CZapit::ST_TVRADIO;
-			//
-			femap.clear();
-			//
-			standby = false;
-			retune = false;
-			//
-			currentMode = TV_MODE;
-			playbackStopForced = false;
-			avDecoderOpen = false;
-			//
-			scanSDT = 0;
-			sdt_wakeup = false;
-			//
-			firstzap = true;
-			playing = false;
-			g_list_changed = false;
-			//
-			current_is_nvod = false;
-			//
-			volume_left = 100;
-			volume_right = 100;
-			audio_mode = 0;
-			def_audio_mode = 0;
-			//
-			volume_percent = 0;
-			//
-			saveLastChannel = true;
-			lastChannelMode = CZapit::TV_MODE;
-			lastChannelRadio = 0;
-			lastChannelTV = 0;
-			makeRemainingChannelsBouquet = false;
-		};
+		CZapit();
+		
 	public:
 		virtual ~CZapit(){ };
 		
