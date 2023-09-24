@@ -144,15 +144,15 @@ void CMenuWidget::Init(const std::string &Icon, const int mwidth, const int mhei
 	paintFootInfo = false;
 	footInfoHeight = 0;
 	cFrameFootInfoHeight = 0;
-	footInfoMode = ITEMINFO_INFO_MODE;
+	footInfoMode = ClistBox::ITEMINFO_INFO_MODE;
 
 	timeout = g_settings.timing_menu;
 	sec_timer_id = 0;
 
 	//
-	widgetType = TYPE_STANDARD;
+	widgetType = CMenuItem::TYPE_STANDARD;
 	shrinkMenu = false;
-	widgetMode = MODE_MENU;
+	widgetMode = ClistBox::MODE_MENU;
 	
 	//
 	cnt = 0;
@@ -162,7 +162,7 @@ void CMenuWidget::Init(const std::string &Icon, const int mwidth, const int mhei
 	itemsPerY = 3;
 	maxItemsPerPage = itemsPerX*itemsPerY;
 	
-	menu_position = MENU_POSITION_CENTER;
+	menu_position = CWidget::MENU_POSITION_CENTER;
 
 	actionKey = "";
 
@@ -229,7 +229,7 @@ void CMenuWidget::initFrames()
 	} 
 
 	// init frames
-	if(widgetType == TYPE_FRAME)
+	if(widgetType == CMenuItem::TYPE_FRAME)
 	{
 		//
 		page_start.clear();
@@ -274,7 +274,7 @@ void CMenuWidget::initFrames()
 		// footInfo height
 		if(paintFootInfo)
 		{
-			if( (widgetType == TYPE_STANDARD) || (widgetType == TYPE_CLASSIC && widgetMode == MODE_LISTBOX) )
+			if( (widgetType == CMenuItem::TYPE_STANDARD) || (widgetType == CMenuItem::TYPE_CLASSIC && widgetMode == ClistBox::MODE_LISTBOX) )
 			{
 				cFrameFootInfoHeight = footInfoHeight;
 			}
@@ -330,17 +330,17 @@ void CMenuWidget::initFrames()
 		y = offy + frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
 
 		// menu position
-		if(menu_position == MENU_POSITION_CENTER)
+		if(menu_position == CWidget::MENU_POSITION_CENTER)
 		{
 			x = offx + frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - full_width ) >> 1 );
 			y = offy + frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
 		}
-		else if(menu_position == MENU_POSITION_LEFT)
+		else if(menu_position == CWidget::MENU_POSITION_LEFT)
 		{
 			x = offx + frameBuffer->getScreenX();
 			y = offy + frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
 		}
-		else if(menu_position == MENU_POSITION_RIGHT)
+		else if(menu_position == CWidget::MENU_POSITION_RIGHT)
 		{
 			x = offx + frameBuffer->getScreenX() + frameBuffer->getScreenWidth() - full_width;
 			y = offy + frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
@@ -352,7 +352,7 @@ void CMenuWidget::paintHead()
 {
 	dprintf(DEBUG_DEBUG, "CMenuWidget::paintHead:\n");
 	
-	if(widgetType == TYPE_FRAME)
+	if(widgetType == CMenuItem::TYPE_FRAME)
 	{
 		// headBox
 		frameBuffer->paintBoxRel(x, y, width, hheight, def_headColor? COL_MENUHEAD_PLUS_0 : headColor/*, headRadius, headCorner, headGradient*/);
@@ -506,7 +506,7 @@ void CMenuWidget::paintFoot()
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::paintFoot:\n");
 	
-	if(widgetType == TYPE_FRAME)
+	if(widgetType == CMenuItem::TYPE_FRAME)
 	{
 		if(fbutton_count)
 		{
@@ -610,7 +610,7 @@ void CMenuWidget::paintItems()
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::paintItems:\n");
 	
-	if(widgetType == TYPE_FRAME)
+	if(widgetType == CMenuItem::TYPE_FRAME)
 	{
 		item_start_y = y + hheight + 10;
 		items_height = height - hheight - fheight - cFrameFootInfoHeight - 20;  //TEST
@@ -691,7 +691,7 @@ void CMenuWidget::paintItems()
 		items_width = width - sb_width;
 
 		// extended
-		if(widgetType == TYPE_EXTENDED)
+		if(widgetType == CMenuItem::TYPE_EXTENDED)
 		{
 			items_width = 2*(width/3) - sb_width;
 		}
@@ -709,7 +709,7 @@ void CMenuWidget::paintItems()
 		// paint items background
 		frameBuffer->paintBoxRel(x, item_start_y, width, items_height, def_color? COL_MENUCONTENT_PLUS_0 : bgcolor);
 		
-		if(widgetType == TYPE_EXTENDED && widgetMode == MODE_MENU)
+		if(widgetType == CMenuItem::TYPE_EXTENDED && widgetMode == ClistBox::MODE_MENU)
 		{
 			frameBuffer->paintBoxRel(x + items_width, item_start_y, width - items_width, items_height, COL_MENUCONTENTDARK_PLUS_0);
 		}
@@ -717,7 +717,7 @@ void CMenuWidget::paintItems()
 		// paint right scrollBar if we have more then one page
 		if(total_pages > 1)
 		{
-			if(widgetType == TYPE_EXTENDED)
+			if(widgetType == CMenuItem::TYPE_EXTENDED)
 				scrollBar.paint(x + 2*(width/3) - SCROLLBAR_WIDTH, item_start_y, items_height, total_pages, current_page);
 			else
 				scrollBar.paint(x + width - SCROLLBAR_WIDTH, item_start_y, items_height, total_pages, current_page);
@@ -762,9 +762,9 @@ void CMenuWidget::paintItemInfo(int pos)
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::paintItemInfo:\n");
 	
-	if(widgetType == TYPE_STANDARD)
+	if(widgetType == CMenuItem::TYPE_STANDARD)
 	{
-		if(widgetMode == MODE_MENU || widgetMode == MODE_SETUP)
+		if(widgetMode == ClistBox::MODE_MENU || widgetMode == ClistBox::MODE_SETUP)
 		{
 			if(paintFootInfo)
 			{
@@ -781,7 +781,7 @@ void CMenuWidget::paintItemInfo(int pos)
 				
 				//
 				itemsLine.setPosition(x, y + height - cFrameFootInfoHeight + 2, width, cFrameFootInfoHeight);
-				itemsLine.setMode(DL_HINT);
+				itemsLine.setMode(CItems2DetailsLine::DL_HINT);
 				itemsLine.setIcon(icon.c_str());
 				itemsLine.setHint(item->itemHint.c_str());
 				itemsLine.enablePaintBG();
@@ -841,17 +841,17 @@ void CMenuWidget::paintItemInfo(int pos)
 				}
 			}
 		}
-		else if(widgetMode == MODE_LISTBOX)
+		else if(widgetMode == ClistBox::MODE_LISTBOX)
 		{
 			if(paintFootInfo)
 			{
-				if (footInfoMode == ITEMINFO_INFO_MODE)
+				if (footInfoMode == ClistBox::ITEMINFO_INFO_MODE)
 				{
 					CMenuItem * item = items[pos];
 	
 					// 
 					itemsLine.setPosition(x, y + height - cFrameFootInfoHeight + 2, width, cFrameFootInfoHeight);
-					itemsLine.setMode(DL_INFO);
+					itemsLine.setMode(CItems2DetailsLine::DL_INFO);
 					itemsLine.setInfo1(item->info1.c_str());
 					itemsLine.setOptionInfo1(item->option_info1.c_str());
 					itemsLine.setInfo2(item->info2.c_str());
@@ -860,13 +860,13 @@ void CMenuWidget::paintItemInfo(int pos)
 					
 					itemsLine.paint();
 				}
-				else if (footInfoMode == ITEMINFO_HINT_MODE)
+				else if (footInfoMode == ClistBox::ITEMINFO_HINT_MODE)
 				{
 					CMenuItem* item = items[pos];
 	
 					// detailslines|box
 					itemsLine.setPosition(x, y + height - cFrameFootInfoHeight + 2, width, cFrameFootInfoHeight);
-					itemsLine.setMode(DL_HINT);
+					itemsLine.setMode(CItems2DetailsLine::DL_HINT);
 					itemsLine.setHint(item->itemHint.c_str());
 					itemsLine.setIcon(item->itemIcon.c_str());
 					itemsLine.enablePaintBG();
@@ -928,9 +928,9 @@ void CMenuWidget::paintItemInfo(int pos)
 			}
 		}
 	}
-	else if(widgetType == TYPE_CLASSIC)
+	else if(widgetType == CMenuItem::TYPE_CLASSIC)
 	{
-		if(widgetMode == MODE_MENU)
+		if(widgetMode == ClistBox::MODE_MENU)
 		{
 			if(fbutton_count == 0)
 			{
@@ -960,17 +960,17 @@ void CMenuWidget::paintItemInfo(int pos)
 				}
 			}
 		}
-		else if(widgetMode == MODE_LISTBOX)
+		else if(widgetMode == ClistBox::MODE_LISTBOX)
 		{
 			if(paintFootInfo)
 			{
-				if (footInfoMode == ITEMINFO_INFO_MODE)
+				if (footInfoMode == ClistBox::ITEMINFO_INFO_MODE)
 				{
 					CMenuItem * item = items[pos];
 	
 					// detailslines
 					itemsLine.setPosition(x, y + height - cFrameFootInfoHeight + 2, width, cFrameFootInfoHeight);
-					itemsLine.setMode(DL_INFO);
+					itemsLine.setMode(CItems2DetailsLine::DL_INFO);
 					itemsLine.setInfo1(item->info1.c_str());
 					itemsLine.setOptionInfo1(item->option_info1.c_str());
 					itemsLine.setInfo2(item->info2.c_str());
@@ -979,13 +979,13 @@ void CMenuWidget::paintItemInfo(int pos)
 					
 					itemsLine.paint();
 				}
-				else if (footInfoMode == ITEMINFO_HINT_MODE)
+				else if (footInfoMode == ClistBox::ITEMINFO_HINT_MODE)
 				{
 					CMenuItem* item = items[pos];
 	
 					// detailslines
 					itemsLine.setPosition(x, y + height - cFrameFootInfoHeight + 2, width, cFrameFootInfoHeight);
-					itemsLine.setMode(DL_HINT);
+					itemsLine.setMode(CItems2DetailsLine::DL_HINT);
 					itemsLine.setHint(item->itemHint.c_str());
 					itemsLine.setIcon(item->itemIcon.c_str());
 					itemsLine.enablePaintBG();
@@ -1047,11 +1047,11 @@ void CMenuWidget::paintItemInfo(int pos)
 			}
 		}
 	}
-	else if(widgetType == TYPE_EXTENDED)
+	else if(widgetType == CMenuItem::TYPE_EXTENDED)
 	{
 		CMenuItem* item = items[pos];
 
-		if(widgetMode == MODE_MENU)
+		if(widgetMode == ClistBox::MODE_MENU)
 		{
 			int iw, ih;
 
@@ -1094,7 +1094,7 @@ void CMenuWidget::paintItemInfo(int pos)
 				frameBuffer->paintHintIcon(item->itemIcon.c_str(), x + items_width + (width - items_width - ITEM_ICON_W)/2, y + (height - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
 			}
 		}
-		else if(widgetMode == MODE_LISTBOX)
+		else if(widgetMode == ClistBox::MODE_LISTBOX)
 		{
 			// scale pic
 			int p_w = 0;
@@ -1141,7 +1141,7 @@ void CMenuWidget::paintItemInfo(int pos)
 			}
 		}
 	}
-	else if(widgetType == TYPE_FRAME)
+	else if(widgetType == CMenuItem::TYPE_FRAME)
 	{
 		// refresh footInfo Box
 		frameBuffer->paintBoxRel(x, y + height - fheight - cFrameFootInfoHeight, width, cFrameFootInfoHeight, COL_MENUCONTENT_PLUS_0);
@@ -1174,7 +1174,7 @@ void CMenuWidget::hideItemInfo()
 	
 	if (paintFootInfo)
 	{
-		if( (widgetType == TYPE_STANDARD) || (widgetType == TYPE_CLASSIC && widgetMode == MODE_LISTBOX) )
+		if( (widgetType == CMenuItem::TYPE_STANDARD) || (widgetType == CMenuItem::TYPE_CLASSIC && widgetMode == ClistBox::MODE_LISTBOX) )
 		{
 			itemsLine.hide();
 		}
@@ -1340,7 +1340,7 @@ void CMenuWidget::integratePlugins(CPlugins::i_type_t integration, const unsigne
 			CMenuForwarder *fw_plugin = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());
 
 			fw_plugin->setHint(_(g_PluginList->getDescription(count).c_str()));
-			//fw_plugin->setWidgetMode(MODE_LISTBOX); //FIXME:
+			//fw_plugin->setWidgetMode(ClistBox::MODE_LISTBOX); //FIXME:
 			fw_plugin->isPlugin = true;
 
 			addItem(fw_plugin);
@@ -1374,7 +1374,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 {
 	dprintf(DEBUG_NORMAL, "CMenuWidget::exec: (%s)\n", l_name.c_str());
 
-	int retval = RETURN_REPAINT;
+	int retval = CMenuTarget::RETURN_REPAINT;
 
 	int pos = 0;
 
@@ -1417,12 +1417,12 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 
 					switch ( rv ) 
 					{
-						case RETURN_EXIT_ALL:
-							retval = RETURN_EXIT_ALL; //fall through
-						case RETURN_EXIT:
+						case CMenuTarget::RETURN_EXIT_ALL:
+							retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
+						case CMenuTarget::RETURN_EXIT:
 							msg = RC_timeout;
 							break;
-						case RETURN_REPAINT:
+						case CMenuTarget::RETURN_REPAINT:
 							//hide();
 							paint();
 							break;
@@ -1483,13 +1483,13 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 				case (NeutrinoMessages::EVT_TIMER):
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
-						retval = RETURN_EXIT_ALL;
+						retval = CMenuTarget::RETURN_EXIT_ALL;
 						msg = RC_timeout;
 					}
 					break;
 					
 				case (RC_page_up) :
-					if(widgetType == TYPE_FRAME)
+					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						pos = (int) page_start[current_page + 1];
 						if(pos >= (int) items.size()) 
@@ -1498,7 +1498,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 						selected = pos;
 						paintItems();
 					}
-					else if(widgetType == TYPE_STANDARD || widgetType == TYPE_CLASSIC || widgetType == TYPE_EXTENDED)
+					else if(widgetType == CMenuItem::TYPE_STANDARD || widgetType == CMenuItem::TYPE_CLASSIC || widgetType == CMenuItem::TYPE_EXTENDED)
 					{
 						if(current_page) 
 						{
@@ -1563,7 +1563,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 
 				case (RC_page_down) :
-					if(widgetType == TYPE_FRAME)
+					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						pos = (int) page_start[current_page] - 1;
 			
@@ -1573,7 +1573,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 						selected = pos;
 						paintItems();
 					}
-					else if(widgetType == TYPE_STANDARD || widgetType == TYPE_CLASSIC || widgetType == TYPE_EXTENDED)
+					else if(widgetType == CMenuItem::TYPE_STANDARD || widgetType == CMenuItem::TYPE_CLASSIC || widgetType == CMenuItem::TYPE_EXTENDED)
 					{
 						pos = (int) page_start[current_page + 1];
 
@@ -1609,7 +1609,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 					
 				case (RC_up) :
-					if(widgetType == TYPE_FRAME)
+					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						pos = selected - itemsPerX;
 
@@ -1632,7 +1632,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							}
 						}
 					}
-					else if(widgetType == TYPE_STANDARD || widgetType == TYPE_CLASSIC || widgetType == TYPE_EXTENDED)
+					else if(widgetType == CMenuItem::TYPE_STANDARD || widgetType == CMenuItem::TYPE_CLASSIC || widgetType == CMenuItem::TYPE_EXTENDED)
 					{
 						//search next / prev selectable item
 						for (unsigned int count = 1; count < items.size(); count++) 
@@ -1667,7 +1667,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 					
 				case (RC_down) :
-					if(widgetType == TYPE_FRAME)
+					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						pos = selected + itemsPerX;
 
@@ -1691,7 +1691,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							} 
 						}
 					}
-					else if(widgetType == TYPE_STANDARD || widgetType == TYPE_CLASSIC || widgetType == TYPE_EXTENDED)
+					else if(widgetType == CMenuItem::TYPE_STANDARD || widgetType == CMenuItem::TYPE_CLASSIC || widgetType == CMenuItem::TYPE_EXTENDED)
 					{
 						//search next / prev selectable item
 						for (unsigned int count = 1; count < items.size(); count++) 
@@ -1724,7 +1724,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 
 				case (RC_left):
-					if(widgetType == TYPE_FRAME)
+					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						for (unsigned int count = 1; count < items.size(); count++) 
 						{
@@ -1757,13 +1757,13 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 						}
 
 					}
-					else if (widgetType == TYPE_EXTENDED)
+					else if (widgetType == CMenuItem::TYPE_EXTENDED)
 					{
 						textBox->scrollPageUp(1);
 					}
-					else if(widgetType == TYPE_STANDARD)
+					else if(widgetType == CMenuItem::TYPE_STANDARD)
 					{
-						if(widgetMode == MODE_SETUP)
+						if(widgetMode == ClistBox::MODE_SETUP)
 						{
 							if(hasItem()) 
 							{
@@ -1778,15 +1778,14 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							
 									switch ( rv ) 
 									{
-										case RETURN_EXIT_ALL:
-											retval = RETURN_EXIT_ALL; //fall through
+										case CMenuTarget::RETURN_EXIT_ALL:
+											retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
 									
-										case RETURN_EXIT:
+										case CMenuTarget::RETURN_EXIT:
 											msg = RC_timeout;
 											break;
 									
-										case RETURN_REPAINT:
-											//hide();
+										case CMenuTarget::RETURN_REPAINT:
 											paint();
 											break;	
 									}
@@ -1802,7 +1801,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 					
 				case (RC_right):
-					if(widgetType == TYPE_FRAME)
+					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						for (unsigned int count = 1; count < items.size(); count++) 
 						{
@@ -1832,13 +1831,13 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							}
 						}
 					}
-					else if (widgetType == TYPE_EXTENDED)
+					else if (widgetType == CMenuItem::TYPE_EXTENDED)
 					{
 						textBox->scrollPageDown(1);
 					}
-					else if(widgetType == TYPE_STANDARD)
+					else if(widgetType == CMenuItem::TYPE_STANDARD)
 					{
-						if(widgetMode == MODE_SETUP)
+						if(widgetMode == ClistBox::MODE_SETUP)
 						{
 							if(hasItem()) 
 							{
@@ -1853,15 +1852,14 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							
 									switch ( rv ) 
 									{
-										case RETURN_EXIT_ALL:
-											retval = RETURN_EXIT_ALL; //fall through
+										case CMenuTarget::RETURN_EXIT_ALL:
+											retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
 									
-										case RETURN_EXIT:
+										case CMenuTarget::RETURN_EXIT:
 											msg = RC_timeout;
 											break;
 									
-										case RETURN_REPAINT:
-											//hide();
+										case CMenuTarget::RETURN_REPAINT:
 											paint();
 											break;	
 									}
@@ -1889,15 +1887,14 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							
 							switch ( rv ) 
 							{
-								case RETURN_EXIT_ALL:
-									retval = RETURN_EXIT_ALL;
+								case CMenuTarget::RETURN_EXIT_ALL:
+									retval = CMenuTarget::RETURN_EXIT_ALL;
 									
-								case RETURN_EXIT:
+								case CMenuTarget::RETURN_EXIT:
 									msg = RC_timeout;
 									break;
 									
-								case RETURN_REPAINT:
-									//hide();
+								case CMenuTarget::RETURN_REPAINT:
 									paint();
 									break;
 							}
@@ -1922,7 +1919,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 				default:
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
-						retval = RETURN_EXIT_ALL;
+						retval = CMenuTarget::RETURN_EXIT_ALL;
 						msg = RC_timeout;
 					}
 			}
@@ -1949,10 +1946,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 	// vfd
 	if(!parent)
 	{
-		//if(CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_webtv)
-		//	CVFD::getInstance()->setMode(CVFD::MODE_WEBTV);
-		//else
-			CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+		CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
 	}
 
 	// init items

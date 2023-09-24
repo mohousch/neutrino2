@@ -66,7 +66,7 @@ int CServiceMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CServiceMenu::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -81,7 +81,7 @@ int CServiceMenu::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "CServiceMenu::showMenu\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;
@@ -91,20 +91,20 @@ int CServiceMenu::showMenu(void)
 	
 	if (widget)
 	{
-		service = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		service = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "system";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		service = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
-		service->setWidgetMode(MODE_MENU);
-		service->setWidgetType(TYPE_CLASSIC);
+		service->setWidgetMode(ClistBox::MODE_MENU);
+		service->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		service->enableShrinkMenu();
 		
 		//

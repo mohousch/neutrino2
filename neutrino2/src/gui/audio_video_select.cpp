@@ -152,7 +152,7 @@ int CAVPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKe
 		dprintf(DEBUG_NORMAL, "CAPIDSelect::exec: apid changed to %d\n", currentapid);
 	}
 	
-	return RETURN_EXIT;
+	return CMenuTarget::RETURN_EXIT;
 }
 
 //
@@ -172,7 +172,7 @@ int CAVSubPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actio
 		dprintf(DEBUG_NORMAL, "CAVSubPIDSelect::exec: spid changed to %d\n", currentspid);
 	}
 	
-	return RETURN_EXIT;
+	return CMenuTarget::RETURN_EXIT;
 }
 
 //
@@ -180,7 +180,7 @@ int CAVPIDSelectWidget::exec(CMenuTarget * parent, const std::string & actionKey
 {
 	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::exec: %s\n", actionKey.c_str());
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 
 	if (parent) 
 		parent->hide();
@@ -194,7 +194,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 {
 	dprintf(DEBUG_NORMAL, "CAVPIDSelectWidget::showAudioDialog (currentapid:%d)\n", currentapid);
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;
@@ -204,19 +204,19 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	
 	if (widget)
 	{
-		AVPIDSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		AVPIDSelector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "avselect";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//			
 		AVPIDSelector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		AVPIDSelector->setWidgetMode(MODE_SETUP);
+		AVPIDSelector->setWidgetMode(ClistBox::MODE_SETUP);
 		AVPIDSelector->enableShrinkMenu();
 						
 		AVPIDSelector->enablePaintHead();
@@ -312,7 +312,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 			AVPIDSelector->addItem(new CMenuForwarder(apidtitle.c_str(), enabled, NULL, &AVPIDChanger, apidnumber, CRCInput::convertDigitToKey(count + 1)), (count == currentapid) );
 		}
 		
-		AVPIDSelector->addItem(new CMenuSeparator(LINE));
+		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	} 
 	
 	//ac3
@@ -321,7 +321,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 #endif				
 				
 	// policy/aspect ratio
-	AVPIDSelector->addItem(new CMenuSeparator(LINE));
+	AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 				
 	// video aspect ratio 4:3/16:9
 	AVPIDSelector->addItem(new CMenuOptionChooser(_("TV-System"), &g_settings.video_Ratio, VIDEOMENU_VIDEORATIO_OPTIONS, VIDEOMENU_VIDEORATIO_OPTION_COUNT, true, CVideoSettings::getInstance()->videoSetupNotifier, RC_green, NEUTRINO_ICON_BUTTON_GREEN));
@@ -339,7 +339,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	
 	if (numpids > 0) 
 	{
-		AVPIDSelector->addItem(new CMenuSeparator(LINE));
+		AVPIDSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 		for (unsigned int count = 0; count < numpids; count++) 
 		{

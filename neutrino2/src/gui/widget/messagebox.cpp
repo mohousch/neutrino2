@@ -340,7 +340,7 @@ void CMessageBox::initFrames(void)
 	
 	if (m_cBoxWindow)
 	{
-		headers = (CHeaders*)m_cBoxWindow->getWidgetItem(WIDGETITEM_HEAD);
+		headers = (CHeaders*)m_cBoxWindow->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
 	}
 	else
 	{

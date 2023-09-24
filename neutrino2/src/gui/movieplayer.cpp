@@ -393,7 +393,7 @@ int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)
 	//
 	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
 
-	return RETURN_EXIT;
+	return CMenuTarget::RETURN_EXIT;
 }
 
 void CMoviePlayerGui::play(unsigned int pos)
@@ -752,19 +752,19 @@ void CMoviePlayerGui::PlayFile(void)
 	
 	if (widget)
 	{
-		bookStartMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		bookStartMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "bookmark";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		bookStartMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		bookStartMenu->setWidgetMode(MODE_MENU);
+		bookStartMenu->setWidgetMode(ClistBox::MODE_MENU);
 		bookStartMenu->enableShrinkMenu();
 			
 		bookStartMenu->enablePaintHead();
@@ -1722,18 +1722,18 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	
 	if (widget)
 	{
-		startPosSelectionMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		startPosSelectionMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "startpos";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		startPosSelectionMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-		startPosSelectionMenu->setWidgetMode(MODE_SETUP);
+		startPosSelectionMenu->setWidgetMode(ClistBox::MODE_SETUP);
 		startPosSelectionMenu->enableShrinkMenu();
 			
 		startPosSelectionMenu->enablePaintHead();
@@ -2085,7 +2085,7 @@ void CMoviePlayerGui::showPlaylist()
 		mplist->addItem(item);
 	}
 
-	mplist->setWidgetType(TYPE_FRAME);
+	mplist->setWidgetType(CMenuItem::TYPE_FRAME);
 	mplist->setItemsPerPage(6, 2);
 	
 	mplist->setSelected(selected);

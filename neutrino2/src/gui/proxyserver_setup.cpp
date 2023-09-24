@@ -46,7 +46,7 @@ int CProxySetup::exec(CMenuTarget * parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_DEBUG, "CProxySetup::exec\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 
 	if (parent)
 		parent->hide();
@@ -69,19 +69,19 @@ int CProxySetup::showProxySetup()
 	
 	if (widget)
 	{
-		mn = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		mn = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "proxysetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		mn = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		mn->setWidgetMode(MODE_SETUP);
+		mn->setWidgetMode(ClistBox::MODE_SETUP);
 		mn->enableShrinkMenu();
 		
 		mn->enablePaintHead();

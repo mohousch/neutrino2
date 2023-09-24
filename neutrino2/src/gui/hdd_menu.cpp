@@ -147,12 +147,12 @@ int CHDDMenuHandler::exec(CMenuTarget * parent, const std::string &actionKey)
 		hintBox->hide();
 		delete hintBox;
 		
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	
 	hddMenu();
 	
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 int CHDDMenuHandler::hddMenu()
@@ -172,7 +172,7 @@ int CHDDMenuHandler::hddMenu()
 	{
                 perror("CHDDMenuHandler::doMenu: scandir(\"/sys/block\") failed");
 
-                return RETURN_REPAINT;
+                return CMenuTarget::RETURN_REPAINT;
         }
 	
 	//
@@ -183,19 +183,19 @@ int CHDDMenuHandler::hddMenu()
 	
 	if (widget)
 	{
-		hddmenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		hddmenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "hddsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		hddmenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		hddmenu->setWidgetMode(MODE_SETUP);
+		hddmenu->setWidgetMode(ClistBox::MODE_SETUP);
 		hddmenu->enableShrinkMenu();
 		
 		hddmenu->enablePaintHead();
@@ -212,11 +212,11 @@ int CHDDMenuHandler::hddMenu()
 	}
 	
 	hddmenu->addItem(new CMenuForwarder(_("back")));
-	hddmenu->addItem(new CMenuSeparator(LINE));
+	hddmenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// save settings
 	hddmenu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	hddmenu->addItem( new CMenuSeparator(LINE) );
+	hddmenu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// activate settings
 	hddmenu->addItem(new CMenuForwarder(_("Activate settings"), true, NULL, this, "activateNow"));
@@ -228,7 +228,7 @@ int CHDDMenuHandler::hddMenu()
 	hddmenu->addItem( new CMenuOptionChooser(_("Noise"), &g_settings.hdd_noise, HDD_NOISE_OPTIONS, HDD_NOISE_OPTION_COUNT, true));
 	
 	// HDDs
-	hddmenu->addItem(new CMenuSeparator(LINE));
+	hddmenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	ret = stat("/", &s);
 	int drive_mask = 0xfff0;
@@ -327,7 +327,7 @@ int CHDDMenuHandler::hddMenu()
 		if (CNeutrinoApp::getInstance()->widget_exists("temphdd2"))
 		{
 			tempMenuWidget[i] = CNeutrinoApp::getInstance()->getWidget("temphdd2");
-			tempMenu[i] = (ClistBox*)tempMenuWidget[i]->getWidgetItem(WIDGETITEM_LISTBOX);
+			tempMenu[i] = (ClistBox*)tempMenuWidget[i]->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 			
 			if (tempMenu[i]->hasHead())
 			{
@@ -339,13 +339,13 @@ int CHDDMenuHandler::hddMenu()
 		{
 			//
 			tempMenuWidget[i] = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-			tempMenuWidget[i]->setMenuPosition(MENU_POSITION_CENTER);
+			tempMenuWidget[i]->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 			tempMenuWidget[i]->enableSaveScreen();
 			
 			//
 			tempMenu[i] = new ClistBox(tempMenuWidget[i]->getWindowsPos().iX, tempMenuWidget[i]->getWindowsPos().iY, tempMenuWidget[i]->getWindowsPos().iWidth, tempMenuWidget[i]->getWindowsPos().iHeight);
 
-			tempMenu[i]->setWidgetMode(MODE_SETUP);
+			tempMenu[i]->setWidgetMode(ClistBox::MODE_SETUP);
 			tempMenu[i]->enableShrinkMenu();
 			
 			//
@@ -366,11 +366,11 @@ int CHDDMenuHandler::hddMenu()
 
 		
 		tempMenu[i]->addItem(new CMenuForwarder(_("back")));
-		tempMenu[i]->addItem(new CMenuSeparator(LINE));
+		tempMenu[i]->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 		//init hdd	
 		tempMenu[i]->addItem(new CMenuForwarder(_("HDD Init"), enabled, "", new CHDDInit, namelist[i]->d_name));
-		tempMenu[i]->addItem(new CMenuSeparator(LINE));
+		tempMenu[i]->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 		// check for parts
 		#define MAX_PARTS 4
@@ -408,7 +408,7 @@ int CHDDMenuHandler::hddMenu()
 			if (CNeutrinoApp::getInstance()->widget_exists("temphdd"))
 			{
 				PartMenuWidget[j] = CNeutrinoApp::getInstance()->getWidget("temphdd");
-				PartMenu[j] = (ClistBox*)PartMenuWidget[j]->getWidgetItem(WIDGETITEM_LISTBOX);
+				PartMenu[j] = (ClistBox*)PartMenuWidget[j]->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 				
 				if (PartMenu[j]->hasHead())
 				{
@@ -420,13 +420,13 @@ int CHDDMenuHandler::hddMenu()
 			{
 				//
 				PartMenuWidget[j] = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				PartMenuWidget[j]->setMenuPosition(MENU_POSITION_CENTER);
+				PartMenuWidget[j]->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 				PartMenuWidget[j]->enableSaveScreen();
 				
 				//
 				PartMenu[j] = new ClistBox(PartMenuWidget[j]->getWindowsPos().iX, PartMenuWidget[j]->getWindowsPos().iY, PartMenuWidget[j]->getWindowsPos().iWidth, PartMenuWidget[j]->getWindowsPos().iHeight);
 
-				PartMenu[j]->setWidgetMode(MODE_SETUP);
+				PartMenu[j]->setWidgetMode(ClistBox::MODE_SETUP);
 				PartMenu[j]->enableShrinkMenu();
 				
 				//
@@ -447,7 +447,7 @@ int CHDDMenuHandler::hddMenu()
 
 			//
 			PartMenu[j]->addItem(new CMenuForwarder(_("back")));
-			PartMenu[j]->addItem(new CMenuSeparator(LINE));
+			PartMenu[j]->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 			
 			// format part
 			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Format"), true, NULL, new CHDDFmtExec, PART));
@@ -462,7 +462,7 @@ int CHDDMenuHandler::hddMenu()
 			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Umount"), true, NULL, new CHDDuMountMSGExec, PART));
 			
 			// hdd explorer
-			PartMenu[j]->addItem(new CMenuSeparator(LINE));
+			PartMenu[j]->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 			PartMenu[j]->addItem(new CMenuForwarder(_("HDD Filexplorer"), mounted, NULL, new CHDDBrowser(), DEVICE));
 			
 			// part
@@ -471,7 +471,7 @@ int CHDDMenuHandler::hddMenu()
 			close(fd);
 		}
 		
-		//hddmenu->addItem(new CMenuSeparator(LINE));
+		//hddmenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		hddmenu->addItem(new CMenuForwarder(str, enabled, NULL, tempMenuWidget[i]));
 
 		// result
@@ -568,7 +568,7 @@ int CHDDInit::exec(CMenuTarget * /*parent*/, const std::string& actionKey)
 		hintbox->paint();
 		sleep(2);
 		delete hintbox;
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	
 	char buf[256];
@@ -605,7 +605,7 @@ int CHDDInit::exec(CMenuTarget * /*parent*/, const std::string& actionKey)
 	progress->hide();
 	delete progress;
 
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 int CHDDDestExec::exec(CMenuTarget * /*parent*/, const std::string&)
@@ -748,7 +748,7 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 				hintbox->paint();
 				sleep(2);
 				delete hintbox;
-				return RETURN_EXIT;
+				return CMenuTarget::RETURN_EXIT;
 			}
 		}
 	}
@@ -788,7 +788,7 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 		hintbox->paint();
 		sleep(2);
 		delete hintbox;
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 
 	char buf[256];
@@ -862,7 +862,7 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	if(!srun) 
 		system("smbd");
 
-	return RETURN_EXIT;
+	return CMenuTarget::RETURN_EXIT;
 }
 
 int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
@@ -920,7 +920,7 @@ int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 			hintbox->paint();
 			sleep(2);
 			delete hintbox;
-			return RETURN_EXIT;
+			return CMenuTarget::RETURN_EXIT;
 		}
 	}
 
@@ -944,7 +944,7 @@ int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 		hintbox->paint();
 		sleep(2);
 		delete hintbox;
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 
 	progress = new CProgressWindow();
@@ -1004,7 +1004,7 @@ int CHDDChkExec::exec(CMenuTarget *parent, const std::string& actionKey)
 	if(!srun) 
 		system("smbd");
 	
-	return RETURN_EXIT;
+	return CMenuTarget::RETURN_EXIT;
 }
 
 int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
@@ -1032,7 +1032,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 		hintbox->paint();
 		sleep(2);
 		delete hintbox;
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	else
 	{
@@ -1055,7 +1055,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 				sleep(2);
 				delete hintbox;
 				
-				return RETURN_EXIT_ALL;
+				return CMenuTarget::RETURN_EXIT_ALL;
 			}
 			else
 			{
@@ -1071,7 +1071,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 					sleep(2);
 					delete hintbox;
 					
-					return RETURN_EXIT_ALL;
+					return CMenuTarget::RETURN_EXIT_ALL;
 				}
 				else //fallback to /tmp/hdd
 				{
@@ -1089,7 +1089,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 						sleep(2);
 						delete hintbox;
 						
-						return RETURN_EXIT_ALL;
+						return CMenuTarget::RETURN_EXIT_ALL;
 					}
 					else
 					{
@@ -1097,7 +1097,7 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 						hintbox->paint();
 						sleep(2);
 						delete hintbox;
-						return RETURN_EXIT;
+						return CMenuTarget::RETURN_EXIT;
 					}
 				}
 			}
@@ -1108,11 +1108,11 @@ int CHDDMountMSGExec::exec(CMenuTarget *parent, const std::string& actionKey)
 			hintbox->paint();
 			sleep(2);
 			delete hintbox;
-			return RETURN_EXIT;
+			return CMenuTarget::RETURN_EXIT;
 		}
 	}
 	
-	return RETURN_EXIT_ALL;
+	return CMenuTarget::RETURN_EXIT_ALL;
 }
 
 int CHDDMountExec::exec(CMenuTarget *parent, const std::string& actionKey)
@@ -1238,7 +1238,7 @@ int CHDDuMountMSGExec::exec(CMenuTarget* parent, const std::string& actionKey)
 			sleep(2);
 			delete hintbox;
 			
-			return RETURN_EXIT;
+			return CMenuTarget::RETURN_EXIT;
 		}
 		else
 		{
@@ -1246,7 +1246,7 @@ int CHDDuMountMSGExec::exec(CMenuTarget* parent, const std::string& actionKey)
 			hintbox->paint();
 			sleep(2);
 			delete hintbox;
-			return RETURN_EXIT;
+			return CMenuTarget::RETURN_EXIT;
 
 		}
 	}
@@ -1257,7 +1257,7 @@ int CHDDuMountMSGExec::exec(CMenuTarget* parent, const std::string& actionKey)
 	sleep(2);
 	delete hintbox;
 	
-	return RETURN_EXIT;
+	return CMenuTarget::RETURN_EXIT;
 }
 
 // hdd browser
@@ -1373,8 +1373,6 @@ REPEAT:
 		delete hintbox;
 	}
 	
-	return RETURN_EXIT;
+	return CMenuTarget::RETURN_EXIT;
 }
-
-
 

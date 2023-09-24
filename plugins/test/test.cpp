@@ -1000,20 +1000,20 @@ void CTestMenu::testCWidget()
 	CMenuForwarder *item9 = new CMenuForwarder("Beenden", true, NULL, this, "exit");
 
 	leftWidget->addItem(item1);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(item2);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(item3);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(item4);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(item5);
 	leftWidget->addItem(item6);
 	leftWidget->addItem(item7);
 	leftWidget->addItem(item8);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(item9);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// rightwidget (listBox)
 	rightBox.iWidth = testWidget->getWindowsPos().iWidth - INTER_FRAME_SPACE - leftBox.iWidth;
@@ -1025,7 +1025,7 @@ void CTestMenu::testCWidget()
 
 	//
 	rightWidget = new ClistBox(&rightBox);
-	rightWidget->setWidgetType(TYPE_FRAME);
+	rightWidget->setWidgetType(CMenuItem::TYPE_FRAME);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->setSelected(right_selected);
 	rightWidget->enablePaintItemInfo(80);
@@ -1571,10 +1571,10 @@ void CTestMenu::testClistBoxWidget()
 
 	rightWidget = new ClistBox(&rightBox);
 
-	rightWidget->setWidgetType(TYPE_FRAME);
-	rightWidget->addWidgetType(TYPE_STANDARD);
-	rightWidget->addWidgetType(TYPE_CLASSIC);
-	rightWidget->addWidgetType(TYPE_EXTENDED);
+	rightWidget->setWidgetType(CMenuItem::TYPE_FRAME);
+	rightWidget->addWidgetType(CMenuItem::TYPE_STANDARD);
+	rightWidget->addWidgetType(CMenuItem::TYPE_CLASSIC);
+	rightWidget->addWidgetType(CMenuItem::TYPE_EXTENDED);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->setSelected(selected);
 	rightWidget->enablePaintHead();
@@ -1586,7 +1586,7 @@ void CTestMenu::testClistBoxWidget()
 	rightWidget->setFootLine(true, true);
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
+	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINT_MODE);
 	rightWidget->enableShrinkMenu();
 
 	// loadPlaylist
@@ -1619,7 +1619,7 @@ void CTestMenu::testClistBoxWidget()
 		item->setHint(tmp.c_str());
 		
 		item->setBorderMode();
-		//item->setWidgetMode(MODE_MENU);
+		//item->setWidgetMode(ClistBox::MODE_MENU);
 
 		rightWidget->addItem(item);
 	}
@@ -1699,20 +1699,20 @@ void CTestMenu::testMultiWidget()
 	CMenuForwarder *item9 = new CMenuForwarder("Beenden", true, NULL, this, "exit");
 
 	leftWidget->addItem(item1);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(item2);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(item3);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(item4);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(item5);
 	leftWidget->addItem(item6);
 	leftWidget->addItem(item7);
 	leftWidget->addItem(item8);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(item9);
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	testWidget->addWidgetItem(leftWidget);
 	
@@ -1962,21 +1962,21 @@ void CTestMenu::testCButtons()
 	//
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	//buttons.setMode(BUTTON_FRAME_COLORED);
+	//buttons.setMode(CCButtons::BUTTON_FRAME_COLORED);
 	buttons.paint();
 	
 	//
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	buttons.setMode(BUTTON_FRAME_COLORED);
+	buttons.setMode(CCButtons::BUTTON_FRAME_COLORED);
 	buttons.paint();
 	
 	//
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	buttons.setMode(BUTTON_FRAME_BORDER);
+	buttons.setMode(CCButtons::BUTTON_FRAME_BORDER);
 	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();
@@ -2004,21 +2004,21 @@ void CTestMenu::testCHButtons()
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
-	//buttons.setMode(BUTTON_FRAME_COLORED);
+	//buttons.setMode(CCButtons::BUTTON_FRAME_COLORED);
 	buttons.paint();
 	
 	//
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
-	buttons.setMode(BUTTON_FRAME_COLORED);
+	buttons.setMode(CCButtons::BUTTON_FRAME_COLORED);
 	buttons.paint();
 	
 	//
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
-	buttons.setMode(BUTTON_FRAME_BORDER);
+	buttons.setMode(CCButtons::BUTTON_FRAME_BORDER);
 	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();
@@ -2439,7 +2439,7 @@ void CTestMenu::testClistBox()
 	}
 
 	// mode
-	rightWidget->addWidgetType(TYPE_STANDARD);
+	rightWidget->addWidgetType(CMenuItem::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2461,7 +2461,7 @@ void CTestMenu::testClistBox()
 
 	// itemInfo
 	//rightWidget->enablePaintItemInfo(70);
-	//rightWidget->setItemInfoMode(ITEMINFO_HINTITEM_MODE);
+	//rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINTITEM_MODE);
 	//rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	//rightWidget->paintItemInfoBorder(BORDER_ALL);
 	//rightWidget->paintItemInfoFrame(true);
@@ -2554,7 +2554,7 @@ void CTestMenu::testClistBox2()
 	}
 
 	// widgettype
-	rightWidget->setWidgetType(TYPE_CLASSIC);
+	rightWidget->setWidgetType(CMenuItem::TYPE_CLASSIC);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2575,7 +2575,7 @@ void CTestMenu::testClistBox2()
 
 	// footinfo
 	//rightWidget->enablePaintItemInfo(70);
-	//rightWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
+	//rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINT_MODE);
 
 	//rightWidget->setSelected(selected);
 	
@@ -2662,7 +2662,7 @@ void CTestMenu::testClistBox3()
 	}
 
 	// widgettype
-	rightWidget->setWidgetType(TYPE_EXTENDED);
+	rightWidget->setWidgetType(CMenuItem::TYPE_EXTENDED);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2765,7 +2765,7 @@ void CTestMenu::testClistBox4()
 	}
 
 	// widgettype
-	rightWidget->setWidgetType(TYPE_FRAME);
+	rightWidget->setWidgetType(CMenuItem::TYPE_FRAME);
 	rightWidget->setItemsPerPage(5,2);
 	rightWidget->enableShrinkMenu();
 	
@@ -2867,14 +2867,14 @@ void CTestMenu::testClistBox5()
 	}
 
 	// mode
-	rightWidget->setWidgetType(TYPE_STANDARD);
+	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	//
-	rightWidget->addWidgetType(TYPE_CLASSIC);
-	rightWidget->addWidgetType(TYPE_EXTENDED);
+	rightWidget->addWidgetType(CMenuItem::TYPE_CLASSIC);
+	rightWidget->addWidgetType(CMenuItem::TYPE_EXTENDED);
 	
-	rightWidget->addWidgetType(TYPE_FRAME);
+	rightWidget->addWidgetType(CMenuItem::TYPE_FRAME);
 	rightWidget->setItemsPerPage(5, 2);
 
 	// head
@@ -2891,7 +2891,7 @@ void CTestMenu::testClistBox5()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ITEMINFO_INFO_MODE);
+	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_INFO_MODE);
 
 	//rightWidget->setSelected(selected);
 
@@ -2974,7 +2974,7 @@ void CTestMenu::testClistBox6()
 
 		item->setHint(tmp.c_str());
 		
-		//item->setWidgetMode(MODE_MENU);
+		//item->setWidgetMode(ClistBox::MODE_MENU);
 		item->setBorderMode(BORDER_TOPBOTTOM);
 		//item->setGradient(LIGHT2DARK2LIGHT);
 		
@@ -2982,13 +2982,13 @@ void CTestMenu::testClistBox6()
 	}
 
 	// mode
-	rightWidget->setWidgetType(TYPE_STANDARD);
+	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	//
-	rightWidget->addWidgetType(TYPE_CLASSIC);
-	rightWidget->addWidgetType(TYPE_EXTENDED);
-	rightWidget->addWidgetType(TYPE_FRAME);
+	rightWidget->addWidgetType(CMenuItem::TYPE_CLASSIC);
+	rightWidget->addWidgetType(CMenuItem::TYPE_EXTENDED);
+	rightWidget->addWidgetType(CMenuItem::TYPE_FRAME);
 
 	rightWidget->setItemsPerPage(5, 2);
 
@@ -3006,7 +3006,7 @@ void CTestMenu::testClistBox6()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
+	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINT_MODE);
 
 	//rightWidget->setSelected(selected);
 
@@ -3089,7 +3089,7 @@ void CTestMenu::testClistBox7()
 
 		item->setHint(tmp.c_str());
 		
-		//item->setWidgetMode(MODE_MENU);
+		//item->setWidgetMode(ClistBox::MODE_MENU);
 		item->setBorderMode(BORDER_TOPBOTTOM);
 		//item->setGradient(LIGHT2DARK2LIGHT);
 		
@@ -3097,13 +3097,13 @@ void CTestMenu::testClistBox7()
 	}
 
 	// mode
-	rightWidget->setWidgetType(TYPE_STANDARD);
+	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	//
-	rightWidget->addWidgetType(TYPE_CLASSIC);
-	rightWidget->addWidgetType(TYPE_EXTENDED);
-	rightWidget->addWidgetType(TYPE_FRAME);
+	rightWidget->addWidgetType(CMenuItem::TYPE_CLASSIC);
+	rightWidget->addWidgetType(CMenuItem::TYPE_EXTENDED);
+	rightWidget->addWidgetType(CMenuItem::TYPE_FRAME);
 
 	rightWidget->setItemsPerPage(5, 2);
 
@@ -3121,7 +3121,7 @@ void CTestMenu::testClistBox7()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ITEMINFO_HINTITEM_MODE);
+	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINTITEM_MODE);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//rightWidget->setSelected(selected);
@@ -3205,7 +3205,7 @@ void CTestMenu::testClistBox8()
 
 		item->setHint(tmp.c_str());
 		
-		//item->setWidgetMode(MODE_MENU);
+		//item->setWidgetMode(ClistBox::MODE_MENU);
 		item->setBorderMode(BORDER_TOPBOTTOM);
 		//item->setGradient(LIGHT2DARK2LIGHT);
 		
@@ -3213,13 +3213,13 @@ void CTestMenu::testClistBox8()
 	}
 
 	// mode
-	rightWidget->setWidgetType(TYPE_STANDARD);
+	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	//
-	rightWidget->addWidgetType(TYPE_CLASSIC);
-	rightWidget->addWidgetType(TYPE_EXTENDED);
-	rightWidget->addWidgetType(TYPE_FRAME);
+	rightWidget->addWidgetType(CMenuItem::TYPE_CLASSIC);
+	rightWidget->addWidgetType(CMenuItem::TYPE_EXTENDED);
+	rightWidget->addWidgetType(CMenuItem::TYPE_FRAME);
 
 	rightWidget->setItemsPerPage(5, 2);
 
@@ -3237,7 +3237,7 @@ void CTestMenu::testClistBox8()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ITEMINFO_HINTICON_MODE);
+	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINTICON_MODE);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//rightWidget->setSelected(selected);
@@ -3320,11 +3320,11 @@ void CTestMenu::testClistBox9()
 	}
 
 	// mode
-	rightWidget->setWidgetType(TYPE_CLASSIC);
-	rightWidget->addWidgetType(TYPE_STANDARD);
-	rightWidget->addWidgetType(TYPE_EXTENDED);
-	rightWidget->addWidgetType(TYPE_FRAME);
-	rightWidget->setWidgetMode(MODE_MENU);
+	rightWidget->setWidgetType(CMenuItem::TYPE_CLASSIC);
+	rightWidget->addWidgetType(CMenuItem::TYPE_STANDARD);
+	rightWidget->addWidgetType(CMenuItem::TYPE_EXTENDED);
+	rightWidget->addWidgetType(CMenuItem::TYPE_FRAME);
+	rightWidget->setWidgetMode(ClistBox::MODE_MENU);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
 
@@ -3344,7 +3344,7 @@ void CTestMenu::testClistBox9()
 
 	// itemInfo
 	rightWidget->enablePaintItemInfo(70);
-	rightWidget->setItemInfoMode(ITEMINFO_HINTHINT_MODE);
+	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINTHINT_MODE);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	rightWidget->paintItemInfoBorder(BORDER_ALL);
 	rightWidget->paintItemInfoFrame(true);
@@ -3697,11 +3697,11 @@ void CTestMenu::testCMenuWidget()
 		menuWidget->addItem(item);
 	}
 
-	menuWidget->setWidgetMode(MODE_LISTBOX);
-	menuWidget->setWidgetType(TYPE_STANDARD);
-	menuWidget->addWidgetType(TYPE_CLASSIC);
-	menuWidget->addWidgetType(TYPE_EXTENDED);
-	menuWidget->addWidgetType(TYPE_FRAME);
+	menuWidget->setWidgetMode(ClistBox::MODE_LISTBOX);
+	menuWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
+	menuWidget->addWidgetType(CMenuItem::TYPE_CLASSIC);
+	menuWidget->addWidgetType(CMenuItem::TYPE_EXTENDED);
+	menuWidget->addWidgetType(CMenuItem::TYPE_FRAME);
 	menuWidget->setItemsPerPage(6, 2);
 	menuWidget->enableShrinkMenu();
 
@@ -3715,7 +3715,7 @@ void CTestMenu::testCMenuWidget()
 	
 	// footInfo
 	menuWidget->enablePaintItemInfo(80);
-	menuWidget->setItemInfoMode(ITEMINFO_HINT_MODE);
+	menuWidget->setItemInfoMode(ClistBox::ITEMINFO_HINT_MODE);
 
 	menuWidget->addKey(RC_info, this, "minfo");
 	menuWidget->addKey(RC_setup, this, "lsetup");
@@ -3797,11 +3797,11 @@ void CTestMenu::testCMenuWidget1()
 	item->setDirectKey(RC_video);
 	menuWidget->addItem(item);
 	
-	menuWidget->setWidgetMode(MODE_MENU);
-	menuWidget->setWidgetType(TYPE_STANDARD);
-	menuWidget->addWidgetType(TYPE_CLASSIC);
-	menuWidget->addWidgetType(TYPE_EXTENDED);
-	menuWidget->addWidgetType(TYPE_FRAME);
+	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
+	menuWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
+	menuWidget->addWidgetType(CMenuItem::TYPE_CLASSIC);
+	menuWidget->addWidgetType(CMenuItem::TYPE_EXTENDED);
+	menuWidget->addWidgetType(CMenuItem::TYPE_FRAME);
 	menuWidget->setItemsPerPage(6, 2);
 	menuWidget->enableShrinkMenu();
 	menuWidget->enablePaintDate();
@@ -6139,20 +6139,20 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		CMenuForwarder *item9 = new CMenuForwarder("Beenden", true, NULL, this, "exit");
 
 		leftWidget->addItem(item1);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		leftWidget->addItem(item2);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		leftWidget->addItem(item3);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		leftWidget->addItem(item4);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		leftWidget->addItem(item5);
 		leftWidget->addItem(item6);
 		leftWidget->addItem(item7);
 		leftWidget->addItem(item8);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		leftWidget->addItem(item9);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 		CHintBox loadBox("CWidget", _("Scan for Movies ..."));
 		loadBox.paint();
@@ -6216,20 +6216,20 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		CMenuForwarder *item9 = new CMenuForwarder("Beenden", true, NULL, this, "exit");
 
 		leftWidget->addItem(item1);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		leftWidget->addItem(item2);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		leftWidget->addItem(item3);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		leftWidget->addItem(item4);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		leftWidget->addItem(item5);
 		leftWidget->addItem(item6);
 		leftWidget->addItem(item7);
 		leftWidget->addItem(item8);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		leftWidget->addItem(item9);
-		leftWidget->addItem(new CMenuSeparator(LINE));
+		leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 		//loadTMDBPlaylist("tv", "airing_today", 1);
 		TVShows = "tv";
@@ -6536,13 +6536,13 @@ void CTestMenu::showMenu()
 	
 	if (mWidget)
 	{
-		mainMenu = (ClistBox*)mWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		mainMenu = (ClistBox*)mWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		mWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		mWidget->setMenuPosition(MENU_POSITION_CENTER);	
+		mWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);	
 		mWidget->name = "testmenu";
 		
 		//	
@@ -6550,7 +6550,7 @@ void CTestMenu::showMenu()
 
 		mainMenu->enablePaintHead();
 		mainMenu->setTitle(_("Test Menu"), NEUTRINO_ICON_BUTTON_SETUP);
-		mainMenu->setWidgetMode(MODE_MENU);
+		mainMenu->setWidgetMode(ClistBox::MODE_MENU);
 		mainMenu->enableShrinkMenu(),
 		mainMenu->enablePaintDate();
 		mainMenu->enablePaintFoot();
@@ -6573,7 +6573,7 @@ void CTestMenu::showMenu()
 	mainMenu->clear();
 	
 	//
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CComponent"));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CComponent"));
 	mainMenu->addItem(new CMenuForwarder("CIcon", true, NULL, this, "icon"));
 	mainMenu->addItem(new CMenuForwarder("CImage", true, NULL, this, "image"));
 	mainMenu->addItem(new CMenuForwarder("CButtons (foot)", true, NULL, this, "buttons"));
@@ -6581,7 +6581,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CSpinner", true, NULL, this, "spinner"));
 	//mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidgetItems"));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CWidgetItems"));
 	mainMenu->addItem(new CMenuForwarder("CHeaders", true, NULL, this, "headers"));
 	mainMenu->addItem(new CMenuForwarder("CFooters", true, NULL, this, "footers"));
 	mainMenu->addItem(new CMenuForwarder("CTextBox", true, NULL, this, "textbox"));
@@ -6595,14 +6595,14 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("ClistBox(Frame)", true, NULL, this, "listbox4"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "singleWidget"));
-	mainMenu->addItem(new CMenuSeparator(LINE));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_INFO)", true, NULL, this, "listbox5"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINT)", true, NULL, this, "listbox6"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTITEM)", true, NULL, this, "listbox7"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTICON)", true, NULL, this, "listbox8"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTHINT)", true, NULL, this, "listbox9"));
 	
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CWidget"));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CWidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistFrame|CHead|CFoot)", true, NULL, this, "listframewidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(CComponents|CHead|CFoot)", true, NULL, this, "ccomponents"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(CTextBox)", true, NULL, this, "textboxwidget"));
@@ -6612,13 +6612,13 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CFrameBox|CHead|CFoot)", true, NULL, this, "widget"));
 	
 	// CMenuWidhet
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "CMenuWidget"));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CMenuWidget"));
 	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_LISTBOX)", true, NULL, this, "menuwidget"));
 	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_MENU)", true, NULL, this, "menuwidget1"));
 	mainMenu->addItem(new CMenuForwarder("CMenuWidget(MODE_SETUP)", true, NULL, this, "menuwidget2"));
 
 	// other widget
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "other Widget"));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "other Widget"));
 	mainMenu->addItem(new CMenuForwarder("CStringInput", true, NULL, this, "stringinput"));
 	mainMenu->addItem(new CMenuForwarder("CStringInputSMS", true, NULL, this, "stringinputsms"));
 	mainMenu->addItem(new CMenuForwarder("CPINInput", true, NULL, this, "pininput"));
@@ -6630,14 +6630,14 @@ void CTestMenu::showMenu()
 	//mainMenu->addItem(new CMenuForwarder("CTimeInput", true, NULL, this, "timeinput"));
 	//mainMenu->addItem(new CMenuForwarder("CIntInput", true, NULL, this, "intinput"));
 	//
-	mainMenu->addItem(new CMenuSeparator(LINE));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("ColorChooser", true, NULL, this, "colorchooser"));
 	mainMenu->addItem(new CMenuForwarder("KeyChooserItem", true, NULL, this, "keychooser"));
 	mainMenu->addItem(new CMenuForwarder("VFDController", true, NULL, this, "vfdcontroller"));
 	mainMenu->addItem(new CMenuForwarder("MountChooser", true, NULL, this, "mountchooser"));
 	
 	//
-	mainMenu->addItem(new CMenuSeparator(LINE));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("ChannelSelectWidget", true, NULL, this, "channelselect"));
 	mainMenu->addItem(new CMenuForwarder("BEWidget", true, NULL, this, "bewidget"));
 	mainMenu->addItem(new CMenuForwarder("AudioVideoSelectWidget", true, NULL, this, "avselect"));
@@ -6653,7 +6653,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("PluginsList", true, NULL, this, "pluginslist"));
 	
 	//
-	mainMenu->addItem(new CMenuSeparator(LINE));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("CInfoBox", true, NULL, this, "infobox"));
 	mainMenu->addItem(new CMenuForwarder("CMessageBox", true, NULL, this, "messagebox"));
 	mainMenu->addItem(new CMenuForwarder("CMessageBoxInfoMsg", true, NULL, this, "messageboxinfomsg"));
@@ -6664,37 +6664,37 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CProgressWindow", true, NULL, this, "progresswindow"));
 
 	//
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "Players"));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Players"));
 	mainMenu->addItem(new CMenuForwarder("PlayMovieURL", true, NULL, this, "playmovieurl"));
 	mainMenu->addItem(new CMenuForwarder("PlayAudioURL", true, NULL, this, "playaudiourl"));
 	mainMenu->addItem(new CMenuForwarder("ShowPictureURL", true, NULL, this, "showpictureurl"));
 
 	//
-	mainMenu->addItem(new CMenuSeparator(LINE));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("PlayMovieFolder", true, NULL, this, "playmoviefolder"));
 	mainMenu->addItem(new CMenuForwarder("PlayAudioFolder", true, NULL, this, "playaudiofolder"));
 	mainMenu->addItem(new CMenuForwarder("ShowPictureFolder", true, NULL, this, "showpicturefolder"));
 
 	//
-	mainMenu->addItem(new CMenuSeparator(LINE));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("PlayMovieDir(without Browser)", true, NULL, this, "playmoviedir"));
 	mainMenu->addItem(new CMenuForwarder("PlayAudioDir(without Browser)", true, NULL, this, "playaudiodir"));
 	mainMenu->addItem(new CMenuForwarder("ShowPictureDir(without Browser)", true, NULL, this, "showpicturedir"));
 
 	//
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "Plugins") );
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Plugins") );
 	mainMenu->addItem(new CMenuForwarder("StartPlugin(e.g: youtube)", true, NULL, this, "startplugin"));
 
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "EPG") );
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "EPG") );
 	mainMenu->addItem(new CMenuForwarder("ShowActuellEPG", true, NULL, this, "showepg"));
 
 	//
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "Channellist") );
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "Channellist") );
 	mainMenu->addItem(new CMenuForwarder("CChannelList:", true, NULL, this, "channellist"));
 	mainMenu->addItem(new CMenuForwarder("CBouquetList:", true, NULL, this, "bouquetlist"));
 	
 	//
-	mainMenu->addItem(new CMenuSeparator(LINE | STRING, "SKIN") );		
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "SKIN") );		
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET", true, NULL, this, "skin"));
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET2", true, NULL, this, "skin2"));
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET3", true, NULL, this, "skin3"));

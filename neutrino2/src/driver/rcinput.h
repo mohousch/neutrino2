@@ -181,31 +181,31 @@ enum
 	RC_yellow	= KEY_YELLOW,	    
 	RC_blue		= KEY_BLUE,	    
 
-	RC_audio	= KEY_AUDIO,		/* 0x188 */
-	RC_video	= KEY_VIDEO,		/* 0x189 */
+	RC_audio	= KEY_AUDIO,		// 0x188
+	RC_video	= KEY_VIDEO,		// 0x189
 			
-	RC_text		= KEY_TEXT,		/* 0x184 */
-	RC_info		= KEY_INFO,		/* 0x166 */			
-	RC_epg		= KEY_EPG,		/* 0x16d */
-	RC_recall 	= KEY_BACK,		/* 0x9E */
-	RC_favorites	= KEY_FAVORITES,	/* 0x16c */
-	RC_sat		= KEY_SAT,		/* 0x17d */
+	RC_text		= KEY_TEXT,		// 0x184
+	RC_info		= KEY_INFO,		// 0x166
+	RC_epg		= KEY_EPG,		// 0x16d
+	RC_recall 	= KEY_BACK,		// 0x9E
+	RC_favorites	= KEY_FAVORITES,	// 0x16c
+	RC_sat		= KEY_SAT,		// 0x17d
 			
-	RC_record	= KEY_RECORD,		/* 0xA7 */
-	RC_play		= KEY_PLAY,		/* 0xCF */
-	RC_pause	= KEY_PAUSE,		/* 0x77 */
-	RC_forward	= KEY_FASTFORWARD,	/* 0xD0 */
-	RC_rewind	= KEY_REWIND,		/* 0xA8 */
-	RC_stop		= KEY_STOP,		/* 0x80 */
+	RC_record	= KEY_RECORD,		// 0xA7
+	RC_play		= KEY_PLAY,		// 0xCF
+	RC_pause	= KEY_PAUSE,		// 0x77
+	RC_forward	= KEY_FASTFORWARD,	// 0xD0
+	RC_rewind	= KEY_REWIND,		// 0xA8
+	RC_stop		= KEY_STOP,		// 0x80
 			
-	RC_timeshift	= KEY_TIME,		/* 0x167 */
+	RC_timeshift	= KEY_TIME,		// 0x167
 						
-	RC_mode		= KEY_MODE,		/* 0x175 */
+	RC_mode		= KEY_MODE,		// 0x175
 
 	RC_next		= 0xFFFFFFF0,
 	RC_prev		= 0xFFFFFFF1,
 
-	/* added from cuberevo3000hd so fix it please */
+	//
 	RC_music	= KEY_MUSIC,
 	RC_picture	= KEY_ARCHIVE,			
 			
@@ -223,13 +223,13 @@ enum
 	RC_bookmark	= KEY_BOOKMARKS,
 	RC_multifeed	= KEY_MULTIFEED,
 
-	/* functions */
+	//
 	RC_f1		= KEY_F1,
 	RC_f2		= KEY_F2,
 	RC_f3		= KEY_F3,
 	RC_f4		= KEY_F4,
 
-	/* frontpanel */
+	//
 	RC_vfdup	= VFD_UP,
 	RC_vfddown	= VFD_DOWN,
 	RC_vfdright	= VFD_RIGHT,
@@ -433,7 +433,7 @@ class CRCInput
 		void clearRCMsg();
 };
 
-// Converts input of numeric keys to SMS style char input
+//// Converts input of numeric keys to SMS style char input
 class SMSKeyInput
 {
 	// time since last input
@@ -444,6 +444,7 @@ class SMSKeyInput
 
 	// keypresses within this period are taken as a sequence
 	int m_timeout;
+	
 	public:
 		SMSKeyInput();
 

@@ -383,17 +383,17 @@ void CNFilm::paintLeftWidgetItems(ClistBox *listBox, bool genre)
 		CMenuForwarder *item5 = new CMenuForwarder("Beenden", true, NULL, this, "exit");
 	
 		listBox->addItem(new CMenuForwarder("Suche", true, tmdbsearch.c_str(), this, "search"));
-		listBox->addItem(new CMenuSeparator(LINE));
+		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		listBox->addItem(item1);
-		listBox->addItem(new CMenuSeparator(LINE));
+		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		listBox->addItem(item2);
-		listBox->addItem(new CMenuSeparator(LINE));
+		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		listBox->addItem(item3);
-		listBox->addItem(new CMenuSeparator(LINE));
+		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		listBox->addItem(item4);
-		listBox->addItem(new CMenuSeparator(LINE));
+		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		listBox->addItem(new CMenuForwarder("Genres", true, NULL, this, "genres"));
-		listBox->addItem(new CMenuSeparator(LINE));
+		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		listBox->addItem(item5);
 	}
 }
@@ -480,7 +480,7 @@ void CNFilm::showMenu(bool genre)
 
 	//
 	rightWidget = new ClistBox(&rightBox);
-	rightWidget->setWidgetType(TYPE_FRAME);
+	rightWidget->setWidgetType(CMenuItem::TYPE_FRAME);
 	rightWidget->setItemsPerPage(5,2);
 	rightWidget->setSelected(right_selected);
 	rightWidget->enablePaintItemInfo();

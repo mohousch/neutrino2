@@ -1965,17 +1965,17 @@ int CMovieInfoWidget::exec(CMenuTarget* parent, const std::string& actionKey)
 
 		tmpMoviePlayerGui.exec(NULL, "");
 
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "MovieInfo")
 	{
 		m_movieInfo.showMovieInfo(movieFile);
 
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 
 	funArt();
 	
-	return RETURN_EXIT;
+	return CMenuTarget::RETURN_EXIT;
 }
 

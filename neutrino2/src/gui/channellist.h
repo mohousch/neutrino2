@@ -38,6 +38,7 @@
 
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
+#include <gui/widget/stringinput.h>
 
 #include <system/lastchannel.h>
 
@@ -53,15 +54,31 @@
 #include <daemonc/remotecontrol.h>
 
 
-enum {
-	LIST_MODE_FAV,
-	LIST_MODE_PROV,
-	LIST_MODE_SAT,
-	LIST_MODE_ALL
+//// CZapProtection
+class CZapProtection
+{
+	protected:
+		char * validPIN;
+	public:
+		int fsk;
+
+		CZapProtection(char * validpin, int FSK){ validPIN = validpin; fsk = FSK; };
+		~CZapProtection(){};
+		bool check();
 };
 
+////
 class CChannelList
 {
+	public:
+		enum 
+		{
+			LIST_MODE_FAV,
+			LIST_MODE_PROV,
+			LIST_MODE_SAT,
+			LIST_MODE_ALL
+		};
+
 	private:
 		CFrameBuffer *frameBuffer;
 

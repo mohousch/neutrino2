@@ -130,7 +130,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	
 	if (widget)
 	{
-		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+		headers = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
 	}
 	else
 	{

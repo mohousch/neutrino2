@@ -129,10 +129,34 @@
 // itemInfo
 #define COL_MENUHINT_PLUS_0        		CFrameBuffer::getInstance()->realcolor[COL_MENUHINT + 0]
 
-
-//
+////
 int convertSetupColor2RGB(unsigned char r, unsigned char g, unsigned char b);
 int convertSetupAlpha2Alpha(unsigned char alpha);
+//
+inline uint32_t make16color(__u32 rgb)
+{
+        return 0xFF000000 | rgb;
+}
+// 
+inline uint32_t make16Color(unsigned int rgb)
+{
+	uint32_t col = 0xFF000000 | rgb;
+	
+        return col;
+}
+//
+inline uint32_t convertSetupColor2Color(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha)
+{
+	int color = convertSetupColor2RGB(r, g, b);
+	int tAlpha = (alpha ? (convertSetupAlpha2Alpha(alpha)) : 0);
+
+	if(!alpha) 
+		tAlpha = 0xFF;
+
+	fb_pixel_t col = ((tAlpha << 24) & 0xFF000000) | color;
+	
+	return col;
+}
 
 //
 typedef struct {
@@ -156,38 +180,9 @@ fb_pixel_t Hsv2SysColor(HsvColor *hsv, uint8_t tr=0xFF);
 uint8_t SysColor2Hsv(fb_pixel_t color, HsvColor *hsv);
 void Hsv2Rgb(HsvColor *hsv, RgbColor *rgb);
 void Rgb2Hsv(RgbColor *rgb, HsvColor *hsv);
-
-//
 fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, fb_pixel_t *gradientBuf, int bSize, int mode, int intensity = INT_LIGHT);
 fb_pixel_t* gradientOneColor(fb_pixel_t col, fb_pixel_t *gradientBuf, int bSize, int mode, int intensity = INT_LIGHT, uint8_t v_min = 0x40, uint8_t v_max = 0xE0, uint8_t s = 0xC0);
 fb_pixel_t* gradientColorToColor(fb_pixel_t start_col, fb_pixel_t end_col, fb_pixel_t *gradientBuf, int bSize, int mode, int intensity = INT_LIGHT);
-
-//
-inline uint32_t make16color(__u32 rgb)
-{
-        return 0xFF000000 | rgb;
-}
-
-// 
-inline uint32_t make16Color(unsigned int rgb)
-{
-	uint32_t col = 0xFF000000 | rgb;
-	
-        return col;
-}
-
-inline uint32_t convertSetupColor2Color(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha)
-{
-	int color = convertSetupColor2RGB(r, g, b);
-	int tAlpha = (alpha ? (convertSetupAlpha2Alpha(alpha)) : 0);
-
-	if(!alpha) 
-		tAlpha = 0xFF;
-
-	fb_pixel_t col = ((tAlpha << 24) & 0xFF000000) | color;
-	
-	return col;
-}
 
 #endif
 

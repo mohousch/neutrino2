@@ -100,7 +100,7 @@ int CPictureViewerGui::exec(CMenuTarget* parent, const std::string &actionKey)
 	dprintf(DEBUG_NORMAL, "CPictureViewerGui::exec: actionKey:%s\n", actionKey.c_str());
 	
 	// 
-	g_PicViewer->setScaling( (ScalingMode)g_settings.picviewer_scaling);
+	g_PicViewer->setScaling( (CFrameBuffer::ScalingMode)g_settings.picviewer_scaling);
 	g_PicViewer->setVisible(g_settings.screen_StartX, g_settings.screen_EndX, g_settings.screen_StartY, g_settings.screen_EndY);
 
 	if(g_settings.video_Ratio == 1)
@@ -151,7 +151,7 @@ int CPictureViewerGui::exec(CMenuTarget* parent, const std::string &actionKey)
 		playlist.clear();
 
 	// 
-	return RETURN_EXIT;
+	return CMenuTarget::RETURN_EXIT;
 }
 
 void CPictureViewerGui::show()

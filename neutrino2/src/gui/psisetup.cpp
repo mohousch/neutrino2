@@ -102,7 +102,7 @@ int CPSISetup::exec(CMenuTarget * parent, const std::string &)
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -357,7 +357,7 @@ int CPSISetup::exec(CMenuTarget * parent, const std::string &)
 				if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
 				{
 					loop = false;
-					res = RETURN_EXIT_ALL;
+					res = CMenuTarget::RETURN_EXIT_ALL;
 				}
 		}
 

@@ -180,8 +180,8 @@ void CNSeasons::showMenu()
 		listBox->addItem(item);
 	}
 
-	listBox->setWidgetMode(MODE_LISTBOX);
-	listBox->setWidgetType(TYPE_FRAME);
+	listBox->setWidgetMode(ClistBox::MODE_LISTBOX);
+	listBox->setWidgetType(CMenuItem::TYPE_FRAME);
 	listBox->setItemsPerPage(6, 2);
 	//listBox->setItemBoxColor(COL_YELLOW);
 	listBox->setSelected(selected);

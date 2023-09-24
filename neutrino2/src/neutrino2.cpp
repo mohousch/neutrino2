@@ -752,11 +752,11 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	strcpy( g_settings.network_nfs_picturedir, configfile.getString( "network_nfs_picturedir", "/media/hdd/picture" ).c_str() );
 
 	g_settings.picviewer_slide_time = configfile.getInt32("picviewer_slide_time", 10);	// in sec
-	g_settings.picviewer_scaling = configfile.getInt32("picviewer_scaling", (int)SIMPLE);
+	g_settings.picviewer_scaling = configfile.getInt32("picviewer_scaling", (int)CFrameBuffer::SIMPLE);
 	// end pictureviewer
 
 	// misc opts
-	g_settings.channel_mode = configfile.getInt32("channel_mode", LIST_MODE_ALL);
+	g_settings.channel_mode = configfile.getInt32("channel_mode", CChannelList::LIST_MODE_ALL);
 
 	//misc
 	g_settings.power_standby = configfile.getInt32( "power_standby", 0);
@@ -955,14 +955,14 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.hdmi_cec_broadcast = configfile.getInt32("hdmi_cec_broadcast", 0); // default off
 	
 	// personalize
-	g_settings.personalize_tvradio = configfile.getInt32("personalize_tvradio", ITEM_ACTIVE);
-	g_settings.personalize_epgtimer = configfile.getInt32("personalize_epgtimer", ITEM_ACTIVE);
-	g_settings.personalize_scart = configfile.getInt32("personalize_scart", ITEM_ACTIVE);
-	g_settings.personalize_features = configfile.getInt32("personalize_features", ITEM_ACTIVE);
-	g_settings.personalize_system = configfile.getInt32("personalize_system", ITEM_ACTIVE);
-	g_settings.personalize_information = configfile.getInt32("personalize_information", ITEM_ACTIVE);
-	g_settings.personalize_powermenu = configfile.getInt32("personalize_powermenu", ITEM_ACTIVE);
-	g_settings.personalize_mediaplayer = configfile.getInt32("personalize_mediaplayer", ITEM_ACTIVE);
+	g_settings.personalize_tvradio = configfile.getInt32("personalize_tvradio", CMenuItem::ITEM_ACTIVE);
+	g_settings.personalize_epgtimer = configfile.getInt32("personalize_epgtimer", CMenuItem::ITEM_ACTIVE);
+	g_settings.personalize_scart = configfile.getInt32("personalize_scart", CMenuItem::ITEM_ACTIVE);
+	g_settings.personalize_features = configfile.getInt32("personalize_features", CMenuItem::ITEM_ACTIVE);
+	g_settings.personalize_system = configfile.getInt32("personalize_system", CMenuItem::ITEM_ACTIVE);
+	g_settings.personalize_information = configfile.getInt32("personalize_information", CMenuItem::ITEM_ACTIVE);
+	g_settings.personalize_powermenu = configfile.getInt32("personalize_powermenu", CMenuItem::ITEM_ACTIVE);
+	g_settings.personalize_mediaplayer = configfile.getInt32("personalize_mediaplayer", CMenuItem::ITEM_ACTIVE);
 	
 	//set OSD resolution
 #define DEFAULT_X_OFF 35
@@ -1719,7 +1719,7 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 	// bouquetList
 	switch(newmode) 
 	{
-		case LIST_MODE_FAV:
+		case CChannelList::LIST_MODE_FAV:
 			if(nMode == mode_radio) 
 			{
 				bouquetList = RADIOfavList;
@@ -1730,7 +1730,7 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 			}
 			break;
 
-		case LIST_MODE_SAT:
+		case CChannelList::LIST_MODE_SAT:
 			if(nMode == mode_radio) 
 			{
 				bouquetList = RADIOsatList;
@@ -1741,7 +1741,7 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 			}
 			break;
 
-		case LIST_MODE_ALL:
+		case CChannelList::LIST_MODE_ALL:
 			if(nMode == mode_radio) 
 			{
 				bouquetList = RADIOallList;
@@ -1753,7 +1753,7 @@ void CNeutrinoApp::setChannelMode(int newmode, int nMode)
 			break;
 
 		default:
-		case LIST_MODE_PROV:
+		case CChannelList::LIST_MODE_PROV:
 			if(nMode == mode_radio) 
 			{
 				bouquetList = RADIObouquetList;
@@ -3156,17 +3156,17 @@ void CNeutrinoApp::selectNVOD()
                 
                 if (widget)
                 {
-			NVODSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+			NVODSelector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 		}
 		else
                 {
                 	//
                 	widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 			widget->name = "nvodselect";
-			widget->setMenuPosition(MENU_POSITION_CENTER);
+			widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
                 	
 			NVODSelector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-			NVODSelector->setWidgetMode(MODE_SETUP);
+			NVODSelector->setWidgetMode(ClistBox::MODE_SETUP);
 			NVODSelector->enableShrinkMenu();
 							
 			NVODSelector->enablePaintHead();
@@ -3260,7 +3260,7 @@ bool CNeutrinoApp::getNVODMenu(ClistBox* menu)
 
 	if( g_RemoteControl->are_subchannels ) 
 	{
-		menu->addItem(new CMenuSeparator(LINE));
+		menu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		CMenuOptionChooser* oj = new CMenuOptionChooser(_("Direct-Mode"), &g_RemoteControl->director_mode, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, NULL, RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW);
 		menu->addItem(oj);
 	}
@@ -3555,12 +3555,12 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			}
 			else if(msg == RC_sat) 
 			{
-				setChannelMode(LIST_MODE_SAT, mode);
+				setChannelMode(CChannelList::LIST_MODE_SAT, mode);
 				nNewChannel = bouquetList->exec(true, true);
 			}
 			else if(msg == RC_favorites) 
 			{
-				setChannelMode(LIST_MODE_FAV, mode);
+				setChannelMode(CChannelList::LIST_MODE_FAV, mode);
 				nNewChannel = bouquetList->exec(true, true);
 			}
 _repeat:

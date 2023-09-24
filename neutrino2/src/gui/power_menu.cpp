@@ -44,7 +44,7 @@ int CPowerMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPowerMenu::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -59,7 +59,7 @@ int CPowerMenu::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "CPowerMenu::showMenu:\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 
 	//
 	CWidget* widget = NULL;
@@ -70,19 +70,19 @@ int CPowerMenu::showMenu(void)
 	
 	if (widget)
 	{
-		powerMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		powerMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "powermenu";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		powerMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
-		powerMenu->setWidgetMode(MODE_MENU);
-		powerMenu->setWidgetType(TYPE_CLASSIC);
+		powerMenu->setWidgetMode(ClistBox::MODE_MENU);
+		powerMenu->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		powerMenu->enableShrinkMenu();
 		
 		//

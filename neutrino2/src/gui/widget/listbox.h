@@ -38,74 +38,8 @@
 #include <gui/plugins.h>
 
 
+////
 class ClistBox;
-
-// item type
-enum 
-{
-	MENUITEM_OPTIONCHOOSER = 0,
-	MENUITEM_OPTIONNUMBERCHOOSER,
-	MENUITEM_OPTIONSTRINGCHOOSER,
-	MENUITEM_SEPARATOR,
-	MENUITEM_FORWARDER
-};
-
-// widget type
-enum
-{
-	TYPE_STANDARD = 0,
-	TYPE_CLASSIC,
-	TYPE_EXTENDED,
-	TYPE_FRAME
-};
-
-// listBox mode
-enum 
-{
-	MODE_LISTBOX = 0,
-	MODE_MENU,
-	MODE_SETUP
-};
-
-// iteminfo mode
-enum
-{
-	ITEMINFO_INFO_MODE = 0,
-	ITEMINFO_HINT_MODE,
-	ITEMINFO_HINTITEM_MODE,
-	ITEMINFO_HINTICON_MODE,
-	ITEMINFO_HINTHINT_MODE
-};
-
-// line separator
-enum
-{
-	EMPTY =	0,
-	LINE = 1,
-	STRING = 2,
-	ALIGN_CENTER = 4,
-	ALIGN_LEFT = 8,
-	ALIGN_RIGHT = 16
-};
-
-// state
-enum
-{
-	ITEM_ACTIVE,
-	ITEM_LOCKED,
-	ITEM_HIDDEN,
-	ITEM_MARKED,
-	ITEM_INACTIVE
-};
-
-//
-typedef struct keyval
-{
-	int key;
-	const char *valname;
-} keyval_struct;
-
-typedef std::vector<keyval_struct> keyval_list_t;
 
 // CChangeObserver
 class CChangeObserver
@@ -123,6 +57,36 @@ class CChangeObserver
 // CMenuItem
 class CMenuItem
 {
+	public:
+		// type
+		enum 
+		{
+			MENUITEM_OPTIONCHOOSER = 0,
+			MENUITEM_OPTIONNUMBERCHOOSER,
+			MENUITEM_OPTIONSTRINGCHOOSER,
+			MENUITEM_SEPARATOR,
+			MENUITEM_FORWARDER
+		};
+		
+		// widgettype
+		enum
+		{
+			TYPE_STANDARD = 0,
+			TYPE_CLASSIC,
+			TYPE_EXTENDED,
+			TYPE_FRAME
+		};
+		
+		// item state
+		enum
+		{
+			ITEM_ACTIVE,
+			ITEM_LOCKED,
+			ITEM_HIDDEN,
+			ITEM_MARKED,
+			ITEM_INACTIVE
+		};
+
 	protected:
 		int x, y, dx, dy;
 		
@@ -267,7 +231,16 @@ class CMenuItem
 		virtual void setState(int state);
 };
 
-// CMenuOptionChooser
+//// CMenuOptionChooser
+typedef struct keyval
+{
+	int key;
+	const char *valname;
+} keyval_struct;
+
+typedef std::vector<keyval_struct> keyval_list_t;
+
+//
 class CMenuOptionChooser : public CMenuItem
 {
 	protected:
@@ -304,7 +277,7 @@ class CMenuOptionChooser : public CMenuItem
 		int exec(CMenuTarget* target);
 };
 
-// CMenuOptionNumberChooser
+//// CMenuOptionNumberChooser
 class CMenuOptionNumberChooser : public CMenuItem
 {
 	int lower_bound;
@@ -339,7 +312,7 @@ class CMenuOptionNumberChooser : public CMenuItem
 		int exec(CMenuTarget *target);
 };
 
-// CMenuOptionStringChooser
+//// CMenuOptionStringChooser
 class CMenuOptionStringChooser : public CMenuItem
 {
 	int height;
@@ -361,12 +334,23 @@ class CMenuOptionStringChooser : public CMenuItem
 		int exec(CMenuTarget* target);
 };
 
-// CMenuSeparator
+//// CMenuSeparator
 class CMenuSeparator : public CMenuItem
 {
 	int type;
 	fb_pixel_t color;
 	int gradient;
+	
+	public:
+		enum
+		{
+			EMPTY =	0,
+			LINE = 1,
+			STRING = 2,
+			ALIGN_CENTER = 4,
+			ALIGN_LEFT = 8,
+			ALIGN_RIGHT = 16
+		};
 
 	public:
 		CMenuSeparator(const int Type = EMPTY, const char * const Text = NULL);
@@ -385,7 +369,7 @@ class CMenuSeparator : public CMenuItem
 		virtual const char * getString(void);
 };
 
-// CMenuForwarder
+//// CMenuForwarder
 class CMenuForwarder : public CMenuItem
 {
 	protected:
@@ -407,11 +391,31 @@ class CMenuForwarder : public CMenuItem
 		void setName(const char * const name){itemName = name;};
 };
 
-//
+////
 class ClistBox : public CWidgetItem
 {
 	public:
+		// listBox mode
+		enum 
+		{
+			MODE_LISTBOX = 0,
+			MODE_MENU,
+			MODE_SETUP
+		};
+
+		// iteminfo mode
+		enum
+		{
+			ITEMINFO_INFO_MODE = 0,
+			ITEMINFO_HINT_MODE,
+			ITEMINFO_HINTITEM_MODE,
+			ITEMINFO_HINTICON_MODE,
+			ITEMINFO_HINTHINT_MODE
+		};
+
+		//
 		std::vector<CMenuItem*> items;
+		
 	private:
 		CFrameBuffer* frameBuffer;
 
@@ -650,7 +654,7 @@ class ClistBox : public CWidgetItem
 		//
 		std::string getActionKey(void){return actionKey;}; // lua
 		
-		virtual void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = TYPE_STANDARD, bool i2lines = false, int iBorder = BORDER_NO);
+		virtual void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = CMenuItem::TYPE_STANDARD, bool i2lines = false, int iBorder = BORDER_NO);
 		
 		//
 		inline bool isPainted(void){return painted;};

@@ -115,7 +115,7 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 	g_RCInput->killTimer(sec_timer_id);
 	sec_timer_id = 0;
 
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 void CImageInfo::hide()
@@ -168,7 +168,7 @@ void CImageInfo::paint()
 		width = widget->getWindowsPos().iWidth;
 		height = widget->getWindowsPos().iHeight;
 		
-		head = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+		head = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
 	}
 	else
 	{

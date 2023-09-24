@@ -79,7 +79,7 @@ int CRecordingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CRecordingSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -90,21 +90,6 @@ int CRecordingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return ret;
 	}
-	/*
-	else if(actionKey == "recording")
-	{
-		CHintBox * hintBox = new CHintBox(_("Information"), _("Save settings now")); // UTF-8
-		hintBox->paint();
-		
-		CNeutrinoApp::getInstance()->setupRecordingDevice();
-		
-		hintBox->hide();
-		delete hintBox;
-		hintBox = NULL;
-		
-		return ret;
-	}
-	*/
 	else if(actionKey == "recordingdir")
 	{
 		if(parent)
@@ -136,7 +121,7 @@ int CRecordingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		hide();
 		showMenu();
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	
 	showMenu();
@@ -181,19 +166,19 @@ void CRecordingSettings::showMenu()
 	
 	if (widget)
 	{
-		recordingSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		recordingSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "recordingsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		recordingSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		recordingSettings->setWidgetMode(MODE_SETUP);
+		recordingSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		recordingSettings->enableShrinkMenu();
 		
 		recordingSettings->enablePaintHead();
@@ -255,37 +240,37 @@ void CRecordingSettings::showMenu()
 
 	// intros
 	recordingSettings->addItem(new CMenuForwarder(_("back")));
-	recordingSettings->addItem( new CMenuSeparator(LINE) );
+	recordingSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	recordingSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 	//recordingSettings->addItem(new CMenuForwarder(_("Activate changes"), true, NULL, this, "recording"));
 
-	recordingSettings->addItem(new CMenuSeparator(LINE | STRING, _("Timer settings")));
+	recordingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Timer settings")));
 	recordingSettings->addItem(fTimerBefore);
 	recordingSettings->addItem(fTimerAfter);
 
 	//apids
-	recordingSettings->addItem(new CMenuSeparator(LINE | STRING, _("default audio streams")));
+	recordingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("default audio streams")));
 	recordingSettings->addItem(aoj1);
 	recordingSettings->addItem(aoj2);
 	recordingSettings->addItem(aoj3);
 
 	//
-	recordingSettings->addItem(new CMenuSeparator(LINE));
+	recordingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	//epg in name format
 	recordingSettings->addItem(oj11);
 	
 	// save in channeldir
 	recordingSettings->addItem(oj13);
 
-	recordingSettings->addItem(new CMenuSeparator(LINE));
+	recordingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	//recdir
 	recordingSettings->addItem(fRecDir);
 	
 	// timeshift
-	recordingSettings->addItem(new CMenuSeparator(LINE | STRING, _("Timeshift")));
+	recordingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Timeshift")));
 	
 	// record time
 	recordingSettings->addItem(new CMenuOptionNumberChooser(_("Fast/timeshift record time(hours)"), &g_settings.record_hours, true, 1, 24, NULL) );

@@ -134,7 +134,7 @@ void CBEChannelSelectWidget::paint()
 	
 	if (widget)
 	{
-		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		listBox = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{

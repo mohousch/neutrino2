@@ -656,7 +656,7 @@ int CMP3Player::showMenu()
 		alist->addItem(item);
 	}
 	
-	alist->setWidgetMode(MODE_LISTBOX);
+	alist->setWidgetMode(ClistBox::MODE_LISTBOX);
 
 	//
 	alist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);

@@ -124,7 +124,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 	bool istheend = false;
 	int lim_cmd;
 	if (!frameBuffer->getActive())
-		return RETURN_EXIT_ALL;
+		return CMenuTarget::RETURN_EXIT_ALL;
 	
 	if (parent)
 		parent->hide();
@@ -412,7 +412,7 @@ int CMotorControl::exec(CMenuTarget* parent, const std::string &)
 	
 	hide();
 
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 void CMotorControl::motorStepWest(void)

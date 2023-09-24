@@ -181,7 +181,7 @@ void CSatIPClient::showMenu()
 	// create menu
 	CMenuWidget * satIPClientMenu = new CMenuWidget("SatIP Client", NEUTRINO_ICON_SETTINGS);
 
-	satIPClientMenu->setWidgetMode(MODE_SETUP);
+	satIPClientMenu->setWidgetMode(ClistBox::MODE_SETUP);
 	satIPClientMenu->setHeadGradient(LIGHT2DARK);
 	satIPClientMenu->setFootGradient(DARK2LIGHT);
 	satIPClientMenu->setHeadLine(false);
@@ -197,9 +197,9 @@ void CSatIPClient::showMenu()
 	
 	//
 	satIPClientMenu->addItem(new CMenuForwarder(_("back"), true, NULL, NULL, NULL, RC_nokey, NEUTRINO_ICON_BUTTON_LEFT));
-	satIPClientMenu->addItem(new CMenuSeparator(LINE));
+	satIPClientMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	satIPClientMenu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	satIPClientMenu->addItem(new CMenuSeparator(LINE));
+	satIPClientMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// enabled
 	CSatIPClientNotifier satIPNotifier(m1, m2);
@@ -226,7 +226,7 @@ void CSatIPClient::showMenu()
 	// workaround
 	satIPClientMenu->addItem(new CMenuOptionChooser(_("SatIP Client Workaround"), &SatIPWorkaround, SATIP_WORKAROUND_OPTIONS, SATIP_WORKAROUND_OPTION_COUNT, true, NULL));
 
-	satIPClientMenu->addItem(new CMenuSeparator(LINE));
+	satIPClientMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// start satipclient
 	satIPClientMenu->addItem(m1);

@@ -999,25 +999,25 @@ int CNeutrinoApp::convertMenuPosition(const char* const position)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertMenuPosition: position: %s\n", position);
 	
-	int pos = MENU_POSITION_NONE;
+	int pos = CWidget::MENU_POSITION_NONE;
 	
 	if (position != NULL)
 	{
 		if ( strcmp(position, "MENU_POSITION_NONE") == 0)
 		{
-			pos = MENU_POSITION_NONE;
+			pos = CWidget::MENU_POSITION_NONE;
 		}
 		else if ( strcmp(position, "MENU_POSITION_LEFT") == 0)
 		{
-			pos = MENU_POSITION_LEFT;
+			pos = CWidget::MENU_POSITION_LEFT;
 		}
 		else if ( strcmp(position, "MENU_POSITION_CENTER") == 0)
 		{
-			pos = MENU_POSITION_CENTER;
+			pos = CWidget::MENU_POSITION_CENTER;
 		}
 		else if ( strcmp(position, "MENU_POSITION_RIGHT") == 0)
 		{
-			pos = MENU_POSITION_RIGHT;
+			pos = CWidget::MENU_POSITION_RIGHT;
 		}
 	}
 	
@@ -1029,21 +1029,21 @@ int CNeutrinoApp::convertClistBoxMode(const char * const mode)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertClistBoxMode: mode: %s\n", mode);
 	
-	int m = MODE_LISTBOX;
+	int m = ClistBox::MODE_LISTBOX;
 	
 	if (mode != NULL)
 	{
 		if ( strcmp(mode, "MODE_LISTBOX") == 0)
 		{
-			m = MODE_LISTBOX;
+			m = ClistBox::MODE_LISTBOX;
 		}
 		else if ( strcmp(mode, "MODE_MENU") == 0)
 		{
-			m = MODE_MENU;
+			m = ClistBox::MODE_MENU;
 		}
 		else if ( strcmp(mode, "MODE_SETUP") == 0)
 		{
-			m = MODE_SETUP;
+			m = ClistBox::MODE_SETUP;
 		}
 	}
 	
@@ -1055,25 +1055,25 @@ int CNeutrinoApp::convertClistBoxType(const char * const type)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertClistBoxType: type: %s\n", type);
 	
-	int t = TYPE_STANDARD;
+	int t = CMenuItem::TYPE_STANDARD;
 	
 	if (type != NULL)
 	{
 		if ( strcmp(type, "TYPE_STANDARD") == 0)
 		{
-			t = TYPE_STANDARD;
+			t = CMenuItem::TYPE_STANDARD;
 		}
 		else if ( strcmp(type, "TYPE_CLASSIC") == 0)
 		{
-			t = TYPE_CLASSIC;
+			t = CMenuItem::TYPE_CLASSIC;
 		}
 		else if ( strcmp(type, "TYPE_EXTENDED") == 0)
 		{
-			t = TYPE_EXTENDED;
+			t = CMenuItem::TYPE_EXTENDED;
 		}
 		else if ( strcmp(type, "TYPE_FRAME") == 0)
 		{
-			t = TYPE_FRAME;
+			t = CMenuItem::TYPE_FRAME;
 		}
 	}
 	
@@ -1084,29 +1084,29 @@ int CNeutrinoApp::convertCMenuItemID(const char * const id)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertCMenuItemID: id: %s\n", id);
 	
-	int i = MENUITEM_FORWARDER;
+	int i = CMenuItem::MENUITEM_FORWARDER;
 	
 	if (id != NULL)
 	{
 		if ( strcmp(id, "MENUITEM_OPTIONCHOOSER") == 0)
 		{
-			i = MENUITEM_OPTIONCHOOSER;
+			i = CMenuItem::MENUITEM_OPTIONCHOOSER;
 		}
 		else if ( strcmp(id, "MENUITEM_OPTIONNUMBERCHOOSER") == 0)
 		{
-			i = MENUITEM_OPTIONNUMBERCHOOSER;
+			i = CMenuItem::MENUITEM_OPTIONNUMBERCHOOSER;
 		}
 		else if ( strcmp(id, "MENUITEM_OPTIONSTRINGCHOOSER") == 0)
 		{
-			i = MENUITEM_OPTIONSTRINGCHOOSER;
+			i = CMenuItem::MENUITEM_OPTIONSTRINGCHOOSER;
 		}
 		else if ( strcmp(id, "MENUITEM_SEPARATOR") == 0)
 		{
-			i = MENUITEM_SEPARATOR;
+			i = CMenuItem::MENUITEM_SEPARATOR;
 		}
 		else if ( strcmp(id, "MENUITEM_FORWARDER") == 0)
 		{
-			i = MENUITEM_FORWARDER;
+			i = CMenuItem::MENUITEM_FORWARDER;
 		}
 	}
 	
@@ -1301,15 +1301,15 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 					
 	listBox = new ClistBox(x, y, width, height);
 		
-	listBox->widgetItem_type = WIDGETITEM_LISTBOX;
+	listBox->widgetItem_type = CWidgetItem::WIDGETITEM_LISTBOX;
 	if (name) listBox->widgetItem_name = name;
 		
 	//
-	int t = TYPE_STANDARD;
+	int t = CMenuItem::TYPE_STANDARD;
 	if (listboxtype) t = convertClistBoxType(listboxtype);
 	listBox->setWidgetType(t);
 	//
-	int m = MODE_LISTBOX;
+	int m = ClistBox::MODE_LISTBOX;
 	if (listboxmode) m = convertClistBoxMode(listboxmode);
 	listBox->setWidgetMode(m);
 	listBox->paintScrollBar(scrollbar);
@@ -1418,11 +1418,11 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		if (item_localename) itemName = _(item_localename);
 						
 		//
-		int id = MENUITEM_FORWARDER;
+		int id = CMenuItem::MENUITEM_FORWARDER;
 		if (item_id) id = convertCMenuItemID(item_id);
 		
 		//FIXME: other items	
-		if (id == MENUITEM_FORWARDER)
+		if (id == CMenuItem::MENUITEM_FORWARDER)
 			menuItem = new CMenuForwarder(itemName.c_str());
 						
 		if (item_actionkey) actionKey = item_actionkey;
@@ -1469,9 +1469,9 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	listboxintegration_node = node->xmlChildrenNode;
 		
 	CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED;
-	unsigned int mode = MODE_MENU;
+	unsigned int mode = ClistBox::MODE_MENU;
 	unsigned int shortcut = RC_nokey;
-	unsigned int type = TYPE_STANDARD;
+	unsigned int type = CMenuItem::TYPE_STANDARD;
 	unsigned int i_lines = false;
 	unsigned int i_border = false;
 					
@@ -1597,7 +1597,7 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 					
 	window = new CWindow(x, y, width, height);
 		
-	window->widgetItem_type = WIDGETITEM_WINDOW;
+	window->widgetItem_type = CWidgetItem::WIDGETITEM_WINDOW;
 	if (name) window->widgetItem_name = name;
 					
 	window->paintMainFrame(paintframe);
@@ -1714,7 +1714,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 
 	head = new CHeaders(x, y, width, height);
 		
-	head->widgetItem_type = WIDGETITEM_HEAD;
+	head->widgetItem_type = CWidgetItem::WIDGETITEM_HEAD;
 	if (name) head->widgetItem_name = name;
 		
 	head->paintMainFrame(paintframe);
@@ -1824,7 +1824,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 						
 	foot = new CFooters(x, y, width, height);
 		
-	foot->widgetItem_type = WIDGETITEM_FOOT;
+	foot->widgetItem_type = CWidgetItem::WIDGETITEM_FOOT;
 		
 	foot->paintMainFrame(paintframe);			
 	if (color != NULL) foot->setColor(finalColor);
@@ -1944,7 +1944,7 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 						
 	textBox = new CTextBox(x, y, width, height);
 		
-	textBox->widgetItem_type = WIDGETITEM_TEXTBOX;
+	textBox->widgetItem_type = CWidgetItem::WIDGETITEM_TEXTBOX;
 	if (name) textBox->widgetItem_name = name;
 	// color
 	uint32_t finalColor = COL_MENUCONTENT_PLUS_0;			
@@ -2056,7 +2056,7 @@ void CNeutrinoApp::parseCCLabel(xmlNodePtr node, CWidget* widget)
 							
 	label = new CCLabel(x, y, cc_dx, cc_dy);
 		
-	label->cc_type = CC_LABEL;
+	label->cc_type = CComponent::CC_LABEL;
 	if (name) label->cc_name = name;
 							
 	if (!text.empty()) label->setText(_(text.c_str()));
@@ -2121,7 +2121,7 @@ void CNeutrinoApp::parseCCImage(xmlNodePtr node, CWidget* widget)
 							
 	pic = new CCImage(x, y, cc_dx, cc_dy);
 		
-	pic->cc_type = CC_IMAGE;
+	pic->cc_type = CComponent::CC_IMAGE;
 	if (name) pic->cc_name = name;
 							
 	if (image != NULL)
@@ -2201,7 +2201,7 @@ void CNeutrinoApp::parseCCTime(xmlNodePtr node, CWidget* widget)
 							
 	time = new CCTime(x, y, cc_dx, cc_dy);
 		
-	time->cc_type = CC_TIME;
+	time->cc_type = CComponent::CC_TIME;
 	if (name) time->cc_name = name;
 							
 	if (cc_format != NULL) time->setFormat(_(cc_format));
@@ -2230,7 +2230,7 @@ void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget)
 	int cc_dy = 0;
 	
 	unsigned int head = 0;
-	unsigned int mode = BUTTON_BUTTON;
+	unsigned int mode = CCButtons::BUTTON_BUTTON;
 	
 	xmlNodePtr buttonlabel_node = NULL;
 	
@@ -2261,7 +2261,8 @@ void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget)
 	}
 				
 	cButton = new CCButtons(x, y, cc_dx, cc_dy);
-		
+	
+	cButton->cc_type = CComponent::CC_BUTTON;	
 	cButton->setMode(mode);
 				
 	// BUTTON_LABEL
@@ -2344,7 +2345,7 @@ void CNeutrinoApp::parseCCHline(xmlNodePtr node, CWidget* widget)
 				
 	hline = new CCHline(x, y, cc_dx, cc_dy);
 		
-	hline->cc_type = CC_HLINE;
+	hline->cc_type = CComponent::CC_HLINE;
 	if (name) hline->cc_name = name;
 		
 	int gr = NOGRADIENT;
@@ -2400,7 +2401,7 @@ void CNeutrinoApp::parseCCVline(xmlNodePtr node, CWidget* widget)
 		
 	vline = new CCVline(x, y, cc_dx, cc_dy);
 		
-	vline->cc_type = CC_VLINE;
+	vline->cc_type = CComponent::CC_VLINE;
 	if (name) vline->cc_name = name;
 		
 	int gr = NOGRADIENT;
@@ -2452,7 +2453,7 @@ void CNeutrinoApp::parseCCPig(xmlNodePtr node, CWidget* widget)
 				
 	pig = new CCPig(x, y, cc_dx, cc_dy);
 		
-	pig->cc_type = CC_PIG;
+	pig->cc_type = CComponent::CC_PIG;
 	if (name) pig->cc_name = name;
 	
 	//				
@@ -2624,7 +2625,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				widget->setTimeOut(timeout);
 				
 				// menuposition
-				int pos = MENU_POSITION_NONE;
+				int pos = CWidget::MENU_POSITION_NONE;
 				if (position) pos = convertMenuPosition(position);
 				widget->setMenuPosition(pos);
 				

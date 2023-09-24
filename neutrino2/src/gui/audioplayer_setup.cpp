@@ -75,12 +75,12 @@ int CAudioPlayerSettings::exec(CMenuTarget* parent, const std::string& actionKey
 		hide();
 		showMenu();
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	
 	showMenu();
 	
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 void CAudioPlayerSettings::showMenu()
@@ -96,19 +96,19 @@ void CAudioPlayerSettings::showMenu()
 	
 	if (widget)
 	{
-		audioPlayerSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		audioPlayerSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "audioplayersetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		audioPlayerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		audioPlayerSettings->setWidgetMode(MODE_SETUP);
+		audioPlayerSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		audioPlayerSettings->enableShrinkMenu();
 		
 		audioPlayerSettings->enablePaintHead();
@@ -126,11 +126,11 @@ void CAudioPlayerSettings::showMenu()
 	
 	// intros
 	audioPlayerSettings->addItem(new CMenuForwarder(_("back")));
-	audioPlayerSettings->addItem( new CMenuSeparator(LINE) );
+	audioPlayerSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	audioPlayerSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	audioPlayerSettings->addItem( new CMenuSeparator(LINE) );
+	audioPlayerSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// high prio
 	audioPlayerSettings->addItem(new CMenuOptionChooser(_("High decode priority"), &g_settings.audioplayer_highprio, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true ));

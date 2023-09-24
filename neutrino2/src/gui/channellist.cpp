@@ -124,6 +124,32 @@ const struct button_label HeadNewModeButtons[HEAD_BUTTONS_COUNT] =
 	{ NEUTRINO_ICON_BUTTON_SETUP, " " }
 };
 
+//// class CZapProtection
+bool CZapProtection::check()
+{
+	int res;
+	char cPIN[5];
+	std::string hint2 = " ";
+	
+	do
+	{
+		cPIN[0] = 0;
+
+		CPLPINInput* PINInput = new CPLPINInput(_("Youth protection"), cPIN, 4, hint2.c_str(), fsk);
+
+		res = PINInput->exec(NULL, "");
+		delete PINInput;
+
+		hint2 = _("PIN-Code was wrong! Try again.");
+	} while ( (strncmp(cPIN,validPIN, 4) != 0) &&
+		  (cPIN[0] != 0) &&
+		  ( res == CMenuTarget::RETURN_REPAINT ) &&
+		  ( fsk >= g_settings.parentallock_lockage ) );
+		  
+	return ( ( strncmp(cPIN, validPIN, 4) == 0 ) || ( fsk < g_settings.parentallock_lockage ) );
+}
+
+////
 CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vlist)
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -421,19 +447,19 @@ int CChannelList::doChannelMenu(void)
 	
 	if (mWidget)
 	{
-		menu = (ClistBox*)mWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)mWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		mWidget = new CWidget(0, 0, 500, 250);
 		mWidget->name = "channellistedit";
-		mWidget->setMenuPosition(MENU_POSITION_CENTER);
+		mWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		menu = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
 
-		menu->setWidgetMode(MODE_MENU);
+		menu->setWidgetMode(ClistBox::MODE_MENU);
 		
 		menu->enablePaintHead();
 		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
@@ -647,7 +673,7 @@ int CChannelList::show(bool zap, bool customMode)
 
 			hide();
 
-			if ( chanlist.size() && g_EventList->exec(chanlist[selected]->epgid, chanlist[selected]->name) == RETURN_EXIT_ALL) 
+			if ( chanlist.size() && g_EventList->exec(chanlist[selected]->epgid, chanlist[selected]->name) == CMenuTarget::RETURN_EXIT_ALL) 
 			{
 				res = -2;
 				loop = false;
@@ -1663,12 +1689,12 @@ void CChannelList::paint()
 	
 	if (widget)
 	{
-		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-		head = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
-		foot = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
-		window = (CWindow*)widget->getWidgetItem(WIDGETITEM_WINDOW);
-		vline = (CCVline*)widget->getCCItem(CC_VLINE);
-		hline = (CCHline*)widget->getCCItem(CC_HLINE);
+		listBox = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		head = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
+		foot = (CFooters*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
+		window = (CWindow*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_WINDOW);
+		vline = (CCVline*)widget->getCCItem(CComponent::CC_VLINE);
+		hline = (CCHline*)widget->getCCItem(CComponent::CC_HLINE);
 	}
 	else
 	{

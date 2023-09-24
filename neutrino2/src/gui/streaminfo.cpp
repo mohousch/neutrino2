@@ -138,7 +138,7 @@ int CStreamInfo::exec(CMenuTarget * parent, const std::string&)
 
 	hide();
 	
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 int CStreamInfo::doSignalStrengthLoop()
@@ -538,7 +538,7 @@ void CStreamInfo::paint(int /*mode*/)
 		width = widget->getWindowsPos().iWidth;
 		height = widget->getWindowsPos().iHeight;
 		
-		head = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
+		head = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
 	}
 	else
 	{

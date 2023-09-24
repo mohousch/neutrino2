@@ -45,7 +45,7 @@ int CMediaPlayerMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMediaplayerMenu::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -69,20 +69,20 @@ void CMediaPlayerMenu::showMenu()
 	
 	if (widget)
 	{
-		mediaPlayer = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		mediaPlayer = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "mediaplayer";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		mediaPlayer = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
-		mediaPlayer->setWidgetMode(MODE_MENU);
-		mediaPlayer->setWidgetType(TYPE_CLASSIC);
+		mediaPlayer->setWidgetMode(ClistBox::MODE_MENU);
+		mediaPlayer->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		mediaPlayer->enableShrinkMenu();
 		
 		//

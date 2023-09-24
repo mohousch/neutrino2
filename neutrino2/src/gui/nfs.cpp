@@ -108,7 +108,7 @@ int CNFSMountGui::exec( CMenuTarget *parent, const std::string &actionKey )
 {
 	dprintf(DEBUG_NORMAL, "CNFSMountGui::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int returnval = RETURN_REPAINT;
+	int returnval = CMenuTarget::RETURN_REPAINT;
 	
 	if (m_nfs_sup == CFSMounter::FS_UNPROBED)
 		m_nfs_sup = CFSMounter::fsSupported(CFSMounter::NFS);
@@ -166,7 +166,7 @@ int CNFSMountGui::exec( CMenuTarget *parent, const std::string &actionKey )
 				  g_settings.network_nfs_username[nr], g_settings.network_nfs_password[nr],
 				  g_settings.network_nfs_mount_options1[nr], g_settings.network_nfs_mount_options2[nr]);
 		// TODO show msg in case of error
-		returnval = RETURN_EXIT;
+		returnval = CMenuTarget::RETURN_EXIT;
 	}
 	else if(actionKey.substr(0, 3) == "dir")
 	{
@@ -180,7 +180,7 @@ int CNFSMountGui::exec( CMenuTarget *parent, const std::string &actionKey )
 		if (b.exec(g_settings.network_nfs_local_dir[nr]))
 			strcpy(g_settings.network_nfs_local_dir[nr], b.getSelectedFile()->Name.c_str());
 
-		returnval = RETURN_REPAINT;
+		returnval = CMenuTarget::RETURN_REPAINT;
 	}
 	
 	return returnval;
@@ -196,19 +196,19 @@ int CNFSMountGui::menu()
 	
 	if (widget)
 	{
-		mountMenuW = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		mountMenuW = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "nfs";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		mountMenuW = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		mountMenuW->setWidgetMode(MODE_SETUP);
+		mountMenuW->setWidgetMode(ClistBox::MODE_SETUP);
 		mountMenuW->enableShrinkMenu();
 		
 		mountMenuW->enablePaintHead();
@@ -226,7 +226,7 @@ int CNFSMountGui::menu()
 	
 	// intros
 	mountMenuW->addItem(new CMenuForwarder(_("back")));
-	mountMenuW->addItem(new CMenuSeparator(LINE));
+	mountMenuW->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	char s2[12];
 
 	for(int i = 0 ; i < NETWORK_NFS_NR_OF_ENTRIES ; i++)
@@ -319,18 +319,18 @@ int CNFSMountGui::menuEntry(int nr)
 	
 	if (widget)
 	{
-		mountMenuEntryW = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		mountMenuEntryW = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "mountvolume";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		mountMenuEntryW = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-		mountMenuEntryW->setWidgetMode(MODE_SETUP);
+		mountMenuEntryW->setWidgetMode(ClistBox::MODE_SETUP);
 		mountMenuEntryW->enableShrinkMenu();
 		
 		mountMenuEntryW->enablePaintHead();
@@ -348,7 +348,7 @@ int CNFSMountGui::menuEntry(int nr)
 	
 	// intros
 	mountMenuEntryW->addItem(new CMenuForwarder(_("back")));
-	mountMenuEntryW->addItem(new CMenuSeparator(LINE));
+	mountMenuEntryW->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// ip
 	CIPInput ipInput(_("Server IP"), g_settings.network_nfs_ip[nr], _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
@@ -417,10 +417,10 @@ int CNFSUmountGui::exec( CMenuTarget *parent, const std::string &actionKey )
 	else if(actionKey.substr(0,8) == "doumount")
 	{
 		CFSMounter::umount((actionKey.substr(9)).c_str());
-		returnval = RETURN_EXIT;
+		returnval = CMenuTarget::RETURN_EXIT;
 	}
 	else
-		returnval = RETURN_REPAINT;
+		returnval = CMenuTarget::RETURN_REPAINT;
 
 	return returnval;
 }
@@ -438,18 +438,18 @@ int CNFSUmountGui::menu()
 	
 	if (widget)
 	{
-		umountMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		umountMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "umountvolume";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		umountMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-		umountMenu->setWidgetMode(MODE_SETUP);
+		umountMenu->setWidgetMode(ClistBox::MODE_SETUP);
 		umountMenu->enableShrinkMenu();
 		
 		umountMenu->enablePaintHead();
@@ -469,7 +469,7 @@ int CNFSUmountGui::menu()
 	
 	// intros
 	umountMenu->addItem(new CMenuForwarder(_("back")));
-	umountMenu->addItem(new CMenuSeparator(LINE));
+	umountMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	CFSMounter::getMountedFS(infos);
 	for (CFSMounter::MountInfos::const_iterator it = infos.begin(); it != infos.end();it++)
@@ -490,7 +490,7 @@ int CNFSUmountGui::menu()
 	if(infos.size() > 0)
 		return widget->exec(this, "");
 	else
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 }
 
 // CNFSSmallMenu
@@ -516,18 +516,18 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 		
 		if (widget)
 		{
-			menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+			menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 		}
 		else
 		{
 			//
 			widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 			widget->name = "nfssmall";
-			widget->setMenuPosition(MENU_POSITION_CENTER);
+			widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 			
 			//
 			menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-			menu->setWidgetMode(MODE_SETUP);
+			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			menu->enableShrinkMenu();
 			
 			menu->enablePaintHead();
@@ -548,7 +548,7 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 		
 		// intros
 		menu->addItem(new CMenuForwarder(_("back")));
-		menu->addItem(new CMenuSeparator(LINE));
+		menu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 		menu->addItem(new CMenuForwarder(_("remount"), true, NULL, this, "remount"));
 		menu->addItem(new CMenuForwarder(_("mount"), true, NULL, &mountGui));
@@ -566,10 +566,10 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 		}
 
 		CFSMounter::automount();
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 const char * mntRes2Str(CFSMounter::MountRes res)

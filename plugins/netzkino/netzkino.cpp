@@ -185,7 +185,7 @@ void CNKMovies::showMenu()
 	leftWidget->setOutFocus();
 
 	leftWidget->addItem(new CMenuForwarder("Suche", true, nksearch.c_str(), this, "search"));
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	if(cats.empty())
 		cats = nkparser.GetCategoryList();
@@ -196,13 +196,13 @@ void CNKMovies::showMenu()
 		leftWidget->addItem(new CMenuForwarder(cats[i].title.c_str(), true, NULL, new CNKMovies(cNKFeedParser::CATEGORY, cats[i].id, cats[i].title), "", RC_nokey, NEUTRINO_ICON_NETZKINO_SMALL));
 	}
 
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(new CMenuSeparator());
 	leftWidget->addItem(new CMenuSeparator());
 	leftWidget->addItem(new CMenuSeparator());
 	leftWidget->addItem(new CMenuSeparator());
 	leftWidget->addItem(new CMenuSeparator());
-	leftWidget->addItem(new CMenuSeparator(LINE));
+	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	leftWidget->addItem(new CMenuForwarder("Beenden", true, NULL, this, "exit", RC_nokey, NEUTRINO_ICON_BUTTON_POWER));
 
 	// rightwidget
@@ -213,7 +213,7 @@ void CNKMovies::showMenu()
 
 	//
 	rightWidget = new ClistBox(&rightBox);
-	rightWidget->setWidgetType(TYPE_FRAME);
+	rightWidget->setWidgetType(CMenuItem::TYPE_FRAME);
 	rightWidget->setItemsPerPage(5,2);
 	rightWidget->setSelected(right_selected);
 	//rightWidget->enablePaintFootInfo();

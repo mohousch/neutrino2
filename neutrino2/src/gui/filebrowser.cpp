@@ -128,9 +128,9 @@ bool sortByDate (const CFile& a, const CFile& b)
 
 bool sortBySize (const CFile& a, const CFile& b)
 {
-	if(a.getFileName()=="..")
+	if(a.getFileName() == "..")
 		return true;
-	if(b.getFileName()=="..")
+	if(b.getFileName() == "..")
 		return false;
 	return a.Size < b.Size;
 }
@@ -495,7 +495,7 @@ bool CFileBrowser::exec(const char * const dirname)
 				else
 					_msg << filelist[selected].getFileName();
 
-				_msg << " " << _("?");
+				_msg << " " << "?";
 				if (MessageBox(_("Delete"), _msg.str().c_str(), mbrNo, mbYes|mbNo) == mbrYes)
 				{
 					recursiveDelete(filelist[selected].Name.c_str());
@@ -740,7 +740,7 @@ void CFileBrowser::paint()
 	
 	if (widget)
 	{
-		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		listBox = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{

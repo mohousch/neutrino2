@@ -248,7 +248,7 @@ class CMenuWidget : public CMenuTarget
 
 		// itemInfo
 		void enablePaintItemInfo(int fh = 70){paintFootInfo = true; footInfoHeight = fh; /*initFrames();*/};
-		void setItemInfoMode(int mode = ITEMINFO_INFO_MODE){footInfoMode = mode;};
+		void setItemInfoMode(int mode = ClistBox::ITEMINFO_INFO_MODE){footInfoMode = mode;};
 
 		// type/mode/pos
 		void setWidgetType(int type){widgetType = type; widget.push_back(widgetType);};

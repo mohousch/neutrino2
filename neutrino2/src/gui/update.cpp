@@ -131,7 +131,7 @@ class CUpdateMenuTarget : public CMenuTarget
 		{
 			*myselectedID = myID;
 
-			return RETURN_EXIT_ALL;
+			return CMenuTarget::RETURN_EXIT_ALL;
 		}
 };
 
@@ -158,19 +158,19 @@ bool CFlashUpdate::selectHttpImage(void)
 	
 	if (widget)
 	{
-		SelectionWidget = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		SelectionWidget = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, 600, MENU_HEIGHT);
 		widget->name = "selecthttpimage";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		SelectionWidget = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		SelectionWidget->setWidgetMode(MODE_SETUP);
+		SelectionWidget->setWidgetMode(ClistBox::MODE_SETUP);
 		SelectionWidget->enableShrinkMenu();
 		
 		SelectionWidget->enablePaintHead();
@@ -439,7 +439,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 	{
 		hide();
 
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 
 	// install
@@ -462,7 +462,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 		{
 			hide();
 			HintBox(_("Error"), _("can't get update list")); // UTF-8
-			return RETURN_REPAINT;
+			return CMenuTarget::RETURN_REPAINT;
 		}
 		
 		sprintf(fullname, "%s/%s", g_settings.update_dir, fname);
@@ -490,7 +490,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 		progressWindow->hide();
 		HintBox(_("Error"), (fileType < '3')? _("image has errors") : _("package has errors")); // UTF-8
 
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	
 	// download or not???
@@ -503,7 +503,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 			remove(filename.c_str());
 			progressWindow->hide();
 
-			return RETURN_REPAINT;
+			return CMenuTarget::RETURN_REPAINT;
 		}
 	}
 
@@ -526,7 +526,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 			progressWindow->hide();
 			HintBox(_("Error"), _(ft.getErrorMessage().c_str())); // UTF-8
 
-			return RETURN_REPAINT;
+			return CMenuTarget::RETURN_REPAINT;
 		}
 
 		//status anzeigen
@@ -572,7 +572,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 			progressWindow->hide();
 			HintBox(_("Error"), _("package install failed")); // UTF-8
 
-			return RETURN_REPAINT;
+			return CMenuTarget::RETURN_REPAINT;
 		}
 		
 		// 100% status
@@ -584,7 +584,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 	
 	progressWindow->hide();
 	
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 //
@@ -680,19 +680,19 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 	
 	if (widget)
 	{
-		mtdselector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		mtdselector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "mtdselector";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		mtdselector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		mtdselector->setWidgetMode(MODE_SETUP);
+		mtdselector->setWidgetMode(ClistBox::MODE_SETUP);
 		mtdselector->enableShrinkMenu();
 		
 		mtdselector->enablePaintHead();
@@ -710,7 +710,7 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 	
 	// intros
 	mtdselector->addItem(new CMenuForwarder(_("Cancel")));
-	mtdselector->addItem(new CMenuSeparator(LINE));
+	mtdselector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	CMTDInfo* mtdInfo = CMTDInfo::getInstance();
 
@@ -782,19 +782,19 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 	
 	if (widget)
 	{
-		fileselector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		fileselector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "fileselector";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		fileselector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		fileselector->setWidgetMode(MODE_SETUP);
+		fileselector->setWidgetMode(ClistBox::MODE_SETUP);
 		fileselector->enableShrinkMenu();
 		
 		fileselector->enablePaintHead();
@@ -812,7 +812,7 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 	
 	// intros
 	fileselector->addItem(new CMenuForwarder(_("Cancel")));
-	fileselector->addItem(new CMenuSeparator(LINE));
+	fileselector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	struct dirent **namelist;
 	int n = scandir("/tmp", &namelist, 0, alphasort);
@@ -906,12 +906,12 @@ int CFlashExpert::exec(CMenuTarget* parent, const std::string & actionKey)
 		}
 		hide();
 
-		return RETURN_EXIT_ALL;
+		return CMenuTarget::RETURN_EXIT_ALL;
 	}
 
 	hide();
 	
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 //
@@ -919,7 +919,7 @@ int CUpdateSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CUpdateSettings::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -957,7 +957,7 @@ int CUpdateSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CUpdateSettings::showMenu\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;
@@ -967,19 +967,19 @@ int CUpdateSettings::showMenu()
 	
 	if (widget)
 	{
-		updateSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		updateSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "updatesetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		updateSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		updateSettings->setWidgetMode(MODE_SETUP);
+		updateSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		updateSettings->enableShrinkMenu();
 		
 		updateSettings->enablePaintHead();
@@ -997,11 +997,11 @@ int CUpdateSettings::showMenu()
 		
 	// intros
 	updateSettings->addItem(new CMenuForwarder(_("back")));
-	updateSettings->addItem(new CMenuSeparator(LINE));
+	updateSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// save settings
 	updateSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	updateSettings->addItem( new CMenuSeparator(LINE) );
+	updateSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// 
 	CWidget* mtdexpertWidget = NULL;
@@ -1011,19 +1011,19 @@ int CUpdateSettings::showMenu()
 	
 	if (mtdexpertWidget)
 	{
-		mtdexpert = (ClistBox*)mtdexpertWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		mtdexpert = (ClistBox*)mtdexpertWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		mtdexpertWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		mtdexpertWidget->name = "flashexpert";
-		mtdexpertWidget->setMenuPosition(MENU_POSITION_CENTER);
+		mtdexpertWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		mtdexpert = new ClistBox(mtdexpertWidget->getWindowsPos().iX, mtdexpertWidget->getWindowsPos().iY, mtdexpertWidget->getWindowsPos().iWidth, mtdexpertWidget->getWindowsPos().iHeight);
 
-		mtdexpert->setWidgetMode(MODE_SETUP);
+		mtdexpert->setWidgetMode(ClistBox::MODE_SETUP);
 		mtdexpert->enableShrinkMenu();
 		
 		mtdexpert->enablePaintHead();
@@ -1041,7 +1041,7 @@ int CUpdateSettings::showMenu()
 		
 	// intros
 	mtdexpert->addItem(new CMenuForwarder(_("back")));
-	mtdexpert->addItem(new CMenuSeparator(LINE));
+	mtdexpert->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 	CFlashExpert * fe = new CFlashExpert();
 
@@ -1054,7 +1054,7 @@ int CUpdateSettings::showMenu()
 	// experten function
 	//FIXME: allow update only when the rootfs is jffs2/squashfs
 	updateSettings->addItem(new CMenuForwarder(_("Expert-functions"), true, NULL, mtdexpertWidget));
-	updateSettings->addItem(new CMenuSeparator(LINE));
+	updateSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 	// update dir
 	updateSettings->addItem( new CMenuForwarder(_("Directory for updates"), true, g_settings.update_dir , this, "update_dir") );
@@ -1064,7 +1064,7 @@ int CUpdateSettings::showMenu()
 	updateSettings->addItem(new CMenuForwarder(_("Software update URL"), true, g_settings.softupdate_url_file, updateSettings_url_file));
 
 	// show current version
-	updateSettings->addItem(new CMenuSeparator(LINE | STRING, _("Current version")));
+	updateSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Current version")));
 
 	// get current version SBBB YYYY MM TT HH MM -- formatsting
 	//CConfigFile lconfigfile('\t');
@@ -1090,7 +1090,7 @@ int CUpdateSettings::showMenu()
 
 	// check update
 	//FIXME: allow update only when the rootfs is jffs2/squashfs
-	updateSettings->addItem(new CMenuSeparator(LINE));
+	updateSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// offline
 	updateSettings->addItem(new CMenuForwarder(_("Manuell(ftp) Software Manager"), true, NULL, new CFlashUpdate(CFlashUpdate::UPDATEMODE_MANUAL)));

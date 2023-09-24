@@ -35,32 +35,19 @@
 #ifndef __remotecontrol__
 #define __remotecontrol__
 
-#include <driver/rcinput.h> 			/* neutrino_msg_t, neutrino_msg_data_t */
-
-/*zapit*/
-#include <zapit/zapit.h>
-
 #include <vector>
 #include <string>
 
-#include <gui/widget/listbox.h>
-#include <gui/widget/stringinput.h>
-
-
-// CZapProtection
-class CZapProtection
-{
-	protected:
-		char * validPIN;
-	public:
-		int fsk;
-
-		CZapProtection(char * validpin, int FSK){ validPIN = validpin; fsk = FSK; };
-		~CZapProtection(){};
-		bool check();
-};
+#include <driver/rcinput.h> 			/* neutrino_msg_t, neutrino_msg_data_t */
 
 //
+#include <zapit/zapit.h>
+
+//#include <gui/widget/listbox.h>		//CChangeObserver
+//#include <gui/widget/stringinput.h>
+
+
+////
 class CSubService
 {
 	private:
@@ -80,7 +67,7 @@ class CSubService
 
 typedef std::vector<CSubService> CSubServiceListSorted;
 
-// CRemoteControl
+//// CRemoteControl
 class CRemoteControl
 {
 	unsigned int            current_programm_timer;

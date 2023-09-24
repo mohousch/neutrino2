@@ -142,7 +142,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	snrscale->reset();
 
 	if (!frameBuffer->getActive())
-		return RETURN_EXIT_ALL;
+		return CMenuTarget::RETURN_EXIT_ALL;
 
 	//
         CZapit::getInstance()->stopPlayBack();
@@ -419,7 +419,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	
 	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
 
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)

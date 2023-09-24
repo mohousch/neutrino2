@@ -1867,12 +1867,12 @@ bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
 				//FIXME:review this
 				switch ( rv ) 
 				{
-					case RETURN_EXIT_ALL:
+					case CMenuTarget::RETURN_EXIT_ALL:
 						ret = false; //fall through
-					case RETURN_EXIT:
+					case CMenuTarget::RETURN_EXIT:
 						ret = false;
 						break;
-					case RETURN_REPAINT:
+					case CMenuTarget::RETURN_REPAINT:
 						ret = true;
 						paint();
 						break;
@@ -1918,12 +1918,12 @@ bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
 				
 			switch ( rv ) 
 			{
-				case RETURN_EXIT_ALL:
+				case CMenuTarget::RETURN_EXIT_ALL:
 					ret = false;
-				case RETURN_EXIT:
+				case CMenuTarget::RETURN_EXIT:
 					ret = false;
 					break;
-				case RETURN_REPAINT:
+				case CMenuTarget::RETURN_REPAINT:
 					ret = true;
 					paint();
 					break;

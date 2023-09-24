@@ -178,8 +178,8 @@ void CMediaPortal::showMenu(void)
 	//
 	mediaPortal = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-	mediaPortal->setWidgetMode(MODE_LISTBOX);
-	mediaPortal->setWidgetType(TYPE_FRAME);
+	mediaPortal->setWidgetMode(ClistBox::MODE_LISTBOX);
+	mediaPortal->setWidgetType(CMenuItem::TYPE_FRAME);
 	
 	//
 	mediaPortal->enablePaintHead();

@@ -346,7 +346,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_DEBUG, "CScanSetup::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -391,7 +391,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		delete hintBox;
 		hintBox = NULL;
 		
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "unisetup") 
 	{
@@ -431,7 +431,7 @@ int CScanSetup::showScanService()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showScanService: Tuner: %d\n", feindex);
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	if(!CZapit::getInstance()->getFE(feindex))
 		return res;
@@ -465,19 +465,19 @@ int CScanSetup::showScanService()
 	
 	if (widget)
 	{
-		scansetup = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		scansetup = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "scansetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		scansetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		scansetup->setWidgetMode(MODE_SETUP);
+		scansetup->setWidgetMode(ClistBox::MODE_SETUP);
 		
 		scansetup->enablePaintHead();
 		scansetup->setTitle(_("Scan transponder"), NEUTRINO_ICON_SCAN);
@@ -497,11 +497,11 @@ int CScanSetup::showScanService()
 	
 	// intros
 	scansetup->addItem(new CMenuForwarder(_("back")));
-	scansetup->addItem(new CMenuSeparator(LINE));
+	scansetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	//save settings
 	scansetup->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	scansetup->addItem(new CMenuSeparator(LINE));
+	scansetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// tuner mode
 	bool have_twin = false;
@@ -579,7 +579,7 @@ int CScanSetup::showScanService()
 	else
 		hidden = false;
 		
-	CMenuItem *item = new CMenuSeparator(LINE);
+	CMenuItem *item = new CMenuSeparator(CMenuSeparator::LINE);
 	item->setHidden(hidden);
 	feModeNotifier->addItem(0, item);
 	scansetup->addItem(item);
@@ -600,7 +600,7 @@ int CScanSetup::showScanService()
 	scansetup->addItem(useNit);
 		
 	// separator
-	item = new CMenuSeparator(LINE);
+	item = new CMenuSeparator(CMenuSeparator::LINE);
 	item->setHidden(hidden);
 	feModeNotifier->addItem(0, item);
 	scansetup->addItem(item);
@@ -695,7 +695,7 @@ int CScanSetup::showMotorSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showMotorSetup\n");
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	CWidget* motorMenuWidget = NULL;
 	ClistBox* motorMenu = NULL;
@@ -705,19 +705,19 @@ int CScanSetup::showMotorSetup()
 		
 	if (motorMenuWidget)
 	{
-		motorMenu = (ClistBox*)motorMenuWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		motorMenu = (ClistBox*)motorMenuWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		motorMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		motorMenuWidget->name = "motorsetup";
-		motorMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
+		motorMenuWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		motorMenu = new ClistBox(motorMenuWidget->getWindowsPos().iX, motorMenuWidget->getWindowsPos().iY, motorMenuWidget->getWindowsPos().iWidth, motorMenuWidget->getWindowsPos().iHeight);
 
-		motorMenu->setWidgetMode(MODE_SETUP);
+		motorMenu->setWidgetMode(ClistBox::MODE_SETUP);
 		motorMenu->enableShrinkMenu();
 			
 		motorMenu->enablePaintHead();
@@ -734,12 +734,12 @@ int CScanSetup::showMotorSetup()
 	}
 		
 	// intros
-	motorMenu->addItem(new CMenuSeparator(LINE));
+	motorMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	motorMenu->addItem(new CMenuForwarder(_("back")));
 
 	// save settings
 	motorMenu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	motorMenu->addItem(new CMenuSeparator(LINE));
+	motorMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// speed
 	motorMenu->addItem(new CMenuOptionNumberChooser(_("moving speed (10 = 1deg/sec)"), (int *)&CZapit::getInstance()->getFE(feindex)->motorRotationSpeed, true, 0, 64, NULL) );
@@ -773,7 +773,7 @@ int CScanSetup::showMotorSetup()
 	motorMenu->addItem( new CMenuOptionChooser(_("Swap rotor east/west"), &g_settings.rotor_swap, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
 	
 	//
-	motorMenu->addItem(new CMenuSeparator(LINE));
+	motorMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	motorMenu->addItem(new CMenuForwarder(_("Motor settings"), true, NULL, new CMotorControl(feindex)));
 	
 	ret = motorMenuWidget->exec(NULL, "");
@@ -792,7 +792,7 @@ int CScanSetup::showUnicableSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showUnicableSetup\n");
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* uniWidget = NULL;
@@ -802,19 +802,19 @@ int CScanSetup::showUnicableSetup()
 	
 	if (uniWidget)
 	{
-		uni_setup = (ClistBox*)uniWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		uni_setup = (ClistBox*)uniWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		uniWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		uniWidget->name = "unicablesetup";
-		uniWidget->setMenuPosition(MENU_POSITION_CENTER);
+		uniWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		uni_setup = new ClistBox(uniWidget->getWindowsPos().iX, uniWidget->getWindowsPos().iY, uniWidget->getWindowsPos().iWidth, uniWidget->getWindowsPos().iHeight);
 
-		uni_setup->setWidgetMode(MODE_SETUP);
+		uni_setup->setWidgetMode(ClistBox::MODE_SETUP);
 		uni_setup->enableShrinkMenu();
 		
 		uni_setup->enablePaintHead();
@@ -831,7 +831,7 @@ int CScanSetup::showUnicableSetup()
 	}
 
 	uni_setup->addItem(new CMenuForwarder(_("back")));
-	uni_setup->addItem(new CMenuSeparator(LINE));
+	uni_setup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// uni_scr
 	CMenuOptionNumberChooser * uniscr = new CMenuOptionNumberChooser(_("Unicable SCR address"), &CZapit::getInstance()->getFE(feindex)->uni_scr, true, -1, dmode == DISEQC_UNICABLE ? 7 : 31);
@@ -865,7 +865,7 @@ int CScanSetup::showLNBSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showLNBSetup\n");
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* satSetupWidget = NULL;
@@ -875,19 +875,19 @@ int CScanSetup::showLNBSetup()
 		
 	if (satSetupWidget)
 	{
-		satSetup = (ClistBox*)satSetupWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		satSetup = (ClistBox*)satSetupWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		satSetupWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		satSetupWidget->name = "satsetup";
-		satSetupWidget->setMenuPosition(MENU_POSITION_CENTER);
+		satSetupWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		satSetup = new ClistBox(satSetupWidget->getWindowsPos().iX, satSetupWidget->getWindowsPos().iY, satSetupWidget->getWindowsPos().iWidth, satSetupWidget->getWindowsPos().iHeight);
 
-		satSetup->setWidgetMode(MODE_SETUP);
+		satSetup->setWidgetMode(ClistBox::MODE_SETUP);
 		satSetup->enableShrinkMenu();
 			
 		satSetup->enablePaintHead();
@@ -904,7 +904,7 @@ int CScanSetup::showLNBSetup()
 	}
 		
 	satSetup->addItem(new CMenuForwarder(_("back")));
-	satSetup->addItem(new CMenuSeparator(LINE));
+	satSetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 	// tmpSat
 	CWidget* tempsatWidget = NULL;
@@ -914,20 +914,20 @@ int CScanSetup::showLNBSetup()
 				
 	if (tempsatWidget)
 	{
-		tempsatlistBox = (ClistBox*)tempsatWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		tempsatlistBox = (ClistBox*)tempsatWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		tempsatWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		tempsatWidget->name = "tempsat";
-		tempsatWidget->setMenuPosition(MENU_POSITION_CENTER);
+		tempsatWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		tempsatWidget->enableSaveScreen();
 		
 		//
 		tempsatlistBox = new ClistBox(tempsatWidget->getWindowsPos().iX, tempsatWidget->getWindowsPos().iY, tempsatWidget->getWindowsPos().iWidth, tempsatWidget->getWindowsPos().iHeight);
 
-		tempsatlistBox->setWidgetMode(MODE_SETUP);
+		tempsatlistBox->setWidgetMode(ClistBox::MODE_SETUP);
 		tempsatlistBox->enableShrinkMenu();
 					
 		//
@@ -950,17 +950,17 @@ int CScanSetup::showLNBSetup()
 			//
 			if (tempsatlistBox->hasHead())
 				tempsatlistBox->setTitle(sit->second.name.c_str(), NEUTRINO_ICON_SCAN);
-			tempsatlistBox->setWidgetMode(MODE_SETUP);
+			tempsatlistBox->setWidgetMode(ClistBox::MODE_SETUP);
 				
 			tempsatlistBox->clear();
 				
 			//
 			tempsatlistBox->addItem(new CMenuForwarder(_("back")));
-			tempsatlistBox->addItem(new CMenuSeparator(LINE));
+			tempsatlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 				
 			// savesettings
 			tempsatlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-			tempsatlistBox->addItem(new CMenuSeparator(LINE));
+			tempsatlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 			// diseqc
 			CMenuOptionNumberChooser * diseqc = new CMenuOptionNumberChooser(_("Diseqc input"), &sit->second.diseqc, ((dmode != NO_DISEQC) && (dmode != DISEQC_ADVANCED)), -1, 15, NULL, 1, -1);
@@ -1033,7 +1033,7 @@ int CScanSetup::showSatOnOffSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showSatOnOffSetup\n");
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CWidget *satOnOffWidget = NULL;
@@ -1044,19 +1044,19 @@ int CScanSetup::showSatOnOffSetup()
 		
 	if (satOnOffWidget)
 	{
-		satOnOfflistBox = (ClistBox*)satOnOffWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		satOnOfflistBox = (ClistBox*)satOnOffWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		satOnOffWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		satOnOffWidget->name = "satOnOff";
-		satOnOffWidget->setMenuPosition(MENU_POSITION_CENTER);
+		satOnOffWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		satOnOfflistBox = new ClistBox(satOnOffWidget->getWindowsPos().iX, satOnOffWidget->getWindowsPos().iY, satOnOffWidget->getWindowsPos().iWidth, satOnOffWidget->getWindowsPos().iHeight);
 
-		satOnOfflistBox->setWidgetMode(MODE_SETUP);
+		satOnOfflistBox->setWidgetMode(ClistBox::MODE_SETUP);
 		satOnOfflistBox->enableShrinkMenu();
 			
 		satOnOfflistBox->enablePaintHead();
@@ -1074,7 +1074,7 @@ int CScanSetup::showSatOnOffSetup()
 	
 	// intros
 	satOnOfflistBox->addItem(new CMenuForwarder(_("back")));
-	satOnOfflistBox->addItem(new CMenuSeparator(LINE));
+	satOnOfflistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	//
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
@@ -1111,7 +1111,7 @@ int CScanSetup::showManualScanSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showManualScanSetup\n");
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	CWidget* manualScanWidget = NULL;
 	ClistBox* manualScanlistBox = NULL;
@@ -1120,19 +1120,19 @@ int CScanSetup::showManualScanSetup()
 	
 	if (manualScanWidget)
 	{
-		manualScanlistBox = (ClistBox*)manualScanWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		manualScanlistBox = (ClistBox*)manualScanWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		manualScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		manualScanWidget->name = "manualscan";
-		manualScanWidget->setMenuPosition(MENU_POSITION_CENTER);
+		manualScanWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		manualScanlistBox = new ClistBox(manualScanWidget->getWindowsPos().iX, manualScanWidget->getWindowsPos().iY, manualScanWidget->getWindowsPos().iWidth, manualScanWidget->getWindowsPos().iHeight);
 
-		manualScanlistBox->setWidgetMode(MODE_SETUP);
+		manualScanlistBox->setWidgetMode(ClistBox::MODE_SETUP);
 		manualScanlistBox->enableShrinkMenu();
 		
 		manualScanlistBox->enablePaintHead();
@@ -1150,11 +1150,11 @@ int CScanSetup::showManualScanSetup()
 
 	// intros
 	manualScanlistBox->addItem(new CMenuForwarder(_("back")));
-	manualScanlistBox->addItem(new CMenuSeparator(LINE));
+	manualScanlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// save settings
 	manualScanlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	manualScanlistBox->addItem(new CMenuSeparator(LINE));
+	manualScanlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// sat select
 	CMenuOptionStringChooser * satSelect = NULL;
@@ -1387,7 +1387,7 @@ int CScanSetup::showManualScanSetup()
 #endif
 	}	
 
-	manualScanlistBox->addItem(new CMenuSeparator(LINE));
+	manualScanlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 	// testsignal
 	manualScanlistBox->addItem(new CMenuForwarder(_("Test signal"), true, NULL, scanTs, "test") );
@@ -1410,7 +1410,7 @@ int CScanSetup::showAutoScanSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showAutoScanSetup\n");
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	CWidget* autoScanWidget = NULL;
 	ClistBox* autoScanlistBox = NULL;
@@ -1419,19 +1419,19 @@ int CScanSetup::showAutoScanSetup()
 	
 	if (autoScanWidget)
 	{
-		autoScanlistBox = (ClistBox*)autoScanWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		autoScanlistBox = (ClistBox*)autoScanWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		autoScanWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		autoScanWidget->name = "autoscan";
-		autoScanWidget->setMenuPosition(MENU_POSITION_CENTER);
+		autoScanWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		autoScanlistBox = new ClistBox(autoScanWidget->getWindowsPos().iX, autoScanWidget->getWindowsPos().iY, autoScanWidget->getWindowsPos().iWidth, autoScanWidget->getWindowsPos().iHeight);
 
-		autoScanlistBox->setWidgetMode(MODE_SETUP);
+		autoScanlistBox->setWidgetMode(ClistBox::MODE_SETUP);
 		autoScanlistBox->enableShrinkMenu();
 		
 		autoScanlistBox->enablePaintHead();
@@ -1449,11 +1449,11 @@ int CScanSetup::showAutoScanSetup()
 	
 	// intros
 	autoScanlistBox->addItem(new CMenuForwarder(_("back")));
-	autoScanlistBox->addItem(new CMenuSeparator(LINE));
+	autoScanlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// savesettings
 	autoScanlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	autoScanlistBox->addItem(new CMenuSeparator(LINE));
+	autoScanlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 	// satselect
 	CMenuOptionStringChooser * satSelect = NULL;
@@ -1543,7 +1543,7 @@ int CScanSetup::showAllAutoScanSetup()
 {
 	dprintf(DEBUG_NORMAL, "CScanSetup::showAllAutoScanSetup\n");
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* autoScanAllWidget = NULL;
@@ -1553,19 +1553,19 @@ int CScanSetup::showAllAutoScanSetup()
 		
 	if (autoScanAllWidget)
 	{
-		autoScanAlllistBox = (ClistBox*)autoScanAllWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		autoScanAlllistBox = (ClistBox*)autoScanAllWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		autoScanAllWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		autoScanAllWidget->name = "autoscanall";
-		autoScanAllWidget->setMenuPosition(MENU_POSITION_CENTER);
+		autoScanAllWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		autoScanAlllistBox = new ClistBox(autoScanAllWidget->getWindowsPos().iX, autoScanAllWidget->getWindowsPos().iY, autoScanAllWidget->getWindowsPos().iWidth, autoScanAllWidget->getWindowsPos().iHeight);
 
-		autoScanAlllistBox->setWidgetMode(MODE_SETUP);
+		autoScanAlllistBox->setWidgetMode(ClistBox::MODE_SETUP);
 		autoScanAlllistBox->enableShrinkMenu();
 			
 		autoScanAlllistBox->enablePaintHead();
@@ -1583,11 +1583,11 @@ int CScanSetup::showAllAutoScanSetup()
 			
 	// intros
 	autoScanAlllistBox->addItem(new CMenuForwarder(_("back")));
-	autoScanAlllistBox->addItem(new CMenuSeparator(LINE));
+	autoScanAlllistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 	// save settings
 	autoScanAlllistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	autoScanAlllistBox->addItem(new CMenuSeparator(LINE));
+	autoScanAlllistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 	// satonoff
 	autoScanAlllistBox->addItem(new CMenuForwarder(_("Satellite"), true, NULL, this, "satonoffsetup"));
@@ -1654,19 +1654,19 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	
 	if (tpWidget)
 	{
-		menu = (ClistBox*)tpWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)tpWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		tpWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		tpWidget->name = "transponder";
-		tpWidget->setMenuPosition(MENU_POSITION_CENTER);
+		tpWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		menu = new ClistBox(tpWidget->getWindowsPos().iX, tpWidget->getWindowsPos().iY, tpWidget->getWindowsPos().iWidth, tpWidget->getWindowsPos().iHeight);
 
-		menu->setWidgetMode(MODE_SETUP);
+		menu->setWidgetMode(ClistBox::MODE_SETUP);
 		
 		//
 		menu->enablePaintHead();
@@ -1882,10 +1882,10 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 #endif	
 	}
 	
-	if(retval == RETURN_EXIT_ALL)
-		return RETURN_EXIT_ALL;
+	if(retval == CMenuTarget::RETURN_EXIT_ALL)
+		return CMenuTarget::RETURN_EXIT_ALL;
 
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 // scan settings
@@ -2367,7 +2367,7 @@ int CTunerSetup::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CTunerSetup::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -2381,7 +2381,7 @@ int CTunerSetup::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CTunerSetup::showMenu\n");
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	CWidget* widget = NULL;
 	ClistBox* TunerSetup = NULL;
@@ -2390,19 +2390,19 @@ int CTunerSetup::showMenu()
 	
 	if (widget)
 	{
-		TunerSetup = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		TunerSetup = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "tunersetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		TunerSetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
-		TunerSetup->setWidgetMode(MODE_MENU);
+		TunerSetup->setWidgetMode(ClistBox::MODE_MENU);
 		TunerSetup->enableShrinkMenu();
 		
 		//
@@ -2425,7 +2425,7 @@ int CTunerSetup::showMenu()
 		
 	// intros
 	TunerSetup->addItem(new CMenuForwarder(_("back")));
-	TunerSetup->addItem( new CMenuSeparator(LINE) );
+	TunerSetup->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 				
 	for(int i = 0; i < CZapit::getInstance()->getFrontendCount(); i++)
 	{

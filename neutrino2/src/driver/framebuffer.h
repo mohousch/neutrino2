@@ -105,31 +105,6 @@ enum {
 	GRADIENT_COLOR2COLOR
 };
 
-// transparency
-enum 
-{
-	TM_EMPTY  = 0,
-	TM_NONE   = 1,
-	TM_BLACK  = 2,
-	TM_INI    = 3
-};
-		
-// scaling mode
-enum ScalingMode
-{
-	NONE = 0,
-	SIMPLE = 1,
-	COLOR = 2
-};
-
-// three mode
-enum
-{
-	THREE_NONE = 0,
-	THREE_SIDE_BY_SIDE,
-	THREE_TOP_AND_BUTTOM
-};
-
 // png/jpg/bmp/gif/crw/svg
 struct cformathandler 
 {
@@ -146,6 +121,32 @@ CFormathandler* fh_getsize(const char * name, int * x, int * y, int width_wanted
 
 class CFrameBuffer
 {
+	public:
+		// transparency
+		enum 
+		{
+			TM_EMPTY  = 0,
+			TM_NONE   = 1,
+			TM_BLACK  = 2,
+			TM_INI    = 3
+		};
+				
+		// scaling mode
+		enum ScalingMode
+		{
+			NONE = 0,
+			SIMPLE = 1,
+			COLOR = 2
+		};
+
+		// three mode
+		enum
+		{
+			THREE_NONE = 0,
+			THREE_SIDE_BY_SIDE,
+			THREE_TOP_AND_BUTTOM
+		};
+	
 	private:
 		CFrameBuffer();
 

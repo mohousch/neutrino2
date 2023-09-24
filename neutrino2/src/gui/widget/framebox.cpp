@@ -436,12 +436,12 @@ int CFrameItem::exec(CMenuTarget *parent)
 {
 	dprintf(DEBUG_NORMAL, "CFrameItem::exec: actionKey:(%s)\n", actionKey.c_str());
 
-	int ret = RETURN_EXIT;
+	int ret = CMenuTarget::RETURN_EXIT;
 
 	if(jumpTarget)
 		ret = jumpTarget->exec(parent, actionKey);
 	else
-		ret = RETURN_EXIT;
+		ret = CMenuTarget::RETURN_EXIT;
 
 	return ret;
 }
@@ -728,7 +728,7 @@ int CFrameBox::swipRight()
 {
 	dprintf(DEBUG_INFO, "CFrameBox::swipRight:\n");
 	
-	int ret = RETURN_NONE;
+	int ret = CMenuTarget::RETURN_NONE;
 
 	for (unsigned int count = 1; count < frames.size(); count++) 
 	{
@@ -754,7 +754,7 @@ int CFrameBox::swipLeft()
 {
 	dprintf(DEBUG_INFO, "CFrameBox::swipLeft:\n");
 	
-	int ret = RETURN_NONE;
+	int ret = CMenuTarget::RETURN_NONE;
 
 	for (unsigned int count = 1; count < frames.size(); count++) 
 	{
@@ -828,7 +828,7 @@ int CFrameBox::oKKeyPressed(CMenuTarget *_parent, neutrino_msg_t _msg)
 {
 	dprintf(DEBUG_INFO, "CFrameBox::okKeyPressed:\n");
 	
-	int ret = RETURN_EXIT;
+	int ret = CMenuTarget::RETURN_EXIT;
 
 	if (hasItem() && selected >= 0 && frames[selected]->isSelectable())
 	{

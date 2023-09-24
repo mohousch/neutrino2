@@ -335,7 +335,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
 		
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "radio")
 	{
@@ -350,7 +350,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		delete CSelectChannelWidgetHandler;
 		CSelectChannelWidgetHandler = NULL;
 		
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "recording_dir")
 	{
@@ -362,7 +362,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 
 		setValueString(b.getSelectedFile()->Name.c_str());
 
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	else if (actionKey == "plugin_chooser")
 	{
@@ -372,7 +372,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		setValueString(timerNew.pluginName);
 		
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	else if (strcmp(key, "modifytimer") == 0)
 	{
@@ -398,7 +398,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 			CTimerd::getInstance()->modifyTimerEvent(timerlist[selected].eventID, timerlist[selected].announceTime, timerlist[selected].alarmTime, timerlist[selected].stopTime, timerlist[selected].eventRepeat, timerlist[selected].repeatCount);
 		}
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	else if (strcmp(key, "newtimer") == 0)
 	{
@@ -421,7 +421,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 			timerNew.eventType == CTimerd::TIMER_RECORD)
 		{
 			if(timerNew_channel_name.empty())
-				return RETURN_REPAINT;
+				return CMenuTarget::RETURN_REPAINT;
 			else
 				timerNew.channel_id = timerNew_chan_id;
 			
@@ -472,7 +472,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 			}
 		}
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 
 	int ret = show();
@@ -509,7 +509,7 @@ int CTimerList::show()
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
 
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	updateEvents();
@@ -555,9 +555,9 @@ int CTimerList::show()
 		}
 		else if ((msg == RC_ok) && !(timerlist.empty()))
 		{
-			if (modifyTimer() == RETURN_EXIT_ALL)
+			if (modifyTimer() == CMenuTarget::RETURN_EXIT_ALL)
 			{
-				res = RETURN_EXIT_ALL;
+				res = CMenuTarget::RETURN_EXIT_ALL;
 				loop = false;
 			}
 			else
@@ -573,9 +573,9 @@ int CTimerList::show()
 		}
 		else if(msg == RC_green)
 		{
-			if (newTimer() == RETURN_EXIT_ALL)
+			if (newTimer() == CMenuTarget::RETURN_EXIT_ALL)
 			{
-				res = RETURN_EXIT_ALL;
+				res = CMenuTarget::RETURN_EXIT_ALL;
 				loop = false;
 			}
 			else
@@ -593,7 +593,7 @@ int CTimerList::show()
 		}
 		else if(msg == RC_setup)
 		{
-			res = RETURN_EXIT_ALL;
+			res = CMenuTarget::RETURN_EXIT_ALL;
 			loop = false;
 		}
 		else if(msg == RC_info)
@@ -607,7 +607,7 @@ int CTimerList::show()
 				{
 					hide();
 					res = g_EpgData->show(timer->channel_id, timer->epgID, &timer->epg_starttime);
-					if(res == RETURN_EXIT_ALL)
+					if(res == CMenuTarget::RETURN_EXIT_ALL)
 						loop = false;
 					else
 					{
@@ -620,7 +620,7 @@ int CTimerList::show()
 		{
 			g_RCInput->postMsg (msg, 0);
 			loop = false;
-			res = RETURN_EXIT_ALL;
+			res = CMenuTarget::RETURN_EXIT_ALL;
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
@@ -632,7 +632,7 @@ int CTimerList::show()
 			if( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
 			{
 				loop = false;
-				res = RETURN_EXIT_ALL;
+				res = CMenuTarget::RETURN_EXIT_ALL;
 			}
 		}
 
@@ -681,7 +681,7 @@ void CTimerList::paint()
 	
 	if (timerlistWidget)
 	{
-		listBox = (ClistBox*)timerlistWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		listBox = (ClistBox*)timerlistWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
@@ -701,7 +701,7 @@ void CTimerList::paint()
 		//
 		timerlistWidget = new CWidget(&cFrameBox);
 		timerlistWidget->name = "timerlist";
-		timerlistWidget->setMenuPosition(MENU_POSITION_CENTER);
+		timerlistWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		timerlistWidget->addWidgetItem(listBox);
 	}
 
@@ -947,7 +947,7 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 
 int CTimerList::modifyTimer()
 {
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	if (listBox) selected = listBox->getSelected();
 
 	CTimerd::responseGetTimer* timer = &timerlist[selected];
@@ -961,19 +961,19 @@ int CTimerList::modifyTimer()
 	
 	if (widget)
 	{
-		timerSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		timerSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "modifytimer";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		timerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		timerSettings->setWidgetMode(MODE_SETUP);
+		timerSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("Modify timer"), NEUTRINO_ICON_TIMER);
 		timerSettings->enablePaintFoot();
@@ -990,11 +990,11 @@ int CTimerList::modifyTimer()
 	
 	// intros
 	timerSettings->addItem(new CMenuForwarder(_("back"), true));
-	timerSettings->addItem(new CMenuSeparator(LINE));
+	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	//
 	timerSettings->addItem(new CMenuForwarder(_("Save Timer"), true, NULL, this, "modifytimer", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	timerSettings->addItem(new CMenuSeparator(LINE));
+	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	char type[80];
 	strcpy(type, convertTimerType2String(timer->eventType)); // UTF
@@ -1028,11 +1028,11 @@ int CTimerList::modifyTimer()
 	strncpy(timer->recordingDir, g_settings.network_nfs_recordingdir, sizeof(timer->recordingDir));
 	CMenuForwarder *m6 = new CMenuForwarder(_("Recording directory"), true, timer->recordingDir, this, "recording_dir");
 
-	timerSettings->addItem(new CMenuSeparator(LINE));
+	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	timerSettings->addItem(m3);
 	timerSettings->addItem(m4);
 	timerSettings->addItem(m5);
-	timerSettings->addItem(new CMenuSeparator(LINE));
+	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	if (timer->eventType == CTimerd::TIMER_RECORD)
 	{
 		timerSettings->addItem(m6);
@@ -1045,12 +1045,12 @@ int CTimerList::modifyTimer()
 	//
 	timerSettings_apidsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 	timerSettings_apidsWidget->name = "apidstimerlist";
-	timerSettings_apidsWidget->setMenuPosition(MENU_POSITION_CENTER);
+	timerSettings_apidsWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 	
 	//			
 	timerSettings_apids = new ClistBox(timerSettings_apidsWidget->getWindowsPos().iX, timerSettings_apidsWidget->getWindowsPos().iY, timerSettings_apidsWidget->getWindowsPos().iWidth, timerSettings_apidsWidget->getWindowsPos().iHeight);
 
-	timerSettings_apids->setWidgetMode(MODE_SETUP);				
+	timerSettings_apids->setWidgetMode(ClistBox::MODE_SETUP);				
 	timerSettings_apids->enablePaintHead();
 	timerSettings_apids->setTitle(_("Audio PIDs"), NEUTRINO_ICON_TIMER);
 	timerSettings_apids->enablePaintFoot();
@@ -1069,7 +1069,7 @@ int CTimerList::modifyTimer()
 	timer_apids_alt = (timer->apids & TIMERD_APIDS_ALT) ? 1 : 0 ;
 
 	timerSettings_apids->addItem(new CMenuForwarder(_("back"), true, NULL, NULL, NULL, RC_nokey, NEUTRINO_ICON_BUTTON_LEFT));
-	timerSettings_apids->addItem(new CMenuSeparator(LINE));
+	timerSettings_apids->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	CMenuOptionChooser* ma1 = new CMenuOptionChooser(_("Record default audio streams"), &timer_apids_dflt, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true, &apid_notifier);
 	timerSettings_apids->addItem(ma1);
 	CMenuOptionChooser* ma2 = new CMenuOptionChooser(_("Record standard stream"), &timer_apids_std, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true, &apid_notifier);
@@ -1104,7 +1104,7 @@ int CTimerList::modifyTimer()
 
 int CTimerList::newTimer()
 {
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	// Defaults
 	timerNew.eventType = CTimerd::TIMER_RECORD ;
@@ -1126,19 +1126,19 @@ int CTimerList::newTimer()
 	
 	if (widget)
 	{
-		timerSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		timerSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "newtimer";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		timerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		timerSettings->setWidgetMode(MODE_SETUP);
+		timerSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("New timer"), NEUTRINO_ICON_TIMER);
 		timerSettings->enablePaintFoot();
@@ -1155,11 +1155,11 @@ int CTimerList::newTimer()
 	
 	// intros
 	timerSettings->addItem(new CMenuForwarder(_("back"), true));
-	timerSettings->addItem(new CMenuSeparator(LINE));
+	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	//
 	timerSettings->addItem(new CMenuForwarder(_("Save timer"), true, NULL, this, "newtimer", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	timerSettings->addItem(new CMenuSeparator(LINE));
+	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// alarm time
 	CDateInput timerSettings_alarmTime(_("Alarm time"), &(timerNew.alarmTime) , _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));
@@ -1213,11 +1213,11 @@ int CTimerList::newTimer()
 	timerSettings->addItem( m0);
 	timerSettings->addItem( m1);
 	timerSettings->addItem( m2);
-	timerSettings->addItem(new CMenuSeparator(LINE));
+	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	timerSettings->addItem( m3);
 	timerSettings->addItem( m4);
 	timerSettings->addItem( m5);
-	timerSettings->addItem(new CMenuSeparator(LINE));
+	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	timerSettings->addItem( m6);
 	timerSettings->addItem( m7);
 	timerSettings->addItem( m8);

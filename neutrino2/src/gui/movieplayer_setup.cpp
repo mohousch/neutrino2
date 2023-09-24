@@ -53,7 +53,7 @@ int CMoviePlayerSettings::exec(CMenuTarget* parent, const std::string& actionKey
 {
 	dprintf(DEBUG_NORMAL, "CMoviePlayerSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -69,7 +69,7 @@ int CMoviePlayerSettings::exec(CMenuTarget* parent, const std::string& actionKey
 		hide();
 		showMenu();
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	
 	showMenu();
@@ -89,19 +89,19 @@ void CMoviePlayerSettings::showMenu()
 	
 	if (widget)
 	{
-		moviePlayerSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		moviePlayerSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "movieplayersetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		moviePlayerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		moviePlayerSettings->setWidgetMode(MODE_SETUP);
+		moviePlayerSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		moviePlayerSettings->enableShrinkMenu();
 		
 		moviePlayerSettings->enablePaintHead();
@@ -119,11 +119,11 @@ void CMoviePlayerSettings::showMenu()
 	
 	// intros
 	moviePlayerSettings->addItem(new CMenuForwarder(_("back")));
-	moviePlayerSettings->addItem( new CMenuSeparator(LINE) );
+	moviePlayerSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	moviePlayerSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	moviePlayerSettings->addItem( new CMenuSeparator(LINE) );
+	moviePlayerSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// multiformat Dir
 	moviePlayerSettings->addItem(new CMenuForwarder(_("Start dir."), true, g_settings.network_nfs_moviedir, this, "moviedir") ); 

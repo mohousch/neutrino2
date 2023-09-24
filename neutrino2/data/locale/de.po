@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-09-23 12:58+0200\n"
+"POT-Creation-Date: 2023-09-24 22:08+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "'X'=timer '-' no timer"
-msgstr ""
+msgstr "'X'=Timer '-' kein Timer"
 
 #, c-format
 msgid "(%d%% over)"
@@ -64,20 +64,17 @@ msgstr ""
 msgid "5 Volt"
 msgstr ""
 
-msgid "?"
-msgstr ""
-
 msgid "A/V sync"
-msgstr ""
+msgstr "Audio / Video Synchronisation"
 
 msgid "AC3 Delay"
-msgstr ""
+msgstr "AC3 Verzögerung"
 
 msgid "AV Select"
-msgstr ""
+msgstr "AV Auswahl"
 
 msgid "Abortion of channel scan"
-msgstr ""
+msgstr "Sender Suche abbrechen"
 
 msgid "Absolute start directory"
 msgstr ""
@@ -86,7 +83,7 @@ msgid "Activate settings"
 msgstr "aktiviere Einstellungen"
 
 msgid "Actors"
-msgstr ""
+msgstr "Schauspieler"
 
 msgid "Add"
 msgstr "Einfügen"
@@ -104,29 +101,28 @@ msgid "Adventure / Western/War"
 msgstr ""
 
 msgid "Age"
-msgstr ""
+msgstr "Alter"
 
 msgid "Alarm time"
 msgstr ""
 
-#, fuzzy
 msgid "All Services"
-msgstr "Alle"
+msgstr "Alle Sender"
 
 msgid "Alpha Setup"
 msgstr "Alpha Einstellungen"
 
 msgid "Analog Output"
-msgstr ""
+msgstr "Analog Ausgang"
 
 msgid "Antenna positioning"
 msgstr ""
 
 msgid "Arabic"
-msgstr ""
+msgstr "Arabisch"
 
 msgid "Are you sure ?"
-msgstr ""
+msgstr "Sind Sie sicher?"
 
 msgid "Are you sure to format ? You will lost all data "
 msgstr ""
@@ -135,10 +131,10 @@ msgid "Are you sure to init ?"
 msgstr ""
 
 msgid "Arts / Culture"
-msgstr ""
+msgstr "Kunst / Kultur"
 
 msgid "Arts / Culture magazines"
-msgstr ""
+msgstr "Kunst / Kultur Zeitschriften"
 
 msgid "Aspect Ratio"
 msgstr ""
@@ -192,16 +188,16 @@ msgid "Available Images/Packages"
 msgstr ""
 
 msgid "BOTTOM"
-msgstr ""
+msgstr "Unten"
 
 msgid "BOTTOM LEFT"
-msgstr ""
+msgstr "Unten Links"
 
 msgid "BOTTOM RIGHT"
-msgstr ""
+msgstr "Unten Recht"
 
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 msgid "Background"
 msgstr "Hintergrund"
@@ -280,7 +276,6 @@ msgstr ""
 msgid "CAM removed from slot"
 msgstr ""
 
-#, fuzzy
 msgid "CEC Setup"
 msgstr "Alpha Einstellungen"
 
@@ -357,16 +352,16 @@ msgid "Cartoons / Puppets"
 msgstr ""
 
 msgid "Change PIN code"
-msgstr ""
+msgstr "PIN Code ändern"
 
 msgid "Change sort order"
-msgstr ""
+msgstr "Reihenfolge ändern"
 
 msgid "Channel"
-msgstr ""
+msgstr "Kanal"
 
 msgid "Channel Logo"
-msgstr ""
+msgstr "Kanal Logo"
 
 msgid "Channel direct selection"
 msgstr ""
@@ -375,7 +370,7 @@ msgid "Channel down"
 msgstr ""
 
 msgid "Channel not available"
-msgstr ""
+msgstr "Kanal nicht verfügbar"
 
 msgid "Channel up"
 msgstr ""
@@ -384,13 +379,13 @@ msgid "Channel:"
 msgstr ""
 
 msgid "Channellist"
-msgstr ""
+msgstr "Sender Liste"
 
 msgid "Channellist Description"
-msgstr ""
+msgstr "Sender Liste Beschreibung"
 
 msgid "Channellist Number"
-msgstr ""
+msgstr "Sender Liste Nummer"
 
 msgid "Channellist settings"
 msgstr "Kanal Liste Einstellungen"
@@ -423,13 +418,13 @@ msgid "Contrast / Brightness"
 msgstr ""
 
 msgid "Cooking"
-msgstr ""
+msgstr "Kochen"
 
 msgid "Copy bouquet to Favorites"
 msgstr "Kopiere Bouquet zu Favoriten"
 
 msgid "Corner"
-msgstr ""
+msgstr "Ecke"
 
 msgid "Correction time in min. (00=off). This time"
 msgstr ""
@@ -464,7 +459,6 @@ msgstr ""
 msgid "Data"
 msgstr ""
 
-#, fuzzy
 msgid "Date"
 msgstr "Datum"
 
@@ -2896,10 +2890,10 @@ msgid "locked"
 msgstr ""
 
 msgid "logos Dir"
-msgstr ""
+msgstr "Sender Logos Ordner"
 
 msgid "loop"
-msgstr ""
+msgstr "Schleife"
 
 msgid ""
 "manual flash update version checks are currently not supported.\n"
@@ -2949,12 +2943,11 @@ msgid "need reboot or epg-reset"
 msgstr ""
 
 msgid "never"
-msgstr ""
+msgstr "nie"
 
 msgid "next bouquet"
 msgstr ""
 
-#, fuzzy
 msgid "no"
 msgstr "EPG Info1"
 
@@ -3037,16 +3030,16 @@ msgid "purple"
 msgstr ""
 
 msgid "ready"
-msgstr ""
+msgstr "bereit"
 
 msgid "record"
-msgstr ""
+msgstr "aufnahme"
 
 msgid "record default audio streams"
 msgstr ""
 
 msgid "red"
-msgstr ""
+msgstr "rot"
 
 msgid "remount"
 msgstr ""
@@ -3058,7 +3051,7 @@ msgid "sat"
 msgstr ""
 
 msgid "save play list"
-msgstr ""
+msgstr "Play Liste speichern"
 
 msgid "save playlist"
 msgstr ""
@@ -3069,7 +3062,6 @@ msgstr ""
 msgid "scroll mode"
 msgstr ""
 
-#, fuzzy
 msgid "search"
 msgstr "Suche"
 
@@ -3143,12 +3135,11 @@ msgid "the filesize is 0 Bytes"
 msgstr ""
 
 msgid "time"
-msgstr ""
+msgstr "Zeit"
 
 msgid "time (in minutes) to switch from standby"
 msgstr ""
 
-#, fuzzy
 msgid "title"
 msgstr "EPG Titel"
 
@@ -3196,7 +3187,7 @@ msgid "volume / playtime / audio"
 msgstr ""
 
 msgid "waiting for EPG..."
-msgstr ""
+msgstr "warten auf EPG..."
 
 msgid "weekly"
 msgstr ""

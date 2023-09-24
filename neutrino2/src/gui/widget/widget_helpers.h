@@ -106,30 +106,32 @@ class CBox
 		inline ~CBox(){};
 };
 
-// CComponent
-enum {
-	CC_ICON,
-	CC_IMAGE,
-	CC_LABEL,
-	CC_TEXT,
-	CC_BUTTON,
-	CC_HLINE,
-	CC_VLINE,
-	CC_FRAMELINE,
-	CC_PIG,
-	CC_GRID,
-	CC_TIME,
-	CC_COUNTER,
-	CC_SPINNER,
-	// not to be added with addCCItem method.
-	CC_SCROLLBAR,
-	CC_PROGRESSBAR,
-	CC_DETAILSLINE,
-	CC_SLIDER,
-};
-
+//// CComponent
 class CComponent
 {
+	public:
+		enum 
+		{
+			CC_ICON,
+			CC_IMAGE,
+			CC_LABEL,
+			CC_TEXT,
+			CC_BUTTON,
+			CC_HLINE,
+			CC_VLINE,
+			CC_FRAMELINE,
+			CC_PIG,
+			CC_GRID,
+			CC_TIME,
+			CC_COUNTER,
+			CC_SPINNER,
+			// not to be added with addCCItem method.
+			CC_SCROLLBAR,
+			CC_PROGRESSBAR,
+			CC_DETAILSLINE,
+			CC_SLIDER,
+		};
+	
 	public:
 		//
 		int cc_type;
@@ -210,6 +212,7 @@ class CComponent
 
 typedef std::vector<CComponent*> CCITEMLIST;
 
+//// CCIcon
 class CCIcon : public CComponent
 {
 	public:
@@ -247,6 +250,7 @@ class CCIcon : public CComponent
 		void blink(bool show);
 };
 
+//// CCImage
 class CCImage : public CComponent
 {
 	public:
@@ -272,13 +276,7 @@ class CCImage : public CComponent
 		void paint();
 };
 
-// CCButtons
-enum {
-	BUTTON_BUTTON,
-	BUTTON_FRAME_COLORED,
-	BUTTON_FRAME_BORDER
-};
-
+//// CCButtons
 class CCButtons : public CComponent
 {
 	private:
@@ -288,6 +286,13 @@ class CCButtons : public CComponent
 		int mode;
 
 	public:
+		enum {
+			BUTTON_BUTTON,
+			BUTTON_FRAME_COLORED,
+			BUTTON_FRAME_BORDER
+		};
+
+		//
 		CFrameBuffer* frameBuffer;
 		
 		//
@@ -308,7 +313,7 @@ class CCButtons : public CComponent
 		void clear(){buttons.clear();};
 };
 
-// CHline
+//// CHline
 class CCHline : public CComponent
 {
 	public:
@@ -330,7 +335,7 @@ class CCHline : public CComponent
 		void paint();
 };
 
-// CVline
+//// CVline
 class CCVline : public CComponent
 {
 	public:
@@ -352,7 +357,7 @@ class CCVline : public CComponent
 		void paint();
 };
 
-// CFrameline
+//// CFrameline
 class CCFrameLine : public CComponent
 {
 	public:
@@ -372,7 +377,7 @@ class CCFrameLine : public CComponent
 		void paint();
 };
 
-// CLabel
+//// CLabel
 class CCLabel : public CComponent
 {
 	public:
@@ -404,7 +409,7 @@ class CCLabel : public CComponent
 		void hide();
 };
 
-//CText
+//// CText
 class CCText : public CComponent
 {
 	private:
@@ -444,7 +449,7 @@ class CCText : public CComponent
 		void hide();
 };
 
-//
+////
 class CCGrid : public CComponent
 {
 	private:
@@ -470,7 +475,7 @@ class CCGrid : public CComponent
 		void hide();
 };
 
-// pig
+//// pig
 class CCPig : public CComponent
 {
 	public:
@@ -489,7 +494,7 @@ class CCPig : public CComponent
 		void hide();
 };
 
-// CCTime
+//// CCTime
 class CCTime : public CComponent/*, public OpenThreads::Thread*/
 {
 	public:
@@ -527,7 +532,7 @@ class CCTime : public CComponent/*, public OpenThreads::Thread*/
 		//void Stop();
 };
 
-// CCCounter
+//// CCCounter
 class CCCounter : public CComponent
 {
 	public:
@@ -564,7 +569,7 @@ class CCCounter : public CComponent
 		CFont* getFont(){return g_Font[font];};
 };
 
-// CCSpinner
+//// CCSpinner
 class CCSpinner : public CComponent/*, public OpenThreads::Thread*/
 {
 	public:
@@ -593,7 +598,7 @@ class CCSpinner : public CComponent/*, public OpenThreads::Thread*/
 		//void run();
 };
 
-//CScrollBar
+//// CScrollBar
 class CScrollBar : public CComponent
 {
 	public:
@@ -608,7 +613,7 @@ class CScrollBar : public CComponent
 		void paint(CBox* position, const int NrOfPages, const int CurrentPage);
 };
 
-// CProgressBar
+//// CProgressBar
 class CProgressBar : public CComponent
 {
 	private:
@@ -636,18 +641,19 @@ class CProgressBar : public CComponent
 		void setColor(uint32_t c){rgb = c;};
 };
 
-// detailsLine
-enum {
-	DL_INFO,
-	DL_HINT,
-	DL_HINTITEM,
-	DL_HINTICON,
-	DL_HINTHINT
-};
-
+//// detailsLine
 class CItems2DetailsLine : public CComponent
 {
 	public:
+		enum {
+			DL_INFO,
+			DL_HINT,
+			DL_HINTITEM,
+			DL_HINTICON,
+			DL_HINTHINT
+		};
+
+		//
 		CFrameBuffer* frameBuffer;
 		
 		//
@@ -695,7 +701,7 @@ class CItems2DetailsLine : public CComponent
 		void enableSaveScreen();
 };
 
-// CCSlider
+//// CCSlider
 class CCSlider : public CComponent
 {
 	private:
@@ -712,20 +718,20 @@ class CCSlider : public CComponent
 		void paint(const int spos, const char * const iconname, const bool selected);
 };
 
-// CWidgetItem
-enum {
-	WIDGETITEM_WINDOW,
-	WIDGETITEM_HEAD,
-	WIDGETITEM_FOOT,
-	WIDGETITEM_LISTBOX,
-	WIDGETITEM_FRAMEBOX,
-	WIDGETITEM_LISTFRAME,
-	WIDGETITEM_TEXTBOX
-};
-
+//// CWidgetItem
 class CWidgetItem
 {
 	public:
+		enum {
+			WIDGETITEM_WINDOW,
+			WIDGETITEM_HEAD,
+			WIDGETITEM_FOOT,
+			WIDGETITEM_LISTBOX,
+			WIDGETITEM_FRAMEBOX,
+			WIDGETITEM_LISTFRAME,
+			WIDGETITEM_TEXTBOX
+		};
+
 		//
 		CBox itemBox;
 
@@ -838,7 +844,7 @@ class CWidgetItem
 
 typedef std::vector<CWidgetItem*> WIDGETITEMLIST;
 
-// CHeaders
+//// CHeaders
 class CHeaders : public CWidgetItem
 {
 	private:
@@ -894,7 +900,7 @@ class CHeaders : public CWidgetItem
 		void clear(){hbutton_labels.clear();};
 };
 
-// CFooters
+//// CFooters
 class CFooters : public CWidgetItem
 {
 	private:

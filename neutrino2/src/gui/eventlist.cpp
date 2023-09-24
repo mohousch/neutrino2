@@ -238,7 +238,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 	neutrino_msg_data_t data;
 	bool in_search = 0;
 
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	if(m_search_list == SEARCH_LIST_NONE) // init globals once only
 	{
@@ -450,7 +450,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 
 				res = g_EpgData->show(channel_id, evtlist[selected].eventID, &evtlist[selected].startTime);
 				
-				if ( res == RETURN_EXIT_ALL )
+				if ( res == CMenuTarget::RETURN_EXIT_ALL )
 				{
 					loop = false;
 				}
@@ -492,7 +492,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		else if (msg == RC_sat || msg == RC_favorites)
 		{
 			g_RCInput->postMsg (msg, 0);
-			res = RETURN_EXIT_ALL;
+			res = CMenuTarget::RETURN_EXIT_ALL;
 			loop = false;
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
@@ -505,7 +505,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 			if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
 			{
 				loop = false;
-				res = RETURN_EXIT_ALL;
+				res = CMenuTarget::RETURN_EXIT_ALL;
 			}
 		}
 
@@ -602,7 +602,7 @@ void EventList::paint(t_channel_id channel_id)
 	
 	if (evlWidget)
 	{
-		listBox = (ClistBox*)evlWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		listBox = (ClistBox*)evlWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
@@ -714,7 +714,7 @@ int CEventListHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*
 {
 	dprintf(DEBUG_NORMAL, "CEventListHandler::exec:\n");
 
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	EventList* e;
 	CChannelList* channelList;
 
@@ -852,7 +852,7 @@ CEventFinderMenu::CEventFinderMenu(int * event, int * search_epg_item, std::stri
 
 int CEventFinderMenu::exec(CMenuTarget * parent, const std::string &actionKey)
 {
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	if(actionKey == "")
 	{
@@ -864,7 +864,7 @@ int CEventFinderMenu::exec(CMenuTarget * parent, const std::string &actionKey)
 	else if(actionKey == "1")
 	{
 		*m_event = true;
-		res = RETURN_EXIT_ALL;
+		res = CMenuTarget::RETURN_EXIT_ALL;
 	}	
 	else if(actionKey == "2")
 	{
@@ -936,7 +936,7 @@ int CEventFinderMenu::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "CEventFinderMenu::showMenu:\n");
 
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	*m_event = false;
 	
 	if(*m_search_list == EventList::SEARCH_LIST_CHANNEL)
@@ -968,19 +968,19 @@ int CEventFinderMenu::showMenu(void)
 	
 	if (widget)
 	{
-		searchMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		searchMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "epgsearch";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		searchMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		searchMenu->setWidgetMode(MODE_SETUP);
+		searchMenu->setWidgetMode(ClistBox::MODE_SETUP);
 		searchMenu->enableShrinkMenu();
 		
 		searchMenu->enablePaintHead();
@@ -997,11 +997,11 @@ int CEventFinderMenu::showMenu(void)
 	}
 
         searchMenu->addItem(mf2);
-        searchMenu->addItem(new CMenuSeparator(LINE));
+        searchMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
         searchMenu->addItem(mo0);
         searchMenu->addItem(mf1);
         searchMenu->addItem(mo1);
-        searchMenu->addItem(new CMenuSeparator(LINE));
+        searchMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
         searchMenu->addItem(mf0);
 	
 	res = widget->exec(NULL, "");

@@ -264,7 +264,7 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL , "CUserMenuMenu::exec: %s\n", actionKey.c_str());
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
         if(parent)
                 parent->hide();
@@ -279,22 +279,22 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if (widget)
 	{	
-		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
-		head = (CHeaders *)widget->getWidgetItem(WIDGETITEM_HEAD);
-		foot = (CFooters *)widget->getWidgetItem(WIDGETITEM_FOOT);
+		menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		head = (CHeaders *)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
+		foot = (CFooters *)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
 		
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		widget->enableSaveScreen();
 		
 		//
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
 		
-		menu->setWidgetMode(MODE_SETUP);
+		menu->setWidgetMode(ClistBox::MODE_SETUP);
 		
 		//	
 		head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
@@ -319,17 +319,17 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	// intros
 	menu->addItem(new CMenuForwarder(_("back")));
-	menu->addItem( new CMenuSeparator(LINE) );
+	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	menu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	menu->addItem( new CMenuSeparator(LINE) );
+	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	//
         CStringInputSMS name(_("User menu"), g_settings.usermenu_text[button].c_str());
         
         menu->addItem(new CMenuForwarder(_("Name"), true, g_settings.usermenu_text[button].c_str(), &name));
-        menu->addItem(new CMenuSeparator(LINE));
+        menu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
         char text[10];
         

@@ -126,7 +126,7 @@ int CDBoxInfoWidget::exec(CMenuTarget * parent, const std::string& actionKey)
 	
 	showInfo();	
 
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 void CDBoxInfoWidget::hide()
@@ -138,14 +138,14 @@ int CDBoxInfoWidget::showInfo()
 {
 	dprintf(DEBUG_NORMAL, "CDBoxInfoWidget::showInfo:\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	dboxInfoWidget = CNeutrinoApp::getInstance()->getWidget("boxinfo");
 	
 	//
 	if (dboxInfoWidget)
 	{
-		head = (CHeaders*)dboxInfoWidget->getWidgetItem(WIDGETITEM_HEAD);
+		head = (CHeaders*)dboxInfoWidget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
 	}
 	else
 	{
@@ -504,7 +504,7 @@ int CInfoMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CInfoMenu::exec: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -518,7 +518,7 @@ int CInfoMenu::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CInfoMenu::showMenu:\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	widget = NULL; 
@@ -529,19 +529,19 @@ int CInfoMenu::showMenu()
 	
 	if (widget)
 	{
-		infoMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		infoMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "information";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		infoMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
-		infoMenu->setWidgetMode(MODE_MENU);
-		infoMenu->setWidgetType(TYPE_CLASSIC);
+		infoMenu->setWidgetMode(ClistBox::MODE_MENU);
+		infoMenu->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		infoMenu->enableShrinkMenu();
 		
 		//

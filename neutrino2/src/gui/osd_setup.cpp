@@ -73,7 +73,7 @@ int COSDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -88,7 +88,7 @@ int COSDSettings::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "COSDSettings::showMenu:\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;
@@ -99,20 +99,20 @@ int COSDSettings::showMenu(void)
 	
 	if (widget)
 	{
-		osdSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		osdSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "osd";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		osdSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
-		osdSettings->setWidgetMode(MODE_MENU);
-		osdSettings->setWidgetType(TYPE_CLASSIC);
+		osdSettings->setWidgetMode(ClistBox::MODE_MENU);
+		osdSettings->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		osdSettings->enableShrinkMenu();
 		
 		//
@@ -236,7 +236,7 @@ int COSDMenuColorSettings::exec(CMenuTarget* parent, const std::string& actionKe
 {
 	dprintf(DEBUG_NORMAL, "COSDMenuColorSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -266,19 +266,19 @@ void COSDMenuColorSettings::showMenu()
 	
 	if (widget)
 	{
-		OSDmenuColorsSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		OSDmenuColorsSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "menusetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		OSDmenuColorsSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		OSDmenuColorsSettings->setWidgetMode(MODE_SETUP);
+		OSDmenuColorsSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		OSDmenuColorsSettings->enableShrinkMenu();
 		
 		//
@@ -300,7 +300,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem(new CMenuForwarder(_("back")));
 
 	// save settings
-	OSDmenuColorsSettings->addItem( new CMenuSeparator(LINE) );
+	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	OSDmenuColorsSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 
 	// head
@@ -334,7 +334,7 @@ void COSDMenuColorSettings::showMenu()
 	CColorChooser * chHintTextColor = new CColorChooser(_("Textcolor"), &g_settings.menu_Hint_Text_red, &g_settings.menu_Hint_Text_green, &g_settings.menu_Hint_Text_blue, NULL, CNeutrinoApp::getInstance()->colorSetupNotifier);
 
 	// head
-	OSDmenuColorsSettings->addItem( new CMenuSeparator(LINE | STRING, _("Head")));
+	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Head")));
 	
 	// head colr
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Background"), true, NULL, chHeadcolor ));
@@ -355,22 +355,22 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Line"), &g_settings.Head_line, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	// window content
-	OSDmenuColorsSettings->addItem( new CMenuSeparator(LINE | STRING, _("Window-Content")));
+	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Window-Content")));
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Background"), true, NULL, chContentcolor ));
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Textcolor"), true, NULL, chContentTextcolor ));
 
 	// window content inactiv
-	OSDmenuColorsSettings->addItem( new CMenuSeparator(LINE | STRING, _("Window-Content inactive")));
+	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Window-Content inactive")));
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Background"), true, NULL, chContentInactivecolor ));
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Textcolor"), true, NULL, chContentInactiveTextcolor));
 
 	// window content selected
-	OSDmenuColorsSettings->addItem( new CMenuSeparator(LINE | STRING, _("Window-Content selected")));
+	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Window-Content selected")));
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Background"), true, NULL, chContentSelectedcolor ));
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Textcolor"), true, NULL, chContentSelectedTextcolor ));
 	
 	// foot
-	OSDmenuColorsSettings->addItem( new CMenuSeparator(LINE | STRING, _("Foot")));
+	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Foot")));
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Background"), true, NULL, chFootcolor ));
 
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Textcolor"), true, NULL, chFootTextcolor ));
@@ -388,7 +388,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Line"), &g_settings.Foot_line, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	// itemInfo
-	OSDmenuColorsSettings->addItem( new CMenuSeparator(LINE | STRING, _("Item Info")));
+	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Item Info")));
 	
 	// itemInfocolor
 	OSDmenuColorsSettings->addItem( new CMenuForwarder(_("Background"), true, NULL, chHintColor ));
@@ -431,7 +431,7 @@ int COSDInfoBarColorSettings::exec(CMenuTarget* parent, const std::string& actio
 {
 	dprintf(DEBUG_NORMAL, "COSDInfoBarColorSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -461,19 +461,19 @@ void COSDInfoBarColorSettings::showMenu()
 	
 	if (widget)
 	{
-		OSDinfobarColorSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		OSDinfobarColorSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "infobarsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		OSDinfobarColorSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		OSDinfobarColorSettings->setWidgetMode(MODE_SETUP);
+		OSDinfobarColorSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		OSDinfobarColorSettings->enableShrinkMenu();
 		
 		OSDinfobarColorSettings->enablePaintHead();
@@ -492,7 +492,7 @@ void COSDInfoBarColorSettings::showMenu()
 	// intros
 	OSDinfobarColorSettings->addItem(new CMenuForwarder(_("back")));
 
-	OSDinfobarColorSettings->addItem(new CMenuSeparator(LINE));
+	OSDinfobarColorSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	OSDinfobarColorSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 
 	// bg
@@ -504,7 +504,7 @@ void COSDInfoBarColorSettings::showMenu()
 	// colored events
 	CColorChooser * chColored_Events = new CColorChooser(_("Events Textcolor"), &g_settings.infobar_colored_events_red, &g_settings.infobar_colored_events_green, &g_settings.infobar_colored_events_blue, NULL, CNeutrinoApp::getInstance()->colorSetupNotifier);
 
-	OSDinfobarColorSettings->addItem( new CMenuSeparator(LINE));
+	OSDinfobarColorSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE));
 
 	// bg color
 	OSDinfobarColorSettings->addItem( new CMenuForwarder(_("Background"), true, NULL, chInfobarcolor ));
@@ -537,7 +537,7 @@ void COSDInfoBarColorSettings::showMenu()
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Radius"), &g_settings.infobar_radius, RADIUS_TYPE_OPTIONS, RADIUS_TYPE_OPTION_COUNT, true));
 	
 	//
-	OSDinfobarColorSettings->addItem( new CMenuSeparator(LINE));
+	OSDinfobarColorSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// sig/snr
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Satellite display on infobar"), &g_settings.infobar_sat_display, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
@@ -566,7 +566,7 @@ int CLanguageSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CLanguageSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -582,7 +582,7 @@ int CLanguageSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		}
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	
 	ret = showMenu();
@@ -594,7 +594,7 @@ int CLanguageSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CLanguageSettings::showMenu:\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CMenuItem* item = NULL;
@@ -605,19 +605,19 @@ int CLanguageSettings::showMenu()
 	
 	if (widget)
 	{
-		languageSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		languageSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "languagesetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		languageSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		languageSettings->setWidgetMode(MODE_SETUP);
+		languageSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		languageSettings->enableShrinkMenu();
 		
 		languageSettings->enablePaintHead();
@@ -635,10 +635,10 @@ int CLanguageSettings::showMenu()
 	
 	// intros
 	languageSettings->addItem(new CMenuForwarder(_("back")));
-	languageSettings->addItem(new CMenuSeparator(LINE));
+	languageSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	languageSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	languageSettings->addItem(new CMenuSeparator(LINE));
+	languageSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	item = new CMenuForwarder(_("English"), true, NULL, this, "en");
 	item->setIconName("en");
@@ -718,7 +718,7 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CFontSettings::exec: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -751,7 +751,7 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		hide();
 		showMenu();
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 		
 	showMenu();
@@ -771,19 +771,19 @@ void CFontSettings::showMenu()
 	
 	if (widget)
 	{
-		fontSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		fontSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, 700, MENU_HEIGHT);
 		widget->name = "fontsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		fontSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		fontSettings->setWidgetMode(MODE_SETUP);
+		fontSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		fontSettings->enableShrinkMenu();
 		
 		fontSettings->enablePaintHead();
@@ -801,16 +801,16 @@ void CFontSettings::showMenu()
 	
 	// intros
 	fontSettings->addItem(new CMenuForwarder(_("back")));
-	fontSettings->addItem(new CMenuSeparator(LINE));
+	fontSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	fontSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	fontSettings->addItem(new CMenuSeparator(LINE));
+	fontSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// font name
 	fontSettings->addItem(new CMenuForwarder(_("Font name"), true, g_settings.font_file, this, "select_font"));
 	
 	// font scaling
-	fontSettings->addItem(new CMenuSeparator(LINE|STRING, _("Font")));
+	fontSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Font")));
 	fontSettings->addItem(new CMenuOptionNumberChooser(_("Horizontal (in %)"), &g_settings.screen_xres, true, 50, 200, NULL) );
 	fontSettings->addItem(new CMenuOptionNumberChooser(_("Vertikal (in %)"), &g_settings.screen_yres, true, 50, 200, NULL) );
 		
@@ -829,7 +829,7 @@ int COSDTimingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDTimingSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -863,19 +863,19 @@ void COSDTimingSettings::showMenu()
 	
 	if (widget)
 	{
-		osdTimingSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		osdTimingSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "osdtimingsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		osdTimingSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		osdTimingSettings->setWidgetMode(MODE_SETUP);
+		osdTimingSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		osdTimingSettings->enableShrinkMenu();
 		
 		osdTimingSettings->enablePaintHead();
@@ -893,10 +893,10 @@ void COSDTimingSettings::showMenu()
 	
 	// intros
 	osdTimingSettings->addItem(new CMenuForwarder(_("back")));
-	osdTimingSettings->addItem(new CMenuSeparator(LINE));
+	osdTimingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	osdTimingSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	osdTimingSettings->addItem(new CMenuSeparator(LINE));
+	osdTimingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	osdTimingSettings->addItem(new CMenuOptionNumberChooser(_("Menu"), &g_settings.timing_menu, true, 0, 600));
 	osdTimingSettings->addItem(new CMenuOptionNumberChooser(_("Channellist"), &g_settings.timing_channellist, true, 0, 600));
@@ -906,7 +906,7 @@ void COSDTimingSettings::showMenu()
 	osdTimingSettings->addItem(new CMenuOptionNumberChooser(_("Numericzap"), &g_settings.timing_numericzap, true, 0, 600));
 	
 
-	osdTimingSettings->addItem(new CMenuSeparator(LINE));
+	osdTimingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	osdTimingSettings->addItem(new CMenuForwarder(_("Default"), true, NULL, this, "osd.def"));
 	
 	//
@@ -924,7 +924,7 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDDiverses::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -953,7 +953,7 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 		hide();
 		showMenu();
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	else if(actionKey == "select_buttons_dir")
 	{
@@ -973,7 +973,7 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 		hide();
 		showMenu();
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	else if(actionKey == "select_hints_dir")
 	{
@@ -993,7 +993,7 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 		hide();
 		showMenu();
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	else if(actionKey == "select_spinner_dir")
 	{
@@ -1013,7 +1013,7 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 		hide();
 		showMenu();
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	else if(actionKey == "logos_dir") 
 	{
@@ -1030,7 +1030,7 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 		hide();
 		showMenu();
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	
 	showMenu();
@@ -1079,19 +1079,19 @@ void COSDDiverses::showMenu()
 	
 	if (widget)
 	{
-		osdDiverseSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		osdDiverseSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "osdmiscsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		osdDiverseSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		osdDiverseSettings->setWidgetMode(MODE_SETUP);
+		osdDiverseSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		osdDiverseSettings->enableShrinkMenu();
 		
 		osdDiverseSettings->enablePaintHead();
@@ -1109,10 +1109,10 @@ void COSDDiverses::showMenu()
 	
 	// intros
 	osdDiverseSettings->addItem(new CMenuForwarder(_("back")));
-	osdDiverseSettings->addItem(new CMenuSeparator(LINE));
+	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	osdDiverseSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	osdDiverseSettings->addItem(new CMenuSeparator(LINE));
+	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// progressbar color
 	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Progressbar Color"), &g_settings.progressbar_color, PROGRESSBAR_COLOR_OPTIONS, PROGRESSBAR_COLOR_OPTION_COUNT, true));
@@ -1132,7 +1132,7 @@ void COSDDiverses::showMenu()
 	osdDiverseSettings->addItem(as);
 	
 	//
-	osdDiverseSettings->addItem(new CMenuSeparator(LINE));
+	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// icons dir
 	osdDiverseSettings->addItem(new CMenuForwarder(_("Icons Dir"), true, g_settings.icons_dir.c_str(), this, "select_icons_dir"));
@@ -1147,7 +1147,7 @@ void COSDDiverses::showMenu()
 	osdDiverseSettings->addItem(new CMenuForwarder(_("Spinner Dir"), true, g_settings.spinner_dir.c_str(), this, "select_spinner_dir"));
 	
 	//
-	osdDiverseSettings->addItem(new CMenuSeparator(LINE));
+	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// logos
 	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Channel Logo"), &g_settings.logos_show_logo, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
@@ -1170,7 +1170,7 @@ int CSkinManager::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CSkinManager::showMenu:\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CMenuItem* item = NULL;
@@ -1181,20 +1181,20 @@ int CSkinManager::showMenu()
 	
 	if (widget)
 	{
-		skinMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		skinMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "skinsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		skinMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		skinMenu->setWidgetMode(MODE_LISTBOX);
-		skinMenu->setWidgetType(TYPE_CLASSIC);
+		skinMenu->setWidgetMode(ClistBox::MODE_LISTBOX);
+		skinMenu->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		skinMenu->enableShrinkMenu();
 		
 		skinMenu->enablePaintHead();
@@ -1268,7 +1268,7 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CSkinManager::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -1294,7 +1294,7 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		showMenu();
 		
-		return RETURN_EXIT_ALL;
+		return CMenuTarget::RETURN_EXIT_ALL;
 	}
 		
 	ret = showMenu();
@@ -1307,7 +1307,7 @@ int CSkinSettings::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CSkinSettings::showMenu:\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CMenuItem* item = NULL;
@@ -1318,19 +1318,19 @@ int CSkinSettings::showMenu()
 	
 	if (widget)
 	{
-		skinSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		skinSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "skinstyleselectionsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		skinSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		skinSettings->setWidgetMode(MODE_SETUP);
+		skinSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		skinSettings->enableShrinkMenu();
 		
 		skinSettings->enablePaintHead();
@@ -1348,12 +1348,12 @@ int CSkinSettings::showMenu()
 	
 	// intros
 	skinSettings->addItem(new CMenuForwarder(_("back")));
-	skinSettings->addItem( new CMenuSeparator(LINE) );
+	skinSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save current skin style
 	skinSettings->addItem(new CMenuForwarder(_("Save current skin style"), true, NULL, this, "savecurrentstyle", RC_red, NEUTRINO_ICON_BUTTON_RED));
 
-	skinSettings->addItem( new CMenuSeparator(LINE) );
+	skinSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// load config files
 	std::string skinPath = CONFIGDIR "/skins/";
@@ -1411,7 +1411,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CSkinSettings::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -1446,7 +1446,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 
 			hide();
 			showMenu();
-			return RETURN_EXIT_ALL;
+			return CMenuTarget::RETURN_EXIT_ALL;
 		}
 		else
 		{
@@ -1481,7 +1481,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			hide();
 			showMenu();
 			
-			return RETURN_EXIT_ALL;
+			return CMenuTarget::RETURN_EXIT_ALL;
 		}
 	}
 		
@@ -1495,7 +1495,7 @@ int CPersonalisation::exec(CMenuTarget *parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPersonalisation::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if (parent)
 		parent->hide();
@@ -1509,7 +1509,7 @@ int CPersonalisation::showMenu(void)
 {
 	dprintf(DEBUG_NORMAL, "CSkinSettings::showMenu:\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CMenuItem *item = NULL;
@@ -1520,19 +1520,19 @@ int CPersonalisation::showMenu(void)
 	
 	if (widget)
 	{
-		personalizeSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		personalizeSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "personalisation";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		personalizeSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		personalizeSettings->setWidgetMode(MODE_SETUP);
+		personalizeSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		personalizeSettings->enableShrinkMenu();
 		
 		personalizeSettings->enablePaintHead();
@@ -1550,57 +1550,57 @@ int CPersonalisation::showMenu(void)
 	
 	// intros
 	personalizeSettings->addItem(new CMenuForwarder(_("back")));
-	personalizeSettings->addItem( new CMenuSeparator(LINE) );
+	personalizeSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	personalizeSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	personalizeSettings->addItem(new CMenuSeparator(LINE));
+	personalizeSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// mainmenu
 	// tv / radio
 	item = new CMenuOptionChooser(_("TV / Radio"), &g_settings.personalize_tvradio);
 	item->setActive(true);
-	item->addOption(_("active"), ITEM_ACTIVE);
-	item->addOption(_("locked"), ITEM_LOCKED);
-	item->addOption(_("hidden"), ITEM_HIDDEN);
-	item->addOption(_("inactive"), ITEM_INACTIVE);
+	item->addOption(_("active"), CMenuItem::ITEM_ACTIVE);
+	item->addOption(_("locked"), CMenuItem::ITEM_LOCKED);
+	item->addOption(_("hidden"), CMenuItem::ITEM_HIDDEN);
+	item->addOption(_("inactive"), CMenuItem::ITEM_INACTIVE);
 	item->enablePullDown();
 	personalizeSettings->addItem(item);
 	
 	// epg / timer
 	item = new CMenuOptionChooser(_("Timer / EPG"), &g_settings.personalize_epgtimer);
 	item->setActive(true);
-	item->addOption(_("active"), ITEM_ACTIVE);
-	item->addOption(_("locked"), ITEM_LOCKED);
-	item->addOption(_("hidden"), ITEM_HIDDEN);
-	item->addOption(_("inactive"), ITEM_INACTIVE);
+	item->addOption(_("active"), CMenuItem::ITEM_ACTIVE);
+	item->addOption(_("locked"), CMenuItem::ITEM_LOCKED);
+	item->addOption(_("hidden"), CMenuItem::ITEM_HIDDEN);
+	item->addOption(_("inactive"), CMenuItem::ITEM_INACTIVE);
 	personalizeSettings->addItem(item);
 	
 	// scart
 #ifdef ENABLE_SCART
 	item = new CMenuOptionChooser(_("Scart"), &g_settings.personalize_scart);
 	item->setActive(true);
-	item->addOption(_("active"), ITEM_ACTIVE);
-	item->addOption(_("locked"), ITEM_LOCKED);
-	item->addOption(_("hidden"), ITEM_HIDDEN);
-	item->addOption(_("inactive"), ITEM_INACTIVE);
+	item->addOption(_("active"), CMenuItem::ITEM_ACTIVE);
+	item->addOption(_("locked"), CMenuItem::ITEM_LOCKED);
+	item->addOption(_("hidden"), CMenuItem::ITEM_HIDDEN);
+	item->addOption(_("inactive"), CMenuItem::ITEM_INACTIVE);
 	personalizeSettings->addItem(item);
 #endif
 	
 	// features
 	item = new CMenuOptionChooser(_("Features"), &g_settings.personalize_features);
 	item->setActive(true);
-	item->addOption(_("active"), ITEM_ACTIVE);
-	item->addOption(_("locked"), ITEM_LOCKED);
-	item->addOption(_("hidden"), ITEM_HIDDEN);
-	item->addOption(_("inactive"), ITEM_INACTIVE);
+	item->addOption(_("active"), CMenuItem::ITEM_ACTIVE);
+	item->addOption(_("locked"), CMenuItem::ITEM_LOCKED);
+	item->addOption(_("hidden"), CMenuItem::ITEM_HIDDEN);
+	item->addOption(_("inactive"), CMenuItem::ITEM_INACTIVE);
 	personalizeSettings->addItem(item);
 	
 	// system
 	item = new CMenuOptionChooser(_("System"), &g_settings.personalize_system);
 	item->setActive(true);
-	item->addOption(_("active"), ITEM_ACTIVE);
-	item->addOption(_("locked"), ITEM_LOCKED);
-	item->addOption(_("hidden"), ITEM_HIDDEN);
-	item->addOption(_("inactive"), ITEM_INACTIVE);
+	item->addOption(_("active"), CMenuItem::ITEM_ACTIVE);
+	item->addOption(_("locked"), CMenuItem::ITEM_LOCKED);
+	item->addOption(_("hidden"), CMenuItem::ITEM_HIDDEN);
+	item->addOption(_("inactive"), CMenuItem::ITEM_INACTIVE);
 	personalizeSettings->addItem(item);
 	
 	// settings
@@ -1608,28 +1608,28 @@ int CPersonalisation::showMenu(void)
 	// information
 	item = new CMenuOptionChooser(_("Information"), &g_settings.personalize_information);
 	item->setActive(true);
-	item->addOption(_("active"), ITEM_ACTIVE);
-	item->addOption(_("locked"), ITEM_LOCKED);
-	item->addOption(_("hidden"), ITEM_HIDDEN);
-	item->addOption(_("inactive"), ITEM_INACTIVE);
+	item->addOption(_("active"), CMenuItem::ITEM_ACTIVE);
+	item->addOption(_("locked"), CMenuItem::ITEM_LOCKED);
+	item->addOption(_("hidden"), CMenuItem::ITEM_HIDDEN);
+	item->addOption(_("inactive"), CMenuItem::ITEM_INACTIVE);
 	personalizeSettings->addItem(item);
 	
 	// powermenu
 	item = new CMenuOptionChooser(_("Power Menu"), &g_settings.personalize_powermenu);
 	item->setActive(true);
-	item->addOption(_("active"), ITEM_ACTIVE);
-	item->addOption(_("locked"), ITEM_LOCKED);
-	item->addOption(_("hidden"), ITEM_HIDDEN);
-	item->addOption(_("inactive"), ITEM_INACTIVE);
+	item->addOption(_("active"), CMenuItem::ITEM_ACTIVE);
+	item->addOption(_("locked"), CMenuItem::ITEM_LOCKED);
+	item->addOption(_("hidden"), CMenuItem::ITEM_HIDDEN);
+	item->addOption(_("inactive"), CMenuItem::ITEM_INACTIVE);
 	personalizeSettings->addItem(item);
 	
 	// mediaplayer
 	item = new CMenuOptionChooser(_("Media Player"), &g_settings.personalize_mediaplayer);
 	item->setActive(true);
-	item->addOption(_("active"), ITEM_ACTIVE);
-	item->addOption(_("locked"), ITEM_LOCKED);
-	item->addOption(_("hidden"), ITEM_HIDDEN);
-	item->addOption(_("inactive"), ITEM_INACTIVE);
+	item->addOption(_("active"), CMenuItem::ITEM_ACTIVE);
+	item->addOption(_("locked"), CMenuItem::ITEM_LOCKED);
+	item->addOption(_("hidden"), CMenuItem::ITEM_HIDDEN);
+	item->addOption(_("inactive"), CMenuItem::ITEM_INACTIVE);
 	personalizeSettings->addItem(item);
 	
 	//

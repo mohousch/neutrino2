@@ -86,7 +86,7 @@ int CAudioSelectMenuHandler::exec(CMenuTarget * parent, const std::string &/*act
 {
 	dprintf(DEBUG_NORMAL, "CAudioSelectMenuHandler::exec:\n");
 
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 
 	if (parent) 
 		parent->hide();
@@ -101,7 +101,7 @@ int CAudioSelectMenuHandler::doMenu()
 {
 	dprintf(DEBUG_NORMAL, "CAudioSelectMenuHandler::doMenu\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	//
 	CWidget* widget = NULL;
@@ -112,19 +112,19 @@ int CAudioSelectMenuHandler::doMenu()
 	
 	if (widget)
 	{
-		AudioSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		AudioSelector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "audioselect";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//			
 		AudioSelector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		AudioSelector->setWidgetMode(MODE_SETUP);
+		AudioSelector->setWidgetMode(ClistBox::MODE_SETUP);
 		AudioSelector->enableShrinkMenu();
 						
 		AudioSelector->enablePaintHead();
@@ -156,7 +156,7 @@ int CAudioSelectMenuHandler::doMenu()
 	}
 
 	if(g_RemoteControl->current_PIDs.APIDs.size())
-		AudioSelector->addItem(new CMenuSeparator(LINE));
+		AudioSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// analogue output
 	AudioSelector->addItem(new CMenuOptionChooser(_("Analog Output"), &g_settings.audio_AnalogMode, AUDIOMENU_ANALOGOUT_OPTIONS, AUDIOMENU_ANALOGOUT_OPTION_COUNT, true, CAudioSettings::getInstance()->audioSetupNotifier, RC_red, NEUTRINO_ICON_BUTTON_RED));
@@ -186,7 +186,7 @@ int CAudioSelectMenuHandler::doMenu()
 				if(!sep_added) 
 				{
 					sep_added = true;
-					AudioSelector->addItem(new CMenuSeparator(LINE | STRING, _("Subtitles")));
+					AudioSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Subtitles")));
 				}
 				char spid[10];
 				//int pid = sd->pId;
@@ -205,7 +205,7 @@ int CAudioSelectMenuHandler::doMenu()
 				if(!sep_added) 
 				{
 					sep_added = true;
-					AudioSelector->addItem(new CMenuSeparator(LINE | STRING, _("Subtitles")));
+					AudioSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Subtitles")));
 				}
 				char spid[64];
 				int page = ((sd->teletext_magazine_number & 0xFF) << 8) | sd->teletext_page_number;
@@ -219,7 +219,7 @@ int CAudioSelectMenuHandler::doMenu()
 		
 		if(sep_added) 
 		{
-			AudioSelector->addItem(new CMenuSeparator(LINE));
+			AudioSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 			AudioSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW ));
 		}
 
@@ -238,7 +238,7 @@ int CAudioSelectMenuHandler::doMenu()
 		if(!sep_added) 
 		{
 			sep_added = true;
-			AudioSelector->addItem(new CMenuSeparator(LINE | STRING, _("Volume adjustment (in %)")));
+			AudioSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Volume adjustment (in %)")));
 		}
 		
 		AudioSelector->addItem(new CMenuOptionNumberChooser(g_RemoteControl->current_PIDs.APIDs[count].desc, &percent[count], is_active, 0, 100, audioSetupNotifierVolPercent));
@@ -270,7 +270,7 @@ int CAPIDChangeExec::exec(CMenuTarget */*parent*/, const std::string & actionKey
 		g_RemoteControl->setAPID(sel);
 	}
 
-	return RETURN_EXIT;
+	return CMenuTarget::RETURN_EXIT;
 }
 
 // volume conf

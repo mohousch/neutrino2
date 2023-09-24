@@ -28,20 +28,21 @@
 #include <gui/widget/widget_helpers.h>
 
 
-//
-enum
-{
-	RETURN_NONE		= 0,
-	RETURN_REPAINT 		= 1,
-	RETURN_EXIT 		= 2,
-	RETURN_EXIT_ALL 	= 4
-};
-
-//
+////
 class CMenuTarget
 {
+	public:
+		enum
+		{
+			RETURN_NONE		= 0,
+			RETURN_REPAINT 		= 1,
+			RETURN_EXIT 		= 2,
+			RETURN_EXIT_ALL 	= 4
+		};
+
 	private:
-		std::string valueString;		
+		std::string valueString;
+				
 	public:
 		CMenuTarget(){valueString.clear();};
 		virtual ~CMenuTarget(){};
@@ -53,18 +54,19 @@ class CMenuTarget
 		virtual void setValueString(const char *const value){valueString = value;};
 };
 
-//
-enum {
-	MENU_POSITION_NONE = 0,
-	MENU_POSITION_LEFT = 1,
-	MENU_POSITION_CENTER = 2,
-	MENU_POSITION_RIGHT = 3
-};
-
-//
+////
 class CWidget : public CMenuTarget
 {
 	public:
+		enum 
+		{
+			MENU_POSITION_NONE = 0,
+			MENU_POSITION_LEFT = 1,
+			MENU_POSITION_CENTER = 2,
+			MENU_POSITION_RIGHT = 3
+		};
+
+		//
 		std::string name;
 			
 	protected:

@@ -108,7 +108,7 @@ int CLCDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CLCDSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -130,19 +130,19 @@ void CLCDSettings::showMenu()
 	
 	if (widget)
 	{
-		lcdSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		lcdSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "lcdsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		lcdSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		lcdSettings->setWidgetMode(MODE_SETUP);
+		lcdSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		lcdSettings->enableShrinkMenu();
 		
 		lcdSettings->enablePaintHead();
@@ -160,11 +160,11 @@ void CLCDSettings::showMenu()
 	
 	// intros
 	lcdSettings->addItem(new CMenuForwarder(_("back")));
-	lcdSettings->addItem( new CMenuSeparator(LINE) );
+	lcdSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	lcdSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	lcdSettings->addItem(new CMenuSeparator(LINE));
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	CLcdNotifier * lcdnotifier = new CLcdNotifier();
 	CVfdControler * lcdsliders = new CVfdControler(_("Display settings"), NULL);
@@ -197,7 +197,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, 15));
 
 	// vfd controller
-	lcdSettings->addItem(new CMenuSeparator(LINE));
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// lcd controller
 	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));
@@ -221,7 +221,7 @@ void CLCDSettings::showMenu()
 	lcdSettings->addItem(new CMenuOptionNumberChooser(_("Brightness after dim timeout"), &g_settings.lcd_setting_dim_brightness, true, 0, 15));
 
 	// vfd controller
-	lcdSettings->addItem(new CMenuSeparator(LINE));
+	lcdSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	lcdSettings->addItem(new CMenuForwarder(_("Contrast / Brightness"), true, NULL, lcdsliders));	
 #endif	
 #endif	

@@ -82,7 +82,7 @@ void CNeutrinoApp::mainMenu(void)
 	
 	if (widget)
 	{
-		nMenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		nMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
@@ -91,7 +91,7 @@ void CNeutrinoApp::mainMenu(void)
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "mainmenu";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		//widget->paintMainFrame(true);
 		//widget->setCorner(RADIUS_SMALL, g_settings.Head_corner | g_settings.Foot_corner);
 		//widget->setGradient(LIGHT2DARK);
@@ -99,8 +99,8 @@ void CNeutrinoApp::mainMenu(void)
 		//
 		nMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
-		nMenu->setWidgetMode(MODE_MENU);
-		nMenu->setWidgetType(TYPE_CLASSIC);
+		nMenu->setWidgetMode(ClistBox::MODE_MENU);
+		nMenu->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		nMenu->enableShrinkMenu();
 		nMenu->paintMainFrame(true);
 		
@@ -360,7 +360,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 	
 	if (widget)
 	{
-		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
@@ -369,7 +369,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "features";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		//widget->paintMainFrame(true);
 		//widget->setCorner(RADIUS_SMALL, g_settings.Head_corner | g_settings.Foot_corner);
 		//widget->setGradient(LIGHT2DARK);
@@ -377,8 +377,8 @@ bool CNeutrinoApp::showUserMenu(int button)
 		//
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		menu->setWidgetMode(MODE_MENU);
-		menu->setWidgetType(TYPE_CLASSIC);
+		menu->setWidgetMode(ClistBox::MODE_MENU);
+		menu->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		menu->enableShrinkMenu();
 		menu->paintMainFrame(true);
 		

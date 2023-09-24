@@ -44,7 +44,7 @@ double CPictureViewer::m_aspect_ratio_correction;
 
 CPictureViewer::CPictureViewer ()
 {
-	m_scaling = (ScalingMode)g_settings.picviewer_scaling;
+	m_scaling = (CFrameBuffer::ScalingMode)g_settings.picviewer_scaling;
 
 	m_Pic_Name = "";
 	m_Pic_Buffer = NULL;
@@ -118,7 +118,7 @@ bool CPictureViewer::decodeImage(const std::string & name, bool showBusySign)
 
 		if (fh->get_pic(name.c_str(), &m_Pic_Buffer, &x, &y) == FH_ERROR_OK) 
 		{
-			if ((x > (m_endx - m_startx) || y > (m_endy - m_starty)) && m_scaling != NONE) 
+			if ((x > (m_endx - m_startx) || y > (m_endy - m_starty)) && m_scaling != CFrameBuffer::NONE) 
 			{
 				if ((m_aspect_ratio_correction * y * (m_endx - m_startx) / x) <= (m_endy - m_starty)) 
 				{

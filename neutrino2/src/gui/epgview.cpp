@@ -459,7 +459,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 {
 	dprintf(DEBUG_NORMAL, "CEpgData::show: %llx\n", channel_id);
 
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	static uint64_t id;
 	static time_t startzeit;
 	 
@@ -638,10 +638,10 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	
 	if (widget)
 	{
-		textBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
-		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
-		footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
-		cFollowScreeningWindow = (CWindow*)widget->getWidgetItem(WIDGETITEM_WINDOW, "screening");
+		textBox = (CTextBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_TEXTBOX);
+		headers = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
+		footers = (CFooters*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
+		cFollowScreeningWindow = (CWindow*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_WINDOW, "screening");
 	}
 	else
 	{
@@ -920,7 +920,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 						if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all )
 						{
 							loop = false;
-							res = RETURN_EXIT_ALL;
+							res = CMenuTarget::RETURN_EXIT_ALL;
 						}
 					}
 			}
@@ -1143,7 +1143,7 @@ int CEPGDataHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CEPGDataHandler::exec:\n");
 
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	CChannelList* channelList;
 	CEpgData* e;
 

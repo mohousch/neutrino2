@@ -89,9 +89,9 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 	
 	if (widget)
 	{
-		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
-		footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
-		m_pcTextBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
+		headers = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
+		footers = (CFooters*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
+		m_pcTextBox = (CTextBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_TEXTBOX);
 	}
 	else
 	{
@@ -167,9 +167,9 @@ CInfoBox::CInfoBox()
 	
 	if (widget)
 	{
-		headers = (CHeaders*)widget->getWidgetItem(WIDGETITEM_HEAD);
-		footers = (CFooters*)widget->getWidgetItem(WIDGETITEM_FOOT);
-		m_pcTextBox = (CTextBox*)widget->getWidgetItem(WIDGETITEM_TEXTBOX);
+		headers = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
+		footers = (CFooters*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
+		m_pcTextBox = (CTextBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_TEXTBOX);
 	}
 	else
 	{
@@ -508,7 +508,7 @@ int CInfoBox::exec(int timeout)
 
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 
 	// show infobox
 	paint();
@@ -544,7 +544,7 @@ int CInfoBox::exec(int timeout)
 		}
 		else if (CNeutrinoApp::getInstance()->handleMsg(msg, data) & messages_return::cancel_all)
 		{
-			res  = RETURN_EXIT_ALL;
+			res  = CMenuTarget::RETURN_EXIT_ALL;
 			loop = false;
 		}
 

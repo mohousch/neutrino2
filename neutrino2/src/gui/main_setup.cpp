@@ -61,7 +61,7 @@ int CMainSettingsMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMainSettingsMenu::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -85,20 +85,20 @@ void CMainSettingsMenu::showMenu(void)
 	
 	if (widget)
 	{
-		mainSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		mainSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "settings";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		mainSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
-		mainSettings->setWidgetMode(MODE_MENU);
-		mainSettings->setWidgetType(TYPE_CLASSIC);
+		mainSettings->setWidgetMode(ClistBox::MODE_MENU);
+		mainSettings->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		mainSettings->enableShrinkMenu();
 		
 		//

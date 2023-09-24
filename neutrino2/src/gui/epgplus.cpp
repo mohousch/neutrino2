@@ -798,7 +798,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 	this->channelListStartIndex = int (selectedChannelIndex / maxNumberOfDisplayableEntries) * maxNumberOfDisplayableEntries;
 	this->bouquetList = _bouquetList;
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 
   	do {
 		this->refreshAll = false;
@@ -968,13 +968,13 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				//
 				menuWidgetOptionsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 				menuWidgetOptionsWidget->name = "epgplusoptions";
-				menuWidgetOptionsWidget->setMenuPosition(MENU_POSITION_CENTER);
+				menuWidgetOptionsWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 				menuWidgetOptionsWidget->enableSaveScreen();
 				
 				//
 				menuWidgetOptions = new ClistBox(menuWidgetOptionsWidget->getWindowsPos().iX, menuWidgetOptionsWidget->getWindowsPos().iY, menuWidgetOptionsWidget->getWindowsPos().iWidth, menuWidgetOptionsWidget->getWindowsPos().iHeight);
 
-				menuWidgetOptions->setWidgetMode(MODE_SETUP);
+				menuWidgetOptions->setWidgetMode(ClistBox::MODE_SETUP);
 				menuWidgetOptions->enableShrinkMenu();
 					
 				menuWidgetOptions->enablePaintHead();
@@ -1199,7 +1199,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 						time_t _startTime = (*It)->channelEvent.startTime;
 						res = g_EpgData->show (this->selectedChannelEntry->channel->channel_id, (*It)->channelEvent.eventID, &_startTime);
 
-						if (res == RETURN_EXIT_ALL) 
+						if (res == CMenuTarget::RETURN_EXIT_ALL) 
 						{
 			  				loop = false;
 						} 
@@ -1223,7 +1223,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 			else if ( msg == RC_sat || msg == RC_favorites)
 			{
 				g_RCInput->postMsg (msg, 0);
-				res = RETURN_EXIT_ALL;
+				res = CMenuTarget::RETURN_EXIT_ALL;
 				loop = false;
 	 		}
 			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
@@ -1235,7 +1235,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 				if (CNeutrinoApp::getInstance ()->handleMsg (msg, data) & messages_return::cancel_all) 
 				{
 		  			loop = false;
-		  			res = RETURN_EXIT_ALL;
+		  			res = CMenuTarget::RETURN_EXIT_ALL;
 				}
 	 		}
 
@@ -1349,7 +1349,7 @@ int CEPGplusHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CEPGplusHandler::exec:\n");
 
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 
 	EpgPlus* e;
 	CChannelList* channelList;
@@ -1394,7 +1394,7 @@ int EpgPlus::MenuTargetAddReminder::exec(CMenuTarget */*parent*/, const std::str
 			printf ("timerd not available\n");
 	}
 
-	return RETURN_EXIT_ALL;
+	return CMenuTarget::RETURN_EXIT_ALL;
 }
 
 EpgPlus::MenuTargetAddRecordTimer::MenuTargetAddRecordTimer (EpgPlus * _epgPlus) 
@@ -1420,7 +1420,7 @@ int EpgPlus::MenuTargetAddRecordTimer::exec(CMenuTarget */*parent*/, const std::
 		} 
 	}
 
-	return RETURN_EXIT_ALL;
+	return CMenuTarget::RETURN_EXIT_ALL;
 }
 
 EpgPlus::MenuTargetRefreshEpg::MenuTargetRefreshEpg (EpgPlus * _epgPlus) 
@@ -1434,7 +1434,7 @@ int EpgPlus::MenuTargetRefreshEpg::exec(CMenuTarget */*parent*/, const std::stri
 
 	this->epgPlus->refreshAll = true;
 
-	return RETURN_EXIT_ALL;
+	return CMenuTarget::RETURN_EXIT_ALL;
 }
 
 struct keyval menuOptionChooserSwitchSwapModes[] = {
@@ -1483,7 +1483,7 @@ int EpgPlus::MenuOptionChooserSwitchSwapMode::exec(CMenuTarget* parent)
 	
 	CMenuOptionChooser::exec(parent);
 	
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
 struct keyval menuOptionChooserSwitchViewModes[] = 
@@ -1513,6 +1513,6 @@ int EpgPlus::MenuOptionChooserSwitchViewMode::exec(CMenuTarget* parent)
 	
 	CMenuOptionChooser::exec(parent);
 	
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 

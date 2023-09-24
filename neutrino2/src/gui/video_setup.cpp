@@ -339,7 +339,7 @@ int CVideoSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CVideoSettings::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -361,19 +361,19 @@ void CVideoSettings::showMenu()
 	
 	if (widget)
 	{
-		videoSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		videoSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "videosetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		videoSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		videoSettings->setWidgetMode(MODE_SETUP);
+		videoSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		videoSettings->enableShrinkMenu();
 		
 		videoSettings->enablePaintHead();
@@ -391,11 +391,11 @@ void CVideoSettings::showMenu()
 	
 	// intros
 	videoSettings->addItem(new CMenuForwarder(_("back")));
-	videoSettings->addItem( new CMenuSeparator(LINE) );
+	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	videoSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	videoSettings->addItem( new CMenuSeparator(LINE) );
+	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// video aspect ratio 4:3/16:9
 	videoSettings->addItem(new CMenuOptionChooser(_("TV-System"), &g_settings.video_Ratio, VIDEOMENU_VIDEORATIO_OPTIONS, VIDEOMENU_VIDEORATIO_OPTION_COUNT, true, videoSetupNotifier));
@@ -419,7 +419,7 @@ void CVideoSettings::showMenu()
 	
 	// psi
 #if defined (__sh__)
-	videoSettings->addItem( new CMenuSeparator(LINE) );
+	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	CPSISetup * chPSISetup = new CPSISetup(_("PSI settings"), &g_settings.contrast, &g_settings.saturation, &g_settings.brightness, &g_settings.tint);
 	videoSettings->addItem( new CMenuForwarder(_("PSI settings"), true, NULL, chPSISetup));

@@ -90,7 +90,7 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CZapitSetup::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	CSelectChannelWidget*  CSelectChannelWidgetHandler = NULL;
 	
 	if (parent)
@@ -113,7 +113,7 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		//
 		setValueString(g_settings.StartChannelTV.c_str());
 		
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "radio")
 	{
@@ -130,7 +130,7 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		//
 		setValueString(g_settings.StartChannelRadio.c_str());
 		
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 
 	showMenu();
@@ -148,19 +148,19 @@ void CZapitSetup::showMenu()
 	
 	if (widget)
 	{
-		zapit = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		zapit = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "zapitsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		zapit = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		zapit->setWidgetMode(MODE_SETUP);
+		zapit->setWidgetMode(ClistBox::MODE_SETUP);
 		zapit->enableShrinkMenu();
 		
 		zapit->enablePaintHead();
@@ -178,11 +178,11 @@ void CZapitSetup::showMenu()
 	
 	// intros
 	zapit->addItem(new CMenuForwarder(_("back")));
-	zapit->addItem(new CMenuSeparator(LINE));
+	zapit->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// save settings
 	zapit->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	zapit->addItem(new CMenuSeparator(LINE));
+	zapit->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	bool activTV = false;
 	bool activRadio = false;

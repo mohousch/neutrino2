@@ -71,7 +71,7 @@ int CParentalLockSettings::exec(CMenuTarget* parent, const std::string& actionKe
 {
 	dprintf(DEBUG_NORMAL, "CParentalLockSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -93,19 +93,19 @@ void CParentalLockSettings::showMenu()
 	
 	if (widget)
 	{
-		listBox = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		listBox = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "parentallocksetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		listBox = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		listBox->setWidgetMode(MODE_SETUP);
+		listBox->setWidgetMode(ClistBox::MODE_SETUP);
 		listBox->enableShrinkMenu();
 		
 		listBox->enablePaintHead();
@@ -123,11 +123,11 @@ void CParentalLockSettings::showMenu()
 	
 	// intro
 	listBox->addItem(new CMenuForwarder(_("back")));
-	listBox->addItem( new CMenuSeparator(LINE) );
+	listBox->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	listBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	listBox->addItem( new CMenuSeparator(LINE) );
+	listBox->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// prompt
 	listBox->addItem(new CMenuOptionChooser(_("Prompt for PIN"), &g_settings.parentallock_prompt, PARENTALLOCK_PROMPT_OPTIONS, PARENTALLOCK_PROMPT_OPTION_COUNT, !parentallocked));

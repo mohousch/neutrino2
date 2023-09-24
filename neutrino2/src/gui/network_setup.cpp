@@ -137,7 +137,7 @@ int CNetworkSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CNetworkSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -196,19 +196,19 @@ void CNetworkSettings::showMenu()
 	
 	if (widget)
 	{
-		networkSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		networkSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "networksetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		networkSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		networkSettings->setWidgetMode(MODE_SETUP);
+		networkSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		networkSettings->enableShrinkMenu();
 		
 		networkSettings->enablePaintHead();
@@ -301,11 +301,11 @@ void CNetworkSettings::showMenu()
 
 	// intros
 	networkSettings->addItem(new CMenuForwarder(_("back"), true));
-	networkSettings->addItem( new CMenuSeparator(LINE) );
+	networkSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	networkSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	networkSettings->addItem( new CMenuSeparator(LINE) );
+	networkSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// setup network on start
 	networkSettings->addItem( oj );
@@ -320,7 +320,7 @@ void CNetworkSettings::showMenu()
 	networkSettings->addItem( m0 );
 	
 	// mac id
-	networkSettings->addItem(new CMenuSeparator(LINE));
+	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	networkSettings->addItem(mac);	//eth id
 	
 	// interface
@@ -329,7 +329,7 @@ void CNetworkSettings::showMenu()
 	else
 		delete ifSelect;
 
-	networkSettings->addItem(new CMenuSeparator(LINE));
+	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// dhcp on/off
 	oj = new CMenuOptionChooser(_("DHCP"), &network_dhcp, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, dhcpNotifier);
@@ -339,7 +339,7 @@ void CNetworkSettings::showMenu()
 	networkSettings->addItem( m8);
 
 	// ip
-	networkSettings->addItem(new CMenuSeparator(LINE));
+	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	networkSettings->addItem( m1);
 
 	// netmask
@@ -349,7 +349,7 @@ void CNetworkSettings::showMenu()
 	networkSettings->addItem( m3);
 
 	// default gateway
-	networkSettings->addItem(new CMenuSeparator(LINE));
+	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	networkSettings->addItem( m4);
 
 	// nameserver
@@ -385,7 +385,7 @@ void CNetworkSettings::showMenu()
 		wlanEnable[1] = m10;
 		
 		// ssid
-		networkSettings->addItem(new CMenuSeparator(LINE));
+		networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		networkSettings->addItem(m9);
 
 		// key
@@ -398,7 +398,7 @@ void CNetworkSettings::showMenu()
 	}
 	
 	// ntp
-	networkSettings->addItem(new CMenuSeparator(LINE | STRING, _("Time-Syncronisation")));
+	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Time-Syncronisation")));
 
 	networkSettings->addItem(new CMenuOptionChooser(_("Syncronisation via"), &g_settings.network_ntpenable, OPTIONS_NTPENABLE_OPTIONS, OPTIONS_NTPENABLE_OPTION_COUNT, true, sectionsdConfigNotifier));
 
@@ -409,11 +409,11 @@ void CNetworkSettings::showMenu()
         networkSettings->addItem( m7);
 	
 	//proxyserver submenu
-	networkSettings->addItem(new CMenuSeparator(LINE));
+	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	networkSettings->addItem(new CMenuForwarder(_("Proxyserver"), true, NULL, new CProxySetup()));
 
 	// mount manager
-	networkSettings->addItem(new CMenuSeparator(LINE | STRING, _("Network Mount Manager")));
+	networkSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Network Mount Manager")));
 
 	networkSettings->addItem(new CMenuForwarder(_("Mount network volume"), true, NULL, new CNFSMountGui()));
 

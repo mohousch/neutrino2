@@ -76,7 +76,7 @@ int CCAMMenuHandler::exec(CMenuTarget * parent, const std::string &actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CCAMMenuHandler::exec: actionkey %s\n", actionKey.c_str());
 
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 
         if (parent)
                 parent->hide();
@@ -92,12 +92,12 @@ int CCAMMenuHandler::exec(CMenuTarget * parent, const std::string &actionKey)
 	if(actionKey == "reset1") 
 	{
 		ci->reset(0);
-		return RETURN_EXIT_ALL;
+		return CMenuTarget::RETURN_EXIT_ALL;
 	}	
 	if(actionKey == "reset2") 
 	{
 		ci->reset(1);
-		return RETURN_EXIT_ALL;
+		return CMenuTarget::RETURN_EXIT_ALL;
 	}	
 
 	doMainMenu();
@@ -120,19 +120,19 @@ void CCAMMenuHandler::doMainMenu()
 	
 	if (widget)
 	{
-		cammenu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		cammenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "cammenu";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		cammenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		cammenu->setWidgetMode(MODE_SETUP);
+		cammenu->setWidgetMode(ClistBox::MODE_SETUP);
 		cammenu->enableShrinkMenu();
 		
 		cammenu->enablePaintHead();
@@ -171,7 +171,7 @@ void CCAMMenuHandler::doMainMenu()
 			char RESET[32];
 			sprintf(RESET, "reset%d", i + 1);
 
-			cammenu->addItem(new CMenuSeparator(LINE));
+			cammenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 			cammenu->addItem(new CMenuForwarder(_("CI cam reset"), true, NULL, this, RESET, RC_nokey));
 		} 
 		else 
@@ -183,7 +183,7 @@ void CCAMMenuHandler::doMainMenu()
 			
 			if (tempMenuWidget)
 			{
-				tempMenu = (ClistBox*)tempMenuWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+				tempMenu = (ClistBox*)tempMenuWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 				
 				if (tempMenu->hasHead())
 				{
@@ -195,13 +195,13 @@ void CCAMMenuHandler::doMainMenu()
 			{
 				//
 				tempMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				tempMenuWidget->setMenuPosition(MENU_POSITION_CENTER);
+				tempMenuWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 				tempMenuWidget->enableSaveScreen();
 				
 				//
 				tempMenu = new ClistBox(tempMenuWidget->getWindowsPos().iX, tempMenuWidget->getWindowsPos().iY, tempMenuWidget->getWindowsPos().iWidth, tempMenuWidget->getWindowsPos().iHeight);
 
-				tempMenu->setWidgetMode(MODE_SETUP);
+				tempMenu->setWidgetMode(ClistBox::MODE_SETUP);
 				tempMenu->enableShrinkMenu();
 				
 				//
@@ -221,7 +221,7 @@ void CCAMMenuHandler::doMainMenu()
 			tempMenu->clear();
 
 			//
-			cammenu->addItem(new CMenuSeparator(LINE));
+			cammenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 			cammenu->addItem(new CMenuForwarder(str, false, NULL, tempMenuWidget));
 		}
 	}	
@@ -375,7 +375,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			
 			if (menuWidget)
 			{
-				menu = (ClistBox*)menuWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+				menu = (ClistBox*)menuWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 				
 				if (menu->hasHead())
 					menu->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);
@@ -385,13 +385,13 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			{
 				//
 				menuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				menuWidget->setMenuPosition(MENU_POSITION_CENTER);
+				menuWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 				menuWidget->enableSaveScreen();
 				
 				//
 				menu = new ClistBox(menuWidget->getWindowsPos().iX, menuWidget->getWindowsPos().iY, menuWidget->getWindowsPos().iWidth, menuWidget->getWindowsPos().iHeight);
 
-				menu->setWidgetMode(MODE_SETUP);
+				menu->setWidgetMode(ClistBox::MODE_SETUP);
 				menu->enableShrinkMenu();
 				
 				//
@@ -562,7 +562,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 
 int CCAMMenuHandler::doMenu(int slot)
 {
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	neutrino_msg_t msg;
 	neutrino_msg_data_t data;
 	bool doexit = false;
@@ -615,7 +615,7 @@ int CCAMMenuHandler::doMenu(int slot)
 
 				ci->CI_CloseMMI(slot);
 
-				return RETURN_REPAINT;
+				return CMenuTarget::RETURN_REPAINT;
 			} 
 			
 			/* -1 = not our event, 0 = back to top menu, 1 = continue loop, 2 = quit */
@@ -625,7 +625,7 @@ int CCAMMenuHandler::doMenu(int slot)
 				if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & ( messages_return::cancel_all | messages_return::cancel_info ) )
 				{
 					doexit = true;
-					res = RETURN_EXIT_ALL;
+					res = CMenuTarget::RETURN_EXIT_ALL;
 				}
 			} 
 			else if (ret == 1) 

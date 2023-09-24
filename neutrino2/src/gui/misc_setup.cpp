@@ -118,7 +118,7 @@ int CGeneralSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CGeneralSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -141,19 +141,19 @@ void CGeneralSettings::showMenu()
 	
 	if (widget)
 	{
-		miscSettingsGeneral = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		miscSettingsGeneral = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "miscsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		miscSettingsGeneral = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		miscSettingsGeneral->setWidgetMode(MODE_SETUP);
+		miscSettingsGeneral->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsGeneral->enableShrinkMenu();
 		
 		miscSettingsGeneral->enablePaintHead();
@@ -171,11 +171,11 @@ void CGeneralSettings::showMenu()
 	
 	// intros
 	miscSettingsGeneral->addItem(new CMenuForwarder(_("back")));
-	miscSettingsGeneral->addItem( new CMenuSeparator(LINE) );
+	miscSettingsGeneral->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	miscSettingsGeneral->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	miscSettingsGeneral->addItem( new CMenuSeparator(LINE) );
+	miscSettingsGeneral->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// rc delay
 	CMenuOptionChooser * m1 = new CMenuOptionChooser(_("Delayed shutdown"), &g_settings.shutdown_real_rcdelay, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, !g_settings.shutdown_real);
@@ -235,12 +235,12 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("Radio Text"), &g_settings.radiotext_enable, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this ));
 	
 	// debug level
-	miscSettingsGeneral->addItem(new CMenuSeparator(LINE));
+	miscSettingsGeneral->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("Debug Level"), &g_settings.debug_level, DEBUG_LEVEL_OPTIONS, DEBUG_LEVEL_OPTIONS_COUNT, true, this ));
 
 	// online key
-	miscSettingsGeneral->addItem(new CMenuSeparator(LINE));
+	miscSettingsGeneral->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	std::string ytkey = g_settings.ytkey;
 	
@@ -260,7 +260,7 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("TMDB Infos"), &g_settings.enable_tmdb_infos, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	// reset factory setup
-	miscSettingsGeneral->addItem(new CMenuSeparator(LINE));
+	miscSettingsGeneral->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	CDataResetNotifier * resetNotifier = new CDataResetNotifier();
 	miscSettingsGeneral->addItem(new CMenuForwarder(_("Reset settings to defaults"), true, NULL, resetNotifier, "factory"));
@@ -501,7 +501,7 @@ int CChannelListSettings::exec(CMenuTarget* parent, const std::string& actionKey
 {
 	dprintf(DEBUG_NORMAL, "CChannelListSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -524,19 +524,19 @@ void CChannelListSettings::showMenu()
 	
 	if (widget)
 	{
-		miscSettingsChannelList = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		miscSettingsChannelList = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "channelssetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		miscSettingsChannelList = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		miscSettingsChannelList->setWidgetMode(MODE_SETUP);
+		miscSettingsChannelList->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsChannelList->enableShrinkMenu();
 		
 		miscSettingsChannelList->enablePaintHead();
@@ -554,11 +554,11 @@ void CChannelListSettings::showMenu()
 	
 	// intros
 	miscSettingsChannelList->addItem(new CMenuForwarder(_("back")));
-	miscSettingsChannelList->addItem( new CMenuSeparator(LINE) );
+	miscSettingsChannelList->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	miscSettingsChannelList->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	miscSettingsChannelList->addItem( new CMenuSeparator(LINE) );
+	miscSettingsChannelList->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// HD list
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Create list of HD channels"), &g_settings.make_hd_list, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, this));
@@ -579,7 +579,7 @@ void CChannelListSettings::showMenu()
 	miscSettingsChannelList->addItem( new CMenuOptionChooser(_("Scan SDT for updates"), (int *)&zapitCfg.scanSDT, SECTIONSD_SCAN_OPTIONS, SECTIONSD_SCAN_OPTIONS_COUNT, true, this) );
 	
 	//
-	miscSettingsChannelList->addItem( new CMenuSeparator(LINE) );
+	miscSettingsChannelList->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// timescale
 	miscSettingsChannelList->addItem(new CMenuOptionChooser(_("Timescale"), &g_settings.channellist_timescale, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
@@ -631,7 +631,7 @@ int CEPGSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CEPGSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -656,7 +656,7 @@ int CEPGSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		hide();
 		showMenu();
 		
-		return RETURN_EXIT_ALL;
+		return CMenuTarget::RETURN_EXIT_ALL;
 	}
 	
 	showMenu();
@@ -692,19 +692,19 @@ void CEPGSettings::showMenu()
 	
 	if (widget)
 	{
-		miscSettingsEPG = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		miscSettingsEPG = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "epgsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		miscSettingsEPG = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		miscSettingsEPG->setWidgetMode(MODE_SETUP);
+		miscSettingsEPG->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsEPG->enableShrinkMenu();
 		
 		miscSettingsEPG->enablePaintHead();
@@ -722,11 +722,11 @@ void CEPGSettings::showMenu()
 	
 	// intros
 	miscSettingsEPG->addItem(new CMenuForwarder(_("back")));
-	miscSettingsEPG->addItem( new CMenuSeparator(LINE) );
+	miscSettingsEPG->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	miscSettingsEPG->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	miscSettingsEPG->addItem( new CMenuSeparator(LINE) );
+	miscSettingsEPG->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	//
 	CEPGConfigNotifier* epgConfigNotifier = new CEPGConfigNotifier;
@@ -755,7 +755,7 @@ void CEPGSettings::showMenu()
         miscSettingsEPG->addItem(new CMenuForwarder(_("EPG save path"), true, g_settings.epg_dir.c_str(), this, "epgdir"));
 	
 	// epglang
-	miscSettingsEPG->addItem(new CMenuSeparator(LINE | STRING, _("Preferred EPG language")));
+	miscSettingsEPG->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Preferred EPG language")));
 	
 	CMenuOptionStringChooser * epglangSelect[3];
 	CEPGlangSelectNotifier * EPGlangNotifier = new CEPGlangSelectNotifier();
@@ -775,14 +775,14 @@ void CEPGSettings::showMenu()
 		miscSettingsEPG->addItem(epglangSelect[i]);
 		
 	// xmltv 
-	miscSettingsEPG->addItem( new CMenuSeparator(LINE) );
+	miscSettingsEPG->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	CXMLTVConfigNotifier* xmltvConfigNotifier = new CXMLTVConfigNotifier;
 	miscSettingsEPG->addItem(new CMenuOptionChooser(_("Use XMLTV EPG"), &g_settings.epg_xmltv, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, xmltvConfigNotifier));
 
 
 	// localtv epg
-	miscSettingsEPG->addItem( new CMenuSeparator(LINE) );
+	miscSettingsEPG->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// server box ip
 	CIPInput * epg_IP = new CIPInput(_("Server Box IP"), g_settings.epg_serverbox_ip);
@@ -913,7 +913,7 @@ int CFileBrowserSettings::exec(CMenuTarget* parent, const std::string& actionKey
 {
 	dprintf(DEBUG_NORMAL, "CFileBrowserSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -936,19 +936,19 @@ void CFileBrowserSettings::showMenu()
 	
 	if (widget)
 	{
-		miscSettingsFileBrowser = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		miscSettingsFileBrowser = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "filebrowsersetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		miscSettingsFileBrowser = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		miscSettingsFileBrowser->setWidgetMode(MODE_SETUP);
+		miscSettingsFileBrowser->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsFileBrowser->enableShrinkMenu();
 		
 		miscSettingsFileBrowser->enablePaintHead();
@@ -966,11 +966,11 @@ void CFileBrowserSettings::showMenu()
 	
 	// intros
 	miscSettingsFileBrowser->addItem(new CMenuForwarder(_("back")));
-	miscSettingsFileBrowser->addItem( new CMenuSeparator(LINE) );
+	miscSettingsFileBrowser->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	miscSettingsFileBrowser->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	miscSettingsFileBrowser->addItem( new CMenuSeparator(LINE) );
+	miscSettingsFileBrowser->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// UTF 
 	miscSettingsFileBrowser->addItem(new CMenuOptionChooser(_("File system"), &g_settings.filesystem_is_utf8, MISCSETTINGS_FILESYSTEM_IS_UTF8_OPTIONS, MISCSETTINGS_FILESYSTEM_IS_UTF8_OPTION_COUNT, true));

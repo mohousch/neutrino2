@@ -117,7 +117,7 @@ int CRemoteControlSettings::exec(CMenuTarget* parent, const std::string& actionK
 {
 	dprintf(DEBUG_NORMAL, "CRemoteControlSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -146,19 +146,19 @@ void CRemoteControlSettings::showMenu()
 	
 	if (widget)
 	{
-		remoteControlSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		remoteControlSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "rcsetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		remoteControlSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		remoteControlSettings->setWidgetMode(MODE_SETUP);
+		remoteControlSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		remoteControlSettings->enableShrinkMenu();
 		
 		remoteControlSettings->enablePaintHead();
@@ -176,7 +176,7 @@ void CRemoteControlSettings::showMenu()
 	
 	// intros
 	remoteControlSettings->addItem(new CMenuForwarder(_("back")));
-	remoteControlSettings->addItem( new CMenuSeparator(LINE) );
+	remoteControlSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	remoteControlSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
@@ -190,7 +190,7 @@ void CRemoteControlSettings::showMenu()
 	CStringInput * remoteControlSettings_repeatBlocker = new CStringInput(_("Repeat delay"), g_settings.repeat_blocker, 3, _("Shortest time (in ms) to recognize 2 keystrokes"), _("Enter 0 to switch of the blocker (red is space)"), "0123456789 ", keySetupNotifier);
 	keySetupNotifier->changeNotify("", NULL);
 
-	remoteControlSettings->addItem(new CMenuSeparator(LINE | STRING, _("Key Repeat-blocker")));
+	remoteControlSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Key Repeat-blocker")));
 	
 	// repeat blocker
 	remoteControlSettings->addItem(new CMenuForwarder(_("Repeat delay"), true, g_settings.repeat_blocker, remoteControlSettings_repeatBlocker));
@@ -199,12 +199,12 @@ void CRemoteControlSettings::showMenu()
  	remoteControlSettings->addItem(new CMenuForwarder(_("Generic delay"), true, g_settings.repeat_genericblocker, remoteControlSettings_repeat_genericblocker));
 
 	// keybinding menu
-	remoteControlSettings->addItem(new CMenuSeparator(LINE | STRING, _("Hot Keys mapping")));
+	remoteControlSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Hot Keys mapping")));
 	
 	remoteControlSettings->addItem(new CMenuForwarder(_("Hot Keys mapping"), true, NULL, new CKeysBindingSettings()));
 
         // usermenu 
-        remoteControlSettings->addItem(new CMenuSeparator(LINE | STRING, _("User menu")));
+        remoteControlSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("User menu")));
 
 	// blue
         remoteControlSettings->addItem(new CMenuForwarder(_("User menu blue"), true, NULL, new CUserMenuMenu(_("User menu blue"), SNeutrinoSettings::BUTTON_BLUE)));
@@ -245,7 +245,7 @@ int CKeysBindingSettings::exec(CMenuTarget* parent, const std::string& actionKey
 {
 	dprintf(DEBUG_NORMAL, "CKeysBindingSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -270,7 +270,7 @@ int CKeysBindingSettings::exec(CMenuTarget* parent, const std::string& actionKey
 		delete hintBox;
 		hintBox = NULL;
 
-		return RETURN_REPAINT;	
+		return CMenuTarget::RETURN_REPAINT;	
 	}
 	
 	showMenu();
@@ -322,19 +322,19 @@ void CKeysBindingSettings::showMenu()
 	
 	if (widget)
 	{
-		bindSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		bindSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "rcbinding";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		bindSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		bindSettings->setWidgetMode(MODE_SETUP);
+		bindSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		bindSettings->enableShrinkMenu();
 		
 		bindSettings->enablePaintHead();
@@ -352,35 +352,35 @@ void CKeysBindingSettings::showMenu()
 	
 	// intros
 	bindSettings->addItem(new CMenuForwarder(_("back")));
-	bindSettings->addItem( new CMenuSeparator(LINE) );
+	bindSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	bindSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
 
-	bindSettings->addItem(new CMenuSeparator(LINE | STRING, _("Modechange")));
+	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Modechange")));
 	
 	// tv/radio mode
 	bindSettings->addItem(new CMenuForwarder(keydescription[KEY_TV_RADIO_MODE], true, NULL, new CKeyChooser(keyvalue_p[KEY_TV_RADIO_MODE], keydescription[KEY_TV_RADIO_MODE], NEUTRINO_ICON_SETTINGS)));
 
 	// channellist
-	bindSettings->addItem(new CMenuSeparator(LINE | STRING, _("Channellist")));
+	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Channellist")));
 
 	for (int i = KEY_PAGE_UP; i <= KEY_BOUQUET_DOWN; i++)
 		bindSettings->addItem(new CMenuForwarder(keydescription[i], true, NULL, new CKeyChooser(keyvalue_p[i], keydescription[i], NEUTRINO_ICON_SETTINGS)));
 
 	// quick zap
-	bindSettings->addItem(new CMenuSeparator(LINE | STRING, _("Quickzap")));
+	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Quickzap")));
 
 	for (int i = KEY_CHANNEL_UP; i <= KEY_SAME_TP; i++)
 		bindSettings->addItem(new CMenuForwarder(keydescription[i], true, NULL, new CKeyChooser(keyvalue_p[i], keydescription[i], NEUTRINO_ICON_SETTINGS)));
 	
 	// media
-	bindSettings->addItem(new CMenuSeparator(LINE | STRING, _("Media")));
+	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Media")));
 	for (int i = KEY_EXTRAS_MOVIEPLAYER; i <= KEY_EXTRAS_FILEBROWSER; i++)
 		bindSettings->addItem(new CMenuForwarder(keydescription[i], true, NULL, new CKeyChooser(keyvalue_p[i], keydescription[i], NEUTRINO_ICON_SETTINGS)));
 
 	// misc
-	bindSettings->addItem(new CMenuSeparator(LINE | STRING, _("Misc settings")));
+	bindSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Misc settings")));
 	
 	// screenshot key
 	bindSettings->addItem(new CMenuForwarder(keydescription[KEY_EXTRAS_SCREENSHOT], true, NULL, new CKeyChooser(keyvalue_p[KEY_EXTRAS_SCREENSHOT], keydescription[KEY_EXTRAS_SCREENSHOT], NEUTRINO_ICON_SETTINGS)));

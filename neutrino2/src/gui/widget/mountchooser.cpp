@@ -53,7 +53,7 @@ CMountChooser::CMountChooser(const char* const Name, const std::string& Icon, in
 		
 	if (widget)
 	{
-		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 			
 		// title
 		if (menu->hasHead())
@@ -64,12 +64,12 @@ CMountChooser::CMountChooser(const char* const Name, const std::string& Icon, in
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "mountchooser";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		widget->enableSaveScreen();
 		
 		//
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-		menu->setWidgetMode(MODE_SETUP);
+		menu->setWidgetMode(ClistBox::MODE_SETUP);
 		
 		//
 		menu->enablePaintHead();
@@ -147,7 +147,7 @@ int CMountChooser::exec(CMenuTarget* parent, const std::string& actionKey)
 
 		hide();
 
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	} 
 	else 
 	{

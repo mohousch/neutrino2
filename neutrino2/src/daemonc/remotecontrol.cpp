@@ -50,38 +50,12 @@
 #include <zapit/bouquets.h>
 
 
-extern tallchans allchans;	// defined in bouquets.h
+//// globals
+extern tallchans allchans;		// defined in zapit.cpp
+extern bool autoshift;			// defined in neutrino2.cpp
+extern uint32_t scrambled_timer;	// defined in neutrino2.cpp
 
-//FIXME: auto-timeshift
-extern bool autoshift;
-extern uint32_t scrambled_timer;
-
-// class CZapProtection
-bool CZapProtection::check()
-{
-	int res;
-	char cPIN[5];
-	std::string hint2 = " ";
-	
-	do
-	{
-		cPIN[0] = 0;
-
-		CPLPINInput* PINInput = new CPLPINInput(_("Youth protection"), cPIN, 4, hint2.c_str(), fsk);
-
-		res = PINInput->exec(NULL, "");
-		delete PINInput;
-
-		hint2 = _("PIN-Code was wrong! Try again.");
-	} while ( (strncmp(cPIN,validPIN, 4) != 0) &&
-		  (cPIN[0] != 0) &&
-		  ( res == RETURN_REPAINT ) &&
-		  ( fsk >= g_settings.parentallock_lockage ) );
-		  
-	return ( ( strncmp(cPIN, validPIN, 4) == 0 ) || ( fsk < g_settings.parentallock_lockage ) );
-}
-
-// class CSubService
+//// class CSubService
 CSubService::CSubService(const t_original_network_id anoriginal_network_id, const t_service_id aservice_id, const t_transport_stream_id atransport_stream_id, const std::string &asubservice_name)
 {
 	service.original_network_id = anoriginal_network_id;
@@ -119,6 +93,7 @@ t_channel_id CSubService::getChannelID(void) const
 	return create_channel_id(service.service_id, service.original_network_id, service.transport_stream_id/*, satellitePosition, freq*/);
 }
 
+////
 CRemoteControl::CRemoteControl()
 {
 	current_channel_id = 	0;

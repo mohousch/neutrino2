@@ -221,10 +221,10 @@ end
 
 -- CWidget
 function testCWidget()
-	local ret = neutrino2.RETURN_REPAINT
+	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
 
 	local testWidget = neutrino2.CWidget()
-	testWidget:setMenuPosition(neutrino2.MENU_POSITION_LEFT)
+	testWidget:setMenuPosition(neutrino2.CWidget_MENU_POSITION_LEFT)
 	
 	local listBox = neutrino2.ClistBox()
 
@@ -234,8 +234,8 @@ function testCWidget()
 	listBox:enablePaintFoot()
 	listBox:enableShrinkMenu()
 
-	--listBox:setWidgetMode(neutrino2.MODE_LISTBOX)
-	listBox:setWidgetType(neutrino2.TYPE_CLASSIC)
+	--listBox:setWidgetMode(neutrino2.ClistBox_MODE_LISTBOX)
+	listBox:setWidgetType(neutrino2.CMenuItem_TYPE_CLASSIC)
 
 	-- CMessageBox
 	item1 = neutrino2.CMenuForwarder("CMessageBox", true, "", null, "msgBox")
@@ -328,14 +328,14 @@ end
 
 -- CMenuWidget
 function testCMenuWidget()
-	local ret = neutrino2.RETURN_REPAINT
+	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
 
 	local listBoxWidget = neutrino2.CMenuWidget("lua: CMenuWidget")
-	listBoxWidget:setWidgetType(neutrino2.TYPE_STANDARD)
-	listBoxWidget:setWidgetMode(neutrino2.MODE_MENU)
+	listBoxWidget:setWidgetType(neutrino2.CMenuItem_TYPE_STANDARD)
+	listBoxWidget:setWidgetMode(neutrino2.ClistBox_MODE_MENU)
 	listBoxWidget:enablePaintItemInfo(70)
 	listBoxWidget:enableShrinkMenu()
-	listBoxWidget:setMenuPosition(neutrino2.MENU_POSITION_RIGHT)
+	listBoxWidget:setMenuPosition(neutrino2.CWidget_MENU_POSITION_RIGHT)
 	listBoxWidget:setHeadCorner(neutrino2.RADIUS_SMALL)
 	listBoxWidget:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
 	listBoxWidget:setHeadLine(false)
@@ -426,7 +426,7 @@ end
 
 -- ClistBox
 function testClistBox()
-	local ret = neutrino2.RETURN_REPAINT
+	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
 
 	local listBox = neutrino2.ClistBox()
 	listBox:enablePaintHead()
@@ -493,7 +493,7 @@ function testClistBox()
 	listBox:addItem(item8)
 	
 	local m = neutrino2.CWidget()
-	m:setMenuPosition(neutrino2.MENU_POSITION_CENTER)
+	m:setMenuPosition(neutrino2.CWidget_MENU_POSITION_CENTER)
 
 	m:addWidgetItem(listBox)
 	m:addKey(neutrino2.RC_info)
@@ -520,7 +520,7 @@ end
 
 -- CFrameBox
 function testCFrameBox()
-	local ret = neutrino2.RETURN_REPAINT
+	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
 
 	local box = neutrino2.CBox()
 	local fb = neutrino2.CFrameBuffer_getInstance()
@@ -537,7 +537,7 @@ function testCFrameBox()
 	frame1:setTitle("MP3")
 	frame1:setHAlign(neutrino2.CC_ALIGN_CENTER)
 	frame1:setActionKey(null, "audioPlayer")
-	frame1:enableBorder()
+	frame1:setBorderMode()
 	frameBox:addFrame(frame1)
 
 	frame2 = neutrino2.CFrameItem()
@@ -545,7 +545,7 @@ function testCFrameBox()
 	frame2:setTitle("PicViewer")
 	frame2:setHAlign(neutrino2.CC_ALIGN_CENTER)
 	frame2:setActionKey(null, "pictureViewer")
-	frame2:enableBorder()
+	frame2:setBorderMode()
 	frameBox:addFrame(frame2)
 
 	frame3 = neutrino2.CFrameItem()
@@ -555,7 +555,7 @@ function testCFrameBox()
 	frame3:setIconName(neutrino2.NEUTRINO_ICON_MOVIE)
 	frame3:setOption("spielt Movie Dateien")
 	frame3:setActionKey(null, "moviePlayer")
-	frame3:enableBorder()
+	frame3:setBorderMode()
 	frameBox:addFrame(frame3)
 
 	frame4 = neutrino2.CFrameItem()
@@ -563,7 +563,7 @@ function testCFrameBox()
 	frame4:setTitle("Beenden")
 	frame4:setHAlign(neutrino2.CC_ALIGN_CENTER)
 	frame4:setActionKey(null, "exit")
-	frame4:enableBorder()
+	frame4:setBorderMode()
 	frameBox:addFrame(frame4)
 
 	local m = neutrino2.CWidget()
@@ -594,7 +594,7 @@ end
 
 -- CFrameBox
 function testCFrameBoxRandom()
-	local ret = neutrino2.RETURN_REPAINT
+	local ret = neutrino2.CMenuTarget_RETURN_REPAINT
 
 	local fb = neutrino2.CFrameBuffer_getInstance()
 	local box = neutrino2.CBox()
@@ -611,7 +611,7 @@ function testCFrameBoxRandom()
 	frame1:setTitle("MP3")
 	frame1:setHAlign(neutrino2.CC_ALIGN_CENTER)
 	frame1:setActionKey(null, "audioPlayer")
-	frame1:enableBorder()
+	frame1:setBorderMode()
 	frameBox:addFrame(frame1)
 
 	frame2 = neutrino2.CFrameItem()
@@ -619,7 +619,7 @@ function testCFrameBoxRandom()
 	frame2:setTitle("PicViewer")
 	frame2:setHAlign(neutrino2.CC_ALIGN_CENTER)
 	frame2:setActionKey(null, "pictureViewer")
-	frame2:enableBorder()
+	frame2:setBorderMode()
 	frameBox:addFrame(frame2)
 
 	frame3 = neutrino2.CFrameItem()
@@ -629,7 +629,7 @@ function testCFrameBoxRandom()
 	frame3:setIconName(neutrino2.NEUTRINO_ICON_MOVIE)
 	frame3:setOption("spielt Movie Dateien")
 	frame3:setActionKey(null, "moviePlayer")
-	frame3:enableBorder()
+	frame3:setBorderMode()
 	frameBox:addFrame(frame3)
 
 	frame10 = neutrino2.CFrameItem()
@@ -637,7 +637,7 @@ function testCFrameBoxRandom()
 	frame10:setTitle("Beenden")
 	frame10:setHAlign(neutrino2.CC_ALIGN_CENTER)
 	frame10:setActionKey(null, "exit")
-	frame10:enableBorder()
+	frame10:setBorderMode()
 	frameBox:addFrame(frame10)
 
 	local m = neutrino2.CWidget(box)
@@ -671,10 +671,10 @@ function main()
 	local ret = neutrino2.RETURN_REPAINT
 	local m = neutrino2.CMenuWidget("lua sample")
 
-	m:setWidgetMode(neutrino2.MODE_MENU)
+	m:setWidgetMode(neutrino2.ClistBox_MODE_MENU)
 	m:enableShrinkMenu()
 	m:enablePaintItemInfo(70)
-	m:setItemInfoMode(neutrino2.ITEMINFO_HINT_MODE)
+	m:setItemInfoMode(neutrino2.ClistBox_ITEMINFO_HINT_MODE)
 	m:setHeadCorner(neutrino2.RADIUS_SMALL)
 	m:setHeadGradient(neutrino2.DARK2LIGHT2DARK)
 	m:setHeadLine(false)
@@ -745,8 +745,4 @@ function main()
 end
 
 main()
-
-
-
-
 

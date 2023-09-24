@@ -58,7 +58,7 @@ int CCECSetup::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CCECSetup::exec:\n");
 	
-	int   res = RETURN_REPAINT;
+	int   res = CMenuTarget::RETURN_REPAINT;
 
 	if (parent)
 		parent->hide();
@@ -110,19 +110,19 @@ int CCECSetup::showMenu()
 	
 	if (widget)
 	{
-		cec = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		cec = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "audioplayersetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		cec = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		cec->setWidgetMode(MODE_SETUP);
+		cec->setWidgetMode(ClistBox::MODE_SETUP);
 		cec->enableShrinkMenu();
 		
 		cec->enablePaintHead();
@@ -140,11 +140,11 @@ int CCECSetup::showMenu()
 	
 	// intros
 	cec->addItem(new CMenuForwarder(_("back")));
-	cec->addItem( new CMenuSeparator(LINE) );
+	cec->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	cec->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	cec->addItem(new CMenuSeparator(LINE));
+	cec->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	//cec
 #if defined (__sh__)

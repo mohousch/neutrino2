@@ -52,7 +52,7 @@ int CDVBSubSelectMenuHandler::exec(CMenuTarget * parent, const std::string &/*ac
 {
 	dprintf(DEBUG_NORMAL, "CDVBSubSelectMenuHandler::exec:\n");
 
-	int res = RETURN_EXIT_ALL;
+	int res = CMenuTarget::RETURN_EXIT_ALL;
 
 	if (parent) 
 		parent->hide();
@@ -64,7 +64,7 @@ int CDVBSubSelectMenuHandler::exec(CMenuTarget * parent, const std::string &/*ac
 
 int CDVBSubSelectMenuHandler::doMenu()
 {
-	int res = RETURN_EXIT_ALL;
+	int res = CMenuTarget::RETURN_EXIT_ALL;
 	
 	dprintf(DEBUG_NORMAL, "CDVBSubSelectMenuHandler::doMenu:\n");
 
@@ -76,19 +76,19 @@ int CDVBSubSelectMenuHandler::doMenu()
 	
 	if (widget)
 	{
-		DVBSubSelector = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		DVBSubSelector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "subselect";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//			
 		DVBSubSelector = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		DVBSubSelector->setWidgetMode(MODE_SETUP);
+		DVBSubSelector->setWidgetMode(ClistBox::MODE_SETUP);
 		DVBSubSelector->enableShrinkMenu();
 						
 		DVBSubSelector->enablePaintHead();
@@ -159,7 +159,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 		
 		if(sep_added) 
 		{
-			DVBSubSelector->addItem(new CMenuSeparator(LINE));
+			DVBSubSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 			DVBSubSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", RC_red, NEUTRINO_ICON_BUTTON_RED ));
 		}
 		else

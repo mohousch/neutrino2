@@ -52,7 +52,7 @@ class CKeyValue : public CMenuSeparator
 	public:
 		int         keyvalue;
 
-		CKeyValue() : CMenuSeparator(STRING, _("Current key"))
+		CKeyValue() : CMenuSeparator(CMenuSeparator::STRING, _("Current key"))
 		{
 		};
 
@@ -81,7 +81,7 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 	if (CNeutrinoApp::getInstance()->widget_exists("keychooser"))
 	{
 		widget = CNeutrinoApp::getInstance()->getWidget("keychooser");	
-		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 		
 		//
 		if (menu->hasHead())
@@ -94,12 +94,12 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "keychooser";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		widget->enableSaveScreen();
 		
 		//
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-		menu->setWidgetMode(MODE_MENU);
+		menu->setWidgetMode(ClistBox::MODE_MENU);
 		
 		//	
 		menu->enablePaintHead();
@@ -116,9 +116,9 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 
 	//
 	menu->addItem(new CKeyValue());
-	menu->addItem(new CMenuSeparator(LINE));
+	menu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	menu->addItem(new CMenuForwarder(_("back")));
-	menu->addItem(new CMenuSeparator(LINE));
+	menu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	menu->addItem(new CMenuForwarder(_("Setup new key"), true, NULL, keyChooser));
 	menu->addItem(new CMenuForwarder(_("No key"), true, NULL, keyDeleter));
 	
@@ -135,9 +135,9 @@ CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::str
 	setFootLine(false);
 	
 	addItem(new CKeyValue());
-	addItem(new CMenuSeparator(LINE));
+	addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	addItem(new CMenuForwarder(_("back")));
-	addItem(new CMenuSeparator(LINE));
+	addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	addItem(new CMenuForwarder(_("Setup new key"), true, NULL, keyChooser));
 	addItem(new CMenuForwarder(_("No key"), true, NULL, keyDeleter));
 }

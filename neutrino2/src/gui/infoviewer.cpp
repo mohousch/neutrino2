@@ -1938,7 +1938,7 @@ int CInfoViewerHandler::exec(CMenuTarget * parent, const std::string &/*actionke
 {
 	dprintf(DEBUG_NORMAL, "CInfoViewerHandler::exec:\n");
 
-	int res = RETURN_EXIT_ALL;
+	int res = CMenuTarget::RETURN_EXIT_ALL;
 	CChannelList* channelList;
 	CInfoViewer* i;
 	

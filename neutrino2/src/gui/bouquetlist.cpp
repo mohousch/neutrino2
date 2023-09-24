@@ -266,7 +266,7 @@ int CBouquetList::doMenu()
 	int i = 0;
 	int select = -1;
 	static int old_selected = 0;
-	//int ret = RETURN_NONE;
+	//int ret = CMenuTarget::RETURN_NONE;
 	signed int bouquet_id;
 	CZapitBouquet * tmp, * zapitBouquet;
 	ZapitChannelList * channels;
@@ -288,19 +288,19 @@ int CBouquetList::doMenu()
 	
 	if (widget)
 	{
-		menu = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, 500, 150);
 		widget->name = "bouquetlistedit";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		menu->setWidgetMode(MODE_MENU);
+		menu->setWidgetMode(ClistBox::MODE_MENU);
 		
 		menu->enablePaintHead();
 		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
@@ -440,27 +440,27 @@ int CBouquetList::show(bool customMode)
 		}
 		else if(msg == RC_red || msg == RC_favorites) 
 		{
-			CNeutrinoApp::getInstance()->setChannelMode(LIST_MODE_FAV, mode);
+			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_FAV, mode);
 
 			hide();
 			return -3;
 		} 
 		else if(msg == RC_green) 
 		{
-			CNeutrinoApp::getInstance()->setChannelMode(LIST_MODE_PROV, mode);
+			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_PROV, mode);
 			hide();
 			return -3;
 		} 
 		else if(msg == RC_yellow || msg == RC_sat)
 		{
-			CNeutrinoApp::getInstance()->setChannelMode(LIST_MODE_SAT, mode);
+			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_SAT, mode);
 
 			hide();
 			return -3;
 		} 
 		else if(msg == RC_blue) 
 		{
-			CNeutrinoApp::getInstance()->setChannelMode(LIST_MODE_ALL, mode);
+			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_ALL, mode);
 
 			hide();
 			return -3;
@@ -609,7 +609,7 @@ void CBouquetList::paint()
 	
 	if (bqWidget)
 	{
-		listBox = (ClistBox*)bqWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		listBox = (ClistBox*)bqWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{

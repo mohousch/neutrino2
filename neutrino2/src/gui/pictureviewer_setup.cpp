@@ -57,9 +57,9 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 #define PICTUREVIEWER_SCALING_OPTION_COUNT 3
 const keyval PICTUREVIEWER_SCALING_OPTIONS[PICTUREVIEWER_SCALING_OPTION_COUNT] =
 {
-	{ SIMPLE, _("simple") },
-	{ COLOR , _("advanced") },
-	{ NONE  , _("none") }
+	{ CFrameBuffer::SIMPLE, _("simple") },
+	{ CFrameBuffer::COLOR , _("advanced") },
+	{ CFrameBuffer::NONE  , _("none") }
 };
 
 CPictureViewerSettings::CPictureViewerSettings()
@@ -74,7 +74,7 @@ int CPictureViewerSettings::exec(CMenuTarget* parent, const std::string& actionK
 {
 	dprintf(DEBUG_NORMAL, "CPicTureViewerSettings::exec: actionKey: %s\n", actionKey.c_str());
 	
-	int ret = RETURN_REPAINT;
+	int ret = CMenuTarget::RETURN_REPAINT;
 	
 	if(parent)
 		parent->hide();
@@ -96,7 +96,7 @@ int CPictureViewerSettings::exec(CMenuTarget* parent, const std::string& actionK
 		hide();
 		showMenu();
 		
-		return RETURN_EXIT;
+		return CMenuTarget::RETURN_EXIT;
 	}
 	
 	showMenu();
@@ -116,19 +116,19 @@ void CPictureViewerSettings::showMenu()
 	
 	if (widget)
 	{
-		PicViewerSettings = (ClistBox*)widget->getWidgetItem(WIDGETITEM_LISTBOX);
+		PicViewerSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "pictureviewersetup";
-		widget->setMenuPosition(MENU_POSITION_CENTER);
+		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		PicViewerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
-		PicViewerSettings->setWidgetMode(MODE_SETUP);
+		PicViewerSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		PicViewerSettings->enableShrinkMenu();
 		
 		PicViewerSettings->enablePaintHead();
@@ -146,11 +146,11 @@ void CPictureViewerSettings::showMenu()
 	
 	// intros
 	PicViewerSettings->addItem(new CMenuForwarder(_("back")));
-	PicViewerSettings->addItem( new CMenuSeparator(LINE) );
+	PicViewerSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
 	PicViewerSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
-	PicViewerSettings->addItem( new CMenuSeparator(LINE) );
+	PicViewerSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// Pic Viewer Scaling
 	PicViewerSettings->addItem(new CMenuOptionChooser(_("Scaling"), &g_settings.picviewer_scaling, PICTUREVIEWER_SCALING_OPTIONS, PICTUREVIEWER_SCALING_OPTION_COUNT, true));

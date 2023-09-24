@@ -778,38 +778,38 @@ CWidgetItem* CWidget::getWidgetItem(const int type, const std::string& name)
 	{
 		switch (type)
 		{
-			case WIDGETITEM_LISTBOX:
-				if ( (items[count]->widgetItem_type == WIDGETITEM_LISTBOX) && (items[count]->widgetItem_name == name) )
+			case CWidgetItem::WIDGETITEM_LISTBOX:
+				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_LISTBOX) && (items[count]->widgetItem_name == name) )
 					ret = items[count]; 
 				break;
 				
-			case WIDGETITEM_WINDOW:
-				if ( (items[count]->widgetItem_type == WIDGETITEM_WINDOW) && (items[count]->widgetItem_name == name) )
+			case CWidgetItem::WIDGETITEM_WINDOW:
+				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_WINDOW) && (items[count]->widgetItem_name == name) )
 					ret = items[count]; 
 				break;
 				
-			case WIDGETITEM_HEAD:
-				if ( (items[count]->widgetItem_type == WIDGETITEM_HEAD) && (items[count]->widgetItem_name == name) )
+			case CWidgetItem::WIDGETITEM_HEAD:
+				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_HEAD) && (items[count]->widgetItem_name == name) )
 					ret = items[count]; 
 				break;
 				
-			case WIDGETITEM_FOOT:
-				if ( (items[count]->widgetItem_type == WIDGETITEM_FOOT) && (items[count]->widgetItem_name == name) )
+			case CWidgetItem::WIDGETITEM_FOOT:
+				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_FOOT) && (items[count]->widgetItem_name == name) )
 					ret = items[count]; 
 				break;
 				
-			case WIDGETITEM_TEXTBOX:
-				if ( (items[count]->widgetItem_type == WIDGETITEM_TEXTBOX) && (items[count]->widgetItem_name == name) )
+			case CWidgetItem::WIDGETITEM_TEXTBOX:
+				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_TEXTBOX) && (items[count]->widgetItem_name == name) )
 					ret = items[count]; 
 				break;
 				
-			case WIDGETITEM_FRAMEBOX:
-				if ( (items[count]->widgetItem_type == WIDGETITEM_FRAMEBOX) && (items[count]->widgetItem_name == name) )
+			case CWidgetItem::WIDGETITEM_FRAMEBOX:
+				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_FRAMEBOX) && (items[count]->widgetItem_name == name) )
 					ret = items[count]; 
 				break;
 				
-			case WIDGETITEM_LISTFRAME:
-				if ( (items[count]->widgetItem_type == WIDGETITEM_LISTFRAME) && (items[count]->widgetItem_name == name) )
+			case CWidgetItem::WIDGETITEM_LISTFRAME:
+				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_LISTFRAME) && (items[count]->widgetItem_name == name) )
 					ret = items[count]; 
 				break;
 				
@@ -832,83 +832,83 @@ CComponent* CWidget::getCCItem(const int type, const std::string& name)
 	{
 		switch (type)
 		{
-			case CC_ICON:
-				if ( (CCItems[count]->cc_type == CC_ICON) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_ICON:
+				if ( (CCItems[count]->cc_type == CComponent::CC_ICON) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_IMAGE:
-				if ( (CCItems[count]->cc_type == CC_IMAGE) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_IMAGE:
+				if ( (CCItems[count]->cc_type == CComponent::CC_IMAGE) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_LABEL:
-				if ( (CCItems[count]->cc_type == CC_LABEL) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_LABEL:
+				if ( (CCItems[count]->cc_type == CComponent::CC_LABEL) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_TEXT:
-				if ( (CCItems[count]->cc_type == CC_TEXT) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_TEXT:
+				if ( (CCItems[count]->cc_type == CComponent::CC_TEXT) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_BUTTON:
-				if ( (CCItems[count]->cc_type == CC_BUTTON) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_BUTTON:
+				if ( (CCItems[count]->cc_type == CComponent::CC_BUTTON) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_HLINE:
-				if ( (CCItems[count]->cc_type == CC_HLINE) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_HLINE:
+				if ( (CCItems[count]->cc_type == CComponent::CC_HLINE) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_VLINE:
-				if ( (CCItems[count]->cc_type == CC_VLINE) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_VLINE:
+				if ( (CCItems[count]->cc_type == CComponent::CC_VLINE) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_FRAMELINE:
-				if ( (CCItems[count]->cc_type == CC_FRAMELINE) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_FRAMELINE:
+				if ( (CCItems[count]->cc_type == CComponent::CC_FRAMELINE) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_PIG:
-				if ( (CCItems[count]->cc_type == CC_PIG) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_PIG:
+				if ( (CCItems[count]->cc_type == CComponent::CC_PIG) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_GRID:
-				if ( (CCItems[count]->cc_type == CC_GRID) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_GRID:
+				if ( (CCItems[count]->cc_type == CComponent::CC_GRID) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_TIME:
-				if ( (CCItems[count]->cc_type == CC_TIME) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_TIME:
+				if ( (CCItems[count]->cc_type == CComponent::CC_TIME) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_COUNTER:
-				if ( (CCItems[count]->cc_type == CC_COUNTER) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_COUNTER:
+				if ( (CCItems[count]->cc_type == CComponent::CC_COUNTER) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_SCROLLBAR:
-				if ( (CCItems[count]->cc_type == CC_SCROLLBAR) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_SCROLLBAR:
+				if ( (CCItems[count]->cc_type == CComponent::CC_SCROLLBAR) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_PROGRESSBAR:
-				if ( (CCItems[count]->cc_type == CC_PROGRESSBAR) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_PROGRESSBAR:
+				if ( (CCItems[count]->cc_type == CComponent::CC_PROGRESSBAR) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_DETAILSLINE:
-				if ( (CCItems[count]->cc_type == CC_DETAILSLINE) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_DETAILSLINE:
+				if ( (CCItems[count]->cc_type == CComponent::CC_DETAILSLINE) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				
-			case CC_SLIDER:
-				if ( (CCItems[count]->cc_type == CC_SLIDER) && (CCItems[count]->cc_name == name) )
+			case CComponent::CC_SLIDER:
+				if ( (CCItems[count]->cc_type == CComponent::CC_SLIDER) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				

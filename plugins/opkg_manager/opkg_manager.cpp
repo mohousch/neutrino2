@@ -266,7 +266,7 @@ int COPKGManager::showMenu()
 	menu->setFootGradient(DARK2LIGHT);
 	menu->setFootLine(false);
 
-	menu->setWidgetMode(MODE_SETUP);
+	menu->setWidgetMode(ClistBox::MODE_SETUP);
 	menu->enableShrinkMenu();
 
 	menu->addItem(new CMenuForwarder(_("Online Software Manager"), true, NULL, this, "internet" ));

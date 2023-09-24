@@ -92,14 +92,14 @@ int CPluginList::showMenu()
 {
 	dprintf(DEBUG_NORMAL, "CPluginList::showMenu\n");
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 	
 	pWidget = CNeutrinoApp::getInstance()->getWidget("plugins");
 
 	//
 	if (pWidget)
 	{
-		plist = (ClistBox*)pWidget->getWidgetItem(WIDGETITEM_LISTBOX);
+		plist = (ClistBox*)pWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 	}
 	else
 	{
@@ -107,13 +107,13 @@ int CPluginList::showMenu()
 		pWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		
 		pWidget->name = "plugins";
-		pWidget->setMenuPosition(MENU_POSITION_CENTER);
+		pWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		plist = new ClistBox(pWidget->getWindowsPos().iX, pWidget->getWindowsPos().iY, pWidget->getWindowsPos().iWidth, pWidget->getWindowsPos().iHeight);
 		
-		plist->setWidgetType(TYPE_CLASSIC);
-		plist->setWidgetMode(MODE_MENU);
+		plist->setWidgetType(CMenuItem::TYPE_CLASSIC);
+		plist->setWidgetMode(ClistBox::MODE_MENU);
 		plist->enableShrinkMenu();
 		
 		// head
@@ -182,7 +182,7 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CPluginList::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 
 	if (parent)
 		parent->hide();
@@ -201,7 +201,7 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 			selected = (int)g_PluginList->getNumberOfPlugins() - 1;
 
 		showMenu();
-		return RETURN_EXIT_ALL;
+		return CMenuTarget::RETURN_EXIT_ALL;
 	}
 	else if(actionKey == "RC_green")
 	{
@@ -212,7 +212,7 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 	{
 		g_PluginList->loadPlugins();
 		showMenu();
-		return RETURN_EXIT_ALL;
+		return CMenuTarget::RETURN_EXIT_ALL;
 	}
 	else if(actionKey == "RC_info")
 	{
@@ -238,16 +238,16 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 		}
 		
 		InfoBox(buffer.c_str(), _("Plugins"), NEUTRINO_ICON_SHELL);
-		return RETURN_REPAINT;
+		return CMenuTarget::RETURN_REPAINT;
 	}
 	else if(actionKey == "RC_ok")
 	{
 		//selected = plist->getSelected();
 
 		if(pluginSelected() == close)
-			return RETURN_EXIT_ALL;
+			return CMenuTarget::RETURN_EXIT_ALL;
 		else
-			return RETURN_REPAINT;
+			return CMenuTarget::RETURN_REPAINT;
 	}
 
 	res = showMenu();
@@ -288,7 +288,7 @@ CPluginsExec* CPluginsExec::getInstance()
 int CPluginsExec::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	if (actionKey.empty())
-		return RETURN_NONE;
+		return CMenuTarget::RETURN_NONE;
 
 	dprintf(DEBUG_NORMAL, "CPluginsExec exec: %s\n", actionKey.c_str());
 
@@ -298,6 +298,6 @@ int CPluginsExec::exec(CMenuTarget* parent, const std::string& actionKey)
 	if (!actionKey.empty())
 		g_PluginList->startPlugin(actionKey.c_str());
 
-	return RETURN_REPAINT;
+	return CMenuTarget::RETURN_REPAINT;
 }
 
