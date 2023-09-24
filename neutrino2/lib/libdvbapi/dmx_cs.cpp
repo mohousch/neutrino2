@@ -468,7 +468,7 @@ void cDemux::removePid(unsigned short Pid)
 
 void cDemux::getSTC(int64_t * STC)
 { 
-#if 1
+#if defined (USE_OPENGL)
 	if (demux_fd < 0)
 		return;
 	
