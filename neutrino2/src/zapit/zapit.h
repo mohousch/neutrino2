@@ -479,15 +479,11 @@ class CZapit
 		// scan
 		bool tuneTP(transponder TP, int feindex = 0);
 		bool scanTP(commandScanTP &msg);
-		bool isScanReady(unsigned int &satellite, unsigned int &processed_transponder, unsigned int &transponder, unsigned int &services );
 		void getScanSatelliteList( SatelliteList &satelliteList );
 		void setScanSatelliteList( ScanSatelliteList &satelliteList );
 		void setScanType(const scanType mode);
 		void setFEMode(const fe_mode_t mode, int feindex = 0);
 		void setScanBouquetMode(const bouquetMode mode);
-		void setDiseqcType(const diseqc_t diseqc, int feindex = 0);
-		void setDiseqcRepeat(const uint32_t repeat, int feindex = 0);
-		void setScanMotorPosList( ScanMotorPosList& motorPosList );
 		bool startScan(commandScanProvider &msg);
 		bool stopScan();
 

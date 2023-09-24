@@ -240,6 +240,9 @@ void CZapit::initFrontend()
 
 #if HAVE_DVB_API_VERSION >= 5
 				//
+				fe->getFEDelSysMask();
+				
+				//
 				if (fe->getDelSysMasked() & DVB_S || fe->getDelSysMasked() & DVB_S2 || fe->getDelSysMasked() & DVB_S2X)
 					have_s = true;
 				if (fe->getDelSysMasked() & DVB_C)
@@ -3919,30 +3922,6 @@ bool CZapit::scanTP(commandScanTP &msg)
 	return ret;
 }
 
-//
-bool CZapit::isScanReady(unsigned int &satellite, unsigned int &processed_transponder, unsigned int &transponder, unsigned int &services )
-{
-	bool scanReady = false;
-	
-	satellite = curr_sat;
-	transponder = found_transponders;
-	processed_transponder = processed_transponders;
-	services = found_channels;
-	
-	if (scan_runs > 0)
-	{
-		scanReady = false;
-		dprintf(DEBUG_INFO, "CZapit::isScanReady: scan not ready\n");
-	}
-	else
-	{
-		scanReady = true;
-		dprintf(DEBUG_INFO, "CZapit::isScanReady: scan ready\n");
-	}
-	
-	return scanReady;
-}
-
 void CZapit::getScanSatelliteList( SatelliteList &satelliteList )
 {
 	CZapit::responseGetSatelliteList sat;
@@ -3981,40 +3960,6 @@ void CZapit::setScanType(const scanType mode)
 void CZapit::setScanBouquetMode(const bouquetMode mode)
 {
 	_bouquetMode = mode;
-}
-
-void CZapit::setDiseqcType(const diseqc_t diseqc, int feindex)
-{
-	if( getFE(feindex)->getInfo()->type == FE_QPSK)
-	{
-		getFE(feindex)->setDiseqcType(diseqc );
-	}
-}
-
-void CZapit::setDiseqcRepeat(const uint32_t repeat, int feindex)
-{		
-	if( getFE(feindex)->getInfo()->type == FE_QPSK)
-	{
-		getFE(feindex)->setDiseqcRepeats(repeat);
-		dprintf(DEBUG_INFO, "CZapit::setDiseqcRepeat: repeats to %d", repeat);
-	}
-}
-
-void CZapit::setScanMotorPosList( ScanMotorPosList& motorPosList )
-{
-	bool changed = false;
-	
-	/*
-	for (uint32_t i = 0; i < motorPosList.size(); i++)
-	{
-		changed |= (motorPositions[pos.satPosition] != pos.motorPos);
-		motorPositions[pos.satPosition] = pos.motorPos;
-	}
-	*/
-	//#FIXME
-	
-	//if (changed) 
-	//	SaveMotorPositions();
 }
 
 //

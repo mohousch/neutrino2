@@ -45,9 +45,7 @@
 #include <zapit/satconfig.h>
 
 
-extern satellite_map_t satellitePositions;	// defined in zapit.cpp
-extern transponder_list_t transponders;		// defined in zapit.cpp
-
+//// globals
 #define SOUTH		0
 #define NORTH		1
 #define EAST		0
@@ -91,6 +89,9 @@ dtv_properties CmdSeq;
                      }
                      
 #define MAX_DELSYS 	8
+////
+extern satellite_map_t satellitePositions;	// defined in zapit.cpp
+extern transponder_list_t transponders;		// defined in zapit.cpp
 
 CFrontend::CFrontend(int num, int adap)
 {
@@ -184,6 +185,12 @@ void CFrontend::getFEInfo(void)
 {
 	if(ioctl(fd, FE_GET_INFO, &info) < 0)
 		perror("FE_GET_INFO");
+}
+
+//
+void CFrontend::getFEDelSysMask(void)
+{
+	dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask:\n");
 	
 	bool legacy = true;
 

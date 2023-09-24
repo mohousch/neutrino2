@@ -31,8 +31,6 @@
 
 #include <system/debug.h>
 
-#include <eventserver.h>
-
 #include <global.h>
 #include <neutrinoMessages.h>
 
@@ -76,7 +74,6 @@ extern uint32_t  found_radio_chans;
 extern uint32_t  found_data_chans;
 extern t_channel_id live_channel_id;
 extern CZapit::bouquetMode _bouquetMode;
-extern CEventServer *eventServer;
 extern CFrontend * live_fe;
 
 #define TIMER_START()			\

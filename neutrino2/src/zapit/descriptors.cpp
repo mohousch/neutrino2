@@ -27,11 +27,8 @@
 #include <cstdio>
 #include <cstring>
 
-/* system */
+//
 #include <system/debug.h>
-
-/* libevent */
-#include <eventserver.h>
 
 #include <global.h>
 #include <neutrinoMessages.h>
@@ -49,7 +46,7 @@
 #include <math.h>
 
 
-// globals
+//// globals
 std::string curr_chan_name;
 uint32_t  found_transponders;
 uint32_t  found_channels;
@@ -59,13 +56,12 @@ uint32_t  found_radio_chans;
 uint32_t  found_data_chans;
 std::string lastServiceName;
 std::map <t_channel_id, uint8_t> service_types;
-
-//
+////
 extern CBouquetManager* scanBouquetManager;
 extern tallchans allchans;   			//  defined in zapit.cpp
 extern tallchans curchans;   			//  defined in zapit.cpp
-extern CEventServer *eventServer;
 
+////
 void CDescriptors::generic_descriptor(const unsigned char * const buffer)
 {
 	dprintf(DEBUG_NORMAL, "generic descriptor dump:");

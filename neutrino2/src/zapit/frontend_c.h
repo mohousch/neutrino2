@@ -199,7 +199,18 @@ class CFrontend
 	public:
 		CFrontend(int num = 0, int adap = 0);
 		~CFrontend(void);
+		
+		//
+                void Close();
+		bool Open();
+		void getFEInfo(void);
+		void getFEDelSysMask(void);
+		void reset(void);
+		void Init(void);
+		void setMasterSlave(bool _slave);
+		void setMasterSlave();
 
+		//
 		static fe_code_rate_t getCodeRate(const uint8_t fec_inner, int system = 0);
 		uint8_t	getDiseqcPosition(void) const { return currentTransponder.diseqc; }
 		int getDiseqcRepeats(void) const { return diseqcRepeats; }
@@ -213,7 +224,7 @@ class CFrontend
 		uint32_t getFEBandwidth(fe_bandwidth_t bandwidth);
 		const struct dvb_frontend_info *getInfo(void) const { return &info; };
 		const FrontendParameters * getfeparams(void) const {return &curfe;}
-
+		//
 		uint32_t getBitErrorRate(void) const;
 		uint16_t getSignalNoiseRatio(void) const;
 		uint16_t getSignalStrength(void) const;
@@ -222,16 +233,13 @@ class CFrontend
 		void getDelSys(int f, int m, char * &fec, char * &sys, char * &mod);
 		fe_code_rate_t getCFEC ();
 		uint32_t getRate();
-
 		//
 		int32_t getCurrentSatellitePosition() { return currentSatellitePosition; }
 		const transponder* getParameters(void) const { return &currentTransponder; };
 		transponder_id_t getTsidOnid()    { return currentTransponder.TP_id; }
-		
 		//
 		struct dvb_frontend_event getEvent(void);
 		bool getHighBand(){ return (int) getFrequency() >= lnbSwitch; };
-		
 		//
 		uint32_t getDeliverySystem();
 		fe_delivery_system_t getFEDeliverySystem(uint32_t sys);
@@ -251,15 +259,6 @@ class CFrontend
 
 		//
 		bool sameTsidOnid(transponder_id_t tpid){ return (currentTransponder.TP_id == 0) || (tpid == currentTransponder.TP_id);}				
-		
-		//
-                void Close();
-		bool Open();
-		void getFEInfo(void);
-		void reset(void);
-		void Init(void);
-		void setMasterSlave(bool _slave);
-		void setMasterSlave();
 		
 		//
 		bool tuneChannel(CZapitChannel *channel, bool nvod);
