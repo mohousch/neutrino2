@@ -103,11 +103,12 @@ CFrontend::CFrontend(int num, int adap)
 	// frontend index
 	fenumber = num;
 	
+	//
 	mode = (fe_mode_t)FE_SINGLE;
 	locked = false;
 	standby = true;
-	
 	slave = false;
+	tuned = false;
 
 	memset(&curfe, 0, sizeof(curfe));
 	
@@ -116,8 +117,7 @@ CFrontend::CFrontend(int num, int adap)
 	curfe.fec_inner = FEC_3_4;
 	curfe.modulation = QAM_64;
 	
-	tuned = false;
-	
+	//
 	diseqcType = NO_DISEQC;
 	diseqcRepeats = 0;
 	// unicable

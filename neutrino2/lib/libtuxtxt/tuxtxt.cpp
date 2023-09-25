@@ -1443,9 +1443,9 @@ int tuxtx_main(int pid, int page, int source)
 				SwitchTranspMode();	
 				break;
 			case RC_HELP:	 SwitchHintMode();		break;
-#if 1
-			case RC_DBOX:	 ConfigMenu(0, source);	break;
-#endif
+
+			//case RC_DBOX:	 ConfigMenu(0, source);	break;	//FIXME:
+
 			case RC_HOME:
 				break;
 			}

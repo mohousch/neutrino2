@@ -159,7 +159,6 @@ extern int current_muted;
 //
 extern cDemux * pmtDemux;			// defined in pmt.cpp
 // dvbsub
-extern int dvbsub_init();
 extern int dvbsub_pause();
 extern int dvbsub_stop();
 extern int dvbsub_getpid();
