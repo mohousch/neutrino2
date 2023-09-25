@@ -1334,7 +1334,7 @@ void CMenuWidget::integratePlugins(CPlugins::i_type_t integration, const unsigne
 			}
 
 			//
-			neutrino_msg_t dk = (shortcut != RC_nokey) ? CRCInput::convertDigitToKey(sc++) : RC_nokey;
+			neutrino_msg_t dk = (shortcut != CRCInput::RC_nokey) ? CRCInput::convertDigitToKey(sc++) : CRCInput::RC_nokey;
 
 			//FIXME: iconName
 			CMenuForwarder *fw_plugin = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());
@@ -1400,7 +1400,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 		
 		int handled = false;
 
-		if ( msg <= RC_MaxRC ) 
+		if ( msg <= CRCInput::RC_MaxRC ) 
 		{
 			timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
 
@@ -1420,7 +1420,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 						case CMenuTarget::RETURN_EXIT_ALL:
 							retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
 						case CMenuTarget::RETURN_EXIT:
-							msg = RC_timeout;
+							msg = CRCInput::RC_timeout;
 							break;
 						case CMenuTarget::RETURN_REPAINT:
 							//hide();
@@ -1443,7 +1443,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 			{
 				CMenuItem * titem = items[i];
 			
-				if ((titem->directKey != RC_nokey) && (titem->directKey == msg)) 
+				if ((titem->directKey != CRCInput::RC_nokey) && (titem->directKey == msg)) 
 				{
 					if (titem->isSelectable()) 
 					{
@@ -1458,7 +1458,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 
 						paintItemInfo(selected);
 						pos = selected;
-						msg = RC_ok;
+						msg = CRCInput::RC_ok;
 						actionKey = titem->actionKey;
 					} 
 					else 
@@ -1484,11 +1484,11 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
 						retval = CMenuTarget::RETURN_EXIT_ALL;
-						msg = RC_timeout;
+						msg = CRCInput::RC_timeout;
 					}
 					break;
 					
-				case (RC_page_up) :
+				case (CRCInput::RC_page_up) :
 					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						pos = (int) page_start[current_page + 1];
@@ -1562,7 +1562,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 
 					break;
 
-				case (RC_page_down) :
+				case (CRCInput::RC_page_down) :
 					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						pos = (int) page_start[current_page] - 1;
@@ -1608,7 +1608,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 
 					break;
 					
-				case (RC_up) :
+				case (CRCInput::RC_up) :
 					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						pos = selected - itemsPerX;
@@ -1666,7 +1666,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					}
 					break;
 					
-				case (RC_down) :
+				case (CRCInput::RC_down) :
 					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						pos = selected + itemsPerX;
@@ -1723,7 +1723,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					}
 					break;
 
-				case (RC_left):
+				case (CRCInput::RC_left):
 					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						for (unsigned int count = 1; count < items.size(); count++) 
@@ -1782,7 +1782,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 											retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
 									
 										case CMenuTarget::RETURN_EXIT:
-											msg = RC_timeout;
+											msg = CRCInput::RC_timeout;
 											break;
 									
 										case CMenuTarget::RETURN_REPAINT:
@@ -1791,16 +1791,16 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 									}
 								}
 								else
-									msg = RC_timeout;
+									msg = CRCInput::RC_timeout;
 							} 
 							else
-								msg = RC_timeout;
+								msg = CRCInput::RC_timeout;
 						}
 					}
 					
 					break;
 					
-				case (RC_right):
+				case (CRCInput::RC_right):
 					if(widgetType == CMenuItem::TYPE_FRAME)
 					{
 						for (unsigned int count = 1; count < items.size(); count++) 
@@ -1856,7 +1856,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 											retval = CMenuTarget::RETURN_EXIT_ALL; //fall through
 									
 										case CMenuTarget::RETURN_EXIT:
-											msg = RC_timeout;
+											msg = CRCInput::RC_timeout;
 											break;
 									
 										case CMenuTarget::RETURN_REPAINT:
@@ -1865,16 +1865,16 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 									}
 								}
 								else
-									msg = RC_timeout;
+									msg = CRCInput::RC_timeout;
 							} 
 							else
-								msg = RC_timeout;
+								msg = CRCInput::RC_timeout;
 						}
 					}
 
 					break;
 
-				case (RC_ok):
+				case (CRCInput::RC_ok):
 					{
 						if(hasItem()) 
 						{
@@ -1891,7 +1891,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 									retval = CMenuTarget::RETURN_EXIT_ALL;
 									
 								case CMenuTarget::RETURN_EXIT:
-									msg = RC_timeout;
+									msg = CRCInput::RC_timeout;
 									break;
 									
 								case CMenuTarget::RETURN_REPAINT:
@@ -1900,18 +1900,18 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							}
 						} 
 						else
-							msg = RC_timeout;
+							msg = CRCInput::RC_timeout;
 					}
 					break;
 
-				case (RC_home):
+				case (CRCInput::RC_home):
 					exit_pressed = true;
 					dprintf(DEBUG_NORMAL, "CMenuWidget::exec: exit_pressed\n");
-					msg = RC_timeout;
+					msg = CRCInput::RC_timeout;
 					selected = -1; 
 					break;
 					
-				case (RC_timeout):
+				case (CRCInput::RC_timeout):
 					exit_pressed = true;
 					selected = -1;
 					break;
@@ -1920,11 +1920,11 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
 						retval = CMenuTarget::RETURN_EXIT_ALL;
-						msg = RC_timeout;
+						msg = CRCInput::RC_timeout;
 					}
 			}
 
-			if ( msg <= RC_MaxRC )
+			if ( msg <= CRCInput::RC_MaxRC )
 			{
 				// recalculate timeout for RC-Tasten
 				timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
@@ -1933,7 +1933,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 		
 		frameBuffer->blit();
 	}
-	while ( msg != RC_timeout );
+	while ( msg != CRCInput::RC_timeout );
 
 	dprintf(DEBUG_NORMAL, "CMenuWidget: (%s) retval: (%d) selected:%d\n", l_name.c_str(), retval, selected);
 	

@@ -166,13 +166,13 @@ void CCAMMenuHandler::doMainMenu()
 			char CAM[255];
 			sprintf(CAM, "cam%d", i + 1);
 
-			cammenu->addItem(new CMenuForwarder(name, true, NULL, this, CAM, RC_nokey));
+			cammenu->addItem(new CMenuForwarder(name, true, NULL, this, CAM, CRCInput::RC_nokey));
 
 			char RESET[32];
 			sprintf(RESET, "reset%d", i + 1);
 
 			cammenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-			cammenu->addItem(new CMenuForwarder(_("CI cam reset"), true, NULL, this, RESET, RC_nokey));
+			cammenu->addItem(new CMenuForwarder(_("CI cam reset"), true, NULL, this, RESET, CRCInput::RC_nokey));
 		} 
 		else 
 		{
@@ -590,7 +590,7 @@ int CCAMMenuHandler::doMenu(int slot)
 
 			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 			
-			if (msg == RC_timeout) 
+			if (msg == CRCInput::RC_timeout) 
 			{
 				if(hintBox)
 				{
@@ -620,7 +620,7 @@ int CCAMMenuHandler::doMenu(int slot)
 			
 			/* -1 = not our event, 0 = back to top menu, 1 = continue loop, 2 = quit */
 			int ret = handleCamMsg(msg, data, true);
-			if(ret < 0 && (msg > RC_Messages)) 
+			if(ret < 0 && (msg > CRCInput::RC_Messages)) 
 			{
 				if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & ( messages_return::cancel_all | messages_return::cancel_info ) )
 				{

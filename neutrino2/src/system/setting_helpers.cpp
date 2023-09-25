@@ -322,7 +322,7 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	menu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	menu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	menu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	//
@@ -338,7 +338,7 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
                 snprintf(text, 10, "%d:", item);
                 text[9] = 0;// terminate for sure
                 
-                menu->addItem( new CMenuOptionChooser(text, &g_settings.usermenu[button][item], USERMENU_ITEM_OPTIONS, USERMENU_ITEM_OPTION_COUNT, true, NULL, RC_nokey, "", true ));
+                menu->addItem( new CMenuOptionChooser(text, &g_settings.usermenu[button][item], USERMENU_ITEM_OPTIONS, USERMENU_ITEM_OPTION_COUNT, true, NULL, CRCInput::RC_nokey, "", true ));
         }
 
         res = widget->exec(NULL, "");

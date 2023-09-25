@@ -406,7 +406,7 @@ void CNFilm::paintRightWidgetItems(ClistBox *listBox)
 		tmp += " ";
 		tmp += m_vMovieInfo[i].epgInfo1;
 
-		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mplay", RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mplay", CRCInput::RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->setHint(tmp.c_str());
 
@@ -492,10 +492,10 @@ void CNFilm::showMenu(bool genre)
 	mainWidget->addWidgetItem(rightWidget);
 	mainWidget->addWidgetItem(footersWidget);
 
-	mainWidget->addKey(RC_info, this, CRCInput::getSpecialKeyName(RC_info));
-	mainWidget->addKey(RC_red, this, "nextPage");
-	mainWidget->addKey(RC_green, this, "prevPage");
-	mainWidget->addKey(RC_blue, this, "startMenu");
+	mainWidget->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
+	mainWidget->addKey(CRCInput::RC_red, this, "nextPage");
+	mainWidget->addKey(CRCInput::RC_green, this, "prevPage");
+	mainWidget->addKey(CRCInput::RC_blue, this, "startMenu");
 
 	mainWidget->exec(NULL, ""); // handler
 

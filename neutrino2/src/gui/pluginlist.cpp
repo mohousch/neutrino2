@@ -160,11 +160,11 @@ int CPluginList::showMenu()
 	}
 	
 	//
-	pWidget->addKey(RC_red, this, CRCInput::getSpecialKeyName(RC_red));
-	pWidget->addKey(RC_green, this, CRCInput::getSpecialKeyName(RC_green));
-	pWidget->addKey(RC_blue, this, CRCInput::getSpecialKeyName(RC_blue));
-	pWidget->addKey(RC_info, this, CRCInput::getSpecialKeyName(RC_info));
-	pWidget->addKey(RC_ok, this, CRCInput::getSpecialKeyName(RC_ok));
+	pWidget->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
+	pWidget->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
+	pWidget->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
+	pWidget->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
+	pWidget->addKey(CRCInput::RC_ok, this, CRCInput::getSpecialKeyName(CRCInput::RC_ok));
 	
 	//
 	pWidget->setTimeOut(g_settings.timing_filebrowser);

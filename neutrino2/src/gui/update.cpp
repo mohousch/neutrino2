@@ -249,7 +249,7 @@ bool CFlashUpdate::selectHttpImage(void)
 				if(!allow_flash && (versionInfo.snapshot < '3'))
 					enabled = false;
 
-				SelectionWidget->addItem(new CMenuForwarder(names[i].c_str(), enabled, descriptions[i].c_str(), new CUpdateMenuTarget(i, &selected), NULL, RC_nokey, NEUTRINO_ICON_UPDATE_SMALL ));
+				SelectionWidget->addItem(new CMenuForwarder(names[i].c_str(), enabled, descriptions[i].c_str(), new CUpdateMenuTarget(i, &selected), NULL, CRCInput::RC_nokey, NEUTRINO_ICON_UPDATE_SMALL ));
 				i++;
 			}
 		}
@@ -1000,7 +1000,7 @@ int CUpdateSettings::showMenu()
 	updateSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// save settings
-	updateSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	updateSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	updateSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// 

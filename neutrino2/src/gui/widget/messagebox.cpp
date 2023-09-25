@@ -585,27 +585,27 @@ int CMessageBox::exec(int timeout)
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 
-		if (msg == RC_timeout && returnDefaultOnTimeout)
+		if (msg == CRCInput::RC_timeout && returnDefaultOnTimeout)
 		{
 			// return default
 			loop = false;
 		}
-		else if (((msg == RC_timeout) || (msg == RC_home)) && (showbuttons & (mbCancel | mbBack | mbOk)))
+		else if (((msg == CRCInput::RC_timeout) || (msg == CRCInput::RC_home)) && (showbuttons & (mbCancel | mbBack | mbOk)))
 		{
 			result = (showbuttons & mbCancel) ? mbrCancel : (showbuttons & mbOk) ? mbrOk: mbrBack;
 			loop   = false;
 		}
-		else if ((msg == RC_green) && (showbuttons & mbNo))
+		else if ((msg == CRCInput::RC_green) && (showbuttons & mbNo))
 		{
 			result = mbrNo;
 			loop   = false;
 		}
-		else if ((msg == RC_red) && (showbuttons & mbYes))
+		else if ((msg == CRCInput::RC_red) && (showbuttons & mbYes))
 		{
 			result = mbrYes;
 			loop   = false;
 		}
-		else if(msg == RC_right)
+		else if(msg == CRCInput::RC_right)
 		{
 			bool ok = false;
 			while (!ok)
@@ -616,16 +616,16 @@ int CMessageBox::exec(int timeout)
 
 			paintButtons();
 		}
-		else if (has_scrollbar() && ((msg == RC_up) || (msg == RC_down) || (msg == RC_page_up) || (msg == RC_page_down)))
+		else if (has_scrollbar() && ((msg == CRCInput::RC_up) || (msg == CRCInput::RC_down) || (msg == CRCInput::RC_page_up) || (msg == CRCInput::RC_page_down)))
 		{
-			if ( (msg == RC_up) || (msg == RC_page_up))
+			if ( (msg == CRCInput::RC_up) || (msg == CRCInput::RC_page_up))
 				scroll_up();
 			else
 				scroll_down();
 			
 			paintButtons();
 		}
-		else if(msg == RC_left)
+		else if(msg == CRCInput::RC_left)
 		{
 			bool ok = false;
 			while (!ok)
@@ -637,7 +637,7 @@ int CMessageBox::exec(int timeout)
 			paintButtons();
 
 		}
-		else if(msg == RC_ok || (msg == RC_home && (showbuttons & mbNone)))
+		else if(msg == CRCInput::RC_ok || (msg == CRCInput::RC_home && (showbuttons & mbNone)))
 		{
 			loop = false;
 		}

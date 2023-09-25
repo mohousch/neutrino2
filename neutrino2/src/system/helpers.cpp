@@ -1735,12 +1735,12 @@ void CFileHelpers::addRecursiveDir(CFileList * re_filelist, std::string rpath, C
 	bool bCancel = false;
 
 	g_RCInput->getMsg_us(&msg, &data, 1);
-	if (msg == RC_home)
+	if (msg == CRCInput::RC_home)
 	{
 		// home key cancel scan
 		bCancel = true;
 	}
-	else if (msg != RC_timeout)
+	else if (msg != CRCInput::RC_timeout)
 	{
 		// other event, save to low priority queue
 		g_RCInput->postMsg( msg, data, false );

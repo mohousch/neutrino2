@@ -1069,9 +1069,9 @@ void CTestMenu::testCWidget()
 	testWidget->addWidgetItem(rightWidget);
 	testWidget->addWidgetItem(footers);
 
-	testWidget->addKey(RC_info, this, "winfo");
-	testWidget->addKey(RC_red, this, "nextPage");
-	testWidget->addKey(RC_green, this, "prevPage");
+	testWidget->addKey(CRCInput::RC_info, this, "winfo");
+	testWidget->addKey(CRCInput::RC_red, this, "nextPage");
+	testWidget->addKey(CRCInput::RC_green, this, "prevPage");
 
 	testWidget->exec(NULL, "");
 
@@ -1211,10 +1211,10 @@ void CTestMenu::testCComponentWidget()
 	testWidget->addWidgetItem(&head);
 	testWidget->addWidgetItem(&foot);
 	
-	testWidget->addKey(RC_red, this, "mplay");
-	testWidget->addKey(RC_green, this, "mplay");
-	testWidget->addKey(RC_yellow, this, "mplay");
-	testWidget->addKey(RC_blue, this, "mplay");
+	testWidget->addKey(CRCInput::RC_red, this, "mplay");
+	testWidget->addKey(CRCInput::RC_green, this, "mplay");
+	testWidget->addKey(CRCInput::RC_yellow, this, "mplay");
+	testWidget->addKey(CRCInput::RC_blue, this, "mplay");
 	
 	testWidget->exec(NULL, "");
 	
@@ -1257,8 +1257,8 @@ void CTestMenu::testCTextBoxWidget()
 	
 	testWidget = new CWidget();
 	testWidget->addWidgetItem(textBoxWidget);
-	testWidget->addKey(RC_ok, this, "mplay");
-	testWidget->addKey(RC_info, this, "tinfo");
+	testWidget->addKey(CRCInput::RC_ok, this, "mplay");
+	testWidget->addKey(CRCInput::RC_info, this, "tinfo");
 	
 	testWidget->exec(NULL, "");
 	
@@ -1535,8 +1535,8 @@ void CTestMenu::testCListFrameWidget()
 	testWidget->addWidgetItem(listFrame);
 	testWidget->addWidgetItem(footers);
 
-	testWidget->addKey(RC_ok, this, "aok");
-	testWidget->addKey(RC_info, this, "ainfo");
+	testWidget->addKey(CRCInput::RC_ok, this, "aok");
+	testWidget->addKey(CRCInput::RC_info, this, "ainfo");
 
 	testWidget->exec(NULL, "");
 
@@ -1627,8 +1627,8 @@ void CTestMenu::testClistBoxWidget()
 	testWidget = new CWidget(&rightBox);
 	testWidget->addWidgetItem(rightWidget);
 
-	testWidget->addKey(RC_info, this, "linfo");
-	testWidget->addKey(RC_setup, this, "lsetup");
+	testWidget->addKey(CRCInput::RC_info, this, "linfo");
+	testWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 
 	testWidget->exec(NULL, "");
 	
@@ -2260,7 +2260,7 @@ void CTestMenu::testCTextBox()
 		textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
 	}
 	
-	textBoxWidget->addKey(RC_ok, this, "winfo");
+	textBoxWidget->addKey(CRCInput::RC_ok, this, "winfo");
 	
 	//	
 	//textBoxWidget->paint();
@@ -2364,8 +2364,8 @@ void CTestMenu::testCListFrame()
 	listFrame->setLines(&listFrameLines);
 	
 	//
-	listFrame->addKey(RC_ok, this, "aok");
-	listFrame->addKey(RC_info, this, "ainfo");
+	listFrame->addKey(CRCInput::RC_ok, this, "aok");
+	listFrame->addKey(CRCInput::RC_info, this, "ainfo");
 	
 	// paint
 	//listFrame->paint();
@@ -2472,9 +2472,9 @@ void CTestMenu::testClistBox()
 	//rightWidget->paintScrollBar(false);
 	
 	//
-	rightWidget->addKey(RC_ok, this, "wplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	//rightWidget->addKey(RC_setup, this, "lsetup");
+	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
+	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
+	//rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	//rightWidget->paint();
 	//CFrameBuffer::getInstance()->blit();
@@ -2580,9 +2580,9 @@ void CTestMenu::testClistBox2()
 	//rightWidget->setSelected(selected);
 	
 	//
-	rightWidget->addKey(RC_ok, this, "wplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
+	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
+	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
+	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	//rightWidget->paint();
 	//CFrameBuffer::getInstance()->blit();
@@ -2686,9 +2686,9 @@ void CTestMenu::testClistBox3()
 	//rightWidget->setSelected(selected);
 
 	//
-	rightWidget->addKey(RC_ok, this, "wplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
+	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
+	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
+	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	//rightWidget->paint();
 	//CFrameBuffer::getInstance()->blit();
@@ -2785,9 +2785,9 @@ void CTestMenu::testClistBox4()
 	rightWidget->setFootLine(true, true);
 
 	//
-	rightWidget->addKey(RC_ok, this, "wplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
+	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
+	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
+	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	//rightWidget->paint();
 	//CFrameBuffer::getInstance()->blit();
@@ -2896,9 +2896,9 @@ void CTestMenu::testClistBox5()
 	//rightWidget->setSelected(selected);
 
 	//
-	rightWidget->addKey(RC_ok, this, "wplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
+	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
+	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
+	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	//rightWidget->paint();
 	//CFrameBuffer::getInstance()->blit();
@@ -3011,9 +3011,9 @@ void CTestMenu::testClistBox6()
 	//rightWidget->setSelected(selected);
 
 	//
-	rightWidget->addKey(RC_ok, this, "wplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
+	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
+	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
+	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	//rightWidget->paint();
 	//CFrameBuffer::getInstance()->blit();
@@ -3127,9 +3127,9 @@ void CTestMenu::testClistBox7()
 	//rightWidget->setSelected(selected);
 
 	//
-	rightWidget->addKey(RC_ok, this, "wplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
+	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
+	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
+	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	//rightWidget->paint();
 	//CFrameBuffer::getInstance()->blit();
@@ -3243,9 +3243,9 @@ void CTestMenu::testClistBox8()
 	//rightWidget->setSelected(selected);
 
 	//
-	rightWidget->addKey(RC_ok, this, "wplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
+	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
+	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
+	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	//rightWidget->paint();
 	//CFrameBuffer::getInstance()->blit();
@@ -3355,9 +3355,9 @@ void CTestMenu::testClistBox9()
 	//rightWidget->paintScrollBar(false);
 	
 	//
-	rightWidget->addKey(RC_ok, this, "wplay");
-	rightWidget->addKey(RC_info, this, "linfo");
-	rightWidget->addKey(RC_setup, this, "lsetup");
+	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
+	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
+	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	//rightWidget->paint();
 	//CFrameBuffer::getInstance()->blit();
@@ -3683,7 +3683,7 @@ void CTestMenu::testCMenuWidget()
 	// add items
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mplay", RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "mplay", CRCInput::RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->setOption(m_vMovieInfo[i].epgChannel.c_str());
 		item->set2lines();
@@ -3717,8 +3717,8 @@ void CTestMenu::testCMenuWidget()
 	menuWidget->enablePaintItemInfo(80);
 	menuWidget->setItemInfoMode(ClistBox::ITEMINFO_HINT_MODE);
 
-	menuWidget->addKey(RC_info, this, "minfo");
-	menuWidget->addKey(RC_setup, this, "lsetup");
+	menuWidget->addKey(CRCInput::RC_info, this, "minfo");
+	menuWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 
 	menuWidget->exec(NULL, "");
 
@@ -3738,7 +3738,7 @@ void CTestMenu::testCMenuWidget1()
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
 	item->setHint(__("Here you can switch between TV / Radio"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
-	item->setDirectKey(RC_red);
+	item->setDirectKey(CRCInput::RC_red);
 	//item->setHidden(true);
 	menuWidget->addItem(item);
 
@@ -3746,28 +3746,28 @@ void CTestMenu::testCMenuWidget1()
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SLEEPTIMER);
 	item->setHint(__("Here you can set Timers and show EPG"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
-	item->setDirectKey(RC_green);
+	item->setDirectKey(CRCInput::RC_green);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(__("Features"), true, NULL, CNeutrinoApp::getInstance(), "features");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
 	item->setHint(__("Here you can choose plugins"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
-	item->setDirectKey(RC_yellow);
+	item->setDirectKey(CRCInput::RC_yellow);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(__("Service"), true, NULL, new CServiceMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
 	item->setHint(__("Here you can set channel scan and more"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
-	item->setDirectKey(RC_blue);
+	item->setDirectKey(CRCInput::RC_blue);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(__("Settings"), true, NULL, new CMainSettingsMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
 	item->setHint(__("Here you can setup your box"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	item->setDirectKey(RC_setup);
+	item->setDirectKey(CRCInput::RC_setup);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(__("OSD"), true, NULL, new COSDSettings());
@@ -3780,21 +3780,21 @@ void CTestMenu::testCMenuWidget1()
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
 	item->setHint(__("Here you can get device Info"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
-	item->setDirectKey(RC_info);
+	item->setDirectKey(CRCInput::RC_info);
 	menuWidget->addItem(item);
 
 	item = new CMenuForwarder(__("Power Menu"), true, NULL, new CPowerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
 	item->setHint(__("Here you can power off or standby your device"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
-	item->setDirectKey(RC_standby);
+	item->setDirectKey(CRCInput::RC_standby);
 	menuWidget->addItem(item);
 	
 	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
 	item->setHint(__("Here you can play music / movies"));
 	item->setIconName(NEUTRINO_ICON_VIDEO);
-	item->setDirectKey(RC_video);
+	item->setDirectKey(CRCInput::RC_video);
 	menuWidget->addItem(item);
 	
 	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
@@ -3808,7 +3808,7 @@ void CTestMenu::testCMenuWidget1()
 	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
 	menuWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	menuWidget->enablePaintItemInfo();
-	menuWidget->addKey(RC_setup, this, "lsetup");
+	menuWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	menuWidget->setTimeOut(g_settings.timing_menu);
 
 	menuWidget->exec(NULL, "");
@@ -4239,7 +4239,7 @@ BROWSER:
 
 		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
 		
-		if (msg != RC_home) 
+		if (msg != CRCInput::RC_home) 
 		{
 			goto BROWSER;
 		}
@@ -4297,7 +4297,7 @@ BROWSER:
 
 		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
 		
-		if (msg != RC_home) 
+		if (msg != CRCInput::RC_home) 
 		{
 			goto BROWSER;
 		}
@@ -4346,7 +4346,7 @@ BROWSER:
 
 		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
 		
-		if (msg != RC_home) 
+		if (msg != CRCInput::RC_home) 
 		{
 			goto BROWSER;
 		}
@@ -4415,7 +4415,7 @@ BROWSER:
 
 		g_RCInput->getMsg_ms(&msg, &data, 10);
 		
-		if (msg != RC_home) 
+		if (msg != CRCInput::RC_home) 
 		{
 			goto BROWSER;
 		}
@@ -4479,7 +4479,7 @@ BROWSER:
 
 		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
 		
-		if (msg != RC_home) 
+		if (msg != CRCInput::RC_home) 
 		{
 			goto BROWSER;
 		}
@@ -4532,7 +4532,7 @@ BROWSER:
 
 		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
 		
-		if (msg != RC_home) 
+		if (msg != CRCInput::RC_home) 
 		{
 			goto BROWSER;
 		}

@@ -215,7 +215,7 @@ int CHDDMenuHandler::hddMenu()
 	hddmenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// save settings
-	hddmenu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	hddmenu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	hddmenu->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// activate settings
@@ -1359,7 +1359,7 @@ REPEAT:
 			
 			g_RCInput->getMsg_ms(&msg, &data, 10);
 			
-			if (msg != RC_home) 
+			if (msg != CRCInput::RC_home) 
 			{
 				goto REPEAT;
 			}

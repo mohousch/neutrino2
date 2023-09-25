@@ -296,7 +296,7 @@ int CStreamInfo::doSignalStrengthLoop()
 
 		// switch paint mode
 		//FIXME picture info
-		if (msg == RC_red || msg == RC_blue || msg == RC_green || msg == RC_yellow) 
+		if (msg == CRCInput::RC_red || msg == CRCInput::RC_blue || msg == CRCInput::RC_green || msg == CRCInput::RC_yellow) 
 		{
 			hide ();
 			if(sigscale)
@@ -310,12 +310,12 @@ int CStreamInfo::doSignalStrengthLoop()
 		}
 		
 		// -- any key --> abort
-		if (msg <= RC_MaxRC) 
+		if (msg <= CRCInput::RC_MaxRC) 
 		{
 			break;
 		}
 		// -- push other events
-		if (msg > RC_MaxRC && msg != RC_timeout) 
+		if (msg > CRCInput::RC_MaxRC && msg != CRCInput::RC_timeout) 
 		{
 			CNeutrinoApp::getInstance ()->handleMsg (msg, data);
 		}

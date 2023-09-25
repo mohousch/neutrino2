@@ -161,7 +161,7 @@ int CExtendedInput::exec( CMenuTarget* parent, const std::string& )
 
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd, true);
 
-		if (msg == RC_left) 
+		if (msg == CRCInput::RC_left) 
 		{
 			bool found = false;
 			int oldSelectedChar = selectedChar;
@@ -196,7 +196,7 @@ int CExtendedInput::exec( CMenuTarget* parent, const std::string& )
 				inputFields[selectedChar]->paint( x+20, y+hheight +20, true );
 			}
 		} 
-		else if (msg == RC_right) 
+		else if (msg == CRCInput::RC_right) 
 		{
 			bool found = false;
 			int oldSelectedChar = selectedChar;
@@ -234,18 +234,18 @@ int CExtendedInput::exec( CMenuTarget* parent, const std::string& )
 				inputFields[selectedChar]->paint( x+20, y+hheight +20, true );
 			}
 		}
-		else if ( (CRCInput::getUnicodeValue(msg) != -1) || (msg == RC_red) || (msg == RC_green) || (msg == RC_blue) || (msg == RC_yellow) || (msg == RC_up) || (msg == RC_down))
+		else if ( (CRCInput::getUnicodeValue(msg) != -1) || (msg == CRCInput::RC_red) || (msg == CRCInput::RC_green) || (msg == CRCInput::RC_blue) || (msg == CRCInput::RC_yellow) || (msg == CRCInput::RC_up) || (msg == CRCInput::RC_down))
 		{
 			inputFields[selectedChar]->keyPressed(msg);
 			inputFields[selectedChar]->paint( x+20, y+hheight +20, true );
 		}
-		else if (msg == RC_ok)
+		else if (msg == CRCInput::RC_ok)
 		{
 			loop = false;
 			if(cancel != NULL)
 				*cancel = false;
 		}
-		else if ( (msg == RC_home) || (msg == RC_timeout) )
+		else if ( (msg == CRCInput::RC_home) || (msg == CRCInput::RC_timeout) )
 		{
 			if(strcmp(value, oldval)!= 0)
 			{
@@ -293,7 +293,7 @@ int CExtendedInput::exec( CMenuTarget* parent, const std::string& )
                 valueString = value;
         }
 
-	if ((observ) && (msg == RC_ok))
+	if ((observ) && (msg == CRCInput::RC_ok))
 	{
 		observ->changeNotify(name, value);
 	}
@@ -405,13 +405,13 @@ void CExtendedInput_Item_Char::keyPressed(const int key)
 		if (isAllowedChar((char)value))
 		{
 			*data = (char)value;
-			g_RCInput->postMsg(RC_right, 0);
+			g_RCInput->postMsg(CRCInput::RC_right, 0);
 		}
 	}
 	else
 	{
 		unsigned int pos = getCharID( *data );
-		if (key == RC_up)
+		if (key == CRCInput::RC_up)
 		{
 			if(pos<allowedChars.size()-1)
 			{
@@ -422,9 +422,9 @@ void CExtendedInput_Item_Char::keyPressed(const int key)
 				*data = allowedChars[0];
 			}
 		}
-		else if (key == RC_down)
+		else if (key == CRCInput::RC_down)
 		{
-			if(pos>0)
+			if(pos > 0)
 			{
 				*data = allowedChars[pos-1];
 			}

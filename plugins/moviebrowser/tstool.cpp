@@ -273,7 +273,7 @@ static int get_input(bool * stop)
 	* stop = false;
 	g_RCInput->getMsg(&msg, &data, 1, false);
 	
-	if(msg == RC_home) 
+	if(msg == CRCInput::RC_home) 
 	{
 		if(MessageBox(_("Information"), _("Cancel movie cut/split ?"), mbrNo, mbYes | mbNo) == mbrYes) 
 		{
@@ -281,7 +281,7 @@ static int get_input(bool * stop)
 		}
 	}
 	
-	if(msg != RC_timeout)
+	if(msg != CRCInput::RC_timeout)
 		retval |= 1;
 	if (CNeutrinoApp::getInstance()->handleMsg(msg, data) & messages_return::cancel_all)
 		retval |= 2;
@@ -584,7 +584,7 @@ ret_err:
 	close(dstfd);
 	free(buf);
 	if(was_cancel)
-		g_RCInput->postMsg(RC_home, 0);
+		g_RCInput->postMsg(CRCInput::RC_home, 0);
 	return retval;
 }
 
@@ -834,7 +834,7 @@ next_file:
 ret_err:
 	free(buf);
 	if(was_cancel)
-		g_RCInput->postMsg(RC_home, 0);
+		g_RCInput->postMsg(CRCInput::RC_home, 0);
 	return retval;
 }
 

@@ -174,7 +174,7 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	miscSettingsGeneral->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	miscSettingsGeneral->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	miscSettingsGeneral->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// rc delay
@@ -201,7 +201,7 @@ void CGeneralSettings::showMenu()
 	parser = parseXmlFile("/etc/timezone.xml");
 	if (parser != NULL) 
 	{	
-		tzSelect = new CMenuOptionStringChooser(_("Time Zone"), g_settings.timezone, true, new CTZChangeNotifier(), RC_nokey, "", true);
+		tzSelect = new CMenuOptionStringChooser(_("Time Zone"), g_settings.timezone, true, new CTZChangeNotifier(), CRCInput::RC_nokey, "", true);
 
 		xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
 		bool found = false;
@@ -557,7 +557,7 @@ void CChannelListSettings::showMenu()
 	miscSettingsChannelList->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	miscSettingsChannelList->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	miscSettingsChannelList->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	miscSettingsChannelList->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// HD list
@@ -725,7 +725,7 @@ void CEPGSettings::showMenu()
 	miscSettingsEPG->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	miscSettingsEPG->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	miscSettingsEPG->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	miscSettingsEPG->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	//
@@ -762,7 +762,7 @@ void CEPGSettings::showMenu()
 	
 	for(int i = 0; i < 3; i++) 
 	{
-		epglangSelect[i] = new CMenuOptionStringChooser(_("Preferred EPG language"), g_settings.pref_epgs[i], true, EPGlangNotifier, RC_nokey, "", true);
+		epglangSelect[i] = new CMenuOptionStringChooser(_("Preferred EPG language"), g_settings.pref_epgs[i], true, EPGlangNotifier, CRCInput::RC_nokey, "", true);
 		std::map<std::string, std::string>::const_iterator it;
 		
 		epglangSelect[i]->addOption("");
@@ -969,7 +969,7 @@ void CFileBrowserSettings::showMenu()
 	miscSettingsFileBrowser->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	miscSettingsFileBrowser->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	miscSettingsFileBrowser->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	miscSettingsFileBrowser->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// UTF 

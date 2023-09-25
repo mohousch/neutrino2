@@ -50,7 +50,7 @@ CMenuItem::CMenuItem()
 	dx = 0;
 	dy = 0;
 	menuItem_type = -1;
-	directKey = RC_nokey;
+	directKey = CRCInput::RC_nokey;
 	msg = 0;
 	iconName = "";
 	can_arrow = false;
@@ -81,6 +81,7 @@ CMenuItem::CMenuItem()
 	widgetMode = ClistBox::MODE_LISTBOX;
 	isPlugin = false;
 
+	//
 	active = true;
 	marked = false;
 	hidden = false;
@@ -321,7 +322,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 	}
 
 	// pulldown
-	if( (msg == RC_ok) && pulldown ) 
+	if( (msg == CRCInput::RC_ok) && pulldown ) 
 	{
 		if (parent->parent)
 			parent->parent->hide();
@@ -407,7 +408,7 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		{
 			if ( options[count].key == (*optionValue) ) 
 			{
-				if( msg == RC_left ) 
+				if( msg == CRCInput::RC_left ) 
 				{
 					if(count > 0)
 						*optionValue = options[(count - 1) % number_of_options].key;
@@ -585,7 +586,7 @@ int CMenuOptionNumberChooser::exec(CMenuTarget*)
 	}
 
 	//
-	if( msg == RC_left ) 
+	if( msg == CRCInput::RC_left ) 
 	{
 		if (((*optionValue) > upper_bound) || ((*optionValue) <= lower_bound))
 			*optionValue = upper_bound;
@@ -736,7 +737,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 	}
 
 	// pulldown
-	if( (msg == RC_ok) && pulldown) 
+	if( (msg == CRCInput::RC_ok) && pulldown) 
 	{
 		int select = -1;
 		
@@ -818,7 +819,7 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		{
 			if (strcmp(options[count].c_str(), optionValue) == 0) //FIXME
 			{
-				if( msg == RC_left ) 
+				if( msg == CRCInput::RC_left ) 
 				{
 					if(count > 0)
 						strcpy(optionValue, options[(count - 1) % options.size()].c_str());
@@ -3117,7 +3118,7 @@ int ClistBox::swipLeft()
 				if((items[selected]->can_arrow)) 
 				{
 					CMenuItem * item = items[selected];
-					item->msg = RC_left;
+					item->msg = CRCInput::RC_left;
 					actionKey = item->actionKey;
 					
 					ret = item->exec(parent);
@@ -3181,7 +3182,7 @@ int ClistBox::swipRight()
 				if((items[selected]->can_arrow)) 
 				{
 					CMenuItem * item = items[selected];
-					item->msg = RC_right;
+					item->msg = CRCInput::RC_right;
 					actionKey = item->actionKey;
 					
 					//
@@ -3225,7 +3226,7 @@ int ClistBox::directKeyPressed(neutrino_msg_t _msg)
 	{
 		CMenuItem * titem = items[i];
 			
-		if ((titem->directKey != RC_nokey) && (titem->directKey == _msg)) 
+		if ((titem->directKey != CRCInput::RC_nokey) && (titem->directKey == _msg)) 
 		{
 			if (titem->isSelectable()) 
 			{
@@ -3305,7 +3306,7 @@ void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned i
 			}
 
 			//
-			neutrino_msg_t dk = (shortcut != RC_nokey) ? CRCInput::convertDigitToKey(sc++) : RC_nokey;
+			neutrino_msg_t dk = (shortcut != CRCInput::RC_nokey) ? CRCInput::convertDigitToKey(sc++) : CRCInput::RC_nokey;
 
 			//FIXME: iconName
 			CMenuForwarder *fw_plugin = new CMenuForwarder(g_PluginList->getName(count), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());

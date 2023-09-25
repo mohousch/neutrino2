@@ -1469,7 +1469,7 @@ int CRCInput::getNumericValue(const neutrino_msg_t key)
 }
 
 // convertDigitToKey - return key representing digit or RC_nokey
-static const unsigned int digit_to_key[10] = {RC_0, RC_1, RC_2, RC_3, RC_4, RC_5, RC_6, RC_7, RC_8, RC_9};
+static const unsigned int digit_to_key[10] = {CRCInput::RC_0, CRCInput::RC_1, CRCInput::RC_2, CRCInput::RC_3, CRCInput::RC_4, CRCInput::RC_5, CRCInput::RC_6, CRCInput::RC_7, CRCInput::RC_8, CRCInput::RC_9};
 
 unsigned long CRCInput::convertDigitToKey(const unsigned int digit)
 {
@@ -1811,12 +1811,12 @@ unsigned char SMSKeyInput::handleMsg(const neutrino_msg_t msg)
 
 	unsigned char key = 0;
 	
-	if(msg == RC_1)
+	if(msg == CRCInput::RC_1)
 	{
 		key = '1';
 	}
 	
-	if(msg == RC_2)
+	if(msg == CRCInput::RC_2)
 	{
 		if(m_oldKey == 'a' && timeoutNotReached)
 			key = 'b';
@@ -1827,7 +1827,7 @@ unsigned char SMSKeyInput::handleMsg(const neutrino_msg_t msg)
 		else
 			key = 'a';
 	}
-	else if(msg == RC_3)
+	else if(msg == CRCInput::RC_3)
 	{
 		if(m_oldKey == 'd' && timeoutNotReached)
 			key = 'e';
@@ -1838,7 +1838,7 @@ unsigned char SMSKeyInput::handleMsg(const neutrino_msg_t msg)
 		else
 			key = 'd';
 	}
-	else if(msg == RC_4)
+	else if(msg == CRCInput::RC_4)
 	{
 		if(m_oldKey == 'g' && timeoutNotReached)
 			key = 'h';
@@ -1849,7 +1849,7 @@ unsigned char SMSKeyInput::handleMsg(const neutrino_msg_t msg)
 		else
 			key = 'g';
 	}
-	else if(msg == RC_5)
+	else if(msg == CRCInput::RC_5)
 	{
 		if(m_oldKey == 'j' && timeoutNotReached)
 			key = 'k';
@@ -1860,7 +1860,7 @@ unsigned char SMSKeyInput::handleMsg(const neutrino_msg_t msg)
 		else
 			key = 'j';
 	}
-	else if(msg == RC_6)
+	else if(msg == CRCInput::RC_6)
 	{
 		if(m_oldKey == 'm' && timeoutNotReached)
 			key = 'n';
@@ -1871,7 +1871,7 @@ unsigned char SMSKeyInput::handleMsg(const neutrino_msg_t msg)
 		else
 			key = 'm';
 	}
-	else if(msg == RC_7)
+	else if(msg == CRCInput::RC_7)
 	{
 		if(m_oldKey == 'p' && timeoutNotReached)
 			key = 'q';
@@ -1884,7 +1884,7 @@ unsigned char SMSKeyInput::handleMsg(const neutrino_msg_t msg)
 		else
 			key = 'p';
 	}
-	else if(msg == RC_8)
+	else if(msg == CRCInput::RC_8)
 	{
 		if(m_oldKey == 't' && timeoutNotReached)
 			key = 'u';
@@ -1895,7 +1895,7 @@ unsigned char SMSKeyInput::handleMsg(const neutrino_msg_t msg)
 		else
 			key = 't';
 	}
-	else if(msg == RC_9)
+	else if(msg == CRCInput::RC_9)
 	{
 		if(m_oldKey == 'w' && timeoutNotReached)
 			key = 'x';
@@ -1908,7 +1908,7 @@ unsigned char SMSKeyInput::handleMsg(const neutrino_msg_t msg)
 		else
 			key = 'w';
 	}
-	else if(msg == RC_0)
+	else if(msg == CRCInput::RC_0)
 	{
 		key = '0';
 	}

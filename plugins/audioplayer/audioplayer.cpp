@@ -672,12 +672,12 @@ int CMP3Player::showMenu()
 	alist->setFootButtons(AudioPlayerButtons, FOOT_BUTTONS_COUNT);
 
 	//
-	alist->addKey(RC_setup, this, CRCInput::getSpecialKeyName(RC_setup));
-	alist->addKey(RC_red, this, CRCInput::getSpecialKeyName(RC_red));
-	alist->addKey(RC_green, this, CRCInput::getSpecialKeyName(RC_green));
-	alist->addKey(RC_yellow, this, CRCInput::getSpecialKeyName(RC_yellow));
-	alist->addKey(RC_blue, this, CRCInput::getSpecialKeyName(RC_blue));
-	alist->addKey(RC_info, this, CRCInput::getSpecialKeyName(RC_info));
+	alist->addKey(CRCInput::RC_setup, this, CRCInput::getSpecialKeyName(CRCInput::RC_setup));
+	alist->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
+	alist->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
+	alist->addKey(CRCInput::RC_yellow, this, CRCInput::getSpecialKeyName(CRCInput::RC_yellow));
+	alist->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
+	alist->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
 
 	res = alist->exec(NULL, "");
 	delete alist;

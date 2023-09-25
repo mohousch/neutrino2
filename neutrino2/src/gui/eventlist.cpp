@@ -272,27 +272,27 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 	{
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 
-		if ( msg <= RC_MaxRC )
+		if ( msg <= CRCInput::RC_MaxRC )
 			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
 
-		if (msg == RC_up)
+		if (msg == CRCInput::RC_up)
 		{
 			listBox->scrollLineUp();
 		}
-		else if (msg == RC_down)
+		else if (msg == CRCInput::RC_down)
 		{
 			listBox->scrollLineDown();
 		}
-		else if (msg == RC_page_up)
+		else if (msg == CRCInput::RC_page_up)
 		{
 			listBox->scrollPageUp();
 		}
-		else if (msg == RC_page_down)
+		else if (msg == CRCInput::RC_page_down)
 		{
 			listBox->scrollPageDown();
 		}
 		// sort
-		else if (msg == RC_blue)
+		else if (msg == CRCInput::RC_blue)
 		{
 			uint64_t selected_id = evtlist[selected].eventID;
 			
@@ -318,14 +318,14 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 			paint(channel_id);
 		}
 		// epg reload
-		else if (msg == RC_setup)
+		else if (msg == CRCInput::RC_setup)
 		{
 			sort_mode = SORT_DESCRIPTION;
 			hide();
 			paint(channel_id);			
 		}
 		// add record
-		else if ( msg == RC_red )
+		else if ( msg == CRCInput::RC_red )
 		{
 			//oldselected = selected;
 			selected = listBox->getSelected();
@@ -378,7 +378,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 			}					
 		}
 		// add remind
-		else if ( msg == RC_yellow )		  
+		else if ( msg == CRCInput::RC_yellow )		  
 		{
 			selected = listBox->getSelected();
 
@@ -407,7 +407,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 			//
 			paint(channel_id);
 		}
-		else if (msg == RC_timeout)
+		else if (msg == CRCInput::RC_timeout)
 		{
 			selected = oldselected;
 			loop = false;
@@ -427,7 +427,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 				loop = false;
 			}
 		}
-		else if (msg == RC_epg)
+		else if (msg == CRCInput::RC_epg)
 		{
 			hide();
 			CEPGplusHandler eplus;
@@ -436,11 +436,11 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 			readEvents(channel_id);
 			paint(channel_id);
 		}
-		else if ( msg == RC_left )		  
+		else if ( msg == CRCInput::RC_left )		  
 		{
 			loop = false;
 		}
-		else if ( msg == RC_right || msg == RC_ok || msg == RC_info)
+		else if ( msg == CRCInput::RC_right || msg == CRCInput::RC_ok || msg == CRCInput::RC_info)
 		{
 			selected = listBox->getSelected();
 
@@ -458,7 +458,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 				{
 					g_RCInput->getMsg( &msg, &data, 0 );
 
-					if ( ( msg != RC_red ) && ( msg != RC_timeout ) )
+					if ( ( msg != CRCInput::RC_red ) && ( msg != CRCInput::RC_timeout ) )
 					{
 						// RC_red schlucken
 						g_RCInput->postMsg( msg, data );
@@ -470,7 +470,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 				}
 			}
 		}
-		else if(msg == RC_0)
+		else if(msg == CRCInput::RC_0)
 		{
 			selected = listBox->getSelected();
 
@@ -484,12 +484,12 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 				paint(channel_id);
 			}	
 		}
-		else if ( msg == RC_green )
+		else if ( msg == CRCInput::RC_green )
 		{
 			in_search = findEvents();
 			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
 		}
-		else if (msg == RC_sat || msg == RC_favorites)
+		else if (msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)
 		{
 			g_RCInput->postMsg (msg, 0);
 			res = CMenuTarget::RETURN_EXIT_ALL;

@@ -272,7 +272,7 @@ void CAudioPlayerGui::playFile()
 		
 		g_RCInput->getMsg(&msg, &data, 1); // 1 sec timeout to update play/stop state display
 
-		if (msg == RC_home)
+		if (msg == CRCInput::RC_home)
 		{
 			if (alist && alist->isPainted())
 			{
@@ -286,32 +286,32 @@ void CAudioPlayerGui::playFile()
 				loop = false;
 			}
 		}
-		else if (msg == RC_left || msg == RC_prev)
+		else if (msg == CRCInput::RC_left || msg == CRCInput::RC_prev)
 		{
 			if (alist && !alist->isPainted())
 				playPrev();
 		}
-		else if (msg == RC_right || msg == RC_next)
+		else if (msg == CRCInput::RC_right || msg == CRCInput::RC_next)
 		{
 			if (alist && !alist->isPainted())
 				playNext();
 		}
-		else if (msg == RC_stop)
+		else if (msg == CRCInput::RC_stop)
 		{
 			if (alist && !alist->isPainted())
 				stop();
 		}
-		else if( msg == RC_pause)
+		else if( msg == CRCInput::RC_pause)
 		{
 			if (alist && !alist->isPainted())
 				pause();
 		}
-		else if(msg == RC_play)
+		else if(msg == CRCInput::RC_play)
 		{
 			if (alist && !alist->isPainted())
 				play(m_current);
 		}
-		else if(msg == RC_loop)
+		else if(msg == CRCInput::RC_loop)
 		{
 			if (!m_inetmode)
 			{
@@ -334,17 +334,17 @@ void CAudioPlayerGui::playFile()
 				paintInfo(m_playlist[m_current]);
 			}
 		}
-		else if(msg == RC_forward)
+		else if(msg == CRCInput::RC_forward)
 		{
 			if (alist && !alist->isPainted())
 				ff(1);
 		}
-		else if(msg == RC_rewind)
+		else if(msg == CRCInput::RC_rewind)
 		{
 			if (alist && !alist->isPainted())
 				rev(1);
 		}
-		else if(msg == RC_red)
+		else if(msg == CRCInput::RC_red)
 		{
 			//if(m_state == CAudioPlayerGui::STOP)
 			{
@@ -361,7 +361,7 @@ void CAudioPlayerGui::playFile()
 				}
 			}
 		} 
-		else if(msg == RC_green)
+		else if(msg == CRCInput::RC_green)
 		{
 			if(m_state != CAudioPlayerGui::STOP)
 			{
@@ -379,7 +379,7 @@ void CAudioPlayerGui::playFile()
 					rev(seconds);
 			}
 		}
-		else if(msg == RC_yellow)
+		else if(msg == CRCInput::RC_yellow)
 		{
 			if (m_state != CAudioPlayerGui::STOP)
 			{
@@ -397,7 +397,7 @@ void CAudioPlayerGui::playFile()
 					ff(seconds);
 			}
 		}
-		else if(msg == RC_blue)
+		else if(msg == CRCInput::RC_blue)
 		{
 			shufflePlaylist();
 			
@@ -407,7 +407,7 @@ void CAudioPlayerGui::playFile()
 				showPlaylist();
 			}
 		}
-		else if(msg == RC_info)
+		else if(msg == CRCInput::RC_info)
 		{
 			hide();
 
@@ -416,7 +416,7 @@ void CAudioPlayerGui::playFile()
 			paintInfo(m_playlist[m_current]);
 			update_t = true;
 		}
-		else if( ((msg == RC_setup) || (msg == RC_vfdmenu)))
+		else if(msg == CRCInput::RC_setup)
 		{
 			hide();
 
@@ -431,27 +431,27 @@ void CAudioPlayerGui::playFile()
 			paintInfo(m_playlist[m_current]);
 			update_t = true;					
 		}
-		else if(msg == RC_down)
+		else if(msg == CRCInput::RC_down)
 		{
 			if (alist && alist->isPainted())
 				alist->scrollLineDown();
 		}
-		else if(msg == RC_page_down)
+		else if(msg == CRCInput::RC_page_down)
 		{
 			if (alist && alist->isPainted())
 				alist->scrollPageDown();
 		}
-		else if(msg == RC_up)
+		else if(msg == CRCInput::RC_up)
 		{
 			if (alist && alist->isPainted())
 				alist->scrollLineUp();
 		}
-		else if(msg == RC_page_up)
+		else if(msg == CRCInput::RC_page_up)
 		{
 			if (alist && alist->isPainted())
 				alist->scrollPageUp();
 		}
-		else if(msg == RC_ok)
+		else if(msg == CRCInput::RC_ok)
 		{
 			if (alist && alist->isPainted())
 			{

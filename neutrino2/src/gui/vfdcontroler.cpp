@@ -115,12 +115,12 @@ int CVfdControler::exec(CMenuTarget* parent, const std::string &)
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd, true );
 
-		if ( msg <= RC_MaxRC )
+		if ( msg <= CRCInput::RC_MaxRC )
 			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_menu == 0 ? 0xFFFF : g_settings.timing_menu);
 
 		switch ( msg )
 		{
-			case RC_down:
+			case CRCInput::RC_down:
 			if(selected < 2) // max entries
 			{
 				paintSlider(x + BORDER_LEFT, y + hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), false);
@@ -148,7 +148,7 @@ int CVfdControler::exec(CMenuTarget* parent, const std::string &)
 			}
 			break;
 
-			case RC_up:
+			case CRCInput::RC_up:
 			if (selected > 0) 
 			{
 				paintSlider(x + BORDER_LEFT, y + hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), false);
@@ -179,7 +179,7 @@ int CVfdControler::exec(CMenuTarget* parent, const std::string &)
 			}
 			break;
 
-			case RC_right:
+			case CRCInput::RC_right:
 				switch (selected) 
 				{
 					case 0:
@@ -204,7 +204,7 @@ int CVfdControler::exec(CMenuTarget* parent, const std::string &)
 				}
 				break;
 
-			case RC_left:
+			case CRCInput::RC_left:
 				switch (selected) 
 				{
 					case 0:
@@ -229,7 +229,7 @@ int CVfdControler::exec(CMenuTarget* parent, const std::string &)
 				}
 				break;
 
-			case RC_home:
+			case CRCInput::RC_home:
 				if ( ((brightness != brightness_alt) || (brightnessstandby != brightnessstandby_alt) ) && (MessageBox(name.c_str(), _("Discard changes?"), mbrYes, mbYes | mbCancel) == mbrCancel))
 					break;
 
@@ -239,7 +239,7 @@ int CVfdControler::exec(CMenuTarget* parent, const std::string &)
 				loop = false;
 				break;
 
-			case RC_ok:
+			case CRCInput::RC_ok:
 				if (selected == 2) 
 				{
 					brightness = DEFAULT_LCD_BRIGHTNESS;
@@ -250,7 +250,7 @@ int CVfdControler::exec(CMenuTarget* parent, const std::string &)
 					break;
 				}
 
-			case RC_timeout:
+			case CRCInput::RC_timeout:
 				loop = false;
 				break;
 	

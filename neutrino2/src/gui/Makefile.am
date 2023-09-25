@@ -43,12 +43,13 @@ noinst_LIBRARIES = libneutrino2_gui.a
 libneutrino2_gui_a_SOURCES = \
 	bouquetlist.cpp \
 	channellist.cpp \
+	infoviewer.cpp \
 	eventlist.cpp \
+	epgview.cpp \
+	epgplus.cpp \
 	pluginlist.cpp \
 	sleeptimer.cpp \
 	screensetup.cpp \
-	epgview.cpp \
-	infoviewer.cpp \
 	scan.cpp \
 	update.cpp \
 	filebrowser.cpp \
@@ -57,7 +58,6 @@ libneutrino2_gui_a_SOURCES = \
 	pictureviewer.cpp \
 	movieplayer.cpp \
 	rc_lock.cpp \
-	epgplus.cpp \
 	streaminfo.cpp \
 	dboxinfo.cpp \
 	plugins.cpp \

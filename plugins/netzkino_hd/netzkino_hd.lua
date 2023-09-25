@@ -335,12 +335,12 @@ function get_movies_menu(_id)
 
 	m_movies:setSelected(selected_movie)
 
-	m_movies:addKey(neutrino2.RC_info, null, "info")
-	m_movies:addKey(neutrino2.RC_record, null, "record")
-	m_movies:addKey(neutrino2.RC_red, null, "nextpage")
-	--m_movies:addKey(neutrino2.RC_green, null, "green")
-	--m_movies:addKey(neutrino2.RC_yellow, null, "new")
-	--m_movies:addKey(neutrino2.RC_blue, null, "highlight")
+	m_movies:addKey(neutrino2.CRCInput_RC_info, null, "info")
+	m_movies:addKey(neutrino2.CRCInput_RC_record, null, "record")
+	m_movies:addKey(neutrino2.CRCInput_RC_red, null, "nextpage")
+	--m_movies:addKey(neutrino2.CRCInput_RC_green, null, "green")
+	--m_movies:addKey(neutrino2.CRCInput_RC_yellow, null, "new")
+	--m_movies:addKey(neutrino2.CRCInput_RC_blue, null, "highlight")
 
 	m_movies:exec(null, "")
 	

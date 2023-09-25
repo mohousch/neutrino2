@@ -821,7 +821,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 					CNeutrinoApp::getInstance()->handleMsg(msg, data);
 					break;
 					
-				case RC_left:
+				case CRCInput::RC_left:
 					if (prev_id != 0)
 					{
 						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningWindow->getWindowsPos().iX + 10, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthr, "<", COL_MENUCONTENT + 3);
@@ -830,7 +830,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 					}
 					break;
 
-				case RC_right:
+				case CRCInput::RC_right:
 					if (next_id != 0)
 					{
 						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(cFollowScreeningWindow->getWindowsPos().iX + cFollowScreeningWindow->getWindowsPos().iWidth - 10 - widthr, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight(), widthr, ">", COL_MENUCONTENT + 3);
@@ -839,20 +839,19 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 					}
 					break;
 
-				case RC_down:
-				case RC_page_down:
+				case CRCInput::RC_down:
+				case CRCInput::RC_page_down:
 					if(textBox)
 						textBox->scrollPageDown(1);
 					break;
 
-				case RC_up:
-				case RC_page_up:
+				case CRCInput::RC_up:
+				case CRCInput::RC_page_up:
 					if(textBox)
 						textBox->scrollPageUp(1);
 					break;
 
-				// 31.05.2002 dirch		record timer
-				case RC_red:
+				case CRCInput::RC_red:
 					if (recDir != NULL)
 					{
 						if(CTimerd::getInstance()->isTimerdAvailable())
@@ -882,8 +881,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 					}
 					break;
 
-				// 31.05.2002 dirch		zapto timer
-				case RC_yellow:
+				case CRCInput::RC_yellow:
 				{
 					{
 						if(CTimerd::getInstance()->isTimerdAvailable())
@@ -898,15 +896,15 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 					break;
 				}
 
-				case RC_ok:
-				case RC_timeout:
-				case RC_home:
-				case RC_info:
+				case CRCInput::RC_ok:
+				case CRCInput::RC_timeout:
+				case CRCInput::RC_home:
+				case CRCInput::RC_info:
 					loop = false;
 					break;
 					
-				case RC_favorites:
-				case RC_sat:
+				case CRCInput::RC_favorites:
+				case CRCInput::RC_sat:
 					g_RCInput->postMsg (msg, 0);
 					loop = false;
 					break;

@@ -402,7 +402,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 		
 		int handled = false;
 
-		if ( msg <= RC_MaxRC ) 
+		if ( msg <= CRCInput::RC_MaxRC ) 
 		{
 			timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
 			
@@ -425,7 +425,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 						case RETURN_EXIT_ALL:
 							retval = RETURN_EXIT_ALL; //fall through
 						case RETURN_EXIT:
-							msg = RC_timeout;
+							msg = CRCInput::RC_timeout;
 							break;
 						case RETURN_REPAINT:
 							paint();
@@ -464,50 +464,50 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
 						retval = RETURN_EXIT_ALL;
-						msg = RC_timeout;
+						msg = CRCInput::RC_timeout;
 					}
 					break;
 					
 				//
-				case (RC_up):
+				case (CRCInput::RC_up):
 					onUpKeyPressed();
 					break;
 
-				case (RC_down):
+				case (CRCInput::RC_down):
 					onDownKeyPressed();
 					break;
 
-				case (RC_right):
+				case (CRCInput::RC_right):
 					onRightKeyPressed();
 					break;
 
-				case (RC_left):
+				case (CRCInput::RC_left):
 					onLeftKeyPressed();
 					break;
 
-				case (RC_page_up):
+				case (CRCInput::RC_page_up):
 					onPageUpKeyPressed();
 					break;
 
-				case (RC_page_down):
+				case (CRCInput::RC_page_down):
 					onPageDownKeyPressed();
 					break;
 
-				case (RC_yellow):
+				case (CRCInput::RC_yellow):
 					onYellowKeyPressed();
 					break;
 
-				case (RC_home):
-				case (RC_setup):
+				case (CRCInput::RC_home):
+				case (CRCInput::RC_setup):
 					onHomeKeyPressed();
 					break;
 
-				case (RC_ok):
+				case (CRCInput::RC_ok):
 					onOKKeyPressed();
 					break;
 				
 				//	
-				case (RC_timeout):
+				case (CRCInput::RC_timeout):
 					exit_pressed = true;
 					selected = -1;
 					break;
@@ -516,11 +516,11 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 					if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
 					{
 						retval = RETURN_EXIT_ALL;
-						msg = RC_timeout;
+						msg = CRCInput::RC_timeout;
 					}
 			}
 
-			if ( msg <= RC_MaxRC )
+			if ( msg <= CRCInput::RC_MaxRC )
 			{
 				// recalculate timeout for RC-Tasten
 				timeoutEnd = CRCInput::calcTimeoutEnd(timeout == 0 ? 0xFFFF : timeout);
@@ -533,7 +533,7 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 			needToBlit = false;
 		}
 	}
-	while ( msg != RC_timeout );
+	while ( msg != CRCInput::RC_timeout );
 
 	dprintf(DEBUG_INFO, "CWidget: retval: (%d) selected:%d\n", retval, selected);
 	
@@ -595,7 +595,7 @@ void CWidget::onOKKeyPressed()
 				case RETURN_EXIT_ALL:
 					retval = RETURN_EXIT_ALL; //fall through
 				case RETURN_EXIT:
-					msg = RC_timeout;
+					msg = CRCInput::RC_timeout;
 					break;
 				case RETURN_REPAINT:
 					paint();
@@ -610,7 +610,7 @@ void CWidget::onHomeKeyPressed()
 	dprintf(DEBUG_INFO, "CWidget::onHomeKeyPressed\n");
 	
 	exit_pressed = true;
-	msg = RC_timeout;
+	msg = CRCInput::RC_timeout;
 	
 	if (hasWidgetItem())
 	{
@@ -687,7 +687,7 @@ void CWidget::onRightKeyPressed()
 			case RETURN_EXIT_ALL:
 				retval = RETURN_EXIT_ALL; //fall through
 			case RETURN_EXIT:
-				msg = RC_timeout;
+				msg = CRCInput::RC_timeout;
 				break;
 			case RETURN_REPAINT:
 				paint();
@@ -712,7 +712,7 @@ void CWidget::onLeftKeyPressed()
 			case RETURN_EXIT_ALL:
 				retval = RETURN_EXIT_ALL; //fall through
 			case RETURN_EXIT:
-				msg = RC_timeout;
+				msg = CRCInput::RC_timeout;
 				break;
 			case RETURN_REPAINT:
 				paint();
@@ -758,7 +758,7 @@ void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 			case RETURN_EXIT_ALL:
 				retval = RETURN_EXIT_ALL; //fall through
 			case RETURN_EXIT:
-				msg = RC_timeout;
+				msg = CRCInput::RC_timeout;
 				break;
 			case RETURN_REPAINT:
 				paint();

@@ -169,12 +169,12 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 	{
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd, true);
 
-		if ( msg <= RC_MaxRC )
+		if ( msg <= CRCInput::RC_MaxRC )
 			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_menu == 0 ? 0xFFFF : g_settings.timing_menu);
 
 		switch ( msg ) 
 		{
-			case RC_down:
+			case CRCInput::RC_down:
 				{
 					if (selected < ((value[VALUE_ALPHA]) ? 3 : 2))
 					{
@@ -191,7 +191,7 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 					break;
 				}
 				
-			case RC_up:
+			case CRCInput::RC_up:
 				{
 					if (selected > 0)
 					{
@@ -208,7 +208,7 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 					break;
 				}
 				
-			case RC_right:
+			case CRCInput::RC_right:
 				{
 					if ((*value[selected]) < 100)
 					{
@@ -223,7 +223,7 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 					break;
 				}
 				
-			case RC_left:
+			case CRCInput::RC_left:
 				{
 					if ((*value[selected]) > 0)
 					{
@@ -238,7 +238,7 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 					break;
 				}
 				
-			case RC_home:
+			case CRCInput::RC_home:
 				if (((*value[VALUE_R] != r_alt) || (*value[VALUE_G] != g_alt) || (*value[VALUE_B] != b_alt) || ((value[VALUE_ALPHA]) && (*(value[VALUE_ALPHA]) != a_alt)) ) &&
 						(MessageBox(name.c_str(), _("Discard changes?"), mbrYes, mbYes | mbCancel) == mbrCancel))
 					break;
@@ -256,8 +256,8 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 					if (value[VALUE_ALPHA])
 						*value[VALUE_ALPHA] = a_alt;
 	
-			case RC_timeout:
-			case RC_ok:
+			case CRCInput::RC_timeout:
+			case CRCInput::RC_ok:
 				loop = false;
 				break;
 

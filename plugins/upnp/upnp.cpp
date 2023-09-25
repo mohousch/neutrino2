@@ -444,47 +444,47 @@ bool CUpnpBrowserGui::loadItem(std::string id, int _selected)
 		}
 
 		g_RCInput->getMsg(&msg, &data, 10); // 1 sec timeout to update play/stop state display
-		neutrino_msg_t msg_repeatok = msg & ~RC_Repeat;
+		neutrino_msg_t msg_repeatok = msg & ~CRCInput::RC_Repeat;
 
-		if( msg == RC_timeout)
+		if( msg == CRCInput::RC_timeout)
 		{
 			// nothing
 		}
-		else if(msg == RC_home)
+		else if(msg == CRCInput::RC_home)
 		{
 			loop = false;
 			//endall = true;
 		}
-		else if(msg == RC_left)
+		else if(msg == CRCInput::RC_left)
 		{
 			loop = false;
 			changed = true;
 		}
-		else if (msg_repeatok == RC_up /*&& selected > 0*/)
+		else if (msg_repeatok == CRCInput::RC_up /*&& selected > 0*/)
 		{
 			listBox->scrollLineUp();
 			//rchanged = true;
 			//changed = true;
 		}
 
-		else if( (msg == RC_yellow || (int) msg == RC_page_up))
+		else if( (msg == CRCInput::RC_yellow || (int) msg == CRCInput::RC_page_up))
 		{
 			listBox->scrollPageUp();
 			rchanged = true;
 			changed = true;
 		}
-		else if (msg_repeatok == RC_down)
+		else if (msg_repeatok == CRCInput::RC_down)
 		{
 			listBox->scrollLineDown();
 			//rchanged = true;
 			//changed = true;
 		}
-		else if( (msg == RC_green || (int) msg == RC_page_down))
+		else if( (msg == CRCInput::RC_green || (int) msg == CRCInput::RC_page_down))
 		{
 			listBox->scrollPageDown();
 			rchanged = true;
 		}
-		else if(msg == RC_right)
+		else if(msg == CRCInput::RC_right)
 		{
 			selected = listBox->getSelected();
 
@@ -496,7 +496,7 @@ bool CUpnpBrowserGui::loadItem(std::string id, int _selected)
 			}
 			changed = true;
 		}
-		else if(msg == RC_red || msg == RC_ok)
+		else if(msg == CRCInput::RC_red || msg == CRCInput::RC_ok)
 		{
 			selected = listBox->getSelected();
 
@@ -828,50 +828,50 @@ int CUpnpBrowserGui::exec(CMenuTarget* parent, const std::string& actionKey)
 		}
 
 		g_RCInput->getMsg(&msg, &data, 10); // 1 sec timeout to update play/stop state display
-		neutrino_msg_t msg_repeatok = msg & ~RC_Repeat;
+		neutrino_msg_t msg_repeatok = msg & ~CRCInput::RC_Repeat;
 
-		if( msg == RC_timeout)
+		if( msg == CRCInput::RC_timeout)
 		{
 			//loop = false;
 		}
-		else if( msg == RC_home)
+		else if( msg == CRCInput::RC_home)
 		{
 			loop = false;
 		}
-		else if (msg_repeatok == RC_page_up)
+		else if (msg_repeatok == CRCInput::RC_page_up)
 		{
 			listBox->scrollPageUp();
 		} 
-		else if (msg_repeatok == RC_page_down)
+		else if (msg_repeatok == CRCInput::RC_page_down)
 		{
 			listBox->scrollPageDown();
 		}
-		else if (msg_repeatok == RC_up)
+		else if (msg_repeatok == CRCInput::RC_up)
 		{
 			listBox->scrollLineUp();
 		} 
-		else if (msg_repeatok == RC_down)
+		else if (msg_repeatok == CRCInput::RC_down)
 		{
 			listBox->scrollLineDown();
 		}
-		else if (msg == RC_right)
+		else if (msg == CRCInput::RC_right)
 		{
 			loadItem("0", listBox->getSelected());
 			changed = true;
 			listBox->clearItems();
 			showMenuEntry();
 		}
-		else if (msg == RC_left)
+		else if (msg == CRCInput::RC_left)
 		{
 			loop = false;
 		}
-		else if (msg == RC_ok)
+		else if (msg == CRCInput::RC_ok)
 		{
 			//listBox->clearItems();
 			loadItem("0", listBox->getSelected());
 			changed = true;
 		} 
-		else if (msg == RC_blue)
+		else if (msg == CRCInput::RC_blue)
 		{
 			hide();
 			listBox->clearItems();

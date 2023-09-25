@@ -62,50 +62,50 @@ GLThreadObj::~GLThreadObj()
 
 void GLThreadObj::initKeys()
 {
-	mSpecialMap[GLUT_KEY_UP]    = RC_up;
-	mSpecialMap[GLUT_KEY_DOWN]  = RC_down;
-	mSpecialMap[GLUT_KEY_LEFT]  = RC_left;
-	mSpecialMap[GLUT_KEY_RIGHT] = RC_right;
+	mSpecialMap[GLUT_KEY_UP]    = CRCInput::RC_up;
+	mSpecialMap[GLUT_KEY_DOWN]  = CRCInput::RC_down;
+	mSpecialMap[GLUT_KEY_LEFT]  = CRCInput::RC_left;
+	mSpecialMap[GLUT_KEY_RIGHT] = CRCInput::RC_right;
 
-	mSpecialMap[GLUT_KEY_F1] = RC_red;
-	mSpecialMap[GLUT_KEY_F2] = RC_green;
-	mSpecialMap[GLUT_KEY_F3] = RC_yellow;
-	mSpecialMap[GLUT_KEY_F4] = RC_blue;
+	mSpecialMap[GLUT_KEY_F1] = CRCInput::RC_red;
+	mSpecialMap[GLUT_KEY_F2] = CRCInput::RC_green;
+	mSpecialMap[GLUT_KEY_F3] = CRCInput::RC_yellow;
+	mSpecialMap[GLUT_KEY_F4] = CRCInput::RC_blue;
 	
-	mSpecialMap[GLUT_KEY_F5] = RC_play;
-	mSpecialMap[GLUT_KEY_F6] = RC_stop;
-	mSpecialMap[GLUT_KEY_F7] = RC_pause;
-	mSpecialMap[GLUT_KEY_F8] = RC_rewind;
-	mSpecialMap[GLUT_KEY_F9] = RC_forward;
-	mSpecialMap[GLUT_KEY_F10] = RC_loop;
-	mSpecialMap[GLUT_KEY_F11] = RC_record;
-	mSpecialMap[GLUT_KEY_F12] = RC_mode;
+	mSpecialMap[GLUT_KEY_F5] = CRCInput::RC_play;
+	mSpecialMap[GLUT_KEY_F6] = CRCInput::RC_stop;
+	mSpecialMap[GLUT_KEY_F7] = CRCInput::RC_pause;
+	mSpecialMap[GLUT_KEY_F8] = CRCInput::RC_rewind;
+	mSpecialMap[GLUT_KEY_F9] = CRCInput::RC_forward;
+	mSpecialMap[GLUT_KEY_F10] = CRCInput::RC_loop;
+	mSpecialMap[GLUT_KEY_F11] = CRCInput::RC_record;
+	mSpecialMap[GLUT_KEY_F12] = CRCInput::RC_mode;
 
-	mSpecialMap[GLUT_KEY_PAGE_UP]   = RC_page_up;
-	mSpecialMap[GLUT_KEY_PAGE_DOWN] = RC_page_down;
+	mSpecialMap[GLUT_KEY_PAGE_UP]   = CRCInput::RC_page_up;
+	mSpecialMap[GLUT_KEY_PAGE_DOWN] = CRCInput::RC_page_down;
 
-	mKeyMap[0x0d] = RC_ok;
-	mKeyMap[0x1b] = RC_home;
-	mKeyMap['i']  = RC_info;
-	mKeyMap['m']  = RC_setup;
-	mKeyMap['e']  = RC_epg;
+	mKeyMap[0x0d] = CRCInput::RC_ok;
+	mKeyMap[0x1b] = CRCInput::RC_home;
+	mKeyMap['i']  = CRCInput::RC_info;
+	mKeyMap['m']  = CRCInput::RC_setup;
+	mKeyMap['e']  = CRCInput::RC_epg;
 
-	mKeyMap['s']  = RC_spkr;
-	mKeyMap['+']  = RC_plus;
-	mKeyMap['-']  = RC_minus;
+	mKeyMap['s']  = CRCInput::RC_spkr;
+	mKeyMap['+']  = CRCInput::RC_plus;
+	mKeyMap['-']  = CRCInput::RC_minus;
 	
-	mKeyMap['h']  = RC_info;
+	mKeyMap['h']  = CRCInput::RC_info;
 
-	mKeyMap['0']  = RC_0;
-	mKeyMap['1']  = RC_1;
-	mKeyMap['2']  = RC_2;
-	mKeyMap['3']  = RC_3;
-	mKeyMap['4']  = RC_4;
-	mKeyMap['5']  = RC_5;
-	mKeyMap['6']  = RC_6;
-	mKeyMap['7']  = RC_7;
-	mKeyMap['8']  = RC_8;
-	mKeyMap['9']  = RC_9;
+	mKeyMap['0']  = CRCInput::RC_0;
+	mKeyMap['1']  = CRCInput::RC_1;
+	mKeyMap['2']  = CRCInput::RC_2;
+	mKeyMap['3']  = CRCInput::RC_3;
+	mKeyMap['4']  = CRCInput::RC_4;
+	mKeyMap['5']  = CRCInput::RC_5;
+	mKeyMap['6']  = CRCInput::RC_6;
+	mKeyMap['7']  = CRCInput::RC_7;
+	mKeyMap['8']  = CRCInput::RC_8;
+	mKeyMap['9']  = CRCInput::RC_9;
 }
 
 void GLThreadObj::run()

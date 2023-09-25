@@ -625,18 +625,18 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 			
 			dprintf(DEBUG_DEBUG, "CInofViewer::showTitle: msg:(0x%X) data:(0x%X)\n", msg, data);
 
-			if ((msg == RC_sat) || (msg == RC_favorites) || (msg == RC_setup) || (msg == RC_red) || (msg == RC_green) || (msg == RC_yellow) || (msg == RC_blue) || (msg == RC_ok) || (msg == RC_text) || (msg == RC_epg) || (msg == RC_record) || (msg == RC_play) || (msg == RC_pause) || (msg == RC_dvbsub) || (msg == RC_mode) || (msg == RC_audio))
+			if ((msg == CRCInput::RC_sat) || (msg == CRCInput::RC_favorites) || (msg == CRCInput::RC_setup) || (msg == CRCInput::RC_red) || (msg == CRCInput::RC_green) || (msg == CRCInput::RC_yellow) || (msg == CRCInput::RC_blue) || (msg == CRCInput::RC_ok) || (msg == CRCInput::RC_text) || (msg == CRCInput::RC_epg) || (msg == CRCInput::RC_record) || (msg == CRCInput::RC_play) || (msg == CRCInput::RC_pause) || (msg == CRCInput::RC_dvbsub) || (msg == CRCInput::RC_mode) || (msg == CRCInput::RC_audio))
 			{
 				g_RCInput->postMsg(msg, 0);
 				res = messages_return::cancel_info;
 			}
-			else if (msg == RC_info)
+			else if (msg == CRCInput::RC_info)
 			{
 				g_RCInput->postMsg(NeutrinoMessages::SHOW_EPG, 0);
 					
 				res = messages_return::cancel_info;
 			} 
-			else if ((msg == RC_home) || (msg == RC_timeout)) 
+			else if ((msg == CRCInput::RC_home) || (msg == CRCInput::RC_timeout)) 
 			{
 				res = messages_return::cancel_info;
 				// add this here, now OK and EXIT/HOME has effect
@@ -664,7 +664,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 				if ((g_settings.radiotext_enable) && (CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_radio))
 					showRadiotext();		
 			} 
-			else if ( g_settings.virtual_zap_mode && ((msg == RC_right) || msg == RC_left)) 
+			else if ( g_settings.virtual_zap_mode && ((msg == CRCInput::RC_right) || msg == CRCInput::RC_left)) 
 			{
 				virtual_zap_mode = true;
 				res = messages_return::cancel_all;
@@ -672,7 +672,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 			} 
 			else if ( !CNeutrinoApp::getInstance()->timeshiftstatus) 
 			{
-				if ((msg == (neutrino_msg_t) g_settings.key_quickzap_up) || (msg == (neutrino_msg_t) g_settings.key_quickzap_down) || (msg == RC_0) || (msg == NeutrinoMessages::SHOW_INFOBAR)) 
+				if ((msg == (neutrino_msg_t) g_settings.key_quickzap_up) || (msg == (neutrino_msg_t) g_settings.key_quickzap_down) || (msg == CRCInput::RC_0) || (msg == NeutrinoMessages::SHOW_INFOBAR)) 
 				{
 					hideIt = false;
 					// radiotext					
@@ -687,7 +687,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 				}
 				else 
 				{
-					if (msg == RC_standby) 
+					if (msg == CRCInput::RC_standby) 
 					{
 						g_RCInput->killTimer(sec_timer_id);
 					}
@@ -715,7 +715,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 
 		if (virtual_zap_mode)
 		{
-			CNeutrinoApp::getInstance()->channelList->virtual_zap_mode(msg == RC_right);
+			CNeutrinoApp::getInstance()->channelList->virtual_zap_mode(msg == CRCInput::RC_right);
 			virtual_zap_mode = false;
 		}
 	}
@@ -904,7 +904,7 @@ void CInfoViewer::showSubchan()
 		{
 	  		g_RCInput->getMsgAbsoluteTimeout (&msg, &data, &timeoutEnd);
 
-	  		if (msg == RC_timeout) 
+	  		if (msg == CRCInput::RC_timeout) 
 			{
 				res = messages_return::cancel_info;
 	  		} 

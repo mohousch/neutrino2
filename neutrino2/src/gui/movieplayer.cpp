@@ -950,13 +950,13 @@ void CMoviePlayerGui::PlayFile(void)
 		// loop msg
 		g_RCInput->getMsg(&msg, &data, 1);	// 1 secs
 		
-		if (msg == RC_stop) 
+		if (msg == CRCInput::RC_stop) 
 		{
 			dprintf(DEBUG_NORMAL, "CMoviePlayerGui::PlayFile: stop (1)\n");
 			
 			stop();
 		} 
-		else if (msg == RC_play) 
+		else if (msg == CRCInput::RC_play) 
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1001,7 +1001,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if ( msg == RC_pause) 
+		else if ( msg == CRCInput::RC_pause) 
 		{
 			if (mplist && !mplist->isPainted())
 			{
@@ -1039,7 +1039,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == RC_blue) 
+		else if (msg == CRCInput::RC_blue) 
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1145,7 +1145,7 @@ void CMoviePlayerGui::PlayFile(void)
 			}
 			}		
 		} 
-		else if ( msg == RC_audio || msg == RC_green) 
+		else if ( msg == CRCInput::RC_audio || msg == CRCInput::RC_green) 
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1167,7 +1167,7 @@ void CMoviePlayerGui::PlayFile(void)
 				AVSelectHandler = NULL;
 			}
 		} 
-		else if(msg == RC_yellow)
+		else if(msg == CRCInput::RC_yellow)
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1186,7 +1186,7 @@ void CMoviePlayerGui::PlayFile(void)
 				showHelpTS();
 			}
 		}
-		else if (msg == RC_info)
+		else if (msg == CRCInput::RC_info)
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1205,7 +1205,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}	
 			}
 		}
-		else if(msg == RC_setup)
+		else if(msg == CRCInput::RC_setup)
 		{
 			if (mplist && !mplist->isPainted())
 			{
@@ -1218,7 +1218,7 @@ void CMoviePlayerGui::PlayFile(void)
 				moviePlayerSettings = NULL;
 			}
 		} 
-		else if (msg == RC_rewind) 
+		else if (msg == CRCInput::RC_rewind) 
 		{
 			if (mplist && !mplist->isPainted())
 			{
@@ -1249,7 +1249,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		}
-		else if (msg == RC_forward) 
+		else if (msg == CRCInput::RC_forward) 
 		{	
 			if (mplist && !mplist->isPainted())
 			{
@@ -1281,7 +1281,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == RC_1) 
+		else if (msg == CRCInput::RC_1) 
 		{
 			if (mplist && !mplist->isPainted())
 			{	
@@ -1297,7 +1297,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == RC_3) 
+		else if (msg == CRCInput::RC_3) 
 		{
 			if (mplist && !mplist->isPainted())
 			{	
@@ -1313,7 +1313,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == RC_4) 
+		else if (msg == CRCInput::RC_4) 
 		{	
 			if (mplist && !mplist->isPainted())
 			{
@@ -1328,7 +1328,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == RC_6) 
+		else if (msg == CRCInput::RC_6) 
 		{	
 			if (mplist && !mplist->isPainted())
 			{
@@ -1343,7 +1343,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == RC_7) 
+		else if (msg == CRCInput::RC_7) 
 		{
 			if (mplist && !mplist->isPainted())
 			{	
@@ -1358,7 +1358,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == RC_9) 
+		else if (msg == CRCInput::RC_9) 
 		{	
 			if (mplist && !mplist->isPainted())
 			{
@@ -1373,7 +1373,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if ( msg == RC_2 )
+		else if ( msg == CRCInput::RC_2 )
 		{	
 			if (mplist && !mplist->isPainted())
 			{
@@ -1388,7 +1388,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if ( msg == RC_loop )
+		else if ( msg == CRCInput::RC_loop )
 		{
 			if (mplist && !mplist->isPainted())
 			{
@@ -1400,7 +1400,7 @@ void CMoviePlayerGui::PlayFile(void)
 				dprintf(DEBUG_NORMAL, "CMoviePlayerGui::PlayFile: Repeat Modus: [%s]\n", m_loop? "ON" : "OFF");
 			}
 		} 
-		else if (msg == RC_5) 
+		else if (msg == CRCInput::RC_5) 
 		{
 			if (mplist && !mplist->isPainted())
 			{	
@@ -1415,7 +1415,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == RC_8) 
+		else if (msg == CRCInput::RC_8) 
 		{
 			if (mplist && !mplist->isPainted())
 			{	
@@ -1430,7 +1430,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == RC_page_up) 
+		else if (msg == CRCInput::RC_page_up) 
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1448,7 +1448,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == RC_page_down) 
+		else if (msg == CRCInput::RC_page_down) 
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1466,7 +1466,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == RC_0) 
+		else if (msg == CRCInput::RC_0) 
 		{
 			if (mplist && !mplist->isPainted())
 			{
@@ -1484,7 +1484,7 @@ void CMoviePlayerGui::PlayFile(void)
 			}
 		} 
 #if !defined (PLATFORM_COOLSTREAM)		
-		else if (msg == RC_slow) 
+		else if (msg == CRCInput::RC_slow) 
 		{
 			if (mplist && !mplist->isPainted())
 			{
@@ -1501,7 +1501,7 @@ void CMoviePlayerGui::PlayFile(void)
 			}
 		}
 #endif		
-		else if(msg == RC_red)
+		else if(msg == CRCInput::RC_red)
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1526,7 +1526,7 @@ void CMoviePlayerGui::PlayFile(void)
 				cMovieInfo.showMovieInfo(playlist[selected]);
 			}
 		}
-		else if(msg == RC_home)
+		else if(msg == CRCInput::RC_home)
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1541,7 +1541,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		}
-		else if(msg == RC_left || msg == RC_prev)
+		else if(msg == CRCInput::RC_left || msg == CRCInput::RC_prev)
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1552,7 +1552,7 @@ void CMoviePlayerGui::PlayFile(void)
 				playPrev();
 			}
 		}
-		else if(msg == RC_right || msg == RC_next)
+		else if(msg == CRCInput::RC_right || msg == CRCInput::RC_next)
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1573,7 +1573,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		}
-		else if(msg == RC_ok)
+		else if(msg == CRCInput::RC_ok)
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1586,14 +1586,14 @@ void CMoviePlayerGui::PlayFile(void)
 				showPlaylist();
 			}
 		}
-		else if(msg == RC_up)
+		else if(msg == CRCInput::RC_up)
 		{
 			if (mplist && mplist->isPainted())
 			{
 				mplist->scrollLineUp();
 			}
 		}
-		else if(msg == RC_down)
+		else if(msg == CRCInput::RC_down)
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1620,7 +1620,7 @@ void CMoviePlayerGui::PlayFile(void)
 		{
 			if (CNeutrinoApp::getInstance()->handleMsg(msg, data) & messages_return::cancel_all)
 				exit = true;
-			else if ( msg <= RC_MaxRC ) 
+			else if ( msg <= CRCInput::RC_MaxRC ) 
 			{
 				CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);
 	

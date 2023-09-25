@@ -149,7 +149,7 @@ void CPictureViewerSettings::showMenu()
 	PicViewerSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	PicViewerSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	PicViewerSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	PicViewerSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// Pic Viewer Scaling

@@ -746,7 +746,7 @@ function mtv_liste(id)
 	--btn.localename = "spiele die ganze Liste"
 
 	--menu:setFootButtons(btn)
-	menu:addKey(neutrino2.RC_red, null, "playlist")
+	menu:addKey(neutrino2.CRCInput_RC_red, null, "playlist")
 
 	--btn2 = neutrino2.button_label_struct()
 
@@ -754,7 +754,7 @@ function mtv_liste(id)
 	--btn2.localename = ""
 
 	--menu:setHeadButtons(btn2)
-	menu:addKey(neutrino2.RC_record, null, "record")
+	menu:addKey(neutrino2.CRCInput_RC_record, null, "record")
 
 	local item = nil
 	if glob.MTVliste ~= nil then
@@ -809,7 +809,7 @@ function settings()
 	menu:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
 	item = neutrino2.CMenuForwarder("Einstellungen speichern")
 	item:setIconName(neutrino2.NEUTRINO_ICON_BUTTON_RED)
-	item:setDirectKey(neutrino2.RC_red)
+	item:setDirectKey(neutrino2.CRCInput_RC_red)
 	menu:addItem(item)
 	menu:addItem(neutrino2.CMenuSeparator(neutrino2.LINE))
 	menu:addItem(neutrino2.CMenuForwarder("Verzeichniss:", true, conf.path))
@@ -1040,7 +1040,7 @@ function searchliste(id)
 	--btn.localename = "spiele die ganze Liste"
 
 	--menu:setFootButtons(btn)
-	menu:addKey(neutrino2.RC_red, null, "playlist")
+	menu:addKey(neutrino2.CRCInput_RC_red, null, "playlist")
 
 	--btn2 = neutrino2.button_label_struct()
 
@@ -1048,7 +1048,7 @@ function searchliste(id)
 	--btn2.localename = "test"
 
 	--menu:setHeadButtons(btn2)
-	menu:addKey(neutrino2.RC_record, null, "record")
+	menu:addKey(neutrino2.CRCInput_RC_record, null, "record")
 
 	local item = nil
 

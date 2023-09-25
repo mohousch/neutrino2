@@ -81,22 +81,22 @@ void CRCLock::lockBox()
 		if (msg == NeutrinoMessages::UNLOCK_RC)
 			break;
 
-		if (msg == RC_red)  
+		if (msg == CRCInput::RC_red)  
 		{
 			timeoutEnd = CRCInput::calcTimeoutEnd(5);
 			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 
-			if (msg == RC_setup)
+			if (msg == CRCInput::RC_setup)
 				break;
 		}
 
-		if (msg == RC_timeout) 
+		if (msg == CRCInput::RC_timeout) 
 			continue;
 
 		// -- Zwen told me: Eating only RC events would be nice
 		// -- so be it...
 
-		if (msg > RC_MaxRC) 
+		if (msg > CRCInput::RC_MaxRC) 
 		{
 			CNeutrinoApp::getInstance()->handleMsg(msg, data); 
 		} 

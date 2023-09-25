@@ -394,7 +394,7 @@ void CVideoSettings::showMenu()
 	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	videoSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	videoSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// video aspect ratio 4:3/16:9
@@ -415,7 +415,7 @@ void CVideoSettings::showMenu()
 #endif	
 
 	// video mode
-	videoSettings->addItem(new CMenuOptionChooser(_("Video Resolution"), &g_settings.video_Mode, VIDEOMENU_VIDEOMODE_OPTIONS, VIDEOMENU_VIDEOMODE_OPTION_COUNT, true, videoSetupNotifier, RC_nokey, "", true));
+	videoSettings->addItem(new CMenuOptionChooser(_("Video Resolution"), &g_settings.video_Mode, VIDEOMENU_VIDEOMODE_OPTIONS, VIDEOMENU_VIDEOMODE_OPTION_COUNT, true, videoSetupNotifier, CRCInput::RC_nokey, "", true));
 	
 	// psi
 #if defined (__sh__)

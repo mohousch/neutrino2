@@ -130,13 +130,13 @@ int CPSISetup::exec(CMenuTarget * parent, const std::string &)
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd, true );
 
-		if ( msg <= RC_MaxRC )
+		if ( msg <= CRCInput::RC_MaxRC )
 			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_menu == 0 ? 0xFFFF : g_settings.timing_menu);
 
 		switch ( msg )
 		{
-			case RC_down:
-			case RC_vfddown:
+			case CRCInput::RC_down:
+			case CRCInput::RC_vfddown:
 				{
 					if(selected < max)
 					{
@@ -169,8 +169,7 @@ int CPSISetup::exec(CMenuTarget * parent, const std::string &)
 					break;
 				}
 				
-			case RC_up:
-			case RC_vfdup:
+			case CRCInput::RC_up:
 				{
 					if (selected > 0)
 					{
@@ -203,8 +202,7 @@ int CPSISetup::exec(CMenuTarget * parent, const std::string &)
 					break;
 				}
 
-			case RC_right:
-			case RC_vfdright:
+			case CRCInput::RC_right:
 				{
 					switch(selected)
 					{
@@ -267,8 +265,7 @@ int CPSISetup::exec(CMenuTarget * parent, const std::string &)
 					break;
 				}
 				
-			case RC_left:
-			case RC_vfdleft:
+			case CRCInput::RC_left:
 				{
 					switch(selected)
 					{
@@ -331,8 +328,7 @@ int CPSISetup::exec(CMenuTarget * parent, const std::string &)
 					break;
 				}
 
-			case RC_home:
-			case RC_vfdexit:
+			case CRCInput::RC_home:
 				if ( *contrast != contrast_old || *saturation != saturation_old || *brightness != brightness_old || *tint != tint_old )
 				{
 					if (MessageBox(_("PSI Setup"), _("Discard changes?"), mbrYes, mbYes | mbCancel) == mbrCancel)
@@ -347,9 +343,8 @@ int CPSISetup::exec(CMenuTarget * parent, const std::string &)
 				*brightness = brightness_old;
 				*tint = tint_old;
 
-			case RC_timeout:
-			case RC_ok:
-			case RC_vfdok:
+			case CRCInput::RC_timeout:
+			case CRCInput::RC_ok:
 				loop = false;
 				break;
 

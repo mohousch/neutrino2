@@ -173,7 +173,7 @@ void CNSeasons::showMenu()
 		tmp += " ";
 		tmp += m_vMovieInfo[i].epgInfo1;
 
-		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, new CNEpisodes(season_id, i), NULL, RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, new CNEpisodes(season_id, i), NULL, CRCInput::RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->setHint(tmp.c_str());
 
@@ -190,7 +190,7 @@ void CNSeasons::showMenu()
 
 	listBox->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 
-	listBox->addKey(RC_info, this, CRCInput::getSpecialKeyName(RC_info));
+	listBox->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
 
 	listBox->exec(NULL, "");
 	//listBox->hide();

@@ -266,10 +266,10 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 
-		if ( msg <= RC_MaxRC )
+		if ( msg <= CRCInput::RC_MaxRC )
 			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_epg);
 
-		if( msg == RC_ok)
+		if( msg == CRCInput::RC_ok)
 		{
 			if (listBox && listBox->hasItem())
 			{
@@ -285,26 +285,26 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 				bouquetChannels = mode == CZapit::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
 		
 				paint();
-				g_RCInput->postMsg(RC_down, 0);
+				g_RCInput->postMsg(CRCInput::RC_down, 0);
 			}
 		}
-		else if (msg == RC_home)
+		else if (msg == CRCInput::RC_home)
 		{
 			loop = false;
 		}
-		else if (msg == RC_page_up)
+		else if (msg == CRCInput::RC_page_up)
 		{
 			listBox->scrollPageUp();
 		}
-		else if (msg == RC_page_down)
+		else if (msg == CRCInput::RC_page_down)
 		{
 			listBox->scrollPageDown();
 		}
-		else if (msg == RC_up)
+		else if (msg == CRCInput::RC_up)
 		{
 			listBox->scrollLineUp();
 		}
-		else if (msg == RC_down)
+		else if (msg == CRCInput::RC_down)
 		{
 			listBox->scrollLineDown();
 		}

@@ -90,7 +90,7 @@ BROWSER:
 
 		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
 		
-		if (msg != RC_home) 
+		if (msg != CRCInput::RC_home) 
 		{
 			goto BROWSER;
 		}

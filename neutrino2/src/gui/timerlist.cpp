@@ -537,23 +537,23 @@ int CTimerList::show()
 
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 
-		if( msg <= RC_MaxRC )
+		if( msg <= CRCInput::RC_MaxRC )
 			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_menu == 0 ? 0xFFFF : g_settings.timing_menu);
 
-		if( ( msg == RC_timeout ) || ( msg == RC_home) )
+		if( ( msg == CRCInput::RC_timeout ) || ( msg == CRCInput::RC_home) )
 		{ 
 			//Exit after timeout or cancel key
 			loop = false;
 		}
-		else if ((msg == RC_up) && !(timerlist.empty()))
+		else if ((msg == CRCInput::RC_up) && !(timerlist.empty()))
 		{
 			listBox->scrollLineUp();
 		}
-		else if ((msg == RC_down) && !(timerlist.empty()))
+		else if ((msg == CRCInput::RC_down) && !(timerlist.empty()))
 		{
 			listBox->scrollLineDown();
 		}
-		else if ((msg == RC_ok) && !(timerlist.empty()))
+		else if ((msg == CRCInput::RC_ok) && !(timerlist.empty()))
 		{
 			if (modifyTimer() == CMenuTarget::RETURN_EXIT_ALL)
 			{
@@ -563,7 +563,7 @@ int CTimerList::show()
 			else
 				update = true;
 		}
-		else if((msg == RC_red) && !(timerlist.empty()))
+		else if((msg == CRCInput::RC_red) && !(timerlist.empty()))
 		{
 			selected = listBox->getSelected();
 
@@ -571,7 +571,7 @@ int CTimerList::show()
 			skipEventID = timerlist[selected].eventID;
 			update = true;
 		}
-		else if(msg == RC_green)
+		else if(msg == CRCInput::RC_green)
 		{
 			if (newTimer() == CMenuTarget::RETURN_EXIT_ALL)
 			{
@@ -581,22 +581,22 @@ int CTimerList::show()
 			else
 				update = true;
 		}
-		else if(msg == RC_yellow)
+		else if(msg == CRCInput::RC_yellow)
 		{
 			update = true;
 		}
-		else if((msg == RC_blue)|| (CRCInput::isNumeric(msg)) )
+		else if((msg == CRCInput::RC_blue)|| (CRCInput::isNumeric(msg)) )
 		{
 			//pushback key if...
 			g_RCInput->postMsg( msg, data );
 			loop = false;
 		}
-		else if(msg == RC_setup)
+		else if(msg == CRCInput::RC_setup)
 		{
 			res = CMenuTarget::RETURN_EXIT_ALL;
 			loop = false;
 		}
-		else if(msg == RC_info)
+		else if(msg == CRCInput::RC_info)
 		{
 			selected = listBox->getSelected();
 
@@ -616,7 +616,7 @@ int CTimerList::show()
 				}
 			}
 		}
-		else if (msg == RC_sat || msg == RC_favorites)
+		else if (msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)
 		{
 			g_RCInput->postMsg (msg, 0);
 			loop = false;
@@ -993,7 +993,7 @@ int CTimerList::modifyTimer()
 	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	//
-	timerSettings->addItem(new CMenuForwarder(_("Save Timer"), true, NULL, this, "modifytimer", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	timerSettings->addItem(new CMenuForwarder(_("Save Timer"), true, NULL, this, "modifytimer", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	char type[80];
@@ -1068,7 +1068,7 @@ int CTimerList::modifyTimer()
 	timer_apids_ac3 = (timer->apids & TIMERD_APIDS_AC3) ? 1 : 0 ;
 	timer_apids_alt = (timer->apids & TIMERD_APIDS_ALT) ? 1 : 0 ;
 
-	timerSettings_apids->addItem(new CMenuForwarder(_("back"), true, NULL, NULL, NULL, RC_nokey, NEUTRINO_ICON_BUTTON_LEFT));
+	timerSettings_apids->addItem(new CMenuForwarder(_("back"), true, NULL, NULL, NULL, CRCInput::RC_nokey, NEUTRINO_ICON_BUTTON_LEFT));
 	timerSettings_apids->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	CMenuOptionChooser* ma1 = new CMenuOptionChooser(_("Record default audio streams"), &timer_apids_dflt, MESSAGEBOX_NO_YES_OPTIONS, MESSAGEBOX_NO_YES_OPTION_COUNT, true, &apid_notifier);
 	timerSettings_apids->addItem(ma1);
@@ -1158,7 +1158,7 @@ int CTimerList::newTimer()
 	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	//
-	timerSettings->addItem(new CMenuForwarder(_("Save timer"), true, NULL, this, "newtimer", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	timerSettings->addItem(new CMenuForwarder(_("Save timer"), true, NULL, this, "newtimer", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	timerSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// alarm time
@@ -1184,7 +1184,7 @@ int CTimerList::newTimer()
 	CTimerListRepeatNotifier notifier((int *)&timerNew.eventRepeat, m4, m5);
 	
 	// repeat
-	CMenuOptionChooser* m3 = new CMenuOptionChooser(_("Repeat"), (int *)&timerNew.eventRepeat, TIMERLIST_REPEAT_OPTIONS, TIMERLIST_REPEAT_OPTION_COUNT, true, &notifier, RC_nokey, "", true);
+	CMenuOptionChooser* m3 = new CMenuOptionChooser(_("Repeat"), (int *)&timerNew.eventRepeat, TIMERLIST_REPEAT_OPTIONS, TIMERLIST_REPEAT_OPTION_COUNT, true, &notifier, CRCInput::RC_nokey, "", true);
 	
 	// channel
 	CMenuForwarder *m6 = new CMenuForwarder(_("Channel"), true, timerNew_channel_name.c_str(), this, CNeutrinoApp::getInstance()->getMode() == NeutrinoMessages::mode_tv? "tv" : "radio");

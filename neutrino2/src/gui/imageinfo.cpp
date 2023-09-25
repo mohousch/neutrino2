@@ -102,7 +102,7 @@ int CImageInfo::exec(CMenuTarget *parent, const std::string&)
 		{
 			widget->refresh();
 		} 
-		else if (msg == RC_home) 
+		else if (msg == CRCInput::RC_home) 
 		{
 			loop = false;
 		}

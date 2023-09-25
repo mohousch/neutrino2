@@ -92,12 +92,12 @@ int CScreenSetup::exec(CMenuTarget *parent, const std::string &)
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd, true );
 
-		if ( msg <= RC_MaxRC )
+		if ( msg <= CRCInput::RC_MaxRC )
 			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_menu == 0 ? 0xFFFF : g_settings.timing_menu);
 
 		switch ( msg )
 		{
-			case RC_ok:
+			case CRCInput::RC_ok:
 				// save
 				g_settings.screen_StartX = x_coord[0];
 				g_settings.screen_EndX = x_coord[1];
@@ -109,19 +109,19 @@ int CScreenSetup::exec(CMenuTarget *parent, const std::string &)
 				loop = false;
 				break;
 
-			case RC_home:
+			case CRCInput::RC_home:
 				if ( ( ( g_settings.screen_StartX != x_coord[0] ) || ( g_settings.screen_EndX != x_coord[1] ) || ( g_settings.screen_StartY != y_coord[0] ) || ( g_settings.screen_EndY != y_coord[1] ) ) &&
 						(MessageBox(_("Screen Setup"), _("Discard changes?"), mbrYes, mbYes | mbCancel) == mbrCancel))
 					break;
 
-			case RC_timeout:
+			case CRCInput::RC_timeout:
 				loop = false;
 				break;
 
-			case RC_red:
-			case RC_green:
+			case CRCInput::RC_red:
+			case CRCInput::RC_green:
 				{
-					selected = ( msg == RC_green ) ? 1 : 0 ;
+					selected = ( msg == CRCInput::RC_green ) ? 1 : 0 ;
 
 					frameBuffer->paintBoxRel(x, y, BoxWidth, BoxHeight/2, (selected == 0)? COL_MENUCONTENTSELECTED_PLUS_0 : COL_MENUCONTENT_PLUS_0);
 					frameBuffer->paintBoxRel(x, y + BoxHeight/2,  BoxWidth, BoxHeight/2, (selected == 1)? COL_MENUCONTENTSELECTED_PLUS_0 : COL_MENUCONTENT_PLUS_0);
@@ -133,7 +133,7 @@ int CScreenSetup::exec(CMenuTarget *parent, const std::string &)
 					break;
 				}
 				
-			case RC_up:
+			case CRCInput::RC_up:
 				{
 					y_coord[selected]--;
 
@@ -145,7 +145,7 @@ int CScreenSetup::exec(CMenuTarget *parent, const std::string &)
 					break;
 				}
 				
-			case RC_down:
+			case CRCInput::RC_down:
 				{
 					y_coord[selected]++;
 
@@ -158,7 +158,7 @@ int CScreenSetup::exec(CMenuTarget *parent, const std::string &)
 					break;
 				}
 				
-			case RC_left:
+			case CRCInput::RC_left:
 				{
 					x_coord[selected]--;
 
@@ -170,7 +170,7 @@ int CScreenSetup::exec(CMenuTarget *parent, const std::string &)
 					break;
 				}
 				
-			case RC_right:
+			case CRCInput::RC_right:
 				{
 					x_coord[selected]++;
 

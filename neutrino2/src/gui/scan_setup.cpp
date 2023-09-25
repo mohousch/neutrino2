@@ -500,7 +500,7 @@ int CScanSetup::showScanService()
 	scansetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	//save settings
-	scansetup->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	scansetup->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	scansetup->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// tuner mode
@@ -613,7 +613,7 @@ int CScanSetup::showScanService()
 #endif
 	{
 		// diseqc
-		CMenuOptionChooser *ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&CZapit::getInstance()->getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, true, satNotify, RC_nokey, "", true);
+		CMenuOptionChooser *ojDiseqc = new CMenuOptionChooser(_("DiSEqC"), (int *)&CZapit::getInstance()->getFE(feindex)->diseqcType, SATSETUP_DISEQC_OPTIONS, SATSETUP_DISEQC_OPTION_COUNT, true, satNotify, CRCInput::RC_nokey, "", true);
 		feModeNotifier->addItem(1, ojDiseqc);
 		
 		// diseqc repeat
@@ -738,7 +738,7 @@ int CScanSetup::showMotorSetup()
 	motorMenu->addItem(new CMenuForwarder(_("back")));
 
 	// save settings
-	motorMenu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	motorMenu->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	motorMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// speed
@@ -959,7 +959,7 @@ int CScanSetup::showLNBSetup()
 			tempsatlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 				
 			// savesettings
-			tempsatlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+			tempsatlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 			tempsatlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 			// diseqc
@@ -1153,7 +1153,7 @@ int CScanSetup::showManualScanSetup()
 	manualScanlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// save settings
-	manualScanlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	manualScanlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	manualScanlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	// sat select
@@ -1164,7 +1164,7 @@ int CScanSetup::showManualScanSetup()
 	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
 #endif
 	{
-		satSelect = new CMenuOptionStringChooser(_("Cable"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+		satSelect = new CMenuOptionStringChooser(_("Cable"), (char*)scanSettings->satNameNoDiseqc, true, NULL, CRCInput::RC_nokey, "", true);
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
@@ -1180,7 +1180,7 @@ int CScanSetup::showManualScanSetup()
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
 #endif
 	{
-		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, CRCInput::RC_nokey, "", true);
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
 		{
@@ -1196,7 +1196,7 @@ int CScanSetup::showManualScanSetup()
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 #endif
 	{
-		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, CRCInput::RC_nokey, "", true);
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
 		{
@@ -1212,7 +1212,7 @@ int CScanSetup::showManualScanSetup()
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif 
 	{
-		satSelect = new CMenuOptionStringChooser(_("Satellite"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+		satSelect = new CMenuOptionStringChooser(_("Satellite"), (char*)scanSettings->satNameNoDiseqc, true, NULL, CRCInput::RC_nokey, "", true);
 		
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
@@ -1452,7 +1452,7 @@ int CScanSetup::showAutoScanSetup()
 	autoScanlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// savesettings
-	autoScanlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	autoScanlistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	autoScanlistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 	// satselect
@@ -1463,7 +1463,7 @@ int CScanSetup::showAutoScanSetup()
 	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM )
 #endif
 	{
-		satSelect = new CMenuOptionStringChooser(_("Cable"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+		satSelect = new CMenuOptionStringChooser(_("Cable"), (char*)scanSettings->satNameNoDiseqc, true, NULL, CRCInput::RC_nokey, "", true);
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
@@ -1479,7 +1479,7 @@ int CScanSetup::showAutoScanSetup()
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM) 
 #endif
 	{
-		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, CRCInput::RC_nokey, "", true);
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
 		{
@@ -1495,7 +1495,7 @@ int CScanSetup::showAutoScanSetup()
 	else if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_ATSC)
 #endif
 	{
-		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+		satSelect = new CMenuOptionStringChooser(_("Provider"), (char*)scanSettings->satNameNoDiseqc, true, NULL, CRCInput::RC_nokey, "", true);
 
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++)
 		{
@@ -1511,7 +1511,7 @@ int CScanSetup::showAutoScanSetup()
 	else if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif 
 	{
-		satSelect = new CMenuOptionStringChooser(_("Satellite"), (char*)scanSettings->satNameNoDiseqc, true, NULL, RC_nokey, "", true);
+		satSelect = new CMenuOptionStringChooser(_("Satellite"), (char*)scanSettings->satNameNoDiseqc, true, NULL, CRCInput::RC_nokey, "", true);
 		
 		for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
 		{
@@ -1586,7 +1586,7 @@ int CScanSetup::showAllAutoScanSetup()
 	autoScanAlllistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 	// save settings
-	autoScanAlllistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	autoScanAlllistBox->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "save_scansettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	autoScanAlllistBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		
 	// satonoff

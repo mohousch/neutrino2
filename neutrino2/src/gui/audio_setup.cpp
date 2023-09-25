@@ -186,7 +186,7 @@ void CAudioSettings::showMenu()
 	audioSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	audioSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	audioSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	audioSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// analog output
@@ -219,7 +219,7 @@ void CAudioSettings::showMenu()
 	
 	for(int i = 0; i < 3; i++) 
 	{
-		audiolangSelect[i] = new CMenuOptionStringChooser(_("Preferred language"), g_settings.pref_lang[i], g_settings.auto_lang, NULL, RC_nokey, "", true);
+		audiolangSelect[i] = new CMenuOptionStringChooser(_("Preferred language"), g_settings.pref_lang[i], g_settings.auto_lang, NULL, CRCInput::RC_nokey, "", true);
 		
 		audiolangSelect[i]->addOption("");
 		std::map<std::string, std::string>::const_iterator it;
@@ -245,7 +245,7 @@ void CAudioSettings::showMenu()
 	CMenuOptionStringChooser * sublangSelect[3];
 	for(int i = 0; i < 3; i++) 
 	{
-		sublangSelect[i] = new CMenuOptionStringChooser(_("Preferred subtitle language"), g_settings.pref_subs[i], g_settings.auto_subs, NULL, RC_nokey, "", true);
+		sublangSelect[i] = new CMenuOptionStringChooser(_("Preferred subtitle language"), g_settings.pref_subs[i], g_settings.auto_subs, NULL, CRCInput::RC_nokey, "", true);
 		std::map<std::string, std::string>::const_iterator it;
 		
 		sublangSelect[i]->addOption("");

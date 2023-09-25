@@ -1852,7 +1852,7 @@ bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
 	bool handled = false;
 	
 	//
-	if ( msg <= RC_MaxRC ) 
+	if ( msg <= CRCInput::RC_MaxRC ) 
 	{
 		std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
 					
@@ -1888,31 +1888,31 @@ bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
 	
 	if (!handled) 
 	{
-		if (msg == RC_up)
+		if (msg == CRCInput::RC_up)
 		{
 			scrollLineUp();
 		}
-		else if (msg == RC_down)
+		else if (msg == CRCInput::RC_down)
 		{
 			scrollLineDown();
 		}
-		else if (msg == RC_left)
+		else if (msg == CRCInput::RC_left)
 		{
 			swipLeft();
 		}
-		else if (msg == RC_right)
+		else if (msg == CRCInput::RC_right)
 		{
 			swipRight();
 		}
-		else if (msg == RC_page_up)
+		else if (msg == CRCInput::RC_page_up)
 		{
 			scrollPageUp();
 		}
-		else if (msg == RC_page_down)
+		else if (msg == CRCInput::RC_page_down)
 		{
 			scrollPageDown();
 		}
-		else if (msg == RC_ok)
+		else if (msg == CRCInput::RC_ok)
 		{
 			int rv = oKKeyPressed(parent);
 				
@@ -1929,7 +1929,7 @@ bool CWidgetItem::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
 					break;
 			}
 		}
-		else if (msg == RC_home || msg == RC_timeout) 
+		else if (msg == CRCInput::RC_home || msg == CRCInput::RC_timeout) 
 		{
 			ret = false;
 		}

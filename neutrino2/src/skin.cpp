@@ -901,93 +901,93 @@ neutrino_msg_t CNeutrinoApp::convertKey(const char * const key)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertKey: key: %s\n", key);
 	
-	neutrino_msg_t msg = RC_nokey;
+	neutrino_msg_t msg = CRCInput::RC_nokey;
 	
 	if (key != NULL)
 	{
 		if ( strcmp(key, "RC_nokey") == 0)
 		{
-			msg = RC_nokey;
+			msg = CRCInput::RC_nokey;
 		}
 		else if ( strcmp(key, "RC_red") == 0)
 		{
-			msg = RC_red;
+			msg = CRCInput::RC_red;
 		}
 		else if ( strcmp(key, "RC_green") == 0)
 		{
-			msg = RC_green;
+			msg = CRCInput::RC_green;
 		}
 		else if ( strcmp(key, "RC_yellow") == 0)
 		{
-			msg = RC_yellow;
+			msg = CRCInput::RC_yellow;
 		}
 		else if ( strcmp(key, "RC_blue") == 0)
 		{
-			msg = RC_blue;
+			msg = CRCInput::RC_blue;
 		}
 		else if ( strcmp(key, "RC_0") == 0)
 		{
-			msg = RC_0;
+			msg = CRCInput::RC_0;
 		}
 		else if ( strcmp(key, "RC_1") == 0)
 		{
-			msg = RC_1;
+			msg = CRCInput::RC_1;
 		}
 		else if ( strcmp(key, "RC_2") == 0)
 		{
-			msg = RC_2;
+			msg = CRCInput::RC_2;
 		}
 		else if ( strcmp(key, "RC_3") == 0)
 		{
-			msg = RC_3;
+			msg = CRCInput::RC_3;
 		}
 		else if ( strcmp(key, "RC_4") == 0)
 		{
-			msg = RC_4;
+			msg = CRCInput::RC_4;
 		}
 		else if ( strcmp(key, "RC_5") == 0)
 		{
-			msg = RC_5;
+			msg = CRCInput::RC_5;
 		}
 		else if ( strcmp(key, "RC_6") == 0)
 		{
-			msg = RC_6;
+			msg = CRCInput::RC_6;
 		}
 		else if ( strcmp(key, "RC_7") == 0)
 		{
-			msg = RC_7;
+			msg = CRCInput::RC_7;
 		}
 		else if ( strcmp(key, "RC_8") == 0)
 		{
-			msg = RC_8;
+			msg = CRCInput::RC_8;
 		}
 		else if ( strcmp(key, "RC_9") == 0)
 		{
-			msg = RC_9;
+			msg = CRCInput::RC_9;
 		}
 		else if ( strcmp(key, "RC_mode") == 0)
 		{
-			msg = RC_mode;
+			msg = CRCInput::RC_mode;
 		}
 		else if ( strcmp(key, "RC_standby") == 0)
 		{
-			msg = RC_standby;
+			msg = CRCInput::RC_standby;
 		}
 		else if ( strcmp(key, "RC_home") == 0)
 		{
-			msg = RC_home;
+			msg = CRCInput::RC_home;
 		}
 		else if ( strcmp(key, "RC_setup") == 0)
 		{
-			msg = RC_setup;
+			msg = CRCInput::RC_setup;
 		}
 		else if ( strcmp(key, "RC_info") == 0)
 		{
-			msg = RC_info;
+			msg = CRCInput::RC_info;
 		}
 		else if ( strcmp(key, "RC_epg") == 0)
 		{
-			msg = RC_epg;
+			msg = CRCInput::RC_epg;
 		}
 	}
 	
@@ -1413,7 +1413,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		CMenuTarget* parent = NULL;
 		std::string actionKey = "";
 		std::string itemName = "";
-		neutrino_msg_t key = RC_nokey;
+		neutrino_msg_t key = CRCInput::RC_nokey;
 						
 		if (item_localename) itemName = _(item_localename);
 						
@@ -1470,7 +1470,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		
 	CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED;
 	unsigned int mode = ClistBox::MODE_MENU;
-	unsigned int shortcut = RC_nokey;
+	unsigned int shortcut = CRCInput::RC_nokey;
 	unsigned int type = CMenuItem::TYPE_STANDARD;
 	unsigned int i_lines = false;
 	unsigned int i_border = false;
@@ -1484,7 +1484,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		i_lines = xmlGetSignedNumericAttribute(listboxintegration_node, "lines", 0);
 		i_border = xmlGetSignedNumericAttribute(listboxintegration_node, "border", 0);
 						
-		listBox->integratePlugins(integration, shortcut? shortcut : RC_nokey, true, mode, type, i_lines, i_border);
+		listBox->integratePlugins(integration, shortcut? shortcut : CRCInput::RC_nokey, true, mode, type, i_lines, i_border);
 				
 		listboxintegration_node = listboxintegration_node->xmlNextNode;
 	}
@@ -2473,7 +2473,7 @@ void CNeutrinoApp::parseKey(xmlNodePtr node, CWidget* widget)
 	key_actionkey = xmlGetAttribute(node, (char*)"actionkey");
 	key_target = xmlGetAttribute(node, (char*)"target");
 		
-	neutrino_msg_t key = RC_nokey;		
+	neutrino_msg_t key = CRCInput::RC_nokey;		
 	CMenuTarget* key_parent = NULL;
 		
 	if (key_name) key = convertKey(key_name);		

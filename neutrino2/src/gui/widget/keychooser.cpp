@@ -198,9 +198,9 @@ int CKeyChooserItem::exec(CMenuTarget* parent, const std::string &)
  get_Message:
 	g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 	
-	if (msg != RC_timeout)
+	if (msg != CRCInput::RC_timeout)
 	{
-		if ((msg > 0) && (msg <= RC_MaxRC))
+		if ((msg > 0) && (msg <= CRCInput::RC_MaxRC))
 			*key = msg;
 		else if (CNeutrinoApp::getInstance()->handleMsg(msg, data) & messages_return::cancel_all)
 			res = RETURN_EXIT_ALL;

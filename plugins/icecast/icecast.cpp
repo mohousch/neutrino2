@@ -324,7 +324,7 @@ void CIceCast::scanXmlData(xmlDocPtr answer_parser, const char *nametag, const c
 			
 			g_RCInput->getMsg(&msg, &data, 0);
 			
-			while (element && msg != RC_home) 
+			while (element && msg != CRCInput::RC_home) 
 			{
 				char *ptr = NULL;
 				char *name = NULL;
@@ -733,11 +733,11 @@ void CIceCast::showMenu()
 	
 	ilist->enablePaintDate();
 
-	ilist->addKey(RC_setup, this, CRCInput::getSpecialKeyName(RC_setup));
-	ilist->addKey(RC_red, this, CRCInput::getSpecialKeyName(RC_red));
-	ilist->addKey(RC_green, this, CRCInput::getSpecialKeyName(RC_green));
-	ilist->addKey(RC_yellow, this, CRCInput::getSpecialKeyName(RC_yellow));
-	ilist->addKey(RC_blue, this, CRCInput::getSpecialKeyName(RC_blue));
+	ilist->addKey(CRCInput::RC_setup, this, CRCInput::getSpecialKeyName(CRCInput::RC_setup));
+	ilist->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
+	ilist->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
+	ilist->addKey(CRCInput::RC_yellow, this, CRCInput::getSpecialKeyName(CRCInput::RC_yellow));
+	ilist->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
 
 	ilist->exec(NULL, "");
 	

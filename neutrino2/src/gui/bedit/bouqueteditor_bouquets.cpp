@@ -237,10 +237,10 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 
-		if ( msg <= RC_MaxRC )
+		if ( msg <= CRCInput::RC_MaxRC )
 			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_epg);
 
-		if ((msg == RC_timeout) || (msg == (neutrino_msg_t)g_settings.key_channelList_cancel))
+		if ((msg == CRCInput::RC_timeout) || (msg == (neutrino_msg_t)g_settings.key_channelList_cancel))
 		{
 			if (state == beDefault)
 			{
@@ -275,7 +275,7 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				cancelMoveBouquet();
 			}
 		}
-		else if (msg == RC_page_up)
+		else if (msg == CRCInput::RC_page_up)
 		{
 			if (state == beDefault)
 				listBox->scrollPageUp();
@@ -290,7 +290,7 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				internalMoveBouquet(selected, next_selected);
 			}
 		}
-		else if (msg == RC_page_down)
+		else if (msg == CRCInput::RC_page_down)
 		{
 			if (state == beDefault)
 				listBox->scrollPageDown();
@@ -306,7 +306,7 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				internalMoveBouquet(selected, next_selected);
 			}
 		}
-		else if (msg == RC_up)
+		else if (msg == CRCInput::RC_up)
 		{
 			if (!(Bouquets->empty()))
 			{
@@ -327,7 +327,7 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				}
 			}
 		}
-		else if (msg == RC_down)
+		else if (msg == CRCInput::RC_down)
 		{
 			if (state == beDefault)
 			{	
@@ -345,21 +345,21 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				internalMoveBouquet(prev_selected, next_selected);
 			}
 		}
-		else if(msg == RC_red)
+		else if(msg == CRCInput::RC_red)
 		{
 			selected = listBox->getSelected();
 
 			if (state == beDefault)
 				deleteBouquet();
 		}
-		else if(msg == RC_green)
+		else if(msg == CRCInput::RC_green)
 		{
 			selected = listBox->getSelected();
 
 			if (state == beDefault)
 				addBouquet();
 		}
-		else if(msg == RC_yellow)
+		else if(msg == CRCInput::RC_yellow)
 		{
 			selected = listBox->getSelected();
 
@@ -371,7 +371,7 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				paint();
 			}
 		}
-		else if(msg == RC_blue)
+		else if(msg == CRCInput::RC_blue)
 		{
 			if (selected < Bouquets->size()) // Bouquets->size() might be 0
 			{
@@ -394,7 +394,7 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				}
 			}
 		}
-		else if(msg == RC_setup)
+		else if(msg == CRCInput::RC_setup)
 		{
 			if (state == beDefault)
 			{
@@ -414,7 +414,7 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 				paint();
 			}
 		}
-		else if(msg == RC_ok)
+		else if(msg == CRCInput::RC_ok)
 		{
 			if (state == beDefault)
 			{

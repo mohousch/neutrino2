@@ -160,7 +160,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 		if(sep_added) 
 		{
 			DVBSubSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-			DVBSubSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", RC_red, NEUTRINO_ICON_BUTTON_RED ));
+			DVBSubSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED ));
 		}
 		else
 			DVBSubSelector->addItem(new CMenuForwarder(_("Subtitles not found"), false));

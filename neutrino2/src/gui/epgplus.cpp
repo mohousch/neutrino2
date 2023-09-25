@@ -841,10 +841,10 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		{
 	  		g_RCInput->getMsgAbsoluteTimeout (&msg, &data, &timeoutEnd);
 
-	  		if (msg <= RC_MaxRC)
+	  		if (msg <= CRCInput::RC_MaxRC)
 				timeoutEnd = CRCInput::calcTimeoutEnd (g_settings.timing_channellist);
 
-	  		if (msg == RC_page_down) 
+	  		if (msg == CRCInput::RC_page_down) 
 			{
 				switch (this->currentSwapMode) 
 				{
@@ -887,7 +887,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		  			break;
 				}
 	  		}
-	  		else if (msg == RC_page_up) 
+	  		else if (msg == CRCInput::RC_page_up) 
 			{
 				switch (this->currentSwapMode) 
 				{
@@ -930,19 +930,19 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		  			break;
 				}
 	  		} 
-			else if (msg == (neutrino_msg_t) RC_red) 
+			else if (msg == (neutrino_msg_t) CRCInput::RC_red) 
 			{
 				this->addRecordTimer->exec(NULL, "");
 	  		} 
-	  		else if (msg == (neutrino_msg_t) RC_green) 
+	  		else if (msg == (neutrino_msg_t) CRCInput::RC_green) 
 	  		{
 	  			this->refreshEpg->exec(NULL, "");
 	  		}
-	  		else if (msg == (neutrino_msg_t) RC_yellow) 
+	  		else if (msg == (neutrino_msg_t) CRCInput::RC_yellow) 
 	  		{
 	  			this->addReminder->exec(NULL, "");
 	  		}
-			else if (msg == (neutrino_msg_t) RC_blue) 
+			else if (msg == (neutrino_msg_t) CRCInput::RC_blue) 
 			{
 				TCChannelEventEntries::const_iterator It = this->getSelectedEvent ();
 
@@ -960,7 +960,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 					}
 				}
 	  		}
-	  		else if (msg == (neutrino_msg_t) RC_setup) 
+	  		else if (msg == (neutrino_msg_t) CRCInput::RC_setup) 
 			{
 				CWidget* menuWidgetOptionsWidget = NULL;
 				ClistBox* menuWidgetOptions = NULL;
@@ -1028,7 +1028,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		  			this->paint();
 				}
 	  		} 
-			else if (msg == RC_up) 
+			else if (msg == CRCInput::RC_up) 
 			{
 				int selectedChannelEntryIndex = this->selectedChannelEntry->index;
 				int prevSelectedChannelEntryIndex = selectedChannelEntryIndex;
@@ -1057,7 +1057,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		  			this->paintChannelEntry (selectedChannelEntryIndex - this->channelListStartIndex);
 				}
 	  		} 
-			else if (msg == RC_down) 
+			else if (msg == CRCInput::RC_down) 
 			{
 				int selectedChannelEntryIndex = this->selectedChannelEntry->index;
 				int prevSelectedChannelEntryIndex = this->selectedChannelEntry->index;
@@ -1081,11 +1081,11 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		  			this->paintChannelEntry (this->selectedChannelEntry->index - this->channelListStartIndex);
 				}
 	  		} 
-			else if ((msg == RC_timeout) || (msg == RC_home) || (msg == RC_epg)) 
+			else if ((msg == CRCInput::RC_timeout) || (msg == CRCInput::RC_home) || (msg == CRCInput::RC_epg)) 
 			{
 				loop = false;
 	  		}
-	  		else if (msg == RC_left) 
+	  		else if (msg == CRCInput::RC_left) 
 			{
 				switch (this->currentViewMode) 
 				{
@@ -1137,7 +1137,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		  			break;
 				}
 	  		} 
-			else if (msg == RC_right) 
+			else if (msg == CRCInput::RC_right) 
 			{
 				switch (this->currentViewMode) 
 				{
@@ -1182,11 +1182,11 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		  			break;
 				}
 	  		} 
-			else if (msg == RC_ok) 
+			else if (msg == CRCInput::RC_ok) 
 			{
 				this->channelList->zapTo(this->selectedChannelEntry->index);
 			} 
-			else if ( msg == RC_info ) 
+			else if ( msg == CRCInput::RC_info ) 
 			{
 				TCChannelEventEntries::const_iterator It = this->getSelectedEvent ();
 
@@ -1207,7 +1207,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 						{
 			  				g_RCInput->getMsg (&msg, &data, 0);
 
-			  				if ((msg != RC_red) && (msg != RC_timeout)) 
+			  				if ((msg != CRCInput::RC_red) && (msg != CRCInput::RC_timeout)) 
 							{
 								// RC_red schlucken
 								g_RCInput->postMsg (msg, data);
@@ -1220,7 +1220,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 		  			}
 				}
 			}
-			else if ( msg == RC_sat || msg == RC_favorites)
+			else if ( msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)
 			{
 				g_RCInput->postMsg (msg, 0);
 				res = CMenuTarget::RETURN_EXIT_ALL;
@@ -1444,7 +1444,7 @@ struct keyval menuOptionChooserSwitchSwapModes[] = {
 
 EpgPlus::MenuOptionChooserSwitchSwapMode::MenuOptionChooserSwitchSwapMode (EpgPlus * _epgPlus)
 :CMenuOptionChooser (_("swap mode"), (int *) &_epgPlus->currentSwapMode, menuOptionChooserSwitchSwapModes, sizeof (menuOptionChooserSwitchSwapModes) / sizeof (keyval)
-					  , true, NULL, RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW) 
+					  , true, NULL, CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW) 
 {
 	this->epgPlus = _epgPlus;
 	this->oldSwapMode = _epgPlus->currentSwapMode;
@@ -1494,7 +1494,7 @@ struct keyval menuOptionChooserSwitchViewModes[] =
 
 EpgPlus::MenuOptionChooserSwitchViewMode::MenuOptionChooserSwitchViewMode (EpgPlus * epgPlus)
 :CMenuOptionChooser (_("view mode"), (int *) &epgPlus->currentViewMode, menuOptionChooserSwitchViewModes, sizeof (menuOptionChooserSwitchViewModes) / sizeof (keyval)
-					  , true, NULL, RC_blue, NEUTRINO_ICON_BUTTON_BLUE) 
+					  , true, NULL, CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE) 
 {
   	this->oldTimingMenuSettings = g_settings.timing_menu;
 }

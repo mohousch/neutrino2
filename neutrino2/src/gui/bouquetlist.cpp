@@ -431,34 +431,34 @@ int CBouquetList::show(bool customMode)
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 
-		if ( msg <= RC_MaxRC )
+		if ( msg <= CRCInput::RC_MaxRC )
 			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
 
-		if ((msg == RC_timeout) || (msg == (neutrino_msg_t)g_settings.key_channelList_cancel))
+		if ((msg == CRCInput::RC_timeout) || (msg == (neutrino_msg_t)g_settings.key_channelList_cancel))
 		{
 			loop = false;
 		}
-		else if(msg == RC_red || msg == RC_favorites) 
+		else if(msg == CRCInput::RC_red || msg == CRCInput::RC_favorites) 
 		{
 			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_FAV, mode);
 
 			hide();
 			return -3;
 		} 
-		else if(msg == RC_green) 
+		else if(msg == CRCInput::RC_green) 
 		{
 			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_PROV, mode);
 			hide();
 			return -3;
 		} 
-		else if(msg == RC_yellow || msg == RC_sat)
+		else if(msg == CRCInput::RC_yellow || msg == CRCInput::RC_sat)
 		{
 			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_SAT, mode);
 
 			hide();
 			return -3;
 		} 
-		else if(msg == RC_blue) 
+		else if(msg == CRCInput::RC_blue) 
 		{
 			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_ALL, mode);
 
@@ -467,9 +467,9 @@ int CBouquetList::show(bool customMode)
 		}
 		else if(Bouquets.size() == 0)
 		{
-			continue; //FIXME msgs not forwarded to neutrino !!
+			continue;
 		}
-		else if ( msg == RC_setup ) 
+		else if ( msg == CRCInput::RC_setup ) 
 		{
 			selected = listBox? listBox->getSelected() : 0;
 
@@ -478,7 +478,7 @@ int CBouquetList::show(bool customMode)
 				//
 				int ret = doMenu();
 				
-				dprintf(DEBUG_NORMAL, "RC_setup: doMenu: %d\n", ret);
+				dprintf(DEBUG_NORMAL, "CRCInput::RC_setup: doMenu: %d\n", ret);
 				
 				if(ret) 
 				{
@@ -502,23 +502,23 @@ int CBouquetList::show(bool customMode)
 
 			paint();
 		}
-		else if (msg == RC_up)
+		else if (msg == CRCInput::RC_up)
 		{
 			listBox->scrollLineUp();
 		}
-		else if (msg == RC_page_up || (int) msg == g_settings.key_channelList_pageup )
+		else if (msg == CRCInput::RC_page_up || (int) msg == g_settings.key_channelList_pageup )
 		{
 			listBox->scrollPageUp();
 		}
-		else if ( msg == RC_down)
+		else if ( msg == CRCInput::RC_down)
 		{
 			listBox->scrollLineDown();
 		}
-		else if ( msg == RC_page_down || (int) msg == g_settings.key_channelList_pagedown )
+		else if ( msg == CRCInput::RC_page_down || (int) msg == g_settings.key_channelList_pagedown )
 		{
 			listBox->scrollPageDown();
 		}
-		else if ( msg == RC_ok ) 
+		else if ( msg == CRCInput::RC_ok ) 
 		{
 			selected = listBox->getSelected();
 

@@ -636,97 +636,97 @@ void CControlAPI::RCEmCGI(CyhookHandler *hh)
 	int sendcode = -1;
 	
 	if ( !strcmp(keyname.c_str(), "KEY_POWER"))
-		sendcode = RC_standby;
+		sendcode = CRCInput::RC_standby;
 	else if ( !strcmp(keyname.c_str(), "KEY_MUTE"))
-		sendcode = RC_spkr;
+		sendcode = CRCInput::RC_spkr;
 	else if ( !strcmp(keyname.c_str(), "KEY_1"))
-		sendcode = RC_1;
+		sendcode = CRCInput::RC_1;
 	else if ( !strcmp(keyname.c_str(), "KEY_2"))
-		sendcode = RC_2;
+		sendcode = CRCInput::RC_2;
 	else if ( !strcmp(keyname.c_str(), "KEY_3"))
-		sendcode = RC_3;
+		sendcode = CRCInput::RC_3;
 	else if ( !strcmp(keyname.c_str(), "KEY_4"))
-		sendcode = RC_4;
+		sendcode = CRCInput::RC_4;
 	else if ( !strcmp(keyname.c_str(), "KEY_5"))
-		sendcode = RC_5;
+		sendcode = CRCInput::RC_5;
 	else if ( !strcmp(keyname.c_str(), "KEY_6"))
-		sendcode = RC_6;
+		sendcode = CRCInput::RC_6;
 	else if ( !strcmp(keyname.c_str(), "KEY_7"))
-		sendcode = RC_7;
+		sendcode = CRCInput::RC_7;
 	else if ( !strcmp(keyname.c_str(), "KEY_8"))
-		sendcode = RC_8;
+		sendcode = CRCInput::RC_8;
 	else if ( !strcmp(keyname.c_str(), "KEY_9"))
-		sendcode = RC_9;
+		sendcode = CRCInput::RC_9;
 	else if ( !strcmp(keyname.c_str(), "KEY_0"))
-		sendcode = RC_9;
+		sendcode = CRCInput::RC_0;
 	else if ( !strcmp(keyname.c_str(), "KEY_INFO"))
-		sendcode = RC_info;
+		sendcode = CRCInput::RC_info;
 	else if ( !strcmp(keyname.c_str(), "KEY_MODE"))
-		sendcode = RC_mode;
+		sendcode = CRCInput::RC_mode;
 	else if ( !strcmp(keyname.c_str(), "KEY_SETUP"))
-		sendcode = RC_setup;
+		sendcode = CRCInput::RC_setup;
 	else if ( !strcmp(keyname.c_str(), "KEY_EPG"))
-		sendcode = RC_epg;	
+		sendcode = CRCInput::RC_epg;	
 	else if ( !strcmp(keyname.c_str(), "KEY_FAVORITES"))
-		sendcode = RC_favorites;
+		sendcode = CRCInput::RC_favorites;
 	else if ( !strcmp(keyname.c_str(), "KEY_HOME"))
-		sendcode = RC_home;	
+		sendcode = CRCInput::RC_home;	
 	else if ( !strcmp(keyname.c_str(), "KEY_UP"))
-		sendcode = RC_up;
+		sendcode = CRCInput::RC_up;
 	else if ( !strcmp(keyname.c_str(), "KEY_LEFT"))
-		sendcode = RC_left;
+		sendcode = CRCInput::RC_left;
 	else if ( !strcmp(keyname.c_str(), "KEY_OK"))
-		sendcode = RC_ok;
+		sendcode = CRCInput::RC_ok;
 	else if ( !strcmp(keyname.c_str(), "KEY_RIGHT"))
-		sendcode = RC_right;
+		sendcode = CRCInput::RC_right;
 	else if ( !strcmp(keyname.c_str(), "KEY_DOWN"))
-		sendcode = RC_down;
+		sendcode = CRCInput::RC_down;
 	else if ( !strcmp(keyname.c_str(), "KEY_VOLUMEUP"))
-		sendcode = RC_plus;
+		sendcode = CRCInput::RC_plus;
 	else if ( !strcmp(keyname.c_str(), "KEY_VOLUMEDOWN"))
-		sendcode = RC_minus;
+		sendcode = CRCInput::RC_minus;
 	else if ( !strcmp(keyname.c_str(), "KEY_PAGEUP"))
-		sendcode = RC_page_up;
+		sendcode = CRCInput::RC_page_up;
 	else if ( !strcmp(keyname.c_str(), "KEY_PAGEDOWN"))
-		sendcode = RC_page_down;
+		sendcode = CRCInput::RC_page_down;
 	else if ( !strcmp(keyname.c_str(), "KEY_TV"))
-		sendcode = RC_mode;
+		sendcode = CRCInput::RC_mode;
 	else if ( !strcmp(keyname.c_str(), "KEY_TEXT"))
-		sendcode = RC_text;
+		sendcode = CRCInput::RC_text;
 	else if ( !strcmp(keyname.c_str(), "KEY_RADIO"))
-		sendcode = RC_mode;
+		sendcode = CRCInput::RC_mode;
 	else if ( !strcmp(keyname.c_str(), "KEY_RED"))
-		sendcode = RC_red;
+		sendcode = CRCInput::RC_red;
 	else if ( !strcmp(keyname.c_str(), "KEY_GREEN"))
-		sendcode = RC_green;
+		sendcode = CRCInput::RC_green;
 	else if ( !strcmp(keyname.c_str(), "KEY_YELLOW"))
-		sendcode = RC_yellow;
+		sendcode = CRCInput::RC_yellow;
 	else if ( !strcmp(keyname.c_str(), "KEY_BLUE"))
-		sendcode = RC_blue;
+		sendcode = CRCInput::RC_blue;
 	else if ( !strcmp(keyname.c_str(), "KEY_SAT"))
-		sendcode = RC_sat;
+		sendcode = CRCInput::RC_sat;
 	else if ( !strcmp(keyname.c_str(), "KEY_HELP"))
-		sendcode = RC_info;
+		sendcode = CRCInput::RC_info;
 	else if ( !strcmp(keyname.c_str(), "KEY_NEXT"))
-		sendcode = RC_next;
+		sendcode = CRCInput::RC_next;
 	else if ( !strcmp(keyname.c_str(), "KEY_PREVIOUS"))
-		sendcode = RC_prev;
+		sendcode = CRCInput::RC_prev;
 	else if ( !strcmp(keyname.c_str(), "KEY_TIME"))
-		sendcode = RC_timeshift;
+		sendcode = CRCInput::RC_timeshift;
 	else if ( !strcmp(keyname.c_str(), "KEY_AUDIO"))
-		sendcode = RC_audio;
+		sendcode = CRCInput::RC_audio;
 	else if ( !strcmp(keyname.c_str(), "KEY_REWIND"))
-		sendcode = RC_rewind;
+		sendcode = CRCInput::RC_rewind;
 	else if ( !strcmp(keyname.c_str(), "KEY_FORWARD"))
-		sendcode = RC_forward;
+		sendcode = CRCInput::RC_forward;
 	else if ( !strcmp(keyname.c_str(), "KEY_PAUSE"))
-		sendcode = RC_pause;
+		sendcode = CRCInput::RC_pause;
 	else if ( !strcmp(keyname.c_str(), "KEY_RECORD"))
-		sendcode = RC_record;
+		sendcode = CRCInput::RC_record;
 	else if ( !strcmp(keyname.c_str(), "KEY_STOP"))
-		sendcode = RC_stop;
+		sendcode = CRCInput::RC_stop;
 	else if ( !strcmp(keyname.c_str(), "KEY_PLAY"))
-		sendcode = RC_play;
+		sendcode = CRCInput::RC_play;
 	
 	if (sendcode == -1) 
 	{

@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: rcinput.h 2013/10/12 mohousch Exp $
+	$Id: rcinput.h 25.09.2023 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -143,106 +143,7 @@
 #define VFD_EXIT	0x0b7
 #define VFD_OK		0x058
 
-//
-enum
-{
-	RC_0		= KEY_0,	    
-	RC_1		= KEY_1,	    
-	RC_2		= KEY_2,	    
-	RC_3		= KEY_3,	    
-	RC_4		= KEY_4,	    
-	RC_5		= KEY_5,	    
-	RC_6		= KEY_6,	    
-	RC_7		= KEY_7,	    
-	RC_8		= KEY_8,	    
-	RC_9		= KEY_9,
-	    		
-	RC_up		= KEY_UP,	    
-	RC_left		= KEY_LEFT,	    
-	RC_right	= KEY_RIGHT,	    
-	RC_down		= KEY_DOWN,
-	    		
-	RC_spkr		= KEY_MUTE,	   		
-	RC_minus        = KEY_VOLUMEDOWN,   
-	RC_plus         = KEY_VOLUMEUP,     
-
-	RC_standby	= KEY_POWER,	    
-			
-	RC_home         = KEY_HOME,         
-	RC_setup	= KEY_MENU,	    
-			
-	RC_page_up	= KEY_PAGEUP,	   
-	RC_page_down	= KEY_PAGEDOWN,	    
-			
-	RC_ok		= KEY_OK,	    
-			
-	RC_red		= KEY_RED,	    
-	RC_green	= KEY_GREEN,	    
-	RC_yellow	= KEY_YELLOW,	    
-	RC_blue		= KEY_BLUE,	    
-
-	RC_audio	= KEY_AUDIO,		// 0x188
-	RC_video	= KEY_VIDEO,		// 0x189
-			
-	RC_text		= KEY_TEXT,		// 0x184
-	RC_info		= KEY_INFO,		// 0x166
-	RC_epg		= KEY_EPG,		// 0x16d
-	RC_recall 	= KEY_BACK,		// 0x9E
-	RC_favorites	= KEY_FAVORITES,	// 0x16c
-	RC_sat		= KEY_SAT,		// 0x17d
-			
-	RC_record	= KEY_RECORD,		// 0xA7
-	RC_play		= KEY_PLAY,		// 0xCF
-	RC_pause	= KEY_PAUSE,		// 0x77
-	RC_forward	= KEY_FASTFORWARD,	// 0xD0
-	RC_rewind	= KEY_REWIND,		// 0xA8
-	RC_stop		= KEY_STOP,		// 0x80
-			
-	RC_timeshift	= KEY_TIME,		// 0x167
-						
-	RC_mode		= KEY_MODE,		// 0x175
-
-	RC_next		= 0xFFFFFFF0,
-	RC_prev		= 0xFFFFFFF1,
-
-	//
-	RC_music	= KEY_MUSIC,
-	RC_picture	= KEY_ARCHIVE,			
-			
-	RC_loop		= KEY_REPEAT,
-	RC_slow		= KEY_SLOW,
-			
-	RC_dvbsub	= KEY_DVBSUB,
-
-	RC_pip		= KEY_PIP,
-	RC_pippos	= KEY_PIPPOS,
-	RC_pipswap	= KEY_PIPSWAP,
-	RC_pipsubch	= KEY_PIPSUBCH,
-
-	RC_net		= KEY_NET,
-	RC_bookmark	= KEY_BOOKMARKS,
-	RC_multifeed	= KEY_MULTIFEED,
-
-	//
-	RC_f1		= KEY_F1,
-	RC_f2		= KEY_F2,
-	RC_f3		= KEY_F3,
-	RC_f4		= KEY_F4,
-
-	//
-	RC_vfdup	= VFD_UP,
-	RC_vfddown	= VFD_DOWN,
-	RC_vfdright	= VFD_RIGHT,
-	RC_vfdleft	= VFD_LEFT,
-	RC_vfdpower	= VFD_POWER,
-	RC_vfdmenu	= VFD_MENU,
-	RC_vfdexit	= VFD_EXIT,
-	RC_vfdok	= VFD_OK,
-
-	RC_timeout	= 0xFFFFFFFF,
-	RC_nokey	= 0xFFFFFFFE
-};
-
+//// defines
 typedef unsigned long neutrino_msg_t;
 typedef unsigned long neutrino_msg_data_t;
 
@@ -297,7 +198,118 @@ class CRCInput
 		void calculateMaxFd(void);
 		int checkTimers();
 
-	public:		
+	public:
+		//rc-code definitions
+		static const neutrino_msg_t RC_Repeat   = 0x0400;
+		static const neutrino_msg_t RC_Release  = 0x0800;
+		static const neutrino_msg_t RC_MaxRC    = KEY_MAX | RC_Repeat | RC_Release; /* /include/linux/input.h: #define KEY_MAX 0x1ff */
+		static const neutrino_msg_t RC_KeyBoard = 0x4000;
+		static const neutrino_msg_t RC_Events   = 0x80000000;
+		static const neutrino_msg_t RC_Messages = 0x90000000;
+		static const neutrino_msg_t RC_WithData = 0xA0000000;
+
+		//	
+		enum
+		{
+			RC_0		= KEY_0,	    
+			RC_1		= KEY_1,	    
+			RC_2		= KEY_2,	    
+			RC_3		= KEY_3,	    
+			RC_4		= KEY_4,	    
+			RC_5		= KEY_5,	    
+			RC_6		= KEY_6,	    
+			RC_7		= KEY_7,	    
+			RC_8		= KEY_8,	    
+			RC_9		= KEY_9,
+			    		
+			RC_up		= KEY_UP,	    
+			RC_left		= KEY_LEFT,	    
+			RC_right	= KEY_RIGHT,	    
+			RC_down		= KEY_DOWN,
+			    		
+			RC_spkr		= KEY_MUTE,	   		
+			RC_minus        = KEY_VOLUMEDOWN,   
+			RC_plus         = KEY_VOLUMEUP,     
+
+			RC_standby	= KEY_POWER,	    
+					
+			RC_home         = KEY_HOME,         
+			RC_setup	= KEY_MENU,	    
+					
+			RC_page_up	= KEY_PAGEUP,	   
+			RC_page_down	= KEY_PAGEDOWN,	    
+					
+			RC_ok		= KEY_OK,	    
+					
+			RC_red		= KEY_RED,	    
+			RC_green	= KEY_GREEN,	    
+			RC_yellow	= KEY_YELLOW,	    
+			RC_blue		= KEY_BLUE,	    
+
+			RC_audio	= KEY_AUDIO,		// 0x188
+			RC_video	= KEY_VIDEO,		// 0x189
+					
+			RC_text		= KEY_TEXT,		// 0x184
+			RC_info		= KEY_INFO,		// 0x166
+			RC_epg		= KEY_EPG,		// 0x16d
+			RC_recall 	= KEY_BACK,		// 0x9E
+			RC_favorites	= KEY_FAVORITES,	// 0x16c
+			RC_sat		= KEY_SAT,		// 0x17d
+					
+			RC_record	= KEY_RECORD,		// 0xA7
+			RC_play		= KEY_PLAY,		// 0xCF
+			RC_pause	= KEY_PAUSE,		// 0x77
+			RC_forward	= KEY_FASTFORWARD,	// 0xD0
+			RC_rewind	= KEY_REWIND,		// 0xA8
+			RC_stop		= KEY_STOP,		// 0x80
+					
+			RC_timeshift	= KEY_TIME,		// 0x167
+								
+			RC_mode		= KEY_MODE,		// 0x175
+
+			RC_next		= 0xFFFFFFF0,
+			RC_prev		= 0xFFFFFFF1,
+
+			//
+			RC_music	= KEY_MUSIC,
+			RC_picture	= KEY_ARCHIVE,			
+					
+			RC_loop		= KEY_REPEAT,
+			RC_slow		= KEY_SLOW,
+					
+			RC_dvbsub	= KEY_DVBSUB,
+
+			RC_pip		= KEY_PIP,
+			RC_pippos	= KEY_PIPPOS,
+			RC_pipswap	= KEY_PIPSWAP,
+			RC_pipsubch	= KEY_PIPSUBCH,
+
+			RC_net		= KEY_NET,
+			RC_bookmark	= KEY_BOOKMARKS,
+			RC_multifeed	= KEY_MULTIFEED,
+
+			//
+			RC_f1		= KEY_F1,
+			RC_f2		= KEY_F2,
+			RC_f3		= KEY_F3,
+			RC_f4		= KEY_F4,
+
+			//
+			RC_vfdup	= VFD_UP,
+			RC_vfddown	= VFD_DOWN,
+			RC_vfdright	= VFD_RIGHT,
+			RC_vfdleft	= VFD_LEFT,
+			RC_vfdpower	= VFD_POWER,
+			RC_vfdmenu	= VFD_MENU,
+			RC_vfdexit	= VFD_EXIT,
+			RC_vfdok	= VFD_OK,
+
+			RC_timeout	= 0xFFFFFFFF,
+			RC_nokey	= 0xFFFFFFFE
+		};
+
+
+		//	
 		CConfigFile	configfile;
 
 		neutrino_msg_t key_0;

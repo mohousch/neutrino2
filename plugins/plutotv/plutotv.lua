@@ -189,8 +189,8 @@ function cat_menu(_id)
 	cm:setFootButtons(red)
 	cm:setFootButtons(green)
 	
-	cm:addKey(neutrino2.RC_red, null, "rec")
-	cm:addKey(neutrino2.RC_green, null, "info")
+	cm:addKey(neutrino2.CRCInput_RC_red, null, "rec")
+	cm:addKey(neutrino2.CRCInput_RC_green, null, "info")
 	
 	local hint = neutrino2.CHintBox(plugin_title, "loading...", neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
@@ -368,8 +368,8 @@ function episode_menu(s)
 	em:setFootButtons(red)
 	em:setFootButtons(green)
 	
-	em:addKey(neutrino2.RC_red, null, "rec")
-	em:addKey(neutrino2.RC_green, null, "info")
+	em:addKey(neutrino2.CRCInput_RC_red, null, "rec")
+	em:addKey(neutrino2.CRCInput_RC_green, null, "info")
 	
 	local hint = neutrino2.CHintBox(plugin_title, "loading...", neutrino2.HINTBOX_WIDTH, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
 	hint:paint()
@@ -497,7 +497,7 @@ function categories_menu()
 	
 	m:setFootButtons(red)
 	
-	m:addKey(neutrino2.RC_red, null, "update")
+	m:addKey(neutrino2.CRCInput_RC_red, null, "update")
 	
 	for _id,_name in pairs(catlist) do
 		item = neutrino2.CMenuForwarder(conv_utf8(_name))

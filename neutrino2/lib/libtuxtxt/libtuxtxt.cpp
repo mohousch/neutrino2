@@ -9,8 +9,6 @@
  *                                                                            *
  ******************************************************************************/
 
-#define TUXTXT_DEBUG 0
-
 #include <pthread.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
@@ -18,10 +16,8 @@
 #include "tuxtxt_def.h"
 #include "tuxtxt_common.h"
 
-/******************************************************************************
- * Initialize                                                                 *
- ******************************************************************************/
 
+//
 static int tuxtxt_initialized = 0;
 
 int tuxtxt_init()
@@ -47,10 +43,7 @@ int tuxtxt_init()
 	return 1;//tuxtxt_init_demuxer();
 }
 
-/******************************************************************************
- * Interface to caller                                                        *
- ******************************************************************************/
-
+//
 int tuxtxt_stop()
 {
 	if (!tuxtxt_cache.receiving) 
@@ -80,23 +73,9 @@ void tuxtxt_start(int tpid, int source)
 
 void tuxtxt_close()
 {
-#if TUXTXT_DEBUG
-	printf ("libtuxtxt: cleaning up\n");
-#endif
 	tuxtxt_stop();
-#if 0
-	if (tuxtxt_cache.dmx != -1)
-    	    close(tuxtxt_cache.dmx);
-#endif
 	tuxtxt_cache.dmx = -1;
 	tuxtxt_clear_cache();
 	tuxtxt_initialized=0;
 }
 
-/* Local Variables: */
-/* indent-tabs-mode:t */
-/* tab-width:3 */
-/* c-basic-offset:3 */
-/* comment-column:0 */
-/* fill-column:120 */
-/* End: */

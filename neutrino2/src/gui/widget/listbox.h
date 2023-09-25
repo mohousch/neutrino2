@@ -265,7 +265,7 @@ class CMenuOptionChooser : public CMenuItem
 		unsigned number_of_options;
 
 	public:
-		CMenuOptionChooser(const char* const Name, int * const OptionValue, const struct keyval * const Options = NULL, const unsigned Number_Of_Options = 0, const bool Active = false, CChangeObserver * const Observ = NULL, const neutrino_msg_t DirectKey = RC_nokey, const std::string& IconName= "", bool Pulldown = false);
+		CMenuOptionChooser(const char* const Name, int * const OptionValue, const struct keyval * const Options = NULL, const unsigned Number_Of_Options = 0, const bool Active = false, CChangeObserver * const Observ = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const std::string& IconName= "", bool Pulldown = false);
 
 		virtual ~CMenuOptionChooser(){options.clear();};
 
@@ -320,7 +320,7 @@ class CMenuOptionStringChooser : public CMenuItem
 	std::vector<std::string> options;
 
 	public:
-		CMenuOptionStringChooser(const char* const Name, char * OptionValue, bool Active = false, CChangeObserver* Observ = NULL, const neutrino_msg_t DirectKey = RC_nokey, const std::string & IconName= "", bool Pulldown = false);
+		CMenuOptionStringChooser(const char* const Name, char * OptionValue, bool Active = false, CChangeObserver* Observ = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const std::string & IconName= "", bool Pulldown = false);
 		
 		virtual ~CMenuOptionStringChooser();
 
@@ -377,7 +377,7 @@ class CMenuForwarder : public CMenuItem
 		virtual const char *getOption(void);
 
 	public:
-		CMenuForwarder(const char * const Text, const bool Active = true, const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
+		CMenuForwarder(const char * const Text, const bool Active = true, const char* const Option = NULL, CMenuTarget * Target = NULL, const char* const ActionKey = NULL, const neutrino_msg_t DirectKey = CRCInput::RC_nokey, const char* const IconName = NULL, const char* const ItemIcon = NULL, const char* const Hint = NULL);
 		
 		virtual ~CMenuForwarder();
 		
@@ -647,14 +647,14 @@ class ClistBox : public CWidgetItem
 		bool isSelectable(void){return true;};
 
 		//
-		int oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg = RC_ok);
+		int oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok);
 		void homeKeyPressed(){selected = -1;};
 		int directKeyPressed(neutrino_msg_t _msg);
 
 		//
 		std::string getActionKey(void){return actionKey;}; // lua
 		
-		virtual void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = CMenuItem::TYPE_STANDARD, bool i2lines = false, int iBorder = BORDER_NO);
+		virtual void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = CMenuItem::TYPE_STANDARD, bool i2lines = false, int iBorder = BORDER_NO);
 		
 		//
 		inline bool isPainted(void){return painted;};

@@ -193,7 +193,7 @@ void CNKMovies::showMenu()
 	// categories
 	for (unsigned i = 0; i < cats.size(); i++)
 	{
-		leftWidget->addItem(new CMenuForwarder(cats[i].title.c_str(), true, NULL, new CNKMovies(cNKFeedParser::CATEGORY, cats[i].id, cats[i].title), "", RC_nokey, NEUTRINO_ICON_NETZKINO_SMALL));
+		leftWidget->addItem(new CMenuForwarder(cats[i].title.c_str(), true, NULL, new CNKMovies(cNKFeedParser::CATEGORY, cats[i].id, cats[i].title), "", CRCInput::RC_nokey, NEUTRINO_ICON_NETZKINO_SMALL));
 	}
 
 	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -203,7 +203,7 @@ void CNKMovies::showMenu()
 	leftWidget->addItem(new CMenuSeparator());
 	leftWidget->addItem(new CMenuSeparator());
 	leftWidget->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	leftWidget->addItem(new CMenuForwarder("Beenden", true, NULL, this, "exit", RC_nokey, NEUTRINO_ICON_BUTTON_POWER));
+	leftWidget->addItem(new CMenuForwarder("Beenden", true, NULL, this, "exit", CRCInput::RC_nokey, NEUTRINO_ICON_BUTTON_POWER));
 
 	// rightwidget
 	rightBox.iWidth = mainWidget->getWindowsPos().iWidth - INTER_FRAME_SPACE - leftBox.iWidth;
@@ -221,7 +221,7 @@ void CNKMovies::showMenu()
 
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
-		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "play", RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, this, "play", CRCInput::RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->setHint(m_vMovieInfo[i].epgInfo2.c_str());
 
@@ -233,12 +233,12 @@ void CNKMovies::showMenu()
 	mainWidget->addWidgetItem(rightWidget);
 	mainWidget->addWidgetItem(footersWidget);
 
-	mainWidget->addKey(RC_red, this, CRCInput::getSpecialKeyName(RC_red));
-	mainWidget->addKey(RC_green, this, CRCInput::getSpecialKeyName(RC_green));
-	mainWidget->addKey(RC_info, this, CRCInput::getSpecialKeyName(RC_info));
-	mainWidget->addKey(RC_record, this, CRCInput::getSpecialKeyName(RC_record));
-	mainWidget->addKey(RC_blue, this, CRCInput::getSpecialKeyName(RC_blue));
-	mainWidget->addKey(RC_home, this, "exit");
+	mainWidget->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
+	mainWidget->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
+	mainWidget->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
+	mainWidget->addKey(CRCInput::RC_record, this, CRCInput::getSpecialKeyName(CRCInput::RC_record));
+	mainWidget->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
+	mainWidget->addKey(CRCInput::RC_home, this, "exit");
 
 	mainWidget->exec(NULL, "");
 

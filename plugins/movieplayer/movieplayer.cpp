@@ -452,12 +452,12 @@ void CMoviePlayer::showMenu()
 	mlist->enablePaintItemInfo();
 
 	//
-	widget->addKey(RC_info, this, CRCInput::getSpecialKeyName(RC_info));
-	widget->addKey(RC_red, this, CRCInput::getSpecialKeyName(RC_red));
-	widget->addKey(RC_green, this, CRCInput::getSpecialKeyName(RC_green));
-	widget->addKey(RC_spkr, this, CRCInput::getSpecialKeyName(RC_spkr));
-	widget->addKey(RC_yellow, this, CRCInput::getSpecialKeyName(RC_yellow));
-	widget->addKey(RC_blue, this, CRCInput::getSpecialKeyName(RC_blue));
+	widget->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
+	widget->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
+	widget->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
+	widget->addKey(CRCInput::RC_spkr, this, CRCInput::getSpecialKeyName(CRCInput::RC_spkr));
+	widget->addKey(CRCInput::RC_yellow, this, CRCInput::getSpecialKeyName(CRCInput::RC_yellow));
+	widget->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
 	
 	//
 	widget->addWidgetItem(mlist);

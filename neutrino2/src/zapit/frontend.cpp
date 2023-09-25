@@ -153,8 +153,8 @@ CFrontend::~CFrontend(void)
 
 bool CFrontend::Open()
 {
-	if(!standby)
-		return false;
+	//if(!standby)
+	//	return false;
 
 	char filename[256];
 

@@ -127,7 +127,7 @@ void CNeutrinoApp::mainMenu(void)
 	if (resetWidget)
 	{
 		item->setIconName(NEUTRINO_ICON_BUTTON_RED);
-		item->setDirectKey(RC_red);
+		item->setDirectKey(CRCInput::RC_red);
 	}
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
 	item->setHint(_(""));
@@ -139,7 +139,7 @@ void CNeutrinoApp::mainMenu(void)
 	if (resetWidget)
 	{
 		item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
-		item->setDirectKey(RC_green);
+		item->setDirectKey(CRCInput::RC_green);
 	}
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TIMERLIST);
 	item->setHint(_(""));
@@ -160,7 +160,7 @@ void CNeutrinoApp::mainMenu(void)
 	if (resetWidget)
 	{
 		item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
-		item->setDirectKey(RC_yellow);
+		item->setDirectKey(CRCInput::RC_yellow);
 	}
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
 	item->setHint(_(""));
@@ -172,7 +172,7 @@ void CNeutrinoApp::mainMenu(void)
 	if (resetWidget)
 	{
 		item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
-		item->setDirectKey(RC_blue);
+		item->setDirectKey(CRCInput::RC_blue);
 	}
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
 	item->setHint(_(""));
@@ -184,7 +184,7 @@ void CNeutrinoApp::mainMenu(void)
 	if (resetWidget)
 	{
 		item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-		item->setDirectKey(RC_setup);
+		item->setDirectKey(CRCInput::RC_setup);
 	}
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
 	item->setHint(_(""));
@@ -242,10 +242,10 @@ void CNeutrinoApp::mainMenu(void)
 #define BUTTONMAX 4
 
 const neutrino_msg_t key_helper_msg_def[BUTTONMAX] = {
-	RC_red,
-	RC_green,
-	RC_yellow,
-	RC_blue
+	CRCInput::RC_red,
+	CRCInput::RC_green,
+	CRCInput::RC_yellow,
+	CRCInput::RC_blue
 };
 
 const char * key_helper_icon_def[BUTTONMAX]={
@@ -274,20 +274,20 @@ class CKeyHelper
                  * A color button could be requested as prefered button (other buttons are not supported yet).
                  * If the appropriate button is already in used, the next number_key button is returned instead
                  * (first 1-9 and than 0). */
-                bool get(neutrino_msg_t* msg, const char** icon, neutrino_msg_t prefered_key = RC_nokey)
+                bool get(neutrino_msg_t* msg, const char** icon, neutrino_msg_t prefered_key = CRCInput::RC_nokey)
                 {
                         bool result = false;
                         int button = -1;
-                        if(prefered_key == RC_red)
+                        if(prefered_key == CRCInput::RC_red)
                                 button = 0;
-                        if(prefered_key == RC_green)
+                        if(prefered_key == CRCInput::RC_green)
                                 button = 1;
-                        if(prefered_key == RC_yellow)
+                        if(prefered_key == CRCInput::RC_yellow)
                                 button = 2;
-                        if(prefered_key == RC_blue)
+                        if(prefered_key == CRCInput::RC_blue)
                                 button = 3;
 
-                        *msg = RC_nokey;
+                        *msg = CRCInput::RC_nokey;
                         *icon = "";
                         if(button >= 0 && button < BUTTONMAX)
                         {
@@ -329,7 +329,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 
 	CMenuItem * menu_item = NULL;
 	CKeyHelper keyhelper;
-	neutrino_msg_t key = RC_nokey;
+	neutrino_msg_t key = CRCInput::RC_nokey;
 	const char * icon = NULL;
 
 	//
@@ -413,7 +413,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 
 			// timerlist
 			case SNeutrinoSettings::ITEM_TIMERLIST:
-				keyhelper.get(&key, &icon, RC_yellow);
+				keyhelper.get(&key, &icon, CRCInput::RC_yellow);
 				menu_item = new CMenuForwarder(_("Timerlist"), true, NULL, new CTimerList, "-1", key, NULL, NEUTRINO_ICON_MENUITEM_TIMERLIST);
 				menu->addItem(menu_item, false);
 				break;
@@ -437,7 +437,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			// plugins
 			case SNeutrinoSettings::ITEM_PLUGIN:
 				{
-					keyhelper.get(&key, &icon, RC_blue);
+					keyhelper.get(&key, &icon, CRCInput::RC_blue);
 					menu_item = new CMenuForwarder(_("Plugins"), true, NULL, new CPluginList(), "-1", key, NULL, NEUTRINO_ICON_MENUITEM_PLUGIN);
 					menu->addItem(menu_item, false);
 				}
@@ -525,7 +525,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 	//	widget->setPosition(menu->getWindowsPos().iX - 5, menu->getWindowsPos().iY - 5, menu->getWindowsPos().iWidth + 10, menu->getWindowsPos().iHeight + 10);
 	
 	//
-	widget->addKey(RC_blue, this, "plugins");
+	widget->addKey(CRCInput::RC_blue, this, "plugins");
 	widget->setTimeOut(g_settings.timing_menu);	
 	widget->exec(NULL, "");
 	

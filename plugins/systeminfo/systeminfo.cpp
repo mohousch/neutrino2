@@ -182,15 +182,15 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 	int timercount = 0;
 	uint64_t timeoutEnd = g_RCInput->calcTimeoutEnd(5);
 
-	while (msg != RC_home)
+	while (msg != CRCInput::RC_home)
 	{
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 
-		if (msg <= RC_MaxRC  ) 
+		if (msg <= CRCInput::RC_MaxRC  ) 
 			timeoutEnd = g_RCInput->calcTimeoutEnd(5);
 		
 		// dont cancel by timeout
-		if (msg == RC_timeout)
+		if (msg == CRCInput::RC_timeout)
 		{
 			if (mode == SYSINFO)
 			{
@@ -227,15 +227,15 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 			
 		}
 
-		if ((msg == RC_up || msg == RC_page_up) && (mode != SYSINFO))
+		if ((msg == CRCInput::RC_up || msg == CRCInput::RC_page_up) && (mode != SYSINFO))
 		{
 			textBox->scrollPageUp(1);
 		}
-		else if ((msg == RC_down || msg == RC_page_down) && (mode != SYSINFO))
+		else if ((msg == CRCInput::RC_down || msg == CRCInput::RC_page_down) && (mode != SYSINFO))
 		{
 			textBox->scrollPageDown(1);
 		}
-		else if ((msg == RC_red) && (mode != SYSINFO))
+		else if ((msg == CRCInput::RC_red) && (mode != SYSINFO))
 		{
 			mode = SYSINFO;
 			sysinfo();
@@ -248,7 +248,7 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 			paintFoot();
 
 		}
-		else if ((msg == RC_green) && (mode != DMESGINFO))
+		else if ((msg == CRCInput::RC_green) && (mode != DMESGINFO))
 		{
 			mode = DMESGINFO;
 			timercount = 0;
@@ -258,7 +258,7 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 			paint();
 			paintFoot();
 		}
-		else if ((msg == RC_yellow) && (mode != CPUINFO))
+		else if ((msg == CRCInput::RC_yellow) && (mode != CPUINFO))
 		{
 			mode = CPUINFO;
 			cpuinfo();
@@ -267,7 +267,7 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 			paint();
 			paintFoot();
 		}
-		else if (msg == RC_blue)
+		else if (msg == CRCInput::RC_blue)
 		{
 			mode = PSINFO;
 			ps();

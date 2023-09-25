@@ -14,7 +14,6 @@
  *                                                                            *
  ******************************************************************************/
 
-#define TUXTXT_CFG_STANDALONE 0  // 1:plugin only 0:use library
 #define TUXTXT_DEBUG 0
 
 #include <config.h>
@@ -46,11 +45,6 @@
 #include FT_CACHE_H
 #include FT_CACHE_SMALL_BITMAPS_H
 
-/* devices */
-
-#if TUXTXT_CFG_STANDALONE
-#include "tuxtxt_common.h"
-#else
 /* variables and functions from libtuxtxt */
 extern tuxtxt_cache_struct tuxtxt_cache;
 extern int tuxtxt_init();
@@ -68,17 +62,14 @@ extern void tuxtxt_decompress_page(int p, int sp, unsigned char* buffer);
 #if TUXTXT_DEBUG
 extern int tuxtxt_get_zipsize(int p, int sp);
 #endif
-#endif
 
 #define TUXTXTCONF CONFIGDIR "/tuxtxt/tuxtxt2.conf"
 
 /* fonts */
 #define TUXTXTTTF DATADIR "/fonts/tuxtxt.ttf"
 #define TUXTXTOTB DATADIR "/fonts/tuxtxt.otb"
-/* alternative fontdir */
-#define TUXTXTTTFVAR CONFIGDIR "/tuxtxt/tuxtxt.ttf"
-#define TUXTXTOTBVAR CONFIGDIR "/tuxtxt/tuxtxt.otb"
 
+//
 int TTFWidthFactor16, TTFHeightFactor16, TTFShiftX, TTFShiftY; /* parameters for adapting to various TTF fonts */
 int fontheight, fontwidth, fontwidth_normal, fontwidth_small, fontwidth_topmenumain, fontwidth_topmenusmall, ascender;
 int ymosaic[4];
@@ -145,24 +136,35 @@ int displaywidth;
 #define release_mosaic      0x1F
 
 /* rc codes */ 
-#define RC_RIGHT    RC_right
-#define RC_LEFT     RC_left
-#define RC_UP       RC_up
-#define RC_DOWN     RC_down
-#define RC_OK       RC_ok
-#define RC_MUTE     RC_spkr
-#define RC_STANDBY  RC_standby
-#define RC_GREEN    RC_green
-#define RC_YELLOW   RC_yellow
-#define RC_RED      RC_red
-#define RC_BLUE     RC_blue
-#define RC_PLUS     RC_plus
-#define RC_MINUS    RC_minus
-#define RC_HELP     RC_info
-#define RC_DBOX     RC_setup
-#define RC_TEXT     RC_text
-#define RC_HOME     RC_home
+#define RC_0        CRCInput::RC_0
+#define RC_1        CRCInput::RC_1
+#define RC_2        CRCInput::RC_2
+#define RC_3        CRCInput::RC_3
+#define RC_4        CRCInput::RC_4
+#define RC_5        CRCInput::RC_5
+#define RC_6        CRCInput::RC_6
+#define RC_7        CRCInput::RC_7
+#define RC_8        CRCInput::RC_8
+#define RC_9        CRCInput::RC_9
+#define RC_RIGHT    CRCInput::RC_right
+#define RC_LEFT     CRCInput::RC_left
+#define RC_UP       CRCInput::RC_up
+#define RC_DOWN     CRCInput::RC_down
+#define RC_OK       CRCInput::RC_ok
+#define RC_MUTE     CRCInput::RC_spkr
+#define RC_STANDBY  CRCInput::RC_standby
+#define RC_GREEN    CRCInput::RC_green
+#define RC_YELLOW   CRCInput::RC_yellow
+#define RC_RED      CRCInput::RC_red
+#define RC_BLUE     CRCInput::RC_blue
+#define RC_PLUS     CRCInput::RC_plus
+#define RC_MINUS    CRCInput::RC_minus
+#define RC_HELP     CRCInput::RC_info
+#define RC_DBOX     CRCInput::RC_setup
+#define RC_TEXT     CRCInput::RC_text
+#define RC_HOME     CRCInput::RC_home
 
+//
 typedef enum /* object type */
 {
 	OBJ_PASSIVE,
@@ -170,6 +172,7 @@ typedef enum /* object type */
 	OBJ_ADAPTIVE
 } tObjType;
 
+//
 const char *ObjectSource[] =
 {
 	"(illegal)",
@@ -178,6 +181,7 @@ const char *ObjectSource[] =
 	"GPOP"
 };
 
+//
 const char *ObjectType[] =
 {
 	"Passive",
@@ -465,7 +469,7 @@ unsigned char restoreaudio = 0;
 /* typ_vcr/dvb: 	v1 a1 v2 a2 v3 a3 (vcr_only: fblk) */
 
 /* language dependent texts */
-#define MAXMENULANGUAGE 10 /* 0 deutsch, 1 englisch, 2 franzצsisch, 3 niederlהndisch, 4 griechisch, 5 italienisch, 6 polnisch, 7 schwedisch, 8 suomi, 9 portuguesa, 10 russian */
+#define MAXMENULANGUAGE 10 /* 0 deutsch, 1 englisch, 2 franz\F6sisch, 3 niederl\E4ndisch, 4 griechisch, 5 italienisch, 6 polnisch, 7 schwedisch, 8 suomi, 9 portuguesa, 10 russian */
 const int menusubset[] =   { NAT_DE   , NAT_UK    , NAT_FR       , NAT_UK          , NAT_GR      , NAT_IT       , NAT_PL    , NAT_SW      , NAT_SW ,   NAT_SP,      NAT_RB};//FIXME
 
 #define Menu_StartX (StartX + fontwidth*9/2)
@@ -560,367 +564,29 @@ const char menuatr[Menu_Height*(Menu_Width+1)] =
 
 const char configmenu[][Menu_Height*(Menu_Width+1)] =
 {
-	{
-/*     0123456789012345678901234567890 */
-                "אבבבבבבבבבבבבבבבבבבבבבבבבבבבבגט"
-                "ד     Konfigurationsmen}     הי"
-                "וזזזזזזזזזזזזזזזזזזזזזזזזזזזזחי"
-                "ד1 Favoriten: Seite 111 dazu הי"
-                "דםמסע                        הי"
-                "ד+-?                         הי"
-                "ד                            הי"
-                "ד2     Teletext-Auswahl      הי"
-                "דם          suchen          מהי"
-                "ד                            הי"
-                "ד      Bildschirmformat      הי"
-                "ד3  Standard-Modus 16:9      הי"
-                "ד                            הי"
-                "ד5        Helligkeit         הי"
-                "דם                          מהי"
-                "ד6       Transparenz         הי"
-                "דם                          מהי"
-                "ד7  nationaler Zeichensatz   הי"
-                "דautomatische Erkennung      הי"
-                "דם                          מהי"
-                "דם Sprache/Language deutsch מהי"
-                "וז   www.tuxtxt.net  x.xx   זחי"
-                "כלללללללללללללללללללללללללללללך"
-        },
-/*     0000000000111111111122222222223 */
-/*     0123456789012345678901234567890 */
-        {
-                "אבבבבבבבבבבבבבבבבבבבבבבבבבבבבגט"
-                "ד     Configuration menu     הי"
-                "וזזזזזזזזזזזזזזזזזזזזזזזזזזזזחי"
-                "ד1 Favorites:  add page 111  הי"
-                "דםמסע                        הי"
-                "ד+-?                         הי"
-                "ד                            הי"
-                "ד2     Teletext selection    הי"
-                "דם          search          מהי"
-                "ד                            הי"
-                "ד        Screen format       הי"
-                "ד3 Standard mode 16:9        הי"
-                "ד                            הי"
-                "ד5        Brightness         הי"
-                "דם                          מהי"
-                "ד6       Transparency        הי"
-                "דם                          מהי"
-                "ד7   national characterset   הי"
-                "ד automatic recognition      הי"
-                "דם                          מהי"
-                "דם Sprache/language english מהי"
-                "וז   www.tuxtxt.net  x.xx   זחי"
-                "כלללללללללללללללללללללללללללללך"
-        },
-/*     0000000000111111111122222222223 */
-/*     0123456789012345678901234567890 */
-        {
-                "אבבבבבבבבבבבבבבבבבבבבבבבבבבבבגט"
-                "ד    Menu de configuration   הי"
-                "וזזזזזזזזזזזזזזזזזזזזזזזזזזזזחי"
-                "ד1 Favorites: ajout. page 111הי"
-                "דםמסע                        הי"
-                "ד+-?                         הי"
-                "ד                            הי"
-                "ד2  Selection de teletext    הי"
-                "דם        recherche         מהי"
-                "ד                            הי"
-                "ד      Format de l'#cran     הי"
-                "ד3 Mode standard 16:9        הי"
-                "ד                            הי"
-                "ד5          Clarte           הי"
-                "דם                          מהי"
-                "ד6       Transparence        הי"
-                "דם                          מהי"
-                "ד7     police nationale      הי"
-                "דreconn. automatique         הי"
-                "דם                          מהי"
-                "דם Sprache/language francaisמהי"
-                "וז   www.tuxtxt.net  x.xx   זחי"
-                "כלללללללללללללללללללללללללללללך"
-        },
-/*     0000000000111111111122222222223 */
-/*     0123456789012345678901234567890 */
-        {
-                "אבבבבבבבבבבבבבבבבבבבבבבבבבבבבגט"
-                "ד      Configuratiemenu      הי"
-                "וזזזזזזזזזזזזזזזזזזזזזזזזזזזזחי"
-                "ד1 Favorieten: toev. pag 111 הי"
-                "דםמסע                        הי"
-                "ד+-?                         הי"
-                "ד                            הי"
-                "ד2     Teletekst-selectie    הי"
-                "דם          zoeken          מהי"
-                "ד                            הי"
-                "ד     Beeldschermformaat     הי"
-                "ד3   Standaardmode 16:9      הי"
-                "ד                            הי"
-                "ד5        Helderheid         הי"
-                "דם                          מהי"
-                "ד6       Transparantie       הי"
-                "דם                          מהי"
-                "ד7    nationale tekenset     הי"
-                "דautomatische herkenning     הי"
-                "דם                          מהי"
-                "דם Sprache/Language nederl. מהי"
-                "וז   www.tuxtxt.net  x.xx   זחי"
-                "כלללללללללללללללללללללללללללללך"
-        },
-/*     0000000000111111111122222222223 */
-/*     0123456789012345678901234567890 */
-        {
-               "אבבבבבבבבבבבבבבבבבבבבבבבבבבבבגט"
-                "ד      Lemo} quhl_seym       הי"
-                "וזזזזזזזזזזזזזזזזזזזזזזזזזזזזחי"
-                "ד1 Vaboq_:    pqo_h. sek. 111הי"
-                "דםמסע                        הי"
-                "ד+-?                         הי"
-                "ד                            הי"
-                "ד2     Epikoc^ Teket]nt      הי"
-                "דם        Amaf^tgsg         מהי"
-                "ד                            הי"
-                "ד       Loqv^ oh|mgr         הי"
-                "ד3 Tq|por pq|tupor   16:9    הי"
-                "ד                            הי"
-                "ד5       Kalpq|tgta          הי"
-                "דם                          מהי"
-                "ד6       Diav\\meia           הי"
-                "דם                          מהי"
-                "ד7    Ehmij^ tuposeiq\\       הי"
-                "דaut|latg amacm~qisg         הי"
-                "דם                          מהי"
-                "דם Ck~ssa/Language ekkgmij\\ מהי"
-                "וז   www.tuxtxt.net  x.xx   זחי"
-                "כלללללללללללללללללללללללללללללך"
-        },
-/*     0000000000111111111122222222223 */
-/*     0123456789012345678901234567890 */
-        {
-                "אבבבבבבבבבבבבבבבבבבבבבבבבבבבבגט"
-                "ד   Menu di configurazione   הי"
-                "וזזזזזזזזזזזזזזזזזזזזזזזזזזזזחי"
-                "ד1  Preferiti:  agg. pag.111 הי"
-                "דםמסע                        הי"
-                "ד+-?                         הי"
-                "ד                            הי"
-                "ד2   Selezione televideo     הי"
-                "דם         ricerca          מהי"
-                "ד                            הי"
-                "ד      Formato schermo       הי"
-                "ד3  Modo standard 16:9       הי"
-                "ד                            הי"
-                "ד5        Luminosit{         הי"
-                "דם                          מהי"
-                "ד6        Trasparenza        הי"
-                "דם                          מהי"
-                "ד7   nazionalita'caratteri   הי"
-                "ד riconoscimento automatico  הי"
-                "דם                          מהי"
-                "דם Lingua/Language Italiana מהי"
-                "וז   www.tuxtxt.net  x.xx   זחי"
-                "כלללללללללללללללללללללללללללללך"
-        },
-/*     0000000000111111111122222222223 */
-/*     0123456789012345678901234567890 */
-        {
-                "אבבבבבבבבבבבבבבבבבבבבבבבבבבבבגט"
-                "ד        Konfiguracja        הי"
-                "וזזזזזזזזזזזזזזזזזזזזזזזזזזזזחי"
-                "ד1 Ulubione : kasuj  str. 111הי"
-                "דםמסע                        הי"
-                "ד+-?                         הי"
-                "ד                            הי"
-                "ד2     Wyb_r telegazety      הי"
-                "דם          szukaj          מהי"
-                "ד                            הי"
-                "ד       Format obrazu        הי"
-                "ד3 Tryb standard 16:9        הי"
-                "ד                            הי"
-                "ד5          Jasno|^          הי"
-                "דם                          מהי"
-                "ד6      Prze~roczysto|^      הי"
-                "דם                          מהי"
-                "ד7 Znaki charakterystyczne   הי"
-                "ד automatyczne rozpozn.      הי"
-                "דם                          מהי"
-                "דם  J`zyk/Language   polski מהי"
-                "וז   www.tuxtxt.net  x.xx   זחי"
-                "כלללללללללללללללללללללללללללללך"
-        },
-/*     0000000000111111111122222222223 */
-/*     0123456789012345678901234567890 */
-        {
-                "אבבבבבבבבבבבבבבבבבבבבבבבבבבבבגט"
-                "ד     Konfigurationsmeny     הי"
-                "וזזזזזזזזזזזזזזזזזזזזזזזזזזזזחי"
-                "ד1 Favoriter: sida 111 ny    הי"
-                "דםמסע                        הי"
-                "ד+-?                         הי"
-                "ד                            הי"
-                "ד2      TextTV v{ljaren      הי"
-                "דם            s|k           מהי"
-                "ד                            הי"
-                "ד        TV- format          הי"
-                "ד3 Standard l{ge 16:9        הי"
-                "ד                            הי"
-                "ד5        Ljusstyrka         הי"
-                "דם                          מהי"
-                "ד6     Genomskinlighet       הי"
-                "דם                          מהי"
-                "ד7nationell teckenupps{ttningהי"
-                "ד automatisk igenk{nning     הי"
-                "דם                          מהי"
-                "דם Sprache/language svenska מהי"
-                "וז   www.tuxtxt.net  x.xx   זחי"
-                "כלללללללללללללללללללללללללללללך"
-        },
-/*     0000000000111111111122222222223 */
-/*     0123456789012345678901234567890 */
-        {
-                "אבבבבבבבבבבבבבבבבבבבבבבבבבבבבגט"
-                "ד        Asetusvalikko       הי"
-                "וזזזזזזזזזזזזזזזזזזזזזזזזזזזזחי"
-                "ד1 Suosikit: sivu 111 lis{{  הי"
-                "דםמסע                        הי"
-                "ד+-?                         הי"
-                "ד                            הי"
-                "ד2   Tekstikanavan valinta   הי"
-                "דם          search          מהי"
-                "ד                            הי"
-                "ד         N{ytt|tila         הי"
-                "ד3 Vakiotila     16:9        הי"
-                "ד                            הי"
-                "ד5         Kirkkaus          הי"
-                "דם                          מהי"
-                "ד6       L{pin{kyvyys        הי"
-                "דם                          מהי"
-                "ד7   kansallinen merkist|    הי"
-                "ד automaattinen tunnistus    הי"
-                "דם                          מהי"
-                "דם Kieli            suomi   מהי"
-                "וז   www.tuxtxt.net  x.xx   זחי"
-                "כלללללללללללללללללללללללללללללך"
-        },
-/*     0000000000111111111122222222223 */
-/*     0123456789012345678901234567890 */
-        {
-                "אבבבבבבבבבבבבבבבבבבבבבבבבבבבבגט"
-                "ד    Menu de Configuracao    הי"
-                "וזזזזזזזזזזזזזזזזזזזזזזזזזזזזחי"
-                "ד1 Favoritos:  adi pag. 111  הי"
-                "דםמסע                        הי"
-                "ד+-?                         הי"
-                "ד                            הי"
-                "ד2     Seleccao Teletext     הי"
-                "דם         Procurar         מהי"
-                "ד                            הי"
-                "ד       formato ecran        הי"
-                "ד3 Standard mode 16:9        הי"
-                "ד                            הי"
-                "ד5          Brilho           הי"
-                "דם                          מהי"
-                "ד6      Transparencia        הי"
-                "דם                          מהי"
-                "ד7  Caracteres nacionaist    הי"
-                "דreconhecimento utomatico    הי"
-                "דם                          מהי"
-                "דם Lingua      Portuguesa   מהי"
-                "וז   www.tuxtxt.net  x.xx   זחי"
-                "כלללללללללללללללללללללללללללללך"
-        },
-/*     0000000000111111111122222222223 */
-/*     0123456789012345678901234567890 */
-        {
-                "אבבבבבבבבבבבבבבבבבבבבבבבבבבבבגט"
-                "ד        Konfiguraciq        הי"
-                "וזזזזזזזזזזזזזזזזזזזזזזזזזזזזחי"
-                "ד1 Faworit&:   dob str. 111  הי"
-                "דםמסע                        הי"
-                "ד+-?                         הי"
-                "ד                            הי"
-                "ד2     W&bor teleteksta      הי"
-                "דם           Poisk          מהי"
-                "ד                            הי"
-                "ד       Format kartinki      הי"
-                "ד3 Stand. revim  16:9        הי"
-                "ד                            הי"
-                "ד5          Qrkostx          הי"
-                "דם                          מהי"
-                "ד6       Prozra~nostx        הי"
-                "דם                          מהי"
-                "ד7  Ispolxzuem&j alfawit     הי"
-                "ד      awtoopredelenie       הי"
-                "דם                          מהי"
-                "דם  Qz&k:         Russkij   מהי"
-                "וז   www.tuxtxt.net  x.xx   זחי"
-                "כלללללללללללללללללללללללללללללך"
-        }
+	
 };
 
 const char catchmenutext[][81] =
 {
-	{ "        םןנמ w{hlen   סע anzeigen       "
-	  "0000000011110000000000110000000000000000" },
-	{ "        םןנמ select   סע show           "
-	  "0000000011110000000000110000000000000000" },
-	{ "  םןנמ selectionner   סע montrer        "
-	  "0011110000000000000000110000000000000000" },
-	{ "        םןנמ kiezen   סע tonen          "
-	  "0000000011110000000000110000000000000000" },
-	{ "        םןנמ epikoc^  סע pqobok^        "
-	  "0000000011110000000000110000000000000000" },
-	{ "        םןנמseleziona סע mostra         "
-	  "0000000011110000000000110000000000000000" },
-	{ "        םןנמ wybiez   סע wyswietl       "
-	  "0000000011110000000000110000000000000000" },
-	{ "        םןנמ v{lj     סע visa           "
-     "0000000011110000000000110000000000000000" },
-	{ "        םןנמ valitse  סע n{yt{          "
-	  "0000000011110000000000110000000000000000" },
+	
 };
 
 const char message_3[][39] =
 {
-	{ "ד   suche nach Teletext-Anbietern   הי" },
-	{ "ד  searching for teletext Services  הי" },
-	{ "ד  recherche des services teletext  הי" },
-	{ "ד zoeken naar teletekst aanbieders  הי" },
-	{ "ד     amaf^tgsg voq]ym Teket]nt     הי" },
-	{ "ד     attesa opzioni televideo      הי" },
-	{ "ד  poszukiwanie sygna}u telegazety  הי" },
-	{ "ד    s|ker efter TextTV tj{nster    הי" },
-	{ "ד   etsit{{n Teksti-TV -palvelua    הי" },
+	
 };
 
-const char message_3_blank[] = "ד                                   הי";
+const char message_3_blank[] = {};
 
 const char message_7[][39] =
 {
-	{ "ד kein Teletext auf dem Transponder הי" },
-	{ "ד   no teletext on the transponder  הי" },
-	{ "ד pas de teletext sur le transponderהי" },
-	{ "ד geen teletekst op de transponder  הי" },
-	{ "ד jal]la Teket]nt ston amaletadot^  הי" },
-	{ "ד nessun televideo sul trasponder   הי" },
-	{ "ד   brak sygna}u na transponderze   הי" },
-	{ "ד ingen TextTV p} denna transponder הי" },
-	{ "ד    Ei Teksti-TV:t{ l{hettimell{   הי" },
+	
 };
 
 const char message_8[][39] =
 {
-/*    00000000001111111111222222222233333333334 */
-/*    01234567890123456789012345678901234567890 */
-	{ "ד  warte auf Empfang von Seite 100  הי" },
-	{ "ד waiting for reception of page 100 הי" },
-	{ "ד attentre la rיception de page 100 הי" },
-	{ "דwachten op ontvangst van pagina 100הי" },
-	{ "ד     amal]my k^xg sek_dar 100      הי" },
-	{ "ד   attesa ricezione pagina 100     הי" },
-	{ "ד     oczekiwanie na stron` 100     הי" },
-	{ "ד  v{ntar p} mottagning av sida 100 הי" },
-	{ "ד        Odotetaan sivua 100        הי" },
+
 };
 
 const char message8pagecolumn[] = /* last(!) column of page to show in each language */
@@ -1039,16 +705,16 @@ tstPageAttr atrtable[] =
 	{ white  , menu1 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MSGDRM3 */
 	{ menu1  , blue  , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENUHIL0 5a Z */
 	{ white  , blue  , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENUHIL1 58 X */
-	{ menu2  , transp, C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENUHIL2 9b › */
-	{ menu2  , menu1 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU0 ab « */
-	{ yellow , menu1 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU1 a4 ₪ */
-	{ menu2  , transp, C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU2 9b › */
-	{ menu2  , menu3 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU3 cb ֻ */
-	{ cyan   , menu3 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU4 c7 ַ */
-	{ white  , menu3 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU5 c8 ָ */
-	{ white  , menu1 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU6 a8 ¨ */
-	{ yellow , menu1 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_CATCHMENU0 a4 ₪ */
-	{ white  , menu1 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}  /* ATR_CATCHMENU1 a8 ¨ */
+	{ menu2  , transp, C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENUHIL2 9b \9B */
+	{ menu2  , menu1 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU0 ab \AB */
+	{ yellow , menu1 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU1 a4 \A4 */
+	{ menu2  , transp, C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU2 9b \9B */
+	{ menu2  , menu3 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU3 cb \CB */
+	{ cyan   , menu3 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU4 c7 \C7 */
+	{ white  , menu3 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU5 c8 \C8 */
+	{ white  , menu1 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_MENU6 a8 \A8 */
+	{ yellow , menu1 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}, /* ATR_CATCHMENU0 a4 \A4 */
+	{ white  , menu1 , C_G0P, 0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0x3f}  /* ATR_CATCHMENU1 a8 \A8 */
 };
 
 /* buffers */

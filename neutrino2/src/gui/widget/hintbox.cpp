@@ -288,18 +288,18 @@ int CHintBox::exec(int timeout)
 	{			
 		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
 
-		if ((msg == RC_timeout) || (msg == RC_home) || (msg == RC_ok))
+		if ((msg == CRCInput::RC_timeout) || (msg == CRCInput::RC_home) || (msg == CRCInput::RC_ok))
 		{
 			res = messages_return::cancel_info;
 		}
-		else if ((has_scrollbar()) && ((msg == RC_up) || (msg == RC_down)))
+		else if ((has_scrollbar()) && ((msg == CRCInput::RC_up) || (msg == CRCInput::RC_down)))
 		{
-			if (msg == RC_up)
+			if (msg == CRCInput::RC_up)
 				scroll_up();
 			else
 				scroll_down();
 		}
-		else if((msg == RC_mode) || (msg == RC_next) || (msg == RC_prev)) 
+		else if((msg == CRCInput::RC_mode) || (msg == CRCInput::RC_next) || (msg == CRCInput::RC_prev)) 
 		{
 			res = messages_return::cancel_info;
 			g_RCInput->postMsg(msg, data);

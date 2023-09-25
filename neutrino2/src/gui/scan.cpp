@@ -350,16 +350,16 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		do {
 			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 
-			if (test && (msg <= RC_MaxRC)) 
+			if (test && (msg <= CRCInput::RC_MaxRC)) 
 			{
 				istheend = true;
-				msg = RC_timeout;
+				msg = CRCInput::RC_timeout;
 			}
-			else if(msg == RC_home) 
+			else if(msg == CRCInput::RC_home) 
 			{
 				if (MessageBox(_("Abortion of channel scan"), _("Should the search really be aborted?"), mbrNo, mbYes | mbNo) == mbrYes) 
 				{
-					msg = RC_timeout;
+					msg = CRCInput::RC_timeout;
 					istheend = true;
 				}
 			}
@@ -370,7 +370,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 				
 			frameBuffer->blit();
 		}
-		while (!(msg == RC_timeout));
+		while (!(msg == CRCInput::RC_timeout));
 	}
 	
 	// to join scan thread
@@ -397,13 +397,13 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		do {
 			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 			
-			if ( msg <= RC_MaxRC )
-				msg = RC_timeout;
+			if ( msg <= CRCInput::RC_MaxRC )
+				msg = CRCInput::RC_timeout;
 			else
 				CNeutrinoApp::getInstance()->handleMsg( msg, data );
 				
 			frameBuffer->blit();
-		} while (!(msg == RC_timeout));
+		} while (!(msg == CRCInput::RC_timeout));
 	}
 
 	hide();
@@ -508,18 +508,18 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 		case NeutrinoMessages::EVT_SCAN_FAILED:
 			success = (msg == NeutrinoMessages::EVT_SCAN_COMPLETE);
 			istheend = true;
-			msg = RC_timeout;
+			msg = CRCInput::RC_timeout;
 			break;
 			
-		case RC_plus:
-		case RC_minus:
-		case RC_left:
-		case RC_right:
+		case CRCInput::RC_plus:
+		case CRCInput::RC_minus:
+		case CRCInput::RC_left:
+		case CRCInput::RC_right:
 			CNeutrinoApp::getInstance()->setVolume(msg, true);
 			break;
 			
 		default:
-			if ((msg >= RC_WithData) && (msg < RC_WithData + 0x10000000)) 
+			if ((msg >= CRCInput::RC_WithData) && (msg < CRCInput::RC_WithData + 0x10000000)) 
 				delete (unsigned char*) data;
 			break;
 	}

@@ -198,7 +198,7 @@ function exec(id, msg, actionKey)
 		moviePlayer()
 	elseif actionKey == "infoBox" then
 		infoBox()
-	elseif msg == neutrino2.RC_info then
+	elseif msg == neutrino2.CRCInput_RC_info then
 		infoBox()
 	elseif id == 0 then
 		messageBox()
@@ -309,7 +309,7 @@ function testCWidget()
 	listBox:setSelected(selected)
 
 	testWidget:addWidgetItem(listBox)
-	testWidget:addKey(neutrino2.RC_info, null, "info")
+	testWidget:addKey(neutrino2.CRCInput_RC_info, null, "info")
 
 	ret = testWidget:exec(null, "")
 
@@ -406,7 +406,7 @@ function testCMenuWidget()
 
 	listBoxWidget:setSelected(selected)
 
-	listBoxWidget:addKey(neutrino2.RC_info)
+	listBoxWidget:addKey(neutrino2.CRCInput_RC_info)
 
 	ret = listBoxWidget:exec(null, "")
 
@@ -496,7 +496,7 @@ function testClistBox()
 	m:setMenuPosition(neutrino2.CWidget_MENU_POSITION_CENTER)
 
 	m:addWidgetItem(listBox)
-	m:addKey(neutrino2.RC_info)
+	m:addKey(neutrino2.CRCInput_RC_info)
 	
 	if selected < 0 then
 		selected = 0

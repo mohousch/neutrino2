@@ -40,10 +40,7 @@
 #include <video_cs.h>
 
 
-extern cVideo * videoDecoder;
-extern CFrontend * live_fe;
-
-// subs
+//// globals
 static pthread_t ttx_sub_thread;
 static int reader_running;
 static int ttx_paused;
@@ -51,7 +48,11 @@ static int ttx_req_pause;
 static int sub_pid, sub_page;
 static bool use_gui;
 static int cfg_national_subset;
+////
+extern cVideo * videoDecoder;
+extern CFrontend * live_fe;
 
+////
 void FillRect(int x, int y, int w, int h, int color)
 {
 	unsigned char *p = lfb + x*4 + y*CFrameBuffer::getInstance()->getStride();
@@ -82,6 +83,7 @@ void FillBorder(int color)
 		FillRect(StartX + displaywidth, ys, CFrameBuffer::getInstance()->getScreenWidth(true) - (StartX+displaywidth),CFrameBuffer::getInstance()->getScreenHeight(true), color);
 }
 
+//
 int getIndexOfPageInHotlist()
 {
 	int i;
@@ -116,23 +118,14 @@ void gethotlist()
 			{
 				if (hotlist[maxhotlist+1] >= 0x100 && hotlist[maxhotlist+1] <= 0x899)
 				{
-#if TUXTXT_DEBUG
-					dprintf(" %03x", hotlist[maxhotlist+1]);
-#endif
 					maxhotlist++;
 					continue;
 				}
 			}
-#if TUXTXT_DEBUG
-			else
-				printf(" ?%s?", line);
-#endif
 		} while (maxhotlist < (int) (sizeof(hotlist)/sizeof(hotlist[0])-1));
 		fclose(hl);
 	}
-#if TUXTXT_DEBUG
-	printf(">\n");
-#endif
+
 	if (maxhotlist < 0) /* hotlist incorrect or not found */
 	{
 		hotlist[0] = 0x100; /* create one */
@@ -150,9 +143,8 @@ void savehotlist()
 	hotlistchanged = 0;
 	sprintf(line, CONFIGDIR "/tuxtxt/hotlist%d.conf", tuxtxt_cache.vtxtpid);
 	
-#if TUXTXT_DEBUG
-	printf("TuxTxt <savehotlist %s", line);
-#endif
+	dprintf(DEBUG_DEBUG, "TuxTxt <savehotlist %s", line);
+
 	if (maxhotlist != 1 || hotlist[0] != 0x100 || hotlist[1] != 0x303)
 	{
 		if ((hl = fopen(line, "wb")) != 0)
@@ -160,9 +152,6 @@ void savehotlist()
 			for (i = 0; i <= maxhotlist; i++)
 			{
 				fprintf(hl, "%03x\n", hotlist[i]);
-#if TUXTXT_DEBUG
-				printf(" %03x", hotlist[i]);
-#endif
 			}
 			fclose(hl);
 		}
@@ -170,9 +159,6 @@ void savehotlist()
 	else
 	{
 		unlink(line); /* remove current hotlist file */
-#if TUXTXT_DEBUG
-		printf(" (default - just deleted)");
-#endif
 	}
 }
 
@@ -403,10 +389,7 @@ void eval_object(int iONr, tstCachedPage *pstCachedPage,
 		iOData = iTripletNumber2Data(iONr, pstCachedPage,pagedata);	/* get triplet data, next triplet */
 		if (iOData < 0) /* invalid number, not cached, or hamming error: terminate */
 			break;
-#if TUXTXT_DEBUG
-		if (dumpl25)
-			printf("  t%03d ", iONr);
-#endif
+
 		if (endcol < 0)
 		{
 			if (ObjType == OBJ_ACTIVE)
@@ -432,10 +415,6 @@ void eval_object(int iONr, tstCachedPage *pstCachedPage,
 					if (iAddress < 40 && iMode != 0x06)
 						endcol = iAddress;
 				}
-#if TUXTXT_DEBUG
-				if (dumpl25)
-					printf("  endcol %02d", endcol);
-#endif
 			}
 		}
 		iONr++;
@@ -464,12 +443,6 @@ void eval_NumberedObject(int p, int s, int packet, int triplet, int high,
 		iONr = idata & 0x1ff; /* triplet number of even object data */
 	if (iONr <= 506)
 	{
-#if TUXTXT_DEBUG
-		if (dumpl25)
-			printf("P%xT%x%c %8s %c#%03d@%03d\n", packet, triplet, "LH"[!!high],	/* pointer pos, type, number, data pos */
-					 ObjectType[triplet % 3], "PCD"[triplet % 3], 8*packet + 2*(triplet-1)/3, iONr);
-
-#endif
 		eval_object(iONr, tuxtxt_cache.astCachetable[p][s], pAPx, pAPy, pAPx0, pAPy0, (tObjType)(triplet % 3),pagedata);
 	}
 }
@@ -492,11 +465,7 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 			*pAPx = iAddress;	/* new Active Column */
 		offset = (*pAPy0 + *pAPy) * 40 + *pAPx0 + *pAPx;	/* offset to page_char and page_atrb */
 		
-#if TUXTXT_DEBUG
-		if (dumpl25)
-			printf("  M%02xC%02xD%02x %d r:%d ch:%02x", iMode, iAddress, iData, *endcol,*pAPy0 + *pAPy,page_char[offset]);
-#endif
-
+		//
 		switch (iMode)
 		{
 			case 0x00:
@@ -528,19 +497,11 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 							c++;
 						} while (c <= *endcol);
 					}
-#if TUXTXT_DEBUG
-					if (dumpl25)
-						printf("  ,%02d FGCol T%x#%x", iAddress, (iData>>3)&0x03, iData&0x07);
-#endif
 				}
 				break;
 			case 0x01:
 				if (iData >= 0x20)
 				{
-#if TUXTXT_DEBUG
-					if (dumpl25)
-						printf("  ,%02d BlockMosaic G1 #%02x", iAddress, iData);
-#endif
 					page_char[offset] = iData;
 					if (*endcol < 0) /* passive object */
 					{
@@ -553,10 +514,6 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 				break;
 			case 0x02:
 			case 0x0b:
-#if TUXTXT_DEBUG
-				if (dumpl25)
-					printf("  ,%02d G3 #%02x f%db%d", iAddress, iData,attrPassive->fg, attrPassive->bg);
-#endif
 				page_char[offset] = iData;
 				if (*endcol < 0) /* passive object */
 				{
@@ -599,24 +556,12 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 							c++;
 						} while (c <= *endcol);
 					}
-#if TUXTXT_DEBUG
-					if (dumpl25)
-						printf("  ,%02d BGCol T%x#%x", iAddress, (iData>>3)&0x03, iData&0x07);
-#endif
 				}
 				break;
 			case 0x06:
-#if TUXTXT_DEBUG
-				if (dumpl25)
-					printf("  PDC");
-#endif
 				/* ignore */
 				break;
 			case 0x07:
-#if TUXTXT_DEBUG
-				if (dumpl25)
-					printf("  ,%02d Flash M%xP%x", iAddress, iData & 0x03, (iData >> 2) & 0x07);
-#endif
 				if ((iData & 0x60) != 0) break; // reserved data field
 				if (*endcol < 0) /* passive object */
 				{
@@ -627,10 +572,6 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 					page_atrb[offset].flashing=iData & 0x1f;
 				break;
 			case 0x08:
-#if TUXTXT_DEBUG
-				if (dumpl25)
-					printf("  ,%02d G0+G2 set #%02x (p105)", iAddress, iData);
-#endif
 				if (*endcol < 0) /* passive object */
 				{
 					attrPassive->setG0G2=iData & 0x3f;
@@ -640,10 +581,6 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 					page_atrb[offset].setG0G2=iData & 0x3f;
 				break;
 			case 0x09:
-#if TUXTXT_DEBUG
-				if (dumpl25)
-					printf("  ,%02d G0 #%02x '%c'", iAddress, iData, iData);
-#endif
 				page_char[offset] = iData;
 				if (*endcol < 0) /* passive object */
 				{
@@ -660,16 +597,6 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 			//case 0x0b: (see 0x02)
 			case 0x0c:
 			{
-#if TUXTXT_DEBUG
-				if (dumpl25)
-					printf("  ,%02d Attribute%s%s%s%s%s%s", iAddress,
-							(iData & 0x40) ? " DoubleWidth" : "",
-							(iData & 0x20) ? " UnderlineSep" : "",
-							(iData & 0x10) ? " InvColour" : "",
-							(iData & 0x04) ? " Conceal" : "",
-							(iData & 0x02) ? " Boxing" : "",
-							(iData & 0x01) ? " DoubleHeight" : "");
-#endif
 				int conc = (iData & 0x04);
 				int inv  = (iData & 0x10);
 				int dw   = (iData & 0x40 ?1:0);
@@ -743,10 +670,6 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 				break;
 			}
 			case 0x0d:
-#if TUXTXT_DEBUG
-				if (dumpl25)
-					printf("  ,%02d %cDRCS #%02x", iAddress, (iData & 0x40) ? ' ' : 'G', iData & 0x3f);
-#endif
 				page_char[offset] = iData & 0x3f;
 				if (*endcol < 0) /* passive object */
 				{
@@ -757,10 +680,6 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 					page_atrb[offset].charset = C_OFFSET_DRCS + ((iData & 0x40) ? (0x10 + *drcssubp) : *gdrcssubp);
 				break;
 			case 0x0f:
-#if TUXTXT_DEBUG
-				if (dumpl25)
-					printf("  ,%02d G2 #%02x", iAddress, iData);
-#endif
 				page_char[offset] = iData;
 				if (*endcol < 0) /* passive object */
 				{
@@ -775,10 +694,6 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 				iData = '@';
 			if (iMode >= 0x10)
 			{
-#if TUXTXT_DEBUG
-				if (dumpl25)
-					printf("  ,%02d G0 #%02x %c +diacr. %x", iAddress, iData, iData, iMode & 0x0f);
-#endif
 				page_char[offset] = iData;
 				if (*endcol < 0) /* passive object */
 				{
@@ -799,19 +714,11 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 	}
 	else /* ================= (iAddress >= 40): row addresses ====================== */
 	{
-#if TUXTXT_DEBUG
-		if (dumpl25)
-			printf("  M%02xR%02xD%02x", iMode, iAddress, iData);
-#endif
 		switch (iMode)
 		{
 			case 0x00:
 			if (0 == (iData>>5))
 			{
-#if TUXTXT_DEBUG
-				if (dumpl25)
-					printf("  FScrCol T%x#%x", (iData>>3)&0x03, iData&0x07);
-#endif
 				FullScrColor = iData & 0x1f;
 			}
 			break;
@@ -823,16 +730,7 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 				int color = iData & 0x1f;
 				int row = *pAPy0 + *pAPy;
 				int maxrow;
-#if TUXTXT_DEBUG
-				if (dumpl25)
-				{
-					printf("  AP=%d,0", RowAddress2Row(iAddress));
-					if (0 == (iData>>5))
-						printf("  FRowCol T%x#%x", (iData>>3)&0x03, iData&0x07);
-					else if (3 == (iData>>5))
-						printf("  FRowCol++ T%x#%x", (iData>>3)&0x03, iData&0x07);
-				}
-#endif
+
 				if (row <= 24 && 0 == (iData>>5))
 					maxrow = row;
 				else if (3 == (iData>>5))
@@ -845,27 +743,12 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 			}
 			break;
 			case 0x04:
-#if TUXTXT_DEBUG
-			if (dumpl25)
-				printf(" AP=%d,%d", RowAddress2Row(iAddress), iData);
-#endif
 			*pAPy = RowAddress2Row(iAddress); /* new Active Row */
 			if (iData < 40)
 				*pAPx = iData;	/* new Active Column */
 			*endcol = -1; /* FIXME: check if row changed? */
 			break;
 			case 0x07:
-#if TUXTXT_DEBUG
-			if (dumpl25)
-			{
-				if (iAddress == 0x3f)
-					printf("  AP=0,0");
-				if (0 == (iData>>5))
-					printf("  Address Display R0 FRowCol T%x#%x", (iData>>3)&0x03, iData&0x07);
-				else if (3 == (iData>>5))
-					printf("  Address Display R0->24 FRowCol T%x#%x", (iData>>3)&0x03, iData&0x07);
-			}
-#endif
 			if (iAddress == 0x3f)
 			{
 				*pAPx = *pAPy = 0; /* new Active Position 0,0 */
@@ -895,17 +778,9 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 			case 0x0d:
 			case 0x0e:
 			case 0x0f:
-#if TUXTXT_DEBUG
-			if (dumpl25)
-				printf("  PDC");
-#endif
 			/* ignore */
 			break;
 			case 0x10:
-#if TUXTXT_DEBUG
-			if (dumpl25)
-				printf("  AP=%d,%d  temp. Origin Modifier", iAddress - 40, iData);
-#endif
 			tAPy = iAddress - 40;
 			tAPx = iData;
 			break;
@@ -924,27 +799,8 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 
 				if (APx0 < 40) /* not in side panel */
 				{
-#if TUXTXT_DEBUG
-					if (dumpl25)
-						printf("  Object Invocation %5s %8s S%xP%xT%x%c %c#%03d\n---",
-								 ObjectSource[(iAddress >> 3) & 0x03], ObjectType[iMode & 0x03],
-								 subp,
-							 packet,
-								 triplet,
-								 "LH"[high], /* low/high */
-								 "PCD"[triplet % 3],
-								 8*packet + 2*(triplet-1)/3 + 1);
-#endif
 					eval_NumberedObject((iAddress & 0x08) ? gpop : pop, subp, packet, triplet, high, &APx, &APy, &APx0, &APy0);
-#if TUXTXT_DEBUG
-					if (dumpl25)
-						printf("---");
-#endif
 				}
-#if TUXTXT_DEBUG
-				else if (dumpl25)
-					printf("Object Invocation for Side Panel - ignored");
-#endif
 			}
 			else if (iAddress & 0x08)	/* local: eval invoked object */
 			{
@@ -955,21 +811,8 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 
 				if (APx0 < 40) /* not in side panel */
 				{
-#if TUXTXT_DEBUG
-					if (dumpl25)
-						printf("  local Object Invocation %5s %8s D%xT%x:\n---",
-								 ObjectSource[(iAddress >> 3) & 0x03], ObjectType[iMode & 0x03], descode, triplet);
-#endif
 					eval_object(13 * 23 + 13 * descode + triplet, pstCachedPage, &APx, &APy, &APx0, &APy0, (tObjType)(triplet % 3), pagedata);
-#if TUXTXT_DEBUG
-					if (dumpl25)
-						printf("---");
-#endif
 				}
-#if TUXTXT_DEBUG
-				else if (dumpl25)
-					printf("local Object Invocation for Side Panel - ignored");
-#endif
 			}
 			break;
 			case 0x15:
@@ -977,29 +820,6 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 			case 0x17:
 			if (0 == (iAddress & 0x08))	/* Object Definition illegal or only level 3.5 */
 				break; /* ignore */
-#if TUXTXT_DEBUG
-			if (dumpl25)
-			{
-				printf("  Object Definition %8s", ObjectType[iMode & 0x03]);
-				{ /* *POP */
-					int triplet = 3 * ((iData >> 5) & 0x03) + (iMode & 0x03);
-					int packet = (iAddress & 0x03) + 1;
-					printf("  S%xP%xT%x%c %c#%03d",
-							 iData & 0x0f,	/* subpage */
-							 packet,
-							 triplet,
-							 "LH"[(iData >> 4) & 0x01], /* low/high */
-							 "PCD"[triplet % 3],
-							 8*packet + 2*(triplet-1)/3 + 1);
-				}
-				{ /* local */
-					int descode = ((iAddress & 0x03) << 3) | (iData >> 4);
-					int triplet = iData & 0x0f;
-					printf("  D%xT%x", descode, triplet);
-				}
-				putchar('\n');
-			}
-#endif
 			tAPx = tAPy = 0;
 			*endcol = -1;
 			return 0xFF; /* termination by object definition */
@@ -1007,20 +827,14 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 			case 0x18:
 			if (0 == (iData & 0x10)) /* DRCS Mode reserved or only level 3.5 */
 				break; /* ignore */
-#if TUXTXT_DEBUG
-			if (dumpl25)
-				printf("  %cDRCS S%x", (iData & 0x40) ? ' ' : 'G', iData & 0x0f);	/* subpage */
-#endif
+
 			if (iData & 0x40)
 				*drcssubp = iData & 0x0f;
 			else
 				*gdrcssubp = iData & 0x0f;
 			break;
 			case 0x1f:
-#if TUXTXT_DEBUG
-			if (dumpl25)
-				printf("  Termination Marker %x\n", iData);	/* subpage */
-#endif
+
 			tAPx = tAPy = 0;
 			*endcol = -1;
 			return 0x80 | iData; /* explicit termination */
@@ -1029,10 +843,7 @@ int eval_triplet(int iOData, tstCachedPage *pstCachedPage,
 			break; /* unsupported or not yet implemented mode: ignore */
 		} /* switch (iMode) */
 	} /* (iAddress >= 40): row addresses */
-#if TUXTXT_DEBUG
-	if (dumpl25 && iAddress < 40)
-		putchar('\n');
-#endif
+
 	if (iAddress < 40 || iMode != 0x10) /* leave temp. AP-Offset unchanged only immediately after definition */
 		tAPx = tAPy = 0;
 
@@ -1124,25 +935,6 @@ void eval_l25()
 				FullScrColor = e->DefScreenColor;
 				national_subset = setnational(e->DefaultCharset);
 				national_subset_secondary = setnational(e->SecondCharset);
-#if TUXTXT_DEBUG
-				if (dumpl25)
-				{
-					int c; /* color */
-					printf("p28/0: DefCharset %02x Sec %02x SidePanel %c%c%x DefScrCol %02x DefRowCol %02x BlBgSubst %x Map %x\n CBGR",
-							 e->DefaultCharset,
-							 e->SecondCharset,
-							 e->LSP ? (e->SPL25 ? 'L' : 'l') : '-',	/* left panel (small: only in level 3.5) */
-							 e->RSP ? (e->SPL25 ? 'R' : 'r') : '-',	/* right panel (small: only in level 3.5) */
-							 e->LSPColumns,
-							 e->DefScreenColor,
-							 e->DefRowColor,
-							 e->BlackBgSubst,
-							 e->ColorTableRemapping);
-					for (c = 0; c < 16; c++)
-						printf(" %x%03x", c, e->bgr[c]);
-					putchar('\n');
-				}
-#endif
 			} /* e->p28Received */
 		}
 
@@ -1156,26 +948,6 @@ void eval_l25()
 			FullScrColor = e->DefScreenColor;
 			national_subset = setnational(e->DefaultCharset);
 			national_subset_secondary = setnational(e->SecondCharset);
-#if TUXTXT_DEBUG
-			if (dumpl25)
-			{
-				int c; /* color */
-				printf("p29/0: DefCharset %02x Sec %02x SidePanel %c%c%x DefScrCol %02x DefRowCol %02x BlBgSubst %x Map %x\n CBGR",
-						 e->DefaultCharset,
-						 e->SecondCharset,
-						 e->LSP ? (e->SPL25 ? 'L' : 'l') : '-',	/* left panel (small: only in level 3.5) */
-						 e->RSP ? (e->SPL25 ? 'R' : 'r') : '-',	/* right panel (small: only in level 3.5) */
-						 e->LSPColumns,
-						 e->DefScreenColor,
-						 e->DefRowColor,
-						 e->BlackBgSubst,
-						 e->ColorTableRemapping);
-				for (c = 0; c < 16; c++)
-					printf(" %x%03x", c, e->bgr[c]);
-				putchar('\n');
-			}
-#endif
-
 		}
 
 		if (ColorTableRemapping)
@@ -1228,18 +1000,6 @@ void eval_l25()
 							    obj[(type-1)*(tstart)+ct*4+1] = ((p[18*40+7+ct*2] & 0x08) >> 3) + 1       ; //packet
 							    obj[(type-1)*(tstart)+ct*4+2] = p[18*40+6+ct*2] & 0x0f                    ; //subp
 							    obj[(type-1)*(tstart)+ct*4+3] = p[18*40+7+ct*2] & 0x01                    ; //high
-
-#if TUXTXT_DEBUG
-								if (dumpl25)
-									printf("GPOP  DefObj%d S%xP%xT%x%c %c#%03d\n"
-										,2-ct
-										, obj[(type-1)*(tstart)+ct*4+2]
-										, obj[(type-1)*(tstart)+ct*4+1]
-										, obj[(type-1)*(tstart)+ct*4]
-										, "LH"[obj[(type-1)*(tstart)+ct*4+3]]
-										, "-CDP"[type]
-										, 8*(obj[(type-1)*(tstart)+ct*4+1]-1) + 2*(obj[(type-1)*(tstart)+ct*4]-1)/3 + 1);
-#endif
 							}
 						}
 					}
@@ -1271,16 +1031,6 @@ void eval_l25()
 							    obj[(type-1)*(tstart)+(ct+2)*4+1] = ((p[opop+7+ct*2] & 0x08) >> 3) + 1       ; //packet
 							    obj[(type-1)*(tstart)+(ct+2)*4+2] = p[opop+6+ct*2]                           ; //subp
 							    obj[(type-1)*(tstart)+(ct+2)*4+3] = p[opop+7+ct*2] & 0x01                    ; //high
-#if TUXTXT_DEBUG
-								if (dumpl25)
-									printf("POP  DefObj%d S%xP%xT%x%c %c#%03d\n"
-										, 2-ct
-										, obj[(type-1)*(tstart)+(ct+2)*4+2]
-										, obj[(type-1)*(tstart)+(ct+2)*4+1]
-										, obj[(type-1)*(tstart)+(ct+2)*4]
-										, "LH"[obj[(type-1)*(tstart)+(ct+2)*4+3]]
-										, "-CDP"[type], 8*(obj[(type-1)*(tstart)+(ct+2)*4+1]-1) + 2*(obj[(type-1)*(tstart)+(ct+2)*4]-1)/3 + 1);
-#endif
 							}
 						}
 					}
@@ -1289,17 +1039,6 @@ void eval_l25()
 			// eval default objects in correct order
 			for (ct = 0; ct < 12; ct++)
 			{
-#if TUXTXT_DEBUG
-								if (dumpl25)
-									printf("eval  DefObjs : %d S%xP%xT%x%c %c#%03d\n"
-										, ct
-										, obj[ct*4+2]
-										, obj[ct*4+1]
-										, obj[ct*4]
-										, "LH"[obj[ct*4+3]]
-										, "-CDP"[obj[ct*4 % 3]]
-										, 8*(obj[ct*4+1]-1) + 2*(obj[ct*4]-1)/3 + 1);
-#endif
 				if (obj[ct*4] != 0)
 				{
 					APx0 = APy0 = APx = APy = tAPx = tAPy = 0;
@@ -1340,20 +1079,9 @@ void eval_l25()
 				tuxtxt_cache.astCachetable[drcs][0]->pageinfo.function = FUNC_DRCS;
 		} /* if mot */
 
-#if TUXTXT_DEBUG
-		if (dumpl25)
-			printf("gpop %03x pop %03x gdrcs %03x drcs %03x p28/0: Func %x Natvalid %x Nat %x Box %x\n",
-					 gpop, pop, gdrcs, drcs,
-					 pi->function, pi->nationalvalid, pi->national, pi->boxed);
-#endif
-
 		/* evaluate local extension data from p26 */
 		if (p26Received)
 		{
-#if TUXTXT_DEBUG
-			if (dumpl25)
-				printf("p26/x:\n");
-#endif
 			APx0 = APy0 = APx = APy = tAPx = tAPy = 0;
 			eval_object(13 * (23-2 + 2), tuxtxt_cache.astCachetable[tuxtxt_cache.page][tuxtxt_cache.subpage], &APx, &APy, &APx0, &APy0, OBJ_ACTIVE, &page_char[40]); /* 1st triplet p26/0 */
 		}
@@ -1516,7 +1244,7 @@ int tuxtx_main(int pid, int page, int source)
 	use_gui = 1;
 	boxed = 0;
 
-#if !TUXTXT_CFG_STANDALONE
+	//
 	int initialized = tuxtxt_init();
 	if ( initialized )
 		tuxtxt_cache.page = 0x100;
@@ -1530,7 +1258,6 @@ int tuxtx_main(int pid, int page, int source)
 		use_gui = 0;
 		boxed = 1;
 	}
-#endif
 
 	// show versioninfo
 	sscanf(cvs_revision, "%*s %s", versioninfo);
@@ -1748,13 +1475,6 @@ FT_Error MyFaceRequester(FTC_FaceID face_id, FT_Library _library, FT_Pointer /*r
 
 	result = FT_New_Face(_library, (char *) face_id, 0, aface);
 
-#if TUXTXT_DEBUG
-	if (!result)
-		printf("TuxTxt <font %s loaded>\n", (char*)face_id);
-	else
-		printf("TuxTxt <open font %s failed>\n", (char*)face_id);
-#endif
-
 	return result;
 }
 
@@ -1776,26 +1496,7 @@ int Init( int source )
 		tuxtxt_cache.current_subpage [magazine] = -1;
 	}
 	
-#if TUXTXT_CFG_STANDALONE
-	/* init data */
-	memset(&tuxtxt_cache.astCachetable, 0, sizeof(tuxtxt_cache.astCachetable));
-	memset(&tuxtxt_cache.subpagetable, 0xFF, sizeof(tuxtxt_cache.subpagetable));
-	memset(&tuxtxt_cache.astP29, 0, sizeof(tuxtxt_cache.astP29));
-	memset(&tuxtxt_cache.basictop, 0, sizeof(tuxtxt_cache.basictop));
-	memset(&tuxtxt_cache.adip, 0, sizeof(tuxtxt_cache.adip));
-	memset(&tuxtxt_cache.flofpages, 0 , sizeof(tuxtxt_cache.flofpages));
-	
-	tuxtxt_cache.maxadippg  = -1;
-	tuxtxt_cache.bttok      = 0;
-	maxhotlist = -1;
-
-	//page_atrb[32] = transp<<4 | transp;
-	inputcounter  = 2;
-	tuxtxt_cache.cached_pages  = 0;
-
-	tuxtxt_cache.page_receiving = -1;
-	tuxtxt_cache.page       = 0x100;
-#endif
+	//
 	lastpage   = tuxtxt_cache.page;
 	prev_100   = 0x100;
 	prev_10    = 0x100;
@@ -1993,12 +1694,6 @@ int Init( int source )
 	}
 	
 	ascender = (usettf ? fontheight * face->ascender / face->units_per_EM : 16);
-	
-#if TUXTXT_DEBUG
-	printf("TuxTxt <fh%d fw%d fs%d tm%d ts%d ym%d %d %d sx%d sy%d a%d>\n",
-			 fontheight, fontwidth, fontwidth_small, fontwidth_topmenumain, fontwidth_topmenusmall,
-			 ymosaic[0], ymosaic[1], ymosaic[2], StartX, StartY, ascender);
-#endif
 
 	/* set new colormap */
 	setcolors((unsigned short *)defaultcolors, 0, SIZECOLTABLE);
@@ -2055,12 +1750,8 @@ int Init( int source )
 		dprintf(DEBUG_NORMAL, "Tuxtxt: national_subset %d (cfg %d)\n", national_subset, cfg_national_subset);
 	}
 
-#if TUXTXT_CFG_STANDALONE
-	tuxtxt_init_demuxer( source);
-	tuxtxt_start_thread( source);
-#else
+	//
 	tuxtxt_start(tuxtxt_cache.vtxtpid, source);
-#endif
 
 	gethotlist();
 	
@@ -2088,18 +1779,6 @@ void CleanUp()
 	/* hide and close pig */
 	if (screenmode)
 		SwitchScreenMode(0); /* turn off divided screen */
-
-#if TUXTXT_CFG_STANDALONE
-	tuxtxt_stop_thread();
-	tuxtxt_clear_cache();
-	
-	if (tuxtxt_cache.dmx != -1)
-		close(tuxtxt_cache.dmx);
-	
-	tuxtxt_cache.dmx = -1;
-#else
-	//tuxtxt_stop();
-#endif
 
 	/* clear screen */
 	CFrameBuffer::getInstance()->clearFrameBuffer();
@@ -2186,7 +1865,9 @@ int GetTeletextPIDs(int /*source*/)
         dmx->sectionFilter(0, filter, mask, 1);
 	res = dmx->Read(bufPAT, sizeof(bufPAT));
 	dmx->Stop();
-	if(res <= 0) {
+	
+	if(res <= 0) 
+	{
 		dprintf(DEBUG_NORMAL, "TuxTxt <read PAT> failed\n");
 		delete dmx;
 		return 0;
@@ -2197,9 +1878,6 @@ int GetTeletextPIDs(int /*source*/)
 
 	for (pat_scan = 0x0A; pat_scan < 0x0A + (((bufPAT[0x01]<<8 | bufPAT[0x02]) & 0x0FFF) - 9); pat_scan += 4)
 	{
-#if TUXTXT_DEBUG
-		printf("PAT liefert:%04x, %04x \n",((bufPAT[pat_scan - 2]<<8) | (bufPAT[pat_scan - 1])),(bufPAT[pat_scan]<<8 | bufPAT[pat_scan+1]) & 0x1FFF);
-#endif
 		if (((bufPAT[pat_scan - 2]<<8) | (bufPAT[pat_scan - 1])) == 0)
 			continue;
 
@@ -2248,15 +1926,6 @@ int GetTeletextPIDs(int /*source*/)
 							country_code[0] = 0;
 							pid_table[pids_found].national_subset = NAT_DEFAULT; /* use default charset */
 						}
-
-#if TUXTXT_DEBUG
-						printf("TuxTxt <Service %04x Country code \"%3s\" national subset %2d%s>\n",
-								 pid_table[pids_found].service_id,
-								 country_code,
-								 pid_table[pids_found].national_subset,
-								 (pid_table[pids_found].vtxt_pid == tuxtxt_cache.vtxtpid) ? " * " : ""
-								 );
-#endif
 
 						pids_found++;
 skip_pid:
@@ -3142,16 +2811,10 @@ void ConfigMenu(int Init, int source)
 
 						if (Init || tuxtxt_cache.vtxtpid != pid_table[current_pid].vtxt_pid)
 						{
-#if TUXTXT_CFG_STANDALONE
-							tuxtxt_stop_thread();
-							tuxtxt_clear_cache();
-#else
+							//
 							tuxtxt_stop();
 							if (Init)
 								tuxtxt_cache.vtxtpid = 0; // force clear cache
-#endif
-							/* reset data */
-
 
 							//page_atrb[32] = transp<<4 | transp;
 							inputcounter = 2;
@@ -3183,12 +2846,7 @@ void ConfigMenu(int Init, int source)
 							if (auto_national)
 								national_subset = pid_table[current_pid].national_subset;
 
-#if TUXTXT_CFG_STANDALONE
-							tuxtxt_cache.vtxtpid = pid_table[current_pid].vtxt_pid;
-							tuxtxt_start_thread(source); //FIXME: source???
-#else
-							tuxtxt_start(pid_table[current_pid].vtxt_pid, source); //FIXME: source
-#endif
+							tuxtxt_start(pid_table[current_pid].vtxt_pid, source); //FIXME:
 						}
 						
 						//tuxtxt_cache.pageupdate = 1;
@@ -3374,17 +3032,11 @@ void PageInput(int Number)
 		{
 			tuxtxt_cache.subpage = subp;
 			tuxtxt_cache.pageupdate = 1;
-#if TUXTXT_DEBUG
-			printf("TuxTxt <DirectInput: %.3X-%.2X>\n", tuxtxt_cache.page, tuxtxt_cache.subpage);
-#endif
 		}
 		else
 		{
 			tuxtxt_cache.subpage = 0;
 			//RenderMessage(PageNotFound);
-#if TUXTXT_DEBUG
-			printf("TuxTxt <DirectInput: %.3X not found>\n", tuxtxt_cache.page);
-#endif
 		}
 	}
 }
@@ -3421,9 +3073,6 @@ void GetNextPageOne(int up)
 		tuxtxt_cache.subpage = subp;
 		hintmode = 0;
 		tuxtxt_cache.pageupdate = 1;
-#if TUXTXT_DEBUG
-		printf("TuxTxt <NextPageOne: %.3X-%.2X>\n", tuxtxt_cache.page, tuxtxt_cache.subpage);
-#endif
 	}
 }
 
@@ -3456,16 +3105,10 @@ void GetNextSubPage(int offset)
 			tuxtxt_cache.subpage = loop;
 			hintmode = 0;
 			tuxtxt_cache.pageupdate = 1;
-#if TUXTXT_DEBUG
-			printf("TuxTxt <NextSubPage: %.3X-%.2X>\n", tuxtxt_cache.page, tuxtxt_cache.subpage);
-#endif
+
 			return;
 		}
 	}
-
-#if TUXTXT_DEBUG
-	printf("TuxTxt <NextSubPage: no other SubPage>\n");
-#endif
 }
 
 /*
@@ -3483,9 +3126,6 @@ void ColorKey(int target)
 	inputcounter = 2;
 	hintmode     = 0;
 	tuxtxt_cache.pageupdate   = 1;
-#if TUXTXT_DEBUG
-	printf("TuxTxt <ColorKey: %.3X>\n", tuxtxt_cache.page);
-#endif
 }
 
 /*
@@ -3620,9 +3260,7 @@ void CatchNextPage(int firstlineinc, int inc)
 				catched_page = tmp_page;
 				RenderCatchedPage();
 				catch_col += inc;	/* FIXME: limit */
-#if TUXTXT_DEBUG
-				printf("TuxTxt <PageCatching: %.3X\n", catched_page);
-#endif
+
 				return;
 			}
 		}
@@ -3663,9 +3301,6 @@ void CatchNextPage(int firstlineinc, int inc)
 			}
 			else
 			{
-#if TUXTXT_DEBUG
-				printf("TuxTxt <PageCatching: no PageNumber>\n");
-#endif
 				return;
 			}
 		}
@@ -3679,9 +3314,6 @@ void CatchNextPage(int firstlineinc, int inc)
 			}
 			else
 			{
-#if TUXTXT_DEBUG
-				printf("TuxTxt <PageCatching: no PageNumber>\n");
-#endif
 				return;
 			}
 		}
@@ -3764,9 +3396,6 @@ void SwitchZoomMode()
 		if (zoommode == 3)
 			zoommode = 0;
 
-#if TUXTXT_DEBUG
-		printf("TuxTxt <SwitchZoomMode: %d>\n", zoommode);
-#endif
 		/* update page */
 		tuxtxt_cache.pageupdate = 1; /* FIXME */
 	}
@@ -3785,10 +3414,6 @@ void SwitchScreenMode(int newscreenmode)
 
 	if ((screenmode > 2) || (screenmode < 0))
 		screenmode = 0;
-
-#if TUXTXT_DEBUG
-	printf("TuxTxt <SwitchScreenMode: %d>\n", screenmode);
-#endif
 
 	// update page
 	tuxtxt_cache.pageupdate = 1;
@@ -3880,10 +3505,6 @@ void SwitchTranspMode()
 	else
 		transpmode--; /* backward to immediately switch to TV-screen */
 
-#if TUXTXT_DEBUG
-	printf("TuxTxt <SwitchTranspMode: %d>\n", transpmode);
-#endif
-
 	/* set mode */
 	if (!transpmode) /* normal text-only */
 	{
@@ -3909,16 +3530,10 @@ void SwitchHintMode()
 {
 	/* toggle mode */
 	hintmode ^= 1;
-#if TUXTXT_DEBUG
-	printf("TuxTxt <SwitchHintMode: %d>\n", hintmode);
-#endif
 
 	if (!hintmode)	/* toggle evaluation of level 2.5 information by explicitly switching off hintmode */
 	{
 		showl25 ^= 1;
-#if TUXTXT_DEBUG
-		printf("TuxTxt <ShowLevel2p5: %d>\n", showl25);
-#endif
 	}
 	/* update page */
 	tuxtxt_cache.pageupdate = 1;
@@ -5063,9 +4678,6 @@ void RenderPage()
 			 pageinfo && pageinfo->nationalvalid) /* individual subset according to page header */
 		{
 			national_subset = countryconversiontable[pageinfo->national];
-#if TUXTXT_DEBUG
-			printf("p%03x b%d n%d v%d i%d\n", tuxtxt_cache.page,national_subset_bak, national_subset, pageinfo->nationalvalid, pageinfo->national);
-#endif
 		}
 		
 		/* render page */
@@ -5164,9 +4776,6 @@ void RenderPage()
 	}
 	else if (transpmode == 2 && tuxtxt_cache.pageupdate == 2)
 	{
-#if TUXTXT_DEBUG
-		printf("received Update flag for page %03x\n",tuxtxt_cache.page);
-#endif
 		// display pagenr. when page has been updated while in transparency mode
 		PosY = StartY;
 

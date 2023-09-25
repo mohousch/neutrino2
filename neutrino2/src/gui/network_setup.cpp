@@ -230,7 +230,7 @@ void CNetworkSettings::showMenu()
 	//interface
 	int ifcount = scandir("/sys/class/net", &namelist, my_filter, alphasort);
 
-	CMenuOptionStringChooser * ifSelect = new CMenuOptionStringChooser(_("Interface"), g_settings.ifname, ifcount > 1, this, RC_nokey, "", true);
+	CMenuOptionStringChooser * ifSelect = new CMenuOptionStringChooser(_("Interface"), g_settings.ifname, ifcount > 1, this, CRCInput::RC_nokey, "", true);
 
 	bool found = false;
 
@@ -304,7 +304,7 @@ void CNetworkSettings::showMenu()
 	networkSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	networkSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", RC_red, NEUTRINO_ICON_BUTTON_RED));
+	networkSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	networkSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// setup network on start
@@ -359,7 +359,7 @@ void CNetworkSettings::showMenu()
 	if(ifcount > 1) // if there is only one, its probably wired
 	{
 		//ssid
-		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, this, RC_nokey, "", true);
+		CMenuOptionStringChooser *m9 = new CMenuOptionStringChooser(_("Network Name"), (char *)network_ssid.c_str(), true, this, CRCInput::RC_nokey, "", true);
 		
 		//
 		std::vector<wlan_network> networks;

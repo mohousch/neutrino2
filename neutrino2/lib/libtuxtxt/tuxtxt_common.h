@@ -252,9 +252,7 @@ void tuxtxt_decode_btt()
 		b1 = b1<<8 | b2<<4 | b3; /* page number */
 		tuxtxt_cache.adippg[++tuxtxt_cache.maxadippg] = b1;
 	}
-#if TUXTXT_DEBUG
-	printf("TuxTxt <BTT decoded>\n");
-#endif
+
 	tuxtxt_cache.bttok = 1;
 }
 
@@ -317,18 +315,14 @@ void tuxtxt_decode_adip() /* additional information table */
 			}
 		} /* next link j */
 		tuxtxt_cache.adippg[i] = 0; /* completely decoded: clear entry */
-#if TUXTXT_DEBUG
-		printf("TuxTxt <ADIP %03x decoded>\n", p);
-#endif
+
 	} /* next adip page i */
 
 	while (!tuxtxt_cache.adippg[tuxtxt_cache.maxadippg] && (tuxtxt_cache.maxadippg >= 0)) /* and shrink table */
 		tuxtxt_cache.maxadippg--;
 }
 
-/******************************************************************************
- * GetSubPage                                                                 *
- ******************************************************************************/
+//
 int tuxtxt_GetSubPage(int page, int subpage, int offset)
 {
 	int loop;
@@ -344,23 +338,14 @@ int tuxtxt_GetSubPage(int page, int subpage, int offset)
 
 		if (tuxtxt_cache.astCachetable[page][loop])
 		{
-#if TUXTXT_DEBUG
-			printf("TuxTxt <NextSubPage: %.3X-%.2X>\n", page, subpage);
-#endif
 			return loop;
 		}
 	}
 
-#if TUXTXT_DEBUG
-	printf("TuxTxt <NextSubPage: no other SubPage>\n");
-#endif
 	return subpage;
 }
 
-/******************************************************************************
- * clear_cache                                                                *
- ******************************************************************************/
-
+//
 void tuxtxt_clear_cache()
 {
 	pthread_mutex_lock(&tuxtxt_cache_lock);
@@ -422,15 +407,11 @@ void tuxtxt_clear_cache()
 	}
 	memset(&tuxtxt_cache.astCachetable, 0, sizeof(tuxtxt_cache.astCachetable));
 	memset(&tuxtxt_cache.astP29, 0, sizeof(tuxtxt_cache.astP29));
-#if TUXTXT_DEBUG
-	printf("TuxTxt cache cleared\n");
-#endif
+
 	pthread_mutex_unlock(&tuxtxt_cache_lock);
 }
 
-/******************************************************************************
- * init_demuxer                                                               *
- ******************************************************************************/
+//
 static cDemux * dmx = NULL;
 int tuxtxt_init_demuxer( int source )
 {
@@ -447,17 +428,12 @@ int tuxtxt_init_demuxer( int source )
 		dmx->Open(DMX_PES_CHANNEL, 2* 3008 * 62, live_fe );
 #endif		
 	}
-#if TUXTXT_DEBUG
-	printf("TuxTxt: initialized\n");
-#endif
 	/* init successfull */
 
 	return 1;
 }
 
-/******************************************************************************
- * CacheThread support functions                                              *
- ******************************************************************************/
+//
 void tuxtxt_decode_p2829(unsigned char *vtxt_row, tstExtData **ptExtData)
 {
 	int bitsleft, colorindex;
@@ -467,9 +443,6 @@ void tuxtxt_decode_p2829(unsigned char *vtxt_row, tstExtData **ptExtData)
 
 	if (t1 < 0 || t2 < 0)
 	{
-#if TUXTXT_DEBUG
-		printf("TuxTxt <Biterror in p28>\n");
-#endif
 		return;
 	}
 
@@ -505,9 +478,6 @@ void tuxtxt_decode_p2829(unsigned char *vtxt_row, tstExtData **ptExtData)
 	}
 	if (t2 < 0 || bitsleft != 14)
 	{
-#if TUXTXT_DEBUG
-		printf("TuxTxt <Biterror in p28/29 t2=%d b=%d>\n", t2, bitsleft);
-#endif
 		(*ptExtData)->p28Received = 0;
 		return;
 	}
@@ -556,9 +526,7 @@ void tuxtxt_allocate_cache(int magazine)
 	}
 }
 
-/******************************************************************************
- * CacheThread                                                                *
- ******************************************************************************/
+//
 static int stop_cache = 0;
 void * tuxtxt_CacheThread(void * /*arg*/)
 {
@@ -629,9 +597,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 
 				if (b1 == 0xFF || b2 == 0xFF)
 				{
-#if TUXTXT_DEBUG
-					printf("TuxTxt <Biterror in Packet>\n");
-#endif
 					continue;
 				}
 
@@ -645,8 +610,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 
 				if (packet_number == 0 && tuxtxt_cache.current_page[magazine] != -1 && tuxtxt_cache.current_subpage[magazine] != -1)
  				    tuxtxt_compress_page(tuxtxt_cache.current_page[magazine],tuxtxt_cache.current_subpage[magazine],pagedata[magazine]);
-
-				//printf("receiving packet %d page %03x subpage %02x\n",packet_number, tuxtxt_cache.current_page[magazine],tuxtxt_cache.current_subpage[magazine]);//FIXME
 
 				/* analyze row */
 				if (packet_number == 0)
@@ -692,17 +655,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 
 					if (tuxtxt_is_dec(tuxtxt_cache.page_receiving)) /* ignore other subpage bits for hex pages */
 					{
-#if 0	/* ? */
-						if (b1 != 0 || b2 != 0)
-						{
-#if TUXTXT_DEBUG
-							printf("TuxTxt <invalid subpage data p%03x %02x %02x %02x %02x>\n", tuxtxt_cache.page_receiving, b1, b2, b3, b4);
-#endif
-							tuxtxt_cache.current_subpage[magazine] = -1;
-							continue;
-						}
-						else
-#endif
 							tuxtxt_cache.current_subpage[magazine] = b3<<4 | b4;
 					}
 					else
@@ -802,9 +754,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 
 						if (descode == 0xff)
 						{
-#if TUXTXT_DEBUG
-							printf("TuxTxt <Biterror in p27>\n");
-#endif
 							continue;
 						}
 						if (descode == 0) // reading FLOF-Pagelinks
@@ -857,14 +806,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 													  12);
 											if (e-a1 < 11)
 												tuxtxt_cache.adip[tuxtxt_cache.flofpages[tuxtxt_cache.current_page[magazine]][l]][e-a1+1] = '\0';
-#if 0 //TUXTXT_DEBUG
-											printf(" %03x/%02x %d %d %d %d %03x %s\n",
-													 tuxtxt_cache.current_page[magazine], tuxtxt_cache.current_subpage[magazine],
-													 l, a, a1, e,
-													 tuxtxt_cache.flofpages[tuxtxt_cache.current_page[magazine]][l],
-													 tuxtxt_cache.adip[tuxtxt_cache.flofpages[tuxtxt_cache.current_page[magazine]][l]]
-													 );
-#endif
 										}
 										e = a - 1;
 										l--;
@@ -936,9 +877,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 
 						if (descode == 0xff)
 						{
-#if TUXTXT_DEBUG
-							printf("TuxTxt <Biterror in p26>\n");
-#endif
 							continue;
 						}
 						if (!pageinfo_thread->ext)
@@ -949,22 +887,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 							pageinfo_thread->ext->p26[descode] = (unsigned char*) malloc(13 * 3);
 						if (pageinfo_thread->ext->p26[descode])
 							memcpy(pageinfo_thread->ext->p26[descode], &vtxt_row[3], 13 * 3);
-#if 0//TUXTXT_DEBUG
-						int i, t, m;
-
-						printf("P%03x/%02x %02d/%x",
-								 tuxtxt_cache.current_page[magazine], tuxtxt_cache.current_subpage[magazine],
-								 packet_number, dehamming[vtxt_row[2]]);
-						for (i=7-4; i <= 45-4; i+=3) /* dump all triplets */
-						{
-							t = deh24(&vtxt_row[i]); /* mode/adr/data */
-							m = (t>>6) & 0x1f;
-							printf(" M%02xA%02xD%03x", m, t & 0x3f, (t>>11) & 0x7f);
-							if (m == 0x1f)	/* terminator */
-								break;
-						}
-						putchar('\n');
-#endif
 					}
 					else if (packet_number == 28)
 					{
@@ -972,9 +894,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 
 						if (descode == 0xff)
 						{
-#if TUXTXT_DEBUG
-							printf("TuxTxt <Biterror in p28>\n");
-#endif
 							continue;
 						}
 						if (descode != 2)
@@ -1019,16 +938,6 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 					}
 					else if (packet_number == 30)
 					{
-#if 0//TUXTXT_DEBUG
-						int i;
-
-						printf("p%03x/%02x %02d/%x ",
-								 tuxtxt_cache.current_page[magazine], tuxtxt_cache.current_subpage[magazine],
-								 packet_number, dehamming[vtxt_row[2]]);
-						for (i=26-4; i <= 45-4; i++) /* station ID */
-							putchar(deparity[vtxt_row[i]]);
-						putchar('\n');
-#endif
 					}
 				}
 				/* set update flag */
@@ -1041,20 +950,13 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 						tuxtxt_cache.subpage = tuxtxt_cache.current_subpage[magazine];
 				}
 			}
-#if 0
-			else
-				printf("line %d row %X %X, continue\n", line, vtx_rowbyte[0], vtx_rowbyte[1]);
-#endif
 		}
 	}
 	
-	//return 0;
 	pthread_exit(NULL);
 }
 
-/******************************************************************************
- * start_thread                                                               *
- ******************************************************************************/
+//
 int tuxtxt_start_thread( int source )
 {
 	printf("tuxtxt_start_thread: starting... tid %ld\n", syscall(__NR_gettid));
@@ -1077,18 +979,13 @@ int tuxtxt_start_thread( int source )
 		return 0;
 	}
 	
-#if 1//TUXTXT_DEBUG
-	printf("TuxTxt service started %x\n", tuxtxt_cache.vtxtpid);
-#endif
 	tuxtxt_cache.receiving = 1;
 	tuxtxt_cache.thread_starting = 0;
 	
 	return 1;
 }
 
-/******************************************************************************
- * stop_thread                                                                *
- ******************************************************************************/
+//
 int tuxtxt_stop_thread()
 {
 	/* stop decode-thread */
@@ -1111,9 +1008,6 @@ int tuxtxt_stop_thread()
 		dmx = NULL;
 	}
 
-#if 1//TUXTXT_DEBUG
-	printf("TuxTxt stopped service %x\n", tuxtxt_cache.vtxtpid);
-#endif
 	return 1;
 }
 

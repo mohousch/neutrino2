@@ -353,7 +353,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::doRecord\n");
 	
 	// leave menu (if in any)
-	g_RCInput->postMsg(RC_timeout, 0);
+	g_RCInput->postMsg(CRCInput::RC_timeout, 0);
 	
 	last_mode = CNeutrinoApp::getInstance()->getMode();
 

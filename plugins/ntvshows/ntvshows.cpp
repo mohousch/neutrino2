@@ -306,7 +306,7 @@ void CTVShows::showMenu()
 		tmp += " ";
 		tmp += m_vMovieInfo[i].epgInfo1;
 
-		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, new CNSeasons(season_id), NULL, RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
+		item = new CMenuForwarder(m_vMovieInfo[i].epgTitle.c_str(), true, NULL, new CNSeasons(season_id), NULL, CRCInput::RC_nokey, NULL, file_exists(m_vMovieInfo[i].tfile.c_str())? m_vMovieInfo[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
 		item->setHint(tmp.c_str());
 
@@ -324,10 +324,10 @@ void CTVShows::showMenu()
 	mlist->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	mlist->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 
-	mlist->addKey(RC_info, this, CRCInput::getSpecialKeyName(RC_info));
-	mlist->addKey(RC_setup, this, CRCInput::getSpecialKeyName(RC_setup));
-	mlist->addKey(RC_red, this, CRCInput::getSpecialKeyName(RC_red));
-	mlist->addKey(RC_green, this, CRCInput::getSpecialKeyName(RC_green));
+	mlist->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
+	mlist->addKey(CRCInput::RC_setup, this, CRCInput::getSpecialKeyName(CRCInput::RC_setup));
+	mlist->addKey(CRCInput::RC_red, this, CRCInput::getSpecialKeyName(CRCInput::RC_red));
+	mlist->addKey(CRCInput::RC_green, this, CRCInput::getSpecialKeyName(CRCInput::RC_green));
 
 	mlist->exec(NULL, "");
 	delete mlist;

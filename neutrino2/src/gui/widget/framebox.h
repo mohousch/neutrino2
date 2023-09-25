@@ -241,7 +241,7 @@ class CFrameBox : public CWidgetItem
 		//
 		bool isSelectable(void);
 
-		int oKKeyPressed(CMenuTarget* _parent, neutrino_msg_t _msg = RC_ok);
+		int oKKeyPressed(CMenuTarget* _parent, neutrino_msg_t _msg = CRCInput::RC_ok);
 		void homeKeyPressed(){selected = -1;};
 
 		// lua compatibility
