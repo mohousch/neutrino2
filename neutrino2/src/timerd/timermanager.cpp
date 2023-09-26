@@ -328,10 +328,10 @@ bool CTimerManager::listEvents(CTimerEventMap &Events)
 {
 	dprintf(DEBUG_NORMAL, "CTimerManager::listEvents\n");
 	
-	if(!&Events)
-		return false;
+	//if(!&Events)
+	//	return false;
 
-	pthread_mutex_lock(&tm_eventsMutex);
+	//pthread_mutex_lock(&tm_eventsMutex);
 
 	Events.clear();
 	
@@ -341,7 +341,7 @@ bool CTimerManager::listEvents(CTimerEventMap &Events)
 		Events[pos->second->eventID] = pos->second;
 	}
 	
-	pthread_mutex_unlock(&tm_eventsMutex);
+	//pthread_mutex_unlock(&tm_eventsMutex);
 	
 	return true;
 }
@@ -487,7 +487,7 @@ void CTimerManager::loadEventsFromConfig()
 		std::vector<int> savedIDs;
 		savedIDs = config.getInt32Vector ("IDS");
 		
-		dprintf(DEBUG_INFO, "CTimerManager::loadEventsFromConfig: %d timer(s) in config\n", savedIDs.size());
+		dprintf(DEBUG_INFO, "CTimerManager::loadEventsFromConfig: %ld timer(s) in config\n", savedIDs.size());
 		
 		for(unsigned int i=0; i < savedIDs.size(); i++)
 		{
@@ -700,7 +700,7 @@ void CTimerManager::saveEventsToConfig()
 	CConfigFile config(',');
 	config.clear();
 	
-	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: save %d events to config ...\n", events.size());
+	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: save %ld events to config ...\n", events.size());
 	
 	CTimerEventMap::iterator pos = events.begin();
 	for(; pos != events.end(); pos++)

@@ -174,7 +174,7 @@ magic_t known_magic[] =
 
 #define is_redirect(a) ((a == 301) || (a == 302))
 
-char err_txt[2048];			/* human readable error message */
+char err_txt[32818];			/* human readable error message */
 char redirect_url[2048];		/* new url if we've been redirected (HTTP 301/302) */
 static char logfile[255];		/* redirect errors from stderr */
 static int retry_num = 2;	/* number of retries for failed connections */
@@ -254,7 +254,7 @@ int ConnectToServer(char *hostname, int port)
 {
 	struct hostent *host;
 	struct sockaddr_in sock;
-	int fd, addr;
+	int fd;
 	struct pollfd pfd;
 
 	host = gethostbyname(hostname);
@@ -265,7 +265,7 @@ int ConnectToServer(char *hostname, int port)
 		return -1;
 	}
 
-	addr = htonl(*(int *)host->h_addr);
+	//addr = htonl(*(int *)host->h_addr);
 
 	fd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -327,7 +327,7 @@ int ConnectToServer(char *hostname, int port)
 
 int request_file(URL *url)
 {
-	char str[255], *ptr;
+	char str[4119], *ptr;
 	int slot;
 	ID3 id3;
 	memset(&id3, 0, sizeof(ID3));
@@ -780,7 +780,7 @@ FILE *f_open(const char *filename, const char *acctype)
 {
 	URL url;
 	FILE *fd;
-	int /*i,*/ compatibility_mode = 0;
+	int compatibility_mode = 0;
 	char *ptr = NULL, buf[4096] = {0}, type[10] = {0};
 
 	if(acctype)

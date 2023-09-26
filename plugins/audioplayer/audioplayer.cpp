@@ -580,7 +580,7 @@ void CMP3Player::showTrackInfo(CAudiofile& file)
 	::scaleImage(cover, &p_w, &p_h);
 
 	infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-	infoBox->setMode(SCROLL);
+	infoBox->setMode(CTextBox::SCROLL);
 	infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	infoBox->setText(buffer.c_str(), cover.c_str(), p_w, p_h);
 	infoBox->exec();

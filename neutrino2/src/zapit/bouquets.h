@@ -103,10 +103,14 @@ class CBouquetManager
 				
 				ZapitChannelList *getBouquet() 
 				{ 
+					ZapitChannelList * ret = NULL;
+					
 					if (mode == CZapit::MODE_TV)
-						return &(Owner->Bouquets[b]->tvChannels);
+						ret = &(Owner->Bouquets[b]->tvChannels);
 					else if (mode == CZapit::MODE_RADIO)
-						return &(Owner->Bouquets[b]->radioChannels);
+						ret = &(Owner->Bouquets[b]->radioChannels);
+						
+					return ret;
 				};
 			public:
 				ChannelIterator(CBouquetManager *owner, const CZapit::channelsMode Mode = CZapit::MODE_TV);

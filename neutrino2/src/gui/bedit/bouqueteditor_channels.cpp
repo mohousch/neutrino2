@@ -147,8 +147,6 @@ void CBEChannelWidget::paint()
 
 		// info1
 		char buf[128];
-		transponder_id_t ct = (*Channels)[count]->getTransponderId();
-		transponder_list_t::iterator tpI = transponders.find(ct);
 		int len = snprintf(buf, sizeof(buf), "%d ", (*Channels)[count]->getFreqId());
 
 		// satname

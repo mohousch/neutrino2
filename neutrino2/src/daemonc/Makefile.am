@@ -17,7 +17,7 @@ else
 AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbapi
 endif
 
-AM_CPPFLAGS += -fno-rtti -fno-exceptions
+AM_CPPFLAGS += -fno-rtti -fno-exceptions -Werror
 
 noinst_LIBRARIES = libneutrino2_daemonc.a
 

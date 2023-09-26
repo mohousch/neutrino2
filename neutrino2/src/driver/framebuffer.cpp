@@ -253,7 +253,7 @@ void CFrameBuffer::init(const char * const fbDevice)
 
 	return;
 
-nolfb:
+//nolfb:
 	dprintf(DEBUG_NORMAL, "CFrameBuffer::init: framebuffer not available.\n");
 	lfb = 0;
 }

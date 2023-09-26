@@ -391,7 +391,7 @@ void CTextBox::refreshTextLineArray(void)
 				}
 				
 				//recalculate breaklinewidth for other pages or when pic dont exists
-				if(m_nNrOfLines > (th / m_nFontTextHeight))
+				if(m_nNrOfLines > (int)(th / m_nFontTextHeight))
 				{
 					if( m_nMode & AUTO_WIDTH)
 					{
@@ -404,7 +404,7 @@ void CTextBox::refreshTextLineArray(void)
 				}
 
 				// 2nd page and over
-				if(m_nNrOfLines > ((m_cFrameTextRel.iHeight) / m_nFontTextHeight))
+				if(m_nNrOfLines > (int)((m_cFrameTextRel.iHeight) / m_nFontTextHeight))
 				{
 					if( m_nMode & AUTO_WIDTH)
 					{
@@ -530,7 +530,7 @@ void CTextBox::refreshText(void)
 		{
 			if (m_tMode == PIC_LEFT)
 			{
-				if(i <= (th / m_nFontTextHeight))
+				if(i <= (int)(th / m_nFontTextHeight))
 					x_start = tw + 10;
 			}
 		}

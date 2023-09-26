@@ -51,32 +51,7 @@ class CWidgetItem;
 class CWidget;
 class CWindow;
 
-// border
-enum {
-	BORDER_NO,
-	BORDER_ALL,
-	BORDER_LEFTRIGHT,
-	BORDER_TOPBOTTOM
-};
-
-// halign
-enum {
-	CC_ALIGN_LEFT,
-	CC_ALIGN_CENTER,
-	CC_ALIGN_RIGHT
-};
-
-// buttons
-typedef struct button_label
-{
-	std::string button;
-	std::string localename;
-	fb_pixel_t color;
-} button_label_struct;
-
-typedef std::vector<button_label_struct> button_label_list_t;
-
-// dimension helper
+//// CBox
 class CBox
 {
 	public:
@@ -107,6 +82,22 @@ class CBox
 };
 
 //// CComponent
+// border
+enum {
+	BORDER_NO,
+	BORDER_ALL,
+	BORDER_LEFTRIGHT,
+	BORDER_TOPBOTTOM
+};
+
+// halign
+enum {
+	CC_ALIGN_LEFT,
+	CC_ALIGN_CENTER,
+	CC_ALIGN_RIGHT
+};
+
+//
 class CComponent
 {
 	public:
@@ -277,6 +268,16 @@ class CCImage : public CComponent
 };
 
 //// CCButtons
+typedef struct button_label
+{
+	std::string button;
+	std::string localename;
+	fb_pixel_t color;
+} button_label_struct;
+
+typedef std::vector<button_label_struct> button_label_list_t;
+
+//
 class CCButtons : public CComponent
 {
 	private:

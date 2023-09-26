@@ -1115,7 +1115,7 @@ void CMenuWidget::paintItemInfo(int pos)
 			textBox->setBackgroundColor(COL_MENUCONTENTDARK_PLUS_0);
 
 			// hint
-			textBox->setText(item->itemHint.c_str(), item->itemIcon.c_str(), p_w, p_h, PIC_CENTER);
+			textBox->setText(item->itemHint.c_str(), item->itemIcon.c_str(), p_w, p_h, CTextBox::PIC_CENTER);
 			textBox->paint();
 			
 			// info button

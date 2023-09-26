@@ -75,7 +75,6 @@ void CNeutrinoApp::mainMenu(void)
 	CWidget* widget = NULL;
 	ClistBox* nMenu = NULL;
 	CMenuItem* item = NULL;
-	
 	bool resetWidget = false;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("mainmenu");
@@ -92,9 +91,6 @@ void CNeutrinoApp::mainMenu(void)
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "mainmenu";
 		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
-		//widget->paintMainFrame(true);
-		//widget->setCorner(RADIUS_SMALL, g_settings.Head_corner | g_settings.Foot_corner);
-		//widget->setGradient(LIGHT2DARK);
 		
 		//
 		nMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
@@ -354,7 +350,6 @@ bool CNeutrinoApp::showUserMenu(int button)
 	//
 	CWidget* widget = NULL;
 	ClistBox* menu = NULL;
-	bool resetWidget = false;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("features");
 	
@@ -364,15 +359,10 @@ bool CNeutrinoApp::showUserMenu(int button)
 	}
 	else
 	{
-		resetWidget = true;
-		
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "features";
 		widget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
-		//widget->paintMainFrame(true);
-		//widget->setCorner(RADIUS_SMALL, g_settings.Head_corner | g_settings.Foot_corner);
-		//widget->setGradient(LIGHT2DARK);
 		
 		//
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);

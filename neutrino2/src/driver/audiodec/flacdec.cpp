@@ -153,26 +153,27 @@ FLAC__StreamDecoderWriteStatus flac_write(const FLAC__StreamDecoder *vf, const F
 
 	if (flacdec->mFrameCount == 0) 
 	{
-		int fmt;
+		//int fmt;
 
 		flacdec->mChannels = frame->header.channels;
 		flacdec->mSampleRate = frame->header.sample_rate;
 		flacdec->mBps = frame->header.bits_per_sample;
 		flacdec->mBuffersize = MAX_OUTPUT_SAMPLES * flacdec->mChannels * flacdec->mBps / 8;
+		
 		switch(flacdec->mBps)
 		{
-			case 8  : fmt = AFMT_U8;
+			case 8  : //fmt = AFMT_U8;
 				break;
 			// TODO: 
 			case 16 : //fmt = is_big_endian_host_ ? AFMT_S16_BE : AFMT_S16_LE;
-				fmt = 16;
+				//fmt = 16;
 				break;
 			case 24 : //fmt = is_big_endian_host_ ? AFMT_S16_BE : AFMT_S16_LE;
-				fmt = 24;
+				//fmt = 24;
 				break;
 			default:
 				printf("Flacdecoder: wrong bits per sample (%d)\n", flacdec->mBps);
-				flacdec->Status=CFlacDec::DSPSET_ERR;
+				flacdec->Status = CFlacDec::DSPSET_ERR;
 				return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
 		}		
 	}

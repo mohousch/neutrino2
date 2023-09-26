@@ -726,3 +726,13 @@ void CListFrame::paint(void)
 	refreshPage();
 }
 
+bool CListFrame::hasItem()
+{
+	bool ret = false;
+	
+	if (m_pLines != NULL) 
+		ret = true;
+		
+	return ret;
+}
+

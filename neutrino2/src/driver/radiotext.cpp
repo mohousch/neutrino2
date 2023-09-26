@@ -970,7 +970,7 @@ void CRadioText::RassDecode(unsigned char *mtext, int len)
 								if (slidenumr == 0) 
 								{
 									Rass_Flags[0][0] = !slidedel;
-									(RT_Info > 0) ? : RT_Info = 0;	// open RadioTextOsd for ArchivTip
+									(RT_Info > 0) ? RT_Info = 0 : 1;	// open RadioTextOsd for ArchivTip
 								}
 								else 
 								{
@@ -1061,7 +1061,7 @@ int CRadioText::RassImage(int QArchiv, int QKey, bool DirUp)
 				}
 				else
  					QArchiv = QKey * 1000;
-				(Rass_Flags[QKey][3-i]) ? : QArchiv = QKey * 1000;
+				//(Rass_Flags[QKey][3-i]) ? : QArchiv = QKey * 1000;
 			}
 			else
 				(Rass_Flags[QKey][0]) ? QArchiv = QKey * 1000 : QArchiv = 0;

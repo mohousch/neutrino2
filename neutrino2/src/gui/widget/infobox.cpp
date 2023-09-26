@@ -118,7 +118,7 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 	if (m_pcTextBox)
 	{
 		m_pcTextBox->setPosition(&m_cBoxFrameText);
-		m_pcTextBox->setMode(SCROLL);
+		m_pcTextBox->setMode(CTextBox::SCROLL);
 	}
 	
 	if (headers)
@@ -196,7 +196,7 @@ CInfoBox::CInfoBox()
 	if (m_pcTextBox)
 	{
 		m_pcTextBox->setPosition(&m_cBoxFrameText);
-		m_pcTextBox->setMode(SCROLL);
+		m_pcTextBox->setMode(CTextBox::SCROLL);
 	}
 	
 	if (headers)
@@ -268,7 +268,7 @@ void CInfoBox::initVar(void)
 	headGradient = g_settings.Head_gradient;
 	
 	// text
-	m_nMode = SCROLL;
+	m_nMode = CTextBox::SCROLL;
 	m_pcFontText = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
 	
 	// foot
@@ -565,7 +565,7 @@ void InfoBox(const char * const text, const char * const title, const char * con
 
 	//
 	infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-	infoBox->setMode(SCROLL);
+	infoBox->setMode(CTextBox::SCROLL);
 	infoBox->setText(text, thumbnail, tw, th, tmode);
 	infoBox->exec();
 	delete infoBox;

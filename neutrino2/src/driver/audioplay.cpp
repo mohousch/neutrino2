@@ -137,7 +137,7 @@ CAudioPlayer * CAudioPlayer::getInstance()
 void * CAudioPlayer::PlayThread( void * /*arg*/)
 {
 	//
-	CBaseDec::RetCode Status = CBaseDec::DecoderBase(&getInstance()->m_Audiofile);
+	/*CBaseDec::RetCode Status =*/ CBaseDec::DecoderBase(&getInstance()->m_Audiofile);
 
 	//stop playing if already playing (multiselect)
 	if(playback->playing)

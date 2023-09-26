@@ -68,7 +68,7 @@ int CPat::parsePAT(CZapitChannel * const channel, CFrontend * fe)
 	mask[4] = 0xFF;
 
 	do {
-		if ( (dmx->sectionFilter(0, filter, mask, 5) < 0) || (i = dmx->Read(buffer, PAT_SIZE) < 0))
+		if ( ( !dmx->sectionFilter(0, filter, mask, 5) ) || (i = dmx->Read(buffer, PAT_SIZE) < 0))
 		{
 			dprintf(DEBUG_NORMAL, "CPat::parsePAT: dmx read failed\n");
 			

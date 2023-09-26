@@ -33,9 +33,9 @@ class CLastChannel
 	private:
 		struct _LastCh
 		{
-			int             channel;
-			unsigned long   timestamp;
-			t_channel_id channel_id;
+			int		channel;
+			long int	timestamp;
+			t_channel_id	channel_id;
 		};
 
 		std::list<_LastCh> lastChannels;

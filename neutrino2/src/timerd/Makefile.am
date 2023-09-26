@@ -10,9 +10,9 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libxmltree \
 	@FREETYPE_CFLAGS@
 
-AM_CPPFLAGS += -fno-rtti -fno-exceptions
+AM_CPPFLAGS += -fno-rtti -fno-exceptions -Werror
 
 noinst_LIBRARIES = libtimerd.a
 
-libtimerd_a_SOURCES = timerd.cpp timermanager.cpp
+libtimerd_a_SOURCES = timermanager.cpp timerd.cpp
 

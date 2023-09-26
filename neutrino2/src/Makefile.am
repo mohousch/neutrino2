@@ -41,7 +41,7 @@ AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
 bin_PROGRAMS = neutrino2
 
-neutrino2_SOURCES = neutrino2_menue.cpp neutrino2.cpp skin.cpp
+neutrino2_SOURCES = neutrino2_menue.cpp skin.cpp neutrino2.cpp
 
 neutrino2_LDADD = \
 	daemonc/libneutrino2_daemonc.a \

@@ -1,9 +1,6 @@
 //
 //  $Id: sectionsd.cpp 23.09.2023 mohousch Exp $
 //
-//    sectionsd.cpp (network daemon for SI-sections)
-//    (dbox-II-project)
-//
 //    Copyright (C) 2001 by fnbrd
 //
 //    Homepage: http://dbox2.elxsi.de
@@ -23,8 +20,6 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
-//
 //
 
 #include <config.h>
@@ -52,7 +47,6 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <signal.h>
-//#include <sys/resource.h> // getrusage
 #include <set>
 #include <map>
 #include <algorithm>
@@ -69,7 +63,7 @@
 
 #include <global.h>
 
-// zapit includes
+//
 #include <zapit/settings.h>
 #include <configfile.h>
 
@@ -98,7 +92,7 @@
 #include <zapit/frontend_c.h>
 
 
-// globals
+//// globals
 int op_increase(int i) { return ++i; }
 // 60 Minuten Zyklus...
 #define TIME_EIT_SCHEDULED_PAUSE 60 * 60
@@ -207,13 +201,13 @@ static DMX dmxVIASAT(0x39, 3000);
 int sectionsd_stop = 0;
 //
 static bool slow_addevent = true;
-
-//
+////
 extern CBouquetManager * g_bouquetManager;	// defined in der zapit.cpp
 extern tallchans allchans;			// defined in zapit.cpp
 extern CFrontend * live_fe;
 extern cDemux * dmxUTC;				// defined in dmxapi.cpp
 
+//
 inline void readLockServices(void)
 {
 	pthread_rwlock_rdlock(&servicesLock);
@@ -289,6 +283,7 @@ inline void unlockBouquets(void)
 	pthread_rwlock_unlock(&bouquetsLock);
 }
 
+//
 bool timeset = false;
 #if USE_OPENGL
 bool bTimeCorrect = true;
@@ -322,16 +317,13 @@ inline bool waitForTimeset(void)
 
 static const SIevent nullEvt; // Null-Event
 
-//------------------------------------------------------------
-// Wir verwalten die events in SmartPointers
-// und nutzen verschieden sortierte Menge zum Zugriff
-//------------------------------------------------------------
+//
 typedef SIevent *SIeventPtr;
-
+//
 typedef std::map<event_id_t, SIeventPtr, std::less<event_id_t> > MySIeventsOrderUniqueKey;
 static MySIeventsOrderUniqueKey mySIeventsOrderUniqueKey;
 static MySIeventsOrderUniqueKey mySIeventsNVODorderUniqueKey;
-
+//
 static SIevent * myCurrentEvent = NULL;
 static SIevent * myNextEvent = NULL;
 
@@ -348,9 +340,10 @@ struct OrderServiceUniqueKeyFirstStartTimeEventUniqueKey
 	}
 };
 
+//
 typedef std::set<SIeventPtr, OrderServiceUniqueKeyFirstStartTimeEventUniqueKey> MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
 
-/*static*/ MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
+MySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey mySIeventsOrderServiceUniqueKeyFirstStartTimeEventUniqueKey;
 
 struct OrderFirstEndTimeServiceIDEventUniqueKey
 {
@@ -394,10 +387,12 @@ struct ChannelNoDVBTimelist
 	ChannelNoDVBTimelist *next;
 };
 
+//
 EPGFilter *CurrentEPGFilter = NULL;
 ChannelBlacklist *CurrentBlacklist = NULL;
 ChannelNoDVBTimelist *CurrentNoDVBTime = NULL;
 
+//
 bool CSectionsd::checkEPGFilter(t_original_network_id onid, t_transport_stream_id tsid, t_service_id sid)
 {
 	EPGFilter *filterptr = CurrentEPGFilter;
@@ -463,7 +458,7 @@ void CSectionsd::addBlacklist(t_original_network_id onid, t_transport_stream_id 
 	
 	if (!checkBlacklist(channel_id))
 	{
-		dprintf(DEBUG_DEBUG, "CSectionsd::addBlacklist: Add Channel Blacklist for channel 0x%012llx, mask 0x%012llx\n", channel_id, mask);
+		dprintf(DEBUG_DEBUG, "CSectionsd::addBlacklist: Add Channel Blacklist for channel 0x%lx, mask 0x%lx\n", channel_id, mask);
 
 		ChannelBlacklist *node = new ChannelBlacklist;
 		node->chan = channel_id;
@@ -481,7 +476,7 @@ void CSectionsd::addNoDVBTimelist(t_original_network_id onid, t_transport_stream
 
 	if (!checkNoDVBTimelist(channel_id))
 	{
-		dprintf(DEBUG_DEBUG, "CSectionsd::addNoDVBTimelist: Add channel 0x%012llx, mask 0x%012llx to NoDVBTimelist\n", channel_id, mask);
+		dprintf(DEBUG_DEBUG, "CSectionsd::addNoDVBTimelist: Add channel 0x%lx, mask 0x%lx to NoDVBTimelist\n", channel_id, mask);
 		ChannelNoDVBTimelist *node = new ChannelNoDVBTimelist;
 		node->chan = channel_id;
 		node->mask = mask;
@@ -535,13 +530,11 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 	{
 		if (!epg_filter_is_whitelist && EPG_filtered) 
 		{
-			//dprintf(DEBUG_DEBUG, "addEvent: blacklist and filter did match\n");
 			return;
 		}
 		
 		if (epg_filter_is_whitelist && !EPG_filtered) 
 		{
-			//dprintf(DEBUG_DEBUG, "addEvent: whitelist and filter did not match\n");
 			return;
 		}
 	}
@@ -629,7 +622,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 	{
 		/* if the new event has a lower (== more recent) table ID, replace the old one */
 		already_exists = false;
-		dprintf(DEBUG_DEBUG, "CSectionsd::addEvent: replacing event %016llx:%02x with %04x:%02x '%.40s'\n", si->second->uniqueKey(), si->second->table_id, evt.eventID, evt.table_id, evt.getName().c_str());
+		dprintf(DEBUG_DEBUG, "CSectionsd::addEvent: replacing event %lx:%02x with %04x:%02x '%.40s'\n", si->second->uniqueKey(), si->second->table_id, evt.eventID, evt.table_id, evt.getName().c_str());
 	}
 	else if (already_exists && ( (evt.table_id == 0x51 || evt.table_id == 0x50 || evt.table_id == 0x4e) && evt.table_id == si->second->table_id && evt.version != si->second->version ))
 	{
@@ -811,7 +804,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 					if ((*x)->times.begin()->startzeit + (long)(*x)->times.begin()->dauer <= start_time)
 						break;
 					/* here we have an overlapping event */
-					dprintf(DEBUG_DEBUG, "CSectionsd::addEvent: %s: delete 0x%016llx.%02x time = 0x%016llx.%02x\n", __func__, x_key, (*x)->table_id, e_key, e->table_id);
+					dprintf(DEBUG_DEBUG, "CSectionsd::addEvent: %s: delete 0x%lx.%02x time = 0x%lx.%02x\n", __func__, x_key, (*x)->table_id, e_key, e->table_id);
 					to_delete.push_back(x_key);
 				}
 			}
@@ -854,7 +847,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 
 			if (back)
 			{
-				// fprintf(stderr, "<");
+				//
 				lastEvent = mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.end();
 				lastEvent--;
 
@@ -867,7 +860,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 				}
 				unlockMessaging();
 			}
-			// else fprintf(stderr, ">");
+			//
 			unlockEvents();
 
 			if(*lastEvent != NULL)
@@ -913,7 +906,6 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 		}
 		unlockEvents();
 		writeLockEvents();
-		//printf("Adding: %04x\n", (int) e->uniqueKey());
 
 		// normales Event
 		mySIeventsOrderUniqueKey.insert(std::make_pair(e->uniqueKey(), e));
@@ -1065,7 +1057,7 @@ void CSectionsd::removeDupEvents(void)
 
 		if ((*e1)->table_id == (*e2)->table_id)
 		{
-			dprintf(DEBUG_DEBUG, "CSectionsd::removeDupEvents: %s: not removing events %llx %llx, t:%02x '%s'\n", __func__, (*e1)->uniqueKey(), (*e2)->uniqueKey(), (*e1)->table_id, (*e1)->getName().c_str());
+			dprintf(DEBUG_DEBUG, "CSectionsd::removeDupEvents: %s: not removing events %lx %lx, t:%02x '%s'\n", __func__, (*e1)->uniqueKey(), (*e2)->uniqueKey(), (*e1)->table_id, (*e1)->getName().c_str());
 			continue;
 		}
 
@@ -1074,7 +1066,7 @@ void CSectionsd::removeDupEvents(void)
 		if ((*e1)->table_id < (*e2)->table_id)
 			del = e2;
 
-		dprintf(DEBUG_DEBUG, "CSectionsd::removeDupEvents: %s: removing event %llx.%02x '%s'\n", __func__, (*del)->uniqueKey(), (*del)->table_id, (*del)->getName().c_str());
+		dprintf(DEBUG_DEBUG, "CSectionsd::removeDupEvents: %s: removing event %lx.%02x '%s'\n", __func__, (*del)->uniqueKey(), (*del)->table_id, (*del)->getName().c_str());
 		/* remember the unique ID for later deletion */
 		to_delete.push_back((*del)->uniqueKey());
 	}
@@ -1399,6 +1391,7 @@ void CSectionsd::pauseScanning(const bool doPause)
 //
 void CSectionsd::dumpStatus(void)
 {
+/*
 	dprintf(DEBUG_DEBUG, "CSectionsd::dumpStatus: Request of status information");
 
 	readLockEvents();
@@ -1443,6 +1436,7 @@ void CSectionsd::dumpStatus(void)
 		 speicherinfo.arena / 1024
 		);
 	dprintf(DEBUG_NORMAL, "%s\n", stati);
+*/
 
 	return ;
 }
@@ -1450,7 +1444,7 @@ void CSectionsd::dumpStatus(void)
 //
 void CSectionsd::setServiceChanged(t_channel_id channel_id, bool requestEvent)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::setServiceChanged: Service changed to:%llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CSectionsd::setServiceChanged: Service changed to:%lx\n", channel_id);
 
 	messaging_last_requested = time_monotonic();
 
@@ -1988,7 +1982,7 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 
 void *CSectionsd::insertEventsfromLocalTV(void *data)
 {
-	dprintf(DEBUG_INFO, "CSectionsd::insertEventsfromLocalTV: chid:%llx\n", (t_channel_id)data);
+	dprintf(DEBUG_INFO, "CSectionsd::insertEventsfromLocalTV: chid:%lx\n", (t_channel_id)data);
 	
 	//
 	t_channel_id chid = (t_channel_id)data;
@@ -2008,7 +2002,7 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 		epgid = chan->getEPGID();
 	}
 	
-	dprintf(DEBUG_INFO, "CSectionsd::insertEventsfromLocalTV:epgid: %llx\n", epgid);
+	dprintf(DEBUG_INFO, "CSectionsd::insertEventsfromLocalTV:epgid: %lx\n", epgid);
 	
 	// localtv
 	std::string evUrl;
@@ -2570,7 +2564,7 @@ void CSectionsd::readSIfromXMLTV(const char *url)
 //
 void CSectionsd::readSIfromLocalTV(const t_channel_id chid)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromLocalTV: %llx\n", chid);
+	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromLocalTV: %lx\n", chid);
 
 	pthread_t thrInsert;
 		
@@ -2918,7 +2912,7 @@ int eit_set_update_filter(int *fd)
 
 	unsigned char cur_eit = dmxCN.get_eit_version();
 	
-	dprintf(DEBUG_DEBUG, "CSectionsd:: eit_set_update_filter, servicekey = 0x" "%llx" ", current version 0x%x got events %d\n", messaging_current_servicekey, cur_eit, messaging_have_CN);
+	dprintf(DEBUG_DEBUG, "CSectionsd:: eit_set_update_filter, servicekey = 0x" "%lx" ", current version 0x%x got events %d\n", messaging_current_servicekey, cur_eit, messaging_have_CN);
 
 	if (cur_eit == 0xff) 
 	{
@@ -3072,7 +3066,7 @@ void *CSectionsd::fseitThread(void *)
 				{
 					timeoutsDMX = 0;
 					dprintf(DEBUG_DEBUG, "CSectionsd::fseitThread: timeoutsDMX for 0x"
-						"%llx"
+						"%lx"
 						" reset to 0 (not broadcast)\n", messaging_current_servicekey );
 
 					dprintf(DEBUG_DEBUG, "CSectionsd::fseitThread: New Filterindex: %d (ges. %d)\n", dmxFSEIT.filter_index + 1, (signed) dmxFSEIT.filters.size() );
@@ -3330,7 +3324,7 @@ void *CSectionsd::viasateitThread(void *)
 				if ((dmxVIASAT.filter_index == 2 && !si->second->eitPresentFollowingFlag()) || ((dmxVIASAT.filter_index == 1 || dmxVIASAT.filter_index == 3) && !si->second->eitScheduleFlag()))
 				{
 					timeoutsDMX = 0;
-					dprintf(DEBUG_DEBUG, "CSectionsd::viasateitThread: timeoutsDMX for 0x" "%llx" " reset to 0 (not broadcast)\n", messaging_current_servicekey );
+					dprintf(DEBUG_DEBUG, "CSectionsd::viasateitThread: timeoutsDMX for 0x" "%lx" " reset to 0 (not broadcast)\n", messaging_current_servicekey );
 
 					dprintf(DEBUG_DEBUG, "CSectionsd::viasateitThread: New Filterindex: %d (ges. %d)\n", dmxVIASAT.filter_index + 1, (signed) dmxVIASAT.filters.size() );
 					dmxVIASAT.change(dmxVIASAT.filter_index + 1);
@@ -3616,7 +3610,7 @@ void *CSectionsd::eitThread(void *)
 				{
 					timeoutsDMX = 0;
 					dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: timeoutsDMX for 0x"
-						"%llx"
+						"%lx"
 						" reset to 0 (not broadcast)\n", messaging_current_servicekey );
 
 					dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: New Filterindex: %d (ges. %d)\n", dmxEIT.filter_index + 1, (signed) dmxEIT.filters.size() );
@@ -3749,10 +3743,9 @@ void *CSectionsd::eitThread(void *)
 						if ( ( e->times.begin()->startzeit < zeit + secondsToCache ) &&
 								( ( e->times.begin()->startzeit + (long)e->times.begin()->dauer ) > zeit - oldEventsAre ) )
 						{
-							//fprintf(stderr, "%02x ", header.table_id);
 							if(sectionsd_stop)
 								break;
-							//printf("Adding event 0x%llx table %x version %x running %d\n", e->uniqueKey(), header->table_id, header->version_number, e->runningStatus());
+
 							CSectionsd::getInstance()->addEvent(*e, zeit);
 						}
 					}
@@ -4041,11 +4034,13 @@ void *CSectionsd::cnThread(void *)
 /* helper function for the housekeeping-thread */
 void CSectionsd::print_meminfo(void)
 {
+/*
 	struct mallinfo meminfo = mallinfo();
 	
 	dprintf(DEBUG_DEBUG, "CSectionsd::print_meminfo: total size of memory occupied by chunks handed out by malloc: %d\n"
 		"total bytes memory allocated with `sbrk' by malloc, in bytes: %d (%dkB)\n",
 		meminfo.uordblks, meminfo.arena, meminfo.arena / 1024);
+*/
 }
 
 //
@@ -4240,7 +4235,7 @@ void CSectionsd::readDVBTimeFilter(void)
 
 void CSectionsd::getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search, std::string search_text)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::getEventsServiceKey:sendAllEvents for:%llx\n", serviceUniqueKey);
+	dprintf(DEBUG_NORMAL, "CSectionsd::getEventsServiceKey:sendAllEvents for:%lx\n", serviceUniqueKey);
 
 	if (serviceUniqueKey != 0) 
 	{ 
@@ -4309,7 +4304,7 @@ void CSectionsd::getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEven
 
 void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CurrentNextInfo& current_next )
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: Request of current/next information for: %llx\n", uniqueServiceKey);
+	dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: Request of current/next information for: %lx\n", uniqueServiceKey);
 
 	SIevent currentEvt;
 	SIevent nextEvt;
@@ -4538,7 +4533,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, Current
 bool CSectionsd::getEPGidShort(event_id_t epgID, CShortEPGData * epgdata)
 {
 	bool ret = false;
-	dprintf(DEBUG_DEBUG, "CSectionsd::getEPGidShort: Request of current EPG for 0x%llx\n", epgID);
+	dprintf(DEBUG_DEBUG, "CSectionsd::getEPGidShort: Request of current EPG for 0x%lx\n", epgID);
 
 	readLockEvents();
 
@@ -4563,7 +4558,7 @@ bool CSectionsd::getEPGidShort(event_id_t epgID, CShortEPGData * epgdata)
 bool CSectionsd::getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata)
 {
 	bool ret = false;
-	dprintf(DEBUG_DEBUG, "CSectionsd::getEPGid: Request of actual EPG for 0x%llx 0x%lx\n", epgID, startzeit);
+	dprintf(DEBUG_DEBUG, "CSectionsd::getEPGid: Request of actual EPG for 0x%lx 0x%lx\n", epgID, startzeit);
 
 	const SIevent& evt = findSIeventForEventUniqueKey(epgID);
 
@@ -4619,7 +4614,7 @@ bool CSectionsd::getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEP
 	SIevent evt;
 	SItime zeit(0, 0);
 
-	dprintf(DEBUG_DEBUG, "CSectionsd::getActualEPGServiceKey Request of current EPG for:%llx\n", uniqueServiceKey);
+	dprintf(DEBUG_DEBUG, "CSectionsd::getActualEPGServiceKey Request of current EPG for:%lx\n", uniqueServiceKey);
 
 	readLockEvents();
 	if (uniqueServiceKey == messaging_current_servicekey) 
@@ -4767,7 +4762,7 @@ void CSectionsd::getChannelEvents(CChannelEventList &eList, bool tv_mode, t_chan
 bool CSectionsd::getComponentTagsUniqueKey(const event_id_t uniqueKey, ComponentTagList& tags)
 {
 	bool ret = false;
-	dprintf(DEBUG_DEBUG, "CSectionsd::getComponentTagsUniqueKey: Request of ComponentTags for 0x%llx\n", uniqueKey);
+	dprintf(DEBUG_DEBUG, "CSectionsd::getComponentTagsUniqueKey: Request of ComponentTags for 0x%lx\n", uniqueKey);
 
 	tags.clear();
 
@@ -4800,7 +4795,7 @@ bool CSectionsd::getComponentTagsUniqueKey(const event_id_t uniqueKey, Component
 bool CSectionsd::getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, LinkageDescriptorList& descriptors)
 {
 	bool ret = false;
-	dprintf(DEBUG_DEBUG, "CSectionsd::getLinkageDescriptorsUniqueKey: Request of LinkageDescriptors for 0x%llx\n", uniqueKey);
+	dprintf(DEBUG_DEBUG, "CSectionsd::getLinkageDescriptorsUniqueKey: Request of LinkageDescriptors for 0x%lx\n", uniqueKey);
 
 	descriptors.clear();
 	readLockEvents();
@@ -4835,7 +4830,7 @@ bool CSectionsd::getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, Link
 bool CSectionsd::getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, NVODTimesList& nvod_list)
 {
 	bool ret = false;
-	dprintf(DEBUG_DEBUG, "CSectionsd::getNVODTimesServiceKey: Request of NVOD times for:%llx\n", uniqueServiceKey);
+	dprintf(DEBUG_DEBUG, "CSectionsd::getNVODTimesServiceKey: Request of NVOD times for:%lx\n", uniqueServiceKey);
 
 	nvod_list.clear();
 

@@ -273,7 +273,7 @@ const keyval NFS_TYPE_OPTIONS[NFS_TYPE_OPTION_COUNT] =
 
 int CNFSMountGui::menuEntry(int nr)
 {
-	char *dir, *local_dir, *username, *password, *options1, *options2, *mac;
+	char *dir, *local_dir, *username, *password, *options1, *options2;
 	int *automount;
 	int *type;
 	char cmd[9];
@@ -287,7 +287,6 @@ int CNFSMountGui::menuEntry(int nr)
 	type = &g_settings.network_nfs_type[nr];
 	options1 = g_settings.network_nfs_mount_options1[nr];
 	options2 = g_settings.network_nfs_mount_options2[nr];
-	mac = g_settings.network_nfs_mac[nr];
 
 	sprintf(cmd, "domount%d", nr);
 	sprintf(cmd2, "dir%d", nr);
@@ -369,11 +368,11 @@ int CNFSMountGui::menuEntry(int nr)
 	
 	// username
 	CStringInputSMS userInput(_("username"), username);
-	CMenuForwarder *username_fwd = new CMenuForwarder(_("username"), (*type==CFSMounter::CIFS || CFSMounter::LUFS), username, &userInput);
+	CMenuForwarder *username_fwd = new CMenuForwarder(_("username"), (*type == CFSMounter::CIFS || *type == CFSMounter::LUFS), username, &userInput);
 	
 	// password
 	CStringInputSMS passInput(_("password"), password);
-	CMenuForwarder *password_fwd = new CMenuForwarder(_("password"), (*type==CFSMounter::CIFS || CFSMounter::LUFS), NULL, &passInput);
+	CMenuForwarder *password_fwd = new CMenuForwarder(_("password"), (*type == CFSMounter::CIFS || *type == CFSMounter::LUFS), NULL, &passInput);
 	
 	// mac
 	CMACInput * macInput = new CMACInput(_("MAC address"),  g_settings.network_nfs_mac[nr], _("Use 0..9, or use Up/Down,"), _("OK saves, HOME! aborts"));

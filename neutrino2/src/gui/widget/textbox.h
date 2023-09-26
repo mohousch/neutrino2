@@ -52,26 +52,28 @@
 #include <gui/widget/widget_helpers.h>
 
 
-// mode
-enum
-{
-	AUTO_WIDTH		= 0x01,
-	AUTO_HIGH		= 0x02,
-	SCROLL			= 0x04,
-	CENTER			= 0x40,
-	NO_AUTO_LINEBREAK 	= 0x80
-};
-
-// pic
-enum 
-{
-	PIC_RIGHT,
-	PIC_LEFT,
-	PIC_CENTER
-};
-
+////
 class CTextBox : public CWidgetItem
 {
+	public:
+		// mode
+		enum
+		{
+			AUTO_WIDTH		= 0x01,
+			AUTO_HIGH		= 0x02,
+			SCROLL			= 0x04,
+			CENTER			= 0x40,
+			NO_AUTO_LINEBREAK 	= 0x80
+		};
+
+		// pic
+		enum 
+		{
+			PIC_RIGHT,
+			PIC_LEFT,
+			PIC_CENTER
+		};
+
 	private:
 		CFrameBuffer* frameBuffer;
 		
@@ -171,5 +173,5 @@ class CTextBox : public CWidgetItem
 		bool isSelectable(void){return true;}
 };
 
-#endif // !defined(AFX_TEXTBOX_H__208DED01_ABEC_491C_A632_5B21057DC5D8__INCLUDED_)
+#endif
 

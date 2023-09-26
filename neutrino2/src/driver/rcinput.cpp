@@ -809,7 +809,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%x) data:(0x%x) <\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from high-pri pipe msg=(0x%lx) data:(0x%lx) <\n", *msg, *data );
 
 			return;
 		}
@@ -1256,7 +1256,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			if ( *msg != RC_nokey )
 			{
 				// raus hier :)
-				//printf("[neutrino] event 0x%x\n", *msg);
+				//printf("[neutrino] event 0x%lx\n", *msg);
 				return;
 			}
 		}
@@ -1361,7 +1361,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			*msg  = buf.msg;
 			*data = buf.data;
 
-			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from low-pri pipe msg=(0x%x) data:(0x%x) <\n", *msg, *data );
+			dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from low-pri pipe msg=(0x%lx) data:(0x%lx) <\n", *msg, *data );
 
 			return;
 		}
@@ -1427,7 +1427,7 @@ void CRCInput::setRepeat(unsigned int delay,unsigned int period)
 
 void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority)
 {
-	dprintf(DEBUG_INFO, "CRCInput::postMsg: msg:(0x%x) data:(0x%x) prio:(%d) >\n", msg, data, Priority );
+	dprintf(DEBUG_INFO, "CRCInput::postMsg: msg:(0x%lx) data:(0x%lx) prio:(%d) >\n", msg, data, Priority );
 
 	struct event buf;
 	
@@ -1681,7 +1681,7 @@ const char * CRCInput::getSpecialKeyName(const unsigned long key)
 			return "RC_none";
 			
 		default:
-			printf("CRCInput::getSpecialKeyName: unknown key: 0x%x\n", key);
+			printf("CRCInput::getSpecialKeyName: unknown key: 0x%lx\n", key);
 			return "RC_unknown";
 	}
 }

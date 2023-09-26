@@ -122,7 +122,7 @@ bool CScan::tuneFrequency(FrontendParameters *feparams, t_satellite_position sat
 
 int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit, int feindex)
 {
-	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CScan::addToScan: freq %d pol %d tpid %llx from (nit:%d) fe(%d)\n", feparams->frequency, feparams->polarization, TsidOnid, fromnit, feindex);
+	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CScan::addToScan: freq %d pol %d tpid %lx from (nit:%d) fe(%d)\n", feparams->frequency, feparams->polarization, TsidOnid, fromnit, feindex);
 
 	freq_id_t freq;
 
@@ -178,7 +178,7 @@ int CScan::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bo
 			
 			TsidOnid = CREATE_TRANSPONDER_ID(freq1, satellitePosition, original_network_id, transport_stream_id);
 
-			dprintf(DEBUG_INFO, "CScan::addToScan: SAME freq %d pol1 %d pol2 %d tpid %llx\n", feparams->frequency, poltmp1, poltmp2, TsidOnid);
+			dprintf(DEBUG_INFO, "CScan::addToScan: SAME freq %d pol1 %d pol2 %d tpid %lx\n", feparams->frequency, poltmp1, poltmp2, TsidOnid);
 
 			feparams->frequency = feparams->frequency + 1000;
 			tI = scanedtransponders.find(TsidOnid);
@@ -233,7 +233,7 @@ _repeat:
 		if(abort_scan)
 			return false;
 
-		dprintf(DEBUG_NORMAL, "CScan::getSDTS: scanning: %llx\n", tI->first);
+		dprintf(DEBUG_NORMAL, "CScan::getSDTS: scanning: %lx\n", tI->first);
 
 		//
 		actual_freq = tI->second.feparams.frequency;
@@ -319,7 +319,7 @@ _repeat:
 			}
 		}
 
-		dprintf(DEBUG_INFO, "CScan::getSDTS: tpid ready: %llx\n", TsidOnid);
+		dprintf(DEBUG_INFO, "CScan::getSDTS: tpid ready: %lx\n", TsidOnid);
 	}
 
 	// add found transponder by nit to scan
@@ -336,7 +336,7 @@ _repeat:
 
 		nittransponders.clear();
 		
-		dprintf(DEBUG_INFO, "CScan::getSDTS: found %d additional transponders from nit\n", scantransponders.size());
+		dprintf(DEBUG_INFO, "CScan::getSDTS: found %ld additional transponders from nit\n", scantransponders.size());
 		
 		if(scantransponders.size()) 
 		{
@@ -354,7 +354,7 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 {
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CScan::scanTransponder:\n");
 	
-	uint8_t polarization = 0;
+	//uint8_t polarization = 0;
 	uint8_t system = 0;
 	uint8_t modulation = 1;
 	int xml_fec;
@@ -456,7 +456,7 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 #endif
 	{
 		feparams.symbol_rate = xmlGetNumericAttribute(transponder, "symbol_rate", 0);
-		polarization = xmlGetNumericAttribute(transponder, "polarization", 0);
+		//polarization = xmlGetNumericAttribute(transponder, "polarization", 0);
 		system = xmlGetNumericAttribute(transponder, "system", 0);
 		modulation = xmlGetNumericAttribute(transponder, "modulation", 0); 
 		xml_fec = xmlGetNumericAttribute(transponder, "fec_inner", 0); // S_QPSK + S2_QPSK
@@ -484,7 +484,7 @@ bool CScan::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satell
 	// read network information table
 	fake_tid++; fake_nid++;
 
-	addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &feparams, /*polarization,*/ false, feindex);
+	addToScan(CREATE_TRANSPONDER_ID(freq, satellitePosition, fake_nid, fake_tid), &feparams, false, feindex);
 
 	return true;
 }
@@ -553,7 +553,7 @@ bool CScan::scanProvider(xmlNodePtr search, t_satellite_position satellitePositi
 						break;
 						
 					default:
-						dprintf(DEBUG_INFO, "CScan::scanProvider: setting service_type of channel_id:%llx %s from %02x to %02x", stI->first, scI->second.getName().c_str(), scI->second.getServiceType(), stI->second);
+						dprintf(DEBUG_INFO, "CScan::scanProvider: setting service_type of channel_id:%lx %s from %02x to %02x", stI->first, scI->second.getName().c_str(), scI->second.getServiceType(), stI->second);
 						
 						scI->second.setServiceType(stI->second);
 						break;

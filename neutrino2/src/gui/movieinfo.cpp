@@ -1193,7 +1193,7 @@ void CMovieInfo::showMovieInfo(MI_MOVIE_INFO &movie_info)
 	::scaleImage(movie_info.tfile, &p_w, &p_h);
 
 	infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-	infoBox->setMode(SCROLL);
+	infoBox->setMode(CTextBox::SCROLL);
 	infoBox->setText(print_buffer.c_str(), movie_info.tfile.c_str(), p_w, p_h);
 	infoBox->exec();
 	delete infoBox;

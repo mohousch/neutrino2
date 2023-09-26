@@ -169,7 +169,7 @@ std::string randomFile(std::string suffix = "tmp", std::string directory = "/tmp
 
 void getTMDBInfo(const char * const text);
 
-//
+////
 class RandomNumber
 {
 	public:
@@ -184,7 +184,7 @@ class RandomNumber
 		}
 };
 
-//
+////
 class CFileHelpers
 {
 	public:
@@ -206,7 +206,7 @@ class CFileHelpers
 		bool saveFile(const CFile& file, const char *text, const int text_size);
 };
 
-//
+////
 class eEnv 
 {
 	private:
@@ -218,7 +218,7 @@ class eEnv
 		static std::string resolve(const std::string &path);
 };
 
-//
+////
 class cTimeMs 
 {
 	private:

@@ -300,9 +300,9 @@ void CInfoViewer::paintTime(int posx, int posy, unsigned int timeFont)
 {
 	dprintf(DEBUG_INFO, "CInfoViewer::paintTime:\n");
 	
-	int time_left_width = 2 * g_Font[timeFont]->getRenderWidth(widest_number);
-	int time_dot_width = g_Font[timeFont]->getRenderWidth(":");
-	int time_width = 2*time_left_width + time_dot_width;
+	//int time_left_width = 2 * g_Font[timeFont]->getRenderWidth(widest_number);
+	//int time_dot_width = g_Font[timeFont]->getRenderWidth(":");
+	//int time_width = 2*time_left_width + time_dot_width;
 	int time_height = g_Font[timeFont]->getHeight();
 
 	int timestr_len = g_Font[timeFont]->getRenderWidth("00:00:00");
@@ -355,7 +355,7 @@ void CInfoViewer::paintRecordIcon(int posx, int posy)
 //
 void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id, const bool _calledFromNumZap, int _epgpos)
 {
-	dprintf(DEBUG_NORMAL, "CInfoViewer::showTitle: channel:%llx callFromNumZap:%s\n", _new_channel_id, _calledFromNumZap? "true" : "false");
+	dprintf(DEBUG_NORMAL, "CInfoViewer::showTitle: channel:%lx callFromNumZap:%s\n", _new_channel_id, _calledFromNumZap? "true" : "false");
 	
 	//
 	std::string ChannelName = _ChannelName;
@@ -398,17 +398,17 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 
 	//
 	int col_NumBoxText;
-	int col_NumBox;
+	//int col_NumBox;
 
 	if (virtual_zap_mode) 
 	{
 		col_NumBoxText = COL_MENUHEAD;
-		col_NumBox = COL_MENUHEAD_PLUS_0;
+		//col_NumBox = COL_MENUHEAD_PLUS_0;
 	} 
 	else 
 	{
 		col_NumBoxText = COL_INFOBAR;
-		col_NumBox = COL_INFOBAR_PLUS_0;
+		//col_NumBox = COL_INFOBAR_PLUS_0;
 	}
 	
 	// shadow
@@ -623,7 +623,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 		{
 			g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);
 			
-			dprintf(DEBUG_DEBUG, "CInofViewer::showTitle: msg:(0x%X) data:(0x%X)\n", msg, data);
+			dprintf(DEBUG_DEBUG, "CInofViewer::showTitle: msg:(0x%lX) data:(0x%lX)\n", msg, data);
 
 			if ((msg == CRCInput::RC_sat) || (msg == CRCInput::RC_favorites) || (msg == CRCInput::RC_setup) || (msg == CRCInput::RC_red) || (msg == CRCInput::RC_green) || (msg == CRCInput::RC_yellow) || (msg == CRCInput::RC_blue) || (msg == CRCInput::RC_ok) || (msg == CRCInput::RC_text) || (msg == CRCInput::RC_epg) || (msg == CRCInput::RC_record) || (msg == CRCInput::RC_play) || (msg == CRCInput::RC_pause) || (msg == CRCInput::RC_dvbsub) || (msg == CRCInput::RC_mode) || (msg == CRCInput::RC_audio))
 			{
@@ -723,7 +723,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 
 void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EPGPos)
 {
-	dprintf(DEBUG_NORMAL, "CInfoViewer::getCurrentNextEPG:%llx\n", ChannelID);
+	dprintf(DEBUG_NORMAL, "CInfoViewer::getCurrentNextEPG:%lx\n", ChannelID);
 	
 	CSectionsd::getInstance()->getCurrentNextServiceKey(ChannelID & 0xFFFFFFFFFFFFULL, info_CurrentNext);
 	
@@ -1155,7 +1155,8 @@ void CInfoViewer::showRadiotext()
 	dprintf(DEBUG_INFO, "CInfoViewer::showRadiotext:\n");
 	
 	char stext[3][100];
-	int yoff = 8, ii = 0;
+	//int yoff = 8;
+	int ii = 0;
 	bool RTisIsUTF = false;
 
 	if (g_Radiotext == NULL) 
@@ -1205,7 +1206,7 @@ void CInfoViewer::showRadiotext()
 					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(rt_x + 10, rt_y + 30, rt_dx - 20, stext[0], COL_INFOBAR, 0, RTisIsUTF); // UTF-8
 				}
 				
-				yoff = 17;
+				//yoff = 17;
 				ii = 1;
 			}
 			
@@ -1434,7 +1435,7 @@ void CInfoViewer::showButton_SubServices()
 
 void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info)
 {
-	dprintf(DEBUG_NORMAL, "CInfoViewer::getEPG: channel_id:%llx\n", for_channel_id);
+	dprintf(DEBUG_NORMAL, "CInfoViewer::getEPG: channel_id:%lx\n", for_channel_id);
 
 	// to clear the oldinfo for channels without epg, call getEPG() with for_channel_id = 0
 	if (for_channel_id == 0)
@@ -1489,7 +1490,7 @@ void CInfoViewer::showSNR()
 	int sig = 0;
 	int posx = 0;
 	int posy = 0;
-  	int barwidth = BAR_WIDTH;
+  	//int barwidth = BAR_WIDTH;
 	
   	if (g_settings.infobar_sat_display && (!IS_WEBTV(channel_id)) && channel_id != 0) 
 	{

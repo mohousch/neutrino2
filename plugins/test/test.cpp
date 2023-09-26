@@ -4005,7 +4005,7 @@ void CTestMenu::testCInfoBox()
 	infoBox->setBorderMode(BORDER_ALL);
 	//infoBox->setBackgroundColor(/*make16color(0xBEBEBE)*/COL_SILVER_PLUS_0);
 	if (!m_vMovieInfo.empty())
-		infoBox->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h, PIC_RIGHT, true, true);
+		infoBox->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true, true);
 	//infoBox->setTextColor(COL_LIME);
 	//infoBox->setHeadColor(COL_NOBEL_PLUS_0);
 	//infoBox->setHeadCorner(NO_RADIUS, CORNER_NONE);
@@ -5706,7 +5706,7 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			::scaleImage(cover, &p_w, &p_h);
 
 			infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-			infoBox->setMode(SCROLL);
+			infoBox->setMode(CTextBox::SCROLL);
 			infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 			infoBox->setText(buffer.c_str(), cover.c_str(), p_w, p_h);
 			infoBox->exec();

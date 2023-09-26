@@ -72,7 +72,7 @@ void CLastChannel::store(int channel, t_channel_id channel_id, bool forceStoreTo
 		}
 
 		// -- store channel on next pos (new channel)
-		_LastCh newChannel = {channel, channel_id, tv.tv_sec};
+		_LastCh newChannel = {channel, tv.tv_sec, channel_id};
 		this->lastChannels.push_front(newChannel);
 		if (this->lastChannels.size() > this->maxSize)
 		{

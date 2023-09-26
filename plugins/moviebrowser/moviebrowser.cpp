@@ -989,69 +989,8 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 		{
 			m_pcWindow->paintBackground();
 			m_pcWindow->blit();
-
-			//				
-			CTmdb * tmdb = new CTmdb();
-			if(tmdb->getMovieInfo(m_movieSelectionHandler->epgTitle))
-			{
-				if ((!tmdb->getDescription().empty())) 
-				{
-					std::string buffer;
-
-					buffer = m_movieSelectionHandler->epgTitle;
-					buffer += "\n";
-	
-					// prepare print buffer  
-					buffer += tmdb->createInfoText();
-	
-					//
-					std::string tname = tmdb->getThumbnailDir();
-					tname += "/";
-					tname += m_movieSelectionHandler->epgTitle;
-					tname += ".jpg";
-
-					tmdb->getSmallCover(tmdb->getPosterPath(), tname);
-				
-					// scale pic
-					int p_w = 0;
-					int p_h = 0;
-				
-					scaleImage(tname, &p_w, &p_h);
-
-					CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
-	
-					CInfoBox * infoBox = new CInfoBox(&position, m_movieSelectionHandler->epgTitle.c_str(), NEUTRINO_ICON_TMDB);
-
-					infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
-					infoBox->exec();
-					delete infoBox;
-
-					if(MessageBox(_("Information"), _("Prefer TMDB infos"), mbrNo, mbYes | mbNo) == mbrYes) 
-					{
-						// rewrite tfile
-						std::string tname = m_movieSelectionHandler->file.Name;
-						changeFileNameExt(tname, ".jpg");
-						if(tmdb->getSmallCover(tmdb->getPosterPath(), tname)) 
-							m_movieSelectionHandler->tfile = tname;
-
-						if(m_movieSelectionHandler->epgInfo1.empty())
-							m_movieSelectionHandler->epgInfo1 = tmdb->getDescription();
-
-						m_movieInfo.saveMovieInfo( *m_movieSelectionHandler);
-					}  
-				}
-				else
-				{
-					MessageBox(_("Information"), _("Not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
-				}
-			}
-			else
-			{
-				MessageBox(_("Information"), _("Not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
-			}
-
-			delete tmdb;
-			tmdb = NULL;
+			
+			::getTMDBInfo(m_movieSelectionHandler->epgTitle.c_str());
 		}
 	}
 	else if(actionKey == "remove_screenshot")
@@ -1920,68 +1859,7 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 			m_pcWindow->paintBackground();
 			m_pcWindow->blit();
 
-			//				
-			CTmdb * tmdb = new CTmdb();
-
-			if(tmdb->getMovieInfo(m_movieSelectionHandler->epgTitle))
-			{
-				if ((!tmdb->getDescription().empty())) 
-				{
-					std::string buffer;
-
-					buffer = m_movieSelectionHandler->epgTitle;
-					buffer += "\n";
-	
-					// prepare print buffer  
-					buffer += tmdb->createInfoText();
-	
-					std::string tname = tmdb->getThumbnailDir();
-					tname += "/";
-					tname += m_movieSelectionHandler->epgTitle;
-					tname += ".jpg";
-
-					tmdb->getSmallCover(tmdb->getPosterPath(), tname);
-				
-					// scale pic
-					int p_w = 0;
-					int p_h = 0;
-				
-					scaleImage(tname, &p_w, &p_h);
-	
-					CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
-	
-					CInfoBox * infoBox = new CInfoBox(&position, m_movieSelectionHandler->epgTitle.c_str(), NEUTRINO_ICON_TMDB);
-
-					infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
-					infoBox->exec();
-					delete infoBox;
-
-					if(MessageBox("Information", _("Prefer TMBD infos ?"), mbrNo, mbYes | mbNo) == mbrYes) 
-					{
-						// rewrite tfile
-						std::string tname = m_movieSelectionHandler->file.Name;
-						changeFileNameExt(tname, ".jpg");
-						if(tmdb->getSmallCover(tmdb->getPosterPath(), tname)) 
-							m_movieSelectionHandler->tfile = tname;
-
-						if(m_movieSelectionHandler->epgInfo1.empty())
-							m_movieSelectionHandler->epgInfo1 = tmdb->getDescription();
-
-						m_movieInfo.saveMovieInfo( *m_movieSelectionHandler);
-					}  
-				}
-				else
-				{
-					MessageBox(_("Information"), _("Not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
-				}
-			}
-			else
-			{
-				MessageBox(_("Information"), _("Not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
-			}
-
-			delete tmdb;
-			tmdb = NULL;
+			::getTMDBInfo(m_movieSelectionHandler->epgTitle.c_str());
 		}
 
 		refresh();

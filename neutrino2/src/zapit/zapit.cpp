@@ -320,7 +320,7 @@ void CZapit::initFrontend()
 	}
 #endif
 	
-	dprintf(DEBUG_INFO, "CZapit::initFrontend: found %d frontends\n", femap.size());
+	dprintf(DEBUG_INFO, "CZapit::initFrontend: found %ld frontends\n", femap.size());
 }
 
 void CZapit::OpenFE(void)
@@ -461,7 +461,7 @@ CFrontend * CZapit::getPreferredFrontend(CZapitChannel * thischannel)
 	{
 		CFrontend * fe = fe_it->second;
 		
-		dprintf(DEBUG_DEBUG, "CZapit::getPreferredFrontend: fe(%d,%d): tuned:%d (locked:%d) fe_freq: %d fe_TP: %llx - chan_freq: %d chan_TP: %llx sat-position: %d sat-name:%s input-type:%d\n",
+		dprintf(DEBUG_DEBUG, "CZapit::getPreferredFrontend: fe(%d,%d): tuned:%d (locked:%d) fe_freq: %d fe_TP: %lx - chan_freq: %d chan_TP: %lx sat-position: %d sat-name:%s input-type:%d\n",
 				fe->feadapter,
 				fe->fenumber,
 				fe->tuned,
@@ -506,13 +506,7 @@ bool CZapit::CanZap(CZapitChannel * thischannel)
 }
 
 CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
-{
-	const char *FEMODE[] = {
-		"SINGLE",
-		"LOOP",
-		"NOTCONNECTED"
-	 };
-	 
+{ 
 	// check for frontend
 	CFrontend * free_frontend = NULL;
 	
@@ -539,18 +533,6 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
 	{
 		CFrontend * fe = fe_it->second;
-		
-		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: fe(%d:%d): (delsys:0x%x) (%s) tuned:%d (locked:%d) fe_TP: %llx - %d chan_TP: %llx\n",
-				fe->feadapter,
-				fe->fenumber,
-				fe->deliverySystemMask,
-				FEMODE[fe->mode],
-				fe->tuned,
-				fe->locked,
-				//fe->getFrequency(), 
-				fe->getTsidOnid(), 
-				//thischannel->getFreqId(), 
-				thischannel->getTransponderId());
 				
 		// skip not connected frontend
 		if( fe->mode == (fe_mode_t)FE_NOTCONNECTED )
@@ -609,7 +591,7 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 	{
 		CFrontend * fe = fe_it->second;
 		
-		dprintf(DEBUG_INFO, "CZapit::getRecordFrontend: fe(%d,%d): (%s) tuned:%d (locked:%d) fe_freq: %d fe_TP: %llx - chan_freq: %d chan_TP: %llx sat-position: %d sat-name:%s input-type:%d\n",
+		dprintf(DEBUG_INFO, "CZapit::getRecordFrontend: fe(%d,%d): (%s) tuned:%d (locked:%d) fe_freq: %d fe_TP: %lx - chan_freq: %d chan_TP: %lx sat-position: %d sat-name:%s input-type:%d\n",
 				fe->feadapter,
 				fe->fenumber,
 				FEMODE[fe->mode],
@@ -832,7 +814,7 @@ void CZapit::loadAudioMap()
 
           	while (fgets(s, 1000, audio_config_file)) 
 		{
-			sscanf(s, "%llx %d %d %d %d %d %d", &chan, &apid, &mode, &volume, &subpid, &ttxpid, &ttxpage);
+			sscanf(s, "%lx %d %d %d %d %d %d", &chan, &apid, &mode, &volume, &subpid, &ttxpid, &ttxpage);
 			
             		audio_map[chan].apid = apid;
             		audio_map[chan].subpid = subpid;
@@ -859,7 +841,7 @@ void CZapit::saveAudioMap()
 			
 		for (audio_map_it = audio_map.begin(); audio_map_it != audio_map.end(); audio_map_it++) 
 		{
-			fprintf(audio_config_file, "%llx %d %d %d %d %d %d\n", (uint64_t) audio_map_it->first,
+			fprintf(audio_config_file, "%lx %d %d %d %d %d %d\n", (uint64_t) audio_map_it->first,
                         (int) audio_map_it->second.apid, (int) audio_map_it->second.mode, (int) audio_map_it->second.volume, 
 			(int) audio_map_it->second.subpid, (int) audio_map_it->second.ttxpid, (int) audio_map_it->second.ttxpage);
 		}
@@ -889,7 +871,7 @@ void CZapit::loadVolumeMap()
 	
 	while (fgets(s, 1000, volume_config_file)) 
 	{
-		if (sscanf(s, "%llx %d %d", &chan, &apid, &volume) == 3)
+		if (sscanf(s, "%lx %d %d", &chan, &apid, &volume) == 3)
 			vol_map.insert(volume_pair_t(chan, pid_pair_t(apid, volume)));
 	}
 	fclose(volume_config_file);
@@ -906,7 +888,7 @@ void CZapit::saveVolumeMap()
 		return;
 	}
 	for (volume_map_iterator_t it = vol_map.begin(); it != vol_map.end(); ++it)
-		fprintf(volume_config_file, "%llx %d %d\n", (uint64_t) it->first, it->second.first, it->second.second);
+		fprintf(volume_config_file, "%lx %d %d\n", (uint64_t) it->first, it->second.first, it->second.second);
 
 	fdatasync(fileno(volume_config_file));
 	fclose(volume_config_file);
@@ -1113,7 +1095,7 @@ void CZapit::saveChannelPids(CZapitChannel * thischannel)
 	if(thischannel == NULL)
 		return;
 
-	dprintf(DEBUG_INFO, "CZapit::saveChannelPids: (%llx), apid %x mode %d volume %d\n", thischannel->getChannelID(), thischannel->getAudioPid(), audio_mode, volume_right);
+	dprintf(DEBUG_INFO, "CZapit::saveChannelPids: (%lx), apid %x mode %d volume %d\n", thischannel->getChannelID(), thischannel->getAudioPid(), audio_mode, volume_right);
 	
 	audio_map[thischannel->getChannelID()].apid = thischannel->getAudioPid();
 	audio_map[thischannel->getChannelID()].mode = audio_mode;
@@ -1137,7 +1119,7 @@ CZapitChannel * CZapit::findChannelToZap(const t_channel_id channel_id, bool in_
 
 		if (cit == nvodchannels.end()) 
 		{
-			dprintf(DEBUG_INFO, "CZapit::findChannelToZap: channel_id (%llx) AS NVOD not found\n", channel_id);
+			dprintf(DEBUG_INFO, "CZapit::findChannelToZap: channel_id (%lx) AS NVOD not found\n", channel_id);
 			return NULL;
 		}
 	} 
@@ -1149,7 +1131,7 @@ CZapitChannel * CZapit::findChannelToZap(const t_channel_id channel_id, bool in_
 
 		if (cit == allchans.end()) 
 		{
-			dprintf(DEBUG_INFO, "CZapit::findChannelToZap: channel_id (%llx) not found\n", channel_id);
+			dprintf(DEBUG_INFO, "CZapit::findChannelToZap: channel_id (%lx) not found\n", channel_id);
 			return NULL;
 		}
 	}
@@ -1203,7 +1185,7 @@ bool CZapit::tuneToChannel(CFrontend * frontend, CZapitChannel * thischannel, bo
 
 bool CZapit::parseChannelPatPmt(CZapitChannel * thischannel, CFrontend * fe)
 {
-	dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: looking up pids for channel_id (%llx)\n", thischannel->getChannelID());
+	dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: looking up pids for channel_id (%lx)\n", thischannel->getChannelID());
 	
 	bool failed = false;
 	
@@ -1315,12 +1297,12 @@ int CZapit::zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate)
 	bool failed = false;
 	CZapitChannel * newchannel;
 
-	dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapit: channel id %llx nvod %d\n", channel_id, in_nvod);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapit: channel id %lx nvod %d\n", channel_id, in_nvod);
 
 	// find channel to zap
 	if( (newchannel = findChannelToZap(channel_id, in_nvod)) == NULL ) 
 	{
-		dprintf(DEBUG_INFO, "CZapit::zapit: channel_id:%llx not found\n", channel_id);
+		dprintf(DEBUG_INFO, "CZapit::zapit: channel_id:%lx not found\n", channel_id);
 		return -1;
 	}
 	
@@ -1369,7 +1351,7 @@ int CZapit::zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate)
 	
 		live_fe = fe;
 	
-		dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapit: zap to %s(%llx) fe(%d:%d)\n", live_channel->getName().c_str(), live_channel_id, live_fe->feadapter, live_fe->fenumber );
+		dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapit: zap to %s(%lx) fe(%d:%d)\n", live_channel->getName().c_str(), live_channel_id, live_fe->feadapter, live_fe->fenumber );
 
 		// tune live frontend
 		if(!tuneToChannel(live_fe, live_channel, transponder_change))
@@ -1454,7 +1436,7 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 	// find channel
 	if((rec_channel = findChannelToZap(channel_id, false)) == NULL) 
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::zapToRecordID: channel_id (%llx) not found\n", channel_id);
+		dprintf(DEBUG_NORMAL, "CZapit::zapToRecordID: channel_id (%lx) not found\n", channel_id);
 		return -1;
 	}
 	
@@ -1504,7 +1486,7 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 	}
 #endif		
 	
-	dprintf(DEBUG_NORMAL, "CZapit::zapToRecordID: zapped to %s (%llx) fe(%d,%d)\n", rec_channel->getName().c_str(), rec_channel_id, record_fe->feadapter, record_fe->fenumber);
+	dprintf(DEBUG_NORMAL, "CZapit::zapToRecordID: zapped to %s (%lx) fe(%d,%d)\n", rec_channel->getName().c_str(), rec_channel_id, record_fe->feadapter, record_fe->fenumber);
 	
 	return 0;
 }
@@ -1518,7 +1500,7 @@ void CZapit::setPidVolume(t_channel_id channel_id, int pid, int percent)
 	if (!pid && (channel_id == live_channel_id) && live_channel)
 		pid = live_channel->getAudioPid();
 
-	dprintf(DEBUG_INFO, "CZapit::setPidVolume: channel %llx pid %x percent %d\n", channel_id, pid, percent);
+	dprintf(DEBUG_INFO, "CZapit::setPidVolume: channel %lx pid %x percent %d\n", channel_id, pid, percent);
 	
 	volume_map_range_t pids = vol_map.equal_range(channel_id);
 	for (volume_map_iterator_t it = pids.first; it != pids.second; ++it) 
@@ -1570,7 +1552,7 @@ int CZapit::getPidVolume(t_channel_id channel_id, int pid, bool ac3)
 		}
 	}
 	
-	dprintf(DEBUG_INFO, "CZapit::getPidVolume: channel %llx pid %x percent %d\n", channel_id, pid, percent);
+	dprintf(DEBUG_INFO, "CZapit::getPidVolume: channel %lx pid %x percent %d\n", channel_id, pid, percent);
 	
 	return percent;
 }
@@ -1599,7 +1581,7 @@ int CZapit::changeAudioPid(uint8_t index)
 		return -1;
 
 	//stop audio demux filter
-	if (audioDemux->Stop() < 0)
+	if (!audioDemux->Stop())
 		return -1;
 
 	//update current channel
@@ -1688,11 +1670,11 @@ int CZapit::changeAudioPid(uint8_t index)
 	dprintf(DEBUG_NORMAL, "CZapit::changeAudioPid: change apid to 0x%x\n", live_channel->getAudioPid());
 
 	//set audio-demux filter
-	if (audioDemux->pesFilter( live_channel->getAudioPid() ) < 0)
+	if (!audioDemux->pesFilter( live_channel->getAudioPid() ))
 		return -1;
 
 	//start demux filter
-	if (audioDemux->Start() < 0)
+	if (!audioDemux->Start())
 		return -1;
 	
 	// set saved volume pro pid
@@ -2212,7 +2194,7 @@ void CZapit::sendNChannels(BouquetNChannelList &Bchannels, const channelsMode mo
 // startplayback return: 0=playing, -1= failed
 int CZapit::startPlayBack(CZapitChannel * thisChannel)
 {
-	dprintf(DEBUG_NORMAL, "CZapit::startPlayBack: chid:%llx\n", thisChannel->getChannelID());
+	dprintf(DEBUG_NORMAL, "CZapit::startPlayBack: chid:%lx\n", thisChannel->getChannelID());
 
 	if(!thisChannel)
 		thisChannel = live_channel;
@@ -2285,16 +2267,16 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 #if defined (PLATFORM_COOLSTREAM)
 			pcrDemux->Open(DMX_PCR_ONLY_CHANNEL, videoDemux->getBuffer());
 #else		
-			if( pcrDemux->Open(DMX_PCR_ONLY_CHANNEL, VIDEO_STREAM_BUFFER_SIZE, live_fe) < 0 )
+			if( !pcrDemux->Open(DMX_PCR_ONLY_CHANNEL, VIDEO_STREAM_BUFFER_SIZE, live_fe) )
 				return -1;
 #endif		
 		
 			// set pes filter
-			if( pcrDemux->pesFilter(thisChannel->getPcrPid() ) < 0 )
+			if( !pcrDemux->pesFilter(thisChannel->getPcrPid() ) )
 				return -1;
 		
 			// start dmx
-			if ( pcrDemux->Start() < 0 )
+			if ( !pcrDemux->Start() )
 				return -1;
 		}
 	
@@ -2308,15 +2290,15 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 #if defined (PLATFORM_COOLSTREAM)
 			audioDemux->Open(DMX_AUDIO_CHANNEL);
 #else		
-			if( audioDemux->Open(DMX_AUDIO_CHANNEL, AUDIO_STREAM_BUFFER_SIZE, live_fe ) < 0 )
+			if( !audioDemux->Open(DMX_AUDIO_CHANNEL, AUDIO_STREAM_BUFFER_SIZE, live_fe ) )
 				return -1;
 #endif		
 		
 			// set pes filter
-			if( audioDemux->pesFilter(thisChannel->getAudioPid() ) < 0 )
+			if( !audioDemux->pesFilter(thisChannel->getAudioPid() ) )
 				return -1;
 		
-			if ( audioDemux->Start() < 0 )
+			if ( !audioDemux->Start() )
 				return -1;
 
 			// start pid
@@ -2424,7 +2406,7 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 #if defined (PLATFORM_COOLSTREAM)
 			videoDemux->Open(DMX_VIDEO_CHANNEL);
 #else		
-			if( videoDemux->Open(DMX_VIDEO_CHANNEL, VIDEO_STREAM_BUFFER_SIZE, live_fe ) < 0 )
+			if( !videoDemux->Open(DMX_VIDEO_CHANNEL, VIDEO_STREAM_BUFFER_SIZE, live_fe ) )
 				return -1;
 #endif
 			// set stream type
@@ -2469,10 +2451,10 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 			dprintf(DEBUG_NORMAL, "CZapit::startPlayBack: starting %s video Pid: 0x%x\n", videoStr, thisChannel->getVideoPid());	
 					
 			// video pes filter
-			if( videoDemux->pesFilter(thisChannel->getVideoPid() ) < 0)
+			if( !videoDemux->pesFilter(thisChannel->getVideoPid() ) )
 				return -1;		
 		
-			if ( videoDemux->Start() < 0 )
+			if ( !videoDemux->Start() )
 				return -1;
 
 			// start Video Decoder
@@ -2687,11 +2669,11 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 {
 	unsigned int result = 0;
 
-	dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapToChannelID: chid %llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapToChannelID: chid %lx\n", channel_id);
 
 	if (zapit(channel_id, isSubService) < 0) 
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: zapit failed, chid %llx\n", channel_id);
+		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: zapit failed, chid %lx\n", channel_id);
 		
 		eventServer->sendEvent((isSubService ? NeutrinoMessages::EVT_ZAP_SUB_FAILED : NeutrinoMessages::EVT_ZAP_FAILED), CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
 		
@@ -2700,17 +2682,17 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 
 	result |= ZAP_OK;
 
-	dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: zapit OK, chid %llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: zapit OK, chid %lx\n", channel_id);
 	
 	if (isSubService) 
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: isSubService chid %llx\n", channel_id);
+		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: isSubService chid %lx\n", channel_id);
 		
 		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_SUB_COMPLETE, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
 	}
 	else if (current_is_nvod) 
 	{
-		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: NVOD chid %llx\n", channel_id);
+		dprintf(DEBUG_NORMAL, "CZapit::zapToChannelID: NVOD chid %lx\n", channel_id);
 		
 		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_ISNVOD, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
 		
@@ -2763,8 +2745,8 @@ void * CZapit::sdtThread(void */*arg*/)
 	if (!CZapit::getInstance()->getFrontendCount())
 		return 0;
 	
-	time_t tstart, tcur, wtime = 0;
-	int ret;
+	time_t /*tstart,*/ tcur, wtime = 0;
+	//int ret;
 	t_transport_stream_id transport_stream_id = 0;
 	t_original_network_id original_network_id = 0;
 	t_satellite_position satellitePosition = 0;
@@ -2776,7 +2758,7 @@ void * CZapit::sdtThread(void */*arg*/)
 	bool updated = 0;
 
 	tcur = time(0);
-	tstart = time(0);
+	//tstart = time(0);
 	CZapit::getInstance()->sdt_tp.clear();
 	
 	dprintf(DEBUG_INFO, "CZaoit::sdtThread: sdt monitor started\n");
@@ -3497,7 +3479,7 @@ void CZapit::setSubServices( subServiceList& subServices )
 	t_satellite_position  satellitePosition = 0;
 	freq_id_t freq = 0;
 		
-	for (int i = 0; i < subServices.size(); i++)
+	for (int i = 0; i < (int)subServices.size(); i++)
 	{
 		nvodchannels.insert (
 				std::pair<t_channel_id, CZapitChannel> (

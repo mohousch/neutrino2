@@ -457,7 +457,7 @@ void CEpgData::showHead(const t_channel_id channel_id)
 
 int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_startzeit, bool doLoop )
 {
-	dprintf(DEBUG_NORMAL, "CEpgData::show: %llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CEpgData::show: %lx\n", channel_id);
 
 	int res = CMenuTarget::RETURN_REPAINT;
 	static uint64_t id;
@@ -688,7 +688,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	if (textBox) 
 	{
 		textBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
-		textBox->setMode(SCROLL);
+		textBox->setMode(CTextBox::SCROLL);
 	}
 
 	// head
