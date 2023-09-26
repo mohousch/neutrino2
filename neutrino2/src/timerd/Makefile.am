@@ -10,7 +10,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libxmltree \
 	@FREETYPE_CFLAGS@
 
-AM_CPPFLAGS += -fno-rtti -fno-exceptions -Werror
+AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
 noinst_LIBRARIES = libtimerd.a
 
