@@ -89,7 +89,7 @@ bool cAudio::Open(CFrontend * fe)
 		return true;
 	}
 
-	audio_fd = open(devname, O_RDWR);
+	audio_fd = ::open(devname, O_RDWR);
 
 	if(audio_fd > 0)
 	{
@@ -110,7 +110,7 @@ bool cAudio::Close()
 
 	if (audio_fd >= 0)
 	{
-		close(audio_fd);
+		::close(audio_fd);
 		audio_fd = -1;	
 	}
 	
@@ -129,7 +129,7 @@ int cAudio::SetMute(int enable)
 #if !defined (__sh__)
 	if (audio_fd > 0)
 	{
-		ret = ioctl(audio_fd, AUDIO_SET_MUTE, enable);
+		ret = ::ioctl(audio_fd, AUDIO_SET_MUTE, enable);
 	
 		if(ret < 0)
 			perror("AUDIO_SET_MUTE"); 
@@ -140,12 +140,12 @@ int cAudio::SetMute(int enable)
 	char sMuted[4];
 	sprintf(sMuted, "%d", Muted);
 
-	int fd = open("/proc/stb/audio/j1_mute", O_RDWR);
+	int fd = ::open("/proc/stb/audio/j1_mute", O_RDWR);
 	
 	if(fd > 0)
 	{
 		write(fd, sMuted, strlen(sMuted));
-		close(fd);
+		::close(fd);
 	}
 #endif
 
@@ -180,7 +180,7 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	
 	if (audio_fd > 0)
 	{
-		ret = ioctl(audio_fd, AUDIO_SET_MIXER, &mixer);
+		ret = ::ioctl(audio_fd, AUDIO_SET_MIXER, &mixer);
 	
 		if(ret < 0)
 			perror("AUDIO_SET_MIXER");
@@ -196,12 +196,12 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	sprintf(sVolume, "%d", volume);
 #endif
 
-	int fd = open("/proc/stb/avs/0/volume", O_RDWR);
+	int fd = ::open("/proc/stb/avs/0/volume", O_RDWR);
 	
 	if(fd > 0)
 	{
 		write(fd, sVolume, strlen(sVolume));
-		close(fd);
+		::close(fd);
 	}
 #endif
 	
@@ -218,7 +218,7 @@ int cAudio::Start(void)
 	
 	int ret = -1;
 	
-	ret = ioctl(audio_fd, AUDIO_PLAY);
+	ret = ::ioctl(audio_fd, AUDIO_PLAY);
 	
 	if(ret < 0)
 		perror("AUDIO_PLAY");	
@@ -235,7 +235,7 @@ int cAudio::Stop(void)
 	
 	int ret = -1;
 		
-	ret = ioctl(audio_fd, AUDIO_STOP);
+	ret = ::ioctl(audio_fd, AUDIO_STOP);
 	
 	if(ret < 0)
 		perror("AUDIO_STOP");	
@@ -250,7 +250,7 @@ bool cAudio::Pause()
 	
 	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
 	
-	if (ioctl(audio_fd, AUDIO_PAUSE) < 0)
+	if (::ioctl(audio_fd, AUDIO_PAUSE) < 0)
 	{
 		perror("AUDIO_PAUSE");
 		return false;
@@ -266,7 +266,7 @@ bool cAudio::Resume()
 	
 	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
 
-	if(ioctl(audio_fd, AUDIO_CONTINUE) < 0)
+	if(::ioctl(audio_fd, AUDIO_CONTINUE) < 0)
 	{
 		perror("AUDIO_CONTINUE");
 		return false;
@@ -294,7 +294,7 @@ void cAudio::SetStreamType(AUDIO_FORMAT type)
 
 	dprintf(DEBUG_INFO, "%s:%s - type=%s\n", FILENAME, __FUNCTION__, aAUDIOFORMAT[type]);
 	
-	if (ioctl(audio_fd, AUDIO_SET_BYPASS_MODE, type) < 0)
+	if (::ioctl(audio_fd, AUDIO_SET_BYPASS_MODE, type) < 0)
 	{
 		perror("AUDIO_SET_BYPASS_MODE");
 		return;
@@ -310,7 +310,7 @@ void cAudio::SetSyncMode(int Mode)
 	
 	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
 	
-	if (ioctl(audio_fd, AUDIO_SET_AV_SYNC, Mode) < 0)
+	if (::ioctl(audio_fd, AUDIO_SET_AV_SYNC, Mode) < 0)
 	{
 		perror("AUDIO_SET_AV_SYNC");
 		return;
@@ -327,9 +327,9 @@ int cAudio::Flush(void)
 	int ret = -1;
 
 #if defined (__sh__)
-	ret = (ioctl(audio_fd, AUDIO_FLUSH) < 0);
+	ret = (::ioctl(audio_fd, AUDIO_FLUSH) < 0);
 #else
-	ret = ioctl(audio_fd, AUDIO_CLEAR_BUFFER);
+	ret = ::ioctl(audio_fd, AUDIO_CLEAR_BUFFER);
 #endif
 
 	if(ret < 0)
@@ -354,7 +354,7 @@ int cAudio::setChannel(int channel)
 	
 	int ret = -1;
 
-	ret = ioctl(audio_fd, AUDIO_CHANNEL_SELECT, (audio_channel_select_t)channel);
+	ret = ::ioctl(audio_fd, AUDIO_CHANNEL_SELECT, (audio_channel_select_t)channel);
 		perror("AUDIO_CHANNEL_SELECT");	
 	
 	return ret;
@@ -377,22 +377,22 @@ void cAudio::SetHdmiDD(int ac3)
 		"none"
 	};
 	
-	int fd = open("/proc/stb/hdmi/audio_source", O_RDWR);
+	int fd = ::open("/proc/stb/hdmi/audio_source", O_RDWR);
 	
 	if(fd > 0)
 	{
 		write(fd, aHDMIDDSOURCE[ac3], strlen(aHDMIDDSOURCE[ac3]));
-		close(fd);
+		::close(fd);
 	}
 #endif
 
 #if !defined (USE_OPENGL)
-	int fd_ac3 = open("/proc/stb/audio/ac3", O_RDWR);
+	int fd_ac3 = ::open("/proc/stb/audio/ac3", O_RDWR);
 	
 	if(fd_ac3 > 0)
 	{
 		write(fd_ac3, aHDMIDD[ac3], strlen(aHDMIDD[ac3]));
-		close(fd_ac3);
+		::close(fd_ac3);
 	}
 #endif	
 }
@@ -413,7 +413,7 @@ int cAudio::setSource(int source)
 	
 	int ret = -1;
 
-	ret = ioctl(audio_fd, AUDIO_SELECT_SOURCE, source);
+	ret = ::ioctl(audio_fd, AUDIO_SELECT_SOURCE, source);
 	
 	return ret;
 }

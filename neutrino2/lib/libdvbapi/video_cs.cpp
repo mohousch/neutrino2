@@ -86,7 +86,7 @@ bool cVideo::Open(CFrontend * fe)
 		return true;
 	}
 
-	video_fd = open(devname, O_RDWR);
+	video_fd = ::open(devname, O_RDWR);
 
 	if(video_fd > 0)
 	{
@@ -108,7 +108,7 @@ bool cVideo::Close()
 	
 	if(video_fd >= 0)
 	{
-		close(video_fd);
+		::close(video_fd);
 		video_fd = -1;
 	}	
 
@@ -125,12 +125,12 @@ int cVideo::getAspectRatio(void)
 	unsigned char buffer[2];
 	int n, fd;
 
-	fd = open("/proc/stb/vmpeg/0/aspect", O_RDONLY);
+	fd = ::open("/proc/stb/vmpeg/0/aspect", O_RDONLY);
 	
 	if(fd > 0)
 	{
 		n = read(fd, buffer, 2);
-		close(fd);
+		::close(fd);
 		
 		if (n > 0) 
 		{
@@ -213,21 +213,21 @@ int cVideo::setAspectRatio(int ratio, int format)
 	int fd;
 
 	// aspectratio	
-        fd = open("/proc/stb/video/aspect", O_WRONLY);
+        fd = ::open("/proc/stb/video/aspect", O_WRONLY);
 	
 	if(fd > 0)
 	{
 		write(fd, sRatio[ratio], strlen(sRatio[ratio]));
-		close(fd);
+		::close(fd);
 	}
 
 	// policy
-	fd = open("/proc/stb/video/policy", O_WRONLY);
+	fd = ::open("/proc/stb/video/policy", O_WRONLY);
 	
 	if(fd > 0)
 	{
 		write(fd, sFormat[format], strlen((const char*) sFormat[format]));
-		close(fd);
+		::close(fd);
 	}
 	
 	dprintf(DEBUG_INFO, "%s %s (aspect=%d format=%d) set %s %s\n", FILENAME, __FUNCTION__, ratio, format, sRatio[ratio], sFormat[format]);
@@ -248,12 +248,12 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 	int n, fd;	
 
 	// framerate
-	fd = open("/proc/stb/vmpeg/0/framerate", O_RDONLY);
+	fd = ::open("/proc/stb/vmpeg/0/framerate", O_RDONLY);
 	
 	if(fd > 0)
 	{
 		n = read(fd, buffer, 10);
-		close(fd);
+		::close(fd);
 
 		if (n > 0) 
 		{
@@ -267,12 +267,12 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 	}
 
 	// width (xres)
-	fd = open("/proc/stb/vmpeg/0/xres", O_RDONLY);
+	fd = ::open("/proc/stb/vmpeg/0/xres", O_RDONLY);
 	
 	if(fd > 0)
 	{
 		n = read(fd, buffer, 10);
-		close(fd);
+		::close(fd);
 
 		if (n > 0) 
 		{
@@ -281,12 +281,12 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 	}
 
 	// height  (yres)
-	fd = open("/proc/stb/vmpeg/0/yres", O_RDONLY);
+	fd = ::open("/proc/stb/vmpeg/0/yres", O_RDONLY);
 	
 	if(fd > 0)
 	{
 		n = read(fd, buffer, 10);
-		close(fd);
+		::close(fd);
 
 		if (n > 0) 
 		{
@@ -311,7 +311,7 @@ int cVideo::Start()
 	playstate = VIDEO_PLAYING;
 	
 	// Video Play
-	if(ioctl(video_fd, VIDEO_PLAY) < 0)
+	if(::ioctl(video_fd, VIDEO_PLAY) < 0)
 		perror("VIDEO_PLAY");	
 		
 	return true;
@@ -326,7 +326,7 @@ int cVideo::Stop(bool blank)
 		
 	playstate = blank ? VIDEO_STOPPED : VIDEO_FREEZED;
 	
-	if( ioctl(video_fd, VIDEO_STOP, blank ? 1 : 0) < 0 )  
+	if( ::ioctl(video_fd, VIDEO_STOP, blank ? 1 : 0) < 0 )  
 		perror("VIDEO_STOP");	
 	
 	return true;
@@ -339,7 +339,7 @@ bool cVideo::Pause(void)
 	
 	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
 		
-	if (ioctl(video_fd, VIDEO_FREEZE) < 0)
+	if (::ioctl(video_fd, VIDEO_FREEZE) < 0)
 		perror("VIDEO_FREEZE");
 	
 	playstate = VIDEO_FREEZED;	
@@ -354,7 +354,7 @@ bool cVideo::Resume(void)
 	
 	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
 		
-	if (ioctl(video_fd, VIDEO_CONTINUE) < 0)
+	if (::ioctl(video_fd, VIDEO_CONTINUE) < 0)
 		perror("VIDEO_CONTINUE");
 	
 	playstate = VIDEO_PLAYING;	
@@ -372,9 +372,9 @@ int cVideo::Flush(void)
 	int ret = -1;
 
 #if defined (__sh__)
-	ret = ioctl(video_fd, VIDEO_FLUSH);
+	ret = ::ioctl(video_fd, VIDEO_FLUSH);
 #else
-	ret = ioctl(video_fd, VIDEO_CLEAR_BUFFER);
+	ret = ::ioctl(video_fd, VIDEO_CLEAR_BUFFER);
 #endif
 
 	if(ret < 0)
@@ -479,12 +479,12 @@ ntsc
 	dprintf(DEBUG_INFO, "%s:%s - video_system=%s\n", FILENAME, __FUNCTION__, aVideoSystems[video_system][0]);	
 
 #if !defined (USE_OPENGL)	
-	int fd = open("/proc/stb/video/videomode", O_RDWR);
+	int fd = ::open("/proc/stb/video/videomode", O_RDWR);
 	
 	if(fd > 0)
 	{
 		write(fd, aVideoSystems[video_system][1], strlen(aVideoSystems[video_system][1]));
-		close(fd);
+		::close(fd);
 	}
 #endif	
 
@@ -514,14 +514,14 @@ int cVideo::SetSpaceColour(int colour_space)
 
 #if !defined (USE_OPENGL)
 #if defined (__sh__)
-	int fd = open("/proc/stb/avs/0/colorformat", O_RDWR);
+	int fd = ::open("/proc/stb/avs/0/colorformat", O_RDWR);
 #else
-	int fd = open("/proc/stb/video/hdmi_colorspace", O_RDWR);
+	int fd = ::open("/proc/stb/video/hdmi_colorspace", O_RDWR);
 #endif	
 	if(fd > 0)
 	{
 		write(fd, aCOLORSPACE[colour_space], strlen(aCOLORSPACE[colour_space]));
-		close(fd);
+		::close(fd);
 	}
 #endif	
 
@@ -580,7 +580,7 @@ void cVideo::SetSyncMode(int mode)
       	
 	dprintf(DEBUG_INFO, "%s:%s - mode=%s\n", FILENAME, __FUNCTION__, aAVSYNCTYPE[mode]);	
 
-	int fd = open("/proc/stb/stream/policy/AV_SYNC", O_RDWR);
+	int fd = ::open("/proc/stb/stream/policy/AV_SYNC", O_RDWR);
 
         if (fd > 0)  
         {
@@ -594,16 +594,16 @@ void cVideo::SetSyncMode(int mode)
 	      		write(fd, av_modes[1], strlen(av_modes[1]));
 	      		clock = 1;
 	   	}
-	   	close(fd);
+	   	::close(fd);
         }
 		
         dprintf(DEBUG_INFO, "%s:%s - set master clock = %s\n", FILENAME, __FUNCTION__, master_clock[clock]);	
 
-	fd = open("/proc/stb/stream/policy/MASTER_CLOCK", O_RDWR);
+	fd = ::open("/proc/stb/stream/policy/MASTER_CLOCK", O_RDWR);
         if (fd > 0)  
         {
 	   	write(fd, master_clock[clock], strlen(master_clock[clock]));
-	   	close(fd);
+	   	::close(fd);
         }
 #endif	
 }
@@ -617,12 +617,12 @@ void cVideo::SetInput(int val)
 
 #if !defined (USE_OPENGL)
 	// avs input
-	int fd_avs_input = open("/proc/stb/avs/0/input", O_RDWR);
+	int fd_avs_input = ::open("/proc/stb/avs/0/input", O_RDWR);
 
 	if(fd_avs_input > 0)
 	{
 		write(fd_avs_input, input[val], strlen(input[val]));
-		close(fd_avs_input);
+		::close(fd_avs_input);
 	}
 #endif	
 }
@@ -636,12 +636,12 @@ void cVideo::SetStandby(int val)
 
 #if !defined (USE_OPENGL)
 	// standby
-	int fd_sb = open("/proc/stb/avs/0/standby", O_RDWR);
+	int fd_sb = ::open("/proc/stb/avs/0/standby", O_RDWR);
 	
 	if(fd_sb > 0)
 	{
 		write(fd_sb, sb[val], strlen(sb[val]));
-		close(fd_sb);
+		::close(fd_sb);
 	}
 	
 	// FIXME:hdmi output
@@ -770,12 +770,12 @@ void cVideo::SetWideScreen(int val) // 0 = auto, 1 = auto(4:3_off)
 	dprintf(DEBUG_INFO, "%s:%s - mode=%s\n", FILENAME, __FUNCTION__, wss[val]);
 
 #if !defined (USE_OPENGL)	
-	int fd = open("/proc/stb/denc/0/wss", O_RDWR);
+	int fd = ::open("/proc/stb/denc/0/wss", O_RDWR);
 	
 	if(fd > 0)
 	{
 		write(fd, wss[val], strlen(wss[val]));
-		close(fd);
+		::close(fd);
 	}
 #endif	
 }
@@ -806,12 +806,12 @@ void cVideo::SetAnalogMode(int mode)
 	dprintf(DEBUG_INFO, "%s:%s - mode=%s\n", FILENAME, __FUNCTION__, aANALOGMODE[mode]);	
 
 #if !defined (USE_OPENGL)	
-	int fd = open("/proc/stb/avs/0/colorformat", O_RDWR);
+	int fd = ::open("/proc/stb/avs/0/colorformat", O_RDWR);
 	
 	if(fd > 0)
 	{
 		write(fd, aANALOGMODE[mode], strlen(aANALOGMODE[mode]));
-		close(fd);
+		::close(fd);
 	}
 #endif	
 }
@@ -826,7 +826,7 @@ int cVideo::getBlank(void)
 
 	struct video_status status;
 
-	if( ioctl(video_fd, VIDEO_GET_STATUS, &status) < 0)
+	if( ::ioctl(video_fd, VIDEO_GET_STATUS, &status) < 0)
 		perror("VIDEO_GET_STATUS");
 
 	return status.video_blank;
@@ -840,7 +840,7 @@ int cVideo::setBlank(int enable)
 	
 	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
 
-	return ioctl(video_fd, VIDEO_SET_BLANK, enable);
+	return ::ioctl(video_fd, VIDEO_SET_BLANK, enable);
 }
 
 /* get play state */
@@ -868,7 +868,7 @@ int cVideo::setSource(int source)
 		
 	dprintf(DEBUG_INFO, "%s:%s - source=%s\n", FILENAME, __FUNCTION__, aVIDEOSTREAMSOURCE[source]);	
 	
-	return ioctl(video_fd, VIDEO_SELECT_SOURCE, source);
+	return ::ioctl(video_fd, VIDEO_SELECT_SOURCE, source);
 }
 
 int64_t cVideo::GetPTS(void)
@@ -877,7 +877,7 @@ int64_t cVideo::GetPTS(void)
 		return -1;
 	
 	int64_t pts = 0;
-	if (ioctl(video_fd, VIDEO_GET_PTS, &pts) < 0)
+	if (::ioctl(video_fd, VIDEO_GET_PTS, &pts) < 0)
 		perror("GET_PTS failed");
 	
 	return pts;
@@ -889,7 +889,7 @@ int cVideo::showSinglePic(const char *filename)
 	
 	dprintf(DEBUG_NORMAL, "showSinglePic %s\n", filename);
 	
-	int f = open(filename, O_RDONLY);
+	int f = ::open(filename, O_RDONLY);
 	
 	if (f >= 0)
 	{
@@ -940,7 +940,7 @@ int cVideo::showSinglePic(const char *filename)
 			return -1;
 		}
 		
-		close(f);
+		::close(f);
 	}
 	else
 	{

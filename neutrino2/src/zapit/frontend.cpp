@@ -163,7 +163,7 @@ bool CFrontend::Open()
 	if (fd < 0) 
 	{
 		// open frontend
-		if( (fd = open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC) ) < 0)
+		if( (fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC) ) < 0)
 		{
 			return false;
 		}
@@ -183,7 +183,7 @@ bool CFrontend::Open()
 //
 void CFrontend::getFEInfo(void)
 {
-	if(ioctl(fd, FE_GET_INFO, &info) < 0)
+	if(::ioctl(fd, FE_GET_INFO, &info) < 0)
 		perror("FE_GET_INFO");
 }
 
@@ -353,7 +353,7 @@ void CFrontend::Close()
 	
 	if (fd >= 0)
 	{
-		close(fd);
+		::close(fd);
 		fd = -1;
 	}
 	
@@ -364,7 +364,7 @@ void CFrontend::reset(void)
 {
 	if (fd >= 0)
 	{
-		close(fd);
+		::close(fd);
 		fd = -1;
 	}
 	
@@ -376,7 +376,7 @@ void CFrontend::reset(void)
 	
 	dprintf(DEBUG_INFO, "cFrontend(%d,%d) reset %s\n", feadapter, fenumber, filename);
 
-	if ((fd = open(filename, O_RDWR | O_NONBLOCK | O_SYNC)) < 0)
+	if ((fd = ::open(filename, O_RDWR | O_NONBLOCK | O_SYNC)) < 0)
 		perror(filename);
 	
 	usleep(150000);
@@ -555,7 +555,7 @@ fe_status_t CFrontend::getStatus(void) const
 { 
 	fe_status_t status;
 	
-	if( ioctl(fd, FE_READ_STATUS, &status) < 0)
+	if( ::ioctl(fd, FE_READ_STATUS, &status) < 0)
 		perror("FE_READ_STATUS");
 
 	return (fe_status_t) (status & FE_HAS_LOCK);
@@ -573,7 +573,7 @@ uint32_t CFrontend::getBitErrorRate(void) const
 {
 	uint32_t ber = 0;
 
-	if(ioctl(fd, FE_READ_BER, &ber) < 0)
+	if(::ioctl(fd, FE_READ_BER, &ber) < 0)
 	      perror("FE_READ_BER");
 
 	return ber;
@@ -583,7 +583,7 @@ uint16_t CFrontend::getSignalStrength(void) const
 {
 	uint16_t strength = 0;
 
-	if(ioctl(fd, FE_READ_SIGNAL_STRENGTH, &strength) < 0)
+	if(::ioctl(fd, FE_READ_SIGNAL_STRENGTH, &strength) < 0)
 	      perror("FE_READ_SIGNAL_STRENGHT");
 
 	return strength;
@@ -593,7 +593,7 @@ uint16_t CFrontend::getSignalNoiseRatio(void) const
 {
 	uint16_t snr = 0;
 
-	if(ioctl(fd, FE_READ_SNR, &snr) < 0)
+	if(::ioctl(fd, FE_READ_SNR, &snr) < 0)
 		perror("FE_READ_SNR");
 
 	return snr;
@@ -603,7 +603,7 @@ uint32_t CFrontend::getUncorrectedBlocks(void) const
 {
 	uint32_t blocks = 0;
 
-	if( ioctl(fd, FE_READ_UNCORRECTED_BLOCKS, &blocks) < 0)
+	if(::ioctl(fd, FE_READ_UNCORRECTED_BLOCKS, &blocks) < 0)
 		perror("FE_READ_UNCORRECTED_BLOCKS");
 
 	return blocks;
@@ -822,7 +822,7 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 
 			memset(&event, 0, sizeof(struct dvb_frontend_event));
 
-			if( ioctl(fd, FE_GET_EVENT, &event) < 0 )
+			if( ::ioctl(fd, FE_GET_EVENT, &event) < 0 )
 			{
 				perror("CFrontend::getEvent ioctl");
 				dprintf(DEBUG_INFO, "FD=%d RET=%d errno=%d\n", fd, ret, errno);
@@ -1015,7 +1015,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 	//clear
   	SETCMD(DTV_CLEAR, 0);
 
-	if (ioctl(fd, FE_SET_PROPERTY, &CmdSeq) < 0) 
+	if (::ioctl(fd, FE_SET_PROPERTY, &CmdSeq) < 0) 
 	{
 		perror("FE_SET_PROPERTY");
      	}
@@ -1034,7 +1034,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 
 	if (ret > 0) 
 	{
-		if (ioctl(fd, FE_GET_EVENT, &ev) < 0)
+		if (::ioctl(fd, FE_GET_EVENT, &ev) < 0)
 			tuned = false;
 	}
 
@@ -1108,7 +1108,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 	SETCMD(DTV_TUNE, 0);
 
 	// tune
-  	if (ioctl(fd, FE_SET_PROPERTY, &CmdSeq) < 0) 
+  	if (::ioctl(fd, FE_SET_PROPERTY, &CmdSeq) < 0) 
 	{
 		perror("FE_SET_PROPERTY");
      	}
@@ -1162,14 +1162,14 @@ void CFrontend::setFrontend(const FrontendParameters * feparams, bool nowait)
 	
 	if(ret > 0)
 	{	
-		if(ioctl(fd, FE_GET_EVENT, &event) < 0)
+		if(::ioctl(fd, FE_GET_EVENT, &event) < 0)
 			perror("FE_GET_EVENT");
 		
 		dprintf(DEBUG_NORMAL, "CFrontend::setFrontend: fe(%d:%d) CLEAR DEMOD: event status %d\n", feadapter, fenumber, event.status);
 	}
 
 	// set frontend
-	if ((ioctl(fd, FE_SET_FRONTEND, feparams)) < 0) 
+	if ((::ioctl(fd, FE_SET_FRONTEND, feparams)) < 0) 
 		perror("FE_SET_FRONTEND");
 }
 #endif
@@ -1189,14 +1189,14 @@ void CFrontend::secSetTone(const fe_sec_tone_mode_t toneMode, const uint32_t ms)
 		   where the global "highband" state is saved. So we need to fake it for
 		   unicable and still set the tone on... */
 		currentToneMode = toneMode; /* need to know polarization for unicable */
-		ioctl(fd, FE_SET_TONE, SEC_TONE_OFF); /* tone must be off except for the time
+		::ioctl(fd, FE_SET_TONE, SEC_TONE_OFF); /* tone must be off except for the time
 							  of sending commands */
 		return;
 	}
 
 	dprintf(DEBUG_INFO, "CFrontend::secSetTone: fe(%d:%d) tone %s\n", feadapter, fenumber, toneMode == SEC_TONE_ON ? "on" : "off");
 
-	if (ioctl(fd, FE_SET_TONE, toneMode) == 0) 
+	if (::ioctl(fd, FE_SET_TONE, toneMode) == 0) 
 	{
 		currentToneMode = toneMode;
 		usleep(1000 * ms);
@@ -1218,13 +1218,13 @@ void CFrontend::secSetVoltage(const fe_sec_voltage_t voltage, const uint32_t ms)
 	{
 		/* see my comment in secSetTone... */
 		currentVoltage = voltage; /* need to know polarization for unicable */
-		ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13); /* voltage must not be 18V */
+		::ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13); /* voltage must not be 18V */
 		return;
 	}
 
 	//dprintf(DEBUG_INFO, "CFrontend::secSetVoltage: fe(%d:%d) voltage %s\n", feadapter, fenumber, voltage == SEC_VOLTAGE_OFF ? "OFF" : voltage == SEC_VOLTAGE_13 ? "13" : "18");
 
-	if (ioctl(fd, FE_SET_VOLTAGE, voltage) == 0) 
+	if (::ioctl(fd, FE_SET_VOLTAGE, voltage) == 0) 
 	{
 		currentVoltage = voltage;
 		usleep(1000 * ms);	// FIXME : is needed ?
@@ -1245,7 +1245,7 @@ void CFrontend::sendDiseqcCommand(const struct dvb_diseqc_master_cmd *cmd, const
 		printf("0x%X ", cmd->msg[i]);
 	printf("\n");
 
-	if (ioctl(fd, FE_DISEQC_SEND_MASTER_CMD, cmd) == 0)
+	if (::ioctl(fd, FE_DISEQC_SEND_MASTER_CMD, cmd) == 0)
 		usleep(1000 * ms);
 }
 
@@ -1259,7 +1259,7 @@ void CFrontend::sendToneBurst(const fe_sec_mini_cmd_t burst, const uint32_t ms)
 	if ( slave || info.type != FE_QPSK) 
 		return;
 	
-	if (ioctl(fd, FE_DISEQC_SEND_BURST, burst) == 0)
+	if (::ioctl(fd, FE_DISEQC_SEND_BURST, burst) == 0)
 		usleep(1000 * ms);
 }
 
@@ -1600,10 +1600,10 @@ uint32_t CFrontend::sendEN50494TuningCommand(const uint32_t frequency, const int
 					(high_band) << 2;		/* high_band  == 0x04 */
 
 			cmd.msg[4] = t & 0xFF;
-			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_18);
+			::ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_18);
 			usleep(15 * 1000);		/* en50494 says: >4ms and < 22 ms */
 			sendDiseqcCommand(&cmd, 50);	/* en50494 says: >2ms and < 60 ms */
-			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13);
+			::ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13);
 		}
 		
 		return (t + 350) * 4000 - frequency;
@@ -1635,10 +1635,10 @@ uint32_t CFrontend::sendEN50607TuningCommand(const uint32_t frequency, const int
 				((bank & 0x03) << 2)			|	/* input 0/1/2/3 */
 				(horizontal << 1)			|	/* horizontal == 0x02 */
 				high_band;					/* high_band  == 0x01 */
-			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_18);
+			::ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_18);
 			usleep(15 * 1000);					/* en50494 says: >4ms and < 22 ms */
 			sendDiseqcCommand(&cmd, 50);				/* en50494 says: >2ms and < 60 ms */
-			ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13);
+			::ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13);
 		}
 		return ret;
 	}
@@ -1863,10 +1863,10 @@ void CFrontend::sendDiseqcStandby(void)
 			cmd.msg[1] = ((uni_scr & 0x1F) << 3);
 			cmd.msg_len = 4;
 		}
-		ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_18);
+		::ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_18);
 		usleep(15 * 1000);
 		sendDiseqcCommand(&cmd, 100);
-		ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13);
+		::ioctl(fd, FE_SET_VOLTAGE, SEC_VOLTAGE_13);
 		return;
 	}
 	

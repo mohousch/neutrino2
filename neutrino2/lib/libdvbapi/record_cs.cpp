@@ -130,7 +130,7 @@ bool cRecord::Stop(void)
 
 	if (file_fd != -1)
 	{
-		close(file_fd);
+		::close(file_fd);
 		file_fd = -1;
 	}
 	
