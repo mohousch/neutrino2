@@ -63,4 +63,4 @@ msgstr "Titel:"
 
 #: ../../audioplayer/audioplayer.cpp:574
 msgid "Track Infos"
-msgstr "Title Informationen"
+msgstr "Track Informationen"

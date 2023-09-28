@@ -75,7 +75,6 @@ void CNeutrinoApp::mainMenu(void)
 	CWidget* widget = NULL;
 	ClistBox* nMenu = NULL;
 	CMenuItem* item = NULL;
-	bool resetWidget = false;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("mainmenu");
 	
@@ -85,8 +84,6 @@ void CNeutrinoApp::mainMenu(void)
 	}
 	else
 	{
-		resetWidget = true;
-		
 		//
 		widget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		widget->name = "mainmenu";
@@ -120,25 +117,15 @@ void CNeutrinoApp::mainMenu(void)
 			  
 	// tv modus
 	item = new CMenuForwarder(_("TV / Radio"), true, NULL, this, "tvradioswitch");
-	if (resetWidget)
-	{
-		item->setIconName(NEUTRINO_ICON_BUTTON_RED);
-		item->setDirectKey(CRCInput::RC_red);
-	}
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
-	item->setHint(_(""));
+	item->setHint(_(" "));
 	item->setState(g_settings.personalize_tvradio);
 	nMenu->addItem(item);
 
 	// epg / sleeptimer
 	item = new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler(), NULL);
-	if (resetWidget)
-	{
-		item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
-		item->setDirectKey(CRCInput::RC_green);
-	}
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TIMERLIST);
-	item->setHint(_(""));
+	item->setHint(_(" "));
 	item->setState(g_settings.personalize_epgtimer);
 	nMenu->addItem(item);
 			
@@ -146,44 +133,29 @@ void CNeutrinoApp::mainMenu(void)
 	// scart
 	item = new CMenuForwarder(_("Scart Mode"), true, NULL, this, "scart");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SCART);
-	item->setHint(_(""));
+	item->setHint(_(" "));
 	item->setState(g_settings.personalize_scart);
 	nMenu->addItem(item);
 #endif
 
 	// features
 	item = new CMenuForwarder(_("Features"), true, NULL, this, "features");
-	if (resetWidget)
-	{
-		item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
-		item->setDirectKey(CRCInput::RC_yellow);
-	}
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
-	item->setHint(_(""));
+	item->setHint(_(" "));
 	item->setState(g_settings.personalize_features);
 	nMenu->addItem(item);
 		
 	// service
 	item = new CMenuForwarder(_("System"), true, NULL, new CServiceMenu(), NULL);
-	if (resetWidget)
-	{
-		item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
-		item->setDirectKey(CRCInput::RC_blue);
-	}
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
-	item->setHint(_(""));
+	item->setHint(_(" "));
 	item->setState(g_settings.personalize_system);
 	nMenu->addItem(item);
 			
 	// main setting
 	item = new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu(), NULL);
-	if (resetWidget)
-	{
-		item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-		item->setDirectKey(CRCInput::RC_setup);
-	}
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
-	item->setHint(_(""));
+	item->setHint(_(" "));
 	nMenu->addItem(item);
 		
 	// osd
@@ -194,27 +166,23 @@ void CNeutrinoApp::mainMenu(void)
 	//box info
 	item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
-	item->setHint(_(""));
+	item->setHint(_(" "));
 	item->setState(g_settings.personalize_information);
 	nMenu->addItem(item);
 
 	// power menu
 	item = new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
-	item->setHint(_(""));
+	item->setHint(_(" "));
 	item->setState(g_settings.personalize_powermenu);
 	nMenu->addItem(item);
 		
 	// mediaplayer
 	item = new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
-	item->setHint(_(""));
+	item->setHint(_(" "));
 	item->setState(g_settings.personalize_mediaplayer);
 	nMenu->addItem(item);
-	
-	//
-	//if (resetWidget)
-	//	widget->setPosition(nMenu->getWindowsPos().iX - 5, nMenu->getWindowsPos().iY - 5, nMenu->getWindowsPos().iWidth + 10, nMenu->getWindowsPos().iHeight + 10);
 
 	//
 	widget->setTimeOut(g_settings.timing_menu);
