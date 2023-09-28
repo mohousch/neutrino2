@@ -153,8 +153,10 @@ CFrontend::~CFrontend(void)
 
 bool CFrontend::Open()
 {
-	//if(!standby)
-	//	return false;
+	dprintf(DEBUG_INFO, "CFrontend::Open:\n");
+	
+	if(!standby)
+		return false;
 
 	char filename[256];
 
@@ -165,6 +167,7 @@ bool CFrontend::Open()
 		// open frontend
 		if( (fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC) ) < 0)
 		{
+			dprintf(DEBUG_INFO, "CFrontend::Open:cannot open %s\n", filename);
 			return false;
 		}
 		
@@ -183,13 +186,15 @@ bool CFrontend::Open()
 //
 void CFrontend::getFEInfo(void)
 {
+	dprintf(DEBUG_INFO, "CFrontend::getFEInfo:\n");
+	
 	if(::ioctl(fd, FE_GET_INFO, &info) < 0)
 		perror("FE_GET_INFO");
-}
+//}
 
 //
-void CFrontend::getFEDelSysMask(void)
-{
+//void CFrontend::getFEDelSysMask(void)
+//{
 	dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask:\n");
 	
 	bool legacy = true;
@@ -317,7 +322,9 @@ void CFrontend::getFEDelSysMask(void)
 
 //
 void CFrontend::Init(void)
-{	
+{
+	dprintf(DEBUG_INFO, "CFrontend::Init:\n");
+		
 	secSetVoltage(SEC_VOLTAGE_13, 15);
 	secSetTone(SEC_TONE_OFF, 15);
 	setDiseqcType(diseqcType);
@@ -325,6 +332,8 @@ void CFrontend::Init(void)
 
 void CFrontend::setMasterSlave(bool _slave)
 {
+	dprintf(DEBUG_INFO, "CFrontend::setMasterSlave:\n");
+	
 	if(slave == _slave)
 		return;
 
@@ -339,6 +348,8 @@ void CFrontend::setMasterSlave(bool _slave)
 
 void CFrontend::Close()
 {
+	dprintf(DEBUG_INFO, "CFrontend::Close:\n");
+	
 	if(standby)
 		return;
 	
@@ -362,6 +373,8 @@ void CFrontend::Close()
 
 void CFrontend::reset(void)
 {
+	dprintf(DEBUG_INFO, "CFrontend::reset:\n");
+	
 	if (fd >= 0)
 	{
 		::close(fd);
@@ -384,6 +397,8 @@ void CFrontend::reset(void)
 
 void CFrontend::setMasterSlave()
 {
+	dprintf(DEBUG_INFO, "CFrontend::setMasterSlave:\n");
+	
 	secSetVoltage(SEC_VOLTAGE_OFF, 0);
 	secSetTone(SEC_TONE_OFF, 15);
 }

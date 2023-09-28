@@ -179,7 +179,7 @@ CZapit::CZapit()
 	//
 	femap.clear();
 	//
-	standby = false;
+	standby = true;
 	retune = false;
 	//
 	currentMode = TV_MODE;
@@ -239,7 +239,7 @@ void CZapit::initFrontend()
 
 #if HAVE_DVB_API_VERSION >= 5
 				//
-				fe->getFEDelSysMask();
+				//fe->getFEDelSysMask();
 				
 				//
 				if (fe->getDelSysMasked() & DVB_S || fe->getDelSysMasked() & DVB_S2 || fe->getDelSysMasked() & DVB_S2X)
@@ -2630,6 +2630,9 @@ void CZapit::enterStandby(void)
 void CZapit::leaveStandby(void)
 { 
 	dprintf(DEBUG_NORMAL, "CZapit::leaveStandby\n");
+	
+	if (!standby)
+		return;
 	
 	standby = false;
 	

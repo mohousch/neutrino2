@@ -103,7 +103,7 @@ class CBouquetManager
 				
 				ZapitChannelList *getBouquet() 
 				{ 
-					ZapitChannelList * ret = NULL;
+					ZapitChannelList * ret = &(Owner->Bouquets[b]->tvChannels);
 					
 					if (mode == CZapit::MODE_TV)
 						ret = &(Owner->Bouquets[b]->tvChannels);
@@ -112,6 +112,7 @@ class CBouquetManager
 						
 					return ret;
 				};
+				
 			public:
 				ChannelIterator(CBouquetManager *owner, const CZapit::channelsMode Mode = CZapit::MODE_TV);
 				ChannelIterator operator ++(int);
