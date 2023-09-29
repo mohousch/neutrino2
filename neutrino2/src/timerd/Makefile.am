@@ -14,5 +14,5 @@ AM_CPPFLAGS += -fno-rtti -fno-exceptions
 
 noinst_LIBRARIES = libtimerd.a
 
-libtimerd_a_SOURCES = timerd.cpp timermanager.cpp
+libtimerd_a_SOURCES = timermanager.cpp timerd.cpp
 
