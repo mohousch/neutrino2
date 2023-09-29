@@ -135,8 +135,6 @@ class CMessageBox
 		void returnDefaultValueOnTimeout(bool returnDefault);
 };
 
-////
 int MessageBox(const char * const Caption, const char * const Text, const result_ Default, const uint32_t ShowButtons, const char * const Icon = NULL, const int Width = MENU_WIDTH, const int timeout = -1, bool returnDefaultOnTimeout = false, const int border = BORDER_NO); // UTF-8
 
 #endif
-

@@ -239,27 +239,22 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 				}
 				
 			case CRCInput::RC_home:
-			{
 				if (((*value[VALUE_R] != r_alt) || (*value[VALUE_G] != g_alt) || (*value[VALUE_B] != b_alt) || ((value[VALUE_ALPHA]) && (*(value[VALUE_ALPHA]) != a_alt)) ) &&
 						(MessageBox(name.c_str(), _("Discard changes?"), mbrYes, mbYes | mbCancel) == mbrCancel))
 					break;
 		
-				// cancel
-				if (value[VALUE_R])
-					*value[VALUE_R] = r_alt;
+					// cancel
+					if (value[VALUE_R])
+						*value[VALUE_R] = r_alt;
 
-				if (value[VALUE_G])
-					*value[VALUE_G] = g_alt;
+					if (value[VALUE_G])
+						*value[VALUE_G] = g_alt;
 
-				if (value[VALUE_B])
-					*value[VALUE_B] = b_alt;
+					if (value[VALUE_B])
+						*value[VALUE_B] = b_alt;
 
-				if (value[VALUE_ALPHA])
-					*value[VALUE_ALPHA] = a_alt;
-					
-				loop = false;	
-				break;
-			}
+					if (value[VALUE_ALPHA])
+						*value[VALUE_ALPHA] = a_alt;
 	
 			case CRCInput::RC_timeout:
 			case CRCInput::RC_ok:

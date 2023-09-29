@@ -3220,7 +3220,7 @@ bool CNeutrinoApp::getNVODMenu(ClistBox* menu)
 		if( !g_RemoteControl->are_subchannels ) 
 		{
 			char nvod_time_a[50], nvod_time_e[50], nvod_time_x[50];
-			char nvod_s[152];
+			char nvod_s[100];
 			struct  tm *tmZeit;
 
 			tmZeit = localtime(&e->startzeit);
@@ -3428,7 +3428,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 // handle msg
 int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
-	dprintf(DEBUG_DEBUG, ANSI_YELLOW"CNeutrinoApp::handleMsg: msg:(0x%lX) data:(0x%lX)\n", msg, data);
+	dprintf(DEBUG_DEBUG, ANSI_YELLOW"CNeutrinoApp::handleMsg: msg:(0x%X) data:(0x%X)\n", msg, data);
 	
 	int res = 0;
 
@@ -4161,7 +4161,7 @@ void CNeutrinoApp::realRun(void)
 	{
 		g_RCInput->getMsg(&msg, &data, 1);	// 10 secs..
 		
-		dprintf(DEBUG_DEBUG, "CNeutrinoApp::realRun: msg:(0x%lX) data:(0x%lX)\n", msg, data);		
+		dprintf(DEBUG_DEBUG, "CNeutrinoApp::realRun: msg:(0x%X) data:(0x%X)\n", msg, data);		
 
 		// mode TV/Radio/IPTV
 		if( (mode == mode_tv) || (mode == mode_radio) ) 
@@ -4364,7 +4364,7 @@ void CNeutrinoApp::realRun(void)
 						MI_MOVIE_INFO mfile;
 
 						//
-						char fname[1027];
+						char fname[255];
 						int cnt = 10*1000000;
 
 						while (!strlen(rec_filename)) 

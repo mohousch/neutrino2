@@ -79,7 +79,7 @@
 #include <record_cs.h>
 
 // defines
-#define FILENAMEBUFFERSIZE 	1048
+#define FILENAMEBUFFERSIZE 	1024
 #define MAXPIDS			64
 // globals
 char rec_filename[FILENAMEBUFFERSIZE];
@@ -118,7 +118,7 @@ CVCRControl::~CVCRControl()
 
 bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::Record: channel_id:%lx\n", eventinfo->channel_id);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::Record: channel_id:%llx\n", eventinfo->channel_id);
 	
 	int mode = CNeutrinoApp::getInstance()->getMode();
 	
@@ -158,7 +158,7 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
                 
                 if (apid_min != UINT_MAX)
                 {
-                        APIDDesc a = {(unsigned short)apid_min, apid_min_idx, false};
+                        APIDDesc a = {apid_min, apid_min_idx, false};
                         apid_list.push_back(a);
                 }
         }
@@ -166,15 +166,14 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
 	// alternate
         if (apids & TIMERD_APIDS_ALT)
         {
-        	//
                 uint32_t apid_min=UINT_MAX;
-                //uint32_t apid_min_idx = 0;
+                uint32_t apid_min_idx = 0;
                 for(unsigned int i = 0; i < allpids.APIDs.size(); i++)
                 {
                         if (allpids.APIDs[i].pid < apid_min && !allpids.APIDs[i].is_ac3)
                         {
                                 apid_min = allpids.APIDs[i].pid;
-                                //apid_min_idx = i;
+                                apid_min_idx = i;
                         }
                 }
                 
@@ -182,7 +181,7 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
                 {
                         if (allpids.APIDs[i].pid != apid_min && !allpids.APIDs[i].is_ac3)
                         {
-                                APIDDesc a = {(unsigned short)allpids.APIDs[i].pid, i, false};
+                                APIDDesc a = {allpids.APIDs[i].pid, i, false};
                                 apid_list.push_back(a);
                         }
                 }
@@ -196,7 +195,7 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
                 {
                         if (allpids.APIDs[i].is_ac3)
                         {
-                                APIDDesc a = {(unsigned short)allpids.APIDs[i].pid, i, true};
+                                APIDDesc a = {allpids.APIDs[i].pid, i, true};
                                 apid_list.push_back(a);
                                 ac3_found=true;
                         }
@@ -219,7 +218,7 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
 
                         if (apid_min != UINT_MAX)
                         {
-                                APIDDesc a = {(unsigned short)apid_min, apid_min_idx, false};
+                                APIDDesc a = {apid_min, apid_min_idx, false};
                                 apid_list.push_back(a);
                         }
                 }
@@ -242,7 +241,7 @@ void CVCRControl::getAPIDs(const t_channel_id channel_id, const unsigned char ap
                 
                 if (apid_min != UINT_MAX)
                 {
-                        APIDDesc a = {(unsigned short)apid_min, apid_min_idx, false};
+                        APIDDesc a = {apid_min, apid_min_idx, false};
                         apid_list.push_back(a);
                 }
         }
@@ -627,7 +626,7 @@ bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname)
 	
 	//FIXME:
 	char filename[512]; // UTF-8
-	char cmd[526];
+	char cmd[512];
 	std::string channel_name;
 	CEPGData epgData;
 	event_id_t epgid = 0;
@@ -673,7 +672,7 @@ bool CVCRControl::Screenshot(const t_channel_id channel_id, char * fname)
 
 		pos = strlen(filename);
 
-		if(CSectionsd::getInstance()->getActualEPGServiceKey(channel_id&0xFFFFFFFFFFFFULL, &epgData))
+		if(CSectionsd::getInstance()->getActualEPGServiceKey(channel_id&0xFFFFFFFFFFFFULL, &epgData));
 			epgid = epgData.eventID;
 
 		if(epgid != 0) 
@@ -1017,8 +1016,8 @@ stream2file_error_msg_t CVCRControl::stopRecording()
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::stopRecording\n");
 	
-	char buf[2048];
-	char buf1[2048];
+	char buf[FILENAMEBUFFERSIZE];
+	char buf1[FILENAMEBUFFERSIZE];
 	stream2file_error_msg_t ret;
 	
 	if(record) 

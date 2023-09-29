@@ -134,7 +134,7 @@ bool freesatHuffmanDecoder::loadFile(int tableid, const char *filename)
 		while ( fgets(buf,sizeof(buf),fp) != NULL )
 		{
 			from = binary = to = NULL;
-			int elems = sscanf(buf, "%a[^:]:%a[^:]:%a[^:]:", (float*)&from, (float*)&binary, (float*)&to);
+			int elems = sscanf(buf,"%a[^:]:%a[^:]:%a[^:]:", &from, &binary, &to);
 			
 			if ( elems == 3 )
 			{

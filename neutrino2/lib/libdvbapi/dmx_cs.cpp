@@ -481,7 +481,7 @@ void cDemux::getSTC(int64_t * STC)
 	stc.num =  demux_num;
 	stc.base = 1;
 	
-	if(::ioctl(demux_fd, DMX_GET_STC, &stc) < 0 )
+	if(ioctl(demux_fd, DMX_GET_STC, &stc) < 0 )
 		perror("DMX_GET_STC");
 	
 	*STC = (int64_t)stc.stc;

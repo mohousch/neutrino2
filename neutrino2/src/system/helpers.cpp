@@ -719,7 +719,7 @@ void splitString(std::string &str, std::string delim, std::vector<std::string> &
 	strlist.clear();
 	int end = 0;
 	
-	while ((end = str.find(delim, start)) != (int)std::string::npos) 
+	while ((end = str.find(delim, start)) != std::string::npos) 
 	{
 		strlist.push_back(str.substr(start, end - start));
 		start = end + delim.size();
@@ -731,7 +731,7 @@ void splitString(std::string &str, std::string delim, std::vector<std::string> &
 void splitString(std::string &str, std::string delim, std::map<std::string,std::string> &strmap, int start)
 {
 	int end = 0;
-	if ((end = str.find(delim, start)) != (int)std::string::npos) 
+	if ((end = str.find(delim, start)) != std::string::npos) 
 	{
 		strmap[str.substr(start, end - start)] = str.substr(end - start + delim.size());
 	}
@@ -1013,7 +1013,7 @@ ssize_t _writeall(int fd, const void *buf, size_t count)
 	if (fd < 0) 
 		return -1;
 		
-	while (handledcount < (ssize_t)count)
+	while (handledcount < count)
 	{
 		retval = write(fd, &ptr[handledcount], count - handledcount);
 
@@ -1043,7 +1043,7 @@ ssize_t _read(int fd, void *buf, size_t count)
 	if (fd < 0) 
 		return -1;
 		
-	while (handledcount < (ssize_t)count)
+	while (handledcount < count)
 	{
 		retval = read(fd, &ptr[handledcount], count - handledcount);
 		
@@ -1301,7 +1301,7 @@ void getTMDBInfo(const char * const text)
 				CInfoBox * infoBox = new CInfoBox(&position, text, NEUTRINO_ICON_TMDB);
 
 				infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-				infoBox->setMode(CTextBox::SCROLL);
+				infoBox->setMode(SCROLL);
 				infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
 				infoBox->exec();
 				delete infoBox;
@@ -1827,8 +1827,8 @@ bool CFileHelpers::saveFile(const CFile & file, const char *text, const int text
 
 	if ((fd = open(file.Name.c_str(), O_SYNC | O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) >= 0) 
 	{
-		//int nr;
-		write(fd, text, text_size);
+		int nr;
+		nr = write(fd, text, text_size);
 		//fdatasync(fd);
 		close(fd);
 		result = true;

@@ -23,6 +23,7 @@ noinst_LIBRARIES = libsectionsd.a
 
 libsectionsd_a_SOURCES = \
 	abstime.c \
+	sectionsd.cpp \
 	dmxapi.cpp \
 	dmx.cpp \
 	SIsections.cpp \
@@ -30,12 +31,10 @@ libsectionsd_a_SOURCES = \
 	SIutils.cpp \
 	SIlanguage.cpp \
 	edvbstring.cpp \
-	freesatv2.cpp \
-	sectionsd.cpp
+	freesatv2.cpp
 
 installdir = $(CONFIGDIR)
 
 install_DATA = \
 	freesat.t1 \
 	freesat.t2
-	

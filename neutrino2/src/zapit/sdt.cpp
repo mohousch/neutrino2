@@ -49,7 +49,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 	int secdone[255];
 	int sectotal = -1;
 
-	memset(secdone, 0, 255*sizeof(int));
+	memset(secdone, 0, 255);
 
 	cDemux * dmx = new cDemux();
 	
@@ -72,10 +72,10 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 	unsigned short original_network_id;
 	unsigned short service_id;
 	unsigned short descriptors_loop_length;
-	//unsigned short running_status;
+	unsigned short running_status;
 
-	//bool EIT_schedule_flag;
-	//bool EIT_present_following_flag;
+	bool EIT_schedule_flag;
+	bool EIT_present_following_flag;
 	bool free_CA_mode;
 
 	unsigned char filter[DMX_FILTER_SIZE];
@@ -87,7 +87,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 	filter[0] = 0x42;	// sdt tid 
 	mask[0] = 0xFF;
 
-	if ( !dmx->sectionFilter(0x11, filter, mask, 1) ) 
+	if (dmx->sectionFilter(0x11, filter, mask, 1) < 0) 
 	{
 		delete dmx;
 		return -1;
@@ -124,9 +124,9 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 		for (pos = 11; pos < section_length - 1; pos += descriptors_loop_length + 5) 
 		{
 			service_id = (buffer[pos] << 8) | buffer[pos + 1];
-			//EIT_schedule_flag = buffer[pos + 2] & 0x02;
-			//EIT_present_following_flag = buffer[pos + 2] & 0x01;
-			//running_status = buffer [pos + 3] & 0xE0;
+			EIT_schedule_flag = buffer[pos + 2] & 0x02;
+			EIT_present_following_flag = buffer[pos + 2] & 0x01;
+			running_status = buffer [pos + 3] & 0xE0;
 			free_CA_mode = buffer [pos + 3] & 0x10;
 			descriptors_loop_length = ((buffer[pos + 3] & 0x0F) << 8) | buffer[pos + 4];
 
@@ -270,11 +270,11 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 	unsigned short original_network_id;
 	unsigned short service_id;
 	unsigned short descriptors_loop_length;
-	//unsigned short running_status;
+	unsigned short running_status;
 
-	//bool EIT_schedule_flag;
-	//bool EIT_present_following_flag;
-	//bool free_CA_mode;
+	bool EIT_schedule_flag;
+	bool EIT_present_following_flag;
+	bool free_CA_mode;
 
 	unsigned char filter[DMX_FILTER_SIZE];
 	unsigned char mask[DMX_FILTER_SIZE];
@@ -303,7 +303,7 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 	memset(&mask[8], 0x00, 8);
 
 	do {
-		if (( !dmx->sectionFilter(0x11, filter, mask, 8) ) || (dmx->Read(buffer, SDT_SIZE) < 0)) 
+		if ((dmx->sectionFilter(0x11, filter, mask, 8) < 0) || (dmx->Read(buffer, SDT_SIZE) < 0)) 
 		{
 			dprintf(DEBUG_NORMAL, "parse_current_sdt: dmx read failed\n");
 			
@@ -319,10 +319,10 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 		for (pos = 11; pos < section_length - 1; pos += descriptors_loop_length + 5) 
 		{
 			service_id = (buffer[pos] << 8) | buffer[pos + 1];
-			//EIT_schedule_flag = buffer[pos + 2] & 0x02;
-			//EIT_present_following_flag = buffer[pos + 2] & 0x01;
-			//running_status = buffer [pos + 3] & 0xE0;
-			//free_CA_mode = buffer [pos + 3] & 0x10;
+			EIT_schedule_flag = buffer[pos + 2] & 0x02;
+			EIT_present_following_flag = buffer[pos + 2] & 0x01;
+			running_status = buffer [pos + 3] & 0xE0;
+			free_CA_mode = buffer [pos + 3] & 0x10;
 			descriptors_loop_length = ((buffer[pos + 3] & 0x0F) << 8) | buffer[pos + 4];
 
 			for (pos2 = pos + 5; pos2 < pos + descriptors_loop_length + 5; pos2 += buffer[pos2 + 1] + 2) 

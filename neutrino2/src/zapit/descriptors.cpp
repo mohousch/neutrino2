@@ -219,7 +219,7 @@ void CDescriptors::FlexMuxTiming_descriptor(const unsigned char * const)
 /* 0x40 */
 void CDescriptors::network_name_descriptor(const unsigned char * const buffer)
 {
-	//unsigned char tag = buffer[0];
+	unsigned char tag = buffer[0];
 	unsigned char len = buffer[1];
 	char name[255];
 	int i;
@@ -265,10 +265,10 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
 	
 	FrontendParameters feparams;
-	//uint8_t polarization;
+	uint8_t polarization;
 	stiterator tI;
 	transponder_id_t TsidOnid;
-	int modulationSystem, modulationType, /*rollOff,*/ fec_inner;
+	int modulationSystem, modulationType, rollOff, fec_inner;
 
 #if HAVE_DVB_API_VERSION >= 5
 	if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
@@ -297,7 +297,7 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 	feparams.inversion = INVERSION_AUTO;
 
 	//rollof
-	//rollOff = (buffer[8] >> 4) & 0x03; 	//alpha_0_35, alpha_0_25, alpha_0_20, alpha_auto
+	rollOff = (buffer[8] >> 4) & 0x03; 	//alpha_0_35, alpha_0_25, alpha_0_20, alpha_auto
 
 	//mod system
 	modulationSystem = (buffer[8] >> 2) & 0x01; 	// 1= DVB_S2
@@ -342,7 +342,7 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 
 	if(feparams.frequency > 15000000) 
 	{
-		printf("[NIT] Bogus TP: freq %d SR %d fec %d pol %d\n", feparams.frequency, feparams.symbol_rate, fec_inner, feparams.polarization);
+		printf("[NIT] Bogus TP: freq %d SR %d fec %d pol %d\n", feparams.frequency, feparams.symbol_rate, fec_inner, polarization);
 		return 0;
 	}
 
@@ -445,7 +445,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 	
 	bool service_wr = false;
 	uint8_t service_type = buffer[2];
-	//CZapitChannel *channel = NULL;
+	CZapitChannel *channel = NULL;
 	bool tpchange = false;
 	static transponder_id_t last_tpid = 0;
 
@@ -557,7 +557,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 		I->second.setName(serviceName);
 		I->second.setServiceType(real_type);
 		I->second.scrambled = free_ca;
-		//channel = &I->second;
+		channel = &I->second;
 	}
 
 	transponder_id_t tpid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
@@ -565,16 +565,16 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 	{
 		std::pair<std::map<t_channel_id, CZapitChannel>::iterator,bool> ret;
 		
-		dprintf(DEBUG_DEBUG, "New channel %lx:::%lx %s\n", channel_id, tpid, serviceName.c_str());
+		dprintf(DEBUG_DEBUG, "New channel %llx:::%llx %s\n", channel_id, tpid, serviceName.c_str());
 		
 		if(freq == 11758 || freq == 11778) 
-			printf("New channel %lx:::%lx %s\n", channel_id, tpid, serviceName.c_str()); //FIXME debug
+			printf("New channel %llx:::%llx %s\n", channel_id, tpid, serviceName.c_str()); //FIXME debug
 
 		ret = allchans.insert (
 				std::pair <t_channel_id, CZapitChannel> (channel_id, CZapitChannel (serviceName, service_id, transport_stream_id, original_network_id, real_type, satellitePosition, freq )));
 
 		ret.first->second.scrambled = free_ca;
-		//channel = &ret.first->second;
+		channel = &ret.first->second;
 	}
 
 #define UNKNOWN_PROVIDER_NAME "Unknown Provider"
@@ -611,7 +611,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 			dmx->Open(DMX_PSI_CHANNEL, 1024, CZapit::getInstance()->getFE(feindex));
 #endif			
 			
-			if (!(( !dmx->sectionFilter(0x10, filter, mask, 5, 10000) ) || (dmx->Read(buff, 1024) < 0))) 
+			if (!((dmx->sectionFilter(0x10, filter, mask, 5, 10000) < 0) || (dmx->Read(buff, 1024) < 0))) 
 			{
 				network_descriptors_length = ((buff[8] & 0x0F) << 8) | buff[9];
 				for (pos = 10; pos < network_descriptors_length + 10; pos += buff[pos + 1] + 2) 

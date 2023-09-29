@@ -1770,7 +1770,7 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 
 	position[menu_nr++] = 0;
 
-	//int sep_pos = menu_nr;
+	int sep_pos = menu_nr;
 
 	for(int i = 0 ; i < MI_MOVIE_BOOK_USER_MAX && menu_nr < MI_MOVIE_BOOK_USER_MAX; i++ )
 	{
@@ -2239,7 +2239,7 @@ void CMoviePlayerGui::doTMDB(MI_MOVIE_INFO& movieFile)
 		CInfoBox * infoBox = new CInfoBox(&position, movieFile.epgTitle.c_str(), NEUTRINO_ICON_TMDB);
 
 		infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-		infoBox->setMode(CTextBox::SCROLL);
+		infoBox->setMode(SCROLL);
 		infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
 		infoBox->exec();
 		delete infoBox;

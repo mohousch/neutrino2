@@ -140,7 +140,7 @@ void CServices::parseTransponders(xmlNodePtr node, t_satellite_position satellit
 		ret = transponders.insert(std::pair<transponder_id_t, transponder> ( tid, transponder(transport_stream_id, feparams, original_network_id)));
 		
 		if (ret.second == false)
-			printf("[getservices] duplicate transponder id %lx freq %d\n", tid, feparams.frequency);
+			printf("[getservices] duplicate transponder id %llx freq %d\n", tid, feparams.frequency);
 
 		// read channels that belong to the current transponder
 		parseChannels(node->xmlChildrenNode, transport_stream_id, original_network_id, satellitePosition, freq);
@@ -223,7 +223,7 @@ void CServices::parseChannels(xmlNodePtr node, const t_transport_stream_id trans
 
 		if(ret.second == false) 
 		{
-			dprintf(DEBUG_INFO, "CServices::parseChannels: duplicate channel %s id %lx freq %d (old %s at %d)\n", name.c_str(), chid, freq, ret.first->second.getName().c_str(), ret.first->second.getFreqId());
+			dprintf(DEBUG_INFO, "CServices::parseChannels: duplicate channel %s id %llx freq %d (old %s at %d)\n", name.c_str(), chid, freq, ret.first->second.getName().c_str(), ret.first->second.getFreqId());
 		} 
 		else 
 		{
@@ -823,7 +823,7 @@ void CServices::saveServices(bool tocopy)
 	
 	transponder_id_t tpid = 0;
 	FILE * fd = 0;
-	//bool updated = 0;
+	bool updated = 0;
 
 	tallchans_iterator ccI;
 	tallchans_iterator dI;
@@ -833,9 +833,9 @@ void CServices::saveServices(bool tocopy)
 	bool satdone = 0;
 	int processed = 0;
 	sat_iterator_t spos_it;
-	//updated = 0;
+	updated = 0;
 
-	dprintf(DEBUG_INFO, "[getservices] total channels: %ld\n", allchans.size());
+	dprintf(DEBUG_INFO, "[getservices] total channels: %d\n", allchans.size());
 	
 	fd = fopen(SERVICES_TMP, "w");
 	if(!fd) 

@@ -436,7 +436,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 			break;
 			
 		case NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS:
-			sprintf(buffer, "%ld", data);
+			sprintf(buffer, "%d", data);
 			paintLine(xpos2, ypos_transponder, w - 100, buffer);
 			total = data;
 	
@@ -456,7 +456,7 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 
 		case NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY:
 			freqready = 1;
-			sprintf(buffer, "%lu", data);
+			sprintf(buffer, "%u", data);
 			xpos_frequency = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(buffer, true);
 			paintLine(xpos2, ypos_frequency, xpos_frequency, buffer);
 			break;
@@ -485,22 +485,22 @@ neutrino_msg_t CScanTs::handleMsg(neutrino_msg_t msg, neutrino_msg_data_t data)
 			break;
 			
 		case NeutrinoMessages::EVT_SCAN_NUM_CHANNELS:
-			sprintf(buffer, " = %ld", data);
+			sprintf(buffer, " = %d", data);
 			paintLine(xpos1 + 3 * 72, ypos_service_numbers + mheight, width - 3 * 72 - 10, buffer);
 			break;
 			
 		case NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN:
-			sprintf(buffer, "%ld", data);
+			sprintf(buffer, "%d", data);
 			paintLine(xpos1, ypos_service_numbers + mheight, 72, buffer);
 			break;
 			
 		case NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN:
-			sprintf(buffer, "%ld", data);
+			sprintf(buffer, "%d", data);
 			paintLine(xpos1 + 72, ypos_service_numbers + mheight, 72, buffer);
 			break;
 			
 		case NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN:
-			sprintf(buffer, "%ld", data);
+			sprintf(buffer, "%d", data);
 			paintLine(xpos1 + 2 * 72, ypos_service_numbers + mheight, 72, buffer);
 			break;
 			
@@ -567,7 +567,7 @@ void CScanTs::paint(bool fortest)
 	dprintf(DEBUG_INFO, "CScanTs::paint\n");
 	
 	int ypos;
-	//int iw, ih;
+	int iw, ih;
 
 	ypos = y;
 	

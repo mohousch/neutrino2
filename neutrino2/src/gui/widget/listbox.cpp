@@ -616,7 +616,8 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 	if (hidden)
 		return y;
 
-	//
+	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
+
 	uint8_t color = COL_MENUCONTENT;
 	fb_pixel_t bgcolor = COL_MENUCONTENT_PLUS_0;
 
@@ -959,11 +960,12 @@ CMenuSeparator::CMenuSeparator(const int Type, const char * const Text)
 
 int CMenuSeparator::getHeight(void) const
 {
-	//
+	////
 	if (hidden)
 		return 0;
 	else
-		return g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;	
+	////
+	return g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;	
 }
 
 int CMenuSeparator::getWidth(void) const
@@ -1092,6 +1094,7 @@ int CMenuForwarder::getHeight(void) const
 {
 	int iw = 0;
 	int ih = 0;
+	int bpp = 0;
 	
 	if (hidden)
 		return 0;
@@ -1330,9 +1333,12 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		// icon1 (right)
 		int icon1_w = 0;
 		int icon1_h = 0;
+		int icon1_offset = 0;
 	
 		if (!icon1.empty())
 		{
+			icon1_offset = ICON_OFFSET; 
+			
 			//get icon size
 			frameBuffer->getIconSize(icon1.c_str(), &icon1_w, &icon1_h);
 			
@@ -1349,9 +1355,12 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		// icon2 (right)
 		int icon2_w = 0;
 		int icon2_h = 0;
+		int icon2_offset = 0;
 	
 		if (!icon2.empty())
 		{
+			icon2_offset = ICON_OFFSET;
+			
 			//get icon size
 			frameBuffer->getIconSize(icon2.c_str(), &icon2_w, &icon2_h);
 			
@@ -1396,6 +1405,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		// hintIcon / iconName
 		int icon_w = 0;
 		int icon_h = 0;
+		int bpp = 0;
 		int icon_offset = 0;
 
 		if(widgetType == TYPE_CLASSIC)
@@ -3188,7 +3198,7 @@ int ClistBox::swipRight()
 //
 int ClistBox::oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_INFO, "ClistBox::okKeyPressed: msg:0x%lx\n", _msg);
+	dprintf(DEBUG_INFO, "ClistBox::okKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = CMenuTarget::RETURN_EXIT;
 
@@ -3207,7 +3217,7 @@ int ClistBox::oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg)
 //
 int ClistBox::directKeyPressed(neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_INFO, "ClistBox::directKeyPressed: msg:0x%lx\n", _msg);
+	dprintf(DEBUG_INFO, "ClistBox::directKeyPressed: msg:0x%x\n", _msg);
 	
 	int ret = CMenuTarget::RETURN_NONE;
 	

@@ -179,7 +179,7 @@ bool getUTC(UTC_t * const UTC, const bool TDT)
 			
 			if (off + rem > (int)sizeof(buf))
 			{
-				dprintf(DEBUG_DEBUG, "getUTC(TOT): not enough buffer space? (%d/%ld)\n", off+rem, sizeof(buf));
+				dprintf(DEBUG_DEBUG, "getUTC(TOT): not enough buffer space? (%d/%d)\n", off+rem, sizeof(buf));
 				break;
 			}
 		}

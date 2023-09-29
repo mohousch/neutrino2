@@ -293,7 +293,7 @@ bool CFlashUpdate::selectHttpImage(void)
 bool CFlashUpdate::getUpdateImage(const std::string & version)
 {
 	CHTTPTool httpTool;
-	char * fname, dest_name[101];
+	char * fname, dest_name[100];
 	httpTool.setTitle(_("Software update"));
 
 	fname = rindex(const_cast<char *>(filename.c_str()), '/');
@@ -562,7 +562,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 	}
 	else // package 
 	{
-		char cmd[112];
+		char cmd[100];
 		const char install_sh[] = "install.sh";
 		
 		sprintf(cmd, "%s %s %s", install_sh, g_settings.update_dir, filename.c_str());

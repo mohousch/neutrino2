@@ -892,10 +892,8 @@ void CAudioPlayerGui::updateTimes(const bool force, bool paint)
 {			
 	if (m_state != CAudioPlayerGui::STOP && paint && !m_inetmode)
 	{	
-#if ENABLE_LCD
 		bool updateTotal = force;
 		bool updatePlayed = force;
-#endif
 
 		if (m_time_total != CAudioPlayer::getInstance()->getTimeTotal())
 		{
@@ -907,18 +905,13 @@ void CAudioPlayerGui::updateTimes(const bool force, bool paint)
 					m_playlist[m_current].MetaData.total_time = CAudioPlayer::getInstance()->getTimeTotal();
 			}
 
-#if ENABLE_LCD
 			updateTotal = true;
-#endif
 		}
 		
 		if ((m_time_played != CAudioPlayer::getInstance()->getTimePlayed()))
 		{
 			m_time_played = CAudioPlayer::getInstance()->getTimePlayed();
-			
-#if ENABLE_LCD
 			updatePlayed = true;
-#endif
 		}
 		
 		timeCounter->setTotalTime(m_time_total);
@@ -1404,7 +1397,7 @@ void CAudioPlayerGui::showPlaylist()
 		}
 		
 		
-		if (i == (unsigned int)m_current)
+		if (i == m_current)
 			item->setIconName(icon);
 				
 		item->setOptionInfo(duration);

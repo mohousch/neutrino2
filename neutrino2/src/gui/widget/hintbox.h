@@ -47,7 +47,6 @@
 #include <gui/widget/widget_helpers.h>
 
 
-////
 class CHintBox
 {
 	protected:
@@ -99,8 +98,6 @@ class CHintBox
 		int exec(int timeout = -1);
 };
 
-////
 int HintBox(const char * const Caption, const char * const Text, const int Width = HINTBOX_WIDTH, int timeout = -1, const char * const Icon = NEUTRINO_ICON_INFO, const int border = BORDER_NO);
 
 #endif
-

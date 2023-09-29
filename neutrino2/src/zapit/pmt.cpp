@@ -77,10 +77,10 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 	bool isAC3 = false;
 	bool isDTS = false;
 	bool isAAC = false;
-	//bool isDTSHD = false;
+	bool isDTSHD = false;
 	bool isEAC3 = false;
 	bool isAACPLUS = false;
-	//bool isLPCM = false;
+	bool isLPCM = false;
 	
 	bool descramble = false;
 	std::string description = "";
@@ -418,7 +418,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 				description = esInfo->elementary_PID;
 			
 			description += " (LPCM)";
-			//isLPCM = true;
+			isLPCM = true;
 			descramble = true;
 			if(!scan_runs)
 				channel->addAudioChannel(esInfo->elementary_PID, CZapitAudioChannel::LPCM, description, componentTag);
@@ -447,7 +447,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 				description = esInfo->elementary_PID;
 			
 			description += " (DTSHD)";
-			//isDTSHD = true;
+			isDTSHD = true;
 			descramble = true;
 			if(!scan_runs)
 				channel->addAudioChannel(esInfo->elementary_PID, CZapitAudioChannel::DTSHD, description, componentTag);
@@ -523,7 +523,7 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 	mask[3] = 0x01;
 	mask[4] = 0xFF;
 
-	if ( ( !dmx->sectionFilter(channel->getPmtPid(), filter, mask, 5) ) || (dmx->Read(buffer, PMT_SIZE) < 0) ) 
+	if ( (dmx->sectionFilter(channel->getPmtPid(), filter, mask, 5) < 0) || (dmx->Read(buffer, PMT_SIZE) < 0) ) 
 	{
 		dprintf(DEBUG_NORMAL, "CPmt::parsePMT: dmx read failed\n");
 		

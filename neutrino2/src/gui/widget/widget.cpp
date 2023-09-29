@@ -744,7 +744,7 @@ void CWidget::onPageDownKeyPressed()
 //
 void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 {
-	dprintf(DEBUG_INFO, "CWidget::onDirectKeyPressed: msg:0x%lx\n", _msg);
+	dprintf(DEBUG_INFO, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
 	
 	if(hasWidgetItem() && selected >= 0)
 	{

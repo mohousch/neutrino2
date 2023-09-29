@@ -199,6 +199,7 @@ bool CChannellogo::displayLogo(t_channel_id logo_id, int posx, int posy, int wid
 std::string CChannellogo::getLogoName(t_channel_id logo_id)
 {
 	std::string logo_name = "";
+	bool logo_ok = false;
 	
 	// check for logo/convert channelid to logo
 	std::string strLogoExt[3] = { ".png", ".jpg", ".svg" };
@@ -213,6 +214,7 @@ std::string CChannellogo::getLogoName(t_channel_id logo_id)
 
 		if(!access(logo_name.c_str(), F_OK)) 
 		{
+			logo_ok = true;
 			break;
 		}
 	}

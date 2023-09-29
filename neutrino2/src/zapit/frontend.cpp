@@ -313,7 +313,7 @@ void CFrontend::getFEInfo(void)
 	}
 	
 	//
-	if ( ( (deliverySystemMask & DVB_C) && (deliverySystemMask & DVB_T) ) || ( (deliverySystemMask & DVB_C) && (deliverySystemMask & DVB_T2) ) || ((deliverySystemMask & DVB_C) && (deliverySystemMask & DVB_T) && (deliverySystemMask & DVB_T2)) )
+	if ( (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T) || (deliverySystemMask & DVB_C && deliverySystemMask & DVB_T2) || (deliverySystemMask & DVB_C) && (deliverySystemMask & DVB_T) && (deliverySystemMask & DVB_T2) )
 	{
 		hybrid = true;
 		dprintf(DEBUG_NORMAL, "frontend: (%d:%d) %s (delsys:0x%x) isHybrid:%s\n", feadapter, fenumber, info.name, deliverySystemMask, hybrid? "true" : "false");
@@ -1417,7 +1417,7 @@ bool CFrontend::setInput(CZapitChannel * channel, bool nvod)
 
 	if (tpI == transponders.end()) 
 	{
-		dprintf(DEBUG_INFO, "CFrontend::setInput: Transponder %lx for channel %lx not found\n", ct, channel->getChannelID());
+		dprintf(DEBUG_INFO, "CFrontend::setInput: Transponder %llx for channel %llx not found\n", ct, channel->getChannelID());
 		return false;
 	}
 
@@ -1434,7 +1434,7 @@ void CFrontend::setInput(t_satellite_position satellitePosition, uint32_t freque
 
 	if (info.type == FE_QPSK)
 	{
-		dprintf(DEBUG_NORMAL, "CFrontend::setInput: fe(%d:%d) (delsys:0x%x) SatellitePosition %d -> %d\n", feadapter, fenumber, deliverySystemMask, currentSatellitePosition, satellitePosition);
+		dprintf(DEBUG_NORMAL, "CFrontend::setInput: fe(%d:%d) (delsys:0x&x) SatellitePosition %d -> %d\n", feadapter, fenumber, deliverySystemMask, currentSatellitePosition, satellitePosition);
 	}
 	else
 		dprintf(DEBUG_NORMAL, "CFrontend::setInput: fe(%d:%d)(delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask);
@@ -1476,10 +1476,10 @@ void CFrontend::setInput(t_satellite_position satellitePosition, uint32_t freque
 //
 bool CFrontend::tuneChannel(CZapitChannel * channel, bool nvod)
 {
-	dprintf(DEBUG_NORMAL, "CFrontend::tuneChannel: fe(%d:%d) delsys:0x%x tpid %lx (channel_tp:%lx nvod:%s)\n", feadapter, fenumber, deliverySystemMask, currentTransponder.TP_id, channel->getTransponderId(), nvod? "true" : "false");
+	dprintf(DEBUG_NORMAL, "CFrontend::tuneChannel: fe(%d:%d) delsys:0x%x tpid %llx (channel_tp:%llx nvod:%s)\n", feadapter, fenumber, deliverySystemMask, currentTransponder.TP_id, channel->getTransponderId(), nvod? "true" : "false");
 
 	////FIXME:TEST
-	transponder_list_t::iterator transponder = transponders.find(channel->getTransponderId());
+	transponder_list_t::iterator transponder = transponders.find(/*currentTransponder.TP_id*/channel->getTransponderId());
 
 	if (transponder == transponders.end())
 		return false;

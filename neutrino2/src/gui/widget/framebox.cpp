@@ -351,7 +351,7 @@ int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
 			}		
 
 			// caption
-			//int c_w = g_Font[captionFont]->getRenderWidth(caption);
+			int c_w = g_Font[captionFont]->getRenderWidth(caption);
 
 			g_Font[captionFont]->RenderString(window.getWindowsPos().iX + iconOffset + iw + iconOffset, window.getWindowsPos().iY + g_Font[captionFont]->getHeight() + (window.getWindowsPos().iHeight - g_Font[captionFont]->getHeight())/2, window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, caption.c_str(), color, 0, true); //
 		}
@@ -387,7 +387,7 @@ int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
 		// caption
 		if(!caption.empty() && pluginOrigName)
 		{
-			//int c_w = g_Font[captionFont]->getRenderWidth(caption);
+			int c_w = g_Font[captionFont]->getRenderWidth(caption);
 
 			g_Font[captionFont]->RenderString(window.getWindowsPos().iX + 2, window.getWindowsPos().iY + window.getWindowsPos().iHeight, window.getWindowsPos().iWidth - 4, caption.c_str(), color);
 		}
@@ -688,7 +688,7 @@ void CFrameBox::hide()
 	
 	if (hasItem())
 	{
-		for (int i = 0; i < (int)frames.size(); i++)
+		for (int i = 0; i < frames.size(); i++)
 		{
 			if (frames[i]->getMode() == FRAME_PIG)
 			{
@@ -714,7 +714,7 @@ bool CFrameBox::isSelectable(void)
 {
 	if (hasItem())
 	{
-		for (int i = 0; i < (int)frames.size(); i++)
+		for (int i = 0; i < frames.size(); i++)
 		{
 			if (frames[i]->isSelectable())
 				return true;
@@ -863,7 +863,7 @@ void CFrameBox::paintHead()
 
 		if (hbutton_count)
 		{
-			for (unsigned int i = 0; i < (unsigned int)hbutton_count; i++)
+			for (unsigned int i = 0; i < hbutton_count; i++)
 			{
 				if (!hbutton_labels[i].button.empty())
 				{
@@ -910,7 +910,7 @@ void CFrameBox::setHeadButtons(const struct button_label *_hbutton_labels, const
 	{
 		if (_hbutton_count)
 		{
-			for (unsigned int i = 0; i < (unsigned int)_hbutton_count; i++)
+			for (unsigned int i = 0; i < _hbutton_count; i++)
 			{
 				hbutton_labels.push_back(_hbutton_labels[i]);
 			}
@@ -934,7 +934,7 @@ void CFrameBox::paintFoot()
 		if (fbutton_count)
 			buttonWidth = (itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT)/fbutton_count;
 	
-		for (unsigned int i = 0; i < (unsigned int)fbutton_count; i++)
+		for (unsigned int i = 0; i < fbutton_count; i++)
 		{
 			if (!fbutton_labels[i].button.empty())
 			{
@@ -958,7 +958,7 @@ void CFrameBox::setFootButtons(const struct button_label* _fbutton_labels, const
 	{
 		if (_fbutton_count)
 		{
-			for (unsigned int i = 0; i < (unsigned int)_fbutton_count; i++)
+			for (unsigned int i = 0; i < _fbutton_count; i++)
 			{
 				fbutton_labels.push_back(_fbutton_labels[i]);
 			}

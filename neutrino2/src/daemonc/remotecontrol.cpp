@@ -78,7 +78,6 @@ CSubService::CSubService(const t_original_network_id anoriginal_network_id, cons
 
 t_channel_id CSubService::getChannelID(void) const
 {
-	/*
 	t_satellite_position  satellitePosition = 0;
 	freq_id_t freq = 0;
 
@@ -90,7 +89,6 @@ t_channel_id CSubService::getChannelID(void) const
 			freq = it->second.getFreqId();
 		}
 	}
-	*/
 	
 	return create_channel_id(service.service_id, service.original_network_id, service.transport_stream_id/*, satellitePosition, freq*/);
 }
@@ -127,7 +125,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		     (msg == NeutrinoMessages::EVT_ZAP_FAILED  ) || 
 		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD  ) ) 
 		{
-			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: timeout EVT_ZAP current_channel_id: %lx data: %lx\n", current_channel_id, *(t_channel_id *)data);
+			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: timeout EVT_ZAP current_channel_id: %llx data: %llx\n", current_channel_id, *(t_channel_id *)data);
 			
 			if ((*(t_channel_id *)data) != current_channel_id) 
 			{
@@ -171,7 +169,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		     (msg == NeutrinoMessages::EVT_ZAP_FAILED) || 
 		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD) )
 		{
-			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP current_channel_id: %lx data: %lx\n", current_channel_id, *(t_channel_id *)data);
+			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP current_channel_id: %llx data: %llx\n", current_channel_id, *(t_channel_id *)data);
 			
 			g_InfoViewer->chanready = 1;
 
@@ -219,7 +217,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			if ( (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) || 
 			     (msg == NeutrinoMessages:: EVT_ZAP_SUB_FAILED ) ) 
 			{
-				dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg EVT_ZAP_SUB current_sub_channel_id: %lx data: %lx\n", current_sub_channel_id, *(t_channel_id *)data);
+				dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg EVT_ZAP_SUB current_sub_channel_id: %llx data: %llx\n", current_sub_channel_id, *(t_channel_id *)data);
 				
 				if ((*(t_channel_id *)data) != current_sub_channel_id)
 				{
@@ -250,7 +248,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		CSectionsd::CurrentNextInfo info_CN;
 		CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel_id & 0xFFFFFFFFFFFFULL, info_CN);
 		
-		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg got  EVT_CURRENTEPG, uniqueKey: %lx chid: %lx flags: %x\n", info_CN.current_uniqueKey, current_channel_id, info_CN.flags);
+		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg got  EVT_CURRENTEPG, uniqueKey: %llx chid: %llx flags: %x\n", info_CN.current_uniqueKey, current_channel_id, info_CN.flags);
 		
 		if ((info_CN.current_uniqueKey >> 16) == (current_channel_id & 0xFFFFFFFFFFFFULL) || (info_CN.current_uniqueKey >> 16) == (current_sub_channel_id & 0xFFFFFFFFFFFFULL))
 		{
@@ -715,7 +713,7 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::st
 	current_channel_id = channel_id;
 	current_channel_name = channame;
 	
-	dprintf(DEBUG_NORMAL, ANSI_BLUE"CRemoteControl::zapToChannelID:%lx\n", channel_id);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE"CRemoteControl::zapToChannelID:%llx\n", channel_id);
 	
 	if (start_video)
 		startvideo(channel_id);

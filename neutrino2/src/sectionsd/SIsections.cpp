@@ -213,7 +213,7 @@ void SIsectionEIT::parseParentalRatingDescriptor(const uint8_t *buf, SIevent &e,
 
 void SIsectionEIT::parseExtendedEventDescriptor(const uint8_t *buf, SIevent &e, unsigned maxlen)
 {
-	struct descr_extended_event_header *evt = (struct descr_extended_event_header *)buf;
+	struct descr_extended_event_header *evt=(struct descr_extended_event_header *)buf;
 	if((evt->descriptor_length + sizeof(descr_generic_header)>maxlen) || (evt->descriptor_length<sizeof(struct descr_extended_event_header) - sizeof(descr_generic_header)))
 		return; // defekt
 		
@@ -221,7 +221,7 @@ void SIsectionEIT::parseExtendedEventDescriptor(const uint8_t *buf, SIevent &e, 
 	int tsidonid = (e.transport_stream_id << 16) | e.original_network_id;
 	int table = get_table(evt->iso_639_2_language_code_hi, evt->iso_639_2_language_code_mid, evt->iso_639_2_language_code_lo);
 
-	char lang[] = {(char)tolower(evt->iso_639_2_language_code_hi), (char)tolower(evt->iso_639_2_language_code_mid), (char)tolower(evt->iso_639_2_language_code_lo), '\0'};
+	char lang[] = {tolower(evt->iso_639_2_language_code_hi), tolower(evt->iso_639_2_language_code_mid), tolower(evt->iso_639_2_language_code_lo), '\0'};
 	std::string language(lang);
 
 	while(items < (unsigned char *)(buf + sizeof(struct descr_extended_event_header) + evt->length_of_items)) 
@@ -269,7 +269,7 @@ void SIsectionEIT::parseShortEventDescriptor(const uint8_t *buf, SIevent &e, uns
 	int tsidonid = (e.transport_stream_id << 16) | e.original_network_id;
 	int table = get_table(evt->language_code_hi, evt->language_code_mid, evt->language_code_lo);
 
-	char lang[] = {(char)tolower(evt->language_code_hi), (char)tolower(evt->language_code_mid), (char)tolower(evt->language_code_lo), '\0'};
+	char lang[] = {tolower(evt->language_code_hi), tolower(evt->language_code_mid), tolower(evt->language_code_lo), '\0'};
 	std::string language(lang);
 
 	buf += sizeof(struct descr_short_event_header);
