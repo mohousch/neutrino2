@@ -58,11 +58,14 @@
 #include <system/channellogo.h>
 
 
+//// defines
 #define TIMESCALE_W	150
 #define TIMESCALE_H	6
 
+//// globals
 static CProgressBar * timescale;
 
+//
 int findItem(std::string strItem, std::vector<std::string> & vecItems) 
 {
 	for (std::vector<std::string>::size_type nCnt = 0; nCnt < vecItems.size(); nCnt++) 
@@ -142,7 +145,7 @@ struct button_label FButtons[4] =
 {
 	{ DUMMY_ICON, " " },
 	{ DUMMY_ICON,  " "},
-	{ NEUTRINO_ICON_BUTTON_YELLOW, "Schedule"},
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule") },
 	{ DUMMY_ICON, " " }
 };
 
@@ -520,7 +523,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 
 	// 21.07.2005 - rainerk
 	// Only show info1 if it's not included in info2!
-	std::string strEpisode = "";	// Episode title in case info1 gets stripped
+	std::string strEpisode = " ";	// Episode title in case info1 gets stripped
 	if (!epgData.info1.empty()) 
 	{
 		bool bHide = false;
@@ -601,7 +604,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	if (epgData.fsk > 0)
 	{
 		char _tfsk[11];
-		sprintf (_tfsk, "FSK: ab %d", epgData.fsk );
+		sprintf (_tfsk, _("FSK: ab %d"), epgData.fsk );
 
 		epgBuffer += _tfsk;
 		epgBuffer += "\n";
@@ -1081,7 +1084,7 @@ int CEpgData::FollowScreenings(const t_channel_id /*channel_id*/, const std::str
 	char			tmpstr[256];
 
   	count = 0;
-	screening_dates = screening_nodual = "";
+	screening_dates = screening_nodual = " ";
     	curtime = time(NULL);
 
 	for ( e = evtlist.begin(); e != evtlist.end(); ++e )
@@ -1125,7 +1128,7 @@ void CEpgData::showTimerEventBar(bool _show)
 	if (recDir != NULL)
 	{
 		FButtons[0].button = NEUTRINO_ICON_BUTTON_RED;
-		FButtons[0].localename = _("record");
+		FButtons[0].localename = _("Record");
 	}
 
 	//

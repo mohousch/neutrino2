@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-09-24 22:08+0200\n"
+"POT-Creation-Date: 2023-09-29 21:45+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,6 +16,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid " "
+msgstr ""
 
 msgid "'X'=timer '-' no timer"
 msgstr "'X'=Timer '-' kein Timer"
@@ -605,22 +608,18 @@ msgstr ""
 msgid "EPG / Timer"
 msgstr ""
 
-#, fuzzy
 msgid "EPG Date"
 msgstr "Datum"
 
-#, fuzzy
 msgid "EPG Info1"
 msgstr "EPG Info1"
 
-#, fuzzy
 msgid "EPG Info2"
-msgstr "EPG Info1"
+msgstr "EPG Info2"
 
 msgid "EPG Long Description (hours)"
 msgstr ""
 
-#, fuzzy
 msgid "EPG Title"
 msgstr "EPG Titel"
 
@@ -730,6 +729,10 @@ msgid "FEC"
 msgstr ""
 
 msgid "FEC_NONE"
+msgstr ""
+
+#, c-format
+msgid "FSK: ab %d"
 msgstr ""
 
 msgid "Fashion"
@@ -847,7 +850,7 @@ msgid "Frequency:"
 msgstr ""
 
 msgid "Friday"
-msgstr ""
+msgstr "Freitag"
 
 msgid "Frontend:"
 msgstr ""
@@ -969,7 +972,6 @@ msgstr ""
 msgid "Hide"
 msgstr "Verstecken"
 
-#, fuzzy
 msgid "Hierarchy"
 msgstr "Suche"
 
@@ -1030,13 +1032,11 @@ msgstr ""
 msgid "Increase Motor Position (a)"
 msgstr ""
 
-#, fuzzy
 msgid "Info"
-msgstr "EPG Info1"
+msgstr "Info"
 
-#, fuzzy
 msgid "Infobar"
-msgstr "EPG Info1"
+msgstr "Infobar"
 
 msgid "Infobar Channel name"
 msgstr ""
@@ -1044,7 +1044,6 @@ msgstr ""
 msgid "Infobar Number"
 msgstr ""
 
-#, fuzzy
 msgid "Infobar info"
 msgstr "Information"
 
@@ -1072,9 +1071,8 @@ msgstr ""
 msgid "Is this video mode working ok ?"
 msgstr ""
 
-#, fuzzy
 msgid "Item Info"
-msgstr "EPG Info1"
+msgstr "Item Info"
 
 msgid "Jazz"
 msgstr ""
@@ -1163,7 +1161,6 @@ msgstr ""
 msgid "List Start"
 msgstr ""
 
-#, fuzzy
 msgid "Literature"
 msgstr "Erweiterungen"
 
@@ -1240,9 +1237,8 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#, fuzzy
 msgid "Menu Info"
-msgstr "EPG Info1"
+msgstr "Menu Info"
 
 msgid "Menu Text"
 msgstr ""
@@ -1284,7 +1280,7 @@ msgid "Modulation"
 msgstr ""
 
 msgid "Monday"
-msgstr ""
+msgstr "Montag"
 
 msgid "More Screenings on this Channel"
 msgstr ""
@@ -1419,7 +1415,6 @@ msgstr "Seite vor"
 msgid "Next bouquet"
 msgstr ""
 
-#, fuzzy
 msgid "Next image"
 msgstr "Seite vor"
 
@@ -1572,7 +1567,6 @@ msgstr ""
 msgid "Plugins"
 msgstr ""
 
-#, fuzzy
 msgid "Polarization"
 msgstr "Information"
 
@@ -1609,7 +1603,6 @@ msgstr ""
 msgid "Prev Page"
 msgstr "Seite zurück"
 
-#, fuzzy
 msgid "Previous image"
 msgstr "Seite zurück"
 
@@ -1874,7 +1867,6 @@ msgstr ""
 msgid "Scan SDT for updates"
 msgstr ""
 
-#, fuzzy
 msgid "Scan for services"
 msgstr "Warte auf Zeit"
 
@@ -1929,11 +1921,9 @@ msgstr "Suche"
 msgid "Search for keyword in EPG..."
 msgstr ""
 
-#, fuzzy
 msgid "Search in EPG"
 msgstr "Suche"
 
-#, fuzzy
 msgid "Search within"
 msgstr "Suche"
 
@@ -1973,11 +1963,9 @@ msgstr ""
 msgid "Server Box type"
 msgstr ""
 
-#, fuzzy
 msgid "Server IP"
 msgstr "Alle"
 
-#, fuzzy
 msgid "Servicescan"
 msgstr "Alle"
 
@@ -2129,7 +2117,7 @@ msgid "Start Search"
 msgstr "Suche"
 
 msgid "Start dir."
-msgstr ""
+msgstr "Start Ordner"
 
 msgid "Start movie from:"
 msgstr ""
@@ -2164,7 +2152,6 @@ msgstr ""
 msgid "Store Motor Position (a)"
 msgstr ""
 
-#, fuzzy
 msgid "Stream information"
 msgstr "Information"
 
@@ -2177,7 +2164,6 @@ msgstr ""
 msgid "Subchannel up"
 msgstr ""
 
-#, fuzzy
 msgid "Subservices"
 msgstr "Alle"
 
@@ -2194,7 +2180,7 @@ msgid "Subtitles not found"
 msgstr ""
 
 msgid "Sunday"
-msgstr ""
+msgstr "Sonntag"
 
 msgid "Svenska"
 msgstr ""
@@ -2283,7 +2269,6 @@ msgstr ""
 msgid "Test network now"
 msgstr ""
 
-#, fuzzy
 msgid "Test signal"
 msgstr "Power Menü"
 
@@ -2346,7 +2331,6 @@ msgstr ""
 msgid "Thursday"
 msgstr ""
 
-#, fuzzy
 msgid "Time"
 msgstr "Zeit"
 
@@ -2530,7 +2514,6 @@ msgstr ""
 msgid "Waiting for CI answer"
 msgstr ""
 
-#, fuzzy
 msgid "Waiting for time..."
 msgstr "Warte auf Zeit"
 
@@ -2949,7 +2932,7 @@ msgid "next bouquet"
 msgstr ""
 
 msgid "no"
-msgstr "EPG Info1"
+msgstr "nein"
 
 msgid "no DiSEqC"
 msgstr ""

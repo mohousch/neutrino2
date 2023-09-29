@@ -167,6 +167,12 @@ void CFrameBuffer::init(const char * const fbDevice)
 	
 	lfb = reinterpret_cast<fb_pixel_t*>(mpGLThreadObj->getOSDBuffer());
 	memset(lfb, 0x7f, screeninfo.xres * screeninfo.yres * 4);
+	
+	if (!lfb) 
+	{
+		perror("mmap");
+		goto nolfb;
+	}
 #else	
 
 	fd = open(fbDevice, O_RDWR);

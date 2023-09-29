@@ -175,86 +175,101 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 		switch ( msg ) 
 		{
 			case CRCInput::RC_down:
+			{
+				if (selected < ((value[VALUE_ALPHA]) ? 3 : 2))
 				{
-					if (selected < ((value[VALUE_ALPHA]) ? 3 : 2))
-					{
-						paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], false);
-						selected++;
-						paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
-					} 
-					else 
-					{
-						paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], false);
-						selected = 0;
-						paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
-					}
-					break;
+					paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], false);
+					
+					selected++;
+					
+					paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
+				} 
+				else 
+				{
+					paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], false);
+					
+					selected = 0;
+					
+					paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
 				}
+				break;
+			}
 				
 			case CRCInput::RC_up:
+			{
+				if (selected > 0)
 				{
-					if (selected > 0)
-					{
-						paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], false);
-						selected--;
-						paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
-					} 
-					else 
-					{
-						paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], false);
-						selected = ((value[VALUE_ALPHA]) ? 3 : 2);
-						paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
-					}
-					break;
+					paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], false);
+					
+					selected--;
+					
+					paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
+				} 
+				else 
+				{
+					paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], false);
+					
+					selected = ((value[VALUE_ALPHA]) ? 3 : 2);
+					
+					paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
 				}
+				break;
+			}
 				
 			case CRCInput::RC_right:
+			{
+				if ((*value[selected]) < 100)
 				{
-					if ((*value[selected]) < 100)
-					{
-						if ((*value[selected]) < 98)
-							(*value[selected]) += 2;
-						else
-							(*value[selected]) = 100;
+					if ((*value[selected]) < 98)
+						(*value[selected]) += 2;
+					else
+						(*value[selected]) = 100;
 
-						paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
-						setColor();
-					}
-					break;
+					paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
+					
+					setColor();
 				}
+				break;
+			}
 				
 			case CRCInput::RC_left:
+			{
+				if ((*value[selected]) > 0)
 				{
-					if ((*value[selected]) > 0)
-					{
-						if ((*value[selected]) > 2)
-							(*value[selected]) -= 2;
-						else
-							(*value[selected]) = 0;
+					if ((*value[selected]) > 2)
+						(*value[selected]) -= 2;
+					else
+						(*value[selected]) = 0;
 
-						paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
-						setColor();
-					}
-					break;
+					paintSlider(cFrameBox.iX + BORDER_LEFT, cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight*selected, value[selected], colorchooser_names[selected], iconnames[selected], true);
+					
+					setColor();
 				}
+				break;
+			}
 				
 			case CRCInput::RC_home:
+			{
 				if (((*value[VALUE_R] != r_alt) || (*value[VALUE_G] != g_alt) || (*value[VALUE_B] != b_alt) || ((value[VALUE_ALPHA]) && (*(value[VALUE_ALPHA]) != a_alt)) ) &&
 						(MessageBox(name.c_str(), _("Discard changes?"), mbrYes, mbYes | mbCancel) == mbrCancel))
 					break;
 		
-					// cancel
-					if (value[VALUE_R])
-						*value[VALUE_R] = r_alt;
+				// cancel
+				if (value[VALUE_R])
+					*value[VALUE_R] = r_alt;
 
-					if (value[VALUE_G])
-						*value[VALUE_G] = g_alt;
+				if (value[VALUE_G])
+					*value[VALUE_G] = g_alt;
 
-					if (value[VALUE_B])
-						*value[VALUE_B] = b_alt;
+				if (value[VALUE_B])
+					*value[VALUE_B] = b_alt;
 
-					if (value[VALUE_ALPHA])
-						*value[VALUE_ALPHA] = a_alt;
+				if (value[VALUE_ALPHA])
+					*value[VALUE_ALPHA] = a_alt;
+					
+				loop = false;
+				break;
+			}
 	
 			case CRCInput::RC_timeout:
 			case CRCInput::RC_ok:

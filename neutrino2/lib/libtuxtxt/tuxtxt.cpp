@@ -4383,18 +4383,18 @@ void RenderMessage(int Message)
 	const char *msg;
 
 
-/*                     00000000001111111111222222222233333333334 */
-/*                     01234567890123456789012345678901234567890 */
+	/* 00000000001111111111222222222233333333334 */
+	/* 01234567890123456789012345678901234567890 */
 	char message_1[] = "�������� www.tuxtxt.com x.xx ���������";
 	char message_2[] = "�                                   ��";
-/* 	char message_3[] = "�   suche nach Teletext-Anbietern   ��"; */
+	//char message_3[] = "�   suche nach Teletext-Anbietern   ��"; 
 	char message_4[] = "�                                   ��";
 	char message_5[] = "��������������������������������������";
 	char message_6[] = "��������������������������������������";
 
-/* 	char message_7[] = "� kein Teletext auf dem Transponder ��"; */
-/* 	char message_8[] = "�  warte auf Empfang von Seite 100  ��"; */
-/* 	char message_9[] = "�     Seite 100 existiert nicht!    ��"; */
+	//char message_7[] = "� kein Teletext auf dem Transponder ��";
+	//char message_8[] = "�  warte auf Empfang von Seite 100  ��";
+	//char message_9[] = "�     Seite 100 existiert nicht!    ��";
 
 	memcpy(&message_1[24], versioninfo, 4);
 	/* reset zoom */
@@ -5466,6 +5466,7 @@ void DecodePage()
 						boxwin = 1;
 						//background = 0x08;
 					}
+					
 /*					if (boxed)
 					{
 						int rowstart = row * 40;
@@ -5720,3 +5721,4 @@ int GetRCCode()
 	
 	return 0;
 }
+

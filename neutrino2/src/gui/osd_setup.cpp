@@ -1276,23 +1276,29 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 	if (!actionKey.empty() && actionKey != g_settings.preferred_skin)
 	{
 		// save current skin settings
-		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		//CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
+		
+		//
+		//g_settings.preferred_skin = actionKey;
+		
+		//CNeutrinoApp::getInstance()->exec(NULL, "restart");
 		
 		// load selected skin
 		std::string buffer;
 		buffer = "Loading skin ";
 		buffer += actionKey.c_str();
-		buffer += ", please be patient.";
+		buffer += ", this need GUI restart, please be patient...";
 		
 		HintBox(_("Information"), _(buffer.c_str()));
-		
-		g_settings.preferred_skin = actionKey;
 			
 		//
-		CNeutrinoApp::getInstance()->loadSkin(g_settings.preferred_skin.c_str());
-		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+		//CNeutrinoApp::getInstance()->loadSkin(g_settings.preferred_skin.c_str());
+		//CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		
-		showMenu();
+		//showMenu();
+		
+		g_settings.preferred_skin = actionKey;
+		CNeutrinoApp::getInstance()->exec(NULL, "restart");
 		
 		return CMenuTarget::RETURN_EXIT_ALL;
 	}
@@ -1454,7 +1460,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			std::string buffer;
 			buffer = "Loading skin style ";
 			buffer += actionKey.c_str();
-			buffer += ", please be patient.";
+			buffer += ", this need GUI restart, please be patient...";
 			
 			HintBox(_("Information"), _(buffer.c_str()));
 		
@@ -1476,10 +1482,12 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
 				
 			// 
-			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+			//CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 			
-			hide();
-			showMenu();
+			//hide();
+			//showMenu();
+			
+			CNeutrinoApp::getInstance()->exec(NULL, "restart");
 			
 			return CMenuTarget::RETURN_EXIT_ALL;
 		}

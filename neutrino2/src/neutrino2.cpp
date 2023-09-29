@@ -3339,6 +3339,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			saveSetup(NEUTRINO_SETTINGS_FILE);
 			
 			// save skin config
+			/*
 			std::string skinConfig = CONFIGDIR "/skins/";
 			skinConfig += g_settings.preferred_skin.c_str();
 			skinConfig += "/";
@@ -3346,6 +3347,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			skinConfig += ".config";
 				
 			saveSkinConfig(skinConfig.c_str());
+			*/
 		}
 
 		// save epg

@@ -106,5 +106,6 @@ void CLocaleManager::registerPlugin(const char *const plugin, const char * const
 	dprintf(DEBUG_DEBUG, "CLocaleManager::registerPlugin: %s\n", plugin);
 	
 	bindtextdomain(plugin, localedir);
+	bind_textdomain_codeset(plugin, "UTF8");
 }
 
