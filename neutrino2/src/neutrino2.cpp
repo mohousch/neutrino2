@@ -2935,8 +2935,6 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if (actionKey == "saveskinsettings")
 	{
-		//HintBox(_("Information"), _("Saving Skin settings now, please be patient."));
-		
 		// fetch skin config file
 		std::string skinConfig = CONFIGDIR "/skins/";
 		skinConfig += g_settings.preferred_skin.c_str();

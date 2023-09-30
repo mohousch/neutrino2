@@ -33,20 +33,22 @@
 
 //
 #if PY_VERSION_HEX >= 0x03000000
-extern "C" void PyInit__neutrino2();
+extern "C" PyObject* PyInit__neutrino2(void);
 #else
-extern "C" void init_neutrino2();
+extern "C" void init_neutrino2(void);
 #endif
 
 neutrinoPython::neutrinoPython()
 {
+#if PY_VERSION_HEX >= 0x03000000
+	PyImport_AppendInittab("_neutrino2", PyInit__neutrino2);
+#endif
+
 	Py_Initialize();
-	PyEval_InitThreads();
 
 	//
-#if PY_VERSION_HEX >= 0x03000000
-	PyInit__neutrino2();
-#else
+#if PY_VERSION_HEX < 0x03000000
+	PyEval_InitThreads();
 	init_neutrino2();
 #endif
 }

@@ -693,10 +693,12 @@ void CTimerList::paint()
 		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
 		listBox->enablePaintDate();
 		listBox->setHeadButtons(&CTimerListHeadButtons, 1);
+		listBox->setHeadLine(true, true);
 
 		// foot
 		listBox->enablePaintFoot();
 		listBox->setFootButtons(TimerListButtons, 4);
+		listBox->setFootLine(true, true);
 		
 		//
 		timerlistWidget = new CWidget(&cFrameBox);
@@ -974,9 +976,15 @@ int CTimerList::modifyTimer()
 		timerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		timerSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		
+		//
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("Modify timer"), NEUTRINO_ICON_TIMER);
+		timerSettings->setHeadLine(true, true);
+		
+		//
 		timerSettings->enablePaintFoot();
+		timerSettings->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
@@ -1050,10 +1058,16 @@ int CTimerList::modifyTimer()
 	//			
 	timerSettings_apids = new ClistBox(timerSettings_apidsWidget->getWindowsPos().iX, timerSettings_apidsWidget->getWindowsPos().iY, timerSettings_apidsWidget->getWindowsPos().iWidth, timerSettings_apidsWidget->getWindowsPos().iHeight);
 
-	timerSettings_apids->setWidgetMode(ClistBox::MODE_SETUP);				
+	timerSettings_apids->setWidgetMode(ClistBox::MODE_SETUP);
+	
+	//				
 	timerSettings_apids->enablePaintHead();
 	timerSettings_apids->setTitle(_("Audio PIDs"), NEUTRINO_ICON_TIMER);
+	timerSettings_apids->setHeadLine(true, true);
+	
+	//
 	timerSettings_apids->enablePaintFoot();
+	timerSettings_apids->setFootLine(true, true);
 						
 	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 						
@@ -1139,9 +1153,15 @@ int CTimerList::newTimer()
 		timerSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		timerSettings->setWidgetMode(ClistBox::MODE_SETUP);
+		
+		//
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("New timer"), NEUTRINO_ICON_TIMER);
+		timerSettings->setHeadLine(true, true);
+		
+		//
 		timerSettings->enablePaintFoot();
+		timerSettings->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			

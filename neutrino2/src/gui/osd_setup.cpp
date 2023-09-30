@@ -588,6 +588,9 @@ int CLanguageSettings::exec(CMenuTarget *parent, const std::string &actionKey)
 		if (!fromStartWizzard)
 		{
 			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+			hide();
+			showMenu();
+			return RETURN_EXIT_ALL;
 		}
 		
 		return CMenuTarget::RETURN_EXIT;
@@ -1304,29 +1307,23 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 	if (!actionKey.empty() && actionKey != g_settings.preferred_skin)
 	{
 		// save current skin settings
-		//CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
-		
-		//
-		//g_settings.preferred_skin = actionKey;
-		
-		//CNeutrinoApp::getInstance()->exec(NULL, "restart");
+		CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 		
 		// load selected skin
 		std::string buffer;
 		buffer = "Loading skin ";
 		buffer += actionKey.c_str();
-		buffer += ", this need GUI restart, please be patient...";
+		buffer += ", please be patient...";
 		
 		HintBox(_("Information"), _(buffer.c_str()));
 			
 		//
-		//CNeutrinoApp::getInstance()->loadSkin(g_settings.preferred_skin.c_str());
-		//CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
-		
-		//showMenu();
+		CNeutrinoApp::getInstance()->loadSkin(actionKey.c_str());
 		
 		g_settings.preferred_skin = actionKey;
-		CNeutrinoApp::getInstance()->exec(NULL, "restart");
+		
+		//CNeutrinoApp::getInstance()->exec(NULL, "savesettings"); //FIXME: ???
+		//CNeutrinoApp::getInstance()->exec(NULL, "restart");
 		
 		return CMenuTarget::RETURN_EXIT_ALL;
 	}
@@ -1492,7 +1489,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			std::string buffer;
 			buffer = "Loading skin style ";
 			buffer += actionKey.c_str();
-			buffer += ", this need GUI restart, please be patient...";
+			buffer += ", please be patient...";
 			
 			HintBox(_("Information"), _(buffer.c_str()));
 		
@@ -1514,12 +1511,9 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
 				
 			// 
-			//CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 			
-			//hide();
-			//showMenu();
-			
-			CNeutrinoApp::getInstance()->exec(NULL, "restart");
+			//CNeutrinoApp::getInstance()->exec(NULL, "restart");
 			
 			return CMenuTarget::RETURN_EXIT_ALL;
 		}
