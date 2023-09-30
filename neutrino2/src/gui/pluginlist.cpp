@@ -119,9 +119,9 @@ int CPluginList::showMenu()
 		// head
 		plist->enablePaintHead();
 		plist->setTitle(_("Plugins"), NEUTRINO_ICON_FEATURES);
-		plist->setTitleHAlign(CC_ALIGN_CENTER);
+		//plist->setTitleHAlign(CC_ALIGN_CENTER);
 		plist->enablePaintDate();
-		plist->setFormat("%d.%m.%Y %H:%M:%S");
+		plist->setFormat("%d.%m.%Y %H:%M");
 		plist->setHeadButtons(&CPluginListHeadButtons, 1);
 		
 		// foot

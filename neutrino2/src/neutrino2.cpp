@@ -220,9 +220,9 @@ CCAMMenuHandler* g_CamHandler;
 //
 bool parentallocked = false;
 //
-#ifdef USE_OPENGL
+//#ifdef USE_OPENGL
 static char **global_argv;
-#endif
+//#endif
 //user menu
 const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] = 
 {
@@ -3416,12 +3416,12 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 
 		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
 		
-#if defined (USE_OPENGL)		
+//#if defined (USE_OPENGL)		
 		if(retcode == RESTART)
 		{		  
 			execvp(global_argv[0], global_argv); // no return if successful
 		}
-#endif		
+//#endif		
 		
 		_exit(retcode);	
 	}
@@ -4774,14 +4774,14 @@ int CNeutrinoApp::run(int argc, char **argv)
 	dprintf( DEBUG_NORMAL, "CNeutrinoApp::run:\n");
 	
 	//
-#ifdef USE_OPENGL	
+//#ifdef USE_OPENGL	
 	global_argv = new char *[argc + 1];
 	
         for (int i = 0; i < argc; i++)
                 global_argv[i] = argv[i];
 	
         global_argv[argc] = NULL;
-#endif
+//#endif
 	
 	// init API
 #if defined (PLATFORM_COOLSTREAM)
