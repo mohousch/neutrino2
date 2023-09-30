@@ -111,14 +111,18 @@ void CAudioPlayerSettings::showMenu()
 		audioPlayerSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		audioPlayerSettings->enableShrinkMenu();
 		
+		//
 		audioPlayerSettings->enablePaintHead();
 		audioPlayerSettings->setTitle(_("Audioplayer settings"), NEUTRINO_ICON_AUDIOPLAYER);
+		audioPlayerSettings->setHeadLine(true, true);
 
+		//
 		audioPlayerSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		audioPlayerSettings->setFootButtons(&btn);
+		audioPlayerSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(audioPlayerSettings);

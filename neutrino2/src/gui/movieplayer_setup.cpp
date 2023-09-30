@@ -104,14 +104,18 @@ void CMoviePlayerSettings::showMenu()
 		moviePlayerSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		moviePlayerSettings->enableShrinkMenu();
 		
+		//
 		moviePlayerSettings->enablePaintHead();
 		moviePlayerSettings->setTitle(_("Movieplayer settings"), NEUTRINO_ICON_MOVIEPLAYER);
+		moviePlayerSettings->setHeadLine(true, true);
 
+		//
 		moviePlayerSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		moviePlayerSettings->setFootButtons(&btn);
+		moviePlayerSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(moviePlayerSettings);
@@ -136,5 +140,4 @@ void CMoviePlayerSettings::showMenu()
 	delete widget;
 	widget = NULL;
 }
-
 

@@ -52,16 +52,16 @@
 #include <system/debug.h>
 
 
+//// globals
 extern cVideo * videoDecoder;
 extern cAudio * audioDecoder;
-
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern CRemoteControl *g_RemoteControl;	/* neutrino.cpp */
 extern CZapit::SatelliteList satList;
 extern CFrontend * live_fe;
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 
-
+////
 CStreamInfo::CStreamInfo()
 {
 	frameBuffer = CFrameBuffer::getInstance ();
@@ -551,6 +551,7 @@ void CStreamInfo::paint(int /*mode*/)
 		head = new CHeaders(x, y, width, 40, _("Stream information"), NEUTRINO_ICON_INFO);
 		head->enablePaintDate();
 		head->setFormat("%d.%m.%Y %H:%M:%S");
+		head->setLine(true, true);
 		
 		if (paint_mode == 0) 
 			widget->addWidgetItem(head);

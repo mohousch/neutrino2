@@ -135,14 +135,18 @@ void CCAMMenuHandler::doMainMenu()
 		cammenu->setWidgetMode(ClistBox::MODE_SETUP);
 		cammenu->enableShrinkMenu();
 		
+		//
 		cammenu->enablePaintHead();
 		cammenu->setTitle(_("CI Cam settings"), NEUTRINO_ICON_CI);
+		cammenu->setHeadLine(true, true);
 
+		//
 		cammenu->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		cammenu->setFootButtons(&btn);
+		cammenu->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(cammenu);
@@ -207,11 +211,13 @@ void CCAMMenuHandler::doMainMenu()
 				//
 				tempMenu->enablePaintHead();
 				tempMenu->setTitle(str, NEUTRINO_ICON_CI);
+				tempMenu->setHeadLine(true, true);
 				
 				//
 				tempMenu->enablePaintFoot();		
 				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 				tempMenu->setFootButtons(&btn);
+				tempMenu->setFootLine(true, true);
 				
 				//
 				tempMenuWidget->addWidgetItem(tempMenu);
@@ -397,11 +403,13 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				//
 				menu->enablePaintHead();
 				menu->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);
+				menu->setHeadLine(true, true);
 				
 				//
 				menu->enablePaintFoot();		
 				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 				menu->setFootButtons(&btn);
+				menu->setFootLine(true, true);
 				
 				//
 				menuWidget->addWidgetItem(menu);

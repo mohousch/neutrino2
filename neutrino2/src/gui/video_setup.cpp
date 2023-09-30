@@ -376,14 +376,18 @@ void CVideoSettings::showMenu()
 		videoSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		videoSettings->enableShrinkMenu();
 		
+		//
 		videoSettings->enablePaintHead();
 		videoSettings->setTitle(_("Video settings"), NEUTRINO_ICON_VIDEO);
+		videoSettings->setHeadLine(true, true);
 
+		//
 		videoSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		videoSettings->setFootButtons(&btn);
+		videoSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(videoSettings);

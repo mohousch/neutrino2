@@ -131,14 +131,18 @@ void CPictureViewerSettings::showMenu()
 		PicViewerSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		PicViewerSettings->enableShrinkMenu();
 		
+		//
 		PicViewerSettings->enablePaintHead();
 		PicViewerSettings->setTitle(_("Pictureviewer settings"), NEUTRINO_ICON_PICTUREVIEWER);
+		PicViewerSettings->setHeadLine(true, true);
 
+		//
 		PicViewerSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		PicViewerSettings->setFootButtons(&btn);
+		PicViewerSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(PicViewerSettings);

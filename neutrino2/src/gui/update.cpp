@@ -173,14 +173,18 @@ bool CFlashUpdate::selectHttpImage(void)
 		SelectionWidget->setWidgetMode(ClistBox::MODE_SETUP);
 		SelectionWidget->enableShrinkMenu();
 		
+		//
 		SelectionWidget->enablePaintHead();
 		SelectionWidget->setTitle(_("Available Images/Packages"), NEUTRINO_ICON_UPDATE);
+		SelectionWidget->setHeadLine(true, true);
 
+		//
 		SelectionWidget->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		SelectionWidget->setFootButtons(&btn);
+		SelectionWidget->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(SelectionWidget);
@@ -695,14 +699,18 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 		mtdselector->setWidgetMode(ClistBox::MODE_SETUP);
 		mtdselector->enableShrinkMenu();
 		
+		//
 		mtdselector->enablePaintHead();
 		mtdselector->setTitle(_("Partition selector"), NEUTRINO_ICON_UPDATE);
+		mtdselector->setHeadLine(true, true);
 
+		//
 		mtdselector->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		mtdselector->setFootButtons(&btn);
+		mtdselector->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(mtdselector);
@@ -797,14 +805,18 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 		fileselector->setWidgetMode(ClistBox::MODE_SETUP);
 		fileselector->enableShrinkMenu();
 		
+		//
 		fileselector->enablePaintHead();
 		fileselector->setTitle(_("File selector"), NEUTRINO_ICON_UPDATE);
+		fileselector->setHeadLine(true, true);
 
+		//
 		fileselector->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		fileselector->setFootButtons(&btn);
+		fileselector->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(fileselector);
@@ -982,14 +994,18 @@ int CUpdateSettings::showMenu()
 		updateSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		updateSettings->enableShrinkMenu();
 		
+		//
 		updateSettings->enablePaintHead();
 		updateSettings->setTitle(_("Software update"), NEUTRINO_ICON_UPDATE);
+		updateSettings->setHeadLine(true, true);
 
+		//
 		updateSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		updateSettings->setFootButtons(&btn);
+		updateSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(updateSettings);
@@ -1026,14 +1042,18 @@ int CUpdateSettings::showMenu()
 		mtdexpert->setWidgetMode(ClistBox::MODE_SETUP);
 		mtdexpert->enableShrinkMenu();
 		
+		//
 		mtdexpert->enablePaintHead();
 		mtdexpert->setTitle(_("Expert functions"), NEUTRINO_ICON_UPDATE);
+		mtdexpert->setHeadLine(true, true);
 
+		//
 		mtdexpert->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		mtdexpert->setFootButtons(&btn);
+		mtdexpert->setFootLine(true, true);
 		
 		//
 		mtdexpertWidget->addWidgetItem(mtdexpert);

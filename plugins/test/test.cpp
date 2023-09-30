@@ -6557,11 +6557,11 @@ void CTestMenu::showMenu()
 
 		mainMenu->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
 		mainMenu->setHeadGradient(LIGHT2DARK);
-		mainMenu->setHeadLine(false);
+		mainMenu->setHeadLine(true, true);
 
 		mainMenu->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
 		mainMenu->setFootGradient(DARK2LIGHT);
-		mainMenu->setFootLine(false);
+		mainMenu->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			

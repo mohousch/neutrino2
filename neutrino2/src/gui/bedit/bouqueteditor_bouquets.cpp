@@ -119,12 +119,20 @@ void CBEBouquetWidget::paint()
 	}
 	else
 	{
+		//
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		
+		//
 		listBox->enablePaintHead();
+		listBox->setHeadLine(true, true);
 		listBox->enablePaintDate();
+		
+		//
+		listBox->enablePaintFoot();
+		listBox->setFootLine(true, true);
 	
+		//
 		widget->addWidgetItem(listBox);
 	}	
 
@@ -162,7 +170,7 @@ void CBEBouquetWidget::paint()
 	listBox->setHeadButtons(&HButton, 1);
 	
 	//
-	listBox->enablePaintFoot();
+	//listBox->enablePaintFoot();
 
 	struct button_label Button[4];
 	Button[0] = CBEBouquetWidgetButtons[0];

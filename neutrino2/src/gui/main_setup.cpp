@@ -105,6 +105,7 @@ void CMainSettingsMenu::showMenu(void)
 		mainSettings->enablePaintHead();
 		mainSettings->setTitle(_("Settings"), NEUTRINO_ICON_SETTINGS);
 		mainSettings->enablePaintDate();
+		mainSettings->setHeadLine(true, true);
 		
 		//
 		mainSettings->enablePaintFoot();
@@ -112,6 +113,7 @@ void CMainSettingsMenu::showMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		mainSettings->setFootButtons(&btn);
+		mainSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(mainSettings);

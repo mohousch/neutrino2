@@ -125,14 +125,18 @@ int CCECSetup::showMenu()
 		cec->setWidgetMode(ClistBox::MODE_SETUP);
 		cec->enableShrinkMenu();
 		
+		//
 		cec->enablePaintHead();
 		cec->setTitle(_("CEC Setup"), NEUTRINO_ICON_SETTINGS);
+		cec->setHeadLine(true, true);
 
+		//
 		cec->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		cec->setFootButtons(&btn);
+		cec->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(cec);

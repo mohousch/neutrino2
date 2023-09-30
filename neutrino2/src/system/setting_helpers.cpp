@@ -296,14 +296,16 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		menu->setWidgetMode(ClistBox::MODE_SETUP);
 		
-		//	
+		// 	
 		head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
+		head->setLine(true, true);
 			
 		//	
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 
 		foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 		foot->setButtons(&btn);
+		foot->setLine(true, true);
 			
 		//
 		widget->addWidgetItem(menu);

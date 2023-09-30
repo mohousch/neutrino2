@@ -479,14 +479,18 @@ int CScanSetup::showScanService()
 
 		scansetup->setWidgetMode(ClistBox::MODE_SETUP);
 		
+		//
 		scansetup->enablePaintHead();
 		scansetup->setTitle(_("Scan transponder"), NEUTRINO_ICON_SCAN);
+		scansetup->setHeadLine(true, true);
 
+		//
 		scansetup->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		scansetup->setFootButtons(&btn);
+		scansetup->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(scansetup);
@@ -2409,6 +2413,7 @@ int CTunerSetup::showMenu()
 		TunerSetup->enablePaintHead();
 		TunerSetup->setTitle(_("Servicescan"), NEUTRINO_ICON_SCAN);
 		TunerSetup->enablePaintDate();
+		TunerSetup->setHeadLine(true, true);
 		
 		//
 		TunerSetup->enablePaintFoot();
@@ -2416,6 +2421,7 @@ int CTunerSetup::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		TunerSetup->setFootButtons(&btn);
+		TunerSetup->setFootLine(true, true);
 		
 		//		
 		widget->addWidgetItem(TunerSetup);

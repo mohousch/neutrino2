@@ -123,10 +123,12 @@ int CPluginList::showMenu()
 		plist->enablePaintDate();
 		plist->setFormat("%d.%m.%Y %H:%M");
 		plist->setHeadButtons(&CPluginListHeadButtons, 1);
+		plist->setHeadLine(true, true);
 		
 		// foot
 		plist->enablePaintFoot();
 		plist->setFootButtons(CPluginListButtons, NUM_LIST_BUTTONS);
+		plist->setFootLine(true, true);
 		
 		//
 		pWidget->addWidgetItem(plist);

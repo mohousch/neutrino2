@@ -156,14 +156,18 @@ void CGeneralSettings::showMenu()
 		miscSettingsGeneral->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsGeneral->enableShrinkMenu();
 		
+		//
 		miscSettingsGeneral->enablePaintHead();
 		miscSettingsGeneral->setTitle(_("Misc settings"), NEUTRINO_ICON_MISC);
+		miscSettingsGeneral->setHeadLine(true, true);
 
+		//
 		miscSettingsGeneral->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		miscSettingsGeneral->setFootButtons(&btn);
+		miscSettingsGeneral->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(miscSettingsGeneral);
@@ -539,14 +543,18 @@ void CChannelListSettings::showMenu()
 		miscSettingsChannelList->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsChannelList->enableShrinkMenu();
 		
+		//
 		miscSettingsChannelList->enablePaintHead();
 		miscSettingsChannelList->setTitle(_("Channellist settings"), NEUTRINO_ICON_CHANNELLIST);
+		miscSettingsChannelList->setHeadLine(true, true);
 
+		//
 		miscSettingsChannelList->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		miscSettingsChannelList->setFootButtons(&btn);
+		miscSettingsChannelList->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(miscSettingsChannelList);
@@ -707,14 +715,18 @@ void CEPGSettings::showMenu()
 		miscSettingsEPG->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsEPG->enableShrinkMenu();
 		
+		//
 		miscSettingsEPG->enablePaintHead();
 		miscSettingsEPG->setTitle(_("EPG settings"), NEUTRINO_ICON_BUTTON_EPG);
+		miscSettingsEPG->setHeadLine(true, true);
 
+		//
 		miscSettingsEPG->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		miscSettingsEPG->setFootButtons(&btn);
+		miscSettingsEPG->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(miscSettingsEPG);
@@ -951,14 +963,18 @@ void CFileBrowserSettings::showMenu()
 		miscSettingsFileBrowser->setWidgetMode(ClistBox::MODE_SETUP);
 		miscSettingsFileBrowser->enableShrinkMenu();
 		
+		//
 		miscSettingsFileBrowser->enablePaintHead();
 		miscSettingsFileBrowser->setTitle(_("Filebrowser settings"), NEUTRINO_ICON_FILEBROWSER);
+		miscSettingsFileBrowser->setHeadLine(true, true);
 
+		//
 		miscSettingsFileBrowser->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		miscSettingsFileBrowser->setFootButtons(&btn);
+		miscSettingsFileBrowser->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(miscSettingsFileBrowser);

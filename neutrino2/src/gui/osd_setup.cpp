@@ -119,6 +119,7 @@ int COSDSettings::showMenu(void)
 		osdSettings->enablePaintHead();
 		osdSettings->setTitle(_("OSD"), NEUTRINO_ICON_COLORS);
 		osdSettings->enablePaintDate();
+		osdSettings->setHeadLine(true, true);
 		
 		//
 		osdSettings->enablePaintFoot();
@@ -126,6 +127,7 @@ int COSDSettings::showMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		osdSettings->setFootButtons(&btn);
+		osdSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(osdSettings);
@@ -284,6 +286,7 @@ void COSDMenuColorSettings::showMenu()
 		//
 		OSDmenuColorsSettings->enablePaintHead();
 		OSDmenuColorsSettings->setTitle(_("Menu"), NEUTRINO_ICON_COLORS);
+		OSDmenuColorsSettings->setHeadLine(true, true);
 
 		//
 		OSDmenuColorsSettings->enablePaintFoot();
@@ -291,6 +294,7 @@ void COSDMenuColorSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		OSDmenuColorsSettings->setFootButtons(&btn);
+		OSDmenuColorsSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(OSDmenuColorsSettings);
@@ -476,14 +480,18 @@ void COSDInfoBarColorSettings::showMenu()
 		OSDinfobarColorSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		OSDinfobarColorSettings->enableShrinkMenu();
 		
+		//
 		OSDinfobarColorSettings->enablePaintHead();
 		OSDinfobarColorSettings->setTitle(_("Infobar"), NEUTRINO_ICON_COLORS);
+		OSDinfobarColorSettings->setHeadLine(true, true);
 
+		//
 		OSDinfobarColorSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		OSDinfobarColorSettings->setFootButtons(&btn);
+		OSDinfobarColorSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(OSDinfobarColorSettings);
@@ -620,14 +628,18 @@ int CLanguageSettings::showMenu()
 		languageSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		languageSettings->enableShrinkMenu();
 		
+		//
 		languageSettings->enablePaintHead();
 		languageSettings->setTitle(_("Language"), NEUTRINO_ICON_LANGUAGE);
+		languageSettings->setHeadLine(true, true);
 
+		//
 		languageSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		languageSettings->setFootButtons(&btn);
+		languageSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(languageSettings);
@@ -786,14 +798,18 @@ void CFontSettings::showMenu()
 		fontSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		fontSettings->enableShrinkMenu();
 		
+		//
 		fontSettings->enablePaintHead();
 		fontSettings->setTitle(_("Font"), NEUTRINO_ICON_COLORS);
+		fontSettings->setHeadLine(true, true);
 
+		//
 		fontSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		fontSettings->setFootButtons(&btn);
+		fontSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(fontSettings);
@@ -878,14 +894,18 @@ void COSDTimingSettings::showMenu()
 		osdTimingSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		osdTimingSettings->enableShrinkMenu();
 		
+		//
 		osdTimingSettings->enablePaintHead();
 		osdTimingSettings->setTitle(_("Timing"), NEUTRINO_ICON_TIMER);
+		osdTimingSettings->setHeadLine(true, true);
 
+		//
 		osdTimingSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		osdTimingSettings->setFootButtons(&btn);
+		osdTimingSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(osdTimingSettings);
@@ -1094,14 +1114,18 @@ void COSDDiverses::showMenu()
 		osdDiverseSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		osdDiverseSettings->enableShrinkMenu();
 		
+		//
 		osdDiverseSettings->enablePaintHead();
 		osdDiverseSettings->setTitle(_("Misc settings"), NEUTRINO_ICON_COLORS);
+		osdDiverseSettings->setHeadLine(true, true);
 
+		//
 		osdDiverseSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		osdDiverseSettings->setFootButtons(&btn);
+		osdDiverseSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(osdDiverseSettings);
@@ -1197,14 +1221,18 @@ int CSkinManager::showMenu()
 		skinMenu->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		skinMenu->enableShrinkMenu();
 		
+		//
 		skinMenu->enablePaintHead();
 		skinMenu->setTitle(_("Skin Select"), NEUTRINO_ICON_COLORS);
+		skinMenu->setHeadLine(true, true);
 
+		//
 		skinMenu->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		skinMenu->setFootButtons(&btn);
+		skinMenu->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(skinMenu);
@@ -1339,14 +1367,18 @@ int CSkinSettings::showMenu()
 		skinSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		skinSettings->enableShrinkMenu();
 		
+		//
 		skinSettings->enablePaintHead();
 		skinSettings->setTitle(_("Skin Style"), NEUTRINO_ICON_COLORS);
+		skinSettings->setHeadLine(true, true);
 
+		//
 		skinSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		skinSettings->setFootButtons(&btn);
+		skinSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(skinSettings);
@@ -1543,14 +1575,18 @@ int CPersonalisation::showMenu(void)
 		personalizeSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		personalizeSettings->enableShrinkMenu();
 		
+		//
 		personalizeSettings->enablePaintHead();
 		personalizeSettings->setTitle(_("Personalisation"), NEUTRINO_ICON_COLORS);
+		personalizeSettings->setHeadLine(true, true);
 
+		//
 		personalizeSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		personalizeSettings->setFootButtons(&btn);
+		personalizeSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(personalizeSettings);

@@ -163,14 +163,18 @@ void CZapitSetup::showMenu()
 		zapit->setWidgetMode(ClistBox::MODE_SETUP);
 		zapit->enableShrinkMenu();
 		
+		//
 		zapit->enablePaintHead();
 		zapit->setTitle(_("Start Channel settings"), NEUTRINO_ICON_ZAPIT);
+		zapit->setHeadLine(true, true);
 
+		//
 		zapit->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		zapit->setFootButtons(&btn);
+		zapit->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(zapit);

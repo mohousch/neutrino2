@@ -324,7 +324,7 @@ void CColorChooser::paint()
 
 	headers.setCorner(RADIUS_SMALL);
 	headers.setGradient(LIGHT2DARK);
-	headers.setLine(false);
+	//headers.setLine(false);
 	
 	headers.paint();
 

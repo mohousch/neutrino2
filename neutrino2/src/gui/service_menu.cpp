@@ -111,6 +111,7 @@ int CServiceMenu::showMenu(void)
 		service->enablePaintHead();
 		service->setTitle(_("System"), NEUTRINO_ICON_SERVICE);
 		service->enablePaintDate();
+		service->setHeadLine(true, true);
 		
 		//
 		service->enablePaintFoot();
@@ -118,6 +119,7 @@ int CServiceMenu::showMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		service->setFootButtons(&btn);
+		service->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(service);

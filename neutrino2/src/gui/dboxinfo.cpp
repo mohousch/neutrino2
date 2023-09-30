@@ -158,6 +158,7 @@ int CDBoxInfoWidget::showInfo()
 		head = new CHeaders(Box.iX, Box.iY, Box.iWidth, 40, _("Box Info"), NEUTRINO_ICON_INFO);
 		head->enablePaintDate();
 		head->setFormat("%d.%m.%Y %H:%M:%S");
+		head->setLine(true, true);
 		
 		//
 		dboxInfoWidget->addWidgetItem(head);
@@ -548,6 +549,7 @@ int CInfoMenu::showMenu()
 		infoMenu->enablePaintHead();
 		infoMenu->setTitle(_("Information"), NEUTRINO_ICON_INFO);
 		infoMenu->enablePaintDate();
+		infoMenu->setHeadLine(true, true);
 		
 		//
 		infoMenu->enablePaintFoot();
@@ -555,6 +557,7 @@ int CInfoMenu::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		infoMenu->setFootButtons(&btn);
+		infoMenu->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(infoMenu);

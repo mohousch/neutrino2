@@ -181,14 +181,18 @@ void CRecordingSettings::showMenu()
 		recordingSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		recordingSettings->enableShrinkMenu();
 		
+		//
 		recordingSettings->enablePaintHead();
 		recordingSettings->setTitle(_("Recording settings"), NEUTRINO_ICON_RECORDING);
+		recordingSettings->setHeadLine(true, true);
 
+		//
 		recordingSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		recordingSettings->setFootButtons(&btn);
+		recordingSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(recordingSettings);

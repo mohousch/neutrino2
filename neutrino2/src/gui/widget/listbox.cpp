@@ -358,12 +358,14 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			
 			//
 			head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
+			head->setLine(true, true);
 			
 			//	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 
 			foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 			foot->setButtons(&btn);
+			foot->setLine(true, true);
 			
 			//
 			widget->addWidgetItem(menu);
@@ -773,12 +775,14 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			
 			//
 			head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
+			head->setLine(true, true);
 			
 			//	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 
 			foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 			foot->setButtons(&btn);
+			foot->setLine(true, true);
 			
 			//
 			widget->addWidgetItem(menu);

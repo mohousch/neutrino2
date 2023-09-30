@@ -3171,8 +3171,10 @@ void CNeutrinoApp::selectNVOD()
 							
 			NVODSelector->enablePaintHead();
 			NVODSelector->setTitle(g_RemoteControl->are_subchannels ? _("Select Subservice") : _("Select starting-time"), NEUTRINO_ICON_VIDEO);
+			NVODSelector->setHeadLine(true, true);
 
 			NVODSelector->enablePaintFoot();
+			NVODSelector->setFootLine(true, true);
 								
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
 								

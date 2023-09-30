@@ -211,14 +211,18 @@ void CNetworkSettings::showMenu()
 		networkSettings->setWidgetMode(ClistBox::MODE_SETUP);
 		networkSettings->enableShrinkMenu();
 		
+		//
 		networkSettings->enablePaintHead();
 		networkSettings->setTitle(_("Network settings"), NEUTRINO_ICON_NETWORK);
+		networkSettings->setHeadLine(true, true);
 
+		//
 		networkSettings->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		networkSettings->setFootButtons(&btn);
+		networkSettings->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(networkSettings);

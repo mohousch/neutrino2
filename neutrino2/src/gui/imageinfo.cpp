@@ -181,6 +181,7 @@ void CImageInfo::paint()
 		head = new CHeaders(x, y, width, 40, _("Image Info"), NEUTRINO_ICON_INFO);
 		head->enablePaintDate();
 		head->setFormat("%d.%m.%Y %H:%M:%S");
+		head->setLine(true, true);
 		
 		widget->addWidgetItem(head);
 

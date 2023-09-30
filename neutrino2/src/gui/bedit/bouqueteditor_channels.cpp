@@ -124,11 +124,18 @@ void CBEChannelWidget::paint()
 	}
 	else
 	{
+		//
 		widget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		
+		//
 		listBox->enablePaintHead();
 		listBox->enablePaintDate();
+		listBox->setHeadLine(true, true);
+		
+		//
+		listBox->enablePaintFoot();
+		listBox->setFootLine(true, true);
 		
 		widget->addWidgetItem(listBox);
 	}	
@@ -168,7 +175,7 @@ void CBEChannelWidget::paint()
 	listBox->setTitle(_(caption.c_str()), NEUTRINO_ICON_EDIT);
 
 	//
-	listBox->enablePaintFoot();
+	//listBox->enablePaintFoot();
 	listBox->setFootButtons(CBEChannelWidgetButtons, BUTTONS_COUNT);
 
 	//

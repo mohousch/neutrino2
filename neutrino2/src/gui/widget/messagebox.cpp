@@ -344,11 +344,15 @@ void CMessageBox::initFrames(void)
 	}
 	else
 	{
+		//
 		m_cBoxWindow = new CWidget(&cFrameBox);
 		headers = new CHeaders();
 		
 		m_cBoxWindow->name = "messagebox";
 		m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+		
+		//
+		headers->setLine(true, true);
 	}
 
 	m_cBoxWindow->paintMainFrame(true);
