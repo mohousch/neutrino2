@@ -302,14 +302,18 @@ int CBouquetList::doMenu()
 
 		menu->setWidgetMode(ClistBox::MODE_MENU);
 		
+		//
 		menu->enablePaintHead();
 		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
+		menu->setHeadLine(true, true);
 
+		//
 		menu->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		menu->setFootButtons(&btn);
+		menu->setFootLine(true, true);
 		
 		//
 		widget->addWidgetItem(menu);
@@ -616,6 +620,14 @@ void CBouquetList::paint()
 		bqWidget = new CWidget(&cFrameBox);
 		listBox = new ClistBox(&cFrameBox);
 		
+		//
+		listBox->enablePaintHead();
+		listBox->setHeadLine(true, true);
+		
+		//
+		listBox->enablePaintFoot();
+		listBox->setFootLine(true, true);
+		
 		bqWidget->name = "bouquetlist";
 		bqWidget->addWidgetItem(listBox);
 	}	
@@ -631,14 +643,14 @@ void CBouquetList::paint()
 	}
 
 	// head
-	listBox->enablePaintHead();
+	//listBox->enablePaintHead();
 	listBox->setTitle(name.c_str());
 	listBox->enablePaintDate();
 
 	listBox->setHeadButtons(&HButton, 1);
 
 	// foot
-	listBox->enablePaintFoot();
+	//listBox->enablePaintFoot();
 	
 	listBox->setFootButtons(CBouquetListButtons, 4);
 
@@ -648,7 +660,4 @@ void CBouquetList::paint()
 	//
 	bqWidget->paint();
 }
-
-
-
 

@@ -461,14 +461,18 @@ int CChannelList::doChannelMenu(void)
 
 		menu->setWidgetMode(ClistBox::MODE_MENU);
 		
+		//
 		menu->enablePaintHead();
 		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
+		menu->setHeadLine(true, true);
 
+		//
 		menu->enablePaintFoot();
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		menu->setFootButtons(&btn);
+		menu->setFootLine(true, true);
 		
 		//
 		mWidget->addWidgetItem(menu);
@@ -1709,9 +1713,11 @@ void CChannelList::paint()
 		//
 		head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 		head->enablePaintDate();
+		head->setLine(true, true);
 		
 		// foot
 		foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
+		foot->setLine(true, true);
 		
 		//
 		window = new CWindow(widget->getWindowsPos().iX + (widget->getWindowsPos().iWidth/3)*2, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth/3, widget->getWindowsPos().iHeight - 100);

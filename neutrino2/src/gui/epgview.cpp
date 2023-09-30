@@ -664,6 +664,10 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		// head
 		headers->enablePaintDate();
 		headers->setFormat("%d.%m.%Y %H:%M:%S");
+		headers->setLine(true, true);
+		
+		//
+		footers->setLine(true, true);
 		
 		//
 		widget->addWidgetItem(textBox);
@@ -672,10 +676,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		widget->addWidgetItem(cFollowScreeningWindow);
 	}
 	
-	//
-	//if (cFollowScreeningWindow)
-	//	cFollowScreeningBox = cFollowScreeningWindow->getWindowsPos();
-		
+	//	
 	int timeScaleWidth = TIMESCALE_W;
 	int timeScaleHeight = TIMESCALE_H;
 	
