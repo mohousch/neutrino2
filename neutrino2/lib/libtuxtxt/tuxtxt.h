@@ -192,7 +192,7 @@ const char *ObjectType[] =
 
 /* messages */
 #define ShowInfoBar     0
-//#define PageNotFound    1
+#define PageNotFound    1
 #define ShowServiceName 2
 #define NoServicesFound 3
 
@@ -562,32 +562,17 @@ const char menuatr[Menu_Height*(Menu_Width+1)] =
 	"2222222222222222222222222222222"
 };
 
-const char configmenu[][Menu_Height*(Menu_Width+1)] =
-{
-	
-};
+const char configmenu[][Menu_Height*(Menu_Width+1)] = {};
 
-const char catchmenutext[][81] =
-{
-	
-};
+const char catchmenutext[][81] = {};
 
-const char message_3[][39] =
-{
-	
-};
+const char message_3[][39] = {};
 
 const char message_3_blank[] = {};
 
-const char message_7[][39] =
-{
-	
-};
+const char message_7[][39] = {};
 
-const char message_8[][39] =
-{
-
-};
+const char message_8[][39] = {};
 
 const char message8pagecolumn[] = /* last(!) column of page to show in each language */
 {

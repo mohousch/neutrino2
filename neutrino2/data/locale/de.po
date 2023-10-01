@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-09-29 21:45+0200\n"
+"POT-Creation-Date: 2023-10-01 08:50+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,9 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid " "
-msgstr ""
 
 msgid "'X'=timer '-' no timer"
 msgstr "'X'=Timer '-' kein Timer"
@@ -1259,22 +1256,22 @@ msgid "Mini-DiSEqC"
 msgstr ""
 
 msgid "Minutes"
-msgstr ""
+msgstr "Minuten"
 
 msgid "Misc settings"
 msgstr "Diverse Einstellungen"
 
 msgid "Mo Tu We Th Fr Sa Su"
-msgstr ""
+msgstr "Mo Die Mit Do Fr Sa So"
 
 msgid "Modechange"
 msgstr ""
 
 msgid "Modify"
-msgstr ""
+msgstr "Bearbeiten"
 
 msgid "Modify timer"
-msgstr ""
+msgstr "Timer bearbeiten"
 
 msgid "Modulation"
 msgstr ""
@@ -1283,16 +1280,16 @@ msgid "Monday"
 msgstr "Montag"
 
 msgid "More Screenings on this Channel"
-msgstr ""
+msgstr "Mehr Informationen auf dem Kanal"
 
 msgid "Motor Control Settings"
 msgstr "Motor Einstellugen"
 
 msgid "Motor Setup"
-msgstr ""
+msgstr "Motor Einstellungen"
 
 msgid "Motor settings"
-msgstr "Einstellungen"
+msgstr "Motor Einstellungen"
 
 msgid "Motor sports"
 msgstr ""
@@ -1304,7 +1301,7 @@ msgid "Mount network volume"
 msgstr ""
 
 msgid "Mount options"
-msgstr ""
+msgstr "Mount Optionen"
 
 msgid "Move"
 msgstr "Bewegen"
@@ -1313,16 +1310,13 @@ msgid "Movie / Drama"
 msgstr ""
 
 msgid "Movie end:"
-msgstr ""
+msgstr "Film Ende:"
 
 msgid "Movie info"
-msgstr ""
-
-msgid "Movie start"
-msgstr ""
+msgstr "Film Info"
 
 msgid "Movie start:"
-msgstr ""
+msgstr "Film Start:"
 
 msgid "Movieplayer"
 msgstr ""
@@ -2583,294 +2577,296 @@ msgid "Zapping History Bouquet"
 msgstr ""
 
 msgid "Zapto timer in one minute"
-msgstr ""
+msgstr "Zapto-Timer in einer Minute"
 
 msgid "Zoom in"
-msgstr ""
+msgstr "Hineinzoomen"
 
 msgid "Zoom out"
-msgstr ""
+msgstr "Rauszoomen"
 
 msgid "a empty entry means no proxy"
-msgstr ""
+msgstr "ein leerer Eintrag bedeutet keinen Proxy"
 
 msgid "a empty entry means no proxy-auth"
-msgstr ""
+msgstr "Ein leerer Eintrag bedeutet keine Proxy-Authentifizierung"
 
 msgid "active"
-msgstr ""
+msgstr "aktiv"
 
 msgid "add channel to my favorites"
-msgstr "Kanal zu meine Favoriten hinzufügen"
+msgstr "Kanal zu meinen Favoriten hinzufügen"
 
 msgid "advanced"
-msgstr ""
+msgstr "fortschrittlich"
 
 msgid "all services"
-msgstr "Alle"
+msgstr "Alle Sender"
 
 msgid "alpha"
-msgstr ""
+msgstr "Alpha"
 
 msgid "amount of timer repeats"
-msgstr ""
+msgstr "Anzahl der Timer-Wiederholungen"
 
 msgid "angular"
-msgstr ""
+msgstr "eckig"
 
 msgid "approx. 1 minute back"
-msgstr ""
+msgstr "ca. 1 Minute zurück"
 
 msgid "approx. 10 minutes back"
-msgstr ""
+msgstr "ca. 10 Minuten zurück"
 
 msgid "approx. 10 seconds back"
-msgstr ""
+msgstr "ca. 10 Sekunden zurück"
 
 msgid "approx. 5 minutes back"
-msgstr ""
+msgstr "ca. 5 Minuten zurück"
 
 msgid "audio master"
-msgstr ""
+msgstr "Audio-Master"
 
 msgid "back"
-msgstr ""
+msgstr "zurück"
 
 msgid "be Cached? (Set in hours)"
-msgstr ""
+msgstr "zwischengespeichert werden? (Eingestellt in Stunden)"
 
 msgid "biweekly"
-msgstr ""
+msgstr "zweiwöchentlich"
 
 msgid "blue"
-msgstr ""
+msgstr "Blau"
 
 msgid "bottom left"
-msgstr ""
+msgstr "unten links"
 
 msgid "bottom right"
-msgstr ""
+msgstr "unten rechts"
 
 msgid "by bouquet"
-msgstr ""
+msgstr "per Bouquet"
 
 msgid ""
 "by manual package update version checks are currently not supported.\n"
 "Are you sure that you wish to install this package?"
 msgstr ""
+"Durch manuelle Paketaktualisierungen werden Versionsprüfungen derzeit nicht unterstützt.\n"
+"Sind Sie sicher, dass Sie dieses Paket installieren möchten?"
 
 msgid "by page"
-msgstr ""
+msgstr "pro Seite"
 
 msgid "cable"
-msgstr ""
+msgstr "Kabel"
 
 msgid "can't get update list"
-msgstr ""
+msgstr "Aktualisierungsliste kann nicht abgerufen werden"
 
 msgid "can't open file"
-msgstr ""
+msgstr "Datei kann nicht geöffnet werden"
 
 msgid "can't open mtd-device"
-msgstr ""
+msgstr "mtd-device kann nicht geöffnet werden"
 
 msgid "caps / no caps"
-msgstr ""
+msgstr "Große / klein Schreibung"
 
 msgid "center"
-msgstr ""
+msgstr "Center"
 
 msgid "channel"
-msgstr ""
+msgstr "Kanal"
 
 msgid "channel (short) / sep.-line / title"
-msgstr ""
+msgstr "Kanal (kurz) / Sep.-Zeile / Titel"
 
 msgid "channel (short) / title"
-msgstr ""
+msgstr "Kanal (kurz) / Titel"
 
 msgid "channel / sep.-line / title"
-msgstr ""
+msgstr "Kanal / Sep.-Zeile / Titel"
 
 msgid "channel / title"
-msgstr ""
+msgstr "Kanal / Titel"
 
 msgid "checking version"
-msgstr ""
+msgstr "Version prüfen"
 
 msgid "choose Skin Style."
-msgstr ""
+msgstr "Wählen Sie Skin Still"
 
 msgid "clear all"
-msgstr ""
+msgstr "alles löschen"
 
 msgid "colored"
-msgstr ""
+msgstr "farbig"
 
 msgid "create satellite bouquets"
-msgstr ""
+msgstr "Erstellen Sie Satelliten Bouquets"
 
 msgid "create screenshot?"
-msgstr ""
+msgstr "Screenshot erstellen?"
 
 msgid "daily"
-msgstr ""
+msgstr "täglich"
 
 msgid "dark to light"
-msgstr ""
+msgstr "dunkel bis hell"
 
 msgid "dark to light to dark"
-msgstr ""
+msgstr "dunkel über hell bis dunkel"
 
 msgid "default audio streams"
-msgstr ""
+msgstr "Standard-Audiostreams"
 
 msgid "default center"
-msgstr ""
+msgstr "Standardzentrum"
 
 msgid "delete"
 msgstr "löschen"
 
 msgid "direct connected"
-msgstr ""
+msgstr "direkt verbunden"
 
 msgid "directory already mounted"
-msgstr ""
+msgstr "Verzeichnis bereits gemountet"
 
 msgid "directory/share"
-msgstr ""
+msgstr "Verzeichnis/Freigabe"
 
 msgid "don't care"
-msgstr ""
+msgstr "ist mir egal"
 
 msgid "downmix"
-msgstr ""
+msgstr "Downmix"
 
 msgid "enter proxyserver name or ip, use host:port"
-msgstr ""
+msgstr "Geben Sie den Namen oder die IP des Proxyservers ein und verwenden Sie host:port"
 
 msgid "enter the proxyserver password"
-msgstr ""
+msgstr "Geben Sie das Proxyserver-Passwort ein"
 
 msgid "enter the proxyserver username"
-msgstr ""
+msgstr "Geben Sie den Proxyserver-Benutzernamen ein"
 
 msgid "erase all"
-msgstr ""
+msgstr "alles löschen"
 
 msgid "erasing flash"
-msgstr ""
+msgstr "Flash Speicher löschen"
 
 msgid "erasure of flash failed"
-msgstr ""
+msgstr "Das Löschen des Flash-Speichers ist fehlgeschlagen"
 
 msgid "error umounting volume"
-msgstr ""
+msgstr "Fehler beim Mounten des Volumes"
 
 msgid "fast"
-msgstr ""
+msgstr "schnell"
 
 msgid "filesystem type not supported"
-msgstr ""
+msgstr "Dateisystemtyp wird nicht unterstützt"
 
 msgid "fourweekly"
-msgstr ""
+msgstr "vierwöchentlich"
 
 msgid "from 12 years up"
-msgstr ""
+msgstr "ab 12 Jahren"
 
 msgid "from 16 years up"
-msgstr ""
+msgstr "ab 16 Jahren"
 
 msgid "from 18 years up"
-msgstr ""
+msgstr "ab 18 Jahren"
 
 msgid "fullscreen"
-msgstr ""
+msgstr "Vollbild"
 
 msgid "getting update list"
-msgstr ""
+msgstr "Aktualisierungsliste abrufen"
 
 msgid "goto end"
-msgstr ""
+msgstr "Gehe zum Ende"
 
 msgid "goto middle"
-msgstr ""
+msgstr "Gehe zur Mitte"
 
 msgid "goto start"
-msgstr ""
+msgstr "Gehe zum Anfang"
 
 msgid "green"
-msgstr ""
+msgstr "Grün"
 
 msgid "hidden"
-msgstr ""
+msgstr "versteckt"
 
 msgid "higher center"
-msgstr ""
+msgstr "höhere Mitte"
 
 msgid "horizontal"
-msgstr ""
+msgstr "horizontal"
 
 msgid "image has errors"
-msgstr ""
+msgstr "Image hat Fehler"
 
 msgid "inactive"
-msgstr ""
+msgstr "inaktiv"
 
 msgid "internet Radio"
-msgstr ""
+msgstr "Internetradio"
 
 msgid "is not installed please install again."
-msgstr ""
+msgstr "nicht installiert ist, bitte erneut installieren."
 
 msgid "is reachable (ping)"
-msgstr ""
+msgstr "ist erreichbar (Ping)"
 
 msgid "is unreachable"
-msgstr ""
+msgstr "ist unerreichbar"
 
 msgid "is unreachable (host or protocol error)"
-msgstr ""
+msgstr "ist nicht erreichbar (Host- oder Protokollfehler)"
 
 msgid "is unreachable (socket error)"
-msgstr ""
+msgstr "ist nicht erreichbar (Socket-Fehler)"
 
 msgid "italian"
-msgstr ""
+msgstr "Italienisch"
 
 msgid "jump backwards"
-msgstr ""
+msgstr "nach hinten springen"
 
 msgid "jump ff"
-msgstr ""
+msgstr "springe ff"
 
 msgid "jump forwards"
-msgstr ""
+msgstr "nach vorne springen"
 
 msgid "jump prev"
-msgstr ""
+msgstr "springen vorh"
 
 msgid "large"
-msgstr ""
+msgstr "groß"
 
 msgid "leave current"
-msgstr ""
+msgstr "aktuell belassen"
 
 msgid "left"
-msgstr ""
+msgstr "links"
 
 msgid "light to dark"
-msgstr ""
+msgstr "hell bis dunkel"
 
 msgid "light to dark to light"
-msgstr ""
+msgstr "hell über dunkel bis hell"
 
 msgid "local dir"
-msgstr ""
+msgstr "lokales Verzeichnis"
 
 msgid "locked"
-msgstr ""
+msgstr "gesperrt"
 
 msgid "logos Dir"
 msgstr "Sender Logos Ordner"
@@ -2882,216 +2878,218 @@ msgid ""
 "manual flash update version checks are currently not supported.\n"
 "Are you sure that you wish to install this image?"
 msgstr ""
+"Manuelle Überprüfungen der Flash-Update-Version werden derzeit nicht unterstützt.\n"
+"Sind Sie sicher, dass Sie dieses Image installieren möchten?"
 
 msgid "middle"
-msgstr ""
+msgstr "Mitte"
 
 msgid "milliseconds"
-msgstr ""
+msgstr "Millisekunden"
 
 msgid "mono left"
-msgstr ""
+msgstr "mono Links"
 
 msgid "mono right"
-msgstr ""
+msgstr "mono Recht"
 
 msgid "monochrom"
 msgstr ""
 
 msgid "monthly"
-msgstr ""
+msgstr "monatlich"
 
 msgid "mount"
-msgstr ""
+msgstr "Mount"
 
 msgid "mount error"
-msgstr ""
+msgstr "Mount-Fehler"
 
 msgid "mount error: timeout"
-msgstr ""
+msgstr "Mountfehler: Zeitüberschreitung"
 
 msgid "mount now"
-msgstr ""
+msgstr "Jetzt mounten"
 
 msgid "mount on startup"
-msgstr ""
+msgstr "Beim Start mounten"
 
 msgid "mount successful"
-msgstr ""
+msgstr "Mount erfolgreich"
 
 msgid "moving speed (10 = 1deg/sec)"
-msgstr ""
+msgstr "Bewegungsgeschwindigkeit (10 = 1 Grad/Sek.)"
 
 msgid "need reboot or epg-reset"
-msgstr ""
+msgstr "brauche einen Neustart oder einen EPG-Reset"
 
 msgid "never"
-msgstr "nie"
+msgstr "niemals"
 
 msgid "next bouquet"
-msgstr ""
+msgstr "nächster Bouquet"
 
 msgid "no"
 msgstr "nein"
 
 msgid "no DiSEqC"
-msgstr ""
+msgstr "kein DiSEqC"
 
 msgid "no epg found"
-msgstr ""
+msgstr "keine EPG gefunden"
 
 msgid "no gradient"
 msgstr ""
 
 msgid "none"
-msgstr ""
+msgstr "keiner"
 
 msgid "normal Brightness"
-msgstr ""
+msgstr "normale Helligkeit"
 
 msgid "normaly 50000, 0 to disable limit"
-msgstr ""
+msgstr "normalerweise 50000, 0 zum Deaktivieren des Grenzwerts"
 
 msgid "not available"
-msgstr ""
+msgstr "Nicht verfügbar"
 
 msgid "not connected"
-msgstr ""
+msgstr "nicht verbunden"
 
 msgid "off"
-msgstr ""
+msgstr "Aus"
 
 msgid "on"
-msgstr ""
+msgstr "An"
 
 msgid "on broadcasted lock"
-msgstr ""
+msgstr "auf Rundfunksperre"
 
 msgid "on locked bouquets"
-msgstr ""
+msgstr "auf verschlossenen Bouquets"
 
 msgid "on weekdays"
-msgstr ""
+msgstr "an Wochentagen"
 
 msgid "once"
-msgstr ""
+msgstr "einmal"
 
 msgid "only radio"
-msgstr ""
+msgstr "nur Radio"
 
 msgid "only tv"
-msgstr ""
+msgstr "nur Fernseher"
 
 msgid "package has errors"
-msgstr ""
+msgstr "Paket enthält Fehler"
 
 msgid "package install failed"
-msgstr ""
+msgstr "Die Paketinstallation ist fehlgeschlagen"
 
 msgid "page down"
-msgstr ""
+msgstr "Seite nach unten"
 
 msgid "page up"
-msgstr ""
+msgstr "Seite nach oben"
 
 msgid "passthrough"
-msgstr ""
+msgstr "Passthrough"
 
 msgid "password"
-msgstr ""
+msgstr "Passwort"
 
 msgid "playtime"
-msgstr ""
+msgstr "Spielzeit"
 
 msgid "prev bouquet"
-msgstr ""
+msgstr "vorheriger Bouquet"
 
 msgid "programming flash"
-msgstr ""
+msgstr "Programmiere Flash"
 
 msgid "purple"
-msgstr ""
+msgstr "lila"
 
 msgid "ready"
 msgstr "bereit"
 
 msgid "record"
-msgstr "aufnahme"
+msgstr "aufzeichnen"
 
 msgid "record default audio streams"
-msgstr ""
+msgstr "Standard-Audiostreams aufzeichnen"
 
 msgid "red"
 msgstr "rot"
 
 msgid "remount"
-msgstr ""
+msgstr "wieder mounten"
 
 msgid "repeats"
-msgstr ""
+msgstr "wiederholt"
 
 msgid "sat"
 msgstr ""
 
 msgid "save play list"
-msgstr "Play Liste speichern"
+msgstr "Playlist speichern"
 
 msgid "save playlist"
-msgstr ""
+msgstr "Playlist speichern"
 
 msgid "schedule"
-msgstr ""
+msgstr "Zeitplan"
 
 msgid "scroll mode"
-msgstr ""
+msgstr "Scrollmodus"
 
 msgid "search"
-msgstr "Suche"
+msgstr "Suchen"
 
 msgid "see timer"
-msgstr ""
+msgstr "siehe Timer"
 
 msgid "show movie infoviewer"
-msgstr ""
+msgstr "Film-Infoviewer anzeigen"
 
 msgid "show playlist"
-msgstr ""
+msgstr "Playlist anzeigen"
 
 msgid "shuffle"
-msgstr ""
+msgstr "Mischen"
 
 msgid "shuffle playlist"
-msgstr ""
+msgstr "Zufallswiedergabeliste"
 
 msgid "simple"
-msgstr ""
+msgstr "einfach"
 
 msgid "skip approx. 1 minute"
-msgstr ""
+msgstr "überspringe ca. 1 Minuten"
 
 msgid "skip approx. 10 minutes"
-msgstr ""
+msgstr "überspringe ca. 10 Minuten"
 
 msgid "skip approx. 10 seconds"
-msgstr ""
+msgstr "überspringe ca. 10 Sekunden"
 
 msgid "skip approx. 5 minutes"
-msgstr ""
+msgstr "überspringe ca. 5 Minuten"
 
 msgid "skip bookmark"
-msgstr ""
+msgstr "Lesezeichen überspringen"
 
 msgid "slow"
-msgstr ""
+msgstr "Langsam"
 
 msgid "small"
-msgstr ""
+msgstr "Klein"
 
 msgid "sorting(A..Z)"
-msgstr ""
+msgstr "Sortieren(A..Z)"
 
 msgid "sorting(Time)"
-msgstr ""
+msgstr "Sortieren(Zeit)"
 
 msgid "stereo"
 msgstr ""
@@ -3121,10 +3119,10 @@ msgid "time"
 msgstr "Zeit"
 
 msgid "time (in minutes) to switch from standby"
-msgstr ""
+msgstr "Zeit (in Minuten) zum Umschalten aus dem Standby-Modus"
 
 msgid "title"
-msgstr "EPG Titel"
+msgstr "Titel"
 
 msgid "to deep standby (0 = off)."
 msgstr ""
@@ -3143,7 +3141,7 @@ msgstr ""
 
 #, c-format
 msgid "unknown"
-msgstr ""
+msgstr "unbekannt"
 
 msgid "update"
 msgstr ""
@@ -3152,7 +3150,7 @@ msgid "username"
 msgstr ""
 
 msgid "vertical"
-msgstr ""
+msgstr "vertikal"
 
 msgid "very large"
 msgstr ""
@@ -3173,7 +3171,7 @@ msgid "waiting for EPG..."
 msgstr "warten auf EPG..."
 
 msgid "weekly"
-msgstr ""
+msgstr "wochentlich"
 
 msgid "will added to stop time of every record timer."
 msgstr ""
@@ -3182,7 +3180,7 @@ msgid "will be deducted of every record timer."
 msgstr ""
 
 msgid "yes"
-msgstr ""
+msgstr "ja"
 
 msgid "youtube ID Key:"
 msgstr ""

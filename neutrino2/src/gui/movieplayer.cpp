@@ -1766,7 +1766,7 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	}
 	
 	// movie start
-	startPosSelectionMenu->addItem(new CMenuForwarder(_("Movie start"), true, NULL));
+	startPosSelectionMenu->addItem(new CMenuForwarder(_("Movie start:"), true, NULL));
 
 	position[menu_nr++] = 0;
 

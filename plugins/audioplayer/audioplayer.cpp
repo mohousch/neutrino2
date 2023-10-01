@@ -351,7 +351,7 @@ void CMP3Player::openFileBrowser()
 		
 		if (maxProgress > SHOW_FILE_LOAD_LIMIT)
 		{
-			progress.setTitle(__("Receiving list, please wait"));	
+			progress.setTitle(__("Receiving list, please wait..."));	
 			progress.paint();
 		}
 		////
@@ -524,7 +524,7 @@ void CMP3Player::showTrackInfo(CAudiofile& file)
 	date = file.MetaData.date;
 	cover = file.MetaData.cover.empty()? DATADIR "/icons/no_coverArt.png" : file.MetaData.cover;
 
-	snprintf(duration, 8, "(%ld:%02ld)", file.MetaData.total_time / 60, file.MetaData.total_time % 60);
+	snprintf(duration, 8, "%ld:%02ld", file.MetaData.total_time / 60, file.MetaData.total_time % 60);
 	
 	std::string buffer;
 	
@@ -563,11 +563,10 @@ void CMP3Player::showTrackInfo(CAudiofile& file)
 	if (duration)
 	{
 		buffer += "\n\n";
-		buffer += __("Length (Min)");
+		buffer += __("Length (Min): ");
 		buffer += duration;
 	}
 	
-	//
 	// infoBox
 	CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
 	

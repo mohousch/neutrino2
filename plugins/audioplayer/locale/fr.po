@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-09-22 10:51+0200\n"
+"POT-Creation-Date: 2023-10-01 08:30+0200\n"
 "PO-Revision-Date: 2023-09-22 10:51+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,50 +17,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../../audioplayer/audioplayer.cpp:601
 msgid "Add"
-msgstr ""
+msgstr "Ajouter"
 
-#: ../../audioplayer/audioplayer.cpp:542
 msgid "Artist: "
-msgstr ""
+msgstr "Chanteur: "
 
-#: ../../audioplayer/audioplayer.cpp:610
 msgid "Audio Player"
 msgstr ""
 
-#: ../../audioplayer/audioplayer.cpp:558
 msgid "Date: "
-msgstr ""
+msgstr "Date: "
 
-#: ../../audioplayer/audioplayer.cpp:600
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
-#: ../../audioplayer/audioplayer.cpp:602
 msgid "Delete all"
-msgstr ""
+msgstr "Supprimer tous"
 
-#: ../../audioplayer/audioplayer.cpp:550
 msgid "Genre: "
 msgstr ""
 
-#: ../../audioplayer/audioplayer.cpp:566
-msgid "Length (Min)"
-msgstr ""
+msgid "Length (Min): "
+msgstr "Duree (Min): "
 
-#: ../../audioplayer/audioplayer.cpp:354
-msgid "Receiving list, please wait"
-msgstr ""
+#, fuzzy
+msgid "Receiving list, please wait..."
+msgstr "Réception de la liste, veuillez patienter..."
 
-#: ../../audioplayer/audioplayer.cpp:603
 msgid "Shuffle"
-msgstr ""
+msgstr "Melanger"
 
-#: ../../audioplayer/audioplayer.cpp:534
 msgid "Title: "
-msgstr ""
+msgstr "Titre: "
 
-#: ../../audioplayer/audioplayer.cpp:574
 msgid "Track Infos"
-msgstr ""
+msgstr "Titre Informations"

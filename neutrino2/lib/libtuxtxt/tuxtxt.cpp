@@ -1270,9 +1270,9 @@ int tuxtx_main(int pid, int page, int source)
 	tuxtxt_cache.vtxtpid = pid;
 
 	if(tuxtxt_cache.vtxtpid == 0)
-		printf("[tuxtxt] No PID given, so scanning for PIDs ...\n\n");
+		printf("Tuxtxt No PID given, so scanning for PIDs ...\n");
 	else
-		printf("[tuxtxt] using PID 0x%x\n", tuxtxt_cache.vtxtpid);
+		printf("Tuxtxt using PID 0x%x\n", tuxtxt_cache.vtxtpid);
 
 	
 	
@@ -1293,7 +1293,7 @@ int tuxtx_main(int pid, int page, int source)
 	sy = s_y;
 	ey = s_y + s_h;
 	
-	dprintf(DEBUG_DEBUG, "stride=%d sx=%d ex=%d sy=%d ey=%d\n", CFrameBuffer::getInstance()->getStride(), sx, ex, sy, ey);
+	dprintf(DEBUG_DEBUG, "Tuxtxt stride=%d sx=%d ex=%d sy=%d ey=%d\n", CFrameBuffer::getInstance()->getStride(), sx, ex, sy, ey);
 
 	//initialisations
 	transpmode = 0;
@@ -1316,14 +1316,13 @@ int tuxtx_main(int pid, int page, int source)
 			{
 				switch (RCCode)
 				{
-//#if TUXTXT_DEBUG /* FIXME */
 				case RC_OK:
 					if (showhex)
 					{
 						dump_page(); /* hexdump of page contents to stdout for debugging */
 					}
 					continue; /* otherwise ignore key */
-//#endif /* TUXTXT_DEBUG */
+					
 				case RC_UP:
 				case RC_DOWN:
 				case RC_0:
@@ -1432,9 +1431,7 @@ int tuxtx_main(int pid, int page, int source)
 			case RC_GREEN:	 ColorKey(prev_10);		break;
 			case RC_YELLOW:  ColorKey(next_10);		break;
 			case RC_BLUE:	 ColorKey(next_100);		break;
-#if 1
 			case RC_PLUS:	 SwitchZoomMode();		break;
-#endif
 			case RC_MINUS:	 SwitchScreenMode(-1);prevscreenmode = screenmode; break;
 			case RC_MUTE:	 SwitchTranspMode();	break;
 			case RC_TEXT:	 
@@ -3036,7 +3033,7 @@ void PageInput(int Number)
 		else
 		{
 			tuxtxt_cache.subpage = 0;
-			//RenderMessage(PageNotFound);
+			RenderMessage(PageNotFound);
 		}
 	}
 }
@@ -4387,33 +4384,29 @@ void RenderMessage(int Message)
 	/* 01234567890123456789012345678901234567890 */
 	char message_1[] = "�������� www.tuxtxt.com x.xx ���������";
 	char message_2[] = "�                                   ��";
-	//char message_3[] = "�   suche nach Teletext-Anbietern   ��"; 
 	char message_4[] = "�                                   ��";
 	char message_5[] = "��������������������������������������";
 	char message_6[] = "��������������������������������������";
 
-	//char message_7[] = "� kein Teletext auf dem Transponder ��";
-	//char message_8[] = "�  warte auf Empfang von Seite 100  ��";
-	//char message_9[] = "�     Seite 100 existiert nicht!    ��";
-
 	memcpy(&message_1[24], versioninfo, 4);
-	/* reset zoom */
+	
+	// reset zoom
 	zoommode = 0;
 
-	/* set colors */
+	// set colors
 	fbcolor   = transp;
 	timecolor = transp<<4 | transp;
 	_menuatr = ATR_MSG0;
 
-	/* clear framebuffer */
+	// clear framebuffer
 	ClearFB(fbcolor);
 
-	/* hide header */
+	// hide header
 	page_atrb[32].fg = transp;
 	page_atrb[32].bg = transp;
 
 
-	/* set pagenumber */
+	// set pagenumber
 	if (Message == ShowServiceName)
 	{
 		pagecolumn = message8pagecolumn[menulanguage];
@@ -4431,7 +4424,7 @@ void RenderMessage(int Message)
 	}
 	else if (Message == NoServicesFound)
 		msg = &message_7[menulanguage][0];
-	else
+	else	//ShowInfoBar | PageNotFound
 		msg = &message_3[menulanguage][0];
 
 	/* render infobar */

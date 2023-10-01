@@ -553,9 +553,9 @@ int CTimerList::show()
 		{
 			listBox->scrollLineDown();
 		}
-		else if ((msg == CRCInput::RC_ok) && !(timerlist.empty()))
+		else if (msg == CRCInput::RC_ok)
 		{
-			if (modifyTimer() == CMenuTarget::RETURN_EXIT_ALL)
+			if ( !(timerlist.empty()) && (modifyTimer() == CMenuTarget::RETURN_EXIT_ALL) )
 			{
 				res = CMenuTarget::RETURN_EXIT_ALL;
 				loop = false;
@@ -951,6 +951,9 @@ int CTimerList::modifyTimer()
 {
 	int res = CMenuTarget::RETURN_REPAINT;
 	if (listBox) selected = listBox->getSelected();
+	
+	//if ( timerlist.empty() )
+	//	return RETURN_REPAINT;
 
 	CTimerd::responseGetTimer* timer = &timerlist[selected];
 
