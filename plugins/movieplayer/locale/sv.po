@@ -1,0 +1,28 @@
+# Swedish translations for neutrino2-plugins package.
+# Copyright (C) 2023 neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# Automatically generated, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 4.8\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-10-01 23:48+0200\n"
+"PO-Revision-Date: 2023-10-01 23:48+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../../movieplayer/movieplayer.cpp:126 ../../movieplayer/movieplayer.cpp:209
+#: ../../movieplayer/movieplayer.cpp:445
+msgid "Movie Player"
+msgstr ""
+
+#: ../../movieplayer/movieplayer.cpp:126 ../../movieplayer/movieplayer.cpp:209
+#: ../../movieplayer/movieplayer.cpp:414
+msgid "Scan for Movies ..."
+msgstr ""

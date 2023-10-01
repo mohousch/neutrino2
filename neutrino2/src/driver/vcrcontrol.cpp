@@ -102,7 +102,7 @@ CVCRControl::CVCRControl()
 	exit_flag = STREAM2FILE_STATUS_IDLE;
 	channel_id = 0;
 	
-	////
+	//
 	g_cMovieInfo = NULL;
 	g_movieInfo = NULL;
 }
@@ -111,9 +111,17 @@ CVCRControl::~CVCRControl()
 {
 	channel_id = 0;
 	
-	////
-	g_cMovieInfo = NULL;
-	g_movieInfo = NULL;
+	if (g_movieInfo)
+	{
+		delete g_movieInfo;
+		g_movieInfo = NULL;
+	}
+	
+	if (g_cMovieInfo)
+	{
+		delete g_cMovieInfo;
+		g_cMovieInfo = NULL;
+	}
 }
 
 bool CVCRControl::Record(const CTimerd::RecordingInfo * const eventinfo)
@@ -317,13 +325,13 @@ bool CVCRControl::Stop()
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::Stop\n");
 	
-	std::string extMessage = " ";
-	time_t end_time = time(0);
+	//std::string extMessage = " ";
+	//time_t end_time = time(0);
 		
-	g_movieInfo->length = (int) round((double) (end_time - start_time) / (double) 60);
-	g_cMovieInfo->encodeMovieInfoXml(&extMessage, g_movieInfo);	
+	//g_movieInfo->length = (int) round((double) (end_time - start_time) / (double) 60);
+	//g_cMovieInfo->encodeMovieInfoXml(&extMessage, g_movieInfo);	
 
-	bool return_value = (stopRecording(/*extMessage.c_str()*/) == STREAM2FILE_OK);
+	bool return_value = (stopRecording() == STREAM2FILE_OK);
 
 	//
 	RestoreNeutrino();
@@ -339,10 +347,18 @@ bool CVCRControl::Stop()
 	
 	// cleanup
 	g_movieInfo->audioPids.clear();
-	delete g_movieInfo;
-	g_movieInfo = NULL;
-	delete g_cMovieInfo;
-	g_cMovieInfo = NULL;
+	
+	if (g_movieInfo)
+	{
+		delete g_movieInfo;
+		g_movieInfo = NULL;
+	}
+	
+	if (g_cMovieInfo)
+	{
+		delete g_cMovieInfo;
+		g_cMovieInfo = NULL;
+	}
 
 	return return_value;
 }

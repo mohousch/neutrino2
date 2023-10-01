@@ -60,6 +60,7 @@ satipclient/Makefile
 icecast/Makefile
 internetradio/Makefile
 movieplayer/Makefile
+movieplayer/locale/Makefile
 moviebrowser/Makefile
 picviewer/Makefile
 audioplayer/Makefile

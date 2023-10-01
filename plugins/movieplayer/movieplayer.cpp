@@ -21,6 +21,11 @@
 #include <plugin.h>
 
 
+//// defines
+//FIXME: make this global
+#define __(string) dgettext("movieplayer", string)
+
+//// globals
 extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
@@ -118,7 +123,7 @@ void CMoviePlayer::loadPlaylist()
 	// recordingdir
 	Path = g_settings.network_nfs_recordingdir;
 
-	CHintBox loadBox(_("Movie Player"), _("Scan for Movies ..."));
+	CHintBox loadBox(__("Movie Player"), __("Scan for Movies ..."));
 	loadBox.paint();
 	
 	//
@@ -201,7 +206,7 @@ void CMoviePlayer::openFileBrowser()
 		MI_MOVIE_INFO movieInfo;
 		m_movieInfo.clearMovieInfo(&movieInfo); // refresh structure
 
-		CHintBox loadBox(_("Movie Player"), _("Scan for Movies ..."));
+		CHintBox loadBox(__("Movie Player"), __("Scan for Movies ..."));
 		loadBox.paint();
 
 		CFileList::const_iterator files = filebrowser.getSelectedFiles().begin();
@@ -406,7 +411,7 @@ const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 	{ NEUTRINO_ICON_BUTTON_RED, _("TMDB") },
 	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add")  },
 	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Delete all") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("Scan for Movies ...") },
+	{ NEUTRINO_ICON_BUTTON_BLUE, __("Scan for Movies ...") },
 };
 
 void CMoviePlayer::showMenu()
@@ -437,7 +442,7 @@ void CMoviePlayer::showMenu()
 	
 	//
 	mlist->enablePaintHead();
-	mlist->setTitle(_("Movie Player"), NEUTRINO_ICON_MOVIE);
+	mlist->setTitle(__("Movie Player"), NEUTRINO_ICON_MOVIE);
 	mlist->enablePaintDate();
 	mlist->setFormat("%A %d.%m.%Y %H:%M:%S");
 	mlist->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
@@ -482,11 +487,6 @@ int CMoviePlayer::exec(CMenuTarget* parent, const std::string& actionKey)
 	if(actionKey == "mplay")
 	{
 		selected = mlist? mlist->getSelected() : 0;
-
-		//CMovieInfoWidget movieInfoWidget;
-		//movieInfoWidget.setMovie(m_vMovieInfo[selected]);
-		
-		//movieInfoWidget.exec(NULL, "");
 		
 		CMoviePlayerGui tmpMoviePlayerGui;
 		tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[selected]);
