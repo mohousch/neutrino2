@@ -59,13 +59,13 @@ msgid "(type)"
 msgstr ""
 
 msgid ", please be patient..."
-msgstr ""
+msgstr ", пожалуйста, наберитесь терпения"
 
 msgid "0 for unlimited repeats"
-msgstr ""
+msgstr "0 для неограниченного количества повторов"
 
 msgid "5 Volt"
-msgstr ""
+msgstr "5 вольт"
 
 msgid "A/V sync"
 msgstr ""
@@ -1168,10 +1168,10 @@ msgid "LoDirection"
 msgstr ""
 
 msgid "Loading skin "
-msgstr ""
+msgstr "Загрузка скина"
 
 msgid "Loading skin style "
-msgstr ""
+msgstr "Загрузка стиля скина"
 
 msgid "LocalTV EPG"
 msgstr ""
