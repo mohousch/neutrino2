@@ -1311,9 +1311,9 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		// load selected skin
 		std::string buffer;
-		buffer = "Loading skin ";
+		buffer = _("Loading skin ");
 		buffer += actionKey.c_str();
-		buffer += ", please be patient...";
+		buffer += _(", please be patient...");
 		
 		HintBox(_("Information"), _(buffer.c_str()));
 			
@@ -1487,9 +1487,9 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		{
 			//
 			std::string buffer;
-			buffer = "Loading skin style ";
+			buffer = _("Loading skin style ");
 			buffer += actionKey.c_str();
-			buffer += ", please be patient...";
+			buffer += _(", please be patient...");
 			
 			HintBox(_("Information"), _(buffer.c_str()));
 		

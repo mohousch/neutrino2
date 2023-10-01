@@ -949,15 +949,15 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 }
 
 // CMenuSeparator
-CMenuSeparator::CMenuSeparator(const int Type, const char * const Text)
+CMenuSeparator::CMenuSeparator(const int Type, const char * const Text, const bool Gradient)
 {
 	//
 	type = Type;
 	itemName = Text? Text : "";
 	
 	//
-	color = COL_MENUCONTENT_PLUS_5; //COL_MENUCONTENTDARK_PLUS_0;
-	gradient = NOGRADIENT;
+	color = COL_MENUCONTENT_PLUS_5;
+	gradient = Gradient;
 
 	menuItem_type = MENUITEM_SEPARATOR;
 }
@@ -1038,26 +1038,26 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 					if (type & ALIGN_LEFT)
 					{
 						//
-						frameBuffer->paintBoxRel(x + BORDER_LEFT + stringwidth + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, 2, color, 0, CORNER_NONE, gradient, GRADIENT_HORIZONTAL);
+						frameBuffer->paintBoxRel(x + BORDER_LEFT + stringwidth + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 					}
 					else if (type & ALIGN_RIGHT)
 					{
 						//
-						frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, 2, color, 0, CORNER_NONE, gradient, GRADIENT_HORIZONTAL);
+						frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 					}
 					else // ALIGN_CENTER
 					{
 						// left
-						frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_LEFT, 2, color, 0, CORNER_NONE, gradient, GRADIENT_HORIZONTAL);
+						frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_LEFT, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 						
 						// right
-						frameBuffer->paintBoxRel(x + (dx + stringwidth)/2 + BORDER_LEFT, y + (height - 2)/2, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_RIGHT, 2, color, 0, CORNER_NONE, gradient, GRADIENT_HORIZONTAL);
+						frameBuffer->paintBoxRel(x + (dx + stringwidth)/2 + BORDER_LEFT, y + (height - 2)/2, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_RIGHT, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 					}
 				}
 			}
 			else
 			{
-				frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT, 2, color, 0, CORNER_NONE, gradient, GRADIENT_HORIZONTAL);
+				frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
 			}	
 		}
 	}

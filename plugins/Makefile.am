@@ -16,12 +16,13 @@ SUBDIRS = \
 	ntvshows \
 	satipclient \
 	opkg_manager \
-	tuxcal \
 	upnp
 
 #testing
 if ENABLE_TESTING
-SUBDIRS += netzkino \
+SUBDIRS += \
+	netzkino \
+	tuxcal \
 	youtube
 endif
 
@@ -30,7 +31,8 @@ SUBDIRS += python
 endif
 
 if ENABLE_LUA
-SUBDIRS += lua \
+SUBDIRS += \
+	lua \
 	media_one \
 	plutotv \
 	netzkino_hd

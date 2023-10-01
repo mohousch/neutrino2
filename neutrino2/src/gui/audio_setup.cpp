@@ -187,11 +187,11 @@ void CAudioSettings::showMenu()
 	
 	// intros
 	audioSettings->addItem(new CMenuForwarder(_("back")));
-	audioSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
+	audioSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE, NULL, true) );
 	
 	// save settings
 	audioSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
-	audioSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
+	audioSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE, NULL, true) );
 
 	// analog output
 	audioSettings->addItem(new CMenuOptionChooser(_("Analog Output"), &g_settings.audio_AnalogMode, AUDIOMENU_ANALOGOUT_OPTIONS, AUDIOMENU_ANALOGOUT_OPTION_COUNT, true, audioSetupNotifier));
@@ -213,7 +213,7 @@ void CAudioSettings::showMenu()
 #endif	
 	
 	// pref lang
-	audioSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Audio language preferences")));
+	audioSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Audio language preferences"), true));
 	
 	// auto ac3 
 	CMenuOptionChooser * a1 = new CMenuOptionChooser(_("Dolby Digital"), &g_settings.audio_DolbyDigital, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, g_settings.auto_lang, audioSetupNotifier );
@@ -244,7 +244,7 @@ void CAudioSettings::showMenu()
 		audioSettings->addItem(audiolangSelect[i]);
 	
 	// sublang
-	audioSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Subtitle language preferences")));
+	audioSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Subtitle language preferences"), true));
 	
 	CMenuOptionStringChooser * sublangSelect[3];
 	for(int i = 0; i < 3; i++) 

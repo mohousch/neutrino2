@@ -395,11 +395,11 @@ void CVideoSettings::showMenu()
 	
 	// intros
 	videoSettings->addItem(new CMenuForwarder(_("back")));
-	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
+	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE, NULL, true) );
 	
 	// save settings
 	videoSettings->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
-	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
+	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE, NULL, true) );
 
 	// video aspect ratio 4:3/16:9
 	videoSettings->addItem(new CMenuOptionChooser(_("TV-System"), &g_settings.video_Ratio, VIDEOMENU_VIDEORATIO_OPTIONS, VIDEOMENU_VIDEORATIO_OPTION_COUNT, true, videoSetupNotifier));
@@ -423,7 +423,7 @@ void CVideoSettings::showMenu()
 	
 	// psi
 #if defined (__sh__)
-	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
+	videoSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE, NULL, true) );
 	
 	CPSISetup * chPSISetup = new CPSISetup(_("PSI settings"), &g_settings.contrast, &g_settings.saturation, &g_settings.brightness, &g_settings.tint);
 	videoSettings->addItem( new CMenuForwarder(_("PSI settings"), true, NULL, chPSISetup));

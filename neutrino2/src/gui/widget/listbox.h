@@ -339,7 +339,7 @@ class CMenuSeparator : public CMenuItem
 {
 	int type;
 	fb_pixel_t color;
-	int gradient;
+	bool gradient;
 	
 	public:
 		enum
@@ -353,7 +353,7 @@ class CMenuSeparator : public CMenuItem
 		};
 
 	public:
-		CMenuSeparator(const int Type = EMPTY, const char * const Text = NULL);
+		CMenuSeparator(const int Type = EMPTY, const char * const Text = NULL, const bool Gradient = false);
 		virtual ~CMenuSeparator(){};
 
 		//
@@ -362,7 +362,6 @@ class CMenuSeparator : public CMenuItem
 		int getWidth(void) const;
 		
 		//
-		void setGradient(int gr){ gradient = gr;};
 		void setColor(fb_pixel_t col){ color = col;};
 
 		//

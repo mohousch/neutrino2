@@ -89,6 +89,8 @@ void GLThreadObj::initKeys()
 	mKeyMap['i']  = CRCInput::RC_info;
 	mKeyMap['m']  = CRCInput::RC_setup;
 	mKeyMap['e']  = CRCInput::RC_epg;
+	mKeyMap['t']  = CRCInput::RC_text;
+	mKeyMap['d']  = CRCInput::RC_dvbsub;
 
 	mKeyMap['s']  = CRCInput::RC_spkr;
 	mKeyMap['+']  = CRCInput::RC_plus;

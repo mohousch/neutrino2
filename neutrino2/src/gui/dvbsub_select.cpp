@@ -90,15 +90,19 @@ int CDVBSubSelectMenuHandler::doMenu()
 
 		DVBSubSelector->setWidgetMode(ClistBox::MODE_SETUP);
 		DVBSubSelector->enableShrinkMenu();
-						
+		
+		//				
 		DVBSubSelector->enablePaintHead();
 		DVBSubSelector->setTitle(_("Subtitle Select"), NEUTRINO_ICON_SUBT);
+		DVBSubSelector->setHeadLine(true, true);
 
+		//
 		DVBSubSelector->enablePaintFoot();
 							
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 							
 		DVBSubSelector->setFootButtons(&btn);
+		DVBSubSelector->setFootLine(true, true);
 						
 		//
 		widget->addWidgetItem(DVBSubSelector);
@@ -159,7 +163,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 		
 		if(sep_added) 
 		{
-			DVBSubSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+			DVBSubSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
 			DVBSubSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED ));
 		}
 		else
