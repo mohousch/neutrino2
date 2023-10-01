@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-01 22:12+0200\n"
+"POT-Creation-Date: 2023-10-01 23:10+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1104,31 +1104,31 @@ msgid "Keyword"
 msgstr "Stichwort"
 
 msgid "LCD EPG Align"
-msgstr ""
+msgstr "LCD-EPG-Ausrichtung"
 
 msgid "LED-Power"
 msgstr ""
 
 msgid "LED_Power"
-msgstr ""
+msgstr "LED-Power"
 
 msgid "LEFT"
-msgstr ""
+msgstr "LINKS"
 
 msgid "LNB High Offset"
-msgstr ""
+msgstr "LNB-High-Offset"
 
 msgid "LNB Low Offset"
-msgstr ""
+msgstr "Niedriger LNB-Offset"
 
 msgid "LNB switch Offset"
-msgstr ""
+msgstr "LNB-Schalter Offset"
 
 msgid "LUFS"
-msgstr ""
+msgstr "LUFS"
 
 msgid "LaDirection"
-msgstr ""
+msgstr "LaDirection"
 
 msgid "Language"
 msgstr "Sprache"
@@ -1137,46 +1137,46 @@ msgid "Languages"
 msgstr "Sprachen"
 
 msgid "Last Channel"
-msgstr ""
+msgstr "Letzter Kanal"
 
 msgid "Last Channel settings"
-msgstr "Letzte Kanal Einstellugen"
+msgstr "Letzte Kanaleinstellungen"
 
 msgid "Last play date"
-msgstr ""
+msgstr "Letzter Spieltermin"
 
 msgid "Last play stop:"
-msgstr ""
+msgstr "Letzter Spielstopp:"
 
 msgid "Latitude"
-msgstr ""
+msgstr "Breite"
 
 msgid "Leave standby"
-msgstr ""
+msgstr "Standby-Modus verlassen"
 
 msgid "Length"
-msgstr "Spiel Dauer (Min)"
+msgstr "Dauer"
 
 msgid "Length (Min)"
 msgstr "Spiel Dauer (Min)"
 
 msgid "License:"
-msgstr ""
+msgstr "Lizenz:"
 
 msgid "Line"
-msgstr ""
+msgstr "Linie"
 
 msgid "List End"
-msgstr ""
+msgstr "Ende der Liste"
 
 msgid "List Start"
-msgstr ""
+msgstr "Listenstart"
 
 msgid "Literature"
 msgstr "Literature"
 
 msgid "LoDirection"
-msgstr ""
+msgstr "LoDirection"
 
 msgid "Loading skin "
 msgstr "Skin wird geladen "
@@ -1185,7 +1185,7 @@ msgid "Loading skin style "
 msgstr "Skin-Stil wird geladen "
 
 msgid "LocalTV EPG"
-msgstr ""
+msgstr "LocalTV EPG"
 
 msgid "Lock"
 msgstr "Sperren"
@@ -1194,107 +1194,107 @@ msgid "Lock RC"
 msgstr "Fernbedienung sperren"
 
 msgid "Lock Remote Control"
-msgstr ""
+msgstr "Fernbedienung sperren"
 
 msgid "Lock program"
-msgstr ""
+msgstr "Programm sperren"
 
 msgid "Locked Channel"
-msgstr ""
+msgstr "Gesperrter Kanal"
 
 #, c-format
 msgid "Locked program (from %d years up)"
-msgstr ""
+msgstr "Gesperrtes Programm (ab %d Jahren)"
 
 msgid "Longitude"
-msgstr ""
+msgstr "Längengrad"
 
 msgid "Lower Right"
-msgstr ""
+msgstr "Rechts unten"
 
 msgid "MAC address"
-msgstr ""
+msgstr "MAC-Adresse"
 
 msgid "MD5 checking"
-msgstr ""
+msgstr "MD5-Überprüfung"
 
 msgid "Magazines / Reports / Documentary"
-msgstr ""
+msgstr "Zeitschriften / Reportagen / Dokumentationen"
 
 msgid "Main Menu"
-msgstr ""
+msgstr "Hauptmenü"
 
 msgid "Make Remaining Channels list"
-msgstr ""
+msgstr "verbleibende Kanäle Liste erstellen"
 
 msgid "Manual frequency scan / Test signal"
-msgstr ""
+msgstr "Manueller Frequenzscan / Testsignal"
 
 msgid "Manuell(ftp) Software Manager"
-msgstr ""
+msgstr "Manuell(ftp) Softwaremanager"
 
 msgid "Mark"
-msgstr ""
+msgstr "Markieren"
 
 msgid "Martial sports"
-msgstr ""
+msgstr "Kampfsport"
 
 msgid "Max. Events"
-msgstr ""
+msgstr "Max. Ereignisse"
 
 msgid "Media"
-msgstr ""
+msgstr "Medien"
 
 msgid "Media Player"
-msgstr ""
+msgstr "Media Player"
 
 msgid "Medicine / Physiology / Psychology"
-msgstr ""
+msgstr "Medizin / Physiologie / Psychologie"
 
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 msgid "Menu Info"
-msgstr "Menu Info"
+msgstr "Menü Info"
 
 msgid "Menu Text"
-msgstr ""
+msgstr "Menütext"
 
 msgid "Menu Title"
-msgstr ""
+msgstr "Menütitel"
 
 msgid "Menu Title2"
-msgstr ""
+msgstr "Menütitel2"
 
 msgid "Menu mode"
-msgstr ""
+msgstr "Menümodus"
 
 msgid "Message"
-msgstr ""
+msgstr "Nachricht"
 
 msgid "Mini-DiSEqC"
-msgstr ""
+msgstr "Mini-DiSEqC"
 
 msgid "Minutes"
 msgstr "Minuten"
 
 msgid "Misc settings"
-msgstr "Diverse Einstellungen"
+msgstr "Verschiedene Einstellungen"
 
 msgid "Mo Tu We Th Fr Sa Su"
-msgstr "Mo Die Mit Do Fr Sa So"
+msgstr "Mo Di We Do Fr Sa Su"
 
 msgid "Modechange"
-msgstr ""
+msgstr "Moduswechsel"
 
 msgid "Modify"
-msgstr "Bearbeiten"
+msgstr "Ändern"
 
 msgid "Modify timer"
-msgstr "Timer bearbeiten"
+msgstr "Timer ändern"
 
 msgid "Modulation"
-msgstr ""
+msgstr "Modulation"
 
 msgid "Monday"
 msgstr "Montag"
@@ -1312,13 +1312,13 @@ msgid "Motor settings"
 msgstr "Motor Einstellungen"
 
 msgid "Motor sports"
-msgstr ""
+msgstr "Motorsport"
 
 msgid "Motoring"
-msgstr ""
+msgstr "Motorisch"
 
 msgid "Mount network volume"
-msgstr ""
+msgstr "Netzwerk-Volume bereitstellen"
 
 msgid "Mount options"
 msgstr "Mount Optionen"
@@ -1327,7 +1327,7 @@ msgid "Move"
 msgstr "Bewegen"
 
 msgid "Movie / Drama"
-msgstr ""
+msgstr "Film / Drama"
 
 msgid "Movie end:"
 msgstr "Film Ende:"
@@ -1339,143 +1339,153 @@ msgid "Movie start:"
 msgstr "Film Start:"
 
 msgid "Movieplayer"
-msgstr ""
+msgstr "Movieplayer"
 
 msgid "Movieplayer settings"
-msgstr "Movieplayer Einstellungen"
+msgstr "Movieplayer-Einstellungen"
 
 msgid "Movies Browser"
-msgstr ""
+msgstr "Filmbrowser"
 
 msgid "Music / Ballet / Dance"
-msgstr ""
+msgstr "Musik / Ballett / Tanz"
 
 msgid "Musical / Opera"
-msgstr ""
+msgstr "Musical / Oper"
 
 msgid "NFS"
-msgstr ""
+msgstr "NFS"
 
 msgid "NTP-Server"
-msgstr ""
+msgstr "NTP-Server"
 
 msgid "NTP-Server example: ntp1.ptb.de"
-msgstr ""
+msgstr "Beispiel für einen NTP-Server: ntp1.ptb.de"
 
 msgid "NTP/DVB-Refresh"
-msgstr ""
+msgstr "NTP/DVB-Refresh"
 
 msgid "NTP/DVB-Time-Sync in minutes"
-msgstr ""
+msgstr "NTP/DVB-Zeitsynchronisierung in Minuten"
 
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 msgid "Name of bouquets"
-msgstr ""
+msgstr "Name den Bouquets"
 
 msgid "Name server"
-msgstr ""
+msgstr "Name Server"
 
 msgid "Nature / Animals / Environment"
-msgstr ""
+msgstr "Natur / Tiere / Umwelt"
 
 msgid "Netmask"
-msgstr ""
+msgstr "Netzmaske"
 
 msgid "Network"
-msgstr ""
+msgstr "Netzwerk"
 
 msgid "Network Mount Manager"
-msgstr ""
+msgstr "Netzwerk-Mount-Manager"
 
 msgid "Network Name"
-msgstr ""
+msgstr "Netzwerkname"
 
 msgid "Network settings"
-msgstr "Netzwerk Einstellugen"
+msgstr "Netzwerkeinstellungen"
 
 msgid "New Bookmark"
-msgstr ""
+msgstr "Neues Lesezeichen"
 
 msgid ""
 "New jump back\n"
 " 'blue' for endposition"
 msgstr ""
+"Neuer Sprung zurück\n"
+" 'blau' für Endposition"
 
 msgid ""
 "New jump forward\n"
 " 'blue' for endposition"
 msgstr ""
+"Neuer Sprung nach vorne\n"
+" 'blau' für Endposition"
 
 msgid "New media"
-msgstr ""
+msgstr "Neue Medien"
 
 msgid "New timer"
 msgstr "Neuer Timer"
 
 msgid "News"
-msgstr ""
+msgstr "Nachrichten"
 
 msgid "News / Weather report"
-msgstr ""
+msgstr "Nachrichten / Wetterbericht"
 
 msgid "News magazine"
-msgstr ""
+msgstr "Nachrichtenmagazin"
 
 msgid "Next Page"
-msgstr "Seite vor"
+msgstr "Nächste Seite"
 
 msgid "Next bouquet"
-msgstr ""
+msgstr "Nächster Bouquet"
 
 msgid "Next image"
-msgstr "Seite vor"
+msgstr "Nächstes Bild"
 
 msgid "Next program"
-msgstr ""
+msgstr "Nächstes Programm"
 
 msgid "No"
-msgstr ""
+msgstr "NEIN"
 
 msgid "No CAM in slot"
-msgstr ""
+msgstr "Kein CAM im Steckplatz"
 
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
 "(MENU-key -> System)"
 msgstr ""
+"Es wurden keine Kanäle gefunden!\n"
+"Bitte führen Sie einen Scan durch\n"
+"(MENU-Taste -> System)"
 
 msgid ""
 "No channels were found!\n"
 "Please execute a scan\n"
 "(MENU-key -> service)"
 msgstr ""
+"Es wurden keine Kanäle gefunden!\n"
+"Bitte führen Sie einen Scan durch\n"
+"(MENU-Taste -> System)"
 
 msgid "No detailed informations available"
 msgstr ""
 
 msgid "No info for current program available"
-msgstr ""
+msgstr "Keine Informationen zum aktuellen Programm verfügbar"
 
 msgid "No key"
-msgstr ""
+msgstr "Keine Taste"
 
 msgid "No neutrino-settings found, Using defaults."
 msgstr "Keine Einstellugen gefunden standard Werte werden benutzt."
 
 msgid "Noise"
-msgstr ""
+msgstr "Lärm"
 
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 msgid "North"
-msgstr ""
+msgstr "Norden"
 
 msgid "Not used"
-msgstr ""
+msgstr "Nicht benutzt"
 
 msgid "Numericzap"
 msgstr "Numericzap"
