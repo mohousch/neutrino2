@@ -467,7 +467,6 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 	removeExtension(name);
 
 	CZapitBouquet *newBouquet = addBouquetIfNotExist(name, false, true);
-	//newBouquet->bWebTV = true;
 	
 	if(iptv)
 	{
@@ -712,9 +711,6 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 					epgid = ReadMarkerValue(strInfoLine, "tvg-id=");
 					alogo = ReadMarkerValue(strInfoLine, "tvg-logo=");
 				}
-				
-				//pBouquet = addBouquetIfNotExist("WEBTV");
-				//pBouquet->bWebTV = true;
 			}		
 			else if(strlen(cLine) > 0 && cLine[0] != '#')
 			{
@@ -734,8 +730,7 @@ void CBouquetManager::parseWebTVBouquet(std::string filename)
 							bqName += " (";
 							bqName += name;
 							bqName += ")";
-							newBouquet = addBouquetIfNotExist(bqName, false, true);
-							//newBouquet->bWebTV = true;	
+							newBouquet = addBouquetIfNotExist(bqName, false, true);	
 						}
 						
 						//
