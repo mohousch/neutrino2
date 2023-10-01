@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-01 19:00+0200\n"
+"POT-Creation-Date: 2023-10-01 22:12+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -265,9 +265,6 @@ msgstr "Baudatum: "
 
 msgid "Buttons Bar"
 msgstr "Schaltflächenleiste"
-
-msgid "Buttons Dir"
-msgstr "Tasten Verzeichniss"
 
 msgid "Buttons Line"
 msgstr "Tastenlinie"
@@ -998,9 +995,6 @@ msgstr "Hierarchie"
 msgid "High decode priority"
 msgstr "Hohe Dekodierungspriorität"
 
-msgid "Hints Dir"
-msgstr "Hinweise Verzeichniss"
-
 msgid "History"
 msgstr "Geschichte"
 
@@ -1033,9 +1027,6 @@ msgstr "IP Adresse"
 
 msgid "ISO-8859-1"
 msgstr "ISO-8859-1"
-
-msgid "Icons Dir"
-msgstr "Icons Verzeichnisse"
 
 msgid "Image Info"
 msgstr "Image Info"
@@ -2110,9 +2101,6 @@ msgstr "Süd"
 
 msgid "Special events (Olympic Games,World Cup etc.)"
 msgstr "Sonderereignisse (Olympische Spiele, Weltmeisterschaft usw.)"
-
-msgid "Spinner Dir"
-msgstr "Spinner Verzeichniss"
 
 msgid "Sports"
 msgstr "Sport"

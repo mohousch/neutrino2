@@ -271,6 +271,12 @@ class CFrameBuffer
 		void setHintBasePath(const std::string& hintPath);
 		void setButtonBasePath(const std::string& buttonPath);
 		void setSpinnerBasePath(const std::string& spinnerPath);
+		
+		//
+		std::string getIconBasePath(void){return iconBasePath;};
+		std::string getButtonBasePath(void){return buttonBasePath;};
+		std::string getHintBasePath(void){return hintBasePath;};
+		std::string getSpinnerBasePath(void){return spinnerBasePath;};
 
 		//
 		void getIconSize(const char * const filename, int* width, int *height);

@@ -2547,7 +2547,7 @@ void ClistBox::paintItemInfo(int pos)
 						if (item->isPlugin)
 							fname = item->itemIcon;
 						else				
-							fname = g_settings.hints_dir + item->itemIcon.c_str() + ".png";
+							fname = CFrameBuffer::getInstance()->getHintBasePath() + item->itemIcon.c_str() + ".png";
 					}
 			
 					itemsLine.setIcon(fname.c_str());
@@ -2578,7 +2578,7 @@ void ClistBox::paintItemInfo(int pos)
 					if (item->isPlugin)
 						fname = item->itemIcon;
 					else				
-						fname = g_settings.hints_dir + item->itemIcon.c_str() + ".png";
+						fname = CFrameBuffer::getInstance()->getHintBasePath() + item->itemIcon.c_str() + ".png";
 				}
 			
 				itemsLine.setIcon(fname.c_str());
@@ -2606,7 +2606,7 @@ void ClistBox::paintItemInfo(int pos)
 					if (item->isPlugin)
 						fname = item->itemIcon;
 					else				
-						fname = g_settings.hints_dir + item->itemIcon.c_str() + ".png";
+						fname = CFrameBuffer::getInstance()->getHintBasePath() + item->itemIcon.c_str() + ".png";
 				}
 			
 				itemsLine.setIcon(fname.c_str());
@@ -2668,7 +2668,7 @@ void ClistBox::paintItemInfo(int pos)
 				if (item->isPlugin)
 					fname = item->itemIcon;
 				else				
-					fname = g_settings.hints_dir + item->itemIcon.c_str() + ".png";
+					fname = CFrameBuffer::getInstance()->getHintBasePath() + item->itemIcon.c_str() + ".png";
 			}
 				
 			itemsLine.setHint(item->itemHint.c_str());

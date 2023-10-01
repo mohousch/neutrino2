@@ -2821,15 +2821,13 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	i = scandir(iconsDir.c_str(), &namelist, 0, 0);
 	if(i < 0)
 	{
-		g_settings.icons_dir = DATADIR "/icons/"; //fallback to default if empty
+		frameBuffer->setIconBasePath(DATADIR "/icons/");
 	}
 	else
 	{
-		g_settings.icons_dir = iconsDir;
+		frameBuffer->setIconBasePath(iconsDir);
 		free(namelist);
 	}
-			
-	frameBuffer->setIconBasePath(g_settings.icons_dir);
 			
 	// setButtonPath
 	std::string buttonsDir = CONFIGDIR "/skins/";
@@ -2840,15 +2838,13 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	i = scandir(buttonsDir.c_str(), &namelist, 0, 0);
 	if(i < 0)
 	{
-		g_settings.buttons_dir = DATADIR "/buttons/"; //fallback to default if empty
+		frameBuffer->setButtonBasePath(DATADIR "/buttons/");
 	}
 	else
 	{
-		g_settings.buttons_dir = buttonsDir;
+		frameBuffer->setButtonBasePath(buttonsDir);
 		free(namelist);
 	}
-			
-	frameBuffer->setButtonBasePath(g_settings.buttons_dir);
 			
 	// setHintPath
 	std::string hintsDir = CONFIGDIR "/skins/";
@@ -2859,15 +2855,13 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	i = scandir(hintsDir.c_str(), &namelist, 0, 0);
 	if(i < 0)
 	{
-		g_settings.hints_dir = DATADIR "/hints/"; //fallback to default if empty
+		frameBuffer->setHintBasePath(DATADIR "/hints/");
 	}
 	else
 	{
-		g_settings.hints_dir = hintsDir;
+		frameBuffer->setHintBasePath(hintsDir);
 		free(namelist);
 	}
-			
-	frameBuffer->setHintBasePath(g_settings.hints_dir);
 			
 	// setSpinnerPath
 	std::string spinnerDir = CONFIGDIR "/skins/";
@@ -2878,15 +2872,13 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 	i = scandir(spinnerDir.c_str(), &namelist, 0, 0);
 	if(i < 0)
 	{
-		g_settings.spinner_dir = DATADIR "/spinner/"; //fallback to default if empty
+		frameBuffer->setSpinnerBasePath(DATADIR "/spinner/");
 	}
 	else
 	{
-		g_settings.spinner_dir = spinnerDir;
+		frameBuffer->setSpinnerBasePath(spinnerDir);
 		free(namelist);
 	}
-			
-	frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
 }
 
 //

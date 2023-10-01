@@ -958,86 +958,6 @@ int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return ret;
 	}
-	else if(actionKey == "select_icons_dir")
-	{
-		CFileBrowser b;
-		b.Dir_Mode = true;
-		
-		if (b.exec(g_settings.icons_dir.c_str())) 
-		{
-			g_settings.icons_dir = b.getSelectedFile()->Name + "/";
-
-			dprintf(DEBUG_NORMAL, "COSDMiscSettings::exec: new icons dir %s\n", g_settings.icons_dir.c_str());
-
-			CFrameBuffer::getInstance()->setIconBasePath(g_settings.icons_dir);
-			//CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
-		}
-		
-		hide();
-		showMenu();
-		
-		return CMenuTarget::RETURN_EXIT;
-	}
-	else if(actionKey == "select_buttons_dir")
-	{
-		CFileBrowser b;
-		b.Dir_Mode = true;
-		
-		if (b.exec(g_settings.buttons_dir.c_str())) 
-		{
-			g_settings.buttons_dir = b.getSelectedFile()->Name + "/";
-
-			dprintf(DEBUG_NORMAL, "COSDMiscSettings::exec: new buttons dir %s\n", g_settings.buttons_dir.c_str());
-
-			CFrameBuffer::getInstance()->setButtonBasePath(g_settings.buttons_dir);
-			//CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
-		}
-		
-		hide();
-		showMenu();
-		
-		return CMenuTarget::RETURN_EXIT;
-	}
-	else if(actionKey == "select_hints_dir")
-	{
-		CFileBrowser b;
-		b.Dir_Mode = true;
-		
-		if (b.exec(g_settings.hints_dir.c_str())) 
-		{
-			g_settings.hints_dir = b.getSelectedFile()->Name + "/";
-
-			dprintf(DEBUG_NORMAL, "COSDMiscSettings::exec: new hints dir %s\n", g_settings.hints_dir.c_str());
-
-			CFrameBuffer::getInstance()->setHintBasePath(g_settings.hints_dir);
-			//CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
-		}
-		
-		hide();
-		showMenu();
-		
-		return CMenuTarget::RETURN_EXIT;
-	}
-	else if(actionKey == "select_spinner_dir")
-	{
-		CFileBrowser b;
-		b.Dir_Mode = true;
-		
-		if (b.exec(g_settings.spinner_dir.c_str())) 
-		{
-			g_settings.spinner_dir = b.getSelectedFile()->Name + "/";
-
-			dprintf(DEBUG_NORMAL, "COSDMiscSettings::exec: new spinner dir %s\n", g_settings.spinner_dir.c_str());
-
-			CFrameBuffer::getInstance()->setSpinnerBasePath(g_settings.spinner_dir);
-			//CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
-		}
-		
-		hide();
-		showMenu();
-		
-		return CMenuTarget::RETURN_EXIT;
-	}
 	else if(actionKey == "logos_dir") 
 	{
 		CFileBrowser b;
@@ -1159,22 +1079,7 @@ void COSDDiverses::showMenu()
 	osdDiverseSettings->addItem(as);
 	
 	//
-	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	
-	// icons dir
-	osdDiverseSettings->addItem(new CMenuForwarder(_("Icons Dir"), true, g_settings.icons_dir.c_str(), this, "select_icons_dir"));
-	
-	// buttons dir
-	osdDiverseSettings->addItem(new CMenuForwarder(_("Buttons Dir"), true, g_settings.buttons_dir.c_str(), this, "select_buttons_dir"));
-	
-	// hints dir
-	osdDiverseSettings->addItem(new CMenuForwarder(_("Hints Dir"), true, g_settings.hints_dir.c_str(), this, "select_hints_dir"));
-	
-	// spinner dir
-	osdDiverseSettings->addItem(new CMenuForwarder(_("Spinner Dir"), true, g_settings.spinner_dir.c_str(), this, "select_spinner_dir"));
-	
-	//
-	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
 	
 	// logos
 	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Channel Logo"), &g_settings.logos_show_logo, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));

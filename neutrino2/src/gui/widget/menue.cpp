@@ -777,7 +777,7 @@ void CMenuWidget::paintItemInfo(int pos)
 				if (item->isPlugin)
 					icon = item->itemIcon;
 				else				
-					icon = g_settings.hints_dir + item->itemIcon.c_str() + ".png";
+					icon = CFrameBuffer::getInstance()->getHintBasePath() + item->itemIcon.c_str() + ".png";
 				
 				//
 				itemsLine.setPosition(x, y + height - cFrameFootInfoHeight + 2, width, cFrameFootInfoHeight);

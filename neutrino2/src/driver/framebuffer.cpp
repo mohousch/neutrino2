@@ -910,7 +910,6 @@ void CFrameBuffer::setIconBasePath(const std::string & iconPath)
 	dprintf(DEBUG_INFO, "CFrameBuffer::setIconBasePath: %s\n", iconPath.c_str());
 	
 	iconBasePath = iconPath;
-	g_settings.icons_dir = iconBasePath;
 }
 
 void CFrameBuffer::setHintBasePath(const std::string & hintPath)
@@ -918,7 +917,6 @@ void CFrameBuffer::setHintBasePath(const std::string & hintPath)
 	dprintf(DEBUG_INFO, "CFrameBuffer::setHintBasePath: %s\n", hintPath.c_str());
 	
 	hintBasePath = hintPath;
-	g_settings.hints_dir = hintBasePath;
 }
 
 void CFrameBuffer::setButtonBasePath(const std::string & buttonPath)
@@ -926,7 +924,6 @@ void CFrameBuffer::setButtonBasePath(const std::string & buttonPath)
 	dprintf(DEBUG_INFO, "CFrameBuffer::setButtonBasePath: %s\n", buttonPath.c_str());
 	
 	buttonBasePath = buttonPath;
-	g_settings.buttons_dir = buttonBasePath;
 }
 
 void CFrameBuffer::setSpinnerBasePath(const std::string & spinnerPath)
@@ -934,7 +931,6 @@ void CFrameBuffer::setSpinnerBasePath(const std::string & spinnerPath)
 	dprintf(DEBUG_INFO, "CFrameBuffer::setSpinnerBasePath: %s\n", spinnerPath.c_str());
 	
 	spinnerBasePath = spinnerPath;
-	g_settings.spinner_dir = spinnerBasePath;
 }
 
 // get icon size

@@ -172,7 +172,7 @@ int CDBoxInfoWidget::showInfo()
 	//cpu
 	yPos += 10;
 	
-	std::string CPU = g_settings.hints_dir;
+	std::string CPU = CFrameBuffer::getInstance()->getHintBasePath();
 	CPU += "/";
 	CPU += NEUTRINO_ICON_MENUITEM_IMAGEINFO;
 	CPU += ".png";
@@ -328,7 +328,7 @@ int CDBoxInfoWidget::showInfo()
     	//hdd devices
     	hddIcon = new CCIcon();
     	
-    	std::string HDD = g_settings.hints_dir;
+    	std::string HDD = CFrameBuffer::getInstance()->getHintBasePath();
 	HDD += "/";
 	HDD += NEUTRINO_ICON_MENUITEM_HDDSETTINGS;
 	HDD += ".png";
@@ -450,7 +450,7 @@ int CDBoxInfoWidget::showInfo()
 	}
 	
 	//frontend
-	std::string TUNER = g_settings.hints_dir;
+	std::string TUNER = CFrameBuffer::getInstance()->getHintBasePath();
 	TUNER += "/";
 	TUNER += NEUTRINO_ICON_MENUITEM_SCANSETTINGS;
 	TUNER += ".png";

@@ -477,12 +477,6 @@ struct SNeutrinoSettings
 	int infobar_buttonbar;
 	int infobar_buttonline;
 	int infobar_border;
-
-	// icons dir
-	std::string icons_dir;
-	std::string hints_dir;
-	std::string buttons_dir;
-	std::string spinner_dir;
 	
 	// cicam
 	int ci_standby_reset;

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-01 19:00+0200\n"
+"POT-Creation-Date: 2023-10-01 22:12+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -261,9 +261,6 @@ msgid "Built date: "
 msgstr ""
 
 msgid "Buttons Bar"
-msgstr ""
-
-msgid "Buttons Dir"
 msgstr ""
 
 msgid "Buttons Line"
@@ -977,9 +974,6 @@ msgstr ""
 msgid "High decode priority"
 msgstr ""
 
-msgid "Hints Dir"
-msgstr ""
-
 msgid "History"
 msgstr ""
 
@@ -1011,9 +1005,6 @@ msgid "IP address"
 msgstr ""
 
 msgid "ISO-8859-1"
-msgstr ""
-
-msgid "Icons Dir"
 msgstr ""
 
 msgid "Image Info"
@@ -2086,9 +2077,6 @@ msgid "South"
 msgstr ""
 
 msgid "Special events (Olympic Games,World Cup etc.)"
-msgstr ""
-
-msgid "Spinner Dir"
 msgstr ""
 
 msgid "Sports"
