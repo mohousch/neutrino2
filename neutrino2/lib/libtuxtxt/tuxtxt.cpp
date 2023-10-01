@@ -2303,6 +2303,7 @@ void Menu_Init(char *menu, int current_pid, int menuitem, int hotindex)
 		menu[MenuLine[M_NAT]*Menu_Width + 28] = ' ';
 	if (showhex)
 		menu[MenuLine[M_PID]*Menu_Width + 27] = '?';
+		
 	/* render menu */
 	PosY = Menu_StartY;
 	for (line = 0; line < Menu_Height; line++)

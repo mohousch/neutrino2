@@ -80,7 +80,7 @@ class CStreamInfo : public CMenuTarget
 			unsigned int short_average, max_short_average, min_short_average;
 		} rate;
 
-		int  doSignalStrengthLoop();
+		void doSignalStrengthLoop();
 
 		int dvrfd, dmxfd;
 		struct timeval tv, last_tv, first_tv;

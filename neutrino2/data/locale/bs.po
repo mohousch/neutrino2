@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-09-23 01:37+0200\n"
+"POT-Creation-Date: 2023-10-01 19:00+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -57,13 +57,13 @@ msgstr ""
 msgid "(type)"
 msgstr ""
 
+msgid ", please be patient..."
+msgstr ""
+
 msgid "0 for unlimited repeats"
 msgstr ""
 
 msgid "5 Volt"
-msgstr ""
-
-msgid "?"
 msgstr ""
 
 msgid "A/V sync"
@@ -730,6 +730,10 @@ msgstr ""
 msgid "FEC_NONE"
 msgstr ""
 
+#, c-format
+msgid "FSK: ab %d"
+msgstr ""
+
 msgid "Fashion"
 msgstr ""
 
@@ -1162,6 +1166,12 @@ msgstr ""
 msgid "LoDirection"
 msgstr ""
 
+msgid "Loading skin "
+msgstr ""
+
+msgid "Loading skin style "
+msgstr ""
+
 msgid "LocalTV EPG"
 msgstr ""
 
@@ -1311,9 +1321,6 @@ msgid "Movie end:"
 msgstr ""
 
 msgid "Movie info"
-msgstr ""
-
-msgid "Movie start"
 msgstr ""
 
 msgid "Movie start:"

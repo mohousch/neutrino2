@@ -51,15 +51,14 @@
 
 #include <libdvbapi/dmx_cs.h>
 
-#define ENABLE_RASS	1
 
+////
 typedef unsigned char uchar;
 typedef unsigned int uint;
 
 extern const char *ConfigDir;
 extern const char *DataDir;
 extern char *ReplayFile;
-
 
 #define RT_MEL 65
 #define tr(a) a
@@ -150,13 +149,10 @@ class CRadioText
 		char RDS_PTYN[9];
 		char *RT_Titel, *RTp_Titel;
 
-//#if ENABLE_RASS
 		// Rass ...
 		int Rass_Show;			// -1=No, 0=Yes, 1=display
 		int Rass_Archiv;		// -1=Off, 0=Index, 1000-9990=Slidenr.
 		bool Rass_Flags[11][4];		// Slides+Gallery existent
-//#endif
-
 };
 
 // Radiotext-Memory

@@ -132,16 +132,17 @@ int CStreamInfo::exec(CMenuTarget * parent, const std::string&)
 		
 	//
 	paint(paint_mode);
-	doSignalStrengthLoop();
-	
 	CFrameBuffer::getInstance()->blit();
+	
+	// loop
+	doSignalStrengthLoop();
 
 	hide();
 	
 	return CMenuTarget::RETURN_REPAINT;
 }
 
-int CStreamInfo::doSignalStrengthLoop()
+void CStreamInfo::doSignalStrengthLoop()
 {	
 #define RED_BAR 40
 #define YELLOW_BAR 70
@@ -153,8 +154,9 @@ int CStreamInfo::doSignalStrengthLoop()
 	snrscale = new CProgressBar(x + 10 - 1, yypos + 2*(g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight()/2) + 5, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
 
 	neutrino_msg_t msg;
+	neutrino_msg_data_t data;
 	uint64_t maxb, minb, lastb, tmp_rate;
-	int cnt = 0,i=0;
+	int cnt = 0, i=0;
 	uint16_t ssig, ssnr;
 	uint32_t  ber;
 	char tmp_str[150];
@@ -165,7 +167,7 @@ int CStreamInfo::doSignalStrengthLoop()
 	int mm = g_Font[font_info]->getRenderWidth ("Max");//max min lenght
 	maxb = minb = lastb = 0;
 	
-	frameBuffer->blit();
+	//frameBuffer->blit();
 	
 	//channel
 	//CChannelList *channelList = CNeutrinoApp::getInstance ()->channelList;
@@ -177,12 +179,14 @@ int CStreamInfo::doSignalStrengthLoop()
 	
 	//
 	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	bool loop = true;
 
-	while (1) 
+	while (loop) 
 	{
-		neutrino_msg_data_t data;
+		//neutrino_msg_data_t data;
 
-		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd_MS (100);
+		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd_MS(100);
 		g_RCInput->getMsgAbsoluteTimeout (&msg, &data, &timeoutEnd);
 
 		if(live_fe != NULL)
@@ -196,13 +200,14 @@ int CStreamInfo::doSignalStrengthLoop()
 		signal.snr = ssnr & 0xFFFF;
 		signal.ber = ber;
 
-		int ret = update_rate ();
+		int ret = update_rate();
 
 		if (paint_mode == 0) 
 		{
 			char currate[150];
 			if (cnt < 12)
 				cnt++;
+				
 			int dheight = g_Font[font_info]->getHeight ();
 			int dx1 = x + 10;
 			
@@ -306,14 +311,16 @@ int CStreamInfo::doSignalStrengthLoop()
 			
 			paint_mode = ++paint_mode % 2;
 			paint(paint_mode);
+			
 			continue;
 		}
 		
 		// -- any key --> abort
 		if (msg <= CRCInput::RC_MaxRC) 
 		{
-			break;
+			loop = false;
 		}
+		
 		// -- push other events
 		if (msg > CRCInput::RC_MaxRC && msg != CRCInput::RC_timeout) 
 		{
@@ -340,7 +347,7 @@ int CStreamInfo::doSignalStrengthLoop()
 	g_RCInput->killTimer(sec_timer_id);
 	sec_timer_id = 0;
 
-	return msg;
+	//return msg;
 }
 
 void CStreamInfo::hide ()

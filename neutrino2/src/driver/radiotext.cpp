@@ -76,29 +76,25 @@
 #include <system/helpers.h>
 
 
+//// globals
 extern CFrontend * live_fe;
 extern cVideo *videoDecoder;
-
+//
 rtp_classes rtp_content;
-
 // RDS rest
 bool RDS_PSShow = false;
 int RDS_PSIndex = 0;
 char RDS_PSText[12][9];
-
 // plugin audiorecorder service
 bool ARec_Receive = false, ARec_Record = false;
-
-//#if ENABLE_RASS
 // ... Gallery (1..999)
 #define RASS_GALMAX 999
 bool Rass_Gallery[RASS_GALMAX+1];
 int Rass_GalStart, Rass_GalEnd, Rass_GalCount, Rass_SlideFoto;
-//#endif
-
+//
 #define floor
 const char *DataDir = "/tmp/rass";
-
+//
 // RDS-Chartranslation: 0x80..0xff
 unsigned char rds_addchar[128] = {
     0xe1, 0xe0, 0xe9, 0xe8, 0xed, 0xec, 0xf3, 0xf2, 
@@ -118,10 +114,11 @@ unsigned char rds_addchar[128] = {
     0xe3, 0xe5, 0xe6, 0xf3, 0xf4, 0xfd, 0xf5, 0xf8, 
     0xfe, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
 };
-
+//
 static const char *entitystr[5]  = { "&apos;", "&amp;", "&quote;", "&gt", "&lt" };
 static const char *entitychar[5] = { "'", "&", "\"", ">", "<" };
 
+//
 char *CRadioText::rds_entitychar(char *text)
 {
 	int i = 0, l, lof, lre, space;
@@ -381,9 +378,7 @@ int CRadioText::PES_Receive(unsigned char *data, int len)
 									RDS_PsPtynDecode(false, mtext, index);	// PS
 									break;
 								case 0xda:
-//#if ENABLE_RASS
 									RassDecode(mtext, index);		// Rass
-//#endif
 									break;
 								}
 							}
@@ -769,8 +764,6 @@ void CRadioText::RadioStatusMsg(void)
 	g_InfoViewer->showRadiotext();
 }
 
-
-//#if ENABLE_RASS
 // add <names> of DVB Radio Slides Specification 1.0, 20061228
 void CRadioText::RassDecode(unsigned char *mtext, int len)
 {
@@ -1109,8 +1102,8 @@ int CRadioText::RassImage(int QArchiv, int QKey, bool DirUp)
 
 	return QArchiv;
 }
-//#endif
 
+//
 static bool rtThreadRunning = false;
 
 void *RadioTextThread(void *data)
@@ -1338,7 +1331,6 @@ void CRadioText::setPid(uint inPid)
 		for (int i=0; i<5; i++) strcpy(RT_Text[i], "");
 		strcpy(RDS_PTYN, "");
 
-//#if ENABLE_RASS
 		// Rass ...
 		Rass_Show = -1;		// -1=No, 0=Yes, 1=display
 		Rass_Archiv = -1;	// -1=Off, 0=Index, 1000-9990=Slidenr.
@@ -1347,7 +1339,7 @@ void CRadioText::setPid(uint inPid)
 		{
 			perror(DataDir);
 		}
-//#endif
+
 		RT_MsgShow = false; // clear entries from old channel
 
 		rc = pthread_create(&threadRT, 0, RadioTextThread, (void *) &rt);
