@@ -423,7 +423,7 @@ const char * GetGenre(const unsigned char contentClassification) // UTF-8
 		i >>= 4;
 		i--;
 
-		res = genre_sub_classes_list[i][((contentClassification & 0x0F) < genre_sub_classes[i]) ? (contentClassification & 0x0F) : 0];
+		res = _(genre_sub_classes_list[i][((contentClassification & 0x0F) < genre_sub_classes[i]) ? (contentClassification & 0x0F) : 0]);
 	}
 	else
 		res = _("unknown");
