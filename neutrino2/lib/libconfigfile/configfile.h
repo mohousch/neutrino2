@@ -110,3 +110,4 @@ class CConfigFile
 };
 
 #endif /* __configfile_h__ */
+

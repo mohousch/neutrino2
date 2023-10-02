@@ -186,7 +186,6 @@ CZapit::CZapit()
 	playbackStopForced = false;
 	avDecoderOpen = false;
 	//
-	scanSDT = 0;
 	sdt_wakeup = false;
 	//
 	firstzap = true;
@@ -207,6 +206,7 @@ CZapit::CZapit()
 	lastChannelRadio = 0;
 	lastChannelTV = 0;
 	makeRemainingChannelsBouquet = false;
+	scanSDT = 0;
 }
 		
 //
@@ -935,6 +935,8 @@ void CZapit::saveZapitSettings(bool write, bool write_a)
 	// write zapit config
 	if (write) 
 	{
+		config.setBool("saveLastChannel", saveLastChannel);
+		
 		if (config.getBool("saveLastChannel", true)) 
 		{
 			if (currentMode & RADIO_MODE)
@@ -951,8 +953,9 @@ void CZapit::saveZapitSettings(bool write, bool write_a)
 
 		config.setInt32("scanSDT", scanSDT);
 
+		//
 		//if (config.getModifiedFlag())
-			config.saveConfig(ZAPIT_CONFIGFILE);
+		config.saveConfig(ZAPIT_CONFIGFILE);
 
 	}
 
@@ -2744,7 +2747,7 @@ unsigned CZapit::zapTo(const unsigned int channel)
 void CZapit::setZapitConfig(Zapit_config * Cfg)
 {
 	makeRemainingChannelsBouquet = Cfg->makeRemainingChannelsBouquet;
-	config.setBool("saveLastChannel", Cfg->saveLastChannel);
+	saveLastChannel = Cfg->saveLastChannel;
 	scanSDT = Cfg->scanSDT;
 	
 	// save it
@@ -2754,7 +2757,7 @@ void CZapit::setZapitConfig(Zapit_config * Cfg)
 void CZapit::getZapitConfig(Zapit_config *Cfg)
 {
         Cfg->makeRemainingChannelsBouquet = makeRemainingChannelsBouquet;
-        Cfg->saveLastChannel = config.getBool("saveLastChannel", true);
+        Cfg->saveLastChannel = saveLastChannel;
         Cfg->scanSDT = scanSDT;
 }
 

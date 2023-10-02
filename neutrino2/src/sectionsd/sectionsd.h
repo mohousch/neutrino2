@@ -21,6 +21,8 @@
 
 */
 
+#include <config.h>
+
 #include <string>
 #include <vector>
 
@@ -28,6 +30,7 @@
 #include <sectionsd/SIevents.hpp>
 
 
+////
 class CShortEPGData
 {
 	public:
@@ -59,7 +62,7 @@ class CChannelEvent
 
 typedef std::vector<CChannelEvent> CChannelEventList;
 
-//
+////
 class CSectionsd
 {
 	public:

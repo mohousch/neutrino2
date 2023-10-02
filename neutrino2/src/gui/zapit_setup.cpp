@@ -36,8 +36,6 @@
 #include <system/debug.h>
 
 
-extern CBouquetManager * g_bouquetManager;	// defined in der zapit.cpp
-
 //option off0_on1
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =

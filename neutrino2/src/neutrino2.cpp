@@ -2877,10 +2877,12 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	{
 		HintBox(_("Information"), _("Saving settings now, please be patient."));
 		
+		//
 		saveSetup(NEUTRINO_SETTINGS_FILE);
 
 		tuxtxt_close();
-			
+		
+		// save zapitconfig	
 		zapitCfg.saveLastChannel = g_settings.uselastchannel;
 		CZapit::getInstance()->setZapitConfig(&zapitCfg);
 	}
@@ -3288,17 +3290,6 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		{
 			// save neutrino.conf
 			saveSetup(NEUTRINO_SETTINGS_FILE);
-			
-			// save skin config
-			/*
-			std::string skinConfig = CONFIGDIR "/skins/";
-			skinConfig += g_settings.preferred_skin.c_str();
-			skinConfig += "/";
-			skinConfig += g_settings.preferred_skin.c_str();
-			skinConfig += ".config";
-				
-			saveSkinConfig(skinConfig.c_str());
-			*/
 		}
 
 		// save epg

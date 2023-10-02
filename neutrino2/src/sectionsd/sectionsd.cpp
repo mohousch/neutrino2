@@ -24,10 +24,10 @@
 //    along with this program; if not, write to the Free Software
 //    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
-//
 
 #include <config.h>
+
+//
 #include <malloc.h>
 #include <dmxapi.h>
 #include <dmx.h>
@@ -52,7 +52,6 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <signal.h>
-//#include <sys/resource.h> // getrusage
 #include <set>
 #include <map>
 #include <algorithm>
@@ -98,7 +97,7 @@
 #include <zapit/frontend_c.h>
 
 
-// globals
+//// globals / defines
 int op_increase(int i) { return ++i; }
 // 60 Minuten Zyklus...
 #define TIME_EIT_SCHEDULED_PAUSE 60 * 60
@@ -184,8 +183,8 @@ static t_channel_id    messaging_current_servicekey = 0;
 static bool channel_is_blacklisted = false;
 // EVENTS...
 /* messaging_eit_is_busy does not need locking, it is only written to from CN-Thread */
-static bool		messaging_eit_is_busy = false;
-static bool		messaging_need_eit_version = false;
+static bool messaging_eit_is_busy = false;
+static bool messaging_need_eit_version = false;
 std::string epg_dir("");
 //
 static pthread_rwlock_t eventsLock = PTHREAD_RWLOCK_INITIALIZER; // Unsere (fast-)mutex, damit nicht gleichzeitig in die Menge events geschrieben und gelesen wird
@@ -207,9 +206,7 @@ static DMX dmxVIASAT(0x39, 3000);
 int sectionsd_stop = 0;
 //
 static bool slow_addevent = true;
-
-//
-extern CBouquetManager * g_bouquetManager;	// defined in der zapit.cpp
+////
 extern tallchans allchans;			// defined in zapit.cpp
 extern CFrontend * live_fe;
 extern cDemux * dmxUTC;				// defined in dmxapi.cpp
@@ -2000,7 +1997,7 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 	t_transport_stream_id _tsid = GET_TRANSPORT_STREAM_ID_FROM_CHANNEL_ID(chid);
 	t_service_id _sid = GET_SERVICE_ID_FROM_CHANNEL_ID(chid);
 	
-	chan = g_bouquetManager->findChannelByChannelID(chid);
+	chan = CZapit::getInstance()->findChannelByChannelID(chid);
 	
 	if (chan)
 	{
@@ -2970,9 +2967,6 @@ int eit_stop_update_filter(int *fd)
 	if(eitDmx && CZapit::getInstance()->getFrontendCount())
 	{
 		eitDmx->Stop();
-		
-		//delete eitDmx;
-		//eitDmx = NULL;
 	}
 
 	*fd = -1;
@@ -4895,14 +4889,11 @@ void CSectionsd::Start(void)
 	// load languages
 	SIlanguage::loadLanguages();
 
-	//
-	tzset(); // TZ auswerten
-
 	//NTP-Config laden
 	if (!ntp_config.loadConfig(CONF_FILE))
 	{
 		// set defaults if no configuration file exists
-		printf("CSectionsd::Start: %s not found\n", CONF_FILE);
+		dprintf(DEBUG_NORMAL, "CSectionsd::Start: %s not found\n", CONF_FILE);
 	}
 
 	ntpserver = ntp_config.getString("network_ntpserver", "de.pool.ntp.org");
@@ -4995,7 +4986,7 @@ void CSectionsd::Start(void)
 	
 	sectionsd_ready = true;
 	
-	//if(CZapit::getInstance()->getFrontendCount())
+	//
 	eit_update_fd = -1;
 }
 
