@@ -96,6 +96,7 @@
 #include <video_cs.h>
 
 
+//// defines
 // CMovieInfoViewer
 #define TIMEOSD_FONT 		SNeutrinoSettings::FONT_TYPE_INFOBAR_CHANNAME
 #define TIMEBARH 		38
@@ -103,7 +104,7 @@
 #define BUTTON_BAR_HEIGHT	25
 #define TIMESCALE_BAR_HEIGHT	4
 
-// movieplayer
+//// movieplayer
 CMoviePlayerGui::CMoviePlayerGui()
 {
 	dprintf(DEBUG_INFO, "CMoviePlayerGui::CMoviePlayerGui()\n");
@@ -304,12 +305,16 @@ void CMoviePlayerGui::removeFromPlaylist(long pos)
 
 void CMoviePlayerGui::startMovieInfoViewer(void)
 {
+	dprintf(DEBUG_DEBUG, "CMoviePlayerGui::startMovieInfoViewer:\n");
+	
 	if(sec_timer_id == 0)
 		sec_timer_id = g_RCInput->addTimer(g_settings.timing_infobar*1000*1000);
 }
 
 void CMoviePlayerGui::killMovieInfoViewer(void)
 {
+	dprintf(DEBUG_DEBUG, "CMoviePlayerGui::killMovieInfoViewer:\n");
+	
 	if(sec_timer_id)
 	{
 		g_RCInput->killTimer(sec_timer_id);
@@ -1815,11 +1820,14 @@ void CMoviePlayerGui::showMovieInfo()
 
 	show(playlist[selected].epgTitle, (playlist[selected].epgInfo1.empty())? playlist[selected].epgInfo2 : playlist[selected].epgInfo1, file_prozent, ac3state, speed, playstate, (playlist[selected].ytid.empty())? true : false, m_loop); //FIXME:
 
+	// start Timer
 	startMovieInfoViewer();
 }
 
 void CMoviePlayerGui::initFrames()
 {
+	dprintf(DEBUG_INFO, "CMoviePlayerGui::initFrames:\n");
+	
 	// movieinfo
 	cFrameBoxInfo.iHeight = BOXHEIGHT_MOVIEINFO;
 	cFrameBoxInfo.iWidth = g_settings.screen_EndX - g_settings.screen_StartX - BORDER_LEFT - BORDER_RIGHT;
@@ -1835,7 +1843,7 @@ void CMoviePlayerGui::initFrames()
 
 void CMoviePlayerGui::hide()
 {
-	//printf("CMovieInfoViewer::hide: x %d y %d xend %d yend %d\n", m_xstart, m_y , m_xend, m_height + 15);
+	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::hide:\n");
 
 	if(!visible)
 		return;
@@ -1847,13 +1855,14 @@ void CMoviePlayerGui::hide()
 
 	visible = false;
 
+	// stop Timer
 	killMovieInfoViewer();
 }
 
 //showMovieInfo
 void CMoviePlayerGui::show(std::string Title, std::string Info, short Percent, const unsigned int ac3state, const int speed, const int playstate, bool show_bookmark, bool m_loop)
 {
-	dprintf(DEBUG_INFO, "CMoviePlayerGui::showMovieInfo:\n");
+	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::showMovieInfo:\n");
 	
 	// icons dimension
 	frameBuffer->getIconSize(NEUTRINO_ICON_16_9, &icon_w_aspect, &icon_h_aspect);

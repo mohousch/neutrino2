@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-01 23:48+0200\n"
+"POT-Creation-Date: 2023-10-02 20:14+0200\n"
 "PO-Revision-Date: 2023-10-01 23:48+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -15,15 +15,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../../movieplayer/movieplayer.cpp:126 ../../movieplayer/movieplayer.cpp:209
-#: ../../movieplayer/movieplayer.cpp:445
 msgid "Movie Player"
 msgstr ""
 
-#: ../../movieplayer/movieplayer.cpp:126 ../../movieplayer/movieplayer.cpp:209
-#: ../../movieplayer/movieplayer.cpp:414
 msgid "Scan for Movies ..."
 msgstr ""

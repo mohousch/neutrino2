@@ -567,8 +567,10 @@ int CRCInput::addTimer(uint64_t Interval, bool oneshot, bool correct_time )
 
 	std::vector<timer>::iterator e;
 	for ( e = timers.begin(); e != timers.end(); ++e )
+	{
 		if ( e->times_out > _newtimer.times_out )
 			break;
+	}
 
 	timers.insert(e, _newtimer);
 
@@ -632,7 +634,7 @@ int CRCInput::checkTimers()
 
 		            	timers.erase(e);
 		            	
-				for ( e= timers.begin(); e!= timers.end(); ++e )
+				for ( e = timers.begin(); e != timers.end(); ++e )
 				{
 					if ( e->times_out > _newtimer.times_out )
 						break;

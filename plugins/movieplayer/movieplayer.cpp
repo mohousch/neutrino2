@@ -434,6 +434,8 @@ void CMoviePlayer::showMenu()
 
 		mlist->addItem(item);
 	}
+	
+	mlist->setSelected(selected);
 
 	//
 	mlist->setWidgetMode(ClistBox::MODE_LISTBOX);
@@ -483,10 +485,15 @@ int CMoviePlayer::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if(parent)
 		hide();
+		
+	selected = mlist? mlist->getSelected() : 0;
+	
+	if (selected > m_vMovieInfo.size())
+		selected = 0;
 	
 	if(actionKey == "mplay")
 	{
-		selected = mlist? mlist->getSelected() : 0;
+		//selected = mlist? mlist->getSelected() : 0;
 		
 		CMoviePlayerGui tmpMoviePlayerGui;
 		tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[selected]);
@@ -497,14 +504,14 @@ int CMoviePlayer::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_info")
 	{
-		selected = mlist? mlist->getSelected() : 0;
+		//selected = mlist? mlist->getSelected() : 0;
 		m_movieInfo.showMovieInfo(m_vMovieInfo[mlist->getSelected()]);
 
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "RC_red")
 	{
-		selected = mlist? mlist->getSelected() : 0;
+		//selected = mlist? mlist->getSelected() : 0;
 		hide();
 		doTMDB(m_vMovieInfo[mlist->getSelected()]);
 		showMenu();
@@ -522,11 +529,14 @@ int CMoviePlayer::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		if(m_vMovieInfo.size() > 0)
 		{	
-			if (&m_vMovieInfo[mlist->getSelected()].file != NULL) 
+			if (&m_vMovieInfo[selected].file != NULL) 
 			{
-			 	onDeleteFile(m_vMovieInfo[mlist->getSelected()]);
+			 	onDeleteFile(m_vMovieInfo[selected]);
 			}
 		}
+		
+		if (selected > m_vMovieInfo.size())
+			selected = 0;
 
 		showMenu();
 

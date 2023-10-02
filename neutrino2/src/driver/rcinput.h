@@ -166,7 +166,7 @@ class CRCInput
 		{
 			neutrino_msg_t msg;
 			neutrino_msg_data_t data;
-			void *buf;
+			//void *buf;
 		};
 
 		struct timer
@@ -423,12 +423,13 @@ class CRCInput
 		static const char * getSpecialKeyName(const unsigned long key);
 		static std::string getKeyName(const unsigned long key);
 
+		// in us
 		int addTimer(uint64_t Interval, bool oneshot = true, bool correct_time = true );
 		int addTimer(struct timeval Timeout);
 		int addTimer(const time_t *Timeout);
-
 		void killTimer(uint32_t id);
 
+		//
 		static int64_t calcTimeoutEnd_MS(const int timeout_in_milliseconds);
 		static int64_t calcTimeoutEnd(const int timeout_in_seconds);
 
