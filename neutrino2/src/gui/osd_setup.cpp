@@ -1227,7 +1227,7 @@ int CSkinManager::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		g_settings.preferred_skin = actionKey;
 		
-		//CNeutrinoApp::getInstance()->exec(NULL, "savesettings"); //FIXME: ???
+		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
 		//CNeutrinoApp::getInstance()->exec(NULL, "restart");
 		
 		return CMenuTarget::RETURN_EXIT_ALL;

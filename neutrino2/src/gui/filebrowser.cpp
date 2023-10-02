@@ -751,6 +751,15 @@ void CFileBrowser::paint()
 		listBox = new ClistBox(&cFrameBox);
 		
 		//
+		listBox->enablePaintHead();
+		listBox->enablePaintDate();
+		listBox->setHeadLine(true, true);
+		
+		//
+		listBox->enablePaintFoot();
+		listBox->setFootLine(true, true);
+		
+		//
 		widget->addWidgetItem(listBox);
 	}	
 
@@ -863,6 +872,7 @@ void CFileBrowser::paint()
 
 		item->setOptionInfo(tmp.c_str()); 
 
+		//
 		listBox->addItem(item);
 	}
 
@@ -870,20 +880,10 @@ void CFileBrowser::paint()
 	char l_name[100];
 	snprintf(l_name, sizeof(l_name), "%s %s", _("Filebrowser"), FILESYSTEM_ENCODING_TO_UTF8(std::string(name).c_str())); // UTF-8
 
-	listBox->enablePaintHead();
 	listBox->setTitle(l_name, NEUTRINO_ICON_FILEBROWSER);
-	listBox->enablePaintDate();
-	listBox->setHeadGradient(g_settings.Head_gradient);
-	listBox->setHeadCorner(g_settings.Head_radius, g_settings.Head_corner);
-	listBox->setHeadLine(g_settings.Head_line);
 	listBox->setHeadButtons(HButtons, 2);
 
 	// foot
-	listBox->enablePaintFoot();
-	listBox->setFootGradient(g_settings.Foot_gradient);
-	listBox->setFootCorner(g_settings.Foot_radius, g_settings.Foot_corner);
-	listBox->setFootLine(g_settings.Foot_line);
-
 	struct button_label Button[4];
 	Button[0] = FileBrowserButtons[0];
 	Button[1] = FileBrowserButtons[1];

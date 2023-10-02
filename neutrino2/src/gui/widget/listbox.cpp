@@ -3313,9 +3313,9 @@ void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned i
 			neutrino_msg_t dk = (shortcut != CRCInput::RC_nokey) ? CRCInput::convertDigitToKey(sc++) : CRCInput::RC_nokey;
 
 			//FIXME: iconName
-			CMenuForwarder *fw_plugin = new CMenuForwarder(g_PluginList->getName(count), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());
+			CMenuForwarder *fw_plugin = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, NULL, CPluginsExec::getInstance(), g_PluginList->getFileName(count), dk, NULL, IconName.c_str());
 
-			fw_plugin->setHint(g_PluginList->getDescription(count).c_str());
+			fw_plugin->setHint(_(g_PluginList->getDescription(count).c_str()));
 			fw_plugin->setWidgetType(itype);
 			if (i2lines) fw_plugin->set2lines();
 			fw_plugin->setBorderMode(iBorder);
