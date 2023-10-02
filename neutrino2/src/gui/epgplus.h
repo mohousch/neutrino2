@@ -77,19 +77,6 @@ class EpgPlus
 			int               size;           
 		};
 
-
-		enum TViewMode
-		{
-			ViewMode_Stretch,
-			ViewMode_Scroll,
-		};
-
-		enum TSwapMode  
-		{
-			SwapMode_ByPage,
-			SwapMode_ByBouquet,
-		};
-
 		class Footer;
 
 		// Header
@@ -344,54 +331,8 @@ class EpgPlus
 		};
 
 		//
-		class MenuOptionChooserSwitchSwapMode : public CMenuOptionChooser
-		{
-			public:
-				MenuOptionChooserSwitchSwapMode(EpgPlus* epgPlus);
-
-				virtual ~MenuOptionChooserSwitchSwapMode();
-
-			public:
-				int exec(CMenuTarget* parent);
-
-			private:
-				int oldTimingMenuSettings;
-				TSwapMode oldSwapMode;
-				EpgPlus * epgPlus;
-		};
-
-		//
-		class MenuOptionChooserSwitchViewMode : public CMenuOptionChooser
-		{
-			public:
-				MenuOptionChooserSwitchViewMode( EpgPlus* epgPlus);
-
-				virtual ~MenuOptionChooserSwitchViewMode();
-
-			public:
-				int exec(CMenuTarget* parent); 
-
-			private:
-				int oldTimingMenuSettings;
-		};
-
-		//
-		class MenuTargetSettings : public CMenuTarget
-		{
-			public:
-				MenuTargetSettings ( EpgPlus * epgPlus);
-
-			public:
-				int exec(CMenuTarget* parent , const std::string& actionKey);
-
-			private:
-				EpgPlus * epgPlus;
-		};
-
 		typedef time_t DurationSetting;
 
-		friend class EpgPlus::MenuOptionChooserSwitchSwapMode;
-		friend class EpgPlus::MenuOptionChooserSwitchViewMode;
 		friend class EpgPlus::ChannelEntry;
 		friend class EpgPlus::ChannelEventEntry;
 
@@ -442,9 +383,6 @@ class EpgPlus
 		static time_t   duration;
 
 		int             entryHeight;
-
-		TViewMode       currentViewMode;
-		TSwapMode       currentSwapMode;
 
 		int             headerX;
 		int             headerY;

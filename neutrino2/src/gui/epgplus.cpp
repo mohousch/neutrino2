@@ -123,7 +123,6 @@ void EpgPlus::Header::paint()
 	head->enablePaintDate();
 	head->setFormat("%d.%m.%Y %H:%M:%S");
 	head->addButton(NEUTRINO_ICON_BUTTON_HELP);
-	head->addButton(NEUTRINO_ICON_BUTTON_SETUP);
 	
 	head->paint();
 }
@@ -684,8 +683,6 @@ void EpgPlus::createChannelEntries (int selectedChannelEntryIndex)
 void EpgPlus::init()
 {
 	frameBuffer = CFrameBuffer::getInstance ();
-	currentViewMode = ViewMode_Scroll;
-	currentSwapMode = SwapMode_ByPage;
 	usableScreenWidth = g_settings.screen_EndX;
 	usableScreenHeight = g_settings.screen_EndY;
 	
@@ -768,8 +765,6 @@ void EpgPlus::init()
 	this->duration = 2 * 60 * 60;
 	
 	this->refreshAll = false;
-	this->currentViewMode = ViewMode_Scroll;
-	this->currentSwapMode = SwapMode_ByPage;
 	
 	this->header = new Header (this->frameBuffer, this->headerX, this->headerY, this->headerWidth);
 	
@@ -846,89 +841,27 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 
 	  		if (msg == CRCInput::RC_page_down) 
 			{
-				switch (this->currentSwapMode) 
-				{
-					case SwapMode_ByPage:
-		  			{
-						int selectedChannelEntryIndex = this->selectedChannelEntry->index;
-						selectedChannelEntryIndex += this->maxNumberOfDisplayableEntries;
+				int selectedChannelEntryIndex = this->selectedChannelEntry->index;
+				selectedChannelEntryIndex += this->maxNumberOfDisplayableEntries;
 
-						if (selectedChannelEntryIndex > this->channelList->getSize () - 1)
-			  				selectedChannelEntryIndex = 0;
+				if (selectedChannelEntryIndex > this->channelList->getSize () - 1)
+			  		selectedChannelEntryIndex = 0;
 
-						this->createChannelEntries (selectedChannelEntryIndex);
+				this->createChannelEntries (selectedChannelEntryIndex);
 
-						this->paint ();
-		  			}
-		  			break;
-
-					case SwapMode_ByBouquet:
-		  			{
-						unsigned int currentBouquetNumber = _bouquetList->getActiveBouquetNumber();
-
-						++currentBouquetNumber;
-
-						if (currentBouquetNumber == _bouquetList->Bouquets.size ())
-			  				currentBouquetNumber = 0;
-
-						CBouquet *bouquet = _bouquetList->Bouquets[currentBouquetNumber];
-
-						if (bouquet->channelList->getSize () > 0) 
-						{
-			  				// select first channel of bouquet
-			  				_bouquetList->activateBouquet (currentBouquetNumber, false);
-
-			  				this->channelListStartIndex = (*bouquet->channelList)[0]->number - 1;
-			  				this->createChannelEntries (this->channelListStartIndex);
-
-			  				this->paint ();
-						}
-		  			}
-		  			break;
-				}
+				this->paint ();
 	  		}
 	  		else if (msg == CRCInput::RC_page_up) 
 			{
-				switch (this->currentSwapMode) 
-				{
-					case SwapMode_ByPage:
-		  			{
-						int selectedChannelEntryIndex = this->selectedChannelEntry->index;
-						selectedChannelEntryIndex -= this->maxNumberOfDisplayableEntries;
+				int selectedChannelEntryIndex = this->selectedChannelEntry->index;
+				selectedChannelEntryIndex -= this->maxNumberOfDisplayableEntries;
 
-						if (selectedChannelEntryIndex < 0)
-			  				selectedChannelEntryIndex = this->channelList->getSize () - 1;
+				if (selectedChannelEntryIndex < 0)
+			  		selectedChannelEntryIndex = this->channelList->getSize () - 1;
 
-						this->createChannelEntries (selectedChannelEntryIndex);
+				this->createChannelEntries (selectedChannelEntryIndex);
 
-						this->paint ();
-		  			}
-		  			break;
-
-					case SwapMode_ByBouquet:
-		  			{
-						unsigned int currentBouquetNumber = _bouquetList->getActiveBouquetNumber ();
-
-						--currentBouquetNumber;
-
-						if (currentBouquetNumber == unsigned (-1))
-			  				currentBouquetNumber = _bouquetList->Bouquets.size () - 1;
-
-						CBouquet *bouquet = _bouquetList->Bouquets[currentBouquetNumber];
-
-						if (bouquet->channelList->getSize () > 0) 
-						{
-			  				// select first channel of bouquet
-			  				_bouquetList->activateBouquet (currentBouquetNumber, false);
-
-			  				this->channelListStartIndex = (*bouquet->channelList)[0]->number - 1;
-			  				this->createChannelEntries (this->channelListStartIndex);
-
-			  				this->paint ();
-						}
-		  			}
-		  			break;
-				}
+				this->paint ();
 	  		} 
 			else if (msg == (neutrino_msg_t) CRCInput::RC_red) 
 			{
@@ -960,58 +893,6 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 					}
 				}
 	  		}
-	  		else if (msg == (neutrino_msg_t) CRCInput::RC_setup) 
-			{
-				CWidget* menuWidgetOptionsWidget = NULL;
-				ClistBox* menuWidgetOptions = NULL;
-				
-				//
-				menuWidgetOptionsWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-				menuWidgetOptionsWidget->name = "epgplusoptions";
-				menuWidgetOptionsWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
-				menuWidgetOptionsWidget->enableSaveScreen();
-				
-				//
-				menuWidgetOptions = new ClistBox(menuWidgetOptionsWidget->getWindowsPos().iX, menuWidgetOptionsWidget->getWindowsPos().iY, menuWidgetOptionsWidget->getWindowsPos().iWidth, menuWidgetOptionsWidget->getWindowsPos().iHeight);
-
-				menuWidgetOptions->setWidgetMode(ClistBox::MODE_SETUP);
-				menuWidgetOptions->enableShrinkMenu();
-					
-				menuWidgetOptions->enablePaintHead();
-				menuWidgetOptions->setTitle(_("Options"), NEUTRINO_ICON_BUTTON_EPG);
-				menuWidgetOptions->setHeadCorner(RADIUS_SMALL);
-				menuWidgetOptions->setHeadGradient(LIGHT2DARK);
-				menuWidgetOptions->setHeadLine(false);
-
-				menuWidgetOptions->enablePaintFoot();
-				menuWidgetOptions->setFootCorner(RADIUS_SMALL);
-				menuWidgetOptions->setFootGradient(DARK2LIGHT);
-				menuWidgetOptions->setFootLine(false);
-						
-				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-						
-				menuWidgetOptions->setFootButtons(&btn);
-					
-				//
-				menuWidgetOptionsWidget->addWidgetItem(menuWidgetOptions);
-				
-				menuWidgetOptions->addItem(new MenuOptionChooserSwitchSwapMode (this));
-				menuWidgetOptions->addItem(new MenuOptionChooserSwitchViewMode (this));
-
-				menuWidgetOptionsWidget->exec (NULL, "");
-				
-				if (menuWidgetOptions)
-				{
-					delete menuWidgetOptions;
-					menuWidgetOptions = NULL;
-				}
-				
-				if (menuWidgetOptionsWidget)
-				{
-					delete menuWidgetOptionsWidget;
-					menuWidgetOptionsWidget = NULL;
-				}
-	  		} 
 			else if (CRCInput::isNumeric (msg)) 
 			{	//numeric zap
 				this->hide ();
@@ -1087,99 +968,62 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 	  		}
 	  		else if (msg == CRCInput::RC_left) 
 			{
-				switch (this->currentViewMode) 
+				TCChannelEventEntries::const_iterator It = this->getSelectedEvent();
+
+				if ( (It != this->selectedChannelEntry->channelEventEntries.begin()) && (It != this->selectedChannelEntry->channelEventEntries.end ()) ) 
 				{
-					case ViewMode_Stretch:
-		  			{
-						if (this->duration - 30 * 60 > 30 * 60) 
+			  		--It;
+			  		this->selectedTime = (*It)->channelEvent.startTime + (*It)->channelEvent.duration / 2;
+			  		if (this->selectedTime < this->startTime)
+						this->selectedTime = this->startTime;
+
+			  		this->selectedChannelEntry->paint (true, this->selectedTime);
+				} 
+				else 
+				{
+			  		if (this->startTime != this->firstStartTime) 
+					{
+						if (this->startTime - this->duration > this->firstStartTime) 
 						{
-			  				this->duration -= 30 * 60;
-			  				this->hide();
-			  				this->refreshAll = true;
-						}
-		  			}
-		  			break;
-
-					case ViewMode_Scroll:
-		  			{
-						TCChannelEventEntries::const_iterator It = this->getSelectedEvent ();
-
-						if ((It != this->selectedChannelEntry->channelEventEntries.begin ()) 
-							&& (It != this->selectedChannelEntry->channelEventEntries.end ()) ) 
-						{
-			  				--It;
-			  				this->selectedTime = (*It)->channelEvent.startTime + (*It)->channelEvent.duration / 2;
-			  				if (this->selectedTime < this->startTime)
-								this->selectedTime = this->startTime;
-
-			  				this->selectedChannelEntry->paint (true, this->selectedTime);
+				  			this->startTime -= this->duration;
 						} 
 						else 
 						{
-			  				if (this->startTime != this->firstStartTime) 
-							{
-								if (this->startTime - this->duration > this->firstStartTime) 
-								{
-				  					this->startTime -= this->duration;
-								} 
-								else 
-								{
-				  					this->startTime = this->firstStartTime;
-								}
-
-								this->selectedTime = this->startTime + this->duration - 1;	// select last event
-								this->createChannelEntries (this->selectedChannelEntry->index);
-
-								this->paint ();
-			  				}
+				  			this->startTime = this->firstStartTime;
 						}
-		  			}
-		  			break;
+
+						this->selectedTime = this->startTime + this->duration - 1;	// select last event
+						this->createChannelEntries (this->selectedChannelEntry->index);
+
+						this->paint ();
+			  		}
 				}
 	  		} 
 			else if (msg == CRCInput::RC_right) 
 			{
-				switch (this->currentViewMode) 
-				{
-					case ViewMode_Stretch:
-		  			{
-						if (this->duration + 30 * 60 < 4 * 60 * 60) 
-						{
-			  				this->duration += 60 * 60;
-			  				this->hide ();
-			  				this->refreshAll = true;
-						}
-		  			}
-		  			break;
+				TCChannelEventEntries::const_iterator It = this->getSelectedEvent ();
 
-					case ViewMode_Scroll:
-		 			{
-						TCChannelEventEntries::const_iterator It = this->getSelectedEvent ();
-
-						if ((It != this->selectedChannelEntry->channelEventEntries.end () - 1)
+				if ((It != this->selectedChannelEntry->channelEventEntries.end () - 1)
 						&& (It != this->selectedChannelEntry->channelEventEntries.end ())) 
-						{
-			  				++It;
+				{
+			  		++It;
 
-			  				this->selectedTime = (*It)->channelEvent.startTime + (*It)->channelEvent.duration / 2;
+			  		this->selectedTime = (*It)->channelEvent.startTime + (*It)->channelEvent.duration / 2;
 
-			  				if (this->selectedTime > this->startTime + time_t (this->duration))
-								this->selectedTime = this->startTime + this->duration;
+			  		if (this->selectedTime > this->startTime + time_t (this->duration))
+						this->selectedTime = this->startTime + this->duration;
 
-			  				this->selectedChannelEntry->paint (true, this->selectedTime);
-						} 
-						else 
-						{
-			  				this->startTime += this->duration;
-			  				this->createChannelEntries (this->selectedChannelEntry->index);
+			  		this->selectedChannelEntry->paint (true, this->selectedTime);
+				} 
+				else 
+				{
+			  		this->startTime += this->duration;
+			  		this->createChannelEntries (this->selectedChannelEntry->index);
 
-			  				this->selectedTime = this->startTime;
-			  				this->createChannelEntries (this->selectedChannelEntry->index);
+			  		this->selectedTime = this->startTime;
+			  		this->createChannelEntries (this->selectedChannelEntry->index);
 
-			  				this->paint ();
-						}
-		  			}
-		  			break;
+			  		this->paint ();
 				}
 	  		} 
 			else if (msg == CRCInput::RC_ok) 
@@ -1435,84 +1279,5 @@ int EpgPlus::MenuTargetRefreshEpg::exec(CMenuTarget */*parent*/, const std::stri
 	this->epgPlus->refreshAll = true;
 
 	return CMenuTarget::RETURN_EXIT_ALL;
-}
-
-struct keyval menuOptionChooserSwitchSwapModes[] = {
-	{EpgPlus::SwapMode_ByPage, _("by page") },
-	{EpgPlus::SwapMode_ByBouquet, _("by bouquet")}
-};
-
-EpgPlus::MenuOptionChooserSwitchSwapMode::MenuOptionChooserSwitchSwapMode (EpgPlus * _epgPlus)
-:CMenuOptionChooser (_("swap mode"), (int *) &_epgPlus->currentSwapMode, menuOptionChooserSwitchSwapModes, sizeof (menuOptionChooserSwitchSwapModes) / sizeof (keyval)
-					  , true, NULL, CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW) 
-{
-	this->epgPlus = _epgPlus;
-	this->oldSwapMode = _epgPlus->currentSwapMode;
-	this->oldTimingMenuSettings = g_settings.timing_menu;
-}
-
-EpgPlus::MenuOptionChooserSwitchSwapMode::~MenuOptionChooserSwitchSwapMode ()
-{
-	g_settings.timing_menu = this->oldTimingMenuSettings;
-	
-	if (this->epgPlus->currentSwapMode != this->oldSwapMode) 
-	{
-		switch (this->epgPlus->currentSwapMode) 
-		{
-			case SwapMode_ByPage:
-				buttonLabels[1].localename = _("page down");
-				buttonLabels[2].localename = _("page up");
-				break;
-
-			case SwapMode_ByBouquet:
-				buttonLabels[1].localename = _("prev bouquet");
-				buttonLabels[2].localename = _("next bouquet");
-				break;
-		}
-
-		this->epgPlus->refreshAll = true;
-	}
-}
-
-int EpgPlus::MenuOptionChooserSwitchSwapMode::exec(CMenuTarget* parent)
-{
-	dprintf(DEBUG_NORMAL, "EpgPlus::MenuOptionChooserSwitchSwapMode::exec:\n");
-
-	// change time out settings temporary
-	g_settings.timing_menu = 1;
-	
-	CMenuOptionChooser::exec(parent);
-	
-	return CMenuTarget::RETURN_REPAINT;
-}
-
-struct keyval menuOptionChooserSwitchViewModes[] = 
-{
-  	{EpgPlus::ViewMode_Scroll, _("stretch mode")},
-  	{EpgPlus::ViewMode_Stretch, _("scroll mode")}
-};
-
-EpgPlus::MenuOptionChooserSwitchViewMode::MenuOptionChooserSwitchViewMode (EpgPlus * epgPlus)
-:CMenuOptionChooser (_("view mode"), (int *) &epgPlus->currentViewMode, menuOptionChooserSwitchViewModes, sizeof (menuOptionChooserSwitchViewModes) / sizeof (keyval)
-					  , true, NULL, CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE) 
-{
-  	this->oldTimingMenuSettings = g_settings.timing_menu;
-}
-
-EpgPlus::MenuOptionChooserSwitchViewMode::~MenuOptionChooserSwitchViewMode ()
-{
-  	g_settings.timing_menu = this->oldTimingMenuSettings;
-}
-
-int EpgPlus::MenuOptionChooserSwitchViewMode::exec(CMenuTarget* parent)
-{
-	dprintf(DEBUG_NORMAL, "EpgPlus::MenuOptionChooserSwitchViewMode::exec:\n");
-
-	// change time out settings temporary
-	g_settings.timing_menu = 1;
-	
-	CMenuOptionChooser::exec(parent);
-	
-	return CMenuTarget::RETURN_REPAINT;
 }
 
