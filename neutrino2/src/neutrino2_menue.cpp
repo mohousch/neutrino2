@@ -123,7 +123,7 @@ void CNeutrinoApp::mainMenu(void)
 	nMenu->addItem(item);
 
 	// epg / sleeptimer
-	item = new CMenuForwarder(_("Timer / EPG"), true, NULL, new CEPGMenuHandler(), NULL);
+	item = new CMenuForwarder(_("EPG / Timer"), true, NULL, new CEPGMenuHandler(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TIMERLIST);
 	//item->setHint(_(" "));
 	item->setState(g_settings.personalize_epgtimer);

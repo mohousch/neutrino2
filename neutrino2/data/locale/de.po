@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-01 23:10+0200\n"
+"POT-Creation-Date: 2023-10-02 10:14+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1509,9 +1509,6 @@ msgstr ""
 msgid "Online Software Manager"
 msgstr "Online-Software-Manager"
 
-msgid "Options"
-msgstr "Optionen"
-
 msgid "Original Title"
 msgstr "Originaler Titel"
 
@@ -2387,9 +2384,6 @@ msgstr "Zeitgesteuerter Schrittmodus"
 msgid "Timeout waiting CI menu ready"
 msgstr "Zeitüberschreitung beim Warten auf CI-Menü bereit"
 
-msgid "Timer / EPG"
-msgstr "Timer / EPG"
-
 msgid "Timer conflict. Create the timer anyway?"
 msgstr "Timer-Konflikt. Den Timer trotzdem erstellen?"
 
@@ -2697,18 +2691,12 @@ msgstr "unten links"
 msgid "bottom right"
 msgstr "unten rechts"
 
-msgid "by bouquet"
-msgstr "per Bouquet"
-
 msgid ""
 "by manual package update version checks are currently not supported.\n"
 "Are you sure that you wish to install this package?"
 msgstr ""
 "Durch manuelle Paketaktualisierungen werden Versionsprüfungen derzeit nicht unterstützt.\n"
 "Sind Sie sicher, dass Sie dieses Paket installieren möchten?"
-
-msgid "by page"
-msgstr "pro Seite"
 
 msgid "cable"
 msgstr "Kabel"
@@ -2978,9 +2966,6 @@ msgstr "brauche einen Neustart oder einen EPG-Reset"
 msgid "never"
 msgstr "niemals"
 
-msgid "next bouquet"
-msgstr "nächster Bouquet"
-
 msgid "no"
 msgstr "nein"
 
@@ -3038,12 +3023,6 @@ msgstr "Paket enthält Fehler"
 msgid "package install failed"
 msgstr "Die Paketinstallation ist fehlgeschlagen"
 
-msgid "page down"
-msgstr "Seite nach unten"
-
-msgid "page up"
-msgstr "Seite nach oben"
-
 msgid "passthrough"
 msgstr "Passthrough"
 
@@ -3052,9 +3031,6 @@ msgstr "Passwort"
 
 msgid "playtime"
 msgstr "Spielzeit"
-
-msgid "prev bouquet"
-msgstr "vorheriger Bouquet"
 
 msgid "programming flash"
 msgstr "Programmiere Flash"
@@ -3091,9 +3067,6 @@ msgstr "Playlist speichern"
 
 msgid "schedule"
 msgstr "Zeitplan"
-
-msgid "scroll mode"
-msgstr "Scrollmodus"
 
 msgid "search"
 msgstr "Suchen"
@@ -3152,12 +3125,6 @@ msgstr "Bei gutem Signal anhalten (in Bewegung)"
 msgid "stop on good signal(stopped)"
 msgstr "Bei gutem Signal anhalten (gestoppt)"
 
-msgid "stretch mode"
-msgstr "Stretch-Modus"
-
-msgid "swap mode"
-msgstr "Swap-Modus"
-
 msgid "switch off after"
 msgstr "danach ausschalten"
 
@@ -3206,9 +3173,6 @@ msgstr "Vertikale"
 
 msgid "very large"
 msgstr "sehr groß"
-
-msgid "view mode"
-msgstr "Ansichtsmodus"
 
 msgid "volume"
 msgstr "Lautstärke"

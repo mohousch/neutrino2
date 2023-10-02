@@ -1506,7 +1506,7 @@ int CPersonalisation::showMenu(void)
 	personalizeSettings->addItem(item);
 	
 	// epg / timer
-	item = new CMenuOptionChooser(_("Timer / EPG"), &g_settings.personalize_epgtimer);
+	item = new CMenuOptionChooser(_("EPG / Timer"), &g_settings.personalize_epgtimer);
 	item->setActive(true);
 	item->addOption(_("active"), CMenuItem::ITEM_ACTIVE);
 	item->addOption(_("locked"), CMenuItem::ITEM_LOCKED);

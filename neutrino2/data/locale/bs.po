@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-01 22:12+0200\n"
+"POT-Creation-Date: 2023-10-02 10:14+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1476,9 +1476,6 @@ msgstr ""
 msgid "Online Software Manager"
 msgstr ""
 
-msgid "Options"
-msgstr ""
-
 msgid "Original Title"
 msgstr ""
 
@@ -2334,9 +2331,6 @@ msgstr ""
 msgid "Timeout waiting CI menu ready"
 msgstr ""
 
-msgid "Timer / EPG"
-msgstr ""
-
 msgid "Timer conflict. Create the timer anyway?"
 msgstr ""
 
@@ -2639,15 +2633,9 @@ msgstr ""
 msgid "bottom right"
 msgstr ""
 
-msgid "by bouquet"
-msgstr ""
-
 msgid ""
 "by manual package update version checks are currently not supported.\n"
 "Are you sure that you wish to install this package?"
-msgstr ""
-
-msgid "by page"
 msgstr ""
 
 msgid "cable"
@@ -2916,9 +2904,6 @@ msgstr ""
 msgid "never"
 msgstr ""
 
-msgid "next bouquet"
-msgstr ""
-
 msgid "no"
 msgstr ""
 
@@ -2976,12 +2961,6 @@ msgstr ""
 msgid "package install failed"
 msgstr ""
 
-msgid "page down"
-msgstr ""
-
-msgid "page up"
-msgstr ""
-
 msgid "passthrough"
 msgstr ""
 
@@ -2989,9 +2968,6 @@ msgid "password"
 msgstr ""
 
 msgid "playtime"
-msgstr ""
-
-msgid "prev bouquet"
 msgstr ""
 
 msgid "programming flash"
@@ -3028,9 +3004,6 @@ msgid "save playlist"
 msgstr ""
 
 msgid "schedule"
-msgstr ""
-
-msgid "scroll mode"
 msgstr ""
 
 msgid "search"
@@ -3090,12 +3063,6 @@ msgstr ""
 msgid "stop on good signal(stopped)"
 msgstr ""
 
-msgid "stretch mode"
-msgstr ""
-
-msgid "swap mode"
-msgstr ""
-
 msgid "switch off after"
 msgstr ""
 
@@ -3143,9 +3110,6 @@ msgid "vertical"
 msgstr ""
 
 msgid "very large"
-msgstr ""
-
-msgid "view mode"
 msgstr ""
 
 msgid "volume"
