@@ -240,7 +240,7 @@ void Rgb2Hsv(RgbColor *rgb, HsvColor *hsv)
 	hsv->v = f_V;
 }
 
-fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, fb_pixel_t *gradientBuf, int bSize, int /*mode*/, int /*intensity*/)
+fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, fb_pixel_t *gradientBuf, int bSize, int mode, int /*intensity*/)
 {
 	if (gradientBuf == NULL) 
 	{
@@ -259,6 +259,13 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, fb_pixel_t *gradientBuf, 
 	int end_box = bSize;
 	uint8_t tr_min = 0xFF;
 	uint8_t tr_max = 0x20;
+	
+	if (mode == LIGHT2DARK)
+	{
+		tr_min = 0x20;
+		tr_max = 0xFF;
+	}
+	
 	float factor = (float)(tr_min - tr_max) / (float)(end_box - start_box);
 
 	for (int i = start_box; i < end_box; i++) 

@@ -453,25 +453,28 @@ struct SNeutrinoSettings
 
 	//head
 	int Head_gradient;
+	int Head_gradient_type;
 	int Head_corner;
 	int Head_radius;
 	int Head_line;
 	
 	// foot
 	int Foot_gradient;
+	int Foot_gradient_type;
 	int Foot_corner;
 	int Foot_radius;
 	int Foot_line;
 	
 	// hint
 	int Hint_gradient;
+	int Hint_gradient_type;
 	int Hint_border;
 	int Hint_corner;
 	int Hint_radius;
 	
 	// infobar
 	int infobar_gradient;
-	int infobar_gradient_direction;
+	int infobar_gradient_type;
 	int infobar_corner;
 	int infobar_radius;
 	int infobar_buttonbar;

@@ -283,7 +283,7 @@ void CProgressBar::paint(unsigned char pcr, bool paintBG)
 	
 	// body
 	if (paintBG)
-		frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? g_settings.progressbar_gradient : NOGRADIENT);	//fill passive
+		frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? g_settings.progressbar_gradient : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);	//fill passive
 	
 	if (pcr != percent) 
 	{
@@ -306,7 +306,7 @@ void CProgressBar::paint(unsigned char pcr, bool paintBG)
 				else
 					rgb = 0xFF0000 + (diff << 8); // adding green
 				
-				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, g_settings.progressbar_gradient);
+				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? g_settings.progressbar_gradient : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			}
 			
 			//yellow
@@ -323,7 +323,7 @@ void CProgressBar::paint(unsigned char pcr, bool paintBG)
 				else
 					rgb = 0xFFFF00 - (diff << 16); // removing red
 	
-				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, g_settings.progressbar_gradient);
+				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? g_settings.progressbar_gradient : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			}
 
 			//green
@@ -341,12 +341,12 @@ void CProgressBar::paint(unsigned char pcr, bool paintBG)
 				else
 					rgb = 0xFFFF00 - (diff << 16); // removing red
 				
-				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, g_settings.progressbar_gradient);
+				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? g_settings.progressbar_gradient : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			}
 		}
 		else
 		{
-			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, siglen, cCBox.iHeight, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_ALL, g_settings.progressbar_gradient);
+			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, siglen, cCBox.iHeight, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? g_settings.progressbar_gradient : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 		}
 		
 		percent = pcr;
@@ -931,7 +931,7 @@ void CCHline::paint()
 		cCBox.iHeight = 2;
 	
 	//
-	frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color, 0, CORNER_NONE, gradient, GRADIENT_HORIZONTAL);
+	frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color, 0, CORNER_NONE, gradient, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 }
 
 // Vline
@@ -963,7 +963,7 @@ void CCVline::paint()
 		cCBox.iWidth = 2;
 	
 	//
-	frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color, 0, CORNER_NONE, gradient, GRADIENT_VERTICAL);
+	frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, color, 0, CORNER_NONE, gradient, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 }
 
 // CFrameLine
@@ -1998,6 +1998,9 @@ CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const c
 	radius = g_settings.Head_radius;
 	corner = g_settings.Head_corner;
 	gradient = g_settings.Head_gradient;
+	grad_direction = GRADIENT_VERTICAL;
+	grad_intensity = INT_LIGHT;
+	grad_type = g_settings.Head_gradient_type;
 	head_line = g_settings.Head_line;
 	head_line_gradient = false;
 
@@ -2029,6 +2032,9 @@ CHeaders::CHeaders(CBox* position, const char * const title, const char * const 
 	radius = g_settings.Head_radius;
 	corner = g_settings.Head_corner;
 	gradient = g_settings.Head_gradient;
+	grad_direction = GRADIENT_VERTICAL;
+	grad_intensity = INT_LIGHT;
+	grad_type = g_settings.Head_gradient_type;
 	head_line = g_settings.Head_line;
 	head_line_gradient = false;
 
@@ -2090,10 +2096,10 @@ void CHeaders::paint()
 	
 	// box
 	if (paintframe)
-		CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient);
+		CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 	
 	if (head_line)
-		frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
+		frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 	// left icon
 	int i_w = 0;
@@ -2217,10 +2223,13 @@ CFooters::CFooters(const int x, const int y, const int dx, const int dy)
 	
 	paintframe = true;
 
-	fbgcolor = COL_MENUFOOT_PLUS_0;
-	fradius = g_settings.Foot_radius;
-	fcorner = g_settings.Foot_corner;
-	fgradient = g_settings.Foot_gradient;
+	bgcolor = COL_MENUFOOT_PLUS_0;
+	radius = g_settings.Foot_radius;
+	corner = g_settings.Foot_corner;
+	gradient = g_settings.Foot_gradient;
+	grad_direction = GRADIENT_VERTICAL;
+	grad_intensity = INT_LIGHT;
+	grad_type = g_settings.Foot_gradient_type;
 	foot_line = g_settings.Foot_line;
 	foot_line_gradient = false;
 
@@ -2241,10 +2250,13 @@ CFooters::CFooters(CBox* position)
 	
 	paintframe = true;
 
-	fbgcolor = COL_MENUFOOT_PLUS_0;
-	fradius = g_settings.Foot_radius;
-	fcorner = g_settings.Foot_corner;
-	fgradient = g_settings.Foot_gradient;
+	bgcolor = COL_MENUFOOT_PLUS_0;
+	radius = g_settings.Foot_radius;
+	corner = g_settings.Foot_corner;
+	gradient = g_settings.Foot_gradient;
+	grad_direction = GRADIENT_VERTICAL;
+	grad_intensity = INT_LIGHT;
+	grad_type = g_settings.Foot_gradient_type;
 	foot_line = g_settings.Foot_line;
 	foot_line_gradient = false;
 
@@ -2290,11 +2302,11 @@ void CFooters::paint()
 	
 	// box
 	if (paintframe)
-		CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, fbgcolor, fradius, fcorner, fgradient);
+		CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 	
 	// paint horizontal line buttom
 	if (foot_line)
-		frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
+		frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 	int buttonWidth = 0;
 

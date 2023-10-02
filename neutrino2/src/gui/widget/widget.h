@@ -105,6 +105,9 @@ class CWidget : public CMenuTarget
 		bool paintframe;
 		fb_pixel_t backgroundColor;
 		int gradient;
+		int grad_direction;
+		int grad_intensity;
+		int grad_type;
 		int radius;
 		int corner;
 		int borderMode;
@@ -169,7 +172,7 @@ class CWidget : public CMenuTarget
 		//
 		void paintMainFrame(bool p){paintframe = p;};
 		void setColor(fb_pixel_t col) {backgroundColor = col;};
-		void setGradient(int gra){gradient = gra;};
+		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
 		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};

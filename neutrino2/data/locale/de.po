@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-02 11:27+0200\n"
+"POT-Creation-Date: 2023-10-03 00:03+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -403,6 +403,9 @@ msgstr "Coderate HP"
 
 msgid "Code Rate LP"
 msgstr "Coderate LP"
+
+msgid "Color to transparent"
+msgstr "Farbig zu transparenz"
 
 msgid "Colour Range"
 msgstr "Farbbereich"
@@ -902,8 +905,8 @@ msgstr "Gehe zur Referenzposition"
 msgid "Gradient"
 msgstr "Farbverläufe"
 
-msgid "Gradient direction"
-msgstr "Verlaufsrichtung"
+msgid "Gradient type"
+msgstr "Farbverlauftyp"
 
 msgid "Guard Interval"
 msgstr "Schutzintervall"
@@ -1498,6 +1501,9 @@ msgstr "OK, speichert, HOME! bricht ab"
 
 msgid "OSD"
 msgstr "OSD"
+
+msgid "One color"
+msgstr "Einfarbig"
 
 msgid ""
 "One or several recording processes are active.\n"
@@ -2845,9 +2851,6 @@ msgstr "versteckt"
 msgid "higher center"
 msgstr "höhere Mitte"
 
-msgid "horizontal"
-msgstr "horizontal"
-
 msgid "image has errors"
 msgstr "Image hat Fehler"
 
@@ -2976,7 +2979,7 @@ msgid "no epg found"
 msgstr "keine EPG gefunden"
 
 msgid "no gradient"
-msgstr ""
+msgstr "Kein Farbverlauf"
 
 msgid "none"
 msgstr "keiner"
@@ -3167,9 +3170,6 @@ msgstr "aktualisieren"
 
 msgid "username"
 msgstr "Nutzername"
-
-msgid "vertical"
-msgstr "Vertikale"
 
 msgid "very large"
 msgstr "sehr groß"

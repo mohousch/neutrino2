@@ -194,11 +194,12 @@ const keyval COLOR_GRADIENT_TYPE_OPTIONS[COLOR_GRADIENT_TYPE_OPTION_COUNT] =
 	{ LIGHT2DARK2LIGHT, _("light to dark to light") }
 };
 
-#define GRADIENT_DIRECTION_TYPE_OPTION_COUNT	2
-const keyval GRADIENT_DIRECTION_TYPE_OPTIONS[GRADIENT_DIRECTION_TYPE_OPTION_COUNT] =
+#define GRADIENT_TYPE_OPTION_COUNT	2
+const keyval GRADIENT_TYPE_OPTIONS[GRADIENT_TYPE_OPTION_COUNT] =
 {
-	{ GRADIENT_HORIZONTAL, _("horizontal") },
-	{ GRADIENT_VERTICAL, _("vertical") }
+	{ GRADIENT_COLOR2TRANSPARENT, _("Color to transparent") },
+	{ GRADIENT_ONECOLOR, _("One color") }
+	//{ GRADIENT_COLOR2COLOR, _("Color to color") }
 };
 
 #define CORNER_TYPE_OPTION_COUNT	10
@@ -535,8 +536,8 @@ void COSDInfoBarColorSettings::showMenu()
 	// gradient
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.infobar_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
 	
-	// gradient direction
-	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Gradient direction"), &g_settings.infobar_gradient_direction, GRADIENT_DIRECTION_TYPE_OPTIONS, GRADIENT_DIRECTION_TYPE_OPTION_COUNT, true));
+	// gradient type
+	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.infobar_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
 	
 	// corner
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.infobar_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));

@@ -416,7 +416,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 		frameBuffer->paintBoxRel(BoxStartX, BoxStartY, BoxWidth, BoxHeight + buttonBarHeight, COL_MENUCONTENT_PLUS_6, g_settings.infobar_radius, g_settings.infobar_corner);
 	
 	// box
-	frameBuffer->paintBoxRel(g_settings.infobar_border? BoxStartX + 2: BoxStartX, g_settings.infobar_border? BoxStartY + 2 : BoxStartY, g_settings.infobar_border? BoxWidth - 4 : BoxWidth, g_settings.infobar_border? BoxHeight + buttonBarHeight - 4 : BoxHeight + buttonBarHeight, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner, g_settings.infobar_gradient, g_settings.infobar_gradient_direction);
+	frameBuffer->paintBoxRel(g_settings.infobar_border? BoxStartX + 2: BoxStartX, g_settings.infobar_border? BoxStartY + 2 : BoxStartY, g_settings.infobar_border? BoxWidth - 4 : BoxWidth, g_settings.infobar_border? BoxHeight + buttonBarHeight - 4 : BoxHeight + buttonBarHeight, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner, g_settings.infobar_gradient, GRADIENT_VERTICAL, INT_LIGHT, g_settings.infobar_gradient_type);
 
 	// painttime
 	if (gotTime)
@@ -1192,7 +1192,7 @@ void CInfoViewer::showRadiotext()
 				frameBuffer->paintBoxRel(rt_x, rt_y, rt_w, rt_h, COL_MENUCONTENT_PLUS_6, g_settings.infobar_radius, g_settings.infobar_corner);
 				
 			// box
-			frameBuffer->paintBoxRel(g_settings.infobar_border? rt_x + 1 : rt_x, g_settings.infobar_border? rt_y + 1 : rt_y, g_settings.infobar_border? rt_w - 2 : rt_w, g_settings.infobar_border? rt_h - 2 : rt_h, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner, g_settings.infobar_gradient, g_settings.infobar_gradient_direction);
+			frameBuffer->paintBoxRel(g_settings.infobar_border? rt_x + 1 : rt_x, g_settings.infobar_border? rt_y + 1 : rt_y, g_settings.infobar_border? rt_w - 2 : rt_w, g_settings.infobar_border? rt_h - 2 : rt_h, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner, g_settings.infobar_gradient, GRADIENT_VERTICAL,  INT_LIGHT, g_settings.infobar_gradient_type);
 			
 			// title		
 			if (g_Radiotext->S_RtOsdTitle == 1) 

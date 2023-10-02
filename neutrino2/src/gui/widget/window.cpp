@@ -88,7 +88,7 @@ void CWindow::initVars()
 	gradient = NOGRADIENT;
 	grad_direction = GRADIENT_VERTICAL;
 	grad_intensity = INT_LIGHT;
-	grad_type = GRADIENT_ONECOLOR;
+	grad_type = GRADIENT_COLOR2TRANSPARENT;
 
 	//
 	borderMode = BORDER_NO;

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-02 10:14+0200\n"
+"POT-Creation-Date: 2023-10-03 00:03+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -400,6 +400,9 @@ msgid "Code Rate HP"
 msgstr ""
 
 msgid "Code Rate LP"
+msgstr ""
+
+msgid "Color to transparent"
 msgstr ""
 
 msgid "Colour Range"
@@ -882,7 +885,7 @@ msgstr ""
 msgid "Gradient"
 msgstr ""
 
-msgid "Gradient direction"
+msgid "Gradient type"
 msgstr ""
 
 msgid "Guard Interval"
@@ -1468,6 +1471,9 @@ msgstr ""
 
 msgid "OSD"
 msgstr "OSD"
+
+msgid "One color"
+msgstr ""
 
 msgid ""
 "One or several recording processes are active.\n"
@@ -2786,9 +2792,6 @@ msgstr ""
 msgid "higher center"
 msgstr ""
 
-msgid "horizontal"
-msgstr ""
-
 msgid "image has errors"
 msgstr ""
 
@@ -3105,9 +3108,6 @@ msgid "update"
 msgstr ""
 
 msgid "username"
-msgstr ""
-
-msgid "vertical"
 msgstr ""
 
 msgid "very large"

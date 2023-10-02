@@ -897,6 +897,35 @@ int CNeutrinoApp::convertGradient(const char* const gradient)
 }
 
 //
+int CNeutrinoApp::convertGradientType(const char* const type)
+{
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertGradientType: gradient_type: %s\n", type);
+	
+	int gr_type = GRADIENT_COLOR2TRANSPARENT;
+	
+	if (type != NULL)
+	{
+		if ( strcmp(type, "GRADIENT_COLOR2TRANSPARENT") == 0)
+		{
+			gr_type = GRADIENT_COLOR2TRANSPARENT;
+		}
+		else if ( strcmp(type, "GRADIENT_ONECOLOR") == 0)
+		{
+			gr_type = GRADIENT_ONECOLOR;
+		}
+		//FIXME:
+		/*
+		else if ( strcmp(type, "GRADIENT_COLOR2COLOR") == 0)
+		{
+			gr_type = GRADIENT_COLOR2COLOR;
+		}
+		*/
+	}
+	
+	return gr_type;
+}
+
+//
 neutrino_msg_t CNeutrinoApp::convertKey(const char * const key)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertKey: key: %s\n", key);
@@ -1553,9 +1582,9 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 	unsigned int border = 0;
 	char *bordercolor = NULL;
 	char *gradient = NULL;
-	unsigned int gradient_direction = 0;
-	unsigned int gradient_intensity = 0;
-	unsigned int gradient_type = 0;
+	unsigned int gradient_direction = GRADIENT_VERTICAL;
+	unsigned int gradient_intensity = INT_LIGHT;
+	char * gradient_type = NULL;
 	
 	//
 	name = xmlGetAttribute(node, (char*)"name");
@@ -1577,7 +1606,7 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 	gradient = xmlGetAttribute(node, (char *)"gradient");
 	gradient_direction = xmlGetSignedNumericAttribute(node, "direction", 0);
 	gradient_intensity = xmlGetSignedNumericAttribute(node, "intensity", 0);
-	gradient_type = xmlGetSignedNumericAttribute(node, "type", 0);
+	gradient_type = xmlGetAttribute(node, (char *)"type");
 		
 	// recalculate posx / posy
 	int x = posx;
@@ -1632,7 +1661,10 @@ void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
 	// gradient
 	int gr = NOGRADIENT;
 	if (gradient) gr = convertGradient(gradient);
-	window->setGradient(gr, gradient_direction, gradient_intensity, gradient_type);
+	int gt = GRADIENT_COLOR2TRANSPARENT;
+	if (gradient_type) gt = convertGradientType(gradient_type);
+	
+	window->setGradient(gr, gradient_direction, gradient_intensity, gt);
 	
 	//				
 	if (widget) widget->addWidgetItem(window);
@@ -2501,6 +2533,9 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 			
 	char* color = NULL;
 	char *gradient = NULL;
+	char *gradient_type = NULL;
+	char *gradient_direction = NULL;
+	char *gradient_intensity = NULL;
 	char * corner = NULL;
 	char * radius = NULL;
 	char * border = NULL;
@@ -2563,6 +2598,9 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 					
 				color = xmlGetAttribute(search, (char*)"color");
 				gradient = xmlGetAttribute(search, (char *)"gradient");
+				gradient_type = xmlGetAttribute(search, (char *)"gradient_type");
+				gradient_direction = xmlGetAttribute(search, (char *)"gradient_direction");
+				gradient_intensity = xmlGetAttribute(search, (char *)"gradient_intensity");
 				corner = xmlGetAttribute(search, (char *)"corner");
 				radius = xmlGetAttribute(search, (char *)"radius");
 				
@@ -2596,7 +2634,14 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				// gradient
 				int gr = NOGRADIENT;
 				if (gradient) gr = convertGradient(gradient);
-				widget->setGradient(gr);
+				int gt = GRADIENT_COLOR2TRANSPARENT;
+				if (gradient_type) gt = convertGradientType(gradient_type);
+				int gd = GRADIENT_VERTICAL;
+				//if (gradient_direction) gd = convertGradientDirection(gradient_direction);
+				int gi = INT_LIGHT;
+				//if (gradient_intensity) gi = convertGradientIntensity(gradient_intensity);
+				
+				widget->setGradient(gr, gd, gi, gt);
 
 				// corner / radius
 				int co = CORNER_NONE;
@@ -2966,20 +3011,22 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.menu_Hint_Text_blue = skinConfig->getInt32( "menu_Hint_Text_blue", 85);
 		
 		// head
-		g_settings.Head_gradient = skinConfig->getInt32("Head_gradient", DARK2LIGHT2DARK);
+		g_settings.Head_gradient = skinConfig->getInt32("Head_gradient", DARK2LIGHT);
+		g_settings.Head_gradient_type = skinConfig->getInt32("Head_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.Head_corner = skinConfig->getInt32("Head_corner", CORNER_TOP);
 		g_settings.Head_radius = skinConfig->getInt32("Head_radius", RADIUS_MID);
 		g_settings.Head_line = skinConfig->getBool("Head_line", false);
 		
 		// foot
-		g_settings.Foot_gradient = skinConfig->getInt32("Foot_gradient", DARK2LIGHT2DARK);
+		g_settings.Foot_gradient = skinConfig->getInt32("Foot_gradient", LIGHT2DARK);
+		g_settings.Foot_gradient_type = skinConfig->getInt32("Foot_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.Foot_corner = skinConfig->getInt32("Foot_corner", CORNER_BOTTOM);
 		g_settings.Foot_radius = skinConfig->getInt32("Foot_radius", RADIUS_MID);
 		g_settings.Foot_line = skinConfig->getBool("Foot_line", false);
 		
 		// infobar
-		g_settings.infobar_gradient = skinConfig->getInt32("infobar_gradient", NOGRADIENT);
-		g_settings.infobar_gradient_direction = skinConfig->getInt32("infobar_gradient_direction", GRADIENT_HORIZONTAL);
+		g_settings.infobar_gradient = skinConfig->getInt32("infobar_gradient", DARK2LIGHT);
+		g_settings.infobar_gradient_type = skinConfig->getInt32("infobar_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.infobar_corner = skinConfig->getInt32("infobar_corner", CORNER_ALL);
 		g_settings.infobar_radius = skinConfig->getInt32("infobar_radius", RADIUS_MID);
 		g_settings.infobar_border = skinConfig->getBool("infobar_border", false);
@@ -2988,7 +3035,8 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		
 		// itemInfo
 		g_settings.Hint_border = skinConfig->getBool("Hint_border", true);
-		g_settings.Hint_gradient = skinConfig->getInt32("Hint_gradient", NOGRADIENT);
+		g_settings.Hint_gradient = skinConfig->getInt32("Hint_gradient", DARK2LIGHT);
+		g_settings.Hint_gradient_type = skinConfig->getInt32("Hint_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.Hint_radius = skinConfig->getInt32("Hint_radius", NO_RADIUS);
 		g_settings.Hint_corner = skinConfig->getInt32("Hint_corner", CORNER_ALL);
 		
@@ -3081,21 +3129,23 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	skinConfig->setInt32( "menu_Hint_Text_green", g_settings.menu_Hint_Text_green );
 	skinConfig->setInt32( "menu_Hint_Text_blue", g_settings.menu_Hint_Text_blue );
 	
-	//
+	// head
 	skinConfig->setInt32("Head_gradient", g_settings.Head_gradient);
+	skinConfig->setInt32("Head_gradient_type", g_settings.Head_gradient_type);
 	skinConfig->setInt32("Head_corner", g_settings.Head_corner);
 	skinConfig->setInt32("Head_radius", g_settings.Head_radius);
 	skinConfig->setBool("Head_line", g_settings.Head_line);
 	
-	//
+	// foot
 	skinConfig->setInt32("Foot_gradient", g_settings.Foot_gradient);
+	skinConfig->setInt32("Foot_gradient_type", g_settings.Foot_gradient_type);
 	skinConfig->setInt32("Foot_corner", g_settings.Foot_corner);
 	skinConfig->setInt32("Foot_radius", g_settings.Foot_radius);
 	skinConfig->setBool("Foot_line", g_settings.Foot_line);
 	
-	//
+	// infobar
 	skinConfig->setInt32("infobar_gradient", g_settings.infobar_gradient);
-	skinConfig->setInt32("infobar_gradient_direction", g_settings.infobar_gradient_direction);
+	skinConfig->setInt32("infobar_gradient_type", g_settings.infobar_gradient_type);
 	skinConfig->setInt32("infobar_corner", g_settings.infobar_corner);
 	skinConfig->setInt32("infobar_radius", g_settings.infobar_radius);
 	skinConfig->setBool("infobar_buttonbar", g_settings.infobar_buttonbar);
@@ -3105,6 +3155,7 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	// itemInfo
 	skinConfig->setBool("Hint_border", g_settings.Hint_border);
 	skinConfig->setInt32("Hint_gradient", g_settings.Hint_gradient);
+	skinConfig->setInt32("Hint_gradient_type", g_settings.Hint_gradient_type);
 	skinConfig->setInt32("Hint_radius", g_settings.Hint_radius);
 	skinConfig->setInt32("Hint_corner", g_settings.Hint_corner);
 	

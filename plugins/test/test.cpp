@@ -2142,7 +2142,9 @@ void CTestMenu::testCWindow()
 
 	window->setColor(COL_MENUCONTENT_PLUS_0);
 	window->setCorner(RADIUS_MID, CORNER_ALL);
-	window->setGradient(LIGHT2DARK2LIGHT, GRADIENT_HORIZONTAL);
+	//window->setGradient(LIGHT2DARK, GRADIENT_VERTICAL); //GRADIENT_ONECOLOR
+	window->setGradient(DARK2LIGHT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_COLOR2TRANSPARENT);
+	//window->setGradient(LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_COLOR2COLR);
 
 	//window->paint();
 	//CFrameBuffer::getInstance()->blit();

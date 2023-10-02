@@ -174,8 +174,8 @@ typedef struct {
 //
 uint8_t limitChar(int c);
 uint8_t getBrightnessRGB(fb_pixel_t color);
-fb_pixel_t changeBrightnessRGBRel(fb_pixel_t color, int br, bool transp=true);
-fb_pixel_t changeBrightnessRGB(fb_pixel_t color, uint8_t br, bool transp=true);
+fb_pixel_t changeBrightnessRGBRel(fb_pixel_t color, int br, bool transp = true);
+fb_pixel_t changeBrightnessRGB(fb_pixel_t color, uint8_t br, bool transp = true);
 fb_pixel_t Hsv2SysColor(HsvColor *hsv, uint8_t tr=0xFF);
 uint8_t SysColor2Hsv(fb_pixel_t color, HsvColor *hsv);
 void Hsv2Rgb(HsvColor *hsv, RgbColor *rgb);

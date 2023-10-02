@@ -855,6 +855,9 @@ class CHeaders : public CWidgetItem
 		int radius;
 		int corner;
 		int gradient;
+		int grad_direction;
+		int grad_intensity;
+		int grad_type;
 		bool head_line;
 		bool head_line_gradient;
 
@@ -879,7 +882,7 @@ class CHeaders : public CWidgetItem
 		void setIcon(const char * const icon){hicon.clear(); if (icon) hicon = icon;};
 		void setHAlign(const int m){thalign = m;};
 		void setColor(fb_pixel_t col){bgcolor = col;};
-		void setGradient(const int grad){gradient = grad;};
+		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setCorner(int ra, int co = CORNER_TOP){radius = ra; corner = co;};
 		void enablePaintDate(void){paintDate = true;};
 		void setFormat(const char* f){if (f) format.clear(); format = f;};
@@ -912,10 +915,13 @@ class CFooters : public CWidgetItem
 		button_label_list_t fbuttons;
 		
 		//
-		fb_pixel_t fbgcolor;
-		int fradius;
-		int fcorner;
-		int fgradient;
+		fb_pixel_t bgcolor;
+		int radius;
+		int corner;
+		int gradient;
+		int grad_direction;
+		int grad_intensity;
+		int grad_type;
 		bool foot_line;
 		bool foot_line_gradient;
 	
@@ -925,9 +931,9 @@ class CFooters : public CWidgetItem
 		virtual ~CFooters();
 		
 		//
-		void setColor(fb_pixel_t col){fbgcolor = col;};
-		void setGradient(const int grad){fgradient = grad;};
-		void setCorner(int ra, int co = CORNER_BOTTOM){fradius = ra; fcorner = co;};
+		void setColor(fb_pixel_t col){bgcolor = col;};
+		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
+		void setCorner(int ra, int co = CORNER_BOTTOM){radius = ra; corner = co;};
 		void setLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
 		
 		//

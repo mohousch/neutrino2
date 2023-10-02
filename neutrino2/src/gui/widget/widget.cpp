@@ -62,6 +62,9 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	paintframe = false;
 	backgroundColor = COL_MENUCONTENT_PLUS_0;
 	gradient = NOGRADIENT;
+	grad_direction = GRADIENT_VERTICAL;
+	grad_intensity = INT_LIGHT;
+	grad_type = GRADIENT_COLOR2TRANSPARENT;
 	radius = NO_RADIUS;
 	corner = CORNER_NONE;
 	borderMode = BORDER_NO;
@@ -101,6 +104,9 @@ CWidget::CWidget(CBox *position)
 	paintframe = false;
 	backgroundColor = COL_MENUCONTENT_PLUS_0;
 	gradient = NOGRADIENT;
+	grad_direction = GRADIENT_VERTICAL;
+	grad_intensity = INT_LIGHT;
+	grad_type = GRADIENT_COLOR2TRANSPARENT;
 	radius = RADIUS_MID;
 	corner = CORNER_ALL;
 	borderMode = BORDER_NO;
@@ -242,14 +248,14 @@ void CWidget::paint()
 	{
 		// mainframe
 		if (borderMode == BORDER_NO)
-			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient);
+			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		else
 		{
 			// border
 			frameBuffer->paintBoxRel(mainFrameBox.iX - 2, mainFrameBox.iY - 2, mainFrameBox.iWidth + 4, mainFrameBox.iHeight + 4, borderColor, radius, corner);
 			
 			// mainframe
-			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient);
+			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 	}
 

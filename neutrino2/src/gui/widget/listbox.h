@@ -463,6 +463,9 @@ class ClistBox : public CWidgetItem
 		int headRadius;
 		int headCorner;
 		int headGradient;
+		int headGradient_type;
+		int headGradient_direction;
+		int headGradient_intensity;
 		int hbutton_count;
 		button_label_list_t hbutton_labels;
 		bool paintDate;
@@ -479,6 +482,9 @@ class ClistBox : public CWidgetItem
 		int footRadius;
 		int footCorner;
 		int footGradient;
+		int footGradient_type;
+		int footGradient_direction;
+		int footGradient_intensity;
 		int fbutton_count;
 		int fbutton_width;
 		button_label_list_t fbutton_labels;
@@ -559,7 +565,7 @@ class ClistBox : public CWidgetItem
 		void setHeadButtons(const struct button_label *_hbutton_label, const int _hbutton_count = 1);
 		void setHeadColor(fb_pixel_t col) {headColor = col;};
 		void setHeadCorner(int ra, int co = CORNER_TOP){headRadius = ra; headCorner = co;};
-		void setHeadGradient(int grad){headGradient = grad;};
+		void setHeadGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){headGradient = grad; headGradient_direction = direction; headGradient_intensity = intensity; headGradient_type = type;};
 		void setHeadLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
 		void setFormat(const char* f){format = f;};
 		
@@ -568,7 +574,7 @@ class ClistBox : public CWidgetItem
 		void setFootButtons(const struct button_label *_fbutton_label, const int _fbutton_count = 1, const int _fbutton_width = 0);
 		void setFootColor(fb_pixel_t col) {footColor = col;};
 		void setFootCorner(int ra, int co = CORNER_BOTTOM){footRadius = ra; footCorner = co;};
-		void setFootGradient(int grad){footGradient = grad;};
+		void setFootGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){footGradient = grad; footGradient_direction = direction; footGradient_intensity = intensity; footGradient_type = type;};
 		void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
 
 		// itemInfo FIXME:

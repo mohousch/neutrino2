@@ -1879,7 +1879,7 @@ void CMoviePlayerGui::show(std::string Title, std::string Info, short Percent, c
 		frameBuffer->paintBoxRel(cFrameBoxInfo.iX, cFrameBoxInfo.iY, cFrameBoxInfo.iWidth, cFrameBoxInfo.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.infobar_radius, g_settings.infobar_corner);
 		
 	// paint info box
-	frameBuffer->paintBoxRel(g_settings.infobar_border? cFrameBoxInfo.iX + 2 : cFrameBoxInfo.iX, g_settings.infobar_border? cFrameBoxInfo.iY + 2 : cFrameBoxInfo.iY, g_settings.infobar_border? cFrameBoxInfo.iWidth - 4 : cFrameBoxInfo.iWidth, g_settings.infobar_border? cFrameBoxInfo.iHeight - 4 : cFrameBoxInfo.iHeight, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner, g_settings.infobar_gradient, g_settings.infobar_gradient_direction); 
+	frameBuffer->paintBoxRel(g_settings.infobar_border? cFrameBoxInfo.iX + 2 : cFrameBoxInfo.iX, g_settings.infobar_border? cFrameBoxInfo.iY + 2 : cFrameBoxInfo.iY, g_settings.infobar_border? cFrameBoxInfo.iWidth - 4 : cFrameBoxInfo.iWidth, g_settings.infobar_border? cFrameBoxInfo.iHeight - 4 : cFrameBoxInfo.iHeight, COL_INFOBAR_PLUS_0, g_settings.infobar_radius, g_settings.infobar_corner, g_settings.infobar_gradient, GRADIENT_VERTICAL, INT_LIGHT, g_settings.infobar_gradient_type); 
 		
 	// botton bar
 	if (g_settings.infobar_buttonbar)
