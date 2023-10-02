@@ -1687,6 +1687,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	unsigned int paintframe = 1;
 	char* color = NULL;
 	char * gradient = NULL;
+	char * gradient_type = NULL;
 	char * corner = NULL;
 	char * radius = NULL;
 	
@@ -1712,6 +1713,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
 	color = xmlGetAttribute(node, (char*)"color");
 	gradient = xmlGetAttribute(node, (char *)"gradient");
+	gradient_type = xmlGetAttribute(node, (char *)"gradient_type");
 	corner = xmlGetAttribute(node, (char *)"corner");
 	radius = xmlGetAttribute(node, (char *)"radius");
 				
@@ -1748,25 +1750,31 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 		
 	head->widgetItem_type = CWidgetItem::WIDGETITEM_HEAD;
 	if (name) head->widgetItem_name = name;
-		
-	head->paintMainFrame(paintframe);
 	
+	// mainframe	
+	head->paintMainFrame(paintframe);
+	// title
 	if (title != NULL) head->setTitle(_(title));
 	head->setHAlign(halign);
+	// icon
 	if (icon != NULL) head->setIcon(icon);
+	// color
 	if(color != NULL) head->setColor(finalColor);
+	// gradient
 	int gr = NOGRADIENT;
 	if (gradient) gr = convertGradient(gradient);
-	head->setGradient(gr);
+	int gt = GRADIENT_COLOR2TRANSPARENT;
+	if (gradient_type) gt = convertGradientType(gradient_type);
+	head->setGradient(gr, GRADIENT_VERTICAL, INT_LIGHT, gt);
+	// corner
 	int co = CORNER_NONE;
 	int ra = NO_RADIUS;
 	if (corner) co = convertCorner(corner);
 	if (radius) ra = convertRadius(radius);
-	head->setCorner(ra, co);
-		
+	head->setCorner(ra, co);	
 	// line
 	head->setLine(head_line, head_line_gradient);
-		
+	// date	
 	if (paintdate) head->enablePaintDate();
 	if (format != NULL) head->setFormat(_(format));
 					
@@ -1811,6 +1819,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	unsigned int paintframe = 1;
 	char* color = NULL;
 	char * gradient = NULL;
+	char * gradient_type = NULL;
 	char * corner = NULL;
 	char * radius = NULL;
 	
@@ -1828,6 +1837,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);	
 	color = xmlGetAttribute(node, (char*)"color");
 	gradient = xmlGetAttribute(node, (char *)"gradient");
+	gradient_type = xmlGetAttribute(node, (char *)"gradient_type");
 	corner = xmlGetAttribute(node, (char *)"corner");
 	radius = xmlGetAttribute(node, (char *)"radius");
 				
@@ -1858,16 +1868,22 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 		
 	foot->widgetItem_type = CWidgetItem::WIDGETITEM_FOOT;
 		
-	foot->paintMainFrame(paintframe);			
+	foot->paintMainFrame(paintframe);
+	// color			
 	if (color != NULL) foot->setColor(finalColor);
+	// gradient
 	int gr = NOGRADIENT;
 	if (gradient) gr = convertGradient(gradient);
-	foot->setGradient(gr);
+	int gt = GRADIENT_COLOR2TRANSPARENT;
+	if (gradient_type) gt = convertGradientType(gradient_type);
+	foot->setGradient(gr, GRADIENT_VERTICAL, INT_LIGHT, gt);
+	// corner
 	int co = CORNER_NONE;
 	int ra = NO_RADIUS;
 	if (corner) co = convertCorner(corner);
 	if (radius) ra = convertRadius(radius);
 	foot->setCorner(ra, co);
+	// line
 	foot->setLine(foot_line, foot_line_gradient);
 					
 	// BUTTON_LABEL
