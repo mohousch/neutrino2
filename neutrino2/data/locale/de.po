@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-02 10:14+0200\n"
+"POT-Creation-Date: 2023-10-02 10:58+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -444,7 +444,7 @@ msgid "Current Track"
 msgstr "Aktueller Titel"
 
 msgid "Current key"
-msgstr "Aktueller Schlüssel"
+msgstr "Aktuelle Taste"
 
 msgid "Current transponder"
 msgstr "Aktueller Transponder"
@@ -674,7 +674,7 @@ msgid "Enter jump target"
 msgstr "Sprungziel eingeben"
 
 msgid "Enter standby"
-msgstr "Gehen Sie in den Standby-Modus"
+msgstr "in den Standby-Modus"
 
 msgid "Enter your new youth protection pin code here!"
 msgstr "Geben Sie hier Ihren neuen Jugendschutz-PIN-Code ein!"
@@ -1789,7 +1789,7 @@ msgid "Reread image (no scaling)"
 msgstr ""
 
 msgid "Reset settings to defaults"
-msgstr "Setzen Sie die Einstellungen auf die Standardeinstellungen zurück"
+msgstr "Einstellungen auf Standard zurück"
 
 msgid "Reset to defaults"
 msgstr "Auf Standardeinstellung zurücksetzen"
@@ -1993,10 +1993,10 @@ msgid "Servicescan"
 msgstr "Sender Suche"
 
 msgid "Set East (soft) Limit"
-msgstr "Stellen Sie die Ostgrenze (weich) ein"
+msgstr "Ostgrenze (weich) einstellen"
 
 msgid "Set West (soft) Limit"
-msgstr "Legen Sie den westlichen (weichen) Grenzwert fest"
+msgstr "westlichen (weichen) Grenzwert festlegen"
 
 msgid "Set in days."
 msgstr "In Tagen einstellen."
@@ -2014,7 +2014,7 @@ msgid "Settings restore"
 msgstr "Einstellungen wiederherstellen"
 
 msgid "Setup New Key"
-msgstr "Neuen Schlüssel einrichten"
+msgstr "Neue Taste einrichten"
 
 msgid "Setup network now"
 msgstr "Jetzt Netzwerk einrichten"
@@ -2026,7 +2026,7 @@ msgid "Setup network on startup"
 msgstr "Richte das Netzwerk beim Start ein"
 
 msgid "Setup new key"
-msgstr "Neuen Schlüssel einrichten"
+msgstr "Neue Taste einrichten"
 
 msgid "Setup satellites input / LNB"
 msgstr "Satelliteneingang / LNB einrichten"
@@ -2137,7 +2137,7 @@ msgid "Start Search"
 msgstr "Suche starten"
 
 msgid "Start dir."
-msgstr "Start Ordner"
+msgstr "Start Verzeichniss"
 
 msgid "Start movie from:"
 msgstr "Film starten von:"
@@ -2227,7 +2227,7 @@ msgid "TMDB Infos are not available"
 msgstr "TMDB-Infos sind nicht verfügbar"
 
 msgid "TMDB Key:"
-msgstr "TMDB-Schlüssel:"
+msgstr "TMDB-Key:"
 
 msgid "TMDB Preview"
 msgstr "TMDB-Vorschau"
@@ -2484,10 +2484,10 @@ msgid "Use 0..9, or use Up/Down,"
 msgstr "Verwenden Sie 0..9 oder verwenden Sie Auf/Ab."
 
 msgid "Use XMLTV EPG"
-msgstr "Verwenden Sie XMLTV EPG"
+msgstr "XMLTV EPG verwenden"
 
 msgid "Use gotoXX"
-msgstr "Verwenden Sie gotoXX"
+msgstr "gotoXX verwenden"
 
 msgid "User menu"
 msgstr "Benutzermenü"
@@ -2577,7 +2577,7 @@ msgid "Winter sports"
 msgstr "Wintersport"
 
 msgid "Write one partition"
-msgstr "Schreiben Sie eine Partition"
+msgstr "Partition schreiben"
 
 msgid "Writing Flash"
 msgstr "Flash schreiben"
@@ -2735,7 +2735,7 @@ msgid "checking version"
 msgstr "Version prüfen"
 
 msgid "choose Skin Style."
-msgstr "Wählen Sie Skin Still"
+msgstr "Skin Still Auswahl"
 
 msgid "clear all"
 msgstr "alles löschen"
@@ -2744,7 +2744,7 @@ msgid "colored"
 msgstr "farbig"
 
 msgid "create satellite bouquets"
-msgstr "Erstellen Sie Satelliten Bouquets"
+msgstr "Satelliten Bouquets erstellen"
 
 msgid "create screenshot?"
 msgstr "Screenshot erstellen?"
@@ -3199,4 +3199,4 @@ msgid "yes"
 msgstr "ja"
 
 msgid "youtube ID Key:"
-msgstr "YouTube-ID-Schlüssel:"
+msgstr "YouTube-ID-Key:"
