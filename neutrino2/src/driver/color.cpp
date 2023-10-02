@@ -235,22 +235,22 @@ void Rgb2Hsv(RgbColor *rgb, HsvColor *hsv)
 		if (f_H < 0)
 			f_H += 360;
 	}
+	
 	hsv->h = f_H;
 	hsv->s = f_S;
 	hsv->v = f_V;
 }
 
-fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, fb_pixel_t *gradientBuf, int bSize, int mode, int /*intensity*/)
+fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int /*intensity*/)
 {
+	fb_pixel_t *gradientBuf = NULL;
+	
+	gradientBuf = (fb_pixel_t*) malloc(bSize * sizeof(fb_pixel_t));
+		
 	if (gradientBuf == NULL) 
 	{
-		gradientBuf = (fb_pixel_t*) malloc(bSize * sizeof(fb_pixel_t));
-		
-		if (gradientBuf == NULL) 
-		{
-			dprintf(DEBUG_NORMAL, "[%s:%d] malloc error\n", __func__, __LINE__);
-			return NULL;
-		}
+		dprintf(DEBUG_NORMAL, "[%s:%d] malloc error\n", __func__, __LINE__);
+		return NULL;
 	}
 	
 	memset((void*)gradientBuf, '\0', bSize * sizeof(fb_pixel_t));
@@ -258,11 +258,11 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, fb_pixel_t *gradientBuf, 
 	int start_box = 0;
 	int end_box = bSize;
 	uint8_t tr_min = 0xFF;
-	uint8_t tr_max = 0x20;
+	uint8_t tr_max = 0xAA;
 	
 	if (mode == LIGHT2DARK)
 	{
-		tr_min = 0x20;
+		tr_min = 0xAA;
 		tr_max = 0xFF;
 	}
 	
@@ -285,17 +285,16 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, fb_pixel_t *gradientBuf, 
 	return gradientBuf;
 }
 
-fb_pixel_t* gradientOneColor(fb_pixel_t col, fb_pixel_t *gradientBuf, int bSize, int mode, int intensity, uint8_t v_min, uint8_t v_max, uint8_t s)
+fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity, uint8_t v_min, uint8_t v_max, uint8_t s)
 {
+	fb_pixel_t *gradientBuf = NULL;
+	
+	gradientBuf = (fb_pixel_t*) malloc(bSize * sizeof(fb_pixel_t));
+		
 	if (gradientBuf == NULL) 
 	{
-		gradientBuf = (fb_pixel_t*) malloc(bSize * sizeof(fb_pixel_t));
-		
-		if (gradientBuf == NULL) 
-		{
-			dprintf(DEBUG_NORMAL, "[%s:%d] malloc error\n", __func__, __LINE__);
-			return NULL;
-		}
+		dprintf(DEBUG_NORMAL, "[%s:%d] malloc error\n", __func__, __LINE__);
+		return NULL;
 	}
 	
 	memset((void*)gradientBuf, '\0', bSize * sizeof(fb_pixel_t));
@@ -374,17 +373,16 @@ fb_pixel_t* gradientOneColor(fb_pixel_t col, fb_pixel_t *gradientBuf, int bSize,
 	return gradientBuf;
 }
 
-fb_pixel_t* gradientColorToColor(fb_pixel_t start_col,fb_pixel_t end_col, fb_pixel_t *gradientBuf, int bSize, int mode, int /*intensity*/)
+fb_pixel_t* gradientColorToColor(fb_pixel_t start_col, fb_pixel_t end_col, int bSize, int mode, int /*intensity*/)
 {
+	fb_pixel_t *gradientBuf = NULL;
+	
+	gradientBuf = (fb_pixel_t*) malloc(bSize * sizeof(fb_pixel_t));
+		
 	if (gradientBuf == NULL) 
 	{
-		gradientBuf = (fb_pixel_t*) malloc(bSize * sizeof(fb_pixel_t));
-		
-		if (gradientBuf == NULL) 
-		{
-			dprintf(DEBUG_NORMAL, "[%s:%d] malloc error\n", __func__, __LINE__);
-			return NULL;
-		}
+		dprintf(DEBUG_NORMAL, "[%s:%d] malloc error\n", __func__, __LINE__);
+		return NULL;
 	}
 	
 	memset((void*)gradientBuf, '\0', bSize * sizeof(fb_pixel_t));

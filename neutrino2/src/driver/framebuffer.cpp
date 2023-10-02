@@ -791,11 +791,11 @@ void CFrameBuffer::paintBoxRel(const int x, const int y, const int dx, const int
 		fb_pixel_t* gradientBuf = NULL;
 		
 		if (grad_type == GRADIENT_ONECOLOR)
-			gradientBuf = gradientOneColor(col, NULL, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
+			gradientBuf = gradientOneColor(col, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
 		else if (grad_type == GRADIENT_COLOR2TRANSPARENT)
-			gradientBuf = gradientColorToTransparent(col, NULL, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
+			gradientBuf = gradientColorToTransparent(col, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
 		else if (grad_type == GRADIENT_COLOR2COLOR)
-			gradientColorToColor(col, col, NULL, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
+			gradientBuf = gradientColorToColor(col, col, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
 
 		fb_pixel_t *bp = boxBuf;
 		fb_pixel_t *gra = gradientBuf;
@@ -831,6 +831,8 @@ void CFrameBuffer::paintBoxRel(const int x, const int y, const int dx, const int
 				bp += dx;
 			}
 		}
+		
+		free(gradientBuf);
 	}
 
 	if(mode > NOGRADIENT || (type && radius))

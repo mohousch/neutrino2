@@ -194,12 +194,12 @@ const keyval COLOR_GRADIENT_TYPE_OPTIONS[COLOR_GRADIENT_TYPE_OPTION_COUNT] =
 	{ LIGHT2DARK2LIGHT, _("light to dark to light") }
 };
 
-#define GRADIENT_TYPE_OPTION_COUNT	2
+#define GRADIENT_TYPE_OPTION_COUNT	3
 const keyval GRADIENT_TYPE_OPTIONS[GRADIENT_TYPE_OPTION_COUNT] =
 {
 	{ GRADIENT_COLOR2TRANSPARENT, _("Color to transparent") },
-	{ GRADIENT_ONECOLOR, _("One color") }
-	//{ GRADIENT_COLOR2COLOR, _("Color to color") }
+	{ GRADIENT_ONECOLOR, _("One color") },
+	{ GRADIENT_COLOR2COLOR, _("Color to color") }
 };
 
 #define CORNER_TYPE_OPTION_COUNT	10

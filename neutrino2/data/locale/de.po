@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-03 00:03+0200\n"
+"POT-Creation-Date: 2023-10-03 01:49+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -403,6 +403,9 @@ msgstr "Coderate HP"
 
 msgid "Code Rate LP"
 msgstr "Coderate LP"
+
+msgid "Color to color"
+msgstr "Farbig zu Farbe"
 
 msgid "Color to transparent"
 msgstr "Farbig zu transparenz"
