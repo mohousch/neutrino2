@@ -893,7 +893,7 @@ msgstr ""
 msgid "Gradient"
 msgstr "Градиент"
 
-msgid "Gradient direction"
+msgid "Gradient type"
 msgstr "Направление градиента"
 
 msgid "Guard Interval"
