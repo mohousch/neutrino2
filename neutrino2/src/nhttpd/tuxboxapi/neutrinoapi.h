@@ -40,8 +40,6 @@ class CNeutrinoAPI
 	std::map<int, CZapit::BouquetChannelList> TVBouquetsList;
 	// List of available radio bouquets
 	std::map<int, CZapit::BouquetChannelList> RadioBouquetsList;
-	// List of bouquets
-	CZapit::BouquetList BouquetList;
 
 	//bool standby_mode;
 
@@ -72,8 +70,8 @@ class CNeutrinoAPI
 
 	void UpdateBouquet(unsigned int BouquetNr);
 	void UpdateChannelList(void);
-	void UpdateBouquets(void);
 
+	//
 	std::string timerEventType2Str(CTimerd::CTimerEventTypes type);
 	std::string timerEventRepeat2Str(CTimerd::CTimerEventRepeat rep);
 	std::string getVideoAspectRatioAsString(void);

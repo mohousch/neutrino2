@@ -91,8 +91,6 @@ CNeutrinoAPI::CNeutrinoAPI()
 #ifdef ENABLE_LCDAPI
 	LcdAPI = new CLCDAPI();
 #endif	
-
-	UpdateBouquets();
 }
 
 CNeutrinoAPI::~CNeutrinoAPI(void)
@@ -109,18 +107,7 @@ CNeutrinoAPI::~CNeutrinoAPI(void)
 		delete ControlAPI;
 }
 
-void CNeutrinoAPI::UpdateBouquets(void)
-{
-#if 0 //FIXME
-	BouquetList.clear();
-	CZapit::getInstance()->getBouquets(BouquetList, true, true);
-	for (unsigned int i = 1; i <= BouquetList.size(); i++)
-		UpdateBouquet(i);
-
-	UpdateChannelList();
-#endif
-}
-
+//
 void CNeutrinoAPI::ZapTo(const char * const target)
 {
 	t_channel_id channel_id;

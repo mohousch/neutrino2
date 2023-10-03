@@ -108,6 +108,7 @@ class CZapit
 		
 		typedef std::vector<commandSetScanSatelliteList> ScanSatelliteList;
 
+		/*
 		struct commandSetScanMotorPosList
 		{
 			t_satellite_position satPosition;
@@ -115,22 +116,13 @@ class CZapit
 		};
 		
 		typedef std::vector<commandSetScanMotorPosList> ScanMotorPosList;
+		*/
 
 		struct responseGetLastChannel
 		{
 			unsigned int	channelNumber;
 			char		mode;
 		};
-
-		struct responseGetBouquets
-		{
-			unsigned int bouquet_nr;
-			char	 name[30];
-			bool	 locked;
-			bool	 hidden;
-		};
-		
-		typedef std::vector<responseGetBouquets> BouquetList;
 
 		struct responseGetBouquetChannels
 		{
@@ -143,12 +135,14 @@ class CZapit
 		
 		typedef std::vector<responseGetBouquetChannels> BouquetChannelList;
 
+		/*
 		struct responseGetBouquetNChannels
 		{
 			unsigned int nr;
 		};
 		
 		typedef std::vector<responseGetBouquetNChannels> BouquetNChannelList;
+		*/
 
 		struct responseGetAPIDs
 		{
@@ -331,12 +325,7 @@ class CZapit
 		
 		//
 		void internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, BouquetChannelList &Bchannels);
-		void internalSendNChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, BouquetNChannelList &Bchannels);
-		void sendBouquets(responseGetBouquets &msgBouquet, const bool emptyBouquetsToo, channelsMode mode);
 		void sendBouquetChannels(BouquetChannelList &Bchannels, const unsigned int bouquet, const channelsMode mode);
-		void sendBouquetNChannels(BouquetNChannelList &Bchannels, const unsigned int bouquet, const channelsMode mode);
-		void sendChannels(BouquetChannelList &Bchannels, const channelsMode mode, const channelsOrder order);
-		void sendNChannels(BouquetNChannelList &Bchannels, const channelsMode mode, const channelsOrder order);
 		
 		//
 		void closeAVDecoder(void);
@@ -464,10 +453,9 @@ class CZapit
 		void getVolumePercent(unsigned int *percent, t_channel_id channel_id = 0, const unsigned int apid = 0, const bool is_ac3 = false);
 		void setAudioChannel(const unsigned int channel);
 		void setVideoSystem(int video_system);
-
-		// channels / bouquets
+		
+		//
 		bool getBouquetChannels(const unsigned int bouquet, BouquetChannelList &channels, const channelsMode mode = MODE_CURRENT, const bool utf_encoded = false);
-		bool getBouquetNChannels(const unsigned int bouquet, BouquetNChannelList& channels, const channelsMode mode = MODE_CURRENT, const bool utf_encoded = false);
 
 		// bouquetManager
 		void saveBouquets();

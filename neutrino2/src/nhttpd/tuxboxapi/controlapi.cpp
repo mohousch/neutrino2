@@ -336,28 +336,25 @@ void CControlAPI::SetModeCGI(CyhookHandler *hh)
 			int mode = NeutrinoMessages::mode_radio;
 			eventServer->sendEvent(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_NEUTRINO, (void *)&mode, sizeof(int));
 			sleep(1);
-			NeutrinoAPI->UpdateBouquets();
 		}
 		else if (hh->ParamList["1"] == "tv")	// switch to tv mode
 		{
 			int mode = NeutrinoMessages::mode_tv;
 			eventServer->sendEvent(NeutrinoMessages::CHANGEMODE, CEventServer::INITID_NEUTRINO, (void *)&mode, sizeof(int));
 			sleep(1);
-			NeutrinoAPI->UpdateBouquets();
 		}
 		else if (hh->ParamList["record"] == "start")	// start record mode
 		{
 			if(hh->ParamList["stopplayback"] == "true")
 				CZapit::getInstance()->stopPlayBack();
 				
-			//NeutrinoAPI->Sectionsd->setPauseScanning(true);
+			//
 			CSectionsd::getInstance()->pauseScanning(true);
 			CZapit::getInstance()->setRecordMode(true);
 		}
 		else if (hh->ParamList["record"] == "stop")	// stop record mode
 		{
 			CZapit::getInstance()->setRecordMode(false);
-			//NeutrinoAPI->Sectionsd->setPauseScanning(false);
 			CSectionsd::getInstance()->pauseScanning(false);
 			if (!CZapit::getInstance()->isPlayBackActive())
 				CZapit::getInstance()->startPlayBack(live_channel);
@@ -2240,7 +2237,6 @@ void CControlAPI::setBouquetCGI(CyhookHandler *hh)
 void CControlAPI::saveBouquetCGI(CyhookHandler *hh)
 {
 	CZapit::getInstance()->saveBouquets();
-	NeutrinoAPI->UpdateBouquets();
 	hh->SendOk();
 }
 
@@ -2346,7 +2342,6 @@ void CControlAPI::changeBouquetCGI(CyhookHandler *hh)
 		}
 
 		//
-		NeutrinoAPI->UpdateBouquets();
 		if(hh->ParamList["redirect"] != "")
 			hh->SendRewrite(hh->ParamList["redirect"]);
 		else
@@ -2359,7 +2354,6 @@ void CControlAPI::changeBouquetCGI(CyhookHandler *hh)
 //
 void CControlAPI::updateBouquetCGI(CyhookHandler *hh)
 {
-	NeutrinoAPI->UpdateBouquets();
 	hh->SendOk();
 }
 

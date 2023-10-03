@@ -89,7 +89,6 @@ class CBouquetManager
 		CBouquetManager() 
 		{ 
 			remainChannels = NULL; 
-			//Bouquets = NULL; 
 		};
 		
 		class ChannelIterator

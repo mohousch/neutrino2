@@ -1,4 +1,4 @@
-SUBDIRS = driver system zapit timerd nhttpd sectionsd daemonc gui interfaces
+SUBDIRS = zapit sectionsd timerd nhttpd driver system daemonc gui interfaces
 
 AM_CPPFLAGS = \
 	-I$(top_builddir) \
