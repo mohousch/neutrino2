@@ -374,10 +374,8 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return CMenuTarget::RETURN_REPAINT;
 	}
-	else if (strcmp(key, "modifytimer") == 0)
+	else if (actionKey == "modifytimer")
 	{
-		selected = listBox->getSelected();
-
 		timerlist[selected].announceTime = timerlist[selected].alarmTime -60;
 		if(timerlist[selected].eventRepeat >= CTimerd::TIMERREPEAT_WEEKDAYS)
 			CTimerd::getInstance()->getWeekdaysFromStr(&timerlist[selected].eventRepeat, m_weekdaysStr.c_str());
@@ -388,8 +386,8 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 			if (timer_apids_dflt)
 				timerlist[selected].apids = TIMERD_APIDS_CONF;
 			else
-				timerlist[selected].apids = (timer_apids_std * TIMERD_APIDS_STD) | (timer_apids_ac3 * TIMERD_APIDS_AC3) |
-					(timer_apids_alt * TIMERD_APIDS_ALT);
+				timerlist[selected].apids = (timer_apids_std * TIMERD_APIDS_STD) | (timer_apids_ac3 * TIMERD_APIDS_AC3) | (timer_apids_alt * TIMERD_APIDS_ALT);
+				
 			CTimerd::getInstance()->modifyTimerAPid(timerlist[selected].eventID,timerlist[selected].apids);
 			CTimerd::getInstance()->modifyRecordTimerEvent(timerlist[selected].eventID, timerlist[selected].announceTime, timerlist[selected].alarmTime, timerlist[selected].stopTime, timerlist[selected].eventRepeat, timerlist[selected].repeatCount,timerlist[selected].recordingDir);
 		} 
@@ -400,7 +398,8 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return CMenuTarget::RETURN_EXIT;
 	}
-	else if (strcmp(key, "newtimer") == 0)
+	//else if (strcmp(key, "newtimer") == 0)
+	else if (actionKey == "newtimer")
 	{
 		timerNew.announceTime = timerNew.alarmTime - 60;
 		CTimerd::EventInfo eventinfo;
@@ -950,10 +949,6 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 int CTimerList::modifyTimer()
 {
 	int res = CMenuTarget::RETURN_REPAINT;
-	if (listBox) selected = listBox->getSelected();
-	
-	//if ( timerlist.empty() )
-	//	return RETURN_REPAINT;
 
 	CTimerd::responseGetTimer* timer = &timerlist[selected];
 
@@ -1103,6 +1098,8 @@ int CTimerList::modifyTimer()
 	}
 
 	res = widget->exec(this, "");
+	
+	selected = timerSettings->getSelected();
 	
 	if (timerSettings)
 	{
