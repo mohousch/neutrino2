@@ -261,7 +261,7 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int 
 	uint8_t tr_max = 0x20;
 	
 #ifdef USE_OPENGL
-	tr_max = 0x20;
+	tr_max = 0x10;
 #else
 	tr_max = 0xAA;
 #endif
@@ -269,7 +269,7 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int 
 	if (mode == LIGHT2DARK)
 	{
 #ifdef USE_OPENGL
-		tr_min = 0x20;
+		tr_min = 0x10;
 #else
 		tr_min = 0xAA;
 #endif
@@ -327,9 +327,9 @@ fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity,
 		switch (intensity) 
 		{
 			case INT_LIGHT:
-				min_v   = 0x40;
-				max_v   = 0xE0;
-				col_s   = (noSaturation) ? 0 : 0xC0;
+				min_v   = 0x10;	//0x40//20
+				max_v   = 0x91;	//0xE0//AA
+				col_s   = (noSaturation) ? 0 : 0xC0; //0xC0
 				break;
 			case INT_NORMAL:
 				min_v   = 0x00;
