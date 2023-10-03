@@ -350,6 +350,9 @@ void COSDMenuColorSettings::showMenu()
 	// head gradient
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.Head_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
 	
+	// head gradienttype
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.Head_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
+	
 	// head corner
 	//OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Head_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
@@ -383,6 +386,9 @@ void COSDMenuColorSettings::showMenu()
 	// foot gradient
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.Foot_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
 	
+	// foot gradienttype
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.Foot_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
+	
 	// foot corner
 	//OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Foot_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
@@ -403,6 +409,9 @@ void COSDMenuColorSettings::showMenu()
 
 	// itemInfo gradient
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.Hint_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
+	
+	// iteminfo gradienttype
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.Hint_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
 	
 	// iteminfo border
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Border"), &g_settings.Hint_border, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));

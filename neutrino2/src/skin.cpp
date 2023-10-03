@@ -2942,7 +2942,7 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 //
 void CNeutrinoApp::readSkinConfig(const char* const filename)
 {
-	dprintf(DEBUG_INFO, "CNeutrinpApp::readSkinConfig %s\n", filename);
+	dprintf(DEBUG_NORMAL, "CNeutrinpApp::readSkinConfig %s\n", filename);
 	
 	CConfigFile* skinConfig = new CConfigFile(',');
 	
@@ -3070,7 +3070,7 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 
 void CNeutrinoApp::saveSkinConfig(const char * const filename)
 {
-	dprintf(DEBUG_INFO, "CNeutrinoApp::saveFile: %s\n", filename);
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::saveFile: %s\n", filename);
 	
 	CConfigFile* skinConfig = new CConfigFile(',');;
 	

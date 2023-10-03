@@ -6557,10 +6557,12 @@ void CTestMenu::showMenu()
 		mainMenu->enablePaintDate();
 		mainMenu->enablePaintFoot();
 
+		// head
 		mainMenu->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
 		mainMenu->setHeadGradient(LIGHT2DARK);
 		mainMenu->setHeadLine(true, true);
 
+		// foot
 		mainMenu->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
 		mainMenu->setFootGradient(DARK2LIGHT);
 		mainMenu->setFootLine(true, true);

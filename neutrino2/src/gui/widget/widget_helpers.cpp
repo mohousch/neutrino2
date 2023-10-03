@@ -1994,6 +1994,7 @@ CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const c
 	htitle = title? title : "";
 	hicon = icon? icon : "";
 
+	//
 	bgcolor = COL_MENUHEAD_PLUS_0;
 	radius = g_settings.Head_radius;
 	corner = g_settings.Head_corner;
@@ -2004,6 +2005,7 @@ CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const c
 	head_line = g_settings.Head_line;
 	head_line_gradient = false;
 
+	//
 	paintframe = true;
 	paintDate = false;
 	format = "%d.%m.%Y %H:%M";

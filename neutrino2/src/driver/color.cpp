@@ -258,11 +258,21 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int 
 	int start_box = 0;
 	int end_box = bSize;
 	uint8_t tr_min = 0xFF;
-	uint8_t tr_max = 0xAA;
+	uint8_t tr_max = 0x20;
+	
+#ifdef USE_OPENGL
+	tr_max = 0x20;
+#else
+	tr_max = 0xAA;
+#endif
 	
 	if (mode == LIGHT2DARK)
 	{
+#ifdef USE_OPENGL
+		tr_min = 0x20;
+#else
 		tr_min = 0xAA;
+#endif
 		tr_max = 0xFF;
 	}
 	
