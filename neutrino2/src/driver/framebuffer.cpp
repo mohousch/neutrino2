@@ -1009,6 +1009,7 @@ void CFrameBuffer::getIconSize(const char * const filename, int * width, int * h
 	close(icon_fd);
 }
 
+//
 bool CFrameBuffer::paintIcon8(const std::string & filename, const int x, const int y, const unsigned char offset)
 {
 	if (!getActive())
@@ -1093,7 +1094,8 @@ bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const
 	dsize = width*height*sizeof(fb_pixel_t);
 	tmp_data = (fb_pixel_t*)malloc(dsize);
 	data = tmp_data;
-		
+	
+	//	
 	unsigned char pixbuf[768];
 	for (int count = 0; count < height; count ++ ) 
 	{
@@ -1117,8 +1119,8 @@ bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const
 		}
 	}
 		
-		close(lfd);
-		data = tmp_data;
+	close(lfd);
+	data = tmp_data;
 	
 	if(!paint)
 		return true;
@@ -1128,6 +1130,8 @@ bool CFrameBuffer::paintIconRaw(const std::string & filename, const int x, const
 
 	blit2FB(data, width, height, x, yy);
 
+	free(tmp_data);
+	
 	return true;
 }
 
@@ -1204,6 +1208,7 @@ _display:
 		yy += (h - height) / 2;	
 
 	blit2FB(data, width, height, x, yy, 0, 0, true);
+	free(data);
 
 	return true;
 }
