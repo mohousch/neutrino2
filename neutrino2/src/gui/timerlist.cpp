@@ -287,6 +287,40 @@ CTimerList::CTimerList()
 	
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
+	
+	////
+	//
+	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
+	
+	if (timerlistWidget)
+	{
+		listBox = (ClistBox*)timerlistWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		//
+		timerlistWidget = new CWidget(&cFrameBox);
+		timerlistWidget->name = "timerlist";
+		timerlistWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
+		
+		//
+		listBox = new ClistBox(&cFrameBox);
+		
+		// head
+		listBox->enablePaintHead();
+		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
+		listBox->enablePaintDate();
+		listBox->setHeadButtons(&CTimerListHeadButtons, 1);
+		listBox->setHeadLine(true, true);
+
+		// foot
+		listBox->enablePaintFoot();
+		listBox->setFootButtons(TimerListButtons, 4);
+		listBox->setFootLine(true, true);
+		
+		//
+		timerlistWidget->addWidgetItem(listBox);
+	}
 }
 
 CTimerList::~CTimerList()
@@ -321,11 +355,7 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 	if(parent)
 		parent->hide();
 
-	//const char * key = actionKey.c_str();
 	std::string chanName;
-	
-	if (listBox)
-		selected = listBox->getSelected();
 	
 	CSelectChannelWidget * CSelectChannelWidgetHandler = NULL;
 	
@@ -562,6 +592,8 @@ int CTimerList::show()
 		}
 		else if (msg == CRCInput::RC_ok)
 		{
+			selected = listBox->getSelected();
+			
 			if ( !(timerlist.empty()) && (modifyTimer() == CMenuTarget::RETURN_EXIT_ALL) )
 			{
 				res = CMenuTarget::RETURN_EXIT_ALL;
@@ -572,7 +604,7 @@ int CTimerList::show()
 		}
 		else if((msg == CRCInput::RC_red) && !(timerlist.empty()))
 		{
-			if (listBox) selected = listBox->getSelected();
+			selected = listBox->getSelected();
 
 			CTimerd::getInstance()->removeTimerEvent(timerlist[selected].eventID);
 			skipEventID = timerlist[selected].eventID;
@@ -605,7 +637,7 @@ int CTimerList::show()
 		}
 		else if(msg == CRCInput::RC_info)
 		{
-			if (listBox) selected = listBox->getSelected();
+			selected = listBox->getSelected();
 
 			CTimerd::responseGetTimer *timer = &timerlist[selected];
 			
@@ -667,60 +699,13 @@ void CTimerList::hide()
 		
 		visible = false;
 	}
-	
-	//
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
-	if (timerlistWidget)
-	{
-		delete timerlistWidget;
-		timerlistWidget = NULL;
-	}
 }
 
 void CTimerList::paint()
 {
 	dprintf(DEBUG_NORMAL, "CTimerList::paint\n");
 	
-	//
-	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
-	
-	if (timerlistWidget)
-	{
-		listBox = (ClistBox*)timerlistWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		//
-		timerlistWidget = new CWidget(&cFrameBox);
-		timerlistWidget->name = "timerlist";
-		timerlistWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
-		
-		//
-		listBox = new ClistBox(&cFrameBox);
-		
-		// head
-		listBox->enablePaintHead();
-		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
-		listBox->enablePaintDate();
-		listBox->setHeadButtons(&CTimerListHeadButtons, 1);
-		listBox->setHeadLine(true, true);
-
-		// foot
-		listBox->enablePaintFoot();
-		listBox->setFootButtons(TimerListButtons, 4);
-		listBox->setFootLine(true, true);
-		
-		//
-		timerlistWidget->addWidgetItem(listBox);
-	}
-
-	if (listBox) 
-		listBox->clearItems();
+	listBox->clearItems();
 
 	for (unsigned int count = 0; count < timerlist.size(); count++)
 	{
@@ -840,7 +825,7 @@ void CTimerList::paint()
 		item->setOption(zAddData.c_str());
 		item->setOptionInfo(convertTimerType2String(timer.eventType));
 
-		if (listBox) listBox->addItem(item);
+		listBox->addItem(item);
 	}
 
 	//
