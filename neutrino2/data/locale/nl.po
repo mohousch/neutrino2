@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-03 01:49+0200\n"
+"POT-Creation-Date: 2023-10-03 12:52+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -427,9 +427,6 @@ msgid "Cooking"
 msgstr ""
 
 msgid "Copy bouquet to Favorites"
-msgstr ""
-
-msgid "Corner"
 msgstr ""
 
 msgid "Correction time in min. (00=off). This time"

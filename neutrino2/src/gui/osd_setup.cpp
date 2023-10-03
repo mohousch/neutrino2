@@ -351,7 +351,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.Head_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
 	
 	// head corner
-	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Head_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
+	//OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Head_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
 	// head radius
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Radius"), &g_settings.Head_radius, RADIUS_TYPE_OPTIONS, RADIUS_TYPE_OPTION_COUNT, true));
@@ -384,7 +384,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.Foot_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
 	
 	// foot corner
-	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Foot_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
+	//OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Foot_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
 	// foot radius
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Radius"), &g_settings.Foot_radius, RADIUS_TYPE_OPTIONS, RADIUS_TYPE_OPTION_COUNT, true));
@@ -411,7 +411,7 @@ void COSDMenuColorSettings::showMenu()
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Radius"), &g_settings.Hint_radius, RADIUS_TYPE_OPTIONS, RADIUS_TYPE_OPTION_COUNT, true));
 	
 	// itemInfo corner
-	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Hint_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
+	//OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Hint_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
@@ -540,7 +540,7 @@ void COSDInfoBarColorSettings::showMenu()
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Gradient type"), &g_settings.infobar_gradient_type, GRADIENT_TYPE_OPTIONS, GRADIENT_TYPE_OPTION_COUNT, true));
 	
 	// corner
-	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.infobar_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
+	//OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.infobar_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
 	// radius
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Radius"), &g_settings.infobar_radius, RADIUS_TYPE_OPTIONS, RADIUS_TYPE_OPTION_COUNT, true));
