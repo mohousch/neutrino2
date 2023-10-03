@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-03 12:52+0200\n"
+"POT-Creation-Date: 2023-10-03 14:26+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -176,10 +176,10 @@ msgid "Audiotype"
 msgstr "Audiotyp"
 
 msgid "Auto select audio"
-msgstr "Audio automatisch auswählen"
+msgstr "Audio automatisch Auswahln"
 
 msgid "Auto select subtitles"
-msgstr "Untertitel automatisch auswählen"
+msgstr "Untertitel automatisch Auswahl"
 
 msgid "Auto-Scan"
 msgstr "Automatischer Scan"
@@ -221,7 +221,7 @@ msgid "Bookmarks"
 msgstr "Lesezeichen"
 
 msgid "Border"
-msgstr "Grenze"
+msgstr "Rand"
 
 msgid "Bosnian"
 msgstr "bosnisch"
@@ -810,7 +810,7 @@ msgid "Font name"
 msgstr "Schriftartenname"
 
 msgid "Foot"
-msgstr "Fuß"
+msgstr "Fußleiste"
 
 msgid "Football / Soccer"
 msgstr "Fussball"
@@ -903,7 +903,7 @@ msgid "Goto Reference Position"
 msgstr "Gehe zur Referenzposition"
 
 msgid "Gradient"
-msgstr "Farbverläufe"
+msgstr "Farbverlauf"
 
 msgid "Gradient type"
 msgstr "Farbverlauftyp"
@@ -1960,19 +1960,19 @@ msgid "Security"
 msgstr "Sicherheit"
 
 msgid "Select Subservice"
-msgstr "Subkanal auswählen"
+msgstr "Subkanal Auswahl"
 
 msgid "Select audio track"
-msgstr "Audiospur auswählen"
+msgstr "Audiospur Auswahl"
 
 msgid "Select language"
-msgstr "Sprache auswählen"
+msgstr "Sprache Auswahl"
 
 msgid "Select starting-time"
-msgstr "Startzeit auswählen"
+msgstr "Startzeit Auswahl"
 
 msgid "Select transponder"
-msgstr "Transponder auswählen"
+msgstr "Transponder Auswahl"
 
 msgid "Serie"
 msgstr "Serie"
@@ -2068,7 +2068,7 @@ msgid "Size"
 msgstr "Größe"
 
 msgid "Skin Select"
-msgstr "Skin Auswahl"
+msgstr "Skin-Auswahl"
 
 msgid "Skin Style"
 msgstr "Skinstil"
@@ -2077,7 +2077,7 @@ msgid "Skin Style name"
 msgstr "Name des Skin-Stils"
 
 msgid "Skin select"
-msgstr "Skin auswählen"
+msgstr "Skin-Auswahl"
 
 msgid "Sleep time"
 msgstr "Schlafenszeit"
@@ -2194,7 +2194,7 @@ msgid "Subservices"
 msgstr "Unterkanäle"
 
 msgid "Subtitle Select"
-msgstr "Untertitel auswählen"
+msgstr "Untertitel-Auswahl"
 
 msgid "Subtitle language preferences"
 msgstr "Einstellungen für die Untertitelsprache"
@@ -2979,7 +2979,7 @@ msgid "no epg found"
 msgstr "keine EPG gefunden"
 
 msgid "no gradient"
-msgstr "Kein Farbverlauf"
+msgstr "Keine"
 
 msgid "none"
 msgstr "keiner"
