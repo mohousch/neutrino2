@@ -193,7 +193,7 @@ class CSectionsd
 		CSectionsd(){};
 	
 	public:
-		~CSectionsd(){};
+		virtual ~CSectionsd(){};
 		static CSectionsd *getInstance()
 		{
 			static CSectionsd * sectionsd = NULL;

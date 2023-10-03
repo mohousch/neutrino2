@@ -42,9 +42,10 @@
 #include <zapit/cam.h>
 
 
+////
 #define CHANNEL_NAME_SIZE 40
-#define RESPONSE_GET_BOUQUETS_END_MARKER 0xFFFFFFFF
 
+////
 class CZapit
 {
 	public:
@@ -108,16 +109,6 @@ class CZapit
 		
 		typedef std::vector<commandSetScanSatelliteList> ScanSatelliteList;
 
-		/*
-		struct commandSetScanMotorPosList
-		{
-			t_satellite_position satPosition;
-			int motorPos;
-		};
-		
-		typedef std::vector<commandSetScanMotorPosList> ScanMotorPosList;
-		*/
-
 		struct responseGetLastChannel
 		{
 			unsigned int	channelNumber;
@@ -134,15 +125,6 @@ class CZapit
 		};
 		
 		typedef std::vector<responseGetBouquetChannels> BouquetChannelList;
-
-		/*
-		struct responseGetBouquetNChannels
-		{
-			unsigned int nr;
-		};
-		
-		typedef std::vector<responseGetBouquetNChannels> BouquetNChannelList;
-		*/
 
 		struct responseGetAPIDs
 		{

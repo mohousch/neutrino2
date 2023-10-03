@@ -35,7 +35,7 @@ class Cyhttpd
 		static CStringList ConfigList; 		// Vars & Values from ReadConfig
 
 		//
-		~Cyhttpd();
+		virtual ~Cyhttpd();
 
 		// Main Programm calls
 		void run(); 				// Init Hooks, ReadConfig, Start Webserver

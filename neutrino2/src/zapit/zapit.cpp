@@ -116,10 +116,11 @@ cDemux *videoDemux = NULL;
 cDemux *audioDemux = NULL;
 cDemux * pcrDemux = NULL;			// defined in dmx_cs.pp (libdvbapi)
 // list of all channels (services)
-tallchans allchans;             	// tallchans defined in "bouquets.h"
-tallchans curchans;             	// tallchans defined in "bouquets.h"
+tallchans allchans;
+tallchans curchans;
 tallchans nvodchannels;
-transponder_list_t transponders;    	// from services.xml
+//
+transponder_list_t transponders;    		// from services.xml
 // pmt update filter
 static int pmt_update_fd = -1;
 // frontend config
@@ -135,7 +136,7 @@ bool have_a = false;
 cVideo * videoDecoder = NULL;
 cAudio * audioDecoder = NULL;
 ////
-extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+extern satellite_map_t satellitePositions;	// defined in getServices.cpp
 extern uint32_t failed_transponders;
 extern uint32_t  found_tv_chans;
 extern uint32_t  found_radio_chans;

@@ -128,15 +128,15 @@ class CTimerd
 			time_t            alarmTime;
 			time_t            announceTime;
 			time_t            stopTime;
-			t_channel_id      channel_id;                       //only filled if applicable
-			event_id_t        epgID;                            //only filled if applicable
-			time_t            epg_starttime;                    //only filled if applicable
-			unsigned char     apids;                            //only filled if applicable
-			bool              standby_on;                       //only filled if applicable
-			char              message[REMINDER_MESSAGE_MAXLEN];         //only filled if applicable
-			char              pluginName[EXEC_PLUGIN_NAME_MAXLEN];      //only filled if applicable
-			char              recordingDir[RECORD_DIR_MAXLEN];       //only filled if applicable
-			char              epgTitle[EPG_TITLE_MAXLEN];       //only filled if applicable
+			t_channel_id      channel_id;                       	//only filled if applicable
+			event_id_t        epgID;                            	//only filled if applicable
+			time_t            epg_starttime;                    	//only filled if applicable
+			unsigned char     apids;                            	//only filled if applicable
+			bool              standby_on;                       	//only filled if applicable
+			char              message[REMINDER_MESSAGE_MAXLEN];	//only filled if applicable
+			char              pluginName[EXEC_PLUGIN_NAME_MAXLEN];	//only filled if applicable
+			char              recordingDir[RECORD_DIR_MAXLEN];	//only filled if applicable
+			char              epgTitle[EPG_TITLE_MAXLEN];		//only filled if applicable
 			
 			bool operator< (const responseGetTimer& a) const
 			{
@@ -150,7 +150,7 @@ class CTimerd
 		CTimerd(){};
 		
 	public:
-		~CTimerd(){};
+		virtual ~CTimerd(){};
 		
 		static CTimerd *getInstance()
 		{

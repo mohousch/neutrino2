@@ -240,7 +240,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 }
 
 //
-extern tallchans curchans;
+extern tallchans curchans;	// defined in zapit.cpp
 
 int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, const t_original_network_id p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, CFrontend * fe)
 { 

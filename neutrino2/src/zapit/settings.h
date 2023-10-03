@@ -59,3 +59,4 @@
 #define CAMD_UDS_NAME  			"/tmp/camd.socket"
 
 #endif /* __zapit__settings_h__ */
+
