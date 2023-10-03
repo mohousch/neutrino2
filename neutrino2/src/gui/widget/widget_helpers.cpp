@@ -283,7 +283,7 @@ void CProgressBar::paint(unsigned char pcr, bool paintBG)
 	
 	// body
 	if (paintBG)
-		frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? g_settings.progressbar_gradient : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);	//fill passive
+		frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);	//fill passive
 	
 	if (pcr != percent) 
 	{
@@ -306,7 +306,7 @@ void CProgressBar::paint(unsigned char pcr, bool paintBG)
 				else
 					rgb = 0xFF0000 + (diff << 8); // adding green
 				
-				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? g_settings.progressbar_gradient : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			}
 			
 			//yellow
@@ -323,7 +323,7 @@ void CProgressBar::paint(unsigned char pcr, bool paintBG)
 				else
 					rgb = 0xFFFF00 - (diff << 16); // removing red
 	
-				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? g_settings.progressbar_gradient : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			}
 
 			//green
@@ -341,12 +341,12 @@ void CProgressBar::paint(unsigned char pcr, bool paintBG)
 				else
 					rgb = 0xFFFF00 - (diff << 16); // removing red
 				
-				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? g_settings.progressbar_gradient : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(cCBox.iX + i, cCBox.iY, 1, cCBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			}
 		}
 		else
 		{
-			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, siglen, cCBox.iHeight, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? g_settings.progressbar_gradient : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, siglen, cCBox.iHeight, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 		}
 		
 		percent = pcr;
@@ -713,10 +713,10 @@ void CItems2DetailsLine::paint()
 		}
 
 		// info1
-		int l_w1 = 0;
+		//int l_w1 = 0;
 		if(!info1.empty())
 		{
-			l_w1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getRenderWidth(info1.c_str());
+			//l_w1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getRenderWidth(info1.c_str());
 
 			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(cCBox.iX + BORDER_LEFT, cCBox.iY + (cCBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, info1.c_str(), COL_MENUHINT, 0, true);
 		}
@@ -731,10 +731,10 @@ void CItems2DetailsLine::paint()
 		}
 
 		// info2
-		int l_w2 = 0;
+		//int l_w2 = 0;
 		if(!info2.empty())
 		{
-			l_w2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(info2.c_str());
+			//l_w2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(info2.c_str());
 
 			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString (cCBox.iX + BORDER_LEFT, cCBox.iY + cCBox.iHeight/2 + (cCBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, info2.c_str(), COL_MENUHINT, 0, true); // UTF-8
 		}

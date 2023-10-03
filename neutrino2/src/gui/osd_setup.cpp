@@ -1074,8 +1074,8 @@ void COSDDiverses::showMenu()
 	// progressbar color
 	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Progressbar Color"), &g_settings.progressbar_color, PROGRESSBAR_COLOR_OPTIONS, PROGRESSBAR_COLOR_OPTION_COUNT, true));
 	
-	// progressbar_gradient
-	osdDiverseSettings->addItem(new CMenuOptionChooser("ProgressBar Gradient", &g_settings.progressbar_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
+	// progressbar_gradient_type
+	//osdDiverseSettings->addItem(new CMenuOptionChooser("ProgressBar Gradient type", &g_settings.progressbar_gradient_type, GRADIENT_TYPE_OPTION_COUNT, GRADIENT_TYPE_OPTIONS, true));
 	
 	// subchan pos
 	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Subchannel display"), &g_settings.infobar_subchan_disp_pos, INFOBAR_SUBCHAN_DISP_POS_OPTIONS, INFOBAR_SUBCHAN_DISP_POS_OPTIONS_COUNT, true));

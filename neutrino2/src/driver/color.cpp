@@ -70,6 +70,7 @@ int convertSetupAlpha2Alpha(unsigned char alpha)
 	return ret;
 }
 
+////
 uint8_t limitChar(int c)
 {
 	uint8_t ret;
@@ -261,7 +262,7 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int 
 	uint8_t tr_max = 0x20;
 	
 #ifdef USE_OPENGL
-	tr_max = 0x10;
+	tr_max = 0x20;
 #else
 	tr_max = 0xAA;
 #endif
@@ -269,7 +270,7 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int 
 	if (mode == LIGHT2DARK)
 	{
 #ifdef USE_OPENGL
-		tr_min = 0x10;
+		tr_min = 0x20;
 #else
 		tr_min = 0xAA;
 #endif
@@ -295,7 +296,7 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int 
 	return gradientBuf;
 }
 
-fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity, uint8_t v_min, uint8_t v_max, uint8_t s)
+fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity)
 {
 	fb_pixel_t *gradientBuf = NULL;
 	
@@ -316,27 +317,26 @@ fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity,
 	uint8_t tr = SysColor2Hsv(col, &hsv);
 	bool noSaturation = (hsv.s <= (float)0.05);
 
-	if (intensity == INT_EXTENDED) 
+	//
+	switch (intensity) 
 	{
-		min_v   = v_min;
-		max_v   = v_max;
-		col_s   = s;
-	}
-	else 
-	{
-		switch (intensity) 
-		{
-			case INT_LIGHT:
-				min_v   = 0x10;	//0x40//20
-				max_v   = 0x91;	//0xE0//AA
-				col_s   = (noSaturation) ? 0 : 0xC0; //0xC0
-				break;
-			case INT_NORMAL:
-				min_v   = 0x00;
-				max_v   = 0xFF;
-				col_s   = (noSaturation) ? 0 : 0xC0;
-				break;
-		}
+		case INT_EXTENDED:
+			min_v   = 0x40;
+			max_v   = 0xE0;
+			col_s   = 0xC0;
+			break;
+		default:		
+		case INT_LIGHT:
+			min_v   = 0x10;	//0x40
+			max_v   = 0x91;	//0xE0
+			col_s   = (noSaturation) ? 0 : 0xC0;
+			break;
+				
+		case INT_NORMAL:
+			min_v   = 0x00;
+			max_v   = 0xFF;
+			col_s   = (noSaturation) ? 0 : 0xC0;
+			break;
 	}
 
 	switch (mode) 
@@ -365,6 +365,7 @@ fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity,
 		v = v_ + (int)(factor_v * (float)i);
 		hsv.v = (float)limitChar(v) / (float)255;
 		hsv.s = (float)col_s / (float)255;
+		
 		gradientBuf[i] = Hsv2SysColor(&hsv, tr);
 	}
 
@@ -376,6 +377,7 @@ fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity,
 			v = v_ + (int)(factor_v * (float)i);
 			hsv.v = (float)limitChar(v) / (float)255;
 			hsv.s = (float)col_s / (float)255;
+			
 			gradientBuf[bSize - i - 1] = Hsv2SysColor(&hsv, tr);
 		}
 	}

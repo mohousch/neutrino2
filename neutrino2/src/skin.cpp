@@ -3055,7 +3055,7 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		
 		// progressbar color
 		g_settings.progressbar_color = skinConfig->getInt32("progressbar_color", 1);
-		g_settings.progressbar_gradient = skinConfig->getInt32("progressbar_gradient", DARK2LIGHT2DARK);
+		//g_settings.progressbar_gradient_type = skinConfig->getInt32("progressbar_gradient_type", GRADIENT_ONECOLOR);
 		
 		strcpy( g_settings.font_file, skinConfig->getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
 
@@ -3174,7 +3174,7 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	
 	// progressbar color
 	skinConfig->setInt32("progressbar_color", g_settings.progressbar_color);
-	skinConfig->setInt32("progressbar_gradient", g_settings.progressbar_gradient);
+	//skinConfig->setInt32("progressbar_gradient_type", g_settings.progressbar_gradient_type);
 		
 	skinConfig->setString("font_file", g_settings.font_file);
 
