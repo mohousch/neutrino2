@@ -913,13 +913,10 @@ int CNeutrinoApp::convertGradientType(const char* const type)
 		{
 			gr_type = GRADIENT_ONECOLOR;
 		}
-		//FIXME:
-		/*
 		else if ( strcmp(type, "GRADIENT_COLOR2COLOR") == 0)
 		{
 			gr_type = GRADIENT_COLOR2COLOR;
 		}
-		*/
 	}
 	
 	return gr_type;
