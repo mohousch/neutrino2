@@ -295,7 +295,11 @@ CTimerList::~CTimerList()
 
 	timerlist.clear();
 
-	delete plugin_chooser;
+	if (plugin_chooser)
+	{
+		delete plugin_chooser;
+		plugin_chooser = NULL;
+	}
 	
 	if (listBox)
 	{
@@ -317,8 +321,11 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 	if(parent)
 		parent->hide();
 
-	const char * key = actionKey.c_str();
+	//const char * key = actionKey.c_str();
 	std::string chanName;
+	
+	if (listBox)
+		selected = listBox->getSelected();
 	
 	CSelectChannelWidget * CSelectChannelWidgetHandler = NULL;
 	
@@ -398,7 +405,6 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return CMenuTarget::RETURN_EXIT;
 	}
-	//else if (strcmp(key, "newtimer") == 0)
 	else if (actionKey == "newtimer")
 	{
 		timerNew.announceTime = timerNew.alarmTime - 60;
@@ -498,6 +504,7 @@ void CTimerList::updateEvents(void)
 		}
 	}
 	
+	// sort
 	sort(timerlist.begin(), timerlist.end());
 }
 
@@ -515,6 +522,7 @@ int CTimerList::show()
 	
 	//
 	paint();
+	CFrameBuffer::getInstance()->blit();
 
 	// add sec timer
 	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
@@ -564,7 +572,7 @@ int CTimerList::show()
 		}
 		else if((msg == CRCInput::RC_red) && !(timerlist.empty()))
 		{
-			selected = listBox->getSelected();
+			if (listBox) selected = listBox->getSelected();
 
 			CTimerd::getInstance()->removeTimerEvent(timerlist[selected].eventID);
 			skipEventID = timerlist[selected].eventID;
@@ -597,9 +605,10 @@ int CTimerList::show()
 		}
 		else if(msg == CRCInput::RC_info)
 		{
-			selected = listBox->getSelected();
+			if (listBox) selected = listBox->getSelected();
 
 			CTimerd::responseGetTimer *timer = &timerlist[selected];
+			
 			if(timer != NULL)
 			{
 				if(timer->eventType == CTimerd::TIMER_RECORD || timer->eventType == CTimerd::TIMER_ZAPTO)
@@ -653,11 +662,13 @@ void CTimerList::hide()
 {
 	if(visible)
 	{
-		if (timerlistWidget) timerlistWidget->hide();
+		if (timerlistWidget) 
+			timerlistWidget->hide();
 		
 		visible = false;
 	}
 	
+	//
 	if (listBox)
 	{
 		delete listBox;
@@ -685,6 +696,11 @@ void CTimerList::paint()
 	else
 	{
 		//
+		timerlistWidget = new CWidget(&cFrameBox);
+		timerlistWidget->name = "timerlist";
+		timerlistWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
+		
+		//
 		listBox = new ClistBox(&cFrameBox);
 		
 		// head
@@ -700,13 +716,11 @@ void CTimerList::paint()
 		listBox->setFootLine(true, true);
 		
 		//
-		timerlistWidget = new CWidget(&cFrameBox);
-		timerlistWidget->name = "timerlist";
-		timerlistWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		timerlistWidget->addWidgetItem(listBox);
 	}
 
-	if (listBox) listBox->clearItems();
+	if (listBox) 
+		listBox->clearItems();
 
 	for (unsigned int count = 0; count < timerlist.size(); count++)
 	{
@@ -830,7 +844,8 @@ void CTimerList::paint()
 	}
 
 	//
-	if (timerlistWidget) timerlistWidget->paint();
+	if (timerlistWidget) 
+		timerlistWidget->paint();
 
 	visible = true;
 }
@@ -1098,8 +1113,6 @@ int CTimerList::modifyTimer()
 	}
 
 	res = widget->exec(this, "");
-	
-	selected = timerSettings->getSelected();
 	
 	if (timerSettings)
 	{
