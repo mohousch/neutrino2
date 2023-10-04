@@ -38,7 +38,6 @@
 #include <zapit/descriptors.h>
 #include <zapit/dvbstring.h>
 #include <zapit/frontend_c.h>
-#include <zapit/getservices.h>
 #include <zapit/scan.h>
 #include <zapit/sdt.h>
 

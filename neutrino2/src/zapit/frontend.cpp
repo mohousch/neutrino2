@@ -40,7 +40,6 @@
 
 /* zapit */
 #include <zapit/settings.h>
-#include <zapit/getservices.h>
 #include <zapit/frontend_c.h>
 #include <zapit/satconfig.h>
 

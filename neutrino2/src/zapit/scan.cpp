@@ -36,7 +36,6 @@
 
 #include <zapit/bouquets.h>
 #include <zapit/zapit.h>
-#include <zapit/getservices.h>
 #include <zapit/nit.h>
 #include <zapit/scan.h>
 #include <zapit/sdt.h>

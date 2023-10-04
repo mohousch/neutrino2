@@ -38,7 +38,6 @@
 #include <configfile.h>
 
 #include <zapit/bouquets.h>
-#include <zapit/getservices.h> // LoadServices
 #include <zapit/sdt.h>
 #include <zapit/settings.h>
 

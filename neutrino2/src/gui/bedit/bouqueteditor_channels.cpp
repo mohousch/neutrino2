@@ -54,11 +54,11 @@
 //
 #include <zapit/bouquets.h>
 #include <zapit/satconfig.h>
-#include <zapit/getservices.h>
 
 #include <system/debug.h>
 
 
+//// globals
 extern satellite_map_t satellitePositions;	// defined in getServices.cpp
 extern transponder_list_t transponders;		// defined in zapit.cpp
 extern CBouquetManager * g_bouquetManager;	// defined in zapit.cpp

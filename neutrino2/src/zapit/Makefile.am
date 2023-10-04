@@ -29,7 +29,6 @@ libzapit_a_SOURCES = \
 	bouquets.cpp \
 	channel.cpp \
 	dvbstring.cpp \
-	getservices.cpp \
 	scan.cpp \
 	cam.cpp \
 	ci.cpp \

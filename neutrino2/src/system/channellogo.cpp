@@ -60,7 +60,7 @@
 #include <iostream>
 
 
-extern tallchans allchans;	// defined in bouquets.h
+extern tallchans allchans;	// defined in zapit.h
 
 CChannellogo* CChannellogo::getInstance()
 {

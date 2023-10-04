@@ -42,6 +42,7 @@
 #include <libxmltree/xmlinterface.h>
 
 
+////
 class CZapitBouquet
 {
 	public:
@@ -70,6 +71,21 @@ class CZapitBouquet
 
 typedef std::vector<CZapitBouquet *> BouquetList;
 
+//
+struct CmpBouquetByChName: public std::binary_function <const CZapitBouquet * const, const CZapitBouquet * const, bool>
+{
+	static bool comparetolower(const char a, const char b)
+	{
+		return tolower(a) < tolower(b);
+	};
+
+	bool operator() (const CZapitBouquet * const c1, const CZapitBouquet * const c2)
+	{
+		return std::lexicographical_compare(c1->Name.begin(), c1->Name.end(), c2->Name.begin(), c2->Name.end(), comparetolower);
+	};
+};
+
+////
 class CBouquetManager
 {
 	public:
@@ -78,6 +94,7 @@ class CBouquetManager
 	private:
 		CZapitBouquet* remainChannels;
 
+		//
 		void makeRemainingChannelsBouquet(void);
 		void parseBouquetsXml(const char* fname, bool ub = false);
 		void writeBouquetHeader(FILE * bouq_fd, uint32_t i, const char * bouquetName);
@@ -91,6 +108,7 @@ class CBouquetManager
 			remainChannels = NULL; 
 		};
 		
+		////
 		class ChannelIterator
 		{
 			private:
@@ -125,6 +143,7 @@ class CBouquetManager
 		ChannelIterator tvChannelsBegin() { return ChannelIterator(this, CZapit::MODE_TV); };
 		ChannelIterator radioChannelsBegin() { return ChannelIterator(this, CZapit::MODE_RADIO); };
 
+		//
 		void saveBouquets(void);
 		void saveUBouquets(void);
 		void loadBouquets(bool loadCurrentBouquet = false);
@@ -154,40 +173,5 @@ class CBouquetManager
 		void sortBouquets(void);
 };
 
-/*
- * Struct for channel comparison by channel names 
- *
- * TODO:
- * Channel names are not US-ASCII, but UTF-8 encoded.
- * Hence we need a compare function that considers the whole unicode charset.
- * For instance all countless variants of the letter a have to be regarded as the same letter.
- */ 
-struct CmpChannelByChName: public std::binary_function <const CZapitChannel * const, const CZapitChannel * const, bool>
-{
-	static bool comparetolower(const char a, const char b)
-	{
-		return tolower(a) < tolower(b);
-	};
-
-	bool operator() (const CZapitChannel * const c1, const CZapitChannel * const c2)
-	{
-		return std::lexicographical_compare(c1->getName().begin(), c1->getName().end(), c2->getName().begin(), c2->getName().end(), comparetolower);
-	};
-};
-
-struct CmpBouquetByChName: public std::binary_function <const CZapitBouquet * const, const CZapitBouquet * const, bool>
-{
-	static bool comparetolower(const char a, const char b)
-	{
-		return tolower(a) < tolower(b);
-	};
-
-	bool operator() (const CZapitBouquet * const c1, const CZapitBouquet * const c2)
-	{
-		return std::lexicographical_compare(c1->Name.begin(), c1->Name.end(), c2->Name.begin(), c2->Name.end(), comparetolower);
-	};
-};
-
 #endif /* __bouquets_h__ */
-
 

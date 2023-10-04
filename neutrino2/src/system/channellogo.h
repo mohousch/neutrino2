@@ -1,7 +1,3 @@
-
-#ifndef __channellogo__
-#define __channellogo__
-
 /*
 	$Id: channellogo.h 23.09.2023 mohousch Exp $
 
@@ -24,6 +20,9 @@
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
+
+#ifndef __channellogo__
+#define __channellogo__
 
 #include <stdlib.h>
 #include <string.h>
@@ -49,8 +48,7 @@
 #include <system/helpers.h>
 
 // zapit types
-#include <zapit/zapittypes.h>
-#include <zapit/getservices.h>
+#include <zapit/zapit.h>
 
 #include <OpenThreads/Thread>
 

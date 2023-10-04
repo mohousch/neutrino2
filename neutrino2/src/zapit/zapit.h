@@ -209,6 +209,13 @@ class CZapit
 			int feindex;
 		};
 		
+		//// services
+		int newtpid;
+		int tcnt;
+		int scnt;
+		uint32_t fake_tid;
+		uint32_t fake_nid;
+		
 		// zapit mode
 		enum {
 			TV_MODE 	= 0x01,
@@ -308,6 +315,16 @@ class CZapit
 		//
 		void internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, BouquetChannelList &Bchannels);
 		void sendBouquetChannels(BouquetChannelList &Bchannels, const unsigned int bouquet, const channelsMode mode);
+		
+		//// channelManager
+		void parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, fe_type_t frontendType);
+		void parseChannels(xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq);
+		void findTransponder(xmlNodePtr root);
+		void parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_satellite_position satellitePosition);
+		void initSat(t_satellite_position position);
+		int loadTransponders();
+		int loadServices(bool only_current);
+		void saveServices(bool tocopy = false);
 		
 		//
 		void closeAVDecoder(void);
@@ -436,7 +453,7 @@ class CZapit
 		void setAudioChannel(const unsigned int channel);
 		void setVideoSystem(int video_system);
 		
-		//
+		// own bouquetManager
 		bool getBouquetChannels(const unsigned int bouquet, BouquetChannelList &channels, const channelsMode mode = MODE_CURRENT, const bool utf_encoded = false);
 
 		// bouquetManager
@@ -445,8 +462,12 @@ class CZapit
 		void restoreBouquets();
 		void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id);
 		void removeChannelFromBouquet(const unsigned int bouquet, const t_channel_id channel_id);
+		
+		// channelManager
+		int loadMotorPositions(void);
+		void saveMotorPositions();
 
-		// scan
+		// scanManager
 		bool tuneTP(transponder TP, int feindex = 0);
 		bool scanTP(commandScanTP &msg);
 		void getScanSatelliteList( SatelliteList &satelliteList );
@@ -463,3 +484,4 @@ class CZapit
 };
 
 #endif
+

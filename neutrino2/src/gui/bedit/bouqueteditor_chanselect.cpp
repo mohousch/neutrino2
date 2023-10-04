@@ -47,7 +47,6 @@
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
 #include <zapit/satconfig.h>
-#include <zapit/getservices.h>
 
 #include <system/debug.h>
 #include <system/helpers.h>

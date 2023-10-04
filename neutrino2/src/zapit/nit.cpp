@@ -36,7 +36,6 @@
 /* zapit */
 #include <zapit/zapit.h>
 #include <zapit/descriptors.h>
-#include <zapit/getservices.h>
 #include <zapit/nit.h>
 #include <zapit/scan.h>
 

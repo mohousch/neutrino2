@@ -45,8 +45,7 @@
 #include <system/settings.h>
 
 // zapit types
-#include <zapit/zapittypes.h>
-#include <zapit/getservices.h>
+#include <zapit/zapit.h>
 
 #include <OpenThreads/Thread>
 

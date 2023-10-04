@@ -151,7 +151,6 @@
 
 // zapit includes
 #include <zapit/frontend_c.h>
-#include <zapit/getservices.h>
 #include <zapit/satconfig.h>
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>

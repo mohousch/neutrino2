@@ -55,7 +55,6 @@
 
 //zapit includes
 #include <zapit/frontend_c.h>
-#include <zapit/getservices.h>
 #include <zapit/satconfig.h>
 
 
@@ -368,7 +367,7 @@ int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif
 		{
-			CServices::getInstance()->saveMotorPositions();
+			CZapit::getInstance()->saveMotorPositions();
 			
 			//diseqc type
 			CZapit::getInstance()->getFE(feindex)->setDiseqcType((diseqc_t)CZapit::getInstance()->getFE(feindex)->diseqcType);
@@ -453,7 +452,7 @@ int CScanSetup::showScanService()
 	if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
 #endif
 	{
-		CServices::getInstance()->loadMotorPositions();
+		CZapit::getInstance()->loadMotorPositions();
 	}
 	
 	//
