@@ -92,6 +92,7 @@ dtv_properties CmdSeq;
 extern satellite_map_t satellitePositions;	// defined in zapit.cpp
 extern transponder_list_t transponders;		// defined in zapit.cpp
 
+////
 CFrontend::CFrontend(int num, int adap)
 {
 	fd = -1;

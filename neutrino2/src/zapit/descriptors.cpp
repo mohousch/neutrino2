@@ -26,6 +26,7 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
+#include <math.h>
 
 //
 #include <system/debug.h>
@@ -33,16 +34,16 @@
 #include <global.h>
 #include <neutrinoMessages.h>
 
+//
 #include <zapit/bouquets.h>
 #include <zapit/zapit.h>
 #include <zapit/descriptors.h>
 #include <zapit/dvbstring.h>
 #include <zapit/frontend_c.h>
-#include <zapit/scan.h>
 #include <zapit/sdt.h>
 
+// libdvbapi
 #include <dmx_cs.h>
-#include <math.h>
 
 
 //// globals
@@ -347,7 +348,7 @@ int CDescriptors::satellite_delivery_system_descriptor(const unsigned char * con
 
 	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-	CScan::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
+	CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
 
 	return 0;
 }
@@ -408,7 +409,7 @@ int CDescriptors::cable_delivery_system_descriptor(const unsigned char * const b
 
        TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-        CScan::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
+        CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
 
 	return 0;
 }
@@ -943,7 +944,7 @@ int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * c
 
 	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
 
-	CScan::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
+	CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
 
 	return 0;
 }

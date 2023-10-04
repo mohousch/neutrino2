@@ -209,13 +209,6 @@ class CZapit
 			int feindex;
 		};
 		
-		//// services
-		int newtpid;
-		int tcnt;
-		int scnt;
-		uint32_t fake_tid;
-		uint32_t fake_nid;
-		
 		// zapit mode
 		enum {
 			TV_MODE 	= 0x01,
@@ -261,6 +254,15 @@ class CZapit
 		uint32_t  lastChannelRadio;
 		uint32_t  lastChannelTV;
 		bool makeRemainingChannelsBouquet;
+		//// channelManager
+		int newtpid;
+		int tcnt;
+		int scnt;
+		uint32_t fake_tid;
+		uint32_t fake_nid;
+		// scanManager
+		uint32_t  actual_freq;
+		uint32_t actual_polarisation;
 		
 	private:
 		//
@@ -325,6 +327,14 @@ class CZapit
 		int loadTransponders();
 		int loadServices(bool only_current);
 		void saveServices(bool tocopy = false);
+		
+		//// scanManager
+		//
+		bool tuneFrequency(FrontendParameters *feparams, t_satellite_position satellitePosition, int feindex);
+		//int addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit = 0, int feindex = 0);
+		bool getSDTS(t_satellite_position satellitePosition, int feindex);
+		bool scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, int feindex);
+		bool scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex);
 		
 		//
 		void closeAVDecoder(void);
@@ -468,6 +478,7 @@ class CZapit
 		void saveMotorPositions();
 
 		// scanManager
+		int addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit = 0, int feindex = 0);
 		bool tuneTP(transponder TP, int feindex = 0);
 		bool scanTP(commandScanTP &msg);
 		void getScanSatelliteList( SatelliteList &satelliteList );

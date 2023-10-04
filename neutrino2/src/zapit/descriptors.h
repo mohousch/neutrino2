@@ -25,6 +25,7 @@
 #include <zapit/zapittypes.h>
 
 
+////
 class CDescriptors
 {
 	private:
@@ -137,3 +138,4 @@ class CDescriptors
 };
 
 #endif /* __zapit_descriptors_h__ */
+

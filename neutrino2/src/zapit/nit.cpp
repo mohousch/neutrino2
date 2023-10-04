@@ -37,8 +37,8 @@
 #include <zapit/zapit.h>
 #include <zapit/descriptors.h>
 #include <zapit/nit.h>
-#include <zapit/scan.h>
 
+// libdvbapi
 #include <dmx_cs.h>
 
 
