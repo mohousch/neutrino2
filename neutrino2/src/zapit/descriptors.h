@@ -28,25 +28,12 @@
 ////
 class CDescriptors
 {
-	private:
+	public:
 		CDescriptors(){};
 		virtual ~CDescriptors(){};
 		
-		uint8_t fix_service_type(uint8_t type);
-		
-	public:
 		//
-		static CDescriptors *getInstance()
-		{
-			static CDescriptors * descriptors = NULL;
-
-			if(!descriptors) 
-			{
-				descriptors = new CDescriptors;
-			} 
-
-			return descriptors;
-		};
+		uint8_t fix_service_type(uint8_t type);
 	
 		//
 		void generic_descriptor(const unsigned char * const buffer);

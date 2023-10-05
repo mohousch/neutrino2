@@ -28,23 +28,9 @@
 
 class CPat
 {
-	private:
+	public:
 		CPat(){};
 		virtual ~CPat(){};
-		
-	public:
-		//
-		static CPat *getInstance()
-		{
-			static CPat * pat = NULL;
-
-			if(!pat) 
-			{
-				pat = new CPat();
-			} 
-
-			return pat;
-		};
 		
 		//
 		int parsePAT(CZapitChannel * const channel, CFrontend * fe);

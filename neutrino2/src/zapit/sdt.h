@@ -28,23 +28,9 @@
 
 class CSdt
 {
-	private:
+	public:
 		CSdt(){};
 		virtual ~CSdt(){};
-		
-	public:
-		//
-		static CSdt *getInstance()
-		{
-			static CSdt * sdt = NULL;
-
-			if(!sdt) 
-			{
-				sdt = new CSdt();
-			} 
-
-			return sdt;
-		};
 		
 		//
 		int parseSDT(t_transport_stream_id* , t_original_network_id*, t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);

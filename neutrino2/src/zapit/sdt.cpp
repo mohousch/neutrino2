@@ -49,6 +49,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 	
 	int secdone[255];
 	int sectotal = -1;
+	CDescriptors descriptor;
 
 	memset(secdone, 0, 255);
 
@@ -136,59 +137,59 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 				switch (buffer[pos2]) 
 				{
 					case 0x0A:
-						CDescriptors::getInstance()->ISO_639_language_descriptor(buffer + pos2);
+						descriptor.ISO_639_language_descriptor(buffer + pos2);
 						break;
 	
 					case 0x40:
-						CDescriptors::getInstance()->network_name_descriptor(buffer + pos2);
+						descriptor.network_name_descriptor(buffer + pos2);
 						break;
 
 					case 0x42:
-						CDescriptors::getInstance()->stuffing_descriptor(buffer + pos2);
+						descriptor.stuffing_descriptor(buffer + pos2);
 						break;
 	
 					case 0x47:
-						CDescriptors::getInstance()->bouquet_name_descriptor(buffer + pos2);
+						descriptor.bouquet_name_descriptor(buffer + pos2);
 						break;
 	
 					case 0x48:
-						CDescriptors::getInstance()->service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq, free_CA_mode, feindex);
+						descriptor.service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq, free_CA_mode, feindex);
 						break;
 	
 					case 0x49:
-						CDescriptors::getInstance()->country_availability_descriptor(buffer + pos2);
+						descriptor.country_availability_descriptor(buffer + pos2);
 						break;
 	
 					case 0x4A:
-						CDescriptors::getInstance()->linkage_descriptor(buffer + pos2);
+						descriptor.linkage_descriptor(buffer + pos2);
 						break;
 	
 					//case 0x4B:
-					//	CDescriptors::getInstance()->NVOD_reference_descriptor(buffer + pos2);
+					//	descriptor.NVOD_reference_descriptor(buffer + pos2);
 					//	break;
 	
 					case 0x4C:
-						CDescriptors::getInstance()->time_shifted_service_descriptor(buffer + pos2);
+						descriptor.time_shifted_service_descriptor(buffer + pos2);
 						break;
 	
 					case 0x51:
-						CDescriptors::getInstance()->mosaic_descriptor(buffer + pos2);
+						descriptor.mosaic_descriptor(buffer + pos2);
 						break;
 	
 					case 0x53:
-						CDescriptors::getInstance()->CA_identifier_descriptor(buffer + pos2);
+						descriptor.CA_identifier_descriptor(buffer + pos2);
 						break;
 	
 					case 0x5D:
-						CDescriptors::getInstance()->multilingual_service_name_descriptor(buffer + pos2);
+						descriptor.multilingual_service_name_descriptor(buffer + pos2);
 						break;
 	
 					case 0x5F:
-						CDescriptors::getInstance()->private_data_specifier_descriptor(buffer + pos2);
+						descriptor.private_data_specifier_descriptor(buffer + pos2);
 						break;
 	
 					case 0x64:
-						CDescriptors::getInstance()->data_broadcast_descriptor(buffer + pos2);
+						descriptor.data_broadcast_descriptor(buffer + pos2);
 						break;
 	
 					case 0x80: // unknown, Eutelsat 13.0E
@@ -228,7 +229,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_netwo
 						break;
 	
 					default:
-						CDescriptors::getInstance()->generic_descriptor(buffer + pos2);
+						descriptor.generic_descriptor(buffer + pos2);
 						break;
 				}
 			}
@@ -258,6 +259,7 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 #endif	
 	
 	int ret = -1;
+	CDescriptors descriptor;
 
 	unsigned char buffer[SDT_SIZE];
 
@@ -331,12 +333,12 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 				switch (buffer[pos2]) 
 				{
 					case 0x48:
-						CDescriptors::getInstance()->current_service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq);
+						descriptor.current_service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq);
 						ret = 0;
 						break;
 	
 					default:
-						CDescriptors::getInstance()->generic_descriptor(buffer + pos2);
+						descriptor.generic_descriptor(buffer + pos2);
 						break;
 				}
 			}

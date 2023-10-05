@@ -42,6 +42,8 @@
 #include <zapit/cam.h>
 #include <zapit/bouquets.h>
 #include <zapit/nit.h>
+#include <zapit/pat.h>
+#include <zapit/sdt.h>
 
 
 ////
@@ -270,7 +272,6 @@ class CZapit
 		scanType _scanType;
 		uint32_t  actual_freq;
 		uint32_t actual_polarisation;
-		CNit *nit;
 		////bouquetManager
 		BouquetList Bouquets;
 		

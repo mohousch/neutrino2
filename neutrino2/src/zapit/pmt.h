@@ -29,23 +29,9 @@
 
 class CPmt
 {
-	private:
+	public:
 		CPmt(){};
 		virtual ~CPmt(){};
-		
-	public:
-		//
-		static CPmt *getInstance()
-		{
-			static CPmt * pmt = NULL;
-
-			if(!pmt) 
-			{
-				pmt = new CPmt();
-			} 
-
-			return pmt;
-		};
 		
 		//
 		unsigned short parseESInfo(const unsigned char * const buffer, CZapitChannel * const channel, CCaPmt * const caPmt);

@@ -1,8 +1,6 @@
 /*
  * $Id: bouquets.cpp 23.09.2023 mohousch Exp $
  *
- * BouquetManager for zapit - d-box2 linux project
- *
  * (C) 2002 by Simplex    <simplex@berlios.de>,
  *             rasc       <rasc@berlios.de>,
  *             thegoodguy <thegoodguy@berlios.de>
@@ -53,13 +51,13 @@
 #include <neutrino2.h>
 
 // curl
-#include <curl/curl.h>
-#include <curl/easy.h>
+//#include <curl/curl.h>
+//#include <curl/easy.h>
 
-#include <dirent.h>
+//#include <dirent.h>
 
 
-// CZapitBouquet
+////
 CZapitChannel * CZapitBouquet::getChannelByChannelID(const t_channel_id channel_id, const unsigned char serviceType)
 {
 	CZapitChannel * result = NULL;
@@ -68,7 +66,7 @@ CZapitChannel * CZapitBouquet::getChannelByChannelID(const t_channel_id channel_
 	
 	switch (serviceType) 
 	{
-		case ST_RESERVED: // ?
+		case ST_RESERVED:
 		case ST_DIGITAL_TELEVISION_SERVICE:
 		case ST_NVOD_REFERENCE_SERVICE:
 		case ST_NVOD_TIME_SHIFTED_SERVICE:

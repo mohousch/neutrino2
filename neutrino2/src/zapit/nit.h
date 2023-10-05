@@ -25,25 +25,9 @@
 
 class CNit
 {
-	//private:
 	public:
 		CNit(){};
 		virtual ~CNit(){};
-	/*	
-	public:
-		//
-		static CNit *getInstance()
-		{
-			static CNit * nit = NULL;
-
-			if(!nit ) 
-			{
-				nit = new CNit();
-			} 
-
-			return nit;
-		};
-	*/
 		
 		//
 		int parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);

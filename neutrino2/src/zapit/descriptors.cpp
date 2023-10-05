@@ -63,7 +63,7 @@ extern tallchans curchans;   			//  defined in zapit.cpp
 ////
 void CDescriptors::generic_descriptor(const unsigned char * const buffer)
 {
-	dprintf(DEBUG_NORMAL, "generic descriptor dump:");
+	dprintf(DEBUG_NORMAL, "CDescriptors::generic descriptor dump:");
 
 	for (unsigned short i = 0; i < buffer[1] + 2; i++)
 		printf(" %02x", buffer[i]);
@@ -891,7 +891,7 @@ void CDescriptors::subtitling_descriptor(const unsigned char * const)
 {
 }
 
-//test
+//
 #include <byteswap.h>
 
 #define UINT32(p)	bswap_32(*(const uint32_t * const)p)
@@ -1051,3 +1051,4 @@ void CDescriptors::announcement_support_descriptor(const unsigned char * const)
 /* 0x6F ... 0x7F: reserved */
 /* 0x80 ... 0xFE: user private */
 /* 0xFF: forbidden */
+

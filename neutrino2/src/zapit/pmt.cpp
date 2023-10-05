@@ -73,6 +73,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 	unsigned char descriptor_tag;
 	unsigned char descriptor_length;
 	unsigned char i;
+	CDescriptors descriptor;
 
 	bool isAC3 = false;
 	bool isDTS = false;
@@ -106,11 +107,11 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 		switch (descriptor_tag) 
 		{
 			case VIDEO_STREAM_DESCRIPTOR:
-				CDescriptors::getInstance()->video_stream_descriptor(buffer + pos);
+				descriptor.video_stream_descriptor(buffer + pos);
 				break;
 
 			case AUDIO_STREAM_DESCRIPTOR:
-				CDescriptors::getInstance()->audio_stream_descriptor(buffer + pos);
+				descriptor.audio_stream_descriptor(buffer + pos);
 				break;
 
 			case REGISTRATION_DESCRIPTOR:
@@ -129,18 +130,18 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 				break;
 
 			case MAXIMUM_BITRATE_DESCRIPTOR:
-				CDescriptors::getInstance()->Maximum_bitrate_descriptor(buffer + pos);
+				descriptor.Maximum_bitrate_descriptor(buffer + pos);
 				break;
 
 			case PRIVATE_DATA_INDICATOR_DESCRIPTOR:
-				CDescriptors::getInstance()->Private_data_indicator_descriptor(buffer + pos);
+				descriptor.Private_data_indicator_descriptor(buffer + pos);
 				break;
 
 			case STD_DESCRIPTOR:
-				CDescriptors::getInstance()->STD_descriptor(buffer + pos);
+				descriptor.STD_descriptor(buffer + pos);
 				break;
 				
-			case 0x1C:
+			case 0x1C: // MPEG4_AUDIO
 				isAACPLUS = true;
 				break;
 				
@@ -152,7 +153,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 				break;
 
 			case VBI_DATA_DESCRIPTOR:
-				CDescriptors::getInstance()->VBI_data_descriptor(buffer + pos);
+				descriptor.VBI_data_descriptor(buffer + pos);
 				break;
 
 			case STREAM_IDENTIFIER_DESCRIPTOR:
@@ -204,15 +205,15 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 					descramble = true;//FIXME MGM / 10E scrambling subtitles ?
 				}
 
-				CDescriptors::getInstance()->subtitling_descriptor(buffer + pos);
+				descriptor.subtitling_descriptor(buffer + pos);
 				break;
 
 			case PRIVATE_DATA_SPECIFIER_DESCRIPTOR:
-				CDescriptors::getInstance()->private_data_specifier_descriptor(buffer + pos);
+				descriptor.private_data_specifier_descriptor(buffer + pos);
 				break;
 
 			case DATA_BROADCAST_ID_DESCRIPTOR:
-				CDescriptors::getInstance()->data_broadcast_id_descriptor(buffer + pos);
+				descriptor.data_broadcast_id_descriptor(buffer + pos);
 				break;
 
 			case AC3_DESCRIPTOR:

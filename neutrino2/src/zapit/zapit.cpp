@@ -243,7 +243,6 @@ CZapit::CZapit()
 	// scanmanager
 	actual_freq = 0; 
 	actual_polarisation = 0;
-	nit = NULL;
 	_bouquetMode = CZapit::BM_UPDATEBOUQUETS;
 	_scanType = CZapit::ST_TVRADIO;
 	// bouquetsmanager
@@ -1251,13 +1250,15 @@ bool CZapit::parseChannelPatPmt(CZapitChannel * thischannel, CFrontend * fe)
 	dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: looking up pids for channel_id (%llx)\n", thischannel->getChannelID());
 	
 	bool failed = false;
+	CPat pat;
+	CPmt pmt;
 	
 	// get program map table pid from program association table
 	if (thischannel->getPmtPid() == 0) 
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: no pmt pid, going to parse pat\n");	
 		
-		if (CPat::getInstance()->parsePAT(thischannel, fe) < 0)
+		if (pat.parsePAT(thischannel, fe) < 0)
 		{
 			dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: pat parsing failed\n");
 			
@@ -1266,17 +1267,17 @@ bool CZapit::parseChannelPatPmt(CZapitChannel * thischannel, CFrontend * fe)
 	}
 
 	// parse program map table and store pids
-	if ( !failed && CPmt::getInstance()->parsePMT(thischannel, fe) < 0) 
+	if ( !failed && pmt.parsePMT(thischannel, fe) < 0) 
 	{
 		dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: pmt parsing failed\n");	
 		
-		if (CPat::getInstance()->parsePAT(thischannel, fe) < 0) 
+		if (pat.parsePAT(thischannel, fe) < 0) 
 		{
 			dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: pat parsing failed\n");
 			
 			failed = true;
 		}
-		else if (CPmt::getInstance()->parsePMT(thischannel, fe) < 0) 
+		else if (pmt.parsePMT(thischannel, fe) < 0) 
 		{
 			dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: pmt parsing failed\n");
 			
@@ -1359,6 +1360,7 @@ int CZapit::zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate)
 	tallchans_iterator cit;
 	bool failed = false;
 	CZapitChannel * newchannel;
+	CPmt pmt;
 
 	dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapit: channel id %llx nvod %d\n", channel_id, in_nvod);
 
@@ -1380,7 +1382,7 @@ int CZapit::zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate)
 		firstzap = false;
 
 		// stop update pmt filter
-		CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
+		pmt.pmt_stop_update_filter(&pmt_update_fd);
 	}
 	
 	//
@@ -1486,7 +1488,7 @@ tune_again:
 		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_CA_ID, CEventServer::INITID_NEUTRINO, &caid, sizeof(int));	
 
 		// start pmt update filter
-		CPmt::getInstance()->pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
+		pmt.pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
 	}	
 
 	return 0;
@@ -3678,6 +3680,8 @@ void * CZapit::sdtThread(void */*arg*/)
 	FILE * fd = 0;
 	FILE * fd1 = 0;
 	bool updated = 0;
+	
+	CSdt sdt;
 
 	tcur = time(0);
 	tstart = time(0);
@@ -3744,7 +3748,7 @@ void * CZapit::sdtThread(void */*arg*/)
 
 			if(live_channel) 
 			{
-				if( CSdt::getInstance()->parseCurrentSDT(transport_stream_id, original_network_id, satellitePosition, freq, live_fe) < 0 )
+				if( sdt.parseCurrentSDT(transport_stream_id, original_network_id, satellitePosition, freq, live_fe) < 0 )
 					continue;
 			}
 
@@ -3938,6 +3942,9 @@ void *CZapit::updatePMTFilter(void *)
 	
 	if (!CZapit::getInstance()->getFrontendCount())
 		return 0;
+		
+	//
+	CPmt pmt;
 	
 	while (true) 
 	{	
@@ -3949,7 +3956,7 @@ void *CZapit::updatePMTFilter(void *)
 
 			if (ret > 0) 
 			{
-				CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
+				pmt.pmt_stop_update_filter(&pmt_update_fd);
 
 				dprintf(DEBUG_INFO, "CZapit::updatePMTFilter: pmt updated, sid 0x%x new version 0x%x\n", (buf[3] << 8) + buf[4], (buf[5] >> 1) & 0x1F);
 
@@ -3960,7 +3967,7 @@ void *CZapit::updatePMTFilter(void *)
 					int vpid = live_channel->getVideoPid();
 					int apid = live_channel->getAudioPid();
 					
-					CPmt::getInstance()->parsePMT(live_channel, live_fe);
+					pmt.parsePMT(live_channel, live_fe);
 					
 					bool apid_found = false;
 					// check if selected audio pid still present
@@ -3990,7 +3997,7 @@ void *CZapit::updatePMTFilter(void *)
 						}
 #endif	
 
-						CPmt::getInstance()->pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
+						pmt.pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
 					}
 						
 					eventServer->sendEvent(NeutrinoMessages::EVT_PMT_CHANGED, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
@@ -4002,7 +4009,7 @@ void *CZapit::updatePMTFilter(void *)
 	}
 	
 	// stop update pmt filter
-	CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
+	pmt.pmt_stop_update_filter(&pmt_update_fd);
 	pmt_update_fd = -1;
 		
 	
@@ -4902,6 +4909,10 @@ bool CZapit::getSDTS(t_satellite_position satellitePosition, int feindex)
 	std::map <transponder_id_t, transponder>::iterator sT;
 
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CZapit::getSDTS: scanning tp from sat/service\n");
+	
+	//
+	CSdt sdt;
+	CNit nit;
 
 _repeat:
 	for (tI = scantransponders.begin(); tI != scantransponders.end(); tI++) 
@@ -4970,7 +4981,7 @@ _repeat:
 		// parse sdt
 		dprintf(DEBUG_NORMAL, ANSI_YELLOW "CZapit::getSDTS: parsing SDT (tsid:onid %04x:%04x)\n", tI->second.transport_stream_id, tI->second.original_network_id);
 		
-		if(CSdt::getInstance()->parseSDT(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
+		if(sdt.parseSDT(&tI->second.transport_stream_id, &tI->second.original_network_id, satellitePosition, freq, feindex) < 0)
 		{
 			dprintf(DEBUG_NORMAL, "CZapit::getSDTS: SDT failed !\n");
 			continue;
@@ -4989,7 +5000,7 @@ _repeat:
 		{
 			dprintf(DEBUG_INFO, "CZapit::getSDTS: parsing NIT\n");
 			
-			if( /*CNit::getInstance()*/nit->parseNIT(satellitePosition, freq, feindex) < 0 )
+			if( nit.parseNIT(satellitePosition, freq, feindex) < 0 )
 			{
 				dprintf(DEBUG_INFO, "CZapit::getSDTS: NIT failed !\n");
 			}
@@ -5281,11 +5292,12 @@ bool CZapit::scanTP(commandScanTP &msg)
 	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::scanTP fe:(%d) scanmode:%d\n", msg.feindex, msg.scanmode);
 	
 	bool ret = true;
+	CPmt pmt;
 	
 	CZapit::stopPlayBack();
 				
 	// stop update pmt filter
-	CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);
+	pmt.pmt_stop_update_filter(&pmt_update_fd);
 	
 	scan_runs = 1;
 	
@@ -5350,6 +5362,7 @@ bool CZapit::startScan(commandScanProvider &msg)
 	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::startScan: fe(%d) scanmode: %d\n", msg.feindex, msg.scanmode);
 	
 	bool ret = true;
+	CPmt pmt;
 	
 	scan_runs = 1;
 	
@@ -5357,7 +5370,7 @@ bool CZapit::startScan(commandScanProvider &msg)
 	stopPlayBack();
 	
 	// stop pmt update filter
-    	CPmt::getInstance()->pmt_stop_update_filter(&pmt_update_fd);	
+    	pmt.pmt_stop_update_filter(&pmt_update_fd);	
 
 	if (pthread_create(&scan_thread, 0, scanThread, (void *) &msg)) 
 	{
@@ -6714,10 +6727,7 @@ void CZapit::Start(Z_start_arg *ZapStart_arg)
 	cam0 = new CCam();
 	
 	// record cam
-	cam1 = new CCam();
-	
-	// nit
-	nit = new CNit();	
+	cam1 = new CCam();	
 	
 	//globals
 	scan_runs = 0;
@@ -6797,13 +6807,6 @@ void CZapit::Stop()
 	// stop pmt update filter thread
 	//pthread_cancel(tpmt);
 	//pthread_join(tpmt, NULL);
-	
-	//
-	if (nit)
-	{
-		delete nit;
-		nit = NULL;
-	}
 
 	if (pmtDemux)
 		delete pmtDemux;

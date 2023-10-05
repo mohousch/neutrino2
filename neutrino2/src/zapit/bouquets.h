@@ -1,8 +1,6 @@
 /*
  * $Id: bouquets.h 23.09.2023 mohousch Exp $
  *
- * BouquetManager for zapit - d-box2 linux project
- *
  * (C) 2002 by Simplex    <simplex@berlios.de>,
  *             rasc       <rasc@berlios.de>,
  *             thegoodguy <thegoodguy@berlios.de>
