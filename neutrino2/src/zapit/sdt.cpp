@@ -35,6 +35,7 @@
 #include <zapit/settings.h>
 #include <zapit/zapittypes.h>
 #include <zapit/bouquets.h>
+#include <zapit/zapit.h>
 
 #include <dmx_cs.h>
 

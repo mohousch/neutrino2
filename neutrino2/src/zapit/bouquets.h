@@ -36,7 +36,6 @@
 
 #include <inttypes.h>
 
-#include "zapit.h"
 #include <zapit/channel.h>
 
 #include <libxmltree/xmlinterface.h>
@@ -83,94 +82,6 @@ struct CmpBouquetByChName: public std::binary_function <const CZapitBouquet * co
 	{
 		return std::lexicographical_compare(c1->Name.begin(), c1->Name.end(), c2->Name.begin(), c2->Name.end(), comparetolower);
 	};
-};
-
-////
-class CBouquetManager
-{
-	public:
-		BouquetList Bouquets;
-		
-	private:
-		CZapitBouquet* remainChannels;
-
-		//
-		void makeRemainingChannelsBouquet(void);
-		void parseBouquetsXml(const char* fname, bool ub = false);
-		void writeBouquetHeader(FILE * bouq_fd, uint32_t i, const char * bouquetName);
-		void writeBouquetFooter(FILE * bouq_fd);
-		void writeBouquetChannels(FILE * bouq_fd, uint32_t i);
-		void makeBouquetfromCurrentservices (const xmlNodePtr root);
-
-	public:
-		CBouquetManager() 
-		{ 
-			remainChannels = NULL; 
-		};
-		
-		////
-		class ChannelIterator
-		{
-			private:
-				CBouquetManager * Owner;
-				CZapit::channelsMode mode;
-				unsigned int b;
-				int c;
-				friend class CZapit;
-				
-				ZapitChannelList *getBouquet() 
-				{ 
-					ZapitChannelList * ret = &(Owner->Bouquets[b]->tvChannels);
-					
-					if (mode == CZapit::MODE_TV)
-						ret = &(Owner->Bouquets[b]->tvChannels);
-					else if (mode == CZapit::MODE_RADIO)
-						ret = &(Owner->Bouquets[b]->radioChannels);
-						
-					return ret;
-				};
-				
-			public:
-				ChannelIterator(CBouquetManager *owner, const CZapit::channelsMode Mode = CZapit::MODE_TV);
-				ChannelIterator operator ++(int);
-				CZapitChannel* operator *();
-				ChannelIterator FindChannelNr(const unsigned int channel);
-				int getLowestChannelNumberWithChannelID(const t_channel_id channel_id);
-				int getNrofFirstChannelofBouquet(const unsigned int bouquet_nr);
-				bool EndOfChannels() { return (c == -2); };
-		};
-
-		ChannelIterator tvChannelsBegin() { return ChannelIterator(this, CZapit::MODE_TV); };
-		ChannelIterator radioChannelsBegin() { return ChannelIterator(this, CZapit::MODE_RADIO); };
-
-		//
-		void saveBouquets(void);
-		void saveUBouquets(void);
-		void loadBouquets(bool loadCurrentBouquet = false);
-		CZapitBouquet* addBouquet(const std::string& name, bool ub = false, bool webtvb = false);
-		CZapitBouquet* addBouquetIfNotExist(const std::string& name, bool ub = false, bool webtvb = false);
-		void deleteBouquet(const unsigned int id);
-		void deleteBouquet(const CZapitBouquet* bouquet);
-		int  existsBouquet(char const * const name);
-		void moveBouquet(const unsigned int oldId, const unsigned int newId);
-		bool existsChannelInBouquet(unsigned int bq_id, const t_channel_id channel_id);
-		void renameBouquet(const unsigned int bouquet, const char * const newName); // UTF-8 encoded
-		void setBouquetLock(const unsigned int bouquet, const bool lock);
-		void setBouquetHidden(const unsigned int bouquet, const bool hidden);
-
-		//
-		void clearAll();
-
-		//
-		CZapitChannel* findChannelByChannelID(const t_channel_id channel_id);
-		CZapitChannel* findChannelByName(std::string name, const t_service_id sid);
-
-		// webtv
-		void parseWebTVBouquet(std::string filename);
-		void loadWebTVBouquets(const std::string& dirname);
-		
-		//
-		void sortBouquets(void);
 };
 
 #endif /* __bouquets_h__ */

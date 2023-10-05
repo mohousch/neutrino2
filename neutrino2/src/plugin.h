@@ -198,7 +198,6 @@ extern  CInfoViewer *g_InfoViewer;
 extern  EventList *g_EventList;
 extern CLocaleManager *g_Locale;
 extern CRadioText *g_Radiotext;
-extern CBouquetManager * g_bouquetManager;		// defined in zapit.cpp
 extern bool has_hdd;					// defined in gui/hdd_menu.cpp
 //
 extern tallchans allchans;				// defined in zapit.cpp

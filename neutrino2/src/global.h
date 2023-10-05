@@ -91,7 +91,6 @@ NEUTRINO_CPP CLocaleManager		*g_Locale;
 NEUTRINO_CPP CRadioText			*g_Radiotext;
 NEUTRINO_CPP CPlugins			*g_PluginList;
 NEUTRINO_CPP CRemoteControl		*g_RemoteControl;
-NEUTRINO_CPP CBouquetManager 		*g_bouquetManager;
 NEUTRINO_CPP CEventServer 		*eventServer;
 NEUTRINO_CPP cPlayback			*playback;
 

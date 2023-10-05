@@ -46,8 +46,8 @@
 #include <zapit/bouquets.h>
 
 
+////
 extern tallchans allchans;
-extern CBouquetManager *g_bouquetManager;
 extern CFrontend * frontend;
 extern cVideo * videoDecoder;
 extern cAudio * audioDecoder;

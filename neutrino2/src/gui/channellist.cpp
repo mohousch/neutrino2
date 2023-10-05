@@ -513,14 +513,14 @@ int CChannelList::doChannelMenu(void)
 				if(result == mbrYes) 
 				{
 					bouquet_id = bouquetList->getActiveBouquetNumber();
-					bouquet_id = g_bouquetManager->existsBouquet(bouquetList->Bouquets[bouquet_id]->channelList->getName());
+					bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[bouquet_id]->channelList->getName());
 
 					if (bouquet_id == -1)
 						return 0;
 					
-					if(g_bouquetManager->existsChannelInBouquet(bouquet_id, channel_id)) 
+					if(CZapit::getInstance()->existsChannelInBouquet(bouquet_id, channel_id)) 
 					{
-						g_bouquetManager->Bouquets[bouquet_id]->removeService(channel_id);
+						CZapit::getInstance()->Bouquets[bouquet_id]->removeService(channel_id);
 						return 1;
 					}
 				}
@@ -528,7 +528,7 @@ int CChannelList::doChannelMenu(void)
 				
 			case 1: // move
 				old_bouquet_id = bouquetList->getActiveBouquetNumber();
-				old_bouquet_id = g_bouquetManager->existsBouquet(bouquetList->Bouquets[old_bouquet_id]->channelList->getName());
+				old_bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[old_bouquet_id]->channelList->getName());
 
 				do {
 					new_bouquet_id = bouquetList->exec(false, false, false);
@@ -539,18 +539,18 @@ int CChannelList::doChannelMenu(void)
 				if(new_bouquet_id < 0)
 					return 0;
 					
-				new_bouquet_id = g_bouquetManager->existsBouquet(bouquetList->Bouquets[new_bouquet_id]->channelList->getName());
+				new_bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[new_bouquet_id]->channelList->getName());
 				if ((new_bouquet_id == -1) || (new_bouquet_id == old_bouquet_id))
 					return 0;
 
-				if(!g_bouquetManager->existsChannelInBouquet(new_bouquet_id, channel_id)) 
+				if(!CZapit::getInstance()->existsChannelInBouquet(new_bouquet_id, channel_id)) 
 				{
 					CZapit::getInstance()->addChannelToBouquet(new_bouquet_id, channel_id);
 				}
 				
-				if(g_bouquetManager->existsChannelInBouquet(old_bouquet_id, channel_id)) 
+				if(CZapit::getInstance()->existsChannelInBouquet(old_bouquet_id, channel_id)) 
 				{
-					g_bouquetManager->Bouquets[old_bouquet_id]->removeService(channel_id);
+					CZapit::getInstance()->Bouquets[old_bouquet_id]->removeService(channel_id);
 				}
 				return 1;
 
@@ -566,11 +566,11 @@ int CChannelList::doChannelMenu(void)
 				if(bouquet_id < 0)
 					return 0;
 				
-				bouquet_id = g_bouquetManager->existsBouquet(bouquetList->Bouquets[bouquet_id]->channelList->getName());
+				bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[bouquet_id]->channelList->getName());
 				if (bouquet_id == -1)
 					return 0;
 				
-				if(!g_bouquetManager->existsChannelInBouquet(bouquet_id, channel_id)) 
+				if(!CZapit::getInstance()->existsChannelInBouquet(bouquet_id, channel_id)) 
 				{
 					CZapit::getInstance()->addChannelToBouquet(bouquet_id, channel_id);
 					return 1;
@@ -578,15 +578,15 @@ int CChannelList::doChannelMenu(void)
 				break;
 				
 			case 3: // add to my favorites
-				bouquet_id = g_bouquetManager->existsBouquet("Favorites");
+				bouquet_id = CZapit::getInstance()->existsBouquet("Favorites");
 
 				if(bouquet_id == -1) 
 				{
-					g_bouquetManager->addBouquet("Favorites", true);
-					bouquet_id = g_bouquetManager->existsBouquet("Favorites");
+					CZapit::getInstance()->addBouquet("Favorites", true);
+					bouquet_id = CZapit::getInstance()->existsBouquet("Favorites");
 				}
 				
-				if(!g_bouquetManager->existsChannelInBouquet(bouquet_id, channel_id)) 
+				if(!CZapit::getInstance()->existsChannelInBouquet(bouquet_id, channel_id)) 
 				{
 					CZapit::getInstance()->addChannelToBouquet(bouquet_id, channel_id);
 					return 1;

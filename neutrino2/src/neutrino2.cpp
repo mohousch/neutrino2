@@ -283,7 +283,6 @@ static void initGlobals(void)
 	g_Radiotext     = NULL;
 	g_Locale        = new CLocaleManager;
 	eventServer 	= new CEventServer;
-	g_bouquetManager = new CBouquetManager();
 }
 
 //
@@ -1596,18 +1595,18 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 
 	// tv/webtv fav / provider list
 	bnum = 0;
-	for (i = 0; i < g_bouquetManager->Bouquets.size(); i++) 
+	for (i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{
 		// tv
-		if (!g_bouquetManager->Bouquets[i]->bHidden && !g_bouquetManager->Bouquets[i]->tvChannels.empty())
+		if (!CZapit::getInstance()->Bouquets[i]->bHidden && !CZapit::getInstance()->Bouquets[i]->tvChannels.empty())
 		{
 			CBouquet * ltmp;
-			if(g_bouquetManager->Bouquets[i]->bUser || g_bouquetManager->Bouquets[i]->bWebTV) 
-				ltmp = TVfavList->addBouquet(g_bouquetManager->Bouquets[i]);
+			if(CZapit::getInstance()->Bouquets[i]->bUser || CZapit::getInstance()->Bouquets[i]->bWebTV) 
+				ltmp = TVfavList->addBouquet(CZapit::getInstance()->Bouquets[i]);
 			else
-				ltmp = TVbouquetList->addBouquet(g_bouquetManager->Bouquets[i]);
+				ltmp = TVbouquetList->addBouquet(CZapit::getInstance()->Bouquets[i]);
 
-			ZapitChannelList * channels = &(g_bouquetManager->Bouquets[i]->tvChannels);
+			ZapitChannelList * channels = &(CZapit::getInstance()->Bouquets[i]->tvChannels);
 			ltmp->channelList->setSize(channels->size());
 			
 			for(int j = 0; j < (int) channels->size(); j++) 
@@ -1623,17 +1622,17 @@ void CNeutrinoApp::channelsInit(bool /*bOnly*/)
 
 	// radio fav / provider list
 	bnum = 0;
-	for (i = 0; i < g_bouquetManager->Bouquets.size(); i++) 
+	for (i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{	
-		if (!g_bouquetManager->Bouquets[i]->bHidden && !g_bouquetManager->Bouquets[i]->bWebTV && !g_bouquetManager->Bouquets[i]->radioChannels.empty())
+		if (!CZapit::getInstance()->Bouquets[i]->bHidden && !CZapit::getInstance()->Bouquets[i]->bWebTV && !CZapit::getInstance()->Bouquets[i]->radioChannels.empty())
 		{
 			CBouquet * ltmp;
-			if(g_bouquetManager->Bouquets[i]->bUser) 
-				ltmp = RADIOfavList->addBouquet(g_bouquetManager->Bouquets[i]);
+			if(CZapit::getInstance()->Bouquets[i]->bUser) 
+				ltmp = RADIOfavList->addBouquet(CZapit::getInstance()->Bouquets[i]);
 			else
-				ltmp = RADIObouquetList->addBouquet(g_bouquetManager->Bouquets[i]);
+				ltmp = RADIObouquetList->addBouquet(CZapit::getInstance()->Bouquets[i]);
 
-			ZapitChannelList *channels = &(g_bouquetManager->Bouquets[i]->radioChannels);
+			ZapitChannelList *channels = &(CZapit::getInstance()->Bouquets[i]->radioChannels);
 			ltmp->channelList->setSize(channels->size());
 			for(int j = 0; j < (int) channels->size(); j++) 
 			{

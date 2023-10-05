@@ -4939,13 +4939,13 @@ void CTestMenu::testCBouquetlist()
 	
 	webTVBouquetList = new CBouquetList("CTestMenu::testWebTVBouquetlist");
 
-	for (int i = 0; i < g_bouquetManager->Bouquets.size(); i++) 
+	for (int i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
 	{
-		if (g_bouquetManager->Bouquets[i]->bWebTV && !g_bouquetManager->Bouquets[i]->tvChannels.empty())
+		if (CZapit::getInstance()->Bouquets[i]->bWebTV && !CZapit::getInstance()->Bouquets[i]->tvChannels.empty())
 		{
-			CBouquet *ltmp = webTVBouquetList->addBouquet(g_bouquetManager->Bouquets[i]);
+			CBouquet *ltmp = webTVBouquetList->addBouquet(CZapit::getInstance()->Bouquets[i]);
 
-			ZapitChannelList *channels = &(g_bouquetManager->Bouquets[i]->tvChannels);
+			ZapitChannelList *channels = &(CZapit::getInstance()->Bouquets[i]->tvChannels);
 	
 			ltmp->channelList->setSize(channels->size());
 

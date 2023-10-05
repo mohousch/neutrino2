@@ -54,8 +54,6 @@
 #include <system/debug.h>
 
 
-extern CBouquetManager * g_bouquetManager;	// defined in der zapit.cpp
-
 #define BUTTONS_COUNT	3
 
 const struct button_label CBEBouquetWidgetButtons[BUTTONS_COUNT] =
@@ -75,7 +73,7 @@ CBEBouquetWidget::CBEBouquetWidget()
 	state = beDefault;
 	blueFunction = beRename;
 	
-	Bouquets = &g_bouquetManager->Bouquets;
+	Bouquets = &CZapit::getInstance()->Bouquets;
 
 	//
 	widget = NULL;
@@ -227,7 +225,7 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	if (parent)
 		parent->hide();
 	
-	Bouquets = &g_bouquetManager->Bouquets;
+	Bouquets = &CZapit::getInstance()->Bouquets;
 	
 	//
 	paint();
@@ -492,8 +490,8 @@ void CBEBouquetWidget::deleteBouquet()
 		return;
 	}
 
-	g_bouquetManager->deleteBouquet(selected);
-	Bouquets = &g_bouquetManager->Bouquets;
+	CZapit::getInstance()->deleteBouquet(selected);
+	Bouquets = &CZapit::getInstance()->Bouquets;
 	if (selected >= Bouquets->size())
 		selected = Bouquets->empty() ? 0 : (Bouquets->size() - 1);
 	bouquetsChanged = true;
@@ -506,8 +504,8 @@ void CBEBouquetWidget::addBouquet()
 	std::string newName = inputName("", _("Name of bouquets"));
 	if (!(newName.empty()))
 	{
-		g_bouquetManager->addBouquet(newName, true);
-		Bouquets = &g_bouquetManager->Bouquets;
+		CZapit::getInstance()->addBouquet(newName, true);
+		Bouquets = &CZapit::getInstance()->Bouquets;
 		selected = Bouquets->empty() ? 0 : (Bouquets->size() - 1);
 		bouquetsChanged = true;
 	}
@@ -527,7 +525,7 @@ void CBEBouquetWidget::finishMoveBouquet()
 	state = beDefault;
 	if (newPosition != origPosition)
 	{
-		Bouquets = &g_bouquetManager->Bouquets;
+		Bouquets = &CZapit::getInstance()->Bouquets;
 		bouquetsChanged = true;
 	}
 
@@ -548,8 +546,8 @@ void CBEBouquetWidget::internalMoveBouquet( unsigned int fromPosition, unsigned 
 	if ( toPosition == Bouquets->size()) 
 		return;
 
-	g_bouquetManager->moveBouquet(fromPosition, toPosition);
-	Bouquets = &g_bouquetManager->Bouquets;
+	CZapit::getInstance()->moveBouquet(fromPosition, toPosition);
+	Bouquets = &CZapit::getInstance()->Bouquets;
 	bouquetsChanged = true;
 
 	selected = toPosition;
@@ -567,8 +565,8 @@ void CBEBouquetWidget::renameBouquet()
 	
 	if (newName != (*Bouquets)[selected]->Name)
 	{
-		g_bouquetManager->Bouquets[selected]->Name = newName;
-		g_bouquetManager->Bouquets[selected]->bUser = true;
+		CZapit::getInstance()->Bouquets[selected]->Name = newName;
+		CZapit::getInstance()->Bouquets[selected]->bUser = true;
 
 		bouquetsChanged = true;
 	}

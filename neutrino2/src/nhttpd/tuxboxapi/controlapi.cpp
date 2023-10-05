@@ -48,7 +48,6 @@
 // globals
 extern int scanning;
 extern tallchans allchans;
-extern CBouquetManager *g_bouquetManager;
 extern t_channel_id live_channel_id;
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
 
@@ -906,9 +905,9 @@ void CControlAPI::GetBouquetCGI(CyhookHandler *hh)
 		if (hh->ParamList["1"] == "actual")
 		{
 			int actual=0;
-			for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
+			for (int i = 0; i < (int) CZapit::getInstance()->Bouquets.size(); i++) 
 			{
-				if(g_bouquetManager->existsChannelInBouquet(i, live_channel_id)) 
+				if(CZapit::getInstance()->existsChannelInBouquet(i, live_channel_id)) 
 				{
 					actual = i + 1;
 					break;
@@ -937,8 +936,8 @@ void CControlAPI::GetBouquetCGI(CyhookHandler *hh)
 				int BouquetNr = atoi(hh->ParamList["bouquet"].c_str());
 				if(BouquetNr > 0)
 					BouquetNr--;
-				channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[BouquetNr]->radioChannels : g_bouquetManager->Bouquets[BouquetNr]->tvChannels;
-				int num = 1 + (mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr) : g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr));
+				channels = mode == CZapit::MODE_RADIO ? CZapit::getInstance()->Bouquets[BouquetNr]->radioChannels : CZapit::getInstance()->Bouquets[BouquetNr]->tvChannels;
+				int num = 1 + (mode == CZapit::MODE_RADIO ? CZapit::getInstance()->radioChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr) : CZapit::getInstance()->tvChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr));
 				
 				for(int j = 0; j < (int) channels.size(); j++) 
 				{
@@ -949,10 +948,10 @@ void CControlAPI::GetBouquetCGI(CyhookHandler *hh)
 			else 
 			{
 				// list all
-				for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
+				for (int i = 0; i < (int) CZapit::getInstance()->Bouquets.size(); i++) 
 				{
-					channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[i]->radioChannels : g_bouquetManager->Bouquets[i]->tvChannels;
-					int num = 1 + (mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(i) : g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(i));
+					channels = mode == CZapit::MODE_RADIO ? CZapit::getInstance()->Bouquets[i]->radioChannels : CZapit::getInstance()->Bouquets[i]->tvChannels;
+					int num = 1 + (mode == CZapit::MODE_RADIO ? CZapit::getInstance()->radioChannelsBegin().getNrofFirstChannelofBouquet(i) : CZapit::getInstance()->tvChannelsBegin().getNrofFirstChannelofBouquet(i));
 					
 					for(int j = 0; j < (int) channels.size(); j++) 
 					{
@@ -1003,12 +1002,12 @@ void CControlAPI::GetBouquetsCGI(CyhookHandler *hh)
 
 	int mode = CZapit::getInstance()->getMode();
 	std::string bouquet;
-	for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
+	for (int i = 0; i < (int) CZapit::getInstance()->Bouquets.size(); i++) 
 	{
-		ZapitChannelList * channels = mode == CZapit::MODE_RADIO ? &g_bouquetManager->Bouquets[i]->radioChannels : &g_bouquetManager->Bouquets[i]->tvChannels;
-		if(!channels->empty() && (!g_bouquetManager->Bouquets[i]->bHidden || show_hidden))
+		ZapitChannelList * channels = mode == CZapit::MODE_RADIO ? &CZapit::getInstance()->Bouquets[i]->radioChannels : &CZapit::getInstance()->Bouquets[i]->tvChannels;
+		if(!channels->empty() && (!CZapit::getInstance()->Bouquets[i]->bHidden || show_hidden))
 		{
-			bouquet = std::string(g_bouquetManager->Bouquets[i]->bFav ? _("Favorites") :g_bouquetManager->Bouquets[i]->Name.c_str());
+			bouquet = std::string(CZapit::getInstance()->Bouquets[i]->bFav ? _("Favorites") :CZapit::getInstance()->Bouquets[i]->Name.c_str());
 			if(encode)
 				bouquet = encodeString(bouquet); // encode (URLencode) the bouquetname
 
@@ -1094,7 +1093,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 		NeutrinoAPI->GetChannelEvents();
 
 		int mode = CZapit::getInstance()->getMode();
-		CBouquetManager::ChannelIterator cit = mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
+		CZapit::ChannelIterator cit = mode == CZapit::MODE_RADIO ? CZapit::getInstance()->radioChannelsBegin() : CZapit::getInstance()->tvChannelsBegin();
 		for (; !(cit.EndOfChannels()); cit++) 
 		{
 			CZapitChannel * channel = *cit;
@@ -1115,7 +1114,7 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 			CChannelEvent *event;
 			NeutrinoAPI->GetChannelEvents();
 			int mode = CZapit::getInstance()->getMode();
-			CBouquetManager::ChannelIterator cit = mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
+			CZapit::ChannelIterator cit = mode == CZapit::MODE_RADIO ? CZapit::getInstance()->radioChannelsBegin() : CZapit::getInstance()->tvChannelsBegin();
 			
 			for (; !(cit.EndOfChannels()); cit++) 
 			{
@@ -1242,8 +1241,8 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 			ZapitChannelList channels;
 			int mode = CZapit::getInstance()->getMode();
 
-			channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[bouquetnr]->radioChannels : g_bouquetManager->Bouquets[bouquetnr]->tvChannels;
-			std::string bouquet = std::string(g_bouquetManager->Bouquets[bouquetnr]->bFav ? _("Favorites") :g_bouquetManager->Bouquets[bouquetnr]->Name.c_str());
+			channels = mode == CZapit::MODE_RADIO ? CZapit::getInstance()->Bouquets[bouquetnr]->radioChannels : CZapit::getInstance()->Bouquets[bouquetnr]->tvChannels;
+			std::string bouquet = std::string(CZapit::getInstance()->Bouquets[bouquetnr]->bFav ? _("Favorites") :CZapit::getInstance()->Bouquets[bouquetnr]->Name.c_str());
 			bouquet = encodeString(bouquet); // encode (URLencode) the bouquetname
 			hh->printf("\t<bouquet>\n\t\t<number>%d</number>\n\t\t<name><![CDATA[%s]]></name>\n\t", bouquetnr+1, bouquet.c_str());
 
@@ -1262,10 +1261,10 @@ void CControlAPI::EpgCGI(CyhookHandler *hh)
 			ZapitChannelList channels;
 			int mode = CZapit::getInstance()->getMode();
 
-			for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
+			for (int i = 0; i < (int) CZapit::getInstance()->Bouquets.size(); i++) 
 			{
-				channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[i]->radioChannels : g_bouquetManager->Bouquets[i]->tvChannels;
-				std::string bouquet = std::string(g_bouquetManager->Bouquets[i]->bFav ? _("Favorites") :g_bouquetManager->Bouquets[i]->Name.c_str());
+				channels = mode == CZapit::MODE_RADIO ? CZapit::getInstance()->Bouquets[i]->radioChannels : CZapit::getInstance()->Bouquets[i]->tvChannels;
+				std::string bouquet = std::string(CZapit::getInstance()->Bouquets[i]->bFav ? _("Favorites") :CZapit::getInstance()->Bouquets[i]->Name.c_str());
 				bouquet = encodeString(bouquet); // encode (URLencode) the bouquetname
 				hh->printf("\t<bouquet>\n\t\t<number>%d</number>\n\t\t<name><![CDATA[%s]]></name>\n\t", i+1, bouquet.c_str());
 
@@ -1452,7 +1451,7 @@ void CControlAPI::SendChannelList(CyhookHandler *hh)
 {
 	int mode = CZapit::getInstance()->getMode();
 	hh->SetHeader(HTTP_OK, "text/html; charset=UTF-8");
-	CBouquetManager::ChannelIterator cit = mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
+	CZapit::ChannelIterator cit = mode == CZapit::MODE_RADIO ? CZapit::getInstance()->radioChannelsBegin() : CZapit::getInstance()->tvChannelsBegin();
 	for (; !(cit.EndOfChannels()); cit++) 
 	{
 		CZapitChannel * channel = *cit;
@@ -2219,13 +2218,13 @@ void CControlAPI::setBouquetCGI(CyhookHandler *hh)
 	if (hh->ParamList["selected"] != "") {
 		int selected = atoi(hh->ParamList["selected"].c_str());
 		if(hh->ParamList["action"].compare("hide") == 0)
-			g_bouquetManager->setBouquetHidden(selected - 1, true);
+			CZapit::getInstance()->setBouquetHidden(selected - 1, true);
 		else if(hh->ParamList["action"].compare("show") == 0)
-			g_bouquetManager->setBouquetHidden(selected - 1, false);
+			CZapit::getInstance()->setBouquetHidden(selected - 1, false);
 		else if(hh->ParamList["action"].compare("lock") == 0)
-			g_bouquetManager->setBouquetLock(selected - 1, true);
+			CZapit::getInstance()->setBouquetLock(selected - 1, true);
 		else if(hh->ParamList["action"].compare("unlock") == 0)
-			g_bouquetManager->setBouquetLock(selected - 1, false);
+			CZapit::getInstance()->setBouquetLock(selected - 1, false);
 			
 		hh->SendOk();
 	}
@@ -2250,12 +2249,12 @@ void CControlAPI::moveBouquetCGI(CyhookHandler *hh)
 		int selected = atoi(hh->ParamList["selected"].c_str());
 		if (hh->ParamList["action"] == "up") 
 		{
-			g_bouquetManager->moveBouquet(selected - 1, (selected - 1) - 1);
+			CZapit::getInstance()->moveBouquet(selected - 1, (selected - 1) - 1);
 			selected--;
 		} 
 		else 
 		{
-			g_bouquetManager->moveBouquet(selected - 1, (selected + 1) - 1);
+			CZapit::getInstance()->moveBouquet(selected - 1, (selected + 1) - 1);
 			selected++;
 		}
 		hh->SendOk();
@@ -2272,7 +2271,7 @@ void CControlAPI::deleteBouquetCGI(CyhookHandler *hh)
 	if (hh->ParamList["selected"] != "") 
 	{
 		selected = atoi(hh->ParamList["selected"].c_str());
-		g_bouquetManager->deleteBouquet(selected - 1);
+		CZapit::getInstance()->deleteBouquet(selected - 1);
 		hh->SendOk();
 	}
 	else
@@ -2285,9 +2284,9 @@ void CControlAPI::addBouquetCGI(CyhookHandler *hh)
 	if (!hh->ParamList["name"].empty())
 	{
 		std::string tmp = hh->ParamList["name"];
-		if (g_bouquetManager->existsBouquet(tmp.c_str()) == -1)
+		if (CZapit::getInstance()->existsBouquet(tmp.c_str()) == -1)
 		{
-			g_bouquetManager->addBouquet(tmp.c_str());
+			CZapit::getInstance()->addBouquet(tmp.c_str());
 			hh->SendOk();
 		}
 		else
@@ -2302,9 +2301,9 @@ void CControlAPI::renameBouquetCGI(CyhookHandler *hh)
 	{
 		if (hh->ParamList["nameto"] != "")
 		{
-			if (g_bouquetManager->existsBouquet((hh->ParamList["nameto"]).c_str()) == -1)
+			if (CZapit::getInstance()->existsBouquet((hh->ParamList["nameto"]).c_str()) == -1)
 			{
-				g_bouquetManager->renameBouquet(atoi(hh->ParamList["selected"].c_str()) - 1, hh->ParamList["nameto"].c_str());
+				CZapit::getInstance()->renameBouquet(atoi(hh->ParamList["selected"].c_str()) - 1, hh->ParamList["nameto"].c_str());
 				hh->SendOk();
 				return;
 			}

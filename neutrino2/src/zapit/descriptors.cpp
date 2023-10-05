@@ -57,7 +57,6 @@ uint32_t  found_data_chans;
 std::string lastServiceName;
 std::map <t_channel_id, uint8_t> service_types;
 ////
-extern CBouquetManager* scanBouquetManager;
 extern tallchans allchans;   			//  defined in zapit.cpp
 extern tallchans curchans;   			//  defined in zapit.cpp
 
@@ -686,17 +685,17 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 				else
 					snprintf(pname, 100, "%s", providerName.c_str());
 
-				bouquetId = scanBouquetManager->existsBouquet(pname);
+				bouquetId = CZapit::getInstance()->existsBouquet(pname);
 
 				if (bouquetId == -1)
-					bouquet = scanBouquetManager->addBouquet(std::string(pname));
+					bouquet = CZapit::getInstance()->addBouquet(std::string(pname));
 				else
-					bouquet = scanBouquetManager->Bouquets[bouquetId];
+					bouquet = CZapit::getInstance()->Bouquets[bouquetId];
 
 				lastServiceName = serviceName;
 				eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SERVICENAME, CEventServer::INITID_NEUTRINO, (void *) lastServiceName.c_str(), lastServiceName.length() + 1);
 
-				CZapitChannel *chan = scanBouquetManager->findChannelByChannelID(channel_id);
+				CZapitChannel *chan = CZapit::getInstance()->findChannelByChannelID(channel_id);
 				if(chan)
 					bouquet->addService(chan);
 

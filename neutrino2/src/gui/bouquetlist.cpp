@@ -60,10 +60,7 @@
 #include <system/debug.h>
 
 
-// globals
-extern CBouquetManager * g_bouquetManager;
-
-//
+////
 CBouquetList::CBouquetList(const char* const Name)
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -348,11 +345,11 @@ int CBouquetList::doMenu()
 			{
 				case 0:
 					hide();
-					bouquet_id = g_bouquetManager->existsBouquet(Bouquets[selected]->channelList->getName());
+					bouquet_id = CZapit::getInstance()->existsBouquet(Bouquets[selected]->channelList->getName());
 					if(bouquet_id < 0) 
-						tmp = g_bouquetManager->addBouquet(Bouquets[selected]->channelList->getName(), true);
+						tmp = CZapit::getInstance()->addBouquet(Bouquets[selected]->channelList->getName(), true);
 					else
-						tmp = g_bouquetManager->Bouquets[bouquet_id];
+						tmp = CZapit::getInstance()->Bouquets[bouquet_id];
   
 					// tv
 					channels = &zapitBouquet->tvChannels;
@@ -386,10 +383,10 @@ int CBouquetList::doMenu()
 			{
 				case 0:
 					hide();
-					bouquet_id = g_bouquetManager->existsBouquet(Bouquets[selected]->channelList->getName());
+					bouquet_id = CZapit::getInstance()->existsBouquet(Bouquets[selected]->channelList->getName());
 					if(bouquet_id >= 0) 
 					{
-						g_bouquetManager->deleteBouquet(bouquet_id);
+						CZapit::getInstance()->deleteBouquet(bouquet_id);
 						return 1;
 					}
 					break;

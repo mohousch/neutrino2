@@ -29,8 +29,9 @@
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
 
+
+////
 extern tallchans allchans;
-extern CBouquetManager *g_bouquetManager;
 extern t_channel_id live_channel_id;
 
 //=============================================================================
@@ -220,15 +221,15 @@ std::string  CNeutrinoYParser::func_get_bouquets_as_dropdown(CyhookHandler *, st
 		nr = atoi(nr_str.c_str());
 
 	int mode = CZapit::getInstance()->getMode();
-	for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
+	for (int i = 0; i < (int) CZapit::getInstance()->Bouquets.size(); i++) 
 	{
-		ZapitChannelList * channels = mode == CZapit::MODE_RADIO ? &g_bouquetManager->Bouquets[i]->radioChannels : &g_bouquetManager->Bouquets[i]->tvChannels;
+		ZapitChannelList * channels = mode == CZapit::MODE_RADIO ? &CZapit::getInstance()->Bouquets[i]->radioChannels : &CZapit::getInstance()->Bouquets[i]->tvChannels;
 		sel=(nr==(i+1)) ? "selected=\"selected\"" : "";
-		if(!channels->empty() && (!g_bouquetManager->Bouquets[i]->bHidden || do_show_hidden == "true"))
+		if(!channels->empty() && (!CZapit::getInstance()->Bouquets[i]->bHidden || do_show_hidden == "true"))
 			yresult += string_printf("<option value=%u %s>%s</option>\n", i + 1, sel.c_str(),
-				(encodeString(std::string(g_bouquetManager->Bouquets[i]->bFav ? _("Favorites") :g_bouquetManager->Bouquets[i]->Name.c_str()))).c_str());
+				(encodeString(std::string(CZapit::getInstance()->Bouquets[i]->bFav ? _("Favorites") :CZapit::getInstance()->Bouquets[i]->Name.c_str()))).c_str());
 				
-			//yresult += string_printf("<option value=%u %s>%s</option>\n", i + 1, sel.c_str(), (encodeString(std::string(g_bouquetManager->Bouquets[i]->Name.c_str()))).c_str());
+			//yresult += string_printf("<option value=%u %s>%s</option>\n", i + 1, sel.c_str(), (encodeString(std::string(CZapit::getInstance()->Bouquets[i]->Name.c_str()))).c_str());
 	}
 	return yresult;
 }
@@ -243,11 +244,11 @@ std::string  CNeutrinoYParser::func_get_bouquets_as_templatelist(CyhookHandler *
 
 	ySplitString(para,"~",ytemplate, do_show_hidden);
 	//ytemplate += "\n"; //FIXME add newline to printf
-	for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
+	for (int i = 0; i < (int) CZapit::getInstance()->Bouquets.size(); i++) 
 	{
-		if(!g_bouquetManager->Bouquets[i]->bHidden || do_show_hidden == "true") 
+		if(!CZapit::getInstance()->Bouquets[i]->bHidden || do_show_hidden == "true") 
 		{
-			yresult += string_printf(ytemplate.c_str(), i + 1, g_bouquetManager->Bouquets[i]->bFav ? _("Favorites") : g_bouquetManager->Bouquets[i]->Name.c_str());
+			yresult += string_printf(ytemplate.c_str(), i + 1, CZapit::getInstance()->Bouquets[i]->bFav ? _("Favorites") : CZapit::getInstance()->Bouquets[i]->Name.c_str());
 			yresult += "\r\n";
 		}
 	}
@@ -260,9 +261,9 @@ std::string  CNeutrinoYParser::func_get_bouquets_as_templatelist(CyhookHandler *
 std::string  CNeutrinoYParser::func_get_actual_bouquet_number(CyhookHandler *, std::string)
 {
 	int actual=0;
-	for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) 
+	for (int i = 0; i < (int) CZapit::getInstance()->Bouquets.size(); i++) 
 	{
-		if(g_bouquetManager->existsChannelInBouquet(i, live_channel_id)) 
+		if(CZapit::getInstance()->existsChannelInBouquet(i, live_channel_id)) 
 		{
 			actual=i+1;
 			break;
@@ -288,7 +289,7 @@ std::string  CNeutrinoYParser::func_get_channels_as_dropdown(CyhookHandler *, st
 	{
 		bnumber--;
 		ZapitChannelList channels;
-		channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[bnumber]->radioChannels : g_bouquetManager->Bouquets[bnumber]->tvChannels;
+		channels = mode == CZapit::MODE_RADIO ? CZapit::getInstance()->Bouquets[bnumber]->radioChannels : CZapit::getInstance()->Bouquets[bnumber]->tvChannels;
 		for(int j = 0; j < (int) channels.size(); j++) 
 		{
 			CEPGData epg;
@@ -323,12 +324,12 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 	if (BouquetNr > 0) 
 	{
 		BouquetNr--;
-		channels = mode == CZapit::MODE_RADIO ? g_bouquetManager->Bouquets[BouquetNr]->radioChannels : g_bouquetManager->Bouquets[BouquetNr]->tvChannels;
-		num = 1 + (mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr) : g_bouquetManager->tvChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr)) ;
+		channels = mode == CZapit::MODE_RADIO ? CZapit::getInstance()->Bouquets[BouquetNr]->radioChannels : CZapit::getInstance()->Bouquets[BouquetNr]->tvChannels;
+		num = 1 + (mode == CZapit::MODE_RADIO ? CZapit::getInstance()->radioChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr) : CZapit::getInstance()->tvChannelsBegin().getNrofFirstChannelofBouquet(BouquetNr)) ;
 	} 
 	else 
 	{
-		CBouquetManager::ChannelIterator cit = mode == CZapit::MODE_RADIO ? g_bouquetManager->radioChannelsBegin() : g_bouquetManager->tvChannelsBegin();
+		CZapit::ChannelIterator cit = mode == CZapit::MODE_RADIO ? CZapit::getInstance()->radioChannelsBegin() : CZapit::getInstance()->tvChannelsBegin();
 		for (; !(cit.EndOfChannels()); cit++)
 			channels.push_back(*cit);
 		num = 1;
@@ -1031,14 +1032,14 @@ std::string  CNeutrinoYParser::func_set_timer_form(CyhookHandler *hh, std::strin
 
 	// program row
 	t_channel_id current_channel = (cmd == "new") ? live_channel_id /*CZapit::getInstance()->getCurrentServiceID()*/ : timer.channel_id;
-	CBouquetManager::ChannelIterator cit = g_bouquetManager->tvChannelsBegin();
+	CZapit::ChannelIterator cit = CZapit::getInstance()->tvChannelsBegin();
 	for (; !(cit.EndOfChannels()); cit++) {
 		sel = ((*cit)->channel_id == current_channel) ? "selected=\"selected\"" : "";
 		hh->ParamList["program_row"] +=
 			string_printf("<option value=\"%llx\" %s>%s</option>\n",
 				(*cit)->channel_id, sel.c_str(), (*cit)->getName().c_str());
 	}
-	cit = g_bouquetManager->radioChannelsBegin();
+	cit = CZapit::getInstance()->radioChannelsBegin();
 	for (; !(cit.EndOfChannels()); cit++) {
 		sel = ((*cit)->channel_id == current_channel) ? "selected=\"selected\"" : "";
 		hh->ParamList["program_row"] +=
@@ -1079,10 +1080,10 @@ std::string  CNeutrinoYParser::func_bouquet_editor_main(CyhookHandler *hh, std::
 	if (hh->ParamList["selected"] != "")
 		selected = atoi(hh->ParamList["selected"].c_str());
 
-	int bouquetSize = (int) g_bouquetManager->Bouquets.size();
-	for (int i = 0; i < (int) g_bouquetManager->Bouquets.size(); i++) {
+	int bouquetSize = (int) CZapit::getInstance()->Bouquets.size();
+	for (int i = 0; i < (int) CZapit::getInstance()->Bouquets.size(); i++) {
 
-		CZapitBouquet * bouquet = g_bouquetManager->Bouquets[i];
+		CZapitBouquet * bouquet = CZapit::getInstance()->Bouquets[i];
 
 		char classname = ((i & 1) == 0) ? 'a' : 'b';
 		classname = (selected == (int) i + 1)?'c':classname;
@@ -1122,7 +1123,7 @@ std::string  CNeutrinoYParser::func_set_bouquet_edit_form(CyhookHandler *hh, std
 	{
 		int selected = atoi(hh->ParamList["selected"].c_str()) - 1;
 		int mode = CZapit::getInstance()->getMode();
-		ZapitChannelList* channels = mode == CZapit::MODE_TV ? &(g_bouquetManager->Bouquets[selected]->tvChannels) : &(g_bouquetManager->Bouquets[selected]->radioChannels);
+		ZapitChannelList* channels = mode == CZapit::MODE_TV ? &(CZapit::getInstance()->Bouquets[selected]->tvChannels) : &(CZapit::getInstance()->Bouquets[selected]->radioChannels);
 		
 		for(int j = 0; j < (int) channels->size(); j++) 
 		{
@@ -1151,7 +1152,7 @@ std::string  CNeutrinoYParser::func_set_bouquet_edit_form(CyhookHandler *hh, std
 
 		for (int i = 0; i < (int) Channels.size(); i++) 
 		{
-			if (!g_bouquetManager->existsChannelInBouquet(selected, Channels[i]->channel_id))
+			if (!CZapit::getInstance()->existsChannelInBouquet(selected, Channels[i]->channel_id))
 			{
 				hh->ParamList["all_channels"] +=
 					string_printf("<option value=\"%llx\">%s</option>\n",

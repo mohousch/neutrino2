@@ -57,8 +57,8 @@
 extern satellite_map_t satellitePositions;	// defined in getServices.cpp
 extern transponder_list_t transponders;		// defined in zapit.cpp
 extern tallchans allchans;			// defined in zapit.cpp
-extern CBouquetManager* g_bouquetManager;	// defined in zapit.cpp
 
+////
 CBEChannelSelectWidget::CBEChannelSelectWidget(const std::string& Caption, unsigned int Bouquet, CZapit::channelsMode Mode)
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -226,9 +226,9 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 
 	//
 	if (mode == CZapit::MODE_TV)
-		bouquetChannels = &(g_bouquetManager->Bouquets[bouquet]->tvChannels);
+		bouquetChannels = &(CZapit::getInstance()->Bouquets[bouquet]->tvChannels);
 	else if (mode == CZapit::MODE_RADIO)
-		bouquetChannels = &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
+		bouquetChannels = &(CZapit::getInstance()->Bouquets[bouquet]->radioChannels);
 
 	Channels.clear();
 	
@@ -285,11 +285,11 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 				setModified();
 		
 				if (isChannelInBouquet(selected))
-					g_bouquetManager->Bouquets[bouquet]->removeService(Channels[selected]->channel_id);
+					CZapit::getInstance()->Bouquets[bouquet]->removeService(Channels[selected]->channel_id);
 				else
 					CZapit::getInstance()->addChannelToBouquet(bouquet, Channels[selected]->channel_id);
 
-				bouquetChannels = mode == CZapit::MODE_TV ? &(g_bouquetManager->Bouquets[bouquet]->tvChannels) : &(g_bouquetManager->Bouquets[bouquet]->radioChannels);
+				bouquetChannels = mode == CZapit::MODE_TV ? &(CZapit::getInstance()->Bouquets[bouquet]->tvChannels) : &(CZapit::getInstance()->Bouquets[bouquet]->radioChannels);
 		
 				paint();
 				g_RCInput->postMsg(CRCInput::RC_down, 0);
