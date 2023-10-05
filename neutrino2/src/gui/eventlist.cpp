@@ -752,7 +752,8 @@ int EventList::findEvents(void)
 		res = 1;
 		m_showChannel = true;   // force the event list to paint the channel name
 		
-		evtlist.clear();
+		if (evtlist.size())
+			evtlist.clear();
 		
 		if(m_search_list == SEARCH_LIST_CHANNEL)
 		{
@@ -788,8 +789,8 @@ int EventList::findEvents(void)
 		}
 		
 		sort(evtlist.begin(), evtlist.end(), sortByDateTime);
-		current_event = (unsigned int)-1;
-		time_t azeit=time(NULL);
+		current_event = (unsigned int) -1;
+		time_t azeit = time(NULL);
 		
 		CChannelEventList::iterator e;
 		for ( e = evtlist.begin(); e != evtlist.end(); ++e )
@@ -813,7 +814,7 @@ int EventList::findEvents(void)
 			}
 		}  
 		          
-		if (current_event == (unsigned int)-1)
+		if (current_event == (unsigned int) - 1)
 			current_event = 0;
 			
 		selected = current_event;
