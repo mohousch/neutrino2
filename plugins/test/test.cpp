@@ -4928,7 +4928,7 @@ void CTestMenu::testCChannellist()
 		}
 	}
 
-	webTVchannelList->exec(); // with zap
+	webTVchannelList->exec(false); // without zap
 }
 
 
@@ -4956,7 +4956,7 @@ void CTestMenu::testCBouquetlist()
 		}
 	}
 
-	webTVBouquetList->exec(true); // with zap
+	webTVBouquetList->exec(true, false, false); // without zap
 }
 
 // skin
