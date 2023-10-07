@@ -197,12 +197,11 @@ char recDir[255];
 char timeshiftDir[255];
 // volume bar
 static CProgressBar * g_volscale;
-// zapit
-Zapit_config zapitCfg;
 //
 int prev_video_Mode;
 int current_volume;
 int current_muted;
+Zapit_config zapitCfg;
 // bouquets lists
 CBouquetList* bouquetList; 				//current bqt list
 //
@@ -2872,17 +2871,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		//
 		saveSetup(NEUTRINO_SETTINGS_FILE);
 
-		tuxtxt_close();
-		
-		// save zapitconfig	
-		zapitCfg.saveLastChannel = g_settings.uselastchannel;
-		zapitCfg.lastchannelmode = g_settings.lastChannelMode;
-		zapitCfg.startchanneltv_nr = g_settings.startchanneltv_nr;
-		zapitCfg.startchannelradio_nr = g_settings.startchannelradio_nr;
-		zapitCfg.startchanneltv_id = g_settings.startchanneltv_id;
-		zapitCfg.startchannelradio_id = g_settings.startchannelradio_id;
-		
-		CZapit::getInstance()->setZapitConfig(&zapitCfg);
+		//tuxtxt_close();
 	}
 	else if (actionKey == "saveskinsettings")
 	{
@@ -3363,6 +3352,9 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			delete frameBuffer;
 
 		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
+		
+		////
+		usleep(1500);
 		
 //#if defined (USE_OPENGL)		
 		if(retcode == RESTART)
@@ -4853,18 +4845,13 @@ int CNeutrinoApp::run(int argc, char **argv)
 	// load selected skin
 	loadSkin(g_settings.preferred_skin);
 	
-	// zapit
-	/*	
-	Z_start_arg ZapStart_arg;
-	
-	ZapStart_arg.lastchannelmode = g_settings.lastChannelMode;
-	ZapStart_arg.startchanneltv_id = g_settings.startchanneltv_id;
-	ZapStart_arg.startchannelradio_id = g_settings.startchannelradio_id;
-	ZapStart_arg.startchanneltv_nr = g_settings.startchanneltv_nr;
-	ZapStart_arg.startchannelradio_nr = g_settings.startchannelradio_nr;
-	ZapStart_arg.uselastchannel = g_settings.uselastchannel;
-	ZapStart_arg.video_mode = g_settings.video_Mode;
-	*/
+	// zapit	
+	zapitCfg.lastchannelmode = g_settings.lastChannelMode;
+	zapitCfg.startchanneltv_id = g_settings.startchanneltv_id;
+	zapitCfg.startchannelradio_id = g_settings.startchannelradio_id;
+	zapitCfg.startchanneltv_nr = g_settings.startchanneltv_nr;
+	zapitCfg.startchannelradio_nr = g_settings.startchannelradio_nr;
+	zapitCfg.saveLastChannel = g_settings.uselastchannel;
 	
 	current_volume = g_settings.current_volume;
 
@@ -4925,8 +4912,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 		audioDecoder->setHwPCMDelay(g_settings.pcm_delay);
 	}
 	
-	////
-	CZapit::getInstance()->Start(/*&ZapStart_arg*/);
+	//
+	CZapit::getInstance()->Start(zapitCfg);
 	
 	// sectionsd
 	CSectionsd::getInstance()->Start();

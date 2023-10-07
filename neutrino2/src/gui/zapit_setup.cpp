@@ -36,6 +36,9 @@
 #include <system/debug.h>
 
 
+//// globals
+extern Zapit_config zapitCfg;
+
 //option off0_on1
 #define OPTIONS_OFF0_ON1_OPTION_COUNT 2
 const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
@@ -130,6 +133,22 @@ int CZapitSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 		
 		return CMenuTarget::RETURN_REPAINT;
 	}
+	else if (actionKey == "savesettings")
+	{
+		// save zapitconfig	
+		zapitCfg.saveLastChannel = !g_settings.uselastchannel;
+		zapitCfg.lastchannelmode = g_settings.lastChannelMode;
+		zapitCfg.startchanneltv_nr = g_settings.startchanneltv_nr;
+		zapitCfg.startchannelradio_nr = g_settings.startchannelradio_nr;
+		zapitCfg.startchanneltv_id = g_settings.startchanneltv_id;
+		zapitCfg.startchannelradio_id = g_settings.startchannelradio_id;
+		
+		CZapit::getInstance()->setZapitConfig(&zapitCfg);
+		
+		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+		
+		return RETURN_REPAINT;
+	}
 
 	showMenu();
 
@@ -183,16 +202,16 @@ void CZapitSetup::showMenu()
 	zapit->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	
 	// save settings
-	zapit->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
+	zapit->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	zapit->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 
 	bool activTV = false;
 	bool activRadio = false;
 
-	if( (!g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_tv) )
+	if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_tv) )
 		activTV = true;
 
-	if( (!g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_radio) )
+	if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_radio) )
 		activRadio = true;
 
 	// last TV channel
@@ -204,12 +223,13 @@ void CZapitSetup::showMenu()
 	// last mode
 	CZapitSetupModeNotifier zapitSetupModeNotifier((int *)&g_settings.lastChannelMode, m3, m4);
 
-	CMenuOptionChooser * m2 = new CMenuOptionChooser(_("Start Mode"), (int *)&g_settings.lastChannelMode, OPTIONS_LASTMODE_OPTIONS, OPTIONS_LASTMODE_OPTION_COUNT, !g_settings.uselastchannel, &zapitSetupModeNotifier);
+	CMenuOptionChooser * m2 = new CMenuOptionChooser(_("Start Mode"), &g_settings.lastChannelMode, OPTIONS_LASTMODE_OPTIONS, OPTIONS_LASTMODE_OPTION_COUNT, g_settings.uselastchannel, &zapitSetupModeNotifier);
 	
 	// use lastchannel
 	CZapitSetupNotifier zapitSetupNotifier(m2, m3, m4);
 
-	CMenuOptionChooser * m1 = new CMenuOptionChooser(_("Start Channel"), &g_settings.uselastchannel, OPTIONS_OFF1_ON0_OPTIONS, OPTIONS_OFF1_ON0_OPTION_COUNT, true, &zapitSetupNotifier);
+	CMenuOptionChooser * m1 = NULL;
+	m1 = new CMenuOptionChooser(_("Start Channel"), &g_settings.uselastchannel, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true, &zapitSetupNotifier);
 	
 	zapit->addItem(m1);
 	zapit->addItem(m2);
@@ -249,13 +269,13 @@ bool CZapitSetupNotifier::changeNotify(const std::string& OptionName, void *)
 		bool activTV = false;
 		bool activRadio = false;
 
-		if( (!g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_tv) )
+		if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_tv) )
 			activTV = true;
 
-		if( (!g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_radio) )
+		if( (g_settings.uselastchannel) && (g_settings.lastChannelMode == NeutrinoMessages::mode_radio) )
 			activRadio = true;
 
-		zapit1->setActive(!g_settings.uselastchannel);
+		zapit1->setActive(g_settings.uselastchannel);
 		zapit2->setActive(activTV);
 		zapit3->setActive(activRadio);
 	}

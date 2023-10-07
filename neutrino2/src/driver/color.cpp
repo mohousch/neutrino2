@@ -327,8 +327,8 @@ fb_pixel_t* gradientOneColor(fb_pixel_t col, int bSize, int mode, int intensity)
 			break;
 		default:		
 		case INT_LIGHT:
-			min_v   = 0x10;	//0x40
-			max_v   = 0x91;	//0xE0
+			min_v   = 0x40;
+			max_v   = 0xE0;
 			col_s   = (noSaturation) ? 0 : 0xC0;
 			break;
 				

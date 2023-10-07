@@ -39,3 +39,4 @@ class CNit
 };
 
 #endif /* __zapit_nit_h__ */
+

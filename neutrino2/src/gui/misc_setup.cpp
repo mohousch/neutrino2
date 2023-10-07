@@ -509,6 +509,13 @@ int CChannelListSettings::exec(CMenuTarget* parent, const std::string& actionKey
 	
 	if(parent)
 		parent->hide();
+		
+	if (actionKey == "savesettings")
+	{		
+		CZapit::getInstance()->setZapitConfig(&zapitCfg);
+		
+		return RETURN_REPAINT;
+	}
 	
 	showMenu();
 	
@@ -565,7 +572,7 @@ void CChannelListSettings::showMenu()
 	miscSettingsChannelList->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	miscSettingsChannelList->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
+	miscSettingsChannelList->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	miscSettingsChannelList->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// HD list

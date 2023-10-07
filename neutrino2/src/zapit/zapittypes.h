@@ -341,31 +341,15 @@ typedef std::map<transponder_id_t, bool> sdt_tp_t; 			// used in zapit.cpp sdtth
 
 //
 typedef struct Zapit_config {
-	int makeRemainingChannelsBouquet;
-	int saveLastChannel;
+	bool makeRemainingChannelsBouquet;
 	int scanSDT;
-	////
+	bool saveLastChannel;
 	int lastchannelmode;
 	t_channel_id startchanneltv_id;
 	t_channel_id startchannelradio_id;
-	int startchanneltv_nr;
-	int startchannelradio_nr;
-	int uselastchannel;
+	uint32_t startchanneltv_nr;
+	uint32_t startchannelradio_nr;
 } t_zapit_config;
-
-//complete zapit start thread-parameters in a struct
-/*
-typedef struct ZAPIT_start_arg
-{
-	int lastchannelmode;
-	t_channel_id startchanneltv_id;
-	t_channel_id startchannelradio_id;
-	int startchanneltv_nr;
-	int startchannelradio_nr;
-	int uselastchannel;
-	int video_mode;
-} Z_start_arg;
-*/
 
 // fetype
 typedef enum {

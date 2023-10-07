@@ -246,7 +246,6 @@ class CZapit
 		bool playbackStopForced;
 		bool avDecoderOpen;
 		//
-		int scanSDT;
 		bool sdt_wakeup;
 		sdt_tp_t sdt_tp;
 		//
@@ -270,7 +269,7 @@ class CZapit
 		uint32_t  lastChannelTV;
 		t_channel_id lastChannelTV_id;
 		bool makeRemainingChannelsBouquet;
-		//int videomode;
+		int scanSDT;
 		//// channelManager
 		int newtpid;
 		int tcnt;
@@ -552,7 +551,7 @@ class CZapit
 		bool startScan(commandScanProvider &msg);
 		bool stopScan();
 		//
-		void Start(/*Z_start_arg *ZapStart_arg*/);
+		void Start(Zapit_config zapitCfg);
 		void Stop();
 };
 

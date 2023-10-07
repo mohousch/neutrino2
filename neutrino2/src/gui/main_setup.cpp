@@ -163,7 +163,7 @@ void CMainSettingsMenu::showMenu(void)
 	mainSettings->addItem(new CMenuForwarder(_("Filebrowser settings"), true, NULL, new CFileBrowserSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_FILEBROWSERSETTINGS));
 		
 	// zapit setup (start channel)
-	mainSettings->addItem(new CMenuForwarder(_("Last Channel settings"), true, NULL, new CZapitSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STARTCHANNELSETTINGS));
+	mainSettings->addItem(new CMenuForwarder(_("Start Channel settings"), true, NULL, new CZapitSetup(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_STARTCHANNELSETTINGS));
 		
 	// psi setup
 	//FIXME:	

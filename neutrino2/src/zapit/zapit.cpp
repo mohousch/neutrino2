@@ -979,17 +979,15 @@ void CZapit::saveZapitSettings(bool write, bool write_a)
 	{
 		config.setBool("saveLastChannel", saveLastChannel);
 		
-		if (config.getBool("saveLastChannel", true)) 
+		//if (config.getBool("saveLastChannel", true)) 
 		{
 			if (currentMode & RADIO_MODE)
 			{
 				config.setInt32("lastChannelMode", RADIO_MODE);
-				//config.setInt64("lastChannelTV_id", lastChannelTV_id);
 			}
 			else if (currentMode & TV_MODE)
 			{
 				config.setInt32("lastChannelMode", TV_MODE);
-				//config.setInt64("lastChannelRadio_id", lastChannelRadio_id);
 			}
 
 			config.setInt32("lastChannelRadio", lastChannelRadio);
@@ -997,13 +995,10 @@ void CZapit::saveZapitSettings(bool write, bool write_a)
 			config.setInt64("lastChannel", live_channel_id);
 		}
 		
-		config.setBool("makeRemainingChannelsBouquet", makeRemainingChannelsBouquet);
-
-		config.setInt32("scanSDT", scanSDT);
-		
-		////
 		config.setInt64("lastChannelTV_id", lastChannelTV_id);
 		config.setInt64("lastChannelRadio_id", lastChannelRadio_id);
+		config.setBool("makeRemainingChannelsBouquet", makeRemainingChannelsBouquet);
+		config.setInt32("scanSDT", scanSDT);
 
 		//
 		//if (config.getModifiedFlag())
@@ -1875,7 +1870,7 @@ int CZapit::prepareChannels()
 	
 	// clear all channels/bouquets/TP's lists
 	transponders.clear();
-	//clearAll();
+	clearAll();
 	allchans.clear();  				// <- this invalidates all bouquets, too!
 	
 	// load frontend config
@@ -5854,7 +5849,7 @@ void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePo
 		ret = transponders.insert(std::pair<transponder_id_t, transponder> ( tid, transponder(transport_stream_id, feparams, original_network_id)));
 		
 		if (ret.second == false)
-			printf("[getservices] duplicate transponder id %llx freq %d\n", tid, feparams.frequency);
+			printf("CZapit::parseTransponders: duplicate transponder id %llx freq %d\n", tid, feparams.frequency);
 
 		// read channels that belong to the current transponder
 		parseChannels(node->xmlChildrenNode, transport_stream_id, original_network_id, satellitePosition, freq);
@@ -5907,7 +5902,7 @@ void CZapit::parseChannels(xmlNodePtr node, const t_transport_stream_id transpor
 		if (remove) 
 		{
 			int result = allchans.erase(chid);
-			dprintf(DEBUG_INFO, "[getservices] %s '%s' (sid=0x%x): %s", add ? "replacing" : "removing", name.c_str(), service_id, result ? "succeded.\n" : "FAILED!\n");
+			dprintf(DEBUG_INFO, "CZapit::parseChannels: %s '%s' (sid=0x%x): %s", add ? "replacing" : "removing", name.c_str(), service_id, result ? "succeded.\n" : "FAILED!\n");
 		}
 
 		if(!add) 
@@ -6195,7 +6190,7 @@ int CZapit::loadMotorPositions(void)
 		fclose(fd);
 	}
 	else
-		printf("[getservices] %s not found.\n", SATCONFIG);
+		printf("CZapit::loadMotorPositions: %s not found.\n", SATCONFIG);
 
 	return 0;
 }
@@ -6205,12 +6200,12 @@ void CZapit::saveMotorPositions()
 	FILE * fd;
 	sat_iterator_t sit;
 	
-	dprintf(DEBUG_INFO, "[getservices] saving motor positions...\n");
+	dprintf(DEBUG_INFO, "CZapit::saveMotorPositions: saving motor positions...\n");
 
 	fd = fopen(SATCONFIG, "w");
 	if(fd == NULL) 
 	{
-		printf("[getservices] cannot open %s\n", SATCONFIG);
+		dprintf(DEBUG_NORMAL, "CZapit::saveMotorPositions: cannot open %s\n", SATCONFIG);
 		return;
 	}
 	
@@ -6549,7 +6544,7 @@ void CZapit::saveServices(bool tocopy)
 	sat_iterator_t spos_it;
 	updated = 0;
 
-	dprintf(DEBUG_INFO, "[getservices] total channels: %d\n", allchans.size());
+	dprintf(DEBUG_INFO, "CZapit::saveServices: total channels: %d\n", allchans.size());
 	
 	fd = fopen(SERVICES_TMP, "w");
 	if(!fd) 
@@ -6577,7 +6572,7 @@ void CZapit::saveServices(bool tocopy)
 
 			if(satpos != spos_it->first) 
 			{
-				dprintf(DEBUG_DEBUG, "[getservices] Sat position %d not found !!\n", satpos);
+				dprintf(DEBUG_DEBUG, "CZapit::saveServices: Sat position %d not found !!\n", satpos);
 
 				continue;
 			}
@@ -6721,11 +6716,11 @@ void CZapit::saveServices(bool tocopy)
 			res = safe_mkdir((char *)CONFIGDIR "/zapit");
 
 			if (res != 0) 
-				perror("[getservices] mkdir");
+				perror("CZapit::saveServices: mkdir");
 		} 
 		else 
 		{
-			perror("[getservices] stat");
+			perror("CZapit::saveServices: stat");
 		}
 	} 
 
@@ -6736,15 +6731,15 @@ void CZapit::saveServices(bool tocopy)
 		unlink(SERVICES_TMP);
 	}
 
-	dprintf(DEBUG_INFO, "[getservices] processed channels: %d\n", processed);
+	dprintf(DEBUG_INFO, "CZapit::saveServices: processed channels: %d\n", processed);
 }
 
 //
-void CZapit::Start(/*Z_start_arg *ZapStart_arg*/)
+void CZapit::Start(Zapit_config zapitCfg)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::Start\n");	
 	
-	//scan for dvb adapter/frontend and feed them in map
+	//
 	initFrontend();
 	
 	// init SH4 HW
@@ -6772,35 +6767,10 @@ void CZapit::Start(/*Z_start_arg *ZapStart_arg*/)
 	// load frontend config
 	loadFrontendConfig();
 	
-	////
-	// load configuration or set defaults if no configuration file exists
+	// load configuration
 	loadZapitSettings();
-	////
-		
-	// video/audio decoder
-	//int video_mode = ZapStart_arg->video_mode;
-	
-	// video decoder
-/*
-#if defined (PLATFORM_COOLSTREAM)
-	videoDecoder = new cVideo(video_mode, videoDemux->getChannel(), videoDemux->getBuffer());
-	videoDecoder->Standby(false);
-	
-	audioDecoder = new cAudio(audioDemux->getBuffer(), videoDecoder->GetTVEnc(), NULL);
-	videoDecoder->SetAudioHandle(audioDecoder->GetHandle());
-#else	
-	videoDecoder = new cVideo();
-		
-	// set video system
-	if(videoDecoder)
-		videoDecoder->SetVideoSystem(video_mode);	
-	
-	// audio decoder
-	audioDecoder = new cAudio();
-#endif
-*/	
 
-	//CI init
+	// CI init
 #if defined (ENABLE_CI)	
 	ci = cDvbCi::getInstance();
 #endif
@@ -6813,43 +6783,34 @@ void CZapit::Start(/*Z_start_arg *ZapStart_arg*/)
 	scan_runs = 0;
 	found_channels = 0;
 	curr_sat = 0;
-
-	// load configuration or set defaults if no configuration file exists
-	//loadZapitSettings();
 	
-	// load services
+	// load channels / bouquets
 	prepareChannels();
 	
-	//start channel
-	//if(ZapStart_arg->uselastchannel == 0)
-	if (!saveLastChannel)
+	//
+	if (!zapitCfg.saveLastChannel)
+	{
+		if (zapitCfg.lastchannelmode == RADIO_MODE)
+			setRadioMode();
+		else if (zapitCfg.lastchannelmode == TV_MODE)
+			setTVMode();
+	}
+	else // start channel
 	{
 		// mode
-		//if (ZapStart_arg->lastchannelmode == RADIO_MODE)
-		if (lastChannelMode == RADIO_MODE)
+		if (zapitCfg.lastchannelmode == RADIO_MODE)
 			setRadioMode();
-		//else if (ZapStart_arg->lastchannelmode == TV_MODE)
-		else if (lastChannelMode == TV_MODE)
+		else if (zapitCfg.lastchannelmode == TV_MODE)
 			setTVMode();
 		
 		// live channel id
 		if (currentMode & RADIO_MODE)
-		//	live_channel_id = ZapStart_arg->startchannelradio_id;
-			live_channel_id = lastChannelRadio_id;
+			live_channel_id = zapitCfg.startchannelradio_id;
 		else if (currentMode & TV_MODE)
-		//	live_channel_id = ZapStart_arg->startchanneltv_id;
-			live_channel_id = lastChannelTV_id;
+			live_channel_id = zapitCfg.startchanneltv_id;
 			
-		//
-		//lastChannelRadio = ZapStart_arg->startchannelradio_nr;
-		//lastChannelTV    = ZapStart_arg->startchanneltv_nr;
-	}
-	else
-	{
-		if (lastChannelMode == RADIO_MODE)
-			setRadioMode();
-		else if (lastChannelMode == TV_MODE)
-			setTVMode();
+		lastChannelTV = zapitCfg.startchanneltv_nr;
+		lastChannelRadio = zapitCfg.startchannelradio_nr;
 	}
 
 	//create sdt thread
@@ -6867,9 +6828,6 @@ void CZapit::Start(/*Z_start_arg *ZapStart_arg*/)
 	
 	//create pmt update filter thread
 	pthread_create(&tpmt, NULL, updatePMTFilter, (void *) NULL);
-	
-	//
-	//dvbsub_init();
 	
 	dprintf(DEBUG_NORMAL, "CZapit::Start: init succeeded\n");
 }
@@ -6899,12 +6857,6 @@ void CZapit::Stop()
 
 	if (pmtDemux)
 		delete pmtDemux;
-	
-	//if(audioDecoder)
-	//	delete audioDecoder;
-	
-	//if(videoDecoder)
-	//	delete videoDecoder;
 
 	//close frontend	
 	for(fe_map_iterator_t it = femap.begin(); it != femap.end(); it++)
