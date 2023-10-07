@@ -413,14 +413,14 @@ void tuxtxt_clear_cache()
 
 //
 static cDemux * dmx = NULL;
-int tuxtxt_init_demuxer( int source )
+int tuxtxt_init_demuxer( /*int source*/ )
 {
 
 	if(dmx == NULL) 
 	{
 		dmx = new cDemux();
 		
-		printf("TuxTxt: source demux %d\n", source);
+		printf("TuxTxt: tuxtxt_init_demuxer\n");
 
 #if defined (PLATFORM_COOLSTREAM)
 		dmx->Open(DMX_PES_CHANNEL);
@@ -957,7 +957,7 @@ void * tuxtxt_CacheThread(void * /*arg*/)
 }
 
 //
-int tuxtxt_start_thread( int source )
+int tuxtxt_start_thread( /*int source*/ )
 {
 	printf("tuxtxt_start_thread: starting... tid %ld\n", syscall(__NR_gettid));
 	
@@ -965,7 +965,7 @@ int tuxtxt_start_thread( int source )
 		return 0;
 
 	tuxtxt_cache.thread_starting = 1;
-	tuxtxt_init_demuxer( source);
+	tuxtxt_init_demuxer( /*source*/);
 
 	dmx->pesFilter(tuxtxt_cache.vtxtpid);
 	dmx->Start();

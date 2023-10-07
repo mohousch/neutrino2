@@ -25,10 +25,14 @@
 #include <zapit/channel.h>
 #include <zapit/ci.h>
 #include <zapit/frontend_c.h>
+#include <zapit/descriptors.h>
 
 
 class CPmt
 {
+	private:
+		CDescriptors descriptor;
+		
 	public:
 		CPmt(){};
 		virtual ~CPmt(){};

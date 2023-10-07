@@ -76,7 +76,6 @@
 
 #define NEUTRINO_SETTINGS_FILE          CONFIGDIR "/neutrino2.conf"
 #define NEUTRINO_SCAN_SETTINGS_FILE     CONFIGDIR "/scan.conf"
-#define NEUTRINO_PARENTALLOCKED_FILE    DATADIR   "/neutrino/.plocked"
 
 // globals
 NEUTRINO_CPP  SNeutrinoSettings		g_settings;
@@ -95,3 +94,4 @@ NEUTRINO_CPP CEventServer 		*eventServer;
 NEUTRINO_CPP cPlayback			*playback;
 
 #endif /* __neutrino_global_h__ */
+

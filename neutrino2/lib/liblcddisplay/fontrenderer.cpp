@@ -90,20 +90,24 @@ void LcdFontRenderClass::InitFontCache()
 		dprintf(DEBUG_NORMAL, "LcdFontRenderClass::InitFontCache: manager failed!\n");
 		return;
 	}
+	
 	if (!cacheManager)
 	{
 		dprintf(DEBUG_NORMAL, "LcdFontRenderClass::InitFontCache: error.\n");
 		return;
 	}
+	
 	if (FTC_SBitCache_New(cacheManager, &sbitsCache))
 	{
 		dprintf(DEBUG_NORMAL, "LcdFontRenderClass::InitFontCache: sbit failed!\n");
 		return;
 	}
+	
 	if (FTC_ImageCache_New(cacheManager, &imageCache))
 	{
 		dprintf(DEBUG_NORMAL, "LcdFontRenderClass::InitFontCache: imagecache failed!\n");
 	}
+	
 	printf("\n");
 }
 

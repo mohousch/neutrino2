@@ -73,8 +73,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 	unsigned char descriptor_tag;
 	unsigned char descriptor_length;
 	unsigned char i;
-	CDescriptors descriptor;
-
+	//
 	bool isAC3 = false;
 	bool isDTS = false;
 	bool isAAC = false;

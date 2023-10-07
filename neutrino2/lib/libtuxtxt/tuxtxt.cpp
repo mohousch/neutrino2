@@ -1244,7 +1244,7 @@ int tuxtx_main(int pid, int page, int source)
 	use_gui = 1;
 	boxed = 0;
 
-	//
+	// init
 	int initialized = tuxtxt_init();
 	if ( initialized )
 		tuxtxt_cache.page = 0x100;

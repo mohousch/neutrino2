@@ -22,9 +22,14 @@
 #ifndef __zapit_nit_h__
 #define __zapit_nit_h__
 
+#include <zapit/descriptors.h>
+
 
 class CNit
 {
+	private:
+		CDescriptors descriptor;
+		
 	public:
 		CNit(){};
 		virtual ~CNit(){};

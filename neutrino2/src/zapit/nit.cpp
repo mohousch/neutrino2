@@ -51,7 +51,6 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 	int ret = 0;
 	int secdone[255];
 	int sectotal = -1;
-	CDescriptors descriptor;
 
 	memset(secdone, 0, 255);
 	
@@ -85,7 +84,7 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 	memset(filter, 0x00, DMX_FILTER_SIZE);
 	memset(mask, 0x00, DMX_FILTER_SIZE);
 
-	filter[0] = 0x40;	/* nit tid */
+	filter[0] = 0x40;	// nit tid
 	mask[0] = 0xFF;
 
 	if (dmx->sectionFilter(0x10, filter, mask, 5) < 0) 

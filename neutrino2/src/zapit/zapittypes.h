@@ -344,9 +344,17 @@ typedef struct Zapit_config {
 	int makeRemainingChannelsBouquet;
 	int saveLastChannel;
 	int scanSDT;
+	////
+	int lastchannelmode;
+	t_channel_id startchanneltv_id;
+	t_channel_id startchannelradio_id;
+	int startchanneltv_nr;
+	int startchannelradio_nr;
+	int uselastchannel;
 } t_zapit_config;
 
 //complete zapit start thread-parameters in a struct
+/*
 typedef struct ZAPIT_start_arg
 {
 	int lastchannelmode;
@@ -357,6 +365,7 @@ typedef struct ZAPIT_start_arg
 	int uselastchannel;
 	int video_mode;
 } Z_start_arg;
+*/
 
 // fetype
 typedef enum {

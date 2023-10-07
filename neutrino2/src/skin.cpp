@@ -2864,11 +2864,14 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 			free(namelist[i]);
 		}
 		free(namelist);
+		
+		strcpy( g_settings.font_file, fontFileName.c_str() );
+			
+		CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
 	}
 			 
-	strcpy( g_settings.font_file, fontFileName.c_str() );
-			
-	CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
+	//strcpy( g_settings.font_file, fontFileName.c_str() );		
+	//CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
 			
 	// setIconPath
 	std::string iconsDir = CONFIGDIR "/skins/";

@@ -43,13 +43,12 @@
 #define SDT_SIZE 	MAX_SECTION_LENGTH
 
 // sdt scan
-int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id,t_original_network_id *p_original_network_id,t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_network_id *p_original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
 	dprintf(DEBUG_NORMAL, "CSdt::parseSDT:\n");
 	
 	int secdone[255];
 	int sectotal = -1;
-	CDescriptors descriptor;
 
 	memset(secdone, 0, 255);
 
@@ -259,7 +258,7 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 #endif	
 	
 	int ret = -1;
-	CDescriptors descriptor;
+	//CDescriptors descriptor;
 
 	unsigned char buffer[SDT_SIZE];
 
@@ -277,7 +276,7 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 
 	bool EIT_schedule_flag;
 	bool EIT_present_following_flag;
-	bool free_CA_mode;
+	//bool free_CA_mode;
 
 	unsigned char filter[DMX_FILTER_SIZE];
 	unsigned char mask[DMX_FILTER_SIZE];
@@ -325,7 +324,7 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 			EIT_schedule_flag = buffer[pos + 2] & 0x02;
 			EIT_present_following_flag = buffer[pos + 2] & 0x01;
 			running_status = buffer [pos + 3] & 0xE0;
-			free_CA_mode = buffer [pos + 3] & 0x10;
+			//free_CA_mode = buffer [pos + 3] & 0x10;
 			descriptors_loop_length = ((buffer[pos + 3] & 0x0F) << 8) | buffer[pos + 4];
 
 			for (pos2 = pos + 5; pos2 < pos + descriptors_loop_length + 5; pos2 += buffer[pos2 + 1] + 2) 
