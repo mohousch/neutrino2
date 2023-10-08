@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-03 17:49+0200\n"
+"POT-Creation-Date: 2023-10-07 21:40+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -59,7 +59,7 @@ msgid "(type)"
 msgstr "(тип)"
 
 msgid ", please be patient..."
-msgstr " пожалуйста, наберитесь терпения ..."
+msgstr ", пожалуйста, наберитесь терпения ..."
 
 msgid "0 for unlimited repeats"
 msgstr "0 для неограниченного количества повторений"
@@ -101,10 +101,10 @@ msgid "Advanced"
 msgstr "передовой"
 
 msgid "Adventure / Western/War"
-msgstr "Приключения / Вестерн / война"
+msgstr "Приключения / Вестерн / Война"
 
 msgid "Age"
-msgstr "Изменить"
+msgstr "Возраст"
 
 msgid "Alarm time"
 msgstr "Время пробуждения"
@@ -134,7 +134,7 @@ msgid "Are you sure to init ?"
 msgstr "Вы уверены, что выполняете инициализацию?"
 
 msgid "Arts / Culture"
-msgstr "Искусство/культура"
+msgstr "Искусство / культура"
 
 msgid "Arts / Culture magazines"
 msgstr "Художественные / культурные журналы"
@@ -146,22 +146,22 @@ msgid "Athletics"
 msgstr "Легкая атлетика"
 
 msgid "Atsc:"
-msgstr "Атск:"
+msgstr ""
 
 msgid "Audio"
 msgstr "Аудио"
 
 msgid "Audio PIDs"
-msgstr "Аудио PID"
+msgstr "Аудио PIDs"
 
 msgid "Audio Playlist"
 msgstr "Аудио плейлист"
 
 msgid "Audio language preferences"
-msgstr "Настройки языка Audio"
+msgstr "Предпочтение языка Audio"
 
 msgid "Audio master"
-msgstr "Audio vfcnth"
+msgstr "Audio мастер"
 
 msgid "Audio settings"
 msgstr "Настройки звука"
@@ -239,7 +239,7 @@ msgid "Bouquets"
 msgstr "Букеты"
 
 msgid "Box Info"
-msgstr "Информация о Boxе"
+msgstr "Информация о Боксе"
 
 msgid "Box will shutdown in 1 min.\n Cancel Sutdown ?"
 msgstr "Бокс отключится через 1 мин.\n Отменить выключение?"
@@ -257,7 +257,7 @@ msgid "Broadcasting / Press"
 msgstr "Трансляция / Пресса"
 
 msgid "Built date: "
-msgstr "Дата постройки:"
+msgstr "Дата сборки:"
 
 msgid "Buttons Bar"
 msgstr "панель кнопок"
@@ -287,10 +287,10 @@ msgid "CEC mode off"
 msgstr "Режим CEC выключен"
 
 msgid "CEC mode recorder"
-msgstr "Регистрация режима CEC"
+msgstr ""
 
 msgid "CEC mode tuner"
-msgstr "Редим CEC тюнера"
+msgstr ""
 
 msgid "CEC settings"
 msgstr "CEC настройки"
@@ -302,10 +302,10 @@ msgid "CEC standby no timer"
 msgstr "Ожидание CEC без таймера"
 
 msgid "CEC view on"
-msgstr "Взгляд на CEC"
+msgstr ""
 
 msgid "CEC volume"
-msgstr "Объем CEC"
+msgstr "громкость CEC"
 
 msgid "CEC volume TV"
 msgstr "CEC громкость ТВ"
@@ -326,7 +326,7 @@ msgid "CI cam reset"
 msgstr "Сброс CI Cam"
 
 msgid "CIFS"
-msgstr "СИФС"
+msgstr ""
 
 msgid "CORNER ALL"
 msgstr "Все углы"
@@ -335,7 +335,7 @@ msgid "CORNER NONE"
 msgstr "Нет углов"
 
 msgid "CPU:"
-msgstr "КПУ"
+msgstr "ЦПУ"
 
 msgid "Cable"
 msgstr "Кабель"
@@ -521,16 +521,16 @@ msgid "DiSEqC-repeats"
 msgstr "DiSEqC-повторы"
 
 msgid "Diashow mode"
-msgstr "Режим диа-шоу"
+msgstr ""
 
 msgid "Dim timeout"
 msgstr "Уменьшить тайм-аут"
 
 msgid "Dir"
-msgstr "Прямой"
+msgstr ""
 
 msgid "Direct-Mode"
-msgstr "Прямой режим"
+msgstr ""
 
 msgid "Director"
 msgstr "Директор"
@@ -563,8 +563,15 @@ msgid "Do not scale picture"
 msgstr "Не масштабировать картинку"
 
 #, c-format
-msgid "Do you really want to flash?\n \nIf a error occurs or the image is not\n""valid, the box will not boot after flashing.\n \n Imagename: %s\n Target: %s"
-msgstr "«Вы действительно хотите прошить?\n» \n Если произошла ошибка или изображение отсутствует\n действительно, приставка не загрузится после прошивки.\n\n «Имя изображения: %s\n» «Цель: %s»"
+msgid ""
+"Do you really want to flash?\n"
+"\n"
+"If a error occurs or the image is not\n"
+"valid, the box will not boot after flashing.\n"
+"\n"
+"Imagename: %s\n"
+"Target: %s"
+msgstr ""
 
 msgid "Do you want to overwrite this file:"
 msgstr "Вы хотите перезаписать этот файл:"
@@ -720,14 +727,14 @@ msgid "Expert-functions"
 msgstr "Функции эксперта"
 
 msgid "FEC"
-msgstr "FEC"
+msgstr ""
 
 msgid "FEC_NONE"
-msgstr "ФЭК_НЕТ"
+msgstr ""
 
 #, c-format
 msgid "FSK: ab %d"
-msgstr "ФСК: в %d"
+msgstr ""
 
 msgid "Fashion"
 msgstr "Мода"
@@ -808,12 +815,24 @@ msgid "Forum:"
 msgstr "Форум"
 
 #, c-format
-msgid "Found the following new image:\n""Date: %s, %s\n BaseImage: %s\n ImageType: %s\n \n Do you want to install this version now?"
-msgstr "Обнаружено следующее новое изображение\n Дата: %s, %s\n «Базовое изображение: %s\n» «Тип изображения: %s\n» \n «Хотите установить эту версию сейчас?»"
+msgid ""
+"Found the following new image:\n"
+"Date: %s, %s\n"
+"BaseImage: %s\n"
+"ImageType: %s\n"
+"\n"
+"Do you want to install this version now?"
+msgstr ""
 
 #, c-format
-msgid "Found the following new package:\n Package: %s\n Date: %s, %s\n BaseImage: %s\n  Type: %s\n \n Do you want to download and install this version now?"
-msgstr "Обнаружен следующий новый пакет:\n «Пакет: %s\n» Дата: %s, %s\n «Базовое изображение: %s\n» Тип: %s\n \n «Хотите загрузить и установить эту версию сейчас?»"
+"Found the following new package:\n"
+"Package: %s\n"
+"Date: %s, %s\n"
+"BaseImage: %s\n"
+"Type: %s\n"
+"\n"
+"Do you want to download and install this version now?"
+msgstr ""
 
 msgid "Framerate"
 msgstr "Частота кадров"
@@ -876,7 +895,7 @@ msgid "Guests"
 msgstr "Гости"
 
 msgid "HD / Crypt Icons"
-msgstr "HD иконки крипт"
+msgstr "HD / Иконки кодировки"
 
 msgid "HDD Devices:"
 msgstr "Устройства жестких дисков:"
@@ -1015,16 +1034,16 @@ msgid "Infobar"
 msgstr "Инфобар"
 
 msgid "Infobar Channel name"
-msgstr "Информационная панель Название канала"
+msgstr "Инфобар Название канала"
 
 msgid "Infobar Number"
-msgstr "Номер информационной панели"
+msgstr "Инфобар Номер"
 
 msgid "Infobar info"
-msgstr "Информация информационной панели"
+msgstr "Информация Инфобар"
 
 msgid "Infobar small"
-msgstr "Информационная панель маленькая"
+msgstr "Инфобар маленький"
 
 msgid "Information"
 msgstr "Информация"
@@ -1074,9 +1093,6 @@ msgstr "ЖК-дисплей EPG"
 msgid "LED-Power"
 msgstr "Светодиодная мощность"
 
-msgid "LED_Power"
-msgstr "Светодиодная мощност"
-
 msgid "LEFT"
 msgstr "ЛЕВЫЙ"
 
@@ -1090,7 +1106,7 @@ msgid "LNB switch Offset"
 msgstr "Смещение переключателя LNB»"
 
 msgid "LUFS"
-msgstr "ЛУФС"
+msgstr ""
 
 msgid "LaDirection"
 msgstr "Направление"
@@ -1103,9 +1119,6 @@ msgstr "Языки"
 
 msgid "Last Channel"
 msgstr "Последний канал"
-
-msgid "Last Channel settings"
-msgstr "Настройки последнего канала"
 
 msgid "Last play date"
 msgstr "Последняя дата игры"
@@ -1402,11 +1415,23 @@ msgstr "Нет"
 msgid "No CAM in slot"
 msgstr "Нет CAM в слоте"
 
-msgid "No channels were found!\nPlease execute a scan\n (MENU-key -> System)"
-msgstr "Каналы не найдены!\n «Пожалуйста, выполните сканирование\n» (Кнопка МЕНЮ -> Система)"
+msgid ""
+"No channels were found!\n"
+"Please execute a scan\n"
+"(MENU-key -> System)"
+msgstr ""
+"Каналы не найдены!\n"
+"Пожалуйста, выполните сканирование\n"
+"(Кнопка МЕНЮ -> Система)"
 
-msgid "No channels were found!\n Please execute a scan\n (MENU-key -> service)"
-msgstr "Каналы не найдены!\n «Пожалуйста, выполните сканирование\n» (Кнопка МЕНЮ -> сервис)"
+msgid ""
+"No channels were found!\n"
+"Please execute a scan\n"
+"(MENU-key -> service)"
+msgstr ""
+"Каналы не найдены!\n"
+"«Пожалуйста, выполните сканирование\n»"
+"(Кнопка МЕНЮ -> сервис)"
 
 msgid "No detailed informations available"
 msgstr "Подробной информации нет»"
@@ -2490,11 +2515,16 @@ msgstr "Да"
 msgid "You really want to to stop record ?"
 msgstr "Вы действительно хотите остановить запись?"
 
-msgid "Your Release cycle differs.\n To continue?"
-msgstr "У вас другой цикл выпуска.\n Продолжить?"
+msgid ""
+"Your Release cycle differs.\n"
+"To continue?"
+msgstr ""
 
-msgid "Your box remote control will be locked.\n To unlock it, press <RED>\n and <MENU> on your remote control."
-msgstr "ПДУ вашей приставки будет заблокирован.\n Чтобы разблокировать его, нажмите <RED>\n и <MENU> на пульте дистанционного управления»."
+msgid ""
+"Your box remote control will be locked.\n"
+" To unlock it, press <RED> \n"
+" and <MENU> on your remote control."
+msgstr ""
 
 msgid "Youth protection"
 msgstr "Защита молодежи»"
@@ -2574,8 +2604,10 @@ msgstr "Нижний левый"
 msgid "bottom right"
 msgstr "Нижний правый"
 
-msgid "by manual package update version checks are currently not supported.\n Are you sure that you wish to install this package?"
-msgstr "ручная проверка версии обновления пакета в настоящее время не поддерживается.\n Вы уверены, что хотите установить этот пакет?"
+msgid ""
+"by manual package update version checks are currently not supported.\n"
+"Are you sure that you wish to install this package?"
+msgstr ""
 
 msgid "cable"
 msgstr "кабель"
@@ -2786,8 +2818,10 @@ msgid "logos Dir"
 msgid "loop"
 msgstr "петля"
 
-msgid "manual flash update version checks are currently not supported.\nAre you sure that you wish to install this image?"
-msgstr" «Проверка версии обновления флэш-памяти вручную в настоящее время не поддерживается.\n»«Вы уверены, что хотите установить этот образ?»"
+msgid ""
+"manual flash update version checks are currently not supported.\n"
+"Are you sure that you wish to install this image?"
+msgstr ""
 
 msgid "middle"
 msgstr "середина"
