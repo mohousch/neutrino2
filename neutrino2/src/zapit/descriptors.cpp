@@ -45,6 +45,12 @@
 // libdvbapi
 #include <dmx_cs.h>
 
+#include <byteswap.h>
+
+
+//// defines
+#define UINT32(p)	bswap_32(*(const uint32_t * const)p)
+
 
 //// globals
 std::string curr_chan_name;
@@ -59,6 +65,7 @@ std::map <t_channel_id, uint8_t> service_types;
 ////
 extern tallchans allchans;   			//  defined in zapit.cpp
 extern tallchans curchans;   			//  defined in zapit.cpp
+extern BouquetList scanBouquets;
 
 ////
 void CDescriptors::generic_descriptor(const unsigned char * const buffer)
@@ -240,8 +247,6 @@ void CDescriptors::service_list_descriptor(const unsigned char * const buffer, c
 		t_service_id service_id = buffer[i + 2] << 8 | buffer[i + 3];
 		t_channel_id channel_id = CREATE_CHANNEL_ID;
 		uint8_t service_type = buffer[i+4];
-
-		//printf("[service_list] type %X sid %X\n", service_type, service_id);
 
 		if(service_type == 0x9A) 
 			service_type = 1;
@@ -564,10 +569,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 	{
 		std::pair<std::map<t_channel_id, CZapitChannel>::iterator,bool> ret;
 		
-		dprintf(DEBUG_DEBUG, "New channel %llx:::%llx %s\n", channel_id, tpid, serviceName.c_str());
-		
-		if(freq == 11758 || freq == 11778) 
-			printf("New channel %llx:::%llx %s\n", channel_id, tpid, serviceName.c_str()); //FIXME debug
+		dprintf(DEBUG_DEBUG, "New channel 0x%llx:::0x%llx %s\n", channel_id, tpid, serviceName.c_str());
 
 		ret = allchans.insert (
 				std::pair <t_channel_id, CZapitChannel> (channel_id, CZapitChannel (serviceName, service_id, transport_stream_id, original_network_id, real_type, satellitePosition, freq )));
@@ -621,7 +623,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 							if (buff[pos + 1] > 30)
 								buff[pos + 1] = 30;
 
-							providerName = CDVBString((const char*)&(buff[pos+2]), buff[pos+1]).getContent();
+							providerName = CDVBString((const char*)&(buff[pos + 2]), buff[pos + 1]).getContent();
 							break;
 
 						default:
@@ -685,12 +687,12 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 				else
 					snprintf(pname, 100, "%s", providerName.c_str());
 
-				bouquetId = CZapit::getInstance()->existsBouquet(pname);
+				bouquetId = CZapit::getInstance()->existsBouquet(pname, scanBouquets);
 
 				if (bouquetId == -1)
-					bouquet = CZapit::getInstance()->addBouquet(std::string(pname));
+					bouquet = CZapit::getInstance()->addBouquet(std::string(pname), scanBouquets);
 				else
-					bouquet = CZapit::getInstance()->Bouquets[bouquetId];
+					bouquet = scanBouquets[bouquetId];
 
 				lastServiceName = serviceName;
 				eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_SERVICENAME, CEventServer::INITID_NEUTRINO, (void *) lastServiceName.c_str(), lastServiceName.length() + 1);
@@ -891,13 +893,7 @@ void CDescriptors::subtitling_descriptor(const unsigned char * const)
 {
 }
 
-//
-#include <byteswap.h>
-
-#define UINT32(p)	bswap_32(*(const uint32_t * const)p)
-//
-
-/* 0x5A */ //FIXME is brocken :-(
+/* 0x5A */
 int CDescriptors::terrestrial_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
 	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);

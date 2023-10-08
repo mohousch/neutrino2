@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-03 17:49+0200\n"
+"POT-Creation-Date: 2023-10-08 11:07+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1142,9 +1142,6 @@ msgstr "Sprachen"
 msgid "Last Channel"
 msgstr "Letzter Kanal"
 
-msgid "Last Channel settings"
-msgstr "Letzte Kanaleinstellungen"
-
 msgid "Last play date"
 msgstr "Letzter Spieltermin"
 
@@ -1467,7 +1464,7 @@ msgstr ""
 "(MENU-Taste -> System)"
 
 msgid "No detailed informations available"
-msgstr ""
+msgstr "Keine Informationen verfügbar"
 
 msgid "No info for current program available"
 msgstr "Keine Informationen zum aktuellen Programm verfügbar"
@@ -1672,7 +1669,7 @@ msgid "Radio"
 msgstr "Radio"
 
 msgid "Radio Channel"
-msgstr "Radiosender"
+msgstr "Radio Kanal"
 
 msgid "Radio Text"
 msgstr "Radiotext"

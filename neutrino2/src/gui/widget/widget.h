@@ -40,13 +40,12 @@ class CMenuTarget
 			RETURN_EXIT_ALL 	= 4
 		};
 
-	private:
 		std::string valueString;
 				
 	public:
 		CMenuTarget(){valueString.clear();};
-		virtual ~CMenuTarget(){};
-		virtual void hide(){};
+		virtual ~CMenuTarget(){valueString.clear();};
+		virtual void hide(){valueString.clear();};
 		virtual int exec(CMenuTarget* parent, const std::string& actionKey) = 0;
 		
 		//

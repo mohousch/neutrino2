@@ -119,7 +119,7 @@ class CSectionsd
 			t_service_id                    service_id;
 			t_original_network_id           original_network_id;
 			t_transport_stream_id           transport_stream_id;
-			CSectionsd::sectionsdTime zeit;
+			CSectionsd::sectionsdTime 	zeit;
 		};
 		typedef std::vector<responseGetNVODTimes> NVODTimesList;
 

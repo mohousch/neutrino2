@@ -130,6 +130,7 @@ void CZapitBouquet::removeService(CZapitChannel *oldChannel)
 				channels = &radioChannels;
 				break;
 		}
+		
 		(*channels).erase(remove(channels->begin(), channels->end(), oldChannel), channels->end());
 	}
 }

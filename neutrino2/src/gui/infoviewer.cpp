@@ -355,7 +355,7 @@ void CInfoViewer::paintRecordIcon(int posx, int posy)
 //
 void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id, const bool _calledFromNumZap, int _epgpos)
 {
-	dprintf(DEBUG_NORMAL, "CInfoViewer::showTitle: channel:%llx callFromNumZap:%s\n", _new_channel_id, _calledFromNumZap? "true" : "false");
+	dprintf(DEBUG_NORMAL, "CInfoViewer::showTitle: channel: 0x%llx callFromNumZap:%s\n", _new_channel_id, _calledFromNumZap? "true" : "false");
 	
 	//
 	std::string ChannelName = _ChannelName;
@@ -723,7 +723,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 
 void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EPGPos)
 {
-	dprintf(DEBUG_NORMAL, "CInfoViewer::getCurrentNextEPG:%llx\n", ChannelID);
+	dprintf(DEBUG_NORMAL, "CInfoViewer::getCurrentNextEPG: 0x%llx\n", ChannelID);
 	
 	CSectionsd::getInstance()->getCurrentNextServiceKey(ChannelID & 0xFFFFFFFFFFFFULL, info_CurrentNext);
 	
@@ -1434,7 +1434,7 @@ void CInfoViewer::showButton_SubServices()
 
 void CInfoViewer::getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info)
 {
-	dprintf(DEBUG_NORMAL, "CInfoViewer::getEPG: channel_id:%llx\n", for_channel_id);
+	dprintf(DEBUG_NORMAL, "CInfoViewer::getEPG: channel_id: 0x%llx\n", for_channel_id);
 
 	// to clear the oldinfo for channels without epg, call getEPG() with for_channel_id = 0
 	if (for_channel_id == 0)

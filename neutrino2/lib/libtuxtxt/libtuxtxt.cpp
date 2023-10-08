@@ -25,7 +25,7 @@ int tuxtxt_init()
 	if ( tuxtxt_initialized )
 		return 0;
 
-	tuxtxt_initialized=1;
+	tuxtxt_initialized = 1;
 
 	/* init data */
 	//memset(&tuxtxt_cache.astCachetable, 0, sizeof(tuxtxt_cache.astCachetable));
@@ -63,11 +63,11 @@ void tuxtxt_start(int tpid, int source)
 		tuxtxt_cache.page = 0x100;
 		tuxtxt_cache.vtxtpid = tpid;
 		
-		tuxtxt_start_thread(source);
+		tuxtxt_start_thread(/*source*/);
 	}
 	else if (!tuxtxt_cache.thread_starting && !tuxtxt_cache.receiving)
 	{
-		tuxtxt_start_thread( source );
+		tuxtxt_start_thread( /*source*/ );
 	}
 }
 
@@ -76,6 +76,6 @@ void tuxtxt_close()
 	tuxtxt_stop();
 	tuxtxt_cache.dmx = -1;
 	tuxtxt_clear_cache();
-	tuxtxt_initialized=0;
+	tuxtxt_initialized = 0;
 }
 

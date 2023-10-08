@@ -174,7 +174,7 @@ void CBouquetList::adjustToChannelID(t_channel_id channel_id)
 		}
 	}
 	
-	dprintf(DEBUG_NORMAL, "CBouquetList::adjustToChannelID to %llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CBouquetList::adjustToChannelID to 0x%llx\n", channel_id);
 	
 	for (uint32_t i = 0; i < Bouquets.size(); i++) 
 	{

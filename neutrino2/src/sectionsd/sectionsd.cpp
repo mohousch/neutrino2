@@ -1062,7 +1062,7 @@ void CSectionsd::removeDupEvents(void)
 
 		if ((*e1)->table_id == (*e2)->table_id)
 		{
-			dprintf(DEBUG_DEBUG, "CSectionsd::removeDupEvents: %s: not removing events %llx %llx, t:%02x '%s'\n", __func__, (*e1)->uniqueKey(), (*e2)->uniqueKey(), (*e1)->table_id, (*e1)->getName().c_str());
+			dprintf(DEBUG_DEBUG, "CSectionsd::removeDupEvents: %s: not removing events 0x%llx 0x%llx, t:%02x '%s'\n", __func__, (*e1)->uniqueKey(), (*e2)->uniqueKey(), (*e1)->table_id, (*e1)->getName().c_str());
 			continue;
 		}
 
@@ -1071,7 +1071,7 @@ void CSectionsd::removeDupEvents(void)
 		if ((*e1)->table_id < (*e2)->table_id)
 			del = e2;
 
-		dprintf(DEBUG_DEBUG, "CSectionsd::removeDupEvents: %s: removing event %llx.%02x '%s'\n", __func__, (*del)->uniqueKey(), (*del)->table_id, (*del)->getName().c_str());
+		dprintf(DEBUG_DEBUG, "CSectionsd::removeDupEvents: %s: removing event 0x%llx.%02x '%s'\n", __func__, (*del)->uniqueKey(), (*del)->table_id, (*del)->getName().c_str());
 		/* remember the unique ID for later deletion */
 		to_delete.push_back((*del)->uniqueKey());
 	}
@@ -1447,7 +1447,7 @@ void CSectionsd::dumpStatus(void)
 //
 void CSectionsd::setServiceChanged(t_channel_id channel_id, bool requestEvent)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::setServiceChanged: Service changed to:%llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CSectionsd::setServiceChanged: Service changed to: 0x%llx\n", channel_id);
 
 	messaging_last_requested = time_monotonic();
 
@@ -1985,7 +1985,7 @@ void *CSectionsd::insertEventsfromXMLTV(void* data)
 
 void *CSectionsd::insertEventsfromLocalTV(void *data)
 {
-	dprintf(DEBUG_INFO, "CSectionsd::insertEventsfromLocalTV: chid:%llx\n", (t_channel_id)data);
+	dprintf(DEBUG_INFO, "CSectionsd::insertEventsfromLocalTV: chid: 0x%llx\n", (t_channel_id)data);
 	
 	//
 	t_channel_id chid = (t_channel_id)data;
@@ -2005,7 +2005,7 @@ void *CSectionsd::insertEventsfromLocalTV(void *data)
 		epgid = chan->getEPGID();
 	}
 	
-	dprintf(DEBUG_INFO, "CSectionsd::insertEventsfromLocalTV:epgid: %llx\n", epgid);
+	dprintf(DEBUG_INFO, "CSectionsd::insertEventsfromLocalTV:epgid: 0x%llx\n", epgid);
 	
 	// localtv
 	std::string evUrl;
@@ -2567,7 +2567,7 @@ void CSectionsd::readSIfromXMLTV(const char *url)
 //
 void CSectionsd::readSIfromLocalTV(const t_channel_id chid)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromLocalTV: %llx\n", chid);
+	dprintf(DEBUG_NORMAL, "CSectionsd::readSIfromLocalTV: 0x%llx\n", chid);
 
 	pthread_t thrInsert;
 		
@@ -2915,7 +2915,7 @@ int eit_set_update_filter(int *fd)
 
 	unsigned char cur_eit = dmxCN.get_eit_version();
 	
-	dprintf(DEBUG_DEBUG, "CSectionsd:: eit_set_update_filter, servicekey = 0x" "%llx" ", current version 0x%x got events %d\n", messaging_current_servicekey, cur_eit, messaging_have_CN);
+	dprintf(DEBUG_DEBUG, "CSectionsd:: eit_set_update_filter, servicekey = 0x" "0x%llx" ", current version 0x%x got events %d\n", messaging_current_servicekey, cur_eit, messaging_have_CN);
 
 	if (cur_eit == 0xff) 
 	{
@@ -3066,7 +3066,7 @@ void *CSectionsd::fseitThread(void *)
 				{
 					timeoutsDMX = 0;
 					dprintf(DEBUG_DEBUG, "CSectionsd::fseitThread: timeoutsDMX for 0x"
-						"%llx"
+						"0x%llx"
 						" reset to 0 (not broadcast)\n", messaging_current_servicekey );
 
 					dprintf(DEBUG_DEBUG, "CSectionsd::fseitThread: New Filterindex: %d (ges. %d)\n", dmxFSEIT.filter_index + 1, (signed) dmxFSEIT.filters.size() );
@@ -3324,7 +3324,7 @@ void *CSectionsd::viasateitThread(void *)
 				if ((dmxVIASAT.filter_index == 2 && !si->second->eitPresentFollowingFlag()) || ((dmxVIASAT.filter_index == 1 || dmxVIASAT.filter_index == 3) && !si->second->eitScheduleFlag()))
 				{
 					timeoutsDMX = 0;
-					dprintf(DEBUG_DEBUG, "CSectionsd::viasateitThread: timeoutsDMX for 0x" "%llx" " reset to 0 (not broadcast)\n", messaging_current_servicekey );
+					dprintf(DEBUG_DEBUG, "CSectionsd::viasateitThread: timeoutsDMX for 0x" "0x%llx" " reset to 0 (not broadcast)\n", messaging_current_servicekey );
 
 					dprintf(DEBUG_DEBUG, "CSectionsd::viasateitThread: New Filterindex: %d (ges. %d)\n", dmxVIASAT.filter_index + 1, (signed) dmxVIASAT.filters.size() );
 					dmxVIASAT.change(dmxVIASAT.filter_index + 1);
@@ -3610,7 +3610,7 @@ void *CSectionsd::eitThread(void *)
 				{
 					timeoutsDMX = 0;
 					dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: timeoutsDMX for 0x"
-						"%llx"
+						"0x%llx"
 						" reset to 0 (not broadcast)\n", messaging_current_servicekey );
 
 					dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: New Filterindex: %d (ges. %d)\n", dmxEIT.filter_index + 1, (signed) dmxEIT.filters.size() );
@@ -4234,7 +4234,7 @@ void CSectionsd::readDVBTimeFilter(void)
 
 void CSectionsd::getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEventList &eList, char search, std::string search_text)
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::getEventsServiceKey:sendAllEvents for:%llx\n", serviceUniqueKey);
+	dprintf(DEBUG_NORMAL, "CSectionsd::getEventsServiceKey:sendAllEvents for:0x%llx\n", serviceUniqueKey);
 
 	if (serviceUniqueKey != 0) 
 	{ 
@@ -4303,7 +4303,7 @@ void CSectionsd::getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEven
 
 void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CurrentNextInfo& current_next )
 {
-	dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: Request of current/next information for: %llx\n", uniqueServiceKey);
+	dprintf(DEBUG_NORMAL, "CSectionsd::getCurrentNextServiceKey: Request of current/next information for: 0x%llx\n", uniqueServiceKey);
 
 	SIevent currentEvt;
 	SIevent nextEvt;
@@ -4613,7 +4613,7 @@ bool CSectionsd::getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEP
 	SIevent evt;
 	SItime zeit(0, 0);
 
-	dprintf(DEBUG_DEBUG, "CSectionsd::getActualEPGServiceKey Request of current EPG for:%llx\n", uniqueServiceKey);
+	dprintf(DEBUG_DEBUG, "CSectionsd::getActualEPGServiceKey Request of current EPG for: 0x%llx\n", uniqueServiceKey);
 
 	readLockEvents();
 	if (uniqueServiceKey == messaging_current_servicekey) 
@@ -4829,7 +4829,7 @@ bool CSectionsd::getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, Link
 bool CSectionsd::getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, NVODTimesList& nvod_list)
 {
 	bool ret = false;
-	dprintf(DEBUG_DEBUG, "CSectionsd::getNVODTimesServiceKey: Request of NVOD times for:%llx\n", uniqueServiceKey);
+	dprintf(DEBUG_DEBUG, "CSectionsd::getNVODTimesServiceKey: Request of NVOD times for: 0x%llx\n", uniqueServiceKey);
 
 	nvod_list.clear();
 
@@ -4897,7 +4897,7 @@ void CSectionsd::Start(void)
 	}
 
 	ntpserver = ntp_config.getString("network_ntpserver", "de.pool.ntp.org");
-	ntprefresh = atoi(ntp_config.getString("network_ntprefresh","30").c_str() );
+	ntprefresh = atoi(ntp_config.getString("network_ntprefresh", "30").c_str() );
 	ntpenable = ntp_config.getBool("network_ntpenable", false);
 	
 	// check for rdate
@@ -4907,10 +4907,10 @@ void CSectionsd::Start(void)
 	ntp_system_cmd = ntp_system_cmd_prefix + ntpserver;
 
 	// epg config
-	secondsToCache = (atoi(ntp_config.getString("epg_cache_time","14").c_str() ) *24*60L*60L); //Tage
-	secondsExtendedTextCache = (atoi(ntp_config.getString("epg_extendedcache_time","360").c_str() ) *60L*60L); //Stunden
-	oldEventsAre = (atoi(ntp_config.getString("epg_old_events","1").c_str() ) *60L*60L); //Stunden
-	max_events= atoi(ntp_config.getString("epg_max_events","50000").c_str() );
+	secondsToCache = (atoi(ntp_config.getString("epg_cache_time", "14").c_str() ) *24*60L*60L); //Tage
+	secondsExtendedTextCache = (atoi(ntp_config.getString("epg_extendedcache_time", "360").c_str() ) *60L*60L); //Stunden
+	oldEventsAre = (atoi(ntp_config.getString("epg_old_events", "1").c_str() ) *60L*60L); //Stunden
+	max_events = atoi(ntp_config.getString("epg_max_events", "50000").c_str() );
 
 	dprintf(DEBUG_NORMAL, "CSectionsd::Start: Caching max %d events\n", max_events);
 	dprintf(DEBUG_NORMAL, "CSectionsd::Start: Caching %ld days\n", secondsToCache / (24*60*60L));

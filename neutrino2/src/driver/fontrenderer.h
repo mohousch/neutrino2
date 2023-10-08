@@ -115,11 +115,10 @@ class FBFontRenderClass
 		                                     FT_Face*    aface);
 
 		CFont *getFont(const char * const family, const char * const style, int size);
-
 		std::string getFamily(const char * const filename) const;
-
 		const char * AddFont(const char * const filename, bool make_italics = false);
 
+		//
 		FBFontRenderClass(const int xres = 72, const int yres = 72);
 		~FBFontRenderClass();
 		

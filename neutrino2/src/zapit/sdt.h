@@ -1,5 +1,5 @@
 /*
- * $Id: sdt.h,v 1.18 2013/08/18 11:23:30 mohousch Exp $
+ * $Id: sdt.h 06.10.2023 11:23:30 mohousch Exp $
  *
  * (C) 2002, 2003 by Andreas Oberritter <obi@tuxbox.org>
  *
@@ -24,10 +24,14 @@
 
 #include <zapit/zapittypes.h>
 #include <zapit/frontend_c.h>
+#include <zapit/descriptors.h>
 
 
 class CSdt
 {
+	private:
+		CDescriptors descriptor;
+		
 	public:
 		CSdt(){};
 		virtual ~CSdt(){};

@@ -326,24 +326,6 @@ int parity(int c)
 	return n;
 }
 
-#if 0	/* just for testing */
-/* encode hamming 24/18 */
-unsigned int ham24(unsigned int val)
-{
-	val = ((val & 0x000001) << 2) |
-		((val & 0x00000e) << 3) |
-		((val & 0x0007f0) << 4) |
-		((val & 0x03f800) << 5);
-	val |= parity(val & 0x555554);
-	val |= parity(val & 0x666664) << 1;
-	val |= parity(val & 0x787870) << 3;
-	val |= parity(val & 0x007f00) << 7;
-	val |= parity(val & 0x7f0000) << 15;
-	val |= parity(val) << 23;
-	return val;
-}
-#endif
-
 /* decode hamming 24/18, error=-1 */
 signed int deh24(unsigned char *ph24)
 {
@@ -368,3 +350,4 @@ signed int deh24(unsigned char *ph24)
 		((h24 & 0x7f0000) >> 5);
 }
 #endif /* table or serial */
+

@@ -336,7 +336,7 @@ void SIevent::setExtendedText(const std::string &lang, const std::string &text)
 
 void SIevent::dump(void) const
 {
-	printf("Unique key: %llx\n", uniqueKey());
+	printf("Unique key: 0x%llx\n", uniqueKey());
 	
 	if(original_network_id)
 		printf("Original-Network-ID: %hu\n", original_network_id);

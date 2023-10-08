@@ -41,7 +41,7 @@
 #include <system/helpers.h>
 
 
-extern bool parentallocked;			// defined neutrino.cpp
+//extern bool parentallocked;			// defined neutrino.cpp
 
 #define PARENTALLOCK_PROMPT_OPTION_COUNT 3
 const keyval PARENTALLOCK_PROMPT_OPTIONS[PARENTALLOCK_PROMPT_OPTION_COUNT] =
@@ -134,10 +134,10 @@ void CParentalLockSettings::showMenu()
 	listBox->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	// prompt
-	listBox->addItem(new CMenuOptionChooser(_("Prompt for PIN"), &g_settings.parentallock_prompt, PARENTALLOCK_PROMPT_OPTIONS, PARENTALLOCK_PROMPT_OPTION_COUNT, !parentallocked));
+	listBox->addItem(new CMenuOptionChooser(_("Prompt for PIN"), &g_settings.parentallock_prompt, PARENTALLOCK_PROMPT_OPTIONS, PARENTALLOCK_PROMPT_OPTION_COUNT, /*!parentallocked*/true));
 
 	// lockage
-	listBox->addItem(new CMenuOptionChooser(_("Lock program"), &g_settings.parentallock_lockage, PARENTALLOCK_LOCKAGE_OPTIONS, PARENTALLOCK_LOCKAGE_OPTION_COUNT, !parentallocked));
+	listBox->addItem(new CMenuOptionChooser(_("Lock program"), &g_settings.parentallock_lockage, PARENTALLOCK_LOCKAGE_OPTIONS, PARENTALLOCK_LOCKAGE_OPTION_COUNT, /*!parentallocked*/true));
 
 	// Pin
 	CPINChangeWidget * pinChangeWidget = new CPINChangeWidget(_("Change PIN code"), g_settings.parentallock_pincode, 4, _("Enter your new youth protection pin code here!"));

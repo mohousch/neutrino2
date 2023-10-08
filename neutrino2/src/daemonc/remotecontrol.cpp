@@ -125,7 +125,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		     (msg == NeutrinoMessages::EVT_ZAP_FAILED  ) || 
 		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD  ) ) 
 		{
-			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: timeout EVT_ZAP current_channel_id: %llx data: %llx\n", current_channel_id, *(t_channel_id *)data);
+			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: timeout EVT_ZAP current_channel_id: 0x%llx data: 0x%llx\n", current_channel_id, *(t_channel_id *)data);
 			
 			if ((*(t_channel_id *)data) != current_channel_id) 
 			{
@@ -169,7 +169,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		     (msg == NeutrinoMessages::EVT_ZAP_FAILED) || 
 		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD) )
 		{
-			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP current_channel_id: %llx data: %llx\n", current_channel_id, *(t_channel_id *)data);
+			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP current_channel_id: 0x%llx data: 0x%llx\n", current_channel_id, *(t_channel_id *)data);
 			
 			g_InfoViewer->chanready = 1;
 
@@ -217,7 +217,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			if ( (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) || 
 			     (msg == NeutrinoMessages:: EVT_ZAP_SUB_FAILED ) ) 
 			{
-				dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg EVT_ZAP_SUB current_sub_channel_id: %llx data: %llx\n", current_sub_channel_id, *(t_channel_id *)data);
+				dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg EVT_ZAP_SUB current_sub_channel_id: 0x%llx data: 0x%llx\n", current_sub_channel_id, *(t_channel_id *)data);
 				
 				if ((*(t_channel_id *)data) != current_sub_channel_id)
 				{
@@ -248,7 +248,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		CSectionsd::CurrentNextInfo info_CN;
 		CSectionsd::getInstance()->getCurrentNextServiceKey(current_channel_id & 0xFFFFFFFFFFFFULL, info_CN);
 		
-		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg got  EVT_CURRENTEPG, uniqueKey: %llx chid: %llx flags: %x\n", info_CN.current_uniqueKey, current_channel_id, info_CN.flags);
+		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg got  EVT_CURRENTEPG, uniqueKey: 0x%llx chid: 0x%llx flags: %x\n", info_CN.current_uniqueKey, current_channel_id, info_CN.flags);
 		
 		if ((info_CN.current_uniqueKey >> 16) == (current_channel_id & 0xFFFFFFFFFFFFULL) || (info_CN.current_uniqueKey >> 16) == (current_sub_channel_id & 0xFFFFFFFFFFFFULL))
 		{
@@ -422,7 +422,7 @@ void CRemoteControl::getSubChannels()
 
 void CRemoteControl::getNVODs()
 {
-	dprintf(DEBUG_NORMAL, "CRemoteControl::getNVODs: getNVODs, current_EPGid: %llx\n", current_EPGid);
+	dprintf(DEBUG_NORMAL, "CRemoteControl::getNVODs: getNVODs, current_EPGid: 0x%llx\n", current_EPGid);
 	
 	if ( subChannels.size() == 0 )
 	{
@@ -713,7 +713,7 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::st
 	current_channel_id = channel_id;
 	current_channel_name = channame;
 	
-	dprintf(DEBUG_NORMAL, ANSI_BLUE"CRemoteControl::zapToChannelID:%llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, ANSI_BLUE"CRemoteControl::zapToChannelID: 0x%llx\n", channel_id);
 	
 	if (start_video)
 		startvideo(channel_id);

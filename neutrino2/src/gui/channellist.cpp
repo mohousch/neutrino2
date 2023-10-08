@@ -389,7 +389,7 @@ t_channel_id CChannelList::getActiveChannel_ChannelID(void) const
 {
 	if (selected < chanlist.size()) 
 	{
-		dprintf(DEBUG_NORMAL, "CChannelList::getActiveChannel_ChannelID:%llx\n", chanlist[selected]->channel_id);
+		dprintf(DEBUG_NORMAL, "CChannelList::getActiveChannel_ChannelID: 0x%llx\n", chanlist[selected]->channel_id);
 		
 		return chanlist[selected]->channel_id;
 	} 
@@ -401,7 +401,7 @@ t_channel_id CChannelList::getActiveChannel_EPGID(void) const
 {
 	if (selected < chanlist.size()) 
 	{
-		printf("CChannelList::getActiveChannel_EPGID:%llx\n", chanlist[selected]->epgid);
+		printf("CChannelList::getActiveChannel_EPGID: 0x%llx\n", chanlist[selected]->epgid);
 		
 		return chanlist[selected]->epgid;
 	} 
@@ -413,7 +413,7 @@ t_channel_id CChannelList::getActiveChannel_LogoID(void) const
 {
 	if (selected < chanlist.size()) 
 	{
-		printf("CChannelList::getActiveChannel_LogoID:%llx\n", chanlist[selected]->logoid);
+		printf("CChannelList::getActiveChannel_LogoID: 0x%llx\n", chanlist[selected]->logoid);
 		
 		return chanlist[selected]->logoid;
 	} 
@@ -1073,7 +1073,7 @@ bool CChannelList::adjustToChannelID(const t_channel_id channel_id, bool bToo)
 {
 	unsigned int i;
 
-	dprintf(DEBUG_NORMAL, "CChannelList::adjustToChannelID: channel_id %llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CChannelList::adjustToChannelID: channel_id 0x%llx\n", channel_id);
 	
 	for (i = 0; i < chanlist.size(); i++) 
 	{
@@ -1144,7 +1144,7 @@ void CChannelList::setSelected( int nChannelNr)
 // -- Zap to channel with channel_id
 bool CChannelList::zapToChannelID(const t_channel_id channel_id, bool rezap)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::zapToChannelID %llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CChannelList::zapToChannelID 0x%llx\n", channel_id);
 	
 	for (unsigned int i = 0; i < chanlist.size(); i++) 
 	{
@@ -1179,7 +1179,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 
 	CZapitChannel * chan = chanlist[pos];
 	
-	dprintf(DEBUG_NORMAL, "CChannelList::zapTo me %s tuned %d new %d %s -> %llx\n", name.c_str(), tuned, pos, chan->name.c_str(), chan->channel_id);
+	dprintf(DEBUG_NORMAL, "CChannelList::zapTo me %s tuned %d new %d %s -> 0x%llx\n", name.c_str(), tuned, pos, chan->name.c_str(), chan->channel_id);
 	
 	if ( (pos != (int)tuned) || rezap ) //FIXME: allow after scan to tun
 	{  

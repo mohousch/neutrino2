@@ -44,6 +44,7 @@
 #include <zapit/nit.h>
 #include <zapit/pat.h>
 #include <zapit/sdt.h>
+#include <zapit/pmt.h>
 
 
 ////
@@ -54,6 +55,12 @@ class CZapitBouquet;
 ////
 class CZapit
 {
+	private:
+		CPat pat;
+		CPmt pmt;
+		CSdt sdt;
+		CNit nit;
+	
 	public:
 		enum zapStatus
 		{
@@ -239,7 +246,6 @@ class CZapit
 		bool playbackStopForced;
 		bool avDecoderOpen;
 		//
-		int scanSDT;
 		bool sdt_wakeup;
 		sdt_tp_t sdt_tp;
 		//
@@ -259,8 +265,11 @@ class CZapit
 		bool saveLastChannel;
 		int lastChannelMode;
 		uint32_t  lastChannelRadio;
+		t_channel_id lastChannelRadio_id;
 		uint32_t  lastChannelTV;
+		t_channel_id lastChannelTV_id;
 		bool makeRemainingChannelsBouquet;
+		int scanSDT;
 		//// channelManager
 		int newtpid;
 		int tcnt;
@@ -325,27 +334,27 @@ class CZapit
 		void saveZapitUBouquets(void);
 		void loadBouquets(bool loadCurrentBouquet = false);
 		CZapitBouquet* addBouquet(const std::string& name, bool ub = false, bool webtvb = false);
+		CZapitBouquet *addBouquet(const std::string &name, BouquetList &list, bool ub = false, bool webtvb = false);
 		CZapitBouquet* addBouquetIfNotExist(const std::string& name, bool ub = false, bool webtvb = false);
+		CZapitBouquet* addBouquetIfNotExist(const std::string& name, BouquetList &list, bool ub = false, bool webtvb = false);
 		void deleteBouquet(const unsigned int id);
 		void deleteBouquet(const CZapitBouquet* bouquet);
-		int  existsBouquet(char const * const name);
+		int  existsBouquet(const char * const name);
+		int existsBouquet(const char * const name, BouquetList &list);
 		void moveBouquet(const unsigned int oldId, const unsigned int newId);
 		bool existsChannelInBouquet(unsigned int bq_id, const t_channel_id channel_id);
+		bool existsChannelInBouquet(unsigned int bq_id, const t_channel_id channel_id, BouquetList &list);
 		void renameBouquet(const unsigned int bouquet, const char * const newName); // UTF-8 encoded
 		void setBouquetLock(const unsigned int bouquet, const bool lock);
 		void setBouquetHidden(const unsigned int bouquet, const bool hidden);
-
 		//
 		void clearAll();
-
 		//
 		CZapitChannel* findChannelByChannelID(const t_channel_id channel_id);
 		CZapitChannel* findChannelByName(std::string name, const t_service_id sid);
-
 		// webtv
 		void parseWebTVBouquet(std::string filename);
 		void loadWebTVBouquets(const std::string& dirname);
-		
 		//
 		void sortBouquets(void);
 		
@@ -360,7 +369,6 @@ class CZapit
 		CFrontend * getRecordFrontend(CZapitChannel * thischannel);
 		void lockFrontend(CFrontend *fe);
 		void unlockFrontend(CFrontend *fe);
-		
 		//
 		void loadAudioMap();
 		void saveAudioMap();
@@ -387,10 +395,8 @@ class CZapit
 		void setTVMode(void);
 		int prepareChannels();
 		void renumServices(void);
-		
 		//
 		unsigned int zapToChannelID(const t_channel_id channel_id, const bool isSubService);
-
 		//
 		void sendCurrentAPIDs(APIDList &apids);
 		void sendCurrentSubPIDs(SubPIDList &subpids);
@@ -398,11 +404,9 @@ class CZapit
 		void sendRecordSubPIDs(SubPIDList &subpids);
 		void sendAPIDs(t_channel_id chid, APIDList &apids);
 		void sendSubPIDs(t_channel_id chid, SubPIDList &subpids);
-		
 		//
 		void internalSendChannels(ZapitChannelList* channels, const unsigned int first_channel_nr, BouquetChannelList &Bchannels);
 		void sendBouquetChannels(BouquetChannelList &Bchannels, const unsigned int bouquet, const channelsMode mode);
-		
 		//// channelManager
 		void parseTransponders(xmlNodePtr node, t_satellite_position satellitePosition, fe_type_t frontendType);
 		void parseChannels(xmlNodePtr node, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq);
@@ -412,27 +416,21 @@ class CZapit
 		int loadTransponders();
 		int loadServices(bool only_current);
 		void saveServices(bool tocopy = false);
-		
 		//// scanManager
 		bool tuneFrequency(FrontendParameters *feparams, t_satellite_position satellitePosition, int feindex);
 		bool getSDTS(t_satellite_position satellitePosition, int feindex);
 		bool scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, int feindex);
 		bool scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex);
 		void saveScanBouquets(const CZapit::bouquetMode bouquetMode, const char * const providerName);
-		
 		//
 		void closeAVDecoder(void);
 		void openAVDecoder(void);
-
-		//
 		void enterStandby(void);
 		void leaveStandby(void);
-		
 		//
 		pthread_t scan_thread; 
 		static void * scanThread(void * data);
 		static void * scanTransponderThread(void * data);
-		
 		//
 		pthread_t tsdt;
 		static void * sdtThread(void * arg);
@@ -464,19 +462,15 @@ class CZapit
 		void saveFrontendConfig(int feindex);
 		void loadFrontendConfig();
 		int getFrontendCount(void){return femap.size();};
-		
 		//
 		void setZapitConfig(Zapit_config * Cfg);
 		void getZapitConfig(Zapit_config *Cfg);
-		
 		//
 		bool CanZap(CZapitChannel * thischannel);
-		
 		//
 		void getLastChannel(unsigned int &channumber, char &mode);
 		int getMode(void);
 		void setMode(const channelsMode mode);
-
 		// playback
 		int startPlayBack(CZapitChannel *);
 		int stopPlayBack(bool sendPmt = false);
@@ -486,12 +480,10 @@ class CZapit
 		void unlockPlayBack();
 		bool isPlayBackActive();
 		void setStandby(bool enable);
-
 		//
 		bool isChannelTVChannel(const t_channel_id channel_id);
 		bool isChannelWEBTVChannel(const t_channel_id channel_id);
 		bool isChannelRadioChannel(const t_channel_id channel_id);
-
 		//
 		void zapToServiceIDNOWAIT(const t_channel_id channel_id);
 		void zapToSubServiceIDNOWAIT(const t_channel_id channel_id);
@@ -500,13 +492,11 @@ class CZapit
 		unsigned int zapToServiceID(const t_channel_id channel_id);
 		unsigned int zapToSubServiceID(const t_channel_id channel_id);
 		int zapToRecordID(const t_channel_id channel_id);
-
 		//
 		std::string getChannelName(const t_channel_id channel_id);
 		int getChannelNumber(const t_channel_id channel_id);
 		std::string getChannelURL(const t_channel_id channel_id);
 		std::string getChannelDescription(const t_channel_id channel_id);
-
 		// current service
 		CZapitChannel* getCurrentService();
 		t_channel_id getCurrentServiceID();
@@ -514,25 +504,20 @@ class CZapit
 		bool getCurrentTP(transponder *TP);
 		CZapit::CCurrentServiceInfo getCurrentServiceInfo();
 		void getCurrentPIDS(responseGetPIDs &pids);
-
 		// novd
 		void setSubServices( subServiceList& subServices );
-
 		// record
 		void setRecordMode(const bool activate);
 		bool isRecordModeActive();
 		t_channel_id getRecordServiceID();
 		CZapit::CCurrentServiceInfo getRecordServiceInfo();
 		void getRecordPIDS(responseGetPIDs &pids);
-		
 		//
 		CZapit::CCurrentServiceInfo getServiceInfo(t_channel_id chid);
 		void getPIDS(t_channel_id chid, responseGetPIDs &pids);
-		
 		//
 		void reinitChannels();
 		void reloadCurrentServices();
-
 		// audio / video
 		void muteAudio(const bool mute);
 		bool getMuteStatus();
@@ -544,20 +529,16 @@ class CZapit
 		void getVolumePercent(unsigned int *percent, t_channel_id channel_id = 0, const unsigned int apid = 0, const bool is_ac3 = false);
 		void setAudioChannel(const unsigned int channel);
 		void setVideoSystem(int video_system);
-		
 		// own bouquetManager needed for nhttpd
 		bool getBouquetChannels(const unsigned int bouquet, BouquetChannelList &channels, const channelsMode mode = MODE_CURRENT, const bool utf_encoded = false);
-
 		// bouquetManager
 		void saveBouquets();
 		void restoreBouquets();
 		void addChannelToBouquet(const unsigned int bouquet, const t_channel_id channel_id);
 		void removeChannelFromBouquet(const unsigned int bouquet, const t_channel_id channel_id);
-		
 		// channelManager
 		int loadMotorPositions(void);
 		void saveMotorPositions();
-
 		// scanManager
 		int addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit = false, int feindex = 0);
 		bool tuneTP(transponder TP, int feindex = 0);
@@ -569,9 +550,8 @@ class CZapit
 		void setScanBouquetMode(const bouquetMode mode);
 		bool startScan(commandScanProvider &msg);
 		bool stopScan();
-
 		//
-		void Start(Z_start_arg *ZapStart_arg);
+		void Start(Zapit_config zapitCfg);
 		void Stop();
 };
 

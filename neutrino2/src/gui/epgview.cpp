@@ -460,7 +460,7 @@ void CEpgData::showHead(const t_channel_id channel_id)
 
 int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_startzeit, bool doLoop )
 {
-	dprintf(DEBUG_NORMAL, "CEpgData::show: %llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CEpgData::show: 0x%llx\n", channel_id);
 
 	int res = CMenuTarget::RETURN_REPAINT;
 	static uint64_t id;
@@ -603,7 +603,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	// fsk
 	if (epgData.fsk > 0)
 	{
-		char _tfsk[11];
+		char _tfsk[11] = "";
 		sprintf (_tfsk, _("FSK: ab %d"), epgData.fsk );
 
 		epgBuffer += _tfsk;
@@ -611,13 +611,16 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	}
 	
 	// length information
-	char lengthInfo[11];
-	sprintf(lengthInfo, "%d", epgData.epg_times.dauer / 60);
-	//epgBuffer += _("length: ");
-	epgBuffer += lengthInfo;
-	epgBuffer += " ";
-	epgBuffer += _("Minutes");
-	epgBuffer += "\n";
+	if (epgData.epg_times.dauer > 0)
+	{
+		char lengthInfo[11] = "";
+		sprintf(lengthInfo, "%d", epgData.epg_times.dauer / 60);
+		
+		epgBuffer += lengthInfo;
+		epgBuffer += " ";
+		epgBuffer += _("Minutes");
+		epgBuffer += "\n";
+	}
 	
 	// genre:
 	if (epgData.contentClassification.length() > 0)
@@ -995,6 +998,8 @@ void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* st
 		epgData.info2.clear();
 		epgData.contentClassification.clear();
 		epgData.userClassification.clear();
+		epgData.epg_times.startzeit = NULL;
+		epgData.epg_times.dauer = 0;
 		
 		epgBuffer.clear();
 	}

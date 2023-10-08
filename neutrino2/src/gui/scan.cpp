@@ -365,7 +365,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			}
 			else
 			{
-				handleMsg(msg, data);
+				msg = handleMsg(msg, data);
 			}
 				
 			frameBuffer->blit();

@@ -184,6 +184,9 @@
 
 //// globals
 int debug = DEBUG_NORMAL;
+//
+cVideo * videoDecoder = NULL;
+cAudio * audioDecoder = NULL;
 // zap
 int old_b_id = -1;
 // record and timeshift
@@ -194,12 +197,11 @@ char recDir[255];
 char timeshiftDir[255];
 // volume bar
 static CProgressBar * g_volscale;
-// zapit
-Zapit_config zapitCfg;
 //
 int prev_video_Mode;
 int current_volume;
 int current_muted;
+Zapit_config zapitCfg;
 // bouquets lists
 CBouquetList* bouquetList; 				//current bqt list
 //
@@ -217,8 +219,6 @@ CBouquetList* RADIOallList;
 CCAMMenuHandler* g_CamHandler;
 #endif
 //
-bool parentallocked = false;
-//
 //#ifdef USE_OPENGL
 static char **global_argv;
 //#endif
@@ -235,6 +235,9 @@ const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] =
 };
 
 ////
+extern cDemux *videoDemux;
+extern cDemux *audioDemux;
+//
 extern char rec_filename[1024];
 //
 extern satellite_map_t satellitePositions;		// defined in getServices.cpp
@@ -261,8 +264,8 @@ extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
 extern CFrontend * live_fe;
 // Audio/Video Decoder
-extern cVideo* videoDecoder;
-extern cAudio* audioDecoder;
+//extern cVideo* videoDecoder;
+//extern cAudio* audioDecoder;
 // timezone for wizard
 extern CMenuOptionStringChooser* tzSelect;		// defined in misc_setup.cpp
 
@@ -395,14 +398,6 @@ int CNeutrinoApp::loadSetup(const char * fname)
 		erg = 1;
 	}
 
-	// parentallock check
-        std::ifstream checkParentallocked(NEUTRINO_PARENTALLOCKED_FILE);
-	if(checkParentallocked) 
-	{
-	        parentallocked = true;
-	        checkParentallocked.close();
-	}
-
 	// video
 	g_settings.video_Mode = configfile.getInt32("video_Mode", VIDEO_STD_720P50);
 	prev_video_Mode = g_settings.video_Mode;
@@ -478,16 +473,8 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	// end audio
 
 	// parentallock
-	if (!parentallocked) 
-	{
-	  	g_settings.parentallock_prompt = configfile.getInt32( "parentallock_prompt", 0 );
-		g_settings.parentallock_lockage = configfile.getInt32( "parentallock_lockage", 12 );
-	} 
-	else 
-	{
-	        g_settings.parentallock_prompt = 3;
-	        g_settings.parentallock_lockage = 18;
-	}
+	g_settings.parentallock_prompt = configfile.getInt32( "parentallock_prompt", 0 );
+	g_settings.parentallock_lockage = configfile.getInt32( "parentallock_lockage", 12 );
 	strcpy( g_settings.parentallock_pincode, configfile.getString( "parentallock_pincode", "0000" ).c_str() );
 	// end parentallock
 
@@ -2100,9 +2087,6 @@ void CNeutrinoApp::initZapper()
 
 	// start infobar
 	g_InfoViewer->start();
-	
-	// send sectionsd config
-	sendSectionsdConfig();
 
 	// read saved epg
 	if (g_settings.epg_save)
@@ -2884,11 +2868,7 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		//
 		saveSetup(NEUTRINO_SETTINGS_FILE);
 
-		tuxtxt_close();
-		
-		// save zapitconfig	
-		zapitCfg.saveLastChannel = g_settings.uselastchannel;
-		CZapit::getInstance()->setZapitConfig(&zapitCfg);
+		//tuxtxt_close();
 	}
 	else if (actionKey == "saveskinsettings")
 	{
@@ -3342,6 +3322,14 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		if(playback)
 			delete playback;
 			
+		////
+		if(audioDecoder)
+			delete audioDecoder;
+	
+		if(videoDecoder)
+			delete videoDecoder;
+		////
+			
 		if (g_RCInput != NULL)
 			delete g_RCInput;
 			
@@ -3361,6 +3349,9 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			delete frameBuffer;
 
 		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
+		
+		////
+		usleep(1500);
 		
 //#if defined (USE_OPENGL)		
 		if(retcode == RESTART)
@@ -4852,22 +4843,32 @@ int CNeutrinoApp::run(int argc, char **argv)
 	loadSkin(g_settings.preferred_skin);
 	
 	// zapit	
-	Z_start_arg ZapStart_arg;
-	
-	ZapStart_arg.lastchannelmode = g_settings.lastChannelMode;
-	ZapStart_arg.startchanneltv_id = g_settings.startchanneltv_id;
-	ZapStart_arg.startchannelradio_id = g_settings.startchannelradio_id;
-	ZapStart_arg.startchanneltv_nr = g_settings.startchanneltv_nr;
-	ZapStart_arg.startchannelradio_nr = g_settings.startchannelradio_nr;
-	ZapStart_arg.uselastchannel = g_settings.uselastchannel;
-	ZapStart_arg.video_mode = g_settings.video_Mode;
+	zapitCfg.lastchannelmode = g_settings.lastChannelMode;
+	zapitCfg.startchanneltv_id = g_settings.startchanneltv_id;
+	zapitCfg.startchannelradio_id = g_settings.startchannelradio_id;
+	zapitCfg.startchanneltv_nr = g_settings.startchanneltv_nr;
+	zapitCfg.startchannelradio_nr = g_settings.startchannelradio_nr;
+	zapitCfg.saveLastChannel = g_settings.uselastchannel;
 	
 	current_volume = g_settings.current_volume;
 
-	CZapit::getInstance()->Start(&ZapStart_arg);
+	// init video / audio decoder
+#if defined (PLATFORM_COOLSTREAM)
+	videoDecoder = new cVideo(g_settings.video_Mode, videoDemux->getChannel(), videoDemux->getBuffer());
+	videoDecoder->Standby(false);
 	
-	// dvbsub thread
-	dvbsub_init();
+	audioDecoder = new cAudio(audioDemux->getBuffer(), videoDecoder->GetTVEnc(), NULL);
+	videoDecoder->SetAudioHandle(audioDecoder->GetHandle());
+#else	
+	videoDecoder = new cVideo();
+		
+	// set video system
+	if(videoDecoder)
+		videoDecoder->SetVideoSystem(g_settings.video_Mode);	
+	
+	// audio decoder
+	audioDecoder = new cAudio();
+#endif
 
 	// audio volume (default)
 	if(audioDecoder)
@@ -4907,6 +4908,12 @@ int CNeutrinoApp::run(int argc, char **argv)
 		// pcm delay 
 		audioDecoder->setHwPCMDelay(g_settings.pcm_delay);
 	}
+	
+	//
+	CZapit::getInstance()->Start(zapitCfg);
+	
+	// sectionsd
+	CSectionsd::getInstance()->Start();
 
 	// timerd
 	CTimerd::getInstance()->Start();
@@ -4915,10 +4922,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 	Cyhttpd::getInstance()->Start();
 
 	// streamts
-	CStreamTS::getInstance()->Start();	
-
-	// sectionsd
-	CSectionsd::getInstance()->Start();
+	CStreamTS::getInstance()->Start();
+	
+	// dvbsub thread
+	dvbsub_init();	
 
 	// for boxes with lcd :-)
 #if ENABLE_LCD	
