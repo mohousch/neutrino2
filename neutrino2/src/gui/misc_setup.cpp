@@ -673,6 +673,13 @@ int CEPGSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		
 		return CMenuTarget::RETURN_EXIT_ALL;
 	}
+	else if (actionKey == "savesettings")
+	{
+		CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+		CNeutrinoApp::getInstance()->sendSectionsdConfig();
+		
+		return RETURN_REPAINT;
+	}
 	
 	showMenu();
 	
@@ -744,7 +751,7 @@ void CEPGSettings::showMenu()
 	miscSettingsEPG->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 	
 	// save settings
-	miscSettingsEPG->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, CNeutrinoApp::getInstance(), "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
+	miscSettingsEPG->addItem(new CMenuForwarder(_("Save settings now"), true, NULL, this, "savesettings", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	miscSettingsEPG->addItem( new CMenuSeparator(CMenuSeparator::LINE) );
 
 	//
@@ -821,9 +828,6 @@ void CEPGSettings::showMenu()
 	miscSettingsEPG->addItem(o1);
 	miscSettingsEPG->addItem(o2);
 	miscSettingsEPG->addItem(o3);
-	
-	// xmltv
-	
 	
 	//
 	widget->setTimeOut(g_settings.timing_menu);

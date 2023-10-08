@@ -2087,9 +2087,6 @@ void CNeutrinoApp::initZapper()
 
 	// start infobar
 	g_InfoViewer->start();
-	
-	// send sectionsd config
-	sendSectionsdConfig();
 
 	// read saved epg
 	if (g_settings.epg_save)

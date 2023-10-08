@@ -4897,7 +4897,7 @@ void CSectionsd::Start(void)
 	}
 
 	ntpserver = ntp_config.getString("network_ntpserver", "de.pool.ntp.org");
-	ntprefresh = atoi(ntp_config.getString("network_ntprefresh","30").c_str() );
+	ntprefresh = atoi(ntp_config.getString("network_ntprefresh", "30").c_str() );
 	ntpenable = ntp_config.getBool("network_ntpenable", false);
 	
 	// check for rdate
@@ -4907,10 +4907,10 @@ void CSectionsd::Start(void)
 	ntp_system_cmd = ntp_system_cmd_prefix + ntpserver;
 
 	// epg config
-	secondsToCache = (atoi(ntp_config.getString("epg_cache_time","14").c_str() ) *24*60L*60L); //Tage
-	secondsExtendedTextCache = (atoi(ntp_config.getString("epg_extendedcache_time","360").c_str() ) *60L*60L); //Stunden
-	oldEventsAre = (atoi(ntp_config.getString("epg_old_events","1").c_str() ) *60L*60L); //Stunden
-	max_events= atoi(ntp_config.getString("epg_max_events","50000").c_str() );
+	secondsToCache = (atoi(ntp_config.getString("epg_cache_time", "14").c_str() ) *24*60L*60L); //Tage
+	secondsExtendedTextCache = (atoi(ntp_config.getString("epg_extendedcache_time", "360").c_str() ) *60L*60L); //Stunden
+	oldEventsAre = (atoi(ntp_config.getString("epg_old_events", "1").c_str() ) *60L*60L); //Stunden
+	max_events = atoi(ntp_config.getString("epg_max_events", "50000").c_str() );
 
 	dprintf(DEBUG_NORMAL, "CSectionsd::Start: Caching max %d events\n", max_events);
 	dprintf(DEBUG_NORMAL, "CSectionsd::Start: Caching %ld days\n", secondsToCache / (24*60*60L));
