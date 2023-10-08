@@ -1302,14 +1302,16 @@ int tuxtx_main(int pid, int page, int source)
 	if (Init(source) == 0)
 		return 0;
 	
-	// create sub thread
+	// create subthread
 	if(!use_gui)
 	{
 		pthread_create(&ttx_sub_thread, 0, reader_thread, (void *) NULL);
 		return 1;
 	}
 
-	do {
+	// loop
+	do 
+	{
 		if (GetRCCode() == 1)
 		{
 			if (transpmode == 2) // TV mode
@@ -1647,11 +1649,11 @@ int Init( int source )
 	ymosaic[2] = (fontheight * 2 + 1) / 3;
 	ymosaic[3] = fontheight;
 	
-	{
-		int i1;
-		for (i1 = 0; i1 <= 10; i1++)
-			aydrcs[i1] = (fontheight * i1 + 5) / 10;
-	}
+	//{
+	int i1;
+	for (i1 = 0; i1 <= 10; i1++)
+		aydrcs[i1] = (fontheight * i1 + 5) / 10;
+	//}
 
 	/* center screen */
 	StartX = sx+ (((ex-sx) - 40*fontwidth) / 2);
@@ -1828,7 +1830,7 @@ void CleanUp()
  * GetTeletextPIDs
 */
 //TODO: multi demuxes needed
-int GetTeletextPIDs(int /*source*/)
+int GetTeletextPIDs(int )
 {
 	int pat_scan, pmt_scan, sdt_scan, desc_scan, pid_test, byte, diff, first_sdt_sec;
 
@@ -2349,10 +2351,16 @@ void ConfigMenu(int Init, int source)
 	{
 		/* set current vtxt */
 		if (tuxtxt_cache.vtxtpid == 0)
+		{
 			tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
+		}
 		else
+		{
 			while(pid_table[current_pid].vtxt_pid != tuxtxt_cache.vtxtpid && current_pid < pids_found)
+			{
 				current_pid++;
+			}
+		}
 	}
 
 	/* reset to normal mode */
@@ -2373,12 +2381,12 @@ void ConfigMenu(int Init, int source)
 
 	hotindex = getIndexOfPageInHotlist();
 
-	/* clear framebuffer */
+	// clear framebuffer
 	ClearFB(transp);
 	clearbbcolor = black;
 	Menu_Init(menu, current_pid, menuitem, hotindex);
 
-	/* loop */
+	// loop
 	do {
 		if (GetRCCode() == 1)
 		{
@@ -2459,12 +2467,19 @@ void ConfigMenu(int Init, int source)
 						
 						/* set current vtxt */
 						if (tuxtxt_cache.vtxtpid == 0)
+						{
 							tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
+						}
 						else
+						{
 							while(pid_table[current_pid].vtxt_pid != tuxtxt_cache.vtxtpid && current_pid < pids_found)
+							{
 								current_pid++;
+							}
+						}
 						Menu_Init(menu, current_pid, menuitem, hotindex);
 					}
+					
 					if (current_pid > 0)
 					{
 						current_pid--;
@@ -2583,10 +2598,16 @@ void ConfigMenu(int Init, int source)
 						
 						/* set current vtxt */
 						if (tuxtxt_cache.vtxtpid == 0)
+						{
 							tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
+						}
 						else
+						{
 							while(pid_table[current_pid].vtxt_pid != tuxtxt_cache.vtxtpid && current_pid < pids_found)
+							{
 								current_pid++;
+							}
+						}
 						Menu_Init(menu, current_pid, menuitem, hotindex);
 					}
 					if (current_pid < pids_found - 1)
@@ -2796,10 +2817,16 @@ void ConfigMenu(int Init, int source)
 						
 						/* set current vtxt */
 						if (tuxtxt_cache.vtxtpid == 0)
+						{
 							tuxtxt_cache.vtxtpid = pid_table[0].vtxt_pid;
+						}
 						else
+						{
 							while(pid_table[current_pid].vtxt_pid != tuxtxt_cache.vtxtpid && current_pid < pids_found)
+							{
 								current_pid++;
+							}
+						}
 						Menu_Init(menu, current_pid, menuitem, hotindex);
 					}
 					else if (pids_found > 1)
@@ -2816,8 +2843,6 @@ void ConfigMenu(int Init, int source)
 
 							//page_atrb[32] = transp<<4 | transp;
 							inputcounter = 2;
-
-
 							tuxtxt_cache.page     = 0x100;
 							lastpage = 0x100;
 							prev_100 = 0x100;
@@ -2825,7 +2850,6 @@ void ConfigMenu(int Init, int source)
 							next_100 = 0x100;
 							next_10  = 0x100;
 							tuxtxt_cache.subpage  = 0;
-
 							tuxtxt_cache.pageupdate = 0;
 							tuxtxt_cache.zap_subpage_manual = 0;
 							hintmode = 0;
@@ -2838,7 +2862,6 @@ void ConfigMenu(int Init, int source)
 							}
 							
 							ClearFB(transp);
-
 
 							/* start demuxer with new vtxtpid */
 							if (auto_national)
@@ -3161,7 +3184,7 @@ void PageCatching()
 		return;
 	}
 
-	/* loop */
+	//
 	do {
 		GetRCCode();
 
@@ -4053,7 +4076,6 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
 		Char = G0table[4][Char-0x20];
 	else if (national_subset_local == NAT_AR && Char >= 0x20 && Char <= 0x7F) /* remap complete areas for arabic */
 		Char = G0table[5][Char-0x20];
-	
 	else
 	{
 		/* load char */
@@ -4218,6 +4240,7 @@ void RenderChar(int Char, tstPageAttr *Attribute, int zoom, int yoffset)
                 else
                         Char = G2table[0][0x20+ Attribute->diacrit];
 		
+		//
 		if ((glyph = FT_Get_Char_Index(face, Char)))
 		{
 			if ((error = FTC_SBitCache_Lookup(cache, &typettf, glyph, &sbit_diacrit, NULL)) == 0)
@@ -4380,7 +4403,6 @@ void RenderMessage(int Message)
 	int pagecolumn;
 	const char *msg;
 
-
 	/* 00000000001111111111222222222233333333334 */
 	/* 01234567890123456789012345678901234567890 */
 	char message_1[] = "�������� www.tuxtxt.com x.xx ���������";
@@ -4434,25 +4456,29 @@ void RenderMessage(int Message)
 	
 	for (byte = 0; byte < 37; byte++)
 		RenderCharFB(message_1[byte], &atrtable[_menuatr + ((byte >= 9 && byte <= 27) ? 1 : 0)]);
+		
 	RenderCharFB(message_1[37], &atrtable[_menuatr + 2]);
 
-	PosX = StartX + fontwidth+5;
+	PosX = StartX + fontwidth + 5;
 	PosY = StartY + fontheight*17;
 	RenderCharFB(message_2[0], &atrtable[_menuatr + 0]);
+	
 	for (byte = 1; byte < 36; byte++)
 		RenderCharFB(message_2[byte], &atrtable[_menuatr + 3]);
+		
 	RenderCharFB(message_2[36], &atrtable[_menuatr + 0]);
 	RenderCharFB(message_2[37], &atrtable[_menuatr + 2]);
 
-	PosX = StartX + fontwidth+5;
+	PosX = StartX + fontwidth + 5;
 	PosY = StartY + fontheight*18;
+	
 	RenderCharFB(msg[0], &atrtable[_menuatr + 0]);
 	for (byte = 1; byte < 36; byte++)
 		RenderCharFB(msg[byte], &atrtable[_menuatr + 3]);
 	RenderCharFB(msg[36], &atrtable[_menuatr + 0]);
 	RenderCharFB(msg[37], &atrtable[_menuatr + 2]);
 
-	PosX = StartX + fontwidth+5;
+	PosX = StartX + fontwidth + 5;
 	PosY = StartY + fontheight*19;
 	RenderCharFB(message_4[0], &atrtable[_menuatr + 0]);
 	for (byte = 1; byte < 36; byte++)
@@ -5196,6 +5222,8 @@ void DecodePage()
 		pCachedPage = tuxtxt_cache.astCachetable[tuxtxt_cache.page][tuxtxt_cache.subpage];
 	else
 		pCachedPage = tuxtxt_cache.astCachetable[tuxtxt_cache.page][tuxtxt_cache.subpagetable[tuxtxt_cache.page]];
+		
+	//
 	if (!pCachedPage)	/* not cached: do nothing */
 		return;
 
@@ -5204,6 +5232,7 @@ void DecodePage()
 	memcpy(&page_char[8], pCachedPage->p0, 24); /* header line without timestring */
 
 	pageinfo = &(pCachedPage->pageinfo);
+	
 	if (pageinfo->p24)
 		memcpy(&page_char[24*40], pageinfo->p24, 40); /* line 25 for FLOF */
 
@@ -5215,7 +5244,6 @@ void DecodePage()
 		boxed = 1;
 	else
 		boxed = 0;
-
 
 	/* modify header */
 	if (boxed)
@@ -5638,8 +5666,7 @@ void DecodePage()
 	int o = 0;
 	char bitmask ;
 
-
-
+	//
 	for (r = 0; r < 25; r++)
 	{
 		for (c = 0; c < 40; c++)
