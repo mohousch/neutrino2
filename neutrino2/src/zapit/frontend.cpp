@@ -1417,7 +1417,7 @@ bool CFrontend::setInput(CZapitChannel * channel, bool nvod)
 
 	if (tpI == transponders.end()) 
 	{
-		dprintf(DEBUG_INFO, "CFrontend::setInput: Transponder %llx for channel %llx not found\n", ct, channel->getChannelID());
+		dprintf(DEBUG_INFO, "CFrontend::setInput: Transponder 0x%llx for channel 0x%llx not found\n", ct, channel->getChannelID());
 		return false;
 	}
 
@@ -1476,10 +1476,10 @@ void CFrontend::setInput(t_satellite_position satellitePosition, uint32_t freque
 //
 bool CFrontend::tuneChannel(CZapitChannel * channel, bool nvod)
 {
-	dprintf(DEBUG_NORMAL, "CFrontend::tuneChannel: fe(%d:%d) delsys:0x%x tpid %llx (channel_tp:%llx nvod:%s)\n", feadapter, fenumber, deliverySystemMask, currentTransponder.TP_id, channel->getTransponderId(), nvod? "true" : "false");
+	dprintf(DEBUG_NORMAL, "CFrontend::tuneChannel: fe(%d:%d) delsys:0x%x tpid 0x%llx (channel_tp: 0x%llx nvod:%s)\n", feadapter, fenumber, deliverySystemMask, currentTransponder.TP_id, channel->getTransponderId(), nvod? "true" : "false");
 
-	////FIXME:TEST
-	transponder_list_t::iterator transponder = transponders.find(/*currentTransponder.TP_id*/channel->getTransponderId());
+	//
+	transponder_list_t::iterator transponder = transponders.find(channel->getTransponderId());
 
 	if (transponder == transponders.end())
 		return false;

@@ -569,7 +569,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 	{
 		std::pair<std::map<t_channel_id, CZapitChannel>::iterator,bool> ret;
 		
-		dprintf(DEBUG_DEBUG, "New channel %llx:::%llx %s\n", channel_id, tpid, serviceName.c_str());
+		dprintf(DEBUG_DEBUG, "New channel 0x%llx:::0x%llx %s\n", channel_id, tpid, serviceName.c_str());
 
 		ret = allchans.insert (
 				std::pair <t_channel_id, CZapitChannel> (channel_id, CZapitChannel (serviceName, service_id, transport_stream_id, original_network_id, real_type, satellitePosition, freq )));
