@@ -825,6 +825,7 @@ msgid ""
 msgstr ""
 
 #, c-format
+msgid ""
 "Found the following new package:\n"
 "Package: %s\n"
 "Date: %s, %s\n"
@@ -950,7 +951,7 @@ msgid "HDD unmount failed !"
 msgstr "Не удалось отключить жесткий диск"
 
 msgid "HDMI Color Space"
-msgst "Цветовое пространство HDMI"
+msgstr "Цветовое пространство HDMI"
 
 msgid "Halt Motor"
 msgstr "Остановить двигатель"
@@ -1145,8 +1146,8 @@ msgid "Line"
 msgstr "Линия"
 
 msgid "List End"
-msgstr "Конец списка
-"
+msgstr "Конец списка"
+
 msgid "List Start"
 msgstr "Список Начало"
 
@@ -2274,8 +2275,15 @@ msgstr "Образ успешно прошит.\n «Приставка буде�
 msgid "The image was successfully saved \n under %s."
 msgstr "Изображение успешно сохранено \n под %s."
 
-msgid "The image you have selected is an untested version, this means\nyour box maybe fail to boot after update.\n\n Do you really want to update to this version?"
-msgstr "Выбранное вами изображение является непроверенной версией, это означает, что\ ,возможно, ваш компьютер не загружается после обновления.\n Вы действительно хотите обновиться до этой версии?"
+msgid ""
+"The image you have selected is an untested version, this means\n"
+"your box maybe fail to boot after update.\n"
+"\n"
+"Do you really want to update to this version?"
+msgstr ""
+"Выбранное вами изображение является непроверенной версией, это означает, что\n"
+"возможно, ваш компьютер не загружается после обновления.\n"
+"Вы действительно хотите обновиться до этой версии?"
 
 msgid "The neutrino-settings have been updated.\n New Options will be set to default."
 msgstr "Настройки нейтрино обновлены.\n Новые параметры будут установлены по умолчанию»."
@@ -2814,6 +2822,7 @@ msgid "locked"
 msgstr "заперто"
 
 msgid "logos Dir"
+msgstr ""
 
 msgid "loop"
 msgstr "петля"
