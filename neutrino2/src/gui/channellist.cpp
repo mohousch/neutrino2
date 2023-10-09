@@ -531,7 +531,7 @@ int CChannelList::doChannelMenu(void)
 				old_bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[old_bouquet_id]->channelList->getName());
 
 				do {
-					new_bouquet_id = bouquetList->exec(false, false, false);
+					new_bouquet_id = bouquetList->exec(false, false);
 				} while(new_bouquet_id == -3);
 
 				hide();
@@ -558,7 +558,7 @@ int CChannelList::doChannelMenu(void)
 				
 			case 2: // add to
 				do {
-					bouquet_id = bouquetList->exec(false, false, false);
+					bouquet_id = bouquetList->exec(false, false);
 				} while(bouquet_id == -3);
 				
 				hide();
@@ -602,17 +602,17 @@ int CChannelList::doChannelMenu(void)
 	return 0;
 }
 
-int CChannelList::exec(bool zap)
+int CChannelList::exec(bool customMode)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::exec: zap:%s\n", zap? "yes" : "no");
+	dprintf(DEBUG_NORMAL, "CChannelList::exec: zap:%s\n", customMode? "no" : "yes");
 	
 	// show list
-	int nNewChannel = show(zap);
+	int nNewChannel = show(customMode);
 
 	dprintf(DEBUG_NORMAL, "CChannelList::exec: chanlist.size:%d nNewChannel:%d\n", (int)chanlist.size(), nNewChannel);
 	
 	// zapto
-	if(zap)
+	if(!customMode)
 	{
 		if ( nNewChannel > -1 && nNewChannel < (int) chanlist.size()) 
 			CNeutrinoApp::getInstance()->channelList->zapTo(getKey(nNewChannel) - 1);
@@ -623,9 +623,9 @@ int CChannelList::exec(bool zap)
 
 #define CHANNEL_SMSKEY_TIMEOUT 800
 //return: >= 0 to zap, -1 on cancel, -3 on list mode change, -4 list edited, -2 zap but no restore old list/chan
-int CChannelList::show(bool zap, bool customMode)
+int CChannelList::show(bool customMode)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::show: zap:%s\n", zap? "yes" : "no");
+	dprintf(DEBUG_NORMAL, "CChannelList::show: zap:%s\n", customMode? "no" : "yes");
 
 	neutrino_msg_t      msg;
 	neutrino_msg_data_t data;
@@ -651,9 +651,6 @@ int CChannelList::show(bool zap, bool customMode)
 
 	// loop control
 	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 
 	bool loop = true;
 	while (loop) 
@@ -820,11 +817,13 @@ int CChannelList::show(bool zap, bool customMode)
 						}
 					}
 				}
+				////TEST
+				printf("CChannelList::show: found:%s\n", found? "true" : "false");
 				
 				if(found) 
 				{
-					bouquetList->activateBouquet(nNext, false);
-					res = bouquetList->showChannelList();
+					//bouquetList->activateBouquet(nNext, false, customMode);
+					res = bouquetList->showChannelList(nNext, customMode);
 					loop = false;
 				}
 			}
@@ -854,8 +853,8 @@ int CChannelList::show(bool zap, bool customMode)
 				
 				if(found) 
 				{
-					bouquetList->activateBouquet(nNext, false);
-					res = bouquetList->showChannelList();
+					//bouquetList->activateBouquet(nNext, false, customMode);
+					res = bouquetList->showChannelList(nNext, customMode);
 					loop = false;
 				}
 			}
@@ -864,7 +863,7 @@ int CChannelList::show(bool zap, bool customMode)
 		{
 			selected = listBox->getSelected();
 	  
-			zapOnExit = true;
+			zapOnExit = !customMode;
 			
 			loop = false;
 		}
@@ -873,7 +872,7 @@ int CChannelList::show(bool zap, bool customMode)
 			if (this->historyMode) 
 			{ 
 				selected = CRCInput::getNumericValue(msg);
-				zapOnExit = true;
+				zapOnExit = !customMode;
 				loop = false;
     			}
 		}
@@ -928,7 +927,7 @@ int CChannelList::show(bool zap, bool customMode)
 	// bouquets mode
 	if (bShowBouquetList)
 	{
-		res = bouquetList->exec(true, zap, customMode);
+		res = bouquetList->exec(true, customMode);
 	}
 	
 	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
@@ -941,6 +940,9 @@ int CChannelList::show(bool zap, bool customMode)
 		return -1;
 
 	if(zapOnExit)
+		res = selected;
+		
+	if (customMode)
 		res = selected;
 
 	dprintf(DEBUG_NORMAL, "CChannelList::show res %d\n", res);
@@ -1004,7 +1006,7 @@ void CChannelList::hide()
 	}
 }
 
-bool CChannelList::showInfo(int pos, int epgpos)
+bool CChannelList::showInfo(int pos, int epgpos, bool fromNumZap)
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::showInfo:\n");
 	
@@ -1014,7 +1016,7 @@ bool CChannelList::showInfo(int pos, int epgpos)
 	CZapitChannel * chan = chanlist[pos];
 	
 	// channel infobar
-	g_InfoViewer->showTitle(pos + 1, chan->name, chan->getSatellitePosition(), chan->channel_id, true, epgpos); // UTF-8
+	g_InfoViewer->showTitle(pos + 1, chan->name, chan->getSatellitePosition(), chan->channel_id, fromNumZap, epgpos); // UTF-8
 	
 	return true;
 }
@@ -1161,7 +1163,7 @@ bool CChannelList::zapToChannelID(const t_channel_id channel_id, bool rezap)
 // 
 void CChannelList::zapTo(int pos, bool rezap)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::zapTo:\n");
+	dprintf(DEBUG_NORMAL, "CChannelList::zapTo: %d\n", pos);
 	
 	// show emty channellist error msg
 	if (chanlist.empty()) 
@@ -1179,7 +1181,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 
 	CZapitChannel * chan = chanlist[pos];
 	
-	dprintf(DEBUG_NORMAL, "CChannelList::zapTo me %s tuned %d new %d %s -> 0x%llx\n", name.c_str(), tuned, pos, chan->name.c_str(), chan->channel_id);
+	dprintf(DEBUG_NORMAL, "CChannelList::zapTo me %s tuned %d new %d %s id: 0x%llx\n", name.c_str(), tuned, pos, chan->name.c_str(), chan->channel_id);
 	
 	if ( (pos != (int)tuned) || rezap ) //FIXME: allow after scan to tun
 	{  
@@ -1343,7 +1345,7 @@ int CChannelList::numericZap(int key)
 	char valstr[10];
 	int chn = CRCInput::getNumericValue(key);
 	int pos = 1;
-	int lastchan= -1;
+	int lastchan = -1;
 	bool doZap = true;
 	bool showEPG = false;
 
@@ -1360,7 +1362,7 @@ int CChannelList::numericZap(int key)
 
 			for (int i = 3; i >= 0; i--) 
 			{
-				valstr[i+ 1]= 0;
+				valstr[i + 1] = 0;
 				g_Font[SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP]->RenderString(ox + 7 + i*((sx - 14)>>2), oy + sy - 3, sx, &valstr[i], COL_INFOBAR);
 			}
 			
@@ -1372,7 +1374,8 @@ int CChannelList::numericZap(int key)
 			lastchan = chn;
 		}
 
-		g_RCInput->getMsg( &msg, &data, g_settings.timing_numericzap * 10 );
+		//
+		g_RCInput->getMsg(&msg, &data, g_settings.timing_numericzap);
 
 		if ( msg == CRCInput::RC_timeout ) 
 		{
@@ -1439,10 +1442,12 @@ int CChannelList::numericZap(int key)
 			doZap = false;
 			break;
 		}
+		
+		frameBuffer->blit();
 	}
 
+	// hide
 	frameBuffer->paintBackgroundBoxRel(ox, oy, sx, sy);
-	
 	frameBuffer->blit();
 
 	chn--;
@@ -1452,20 +1457,14 @@ int CChannelList::numericZap(int key)
 	
 	if ( doZap ) 
 	{
-		// kill infobar
-		if(g_settings.timing_infobar == 0)
-			g_InfoViewer->killTitle();
-		
 		// zapto selected channel
 		zapTo( chn );
+		showInfo(chn -1, 0, false);
 	} 
 	else 
 	{
 		// show infobar
-		showInfo(tuned);
-		
-		// kill infobar
-		g_InfoViewer->killTitle();
+		showInfo(tuned, 0, false);
 
 		if ( showEPG )
 			g_EventList->exec(chanlist[chn]->epgid, chanlist[chn]->name);
@@ -1511,7 +1510,7 @@ void CChannelList::virtual_zap_mode(bool up)
                 }
 
 		epgpos = 0;
-		g_RCInput->getMsg( &msg, &data, 15*10 ); // 15 seconds, not user changable
+		g_RCInput->getMsg( &msg, &data, 15); // 15 seconds, not user changable
 
                 if ( msg == CRCInput::RC_ok )
                 {
@@ -1579,16 +1578,16 @@ void CChannelList::virtual_zap_mode(bool up)
 
         if ( doZap )
         {
-		if(g_settings.timing_infobar == 0)
-			g_InfoViewer->killTitle();
+		//if(g_settings.timing_infobar == 0)
+		//	g_InfoViewer->killTitle();
 
                 zapTo(chn);
         }
         else
         {
-        	showInfo(tuned);
+        	showInfo(tuned, 0, false);
         	
-                g_InfoViewer->killTitle();
+                //g_InfoViewer->killTitle();
 
                 // Rote Taste zeigt EPG fuer gewaehlten Kanal an
                 if ( showEPG )
@@ -1812,7 +1811,7 @@ void CChannelList::paint()
 			item = new CMenuForwarder(chanlist[i]->name.c_str(), true, option.c_str());
 
 			// channel number
-			item->setNumber(chanlist[i]->number);
+			item->setNumber(/*chanlist[i]->number*/i + 1);
 			
 			// timescale
 			if (g_settings.channellist_timescale) item->setPercent(runningPercent);

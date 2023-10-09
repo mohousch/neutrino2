@@ -105,7 +105,7 @@ _repeat:
 
 	// show channel list
 	if(bouquetList->Bouquets.size() && bouquetList->Bouquets[activBouquet]->channelList->getSize() > 0)
-		nNewChannel = bouquetList->Bouquets[activBouquet]->channelList->show(false, true);
+		nNewChannel = bouquetList->Bouquets[activBouquet]->channelList->show(true);
 	else
 		nNewChannel = bouquetList->show(true);
 
@@ -131,16 +131,15 @@ _repeat:
 	{
 		ChannelID = bouquetList->Bouquets[nActivBouquet]->channelList->getActiveChannel_ChannelID();
 	}
-	
+
 	// set last channel mode
 	CNeutrinoApp::getInstance()->setChannelMode(channelMode, nMode);
 
 	// set last activ bouquet and channel
 	if(bouquetList->Bouquets.size()) 
 	{
-		bouquetList->activateBouquet(activBouquet, false, false);
+		bouquetList->activateBouquet(activBouquet/*, false, true*/);
 		bouquetList->Bouquets[activBouquet]->channelList->setSelected(activChannel - 1);
 	}
 }
-
 

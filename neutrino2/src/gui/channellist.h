@@ -142,18 +142,16 @@ class CChannelList
 		void virtual_zap_mode(bool up);
 		bool zapToChannelID(const t_channel_id channel_id, bool rezap = false);
 		bool adjustToChannelID(const t_channel_id channel_id, bool bToo = true);
-		bool showInfo(int pos, int epgpos = 0);
+		bool showInfo(int pos, int epgpos = 0, bool fromNumZap = true);
 		void updateEvents(void);
 		int numericZap(int key);
-		int show(bool zap = true, bool customMode = false);
-		int exec(bool zap = true);
+		int show(bool customMode = false);
+		int exec(bool customMode = false);
 		void quickZap(int key, bool cycle = false);
 		int  hasChannel(int nChannelNr);
 		int  hasChannelID(t_channel_id channel_id);
-		void setSelected( int nChannelNr); 		// for adjusting bouquet's channel list after numzap or quickzap
-
+		void setSelected( int nChannelNr); 	// for adjusting bouquet's channel list after numzap or quickzap
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
-
 		int getSize() const;
 		int getSelectedChannelIndex() const;
 		void setSize(int newsize);
@@ -162,8 +160,8 @@ class CChannelList
 		void SortAlpha(void);
 		void SortSat(void);
 		void ClearList(void);
-		
 		bool canZap(CZapitChannel* channel = NULL);
 };
 
 #endif
+
