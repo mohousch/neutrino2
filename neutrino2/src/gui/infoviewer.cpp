@@ -601,19 +601,17 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 	
 	frameBuffer->blit();
 
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-
 	// loop msg
 	neutrino_msg_t msg;
 	neutrino_msg_data_t data;
-
-	CNeutrinoApp * neutrino = CNeutrinoApp::getInstance();
 
 	if (!_calledFromNumZap) 
 	{
 		bool hideIt = true;
 		virtual_zap_mode = false;
+		
+		// add sec timer
+		sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 
 		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd( (g_settings.timing_infobar == 0)? DEFAULT_TIMING_INFOBAR : g_settings.timing_infobar );
 
@@ -692,7 +690,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 						g_RCInput->killTimer(sec_timer_id);
 					}
 						
-					res = neutrino->handleMsg(msg, data);
+					res = CNeutrinoApp::getInstance()->handleMsg(msg, data);
 						
 					if (res & messages_return::unhandled) 
 					{
@@ -803,8 +801,6 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 void CInfoViewer::showSubchan()
 {
 	dprintf(DEBUG_INFO, "CInfoViewer::showSubchan:\n");
-	
-  	CNeutrinoApp *neutrino = CNeutrinoApp::getInstance();
 
   	std::string subChannelName;	// holds the name of the subchannel/audio channel
   	int subchannel = 0;		// holds the channel index
@@ -910,7 +906,7 @@ void CInfoViewer::showSubchan()
 	  		} 
 			else 
 			{
-				res = neutrino->handleMsg(msg, data);
+				res = CNeutrinoApp::getInstance()->handleMsg(msg, data);
 
 				if (res & messages_return::unhandled) 
 				{
