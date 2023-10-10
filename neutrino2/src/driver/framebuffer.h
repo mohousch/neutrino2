@@ -193,7 +193,16 @@ class CFrameBuffer
 		
 #ifdef USE_OPENGL
 		GLThreadObj *mpGLThreadObj; // the thread object
-#endif		
+#endif	
+
+		//
+		int  limitRadius(const int& dx, const int& dy, int& radius);
+		void setCornerFlags(const int& type);
+		void initQCircle();
+		inline int calcCornersOffset(const int& dy, const int& line, const int& radius, const int& type) { int ofs = 0; calcCorners(&ofs, NULL, NULL, dy, line, radius, type); return ofs; }
+		bool calcCorners(int *ofs, int *ofl, int *ofr, const int& dy, const int& line, const int& radius, const int& type);
+		void paintHLineRelInternal2Buf(const int& x, const int& dx, const int& y, const int& box_dx, const fb_pixel_t& col, fb_pixel_t* buf);
+		fb_pixel_t* paintBoxRel2Buf(const int dx, const int dy, const fb_pixel_t col, fb_pixel_t* buf = NULL, int radius = 0, int type = CORNER_ALL);	
 
 	public:
 		~CFrameBuffer();
@@ -239,15 +248,6 @@ class CFrameBuffer
 			// 16/32 bit
 			*dest = realcolor[color];
 		};
-
-		//
-		int  limitRadius(const int& dx, const int& dy, int& radius);
-		void setCornerFlags(const int& type);
-		void initQCircle();
-		inline int calcCornersOffset(const int& dy, const int& line, const int& radius, const int& type) { int ofs = 0; calcCorners(&ofs, NULL, NULL, dy, line, radius, type); return ofs; }
-		bool calcCorners(int *ofs, int *ofl, int *ofr, const int& dy, const int& line, const int& radius, const int& type);
-		void paintHLineRelInternal2Buf(const int& x, const int& dx, const int& y, const int& box_dx, const fb_pixel_t& col, fb_pixel_t* buf);
-		fb_pixel_t* paintBoxRel2Buf(const int dx, const int dy, const fb_pixel_t col, fb_pixel_t* buf = NULL, int radius = 0, int type = CORNER_ALL);
 
 		//
 		void paintPixel(const int x, const int y, const fb_pixel_t col);
@@ -301,7 +301,7 @@ class CFrameBuffer
 		void paintBackground();
 		bool loadBackgroundPic(const std::string& filename, bool show = true);
 
-		// misc
+		//
 		void saveScreen(int x, int y, int dx, int dy, fb_pixel_t * const memp);
 		void restoreScreen(int x, int y, int dx, int dy, fb_pixel_t * const memp);
 

@@ -795,7 +795,7 @@ void CFrameBuffer::paintBoxRel(const int x, const int y, const int dx, const int
 		else if (grad_type == GRADIENT_COLOR2TRANSPARENT)
 			gradientBuf = gradientColorToTransparent(col, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
 		else if (grad_type == GRADIENT_COLOR2COLOR) // FIXME:
-			gradientBuf = gradientColorToColor(COL_SILVER_PLUS_0, col, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
+			gradientBuf = gradientColorToColor(col, COL_SILVER_PLUS_0, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
 
 		fb_pixel_t *bp = boxBuf;
 		fb_pixel_t *gra = gradientBuf;
