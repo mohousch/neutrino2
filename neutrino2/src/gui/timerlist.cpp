@@ -288,7 +288,6 @@ CTimerList::CTimerList()
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
-	////
 	//
 	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
 	
@@ -624,7 +623,7 @@ int CTimerList::show()
 		{
 			update = true;
 		}
-		else if((msg == CRCInput::RC_blue)|| (CRCInput::isNumeric(msg)) )
+		else if( (msg == CRCInput::RC_blue) || (CRCInput::isNumeric(msg)) )
 		{
 			//pushback key if...
 			g_RCInput->postMsg( msg, data );

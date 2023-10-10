@@ -90,11 +90,9 @@ class EventList
 		CWidget* evlWidget;
 		ClistBox* listBox;
 		CMenuItem* item;
-		
 		//
 		uint32_t sec_timer_id;
 		unsigned int selected;
-
 		void paint(t_channel_id channel_id = 0);
 		void hide();
 

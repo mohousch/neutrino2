@@ -105,6 +105,7 @@ EventList::EventList()
 	m_search_bouquet_id= 1;
 	
 	evtlist.clear();
+	timerlist.clear();
 
 	//
 	evlWidget = NULL;
@@ -123,6 +124,7 @@ EventList::EventList()
 EventList::~EventList()
 {
 	evtlist.clear();
+	timerlist.clear();
 	
 	if (listBox)
 	{
@@ -200,9 +202,6 @@ void EventList::readEvents(const t_channel_id channel_id)
   				evtlist.erase(e2);
   			}
   		}
-		timerlist.clear();
-		CTimerd::getInstance()->getTimerList(timerlist);
-
 	}
 	
 	current_event = (unsigned int) - 1;
@@ -221,15 +220,18 @@ void EventList::readEvents(const t_channel_id channel_id)
 
 		evt.description = _("EPG is not available");
 		evt.eventID = 0;
+		evt.channelID = 0;
+		evt.startTime = 0;
+		evt.duration = 0;
+		
 		evtlist.push_back(evt);
 
 	}
 	
 	if (current_event == (unsigned int) - 1)
 		current_event = 0;
+		
 	selected = current_event;
-
-	return;
 }
 
 int EventList::exec(const t_channel_id channel_id, const std::string& channelname) // UTF-8
@@ -252,9 +254,6 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 
 	name = channelname;
 	sort_mode = SORT_DESCRIPTION;
-	
-	//
-	readEvents(channel_id);
 
 	//
 	paint(channel_id);
@@ -327,82 +326,72 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		// add record
 		else if ( msg == CRCInput::RC_red )
 		{
-			//oldselected = selected;
 			selected = listBox->getSelected();
 
+			// delete if scheduled
+			int tID = -1;
+			CTimerd::CTimerEventTypes etype = isScheduled(channel_id, &evtlist[selected], &tID);
+			if(etype == CTimerd::TIMER_RECORD) 
+			{
+				CTimerd::getInstance()->removeTimerEvent(tID);
+
+				paint(channel_id);
+				continue;
+			}
+				
 			if (recDir != NULL)
 			{
-				int tID = -1;
-				CTimerd::CTimerEventTypes etype = isScheduled(channel_id, &evtlist[selected], &tID);
-				if(etype == CTimerd::TIMER_RECORD) 
+				if (CTimerd::getInstance()->addRecordTimerEvent(channel_id,
+						evtlist[selected].startTime,
+						evtlist[selected].startTime + evtlist[selected].duration,
+						evtlist[selected].eventID, evtlist[selected].startTime,
+						evtlist[selected].startTime - (ANNOUNCETIME + 120),
+						TIMERD_APIDS_CONF, true, recDir,false) == -1)
 				{
-					CTimerd::getInstance()->removeTimerEvent(tID);
-					timerlist.clear();
-					CTimerd::getInstance()->getTimerList(timerlist);
-
-					paint(channel_id);
-					continue;
-				}
-				
-				if (recDir != NULL)
-				{
-					if (CTimerd::getInstance()->addRecordTimerEvent(channel_id,
-								evtlist[selected].startTime,
-								evtlist[selected].startTime + evtlist[selected].duration,
-								evtlist[selected].eventID, evtlist[selected].startTime,
-								evtlist[selected].startTime - (ANNOUNCETIME + 120),
-								TIMERD_APIDS_CONF, true, recDir,false) == -1)
+					if(askUserOnTimerConflict(evtlist[selected].startTime - (ANNOUNCETIME + 120), evtlist[selected].startTime + evtlist[selected].duration))
 					{
-						if(askUserOnTimerConflict(evtlist[selected].startTime - (ANNOUNCETIME + 120), evtlist[selected].startTime + evtlist[selected].duration))
-						{
-							CTimerd::getInstance()->addRecordTimerEvent(channel_id,
-									evtlist[selected].startTime,
-									evtlist[selected].startTime + evtlist[selected].duration,
-									evtlist[selected].eventID, evtlist[selected].startTime,
-									evtlist[selected].startTime - (ANNOUNCETIME + 120),
-									TIMERD_APIDS_CONF, true, recDir,true);
+						CTimerd::getInstance()->addRecordTimerEvent(channel_id,
+							evtlist[selected].startTime,
+							evtlist[selected].startTime + evtlist[selected].duration,
+							evtlist[selected].eventID, evtlist[selected].startTime,
+							evtlist[selected].startTime - (ANNOUNCETIME + 120),
+							TIMERD_APIDS_CONF, true, recDir,true);
 									
-							MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
-						}
-					} 
-					else 
-					{
 						MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 					}
+				} 
+				else 
+				{
+					MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
 				}
-				timerlist.clear();
-				CTimerd::getInstance()->getTimerList(timerlist);
+			}
 				
-				//
-				paint(channel_id);
-			}					
+			//
+			paint(channel_id);					
 		}
 		// add remind
 		else if ( msg == CRCInput::RC_yellow )		  
 		{
 			selected = listBox->getSelected();
 
+			// delete if scheduled
 			int tID = -1;
 			CTimerd::CTimerEventTypes etype = isScheduled(channel_id, &evtlist[selected], &tID);
 			
 			if(etype == CTimerd::TIMER_ZAPTO) 
 			{
 				CTimerd::getInstance()->removeTimerEvent(tID);
-				timerlist.clear();
-				CTimerd::getInstance()->getTimerList(timerlist);
 
 				paint(channel_id);
 				continue;
 			}
 
 			CTimerd::getInstance()->addZaptoTimerEvent(channel_id, 
-						evtlist[selected].startTime,
-						evtlist[selected].startTime - ANNOUNCETIME, 0,
-						evtlist[selected].eventID, evtlist[selected].startTime, 0);
+					evtlist[selected].startTime,
+					evtlist[selected].startTime - ANNOUNCETIME, 0,
+					evtlist[selected].eventID, evtlist[selected].startTime, 0);
 					
 			MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
-			timerlist.clear();
-			CTimerd::getInstance()->getTimerList (timerlist);
 			
 			//
 			paint(channel_id);
@@ -432,8 +421,7 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 			hide();
 			CEPGplusHandler eplus;
 			eplus.exec(NULL, "");
-			
-			readEvents(channel_id);
+			//
 			paint(channel_id);
 		}
 		else if ( msg == CRCInput::RC_left )		  
@@ -463,8 +451,6 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 						// RC_red schlucken
 						g_RCInput->postMsg( msg, data );
 					}
-					timerlist.clear();
-					CTimerd::getInstance()->getTimerList (timerlist);
 
 					paint(channel_id);
 				}
@@ -497,7 +483,6 @@ int EventList::exec(const t_channel_id channel_id, const std::string& channelnam
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			//
 			evlWidget->refresh();
 		} 
 		else
@@ -554,6 +539,7 @@ CTimerd::CTimerEventTypes EventList::isScheduled(t_channel_id channel_id, CChann
 				{
 					if(tID)
 						*tID = timer->eventID;
+						
 					return timer->eventType;
 				}
 			}
@@ -583,6 +569,13 @@ struct button_label HeadButtons[3] =
 void EventList::paint(t_channel_id channel_id)
 {
 	dprintf(DEBUG_NORMAL, "EventList::paint\n");
+	
+	//
+	readEvents(channel_id);
+	
+	// 
+	timerlist.clear();
+	CTimerd::getInstance()->getTimerList(timerlist);
 	
 	//
 	if (listBox)

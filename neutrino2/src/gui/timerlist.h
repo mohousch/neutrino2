@@ -57,9 +57,7 @@ class CTimerList : public CMenuTarget
 		ClistBox *listBox;
 		CMenuItem *item;
 		CBox cFrameBox;
-
 		uint32_t sec_timer_id;
-
 		void paint();
 		int show();
 

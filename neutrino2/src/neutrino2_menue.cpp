@@ -479,10 +479,6 @@ bool CNeutrinoApp::showUserMenu(int button)
 	}
 	
 	//
-	//if (resetWidget)
-	//	widget->setPosition(menu->getWindowsPos().iX - 5, menu->getWindowsPos().iY - 5, menu->getWindowsPos().iWidth + 10, menu->getWindowsPos().iHeight + 10);
-	
-	//
 	widget->addKey(CRCInput::RC_blue, this, "plugins");
 	widget->setTimeOut(g_settings.timing_menu);	
 	widget->exec(NULL, "");

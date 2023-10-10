@@ -83,10 +83,7 @@ CBouquetList::CBouquetList(const char* const Name)
 	cFrameBox.iHeight = frameBuffer->getScreenHeight() / 20 * 18;
 	
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
-	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
-	
-	if (Bouquets.size())
-		selected = 0;	
+	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;	
 }
 
 CBouquetList::~CBouquetList()

@@ -346,7 +346,8 @@ bool CVCRControl::Stop()
 	}
 	
 	// cleanup
-	g_movieInfo->audioPids.clear();
+	if (g_movieInfo->audioPids.size())
+		g_movieInfo->audioPids.clear();
 	
 	if (g_movieInfo)
 	{
