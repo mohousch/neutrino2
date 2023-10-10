@@ -167,8 +167,6 @@ void CStreamInfo::doSignalStrengthLoop()
 	int mm = g_Font[font_info]->getRenderWidth ("Max");//max min lenght
 	maxb = minb = lastb = 0;
 	
-	//frameBuffer->blit();
-	
 	//channel
 	//CChannelList *channelList = CNeutrinoApp::getInstance ()->channelList;
 	//int curnum = channelList->getActiveChannelNumber();
@@ -181,12 +179,10 @@ void CStreamInfo::doSignalStrengthLoop()
 	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
 	bool loop = true;
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd_MS(100);
 
 	while (loop) 
 	{
-		//neutrino_msg_data_t data;
-
-		uint64_t timeoutEnd = CRCInput::calcTimeoutEnd_MS(100);
 		g_RCInput->getMsgAbsoluteTimeout (&msg, &data, &timeoutEnd);
 
 		if(live_fe != NULL)
@@ -298,31 +294,31 @@ void CStreamInfo::doSignalStrengthLoop()
 		{
 			widget->refresh();
 		} 
-
 		// switch paint mode
 		//FIXME picture info
-		if (msg == CRCInput::RC_red || msg == CRCInput::RC_blue || msg == CRCInput::RC_green || msg == CRCInput::RC_yellow) 
+		else if (msg == CRCInput::RC_red || msg == CRCInput::RC_blue || msg == CRCInput::RC_green || msg == CRCInput::RC_yellow) 
 		{
-			hide ();
-			if(sigscale)
-				sigscale->reset();
-			if(snrscale)
-				snrscale->reset();
-			
-			paint_mode = ++paint_mode % 2;
-			paint(paint_mode);
-			
-			continue;
+			if(!IS_WEBTV(live_channel_id))
+			{
+				hide ();
+				if(sigscale)
+					sigscale->reset();
+				if(snrscale)
+					snrscale->reset();
+				
+				paint_mode = ++paint_mode % 2;
+				paint(paint_mode);
+				
+				continue;
+			}
 		}
-		
 		// -- any key --> abort
-		if (msg <= CRCInput::RC_MaxRC) 
+		else if (msg <= CRCInput::RC_MaxRC) 
 		{
 			loop = false;
 		}
-		
 		// -- push other events
-		if (msg > CRCInput::RC_MaxRC && msg != CRCInput::RC_timeout) 
+		else if (msg > CRCInput::RC_MaxRC && msg != CRCInput::RC_timeout) 
 		{
 			CNeutrinoApp::getInstance ()->handleMsg (msg, data);
 		}
@@ -346,8 +342,6 @@ void CStreamInfo::doSignalStrengthLoop()
 	
 	g_RCInput->killTimer(sec_timer_id);
 	sec_timer_id = 0;
-
-	//return msg;
 }
 
 void CStreamInfo::hide ()
