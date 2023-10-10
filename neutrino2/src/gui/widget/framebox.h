@@ -105,40 +105,33 @@ class CFrameItem
 		virtual void setOption(const char *text){if (text != NULL) option = text;};
 		virtual void setPlugin(const char * const pluginName);
 		virtual void showPluginName(){pluginOrigName = true;};
-		
 		virtual void setHAlign(int h){halign = h;};
-
 		//
 		virtual void setActionKey(CMenuTarget *Target, const char *const ActionKey){jumpTarget = Target; actionKey = ActionKey;};
 		virtual void setDirectKey(neutrino_msg_t key){directKey = key;};
-		
 		//
 		virtual void setCaptionFont(unsigned int font){captionFont = font;};
 		virtual void setOptionFont(unsigned int font){optionFont = font;}; 
-
+		//
 		int exec(CMenuTarget *parent);
-		
 		//
 		virtual void setActive(const bool Active);
 		virtual void setMarked(const bool Marked);
-
+		//
 		virtual bool isSelectable(void)
 		{
 			return active;				
 		}
-
 		//
 		virtual void setBorderMode(int b = BORDER_ALL){borderMode =b;};
 		virtual void setBorderColor(fb_pixel_t col){borderColor = col;};
 		virtual void paintMainFrame(bool p){paintFrame = p;};
 		virtual void setPosition(int x, int y, int dx, int dy){window.setPosition(x, y, dx, dy);};
 		virtual void setPosition(CBox *position){window.setPosition(position);};
-		
 		//
 		virtual void setColor(fb_pixel_t col) {fcolor = col;};
 		virtual void setCorner(int ra, int co){radius = ra; corner = co;};
 		virtual void setGradient(int grad){gradient = grad;};
-		
 		//
 		virtual void setParent(CFrameBox* p){parent = p;};
 };

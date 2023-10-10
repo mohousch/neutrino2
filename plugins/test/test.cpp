@@ -1967,8 +1967,12 @@ void CTestMenu::testCButtons()
 	
 	//
 	buttons.clear();
-	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
-	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 35);
+	//buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	buttons.addButton("", "I'M A RED BUTTON", COL_RED_PLUS_0);
+	buttons.addButton("", "I'M A GREEN BUTTON", COL_GREEN_PLUS_0);
+	buttons.addButton("", "I'M A YELLOW BUTTON", COL_YELLOW_PLUS_0);
+	buttons.addButton("", "I'M A BLUE BUTTON", COL_BLUE_PLUS_0);
 	buttons.setMode(CCButtons::BUTTON_FRAME_COLORED);
 	buttons.paint();
 	
