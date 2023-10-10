@@ -4928,9 +4928,7 @@ void CTestMenu::testCChannellist()
 		}
 	}
 
-	int res = webTVchannelList->exec(true); // without zap
-	
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCChannellist: res:%d\n", res);
+	webTVchannelList->exec(true); // without zap
 }
 
 
@@ -4958,9 +4956,7 @@ void CTestMenu::testCBouquetlist()
 		}
 	}
 
-	int res = webTVBouquetList->exec(true, true); // without zap
-	
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testCBouquetlist: res:%d\n", res);
+	webTVBouquetList->exec(true, true); // without zap
 }
 
 // skin
