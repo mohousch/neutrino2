@@ -3478,29 +3478,31 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			int old_b = bouquetList->getActiveBouquetNumber();
 			int old_mode = g_settings.channel_mode;
 
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP START:\n");
+			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP START: bouquet: %d\n", old_b);
 
 			if(bouquetList->Bouquets.size()) 
 			{
 				old_num = bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber();
 			}
+			
+			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP START: bouquet: %d channel: %d\n", old_b, old_num);
 
 			if( msg == CRCInput::RC_ok ) 
 			{
 				if(bouquetList->Bouquets.size() && bouquetList->Bouquets[old_b]->channelList->getSize() > 0)
 					nNewChannel = bouquetList->Bouquets[old_b]->channelList->exec();//with ZAP!
 				else
-					nNewChannel = bouquetList->exec(true);	//with zap
+					nNewChannel = bouquetList->exec();	//with zap
 			}
 			else if(msg == CRCInput::RC_sat) 
 			{
 				setChannelMode(CChannelList::LIST_MODE_SAT, mode);
-				nNewChannel = bouquetList->exec(true);
+				nNewChannel = bouquetList->exec();
 			}
 			else if(msg == CRCInput::RC_favorites) 
 			{
 				setChannelMode(CChannelList::LIST_MODE_FAV, mode);
-				nNewChannel = bouquetList->exec(true);
+				nNewChannel = bouquetList->exec();
 			}
 _repeat:
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP RES: nNewChannel %d\n", nNewChannel);
@@ -3518,7 +3520,7 @@ _repeat:
 			}
 			else if(nNewChannel == -3) // list mode changed
 			{ 
-				nNewChannel = bouquetList->exec(true);
+				nNewChannel = bouquetList->exec();
 				goto _repeat;
 			}
 			else if(nNewChannel == -4) // list edited

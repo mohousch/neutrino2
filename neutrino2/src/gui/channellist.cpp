@@ -81,8 +81,7 @@ bool pip_selected = false;
 //
 extern bool autoshift;
 extern CZapitChannel * live_channel;
-extern int old_b_id;
-//extern char recDir[255];				// defined in neutrino.cpp
+extern int old_b_id;				// defined in neutrino.cpp
 //
 extern CRemoteControl * g_RemoteControl; 		// neutrino.cpp	
 //
@@ -154,7 +153,7 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	frameBuffer = CFrameBuffer::getInstance();
 
 	name = Name;
-	selected = 0;
+	selected = -1;
 	tuned = 0xfffffff;
 	zapProtection = NULL;
 	this->historyMode = _historyMode;
@@ -822,7 +821,7 @@ int CChannelList::show(bool customMode)
 				
 				if(found) 
 				{
-					//bouquetList->activateBouquet(nNext, false, customMode);
+					bouquetList->activateBouquet(nNext);
 					res = bouquetList->showChannelList(nNext, customMode);
 					loop = false;
 				}
@@ -853,7 +852,7 @@ int CChannelList::show(bool customMode)
 				
 				if(found) 
 				{
-					//bouquetList->activateBouquet(nNext, false, customMode);
+					bouquetList->activateBouquet(nNext);
 					res = bouquetList->showChannelList(nNext, customMode);
 					loop = false;
 				}

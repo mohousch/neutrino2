@@ -85,16 +85,13 @@ class CBouquetList
 
 		//
 		CBox cFrameBox;
-		
 		CWidget* bqWidget;
-		
 		ClistBox *listBox;
 		CMenuItem *item;
-		
 		//
 		uint32_t sec_timer_id;
-		unsigned int selected;
-
+		int selected;
+		//
 		void paint();
 		void hide();
 
@@ -113,7 +110,7 @@ class CBouquetList
 		CBouquet* addBouquet(CZapitBouquet * zapitBouquet);
 		void deleteBouquet(CBouquet* bouquet);
 		int getActiveBouquetNumber();
-		void activateBouquet(int id/*, bool bShowChannelList = false, bool customMode = false*/);
+		void activateBouquet(int id);
 		int show(bool customMode = false);
 		int showChannelList(int nBouquet = -1, bool customMode = false);
 		void adjustToChannel(int nChannelNr);

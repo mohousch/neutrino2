@@ -64,7 +64,7 @@
 CBouquetList::CBouquetList(const char* const Name)
 {
 	frameBuffer = CFrameBuffer::getInstance();
-	selected    = 0;
+	selected = -1;
 	
 	if(Name == NULL)
 		name = _("Bouquets");
@@ -83,7 +83,10 @@ CBouquetList::CBouquetList(const char* const Name)
 	cFrameBox.iHeight = frameBuffer->getScreenHeight() / 20 * 18;
 	
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
-	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;	
+	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
+	
+	if (Bouquets.size())
+		selected = 0;	
 }
 
 CBouquetList::~CBouquetList()
@@ -143,7 +146,14 @@ void CBouquetList::deleteBouquet(CBouquet * bouquet)
 
 int CBouquetList::getActiveBouquetNumber()
 {
-	return selected;
+	int res = 0;
+	
+	if (selected < 0)
+		res = 0;
+	else
+		res = selected;
+		
+	return res;
 }
 
 void CBouquetList::adjustToChannel( int nChannelNr)
@@ -198,10 +208,6 @@ int CBouquetList::showChannelList(int nBouquet, bool customMode)
 
 	if (nBouquet == -1)
 		nBouquet = selected;
-	////TEST
-	else if(nBouquet < (int) Bouquets.size())
-		selected = nBouquet;
-	////
 
 	int nNewChannel = Bouquets[nBouquet]->channelList->exec(customMode);
 	
@@ -211,37 +217,27 @@ int CBouquetList::showChannelList(int nBouquet, bool customMode)
 		nNewChannel = -2;
 	}
 	
+	dprintf(DEBUG_NORMAL, "CBouquetList::showChannelList: nNewChannel:%d\n", nNewChannel);
+	
 	return nNewChannel;
 }
 
 // bShowChannelList default to false , return seems not checked anywhere
-void CBouquetList::activateBouquet(int id/*, bool bShowChannelList, bool customMode*/)
+void CBouquetList::activateBouquet(int id)
 {
 	dprintf(DEBUG_NORMAL, "CBouquetList::activateBouquet: id:%d\n", id);
 
-	//int res = -1;
-
 	if(id < (int) Bouquets.size())
 		selected = id;
-
-	/*
-	if (bShowChannelList) 
-	{
-		res = Bouquets[selected]->channelList->exec(customMode);
-
-		// ???
-		if(!customMode)
-		{
-			if(res > -1)
-				res = -2;
-		}
-	}
-	*/
-	
-	//return res;
 }
 
 //
+// exec
+// -1 = timeout / cancel
+// -2 = forward msgs to neutrino
+// -3 = mode chnage fav / prov / sat / all
+// -4 = setup
+// or selected bouquet pos
 int CBouquetList::exec(bool bShowChannelList, bool customMode)
 {
 	dprintf(DEBUG_NORMAL, "CBouquetList::exec: showChannelList:%s, zap:%s\n", bShowChannelList? "yes" : "no", customMode? "no" : "eys");
@@ -257,11 +253,288 @@ int CBouquetList::exec(bool bShowChannelList, bool customMode)
 	// if >= 0, call activateBouquet to show channellist
 	if ( res > -1) 
 	{
-		//return activateBouquet(selected, bShowChannelList, customMode);
-		return showChannelList(selected, customMode);
+		activateBouquet(selected);
+		res = showChannelList(selected, customMode);
 	}
 	
+	dprintf(DEBUG_NORMAL, "CBouquetList::exec: res:%d\n", res);
+	
 	return res;
+}
+
+//
+// bShowChannelList
+// -1 = timeout / cancel
+// -2 = forward msgs to neutrino
+// -3 = mode chnage fav / prov / sat / all
+// -4 = setup
+// or selected bouquet pos
+int CBouquetList::show(bool customMode)
+{
+	dprintf(DEBUG_NORMAL, "CBouquetList::show: zap:%s\n", customMode? "no" : "yes");
+
+	neutrino_msg_t      msg;
+	neutrino_msg_data_t data;
+	int res = -1;
+	
+	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);
+	
+	//
+	paint();
+	CFrameBuffer::getInstance()->blit();
+
+	int zapOnExit = false;
+
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
+
+	// add sec timer
+	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
+	int mode = CNeutrinoApp::getInstance()->getMode();
+
+	if(customMode)
+		mode = CNeutrinoApp::getInstance()->getChMode();
+
+	bool loop = true;
+	while (loop) 
+	{
+		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
+
+		if ( msg <= CRCInput::RC_MaxRC )
+			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
+
+		if ((msg == CRCInput::RC_timeout) || (msg == (neutrino_msg_t)g_settings.key_channelList_cancel))
+		{
+			loop = false;
+		}
+		else if(msg == CRCInput::RC_red || msg == CRCInput::RC_favorites) 
+		{
+			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_FAV, mode);
+
+			hide();
+			return -3;
+		} 
+		else if(msg == CRCInput::RC_green) 
+		{
+			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_PROV, mode);
+			hide();
+			return -3;
+		} 
+		else if(msg == CRCInput::RC_yellow || msg == CRCInput::RC_sat)
+		{
+			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_SAT, mode);
+
+			hide();
+			return -3;
+		} 
+		else if(msg == CRCInput::RC_blue) 
+		{
+			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_ALL, mode);
+
+			hide();
+			return -3;
+		}
+		/*
+		else if(Bouquets.size() == 0)
+		{
+			continue;
+		}
+		*/
+		else if ( msg == CRCInput::RC_setup ) 
+		{
+			selected = listBox? listBox->getSelected() : 0;
+
+			if (Bouquets.size() && Bouquets[selected]->channelList->getSize() && !Bouquets[selected]->zapitBouquet->bWebTV)
+			{
+				//
+				int ret = doMenu();
+				
+				dprintf(DEBUG_NORMAL, "CRCInput::RC_setup: doMenu: %d\n", ret);
+				
+				if(ret) 
+				{
+					res = -4;
+					loop = false;
+				}
+				else
+				{
+					paint();
+				}
+			}
+		}
+		else if ( msg == (neutrino_msg_t) g_settings.key_list_start ) 
+		{
+			selected = 0;
+			paint();
+		}
+		else if ( msg == (neutrino_msg_t) g_settings.key_list_end ) 
+		{
+			selected = Bouquets.size() - 1;
+
+			paint();
+		}
+		else if (msg == CRCInput::RC_up)
+		{
+			listBox->scrollLineUp();
+		}
+		else if (msg == CRCInput::RC_page_up || (int) msg == g_settings.key_channelList_pageup )
+		{
+			listBox->scrollPageUp();
+		}
+		else if ( msg == CRCInput::RC_down)
+		{
+			listBox->scrollLineDown();
+		}
+		else if ( msg == CRCInput::RC_page_down || (int) msg == g_settings.key_channelList_pagedown )
+		{
+			listBox->scrollPageDown();
+		}
+		else if ( msg == CRCInput::RC_ok ) 
+		{
+			selected = listBox->getSelected();
+
+			zapOnExit = !customMode;
+			loop = false;
+		}
+		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+		{
+			listBox->refresh();
+		} 
+		else 
+		{
+			if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
+			{
+				loop = false;
+				res = -2;
+			}
+		}
+			
+		frameBuffer->blit();	
+	}
+	
+	hide();
+	
+	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
+
+	//
+	g_RCInput->killTimer(sec_timer_id);
+	sec_timer_id = 0;
+	
+	if(zapOnExit) 
+	{
+		res = selected;
+	}
+		
+	if (customMode)
+	{
+		res = selected;
+	}
+		
+	dprintf(DEBUG_NORMAL, "CBouquetList::show: res:%d\n", res);
+		
+	return (res);
+}
+
+void CBouquetList::hide()
+{
+	if (bqWidget)
+		bqWidget->hide();
+	else
+		CFrameBuffer::getInstance()->clearFrameBuffer();
+		
+	frameBuffer->blit();
+	
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (bqWidget)
+	{
+		delete bqWidget;
+		bqWidget = NULL;
+	}
+}
+
+const struct button_label HButton = {NEUTRINO_ICON_BUTTON_SETUP, " " };
+
+const struct button_label CBouquetListButtons[4] =
+{
+        { NEUTRINO_ICON_BUTTON_RED, _("Favorites") },
+        { NEUTRINO_ICON_BUTTON_GREEN, _("Providers")},
+        { NEUTRINO_ICON_BUTTON_YELLOW, _("Satellites")},
+        { NEUTRINO_ICON_BUTTON_BLUE, _("All Services")}
+};
+
+void CBouquetList::paint()
+{
+	dprintf(DEBUG_NORMAL, "CBouquetList::paint\n");
+	
+	//
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (bqWidget)
+	{
+		delete bqWidget;
+		bqWidget = NULL;
+	}
+	
+	//
+	bqWidget = CNeutrinoApp::getInstance()->getWidget("bouquetlist");
+	
+	if (bqWidget)
+	{
+		listBox = (ClistBox*)bqWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		bqWidget = new CWidget(&cFrameBox);
+		listBox = new ClistBox(&cFrameBox);
+		
+		//
+		listBox->enablePaintHead();
+		listBox->setHeadLine(true, true);
+		
+		//
+		listBox->enablePaintFoot();
+		listBox->setFootLine(true, true);
+		
+		bqWidget->name = "bouquetlist";
+		bqWidget->addWidgetItem(listBox);
+	}	
+
+	listBox->clear();
+
+	for (unsigned int count = 0; count < Bouquets.size(); count++)
+	{
+		item = new CMenuForwarder(_(Bouquets[count]->channelList->getName()));
+
+		item->setNumber(count + 1);
+		listBox->addItem(item);
+	}
+
+	// head
+	//listBox->enablePaintHead();
+	listBox->setTitle(name.c_str());
+	listBox->enablePaintDate();
+
+	listBox->setHeadButtons(&HButton, 1);
+
+	// foot
+	//listBox->enablePaintFoot();
+	
+	listBox->setFootButtons(CBouquetListButtons, 4);
+
+	//
+	listBox->setSelected(selected);
+	
+	//
+	bqWidget->paint();
 }
 
 int CBouquetList::doMenu()
@@ -406,266 +679,5 @@ int CBouquetList::doMenu()
 	}
 	
 	return 0;
-}
-
-// bShowChannelList default to true, returns new bouquet or -1/-2
-int CBouquetList::show(bool customMode)
-{
-	dprintf(DEBUG_NORMAL, "CBouquetList::show: zap:%s\n", customMode? "no" : "yes");
-
-	neutrino_msg_t      msg;
-	neutrino_msg_data_t data;
-	int res = -1;
-	
-	CVFD::getInstance()->setMode(CVFD::MODE_MENU_UTF8);
-	
-	//
-	paint();
-	CFrameBuffer::getInstance()->blit();
-
-	int zapOnExit = false;
-
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	int mode = CNeutrinoApp::getInstance()->getMode();
-
-	if(customMode)
-		mode = CNeutrinoApp::getInstance()->getChMode();
-
-	bool loop = true;
-	while (loop) 
-	{
-		g_RCInput->getMsgAbsoluteTimeout( &msg, &data, &timeoutEnd );
-
-		if ( msg <= CRCInput::RC_MaxRC )
-			timeoutEnd = CRCInput::calcTimeoutEnd(g_settings.timing_channellist);
-
-		if ((msg == CRCInput::RC_timeout) || (msg == (neutrino_msg_t)g_settings.key_channelList_cancel))
-		{
-			loop = false;
-		}
-		else if(msg == CRCInput::RC_red || msg == CRCInput::RC_favorites) 
-		{
-			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_FAV, mode);
-
-			hide();
-			return -3;
-		} 
-		else if(msg == CRCInput::RC_green) 
-		{
-			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_PROV, mode);
-			hide();
-			return -3;
-		} 
-		else if(msg == CRCInput::RC_yellow || msg == CRCInput::RC_sat)
-		{
-			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_SAT, mode);
-
-			hide();
-			return -3;
-		} 
-		else if(msg == CRCInput::RC_blue) 
-		{
-			CNeutrinoApp::getInstance()->setChannelMode(CChannelList::LIST_MODE_ALL, mode);
-
-			hide();
-			return -3;
-		}
-		else if(Bouquets.size() == 0)
-		{
-			continue;
-		}
-		else if ( msg == CRCInput::RC_setup ) 
-		{
-			selected = listBox? listBox->getSelected() : 0;
-
-			if (Bouquets.size() && Bouquets[selected]->channelList->getSize() && !Bouquets[selected]->zapitBouquet->bWebTV)
-			{
-				//
-				int ret = doMenu();
-				
-				dprintf(DEBUG_NORMAL, "CRCInput::RC_setup: doMenu: %d\n", ret);
-				
-				if(ret) 
-				{
-					res = -4;
-					loop = false;
-				}
-				else
-				{
-					paint();
-				}
-			}
-		}
-		else if ( msg == (neutrino_msg_t) g_settings.key_list_start ) 
-		{
-			selected = 0;
-			paint();
-		}
-		else if ( msg == (neutrino_msg_t) g_settings.key_list_end ) 
-		{
-			selected = Bouquets.size() - 1;
-
-			paint();
-		}
-		else if (msg == CRCInput::RC_up)
-		{
-			listBox->scrollLineUp();
-		}
-		else if (msg == CRCInput::RC_page_up || (int) msg == g_settings.key_channelList_pageup )
-		{
-			listBox->scrollPageUp();
-		}
-		else if ( msg == CRCInput::RC_down)
-		{
-			listBox->scrollLineDown();
-		}
-		else if ( msg == CRCInput::RC_page_down || (int) msg == g_settings.key_channelList_pagedown )
-		{
-			listBox->scrollPageDown();
-		}
-		else if ( msg == CRCInput::RC_ok ) 
-		{
-			selected = listBox->getSelected();
-
-			zapOnExit = !customMode;
-			loop = false;
-		}
-		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			listBox->refresh();
-		} 
-		else 
-		{
-			if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
-			{
-				loop = false;
-				res = -2;
-			}
-		}
-			
-		frameBuffer->blit();	
-	}
-	
-	hide();
-	
-	CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
-
-	//
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
-	
-	if(zapOnExit) 
-		res = selected;
-		
-	if (customMode)
-		res = selected;
-		
-	return (res);
-}
-
-void CBouquetList::hide()
-{
-	if (bqWidget)
-		bqWidget->hide();
-	else
-		CFrameBuffer::getInstance()->clearFrameBuffer();
-		
-	frameBuffer->blit();
-	
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
-	if (bqWidget)
-	{
-		delete bqWidget;
-		bqWidget = NULL;
-	}
-}
-
-const struct button_label HButton = {NEUTRINO_ICON_BUTTON_SETUP, " " };
-
-const struct button_label CBouquetListButtons[4] =
-{
-        { NEUTRINO_ICON_BUTTON_RED, _("Favorites") },
-        { NEUTRINO_ICON_BUTTON_GREEN, _("Providers")},
-        { NEUTRINO_ICON_BUTTON_YELLOW, _("Satellites")},
-        { NEUTRINO_ICON_BUTTON_BLUE, _("All Services")}
-};
-
-void CBouquetList::paint()
-{
-	dprintf(DEBUG_NORMAL, "CBouquetList::paint\n");
-	
-	//
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
-	if (bqWidget)
-	{
-		delete bqWidget;
-		bqWidget = NULL;
-	}
-	
-	//
-	bqWidget = CNeutrinoApp::getInstance()->getWidget("bouquetlist");
-	
-	if (bqWidget)
-	{
-		listBox = (ClistBox*)bqWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		bqWidget = new CWidget(&cFrameBox);
-		listBox = new ClistBox(&cFrameBox);
-		
-		//
-		listBox->enablePaintHead();
-		listBox->setHeadLine(true, true);
-		
-		//
-		listBox->enablePaintFoot();
-		listBox->setFootLine(true, true);
-		
-		bqWidget->name = "bouquetlist";
-		bqWidget->addWidgetItem(listBox);
-	}	
-
-	listBox->clear();
-
-	for (unsigned int count = 0; count < Bouquets.size(); count++)
-	{
-		item = new CMenuForwarder(_(Bouquets[count]->channelList->getName()));
-
-		item->setNumber(count + 1);
-		listBox->addItem(item);
-	}
-
-	// head
-	//listBox->enablePaintHead();
-	listBox->setTitle(name.c_str());
-	listBox->enablePaintDate();
-
-	listBox->setHeadButtons(&HButton, 1);
-
-	// foot
-	//listBox->enablePaintFoot();
-	
-	listBox->setFootButtons(CBouquetListButtons, 4);
-
-	//
-	listBox->setSelected(selected);
-	
-	//
-	bqWidget->paint();
 }
 

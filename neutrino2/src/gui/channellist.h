@@ -86,7 +86,7 @@ class CChannelList
 		CBox cFrameBox;
 		CBox winTopBox;
 		CBox winBottomBox;
-		
+		//
 		CWidget* widget;
 		ClistBox *listBox;
 		CMenuItem *item;
@@ -95,11 +95,10 @@ class CChannelList
 		CWindow* window;
 		CCVline* vline;
 		CCHline* hline;
-
 		//
 		uint32_t sec_timer_id;
-		unsigned int selected;
-
+		int selected;
+		//
 		void paint();
 		void hide();
 		void paintCurrentNextEvent(int _selected);
