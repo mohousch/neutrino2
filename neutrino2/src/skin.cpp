@@ -47,7 +47,7 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 #include <gui/widget/framebox.h>
-#include <gui/widget/window.h>
+//#include <gui/widget/window.h>
 #include <gui/widget/hintbox.h>
 
 #include <gui/plugins.h>
@@ -1558,115 +1558,6 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	if (widget) widget->addWidgetItem(listBox);
 }
 
-// CWindow
-void CNeutrinoApp::parseCWindow(xmlNodePtr node, CWidget* widget)
-{
-	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCWindow\n");
-	
-	CWindow* window = NULL;
-	
-	char* name = NULL;
-				
-	int posx = 0;
-	int posy = 0;
-	int width = 0;
-	int height = 0;
-				
-	unsigned int paintframe = 1;
-	char* color = NULL;
-	char * corner = NULL;
-	char * radius = NULL;
-	unsigned int border = 0;
-	char *bordercolor = NULL;
-	char *gradient = NULL;
-	unsigned int gradient_direction = GRADIENT_VERTICAL;
-	unsigned int gradient_intensity = INT_LIGHT;
-	char * gradient_type = NULL;
-	
-	//
-	name = xmlGetAttribute(node, (char*)"name");
-		
-	//		
-	posx = xmlGetSignedNumericAttribute(node, "posx", 0);
-	posy = xmlGetSignedNumericAttribute(node, "posy", 0);
-	width = xmlGetSignedNumericAttribute(node, "width", 0);
-	height = xmlGetSignedNumericAttribute(node, "height", 0);
-				
-	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
-	color = xmlGetAttribute(node, (char*)"color");
-
-	corner = xmlGetAttribute(node, (char *)"corner");
-	radius = xmlGetAttribute(node, (char *)"radius");
-	border = xmlGetSignedNumericAttribute(node, "border", 0);
-	bordercolor = xmlGetAttribute(node, (char *)"bordercolor");
-		
-	gradient = xmlGetAttribute(node, (char *)"gradient");
-	gradient_direction = xmlGetSignedNumericAttribute(node, "direction", 0);
-	gradient_intensity = xmlGetSignedNumericAttribute(node, "intensity", 0);
-	gradient_type = xmlGetAttribute(node, (char *)"type");
-		
-	// recalculate posx / posy
-	int x = posx;
-	int y = posy;
-		
-	if (widget)
-	{			
-		x = widget->getWindowsPos().iX + posx;
-		y = widget->getWindowsPos().iY + posy;
-				
-		if (width > widget->getWindowsPos().iWidth)
-			width = widget->getWindowsPos().iWidth;
-				
-		if (height > widget->getWindowsPos().iHeight)
-			height = widget->getWindowsPos().iHeight;
-	}
-					
-	window = new CWindow(x, y, width, height);
-		
-	window->widgetItem_type = CWidgetItem::WIDGETITEM_WINDOW;
-	if (name) window->widgetItem_name = name;
-					
-	window->paintMainFrame(paintframe);
-		
-	// color
-	uint32_t finalColor = COL_MENUCONTENT_PLUS_0;
-				
-	if (color != NULL) 
-	{
-		finalColor = convertColor(color);
-		window->setColor(finalColor);
-	}
-		
-	// corner/radius
-	int co = CORNER_NONE;
-	int ra = NO_RADIUS;
-	if (corner) co = convertCorner(corner);
-	if (radius) ra = convertRadius(radius);
-	window->setCorner(ra, co);
-
-	// border
-	window->setBorderMode(border);
-		
-	// bordercolor
-	fb_pixel_t bColor = COL_INFOBAR_SHADOW_PLUS_0;	
-	if (bordercolor != NULL)
-	{ 
-		bColor = convertColor(bordercolor);
-		window->setBorderColor(bColor);
-	}
-
-	// gradient
-	int gr = NOGRADIENT;
-	if (gradient) gr = convertGradient(gradient);
-	int gt = GRADIENT_COLOR2TRANSPARENT;
-	if (gradient_type) gt = convertGradientType(gradient_type);
-	
-	window->setGradient(gr, gradient_direction, gradient_intensity, gt);
-	
-	//				
-	if (widget) widget->addWidgetItem(window);
-}
-
 // CHead
 void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 {
@@ -2035,6 +1926,116 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	
 	//				
 	if (widget) widget->addWidgetItem(textBox);
+}
+
+////
+// CWindow
+void CNeutrinoApp::parseCCWindow(xmlNodePtr node, CWidget* widget)
+{
+	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCCWindow\n");
+	
+	CCWindow* window = NULL;
+	
+	char* name = NULL;
+				
+	int posx = 0;
+	int posy = 0;
+	int width = 0;
+	int height = 0;
+				
+	unsigned int paintframe = 1;
+	char* color = NULL;
+	char * corner = NULL;
+	char * radius = NULL;
+	unsigned int border = 0;
+	char *bordercolor = NULL;
+	char *gradient = NULL;
+	unsigned int gradient_direction = GRADIENT_VERTICAL;
+	unsigned int gradient_intensity = INT_LIGHT;
+	char * gradient_type = NULL;
+	
+	//
+	name = xmlGetAttribute(node, (char*)"name");
+		
+	//		
+	posx = xmlGetSignedNumericAttribute(node, "posx", 0);
+	posy = xmlGetSignedNumericAttribute(node, "posy", 0);
+	width = xmlGetSignedNumericAttribute(node, "width", 0);
+	height = xmlGetSignedNumericAttribute(node, "height", 0);
+				
+	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
+	color = xmlGetAttribute(node, (char*)"color");
+
+	corner = xmlGetAttribute(node, (char *)"corner");
+	radius = xmlGetAttribute(node, (char *)"radius");
+	border = xmlGetSignedNumericAttribute(node, "border", 0);
+	bordercolor = xmlGetAttribute(node, (char *)"bordercolor");
+		
+	gradient = xmlGetAttribute(node, (char *)"gradient");
+	gradient_direction = xmlGetSignedNumericAttribute(node, "direction", 0);
+	gradient_intensity = xmlGetSignedNumericAttribute(node, "intensity", 0);
+	gradient_type = xmlGetAttribute(node, (char *)"type");
+		
+	// recalculate posx / posy
+	int x = posx;
+	int y = posy;
+		
+	if (widget)
+	{			
+		x = widget->getWindowsPos().iX + posx;
+		y = widget->getWindowsPos().iY + posy;
+				
+		if (width > widget->getWindowsPos().iWidth)
+			width = widget->getWindowsPos().iWidth;
+				
+		if (height > widget->getWindowsPos().iHeight)
+			height = widget->getWindowsPos().iHeight;
+	}
+					
+	window = new CCWindow(x, y, width, height);
+		
+	window->cc_type = CComponent::CC_WINDOW;
+	if (name) window->cc_name = name;
+					
+	window->paintMainFrame(paintframe);
+		
+	// color
+	uint32_t finalColor = COL_MENUCONTENT_PLUS_0;
+				
+	if (color != NULL) 
+	{
+		finalColor = convertColor(color);
+		window->setColor(finalColor);
+	}
+		
+	// corner/radius
+	int co = CORNER_NONE;
+	int ra = NO_RADIUS;
+	if (corner) co = convertCorner(corner);
+	if (radius) ra = convertRadius(radius);
+	window->setCorner(ra, co);
+
+	// border
+	window->setBorderMode(border);
+		
+	// bordercolor
+	fb_pixel_t bColor = COL_INFOBAR_SHADOW_PLUS_0;	
+	if (bordercolor != NULL)
+	{ 
+		bColor = convertColor(bordercolor);
+		window->setBorderColor(bColor);
+	}
+
+	// gradient
+	int gr = NOGRADIENT;
+	if (gradient) gr = convertGradient(gradient);
+	int gt = GRADIENT_COLOR2TRANSPARENT;
+	if (gradient_type) gt = convertGradientType(gradient_type);
+	
+	window->setGradient(gr, gradient_direction, gradient_intensity, gt);
+	
+	//				
+	if (widget) widget->addCCItem(window);
 }
 
 // CCLabel
@@ -2686,15 +2687,6 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				int pos = CWidget::MENU_POSITION_NONE;
 				if (position) pos = convertMenuPosition(position);
 				widget->setMenuPosition(pos);
-				
-				// WINDOW
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "WINDOW")) != NULL) 
-				{
-					parseCWindow(item, widget);
-					item = item->xmlNextNode;
-				}
 					
 				// HEAD
 				item = search->xmlChildrenNode;
@@ -2729,6 +2721,15 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				while ((item = xmlGetNextOccurence(item, "TEXTBOX")) != NULL) 
 				{
 					parseCTextBox(item, widget);
+					item = item->xmlNextNode;
+				}
+				
+				// WINDOW
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "WINDOW")) != NULL) 
+				{
+					parseCCWindow(item, widget);
 					item = item->xmlNextNode;
 				}
 					

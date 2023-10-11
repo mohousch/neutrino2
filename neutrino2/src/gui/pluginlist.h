@@ -35,7 +35,6 @@
 #include <string>
 #include <vector>
 
-#include <gui/widget/window.h>
 #include <gui/widget/listbox.h>
 #include <gui/widget/widget.h>
 

@@ -76,7 +76,7 @@ CAlphaSetup::CAlphaSetup(const char* const Name, unsigned char * Alpha, CChangeO
 	mainBox.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - mainBox.iHeight) >> 1);
 
 	//mainWindow.setPosition(&mainBox);
-	mainWindow = new CWindow(&mainBox);
+	mainWindow = new CCWindow(&mainBox);
 
 	observer = Observer;
 	name = Name? Name : "";

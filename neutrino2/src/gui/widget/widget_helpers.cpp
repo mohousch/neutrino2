@@ -32,7 +32,6 @@
 
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/textbox.h>
-#include <gui/widget/window.h>
 #include <gui/widget/framebox.h>
 
 #include <video_cs.h>
@@ -58,6 +57,214 @@ CComponent::CComponent()
 	halign = CC_ALIGN_LEFT;
 	
 	cc_type = -1;
+}
+
+////
+CCWindow::CCWindow(const int x, const int y, const int dx, const int dy)
+{
+	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
+	
+	frameBuffer = CFrameBuffer::getInstance(); 
+	
+	cCBox.iX = x;
+	cCBox.iY = y;
+	cCBox.iWidth = dx;
+	cCBox.iHeight = dy;
+
+	initFrames();
+
+	initVars();
+}
+
+CCWindow::CCWindow(CBox* position)
+{
+	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
+	
+	frameBuffer = CFrameBuffer::getInstance(); 
+	
+	cCBox = *position;
+
+	initFrames();
+
+	initVars();
+}
+
+CCWindow::~CCWindow()
+{
+	if(background)
+	{
+		delete[] background;
+		background = NULL;
+	}
+}
+
+void CCWindow::initVars()
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+
+	radius = NO_RADIUS;
+	corner = CORNER_NONE;
+	bgcolor = COL_MENUCONTENT_PLUS_0;
+	gradient = NOGRADIENT;
+	grad_direction = GRADIENT_VERTICAL;
+	grad_intensity = INT_LIGHT;
+	grad_type = GRADIENT_COLOR2TRANSPARENT;
+	//
+	borderMode = BORDER_NO;
+	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
+	paintBG = true;
+	//
+	background = NULL;
+	//
+	current_page = 0;
+	total_pages = 1;
+	//
+	cc_type = CC_WINDOW;
+}
+
+void CCWindow::setPosition(const int x, const int y, const int dx, const int dy)
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+	
+	cCBox.iX = x;
+	cCBox.iY = y;
+	cCBox.iWidth = dx;
+	cCBox.iHeight = dy;
+	
+	initFrames();
+}
+
+void CCWindow::setPosition(CBox* position)
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+	
+	cCBox = *position;
+	
+	initFrames();
+}
+
+void CCWindow::initFrames()
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+
+	// sanity check
+	if(cCBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
+		cCBox.iHeight = frameBuffer->getScreenHeight(true) - 4;  // 4 pixels for border
+
+	// sanity check
+	if(cCBox.iWidth > (int)frameBuffer->getScreenWidth(true))
+		cCBox.iWidth = frameBuffer->getScreenWidth(true) - 4; // 4 pixels for border
+}
+
+void CCWindow::saveScreen()
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+
+	if(background)
+	{
+		delete[] background;
+		background = NULL;
+	}
+
+	background = new fb_pixel_t[borderMode? (cCBox.iWidth + 4)*(cCBox.iHeight + 4) : cCBox.iWidth*cCBox.iHeight];
+		
+	if(background)
+	{
+		if (borderMode)
+			frameBuffer->saveScreen(cCBox.iX - 2, cCBox.iY - 2, cCBox.iWidth + 4, cCBox.iHeight + 4, background);
+		else
+			frameBuffer->saveScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+}
+
+void CCWindow::restoreScreen()
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+	
+	if(background) 
+	{
+		if (borderMode)
+			frameBuffer->restoreScreen(cCBox.iX - 2, cCBox.iY - 2, cCBox.iWidth + 4, cCBox.iHeight + 4, background);
+		else
+			frameBuffer->restoreScreen(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, background);
+	}
+}
+
+void CCWindow::paintPage(void)
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::paintPage:\n");
+
+	if (paintBG)
+	{
+		if (borderMode == BORDER_NO)
+		{
+			// frame
+			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+		}
+		else if (borderMode == BORDER_ALL)
+		{
+			// border
+			frameBuffer->paintBoxRel(cCBox.iX - 2, cCBox.iY - 2, cCBox.iWidth + 4, cCBox.iHeight + 4, borderColor, radius, corner);
+				
+			// frame
+			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+		}
+		else if (borderMode == BORDER_LEFTRIGHT)
+		{
+			// border
+			frameBuffer->paintBoxRel(cCBox.iX - 2, cCBox.iY, cCBox.iWidth + 4, cCBox.iHeight, borderColor, radius, corner);
+				
+			// frame
+			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+		}
+		else if (borderMode == BORDER_TOPBOTTOM)
+		{
+			// border
+			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY - 2, cCBox.iWidth, cCBox.iHeight + 4, borderColor, radius, corner);
+				
+			// frame
+			frameBuffer->paintBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+		}
+	}
+}
+
+void CCWindow::paint()
+{
+	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
+
+	//
+	if (!paintBG)
+	{
+		saveScreen();
+	}
+
+	//
+	paintPage();
+}
+
+void CCWindow::hide()
+{
+	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
+	
+	if(!paintBG)
+		restoreScreen();
+	else
+	{
+		if (borderMode)
+			frameBuffer->paintBackgroundBoxRel(cCBox.iX - 2, cCBox.iY - 2, cCBox.iWidth + 4, cCBox.iHeight + 4);
+		else
+			frameBuffer->paintBackgroundBoxRel(cCBox.iX, cCBox.iY, cCBox.iWidth, cCBox.iHeight);
+	}
+		
+	CFrameBuffer::getInstance()->blit();
+}
+
+void CCWindow::refresh(void)
+{
+	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
+
+	restoreScreen();
+	paintPage();
 }
 
 // CCIcon
@@ -500,7 +707,7 @@ void CCButtons::paint()
 		{
 			buttonWidth = (cCBox.iWidth - BORDER_LEFT - BORDER_RIGHT)/count;
 			
-			// get max width
+			// get maxButtonWidth
 			for (unsigned int i = 0; i < count; i++)
 			{
 				if (!buttons[i].localename.empty())
@@ -583,7 +790,7 @@ void CScrollBar::paint(const int x, const int y, const int dy, const int NrOfPag
 {
 	// scrollBar
 	CBox cFrameScrollBar;
-	CWindow cScrollBarWindow;
+	CCWindow cScrollBarWindow;
 
 	cFrameScrollBar.iX = x;
 	cFrameScrollBar.iY = y;
@@ -598,7 +805,7 @@ void CScrollBar::paint(const int x, const int y, const int dy, const int NrOfPag
 		
 	// scrollBar slider
 	CBox cFrameSlider;
-	CWindow cSliderWindow;	
+	CCWindow cSliderWindow;	
 
 	cFrameSlider.iX = cFrameScrollBar.iX + 2;
 	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
@@ -615,7 +822,7 @@ void CScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPag
 {
 	// scrollBar
 	CBox cFrameScrollBar;
-	CWindow cScrollBarWindow;
+	CCWindow cScrollBarWindow;
 
 	cFrameScrollBar = *position;
 
@@ -626,7 +833,7 @@ void CScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPag
 		
 	// scrollBar slider
 	CBox cFrameSlider;
-	CWindow cSliderWindow;	
+	CCWindow cSliderWindow;	
 
 	cFrameSlider.iX = cFrameScrollBar.iX + 2;
 	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);

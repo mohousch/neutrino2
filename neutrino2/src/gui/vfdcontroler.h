@@ -39,7 +39,6 @@
 #include <system/localize.h>
 
 #include <gui/widget/widget.h>
-#include <gui/widget/window.h>
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/listbox.h>
 
@@ -58,7 +57,7 @@ class CVfdControler : public CMenuTarget
 
 		int hheight, mheight; // head/menu font height
 
-		CWindow *mainWindow;
+		CCWindow *mainWindow;
 
 		unsigned char brightness;
 		unsigned char brightnessstandby;

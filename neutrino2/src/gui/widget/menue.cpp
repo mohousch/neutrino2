@@ -796,7 +796,7 @@ void CMenuWidget::paintItemInfo(int pos)
 				itemsLine.setMode(CItems2DetailsLine::DL_HINT);
 				itemsLine.setIcon(icon.c_str());
 				itemsLine.setHint(item->itemHint.c_str());
-				itemsLine.enablePaintBG();
+				itemsLine.paintMainFrame(true);
 					
 				itemsLine.paint();
 				
@@ -868,7 +868,7 @@ void CMenuWidget::paintItemInfo(int pos)
 					itemsLine.setOptionInfo1(item->option_info1.c_str());
 					itemsLine.setInfo2(item->info2.c_str());
 					itemsLine.setOptionInfo2(item->option_info2.c_str());
-					itemsLine.enablePaintBG();
+					itemsLine.paintMainFrame(true);
 					
 					itemsLine.paint();
 				}
@@ -881,7 +881,7 @@ void CMenuWidget::paintItemInfo(int pos)
 					itemsLine.setMode(CItems2DetailsLine::DL_HINT);
 					itemsLine.setHint(item->itemHint.c_str());
 					itemsLine.setIcon(item->itemIcon.c_str());
-					itemsLine.enablePaintBG();
+					itemsLine.paintMainFrame(true);
 				
 					itemsLine.paint();
 				}
@@ -987,7 +987,7 @@ void CMenuWidget::paintItemInfo(int pos)
 					itemsLine.setOptionInfo1(item->option_info1.c_str());
 					itemsLine.setInfo2(item->info2.c_str());
 					itemsLine.setOptionInfo2(item->option_info2.c_str());
-					itemsLine.enablePaintBG();
+					itemsLine.paintMainFrame(true);
 					
 					itemsLine.paint();
 				}
@@ -1000,7 +1000,7 @@ void CMenuWidget::paintItemInfo(int pos)
 					itemsLine.setMode(CItems2DetailsLine::DL_HINT);
 					itemsLine.setHint(item->itemHint.c_str());
 					itemsLine.setIcon(item->itemIcon.c_str());
-					itemsLine.enablePaintBG();
+					itemsLine.paintMainFrame(true);
 				
 					itemsLine.paint();
 				}

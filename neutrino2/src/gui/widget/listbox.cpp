@@ -2537,7 +2537,7 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setOptionInfo1(item->option_info1.c_str());
 				itemsLine.setInfo2(item->info2.c_str());
 				itemsLine.setOptionInfo2(item->option_info2.c_str());
-				itemsLine.enablePaintBG();
+				itemsLine.paintMainFrame(true);
 					
 				itemsLine.paint();
 			}
@@ -2564,7 +2564,7 @@ void ClistBox::paintItemInfo(int pos)
 			
 					itemsLine.setIcon(fname.c_str());
 				}
-				itemsLine.enablePaintBG();
+				itemsLine.paintMainFrame(true);
 					
 				itemsLine.paint();
 			}
@@ -2594,7 +2594,7 @@ void ClistBox::paintItemInfo(int pos)
 				}
 			
 				itemsLine.setIcon(fname.c_str());
-				itemsLine.enablePaintBG();
+				itemsLine.paintMainFrame(true);
 					
 				itemsLine.paint();
 			}
@@ -2622,7 +2622,7 @@ void ClistBox::paintItemInfo(int pos)
 				}
 			
 				itemsLine.setIcon(fname.c_str());
-				itemsLine.enablePaintBG();
+				itemsLine.paintMainFrame(true);
 					
 				itemsLine.paint();
 			}
@@ -2639,7 +2639,7 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setFont(iteminfofont);
 				itemsLine.setScaling(iteminfoscale);
 				itemsLine.setHint(item->itemHint.c_str());
-				itemsLine.enablePaintBG();
+				itemsLine.paintMainFrame(true);
 					
 				itemsLine.paint();
 			}
@@ -2665,7 +2665,7 @@ void ClistBox::paintItemInfo(int pos)
 			itemsLine.setPosition(itemBox.iX + 2*(itemBox.iWidth/3), itemBox.iY + hheight, (itemBox.iWidth/3), items_height);
 			if (paintframe)
 			{
-				itemsLine.enablePaintBG();
+				itemsLine.paintMainFrame(true);
 				itemsLine.setBorderMode(BORDER_NO);
 			}
 			else

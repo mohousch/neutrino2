@@ -75,7 +75,7 @@ CVfdControler::CVfdControler(const char* const Name, CChangeObserver* Observer)
 	x = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - width) >> 1);
 	y = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - height)>> 1);
 
-	mainWindow = new CWindow(x, y, width, height);
+	mainWindow = new CCWindow(x, y, width, height);
 
 	brightness = CVFD::getInstance()->getBrightness();
 	brightnessstandby = CVFD::getInstance()->getBrightnessStandby();

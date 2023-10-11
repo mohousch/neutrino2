@@ -40,7 +40,6 @@
 #include <driver/framebuffer.h>
 
 #include <gui/widget/widget.h>
-#include <gui/widget/window.h>
 #include <gui/widget/helpbox.h>
 #include <gui/widget/widget.h>
 

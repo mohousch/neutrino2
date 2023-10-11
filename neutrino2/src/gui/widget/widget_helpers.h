@@ -66,16 +66,6 @@ enum {
 	CC_ALIGN_RIGHT
 };
 
-// buttons
-typedef struct button_label
-{
-	std::string button;
-	std::string localename;
-	fb_pixel_t color;
-} button_label_struct;
-
-typedef std::vector<button_label_struct> button_label_list_t;
-
 // dimension helper
 class CBox
 {
@@ -125,6 +115,7 @@ class CComponent
 			CC_TIME,
 			CC_COUNTER,
 			CC_SPINNER,
+			CC_WINDOW,
 			// not to be added with addCCItem method.
 			CC_SCROLLBAR,
 			CC_PROGRESSBAR,
@@ -195,7 +186,7 @@ class CComponent
 		virtual void setButtons(const struct button_label *button_label, const int button_count = 1){};
 		virtual void setFont(unsigned int f){};
 		virtual void setText(const char* text){};
-		virtual void enablePaintBG(){paintBG = true;};
+		virtual void paintMainFrame(bool p){paintBG = p;};
 		virtual void setHAlign(int h){halign = h;};
 		virtual void setMode(int m){};
 		virtual void useBackground(void){};
@@ -212,21 +203,69 @@ class CComponent
 
 typedef std::vector<CComponent*> CCITEMLIST;
 
+//// window
+class CCWindow : public CComponent
+{
+	private:
+		CFrameBuffer* frameBuffer;
+		//
+		int radius;
+		int corner;
+		fb_pixel_t bgcolor;
+		int gradient;
+		int grad_direction;
+		int grad_intensity;
+		int grad_type;
+		//
+		fb_pixel_t * background;
+		//
+		int borderMode;
+		fb_pixel_t borderColor;
+		//
+		unsigned int current_page;
+		unsigned int total_pages;
+		//
+		void initVars(void);
+		void initFrames();
+		void saveScreen();
+		void restoreScreen();
+		void paintPage(void);
+		
+	public:
+		CCWindow(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
+		CCWindow(CBox* position);
+		virtual ~CCWindow();
+		//
+		void setPosition(const int x, const int y, const int dx, const int dy);
+		void setPosition(CBox* position);
+		//
+		void setColor(fb_pixel_t col){bgcolor = col;};
+		void setCorner(int ra, int co){radius = ra; corner = co;};
+		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
+		void setBorderMode(int sm){borderMode = sm;};
+		void setBorderColor(fb_pixel_t col){borderColor = col;};
+		//
+		void paint(void);
+		void hide(void);
+		//
+		void refresh(void);
+};
+
 //// CCIcon
 class CCIcon : public CComponent
 {
 	public:
-		CFrameBuffer* frameBuffer;
-		
 		//		
 		int width;
 		int height;
-		
-		fb_pixel_t* background;
-		
-		//
 		std::string iconName;
+		
+	private:
+		CFrameBuffer* frameBuffer;
+		//
+		fb_pixel_t* background;
 
+	public:
 		CCIcon(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
 		virtual ~CCIcon()
 		{
@@ -239,11 +278,9 @@ class CCIcon : public CComponent
 		
 		//
 		void setIcon(const char* const icon);
-
 		//
 		void paint();
 		void hide();
-		
 		//
 		void saveScreen(void);
 		void restoreScreen(void);
@@ -254,29 +291,37 @@ class CCIcon : public CComponent
 class CCImage : public CComponent
 {
 	public:
-		CFrameBuffer* frameBuffer;
-		
 		//
 		int iWidth;
 		int iHeight;
 		int iNbp;
-		
-		//
 		std::string imageName;
+		
+	private:
+		CFrameBuffer* frameBuffer;
+		//
 		bool scale;
 
+	public:
 		CCImage(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
 		virtual ~CCImage(){};
-		
 		//
 		void setImage(const char* const image);
 		void setScaling(bool s){scale = s;};
-		
 		//
 		void paint();
 };
 
 //// CCButtons
+typedef struct button_label
+{
+	std::string button;
+	std::string localename;
+	fb_pixel_t color;
+} button_label_struct;
+
+typedef std::vector<button_label_struct> button_label_list_t;
+
 class CCButtons : public CComponent
 {
 	private:
@@ -723,7 +768,6 @@ class CWidgetItem
 {
 	public:
 		enum {
-			WIDGETITEM_WINDOW,
 			WIDGETITEM_HEAD,
 			WIDGETITEM_FOOT,
 			WIDGETITEM_LISTBOX,

@@ -619,9 +619,7 @@ void CFrameBox::paintFrames()
 	for (unsigned int count = 0; count < (unsigned int)frames.size(); count++) 
 	{
 		CFrameItem *frame = frames[count];
-
-		// init frame
-
+		
 		//
 		if((frame->isSelectable()) && (selected == -1)) 
 		{

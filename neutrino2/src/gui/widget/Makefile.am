@@ -24,7 +24,6 @@ noinst_LIBRARIES = libneutrino2_gui_widget.a libneutrino2_gui_widget2.a
 
 libneutrino2_gui_widget_a_SOURCES = \
 	widget_helpers.cpp \
-	window.cpp \
 	textbox.cpp \
 	listframe.cpp \
 	listbox.cpp \

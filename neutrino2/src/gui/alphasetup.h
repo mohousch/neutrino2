@@ -38,7 +38,6 @@
 
 #include <gui/widget/widget.h>
 #include <gui/widget/widget_helpers.h>
-#include <gui/widget/window.h>
 #include <gui/widget/listbox.h>
 
 #include <driver/framebuffer.h>
@@ -57,7 +56,7 @@ class CAlphaSetup : public CMenuTarget
 		int hheight;		// head menu font height
 		int mheight; 		// menu font height
 
-		CWindow *mainWindow;
+		CCWindow *mainWindow;
 
 		unsigned char *alpha;
 		std::string name;

@@ -143,22 +143,19 @@ class CNeutrinoApp : public CMenuTarget
 		void saveSetup(const char * fname);
 		int loadSetup(const char * fname);
 		void setupFonts(const char* font_file);
-		
 		// skin
 		void loadSkin(std::string skinName);
 		void readSkinConfig(const char* const filename);
 		void saveSkinConfig(const char* const filename);
-		
 		//
 		CWidget *getWidget(const char *const widgetname, const char *const skinfilename = NULL, const bool data = false);
-		
 		//
 		void parseClistBox(xmlNodePtr node, CWidget* widget);
-		void parseCWindow(xmlNodePtr node, CWidget* widget);
 		void parseCHead(xmlNodePtr node, CWidget* widget);
 		void parseCFoot(xmlNodePtr node, CWidget* widget);
 		void parseCTextBox(xmlNodePtr node, CWidget* widget);
-		void parseCFrameBox(xmlNodePtr node, CWidget* widget){};
+		//
+		void parseCCWindow(xmlNodePtr node, CWidget* widget);
 		void parseCCLabel(xmlNodePtr node, CWidget* widget);
 		void parseCCImage(xmlNodePtr node, CWidget* widget);
 		void parseCCTime(xmlNodePtr node, CWidget* widget);

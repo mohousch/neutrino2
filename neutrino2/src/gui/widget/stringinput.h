@@ -43,7 +43,6 @@
 
 #include <gui/widget/icons.h>
 #include <gui/widget/widget.h>
-#include <gui/widget/window.h>
 #include <gui/widget/widget_helpers.h>
 
 #include <system/settings.h>
@@ -62,7 +61,7 @@ class CStringInput : public CMenuTarget
 		int mheight; // menu font height
 		int iheight; // itemheight
 
-		CWindow m_cBoxWindow;
+		CCWindow m_cBoxWindow;
 		CHeaders headers;
 		
 		uint32_t smstimer;

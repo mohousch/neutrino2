@@ -33,7 +33,6 @@
 #include <system/localize.h>
 
 #include <gui/widget/widget.h>
-#include <gui/widget/window.h>
 #include <gui/widget/widget_helpers.h>
 
 
@@ -51,7 +50,7 @@ class CProgressWindow : public CComponent
 		int hheight; // head font height
 		int mheight; // menu font height
 
-		CWindow m_cBoxWindow;
+		CCWindow m_cBoxWindow;
 
 		std::string captionString;
 

@@ -107,7 +107,7 @@ CColorChooser::CColorChooser(const char * const Name, unsigned char *R, unsigned
 
 	//
 	//m_cBoxWindow.setPosition(&cFrameBox);
-	m_cBoxWindow = new CWindow(&cFrameBox);
+	m_cBoxWindow = new CCWindow(&cFrameBox);
 }
 
 CColorChooser::~CColorChooser()

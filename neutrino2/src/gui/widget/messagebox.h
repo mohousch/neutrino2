@@ -45,7 +45,6 @@
 
 #include <gui/widget/drawable.h>
 #include <gui/widget/icons.h>
-#include <gui/widget/window.h>
 #include <gui/widget/widget_helpers.h>
 
 

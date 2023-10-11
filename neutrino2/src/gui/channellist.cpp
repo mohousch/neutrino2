@@ -425,182 +425,17 @@ int CChannelList::getActiveChannelNumber(void) const
 	return (selected + 1);
 }
 
-int CChannelList::doChannelMenu(void)
+int CChannelList::getSize() const
 {
-	int i = 0;
-	int select = -1;
-	static int old_selected = 0;
-	signed int bouquet_id, old_bouquet_id, new_bouquet_id;
-	int result;
-	t_channel_id channel_id;
-	
-	if( !bouquetList )
-		return 0;
-	
-	//
-	CWidget* mWidget = NULL;
-	ClistBox* menu = NULL;
-	
-	mWidget = CNeutrinoApp::getInstance()->getWidget("channellistedit");
-	
-	if (mWidget)
-	{
-		menu = (ClistBox*)mWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
-	}
-	else
-	{
-		//
-		mWidget = new CWidget(0, 0, 500, 250);
-		mWidget->name = "channellistedit";
-		mWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
-		
-		//
-		menu = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
-
-		menu->setWidgetMode(ClistBox::MODE_MENU);
-		
-		//
-		menu->enablePaintHead();
-		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
-		menu->setHeadLine(true, true);
-
-		//
-		menu->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-		menu->setFootButtons(&btn);
-		menu->setFootLine(true, true);
-		
-		//
-		mWidget->addWidgetItem(menu);
-	}
-	
-	//
-	mWidget->setCorner(g_settings.Head_radius > g_settings.Foot_radius? g_settings.Head_radius : g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
-	mWidget->setBorderMode();
-	mWidget->paintMainFrame(true);
-	mWidget->enableSaveScreen();
-	
-	//
-	menu->addItem(new CMenuForwarder(_("delete")), old_selected == i++);
-	menu->addItem(new CMenuForwarder(_("Move")), old_selected == i++);
-	menu->addItem(new CMenuForwarder(_("Add to Bouquets")), old_selected == i++);
-	menu->addItem(new CMenuForwarder(_("add channel to my favorites")), old_selected == i++);
-
-	mWidget->exec(NULL, "");
-	select = menu->getSelected();
-	
-	delete menu;
-	menu = NULL;
-	
-	delete mWidget;
-	mWidget = NULL;
-
-	if(select >= 0) 
-	{
-		hide();
-		
-		old_selected = select;
-		channel_id = chanlist[selected]->channel_id;
-		
-		switch(select) 
-		{
-			case 0: //delete
-				result = MessageBox(_("Delete"), _("Delete channel from bouquet?"), mbrNo, mbYes | mbNo );
-
-				if(result == mbrYes) 
-				{
-					bouquet_id = bouquetList->getActiveBouquetNumber();
-					bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[bouquet_id]->channelList->getName());
-
-					if (bouquet_id == -1)
-						return 0;
-					
-					if(CZapit::getInstance()->existsChannelInBouquet(bouquet_id, channel_id)) 
-					{
-						CZapit::getInstance()->Bouquets[bouquet_id]->removeService(channel_id);
-						return 1;
-					}
-				}
-				break;
-				
-			case 1: // move
-				old_bouquet_id = bouquetList->getActiveBouquetNumber();
-				old_bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[old_bouquet_id]->channelList->getName());
-
-				do {
-					new_bouquet_id = bouquetList->exec(false, false);
-				} while(new_bouquet_id == -3);
-
-				hide();
-				
-				if(new_bouquet_id < 0)
-					return 0;
-					
-				new_bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[new_bouquet_id]->channelList->getName());
-				if ((new_bouquet_id == -1) || (new_bouquet_id == old_bouquet_id))
-					return 0;
-
-				if(!CZapit::getInstance()->existsChannelInBouquet(new_bouquet_id, channel_id)) 
-				{
-					CZapit::getInstance()->addChannelToBouquet(new_bouquet_id, channel_id);
-				}
-				
-				if(CZapit::getInstance()->existsChannelInBouquet(old_bouquet_id, channel_id)) 
-				{
-					CZapit::getInstance()->Bouquets[old_bouquet_id]->removeService(channel_id);
-				}
-				return 1;
-
-				break;
-				
-			case 2: // add to
-				do {
-					bouquet_id = bouquetList->exec(false, false);
-				} while(bouquet_id == -3);
-				
-				hide();
-				
-				if(bouquet_id < 0)
-					return 0;
-				
-				bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[bouquet_id]->channelList->getName());
-				if (bouquet_id == -1)
-					return 0;
-				
-				if(!CZapit::getInstance()->existsChannelInBouquet(bouquet_id, channel_id)) 
-				{
-					CZapit::getInstance()->addChannelToBouquet(bouquet_id, channel_id);
-					return 1;
-				}
-				break;
-				
-			case 3: // add to my favorites
-				bouquet_id = CZapit::getInstance()->existsBouquet("Favorites");
-
-				if(bouquet_id == -1) 
-				{
-					CZapit::getInstance()->addBouquet("Favorites", true);
-					bouquet_id = CZapit::getInstance()->existsBouquet("Favorites");
-				}
-				
-				if(!CZapit::getInstance()->existsChannelInBouquet(bouquet_id, channel_id)) 
-				{
-					CZapit::getInstance()->addChannelToBouquet(bouquet_id, channel_id);
-					return 1;
-				}
-				
-				break;
-				
-			default:
-				break;
-		}
-	}
-	
-	return 0;
+	return this->chanlist.size();
 }
 
+int CChannelList::getSelectedChannelIndex() const
+{
+	return this->selected;
+}
+
+//
 int CChannelList::exec(bool customMode)
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::exec: zap:%s\n", customMode? "no" : "yes");
@@ -1693,7 +1528,7 @@ void CChannelList::paint()
 		listBox = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
 		head = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
 		foot = (CFooters*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
-		window = (CWindow*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_WINDOW);
+		window = (CCWindow*)widget->getCCItem(CComponent::CC_WINDOW);
 		vline = (CCVline*)widget->getCCItem(CComponent::CC_VLINE);
 		hline = (CCHline*)widget->getCCItem(CComponent::CC_HLINE);
 	}
@@ -1717,7 +1552,7 @@ void CChannelList::paint()
 		foot->setLine(true, true);
 		
 		//
-		window = new CWindow(widget->getWindowsPos().iX + (widget->getWindowsPos().iWidth/3)*2, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth/3, widget->getWindowsPos().iHeight - 100);
+		window = new CCWindow(widget->getWindowsPos().iX + (widget->getWindowsPos().iWidth/3)*2, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth/3, widget->getWindowsPos().iHeight - 100);
 		
 		// vline
 		vline = new CCVline(widget->getWindowsPos().iX + (widget->getWindowsPos().iWidth/3)*2, widget->getWindowsPos().iY + 60, 2, widget->getWindowsPos().iHeight - 120);
@@ -1730,14 +1565,15 @@ void CChannelList::paint()
 		widget->addWidgetItem(listBox);
 		widget->addWidgetItem(head);
 		widget->addWidgetItem(foot);
-		widget->addWidgetItem(window);
-		
-		//	
+		//
+		widget->addCCItem(window);	
 		widget->addCCItem(vline);
 		widget->addCCItem(hline);
 	}
 	
 	// wionTop
+	if (window)
+	{
 	winTopBox.iX = window->getWindowsPos().iX + 2;
 	winTopBox.iY = window->getWindowsPos().iY + 2;
 	winTopBox.iWidth = window->getWindowsPos().iWidth - 4;
@@ -1748,6 +1584,7 @@ void CChannelList::paint()
 	winBottomBox.iY = window->getWindowsPos().iY + window->getWindowsPos().iHeight/2 + 2;
 	winBottomBox.iWidth = window->getWindowsPos().iWidth - 4;
 	winBottomBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
+	}
 
 	if (head) 
 		head->clear();
@@ -2006,13 +1843,180 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	nextText.paint();
 }
 
-int CChannelList::getSize() const
+//
+int CChannelList::doChannelMenu(void)
 {
-	return this->chanlist.size();
-}
+	int i = 0;
+	int select = -1;
+	static int old_selected = 0;
+	signed int bouquet_id, old_bouquet_id, new_bouquet_id;
+	int result;
+	t_channel_id channel_id;
+	
+	if( !bouquetList )
+		return 0;
+	
+	//
+	CWidget* mWidget = NULL;
+	ClistBox* menu = NULL;
+	
+	mWidget = CNeutrinoApp::getInstance()->getWidget("channellistedit");
+	
+	if (mWidget)
+	{
+		menu = (ClistBox*)mWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+	}
+	else
+	{
+		//
+		mWidget = new CWidget(0, 0, 500, 250);
+		mWidget->name = "channellistedit";
+		mWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
+		
+		//
+		menu = new ClistBox(mWidget->getWindowsPos().iX, mWidget->getWindowsPos().iY, mWidget->getWindowsPos().iWidth, mWidget->getWindowsPos().iHeight);
 
-int CChannelList::getSelectedChannelIndex() const
-{
-	return this->selected;
+		menu->setWidgetMode(ClistBox::MODE_MENU);
+		
+		//
+		menu->enablePaintHead();
+		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
+		menu->setHeadLine(true, true);
+
+		//
+		menu->enablePaintFoot();
+			
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
+			
+		menu->setFootButtons(&btn);
+		menu->setFootLine(true, true);
+		
+		//
+		mWidget->addWidgetItem(menu);
+	}
+	
+	//
+	mWidget->setCorner(g_settings.Head_radius > g_settings.Foot_radius? g_settings.Head_radius : g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+	mWidget->setBorderMode();
+	mWidget->paintMainFrame(true);
+	mWidget->enableSaveScreen();
+	
+	//
+	menu->addItem(new CMenuForwarder(_("delete")), old_selected == i++);
+	menu->addItem(new CMenuForwarder(_("Move")), old_selected == i++);
+	menu->addItem(new CMenuForwarder(_("Add to Bouquets")), old_selected == i++);
+	menu->addItem(new CMenuForwarder(_("add channel to my favorites")), old_selected == i++);
+
+	mWidget->exec(NULL, "");
+	select = menu->getSelected();
+	
+	delete menu;
+	menu = NULL;
+	
+	delete mWidget;
+	mWidget = NULL;
+
+	if(select >= 0) 
+	{
+		hide();
+		
+		old_selected = select;
+		channel_id = chanlist[selected]->channel_id;
+		
+		switch(select) 
+		{
+			case 0: //delete
+				result = MessageBox(_("Delete"), _("Delete channel from bouquet?"), mbrNo, mbYes | mbNo );
+
+				if(result == mbrYes) 
+				{
+					bouquet_id = bouquetList->getActiveBouquetNumber();
+					bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[bouquet_id]->channelList->getName());
+
+					if (bouquet_id == -1)
+						return 0;
+					
+					if(CZapit::getInstance()->existsChannelInBouquet(bouquet_id, channel_id)) 
+					{
+						CZapit::getInstance()->Bouquets[bouquet_id]->removeService(channel_id);
+						return 1;
+					}
+				}
+				break;
+				
+			case 1: // move
+				old_bouquet_id = bouquetList->getActiveBouquetNumber();
+				old_bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[old_bouquet_id]->channelList->getName());
+
+				do {
+					new_bouquet_id = bouquetList->exec(false, false);
+				} while(new_bouquet_id == -3);
+
+				hide();
+				
+				if(new_bouquet_id < 0)
+					return 0;
+					
+				new_bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[new_bouquet_id]->channelList->getName());
+				if ((new_bouquet_id == -1) || (new_bouquet_id == old_bouquet_id))
+					return 0;
+
+				if(!CZapit::getInstance()->existsChannelInBouquet(new_bouquet_id, channel_id)) 
+				{
+					CZapit::getInstance()->addChannelToBouquet(new_bouquet_id, channel_id);
+				}
+				
+				if(CZapit::getInstance()->existsChannelInBouquet(old_bouquet_id, channel_id)) 
+				{
+					CZapit::getInstance()->Bouquets[old_bouquet_id]->removeService(channel_id);
+				}
+				return 1;
+
+				break;
+				
+			case 2: // add to
+				do {
+					bouquet_id = bouquetList->exec(false, false);
+				} while(bouquet_id == -3);
+				
+				hide();
+				
+				if(bouquet_id < 0)
+					return 0;
+				
+				bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[bouquet_id]->channelList->getName());
+				if (bouquet_id == -1)
+					return 0;
+				
+				if(!CZapit::getInstance()->existsChannelInBouquet(bouquet_id, channel_id)) 
+				{
+					CZapit::getInstance()->addChannelToBouquet(bouquet_id, channel_id);
+					return 1;
+				}
+				break;
+				
+			case 3: // add to my favorites
+				bouquet_id = CZapit::getInstance()->existsBouquet("Favorites");
+
+				if(bouquet_id == -1) 
+				{
+					CZapit::getInstance()->addBouquet("Favorites", true);
+					bouquet_id = CZapit::getInstance()->existsBouquet("Favorites");
+				}
+				
+				if(!CZapit::getInstance()->existsChannelInBouquet(bouquet_id, channel_id)) 
+				{
+					CZapit::getInstance()->addChannelToBouquet(bouquet_id, channel_id);
+					return 1;
+				}
+				
+				break;
+				
+			default:
+				break;
+		}
+	}
+	
+	return 0;
 }
 

@@ -42,7 +42,6 @@
 #include <system/localize.h>
 
 #include <gui/widget/widget.h>
-#include <gui/widget/window.h>
 #include <gui/widget/widget_helpers.h>
 
 
@@ -57,7 +56,7 @@ class CColorChooser : public CMenuTarget
 		CBox cFrameBoxItem;
 		CBox cFrameBoxColorPreview;
 
-		CWindow* m_cBoxWindow;
+		CCWindow* m_cBoxWindow;
 
 		unsigned char * value[4]; // r, g, b, alpha
 

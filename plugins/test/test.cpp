@@ -102,7 +102,7 @@ class CTestMenu : public CMenuTarget
 		CListFrame *listFrame;
 
 		// CWindow
-		CWindow *windowWidget;
+		CCWindow *windowWidget;
 		
 		// CTextBox
 		CTextBox* textBoxWidget;
@@ -139,6 +139,10 @@ class CTestMenu : public CMenuTarget
 		void testMultiWidget();
 
 		// CCompenents 
+		void testCCWindow(void);
+		void testCWindow();
+		void testCWindowShadow();
+		void testCWindowCustomColor();
 		void testCIcon();
 		void testCImage();
 		void testCProgressBar();
@@ -149,9 +153,9 @@ class CTestMenu : public CMenuTarget
 		// CWidgetItem
 		void testCHeaders();
 		void testCFooters();
-		void testCWindow();
-		void testCWindowShadow();
-		void testCWindowCustomColor();
+		//void testCWindow();
+		//void testCWindowShadow();
+		//void testCWindowCustomColor();
 		void testCProgressWindow();
 		void testCTextBox();
 		void testCListFrame();
@@ -1150,7 +1154,7 @@ void CTestMenu::testCComponentWidget()
 	CCLabel testLabel;
 	testLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
 	testLabel.setColor(COL_ORANGE);
-	testLabel.enablePaintBG();
+	testLabel.paintMainFrame(true);
 	testLabel.setText("this is a CComponent label test :-)");
 	testLabel.setPosition(Box.iX + 20, Box.iY + 50, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
 	
@@ -1735,10 +1739,10 @@ void CTestMenu::testMultiWidget()
 	}
 	
 	// CWindow
-	windowWidget = new CWindow(&Box);
+	windowWidget = new CCWindow(&Box);
 	windowWidget->setColor(COL_MENUCONTENT_PLUS_0);
 	
-	testWidget->addWidgetItem(windowWidget);
+	testWidget->addCCItem(windowWidget);
 	
 	// icon
 	CCIcon testIcon;
@@ -1759,7 +1763,7 @@ void CTestMenu::testMultiWidget()
 	CCLabel testLabel;
 	testLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
 	testLabel.setColor(COL_GREEN);
-	testLabel.enablePaintBG();
+	testLabel.paintMainFrame(true);
 	testLabel.setText("this is a CComponent label test :-)");
 	testLabel.setPosition(Box.iX + 20, Box.iY + 50, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
 	
@@ -1819,6 +1823,33 @@ void CTestMenu::testMultiWidget()
 	
 	delete windowWidget;
 	windowWidget = NULL;
+}
+
+// CCPanel
+void CTestMenu::testCCWindow(void)
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCWindow\n");
+	
+	CCWindow testPanel;
+	
+	CBox Box;
+	Box.iX = g_settings.screen_StartX + 100;
+	Box.iY = g_settings.screen_StartY + 100;
+	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 200);
+	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 200);
+	
+	testPanel.setPosition(&Box);
+	testPanel.setBorderMode(BORDER_ALL);
+	testPanel.paintMainFrame(true);
+	testPanel.paint();
+	
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	testWidget = new CWidget();
+	testWidget->exec(NULL, "");
+	delete testWidget;
+	testWidget = NULL;
 }
 
 // CIcon
@@ -1959,15 +1990,14 @@ void CTestMenu::testCButtons()
 	int icon_w, icon_h;
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
 	
-	//
+	// icons
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	//buttons.setMode(CCButtons::BUTTON_FRAME_COLORED);
 	buttons.paint();
 	
-	//
+	// colored frame
 	buttons.clear();
-	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 35);
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 40);
 	//buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	buttons.addButton("", "I'M A RED BUTTON", COL_RED_PLUS_0);
 	buttons.addButton("", "I'M A GREEN BUTTON", COL_GREEN_PLUS_0);
@@ -1978,7 +2008,7 @@ void CTestMenu::testCButtons()
 	
 	//
 	buttons.clear();
-	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 40);
 	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	buttons.setMode(CCButtons::BUTTON_FRAME_BORDER);
 	buttons.paint();
@@ -2008,19 +2038,18 @@ void CTestMenu::testCHButtons()
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
-	//buttons.setMode(CCButtons::BUTTON_FRAME_COLORED);
 	buttons.paint();
 	
-	//
+	// colored frame
 	buttons.clear();
-	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 25);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
 	buttons.setMode(CCButtons::BUTTON_FRAME_COLORED);
 	buttons.paint();
 	
-	//
+	// frame
 	buttons.clear();
-	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), icon_h);
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 25);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
 	buttons.setMode(CCButtons::BUTTON_FRAME_BORDER);
 	buttons.paint();
@@ -2142,7 +2171,7 @@ void CTestMenu::testCWindow()
 	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 400);
 
 	//
-	CWindow* window = new CWindow(&Box);
+	CCWindow* window = new CCWindow(&Box);
 
 	window->setColor(COL_MENUCONTENT_PLUS_0);
 	window->setCorner(RADIUS_MID, CORNER_ALL);
@@ -2150,12 +2179,14 @@ void CTestMenu::testCWindow()
 	window->setGradient(DARK2LIGHT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_COLOR2TRANSPARENT);
 	//window->setGradient(LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_COLOR2COLR);
 
-	//window->paint();
-	//CFrameBuffer::getInstance()->blit();
+	window->paint();
+	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	window->exec();
-	//window->hide();
+	testWidget = new CWidget();
+	testWidget->exec(NULL, "");
+	delete testWidget;
+	testWidget = NULL;
 	
 	if (window)
 	{
@@ -2177,19 +2208,21 @@ void CTestMenu::testCWindowShadow()
 	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 400);
 
 	//
-	CWindow* window = new CWindow(&Box);
+	CCWindow *window = new CCWindow(&Box);
 
 	window->setColor(COL_MENUCONTENT_PLUS_0);
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setBorderMode(BORDER_ALL);
 	window->paintMainFrame(true);
 
-	//window->paint();
-	//CFrameBuffer::getInstance()->blit();
+	window->paint();
+	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	window->exec();
-	//window->hide();
+	testWidget = new CWidget();
+	testWidget->exec(NULL, "");
+	delete testWidget;
+	testWidget = NULL;
 	
 	if (window)
 	{
@@ -2211,19 +2244,21 @@ void CTestMenu::testCWindowCustomColor()
 	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 400);
 
 	//
-	CWindow* window = new CWindow(&Box);
+	CCWindow* window = new CCWindow(&Box);
 
 	window->setColor(COL_ORANGE_PLUS_0); // or use like make16color(0x76A5AF)
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setBorderMode(BORDER_ALL);
 	window->paintMainFrame(true);
 
-	//window->paint();
-	//CFrameBuffer::getInstance()->blit();
+	window->paint();
+	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	window->exec();
-	//window->hide();
+	testWidget = new CWidget();
+	testWidget->exec(NULL, "");
+	delete testWidget;
+	testWidget = NULL;
 	
 	if (window)
 	{
@@ -5058,6 +5093,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
+	else if (actionKey == "panel")
+	{
+		testCCWindow();
+		
+		return RETURN_REPAINT;
+	}
 	else if(actionKey == "icon")
 	{
 		testCIcon();
@@ -6582,11 +6623,15 @@ void CTestMenu::showMenu()
 	
 	//
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CComponent"));
-	mainMenu->addItem(new CMenuForwarder("CIcon", true, NULL, this, "icon"));
-	mainMenu->addItem(new CMenuForwarder("CImage", true, NULL, this, "image"));
-	mainMenu->addItem(new CMenuForwarder("CButtons (foot)", true, NULL, this, "buttons"));
-	mainMenu->addItem(new CMenuForwarder("CButtons (head)", true, NULL, this, "hbuttons"));
-	mainMenu->addItem(new CMenuForwarder("CSpinner", true, NULL, this, "spinner"));
+	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
+	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "window"));
+	mainMenu->addItem(new CMenuForwarder("CCWindow(with shadow)", true, NULL, this, "windowshadow"));
+	mainMenu->addItem(new CMenuForwarder("CCWindow(shadow|customColor)", true, NULL, this, "windowcustomcolor"));
+	mainMenu->addItem(new CMenuForwarder("CCIcon", true, NULL, this, "icon"));
+	mainMenu->addItem(new CMenuForwarder("CCImage", true, NULL, this, "image"));
+	mainMenu->addItem(new CMenuForwarder("CCButtons (foot)", true, NULL, this, "buttons"));
+	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
+	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
 	//mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CWidgetItems"));
@@ -6594,9 +6639,6 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CFooters", true, NULL, this, "footers"));
 	mainMenu->addItem(new CMenuForwarder("CTextBox", true, NULL, this, "textbox"));
 	mainMenu->addItem(new CMenuForwarder("CListFrame", true, NULL, this, "listframe"));
-	mainMenu->addItem(new CMenuForwarder("CWindow", true, NULL, this, "window"));
-	mainMenu->addItem(new CMenuForwarder("CWindow(with shadow)", true, NULL, this, "windowshadow"));
-	mainMenu->addItem(new CMenuForwarder("CWindow(shadow|customColor)", true, NULL, this, "windowcustomcolor"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(standard)", true, NULL, this, "listbox"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(classic)", true, NULL, this, "listbox2"));
 	mainMenu->addItem(new CMenuForwarder("ClistBox(extended)", true, NULL, this, "listbox3"));

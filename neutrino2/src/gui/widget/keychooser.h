@@ -44,7 +44,6 @@
 #include <system/localize.h>
 
 #include <gui/widget/listbox.h>
-#include <gui/widget/window.h>
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/widget.h>
 #include <gui/widget/menue.h>
@@ -84,7 +83,7 @@ class CKeyChooserItem : public CMenuTarget
 		CBox m_cBox;
 		CBox m_cTitle;
 
-		CWindow m_cBoxWindow;
+		CCWindow m_cBoxWindow;
 
 		std::string name;
 		int* key;

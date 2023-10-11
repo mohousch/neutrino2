@@ -789,11 +789,6 @@ CWidgetItem* CWidget::getWidgetItem(const int type, const std::string& name)
 					ret = items[count]; 
 				break;
 				
-			case CWidgetItem::WIDGETITEM_WINDOW:
-				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_WINDOW) && (items[count]->widgetItem_name == name) )
-					ret = items[count]; 
-				break;
-				
 			case CWidgetItem::WIDGETITEM_HEAD:
 				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_HEAD) && (items[count]->widgetItem_name == name) )
 					ret = items[count]; 
@@ -890,6 +885,11 @@ CComponent* CWidget::getCCItem(const int type, const std::string& name)
 				
 			case CComponent::CC_TIME:
 				if ( (CCItems[count]->cc_type == CComponent::CC_TIME) && (CCItems[count]->cc_name == name) )
+					ret = CCItems[count]; 
+				break;
+				
+			case CComponent::CC_WINDOW:
+				if ( (CCItems[count]->cc_type == CComponent::CC_WINDOW) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				

@@ -32,7 +32,6 @@
 #include <driver/framebuffer.h>
 #include <driver/fontrenderer.h>
 
-#include <gui/widget/window.h>
 #include <gui/widget/widget.h>
 
 
@@ -47,15 +46,13 @@ enum {
 	FRAME_PLUGIN,
 	FRAME_HLINE,
 	FRAME_VLINE,
-	FRAME_PIG,
-	//FRAME_TIME,
-	//FRAME_SLIDER
+	FRAME_PIG
 };
 
 class CFrameItem
 {
 	public:
-		CWindow window;
+		CCWindow window;
 		
 		int halign;
 		int valign;

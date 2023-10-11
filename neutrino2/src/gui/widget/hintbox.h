@@ -38,8 +38,6 @@
 #include <string>
 #include <vector>
 
-#include <gui/widget/window.h>
-
 #include <system/localize.h>
 #include <system/settings.h>
 

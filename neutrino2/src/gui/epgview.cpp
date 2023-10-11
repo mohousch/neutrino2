@@ -647,7 +647,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		textBox = (CTextBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_TEXTBOX);
 		headers = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
 		footers = (CFooters*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
-		cFollowScreeningWindow = (CWindow*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_WINDOW, "screening");
+		cFollowScreeningWindow = (CCWindow*)widget->getCCItem(CComponent::CC_WINDOW, "screening");
 	}
 	else
 	{
@@ -662,7 +662,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		textBox = new CTextBox(&cTextBox);
 		headers = new CHeaders(&cHeadBox);
 		footers = new CFooters(&cFootBox);
-		cFollowScreeningWindow = new CWindow(&cFollowScreeningBox);
+		cFollowScreeningWindow = new CCWindow(&cFollowScreeningBox);
 		
 		// head
 		headers->enablePaintDate();
@@ -676,7 +676,8 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		widget->addWidgetItem(textBox);
 		widget->addWidgetItem(headers);
 		widget->addWidgetItem(footers);
-		widget->addWidgetItem(cFollowScreeningWindow);
+		//
+		widget->addCCItem(cFollowScreeningWindow);
 	}
 	
 	//	

@@ -92,7 +92,7 @@ class CChannelList
 		CMenuItem *item;
 		CHeaders* head;
 		CFooters* foot;
-		CWindow* window;
+		CCWindow* window;
 		CCVline* vline;
 		CCHline* hline;
 		//

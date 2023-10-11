@@ -91,7 +91,6 @@
 #include <gui/widget/helpbox.h>
 #include <gui/widget/infobox.h>
 #include <gui/widget/textbox.h>
-#include <gui/widget/window.h>
 #include <gui/widget/icons.h>
 #include <gui/widget/listbox.h>
 #include <gui/widget/listframe.h>

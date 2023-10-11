@@ -73,7 +73,6 @@ neutrino2_LDADD = \
 	gui/main_setup.o \
 	gui/power_menu.o \
 	gui/epg_menu.o \
-	gui/widget/window.o \
 	gui/widget/listbox.o \
 	gui/widget/listframe.o \
 	gui/widget/framebox.o \

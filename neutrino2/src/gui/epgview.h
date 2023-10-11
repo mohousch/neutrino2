@@ -48,7 +48,6 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/textbox.h>
-#include <gui/widget/window.h>
 
 #include <sectionsd/sectionsd.h>
 
@@ -69,7 +68,7 @@ class CEpgData
 		CHeaders* headers;
 		CFooters* footers;
 		CTextBox *textBox;
-		CWindow *cFollowScreeningWindow;
+		CCWindow *cFollowScreeningWindow;
 		CCIcon *audioIcon;
 		CWidget *widget;
 
