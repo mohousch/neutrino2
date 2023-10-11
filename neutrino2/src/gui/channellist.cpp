@@ -153,7 +153,7 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	frameBuffer = CFrameBuffer::getInstance();
 
 	name = Name;
-	selected = -1;
+	selected = 0;
 	tuned = 0xfffffff;
 	zapProtection = NULL;
 	this->historyMode = _historyMode;
