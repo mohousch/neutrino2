@@ -137,8 +137,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 		//
 		widget = new CWidget(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
 		widget->name = "hintbox";
-		
-		//widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 		
 		//
 		headers = new CHeaders();

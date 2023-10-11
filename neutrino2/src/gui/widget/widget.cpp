@@ -189,6 +189,11 @@ void CWidget::paintCCItems()
 	{
 		for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
 		{
+			if( (CCItems[count]->isSelectable()) && (selected == -1)) 
+			{
+				selected = count;
+			}
+		
 			CCItems[count]->paint();
 		}
 	}
