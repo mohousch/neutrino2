@@ -311,6 +311,8 @@ void CStreamInfo::doSignalStrengthLoop()
 				
 				continue;
 			}
+			else
+				loop = false;
 		}
 		// -- any key --> abort
 		else if (msg <= CRCInput::RC_MaxRC) 
