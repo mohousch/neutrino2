@@ -69,7 +69,7 @@ typedef struct
 	int rowWidth[LF_MAX_ROWS];
 }LF_LINES;
 
-class CListFrame : public CWidgetItem
+class CListFrame : public CComponent
 {
 	public:
 		typedef enum mode_

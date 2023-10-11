@@ -503,7 +503,7 @@ int CChannelList::show(bool customMode)
 		}
 		else if (msg == CRCInput::RC_epg) // epg
 		{
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 
 			hide();
 
@@ -517,7 +517,7 @@ int CChannelList::show(bool customMode)
 		}
 		else if (msg == CRCInput::RC_red) // record
 		{
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 
 			hide();
 			
@@ -539,7 +539,7 @@ int CChannelList::show(bool customMode)
 		}
 		else if( msg == CRCInput::RC_yellow )
 		{
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 
 			hide();
 			
@@ -560,7 +560,7 @@ int CChannelList::show(bool customMode)
 		}
 		else if ( msg == CRCInput::RC_setup ) 
 		{
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 			
 			if (chanlist.size() && !IS_WEBTV(chanlist[selected]->channel_id))
 			{
@@ -595,36 +595,36 @@ int CChannelList::show(bool customMode)
 		}
                 else if (msg == CRCInput::RC_up)
                 {
-			listBox->scrollLineUp();
+			if (listBox) listBox->scrollLineUp();
 			
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 				
 			//
 			paintCurrentNextEvent(selected);
                 }
 		else if ( msg == CRCInput::RC_page_up || (int) msg == g_settings.key_channelList_pageup)
                 {
-			listBox->scrollPageUp();
+			if (listBox) listBox->scrollPageUp();
 			
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 				
 			//
 			paintCurrentNextEvent(selected);
                 }
                 else if (msg == CRCInput::RC_down)
                 {
-			listBox->scrollLineDown();
+			if (listBox) listBox->scrollLineDown();
 			
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 				
 			//
 			paintCurrentNextEvent(selected);
                 }
 		else if (msg == CRCInput::RC_page_down || (int) msg == g_settings.key_channelList_pagedown)
                 {
-			listBox->scrollPageDown();
+			if (listBox) listBox->scrollPageDown();
 			
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 				
 			//
 			paintCurrentNextEvent(selected);
@@ -695,7 +695,7 @@ int CChannelList::show(bool customMode)
 		}
 		else if ( msg == CRCInput::RC_ok ) 
 		{
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 	  
 			zapOnExit = !customMode;
 			
@@ -719,7 +719,7 @@ int CChannelList::show(bool customMode)
 		}
 		else if ( msg == CRCInput::RC_green ) //next
 		{
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 			
 			hide();
 			
@@ -731,7 +731,7 @@ int CChannelList::show(bool customMode)
 		} 
 		else if ( (msg == CRCInput::RC_info) )
 		{
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 
 			hide();
 			
@@ -1525,9 +1525,9 @@ void CChannelList::paint()
 	
 	if (widget)
 	{
-		listBox = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
-		head = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
-		foot = (CFooters*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
+		listBox = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
+		head = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		foot = (CFooters*)widget->getCCItem(CComponent::CC_FOOT);
 		window = (CCWindow*)widget->getCCItem(CComponent::CC_WINDOW);
 		vline = (CCVline*)widget->getCCItem(CComponent::CC_VLINE);
 		hline = (CCHline*)widget->getCCItem(CComponent::CC_HLINE);
@@ -1562,10 +1562,10 @@ void CChannelList::paint()
 		hline = new CCHline(widget->getWindowsPos().iX + (widget->getWindowsPos().iWidth/3)*2 + 10, widget->getWindowsPos().iY + 50 + (widget->getWindowsPos().iHeight - 100)/2, widget->getWindowsPos().iWidth/3 - 20, 2);
 		hline->setGradient(3);
 		
-		widget->addWidgetItem(listBox);
-		widget->addWidgetItem(head);
-		widget->addWidgetItem(foot);
+		widget->addCCItem(listBox);
 		//
+		widget->addCCItem(head);
+		widget->addCCItem(foot);
 		widget->addCCItem(window);	
 		widget->addCCItem(vline);
 		widget->addCCItem(hline);
@@ -1574,16 +1574,16 @@ void CChannelList::paint()
 	// wionTop
 	if (window)
 	{
-	winTopBox.iX = window->getWindowsPos().iX + 2;
-	winTopBox.iY = window->getWindowsPos().iY + 2;
-	winTopBox.iWidth = window->getWindowsPos().iWidth - 4;
-	winTopBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
-	
-	// winBottom
-	winBottomBox.iX = window->getWindowsPos().iX + 2;
-	winBottomBox.iY = window->getWindowsPos().iY + window->getWindowsPos().iHeight/2 + 2;
-	winBottomBox.iWidth = window->getWindowsPos().iWidth - 4;
-	winBottomBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
+		winTopBox.iX = window->getWindowsPos().iX + 2;
+		winTopBox.iY = window->getWindowsPos().iY + 2;
+		winTopBox.iWidth = window->getWindowsPos().iWidth - 4;
+		winTopBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
+		
+		// winBottom
+		winBottomBox.iX = window->getWindowsPos().iX + 2;
+		winBottomBox.iY = window->getWindowsPos().iY + window->getWindowsPos().iHeight/2 + 2;
+		winBottomBox.iWidth = window->getWindowsPos().iWidth - 4;
+		winBottomBox.iHeight = window->getWindowsPos().iHeight/2 - 4;
 	}
 
 	if (head) 
@@ -1864,7 +1864,7 @@ int CChannelList::doChannelMenu(void)
 	
 	if (mWidget)
 	{
-		menu = (ClistBox*)mWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)mWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1892,7 +1892,7 @@ int CChannelList::doChannelMenu(void)
 		menu->setFootLine(true, true);
 		
 		//
-		mWidget->addWidgetItem(menu);
+		mWidget->addCCItem(menu);
 	}
 	
 	//

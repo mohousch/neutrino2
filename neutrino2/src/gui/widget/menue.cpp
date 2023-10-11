@@ -200,10 +200,13 @@ CMenuWidget::~CMenuWidget()
 
 void CMenuWidget::addItem(CMenuItem *menuItem, const bool defaultselected)
 {
-	if (defaultselected)
-		selected = items.size();
-	
-	items.push_back(menuItem);
+	if (menuItem != NULL)
+	{
+		if (defaultselected)
+			selected = items.size();
+		
+		items.push_back(menuItem);
+	}
 }
 
 void CMenuWidget::removeItem(long pos)

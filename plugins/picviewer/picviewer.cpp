@@ -225,7 +225,7 @@ void CPicViewer::showMenu()
 	widget->addKey(CRCInput::RC_yellow, this, CRCInput::getSpecialKeyName(CRCInput::RC_yellow));
 	widget->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
 	
-	widget->addWidgetItem(plist);
+	widget->addCCItem(plist);
 
 	widget->exec(NULL, "");
 	

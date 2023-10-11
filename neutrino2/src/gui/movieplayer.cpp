@@ -757,7 +757,7 @@ void CMoviePlayerGui::PlayFile(void)
 	
 	if (widget)
 	{
-		bookStartMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		bookStartMenu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -782,7 +782,7 @@ void CMoviePlayerGui::PlayFile(void)
 		bookStartMenu->setFootButtons(&btn);
 			
 		//
-		widget->addWidgetItem(bookStartMenu);
+		widget->addCCItem(bookStartMenu);
 	}
 
 	bookStartMenu->addItem(new CMenuForwarder(_("New Bookmark")));
@@ -1727,7 +1727,7 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 	
 	if (widget)
 	{
-		startPosSelectionMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		startPosSelectionMenu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1751,7 +1751,7 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 		startPosSelectionMenu->setFootButtons(&btn);
 			
 		//
-		widget->addWidgetItem(startPosSelectionMenu);
+		widget->addCCItem(startPosSelectionMenu);
 	}
 	
 	startPosSelectionMenu->clearItems();

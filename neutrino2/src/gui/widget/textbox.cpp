@@ -143,6 +143,7 @@ void CTextBox::initVar(void)
 	
 	//
 	paintframe = true;
+	inFocus = true;
 	enableFrame = false;
 	useBG = false;
 	borderMode = BORDER_NO;
@@ -150,7 +151,7 @@ void CTextBox::initVar(void)
 	background = NULL;
 	
 	//
-	widgetItem_type = WIDGETITEM_TEXTBOX;
+	cc_type = CC_TEXTBOX;
 }
 
 void CTextBox::setPosition(const int x, const int y, const int dx, const int dy)

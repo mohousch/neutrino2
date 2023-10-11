@@ -196,7 +196,7 @@ int CNFSMountGui::menu()
 	
 	if (widget)
 	{
-		mountMenuW = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		mountMenuW = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -221,7 +221,7 @@ int CNFSMountGui::menu()
 		mountMenuW->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(mountMenuW);
+		widget->addCCItem(mountMenuW);
 	}
 	
 	// intros
@@ -319,7 +319,7 @@ int CNFSMountGui::menuEntry(int nr)
 	
 	if (widget)
 	{
-		mountMenuEntryW = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		mountMenuEntryW = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -343,7 +343,7 @@ int CNFSMountGui::menuEntry(int nr)
 		mountMenuEntryW->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(mountMenuEntryW);
+		widget->addCCItem(mountMenuEntryW);
 	}
 	
 	// intros
@@ -438,7 +438,7 @@ int CNFSUmountGui::menu()
 	
 	if (widget)
 	{
-		umountMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		umountMenu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -462,7 +462,7 @@ int CNFSUmountGui::menu()
 		umountMenu->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(umountMenu);
+		widget->addCCItem(umountMenu);
 	}
 	
 	umountMenu->clearItems();
@@ -516,7 +516,7 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 		
 		if (widget)
 		{
-			menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+			menu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 		}
 		else
 		{
@@ -540,7 +540,7 @@ int CNFSSmallMenu::exec( CMenuTarget* parent, const std::string & actionKey )
 			menu->setFootButtons(&btn);
 			
 			//
-			widget->addWidgetItem(menu);
+			widget->addCCItem(menu);
 		}
 
 		CNFSMountGui mountGui;

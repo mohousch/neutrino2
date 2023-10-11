@@ -165,7 +165,7 @@ void CZapitSetup::showMenu()
 	
 	if (widget)
 	{
-		zapit = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		zapit = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -194,7 +194,7 @@ void CZapitSetup::showMenu()
 		zapit->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(zapit);
+		widget->addCCItem(zapit);
 	}
 	
 	// intros

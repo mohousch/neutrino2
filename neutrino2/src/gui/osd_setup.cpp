@@ -99,7 +99,7 @@ int COSDSettings::showMenu(void)
 	
 	if (widget)
 	{
-		osdSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		osdSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -130,7 +130,7 @@ int COSDSettings::showMenu(void)
 		osdSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(osdSettings);
+		widget->addCCItem(osdSettings);
 	}
 	
 	// skin manager
@@ -269,7 +269,7 @@ void COSDMenuColorSettings::showMenu()
 	
 	if (widget)
 	{
-		OSDmenuColorsSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		OSDmenuColorsSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -298,7 +298,7 @@ void COSDMenuColorSettings::showMenu()
 		OSDmenuColorsSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(OSDmenuColorsSettings);
+		widget->addCCItem(OSDmenuColorsSettings);
 	}
 	
 	// intros
@@ -475,7 +475,7 @@ void COSDInfoBarColorSettings::showMenu()
 	
 	if (widget)
 	{
-		OSDinfobarColorSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		OSDinfobarColorSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -504,7 +504,7 @@ void COSDInfoBarColorSettings::showMenu()
 		OSDinfobarColorSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(OSDinfobarColorSettings);
+		widget->addCCItem(OSDinfobarColorSettings);
 	}
 	
 	// intros
@@ -626,7 +626,7 @@ int CLanguageSettings::showMenu()
 	
 	if (widget)
 	{
-		languageSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		languageSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -655,7 +655,7 @@ int CLanguageSettings::showMenu()
 		languageSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(languageSettings);
+		widget->addCCItem(languageSettings);
 	}
 	
 	// intros
@@ -796,7 +796,7 @@ void CFontSettings::showMenu()
 	
 	if (widget)
 	{
-		fontSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		fontSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -825,7 +825,7 @@ void CFontSettings::showMenu()
 		fontSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(fontSettings);
+		widget->addCCItem(fontSettings);
 	}
 	
 	// intros
@@ -892,7 +892,7 @@ void COSDTimingSettings::showMenu()
 	
 	if (widget)
 	{
-		osdTimingSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		osdTimingSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -921,7 +921,7 @@ void COSDTimingSettings::showMenu()
 		osdTimingSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(osdTimingSettings);
+		widget->addCCItem(osdTimingSettings);
 	}
 	
 	// intros
@@ -1032,7 +1032,7 @@ void COSDDiverses::showMenu()
 	
 	if (widget)
 	{
-		osdDiverseSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		osdDiverseSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1061,7 +1061,7 @@ void COSDDiverses::showMenu()
 		osdDiverseSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(osdDiverseSettings);
+		widget->addCCItem(osdDiverseSettings);
 	}
 	
 	// intros
@@ -1123,7 +1123,7 @@ int CSkinManager::showMenu()
 	
 	if (widget)
 	{
-		skinMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		skinMenu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1153,7 +1153,7 @@ int CSkinManager::showMenu()
 		skinMenu->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(skinMenu);
+		widget->addCCItem(skinMenu);
 	}
 	
 	//
@@ -1263,7 +1263,7 @@ int CSkinSettings::showMenu()
 	
 	if (widget)
 	{
-		skinSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		skinSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1292,7 +1292,7 @@ int CSkinSettings::showMenu()
 		skinSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(skinSettings);
+		widget->addCCItem(skinSettings);
 	}
 	
 	// intros
@@ -1466,7 +1466,7 @@ int CPersonalisation::showMenu(void)
 	
 	if (widget)
 	{
-		personalizeSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		personalizeSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1495,7 +1495,7 @@ int CPersonalisation::showMenu(void)
 		personalizeSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(personalizeSettings);
+		widget->addCCItem(personalizeSettings);
 	}
 	
 	// intros

@@ -293,7 +293,7 @@ CTimerList::CTimerList()
 	
 	if (timerlistWidget)
 	{
-		listBox = (ClistBox*)timerlistWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		listBox = (ClistBox*)timerlistWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -318,7 +318,7 @@ CTimerList::CTimerList()
 		listBox->setFootLine(true, true);
 		
 		//
-		timerlistWidget->addWidgetItem(listBox);
+		timerlistWidget->addCCItem(listBox);
 	}
 }
 
@@ -960,7 +960,7 @@ int CTimerList::modifyTimer()
 	
 	if (widget)
 	{
-		timerSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		timerSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -988,7 +988,7 @@ int CTimerList::modifyTimer()
 		timerSettings->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(timerSettings);
+		widget->addCCItem(timerSettings);
 	}
 	
 	timerSettings->clearItems();
@@ -1071,7 +1071,7 @@ int CTimerList::modifyTimer()
 	timerSettings_apids->setFootButtons(&btn);
 					
 	//
-	timerSettings_apidsWidget->addWidgetItem(timerSettings_apids);
+	timerSettings_apidsWidget->addCCItem(timerSettings_apids);
 
 	CTimerListApidNotifier apid_notifier(&timer_apids_dflt, &timer_apids_std, &timer_apids_ac3, &timer_apids_alt);
 	timer_apids_dflt = (timer->apids == 0) ? 1 : 0 ;
@@ -1137,7 +1137,7 @@ int CTimerList::newTimer()
 	
 	if (widget)
 	{
-		timerSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		timerSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1165,7 +1165,7 @@ int CTimerList::newTimer()
 		timerSettings->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(timerSettings);
+		widget->addCCItem(timerSettings);
 	}
 	
 	timerSettings->clearItems();

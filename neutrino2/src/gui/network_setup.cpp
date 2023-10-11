@@ -196,7 +196,7 @@ void CNetworkSettings::showMenu()
 	
 	if (widget)
 	{
-		networkSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		networkSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -225,7 +225,7 @@ void CNetworkSettings::showMenu()
 		networkSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(networkSettings);
+		widget->addCCItem(networkSettings);
 	}
 	
 	//

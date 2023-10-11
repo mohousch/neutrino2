@@ -467,7 +467,7 @@ void CMoviePlayer::showMenu()
 	widget->addKey(CRCInput::RC_blue, this, CRCInput::getSpecialKeyName(CRCInput::RC_blue));
 	
 	//
-	widget->addWidgetItem(mlist);
+	widget->addCCItem(mlist);
 	widget->setTimeOut(g_settings.timing_menu);
 
 	widget->exec(NULL, "");

@@ -3091,7 +3091,7 @@ void CNeutrinoApp::selectNVOD()
                 
                 if (widget)
                 {
-			NVODSelector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+			NVODSelector = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 		}
 		else
                 {
@@ -3116,7 +3116,7 @@ void CNeutrinoApp::selectNVOD()
 			NVODSelector->setFootButtons(&btn);
 			
 			//
-			widget->addWidgetItem(NVODSelector);
+			widget->addCCItem(NVODSelector);
 		}
 
 		//

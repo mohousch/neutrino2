@@ -372,15 +372,15 @@ int CBouquetList::show(bool customMode)
 		}
 		else if (msg == CRCInput::RC_up)
 		{
-			listBox->scrollLineUp();
+			if (listBox) listBox->scrollLineUp();
 		}
 		else if (msg == CRCInput::RC_page_up || (int) msg == g_settings.key_channelList_pageup )
 		{
-			listBox->scrollPageUp();
+			if (listBox) listBox->scrollPageUp();
 		}
 		else if ( msg == CRCInput::RC_down)
 		{
-			listBox->scrollLineDown();
+			if (listBox) listBox->scrollLineDown();
 		}
 		else if ( msg == CRCInput::RC_page_down || (int) msg == g_settings.key_channelList_pagedown )
 		{
@@ -388,14 +388,14 @@ int CBouquetList::show(bool customMode)
 		}
 		else if ( msg == CRCInput::RC_ok ) 
 		{
-			selected = listBox->getSelected();
+			selected = listBox? listBox->getSelected() : 0;
 
 			zapOnExit = !customMode;
 			loop = false;
 		}
 		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
 		{
-			listBox->refresh();
+			if (listBox) listBox->refresh();
 		} 
 		else 
 		{
@@ -486,7 +486,7 @@ void CBouquetList::paint()
 	
 	if (bqWidget)
 	{
-		listBox = (ClistBox*)bqWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		listBox = (ClistBox*)bqWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -502,33 +502,28 @@ void CBouquetList::paint()
 		listBox->setFootLine(true, true);
 		
 		bqWidget->name = "bouquetlist";
-		bqWidget->addWidgetItem(listBox);
+		bqWidget->addCCItem(listBox);
 	}	
 
-	listBox->clear();
+	if (listBox) listBox->clear();
 
 	for (unsigned int count = 0; count < Bouquets.size(); count++)
 	{
 		item = new CMenuForwarder(_(Bouquets[count]->channelList->getName()));
 
 		item->setNumber(count + 1);
-		listBox->addItem(item);
+		if (listBox) listBox->addItem(item);
 	}
 
 	// head
-	//listBox->enablePaintHead();
-	listBox->setTitle(name.c_str());
-	listBox->enablePaintDate();
-
-	listBox->setHeadButtons(&HButton, 1);
-
-	// foot
-	//listBox->enablePaintFoot();
-	
-	listBox->setFootButtons(CBouquetListButtons, 4);
-
-	//
-	listBox->setSelected(selected);
+	if (listBox)
+	{
+		listBox->setTitle(name.c_str());
+		listBox->enablePaintDate();
+		listBox->setHeadButtons(&HButton, 1);
+		listBox->setFootButtons(CBouquetListButtons, 4);
+		listBox->setSelected(selected);
+	}
 	
 	//
 	bqWidget->paint();
@@ -563,7 +558,7 @@ int CBouquetList::doMenu()
 	
 	if (widget)
 	{
-		menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -591,7 +586,7 @@ int CBouquetList::doMenu()
 		menu->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(menu);
+		widget->addCCItem(menu);
 	}
 	
 	//

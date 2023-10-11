@@ -1938,7 +1938,7 @@ void CMovieInfoWidget::funArt()
 
 	testFrameBox->addFrame(infoFrame, true);
 
-	widget->addWidgetItem(testFrameBox);
+	widget->addCCItem(testFrameBox);
 	
 	//
 	widget->setTimeOut(g_settings.timing_filebrowser);

@@ -141,7 +141,7 @@ void CGeneralSettings::showMenu()
 	
 	if (widget)
 	{
-		miscSettingsGeneral = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		miscSettingsGeneral = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -170,7 +170,7 @@ void CGeneralSettings::showMenu()
 		miscSettingsGeneral->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(miscSettingsGeneral);
+		widget->addCCItem(miscSettingsGeneral);
 	}
 	
 	// intros
@@ -535,7 +535,7 @@ void CChannelListSettings::showMenu()
 	
 	if (widget)
 	{
-		miscSettingsChannelList = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		miscSettingsChannelList = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -564,7 +564,7 @@ void CChannelListSettings::showMenu()
 		miscSettingsChannelList->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(miscSettingsChannelList);
+		widget->addCCItem(miscSettingsChannelList);
 	}
 	
 	// intros
@@ -714,7 +714,7 @@ void CEPGSettings::showMenu()
 	
 	if (widget)
 	{
-		miscSettingsEPG = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		miscSettingsEPG = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -743,7 +743,7 @@ void CEPGSettings::showMenu()
 		miscSettingsEPG->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(miscSettingsEPG);
+		widget->addCCItem(miscSettingsEPG);
 	}
 	
 	// intros
@@ -959,7 +959,7 @@ void CFileBrowserSettings::showMenu()
 	
 	if (widget)
 	{
-		miscSettingsFileBrowser = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		miscSettingsFileBrowser = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -988,7 +988,7 @@ void CFileBrowserSettings::showMenu()
 		miscSettingsFileBrowser->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(miscSettingsFileBrowser);
+		widget->addCCItem(miscSettingsFileBrowser);
 	}
 	
 	// intros

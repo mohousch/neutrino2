@@ -110,7 +110,7 @@ int CCECSetup::showMenu()
 	
 	if (widget)
 	{
-		cec = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		cec = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -139,7 +139,7 @@ int CCECSetup::showMenu()
 		cec->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(cec);
+		widget->addCCItem(cec);
 	}
 	
 	// intros

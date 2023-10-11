@@ -464,7 +464,7 @@ int CScanSetup::showScanService()
 	
 	if (widget)
 	{
-		scansetup = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		scansetup = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -492,7 +492,7 @@ int CScanSetup::showScanService()
 		scansetup->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(scansetup);
+		widget->addCCItem(scansetup);
 	}
 	
 	
@@ -708,7 +708,7 @@ int CScanSetup::showMotorSetup()
 		
 	if (motorMenuWidget)
 	{
-		motorMenu = (ClistBox*)motorMenuWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		motorMenu = (ClistBox*)motorMenuWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -733,7 +733,7 @@ int CScanSetup::showMotorSetup()
 		motorMenu->setFootButtons(&btn);
 			
 		//
-		motorMenuWidget->addWidgetItem(motorMenu);
+		motorMenuWidget->addCCItem(motorMenu);
 	}
 		
 	// intros
@@ -805,7 +805,7 @@ int CScanSetup::showUnicableSetup()
 	
 	if (uniWidget)
 	{
-		uni_setup = (ClistBox*)uniWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		uni_setup = (ClistBox*)uniWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -830,7 +830,7 @@ int CScanSetup::showUnicableSetup()
 		uni_setup->setFootButtons(&btn);
 		
 		//
-		uniWidget->addWidgetItem(uni_setup);
+		uniWidget->addCCItem(uni_setup);
 	}
 
 	uni_setup->addItem(new CMenuForwarder(_("back")));
@@ -878,7 +878,7 @@ int CScanSetup::showLNBSetup()
 		
 	if (satSetupWidget)
 	{
-		satSetup = (ClistBox*)satSetupWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		satSetup = (ClistBox*)satSetupWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -903,7 +903,7 @@ int CScanSetup::showLNBSetup()
 		satSetup->setFootButtons(&btn);
 			
 		//
-		satSetupWidget->addWidgetItem(satSetup);
+		satSetupWidget->addCCItem(satSetup);
 	}
 		
 	satSetup->addItem(new CMenuForwarder(_("back")));
@@ -917,7 +917,7 @@ int CScanSetup::showLNBSetup()
 				
 	if (tempsatWidget)
 	{
-		tempsatlistBox = (ClistBox*)tempsatWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		tempsatlistBox = (ClistBox*)tempsatWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -942,7 +942,7 @@ int CScanSetup::showLNBSetup()
 		tempsatlistBox->setFootButtons(&btn);
 					
 		//
-		tempsatWidget->addWidgetItem(tempsatlistBox);
+		tempsatWidget->addCCItem(tempsatlistBox);
 	}
 
 	for(sit = satellitePositions.begin(); sit != satellitePositions.end(); sit++) 
@@ -1047,7 +1047,7 @@ int CScanSetup::showSatOnOffSetup()
 		
 	if (satOnOffWidget)
 	{
-		satOnOfflistBox = (ClistBox*)satOnOffWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		satOnOfflistBox = (ClistBox*)satOnOffWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1072,7 +1072,7 @@ int CScanSetup::showSatOnOffSetup()
 		satOnOfflistBox->setFootButtons(&btn);
 			
 		//
-		satOnOffWidget->addWidgetItem(satOnOfflistBox);
+		satOnOffWidget->addCCItem(satOnOfflistBox);
 	}
 	
 	// intros
@@ -1123,7 +1123,7 @@ int CScanSetup::showManualScanSetup()
 	
 	if (manualScanWidget)
 	{
-		manualScanlistBox = (ClistBox*)manualScanWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		manualScanlistBox = (ClistBox*)manualScanWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1148,7 +1148,7 @@ int CScanSetup::showManualScanSetup()
 		manualScanlistBox->setFootButtons(&btn);
 		
 		//
-		manualScanWidget->addWidgetItem(manualScanlistBox);
+		manualScanWidget->addCCItem(manualScanlistBox);
 	}
 
 	// intros
@@ -1422,7 +1422,7 @@ int CScanSetup::showAutoScanSetup()
 	
 	if (autoScanWidget)
 	{
-		autoScanlistBox = (ClistBox*)autoScanWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		autoScanlistBox = (ClistBox*)autoScanWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1447,7 +1447,7 @@ int CScanSetup::showAutoScanSetup()
 		autoScanlistBox->setFootButtons(&btn);
 		
 		//
-		autoScanWidget->addWidgetItem(autoScanlistBox);
+		autoScanWidget->addCCItem(autoScanlistBox);
 	}
 	
 	// intros
@@ -1556,7 +1556,7 @@ int CScanSetup::showAllAutoScanSetup()
 		
 	if (autoScanAllWidget)
 	{
-		autoScanAlllistBox = (ClistBox*)autoScanAllWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		autoScanAlllistBox = (ClistBox*)autoScanAllWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1581,7 +1581,7 @@ int CScanSetup::showAllAutoScanSetup()
 		autoScanAlllistBox->setFootButtons(&btn);
 			
 		//
-		autoScanAllWidget->addWidgetItem(autoScanAlllistBox);
+		autoScanAllWidget->addCCItem(autoScanAlllistBox);
 	}
 			
 	// intros
@@ -1657,7 +1657,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	
 	if (tpWidget)
 	{
-		menu = (ClistBox*)tpWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)tpWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1683,7 +1683,7 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 		menu->setFootButtons(&btn);
 		
 		//
-		tpWidget->addWidgetItem(menu);
+		tpWidget->addCCItem(menu);
 	}
 	
 	//
@@ -2393,7 +2393,7 @@ int CTunerSetup::showMenu()
 	
 	if (widget)
 	{
-		TunerSetup = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		TunerSetup = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -2423,7 +2423,7 @@ int CTunerSetup::showMenu()
 		TunerSetup->setFootLine(true, true);
 		
 		//		
-		widget->addWidgetItem(TunerSetup);
+		widget->addCCItem(TunerSetup);
 	}
 	
 	TunerSetup->clearItems();

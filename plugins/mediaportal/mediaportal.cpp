@@ -279,7 +279,7 @@ void CMediaPortal::showMenu(void)
 		mediaPortal->addItem(item);
 	}
 	
-	widget->addWidgetItem(mediaPortal);
+	widget->addCCItem(mediaPortal);
 
 	widget->exec(NULL, "");
 	

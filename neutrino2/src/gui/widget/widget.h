@@ -71,11 +71,8 @@ class CWidget : public CMenuTarget
 	protected:
 		CFrameBuffer *frameBuffer;
 		CBox mainFrameBox;
-
 		// 
-		WIDGETITEMLIST items;
 		CCITEMLIST CCItems;
-
 		//
 		neutrino_msg_t      msg;
 		neutrino_msg_data_t data;
@@ -88,10 +85,8 @@ class CWidget : public CMenuTarget
 		uint64_t timeout;
 		uint32_t sec_timer_id;
 		uint64_t sec_timer_interval;
-		
 		//
 		std::string actionKey; // for lua
-		
 		// screen
 		fb_pixel_t * background;
 		bool savescreen;
@@ -99,7 +94,6 @@ class CWidget : public CMenuTarget
 		void restoreScreen();
 		//
 		int menu_position;
-
 		// mainframe		
 		bool paintframe;
 		fb_pixel_t backgroundColor;
@@ -111,11 +105,9 @@ class CWidget : public CMenuTarget
 		int corner;
 		int borderMode;
 		fb_pixel_t borderColor;
-		
 		//
 		unsigned int current_page;
 		unsigned int total_pages;
-		
 		//
 		void initFrames();
 
@@ -133,41 +125,27 @@ class CWidget : public CMenuTarget
 			mainFrameBox.iHeight = dy;
 		};
 		virtual void setPosition(CBox* position){mainFrameBox = *position;};
-
-		// WIDGETITEMS
-		virtual void addWidgetItem(CWidgetItem* widgetItem, const bool defaultselected = false);
-		bool hasWidgetItem(){return !items.empty();};
-		int getWidgetItemsCount(){return items.size();};
-		virtual void clearWidgetItems(void){return items.clear();};
-		virtual void paintWidgetItems();
-		virtual void removeWidgetItem(long pos);
-		WIDGETITEMLIST getWidgetItems(){return items;};
-		
+		//
 		void setSelected(unsigned int _new) {selected = _new; if (selected < 0) selected = 0;};
 		int getSelected(){return exit_pressed ? -1 : selected;};
-		
 		// CCITEMS
-		virtual void addCCItem(CComponent* CCItem);
+		virtual void addCCItem(CComponent* CCItem, const bool defaultselected = false);
 		bool hasCCItem(){return !CCItems.empty();};
 		int getCCItemsCount(){return CCItems.size();};
 		virtual void clearCCItems(){CCItems.clear();};
 		virtual void paintCCItems();
 		virtual void removeCCItem(long pos);
 		CCITEMLIST getCCItems(){return CCItems;};
-		
 		//
 		virtual void paint();
 		virtual void hide();
 		virtual int exec(CMenuTarget *parent, const std::string &actionKey);
 		virtual void refresh();
-
 		//
 		void setTimeOut(uint64_t to = 0){timeout = to;};
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;};
-		
 		//
 		void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
-
 		//
 		void paintMainFrame(bool p){paintframe = p;};
 		void setColor(fb_pixel_t col) {backgroundColor = col;};
@@ -178,16 +156,13 @@ class CWidget : public CMenuTarget
 		//
 		void enableSaveScreen();
 		void setMenuPosition(int p){menu_position = p; initFrames();};
-		
 		// lua compatibility
 		std::string getActionKey(){return actionKey;};
 		neutrino_msg_t getKey(){return msg;};
 		bool getExitPressed(){return exit_pressed;};
-		
 		//
 		inline CBox getWindowsPos(void){return mainFrameBox;};
 		int getMenuPosition(){return menu_position;};
-
 		// events
 		virtual void onOKKeyPressed();
 		virtual void onHomeKeyPressed();
@@ -199,12 +174,9 @@ class CWidget : public CMenuTarget
 		virtual void onPageDownKeyPressed();
 		virtual void onYellowKeyPressed();
 		virtual void onDirectKeyPressed(neutrino_msg_t _msg);
-		
 		//
 		std::string getWidgetName(){return name;};
-		
 		//
-		CWidgetItem* getWidgetItem(const int type, const std::string& name = "");
 		CComponent* getCCItem(const int type, const std::string& name = "");
 };
 

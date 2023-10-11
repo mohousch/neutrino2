@@ -96,7 +96,7 @@ void CAudioPlayerSettings::showMenu()
 	
 	if (widget)
 	{
-		audioPlayerSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		audioPlayerSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -125,7 +125,7 @@ void CAudioPlayerSettings::showMenu()
 		audioPlayerSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(audioPlayerSettings);
+		widget->addCCItem(audioPlayerSettings);
 	}
 	
 	// intros

@@ -168,7 +168,7 @@ void CImageInfo::paint()
 		width = widget->getWindowsPos().iWidth;
 		height = widget->getWindowsPos().iHeight;
 		
-		head = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
+		head = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
 	}
 	else
 	{
@@ -183,7 +183,7 @@ void CImageInfo::paint()
 		head->setFormat("%d.%m.%Y %H:%M:%S");
 		head->setLine(true, true);
 		
-		widget->addWidgetItem(head);
+		widget->addCCItem(head);
 
 	}
 	

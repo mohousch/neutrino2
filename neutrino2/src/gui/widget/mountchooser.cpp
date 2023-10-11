@@ -53,7 +53,7 @@ CMountChooser::CMountChooser(const char* const Name, const std::string& Icon, in
 		
 	if (widget)
 	{
-		menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 			
 		// title
 		if (menu->hasHead())
@@ -81,7 +81,7 @@ CMountChooser::CMountChooser(const char* const Name, const std::string& Icon, in
 		menu->setFootButtons(&btn);
 			
 		//
-		widget->addWidgetItem(menu);
+		widget->addCCItem(menu);
 	}
 		
 	menu->clear();

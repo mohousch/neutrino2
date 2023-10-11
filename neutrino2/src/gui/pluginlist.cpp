@@ -74,7 +74,7 @@ CPluginList::~CPluginList()
 
 void CPluginList::hide()
 {
-	plist->hide();	
+	if (plist) plist->hide();	
 }
 
 #define NUM_LIST_BUTTONS 4
@@ -99,7 +99,7 @@ int CPluginList::showMenu()
 	//
 	if (pWidget)
 	{
-		plist = (ClistBox*)pWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		plist = (ClistBox*)pWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -131,7 +131,7 @@ int CPluginList::showMenu()
 		plist->setFootLine(true, true);
 		
 		//
-		pWidget->addWidgetItem(plist);
+		pWidget->addCCItem(plist);
 	}
 
 	//
@@ -157,7 +157,7 @@ int CPluginList::showMenu()
 			item->set2lines();
 			//item->setBorderMode();
 
-			plist->addItem(item);
+			if (plist) plist->addItem(item);
 		}
 	}
 	
@@ -207,8 +207,8 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_green")
 	{
-		selected = plist->getSelected();
-		g_PluginList->startPlugin(plist->getSelected());
+		selected = plist? plist->getSelected() : 0;
+		g_PluginList->startPlugin(selected);
 	}
 	else if(actionKey == "RC_blue")
 	{
@@ -218,7 +218,7 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_info")
 	{
-		selected = plist->getSelected();
+		selected = plist? plist->getSelected() : 0;
 		std::string buffer;
 
 		buffer = "Name: ";
@@ -244,8 +244,6 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_ok")
 	{
-		//selected = plist->getSelected();
-
 		if(pluginSelected() == close)
 			return CMenuTarget::RETURN_EXIT_ALL;
 		else
@@ -259,7 +257,9 @@ int CPluginList::exec(CMenuTarget * parent, const std::string& actionKey)
 
 CPluginList::result_ CPluginList::pluginSelected()
 {
-	g_PluginList->startPlugin(plist->getSelected());
+	selected = plist? plist->getSelected() : 0;
+	
+	g_PluginList->startPlugin(selected);
 	
 	return resume;
 }
@@ -271,7 +271,9 @@ CPluginChooser::CPluginChooser(char* pluginname)
 
 CPluginList::result_ CPluginChooser::pluginSelected()
 {
-	strcpy(selected_plugin, g_PluginList->getFileName(plist->getSelected()));
+	int selected = plist? plist->getSelected() : 0;
+	
+	strcpy(selected_plugin, g_PluginList->getFileName(selected));
 
 	return CPluginList::close;
 }

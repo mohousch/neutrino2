@@ -120,7 +120,7 @@ void CCAMMenuHandler::doMainMenu()
 	
 	if (widget)
 	{
-		cammenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		cammenu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -149,7 +149,7 @@ void CCAMMenuHandler::doMainMenu()
 		cammenu->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(cammenu);
+		widget->addCCItem(cammenu);
 	}
 	
 	// intros
@@ -187,7 +187,7 @@ void CCAMMenuHandler::doMainMenu()
 			
 			if (tempMenuWidget)
 			{
-				tempMenu = (ClistBox*)tempMenuWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+				tempMenu = (ClistBox*)tempMenuWidget->getCCItem(CComponent::CC_LISTBOX);
 				
 				if (tempMenu->hasHead())
 				{
@@ -220,7 +220,7 @@ void CCAMMenuHandler::doMainMenu()
 				tempMenu->setFootLine(true, true);
 				
 				//
-				tempMenuWidget->addWidgetItem(tempMenu);
+				tempMenuWidget->addCCItem(tempMenu);
 			}
 			
 			//
@@ -381,7 +381,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			
 			if (menuWidget)
 			{
-				menu = (ClistBox*)menuWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+				menu = (ClistBox*)menuWidget->getCCItem(CComponent::CC_LISTBOX);
 				
 				if (menu->hasHead())
 					menu->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);
@@ -412,7 +412,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				menu->setFootLine(true, true);
 				
 				//
-				menuWidget->addWidgetItem(menu);
+				menuWidget->addCCItem(menu);
 			}
 			
 			menu->clear();

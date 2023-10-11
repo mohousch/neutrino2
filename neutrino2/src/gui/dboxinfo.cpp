@@ -145,7 +145,7 @@ int CDBoxInfoWidget::showInfo()
 	//
 	if (dboxInfoWidget)
 	{
-		head = (CHeaders*)dboxInfoWidget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
+		head = (CHeaders*)dboxInfoWidget->getCCItem(CComponent::CC_HEAD);
 	}
 	else
 	{
@@ -161,7 +161,7 @@ int CDBoxInfoWidget::showInfo()
 		head->setLine(true, true);
 		
 		//
-		dboxInfoWidget->addWidgetItem(head);
+		dboxInfoWidget->addCCItem(head);
 
 	}
 	
@@ -530,7 +530,7 @@ int CInfoMenu::showMenu()
 	
 	if (widget)
 	{
-		infoMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		infoMenu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -560,7 +560,7 @@ int CInfoMenu::showMenu()
 		infoMenu->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(infoMenu);
+		widget->addCCItem(infoMenu);
 	}
 	
 	//

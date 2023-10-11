@@ -80,7 +80,7 @@ void CNeutrinoApp::mainMenu(void)
 	
 	if (widget)
 	{
-		nMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		nMenu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -112,7 +112,7 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(nMenu);
+		widget->addCCItem(nMenu);
 	}
 			  
 	// tv modus
@@ -120,14 +120,14 @@ void CNeutrinoApp::mainMenu(void)
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
 	//item->setHint(_(" "));
 	item->setState(g_settings.personalize_tvradio);
-	nMenu->addItem(item);
+	if (nMenu) nMenu->addItem(item);
 
 	// epg / sleeptimer
 	item = new CMenuForwarder(_("EPG / Timer"), true, NULL, new CEPGMenuHandler(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TIMERLIST);
 	//item->setHint(_(" "));
 	item->setState(g_settings.personalize_epgtimer);
-	nMenu->addItem(item);
+	if (nMenu) nMenu->addItem(item);
 			
 #if defined (ENABLE_SCART)
 	// scart
@@ -135,7 +135,7 @@ void CNeutrinoApp::mainMenu(void)
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SCART);
 	//item->setHint(_(" "));
 	item->setState(g_settings.personalize_scart);
-	nMenu->addItem(item);
+	if (nMenu) nMenu->addItem(item);
 #endif
 
 	// features
@@ -143,46 +143,46 @@ void CNeutrinoApp::mainMenu(void)
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
 	//item->setHint(_(" "));
 	item->setState(g_settings.personalize_features);
-	nMenu->addItem(item);
+	if (nMenu) nMenu->addItem(item);
 		
 	// service
 	item = new CMenuForwarder(_("System"), true, NULL, new CServiceMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
 	//item->setHint(_(" "));
 	item->setState(g_settings.personalize_system);
-	nMenu->addItem(item);
+	if (nMenu) nMenu->addItem(item);
 			
 	// main setting
 	item = new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
 	//item->setHint(_(" "));
-	nMenu->addItem(item);
+	if (nMenu) nMenu->addItem(item);
 		
 	// osd
 	item = new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
-	nMenu->addItem(item);
+	if (nMenu) nMenu->addItem(item);
 		
 	//box info
 	item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
 	//item->setHint(_(" "));
 	item->setState(g_settings.personalize_information);
-	nMenu->addItem(item);
+	if (nMenu) nMenu->addItem(item);
 
 	// power menu
 	item = new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
 	//item->setHint(_(" "));
 	item->setState(g_settings.personalize_powermenu);
-	nMenu->addItem(item);
+	if (nMenu) nMenu->addItem(item);
 		
 	// mediaplayer
 	item = new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
 	//item->setHint(_(" "));
 	item->setState(g_settings.personalize_mediaplayer);
-	nMenu->addItem(item);
+	if (nMenu) nMenu->addItem(item);
 
 	//
 	widget->setTimeOut(g_settings.timing_menu);
@@ -323,7 +323,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 	
 	if (widget)
 	{
-		menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		menu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -355,7 +355,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 		menu->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(menu);
+		widget->addCCItem(menu);
 	}	
 
 	// go through any postition number
@@ -373,14 +373,14 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_TIMERLIST:
 				keyhelper.get(&key, &icon, CRCInput::RC_yellow);
 				menu_item = new CMenuForwarder(_("Timerlist"), true, NULL, new CTimerList, "-1", key, NULL, NEUTRINO_ICON_MENUITEM_TIMERLIST);
-				menu->addItem(menu_item, false);
+				if (menu) menu->addItem(menu_item, false);
 				break;
 
 			// rclock
 			case SNeutrinoSettings::ITEM_REMOTE:
 				keyhelper.get(&key, &icon);
 				menu_item = new CMenuForwarder(_("Remote Control lock"), true, NULL, this->rcLock, "-1", key, NULL, NEUTRINO_ICON_MENUITEM_PARENTALLOCKSETTINGS);
-				menu->addItem(menu_item, false);
+				if (menu) menu->addItem(menu_item, false);
 				break;
 				
 			// vtxt	
@@ -388,7 +388,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 				{
 					keyhelper.get(&key, &icon);
 					menu_item = new CMenuForwarder(_("Teletext"), true, NULL, new CTuxtxtChangeExec, "-1", key, NULL, NEUTRINO_ICON_MENUITEM_VTXT);
-					menu->addItem(menu_item, false);
+					if (menu) menu->addItem(menu_item, false);
 				}
 				break;	
 				
@@ -397,7 +397,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 				{
 					keyhelper.get(&key, &icon, CRCInput::RC_blue);
 					menu_item = new CMenuForwarder(_("Plugins"), true, NULL, new CPluginList(), "-1", key, NULL, NEUTRINO_ICON_MENUITEM_PLUGIN);
-					menu->addItem(menu_item, false);
+					if (menu) menu->addItem(menu_item, false);
 				}
 				break;
 				
@@ -406,7 +406,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 				{
 					keyhelper.get(&key, &icon);
 					menu_item = new CMenuForwarder(_("Delete channels"), true, NULL, this, "delete_zapit", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
-					menu->addItem(menu_item, false);
+					if (menu) menu->addItem(menu_item, false);
 				}
 				break;
 				
@@ -415,7 +415,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 				{
 					keyhelper.get(&key, &icon);
 					menu_item = new CMenuForwarder(_("Delete WebTV channels"), true, NULL, this, "delete_webtv", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
-					menu->addItem(menu_item, false);
+					if (menu) menu->addItem(menu_item, false);
 				}
 				break;
 				
@@ -423,7 +423,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 				{
 					keyhelper.get(&key, &icon);
 					menu_item = new CMenuForwarder(_("Free Memory"), true, NULL, this, "free_memory", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
-					menu->addItem(menu_item, false);
+					if (menu) menu->addItem(menu_item, false);
 				}
 				break;
 				
@@ -431,7 +431,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 				{
 					keyhelper.get(&key, &icon);
 					menu_item = new CMenuForwarder(_("Reload channel lists"), true, NULL, this, "reloadchannels", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
-					menu->addItem(menu_item, false);
+					if (menu) menu->addItem(menu_item, false);
 				}
 				break;
 				
@@ -439,7 +439,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 				{
 					keyhelper.get(&key, &icon);
 					menu_item = new CMenuForwarder(_("Reload XMLTV EPG"), true, NULL, this, "reloadxmltvepg", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
-					menu->addItem(menu_item, false);
+					if (menu) menu->addItem(menu_item, false);
 				}
 				break;
 				
@@ -447,7 +447,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 				{
 					keyhelper.get(&key, &icon);
 					menu_item = new CMenuForwarder(_("Reload EPG"), true, NULL, this, "reloadepg", key, NULL, NEUTRINO_ICON_MENUITEM_SERVICE);
-					menu->addItem(menu_item, false);
+					if (menu) menu->addItem(menu_item, false);
 				}
 				break;
 
@@ -461,7 +461,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 	if( button == SNeutrinoSettings::BUTTON_BLUE) 
 	{
 		keyhelper.get(&key, &icon);
-		menu->integratePlugins(CPlugins::I_TYPE_USER, key);
+		if (menu) menu->integratePlugins(CPlugins::I_TYPE_USER, key);
 	}
 		
 	// start directly plugins if there is no items / start features
@@ -474,8 +474,11 @@ bool CNeutrinoApp::showUserMenu(int button)
 	}
 	else
 	{
-		menu->setSelected(selected[button]);
-		selected[button] = menu->getSelected();
+		if (menu) 
+		{
+			menu->setSelected(selected[button]);
+			selected[button] = menu->getSelected();
+		}
 	}
 	
 	//

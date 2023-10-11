@@ -146,7 +146,7 @@ void CRemoteControlSettings::showMenu()
 	
 	if (widget)
 	{
-		remoteControlSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		remoteControlSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -175,7 +175,7 @@ void CRemoteControlSettings::showMenu()
 		remoteControlSettings->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(remoteControlSettings);
+		widget->addCCItem(remoteControlSettings);
 	}
 	
 	// intros
@@ -326,7 +326,7 @@ void CKeysBindingSettings::showMenu()
 	
 	if (widget)
 	{
-		bindSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		bindSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -355,7 +355,7 @@ void CKeysBindingSettings::showMenu()
 		bindSettings->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(bindSettings);
+		widget->addCCItem(bindSettings);
 	}
 	
 	// intros

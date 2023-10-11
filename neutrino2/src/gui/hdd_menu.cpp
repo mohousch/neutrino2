@@ -183,7 +183,7 @@ int CHDDMenuHandler::hddMenu()
 	
 	if (widget)
 	{
-		hddmenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		hddmenu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -208,7 +208,7 @@ int CHDDMenuHandler::hddMenu()
 		hddmenu->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(hddmenu);
+		widget->addCCItem(hddmenu);
 	}
 	
 	hddmenu->addItem(new CMenuForwarder(_("back")));
@@ -327,7 +327,7 @@ int CHDDMenuHandler::hddMenu()
 		if (CNeutrinoApp::getInstance()->widget_exists("temphdd2"))
 		{
 			tempMenuWidget[i] = CNeutrinoApp::getInstance()->getWidget("temphdd2");
-			tempMenu[i] = (ClistBox*)tempMenuWidget[i]->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+			tempMenu[i] = (ClistBox*)tempMenuWidget[i]->getCCItem(CComponent::CC_LISTBOX);
 			
 			if (tempMenu[i]->hasHead())
 			{
@@ -358,7 +358,7 @@ int CHDDMenuHandler::hddMenu()
 			tempMenu[i]->setFootButtons(&btn);
 			
 			//
-			tempMenuWidget[i]->addWidgetItem(tempMenu[i]);
+			tempMenuWidget[i]->addCCItem(tempMenu[i]);
 		}
 		
 		//
@@ -408,7 +408,7 @@ int CHDDMenuHandler::hddMenu()
 			if (CNeutrinoApp::getInstance()->widget_exists("temphdd"))
 			{
 				PartMenuWidget[j] = CNeutrinoApp::getInstance()->getWidget("temphdd");
-				PartMenu[j] = (ClistBox*)PartMenuWidget[j]->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+				PartMenu[j] = (ClistBox*)PartMenuWidget[j]->getCCItem(CComponent::CC_LISTBOX);
 				
 				if (PartMenu[j]->hasHead())
 				{
@@ -439,7 +439,7 @@ int CHDDMenuHandler::hddMenu()
 				PartMenu[j]->setFootButtons(&btn);
 				
 				//
-				PartMenuWidget[j]->addWidgetItem(PartMenu[j]);
+				PartMenuWidget[j]->addCCItem(PartMenu[j]);
 			}
 			
 			//

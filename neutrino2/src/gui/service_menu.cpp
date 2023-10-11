@@ -91,7 +91,7 @@ int CServiceMenu::showMenu(void)
 	
 	if (widget)
 	{
-		service = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		service = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -122,7 +122,7 @@ int CServiceMenu::showMenu(void)
 		service->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(service);
+		widget->addCCItem(service);
 	}
 	
 	// tuner/scan setup

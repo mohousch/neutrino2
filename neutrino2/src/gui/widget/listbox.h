@@ -391,7 +391,7 @@ class CMenuForwarder : public CMenuItem
 };
 
 ////
-class ClistBox : public CWidgetItem
+class ClistBox : public CComponent
 {
 	public:
 		// listBox mode

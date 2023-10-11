@@ -89,7 +89,7 @@ void CMoviePlayerSettings::showMenu()
 	
 	if (widget)
 	{
-		moviePlayerSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		moviePlayerSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -118,7 +118,7 @@ void CMoviePlayerSettings::showMenu()
 		moviePlayerSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(moviePlayerSettings);
+		widget->addCCItem(moviePlayerSettings);
 	}
 	
 	// intros

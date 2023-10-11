@@ -69,7 +69,7 @@ int CProxySetup::showProxySetup()
 	
 	if (widget)
 	{
-		mn = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		mn = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -94,7 +94,7 @@ int CProxySetup::showProxySetup()
 		mn->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(mn);
+		widget->addCCItem(mn);
 	}
 
 	CStringInputSMS * softUpdate_proxy = new CStringInputSMS(_("Hostname"), g_settings.softupdate_proxyserver, MAX_INPUT_CHARS, _("enter proxyserver name or ip, use host:port"), _("a empty entry means no proxy"), "abcdefghijklmnopqrstuvwxyz0123456789-.: ");

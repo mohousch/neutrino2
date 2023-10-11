@@ -116,7 +116,7 @@ void CPictureViewerSettings::showMenu()
 	
 	if (widget)
 	{
-		PicViewerSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		PicViewerSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -145,7 +145,7 @@ void CPictureViewerSettings::showMenu()
 		PicViewerSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(PicViewerSettings);
+		widget->addCCItem(PicViewerSettings);
 	}
 	
 	// intros

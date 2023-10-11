@@ -487,10 +487,10 @@ void CNFilm::showMenu(bool genre)
 
 	paintRightWidgetItems(rightWidget);
 
-	mainWidget->addWidgetItem(headersWidget);
-	mainWidget->addWidgetItem(leftWidget);
-	mainWidget->addWidgetItem(rightWidget);
-	mainWidget->addWidgetItem(footersWidget);
+	mainWidget->addCCItem(headersWidget);
+	mainWidget->addCCItem(leftWidget);
+	mainWidget->addCCItem(rightWidget);
+	mainWidget->addCCItem(footersWidget);
 
 	mainWidget->addKey(CRCInput::RC_info, this, CRCInput::getSpecialKeyName(CRCInput::RC_info));
 	mainWidget->addKey(CRCInput::RC_red, this, "nextPage");

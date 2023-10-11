@@ -166,7 +166,7 @@ void CRecordingSettings::showMenu()
 	
 	if (widget)
 	{
-		recordingSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		recordingSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -195,7 +195,7 @@ void CRecordingSettings::showMenu()
 		recordingSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(recordingSettings);
+		widget->addCCItem(recordingSettings);
 	}
 	
 	//

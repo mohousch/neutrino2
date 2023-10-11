@@ -130,7 +130,7 @@ void CLCDSettings::showMenu()
 	
 	if (widget)
 	{
-		lcdSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		lcdSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -155,7 +155,7 @@ void CLCDSettings::showMenu()
 		lcdSettings->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(lcdSettings);
+		widget->addCCItem(lcdSettings);
 	}
 	
 	// intros

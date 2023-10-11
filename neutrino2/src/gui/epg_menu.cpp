@@ -74,7 +74,7 @@ int CEPGMenuHandler::doMenu()
 	
 	if (widget)
 	{
-		redMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		redMenu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -103,7 +103,7 @@ int CEPGMenuHandler::doMenu()
 		redMenu->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(redMenu);
+		widget->addCCItem(redMenu);
 	}
 		
 	// eventlist

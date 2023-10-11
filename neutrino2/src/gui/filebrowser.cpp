@@ -740,7 +740,7 @@ void CFileBrowser::paint()
 	
 	if (widget)
 	{
-		listBox = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		listBox = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -760,7 +760,7 @@ void CFileBrowser::paint()
 		listBox->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(listBox);
+		widget->addCCItem(listBox);
 	}	
 
 	listBox->clear();

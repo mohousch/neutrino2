@@ -43,21 +43,17 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	mainFrameBox.iY = y;
 	mainFrameBox.iWidth = dx;
 	mainFrameBox.iHeight = dy;
-
+	//
 	savescreen = false;
 	background = NULL;
-	
 	//
 	menu_position = MENU_POSITION_NONE;
-
 	//
 	timeout = g_settings.timing_menu;
 	sec_timer_id = 0;
 	sec_timer_interval = 1;
-	
 	//
 	selected = -1;
-
 	//
 	paintframe = false;
 	backgroundColor = COL_MENUCONTENT_PLUS_0;
@@ -69,37 +65,33 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	corner = CORNER_NONE;
 	borderMode = BORDER_NO;
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
-	
 	//
 	current_page = 0;
 	total_pages = 1;
-
 	//
 	actionKey = "";
-	
+	//
 	name = "";
+	//
+	CCItems.clear();
 }
 
 CWidget::CWidget(CBox *position)
 {
 	frameBuffer = CFrameBuffer::getInstance();
-
+	//
 	mainFrameBox = *position;
-
+	//
 	savescreen = false;
 	background = NULL;
-	
 	//
 	menu_position = MENU_POSITION_NONE;
-
 	//
 	timeout = g_settings.timing_menu;
 	sec_timer_id = 0;
 	sec_timer_interval = 1;
-	
 	//
 	selected = -1;
-
 	//
 	paintframe = false;
 	backgroundColor = COL_MENUCONTENT_PLUS_0;
@@ -111,37 +103,19 @@ CWidget::CWidget(CBox *position)
 	corner = CORNER_ALL;
 	borderMode = BORDER_NO;
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
-	
 	//
 	current_page = 0;
 	total_pages = 1;
-
 	//
 	actionKey = "";
-	
 	name = "";
+	//
+	CCItems.clear();
 }
 
 CWidget::~CWidget()
 {
-	dprintf(DEBUG_NORMAL, "CWidget::del (%s)\n", name.c_str());
-
-	////
-	/*
-	for(unsigned int i = 0; i < (unsigned int)items.size(); i++)
-	{
-		items[i]->stopRefresh();
-	}
-
-	//
-	for(unsigned int i = 0; i < (unsigned int)CCItems.size(); i++)
-	{
-		CCItems[i]->hide();
-	}
-	*/	
-	
-	//	
-	items.clear();
+	dprintf(DEBUG_NORMAL, "CWidget::del (%s)\n", name.c_str());	
 		
 	//
 	CCItems.clear();
@@ -154,24 +128,21 @@ CWidget::~CWidget()
 	}
 }
 
-void CWidget::addWidgetItem(CWidgetItem *widgetItem, const bool defaultselected)
-{
-	if (defaultselected)
-		selected = items.size();
-	
-	items.push_back(widgetItem);
-	widgetItem->setParent(this);
-}
-
-void CWidget::removeWidgetItem(long pos)
-{
-	items.erase(items.begin() + pos); 
-}
-
 //
-void CWidget::addCCItem(CComponent* CCItem)
+void CWidget::addCCItem(CComponent* CCItem, const bool defaultselected)
 {
-	CCItems.push_back(CCItem);
+	if (CCItem)
+	{
+		if (CCItem->isSelectable())
+		{
+			if (defaultselected)
+				selected = CCItems.size();
+		}
+			 
+		CCItems.push_back(CCItem);
+		
+		CCItem->setParent(this);
+	}
 }
 
 void CWidget::removeCCItem(long pos)
@@ -209,30 +180,17 @@ void CWidget::initFrames()
 	}
 }
 
-void CWidget::paintWidgetItems()
-{
-	dprintf(DEBUG_INFO, "CWidget::paintWidgetItems\n");
-
-	for (unsigned int i = 0; i < (unsigned int)items.size(); i++)
-	{
-		if( (items[i]->isSelectable()) && (selected == -1)) 
-		{
-			selected = i;
-		}
-
-		items[i]->paint();
-	}
-
-}
-
 //
 void CWidget::paintCCItems()
 {
 	dprintf(DEBUG_INFO, "CWidget::paintCCItems:\n");
 
-	for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
+	if (hasCCItem())
 	{
-		CCItems[count]->paint();
+		for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
+		{
+			CCItems[count]->paint();
+		}
 	}
 }
 
@@ -258,14 +216,9 @@ void CWidget::paint()
 			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		}
 	}
-
-	// WidgetItems
-	if (hasWidgetItem())
-		paintWidgetItems();
 	
 	// CCItems	
-	if (hasCCItem())
-		paintCCItems();
+	paintCCItems();
 }
 
 void CWidget::saveScreen()
@@ -320,19 +273,16 @@ void CWidget::enableSaveScreen()
 void CWidget::hide()
 {
 	dprintf(DEBUG_NORMAL, "CWidget::hide (%s)\n", name.c_str());
-	
-	//
-	if (hasWidgetItem())
-	{
-		for(unsigned int i = 0; i < (unsigned int)items.size(); i++)
-		{
-			items[i]->stopRefresh();
-		}
-	}
 
 	//
 	if (hasCCItem())
 	{
+		for(unsigned int i = 0; i < (unsigned int)CCItems.size(); i++)
+		{
+			CCItems[i]->stopRefresh();
+		}
+		
+		//
 		for(unsigned int i = 0; i < (unsigned int)CCItems.size(); i++)
 		{
 			if ( (CCItems[i]->getCCType() == CComponent::CC_PIG) || (CCItems[i]->getCCType() == CComponent::CC_SPINNER) )
@@ -380,11 +330,11 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 		parent->hide();
 
 	// set in focus
-	if (hasWidgetItem() && items.size() > 1)
+	if (hasCCItem() && CCItems.size())
 	{
-		for (unsigned int i = 0; i < (unsigned int)items.size(); i++)
+		for (unsigned int i = 0; i < (unsigned int)CCItems.size(); i++)
 		{
-			if((items[i]->isSelectable()) && (items[i]->inFocus == true))
+			if((CCItems[i]->isSelectable()) && (CCItems[i]->inFocus == true))
 			{
 				selected = i;
 				break;
@@ -562,22 +512,16 @@ int CWidget::exec(CMenuTarget *parent, const std::string &)
 }
 
 void CWidget::refresh()
-{
-	// refresh items
-	for (unsigned int i = 0; i < (unsigned int)items.size(); i++)
-	{
-		if (items[i]->update())
-		{
-			items[i]->refresh();
-		}
-	}
-				
+{				
 	// refresh CCItems
-	for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
+	if (hasCCItem())
 	{
-		if (CCItems[count]->update())
+		for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
 		{
-			CCItems[count]->refresh();
+			if (CCItems[count]->update())
+			{
+				CCItems[count]->refresh();
+			}
 		}
 	}
 }
@@ -587,13 +531,13 @@ void CWidget::onOKKeyPressed()
 {
 	dprintf(DEBUG_INFO, "CWidget::onOKKeyPressed:\n");
 	
-	if(hasWidgetItem() && selected >= 0)
+	if(hasCCItem() && selected >= 0)
 	{
-		if (items[selected]->hasItem() && items[selected]->isSelectable())
+		if (CCItems[selected]->hasItem() && CCItems[selected]->isSelectable())
 		{
-			int rv = items[selected]->oKKeyPressed(this);
+			int rv = CCItems[selected]->oKKeyPressed(this);
 
-			actionKey = items[selected]->getActionKey();	// for lua
+			actionKey = CCItems[selected]->getActionKey();	// for lua
 
 			//
 			switch ( rv ) 
@@ -618,11 +562,11 @@ void CWidget::onHomeKeyPressed()
 	exit_pressed = true;
 	msg = CRCInput::RC_timeout;
 	
-	if (hasWidgetItem())
+	if (hasCCItem())
 	{
-		for (unsigned int count = 0; count < (unsigned int)items.size(); count++) 
+		for (unsigned int count = 0; count < (unsigned int)CCItems.size(); count++) 
 		{
-			items[count]->homeKeyPressed();
+			CCItems[count]->homeKeyPressed();
 		}
 	}
 
@@ -633,18 +577,18 @@ void CWidget::onYellowKeyPressed()
 {
 	dprintf(DEBUG_INFO, "CWidget::onYellowKeyPressed\n");
 	
-	if(hasWidgetItem())
+	if(hasCCItem())
 	{
-		for (unsigned int count = 1; count < (unsigned int)items.size(); count++) 
+		for (unsigned int count = 1; count < (unsigned int)CCItems.size(); count++) 
 		{
-			pos = (selected + count)%items.size();
+			pos = (selected + count)%CCItems.size();
 
-			CWidgetItem * item = items[pos];
+			CComponent * item = CCItems[pos];
 
 			if(item->isSelectable() && item->hasItem())
 			{
-				items[selected]->setOutFocus();
-				items[selected]->paint();
+				CCItems[selected]->setOutFocus();
+				CCItems[selected]->paint();
 
 				selected = pos;
 
@@ -661,9 +605,9 @@ void CWidget::onUpKeyPressed()
 {
 	dprintf(DEBUG_INFO, "CWidget::onUpKeyPressed\n");
 	
-	if(hasWidgetItem() && selected >= 0)
+	if(hasCCItem() && selected >= 0)
 	{
-		items[selected]->scrollLineUp();
+		CCItems[selected]->scrollLineUp();
 	}
 }
 
@@ -671,9 +615,9 @@ void CWidget::onDownKeyPressed()
 {
 	dprintf(DEBUG_INFO, "CWidget::onDownKeyPressed\n");
 	
-	if(hasWidgetItem() && selected >= 0)
+	if(hasCCItem() && selected >= 0)
 	{
-		items[selected]->scrollLineDown();
+		CCItems[selected]->scrollLineDown();
 	}
 }
 
@@ -681,11 +625,11 @@ void CWidget::onRightKeyPressed()
 {
 	dprintf(DEBUG_INFO, "CWidget::onRightKeyPressed\n");
 	
-	if(hasWidgetItem() && selected >= 0)
+	if(hasCCItem() && selected >= 0)
 	{
-		int rv = items[selected]->swipRight();
+		int rv = CCItems[selected]->swipRight();
 		
-		actionKey = items[selected]->getActionKey();	// lua
+		actionKey = CCItems[selected]->getActionKey();	// lua
 
 		//
 		switch ( rv ) 
@@ -706,11 +650,11 @@ void CWidget::onLeftKeyPressed()
 {
 	dprintf(DEBUG_INFO, "CWidget::onLeftKeyPressed\n");
 	
-	if(hasWidgetItem() && selected >= 0)
+	if(hasCCItem() && selected >= 0)
 	{
-		int rv = items[selected]->swipLeft();
+		int rv = CCItems[selected]->swipLeft();
 		
-		actionKey = items[selected]->getActionKey();	// lua
+		actionKey = CCItems[selected]->getActionKey();	// lua
 
 		//
 		switch ( rv ) 
@@ -731,9 +675,9 @@ void CWidget::onPageUpKeyPressed()
 {
 	dprintf(DEBUG_INFO, "CWidget::onPageUpKeyPressed\n");
 	
-	if(hasWidgetItem() && selected >= 0)
+	if(hasCCItem() && selected >= 0)
 	{
-		items[selected]->scrollPageUp();
+		CCItems[selected]->scrollPageUp();
 	}
 }
 
@@ -741,9 +685,9 @@ void CWidget::onPageDownKeyPressed()
 {
 	dprintf(DEBUG_INFO, "CWidget::onPageDownKeyPressed\n");
 	
-	if(hasWidgetItem() && selected >= 0)
+	if(hasCCItem() && selected >= 0)
 	{
-		items[selected]->scrollPageDown();
+		CCItems[selected]->scrollPageDown();
 	}
 }
 
@@ -752,11 +696,11 @@ void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 {
 	dprintf(DEBUG_INFO, "CWidget::onDirectKeyPressed: msg:0x%x\n", _msg);
 	
-	if(hasWidgetItem() && selected >= 0)
+	if(hasCCItem() && selected >= 0)
 	{
-		int rv = items[selected]->directKeyPressed(_msg);
+		int rv = CCItems[selected]->directKeyPressed(_msg);
 
-		actionKey = items[selected]->getActionKey();	// lua
+		actionKey = CCItems[selected]->getActionKey();	// lua
 
 		//
 		switch ( rv ) 
@@ -771,55 +715,6 @@ void CWidget::onDirectKeyPressed(neutrino_msg_t _msg)
 				break;
 		}
 	}
-}
-
-//
-CWidgetItem* CWidget::getWidgetItem(const int type, const std::string& name)
-{
-	dprintf(DEBUG_INFO, "CWidget::getWidgetItem: (%d) (%s)\n", type, name.c_str());
-	
-	CWidgetItem* ret = NULL;
-	
-	for (unsigned int count = 0; count < (unsigned int)items.size(); count++) 
-	{
-		switch (type)
-		{
-			case CWidgetItem::WIDGETITEM_LISTBOX:
-				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_LISTBOX) && (items[count]->widgetItem_name == name) )
-					ret = items[count]; 
-				break;
-				
-			case CWidgetItem::WIDGETITEM_HEAD:
-				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_HEAD) && (items[count]->widgetItem_name == name) )
-					ret = items[count]; 
-				break;
-				
-			case CWidgetItem::WIDGETITEM_FOOT:
-				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_FOOT) && (items[count]->widgetItem_name == name) )
-					ret = items[count]; 
-				break;
-				
-			case CWidgetItem::WIDGETITEM_TEXTBOX:
-				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_TEXTBOX) && (items[count]->widgetItem_name == name) )
-					ret = items[count]; 
-				break;
-				
-			case CWidgetItem::WIDGETITEM_FRAMEBOX:
-				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_FRAMEBOX) && (items[count]->widgetItem_name == name) )
-					ret = items[count]; 
-				break;
-				
-			case CWidgetItem::WIDGETITEM_LISTFRAME:
-				if ( (items[count]->widgetItem_type == CWidgetItem::WIDGETITEM_LISTFRAME) && (items[count]->widgetItem_name == name) )
-					ret = items[count]; 
-				break;
-				
-			default:
-				break;
-		}
-	}
-	
-	return ret;
 }
 
 //
@@ -915,6 +810,36 @@ CComponent* CWidget::getCCItem(const int type, const std::string& name)
 				
 			case CComponent::CC_SLIDER:
 				if ( (CCItems[count]->cc_type == CComponent::CC_SLIDER) && (CCItems[count]->cc_name == name) )
+					ret = CCItems[count]; 
+				break;
+				
+			case CComponent::CC_LISTBOX:
+				if ( (CCItems[count]->cc_type == CComponent::CC_LISTBOX) && (CCItems[count]->cc_name == name) )
+					ret = CCItems[count]; 
+				break;
+	
+			case CComponent::CC_HEAD:
+				if ( (CCItems[count]->cc_type == CComponent::CC_HEAD) && (CCItems[count]->cc_name == name) )
+					ret = CCItems[count]; 
+				break;
+				
+			case CComponent::CC_FOOT:
+				if ( (CCItems[count]->cc_type == CComponent::CC_FOOT) && (CCItems[count]->cc_name == name) )
+					ret = CCItems[count]; 
+				break;
+				
+			case CComponent::CC_TEXTBOX:
+				if ( (CCItems[count]->cc_type == CComponent::CC_TEXTBOX) && (CCItems[count]->cc_name == name) )
+					ret = CCItems[count]; 
+				break;
+				
+			case CComponent::CC_FRAMEBOX:
+				if ( (CCItems[count]->cc_type == CComponent::CC_FRAMEBOX) && (CCItems[count]->cc_name == name) )
+					ret = CCItems[count]; 
+				break;
+	
+			case CComponent::CC_LISTFRAME:
+				if ( (CCItems[count]->cc_type == CComponent::CC_LISTFRAME) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 
 				break;
 				

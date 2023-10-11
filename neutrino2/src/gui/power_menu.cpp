@@ -70,7 +70,7 @@ int CPowerMenu::showMenu(void)
 	
 	if (widget)
 	{
-		powerMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		powerMenu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -100,7 +100,7 @@ int CPowerMenu::showMenu(void)
 		powerMenu->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(powerMenu);
+		widget->addCCItem(powerMenu);
 	}
 	
 	// sleep timer

@@ -134,7 +134,7 @@ class CFrameItem
 };
 
 //// CFrameBox
-class CFrameBox : public CWidgetItem
+class CFrameBox : public CComponent
 {
 	private:
 		CFrameBuffer* frameBuffer;

@@ -1327,8 +1327,8 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 					
 	listBox = new ClistBox(x, y, width, height);
 		
-	listBox->widgetItem_type = CWidgetItem::WIDGETITEM_LISTBOX;
-	if (name) listBox->widgetItem_name = name;
+	listBox->cc_type = CComponent::CC_LISTBOX;
+	if (name) listBox->cc_name = name;
 		
 	//
 	int t = CMenuItem::TYPE_STANDARD;
@@ -1555,7 +1555,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	}
 	
 	//	
-	if (widget) widget->addWidgetItem(listBox);
+	if (widget) widget->addCCItem(listBox);
 }
 
 // CHead
@@ -1636,8 +1636,8 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 
 	head = new CHeaders(x, y, width, height);
 		
-	head->widgetItem_type = CWidgetItem::WIDGETITEM_HEAD;
-	if (name) head->widgetItem_name = name;
+	head->cc_type = CComponent::CC_HEAD;
+	if (name) head->cc_name = name;
 	
 	// mainframe	
 	head->paintMainFrame(paintframe);
@@ -1689,7 +1689,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	}
 	
 	//				
-	if (widget) widget->addWidgetItem(head);
+	if (widget) widget->addCCItem(head);
 }
 
 // CFoot
@@ -1754,7 +1754,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 						
 	foot = new CFooters(x, y, width, height);
 		
-	foot->widgetItem_type = CWidgetItem::WIDGETITEM_FOOT;
+	foot->cc_type = CComponent::CC_FOOT;
 		
 	foot->paintMainFrame(paintframe);
 	// color			
@@ -1797,7 +1797,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	}
 	
 	//				
-	if (widget) widget->addWidgetItem(foot);
+	if (widget) widget->addCCItem(foot);
 }
 
 // CTextBox
@@ -1880,8 +1880,8 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 						
 	textBox = new CTextBox(x, y, width, height);
 		
-	textBox->widgetItem_type = CWidgetItem::WIDGETITEM_TEXTBOX;
-	if (name) textBox->widgetItem_name = name;
+	textBox->cc_type = CComponent::CC_TEXTBOX;
+	if (name) textBox->cc_name = name;
 	// color
 	uint32_t finalColor = COL_MENUCONTENT_PLUS_0;			
 	if (color != NULL) 
@@ -1925,7 +1925,7 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	*/
 	
 	//				
-	if (widget) widget->addWidgetItem(textBox);
+	if (widget) widget->addCCItem(textBox);
 }
 
 ////
@@ -2687,6 +2687,15 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				int pos = CWidget::MENU_POSITION_NONE;
 				if (position) pos = convertMenuPosition(position);
 				widget->setMenuPosition(pos);
+				
+				// WINDOW
+				item = search->xmlChildrenNode;
+				
+				while ((item = xmlGetNextOccurence(item, "WINDOW")) != NULL) 
+				{
+					parseCCWindow(item, widget);
+					item = item->xmlNextNode;
+				}
 					
 				// HEAD
 				item = search->xmlChildrenNode;
@@ -2721,15 +2730,6 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				while ((item = xmlGetNextOccurence(item, "TEXTBOX")) != NULL) 
 				{
 					parseCTextBox(item, widget);
-					item = item->xmlNextNode;
-				}
-				
-				// WINDOW
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "WINDOW")) != NULL) 
-				{
-					parseCCWindow(item, widget);
 					item = item->xmlNextNode;
 				}
 					

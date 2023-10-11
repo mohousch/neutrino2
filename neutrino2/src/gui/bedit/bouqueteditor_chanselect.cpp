@@ -133,7 +133,7 @@ void CBEChannelSelectWidget::paint()
 	
 	if (widget)
 	{
-		listBox = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		listBox = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -151,7 +151,7 @@ void CBEChannelSelectWidget::paint()
 		listBox->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(listBox);
+		widget->addCCItem(listBox);
 	}	
 
 	listBox->clear();

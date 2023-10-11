@@ -158,7 +158,7 @@ bool CFlashUpdate::selectHttpImage(void)
 	
 	if (widget)
 	{
-		SelectionWidget = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		SelectionWidget = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -187,7 +187,7 @@ bool CFlashUpdate::selectHttpImage(void)
 		SelectionWidget->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(SelectionWidget);
+		widget->addCCItem(SelectionWidget);
 	}
 	
 	// intros
@@ -684,7 +684,7 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 	
 	if (widget)
 	{
-		mtdselector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		mtdselector = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -713,7 +713,7 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 		mtdselector->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(mtdselector);
+		widget->addCCItem(mtdselector);
 	}
 	
 	// intros
@@ -790,7 +790,7 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 	
 	if (widget)
 	{
-		fileselector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		fileselector = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -819,7 +819,7 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 		fileselector->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(fileselector);
+		widget->addCCItem(fileselector);
 	}
 	
 	// intros
@@ -979,7 +979,7 @@ int CUpdateSettings::showMenu()
 	
 	if (widget)
 	{
-		updateSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		updateSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1008,7 +1008,7 @@ int CUpdateSettings::showMenu()
 		updateSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(updateSettings);
+		widget->addCCItem(updateSettings);
 	}
 		
 	// intros
@@ -1027,7 +1027,7 @@ int CUpdateSettings::showMenu()
 	
 	if (mtdexpertWidget)
 	{
-		mtdexpert = (ClistBox*)mtdexpertWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		mtdexpert = (ClistBox*)mtdexpertWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -1056,7 +1056,7 @@ int CUpdateSettings::showMenu()
 		mtdexpert->setFootLine(true, true);
 		
 		//
-		mtdexpertWidget->addWidgetItem(mtdexpert);
+		mtdexpertWidget->addCCItem(mtdexpert);
 	}
 		
 	// intros

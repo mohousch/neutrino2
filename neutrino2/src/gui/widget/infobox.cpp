@@ -89,9 +89,9 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 	
 	if (widget)
 	{
-		headers = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
-		footers = (CFooters*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
-		m_pcTextBox = (CTextBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_TEXTBOX);
+		headers = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		footers = (CFooters*)widget->getCCItem(CComponent::CC_FOOT);
+		m_pcTextBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
 	}
 	else
 	{
@@ -114,9 +114,9 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 		
 		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
 		
-		widget->addWidgetItem(m_pcTextBox);
-		widget->addWidgetItem(headers);
-		widget->addWidgetItem(footers);
+		widget->addCCItem(m_pcTextBox);
+		widget->addCCItem(headers);
+		widget->addCCItem(footers);
 	}
 	
 	if (m_pcTextBox)
@@ -171,9 +171,9 @@ CInfoBox::CInfoBox()
 	
 	if (widget)
 	{
-		headers = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
-		footers = (CFooters*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
-		m_pcTextBox = (CTextBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_TEXTBOX);
+		headers = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		footers = (CFooters*)widget->getCCItem(CComponent::CC_FOOT);
+		m_pcTextBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
 	}
 	else
 	{
@@ -192,9 +192,9 @@ CInfoBox::CInfoBox()
 		
 		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
 		
-		widget->addWidgetItem(m_pcTextBox);
-		widget->addWidgetItem(headers);
-		widget->addWidgetItem(footers);
+		widget->addCCItem(m_pcTextBox);
+		widget->addCCItem(headers);
+		widget->addCCItem(footers);
 	}
 	
 	if (m_pcTextBox)

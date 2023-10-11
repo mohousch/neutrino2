@@ -85,7 +85,7 @@ void CMainSettingsMenu::showMenu(void)
 	
 	if (widget)
 	{
-		mainSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		mainSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -116,7 +116,7 @@ void CMainSettingsMenu::showMenu(void)
 		mainSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(mainSettings);
+		widget->addCCItem(mainSettings);
 	}
 
 	// video settings

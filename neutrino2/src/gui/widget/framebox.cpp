@@ -463,7 +463,7 @@ CFrameBox::CFrameBox(const int x, int const y, const int dx, const int dy)
 
 	inFocus = true;
 
-	widgetItem_type = WIDGETITEM_FRAMEBOX;
+	cc_type = CC_FRAMEBOX;
 	paintframe = true;
 
 	actionKey = "";
@@ -518,7 +518,7 @@ CFrameBox::CFrameBox(CBox* position)
 
 	inFocus = true;
 
-	widgetItem_type = WIDGETITEM_FRAMEBOX;
+	cc_type = CC_FRAMEBOX;
 	paintframe = true;
 
 	actionKey = "";
@@ -583,11 +583,14 @@ CFrameBox::~CFrameBox()
 
 void CFrameBox::addFrame(CFrameItem *frame, const bool defaultselected)
 {
-	if (defaultselected)
-		selected = frames.size();
-	
-	frames.push_back(frame);
-	frame->setParent(this);
+	if (frame != NULL)
+	{
+		if (defaultselected)
+			selected = frames.size();
+		
+		frames.push_back(frame);
+		frame->setParent(this);
+	}
 }
 
 bool CFrameBox::hasItem()

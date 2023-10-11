@@ -69,7 +69,7 @@ enum
 	PIC_CENTER
 };
 
-class CTextBox : public CWidgetItem
+class CTextBox : public CComponent
 {
 	private:
 		CFrameBuffer* frameBuffer;

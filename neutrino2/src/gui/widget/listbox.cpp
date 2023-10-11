@@ -339,9 +339,9 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		
 		if (widget)
 		{
-			menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
-			head = (CHeaders *)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
-			foot = (CFooters *)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
+			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
+			head = (CHeaders *)widget->getCCItem(CComponent::CC_HEAD);
+			foot = (CFooters *)widget->getCCItem(CComponent::CC_FOOT);
 		}
 		else
 		{
@@ -368,9 +368,9 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			foot->setLine(true, true);
 			
 			//
-			widget->addWidgetItem(menu);
-			widget->addWidgetItem(head);
-			widget->addWidgetItem(foot);
+			widget->addCCItem(menu);
+			widget->addCCItem(head);
+			widget->addCCItem(foot);
 		}
 		
 		if (head)
@@ -756,9 +756,9 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		
 		if (widget)
 		{
-			menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
-			head = (CHeaders *)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
-			foot = (CFooters *)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
+			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
+			head = (CHeaders *)widget->getCCItem(CComponent::CC_HEAD);
+			foot = (CFooters *)widget->getCCItem(CComponent::CC_FOOT);
 		}
 		else
 		{
@@ -785,9 +785,9 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			foot->setLine(true, true);
 			
 			//
-			widget->addWidgetItem(menu);
-			widget->addWidgetItem(head);
-			widget->addWidgetItem(foot);
+			widget->addCCItem(menu);
+			widget->addCCItem(head);
+			widget->addCCItem(foot);
 		}
 		
 		if (head)
@@ -1667,6 +1667,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	//
 	inFocus = true;
 	shrinkMenu = false;
+	paintframe = true;
 
 	//
 	itemsPerX = 6;
@@ -1701,7 +1702,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	//
 	sec_timer_id = 0;
 	
-	widgetItem_type = WIDGETITEM_LISTBOX;
+	cc_type = CC_LISTBOX;
 }
 
 ClistBox::ClistBox(CBox* position)
@@ -1795,6 +1796,7 @@ ClistBox::ClistBox(CBox* position)
 	//
 	inFocus = true;
 	shrinkMenu = false;
+	paintframe = true;
 
 	//
 	itemsPerX = 6;
@@ -1824,7 +1826,7 @@ ClistBox::ClistBox(CBox* position)
 	//
 	sec_timer_id = 0;
 	
-	widgetItem_type = WIDGETITEM_LISTBOX;
+	cc_type = CC_LISTBOX;
 }
 
 ClistBox::~ClistBox()

@@ -541,7 +541,7 @@ void CStreamInfo::paint(int /*mode*/)
 		width = widget->getWindowsPos().iWidth;
 		height = widget->getWindowsPos().iHeight;
 		
-		head = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
+		head = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
 	}
 	else
 	{
@@ -557,13 +557,13 @@ void CStreamInfo::paint(int /*mode*/)
 		head->setLine(true, true);
 		
 		if (paint_mode == 0) 
-			widget->addWidgetItem(head);
+			widget->addCCItem(head);
 
 	}
 	
 	//
 	if (paint_mode != 0) 
-		widget->clearWidgetItems();
+		widget->clearCCItems();
 		
 	widget->paint();
 	

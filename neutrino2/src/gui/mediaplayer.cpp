@@ -69,7 +69,7 @@ void CMediaPlayerMenu::showMenu()
 	
 	if (widget)
 	{
-		mediaPlayer = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		mediaPlayer = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -100,7 +100,7 @@ void CMediaPlayerMenu::showMenu()
 		mediaPlayer->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(mediaPlayer);
+		widget->addCCItem(mediaPlayer);
 	}
 
 	//

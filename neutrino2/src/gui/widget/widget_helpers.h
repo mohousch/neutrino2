@@ -1,5 +1,5 @@
 /*
- * $Id: widget_helpers.h 10.08.2023 mohousch Exp $
+ * $Id: widget_helpers.h 11.10.2023 mohousch Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,6 @@
 extern CFont * g_Font[FONT_TYPE_COUNT];
 //
 class CMenuTarget;
-class CWidgetItem;
 class CWidget;
 class CWindow;
 
@@ -116,11 +115,18 @@ class CComponent
 			CC_COUNTER,
 			CC_SPINNER,
 			CC_WINDOW,
-			// not to be added with addCCItem method.
+			//// not to be added with addCCItem method.
 			CC_SCROLLBAR,
 			CC_PROGRESSBAR,
 			CC_DETAILSLINE,
 			CC_SLIDER,
+			////
+			CC_HEAD,
+			CC_FOOT,
+			CC_LISTBOX,
+			CC_FRAMEBOX,
+			CC_LISTFRAME,
+			CC_TEXTBOX
 		};
 	
 	public:
@@ -129,29 +135,39 @@ class CComponent
 		std:: string cc_name;
 		
 		//
-		CBox cCBox;
+		CBox itemBox;
 		int halign;
 		
 		//
 		bool rePaint;
 		bool savescreen;
-		bool paintBG;
+		bool paintframe;
+		bool inFocus;
+		bool painted;
+		////
+		CWidget* parent;
+		//
+		struct keyAction { std::string action; CMenuTarget *menue; };
+		std::map<neutrino_msg_t, keyAction> keyActionMap;
+		uint32_t sec_timer_id;
+		std::string actionKey; // lua
 		
 		//
 		CComponent();
 		virtual ~CComponent(){};
 		
+		//
 		virtual bool isSelectable(void){return false;};
-		
+		virtual bool hasItem(){return false;};
 		//
 		virtual void paint(void){};
 		virtual void hide(void){};
-		
-		//
 		virtual void enableRepaint(){rePaint = true;};
 		virtual bool update() const {return rePaint;};
 		virtual void refresh(void){};
 		virtual void blink(bool){};
+		virtual void stopRefresh(){};
+		virtual inline bool isPainted(void){return painted;};
 		
 		//
 		virtual int getCCType(){return cc_type;};
@@ -162,19 +178,19 @@ class CComponent
 		{
 			dprintf(DEBUG_INFO, "CComponent::setPosition: x:%d y:%d dx:%d dy:%d\n", _x, _y, _width, _height);
 			
-			cCBox.iX = _x;
-			cCBox.iY = _y;
-			cCBox.iWidth = _width;
-			cCBox.iHeight = _height;
+			itemBox.iX = _x;
+			itemBox.iY = _y;
+			itemBox.iWidth = _width;
+			itemBox.iHeight = _height;
 		};
 		
 		virtual void setPosition(const CBox * position)
 		{
-			cCBox = *position;
+			itemBox = *position;
 		};
 		
 		//
-		virtual inline CBox getWindowsPos(void){return cCBox;};
+		virtual inline CBox getWindowsPos(void){return itemBox;};
 		
 		//
 		virtual void initFrames(){};
@@ -186,7 +202,7 @@ class CComponent
 		virtual void setButtons(const struct button_label *button_label, const int button_count = 1){};
 		virtual void setFont(unsigned int f){};
 		virtual void setText(const char* text){};
-		virtual void paintMainFrame(bool p){paintBG = p;};
+		virtual void paintMainFrame(bool p){paintframe = p;};
 		virtual void setHAlign(int h){halign = h;};
 		virtual void setMode(int m){};
 		virtual void useBackground(void){};
@@ -194,11 +210,34 @@ class CComponent
 		virtual void setInterFrame(int iframe = 15){};
 		virtual void setTotalTime(time_t tot_time){};
 		virtual void setPlayTime(time_t p_time){};
-
 		//
 		virtual void saveScreen(void){};
 		virtual void restoreScreen(void){};
 		virtual void enableSaveScreen(void){savescreen = true;};
+		////
+		virtual void scrollLineDown(const int lines = 1){};
+		virtual void scrollLineUp(const int lines = 1){};
+		virtual void scrollPageDown(const int pages = 1){};
+		virtual void scrollPageUp(const int pages = 1){};
+		virtual int swipLeft(){return 0;};
+		virtual int swipRight(){return 0;};
+		//
+		virtual void setOutFocus(bool focus = true){inFocus = !focus;};
+		virtual void setSelected(unsigned int _new) {};
+		//
+		virtual int oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok){return 0;};
+		virtual void homeKeyPressed(){};
+		virtual int directKeyPressed(neutrino_msg_t ){return 0;};
+		//
+		virtual std::string getActionKey(void){ return actionKey;}; // lua
+		virtual int getSelected(void){return -1;};
+		//
+		virtual void setParent(CWidget* p){parent = p;};
+		//
+		virtual void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
+		virtual void setSecTimer(uint32_t id){sec_timer_id = id;};
+		virtual bool onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data);
+		virtual void exec(int timeout = -1); // in sec
 };
 
 typedef std::vector<CComponent*> CCITEMLIST;
@@ -346,14 +385,11 @@ class CCButtons : public CComponent
 		
 		//
 		void setMode(int m){mode = m;};
-		
 		//
 		void setButtons(const struct button_label *button_label, const int button_count = 1, bool _head = false);
 		void addButton(const char *btn, const char *lname = NULL, const fb_pixel_t col = 0);
-		
 		//
 		void paint();
-		
 		//
 		void clear(){buttons.clear();};
 };
@@ -367,7 +403,7 @@ class CCHline : public CComponent
 		//
 		fb_pixel_t color;
 		int gradient;
-		
+	
 		//
 		CCHline(const int x = 0, const int y = 0, const int dx = 0, const int dy = 0);
 		virtual ~CCHline(){};
@@ -375,7 +411,6 @@ class CCHline : public CComponent
 		//
 		void setColor(fb_pixel_t col){color = col;};
 		void setGradient(int gr){gradient = gr;};
-		
 		//
 		void paint();
 };
@@ -678,7 +713,7 @@ class CProgressBar : public CComponent
 		virtual ~CProgressBar(){};
 		
 		//
-		void paint(unsigned char pcr, bool paintBG = true);
+		void paint(unsigned char pcr, bool paintframe = true);
 		void reset();
 		int getPercent() { return percent; };
 		
@@ -763,154 +798,29 @@ class CCSlider : public CComponent
 		void paint(const int spos, const char * const iconname, const bool selected);
 };
 
-//// CWidgetItem
-class CWidgetItem
-{
-	public:
-		enum {
-			WIDGETITEM_HEAD,
-			WIDGETITEM_FOOT,
-			WIDGETITEM_LISTBOX,
-			WIDGETITEM_FRAMEBOX,
-			WIDGETITEM_LISTFRAME,
-			WIDGETITEM_TEXTBOX
-		};
-
-		//
-		CBox itemBox;
-
-		//
-		int widgetItem_type;
-		std::string widgetItem_name;
-		
-		//
-		bool inFocus;
-		bool rePaint;
-		bool paintframe;
-		
-		//
-		std::string actionKey; // lua
-		
-		//
-		bool painted;
-		
-		//
-		CWidget* parent;
-		
-		//
-		struct keyAction { std::string action; CMenuTarget *menue; };
-		std::map<neutrino_msg_t, keyAction> keyActionMap;
-		
-		uint32_t sec_timer_id;
-
-		//
-		CWidgetItem();
-		virtual ~CWidgetItem(){};
-		
-		//
-		virtual int getWidgetItemType(){return widgetItem_type;};
-		virtual std::string getWidgetItemName(){return widgetItem_name;};
-
-		virtual bool isSelectable(void){return false;}
-		virtual bool hasItem(){return false;};
-		
-		//
-		virtual void initFrames(){};
-		virtual void saveScreen(){};
-		virtual void restoreScreen(){};
-
-		//
-		virtual void paintHead(){};
-		virtual void paintFoot(){};
-		virtual void paintItemInfo(int ){};
-		virtual void hideItemInfo(){};
-		virtual void paint(void){painted = true;};
-		virtual void hide(void){painted = false;};
-		virtual void paintMainFrame(bool p){paintframe = p;};
-		
-		//
-		virtual void enableRepaint(){rePaint = true;};
-		virtual bool update() const {return rePaint;};
-		virtual void refresh(void){};
-		virtual void stopRefresh(){};
-
-		//
-		virtual void scrollLineDown(const int lines = 1){};
-		virtual void scrollLineUp(const int lines = 1){};
-		virtual void scrollPageDown(const int pages = 1){};
-		virtual void scrollPageUp(const int pages = 1){};
-		virtual int swipLeft(){return 0;};
-		virtual int swipRight(){return 0;};
-
-		//
-		virtual void setOutFocus(bool focus = true){inFocus = !focus;};
-		virtual void setSelected(unsigned int _new) {};
-
-		//
-		virtual void setPosition(const int x, const int y, const int dx, const int dy)
-		{
-			itemBox.iX = x;
-			itemBox.iY = y;
-			itemBox.iWidth = dx;
-			itemBox.iHeight = dy;
-		};
-		virtual void setPosition(CBox* position){itemBox = *position;};
-		virtual inline CBox getWindowsPos(void){return itemBox;};
-
-		//
-		virtual int getWidgetType(){return (4);};
-
-		//
-		virtual int oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok){return 0;};
-		virtual void homeKeyPressed(){};
-		virtual int directKeyPressed(neutrino_msg_t ){return 0;};
-		
-		//
-		virtual std::string getActionKey(void){ return actionKey;}; // lua
-		virtual int getSelected(void){return -1;};
-		
-		//
-		virtual void setParent(CWidget* p){parent = p;};
-		//
-		virtual void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
-		virtual void setSecTimer(uint32_t id){sec_timer_id = id;};
-		
-		//
-		virtual bool onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data);
-		
-		//
-		virtual inline bool isPainted(void){return painted;};
-		virtual void clear(){};
-		
-		//
-		virtual void exec(int timeout = -1); // in sec
-};
-
-typedef std::vector<CWidgetItem*> WIDGETITEMLIST;
-
 //// CHeaders
-class CHeaders : public CWidgetItem
+class CHeaders : public CComponent
 {
 	private:
 		CFrameBuffer* frameBuffer;
 		
 		//
-		fb_pixel_t bgcolor;
+		fb_pixel_t color;
 		int radius;
 		int corner;
 		int gradient;
 		int grad_direction;
 		int grad_intensity;
 		int grad_type;
-		bool head_line;
-		bool head_line_gradient;
+		bool line;
+		bool line_gradient;
 
-		int hbutton_count;
-		button_label_list_t hbutton_labels;
+		int count;
+		button_label_list_t buttons;
 		
 		std::string htitle;
 		std::string hicon;
-		int thalign;
+		int halign;
 		
 		bool paintDate;
 		std::string format;
@@ -924,16 +834,16 @@ class CHeaders : public CWidgetItem
 		//
 		void setTitle(const char * const title){htitle.clear(); if (title) htitle = title;};
 		void setIcon(const char * const icon){hicon.clear(); if (icon) hicon = icon;};
-		void setHAlign(const int m){thalign = m;};
-		void setColor(fb_pixel_t col){bgcolor = col;};
+		void setHAlign(const int m){halign = m;};
+		void setColor(fb_pixel_t col){color = col;};
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setCorner(int ra, int co = CORNER_TOP){radius = ra; corner = co;};
 		void enablePaintDate(void){paintDate = true;};
 		void setFormat(const char* f){if (f) format.clear(); format = f;};
-		void setLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
+		void setLine(bool l, bool g = false){line = l; line_gradient = g;};
 		
 		//
-		void setButtons(const struct button_label* _hbutton_labels, const int _hbutton_count = 1);
+		void setButtons(const struct button_label* _button_labels, const int _count = 1);
 		void addButton(const char *btn, const char *lname = NULL, const fb_pixel_t col = 0);
 
 		//
@@ -944,30 +854,30 @@ class CHeaders : public CWidgetItem
 		void stopRefresh();
 		
 		//
-		void clear(){hbutton_labels.clear();};
+		void clear(){buttons.clear();};
 };
 
 //// CFooters
-class CFooters : public CWidgetItem
+class CFooters : public CComponent
 {
 	private:
 		CFrameBuffer* frameBuffer;
 		
 		//
-		unsigned int fcount;
-		int fbutton_width;
-		button_label_list_t fbuttons;
+		unsigned int count;
+		int button_width;
+		button_label_list_t buttons;
 		
 		//
-		fb_pixel_t bgcolor;
+		fb_pixel_t color;
 		int radius;
 		int corner;
 		int gradient;
 		int grad_direction;
 		int grad_intensity;
 		int grad_type;
-		bool foot_line;
-		bool foot_line_gradient;
+		bool line;
+		bool line_gradient;
 	
 	public:
 		CFooters(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
@@ -975,13 +885,13 @@ class CFooters : public CWidgetItem
 		virtual ~CFooters();
 		
 		//
-		void setColor(fb_pixel_t col){bgcolor = col;};
+		void setColor(fb_pixel_t col){color = col;};
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setCorner(int ra, int co = CORNER_BOTTOM){radius = ra; corner = co;};
-		void setLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
+		void setLine(bool l, bool g = false){line = l; line_gradient = g;};
 		
 		//
-		void setButtons(const struct button_label *button_label, const int button_count = 1, const int _fbutton_width = 0);
+		void setButtons(const struct button_label *_button_labels, const int _count = 1, const int _button_width = 0);
 		void addButton(const char *btn, const char *lname = NULL, const fb_pixel_t col = 0);
 		
 		//
@@ -989,7 +899,7 @@ class CFooters : public CWidgetItem
 		void hide();
 		
 		//
-		void clear(){fbuttons.clear();};
+		void clear(){buttons.clear();};
 };
 
 #endif /* __gui_widget_helpers_h__ */

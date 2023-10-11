@@ -130,7 +130,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	
 	if (widget)
 	{
-		headers = (CHeaders*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
+		headers = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
 	}
 	else
 	{
@@ -138,7 +138,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 		widget = new CWidget(cFrameBox.iX, cFrameBox.iY, cFrameBox.iWidth, cFrameBox.iHeight);
 		widget->name = "hintbox";
 		
-		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+		//widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 		
 		//
 		headers = new CHeaders();
@@ -185,18 +185,19 @@ void CHintBox::paint(void)
 	cFrameBoxTitle.iY = borderMode? cFrameBox.iY + 2 : cFrameBox.iY;
 	cFrameBoxTitle.iWidth = borderMode? cFrameBox.iWidth - 4 : cFrameBox.iWidth;
 
-	headers->setPosition(&cFrameBoxTitle);
-	
-	headers->setTitle(caption.c_str());
-	headers->setIcon(iconfile.c_str());
+	if (headers)
+	{
+		headers->setPosition(&cFrameBoxTitle);
+		headers->setTitle(caption.c_str());
+		headers->setIcon(iconfile.c_str());
+	}
 	
 	widget->setPosition(&cFrameBox);
 	widget->setBorderMode(borderMode);
 	widget->setBorderColor(borderColor);
-	
 	widget->enableSaveScreen();
-	
-	widget->addWidgetItem(headers);
+	//
+	widget->addCCItem(headers);
 
 	//
 	refreshPage();

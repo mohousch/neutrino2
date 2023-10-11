@@ -76,7 +76,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 	
 	if (widget)
 	{
-		DVBSubSelector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		DVBSubSelector = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -105,7 +105,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 		DVBSubSelector->setFootLine(true, true);
 						
 		//
-		widget->addWidgetItem(DVBSubSelector);
+		widget->addCCItem(DVBSubSelector);
 	}
 	
 	CSubtitleChangeExec SubtitleChanger;

@@ -112,7 +112,7 @@ int CAudioSelectMenuHandler::doMenu()
 	
 	if (widget)
 	{
-		AudioSelector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		AudioSelector = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -139,7 +139,7 @@ int CAudioSelectMenuHandler::doMenu()
 		AudioSelector->setFootButtons(&btn);
 						
 		//
-		widget->addWidgetItem(AudioSelector);
+		widget->addCCItem(AudioSelector);
 	}
 	
 	//

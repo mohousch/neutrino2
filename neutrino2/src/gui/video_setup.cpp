@@ -361,7 +361,7 @@ void CVideoSettings::showMenu()
 	
 	if (widget)
 	{
-		videoSettings = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		videoSettings = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -390,7 +390,7 @@ void CVideoSettings::showMenu()
 		videoSettings->setFootLine(true, true);
 		
 		//
-		widget->addWidgetItem(videoSettings);
+		widget->addCCItem(videoSettings);
 	}
 	
 	// intros

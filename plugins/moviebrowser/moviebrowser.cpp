@@ -1334,10 +1334,10 @@ int CMovieBrowser::paint(void)
 		return (false);
 	}
 	
-	widget->addWidgetItem(headers);
-	widget->addWidgetItem(m_pcBrowser);
-	widget->addWidgetItem(m_pcInfo);
-	widget->addWidgetItem(footers);
+	widget->addCCItem(headers);
+	widget->addCCItem(m_pcBrowser);
+	widget->addCCItem(m_pcInfo);
+	widget->addCCItem(footers);
 	
 	return (true);
 }

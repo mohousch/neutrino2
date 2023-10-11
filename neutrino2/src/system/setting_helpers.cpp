@@ -279,9 +279,9 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	
 	if (widget)
 	{	
-		menu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
-		head = (CHeaders *)widget->getWidgetItem(CWidgetItem::WIDGETITEM_HEAD);
-		foot = (CFooters *)widget->getWidgetItem(CWidgetItem::WIDGETITEM_FOOT);
+		menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
+		head = (CHeaders *)widget->getCCItem(CComponent::CC_HEAD);
+		foot = (CFooters *)widget->getCCItem(CComponent::CC_FOOT);
 		
 	}
 	else
@@ -308,9 +308,9 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 		foot->setLine(true, true);
 			
 		//
-		widget->addWidgetItem(menu);
-		widget->addWidgetItem(head);
-		widget->addWidgetItem(foot);
+		widget->addCCItem(menu);
+		widget->addCCItem(head);
+		widget->addCCItem(foot);
 	}
 	
 	if (head)

@@ -204,7 +204,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 	
 	if (widget)
 	{
-		AVPIDSelector = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		AVPIDSelector = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -231,7 +231,7 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 		AVPIDSelector->setFootButtons(&btn);
 						
 		//
-		widget->addWidgetItem(AVPIDSelector);
+		widget->addCCItem(AVPIDSelector);
 	}
 	
 	// audio pids

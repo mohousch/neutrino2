@@ -595,7 +595,7 @@ void EventList::paint(t_channel_id channel_id)
 	
 	if (evlWidget)
 	{
-		listBox = (ClistBox*)evlWidget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		listBox = (ClistBox*)evlWidget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -615,7 +615,7 @@ void EventList::paint(t_channel_id channel_id)
 		listBox->setFootLine(true, true);
 		
 		//
-		evlWidget->addWidgetItem(listBox);
+		evlWidget->addCCItem(listBox);
 	}
 
 	listBox->clear();
@@ -967,7 +967,7 @@ int CEventFinderMenu::showMenu(void)
 	
 	if (widget)
 	{
-		searchMenu = (ClistBox*)widget->getWidgetItem(CWidgetItem::WIDGETITEM_LISTBOX);
+		searchMenu = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
 	}
 	else
 	{
@@ -992,7 +992,7 @@ int CEventFinderMenu::showMenu(void)
 		searchMenu->setFootButtons(&btn);
 		
 		//
-		widget->addWidgetItem(searchMenu);
+		widget->addCCItem(searchMenu);
 	}
 
         searchMenu->addItem(mf2);
