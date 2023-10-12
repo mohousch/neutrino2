@@ -83,7 +83,6 @@ neutrino2_LDADD = \
 	gui/widget/stringinput.o \
 	gui/widget/stringinput_ext.o \
 	gui/widget/colorchooser.o \
-	gui/widget/mountchooser.o \
 	gui/widget/keychooser.o \
 	gui/widget/menue.o \
 	$(top_builddir)/lib/libconfigfile/libtuxbox-configfile.a \

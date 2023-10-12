@@ -199,7 +199,6 @@ class CTestMenu : public CMenuTarget
 		void testVFDController();
 		void testColorChooser();
 		void testKeyChooser();
-		void testMountChooser();
 		void testChannelSelectWidget();
 		void testBEWidget();
 		void testAVSelectWidget();
@@ -4799,30 +4798,21 @@ void CTestMenu::testColorChooser()
 	CColorChooser * colorChooserHandler = new CColorChooser(_("Background"), &g_settings.menu_Head_red, &g_settings.menu_Head_green, &g_settings.menu_Head_blue, &g_settings.menu_Head_alpha, CNeutrinoApp::getInstance()->colorSetupNotifier);
 
 	colorChooserHandler->exec(NULL, "");
-	//delete colorChooserHandler;
-	//colorChooserHandler = NULL;
+	
+	delete colorChooserHandler;
+	colorChooserHandler = NULL;
 }
 
 void CTestMenu::testKeyChooser()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testKeyChooser\n");
 	
-	CKeyChooserItem * keyChooser = new CKeyChooserItem("testing CKeyChooser: key_screenshot:", &g_settings.key_screenshot);
+	CKeyChooser *keyChooser = new CKeyChooser(&g_settings.key_screenshot, "testingKeyChooser: Screenshot", NEUTRINO_ICON_KEYBINDING);
 
 	keyChooser->exec(NULL, "");
+	
 	delete keyChooser;
 	keyChooser = NULL;
-}
-
-void CTestMenu::testMountChooser()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testMountChooser\n");
-	
-	CMountChooser * mountChooser = new CMountChooser("testing CMountChooser", NEUTRINO_ICON_SETTINGS, NULL, g_settings.network_nfs_moviedir, g_settings.network_nfs_recordingdir);
-
-	mountChooser->exec(NULL, "");
-	delete mountChooser;
-	mountChooser = NULL;
 }
 
 void CTestMenu::testPluginsList()
@@ -5477,12 +5467,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	else if(actionKey == "keychooser")
 	{
 		testKeyChooser();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "mountchooser")
-	{
-		testMountChooser();
 
 		return RETURN_REPAINT;
 	}
@@ -6682,9 +6666,8 @@ void CTestMenu::showMenu()
 	//
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("ColorChooser", true, NULL, this, "colorchooser"));
-	mainMenu->addItem(new CMenuForwarder("KeyChooserItem", true, NULL, this, "keychooser"));
+	mainMenu->addItem(new CMenuForwarder("KeyChooser", true, NULL, this, "keychooser"));
 	mainMenu->addItem(new CMenuForwarder("VFDController", true, NULL, this, "vfdcontroller"));
-	mainMenu->addItem(new CMenuForwarder("MountChooser", true, NULL, this, "mountchooser"));
 	
 	//
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));

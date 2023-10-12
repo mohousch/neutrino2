@@ -41,6 +41,5 @@ libneutrino2_gui_widget2_a_SOURCES = \
 	stringinput.cpp \
 	stringinput_ext.cpp \
 	colorchooser.cpp \
-	keychooser.cpp \
-	mountchooser.cpp
+	keychooser.cpp
 	

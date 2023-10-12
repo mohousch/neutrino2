@@ -63,7 +63,6 @@
 #include <gui/widget/messagebox.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/stringinput_ext.h>
-#include <gui/widget/mountchooser.h>
 
 #include <system/settings.h>
 #include <system/fsmounter.h>

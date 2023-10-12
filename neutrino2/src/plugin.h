@@ -87,7 +87,6 @@
 #include <gui/widget/keychooser.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/stringinput_ext.h>
-#include <gui/widget/mountchooser.h>
 #include <gui/widget/helpbox.h>
 #include <gui/widget/infobox.h>
 #include <gui/widget/textbox.h>

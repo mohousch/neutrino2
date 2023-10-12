@@ -66,7 +66,7 @@ class CKeyValue : public CMenuSeparator
 		};
 };
 
-CKeyChooser::CKeyChooser(int* const Key, const char* const Title, const std::string& Icon)
+CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::string& Icon)
 : CMenuWidget(Title, Icon)
 {
 	frameBuffer = CFrameBuffer::getInstance();
