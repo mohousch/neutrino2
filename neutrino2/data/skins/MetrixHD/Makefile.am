@@ -1,4 +1,4 @@
-SUBDIRS = buttons
+SUBDIRS = buttons hints
 
 installdir = $(CONFIGDIR)/skins/MetrixHD
 

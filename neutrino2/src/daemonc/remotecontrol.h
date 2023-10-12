@@ -43,9 +43,6 @@
 //
 #include <zapit/zapit.h>
 
-//#include <gui/widget/listbox.h>		//CChangeObserver
-//#include <gui/widget/stringinput.h>
-
 
 ////
 class CSubService

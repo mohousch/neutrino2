@@ -273,6 +273,7 @@ data/skins/KravenHD/Makefile
 data/skins/KravenHD/background/Makefile
 data/skins/MetrixHD/Makefile
 data/skins/MetrixHD/buttons/Makefile
+data/skins/MetrixHD/hints/Makefile
 data/skins/titan/Makefile
 data/skins/neutrino2/Makefile
 data/locale/Makefile

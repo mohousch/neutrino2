@@ -12,7 +12,6 @@ install_DATA = \
 	mute.png mute_small.png mute_zap_gray.png mute_zap_green.png \
 	ok.png \
 	epg.png \
-	btn_timer.png \
-	information.png mediaplayer.png timerepg.png features.png mainsetup.png powermenu.png service.png
+	btn_timer.png
 	
 

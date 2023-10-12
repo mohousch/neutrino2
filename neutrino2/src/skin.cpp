@@ -47,7 +47,6 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 #include <gui/widget/framebox.h>
-//#include <gui/widget/window.h>
 #include <gui/widget/hintbox.h>
 
 #include <gui/plugins.h>
@@ -2814,9 +2813,6 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 			
 		CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
 	}
-			 
-	//strcpy( g_settings.font_file, fontFileName.c_str() );		
-	//CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
 			
 	// setIconPath
 	std::string iconsDir = CONFIGDIR "/skins/";

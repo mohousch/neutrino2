@@ -78,19 +78,7 @@ CSubService::CSubService(const t_original_network_id anoriginal_network_id, cons
 
 t_channel_id CSubService::getChannelID(void) const
 {
-	t_satellite_position  satellitePosition = 0;
-	freq_id_t freq = 0;
-
-	for (tallchans_iterator it = allchans.begin(); it != allchans.end(); it++)
-	{
-		if(it->second.getServiceId() == service.service_id)
-		{
-			satellitePosition = it->second.getSatellitePosition();
-			freq = it->second.getFreqId();
-		}
-	}
-	
-	return create_channel_id(service.service_id, service.original_network_id, service.transport_stream_id/*, satellitePosition, freq*/);
+	return create_channel_id(service.service_id, service.original_network_id, service.transport_stream_id);
 }
 
 ////
