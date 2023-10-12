@@ -552,9 +552,9 @@ CTimerd::CTimerEventTypes EventList::isScheduled(t_channel_id channel_id, CChann
 #define NUM_LIST_BUTTONS 5
 struct button_label FootButtons[NUM_LIST_BUTTONS] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("record") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("search") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("schedule") },
+	{ NEUTRINO_ICON_BUTTON_RED, _("Record") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Search") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule") },
 	{ NEUTRINO_ICON_BUTTON_BLUE, _("sorting(Time)") },
 	{ NEUTRINO_ICON_BUTTON_SETUP_SMALL, _("Refresh EPG") }
 };

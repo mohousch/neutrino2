@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-08 11:07+0200\n"
+"POT-Creation-Date: 2023-10-12 17:38+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -3041,9 +3041,6 @@ msgstr "lila"
 msgid "ready"
 msgstr "bereit"
 
-msgid "record"
-msgstr "aufzeichnen"
-
 msgid "record default audio streams"
 msgstr "Standard-Audiostreams aufzeichnen"
 
@@ -3064,12 +3061,6 @@ msgstr "Playlist speichern"
 
 msgid "save playlist"
 msgstr "Playlist speichern"
-
-msgid "schedule"
-msgstr "Zeitplan"
-
-msgid "search"
-msgstr "Suchen"
 
 msgid "see timer"
 msgstr "siehe Timer"
