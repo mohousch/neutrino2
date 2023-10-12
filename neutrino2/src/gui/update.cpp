@@ -346,7 +346,7 @@ bool CFlashUpdate::checkVersion4Update()
 		{
 			// check release cycle
 			if ((strncmp(RELEASE_CYCLE, versionInfo->getReleaseCycle(), 2) != 0) &&
-			(MessageBox(_("Information"), _("Your Release cycle differs.\nTo continue?"), mbrYes, mbYes | mbNo, NEUTRINO_ICON_UPDATE) != mbrYes))
+			(MessageBox(_("Information"), _("Your Release cycle differs.\nTo continue?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NEUTRINO_ICON_UPDATE) != CMessageBox::mbrYes))
 			{
 				delete versionInfo;
 				return false;
@@ -354,7 +354,7 @@ bool CFlashUpdate::checkVersion4Update()
 
 			// check if not release ask to install (beta + snapshot)
 			if ((strcmp(RELEASE_TYPE, versionInfo->getType()) != 0) &&
-		    	    (MessageBox(_("Information"), _("The image you have selected is an untested version, this means\nyour box maybe fail to boot after update.\n\nDo you really want to update to this version?"), mbrYes, mbYes | mbNo, NEUTRINO_ICON_UPDATE) != mbrYes))
+		    	    (MessageBox(_("Information"), _("The image you have selected is an untested version, this means\nyour box maybe fail to boot after update.\n\nDo you really want to update to this version?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NEUTRINO_ICON_UPDATE) != CMessageBox::mbrYes))
 			{
 				delete versionInfo;
 				return false;
@@ -427,7 +427,7 @@ bool CFlashUpdate::checkVersion4Update()
 		msg_body = (fileType < '3')? _("Found the following new image:\nDate: %s, %s\nBaseImage: %s\nImageType: %s\n\nDo you want to install this version now?") : _("Found the following new package:\nPackage: %s\nDate: %s, %s\nBaseImage: %s\nType: %s\n\nDo you want to download and install this version now?");
 	}
 	
-	return ( (fileType == 'T')? true : MessageBox(_("Information"), msg, mbrYes, mbYes | mbNo, NEUTRINO_ICON_UPDATE) == mbrYes); // UTF-8
+	return ( (fileType == 'T')? true : MessageBox(_("Information"), msg, CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NEUTRINO_ICON_UPDATE) == CMessageBox::mbrYes); // UTF-8
 }
 
 int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
@@ -501,7 +501,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 	if(updateMode == UPDATEMODE_INTERNET) 
 	{ 
 		//internet-update
-		if ( MessageBox(_("Information"), (fileType < '3')? _("image has errors") : _("package has errors"), mbrYes, mbYes | mbNo, NEUTRINO_ICON_UPDATE) != mbrYes) // UTF-8
+		if ( MessageBox(_("Information"), (fileType < '3')? _("image has errors") : _("package has errors"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NEUTRINO_ICON_UPDATE) != CMessageBox::mbrYes) // UTF-8
 		{
 			// remove flash/package
 			remove(filename.c_str());
@@ -560,7 +560,7 @@ int CFlashUpdate::exec(CMenuTarget * parent, const std::string &)
 			fread(buffer, filesize, 1, fd);
 			fclose(fd);
 			buffer[filesize] = 0;
-			MessageBox(_("Information"), buffer, mbrBack, mbBack); // UTF-8
+			MessageBox(_("Information"), buffer, CMessageBox::mbrBack, CMessageBox::mbBack); // UTF-8
 			free(buffer);
 		}
 	}
@@ -643,7 +643,7 @@ void CFlashExpert::writemtd(const std::string & filename, int mtdNumber)
 
 	sprintf(message, _("Do you really want to flash?\n\nIf a error occurs or the image is not\nvalid, the box will not boot after flashing.\n\nImagename: %s\nTarget: %s"), FILESYSTEM_ENCODING_TO_UTF8(std::string(filename).c_str()), CMTDInfo::getInstance()->getMTDName(mtdNumber).c_str());
 
-	if (MessageBox(_("Information"), message, mbrNo, mbYes | mbNo, NEUTRINO_ICON_UPDATE) != mbrYes) // UTF-8
+	if (MessageBox(_("Information"), message, CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NEUTRINO_ICON_UPDATE) != CMessageBox::mbrYes) // UTF-8
 		return;
 
 #ifdef ENABLE_LCD

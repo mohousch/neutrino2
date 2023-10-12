@@ -512,9 +512,9 @@ int CHDDInit::exec(CMenuTarget * /*parent*/, const std::string& actionKey)
 	
 	sprintf(src, "/dev/%s", actionKey.c_str());
 
-	res = MessageBox(_("Hdd Format"), _("Are you sure to init ?"), mbrNo, mbYes | mbNo );
+	res = MessageBox(_("Hdd Format"), _("Are you sure to init ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo );
 
-	if(res != mbrYes)
+	if(res != CMessageBox::mbrYes)
 		return 0;
 	
 	f = fopen("/proc/sys/kernel/hotplug", "w");
@@ -703,9 +703,9 @@ int CHDDFmtExec::exec(CMenuTarget *parent, const std::string& actionKey)
 
 	sprintf(src, "/dev/%s", actionKey.c_str());
 
-	res = MessageBox(_("HDD Format"), _("Are you sure to format ? You will lost all data "), mbrNo, mbYes | mbNo );
+	res = MessageBox(_("HDD Format"), _("Are you sure to format ? You will lost all data "), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo );
 
-	if(res != mbrYes)
+	if(res != CMessageBox::mbrYes)
 		return 0;
 
 	bool srun = system("killall -9 smbd");

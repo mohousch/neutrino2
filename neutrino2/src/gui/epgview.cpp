@@ -701,7 +701,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	if (textBox) 
 	{
 		textBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
-		textBox->setMode(SCROLL);
+		textBox->setMode(CTextBox::SCROLL);
 	}
 
 	// head
@@ -910,12 +910,12 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 									{
 										CTimerd::getInstance()->addRecordTimerEvent(channel_id, epgData.epg_times.startzeit, epgData.epg_times.startzeit + epgData.epg_times.dauer, epgData.eventID, epgData.epg_times.startzeit, epgData.epg_times.startzeit - (ANNOUNCETIME + 120 ), TIMERD_APIDS_CONF, true, recDir,true);
 														 
-										MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
+										MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, CComponent::BORDER_ALL);
 									}
 								} 
 								else 
 								{
-									MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
+									MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, CComponent::BORDER_ALL);
 								}
 							}
 						}
@@ -931,7 +931,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 						{
 							CTimerd::getInstance()->addZaptoTimerEvent(channel_id, epgData.epg_times.startzeit, epgData.epg_times.startzeit - ANNOUNCETIME, 0, epgData.eventID, epgData.epg_times.startzeit, 0);
 										
-							MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
+							MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, CComponent::BORDER_ALL);
 						}
 						else
 							printf("timerd not available\n");

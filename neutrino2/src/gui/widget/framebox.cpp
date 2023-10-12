@@ -45,7 +45,7 @@ CFrameItem::CFrameItem()
 	caption = "";
 	mode = FRAME_BOX;
 
-	borderMode = BORDER_NO;
+	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	paintFrame = true;
 	pluginOrigName = false;
@@ -62,7 +62,7 @@ CFrameItem::CFrameItem()
 	corner = NO_RADIUS;
 	gradient = NOGRADIENT;
 	
-	halign = CC_ALIGN_LEFT;
+	halign = CComponent::CC_ALIGN_LEFT;
 
 	// init
 	window.setPosition(-1, -1, -1, -1);
@@ -221,9 +221,9 @@ int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
 				
 				int startPosX = window.getWindowsPos().iX + iconOffset + iw + iconOffset;
 			
-				if (halign == CC_ALIGN_CENTER)
+				if (halign == CComponent::CC_ALIGN_CENTER)
 					startPosX = window.getWindowsPos().iX + (window.getWindowsPos().iWidth >> 1) - (c_w >> 1);
-				else if (halign == CC_ALIGN_RIGHT)
+				else if (halign == CComponent::CC_ALIGN_RIGHT)
 					startPosX = window.getWindowsPos().iX + window.getWindowsPos().iWidth - c_w;
 
 				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + 3 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, caption.c_str(), color, 0, true); //
@@ -236,9 +236,9 @@ int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
 				
 				int o_startPosX = window.getWindowsPos().iX + iconOffset + iw + iconOffset;
 			
-				if (halign == CC_ALIGN_CENTER)
+				if (halign == CComponent::CC_ALIGN_CENTER)
 					o_startPosX = window.getWindowsPos().iX + (window.getWindowsPos().iWidth >> 1) - (o_w >> 1);
-				else if (halign == CC_ALIGN_RIGHT)
+				else if (halign == CComponent::CC_ALIGN_RIGHT)
 					o_startPosX = window.getWindowsPos().iX + window.getWindowsPos().iWidth - o_w;
 
 				g_Font[optionFont]->RenderString(o_startPosX, window.getWindowsPos().iY + window.getWindowsPos().iHeight, window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, option.c_str(), color, 0, true);
@@ -257,9 +257,9 @@ int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
 				
 				int startPosX = window.getWindowsPos().iX + iconOffset + iw + iconOffset;
 			
-				if (halign == CC_ALIGN_CENTER)
+				if (halign == CComponent::CC_ALIGN_CENTER)
 					startPosX = window.getWindowsPos().iX + (window.getWindowsPos().iWidth >> 1) - (c_w >> 1);
-				else if (halign == CC_ALIGN_RIGHT)
+				else if (halign == CComponent::CC_ALIGN_RIGHT)
 					startPosX = window.getWindowsPos().iX + window.getWindowsPos().iWidth - c_w;
 
 				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + (window.getWindowsPos().iHeight - c_h)/2 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, caption.c_str(), (bgcolor == COL_YELLOW_PLUS_0)? COL_BLACK : color);
@@ -411,9 +411,9 @@ int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
 				
 			int startPosX = window.getWindowsPos().iX;
 			
-			if (halign == CC_ALIGN_CENTER)
+			if (halign == CComponent::CC_ALIGN_CENTER)
 				startPosX = window.getWindowsPos().iX + (window.getWindowsPos().iWidth >> 1) - (c_w >> 1);
-			else if (halign == CC_ALIGN_RIGHT)
+			else if (halign == CComponent::CC_ALIGN_RIGHT)
 				startPosX = window.getWindowsPos().iX + window.getWindowsPos().iWidth - c_w;
 			
 			g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + g_Font[captionFont]->getHeight() + (window.getWindowsPos().iHeight - g_Font[captionFont]->getHeight())/2, c_w, caption.c_str(), color);

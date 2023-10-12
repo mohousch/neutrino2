@@ -48,8 +48,8 @@ extern CFont * g_Font[FONT_TYPE_COUNT];
 //
 class CMenuTarget;
 class CWidget;
-class CWindow;
 
+/*
 // border
 enum {
 	BORDER_NO,
@@ -64,6 +64,7 @@ enum {
 	CC_ALIGN_CENTER,
 	CC_ALIGN_RIGHT
 };
+*/
 
 // dimension helper
 class CBox
@@ -99,6 +100,7 @@ class CBox
 class CComponent
 {
 	public:
+		// cc_type
 		enum 
 		{
 			CC_ICON,
@@ -127,6 +129,21 @@ class CComponent
 			CC_FRAMEBOX,
 			CC_LISTFRAME,
 			CC_TEXTBOX
+		};
+		
+		// border
+		enum {
+			BORDER_NO,
+			BORDER_ALL,
+			BORDER_LEFTRIGHT,
+			BORDER_TOPBOTTOM
+		};
+
+		// halign
+		enum {
+			CC_ALIGN_LEFT,
+			CC_ALIGN_CENTER,
+			CC_ALIGN_RIGHT
 		};
 	
 	public:

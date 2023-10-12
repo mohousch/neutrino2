@@ -1216,7 +1216,7 @@ void CAudioPlayerGui::savePlaylist()
 				_("File could not be created:"),
 				absPlaylistFilename.c_str());
 
-			MessageBox(_("Error"), msg, mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+			MessageBox(_("Error"), msg, CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			// refresh view
 			std::cout << "CAudioPlayerGui: could not create play list file " 
 			<< absPlaylistFilename << std::endl;
@@ -1244,7 +1244,7 @@ bool CAudioPlayerGui::askToOverwriteFile(const std::string& filename)
 	char msg[filename.length() + 127];
 	
 	snprintf(msg, filename.length() + 126, "%s\n%s", _("Do you want to overwrite this file:"), filename.c_str());
-	bool res = (MessageBox(_("Overwrite?"), msg, mbrYes, mbYes | mbNo) == mbrYes);
+	bool res = (MessageBox(_("Overwrite?"), msg, CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes);
 	
 	return res;
 }

@@ -151,7 +151,7 @@ class CWidget : public CMenuTarget
 		void setColor(fb_pixel_t col) {backgroundColor = col;};
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
-		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
+		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};
 		//
 		void enableSaveScreen();

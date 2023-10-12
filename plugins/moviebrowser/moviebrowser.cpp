@@ -920,7 +920,7 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 	{
 		if(m_movieSelectionHandler != NULL)
 		{
-			if(MessageBox(_("Information"), _("Cut jumps from movie ?"), mbrNo, mbYes | mbNo) == mbrYes) 
+			if(MessageBox(_("Information"), _("Cut jumps from movie ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 			{
 				CHintBox * hintBox = new CHintBox(_("Moviebrowser"), _("Cutting, please wait"));
 				hintBox->paint();
@@ -933,7 +933,7 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 				off64_t res = cut_movie(m_movieSelectionHandler, &m_movieInfo);
 
 				if(res == 0)
-					MessageBox(_("Error"), _("Cut failed, is there jump bookmarks ? Or check free space."), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+					MessageBox(_("Error"), _("Cut failed, is there jump bookmarks ? Or check free space."), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			}
 		}
 	}
@@ -942,12 +942,12 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 		if(m_movieSelectionHandler != NULL) 
 		{
 			if((m_movieSelectionHandler == playing_info) && (NeutrinoMessages::mode_ts == CNeutrinoApp::getInstance()->getMode()))
-				MessageBox(_("Error"), _("Impossible to truncate playing movie."), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+				MessageBox(_("Error"), _("Impossible to truncate playing movie."), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			else if(m_movieSelectionHandler->bookmarks.end == 0)
-				MessageBox(_("Error"), _("No End bookmark defined!"), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+				MessageBox(_("Error"), _("No End bookmark defined!"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			else 
 			{
-				if(MessageBox(_("Information"), _("Truncate movie ?"), mbrNo, mbYes | mbNo) == mbrYes) 
+				if(MessageBox(_("Information"), _("Truncate movie ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 				{
 					CHintBox * hintBox = new CHintBox(_("Information"), _("Truncating, please wait"));
 					hintBox->paint();
@@ -956,7 +956,7 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 					delete hintBox;
 
 					if(res == 0)
-						MessageBox(_("Error"), _("Truncate failed."), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+						MessageBox(_("Error"), _("Truncate failed."), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 				}
 			}
 		}
@@ -966,7 +966,7 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 		if(m_movieSelectionHandler != NULL)
 		{
 
-			if(MessageBox(_("Information"), _("Copy jumps from movie to new file ?"), mbrNo, mbYes | mbNo) == mbrYes) 
+			if(MessageBox(_("Information"), _("Copy jumps from movie to new file ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 			{
 				CHintBox * hintBox = new CHintBox(_("Information"), _("Coping, please wait"));
 				hintBox->paint();
@@ -979,7 +979,7 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 				off64_t res = copy_movie(m_movieSelectionHandler, &m_movieInfo, true);
 			
 				if(res == 0)
-					MessageBox(_("Information"), _("Copy failed, is there jump bookmarks ? Or check free space."), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+					MessageBox(_("Information"), _("Copy failed, is there jump bookmarks ? Or check free space."), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			}
 		}
 	}
@@ -1026,7 +1026,7 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 					infoBox->exec();
 					delete infoBox;
 
-					if(MessageBox(_("Information"), _("Prefer TMDB infos"), mbrNo, mbYes | mbNo) == mbrYes) 
+					if(MessageBox(_("Information"), _("Prefer TMDB infos"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 					{
 						// rewrite tfile
 						std::string tname = m_movieSelectionHandler->file.Name;
@@ -1042,12 +1042,12 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 				}
 				else
 				{
-					MessageBox(_("Information"), _("Not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+					MessageBox(_("Information"), _("Not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 				}
 			}
 			else
 			{
-				MessageBox(_("Information"), _("Not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+				MessageBox(_("Information"), _("Not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 			}
 
 			delete tmdb;
@@ -1058,7 +1058,7 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 	{
 		if (m_movieSelectionHandler != NULL) 
 		{
-                	if(MessageBox(_("Information"), _("remove screenshot?"), mbrNo, mbYes | mbNo) == mbrYes) 
+                	if(MessageBox(_("Information"), _("remove screenshot?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 			{
                         	std::string fname = m_movieSelectionHandler->file.Name;
 				
@@ -1956,7 +1956,7 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 					infoBox->exec();
 					delete infoBox;
 
-					if(MessageBox("Information", _("Prefer TMBD infos ?"), mbrNo, mbYes | mbNo) == mbrYes) 
+					if(MessageBox("Information", _("Prefer TMBD infos ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 					{
 						// rewrite tfile
 						std::string tname = m_movieSelectionHandler->file.Name;
@@ -1972,12 +1972,12 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 				}
 				else
 				{
-					MessageBox(_("Information"), _("Not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+					MessageBox(_("Information"), _("Not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 				}
 			}
 			else
 			{
-				MessageBox(_("Information"), _("Not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+				MessageBox(_("Information"), _("Not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 			}
 
 			delete tmdb;
@@ -2228,7 +2228,7 @@ void CMovieBrowser::onDeleteFile(MI_MOVIE_INFO& movieSelectionHandler)
 	msg += "\r\n ";
 	msg += _("?");
 	
-	if (MessageBox(_("Delete"), msg.c_str(), mbrNo, mbYes | mbNo) == mbrYes)
+	if (MessageBox(_("Delete"), msg.c_str(), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes)
 	{
 		delFile(movieSelectionHandler.file);
 			

@@ -357,7 +357,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 			}
 			else if(msg == CRCInput::RC_home) 
 			{
-				if (MessageBox(_("Abortion of channel scan"), _("Should the search really be aborted?"), mbrNo, mbYes | mbNo) == mbrYes) 
+				if (MessageBox(_("Abortion of channel scan"), _("Should the search really be aborted?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 				{
 					msg = CRCInput::RC_timeout;
 					istheend = true;

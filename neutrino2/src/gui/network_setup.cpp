@@ -553,7 +553,7 @@ void testNetworkSettings(const char* ip, const char* netmask, const char* broadc
 	text += "\nwiki.tuxbox-neutrino.org: ";
 	text += mypinghost("81.7.17.245");
 
-	MessageBox(_("Test network now"), text.c_str(), mbrBack, mbBack, NEUTRINO_ICON_INFO); // UTF-8
+	MessageBox(_("Test network now"), text.c_str(), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO); // UTF-8
 }
 
 void showCurrentNetworkSettings()
@@ -602,7 +602,7 @@ void showCurrentNetworkSettings()
 		text += router;
 	}
 	
-	MessageBox(_("Show active network settings"), text.c_str(), mbrBack, mbBack, NEUTRINO_ICON_INFO); // UTF-8
+	MessageBox(_("Show active network settings"), text.c_str(), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO); // UTF-8
 }
 
 

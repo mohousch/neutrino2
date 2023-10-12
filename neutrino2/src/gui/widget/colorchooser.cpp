@@ -251,7 +251,7 @@ int CColorChooser::exec(CMenuTarget* parent, const std::string&)
 			case CRCInput::RC_home:
 			{
 				if (((*value[VALUE_R] != r_alt) || (*value[VALUE_G] != g_alt) || (*value[VALUE_B] != b_alt) || ((value[VALUE_ALPHA]) && (*(value[VALUE_ALPHA]) != a_alt)) ) &&
-						(MessageBox(name.c_str(), _("Discard changes?"), mbrYes, mbYes | mbCancel) == mbrCancel))
+						(MessageBox(name.c_str(), _("Discard changes?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbCancel) == CMessageBox::mbrCancel))
 					break;
 		
 				// cancel

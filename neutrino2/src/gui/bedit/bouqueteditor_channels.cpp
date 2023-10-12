@@ -414,7 +414,7 @@ void CBEChannelWidget::deleteChannel()
 	if (selected >= Channels->size()) /* Channels.size() might be 0 */
 		return;
 
-	if (MessageBox(_("Delete"), (*Channels)[selected]->getName().c_str(), mbrNo, mbYes|mbNo, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL) != mbrYes)
+	if (MessageBox(_("Delete"), (*Channels)[selected]->getName().c_str(), CMessageBox::mbrNo, CMessageBox::mbYes|CMessageBox::mbNo, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, CComponent::BORDER_ALL) != CMessageBox::mbrYes)
 		return;
 
 	CZapit::getInstance()->Bouquets[bouquet]->removeService((*Channels)[selected]->channel_id);

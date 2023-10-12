@@ -24,7 +24,7 @@ extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
-#define NEUTRINO_ICON_YT				PLUGINDIR "/youtube/youtube.png"
+#define NEUTRINO_ICON_YT			PLUGINDIR "/youtube/youtube.png"
 #define NEUTRINO_ICON_YT_SMALL			PLUGINDIR "/youtube/youtube_small.png"
 
 YTB_SETTINGS m_settings;
@@ -283,7 +283,7 @@ REPEAT:
 		else 
 		{
 			//FIXME show error
-			MessageBox(_("Error"), _("Failed to load youtube feed"), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+			MessageBox(_("Error"), _("Failed to load youtube feed"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			
 			//return;
 			if(mode == cYTFeedParser::PREV)

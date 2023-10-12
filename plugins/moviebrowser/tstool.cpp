@@ -275,7 +275,7 @@ static int get_input(bool * stop)
 	
 	if(msg == CRCInput::RC_home) 
 	{
-		if(MessageBox(_("Information"), _("Cancel movie cut/split ?"), mbrNo, mbYes | mbNo) == mbrYes) 
+		if(MessageBox(_("Information"), _("Cancel movie cut/split ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 		{
 			* stop = true;
 		}

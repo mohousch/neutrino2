@@ -65,10 +65,11 @@ class CHelpBox
 		void addPagebreak();
 		
 		//
-		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
+		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		
 		//
-		void show(const char* const Caption, const int Width = HELPBOX_WIDTH, int timeout = -1, const result_ Default = mbrBack, const uint32_t ShowButtons = mbBack);
+		void show(const char* const Caption, const int Width = HELPBOX_WIDTH, int timeout = -1, const CMessageBox::result_ Default = CMessageBox::mbrBack, const uint32_t ShowButtons = CMessageBox::mbBack);
 };
 
 #endif
+

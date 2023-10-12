@@ -487,7 +487,7 @@ bool CVideoSetupNotifier::changeNotify(const std::string& OptionName, void *)
 
 		if(prev_video_Mode != g_settings.video_Mode) 
 		{
-			if(MessageBox(_("Information"), _("Is this video mode working ok ?"), mbrNo, mbYes | mbNo, NEUTRINO_ICON_INFO) != mbrYes) 
+			if(MessageBox(_("Information"), _("Is this video mode working ok ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NEUTRINO_ICON_INFO) != CMessageBox::mbrYes) 
 			{
 				g_settings.video_Mode = prev_video_Mode;
 				if(videoDecoder)

@@ -83,7 +83,7 @@ void CNKMovies::loadNKTitles(int mode, std::string search, int id)
 	else 
 	{
 		//FIXME show error
-		MessageBox(_("Error"), _("Failed to load Netzkino Movies"), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+		MessageBox(_("Error"), _("Failed to load Netzkino Movies"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 
 		loadBox.hide();
 	}

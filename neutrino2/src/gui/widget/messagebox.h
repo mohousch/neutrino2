@@ -48,32 +48,35 @@
 #include <gui/widget/widget_helpers.h>
 
 
-typedef enum result_
-{
-	mbrYes    = 0,
-	mbrNo     = 1,
-	mbrCancel = 2,
-	mbrBack   = 3,
-	mbrOk     = 4
-} result;
-	
-typedef enum buttons_
-{
-	mbYes	 = 0x01,
-	mbNo 	 = 0x02,
-	mbCancel = 0x04,
-	mbAll    = 0x07,
-	mbBack   = 0x08,
-	mbOk     = 0x10,
-	mbNone   = 0x20
-} buttons;
-
+////
 class CMessageBox
 {
+	public:
+		enum result_
+		{
+			mbrYes    = 0,
+			mbrNo     = 1,
+			mbrCancel = 2,
+			mbrBack   = 3,
+			mbrOk     = 4
+		} result;
+			
+		enum buttons_
+		{
+			mbYes	 = 0x01,
+			mbNo 	 = 0x02,
+			mbCancel = 0x04,
+			mbAll    = 0x07,
+			mbBack   = 0x08,
+			mbOk     = 0x10,
+			mbNone   = 0x20
+		} buttons;
+
 	protected:
 		CBox cFrameBox;
 		CWidget *m_cBoxWindow;
 		CHeaders *headers;
+		CScrollBar scrollBar;
 
 		unsigned int m_currentPage;
 		std::vector<int>m_startEntryOfPage;
@@ -90,8 +93,6 @@ class CMessageBox
 		char * m_message;
 		ContentLines m_lines;
 		std::string  m_iconfile;
-
-		CScrollBar scrollBar;
 		
 		void refreshPage();
 
@@ -116,9 +117,6 @@ class CMessageBox
 		void paintButtons();
 
 	public:
-		result_ result;
-		buttons_  buttons;
-		
 		//
 		CMessageBox(const char * const Caption, ContentLines& Lines, const int Width = MESSAGEBOX_WIDTH, const char * const Icon = NULL, const result_ Default = mbrYes, const uint32_t ShowButtons = mbAll);
 	
@@ -127,13 +125,14 @@ class CMessageBox
 
 		virtual ~CMessageBox(void);
 		
-		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
+		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};
 
 		int exec(int timeout = -1);
 		void returnDefaultValueOnTimeout(bool returnDefault);
 };
 
-int MessageBox(const char * const Caption, const char * const Text, const result_ Default, const uint32_t ShowButtons, const char * const Icon = NULL, const int Width = MENU_WIDTH, const int timeout = -1, bool returnDefaultOnTimeout = false, const int border = BORDER_NO); // UTF-8
+int MessageBox(const char * const Caption, const char * const Text, const CMessageBox::result_ Default, const uint32_t ShowButtons, const char * const Icon = NULL, const int Width = MENU_WIDTH, const int timeout = -1, bool returnDefaultOnTimeout = false, const int border = CComponent::BORDER_NO); // UTF-8
 
 #endif
+

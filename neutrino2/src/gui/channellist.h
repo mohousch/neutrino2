@@ -99,7 +99,7 @@ class CChannelList
 		uint32_t sec_timer_id;
 		int selected;
 		//
-		void paint();
+		void paint(bool customMode = false);
 		void hide();
 		void paintCurrentNextEvent(int _selected);
 

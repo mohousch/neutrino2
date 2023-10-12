@@ -94,7 +94,7 @@ CMenuItem::CMenuItem()
 	actionKey = "";
 	
 	paintFrame = true;
-	borderMode = BORDER_NO;
+	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	itemGradient = NOGRADIENT;
 	
@@ -225,19 +225,19 @@ void CMenuItem::paintItemBox(int dy, fb_pixel_t col)
 	CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, borderColor);
 				
 	// itemBox
-	if (borderMode == BORDER_NO)
+	if (borderMode == CComponent::BORDER_NO)
 	{
 		CFrameBuffer::getInstance()->paintBoxRel(x, y, dx, dy, col, NO_RADIUS, CORNER_NONE, itemGradient); 
 	}
-	else if (borderMode == BORDER_ALL)
+	else if (borderMode == CComponent::BORDER_ALL)
 	{
 		CFrameBuffer::getInstance()->paintBoxRel(x + 2, y + 2, dx - 4, dy - 4, col, NO_RADIUS, CORNER_NONE, itemGradient);
 	}
-	else if (borderMode == BORDER_LEFTRIGHT)
+	else if (borderMode == CComponent::BORDER_LEFTRIGHT)
 	{
 		CFrameBuffer::getInstance()->paintBoxRel(x + 2, y, dx - 4, dy, col, NO_RADIUS, CORNER_NONE, itemGradient);
 	}
-	else if (borderMode == BORDER_TOPBOTTOM)
+	else if (borderMode == CComponent::BORDER_TOPBOTTOM)
 	{
 		CFrameBuffer::getInstance()->paintBoxRel(x, y + 2, dx, dy - 4, col, NO_RADIUS, CORNER_NONE, itemGradient);
 	} 
@@ -1658,7 +1658,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	itemInfoBox.iHeight = 0;
 	iteminfoborder = false;
 	iteminfosavescreen = false;
-	iteminfobordermode = BORDER_NO;
+	iteminfobordermode = CComponent::BORDER_NO;
 	iteminfoframe = true;
 	iteminfofont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
 	iteminfocolor = COL_MENUCONTENT_PLUS_0;
@@ -1694,7 +1694,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	item_width = 0;
 	items_width = 0;
 	items_height = 0;
-	itemBorderMode = BORDER_NO;
+	itemBorderMode = CComponent::BORDER_NO;
 	itemBorderColor = COL_MENUCONTENT_PLUS_6;
 	itemGradient = NOGRADIENT;
 	item2Lines = false;
@@ -1782,7 +1782,7 @@ ClistBox::ClistBox(CBox* position)
 	itemInfoBox.iHeight = 0;
 	iteminfoborder = false;
 	iteminfosavescreen = false;
-	iteminfobordermode = BORDER_NO;
+	iteminfobordermode = CComponent::BORDER_NO;
 	iteminfoframe = true;
 	iteminfofont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
 	iteminfocolor = COL_MENUCONTENT_PLUS_0;
@@ -1818,7 +1818,7 @@ ClistBox::ClistBox(CBox* position)
 	item_width = 0;
 	items_width = 0;
 	items_height = 0;
-	itemBorderMode = BORDER_NO;
+	itemBorderMode = CComponent::BORDER_NO;
 	itemBorderColor = COL_MENUCONTENT_PLUS_6;
 	itemGradient = NOGRADIENT;
 	item2Lines = false;
@@ -2668,7 +2668,7 @@ void ClistBox::paintItemInfo(int pos)
 			if (paintframe)
 			{
 				itemsLine.paintMainFrame(true);
-				itemsLine.setBorderMode(BORDER_NO);
+				itemsLine.setBorderMode(CComponent::BORDER_NO);
 			}
 			else
 				itemsLine.enableSaveScreen();

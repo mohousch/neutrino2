@@ -108,7 +108,7 @@ CMessageBox::CMessageBox(const char* const Caption, const char * const Text, con
 		m_width = new_width;
 		
 	//
-	borderMode = BORDER_NO;
+	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 		
 	// initFrames
@@ -164,7 +164,7 @@ CMessageBox::CMessageBox(const char* const Caption, ContentLines& Lines, const i
 		m_width = new_width;
 		
 	//
-	borderMode = BORDER_NO;
+	borderMode = CComponent::BORDER_NO;
 		
 	// initFrames
 	initFrames();
@@ -663,7 +663,7 @@ int CMessageBox::exec(int timeout)
 }
 
 // helpers
-int MessageBox(const char * const Caption, const char * const Text, const result_ Default, const uint32_t ShowButtons, const char * const Icon, const int Width, const int timeout, bool returnDefaultOnTimeout, const int border)
+int MessageBox(const char * const Caption, const char * const Text, const CMessageBox::result_ Default, const uint32_t ShowButtons, const char * const Icon, const int Width, const int timeout, bool returnDefaultOnTimeout, const int border)
 {
    	CMessageBox * messageBox = new CMessageBox(Caption, Text, Width, Icon, Default, ShowButtons);
 	messageBox->returnDefaultValueOnTimeout(returnDefaultOnTimeout);

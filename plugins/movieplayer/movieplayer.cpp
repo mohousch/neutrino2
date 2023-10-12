@@ -293,7 +293,7 @@ void CMoviePlayer::doTMDB(MI_MOVIE_INFO& movieFile)
 		infoBox->exec();
 		delete infoBox;
 
-		if(MessageBox(_("Information"), _("Prefer TMDB infos ?"), mbrNo, mbYes | mbNo) == mbrYes) 
+		if(MessageBox(_("Information"), _("Prefer TMDB infos ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 		{
 			// tfile
 			std::string tname = movieFile.file.Name;
@@ -323,7 +323,7 @@ void CMoviePlayer::doTMDB(MI_MOVIE_INFO& movieFile)
 	}
 	else
 	{
-		MessageBox(_("Information"), _("Not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+		MessageBox(_("Information"), _("Not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 	}
 
 	delete tmdb;
@@ -354,7 +354,7 @@ void CMoviePlayer::onDeleteFile(MI_MOVIE_INFO& movieFile)
 	msg += "\r\n ";
 	msg += "?";
 
-	if (MessageBox(_("Delete"), msg.c_str(), mbrNo, mbYes | mbNo) == mbrYes)
+	if (MessageBox(_("Delete"), msg.c_str(), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes)
 	{
 		delFile(movieFile.file);
 			

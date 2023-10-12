@@ -152,7 +152,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	spinner = NULL;
 	
 	//
-	borderMode = BORDER_NO;
+	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 }
 

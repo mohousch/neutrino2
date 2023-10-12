@@ -380,8 +380,8 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 
 	if( actionKey == "factory") 
 	{
-		int result = MessageBox(_("Reset settings to defaults"), _("Are you sure ?"), mbrNo, mbYes | mbNo);
-		if(result != mbrYes) 
+		int result = MessageBox(_("Reset settings to defaults"), _("Are you sure ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo);
+		if(result != CMessageBox::mbrYes) 
 			return true;
 		
 		// neutrino settings
@@ -464,7 +464,7 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 				system(fname);
 			} 
 			else
-				MessageBox(_("Error"), _("Backup failed"), mbrBack, mbBack, NEUTRINO_ICON_ERROR);
+				MessageBox(_("Error"), _("Backup failed"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_ERROR);
 		}
 
 		return true;
@@ -476,8 +476,8 @@ int CDataResetNotifier::exec(CMenuTarget *parent, const std::string& actionKey)
 		
 		if (fileBrowser.exec("/media") == true) 
 		{
-			int result = MessageBox(_("Settings restore"), _("Do you want to restore the previous settings?"), mbrNo, mbYes | mbNo);
-			if(result == mbrYes) 
+			int result = MessageBox(_("Settings restore"), _("Do you want to restore the previous settings?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo);
+			if(result == CMessageBox::mbrYes) 
 			{
 				char  fname[256];
 				

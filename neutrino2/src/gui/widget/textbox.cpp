@@ -146,7 +146,7 @@ void CTextBox::initVar(void)
 	inFocus = true;
 	enableFrame = false;
 	useBG = false;
-	borderMode = BORDER_NO;
+	borderMode = CComponent::BORDER_NO;
 	
 	background = NULL;
 	
@@ -486,17 +486,17 @@ void CTextBox::refreshText(void)
 		CFrameBuffer::getInstance()->paintFrameBox(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_6);
 	
 		// bg
-		if (borderMode == BORDER_NO)
+		if (borderMode == CComponent::BORDER_NO)
 			CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, m_textBackgroundColor, m_textRadius, m_textCorner);
-		else if (borderMode == BORDER_ALL)
+		else if (borderMode == CComponent::BORDER_ALL)
 		{
 			CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX + 2, itemBox.iY + 2, itemBox.iWidth - 4, itemBox.iHeight - 4, m_textBackgroundColor, m_textRadius, m_textCorner);
 		}
-		else if (borderMode == BORDER_LEFTRIGHT)
+		else if (borderMode == CComponent::BORDER_LEFTRIGHT)
 		{
 			CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX + 2, itemBox.iY, itemBox.iWidth - 4, itemBox.iHeight, m_textBackgroundColor, m_textRadius, m_textCorner);
 		}
-		else if (borderMode == BORDER_TOPBOTTOM)
+		else if (borderMode == CComponent::BORDER_TOPBOTTOM)
 		{
 			CFrameBuffer::getInstance()->paintBoxRel(itemBox.iX, itemBox.iY + 2, itemBox.iWidth, itemBox.iHeight - 4, m_textBackgroundColor, m_textRadius, m_textCorner);
 		}

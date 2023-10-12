@@ -627,7 +627,7 @@ void CUpnpBrowserGui::loadDevices(bool hint)
 
 	if (!m_devices.size())
 	{
-		MessageBox(_("Information"), _("No UPnP servers found"), mbrBack, mbBack, NEUTRINO_ICON_UPDATE);
+		MessageBox(_("Information"), _("No UPnP servers found"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_UPDATE);
 		delete scanBox;
 		return;
 	}

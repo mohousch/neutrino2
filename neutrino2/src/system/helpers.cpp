@@ -1301,19 +1301,19 @@ void getTMDBInfo(const char * const text)
 				CInfoBox * infoBox = new CInfoBox(&position, text, NEUTRINO_ICON_TMDB);
 
 				infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-				infoBox->setMode(SCROLL);
+				infoBox->setMode(CTextBox::SCROLL);
 				infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
 				infoBox->exec();
 				delete infoBox;
 			}
 			else
 			{
-				MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
+				MessageBox(_("Information"), _("not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, CComponent::BORDER_ALL);
 			}
 		}
 		else
 		{
-			MessageBox(_("Information"), _("not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
+			MessageBox(_("Information"), _("not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, CComponent::BORDER_ALL);
 		}
 
 		delete tmdb;

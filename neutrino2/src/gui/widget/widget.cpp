@@ -63,7 +63,7 @@ CWidget::CWidget(const int x, const int y, const int dx, const int dy)
 	grad_type = GRADIENT_COLOR2TRANSPARENT;
 	radius = NO_RADIUS;
 	corner = CORNER_NONE;
-	borderMode = BORDER_NO;
+	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	//
 	current_page = 0;
@@ -101,7 +101,7 @@ CWidget::CWidget(CBox *position)
 	grad_type = GRADIENT_COLOR2TRANSPARENT;
 	radius = RADIUS_MID;
 	corner = CORNER_ALL;
-	borderMode = BORDER_NO;
+	borderMode = CComponent::BORDER_NO;
 	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
 	//
 	current_page = 0;
@@ -210,7 +210,7 @@ void CWidget::paint()
 	if (paintframe)
 	{
 		// mainframe
-		if (borderMode == BORDER_NO)
+		if (borderMode == CComponent::BORDER_NO)
 			frameBuffer->paintBoxRel(mainFrameBox.iX, mainFrameBox.iY, mainFrameBox.iWidth, mainFrameBox.iHeight, backgroundColor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
 		else
 		{

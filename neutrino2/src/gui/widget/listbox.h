@@ -208,7 +208,7 @@ class CMenuItem
 
 		virtual void set2lines(void){nLinesItem = true;};
 		virtual void setWidgetType(int type){widgetType = type;};
-		virtual void setBorderMode(int m = BORDER_ALL){borderMode = m;};
+		virtual void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
 		virtual void setBorderColor(fb_pixel_t col){borderColor = col;};
 		virtual void setGradient(int gr){itemGradient = gr;};
 
@@ -643,7 +643,7 @@ class ClistBox : public CComponent
 		void setWidgetMode(int mode){widgetMode = mode;};
 		
 		// item
-		void setItemBorderMode(int m = BORDER_ALL){itemBorderMode = m;};
+		void setItemBorderMode(int m = CComponent::BORDER_ALL){itemBorderMode = m;};
 		void setItemBorderColor(fb_pixel_t col){itemBorderColor = col;};
 		void setItemGradient(int gr = NOGRADIENT){itemGradient = gr;};
 		void setItem2Lines(){item2Lines = true;};
@@ -659,7 +659,7 @@ class ClistBox : public CComponent
 		//
 		std::string getActionKey(void){return actionKey;}; // lua
 		
-		virtual void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = CMenuItem::TYPE_STANDARD, bool i2lines = false, int iBorder = BORDER_NO);
+		virtual void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = CMenuItem::TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
 		
 		//
 		inline bool isPainted(void){return painted;};

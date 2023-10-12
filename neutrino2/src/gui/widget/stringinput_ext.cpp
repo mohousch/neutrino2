@@ -249,21 +249,21 @@ int CExtendedInput::exec( CMenuTarget* parent, const std::string& )
 		{
 			if(strcmp(value, oldval)!= 0)
 			{
-				int erg = MessageBox(name.c_str(), _("Discard changes?"), mbrYes, mbNo | mbYes | mbCancel);
-				 if(erg == mbrYes)
+				int erg = MessageBox(name.c_str(), _("Discard changes?"), CMessageBox::mbrYes, CMessageBox::mbNo | CMessageBox::mbYes | CMessageBox::mbCancel);
+				 if(erg == CMessageBox::mbrYes)
 				 {
 					strcpy(value, oldval);
 					loop = false;
 					if(cancel != NULL)
 						*cancel = true;
 				 }
-				 else if(erg == mbrNo)
+				 else if(erg == CMessageBox::mbrNo)
 				 {
 					 loop = false;
 					 if(cancel != NULL)
 						 *cancel = false;
 				 }
-				 else if(erg == mbrCancel)
+				 else if(erg == CMessageBox::mbrCancel)
 				 {
 				 }
 			} 

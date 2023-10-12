@@ -496,7 +496,7 @@ bool CFileBrowser::exec(const char * const dirname)
 					_msg << filelist[selected].getFileName();
 
 				_msg << " " << "?";
-				if (MessageBox(_("Delete"), _msg.str().c_str(), mbrNo, mbYes|mbNo) == mbrYes)
+				if (MessageBox(_("Delete"), _msg.str().c_str(), CMessageBox::mbrNo, CMessageBox::mbYes|CMessageBox::mbNo) == CMessageBox::mbrYes)
 				{
 					recursiveDelete(filelist[selected].Name.c_str());
 					

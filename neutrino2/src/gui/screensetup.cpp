@@ -111,7 +111,7 @@ int CScreenSetup::exec(CMenuTarget *parent, const std::string &)
 
 			case CRCInput::RC_home:
 				if ( ( ( g_settings.screen_StartX != x_coord[0] ) || ( g_settings.screen_EndX != x_coord[1] ) || ( g_settings.screen_StartY != y_coord[0] ) || ( g_settings.screen_EndY != y_coord[1] ) ) &&
-						(MessageBox(_("Screen Setup"), _("Discard changes?"), mbrYes, mbYes | mbCancel) == mbrCancel))
+						(MessageBox(_("Screen Setup"), _("Discard changes?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbCancel) == CMessageBox::mbrCancel))
 					break;
 
 			case CRCInput::RC_timeout:

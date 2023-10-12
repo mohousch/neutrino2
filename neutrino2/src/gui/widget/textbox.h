@@ -51,26 +51,28 @@
 #include <gui/widget/widget_helpers.h>
 
 
-// mode
-enum
-{
-	AUTO_WIDTH		= 0x01,
-	AUTO_HIGH		= 0x02,
-	SCROLL			= 0x04,
-	CENTER			= 0x40,
-	NO_AUTO_LINEBREAK 	= 0x80
-};
-
-// pic
-enum 
-{
-	PIC_RIGHT,
-	PIC_LEFT,
-	PIC_CENTER
-};
-
+////
 class CTextBox : public CComponent
 {
+	public:
+		// mode
+		enum
+		{
+			AUTO_WIDTH		= 0x01,
+			AUTO_HIGH		= 0x02,
+			SCROLL			= 0x04,
+			CENTER			= 0x40,
+			NO_AUTO_LINEBREAK 	= 0x80
+		};
+
+		// pic
+		enum 
+		{
+			PIC_RIGHT,
+			PIC_LEFT,
+			PIC_CENTER
+		};
+
 	private:
 		CFrameBuffer* frameBuffer;
 		
@@ -159,7 +161,7 @@ class CTextBox : public CComponent
 		void setTextColor(uint8_t col){m_textColor = col;};
 		void setFont(unsigned int font_text){m_pcFontText = font_text;};
 		void setMode(const int mode);
-		void setBorderMode(int m = BORDER_ALL){borderMode = m;};
+		void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
 
 		void paint(void);
 		void hide(void);

@@ -120,7 +120,7 @@ class CFrameItem
 			return active;				
 		}
 		//
-		virtual void setBorderMode(int b = BORDER_ALL){borderMode =b;};
+		virtual void setBorderMode(int b = CComponent::BORDER_ALL){borderMode =b;};
 		virtual void setBorderColor(fb_pixel_t col){borderColor = col;};
 		virtual void paintMainFrame(bool p){paintFrame = p;};
 		virtual void setPosition(int x, int y, int dx, int dy){window.setPosition(x, y, dx, dy);};

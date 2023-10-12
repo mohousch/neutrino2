@@ -1144,25 +1144,25 @@ int CNeutrinoApp::convertBorder(const char* const border)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertBorder: value: %s\n", border);
 	
-	int bor = BORDER_NO;
+	int bor = CComponent::BORDER_NO;
 	
 	if (border != NULL)
 	{
 		if ( strcmp(border, "BORDER_NO") == 0)
 		{
-			bor = BORDER_NO;
+			bor = CComponent::BORDER_NO;
 		}
 		else if ( strcmp(border, "BORDER_ALL") == 0)
 		{
-			bor = BORDER_ALL;
+			bor = CComponent::BORDER_ALL;
 		}
 		else if ( strcmp(border, "BORDER_LEFTRIGHT") == 0)
 		{
-			bor = BORDER_LEFTRIGHT;
+			bor = CComponent::BORDER_LEFTRIGHT;
 		}
 		else if ( strcmp(border, "BORDER_TOPBOTTOM") == 0)
 		{
-			bor = BORDER_TOPBOTTOM;
+			bor = CComponent::BORDER_TOPBOTTOM;
 		}
 	}
 	
@@ -1822,10 +1822,10 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	char* textColor = NULL;
 	char *font = NULL;
 	unsigned int fontbg = 0;
-	unsigned int mode = SCROLL;
-	unsigned int border = BORDER_NO;
+	unsigned int mode = CTextBox::SCROLL;
+	unsigned int border = CComponent::BORDER_NO;
 	
-	unsigned int tmode = PIC_RIGHT;
+	unsigned int tmode = CTextBox::PIC_RIGHT;
 	unsigned int tw = 0;
 	unsigned int th = 0;
 	unsigned int tframe = 0;
@@ -2665,7 +2665,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				widget->setCorner(ra, co);
 				
 				// border
-				int br = BORDER_NO;
+				int br = CComponent::BORDER_NO;
 				if (border) br = convertBorder(border);
 				widget->setBorderMode(br);
 				
@@ -2688,120 +2688,64 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				if (position) pos = convertMenuPosition(position);
 				widget->setMenuPosition(pos);
 				
-				// WINDOW
+				//
 				item = search->xmlChildrenNode;
 				
-				while ((item = xmlGetNextOccurence(item, "WINDOW")) != NULL) 
+				while (item)
 				{
-					parseCCWindow(item, widget);
-					item = item->xmlNextNode;
-				}
+					if ( !(strcmp(xmlGetName(item), "HEAD")))	
+					{
+						parseCHead(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "FOOT"))) 	
+					{
+						parseCFoot(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "LISTBOX"))) 
+					{
+						parseClistBox(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "TEXTBOX")))
+					{
+						parseCTextBox(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "WINDOW")))
+					{
+						parseCCWindow(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "LABEL")))
+					{
+						parseCCLabel(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "IMAGE")))
+					{
+						parseCCImage(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "TIME")))
+					{
+						parseCCTime(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "BUTTON")))
+					{
+						parseCCButtons(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "HLINE")))
+					{
+						parseCCHline(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "VLINE")))
+					{
+						parseCCVline(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "PIG")))
+					{
+						parseCCPig(item, widget);
+					}
+					else if ( !(strcmp(xmlGetName(item), "KEY")))
+					{
+						parseKey(item, widget);
+					}
 					
-				// HEAD
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "HEAD")) != NULL) 
-				{
-					parseCHead(item, widget);
-					item = item->xmlNextNode;
-				}
-					
-				// FOOT
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "FOOT")) != NULL) 
-				{
-					parseCFoot(item, widget);
-					item = item->xmlNextNode;
-				}
-					
-				// LISTBOX
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "LISTBOX")) != NULL) 
-				{
-					parseClistBox(item, widget);
-					item = item->xmlNextNode;
-				}
-					
-				// TEXTBOX
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "TEXTBOX")) != NULL) 
-				{
-					parseCTextBox(item, widget);
-					item = item->xmlNextNode;
-				}
-					
-				// LABEL
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "LABEL")) != NULL) 
-				{
-					parseCCLabel(item, widget);
-					item = item->xmlNextNode;
-				}
-					
-				// IMAGE
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "IMAGE")) != NULL) 
-				{
-					parseCCImage(item, widget);
-					item = item->xmlNextNode;
-				}
-					
-				// TIME
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "TIME")) != NULL) 
-				{
-					parseCCTime(item, widget);
-					item = item->xmlNextNode;
-				}
-					
-				// BUTTONS
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "BUTTON")) != NULL) 
-				{
-					parseCCButtons(item, widget);
-					item = item->xmlNextNode;
-				}
-					
-				// HLINE
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "HLINE")) != NULL) 
-				{
-					parseCCHline(item, widget);
-					item = item->xmlNextNode;
-				}
-					
-				// VLINE
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "VLINE")) != NULL) 
-				{
-					parseCCVline(item, widget);
-					item = item->xmlNextNode;
-				}
-				
-				// PIG
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "PIG")) != NULL) 
-				{
-					parseCCPig(item, widget);
-					item = item->xmlNextNode;
-				}
-					
-				// KEY
-				item = search->xmlChildrenNode;
-				
-				while ((item = xmlGetNextOccurence(item, "KEY")) != NULL) 
-				{
-					parseKey(item, widget);
 					item = item->xmlNextNode;
 				}
 			}

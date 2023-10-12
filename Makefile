@@ -52,13 +52,7 @@ export CFLAGS CXXFLAGS
 default: neutrino plugins
 
 run:
-	$(DEST)/bin/neutrino2
-	
-run-info:
-	$(DEST)/bin/neutrino2 -v 1
-	
-run-debug:
-	$(DEST)/bin/neutrino2 -v 2		
+	$(DEST)/bin/neutrino2		
 	
 run-gdb:
 	gdb -ex run $(DEST)/bin/neutrino2

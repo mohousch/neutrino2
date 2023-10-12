@@ -50,7 +50,7 @@ CHelpBox::CHelpBox()
 	dprintf(DEBUG_INFO, "Helpbox::\n");
 	
 	//
-	borderMode = BORDER_NO;
+	borderMode = CComponent::BORDER_NO;
 }
 
 CHelpBox::~CHelpBox()
@@ -66,7 +66,7 @@ CHelpBox::~CHelpBox()
   	}
 }
 
-void CHelpBox::show(const char* const Caption, const int Width, int timeout, const result_ Default, const uint32_t ShowButtons)
+void CHelpBox::show(const char* const Caption, const int Width, int timeout, const CMessageBox::result_ Default, const uint32_t ShowButtons)
 {
 	dprintf(DEBUG_NORMAL, "Helpbox::show\n");
 

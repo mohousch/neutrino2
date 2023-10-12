@@ -252,21 +252,21 @@ int CBEBouquetWidget::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 			{
 				if (bouquetsChanged)
 				{
-					int result = MessageBox(_("Bouquet Editor"), _("Do you want to save the changes?"), mbrYes, mbAll, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, BORDER_ALL);
+					int result = MessageBox(_("Bouquet Editor"), _("Do you want to save the changes?"), CMessageBox::mbrYes, CMessageBox::mbAll, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, CComponent::BORDER_ALL);
 
 					switch( result )
 					{
-						case mbrYes :
+						case CMessageBox::mbrYes :
 							loop = false;
 							saveChanges();
 						break;
 						
-						case mbrNo :
+						case CMessageBox::mbrNo :
 							loop = false;
 							discardChanges();
 						break;
 						
-						case mbrCancel :
+						case CMessageBox::mbrCancel :
 							paint();
 						break;
 					}
@@ -484,7 +484,7 @@ void CBEBouquetWidget::deleteBouquet()
 	if (selected >= Bouquets->size()) /* Bouquets->size() might be 0 */
 		return;
 
-	if (MessageBox(_("Delete"), (*Bouquets)[selected]->Name.c_str(), mbrNo, mbYes | mbNo) != mbrYes)
+	if (MessageBox(_("Delete"), (*Bouquets)[selected]->Name.c_str(), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) != CMessageBox::mbrYes)
 	{
 		paint();
 		return;
@@ -607,7 +607,7 @@ std::string CBEBouquetWidget::inputName(const char * const defaultName, const ch
 void CBEBouquetWidget::saveChanges()
 {
 	CHintBox* hintBox= new CHintBox(_("Bouquet Editor"), _("Saving changes. Please be patient."), 500); // UTF-8
-	hintBox->setBorderMode(BORDER_ALL);
+	hintBox->setBorderMode(CComponent::BORDER_ALL);
 	hintBox->paint();
 	
 	CZapit::getInstance()->saveBouquets();
@@ -620,7 +620,7 @@ void CBEBouquetWidget::saveChanges()
 void CBEBouquetWidget::discardChanges()
 {
 	CHintBox* hintBox= new CHintBox(_("Bouquet Editor"), _("Discarding changes. Please be patient."), 500); // UTF-8
-	hintBox->setBorderMode(BORDER_ALL);
+	hintBox->setBorderMode(CComponent::BORDER_ALL);
 	hintBox->paint();
 	
 	CZapit::getInstance()->restoreBouquets();

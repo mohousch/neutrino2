@@ -331,7 +331,7 @@ int CPSISetup::exec(CMenuTarget * parent, const std::string &)
 			case CRCInput::RC_home:
 				if ( *contrast != contrast_old || *saturation != saturation_old || *brightness != brightness_old || *tint != tint_old )
 				{
-					if (MessageBox(_("PSI Setup"), _("Discard changes?"), mbrYes, mbYes | mbCancel) == mbrCancel)
+					if (MessageBox(_("PSI Setup"), _("Discard changes?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbCancel) == CMessageBox::mbrCancel)
 					{
 						break;
 					}

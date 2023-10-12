@@ -952,14 +952,14 @@ void CTestMenu::testCWidget()
 	frame->setPosition(topBox.iX, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Filme");
 	frame->setActionKey(this, "movie");
-	frame->setHAlign(CC_ALIGN_CENTER);
+	frame->setHAlign(CComponent::CC_ALIGN_CENTER);
 	frame->setBorderMode();
 	frameBoxWidget->addFrame(frame);
 	
 	frame = new CFrameItem();
 	frame->setPosition(topBox.iX + topBox.iWidth/3, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Serien");
-	frame->setHAlign(CC_ALIGN_CENTER);
+	frame->setHAlign(CComponent::CC_ALIGN_CENTER);
 	frame->setActionKey(this, "tv");
 	frame->setBorderMode();
 	frameBoxWidget->addFrame(frame);
@@ -967,7 +967,7 @@ void CTestMenu::testCWidget()
 	frame = new CFrameItem();
 	frame->setPosition(topBox.iX + 2*topBox.iWidth/3, topBox.iY, topBox.iWidth/3, topBox.iHeight);
 	frame->setTitle("Suche");
-	frame->setHAlign(CC_ALIGN_CENTER);
+	frame->setHAlign(CComponent::CC_ALIGN_CENTER);
 	frame->setOption(tmdbsearch.c_str());
 	frame->setActionKey(this, "search");
 	frame->setBorderMode();
@@ -1313,7 +1313,7 @@ void CTestMenu::testCFrameBoxWidget()
 	int h_h = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight();
 	homeFrame->setPosition(box.iX + 10, box.iY + 40, h_w + 10, h_h);
 	homeFrame->setTitle("Home");
-	homeFrame->setHAlign(CC_ALIGN_CENTER);
+	homeFrame->setHAlign(CComponent::CC_ALIGN_CENTER);
 	homeFrame->setActionKey(this, "home");
 
 	frameBoxWidget->addFrame(homeFrame);
@@ -1326,7 +1326,7 @@ void CTestMenu::testCFrameBoxWidget()
 	int s_h = g_Font[SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE]->getHeight();
 	setupFrame->setPosition(box.iX + 10 + 5 + h_w + 20, box.iY + 40, s_w + 10, h_h);
 	setupFrame->setTitle("Setup");
-	setupFrame->setHAlign(CC_ALIGN_CENTER);
+	setupFrame->setHAlign(CComponent::CC_ALIGN_CENTER);
 	setupFrame->setActionKey(this, "setup");
 
 	frameBoxWidget->addFrame(setupFrame);
@@ -1339,7 +1339,7 @@ void CTestMenu::testCFrameBoxWidget()
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_INFO, &i_w, &i_h);
 	helpFrame->setPosition(box.iX + 10 + 5 + h_w + 10 + s_w + 40, box.iY + 40, i_w + 4, h_h);
 	helpFrame->setTitle("?");
-	helpFrame->setHAlign(CC_ALIGN_CENTER);
+	helpFrame->setHAlign(CComponent::CC_ALIGN_CENTER);
 	helpFrame->setActionKey(this, "help");
 
 	frameBoxWidget->addFrame(helpFrame);
@@ -1839,7 +1839,7 @@ void CTestMenu::testCCWindow(void)
 	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 200);
 	
 	testPanel.setPosition(&Box);
-	testPanel.setBorderMode(BORDER_ALL);
+	testPanel.setBorderMode(CComponent::BORDER_ALL);
 	testPanel.paintMainFrame(true);
 	testPanel.paint();
 	
@@ -2100,7 +2100,7 @@ void CTestMenu::testCHeaders()
 	headers->enablePaintDate();
 	headers->setFormat("%d.%m.%Y %H:%M:%S");
 	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	headers->setHAlign(CC_ALIGN_CENTER);
+	headers->setHAlign(CComponent::CC_ALIGN_CENTER);
 	headers->setCorner(RADIUS_SMALL, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
 	headers->setGradient(LIGHT2DARK);
 		
@@ -2212,7 +2212,7 @@ void CTestMenu::testCWindowShadow()
 
 	window->setColor(COL_MENUCONTENT_PLUS_0);
 	window->setCorner(RADIUS_MID, CORNER_ALL);
-	window->setBorderMode(BORDER_ALL);
+	window->setBorderMode(CComponent::BORDER_ALL);
 	window->paintMainFrame(true);
 
 	window->paint();
@@ -2248,7 +2248,7 @@ void CTestMenu::testCWindowCustomColor()
 
 	window->setColor(COL_ORANGE_PLUS_0); // or use like make16color(0x76A5AF)
 	window->setCorner(RADIUS_MID, CORNER_ALL);
-	window->setBorderMode(BORDER_ALL);
+	window->setBorderMode(CComponent::BORDER_ALL);
 	window->paintMainFrame(true);
 
 	window->paint();
@@ -2486,7 +2486,7 @@ void CTestMenu::testClistBox()
 	// head
 	rightWidget->enablePaintHead();
 	rightWidget->setTitle("ClistBox (standard)", NEUTRINO_ICON_MOVIE);
-	rightWidget->setTitleHAlign(CC_ALIGN_CENTER);
+	rightWidget->setTitleHAlign(CComponent::CC_ALIGN_CENTER);
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
 	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
@@ -2504,7 +2504,7 @@ void CTestMenu::testClistBox()
 	//rightWidget->enablePaintItemInfo(70);
 	//rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINTITEM_MODE);
 	//rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
-	//rightWidget->paintItemInfoBorder(BORDER_ALL);
+	//rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);
 	//rightWidget->paintItemInfoFrame(true);
 	//rightWidget->enableItemInfoSaveScreen();
 	//rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_PLUGINLIST_ITEMLARGE);
@@ -2815,7 +2815,7 @@ void CTestMenu::testClistBox4()
 	// head
 	rightWidget->enablePaintHead();
 	rightWidget->setTitle("ClistBox (FRAME)", NEUTRINO_ICON_MOVIE);
-	rightWidget->setTitleHAlign(CC_ALIGN_CENTER);
+	rightWidget->setTitleHAlign(CComponent::CC_ALIGN_CENTER);
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
 	rightWidget->setHeadLine(true, true);
@@ -3016,7 +3016,7 @@ void CTestMenu::testClistBox6()
 		item->setHint(tmp.c_str());
 		
 		//item->setWidgetMode(ClistBox::MODE_MENU);
-		item->setBorderMode(BORDER_TOPBOTTOM);
+		item->setBorderMode(CComponent::BORDER_TOPBOTTOM);
 		//item->setGradient(LIGHT2DARK2LIGHT);
 		
 		rightWidget->addItem(item);
@@ -3131,7 +3131,7 @@ void CTestMenu::testClistBox7()
 		item->setHint(tmp.c_str());
 		
 		//item->setWidgetMode(ClistBox::MODE_MENU);
-		item->setBorderMode(BORDER_TOPBOTTOM);
+		item->setBorderMode(CComponent::BORDER_TOPBOTTOM);
 		//item->setGradient(LIGHT2DARK2LIGHT);
 		
 		rightWidget->addItem(item);
@@ -3247,7 +3247,7 @@ void CTestMenu::testClistBox8()
 		item->setHint(tmp.c_str());
 		
 		//item->setWidgetMode(ClistBox::MODE_MENU);
-		item->setBorderMode(BORDER_TOPBOTTOM);
+		item->setBorderMode(CComponent::BORDER_TOPBOTTOM);
 		//item->setGradient(LIGHT2DARK2LIGHT);
 		
 		rightWidget->addItem(item);
@@ -3372,7 +3372,7 @@ void CTestMenu::testClistBox9()
 	// head
 	rightWidget->enablePaintHead();
 	rightWidget->setTitle("ClistBox (standard)", NEUTRINO_ICON_MOVIE);
-	rightWidget->setTitleHAlign(CC_ALIGN_CENTER);
+	rightWidget->setTitleHAlign(CComponent::CC_ALIGN_CENTER);
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
 	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
@@ -3387,7 +3387,7 @@ void CTestMenu::testClistBox9()
 	rightWidget->enablePaintItemInfo(70);
 	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINTHINT_MODE);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
-	rightWidget->paintItemInfoBorder(BORDER_ALL);
+	rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);
 	rightWidget->paintItemInfoFrame(true);
 	rightWidget->enableItemInfoSaveScreen();
 	rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_PLUGINLIST_ITEMLARGE);
@@ -3450,7 +3450,7 @@ void CTestMenu::testCFrameBox()
 	frame->setActionKey(this, "help");
 	frame->setColor(COL_RED_PLUS_0);
 	frame->setGradient(DARK2LIGHT2DARK);
-	frame->setHAlign(CC_ALIGN_CENTER);
+	frame->setHAlign(CComponent::CC_ALIGN_CENTER);
 	frameBoxWidget->addFrame(frame);
 	
 	frame = new CFrameItem();
@@ -3459,7 +3459,7 @@ void CTestMenu::testCFrameBox()
 	frame->setActionKey(this, "help");
 	frame->setColor(COL_GREEN_PLUS_0);
 	frame->setGradient(LIGHT2DARK);
-	frame->setHAlign(CC_ALIGN_CENTER);
+	frame->setHAlign(CComponent::CC_ALIGN_CENTER);
 	frameBoxWidget->addFrame(frame);
 
 	frame = new CFrameItem();
@@ -3468,7 +3468,7 @@ void CTestMenu::testCFrameBox()
 	frame->setOption("(2019)");
 	frame->setActionKey(this, "help");
 	frame->setColor(COL_NOBEL_PLUS_0);
-	frame->setHAlign(CC_ALIGN_CENTER);
+	frame->setHAlign(CComponent::CC_ALIGN_CENTER);
 	frameBoxWidget->addFrame(frame);
 	
 	// pic
@@ -3485,7 +3485,7 @@ void CTestMenu::testCFrameBox()
 	frame->setActionKey(this, "exit");
 	frame->setGradient(LIGHT2DARK);
 	frame->setColor(COL_BLUE_PLUS_0);
-	frame->setHAlign(CC_ALIGN_CENTER);
+	frame->setHAlign(CComponent::CC_ALIGN_CENTER);
 	frameBoxWidget->addFrame(frame);
 
 	frameBoxWidget->setSelected(selected);
@@ -4043,10 +4043,10 @@ void CTestMenu::testCInfoBox()
 	
 	CInfoBox * infoBox = new CInfoBox(&position, "CInfoBox", NEUTRINO_ICON_INFO);	
 	
-	infoBox->setBorderMode(BORDER_ALL);
+	infoBox->setBorderMode(CComponent::BORDER_ALL);
 	//infoBox->setBackgroundColor(/*make16color(0xBEBEBE)*/COL_SILVER_PLUS_0);
 	if (!m_vMovieInfo.empty())
-		infoBox->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h, PIC_RIGHT, true, true);
+		infoBox->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true, true);
 	//infoBox->setTextColor(COL_LIME);
 	//infoBox->setHeadColor(COL_NOBEL_PLUS_0);
 	//infoBox->setHeadCorner(NO_RADIUS, CORNER_NONE);
@@ -4066,7 +4066,7 @@ void CTestMenu::testCMessageBox()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
-	CMessageBox * messageBox = new CMessageBox(__("Information"), "testing CMessageBox"/*, 600, NEUTRINO_ICON_INFO, mbrYes, mbNone*/);
+	CMessageBox * messageBox = new CMessageBox(__("Information"), "testing CMessageBox"/*, 600, NEUTRINO_ICON_INFO, CMessageBox::mbrYes, CMessageBox::mbNone*/);
 	
 	int res = messageBox->exec();
 
@@ -4081,7 +4081,7 @@ void CTestMenu::testCMessageBoxInfoMsg()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
-	MessageBox(__("Information"), "testing CMessageBoxInfoMsg", mbrBack, mbBack, NEUTRINO_ICON_INFO);
+	MessageBox(__("Information"), "testing CMessageBoxInfoMsg", CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 }
 
 // MessageBox
@@ -4089,7 +4089,7 @@ void CTestMenu::testCMessageBoxErrorMsg()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCMessageBox\n");
 
-	MessageBox(__("Error"), "testing CMessageBoxErrorMsg", mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+	MessageBox(__("Error"), "testing CMessageBoxErrorMsg", CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 }
 
 // CHintBox
@@ -4160,7 +4160,7 @@ void CTestMenu::testCHelpBox()
 		
 	helpBox->addLine(NEUTRINO_ICON_MENUITEM_SCANSETTINGS, "neutrinoHD2 the best GUI :-P", g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1], COL_YELLOW, true);
 
-	helpBox->show(_("Information"), HELPBOX_WIDTH, -1, mbrBack, mbNone);
+	helpBox->show(_("Information"), HELPBOX_WIDTH, -1, CMessageBox::mbrBack, CMessageBox::mbNone);
 	
 	delete helpBox;
 	helpBox = NULL;
@@ -5083,13 +5083,13 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if(actionKey == "menuforwarder")
 	{
-		MessageBox(_("Information"), "testing CMenuForwarder", mbrBack, mbBack, NEUTRINO_ICON_INFO);
+		MessageBox(_("Information"), "testing CMenuForwarder", CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 
 		return RETURN_REPAINT;
 	}
 	else if(actionKey == "listboxitem")
 	{
-		MessageBox(_("Information"), "testing CMenuForwarder", mbrBack, mbBack, NEUTRINO_ICON_INFO);
+		MessageBox(_("Information"), "testing CMenuForwarder", CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 
 		return RETURN_REPAINT;
 	}
@@ -5753,7 +5753,7 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			::scaleImage(cover, &p_w, &p_h);
 
 			infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-			infoBox->setMode(SCROLL);
+			infoBox->setMode(CTextBox::SCROLL);
 			infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 			infoBox->setText(buffer.c_str(), cover.c_str(), p_w, p_h);
 			infoBox->exec();
@@ -6634,7 +6634,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
 	//mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	
-	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CWidgetItems"));
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("CHeaders", true, NULL, this, "headers"));
 	mainMenu->addItem(new CMenuForwarder("CFooters", true, NULL, this, "footers"));
 	mainMenu->addItem(new CMenuForwarder("CTextBox", true, NULL, this, "textbox"));

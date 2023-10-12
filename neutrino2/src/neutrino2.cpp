@@ -3243,7 +3243,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 	}
 	
 	//
-	if (!recordingstatus || MessageBox(_("Information"), _("You really want to to stop record ?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes)  
+	if (!recordingstatus || MessageBox(_("Information"), _("You really want to to stop record ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == CMessageBox::mbrYes)  
 	{
 		// stop recording
 		if(recordingstatus) 
@@ -3801,7 +3801,7 @@ _repeat:
 
 				name += zAddData;
 			}
-			HintBox(_("Information"), _(name.c_str()), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
+			HintBox(_("Information"), _(name.c_str()), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, CComponent::BORDER_ALL);
 		}
 
 		return messages_return::handled;
@@ -3837,14 +3837,14 @@ _repeat:
 		delete[] (unsigned char*) data;
 		
 		if( mode != mode_scart )
-			HintBox(_("Information"), _("Recording starts in a few minutes"), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
+			HintBox(_("Information"), _("Recording starts in a few minutes"), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, CComponent::BORDER_ALL);
 		
 		return messages_return::handled;
 	}
 	else if( msg == NeutrinoMessages::ANNOUNCE_SLEEPTIMER) 
 	{
 		if( mode != mode_scart )
-			HintBox(_("Information"), _("Sleeptimer in 1 min"), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, BORDER_ALL);
+			HintBox(_("Information"), _("Sleeptimer in 1 min"), HINTBOX_WIDTH, -1, NEUTRINO_ICON_INFO, CComponent::BORDER_ALL);
 		
 		return messages_return::handled;
 	}
@@ -3882,7 +3882,7 @@ _repeat:
 	else if( msg == NeutrinoMessages::ANNOUNCE_SHUTDOWN) 
 	{
 		if( mode != mode_scart )
-			skipShutdownTimer = (MessageBox(_("Information"), _("Box will shutdown in 1 min.\nCancel Sutdown ?"), mbrNo, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 5, false, BORDER_ALL) == mbrYes);
+			skipShutdownTimer = (MessageBox(_("Information"), _("Box will shutdown in 1 min.\nCancel Sutdown ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 5, false, CComponent::BORDER_ALL) == CMessageBox::mbrYes);
 	}
 	else if( msg == NeutrinoMessages::SHUTDOWN ) 
 	{
@@ -3933,7 +3933,7 @@ _repeat:
 	else if (msg == NeutrinoMessages::EVT_EXTMSG) 
 	{
 		if (mode != mode_scart)
-			MessageBox(_("Information"), (const char *) data, mbrBack, mbBack, NEUTRINO_ICON_INFO); // UTF-8
+			MessageBox(_("Information"), (const char *) data, CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO); // UTF-8
 			
 		delete[] (unsigned char*) data;
 		
@@ -3950,7 +3950,7 @@ _repeat:
 		}
 		
 		if( mode != mode_scart )
-			MessageBox(_("Reminder"), text.c_str(), mbrBack, mbBack, NEUTRINO_ICON_INFO); // UTF-8
+			MessageBox(_("Reminder"), text.c_str(), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO); // UTF-8
 			
 		delete[] (unsigned char*) data;
 		
@@ -4380,7 +4380,7 @@ void CNeutrinoApp::realRun(void)
 				// stop record if recording
 				if( recordingstatus ) 
 				{
-					if(MessageBox(_("Information"), _("You really want to to stop record ?"), mbrYes, mbYes | mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == mbrYes)
+					if(MessageBox(_("Information"), _("You really want to to stop record ?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == CMessageBox::mbrYes)
 					{
 						CTimerd::getInstance()->stopTimerEvent(recording_id);
 						recordingstatus = 0; //FIXME???

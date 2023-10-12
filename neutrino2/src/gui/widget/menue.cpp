@@ -125,7 +125,7 @@ void CMenuWidget::Init(const std::string &Icon, const int mwidth, const int mhei
 	def_headRadius = true;
 	def_headCorner = true;
 	def_headGradient = true;
-	thalign = CC_ALIGN_LEFT;
+	thalign = CComponent::CC_ALIGN_LEFT;
 	head_line = g_settings.Head_line;
 	head_line_gradient = false;
 	
@@ -431,7 +431,7 @@ void CMenuWidget::paintHead()
 		int startPosX = x + BORDER_LEFT + i_w + ICON_OFFSET;
 		int stringWidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(l_name.c_str());
 	
-		if (thalign == CC_ALIGN_CENTER)
+		if (thalign == CComponent::CC_ALIGN_CENTER)
 			startPosX = x + (width >> 1) - (stringWidth >> 1);
 
 		// title
@@ -508,7 +508,7 @@ void CMenuWidget::paintHead()
 		int startPosX = x + BORDER_LEFT + i_w + ICON_OFFSET;
 		int stringWidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getRenderWidth(l_name.c_str());
 	
-		if (thalign == CC_ALIGN_CENTER)
+		if (thalign == CComponent::CC_ALIGN_CENTER)
 			startPosX = x + (width >> 1) - (stringWidth >> 1);
 			
 		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, y + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), width - BORDER_RIGHT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - timestr_len - buttonWidth - (hbutton_count)*ICON_TO_ICON_OFFSET, l_name.c_str(), COL_MENUHEAD, 0, true); // UTF-8
@@ -1130,7 +1130,7 @@ void CMenuWidget::paintItemInfo(int pos)
 			textBox->setBackgroundColor(COL_MENUCONTENTDARK_PLUS_0);
 
 			// hint
-			textBox->setText(item->itemHint.c_str(), item->itemIcon.c_str(), p_w, p_h, PIC_CENTER);
+			textBox->setText(item->itemHint.c_str(), item->itemIcon.c_str(), p_w, p_h, CTextBox::PIC_CENTER);
 			textBox->paint();
 			
 			// info button

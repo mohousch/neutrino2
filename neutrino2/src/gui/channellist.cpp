@@ -153,7 +153,7 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	frameBuffer = CFrameBuffer::getInstance();
 
 	name = Name;
-	selected = 0;
+	selected = -1;
 	tuned = 0xfffffff;
 	zapProtection = NULL;
 	this->historyMode = _historyMode;
@@ -472,8 +472,7 @@ int CChannelList::show(bool customMode)
 	updateEvents();
 	
 	// 
-	paint();
-	
+	paint(customMode);
 	CFrameBuffer::getInstance()->blit();
 
 	int oldselected = selected;
@@ -525,7 +524,7 @@ int CChannelList::show(bool customMode)
 			{
 				CTimerd::getInstance()->addRecordTimerEvent(chanlist[selected]->channel_id, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime + chanlist[selected]->currentEvent.duration, chanlist[selected]->currentEvent.eventID, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime - (ANNOUNCETIME + 120) , TIMERD_APIDS_CONF, true);
 
-				MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);	// UTF-8
+				MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);	// UTF-8
 			} 
 			
 			paint();
@@ -547,7 +546,7 @@ int CChannelList::show(bool customMode)
 			{
 				CTimerd::getInstance()->addZaptoTimerEvent (chanlist[selected]->channel_id, chanlist[selected]->currentEvent.startTime, chanlist[selected]->currentEvent.startTime - ANNOUNCETIME, 0, chanlist[selected]->currentEvent.eventID, chanlist[selected]->currentEvent.startTime, 0);
 		
-				MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), mbrBack, mbBack, NEUTRINO_ICON_INFO);	// UTF-8
+				MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);	// UTF-8
 			} 
 
 			paint();
@@ -651,8 +650,6 @@ int CChannelList::show(bool customMode)
 						}
 					}
 				}
-				////TEST
-				printf("CChannelList::show: found:%s\n", found? "true" : "false");
 				
 				if(found) 
 				{
@@ -667,7 +664,7 @@ int CChannelList::show(bool customMode)
 			if (bouquetList->Bouquets.size() > 0) 
 			{
 				bool found = true;
-				int nNext = (bouquetList->getActiveBouquetNumber()+bouquetList->Bouquets.size() - 1) % bouquetList->Bouquets.size();
+				int nNext = (bouquetList->getActiveBouquetNumber() + bouquetList->Bouquets.size() - 1) % bouquetList->Bouquets.size();
 				
 				if(bouquetList->Bouquets[nNext]->channelList->getSize() <= 0) 
 				{
@@ -1003,7 +1000,7 @@ void CChannelList::zapTo(int pos, bool rezap)
 	if (chanlist.empty()) 
 	{
 		if (CZapit::getInstance()->getFrontendCount() >= 1) 
-			MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> System)"), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+			MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> System)"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			
 		return;
 	}
@@ -1058,7 +1055,7 @@ int CChannelList::numericZap(int key)
 	if (chanlist.empty()) 
 	{
 		if (CZapit::getInstance()->getFrontendCount() >= 1) 
-			MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+			MessageBox(_("Error"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			
 		return res;
 	}
@@ -1317,7 +1314,7 @@ void CChannelList::virtual_zap_mode(bool up)
         if (chanlist.empty()) 
 	{
 		if (CZapit::getInstance()->getFrontendCount() >= 1) 
-			MessageBox(_("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), mbrCancel, mbCancel, NEUTRINO_ICON_ERROR);
+			MessageBox(_("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), _("No channels were found!\nPlease execute a scan\n(MENU-key -> service)"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 			
                 return;
         }
@@ -1473,9 +1470,12 @@ bool CChannelList::canZap(CZapitChannel * channel)
 	return iscurrent;
 }
 
-void CChannelList::paint()
+void CChannelList::paint(bool customMode)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::paint\n");
+	dprintf(DEBUG_NORMAL, "CChannelList::paint: selected: %d\n", selected);
+	
+	if (!customMode && selected < 0)
+		selected = 0;
 	
 	//
 	if (hline)
@@ -1723,7 +1723,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	// title
 	CCLabel epgTitle(winTopBox.iX + 10, winTopBox.iY + 10, winTopBox.iWidth - 20, 60);
 	epgTitle.setText(p_event->description.c_str());
-	epgTitle.setHAlign(CC_ALIGN_CENTER);
+	epgTitle.setHAlign(CComponent::CC_ALIGN_CENTER);
 	epgTitle.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	
 	// runningPercent
@@ -1760,12 +1760,12 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	
 	CCLabel startTime(winTopBox.iX + 10, winTopBox.iY + 10 + 60 + 10, 80, 20);
 	startTime.setText(cSeit);
-	startTime.setHAlign(CC_ALIGN_CENTER);
+	startTime.setHAlign(CComponent::CC_ALIGN_CENTER);
 	startTime.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	
 	CCLabel restTime(winTopBox.iX + 100 + winTopBox.iWidth - 200 + 10, winTopBox.iY + 10 + 60 + 10, 80, 20);
 	restTime.setText(cNoch);
-	restTime.setHAlign(CC_ALIGN_CENTER);
+	restTime.setHAlign(CComponent::CC_ALIGN_CENTER);
 	restTime.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO2);
 	
 	// text
@@ -1796,13 +1796,13 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	//
 	CCLabel nextTitle(winBottomBox.iX + 10, winBottomBox.iY + 10, winBottomBox.iWidth - 20, 20);
 	nextTitle.setText(p_event->description.c_str());
-	nextTitle.setHAlign(CC_ALIGN_CENTER);
+	nextTitle.setHAlign(CComponent::CC_ALIGN_CENTER);
 	nextTitle.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	
 	// vom/bis
 	std::string fromto = "";
 	CCLabel nextTime(winBottomBox.iX + 10, winBottomBox.iY + 10 + 30, winBottomBox.iWidth - 20, 20);
-	nextTime.setHAlign(CC_ALIGN_CENTER);
+	nextTime.setHAlign(CComponent::CC_ALIGN_CENTER);
 	nextTime.setFont(SNeutrinoSettings::FONT_TYPE_EVENTLIST_ITEMLARGE);
 	
 	//
@@ -1926,9 +1926,9 @@ int CChannelList::doChannelMenu(void)
 		switch(select) 
 		{
 			case 0: //delete
-				result = MessageBox(_("Delete"), _("Delete channel from bouquet?"), mbrNo, mbYes | mbNo );
+				result = MessageBox(_("Delete"), _("Delete channel from bouquet?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo );
 
-				if(result == mbrYes) 
+				if(result == CMessageBox::mbrYes) 
 				{
 					bouquet_id = bouquetList->getActiveBouquetNumber();
 					bouquet_id = CZapit::getInstance()->existsBouquet(bouquetList->Bouquets[bouquet_id]->channelList->getName());

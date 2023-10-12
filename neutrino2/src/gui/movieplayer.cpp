@@ -623,7 +623,7 @@ void CMoviePlayerGui::stop()
 		// stop record if recording
 		if( CNeutrinoApp::getInstance()->recordingstatus) 
 		{
-			if(MessageBox(_("Information"), _("You really want to to stop record ?"), mbrYes, mbYes | mbNo, NULL, 450, 30, true) == mbrYes)
+			if(MessageBox(_("Information"), _("You really want to to stop record ?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NULL, 450, 30, true) == CMessageBox::mbrYes)
 			{
 				CVCRControl::getInstance()->Stop();
 				CTimerd::getInstance()->stopTimerEvent(CNeutrinoApp::getInstance()->recording_id);
@@ -1572,7 +1572,7 @@ void CMoviePlayerGui::PlayFile(void)
 		{
 			if (mplist && !mplist->isPainted())
 			{
-		 		if(MessageBox(_("Information"), _("create screenshot?"), mbrNo, mbYes | mbNo) == mbrYes) 
+		 		if(MessageBox(_("Information"), _("create screenshot?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 				{
 					CVCRControl::getInstance()->Screenshot(0, (char *)playlist[selected].file.Name.c_str());
 				}
@@ -2248,12 +2248,12 @@ void CMoviePlayerGui::doTMDB(MI_MOVIE_INFO& movieFile)
 		CInfoBox * infoBox = new CInfoBox(&position, movieFile.epgTitle.c_str(), NEUTRINO_ICON_TMDB);
 
 		infoBox->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-		infoBox->setMode(SCROLL);
+		infoBox->setMode(CTextBox::SCROLL);
 		infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
 		infoBox->exec();
 		delete infoBox;
 
-		if(MessageBox(_("Information"), _("Prefer TMDB Infos"), mbrNo, mbYes | mbNo) == mbrYes) 
+		if(MessageBox(_("Information"), _("Prefer TMDB Infos"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 		{
 			// tfile
 			std::string tname = movieFile.file.Name;
@@ -2283,7 +2283,7 @@ void CMoviePlayerGui::doTMDB(MI_MOVIE_INFO& movieFile)
 	}
 	else
 	{
-		MessageBox(_("Information"), _("TMDB Infos are not available"), mbrBack, mbBack, NEUTRINO_ICON_INFO);
+		MessageBox(_("Information"), _("TMDB Infos are not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 	}
 
 	delete tmdb;

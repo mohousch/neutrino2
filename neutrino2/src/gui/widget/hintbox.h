@@ -89,13 +89,14 @@ class CHintBox
 		void hide(void);
 		
 		void enablePaintHG(void){paintHG = true;};
-		void setBorderMode(int sm = BORDER_ALL){borderMode = sm;};
+		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};
 
 		//
 		int exec(int timeout = -1);
 };
 
-int HintBox(const char * const Caption, const char * const Text, const int Width = HINTBOX_WIDTH, int timeout = -1, const char * const Icon = NEUTRINO_ICON_INFO, const int border = BORDER_NO);
+int HintBox(const char * const Caption, const char * const Text, const int Width = HINTBOX_WIDTH, int timeout = -1, const char * const Icon = NEUTRINO_ICON_INFO, const int border = CComponent::BORDER_NO);
 
 #endif
+
