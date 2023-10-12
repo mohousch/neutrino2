@@ -149,13 +149,8 @@ class CTestMenu : public CMenuTarget
 		void testCButtons();
 		void testCHButtons();
 		void testCSpinner();
-
-		// CWidgetItem
 		void testCHeaders();
 		void testCFooters();
-		//void testCWindow();
-		//void testCWindowShadow();
-		//void testCWindowCustomColor();
 		void testCProgressWindow();
 		void testCTextBox();
 		void testCListFrame();
@@ -1589,7 +1584,7 @@ void CTestMenu::testClistBoxWidget()
 	rightWidget->setFootLine(true, true);
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINT_MODE);
+	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINTICON);
 	rightWidget->enableShrinkMenu();
 
 	// loadPlaylist
@@ -2501,7 +2496,7 @@ void CTestMenu::testClistBox()
 
 	// itemInfo
 	//rightWidget->enablePaintItemInfo(70);
-	//rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINTITEM_MODE);
+	//rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINT);
 	//rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	//rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);
 	//rightWidget->paintItemInfoFrame(true);
@@ -2615,7 +2610,7 @@ void CTestMenu::testClistBox2()
 
 	// footinfo
 	//rightWidget->enablePaintItemInfo(70);
-	//rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINT_MODE);
+	//rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINT);
 
 	//rightWidget->setSelected(selected);
 	
@@ -2853,10 +2848,10 @@ void CTestMenu::testClistBox4()
 	}
 }
 
-// ClistBox(DL_INFO)
+// ClistBox(itemInfo_info)
 void CTestMenu::testClistBox5()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(DL_INFO)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(INFO)\n");
 
 	CBox Box;
 	
@@ -2874,7 +2869,7 @@ void CTestMenu::testClistBox5()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(DL_INFO)", __("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(INFO)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -2918,7 +2913,7 @@ void CTestMenu::testClistBox5()
 	rightWidget->setItemsPerPage(5, 2);
 
 	// head
-	rightWidget->setTitle("ClistBox(DL_INFO)", NEUTRINO_ICON_MOVIE);
+	rightWidget->setTitle("ClistBox(INFO)", NEUTRINO_ICON_MOVIE);
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
@@ -2931,7 +2926,7 @@ void CTestMenu::testClistBox5()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_INFO_MODE);
+	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_INFO);
 
 	//rightWidget->setSelected(selected);
 
@@ -2964,10 +2959,10 @@ void CTestMenu::testClistBox5()
 	}
 }
 
-// ClistBox(listBox mode)
+// ClistBox(itemInfo_hintItem)
 void CTestMenu::testClistBox6()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(DL_HINT)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox(HINTITEM)\n");
 
 	CBox Box;
 	
@@ -2985,7 +2980,7 @@ void CTestMenu::testClistBox6()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(DL_HINT)", __("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(HINTITEM)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -3033,7 +3028,7 @@ void CTestMenu::testClistBox6()
 	rightWidget->setItemsPerPage(5, 2);
 
 	// head
-	rightWidget->setTitle("ClistBox(DL_HINT)", NEUTRINO_ICON_MOVIE);
+	rightWidget->setTitle("ClistBox(HINTITEM)", NEUTRINO_ICON_MOVIE);
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
@@ -3046,7 +3041,7 @@ void CTestMenu::testClistBox6()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINT_MODE);
+	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINTITEM);
 
 	//rightWidget->setSelected(selected);
 
@@ -3079,10 +3074,10 @@ void CTestMenu::testClistBox6()
 	}
 }
 
-// ClistBox(listBox mode)
+// ClistBox(hintIcon)
 void CTestMenu::testClistBox7()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox7(DL_HINTITEM)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox7(HINTICON)\n");
 
 	CBox Box;
 	
@@ -3100,7 +3095,7 @@ void CTestMenu::testClistBox7()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(DL_HINT)", __("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(HINTICON)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -3148,7 +3143,7 @@ void CTestMenu::testClistBox7()
 	rightWidget->setItemsPerPage(5, 2);
 
 	// head
-	rightWidget->setTitle("ClistBox(DL_HINT)", NEUTRINO_ICON_MOVIE);
+	rightWidget->setTitle("ClistBox(HINTICON)", NEUTRINO_ICON_MOVIE);
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
@@ -3161,7 +3156,7 @@ void CTestMenu::testClistBox7()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINTITEM_MODE);
+	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINTICON);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//rightWidget->setSelected(selected);
@@ -3195,10 +3190,10 @@ void CTestMenu::testClistBox7()
 	}
 }
 
-// ClistBox(listBox mode)
+// ClistBox(ICON)
 void CTestMenu::testClistBox8()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox8(DL_HINTICON)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox8(ICON)\n");
 
 	CBox Box;
 	
@@ -3216,7 +3211,7 @@ void CTestMenu::testClistBox8()
 
 	rightWidget = new ClistBox(&Box);
 
-	CHintBox loadBox("ClistBox(DL_HINT)", __("Scan for Movies ..."));
+	CHintBox loadBox("ClistBox(ICON)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -3264,7 +3259,7 @@ void CTestMenu::testClistBox8()
 	rightWidget->setItemsPerPage(5, 2);
 
 	// head
-	rightWidget->setTitle("ClistBox(DL_HINT)", NEUTRINO_ICON_MOVIE);
+	rightWidget->setTitle("ClistBox(ICON)", NEUTRINO_ICON_MOVIE);
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
@@ -3277,7 +3272,7 @@ void CTestMenu::testClistBox8()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINTICON_MODE);
+	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_ICON);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//rightWidget->setSelected(selected);
@@ -3311,10 +3306,10 @@ void CTestMenu::testClistBox8()
 	}
 }
 
-// ClistBox9
+// ClistBox9(HINT)
 void CTestMenu::testClistBox9()
 {
-	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox9 (hinthint)\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testClistBox9 (HINT)\n");
 
 	CBox Box;
 	
@@ -3332,7 +3327,7 @@ void CTestMenu::testClistBox9()
 
 	rightWidget = new ClistBox(&Box);
 	
-	CHintBox loadBox("testClistBox(standard)", __("Scan for Movies ..."));
+	CHintBox loadBox("testClistBox(HINT)", __("Scan for Movies ..."));
 	loadBox.paint();
 	loadMoviePlaylist();
 	loadBox.hide();
@@ -3370,7 +3365,7 @@ void CTestMenu::testClistBox9()
 
 	// head
 	rightWidget->enablePaintHead();
-	rightWidget->setTitle("ClistBox (standard)", NEUTRINO_ICON_MOVIE);
+	rightWidget->setTitle("ClistBox (HINT)", NEUTRINO_ICON_MOVIE);
 	rightWidget->setTitleHAlign(CComponent::CC_ALIGN_CENTER);
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
@@ -3384,7 +3379,7 @@ void CTestMenu::testClistBox9()
 
 	// itemInfo
 	rightWidget->enablePaintItemInfo(70);
-	rightWidget->setItemInfoMode(ClistBox::ITEMINFO_HINTHINT_MODE);
+	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINT);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);
 	rightWidget->paintItemInfoFrame(true);
@@ -3755,7 +3750,7 @@ void CTestMenu::testCMenuWidget()
 	
 	// footInfo
 	menuWidget->enablePaintItemInfo(80);
-	menuWidget->setItemInfoMode(ClistBox::ITEMINFO_HINT_MODE);
+	menuWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINT);
 
 	menuWidget->addKey(CRCInput::RC_info, this, "minfo");
 	menuWidget->addKey(CRCInput::RC_setup, this, "lsetup");
@@ -6630,11 +6625,11 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "framebox"));
 	mainMenu->addItem(new CMenuForwarder("CFrameBox", true, NULL, this, "singleWidget"));
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_INFO)", true, NULL, this, "listbox5"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINT)", true, NULL, this, "listbox6"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTITEM)", true, NULL, this, "listbox7"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTICON)", true, NULL, this, "listbox8"));
-	mainMenu->addItem(new CMenuForwarder("ClistBox(DL_HINTHINT)", true, NULL, this, "listbox9"));
+	mainMenu->addItem(new CMenuForwarder("ClistBox(INFO)", true, NULL, this, "listbox5"));
+	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTITEM)", true, NULL, this, "listbox6"));
+	mainMenu->addItem(new CMenuForwarder("ClistBox(HINTICON)", true, NULL, this, "listbox7"));
+	mainMenu->addItem(new CMenuForwarder("ClistBox(ICON)", true, NULL, this, "listbox8"));
+	mainMenu->addItem(new CMenuForwarder("ClistBox(HINT)", true, NULL, this, "listbox9"));
 	
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CWidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistFrame|CHead|CFoot)", true, NULL, this, "listframewidget"));

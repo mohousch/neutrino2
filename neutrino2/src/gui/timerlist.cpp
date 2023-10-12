@@ -76,6 +76,7 @@
 #include <gui/channel_select.h>
 
 
+////
 extern char recDir[255];			// defined in neutrino.cpp
 
 class CTimerListNewNotifier : public CChangeObserver

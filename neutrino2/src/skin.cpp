@@ -1105,6 +1105,40 @@ int CNeutrinoApp::convertClistBoxType(const char * const type)
 	return t;
 }
 
+//
+int CNeutrinoApp::convertItemInfoMode(const char * const mode)
+{
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertItemInfoMode: mode: %s\n", mode);
+	
+	int m = CItemInfo::ITEMINFO_INFO;
+	
+	if (mode != NULL)
+	{
+		if ( strcmp(mode, "ITEMINFO_INFO") == 0)
+		{
+			m = CItemInfo::ITEMINFO_INFO;
+		}
+		else if ( strcmp(mode, "ITEMINFO_HINTITEM") == 0)
+		{
+			m = CItemInfo::ITEMINFO_HINTITEM;
+		}
+		else if ( strcmp(mode, "ITEMINFO_HINTICON") == 0)
+		{
+			m = CItemInfo::ITEMINFO_HINTICON;
+		}
+		else if ( strcmp(mode, "ITEMINFO_ICON") == 0)
+		{
+			m = CItemInfo::ITEMINFO_ICON;
+		}
+		else if ( strcmp(mode, "ITEMINFO_HINT") == 0)
+		{
+			m = CItemInfo::ITEMINFO_HINT;
+		}
+	}
+	
+	return m;
+}
+
 int CNeutrinoApp::convertCMenuItemID(const char * const id)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertCMenuItemID: id: %s\n", id);
@@ -1235,7 +1269,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 				
 	// iteminfo
 	unsigned int paintiteminfo = 0;
-	unsigned int iteminfomode = 0;		
+	char * iteminfomode = NULL;		
 	unsigned int iteminfoframe = 0;
 	unsigned int iteminfo_posx = 0;
 	unsigned int iteminfo_posy = 0;
@@ -1296,7 +1330,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 				
 	// iteminfo
 	paintiteminfo = xmlGetSignedNumericAttribute(node, "paintiteminfo", 0);
-	iteminfomode = xmlGetSignedNumericAttribute(node, "iteminfomode", 0);
+	iteminfomode = xmlGetAttribute(node, (char *)"iteminfomode");
 	iteminfoframe = xmlGetSignedNumericAttribute(node, "iteminfoframe", 0);
 	iteminfo_posx = xmlGetSignedNumericAttribute(node, "iteminfoposx", 0);
 	iteminfo_posy = xmlGetSignedNumericAttribute(node, "iteminfoposy", 0);
@@ -1377,7 +1411,9 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	if (paintiteminfo)
 	{
 		listBox->enablePaintItemInfo(70);
-		listBox->setItemInfoMode(iteminfomode);		
+		int iimode = CItemInfo::ITEMINFO_INFO;
+		if (iteminfomode) iimode = convertItemInfoMode(iteminfomode);
+		listBox->setItemInfoMode(iimode);		
 		listBox->setItemInfoPos(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);
 		listBox->paintItemInfoFrame(iteminfoframe);
 		if (iteminfo_color) listBox->setItemInfoColor(hintColor);

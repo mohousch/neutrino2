@@ -176,6 +176,7 @@ class CNeutrinoApp : public CMenuTarget
 		int convertMenuPosition(const char * const position);
 		int convertClistBoxMode(const char * const mode);
 		int convertClistBoxType(const char * const type);
+		int convertItemInfoMode(const char * const mode);
 		int convertCMenuItemID(const char * const id);
 		int convertBool(const char* const value);
 		int convertBorder(const char * const border);

@@ -49,23 +49,6 @@ extern CFont * g_Font[FONT_TYPE_COUNT];
 class CMenuTarget;
 class CWidget;
 
-/*
-// border
-enum {
-	BORDER_NO,
-	BORDER_ALL,
-	BORDER_LEFTRIGHT,
-	BORDER_TOPBOTTOM
-};
-
-// halign
-enum {
-	CC_ALIGN_LEFT,
-	CC_ALIGN_CENTER,
-	CC_ALIGN_RIGHT
-};
-*/
-
 // dimension helper
 class CBox
 {
@@ -120,7 +103,7 @@ class CComponent
 			//// not to be added with addCCItem method.
 			CC_SCROLLBAR,
 			CC_PROGRESSBAR,
-			CC_DETAILSLINE,
+			CC_ITEMINFO,
 			CC_SLIDER,
 			////
 			CC_HEAD,
@@ -506,7 +489,7 @@ class CCLabel : public CComponent
 		void hide();
 };
 
-//// CText
+//// CCText
 class CCText : public CComponent
 {
 	private:
@@ -546,7 +529,7 @@ class CCText : public CComponent
 		void hide();
 };
 
-////
+//// CCGrid
 class CCGrid : public CComponent
 {
 	private:
@@ -572,7 +555,7 @@ class CCGrid : public CComponent
 		void hide();
 };
 
-//// pig
+//// CCPig
 class CCPig : public CComponent
 {
 	public:
@@ -739,15 +722,16 @@ class CProgressBar : public CComponent
 };
 
 //// detailsLine
-class CItems2DetailsLine : public CComponent
+class CItemInfo : public CComponent
 {
 	public:
-		enum {
-			DL_INFO,
-			DL_HINT,
-			DL_HINTITEM,
-			DL_HINTICON,
-			DL_HINTHINT
+		enum 
+		{
+			ITEMINFO_INFO,
+			ITEMINFO_HINTITEM,
+			ITEMINFO_HINTICON,
+			ITEMINFO_ICON,
+			ITEMINFO_HINT
 		};
 
 		//
@@ -770,28 +754,25 @@ class CItems2DetailsLine : public CComponent
 		fb_pixel_t *background;
 		
 		//
-		CItems2DetailsLine();
-		virtual ~CItems2DetailsLine();
+		CItemInfo();
+		virtual ~CItemInfo();
 		
 		//
 		void paint();
 		void hide();
-		
 		//
-		virtual void setMode(int m){mode = m;};
-		virtual void setInfo1(const char* const text){if (text) info1 = text;};
-		virtual void setInfo2(const char* const text){if (text)  info2 = text;};
-		virtual void setOptionInfo1(const char* const text){if (text) option_info1 = text;};
-		virtual void setOptionInfo2(const char* const text){if (text) option_info2 = text;};
-		virtual void setHint(const char* const Text){if (Text) hint =  Text;};
-		virtual void setIcon(const char* const ic){if (ic) icon = ic;};
-		
+		void setMode(int m){mode = m;};
+		void setInfo1(const char* const text){if (text) info1 = text;};
+		void setInfo2(const char* const text){if (text)  info2 = text;};
+		void setOptionInfo1(const char* const text){if (text) option_info1 = text;};
+		void setOptionInfo2(const char* const text){if (text) option_info2 = text;};
+		void setHint(const char* const Text){if (Text) hint =  Text;};
+		void setIcon(const char* const ic){if (ic) icon = ic;};
 		// custom mode
 		void setFont(unsigned int f){tFont = f;};
 		void setBorderMode(int m){borderMode = m;};
 		void setColor(uint32_t col){color = col;};
 		void setScaling(bool s){scale = s;};
-		
 		//
 		void saveScreen(void);
 		void restoreScreen(void);

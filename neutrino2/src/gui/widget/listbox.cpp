@@ -1651,7 +1651,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	paintFootInfo = false;
 	footInfoHeight = 0;
 	cFrameFootInfoHeight = 0;
-	footInfoMode = ITEMINFO_INFO_MODE;
+	footInfoMode = CItemInfo::ITEMINFO_INFO;
 	itemInfoBox.iX = 0;
 	itemInfoBox.iY = 0;
 	itemInfoBox.iWidth = 0;
@@ -1775,7 +1775,7 @@ ClistBox::ClistBox(CBox* position)
 	paintFootInfo = false;
 	footInfoHeight = 0;
 	cFrameFootInfoHeight = 0;
-	footInfoMode = ITEMINFO_INFO_MODE;
+	footInfoMode = CItemInfo::ITEMINFO_INFO;
 	itemInfoBox.iX = 0;
 	itemInfoBox.iY = 0;
 	itemInfoBox.iWidth = 0;
@@ -2528,13 +2528,13 @@ void ClistBox::paintItemInfo(int pos)
 		{
 			dprintf(DEBUG_INFO, "ClistBox::paintItemInfo:\n"); //FIXME:
 			
-			if (footInfoMode == ITEMINFO_INFO_MODE)
+			if (footInfoMode == CItemInfo::ITEMINFO_INFO)
 			{
 				CMenuItem* item = items[pos];
 
 				// detailslines
 				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
-				itemsLine.setMode(CItems2DetailsLine::DL_INFO);
+				itemsLine.setMode(CItemInfo::ITEMINFO_INFO);
 				itemsLine.setInfo1(item->info1.c_str());
 				itemsLine.setOptionInfo1(item->option_info1.c_str());
 				itemsLine.setInfo2(item->info2.c_str());
@@ -2543,13 +2543,13 @@ void ClistBox::paintItemInfo(int pos)
 					
 				itemsLine.paint();
 			}
-			else if (footInfoMode == ITEMINFO_HINT_MODE)
+			else if (footInfoMode == CItemInfo::ITEMINFO_HINTITEM)
 			{
 				CMenuItem* item = items[pos];
 	
 				// detailslines box
 				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
-				itemsLine.setMode(CItems2DetailsLine::DL_HINT);
+				itemsLine.setMode(CItemInfo::ITEMINFO_HINTITEM);
 				itemsLine.setHint(item->itemHint.c_str());
 				
 				if (widgetType == CMenuItem::TYPE_STANDARD)
@@ -2570,13 +2570,13 @@ void ClistBox::paintItemInfo(int pos)
 					
 				itemsLine.paint();
 			}
-			else if (footInfoMode == ITEMINFO_HINTITEM_MODE)
+			else if (footInfoMode == CItemInfo::ITEMINFO_HINTICON)
 			{
 				CMenuItem* item = items[pos];
 	
 				// detailslines box
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
-				itemsLine.setMode(CItems2DetailsLine::DL_HINTITEM);
+				itemsLine.setMode(CItemInfo::ITEMINFO_HINTICON);
 				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
@@ -2584,7 +2584,6 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setScaling(iteminfoscale);
 				itemsLine.setHint(item->itemHint.c_str());
 				//
-				//itemsLine.setIcon(item->itemIcon.c_str());
 				std::string fname = item->itemIcon;
 					
 				if (widgetMode == MODE_MENU)
@@ -2600,19 +2599,18 @@ void ClistBox::paintItemInfo(int pos)
 					
 				itemsLine.paint();
 			}
-			else if (footInfoMode == ITEMINFO_HINTICON_MODE)
+			else if (footInfoMode == CItemInfo::ITEMINFO_ICON)
 			{
 				CMenuItem* item = items[pos];
 	
 				// detailslines box
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
-				itemsLine.setMode(CItems2DetailsLine::DL_HINTICON);
+				itemsLine.setMode(CItemInfo::ITEMINFO_ICON);
 				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
 				itemsLine.setScaling(iteminfoscale);
 				//
-				//itemsLine.setIcon(item->itemIcon.c_str());
 				std::string fname = item->itemIcon;
 					
 				if (widgetMode == MODE_MENU)
@@ -2628,13 +2626,13 @@ void ClistBox::paintItemInfo(int pos)
 					
 				itemsLine.paint();
 			}
-			else if (footInfoMode == ITEMINFO_HINTHINT_MODE)
+			else if (footInfoMode == CItemInfo::ITEMINFO_HINT)
 			{
 				CMenuItem* item = items[pos];
 	
 				// detailslines box
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
-				itemsLine.setMode(CItems2DetailsLine::DL_HINTHINT);
+				itemsLine.setMode(CItemInfo::ITEMINFO_HINT);
 				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
@@ -2674,10 +2672,10 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.enableSaveScreen();
 			
 			if (widgetMode == MODE_LISTBOX)
-				itemsLine.setMode(CItems2DetailsLine::DL_HINTITEM);
+				itemsLine.setMode(CItemInfo::ITEMINFO_HINT);
 			else if (widgetMode == MODE_MENU)
 			{
-				itemsLine.setMode(CItems2DetailsLine::DL_HINTICON);
+				itemsLine.setMode(CItemInfo::ITEMINFO_HINTITEM);
 				
 				if (item->isPlugin)
 					fname = item->itemIcon;

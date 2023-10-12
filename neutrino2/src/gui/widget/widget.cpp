@@ -798,26 +798,6 @@ CComponent* CWidget::getCCItem(const int type, const std::string& name)
 					ret = CCItems[count]; 
 				break;
 				
-			case CComponent::CC_SCROLLBAR:
-				if ( (CCItems[count]->cc_type == CComponent::CC_SCROLLBAR) && (CCItems[count]->cc_name == name) )
-					ret = CCItems[count]; 
-				break;
-				
-			case CComponent::CC_PROGRESSBAR:
-				if ( (CCItems[count]->cc_type == CComponent::CC_PROGRESSBAR) && (CCItems[count]->cc_name == name) )
-					ret = CCItems[count]; 
-				break;
-				
-			case CComponent::CC_DETAILSLINE:
-				if ( (CCItems[count]->cc_type == CComponent::CC_DETAILSLINE) && (CCItems[count]->cc_name == name) )
-					ret = CCItems[count]; 
-				break;
-				
-			case CComponent::CC_SLIDER:
-				if ( (CCItems[count]->cc_type == CComponent::CC_SLIDER) && (CCItems[count]->cc_name == name) )
-					ret = CCItems[count]; 
-				break;
-				
 			case CComponent::CC_LISTBOX:
 				if ( (CCItems[count]->cc_type == CComponent::CC_LISTBOX) && (CCItems[count]->cc_name == name) )
 					ret = CCItems[count]; 

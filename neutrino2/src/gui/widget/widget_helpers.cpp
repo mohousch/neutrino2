@@ -851,13 +851,13 @@ void CScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPag
 	cSliderWindow.paint();
 }
 
-// detailsLine
-CItems2DetailsLine::CItems2DetailsLine()
+// CItemInfo
+CItemInfo::CItemInfo()
 {
 	frameBuffer = CFrameBuffer::getInstance();
 	
 	//
-	mode = DL_INFO; 
+	mode = ITEMINFO_INFO; 
 	info1 = "";
 	option_info1 = "";
 	info2 = "";
@@ -875,10 +875,10 @@ CItems2DetailsLine::CItems2DetailsLine()
 	color = COL_MENUCONTENT_PLUS_0;
 	scale = false;
 	
-	cc_type = CC_DETAILSLINE;
+	cc_type = CC_ITEMINFO;
 }
 
-CItems2DetailsLine::~CItems2DetailsLine()
+CItemInfo::~CItemInfo()
 {
 	info1.clear();
 	option_info1.clear();
@@ -897,9 +897,9 @@ CItems2DetailsLine::~CItems2DetailsLine()
 	}
 }
 
-void CItems2DetailsLine::paint()
+void CItemInfo::paint()
 {
-	dprintf(DEBUG_DEBUG, "CItems2DetailsLine::paint:\n");
+	dprintf(DEBUG_DEBUG, "CItemInfo::paint:\n");
 	
 	// border
 	if (paintframe)
@@ -914,7 +914,7 @@ void CItems2DetailsLine::paint()
 		restoreScreen();
 	
 	//
-	if (mode == DL_INFO)
+	if (mode == ITEMINFO_INFO)
 	{
 		// option_info1
 		int l_ow1 = 0;
@@ -952,7 +952,7 @@ void CItems2DetailsLine::paint()
 			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString (itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight/2 + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, info2.c_str(), COL_MENUHINT, 0, true); // UTF-8
 		}
 	}
-	else if (mode == DL_HINT)
+	else if (mode == ITEMINFO_HINTITEM)
 	{
 		//
 		int iw = 0;
@@ -982,7 +982,7 @@ void CItems2DetailsLine::paint()
 		Dline.setText(hint.c_str());		
 		Dline.paint();
 	}
-	else if (mode == DL_HINTITEM)
+	else if (mode == ITEMINFO_HINTICON)
 	{
 		//
 		int iw = 0;
@@ -1012,7 +1012,7 @@ void CItems2DetailsLine::paint()
 		Dline.paint();
 		
 	}
-	else if (mode == DL_HINTICON)	
+	else if (mode == ITEMINFO_ICON)	
 	{
 		CCImage DImage(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 		DImage.setImage(icon.c_str());
@@ -1020,7 +1020,7 @@ void CItems2DetailsLine::paint()
 		DImage.setColor(color);
 		DImage.paint();
 	}
-	else if (mode == DL_HINTHINT)
+	else if (mode == ITEMINFO_HINT)
 	{
 		CCText Dline(itemBox.iX + 10, itemBox.iY + 10, itemBox.iWidth - 20, itemBox.iHeight - 20);
 		Dline.setFont(tFont);
@@ -1030,7 +1030,7 @@ void CItems2DetailsLine::paint()
 }
 
 //
-void CItems2DetailsLine::hide()
+void CItemInfo::hide()
 {
 	if(background) 
 	{
@@ -1040,10 +1040,10 @@ void CItems2DetailsLine::hide()
 		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 }
 
-////
-void CItems2DetailsLine::saveScreen(void)
+//
+void CItemInfo::saveScreen(void)
 {
-	dprintf(DEBUG_NORMAL, "CItems2DetailsLine::saveScreen\n");
+	dprintf(DEBUG_NORMAL, "CItemInfo::saveScreen\n");
 	
 	if (background)
 	{
@@ -1059,9 +1059,9 @@ void CItems2DetailsLine::saveScreen(void)
 	}
 }
 
-void CItems2DetailsLine::restoreScreen(void)
+void CItemInfo::restoreScreen(void)
 {
-	dprintf(DEBUG_NORMAL, "CItems2DetailsLine::restoreScreen\n");
+	dprintf(DEBUG_NORMAL, "CItemInfo::restoreScreen\n");
 	
 	//
 	if (savescreen && background)
@@ -1071,9 +1071,9 @@ void CItems2DetailsLine::restoreScreen(void)
 }
 
 //
-void CItems2DetailsLine::enableSaveScreen()
+void CItemInfo::enableSaveScreen()
 {
-	dprintf(DEBUG_NORMAL, "CItems2DetailsLine::enableSaveScreen\n");
+	dprintf(DEBUG_NORMAL, "CItemInfo::enableSaveScreen\n");
 	
 	savescreen = true;
 	

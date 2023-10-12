@@ -50,7 +50,7 @@ class CKeyValue : public CMenuSeparator
 	std::string the_text;
 	
 	public:
-		int         keyvalue;
+		int keyvalue;
 
 		CKeyValue() : CMenuSeparator(CMenuSeparator::STRING, _("Current key"))
 		{

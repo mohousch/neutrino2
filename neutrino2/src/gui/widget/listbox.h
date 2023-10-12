@@ -403,6 +403,7 @@ class ClistBox : public CComponent
 		};
 
 		// iteminfo mode
+		/*
 		enum
 		{
 			ITEMINFO_INFO_MODE = 0,
@@ -411,6 +412,7 @@ class ClistBox : public CComponent
 			ITEMINFO_HINTICON_MODE,
 			ITEMINFO_HINTHINT_MODE
 		};
+		*/
 
 		//
 		std::vector<CMenuItem*> items;
@@ -494,7 +496,7 @@ class ClistBox : public CComponent
 		// itemInfo
 		int cFrameFootInfoHeight;
 		int footInfoHeight;
-		CItems2DetailsLine itemsLine;
+		CItemInfo itemsLine;
 		bool paintFootInfo;
 		int footInfoMode;
 		CBox itemInfoBox;
@@ -582,7 +584,7 @@ class ClistBox : public CComponent
 		void setItemInfoMode(int mode){footInfoMode = mode;};
 		void setItemInfoPos(int x, int y, int dx, int dy)
 		{
-			if ( (footInfoMode == ITEMINFO_HINTITEM_MODE) || (footInfoMode == ITEMINFO_HINTICON_MODE) || (footInfoMode == ITEMINFO_HINTHINT_MODE))
+			if ( (footInfoMode == CItemInfo::ITEMINFO_HINTICON) || (footInfoMode == CItemInfo::ITEMINFO_ICON) || (footInfoMode == CItemInfo::ITEMINFO_HINT))
 			{
 				itemInfoBox.iX = x; 
 				itemInfoBox.iY = y; 
