@@ -194,8 +194,8 @@ typedef std::vector<MI_MOVIE_INFO> CMoviePlayList;
 class CMovieInfo
 {
 	public:	// Functions
-		CMovieInfo();
-		~CMovieInfo();
+		CMovieInfo(){};
+		virtual ~CMovieInfo(){};
 		bool convertTs2XmlName(std::string* filename);  				// convert a ts file name in .xml file name
 		bool convertTs2XmlName(char* filename, int size);				// convert a ts file name in .xml file name
 		bool loadMovieInfo(MI_MOVIE_INFO* movie_info, CFile* file = NULL );

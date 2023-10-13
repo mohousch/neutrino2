@@ -677,7 +677,7 @@ void CCButtons::paint()
 						//
 						CFrameItem frame;
 						
-						frame.setPosition(startx, itemBox.iY - 1, maxButtonTextWidth + 10, itemBox.iHeight -2);
+						frame.setPosition(startx, itemBox.iY + 1, maxButtonTextWidth + 10, itemBox.iHeight -2);
 						frame.setBorderMode();
 						frame.paintMainFrame(true);
 						//frame.setColor(buttons[i].color);
@@ -693,7 +693,7 @@ void CCButtons::paint()
 						//
 						CFrameItem frame;
 						
-						frame.setPosition(startx, itemBox.iY - 1, maxButtonTextWidth + 10, itemBox.iHeight -2);
+						frame.setPosition(startx, itemBox.iY + 1, maxButtonTextWidth + 10, itemBox.iHeight -2);
 						frame.setBorderMode();
 						frame.paintMainFrame(true);
 						frame.setColor(buttons[i].color);
@@ -762,29 +762,28 @@ void CCButtons::paint()
 					//
 					CFrameItem frame;
 						
-					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY - 1, buttonWidth, itemBox.iHeight - 2);
+					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 1, buttonWidth, itemBox.iHeight - 2);
 					frame.setBorderMode();
 					frame.paintMainFrame(true);
 					//frame.setColor(buttons[i].color);
 					frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
 					frame.setTitle(_(buttons[i].localename.c_str()));
 					frame.setHAlign(CC_ALIGN_CENTER);
-					frame.paint();
+					if (!buttons[i].localename.empty()) frame.paint();
 				}
 				else if (mode == BUTTON_FRAME_COLORED)
 				{
 					//
 					CFrameItem frame;
-					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY - 1, buttonWidth, itemBox.iHeight - 2);
+					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 1, buttonWidth, itemBox.iHeight - 2);
 					frame.setBorderMode();
 					frame.paintMainFrame(true);
 					frame.setColor(buttons[i].color);
 					frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
 					frame.setTitle(_(buttons[i].localename.c_str()));
 					frame.setHAlign(CC_ALIGN_CENTER);
-					frame.paint();
+					if (!buttons[i].localename.empty()) frame.paint();
 				}
-				//}
 			}
 		}
 	}
@@ -2199,9 +2198,10 @@ CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const c
 	paintDate = false;
 	format = "%d.%m.%Y %H:%M";
 	timer = NULL;
-	
+	//
 	count	= 0;
 	buttons.clear();
+	mode = CCButtons::BUTTON_BUTTON;
 	
 	halign = CC_ALIGN_LEFT;
 
@@ -2218,7 +2218,7 @@ CHeaders::CHeaders(CBox* position, const char * const title, const char * const 
 
 	htitle = title? title : "";
 	hicon = icon? icon : "";
-
+	//
 	color = COL_MENUHEAD_PLUS_0;
 	radius = g_settings.Head_radius;
 	corner = g_settings.Head_corner;
@@ -2228,14 +2228,15 @@ CHeaders::CHeaders(CBox* position, const char * const title, const char * const 
 	grad_type = g_settings.Head_gradient_type;
 	line = g_settings.Head_line;
 	line_gradient = false;
-
+	//
 	paintframe = true;
 	paintDate = false;
 	format = "%d.%m.%Y %H:%M";
 	timer = NULL;
-	
+	//
 	count	= 0;
 	buttons.clear();
+	mode = CCButtons::BUTTON_BUTTON;
 	
 	halign = CC_ALIGN_LEFT;
 
@@ -2409,12 +2410,8 @@ CFooters::CFooters(const int x, const int y, const int dx, const int dy)
 	itemBox.iWidth = dx;
 	itemBox.iHeight = dy;
 
-	buttons.clear();
-	count = 0;
-	button_width = itemBox.iWidth;
-	
+	//
 	paintframe = true;
-
 	color = COL_MENUFOOT_PLUS_0;
 	radius = g_settings.Foot_radius;
 	corner = g_settings.Foot_corner;
@@ -2424,7 +2421,13 @@ CFooters::CFooters(const int x, const int y, const int dx, const int dy)
 	grad_type = g_settings.Foot_gradient_type;
 	line = g_settings.Foot_line;
 	line_gradient = false;
-
+	//
+	buttons.clear();
+	count = 0;
+	button_width = itemBox.iWidth;
+	mode = CCButtons::BUTTON_BUTTON;
+	
+	//
 	cc_type = CC_FOOT;
 }
 
@@ -2436,12 +2439,8 @@ CFooters::CFooters(CBox* position)
 	
 	itemBox = *position;
 
-	buttons.clear();
-	count = 0;
-	button_width = itemBox.iWidth;
-	
+	//
 	paintframe = true;
-
 	color = COL_MENUFOOT_PLUS_0;
 	radius = g_settings.Foot_radius;
 	corner = g_settings.Foot_corner;
@@ -2451,7 +2450,13 @@ CFooters::CFooters(CBox* position)
 	grad_type = g_settings.Foot_gradient_type;
 	line = g_settings.Foot_line;
 	line_gradient = false;
+	//
+	buttons.clear();
+	count = 0;
+	button_width = itemBox.iWidth;
+	mode = CCButtons::BUTTON_BUTTON;
 
+	//
 	cc_type = CC_FOOT;
 }
 
@@ -2504,6 +2509,7 @@ void CFooters::paint()
 
 	count = buttons.size();
 
+/*
 	if(count)
 	{
 		buttonWidth = (button_width)/count;
@@ -2531,6 +2537,91 @@ void CFooters::paint()
 				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
 			}
 		}
+	}
+*/
+	////
+	int maxButtonTextWidth = buttonWidth;
+	int iw[count];
+	int ih[count];
+	int f_w[count];
+	
+	if(count)
+	{
+			buttonWidth = (itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT)/count;
+			
+			// get maxButtonWidth
+			for (unsigned int i = 0; i < count; i++)
+			{
+				if (!buttons[i].localename.empty())
+				{
+					f_w[i] = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
+					
+					if (i > 0)
+						maxButtonTextWidth = std::max(f_w[i], f_w[i - 1]) + 10;
+					else
+						maxButtonTextWidth = f_w[i] + 10;
+						
+					if ((maxButtonTextWidth + 20) > buttonWidth)
+						maxButtonTextWidth = buttonWidth;
+				}
+			}
+			
+			if (maxButtonTextWidth > buttonWidth)
+				maxButtonTextWidth = buttonWidth;
+		
+			for (unsigned int i = 0; i < count; i++)
+			{
+				if (mode == CCButtons::BUTTON_BUTTON)
+				{
+					if (!buttons[i].button.empty())
+					{
+						iw[i] = 0;
+						ih[i] = 0;
+
+						CFrameBuffer::getInstance()->getIconSize(buttons[i].button.c_str(), &iw[i], &ih[i]);
+							
+						// scale icon
+						if(ih[i] >= itemBox.iHeight)
+						{
+							ih[i] = itemBox.iHeight - 2;
+						}
+							
+						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
+					
+						CFrameBuffer::getInstance()->paintIcon(buttons[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+
+						// FIXME: i18n
+						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
+					}
+				}
+				else if (mode == CCButtons::BUTTON_FRAME_BORDER)
+				{
+					//
+					CFrameItem frame;
+						
+					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
+					frame.setBorderMode();
+					frame.paintMainFrame(true);
+					//frame.setColor(buttons[i].color);
+					frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+					frame.setTitle(_(buttons[i].localename.c_str()));
+					frame.setHAlign(CC_ALIGN_CENTER);
+					frame.paint();
+				}
+				else if (mode == CCButtons::BUTTON_FRAME_COLORED)
+				{
+					//
+					CFrameItem frame;
+					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
+					frame.setBorderMode();
+					frame.paintMainFrame(true);
+					frame.setColor(buttons[i].color);
+					frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+					frame.setTitle(_(buttons[i].localename.c_str()));
+					frame.setHAlign(CC_ALIGN_CENTER);
+					frame.paint();
+				}
+			}
 	}
 }
 

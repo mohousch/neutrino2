@@ -66,16 +66,7 @@
 #include <gui/movieplayer.h>
 
 
-CMovieInfo::CMovieInfo()
-{
-
-}
-
-CMovieInfo::~CMovieInfo()
-{
-	;
-}
-
+////
 bool CMovieInfo::convertTs2XmlName(char *char_filename, int size)
 {
 	bool result = false;
@@ -203,7 +194,6 @@ bool CMovieInfo::encodeMovieInfoXml(std::string * extMessage, MI_MOVIE_INFO * mo
 	}
 
 	XML_ADD_TAG_UNSIGNED(*extMessage, MI_XML_TAG_VTXTPID, movie_info->epgVTXPID);	//%u
-	/* new tags */
 	XML_ADD_TAG_UNSIGNED(*extMessage, MI_XML_TAG_GENRE_MAJOR, movie_info->genreMajor);
 	XML_ADD_TAG_UNSIGNED(*extMessage, MI_XML_TAG_GENRE_MINOR, movie_info->genreMinor);
 	XML_ADD_TAG_STRING(*extMessage, MI_XML_TAG_SERIE_NAME, movie_info->serieName);
@@ -1133,6 +1123,7 @@ int find_next_char(char to_find, char *text, int start_pos, int end_pos)
 		}
 		start_pos++;
 	}
+	
 	return (-1);
 }
 
@@ -1174,7 +1165,7 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 	movie_info->dateOfLastPlay = 0;	//100*366*24*60*60;              // (date, month, year)
 
 	int bytes = strlen(text);
-	/** search ****/
+	//
 	int pos = 0;
 
 	EPG_AUDIO_PIDS audio_pids;
@@ -1183,28 +1174,29 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 	{
 		pos++;
 		GET_XML_DATA_STRING(text, pos, MI_XML_TAG_CHANNELNAME, movie_info->epgChannel)
-		    GET_XML_DATA_STRING(text, pos, MI_XML_TAG_EPGTITLE, movie_info->epgTitle)
-		    GET_XML_DATA_LONG(text, pos, MI_XML_TAG_ID, movie_info->epgId)
-		    GET_XML_DATA_STRING(text, pos, MI_XML_TAG_INFO1, movie_info->epgInfo1)
-		    GET_XML_DATA_STRING(text, pos, MI_XML_TAG_INFO2, movie_info->epgInfo2)
-		    GET_XML_DATA_LONG(text, pos, MI_XML_TAG_EPGID, movie_info->epgEpgId)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_MODE, movie_info->epgMode)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_VIDEOPID, movie_info->epgVideoPid)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_VIDEOTYPE, movie_info->VideoType)
-		    GET_XML_DATA_STRING(text, pos, MI_XML_TAG_NAME, movie_info->epgChannel)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_VTXTPID, movie_info->epgVTXPID)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_GENRE_MAJOR, movie_info->genreMajor)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_GENRE_MINOR, movie_info->genreMinor)
-		    GET_XML_DATA_STRING(text, pos, MI_XML_TAG_SERIE_NAME, movie_info->serieName)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_LENGTH, movie_info->length)
-		    GET_XML_DATA_STRING(text, pos, MI_XML_TAG_PRODUCT_COUNTRY, movie_info->productionCountry)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_PRODUCT_DATE, movie_info->productionDate)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_PARENTAL_LOCKAGE, movie_info->parentalLockAge)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_QUALITY, movie_info->quality)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_DATE_OF_LAST_PLAY, movie_info->dateOfLastPlay)
-		    GET_XML_DATA_STRING(text, pos, "genres", movie_info->genres)
-		    GET_XML_DATA_INT(text, pos, "vote_average", movie_info->vote_average)
-		    if (strncmp(&text[pos], MI_XML_TAG_AUDIOPIDS, sizeof(MI_XML_TAG_AUDIOPIDS) - 1) == 0)
+		GET_XML_DATA_STRING(text, pos, MI_XML_TAG_EPGTITLE, movie_info->epgTitle)
+		GET_XML_DATA_LONG(text, pos, MI_XML_TAG_ID, movie_info->epgId)
+		GET_XML_DATA_STRING(text, pos, MI_XML_TAG_INFO1, movie_info->epgInfo1)
+		GET_XML_DATA_STRING(text, pos, MI_XML_TAG_INFO2, movie_info->epgInfo2)
+		GET_XML_DATA_LONG(text, pos, MI_XML_TAG_EPGID, movie_info->epgEpgId)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_MODE, movie_info->epgMode)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_VIDEOPID, movie_info->epgVideoPid)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_VIDEOTYPE, movie_info->VideoType)
+		GET_XML_DATA_STRING(text, pos, MI_XML_TAG_NAME, movie_info->epgChannel)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_VTXTPID, movie_info->epgVTXPID)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_GENRE_MAJOR, movie_info->genreMajor)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_GENRE_MINOR, movie_info->genreMinor)
+		GET_XML_DATA_STRING(text, pos, MI_XML_TAG_SERIE_NAME, movie_info->serieName)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_LENGTH, movie_info->length)
+		GET_XML_DATA_STRING(text, pos, MI_XML_TAG_PRODUCT_COUNTRY, movie_info->productionCountry)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_PRODUCT_DATE, movie_info->productionDate)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_PARENTAL_LOCKAGE, movie_info->parentalLockAge)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_QUALITY, movie_info->quality)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_DATE_OF_LAST_PLAY, movie_info->dateOfLastPlay)
+		GET_XML_DATA_STRING(text, pos, "genres", movie_info->genres)
+		GET_XML_DATA_INT(text, pos, "vote_average", movie_info->vote_average)
+		
+		if (strncmp(&text[pos], MI_XML_TAG_AUDIOPIDS, sizeof(MI_XML_TAG_AUDIOPIDS) - 1) == 0)
 			pos += sizeof(MI_XML_TAG_AUDIOPIDS);
 
 		/* parse audio pids */
@@ -1286,11 +1278,11 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 		
 		/* parse bookmarks */
 		GET_XML_DATA_INT(text, pos, MI_XML_TAG_BOOKMARK_START, movie_info->bookmarks.start)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_BOOKMARK_END, movie_info->bookmarks.end)
-		    GET_XML_DATA_INT(text, pos, MI_XML_TAG_BOOKMARK_LAST, movie_info->bookmarks.lastPlayStop)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_BOOKMARK_END, movie_info->bookmarks.end)
+		GET_XML_DATA_INT(text, pos, MI_XML_TAG_BOOKMARK_LAST, movie_info->bookmarks.lastPlayStop)
 
-		    if (bookmark_nr < MI_MOVIE_BOOK_USER_MAX) 
-		    {
+		if (bookmark_nr < MI_MOVIE_BOOK_USER_MAX) 
+		{
 			if (strncmp(&text[pos], MI_XML_TAG_BOOKMARK_USER, sizeof(MI_XML_TAG_BOOKMARK_USER) - 1) == 0) 
 			{
 				pos += sizeof(MI_XML_TAG_BOOKMARK_USER);
@@ -1347,19 +1339,16 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 		}
 	}
 
+	
 	strReplace(movie_info->epgTitle, "&quot;", "\"");
 	strReplace(movie_info->epgInfo1, "&quot;", "\"");
 	strReplace(movie_info->epgTitle, "&apos;", "'");
 	strReplace(movie_info->epgInfo1, "&apos;", "'");
 	strReplace(movie_info->epgInfo1, "&amp;", "&");
-	
 	htmlEntityDecode(movie_info->epgInfo1, true);
-	
-	//
 	strReplace(movie_info->epgInfo2, "&quot;", "\"");
 	strReplace(movie_info->epgInfo2, "&apos;", "'");
-	strReplace(movie_info->epgInfo2, "&amp;", "&");
-		
+	strReplace(movie_info->epgInfo2, "&amp;", "&");	
 	htmlEntityDecode(movie_info->epgInfo2, true);
 
 	return (true);

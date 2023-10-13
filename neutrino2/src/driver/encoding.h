@@ -32,3 +32,4 @@ std::string UTF8_to_UTF8XML(const char *);
 std::string Latin1_to_UTF8 (const char *);
 
 #endif /* __neutrino__encoding_h__ */
+

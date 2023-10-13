@@ -1020,6 +1020,32 @@ neutrino_msg_t CNeutrinoApp::convertKey(const char * const key)
 }
 
 //
+int CNeutrinoApp::convertButtonMode(const char * const mode)
+{
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::convertButtonMode: mode: %s\n", mode);
+	
+	int bmode = CCButtons::BUTTON_BUTTON;
+	
+	if (mode != NULL)
+	{
+		if ( strcmp(mode, "BUTTON_BUTTON") == 0)
+		{
+			bmode = CCButtons::BUTTON_BUTTON;
+		}
+		else if ( strcmp(mode, "BUTTON_FRAME_BORDER") == 0)
+		{
+			bmode = CCButtons::BUTTON_FRAME_BORDER;
+		}
+		else if ( strcmp(mode, "BUTTON_FRAME_COLORED") == 0)
+		{
+			bmode = CCButtons::BUTTON_FRAME_COLORED;
+		}
+	}
+	
+	return bmode;
+}
+
+//
 int CNeutrinoApp::convertMenuPosition(const char* const position)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertMenuPosition: position: %s\n", position);
@@ -1623,6 +1649,8 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	unsigned int paintdate = 0;
 	char* format = NULL;
 	
+	char *bmode = NULL;
+	
 	xmlNodePtr buttonlabel_node = NULL;
 	
 	//
@@ -1652,6 +1680,8 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 		
 	paintdate = xmlGetSignedNumericAttribute(node, "paintdate", 0);
 	format = xmlGetAttribute(node, (char*)"format");
+	
+	bmode = xmlGetAttribute(node, (char *)"buttonmode");
 		
 	// recalculate posx / posy
 	int x = posx;
@@ -1700,6 +1730,10 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	// date	
 	if (paintdate) head->enablePaintDate();
 	if (format != NULL) head->setFormat(_(format));
+	//
+	int buttonmode = CCButtons::BUTTON_BUTTON;
+	if (bmode) buttonmode = convertButtonMode(bmode);
+	head->setButtonMode(buttonmode);
 					
 	// BUTTON_LABEL
 	buttonlabel_node = node->xmlChildrenNode;
@@ -1740,7 +1774,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	int height = 0;
 				
 	unsigned int paintframe = 1;
-	char* color = NULL;
+	char * color = NULL;
 	char * gradient = NULL;
 	char * gradient_type = NULL;
 	char * corner = NULL;
@@ -1748,6 +1782,8 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	
 	unsigned int foot_line = 0;
 	unsigned int foot_line_gradient = 0;
+	
+	char *bmode = NULL;
 	
 	xmlNodePtr buttonlabel_node = NULL;
 	
@@ -1763,6 +1799,8 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	gradient_type = xmlGetAttribute(node, (char *)"gradient_type");
 	corner = xmlGetAttribute(node, (char *)"corner");
 	radius = xmlGetAttribute(node, (char *)"radius");
+	
+	bmode = xmlGetAttribute(node, (char *)"buttonmode");
 				
 	// parse color
 	uint32_t finalColor = COL_MENUCONTENT_PLUS_0;		
@@ -1808,23 +1846,34 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	foot->setCorner(ra, co);
 	// line
 	foot->setLine(foot_line, foot_line_gradient);
+	//
+	int buttonmode = CCButtons::BUTTON_BUTTON;
+	if (bmode) buttonmode = convertButtonMode(bmode);
+	foot->setButtonMode(buttonmode);
 					
 	// BUTTON_LABEL
 	buttonlabel_node = node->xmlChildrenNode;
 		
-	char* button = NULL;
-	char* localename = NULL;
+	char *button = NULL;
+	char *localename = NULL;
+	char *bcolor = NULL;
 					
 	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "BUTTON_LABEL")) != NULL) 
 	{	
 		button = xmlGetAttribute(buttonlabel_node, (char*)"name");
 		localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
+		bcolor = xmlGetAttribute(buttonlabel_node, (char*)"color");
 						
 		button_label_struct btn;
 		btn.button = " ";
 		if (button) btn.button = button;
 		btn.localename = " ";
 		if (localename) btn.localename = localename;
+		//
+		btn.color = COL_BACKGROUND_PLUS_0;
+		fb_pixel_t col = COL_BACKGROUND_PLUS_0;
+		if (bcolor) col = convertColor(bcolor);
+		btn.color = col;
 						
 		foot->setButtons(&btn);
 				
@@ -2311,7 +2360,7 @@ void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget)
 	int cc_dy = 0;
 	
 	unsigned int head = 0;
-	unsigned int mode = CCButtons::BUTTON_BUTTON;
+	char * mode = NULL;
 	
 	xmlNodePtr buttonlabel_node = NULL;
 	
@@ -2323,7 +2372,7 @@ void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget)
 		
 	//
 	head = xmlGetSignedNumericAttribute(node, "head", 0);
-	mode = xmlGetSignedNumericAttribute(node, "mode", 0);
+	mode = xmlGetAttribute(node, (char *)"buttonmode");
 		
 	// recalculate posx / posy
 	int x = cc_x;
@@ -2343,8 +2392,12 @@ void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget)
 				
 	cButton = new CCButtons(x, y, cc_dx, cc_dy);
 	
-	cButton->cc_type = CComponent::CC_BUTTON;	
-	cButton->setMode(mode);
+	cButton->cc_type = CComponent::CC_BUTTON;
+	
+	//
+	int bmode = CCButtons::BUTTON_BUTTON;
+	if (mode) bmode = convertButtonMode(mode);	
+	cButton->setButtonMode(bmode);
 				
 	// BUTTON_LABEL
 	buttonlabel_node = node->xmlChildrenNode;

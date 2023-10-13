@@ -1992,19 +1992,18 @@ void CTestMenu::testCButtons()
 	// colored frame
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 40);
-	//buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	buttons.addButton("", "I'M A RED BUTTON", COL_RED_PLUS_0);
 	buttons.addButton("", "I'M A GREEN BUTTON", COL_GREEN_PLUS_0);
 	buttons.addButton("", "I'M A YELLOW BUTTON", COL_YELLOW_PLUS_0);
 	buttons.addButton("", "I'M A BLUE BUTTON", COL_BLUE_PLUS_0);
-	buttons.setMode(CCButtons::BUTTON_FRAME_COLORED);
+	buttons.setButtonMode(CCButtons::BUTTON_FRAME_COLORED);
 	buttons.paint();
 	
 	//
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 40);
 	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	buttons.setMode(CCButtons::BUTTON_FRAME_BORDER);
+	buttons.setButtonMode(CCButtons::BUTTON_FRAME_BORDER);
 	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();
@@ -2038,14 +2037,14 @@ void CTestMenu::testCHButtons()
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 25);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
-	buttons.setMode(CCButtons::BUTTON_FRAME_COLORED);
+	buttons.setButtonMode(CCButtons::BUTTON_FRAME_COLORED);
 	buttons.paint();
 	
 	// frame
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 25);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
-	buttons.setMode(CCButtons::BUTTON_FRAME_BORDER);
+	buttons.setButtonMode(CCButtons::BUTTON_FRAME_BORDER);
 	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();
@@ -2137,13 +2136,10 @@ void CTestMenu::testCFooters()
 	footers->setCorner(RADIUS_SMALL, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
 	footers->setGradient(LIGHT2DARK);
 	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-		
-	//footers->paint();
-	//CFrameBuffer::getInstance()->blit();
+	footers->setButtonMode(CCButtons::BUTTON_FRAME_COLORED);
 
 	// loop
 	footers->exec(10);
-	//footers->hide();
 
 	if(footers)
 	{

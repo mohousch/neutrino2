@@ -153,7 +153,7 @@ CChannelList::CChannelList(const char * const Name, bool _historyMode, bool _vli
 	frameBuffer = CFrameBuffer::getInstance();
 
 	name = Name;
-	selected = -1;
+	selected = 0;
 	tuned = 0xfffffff;
 	zapProtection = NULL;
 	this->historyMode = _historyMode;
@@ -1472,10 +1472,12 @@ bool CChannelList::canZap(CZapitChannel * channel)
 
 void CChannelList::paint(bool customMode)
 {
-	dprintf(DEBUG_NORMAL, "CChannelList::paint: selected: %d\n", selected);
+	//dprintf(DEBUG_NORMAL, "CChannelList::paint: selected: %d\n", selected);
 	
 	if (!customMode && selected < 0)
 		selected = 0;
+		
+	dprintf(DEBUG_NORMAL, "CChannelList::paint: selected: %d\n", selected);
 	
 	//
 	if (hline)

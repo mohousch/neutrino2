@@ -384,7 +384,7 @@ class CCButtons : public CComponent
 		virtual ~CCButtons(){};
 		
 		//
-		void setMode(int m){mode = m;};
+		void setButtonMode(int m){mode = m;};
 		//
 		void setButtons(const struct button_label *button_label, const int button_count = 1, bool _head = false);
 		void addButton(const char *btn, const char *lname = NULL, const fb_pixel_t col = 0);
@@ -812,14 +812,13 @@ class CHeaders : public CComponent
 		int grad_type;
 		bool line;
 		bool line_gradient;
-
+		//
 		int count;
 		button_label_list_t buttons;
-		
+		int mode;
+		//
 		std::string htitle;
 		std::string hicon;
-		int halign;
-		
 		bool paintDate;
 		std::string format;
 		CCTime* timer;
@@ -839,18 +838,16 @@ class CHeaders : public CComponent
 		void enablePaintDate(void){paintDate = true;};
 		void setFormat(const char* f){if (f) format.clear(); format = f;};
 		void setLine(bool l, bool g = false){line = l; line_gradient = g;};
-		
 		//
 		void setButtons(const struct button_label* _button_labels, const int _count = 1);
 		void addButton(const char *btn, const char *lname = NULL, const fb_pixel_t col = 0);
-
+		void setButtonMode(int m){mode = m;};
 		//
 		void paint();
 		void hide();
 		void refresh(void){if (paintDate) timer->refresh();};
 		bool update() const {return paintDate;};
 		void stopRefresh();
-		
 		//
 		void clear(){buttons.clear();};
 };
@@ -862,11 +859,6 @@ class CFooters : public CComponent
 		CFrameBuffer* frameBuffer;
 		
 		//
-		unsigned int count;
-		int button_width;
-		button_label_list_t buttons;
-		
-		//
 		fb_pixel_t color;
 		int radius;
 		int corner;
@@ -876,6 +868,11 @@ class CFooters : public CComponent
 		int grad_type;
 		bool line;
 		bool line_gradient;
+		//
+		unsigned int count;
+		int button_width;
+		button_label_list_t buttons;
+		int mode;
 	
 	public:
 		CFooters(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
@@ -887,15 +884,13 @@ class CFooters : public CComponent
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setCorner(int ra, int co = CORNER_BOTTOM){radius = ra; corner = co;};
 		void setLine(bool l, bool g = false){line = l; line_gradient = g;};
-		
 		//
 		void setButtons(const struct button_label *_button_labels, const int _count = 1, const int _button_width = 0);
 		void addButton(const char *btn, const char *lname = NULL, const fb_pixel_t col = 0);
-		
+		void setButtonMode(int m){mode = m;};
 		//
 		void paint();
 		void hide();
-		
 		//
 		void clear(){buttons.clear();};
 };

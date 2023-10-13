@@ -173,6 +173,7 @@ class CNeutrinoApp : public CMenuTarget
 		int convertGradient(const char* const gradient);
 		int convertGradientType(const char * const type);
 		neutrino_msg_t convertKey(const char* const key);
+		int convertButtonMode(const char * const mode);
 		int convertMenuPosition(const char * const position);
 		int convertClistBoxMode(const char * const mode);
 		int convertClistBoxType(const char * const type);
