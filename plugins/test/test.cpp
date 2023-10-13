@@ -202,7 +202,6 @@ class CTestMenu : public CMenuTarget
 		void testAlphaSetupWidget();
 		void testPSISetup();
 		void testRCLock();
-		void testSleepTimerWidget();
 		void testMountGUI();
 		void testUmountGUI();
 		void testMountSmallMenu();
@@ -4729,19 +4728,6 @@ void CTestMenu::testRCLock()
 	rcLock = NULL;
 }
 
-void CTestMenu::testSleepTimerWidget()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSleepTimerWidget\n");
-	
-	//FIXME:TEST
-	/*
-	CSleepTimerWidget * sleepTimerHandler = new CSleepTimerWidget();
-	sleepTimerHandler->exec(NULL, "");
-	delete sleepTimerHandler;
-	sleepTimerHandler = NULL;
-	*/
-}
-
 void CTestMenu::testMountGUI()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testMountGUI\n");
@@ -4786,7 +4772,7 @@ void CTestMenu::testColorChooser()
 {
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testColorChooser\n");
 	
-	CColorChooser * colorChooserHandler = new CColorChooser(_("Background"), &g_settings.menu_Head_red, &g_settings.menu_Head_green, &g_settings.menu_Head_blue, &g_settings.menu_Head_alpha, CNeutrinoApp::getInstance()->colorSetupNotifier);
+	CColorChooser * colorChooserHandler = new CColorChooser("testingCColorChooser: Head", &g_settings.menu_Head_red, &g_settings.menu_Head_green, &g_settings.menu_Head_blue, &g_settings.menu_Head_alpha, CNeutrinoApp::getInstance()->colorSetupNotifier);
 
 	colorChooserHandler->exec(NULL, "");
 	
@@ -4985,7 +4971,7 @@ void CTestMenu::testSkinWidget()
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSkinWidget\n");
 	
 	//
-	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Skin\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"/>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"/>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
+	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradient_type=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Skin\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"/>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradient_type=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"/>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
 	
 	CWidget * widget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str(), true);
 	
@@ -5416,12 +5402,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	else if(actionKey == "rclock")
 	{
 		testRCLock();
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "sleeptimer")
-	{
-		testSleepTimerWidget();
 
 		return RETURN_REPAINT;
 	}
@@ -6670,7 +6650,6 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("AlphaSetup", true, NULL, this, "alphasetup"));
 	mainMenu->addItem(new CMenuForwarder("PSISetup", true, NULL, this, "psisetup"));
 	mainMenu->addItem(new CMenuForwarder("RCLock", true, NULL, this, "rclock"));
-	mainMenu->addItem(new CMenuForwarder("SleepTimerWidget", true, NULL, this, "sleeptimer"));
 	mainMenu->addItem(new CMenuForwarder("MountGUI", true, NULL, this, "mountgui"));
 	//mainMenu->addItem(new CMenuForwarder("UmountGUI", true, NULL, this, "umountgui"));
 	mainMenu->addItem(new CMenuForwarder("MountSmallMenu", true, NULL, this, "mountsmallmenu"));
