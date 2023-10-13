@@ -298,7 +298,7 @@ bool CGeneralSettings::changeNotify(const std::string& OptionName, void */*data*
 
 			if (g_Radiotext && ((CNeutrinoApp::getInstance()->getMode()) == NeutrinoMessages::mode_radio))
 			{
-				if(live_fe)
+				if(live_fe && !IS_WEBTV(live_channel_id))
 					g_Radiotext->setPid(g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].pid);
 			}
 		} 

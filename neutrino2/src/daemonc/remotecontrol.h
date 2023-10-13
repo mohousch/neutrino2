@@ -82,7 +82,7 @@ class CRemoteControl
 		t_channel_id                  current_channel_id;
 		unsigned long long            current_EPGid;
 		unsigned long long            next_EPGid;
-		CZapit::responseGetPIDs current_PIDs;
+		CZapit::responseGetPIDs       current_PIDs;
 	
 		// APID - Details
 		bool                          has_ac3;

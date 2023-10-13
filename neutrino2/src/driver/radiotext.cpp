@@ -73,7 +73,9 @@
 #include <video_cs.h>
 //
 #include <framebuffer.h>
+
 #include <system/helpers.h>
+#include <system/debug.h>
 
 
 //// globals
@@ -928,7 +930,6 @@ void CRadioText::RassDecode(unsigned char *mtext, int len)
 								videoDecoder->finishShowSinglePic();
 								videoDecoder->showSinglePic(filepath);
 							}
-							//
 						}
 						else
 							printf("ERROR vdr-radio: writing imagefile failed '%s'", filepath);
@@ -1211,7 +1212,7 @@ void *RadioTextThread(void *data)
 CRadioText::CRadioText(void)
 {
 	pid 		= 0;
-	//dmxfd 		= -1;
+	//dmxfd 	= -1;
 	S_Verbose 	= 0;
 	S_RtFunc 	= 1;
 	S_RtOsd 	= 1;
@@ -1237,7 +1238,10 @@ CRadioText::CRadioText(void)
 	RT_PlusShow 	= false;
 	RT_Replay 	= false;
 	RT_ReOpen 	= false;
-	for (int i=0; i<5; i++) strcpy(RT_Text[i], "");
+	
+	for (int i=0; i<5; i++) 
+		strcpy(RT_Text[i], "");
+		
 	strcpy(RDS_PTYN, "");
 	have_radiotext	= false;
 	audioDemux = NULL;
@@ -1276,13 +1280,12 @@ void CRadioText::setPid(uint inPid)
 {
 	uint oldPid = pid;
 
-	printf("\nCRadioText::setPid: old pid 0x%x new pid 0x%x\n", oldPid, inPid);
+	dprintf(DEBUG_NORMAL, "CRadioText::setPid: old pid 0x%x new pid 0x%x\n", oldPid, inPid);
 	
 	if (pid != inPid)
 	{
 		int rc;
 
-		printf("CRadioText::setPid: setting pid 0x%x\n", inPid);
 		pid = inPid;
 
 		// open the device if first pid
@@ -1328,7 +1331,10 @@ void CRadioText::setPid(uint inPid)
 		RT_PlusShow = false;
 		RT_Replay = false;
 		RT_ReOpen = false;
-		for (int i=0; i<5; i++) strcpy(RT_Text[i], "");
+		
+		for (int i = 0; i < 5; i++) 
+			strcpy(RT_Text[i], "");
+			
 		strcpy(RDS_PTYN, "");
 
 		// Rass ...

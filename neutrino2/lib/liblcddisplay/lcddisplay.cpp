@@ -461,28 +461,23 @@ void CLCDDisplay::surface_fill_rect(int area_left, int area_top, int area_right,
 
 		if (surface_bpp == 8)
 		{
-			for (int y=area_top; y<area_bottom; y++)
+			for (int y = area_top; y < area_bottom; y++)
 		 		memset(((uint8_t*)surface_data)+y*surface_stride+area_left, color, area_width);
 		} 
 		else if (surface_bpp == 16)
 		{
 			uint32_t icol;
 
-#if 0
-			if (surface_clut.data && color < surface_clut.colors)
-				icol=(surface_clut.data[color].a<<24)|(surface_clut.data[color].r<<16)|(surface_clut.data[color].g<<8)|(surface_clut.data[color].b);
-			else
-#endif
 			icol = 0x10101*color;
 #if BYTE_ORDER == LITTLE_ENDIAN
 			uint16_t col = bswap_16(((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19);
 #else
 			uint16_t col = ((icol & 0xFF) >> 3) << 11 | ((icol & 0xFF00) >> 10) << 5 | (icol & 0xFF0000) >> 19;
 #endif
-			for (int y=area_top; y<area_bottom; y++)
+			for (int y = area_top; y < area_bottom; y++)
 			{
 				uint16_t *dst=(uint16_t*)(((uint8_t*)surface_data)+y*surface_stride+area_left*surface_bypp);
-				int x=area_width;
+				int x = area_width;
 				while (x--)
 					*dst++=col;
 			}
@@ -491,20 +486,9 @@ void CLCDDisplay::surface_fill_rect(int area_left, int area_top, int area_right,
 		{
 			uint32_t col;
 
-#if 0
-			if (surface_clut.data && color < surface_clut.colors)
-				col=(surface_clut.data[color].a<<24)|(surface_clut.data[color].r<<16)|(surface_clut.data[color].g<<8)|(surface_clut.data[color].b);
-			else
-#endif
 			col = 0x10101*color;
 			
 			col ^= 0xFF000000;
-			
-#if 0
-			if (surface_data_phys && gAccel::getInstance())
-				if (!gAccel::getInstance()->fill(surface,  area, col))
-					continue;
-#endif
 
 			for (int y=area_top; y<area_bottom; y++)
 			{

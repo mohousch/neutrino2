@@ -85,39 +85,7 @@ uint8_t limitChar(int c)
 	return ret;
 }
 
-uint8_t getBrightnessRGB(fb_pixel_t color)
-{
-	RgbColor rgb;
-	rgb.r  = (uint8_t)((color & 0x00FF0000) >> 16);
-	rgb.g  = (uint8_t)((color & 0x0000FF00) >>  8);
-	rgb.b  = (uint8_t) (color & 0x000000FF);
-
-	return rgb.r > rgb.g ? (rgb.r > rgb.b ? rgb.r : rgb.b) : (rgb.g > rgb.b ? rgb.g : rgb.b);
-}
-
-fb_pixel_t changeBrightnessRGBRel(fb_pixel_t color, int br, bool transp)
-{
-	int br_ = (int)getBrightnessRGB(color);
-	br_ += br;
-	
-	if (br_ < 0) br_ = 0;
-	if (br_ > 255) br_ = 255;
-	
-	return changeBrightnessRGB(color, (uint8_t)br_, transp);
-}
-
-fb_pixel_t changeBrightnessRGB(fb_pixel_t color, uint8_t br, bool transp)
-{
-	HsvColor hsv;
-	uint8_t tr = SysColor2Hsv(color, &hsv);
-	hsv.v = (float)br / (float)255;
-	
-	if (!transp)
-		tr = 0xFF;
-		
-	return Hsv2SysColor(&hsv, tr);
-}
-
+//
 fb_pixel_t Hsv2SysColor(HsvColor *hsv, uint8_t tr)
 {
 	RgbColor rgb;

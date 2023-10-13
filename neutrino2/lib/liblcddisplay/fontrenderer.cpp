@@ -43,11 +43,10 @@
 #endif
 
 // fribidi
-#if defined (ENABLE_FRIBIDI)
 #include <fribidi/fribidi.h>
-#endif
 
 
+////
 FT_Error LcdFontRenderClass::myFTC_Face_Requester(FTC_FaceID  face_id,
                             FT_Library  library,
                             FT_Pointer  request_data,
@@ -85,6 +84,7 @@ void LcdFontRenderClass::InitFontCache()
 	dprintf(DEBUG_NORMAL, "LcdFontRenderClass::InitFontCache: Intializing font cache...\n");
 	
 	fflush(stdout);
+	
 	if (FTC_Manager_New(library, 3, 0, 0, myFTC_Face_Requester, this, &cacheManager))
 	{
 		dprintf(DEBUG_NORMAL, "LcdFontRenderClass::InitFontCache: manager failed!\n");
@@ -223,9 +223,7 @@ FT_Error LcdFont::getGlyphBitmap(FT_ULong glyph_index, FTC_SBit *sbit)
 }
 
 extern int UTF8ToUnicode(const char * &text, const bool utf8_encoded);	//defined in src/driver/fontrenderer.cpp
-#if defined (ENABLE_FRIBIDI)
 std::string fribidiShapeChar(const char* text, const bool utf8_encoded);
-#endif
 
 void LcdFont::RenderString(int x, int y, const int width, const char * text, const int color, const int selected, const bool utf8_encoded)
 {
@@ -233,10 +231,8 @@ void LcdFont::RenderString(int x, int y, const int width, const char * text, con
 	pthread_mutex_lock(&renderer->render_mutex);
 	
 // fribidi
-#if defined (ENABLE_FRIBIDI)
 	std::string Text = fribidiShapeChar(text, utf8_encoded);
-	text = Text.c_str();
-#endif		
+	text = Text.c_str();		
 
 #ifdef FT_NEW_CACHE_API
 	FTC_ScalerRec scaler;
@@ -324,10 +320,8 @@ int LcdFont::getRenderWidth(const char * text, const bool utf8_encoded)
 	pthread_mutex_lock(&renderer->render_mutex);
 	
 // fribidi
-#if defined (ENABLE_FRIBIDI)
 	std::string Text = fribidiShapeChar(text, utf8_encoded);
-	text = Text.c_str();
-#endif	
+	text = Text.c_str();	
 	
 	FT_Error err;
 #ifdef FT_NEW_CACHE_API

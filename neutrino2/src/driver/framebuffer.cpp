@@ -66,7 +66,7 @@ void add_format(int (*picsize)(const char *,int *,int*,int,int),int (*picread)(c
 //
 static uint32_t * virtual_fb = NULL;
 
-inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
+static inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
 				  uint32_t  /*rl*/ = 0, uint32_t  /*ro*/ = 0,
 				  uint32_t  /*gl*/ = 0, uint32_t  /*go*/ = 0,
 				  uint32_t  /*bl*/ = 0, uint32_t  /*bo*/ = 0,

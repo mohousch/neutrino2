@@ -218,9 +218,7 @@ CBouquetList* RADIOallList;
 CCAMMenuHandler* g_CamHandler;
 #endif
 //
-//#ifdef USE_OPENGL
 static char **global_argv;
-//#endif
 //user menu
 const char *usermenu_button_def[SNeutrinoSettings::BUTTON_MAX] = 
 {
@@ -262,9 +260,6 @@ extern int dvbsub_terminate();
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
 extern CFrontend * live_fe;
-// Audio/Video Decoder
-//extern cVideo* videoDecoder;
-//extern cAudio* audioDecoder;
 // timezone for wizard
 extern CMenuOptionStringChooser* tzSelect;		// defined in misc_setup.cpp
 
@@ -343,7 +338,7 @@ CNeutrinoApp * CNeutrinoApp::getInstance()
 
 typedef struct font_sizes
 {
-        const char* const name;
+        const char* const 	name;
         const unsigned int      defaultsize;
         const unsigned int      style;
         const unsigned int      size_offset;
@@ -374,7 +369,7 @@ font_sizes_struct neutrino_font[FONT_TYPE_COUNT] =
         {_("Infobar info")       	,  20, FONT_STYLE_REGULAR, 1},
         {_("Infobar small")      	,  14, FONT_STYLE_REGULAR, 1},
         {_("Filebrowser item")   	,  16, FONT_STYLE_BOLD   , 1},
-        {_("Menu Title2")         	,  40, FONT_STYLE_REGULAR   , 0},
+        {_("Menu Title2")         	,  40, FONT_STYLE_REGULAR, 0},
 };
 
 // signal font
@@ -907,11 +902,11 @@ int CNeutrinoApp::loadSetup(const char * fname)
 #endif
 
 	// cec
-	g_settings.hdmi_cec_mode = configfile.getInt32("hdmi_cec_mode", 0); // default off
-	g_settings.hdmi_cec_view_on = configfile.getInt32("hdmi_cec_view_on", 0); // default off
-	g_settings.hdmi_cec_standby = configfile.getInt32("hdmi_cec_standby", 0); // default off
+	g_settings.hdmi_cec_mode = configfile.getInt32("hdmi_cec_mode", 0); 		// default off
+	g_settings.hdmi_cec_view_on = configfile.getInt32("hdmi_cec_view_on", 0); 	// default off
+	g_settings.hdmi_cec_standby = configfile.getInt32("hdmi_cec_standby", 0); 	// default off
 	g_settings.hdmi_cec_volume = configfile.getInt32("hdmi_cec_volume", 0);
-	g_settings.hdmi_cec_broadcast = configfile.getInt32("hdmi_cec_broadcast", 0); // default off
+	g_settings.hdmi_cec_broadcast = configfile.getInt32("hdmi_cec_broadcast", 0); 	// default off
 	
 	// personalize
 	g_settings.personalize_tvradio = configfile.getInt32("personalize_tvradio", CMenuItem::ITEM_ACTIVE);
@@ -2605,17 +2600,21 @@ void CNeutrinoApp::radioMode( bool rezap)
 	g_RemoteControl->radioMode();
 	setChannelMode( g_settings.channel_mode, mode);
 	
-	if (g_settings.radiotext_enable) 
-	{
-		if(g_Radiotext == NULL)
-			g_Radiotext = new CRadioText;
-	}
-	
 	if( rezap ) 
 	{
 		firstChannel();
 		channelList->tuned = 0xfffffff;
 		channelList->zapTo(firstchannel.channelNumber);
+	}
+	
+	//
+	if (g_settings.radiotext_enable) 
+	{
+		if(g_Radiotext == NULL)
+			g_Radiotext = new CRadioText();
+			
+		if (g_Radiotext && !IS_WEBTV(live_channel_id) && live_fe)
+			g_Radiotext->setPid(g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].pid);	
 	}	
 }
 
@@ -3186,9 +3185,9 @@ bool CNeutrinoApp::getNVODMenu(ClistBox* menu)
 		else 
 		{
 			if (count == 0)
-				menu->addItem(new CMenuForwarder(Latin1_to_UTF8(e->subservice_name.c_str()).c_str(), true, NULL, NVODChanger, nvod_id, CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
+				menu->addItem(new CMenuForwarder(::Latin1_to_UTF8(e->subservice_name.c_str()).c_str(), true, NULL, NVODChanger, nvod_id, CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
 			else
-				menu->addItem(new CMenuForwarder(Latin1_to_UTF8(e->subservice_name.c_str()).c_str(), true, NULL, NVODChanger, nvod_id, CRCInput::convertDigitToKey(count)), (count == g_RemoteControl->selected_subchannel));
+				menu->addItem(new CMenuForwarder(::Latin1_to_UTF8(e->subservice_name.c_str()).c_str(), true, NULL, NVODChanger, nvod_id, CRCInput::convertDigitToKey(count)), (count == g_RemoteControl->selected_subchannel));
 		}
 
 		count++;
@@ -3228,7 +3227,7 @@ void CNeutrinoApp::unlockPlayBack(void)
 	startSubtitles();
 }
 
-// exit run
+// exitRun
 void CNeutrinoApp::exitRun(int retcode, bool save)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::exitRun: (retcode:%d) (save:%s)\n", retcode, save? "true" :"false");
@@ -3321,13 +3320,12 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		if(playback)
 			delete playback;
 			
-		////
+		//
 		if(audioDecoder)
 			delete audioDecoder;
 	
 		if(videoDecoder)
 			delete videoDecoder;
-		////
 			
 		if (g_RCInput != NULL)
 			delete g_RCInput;
@@ -3349,15 +3347,13 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 
 		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
 		
-		////
+		//
 		usleep(1500);
-		
-//#if defined (USE_OPENGL)		
+				
 		if(retcode == RESTART)
 		{		  
 			execvp(global_argv[0], global_argv); // no return if successful
-		}
-//#endif		
+		}		
 		
 		_exit(retcode);	
 	}
@@ -3366,8 +3362,6 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 // handle msg
 int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 {
-	//dprintf(DEBUG_DEBUG, ANSI_YELLOW"CNeutrinoApp::handleMsg: msg:(0x%X) data:(0x%X)\n", msg, data);
-	
 	int res = 0;
 
 	// zap complete event
@@ -3979,11 +3973,7 @@ _repeat:
 				if((data & norezap) == norezap)
 					radioMode(false);
 				else
-					radioMode(true);
-	
-				//FIXME: this sucks when no DVB device is present
-				if (g_settings.radiotext_enable && g_Radiotext)
-					g_Radiotext->setPid(g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].pid);				
+					radioMode(true);			
 			}
 		}
 		
@@ -4099,11 +4089,9 @@ void CNeutrinoApp::realRun(void)
 	// main run loop
 	while( true ) 
 	{
-		g_RCInput->getMsg(&msg, &data, 1);	// 10 secs..
-		
-		//dprintf(DEBUG_DEBUG, "CNeutrinoApp::realRun: msg:(0x%X) data:(0x%X)\n", msg, data);		
+		g_RCInput->getMsg(&msg, &data, 1);	// 1 secs..	
 
-		// mode TV/Radio/IPTV
+		// mode TV/Radio
 		if( (mode == mode_tv) || (mode == mode_radio) ) 
 		{
 			if(msg == NeutrinoMessages::SHOW_EPG) 
@@ -4711,17 +4699,15 @@ int CNeutrinoApp::run(int argc, char **argv)
 {
 	dprintf( DEBUG_NORMAL, "CNeutrinoApp::run:\n");
 	
-	//
-//#ifdef USE_OPENGL	
+	//	
 	global_argv = new char *[argc + 1];
 	
         for (int i = 0; i < argc; i++)
                 global_argv[i] = argv[i];
 	
         global_argv[argc] = NULL;
-//#endif
 	
-	// init API
+	// init coolstream API
 #if defined (PLATFORM_COOLSTREAM)
 	cs_api_init();
 	cs_register_messenger(CSSendMessage);
@@ -4762,10 +4748,8 @@ int CNeutrinoApp::run(int argc, char **argv)
 #else	
 	CVFD::getInstance()->init();
 #endif	
-
 	// VFD clear	
 	CVFD::getInstance()->Clear();	
-
 	// show startup msg in vfd
 	CVFD::getInstance()->ShowText( (char *)"N2");
 	
