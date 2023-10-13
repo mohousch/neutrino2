@@ -18,15 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
-
- * those files (xmlinterface.cpp and xmlinterface.h) lived at three different places
-   in the tuxbox-cvs before, so look there for history information:
-   - apps/dvb/zapit/include/zapit/xmlinterface.h
-   - apps/dvb/zapit/src/xmlinterface.cpp
-   - apps/tuxbox/neutrino/daemons/sectionsd/xmlinterface.cpp
-   - apps/tuxbox/neutrino/src/system/xmlinterface.cpp
-   - apps/tuxbox/neutrino/src/system/xmlinterface.h
  */
 
 #ifndef __xmlinterface_h__
@@ -38,33 +29,25 @@
 
 #include <string>
 
-//#define USE_LIBXML
-#ifdef USE_LIBXML
-#include <libxml/parser.h>
-#define xmlNextNode next
-inline char* xmlGetAttribute     (xmlNodePtr cur, const char * s) { return (char *)xmlGetProp(cur, (const xmlChar *)s); };
-inline char* xmlGetName          (xmlNodePtr cur)                 { return (char *)(cur->name); };
-
-#else  /* use libxmltree */
 #include "xmltree.h"
+
+
+////
 typedef XMLTreeParser	*xmlDocPtr;
 typedef XMLTreeNode	*xmlNodePtr;
 #define xmlChildrenNode GetChild()
 #define xmlNextNode     GetNext()
-inline xmlNodePtr xmlDocGetRootElement(xmlDocPtr  doc){ return doc->RootNode(); };
+inline xmlNodePtr xmlDocGetRootElement(xmlDocPtr doc){ return doc->RootNode(); };
 inline void xmlFreeDoc(xmlDocPtr  doc){ delete doc; };
 inline char *xmlGetAttribute(xmlNodePtr cur, const char *s){ return cur->GetAttributeValue(s); };
 inline char *xmlGetName(xmlNodePtr cur){ return cur->GetType(); };
 inline char *xmlGetData(xmlNodePtr cur){ return cur->GetData(); };
-#endif /* USE_LIBXML */
-
-
 unsigned long xmlGetNumericAttribute(const xmlNodePtr node, const char *name, const int base);
 long xmlGetSignedNumericAttribute(const xmlNodePtr node, const char *name, const int base);
 xmlNodePtr xmlGetNextOccurence(xmlNodePtr cur, const char * s);
-
+//
 std::string Unicode_Character_to_UTF8(const int character);
-
+//
 xmlDocPtr parseXml(const char *data);
 xmlDocPtr parseXmlFile(const char * filename, bool warning_by_nonexistence = false);
 

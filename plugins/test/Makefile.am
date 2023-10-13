@@ -12,7 +12,7 @@ AM_CPPFLAGS =  \
 	-I$(top_srcdir)/../neutrino2/lib/libxmltree \
 	-I$(top_srcdir)/../neutrino2/lib/libmd5sum \
 	-I$(top_srcdir)/../neutrino2/lib/libdvbapi \
-	@FREETYPE_CFLAGS@ 
+	@FREETYPE_CFLAGS@
 
 noinst_LTLIBRARIES = test.la
 

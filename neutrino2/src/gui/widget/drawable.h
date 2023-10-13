@@ -41,19 +41,18 @@
 #include <system/localize.h>
 
 
-class Drawable;
+////
+//class Drawable;
+//
+//typedef std::vector<std::vector<Drawable*> > ContentLines;
 
-typedef std::vector<std::vector<Drawable*> > ContentLines;
-
-
-/**
- * The base class for items which can be drawn on a CFBWindow.
- */
+////
 class Drawable
 {
 	public:
 
-		enum DType {
+		enum DType 
+		{
 			DTYPE_DRAWABLE,
 			DTYPE_TEXT,
 			DTYPE_ICON,
@@ -86,10 +85,10 @@ class Drawable
 		Drawable();
 
 		int m_height;
-		int m_width;
-
-	private:		
+		int m_width;		
 };
+
+typedef std::vector<std::vector<Drawable*> > ContentLines;
 
 /**
  * This class draws a given string.
@@ -153,3 +152,4 @@ class DPagebreak : public Drawable
 };
 
 #endif
+

@@ -37,11 +37,12 @@
 
 #include <vector>
 
+
+////
 class CFSMounter
 {
 	// protected
 	public:
-		
 		enum FS_Support
 		{
 			FS_UNSUPPORTED   = 0,
@@ -83,8 +84,6 @@ class CFSMounter
 		};
 
 		typedef std::vector<CFSMounter::MountInfo> MountInfos;
-
-	private:
 	
 	public:
 		CFSMounter();
@@ -105,3 +104,4 @@ bool remove_modules(const CFSMounter::FSType fstype);
 extern bool nfs_mounted_once; /* needed by update.cpp to prevent removal of modules after flashing a new cramfs, since rmmod (busybox) might no longer be available */
 
 #endif
+

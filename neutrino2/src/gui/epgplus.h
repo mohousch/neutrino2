@@ -53,7 +53,6 @@
 
 
 class CBouquetList;
-class ConfigFile;
 
 class EpgPlus
 {

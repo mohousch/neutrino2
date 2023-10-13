@@ -55,12 +55,6 @@
 #include <gui/widget/infobox.h>
 #include <gui/movieinfo.h>
 
-//#define XMLTREE_LIB
-#ifdef XMLTREE_LIB
-#include <xmltree/xmltree.h>
-#include <xmltree/xmltok.h>
-#endif
-
 #include <system/debug.h>
 #include <system/helpers.h>
 #include <system/tmdbparser.h>
@@ -386,11 +380,7 @@ bool CMovieInfo::loadMovieInfo(MI_MOVIE_INFO * movie_info, CFile * file)
 
 		if (result == true) 
 		{
-#ifdef XMLTREE_LIB
-			result = parseXmlTree(text, movie_info);
-#else /* XMLTREE_LIB */
 			result = parseXmlQuickFix(text, movie_info);
-#endif /* XMLTREE_LIB */
 		}
 	}
 	
@@ -635,11 +625,7 @@ MI_MOVIE_INFO CMovieInfo::loadMovieInfo(const char *file)
 
 			if (result == true) 
 			{
-#ifdef XMLTREE_LIB
-				result = parseXmlTree(text, &movie_info);
-#else /* XMLTREE_LIB */
 				result = parseXmlQuickFix(text, &movie_info);
-#endif /* XMLTREE_LIB */
 			}
 		}
 		
@@ -858,121 +844,6 @@ MI_MOVIE_INFO CMovieInfo::loadMovieInfo(const char *file)
 	}
 
 	return movie_info;
-}
-
-bool CMovieInfo::parseXmlTree(char */*text*/, MI_MOVIE_INFO */*movie_info*/)
-{
-#ifndef XMLTREE_LIB
-	return (false);		// no XML lib available return false
-#else /* XMLTREE_LIB */
-
-	XMLTreeParser *parser = new XMLTreeParser(NULL);
-
-	if (!parser->Parse(text, strlen(text), 1)) 
-	{
-		dprintf(DEBUG_INFO, "parse error: %s at line %d \r\n", parser->ErrorString(parser->GetErrorCode()), parser->GetCurrentLineNumber());
-		//fclose(in);
-		delete parser;
-		return (false);
-	}
-
-	XMLTreeNode *root = parser->RootNode();
-	if (!root) 
-	{
-		dprintf(DEBUG_NORMAL, " root error \r\n");
-		return (false);
-	}
-
-	if (strcmp(root->GetType(), MI_XML_TAG_NEUTRINO)) 
-	{
-		dprintf(DEBUG_NORMAL, "not neutrino file. %s", root->GetType());
-		return (false);
-	}
-
-	XMLTreeNode *node = parser->RootNode();
-
-	for (node = node->GetChild(); node; node = node->GetNext()) 
-	{
-		if (!strcmp(node->GetType(), MI_XML_TAG_RECORD)) 
-		{
-			for (XMLTreeNode * xam1 = node->GetChild(); xam1; xam1 = xam1->GetNext()) 
-			{
-				XML_GET_DATA_STRING(xam1, MI_XML_TAG_CHANNELNAME, movie_info->epgChannel);
-				XML_GET_DATA_STRING(xam1, MI_XML_TAG_EPGTITLE, movie_info->epgTitle);
-				XML_GET_DATA_LONG(xam1, MI_XML_TAG_ID, movie_info->epgId);
-				XML_GET_DATA_STRING(xam1, MI_XML_TAG_INFO1, movie_info->epgInfo1);
-				XML_GET_DATA_STRING(xam1, MI_XML_TAG_INFO2, movie_info->epgInfo2);
-				XML_GET_DATA_LONG(xam1, MI_XML_TAG_EPGID, movie_info->epgEpgId);	// %llu
-				XML_GET_DATA_INT(xam1, MI_XML_TAG_MODE, movie_info->epgMode);		//%d
-				XML_GET_DATA_INT(xam1, MI_XML_TAG_VIDEOPID, movie_info->epgVideoPid);	//%u
-				XML_GET_DATA_INT(xam1, MI_XML_TAG_VIDEOTYPE, movie_info->VideoType);	//%u
-				
-				if (!strcmp(xam1->GetType(), MI_XML_TAG_AUDIOPIDS)) 
-				{
-					for (XMLTreeNode * xam2 = xam1->GetChild(); xam2; xam2 = xam2->GetNext()) 
-					{
-						if (!strcmp(xam2->GetType(), MI_XML_TAG_AUDIO)) 
-						{
-							EPG_AUDIO_PIDS pids;
-							pids.epgAudioPid = atoi(xam2->GetAttributeValue((char *)MI_XML_TAG_PID));
-							pids.atype = atoi(xam2->GetAttributeValue((char *)MI_XML_TAG_ATYPE));
-							pids.selected = atoi(xam2->GetAttributeValue((char *)MI_XML_TAG_SELECTED));
-							pids.epgAudioPidName = xam2->GetAttributeValue((char *)MI_XML_TAG_NAME);
-							//printf("MOVIE INFO: apid %d type %d name %s selected %d\n", pids.epgAudioPid, pids.atype, pids.epgAudioPidName.c_str(), pids.selected);
-							movie_info->audioPids.push_back(pids);
-						}
-					}
-				}
-				XML_GET_DATA_INT(xam1, MI_XML_TAG_VTXTPID, movie_info->epgVTXPID);	//%u
-				/*new tags */
-				XML_GET_DATA_INT(xam1, MI_XML_TAG_GENRE_MAJOR, movie_info->genreMajor);
-				XML_GET_DATA_INT(xam1, MI_XML_TAG_GENRE_MINOR, movie_info->genreMinor);
-				XML_GET_DATA_STRING(xam1, MI_XML_TAG_SERIE_NAME, movie_info->serieName);
-				XML_GET_DATA_INT(xam1, MI_XML_TAG_LENGTH, movie_info->length);
-				XML_GET_DATA_STRING(xam1, MI_XML_TAG_PRODUCT_COUNTRY, movie_info->productionCountry);
-				//if(!strcmp(xam1->GetType(), MI_XML_TAG_PRODUCT_COUNTRY)) if(xam1->GetData() != NULL)strncpy(movie_info->productionCountry, xam1->GetData(),4);        
-				XML_GET_DATA_INT(xam1, MI_XML_TAG_PRODUCT_DATE, movie_info->productionDate);
-				XML_GET_DATA_INT(xam1, MI_XML_TAG_QUALITY, movie_info->quality);
-				XML_GET_DATA_INT(xam1, MI_XML_TAG_PARENTAL_LOCKAGE, movie_info->parentalLockAge);
-				XML_GET_DATA_INT(xam1, MI_XML_TAG_DATE_OF_LAST_PLAY, movie_info->dateOfLastPlay);
-
-				if (!strcmp(xam1->GetType(), MI_XML_TAG_BOOKMARK)) 
-				{
-					for (XMLTreeNode * xam2 = xam1->GetChild(); xam2; xam2 = xam2->GetNext()) 
-					{
-						XML_GET_DATA_INT(xam2, MI_XML_TAG_BOOKMARK_START, movie_info->bookmarks.start);
-						XML_GET_DATA_INT(xam2, MI_XML_TAG_BOOKMARK_END, movie_info->bookmarks.end);
-						XML_GET_DATA_INT(xam2, MI_XML_TAG_BOOKMARK_LAST, movie_info->bookmarks.lastPlayStop);
-					}
-				}
-				
-				//
-				XML_GET_DATA_INT(xam1, "vote_average", movie_info->vote_average);
-				XML_GET_DATA_STRING(xam1, "genres", movie_info->genres);
-			}
-		}
-	}
-
-	delete parser;
-	
-	//
-	strReplace(movie_info->epgTitle, "&quot;", "\"");
-	strReplace(movie_info->epgInfo1, "&quot;", "\"");
-	strReplace(movie_info->epgTitle, "&apos;", "'");
-	strReplace(movie_info->epgInfo1, "&apos;", "'");
-	strReplace(movie_info->epgInfo1, "&amp;", "&");
-	
-	htmlEntityDecode(movie_info->epgInfo1, true);
-	
-	//
-	strReplace(movie_info->epgInfo2, "&quot;", "\"");
-	strReplace(movie_info->epgInfo2, "&apos;", "'");
-	strReplace(movie_info->epgInfo2, "&amp;", "&");
-		
-	htmlEntityDecode(movie_info->epgInfo2, true);
-#endif /* XMLTREE_LIB */
-
-	return (true);
 }
 
 void CMovieInfo::showMovieInfo(MI_MOVIE_INFO &movie_info)
@@ -1197,6 +1068,7 @@ void CMovieInfo::showMovieInfo(MI_MOVIE_INFO &movie_info)
 	infoBox->setText(print_buffer.c_str(), movie_info.tfile.c_str(), p_w, p_h);
 	infoBox->exec();
 	delete infoBox;
+	infoBox = NULL;
 }
 
 void CMovieInfo::printDebugMovieInfo(MI_MOVIE_INFO & movie_info)
@@ -1298,7 +1170,6 @@ int find_next_char(char to_find, char *text, int start_pos, int end_pos)
 
 bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 {
-#ifndef XMLTREE_LIB
 	int bookmark_nr = 0;
 	movie_info->dateOfLastPlay = 0;	//100*366*24*60*60;              // (date, month, year)
 
@@ -1492,8 +1363,6 @@ bool CMovieInfo::parseXmlQuickFix(char *text, MI_MOVIE_INFO * movie_info)
 	htmlEntityDecode(movie_info->epgInfo2, true);
 
 	return (true);
-#endif
-	return (false);
 }
 
 bool CMovieInfo::addNewBookmark(MI_MOVIE_INFO * movie_info, MI_BOOKMARK & new_bookmark)
@@ -1612,13 +1481,10 @@ bool CMovieInfo::loadFile(CFile& file, char *buffer, int buffer_size)
 {
 	bool result = true;
 
-	//dprintf(DEBUG_INFO, "CMovieInfo::laodFile: %s\n", file.getFileName().c_str());
-
 	// open file
 	int fd = open(file.Name.c_str(), O_RDONLY);
 	if (fd == -1)		// cannot open file, return!!!!! 
 	{
-		//dprintf(DEBUG_NORMAL, "CMovieInfo::laodFile: cannot open (%s)\r\n", file.getFileName().c_str());
 		return false;
 	}
 	
@@ -1626,7 +1492,6 @@ bool CMovieInfo::loadFile(CFile& file, char *buffer, int buffer_size)
 	int bytes = read(fd, buffer, buffer_size - 1);
 	if (bytes <= 0)		// cannot read file into buffer, return!!!! 
 	{
-		//dprintf(DEBUG_NORMAL, "CMovieInfo::laodFile: cannot read (%s)\r\n", file.getFileName().c_str());
 		return false;
 	}
 
@@ -1713,7 +1578,7 @@ void CMovieInfo::copy(MI_MOVIE_INFO * src, MI_MOVIE_INFO * dst)
 	dst->genres = src->genres;
 }
 
-// CMovieInfoWidget
+//// CMovieInfoWidget
 CMovieInfoWidget::CMovieInfoWidget()
 {
 	m_movieInfo.clearMovieInfo(&movieFile);

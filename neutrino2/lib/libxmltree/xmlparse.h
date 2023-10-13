@@ -96,11 +96,11 @@ enum XML_Error {
   XML_ERROR_EXTERNAL_ENTITY_HANDLING
 };
 
-#define INIT_TAG_BUF_SIZE 32  /* must be a multiple of sizeof(XML_Char) */
-#define INIT_DATA_BUF_SIZE 1024
-#define INIT_ATTS_SIZE 32  //
-#define INIT_BLOCK_SIZE 1024
-#define INIT_BUFFER_SIZE 1024
+#define INIT_TAG_BUF_SIZE 	32  /* must be a multiple of sizeof(XML_Char) */
+#define INIT_DATA_BUF_SIZE 	1024
+#define INIT_ATTS_SIZE 		32  // must be enough
+#define INIT_BLOCK_SIZE 	1024
+#define INIT_BUFFER_SIZE 	1024
 
 typedef struct tag {
   struct tag *parent;
@@ -182,7 +182,7 @@ extern Processor externalEntityInitProcessor2;
 extern Processor externalEntityInitProcessor3;
 extern Processor externalEntityContentProcessor;
 
-
+//
 class XML_Parser
 {
   friend Processor prologProcessor;
@@ -297,3 +297,4 @@ class XML_Parser
 };
 
 #endif /* not XmlParse_INCLUDED */
+

@@ -140,7 +140,7 @@ int CNFSMountGui::exec( CMenuTarget *parent, const std::string &actionKey )
 		}
 		returnval = menu();
 	}
-	else if(actionKey.substr(0,10) == "mountentry")
+	else if(actionKey.substr(0, 10) == "mountentry")
 	{
 		if(parent)
 			parent->hide();

@@ -106,7 +106,6 @@ CColorChooser::CColorChooser(const char * const Name, unsigned char *R, unsigned
 	cFrameBoxColorPreview.iY = cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight/2;
 
 	//
-	//m_cBoxWindow.setPosition(&cFrameBox);
 	m_cBoxWindow = new CCWindow(&cFrameBox);
 }
 

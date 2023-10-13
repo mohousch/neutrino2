@@ -2166,7 +2166,7 @@ void CFrameBuffer::displayRGB(unsigned char * rgbbuff, int x_size, int y_size, i
 // display image
 bool CFrameBuffer::displayImage(const std::string& name, int posx, int posy, int width, int height, int x_pan, int y_pan)
 {
-	dprintf(DEBUG_NORMAL, "CFrameBuffer::displayImage %s\n", name.c_str());
+	dprintf(DEBUG_DEBUG, "CFrameBuffer::displayImage %s\n", name.c_str());
 	
 	if(!getActive())
 		return false;

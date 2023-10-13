@@ -39,7 +39,6 @@ class XMLTreeNode
 {
   public:
     // matching mode: case insensitive or case sensitive?
-
     enum matchmode
     {
       MATCH_CASE   = 0,
@@ -68,7 +67,6 @@ class XMLTreeNode
     ~XMLTreeNode();
 
     // add modes: add the node as child or neighbour?
-
     enum addmode
     {
       ADD_NEIGHBOUR = 0,
