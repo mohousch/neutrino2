@@ -59,5 +59,12 @@ install_DATA = \
 	hint_video.png \
 	hint_avinputmode.png \
 	hint_avinputmode_pip.png \
-	hint_quadpip.png 
+	hint_quadpip.png \
+	hint_themes.png \
+	hint_font.png \
+	hint_menucolors.png \
+	hint_infobarcolors.png \
+	hint_osdtiming.png \
+	hint_standby.png \
+	hint_xmltv.png
 
