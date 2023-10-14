@@ -1437,7 +1437,8 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 				//get icon size
 				frameBuffer->getIconSize(iconName.c_str(), &icon_w, &icon_h);
 				
-				if (icon_h >= g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6)
+				// scale iconName
+				if (icon_h >= getHeight())
 				{
 					icon_h = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 4;
 					if (icon_w > 1.63*icon_h)

@@ -787,7 +787,7 @@ void CCButtons::paint()
 					//
 					CCHline line;
 					
-					line.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - 4, buttonWidth, 2);
+					line.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - 10, buttonWidth, 8);
 					line.setColor(buttons[i].color);
 					//line.setGradient();
 					line.paint();
@@ -2369,12 +2369,12 @@ void CHeaders::paint()
 				//
 				CCFrameLine frame;
 						
-				frame.setPosition(startx, itemBox.iY + 2, maxButtonTextWidth + 10, itemBox.iHeight - 4);
+				frame.setPosition(startx, itemBox.iY + 4, maxButtonTextWidth + 10, itemBox.iHeight - 8);
 				frame.paint();
 					
 				// label
 				CCLabel label;
-				label.setPosition(startx, itemBox.iY + 2, maxButtonTextWidth + 10, itemBox.iHeight - 4);
+				label.setPosition(startx, itemBox.iY + 4, maxButtonTextWidth + 10, itemBox.iHeight - 8);
 				label.setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
 				label.setText(_(buttons[i].localename.c_str()));
 				label.setHAlign(CC_ALIGN_CENTER);
@@ -2612,12 +2612,12 @@ void CFooters::paint()
 				//
 				CCFrameLine frame;
 						
-				frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
+				frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 4, buttonWidth, itemBox.iHeight - 4);
 				frame.paint();
 					
 				// label
 				CCLabel label;
-				label.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
+				label.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 4, buttonWidth, itemBox.iHeight - 8);
 				label.setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
 				label.setHAlign(CC_ALIGN_CENTER);
 				label.setText(_(buttons[i].localename.c_str()));
@@ -2627,7 +2627,7 @@ void CFooters::paint()
 			{
 				//
 				CFrameItem frame;
-				frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
+				frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 4, buttonWidth, itemBox.iHeight - 8);
 				frame.setBorderMode();
 				frame.paintMainFrame(true);
 				frame.setColor(buttons[i].color);
@@ -2651,7 +2651,7 @@ void CFooters::paint()
 				//
 				CCHline line;
 					
-				line.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - 4, buttonWidth, 2);
+				line.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - 10, buttonWidth, 8);
 				line.setColor(buttons[i].color);
 				//line.setGradient();
 				line.paint();

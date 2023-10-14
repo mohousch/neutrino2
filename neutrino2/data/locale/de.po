@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-14 22:35+0200\n"
+"POT-Creation-Date: 2023-10-14 23:35+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -498,7 +498,7 @@ msgid "Delete channel from bouquet?"
 msgstr "Kanal aus Bouquet löschen?"
 
 msgid "Delete channels"
-msgstr "Kanäle löschen"
+msgstr "Senderlisten löschen"
 
 msgid "Description: "
 msgstr "Beschreibung: "
@@ -1748,9 +1748,6 @@ msgstr "Senderlisten neu laden"
 
 msgid "Reloading EPG, please be patient."
 msgstr "EPG wird neu geladen, bitte haben Sie etwas Geduld."
-
-msgid "Reloading Skin default style, please be patient."
-msgstr "Der Skin-Standardstil wird neu geladen. Bitte haben Sie etwas Geduld."
 
 msgid "Reloading XMLTV EPG, please be patient."
 msgstr "XMLTV EPG wird neu geladen, bitte haben Sie etwas Geduld."
