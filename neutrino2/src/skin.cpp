@@ -1340,13 +1340,13 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	icon = xmlGetAttribute(node, "icon");
 	//format = xmlGetAttribute(node, (char*)"format"); //FIXME:
 	halign = xmlGetSignedNumericAttribute(node, "halign", 0);
-	head_line = xmlGetSignedNumericAttribute(node, "head_line", 0);
-	head_line_gradient = xmlGetSignedNumericAttribute(node, "head_line_gradient", 0);
+	head_line = xmlGetSignedNumericAttribute(node, "headline", 0);
+	head_line_gradient = xmlGetSignedNumericAttribute(node, "headlinegradient", 0);
 				
 	// foot
 	paintfoot = xmlGetSignedNumericAttribute(node, "paintfoot", 0);
-	foot_line = xmlGetSignedNumericAttribute(node, "foot_line", 0);
-	foot_line_gradient = xmlGetSignedNumericAttribute(node, "foot_line_gradient", 0);
+	foot_line = xmlGetSignedNumericAttribute(node, "footline", 0);
+	foot_line_gradient = xmlGetSignedNumericAttribute(node, "footlinegradient", 0);
 		
 	// item
 	itemborder = xmlGetSignedNumericAttribute(node, "itemborder", 0);
@@ -1664,7 +1664,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);		
 	color = xmlGetAttribute(node, (char*)"color");
 	gradient = xmlGetAttribute(node, (char *)"gradient");
-	gradient_type = xmlGetAttribute(node, (char *)"gradient_type");
+	gradient_type = xmlGetAttribute(node, (char *)"gradienttype");
 	corner = xmlGetAttribute(node, (char *)"corner");
 	radius = xmlGetAttribute(node, (char *)"radius");
 				
@@ -1676,7 +1676,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	halign = xmlGetSignedNumericAttribute(node, "halign", 0);
 	icon = xmlGetAttribute(node, (char*)"icon");
 	head_line = xmlGetSignedNumericAttribute(node, "line", 0);
-	head_line_gradient = xmlGetSignedNumericAttribute(node, "line_gradient", 0);
+	head_line_gradient = xmlGetSignedNumericAttribute(node, "linegradient", 0);
 		
 	paintdate = xmlGetSignedNumericAttribute(node, "paintdate", 0);
 	format = xmlGetAttribute(node, (char*)"format");
@@ -1796,7 +1796,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);	
 	color = xmlGetAttribute(node, (char*)"color");
 	gradient = xmlGetAttribute(node, (char *)"gradient");
-	gradient_type = xmlGetAttribute(node, (char *)"gradient_type");
+	gradient_type = xmlGetAttribute(node, (char *)"gradienttype");
 	corner = xmlGetAttribute(node, (char *)"corner");
 	radius = xmlGetAttribute(node, (char *)"radius");
 	
@@ -1807,7 +1807,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	if (color) finalColor = convertColor(color);
 				
 	foot_line = xmlGetSignedNumericAttribute(node, "line", 0);
-	foot_line_gradient = xmlGetSignedNumericAttribute(node, "line_gradient", 0);
+	foot_line_gradient = xmlGetSignedNumericAttribute(node, "linegradient", 0);
 		
 	// recalculate posx / posy
 	int x = posx;
@@ -2012,7 +2012,6 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	if (widget) widget->addCCItem(textBox);
 }
 
-////
 // CWindow
 void CNeutrinoApp::parseCCWindow(xmlNodePtr node, CWidget* widget)
 {
@@ -2056,8 +2055,8 @@ void CNeutrinoApp::parseCCWindow(xmlNodePtr node, CWidget* widget)
 	bordercolor = xmlGetAttribute(node, (char *)"bordercolor");
 		
 	gradient = xmlGetAttribute(node, (char *)"gradient");
-	gradient_direction = xmlGetSignedNumericAttribute(node, "direction", 0);
-	gradient_intensity = xmlGetSignedNumericAttribute(node, "intensity", 0);
+	gradient_direction = xmlGetSignedNumericAttribute(node, "gradientdirection", 0);
+	gradient_intensity = xmlGetSignedNumericAttribute(node, "gradientintensity", 0);
 	gradient_type = xmlGetAttribute(node, (char *)"type");
 		
 	// recalculate posx / posy
@@ -2700,9 +2699,9 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 					
 				color = xmlGetAttribute(search, (char*)"color");
 				gradient = xmlGetAttribute(search, (char *)"gradient");
-				gradient_type = xmlGetAttribute(search, (char *)"gradient_type");
-				gradient_direction = xmlGetAttribute(search, (char *)"gradient_direction");
-				gradient_intensity = xmlGetAttribute(search, (char *)"gradient_intensity");
+				gradient_type = xmlGetAttribute(search, (char *)"gradienttype");
+				gradient_direction = xmlGetAttribute(search, (char *)"gradientdirection");
+				gradient_intensity = xmlGetAttribute(search, (char *)"gradientintensity");
 				corner = xmlGetAttribute(search, (char *)"corner");
 				radius = xmlGetAttribute(search, (char *)"radius");
 				

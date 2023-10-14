@@ -990,8 +990,7 @@
 	
 	<WIDGET name="bouquetlist" posx="0" posy="0" width="1280" height="720">
 		<WINDOW name="bg" posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		
-		<LISTBOX posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" head_line="1" head_line_gradient="1" paintfoot="1" foot_line="1" foot_line_gradient="1"/>
+		<LISTBOX posx="60" posy="60" width="715" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" headlinegradient="DARK2LIGHT2DARK" paintfoot="1" footline="1" footlinegradient="1"/>
 		
 		<WINDOW posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</WINDOW>
@@ -1005,8 +1004,8 @@
 	<WIDGET name="channellist" posx="0" posy="0" width="1280" height="720">
 		<WINDOW posx="50" posy="50" width="735" height="620" paintframe="1"/>
 		<LISTBOX posx="60" posy="120" width="715" height="480" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1"/>
-		<HEAD posx="60" posy="60" width="715" height="50" paintdate="1" line="1" line_gradient="DARK2LIGHT"/>
-		<FOOT posx="60" posy="620" width="715" height="50" line="1" line_gradient="DARK2LIGHT"/>
+		<HEAD posx="60" posy="60" width="715" height="50" paintdate="1" line="1" linegradient="DARK2LIGHT"/>
+		<FOOT posx="60" posy="620" width="715" height="50" line="1" linegradient="DARK2LIGHT"/>
 		<WINDOW posx="785" posy="70" width="445" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0">
 		</WINDOW>
 		<HLINE posx="795" posy="360" width="425" height="3" gradient="DARK2LIGHT2DARK"/>
@@ -1043,7 +1042,7 @@
 	
 	<WIDGET name="eventlist" posx="0" posy="0" width="1280" height="720">
 		<WINDOW name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
-		<LISTBOX posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" head_line="1" head_line_gradient="DARK2LIGHT2DARK" paintfoot="1" foot_line="1" foot_line_gradient="DARK2LIGHT2DARK"/>
+		<LISTBOX posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_LISTBOX" scrollbar="1" painthead="1" headline="1" headlinegradient="DARK2LIGHT2DARK" paintfoot="1" footline="1" footlinegradient="DARK2LIGHT2DARK"/>
 		<WINDOW posx="825" posy="70" width="405" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<IMAGE name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<TIME name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
@@ -1052,8 +1051,8 @@
 	
 	<WIDGET name="epgview" posx="0" posy="0" width="1280" height="720">
 		<WINDOW name="bg" posx="50" posy="50" width="735" height="620" paintframe="1"/>
-		<HEAD posx="60" posy="60" width="715" height="60" line="1" line_gradient="DARK2LIGHT2DARK"/>
-		<FOOT posx="60" posy="600" width="715" height="60" line="1" line_gradient="DARK2LIGHT2DARK"/>
+		<HEAD posx="60" posy="60" width="715" height="60" line="1" linegradient="DARK2LIGHT2DARK"/>
+		<FOOT posx="60" posy="600" width="715" height="60" line="1" linegradient="DARK2LIGHT2DARK"/>
 		<TEXTBOX posx="60" posy="120" width="715" height="430" paintframe="1" fontbg="1"/>
 		<!--<WINDOW name="screening" posx="60" posy="570" width="715" height="30" paintframe="1"/>-->
 		
@@ -1066,7 +1065,7 @@
 	
 	<WIDGET name="filebrowser" posx="0" posy="0" width="1280" height="720">
 		<WINDOW name="bg" posx="50" posy="50" width="775" height="620" paintframe="1"/>
-		<LISTBOX posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1" paintdate="1" head_line="1" paintfoot="1" foot_line="1"/>
+		<LISTBOX posx="60" posy="60" width="755" height="600" type="TYPE_STANDARD" mode="MODE_MENU" scrollbar="1" painthead="1" paintdate="1" headline="1" paintfoot="1" footline="1"/>
 		<WINDOW posx="825" posy="70" width="405" height="580" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<IMAGE name="hint" posx="835" posy="150" width="385" height="275" image="picon_default.png"/>
 		<TIME name="date" posx="835" posy="460" width="385" height="60" refresh="1" format="%A %d.%m.%Y" font="FONT_TYPE_EPG_TITLE"/>
