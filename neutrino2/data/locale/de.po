@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-14 19:51+0200\n"
+"POT-Creation-Date: 2023-10-14 22:35+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2746,6 +2746,9 @@ msgstr "alles löschen"
 msgid "colored"
 msgstr "farbig"
 
+msgid "create new"
+msgstr "Neu erstellen"
+
 msgid "create screenshot?"
 msgstr "Screenshot erstellen?"
 
@@ -2790,9 +2793,6 @@ msgstr "Geben Sie das Proxyserver-Passwort ein"
 
 msgid "enter the proxyserver username"
 msgstr "Geben Sie den Proxyserver-Benutzernamen ein"
-
-msgid "erase all"
-msgstr "alles löschen"
 
 msgid "erasing flash"
 msgstr "Flash Speicher löschen"
