@@ -2865,8 +2865,8 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		
 		//
 		saveSetup(NEUTRINO_SETTINGS_FILE);
-
-		//tuxtxt_close();
+		
+		return RETURN_REPAINT;
 	}
 	else if (actionKey == "saveskinsettings")
 	{
@@ -2878,6 +2878,8 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		skinConfig += ".config";
 				
 		saveSkinConfig(skinConfig.c_str());
+		
+		return RETURN_REPAINT;
 	}
 	else if (actionKey == "defaultskinsettings")
 	{
@@ -2889,17 +2891,23 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		skinDefaultConfigFile += "default.config";
 			
 		readSkinConfig(skinDefaultConfigFile.c_str());
+		
+		return RETURN_REPAINT;
 	}
 	else if(actionKey == "reloadchannels")
 	{
 		HintBox(_("Information"), _("Reloading channel lists, please be patient."));
 		CZapit::getInstance()->reinitChannels();
+		
+		return RETURN_REPAINT;
 	}
 	else if (actionKey == "reloadepg")
 	{
 		HintBox(_("Information"), _("Reloading EPG, please be patient."));
 			
 		CSectionsd::getInstance()->readSIfromXML(g_settings.epg_dir.c_str());
+		
+		return RETURN_REPAINT;
 	}
 	else if (actionKey == "reloadxmltvepg")
 	{
@@ -2909,21 +2917,30 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 		{
 			CSectionsd::getInstance()->readSIfromXMLTV(g_settings.xmltv[i].c_str());
 		}
+		
+		return RETURN_REPAINT;
 	}
 	else if (actionKey == "delete_zapit")
 	{
-		my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/zapit/*.xml");
+		my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/zapit/services.xml");
+		my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/zapit/bouquets.xml");
 		CZapit::getInstance()->reinitChannels();
+		
+		return RETURN_REPAINT;
 	}
 	else if (actionKey == "delete_webtv")
 	{
 		my_system(3, "/bin/sh", "-c", "rm -f " CONFIGDIR "/webtv/*.*");
 		CZapit::getInstance()->reinitChannels();
+		
+		return RETURN_REPAINT;
 	}
 	else if (actionKey == "free_memory")
 	{
 		CSectionsd::getInstance()->dumpStatus();
 		CSectionsd::getInstance()->freeMemory();
+		
+		return RETURN_REPAINT;
 	}
 	else if (actionKey == "mainmenu")
 	{
@@ -2933,20 +2950,14 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	}
 	else if(actionKey == "features")
 	{
-		if(parent)
-			parent->hide();
-		
 		stopSubtitles();
 		showUserMenu(SNeutrinoSettings::BUTTON_BLUE);
 		startSubtitles();
 				
-		return RETURN_REPAINT;	
+		return RETURN_REPAINT;
 	}
 	else if(actionKey == "plugins")
 	{
-		if(parent)
-			parent->hide();
-		
 		stopSubtitles();
 		
 		CPluginList * pluginList = new CPluginList();
@@ -3155,7 +3166,7 @@ bool CNeutrinoApp::getNVODMenu(ClistBox* menu)
 		if( !g_RemoteControl->are_subchannels ) 
 		{
 			char nvod_time_a[50], nvod_time_e[50], nvod_time_x[50];
-			char nvod_s[100];
+			char nvod_s[255];
 			struct  tm *tmZeit;
 
 			tmZeit = localtime(&e->startzeit);
@@ -4292,7 +4303,7 @@ void CNeutrinoApp::realRun(void)
 						MI_MOVIE_INFO mfile;
 
 						//
-						char fname[255];
+						char fname[1024];
 						int cnt = 10*1000000;
 
 						while (!strlen(rec_filename)) 

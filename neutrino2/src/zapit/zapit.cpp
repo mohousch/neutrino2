@@ -4710,51 +4710,49 @@ void CZapit::saveScanBouquets(const CZapit::bouquetMode bouquetMode, const char 
 		unlink(BOUQUETS_XML);
 	}
 	
-	if (bouquetMode == CZapit::BM_DELETEBOUQUETS || bouquetMode == CZapit::BM_UPDATEBOUQUETS)
+	//
+	while (!(scanBouquets.empty())) 
 	{
-		while (!(scanBouquets.empty())) 
+		CZapitBouquet * bouquet;
+		int dest = existsBouquet(scanBouquets[0]->Name.c_str());
+			
+		dprintf(DEBUG_NORMAL, "CZapit::saveScanBouquets: dest %d for name %s\n", dest, scanBouquets[0]->Name.c_str());
+
+		if(dest == -1) 
 		{
-			CZapitBouquet * bouquet;
-			int dest = existsBouquet(scanBouquets[0]->Name.c_str());
-			
-			dprintf(DEBUG_NORMAL, "CZapit::saveScanBouquets: dest %d for name %s\n", dest, scanBouquets[0]->Name.c_str());
-
-			if(dest == -1) 
-			{
-				bouquet = addBouquet(scanBouquets[0]->Name.c_str());
-				dest = existsBouquet(scanBouquets[0]->Name.c_str());
-			}
-			else
-				bouquet = Bouquets[dest];
-
-			// tv bouquets
-			for(unsigned int i = 0; i < scanBouquets[0]->tvChannels.size(); i++) 
-			{
-				if(!(existsChannelInBouquet(dest, scanBouquets[0]->tvChannels[i]->getChannelID()))) 
-				{
-					bouquet->addService(scanBouquets[0]->tvChannels[i]);
-
-					dprintf(DEBUG_NORMAL, "CZapit::saveScanBouquets: adding channel %s\n", scanBouquets[0]->tvChannels[i]->getName().c_str());
-				}
-			}
-			
-			// radio bouquets
-			for(unsigned int i = 0; i < scanBouquets[0]->radioChannels.size(); i++) 
-			{
-				if(!(existsChannelInBouquet(dest, scanBouquets[0]->radioChannels[i]->getChannelID()))) 
-				{
-					bouquet->addService(scanBouquets[0]->radioChannels[i]);
-
-					dprintf(DEBUG_NORMAL, "CZapit::saveScanBouquets: adding channel %s\n", scanBouquets[0]->radioChannels[i]->getName().c_str());
-				}
-			}
-
-			sortBouquets();
-			
-			//
-			delete scanBouquets[0];
-			scanBouquets.erase(scanBouquets.begin());
+			bouquet = addBouquet(scanBouquets[0]->Name.c_str());
+			dest = existsBouquet(scanBouquets[0]->Name.c_str());
 		}
+		else
+			bouquet = Bouquets[dest];
+
+		// tv bouquets
+		for(unsigned int i = 0; i < scanBouquets[0]->tvChannels.size(); i++) 
+		{
+			if(!(existsChannelInBouquet(dest, scanBouquets[0]->tvChannels[i]->getChannelID()))) 
+			{
+				bouquet->addService(scanBouquets[0]->tvChannels[i]);
+
+				dprintf(DEBUG_NORMAL, "CZapit::saveScanBouquets: adding channel %s\n", scanBouquets[0]->tvChannels[i]->getName().c_str());
+			}
+		}
+			
+		// radio bouquets
+		for(unsigned int i = 0; i < scanBouquets[0]->radioChannels.size(); i++) 
+		{
+			if(!(existsChannelInBouquet(dest, scanBouquets[0]->radioChannels[i]->getChannelID()))) 
+			{
+				bouquet->addService(scanBouquets[0]->radioChannels[i]);
+
+				dprintf(DEBUG_NORMAL, "CZapit::saveScanBouquets: adding channel %s\n", scanBouquets[0]->radioChannels[i]->getName().c_str());
+			}
+		}
+
+		sortBouquets();
+			
+		//
+		delete scanBouquets[0];
+		scanBouquets.erase(scanBouquets.begin());
 	}
 }
 

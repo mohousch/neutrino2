@@ -130,14 +130,13 @@
 #define COL_MENUHINT_PLUS_0        		CFrameBuffer::getInstance()->realcolor[COL_MENUHINT + 0]
 
 ////
-int convertSetupColor2RGB(unsigned char r, unsigned char g, unsigned char b);
-int convertSetupAlpha2Alpha(unsigned char alpha);
-//
 inline uint32_t make16color(unsigned int rgb)
 {
         return 0xFF000000 | rgb;
 }
 //
+int convertSetupColor2RGB(unsigned char r, unsigned char g, unsigned char b);
+int convertSetupAlpha2Alpha(unsigned char alpha);
 inline uint32_t convertSetupColor2Color(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha)
 {
 	int color = convertSetupColor2RGB(r, g, b);

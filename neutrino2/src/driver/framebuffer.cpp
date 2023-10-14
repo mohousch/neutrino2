@@ -65,7 +65,6 @@ void add_format(int (*picsize)(const char *,int *,int*,int,int),int (*picread)(c
 
 //
 static uint32_t * virtual_fb = NULL;
-
 static inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
 				  uint32_t  /*rl*/ = 0, uint32_t  /*ro*/ = 0,
 				  uint32_t  /*gl*/ = 0, uint32_t  /*go*/ = 0,
@@ -586,7 +585,7 @@ void CFrameBuffer::paletteSet(struct fb_cmap *map)
 
 	for (int i = 0; i < 256; i++)
 	{
-		realcolor[i] = make16color(cmap.red[i], cmap.green[i], cmap.blue[i], cmap.transp[i], rl, ro, gl, go, bl, bo, tl, to);
+		realcolor[i] = ::make16color(cmap.red[i], cmap.green[i], cmap.blue[i], cmap.transp[i], rl, ro, gl, go, bl, bo, tl, to);
 	}
 }
 

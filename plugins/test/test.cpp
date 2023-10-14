@@ -2173,9 +2173,7 @@ void CTestMenu::testCWindow()
 
 	window->setColor(COL_MENUCONTENT_PLUS_0);
 	window->setCorner(RADIUS_MID, CORNER_ALL);
-	//window->setGradient(LIGHT2DARK, GRADIENT_VERTICAL); //GRADIENT_ONECOLOR
 	window->setGradient(DARK2LIGHT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_COLOR2TRANSPARENT);
-	//window->setGradient(LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_COLOR2COLR);
 
 	window->paint();
 	CFrameBuffer::getInstance()->blit();
@@ -2244,7 +2242,8 @@ void CTestMenu::testCWindowCustomColor()
 	//
 	CCWindow* window = new CCWindow(&Box);
 
-	window->setColor(COL_ORANGE_PLUS_0); // or use like make16color(0x76A5AF)
+	//window->setColor(COL_YELLOW_PLUS_0);
+	window->setColor(::make16color(0xFFFF00));
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setBorderMode(CComponent::BORDER_ALL);
 	window->paintMainFrame(true);
