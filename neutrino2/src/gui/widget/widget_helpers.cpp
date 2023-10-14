@@ -585,7 +585,7 @@ CCButtons::CCButtons(const int x, const int y, const int dx, const int dy)
 	buttons.clear(); 
 	count = 0;
 	head = false;
-	mode = BUTTON_BUTTON;
+	mode = BUTTON_ICON;
 	
 	cc_type = CC_BUTTON;
 }
@@ -654,9 +654,9 @@ void CCButtons::paint()
 			
 			for (unsigned int i = 0; i < count; i++)
 			{
-				if(!buttons[i].button.empty())
+				if (mode == BUTTON_ICON)
 				{
-					if (mode == BUTTON_BUTTON)
+					if(!buttons[i].button.empty())
 					{
 						frameBuffer->getIconSize(buttons[i].button.c_str(), &iw[i], &ih[i]);
 						
@@ -670,38 +670,24 @@ void CCButtons::paint()
 
 						frameBuffer->paintIcon(buttons[i].button, startx, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
 					}
-					else if (mode == BUTTON_FRAME_BORDER)
-					{
-						startx -= (maxButtonTextWidth + 10 + ICON_TO_ICON_OFFSET);
+				}
+				else if (mode == BUTTON_FRAME)
+				{
+					startx -= (maxButtonTextWidth + 10 + ICON_TO_ICON_OFFSET);
 							
-						//
-						CFrameItem frame;
+					//
+					CCFrameLine frame;
 						
-						frame.setPosition(startx, itemBox.iY + 1, maxButtonTextWidth + 10, itemBox.iHeight -2);
-						frame.setBorderMode();
-						frame.paintMainFrame(true);
-						//frame.setColor(buttons[i].color);
-						frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
-						frame.setTitle(_(buttons[i].localename.c_str()));
-						frame.setHAlign(CC_ALIGN_CENTER);
-						frame.paint();
-					}
-					else if (mode == BUTTON_FRAME_COLORED)
-					{
-						startx -= (maxButtonTextWidth + 10 + ICON_TO_ICON_OFFSET);
-							
-						//
-						CFrameItem frame;
-						
-						frame.setPosition(startx, itemBox.iY + 1, maxButtonTextWidth + 10, itemBox.iHeight -2);
-						frame.setBorderMode();
-						frame.paintMainFrame(true);
-						frame.setColor(buttons[i].color);
-						frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
-						frame.setTitle(_(buttons[i].localename.c_str()));
-						frame.setHAlign(CC_ALIGN_CENTER);
-						frame.paint();
-					}
+					frame.setPosition(startx, itemBox.iY + 2, maxButtonTextWidth + 10, itemBox.iHeight - 4);
+					frame.paint();
+					
+					// label
+					CCLabel label;
+					label.setPosition(startx, itemBox.iY + 2, maxButtonTextWidth + 10, itemBox.iHeight - 4);
+					label.setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+					label.setText(_(buttons[i].localename.c_str()));
+					label.setHAlign(CC_ALIGN_CENTER);
+					label.paint();
 				}
 			}
 		}
@@ -734,7 +720,7 @@ void CCButtons::paint()
 		
 			for (unsigned int i = 0; i < count; i++)
 			{
-				if (mode == BUTTON_BUTTON)
+				if (mode == BUTTON_ICON)
 				{
 					if (!buttons[i].button.empty())
 					{
@@ -757,25 +743,27 @@ void CCButtons::paint()
 						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
 					}
 				}
-				else if (mode == BUTTON_FRAME_BORDER)
+				else if (mode == BUTTON_FRAME)
 				{
 					//
-					CFrameItem frame;
+					CCFrameLine frame;
 						
-					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 1, buttonWidth, itemBox.iHeight - 2);
-					frame.setBorderMode();
-					frame.paintMainFrame(true);
-					//frame.setColor(buttons[i].color);
-					frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
-					frame.setTitle(_(buttons[i].localename.c_str()));
-					frame.setHAlign(CC_ALIGN_CENTER);
-					if (!buttons[i].localename.empty()) frame.paint();
+					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
+					frame.paint();
+					
+					// label
+					CCLabel label;
+					label.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
+					label.setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+					label.setHAlign(CC_ALIGN_CENTER);
+					label.setText(_(buttons[i].localename.c_str()));
+					label.paint();
 				}
-				else if (mode == BUTTON_FRAME_COLORED)
+				else if (mode == BUTTON_COLOREDFRAME)
 				{
 					//
 					CFrameItem frame;
-					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 1, buttonWidth, itemBox.iHeight - 2);
+					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
 					frame.setBorderMode();
 					frame.paintMainFrame(true);
 					frame.setColor(buttons[i].color);
@@ -783,6 +771,26 @@ void CCButtons::paint()
 					frame.setTitle(_(buttons[i].localename.c_str()));
 					frame.setHAlign(CC_ALIGN_CENTER);
 					if (!buttons[i].localename.empty()) frame.paint();
+				}
+				else if (mode == BUTTON_COLOREDLINE)
+				{
+					// button label
+					CCLabel label;
+					
+					label.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 1, buttonWidth, itemBox.iHeight - 2);
+					//label.setColor();
+					label.setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+					label.setText(_(buttons[i].localename.c_str()));
+					label.setHAlign(CC_ALIGN_CENTER);
+					label.paint();
+					
+					//
+					CCHline line;
+					
+					line.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - 4, buttonWidth, 2);
+					line.setColor(buttons[i].color);
+					//line.setGradient();
+					line.paint();
 				}
 			}
 		}
@@ -2201,7 +2209,7 @@ CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const c
 	//
 	count	= 0;
 	buttons.clear();
-	mode = CCButtons::BUTTON_BUTTON;
+	mode = CCButtons::BUTTON_ICON;
 	
 	halign = CC_ALIGN_LEFT;
 
@@ -2236,7 +2244,7 @@ CHeaders::CHeaders(CBox* position, const char * const title, const char * const 
 	//
 	count	= 0;
 	buttons.clear();
-	mode = CCButtons::BUTTON_BUTTON;
+	mode = CCButtons::BUTTON_ICON;
 	
 	halign = CC_ALIGN_LEFT;
 
@@ -2317,25 +2325,60 @@ void CHeaders::paint()
 	int iw[count], ih[count];
 	int startx = itemBox.iX + itemBox.iWidth - BORDER_RIGHT;
 	int buttonWidth = 0;
+	int maxButtonTextWidth = buttonWidth;
+	int f_w[count];
 
 	if(count)
 	{
+		// get max width
+		for (unsigned int i = 0; i < count; i++)
+		{
+			if (!buttons[i].localename.empty())
+			{
+				f_w[i] = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
+				if (i > 0)
+					maxButtonTextWidth = std::max(f_w[i], f_w[i - 1]) + 10;
+				else
+					maxButtonTextWidth = f_w[i] + 10;
+			}
+		}
+		
 		for (unsigned int i = 0; i < (unsigned int)count; i++)
 		{
-			if (!buttons[i].button.empty())
+			if (mode == CCButtons::BUTTON_ICON)
 			{
-				CFrameBuffer::getInstance()->getIconSize(buttons[i].button.c_str(), &iw[i], &ih[i]);
-				
-				// scale icon
-				if(ih[i] >= itemBox.iHeight)
+				if(!buttons[i].button.empty())
 				{
-					ih[i] = itemBox.iHeight - 4;
-				}
-		
-				startx -= (iw[i] + ICON_TO_ICON_OFFSET);
-				buttonWidth += iw[i];
+					frameBuffer->getIconSize(buttons[i].button.c_str(), &iw[i], &ih[i]);
+						
+					// scale icon
+					if(ih[i] >= itemBox.iHeight)
+					{
+						ih[i] = itemBox.iHeight - 2;
+					}
+					
+					startx -= (iw[i] + ICON_TO_ICON_OFFSET);
 
-				CFrameBuffer::getInstance()->paintIcon(buttons[i].button, startx, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+					frameBuffer->paintIcon(buttons[i].button, startx, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+				}
+			}
+			else if (mode == CCButtons::BUTTON_FRAME)
+			{
+				startx -= (maxButtonTextWidth + 10 + ICON_TO_ICON_OFFSET);
+							
+				//
+				CCFrameLine frame;
+						
+				frame.setPosition(startx, itemBox.iY + 2, maxButtonTextWidth + 10, itemBox.iHeight - 4);
+				frame.paint();
+					
+				// label
+				CCLabel label;
+				label.setPosition(startx, itemBox.iY + 2, maxButtonTextWidth + 10, itemBox.iHeight - 4);
+				label.setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+				label.setText(_(buttons[i].localename.c_str()));
+				label.setHAlign(CC_ALIGN_CENTER);
+				label.paint();
 			}
 		}
 	}
@@ -2425,7 +2468,7 @@ CFooters::CFooters(const int x, const int y, const int dx, const int dy)
 	buttons.clear();
 	count = 0;
 	button_width = itemBox.iWidth;
-	mode = CCButtons::BUTTON_BUTTON;
+	mode = CCButtons::BUTTON_ICON;
 	
 	//
 	cc_type = CC_FOOT;
@@ -2454,7 +2497,7 @@ CFooters::CFooters(CBox* position)
 	buttons.clear();
 	count = 0;
 	button_width = itemBox.iWidth;
-	mode = CCButtons::BUTTON_BUTTON;
+	mode = CCButtons::BUTTON_ICON;
 
 	//
 	cc_type = CC_FOOT;
@@ -2509,37 +2552,7 @@ void CFooters::paint()
 
 	count = buttons.size();
 
-/*
-	if(count)
-	{
-		buttonWidth = (button_width)/count;
-	
-		for (unsigned int i = 0; i < count; i++)
-		{
-			if (!buttons[i].button.empty())
-			{
-				int iw = 0;
-				int ih = 0;
-
-				CFrameBuffer::getInstance()->getIconSize(buttons[i].button.c_str(), &iw, &ih);
-				
-				// scale icon
-				if(ih >= itemBox.iHeight)
-				{
-					ih = itemBox.iHeight - 4;
-				}
-				
-				int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
-		
-				CFrameBuffer::getInstance()->paintIcon(buttons[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + (itemBox.iHeight - ih)/2, 0, true, iw, ih);
-
-				// FIXME: i18n
-				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
-			}
-		}
-	}
-*/
-	////
+	//
 	int maxButtonTextWidth = buttonWidth;
 	int iw[count];
 	int ih[count];
@@ -2547,11 +2560,11 @@ void CFooters::paint()
 	
 	if(count)
 	{
-			buttonWidth = (itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT)/count;
+		buttonWidth = (itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT)/count;
 			
-			// get maxButtonWidth
-			for (unsigned int i = 0; i < count; i++)
-			{
+		// get maxButtonWidth
+		for (unsigned int i = 0; i < count; i++)
+		{
 				if (!buttons[i].localename.empty())
 				{
 					f_w[i] = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(_(buttons[i].localename.c_str()));
@@ -2564,64 +2577,86 @@ void CFooters::paint()
 					if ((maxButtonTextWidth + 20) > buttonWidth)
 						maxButtonTextWidth = buttonWidth;
 				}
-			}
+		}
 			
-			if (maxButtonTextWidth > buttonWidth)
-				maxButtonTextWidth = buttonWidth;
+		if (maxButtonTextWidth > buttonWidth)
+			maxButtonTextWidth = buttonWidth;
 		
-			for (unsigned int i = 0; i < count; i++)
+		for (unsigned int i = 0; i < count; i++)
+		{
+			if (mode == CCButtons::BUTTON_ICON)
 			{
-				if (mode == CCButtons::BUTTON_BUTTON)
+				if (!buttons[i].button.empty())
 				{
-					if (!buttons[i].button.empty())
+					iw[i] = 0;
+					ih[i] = 0;
+
+					CFrameBuffer::getInstance()->getIconSize(buttons[i].button.c_str(), &iw[i], &ih[i]);
+							
+					// scale icon
+					if(ih[i] >= itemBox.iHeight)
 					{
-						iw[i] = 0;
-						ih[i] = 0;
-
-						CFrameBuffer::getInstance()->getIconSize(buttons[i].button.c_str(), &iw[i], &ih[i]);
-							
-						// scale icon
-						if(ih[i] >= itemBox.iHeight)
-						{
-							ih[i] = itemBox.iHeight - 2;
-						}
-							
-						int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
-					
-						CFrameBuffer::getInstance()->paintIcon(buttons[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
-
-						// FIXME: i18n
-						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
+						ih[i] = itemBox.iHeight - 2;
 					}
-				}
-				else if (mode == CCButtons::BUTTON_FRAME_BORDER)
-				{
-					//
-					CFrameItem frame;
-						
-					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
-					frame.setBorderMode();
-					frame.paintMainFrame(true);
-					//frame.setColor(buttons[i].color);
-					frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
-					frame.setTitle(_(buttons[i].localename.c_str()));
-					frame.setHAlign(CC_ALIGN_CENTER);
-					frame.paint();
-				}
-				else if (mode == CCButtons::BUTTON_FRAME_COLORED)
-				{
-					//
-					CFrameItem frame;
-					frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
-					frame.setBorderMode();
-					frame.paintMainFrame(true);
-					frame.setColor(buttons[i].color);
-					frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
-					frame.setTitle(_(buttons[i].localename.c_str()));
-					frame.setHAlign(CC_ALIGN_CENTER);
-					frame.paint();
+							
+					int f_h = g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight();
+					
+					CFrameBuffer::getInstance()->paintIcon(buttons[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
+
+					// FIXME: i18n
+					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
 				}
 			}
+			else if (mode == CCButtons::BUTTON_FRAME)
+			{
+				//
+				CCFrameLine frame;
+						
+				frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
+				frame.paint();
+					
+				// label
+				CCLabel label;
+				label.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
+				label.setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+				label.setHAlign(CC_ALIGN_CENTER);
+				label.setText(_(buttons[i].localename.c_str()));
+				label.paint();
+			}
+			else if (mode == CCButtons::BUTTON_COLOREDFRAME)
+			{
+				//
+				CFrameItem frame;
+				frame.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 2, buttonWidth, itemBox.iHeight - 4);
+				frame.setBorderMode();
+				frame.paintMainFrame(true);
+				frame.setColor(buttons[i].color);
+				frame.setCaptionFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+				frame.setTitle(_(buttons[i].localename.c_str()));
+				frame.setHAlign(CC_ALIGN_CENTER);
+				frame.paint();
+			}
+			else if (mode == CCButtons::BUTTON_COLOREDLINE)
+			{
+				// button label
+				CCLabel label;
+					
+				label.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + 1, buttonWidth, itemBox.iHeight - 2);
+				//label.setColor();
+				label.setFont(SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL);
+				label.setText(_(buttons[i].localename.c_str()));
+				label.setHAlign(CC_ALIGN_CENTER);
+				label.paint();
+					
+				//
+				CCHline line;
+					
+				line.setPosition(itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - 4, buttonWidth, 2);
+				line.setColor(buttons[i].color);
+				//line.setGradient();
+				line.paint();
+			}
+		}
 	}
 }
 

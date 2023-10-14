@@ -1024,21 +1024,25 @@ int CNeutrinoApp::convertButtonMode(const char * const mode)
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::convertButtonMode: mode: %s\n", mode);
 	
-	int bmode = CCButtons::BUTTON_BUTTON;
+	int bmode = CCButtons::BUTTON_ICON;
 	
 	if (mode != NULL)
 	{
-		if ( strcmp(mode, "BUTTON_BUTTON") == 0)
+		if ( strcmp(mode, "BUTTON_ICON") == 0)
 		{
-			bmode = CCButtons::BUTTON_BUTTON;
+			bmode = CCButtons::BUTTON_ICON;
 		}
-		else if ( strcmp(mode, "BUTTON_FRAME_BORDER") == 0)
+		else if ( strcmp(mode, "BUTTON_FRAME") == 0)
 		{
-			bmode = CCButtons::BUTTON_FRAME_BORDER;
+			bmode = CCButtons::BUTTON_FRAME;
 		}
-		else if ( strcmp(mode, "BUTTON_FRAME_COLORED") == 0)
+		else if ( strcmp(mode, "BUTTON_COLOREDFRAME") == 0)
 		{
-			bmode = CCButtons::BUTTON_FRAME_COLORED;
+			bmode = CCButtons::BUTTON_COLOREDFRAME;
+		}
+		else if ( strcmp(mode, "BUTTON_COLOREDLINE") == 0)
+		{
+			bmode = CCButtons::BUTTON_COLOREDLINE;
 		}
 	}
 	
@@ -1731,7 +1735,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	if (paintdate) head->enablePaintDate();
 	if (format != NULL) head->setFormat(_(format));
 	//
-	int buttonmode = CCButtons::BUTTON_BUTTON;
+	int buttonmode = CCButtons::BUTTON_ICON;
 	if (bmode) buttonmode = convertButtonMode(bmode);
 	head->setButtonMode(buttonmode);
 					
@@ -1847,7 +1851,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	// line
 	foot->setLine(foot_line, foot_line_gradient);
 	//
-	int buttonmode = CCButtons::BUTTON_BUTTON;
+	int buttonmode = CCButtons::BUTTON_ICON;
 	if (bmode) buttonmode = convertButtonMode(bmode);
 	foot->setButtonMode(buttonmode);
 					
@@ -1866,11 +1870,12 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 						
 		button_label_struct btn;
 		btn.button = " ";
-		if (button) btn.button = button;
 		btn.localename = " ";
+		btn.color = 0;
+		
+		if (button) btn.button = button;
 		if (localename) btn.localename = localename;
 		//
-		btn.color = COL_BACKGROUND_PLUS_0;
 		fb_pixel_t col = COL_BACKGROUND_PLUS_0;
 		if (bcolor) col = convertColor(bcolor);
 		btn.color = col;
@@ -2394,7 +2399,7 @@ void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget)
 	cButton->cc_type = CComponent::CC_BUTTON;
 	
 	//
-	int bmode = CCButtons::BUTTON_BUTTON;
+	int bmode = CCButtons::BUTTON_ICON;
 	if (mode) bmode = convertButtonMode(mode);	
 	cButton->setButtonMode(bmode);
 				

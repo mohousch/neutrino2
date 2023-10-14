@@ -101,10 +101,10 @@ extern t_channel_id live_channel_id;
 #define NUM_LIST_BUTTONS 4
 struct button_label CChannelListButtons[NUM_LIST_BUTTONS] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("Record")},
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("TMDB info")},
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule")},
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("Bouquets")},
+	{ NEUTRINO_ICON_BUTTON_RED, _("Record"), COL_RED_PLUS_0 },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("TMDB info"), COL_GREEN_PLUS_0 },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Schedule"), COL_YELLOW_PLUS_0 },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("Bouquets"), COL_BLUE_PLUS_0 }
 };
 
 #define HEAD_BUTTONS_COUNT	3
@@ -1682,11 +1682,17 @@ void CChannelList::paint(bool customMode)
 	}
 	
 	// head
-	if (head) head->setTitle(_(name.c_str()));
-	if (head) head->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	if (head) 
+	{
+		head->setTitle(_(name.c_str()));
+		head->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	}
 
 	// foot
-	if (foot) foot->setButtons(CChannelListButtons, NUM_LIST_BUTTONS);
+	if (foot) 
+	{
+		foot->setButtons(CChannelListButtons, NUM_LIST_BUTTONS);
+	}
 
 	//
 	if (listBox) listBox->setSelected(selected);

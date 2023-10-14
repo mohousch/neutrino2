@@ -1988,21 +1988,31 @@ void CTestMenu::testCButtons()
 	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	buttons.paint();
 	
-	// colored frame
+	// frame
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 40);
+	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	buttons.setButtonMode(CCButtons::BUTTON_FRAME);
+	buttons.paint();
+	
+	// coloredframe
+	buttons.clear();
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 40);
 	buttons.addButton("", "I'M A RED BUTTON", COL_RED_PLUS_0);
 	buttons.addButton("", "I'M A GREEN BUTTON", COL_GREEN_PLUS_0);
 	buttons.addButton("", "I'M A YELLOW BUTTON", COL_YELLOW_PLUS_0);
 	buttons.addButton("", "I'M A BLUE BUTTON", COL_BLUE_PLUS_0);
-	buttons.setButtonMode(CCButtons::BUTTON_FRAME_COLORED);
+	buttons.setButtonMode(CCButtons::BUTTON_COLOREDFRAME);
 	buttons.paint();
 	
-	//
+	// coloredline
 	buttons.clear();
-	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 40);
-	buttons.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	buttons.setButtonMode(CCButtons::BUTTON_FRAME_BORDER);
+	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 250 + 150, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 40);
+	buttons.addButton("", "I'M A RED BUTTON", COL_RED_PLUS_0);
+	buttons.addButton("", "I'M A GREEN BUTTON", COL_GREEN_PLUS_0);
+	buttons.addButton("", "I'M A YELLOW BUTTON", COL_YELLOW_PLUS_0);
+	buttons.addButton("", "I'M A BLUE BUTTON", COL_BLUE_PLUS_0);
+	buttons.setButtonMode(CCButtons::BUTTON_COLOREDLINE);
 	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();
@@ -2036,14 +2046,14 @@ void CTestMenu::testCHButtons()
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 50, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 25);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
-	buttons.setButtonMode(CCButtons::BUTTON_FRAME_COLORED);
+	buttons.setButtonMode(CCButtons::BUTTON_COLOREDFRAME);
 	buttons.paint();
 	
 	// frame
 	buttons.clear();
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 25);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
-	buttons.setButtonMode(CCButtons::BUTTON_FRAME_BORDER);
+	buttons.setButtonMode(CCButtons::BUTTON_FRAME);
 	buttons.paint();
 
 	CFrameBuffer::getInstance()->blit();
@@ -2053,8 +2063,6 @@ void CTestMenu::testCHButtons()
 	testWidget->exec(NULL, "");
 	delete testWidget;
 	testWidget = NULL;
-	
-	//hide();
 }
 
 void CTestMenu::testCSpinner()
@@ -2092,6 +2100,7 @@ void CTestMenu::testCHeaders()
 	headers->enablePaintDate();
 	headers->setFormat("%d.%m.%Y %H:%M:%S");
 	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
+	headers->setButtonMode(CCButtons::BUTTON_FRAME);
 	headers->setHAlign(CComponent::CC_ALIGN_CENTER);
 	headers->setCorner(RADIUS_SMALL, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
 	headers->setGradient(LIGHT2DARK);
@@ -2135,7 +2144,7 @@ void CTestMenu::testCFooters()
 	footers->setCorner(RADIUS_SMALL, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
 	footers->setGradient(LIGHT2DARK);
 	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	footers->setButtonMode(CCButtons::BUTTON_FRAME_COLORED);
+	footers->setButtonMode(CCButtons::BUTTON_COLOREDLINE);
 
 	// loop
 	footers->exec(10);

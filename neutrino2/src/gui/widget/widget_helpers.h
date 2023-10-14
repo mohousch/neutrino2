@@ -371,9 +371,10 @@ class CCButtons : public CComponent
 
 	public:
 		enum {
-			BUTTON_BUTTON,
-			BUTTON_FRAME_COLORED,
-			BUTTON_FRAME_BORDER
+			BUTTON_ICON,
+			BUTTON_FRAME,
+			BUTTON_COLOREDFRAME,
+			BUTTON_COLOREDLINE
 		};
 
 		//
@@ -831,7 +832,7 @@ class CHeaders : public CComponent
 		//
 		void setTitle(const char * const title){htitle.clear(); if (title) htitle = title;};
 		void setIcon(const char * const icon){hicon.clear(); if (icon) hicon = icon;};
-		void setHAlign(const int m){halign = m;};
+		//void setHAlign(const int m){halign = m;};
 		void setColor(fb_pixel_t col){color = col;};
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setCorner(int ra, int co = CORNER_TOP){radius = ra; corner = co;};
