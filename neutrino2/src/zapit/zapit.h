@@ -72,9 +72,7 @@ class CZapit
 		enum bouquetMode
 		{
 			BM_DELETEBOUQUETS,
-			BM_DONTTOUCHBOUQUETS,
-			BM_UPDATEBOUQUETS,
-			BM_CREATESATELLITEBOUQUET
+			BM_UPDATEBOUQUETS
 		};
 
 		enum scanType
@@ -343,7 +341,6 @@ class CZapit
 		int existsBouquet(const char * const name, BouquetList &list);
 		void moveBouquet(const unsigned int oldId, const unsigned int newId);
 		bool existsChannelInBouquet(unsigned int bq_id, const t_channel_id channel_id);
-		bool existsChannelInBouquet(unsigned int bq_id, const t_channel_id channel_id, BouquetList &list);
 		void renameBouquet(const unsigned int bouquet, const char * const newName); // UTF-8 encoded
 		void setBouquetLock(const unsigned int bouquet, const bool lock);
 		void setBouquetHidden(const unsigned int bouquet, const bool hidden);

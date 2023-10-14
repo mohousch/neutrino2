@@ -104,13 +104,11 @@ const keyval SCANTS_SCANMODE_OPTIONS[SCANTS_SCANMODE_OPTION_COUNT] =
 	{ CZapit::SM_FAST, _("Fast") }
 };
 
-#define SCANTS_BOUQUET_OPTION_COUNT 4
+#define SCANTS_BOUQUET_OPTION_COUNT 2
 const keyval SCANTS_BOUQUET_OPTIONS[SCANTS_BOUQUET_OPTION_COUNT] =
 {
 	{ CZapit::BM_DELETEBOUQUETS, _("erase all") },
-	{ CZapit::BM_DONTTOUCHBOUQUETS, _("leave current") },
-	{ CZapit::BM_UPDATEBOUQUETS, _("update") },
-	{ CZapit::BM_CREATESATELLITEBOUQUET, _("create satellite bouquets") }
+	{ CZapit::BM_UPDATEBOUQUETS, _("update") }
 };
 
 #define SCANTS_ZAPIT_SCANTYPE_COUNT 4

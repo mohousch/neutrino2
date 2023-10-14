@@ -3005,24 +3005,6 @@ bool CZapit::existsChannelInBouquet( unsigned int bq_id, const t_channel_id chan
 	return status;
 }
 
-////
-bool CZapit::existsChannelInBouquet( unsigned int bq_id, const t_channel_id channel_id, BouquetList &list)
-{
-	bool status = false;
-	CZapitChannel  *ch = NULL;
-
-	if (bq_id <= list.size()) 
-	{
-		// query TV-Channels  && Radio channels
-		ch = list[bq_id]->getChannelByChannelID(channel_id, 0);
-
-		if (ch)  
-			status = true;
-	}
-
-	return status;
-}
-
 void CZapit::moveBouquet(const unsigned int oldId, const unsigned int newId)
 {
 	if ((oldId < Bouquets.size()) && (newId < Bouquets.size())) 
@@ -4722,16 +4704,13 @@ void CZapit::saveScanBouquets(const CZapit::bouquetMode bouquetMode, const char 
 {
 	dprintf(DEBUG_NORMAL, "CZapit::saveScanBouquets: mode:%d scanBouquets:%d bouquets:%d\n", bouquetMode, scanBouquets.size(), Bouquets.size());
 	
-	if (bouquetMode == CZapit::BM_DELETEBOUQUETS) // 0
+	if (bouquetMode == CZapit::BM_DELETEBOUQUETS)
 	{
 		clearAll();
 		unlink(BOUQUETS_XML);
 	}
-	else if (bouquetMode == CZapit::BM_DONTTOUCHBOUQUETS) // 1
-	{
-		return;
-	}
-	else if (bouquetMode == CZapit::BM_UPDATEBOUQUETS) // 2
+	
+	if (bouquetMode == CZapit::BM_DELETEBOUQUETS || bouquetMode == CZapit::BM_UPDATEBOUQUETS)
 	{
 		while (!(scanBouquets.empty())) 
 		{
@@ -4751,7 +4730,7 @@ void CZapit::saveScanBouquets(const CZapit::bouquetMode bouquetMode, const char 
 			// tv bouquets
 			for(unsigned int i = 0; i < scanBouquets[0]->tvChannels.size(); i++) 
 			{
-				if(!(existsChannelInBouquet(dest, scanBouquets[0]->tvChannels[i]->getChannelID(), scanBouquets))) 
+				if(!(existsChannelInBouquet(dest, scanBouquets[0]->tvChannels[i]->getChannelID()))) 
 				{
 					bouquet->addService(scanBouquets[0]->tvChannels[i]);
 
@@ -4762,7 +4741,7 @@ void CZapit::saveScanBouquets(const CZapit::bouquetMode bouquetMode, const char 
 			// radio bouquets
 			for(unsigned int i = 0; i < scanBouquets[0]->radioChannels.size(); i++) 
 			{
-				if(!(existsChannelInBouquet(dest, scanBouquets[0]->radioChannels[i]->getChannelID(), scanBouquets))) 
+				if(!(existsChannelInBouquet(dest, scanBouquets[0]->radioChannels[i]->getChannelID()))) 
 				{
 					bouquet->addService(scanBouquets[0]->radioChannels[i]);
 
@@ -4776,22 +4755,6 @@ void CZapit::saveScanBouquets(const CZapit::bouquetMode bouquetMode, const char 
 			delete scanBouquets[0];
 			scanBouquets.erase(scanBouquets.begin());
 		}
-	}
-	else if (bouquetMode == CZapit::BM_CREATESATELLITEBOUQUET) //3 //FIXME:
-	{
-		while (scanBouquets.size() > 1) 
-		{
-			BouquetList::iterator it = scanBouquets.begin() + 1;
-			scanBouquets[0]->tvChannels.insert(scanBouquets[0]->tvChannels.end(), (*it)->tvChannels.begin(), (*it)->tvChannels.end());
-			scanBouquets[0]->radioChannels.insert(scanBouquets[0]->radioChannels.end(), (*it)->radioChannels.begin(), (*it)->radioChannels.end());
-			
-			//
-			delete (*it);
-			scanBouquets.erase(it);
-		}
-
-		if(scanBouquets.size() > 0)
-			scanBouquets[0]->Name = providerName;
 	}
 }
 

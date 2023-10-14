@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-12 17:38+0200\n"
+"POT-Creation-Date: 2023-10-14 19:51+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2718,9 +2718,6 @@ msgstr "очистить всё "
 msgid "colored"
 msgstr "цветной"
 
-msgid "create satellite bouquets"
-msgstr "создавать спутниковые букеты"
-
 msgid "create screenshot?"
 msgstr "сделать скриншот?"
 
@@ -2861,9 +2858,6 @@ msgstr "перейти к предыдущему"
 
 msgid "large"
 msgstr "большой"
-
-msgid "leave current"
-msgstr "оставить текущий"
 
 msgid "left"
 msgstr "левый"
