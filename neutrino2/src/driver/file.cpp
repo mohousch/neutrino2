@@ -89,8 +89,8 @@ const char * const file_extension_list[] =
 	"mts",
 	"ogg", 
 	
-	"png",
 	"pls",
+	"png",
 	"sh",
 	"ts",
 	
@@ -149,8 +149,8 @@ const CFile::FileExtension file_extension[] =
 	CFile::EXTENSION_MTS,
 	CFile::EXTENSION_OGG,
 	
-	CFile::EXTENSION_PNG, 
 	CFile::EXTENSION_PLS,
+	CFile::EXTENSION_PNG, 
 	CFile::EXTENSION_SH,
 	CFile::EXTENSION_TS,
 	
@@ -209,8 +209,8 @@ const CFile::FileType file_type_list[] =
 	CFile::FILE_VIDEO,
 	CFile::FILE_VIDEO, 
 	
-	CFile::FILE_PICTURE, 
 	CFile::FILE_PLAYLIST,
+	CFile::FILE_PICTURE, 
 	CFile::FILE_TEXT,
 	CFile::FILE_VIDEO,
 	
