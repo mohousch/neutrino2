@@ -1723,7 +1723,7 @@ void CNeutrinoApp::setupFrameBuffer()
 {
 	frameBuffer->init();
 	
-	if(frameBuffer->setMode() ) 
+	if(frameBuffer->setMode()) 
 	{
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::setupFrameBuffer: Error while setting framebuffer mode\n");
 		exit(-1);

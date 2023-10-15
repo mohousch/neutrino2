@@ -65,6 +65,14 @@ void add_format(int (*picsize)(const char *,int *,int*,int,int),int (*picread)(c
 
 //
 static uint32_t * virtual_fb = NULL;
+inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
+				  uint32_t  /*rl*/ = 0, uint32_t  /*ro*/ = 0,
+				  uint32_t  /*gl*/ = 0, uint32_t  /*go*/ = 0,
+				  uint32_t  /*bl*/ = 0, uint32_t  /*bo*/ = 0,
+				  uint32_t  /*tl*/ = 0, uint32_t  /*to*/ = 0)
+{
+	return ((t << 24) & 0xFF000000) | ((r << 8) & 0xFF0000) | ((g << 0) & 0xFF00) | (b >> 8 & 0xFF);
+}
 
 CFrameBuffer::CFrameBuffer()
 : active ( true )
@@ -222,26 +230,25 @@ void CFrameBuffer::init(const char * const fbDevice)
 #endif /* USE_OPENGL */
 	
 	// set colors
-	paletteSetColor(0x1, 0x010101, 0xFF);
-        paletteSetColor(COL_MAROON, 0x800000, 0xFF);
-        paletteSetColor(COL_GREEN, 0x008000, 0xFF);
-	paletteSetColor(COL_OLIVE, 0x808000, 0xFF);
-        paletteSetColor(COL_NAVY, 0x000080, 0xFF);
-        paletteSetColor(COL_PURPLE, 0x800080, 0xFF);
-        paletteSetColor(COL_TEAL, 0x008080, 0xFF);
-        paletteSetColor(COL_NOBEL, 0xA0A0A0, 0xFF);
-        paletteSetColor(COL_MATTERHORN, 0x505050, 0xFF);
-        paletteSetColor(COL_RED, 0xFF0000, 0xFF);
-        paletteSetColor(COL_LIME, 0x00FF00, 0xFF);
-        paletteSetColor(COL_YELLOW, 0xFFFF00, 0xFF);
-        paletteSetColor(COL_BLUE, 0x0000FF, 0xFF);
-        paletteSetColor(COL_MAGENTA, 0xFF00FF, 0xFF);
-        paletteSetColor(COL_AQUA, 0x00FFFF, 0xFF);
-        paletteSetColor(COL_WHITE, 0xFFFFFF, 0xFF);
-        paletteSetColor(COL_BLACK, 0x000000, 0xFF);
-        paletteSetColor(COL_ORANGE, 0xFF5500, 0xFF);
-        paletteSetColor(COL_SILVER, 0xBEBEBE, 0xFF);
-        
+	paletteSetColor(0x1, 0x010101, 0xFF);			// black
+        paletteSetColor(COL_MAROON, 0x800000, 0xFF);		// maroon
+        paletteSetColor(COL_GREEN, 0x008000, 0xFF);		// green
+	paletteSetColor(COL_OLIVE, 0x808000, 0xFF);		// olive
+        paletteSetColor(COL_NAVY, 0x000080, 0xFF);		// navy
+        paletteSetColor(COL_PURPLE, 0x800080, 0xFF);		// purple
+        paletteSetColor(COL_TEAL, 0x008080, 0xFF);		// teal
+        paletteSetColor(COL_NOBEL, 0xA0A0A0, 0xFF);		// nobel
+        paletteSetColor(COL_MATTERHORN, 0x505050, 0xFF);	// matterhorn
+        paletteSetColor(COL_RED, 0xFF0000, 0xFF);		// red
+        paletteSetColor(COL_LIME, 0x00FF00, 0xFF);		// lime
+        paletteSetColor(COL_YELLOW, 0xFFFF00, 0xFF);		// yelloow
+        paletteSetColor(COL_BLUE, 0x0000FF, 0xFF);		// blue
+        paletteSetColor(COL_MAGENTA, 0xFF00FF, 0xFF);		// magenta
+        paletteSetColor(COL_AQUA, 0x00FFFF, 0xFF);		// aqua
+        paletteSetColor(COL_WHITE, 0xFFFFFF, 0xFF);		// white
+        paletteSetColor(COL_BLACK, 0x000000, 0xFF);		// black
+        paletteSetColor(COL_ORANGE, 0xFF5500, 0xFF);		// orange
+        paletteSetColor(COL_SILVER, 0xBEBEBE, 0xFF);		// silver
         paletteSetColor(COL_BACKGROUND, 0x000000, 0x0);
 
         paletteSet(&cmap);
@@ -465,20 +472,20 @@ void CFrameBuffer::setFrameBufferMode(unsigned int nxRes, unsigned int nyRes, un
 	stride = fix.line_length;
 }
 
-int CFrameBuffer::setMode()
+int CFrameBuffer::setMode(unsigned int x, unsigned int y, unsigned int _bpp)
 {
 	if (!available && !active)
 		return -1;
 	
-	dprintf(DEBUG_NORMAL, "CFrameBuffer::setMode: FB: %dx%dx%d\n", DEFAULT_XRES, DEFAULT_YRES, DEFAULT_BPP);
+	dprintf(DEBUG_NORMAL, "CFrameBuffer::setMode: FB: %dx%dx%d\n", x, y, _bpp);
 
 #if defined (__sh__) || defined (USE_OPENGL)
-	xRes = DEFAULT_XRES;
-	yRes = DEFAULT_YRES;
-	bpp = DEFAULT_BPP;
+	xRes = x;
+	yRes = y;
+	bpp = _bpp;
 	stride = xRes * 4;
 #else
-	setFrameBufferMode(DEFAULT_XRES, DEFAULT_YRES, DEFAULT_BPP);
+	setFrameBufferMode(x, y, _bpp);
 #endif	
 
 	// clear frameBuffer
@@ -561,9 +568,16 @@ void CFrameBuffer::paletteSet(struct fb_cmap *map)
 	if (!active)
 		return;
 	
+	//
 	if(map == NULL)
 		map = &cmap;
+		
+	if (bpp == 8)
+	{
+		ioctl(fd, FBIOPUTCMAP, map);
+	}
 
+	//
 	uint32_t rl, ro, gl, go, bl, bo, tl, to;
 	
 	rl = screeninfo.red.length;
@@ -702,25 +716,26 @@ void CFrameBuffer::paintHLineRelInternal2Buf(const int& x, const int& dx, const 
 		*(dest++) = col;		
 }
 
-fb_pixel_t* CFrameBuffer::paintBoxRel2Buf(const int dx, const int dy, const fb_pixel_t col, fb_pixel_t* buf, int radius, int type)
+fb_pixel_t* CFrameBuffer::paintBoxRel2Buf(const int dx, const int dy, const fb_pixel_t col, int radius, int type)
 {
 	if (!getActive())
-		return buf;
+		return NULL;
 
 	if (dx == 0 || dy == 0) 
 	{
-		return buf;
+		return NULL;
 	}
 
-	fb_pixel_t* pixBuf = buf;
+	fb_pixel_t* pixBuf = NULL;
+	
+	pixBuf = (fb_pixel_t*)malloc(dx*dy*sizeof(fb_pixel_t));;
+	
 	if (pixBuf == NULL) 
 	{
-		pixBuf = (fb_pixel_t*)malloc(dx*dy*sizeof(fb_pixel_t));
-		if (pixBuf == NULL) 
-		{
-			return NULL;
-		}
+		dprintf(DEBUG_NORMAL, "CFrameBuffer::paintBoxRel2Buf: malloc error\n");
+		return NULL;
 	}
+
 	memset((void*)pixBuf, '\0', dx*dy*sizeof(fb_pixel_t));
 
 	if (type && radius) 
@@ -770,7 +785,7 @@ void CFrameBuffer::paintBoxRel(const int x, const int y, const int dx, const int
 	fb_pixel_t MASK = 0xFFFFFFFF;
 
 	// boxBuf
-	fb_pixel_t* boxBuf = paintBoxRel2Buf(dx, dy, (mode > NOGRADIENT)? MASK : col, NULL, radius, type);
+	fb_pixel_t* boxBuf = paintBoxRel2Buf(dx, dy, (mode > NOGRADIENT)? MASK : col, radius, type);
 	
         if (!boxBuf)
                return;
@@ -786,7 +801,7 @@ void CFrameBuffer::paintBoxRel(const int x, const int y, const int dx, const int
 		else if (grad_type == GRADIENT_COLOR2TRANSPARENT)
 			gradientBuf = gradientColorToTransparent(col, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
 		else if (grad_type == GRADIENT_COLOR2COLOR) // FIXME:
-			gradientBuf = gradientColorToColor(col, COL_SILVER_PLUS_0, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
+			gradientBuf = gradientColorToColor(COL_SILVER_PLUS_0, col, (direction == GRADIENT_VERTICAL)? dy : dx, mode, intensity);
 
 		fb_pixel_t *bp = boxBuf;
 		fb_pixel_t *gra = gradientBuf;

@@ -202,7 +202,7 @@ class CFrameBuffer
 		inline int calcCornersOffset(const int& dy, const int& line, const int& radius, const int& type) { int ofs = 0; calcCorners(&ofs, NULL, NULL, dy, line, radius, type); return ofs; }
 		bool calcCorners(int *ofs, int *ofl, int *ofr, const int& dy, const int& line, const int& radius, const int& type);
 		void paintHLineRelInternal2Buf(const int& x, const int& dx, const int& y, const int& box_dx, const fb_pixel_t& col, fb_pixel_t* buf);
-		fb_pixel_t* paintBoxRel2Buf(const int dx, const int dy, const fb_pixel_t col, fb_pixel_t* buf = NULL, int radius = 0, int type = CORNER_ALL);	
+		fb_pixel_t* paintBoxRel2Buf(const int dx, const int dy, const fb_pixel_t col, int radius = 0, int type = CORNER_ALL);	
 
 	public:
 		~CFrameBuffer();
@@ -217,7 +217,7 @@ class CFrameBuffer
 
 		void init(const char * const fbDevice = "/dev/fb0");		
 		void setFrameBufferMode(unsigned int xRes, unsigned int yRes, unsigned int bpp);
-		int setMode();
+		int setMode(unsigned int x = DEFAULT_XRES, unsigned int y = DEFAULT_YRES, unsigned int _bpp = 32);
 
 		int getFileHandle() const; //only used for plugins (games) !!
 		t_fb_var_screeninfo *getScreenInfo();

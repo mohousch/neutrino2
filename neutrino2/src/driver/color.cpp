@@ -48,11 +48,11 @@
 #define FLT_EPSILON 1E-5
 #endif
 
-int convertSetupColor2RGB(const unsigned char r, const unsigned char g, const unsigned char b)
+int convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b)
 {
-	unsigned char red =	(int)r * 255 / 100;
-	unsigned char green =	(int)g * 255 / 100;
-	unsigned char blue =	(int)b * 255 / 100;
+	uint8_t red =	(int)r * 255 / 100;
+	uint8_t green =	(int)g * 255 / 100;
+	uint8_t blue =	(int)b * 255 / 100;
 
 	return (red << 16) | (green << 8) | blue;
 }

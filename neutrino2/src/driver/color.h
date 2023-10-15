@@ -130,41 +130,24 @@
 #define COL_MENUHINT_PLUS_0        		CFrameBuffer::getInstance()->realcolor[COL_MENUHINT + 0]
 
 ////
-int convertSetupColor2RGB(unsigned char r, unsigned char g, unsigned char b);
+int convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b);
 int convertSetupAlpha2Alpha(unsigned char alpha);
 //
-inline uint32_t convertSetupColor2Color(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha)
+inline uint32_t rgbaToColor(unsigned int rgb, uint8_t tr = 0xFF)
 {
-	int color = convertSetupColor2RGB(r, g, b);
-	int tAlpha = (alpha ? convertSetupAlpha2Alpha(alpha) : 0xFF);
-
-	fb_pixel_t col = ((tAlpha << 24) & 0xFF000000) | color;
+	fb_pixel_t col = ((tr << 24) & 0xFF000000) | rgb;
 	
 	return col;
 }
-inline uint32_t convertRGBA2Color(unsigned int rgb, uint8_t tr = 0xFF)
+
+inline uint32_t rgbaToColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	fb_pixel_t col = 0xFF000000 | rgb;
-	
-	return col;
-}
-//
-inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
-				  uint32_t  /*rl*/ = 0, uint32_t  /*ro*/ = 0,
-				  uint32_t  /*gl*/ = 0, uint32_t  /*go*/ = 0,
-				  uint32_t  /*bl*/ = 0, uint32_t  /*bo*/ = 0,
-				  uint32_t  /*tl*/ = 0, uint32_t  /*to*/ = 0)
-{
-	return ((t << 24) & 0xFF000000) | ((r << 8) & 0xFF0000) | ((g << 0) & 0xFF00) | (b >> 8 & 0xFF);
-}
-inline uint32_t argbToColor(uint8_t A, uint8_t R, uint8_t G, uint8_t B)
-{
-	return (uint32_t(A) << 24) | (uint32_t(R) << 16) | (uint32_t(G) << 8) | B;
+	return (a << 24) | (r << 16) | (g << 8) | b;
 }
 
-inline uint32_t rgbToColor(uint8_t R, uint8_t G, uint8_t B)
+inline uint32_t rgbToColor(uint8_t r, uint8_t g, uint8_t b)
 {
-	return (uint32_t(R) << 16) | (uint32_t(G) << 8) | B;
+	return (r << 16) | (g << 8) | b;
 }
 
 ////

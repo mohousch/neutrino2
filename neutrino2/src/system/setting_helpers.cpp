@@ -109,7 +109,7 @@ bool CColorSetupNotifier::changeNotify(const std::string&, void *)
 	CFrameBuffer *frameBuffer = CFrameBuffer::getInstance();
 	
 	// head
-	frameBuffer->paletteGenFade(COL_MENUHEAD, convertSetupColor2RGB(g_settings.menu_Head_red, g_settings.menu_Head_green, g_settings.menu_Head_blue), convertSetupColor2RGB(g_settings.menu_Head_Text_red, g_settings.menu_Head_Text_green, g_settings.menu_Head_Text_blue), 8, convertSetupAlpha2Alpha( g_settings.menu_Head_alpha ) );
+	frameBuffer->paletteGenFade(COL_MENUHEAD, convertSetupColor2RGB(g_settings.menu_Head_red, g_settings.menu_Head_green, g_settings.menu_Head_blue), convertSetupColor2RGB(g_settings.menu_Head_Text_red, g_settings.menu_Head_Text_green, g_settings.menu_Head_Text_blue), 8, convertSetupAlpha2Alpha( g_settings.menu_Head_alpha ));
 
 	// menu content
 	frameBuffer->paletteGenFade(COL_MENUCONTENT, convertSetupColor2RGB(g_settings.menu_Content_red, g_settings.menu_Content_green, g_settings.menu_Content_blue), convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), 8, convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );

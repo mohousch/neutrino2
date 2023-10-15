@@ -1818,33 +1818,6 @@ void CTestMenu::testMultiWidget()
 	windowWidget = NULL;
 }
 
-// CCPanel
-void CTestMenu::testCCWindow(void)
-{
-	dprintf(DEBUG_NORMAL, "CTestMenu::testCCWindow\n");
-	
-	CCWindow testPanel;
-	
-	CBox Box;
-	Box.iX = g_settings.screen_StartX + 100;
-	Box.iY = g_settings.screen_StartY + 100;
-	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 200);
-	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 200);
-	
-	testPanel.setPosition(&Box);
-	testPanel.setBorderMode(CComponent::BORDER_ALL);
-	testPanel.paintMainFrame(true);
-	testPanel.paint();
-	
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	testWidget = new CWidget();
-	testWidget->exec(NULL, "");
-	delete testWidget;
-	testWidget = NULL;
-}
-
 // CIcon
 void CTestMenu::testCIcon()
 {
@@ -2156,7 +2129,33 @@ void CTestMenu::testCFooters()
 	}
 }
 
-// Cwindow
+//// CCwindow
+void CTestMenu::testCCWindow(void)
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCWindow\n");
+	
+	CCWindow testPanel;
+	
+	CBox Box;
+	Box.iX = g_settings.screen_StartX + 100;
+	Box.iY = g_settings.screen_StartY + 100;
+	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 200);
+	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 200);
+	
+	testPanel.setPosition(&Box);
+	testPanel.setBorderMode(CComponent::BORDER_ALL);
+	testPanel.paintMainFrame(true);
+	testPanel.paint();
+	
+	CFrameBuffer::getInstance()->blit();
+
+	// loop
+	testWidget = new CWidget();
+	testWidget->exec(NULL, "");
+	delete testWidget;
+	testWidget = NULL;
+}
+
 void CTestMenu::testCWindow()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCWindow\n");
@@ -2191,7 +2190,7 @@ void CTestMenu::testCWindow()
 	}
 }
 
-// CWindow
+// CCWindow with border
 void CTestMenu::testCWindowShadow()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCWindowShadow\n");
@@ -2242,9 +2241,8 @@ void CTestMenu::testCWindowCustomColor()
 	//
 	CCWindow* window = new CCWindow(&Box);
 
-	//window->setColor(::convertRGBA2Color(0x800000, 0x7F));
-	//window->setColor(::convertSetupColor2Color(0, 10, 25, 0));
-	window->setColor(::argbToColor(0xFF, 0x80, 0x00, 0x00));
+	window->setColor(::rgbaToColor(0xBEBEBE, 0xFF));
+	//window->setColor(::rgbaToColor(0xFF, 0xFF, 0xFF, 0x00));
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setBorderMode(CComponent::BORDER_ALL);
 	window->paintMainFrame(true);
@@ -2253,10 +2251,7 @@ void CTestMenu::testCWindowCustomColor()
 	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	testWidget = new CWidget();
-	testWidget->exec(NULL, "");
-	delete testWidget;
-	testWidget = NULL;
+	window->exec();
 	
 	if (window)
 	{
@@ -4947,7 +4942,7 @@ void CTestMenu::testCBouquetlist()
 	
 	webTVBouquetList = new CBouquetList("CTestMenu::testWebTVBouquetlist");
 
-	for (int i = 0; i < CZapit::getInstance()->Bouquets.size(); i++) 
+	for (int i = 0; i < (int)CZapit::getInstance()->Bouquets.size(); i++) 
 	{
 		if (CZapit::getInstance()->Bouquets[i]->bWebTV && !CZapit::getInstance()->Bouquets[i]->tvChannels.empty())
 		{

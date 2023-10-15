@@ -518,7 +518,7 @@ uint32_t CNeutrinoApp::convertColor(const char* const color)
 		}
 	}
 				
-	rgba = ::argbToColor(a, r, g, b);
+	rgba = ::rgbaToColor(r, g, b, a);
 	
 	return rgba;
 }
