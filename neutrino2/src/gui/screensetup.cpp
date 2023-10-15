@@ -272,7 +272,7 @@ void CScreenSetup::paint()
 	int h = (int) frameBuffer->getScreenHeight(true);
 
 	// box(background)
-	frameBuffer->paintBox(0, 0, w, h, /*make16color(0xA0A0A0)*/ COL_NOBEL_PLUS_0 );
+	frameBuffer->paintBox(0, 0, w, h, COL_NOBEL_PLUS_0 );
 
 	// hlines grid
 	for(int count = 0; count < h; count += 15)

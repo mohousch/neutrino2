@@ -210,6 +210,7 @@ void Rgb2Hsv(RgbColor *rgb, HsvColor *hsv)
 	hsv->v = f_V;
 }
 
+//
 fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int /*intensity*/)
 {
 	fb_pixel_t *gradientBuf = NULL;

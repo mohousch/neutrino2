@@ -518,7 +518,7 @@ void CProgressBar::paint(unsigned char pcr, bool paintBG)
 				else
 					rgb = 0xFF0000 + (diff << 8); // adding green
 				
-				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, ::convertRGBA2Color(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			}
 			
 			//yellow
@@ -535,7 +535,7 @@ void CProgressBar::paint(unsigned char pcr, bool paintBG)
 				else
 					rgb = 0xFFFF00 - (diff << 16); // removing red
 	
-				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, ::convertRGBA2Color(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			}
 
 			//green
@@ -553,7 +553,7 @@ void CProgressBar::paint(unsigned char pcr, bool paintBG)
 				else
 					rgb = 0xFFFF00 - (diff << 16); // removing red
 				
-				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, make16color(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, ::convertRGBA2Color(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			}
 		}
 		else

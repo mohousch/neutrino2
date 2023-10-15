@@ -125,10 +125,7 @@ void CColorChooser::setColor()
 	dprintf(DEBUG_NORMAL, "CColorChooser::setColor:\n");
 	
 	int color = convertSetupColor2RGB(*(value[VALUE_R]), *(value[VALUE_G]), *(value[VALUE_B]));
-	int tAlpha = (value[VALUE_ALPHA]) ? (convertSetupAlpha2Alpha(*(value[VALUE_ALPHA]))) : 0;
-
-	if(!value[VALUE_ALPHA]) 
-		tAlpha = 0xFF;
+	int tAlpha = (value[VALUE_ALPHA]) ? (convertSetupAlpha2Alpha(*(value[VALUE_ALPHA]))) : 0xFF;
 
 	fb_pixel_t col = ((tAlpha << 24) & 0xFF000000) | color;
 	

@@ -350,23 +350,23 @@ uint32_t CNeutrinoApp::convertColor(const char* const color)
 	
 	uint32_t rgba = COL_MENUCONTENT_PLUS_0;
 	
-	unsigned int r = 0;
-	unsigned int g = 0;
-	unsigned int b = 0;
-	unsigned int a = 0;
+	uint8_t a = 0;
+	uint8_t r = 0;
+	uint8_t g = 0;
+	uint8_t b = 0;
 				
 	if (color != NULL)
 	{
 		if (color[0] == '#')
 		{
-			unsigned long col = 0;
+			uint32_t col = 0;
 						
 			if (sscanf(color + 1, "%lx", &col) == 1)
 			{
-				r = (col>>24)&0xFF; 
-				g = (col>>16)&0xFF;
-				b = (col >> 8)&0xFF;
-				a = (col)&0xFF;
+				a = (col >> 24)&0xFF; 
+				r = (col >> 16)&0xFF;
+				g = (col >> 8)&0xFF;
+				b = (col)&0xFF;
 			}
 		}
 		else
@@ -518,7 +518,7 @@ uint32_t CNeutrinoApp::convertColor(const char* const color)
 		}
 	}
 				
-	rgba = convertSetupColor2Color(r, g, b, a); 
+	rgba = ::argbToColor(a, r, g, b);
 	
 	return rgba;
 }

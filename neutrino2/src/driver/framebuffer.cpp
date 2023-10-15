@@ -65,14 +65,6 @@ void add_format(int (*picsize)(const char *,int *,int*,int,int),int (*picread)(c
 
 //
 static uint32_t * virtual_fb = NULL;
-static inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
-				  uint32_t  /*rl*/ = 0, uint32_t  /*ro*/ = 0,
-				  uint32_t  /*gl*/ = 0, uint32_t  /*go*/ = 0,
-				  uint32_t  /*bl*/ = 0, uint32_t  /*bo*/ = 0,
-				  uint32_t  /*tl*/ = 0, uint32_t  /*to*/ = 0)
-{
-	return ((t << 24) & 0xFF000000) | ((r << 8) & 0xFF0000) | ((g << 0) & 0xFF00) | (b >> 8 & 0xFF);
-}
 
 CFrameBuffer::CFrameBuffer()
 : active ( true )

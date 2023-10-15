@@ -2242,8 +2242,9 @@ void CTestMenu::testCWindowCustomColor()
 	//
 	CCWindow* window = new CCWindow(&Box);
 
-	//window->setColor(COL_YELLOW_PLUS_0);
-	window->setColor(::make16color(0xFFFF00));
+	//window->setColor(::convertRGBA2Color(0x800000, 0x7F));
+	//window->setColor(::convertSetupColor2Color(0, 10, 25, 0));
+	window->setColor(::argbToColor(0xFF, 0x80, 0x00, 0x00));
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setBorderMode(CComponent::BORDER_ALL);
 	window->paintMainFrame(true);
@@ -4041,16 +4042,9 @@ void CTestMenu::testCInfoBox()
 	CInfoBox * infoBox = new CInfoBox(&position, "CInfoBox", NEUTRINO_ICON_INFO);	
 	
 	infoBox->setBorderMode(CComponent::BORDER_ALL);
-	//infoBox->setBackgroundColor(/*make16color(0xBEBEBE)*/COL_SILVER_PLUS_0);
+	
 	if (!m_vMovieInfo.empty())
 		infoBox->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true, true);
-	//infoBox->setTextColor(COL_LIME);
-	//infoBox->setHeadColor(COL_NOBEL_PLUS_0);
-	//infoBox->setHeadCorner(NO_RADIUS, CORNER_NONE);
-	//infoBox->setHeadGradient(NOGRADIENT);
-	//infoBox->setFootColor(COL_NOBEL_PLUS_0);
-	//infoBox->setFootCorner(NO_RADIUS, CORNER_NONE);
-	//infoBox->setFootGradient(NOGRADIENT);
 	
 	infoBox->exec();
 	
