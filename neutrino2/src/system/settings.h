@@ -206,7 +206,7 @@ struct SNeutrinoSettings
 	unsigned char infobar_colored_events_green;
 	unsigned char infobar_colored_events_blue;
 
-	char	font_file[100];
+	char font_file[100];
 	
 	int timing_menu;
 	int timing_channellist;

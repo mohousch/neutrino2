@@ -357,16 +357,17 @@ uint32_t CNeutrinoApp::convertColor(const char* const color)
 				
 	if (color != NULL)
 	{
+		/*rrggbbaa*/
 		if (color[0] == '#')
 		{
 			uint32_t col = 0;
 						
 			if (sscanf(color + 1, "%lx", &col) == 1)
 			{
-				a = (col >> 24)&0xFF; 
-				r = (col >> 16)&0xFF;
-				g = (col >> 8)&0xFF;
-				b = (col)&0xFF;
+				r = (col >> 24)&0xFF; 
+				g = (col >> 16)&0xFF;
+				b = (col >> 8)&0xFF;
+				a = (col)&0xFF;
 			}
 		}
 		else

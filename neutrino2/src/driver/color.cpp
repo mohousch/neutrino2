@@ -371,15 +371,15 @@ fb_pixel_t* gradientColorToColor(fb_pixel_t start_col, fb_pixel_t end_col, int b
 	int start_box = 0;
 	int end_box = bSize;
 
-	fb_pixel_t temp_col = end_col;
-	end_col =  start_col;
-	start_col = temp_col;
+	fb_pixel_t temp_col = start_col;
+	start_col =  end_col;
+	end_col = temp_col;
 
-	if (mode == DARK2LIGHT)
+	if (mode == LIGHT2DARK)
 	{
-		temp_col = start_col;
-		start_col = end_col;
-		end_col = temp_col;
+		temp_col = end_col;
+		end_col = start_col;
+		start_col = temp_col;
 	}
 
 	uint8_t start_tr = (uint8_t)((start_col & 0xFF000000) >> 24);
