@@ -59,14 +59,7 @@ int convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b)
 
 int convertSetupAlpha2Alpha(uint8_t alpha)
 {
-	// invert alpha
-	if(alpha == 0) 
-		return 0xFF;
-	else if(alpha >= 100) 
-		return 0;
-	
-	int a = 100 - alpha;
-	int ret = a * 0xFF / 100;
+	uint8_t ret = (int)alpha * 255 / 100;
 	
 	return ret;
 }

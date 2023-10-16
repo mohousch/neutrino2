@@ -149,6 +149,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	// HG
 	paintHG = true;
 	sec_timer_id = 0;
+	sec_timer_interval = 1;
 	spinner = NULL;
 	
 	//
@@ -267,7 +268,7 @@ int CHintBox::exec(int timeout)
 	neutrino_msg_data_t data;
 	
 	// HG
-	sec_timer_id = g_RCInput->addTimer(0.15*1000*1000, false);
+	sec_timer_id = g_RCInput->addTimer(sec_timer_interval*1000*1000, false);
 
 	paint();
 	
@@ -337,9 +338,12 @@ int CHintBox::exec(int timeout)
 		delete spinner;
 		spinner = NULL;
 	}
-		
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
+	
+	if (sec_timer_id)
+	{	
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
 
 	return res;
 }

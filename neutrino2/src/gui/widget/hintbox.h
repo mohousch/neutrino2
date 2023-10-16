@@ -70,6 +70,7 @@ class CHintBox
 		// hourglass
 		bool paintHG;
 		uint32_t sec_timer_id;
+		uint64_t sec_timer_interval;
 		CCSpinner * spinner;
 		
 		//
@@ -91,7 +92,7 @@ class CHintBox
 		void enablePaintHG(void){paintHG = true;};
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};
-
+		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;}; // in sec
 		//
 		int exec(int timeout = -1);
 };

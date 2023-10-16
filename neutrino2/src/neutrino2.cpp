@@ -532,7 +532,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	strcpy(g_settings.language, configfile.getString("language", "en").c_str());
 
 	// themes
-	g_settings.menu_Head_alpha = configfile.getInt32( "menu_Head_alpha", 15);
+	g_settings.menu_Head_alpha = configfile.getInt32( "menu_Head_alpha", 85);
 	g_settings.menu_Head_red = configfile.getInt32( "menu_Head_red", 15);
 	g_settings.menu_Head_green = configfile.getInt32( "menu_Head_green", 15);
 	g_settings.menu_Head_blue = configfile.getInt32( "menu_Head_blue", 15);
@@ -542,7 +542,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.menu_Head_Text_green = configfile.getInt32( "menu_Head_Text_green", 100);
 	g_settings.menu_Head_Text_blue = configfile.getInt32( "menu_Head_Text_blue", 100);
 	
-	g_settings.menu_Content_alpha = configfile.getInt32( "menu_Content_alpha", 0);
+	g_settings.menu_Content_alpha = configfile.getInt32( "menu_Content_alpha", 100);
 	g_settings.menu_Content_red = configfile.getInt32( "menu_Content_red", 15);
 	g_settings.menu_Content_green = configfile.getInt32( "menu_Content_green", 15);
 	g_settings.menu_Content_blue = configfile.getInt32( "menu_Content_blue", 15);
@@ -552,7 +552,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.menu_Content_Text_green = configfile.getInt32( "menu_Content_Text_green", 85);
 	g_settings.menu_Content_Text_blue = configfile.getInt32( "menu_Content_Text_blue", 85);
 	
-	g_settings.menu_Content_Selected_alpha = configfile.getInt32( "menu_Content_Selected_alpha", 20);
+	g_settings.menu_Content_Selected_alpha = configfile.getInt32( "menu_Content_Selected_alpha", 80);
 	g_settings.menu_Content_Selected_red = configfile.getInt32( "menu_Content_Selected_red", 75);
 	g_settings.menu_Content_Selected_green = configfile.getInt32( "menu_Content_Selected_green", 75);
 	g_settings.menu_Content_Selected_blue = configfile.getInt32( "menu_Content_Selected_blue", 75);
@@ -562,7 +562,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.menu_Content_Selected_Text_green = configfile.getInt32( "menu_Content_Selected_Text_green", 25);
 	g_settings.menu_Content_Selected_Text_blue = configfile.getInt32( "menu_Content_Selected_Text_blue", 25);
 	
-	g_settings.menu_Content_inactive_alpha = configfile.getInt32( "menu_Content_inactive_alpha", 20);
+	g_settings.menu_Content_inactive_alpha = configfile.getInt32( "menu_Content_inactive_alpha", 80);
 	g_settings.menu_Content_inactive_red = configfile.getInt32( "menu_Content_inactive_red", 25);
 	g_settings.menu_Content_inactive_green = configfile.getInt32( "menu_Content_inactive_green", 25);
 	g_settings.menu_Content_inactive_blue = configfile.getInt32( "menu_Content_inactive_blue", 25);
@@ -572,7 +572,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.menu_Content_inactive_Text_green = configfile.getInt32( "menu_Content_inactive_Text_green", 55);
 	g_settings.menu_Content_inactive_Text_blue = configfile.getInt32( "menu_Content_inactive_Text_blue", 55);
 
-	g_settings.infobar_alpha = configfile.getInt32( "infobar_alpha", 20);
+	g_settings.infobar_alpha = configfile.getInt32( "infobar_alpha", 80);
 	g_settings.infobar_red = configfile.getInt32( "infobar_red", 25);
 	g_settings.infobar_green = configfile.getInt32( "infobar_green", 25);
 	g_settings.infobar_blue = configfile.getInt32( "infobar_blue", 25);
@@ -582,12 +582,12 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.infobar_Text_green = configfile.getInt32( "infobar_Text_green", 100);
 	g_settings.infobar_Text_blue = configfile.getInt32( "infobar_Text_blue", 100);
 		
-	g_settings.infobar_colored_events_alpha = configfile.getInt32( "infobar_colored_events_alpha", 0);
+	g_settings.infobar_colored_events_alpha = configfile.getInt32( "infobar_colored_events_alpha", 100);
 	g_settings.infobar_colored_events_red = configfile.getInt32( "infobar_colored_events_red", 95);
 	g_settings.infobar_colored_events_green = configfile.getInt32( "infobar_colored_events_green", 70);
 	g_settings.infobar_colored_events_blue = configfile.getInt32( "infobar_colored_events_blue", 0);
 	
-	g_settings.menu_Foot_alpha = configfile.getInt32( "menu_Foot_alpha", 15);
+	g_settings.menu_Foot_alpha = configfile.getInt32( "menu_Foot_alpha", 85);
 	g_settings.menu_Foot_red = configfile.getInt32( "menu_Foot_red", 15);
 	g_settings.menu_Foot_green = configfile.getInt32( "menu_Foot_green", 15);
 	g_settings.menu_Foot_blue = configfile.getInt32( "menu_Foot_blue", 15);
@@ -597,7 +597,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.menu_Foot_Text_green = configfile.getInt32( "menu_Foot_Text_green", 100);
 	g_settings.menu_Foot_Text_blue = configfile.getInt32( "menu_Foot_Text_blue", 100);
 
-	g_settings.menu_Hint_alpha = configfile.getInt32( "menu_Hint_alpha", 20);
+	g_settings.menu_Hint_alpha = configfile.getInt32( "menu_Hint_alpha", 80);
 	g_settings.menu_Hint_red = configfile.getInt32( "menu_Hint_red", 25);
 	g_settings.menu_Hint_green = configfile.getInt32( "menu_Hint_green", 25);
 	g_settings.menu_Hint_blue = configfile.getInt32( "menu_Hint_blue", 25);

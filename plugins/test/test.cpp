@@ -2169,7 +2169,7 @@ void CTestMenu::testCWindowCustomColor()
 	uint8_t g = 0;
 	uint8_t b = 0;
 	
-	uint8_t color = 0x14;
+	uint8_t color = COL_YELLOW;
 	uint32_t col = CFrameBuffer::getInstance()->realcolor[color];
 						
 	a = (col >> 24)&0xFF; 
@@ -2177,12 +2177,15 @@ void CTestMenu::testCWindowCustomColor()
 	g = (col >> 8)&0xFF;
 	b = (col)&0xFF;
 	
-	dprintf(DEBUG_NORMAL, "testCWindowCustomColor: lookupColor: color-index: 0x%x -> col:0x%lx (a:0x%x r:0x%x g:0x%x b:0x%x)\n", color, col, a, r, g, b);
+	dprintf(DEBUG_NORMAL, "testCWindowCustomColor: lookupColor: color-index: 0x%2x -> col:0x%8x (a:0x%2x r:0x%2x g:0x%2x b:0x%2x)\n", color, col, a, r, g, b);
+	
+	//col = ::rgbaToColor(r, g, b, a);
+	//col = ::convertSetupColor2Color(100, 100, 0, 100); // 100% red, 100% green, 0% blue 100% alpha
 
 	//
 	CCWindow* window = new CCWindow(&Box);
 
-	window->setColor(::rgbaToColor(r, g, b, a));
+	window->setColor(col);
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setBorderMode(CComponent::BORDER_ALL);
 	window->paintMainFrame(true);
