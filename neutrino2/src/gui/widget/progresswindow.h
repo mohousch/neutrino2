@@ -55,7 +55,7 @@ class CProgressWindow : public CComponent
 		std::string captionString;
 
 		//
-		unsigned int global_progress;
+		int global_progress;
 		int globalstatusX;
 		int globalstatusY;
 		int statusTextY;

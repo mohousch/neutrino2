@@ -125,7 +125,7 @@ void CColorChooser::setColor()
 	dprintf(DEBUG_NORMAL, "CColorChooser::setColor:\n");
 	
 	int color = convertSetupColor2RGB(*(value[VALUE_R]), *(value[VALUE_G]), *(value[VALUE_B]));
-	int tAlpha = (value[VALUE_ALPHA]) ? (convertSetupAlpha2Alpha(*(value[VALUE_ALPHA]))) : 0xFF;	// textColor without alpha
+	int tAlpha = (value[VALUE_ALPHA]) ? (convertSetupAlpha2Alpha(*(value[VALUE_ALPHA]))) : 0xFF;
 
 	fb_pixel_t col = ((tAlpha << 24) & 0xFF000000) | color;
 	
@@ -319,9 +319,7 @@ void CColorChooser::paint()
 	CHeaders headers(&cFrameBoxTitle, name.c_str(), NEUTRINO_ICON_COLORS);
 
 	headers.setCorner(RADIUS_SMALL);
-	headers.setGradient(LIGHT2DARK);
-	//headers.setLine(false);
-	
+	headers.setGradient(LIGHT2DARK);	
 	headers.paint();
 
 	// slider
@@ -335,10 +333,9 @@ void CColorChooser::paint()
 	cFrameBoxColorPreview.iWidth = cFrameBox.iWidth - BORDER_LEFT - BORDER_RIGHT - 2*ICON_OFFSET - 150 - 2*ICON_OFFSET - a_w;
 	cFrameBoxColorPreview.iX = cFrameBox.iX + cFrameBox.iWidth - BORDER_RIGHT - cFrameBoxColorPreview.iWidth;
 	cFrameBoxColorPreview.iY = cFrameBox.iY + cFrameBoxTitle.iHeight + cFrameBoxItem.iHeight/2;
-
-	frameBuffer->paintBoxRel(cFrameBoxColorPreview.iX, cFrameBoxColorPreview.iY, cFrameBoxColorPreview.iWidth, cFrameBoxColorPreview.iHeight, COL_MENUHEAD_PLUS_0);
-
-	frameBuffer->paintBoxRel(cFrameBoxColorPreview.iX + 2, cFrameBoxColorPreview.iY + 2, cFrameBoxColorPreview.iWidth - 4, cFrameBoxColorPreview.iHeight - 4 - BORDER_LEFT, 254);
+	
+	// color preview frame
+	frameBuffer->paintFrameBox(cFrameBoxColorPreview.iX, cFrameBoxColorPreview.iY, cFrameBoxColorPreview.iWidth, cFrameBoxColorPreview.iHeight, COL_SILVER_PLUS_0);
 }
 
 void CColorChooser::paintSlider(int _x, int _y, unsigned char *spos, const char* const text, const char * const iconname, const bool selected)

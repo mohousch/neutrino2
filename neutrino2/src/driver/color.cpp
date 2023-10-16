@@ -57,8 +57,9 @@ int convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b)
 	return (red << 16) | (green << 8) | blue;
 }
 
-int convertSetupAlpha2Alpha(unsigned char alpha)
+int convertSetupAlpha2Alpha(uint8_t alpha)
 {
+	// invert alpha
 	if(alpha == 0) 
 		return 0xFF;
 	else if(alpha >= 100) 
@@ -68,6 +69,16 @@ int convertSetupAlpha2Alpha(unsigned char alpha)
 	int ret = a * 0xFF / 100;
 	
 	return ret;
+}
+
+uint32_t convertSetupColor2Color(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha)
+{
+	int color = convertSetupColor2RGB(r, g, b);
+	int tAlpha = (alpha ? (convertSetupAlpha2Alpha(alpha)) : 0xFF);
+
+	fb_pixel_t col = ((tAlpha << 24) & 0xFF000000) | color;
+	
+	return col;
 }
 
 ////

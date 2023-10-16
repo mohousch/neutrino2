@@ -49,7 +49,7 @@ CProgressWindow::CProgressWindow(int _x, int _y, int _width, int _height)
 	paintHead = false;
 	paintCancelIcon = false;
 
-	global_progress = 0;
+	global_progress = -1;
 	statusText = "";
 
 	// initframes
@@ -167,7 +167,6 @@ void CProgressWindow::paint()
 	int ypos = y;
 
 	// box
-	//m_cBoxWindow.enableSaveScreen();
 	m_cBoxWindow.setCorner(RADIUS_SMALL, CORNER_ALL);
 	m_cBoxWindow.paint();
 	
@@ -204,5 +203,4 @@ void CProgressWindow::paint()
 	
 	CFrameBuffer::getInstance()->blit();
 }
-
 

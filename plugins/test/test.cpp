@@ -118,7 +118,6 @@ class CTestMenu : public CMenuTarget
 		
 		// pb
 		CProgressBar* progressBar;
-		CProgressBar* progressBar2;
 
 		// helper functions
 		void loadTMDBPlaylist(const char *txt = "movie", const char *list = "popular", const int seite = 1, bool search = false);
@@ -309,7 +308,6 @@ CTestMenu::CTestMenu()
 	textBoxWidget = NULL;
 	progressWindow = NULL;
 	progressBar = NULL;
-	progressBar2 = NULL;
 }
 
 CTestMenu::~CTestMenu()
@@ -394,12 +392,6 @@ CTestMenu::~CTestMenu()
 	{
 		delete progressWindow;
 		progressWindow = NULL;
-	}
-	
-	if (progressBar2)
-	{
-		delete progressBar2;
-		progressBar2 = NULL;
 	}
 }
 
@@ -1834,16 +1826,12 @@ void CTestMenu::testCIcon()
 	testIcon.setPosition(150 + BORDER_LEFT, 150, testIcon.width, testIcon.height);
 
 	testIcon.paint();
-
 	CFrameBuffer::getInstance()->blit();
 
 	// loop
-	testWidget = new CWidget();
-	testWidget->exec(NULL, "");
-	delete testWidget;
-	testWidget = NULL;
-
-	//hide();
+	testIcon.exec();
+	
+	hide();  // CCIcon dont hide()
 }
 
 // CImage
@@ -1893,57 +1881,30 @@ void CTestMenu::testCProgressBar()
 	Box2.iHeight = 10;
 	
 	progressBar = new CProgressBar(&Box);
-	progressBar2 = new CProgressBar(&Box2, 40, 100, 70, false);
 	
 	//
-	progressBar->paint(10);
-	progressBar2->paint(10);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(20);
-	progressBar2->paint(20);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(30);
-	progressBar2->paint(30);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(40);
-	progressBar2->paint(40);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(50);
-	progressBar2->paint(50);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(60);
-	progressBar2->paint(60);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(70);
-	progressBar2->paint(70);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(80);
-	progressBar2->paint(80);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(90);
-	progressBar2->paint(90);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressBar->paint(100);
-	progressBar2->paint(100);
-	CFrameBuffer::getInstance()->blit();
+	neutrino_msg_t msg, data;
 	
-	delete progressBar;
-	progressBar = NULL;
-	
-	delete progressBar2;
-	progressBar2 = NULL;
+	for (unsigned int count = 0; count < 100; count += 10)
+	{
+		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
+		
+		progressBar->paint(count);
+		usleep(1000000);
+		
+		if (msg <= CRCInput::RC_MaxRC) // any key break
+		{
+			break;
+		}
+		
+		CFrameBuffer::getInstance()->blit();
+	}
 	
 	//
 	hide();
+	
+	delete progressBar;
+	progressBar = NULL;
 }
 
 // CButtons
@@ -2042,16 +2003,15 @@ void CTestMenu::testCSpinner()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCCSpinner:\n");
 	
-	testWidget = new CWidget();
+	//testWidget = new CWidget();
+	//CCSpinner testSpinner(10, 10, 20, 20);
 	
-	CCSpinner testSpinner(10, 10, 20, 20);
+	CCSpinner * testSpinner = new CCSpinner(10, 10, 20, 20);
 	
-	testWidget->addCCItem(&testSpinner);
+	testSpinner->exec(10);
 	
-	testWidget->exec(NULL, "");
-	
-	delete testWidget;
-	testWidget = NULL;
+	delete testSpinner;
+	testSpinner = NULL;
 }
 
 //
@@ -2078,21 +2038,7 @@ void CTestMenu::testCHeaders()
 	headers->setCorner(RADIUS_SMALL, CORNER_TOP_LEFT|CORNER_BOTTOM_RIGHT);
 	headers->setGradient(LIGHT2DARK);
 		
-	//headers->paint();
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = 0;
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	headers->setSecTimer(sec_timer_id);
 	headers->exec(10);
-	//headers->hide();
-
-	g_RCInput->killTimer(sec_timer_id);
-	sec_timer_id = 0;
 
 	if(headers)
 	{
@@ -2145,15 +2091,8 @@ void CTestMenu::testCCWindow(void)
 	testPanel.setPosition(&Box);
 	testPanel.setBorderMode(CComponent::BORDER_ALL);
 	testPanel.paintMainFrame(true);
-	testPanel.paint();
 	
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	testWidget = new CWidget();
-	testWidget->exec(NULL, "");
-	delete testWidget;
-	testWidget = NULL;
+	testPanel.exec();
 }
 
 void CTestMenu::testCWindow()
@@ -2174,14 +2113,7 @@ void CTestMenu::testCWindow()
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setGradient(DARK2LIGHT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_COLOR2TRANSPARENT);
 
-	window->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	testWidget = new CWidget();
-	testWidget->exec(NULL, "");
-	delete testWidget;
-	testWidget = NULL;
+	window->exec();
 	
 	if (window)
 	{
@@ -2210,14 +2142,7 @@ void CTestMenu::testCWindowShadow()
 	window->setBorderMode(CComponent::BORDER_ALL);
 	window->paintMainFrame(true);
 
-	window->paint();
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	testWidget = new CWidget();
-	testWidget->exec(NULL, "");
-	delete testWidget;
-	testWidget = NULL;
+	window->exec();
 	
 	if (window)
 	{
@@ -2237,18 +2162,30 @@ void CTestMenu::testCWindowCustomColor()
 	Box.iY = g_settings.screen_StartY + 200;
 	Box.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 400);
 	Box.iHeight = (g_settings.screen_EndY - g_settings.screen_StartY - 400);
+	
+	//lookup color from col index
+	uint8_t a = 0;
+	uint8_t r = 0;
+	uint8_t g = 0;
+	uint8_t b = 0;
+	
+	uint8_t color = 0x14;
+	uint32_t col = CFrameBuffer::getInstance()->realcolor[color];
+						
+	a = (col >> 24)&0xFF; 
+	r = (col >> 16)&0xFF;
+	g = (col >> 8)&0xFF;
+	b = (col)&0xFF;
+	
+	dprintf(DEBUG_NORMAL, "testCWindowCustomColor: lookupColor: color-index: 0x%x -> col:0x%lx (a:0x%x r:0x%x g:0x%x b:0x%x)\n", color, col, a, r, g, b);
 
 	//
 	CCWindow* window = new CCWindow(&Box);
 
-	window->setColor(::rgbaToColor(0xBEBEBE, 0xFF));
-	//window->setColor(::rgbaToColor(0xFF, 0xFF, 0xFF, 0x00));
+	window->setColor(::rgbaToColor(r, g, b, a));
 	window->setCorner(RADIUS_MID, CORNER_ALL);
 	window->setBorderMode(CComponent::BORDER_ALL);
 	window->paintMainFrame(true);
-
-	window->paint();
-	CFrameBuffer::getInstance()->blit();
 
 	// loop
 	window->exec();
@@ -2296,13 +2233,8 @@ void CTestMenu::testCTextBox()
 	
 	textBoxWidget->addKey(CRCInput::RC_ok, this, "winfo");
 	
-	//	
-	//textBoxWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
-	
 	// loop
 	textBoxWidget->exec();
-	//textBoxWidget->hide();
 	
 	if (textBoxWidget)
 	{
@@ -2401,10 +2333,6 @@ void CTestMenu::testCListFrame()
 	listFrame->addKey(CRCInput::RC_ok, this, "aok");
 	listFrame->addKey(CRCInput::RC_info, this, "ainfo");
 	
-	// paint
-	//listFrame->paint();
-	//CFrameBuffer::getInstance()->blit();
-
 	CAudioPlayer::getInstance()->init();
 	
 	// loop
@@ -2415,8 +2343,6 @@ void CTestMenu::testCListFrame()
 	{
 		listFrameLines.lineArray[i].clear();
 	}
-
-	//listFrame->hide();
 	
 	delete listFrame;
 	listFrame = NULL;
@@ -2510,22 +2436,7 @@ void CTestMenu::testClistBox()
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	//rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
-	//rightWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();
-	//rightWidget->hide();		
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	if (rightWidget)
 	{
@@ -2618,22 +2529,7 @@ void CTestMenu::testClistBox2()
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
-	//rightWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	//rightWidget->hide();
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	if (rightWidget)
 	{
@@ -2724,22 +2620,7 @@ void CTestMenu::testClistBox3()
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
-	//rightWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	//rightWidget->hide();
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	if (rightWidget)
 	{
@@ -2823,22 +2704,7 @@ void CTestMenu::testClistBox4()
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
-	//rightWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	//rightWidget->hide();
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	if (rightWidget)
 	{
@@ -2934,22 +2800,7 @@ void CTestMenu::testClistBox5()
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
-	//rightWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	//rightWidget->hide();
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	if (rightWidget)
 	{
@@ -3049,22 +2900,7 @@ void CTestMenu::testClistBox6()
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
-	//rightWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	//rightWidget->hide();
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	if (rightWidget)
 	{
@@ -3165,22 +3001,7 @@ void CTestMenu::testClistBox7()
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
-	//rightWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	//rightWidget->hide();
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	if (rightWidget)
 	{
@@ -3281,22 +3102,7 @@ void CTestMenu::testClistBox8()
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
-	//rightWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();		
-	//rightWidget->hide();
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	if (rightWidget)
 	{
@@ -3393,22 +3199,7 @@ void CTestMenu::testClistBox9()
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
 	rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
-	//rightWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	rightWidget->setSecTimer(sec_timer_id);
 	rightWidget->exec();
-	//rightWidget->hide();		
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	if (rightWidget)
 	{
@@ -3483,22 +3274,7 @@ void CTestMenu::testCFrameBox()
 
 	frameBoxWidget->setSelected(selected);
 
-	//frameBoxWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	uint32_t sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	frameBoxWidget->setSecTimer(sec_timer_id);
 	frameBoxWidget->exec();
-	//frameBoxWidget->hide();		
-	
-	if (sec_timer_id)
-	{
-		//
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	if (frameBoxWidget)
 	{
@@ -3670,26 +3446,9 @@ void CTestMenu::testCFrameBox1()
 	// foot
 	frameBoxWidget->enablePaintFoot();
 	frameBoxWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	
-	//
-	//frameBoxWidget->paint();
-	//CFrameBuffer::getInstance()->blit();
 
 	// loop
-	uint32_t sec_timer_id = 0;
-
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
-	
-	frameBoxWidget->setSecTimer(sec_timer_id);
 	frameBoxWidget->exec();
-	//frameBoxWidget->hide();
-	
-	if (sec_timer_id)
-	{
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}
 	
 	if (frameBoxWidget)
 	{
@@ -4159,48 +3918,34 @@ void CTestMenu::testCProgressWindow()
 
 	progressWindow = new CProgressWindow();
 	progressWindow->setTitle("CProgressWindow");
+	
+	//
 	progressWindow->paint();
 	
-	progressWindow->showStatusMessageUTF("testing CProgressWindow:0");
-	progressWindow->showGlobalStatus(0);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressWindow->showGlobalStatus(10);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressWindow->showGlobalStatus(20);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressWindow->showStatusMessageUTF("testing CProgressWindow:30");
-	progressWindow->showGlobalStatus(30);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressWindow->showGlobalStatus(40);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressWindow->showGlobalStatus(50);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressWindow->showStatusMessageUTF("testing CProgressWindow:60");
-	progressWindow->showGlobalStatus(60);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressWindow->showGlobalStatus(70);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressWindow->showStatusMessageUTF("testing CProgressWindow:80");
-	progressWindow->showGlobalStatus(80);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressWindow->showGlobalStatus(90);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
-	progressWindow->showStatusMessageUTF("testing CProgressWindow:100");
-	progressWindow->showGlobalStatus(100);
-	CFrameBuffer::getInstance()->blit();
-	usleep(1000000);
+	neutrino_msg_t msg, data;
+	
+	for (unsigned int count = 0; count < 100; count += 10)
+	{
+		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
+		
+		std::string buffer = "progress: ";
+		buffer += toString(count);
+		
+		progressWindow->showStatusMessageUTF(buffer.c_str());
+		progressWindow->showGlobalStatus(count);
+		usleep(1000000);
+		
+		if (msg <= CRCInput::RC_MaxRC) // any key break
+		{
+			break;
+		}
+		
+		CFrameBuffer::getInstance()->blit();
+	}
 	
 	progressWindow->hide();
+	
+	//
 	delete progressWindow;
 	progressWindow = NULL;
 }
@@ -6584,7 +6329,7 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CCButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
-	//mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
+	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 	mainMenu->addItem(new CMenuForwarder("CHeaders", true, NULL, this, "headers"));

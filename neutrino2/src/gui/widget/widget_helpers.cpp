@@ -59,6 +59,7 @@ CComponent::CComponent()
 	actionKey = ""; 
 	parent = NULL; 
 	sec_timer_id = 0;
+	sec_timer_interval = 1;
 	//
 	cc_type = -1;
 	cc_name = "";
@@ -2161,6 +2162,9 @@ void CComponent::exec(int timeout)
 	if ( timeout == -1 )
 		timeout = 0xFFFF;
 		
+	// add sec timer
+	sec_timer_id = g_RCInput->addTimer(sec_timer_interval*1000*1000, false);
+		
 	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(timeout);
 
 	while(loop)
@@ -2172,7 +2176,14 @@ void CComponent::exec(int timeout)
 		CFrameBuffer::getInstance()->blit();
 	}
 
-	hide();		
+	hide();	
+	
+	//
+	if (sec_timer_id)
+	{
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}	
 }
 
 //// headers

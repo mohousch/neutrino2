@@ -150,6 +150,7 @@ class CComponent
 		struct keyAction { std::string action; CMenuTarget *menue; };
 		std::map<neutrino_msg_t, keyAction> keyActionMap;
 		uint32_t sec_timer_id;
+		uint64_t sec_timer_interval;
 		std::string actionKey; // lua
 		
 		//
@@ -235,7 +236,7 @@ class CComponent
 		virtual void setParent(CWidget* p){parent = p;};
 		//
 		virtual void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
-		virtual void setSecTimer(uint32_t id){sec_timer_id = id;};
+		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;}; // in sec
 		virtual bool onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data);
 		virtual void exec(int timeout = -1); // in sec
 };
@@ -638,11 +639,9 @@ class CCCounter : public CComponent
 		void setFont(unsigned int f){font = f;};
 		void setTotalTime(time_t tot_time){total_time = tot_time;};
 		void setPlayTime(time_t p_time){play_time = p_time;};
-		
 		//
 		void paint();
 		void hide();
-		
 		//
 		void refresh();
 		
@@ -670,7 +669,6 @@ class CCSpinner : public CComponent/*, public OpenThreads::Thread*/
 		//
 		void paint();
 		void hide();
-		
 		//
 		void refresh();
 		
@@ -714,10 +712,9 @@ class CProgressBar : public CComponent
 		virtual ~CProgressBar(){};
 		
 		//
-		void paint(unsigned char pcr, bool paintframe = true);
+		void paint(unsigned char pcr, bool paintBG = true);
 		void reset();
 		int getPercent() { return percent; };
-		
 		//
 		void setColor(uint32_t c){rgb = c;};
 };

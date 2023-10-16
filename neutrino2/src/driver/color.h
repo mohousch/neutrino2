@@ -40,7 +40,7 @@
 #include <driver/framebuffer.h>
 
 
-// font common colors
+// fix font colors
 #define COL_MAROON	 			0x02
 #define COL_GREEN	 			0x03
 #define COL_OLIVE	 			0x04
@@ -73,7 +73,7 @@
 #define COL_INFOBAR_COLORED_EVENTS		254-8*9
 #define COL_MENUHINT				254-8*10
 
-// gui common colors
+// fix colors
 #define COL_MAROON_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_MAROON]
 #define COL_GREEN_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_GREEN]
 #define COL_OLIVE_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_OLIVE]
@@ -131,8 +131,10 @@
 
 ////
 int convertSetupColor2RGB(uint8_t r, uint8_t g, uint8_t b);
-int convertSetupAlpha2Alpha(unsigned char alpha);
-//
+int convertSetupAlpha2Alpha(uint8_t alpha);
+uint32_t convertSetupColor2Color(uint8_t r, uint8_t g, uint8_t b, uint8_t alpha);
+
+////
 inline uint32_t rgbaToColor(unsigned int rgb, uint8_t tr = 0xFF)
 {
 	fb_pixel_t col = ((tr << 24) & 0xFF000000) | rgb;

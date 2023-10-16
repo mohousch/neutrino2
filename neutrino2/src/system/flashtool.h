@@ -70,7 +70,6 @@ class CFlashTool
 class CFlashVersionInfo
 {
 	private:
-		
 		char date[11];
 		char time[6];
 		char releaseCycle[20];

@@ -45,6 +45,7 @@
 #include <fribidi/fribidi.h>
 
 
+////
 FT_Error FBFontRenderClass::myFTC_Face_Requester(FTC_FaceID  face_id,
         FT_Library  /*library*/,
         FT_Pointer  request_data,
@@ -238,6 +239,7 @@ std::string FBFontRenderClass::getFamily(const char * const filename) const
   	return "";
 }
 
+////
 CFont::CFont(FBFontRenderClass * render, FTC_FaceID faceid, const int isize, const fontmodifier _stylemodifier)
 {
 	stylemodifier   = _stylemodifier;
@@ -513,7 +515,7 @@ void CFont::RenderString(int x, int y, const int width, const char *text, const 
 	static int faktor[256]           = {0};
 	static bool fontRecsInit         = false;
 	fb_pixel_t bg_color              = 1;
-	fb_pixel_t fg_color              = useBackground? frameBuffer->realcolor[color] : frameBuffer->realcolor[((((color) + 2) | 7) - 2)];
+	fb_pixel_t fg_color              = useBackground? frameBuffer->realcolor[color] : frameBuffer->realcolor[((((color) + 2) | 7) - 2)]; // ???
 
 	if (!useBackground) 
 	{

@@ -505,7 +505,8 @@ void CTextBox::refreshText(void)
 	// paint thumbnail (paint picture only on first page)
 	if(m_nCurrentPage == 0 && !access(thumbnail.c_str(), F_OK) )
 	{
-		if (enableFrame) CFrameBuffer::getInstance()->paintFrameBox(lx, ly, tw, th, COL_WHITE_PLUS_0);
+		if (enableFrame) 
+			CFrameBuffer::getInstance()->paintFrameBox(lx, ly, tw, th, COL_WHITE_PLUS_0);
 		
 		// picture
 		CFrameBuffer::getInstance()->displayImage(thumbnail.c_str(), lx + THUMBNAIL_OFFSET, ly + THUMBNAIL_OFFSET, tw - THUMBNAIL_OFFSET, th - THUMBNAIL_OFFSET);
