@@ -64,10 +64,7 @@
 #include <iostream>
 
 
-using namespace std;
-
-extern tallchans allchans;	// defined in bouquets.h
-
+////
 off_t file_size(const char *filename)
 {
 	struct stat stat_buf;
@@ -1075,7 +1072,7 @@ std::string readFile(std::string file)
 		if (length > 0xffff) 
 		{ 
 			/* longer than 64k? better read in chunks! */
-			cerr << __func__ << ": file " << file << " too big (" << length << " bytes)" << endl;
+			std::cerr << __func__ << ": file " << file << " too big (" << length << " bytes)" << std::endl;
 			return "";
 		}
 		
@@ -1083,17 +1080,19 @@ std::string readFile(std::string file)
 		char* buffer = new char[length + 1];
 		if (! buffer) 
 		{
-			cerr << __func__ << ": allocating " << (length + 1) << " bytes for buffer failed" << endl;
+			std::cerr << __func__ << ": allocating " << (length + 1) << " bytes for buffer failed" << std::endl;
 			return "";
 		}
+		
 		tmpData.read(buffer, length);
 		tmpData.close();
 		buffer[length] = '\0';
-		ret_s = (string)buffer;
+		ret_s = (std::string)buffer;
 		delete [] buffer;
 	}
-	else {
-		cerr << "Error read " << file << endl;
+	else 
+	{
+		std::cerr << "Error read " << file << std::endl;
 		return "";
 	}
 
