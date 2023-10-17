@@ -579,7 +579,7 @@ void CAudioPlayerGui::paintInfo(CAudiofile& File)
 	if(xstart < (BORDER_LEFT + 1*cFrameBox.iHeight + ICON_OFFSET))
 		xstart = BORDER_LEFT + 1*cFrameBox.iHeight + ICON_OFFSET;
 
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + xstart, cFrameBox.iY + 4 + cFrameBox.iHeight/3, cFrameBox.iWidth - 20, tmp, COL_INFOBAR); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + xstart, cFrameBox.iY + 4 + cFrameBox.iHeight/3, cFrameBox.iWidth - 20, tmp, COL_INFOBAR_TEXT_PLUS_0); // UTF-8
 
 	// second line (Artist/Title)
 	if (File.MetaData.title.empty())
@@ -600,7 +600,7 @@ void CAudioPlayerGui::paintInfo(CAudiofile& File)
 	if(xstart < (BORDER_LEFT + 1*cFrameBox.iHeight + ICON_OFFSET))
 		xstart = BORDER_LEFT + 1*cFrameBox.iHeight + ICON_OFFSET;
 	
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + xstart, cFrameBox.iY + 2 + cFrameBox.iHeight/3 + 2 + cFrameBox.iHeight/3, cFrameBox.iWidth - BORDER_LEFT - BORDER_RIGHT - 1*cFrameBox.iHeight - ICON_OFFSET - w_time, tmp, COL_INFOBAR); // UTF-8		
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + xstart, cFrameBox.iY + 2 + cFrameBox.iHeight/3 + 2 + cFrameBox.iHeight/3, cFrameBox.iWidth - BORDER_LEFT - BORDER_RIGHT - 1*cFrameBox.iHeight - ICON_OFFSET - w_time, tmp, COL_INFOBAR_TEXT_PLUS_0); // UTF-8		
 
 	//playstate
 	int icon_w, icon_h;
@@ -636,7 +636,7 @@ void CAudioPlayerGui::paintInfo(CAudiofile& File)
 	{
 		xstart = ((cFrameBox.iWidth - BORDER_LEFT - BORDER_RIGHT - g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getRenderWidth(m_metainfo))/2) + BORDER_LEFT;
 
-		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(cFrameBox.iX + xstart, cFrameBox.iY + cFrameBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight()/2, cFrameBox.iWidth- 2*xstart, m_metainfo, COL_INFOBAR);
+		g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(cFrameBox.iX + xstart, cFrameBox.iY + cFrameBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight()/2, cFrameBox.iWidth- 2*xstart, m_metainfo, COL_INFOBAR_TEXT_PLUS_0);
 	}
 
 	// playTime/timeTotal

@@ -147,7 +147,7 @@ int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
 {
 	dprintf(DEBUG_DEBUG, "CFrameItem::paint:\n");
 
-	uint8_t color = COL_MENUCONTENT;
+	uint32_t color = COL_MENUCONTENT_TEXT_PLUS_0;
 	fb_pixel_t bgcolor = marked? COL_MENUCONTENTSELECTED_PLUS_1 : fcolor;
 
 	if (selected)
@@ -156,24 +156,24 @@ int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
 		{
 			if (parent->inFocus)
 			{
-					color = COL_MENUCONTENTSELECTED;
+					color = COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 					bgcolor = COL_MENUCONTENTSELECTED_PLUS_0;
 			}
 			else
 			{
-					color = COL_MENUCONTENT;	
+					color = COL_MENUCONTENT_TEXT_PLUS_0;	
 					bgcolor = fcolor;
 			}
 		}
 		else
 		{
-			color = COL_MENUCONTENTSELECTED;
+			color = COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 			bgcolor = COL_MENUCONTENTSELECTED_PLUS_0;
 		}
 	}
 	else if (!active)
 	{
-		//color = COL_MENUCONTENTINACTIVE;
+		//color = COL_MENUCONTENTINACTIVE_TEXT_PLUS_0;
 		//bgcolor = COL_MENUCONTENTINACTIVE_PLUS_0;
 	}
 
@@ -262,7 +262,7 @@ int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
 				else if (halign == CComponent::CC_ALIGN_RIGHT)
 					startPosX = window.getWindowsPos().iX + window.getWindowsPos().iWidth - c_w;
 
-				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + (window.getWindowsPos().iHeight - c_h)/2 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, caption.c_str(), (bgcolor == COL_YELLOW_PLUS_0)? COL_BLACK : color);
+				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + (window.getWindowsPos().iHeight - c_h)/2 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, caption.c_str(), (bgcolor == COL_YELLOW_PLUS_0)? COL_BLACK_PLUS_0 : color);
 			}
 		}
 	}
@@ -901,7 +901,7 @@ void CFrameBox::paintHead()
 		}
 		
 		// head title
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(itemBox.iX + BORDER_LEFT + i_w + 2*ICON_OFFSET, itemBox.iY + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_RIGHT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - timestr_len - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET, l_name.c_str(), COL_MENUHEAD, 0, true); // UTF-8
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(itemBox.iX + BORDER_LEFT + i_w + 2*ICON_OFFSET, itemBox.iY + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_RIGHT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - timestr_len - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET, l_name.c_str(), COL_MENUHEAD_TEXT_PLUS_0, 0, true); // UTF-8
 	}
 }
 
@@ -947,7 +947,7 @@ void CFrameBox::paintFoot()
 		
 				CFrameBuffer::getInstance()->paintIcon(fbutton_labels[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + (fheight - ih)/2);
 
-				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw - ICON_OFFSET, fbutton_labels[i].localename, COL_MENUFOOT, 0, true); // UTF-8
+				g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw - ICON_OFFSET, fbutton_labels[i].localename, COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 			}
 		}
 	}

@@ -324,9 +324,9 @@ void CExtendedInput::paint()
 
 	if (!hint_1.empty())
 	{
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(x + 20, hintPosY, width - 20, hint_1, COL_MENUCONTENT, 0, true); // UTF-8
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(x + 20, hintPosY, width - 20, hint_1, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 		if (!hint_2.empty())
-			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(x + 20, hintPosY + iheight, width - 20, hint_2, COL_MENUCONTENT, 0, true); // UTF-8
+			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(x + 20, hintPosY + iheight, width - 20, hint_2, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 	}
 
 	// input field
@@ -362,17 +362,17 @@ void CExtendedInput_Item_Char::paint(int x, int y, bool focusGained )
 	int startx = ix + x;
 	int starty = iy + y;
 
-	uint8_t    color;
+	uint32_t    color;
 	fb_pixel_t bgcolor;
 	
 	if (focusGained)
 	{
-		color   = COL_MENUCONTENTSELECTED;
+		color   = COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 		bgcolor = COL_MENUCONTENTSELECTED_PLUS_0;
 	}
 	else
 	{
-		color   = COL_MENUCONTENT;
+		color   = COL_MENUCONTENT_TEXT_PLUS_0;
 		bgcolor = COL_MENUCONTENT_PLUS_0;
 	}
 

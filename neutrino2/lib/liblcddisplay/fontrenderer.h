@@ -56,7 +56,7 @@ class LcdFont
         FT_Error getGlyphBitmap(FT_ULong glyph_index, FTC_SBit *sbit);
 
         public:
-                void RenderString(int x, int y, int width, const char *text, int color, int selected=0, const bool utf8_encoded = false);
+                void RenderString(int x, int y, int width, const char *text, int color, int selected = 0, const bool utf8_encoded = false);
 
                 int getRenderWidth(const char *text, const bool utf8_encoded = false);
 

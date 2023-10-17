@@ -77,7 +77,7 @@ void CHelpBox::show(const char* const Caption, const int Width, int timeout, con
 	msgBox.exec(timeout);
 }
 
-void CHelpBox::addLine(std::string& text, CFont* font, uint8_t col, const bool bg)
+void CHelpBox::addLine(std::string& text, CFont* font, uint32_t col, const bool bg)
 {
 	std::vector<Drawable*> v;
 	Drawable *d = new DText(text, font, col, bg);
@@ -85,7 +85,7 @@ void CHelpBox::addLine(std::string& text, CFont* font, uint8_t col, const bool b
 	m_lines.push_back(v);
 }
 
-void CHelpBox::addLine(const char* const text, CFont* font, uint8_t col, const bool bg)
+void CHelpBox::addLine(const char* const text, CFont* font, uint32_t col, const bool bg)
 {
 	std::vector<Drawable*> v;
 	Drawable *d = new DText(text, font, col, bg);
@@ -93,7 +93,7 @@ void CHelpBox::addLine(const char* const text, CFont* font, uint8_t col, const b
 	m_lines.push_back(v);
 }
 
-void CHelpBox::addLine(const char* const icon, const char* const text, CFont* font, uint8_t col, const bool bg)
+void CHelpBox::addLine(const char* const icon, const char* const text, CFont* font, uint32_t col, const bool bg)
 {
 	std::vector<Drawable*> v;
 	Drawable *di = new DIcon(icon);
@@ -103,7 +103,7 @@ void CHelpBox::addLine(const char* const icon, const char* const text, CFont* fo
 	m_lines.push_back(v);
 }
 
-void CHelpBox::addLine(std::string& icon, std::string& text, CFont* font, uint8_t col, const bool bg)
+void CHelpBox::addLine(std::string& icon, std::string& text, CFont* font, uint32_t col, const bool bg)
 {
 	std::vector<Drawable*> v;
 	Drawable *di = new DIcon(icon);
@@ -113,7 +113,7 @@ void CHelpBox::addLine(std::string& icon, std::string& text, CFont* font, uint8_
 	m_lines.push_back(v);
 }
 
-void CHelpBox::add2Line(const char* const text1, const char* const text2, CFont* font1, uint8_t col1, const bool bg1, CFont* font2, uint8_t col2, const bool bg2)
+void CHelpBox::add2Line(const char* const text1, const char* const text2, CFont* font1, uint32_t col1, const bool bg1, CFont* font2, uint32_t col2, const bool bg2)
 {
 	std::vector<Drawable*> v;
 	Drawable *di = new DText(text1, font1, col1, bg1);

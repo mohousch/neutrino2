@@ -741,7 +741,7 @@ void CCButtons::paint()
 						CFrameBuffer::getInstance()->paintIcon(buttons[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
 
 						// FIXME: i18n
-						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
+						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 					}
 				}
 				else if (mode == BUTTON_FRAME)
@@ -930,7 +930,7 @@ void CItemInfo::paint()
 		{
 			l_ow1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(option_info1.c_str());
 
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString(itemBox.iX + itemBox.iWidth - BORDER_RIGHT - l_ow1, itemBox.iY + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, option_info1.c_str(), COL_MENUHINT, 0, true);
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString(itemBox.iX + itemBox.iWidth - BORDER_RIGHT - l_ow1, itemBox.iY + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, option_info1.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
 		}
 
 		// info1
@@ -939,7 +939,7 @@ void CItemInfo::paint()
 		{
 			//l_w1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getRenderWidth(info1.c_str());
 
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(itemBox.iX + BORDER_LEFT, itemBox.iY + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, info1.c_str(), COL_MENUHINT, 0, true);
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(itemBox.iX + BORDER_LEFT, itemBox.iY + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, info1.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
 		}
 
 		// option_info2
@@ -948,7 +948,7 @@ void CItemInfo::paint()
 		{
 			l_ow2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(option_info2.c_str());
 
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(itemBox.iX + itemBox.iWidth - BORDER_RIGHT - l_ow2, itemBox.iY + itemBox.iHeight/2 + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, option_info2.c_str(), COL_MENUHINT, 0, true);
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(itemBox.iX + itemBox.iWidth - BORDER_RIGHT - l_ow2, itemBox.iY + itemBox.iHeight/2 + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, option_info2.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
 		}
 
 		// info2
@@ -957,7 +957,7 @@ void CItemInfo::paint()
 		{
 			//l_w2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(info2.c_str());
 
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString (itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight/2 + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, info2.c_str(), COL_MENUHINT, 0, true); // UTF-8
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString (itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight/2 + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, info2.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true); // UTF-8
 		}
 	}
 	else if (mode == ITEMINFO_HINTITEM)
@@ -1226,7 +1226,7 @@ CCLabel::CCLabel(const int x, const int y, const int dx, const int dy)
 	background = NULL;
 	
 	//
-	color = COL_MENUCONTENT;
+	color = COL_MENUCONTENT_TEXT_PLUS_0;
 	font = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
 	
 	label = "";
@@ -1333,7 +1333,7 @@ CCText::CCText(const int x, const int y, const int dx, const int dy)
 	background = NULL;
 	
 	font = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
-	color = COL_MENUCONTENT;
+	color = COL_MENUCONTENT_TEXT_PLUS_0;
 	
 	//
 	Text.clear();
@@ -1616,7 +1616,7 @@ CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 	itemBox.iHeight = dy;
 	
 	font = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
-	color = COL_MENUHEAD;
+	color = COL_MENUHEAD_TEXT_PLUS_0;
 	
 	background = NULL;
 	
@@ -1668,7 +1668,7 @@ void CCTime::paint()
 		
 	int startPosX = itemBox.iX + (itemBox.iWidth - timestr_len)/2;
 	
-	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color, 0, true);
+	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color);
 	
 	////
 	//Start();
@@ -1690,7 +1690,7 @@ void CCTime::refresh()
 		
 	int startPosX = itemBox.iX + (itemBox.iWidth - timestr_len)/2;
 	
-	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color, 0, true);
+	g_Font[font]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[font]->getHeight())/2 + g_Font[font]->getHeight(), timestr_len, timestr.c_str(), color);
 }
 
 /*
@@ -1787,7 +1787,7 @@ CCCounter::CCCounter(const int x, const int y, const int dx, const int dy)
 	itemBox.iHeight = dy;
 	
 	font = SNeutrinoSettings::FONT_TYPE_INFOBAR_INFO;
-	color = COL_INFOBAR;
+	color = COL_INFOBAR_TEXT_PLUS_0;
 	
 	background = NULL;
 	
@@ -2424,7 +2424,7 @@ void CHeaders::paint()
 	if (halign == CC_ALIGN_CENTER)
 		startPosX = itemBox.iX + (itemBox.iWidth >> 1) - (stringWidth >> 1);
 
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (count - 1)*ICON_TO_ICON_OFFSET - timestr_len, htitle, COL_MENUHEAD);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (count - 1)*ICON_TO_ICON_OFFSET - timestr_len, htitle, COL_MENUHEAD_TEXT_PLUS_0);
 }
 
 void CHeaders::stopRefresh()
@@ -2615,7 +2615,7 @@ void CFooters::paint()
 					CFrameBuffer::getInstance()->paintIcon(buttons[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + (itemBox.iHeight - ih[i])/2, 0, true, iw[i], ih[i]);
 
 					// FIXME: i18n
-					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
+					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + f_h + (itemBox.iHeight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(buttons[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 				}
 			}
 			else if (mode == CCButtons::BUTTON_FRAME)

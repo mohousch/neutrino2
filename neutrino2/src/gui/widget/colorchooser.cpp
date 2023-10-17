@@ -357,6 +357,6 @@ void CColorChooser::paintSlider(int _x, int _y, unsigned char *spos, const char*
 	// slider icon
 	frameBuffer->paintIcon(selected ? iconname : NEUTRINO_ICON_VOLUMESLIDER2, _x + a_w + 2*ICON_OFFSET + 3 + (*spos), _y + cFrameBoxItem.iHeight/ITEMS_COUNT);
 
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, _y + cFrameBoxItem.iHeight, cFrameBox.iWidth - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - 150 - cFrameBoxColorPreview.iWidth, text, COL_MENUCONTENT, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, _y + cFrameBoxItem.iHeight, cFrameBox.iWidth - BORDER_LEFT - BORDER_RIGHT - ICON_OFFSET - 150 - cFrameBoxColorPreview.iWidth, text, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 }
 

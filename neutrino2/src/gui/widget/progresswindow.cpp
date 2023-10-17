@@ -124,7 +124,7 @@ void CProgressWindow::showGlobalStatus(const unsigned int prog)
 	frameBuffer->paintBoxRel(x + width - (w + 20), globalstatusY - 5, w + 20 - 2, g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 8, COL_MENUCONTENT_PLUS_0);
 
 	// percent
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + width - (w + 10), globalstatusY + 18, w, strProg, COL_MENUCONTENT, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + width - (w + 10), globalstatusY + 18, w, strProg, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 
 	// progressBar
 	progressBar->paint(global_progress);
@@ -140,7 +140,7 @@ void CProgressWindow::showStatusMessageUTF(const std::string &text)
 {
 	statusText = text;
 	frameBuffer->paintBox(x + 2, statusTextY - mheight, x + width - 4, statusTextY, COL_MENUCONTENT_PLUS_0);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 10, statusTextY, width - 20, text, COL_MENUCONTENT, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 10, statusTextY, width - 20, text, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 	
 	CFrameBuffer::getInstance()->blit();
 

@@ -466,7 +466,7 @@ class CCLabel : public CComponent
 		CFrameBuffer* frameBuffer;
 		
 		//
-		uint8_t color;
+		uint32_t color;
 		unsigned int font;
 		std::string label;
 		
@@ -478,14 +478,13 @@ class CCLabel : public CComponent
 		virtual ~CCLabel();
 		
 		//
-		void setColor(uint8_t col){color = col;};
+		void setColor(uint32_t col){color = col;};
 		void setFont(unsigned int f){font = f;};
 		void setText(const char* const text){label = text? text : "";};
-
+		//
 		void saveScreen(void);
 		void restoreScreen(void);
 		void enableSaveScreen();
-		
 		//
 		void paint();
 		void hide();
@@ -498,17 +497,17 @@ class CCText : public CComponent
 		int emptyLineCount;
 		int medlineheight;
 		int medlinecount;
-		
+		//
 		void addTextToArray(const std::string & text );
 		void processTextToArray(std::string text);
+		
 	public:
 		CFrameBuffer* frameBuffer;
 		
 		//
 		unsigned int font;
 		std::vector<std::string> Text;
-		uint8_t color;
-		
+		uint32_t color;
 		//
 		fb_pixel_t* background;
 		
@@ -518,14 +517,12 @@ class CCText : public CComponent
 		
 		//
 		void setFont(unsigned int f){font = f;};
-		void setColor(uint8_t col){color = col;};
+		void setColor(uint32_t col){color = col;};
 		void setText(const char* const text){processTextToArray(text);};
-
 		//
 		void enableSaveScreen();
 		void saveScreen(void);
 		void restoreScreen(void);
-		
 		//
 		void paint();
 		void hide();
@@ -551,7 +548,6 @@ class CCGrid : public CComponent
 		void init();
 		void setColor(fb_pixel_t col){rgb = col;};
 		void setInterFrame(int iframe = 15){inter_frame = iframe;};
-
 		//
 		void paint();
 		void hide();
@@ -570,7 +566,6 @@ class CCPig : public CComponent
 
 		//
 		void init();
-
 		//
 		void paint();
 		void hide();
@@ -583,10 +578,10 @@ class CCTime : public CComponent/*, public OpenThreads::Thread*/
 		CFrameBuffer* frameBuffer;
 		
 		//
-		uint8_t color;
+		uint32_t color;
 		unsigned int font;
 		std::string format;
-		
+		//
 		fb_pixel_t* background;
 		void saveScreen(void);
 		void restoreScreen(void);
@@ -596,14 +591,12 @@ class CCTime : public CComponent/*, public OpenThreads::Thread*/
 		virtual ~CCTime();
 		
 		//
-		void setColor(uint8_t col){color = col;};
+		void setColor(uint32_t col){color = col;};
 		void setFont(unsigned int f){font = f;};
 		void setFormat(const char* const f);
-		
 		//
 		void paint();
 		void hide();
-		
 		//
 		void refresh();
 		
@@ -621,7 +614,7 @@ class CCCounter : public CComponent
 		CFrameBuffer* frameBuffer;
 		
 		//
-		uint8_t color;
+		uint32_t color;
 		unsigned int font;
 		time_t total_time;
 		time_t play_time;
@@ -635,7 +628,7 @@ class CCCounter : public CComponent
 		virtual ~CCCounter();
 		
 		//
-		void setColor(uint8_t col){color = col;};
+		void setColor(uint32_t col){color = col;};
 		void setFont(unsigned int f){font = f;};
 		void setTotalTime(time_t tot_time){total_time = tot_time;};
 		void setPlayTime(time_t p_time){play_time = p_time;};
@@ -644,7 +637,6 @@ class CCCounter : public CComponent
 		void hide();
 		//
 		void refresh();
-		
 		//
 		CFont* getFont(){return g_Font[font];};
 };

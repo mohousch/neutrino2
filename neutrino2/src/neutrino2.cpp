@@ -2361,7 +2361,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 		// erase the numbers
 		frameBuffer->paintBoxRel(x + dx - 50, y , 40, dy, COL_MENUCONTENT_PLUS_0);
 
-		g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(x + dx - 45, y + dy/2 + 14, 36, p1, COL_MENUCONTENT );
+		g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(x + dx - 45, y + dy/2 + 14, 36, p1, COL_MENUCONTENT_TEXT_PLUS_0);
 
 		frameBuffer->blit();
 	}
@@ -2426,7 +2426,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 				// erase the numbers
 				frameBuffer->paintBoxRel(x + dx - 50, y , 40, dy, COL_MENUCONTENT_PLUS_0);
 
-				g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(x + dx - 45, y + dy/2 + 14, 36, p, COL_MENUCONTENT);
+				g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->RenderString(x + dx - 45, y + dy/2 + 14, 36, p, COL_MENUCONTENT_TEXT_PLUS_0);
 				
 				frameBuffer->blit();
 

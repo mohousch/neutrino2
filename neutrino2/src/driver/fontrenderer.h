@@ -43,19 +43,29 @@
 class FBFontRenderClass;
 class CFont
 {
-	CFrameBuffer	* frameBuffer;
+	CFrameBuffer		* frameBuffer;
 	FTC_ImageTypeRec	font;
-	FBFontRenderClass * renderer;
-	FT_Face		face;
-	FT_Size		size;
-	FTC_ScalerRec  scaler;
+	FBFontRenderClass 	*renderer;
+	FT_Face			face;
+	FT_Size			size;
+	FTC_ScalerRec  		scaler;
 
 	FT_Error getGlyphBitmap(FT_ULong glyph_index, FTC_SBit *sbit);
 
 	// these are HACKED values, because the font metrics were unusable.
-	int height, ascender, descender, upper, lower;
+	int height, DigitHeight, DigitOffset, ascender, descender, upper, lower;
 	int fontwidth;
-	inline void paintFontPixel(fb_pixel_t *td, uint8_t fg_red, uint8_t fg_green, uint8_t fg_blue, int faktor, uint8_t index);
+	int maxdigitwidth;
+	uint8_t fg_red, fg_green, fg_blue;
+	fb_pixel_t colors[256];
+	bool useFullBG;
+
+	//
+	inline int int_min(int a, int b)
+	{
+		return (a < b) ? a : b;
+	}
+	inline void paintFontPixel(fb_pixel_t *td, uint8_t src);
 
 	public:
 		enum fontmodifier
@@ -64,17 +74,30 @@ class CFont
 			Embolden
 		};
 		fontmodifier stylemodifier;
+		
+		/*
+		enum renderflags
+		{
+			IS_UTF8 = 1,
+			FULLBG = 2
+		};
+		*/
 
-		void RenderString(int x, int y, const int width, const char * text, const uint8_t color, const int boxheight = 0, bool utf8_encoded = true, const bool useBackground = false);
-		void RenderString(int x, int y, const int width, const std::string & text, const uint8_t color, const int boxheight = 0, bool utf8_encoded = true, const bool useBackground = false);
-
+		//
+		void RenderString(int x, int y, const int width, const char *text, const fb_pixel_t color, const int boxheight = 0, bool utf8_encoded = true, const bool useBackground = false);
+		void RenderString(int x, int y, const int width, const std::string &text, const fb_pixel_t color, const int boxheight = 0, bool utf8_encoded = true, const bool useBackground = false);
+		//
 		int getRenderWidth(const char* text, bool utf8_encoded = true);
 		int getRenderWidth(const std::string &text, bool utf8_encoded = true);
 		int getHeight(void);
+		int getDigitHeight(void);
+		int getMaxDigitWidth(void);
+		int getDigitOffset(void);
 		int getWidth(void);
 		int getSize(){return font.width;}
 		int setSize(int isize);
 
+		//
 		CFont(FBFontRenderClass *render, FTC_FaceID faceid, const int isize, const fontmodifier _stylemodifier);
 		~CFont(){}		
 };

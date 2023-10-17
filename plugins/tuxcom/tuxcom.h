@@ -177,23 +177,23 @@ enum {
 	GRID
 };
 
-enum {
-	TRANSP = COL_BACKGROUND, 
-	WHITE = COL_WHITE, 
-	BLACK = COL_BLACK, 
-	BLUE1 = COL_BLUE, 
-	BLUE2 = COL_NAVY, 
-	ORANGE = COL_ORANGE, 
-	GREEN = COL_GREEN, 
-	YELLOW = COL_YELLOW, 
-	RED = COL_RED, 
-	GRAY = COL_NOBEL,
-	GREEN2 = COL_LIME,
-	GRAY2 = COL_MATTERHORN, 
-	BLUE_TRANSP = COL_NAVY, 
-	GRAY_TRANSP = COL_NOBEL, 
-	BLUE3 = COL_NAVY
-};
+//enum {
+#define	TRANSP COL_BACKGROUND_PLUS_0 
+#define	WHITE COL_WHITE_PLUS_0
+#define	BLACK COL_BLACK_PLUS_0
+#define	BLUE1 COL_BLUE_PLUS_0
+#define	BLUE2 COL_NAVY_PLUS_0
+#define	ORANGE COL_ORANGE_PLUS_0
+#define	GREEN COL_GREEN_PLUS_0
+#define	YELLOW COL_YELLOW_PLUS_0
+#define	RED COL_RED_PLUS_0
+#define	GRAY COL_NOBEL_PLUS_0
+#define	GREEN2 COL_LIME_PLUS_0
+#define	GRAY2 COL_MATTERHORN 
+#define	BLUE_TRANSP COL_NAVY_PLUS_0 
+#define	GRAY_TRANSP COL_NOBEL_PLUS_0
+#define	BLUE3 COL_NAVY_PLUS_0
+//};
 
 #define CONFIG_FILE PLUGINDIR "/tuxcom/tuxcom.conf"
 
@@ -524,27 +524,27 @@ struct marker
 
 struct frameinfo
 {
-	char           			path[FILENAME_MAX];
-	int            			writable;
-	int			  			sort;
-	int           			markcount;
+	char           		path[FILENAME_MAX];
+	int            		writable;
+	int			  sort;
+	int           		markcount;
 	unsigned long long  	marksize;
-	long          			first;
-	long		  			selected;
+	long          		first;
+	long		  	selected;
 	long			count;
 	unsigned long long  	size;
-	struct fileentry*		flist;
-	struct marker * 		mlist;
+	struct fileentry*	flist;
+	struct marker * 	mlist;
 	int						ziptype;
-	char           			zipfile[FILENAME_MAX];
-	char           			zippath[FILENAME_MAX];
+	char           		zipfile[FILENAME_MAX];
+	char           		zippath[FILENAME_MAX];
 	struct zipfileentry*	allziplist;
 	FILE*                   ftpconn;
 	struct sockaddr_in      s_in;
-	char 					ftphost[512];
-	int  					ftpport;
-	char 					ftpuser[100];
-	char 					ftppass[100];
+	char 			ftphost[512];
+	int  			ftpport;
+	char 			ftpuser[100];
+	char 			ftppass[100];
 
 };
 
@@ -552,7 +552,7 @@ struct frameinfo finfo[2];
 
 //functions
 void			SetPassword();
-void 			RenderBox(int sx, int sy, int ex, int ey, int mode, uint8_t color);
+void 			RenderBox(int sx, int sy, int ex, int ey, int mode, uint32_t color);
 void 	          	RenderFrame(int frame);
 void 	          	RenderMenuLine(int highlight, int refresh);
 void 	          	FillDir(int frame, int selmode);

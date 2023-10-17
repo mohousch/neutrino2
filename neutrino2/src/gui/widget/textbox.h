@@ -104,7 +104,7 @@ class CTextBox : public CComponent
 
 		// backgrond
 		fb_pixel_t m_textBackgroundColor;
-		uint8_t m_textColor;
+		uint32_t m_textColor;
 		int m_textRadius;
 		int m_textCorner;
 		
@@ -158,7 +158,7 @@ class CTextBox : public CComponent
 		void setPosition(const CBox * position);
 		void setCorner(int ra, int co){m_textRadius = ra; m_textCorner = co;};
 		void setBackgroundColor(fb_pixel_t col){m_textBackgroundColor = col;};
-		void setTextColor(uint8_t col){m_textColor = col;};
+		void setTextColor(uint32_t col){m_textColor = col;};
 		void setFont(unsigned int font_text){m_pcFontText = font_text;};
 		void setMode(const int mode);
 		void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};

@@ -167,7 +167,7 @@ class CNeutrinoApp : public CMenuTarget
 		//
 		CMenuTarget* convertTarget(const std::string& name);
 		uint32_t convertColor(const char* const color);
-		uint8_t convertFontColor(const char* const color);
+		uint32_t convertFontColor(const char* const color);
 		int convertCorner(const char * const corner);
 		int convertRadius(const char* const radius);
 		int convertGradient(const char* const gradient);

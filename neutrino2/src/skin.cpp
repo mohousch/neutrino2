@@ -525,11 +525,11 @@ uint32_t CNeutrinoApp::convertColor(const char* const color)
 }
 
 //
-uint8_t CNeutrinoApp::convertFontColor(const char* const color)
+uint32_t CNeutrinoApp::convertFontColor(const char* const color)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertFontColor: color: %s\n", color);
 	
-	uint8_t rgb = COL_MENUCONTENT;
+	uint32_t rgb = COL_MENUCONTENT_TEXT_PLUS_0;
 	
 	unsigned int r = 0;
 	unsigned int g = 0;
@@ -552,115 +552,115 @@ uint8_t CNeutrinoApp::convertFontColor(const char* const color)
 		{
 			if ( strcmp(color, "COL_MAROON") == 0)
 			{
-				return COL_MAROON;
+				return COL_MAROON_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_GREEN") == 0)
 			{
-				return COL_GREEN;
+				return COL_GREEN_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_OLIVE") == 0)
 			{
-				return COL_OLIVE;
+				return COL_OLIVE_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_NAVY") == 0)
 			{
-				return COL_NAVY;
+				return COL_NAVY_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_PURPLE") == 0)
 			{
-				return COL_PURPLE;
+				return COL_PURPLE_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_TEAL") == 0)
 			{
-				return COL_TEAL;
+				return COL_TEAL_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_NOBEL") == 0)
 			{
-				return COL_NOBEL;
+				return COL_NOBEL_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_MATTERHORN") == 0)
 			{
-				return COL_MATTERHORN;
+				return COL_MATTERHORN_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_RED") == 0)
 			{
-				return COL_RED;
+				return COL_RED_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_LIME") == 0)
 			{
-				return COL_LIME;
+				return COL_LIME_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_YELLOW") == 0)
 			{
-				return COL_YELLOW;
+				return COL_YELLOW_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_BLUE") == 0)
 			{
-				return COL_BLUE;
+				return COL_BLUE_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_MAGENTA") == 0)
 			{
-				return COL_MAGENTA;
+				return COL_MAGENTA_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_AQUA") == 0)
 			{
-				return COL_AQUA;
+				return COL_AQUA_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_WHITE") == 0)
 			{
-				return COL_WHITE;
+				return COL_WHITE_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_BLACK") == 0)
 			{
-				return COL_BLACK;
+				return COL_BLACK_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_ORANGE") == 0)
 			{
-				return COL_ORANGE;
+				return COL_ORANGE_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_SILVER") == 0)
 			{
-				return COL_SILVER;
+				return COL_SILVER_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_BACKGROUND") == 0)
 			{
-				return COL_BACKGROUND;
+				return COL_BACKGROUND_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_INFOBAR") == 0)
 			{
-				return COL_INFOBAR;
+				return COL_INFOBAR_TEXT_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_INFOBAR_SHADOW") == 0)
 			{
-				return COL_INFOBAR_SHADOW;
+				return COL_INFOBAR_SHADOW_TEXT_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_MENUHEAD") == 0)
 			{
-				return COL_MENUHEAD;
+				return COL_MENUHEAD_TEXT_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_MENUCONTENT") == 0)
 			{
-				return COL_MENUCONTENT;
+				return COL_MENUCONTENT_TEXT_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_MENUCONTENTDARK") == 0)
 			{
-				return COL_MENUCONTENTDARK;
+				return COL_MENUCONTENTDARK_TEXT_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_MENUCONTENTSELECTED") == 0)
 			{
-				return COL_MENUCONTENTSELECTED;
+				return COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_MENUCONTENTINACTIVE") == 0)
 			{
-				return COL_MENUCONTENTINACTIVE;
+				return COL_MENUCONTENTINACTIVE_TEXT_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_MENUFOOT") == 0)
 			{
-				return COL_MENUFOOT;
+				return COL_MENUFOOT_TEXT_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_MENUHINT") == 0)
 			{
-				return COL_MENUHINT;
+				return COL_MENUHINT_TEXT_PLUS_0;
 			}
 		}
 	}
@@ -1988,7 +1988,7 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	textBox->setCorner(ra, co);
 	textBox->paintMainFrame(paintframe);
 					
-	textBox->setTextColor(textColor? convertFontColor(textColor) : COL_MENUCONTENT);
+	textBox->setTextColor(textColor? convertFontColor(textColor) : COL_MENUCONTENT_TEXT_PLUS_0);
 	//
 	int fs = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
 	if (font) fs = convertFontSize(font);
@@ -2164,7 +2164,7 @@ void CNeutrinoApp::parseCCLabel(xmlNodePtr node, CWidget* widget)
 	font_size = xmlGetAttribute(node, (char *)"font");
 	font_color = xmlGetAttribute(node, (char*)"fontcolor");
 		
-	uint8_t color = COL_MENUCONTENT;
+	uint32_t color = COL_MENUCONTENT_TEXT_PLUS_0;
 		
 	if (font_color) color = convertFontColor(font_color);
 						
@@ -2310,7 +2310,7 @@ void CNeutrinoApp::parseCCTime(xmlNodePtr node, CWidget* widget)
 	font_size = xmlGetAttribute(node, (char *)"font");
 	font_color = xmlGetAttribute(node, (char*)"fontcolor");
 		
-	uint8_t color = COL_MENUCONTENT;
+	uint32_t color = COL_MENUCONTENT_TEXT_PLUS_0;
 		
 	if (font_color) color = convertFontColor(font_color);
 						

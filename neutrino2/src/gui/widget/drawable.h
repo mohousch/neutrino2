@@ -96,8 +96,8 @@ typedef std::vector<std::vector<Drawable*> > ContentLines;
 class DText : public Drawable
 {
 	public:
-		DText(std::string& text, CFont* font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint8_t col = COL_MENUCONTENT, const bool bg = false);
-		DText(const char *text, CFont* font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint8_t col = COL_MENUCONTENT, const bool bg = false);
+		DText(std::string& text, CFont* font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg = false);
+		DText(const char *text, CFont* font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg = false);
 		void init();
 		void draw(int x, int y, int width);
 		DType getType();
@@ -105,7 +105,7 @@ class DText : public Drawable
 	protected:
 		std::string m_text;
 		CFont* m_font;
-		uint8_t m_color;
+		uint32_t m_color;
 		bool m_background;
 };
 

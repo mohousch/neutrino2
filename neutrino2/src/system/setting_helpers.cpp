@@ -137,6 +137,68 @@ bool CColorSetupNotifier::changeNotify(const std::string&, void *)
 
 	// hint
 	frameBuffer->paletteGenFade(COL_MENUHINT, convertSetupColor2RGB(g_settings.menu_Hint_red, g_settings.menu_Hint_green, g_settings.menu_Hint_blue), convertSetupColor2RGB(g_settings.menu_Hint_Text_red, g_settings.menu_Hint_Text_green, g_settings.menu_Hint_Text_blue), 8, convertSetupAlpha2Alpha( g_settings.menu_Hint_alpha ) );
+	
+#if 0
+	// head
+	frameBuffer->paletteSetColor(COL_MENUHEAD, convertSetupColor2RGB(g_settings.menu_Head_red, g_settings.menu_Head_green, g_settings.menu_Head_blue), convertSetupAlpha2Alpha( g_settings.menu_Head_alpha ));
+
+	// menu content
+	frameBuffer->paletteSetColor(COL_MENUCONTENT, convertSetupColor2RGB(g_settings.menu_Content_red, g_settings.menu_Content_green, g_settings.menu_Content_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
+
+	// menu content dark
+	frameBuffer->paletteSetColor(COL_MENUCONTENTDARK, convertSetupColor2RGB(int(g_settings.menu_Content_red*0.6), int(g_settings.menu_Content_green*0.6), int(g_settings.menu_Content_blue*0.6)), convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
+
+	// menu content selected
+	frameBuffer->paletteSetColor(COL_MENUCONTENTSELECTED, convertSetupColor2RGB(g_settings.menu_Content_Selected_red, g_settings.menu_Content_Selected_green, g_settings.menu_Content_Selected_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_Selected_alpha) );
+
+	// menu content inactiv
+	frameBuffer->paletteSetColor(COL_MENUCONTENTINACTIVE, convertSetupColor2RGB(g_settings.menu_Content_inactive_red, g_settings.menu_Content_inactive_green, g_settings.menu_Content_inactive_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_inactive_alpha) );
+
+	// foot
+	frameBuffer->paletteSetColor(COL_MENUFOOT, convertSetupColor2RGB(g_settings.menu_Foot_red, g_settings.menu_Foot_green, g_settings.menu_Foot_blue), convertSetupAlpha2Alpha(g_settings.menu_Foot_alpha) );
+
+	// infobar
+	frameBuffer->paletteSetColor(COL_INFOBAR, convertSetupColor2RGB(g_settings.infobar_red, g_settings.infobar_green, g_settings.infobar_blue), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
+
+	// infobar shadow
+	frameBuffer->paletteSetColor(COL_INFOBAR_SHADOW, convertSetupColor2RGB(int(g_settings.infobar_red*0.4), int(g_settings.infobar_green*0.4), int(g_settings.infobar_blue*0.4)), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
+
+	// infobar colored events
+	frameBuffer->paletteSetColor(COL_INFOBAR_COLORED_EVENTS, convertSetupColor2RGB(g_settings.infobar_red, g_settings.infobar_green, g_settings.infobar_blue), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
+
+	// hint
+	frameBuffer->paletteSetColor(COL_MENUHINT, convertSetupColor2RGB(g_settings.menu_Hint_red, g_settings.menu_Hint_green, g_settings.menu_Hint_blue), convertSetupAlpha2Alpha( g_settings.menu_Hint_alpha ) );
+#endif
+	// menu content inactiv text
+	frameBuffer->paletteSetColor(COL_MENUCONTENTINACTIVE_TEXT, convertSetupColor2RGB(g_settings.menu_Content_inactive_Text_red, g_settings.menu_Content_inactive_Text_green, g_settings.menu_Content_inactive_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_inactive_alpha) );
+	
+	// menu content selected text
+	frameBuffer->paletteSetColor(COL_MENUCONTENTSELECTED_TEXT,	convertSetupColor2RGB(g_settings.menu_Content_Selected_Text_red, g_settings.menu_Content_Selected_Text_green, g_settings.menu_Content_Selected_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_Selected_alpha) );
+	
+	// menu content dark text
+	frameBuffer->paletteSetColor(COL_MENUCONTENTDARK_TEXT, convertSetupColor2RGB(int(g_settings.menu_Content_Text_red*0.6), int(g_settings.menu_Content_Text_green*0.6), int(g_settings.menu_Content_Text_blue*0.6)), convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
+	
+	// menu content text
+	frameBuffer->paletteSetColor(COL_MENUCONTENT_TEXT, convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
+	
+	// head text
+	frameBuffer->paletteSetColor(COL_MENUHEAD_TEXT, convertSetupColor2RGB(g_settings.menu_Head_Text_red, g_settings.menu_Head_Text_green, g_settings.menu_Head_Text_blue), convertSetupAlpha2Alpha( g_settings.menu_Head_alpha ));
+	
+	// foot text
+	frameBuffer->paletteSetColor(COL_MENUFOOT_TEXT, convertSetupColor2RGB(g_settings.menu_Foot_Text_red, g_settings.menu_Foot_Text_green, g_settings.menu_Foot_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Foot_alpha) );
+	
+	// infobar text
+	frameBuffer->paletteSetColor(COL_INFOBAR_TEXT, convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
+
+	// infobar shadow text
+	frameBuffer->paletteSetColor(COL_INFOBAR_SHADOW_TEXT, convertSetupColor2RGB(int(g_settings.infobar_Text_red*0.4), int(g_settings.infobar_Text_green*0.4), int(g_settings.infobar_Text_blue*0.4)), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
+
+	// infobar colored events text
+	frameBuffer->paletteSetColor(COL_INFOBAR_COLORED_EVENTS_TEXT, convertSetupColor2RGB(g_settings.infobar_colored_events_red, g_settings.infobar_colored_events_green, g_settings.infobar_colored_events_blue), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
+
+	// hint text
+	frameBuffer->paletteSetColor(COL_MENUHINT_TEXT, convertSetupColor2RGB(g_settings.menu_Hint_Text_red, g_settings.menu_Hint_Text_green, g_settings.menu_Hint_Text_blue), convertSetupAlpha2Alpha( g_settings.menu_Hint_alpha ) );
+	////
 
 	frameBuffer->paletteSet();
 

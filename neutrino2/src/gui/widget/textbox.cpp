@@ -125,7 +125,7 @@ void CTextBox::initVar(void)
 	itemBox.iY = g_settings.screen_StartY + ((g_settings.screen_EndY - g_settings.screen_StartY - itemBox.iHeight) >>1);
 	
 	m_textBackgroundColor = COL_MENUCONTENT_PLUS_0;
-	m_textColor = COL_MENUCONTENT;
+	m_textColor = COL_MENUCONTENT_TEXT_PLUS_0;
 	m_textRadius = RADIUS_MID;
 	m_textCorner = CORNER_NONE;
 

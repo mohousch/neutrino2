@@ -439,7 +439,7 @@ void CInfoBox::setBackgroundColor(fb_pixel_t col)
 }
 
 //
-void CInfoBox::setTextColor(uint8_t col)
+void CInfoBox::setTextColor(uint32_t col)
 {
 	if(m_pcTextBox != NULL)
 		m_pcTextBox->setTextColor(col);

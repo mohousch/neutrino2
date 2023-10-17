@@ -128,7 +128,7 @@ class CMenuItem
 		//
 		unsigned int nameFont;
 		unsigned int optionFont;
-		uint8_t optionFontColor;
+		uint32_t optionFontColor;
 
 		bool nLinesItem; // 2 lines Item 
 
@@ -204,7 +204,7 @@ class CMenuItem
 
 		virtual void setNameFont(unsigned int font){nameFont = font;};
 		virtual void setOptionFont(unsigned int font){optionFont = font;};
-		virtual void setOptionFontColor(uint8_t c){optionFontColor = c;};
+		virtual void setOptionFontColor(uint32_t c){optionFontColor = c;};
 
 		virtual void set2lines(void){nLinesItem = true;};
 		virtual void setWidgetType(int type){widgetType = type;};

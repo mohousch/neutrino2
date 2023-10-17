@@ -435,7 +435,7 @@ void CMenuWidget::paintHead()
 			startPosX = x + (width >> 1) - (stringWidth >> 1);
 
 		// title
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, y + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (hbutton_count)*ICON_TO_ICON_OFFSET - timestr_len, l_name.c_str(), COL_MENUHEAD);
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, y + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (hbutton_count)*ICON_TO_ICON_OFFSET - timestr_len, l_name.c_str(), COL_MENUHEAD_TEXT_PLUS_0);
 	}
 	else
 	{
@@ -444,7 +444,6 @@ void CMenuWidget::paintHead()
 		
 		// paint horizontal line top
 		if (head_line)
-			//frameBuffer->paintHLineRel(x + BORDER_LEFT, width - BORDER_LEFT - BORDER_RIGHT, y + hheight - 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			frameBuffer->paintBoxRel(x + BORDER_LEFT, y + hheight - 2, width - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, head_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 	
 		//paint icon (left)
@@ -511,7 +510,7 @@ void CMenuWidget::paintHead()
 		if (thalign == CComponent::CC_ALIGN_CENTER)
 			startPosX = x + (width >> 1) - (stringWidth >> 1);
 			
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, y + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), width - BORDER_RIGHT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - timestr_len - buttonWidth - (hbutton_count)*ICON_TO_ICON_OFFSET, l_name.c_str(), COL_MENUHEAD, 0, true); // UTF-8
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, y + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), width - BORDER_RIGHT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - timestr_len - buttonWidth - (hbutton_count)*ICON_TO_ICON_OFFSET, l_name.c_str(), COL_MENUHEAD_TEXT_PLUS_0, 0, true); // UTF-8
 	}
 }
 
@@ -527,7 +526,6 @@ void CMenuWidget::paintFoot()
 			frameBuffer->paintBoxRel(x, y + height - fheight, width, fheight, def_footColor? COL_MENUFOOT_PLUS_0 : footColor);
 
 			// paint horizontal line buttom
-			//frameBuffer->paintHLineRel(x + BORDER_LEFT, width - BORDER_LEFT - BORDER_RIGHT, y + height - fheight, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			frameBuffer->paintBoxRel(x + BORDER_LEFT, y + height - fheight, width - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 
 			// buttons
@@ -556,7 +554,7 @@ void CMenuWidget::paintFoot()
 					CFrameBuffer::getInstance()->paintIcon(fbutton_labels[i].button, x + BORDER_LEFT + i*buttonWidth, y + height - fheight + (fheight - ih[i])/2, 0, true, iw[i], ih[i]);
 
 					// FIXME: i18n
-					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(x + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, y + height - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
+					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(x + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, y + height - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 				}
 			}
 		}
@@ -568,7 +566,6 @@ void CMenuWidget::paintFoot()
 		
 		// paint horizontal line buttom
 		if (foot_line)
-			//frameBuffer->paintHLineRel(x + BORDER_LEFT, width - BORDER_LEFT - BORDER_RIGHT, y + height - cFrameFootInfoHeight - fheight, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			frameBuffer->paintBoxRel(x + BORDER_LEFT, y + height - fheight, width - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 		
 		// buttons
@@ -599,7 +596,7 @@ void CMenuWidget::paintFoot()
 					CFrameBuffer::getInstance()->paintIcon(fbutton_labels[i].button, x + BORDER_LEFT + i*buttonWidth, y + height - cFrameFootInfoHeight - fheight + (fheight - ih[i])/2, 0, true, iw[i], ih[i]);
 
 					// FIXME: i18n
-					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(x + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, y + height - cFrameFootInfoHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
+					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(x + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, y + height - cFrameFootInfoHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 				}
 			}
 		}
@@ -851,7 +848,7 @@ void CMenuWidget::paintItemInfo(int pos)
 					// Hint
 					if(!item->itemHint.empty())
 					{
-						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT + iw + ICON_OFFSET, y + height - fheight - cFrameFootInfoHeight + (fheight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - iw, item->itemHint.c_str(), COL_MENUFOOT, 0, true); // UTF-8
+						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT + iw + ICON_OFFSET, y + height - fheight - cFrameFootInfoHeight + (fheight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - iw, item->itemHint.c_str(), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 					}
 				}
 			}
@@ -937,7 +934,7 @@ void CMenuWidget::paintItemInfo(int pos)
 					// Hint
 					if(!item->itemHint.empty())
 					{
-						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT + iw + ICON_OFFSET, y + height - fheight - cFrameFootInfoHeight + (fheight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - iw, item->itemHint.c_str(), COL_MENUFOOT, 0, true); // UTF-8
+						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT + iw + ICON_OFFSET, y + height - fheight - cFrameFootInfoHeight + (fheight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - iw, item->itemHint.c_str(), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 					}
 				}
 			}
@@ -971,7 +968,7 @@ void CMenuWidget::paintItemInfo(int pos)
 				// Hint
 				if(!item->itemHint.empty())
 				{
-					g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT + iw + ICON_OFFSET, y + height - cFrameFootInfoHeight - fheight + (fheight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - iw, item->itemHint.c_str(), COL_MENUFOOT, 0, true); // UTF-8
+					g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT + iw + ICON_OFFSET, y + height - cFrameFootInfoHeight - fheight + (fheight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - iw, item->itemHint.c_str(), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 				}
 			}
 		}
@@ -1056,7 +1053,7 @@ void CMenuWidget::paintItemInfo(int pos)
 					// Hint
 					if(!item->itemHint.empty())
 					{
-						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT + iw + ICON_OFFSET, y + height - cFrameFootInfoHeight - fheight + (fheight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - iw, item->itemHint.c_str(), COL_MENUFOOT, 0, true); // UTF-8
+						g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT + iw + ICON_OFFSET, y + height - cFrameFootInfoHeight - fheight + (fheight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - iw, item->itemHint.c_str(), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 					}
 				}
 			}
@@ -1092,7 +1089,7 @@ void CMenuWidget::paintItemInfo(int pos)
 				// itemHint
 				if(!item->itemHint.empty())
 				{
-					g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT + iw + ICON_OFFSET, y + height - cFrameFootInfoHeight - fheight + (fheight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - iw, item->itemHint.c_str(), COL_MENUFOOT, 0, true); // UTF-8
+					g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT + iw + ICON_OFFSET, y + height - cFrameFootInfoHeight - fheight + (fheight - g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT - iw, item->itemHint.c_str(), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 				}
 			}
 
@@ -1171,13 +1168,13 @@ void CMenuWidget::paintItemInfo(int pos)
 			// itemName
 			if(!item->itemName.empty())
 			{
-				g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(x + BORDER_LEFT, y + height - fheight - cFrameFootInfoHeight + (cFrameFootInfoHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE] ->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT, item->itemName.c_str(), COL_MENUHINT);
+				g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(x + BORDER_LEFT, y + height - fheight - cFrameFootInfoHeight + (cFrameFootInfoHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE] ->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), width - BORDER_LEFT - BORDER_RIGHT, item->itemName.c_str(), COL_MENUHINT_TEXT_PLUS_0);
 			}
 
 			// hint
 			if(!item->itemHint.empty())
 			{
-				g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT, y + height - fheight, width - BORDER_LEFT - BORDER_RIGHT, item->itemHint.c_str(), COL_MENUHINT);
+				g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(x + BORDER_LEFT, y + height - fheight, width - BORDER_LEFT - BORDER_RIGHT, item->itemHint.c_str(), COL_MENUHINT_TEXT_PLUS_0);
 			}
 		}
 	}

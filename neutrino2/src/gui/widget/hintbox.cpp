@@ -216,7 +216,7 @@ void CHintBox::refreshPage(void)
 
 	for (std::vector<char *>::const_iterator it = line.begin() + (entries_per_page * current_page); ((it != line.end()) && (count > 0)); it++, count--)
 	{
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + BORDER_LEFT, (ypos += cFrameBoxItem.iHeight), cFrameBox.iWidth, *it, COL_MENUCONTENT, 0, true); 
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(cFrameBox.iX + BORDER_LEFT, (ypos += cFrameBoxItem.iHeight), cFrameBox.iWidth, *it, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); 
 	}
 
 	// scrollBar #TODO

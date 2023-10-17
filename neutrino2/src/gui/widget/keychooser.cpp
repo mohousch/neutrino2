@@ -254,8 +254,8 @@ void CKeyChooserItem::paint()
 	headers.paint();
 
 	//paint msg...
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(m_cBox.iX + BORDER_LEFT, m_cBox.iY + hheight + mheight, m_cBox.iWidth, _("Please press the new key"), COL_MENUCONTENT, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(m_cBox.iX + BORDER_LEFT, m_cBox.iY + hheight + mheight, m_cBox.iWidth, _("Please press the new key"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(m_cBox.iX + BORDER_LEFT, m_cBox.iY + hheight + mheight* 2, m_cBox.iWidth, _("Wait a few seconds for abort"), COL_MENUCONTENT, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(m_cBox.iX + BORDER_LEFT, m_cBox.iY + hheight + mheight* 2, m_cBox.iWidth, _("Wait a few seconds for abort"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 }
 

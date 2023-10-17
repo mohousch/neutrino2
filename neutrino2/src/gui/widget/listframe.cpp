@@ -53,10 +53,10 @@
 #define LIST_BACKGROUND_COLOR 			COL_MENUCONTENT_PLUS_0
 #define LIST_BACKGROUND_COLOR_SELECTED 		COL_MENUCONTENTSELECTED_PLUS_0
 
-#define TITLE_FONT_COLOR 			COL_MENUHEAD
-#define HEADER_LIST_FONT_COLOR 			COL_MENUCONTENT
-#define LIST_FONT_COLOR 			COL_MENUCONTENT
-#define LIST_FONT_COLOR_SELECTED 		COL_MENUCONTENTSELECTED
+#define TITLE_FONT_COLOR 			COL_MENUHEAD_TEXT_PLUS_0
+#define HEADER_LIST_FONT_COLOR 			COL_MENUCONTENT_TEXT_PLUS_0
+#define LIST_FONT_COLOR 			COL_MENUCONTENT_TEXT_PLUS_0
+#define LIST_FONT_COLOR_SELECTED 		COL_MENUCONTENTSELECTED_TEXT_PLUS_0
 
 #define FONT_LIST 				g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO2]
 #define FONT_HEADER_LIST 			g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]
@@ -398,7 +398,7 @@ void CListFrame::refreshList(void)
 	int y = m_cFrameListRel.iY + TEXT_BORDER_WIDTH ;
 	for(int line = m_nCurrentLine; line < m_nNrOfLines && line < m_nCurrentLine + m_nLinesPerPage; line++)
 	{
-		uint8_t color = LIST_FONT_COLOR;
+		uint32_t color = LIST_FONT_COLOR;
 		// draw line
 		if(line == m_nSelectedLine && m_showSelection == true)
 		{
@@ -439,7 +439,7 @@ void CListFrame::refreshLine(int line)
 	if((line < m_nCurrentLine) && (line > m_nCurrentLine + m_nLinesPerPage))
 		return;
 
-	uint8_t color;
+	uint32_t color;
 	int rel_line = line - m_nCurrentLine;
 	int y = m_cFrameListRel.iY + TEXT_BORDER_WIDTH + (rel_line*m_nFontListHeight);
 

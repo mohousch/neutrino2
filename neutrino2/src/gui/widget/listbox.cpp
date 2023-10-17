@@ -73,7 +73,7 @@ CMenuItem::CMenuItem()
 
 	nameFont = SNeutrinoSettings::FONT_TYPE_MENU;
 	optionFont = SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER;
-	optionFontColor = COL_MENUCONTENT;
+	optionFontColor = COL_MENUCONTENT_TEXT_PLUS_0;
 			
 	//
 	nLinesItem = false;
@@ -445,12 +445,12 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 
 	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
 
-	uint8_t color = COL_MENUCONTENT;
+	uint32_t color = COL_MENUCONTENT_TEXT_PLUS_0;
 	fb_pixel_t bgcolor = COL_MENUCONTENT_PLUS_0;
 
 	if (selected)
 	{
-		color = COL_MENUCONTENTSELECTED;
+		color = COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 		
 		//FIXME:
 		if (parent)
@@ -462,7 +462,7 @@ int CMenuOptionChooser::paint(bool selected, bool AfterPulldown)
 	}
 	else if (!active)
 	{
-		color = COL_MENUCONTENTINACTIVE;
+		color = COL_MENUCONTENTINACTIVE_TEXT_PLUS_0;
 	}
 	
 	// paint item
@@ -620,12 +620,12 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 
 	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
 
-	uint8_t color = COL_MENUCONTENT;
+	uint32_t color = COL_MENUCONTENT_TEXT_PLUS_0;
 	fb_pixel_t bgcolor = COL_MENUCONTENT_PLUS_0;
 
 	if (selected)
 	{
-		color = COL_MENUCONTENTSELECTED;
+		color = COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 		
 		//FIXME:
 		if (parent)
@@ -637,7 +637,7 @@ int CMenuOptionNumberChooser::paint(bool selected, bool /*AfterPulldown*/)
 	}
 	else if (!active)
 	{
-		color = COL_MENUCONTENTINACTIVE;
+		color = COL_MENUCONTENTINACTIVE_TEXT_PLUS_0;
 	}
 	
 	// paint item
@@ -858,12 +858,12 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 
 	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
 
-	uint8_t color = COL_MENUCONTENT;
+	uint32_t color = COL_MENUCONTENT_TEXT_PLUS_0;
 	fb_pixel_t bgcolor = COL_MENUCONTENT_PLUS_0;
 	
 	if (selected) 
 	{
-		color = COL_MENUCONTENTSELECTED;
+		color = COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 		
 		//FIXME:
 		if (parent)
@@ -875,7 +875,7 @@ int CMenuOptionStringChooser::paint( bool selected, bool afterPulldown)
 	}
 	else if (!active) 
 	{
-		color = COL_MENUCONTENTINACTIVE;
+		color = COL_MENUCONTENTINACTIVE_TEXT_PLUS_0;
 	}
 	
 	// paint item
@@ -1020,7 +1020,7 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 				if (paintFrame)
 					frameBuffer->paintBoxRel(stringstartposX - 5, y, stringwidth + 10, height, COL_MENUCONTENT_PLUS_0);
 
-				g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposX, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - (stringstartposX - x) , l_text, COL_MENUCONTENTINACTIVE, 0, true); // UTF-8
+				g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposX, y + (height - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight(), dx - (stringstartposX - x) , l_text, COL_MENUCONTENTINACTIVE_TEXT_PLUS_0, 0, true); // UTF-8
 			}
 		}
 		
@@ -1213,7 +1213,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 	const char * l_text = getName();
 	const char * option_text = getOption();	
 
-	uint8_t color = COL_MENUCONTENT;
+	uint32_t color = COL_MENUCONTENT_TEXT_PLUS_0;
 	fb_pixel_t bgcolor = marked? COL_MENUCONTENTSELECTED_PLUS_1 : COL_MENUCONTENT_PLUS_0;
 	
 	if (hidden)
@@ -1226,24 +1226,24 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		{
 			if (parent->inFocus)
 			{
-				color = COL_MENUCONTENTSELECTED;
+				color = COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 				bgcolor = COL_MENUCONTENTSELECTED_PLUS_0;
 			}
 			else
 			{
-				color = COL_MENUCONTENT;	
+				color = COL_MENUCONTENT_TEXT_PLUS_0;	
 				bgcolor = COL_MENUCONTENT_PLUS_0;
 			}
 		}
 		else
 		{
-			color = COL_MENUCONTENTSELECTED;
+			color = COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 			bgcolor = COL_MENUCONTENTSELECTED_PLUS_0;
 		}
 	}
 	else if (!active)
 	{
-		color = COL_MENUCONTENTINACTIVE;
+		color = COL_MENUCONTENTINACTIVE_TEXT_PLUS_0;
 	}
 
 	if(widgetType == TYPE_FRAME)
@@ -2309,7 +2309,7 @@ void ClistBox::paintHead()
 			if (thalign == CC_ALIGN_CENTER)
 				startPosX = itemBox.iX + (itemBox.iWidth >> 1) - (stringWidth >> 1);
 		
-			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET - timestr_len, l_name, COL_MENUHEAD);
+			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET - timestr_len, l_name, COL_MENUHEAD_TEXT_PLUS_0);
 		}
 		else
 		{		
@@ -2392,7 +2392,7 @@ void ClistBox::paintHead()
 			if (thalign == CC_ALIGN_CENTER)
 				startPosX = itemBox.iX + (itemBox.iWidth >> 1) - (stringWidth >> 1);
 				
-			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_RIGHT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - timestr_len - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET, l_name.c_str(), COL_MENUHEAD, 0, true); // UTF-8
+			g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (hheight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_RIGHT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - timestr_len - buttonWidth - (hbutton_count - 1)*ICON_TO_ICON_OFFSET, l_name.c_str(), COL_MENUHEAD_TEXT_PLUS_0, 0, true); // UTF-8
 		}		
 	}	
 }
@@ -2440,7 +2440,7 @@ void ClistBox::paintFoot()
 						CFrameBuffer::getInstance()->paintIcon(fbutton_labels[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + (fheight - ih[i])/2, 0, true, iw[i], ih[i]);
 
 						// FIXME: i18n
-						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
+						g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + itemBox.iHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 					}
 				}
 			}
@@ -2481,7 +2481,7 @@ void ClistBox::paintFoot()
 		
 					CFrameBuffer::getInstance()->paintIcon(fbutton_labels[i].button, itemBox.iX + BORDER_LEFT + i*buttonWidth, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + (fheight - ih[i])/2, 0, true, iw[i], ih[i]);
 					// FIXME: i18n
-					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT, 0, true); // UTF-8
+					g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(itemBox.iX + BORDER_LEFT + iw[i] + ICON_OFFSET + i*buttonWidth, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + f_h + (fheight - f_h)/2, buttonWidth - iw[i] - ICON_OFFSET, _(fbutton_labels[i].localename.c_str()), COL_MENUFOOT_TEXT_PLUS_0, 0, true); // UTF-8
 				}
 			}
 		}
@@ -2709,13 +2709,13 @@ void ClistBox::paintItemInfo(int pos)
 				// itemName
 				if(!item->itemName.empty())
 				{
-					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + (cFrameFootInfoHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE] ->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, item->itemName.c_str(), COL_MENUHINT);
+					g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight - cFrameFootInfoHeight + (cFrameFootInfoHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE] ->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, item->itemName.c_str(), COL_MENUHINT_TEXT_PLUS_0);
 				}
 
 				// hint
 				if(!item->itemHint.empty())
 				{
-					g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, item->itemHint.c_str(), COL_MENUHINT);
+					g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->RenderString(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - fheight, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, item->itemHint.c_str(), COL_MENUHINT_TEXT_PLUS_0);
 				}
 			}
 		}

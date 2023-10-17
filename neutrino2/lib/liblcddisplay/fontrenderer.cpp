@@ -304,7 +304,7 @@ void LcdFont::RenderString(int x, int y, const int width, const char * text, con
 			{
 				unsigned char c = glyph->buffer[ay*abs(glyph->pitch)+(ax>>3)];
 				if((c>>(7-(ax&7)))&1)
-				framebuffer->draw_point(xpos,ry, color);
+				framebuffer->draw_point(xpos, ry, color);
 				xpos ++;
 			}
 		ry++;

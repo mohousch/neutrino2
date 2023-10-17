@@ -460,7 +460,7 @@ void CMessageBox::paintButtons()
 	dprintf(DEBUG_INFO, "CMessageBox::paintButtons\n");
 	
 	//
-	uint8_t    color;
+	uint32_t color;
 	fb_pixel_t bgcolor;
 
 	if (showbuttons & mbNone)
@@ -492,12 +492,12 @@ void CMessageBox::paintButtons()
 	{
 		if (result == mbrYes)
 		{
-			color   = COL_MENUCONTENTSELECTED;
+			color   = COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 			bgcolor = COL_MENUCONTENTSELECTED_PLUS_0;
 		}
 		else
 		{
-			color   = COL_INFOBAR_SHADOW;
+			color   = COL_INFOBAR_SHADOW_TEXT_PLUS_0;
 			bgcolor = COL_INFOBAR_SHADOW_PLUS_0;
 		}
 		
@@ -520,12 +520,12 @@ void CMessageBox::paintButtons()
 	{
 		if (result == mbrNo)
 		{
-			color   = COL_MENUCONTENTSELECTED;
+			color   = COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 			bgcolor = COL_MENUCONTENTSELECTED_PLUS_0;
 		}
 		else
 		{
-			color   = COL_INFOBAR_SHADOW;
+			color   = COL_INFOBAR_SHADOW_TEXT_PLUS_0;
 			bgcolor = COL_INFOBAR_SHADOW_PLUS_0;
 		}
 
@@ -547,12 +547,12 @@ void CMessageBox::paintButtons()
 	{
 		if (result >= mbrCancel)
 		{
-			color   = COL_MENUCONTENTSELECTED;
+			color   = COL_MENUCONTENTSELECTED_TEXT_PLUS_0;
 			bgcolor = COL_MENUCONTENTSELECTED_PLUS_0;
 		}
 		else
 		{
-			color   = COL_INFOBAR_SHADOW;
+			color   = COL_INFOBAR_SHADOW_TEXT_PLUS_0;
 			bgcolor = COL_INFOBAR_SHADOW_PLUS_0;
 		}
 

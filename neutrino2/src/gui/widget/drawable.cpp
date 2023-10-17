@@ -66,7 +66,7 @@ Drawable::DType Drawable::getType(void)
 }
 
 // DText
-DText::DText(std::string& text, CFont* font, uint8_t col, const bool bg) 
+DText::DText(std::string& text, CFont* font, uint32_t col, const bool bg) 
 {
 	m_text = text;
 	m_font = font;
@@ -76,7 +76,7 @@ DText::DText(std::string& text, CFont* font, uint8_t col, const bool bg)
 	init();
 }
 
-DText::DText(const char *text, CFont* font, uint8_t col, const bool bg)
+DText::DText(const char *text, CFont* font, uint32_t col, const bool bg)
 {
 	m_text = std::string(text);
 	m_font = font;

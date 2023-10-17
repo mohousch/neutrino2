@@ -67,7 +67,7 @@ int GetStringLen(const char *string, int size)
 //
 // RenderString
 //
-void RenderString(const char *string, int _sx, int _sy, int maxwidth, int layout, int size, uint8_t color)
+void RenderString(const char *string, int _sx, int _sy, int maxwidth, int layout, int size, uint32_t color)
 {
 	//set alignment
 	if(layout != TC_LEFT)
@@ -93,21 +93,21 @@ void RenderString(const char *string, int _sx, int _sy, int maxwidth, int layout
 //
 // RenderBox
 //
-void RenderBox(int _sx, int _sy, int _ex, int _ey, int mode, uint8_t color)
+void RenderBox(int _sx, int _sy, int _ex, int _ey, int mode, uint32_t color)
 { 
 	if(mode == FILL)
 	{
-		CFrameBuffer::getInstance()->paintBoxRel(StartX + _sx, StartY + _sy, (_ex - _sx), (_ey - _sy), CFrameBuffer::getInstance()->realcolor[color]);
+		CFrameBuffer::getInstance()->paintBoxRel(StartX + _sx, StartY + _sy, (_ex - _sx), (_ey - _sy), /*CFrameBuffer::getInstance()->realcolor[color]*/color);
 	}
 	else
 	{
 		// paint horizontal line
-		CFrameBuffer::getInstance()->paintHLineRel(StartX + _sx, (_ex - _sx), StartY + _sy, CFrameBuffer::getInstance()->realcolor[color]);
-		CFrameBuffer::getInstance()->paintHLineRel(StartX + _sx, (_ex - _sx), StartY + _ey, CFrameBuffer::getInstance()->realcolor[color]);
+		CFrameBuffer::getInstance()->paintHLineRel(StartX + _sx, (_ex - _sx), StartY + _sy, /*CFrameBuffer::getInstance()->realcolor[color]*/color);
+		CFrameBuffer::getInstance()->paintHLineRel(StartX + _sx, (_ex - _sx), StartY + _ey, /*CFrameBuffer::getInstance()->realcolor[color]*/color);
 		
 		// paint vertical line
-		CFrameBuffer::getInstance()->paintVLineRel(StartX + _sx, StartY + _sy, (_ey - _sy), CFrameBuffer::getInstance()->realcolor[color]);
-		CFrameBuffer::getInstance()->paintVLineRel(StartX + _ex, StartY + _sy, (_ey - _sy), CFrameBuffer::getInstance()->realcolor[color]);
+		CFrameBuffer::getInstance()->paintVLineRel(StartX + _sx, StartY + _sy, (_ey - _sy), /*CFrameBuffer::getInstance()->realcolor[color]*/color);
+		CFrameBuffer::getInstance()->paintVLineRel(StartX + _ex, StartY + _sy, (_ey - _sy), /*CFrameBuffer::getInstance()->realcolor[color]*/color);
 	}
 }
 
@@ -201,8 +201,8 @@ void RenderFrame(int frame)
 		return;
 
 	int row = 0;
-	uint8_t bcolor;
-	uint8_t fcolor;
+	uint32_t bcolor;
+	uint32_t fcolor;
 	char sizeString[100];
 	short bselected;
 	struct fileentry* pfe;
@@ -212,7 +212,7 @@ void RenderFrame(int frame)
 	else if (curframe != frame)
 		lastnoncur = frame;
 
-	uint8_t nBackColor;
+	uint32_t nBackColor;
 
 	colortool[0] = ACTION_EXEC   ;
 	colortool[1] = ACTION_MARKER ;
