@@ -129,16 +129,16 @@
 // itemInfo
 #define COL_MENUHINT_PLUS_0        		CFrameBuffer::getInstance()->realcolor[COL_MENUHINT + 0]
 // text colors
-#define COL_MENUCONTENTINACTIVE_TEXT_PLUS_0	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTINACTIVE_TEXT + 0]		
-#define COL_MENUCONTENTSELECTED_TEXT_PLUS_0	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTSELECTED_TEXT + 0]	
-#define COL_MENUCONTENTDARK_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTDARK_TEXT + 0]	
-#define COL_MENUCONTENT_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT_TEXT + 0]			
-#define COL_MENUHEAD_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUHEAD_TEXT + 0]			
-#define COL_MENUFOOT_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUFOOT_TEXT + 0]			
-#define COL_INFOBAR_TEXT_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_TEXT + 0]		
-#define COL_INFOBAR_SHADOW_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_SHADOW + 0]		
-#define COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0	CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_COLORED_EVENTS + 0]	
-#define COL_MENUHINT_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUHINT_TEXT + 0]			
+#define COL_MENUCONTENTINACTIVE_TEXT_PLUS_0	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTINACTIVE_TEXT]		
+#define COL_MENUCONTENTSELECTED_TEXT_PLUS_0	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTSELECTED_TEXT]	
+#define COL_MENUCONTENTDARK_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTDARK_TEXT]	
+#define COL_MENUCONTENT_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT_TEXT]			
+#define COL_MENUHEAD_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUHEAD_TEXT]			
+#define COL_MENUFOOT_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUFOOT_TEXT]			
+#define COL_INFOBAR_TEXT_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_TEXT]		
+#define COL_INFOBAR_SHADOW_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_SHADOW_TEXT]		
+#define COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0	CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_COLORED_EVENTS_TEXT]	
+#define COL_MENUHINT_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUHINT_TEXT]			
 //
 #define COL_BACKGROUND_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_BACKGROUND]
 

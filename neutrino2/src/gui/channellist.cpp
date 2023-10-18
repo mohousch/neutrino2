@@ -1194,7 +1194,7 @@ int CChannelList::numericZap(int key)
 			for (int i = 3; i >= 0; i--) 
 			{
 				valstr[i + 1] = 0;
-				g_Font[SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP]->RenderString(ox + 7 + i*((sx - 14)>>2), oy + sy - 3, sx, &valstr[i], COL_INFOBAR);
+				g_Font[SNeutrinoSettings::FONT_TYPE_CHANNEL_NUM_ZAP]->RenderString(ox + 7 + i*((sx - 14)>>2), oy + sy - 3, sx, &valstr[i], COL_INFOBAR_TEXT_PLUS_0);
 			}
 			
 			frameBuffer->blit();
@@ -1674,7 +1674,7 @@ void CChannelList::paint(bool customMode)
 			}
 			
 			// option font color
-			item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS);
+			item->setOptionFontColor(COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0);
 			
 
 			if (listBox) listBox->addItem(item);

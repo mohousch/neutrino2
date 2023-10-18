@@ -487,13 +487,13 @@ void CMotorControl::paintLine(int _x, int * _y, int _width, char * txt)
 {
 	*_y += mheight;
 	frameBuffer->paintBoxRel(_x, *_y - mheight, _width, mheight, COL_MENUCONTENT_PLUS_0);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(_x, *_y, _width, txt, COL_MENUCONTENT, 0, true);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(_x, *_y, _width, txt, COL_MENUCONTENT_TEXT_PLUS_0, 0, true);
 }
 
 void CMotorControl::paintLine(int _x, int _y, int _width, char * txt)
 {
 	//frameBuffer->paintBoxRel(_x, _y - mheight, _width, mheight, COL_MENUCONTENT_PLUS_0);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(_x, _y, _width, txt, COL_MENUCONTENT, 0, true);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(_x, _y, _width, txt, COL_MENUCONTENT_TEXT_PLUS_0, 0, true);
 }
 
 void CMotorControl::paintSeparator(int xpos, int * _ypos, int _width, char * /*txt*/)
@@ -511,7 +511,7 @@ void CMotorControl::paintSeparator(int xpos, int * _ypos, int _width, char * /*t
 	stringstartposX = 0;
 	stringstartposX = (xpos + (width >> 1)) - (stringwidth >> 1);
 	frameBuffer->paintBoxRel(stringstartposX - 5, *ypos - mheight, stringwidth + 10, mheight, COL_MENUCONTENT_PLUS_0);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposX, *ypos, stringwidth, txt, COL_MENUCONTENT);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposX, *ypos, stringwidth, txt, COL_MENUCONTENT_TEXT_PLUS_0);
 #endif
 }
 
@@ -756,7 +756,7 @@ void CMotorControl::showSNR()
 
 		posx = posx + barwidth + 3;
 		frameBuffer->paintBoxRel(posx, posy - 2, sw+4, mheight, COL_MENUCONTENT_PLUS_0);
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT);
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT_TEXT_PLUS_0);
 	}
 
 	if(snrscale->getPercent() != snr) 
@@ -770,6 +770,6 @@ void CMotorControl::showSNR()
 
 		posx = posx + barwidth + 3;
 		frameBuffer->paintBoxRel(posx, posy - 2, sw+4, mheight, COL_MENUCONTENT_PLUS_0);
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT);
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT_TEXT_PLUS_0);
 	}
 }

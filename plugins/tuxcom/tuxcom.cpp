@@ -97,17 +97,17 @@ void RenderBox(int _sx, int _sy, int _ex, int _ey, int mode, uint32_t color)
 { 
 	if(mode == FILL)
 	{
-		CFrameBuffer::getInstance()->paintBoxRel(StartX + _sx, StartY + _sy, (_ex - _sx), (_ey - _sy), /*CFrameBuffer::getInstance()->realcolor[color]*/color);
+		CFrameBuffer::getInstance()->paintBoxRel(StartX + _sx, StartY + _sy, (_ex - _sx), (_ey - _sy), color);
 	}
 	else
 	{
 		// paint horizontal line
-		CFrameBuffer::getInstance()->paintHLineRel(StartX + _sx, (_ex - _sx), StartY + _sy, /*CFrameBuffer::getInstance()->realcolor[color]*/color);
-		CFrameBuffer::getInstance()->paintHLineRel(StartX + _sx, (_ex - _sx), StartY + _ey, /*CFrameBuffer::getInstance()->realcolor[color]*/color);
+		CFrameBuffer::getInstance()->paintHLineRel(StartX + _sx, (_ex - _sx), StartY + _sy, color);
+		CFrameBuffer::getInstance()->paintHLineRel(StartX + _sx, (_ex - _sx), StartY + _ey, color);
 		
 		// paint vertical line
-		CFrameBuffer::getInstance()->paintVLineRel(StartX + _sx, StartY + _sy, (_ey - _sy), /*CFrameBuffer::getInstance()->realcolor[color]*/color);
-		CFrameBuffer::getInstance()->paintVLineRel(StartX + _ex, StartY + _sy, (_ey - _sy), /*CFrameBuffer::getInstance()->realcolor[color]*/color);
+		CFrameBuffer::getInstance()->paintVLineRel(StartX + _sx, StartY + _sy, (_ey - _sy), color);
+		CFrameBuffer::getInstance()->paintVLineRel(StartX + _ex, StartY + _sy, (_ey - _sy), color);
 	}
 }
 
@@ -146,7 +146,9 @@ void RenderMenuLine(int highlight, int refresh)
 	char szEntry[20];
 	int i;
 	unsigned int j;
+	
 	RenderBox(menuitemwidth * MENUITEMS,viewy-MENUSIZE, viewx, viewy-MENUSIZE / 2 , FILL, (highlight == MENUITEMS-1 ? GREEN : BLUE2) );
+	
 	for (i = 0; i < MENUITEMS; i++)
 	{
 		RenderBox(menuitemwidth * i,viewy-MENUSIZE, menuitemwidth *(i+1), viewy-MENUSIZE / 2 , FILL, (i == highlight ? GREEN : BLUE2) );
@@ -154,6 +156,7 @@ void RenderMenuLine(int highlight, int refresh)
 
 		sprintf(szEntry,"%d",(i+1)%MENUITEMS);
 		RenderString(szEntry, menuitemwidth * i + 1, viewy-(MENUSIZE/2 + FONT_OFFSET_BIG) , menuitemnumber, TC_CENTER, SMALL, WHITE);
+		
 		if (refresh == EDIT)
 		{
 			if (textuppercase == 0)
@@ -179,7 +182,6 @@ void RenderMenuLine(int highlight, int refresh)
 
 	for (i = 0; i < COLORBUTTONS; i++)
 	{
-
 		RenderBox( (viewx/COLORBUTTONS) *i, viewy-MENUSIZE/2, (viewx/COLORBUTTONS) *(i+1), viewy, FILL, (i == 0 ? RED    :
 		                                                            					                   (i == 1 ? GREEN  :                                                        					                   (i == 2 ? YELLOW : BLUE1))));
 		RenderBox( (viewx/COLORBUTTONS) *i ,viewy-MENUSIZE/2, (i < COLORBUTTONS-1 ? (viewx/COLORBUTTONS) *(i+1) : viewx) , viewy , GRID,  WHITE );

@@ -142,7 +142,7 @@ int CVfdControler::exec(CMenuTarget* parent, const std::string &)
 					case 2:
 						frameBuffer->paintBoxRel(x, y + hheight + mheight*2 + mheight/2, width, mheight, COL_MENUCONTENTSELECTED_PLUS_0);
 
-						g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*3 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENTSELECTED, 0, true); // UTF-8
+						g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*3 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENTSELECTED_TEXT_PLUS_0, 0, true); // UTF-8
 						break;
 				}
 			}
@@ -170,7 +170,7 @@ int CVfdControler::exec(CMenuTarget* parent, const std::string &)
 
 						frameBuffer->paintBoxRel(x, y + hheight + mheight*2 + mheight/2, width, mheight, COL_MENUCONTENT_PLUS_0);
 
-						g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*3 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENT, 0, true); // UTF-8
+						g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*3 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 						break;
 						
 					case 2:
@@ -299,7 +299,7 @@ void CVfdControler::paint()
 	paintSlider(x + BORDER_LEFT, y + hheight + mheight, brightnessstandby, BRIGHTNESSFACTOR, _("Standby Brightness"), false);
 
 	frameBuffer->paintHLineRel(x + BORDER_LEFT, width - 20, y + hheight + mheight*2 + mheight/4, COL_MENUCONTENT_PLUS_3);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*3 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENT, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + BORDER_LEFT, y + hheight + mheight*3 + mheight/2, width, _("Reset to defaults"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 }
 
 void CVfdControler::paintSlider(int _x, int _y, unsigned int spos, float factor, const char* const text, bool selected)
@@ -319,13 +319,12 @@ void CVfdControler::paintSlider(int _x, int _y, unsigned int spos, float factor,
 	frameBuffer->paintIcon(NEUTRINO_ICON_VOLUMEBODY, _x + startx, _y + 2 + mheight/4);
 	frameBuffer->paintIcon(selected ? NEUTRINO_ICON_VOLUMESLIDER2BLUE : NEUTRINO_ICON_VOLUMESLIDER2, (int)(_x + (startx + 3) + (spos / factor)), _y + mheight/4);
 
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, _y + mheight, width, text, COL_MENUCONTENT, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, _y + mheight, width, text, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 	
 	// wert //FIXME
 	sprintf(wert, "%3d", spos ); // UTF-8 encoded
 
 	frameBuffer->paintBoxRel(_x + startx + 120 + 10, _y, 50, mheight, COL_MENUCONTENT_PLUS_0);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x + startx + 120 + 10, _y + mheight, width, wert, COL_MENUCONTENT, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x + startx + 120 + 10, _y + mheight, width, wert, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 }
-
 

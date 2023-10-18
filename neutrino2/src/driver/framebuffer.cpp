@@ -537,9 +537,9 @@ void CFrameBuffer::paletteFade(int i, __u32 rgb1, __u32 rgb2, int level)
 	__u16 *g = cmap.green + i;
 	__u16 *b = cmap.blue + i;
 	
-	*r= ((rgb2&0xFF0000)>>16)*level;
-	*g= ((rgb2&0x00FF00)>>8 )*level;
-	*b= ((rgb2&0x0000FF)    )*level;
+	*r = ((rgb2&0xFF0000)>>16)*level;
+	*g = ((rgb2&0x00FF00)>>8 )*level;
+	*b = ((rgb2&0x0000FF)    )*level;
 	*r += ((rgb1&0xFF0000)>>16)*(255 - level);
 	*g += ((rgb1&0x00FF00)>>8 )*(255 - level);
 	*b += ((rgb1&0x0000FF))*(255 - level);
@@ -551,7 +551,7 @@ void CFrameBuffer::paletteGenFade(int in, __u32 rgb1, __u32 rgb2, int num, int t
 	{
 		paletteFade(in + i, rgb1, rgb2, i*(255/(num - 1)));
 		cmap.transp[in + i] = tr;
-		tr--; //FIXME:
+		tr--;
 	}
 }
 

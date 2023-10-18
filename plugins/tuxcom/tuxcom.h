@@ -197,13 +197,13 @@ enum {
 
 #define CONFIG_FILE PLUGINDIR "/tuxcom/tuxcom.conf"
 
-uint8_t trans_map[] = {
+uint32_t trans_map[] = {
 	BLUE1, 
 	BLUE_TRANSP, 
 	TRANSP
 };
 
-uint8_t trans_map_mark[] = {
+uint32_t trans_map_mark[] = {
 	GRAY2, 
 	GRAY_TRANSP, 
 	GRAY_TRANSP

@@ -185,7 +185,7 @@ int CDBoxInfoWidget::showInfo()
 	cpuLabel->setText(_("CPU:"));
 	cpuLabel->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
 	g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getRenderWidth("CPU:");
-	cpuLabel->setColor(COL_MENUHEAD);
+	cpuLabel->setColor(COL_MENUHEAD_TEXT_PLUS_0);
 	cpuLabel->setPosition(Box.iX + 10 + 100 + 10, yPos, g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getRenderWidth("CPU:"), 40);
 	dboxInfoWidget->addCCItem(cpuLabel);
 	
@@ -221,7 +221,7 @@ int CDBoxInfoWidget::showInfo()
 				cpuLabel1 = new CCLabel();
 				cpuLabel1->setText(hw.c_str());
 				cpuLabel1->setFont(SNeutrinoSettings::FONT_TYPE_MENU);
-				cpuLabel1->setColor(COL_MENUCONTENT);
+				cpuLabel1->setColor(COL_MENUCONTENT_TEXT_PLUS_0);
 				cpuLabel1->setPosition(Box.iX + 10 + 100, yPos, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight());
 				dboxInfoWidget->addCCItem(cpuLabel1);
 				
@@ -237,7 +237,7 @@ int CDBoxInfoWidget::showInfo()
 			cpuLabel2 = new CCLabel();
 			cpuLabel2->setText(buffer);
 			cpuLabel2->setFont(SNeutrinoSettings::FONT_TYPE_MENU);
-			cpuLabel2->setColor(COL_MENUCONTENT);
+			cpuLabel2->setColor(COL_MENUCONTENT_TEXT_PLUS_0);
 			cpuLabel2->setPosition(Box.iX + 10 + 100, yPos, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight());
 			dboxInfoWidget->addCCItem(cpuLabel2);
 			
@@ -301,7 +301,7 @@ int CDBoxInfoWidget::showInfo()
 	upLabel = new CCLabel();
 	upLabel->setText(sbuf);
 	upLabel->setFont(SNeutrinoSettings::FONT_TYPE_MENU);
-	upLabel->setColor(COL_MENUCONTENTINACTIVE);
+	upLabel->setColor(COL_MENUCONTENTINACTIVE_TEXT_PLUS_0);
 	upLabel->setPosition(Box.iX + 10, yPos, Box.iWidth, 35);
 	dboxInfoWidget->addCCItem(upLabel);
 	
@@ -313,7 +313,7 @@ int CDBoxInfoWidget::showInfo()
 	memLabel = new CCLabel();
 	memLabel->setText(ubuf);
 	memLabel->setFont(SNeutrinoSettings::FONT_TYPE_MENU);
-	memLabel->setColor(COL_MENUCONTENTINACTIVE);
+	memLabel->setColor(COL_MENUCONTENTINACTIVE_TEXT_PLUS_0);
 	memLabel->setPosition(Box.iX + 10, yPos, Box.iWidth, 35);
 	dboxInfoWidget->addCCItem(memLabel);
 	
@@ -351,7 +351,7 @@ int CDBoxInfoWidget::showInfo()
 		hddLabel = new CCLabel();
 		hddLabel->setText(_("HDD Devices:"));
 		hddLabel->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-		hddLabel->setColor(COL_MENUHEAD);
+		hddLabel->setColor(COL_MENUHEAD_TEXT_PLUS_0);
 		hddLabel->setPosition(Box.iX + 10 + hddIcon->width + 10, yPos, g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getRenderWidth("HDD Devices:"), 40);
 		dboxInfoWidget->addCCItem(hddLabel);
 		
@@ -442,7 +442,7 @@ int CDBoxInfoWidget::showInfo()
 		hddLabel1 = new CCLabel();
 		hddLabel1->setText(str);
 		hddLabel1->setFont(SNeutrinoSettings::FONT_TYPE_MENU);
-		hddLabel1->setColor(COL_MENUCONTENT);
+		hddLabel1->setColor(COL_MENUCONTENT_TEXT_PLUS_0);
 		hddLabel1->setPosition(Box.iX + 10 + 100, yPos, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight());
 		dboxInfoWidget->addCCItem(hddLabel1);
 			
@@ -468,7 +468,7 @@ int CDBoxInfoWidget::showInfo()
 		tunerLabel = new CCLabel();
 		tunerLabel->setText(_("Frontend:"));
 		tunerLabel->setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-		tunerLabel->setColor(COL_MENUHEAD);
+		tunerLabel->setColor(COL_MENUHEAD_TEXT_PLUS_0);
 		tunerLabel->setPosition(Box.iX + 10 + 100 + 10, yPos, g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]->getRenderWidth("Frontend:"), 40);
 		dboxInfoWidget->addCCItem(tunerLabel);
 		
@@ -485,7 +485,7 @@ int CDBoxInfoWidget::showInfo()
 		tunerLabel1 = new CCLabel();
 		tunerLabel1->setText(tbuf);
 		tunerLabel1->setFont(SNeutrinoSettings::FONT_TYPE_MENU);
-		tunerLabel1->setColor(COL_MENUCONTENT);
+		tunerLabel1->setColor(COL_MENUCONTENT_TEXT_PLUS_0);
 		tunerLabel1->setPosition(Box.iX + 10 + 100, yPos, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight());
 		dboxInfoWidget->addCCItem(tunerLabel1);
 		

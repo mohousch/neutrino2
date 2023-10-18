@@ -552,14 +552,14 @@ void CScanTs::hide()
 void CScanTs::paintLineLocale(int _x, int * _y, int _width, const char* const l)
 {
 	frameBuffer->paintBoxRel(_x, *_y, _width, mheight, COL_MENUCONTENT_PLUS_0);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, *_y + mheight, _width, l, COL_MENUCONTENTINACTIVE, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, *_y + mheight, _width, l, COL_MENUCONTENTINACTIVE_TEXT_PLUS_0, 0, true); // UTF-8
 	*_y += mheight;
 }
 
 void CScanTs::paintLine(int _x, int _y, int w, const char * const txt)
 {
 	frameBuffer->paintBoxRel(_x, _y, w, mheight, COL_MENUCONTENT_PLUS_0);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, _y + mheight, w, txt, COL_MENUCONTENT, 0, true); // UTF-8
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(_x, _y + mheight, w, txt, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 }
 
 void CScanTs::paint(bool fortest)
@@ -698,7 +698,7 @@ void CScanTs::showSNR()
 		posx = posx + barwidth + 3;
 		sw = x + 247 - posx;
 		frameBuffer->paintBoxRel(posx, posy - 2, sw, mheight, COL_MENUCONTENT_PLUS_0);
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT);
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT_TEXT_PLUS_0);
 	}
 
 	if(snrscale->getPercent() != snr) 
@@ -712,7 +712,7 @@ void CScanTs::showSNR()
 		posx = posx + barwidth + 3;
 		sw = x + width - posx;
 		frameBuffer->paintBoxRel(posx, posy - 2, sw, mheight, COL_MENUCONTENT_PLUS_0);
-		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT);
+		g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT_TEXT_PLUS_0);
 	}
 	
 	frameBuffer->blit();

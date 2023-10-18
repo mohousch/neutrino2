@@ -126,8 +126,8 @@ int CScreenSetup::exec(CMenuTarget *parent, const std::string &)
 					frameBuffer->paintBoxRel(x, y, BoxWidth, BoxHeight/2, (selected == 0)? COL_MENUCONTENTSELECTED_PLUS_0 : COL_MENUCONTENT_PLUS_0);
 					frameBuffer->paintBoxRel(x, y + BoxHeight/2,  BoxWidth, BoxHeight/2, (selected == 1)? COL_MENUCONTENTSELECTED_PLUS_0 : COL_MENUCONTENT_PLUS_0);
 
-					g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y + BoxHeight/2, BoxWidth, _("Upper Left"), (selected == 0)?COL_MENUCONTENTSELECTED : COL_MENUCONTENT, 0, true); // UTF-8
-					g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y + BoxHeight, BoxWidth, _("Lower Right"), (selected == 1)?COL_MENUCONTENTSELECTED : COL_MENUCONTENT, 0, true); // UTF-8
+					g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y + BoxHeight/2, BoxWidth, _("Upper Left"), (selected == 0)?COL_MENUCONTENTSELECTED : COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
+					g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y + BoxHeight, BoxWidth, _("Lower Right"), (selected == 1)?COL_MENUCONTENTSELECTED : COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 
 					paintIcons();
 					break;
@@ -255,10 +255,10 @@ void CScreenSetup::paintCoords()
 	sprintf((char*) &xepos, "EX: %d", x_coord[1] );
 	sprintf((char*) &yepos, "EY: %d", y_coord[1] );
 
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x1 + BORDER_LEFT, y1 + 30, 200, xpos, COL_MENUCONTENT);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x1 + BORDER_LEFT, y1 + 50, 200, ypos, COL_MENUCONTENT);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x1 + BORDER_LEFT, y1 + 70, 200, xepos, COL_MENUCONTENT);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x1 + BORDER_LEFT, y1 + 90, 200, yepos, COL_MENUCONTENT);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x1 + BORDER_LEFT, y1 + 30, 200, xpos, COL_MENUCONTENT_TEXT_PLUS_0);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x1 + BORDER_LEFT, y1 + 50, 200, ypos, COL_MENUCONTENT_TEXT_PLUS_0);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x1 + BORDER_LEFT, y1 + 70, 200, xepos, COL_MENUCONTENT_TEXT_PLUS_0);
+	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x1 + BORDER_LEFT, y1 + 90, 200, yepos, COL_MENUCONTENT_TEXT_PLUS_0);
 }
 
 void CScreenSetup::paint()
@@ -295,10 +295,10 @@ void CScreenSetup::paint()
         frameBuffer->paintBoxRel(x, y + BoxHeight/2, BoxWidth, BoxHeight/2, COL_MENUCONTENT_PLUS_0);
 
 	// upper
-        g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y+BoxHeight/2, BoxWidth, _("Upper Left"), COL_MENUCONTENTSELECTED , 0, true); // UTF-8
+        g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y+BoxHeight/2, BoxWidth, _("Upper Left"), COL_MENUCONTENTSELECTED_TEXT_PLUS_0, 0, true); // UTF-8
         
         // lower
-        g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y+BoxHeight, BoxWidth, _("Lower Right"), COL_MENUCONTENT, 0, true); // UTF-8
+        g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + 30, y+BoxHeight, BoxWidth, _("Lower Right"), COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 
 	paintIcons();
 	paintBorderUL();
