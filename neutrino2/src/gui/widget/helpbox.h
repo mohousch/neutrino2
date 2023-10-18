@@ -56,11 +56,11 @@ class CHelpBox
 		virtual ~CHelpBox();
 
 		//
-		void addLine(std::string& text, CFont* font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg = false);
-		void addLine(const char* const text, CFont* font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg = false);
-		void addLine(std::string& icon, std::string& text, CFont* font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg = false);
-		void addLine(const char* const icon, const char* const text, CFont* font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg = false);
-		void add2Line(const char* const text1, const char* const text2, CFont* font1 = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col1 = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg1 = false, CFont* font2 = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col2 = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg2 = false);
+		void addLine(std::string& text);
+		void addLine(const char* const text);
+		void addLine(std::string& icon, std::string& text);
+		void addLine(const char* const icon, const char* const text);
+		//void add2Line(const char* const text1, const char* const text2, CFont* font1 = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col1 = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg1 = false, CFont* font2 = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col2 = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg2 = false);
 		void addSeparator();
 		void addPagebreak();
 		

@@ -66,22 +66,22 @@ Drawable::DType Drawable::getType(void)
 }
 
 // DText
-DText::DText(std::string& text, CFont* font, uint32_t col, const bool bg) 
+DText::DText(std::string& text) 
 {
 	m_text = text;
-	m_font = font;
-	m_color = col;
-	m_background = bg;
+	m_font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU];
+	m_color = COL_MENUCONTENT_TEXT_PLUS_0;
+	m_background = false;
 
 	init();
 }
 
-DText::DText(const char *text, CFont* font, uint32_t col, const bool bg)
+DText::DText(const char *text)
 {
 	m_text = std::string(text);
-	m_font = font;
-	m_color = col;
-	m_background = bg;
+	m_font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU];
+	m_color = COL_MENUCONTENT_TEXT_PLUS_0;
+	m_background = false;
 
 	init();
 }

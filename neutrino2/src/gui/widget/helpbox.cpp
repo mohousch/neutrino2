@@ -66,53 +66,42 @@ CHelpBox::~CHelpBox()
   	}
 }
 
-void CHelpBox::show(const char* const Caption, const int Width, int timeout, const CMessageBox::result_ Default, const uint32_t ShowButtons)
-{
-	dprintf(DEBUG_NORMAL, "Helpbox::show\n");
-
- 	CMessageBox msgBox(Caption, m_lines, Width, NEUTRINO_ICON_INFO, Default, ShowButtons);
- 	
- 	msgBox.setBorderMode(borderMode);
-
-	msgBox.exec(timeout);
-}
-
-void CHelpBox::addLine(std::string& text, CFont* font, uint32_t col, const bool bg)
+void CHelpBox::addLine(std::string& text)
 {
 	std::vector<Drawable*> v;
-	Drawable *d = new DText(text, font, col, bg);
+	Drawable *d = new DText(text);
 	v.push_back(d);
 	m_lines.push_back(v);
 }
 
-void CHelpBox::addLine(const char* const text, CFont* font, uint32_t col, const bool bg)
+void CHelpBox::addLine(const char* const text)
 {
 	std::vector<Drawable*> v;
-	Drawable *d = new DText(text, font, col, bg);
+	Drawable *d = new DText(text);
 	v.push_back(d);
 	m_lines.push_back(v);
 }
 
-void CHelpBox::addLine(const char* const icon, const char* const text, CFont* font, uint32_t col, const bool bg)
+void CHelpBox::addLine(const char* const icon, const char* const text)
 {
 	std::vector<Drawable*> v;
 	Drawable *di = new DIcon(icon);
-	Drawable *dt = new DText(text, font, col, bg);
+	Drawable *dt = new DText(text);
 	v.push_back(di);
 	v.push_back(dt);
 	m_lines.push_back(v);
 }
 
-void CHelpBox::addLine(std::string& icon, std::string& text, CFont* font, uint32_t col, const bool bg)
+void CHelpBox::addLine(std::string& icon, std::string& text)
 {
 	std::vector<Drawable*> v;
 	Drawable *di = new DIcon(icon);
-	Drawable *dt = new DText(text, font, col, bg);
+	Drawable *dt = new DText(text);
 	v.push_back(di);
 	v.push_back(dt);
 	m_lines.push_back(v);
 }
-
+/*
 void CHelpBox::add2Line(const char* const text1, const char* const text2, CFont* font1, uint32_t col1, const bool bg1, CFont* font2, uint32_t col2, const bool bg2)
 {
 	std::vector<Drawable*> v;
@@ -122,7 +111,7 @@ void CHelpBox::add2Line(const char* const text1, const char* const text2, CFont*
 	v.push_back(dt);
 	m_lines.push_back(v);
 }
-
+*/
 void CHelpBox::addSeparator(void)
 {
 	std::vector<Drawable*> v;
@@ -137,5 +126,16 @@ void CHelpBox::addPagebreak(void)
 	Drawable *p = new DPagebreak();
 	v.push_back(p);
 	m_lines.push_back(v);
+}
+
+void CHelpBox::show(const char* const Caption, const int Width, int timeout, const CMessageBox::result_ Default, const uint32_t ShowButtons)
+{
+	dprintf(DEBUG_NORMAL, "Helpbox::show\n");
+
+ 	CMessageBox msgBox(Caption, m_lines, Width, NEUTRINO_ICON_INFO, Default, ShowButtons);
+ 	
+ 	msgBox.setBorderMode(borderMode);
+
+	msgBox.exec(timeout);
 }
 

@@ -42,11 +42,6 @@
 
 
 ////
-//class Drawable;
-//
-//typedef std::vector<std::vector<Drawable*> > ContentLines;
-
-////
 class Drawable
 {
 	public:
@@ -96,8 +91,8 @@ typedef std::vector<std::vector<Drawable*> > ContentLines;
 class DText : public Drawable
 {
 	public:
-		DText(std::string& text, CFont* font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg = false);
-		DText(const char *text, CFont* font = g_Font[SNeutrinoSettings::FONT_TYPE_MENU], uint32_t col = COL_MENUCONTENT_TEXT_PLUS_0, const bool bg = false);
+		DText(std::string& text);
+		DText(const char *text);
 		void init();
 		void draw(int x, int y, int width);
 		DType getType();
@@ -108,7 +103,6 @@ class DText : public Drawable
 		uint32_t m_color;
 		bool m_background;
 };
-
 
 /**
  * This class draws a given icon.
