@@ -140,7 +140,7 @@ void CImageInfo::paintLine(int xpos, int font, const char* text)
 	char buf[100];
 	sprintf((char*) buf, "%s", text);
 	
-	g_Font[font]->RenderString(xpos, ypos, width - BORDER_RIGHT, buf, COL_INFOBAR, 0, true);
+	g_Font[font]->RenderString(xpos, ypos, width - BORDER_RIGHT, buf, COL_INFOBAR_TEXT_PLUS_0, 0, true);
 }
 
 void CImageInfo::paint()

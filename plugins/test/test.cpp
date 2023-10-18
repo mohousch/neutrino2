@@ -1243,19 +1243,21 @@ void CTestMenu::testCTextBoxWidget()
 	
 	if (!m_vMovieInfo.empty())
 		textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
+		
+	testWidget = new CWidget(&box);
 	
-	testWidget = new CWidget();
-	testWidget->addCCItem(textBoxWidget);
 	testWidget->addKey(CRCInput::RC_ok, this, "mplay");
 	testWidget->addKey(CRCInput::RC_info, this, "tinfo");
 	
-	testWidget->exec(NULL, "");
+	testWidget->addCCItem(textBoxWidget);
 	
-	delete testWidget;
-	testWidget = NULL;
+	testWidget->exec(this, "");
 	
 	delete textBoxWidget;
 	textBoxWidget = NULL;
+	
+	delete testWidget;
+	testWidget = NULL;
 }
 
 void CTestMenu::testCFrameBoxWidget()
@@ -1848,17 +1850,18 @@ void CTestMenu::testCImage()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCImage: image:%s iw:%d ih:%d nbp:%d\n", testImage.imageName.c_str(), testImage.iWidth, testImage.iHeight, testImage.iNbp);
 	
 	testImage.setPosition(150 + BORDER_LEFT, 150, testImage.iWidth, testImage.iHeight);
-	testImage.paint();
+	//testImage.paint();
 
-	CFrameBuffer::getInstance()->blit();
+	//CFrameBuffer::getInstance()->blit();
 
 	// loop
-	testWidget = new CWidget();
-	testWidget->exec(NULL, "");
-	delete testWidget;
-	testWidget = NULL;
+	//testWidget = new CWidget();
+	//testWidget->exec(NULL, "");
+	//delete testWidget;
+	//testWidget = NULL;
+	testImage.exec();
 	
-	//hide();
+	hide();
 }
 
 // CProgressBar
@@ -1947,17 +1950,11 @@ void CTestMenu::testCButtons()
 	buttons.addButton("", "I'M A YELLOW BUTTON", COL_YELLOW_PLUS_0);
 	buttons.addButton("", "I'M A BLUE BUTTON", COL_BLUE_PLUS_0);
 	buttons.setButtonMode(CCButtons::BUTTON_COLOREDLINE);
-	buttons.paint();
-
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	testWidget = new CWidget();
-	testWidget->exec(NULL, "");
-	delete testWidget;
-	testWidget = NULL;
 	
-	//hide();
+	//
+	buttons.exec();
+	
+	hide();
 }
 
 // CButtons
@@ -1988,23 +1985,15 @@ void CTestMenu::testCHButtons()
 	buttons.setPosition(g_settings.screen_StartX + 50 + BORDER_LEFT, g_settings.screen_StartY + 50 + 100, (g_settings.screen_EndX - g_settings.screen_StartX - 100), 25);
 	buttons.setButtons(HeadButtons, HEAD_BUTTONS_COUNT, true);
 	buttons.setButtonMode(CCButtons::BUTTON_FRAME);
-	buttons.paint();
-
-	CFrameBuffer::getInstance()->blit();
-
-	// loop
-	testWidget = new CWidget();
-	testWidget->exec(NULL, "");
-	delete testWidget;
-	testWidget = NULL;
+	
+	buttons.exec();
+	
+	hide();
 }
 
 void CTestMenu::testCSpinner()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCCSpinner:\n");
-	
-	//testWidget = new CWidget();
-	//CCSpinner testSpinner(10, 10, 20, 20);
 	
 	CCSpinner * testSpinner = new CCSpinner(10, 10, 20, 20);
 	
