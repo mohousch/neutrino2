@@ -1138,7 +1138,7 @@ void CTestMenu::testCComponentWidget()
 	// label
 	CCLabel testLabel;
 	testLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
-	testLabel.setColor(COL_ORANGE);
+	testLabel.setColor(COL_ORANGE_PLUS_0);
 	testLabel.paintMainFrame(true);
 	testLabel.setText("this is a CComponent label test :-)");
 	testLabel.setPosition(Box.iX + 20, Box.iY + 50, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
@@ -1179,7 +1179,7 @@ void CTestMenu::testCComponentWidget()
 	// text
 	CCText testText;
 	testText.setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
-	testText.setColor(COL_RED);
+	testText.setColor(COL_RED_PLUS_0);
 	testText.setText(buffer.c_str());
 	
 	testWidget->addCCItem(&testText);
@@ -1747,7 +1747,7 @@ void CTestMenu::testMultiWidget()
 	// label
 	CCLabel testLabel;
 	testLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
-	testLabel.setColor(COL_GREEN);
+	testLabel.setColor(COL_GREEN_PLUS_0);
 	testLabel.paintMainFrame(true);
 	testLabel.setText("this is a CComponent label test :-)");
 	testLabel.setPosition(Box.iX + 20, Box.iY + 50, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
