@@ -11,10 +11,10 @@
 		<WINDOW posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<IMAGE name="image" id="1" posx="300" posy="20" width="300" height="300" image="picon_default.png"/>
 		-->
-		<LABEL posx="650" posy="600" width="520" height="60" text="Main Menu" halign="1" fontcolor="COL_MENUHEAD" font="FONT_TYPE_MENU_TITLE2"/>
+		<LABEL posx="650" posy="600" width="520" height="60" text="Main Menu" halign="1" fontcolor="COL_MENUHEAD_TEXT_PLUS_0" font="FONT_TYPE_MENU_TITLE2"/>
 		<WINDOW posx="280" posy="400" width="340" height="100" paintframe="1"/>
-		<TIME posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" fontcolor="COL_MENUHEAD" font="FONT_TYPE_EPG_TITLE"/>
-		<TIME posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" fontcolor="COL_MENUHEAD" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
+		<TIME posx="280" posy="410" width="340" height="60" refresh="1" format="%A %d.%m.%Y" fontcolor="COL_MENUHEAD_TEXT_PLUS_0" font="FONT_TYPE_EPG_TITLE"/>
+		<TIME posx="280" posy="440" width="340" height="60" refresh="1" format="%H:%M:%S" fontcolor="COL_MENUHEAD_TEXT_PLUS_0" font="FONT_TYPE_EVENTLIST_ITEMLARGE"/>
 	</WIDGET>
 	
 	<WIDGET name="settings" posx="0" posy="0" width="1280" height="720">

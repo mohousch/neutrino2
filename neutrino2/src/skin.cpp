@@ -531,21 +531,23 @@ uint32_t CNeutrinoApp::convertFontColor(const char* const color)
 	
 	uint32_t rgb = COL_MENUCONTENT_TEXT_PLUS_0;
 	
-	unsigned int r = 0;
-	unsigned int g = 0;
-	unsigned int b = 0;
+	uint8_t a = 0;
+	uint8_t r = 0;
+	uint8_t g = 0;
+	uint8_t b = 0;
 				
 	if (color != NULL)
 	{
 		if (color[0] == '#')
 		{
-			unsigned long col = 0;
+			uint32_t col = 0;
 						
 			if (sscanf(color + 1, "%lx", &col) == 1)
 			{
-				r = (col>>16)&0xFF;
-				g = (col >> 8)&0xFF;
-				b = (col)&0xFF;
+				r = (col >> 24)&0xFF; 
+				g = (col >> 16)&0xFF;
+				b = (col >> 8)&0xFF;
+				a = (col)&0xFF;
 			}
 		}
 		else
@@ -665,7 +667,7 @@ uint32_t CNeutrinoApp::convertFontColor(const char* const color)
 		}
 	}
 				
-	rgb = convertSetupColor2RGB(r, g, b); 
+	rgb = ::rgbaToColor(r, g, b, a);
 	
 	return rgb;
 }
