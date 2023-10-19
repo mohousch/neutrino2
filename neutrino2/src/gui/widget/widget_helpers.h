@@ -169,6 +169,7 @@ class CComponent
 		virtual void blink(bool){};
 		virtual void stopRefresh(){};
 		virtual inline bool isPainted(void){return painted;};
+		virtual void clear(void){};
 		
 		//
 		virtual int getCCType(){return cc_type;};

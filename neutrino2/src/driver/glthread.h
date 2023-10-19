@@ -36,20 +36,20 @@ class GLThreadObj : public OpenThreads::Thread
 {
 	public:
 		GLThreadObj(int x, int y);
-		~GLThreadObj();
+		~GLThreadObj(){};
 
+		//
 		void run();
 		void Start() { OpenThreads::Thread::start(); }
 		void waitInit();			/* wait until things are set up */
 		void shutDown() { mShutDown = true; }	/* shut down event loop (causes thread to exit) */
 		void join() { OpenThreads::Thread::join(); }
 		unsigned char *getOSDBuffer() { return &mOSDBuffer[0]; } /* gets pointer to OSD bounce buffer */
-
+		//
 		int getOSDWidth() { return mState.width; }
 		int getOSDHeight() { return mState.height; }
-
+		//
 		void clear();
-		
 		void blit() { mState.blit = true; }
 
 	private:
@@ -92,7 +92,6 @@ class GLThreadObj : public OpenThreads::Thread
 		} mState;
 
 		void bltOSDBuffer();
-		//void bltDisplayBuffer();
 };
 
 #endif

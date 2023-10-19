@@ -134,8 +134,6 @@ void CBEBouquetWidget::paint()
 		widget->addCCItem(listBox);
 	}	
 
-	listBox->clear();
-
 	for (unsigned int count = 0; count < Bouquets->size(); count++)
 	{
 		if (!(*Bouquets)[count]->bWebTV)
@@ -166,9 +164,6 @@ void CBEBouquetWidget::paint()
 	//
 	listBox->setTitle(_("Bouquets"), NEUTRINO_ICON_EDIT);
 	listBox->setHeadButtons(&HButton, 1);
-	
-	//
-	//listBox->enablePaintFoot();
 
 	struct button_label Button[4];
 	Button[0] = CBEBouquetWidgetButtons[0];

@@ -154,8 +154,6 @@ void CBEChannelSelectWidget::paint()
 		widget->addCCItem(listBox);
 	}	
 
-	listBox->clear();
-
 	for (unsigned int count = 0; count < Channels.size(); count++)
 	{
 		item = new CMenuForwarder(Channels[count]->getName().c_str());
@@ -193,7 +191,6 @@ void CBEChannelSelectWidget::paint()
 	listBox->setTitle(caption.c_str(), NEUTRINO_ICON_EDIT);
 	
 	//
-	//listBox->enablePaintFoot();
 	listBox->setFootButtons(Buttons, BUTTONS_COUNT);
 
 	//

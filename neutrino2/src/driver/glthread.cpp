@@ -39,7 +39,8 @@
 #include <system/debug.h>
 
 
-/*static*/ GLThreadObj *gThiz = 0; /* GLUT does not allow for an arbitrary argument to the render func */
+//// globals
+GLThreadObj *gThiz = 0; /* GLUT does not allow for an arbitrary argument to the render func */
 int GLWinID;
 int GLxStart;
 int GLyStart;
@@ -53,11 +54,6 @@ GLThreadObj::GLThreadObj(int x, int y) : mX(x), mY(y), mReInit(true), mShutDown(
 	mState.blit = true;
 
 	initKeys();
-}
-
-
-GLThreadObj::~GLThreadObj()
-{
 }
 
 void GLThreadObj::initKeys()
@@ -176,7 +172,6 @@ void GLThreadObj::setupCtx()
 	GLyStart = mY;
 	GLWidth = getOSDWidth();
 	GLHeight = getOSDHeight();
-	//
 }
 
 void GLThreadObj::setupOSDBuffer()
@@ -196,16 +191,15 @@ void GLThreadObj::setupOSDBuffer()
 
 void GLThreadObj::setupGLObjects()
 {
-	// osd
 	glGenTextures(1, &mState.osdtex);
 	glGenTextures(1, &mState.displaytex);
+	//
 	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mState.width, mState.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-
-	// display
+	// 
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex); /* we do not yet know the size so will set that inline */
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -238,6 +232,7 @@ void GLThreadObj::rendercb()
 void GLThreadObj::keyboardcb(unsigned char key, int /*x*/, int /*y*/)
 {
 	std::map<unsigned char, neutrino_msg_t>::const_iterator i = gThiz->mKeyMap.find(key);
+	
 	if(i != gThiz->mKeyMap.end())
 	{ 
 		/* let's assume globals are thread-safe */
@@ -266,7 +261,7 @@ void GLThreadObj::specialcb(int key, int /*x*/, int /*y*/)
 	}
 }
 
-int sleep_us = 30000;
+int sleep_us = 60000;
 void GLThreadObj::render() 
 {
 	if(mShutDown)
@@ -328,7 +323,7 @@ void GLThreadObj::render()
 	}
 
 	// simply limit to 30 Hz, if anyone wants to do this properly, feel free
-	//usleep(sleep_us);
+	usleep(sleep_us);
 	
 	glutPostRedisplay();
 }
