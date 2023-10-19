@@ -294,9 +294,9 @@ const char *szFmtStr[] = {
 };
 
 // defines for setting the output
-#define FONTSIZE_SMALL  	24
-#define FONTSIZE_NORMAL 	32
-#define FONTSIZE_BIG 		40
+#define FONTSIZE_SMALL  	20 // index
+#define FONTSIZE_NORMAL 	20
+#define FONTSIZE_BIG 		20
 
 #define _MAXSCREEN_X		CFrameBuffer::getInstance()->getScreenWidth() //1200
 #define _MAXSCREEN_Y		CFrameBuffer::getInstance()->getScreenHeight() //640
@@ -440,28 +440,28 @@ enum {
 	GRID
 };
 
-enum {
-	TRANSP = COL_BACKGROUND, 
-	WHITE = COL_WHITE, 
-	SKIN0, 
-	SKIN1, 
-	SKIN2 = COL_NAVY, 
-	ORANGE = COL_ORANGE, 
-	GREEN = COL_GREEN, 
-	YELLOW = COL_YELLOW, 
-	RED = COL_RED, 
-	BLUE = COL_BLUE, 
-	GREY = COL_MATTERHORN, 
-	DAY1,
-	DAY2, 
-	DAY3, 
-	DAY4, 
-	DAY5, 
-	SKIN3 = COL_BLUE, 
-	BLACK = COL_BLACK, 
-	LGREY = COL_NOBEL, 
-	MAGENTA = COL_MAGENTA
-};
+//enum {
+#define TRANSP COL_BACKGROUND_PLUS_0 
+#define WHITE COL_WHITE_PLUS_0
+#define SKIN0 COL_BLUE_PLUS_0
+#define SKIN1 COL_BLUE_PLUS_0
+#define SKIN2 COL_NAVY_PLUS_0 
+#define ORANGE COL_ORANGE_PLUS_0
+#define GREEN COL_GREEN_PLUS_0
+#define YELLOW COL_YELLOW_PLUS_0 
+#define RED COL_RED_PLUS_0
+#define BLUE COL_BLUE_PLUS_0
+#define GREY COL_MATTERHORN_PLUS_0 
+#define DAY1 COL_BLUE_PLUS_0
+#define DAY2 COL_BLUE_PLUS_0
+#define DAY3 COL_BLUE_PLUS_0
+#define DAY4 COL_BLUE_PLUS_0
+#define DAY5 COL_BLUE_PLUS_0
+#define SKIN3 COL_BLUE_PLUS_0
+#define BLACK COL_BLACK_PLUS_0 
+#define LGREY COL_NOBEL_PLUS_0 
+#define MAGENTA COL_MAGENTA_PLUS_0
+//};
 
 unsigned short rccode;
 int startx, starty, sx, ex, sy, ey;

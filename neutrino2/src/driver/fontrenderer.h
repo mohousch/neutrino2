@@ -74,14 +74,6 @@ class CFont
 			Embolden
 		};
 		fontmodifier stylemodifier;
-		
-		/*
-		enum renderflags
-		{
-			IS_UTF8 = 1,
-			FULLBG = 2
-		};
-		*/
 
 		//
 		void RenderString(int x, int y, const int width, const char *text, const fb_pixel_t color, const int boxheight = 0, bool utf8_encoded = true, const bool useBackground = false);

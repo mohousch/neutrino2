@@ -171,13 +171,11 @@ class cDvbCi
 		//
 		bool CamPresent(int slot);
 		bool GetName(int slot, char * name);
-
 		//
                 void CI_MenuAnswer(unsigned char bSlotIndex,unsigned char choice);
                 void CI_Answer(unsigned char bSlotIndex,unsigned char *pBuffer,unsigned char nLength);
                 void CI_CloseMMI(unsigned char bSlotIndex);
                 void CI_EnterMenu(unsigned char bSlotIndex);
-                
                 //
                 bool checkQueueSize(tSlot* slot);
                 void process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int asn_data_length, int con_id);

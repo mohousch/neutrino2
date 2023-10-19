@@ -25,7 +25,6 @@ extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
-
 //
 // ReadConf
 //
@@ -352,7 +351,7 @@ int GetStringLen(const char *string, int size)
  * render a string to the screen
  
 */
-void RenderString(const char *string, int _sx, int _sy, int maxwidth, int layout, int size, uint8_t color)
+void RenderString(const char *string, int _sx, int _sy, int maxwidth, int layout, int size, uint32_t color)
 {
 	//set alignment
 	if(layout != LEFT)
@@ -372,7 +371,7 @@ void RenderString(const char *string, int _sx, int _sy, int maxwidth, int layout
 		}
 	}
 	
-	g_Font[size]->RenderString(startx + _sx, starty + _sy, maxwidth, string, color, 0, true, true); // UTF-8
+	g_Font[size]->RenderString(startx + _sx, starty + _sy, maxwidth, string, color); // UTF-8
 }
 
 //
@@ -389,21 +388,21 @@ void RenderString(const char *string, int _sx, int _sy, int maxwidth, int layout
  \param color	: color to paint with
  \return      : none
 */
-void RenderBox(int _sx, int _sy, int _ex, int _ey, int mode, uint8_t color)
+void RenderBox(int _sx, int _sy, int _ex, int _ey, int mode, uint32_t color)
 {
 	if(mode == FILL)
 	{
-		CFrameBuffer::getInstance()->paintBoxRel(startx + _sx, starty + _sy, (_ex - _sx), (_ey - _sy), CFrameBuffer::getInstance()->realcolor[color]);
+		CFrameBuffer::getInstance()->paintBoxRel(startx + _sx, starty + _sy, (_ex - _sx), (_ey - _sy), color);
 	}
 	else
 	{
 		// paint horizontal line
-		CFrameBuffer::getInstance()->paintHLineRel(startx + _sx, (_ex - _sx), starty + _sy, CFrameBuffer::getInstance()->realcolor[color]);
-		CFrameBuffer::getInstance()->paintHLineRel(startx + _sx, (_ex - _sx), starty + _ey, CFrameBuffer::getInstance()->realcolor[color]);
+		CFrameBuffer::getInstance()->paintHLineRel(startx + _sx, (_ex - _sx), starty + _sy, color);
+		CFrameBuffer::getInstance()->paintHLineRel(startx + _sx, (_ex - _sx), starty + _ey, color);
 		
 		// paint vertical line
-		CFrameBuffer::getInstance()->paintVLineRel(startx + _sx, starty + _sy, (_ey - _sy), CFrameBuffer::getInstance()->realcolor[color]);
-		CFrameBuffer::getInstance()->paintVLineRel(starty + _ex, starty + _sy, (_ey - _sy), CFrameBuffer::getInstance()->realcolor[color]);
+		CFrameBuffer::getInstance()->paintVLineRel(startx + _sx, starty + _sy, (_ey - _sy), color);
+		CFrameBuffer::getInstance()->paintVLineRel(starty + _ex, starty + _sy, (_ey - _sy), color);
 	}	
 }
 
@@ -414,7 +413,7 @@ void RenderBox(int _sx, int _sy, int _ex, int _ey, int mode, uint8_t color)
  * render a integer to the screen
  
 */
-void RenderInt(const char *string, int _sx, int _sy, int maxwidth, int layout, int size, uint8_t color, uint8_t colorgrid, uint8_t colorfill)
+void RenderInt(const char *string, int _sx, int _sy, int maxwidth, int layout, int size, uint32_t color, uint32_t colorgrid, uint32_t colorfill)
 {
 	int x,y,cx,cy;
 	int sizey = FONTSIZE_NORMAL;
@@ -435,7 +434,7 @@ void RenderInt(const char *string, int _sx, int _sy, int maxwidth, int layout, i
 	if (colorgrid != -1) 
 		RenderBox(x, y, cx, cy, GRID, colorgrid);
 
-	RenderString(string, _sx, _sy, maxwidth, layout, size, color);
+	RenderString(string, _sx, _sy, maxwidth, layout, sizey, color);
 }
 
 //
@@ -450,7 +449,7 @@ void RenderInt(const char *string, int _sx, int _sy, int maxwidth, int layout, i
  \param iType	: index for the object to paint
  \return      : none
 */
-void RenderSObject(int _sx, int _sy, uint8_t color, int iType)
+void RenderSObject(int _sx, int _sy, uint32_t color, int iType)
 {
 	int x, y;
 	char *pObj = circle;
@@ -470,7 +469,7 @@ void RenderSObject(int _sx, int _sy, uint8_t color, int iType)
 		{
 			if (*pObj++)					// only paint if mask-value set
 				//memset(lbb + startx + sx + x + var_screeninfo.xres*(starty + sy + y), color, 1);
-				CFrameBuffer::getInstance()->paintPixel(startx + _sx, starty + _sy, CFrameBuffer::getInstance()->realcolor[color]);
+				CFrameBuffer::getInstance()->paintPixel(startx + _sx, starty + _sy, color);
 		}
 	}
 }
@@ -593,11 +592,11 @@ void ShowMessage(int message)
  \param iEditCol	: column in line just being edited
  \return					: none
 */
-int *PaintEdit(EVT_DB* pEvt, int iEditLine, uint8_t iEditCol)
+int *PaintEdit(EVT_DB* pEvt, int iEditLine, uint32_t iEditCol)
 {
 	char info[80];	
 	int x, y, l, t, r, b;
-	uint8_t iColor=RED;
+	uint32_t iColor=RED;
 	int* pIEdit=NULL;
 	
 	// background (just for testing)
@@ -622,7 +621,7 @@ int *PaintEdit(EVT_DB* pEvt, int iEditLine, uint8_t iEditCol)
 	
 	int i;
 	int *pint=NULL;
-	uint8_t colorfill=WHITE;
+	uint32_t colorfill=WHITE;
 	int iStrLen=0;
 	
 	for (i=1;i<11;i++)
@@ -735,7 +734,7 @@ int *PaintEdit(EVT_DB* pEvt, int iEditLine, uint8_t iEditCol)
 	else colorfill=WHITE;
 	RenderInt(pEvt->info,EDITX+5,iY,FONTSIZE_NORMAL*16, FIXEDLEFT, NORMAL, BLACK, SKIN2,colorfill);
 	if (strlen(pEvt->info)>MAXINFOEDITLEN/2)
-		RenderInt(&pEvt->info[MAXINFOEDITLEN/2],EDITX+5,iY+GRIDLINE,FONTSIZE_NORMAL*16, FIXEDLEFT, NORMAL, BLACK,SKIN2,colorfill);
+		RenderInt(&pEvt->info[MAXINFOEDITLEN/2],EDITX+5,iY+GRIDLINE,NORMAL, FIXEDLEFT, NORMAL, BLACK,SKIN2,colorfill);
 	if (iEditLine==11)
 	{
 		info[0]=pEvt->info[iEditCol];
@@ -866,7 +865,7 @@ int CheckEvent(EVT_DB* pEvt)
 int Edit(EVT_DB* pEvt)
 {
 	int iEditLine=1;
-	uint8_t iEditCol=0;
+	uint32_t iEditCol=0;
 	unsigned short tmprc=0xFFFF;
 	int iTypeInt=2;
 	int iMultipl=1;

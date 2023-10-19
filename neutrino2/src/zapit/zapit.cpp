@@ -78,18 +78,14 @@
 #include <dmx_cs.h>
 #include <audio_cs.h>
 #include <video_cs.h>
-#if defined (ENABLE_CI)
 #include <dvb-ci.h>
-#endif
 
 #include <playback_cs.h>
 
 
 //// globals
 // ci
-#if defined (ENABLE_CI)
 cDvbCi * ci = NULL;
-#endif
 // audio conf
 std::map<t_channel_id, audio_map_set_t> audio_map;
 std::map<t_channel_id, audio_map_set_t>::iterator audio_map_it;
@@ -1130,33 +1126,25 @@ void CZapit::sendCaPmtRecordStop(void)
 		if(live_channel != NULL)
 		{
 			cam0->setCaPmt(live_channel, live_channel->getCaPmt(), demux_index, ca_mask, true); // cam0 update
-#if defined (ENABLE_CI)
-			if(live_fe != NULL)
-				ci->SendCaPMT(NULL, live_fe->fenumber);
-#endif
+			ci->SendCaPMT(NULL, live_fe? live_fe->fenumber : 0);
 		}
 	} 
 	else 
 	{
 		if(live_channel != NULL)
 			cam0->setCaPmt(live_channel, live_channel->getCaPmt(), demux_index, ca_mask); //cam0 start
-#if defined (ENABLE_CI)
+			
 		if(rec_channel != NULL)
 		{
-			if(record_fe != NULL)
-				ci->SendCaPMT(NULL, record_fe->fenumber);
+			ci->SendCaPMT(NULL, record_fe? record_fe->fenumber : 0);
 		}
-#endif
 	}
 	
 	// ci cam
-#if defined (ENABLE_CI)
 	if(live_channel != NULL)
 	{
-		if(live_fe != NULL)
-			ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
+		ci->SendCaPMT(live_channel->getCaPmt(), live_fe? live_fe->fenumber : 0);
 	}
-#endif
 }
 
 // save pids
@@ -1482,13 +1470,10 @@ tune_again:
 		sendCaPmtPlayBackStart(live_channel, live_fe);
 	
 		// ci cam
-#if defined (ENABLE_CI)	
 		if(live_channel != NULL)
 		{
-			if(live_fe != NULL)
-				ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
+			ci->SendCaPMT(live_channel->getCaPmt(), live_fe? live_fe->fenumber : 0);
 		}
-#endif	
 
 		// send caid
 		int caid = 1;
@@ -1550,14 +1535,11 @@ int CZapit::zapToRecordID(const t_channel_id channel_id)
 	// cam
 	sendCaPmtPlayBackStart(rec_channel, record_fe);
 	
-	// ci cam
-#if defined (ENABLE_CI)	
+	// ci cam	
 	if(rec_channel != NULL)
 	{
-		if(record_fe != NULL)
-			ci->SendCaPMT(rec_channel->getCaPmt(), record_fe->fenumber);
-	}
-#endif		
+		ci->SendCaPMT(rec_channel->getCaPmt(), record_fe? record_fe->fenumber : 0);
+	}		
 	
 	dprintf(DEBUG_NORMAL, "CZapit::zapToRecordID: zapped to %s (0x%llx) fe(%d,%d)\n", rec_channel->getName().c_str(), rec_channel_id, record_fe->feadapter, record_fe->fenumber);
 	
@@ -4061,13 +4043,10 @@ void *CZapit::updatePMTFilter(void *)
 						CZapit::getInstance()->sendCaPmtPlayBackStart(live_channel, live_fe);
 						
 						// ci cam
-#if defined (ENABLE_CI)
 						if(live_channel != NULL)
 						{
-							if(live_fe != NULL)
-								ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
-						}
-#endif	
+							ci->SendCaPMT(live_channel->getCaPmt(), live_fe?live_fe->fenumber : 0);
+						}	
 
 						CZapit::getInstance()->pmt.pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
 					}
@@ -4144,20 +4123,11 @@ void CZapit::unlockPlayBack()
 			sendCaPmtPlayBackStart(live_channel, live_fe);
 	}
 			
-			// ci cam
-#if defined (ENABLE_CI)	
+	// ci cam	
 	if(live_channel != NULL)
 	{
-		if(live_fe != NULL)
-			ci->SendCaPMT(live_channel->getCaPmt(), live_fe->fenumber);
-	}
-#endif					
-
-#if defined (ENABLE_GSTREAMER)
-	if (! (currentMode & RECORD_MODE))
-		if(live_channel)
-			zapit(live_channel->getChannelID(), current_is_nvod);
-#endif
+		ci->SendCaPMT(live_channel->getCaPmt(), live_fe? live_fe->fenumber : 0);
+	}					
 }
 
 bool CZapit::isPlayBackActive()
@@ -6731,10 +6701,8 @@ void CZapit::Start(Zapit_config zapitCfg)
 	// load configuration
 	loadZapitSettings();
 
-	// CI init
-#if defined (ENABLE_CI)	
+	// CI init	
 	ci = cDvbCi::getInstance();
-#endif
 
 	// init cam
 	cam0 = new CCam();

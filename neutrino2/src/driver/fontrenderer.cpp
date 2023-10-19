@@ -448,6 +448,7 @@ void CFont::paintFontPixel(fb_pixel_t *td, uint8_t src)
 	if (useFullBG)
 	{
 		uint8_t *dst = (uint8_t *)td;
+		
 		if (*td == (fb_pixel_t)0)
 		{
 			*dst = DST_BLUE  + ((fg_blue  - DST_BLUE)  * src) / 256;

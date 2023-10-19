@@ -11,7 +11,7 @@ SUBDIRS = \
 	libiw
 
 if !BOXTYPE_COOLSTREAM
-SUBDIRS += libdvbapi
+SUBDIRS += libdvbapi libdvbci
 endif
 
 if !ENABLE_GSTREAMER
@@ -22,9 +22,6 @@ if ENABLE_LCD
 SUBDIRS += liblcddisplay
 endif
 
-if ENABLE_CI
-SUBDIRS += libdvbci
-endif
 
 
 

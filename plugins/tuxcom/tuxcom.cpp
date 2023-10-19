@@ -87,7 +87,7 @@ void RenderString(const char *string, int _sx, int _sy, int maxwidth, int layout
 		}
 	}
 	
-	g_Font[size]->RenderString(StartX + _sx, StartY + _sy, maxwidth, string, color, 0, true, true); // UTF-8
+	g_Font[size]->RenderString(StartX + _sx, StartY + _sy, maxwidth, string, color); // UTF-8
 }
 
 //
