@@ -90,8 +90,8 @@ CScanTs::CScanTs(int num)
 	x = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - width) / 2;
 	y = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - height) / 2;
 
-	sigscale = new CProgressBar(x + 20 - 1, y + height - mheight - 5 + 2, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
-	snrscale = new CProgressBar(x + 20 + 260 - 1, y + height - mheight - 5 + 2, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
+	sigscale = new CCProgressBar(x + 20 - 1, y + height - mheight - 5 + 2, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
+	snrscale = new CCProgressBar(x + 20 + 260 - 1, y + height - mheight - 5 + 2, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
 	
 	feindex = num;
 }
@@ -381,7 +381,7 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 	{
 		const char * text = success ? _("Transponderscan finished.") : _("Transponderscan failed!");
 		
-		CHeaders head(x, y, width, hheight, text, NEUTRINO_ICON_SCAN);
+		CCHeaders head(x, y, width, hheight, text, NEUTRINO_ICON_SCAN);
 		const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " "};
 			
 		head.setButtons(&btn);
@@ -572,7 +572,7 @@ void CScanTs::paint(bool fortest)
 	ypos = y;
 	
 	//
-	CHeaders head(x, ypos, width, hheight, fortest ? _("Test signal") : _("Scan transponder"), NEUTRINO_ICON_SCAN);
+	CCHeaders head(x, ypos, width, hheight, fortest ? _("Test signal") : _("Scan transponder"), NEUTRINO_ICON_SCAN);
 	const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " "};
 			
 	head.setButtons(&btn);

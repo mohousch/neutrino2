@@ -303,16 +303,16 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 	//
 	CWidget* widget = NULL;
 	ClistBox* menu = NULL;
-	CHeaders *head = NULL;
-	CFooters *foot = NULL;
+	CCHeaders *head = NULL;
+	CCFooters *foot = NULL;
 	
 	widget = CNeutrinoApp::getInstance()->getWidget("usermenu");
 	
 	if (widget)
 	{	
 		menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-		head = (CHeaders *)widget->getCCItem(CComponent::CC_HEAD);
-		foot = (CFooters *)widget->getCCItem(CComponent::CC_FOOT);
+		head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
+		foot = (CCFooters *)widget->getCCItem(CComponent::CC_FOOT);
 		
 	}
 	else
@@ -328,13 +328,13 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 		menu->setWidgetMode(ClistBox::MODE_SETUP);
 		
 		// 	
-		head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
+		head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 		head->setLine(true, true);
 			
 		//	
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 
-		foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
+		foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 		foot->setButtons(&btn);
 		foot->setLine(true, true);
 			

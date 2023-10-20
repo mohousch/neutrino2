@@ -132,7 +132,7 @@ CMoviePlayerGui::CMoviePlayerGui()
 	
 	mplist = new ClistBox(&box);
 	
-	moviescale = new CProgressBar(cFrameBoxInfo.iX + BORDER_LEFT, cFrameBoxInfo.iY + 30, cFrameBoxInfo.iWidth - BORDER_LEFT - BORDER_RIGHT, TIMESCALE_BAR_HEIGHT);
+	moviescale = new CCProgressBar(cFrameBoxInfo.iX + BORDER_LEFT, cFrameBoxInfo.iY + 30, cFrameBoxInfo.iWidth - BORDER_LEFT - BORDER_RIGHT, TIMESCALE_BAR_HEIGHT);
 
 	timeCounter = NULL;
 	file_prozent = 0;
@@ -2071,6 +2071,7 @@ void CMoviePlayerGui::showPlaylist()
 {
 	dprintf(DEBUG_NORMAL, "CMoviePlayerGui::showPlaylist:\n");
 	
+	mplist->clearItems();
 	mplist->clear();
 
 	for(unsigned int i = 0; i < playlist.size(); i++)

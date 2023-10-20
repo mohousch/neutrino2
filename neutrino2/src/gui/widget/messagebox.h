@@ -75,8 +75,8 @@ class CMessageBox
 	protected:
 		CBox cFrameBox;
 		CWidget *m_cBoxWindow;
-		CHeaders *headers;
-		CScrollBar scrollBar;
+		CCHeaders *headers;
+		CCScrollBar scrollBar;
 
 		unsigned int m_currentPage;
 		std::vector<int>m_startEntryOfPage;

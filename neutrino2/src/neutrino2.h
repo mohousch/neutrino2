@@ -149,6 +149,7 @@ class CNeutrinoApp : public CMenuTarget
 		void saveSkinConfig(const char* const filename);
 		//
 		CWidget *getWidget(const char *const widgetname, const char *const skinfilename = NULL, const bool data = false);
+		void parseCWidget(xmlNodePtr node);
 		//
 		void parseClistBox(xmlNodePtr node, CWidget* widget);
 		void parseCHead(xmlNodePtr node, CWidget* widget);

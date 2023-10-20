@@ -74,11 +74,11 @@ class CTestMenu : public CMenuTarget
 		
 		// CHeaders
 		CBox headBox;
-		CHeaders * headers;
+		CCHeaders * headers;
 		
 		// CFooters
 		CBox footBox;
-		CFooters *footers;
+		CCFooters *footers;
 
 		// CWidget
 		CWidget *testWidget;
@@ -117,7 +117,7 @@ class CTestMenu : public CMenuTarget
 		CProgressWindow * progressWindow;
 		
 		// pb
-		CProgressBar* progressBar;
+		CCProgressBar* progressBar;
 
 		// helper functions
 		void loadTMDBPlaylist(const char *txt = "movie", const char *list = "popular", const int seite = 1, bool search = false);
@@ -907,7 +907,7 @@ void CTestMenu::testCWidget()
 	headBox.iX = frameBuffer->getScreenX();
 	headBox.iY = frameBuffer->getScreenY();
 
-	headers = new CHeaders(&headBox, "CWidget(CFrameBox/ClistBox)", NEUTRINO_ICON_MP3);
+	headers = new CCHeaders(&headBox, "CWidget(CFrameBox/ClistBox)", NEUTRINO_ICON_MP3);
 
 	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	headers->enablePaintDate();
@@ -918,7 +918,7 @@ void CTestMenu::testCWidget()
 	footBox.iX = frameBuffer->getScreenX();
 	footBox.iY = frameBuffer->getScreenY() + frameBuffer->getScreenHeight() - footBox.iHeight;
 
-	footers = new CFooters(&footBox);
+	footers = new CCFooters(&footBox);
 	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
 	// topwidget (frameBox)
@@ -1114,11 +1114,11 @@ void CTestMenu::testCComponentWidget()
 	testWidget->setCorner(RADIUS_MID, CORNER_ALL);
 	
 	// heades
-	CHeaders head(Box.iX, Box.iY, Box.iWidth, 40, "CWidget(CCItems)", NEUTRINO_ICON_COLORS);
+	CCHeaders head(Box.iX, Box.iY, Box.iWidth, 40, "CWidget(CCItems)", NEUTRINO_ICON_COLORS);
 	head.enablePaintDate();
 	
 	// footers
-	CFooters foot(Box.iX, Box.iY + Box.iHeight - 40, Box.iWidth, 40);
+	CCFooters foot(Box.iX, Box.iY + Box.iHeight - 40, Box.iWidth, 40);
 	foot.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
 	// icon
@@ -1276,7 +1276,7 @@ void CTestMenu::testCFrameBoxWidget()
 
 	testWidget = new CWidget(&box);
 	
-	headers = new CHeaders(box.iX, box.iY, box.iWidth, 40, "testCFrameBoxWidget", NEUTRINO_ICON_MP3);
+	headers = new CCHeaders(box.iX, box.iY, box.iWidth, 40, "testCFrameBoxWidget", NEUTRINO_ICON_MP3);
 
 	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	headers->enablePaintDate();
@@ -1426,7 +1426,7 @@ void CTestMenu::testCListFrameWidget()
 	headBox.iX = testWidget->getWindowsPos().iX;
 	headBox.iY = testWidget->getWindowsPos().iY;
 
-	headers = new CHeaders(&headBox, "CWidget(ClistFrame)", NEUTRINO_ICON_MP3);
+	headers = new CCHeaders(&headBox, "CWidget(ClistFrame)", NEUTRINO_ICON_MP3);
 
 	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	headers->enablePaintDate();
@@ -1437,7 +1437,7 @@ void CTestMenu::testCListFrameWidget()
 	footBox.iX = testWidget->getWindowsPos().iX;
 	footBox.iY = testWidget->getWindowsPos().iY + testWidget->getWindowsPos().iHeight - footBox.iHeight;
 
-	footers = new CFooters(&footBox);
+	footers = new CCFooters(&footBox);
 
 	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	//footers->setCorner(RADIUS_MID, CORNER_BOTTOM);
@@ -1578,7 +1578,7 @@ void CTestMenu::testClistBoxWidget()
 	rightWidget->setFootLine(true, true);
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINTICON);
+	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTICON);
 	rightWidget->enableShrinkMenu();
 
 	// loadPlaylist
@@ -1651,14 +1651,14 @@ void CTestMenu::testMultiWidget()
 	footBox.iY = mainBox.iY + mainBox.iHeight - footBox.iHeight;
 	footBox.iWidth = mainBox.iWidth;
 
-	headers = new CHeaders(&headBox, "CWidget(ClistBox/CWindow)", NEUTRINO_ICON_MP3);
+	headers = new CCHeaders(&headBox, "CWidget(ClistBox/CWindow)", NEUTRINO_ICON_MP3);
 
 	headers->enablePaintDate();
 	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	
 	testWidget->addCCItem(headers);
 
-	footers = new CFooters(&footBox);
+	footers = new CCFooters(&footBox);
 
 	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
@@ -1884,7 +1884,7 @@ void CTestMenu::testCProgressBar()
 	Box2.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20);
 	Box2.iHeight = 10;
 	
-	progressBar = new CProgressBar(&Box);
+	progressBar = new CCProgressBar(&Box);
 	
 	//
 	neutrino_msg_t msg, data;
@@ -2030,7 +2030,7 @@ void CTestMenu::testCHeaders()
 	headBox.iHeight = 40;
 
 	//
-	headers = new CHeaders(&headBox);
+	headers = new CCHeaders(&headBox);
 
 	headers->setTitle("test CHeaders");
 	headers->setIcon(NEUTRINO_ICON_MP3);
@@ -2062,7 +2062,7 @@ void CTestMenu::testCFooters()
 	footBox.iWidth = (g_settings.screen_EndX - g_settings.screen_StartX - 20);
 
 	//
-	footers = new CFooters(&footBox);
+	footers = new CCFooters(&footBox);
 	
 	footers->setCorner(RADIUS_SMALL, CORNER_TOP_RIGHT|CORNER_BOTTOM_LEFT);
 	footers->setGradient(LIGHT2DARK);
@@ -2429,7 +2429,7 @@ void CTestMenu::testClistBox()
 
 	// itemInfo
 	//rightWidget->enablePaintItemInfo(70);
-	//rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINT);
+	//rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINT);
 	//rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	//rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);
 	//rightWidget->paintItemInfoFrame(true);
@@ -2528,7 +2528,7 @@ void CTestMenu::testClistBox2()
 
 	// footinfo
 	//rightWidget->enablePaintItemInfo(70);
-	//rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINT);
+	//rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINT);
 
 	//rightWidget->setSelected(selected);
 	
@@ -2799,7 +2799,7 @@ void CTestMenu::testClistBox5()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_INFO);
+	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_INFO);
 
 	//rightWidget->setSelected(selected);
 
@@ -2899,7 +2899,7 @@ void CTestMenu::testClistBox6()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINTITEM);
+	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTITEM);
 
 	//rightWidget->setSelected(selected);
 
@@ -2999,7 +2999,7 @@ void CTestMenu::testClistBox7()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINTICON);
+	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTICON);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//rightWidget->setSelected(selected);
@@ -3100,7 +3100,7 @@ void CTestMenu::testClistBox8()
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
-	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_ICON);
+	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_ICON);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 
 	//rightWidget->setSelected(selected);
@@ -3192,7 +3192,7 @@ void CTestMenu::testClistBox9()
 
 	// itemInfo
 	rightWidget->enablePaintItemInfo(70);
-	rightWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINT);
+	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINT);
 	rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
 	rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);
 	rightWidget->paintItemInfoFrame(true);
@@ -3516,7 +3516,7 @@ void CTestMenu::testCMenuWidget()
 	
 	// footInfo
 	menuWidget->enablePaintItemInfo(80);
-	menuWidget->setItemInfoMode(CItemInfo::ITEMINFO_HINT);
+	menuWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINT);
 
 	menuWidget->addKey(CRCInput::RC_info, this, "minfo");
 	menuWidget->addKey(CRCInput::RC_setup, this, "lsetup");
@@ -4709,7 +4709,7 @@ void CTestMenu::testSkinWidget()
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSkinWidget\n");
 	
 	//
-	std::string skin = "\n<skin>\n\t<WIDGET name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<HEAD posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradienttype=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Skin\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<LISTBOX posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"/>\n\t\t<FOOT posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradienttype=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<BUTTON_LABEL name=\"info\"/>\n\t\t</FOOT>\n\t</WIDGET>\n</skin>\n";
+	std::string skin = "\n<skin>\n\t<screen name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<head posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradienttype=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Skin\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<listbox posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"1\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\"/>\n\t\t<foot posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradienttype=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<button_label name=\"info\"/>\n\t\t</foot>\n\t</screen>\n</skin>\n";
 	
 	CWidget * widget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str(), true);
 	

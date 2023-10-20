@@ -40,7 +40,7 @@ class CStreamInfo : public CMenuTarget
 		
 		//
 		CWidget *widget;
-		CHeaders *head;
+		CCHeaders *head;
 		uint32_t sec_timer_id;
 		
 		//
@@ -98,8 +98,8 @@ class CStreamInfo : public CMenuTarget
 		void paint_signal_fe(struct bitrate rate, struct feSignal s);
 		int  y_signal_fe(unsigned long value, unsigned long max_range, int max_y);
 		void SignalRenderStr (unsigned int value, int x, int y);
-		CProgressBar *sigscale;
-		CProgressBar *snrscale;
+		CCProgressBar *sigscale;
+		CCProgressBar *snrscale;
 		void showSNR ();
 		
 		cDemux * ts_dmx;

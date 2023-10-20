@@ -100,18 +100,17 @@ class CComponent
 			CC_COUNTER,
 			CC_SPINNER,
 			CC_WINDOW,
-			//// not to be added with addCCItem method.
-			CC_SCROLLBAR,
-			CC_PROGRESSBAR,
-			CC_ITEMINFO,
-			CC_SLIDER,
-			////
 			CC_HEAD,
 			CC_FOOT,
 			CC_LISTBOX,
 			CC_FRAMEBOX,
 			CC_LISTFRAME,
-			CC_TEXTBOX
+			CC_TEXTBOX,
+			//// not to be added with addCCItem method.
+			CC_SCROLLBAR,
+			CC_PROGRESSBAR,
+			CC_ITEMINFO,
+			CC_SLIDER,
 		};
 		
 		// border
@@ -220,58 +219,10 @@ class CComponent
 		virtual void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;}; // in sec
 		virtual bool onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data);
-		virtual void exec(int timeout = -1); // in sec
+		virtual int exec(int timeout = -1); // in sec
 };
 
 typedef std::vector<CComponent*> CCITEMLIST;
-
-//// window
-class CCWindow : public CComponent
-{
-	private:
-		CFrameBuffer* frameBuffer;
-		//
-		int radius;
-		int corner;
-		fb_pixel_t bgcolor;
-		int gradient;
-		int grad_direction;
-		int grad_intensity;
-		int grad_type;
-		//
-		fb_pixel_t * background;
-		//
-		int borderMode;
-		fb_pixel_t borderColor;
-		//
-		unsigned int current_page;
-		unsigned int total_pages;
-		//
-		void initVars(void);
-		void initFrames();
-		void saveScreen();
-		void restoreScreen();
-		void paintPage(void);
-		
-	public:
-		CCWindow(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
-		CCWindow(CBox* position);
-		virtual ~CCWindow();
-		//
-		void setPosition(const int x, const int y, const int dx, const int dy);
-		void setPosition(CBox* position);
-		//
-		void setColor(fb_pixel_t col){bgcolor = col;};
-		void setCorner(int ra, int co){radius = ra; corner = co;};
-		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
-		void setBorderMode(int sm){borderMode = sm;};
-		void setBorderColor(fb_pixel_t col){borderColor = col;};
-		//
-		void paint(void);
-		void hide(void);
-		//
-		void refresh(void);
-};
 
 //// CCIcon
 class CCIcon : public CComponent
@@ -441,6 +392,31 @@ class CCFrameLine : public CComponent
 		void paint();
 };
 
+//// CCGrid
+class CCGrid : public CComponent
+{
+	private:
+		//
+		fb_pixel_t rgb;
+		int inter_frame;
+
+	public:
+		CFrameBuffer* frameBuffer;
+		
+		//
+		CCGrid(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
+		CCGrid(CBox* position);
+		virtual ~CCGrid(){};
+
+		//
+		void init();
+		void setColor(fb_pixel_t col){rgb = col;};
+		void setInterFrame(int iframe = 15){inter_frame = iframe;};
+		//
+		void paint();
+		void hide();
+};
+
 //// CLabel
 class CCLabel : public CComponent
 {
@@ -505,49 +481,6 @@ class CCText : public CComponent
 		void enableSaveScreen();
 		void saveScreen(void);
 		void restoreScreen(void);
-		//
-		void paint();
-		void hide();
-};
-
-//// CCGrid
-class CCGrid : public CComponent
-{
-	private:
-		//
-		fb_pixel_t rgb;
-		int inter_frame;
-
-	public:
-		CFrameBuffer* frameBuffer;
-		
-		//
-		CCGrid(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
-		CCGrid(CBox* position);
-		virtual ~CCGrid(){};
-
-		//
-		void init();
-		void setColor(fb_pixel_t col){rgb = col;};
-		void setInterFrame(int iframe = 15){inter_frame = iframe;};
-		//
-		void paint();
-		void hide();
-};
-
-//// CCPig
-class CCPig : public CComponent
-{
-	public:
-		CFrameBuffer* frameBuffer;
-		
-		//
-		CCPig(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
-		CCPig(CBox* position);
-		virtual ~CCPig(){};
-
-		//
-		void init();
 		//
 		void paint();
 		void hide();
@@ -651,23 +584,37 @@ class CCSpinner : public CComponent/*, public OpenThreads::Thread*/
 		//void run();
 };
 
-//// CScrollBar
-class CScrollBar : public CComponent
+//// CCSlider
+class CCSlider : public CComponent
 {
+	private:
+		int value;
+		int max_value;
+		int min_value;
+		int step;
+		
 	public:
-		CFrameBuffer* frameBuffer;
+		//
+		CFrameBuffer *frameBuffer;
 		
 		//
-		CScrollBar(){frameBuffer = CFrameBuffer::getInstance(); cc_type = CC_SCROLLBAR;};
-		virtual ~CScrollBar(){};
-
-		// currentPage start with 0
-		void paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage);
-		void paint(CBox* position, const int NrOfPages, const int CurrentPage);
+		CCSlider(const int x, const int y, const int dx, const int dy);
+		virtual ~CCSlider(){};
+		
+		//
+		void paint();
+		//
+		void paintSlider(const int _x, const int _y, const unsigned int spos, const char* const text, const char * const iconname);
+		int swipRight();
+		int swipLeft();
+		//
+		void setMaxValue(int val){max_value = val;};
+		void setMinValue(int val){min_value = val;};
+		void setStepValue(int val){step = val;};
 };
 
 //// CProgressBar
-class CProgressBar : public CComponent
+class CCProgressBar : public CComponent
 {
 	private:
 		unsigned char percent;
@@ -680,10 +627,10 @@ class CProgressBar : public CComponent
 		CFrameBuffer* frameBuffer;
 		
 		//
-		CProgressBar(int x, int y, int w, int h, int r = 40, int g = 100, int b = 70, bool inv = true);
-		CProgressBar(const CBox* psoition, int r = 40, int g = 100, int b = 70, bool inv = true);
+		CCProgressBar(int x, int y, int w, int h, int r = 40, int g = 100, int b = 70, bool inv = true);
+		CCProgressBar(const CBox* psoition, int r = 40, int g = 100, int b = 70, bool inv = true);
 		
-		virtual ~CProgressBar(){};
+		virtual ~CCProgressBar(){};
 		
 		//
 		void paint();
@@ -694,8 +641,23 @@ class CProgressBar : public CComponent
 		void setColor(uint32_t c){rgb = c;};
 };
 
-//// detailsLine
-class CItemInfo : public CComponent
+//// CCScrollBar
+class CCScrollBar : public CComponent
+{
+	public:
+		CFrameBuffer* frameBuffer;
+		
+		//
+		CCScrollBar(){frameBuffer = CFrameBuffer::getInstance(); cc_type = CC_SCROLLBAR;};
+		virtual ~CCScrollBar(){};
+
+		// currentPage start with 0
+		void paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage);
+		void paint(CBox* position, const int NrOfPages, const int CurrentPage);
+};
+
+//// CCItemInfo
+class CCItemInfo : public CComponent
 {
 	public:
 		enum 
@@ -727,8 +689,8 @@ class CItemInfo : public CComponent
 		fb_pixel_t *background;
 		
 		//
-		CItemInfo();
-		virtual ~CItemInfo();
+		CCItemInfo();
+		virtual ~CCItemInfo();
 		
 		//
 		void paint();
@@ -752,37 +714,74 @@ class CItemInfo : public CComponent
 		void enableSaveScreen();
 };
 
-//// CCSlider
-class CCSlider : public CComponent
+//// window
+class CCWindow : public CComponent
 {
 	private:
-		int value;
-		int max_value;
-		int min_value;
-		int step;
+		CFrameBuffer* frameBuffer;
+		//
+		int radius;
+		int corner;
+		fb_pixel_t bgcolor;
+		int gradient;
+		int grad_direction;
+		int grad_intensity;
+		int grad_type;
+		//
+		fb_pixel_t * background;
+		//
+		int borderMode;
+		fb_pixel_t borderColor;
+		//
+		unsigned int current_page;
+		unsigned int total_pages;
+		//
+		void initVars(void);
+		void initFrames();
+		void saveScreen();
+		void restoreScreen();
+		void paintPage(void);
 		
 	public:
+		CCWindow(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
+		CCWindow(CBox* position);
+		virtual ~CCWindow();
 		//
-		CFrameBuffer *frameBuffer;
+		void setPosition(const int x, const int y, const int dx, const int dy);
+		void setPosition(CBox* position);
+		//
+		void setColor(fb_pixel_t col){bgcolor = col;};
+		void setCorner(int ra, int co){radius = ra; corner = co;};
+		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
+		void setBorderMode(int sm){borderMode = sm;};
+		void setBorderColor(fb_pixel_t col){borderColor = col;};
+		//
+		void paint(void);
+		void hide(void);
+		//
+		void refresh(void);
+};
+
+//// CCPig
+class CCPig : public CComponent
+{
+	public:
+		CFrameBuffer* frameBuffer;
 		
 		//
-		CCSlider(const int x, const int y, const int dx, const int dy);
-		virtual ~CCSlider(){};
-		
+		CCPig(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
+		CCPig(CBox* position);
+		virtual ~CCPig(){};
+
+		//
+		void init();
 		//
 		void paint();
-		//
-		void paintSlider(const int _x, const int _y, const unsigned int spos, const char* const text, const char * const iconname);
-		int swipRight();
-		int swipLeft();
-		//
-		void setMaxValue(int val){max_value = val;};
-		void setMinValue(int val){min_value = val;};
-		void setStepValue(int val){step = val;};
+		void hide();
 };
 
 //// CHeaders
-class CHeaders : public CComponent
+class CCHeaders : public CComponent
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -809,9 +808,9 @@ class CHeaders : public CComponent
 		CCTime* timer;
 	
 	public:
-		CHeaders(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES, const char * const title = NULL, const char * const icon = NULL);
-		CHeaders(CBox* position, const char * const title = NULL, const char * const icon = NULL);
-		virtual ~CHeaders();
+		CCHeaders(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES, const char * const title = NULL, const char * const icon = NULL);
+		CCHeaders(CBox* position, const char * const title = NULL, const char * const icon = NULL);
+		virtual ~CCHeaders();
 
 		//
 		void setTitle(const char * const title){htitle.clear(); if (title) htitle = title;};
@@ -837,7 +836,7 @@ class CHeaders : public CComponent
 };
 
 //// CFooters
-class CFooters : public CComponent
+class CCFooters : public CComponent
 {
 	private:
 		CFrameBuffer* frameBuffer;
@@ -859,9 +858,9 @@ class CFooters : public CComponent
 		int mode;
 	
 	public:
-		CFooters(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
-		CFooters(CBox* position);
-		virtual ~CFooters();
+		CCFooters(const int x = 0, const int y = 0, const int dx = DEFAULT_XRES, const int dy = DEFAULT_XRES);
+		CCFooters(CBox* position);
+		virtual ~CCFooters();
 		
 		//
 		void setColor(fb_pixel_t col){color = col;};

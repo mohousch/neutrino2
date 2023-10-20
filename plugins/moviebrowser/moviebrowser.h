@@ -237,8 +237,8 @@ class CMovieBrowser : public CMenuTarget
 		CListFrame * m_pcLastRecord;
 		CTextBox * m_pcInfo;
 		CListFrame * m_pcFilter;
-		CHeaders *headers;
-		CFooters *footers;
+		CCHeaders *headers;
+		CCFooters *footers;
 	
 		CBox m_cBoxFrame;
 		CBox m_cBoxFrameLastPlayList;

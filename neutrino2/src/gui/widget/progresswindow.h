@@ -61,7 +61,7 @@ class CProgressWindow : public CComponent
 		int statusTextY;
 		std::string statusText;
 		
-		CProgressBar* progressBar;
+		CCProgressBar* progressBar;
 
 		bool paintHead;
 		bool paintCancelIcon;

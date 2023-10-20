@@ -44,11 +44,11 @@ class CNFilm : public CMenuTarget
 		CBox leftBox;
 		CBox rightBox;
 
-		CHeaders *headersWidget;
+		CCHeaders *headersWidget;
 		CWidget *mainWidget;
 		ClistBox *leftWidget;
 		ClistBox *rightWidget;
-		CFooters *footersWidget;
+		CCFooters *footersWidget;
 
 		CMenuItem* item;
 
@@ -443,7 +443,7 @@ void CNFilm::showMenu(bool genre)
 	headBox.iX = frameBuffer->getScreenX();
 	headBox.iY = frameBuffer->getScreenY();
 
-	headersWidget = new CHeaders(headBox.iX, headBox.iY, headBox.iWidth, headBox.iHeight, "Movie Trailer", NEUTRINO_ICON_TMDB);
+	headersWidget = new CCHeaders(headBox.iX, headBox.iY, headBox.iWidth, headBox.iHeight, "Movie Trailer", NEUTRINO_ICON_TMDB);
 
 	headersWidget->setButtons(&HeadButtons, 1);
 	headersWidget->enablePaintDate();
@@ -454,7 +454,7 @@ void CNFilm::showMenu(bool genre)
 	footBox.iX = frameBuffer->getScreenX();
 	footBox.iY = frameBuffer->getScreenY() + frameBuffer->getScreenHeight() - footBox.iHeight;
 
-	footersWidget = new CFooters(footBox.iX, footBox.iY, footBox.iWidth, footBox.iHeight);
+	footersWidget = new CCFooters(footBox.iX, footBox.iY, footBox.iWidth, footBox.iHeight);
 
 	footersWidget->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 

@@ -332,16 +332,16 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		//
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
-		CHeaders *head = NULL;
-		CFooters *foot = NULL;
+		CCHeaders *head = NULL;
+		CCFooters *foot = NULL;
 		
 		widget = CNeutrinoApp::getInstance()->getWidget("optionchooser");
 		
 		if (widget)
 		{
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-			head = (CHeaders *)widget->getCCItem(CComponent::CC_HEAD);
-			foot = (CFooters *)widget->getCCItem(CComponent::CC_FOOT);
+			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
+			foot = (CCFooters *)widget->getCCItem(CComponent::CC_FOOT);
 		}
 		else
 		{
@@ -357,13 +357,13 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			
 			//
-			head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
+			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 			head->setLine(true, true);
 			
 			//	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 
-			foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
+			foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 			foot->setButtons(&btn);
 			foot->setLine(true, true);
 			
@@ -749,16 +749,16 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		//
 		CWidget* widget = NULL;
 		ClistBox* menu = NULL;
-		CHeaders *head = NULL;
-		CFooters *foot = NULL;
+		CCHeaders *head = NULL;
+		CCFooters *foot = NULL;
 		
 		widget = CNeutrinoApp::getInstance()->getWidget("optionstringchooser");
 		
 		if (widget)
 		{
 			menu = (ClistBox *)widget->getCCItem(CComponent::CC_LISTBOX);
-			head = (CHeaders *)widget->getCCItem(CComponent::CC_HEAD);
-			foot = (CFooters *)widget->getCCItem(CComponent::CC_FOOT);
+			head = (CCHeaders *)widget->getCCItem(CComponent::CC_HEAD);
+			foot = (CCFooters *)widget->getCCItem(CComponent::CC_FOOT);
 		}
 		else
 		{
@@ -774,13 +774,13 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			menu->setWidgetMode(ClistBox::MODE_SETUP);
 			
 			//
-			head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
+			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 			head->setLine(true, true);
 			
 			//	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 
-			foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
+			foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 			foot->setButtons(&btn);
 			foot->setLine(true, true);
 			
@@ -1462,7 +1462,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 			
 			int pbPosX = x + BORDER_LEFT + number_width + number_offset + icon_w + icon_offset;
 
-			CProgressBar timescale(pbPosX, y + (height - pBarHeight)/2, pb_width, pBarHeight);
+			CCProgressBar timescale(pbPosX, y + (height - pBarHeight)/2, pb_width, pBarHeight);
 			timescale.reset();
 			timescale.refresh(runningPercent);
 		}
@@ -1652,7 +1652,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	paintFootInfo = false;
 	footInfoHeight = 0;
 	cFrameFootInfoHeight = 0;
-	footInfoMode = CItemInfo::ITEMINFO_INFO;
+	footInfoMode = CCItemInfo::ITEMINFO_INFO;
 	itemInfoBox.iX = 0;
 	itemInfoBox.iY = 0;
 	itemInfoBox.iWidth = 0;
@@ -1776,7 +1776,7 @@ ClistBox::ClistBox(CBox* position)
 	paintFootInfo = false;
 	footInfoHeight = 0;
 	cFrameFootInfoHeight = 0;
-	footInfoMode = CItemInfo::ITEMINFO_INFO;
+	footInfoMode = CCItemInfo::ITEMINFO_INFO;
 	itemInfoBox.iX = 0;
 	itemInfoBox.iY = 0;
 	itemInfoBox.iWidth = 0;
@@ -2529,13 +2529,13 @@ void ClistBox::paintItemInfo(int pos)
 		{
 			dprintf(DEBUG_INFO, "ClistBox::paintItemInfo:\n"); //FIXME:
 			
-			if (footInfoMode == CItemInfo::ITEMINFO_INFO)
+			if (footInfoMode == CCItemInfo::ITEMINFO_INFO)
 			{
 				CMenuItem* item = items[pos];
 
 				// detailslines
 				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
-				itemsLine.setMode(CItemInfo::ITEMINFO_INFO);
+				itemsLine.setMode(CCItemInfo::ITEMINFO_INFO);
 				itemsLine.setInfo1(item->info1.c_str());
 				itemsLine.setOptionInfo1(item->option_info1.c_str());
 				itemsLine.setInfo2(item->info2.c_str());
@@ -2544,13 +2544,13 @@ void ClistBox::paintItemInfo(int pos)
 					
 				itemsLine.paint();
 			}
-			else if (footInfoMode == CItemInfo::ITEMINFO_HINTITEM)
+			else if (footInfoMode == CCItemInfo::ITEMINFO_HINTITEM)
 			{
 				CMenuItem* item = items[pos];
 	
 				// detailslines box
 				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
-				itemsLine.setMode(CItemInfo::ITEMINFO_HINTITEM);
+				itemsLine.setMode(CCItemInfo::ITEMINFO_HINTITEM);
 				itemsLine.setHint(item->itemHint.c_str());
 				
 				if (widgetType == CMenuItem::TYPE_STANDARD)
@@ -2571,13 +2571,13 @@ void ClistBox::paintItemInfo(int pos)
 					
 				itemsLine.paint();
 			}
-			else if (footInfoMode == CItemInfo::ITEMINFO_HINTICON)
+			else if (footInfoMode == CCItemInfo::ITEMINFO_HINTICON)
 			{
 				CMenuItem* item = items[pos];
 	
 				// detailslines box
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
-				itemsLine.setMode(CItemInfo::ITEMINFO_HINTICON);
+				itemsLine.setMode(CCItemInfo::ITEMINFO_HINTICON);
 				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
@@ -2600,13 +2600,13 @@ void ClistBox::paintItemInfo(int pos)
 					
 				itemsLine.paint();
 			}
-			else if (footInfoMode == CItemInfo::ITEMINFO_ICON)
+			else if (footInfoMode == CCItemInfo::ITEMINFO_ICON)
 			{
 				CMenuItem* item = items[pos];
 	
 				// detailslines box
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
-				itemsLine.setMode(CItemInfo::ITEMINFO_ICON);
+				itemsLine.setMode(CCItemInfo::ITEMINFO_ICON);
 				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
@@ -2627,13 +2627,13 @@ void ClistBox::paintItemInfo(int pos)
 					
 				itemsLine.paint();
 			}
-			else if (footInfoMode == CItemInfo::ITEMINFO_HINT)
+			else if (footInfoMode == CCItemInfo::ITEMINFO_HINT)
 			{
 				CMenuItem* item = items[pos];
 	
 				// detailslines box
 				itemsLine.setPosition(itemInfoBox.iX, itemInfoBox.iY, itemInfoBox.iWidth, itemInfoBox.iHeight);
-				itemsLine.setMode(CItemInfo::ITEMINFO_HINT);
+				itemsLine.setMode(CCItemInfo::ITEMINFO_HINT);
 				itemsLine.setBorderMode(iteminfobordermode);
 				if (iteminfosavescreen) itemsLine.enableSaveScreen();
 				itemsLine.setColor(iteminfocolor);
@@ -2673,10 +2673,10 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.enableSaveScreen();
 			
 			if (widgetMode == MODE_LISTBOX)
-				itemsLine.setMode(CItemInfo::ITEMINFO_HINT);
+				itemsLine.setMode(CCItemInfo::ITEMINFO_HINT);
 			else if (widgetMode == MODE_MENU)
 			{
-				itemsLine.setMode(CItemInfo::ITEMINFO_HINTITEM);
+				itemsLine.setMode(CCItemInfo::ITEMINFO_HINTITEM);
 				
 				if (item->isPlugin)
 					fname = item->itemIcon;

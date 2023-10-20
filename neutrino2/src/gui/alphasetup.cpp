@@ -244,7 +244,7 @@ void CAlphaSetup::paint()
 	mainWindow->paint();
 
 	// head
-	CHeaders headers(mainBox.iX, mainBox.iY, mainBox.iWidth, hheight, name.c_str(), NEUTRINO_ICON_COLORS);
+	CCHeaders headers(mainBox.iX, mainBox.iY, mainBox.iWidth, hheight, name.c_str(), NEUTRINO_ICON_COLORS);
 	headers.paint();
 
 	// slider

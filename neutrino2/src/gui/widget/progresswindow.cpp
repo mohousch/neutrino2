@@ -57,7 +57,7 @@ CProgressWindow::CProgressWindow(int _x, int _y, int _width, int _height)
 	initFrames(_x, _y, _width, _height);
 
 	// progressbar
-	progressBar = new CProgressBar(x + BORDER_LEFT, y + hheight + (mheight>>1) + 2*mheight, width - BORDER_LEFT - BORDER_RIGHT - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth("100%") - 10, 10);
+	progressBar = new CCProgressBar(x + BORDER_LEFT, y + hheight + (mheight>>1) + 2*mheight, width - BORDER_LEFT - BORDER_RIGHT - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth("100%") - 10, 10);
 
 	progressBar->reset();
 }
@@ -177,7 +177,7 @@ void CProgressWindow::paint()
 		const char * l_caption;
 		l_caption = captionString.c_str();
 
-		CHeaders headers(x, y, width, hheight, l_caption, NEUTRINO_ICON_INFO);
+		CCHeaders headers(x, y, width, hheight, l_caption, NEUTRINO_ICON_INFO);
 		headers.setCorner(RADIUS_SMALL, CORNER_TOP);
 		headers.setGradient(LIGHT2DARK);
 		headers.setLine(false);

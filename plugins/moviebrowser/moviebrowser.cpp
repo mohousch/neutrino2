@@ -1293,7 +1293,7 @@ int CMovieBrowser::paint(void)
 	
 	widget = new CWidget(&m_cBoxFrame);
 	
-	headers = new CHeaders(&m_cBoxFrameTitleRel);
+	headers = new CCHeaders(&m_cBoxFrameTitleRel);
 
 	m_pcBrowser = new CListFrame(&m_browserListLines, NULL, CListFrame::SCROLL | CListFrame::HEADER_LINE, &m_cBoxFrameBrowserList);
 
@@ -1305,7 +1305,7 @@ int CMovieBrowser::paint(void)
 
 	m_pcInfo = new CTextBox(&m_cBoxFrameInfo);
 	
-	footers = new CFooters(&m_cBoxFrameFootRel);
+	footers = new CCFooters(&m_cBoxFrameFootRel);
 
 	if(m_pcBrowser == NULL || m_pcLastPlay == NULL || m_pcLastRecord == NULL || m_pcInfo == NULL || m_pcFilter == NULL)
 	{

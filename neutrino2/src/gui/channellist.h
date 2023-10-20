@@ -90,8 +90,8 @@ class CChannelList
 		CWidget* widget;
 		ClistBox *listBox;
 		CMenuItem *item;
-		CHeaders* head;
-		CFooters* foot;
+		CCHeaders* head;
+		CCFooters* foot;
 		CCWindow* window;
 		CCVline* vline;
 		CCHline* hline;

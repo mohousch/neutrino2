@@ -168,7 +168,7 @@ void CImageInfo::paint()
 		width = widget->getWindowsPos().iWidth;
 		height = widget->getWindowsPos().iHeight;
 		
-		head = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		head = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
 	}
 	else
 	{
@@ -178,7 +178,7 @@ void CImageInfo::paint()
 		widget->paintMainFrame(true);
 		
 		// head
-		head = new CHeaders(x, y, width, 40, _("Image Info"), NEUTRINO_ICON_INFO);
+		head = new CCHeaders(x, y, width, 40, _("Image Info"), NEUTRINO_ICON_INFO);
 		head->enablePaintDate();
 		head->setFormat("%d.%m.%Y %H:%M:%S");
 		head->setLine(true, true);

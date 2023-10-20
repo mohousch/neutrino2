@@ -439,7 +439,7 @@ class ClistBox : public CComponent
 		int items_height;
 		int items_width;
 
-		CScrollBar scrollBar;
+		CCScrollBar scrollBar;
 
 		//
 		bool shrinkMenu;
@@ -496,7 +496,7 @@ class ClistBox : public CComponent
 		// itemInfo
 		int cFrameFootInfoHeight;
 		int footInfoHeight;
-		CItemInfo itemsLine;
+		CCItemInfo itemsLine;
 		bool paintFootInfo;
 		int footInfoMode;
 		CBox itemInfoBox;
@@ -584,7 +584,7 @@ class ClistBox : public CComponent
 		void setItemInfoMode(int mode){footInfoMode = mode;};
 		void setItemInfoPos(int x, int y, int dx, int dy)
 		{
-			if ( (footInfoMode == CItemInfo::ITEMINFO_HINTICON) || (footInfoMode == CItemInfo::ITEMINFO_ICON) || (footInfoMode == CItemInfo::ITEMINFO_HINT))
+			if ( (footInfoMode == CCItemInfo::ITEMINFO_HINTICON) || (footInfoMode == CCItemInfo::ITEMINFO_ICON) || (footInfoMode == CCItemInfo::ITEMINFO_HINT))
 			{
 				itemInfoBox.iX = x; 
 				itemInfoBox.iY = y; 

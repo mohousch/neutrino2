@@ -155,7 +155,7 @@ void CNKMovies::showMenu()
 	headBox.iX = frameBuffer->getScreenX();
 	headBox.iY = frameBuffer->getScreenY();
 
-	headersWidget = new CHeaders(headBox.iX, headBox.iY, headBox.iWidth, headBox.iHeight, title.c_str(), NEUTRINO_ICON_NETZKINO_SMALL);
+	headersWidget = new CCHeaders(headBox.iX, headBox.iY, headBox.iWidth, headBox.iHeight, title.c_str(), NEUTRINO_ICON_NETZKINO_SMALL);
 
 	headersWidget->setButtons(NKHeadButtons, HEAD_BUTTONS_COUNT);
 	headersWidget->enablePaintDate();
@@ -167,7 +167,7 @@ void CNKMovies::showMenu()
 	footBox.iX = frameBuffer->getScreenX();
 	footBox.iY = frameBuffer->getScreenY() + frameBuffer->getScreenHeight() - footBox.iHeight;
 
-	footersWidget = new CFooters(footBox.iX, footBox.iY, footBox.iWidth, footBox.iHeight);
+	footersWidget = new CCFooters(footBox.iX, footBox.iY, footBox.iWidth, footBox.iHeight);
 
 	footersWidget->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	footersWidget->setGradient(NOGRADIENT);

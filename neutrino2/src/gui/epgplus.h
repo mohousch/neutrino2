@@ -102,7 +102,7 @@ class EpgPlus
 				int width;
 				
 				static CFont *font;
-				static CHeaders *head;
+				static CCHeaders *head;
 		};
 
 		// timeline

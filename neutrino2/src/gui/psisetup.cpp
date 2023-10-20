@@ -384,7 +384,7 @@ void CPSISetup::paint()
 	//mainWindow.paint();
 
 	// head
-	CHeaders headers(x, y, width, hheight, name.c_str(), NEUTRINO_ICON_COLORS);
+	CCHeaders headers(x, y, width, hheight, name.c_str(), NEUTRINO_ICON_COLORS);
 	//headers.paint();
 	
 	//paint slider

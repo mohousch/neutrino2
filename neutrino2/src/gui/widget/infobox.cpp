@@ -89,16 +89,16 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 	
 	if (widget)
 	{
-		headers = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
-		footers = (CFooters*)widget->getCCItem(CComponent::CC_FOOT);
+		headers = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		footers = (CCFooters*)widget->getCCItem(CComponent::CC_FOOT);
 		m_pcTextBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
 	}
 	else
 	{
 		//
 		widget = new CWidget(&m_cBoxFrame);
-		headers = new CHeaders();
-		footers = new CFooters();
+		headers = new CCHeaders();
+		footers = new CCFooters();
 		
 		//
 		headers->setColor(headColor);
@@ -171,16 +171,16 @@ CInfoBox::CInfoBox()
 	
 	if (widget)
 	{
-		headers = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
-		footers = (CFooters*)widget->getCCItem(CComponent::CC_FOOT);
+		headers = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		footers = (CCFooters*)widget->getCCItem(CComponent::CC_FOOT);
 		m_pcTextBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
 	}
 	else
 	{
 		widget = new CWidget(&m_cBoxFrame);
 		
-		headers = new CHeaders();
-		footers = new CFooters();
+		headers = new CCHeaders();
+		footers = new CCFooters();
 		
 		headers->setColor(headColor);
 		headers->setCorner(headRadius, headCorner);

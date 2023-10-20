@@ -95,7 +95,7 @@ class CTextBox : public CComponent
 		int m_nCurrentLine;
 		int m_nCurrentPage;
 		
-		CScrollBar scrollBar;
+		CCScrollBar scrollBar;
 
 		// text
 		unsigned int m_pcFontText;

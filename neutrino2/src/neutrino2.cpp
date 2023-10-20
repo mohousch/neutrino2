@@ -195,7 +195,7 @@ uint32_t scrambled_timer = 0;
 char recDir[255];
 char timeshiftDir[255];
 // volume bar
-static CProgressBar * g_volscale;
+static CCProgressBar * g_volscale;
 //
 int prev_video_Mode;
 int current_volume;
@@ -2324,7 +2324,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 			break;
 	}
 	
-	g_volscale = new CProgressBar(x + dy+ (dy/4), y +(dy/4), 200, 15);
+	g_volscale = new CCProgressBar(x + dy+ (dy/4), y +(dy/4), 200, 15);
 
 	if(bDoPaint) 
 	{

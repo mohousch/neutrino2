@@ -292,7 +292,7 @@ void CVfdControler::paint()
 	mainWindow->paint();
 
 	// head
-	CHeaders headers(x, y, width, hheight, name.c_str(), NEUTRINO_ICON_LCD);
+	CCHeaders headers(x, y, width, hheight, name.c_str(), NEUTRINO_ICON_LCD);
 	headers.paint();
 
 	paintSlider(x + BORDER_LEFT, y + hheight, brightness, BRIGHTNESSFACTOR, _("normal Brightness"), true);

@@ -99,8 +99,8 @@ void CMotorControl::Init(void)
 	stepDelay = 10;
 	
 	//
-	sigscale = new CProgressBar(x + 10 - 1, y + height - mheight - 5, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
-	snrscale = new CProgressBar(x + 10 + 210 - 1, y + height - mheight - 5, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
+	sigscale = new CCProgressBar(x + 10 - 1, y + height - mheight - 5, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
+	snrscale = new CCProgressBar(x + 10 + 210 - 1, y + height - mheight - 5, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
 }
 
 int CMotorControl::exec(CMenuTarget* parent, const std::string &)
@@ -584,11 +584,11 @@ void CMotorControl::paint()
 	ypos = y;
 	
 	// headBox
-	CHeaders head(x, ypos, width, hheight, _("Motor Setup"), NEUTRINO_ICON_SCAN);
+	CCHeaders head(x, ypos, width, hheight, _("Motor Setup"), NEUTRINO_ICON_SCAN);
 	head.paint();
 	
 	// footer
-	CFooters foot(x, ypos + hheight, width, height - hheight);
+	CCFooters foot(x, ypos + hheight, width, height - hheight);
 	foot.paint();
 
 	ypos += hheight + (mheight >> 1) - 10;

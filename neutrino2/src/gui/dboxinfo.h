@@ -52,7 +52,7 @@ class CDBoxInfoWidget : public CMenuTarget
 		CBox Box;
 		
 		CWidget* dboxInfoWidget;
-		CHeaders* head;
+		CCHeaders* head;
 		
 		CCIcon* cpuIcon;
 		CCLabel* cpuLabel;

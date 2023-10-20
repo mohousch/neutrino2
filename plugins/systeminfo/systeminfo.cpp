@@ -99,7 +99,7 @@ void CSysInfoWidget::paintHead()
 		sprintf((char *) buf, "%s", "Prozess-Liste:");
 	
 	// title
-	CHeaders headers(&cFrameBoxTitle, buf, titleIcon.iconName.c_str());
+	CCHeaders headers(&cFrameBoxTitle, buf, titleIcon.iconName.c_str());
 	headers.enablePaintDate();
 	headers.setCorner(RADIUS_SMALL, CORNER_TOP);
 	headers.setGradient(LIGHT2DARK);
@@ -124,7 +124,7 @@ void CSysInfoWidget::paintFoot()
 	cFrameBoxFoot.iY = cFrameBox.iY + cFrameBox.iHeight - cFrameBoxFoot.iHeight;
 	cFrameBoxFoot.iWidth = cFrameBox.iWidth;
 
-	CFooters footers(&cFrameBoxFoot);
+	CCFooters footers(&cFrameBoxFoot);
 	footers.setCorner(RADIUS_SMALL, CORNER_BOTTOM);
 	footers.setGradient(DARK2LIGHT);
 	footers.setLine(false);

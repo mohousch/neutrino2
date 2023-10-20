@@ -190,7 +190,7 @@ class CInfoViewer
 		CChannelEventList evtlist;
 		CChannelEventList::iterator eli;
 
-		CProgressBar *snrscale, *sigscale, *timescale;
+		CCProgressBar *snrscale, *sigscale, *timescale;
 		
 		//
 		void showEPGData(bool calledFromEvent = false);

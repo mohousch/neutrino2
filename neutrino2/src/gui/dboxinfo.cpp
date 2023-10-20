@@ -145,7 +145,7 @@ int CDBoxInfoWidget::showInfo()
 	//
 	if (dboxInfoWidget)
 	{
-		head = (CHeaders*)dboxInfoWidget->getCCItem(CComponent::CC_HEAD);
+		head = (CCHeaders*)dboxInfoWidget->getCCItem(CComponent::CC_HEAD);
 	}
 	else
 	{
@@ -155,7 +155,7 @@ int CDBoxInfoWidget::showInfo()
 		dboxInfoWidget->paintMainFrame(true);
 		
 		// head
-		head = new CHeaders(Box.iX, Box.iY, Box.iWidth, 40, _("Box Info"), NEUTRINO_ICON_INFO);
+		head = new CCHeaders(Box.iX, Box.iY, Box.iWidth, 40, _("Box Info"), NEUTRINO_ICON_INFO);
 		head->enablePaintDate();
 		head->setFormat("%d.%m.%Y %H:%M:%S");
 		head->setLine(true, true);

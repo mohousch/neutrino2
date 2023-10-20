@@ -1143,29 +1143,29 @@ int CNeutrinoApp::convertItemInfoMode(const char * const mode)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertItemInfoMode: mode: %s\n", mode);
 	
-	int m = CItemInfo::ITEMINFO_INFO;
+	int m = CCItemInfo::ITEMINFO_INFO;
 	
 	if (mode != NULL)
 	{
 		if ( strcmp(mode, "ITEMINFO_INFO") == 0)
 		{
-			m = CItemInfo::ITEMINFO_INFO;
+			m = CCItemInfo::ITEMINFO_INFO;
 		}
 		else if ( strcmp(mode, "ITEMINFO_HINTITEM") == 0)
 		{
-			m = CItemInfo::ITEMINFO_HINTITEM;
+			m = CCItemInfo::ITEMINFO_HINTITEM;
 		}
 		else if ( strcmp(mode, "ITEMINFO_HINTICON") == 0)
 		{
-			m = CItemInfo::ITEMINFO_HINTICON;
+			m = CCItemInfo::ITEMINFO_HINTICON;
 		}
 		else if ( strcmp(mode, "ITEMINFO_ICON") == 0)
 		{
-			m = CItemInfo::ITEMINFO_ICON;
+			m = CCItemInfo::ITEMINFO_ICON;
 		}
 		else if ( strcmp(mode, "ITEMINFO_HINT") == 0)
 		{
-			m = CItemInfo::ITEMINFO_HINT;
+			m = CCItemInfo::ITEMINFO_HINT;
 		}
 	}
 	
@@ -1444,7 +1444,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	if (paintiteminfo)
 	{
 		listBox->enablePaintItemInfo(70);
-		int iimode = CItemInfo::ITEMINFO_INFO;
+		int iimode = CCItemInfo::ITEMINFO_INFO;
 		if (iteminfomode) iimode = convertItemInfoMode(iteminfomode);
 		listBox->setItemInfoMode(iimode);		
 		listBox->setItemInfoPos(iteminfo_posx, iteminfo_posy, iteminfo_width, iteminfo_height);
@@ -1488,7 +1488,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	unsigned int item_border = 0;
 	unsigned int item_gradient = 0;
 					
-	while ((listboxitem_node = xmlGetNextOccurence(listboxitem_node, "ITEM")) != NULL) 
+	while ((listboxitem_node = xmlGetNextOccurence(listboxitem_node, "item")) != NULL) 
 	{	
 		item_id = xmlGetAttribute(listboxitem_node, (char *)"id");
 						
@@ -1569,7 +1569,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	unsigned int i_lines = false;
 	unsigned int i_border = false;
 					
-	while ((listboxintegration_node = xmlGetNextOccurence(listboxintegration_node, "INTEGRATION")) != NULL) 
+	while ((listboxintegration_node = xmlGetNextOccurence(listboxintegration_node, "integration")) != NULL) 
 	{	
 		integration = (CPlugins::i_type_t)xmlGetSignedNumericAttribute(listboxintegration_node, "id", 0);
 		mode = xmlGetSignedNumericAttribute(listboxintegration_node, "mode", 0);
@@ -1589,7 +1589,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	char* button = NULL;
 	char* localename = NULL;
 					
-	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "FOOT_BUTTON_LABEL")) != NULL) 
+	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "foot_button_label")) != NULL) 
 	{	
 		button = xmlGetAttribute(buttonlabel_node, (char*)"name");
 		localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
@@ -1606,7 +1606,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	}
 				
 	// BUTTON_LABEL HEAD
-	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "HEAD_BUTTON_LABEL")) != NULL) 
+	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "head_button_label")) != NULL) 
 	{	
 		button = xmlGetAttribute(buttonlabel_node, (char*)"name");
 		//localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
@@ -1631,7 +1631,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCHead:\n");
 	
-	CHeaders* head = NULL;
+	CCHeaders* head = NULL;
 	
 	char* name = NULL;
 				
@@ -1706,7 +1706,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 			height = widget->getWindowsPos().iHeight;
 	}
 
-	head = new CHeaders(x, y, width, height);
+	head = new CCHeaders(x, y, width, height);
 		
 	head->cc_type = CComponent::CC_HEAD;
 	if (name) head->cc_name = name;
@@ -1748,7 +1748,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	char* button = NULL;
 	char* localename = NULL;
 					
-	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "BUTTON_LABEL")) != NULL) 
+	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "button_label")) != NULL) 
 	{	
 		button = xmlGetAttribute(buttonlabel_node, (char*)"name");
 		localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
@@ -1773,7 +1773,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCFoot:\n");
 	
-	CFooters* foot = NULL;
+	CCFooters* foot = NULL;
 	
 	int posx = 0;
 	int posy = 0;
@@ -1832,7 +1832,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 			height = widget->getWindowsPos().iHeight;
 	}
 						
-	foot = new CFooters(x, y, width, height);
+	foot = new CCFooters(x, y, width, height);
 		
 	foot->cc_type = CComponent::CC_FOOT;
 		
@@ -1865,7 +1865,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	char *localename = NULL;
 	char *bcolor = NULL;
 					
-	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "BUTTON_LABEL")) != NULL) 
+	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "button_label")) != NULL) 
 	{	
 		button = xmlGetAttribute(buttonlabel_node, (char*)"name");
 		localename = xmlGetAttribute(buttonlabel_node, (char*)"localename");
@@ -2413,7 +2413,7 @@ void CNeutrinoApp::parseCCButtons(xmlNodePtr node, CWidget* widget)
 	char *localename = NULL;
 	char *color = NULL;
 				
-	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "BUTTON_LABEL")) != NULL) 
+	while ((buttonlabel_node = xmlGetNextOccurence(buttonlabel_node, "button_label")) != NULL) 
 	{		
 		button = xmlGetAttribute(buttonlabel_node, (char *)"name");
 		localename = xmlGetAttribute(buttonlabel_node, (char *)"localename");
@@ -2625,11 +2625,48 @@ void CNeutrinoApp::parseKey(xmlNodePtr node, CWidget* widget)
 			
 }
 
+//
+void CNeutrinoApp::parseCWidget(xmlNodePtr node)
+{
+	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCWidget:\n");
+	
+	/*
+	CWidget *widget = NULL;
+	
+	//
+	char* name = NULL;
+			
+	unsigned int x = 0;
+	unsigned int y = 0;
+	unsigned int dx = 0;
+	unsigned int dy = 0;
+			
+	char* color = NULL;
+	char *gradient = NULL;
+	char *gradient_type = NULL;
+	char *gradient_direction = NULL;
+	char *gradient_intensity = NULL;
+	char * corner = NULL;
+	char * radius = NULL;
+	char * border = NULL;
+	char *bordercolor = NULL;
+			
+	unsigned int paintframe = 0;
+	unsigned int savescreen = 0;
+	unsigned int timeout = 300;
+	char *position = NULL;
+	
+	//
+	xmlNodePtr item = NULL;
+	*/
+}
+
 // getWidget
 CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *const skinfilename, bool data)
 {
 	dprintf(DEBUG_NORMAL, ANSI_GREEN"\nCNeutrinoApp::getWidget: <<%s>>\n", widgetname);
 	
+	//
 	CWidget *widget = NULL;
 	
 	//
@@ -2692,7 +2729,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 	{
 		xmlNodePtr search = xmlDocGetRootElement(parser)->xmlChildrenNode;
 			
-		while ( (search = xmlGetNextOccurence(search, "WIDGET")) != NULL ) 
+		while ( (search = xmlGetNextOccurence(search, "screen")) != NULL ) 
 		{
 			//
 			name = xmlGetAttribute(search, (char*)"name");
@@ -2788,55 +2825,55 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				
 				while (item)
 				{
-					if ( !(strcmp(xmlGetName(item), "HEAD")))	
+					if ( !(strcmp(xmlGetName(item), "head")))	
 					{
 						parseCHead(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "FOOT"))) 	
+					else if ( !(strcmp(xmlGetName(item), "foot"))) 	
 					{
 						parseCFoot(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "LISTBOX"))) 
+					else if ( !(strcmp(xmlGetName(item), "listbox"))) 
 					{
 						parseClistBox(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "TEXTBOX")))
+					else if ( !(strcmp(xmlGetName(item), "textbox")))
 					{
 						parseCTextBox(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "WINDOW")))
+					else if ( !(strcmp(xmlGetName(item), "window")))
 					{
 						parseCCWindow(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "LABEL")))
+					else if ( !(strcmp(xmlGetName(item), "label")))
 					{
 						parseCCLabel(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "IMAGE")))
+					else if ( !(strcmp(xmlGetName(item), "image")))
 					{
 						parseCCImage(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "TIME")))
+					else if ( !(strcmp(xmlGetName(item), "time")))
 					{
 						parseCCTime(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "BUTTON")))
+					else if ( !(strcmp(xmlGetName(item), "button")))
 					{
 						parseCCButtons(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "HLINE")))
+					else if ( !(strcmp(xmlGetName(item), "hline")))
 					{
 						parseCCHline(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "VLINE")))
+					else if ( !(strcmp(xmlGetName(item), "vline")))
 					{
 						parseCCVline(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "PIG")))
+					else if ( !(strcmp(xmlGetName(item), "pig")))
 					{
 						parseCCPig(item, widget);
 					}
-					else if ( !(strcmp(xmlGetName(item), "KEY")))
+					else if ( !(strcmp(xmlGetName(item), "key")))
 					{
 						parseKey(item, widget);
 					}

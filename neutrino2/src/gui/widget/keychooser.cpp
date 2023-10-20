@@ -247,7 +247,7 @@ void CKeyChooserItem::paint()
 	m_cTitle.iX = m_cBox.iX;
 	m_cTitle.iY = m_cBox.iY;
 
-	CHeaders headers(&m_cTitle, name.c_str(), NEUTRINO_ICON_KEYBINDING);
+	CCHeaders headers(&m_cTitle, name.c_str(), NEUTRINO_ICON_KEYBINDING);
 	headers.setCorner(RADIUS_SMALL);
 	headers.setGradient(LIGHT2DARK);
 	headers.setLine(false);

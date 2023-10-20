@@ -150,13 +150,13 @@ void CStreamInfo::doSignalStrengthLoop()
 #define BAR_WIDTH 150 
 #define BAR_HEIGHT 12 
 
-	sigscale = new CProgressBar(x + 10 - 1, yypos + (g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight()/2), BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
-	snrscale = new CProgressBar(x + 10 - 1, yypos + 2*(g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight()/2) + 5, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
+	sigscale = new CCProgressBar(x + 10 - 1, yypos + (g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight()/2), BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
+	snrscale = new CCProgressBar(x + 10 - 1, yypos + 2*(g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight()/2) + 5, BAR_WIDTH, BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR);
 
 	neutrino_msg_t msg;
 	neutrino_msg_data_t data;
 	uint64_t maxb, minb, lastb, tmp_rate;
-	int cnt = 0, i=0;
+	int cnt = 0, i = 0;
 	uint16_t ssig, ssnr;
 	uint32_t  ber;
 	char tmp_str[150];
@@ -541,7 +541,7 @@ void CStreamInfo::paint(int /*mode*/)
 		width = widget->getWindowsPos().iWidth;
 		height = widget->getWindowsPos().iHeight;
 		
-		head = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		head = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
 	}
 	else
 	{
@@ -551,7 +551,7 @@ void CStreamInfo::paint(int /*mode*/)
 		widget->paintMainFrame(true);
 		
 		// head
-		head = new CHeaders(x, y, width, 40, _("Stream information"), NEUTRINO_ICON_INFO);
+		head = new CCHeaders(x, y, width, 40, _("Stream information"), NEUTRINO_ICON_INFO);
 		head->enablePaintDate();
 		head->setFormat("%d.%m.%Y %H:%M:%S");
 		head->setLine(true, true);

@@ -134,7 +134,7 @@ class CListFrame : public CComponent
 		CFrameBuffer * frameBuffer;
 		std::string m_iconTitle;
 
-		CScrollBar scrollBar;
+		CCScrollBar scrollBar;
 	public:
 		CListFrame();
 		CListFrame(LF_LINES* lines);

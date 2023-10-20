@@ -142,7 +142,7 @@ class CMoviePlayerGui : public CMenuTarget
 		int icon_blue_w, icon_blue_h;
 
 		// infoViewer
-		CProgressBar* moviescale;
+		CCProgressBar* moviescale;
 		void showMovieInfo();
 		bool IsVisible() {return visible;};
 		CCCounter* timeCounter;

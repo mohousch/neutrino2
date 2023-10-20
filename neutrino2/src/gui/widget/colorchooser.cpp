@@ -316,7 +316,7 @@ void CColorChooser::paint()
 	cFrameBoxTitle.iY = cFrameBox.iY;
 	cFrameBoxTitle.iWidth = cFrameBox.iWidth;
 
-	CHeaders headers(&cFrameBoxTitle, name.c_str(), NEUTRINO_ICON_COLORS);
+	CCHeaders headers(&cFrameBoxTitle, name.c_str(), NEUTRINO_ICON_COLORS);
 
 	headers.setCorner(RADIUS_SMALL);
 	headers.setGradient(LIGHT2DARK);	

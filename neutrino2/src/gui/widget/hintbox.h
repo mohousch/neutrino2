@@ -53,7 +53,7 @@ class CHintBox
 		CBox cFrameBoxItem;
 		
 		CWidget *widget;
-		CHeaders *headers;
+		CCHeaders *headers;
 
 		unsigned int entries_per_page;
 		unsigned int current_page;
@@ -63,7 +63,7 @@ class CHintBox
 		std::vector<char *>line;
 		std::string iconfile;
 
-		CScrollBar scrollBar;
+		CCScrollBar scrollBar;
 		
 		void refreshPage(void);
 		

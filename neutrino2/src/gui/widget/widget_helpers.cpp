@@ -182,7 +182,7 @@ bool CComponent::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
 }
 
 //
-void CComponent::exec(int timeout)
+int CComponent::exec(int timeout)
 {
 	dprintf(DEBUG_INFO, "CComponent::exec: timeout:%d\n", timeout);
 	
@@ -219,215 +219,9 @@ void CComponent::exec(int timeout)
 	{
 		g_RCInput->killTimer(sec_timer_id);
 		sec_timer_id = 0;
-	}	
-}
-
-////
-CCWindow::CCWindow(const int x, const int y, const int dx, const int dy)
-{
-	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
-	
-	frameBuffer = CFrameBuffer::getInstance(); 
-	
-	itemBox.iX = x;
-	itemBox.iY = y;
-	itemBox.iWidth = dx;
-	itemBox.iHeight = dy;
-
-	initFrames();
-
-	initVars();
-}
-
-CCWindow::CCWindow(CBox* position)
-{
-	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
-	
-	frameBuffer = CFrameBuffer::getInstance(); 
-	
-	itemBox = *position;
-
-	initFrames();
-
-	initVars();
-}
-
-CCWindow::~CCWindow()
-{
-	if(background)
-	{
-		delete[] background;
-		background = NULL;
 	}
-}
-
-void CCWindow::initVars()
-{
-	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
-
-	radius = NO_RADIUS;
-	corner = CORNER_NONE;
-	bgcolor = COL_MENUCONTENT_PLUS_0;
-	gradient = NOGRADIENT;
-	grad_direction = GRADIENT_VERTICAL;
-	grad_intensity = INT_LIGHT;
-	grad_type = GRADIENT_COLOR2TRANSPARENT;
-	//
-	borderMode = BORDER_NO;
-	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
-	paintframe = true;
-	//
-	background = NULL;
-	//
-	current_page = 0;
-	total_pages = 1;
-	//
-	cc_type = CC_WINDOW;
-}
-
-void CCWindow::setPosition(const int x, const int y, const int dx, const int dy)
-{
-	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
 	
-	itemBox.iX = x;
-	itemBox.iY = y;
-	itemBox.iWidth = dx;
-	itemBox.iHeight = dy;
-	
-	initFrames();
-}
-
-void CCWindow::setPosition(CBox* position)
-{
-	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
-	
-	itemBox = *position;
-	
-	initFrames();
-}
-
-void CCWindow::initFrames()
-{
-	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
-
-	// sanity check
-	if(itemBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
-		itemBox.iHeight = frameBuffer->getScreenHeight(true) - 4;  // 4 pixels for border
-
-	// sanity check
-	if(itemBox.iWidth > (int)frameBuffer->getScreenWidth(true))
-		itemBox.iWidth = frameBuffer->getScreenWidth(true) - 4; // 4 pixels for border
-}
-
-void CCWindow::saveScreen()
-{
-	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
-
-	if(background)
-	{
-		delete[] background;
-		background = NULL;
-	}
-
-	background = new fb_pixel_t[borderMode? (itemBox.iWidth + 4)*(itemBox.iHeight + 4) : itemBox.iWidth*itemBox.iHeight];
-		
-	if(background)
-	{
-		if (borderMode)
-			frameBuffer->saveScreen(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, background);
-		else
-			frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
-	}
-}
-
-void CCWindow::restoreScreen()
-{
-	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
-	
-	if(background) 
-	{
-		if (borderMode)
-			frameBuffer->restoreScreen(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, background);
-		else
-			frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
-	}
-}
-
-void CCWindow::paintPage(void)
-{
-	dprintf(DEBUG_DEBUG, "CCWindow::paintPage:\n");
-
-	if (paintframe)
-	{
-		if (borderMode == BORDER_NO)
-		{
-			// frame
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
-		}
-		else if (borderMode == BORDER_ALL)
-		{
-			// border
-			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, borderColor, radius, corner);
-				
-			// frame
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
-		}
-		else if (borderMode == BORDER_LEFTRIGHT)
-		{
-			// border
-			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY, itemBox.iWidth + 4, itemBox.iHeight, borderColor, radius, corner);
-				
-			// frame
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
-		}
-		else if (borderMode == BORDER_TOPBOTTOM)
-		{
-			// border
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY - 2, itemBox.iWidth, itemBox.iHeight + 4, borderColor, radius, corner);
-				
-			// frame
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
-		}
-	}
-}
-
-void CCWindow::paint()
-{
-	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
-
-	//
-	if (!paintframe)
-	{
-		saveScreen();
-	}
-
-	//
-	paintPage();
-}
-
-void CCWindow::hide()
-{
-	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
-	
-	if(!paintframe)
-		restoreScreen();
-	else
-	{
-		if (borderMode)
-			frameBuffer->paintBackgroundBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4);
-		else
-			frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
-	}
-		
-	CFrameBuffer::getInstance()->blit();
-}
-
-void CCWindow::refresh(void)
-{
-	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
-
-	restoreScreen();
-	paintPage();
+	return 0;	
 }
 
 //// CCIcon
@@ -573,166 +367,6 @@ void CCImage::paint()
 		if (!imageName.empty()) 
 			frameBuffer->displayImage(imageName.c_str(), startPosX, itemBox.iY + (itemBox.iHeight - iHeight)/2, iWidth, iHeight);
 	}
-}
-
-//// progressbar
-CProgressBar::CProgressBar(int x, int y, int w, int h, int r, int g, int b, bool inv)
-{
-	dprintf(DEBUG_DEBUG, "CProgressBar::CProgressBar: x:%d y:%d dx:%d dy:%d\n", x, y, w, h);
-	
-	frameBuffer = CFrameBuffer::getInstance();
-	
-	itemBox.iX = x;
-	itemBox.iY = y;
-	itemBox.iWidth = w;
-	itemBox.iHeight = h;
-	inverse = inv;
-	
-	div = (double) itemBox.iWidth / (double) 100;
-	
-	red = (double) r * (double) div ;
-	green = (double) g * (double) div;
-	yellow = (double) g * (double) div;
-	
-	while ((red + yellow + green) < itemBox.iWidth) 
-	{
-		if (green)
-			green++;
-		if (yellow && ((red + yellow + green) < itemBox.iWidth))
-			yellow++;
-		if (red && ((red + yellow + green) < itemBox.iWidth))
-			red++;
-	}
-	
-	rgb = 0xFF0000;
-	
-	percent = 255;
-	
-	cc_type = CC_PROGRESSBAR;
-}
-
-CProgressBar::CProgressBar(const CBox* position, int r, int g, int b, bool inv)
-{
-	dprintf(DEBUG_DEBUG, "CProgressBar::CProgressBar: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
-	
-	frameBuffer = CFrameBuffer::getInstance(); 
-	
-	itemBox = *position;
-	inverse = inv;
-	
-	div = (double) itemBox.iWidth / (double) 100;
-	
-	red = (double) r * (double) div ;
-	green = (double) g * (double) div;
-	yellow = (double) g * (double) div;
-	
-	while ((red + yellow + green) < itemBox.iWidth) 
-	{
-		if (green)
-			green++;
-		if (yellow && ((red + yellow + green) < itemBox.iWidth))
-			yellow++;
-		if (red && ((red + yellow + green) < itemBox.iWidth))
-			red++;
-	}
-	
-	rgb = 0xFF0000;
-	
-	percent = 255;
-	
-	cc_type = CC_PROGRESSBAR;
-}
-
-void CProgressBar::paint()
-{
-	dprintf(DEBUG_DEBUG, "CProgressBar::paint:\n");
-	
-	// body
-	frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
-}
-
-void CProgressBar::refresh(unsigned char pcr)
-{
-	dprintf(DEBUG_DEBUG, "CProgressBar::refresh: pcr:%d\n", pcr);
-	
-	int i = 0;
-	int b = 0;
-	int siglen = 0;
-	
-	// body
-	frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
-	
-	if (pcr != percent) 
-	{
-		if(percent == 255) 
-			percent = 0;
-
-		siglen = (double) pcr * (double) div;
-		int step = 0;
-		uint32_t diff = 0;
-
-		if(g_settings.progressbar_color)
-		{
-			//red
-			for (i = 0; (i < red) && (i < siglen); i++) 
-			{
-				diff = i * 255 / red;
-
-				if(inverse) 
-					rgb = 0x00FF00 + (diff << 16); // adding red
-				else
-					rgb = 0xFF0000 + (diff << 8); // adding green
-				
-				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, ::rgbaToColor(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
-			}
-			
-			//yellow
-			step = yellow - red - 1;
-			if (step < 1)
-				step = 1;
-		
-			for (; (i < yellow) && (i < siglen); i++) 
-			{
-				diff = b++ * 255 / step / 2;
-
-				if(inverse) 
-					rgb = 0xFFFF00 - (diff << 8); // removing green
-				else
-					rgb = 0xFFFF00 - (diff << 16); // removing red
-	
-				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, ::rgbaToColor(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
-			}
-
-			//green
-			int off = diff;
-			b = 0;
-			step = green - yellow - 1;
-			if (step < 1)
-				step = 1;
-			for (; (i < green) && (i < siglen); i++) 
-			{
-				diff = b++ * 255 / step / 2 + off;
-
-				if(inverse) 
-					rgb = 0xFFFF00 - (diff << 8); // removing green
-				else
-					rgb = 0xFFFF00 - (diff << 16); // removing red
-				
-				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, ::rgbaToColor(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
-			}
-		}
-		else
-		{
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, siglen, itemBox.iHeight, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
-		}
-		
-		percent = pcr;
-	}
-}
-
-void CProgressBar::reset()
-{
-  	percent = 255;
 }
 
 //// CCButtons
@@ -962,394 +596,6 @@ void CCButtons::paint()
 	}
 }
 
-//// CScrollBar
-void CScrollBar::paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage)
-{
-	// scrollBar
-	CBox cFrameScrollBar;
-	CCWindow cScrollBarWindow;
-
-	cFrameScrollBar.iX = x;
-	cFrameScrollBar.iY = y;
-	cFrameScrollBar.iWidth = SCROLLBAR_WIDTH;
-	cFrameScrollBar.iHeight = dy;
-
-
-	cScrollBarWindow.setPosition(&cFrameScrollBar);
-	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
-	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cScrollBarWindow.paint();
-		
-	// scrollBar slider
-	CBox cFrameSlider;
-	CCWindow cSliderWindow;	
-
-	cFrameSlider.iX = cFrameScrollBar.iX + 2;
-	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
-	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
-	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
-
-	cSliderWindow.setPosition(&cFrameSlider);
-	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
-	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cSliderWindow.paint();
-}
-
-void CScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPage)
-{
-	// scrollBar
-	CBox cFrameScrollBar;
-	CCWindow cScrollBarWindow;
-
-	cFrameScrollBar = *position;
-
-	cScrollBarWindow.setPosition(&cFrameScrollBar);
-	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
-	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cScrollBarWindow.paint();
-		
-	// scrollBar slider
-	CBox cFrameSlider;
-	CCWindow cSliderWindow;	
-
-	cFrameSlider.iX = cFrameScrollBar.iX + 2;
-	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
-	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
-	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
-
-	cSliderWindow.setPosition(&cFrameSlider);
-	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
-	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
-	cSliderWindow.paint();
-}
-
-//// CItemInfo
-CItemInfo::CItemInfo()
-{
-	frameBuffer = CFrameBuffer::getInstance();
-	
-	//
-	mode = ITEMINFO_INFO; 
-	info1 = "";
-	option_info1 = "";
-	info2 = "";
-	option_info2 = "";
-	hint = "";
-	icon = "";
-	
-	paintframe = false;
-	background = NULL;
-	
-	// hintitem / hinticon
-	tFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
-	borderMode = g_settings.Hint_border;
-	savescreen = false;
-	color = COL_MENUCONTENT_PLUS_0;
-	scale = false;
-	
-	cc_type = CC_ITEMINFO;
-}
-
-CItemInfo::~CItemInfo()
-{
-	info1.clear();
-	option_info1.clear();
-	info2.clear();
-	option_info2.clear();
-	hint.clear();
-	icon.clear();
-	
-	if (savescreen)
-	{
-		if (background)
-		{
-			delete [] background;
-			background = NULL;
-		}
-	}
-}
-
-void CItemInfo::paint()
-{
-	dprintf(DEBUG_DEBUG, "CItemInfo::paint:\n");
-	
-	// border
-	if (paintframe)
-	{
-		if (borderMode) 
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.Hint_radius, g_settings.Hint_corner);
-				
-		// infoBox
-		frameBuffer->paintBoxRel(borderMode? itemBox.iX + 2 : itemBox.iX, borderMode? itemBox.iY + 2 : itemBox.iY, borderMode? itemBox.iWidth - 4 : itemBox.iWidth, borderMode? itemBox.iHeight - 4 : itemBox.iHeight, color, g_settings.Hint_radius, g_settings.Hint_corner, g_settings.Hint_gradient);
-	}
-	else
-		restoreScreen();
-	
-	//
-	if (mode == ITEMINFO_INFO)
-	{
-		// option_info1
-		int l_ow1 = 0;
-		if(!option_info1.empty())
-		{
-			l_ow1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(option_info1.c_str());
-
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString(itemBox.iX + itemBox.iWidth - BORDER_RIGHT - l_ow1, itemBox.iY + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, option_info1.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
-		}
-
-		// info1
-		//int l_w1 = 0;
-		if(!info1.empty())
-		{
-			//l_w1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getRenderWidth(info1.c_str());
-
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(itemBox.iX + BORDER_LEFT, itemBox.iY + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, info1.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
-		}
-
-		// option_info2
-		int l_ow2 = 0;
-		if(!option_info2.empty())
-		{
-			l_ow2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(option_info2.c_str());
-
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(itemBox.iX + itemBox.iWidth - BORDER_RIGHT - l_ow2, itemBox.iY + itemBox.iHeight/2 + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, option_info2.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
-		}
-
-		// info2
-		//int l_w2 = 0;
-		if(!info2.empty())
-		{
-			//l_w2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(info2.c_str());
-
-			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString (itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight/2 + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, info2.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true); // UTF-8
-		}
-	}
-	else if (mode == ITEMINFO_HINTITEM)
-	{
-		//
-		int iw = 0;
-		int ih = 0;
-		int bpp = 0;
-		
-		if (!icon.empty())
-		{
-			frameBuffer->getSize(icon.c_str(), &iw, &iw, &bpp);
-			
-			if (iw > 100)
-				iw = 100;
-				
-			if (ih > (itemBox.iHeight - 4))
-				ih = itemBox.iHeight - 4;
-			
-			CCImage DImage(itemBox.iX + 5, itemBox.iY + 2, 100, itemBox.iHeight - 4);
-			DImage.setImage(icon.c_str());
-			DImage.setScaling(scale);
-			//DImage.setColor(color);
-			DImage.paint();
-		}
-		
-		//
-		CCText Dline(itemBox.iX + 115, itemBox.iY + 10, itemBox.iWidth - iw - 20, itemBox.iHeight - 20);
-		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());		
-		Dline.paint();
-	}
-	else if (mode == ITEMINFO_HINTICON)
-	{
-		//
-		int iw = 0;
-		int ih = 0;
-		
-		if (!icon.empty())
-		{
-			::scaleImage(icon, &iw, &ih);
-			
-			if (iw > itemBox.iWidth && itemBox.iWidth != 0)
-				iw = itemBox.iWidth - 4;
-				
-			if (ih > (itemBox.iHeight - 4) && itemBox.iHeight != 0)
-				ih = (itemBox.iHeight - 4)/2;
-		
-			CCImage DImage(itemBox.iX + 2, itemBox.iY + 2, itemBox.iWidth - 4, ih - 4);
-			DImage.setImage(icon.c_str());
-			DImage.setScaling(scale);
-			//DImage.setColor(color);
-			DImage.paint();
-		}
-		
-		//
-		CCText Dline(itemBox.iX + 10, itemBox.iY + ih + 10, itemBox.iWidth - 20, itemBox.iHeight - ih - 20);
-		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());		
-		Dline.paint();
-		
-	}
-	else if (mode == ITEMINFO_ICON)	
-	{
-		CCImage DImage(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
-		DImage.setImage(icon.c_str());
-		DImage.setScaling(scale);
-		//DImage.setColor(color);
-		DImage.paint();
-	}
-	else if (mode == ITEMINFO_HINT)
-	{
-		CCText Dline(itemBox.iX + 10, itemBox.iY + 10, itemBox.iWidth - 20, itemBox.iHeight - 20);
-		Dline.setFont(tFont);
-		Dline.setText(hint.c_str());		
-		Dline.paint();
-	}
-}
-
-//
-void CItemInfo::hide()
-{
-	if(background) 
-	{
-		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
-	}
-	else //FIXME:
-		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
-}
-
-//
-void CItemInfo::saveScreen(void)
-{
-	dprintf(DEBUG_NORMAL, "CItemInfo::saveScreen\n");
-	
-	if (background)
-	{
-		delete [] background;
-		background = NULL;
-	}
-		
-	background = new fb_pixel_t[itemBox.iWidth*itemBox.iHeight];
-		
-	if (background)
-	{
-		frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
-	}
-}
-
-void CItemInfo::restoreScreen(void)
-{
-	dprintf(DEBUG_NORMAL, "CItemInfo::restoreScreen\n");
-	
-	//
-	if (savescreen && background)
-	{
-		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
-	}
-}
-
-//
-void CItemInfo::enableSaveScreen()
-{
-	dprintf(DEBUG_NORMAL, "CItemInfo::enableSaveScreen\n");
-	
-	savescreen = true;
-	
-	saveScreen();
-}
-
-////
-CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
-{
-	dprintf(DEBUG_DEBUG, "CCSlider::CCSlider\n");
-	
-	//
-	frameBuffer = CFrameBuffer::getInstance();
-	
-	//
-	itemBox.iX = x;
-	itemBox.iY = y;
-	itemBox.iWidth = dx;
-	itemBox.iHeight = dy; 
-	
-	//
-	value = 0;
-	min_value = 0;
-	max_value = 100;
-	step = 1;
-	
-	//
-	cc_type = CC_SLIDER;
-}
-
-void CCSlider::paint()
-{
-	dprintf(DEBUG_DEBUG, "CCSlider::paint:\n");
-	
-	paintSlider(itemBox.iX, itemBox.iY, value, "test CCSlider", NEUTRINO_ICON_VOLUMESLIDER2RED);
-}
-
-//
-void CCSlider::paintSlider(const int _x, const int _y, const unsigned int spos, const char* const text, const char * const iconname)
-{
-	dprintf(DEBUG_NORMAL, "CCSlider::paintSlider:\n");
-	
-	char wert[5];
-	
-	//int icon_w = 120;
-	//int icon_h = 11;
-	//frameBuffer->getIconSize(NEUTRINO_ICON_VOLUMEBODY, &icon_w, &icon_h);
-	int slider_w = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth("100", true); //UTF-8
-	//int startx = itemBox.iWidth - icon_w - slider_w - 50;
-	//frameBuffer->paintBoxRel(_x + itemBox.iX, _y, 120, itemBox.iHeight, COL_MENUCONTENT_PLUS_0);
-	//frameBuffer->paintIcon(NEUTRINO_ICON_VOLUMEBODY, _x + startx, _y + 2 + itemBox.iHeight / 4);
-	//frameBuffer->paintIcon(iconname, _x + startx + 3 + spos, _y + itemBox.iHeight / 4);
-	
-	////
-	//frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + (itemBox.iHeight - 6)/2, itemBox.iWidth - slider_w - 5, /*itemBox.iHeight*/6, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
-
-	//
-	//g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(itemBox.iX + itemBox.iWidth - slider_w - 5, _y + itemBox.iHeight + (itemBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2, itemBox.iWidth - slider_w - 5, text, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
-	
-	sprintf(wert, "%3d", spos); // UTF-8 encoded
-
-	// refreshBox
-	frameBuffer->paintBoxRel(itemBox.iX + itemBox.iWidth - slider_w - 5, _y, 50, itemBox.iHeight, COL_BACKGROUND);
-	
-	//
-	//g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(itemBox.iX + itemBox.iWidth - slider_w - 5, itemBox.iY + itemBox.iHeight + (itemBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2, slider_w, wert, COL_MENUCONTENT_TEXT_PLUS_0, 0, true, true); // UTF-8
-}
-
-//
-int CCSlider::swipRight()
-{
-	dprintf(DEBUG_NORMAL, "CCSlider::swipRight:\n");
-	
-	if (value > max_value)
-		value = max_value;
-	
-	if (value < max_value)
-	{
-		value++;
-	
-		paintSlider(itemBox.iX, itemBox.iY, value, "test CCSlider", NEUTRINO_ICON_VOLUMESLIDER2RED);
-	}
-	
-	return value;
-}
-
-//
-int CCSlider::swipLeft()
-{
-	dprintf(DEBUG_NORMAL, "CCSlider::swipLeft:\n");
-	
-	if (value < min_value)
-		value = min_value; 
-	
-	if (value > min_value)
-	{
-		value--;
-	
-		paintSlider(itemBox.iX, itemBox.iY, value--, "test CCSlider", NEUTRINO_ICON_VOLUMESLIDER2RED);
-	}
-	
-	return value;
-}
-
 //// CCHline
 CCHline::CCHline(const int x, const int y, const int dx, const int dy)
 {
@@ -1437,6 +683,62 @@ void CCFrameLine::paint()
 	
 	frameBuffer->paintFrameBox(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, color);
 }
+
+//// CCGrid
+CCGrid::CCGrid(const int x, const int y, const int dx, const int dy)
+{
+	dprintf(DEBUG_DEBUG, "CCGrid::CCGrid: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	
+	frameBuffer = CFrameBuffer::getInstance(); 
+	
+	itemBox.iX = x;
+	itemBox.iY = y;
+	itemBox.iWidth = dx;
+	itemBox.iHeight = dy;
+
+	init();
+}
+
+CCGrid::CCGrid(CBox* position)
+{
+	dprintf(DEBUG_DEBUG, "CCGrid::CCGrid:\n");
+	
+	frameBuffer = CFrameBuffer::getInstance(); 
+	
+	itemBox = *position;
+
+	init();
+}
+
+void CCGrid::init()
+{
+	rgb = COL_NOBEL_PLUS_0;
+	inter_frame = 15;
+	
+	//
+	cc_type = CC_GRID;
+}
+
+void CCGrid::paint()
+{
+	dprintf(DEBUG_DEBUG, "CCGrid::paint\n");
+	
+	// hlines grid
+	for(int count = 0; count < itemBox.iHeight; count += inter_frame)
+		frameBuffer->paintHLine(itemBox.iX, itemBox.iX + itemBox.iWidth, itemBox.iY + count, rgb );
+
+	// vlines grid
+	for(int count = 0; count < itemBox.iWidth; count += inter_frame)
+		frameBuffer->paintVLine(itemBox.iX + count, itemBox.iY, itemBox.iY + itemBox.iHeight, rgb );
+}
+
+void CCGrid::hide()
+{
+	frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
+	
+	CFrameBuffer::getInstance()->blit();
+}
+
 
 //// CCLabel
 CCLabel::CCLabel(const int x, const int y, const int dx, const int dy)
@@ -1720,116 +1022,6 @@ void CCText::hide()
 	}
 }
 
-//// CCGrid
-CCGrid::CCGrid(const int x, const int y, const int dx, const int dy)
-{
-	dprintf(DEBUG_DEBUG, "CCGrid::CCGrid: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
-	
-	frameBuffer = CFrameBuffer::getInstance(); 
-	
-	itemBox.iX = x;
-	itemBox.iY = y;
-	itemBox.iWidth = dx;
-	itemBox.iHeight = dy;
-
-	init();
-}
-
-CCGrid::CCGrid(CBox* position)
-{
-	dprintf(DEBUG_DEBUG, "CCGrid::CCGrid:\n");
-	
-	frameBuffer = CFrameBuffer::getInstance(); 
-	
-	itemBox = *position;
-
-	init();
-}
-
-void CCGrid::init()
-{
-	rgb = COL_NOBEL_PLUS_0;
-	inter_frame = 15;
-	
-	//
-	cc_type = CC_GRID;
-}
-
-void CCGrid::paint()
-{
-	dprintf(DEBUG_DEBUG, "CCGrid::paint\n");
-	
-	// hlines grid
-	for(int count = 0; count < itemBox.iHeight; count += inter_frame)
-		frameBuffer->paintHLine(itemBox.iX, itemBox.iX + itemBox.iWidth, itemBox.iY + count, rgb );
-
-	// vlines grid
-	for(int count = 0; count < itemBox.iWidth; count += inter_frame)
-		frameBuffer->paintVLine(itemBox.iX + count, itemBox.iY, itemBox.iY + itemBox.iHeight, rgb );
-}
-
-void CCGrid::hide()
-{
-	frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
-	
-	CFrameBuffer::getInstance()->blit();
-}
-
-//// CCPig
-CCPig::CCPig(const int x, const int y, const int dx, const int dy)
-{
-	dprintf(DEBUG_DEBUG, "CCPig::CCPig: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
-	
-	frameBuffer = CFrameBuffer::getInstance(); 
-	
-	//
-	itemBox.iX = x;
-	itemBox.iY = y;
-	itemBox.iWidth = dx;
-	itemBox.iHeight = dy;
-
-	init();
-}
-
-CCPig::CCPig(CBox* position)
-{
-	dprintf(DEBUG_DEBUG, "CCPig::CCPig:\n");
-	
-	frameBuffer = CFrameBuffer::getInstance(); 
-	
-	//
-	itemBox = *position;
-
-	init();
-}
-
-void CCPig::init()
-{
-	//
-	cc_type = CC_PIG;
-}
-
-void CCPig::paint()
-{
-	dprintf(DEBUG_DEBUG, "CCPig::paint\n");
-	
-	frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);	
-		
-
-	if(videoDecoder)
-		videoDecoder->Pig(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);	
-}
-
-void CCPig::hide()
-{
-	if(videoDecoder)  
-		videoDecoder->Pig(-1, -1, -1, -1);
-
-	frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
-	
-	CFrameBuffer::getInstance()->blit();
-}
-
 //// CCTime
 CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 {
@@ -2111,7 +1303,7 @@ void CCCounter::restoreScreen(void)
 	}
 }
 
-// CCSpinner
+//// CCSpinner
 CCSpinner::CCSpinner(const int x, const int y, const int dx, const int dy)
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -2259,10 +1451,821 @@ void CCSpinner::run()
 }
 */
 
-//// CHeaders
-CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const char * const title, const char * const icon)
+////
+CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_DEBUG, "CHeaders::CHeaders: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCSlider::CCSlider\n");
+	
+	//
+	frameBuffer = CFrameBuffer::getInstance();
+	
+	//
+	itemBox.iX = x;
+	itemBox.iY = y;
+	itemBox.iWidth = dx;
+	itemBox.iHeight = dy; 
+	
+	//
+	value = 0;
+	min_value = 0;
+	max_value = 100;
+	step = 1;
+	
+	//
+	cc_type = CC_SLIDER;
+}
+
+void CCSlider::paint()
+{
+	dprintf(DEBUG_DEBUG, "CCSlider::paint:\n");
+	
+	paintSlider(itemBox.iX, itemBox.iY, value, "test CCSlider", NEUTRINO_ICON_VOLUMESLIDER2RED);
+}
+
+//
+void CCSlider::paintSlider(const int _x, const int _y, const unsigned int spos, const char* const text, const char * const iconname)
+{
+	dprintf(DEBUG_NORMAL, "CCSlider::paintSlider:\n");
+	
+	char wert[5];
+	
+	//int icon_w = 120;
+	//int icon_h = 11;
+	//frameBuffer->getIconSize(NEUTRINO_ICON_VOLUMEBODY, &icon_w, &icon_h);
+	int slider_w = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth("100", true); //UTF-8
+	//int startx = itemBox.iWidth - icon_w - slider_w - 50;
+	//frameBuffer->paintBoxRel(_x + itemBox.iX, _y, 120, itemBox.iHeight, COL_MENUCONTENT_PLUS_0);
+	//frameBuffer->paintIcon(NEUTRINO_ICON_VOLUMEBODY, _x + startx, _y + 2 + itemBox.iHeight / 4);
+	//frameBuffer->paintIcon(iconname, _x + startx + 3 + spos, _y + itemBox.iHeight / 4);
+	
+	////
+	//frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + (itemBox.iHeight - 6)/2, itemBox.iWidth - slider_w - 5, /*itemBox.iHeight*/6, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+
+	//
+	//g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(itemBox.iX + itemBox.iWidth - slider_w - 5, _y + itemBox.iHeight + (itemBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2, itemBox.iWidth - slider_w - 5, text, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
+	
+	sprintf(wert, "%3d", spos); // UTF-8 encoded
+
+	// refreshBox
+	frameBuffer->paintBoxRel(itemBox.iX + itemBox.iWidth - slider_w - 5, _y, 50, itemBox.iHeight, COL_BACKGROUND);
+	
+	//
+	//g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(itemBox.iX + itemBox.iWidth - slider_w - 5, itemBox.iY + itemBox.iHeight + (itemBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2, slider_w, wert, COL_MENUCONTENT_TEXT_PLUS_0, 0, true, true); // UTF-8
+}
+
+//
+int CCSlider::swipRight()
+{
+	dprintf(DEBUG_NORMAL, "CCSlider::swipRight:\n");
+	
+	if (value > max_value)
+		value = max_value;
+	
+	if (value < max_value)
+	{
+		value++;
+	
+		paintSlider(itemBox.iX, itemBox.iY, value, "test CCSlider", NEUTRINO_ICON_VOLUMESLIDER2RED);
+	}
+	
+	return value;
+}
+
+//
+int CCSlider::swipLeft()
+{
+	dprintf(DEBUG_NORMAL, "CCSlider::swipLeft:\n");
+	
+	if (value < min_value)
+		value = min_value; 
+	
+	if (value > min_value)
+	{
+		value--;
+	
+		paintSlider(itemBox.iX, itemBox.iY, value--, "test CCSlider", NEUTRINO_ICON_VOLUMESLIDER2RED);
+	}
+	
+	return value;
+}
+
+//// progressbar
+CCProgressBar::CCProgressBar(int x, int y, int w, int h, int r, int g, int b, bool inv)
+{
+	dprintf(DEBUG_DEBUG, "CCProgressBar::CCProgressBar: x:%d y:%d dx:%d dy:%d\n", x, y, w, h);
+	
+	frameBuffer = CFrameBuffer::getInstance();
+	
+	itemBox.iX = x;
+	itemBox.iY = y;
+	itemBox.iWidth = w;
+	itemBox.iHeight = h;
+	inverse = inv;
+	
+	div = (double) itemBox.iWidth / (double) 100;
+	
+	red = (double) r * (double) div ;
+	green = (double) g * (double) div;
+	yellow = (double) g * (double) div;
+	
+	while ((red + yellow + green) < itemBox.iWidth) 
+	{
+		if (green)
+			green++;
+		if (yellow && ((red + yellow + green) < itemBox.iWidth))
+			yellow++;
+		if (red && ((red + yellow + green) < itemBox.iWidth))
+			red++;
+	}
+	
+	rgb = 0xFF0000;
+	
+	percent = 255;
+	
+	cc_type = CC_PROGRESSBAR;
+}
+
+CCProgressBar::CCProgressBar(const CBox* position, int r, int g, int b, bool inv)
+{
+	dprintf(DEBUG_DEBUG, "CCProgressBar::CCProgressBar: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
+	
+	frameBuffer = CFrameBuffer::getInstance(); 
+	
+	itemBox = *position;
+	inverse = inv;
+	
+	div = (double) itemBox.iWidth / (double) 100;
+	
+	red = (double) r * (double) div ;
+	green = (double) g * (double) div;
+	yellow = (double) g * (double) div;
+	
+	while ((red + yellow + green) < itemBox.iWidth) 
+	{
+		if (green)
+			green++;
+		if (yellow && ((red + yellow + green) < itemBox.iWidth))
+			yellow++;
+		if (red && ((red + yellow + green) < itemBox.iWidth))
+			red++;
+	}
+	
+	rgb = 0xFF0000;
+	
+	percent = 255;
+	
+	cc_type = CC_PROGRESSBAR;
+}
+
+void CCProgressBar::paint()
+{
+	dprintf(DEBUG_DEBUG, "CCProgressBar::paint:\n");
+	
+	// body
+	frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+}
+
+void CCProgressBar::refresh(unsigned char pcr)
+{
+	dprintf(DEBUG_DEBUG, "CCProgressBar::refresh: pcr:%d\n", pcr);
+	
+	int i = 0;
+	int b = 0;
+	int siglen = 0;
+	
+	// body
+	frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+	
+	if (pcr != percent) 
+	{
+		if(percent == 255) 
+			percent = 0;
+
+		siglen = (double) pcr * (double) div;
+		int step = 0;
+		uint32_t diff = 0;
+
+		if(g_settings.progressbar_color)
+		{
+			//red
+			for (i = 0; (i < red) && (i < siglen); i++) 
+			{
+				diff = i * 255 / red;
+
+				if(inverse) 
+					rgb = 0x00FF00 + (diff << 16); // adding red
+				else
+					rgb = 0xFF0000 + (diff << 8); // adding green
+				
+				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, ::rgbaToColor(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+			}
+			
+			//yellow
+			step = yellow - red - 1;
+			if (step < 1)
+				step = 1;
+		
+			for (; (i < yellow) && (i < siglen); i++) 
+			{
+				diff = b++ * 255 / step / 2;
+
+				if(inverse) 
+					rgb = 0xFFFF00 - (diff << 8); // removing green
+				else
+					rgb = 0xFFFF00 - (diff << 16); // removing red
+	
+				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, ::rgbaToColor(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+			}
+
+			//green
+			int off = diff;
+			b = 0;
+			step = green - yellow - 1;
+			if (step < 1)
+				step = 1;
+			for (; (i < green) && (i < siglen); i++) 
+			{
+				diff = b++ * 255 / step / 2 + off;
+
+				if(inverse) 
+					rgb = 0xFFFF00 - (diff << 8); // removing green
+				else
+					rgb = 0xFFFF00 - (diff << 16); // removing red
+				
+				frameBuffer->paintBoxRel(itemBox.iX + i, itemBox.iY, 1, itemBox.iHeight, ::rgbaToColor(rgb), NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+			}
+		}
+		else
+		{
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, siglen, itemBox.iHeight, COL_MENUCONTENT_PLUS_6, NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+		}
+		
+		percent = pcr;
+	}
+}
+
+void CCProgressBar::reset()
+{
+  	percent = 255;
+}
+
+//// CCScrollBar
+void CCScrollBar::paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage)
+{
+	// scrollBar
+	CBox cFrameScrollBar;
+	CCWindow cScrollBarWindow;
+
+	cFrameScrollBar.iX = x;
+	cFrameScrollBar.iY = y;
+	cFrameScrollBar.iWidth = SCROLLBAR_WIDTH;
+	cFrameScrollBar.iHeight = dy;
+
+
+	cScrollBarWindow.setPosition(&cFrameScrollBar);
+	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
+	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cScrollBarWindow.paint();
+		
+	// scrollBar slider
+	CBox cFrameSlider;
+	CCWindow cSliderWindow;	
+
+	cFrameSlider.iX = cFrameScrollBar.iX + 2;
+	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
+	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
+	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
+
+	cSliderWindow.setPosition(&cFrameSlider);
+	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
+	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cSliderWindow.paint();
+}
+
+void CCScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPage)
+{
+	// scrollBar
+	CBox cFrameScrollBar;
+	CCWindow cScrollBarWindow;
+
+	cFrameScrollBar = *position;
+
+	cScrollBarWindow.setPosition(&cFrameScrollBar);
+	cScrollBarWindow.setColor(COL_MENUCONTENT_PLUS_1);
+	cScrollBarWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cScrollBarWindow.paint();
+		
+	// scrollBar slider
+	CBox cFrameSlider;
+	CCWindow cSliderWindow;	
+
+	cFrameSlider.iX = cFrameScrollBar.iX + 2;
+	cFrameSlider.iY = cFrameScrollBar.iY + CurrentPage*(cFrameScrollBar.iHeight/NrOfPages);
+	cFrameSlider.iWidth = cFrameScrollBar.iWidth - 4;
+	cFrameSlider.iHeight = cFrameScrollBar.iHeight/NrOfPages;
+
+	cSliderWindow.setPosition(&cFrameSlider);
+	cSliderWindow.setColor(COL_MENUCONTENT_PLUS_3);
+	cSliderWindow.setCorner(NO_RADIUS, CORNER_ALL);
+	cSliderWindow.paint();
+}
+
+//// CItemInfo
+CCItemInfo::CCItemInfo()
+{
+	frameBuffer = CFrameBuffer::getInstance();
+	
+	//
+	mode = ITEMINFO_INFO; 
+	info1 = "";
+	option_info1 = "";
+	info2 = "";
+	option_info2 = "";
+	hint = "";
+	icon = "";
+	
+	paintframe = false;
+	background = NULL;
+	
+	// hintitem / hinticon
+	tFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
+	borderMode = g_settings.Hint_border;
+	savescreen = false;
+	color = COL_MENUCONTENT_PLUS_0;
+	scale = false;
+	
+	cc_type = CC_ITEMINFO;
+}
+
+CCItemInfo::~CCItemInfo()
+{
+	info1.clear();
+	option_info1.clear();
+	info2.clear();
+	option_info2.clear();
+	hint.clear();
+	icon.clear();
+	
+	if (savescreen)
+	{
+		if (background)
+		{
+			delete [] background;
+			background = NULL;
+		}
+	}
+}
+
+void CCItemInfo::paint()
+{
+	dprintf(DEBUG_DEBUG, "CCItemInfo::paint:\n");
+	
+	// border
+	if (paintframe)
+	{
+		if (borderMode) 
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.Hint_radius, g_settings.Hint_corner);
+				
+		// infoBox
+		frameBuffer->paintBoxRel(borderMode? itemBox.iX + 2 : itemBox.iX, borderMode? itemBox.iY + 2 : itemBox.iY, borderMode? itemBox.iWidth - 4 : itemBox.iWidth, borderMode? itemBox.iHeight - 4 : itemBox.iHeight, color, g_settings.Hint_radius, g_settings.Hint_corner, g_settings.Hint_gradient);
+	}
+	else
+		restoreScreen();
+	
+	//
+	if (mode == ITEMINFO_INFO)
+	{
+		// option_info1
+		int l_ow1 = 0;
+		if(!option_info1.empty())
+		{
+			l_ow1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(option_info1.c_str());
+
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString(itemBox.iX + itemBox.iWidth - BORDER_RIGHT - l_ow1, itemBox.iY + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, option_info1.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
+		}
+
+		// info1
+		//int l_w1 = 0;
+		if(!info1.empty())
+		{
+			//l_w1 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getRenderWidth(info1.c_str());
+
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->RenderString(itemBox.iX + BORDER_LEFT, itemBox.iY + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow1, info1.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
+		}
+
+		// option_info2
+		int l_ow2 = 0;
+		if(!option_info2.empty())
+		{
+			l_ow2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getRenderWidth(option_info2.c_str());
+
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->RenderString(itemBox.iX + itemBox.iWidth - BORDER_RIGHT - l_ow2, itemBox.iY + itemBox.iHeight/2 + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_NUMBER]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, option_info2.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true);
+		}
+
+		// info2
+		//int l_w2 = 0;
+		if(!info2.empty())
+		{
+			//l_w2 = g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getRenderWidth(info2.c_str());
+
+			g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->RenderString (itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight/2 + (itemBox.iHeight/2 - g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_CHANNELLIST_DESCR]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - l_ow2, info2.c_str(), COL_MENUHINT_TEXT_PLUS_0, 0, true); // UTF-8
+		}
+	}
+	else if (mode == ITEMINFO_HINTITEM)
+	{
+		//
+		int iw = 0;
+		int ih = 0;
+		int bpp = 0;
+		
+		if (!icon.empty())
+		{
+			frameBuffer->getSize(icon.c_str(), &iw, &iw, &bpp);
+			
+			if (iw > 100)
+				iw = 100;
+				
+			if (ih > (itemBox.iHeight - 4))
+				ih = itemBox.iHeight - 4;
+			
+			CCImage DImage(itemBox.iX + 5, itemBox.iY + 2, 100, itemBox.iHeight - 4);
+			DImage.setImage(icon.c_str());
+			DImage.setScaling(scale);
+			//DImage.setColor(color);
+			DImage.paint();
+		}
+		
+		//
+		CCText Dline(itemBox.iX + 115, itemBox.iY + 10, itemBox.iWidth - iw - 20, itemBox.iHeight - 20);
+		Dline.setFont(tFont);
+		Dline.setText(hint.c_str());		
+		Dline.paint();
+	}
+	else if (mode == ITEMINFO_HINTICON)
+	{
+		//
+		int iw = 0;
+		int ih = 0;
+		
+		if (!icon.empty())
+		{
+			::scaleImage(icon, &iw, &ih);
+			
+			if (iw > itemBox.iWidth && itemBox.iWidth != 0)
+				iw = itemBox.iWidth - 4;
+				
+			if (ih > (itemBox.iHeight - 4) && itemBox.iHeight != 0)
+				ih = (itemBox.iHeight - 4)/2;
+		
+			CCImage DImage(itemBox.iX + 2, itemBox.iY + 2, itemBox.iWidth - 4, ih - 4);
+			DImage.setImage(icon.c_str());
+			DImage.setScaling(scale);
+			//DImage.setColor(color);
+			DImage.paint();
+		}
+		
+		//
+		CCText Dline(itemBox.iX + 10, itemBox.iY + ih + 10, itemBox.iWidth - 20, itemBox.iHeight - ih - 20);
+		Dline.setFont(tFont);
+		Dline.setText(hint.c_str());		
+		Dline.paint();
+		
+	}
+	else if (mode == ITEMINFO_ICON)	
+	{
+		CCImage DImage(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
+		DImage.setImage(icon.c_str());
+		DImage.setScaling(scale);
+		//DImage.setColor(color);
+		DImage.paint();
+	}
+	else if (mode == ITEMINFO_HINT)
+	{
+		CCText Dline(itemBox.iX + 10, itemBox.iY + 10, itemBox.iWidth - 20, itemBox.iHeight - 20);
+		Dline.setFont(tFont);
+		Dline.setText(hint.c_str());		
+		Dline.paint();
+	}
+}
+
+//
+void CCItemInfo::hide()
+{
+	if(background) 
+	{
+		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+	}
+	else //FIXME:
+		frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
+}
+
+//
+void CCItemInfo::saveScreen(void)
+{
+	dprintf(DEBUG_NORMAL, "CCItemInfo::saveScreen\n");
+	
+	if (background)
+	{
+		delete [] background;
+		background = NULL;
+	}
+		
+	background = new fb_pixel_t[itemBox.iWidth*itemBox.iHeight];
+		
+	if (background)
+	{
+		frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+	}
+}
+
+void CCItemInfo::restoreScreen(void)
+{
+	dprintf(DEBUG_NORMAL, "CCItemInfo::restoreScreen\n");
+	
+	//
+	if (savescreen && background)
+	{
+		frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+	}
+}
+
+//
+void CCItemInfo::enableSaveScreen()
+{
+	dprintf(DEBUG_NORMAL, "CCItemInfo::enableSaveScreen\n");
+	
+	savescreen = true;
+	
+	saveScreen();
+}
+
+////
+CCWindow::CCWindow(const int x, const int y, const int dx, const int dy)
+{
+	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
+	
+	frameBuffer = CFrameBuffer::getInstance(); 
+	
+	itemBox.iX = x;
+	itemBox.iY = y;
+	itemBox.iWidth = dx;
+	itemBox.iHeight = dy;
+
+	initFrames();
+
+	initVars();
+}
+
+CCWindow::CCWindow(CBox* position)
+{
+	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
+	
+	frameBuffer = CFrameBuffer::getInstance(); 
+	
+	itemBox = *position;
+
+	initFrames();
+
+	initVars();
+}
+
+CCWindow::~CCWindow()
+{
+	if(background)
+	{
+		delete[] background;
+		background = NULL;
+	}
+}
+
+void CCWindow::initVars()
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+
+	radius = NO_RADIUS;
+	corner = CORNER_NONE;
+	bgcolor = COL_MENUCONTENT_PLUS_0;
+	gradient = NOGRADIENT;
+	grad_direction = GRADIENT_VERTICAL;
+	grad_intensity = INT_LIGHT;
+	grad_type = GRADIENT_COLOR2TRANSPARENT;
+	//
+	borderMode = BORDER_NO;
+	borderColor = COL_INFOBAR_SHADOW_PLUS_0;
+	paintframe = true;
+	//
+	background = NULL;
+	//
+	current_page = 0;
+	total_pages = 1;
+	//
+	cc_type = CC_WINDOW;
+}
+
+void CCWindow::setPosition(const int x, const int y, const int dx, const int dy)
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+	
+	itemBox.iX = x;
+	itemBox.iY = y;
+	itemBox.iWidth = dx;
+	itemBox.iHeight = dy;
+	
+	initFrames();
+}
+
+void CCWindow::setPosition(CBox* position)
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+	
+	itemBox = *position;
+	
+	initFrames();
+}
+
+void CCWindow::initFrames()
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+
+	// sanity check
+	if(itemBox.iHeight > ((int)frameBuffer->getScreenHeight(true)))
+		itemBox.iHeight = frameBuffer->getScreenHeight(true) - 4;  // 4 pixels for border
+
+	// sanity check
+	if(itemBox.iWidth > (int)frameBuffer->getScreenWidth(true))
+		itemBox.iWidth = frameBuffer->getScreenWidth(true) - 4; // 4 pixels for border
+}
+
+void CCWindow::saveScreen()
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+
+	if(background)
+	{
+		delete[] background;
+		background = NULL;
+	}
+
+	background = new fb_pixel_t[borderMode? (itemBox.iWidth + 4)*(itemBox.iHeight + 4) : itemBox.iWidth*itemBox.iHeight];
+		
+	if(background)
+	{
+		if (borderMode)
+			frameBuffer->saveScreen(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, background);
+		else
+			frameBuffer->saveScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+	}
+}
+
+void CCWindow::restoreScreen()
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::%s\n", __FUNCTION__);
+	
+	if(background) 
+	{
+		if (borderMode)
+			frameBuffer->restoreScreen(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, background);
+		else
+			frameBuffer->restoreScreen(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, background);
+	}
+}
+
+void CCWindow::paintPage(void)
+{
+	dprintf(DEBUG_DEBUG, "CCWindow::paintPage:\n");
+
+	if (paintframe)
+	{
+		if (borderMode == BORDER_NO)
+		{
+			// frame
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+		}
+		else if (borderMode == BORDER_ALL)
+		{
+			// border
+			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4, borderColor, radius, corner);
+				
+			// frame
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+		}
+		else if (borderMode == BORDER_LEFTRIGHT)
+		{
+			// border
+			frameBuffer->paintBoxRel(itemBox.iX - 2, itemBox.iY, itemBox.iWidth + 4, itemBox.iHeight, borderColor, radius, corner);
+				
+			// frame
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+		}
+		else if (borderMode == BORDER_TOPBOTTOM)
+		{
+			// border
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY - 2, itemBox.iWidth, itemBox.iHeight + 4, borderColor, radius, corner);
+				
+			// frame
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, bgcolor, radius, corner, gradient, grad_direction, grad_intensity, grad_type);
+		}
+	}
+}
+
+void CCWindow::paint()
+{
+	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
+
+	//
+	if (!paintframe)
+	{
+		saveScreen();
+	}
+
+	//
+	paintPage();
+}
+
+void CCWindow::hide()
+{
+	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
+	
+	if(!paintframe)
+		restoreScreen();
+	else
+	{
+		if (borderMode)
+			frameBuffer->paintBackgroundBoxRel(itemBox.iX - 2, itemBox.iY - 2, itemBox.iWidth + 4, itemBox.iHeight + 4);
+		else
+			frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
+	}
+		
+	CFrameBuffer::getInstance()->blit();
+}
+
+void CCWindow::refresh(void)
+{
+	dprintf(DEBUG_INFO, "CCWindow::%s\n", __FUNCTION__);
+
+	restoreScreen();
+	paintPage();
+}
+
+//// CCPig
+CCPig::CCPig(const int x, const int y, const int dx, const int dy)
+{
+	dprintf(DEBUG_DEBUG, "CCPig::CCPig: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	
+	frameBuffer = CFrameBuffer::getInstance(); 
+	
+	//
+	itemBox.iX = x;
+	itemBox.iY = y;
+	itemBox.iWidth = dx;
+	itemBox.iHeight = dy;
+
+	init();
+}
+
+CCPig::CCPig(CBox* position)
+{
+	dprintf(DEBUG_DEBUG, "CCPig::CCPig:\n");
+	
+	frameBuffer = CFrameBuffer::getInstance(); 
+	
+	//
+	itemBox = *position;
+
+	init();
+}
+
+void CCPig::init()
+{
+	//
+	cc_type = CC_PIG;
+}
+
+void CCPig::paint()
+{
+	dprintf(DEBUG_DEBUG, "CCPig::paint\n");
+	
+	frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);	
+		
+
+	if(videoDecoder)
+		videoDecoder->Pig(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);	
+}
+
+void CCPig::hide()
+{
+	if(videoDecoder)  
+		videoDecoder->Pig(-1, -1, -1, -1);
+
+	frameBuffer->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
+	
+	CFrameBuffer::getInstance()->blit();
+}
+
+//// CCHeaders
+CCHeaders::CCHeaders(const int x, const int y, const int dx, const int dy, const char * const title, const char * const icon)
+{
+	dprintf(DEBUG_DEBUG, "CCHeaders::CCHeaders: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -2300,9 +2303,9 @@ CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const c
 	cc_type = CC_HEAD;
 }
 
-CHeaders::CHeaders(CBox* position, const char * const title, const char * const icon)
+CCHeaders::CCHeaders(CBox* position, const char * const title, const char * const icon)
 {
-	dprintf(DEBUG_DEBUG, "CHeaders::CHeaders: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
+	dprintf(DEBUG_DEBUG, "CCHeaders::CCHeaders: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -2335,7 +2338,7 @@ CHeaders::CHeaders(CBox* position, const char * const title, const char * const 
 	cc_type = CC_HEAD;
 }
 
-CHeaders::~CHeaders()
+CCHeaders::~CCHeaders()
 {
 	if (timer)
 	{
@@ -2347,7 +2350,7 @@ CHeaders::~CHeaders()
 	buttons.clear();
 }
 
-void CHeaders::setButtons(const struct button_label* _button_labels, const int _count)		
+void CCHeaders::setButtons(const struct button_label* _button_labels, const int _count)		
 {
 	if (_count)
 	{
@@ -2360,9 +2363,9 @@ void CHeaders::setButtons(const struct button_label* _button_labels, const int _
 	count = buttons.size();
 }
 
-void CHeaders::addButton(const char *btn, const char *lname, const fb_pixel_t col)
+void CCHeaders::addButton(const char *btn, const char *lname, const fb_pixel_t col)
 {
-	dprintf(DEBUG_DEBUG, "CHeaders::addButton: btn:%s name:%s\n", btn, lname);
+	dprintf(DEBUG_DEBUG, "CCHeaders::addButton: btn:%s name:%s\n", btn, lname);
 	
 	button_label_struct button;
 	
@@ -2374,9 +2377,9 @@ void CHeaders::addButton(const char *btn, const char *lname, const fb_pixel_t co
 	count++;
 }		
 
-void CHeaders::paint()
+void CCHeaders::paint()
 {
-	dprintf(DEBUG_INFO, "CHeaders::paint: (%s) (%s)\n", htitle.c_str(), hicon.c_str());
+	dprintf(DEBUG_INFO, "CCHeaders::paint: (%s) (%s)\n", htitle.c_str(), hicon.c_str());
 	
 	// box
 	if (paintframe)
@@ -2500,7 +2503,7 @@ void CHeaders::paint()
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->RenderString(startPosX, itemBox.iY + (itemBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight(), itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - i_w - 2*ICON_OFFSET - buttonWidth - (count - 1)*ICON_TO_ICON_OFFSET - timestr_len, htitle, COL_MENUHEAD_TEXT_PLUS_0);
 }
 
-void CHeaders::stopRefresh()
+void CCHeaders::stopRefresh()
 {
 	if (timer)
 	{
@@ -2510,9 +2513,9 @@ void CHeaders::stopRefresh()
 	}
 }
 
-void CHeaders::hide()
+void CCHeaders::hide()
 {
-	dprintf(DEBUG_INFO, "CHeaders::hide:\n");
+	dprintf(DEBUG_INFO, "CCHeaders::hide:\n");
 	
 	if (paintframe)
 		CFrameBuffer::getInstance()->paintBackgroundBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
@@ -2525,10 +2528,10 @@ void CHeaders::hide()
 	}
 }
 
-// CFooters
-CFooters::CFooters(const int x, const int y, const int dx, const int dy)
+// CCFooters
+CCFooters::CCFooters(const int x, const int y, const int dx, const int dy)
 {
-	dprintf(DEBUG_DEBUG, "CFooters::CFooters: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
+	dprintf(DEBUG_DEBUG, "CCFooters::CCFooters: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -2558,9 +2561,9 @@ CFooters::CFooters(const int x, const int y, const int dx, const int dy)
 	cc_type = CC_FOOT;
 }
 
-CFooters::CFooters(CBox* position)
+CCFooters::CCFooters(CBox* position)
 {
-	dprintf(DEBUG_DEBUG, "CFooters::CFooters: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
+	dprintf(DEBUG_DEBUG, "CCFooters::CCFooters: x:%d y:%d dx:%d dy:%d\n", position->iX, position->iY, position->iWidth, position->iHeight);
 	
 	frameBuffer = CFrameBuffer::getInstance(); 
 	
@@ -2587,12 +2590,12 @@ CFooters::CFooters(CBox* position)
 	cc_type = CC_FOOT;
 }
 
-CFooters::~CFooters()
+CCFooters::~CCFooters()
 {
 	buttons.clear();
 }
 
-void CFooters::setButtons(const struct button_label *_button_labels, const int _count, const int _button_width)
+void CCFooters::setButtons(const struct button_label *_button_labels, const int _count, const int _button_width)
 {
 	if (_count)
 	{
@@ -2606,9 +2609,9 @@ void CFooters::setButtons(const struct button_label *_button_labels, const int _
 	button_width = (_button_width == 0)? itemBox.iWidth : _button_width;	
 }
 
-void CFooters::addButton(const char *btn, const char *lname, const fb_pixel_t col)
+void CCFooters::addButton(const char *btn, const char *lname, const fb_pixel_t col)
 {
-	dprintf(DEBUG_DEBUG, "CFooters::addButton: btn:%s name:%s\n", btn, lname);
+	dprintf(DEBUG_DEBUG, "CCFooters::addButton: btn:%s name:%s\n", btn, lname);
 	
 	button_label_struct button;
 	
@@ -2620,9 +2623,9 @@ void CFooters::addButton(const char *btn, const char *lname, const fb_pixel_t co
 	count++;
 }
 
-void CFooters::paint()
+void CCFooters::paint()
 {
-	dprintf(DEBUG_INFO, "CFooters::paint:\n");
+	dprintf(DEBUG_INFO, "CCFooters::paint:\n");
 	
 	// box
 	if (paintframe)
@@ -2744,7 +2747,7 @@ void CFooters::paint()
 	}
 }
 
-void CFooters::hide()
+void CCFooters::hide()
 {
 	dprintf(DEBUG_INFO, "CFooters::hide:\n");
 	

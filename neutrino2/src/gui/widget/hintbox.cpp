@@ -130,7 +130,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 	
 	if (widget)
 	{
-		headers = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		headers = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
 	}
 	else
 	{
@@ -140,7 +140,7 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 		
 		//
-		headers = new CHeaders();
+		headers = new CCHeaders();
 		headers->setLine(true, true);
 	}
 	

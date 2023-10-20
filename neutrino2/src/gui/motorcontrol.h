@@ -65,7 +65,7 @@ class CMotorControl : public CMenuTarget
 		uint8_t motorPosition;
 		int32_t satellitePosition;
 		int satfindpid;
-		CProgressBar * snrscale, * sigscale;
+		CCProgressBar * snrscale, * sigscale;
 
 		void paint();
 		void paintMenu(void);

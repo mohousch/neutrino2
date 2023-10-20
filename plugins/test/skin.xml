@@ -3,9 +3,9 @@
 <!-- SKIN: testmenu -->
 <!-- AUTHOR: mohousch -->
 
-	<WIDGET name="testmenu" posx="0" posy="0" width="600" height="600" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_ALL" radius="RADIUS_VERYLARGE" border="BORDER_ALL" gradient="DARK2LIGHT2DARK" timeout="180">
-		<LISTBOX posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" painthead="1" title="Test Menu" icon="multimedia" headline="1" paintdate="1" paintfoot="1" footline="1" scrollbar="1">
-			<FOOT_BUTTON_LABEL name="information"/>
-		</LISTBOX>
-	</WIDGET>
+	<screen name="testmenu" posx="0" posy="0" width="600" height="600" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_ALL" radius="RADIUS_VERYLARGE" border="BORDER_ALL" gradient="DARK2LIGHT2DARK" timeout="180">
+		<listbox posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" painthead="1" title="Test Menu" icon="multimedia" headline="1" paintdate="1" paintfoot="1" footline="1" scrollbar="1">
+			<foot_button_label name="information"/>
+		</listbox>
+	</screen>
 </skin>

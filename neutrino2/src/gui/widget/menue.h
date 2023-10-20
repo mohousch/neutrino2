@@ -84,7 +84,7 @@ class CMenuWidget : public CMenuTarget
 		int sb_width;
 		int items_height;
 		int items_width;
-		CScrollBar scrollBar;
+		CCScrollBar scrollBar;
 		
 		//
 		fb_pixel_t * background;
@@ -157,7 +157,7 @@ class CMenuWidget : public CMenuTarget
 		int cFrameFootInfoHeight;
 		int footInfoHeight;
 		int footInfoMode;
-		CItemInfo itemsLine;
+		CCItemInfo itemsLine;
 		
 		// extended
 		CTextBox * textBox;
@@ -256,7 +256,7 @@ class CMenuWidget : public CMenuTarget
 
 		// itemInfo
 		void enablePaintItemInfo(int fh = 70){paintFootInfo = true; footInfoHeight = fh; /*initFrames();*/};
-		void setItemInfoMode(int mode = CItemInfo::ITEMINFO_INFO){footInfoMode = mode;};
+		void setItemInfoMode(int mode = CCItemInfo::ITEMINFO_INFO){footInfoMode = mode;};
 
 		// type/mode/pos
 		void setWidgetType(int type){widgetType = type; widget.push_back(widgetType);};

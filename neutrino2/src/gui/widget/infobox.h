@@ -63,7 +63,7 @@ class CInfoBox
 		CWidget * widget;
 		
 		//
-		CHeaders *headers;
+		CCHeaders *headers;
 		std::string m_cIcon;
 		std::string m_cTitle;
 		fb_pixel_t headColor;
@@ -78,7 +78,7 @@ class CInfoBox
 		int borderMode;
 		
 		// foot
-		CFooters *footers;
+		CCFooters *footers;
 		fb_pixel_t footColor;
 		int footRadius;
 		int footCorner;

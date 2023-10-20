@@ -63,7 +63,7 @@
 #define TIMESCALE_H	6
 
 //// globals
-static CProgressBar * timescale;
+static CCProgressBar * timescale;
 
 //
 int findItem(std::string strItem, std::vector<std::string> & vecItems) 
@@ -645,8 +645,8 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	if (widget)
 	{
 		textBox = (CTextBox*)widget->getCCItem(CComponent::CC_TEXTBOX);
-		headers = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
-		footers = (CFooters*)widget->getCCItem(CComponent::CC_FOOT);
+		headers = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		footers = (CCFooters*)widget->getCCItem(CComponent::CC_FOOT);
 		cFollowScreeningWindow = (CCWindow*)widget->getCCItem(CComponent::CC_WINDOW, "screening");
 	}
 	else
@@ -660,8 +660,8 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		
 		//
 		textBox = new CTextBox(&cTextBox);
-		headers = new CHeaders(&cHeadBox);
-		footers = new CFooters(&cFootBox);
+		headers = new CCHeaders(&cHeadBox);
+		footers = new CCFooters(&cFootBox);
 		cFollowScreeningWindow = new CCWindow(&cFollowScreeningBox);
 		
 		// head
@@ -694,7 +694,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	
 	if (cFollowScreeningWindow)
 	{	
-		timescale = new CProgressBar(cFollowScreeningWindow->getWindowsPos().iX + (cFollowScreeningWindow->getWindowsPos().iWidth - timeScaleWidth)/2, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - timeScaleHeight)/2, timeScaleWidth, timeScaleHeight);
+		timescale = new CCProgressBar(cFollowScreeningWindow->getWindowsPos().iX + (cFollowScreeningWindow->getWindowsPos().iWidth - timeScaleWidth)/2, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - timeScaleHeight)/2, timeScaleWidth, timeScaleHeight);
 	}
 
 	//

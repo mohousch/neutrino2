@@ -85,7 +85,7 @@ static EpgPlus::SizeSetting sizeSettingTable[] = {
 
 // Header
 CFont * EpgPlus::Header::font = NULL;
-CHeaders *EpgPlus::Header::head = NULL;
+CCHeaders *EpgPlus::Header::head = NULL;
 
 EpgPlus::Header::Header(CFrameBuffer * _frameBuffer, int _x, int _y, int _width)
 {
@@ -112,7 +112,7 @@ void EpgPlus::Header::init()
 
 void EpgPlus::Header::paint()
 {
-	head = new CHeaders(this->x, this->y, this->width, /*this->font->getHeight() + 10*/40, _("Eventlist overview"), NEUTRINO_ICON_BUTTON_EPG);
+	head = new CCHeaders(this->x, this->y, this->width, /*this->font->getHeight() + 10*/40, _("Eventlist overview"), NEUTRINO_ICON_BUTTON_EPG);
 
 	head->setCorner(RADIUS_SMALL, CORNER_TOP);
 	head->setGradient(LIGHT2DARK);
@@ -518,7 +518,7 @@ struct button_label buttonLabels[] = {
 
 void EpgPlus::Footer::paintButtons(button_label * _buttonLabels, int numberOfButtons)
 {
-	CFooters foot(this->x, this->y + this->getUsedHeight() - (/*this->fontButtons->getHeight() + 10*/40), this->width, /*this->fontButtons->getHeight() + 10*/40);
+	CCFooters foot(this->x, this->y + this->getUsedHeight() - (/*this->fontButtons->getHeight() + 10*/40), this->width, /*this->fontButtons->getHeight() + 10*/40);
 
 	foot.setCorner(RADIUS_SMALL, CORNER_BOTTOM);
 	foot.setGradient(DARK2LIGHT);

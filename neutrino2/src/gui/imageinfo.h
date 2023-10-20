@@ -38,7 +38,7 @@ class CImageInfo : public CMenuTarget
 		
 		//
 		CWidget *widget;
-		CHeaders *head;
+		CCHeaders *head;
 		uint32_t sec_timer_id;
 		
 		//

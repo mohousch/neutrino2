@@ -340,7 +340,7 @@ void CMessageBox::initFrames(void)
 	
 	if (m_cBoxWindow)
 	{
-		headers = (CHeaders*)m_cBoxWindow->getCCItem(CComponent::CC_HEAD);
+		headers = (CCHeaders*)m_cBoxWindow->getCCItem(CComponent::CC_HEAD);
 	}
 	else
 	{
@@ -349,7 +349,7 @@ void CMessageBox::initFrames(void)
 		m_cBoxWindow->name = "messagebox";
 		m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 		
-		headers = new CHeaders();
+		headers = new CCHeaders();
 		
 		//
 		headers->setLine(true, true);

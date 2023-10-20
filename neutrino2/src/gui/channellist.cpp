@@ -1528,8 +1528,8 @@ void CChannelList::paint(bool customMode)
 	if (widget)
 	{
 		listBox = (ClistBox*)widget->getCCItem(CComponent::CC_LISTBOX);
-		head = (CHeaders*)widget->getCCItem(CComponent::CC_HEAD);
-		foot = (CFooters*)widget->getCCItem(CComponent::CC_FOOT);
+		head = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
+		foot = (CCFooters*)widget->getCCItem(CComponent::CC_FOOT);
 		window = (CCWindow*)widget->getCCItem(CComponent::CC_WINDOW);
 		vline = (CCVline*)widget->getCCItem(CComponent::CC_VLINE);
 		hline = (CCHline*)widget->getCCItem(CComponent::CC_HLINE);
@@ -1545,12 +1545,12 @@ void CChannelList::paint(bool customMode)
 		listBox->paintMainFrame(false);
 		
 		//
-		head = new CHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
+		head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 		head->enablePaintDate();
 		head->setLine(true, true);
 		
 		// foot
-		foot = new CFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
+		foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 		foot->setLine(true, true);
 		
 		//
@@ -1750,7 +1750,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 			runningPercent = 0;
 	}
 	
-	CProgressBar pb(winTopBox.iX + 100, winTopBox.iY + 10 + 60 + 20, winTopBox.iWidth - 200, 5);
+	CCProgressBar pb(winTopBox.iX + 100, winTopBox.iY + 10 + 60 + 20, winTopBox.iWidth - 200, 5);
 	
 	//
 	if (p_event != NULL && !(p_event->description.empty())) 

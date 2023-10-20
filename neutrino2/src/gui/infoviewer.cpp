@@ -165,11 +165,11 @@ void CInfoViewer::Init()
 	snrscale = NULL;
 	timescale = NULL;	//5? see in code
 	
-	sigscale = new CProgressBar(BoxStartX + satNameWidth + 20 + g_SignalFont->getRenderWidth("FREQ:1000000MHZ") + 10, BoxStartY + (SAT_INFOBOX_HEIGHT - SIGSCALE_BAR_HEIGHT)/2, BAR_WIDTH, SIGSCALE_BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR, false);
+	sigscale = new CCProgressBar(BoxStartX + satNameWidth + 20 + g_SignalFont->getRenderWidth("FREQ:1000000MHZ") + 10, BoxStartY + (SAT_INFOBOX_HEIGHT - SIGSCALE_BAR_HEIGHT)/2, BAR_WIDTH, SIGSCALE_BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR, false);
 	
-	snrscale = new CProgressBar(BoxStartX + satNameWidth + 20 + g_SignalFont->getRenderWidth("FREQ:1000000MHZ") + 10 + g_SignalFont->getRenderWidth("SIG:100%") + 10, BoxStartY + (SAT_INFOBOX_HEIGHT - SIGSCALE_BAR_HEIGHT)/2, BAR_WIDTH, SNRSCALE_BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR, false);
+	snrscale = new CCProgressBar(BoxStartX + satNameWidth + 20 + g_SignalFont->getRenderWidth("FREQ:1000000MHZ") + 10 + g_SignalFont->getRenderWidth("SIG:100%") + 10, BoxStartY + (SAT_INFOBOX_HEIGHT - SIGSCALE_BAR_HEIGHT)/2, BAR_WIDTH, SNRSCALE_BAR_HEIGHT, RED_BAR, GREEN_BAR, YELLOW_BAR, false);
 	
-	timescale = new CProgressBar(timescale_posx, timescale_posy, BoxWidth - BORDER_LEFT - BORDER_RIGHT, TIMESCALE_BAR_HEIGHT);	//5? see in code
+	timescale = new CCProgressBar(timescale_posx, timescale_posy, BoxWidth - BORDER_LEFT - BORDER_RIGHT, TIMESCALE_BAR_HEIGHT);	//5? see in code
 	
 	timer = NULL;
 	recIcon = NULL;

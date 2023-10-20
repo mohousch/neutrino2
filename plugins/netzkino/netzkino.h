@@ -42,11 +42,11 @@ class CNKMovies : public CMenuTarget
 		CBox leftBox;
 		CBox rightBox;
 
-		CHeaders *headersWidget;
+		CCHeaders *headersWidget;
 		CWidget *mainWidget;
 		ClistBox *leftWidget;
 		ClistBox *rightWidget;
-		CFooters *footersWidget;
+		CCFooters *footersWidget;
 
 		CMenuItem* item;
 

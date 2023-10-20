@@ -65,8 +65,8 @@ class CEpgData
 		CBox cTextBox;
 
 		//
-		CHeaders* headers;
-		CFooters* footers;
+		CCHeaders* headers;
+		CCFooters* footers;
 		CTextBox *textBox;
 		CCWindow *cFollowScreeningWindow;
 		CCIcon *audioIcon;

@@ -70,7 +70,7 @@ class CScanTs : public CMenuTarget
 		uint32_t total;
 		uint32_t done;
 		
-		CProgressBar * snrscale, * sigscale;
+		CCProgressBar * snrscale, * sigscale;
 
 		void paint(bool fortest = false);
 		void paintLineLocale(int _x, int * _y, int _width, const char* const l);
