@@ -1,5 +1,5 @@
 /*
- * $Id: widget_helpers.cpp 10.08.2023 mohousch Exp $
+ * $Id: widget_helpers.cpp 20.10.2023 mohousch Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,9 +37,10 @@
 #include <video_cs.h>
 
 
+//// globals
 extern cVideo * videoDecoder;
 
-// CComponent
+//// CComponent
 CComponent::CComponent()
 {
 	//
@@ -48,11 +49,11 @@ CComponent::CComponent()
 	itemBox.iWidth = 0;
 	itemBox.iHeight = 0;
 	//
-	rePaint = false;
-	savescreen = false;
 	paintframe = false;
-	inFocus = true; 
+	rePaint = false;
 	painted = false;
+	savescreen = false;
+	inFocus = true; 
 	//
 	halign = CC_ALIGN_LEFT;
 	//
@@ -63,6 +64,162 @@ CComponent::CComponent()
 	//
 	cc_type = -1;
 	cc_name = "";
+}
+
+//
+void CComponent::addKey(neutrino_msg_t key, CMenuTarget *menue, const std::string & action)
+{
+	dprintf(DEBUG_DEBUG, "CComponent::addKey: %s\n", action.c_str());
+	
+	keyActionMap[key].menue = menue;
+	keyActionMap[key].action = action;
+}
+
+//
+bool CComponent::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
+{
+	dprintf(DEBUG_DEBUG, "CComponent::onButtonPress: (msg:%ld) (data:%ld)\n", msg, data);
+	
+	bool ret = true;
+	bool handled = false;
+	
+	//
+	if ( msg <= CRCInput::RC_MaxRC ) 
+	{
+		std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
+					
+		if (it != keyActionMap.end()) 
+		{
+			actionKey = it->second.action;
+
+			if (it->second.menue != NULL)
+			{
+				int rv = it->second.menue->exec(parent, it->second.action);
+
+				//FIXME:review this
+				switch ( rv ) 
+				{
+					case CMenuTarget::RETURN_EXIT_ALL:
+						ret = false; //fall through
+					case CMenuTarget::RETURN_EXIT:
+						ret = false;
+						break;
+					case CMenuTarget::RETURN_REPAINT:
+						ret = true;
+						paint();
+						break;
+				}
+			}
+			else
+				handled = true;
+		}
+		
+		//
+		directKeyPressed(msg);
+	}
+	
+	if (!handled) 
+	{
+		if (msg == CRCInput::RC_up)
+		{
+			scrollLineUp();
+		}
+		else if (msg == CRCInput::RC_down)
+		{
+			scrollLineDown();
+		}
+		else if (msg == CRCInput::RC_left)
+		{
+			swipLeft();
+		}
+		else if (msg == CRCInput::RC_right)
+		{
+			swipRight();
+		}
+		else if (msg == CRCInput::RC_page_up)
+		{
+			scrollPageUp();
+		}
+		else if (msg == CRCInput::RC_page_down)
+		{
+			scrollPageDown();
+		}
+		else if (msg == CRCInput::RC_ok)
+		{
+			int rv = oKKeyPressed(parent);
+				
+			switch ( rv ) 
+			{
+				case CMenuTarget::RETURN_EXIT_ALL:
+					ret = false;
+				case CMenuTarget::RETURN_EXIT:
+					ret = false;
+					break;
+				case CMenuTarget::RETURN_REPAINT:
+					ret = true;
+					paint();
+					break;
+			}
+		}
+		else if (msg == CRCInput::RC_home || msg == CRCInput::RC_timeout) 
+		{
+			ret = false;
+		}
+		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+		{
+			if (update())
+			{
+				refresh();
+			}
+		}
+		else if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
+		{
+			ret = false;
+		}
+	}
+	
+	return ret;
+}
+
+//
+void CComponent::exec(int timeout)
+{
+	dprintf(DEBUG_INFO, "CComponent::exec: timeout:%d\n", timeout);
+	
+	// loop
+	neutrino_msg_t msg;
+	neutrino_msg_data_t data;
+	bool loop = true;
+
+	//
+	paint();
+	CFrameBuffer::getInstance()->blit();
+	
+	if ( timeout == -1 )
+		timeout = 0xFFFF;
+		
+	// add sec timer
+	sec_timer_id = g_RCInput->addTimer(sec_timer_interval*1000*1000, false);
+		
+	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(timeout);
+
+	while(loop)
+	{
+		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);		
+		
+		loop = onButtonPress(msg, data); //
+
+		CFrameBuffer::getInstance()->blit();
+	}
+
+	hide();	
+	
+	//
+	if (sec_timer_id)
+	{
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}	
 }
 
 ////
@@ -273,7 +430,7 @@ void CCWindow::refresh(void)
 	paintPage();
 }
 
-// CCIcon
+//// CCIcon
 CCIcon::CCIcon(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCIcon::CCIcon: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -363,7 +520,7 @@ void CCIcon::blink(bool show)
 		hide();
 }
 
-// CCImage
+//// CCImage
 CCImage::CCImage(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCImage::CCImage: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -418,7 +575,7 @@ void CCImage::paint()
 	}
 }
 
-// progressbar
+//// progressbar
 CProgressBar::CProgressBar(int x, int y, int w, int h, int r, int g, int b, bool inv)
 {
 	dprintf(DEBUG_DEBUG, "CProgressBar::CProgressBar: x:%d y:%d dx:%d dy:%d\n", x, y, w, h);
@@ -578,7 +735,7 @@ void CProgressBar::reset()
   	percent = 255;
 }
 
-// CCButtons
+//// CCButtons
 CCButtons::CCButtons(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCButtons::CCButtons: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -805,7 +962,7 @@ void CCButtons::paint()
 	}
 }
 
-// scrollBar
+//// CScrollBar
 void CScrollBar::paint(const int x, const int y, const int dy, const int NrOfPages, const int CurrentPage)
 {
 	// scrollBar
@@ -866,7 +1023,7 @@ void CScrollBar::paint(CBox* position, const int NrOfPages, const int CurrentPag
 	cSliderWindow.paint();
 }
 
-// CItemInfo
+//// CItemInfo
 CItemInfo::CItemInfo()
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -987,7 +1144,7 @@ void CItemInfo::paint()
 			CCImage DImage(itemBox.iX + 5, itemBox.iY + 2, 100, itemBox.iHeight - 4);
 			DImage.setImage(icon.c_str());
 			DImage.setScaling(scale);
-			DImage.setColor(color);
+			//DImage.setColor(color);
 			DImage.paint();
 		}
 		
@@ -1016,7 +1173,7 @@ void CItemInfo::paint()
 			CCImage DImage(itemBox.iX + 2, itemBox.iY + 2, itemBox.iWidth - 4, ih - 4);
 			DImage.setImage(icon.c_str());
 			DImage.setScaling(scale);
-			DImage.setColor(color);
+			//DImage.setColor(color);
 			DImage.paint();
 		}
 		
@@ -1032,7 +1189,7 @@ void CItemInfo::paint()
 		CCImage DImage(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight);
 		DImage.setImage(icon.c_str());
 		DImage.setScaling(scale);
-		DImage.setColor(color);
+		//DImage.setColor(color);
 		DImage.paint();
 	}
 	else if (mode == ITEMINFO_HINT)
@@ -1095,7 +1252,7 @@ void CItemInfo::enableSaveScreen()
 	saveScreen();
 }
 
-//
+////
 CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCSlider::CCSlider\n");
@@ -1193,7 +1350,7 @@ int CCSlider::swipLeft()
 	return value;
 }
 
-//// Hline
+//// CCHline
 CCHline::CCHline(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCHline::CCHline: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1225,7 +1382,7 @@ void CCHline::paint()
 	frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, color, 0, CORNER_NONE, gradient, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 }
 
-//// Vline
+//// CCVline
 CCVline::CCVline(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCVline::CCVline: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1281,7 +1438,7 @@ void CCFrameLine::paint()
 	frameBuffer->paintFrameBox(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, color);
 }
 
-//// CLabel
+//// CCLabel
 CCLabel::CCLabel(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCLabel::CCLabel: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1388,7 +1545,7 @@ void CCLabel::hide()
 	}	
 }
 
-////
+//// CCText
 CCText::CCText(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCText::CCText: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1563,7 +1720,7 @@ void CCText::hide()
 	}
 }
 
-//// grid
+//// CCGrid
 CCGrid::CCGrid(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCGrid::CCGrid: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1618,7 +1775,7 @@ void CCGrid::hide()
 	CFrameBuffer::getInstance()->blit();
 }
 
-//// pig
+//// CCPig
 CCPig::CCPig(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCPig::CCPig: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -2102,161 +2259,7 @@ void CCSpinner::run()
 }
 */
 
-//
-void CComponent::addKey(neutrino_msg_t key, CMenuTarget *menue, const std::string & action)
-{
-	dprintf(DEBUG_DEBUG, "CComponent::addKey: %s\n", action.c_str());
-	
-	keyActionMap[key].menue = menue;
-	keyActionMap[key].action = action;
-}
-
-bool CComponent::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
-{
-	dprintf(DEBUG_DEBUG, "CComponent::onButtonPress: (msg:%ld) (data:%ld)\n", msg, data);
-	
-	bool ret = true;
-	bool handled = false;
-	
-	//
-	if ( msg <= CRCInput::RC_MaxRC ) 
-	{
-		std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
-					
-		if (it != keyActionMap.end()) 
-		{
-			actionKey = it->second.action;
-
-			if (it->second.menue != NULL)
-			{
-				int rv = it->second.menue->exec(parent, it->second.action);
-
-				//FIXME:review this
-				switch ( rv ) 
-				{
-					case CMenuTarget::RETURN_EXIT_ALL:
-						ret = false; //fall through
-					case CMenuTarget::RETURN_EXIT:
-						ret = false;
-						break;
-					case CMenuTarget::RETURN_REPAINT:
-						ret = true;
-						paint();
-						break;
-				}
-			}
-			else
-				handled = true;
-		}
-		
-		//
-		directKeyPressed(msg);
-	}
-	
-	if (!handled) 
-	{
-		if (msg == CRCInput::RC_up)
-		{
-			scrollLineUp();
-		}
-		else if (msg == CRCInput::RC_down)
-		{
-			scrollLineDown();
-		}
-		else if (msg == CRCInput::RC_left)
-		{
-			swipLeft();
-		}
-		else if (msg == CRCInput::RC_right)
-		{
-			swipRight();
-		}
-		else if (msg == CRCInput::RC_page_up)
-		{
-			scrollPageUp();
-		}
-		else if (msg == CRCInput::RC_page_down)
-		{
-			scrollPageDown();
-		}
-		else if (msg == CRCInput::RC_ok)
-		{
-			int rv = oKKeyPressed(parent);
-				
-			switch ( rv ) 
-			{
-				case CMenuTarget::RETURN_EXIT_ALL:
-					ret = false;
-				case CMenuTarget::RETURN_EXIT:
-					ret = false;
-					break;
-				case CMenuTarget::RETURN_REPAINT:
-					ret = true;
-					paint();
-					break;
-			}
-		}
-		else if (msg == CRCInput::RC_home || msg == CRCInput::RC_timeout) 
-		{
-			ret = false;
-		}
-		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			if (update())
-			{
-				refresh();
-			}
-		}
-		else if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
-		{
-			ret = false;
-		}
-	}
-	
-	return ret;
-}
-
-void CComponent::exec(int timeout)
-{
-	dprintf(DEBUG_INFO, "CComponent::exec: timeout:%d\n", timeout);
-	
-	// loop
-	neutrino_msg_t msg;
-	neutrino_msg_data_t data;
-	bool loop = true;
-
-	//
-	paint();
-	CFrameBuffer::getInstance()->blit();
-	
-	if ( timeout == -1 )
-		timeout = 0xFFFF;
-		
-	// add sec timer
-	sec_timer_id = g_RCInput->addTimer(sec_timer_interval*1000*1000, false);
-		
-	uint64_t timeoutEnd = CRCInput::calcTimeoutEnd(timeout);
-
-	while(loop)
-	{
-		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);		
-		
-		loop = onButtonPress(msg, data); //
-
-		CFrameBuffer::getInstance()->blit();
-	}
-
-	hide();	
-	
-	//
-	if (sec_timer_id)
-	{
-		g_RCInput->killTimer(sec_timer_id);
-		sec_timer_id = 0;
-	}	
-}
-
-//// headers
+//// CHeaders
 CHeaders::CHeaders(const int x, const int y, const int dx, const int dy, const char * const title, const char * const icon)
 {
 	dprintf(DEBUG_DEBUG, "CHeaders::CHeaders: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -2522,7 +2525,7 @@ void CHeaders::hide()
 	}
 }
 
-// footers
+// CFooters
 CFooters::CFooters(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CFooters::CFooters: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);

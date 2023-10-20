@@ -170,11 +170,9 @@ class CComponent
 		virtual void stopRefresh(){};
 		virtual inline bool isPainted(void){return painted;};
 		virtual void clear(void){};
-		
 		//
 		virtual int getCCType(){return cc_type;};
 		virtual std::string getCCName(){return cc_name;};
-		
 		//
 		virtual void setPosition(const int _x, const int _y, const int _width, const int _height)
 		{
@@ -185,7 +183,6 @@ class CComponent
 			itemBox.iWidth = _width;
 			itemBox.iHeight = _height;
 		};
-		
 		virtual void setPosition(const CBox * position)
 		{
 			itemBox = *position;
@@ -193,25 +190,9 @@ class CComponent
 		
 		//
 		virtual inline CBox getWindowsPos(void){return itemBox;};
-		
 		//
-		virtual void initFrames(){};
-		virtual void setIcon(const char* const icon){};
-		virtual void setHint(const char * const hint){};
-		virtual void setImage(const char* const image){};
-		virtual void setScaling(bool s){};
-		virtual void setColor(uint32_t col){};
-		virtual void setButtons(const struct button_label *button_label, const int button_count = 1){};
-		virtual void setFont(unsigned int f){};
-		virtual void setText(const char* text){};
 		virtual void paintMainFrame(bool p){paintframe = p;};
 		virtual void setHAlign(int h){halign = h;};
-		virtual void setMode(int m){};
-		virtual void useBackground(void){};
-		virtual void setFormat(const char* f){};
-		virtual void setInterFrame(int iframe = 15){};
-		virtual void setTotalTime(time_t tot_time){};
-		virtual void setPlayTime(time_t p_time){};
 		//
 		virtual void saveScreen(void){};
 		virtual void restoreScreen(void){};
@@ -835,7 +816,6 @@ class CHeaders : public CComponent
 		//
 		void setTitle(const char * const title){htitle.clear(); if (title) htitle = title;};
 		void setIcon(const char * const icon){hicon.clear(); if (icon) hicon = icon;};
-		//void setHAlign(const int m){halign = m;};
 		void setColor(fb_pixel_t col){color = col;};
 		void setGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){gradient = grad; grad_direction = direction; grad_intensity = intensity; grad_type = type;};
 		void setCorner(int ra, int co = CORNER_TOP){radius = ra; corner = co;};
