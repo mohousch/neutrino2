@@ -632,10 +632,6 @@ uint32_t CNeutrinoApp::convertFontColor(const char* const color)
 			{
 				return COL_INFOBAR_TEXT_PLUS_0;
 			}
-			else if ( strcmp(color, "COL_INFOBAR_SHADOW") == 0)
-			{
-				return COL_INFOBAR_SHADOW_TEXT_PLUS_0;
-			}
 			else if ( strcmp(color, "COL_MENUHEAD") == 0)
 			{
 				return COL_MENUHEAD_TEXT_PLUS_0;
@@ -643,10 +639,6 @@ uint32_t CNeutrinoApp::convertFontColor(const char* const color)
 			else if ( strcmp(color, "COL_MENUCONTENT") == 0)
 			{
 				return COL_MENUCONTENT_TEXT_PLUS_0;
-			}
-			else if ( strcmp(color, "COL_MENUCONTENTDARK") == 0)
-			{
-				return COL_MENUCONTENTDARK_TEXT_PLUS_0;
 			}
 			else if ( strcmp(color, "COL_MENUCONTENTSELECTED") == 0)
 			{

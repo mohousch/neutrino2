@@ -497,7 +497,7 @@ void CMessageBox::paintButtons()
 		}
 		else
 		{
-			color   = COL_INFOBAR_SHADOW_TEXT_PLUS_0;
+			color   = COL_INFOBAR_TEXT_PLUS_0;
 			bgcolor = COL_INFOBAR_SHADOW_PLUS_0;
 		}
 		
@@ -525,7 +525,7 @@ void CMessageBox::paintButtons()
 		}
 		else
 		{
-			color   = COL_INFOBAR_SHADOW_TEXT_PLUS_0;
+			color   = COL_INFOBAR_TEXT_PLUS_0;
 			bgcolor = COL_INFOBAR_SHADOW_PLUS_0;
 		}
 
@@ -552,7 +552,7 @@ void CMessageBox::paintButtons()
 		}
 		else
 		{
-			color   = COL_INFOBAR_SHADOW_TEXT_PLUS_0;
+			color   = COL_INFOBAR_TEXT_PLUS_0;
 			bgcolor = COL_INFOBAR_SHADOW_PLUS_0;
 		}
 

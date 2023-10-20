@@ -721,9 +721,9 @@ void CMenuWidget::paintItems()
 		// paint items background
 		frameBuffer->paintBoxRel(x, item_start_y, width, items_height, def_color? COL_MENUCONTENT_PLUS_0 : bgcolor);
 		
-		if(widgetType == CMenuItem::TYPE_EXTENDED && widgetMode == ClistBox::MODE_MENU)
+		//if(widgetType == CMenuItem::TYPE_EXTENDED && widgetMode == ClistBox::MODE_MENU)
 		{
-			frameBuffer->paintBoxRel(x + items_width, item_start_y, width - items_width, items_height, COL_MENUCONTENTDARK_PLUS_0);
+		//	frameBuffer->paintBoxRel(x + items_width, item_start_y, width - items_width, items_height, COL_MENUCONTENTDARK_PLUS_0);
 		}
 	
 		// paint right scrollBar if we have more then one page
@@ -1100,7 +1100,7 @@ void CMenuWidget::paintItemInfo(int pos)
 				frameBuffer->getIconSize(item->itemIcon.c_str(), &iw, &ih);
 
 				// refreshbox
-				frameBuffer->paintBoxRel(x + items_width + (width - items_width - ITEM_ICON_W)/2, y + (height - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H, COL_MENUCONTENTDARK_PLUS_0);
+				frameBuffer->paintBoxRel(x + items_width + (width - items_width - ITEM_ICON_W)/2, y + (height - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H, /*COL_MENUCONTENTDARK_PLUS_0*/COL_MENUCONTENT_PLUS_0);
 
 				// itemIcom
 				frameBuffer->paintHintIcon(item->itemIcon.c_str(), x + items_width + (width - items_width - ITEM_ICON_W)/2, y + (height - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);

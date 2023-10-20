@@ -144,9 +144,6 @@ bool CColorSetupNotifier::changeNotify(const std::string&, void *)
 	// menu content selected text
 	frameBuffer->paletteSetColor(COL_MENUCONTENTSELECTED_TEXT,	convertSetupColor2RGB(g_settings.menu_Content_Selected_Text_red, g_settings.menu_Content_Selected_Text_green, g_settings.menu_Content_Selected_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_Selected_alpha) );
 	
-	// menu content dark text
-	frameBuffer->paletteSetColor(COL_MENUCONTENTDARK_TEXT, convertSetupColor2RGB(int(g_settings.menu_Content_Text_red*0.6), int(g_settings.menu_Content_Text_green*0.6), int(g_settings.menu_Content_Text_blue*0.6)), convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
-	
 	// menu content text
 	frameBuffer->paletteSetColor(COL_MENUCONTENT_TEXT, convertSetupColor2RGB(g_settings.menu_Content_Text_red, g_settings.menu_Content_Text_green, g_settings.menu_Content_Text_blue), convertSetupAlpha2Alpha(g_settings.menu_Content_alpha) );
 	
@@ -159,15 +156,11 @@ bool CColorSetupNotifier::changeNotify(const std::string&, void *)
 	// infobar text
 	frameBuffer->paletteSetColor(COL_INFOBAR_TEXT, convertSetupColor2RGB(g_settings.infobar_Text_red, g_settings.infobar_Text_green, g_settings.infobar_Text_blue), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
 
-	// infobar shadow text
-	frameBuffer->paletteSetColor(COL_INFOBAR_SHADOW_TEXT, convertSetupColor2RGB(int(g_settings.infobar_Text_red*0.4), int(g_settings.infobar_Text_green*0.4), int(g_settings.infobar_Text_blue*0.4)), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
-
 	// infobar colored events text
 	frameBuffer->paletteSetColor(COL_INFOBAR_COLORED_EVENTS_TEXT, convertSetupColor2RGB(g_settings.infobar_colored_events_red, g_settings.infobar_colored_events_green, g_settings.infobar_colored_events_blue), convertSetupAlpha2Alpha(g_settings.infobar_alpha) );
 
 	// hint text
 	frameBuffer->paletteSetColor(COL_MENUHINT_TEXT, convertSetupColor2RGB(g_settings.menu_Hint_Text_red, g_settings.menu_Hint_Text_green, g_settings.menu_Hint_Text_blue), convertSetupAlpha2Alpha( g_settings.menu_Hint_alpha ) );
-	////
 
 	frameBuffer->paletteSet();
 

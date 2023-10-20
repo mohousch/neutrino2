@@ -40,26 +40,26 @@
 #include <driver/framebuffer.h>
 
 
-// fix font colors
-#define COL_MAROON	 			0x02
-#define COL_GREEN	 			0x03
-#define COL_OLIVE	 			0x04
-#define COL_NAVY	 			0x05
-#define COL_PURPLE		 		0x06
-#define COL_TEAL		 		0x07
-#define COL_NOBEL		 		0x08
-#define COL_MATTERHORN 				0x09
-#define COL_RED	 				0x0A
-#define COL_LIME	 			0x0B
-#define COL_YELLOW	 			0x0C
-#define COL_BLUE	 			0x0D
-#define COL_MAGENTA	 			0x0E
-#define COL_AQUA		 		0x0F
-#define COL_WHITE	 			0x10
-#define COL_BLACK	 			0x11
-#define COL_ORANGE				0x12
-#define COL_SILVER				0x13
-// neutrino font colors
+//
+#define COL_MAROON	 			2
+#define COL_GREEN	 			3
+#define COL_OLIVE	 			4
+#define COL_NAVY	 			5
+#define COL_PURPLE		 		6
+#define COL_TEAL		 		7
+#define COL_NOBEL		 		8
+#define COL_MATTERHORN 				9
+#define COL_RED	 				10
+#define COL_LIME	 			11
+#define COL_YELLOW	 			12
+#define COL_BLUE	 			13
+#define COL_MAGENTA	 			14
+#define COL_AQUA		 		15
+#define COL_WHITE	 			16
+#define COL_BLACK	 			17
+#define COL_ORANGE				18
+#define COL_SILVER				19
+//
 #define COL_MENUCONTENTINACTIVE			254-8*1
 #define COL_MENUCONTENTSELECTED			254-8*2
 #define COL_MENUCONTENTDARK			254-8*3
@@ -70,20 +70,19 @@
 #define COL_INFOBAR_SHADOW			254-8*8
 #define COL_INFOBAR_COLORED_EVENTS		254-8*9
 #define COL_MENUHINT				254-8*10
-// neutrino text font colors
+// text colors
 #define COL_MENUCONTENTINACTIVE_TEXT		254-8*11
 #define COL_MENUCONTENTSELECTED_TEXT		254-8*12
-#define COL_MENUCONTENTDARK_TEXT		254-8*13
-#define COL_MENUCONTENT_TEXT			254-8*14
-#define COL_MENUHEAD_TEXT			254-8*15
-#define COL_MENUFOOT_TEXT			254-8*16
-#define COL_INFOBAR_TEXT			254-8*17
-#define COL_INFOBAR_SHADOW_TEXT			254-8*18
-#define COL_INFOBAR_COLORED_EVENTS_TEXT		254-8*19
-#define COL_MENUHINT_TEXT			254-8*20 
+#define COL_MENUCONTENT_TEXT			254-8*13
+#define COL_MENUHEAD_TEXT			254-8*14
+#define COL_MENUFOOT_TEXT			254-8*15
+#define COL_INFOBAR_TEXT			254-8*16
+#define COL_INFOBAR_COLORED_EVENTS_TEXT		254-8*17
+#define COL_MENUHINT_TEXT			254-8*18 
 //
-#define COL_BACKGROUND 				0xFF
-//// fix colors
+#define COL_BACKGROUND 				255
+
+////
 #define COL_MAROON_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_MAROON]
 #define COL_GREEN_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_GREEN]
 #define COL_OLIVE_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_OLIVE]
@@ -102,41 +101,31 @@
 #define COL_BLACK_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_BLACK]
 #define COL_ORANGE_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_ORANGE]
 #define COL_SILVER_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_SILVER]
-// neutrino gui colors
-// infoBar color
+//
 #define COL_INFOBAR_PLUS_0              	CFrameBuffer::getInstance()->realcolor[COL_INFOBAR + 0]
-#define COL_INFOBAR_SHADOW_PLUS_0       	CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_SHADOW + 0] // CMessageBox
-#define COL_INFOBAR_SHADOW_PLUS_1       	CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_SHADOW + 1] // infobar buttons
-// head color
+#define COL_INFOBAR_SHADOW_PLUS_0       	CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_SHADOW + 0]
+#define COL_INFOBAR_SHADOW_PLUS_1       	CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_SHADOW + 1]
 #define COL_MENUHEAD_PLUS_0             	CFrameBuffer::getInstance()->realcolor[COL_MENUHEAD + 0]
-// menucontent
 #define COL_MENUCONTENT_PLUS_0          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 0]
 #define COL_MENUCONTENT_PLUS_1          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 1] // scrollbar
 #define COL_MENUCONTENT_PLUS_2          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 2] // progressbar
-#define COL_MENUCONTENT_PLUS_3          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 3] // scrollbarslider
+#define COL_MENUCONTENT_PLUS_3          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 3] // slider
 #define COL_MENUCONTENT_PLUS_4          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 4] // stringinput
 #define COL_MENUCONTENT_PLUS_5          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 5] // epgplus
 #define COL_MENUCONTENT_PLUS_6          	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT + 6] // shadow
-// menucontentdark
 #define COL_MENUCONTENTDARK_PLUS_0      	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTDARK + 0] //
-// menuselected
 #define COL_MENUCONTENTSELECTED_PLUS_0  	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTSELECTED + 0]
-#define COL_MENUCONTENTSELECTED_PLUS_1  	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTSELECTED + 1] // marked
-// menuinactive
+#define COL_MENUCONTENTSELECTED_PLUS_1  	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTSELECTED + 1]
 #define COL_MENUCONTENTINACTIVE_PLUS_0  	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTINACTIVE + 0]
-// foot
 #define COL_MENUFOOT_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_MENUFOOT + 0]
-// itemInfo
 #define COL_MENUHINT_PLUS_0        		CFrameBuffer::getInstance()->realcolor[COL_MENUHINT + 0]
-// text colors
+// text
 #define COL_MENUCONTENTINACTIVE_TEXT_PLUS_0	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTINACTIVE_TEXT]		
-#define COL_MENUCONTENTSELECTED_TEXT_PLUS_0	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTSELECTED_TEXT]	
-#define COL_MENUCONTENTDARK_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTDARK_TEXT]	
+#define COL_MENUCONTENTSELECTED_TEXT_PLUS_0	CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENTSELECTED_TEXT]		
 #define COL_MENUCONTENT_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUCONTENT_TEXT]			
 #define COL_MENUHEAD_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUHEAD_TEXT]			
 #define COL_MENUFOOT_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUFOOT_TEXT]			
-#define COL_INFOBAR_TEXT_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_TEXT]		
-#define COL_INFOBAR_SHADOW_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_SHADOW_TEXT]		
+#define COL_INFOBAR_TEXT_PLUS_0			CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_TEXT]			
 #define COL_INFOBAR_COLORED_EVENTS_TEXT_PLUS_0	CFrameBuffer::getInstance()->realcolor[COL_INFOBAR_COLORED_EVENTS_TEXT]	
 #define COL_MENUHINT_TEXT_PLUS_0		CFrameBuffer::getInstance()->realcolor[COL_MENUHINT_TEXT]			
 //
