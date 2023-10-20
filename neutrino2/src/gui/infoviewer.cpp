@@ -586,11 +586,9 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 	if( showButtonBar )
 	{
 		// green button
-		showButton_Audio();
-			
+		showButton_Audio();	
 		// yellow button
 		showButton_SubServices();
-		
 		//	
 		showIcon_CA_Status();
 		showIcon_16_9();
