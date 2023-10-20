@@ -786,7 +786,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		if (timescale)
 		{
 			timescale->reset();
-			timescale->paint(epg_done);
+			timescale->refresh(epg_done);
 		}
 	}
 
@@ -843,7 +843,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 					if (timescale)
 					{
 						timescale->reset();
-						timescale->paint(epg_done);
+						timescale->refresh(epg_done);
 					}
 				}
 			} 

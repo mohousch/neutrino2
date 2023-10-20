@@ -1,5 +1,5 @@
 /*
- * $Id: pmt.cpp,v 1.41 2013/08/18 11:23:30 mohousch Exp $
+ * $Id: pmt.cpp 20.10.2023 mohousch Exp $
  *
  * (C) 2002 by Andreas Oberritter <obi@tuxbox.org>
  * (C) 2002 by Frank Bormann <happydude@berlios.de>

@@ -693,7 +693,7 @@ void CScanTs::showSNR()
 		sprintf(percent, "%d%% SIG", sig);
 		sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth ("100% SIG");
 
-		sigscale->paint(sig);
+		sigscale->refresh(sig);
 
 		posx = posx + barwidth + 3;
 		sw = x + 247 - posx;
@@ -707,7 +707,7 @@ void CScanTs::showSNR()
 		sprintf(percent, "%d%% SNR", snr);
 		sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth ("100% SNR");
 		
-		snrscale->paint(snr);
+		snrscale->refresh(snr);
 
 		posx = posx + barwidth + 3;
 		sw = x + width - posx;

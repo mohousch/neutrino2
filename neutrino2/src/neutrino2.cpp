@@ -2353,7 +2353,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 		g_volscale->reset();
 
 		//
-		g_volscale->paint(current_volume);
+		g_volscale->refresh(current_volume);
 
 		char p1[4]; // 3 digits + '\0'
 		sprintf(p1, "%3d", current_volume);
@@ -2418,7 +2418,7 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 				dprintf(DEBUG_NORMAL, "CNeutrinoApp::setVolume: current_volume %d\n", current_volume);
 
 				//
-				g_volscale->paint(current_volume);
+				g_volscale->refresh(current_volume);
 
 				char p[4]; // 3 digits + '\0'
 				sprintf(p, "%3d", current_volume);

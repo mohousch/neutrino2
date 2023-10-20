@@ -557,7 +557,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 	g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->RenderString(BoxStartX + BORDER_LEFT + icon_red_w + ICON_TO_ICON_OFFSET + asize + icon_green_w + ICON_TO_ICON_OFFSET + asize + icon_yellow_w + ICON_TO_ICON_OFFSET + asize + icon_blue_w + ICON_TO_ICON_OFFSET, buttonBarStartY + (buttonBarHeight - g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight())/2 + g_Font[SNeutrinoSettings::FONT_TYPE_INFOBAR_SMALL]->getHeight(), asize - ICON_TO_ICON_OFFSET - icon_blue_w, _("Features"), COL_INFOBAR_SHADOW_TEXT_PLUS_0, 0, true); // UTF-8
 	
 	//
-	timescale->paint(runningPercent);
+	timescale->refresh(runningPercent);
 
 	// get CN epg
 	getCurrentNextEPG(channel_id, new_chan, _epgpos);
@@ -1653,7 +1653,7 @@ void CInfoViewer::showEPGData(bool calledFromEvent)
 	  	
 	  	// paint percent
 	  	timescale->reset();
-		timescale->paint(runningPercent);
+		timescale->refresh(runningPercent);
 
 		// red button
 		if (showButtonBar) 

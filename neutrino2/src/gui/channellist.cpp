@@ -1841,7 +1841,7 @@ void CChannelList::paintCurrentNextEvent(int _selected)
 	// current
 	epgTitle.paint();
 	pb.reset();
-	pb.paint(runningPercent);
+	pb.refresh(runningPercent);
 	startTime.paint();
 	restTime.paint();
 	text.paint();

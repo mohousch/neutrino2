@@ -1,5 +1,5 @@
 /*
- * $Id: sdt.cpp,v 1.45 2013/08/18 11:23:30 mohousch Exp $
+ * $Id: sdt.cpp 20.10.2023 mohousch Exp $
  *
  * (C) 2002, 2003 by Andreas Oberritter <obi@tuxbox.org>
  *

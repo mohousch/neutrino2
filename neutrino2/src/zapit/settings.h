@@ -1,5 +1,5 @@
 /*
- * $Header: /cvs/tuxbox/apps/dvb/zapit/include/zapit/settings.h,v 1.9 2013/08/18 11:23:30 mohousch Exp $
+ * settings.h 20.10.2023 mohousch Exp $
  *
  * zapit's settings - d-box2 linux project
  *

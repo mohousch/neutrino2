@@ -1,5 +1,5 @@
 /*
- * $Id: nit.h,v 1.7 2013/08/18 11:23:30 mohousch Exp $
+ * $Id: nit.h 20.10.2023 Exp $
  *
  * (C) 2002-2003 Andreas Oberritter <obi@tuxbox.org>
  *

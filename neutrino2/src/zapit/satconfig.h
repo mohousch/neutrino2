@@ -1,5 +1,5 @@
 /*
- * $Id: satconfig.h,v 1.31 2013/08/18 11:23:30 mohousch Exp $
+ * $Id: satconfig.h 20.10.2023 mohousch Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

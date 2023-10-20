@@ -486,17 +486,24 @@ CProgressBar::CProgressBar(const CBox* position, int r, int g, int b, bool inv)
 	cc_type = CC_PROGRESSBAR;
 }
 
-void CProgressBar::paint(unsigned char pcr, bool paintBG)
+void CProgressBar::paint()
 {
-	dprintf(DEBUG_DEBUG, "CProgressBar::paint: pcr:%d\n", pcr);
+	dprintf(DEBUG_DEBUG, "CProgressBar::paint:\n");
+	
+	// body
+	frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+}
+
+void CProgressBar::refresh(unsigned char pcr)
+{
+	dprintf(DEBUG_DEBUG, "CProgressBar::refresh: pcr:%d\n", pcr);
 	
 	int i = 0;
 	int b = 0;
 	int siglen = 0;
 	
 	// body
-	if (paintBG)
-		frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);	//fill passive
+	frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, g_settings.progressbar_color? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 	
 	if (pcr != percent) 
 	{
@@ -1103,27 +1110,90 @@ CCSlider::CCSlider(const int x, const int y, const int dx, const int dy)
 	itemBox.iHeight = dy; 
 	
 	//
+	value = 0;
+	min_value = 0;
+	max_value = 100;
+	step = 1;
+	
+	//
 	cc_type = CC_SLIDER;
 }
 
-void CCSlider::paint(const int spos, const char * const iconname, const bool selected)
+void CCSlider::paint()
 {
 	dprintf(DEBUG_DEBUG, "CCSlider::paint:\n");
 	
-	// volumebox box
-	int icon_w = 120;
-	int icon_h = 11;
-	
-	// volumebody
-	frameBuffer->getIconSize(NEUTRINO_ICON_VOLUMEBODY, &icon_w, &icon_h);
-	frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_0);
-	frameBuffer->paintIcon(NEUTRINO_ICON_VOLUMEBODY, itemBox.iX, itemBox.iY);
-
-	// slider icon
-	frameBuffer->paintIcon(selected ? iconname : NEUTRINO_ICON_VOLUMESLIDER2, itemBox.iX + spos, itemBox.iY);
+	paintSlider(itemBox.iX, itemBox.iY, value, "test CCSlider", NEUTRINO_ICON_VOLUMESLIDER2RED);
 }
 
-// Hline
+//
+void CCSlider::paintSlider(const int _x, const int _y, const unsigned int spos, const char* const text, const char * const iconname)
+{
+	dprintf(DEBUG_NORMAL, "CCSlider::paintSlider:\n");
+	
+	char wert[5];
+	
+	//int icon_w = 120;
+	//int icon_h = 11;
+	//frameBuffer->getIconSize(NEUTRINO_ICON_VOLUMEBODY, &icon_w, &icon_h);
+	int slider_w = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth("100", true); //UTF-8
+	//int startx = itemBox.iWidth - icon_w - slider_w - 50;
+	//frameBuffer->paintBoxRel(_x + itemBox.iX, _y, 120, itemBox.iHeight, COL_MENUCONTENT_PLUS_0);
+	//frameBuffer->paintIcon(NEUTRINO_ICON_VOLUMEBODY, _x + startx, _y + 2 + itemBox.iHeight / 4);
+	//frameBuffer->paintIcon(iconname, _x + startx + 3 + spos, _y + itemBox.iHeight / 4);
+	
+	////
+	//frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + (itemBox.iHeight - 6)/2, itemBox.iWidth - slider_w - 5, /*itemBox.iHeight*/6, COL_MENUCONTENT_PLUS_2, NO_RADIUS, CORNER_ALL, DARK2LIGHT2DARK, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
+
+	//
+	//g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(itemBox.iX + itemBox.iWidth - slider_w - 5, _y + itemBox.iHeight + (itemBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2, itemBox.iWidth - slider_w - 5, text, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
+	
+	sprintf(wert, "%3d", spos); // UTF-8 encoded
+
+	// refreshBox
+	frameBuffer->paintBoxRel(itemBox.iX + itemBox.iWidth - slider_w - 5, _y, 50, itemBox.iHeight, COL_BACKGROUND);
+	
+	//
+	//g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(itemBox.iX + itemBox.iWidth - slider_w - 5, itemBox.iY + itemBox.iHeight + (itemBox.iHeight - g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight())/2, slider_w, wert, COL_MENUCONTENT_TEXT_PLUS_0, 0, true, true); // UTF-8
+}
+
+//
+int CCSlider::swipRight()
+{
+	dprintf(DEBUG_NORMAL, "CCSlider::swipRight:\n");
+	
+	if (value > max_value)
+		value = max_value;
+	
+	if (value < max_value)
+	{
+		value++;
+	
+		paintSlider(itemBox.iX, itemBox.iY, value, "test CCSlider", NEUTRINO_ICON_VOLUMESLIDER2RED);
+	}
+	
+	return value;
+}
+
+//
+int CCSlider::swipLeft()
+{
+	dprintf(DEBUG_NORMAL, "CCSlider::swipLeft:\n");
+	
+	if (value < min_value)
+		value = min_value; 
+	
+	if (value > min_value)
+	{
+		value--;
+	
+		paintSlider(itemBox.iX, itemBox.iY, value--, "test CCSlider", NEUTRINO_ICON_VOLUMESLIDER2RED);
+	}
+	
+	return value;
+}
+
+//// Hline
 CCHline::CCHline(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCHline::CCHline: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1155,7 +1225,7 @@ void CCHline::paint()
 	frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, color, 0, CORNER_NONE, gradient, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 }
 
-// Vline
+//// Vline
 CCVline::CCVline(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCVline::CCVline: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1187,7 +1257,7 @@ void CCVline::paint()
 	frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, color, 0, CORNER_NONE, gradient, GRADIENT_VERTICAL, INT_LIGHT, GRADIENT_ONECOLOR);
 }
 
-// CFrameLine
+//// CFrameLine
 CCFrameLine::CCFrameLine(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCFrameLine::CCFrameLine: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1211,7 +1281,7 @@ void CCFrameLine::paint()
 	frameBuffer->paintFrameBox(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, color);
 }
 
-// CLabel
+//// CLabel
 CCLabel::CCLabel(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCLabel::CCLabel: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1318,7 +1388,7 @@ void CCLabel::hide()
 	}	
 }
 
-//
+////
 CCText::CCText(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCText::CCText: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1493,7 +1563,7 @@ void CCText::hide()
 	}
 }
 
-// grid
+//// grid
 CCGrid::CCGrid(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCGrid::CCGrid: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1548,7 +1618,7 @@ void CCGrid::hide()
 	CFrameBuffer::getInstance()->blit();
 }
 
-// pig
+//// pig
 CCPig::CCPig(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCPig::CCPig: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1603,7 +1673,7 @@ void CCPig::hide()
 	CFrameBuffer::getInstance()->blit();
 }
 
-// CCTime
+//// CCTime
 CCTime::CCTime(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCTime::CCTime: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);
@@ -1774,7 +1844,7 @@ void CCTime::restoreScreen(void)
 	}
 }
 
-// CCCounter
+//// CCCounter
 CCCounter::CCCounter(const int x, const int y, const int dx, const int dy)
 {
 	dprintf(DEBUG_DEBUG, "CCCounter::CCCounter: x:%d y:%d dx:%d dy:%d\n", x, y, dx, dy);

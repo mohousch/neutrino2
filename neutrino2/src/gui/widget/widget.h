@@ -47,6 +47,7 @@ class CMenuTarget
 		virtual ~CMenuTarget(){valueString.clear();};
 		virtual void hide(){valueString.clear();};
 		virtual int exec(CMenuTarget* parent, const std::string& actionKey) = 0;
+		virtual int exec(int timeout = -1){};
 		
 		//
 		virtual std::string& getValueString() {return valueString;};

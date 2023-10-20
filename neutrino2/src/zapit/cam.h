@@ -1,5 +1,5 @@
 /*
- * $Id: cam.h,v 1.26 2013/08/18 11:23:30 mohousch Exp $
+ * $Id: cam.h 20.10.2023 11:23:30 mohousch Exp $
  *
  * (C) 2002-2003 Andreas Oberritter <obi@tuxbox.org>,
  *               thegoodguy         <thegoodguy@berlios.de>

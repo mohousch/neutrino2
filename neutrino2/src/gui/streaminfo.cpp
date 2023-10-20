@@ -985,7 +985,7 @@ void CStreamInfo::showSNR()
 			sprintf(percent, "%d%% SIG", sig);
 			sw = g_Font[font_info]->getRenderWidth (percent);
 
-			sigscale->paint(sig);
+			sigscale->refresh(sig);
 
 			posx = posx + barwidth + 3;
 			
@@ -1001,7 +1001,7 @@ void CStreamInfo::showSNR()
 			sprintf(percent, "%d%% SNR", snr);
 			sw = g_Font[font_info]->getRenderWidth (percent);
 
-			snrscale->paint(snr);
+			snrscale->refresh(snr);
 
 			// FIXME:
 			posx = posx + barwidth + 3;

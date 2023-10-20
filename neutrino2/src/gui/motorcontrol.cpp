@@ -492,27 +492,17 @@ void CMotorControl::paintLine(int _x, int * _y, int _width, char * txt)
 
 void CMotorControl::paintLine(int _x, int _y, int _width, char * txt)
 {
-	//frameBuffer->paintBoxRel(_x, _y - mheight, _width, mheight, COL_MENUCONTENT_PLUS_0);
+	//
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString(_x, _y, _width, txt, COL_MENUCONTENT_TEXT_PLUS_0, 0, true);
 }
 
 void CMotorControl::paintSeparator(int xpos, int * _ypos, int _width, char * /*txt*/)
 {
-	//int stringwidth = 0;
-	//int stringstartposX = 0;
 	int th = 10;
-	//*ypos += mheight;
+
 	*_ypos += th;
 	frameBuffer->paintHLineRel(xpos, _width - 20, *_ypos - (th >> 1), COL_MENUCONTENT_PLUS_3);
 	frameBuffer->paintHLineRel(xpos, _width - 20, *_ypos - (th >> 1) + 1, COL_MENUCONTENT_PLUS_1);
-	
-#if 0
-	stringwidth = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getRenderWidth(txt);
-	stringstartposX = 0;
-	stringstartposX = (xpos + (width >> 1)) - (stringwidth >> 1);
-	frameBuffer->paintBoxRel(stringstartposX - 5, *ypos - mheight, stringwidth + 10, mheight, COL_MENUCONTENT_PLUS_0);
-	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(stringstartposX, *ypos, stringwidth, txt, COL_MENUCONTENT_TEXT_PLUS_0);
-#endif
 }
 
 void CMotorControl::paintStatus()
@@ -722,7 +712,6 @@ void CMotorControl::stopSatFind(void)
 void CMotorControl::showSNR()
 {
 	char percent[10];
-	//char ber[20];
 	int barwidth = 100;
 	uint16_t ssig, ssnr;
 	int sig, snr;
@@ -751,8 +740,8 @@ void CMotorControl::showSNR()
 		sprintf(percent, "%d%% SIG", sig);
 		sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->getRenderWidth ("100% SIG");
 
-		//sigscale->setPosition(posx - 1, posy, BAR_WIDTH, BAR_HEIGHT);
-		sigscale->paint(/*x + 10 - 1, y + height - mheight - 5,*/ sig);
+		//
+		sigscale->refresh(sig);
 
 		posx = posx + barwidth + 3;
 		frameBuffer->paintBoxRel(posx, posy - 2, sw+4, mheight, COL_MENUCONTENT_PLUS_0);
@@ -765,11 +754,12 @@ void CMotorControl::showSNR()
 		sprintf(percent, "%d%% SNR", snr);
 		sw = g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->getRenderWidth ("100% SNR");
 		
-		//snrscale->setPosition(posx - 1, posy, BAR_WIDTH, BAR_HEIGHT);
-		snrscale->paint(/*x + 10 + 210 - 1, y + height - mheight - 5,*/ snr);
+		//
+		snrscale->refresh(snr);
 
 		posx = posx + barwidth + 3;
 		frameBuffer->paintBoxRel(posx, posy - 2, sw+4, mheight, COL_MENUCONTENT_PLUS_0);
 		g_Font[SNeutrinoSettings::FONT_TYPE_MENU_INFO]->RenderString (posx+2, posy + mheight, sw, percent, COL_MENUCONTENT_TEXT_PLUS_0);
 	}
 }
+

@@ -1,5 +1,5 @@
 /*
- * $Id: sdt.h 06.10.2023 11:23:30 mohousch Exp $
+ * $Id: sdt.h 20.10.2023 mohousch Exp $
  *
  * (C) 2002, 2003 by Andreas Oberritter <obi@tuxbox.org>
  *

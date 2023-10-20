@@ -1,5 +1,5 @@
 /*
- * $Id: widget_helpers.h 11.10.2023 mohousch Exp $
+ * $Id: widget_helpers.h 20.10.2023 mohousch Exp $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -705,7 +705,8 @@ class CProgressBar : public CComponent
 		virtual ~CProgressBar(){};
 		
 		//
-		void paint(unsigned char pcr, bool paintBG = true);
+		void paint();
+		void refresh(unsigned char pcr);
 		void reset();
 		int getPercent() { return percent; };
 		//
@@ -774,7 +775,11 @@ class CItemInfo : public CComponent
 class CCSlider : public CComponent
 {
 	private:
-	
+		int value;
+		int max_value;
+		int min_value;
+		int step;
+		
 	public:
 		//
 		CFrameBuffer *frameBuffer;
@@ -784,7 +789,15 @@ class CCSlider : public CComponent
 		virtual ~CCSlider(){};
 		
 		//
-		void paint(const int spos, const char * const iconname, const bool selected);
+		void paint();
+		//
+		void paintSlider(const int _x, const int _y, const unsigned int spos, const char* const text, const char * const iconname);
+		int swipRight();
+		int swipLeft();
+		//
+		void setMaxValue(int val){max_value = val;};
+		void setMinValue(int val){min_value = val;};
+		void setStepValue(int val){step = val;};
 };
 
 //// CHeaders

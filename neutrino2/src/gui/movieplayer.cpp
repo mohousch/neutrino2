@@ -902,7 +902,7 @@ void CMoviePlayerGui::PlayFile(void)
 				file_prozent = (position / (duration / 100));
 			
 			moviescale->reset();	
-			moviescale->paint(file_prozent, false);
+			moviescale->refresh(file_prozent);
 			updateTime();
 		}
 
@@ -1740,11 +1740,13 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 		startPosSelectionMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		startPosSelectionMenu->setWidgetMode(ClistBox::MODE_SETUP);
 		startPosSelectionMenu->enableShrinkMenu();
-			
+		//	
 		startPosSelectionMenu->enablePaintHead();
 		startPosSelectionMenu->setTitle(_("Start movie from:"), NEUTRINO_ICON_MOVIE);
-
+		startPosSelectionMenu->setHeadLine(true, true);
+		//
 		startPosSelectionMenu->enablePaintFoot();
+		startPosSelectionMenu->setFootLine(true, true);
 				
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 				
@@ -2039,7 +2041,7 @@ void CMoviePlayerGui::show(std::string Title, std::string Info, short Percent, c
 		Percent = 100;
 	
 	moviescale->reset();
-	moviescale->paint(/*cFrameBoxInfo.iX + BORDER_LEFT, cFrameBoxInfo.iY + 30,*/ Percent);
+	moviescale->refresh(Percent);
 }
 
 void CMoviePlayerGui::updateTime()

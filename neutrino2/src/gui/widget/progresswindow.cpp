@@ -127,7 +127,7 @@ void CProgressWindow::showGlobalStatus(const unsigned int prog)
 	g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->RenderString(x + width - (w + 10), globalstatusY + 18, w, strProg, COL_MENUCONTENT_TEXT_PLUS_0, 0, true); // UTF-8
 
 	// progressBar
-	progressBar->paint(global_progress);
+	progressBar->refresh(global_progress);
 	
 	CFrameBuffer::getInstance()->blit();
 

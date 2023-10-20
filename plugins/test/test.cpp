@@ -148,6 +148,7 @@ class CTestMenu : public CMenuTarget
 		void testCButtons();
 		void testCHButtons();
 		void testCSpinner();
+		void testCCSlider();
 		void testCHeaders();
 		void testCFooters();
 		void testCProgressWindow();
@@ -1892,7 +1893,7 @@ void CTestMenu::testCProgressBar()
 	{
 		g_RCInput->getMsg_ms(&msg, &data, 10); // 1 sec
 		
-		progressBar->paint(count);
+		progressBar->refresh(count);
 		usleep(1000000);
 		
 		if (msg <= CRCInput::RC_MaxRC) // any key break
@@ -2001,6 +2002,20 @@ void CTestMenu::testCSpinner()
 	
 	delete testSpinner;
 	testSpinner = NULL;
+}
+
+void CTestMenu::testCCSlider()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testCCSlider:\n");
+	
+	CCSlider * testSlider = new CCSlider(100, 100, 250, 20);
+	
+	testSlider->exec();
+	
+	hide(); //
+	
+	delete testSlider;
+	testSlider = NULL;
 }
 
 //
@@ -4972,6 +4987,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 
 		return RETURN_REPAINT;
 	}
+	else if (actionKey == "slider")
+	{
+		testCCSlider();
+		
+		return RETURN_REPAINT;
+	}
 	else if(actionKey == "listbox")
 	{
 		testClistBox();
@@ -6257,7 +6278,7 @@ void CTestMenu::showMenu()
 	
 	std::string skin = PLUGINDIR "/test/test.xml";
 	
-	//mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str());
+	mWidget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str());
 	
 	if (mWidget)
 	{
@@ -6297,19 +6318,18 @@ void CTestMenu::showMenu()
 		mWidget->addCCItem(mainMenu);
 	}
 	
-	mainMenu->clear();
-	
 	//
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CComponent"));
 	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
-	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "window"));
-	mainMenu->addItem(new CMenuForwarder("CCWindow(with shadow)", true, NULL, this, "windowshadow"));
-	mainMenu->addItem(new CMenuForwarder("CCWindow(shadow|customColor)", true, NULL, this, "windowcustomcolor"));
+	mainMenu->addItem(new CMenuForwarder("CCWindow(gradient)", true, NULL, this, "window"));
+	mainMenu->addItem(new CMenuForwarder("CCWindow(with border)", true, NULL, this, "windowshadow"));
+	mainMenu->addItem(new CMenuForwarder("CCWindow(border|customColor)", true, NULL, this, "windowcustomcolor"));
 	mainMenu->addItem(new CMenuForwarder("CCIcon", true, NULL, this, "icon"));
 	mainMenu->addItem(new CMenuForwarder("CCImage", true, NULL, this, "image"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (foot)", true, NULL, this, "buttons"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (head)", true, NULL, this, "hbuttons"));
 	mainMenu->addItem(new CMenuForwarder("CCSpinner", true, NULL, this, "spinner"));
+	//mainMenu->addItem(new CMenuForwarder("CCSlider", true, NULL, this, "slider"));
 	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));

@@ -1464,7 +1464,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 
 			CProgressBar timescale(pbPosX, y + (height - pBarHeight)/2, pb_width, pBarHeight);
 			timescale.reset();
-			timescale.paint(runningPercent);
+			timescale.refresh(runningPercent);
 		}
 	
 		// locale / option
