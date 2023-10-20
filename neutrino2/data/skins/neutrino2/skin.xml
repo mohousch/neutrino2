@@ -448,8 +448,8 @@
 		<listbox posx="50" posy="100" width="700" height="420" paintframe="0" type="TYPE_STANDARD" mode="MODE_listbox" itemborder="1" scrollbar="1"/>
 		<window posx="750" posy="100" width="380" height="420" paintframe="0"/>
 		<foot posx="50" posy="520" width="1080" height="50" paintframe="0" line="1"/>
-		<HLINE posx="790" posy="310" width="360" height="360" gradient="DARK2LIGHT2DARK"/>
-		<VLINE posx="750" posy="110" width="3" height="400" gradient="DARK2LIGHT2DARK"/>
+		<hline posx="790" posy="310" width="360" height="360" gradient="DARK2LIGHT2DARK"/>
+		<vline posx="750" posy="110" width="3" height="400" gradient="DARK2LIGHT2DARK"/>
 	</screen>
 	
 	<screen name="channellistedit" width="600" height="500" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
