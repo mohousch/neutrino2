@@ -1044,7 +1044,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == CRCInput::RC_blue) 
+		else if (msg == CRCInput::RC_green) 
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -1150,7 +1150,7 @@ void CMoviePlayerGui::PlayFile(void)
 			}
 			}		
 		} 
-		else if ( msg == CRCInput::RC_audio || msg == CRCInput::RC_green) 
+		else if ( msg == CRCInput::RC_audio || msg == CRCInput::RC_blue) 
 		{
 			if (mplist && mplist->isPainted())
 			{
@@ -2062,9 +2062,9 @@ const struct button_label HeadButtons = { NEUTRINO_ICON_BUTTON_HELP, ""} ;
 const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 {
 	{ NEUTRINO_ICON_BUTTON_RED, _("Delete") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("TMDB info") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add") },
 	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Delete all") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("Add") },
+	{ NEUTRINO_ICON_BUTTON_BLUE, _("TMDB") },
 };
 
 void CMoviePlayerGui::showPlaylist()

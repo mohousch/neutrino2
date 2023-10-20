@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-20 17:11+0200\n"
+"POT-Creation-Date: 2023-10-21 01:32+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1440,7 +1440,7 @@ msgid "Next program"
 msgstr "Nächstes Programm"
 
 msgid "No"
-msgstr "NEIN"
+msgstr "Nein"
 
 msgid "No CAM in slot"
 msgstr "Kein CAM im Steckplatz"
@@ -2220,8 +2220,8 @@ msgstr "Synchronisation über"
 msgid "System"
 msgstr "System"
 
-msgid "TMDB Infos"
-msgstr "TMDB-Infos"
+msgid "TMDB"
+msgstr "TMDB"
 
 msgid "TMDB Infos are not available"
 msgstr "TMDB-Infos sind nicht verfügbar"
@@ -2231,9 +2231,6 @@ msgstr "TMDB-Key:"
 
 msgid "TMDB Preview"
 msgstr "TMDB-Vorschau"
-
-msgid "TMDB info"
-msgstr "TMDB-Informationen"
 
 msgid "TMDB:"
 msgstr "TMDB:"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-14 23:35+0200\n"
+"POT-Creation-Date: 2023-10-21 01:32+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2187,7 +2187,7 @@ msgstr ""
 msgid "System"
 msgstr ""
 
-msgid "TMDB Infos"
+msgid "TMDB"
 msgstr ""
 
 msgid "TMDB Infos are not available"
@@ -2197,9 +2197,6 @@ msgid "TMDB Key:"
 msgstr ""
 
 msgid "TMDB Preview"
-msgstr ""
-
-msgid "TMDB info"
 msgstr ""
 
 msgid "TMDB:"

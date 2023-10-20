@@ -261,7 +261,7 @@ void CGeneralSettings::showMenu()
 	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("TMDB Preview"), &g_settings.enable_tmdb_preview, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	// prefer tmdb infos
-	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("TMDB Infos"), &g_settings.enable_tmdb_infos, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	miscSettingsGeneral->addItem(new CMenuOptionChooser(_("TMDB"), &g_settings.enable_tmdb_infos, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	// reset factory setup
 	miscSettingsGeneral->addItem(new CMenuSeparator(CMenuSeparator::LINE));
