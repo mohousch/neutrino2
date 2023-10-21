@@ -100,25 +100,23 @@ class CTextBox : public CComponent
 		// text
 		unsigned int m_pcFontText;
 		unsigned int m_nFontTextHeight;
-		bool useBG;
 
 		// backgrond
 		fb_pixel_t m_textBackgroundColor;
 		uint32_t m_textColor;
 		int m_textRadius;
 		int m_textCorner;
-		
+		//
 		std::string thumbnail;
 		int lx; 
 		int ly; 
 		int tw; 
 		int th;
 		bool enableFrame;
-
 		bool bigFonts;
 		bool painted;
 		int borderMode;
-		
+		//
 		fb_pixel_t* background;
 		void saveScreen();
 		void restoreScreen();
@@ -139,21 +137,8 @@ class CTextBox : public CComponent
 
 		virtual ~CTextBox();
 
-		// Functions
-		void scrollPageDown(const int pages = 1);
-		void scrollPageUp(const int pages = 1);
-
-		//				
-		bool setText(const char * const newText, const char * const _thumbnail = NULL, int _tw = 0, int _th = 0, int _tmode = PIC_RIGHT, bool enable_frame = false, const bool useBackground = false);
-		
-		inline bool isPainted(void){return painted;};
-
-		//
-		inline int getMaxLineWidth(void){return(m_nMaxLineWidth);};
-		inline int getLines(void){return(m_nNrOfLines);};
-		inline int getPages(void){return(m_nNrOfPages);};
-		inline void movePosition(int x, int y){itemBox.iX = x; itemBox.iY = y;};
-
+		//// properties			
+		bool setText(const char * const newText, const char * const _thumbnail = NULL, int _tw = 0, int _th = 0, int _tmode = PIC_RIGHT, bool enable_frame = false);
 		void setPosition(const int x, const int y, const int dx, const int dy);
 		void setPosition(const CBox * position);
 		void setCorner(int ra, int co){m_textRadius = ra; m_textCorner = co;};
@@ -162,13 +147,24 @@ class CTextBox : public CComponent
 		void setFont(unsigned int font_text){m_pcFontText = font_text;};
 		void setMode(const int mode);
 		void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
-
+		void setBigFonts();
+		
+		////
 		void paint(void);
 		void hide(void);
+		inline bool isPainted(void){return painted;};
+		
+		//// events
+		void scrollPageDown(const int pages = 1);
+		void scrollPageUp(const int pages = 1);
 
-		void setBigFonts();
+		//// get methods
+		inline int getMaxLineWidth(void){return(m_nMaxLineWidth);};
+		inline int getLines(void){return(m_nNrOfLines);};
+		inline int getPages(void){return(m_nNrOfPages);};
+		inline void movePosition(int x, int y){itemBox.iX = x; itemBox.iY = y;};
 
-		//
+		////
 		bool isSelectable(void){return true;}
 };
 

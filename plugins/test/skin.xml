@@ -2,9 +2,14 @@
 
 <!-- SKIN: testmenu -->
 <!-- AUTHOR: mohousch -->
+<!-- DONT EDIT IF YOU DONT KNOW WHAT ARE YOU DOING -->
 
 	<screen name="testmenu" posx="0" posy="0" width="600" height="600" position="MENU_POSITION_CENTER" paintframe="1" corner="CORNER_ALL" radius="RADIUS_VERYLARGE" border="BORDER_ALL" gradient="DARK2LIGHT2DARK" timeout="180">
 		<listbox posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" painthead="1" title="Test Menu" icon="multimedia" headline="1" paintdate="1" paintfoot="1" footline="1" scrollbar="1">
+			<item id="FORWARDER" localename="item 1" optioninfo="test 1" actionkey="do not thing" target="0" itemicon="hint_tvmode" hint="any hint or comments" iconname="red" directkey="red" lines="0" border="BORDER_ALL" gradient="DARK2LIGHT2DARK" type="TYPE_CLASSIC"/>
+			<item id="SEPARATOR" type="LINE|STRING" localename="entry"/>
+			<item id="FORWARDER" localename="item 2" lines="1"/>
+			<item id="FORWARDER" localename=" item 3"/>
 			<foot_button_label name="information"/>
 		</listbox>
 	</screen>

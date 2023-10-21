@@ -72,7 +72,7 @@ class CColorChooser : public CMenuTarget
 	public:
 		//
 		CColorChooser(const char * const Name, unsigned char *R, unsigned char *G, unsigned char *B, unsigned char* Alpha, CChangeObserver* Observer = NULL); // UTF-8
-		~CColorChooser();
+		virtual ~CColorChooser();
 
 		void hide();
 		int exec(CMenuTarget* parent, const std::string& actionKey);

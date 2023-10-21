@@ -80,7 +80,7 @@ class CExtendedInput : public CMenuTarget
 
 		//
 		CExtendedInput(const char* const Name, const char* const Value, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, CChangeObserver* Observ = NULL, bool* cancel = NULL);
-		~CExtendedInput();
+		virtual ~CExtendedInput();
 
 		void hide();
 		int exec( CMenuTarget* parent, const std::string & actionKey );
@@ -134,7 +134,6 @@ class CExtendedInput_Item_newLiner : public CExtendedInput_Item
 		virtual bool isSelectable(){return false;};
 };
 
-
 class CExtendedInput_Item_Char : public CExtendedInput_Item
 {
 	protected:
@@ -170,7 +169,7 @@ class CIPInput : public CExtendedInput
 
 class CDateInput : public CExtendedInput
 {
-   private:
+   	private:
 		time_t* time;
 		int dst;
 
@@ -180,7 +179,7 @@ class CDateInput : public CExtendedInput
 
 	public:
 		CDateInput(const char * const Name, time_t* Time, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, CChangeObserver* Observ = NULL);
-		~CDateInput();
+		virtual ~CDateInput();
 		char* getValue() {return value;}
 };
 

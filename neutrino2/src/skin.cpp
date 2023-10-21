@@ -1172,29 +1172,74 @@ int CNeutrinoApp::convertCMenuItemID(const char * const id)
 	
 	if (id != NULL)
 	{
-		if ( strcmp(id, "MENUITEM_OPTIONCHOOSER") == 0)
+		if ( strcmp(id, "OPTIONCHOOSER") == 0)
 		{
 			i = CMenuItem::MENUITEM_OPTIONCHOOSER;
 		}
-		else if ( strcmp(id, "MENUITEM_OPTIONNUMBERCHOOSER") == 0)
+		else if ( strcmp(id, "OPTIONNUMBERCHOOSER") == 0)
 		{
 			i = CMenuItem::MENUITEM_OPTIONNUMBERCHOOSER;
 		}
-		else if ( strcmp(id, "MENUITEM_OPTIONSTRINGCHOOSER") == 0)
+		else if ( strcmp(id, "OPTIONSTRINGCHOOSER") == 0)
 		{
 			i = CMenuItem::MENUITEM_OPTIONSTRINGCHOOSER;
 		}
-		else if ( strcmp(id, "MENUITEM_SEPARATOR") == 0)
+		else if ( strcmp(id, "SEPARATOR") == 0)
 		{
 			i = CMenuItem::MENUITEM_SEPARATOR;
 		}
-		else if ( strcmp(id, "MENUITEM_FORWARDER") == 0)
+		else if ( strcmp(id, "FORWARDER") == 0)
 		{
 			i = CMenuItem::MENUITEM_FORWARDER;
 		}
 	}
 	
 	return i;
+}
+
+int CNeutrinoApp::convertCMeuSeparatorType(const char * const type)
+{
+	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertCMenuSeparatorType: id: %s\n", type);
+	
+	int st = CMenuSeparator::LINE;
+	
+	if (type != NULL)
+	{
+		if ( strcmp(type, "EMPTY") == 0)
+		{
+			st = CMenuSeparator::EMPTY;
+		}
+		else if ( strcmp(type, "LINE") == 0)
+		{
+			st = CMenuSeparator::LINE;
+		}
+		else if ( strcmp(type, "STRING") == 0)
+		{
+			st = CMenuSeparator::STRING;
+		}
+		else if ( strcmp(type, "STRING|ALIGN_LEFT") == 0)
+		{
+			st = CMenuSeparator::STRING | CMenuSeparator::ALIGN_LEFT;
+		}
+		else if ( strcmp(type, "STRING|ALIGN_RIGHT") == 0)
+		{
+			st = CMenuSeparator::STRING | CMenuSeparator::ALIGN_RIGHT;
+		}
+		else if ( strcmp(type, "LINE|STRING") == 0)
+		{
+			st = CMenuSeparator::LINE | CMenuSeparator::STRING;
+		}
+		else if ( strcmp(type, "LINE|STRING|ALIGN_LEFT") == 0)
+		{
+			st = CMenuSeparator::LINE | CMenuSeparator::STRING | CMenuSeparator::ALIGN_LEFT;
+		}
+		else if ( strcmp(type, "LINE|STRING|ALIGN_RIGHT") == 0)
+		{
+			st = CMenuSeparator::LINE | CMenuSeparator::STRING | CMenuSeparator::ALIGN_RIGHT;
+		}
+	}
+	
+	return st;
 }
 
 //
@@ -1407,9 +1452,6 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		finalColor = convertColor(color);
 		listBox->setColor(finalColor);
 	}
-	// gradient
-	// corner
-	// radius
 		
 	if (shrink) listBox->enableShrinkMenu();
 				
@@ -1468,24 +1510,26 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	//
 	char * item_id = NULL;
 						
-	char* item_localename = NULL;
-	char* item_option = NULL;
-	char* item_actionkey = NULL;
-	char* item_target = NULL;
-	char* item_hinticon = NULL;
-	char* item_hint = NULL;
-	char* item_icon = NULL;
-	char* item_directkey = NULL;
+	char * item_localename = NULL;
+	char * item_option = NULL;
+	char * item_option_info = NULL;
+	char * item_actionkey = NULL;
+	char * item_target = NULL;
+	char * item_hinticon = NULL;
+	char * item_hint = NULL;
+	char * item_icon = NULL;
+	char * item_directkey = NULL;
 	unsigned int item_lines = 0;
-	unsigned int item_border = 0;
-	unsigned int item_gradient = 0;
+	char * item_border = NULL;
+	char * item_gradient = NULL;
+	char * sep_type = NULL;
 					
 	while ((listboxitem_node = xmlGetNextOccurence(listboxitem_node, "item")) != NULL) 
 	{	
-		item_id = xmlGetAttribute(listboxitem_node, (char *)"id");
-						
+		item_id = xmlGetAttribute(listboxitem_node, (char *)"id");				
 		item_localename = xmlGetAttribute(listboxitem_node, (char*)"localename");
 		item_option = xmlGetAttribute(listboxitem_node, (char*)"option");
+		item_option_info = xmlGetAttribute(listboxitem_node, (char*)"optioninfo");
 		item_actionkey = xmlGetAttribute(listboxitem_node, (char*)"actionkey");
 		item_target = xmlGetAttribute(listboxitem_node, (char*)"target");
 		item_hinticon = xmlGetAttribute(listboxitem_node, (char*)"itemicon");
@@ -1493,8 +1537,9 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		item_icon = xmlGetAttribute(listboxitem_node, (char*)"iconname");
 		item_directkey = xmlGetAttribute(listboxitem_node, (char*)"directkey");
 		item_lines = xmlGetSignedNumericAttribute(listboxitem_node, "lines", 0);
-		item_border = xmlGetSignedNumericAttribute(listboxitem_node, "border", 0);
-		item_gradient = xmlGetSignedNumericAttribute(listboxitem_node, "gradient", 0);
+		item_border = xmlGetAttribute(listboxitem_node, (char *)"border");
+		item_gradient = xmlGetAttribute(listboxitem_node, (char *)"gradient");
+		sep_type = xmlGetAttribute(listboxitem_node, (char *)"type");
 						
 		CMenuTarget* parent = NULL;
 		std::string actionKey = "";
@@ -1510,6 +1555,20 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		//FIXME: other items	
 		if (id == CMenuItem::MENUITEM_FORWARDER)
 			menuItem = new CMenuForwarder(itemName.c_str());
+		//else if (id == CMenuItem::MENUITEM_OPTIONCHOOSER)
+		//	menuItem = new CMenuOptionChooser(itemName.c_str());
+		//else if (id == CMenuItem::MENUITEM_OPTIONNUMBERCHOOSER)
+		//	menuItem = new CMenuOptionNumberChooser(itemName.c_str());
+		//else if (id == CMenuItem::MENUITEM_OPTIONSTRINGCHOOSER)
+		//	menuItem = new CMenuOptionStringChooser(itemName.c_str());
+		else if (id == CMenuItem::MENUITEM_SEPARATOR)
+		{
+			int type = CMenuSeparator::LINE;
+			
+			if (sep_type) type = convertCMeuSeparatorType(sep_type);
+			
+			menuItem = new CMenuSeparator(type, itemName.c_str());
+		}
 						
 		if (item_actionkey) actionKey = item_actionkey;
 			
@@ -1528,8 +1587,13 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		if (item_hint) menuItem->setHint(item_hint);
 		if (item_lines) menuItem->set2lines();
 		if (item_option) menuItem->setOption(item_option);
-		if (item_border) menuItem->setBorderMode(item_border);
-		if (item_gradient) menuItem->setGradient(item_gradient);
+		if (item_option_info) menuItem->setOptionInfo(item_option_info);
+		int br = CComponent::BORDER_NO;
+		if (item_border) br = convertBorder(item_border);
+		menuItem->setBorderMode(br);
+		int gr = NOGRADIENT;
+		if (item_gradient) gr = convertGradient(item_gradient);
+		menuItem->setGradient(gr);
 					
 		if (item_hinticon)
 		{
@@ -1899,13 +1963,12 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	int height = 0;
 				
 	unsigned int paintframe = 1;
-	char* color = NULL;
+	char * color = NULL;
 	char * corner = NULL;
 	char * radius = NULL;
 	
-	char* textColor = NULL;
-	char *font = NULL;
-	unsigned int fontbg = 0;
+	char * textColor = NULL;
+	char * font = NULL;
 	unsigned int mode = CTextBox::SCROLL;
 	unsigned int border = CComponent::BORDER_NO;
 	
@@ -1914,8 +1977,8 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	unsigned int th = 0;
 	unsigned int tframe = 0;
 	
-	char* text = NULL;
-	char* pic = NULL;
+	char * text = NULL;
+	char * pic = NULL;
 	
 	//
 	name = xmlGetAttribute(node, (char*)"name");
@@ -1933,7 +1996,6 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 		
 	textColor = xmlGetAttribute(node, (char*)"textcolor");
 	font = xmlGetAttribute(node, (char *)"font");
-	fontbg = xmlGetSignedNumericAttribute(node, "fontbg", 0);
 		
 	mode = xmlGetSignedNumericAttribute(node, "mode", 0);
 	border = xmlGetSignedNumericAttribute(node, "border", 0);
@@ -1991,22 +2053,7 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	textBox->setMode(mode);
 	
 	//FIXME:	
-	/*
-	std::string filename = "";
-	std::string image = pic;
-	if (pic != NULL)
-	{
-		filename = CONFIGDIR "/skins/";
-		filename += g_settings.preferred_skin;
-		filename += "/";
-		filename += pic;
-					
-		if (file_exists(filename.c_str()))
-			image = filename.c_str();
-	}
-
-	if (text) textBox->setText(text, image.c_str(), tw, th, tmode, tframe, fontbg);
-	*/
+	if (text) textBox->setText(text, pic? pic : NULL, tw, th, tmode, tframe);
 	
 	//				
 	if (widget) widget->addCCItem(textBox);
@@ -2613,16 +2660,14 @@ void CNeutrinoApp::parseKey(xmlNodePtr node, CWidget* widget)
 	if (key_target) key_parent = convertTarget(key_target);
 	
 	//			
-	if (widget) widget->addKey(key, key_parent, key_actionkey);
-			
+	if (widget) widget->addKey(key, key_parent, key_actionkey);		
 }
 
-//
+/*
 void CNeutrinoApp::parseCWidget(xmlNodePtr node)
 {
 	dprintf(DEBUG_INFO, "CNeutrinoApp::parseCWidget:\n");
 	
-	/*
 	CWidget *widget = NULL;
 	
 	//
@@ -2650,8 +2695,8 @@ void CNeutrinoApp::parseCWidget(xmlNodePtr node)
 	
 	//
 	xmlNodePtr item = NULL;
-	*/
 }
+*/
 
 // getWidget
 CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *const skinfilename, bool data)

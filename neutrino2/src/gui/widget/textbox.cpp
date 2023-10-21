@@ -145,7 +145,6 @@ void CTextBox::initVar(void)
 	paintframe = true;
 	inFocus = true;
 	enableFrame = false;
-	useBG = false;
 	borderMode = CComponent::BORDER_NO;
 	
 	background = NULL;
@@ -537,7 +536,7 @@ void CTextBox::refreshText(void)
 			}
 		}
 
-		g_Font[m_pcFontText]->RenderString(m_cFrameTextRel.iX + x_start, y, m_cFrameTextRel.iWidth, m_cLineArray[i].c_str(), m_textColor, 0, true, useBG); // UTF-8
+		g_Font[m_pcFontText]->RenderString(m_cFrameTextRel.iX + x_start, y, m_cFrameTextRel.iWidth, m_cLineArray[i].c_str(), m_textColor); // UTF-8
 	}
 }
 
@@ -598,13 +597,12 @@ void CTextBox::refreshPage(void)
 	refreshScroll();	
 }
 
-bool CTextBox::setText(const char * const newText, const char * const _thumbnail, int _tw, int _th, int _tmode, bool enable_frame, const bool useBackground)
+bool CTextBox::setText(const char * const newText, const char * const _thumbnail, int _tw, int _th, int _tmode, bool enable_frame/*, const bool useBackground*/)
 {
 	dprintf(DEBUG_DEBUG, "CTextBox::setText:\r\n");
 
 	m_tMode = _tmode;
 	enableFrame = enable_frame;
-	useBG = useBackground;
 
 	// thumbnail
 	thumbnail = "";

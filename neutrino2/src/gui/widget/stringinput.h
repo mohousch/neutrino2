@@ -104,7 +104,7 @@ class CStringInput : public CMenuTarget
 	public:	
 		CStringInput(const char * const Head, const char * const Value, int Size = 10, const char* const Hint_1 = NULL, const char* const Hint_2 = NULL, const char * const Valid_Chars = NULL, CChangeObserver* Observ = NULL, const char * const Icon = NEUTRINO_ICON_KEYBINDING);
 		
-		~CStringInput();
+		virtual ~CStringInput();
 
 		void hide();
 		int exec(CMenuTarget* parent, const std::string &actionKey);

@@ -964,12 +964,10 @@ CMenuSeparator::CMenuSeparator(const int Type, const char * const Text, const bo
 
 int CMenuSeparator::getHeight(void) const
 {
-	////
 	if (hidden)
 		return 0;
 	else
-	////
-	return g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;	
+		return g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 6;	
 }
 
 int CMenuSeparator::getWidth(void) const

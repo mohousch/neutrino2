@@ -149,12 +149,14 @@ class CNeutrinoApp : public CMenuTarget
 		void saveSkinConfig(const char* const filename);
 		//
 		CWidget *getWidget(const char *const widgetname, const char *const skinfilename = NULL, const bool data = false);
-		void parseCWidget(xmlNodePtr node);
+//		void parseCWidget(xmlNodePtr node);
 		//
 		void parseClistBox(xmlNodePtr node, CWidget* widget);
 		void parseCHead(xmlNodePtr node, CWidget* widget);
 		void parseCFoot(xmlNodePtr node, CWidget* widget);
 		void parseCTextBox(xmlNodePtr node, CWidget* widget);
+//		void parseCListFrame(xmlNodePtr node, CWidget* widget);
+//		void parseCFrameBox(xmlNodePtr node, CWidget* widget);
 		//
 		void parseCCWindow(xmlNodePtr node, CWidget* widget);
 		void parseCCLabel(xmlNodePtr node, CWidget* widget);
@@ -180,6 +182,7 @@ class CNeutrinoApp : public CMenuTarget
 		int convertClistBoxType(const char * const type);
 		int convertItemInfoMode(const char * const mode);
 		int convertCMenuItemID(const char * const id);
+		int convertCMeuSeparatorType(const char * const type);
 		int convertBool(const char* const value);
 		int convertBorder(const char * const border);
 		int convertFontSize(const char * const size);

@@ -111,7 +111,7 @@ class CInfoBox
 		void setHeadGradient(int grad){headGradient = grad;};
 		
 		// text
-		bool setText(const char * const newText, const char * const _thumbnail = NULL, int _tw = 0, int _th = 0, int tmode = CTextBox::PIC_RIGHT, bool enable_frame = false, const bool useBackground = false);
+		bool setText(const char * const newText, const char * const _thumbnail = NULL, int _tw = 0, int _th = 0, int tmode = CTextBox::PIC_RIGHT, bool enable_frame = false);
 		void setMode(const int mode){m_nMode = mode;};
 		void setBackgroundColor(fb_pixel_t col);
 		void setTextColor(uint32_t col);

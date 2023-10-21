@@ -71,7 +71,7 @@ class CKeyChooser : public CMenuWidget/*CMenuTarget*/
 	public:
 		//
 		CKeyChooser(int* const Key, const char* const Title, const std::string& Icon = "");
-		~CKeyChooser();
+		virtual ~CKeyChooser();
 		
 		//
 		//int exec(CMenuTarget* parent, const std::string & actionKey);

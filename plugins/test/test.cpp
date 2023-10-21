@@ -1245,13 +1245,12 @@ void CTestMenu::testCTextBoxWidget()
 	if (!m_vMovieInfo.empty())
 		textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
 		
+	textBoxWidget->setTextColor(COL_YELLOW_PLUS_0);
+		
 	testWidget = new CWidget(&box);
-	
 	testWidget->addKey(CRCInput::RC_ok, this, "mplay");
 	testWidget->addKey(CRCInput::RC_info, this, "tinfo");
-	
 	testWidget->addCCItem(textBoxWidget);
-	
 	testWidget->exec(this, "");
 	
 	delete textBoxWidget;
@@ -2239,7 +2238,10 @@ void CTestMenu::testCTextBox()
 		textBoxWidget->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h);
 	}
 	
-	textBoxWidget->addKey(CRCInput::RC_ok, this, "winfo");
+	textBoxWidget->setTextColor(COL_YELLOW_PLUS_0);
+	
+	textBoxWidget->addKey(CRCInput::RC_info, this, "tinfo");
+	textBoxWidget->addKey(CRCInput::RC_ok, this, "mplay");
 	
 	// loop
 	textBoxWidget->exec();
@@ -3804,9 +3806,10 @@ void CTestMenu::testCInfoBox()
 	CInfoBox * infoBox = new CInfoBox(&position, "CInfoBox", NEUTRINO_ICON_INFO);	
 	
 	infoBox->setBorderMode(CComponent::BORDER_ALL);
+	infoBox->setTextColor(COL_RED_PLUS_0);
 	
 	if (!m_vMovieInfo.empty())
-		infoBox->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true, true);
+		infoBox->setText(buffer.c_str(), m_vMovieInfo[0].tfile.c_str(), p_w, p_h, CTextBox::PIC_RIGHT, true);
 	
 	infoBox->exec();
 	
@@ -6318,12 +6321,11 @@ void CTestMenu::showMenu()
 		mWidget->addCCItem(mainMenu);
 	}
 	
+	mainMenu->clear();
+	mainMenu->clearItems();
+	
 	//
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CComponent"));
-	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
-	mainMenu->addItem(new CMenuForwarder("CCWindow(gradient)", true, NULL, this, "window"));
-	mainMenu->addItem(new CMenuForwarder("CCWindow(with border)", true, NULL, this, "windowshadow"));
-	mainMenu->addItem(new CMenuForwarder("CCWindow(border|customColor)", true, NULL, this, "windowcustomcolor"));
 	mainMenu->addItem(new CMenuForwarder("CCIcon", true, NULL, this, "icon"));
 	mainMenu->addItem(new CMenuForwarder("CCImage", true, NULL, this, "image"));
 	mainMenu->addItem(new CMenuForwarder("CCButtons (foot)", true, NULL, this, "buttons"));
@@ -6333,6 +6335,10 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("CProgressBar", true, NULL, this, "progressbar"));
 	
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	mainMenu->addItem(new CMenuForwarder("CCWindow", true, NULL, this, "panel"));
+	mainMenu->addItem(new CMenuForwarder("CCWindow(gradient)", true, NULL, this, "window"));
+	mainMenu->addItem(new CMenuForwarder("CCWindow(with border)", true, NULL, this, "windowshadow"));
+	mainMenu->addItem(new CMenuForwarder("CCWindow(border|customColor)", true, NULL, this, "windowcustomcolor"));
 	mainMenu->addItem(new CMenuForwarder("CHeaders", true, NULL, this, "headers"));
 	mainMenu->addItem(new CMenuForwarder("CFooters", true, NULL, this, "footers"));
 	mainMenu->addItem(new CMenuForwarder("CTextBox", true, NULL, this, "textbox"));

@@ -169,18 +169,14 @@ class CMenuItem
 		}
 
 		virtual bool isSelectable(void) const {return false;}
-
 		virtual int exec(CMenuTarget *) {return 0;}
-		
 		//
 		virtual void setActive(const bool Active);
 		virtual void setMarked(const bool Marked);
 		virtual void setHidden(const bool Hidden);
-
 		//
 		virtual int getYPosition(void) const { return y; }
 		virtual int getMenuItemType(){ return menuItem_type;};
-
 		//
 		virtual void setOption(const char* text){if (text) option = text;};
 		virtual void setOptionInfo(const char* text){if (text) optionInfo = text;};
@@ -188,45 +184,37 @@ class CMenuItem
 		virtual void setInfo2(const char* const text){if (text) info2 = text;};
 		virtual void setOptionInfo1(const char* const text){if (text) option_info1 = text;};
 		virtual void setOptionInfo2(const char* const text){if (text) option_info2 = text;};
-
 		//
 		virtual void setHint(const char* const Text){if (Text) itemHint =  Text;};
 		virtual void setHintIcon(const char* const icon){if (icon) itemIcon = icon;};
-
 		//
 		virtual void setIconName(const char* const icon){if (icon) iconName = icon;};
-
 		//
 		virtual void setIcon1(const char* const icon){if (icon)icon1 = icon;};
 		virtual void setIcon2(const char* const icon){if (icon)icon2 = icon;};
 		virtual void setNumber(int nr){number = nr;};
 		virtual void setPercent(unsigned int percent){pb = true; runningPercent = percent;};
-
+		//
 		virtual void setNameFont(unsigned int font){nameFont = font;};
 		virtual void setOptionFont(unsigned int font){optionFont = font;};
 		virtual void setOptionFontColor(uint32_t c){optionFontColor = c;};
-
+		//
 		virtual void set2lines(void){nLinesItem = true;};
 		virtual void setWidgetType(int type){widgetType = type;};
 		virtual void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
 		virtual void setBorderColor(fb_pixel_t col){borderColor = col;};
 		virtual void setGradient(int gr){itemGradient = gr;};
-
 		//
 		virtual void setDirectKey(neutrino_msg_t key){directKey = key;};
 		virtual void setActionKey(CMenuTarget *Target, const char *const ActionKey){jumpTarget = Target; actionKey = ActionKey;};
-		
 		//
 		virtual void setParent(ClistBox* p){parent = p;};
-		
 		//
 		virtual void setChangeObserver(CChangeObserver* c){observ = c;};
 		virtual void enablePullDown(){pulldown = true;};
 		virtual void addOption(const char *opt, const int val = 0){};
-		
 		// locked
 		virtual void setLocked(char *validpin = NULL){ locked = true; AlwaysAsk = true; validPIN = validpin? validpin : (char *)"";};
-		
 		// state : active/locked/hidden/marked/inactive
 		virtual void setState(int state);
 };
@@ -402,18 +390,6 @@ class ClistBox : public CComponent
 			MODE_SETUP
 		};
 
-		// iteminfo mode
-		/*
-		enum
-		{
-			ITEMINFO_INFO_MODE = 0,
-			ITEMINFO_HINT_MODE,
-			ITEMINFO_HINTITEM_MODE,
-			ITEMINFO_HINTICON_MODE,
-			ITEMINFO_HINTHINT_MODE
-		};
-		*/
-
 		//
 		std::vector<CMenuItem*> items;
 		
@@ -526,10 +502,8 @@ class ClistBox : public CComponent
 		int corner;
 		bool scrollbar;
 		int gradient;
-		
 		//
 		int widgetMode;
-		
 		// item
 		int itemBorderMode;
 		fb_pixel_t itemBorderColor;
@@ -540,46 +514,52 @@ class ClistBox : public CComponent
 		ClistBox(const int x = 0, int const y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
 		ClistBox(CBox* position);
 		virtual ~ClistBox();
+		
+		//
+		bool isSelectable(void){return true;};
 
-		virtual void addItem(CMenuItem * menuItem, const bool defaultselected = false);
+		////
+		void addItem(CMenuItem * menuItem, const bool defaultselected = false);
 		bool hasItem();
 		void clearItems(void){items.clear(); current_page = 0;};
 		void clear(void){hbutton_labels.clear(); fbutton_labels.clear(); widget.clear();current_page = 0;};
 		void setSelected(unsigned int _new) { selected = _new; };
-
-		virtual void initFrames();
-		virtual void paintHead();
-		virtual void paintFoot();
-		virtual void paintItemInfo(int pos);
-		virtual void hideItemInfo();
-		
-		//
-		virtual void paint();
-		virtual void hide();
+		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = CMenuItem::TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
+		////
+		void initFrames(); // public
+		void paintHead();
+		void paintFoot();
+		void paintItemInfo(int pos);
+		void hideItemInfo();
+		void paint();
+		void hide();
 		void refresh(){if (paintDate && paintTitle) timer->refresh();};
 		bool update() const {return paintDate;};
-
-		// head
-		void enablePaintHead(){paintTitle = true;};
-		void enablePaintDate(void){paintDate = true;};
-		void setTitle(const char* title = "", const char* icon = NULL){if (title) l_name = title; if(icon) iconfile = icon;};
-		void setTitleHAlign(const int m){thalign = m;};
-		void setHeadButtons(const struct button_label *_hbutton_label, const int _hbutton_count = 1);
-		void setHeadColor(fb_pixel_t col) {headColor = col;};
-		void setHeadCorner(int ra, int co = CORNER_TOP){headRadius = ra; headCorner = co;};
-		void setHeadGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){headGradient = grad; headGradient_direction = direction; headGradient_intensity = intensity; headGradient_type = type;};
-		void setHeadLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
-		void setFormat(const char* f){format = f;};
+		inline bool isPainted(void){return painted;};
+		bool hasHead(){return paintTitle;};
+		bool hasFoot(){return paint_Foot;};
 		
-		// foot
-		void enablePaintFoot(){paint_Foot = true;};
-		void setFootButtons(const struct button_label *_fbutton_label, const int _fbutton_count = 1, const int _fbutton_width = 0);
-		void setFootColor(fb_pixel_t col) {footColor = col;};
-		void setFootCorner(int ra, int co = CORNER_BOTTOM){footRadius = ra; footCorner = co;};
-		void setFootGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){footGradient = grad; footGradient_direction = direction; footGradient_intensity = intensity; footGradient_type = type;};
-		void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
-
-		// itemInfo FIXME:
+		//// main properties
+		void enableShrinkMenu(){shrinkMenu = true;};
+		void setColor(fb_pixel_t col){bgcolor = col;};
+		void setCorner(int ra, int co){radius = ra; corner = co;};
+		void paintScrollBar(bool sb){scrollbar = sb;};
+		void setGradient(int grad){ gradient = grad;};
+		// frame method
+		void setItemsPerPage(int itemsX = 6, int itemsY = 3){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};
+		//
+		void setWidgetType(int type){widgetType = type; widget.push_back(widgetType);};
+		void addWidgetType(int wtype){widget.push_back(wtype);};
+		void changeWidgetType();
+		void setWidgetMode(int mode){widgetMode = mode;};
+		
+		//// item properties
+		void setItemBorderMode(int m = CComponent::BORDER_ALL){itemBorderMode = m;};
+		void setItemBorderColor(fb_pixel_t col){itemBorderColor = col;};
+		void setItemGradient(int gr = NOGRADIENT){itemGradient = gr;};
+		void setItem2Lines(){item2Lines = true;};
+		
+		//// itemInfo properties
 		void enablePaintItemInfo(int fh = 0){paintFootInfo = true; footInfoHeight = fh;};
 		void setItemInfoMode(int mode){footInfoMode = mode;};
 		void setItemInfoPos(int x, int y, int dx, int dy)
@@ -599,23 +579,40 @@ class ClistBox : public CComponent
 		void setItemInfoFont(unsigned int f){iteminfofont = f;};
 		void setItemInfoColor(uint32_t col){iteminfocolor = col;};
 		void setItemInfoScaling(bool s){iteminfoscale = s;};
+		
+		//// head properties
+		void enablePaintHead(){paintTitle = true;};
+		void enablePaintDate(void){paintDate = true;};
+		void setTitle(const char* title = "", const char* icon = NULL){if (title) l_name = title; if(icon) iconfile = icon;};
+		void setTitleHAlign(const int m){thalign = m;};
+		void setHeadButtons(const struct button_label *_hbutton_label, const int _hbutton_count = 1);
+		void setHeadColor(fb_pixel_t col) {headColor = col;};
+		void setHeadCorner(int ra, int co = CORNER_TOP){headRadius = ra; headCorner = co;};
+		void setHeadGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){headGradient = grad; headGradient_direction = direction; headGradient_intensity = intensity; headGradient_type = type;};
+		void setHeadLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
+		void setFormat(const char* f){format = f;};
+		
+		//// foot properties
+		void enablePaintFoot(){paint_Foot = true;};
+		void setFootButtons(const struct button_label *_fbutton_label, const int _fbutton_count = 1, const int _fbutton_width = 0);
+		void setFootColor(fb_pixel_t col) {footColor = col;};
+		void setFootCorner(int ra, int co = CORNER_BOTTOM){footRadius = ra; footCorner = co;};
+		void setFootGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){footGradient = grad; footGradient_direction = direction; footGradient_intensity = intensity; footGradient_type = type;};
+		void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
 
-		// mainFrame
-		void enableShrinkMenu(){shrinkMenu = true;};
-		void setColor(fb_pixel_t col){bgcolor = col;};
-		void setCorner(int ra, int co){radius = ra; corner = co;};
-		void paintScrollBar(bool sb){scrollbar = sb;};
-		void setGradient(int grad){ gradient = grad;};
-
+		//// events / actionKey methodes
+		void scrollLineDown(const int lines = 1);
+		void scrollLineUp(const int lines = 1);
+		void scrollPageDown(const int pages = 1);
+		void scrollPageUp(const int pages = 1);
+		int swipLeft();
+		int swipRight();
 		//
-		virtual void scrollLineDown(const int lines = 1);
-		virtual void scrollLineUp(const int lines = 1);
-		virtual void scrollPageDown(const int pages = 1);
-		virtual void scrollPageUp(const int pages = 1);
-		virtual int swipLeft();
-		virtual int swipRight();
+		int oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok);
+		void homeKeyPressed(){selected = -1;};
+		int directKeyPressed(neutrino_msg_t _msg);
 
-		//
+		//// get methods
 		int getItemsCount()const{return items.size();};
 		int getCurrentPage()const{return current_page;};
 		int getTotalPages()const{return total_pages;};
@@ -630,43 +627,15 @@ class ClistBox : public CComponent
 		std::string getItemHint(){if (hasItem()) return items[selected]->itemHint; else return "";};
 		std::string getItemIcon(){if (hasItem()) return items[selected]->itemIcon; else return "";};
 		CBox getWindowsPos(void){initFrames(); return (itemBox);};
-
 		// frame type methods
-		void setItemsPerPage(int itemsX = 6, int itemsY = 3){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};
 		int getItemsPerX()const{return itemsPerX;};
 		int getItemsPerY()const{return itemsPerY;};
 		int getMaxItemsPerPage()const{return maxItemsPerPage;};
-
 		// widget type/mode/pos
-		void setWidgetType(int type){widgetType = type; widget.push_back(widgetType);};
 		int getWidgetType(){return widgetType;};
-		void addWidgetType(int wtype){widget.push_back(wtype);};
-		void changeWidgetType();
-		void setWidgetMode(int mode){widgetMode = mode;};
-		
-		// item
-		void setItemBorderMode(int m = CComponent::BORDER_ALL){itemBorderMode = m;};
-		void setItemBorderColor(fb_pixel_t col){itemBorderColor = col;};
-		void setItemGradient(int gr = NOGRADIENT){itemGradient = gr;};
-		void setItem2Lines(){item2Lines = true;};
-
-		//
-		bool isSelectable(void){return true;};
-
-		//
-		int oKKeyPressed(CMenuTarget* target, neutrino_msg_t _msg = CRCInput::RC_ok);
-		void homeKeyPressed(){selected = -1;};
-		int directKeyPressed(neutrino_msg_t _msg);
-
 		//
 		std::string getActionKey(void){return actionKey;}; // lua
-		
-		virtual void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = CMenuItem::TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
-		
-		//
-		inline bool isPainted(void){return painted;};
-		bool hasHead(){return paintTitle;};
-		bool hasFoot(){return paint_Foot;};
 };
 
 #endif // LISTBOX_H_
+
