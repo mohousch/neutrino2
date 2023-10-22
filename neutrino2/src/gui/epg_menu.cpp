@@ -93,10 +93,10 @@ int CEPGMenuHandler::doMenu()
 		redMenu->enablePaintHead();
 		redMenu->setTitle(_("EPG / Timer"), NEUTRINO_ICON_BUTTON_EPG);
 		redMenu->enablePaintDate();
-		redMenu->setHeadLine(true, true);
+		//redMenu->setHeadLine(true, true);
 		
 		redMenu->enablePaintFoot();
-		redMenu->setFootLine(true, true);
+		//redMenu->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			

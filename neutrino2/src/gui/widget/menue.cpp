@@ -868,7 +868,7 @@ void CMenuWidget::paintItemInfo(int pos)
 	}
 	else if(widgetType == CMenuItem::TYPE_CLASSIC)
 	{
-		if(widgetMode == ClistBox::MODE_MENU)
+		if(widgetMode == ClistBox::MODE_MENU || widgetMode == ClistBox::MODE_SETUP)
 		{
 			if(paintFootInfo)
 			{

@@ -129,10 +129,10 @@ int CAudioSelectMenuHandler::doMenu()
 						
 		AudioSelector->enablePaintHead();
 		AudioSelector->setTitle(_("Select language"), NEUTRINO_ICON_AUDIO);
-		AudioSelector->setHeadLine(true, true);
+//		AudioSelector->setHeadLine(true, true);
 
 		AudioSelector->enablePaintFoot();
-		AudioSelector->setFootLine(true, true);
+//		AudioSelector->setFootLine(true, true);
 							
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 							

@@ -1477,7 +1477,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	// iteminfo
 	if (paintiteminfo)
 	{
-		listBox->enablePaintItemInfo(70);
+		listBox->enablePaintItemInfo((m == ClistBox::MODE_LISTBOX)? 70 : 0);
 		int iimode = CCItemInfo::ITEMINFO_INFO;
 		if (iteminfomode) iimode = convertItemInfoMode(iteminfomode);
 		listBox->setItemInfoMode(iimode);		

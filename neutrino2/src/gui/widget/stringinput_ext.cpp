@@ -316,7 +316,7 @@ void CExtendedInput::paint()
 	CCHeaders head(x, y, width, hheight, name.c_str());
 	head.setCorner(RADIUS_SMALL);
 	head.setGradient(LIGHT2DARK);
-	head.setLine(false);
+//	head.setLine(false);
 	head.paint();
 
 	// body / footbox

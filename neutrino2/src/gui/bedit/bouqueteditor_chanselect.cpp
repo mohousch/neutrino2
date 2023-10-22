@@ -144,11 +144,11 @@ void CBEChannelSelectWidget::paint()
 		//
 		listBox->enablePaintHead();
 		listBox->enablePaintDate();
-		listBox->setHeadLine(true, true);
+//		listBox->setHeadLine(true, true);
 		
 		//
 		listBox->enablePaintFoot();
-		listBox->setFootLine(true, true);
+//		listBox->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(listBox);

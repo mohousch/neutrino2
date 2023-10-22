@@ -94,7 +94,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 		//				
 		DVBSubSelector->enablePaintHead();
 		DVBSubSelector->setTitle(_("Subtitle Select"), NEUTRINO_ICON_SUBT);
-		DVBSubSelector->setHeadLine(true, true);
+//		DVBSubSelector->setHeadLine(true, true);
 
 		//
 		DVBSubSelector->enablePaintFoot();
@@ -102,7 +102,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 							
 		DVBSubSelector->setFootButtons(&btn);
-		DVBSubSelector->setFootLine(true, true);
+//		DVBSubSelector->setFootLine(true, true);
 						
 		//
 		widget->addCCItem(DVBSubSelector);

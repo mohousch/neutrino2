@@ -171,7 +171,7 @@ void CAudioSettings::showMenu()
 		//
 		audioSettings->enablePaintHead();
 		audioSettings->setTitle(_("Audio settings"), NEUTRINO_ICON_AUDIO);
-		audioSettings->setHeadLine(true, true);
+//		audioSettings->setHeadLine(true, true);
 
 		//
 		audioSettings->enablePaintFoot();
@@ -179,7 +179,7 @@ void CAudioSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		audioSettings->setFootButtons(&btn);
-		audioSettings->setFootLine(true, true);
+//		audioSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(audioSettings);

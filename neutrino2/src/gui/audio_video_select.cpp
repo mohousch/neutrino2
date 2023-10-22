@@ -221,10 +221,10 @@ int CAVPIDSelectWidget::showAudioDialog(void)
 						
 		AVPIDSelector->enablePaintHead();
 		AVPIDSelector->setTitle(_("AV Select"), NEUTRINO_ICON_AUDIO);
-		AVPIDSelector->setHeadLine(true, true);
+//		AVPIDSelector->setHeadLine(true, true);
 
 		AVPIDSelector->enablePaintFoot();
-		AVPIDSelector->setFootLine(true, true);
+//		AVPIDSelector->setFootLine(true, true);
 							
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 							

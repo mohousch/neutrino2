@@ -250,7 +250,7 @@ void CKeyChooserItem::paint()
 	CCHeaders headers(&m_cTitle, name.c_str(), NEUTRINO_ICON_KEYBINDING);
 	headers.setCorner(RADIUS_SMALL);
 	headers.setGradient(LIGHT2DARK);
-	headers.setLine(false);
+//	headers.setLine(false);
 	headers.paint();
 
 	//paint msg...

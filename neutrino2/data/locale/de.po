@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-22 18:06+0200\n"
+"POT-Creation-Date: 2023-10-22 22:31+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -989,8 +989,35 @@ msgstr "Kopfleiste"
 msgid "Help"
 msgstr "Hilfe"
 
+msgid "Here you can choose plugins"
+msgstr "Hier können Sie die Features benutzen"
+
+msgid "Here you can get device Info"
+msgstr "Hier erhalten Sie Infos über ihren Device"
+
+msgid "Here you can play / show  music / movies / pics"
+msgstr "Hier können Sie Musik / Filme abspielen"
+
+msgid "Here you can power off or standby your device"
+msgstr "Hier können Sie ihren Box ausschalten"
+
 msgid "Here you can select a skin from the following list."
 msgstr "Hier können Sie einen Skin aus der folgenden Liste auswählen."
+
+msgid "Here you can set Timers and show EPG"
+msgstr "Hier erhalten Sie Details zum laufenden Sender"
+
+msgid "Here you can set channel scan and more"
+msgstr "Hier können Sie Sender suchlauf führen"
+
+msgid "Here you can setup OSD"
+msgstr "Hier können Sie Farbschema wechseln"
+
+msgid "Here you can setup your box"
+msgstr "Hier können Sie ihre Box einstellen"
+
+msgid "Here you can switch between TV / Radio"
+msgstr "Hier können Sie in den TV Modus wechseln"
 
 msgid "Hide"
 msgstr "Verstecken"

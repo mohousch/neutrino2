@@ -429,8 +429,6 @@ class ClistBox : public CComponent
 
 		// widget type
 		int widgetType;
-		//std::vector<int> widget;
-		//int cnt;
 
 		// head
 		bool paintTitle;
@@ -522,7 +520,7 @@ class ClistBox : public CComponent
 		void addItem(CMenuItem * menuItem, const bool defaultselected = false);
 		bool hasItem();
 		void clearItems(void){items.clear(); current_page = 0;};
-		void clear(void){hbutton_labels.clear(); fbutton_labels.clear(); /*widget.clear();*/current_page = 0;};
+		void clear(void){hbutton_labels.clear(); fbutton_labels.clear(); current_page = 0;};
 		void setSelected(unsigned int _new) { selected = _new; };
 		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = CMenuItem::TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
 		////
@@ -548,9 +546,7 @@ class ClistBox : public CComponent
 		// frame method
 		void setItemsPerPage(int itemsX = 6, int itemsY = 3){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};
 		//
-		void setWidgetType(int type){widgetType = type; /*widget.push_back(widgetType);*/};
-		//void addWidgetType(int wtype){widget.push_back(wtype);};
-		//void changeWidgetType();
+		void setWidgetType(int type){widgetType = type;};
 		void setWidgetMode(int mode){widgetMode = mode;};
 		
 		//// item properties

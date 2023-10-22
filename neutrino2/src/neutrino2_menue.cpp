@@ -101,14 +101,16 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu->enablePaintHead();
 		nMenu->setTitle(_("Main Menu"), NEUTRINO_ICON_MAINMENU);
 		nMenu->enablePaintDate();
-		nMenu->setHeadLine(true, true);
+		//nMenu->setHeadLine(true, true);
 		
 		// foot
 		nMenu->enablePaintFoot();
-		nMenu->setFootLine(true, true);
+		//nMenu->setFootLine(true, true);
+		
+		// iteminfo
+		nMenu->enablePaintItemInfo();
 			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
-			
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };	
 		nMenu->setFootButtons(&btn);
 		
 		//
@@ -118,12 +120,18 @@ void CNeutrinoApp::mainMenu(void)
 	// tv modus
 	item = new CMenuForwarder(_("TV / Radio"), true, NULL, this, "tvradioswitch");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TV);
+	item->setHint(_("Here you can switch between TV / Radio"));
+	item->setIconName(NEUTRINO_ICON_BUTTON_RED);
+	item->setDirectKey(CRCInput::RC_red);
 	item->setState(g_settings.personalize_tvradio);
 	if (nMenu) nMenu->addItem(item);
 
 	// epg / sleeptimer
 	item = new CMenuForwarder(_("EPG / Timer"), true, NULL, new CEPGMenuHandler(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_TIMERLIST);
+	item->setHint(_("Here you can set Timers and show EPG"));
+	item->setIconName(NEUTRINO_ICON_BUTTON_GREEN);
+	item->setDirectKey(CRCInput::RC_green);
 	item->setState(g_settings.personalize_epgtimer);
 	if (nMenu) nMenu->addItem(item);
 			
@@ -131,6 +139,8 @@ void CNeutrinoApp::mainMenu(void)
 	// scart
 	item = new CMenuForwarder(_("Scart Mode"), true, NULL, this, "scart");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SCART);
+	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
+	//item->setDirectKey(CRCInput::RC_yellow);
 	item->setState(g_settings.personalize_scart);
 	if (nMenu) nMenu->addItem(item);
 #endif
@@ -138,40 +148,61 @@ void CNeutrinoApp::mainMenu(void)
 	// features
 	item = new CMenuForwarder(_("Features"), true, NULL, this, "features");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_FEATURES);
+	item->setHint(_("Here you can choose plugins"));
+	item->setIconName(NEUTRINO_ICON_BUTTON_BLUE);
+	item->setDirectKey(CRCInput::RC_blue);
 	item->setState(g_settings.personalize_features);
 	if (nMenu) nMenu->addItem(item);
 		
 	// service
 	item = new CMenuForwarder(_("System"), true, NULL, new CServiceMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SERVICE);
+	item->setHint(_("Here you can set channel scan and more"));
+	item->setIconName(NEUTRINO_ICON_BUTTON_1);
+	item->setDirectKey(CRCInput::RC_1);
 	item->setState(g_settings.personalize_system);
 	if (nMenu) nMenu->addItem(item);
 			
 	// main setting
 	item = new CMenuForwarder(_("Settings"), true, NULL, new CMainSettingsMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
+	item->setHint(_("Here you can setup your box"));
+	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
+	item->setDirectKey(CRCInput::RC_setup);
 	if (nMenu) nMenu->addItem(item);
 		
 	// osd
 	item = new CMenuForwarder(_("OSD"), true, NULL, new COSDSettings(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_OSDSETTINGS);
+	item->setHint(_("Here you can setup OSD"));
+	item->setIconName(NEUTRINO_ICON_BUTTON_2);
+	item->setDirectKey(CRCInput::RC_2);
 	if (nMenu) nMenu->addItem(item);
 		
 	//box info
 	item = new CMenuForwarder(_("Information"), true, NULL, new CInfoMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_BOXINFO);
+	item->setHint(_("Here you can get device Info"));
+	item->setIconName(NEUTRINO_ICON_BUTTON_INFO_SMALL);
+	item->setDirectKey(CRCInput::RC_info);
 	item->setState(g_settings.personalize_information);
 	if (nMenu) nMenu->addItem(item);
 
 	// power menu
 	item = new CMenuForwarder(_("Power Menu"), true, NULL, new CPowerMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_POWERMENU);
+	item->setHint(_("Here you can power off or standby your device"));
+	item->setIconName(NEUTRINO_ICON_BUTTON_POWER);
+	item->setDirectKey(CRCInput::RC_standby);
 	item->setState(g_settings.personalize_powermenu);
 	if (nMenu) nMenu->addItem(item);
 		
 	// mediaplayer
 	item = new CMenuForwarder(_("Media Player"), true, NULL, new CMediaPlayerMenu(), NULL);
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
+	item->setHint(_("Here you can play / show  music / movies / pics"));
+	item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
+	item->setDirectKey(CRCInput::RC_video);
 	item->setState(g_settings.personalize_mediaplayer);
 	if (nMenu) nMenu->addItem(item);
 
@@ -335,11 +366,11 @@ bool CNeutrinoApp::showUserMenu(int button)
 		menu->enablePaintHead();
 		menu->setTitle(txt.c_str(), NEUTRINO_ICON_FEATURES);
 		menu->enablePaintDate();
-		menu->setHeadLine(true, true);
+		//menu->setHeadLine(true, true);
 		
 		//
 		menu->enablePaintFoot();
-		menu->setFootLine(true, true);
+		//menu->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
 			

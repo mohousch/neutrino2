@@ -128,7 +128,7 @@ int CCECSetup::showMenu()
 		//
 		cec->enablePaintHead();
 		cec->setTitle(_("CEC Setup"), NEUTRINO_ICON_SETTINGS);
-		cec->setHeadLine(true, true);
+//		cec->setHeadLine(true, true);
 
 		//
 		cec->enablePaintFoot();
@@ -136,7 +136,7 @@ int CCECSetup::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		cec->setFootButtons(&btn);
-		cec->setFootLine(true, true);
+//		cec->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(cec);

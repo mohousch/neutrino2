@@ -1547,11 +1547,11 @@ void CChannelList::paint(bool customMode)
 		//
 		head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
 		head->enablePaintDate();
-		head->setLine(true, true);
+//		head->setLine(true, true);
 		
 		// foot
 		foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
-		foot->setLine(true, true);
+//		foot->setLine(true, true);
 		
 		//
 		window = new CCWindow(widget->getWindowsPos().iX + (widget->getWindowsPos().iWidth/3)*2, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth/3, widget->getWindowsPos().iHeight - 100);
@@ -1889,7 +1889,7 @@ int CChannelList::doChannelMenu(void)
 		//
 		menu->enablePaintHead();
 		menu->setTitle(_("Edit"), NEUTRINO_ICON_SETTINGS);
-		menu->setHeadLine(true, true);
+//		menu->setHeadLine(true, true);
 
 		//
 		menu->enablePaintFoot();
@@ -1897,7 +1897,7 @@ int CChannelList::doChannelMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		menu->setFootButtons(&btn);
-		menu->setFootLine(true, true);
+//		menu->setFootLine(true, true);
 		
 		//
 		mWidget->addCCItem(menu);

@@ -1546,10 +1546,10 @@ void CTestMenu::testClistBoxWidget()
 	rightWidget->enablePaintHead();
 	rightWidget->setTitle("CWidget(ClistBox)", NEUTRINO_ICON_MP3);
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	rightWidget->setHeadLine(true, true);
+	//rightWidget->setHeadLine(true, true);
 	rightWidget->enablePaintDate();
 	rightWidget->enablePaintFoot();
-	rightWidget->setFootLine(true, true);
+	//rightWidget->setFootLine(true, true);
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->enablePaintItemInfo(80);
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTICON);
@@ -2391,12 +2391,12 @@ void CTestMenu::testClistBox()
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
 	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
-	rightWidget->setHeadLine(true, true);
+	//rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	rightWidget->setFootLine(true, true);
+	//rightWidget->setFootLine(true, true);
 	
 	rightWidget->setHeadGradient(LIGHT2DARK);
 	rightWidget->setFootGradient(DARK2LIGHT);
@@ -2490,12 +2490,12 @@ void CTestMenu::testClistBox2()
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
 	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
-	rightWidget->setHeadLine(true, true);
+//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	rightWidget->setFootLine(true, true);
+//	rightWidget->setFootLine(true, true);
 	
 	rightWidget->setHeadGradient(LIGHT2DARK);
 	rightWidget->setFootGradient(DARK2LIGHT);
@@ -2582,12 +2582,12 @@ void CTestMenu::testClistBox3()
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
-	rightWidget->setHeadLine(true, true);
+//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	rightWidget->setFootLine(true, true);
+//	rightWidget->setFootLine(true, true);
 
 	rightWidget->setHeadGradient(LIGHT2DARK);
 	rightWidget->setFootGradient(DARK2LIGHT);
@@ -2674,12 +2674,12 @@ void CTestMenu::testClistBox4()
 	rightWidget->setTitleHAlign(CComponent::CC_ALIGN_CENTER);
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
-	rightWidget->setHeadLine(true, true);
+//	rightWidget->setHeadLine(true, true);
 	
 	// foot
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	rightWidget->setFootLine(true, true);
+//	rightWidget->setFootLine(true, true);
 	
 	// itemInfo
 	rightWidget->enablePaintItemInfo();
@@ -2767,12 +2767,12 @@ void CTestMenu::testClistBox5()
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
-	rightWidget->setHeadLine(true, true);
+//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	rightWidget->setFootLine(true, true);
+//	rightWidget->setFootLine(true, true);
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
@@ -2866,12 +2866,12 @@ void CTestMenu::testClistBox6()
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
-	rightWidget->setHeadLine(true, true);
+//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	rightWidget->setFootLine(true, true);
+//	rightWidget->setFootLine(true, true);
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
@@ -2965,12 +2965,12 @@ void CTestMenu::testClistBox7()
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
-	rightWidget->setHeadLine(true, true);
+//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	rightWidget->setFootLine(true, true);
+//	rightWidget->setFootLine(true, true);
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
@@ -3065,12 +3065,12 @@ void CTestMenu::testClistBox8()
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
-	rightWidget->setHeadLine(true, true);
+//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	rightWidget->setFootLine(true, true);
+//	rightWidget->setFootLine(true, true);
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
@@ -3157,12 +3157,12 @@ void CTestMenu::testClistBox9()
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
 	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
-	rightWidget->setHeadLine(true, true);
+//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	rightWidget->setFootLine(true, true);
+//	rightWidget->setFootLine(true, true);
 
 	// itemInfo
 	rightWidget->enablePaintItemInfo(70);
@@ -6646,12 +6646,12 @@ void CTestMenu::showMenu()
 		// head
 		mainMenu->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
 		mainMenu->setHeadGradient(LIGHT2DARK);
-		mainMenu->setHeadLine(true, true);
+		//mainMenu->setHeadLine(true, true);
 
 		// foot
 		mainMenu->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
 		mainMenu->setFootGradient(DARK2LIGHT);
-		mainMenu->setFootLine(true, true);
+		//mainMenu->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			

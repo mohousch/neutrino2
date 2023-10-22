@@ -1496,7 +1496,7 @@ void CFrameBuffer::paintBackground()
 
 void CFrameBuffer::saveScreen(int x, int y, int dx, int dy, fb_pixel_t * const memp)
 {
-	dprintf(DEBUG_DEBUG, "CFrameBuffer::saveScreen\n");
+	//dprintf(DEBUG_DEBUG, "CFrameBuffer::saveScreen\n");
 	
 	if (!getActive())
 		return;

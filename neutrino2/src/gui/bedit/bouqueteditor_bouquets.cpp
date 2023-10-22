@@ -123,12 +123,12 @@ void CBEBouquetWidget::paint()
 		
 		//
 		listBox->enablePaintHead();
-		listBox->setHeadLine(true, true);
+//		listBox->setHeadLine(true, true);
 		listBox->enablePaintDate();
 		
 		//
 		listBox->enablePaintFoot();
-		listBox->setFootLine(true, true);
+//		listBox->setFootLine(true, true);
 	
 		//
 		widget->addCCItem(listBox);

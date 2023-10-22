@@ -352,7 +352,7 @@ void CMessageBox::initFrames(void)
 		headers = new CCHeaders();
 		
 		//
-		headers->setLine(true, true);
+		//headers->setLine(true, true);
 	}
 
 	m_cBoxWindow->paintMainFrame(true);

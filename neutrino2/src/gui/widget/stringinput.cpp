@@ -471,7 +471,7 @@ void CStringInput::paint()
 	headers.setIcon(iconfile.c_str());
 	headers.setCorner(RADIUS_SMALL);
 	headers.setGradient(LIGHT2DARK);
-	headers.setLine(false);
+//	headers.setLine(false);
 	headers.paint();
 
 	if (!hint_1.empty())

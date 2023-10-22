@@ -104,13 +104,13 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 		headers->setColor(headColor);
 		headers->setCorner(headRadius, headCorner);
 		headers->setGradient(headGradient);
-		headers->setLine(true, true);
+//		headers->setLine(true, true);
 		
 		//
 		footers->setColor(footColor);
 		footers->setCorner(footRadius, footCorner);
 		footers->setGradient(footGradient);
-		footers->setLine(true, true);
+//		footers->setLine(true, true);
 		
 		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
 		
