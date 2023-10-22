@@ -2593,7 +2593,7 @@ void CTestMenu::testClistBox3()
 	rightWidget->setFootGradient(DARK2LIGHT);
 	
 	// footinfo
-	rightWidget->enablePaintItemInfo(80);
+	rightWidget->enablePaintItemInfo();
 
 	//rightWidget->setSelected(selected);
 
@@ -2680,6 +2680,9 @@ void CTestMenu::testClistBox4()
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->setFootLine(true, true);
+	
+	// itemInfo
+	rightWidget->enablePaintItemInfo();
 
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");

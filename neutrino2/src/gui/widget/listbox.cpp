@@ -2670,11 +2670,12 @@ void ClistBox::paintItemInfo(int pos)
 			else
 				itemsLine.enableSaveScreen();
 			
-			if (widgetMode == MODE_LISTBOX)
-				itemsLine.setMode(CCItemInfo::ITEMINFO_HINT);
-			else if (widgetMode == MODE_MENU)
+			itemsLine.setMode(CCItemInfo::ITEMINFO_HINTICON);
+			//if (widgetMode == MODE_LISTBOX)
+			//	itemsLine.setMode(CCItemInfo::ITEMINFO_HINTICON);
+			if (widgetMode == MODE_MENU)
 			{
-				itemsLine.setMode(CCItemInfo::ITEMINFO_HINTITEM);
+				itemsLine.setMode(CCItemInfo::ITEMINFO_ICON);
 				
 				if (item->isPlugin)
 					fname = item->itemIcon;

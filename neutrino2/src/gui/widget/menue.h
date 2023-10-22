@@ -167,7 +167,7 @@ class CMenuWidget : public CMenuTarget
 		bool hasItem();
 		int getItemsCount()const{return items.size();};
 		void clearItems(void){items.clear();};
-		void clear(void){items.clear(); hbutton_labels.clear(); fbutton_labels.clear(); /*widget.clear();*/current_page = 0;};
+		void clear(void){items.clear(); hbutton_labels.clear(); fbutton_labels.clear(); current_page = 0;};
 
 		////
 		void initFrames();
@@ -195,26 +195,16 @@ class CMenuWidget : public CMenuTarget
 		void setHeadButtons(const struct button_label* _hbutton_label, const int _hbutton_count = 1);
 		void enablePaintDate(void){paintDate = true;};
 		void setFormat(const char* f){if (f) format.clear(); format = f;};
-		//void setHeadColor(fb_pixel_t col) {headColor = col; def_headColor = false;};
-		//void setHeadCorner(int ra, int co = CORNER_TOP){headRadius = ra; headCorner = co; def_headRadius = false; def_headCorner = false;};
-		//void setHeadGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){headGradient = grad; headGradient_direction = direction; headGradient_intensity = intensity; headGradient_type = type; def_headGradient = false;};
-		//void setHeadLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
 		
 		//// foot
 		void setFootButtons(const struct button_label *_fbutton_label, const int _fbutton_count = 1, const int _fbutton_width = 0);
-		//void setFootColor(fb_pixel_t col) {footColor = col; def_footColor = false;};
-		//void setFootCorner(int ra, int co = CORNER_BOTTOM){footRadius = ra; footCorner = co; def_footRadius = false; def_footCorner = false;};
-		//void setFootGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){footGradient = grad; footGradient_direction = direction; footGradient_intensity = intensity; footGradient_type = type; def_footGradient = false;};
-		//void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
 
 		//// itemInfo
 		void enablePaintItemInfo(int fh = 70){paintFootInfo = true; footInfoHeight = fh; /*initFrames();*/};
 		void setItemInfoMode(int mode = CCItemInfo::ITEMINFO_INFO){footInfoMode = mode;};
 
 		//// type/mode/pos
-		void setWidgetType(int type){widgetType = type; /*widget.push_back(widgetType);*/};
-		//void addWidgetType(int wtype){widget.push_back(wtype);};
-		//void changeWidgetType();
+		void setWidgetType(int type){widgetType = type;};
 		void setWidgetMode(int mode){widgetMode = mode;};
 		void setMenuPosition(int p){menu_position = p;};
 		void enableShrinkMenu(){shrinkMenu = true;};
