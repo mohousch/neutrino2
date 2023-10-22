@@ -459,8 +459,8 @@ void RenderSObject(int _sx, int _sy, uint32_t color, int iType)
 	if (iType == OBJ_HEART) pObj = heart;
 	if (iType == OBJ_MARKER) pObj = marker;
 	if (iType == OBJ_SCROLLUP) pObj = scroll_up;
-	if (iType == OBJ_SCROLLDN) pObj=scroll_dn;
-	if (iType == OBJ_CLOCK) pObj=symbolclock;
+	if (iType == OBJ_SCROLLDN) pObj = scroll_dn;
+	if (iType == OBJ_CLOCK) pObj = symbolclock;
 
 	// render
 	for (y = 0; y < OBJ_SY; y++)					// for all columns
@@ -1244,20 +1244,14 @@ void PaintGrid(int last, int start, int end, int akt, int sel, int infolines, in
 	else 
 		cy = GRIDBOX_CY1/cols;
 	
-	// background (just for testing)
-	// RenderBox(0, 0, MAXSCREEN_X, MAXSCREEN_Y, FILL, WHITE);
-	// sprintf(info,"%d %d %d %d %d %d",last,start,end,akt,sel,infolines);
-	// RenderString(info,0,GRIDLINE-2,MAXSCREEN_X-4, LEFT, SMALL, GREY);
-	// return;
-	
 	// header (paint date and time)
 	RenderBox(0, 0, MAXSCREEN_X, GRIDLINE, FILL, SKIN3);
 	RenderBox(0, 0, MAXSCREEN_X, GRIDLINE, GRID, SKIN2);
 	RenderBox(MAXSCREEN_X/2, 0, MAXSCREEN_X/2, GRIDLINE, GRID, SKIN2);
 	strftime(info, 80, infomsg[DATE][osdidx], at);
-	RenderString(info, 0, GRIDLINE - 4, MAXSCREEN_X - 4, FIXEDRIGHT, SMALL, GREY);
+	RenderString(info, 0, GRIDLINE - 4, MAXSCREEN_X - 4, FIXEDRIGHT, SMALL, WHITE);
 	sprintf(info, "%s %u", monthmsg[tShow_mon-1][osdidx], tShow_year);
-	RenderString(info, 0 + 4, GRIDLINE - 4, MAXSCREEN_X/2, TUXCAL_CENTER, NORMAL, BLACK);
+	RenderString(info, 0 + 4, GRIDLINE - 4, MAXSCREEN_X/2, TUXCAL_CENTER, NORMAL, WHITE);
 	
 	// only paint if a key has been pressed
 	//if (rccode != 0xFFFF) return;
@@ -1480,8 +1474,8 @@ void PaintGrid(int last, int start, int end, int akt, int sel, int infolines, in
 	}
 		
 	// footer 
-	RenderBox(0, MAXSCREEN_Y-GRIDLINE_SMALL, MAXSCREEN_X,MAXSCREEN_Y, FILL, SKIN3);
-	RenderBox(0, MAXSCREEN_Y-GRIDLINE_SMALL, MAXSCREEN_X,MAXSCREEN_Y, GRID, SKIN2); 
+	RenderBox(0, MAXSCREEN_Y - GRIDLINE_SMALL, MAXSCREEN_X, MAXSCREEN_Y, FILL, SKIN3);
+	RenderBox(0, MAXSCREEN_Y - GRIDLINE_SMALL, MAXSCREEN_X, MAXSCREEN_Y, GRID, SKIN2); 
 	
 	if (infolines)
 	{
@@ -1490,26 +1484,26 @@ void PaintGrid(int last, int start, int end, int akt, int sel, int infolines, in
 		// red
 		//RenderSObject(4,MAXSCREEN_Y-GRIDLINE_SMALL+4,RED,OBJ_CIRCLE);	
 		CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_BUTTON_RED, startx, starty + MAXSCREEN_Y - ih);
-		RenderString(infohelp[0][osdidx], 25, MAXSCREEN_Y - 4, MAXSCREEN_X/4, LEFT, SMALL,BLACK);
+		RenderString(infohelp[0][osdidx], 25, MAXSCREEN_Y - 4, MAXSCREEN_X/4, LEFT, SMALL, WHITE);
 		
 		// green
 		//RenderSObject(4+MAXSCREEN_X/4,MAXSCREEN_Y-GRIDLINE_SMALL+4,GREEN,OBJ_CIRCLE);
 		CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_BUTTON_GREEN, startx + MAXSCREEN_X/4, starty + MAXSCREEN_Y - ih);
-		RenderString(infohelp[1][osdidx], 25 + MAXSCREEN_X/4, MAXSCREEN_Y - 4, MAXSCREEN_X/4, LEFT, SMALL, BLACK);
+		RenderString(infohelp[1][osdidx], 25 + MAXSCREEN_X/4, MAXSCREEN_Y - 4, MAXSCREEN_X/4, LEFT, SMALL, WHITE);
 		
 		// yellow
 		//RenderSObject(4+MAXSCREEN_X/2,MAXSCREEN_Y-GRIDLINE_SMALL+4,YELLOW,OBJ_CIRCLE);	
 		CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_BUTTON_YELLOW, startx + MAXSCREEN_X/2, starty + MAXSCREEN_Y - ih);
-		RenderString(infohelp[2][osdidx],25 + MAXSCREEN_X/2,MAXSCREEN_Y-4,MAXSCREEN_X/4,LEFT,SMALL,BLACK);
+		RenderString(infohelp[2][osdidx],25 + MAXSCREEN_X/2,MAXSCREEN_Y-4,MAXSCREEN_X/4,LEFT,SMALL, WHITE);
 		
 		// blue
 		//RenderSObject(4+3*MAXSCREEN_X/4,MAXSCREEN_Y-GRIDLINE_SMALL+4,BLUE,OBJ_CIRCLE);	
 		CFrameBuffer::getInstance()->paintIcon(NEUTRINO_ICON_BUTTON_BLUE, startx + 3*MAXSCREEN_X/4, starty + MAXSCREEN_Y - ih);
-		RenderString(infohelp[3][osdidx],25 + 3*MAXSCREEN_X/4,MAXSCREEN_Y - 4,MAXSCREEN_X/4, LEFT, SMALL, BLACK);	
+		RenderString(infohelp[3][osdidx],25 + 3*MAXSCREEN_X/4,MAXSCREEN_Y - 4,MAXSCREEN_X/4, LEFT, SMALL, WHITE);	
 	}
 	else
 	{
-		RenderString(infohelp[4][osdidx],4,MAXSCREEN_Y-4,MAXSCREEN_X-8,LEFT,SMALL,BLACK);	
+		RenderString(infohelp[4][osdidx],4,MAXSCREEN_Y-4,MAXSCREEN_X-8,LEFT,SMALL, WHITE);	
 	}
 
 	// output to framebuffer

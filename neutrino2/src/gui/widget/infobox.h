@@ -83,34 +83,31 @@ class CInfoBox
 		int footRadius;
 		int footCorner;
 		int footGradient;
-		
-		//
-		bool hide(void);
-		void initVar(void);
-		void initFrames(void);
-		void refreshTitle(void);
-		void refreshFoot(void);
-
-		bool paint(void);
-
-		void scrollPageDown(const int pages);
-		void scrollPageUp(const int pages);
-
-		void setBigFonts();
 
 	public:
 		CInfoBox();
 		CInfoBox(const CBox* position, const char * title = NULL, const char * icon = NEUTRINO_ICON_INFO);
 		virtual ~CInfoBox();
+		
+		////
+		void initVar(void);
+		void initFrames(void);
+		void refreshTitle(void);
+		void refreshFoot(void);
+		void paint(void);
+		void hide(void);
+		
+		////
+		void setBigFonts();
 
-		// head
+		//// head properties
 		void setTitle(const char *title){m_cTitle = title;};
 		void setIcon(const char *icon){m_cIcon = icon;};
 		void setHeadColor(fb_pixel_t col) {headColor = col;};
 		void setHeadCorner(int ra, int co){headRadius = ra; headCorner = co;};
 		void setHeadGradient(int grad){headGradient = grad;};
 		
-		// text
+		//// text properties
 		bool setText(const char * const newText, const char * const _thumbnail = NULL, int _tw = 0, int _th = 0, int tmode = CTextBox::PIC_RIGHT, bool enable_frame = false);
 		void setMode(const int mode){m_nMode = mode;};
 		void setBackgroundColor(fb_pixel_t col);
@@ -118,13 +115,17 @@ class CInfoBox
 		void setFont(unsigned int font_text);
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		
-		// foot
+		//// foot properties
 		void setFootColor(fb_pixel_t col) {footColor = col;};
 		void setFootCorner(int ra, int co){footRadius = ra; footCorner = co;};
 		void setFootGradient(int grad){footGradient = grad;};
 
 		//
 		int exec(int timeout = -1);
+		
+		////
+		void scrollPageDown(const int pages);
+		void scrollPageUp(const int pages);
 };
 
 //

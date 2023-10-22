@@ -204,40 +204,36 @@ class CFrameBox : public CComponent
 			initFrames();
 		};
 		void setPosition(CBox* position){itemBox = *position; initFrames();};
+		
+		//
+		bool isSelectable(void);
 
-		virtual void addFrame(CFrameItem *frame, const bool defaultselected = false);
+		//// 
+		void addFrame(CFrameItem *frame, const bool defaultselected = false);
 		bool hasItem();
 		void clearFrames(void){frames.clear();};
 		void setSelected(unsigned int _new) { /*if(_new <= frames.size())*/ selected = _new; };
 
-		virtual void initFrames();
-		virtual void paint();
-		virtual void hide();
+		//// 
+		void initFrames();
+		void paint();
+		void hide();
 		void refresh(){if (paintDate && paintTitle) timer->refresh();};
 		bool update() const {return paintDate;};
 
-		//
-		virtual int swipRight();
-		virtual int swipLeft();
-		virtual void scrollLineDown(const int lines = 1);
-		virtual void scrollLineUp(const int lines = 1);
-
-		int getSelected(){return selected;};
-		
-		//
+		//// main properties
 		void setColor(fb_pixel_t col){bgcolor = col;};
 		void setCorner(int ra, int co){radius = ra; corner = co;};
 
-		//
-		bool isSelectable(void);
-
+		//// events
+		int swipRight();
+		int swipLeft();
+		void scrollLineDown(const int lines = 1);
+		void scrollLineUp(const int lines = 1);
 		int oKKeyPressed(CMenuTarget* _parent, neutrino_msg_t _msg = CRCInput::RC_ok);
 		void homeKeyPressed(){selected = -1;};
 
-		// lua compatibility
-		std::string getActionKey(void){return actionKey;};
-		
-		// head
+		//// head properties
 		void enablePaintHead(){paintTitle = true;};
 		virtual void paintHead();
 		void enablePaintDate(void){paintDate = true;};
@@ -248,13 +244,16 @@ class CFrameBox : public CComponent
 		void setHeadGradient(int grad){headGradient = grad;};
 		void setFormat(const char* f){format = f;};
 		
-		// foot
+		//// foot properties
 		void enablePaintFoot(){paint_Foot = true;};
 		virtual void paintFoot();
 		void setFootButtons(const struct button_label *_fbutton_label, const int _fbutton_count = 1, const int _fbutton_width = 0);
 		void setFootColor(fb_pixel_t col) {footColor = col;};
 		void setFootCorner(int ra, int co = CORNER_BOTTOM){footRadius = ra; footCorner = co;};
 		void setFootGradient(int grad){footGradient = grad;};
+		
+		//// get methods
+		int getSelected(){return selected;};
 };
 
 #endif

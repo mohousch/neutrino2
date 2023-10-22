@@ -1419,45 +1419,20 @@ void CTestMenu::testCListFrameWidget()
 	
 	testWidget = new CWidget(frameBuffer->getScreenX() + 50, frameBuffer->getScreenY() + 50, frameBuffer->getScreenWidth() - 100, frameBuffer->getScreenHeight() - 100);
 
-	// head
-	headBox.iWidth = testWidget->getWindowsPos().iWidth;
-	headBox.iHeight = 40;
-	headBox.iX = testWidget->getWindowsPos().iX;
-	headBox.iY = testWidget->getWindowsPos().iY;
-
-	headers = new CCHeaders(&headBox, "CWidget(ClistFrame)", NEUTRINO_ICON_MP3);
-
-	headers->setButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	headers->enablePaintDate();
-
-	// foot
-	footBox.iWidth = testWidget->getWindowsPos().iWidth;
-	footBox.iHeight = 40;
-	footBox.iX = testWidget->getWindowsPos().iX;
-	footBox.iY = testWidget->getWindowsPos().iY + testWidget->getWindowsPos().iHeight - footBox.iHeight;
-
-	footers = new CCFooters(&footBox);
-
-	footers->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	//footers->setCorner(RADIUS_MID, CORNER_BOTTOM);
-
 	//
 	CBox listFrameBox;
 	LF_LINES listFrameLines;
 	int selected = 0;
 	
 	listFrameBox.iX = testWidget->getWindowsPos().iX;
-	listFrameBox.iY = testWidget->getWindowsPos().iY + headBox.iHeight;
+	listFrameBox.iY = testWidget->getWindowsPos().iY;
 	listFrameBox.iWidth = testWidget->getWindowsPos().iWidth;
-	listFrameBox.iHeight = testWidget->getWindowsPos().iHeight - headBox.iHeight - footBox.iHeight;
-
-	//
-#define MAX_ROWS 		LF_MAX_ROWS //6
+	listFrameBox.iHeight = testWidget->getWindowsPos().iHeight;
 
 	// init
-	listFrameLines.rows = MAX_ROWS;
+	listFrameLines.rows = LF_MAX_ROWS;
 
-	for(int row = 0; row < MAX_ROWS; row++)
+	for(int row = 0; row < LF_MAX_ROWS; row++)
 	{
 		listFrameLines.lineArray[row].clear();
 	}
@@ -1479,7 +1454,11 @@ void CTestMenu::testCListFrameWidget()
 	listFrameLines.lineHeader[5] = "date";
 	
 
-	listFrame = new CListFrame(&listFrameLines, NULL, CListFrame::CListFrame::HEADER_LINE | CListFrame::SCROLL, &listFrameBox);
+	//
+	listFrame = new CListFrame(&listFrameBox);
+
+	listFrame->setMode(CListFrame::TITLE | CListFrame::HEADER_LINE | CListFrame::SCROLL);
+	listFrame->setTitle("listFrame (AudioPlayer)", NEUTRINO_ICON_MP3);
 
 	CHintBox loadBox("ListFrame Widget", __("Scan for Movies ..."));
 	loadBox.paint();
@@ -1522,9 +1501,7 @@ void CTestMenu::testCListFrameWidget()
 	listFrame->showSelection(true);
 
 	//
-	testWidget->addCCItem(headers);
 	testWidget->addCCItem(listFrame);
-	testWidget->addCCItem(footers);
 
 	testWidget->addKey(CRCInput::RC_ok, this, "aok");
 	testWidget->addKey(CRCInput::RC_info, this, "ainfo");
@@ -1536,12 +1513,6 @@ void CTestMenu::testCListFrameWidget()
 
 	delete listFrame;
 	listFrame = NULL;
-
-	delete headers;
-	headers = NULL;
-
-	delete footers;
-	footers = NULL;
 }
 
 void CTestMenu::testClistBoxWidget()
@@ -2265,18 +2236,13 @@ void CTestMenu::testCListFrame()
 	//
 	listFrameBox.iWidth = CFrameBuffer::getInstance()->getScreenWidth() / 20 * 17;
 	listFrameBox.iHeight = CFrameBuffer::getInstance()->getScreenHeight() / 20 * 18;
-
-	// recalculate x and y
 	listFrameBox.iX = CFrameBuffer::getInstance()->getScreenX() + ((CFrameBuffer::getInstance()->getScreenWidth() - (listFrameBox.iWidth)) / 2);
 	listFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - listFrameBox.iHeight) / 2);
 
-	//
-#define MAX_ROWS 		LF_MAX_ROWS //6
-
 	// init
-	listFrameLines.rows = 6;
+	listFrameLines.rows = LF_MAX_ROWS;
 
-	for(int row = 0; row < 6; row++)
+	for(int row = 0; row < LF_MAX_ROWS; row++)
 	{
 		listFrameLines.lineArray[row].clear();
 	}
@@ -2298,8 +2264,10 @@ void CTestMenu::testCListFrame()
 	listFrameLines.lineHeader[5] = "date";
 	
 
-	listFrame = new CListFrame(&listFrameLines, NULL, CListFrame::TITLE | CListFrame::HEADER_LINE | CListFrame::SCROLL, &listFrameBox);
+	//
+	listFrame = new CListFrame(&listFrameBox);
 
+	listFrame->setMode(CListFrame::TITLE | CListFrame::HEADER_LINE | CListFrame::SCROLL);
 	// title
 	listFrame->setTitle("listFrame (AudioPlayer)", NEUTRINO_ICON_MP3);
 	
@@ -6357,11 +6325,11 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuForwarder("ClistBox(HINT)", true, NULL, this, "listbox9"));
 	
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "CWidget"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(ClistFrame|CHead|CFoot)", true, NULL, this, "listframewidget"));
-	mainMenu->addItem(new CMenuForwarder("CWidget(CComponents|CHead|CFoot)", true, NULL, this, "ccomponents"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(CTextBox)", true, NULL, this, "textboxwidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox)", true, NULL, this, "listboxmwidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(CFrameBox)", true, NULL, this, "firetv"));
+	mainMenu->addItem(new CMenuForwarder("CWidget(ClistFrame|CHead|CFoot)", true, NULL, this, "listframewidget"));
+	mainMenu->addItem(new CMenuForwarder("CWidget(CComponents|CHead|CFoot)", true, NULL, this, "ccomponents"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CWindow|CHead|CFoot)", true, NULL, this, "multiwidget"));
 	mainMenu->addItem(new CMenuForwarder("CWidget(ClistBox|CFrameBox|CHead|CFoot)", true, NULL, this, "widget"));
 	

@@ -101,17 +101,7 @@ void CHelpBox::addLine(std::string& icon, std::string& text)
 	v.push_back(dt);
 	m_lines.push_back(v);
 }
-/*
-void CHelpBox::add2Line(const char* const text1, const char* const text2, CFont* font1, uint32_t col1, const bool bg1, CFont* font2, uint32_t col2, const bool bg2)
-{
-	std::vector<Drawable*> v;
-	Drawable *di = new DText(text1, font1, col1, bg1);
-	Drawable *dt = new DText(text2, font2, col2, bg2);
-	v.push_back(di);
-	v.push_back(dt);
-	m_lines.push_back(v);
-}
-*/
+
 void CHelpBox::addSeparator(void)
 {
 	std::vector<Drawable*> v;

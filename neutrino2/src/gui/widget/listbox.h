@@ -633,8 +633,6 @@ class ClistBox : public CComponent
 		int getMaxItemsPerPage()const{return maxItemsPerPage;};
 		// widget type/mode/pos
 		int getWidgetType(){return widgetType;};
-		//
-		std::string getActionKey(void){return actionKey;}; // lua
 };
 
 #endif // LISTBOX_H_

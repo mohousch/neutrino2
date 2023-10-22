@@ -54,6 +54,7 @@ class CHintBox
 		
 		CWidget *widget;
 		CCHeaders *headers;
+		CCScrollBar scrollBar;
 
 		unsigned int entries_per_page;
 		unsigned int current_page;
@@ -62,8 +63,6 @@ class CHintBox
 		char * message;
 		std::vector<char *>line;
 		std::string iconfile;
-
-		CCScrollBar scrollBar;
 		
 		void refreshPage(void);
 		
@@ -76,25 +75,31 @@ class CHintBox
 		//
 		int borderMode;
 		fb_pixel_t borderColor;
+		
+		////
+		bool has_scrollbar(void);
 
 	public:
 		//
 		CHintBox(const char * Caption, const char * const Text, const int Width = HINTBOX_WIDTH, const char * const Icon = NEUTRINO_ICON_INFO);
 		virtual ~CHintBox(void);
 
-		bool has_scrollbar(void);
-		void scroll_up(void);
-		void scroll_down(void);
-
+		////
 		void paint(void);
 		void hide(void);
 		
+		////
 		void enablePaintHG(void){paintHG = true;};
 		void setBorderMode(int sm = CComponent::BORDER_ALL){borderMode = sm;};
 		void setBorderColor(fb_pixel_t col){borderColor = col;};
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;}; // in sec
-		//
+		
+		////
 		int exec(int timeout = -1);
+		
+		////
+		void scrollPageUp(void);
+		void scrollPageDown(void);
 };
 
 int HintBox(const char * const Caption, const char * const Text, const int Width = HINTBOX_WIDTH, int timeout = -1, const char * const Icon = NEUTRINO_ICON_INFO, const int border = CComponent::BORDER_NO);

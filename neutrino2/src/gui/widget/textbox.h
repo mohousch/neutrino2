@@ -79,6 +79,8 @@ class CTextBox : public CComponent
 		//
 		CBox m_cFrameTextRel;
 		CBox m_cFrameScrollRel;
+		
+		CCScrollBar scrollBar;
 
 		// variables
 		std::string m_cText;
@@ -94,8 +96,6 @@ class CTextBox : public CComponent
 		int m_nLinesPerPage;
 		int m_nCurrentLine;
 		int m_nCurrentPage;
-		
-		CCScrollBar scrollBar;
 
 		// text
 		unsigned int m_pcFontText;
@@ -168,5 +168,5 @@ class CTextBox : public CComponent
 		bool isSelectable(void){return true;}
 };
 
-#endif // !defined(AFX_TEXTBOX_H__208DED01_ABEC_491C_A632_5B21057DC5D8__INCLUDED_)
+#endif // TEXTBOX_H
 

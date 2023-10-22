@@ -1295,13 +1295,27 @@ int CMovieBrowser::paint(void)
 	
 	headers = new CCHeaders(&m_cBoxFrameTitleRel);
 
-	m_pcBrowser = new CListFrame(&m_browserListLines, NULL, CListFrame::SCROLL | CListFrame::HEADER_LINE, &m_cBoxFrameBrowserList);
+	//
+	m_pcBrowser = new CListFrame(&m_cBoxFrameBrowserList);
+	m_pcBrowser->setMode(CListFrame::SCROLL | CListFrame::HEADER_LINE);
 
-	m_pcLastPlay = new CListFrame(&m_playListLines, NULL, CListFrame::SCROLL | CListFrame::HEADER_LINE | CListFrame::TITLE, &m_cBoxFrameLastPlayList, _("Last played:"), g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]);
+	//
+	m_pcLastPlay = new CListFrame(&m_cBoxFrameLastPlayList);
+	m_pcLastPlay->setMode(CListFrame::SCROLL | CListFrame::HEADER_LINE | CListFrame::TITLE);
+	m_pcLastPlay->setTitle(_("Last played:"));
+	m_pcLastPlay->setTitleFont(g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]);
 
-	m_pcLastRecord = new CListFrame(&m_recordListLines, NULL, CListFrame::SCROLL | CListFrame::HEADER_LINE | CListFrame::TITLE, &m_cBoxFrameLastRecordList, _("Last recorded:"), g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]);
+	//
+	m_pcLastRecord = new CListFrame(&m_cBoxFrameLastRecordList);
+	m_pcLastRecord->setMode(CListFrame::SCROLL | CListFrame::HEADER_LINE | CListFrame::TITLE);
+	m_pcLastRecord->setTitle(_("Last recorded:"));
+	m_pcLastRecord->setTitleFont(g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]);
 
-	m_pcFilter = new CListFrame(&m_FilterLines, NULL, CListFrame::SCROLL | CListFrame::TITLE, &m_cBoxFrameFilter, _("Filter movies by category:"), g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]);
+	//
+	m_pcFilter = new CListFrame(&m_cBoxFrameFilter);
+	m_pcFilter->setMode(CListFrame::SCROLL | CListFrame::TITLE);
+	m_pcFilter->setTitle(_("Filter movies by category:"));
+	m_pcFilter->setTitleFont(g_Font[SNeutrinoSettings::FONT_TYPE_EPG_INFO1]);
 
 	m_pcInfo = new CTextBox(&m_cBoxFrameInfo);
 	

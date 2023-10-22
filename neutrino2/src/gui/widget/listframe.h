@@ -101,12 +101,13 @@ class CListFrame : public CComponent
 		CBox m_cFrameListRel;
 		CBox m_cFrameScrollRel;
 		CBox m_cFrameHeaderListRel;
+		
+		CCScrollBar scrollBar;
 
+		////
 		int m_nMaxHeight;
 		int m_nMaxWidth;
-
 		int m_nMode;
-
 		int m_nNrOfPages;
 		int m_nNrOfLines;
 		int m_nNrOfRows;
@@ -115,6 +116,7 @@ class CListFrame : public CComponent
 		int m_nCurrentLine;
 		int m_nCurrentPage;
 		int m_nSelectedLine;
+		int LinesPerPage;
 
 		bool m_showSelection;
 		
@@ -127,55 +129,61 @@ class CListFrame : public CComponent
 		
 		static CFont* m_pcFontHeaderList;
 		int m_nFontHeaderListHeight;
-		
-		//
-		int LinesPerPage;
 
 		CFrameBuffer * frameBuffer;
 		std::string m_iconTitle;
 
-		CCScrollBar scrollBar;
 	public:
-		CListFrame();
-		CListFrame(LF_LINES* lines);
-		CListFrame(LF_LINES* lines, 
-					CFont* font_text,
-					const int mode, 
-					const CBox* position,
-					const char* textTitle = NULL,
-					CFont *font_title = NULL);
+		//CListFrame();
+		CListFrame(const int x = 0, const int y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
+		CListFrame(CBox* position);
 
 		virtual ~CListFrame();
-
-		// Functions
-		void    refreshPage(void);
-		void    refreshLine(int line);
-		void    scrollPageDown(const int pages = 1);
-		void    scrollPageUp(const int pages = 1);				
-		void 	scrollLineDown(const int lines = 1);
-		void 	scrollLineUp(const int lines = 1);
-		bool	setLines(LF_LINES* lines);
-		bool	setTitle(const char* title = "", const std::string& icon = NULL);
-		bool	setSelectedLine(int selection = 0);
-		void	hide(void);
-		void	paint(void);
-
-		inline	int	getMaxLineWidth(void)		{return(m_nMaxLineWidth);};
-		inline  int     getSelectedLine(void)		{return(m_nSelectedLine);};
-		inline  int     getLines(void)			{return(m_nNrOfLines);};
-		inline  int     getPages(void)			{return(m_nNrOfPages);};
-		inline int 	getLinesPerPage(void)		{return(LinesPerPage);};
 		
-		//
-		int getSelected(void){return(m_nSelectedLine);}; 
+		////
+		void setPosition(const CBox* position)
+		{
+			itemBox	= *position;
 
-		//
-		inline  void    showSelection(bool show = true)	{m_showSelection = show; refreshLine(m_nSelectedLine);};
-		inline	void	movePosition(int x, int y)	{itemBox.iX = x; itemBox.iY = y;};
-
-		//
+			m_nMaxHeight = itemBox.iHeight;
+			m_nMaxWidth = itemBox.iWidth;
+		};
+		
+		////
 		bool isSelectable(void){return true;}
 		bool hasItem(){if (m_pLines != NULL) return true;};
+
+		////
+		void refreshPage(void);
+		void refreshLine(int line);
+		inline void showSelection(bool show = true)	{m_showSelection = show; refreshLine(m_nSelectedLine);};
+		inline void movePosition(int x, int y)	{itemBox.iX = x; itemBox.iY = y;};
+		
+		////
+		void hide(void);
+		void paint(void);
+		
+		////
+		void scrollPageDown(const int pages = 1);
+		void scrollPageUp(const int pages = 1);				
+		void scrollLineDown(const int lines = 1);
+		void scrollLineUp(const int lines = 1);
+		
+		////
+		void setLines(LF_LINES* lines);
+		void setTitle(const char* title, const char * const icon = NULL);
+		void setSelectedLine(int selection = 0);
+		void setFont(CFont *font_text){m_pcFontList = font_text;};
+		void setMode(int m){m_nMode = m; initFrames();};
+		void setTitleFont(CFont *font_title){m_pcFontTitle = font_title;};
+
+		//// get methods
+		inline int getMaxLineWidth(void)		{return(m_nMaxLineWidth);};
+		inline int getSelectedLine(void)		{return(m_nSelectedLine);};
+		inline int getLines(void)			{return(m_nNrOfLines);};
+		inline int getPages(void)			{return(m_nNrOfPages);};
+		inline int getLinesPerPage(void)		{return(LinesPerPage);};
+		int getSelected(void){return(m_nSelectedLine);}; 
 };
 
 #endif //LISTFRAME_H_

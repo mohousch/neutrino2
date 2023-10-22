@@ -370,11 +370,9 @@ void CInfoBox::refreshFoot(void)
 // Return:		
 // Notes:		
 //////////////////////////////////////////////////////////////////////
-bool CInfoBox::hide(void)
+void CInfoBox::hide(void)
 {
 	widget->hide();
-	
-	return (true);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -483,7 +481,7 @@ bool CInfoBox::setText(const char * const newText, const char * const _thumbnail
 // Return:		
 // Notes:		
 //////////////////////////////////////////////////////////////////////
-bool CInfoBox::paint(void)
+void CInfoBox::paint(void)
 {
 	dprintf(DEBUG_DEBUG, "CInfoBox::paint\n");
 
@@ -494,8 +492,6 @@ bool CInfoBox::paint(void)
 	refreshFoot();
 	
 	widget->paint();
-	
-	return (true);
 }
 
 //////////////////////////////////////////////////////////////////////

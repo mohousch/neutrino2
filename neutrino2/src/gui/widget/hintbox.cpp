@@ -233,7 +233,7 @@ bool CHintBox::has_scrollbar(void)
 	return (entries_per_page < line.size());
 }
 
-void CHintBox::scroll_up(void)
+void CHintBox::scrollPageUp(void)
 {
 	if (current_page > 0)
 	{
@@ -242,7 +242,7 @@ void CHintBox::scroll_up(void)
 	}
 }
 
-void CHintBox::scroll_down(void)
+void CHintBox::scrollPageDown(void)
 {
 	if ((entries_per_page * (current_page + 1)) <= line.size())
 	{
@@ -299,9 +299,9 @@ int CHintBox::exec(int timeout)
 		else if ((has_scrollbar()) && ((msg == CRCInput::RC_up) || (msg == CRCInput::RC_down)))
 		{
 			if (msg == CRCInput::RC_up)
-				scroll_up();
+				scrollPageUp();
 			else
-				scroll_down();
+				scrollPageDown();
 		}
 		else if((msg == CRCInput::RC_mode) || (msg == CRCInput::RC_next) || (msg == CRCInput::RC_prev)) 
 		{
@@ -354,7 +354,7 @@ int HintBox(const char * const Caption, const char * const Text, const int Width
 
  	CHintBox * hintBox = new CHintBox(Caption, Text, Width, Icon);
 	hintBox->setBorderMode(border);
-	//hintBox->setBorderColor(bcol);
+
 	res = hintBox->exec(timeout);
 		
 	delete hintBox;
