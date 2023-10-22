@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 4.8\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-09-23 01:30+0200\n"
+"POT-Creation-Date: 2023-10-22 17:04+0200\n"
 "PO-Revision-Date: 2023-09-21 23:10+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -18,10 +18,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "CMenuWidget(Menu Mode)"
-msgstr "Kazalla!"
+msgstr "Hauptmenü"
+
+msgid "CMenuWidget(Menu|ItemInfo)"
+msgstr "Hauptmenü"
+
+msgid "CMenuWidget(Menu|classic)"
+msgstr "Hauptmenü"
+
+#, fuzzy
+msgid "CMenuWidget(Menu|extended)"
+msgstr "Hauptmenü"
+
+#, fuzzy
+msgid "CMenuWidget(Menu|frame)"
+msgstr "Hauptmenü"
 
 msgid "CWidget(CFrameBox/ClistBox)"
-msgstr "Verdammt das war nur ein Test"
+msgstr "Hauptmenü"
 
 msgid "Error"
 msgstr "Fehler"
@@ -30,31 +44,31 @@ msgid "Features"
 msgstr "Erweiterungen"
 
 msgid "Here you can choose plugins"
-msgstr ""
+msgstr "Hier können Sie die Features benutzen"
 
 msgid "Here you can get device Info"
-msgstr ""
+msgstr "Hier erhalten Sie Infos über ihren Device"
 
 msgid "Here you can play music / movies"
-msgstr ""
+msgstr "Hier können Sie Musik / Filme abspielen"
 
 msgid "Here you can power off or standby your device"
-msgstr ""
+msgstr "Hier können Sie ihren Box ausschalten"
 
 msgid "Here you can set Timers and show EPG"
-msgstr ""
+msgstr "Hier erhalten Sie Details zum laufenden Sender"
 
 msgid "Here you can set channel scan and more"
-msgstr ""
+msgstr "Hier können Sie Sender suchlauf führen"
 
 msgid "Here you can setup OSD"
-msgstr ""
+msgstr "Hier können Sie Farbschema wechseln"
 
 msgid "Here you can setup your box"
-msgstr ""
+msgstr "Hier können Sie ihre Box einstellen"
 
 msgid "Here you can switch between TV / Radio"
-msgstr "Na Ihr pap Nasen!"
+msgstr "Hier können Sie in den TV Modus wechseln"
 
 msgid "IP:"
 msgstr ""
@@ -69,7 +83,7 @@ msgid "OSD"
 msgstr ""
 
 msgid "Power Menu"
-msgstr ""
+msgstr "Auschaltmenü"
 
 msgid "Scan for Movies ..."
 msgstr ""

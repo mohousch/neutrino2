@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-21 01:32+0200\n"
+"POT-Creation-Date: 2023-10-22 18:06+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -267,6 +267,9 @@ msgid "Buttons Bar"
 msgstr "панель кнопок"
 
 msgid "Buttons Line"
+msgstr "Линия кнопок"
+
+msgid "Buttons Line Gradient"
 msgstr "Линия кнопок"
 
 msgid "CAM init complete"
@@ -1147,6 +1150,9 @@ msgstr "Лицензия:"
 
 msgid "Line"
 msgstr "Линия"
+
+msgid "Line Gradient"
+msgstr "Линия Градиент"
 
 msgid "List End"
 msgstr "Конец списка"

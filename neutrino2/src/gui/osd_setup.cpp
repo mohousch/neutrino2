@@ -361,6 +361,9 @@ void COSDMenuColorSettings::showMenu()
 	
 	// head line
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Line"), &g_settings.Head_line, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	
+	// head line gradient
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Line Gradient"), &g_settings.Head_line_gradient, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	// window content
 	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Window-Content")));
@@ -397,6 +400,9 @@ void COSDMenuColorSettings::showMenu()
 	
 	// foot line
 	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Line"), &g_settings.Foot_line, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	
+	// foot line gradient
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Line Gradient"), &g_settings.Foot_line_gradient, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	// itemInfo
 	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Item Info")));
@@ -541,6 +547,9 @@ void COSDInfoBarColorSettings::showMenu()
 	
 	// infobar buttonline
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Buttons Line"), &g_settings.infobar_buttonline, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
+	
+	// infobar buttonline gradient
+	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Buttons Line Gradient"), &g_settings.infobar_buttonline_gradient, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
 
 	// gradient
 	OSDinfobarColorSettings->addItem(new CMenuOptionChooser(_("Gradient"), &g_settings.infobar_gradient, COLOR_GRADIENT_TYPE_OPTIONS, COLOR_GRADIENT_TYPE_OPTION_COUNT, true));
