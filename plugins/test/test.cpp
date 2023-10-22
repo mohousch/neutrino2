@@ -3568,7 +3568,7 @@ void CTestMenu::testCMenuWidgetMenu()
 	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
 	item->setHint(__("Here you can play music / movies"));
-	item->setIconName(NEUTRINO_ICON_VIDEO);
+	item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
 	item->setDirectKey(CRCInput::RC_video);
 	menuWidget->addItem(item);
 	
@@ -3653,7 +3653,7 @@ void CTestMenu::testCMenuWidgetMenuItemInfo()
 	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
 	item->setHint(__("Here you can play music / movies"));
-	item->setIconName(NEUTRINO_ICON_VIDEO);
+	item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
 	item->setDirectKey(CRCInput::RC_video);
 	menuWidget->addItem(item);
 	
@@ -3740,7 +3740,7 @@ void CTestMenu::testCMenuWidgetMenuClassic()
 	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
 	item->setHint(__("Here you can play music / movies"));
-	item->setIconName(NEUTRINO_ICON_VIDEO);
+	item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
 	item->setDirectKey(CRCInput::RC_video);
 	menuWidget->addItem(item);
 	
@@ -3826,7 +3826,7 @@ void CTestMenu::testCMenuWidgetMenuExtended()
 	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
 	item->setHint(__("Here you can play music / movies"));
-	item->setIconName(NEUTRINO_ICON_VIDEO);
+	item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
 	item->setDirectKey(CRCInput::RC_video);
 	menuWidget->addItem(item);
 	
@@ -3912,7 +3912,7 @@ void CTestMenu::testCMenuWidgetMenuFrame()
 	item = new CMenuForwarder(__("Media Player"), true, NULL, new CMediaPlayerMenu());
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_MEDIAPLAYER);
 	item->setHint(__("Here you can play music / movies"));
-	item->setIconName(NEUTRINO_ICON_VIDEO);
+	item->setIconName(NEUTRINO_ICON_BUTTON_PLAY_SMALL);
 	item->setDirectKey(CRCInput::RC_video);
 	menuWidget->addItem(item);
 	

@@ -2286,7 +2286,7 @@ CCHeaders::CCHeaders(const int x, const int y, const int dx, const int dy, const
 	grad_intensity = INT_LIGHT;
 	grad_type = g_settings.Head_gradient_type;
 	line = g_settings.Head_line;
-	line_gradient = false;
+	line_gradient = g_settings.Head_line_gradient;
 
 	//
 	paintframe = true;
@@ -2322,7 +2322,7 @@ CCHeaders::CCHeaders(CBox* position, const char * const title, const char * cons
 	grad_intensity = INT_LIGHT;
 	grad_type = g_settings.Head_gradient_type;
 	line = g_settings.Head_line;
-	line_gradient = false;
+	line_gradient = g_settings.Head_line_gradient;
 	//
 	paintframe = true;
 	paintDate = false;
@@ -2550,7 +2550,7 @@ CCFooters::CCFooters(const int x, const int y, const int dx, const int dy)
 	grad_intensity = INT_LIGHT;
 	grad_type = g_settings.Foot_gradient_type;
 	line = g_settings.Foot_line;
-	line_gradient = false;
+	line_gradient = g_settings.Foot_line_gradient;
 	//
 	buttons.clear();
 	count = 0;
@@ -2579,7 +2579,7 @@ CCFooters::CCFooters(CBox* position)
 	grad_intensity = INT_LIGHT;
 	grad_type = g_settings.Foot_gradient_type;
 	line = g_settings.Foot_line;
-	line_gradient = false;
+	line_gradient = g_settings.Foot_line_gradient;
 	//
 	buttons.clear();
 	count = 0;
