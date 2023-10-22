@@ -457,6 +457,7 @@ struct SNeutrinoSettings
 	int Head_corner;
 	int Head_radius;
 	int Head_line;
+	int Head_line_gradient;
 	
 	// foot
 	int Foot_gradient;
@@ -464,6 +465,7 @@ struct SNeutrinoSettings
 	int Foot_corner;
 	int Foot_radius;
 	int Foot_line;
+	int Foot_line_gradient;
 	
 	// hint
 	int Hint_gradient;
@@ -479,6 +481,7 @@ struct SNeutrinoSettings
 	int infobar_radius;
 	int infobar_buttonbar;
 	int infobar_buttonline;
+	int infobar_buttonline_gradient;
 	int infobar_border;
 	
 	// cicam

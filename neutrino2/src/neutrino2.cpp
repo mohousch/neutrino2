@@ -825,6 +825,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.Head_gradient = configfile.getInt32("Head_gradient", DARK2LIGHT);
 	g_settings.Head_gradient_type = configfile.getInt32("Head_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 	g_settings.Head_line = configfile.getInt32("Head_line", false);
+	g_settings.Head_line_gradient = configfile.getInt32("Head_line_gradient", false);
 	
 	// foot
 	g_settings.Foot_corner = configfile.getInt32("Foot_corner", CORNER_BOTTOM);
@@ -832,6 +833,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.Foot_gradient = configfile.getInt32("Foot_gradient", LIGHT2DARK);
 	g_settings.Foot_gradient_type = configfile.getInt32("Foot_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 	g_settings.Foot_line = configfile.getInt32("Foot_line", false);
+	g_settings.Foot_line_gradient = configfile.getInt32("Foot_line_gradient", false);
 	
 	// infobar
 	g_settings.infobar_corner = configfile.getInt32("infobar_corner", CORNER_ALL);
@@ -840,6 +842,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.infobar_gradient_type = configfile.getInt32("infobar_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 	g_settings.infobar_buttonbar = configfile.getBool("infobar_buttonbar", true);
 	g_settings.infobar_buttonline = configfile.getBool("infobar_buttonline", false);
+	g_settings.infobar_buttonline_gradient = configfile.getBool("infobar_buttonline_gradient", false);
 	g_settings.infobar_border = configfile.getBool("infobar_border", false);
 	
 	// hint
@@ -1308,6 +1311,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("Head_gradient", g_settings.Head_gradient);
 	configfile.setInt32("Head_gradient_type", g_settings.Head_gradient_type);
 	configfile.setBool("Head_line", g_settings.Head_line);
+	configfile.setBool("Head_line_gradient", g_settings.Head_line_gradient);
 	
 	// foot
 	configfile.setInt32("Foot_corner", g_settings.Foot_corner);
@@ -1315,6 +1319,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("Foot_gradient", g_settings.Foot_gradient);
 	configfile.setInt32("Foot_gradient_type", g_settings.Foot_gradient_type);
 	configfile.setBool("Foot_line", g_settings.Foot_line);
+	configfile.setBool("Foot_line_gradient", g_settings.Foot_line_gradient);
 	
 	// hint
 	configfile.setInt32("Hint_gradient", g_settings.Hint_gradient);
@@ -1330,6 +1335,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32("infobar_radius", g_settings.infobar_radius);
 	configfile.setBool("infobar_buttonbar", g_settings.infobar_buttonbar);
 	configfile.setBool("infobar_buttonline", g_settings.infobar_buttonline);
+	configfile.setBool("infobar_buttonline_gradient", g_settings.infobar_buttonline_gradient);
 	configfile.setBool("infobar_border", g_settings.infobar_border);
 
 	//

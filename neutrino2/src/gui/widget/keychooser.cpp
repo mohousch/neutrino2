@@ -127,12 +127,12 @@ CKeyChooser::CKeyChooser(int * const Key, const char* const Title, const std::st
 	*/
 	
 	enableShrinkMenu();
-	setHeadCorner(RADIUS_SMALL);
-	setHeadGradient(LIGHT2DARK);
-	setHeadLine(false);
-	setFootCorner(RADIUS_SMALL);
-	setFootGradient(DARK2LIGHT);
-	setFootLine(false);
+	//setHeadCorner(RADIUS_SMALL);
+	//setHeadGradient(LIGHT2DARK);
+	//setHeadLine(false);
+	//setFootCorner(RADIUS_SMALL);
+	//setFootGradient(DARK2LIGHT);
+	//setFootLine(false);
 	
 	addItem(new CKeyValue());
 	addItem(new CMenuSeparator(CMenuSeparator::LINE));

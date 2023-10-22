@@ -1675,7 +1675,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 
 	//
 	widgetType = CMenuItem::TYPE_STANDARD;
-	cnt = 0;
+//	cnt = 0;
 	widgetMode = MODE_LISTBOX;
 
 	background = NULL;
@@ -1789,7 +1789,7 @@ ClistBox::ClistBox(CBox* position)
 
 	//
 	widgetType = CMenuItem::TYPE_STANDARD;
-	cnt = 0;
+//	cnt = 0;
 	widgetMode = MODE_LISTBOX;
 	
 	//
@@ -3271,7 +3271,7 @@ int ClistBox::directKeyPressed(neutrino_msg_t _msg)
 	return ret;
 }
 
-//
+/*
 void ClistBox::changeWidgetType()
 {
 	dprintf(DEBUG_INFO, "ClistBox::changeWidgetType:\n");
@@ -3292,6 +3292,7 @@ void ClistBox::changeWidgetType()
 		paint();
 	}
 }
+*/
 
 //
 void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned int shortcut, bool enabled, int imode, int itype, bool i2lines, int iBorder)

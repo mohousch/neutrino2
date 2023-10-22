@@ -664,16 +664,16 @@ int CMP3Player::showMenu()
 	alist->setWidgetMode(ClistBox::MODE_LISTBOX);
 
 	//
-	alist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
-	alist->setHeadGradient(LIGHT2DARK);
-	alist->setHeadLine(false);
+	//alist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
+	//alist->setHeadGradient(LIGHT2DARK);
+	//alist->setHeadLine(false);
 	alist->enablePaintDate();
 	alist->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	
 	//
-	alist->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
-	alist->setFootGradient(DARK2LIGHT);
-	alist->setFootLine(false);
+	//alist->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
+	//alist->setFootGradient(DARK2LIGHT);
+	//alist->setFootLine(false);
 	alist->setFootButtons(AudioPlayerButtons, FOOT_BUTTONS_COUNT);
 
 	//

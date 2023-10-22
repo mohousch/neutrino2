@@ -3143,6 +3143,7 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.Head_corner = skinConfig->getInt32("Head_corner", CORNER_TOP);
 		g_settings.Head_radius = skinConfig->getInt32("Head_radius", RADIUS_MID);
 		g_settings.Head_line = skinConfig->getBool("Head_line", false);
+		g_settings.Head_line_gradient = skinConfig->getBool("Head_line_gradient", false);
 		
 		// foot
 		g_settings.Foot_gradient = skinConfig->getInt32("Foot_gradient", LIGHT2DARK);
@@ -3150,6 +3151,7 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.Foot_corner = skinConfig->getInt32("Foot_corner", CORNER_BOTTOM);
 		g_settings.Foot_radius = skinConfig->getInt32("Foot_radius", RADIUS_MID);
 		g_settings.Foot_line = skinConfig->getBool("Foot_line", false);
+		g_settings.Foot_line_gradient = skinConfig->getBool("Foot_line_gradient", false);
 		
 		// infobar
 		g_settings.infobar_gradient = skinConfig->getInt32("infobar_gradient", DARK2LIGHT);
@@ -3159,6 +3161,7 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.infobar_border = skinConfig->getBool("infobar_border", false);
 		g_settings.infobar_buttonbar = skinConfig->getBool("infobar_buttonbar", true);
 		g_settings.infobar_buttonline = skinConfig->getBool("infobar_buttonline", false);
+		g_settings.infobar_buttonline_gradient = skinConfig->getBool("infobar_buttonline_gradient", false);
 		
 		// itemInfo
 		g_settings.Hint_border = skinConfig->getBool("Hint_border", true);
@@ -3262,6 +3265,7 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	skinConfig->setInt32("Head_corner", g_settings.Head_corner);
 	skinConfig->setInt32("Head_radius", g_settings.Head_radius);
 	skinConfig->setBool("Head_line", g_settings.Head_line);
+	skinConfig->setBool("Head_line_gradient", g_settings.Head_line_gradient);
 	
 	// foot
 	skinConfig->setInt32("Foot_gradient", g_settings.Foot_gradient);
@@ -3269,6 +3273,7 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	skinConfig->setInt32("Foot_corner", g_settings.Foot_corner);
 	skinConfig->setInt32("Foot_radius", g_settings.Foot_radius);
 	skinConfig->setBool("Foot_line", g_settings.Foot_line);
+	skinConfig->setBool("Foot_line_gradient", g_settings.Foot_line_gradient);
 	
 	// infobar
 	skinConfig->setInt32("infobar_gradient", g_settings.infobar_gradient);
@@ -3277,6 +3282,7 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	skinConfig->setInt32("infobar_radius", g_settings.infobar_radius);
 	skinConfig->setBool("infobar_buttonbar", g_settings.infobar_buttonbar);
 	skinConfig->setBool("infobar_buttonline", g_settings.infobar_buttonline);
+	skinConfig->setBool("infobar_buttonline_gradient", g_settings.infobar_buttonline_gradient);
 	skinConfig->setBool("infobar_border", g_settings.infobar_border);
 	
 	// itemInfo

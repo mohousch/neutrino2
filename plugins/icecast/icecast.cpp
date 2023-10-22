@@ -722,13 +722,13 @@ void CIceCast::showMenu()
 	//ilist->setTimeOut(g_settings.timing[SNeutrinoSettings::TIMING_CHANLIST]);
 	ilist->setSelected(selected);
 
-	ilist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
-	ilist->setHeadGradient(LIGHT2DARK);
-	ilist->setHeadLine(false);
+	//ilist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
+	//ilist->setHeadGradient(LIGHT2DARK);
+	//ilist->setHeadLine(false);
 	ilist->setHeadButtons(&HeadButtons);
-	ilist->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
-	ilist->setFootGradient(DARK2LIGHT);
-	ilist->setFootLine(false);
+	//ilist->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
+	//ilist->setFootGradient(DARK2LIGHT);
+	//ilist->setFootLine(false);
 	ilist->setFootButtons(AudioPlayerButtons, FOOT_BUTTONS_COUNT);
 	
 	ilist->enablePaintDate();

@@ -3009,12 +3009,12 @@ void CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 	CIntInput bookEndIntInput(_("Bookmark change"), (int&)movie_info->bookmarks.end, 5, _("Enter new Position (s)"), _("Enter new Position (s)"));
 
 	CMenuWidget bookmarkMenu(_("Bookmarks"), NEUTRINO_ICON_MOVIE);
-	bookmarkMenu.setHeadCorner(RADIUS_SMALL);
-	bookmarkMenu.setHeadGradient(LIGHT2DARK);
-	bookmarkMenu.setHeadLine(false);
-	bookmarkMenu.setFootCorner(RADIUS_SMALL);
-	bookmarkMenu.setFootGradient(DARK2LIGHT);
-	bookmarkMenu.setFootLine(false);
+	//bookmarkMenu.setHeadCorner(RADIUS_SMALL);
+	//bookmarkMenu.setHeadGradient(LIGHT2DARK);
+	//bookmarkMenu.setHeadLine(false);
+	//bookmarkMenu.setFootCorner(RADIUS_SMALL);
+	//bookmarkMenu.setFootGradient(DARK2LIGHT);
+	//bookmarkMenu.setFootLine(false);
 
 	// intros
 	bookmarkMenu.addItem(new CMenuForwarder(_("Clear all"), true, NULL, this, "book_clear_all", CRCInput::RC_blue, NEUTRINO_ICON_BUTTON_BLUE));
@@ -3031,12 +3031,12 @@ void CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 		pBookTypeIntInput[i1] = new CIntInput (_("Bookmark change"), (int&) movie_info->bookmarks.user[i1].length, 20, _("Enter new Position (s)"), _("Enter new Position (s)"));
 
 		pBookItemMenu[i1] = new CMenuWidget(_("Bookmarks"), NEUTRINO_ICON_MOVIE);
-		pBookItemMenu[i1]->setHeadCorner(RADIUS_SMALL);
-		pBookItemMenu[i1]->setHeadGradient(LIGHT2DARK);
-		pBookItemMenu[i1]->setHeadLine(false);
-		pBookItemMenu[i1]->setFootCorner(RADIUS_SMALL);
-		pBookItemMenu[i1]->setFootGradient(DARK2LIGHT);
-		pBookItemMenu[i1]->setFootLine(false);
+		//pBookItemMenu[i1]->setHeadCorner(RADIUS_SMALL);
+		//pBookItemMenu[i1]->setHeadGradient(LIGHT2DARK);
+		//pBookItemMenu[i1]->setHeadLine(false);
+		//pBookItemMenu[i1]->setFootCorner(RADIUS_SMALL);
+		//pBookItemMenu[i1]->setFootGradient(DARK2LIGHT);
+		//pBookItemMenu[i1]->setFootLine(false);
 
 		pBookItemMenu[i1]->setWidgetMode(ClistBox::MODE_SETUP);
 		pBookItemMenu[i1]->enableShrinkMenu();
@@ -3053,12 +3053,12 @@ void CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 	CStringInputSMS serieUserInput(_("Serie"), movie_info->serieName.c_str());
 
 	CMenuWidget serieMenu(_("Serie"), NEUTRINO_ICON_MOVIE);
-	serieMenu.setHeadCorner(RADIUS_SMALL);
-	serieMenu.setHeadGradient(LIGHT2DARK);
-	serieMenu.setHeadLine(false);
-	serieMenu.setFootCorner(RADIUS_SMALL);
-	serieMenu.setFootGradient(DARK2LIGHT);
-	serieMenu.setFootLine(false);
+	//serieMenu.setHeadCorner(RADIUS_SMALL);
+	//serieMenu.setHeadGradient(LIGHT2DARK);
+	//serieMenu.setHeadLine(false);
+	//serieMenu.setFootCorner(RADIUS_SMALL);
+	//serieMenu.setFootGradient(DARK2LIGHT);
+	//serieMenu.setFootLine(false);
 	
 	serieMenu.setWidgetMode(ClistBox::MODE_MENU);
 	serieMenu.enableShrinkMenu();
@@ -3080,12 +3080,12 @@ void CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 	//movieInfoMenuUpdate.enableSaveScreen();
 	movieInfoMenuUpdate.setWidgetMode(ClistBox::MODE_MENU);
 	movieInfoMenuUpdate.enableShrinkMenu();
-	movieInfoMenuUpdate.setHeadCorner(RADIUS_SMALL);
-	movieInfoMenuUpdate.setHeadGradient(LIGHT2DARK);
-	movieInfoMenuUpdate.setHeadLine(false);
-	movieInfoMenuUpdate.setFootCorner(RADIUS_SMALL);
-	movieInfoMenuUpdate.setFootGradient(DARK2LIGHT);
-	movieInfoMenuUpdate.setFootLine(false);
+	//movieInfoMenuUpdate.setHeadCorner(RADIUS_SMALL);
+	//movieInfoMenuUpdate.setHeadGradient(LIGHT2DARK);
+	//movieInfoMenuUpdate.setHeadLine(false);
+	//movieInfoMenuUpdate.setFootCorner(RADIUS_SMALL);
+	//movieInfoMenuUpdate.setFootGradient(DARK2LIGHT);
+	//movieInfoMenuUpdate.setFootLine(false);
 	
 	
 	// save 
@@ -3163,12 +3163,12 @@ void CMovieBrowser::showMovieInfoMenu(MI_MOVIE_INFO * movie_info)
 
 	movieInfoMenu.setWidgetMode(ClistBox::MODE_MENU);
 	movieInfoMenu.enableShrinkMenu();
-	movieInfoMenu.setHeadCorner(RADIUS_SMALL);
-	movieInfoMenu.setHeadGradient(LIGHT2DARK);
-	movieInfoMenu.setHeadLine(false);
-	movieInfoMenu.setFootCorner(RADIUS_SMALL);
-	movieInfoMenu.setFootGradient(DARK2LIGHT);
-	movieInfoMenu.setFootLine(false);
+	//movieInfoMenu.setHeadCorner(RADIUS_SMALL);
+	//movieInfoMenu.setHeadGradient(LIGHT2DARK);
+	//movieInfoMenu.setHeadLine(false);
+	//movieInfoMenu.setFootCorner(RADIUS_SMALL);
+	//movieInfoMenu.setFootGradient(DARK2LIGHT);
+	//movieInfoMenu.setFootLine(false);
 
 	// save changes
 	movieInfoMenu.addItem(new CMenuForwarder(_("Save changes"), true, NULL, this, "save_movie_info", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
@@ -3272,12 +3272,12 @@ bool CMovieBrowser::showMenu()
 
 	parentalMenu.setWidgetMode(ClistBox::MODE_SETUP);
 	parentalMenu.enableShrinkMenu();
-	parentalMenu.setHeadCorner(RADIUS_SMALL);
-	parentalMenu.setHeadGradient(LIGHT2DARK);
-	parentalMenu.setHeadLine(false);
-	parentalMenu.setFootCorner(RADIUS_SMALL);
-	parentalMenu.setFootGradient(DARK2LIGHT);
-	parentalMenu.setFootLine(false);
+	//parentalMenu.setHeadCorner(RADIUS_SMALL);
+	//parentalMenu.setHeadGradient(LIGHT2DARK);
+	//parentalMenu.setHeadLine(false);
+	//parentalMenu.setFootCorner(RADIUS_SMALL);
+	//parentalMenu.setFootGradient(DARK2LIGHT);
+	//parentalMenu.setFootLine(false);
 	
 	parentalMenu.addItem( new CMenuOptionChooser(_("activated"), (int*)(&m_parentalLock), MESSAGEBOX_PARENTAL_LOCK_OPTIONS, MESSAGEBOX_PARENTAL_LOCK_OPTIONS_COUNT, true ));
 
@@ -3288,12 +3288,12 @@ bool CMovieBrowser::showMenu()
 
 	optionsMenuDir.setWidgetMode(ClistBox::MODE_SETUP);
 	optionsMenuDir.enableShrinkMenu();
-	optionsMenuDir.setHeadCorner(RADIUS_SMALL);
-	optionsMenuDir.setHeadGradient(LIGHT2DARK);
-	optionsMenuDir.setHeadLine(false);
-	optionsMenuDir.setFootCorner(RADIUS_SMALL);
-	optionsMenuDir.setFootGradient(DARK2LIGHT);
-	optionsMenuDir.setFootLine(false);
+	//optionsMenuDir.setHeadCorner(RADIUS_SMALL);
+	//optionsMenuDir.setHeadGradient(LIGHT2DARK);
+	//optionsMenuDir.setHeadLine(false);
+	//optionsMenuDir.setFootCorner(RADIUS_SMALL);
+	//optionsMenuDir.setFootGradient(DARK2LIGHT);
+	//optionsMenuDir.setFootLine(false);
 	
 	optionsMenuDir.addItem( new CMenuOptionChooser(_("Use record directory"), (int*)(&m_settings.storageDirRecUsed), MESSAGEBOX_YES_NO_OPTIONS, MESSAGEBOX_YES_NO_OPTIONS_COUNT, true ));
 	optionsMenuDir.addItem( new CMenuForwarder(_("Path"), false ,g_settings.network_nfs_recordingdir));
@@ -3335,12 +3335,12 @@ bool CMovieBrowser::showMenu()
 
 	optionsMenuBrowser.setWidgetMode(ClistBox::MODE_SETUP);
 	optionsMenuBrowser.enableShrinkMenu();
-	optionsMenuBrowser.setHeadCorner(RADIUS_SMALL);
-	optionsMenuBrowser.setHeadGradient(LIGHT2DARK);
-	optionsMenuBrowser.setHeadLine(false);
-	optionsMenuBrowser.setFootCorner(RADIUS_SMALL);
-	optionsMenuBrowser.setFootGradient(DARK2LIGHT);
-	optionsMenuBrowser.setFootLine(false);
+	//optionsMenuBrowser.setHeadCorner(RADIUS_SMALL);
+	//optionsMenuBrowser.setHeadGradient(LIGHT2DARK);
+	//optionsMenuBrowser.setHeadLine(false);
+	//optionsMenuBrowser.setFootCorner(RADIUS_SMALL);
+	//optionsMenuBrowser.setFootGradient(DARK2LIGHT);
+	//optionsMenuBrowser.setFootLine(false);
 	
 	optionsMenuBrowser.addItem( new CMenuForwarder(_("Number of lines last play"), true, playMaxUserIntInput.getValue(),   &playMaxUserIntInput));
 	optionsMenuBrowser.addItem( new CMenuForwarder(_("Number of lines last record"), true, recMaxUserIntInput.getValue(), &recMaxUserIntInput));
@@ -3362,12 +3362,12 @@ bool CMovieBrowser::showMenu()
 
 	optionsMenu.setWidgetMode(ClistBox::MODE_SETUP);
 	optionsMenu.enableShrinkMenu();
-	optionsMenu.setHeadCorner(RADIUS_SMALL);
-	optionsMenu.setHeadGradient(LIGHT2DARK);
-	optionsMenu.setHeadLine(false);
-	optionsMenu.setFootCorner(RADIUS_SMALL);
-	optionsMenu.setFootGradient(DARK2LIGHT);
-	optionsMenu.setFootLine(false);
+	//optionsMenu.setHeadCorner(RADIUS_SMALL);
+	//optionsMenu.setHeadGradient(LIGHT2DARK);
+	//optionsMenu.setHeadLine(false);
+	//optionsMenu.setFootCorner(RADIUS_SMALL);
+	//optionsMenu.setFootGradient(DARK2LIGHT);
+	//optionsMenu.setFootLine(false);
 
 	optionsMenu.addItem( new CMenuForwarder(_("Save changes"), true, NULL, this, "save_options", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
 	optionsMenu.addItem( new CMenuSeparator(CMenuSeparator::LINE));
@@ -3392,12 +3392,12 @@ bool CMovieBrowser::showMenu()
 
 	mainMenu.setWidgetMode(ClistBox::MODE_MENU);
 	mainMenu.enableShrinkMenu();
-	mainMenu.setHeadCorner(RADIUS_SMALL);
-	mainMenu.setHeadGradient(LIGHT2DARK);
-	mainMenu.setHeadLine(false);
-	mainMenu.setFootCorner(RADIUS_SMALL);
-	mainMenu.setFootGradient(DARK2LIGHT);
-	mainMenu.setFootLine(false);
+	//mainMenu.setHeadCorner(RADIUS_SMALL);
+	//mainMenu.setHeadGradient(LIGHT2DARK);
+	//mainMenu.setHeadLine(false);
+	//mainMenu.setFootCorner(RADIUS_SMALL);
+	//mainMenu.setFootGradient(DARK2LIGHT);
+	//mainMenu.setFootLine(false);
 	
 	// show movie info
 	mainMenu.addItem( new CMenuForwarder(_("Film Informationen"), (m_movieSelectionHandler != NULL), NULL, this, "show_movie_info_menu", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED));
@@ -3985,12 +3985,12 @@ void CDirMenu::show(void)
 	
 	CMenuWidget dirMenu(_("Additional paths"), NEUTRINO_ICON_MOVIE);
 	dirMenu.enableSaveScreen();
-	dirMenu.setHeadCorner(RADIUS_SMALL);
-	dirMenu.setHeadGradient(LIGHT2DARK);
-	dirMenu.setHeadLine(false);
-	dirMenu.setFootCorner(RADIUS_SMALL);
-	dirMenu.setFootGradient(DARK2LIGHT);
-	dirMenu.setFootLine(false);
+	//dirMenu.setHeadCorner(RADIUS_SMALL);
+	//dirMenu.setHeadGradient(LIGHT2DARK);
+	//dirMenu.setHeadLine(false);
+	//dirMenu.setFootCorner(RADIUS_SMALL);
+	//dirMenu.setFootGradient(DARK2LIGHT);
+	//dirMenu.setFootLine(false);
 
 	dirMenu.setWidgetMode(ClistBox::MODE_MENU);
 	dirMenu.enableShrinkMenu();

@@ -109,50 +109,24 @@ class CMenuWidget : public CMenuTarget
 		uint32_t sec_timer_id;
 		uint64_t timeout;
 
-		// head
+		//// head
 		int hheight;
 		std::string l_name;
 		std::string iconfile;
 		int hbutton_count;
 		button_label_list_t hbutton_labels;
-		fb_pixel_t headColor;
-		bool def_headColor;
-		int headRadius;
-		bool def_headRadius;
-		int headCorner;
-		bool def_headCorner;
-		int headGradient;
-		int headGradient_type;
-		int headGradient_direction;
-		int headGradient_intensity;
-		bool def_headGradient;
 		int thalign;
-		bool head_line;
-		bool head_line_gradient;
 		bool paintDate;
 		std::string format;
 		CCTime* timer;
 		
-		// foot
+		//// foot
 		int fheight;
 		int fbutton_count;
 		int fbutton_width;
 		button_label_list_t fbutton_labels;
-		fb_pixel_t footColor;
-		bool def_footColor;
-		int footRadius;
-		bool def_footRadius;
-		int footCorner;
-		bool def_footCorner;
-		int footGradient;
-		int footGradient_type;
-		int footGradient_direction;
-		int footGradient_intensity;
-		bool def_footGradient;
-		bool foot_line;
-		bool foot_line_gradient;
 
-		// itemInfo
+		//// itemInfo
 		bool paintFootInfo;
 		int cFrameFootInfoHeight;
 		int footInfoHeight;
@@ -171,17 +145,11 @@ class CMenuWidget : public CMenuTarget
 
 		//
 		int widgetType;
-		std::vector<int> widget;
-		int cnt;
 
 		//
 		bool shrinkMenu;
 		int widgetMode;
 		int menu_position;
-		
-		//
-		fb_pixel_t bgcolor;
-		bool def_color;
 
 		// for lua
 		std::string actionKey;
@@ -192,88 +160,78 @@ class CMenuWidget : public CMenuTarget
 		
 		virtual ~CMenuWidget();
 
-		virtual void addItem(CMenuItem * menuItem, const bool defaultselected = false);
-		virtual void removeItem(long pos);
+		////
+		void addItem(CMenuItem * menuItem, const bool defaultselected = false);
+		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true);
+		void removeItem(long pos);
 		bool hasItem();
 		int getItemsCount()const{return items.size();};
 		void clearItems(void){items.clear();};
-		void clear(void){items.clear(); hbutton_labels.clear(); fbutton_labels.clear(); widget.clear();current_page = 0;};
+		void clear(void){items.clear(); hbutton_labels.clear(); fbutton_labels.clear(); /*widget.clear();*/current_page = 0;};
 
-		//
-		virtual void initFrames();
-		virtual void paintHead();
-		virtual void paintFoot();
-		virtual void paint();
-		virtual void paintItemInfo(int pos);
-		virtual void hideItemInfo();
-		virtual void hide();
-		virtual void refresh();
-
-		//
-		virtual int exec(CMenuTarget * parent, const std::string &actionKey);
-
-		void setSelected(unsigned int _new) { if(_new <= items.size()) selected = _new; if (selected < 0) selected = 0;};
-		int getSelected(){return selected;};
-		
-		void setTimeOut(unsigned long long int to = 0){timeout = to;};
-
-		void move(int xoff, int yoff);
-		int getHeight(void) const {return height;}
-		int getWidth(void) const {return width;};
-		int getX(void) const {return x;};
-		int getY(void) const {return y;};
-		
-		//
-		bool getExitPressed(){return exit_pressed;};
-		
-		//
+		////
+		void initFrames();
+		void paintHead();
+		void paintFoot();
+		void paint();
+		void paintItemInfo(int pos);
+		void hideItemInfo();
+		void hide();
+		void refresh();
 		void enableSaveScreen();
 
-		//
+		////
+		int exec(CMenuTarget * parent, const std::string &actionKey);
+
+		////
+		void setSelected(unsigned int _new) { if(_new <= items.size()) selected = _new; if (selected < 0) selected = 0;};
+		void setTimeOut(unsigned long long int to = 0){timeout = to;};
+		void move(int xoff, int yoff);
 		void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
-		neutrino_msg_t getKey(){return msg;};
-		
-		//
-		void setColor(fb_pixel_t col){bgcolor = col; def_color = false;};
 
-		// foot
-		void setFootButtons(const struct button_label *_fbutton_label, const int _fbutton_count = 1, const int _fbutton_width = 0);
-		void setFootColor(fb_pixel_t col) {footColor = col; def_footColor = false;};
-		void setFootCorner(int ra, int co = CORNER_BOTTOM){footRadius = ra; footCorner = co; def_footRadius = false; def_footCorner = false;};
-		void setFootGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){footGradient = grad; footGradient_direction = direction; footGradient_intensity = intensity; footGradient_type = type; def_footGradient = false;};
-		void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
-
-		// head
+		//// head
 		void setTitle(const char* title = "", const char* icon = NULL){l_name = title; if(icon != NULL) iconfile = icon;};
 		void setTitleHAlign(const int m){thalign = m;};
 		void setHeadButtons(const struct button_label* _hbutton_label, const int _hbutton_count = 1);
 		void enablePaintDate(void){paintDate = true;};
 		void setFormat(const char* f){if (f) format.clear(); format = f;};
-		void setHeadColor(fb_pixel_t col) {headColor = col; def_headColor = false;};
-		void setHeadCorner(int ra, int co = CORNER_TOP){headRadius = ra; headCorner = co; def_headRadius = false; def_headCorner = false;};
-		void setHeadGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){headGradient = grad; headGradient_direction = direction; headGradient_intensity = intensity; headGradient_type = type; def_headGradient = false;};
-		void setHeadLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
+		//void setHeadColor(fb_pixel_t col) {headColor = col; def_headColor = false;};
+		//void setHeadCorner(int ra, int co = CORNER_TOP){headRadius = ra; headCorner = co; def_headRadius = false; def_headCorner = false;};
+		//void setHeadGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){headGradient = grad; headGradient_direction = direction; headGradient_intensity = intensity; headGradient_type = type; def_headGradient = false;};
+		//void setHeadLine(bool l, bool g = false){head_line = l; head_line_gradient = g;};
+		
+		//// foot
+		void setFootButtons(const struct button_label *_fbutton_label, const int _fbutton_count = 1, const int _fbutton_width = 0);
+		//void setFootColor(fb_pixel_t col) {footColor = col; def_footColor = false;};
+		//void setFootCorner(int ra, int co = CORNER_BOTTOM){footRadius = ra; footCorner = co; def_footRadius = false; def_footCorner = false;};
+		//void setFootGradient(int grad, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int type = GRADIENT_COLOR2TRANSPARENT){footGradient = grad; footGradient_direction = direction; footGradient_intensity = intensity; footGradient_type = type; def_footGradient = false;};
+		//void setFootLine(bool l, bool g = false){foot_line = l; foot_line_gradient = g;};
 
-		// itemInfo
+		//// itemInfo
 		void enablePaintItemInfo(int fh = 70){paintFootInfo = true; footInfoHeight = fh; /*initFrames();*/};
 		void setItemInfoMode(int mode = CCItemInfo::ITEMINFO_INFO){footInfoMode = mode;};
 
-		// type/mode/pos
-		void setWidgetType(int type){widgetType = type; widget.push_back(widgetType);};
-		int getWidgetType(){return widgetType;};
-		void addWidgetType(int wtype){widget.push_back(wtype);};
-		void changeWidgetType();
+		//// type/mode/pos
+		void setWidgetType(int type){widgetType = type; /*widget.push_back(widgetType);*/};
+		//void addWidgetType(int wtype){widget.push_back(wtype);};
+		//void changeWidgetType();
 		void setWidgetMode(int mode){widgetMode = mode;};
 		void setMenuPosition(int p){menu_position = p;};
 		void enableShrinkMenu(){shrinkMenu = true;};
-
 		//
 		void setItemsPerPage(int itemsX = 6, int itemsY = 3){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};
 
-		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true);
-
-		//
+		//// get methods
+		bool getExitPressed(){return exit_pressed;};
+		int getSelected(){return selected;};
+		int getWidgetType(){return widgetType;};
+		int getHeight(void) const {return height;}
+		int getWidth(void) const {return width;};
+		int getX(void) const {return x;};
+		int getY(void) const {return y;};
 		std::string getActionKey(){return actionKey;}; // lua
+		neutrino_msg_t getKey(){return msg;};
 };
 
 #endif
+
