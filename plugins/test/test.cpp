@@ -2382,6 +2382,7 @@ void CTestMenu::testClistBox()
 
 	// mode
 	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
+	//rightWidget->setWidgetMode(ClistBox::MODE_MENU);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2391,32 +2392,20 @@ void CTestMenu::testClistBox()
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
 	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
-	//rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
-	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	//rightWidget->setFootLine(true, true);
+	//rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
 	rightWidget->setHeadGradient(LIGHT2DARK);
 	rightWidget->setFootGradient(DARK2LIGHT);
 
 	// itemInfo
 	//rightWidget->enablePaintItemInfo(70);
-	//rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINT);
-	//rightWidget->setItemInfoPos(Box.iX + Box.iWidth + 150, Box.iY + 100, 400, 400);
-	//rightWidget->paintItemInfoBorder(CComponent::BORDER_ALL);
-	//rightWidget->paintItemInfoFrame(true);
-	//rightWidget->enableItemInfoSaveScreen();
-	//rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_PLUGINLIST_ITEMLARGE);
-	
-	//
-	//rightWidget->paintScrollBar(false);
 	
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
-	//rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	rightWidget->exec();
 	
@@ -2482,6 +2471,7 @@ void CTestMenu::testClistBox2()
 
 	// widgettype
 	rightWidget->setWidgetType(CMenuItem::TYPE_CLASSIC);
+	//rightWidget->setWidgetMode(ClistBox::MODE_MENU);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2490,26 +2480,20 @@ void CTestMenu::testClistBox2()
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
 	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
-//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-//	rightWidget->setFootLine(true, true);
 	
 	rightWidget->setHeadGradient(LIGHT2DARK);
 	rightWidget->setFootGradient(DARK2LIGHT);
 
 	// footinfo
 	//rightWidget->enablePaintItemInfo(70);
-	//rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINT);
-
-	//rightWidget->setSelected(selected);
 	
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
-	//rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	rightWidget->exec();		
 	
@@ -2575,6 +2559,7 @@ void CTestMenu::testClistBox3()
 
 	// widgettype
 	rightWidget->setWidgetType(CMenuItem::TYPE_EXTENDED);
+	//rightWidget->setWidgetMode(ClistBox::MODE_MENU);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2582,12 +2567,10 @@ void CTestMenu::testClistBox3()
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
-//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-//	rightWidget->setFootLine(true, true);
 
 	rightWidget->setHeadGradient(LIGHT2DARK);
 	rightWidget->setFootGradient(DARK2LIGHT);
@@ -2595,12 +2578,9 @@ void CTestMenu::testClistBox3()
 	// footinfo
 	rightWidget->enablePaintItemInfo();
 
-	//rightWidget->setSelected(selected);
-
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
-	//rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	rightWidget->exec();		
 	
@@ -2663,7 +2643,8 @@ void CTestMenu::testClistBox4()
 
 	// widgettype
 	rightWidget->setWidgetType(CMenuItem::TYPE_FRAME);
-	rightWidget->setItemsPerPage(5,2);
+	//rightWidget->setWidgetMode(ClistBox::MODE_MENU);
+	rightWidget->setItemsPerPage(6,2);
 	rightWidget->enableShrinkMenu();
 	
 	rightWidget->paintMainFrame(true);
@@ -2674,12 +2655,10 @@ void CTestMenu::testClistBox4()
 	rightWidget->setTitleHAlign(CComponent::CC_ALIGN_CENTER);
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
-//	rightWidget->setHeadLine(true, true);
 	
 	// foot
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-//	rightWidget->setFootLine(true, true);
 	
 	// itemInfo
 	rightWidget->enablePaintItemInfo();
@@ -2687,7 +2666,6 @@ void CTestMenu::testClistBox4()
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
-	//rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	rightWidget->exec();		
 	
@@ -2855,34 +2833,23 @@ void CTestMenu::testClistBox6()
 	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
-	//
-	//rightWidget->addWidgetType(CMenuItem::TYPE_CLASSIC);
-	//rightWidget->addWidgetType(CMenuItem::TYPE_EXTENDED);
-	//rightWidget->addWidgetType(CMenuItem::TYPE_FRAME);
-	//rightWidget->setItemsPerPage(5, 2);
-
 	// head
 	rightWidget->setTitle("ClistBox(HINTITEM)", NEUTRINO_ICON_MOVIE);
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
-//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-//	rightWidget->setFootLine(true, true);
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTITEM);
 
-	//rightWidget->setSelected(selected);
-
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
-	//rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	rightWidget->exec();		
 	

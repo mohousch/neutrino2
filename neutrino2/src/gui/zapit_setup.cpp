@@ -183,7 +183,7 @@ void CZapitSetup::showMenu()
 		//
 		zapit->enablePaintHead();
 		zapit->setTitle(_("Start Channel settings"), NEUTRINO_ICON_ZAPIT);
-		zapit->setHeadLine(true, true);
+//		zapit->setHeadLine(true, true);
 
 		//
 		zapit->enablePaintFoot();
@@ -191,7 +191,7 @@ void CZapitSetup::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		zapit->setFootButtons(&btn);
-		zapit->setFootLine(true, true);
+//		zapit->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(zapit);

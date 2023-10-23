@@ -684,6 +684,9 @@ class CCItemInfo : public CComponent
 		int borderMode;
 		uint32_t color;
 		bool scale;
+		int radius;
+		int corner;
+		int gradient;
 		
 		//
 		fb_pixel_t *background;
@@ -708,6 +711,8 @@ class CCItemInfo : public CComponent
 		void setBorderMode(int m){borderMode = m;};
 		void setColor(uint32_t col){color = col;};
 		void setScaling(bool s){scale = s;};
+		void setCorner(int ra, int co){radius = ra; corner = co;};
+		void setGradient(int grad){gradient = grad;};
 		//
 		void saveScreen(void);
 		void restoreScreen(void);

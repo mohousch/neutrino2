@@ -134,7 +134,7 @@ void CPictureViewerSettings::showMenu()
 		//
 		PicViewerSettings->enablePaintHead();
 		PicViewerSettings->setTitle(_("Pictureviewer settings"), NEUTRINO_ICON_PICTUREVIEWER);
-		PicViewerSettings->setHeadLine(true, true);
+//		PicViewerSettings->setHeadLine(true, true);
 
 		//
 		PicViewerSettings->enablePaintFoot();
@@ -142,7 +142,7 @@ void CPictureViewerSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		PicViewerSettings->setFootButtons(&btn);
-		PicViewerSettings->setFootLine(true, true);
+//		PicViewerSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(PicViewerSettings);

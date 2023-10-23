@@ -256,7 +256,7 @@ void CMenuWidget::initFrames()
 		// footInfo height
 		if(paintFootInfo)
 		{
-			if( (widgetType == CMenuItem::TYPE_STANDARD) || (widgetType == CMenuItem::TYPE_CLASSIC && widgetMode == ClistBox::MODE_LISTBOX) )
+			if(widgetType == CMenuItem::TYPE_STANDARD)
 			{
 				cFrameFootInfoHeight = footInfoHeight;
 			}

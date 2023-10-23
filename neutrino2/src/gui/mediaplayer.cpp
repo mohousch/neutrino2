@@ -89,7 +89,7 @@ void CMediaPlayerMenu::showMenu()
 		mediaPlayer->enablePaintHead();
 		mediaPlayer->setTitle(_("Media Player"), NEUTRINO_ICON_MULTIMEDIA);
 		mediaPlayer->enablePaintDate();
-		mediaPlayer->setHeadLine(true, true);
+//		mediaPlayer->setHeadLine(true, true);
 		
 		//
 		mediaPlayer->enablePaintFoot();
@@ -97,7 +97,7 @@ void CMediaPlayerMenu::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		mediaPlayer->setFootButtons(&btn);
-		mediaPlayer->setFootLine(true, true);
+//		mediaPlayer->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(mediaPlayer);

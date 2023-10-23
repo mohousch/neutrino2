@@ -310,12 +310,12 @@ CTimerList::CTimerList()
 		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
 		listBox->enablePaintDate();
 		listBox->setHeadButtons(&CTimerListHeadButtons, 1);
-		listBox->setHeadLine(true, true);
+//		listBox->setHeadLine(true, true);
 
 		// foot
 		listBox->enablePaintFoot();
 		listBox->setFootButtons(TimerListButtons, 4);
-		listBox->setFootLine(true, true);
+//		listBox->setFootLine(true, true);
 		
 		//
 		timerlistWidget->addCCItem(listBox);
@@ -977,11 +977,11 @@ int CTimerList::modifyTimer()
 		//
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("Modify timer"), NEUTRINO_ICON_TIMER);
-		timerSettings->setHeadLine(true, true);
+//		timerSettings->setHeadLine(true, true);
 		
 		//
 		timerSettings->enablePaintFoot();
-		timerSettings->setFootLine(true, true);
+//		timerSettings->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
@@ -1060,11 +1060,11 @@ int CTimerList::modifyTimer()
 	//				
 	timerSettings_apids->enablePaintHead();
 	timerSettings_apids->setTitle(_("Audio PIDs"), NEUTRINO_ICON_TIMER);
-	timerSettings_apids->setHeadLine(true, true);
+//	timerSettings_apids->setHeadLine(true, true);
 	
 	//
 	timerSettings_apids->enablePaintFoot();
-	timerSettings_apids->setFootLine(true, true);
+//	timerSettings_apids->setFootLine(true, true);
 						
 	const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 						
@@ -1154,11 +1154,11 @@ int CTimerList::newTimer()
 		//
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("New timer"), NEUTRINO_ICON_TIMER);
-		timerSettings->setHeadLine(true, true);
+//		timerSettings->setHeadLine(true, true);
 		
 		//
 		timerSettings->enablePaintFoot();
-		timerSettings->setFootLine(true, true);
+//		timerSettings->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			

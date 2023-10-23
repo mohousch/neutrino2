@@ -608,11 +608,11 @@ void EventList::paint(t_channel_id channel_id)
 		
 		//
 		listBox->enablePaintHead();
-		listBox->setHeadLine(true, true);
+//		listBox->setHeadLine(true, true);
 		
 		//
 		listBox->enablePaintDate();
-		listBox->setFootLine(true, true);
+//		listBox->setFootLine(true, true);
 		
 		//
 		evlWidget->addCCItem(listBox);

@@ -164,11 +164,11 @@ void CRemoteControlSettings::showMenu()
 		//
 		remoteControlSettings->enablePaintHead();
 		remoteControlSettings->setTitle(_("Keybinding settings"), NEUTRINO_ICON_KEYBINDING);
-		remoteControlSettings->setHeadLine(true, true);
+//		remoteControlSettings->setHeadLine(true, true);
 
 		//
 		remoteControlSettings->enablePaintFoot();
-		remoteControlSettings->setFootLine(true, true);
+//		remoteControlSettings->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
@@ -344,11 +344,11 @@ void CKeysBindingSettings::showMenu()
 		//
 		bindSettings->enablePaintHead();
 		bindSettings->setTitle(_("Hot Keys mapping"), NEUTRINO_ICON_KEYBINDING);
-		bindSettings->setHeadLine(true, true);
+//		bindSettings->setHeadLine(true, true);
 
 		//
 		bindSettings->enablePaintFoot();
-		bindSettings->setFootLine(true, true);
+//		bindSettings->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			

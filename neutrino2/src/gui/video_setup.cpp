@@ -379,7 +379,7 @@ void CVideoSettings::showMenu()
 		//
 		videoSettings->enablePaintHead();
 		videoSettings->setTitle(_("Video settings"), NEUTRINO_ICON_VIDEO);
-		videoSettings->setHeadLine(true, true);
+//		videoSettings->setHeadLine(true, true);
 
 		//
 		videoSettings->enablePaintFoot();
@@ -387,7 +387,7 @@ void CVideoSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		videoSettings->setFootButtons(&btn);
-		videoSettings->setFootLine(true, true);
+//		videoSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(videoSettings);

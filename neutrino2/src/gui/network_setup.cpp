@@ -214,7 +214,7 @@ void CNetworkSettings::showMenu()
 		//
 		networkSettings->enablePaintHead();
 		networkSettings->setTitle(_("Network settings"), NEUTRINO_ICON_NETWORK);
-		networkSettings->setHeadLine(true, true);
+//		networkSettings->setHeadLine(true, true);
 
 		//
 		networkSettings->enablePaintFoot();
@@ -222,7 +222,7 @@ void CNetworkSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		networkSettings->setFootButtons(&btn);
-		networkSettings->setFootLine(true, true);
+//		networkSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(networkSettings);

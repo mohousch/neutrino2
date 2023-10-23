@@ -1743,10 +1743,10 @@ int CMoviePlayerGui::showStartPosSelectionMenu(void)
 		//	
 		startPosSelectionMenu->enablePaintHead();
 		startPosSelectionMenu->setTitle(_("Start movie from:"), NEUTRINO_ICON_MOVIE);
-		startPosSelectionMenu->setHeadLine(true, true);
+//		startPosSelectionMenu->setHeadLine(true, true);
 		//
 		startPosSelectionMenu->enablePaintFoot();
-		startPosSelectionMenu->setFootLine(true, true);
+//		startPosSelectionMenu->setFootLine(true, true);
 				
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 				
@@ -2107,11 +2107,11 @@ void CMoviePlayerGui::showPlaylist()
 	mplist->enablePaintDate();
 	mplist->setFormat("%d.%m.%Y %H:%M:%S");
 	mplist->setHeadButtons(&HeadButtons);
-	mplist->setHeadLine(true, true);
+//	mplist->setHeadLine(true, true);
 	
 	mplist->enablePaintFoot();
 	mplist->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-	mplist->setFootLine(true, true);
+//	mplist->setFootLine(true, true);
 	
 	mplist->enablePaintItemInfo();
 	

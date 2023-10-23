@@ -111,7 +111,7 @@ void CParentalLockSettings::showMenu()
 		//
 		listBox->enablePaintHead();
 		listBox->setTitle(_("Parentallock settings"), NEUTRINO_ICON_LOCK);
-		listBox->setHeadLine(true, true);
+//		listBox->setHeadLine(true, true);
 
 		//
 		listBox->enablePaintFoot();
@@ -119,7 +119,7 @@ void CParentalLockSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		listBox->setFootButtons(&btn);
-		listBox->setFootLine(true, true);
+//		listBox->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(listBox);

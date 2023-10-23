@@ -93,7 +93,7 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		nMenu->setWidgetMode(ClistBox::MODE_MENU);
-		nMenu->setWidgetType(CMenuItem::TYPE_CLASSIC);
+		nMenu->setWidgetType(CMenuItem::TYPE_EXTENDED);
 		nMenu->enableShrinkMenu();
 		nMenu->paintMainFrame(true);
 		
@@ -101,17 +101,13 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu->enablePaintHead();
 		nMenu->setTitle(_("Main Menu"), NEUTRINO_ICON_MAINMENU);
 		nMenu->enablePaintDate();
-		//nMenu->setHeadLine(true, true);
 		
 		// foot
 		nMenu->enablePaintFoot();
-		//nMenu->setFootLine(true, true);
 		
 		// iteminfo
-		nMenu->enablePaintItemInfo();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };	
-		nMenu->setFootButtons(&btn);
+		nMenu->enablePaintItemInfo(60);
+		//nMenu->setItemInfoMode(CCItemInfo::ITEMINFO_HINTITEM);
 		
 		//
 		widget->addCCItem(nMenu);
@@ -139,6 +135,7 @@ void CNeutrinoApp::mainMenu(void)
 	// scart
 	item = new CMenuForwarder(_("Scart Mode"), true, NULL, this, "scart");
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SCART);
+	item->setHint(_("Here you can switch to scart modus"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_YELLOW);
 	//item->setDirectKey(CRCInput::RC_yellow);
 	item->setState(g_settings.personalize_scart);
@@ -308,7 +305,7 @@ class CKeyHelper
 
 bool CNeutrinoApp::showUserMenu(int button)
 {
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::showUserMenu\n");
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::showUserMenu: button:%d\n", button);
 	
 	if(button < 0 || button >= SNeutrinoSettings::BUTTON_MAX)
 		return false;
@@ -358,7 +355,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		menu->setWidgetMode(ClistBox::MODE_MENU);
-		menu->setWidgetType(CMenuItem::TYPE_CLASSIC);
+		menu->setWidgetType(CMenuItem::TYPE_EXTENDED);
 		menu->enableShrinkMenu();
 		menu->paintMainFrame(true);
 		
@@ -366,15 +363,14 @@ bool CNeutrinoApp::showUserMenu(int button)
 		menu->enablePaintHead();
 		menu->setTitle(txt.c_str(), NEUTRINO_ICON_FEATURES);
 		menu->enablePaintDate();
-		//menu->setHeadLine(true, true);
 		
 		//
-		menu->enablePaintFoot();
-		//menu->setFootLine(true, true);
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
-			
-		menu->setFootButtons(&btn);
+		menu->enablePaintFoot();	
+		//const struct button_label btn = { NEUTRINO_ICON_INFO, " " };	
+		//menu->setFootButtons(&btn);
+		
+		//
+		menu->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(menu);
@@ -395,6 +391,7 @@ bool CNeutrinoApp::showUserMenu(int button)
 			case SNeutrinoSettings::ITEM_TIMERLIST:
 				keyhelper.get(&key, &icon, CRCInput::RC_yellow);
 				menu_item = new CMenuForwarder(_("Timerlist"), true, NULL, new CTimerList, "-1", key, NULL, NEUTRINO_ICON_MENUITEM_TIMERLIST);
+				menu_item->setHint(_("Here you can set timers"));
 				if (menu) menu->addItem(menu_item, false);
 				break;
 

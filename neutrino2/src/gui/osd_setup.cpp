@@ -119,7 +119,7 @@ int COSDSettings::showMenu(void)
 		osdSettings->enablePaintHead();
 		osdSettings->setTitle(_("OSD"), NEUTRINO_ICON_COLORS);
 		osdSettings->enablePaintDate();
-		osdSettings->setHeadLine(true, true);
+//		osdSettings->setHeadLine(true, true);
 		
 		//
 		osdSettings->enablePaintFoot();
@@ -127,7 +127,7 @@ int COSDSettings::showMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		osdSettings->setFootButtons(&btn);
-		osdSettings->setFootLine(true, true);
+//		osdSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(osdSettings);
@@ -287,7 +287,7 @@ void COSDMenuColorSettings::showMenu()
 		//
 		OSDmenuColorsSettings->enablePaintHead();
 		OSDmenuColorsSettings->setTitle(_("Menu"), NEUTRINO_ICON_COLORS);
-		OSDmenuColorsSettings->setHeadLine(true, true);
+//		OSDmenuColorsSettings->setHeadLine(true, true);
 
 		//
 		OSDmenuColorsSettings->enablePaintFoot();
@@ -295,7 +295,7 @@ void COSDMenuColorSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		OSDmenuColorsSettings->setFootButtons(&btn);
-		OSDmenuColorsSettings->setFootLine(true, true);
+//		OSDmenuColorsSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(OSDmenuColorsSettings);
@@ -499,7 +499,7 @@ void COSDInfoBarColorSettings::showMenu()
 		//
 		OSDinfobarColorSettings->enablePaintHead();
 		OSDinfobarColorSettings->setTitle(_("Infobar"), NEUTRINO_ICON_COLORS);
-		OSDinfobarColorSettings->setHeadLine(true, true);
+//		OSDinfobarColorSettings->setHeadLine(true, true);
 
 		//
 		OSDinfobarColorSettings->enablePaintFoot();
@@ -507,7 +507,7 @@ void COSDInfoBarColorSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		OSDinfobarColorSettings->setFootButtons(&btn);
-		OSDinfobarColorSettings->setFootLine(true, true);
+//		OSDinfobarColorSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(OSDinfobarColorSettings);
@@ -653,7 +653,7 @@ int CLanguageSettings::showMenu()
 		//
 		languageSettings->enablePaintHead();
 		languageSettings->setTitle(_("Language"), NEUTRINO_ICON_LANGUAGE);
-		languageSettings->setHeadLine(true, true);
+//		languageSettings->setHeadLine(true, true);
 
 		//
 		languageSettings->enablePaintFoot();
@@ -661,7 +661,7 @@ int CLanguageSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		languageSettings->setFootButtons(&btn);
-		languageSettings->setFootLine(true, true);
+//		languageSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(languageSettings);
@@ -823,7 +823,7 @@ void CFontSettings::showMenu()
 		//
 		fontSettings->enablePaintHead();
 		fontSettings->setTitle(_("Font"), NEUTRINO_ICON_COLORS);
-		fontSettings->setHeadLine(true, true);
+//		fontSettings->setHeadLine(true, true);
 
 		//
 		fontSettings->enablePaintFoot();
@@ -831,7 +831,7 @@ void CFontSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		fontSettings->setFootButtons(&btn);
-		fontSettings->setFootLine(true, true);
+//		fontSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(fontSettings);
@@ -919,7 +919,7 @@ void COSDTimingSettings::showMenu()
 		//
 		osdTimingSettings->enablePaintHead();
 		osdTimingSettings->setTitle(_("Timing"), NEUTRINO_ICON_TIMER);
-		osdTimingSettings->setHeadLine(true, true);
+//		osdTimingSettings->setHeadLine(true, true);
 
 		//
 		osdTimingSettings->enablePaintFoot();
@@ -927,7 +927,7 @@ void COSDTimingSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		osdTimingSettings->setFootButtons(&btn);
-		osdTimingSettings->setFootLine(true, true);
+//		osdTimingSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(osdTimingSettings);
@@ -1059,7 +1059,7 @@ void COSDDiverses::showMenu()
 		//
 		osdDiverseSettings->enablePaintHead();
 		osdDiverseSettings->setTitle(_("Misc settings"), NEUTRINO_ICON_COLORS);
-		osdDiverseSettings->setHeadLine(true, true);
+//		osdDiverseSettings->setHeadLine(true, true);
 
 		//
 		osdDiverseSettings->enablePaintFoot();
@@ -1067,7 +1067,7 @@ void COSDDiverses::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		osdDiverseSettings->setFootButtons(&btn);
-		osdDiverseSettings->setFootLine(true, true);
+//		osdDiverseSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(osdDiverseSettings);
@@ -1151,7 +1151,7 @@ int CSkinManager::showMenu()
 		//
 		skinMenu->enablePaintHead();
 		skinMenu->setTitle(_("Skin Select"), NEUTRINO_ICON_COLORS);
-		skinMenu->setHeadLine(true, true);
+//		skinMenu->setHeadLine(true, true);
 
 		//
 		skinMenu->enablePaintFoot();
@@ -1159,7 +1159,7 @@ int CSkinManager::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		skinMenu->setFootButtons(&btn);
-		skinMenu->setFootLine(true, true);
+//		skinMenu->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(skinMenu);
@@ -1290,7 +1290,7 @@ int CSkinSettings::showMenu()
 		//
 		skinSettings->enablePaintHead();
 		skinSettings->setTitle(_("Skin Style"), NEUTRINO_ICON_COLORS);
-		skinSettings->setHeadLine(true, true);
+//		skinSettings->setHeadLine(true, true);
 
 		//
 		skinSettings->enablePaintFoot();
@@ -1298,7 +1298,7 @@ int CSkinSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		skinSettings->setFootButtons(&btn);
-		skinSettings->setFootLine(true, true);
+//		skinSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(skinSettings);
@@ -1493,7 +1493,7 @@ int CPersonalisation::showMenu(void)
 		//
 		personalizeSettings->enablePaintHead();
 		personalizeSettings->setTitle(_("Personalisation"), NEUTRINO_ICON_COLORS);
-		personalizeSettings->setHeadLine(true, true);
+//		personalizeSettings->setHeadLine(true, true);
 
 		//
 		personalizeSettings->enablePaintFoot();
@@ -1501,7 +1501,7 @@ int CPersonalisation::showMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		personalizeSettings->setFootButtons(&btn);
-		personalizeSettings->setFootLine(true, true);
+//		personalizeSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(personalizeSettings);

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-22 22:31+0200\n"
+"POT-Creation-Date: 2023-10-24 01:01+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -990,6 +990,9 @@ msgstr ""
 msgid "Here you can set channel scan and more"
 msgstr ""
 
+msgid "Here you can set timers"
+msgstr ""
+
 msgid "Here you can setup OSD"
 msgstr ""
 
@@ -997,6 +1000,9 @@ msgid "Here you can setup your box"
 msgstr ""
 
 msgid "Here you can switch between TV / Radio"
+msgstr ""
+
+msgid "Here you can switch to scart modus"
 msgstr ""
 
 msgid "Hide"

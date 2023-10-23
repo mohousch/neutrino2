@@ -667,10 +667,10 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		// head
 		headers->enablePaintDate();
 		headers->setFormat("%d.%m.%Y %H:%M:%S");
-		headers->setLine(true, true);
+//		headers->setLine(true, true);
 		
 		//
-		footers->setLine(true, true);
+//		footers->setLine(true, true);
 		
 		//
 		widget->addCCItem(textBox);

@@ -1793,6 +1793,9 @@ CCItemInfo::CCItemInfo()
 	savescreen = false;
 	color = COL_MENUCONTENT_PLUS_0;
 	scale = false;
+	radius = g_settings.Hint_radius;
+	corner = g_settings.Hint_corner;
+	gradient = NOGRADIENT;
 	
 	cc_type = CC_ITEMINFO;
 }
@@ -1827,7 +1830,7 @@ void CCItemInfo::paint()
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, itemBox.iHeight, COL_MENUCONTENT_PLUS_6, g_settings.Hint_radius, g_settings.Hint_corner);
 				
 		// infoBox
-		frameBuffer->paintBoxRel(borderMode? itemBox.iX + 2 : itemBox.iX, borderMode? itemBox.iY + 2 : itemBox.iY, borderMode? itemBox.iWidth - 4 : itemBox.iWidth, borderMode? itemBox.iHeight - 4 : itemBox.iHeight, color, g_settings.Hint_radius, g_settings.Hint_corner, g_settings.Hint_gradient);
+		frameBuffer->paintBoxRel(borderMode? itemBox.iX + 2 : itemBox.iX, borderMode? itemBox.iY + 2 : itemBox.iY, borderMode? itemBox.iWidth - 4 : itemBox.iWidth, borderMode? itemBox.iHeight - 4 : itemBox.iHeight, color, radius, corner, gradient);
 	}
 	else
 		restoreScreen();

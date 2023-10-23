@@ -107,7 +107,7 @@ void CMoviePlayerSettings::showMenu()
 		//
 		moviePlayerSettings->enablePaintHead();
 		moviePlayerSettings->setTitle(_("Movieplayer settings"), NEUTRINO_ICON_MOVIEPLAYER);
-		moviePlayerSettings->setHeadLine(true, true);
+//		moviePlayerSettings->setHeadLine(true, true);
 
 		//
 		moviePlayerSettings->enablePaintFoot();
@@ -115,7 +115,7 @@ void CMoviePlayerSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		moviePlayerSettings->setFootButtons(&btn);
-		moviePlayerSettings->setFootLine(true, true);
+//		moviePlayerSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(moviePlayerSettings);

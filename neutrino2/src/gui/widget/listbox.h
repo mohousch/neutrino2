@@ -389,6 +389,14 @@ class ClistBox : public CComponent
 			MODE_MENU,
 			MODE_SETUP
 		};
+		
+		enum 
+		{
+			FLAG_NONE,
+			FLAG_PAINTICON,
+			FLAG_ADJUSTLOCALE,
+			FLAG_ADJUSTOPTION,
+		};
 
 		//
 		std::vector<CMenuItem*> items;
@@ -481,6 +489,7 @@ class ClistBox : public CComponent
 		unsigned int iteminfofont;
 		uint32_t iteminfocolor;
 		bool iteminfoscale;
+		CCLabel label;
 
 		// methods
 		virtual void paintItems();

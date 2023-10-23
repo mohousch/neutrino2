@@ -184,7 +184,7 @@ void CRecordingSettings::showMenu()
 		//
 		recordingSettings->enablePaintHead();
 		recordingSettings->setTitle(_("Recording settings"), NEUTRINO_ICON_RECORDING);
-		recordingSettings->setHeadLine(true, true);
+//		recordingSettings->setHeadLine(true, true);
 
 		//
 		recordingSettings->enablePaintFoot();
@@ -192,7 +192,7 @@ void CRecordingSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		recordingSettings->setFootButtons(&btn);
-		recordingSettings->setFootLine(true, true);
+//		recordingSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(recordingSettings);

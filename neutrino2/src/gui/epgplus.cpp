@@ -116,7 +116,7 @@ void EpgPlus::Header::paint()
 
 	head->setCorner(RADIUS_SMALL, CORNER_TOP);
 	head->setGradient(LIGHT2DARK);
-	head->setLine(true, true);
+//	head->setLine(true, true);
 	head->enablePaintDate();
 	head->setFormat("%d.%m.%Y %H:%M:%S");
 	head->addButton(NEUTRINO_ICON_BUTTON_HELP);
@@ -522,7 +522,7 @@ void EpgPlus::Footer::paintButtons(button_label * _buttonLabels, int numberOfBut
 
 	foot.setCorner(RADIUS_SMALL, CORNER_BOTTOM);
 	foot.setGradient(DARK2LIGHT);
-	foot.setLine(true, true);
+//	foot.setLine(true, true);
 	foot.setButtons(buttonLabels, numberOfButtons);
 	foot.paint();
 }

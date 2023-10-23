@@ -89,7 +89,7 @@ int CPowerMenu::showMenu(void)
 		powerMenu->enablePaintHead();
 		powerMenu->setTitle(_("Power Menu"), NEUTRINO_ICON_BUTTON_POWER);
 		powerMenu->enablePaintDate();
-		powerMenu->setHeadLine(true, true);
+//		powerMenu->setHeadLine(true, true);
 		
 		//
 		powerMenu->enablePaintFoot();
@@ -97,7 +97,7 @@ int CPowerMenu::showMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		powerMenu->setFootButtons(&btn); 
-		powerMenu->setFootLine(true, true);
+//		powerMenu->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(powerMenu);
