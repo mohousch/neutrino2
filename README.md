@@ -4,8 +4,8 @@
 </h1>
 
 - the GUI is completely reworked.
-- no socket communication between zapit / timed / nhttpd, all is neutrino
-- i18n localization.
+- only one events socket.
+- i18n localizaton.
 - skin support.
 - plugins interfaces: legacy, lua and python (exp) neutrino2 shares all his functionality with plugins.
   and more...
