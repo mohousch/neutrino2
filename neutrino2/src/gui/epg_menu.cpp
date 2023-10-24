@@ -87,20 +87,21 @@ int CEPGMenuHandler::doMenu()
 		redMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		redMenu->setWidgetMode(ClistBox::MODE_MENU);
-		redMenu->setWidgetType(CMenuItem::TYPE_CLASSIC);
+		redMenu->setWidgetType(CMenuItem::TYPE_STANDARD);
 		redMenu->enableShrinkMenu();
 		
+		// head
 		redMenu->enablePaintHead();
 		redMenu->setTitle(_("EPG / Timer"), NEUTRINO_ICON_BUTTON_EPG);
 		redMenu->enablePaintDate();
-		//redMenu->setHeadLine(true, true);
 		
-		redMenu->enablePaintFoot();
-		//redMenu->setFootLine(true, true);
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
+		// foot
+		redMenu->enablePaintFoot();	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
 		redMenu->setFootButtons(&btn);
+		
+		// iteminfo
+		redMenu->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(redMenu);

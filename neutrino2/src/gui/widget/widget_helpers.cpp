@@ -1965,7 +1965,7 @@ void CCItemInfo::hide()
 //
 void CCItemInfo::saveScreen(void)
 {
-	dprintf(DEBUG_NORMAL, "CCItemInfo::saveScreen\n");
+	dprintf(DEBUG_DEBUG, "CCItemInfo::saveScreen\n");
 	
 	if (background)
 	{
@@ -1983,7 +1983,7 @@ void CCItemInfo::saveScreen(void)
 
 void CCItemInfo::restoreScreen(void)
 {
-	dprintf(DEBUG_NORMAL, "CCItemInfo::restoreScreen\n");
+	dprintf(DEBUG_DEBUG, "CCItemInfo::restoreScreen\n");
 	
 	//
 	if (savescreen && background)
@@ -1995,7 +1995,7 @@ void CCItemInfo::restoreScreen(void)
 //
 void CCItemInfo::enableSaveScreen()
 {
-	dprintf(DEBUG_NORMAL, "CCItemInfo::enableSaveScreen\n");
+	dprintf(DEBUG_DEBUG, "CCItemInfo::enableSaveScreen\n");
 	
 	savescreen = true;
 	

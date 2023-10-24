@@ -706,16 +706,17 @@ void CTimerManager::saveEventsToConfig()
 	for(; pos != events.end(); pos++)
 	{
 		CTimerEvent *event = pos->second;
-		dprintf(DEBUG_INFO, "[timermanager] event #%d\n",event->eventID);
+		//dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig event #%d\n",event->eventID);
 		event->saveToConfig(&config);
 	}
-	dprintf(DEBUG_INFO, "\n");
+	
+	//dprintf(DEBUG_INFO, "\n");
 	
 	config.setInt32 ("EXTRA_TIME_START", m_extraTimeStart);
-	dprintf(DEBUG_INFO, "[timermanager] setting EXTRA_TIME_START to %d\n", m_extraTimeStart);
+	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: setting EXTRA_TIME_START to %d\n", m_extraTimeStart);
 	config.setInt32 ("EXTRA_TIME_END", m_extraTimeEnd);
-	dprintf(DEBUG_INFO, "[timermanager] setting EXTRA_TIME_END to %d\n", m_extraTimeEnd);
-	dprintf(DEBUG_INFO, "[timermanager] now saving config to %s...\n", TIMERD_CONFIGFILE);
+	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: setting EXTRA_TIME_END to %d\n", m_extraTimeEnd);
+	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: now saving config to %s...\n", TIMERD_CONFIGFILE);
 	config.saveConfig(TIMERD_CONFIGFILE);
 	
 	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: config saved!\n");

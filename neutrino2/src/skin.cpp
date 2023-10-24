@@ -2701,7 +2701,7 @@ void CNeutrinoApp::parseCWidget(xmlNodePtr node)
 // getWidget
 CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *const skinfilename, bool data)
 {
-	dprintf(DEBUG_NORMAL, ANSI_GREEN"\nCNeutrinoApp::getWidget: <<%s>>\n", widgetname);
+	dprintf(DEBUG_NORMAL, ANSI_GREEN"CNeutrinoApp::getWidget: <<%s>>\n", widgetname);
 	
 	//
 	CWidget *widget = NULL;

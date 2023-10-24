@@ -60,30 +60,29 @@ class CTimerList : public CMenuTarget
 		uint32_t sec_timer_id;
 		void paint();
 		int show();
-
 		unsigned int selected;
 		bool visible;			
-
+		//
 		CTimerd::TimerList timerlist;             // List of timers		
 		CTimerd::responseGetTimer timerNew;
 		int timerNew_standby_on;
 		std::string m_weekdaysStr;
-		
+		//
 		t_channel_id timerNew_chan_id;
 		std::string timerNew_channel_name;
-		
+		//
 		int timer_apids_dflt;
 		int timer_apids_std;
 		int timer_apids_ac3;
 		int timer_apids_alt;
-
+		//
 		int skipEventID;
-
+		//
 		int modifyTimer();
 		int newTimer();
-
+		//
 		void updateEvents(void);
-
+		//
 		CPluginChooser * plugin_chooser;
 
 	public:

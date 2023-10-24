@@ -288,8 +288,7 @@ CNeutrinoApp::CNeutrinoApp()
 {
 	standby_pressed_at.tv_sec = 0;
 
-	frameBuffer = CFrameBuffer::getInstance();
-	setupFrameBuffer();
+	frameBuffer = NULL;
 
 	mode = mode_unknown;
 	
@@ -1727,6 +1726,8 @@ void CNeutrinoApp::setDebugLevel( int level )
 // setup the framebuffer
 void CNeutrinoApp::setupFrameBuffer()
 {
+	frameBuffer = CFrameBuffer::getInstance();
+	
 	frameBuffer->init();
 	
 	if(frameBuffer->setMode()) 
@@ -2242,7 +2243,7 @@ void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 	int y = g_settings.screen_StartY + 10;
 
 	//FIXME:
-	if(mute_pixbuf == NULL)
+	if (mute_pixbuf == NULL)
 	{
 		mute_pixbuf = new fb_pixel_t[dx*dy];
 		
@@ -2259,6 +2260,7 @@ void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 	
 	CZapit::getInstance()->muteAudio(current_muted);
 
+	// paint
 	if( isEvent && ( mode != mode_scart ) && ( mode != mode_audio) && ( mode != mode_pic))
 	{
 		if( current_muted ) 
@@ -2279,6 +2281,13 @@ void CNeutrinoApp::audioMute( int newValue, bool isEvent )
 		}
 		
 		frameBuffer->blit();	
+	}
+	
+	////
+	if( mute_pixbuf) 
+	{
+		delete [] mute_pixbuf;
+		mute_pixbuf = NULL;
 	}
 }
 
@@ -2470,8 +2479,11 @@ void CNeutrinoApp::setVolume(const neutrino_msg_t key, const bool bDoPaint)
 		frameBuffer->blit();
 	}
 	
-	delete g_volscale;
-	g_volscale = NULL;
+	if (g_volscale)
+	{
+		delete g_volscale;
+		g_volscale = NULL;
+	}
 }
 
 // tv mode
@@ -4120,6 +4132,7 @@ void CNeutrinoApp::realRun(void)
 				
 				g_RCInput->clearRCMsg();
 				
+				// restore mute symbol
 				audioMute(current_muted, true);
 
 				startSubtitles();
@@ -4688,6 +4701,9 @@ int CNeutrinoApp::run(int argc, char **argv)
                 global_argv[i] = argv[i];
 	
         global_argv[argc] = NULL;
+        
+        //
+        setupFrameBuffer();
 	
 	// init coolstream API
 #if defined (PLATFORM_COOLSTREAM)

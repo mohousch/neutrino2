@@ -288,7 +288,7 @@ CTimerList::CTimerList()
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
-	//
+	/*
 	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
 	
 	if (timerlistWidget)
@@ -310,16 +310,15 @@ CTimerList::CTimerList()
 		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
 		listBox->enablePaintDate();
 		listBox->setHeadButtons(&CTimerListHeadButtons, 1);
-//		listBox->setHeadLine(true, true);
 
 		// foot
 		listBox->enablePaintFoot();
 		listBox->setFootButtons(TimerListButtons, 4);
-//		listBox->setFootLine(true, true);
 		
 		//
 		timerlistWidget->addCCItem(listBox);
 	}
+	*/
 }
 
 CTimerList::~CTimerList()
@@ -357,6 +356,10 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 	std::string chanName;
 	
 	CSelectChannelWidget * CSelectChannelWidgetHandler = NULL;
+	
+	////
+	selected = listBox? listBox->getSelected() : 0;
+	////
 	
 	if(actionKey == "tv")
 	{
@@ -412,7 +415,8 @@ int CTimerList::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if (actionKey == "modifytimer")
 	{
-		timerlist[selected].announceTime = timerlist[selected].alarmTime -60;
+		timerlist[selected].announceTime = timerlist[selected].alarmTime - 60;
+		
 		if(timerlist[selected].eventRepeat >= CTimerd::TIMERREPEAT_WEEKDAYS)
 			CTimerd::getInstance()->getWeekdaysFromStr(&timerlist[selected].eventRepeat, m_weekdaysStr.c_str());
 		
@@ -698,11 +702,62 @@ void CTimerList::hide()
 		
 		visible = false;
 	}
+	
+	////
+	if (listBox)
+	{
+		delete listBox;
+		listBox = NULL;
+	}
+	
+	if (timerlistWidget)
+	{
+		delete timerlistWidget;
+		timerlistWidget = NULL;
+	}
+	////
 }
 
 void CTimerList::paint()
 {
 	dprintf(DEBUG_NORMAL, "CTimerList::paint\n");
+	
+	////
+	//
+	timerlistWidget = NULL;
+	listBox = NULL;
+	item = NULL;
+	
+	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
+	
+	if (timerlistWidget)
+	{
+		listBox = (ClistBox*)timerlistWidget->getCCItem(CComponent::CC_LISTBOX);
+	}
+	else
+	{
+		//
+		timerlistWidget = new CWidget(&cFrameBox);
+		timerlistWidget->name = "timerlist";
+		timerlistWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
+		
+		//
+		listBox = new ClistBox(&cFrameBox);
+		
+		// head
+		listBox->enablePaintHead();
+		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
+		listBox->enablePaintDate();
+		listBox->setHeadButtons(&CTimerListHeadButtons, 1);
+
+		// foot
+		listBox->enablePaintFoot();
+		listBox->setFootButtons(TimerListButtons, 4);
+		
+		//
+		timerlistWidget->addCCItem(listBox);
+	}
+	////
 	
 	listBox->clearItems();
 
@@ -830,6 +885,10 @@ void CTimerList::paint()
 	//
 	if (timerlistWidget) 
 		timerlistWidget->paint();
+		
+	////
+	selected = listBox->getSelected();
+	////
 
 	visible = true;
 }
@@ -977,11 +1036,9 @@ int CTimerList::modifyTimer()
 		//
 		timerSettings->enablePaintHead();
 		timerSettings->setTitle(_("Modify timer"), NEUTRINO_ICON_TIMER);
-//		timerSettings->setHeadLine(true, true);
 		
 		//
 		timerSettings->enablePaintFoot();
-//		timerSettings->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
@@ -1023,7 +1080,7 @@ int CTimerList::modifyTimer()
 	CMenuForwarder *m4 = new CMenuForwarder(_("on weekdays"), true, m_weekdaysStr.c_str(), &timerSettings_weekdays );
 	CIntInput timerSettings_repeatCount(_("repeats"), (int&)timer->repeatCount,3, _("amount of timer repeats"), _("0 for unlimited repeats"));
 
-	CMenuForwarder *m5 = new CMenuForwarder(_("repeats"), /*timer->eventRepeat != (int)CTimerd::TIMERREPEAT_ONCE*/true, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
+	CMenuForwarder *m5 = new CMenuForwarder(_("repeats"), true, timerSettings_repeatCount.getValue(), &timerSettings_repeatCount);
 
 	// repeat
 	CTimerListRepeatNotifier notifier((int *)&timer->eventRepeat, m4, m5);

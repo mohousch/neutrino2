@@ -98,6 +98,8 @@ extern CBouquetList   * RADIOallList;
 extern t_channel_id rec_channel_id;
 extern t_channel_id live_channel_id;
 
+#define CHANNEL_SMSKEY_TIMEOUT 800
+
 #define NUM_LIST_BUTTONS 4
 struct button_label CChannelListButtons[NUM_LIST_BUTTONS] =
 {
@@ -435,7 +437,11 @@ int CChannelList::getSelectedChannelIndex() const
 	return this->selected;
 }
 
-//
+// >= 0 to zap
+// -1 on cancel
+// -3 on list mode change
+// -4 list edited
+// -2 zap but no restore old list/chan
 int CChannelList::exec(bool customMode)
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::exec: zap:%s\n", customMode? "no" : "yes");
@@ -455,8 +461,11 @@ int CChannelList::exec(bool customMode)
 	return nNewChannel;
 }
 
-#define CHANNEL_SMSKEY_TIMEOUT 800
-//return: >= 0 to zap, -1 on cancel, -3 on list mode change, -4 list edited, -2 zap but no restore old list/chan
+// >= 0 to zap
+// -1 on cancel
+// -3 on list mode change
+// -4 list edited
+// -2 zap but no restore old list/chan
 int CChannelList::show(bool customMode)
 {
 	dprintf(DEBUG_NORMAL, "CChannelList::show: zap:%s\n", customMode? "no" : "yes");

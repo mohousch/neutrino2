@@ -77,7 +77,7 @@ inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
 CFrameBuffer::CFrameBuffer()
 : active ( true )
 {
-	dprintf(DEBUG_NORMAL, "CFrameBuffer::CFrameBuffer()\n");
+	//dprintf(DEBUG_NORMAL, "CFrameBuffer::CFrameBuffer()\n");
 
 #if defined (USE_OPENGL)
 	mpGLThreadObj = NULL;
@@ -125,7 +125,7 @@ CFrameBuffer* CFrameBuffer::getInstance()
 	if(!frameBuffer) 
 	{
 		frameBuffer = new CFrameBuffer();
-		dprintf(DEBUG_NORMAL, "CFrameBuffer::getInstance: frameBuffer Instance created\n");
+		//dprintf(DEBUG_NORMAL, "CFrameBuffer::getInstance: frameBuffer Instance created\n");
 	} 
 
 	return frameBuffer;
