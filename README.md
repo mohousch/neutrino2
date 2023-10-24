@@ -3,7 +3,7 @@
   Welcome to neutrino2 software
 </h1>
 
-- the GUI is completely re/worked, this give us more simply tools to do any GUI work.
+- the GUI is completely reworked.
 - no socket communication between zapit / timed / nhttpd, all is neutrino
 - i18n localization.
 - skin support.
