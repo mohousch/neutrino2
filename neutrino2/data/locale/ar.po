@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-24 01:01+0200\n"
+"POT-Creation-Date: 2023-10-24 12:46+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -398,6 +398,9 @@ msgstr ""
 msgid "Children / Juvenile program"
 msgstr ""
 
+msgid "Classic"
+msgstr ""
+
 msgid "Code Rate HP"
 msgstr ""
 
@@ -725,6 +728,9 @@ msgid "Expert functions"
 msgstr ""
 
 msgid "Expert-functions"
+msgstr ""
+
+msgid "Extended"
 msgstr ""
 
 msgid "FEC"
@@ -2046,6 +2052,9 @@ msgstr ""
 msgid "Show / Gameshow"
 msgstr ""
 
+msgid "Show Hints"
+msgstr ""
+
 msgid "Show active network settings"
 msgstr ""
 
@@ -2119,6 +2128,9 @@ msgid "Sports"
 msgstr ""
 
 msgid "Sports magazines"
+msgstr ""
+
+msgid "Standard"
 msgstr ""
 
 msgid "Standby"
@@ -2545,6 +2557,9 @@ msgid "West"
 msgstr ""
 
 msgid "Wide Screen Auto"
+msgstr ""
+
+msgid "Widget Type"
 msgstr ""
 
 msgid "Window-Content"

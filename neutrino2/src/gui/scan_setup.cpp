@@ -331,13 +331,6 @@ CScanSetup::~CScanSetup()
 		feDelSysNotifier = NULL;
 	}
 }
-/*
-void CScanSetup::hide()
-{
-	CFrameBuffer::getInstance()->paintBackground();
-	CFrameBuffer::getInstance()->blit();
-}
-*/
 
 int CScanSetup::exec(CMenuTarget * parent, const std::string &actionKey)
 {
@@ -475,19 +468,16 @@ int CScanSetup::showScanService()
 		scansetup = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		scansetup->setWidgetMode(ClistBox::MODE_SETUP);
+		scansetup->enableShrinkMenu();
 		
-		//
+		// head
 		scansetup->enablePaintHead();
 		scansetup->setTitle(_("Scan transponder"), NEUTRINO_ICON_SCAN);
-//		scansetup->setHeadLine(true, true);
 
-		//
-		scansetup->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
+		// foot
+		scansetup->enablePaintFoot();	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
 		scansetup->setFootButtons(&btn);
-//		scansetup->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(scansetup);

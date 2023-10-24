@@ -255,6 +255,8 @@ struct SNeutrinoSettings
 	
 	int volume_pos;
 	std::string preferred_skin;
+	int widget_type;
+	int item_info;
 	// END OSD
 
 	// KEYS
@@ -371,7 +373,7 @@ struct SNeutrinoSettings
 	std::string epg_max_events;
 	std::string epg_extendedcache;
 	std::string epg_dir;
-	//
+	// xmltv
 	std::vector<std::string> xmltv;
 	int epg_xmltv;
 	// localtv
@@ -501,9 +503,6 @@ struct SNeutrinoSettings
 	int hdmi_cec_standby;
 	int hdmi_cec_volume;
 	int hdmi_cec_broadcast;
-	
-	// 
-	//uint32_t delsys;
 	
 	// personalisation
 	int  personalize_tvradio;

@@ -1105,6 +1105,23 @@ void COSDDiverses::showMenu()
 	
 	// logos dir
 	osdDiverseSettings->addItem( new CMenuForwarder(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" ) );
+	
+	//// 
+	// widget_type
+	if (g_settings.preferred_skin == "neutrino")
+	{
+		CMenuItem *item = new CMenuOptionChooser(_("Widget Type"), &g_settings.widget_type);
+		item->setActive(true);
+		item->addOption(_("Standard"), CMenuItem::TYPE_STANDARD);
+		item->addOption(_("Classic"), CMenuItem::TYPE_CLASSIC);
+		item->addOption(_("Extended"), CMenuItem::TYPE_EXTENDED);
+		
+		osdDiverseSettings->addItem(item);
+	}
+	
+	// item info
+	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Show Hints"), &g_settings.item_info, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
+	////
 
 	//
 	widget->setTimeOut(g_settings.timing_menu);

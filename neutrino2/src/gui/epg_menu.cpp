@@ -87,7 +87,7 @@ int CEPGMenuHandler::doMenu()
 		redMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		redMenu->setWidgetMode(ClistBox::MODE_MENU);
-		redMenu->setWidgetType(CMenuItem::TYPE_STANDARD);
+		redMenu->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		redMenu->enableShrinkMenu();
 		
 		// head
@@ -97,11 +97,8 @@ int CEPGMenuHandler::doMenu()
 		
 		// foot
 		redMenu->enablePaintFoot();	
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 		redMenu->setFootButtons(&btn);
-		
-		// iteminfo
-		redMenu->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(redMenu);

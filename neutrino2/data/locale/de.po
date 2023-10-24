@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-24 01:01+0200\n"
+"POT-Creation-Date: 2023-10-24 12:46+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -401,6 +401,9 @@ msgstr "Dateisystem prüfen"
 msgid "Children / Juvenile program"
 msgstr "Kinder- / Jugendprogramm"
 
+msgid "Classic"
+msgstr ""
+
 msgid "Code Rate HP"
 msgstr "Coderate HP"
 
@@ -735,6 +738,9 @@ msgstr "Expertenfunktionen"
 
 msgid "Expert-functions"
 msgstr "Expertenfunktionen"
+
+msgid "Extended"
+msgstr ""
 
 msgid "FEC"
 msgstr "FEC"
@@ -2080,6 +2086,10 @@ msgstr "Sollte die Suche wirklich abgebrochen werden?"
 msgid "Show / Gameshow"
 msgstr "Show / Gameshow"
 
+#, fuzzy
+msgid "Show Hints"
+msgstr "Dateirechte anzeigen"
+
 msgid "Show active network settings"
 msgstr "Aktive Netzwerkeinstellungen anzeigen"
 
@@ -2154,6 +2164,10 @@ msgstr "Sport"
 
 msgid "Sports magazines"
 msgstr "Sportzeitschriften"
+
+#, fuzzy
+msgid "Standard"
+msgstr "Standby"
 
 msgid "Standby"
 msgstr "Standby"
@@ -2600,6 +2614,10 @@ msgstr "Westen"
 
 msgid "Wide Screen Auto"
 msgstr "Breitbild-Automatik"
+
+#, fuzzy
+msgid "Widget Type"
+msgstr "ImageTyp"
 
 msgid "Window-Content"
 msgstr "Fensterinhalt"

@@ -93,7 +93,7 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		nMenu->setWidgetMode(ClistBox::MODE_MENU);
-		nMenu->setWidgetType(CMenuItem::TYPE_STANDARD);
+		nMenu->setWidgetType(g_settings.widget_type);
 		nMenu->enableShrinkMenu();
 		nMenu->paintMainFrame(true);
 		
@@ -105,11 +105,11 @@ void CNeutrinoApp::mainMenu(void)
 		// foot
 		nMenu->enablePaintFoot();
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };	
-		nMenu->setFootButtons(&btn);
+		if (g_settings.widget_type == CMenuItem::TYPE_STANDARD || !g_settings.item_info)
+			nMenu->setFootButtons(&btn);
 		
 		// iteminfo
-		nMenu->enablePaintItemInfo(60);
-		//nMenu->setItemInfoMode(CCItemInfo::ITEMINFO_HINTITEM);
+		if (g_settings.item_info) nMenu->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(nMenu);
@@ -355,24 +355,24 @@ bool CNeutrinoApp::showUserMenu(int button)
 		
 		//
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-
 		menu->setWidgetMode(ClistBox::MODE_MENU);
-		menu->setWidgetType(CMenuItem::TYPE_STANDARD);
+		menu->setWidgetType(g_settings.widget_type);
 		menu->enableShrinkMenu();
 		menu->paintMainFrame(true);
 		
-		//
+		// head
 		menu->enablePaintHead();
 		menu->setTitle(txt.c_str(), NEUTRINO_ICON_FEATURES);
 		menu->enablePaintDate();
 		
-		//
+		// foot
 		menu->enablePaintFoot();	
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };	
-		menu->setFootButtons(&btn);
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
+		if (g_settings.widget_type == CMenuItem::TYPE_STANDARD || !g_settings.item_info)	
+			menu->setFootButtons(&btn);
 		
-		//
-		menu->enablePaintItemInfo(60);
+		// item info
+		if (g_settings.item_info) menu->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(menu);

@@ -632,6 +632,10 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	
 	//
 	g_settings.preferred_skin = configfile.getString("preferred_skin", "neutrino2");
+	////
+	g_settings.widget_type = configfile.getInt32("widget_type", CMenuItem::TYPE_CLASSIC);
+	g_settings.item_info = configfile.getBool("item_info", false);
+	////
 
 	// keysbinding
 	strcpy(g_settings.repeat_blocker, configfile.getString("repeat_blocker", "250").c_str());
@@ -1152,6 +1156,8 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	
 	//
 	configfile.setString("preferred_skin", g_settings.preferred_skin);
+	configfile.setInt32("widget_type", g_settings.widget_type);
+	configfile.setBool("item_info", g_settings.item_info);
 	// END OSD
 
 	// KEYS
