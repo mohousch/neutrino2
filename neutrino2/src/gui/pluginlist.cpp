@@ -105,30 +105,23 @@ int CPluginList::showMenu()
 	{
 		//
 		pWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
-		
 		pWidget->name = "plugins";
 		pWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
 		
 		//
 		plist = new ClistBox(pWidget->getWindowsPos().iX, pWidget->getWindowsPos().iY, pWidget->getWindowsPos().iWidth, pWidget->getWindowsPos().iHeight);
-		
 		plist->setWidgetType(CMenuItem::TYPE_CLASSIC);
 		plist->setWidgetMode(ClistBox::MODE_MENU);
 		plist->enableShrinkMenu();
-		
 		// head
 		plist->enablePaintHead();
 		plist->setTitle(_("Plugins"), NEUTRINO_ICON_FEATURES);
-		//plist->setTitleHAlign(CC_ALIGN_CENTER);
 		plist->enablePaintDate();
 		plist->setFormat("%d.%m.%Y %H:%M");
 		plist->setHeadButtons(&CPluginListHeadButtons, 1);
-		//plist->setHeadLine(true, true);
-		
 		// foot
 		plist->enablePaintFoot();
 		plist->setFootButtons(CPluginListButtons, NUM_LIST_BUTTONS);
-		//plist->setFootLine(true, true);
 		
 		//
 		pWidget->addCCItem(plist);
@@ -153,9 +146,8 @@ int CPluginList::showMenu()
 			item = new CMenuForwarder(_(g_PluginList->getName(count)), enabled, _(g_PluginList->getDescription(count).c_str()), CPluginsExec::getInstance(), g_PluginList->getFileName(count));
 			
 			item->setHintIcon(file_exists(IconName.c_str())? IconName.c_str() : NEUTRINO_ICON_MENUITEM_PLUGIN);
-
-			item->set2lines();
-			//item->setBorderMode();
+			
+			item->set2lines(true);
 
 			if (plist) plist->addItem(item);
 		}

@@ -1366,7 +1366,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	posy = xmlGetSignedNumericAttribute(node, "posy", 0);
 	width = xmlGetSignedNumericAttribute(node, "width", 0);
 	height = xmlGetSignedNumericAttribute(node, "height", 0);
-				
+	//			
 	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);
 	color = xmlGetAttribute(node, (char*)"color");
 	gradient = xmlGetAttribute(node, (char *)"gradient");
@@ -1375,8 +1375,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	listboxtype = xmlGetAttribute(node, (char *)"type");
 	listboxmode = xmlGetAttribute(node, (char *)"mode");
 	scrollbar = xmlGetSignedNumericAttribute(node, "scrollbar", 0);
-	shrink = xmlGetSignedNumericAttribute(node, "shrink", 0);
-				
+	shrink = xmlGetSignedNumericAttribute(node, "shrink", 0);			
 	// head
 	painthead = xmlGetSignedNumericAttribute(node, "painthead", 0);
 	paintdate = xmlGetSignedNumericAttribute(node, "paintdate", 0);
@@ -1385,13 +1384,11 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	//format = xmlGetAttribute(node, (char*)"format"); //FIXME:
 	halign = xmlGetSignedNumericAttribute(node, "halign", 0);
 	head_line = xmlGetSignedNumericAttribute(node, "headline", 0);
-	head_line_gradient = xmlGetSignedNumericAttribute(node, "headlinegradient", 0);
-				
+	head_line_gradient = xmlGetSignedNumericAttribute(node, "headlinegradient", 0);			
 	// foot
 	paintfoot = xmlGetSignedNumericAttribute(node, "paintfoot", 0);
 	foot_line = xmlGetSignedNumericAttribute(node, "footline", 0);
-	foot_line_gradient = xmlGetSignedNumericAttribute(node, "footlinegradient", 0);
-		
+	foot_line_gradient = xmlGetSignedNumericAttribute(node, "footlinegradient", 0);	
 	// item
 	itemborder = xmlGetSignedNumericAttribute(node, "itemborder", 0);
 	itembordercolor = xmlGetAttribute(node, (char *)"itembordercolor");
@@ -1585,7 +1582,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 		
 		if (item_icon) menuItem->setIconName(item_icon);	
 		if (item_hint) menuItem->setHint(item_hint);
-		if (item_lines) menuItem->set2lines();
+		if (item_lines) menuItem->set2lines(item_lines);
 		if (item_option) menuItem->setOption(item_option);
 		if (item_option_info) menuItem->setOptionInfo(item_option_info);
 		int br = CComponent::BORDER_NO;

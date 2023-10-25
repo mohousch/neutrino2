@@ -120,6 +120,7 @@ void CAudioPlayerGui::Init(void)
 	box.iY = m_frameBuffer->getScreenY() + ((m_frameBuffer->getScreenHeight() - box.iHeight) >> 1 );
 	
 	alist = new ClistBox(&box);
+	alist->setItem2Lines();
 	item = NULL;
 	sec_timer_id = 0;
 	
@@ -1403,8 +1404,6 @@ void CAudioPlayerGui::showPlaylist()
 		item->setOptionInfo(duration);
 		item->setNumber(i + 1);
 
-		
-		item->set2lines();
 		item->setBorderMode();
 
 		alist->addItem(item);
@@ -1418,7 +1417,6 @@ void CAudioPlayerGui::showPlaylist()
 	//
 	alist->setHeadCorner(RADIUS_SMALL, CORNER_TOP);
 	alist->setHeadGradient(LIGHT2DARK);
-//	alist->setHeadLine(false);
 	alist->enablePaintHead();
 	alist->setTitle(_("Audio Playlist"), NEUTRINO_ICON_MP3);
 	alist->enablePaintDate();
@@ -1426,7 +1424,6 @@ void CAudioPlayerGui::showPlaylist()
 	//
 	alist->setFootCorner(RADIUS_SMALL, CORNER_BOTTOM);
 	alist->setFootGradient(DARK2LIGHT);
-//	alist->setFootLine(false);
 	alist->enablePaintFoot();
 	alist->setFootButtons(AudioPlayerButtons, FOOT_BUTTONS_COUNT);
 	

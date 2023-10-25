@@ -743,13 +743,11 @@ void CTimerList::paint()
 		
 		//
 		listBox = new ClistBox(&cFrameBox);
-		
 		// head
 		listBox->enablePaintHead();
 		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
 		listBox->enablePaintDate();
 		listBox->setHeadButtons(&CTimerListHeadButtons, 1);
-
 		// foot
 		listBox->enablePaintFoot();
 		listBox->setFootButtons(TimerListButtons, 4);
@@ -875,7 +873,7 @@ void CTimerList::paint()
 		}
 
 		item = new CMenuForwarder(alarm.c_str());
-		item->set2lines();
+		item->set2lines(true);
 		item->setOption(zAddData.c_str());
 		item->setOptionInfo(convertTimerType2String(timer.eventType));
 

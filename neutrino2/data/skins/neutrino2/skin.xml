@@ -62,7 +62,7 @@
 	</screen>
 	
 	<screen name="plugins" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<listbox posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" painthead="1" title="Plugins" icon="features" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
+		<listbox posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_CLASSIC" mode="MODE_MENU" itemborder="1" itemlines="1" painthead="1" title="Plugins" icon="features" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
 			<foot_button_label name="btn_red" localename="Delete"/>
 			<foot_button_label name="btn_green" localename="Start"/>
 			<foot_button_label name="btn_yellow"/>
@@ -71,7 +71,7 @@
 	</screen>
 	
 	<screen name="timerlist" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
-		<listbox posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_listbox" itemborder="1" painthead="1" title="Timerlist" icon="timer" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
+		<listbox posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_listbox" itemborder="1" itemlines="1" painthead="1" title="Timerlist" icon="timer" paintdate="1" headline="1" paintfoot="1" footline="1" scrollbar="1">
 			<foot_button_label name="btn_red" localename="Delete"/>
 			<foot_button_label name="btn_green" localename="New timer"/>
 			<foot_button_label name="btn_yellow" localename="Reload"/>
@@ -471,7 +471,7 @@
 	</screen>
 	
 	<screen name="eventlist" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<listbox posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_listbox" itemborder="1" painthead="1" headline="1" paintdate="1" paintfoot="1" footline="1" scrollbar="1"/>
+		<listbox posx="50" posy="50" width="1080" height="520" paintframe="0" type="TYPE_STANDARD" mode="MODE_listbox" itemborder="1" itemlines="1" painthead="1" headline="1" paintdate="1" paintfoot="1" footline="1" scrollbar="1"/>
 	</screen>
 	
 	<screen name="epgsearch" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">

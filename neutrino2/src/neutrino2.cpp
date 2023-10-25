@@ -635,6 +635,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	////
 	g_settings.widget_type = configfile.getInt32("widget_type", CMenuItem::TYPE_CLASSIC);
 	g_settings.item_info = configfile.getBool("item_info", false);
+	g_settings.theme = configfile.getString("theme", "default.config");
 	////
 
 	// keysbinding
@@ -1158,6 +1159,7 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setString("preferred_skin", g_settings.preferred_skin);
 	configfile.setInt32("widget_type", g_settings.widget_type);
 	configfile.setBool("item_info", g_settings.item_info);
+	configfile.setString("theme", g_settings.theme);
 	// END OSD
 
 	// KEYS

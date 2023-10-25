@@ -2086,8 +2086,6 @@ void CMoviePlayerGui::showPlaylist()
 
 		item->setHintIcon(file_exists(playlist[i].tfile.c_str())? playlist[i].tfile.c_str() : DATADIR "/icons/nopreview.jpg");
 
-		item->set2lines();
-
 		std::string tmp = playlist[i].epgInfo1;
 		tmp += "\n";
 		tmp += playlist[i].epgInfo2;

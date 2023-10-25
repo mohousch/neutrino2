@@ -199,7 +199,7 @@ class CMenuItem
 		virtual void setOptionFont(unsigned int font){optionFont = font;};
 		virtual void setOptionFontColor(uint32_t c){optionFontColor = c;};
 		//
-		virtual void set2lines(void){nLinesItem = true;};
+		virtual void set2lines(bool p){nLinesItem = p;};
 		virtual void setWidgetType(int type){widgetType = type;};
 		virtual void setBorderMode(int m = CComponent::BORDER_ALL){borderMode = m;};
 		virtual void setBorderColor(fb_pixel_t col){borderColor = col;};
@@ -562,7 +562,7 @@ class ClistBox : public CComponent
 		void setItemBorderMode(int m = CComponent::BORDER_ALL){itemBorderMode = m;};
 		void setItemBorderColor(fb_pixel_t col){itemBorderColor = col;};
 		void setItemGradient(int gr = NOGRADIENT){itemGradient = gr;};
-		void setItem2Lines(){item2Lines = true;};
+		void setItem2Lines(){item2Lines = true; initFrames();};
 		
 		//// itemInfo properties
 		void enablePaintItemInfo(int fh = 0){paintFootInfo = true; footInfoHeight = fh;};

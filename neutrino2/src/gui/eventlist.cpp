@@ -605,16 +605,11 @@ void EventList::paint(t_channel_id channel_id)
 		
 		//
 		listBox = new ClistBox(&cFrameBox);
-		
 		//
 		listBox->enablePaintHead();
-//		listBox->setHeadLine(true, true);
-		
 		//
 		listBox->enablePaintDate();
-//		listBox->setFootLine(true, true);
 		
-		//
 		evlWidget->addCCItem(listBox);
 	}
 
@@ -675,10 +670,11 @@ void EventList::paint(t_channel_id channel_id)
 		icontype = etype == CTimerd::TIMER_ZAPTO ? NEUTRINO_ICON_BUTTON_YELLOW : etype == CTimerd::TIMER_RECORD ? NEUTRINO_ICON_BUTTON_RED : "";
 
 		item->setIconName(icontype.c_str());
-		item->set2lines();
 
 		if(count == current_event)
 			item->setMarked(true);
+			
+		item->set2lines(true);
 
 		listBox->addItem(item);
 	}

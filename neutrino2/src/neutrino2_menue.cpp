@@ -149,7 +149,7 @@ void CNeutrinoApp::mainMenu(void)
 	//
 	if (nMenu && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
 	{
-		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
 	}
 
 	// features
@@ -189,7 +189,7 @@ void CNeutrinoApp::mainMenu(void)
 	//
 	if (nMenu && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
 	{
-		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
 	}
 		
 	//box info
@@ -213,7 +213,7 @@ void CNeutrinoApp::mainMenu(void)
 	//
 	if (nMenu && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
 	{
-		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
 	}
 		
 	// mediaplayer

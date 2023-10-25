@@ -1168,7 +1168,6 @@ int CSkinManager::showMenu()
 		//
 		skinMenu->enablePaintHead();
 		skinMenu->setTitle(_("Skin Select"), NEUTRINO_ICON_COLORS);
-//		skinMenu->setHeadLine(true, true);
 
 		//
 		skinMenu->enablePaintFoot();
@@ -1176,7 +1175,6 @@ int CSkinManager::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		skinMenu->setFootButtons(&btn);
-//		skinMenu->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(skinMenu);
@@ -1214,8 +1212,6 @@ int CSkinManager::showMenu()
 					item->setIcon1(NEUTRINO_ICON_MARK);
 					select = true;
 				}
-				
-				item->set2lines();
 				
 				skinMenu->addItem(item, select);	
 			}
@@ -1425,6 +1421,7 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 		}
 		else
 		{
+			g_settings.theme = actionKey.c_str();
 			//
 			std::string buffer;
 			buffer = _("Loading skin style ");

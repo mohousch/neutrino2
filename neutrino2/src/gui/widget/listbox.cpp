@@ -1036,26 +1036,26 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 					if (type & ALIGN_LEFT)
 					{
 						//
-						frameBuffer->paintBoxRel(x + BORDER_LEFT + stringwidth + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
+						frameBuffer->paintBoxRel(x + BORDER_LEFT + stringwidth + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 					}
 					else if (type & ALIGN_RIGHT)
 					{
 						//
-						frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
+						frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT - stringwidth, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 					}
 					else // ALIGN_CENTER
 					{
 						// left
-						frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_LEFT, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
+						frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_LEFT, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 						
 						// right
-						frameBuffer->paintBoxRel(x + (dx + stringwidth)/2 + BORDER_LEFT, y + (height - 2)/2, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_RIGHT, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
+						frameBuffer->paintBoxRel(x + (dx + stringwidth)/2 + BORDER_LEFT, y + (height - 2)/2, (dx - BORDER_LEFT - BORDER_RIGHT - stringwidth)/2 - BORDER_RIGHT, 2, color, 0, CORNER_NONE, gradient? LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 					}
 				}
 			}
 			else
 			{
-				frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL);
+				frameBuffer->paintBoxRel(x + BORDER_LEFT, y + (height - 2)/2, dx - BORDER_LEFT - BORDER_RIGHT, 2, color, 0, CORNER_NONE, gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 			}	
 		}
 	}
@@ -1910,10 +1910,10 @@ void ClistBox::initFrames()
 		item->widgetType = widgetType;
 		item->widgetMode = widgetMode;
 		item->paintFrame = paintframe;
-		if (itemBorderMode) item->setBorderMode(itemBorderMode);
+		item->setBorderMode(itemBorderMode);
 		item->setBorderColor(itemBorderColor);
-		if (itemGradient) item->setGradient(itemGradient);
-		if (item2Lines) item->set2lines();
+		item->setGradient(itemGradient);
+		if (item2Lines) item->set2lines(item2Lines);
 	} 
 
 	// head
@@ -3479,7 +3479,7 @@ void ClistBox::integratePlugins(CPlugins::i_type_t integration, const unsigned i
 
 			fw_plugin->setHint(_(g_PluginList->getDescription(count).c_str()));
 			fw_plugin->setWidgetType(itype);
-			if (i2lines) fw_plugin->set2lines();
+			fw_plugin->set2lines(i2lines);
 			fw_plugin->setBorderMode(iBorder);
 			
 			fw_plugin->isPlugin = true;

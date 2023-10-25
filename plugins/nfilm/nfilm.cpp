@@ -375,10 +375,10 @@ void CNFilm::paintLeftWidgetItems(ClistBox *listBox, bool genre)
 		CMenuForwarder *item1 = new CMenuForwarder("In den Kinos", true, NULL, this, "movie_in_cinema");
 		CMenuForwarder *item2 = new CMenuForwarder("Am", true, NULL, this, "movie_popular");
 		item2->setOption("populärsten");
-		item2->set2lines();
+		item2->set2lines(true);
 		CMenuForwarder *item3 = new CMenuForwarder("Am besten", true, NULL, this, "movie_top_rated");
 		item3->setOption("bewertet");
-		item3->set2lines();
+		item3->set2lines(true);
 		CMenuForwarder *item4 = new CMenuForwarder("Neue Filme", true, NULL, this, "movie_new");
 		CMenuForwarder *item5 = new CMenuForwarder("Beenden", true, NULL, this, "exit");
 	

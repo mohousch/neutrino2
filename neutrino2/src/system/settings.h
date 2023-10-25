@@ -257,6 +257,7 @@ struct SNeutrinoSettings
 	std::string preferred_skin;
 	int widget_type;
 	int item_info;
+	std::string theme;
 	// END OSD
 
 	// KEYS
@@ -418,7 +419,7 @@ struct SNeutrinoSettings
 	// END HDD
 
 	// UPDATE
-	char	update_dir[100];
+	char update_dir[100];
 	char softupdate_proxyserver[MAX_INPUT_CHARS + 1];
 	char softupdate_proxyusername[MAX_INPUT_CHARS + 1];
 	char softupdate_proxypassword[MAX_INPUT_CHARS + 1];
