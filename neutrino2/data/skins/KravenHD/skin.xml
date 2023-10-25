@@ -9,7 +9,7 @@
 		<image posx="640" posy="150" width="640" height="300" image="background/logo.png"/>
 		<time posx="640" posy="450" width="640" height="100" refresh="1" format="%A %d.%m.%Y"/>
 		<time posx="640" posy="500" width="640" height="100" refresh="1" format="%H:%M:%S"/>
-		<listbox posx="50" posy="50" width="540" height="620" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1"/>
+		<listbox posx="50" posy="50" width="540" height="620" paintframe="0" type="TYPE_STANDARD" mode="MODE_MENU" itemborder="1" itemlines="1" disableitemicon="1"/>
 	</screen>
 	
 	<screen name="settings" posx="0" posy="0" width="1280" height="720" paintframe="1" gradient="DARK2LIGHT2DARK">

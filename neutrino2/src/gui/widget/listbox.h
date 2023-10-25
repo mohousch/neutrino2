@@ -124,6 +124,7 @@ class CMenuItem
 		int widgetType;
 		int widgetMode;
 		bool isPlugin;
+		bool paintIconName;
 
 		//
 		unsigned int nameFont;
@@ -516,6 +517,7 @@ class ClistBox : public CComponent
 		fb_pixel_t itemBorderColor;
 		int itemGradient;
 		bool item2Lines;
+		bool paintIconName;
 		
 	public:
 		ClistBox(const int x = 0, int const y = 0, const int dx = MENU_WIDTH, const int dy = MENU_HEIGHT);
@@ -563,6 +565,7 @@ class ClistBox : public CComponent
 		void setItemBorderColor(fb_pixel_t col){itemBorderColor = col;};
 		void setItemGradient(int gr = NOGRADIENT){itemGradient = gr;};
 		void setItem2Lines(){item2Lines = true; initFrames();};
+		void disablePaintIconName(void) { paintIconName = false;};
 		
 		//// itemInfo properties
 		void enablePaintItemInfo(int fh = 0){paintFootInfo = true; footInfoHeight = fh;};

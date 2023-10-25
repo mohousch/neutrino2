@@ -80,24 +80,23 @@ void CMediaPlayerMenu::showMenu()
 		
 		//
 		mediaPlayer = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-		
 		mediaPlayer->setWidgetMode(ClistBox::MODE_MENU);
-		mediaPlayer->setWidgetType(CMenuItem::TYPE_CLASSIC);
+		mediaPlayer->setWidgetType(g_settings.widget_type);
 		mediaPlayer->enableShrinkMenu();
-		
 		//
 		mediaPlayer->enablePaintHead();
 		mediaPlayer->setTitle(_("Media Player"), NEUTRINO_ICON_MULTIMEDIA);
 		mediaPlayer->enablePaintDate();
-//		mediaPlayer->setHeadLine(true, true);
-		
 		//
-		mediaPlayer->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-		mediaPlayer->setFootButtons(&btn);
-//		mediaPlayer->setFootLine(true, true);
+		if (mediaPlayer->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		{
+			mediaPlayer->enablePaintFoot();	
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+			if (!g_settings.item_info) mediaPlayer->setFootButtons(&btn);
+		}
+		
+		// iteminfo
+		if (g_settings.item_info) mediaPlayer->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(mediaPlayer);

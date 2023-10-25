@@ -542,22 +542,24 @@ int CInfoMenu::showMenu()
 		infoMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		infoMenu->setWidgetMode(ClistBox::MODE_MENU);
-		infoMenu->setWidgetType(CMenuItem::TYPE_CLASSIC);
+		infoMenu->setWidgetType(g_settings.widget_type);
 		infoMenu->enableShrinkMenu();
 		
 		//
 		infoMenu->enablePaintHead();
 		infoMenu->setTitle(_("Information"), NEUTRINO_ICON_INFO);
 		infoMenu->enablePaintDate();
-//		infoMenu->setHeadLine(true, true);
 		
 		//
-		infoMenu->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-		infoMenu->setFootButtons(&btn);
-//		infoMenu->setFootLine(true, true);
+		if (infoMenu->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		{
+			infoMenu->enablePaintFoot();	
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+			if (!g_settings.item_info) infoMenu->setFootButtons(&btn);
+		}
+		
+		// iteminfo
+		if (g_settings.item_info) infoMenu->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(infoMenu);

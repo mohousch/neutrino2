@@ -112,22 +112,22 @@ int COSDSettings::showMenu(void)
 		osdSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		osdSettings->setWidgetMode(ClistBox::MODE_MENU);
-		osdSettings->setWidgetType(CMenuItem::TYPE_CLASSIC);
+		osdSettings->setWidgetType(g_settings.widget_type);
 		osdSettings->enableShrinkMenu();
-		
 		//
 		osdSettings->enablePaintHead();
 		osdSettings->setTitle(_("OSD"), NEUTRINO_ICON_COLORS);
 		osdSettings->enablePaintDate();
-//		osdSettings->setHeadLine(true, true);
-		
 		//
-		osdSettings->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-		osdSettings->setFootButtons(&btn);
-//		osdSettings->setFootLine(true, true);
+		if (osdSettings->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		{
+			osdSettings->enablePaintFoot();	
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+			if (!g_settings.item_info) osdSettings->setFootButtons(&btn);
+		}
+		
+		// iteminfo
+		if (g_settings.item_info) osdSettings->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(osdSettings);
@@ -1212,6 +1212,8 @@ int CSkinManager::showMenu()
 					item->setIcon1(NEUTRINO_ICON_MARK);
 					select = true;
 				}
+				
+				item->set2lines(true);
 				
 				skinMenu->addItem(item, select);	
 			}

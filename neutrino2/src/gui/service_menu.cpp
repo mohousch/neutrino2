@@ -102,24 +102,23 @@ int CServiceMenu::showMenu(void)
 		
 		//
 		service = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
-		
 		service->setWidgetMode(ClistBox::MODE_MENU);
-		service->setWidgetType(CMenuItem::TYPE_CLASSIC);
+		service->setWidgetType(g_settings.widget_type);
 		service->enableShrinkMenu();
-		
-		//
+		// head
 		service->enablePaintHead();
 		service->setTitle(_("System"), NEUTRINO_ICON_SERVICE);
 		service->enablePaintDate();
-//		service->setHeadLine(true, true);
+		// foot
+		if (service->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		{
+			service->enablePaintFoot();	
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+			if (!g_settings.item_info) service->setFootButtons(&btn);
+		}
 		
-		//
-		service->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-		service->setFootButtons(&btn);
-//		service->setFootLine(true, true);
+		// iteminfo
+		if (g_settings.item_info) service->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(service);

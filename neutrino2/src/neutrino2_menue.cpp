@@ -107,7 +107,7 @@ void CNeutrinoApp::mainMenu(void)
 		{
 			nMenu->enablePaintFoot();
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " " };	
-			nMenu->setFootButtons(&btn);
+			if (!g_settings.item_info) nMenu->setFootButtons(&btn);
 		}
 		
 		// iteminfo
@@ -147,7 +147,7 @@ void CNeutrinoApp::mainMenu(void)
 #endif
 
 	//
-	if (nMenu && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
+	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
 	{
 		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
 	}
@@ -187,7 +187,7 @@ void CNeutrinoApp::mainMenu(void)
 	if (nMenu) nMenu->addItem(item);
 	
 	//
-	if (nMenu && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
+	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
 	{
 		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
 	}
@@ -211,7 +211,7 @@ void CNeutrinoApp::mainMenu(void)
 	if (nMenu) nMenu->addItem(item);
 	
 	//
-	if (nMenu && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
+	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
 	{
 		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
 	}

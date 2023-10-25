@@ -98,22 +98,23 @@ void CMainSettingsMenu::showMenu(void)
 		mainSettings = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		mainSettings->setWidgetMode(ClistBox::MODE_MENU);
-		mainSettings->setWidgetType(CMenuItem::TYPE_CLASSIC);
+		mainSettings->setWidgetType(g_settings.widget_type);
 		mainSettings->enableShrinkMenu();
 		
 		//
 		mainSettings->enablePaintHead();
 		mainSettings->setTitle(_("Settings"), NEUTRINO_ICON_SETTINGS);
 		mainSettings->enablePaintDate();
-//		mainSettings->setHeadLine(true, true);
-		
 		//
-		mainSettings->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-		mainSettings->setFootButtons(&btn);
-//		mainSettings->setFootLine(true, true);
+		if (mainSettings->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		{
+			mainSettings->enablePaintFoot();	
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+			if (!g_settings.item_info) mainSettings->setFootButtons(&btn);
+		}
+		
+		// iteminfo
+		if (g_settings.item_info) mainSettings->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(mainSettings);

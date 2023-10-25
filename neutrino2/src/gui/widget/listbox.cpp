@@ -80,6 +80,7 @@ CMenuItem::CMenuItem()
 	widgetType = TYPE_STANDARD;
 	widgetMode = ClistBox::MODE_LISTBOX;
 	isPlugin = false;
+	paintIconName = true;
 
 	//
 	active = true;
@@ -1428,7 +1429,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		}
 		else // standard|extended
 		{
-			if (!iconName.empty())
+			if (!iconName.empty() && paintIconName)
 			{
 				icon_offset = ICON_OFFSET;
 				
@@ -1696,6 +1697,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	itemBorderColor = COL_MENUCONTENT_PLUS_6;
 	itemGradient = NOGRADIENT;
 	item2Lines = false;
+	paintIconName = true;
 	
 	//
 	sec_timer_id = 0;
@@ -1819,6 +1821,7 @@ ClistBox::ClistBox(CBox* position)
 	itemBorderColor = COL_MENUCONTENT_PLUS_6;
 	itemGradient = NOGRADIENT;
 	item2Lines = false;
+	paintIconName = true;
 	
 	//
 	sec_timer_id = 0;
@@ -1914,6 +1917,7 @@ void ClistBox::initFrames()
 		item->setBorderColor(itemBorderColor);
 		item->setGradient(itemGradient);
 		if (item2Lines) item->set2lines(item2Lines);
+		item->paintIconName = paintIconName;
 	} 
 
 	// head
@@ -2106,7 +2110,7 @@ void ClistBox::paint()
 		int iw, ih;
 		frameBuffer->getIconSize(NEUTRINO_ICON_INFO, &iw, &ih);
 						
-		if (paintFootInfo)
+		if (paintFootInfo && paint_Foot)
 		{	
 			label.setPosition(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - iw, fheight - 2);
 			

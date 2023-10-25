@@ -82,22 +82,24 @@ int CPowerMenu::showMenu(void)
 		powerMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 		
 		powerMenu->setWidgetMode(ClistBox::MODE_MENU);
-		powerMenu->setWidgetType(CMenuItem::TYPE_CLASSIC);
+		powerMenu->setWidgetType(g_settings.widget_type);
 		powerMenu->enableShrinkMenu();
 		
 		//
 		powerMenu->enablePaintHead();
 		powerMenu->setTitle(_("Power Menu"), NEUTRINO_ICON_BUTTON_POWER);
 		powerMenu->enablePaintDate();
-//		powerMenu->setHeadLine(true, true);
 		
 		//
-		powerMenu->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
-		powerMenu->setFootButtons(&btn); 
-//		powerMenu->setFootLine(true, true);
+		if (powerMenu->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		{
+			powerMenu->enablePaintFoot();	
+			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
+			if (!g_settings.item_info) powerMenu->setFootButtons(&btn);
+		}
+		
+		// iteminfo
+		if (g_settings.item_info) powerMenu->enablePaintItemInfo(60);
 		
 		//
 		widget->addCCItem(powerMenu);

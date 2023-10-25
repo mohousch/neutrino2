@@ -1352,6 +1352,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	char *itembordercolor = NULL;
 	char * itemgradient = NULL;
 	unsigned int item2lines = 0;
+	unsigned int itemiconname = 0;
 	
 	//
 	xmlNodePtr listboxitem_node = NULL;
@@ -1394,6 +1395,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	itembordercolor = xmlGetAttribute(node, (char *)"itembordercolor");
 	itemgradient = xmlGetAttribute(node, (char *)"itemgradient");
 	item2lines = xmlGetSignedNumericAttribute(node, "itemlines", 0);
+	itemiconname = xmlGetSignedNumericAttribute(node, "disableitemicon", 0);
 				
 	// iteminfo
 	paintiteminfo = xmlGetSignedNumericAttribute(node, "paintiteminfo", 0);
@@ -1500,6 +1502,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	listBox->setItemGradient(item_gr);
 	// item2lines
 	if (item2lines) listBox->setItem2Lines();
+	if (itemiconname) listBox->disablePaintIconName();
 				
 	// ITEM	
 	listboxitem_node = node->xmlChildrenNode;
