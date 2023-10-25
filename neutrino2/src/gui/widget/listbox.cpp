@@ -2599,7 +2599,7 @@ void ClistBox::setFootButtons(const struct button_label* _fbutton_labels, const 
 
 void ClistBox::paintItemInfo(int pos)
 {
-	dprintf(DEBUG_INFO, "ClistBox::paintItemInfo:\n"); 
+	dprintf(DEBUG_INFO, "ClistBox::paintItemInfo: %d\n", pos); 
 	
 	if( (widgetType == CMenuItem::TYPE_STANDARD) || (widgetType == CMenuItem::TYPE_CLASSIC) )
 	{
@@ -2714,7 +2714,7 @@ void ClistBox::paintItemInfo(int pos)
 			}
 			
 			//
-			if(fbutton_count == 0)
+			if (paint_Foot && fbutton_count == 0)
 			{	
 				// info icon
 				CCIcon infoIcon;
@@ -2813,7 +2813,7 @@ void ClistBox::paintItemInfo(int pos)
 			
 		if (paintFootInfo) // MODE_LISTBOX | MODE_MENU
 		{
-			if(fbutton_count == 0)
+			if ( paint_Foot && fbutton_count == 0)
 			{
 				int iw, ih;
 				frameBuffer->getIconSize(NEUTRINO_ICON_INFO, &iw, &ih);
