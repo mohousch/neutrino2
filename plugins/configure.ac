@@ -1,4 +1,4 @@
-AC_INIT(neutrino2-plugins,4.9)
+AC_INIT(neutrino2-plugins,5.0)
 AM_INIT_AUTOMAKE([nostdinc])
 
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
