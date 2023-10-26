@@ -487,6 +487,9 @@ struct SNeutrinoSettings
 	int infobar_buttonline_gradient;
 	int infobar_border;
 	
+	// separator
+	int sep_gradient;
+	
 	// cicam
 	int ci_standby_reset;
 	int ci_clock[4];

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-24 12:46+0200\n"
+"POT-Creation-Date: 2023-10-26 02:22+0200\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1016,9 +1016,8 @@ msgstr "Hier erhalten Sie Details zum laufenden Sender"
 msgid "Here you can set channel scan and more"
 msgstr "Hier können Sie Sender suchlauf führen"
 
-#, fuzzy
 msgid "Here you can set timers"
-msgstr "Hier können Sie Farbschema wechseln"
+msgstr "Hier können Sie Timers einstellen"
 
 msgid "Here you can setup OSD"
 msgstr "Hier können Sie Farbschema wechseln"
@@ -2014,6 +2013,12 @@ msgstr "Startzeit Auswahl"
 msgid "Select transponder"
 msgstr "Transponder Auswahl"
 
+msgid "Separator"
+msgstr "Trennlinie"
+
+msgid "Separator Gradient"
+msgstr "Linie Farbverlauf"
+
 msgid "Serie"
 msgstr "Serie"
 
@@ -2086,9 +2091,8 @@ msgstr "Sollte die Suche wirklich abgebrochen werden?"
 msgid "Show / Gameshow"
 msgstr "Show / Gameshow"
 
-#, fuzzy
 msgid "Show Hints"
-msgstr "Dateirechte anzeigen"
+msgstr "Item Infos zeigen"
 
 msgid "Show active network settings"
 msgstr "Aktive Netzwerkeinstellungen anzeigen"
@@ -2165,9 +2169,8 @@ msgstr "Sport"
 msgid "Sports magazines"
 msgstr "Sportzeitschriften"
 
-#, fuzzy
 msgid "Standard"
-msgstr "Standby"
+msgstr "Standard"
 
 msgid "Standby"
 msgstr "Standby"
@@ -2615,9 +2618,8 @@ msgstr "Westen"
 msgid "Wide Screen Auto"
 msgstr "Breitbild-Automatik"
 
-#, fuzzy
 msgid "Widget Type"
-msgstr "ImageTyp"
+msgstr "Widget Typ"
 
 msgid "Window-Content"
 msgstr "Fensterinhalt"

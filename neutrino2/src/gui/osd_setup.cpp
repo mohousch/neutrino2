@@ -428,6 +428,11 @@ void COSDMenuColorSettings::showMenu()
 	// itemInfo corner
 	//OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Corner"), &g_settings.Hint_corner, CORNER_TYPE_OPTIONS, CORNER_TYPE_OPTION_COUNT, true));
 	
+	// sep gradient
+	OSDmenuColorsSettings->addItem( new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, _("Separator")));
+	
+	OSDmenuColorsSettings->addItem(new CMenuOptionChooser(_("Separator Gradient"), &g_settings.sep_gradient, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
+	
 	//
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
@@ -1106,7 +1111,9 @@ void COSDDiverses::showMenu()
 	// logos dir
 	osdDiverseSettings->addItem( new CMenuForwarder(_("logos Dir"), true, g_settings.logos_dir.c_str(), this, "logos_dir" ) );
 	
-	//// 
+	//
+	osdDiverseSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	
 	// widget_type
 	if (g_settings.preferred_skin == "neutrino")
 	{
@@ -1120,8 +1127,7 @@ void COSDDiverses::showMenu()
 	}
 	
 	// item info
-	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Show Hints"), &g_settings.item_info, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true ));
-	////
+	osdDiverseSettings->addItem(new CMenuOptionChooser(_("Show Hints"), &g_settings.item_info, OPTIONS_OFF0_ON1_OPTIONS, OPTIONS_OFF0_ON1_OPTION_COUNT, true));
 
 	//
 	widget->setTimeOut(g_settings.timing_menu);

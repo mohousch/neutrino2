@@ -855,6 +855,9 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.Hint_border = configfile.getBool("Hint_border", true);
 	g_settings.Hint_radius = configfile.getInt32("Hint_radius", NO_RADIUS);
 	g_settings.Hint_corner = configfile.getInt32("Hint_corner", CORNER_ALL);
+	
+	// sep
+	g_settings.sep_gradient = configfile.getBool("separator_gradient", true);
 	// END MISC OPTS
 
 	// HDD
@@ -1344,6 +1347,9 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setBool("infobar_buttonline", g_settings.infobar_buttonline);
 	configfile.setBool("infobar_buttonline_gradient", g_settings.infobar_buttonline_gradient);
 	configfile.setBool("infobar_border", g_settings.infobar_border);
+	
+	// sep
+	configfile.setBool("separator_gradient", g_settings.sep_gradient);
 
 	//
 	configfile.setString("ytkey", g_settings.ytkey);

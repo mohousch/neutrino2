@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-24 12:46+0200\n"
+"POT-Creation-Date: 2023-10-26 02:22+0200\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1993,6 +1993,12 @@ msgstr "Выберите время начала"
 msgid "Select transponder"
 msgstr "Выбрать транспондер"
 
+msgid "Separator"
+msgstr "Линия Градиент"
+
+msgid "Separator Gradient"
+msgstr "Линия Градиент"
+
 msgid "Serie"
 msgstr "Ряд"
 
@@ -2065,7 +2071,6 @@ msgstr "Действительно ли стоит прекратить поис
 msgid "Show / Gameshow"
 msgstr "Шоу/игровое шоу"
 
-#, fuzzy
 msgid "Show Hints"
 msgstr "Показать права файла"
 
@@ -2144,7 +2149,6 @@ msgstr "Спорт"
 msgid "Sports magazines"
 msgstr "Спортивные журналы"
 
-#, fuzzy
 msgid "Standard"
 msgstr "Режим ожидания"
 
@@ -2593,7 +2597,6 @@ msgstr "Запад"
 msgid "Wide Screen Auto"
 msgstr "Широкоэкранный авто"
 
-#, fuzzy
 msgid "Widget Type"
 msgstr "Тип изображения"
 

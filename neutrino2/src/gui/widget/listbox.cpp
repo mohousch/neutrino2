@@ -958,7 +958,7 @@ CMenuSeparator::CMenuSeparator(const int Type, const char * const Text, const bo
 	
 	//
 	color = COL_MENUCONTENT_PLUS_5;
-	gradient = Gradient;
+	gradient = /*Gradient*/g_settings.sep_gradient;
 
 	menuItem_type = MENUITEM_SEPARATOR;
 }
