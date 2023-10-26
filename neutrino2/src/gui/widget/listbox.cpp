@@ -1913,11 +1913,13 @@ void ClistBox::initFrames()
 		item->widgetType = widgetType;
 		item->widgetMode = widgetMode;
 		item->paintFrame = paintframe;
-		item->setBorderMode(itemBorderMode);
-		item->setBorderColor(itemBorderColor);
-		item->setGradient(itemGradient);
-		if (item2Lines) item->set2lines(item2Lines);
 		item->paintIconName = paintIconName;
+		////
+		if (itemBorderMode) item->setBorderMode(itemBorderMode);
+		if (itemBorderColor) item->setBorderColor(itemBorderColor);
+		if (itemGradient) item->setGradient(itemGradient);
+		if (item2Lines) item->set2lines(item2Lines);
+
 	} 
 
 	// head

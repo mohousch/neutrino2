@@ -37,7 +37,7 @@
 	
 	<screen name="features" posx="0" posy="0" width="1280" height="720">
 		<window posx="650" posy="50" width="520" height="520" paintframe="1"/>
-		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1"/>
+		<listbox posx="640" posy="60" width="540" height="500" type="TYPE_STANDARD" mode="MODE_MENU" itemlines="1" disableitemicon="1"/>
 		<label name="label" id="2" posx="650" posy="600" width="520" height="60" text="Features" halign="1" font="FONT_TYPE_MENU_TITLE2"/>
 		<window posx="300" posy="50" width="300" height="300" paintframe="1" color="COL_MENUCONTENTSELECTED_PLUS_0"/>
 		<image name="image" posx="300" posy="50" width="300" height="300" image="hints/hint_plugin.png"/>
