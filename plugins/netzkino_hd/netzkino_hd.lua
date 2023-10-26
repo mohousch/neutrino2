@@ -309,7 +309,7 @@ function get_movies_menu(_id)
 	
 	m_movies = neutrino2.CMenuWidget(menu_title, netzkino_png)
 
-	m_movies:setWidgetType(neutrino2.TYPE_FRAME)
+	m_movies:setWidgetType(neutrino2.CMenuItem_TYPE_FRAME)
 	m_movies:setItemsPerPage(6, 2)
 
 	m_movies:setFootButtons(red)
