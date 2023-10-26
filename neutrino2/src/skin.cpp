@@ -3170,10 +3170,13 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.Hint_radius = skinConfig->getInt32("Hint_radius", NO_RADIUS);
 		g_settings.Hint_corner = skinConfig->getInt32("Hint_corner", CORNER_ALL);
 		
+		//
+		g_settings.sep_gradient = skinConfig->getBool("separator_gradient", true);
+		
 		// progressbar color
 		g_settings.progressbar_color = skinConfig->getInt32("progressbar_color", 1);
-		//g_settings.progressbar_gradient_type = skinConfig->getInt32("progressbar_gradient_type", GRADIENT_ONECOLOR);
 		
+		// font
 		strcpy( g_settings.font_file, skinConfig->getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
 
 		colorSetupNotifier = new CColorSetupNotifier;
@@ -3292,10 +3295,13 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	skinConfig->setInt32("Hint_radius", g_settings.Hint_radius);
 	skinConfig->setInt32("Hint_corner", g_settings.Hint_corner);
 	
+	// sep
+	skinConfig->setBool("separator_gradient", g_settings.sep_gradient);
+	
 	// progressbar color
 	skinConfig->setInt32("progressbar_color", g_settings.progressbar_color);
-	//skinConfig->setInt32("progressbar_gradient_type", g_settings.progressbar_gradient_type);
-		
+
+	// font		
 	skinConfig->setString("font_file", g_settings.font_file);
 
 	if (!skinConfig->saveConfig(filename))
