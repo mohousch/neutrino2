@@ -547,7 +547,7 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 		CCHline hline(buttonBarStartX + BORDER_LEFT, buttonBarStartY, BoxWidth - BORDER_LEFT - BORDER_RIGHT, buttonBarHeight);
 		
 		hline.setColor(COL_INFOBAR_SHADOW_PLUS_1);
-		hline.setGradient(3);
+		hline.setGradient(g_settings.infobar_buttonline_gradient);
 		hline.paint();
 	}
 

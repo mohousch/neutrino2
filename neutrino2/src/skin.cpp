@@ -3154,11 +3154,11 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.Foot_line_gradient = skinConfig->getBool("Foot_line_gradient", false);
 		
 		// infobar
-		g_settings.infobar_gradient = skinConfig->getInt32("infobar_gradient", DARK2LIGHT);
-		g_settings.infobar_gradient_type = skinConfig->getInt32("infobar_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.infobar_corner = skinConfig->getInt32("infobar_corner", CORNER_ALL);
 		g_settings.infobar_radius = skinConfig->getInt32("infobar_radius", RADIUS_MID);
 		g_settings.infobar_border = skinConfig->getBool("infobar_border", false);
+		g_settings.infobar_gradient = skinConfig->getInt32("infobar_gradient", DARK2LIGHT);
+		g_settings.infobar_gradient_type = skinConfig->getInt32("infobar_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.infobar_buttonbar = skinConfig->getBool("infobar_buttonbar", true);
 		g_settings.infobar_buttonline = skinConfig->getBool("infobar_buttonline", false);
 		g_settings.infobar_buttonline_gradient = skinConfig->getBool("infobar_buttonline_gradient", false);
@@ -3279,14 +3279,14 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 	skinConfig->setBool("Foot_line_gradient", g_settings.Foot_line_gradient);
 	
 	// infobar
-	skinConfig->setInt32("infobar_gradient", g_settings.infobar_gradient);
-	skinConfig->setInt32("infobar_gradient_type", g_settings.infobar_gradient_type);
 	skinConfig->setInt32("infobar_corner", g_settings.infobar_corner);
 	skinConfig->setInt32("infobar_radius", g_settings.infobar_radius);
+	skinConfig->setBool("infobar_border", g_settings.infobar_border);
+	skinConfig->setInt32("infobar_gradient", g_settings.infobar_gradient);
+	skinConfig->setInt32("infobar_gradient_type", g_settings.infobar_gradient_type);
 	skinConfig->setBool("infobar_buttonbar", g_settings.infobar_buttonbar);
 	skinConfig->setBool("infobar_buttonline", g_settings.infobar_buttonline);
 	skinConfig->setBool("infobar_buttonline_gradient", g_settings.infobar_buttonline_gradient);
-	skinConfig->setBool("infobar_border", g_settings.infobar_border);
 	
 	// itemInfo
 	skinConfig->setBool("Hint_border", g_settings.Hint_border);
