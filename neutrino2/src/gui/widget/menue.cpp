@@ -197,6 +197,13 @@ void CMenuWidget::initFrames()
 	hheight = 0;
 	fheight = 0;
 	cFrameFootInfoHeight = 0;
+	
+	//
+	if(width > (int) frameBuffer->getScreenWidth())
+		width = frameBuffer->getScreenWidth();
+
+	if(height > ((int)frameBuffer->getScreenHeight()))
+		height = frameBuffer->getScreenHeight();
 
 	// widgettype forwarded to item 
 	for (unsigned int count = 0; count < items.size(); count++) 
@@ -327,6 +334,8 @@ void CMenuWidget::initFrames()
 			x = offx + frameBuffer->getScreenX() + frameBuffer->getScreenWidth() - full_width;
 			y = offy + frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
 		}
+		
+		dprintf(DEBUG_NORMAL, "CMenuWidget::initFrames: END\n");
 	}
 }
 

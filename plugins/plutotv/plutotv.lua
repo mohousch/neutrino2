@@ -39,7 +39,6 @@ function get_channels()
 	local target = neutrino2.CONFIGDIR .. "/webtv/plutotv.m3u8"
 		
 	if httpTool:downloadFile(obj_file, target, 100) == true then
-		--os.execute("pzapit -c")
 		neutrino2.CZapit_getInstance():reinitChannels()
 	end
 end
@@ -165,10 +164,10 @@ cm_selected = 0
 function cat_menu(_id)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 
-	local cm = neutrino2.CMenuWidget(catlist[tonumber(_id)], neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
-	cm:setWidgetType(neutrino2.CMenuItem_TYPE_FRAME)
-	cm:enablePaintItemInfo(70)
-	cm:setItemsPerPage(6, 2)
+	local cm = neutrino2.CMenuWidget(catlist[tonumber(_id)], neutrino2.PLUGINDIR .. "/plutotv/plutotv.png", 1100)
+	--cm:setWidgetType(neutrino2.CMenuItem_TYPE_FRAME)
+	--cm:enablePaintItemInfo(70)
+	--cm:setItemsPerPage(6, 2)
 	cm:enablePaintDate()
 	cm:clear()
 	
@@ -192,7 +191,8 @@ function cat_menu(_id)
 	for cat, itemlist_detail in pairs (itemlist) do
 		if cat == tonumber(_id) then
 			local count = 1
-			for item, item_detail in pairs(itemlist_detail) do	
+			for item, item_detail in pairs(itemlist_detail) do
+				--[[	
 				tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
 					
 				if item_detail.cover ~= nil then
@@ -202,14 +202,15 @@ function cat_menu(_id)
 						neutrino2.downloadUrl(conv_utf8(item_detail.cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
 					end
 				end
+				]]
 					
 				playback_details[item] = 
 				{
 					uuid = item_detail.uuid;
 					name = item_detail.name;
 					desc = item_detail.desc;
-					--cover = item_detail.cover;
-					cover = tfile;
+					cover = item_detail.cover;
+					--cover = tfile;
 					type = item_detail.type;
 					duration = item_detail.duration;
 					rating = item_detail.rating;
@@ -217,8 +218,9 @@ function cat_menu(_id)
 				}
 					
 				item = neutrino2.CMenuForwarder(conv_utf8(item_detail.name))
-				item:setHintIcon(tfile)
-				item:setHint(item_detail.desc)
+				--item:setHintIcon(tfile)
+				item:setOption(item_detail.desc)
+				item:set2lines(true)
 				
 				if item_detail.type == "movie" then
 					item:setActionKey(null, "info");
@@ -259,7 +261,7 @@ function cat_menu(_id)
 		cat_menu(_id)
 	end
 	
-	neutrino2.CFileHelpers():removeDir("/tmp/plutotv")
+	os.remove("/tmp/plutotv")
 end
 
 sm_selected = 0
@@ -332,10 +334,10 @@ em_selected = 0
 function episode_menu(s)
 	neutrino2.CFileHelpers():createDir("/tmp/plutotv")
 	
-	local em = neutrino2.CMenuWidget(episodelist[tonumber(s)][1].title .. " - Season "..s, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png")
-	em:setWidgetType(neutrino2.CMenuItem_TYPE_FRAME)
-	em:enablePaintItemInfo(70)
-	em:setItemsPerPage(6, 2)
+	local em = neutrino2.CMenuWidget(episodelist[tonumber(s)][1].title .. " - Season "..s, neutrino2.PLUGINDIR .. "/plutotv/plutotv.png", 1100)
+	--em:setWidgetType(neutrino2.CMenuItem_TYPE_FRAME)
+	--em:enablePaintItemInfo(70)
+	--em:setItemsPerPage(6, 2)
 	em:enablePaintDate()
 	em:clear()
 	
@@ -360,6 +362,8 @@ function episode_menu(s)
 		if season == tonumber(s) then
 			local count = 1
 			for episode, episode_detail in pairs(episodelist_detail) do
+			
+				--[[
 				local tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
 					
 				if episode_detail.cover ~= nil then
@@ -369,14 +373,15 @@ function episode_menu(s)
 						neutrino2.downloadUrl(conv_utf8(episode_detail.cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
 					end
 				end
+				]]
 				
 				playback_details[episode] = 
 				{
 					uuid = episode_detail.uuid;
 					name = episode_detail.name;
 					desc = episode_detail.desc;
-					--cover = episode_detail.cover;
-					cover = tfile;
+					cover = episode_detail.cover;
+					--cover = tfile;
 					type =  episode_detail.type;
 					duration = episode_detail.duration;
 					rating = episode_detail.rating;
@@ -386,9 +391,10 @@ function episode_menu(s)
 				}
 				
 				item = neutrino2.CMenuForwarder(episode_detail.name)
-				item:setHintIcon(tfile)
-				item:setHint(episode_detail.desc)
+				--item:setHintIcon(tfile)
+				item:setOption(episode_detail.desc)
 				item:setActionKey(null, "info")
+				item:set2lines(true)
 				
 				em:addItem(item)
 			end
@@ -429,9 +435,19 @@ function playStream(id)
 	cover = playback_details[id].cover	
 	duration = playback_details[id].duration
 	rating = playback_details[id].rating
+	
+	tfile = neutrino2.DATADIR .. "/icons/nopreview.jpg"
+					
+	if cover ~= nil then
+		tfile = "/tmp/plutotv/" .. conv_utf8(title) .. ".jpg"
+					
+		if neutrino2.file_exists(tfile) ~= true then
+			neutrino2.downloadUrl(conv_utf8(cover) .. "?h=640&w=480", tfile, "Mozilla/5.0")
+		end
+	end
 		
 	movieWidget = neutrino2.CMovieInfoWidget()
-	movieWidget:setMovie(file, title, info1, "", cover, duration)
+	movieWidget:setMovie(file, title, info1, "", tfile, duration)
 
 	movieWidget:exec(null, "")
 end
@@ -508,10 +524,11 @@ end
 
 function main()
 	get_cat()
+	os.remove("/tmp/lua*")
+	os.remove("/tmp/plutotv")
+	collectgarbage();
 end
 
 main()
-
-
 
 
