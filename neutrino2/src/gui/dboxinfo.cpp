@@ -158,6 +158,7 @@ int CDBoxInfoWidget::showInfo()
 		head = new CCHeaders(Box.iX, Box.iY, Box.iWidth, 40, _("Box Info"), NEUTRINO_ICON_INFO);
 		head->enablePaintDate();
 		head->setFormat("%d.%m.%Y %H:%M:%S");
+//		head->setLine(true, true);
 		
 		//
 		dboxInfoWidget->addCCItem(head);
