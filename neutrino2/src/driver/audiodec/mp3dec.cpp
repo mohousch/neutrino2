@@ -379,9 +379,6 @@ bool CMP3Dec::GetMetaData(FILE* in, const bool nice, CAudioMetaData* const m)
 		
 		// id3tag infos
 		GetID3(in, m);
-		
-		// id3tag cover
-		//SaveCover(in, m);
 	}
 	else
 	{

@@ -122,6 +122,7 @@ known bugs:
 
 #define STATIC /**/
 
+//
 #ifdef fopen
 	#undef fopen
 #endif
@@ -141,7 +142,6 @@ known bugs:
 	#undef fseek
 #endif
 
-
 typedef struct
 {
 	const unsigned char mask[4];
@@ -157,27 +157,13 @@ magic_t known_magic[] =
 	{{0xFF, 0xFF, 0xFF, 0x00}, {'F' , 'L' , 'V' , 0x00}, "audio/flv"}
 };
 
-#if 0
-#warning if a magic is contained in a file (for instance in .cdr) there is no way to play it correctly with neutrino
-#warning the third magic is pretty short - hence disabled by default
-/* 1111 1111 1111 1010 0000 0000 0000 0000
-   AAAA AAAA AAAB BCC
-   where A: frame sync
-   B: MPEG audio ID (11 = MPEG Version 1)
-   C: Layer description (01 = Layer III)
-   see http://mpgedit.org/mpgedit/mpeg_format/mpeghdr.htm */
-
-#define known_magic_count (sizeof(known_magic) / sizeof(magic_t))
-#else
 #define known_magic_count 2
-#endif
-
 #define is_redirect(a) ((a == 301) || (a == 302))
 
 char err_txt[2048];			/* human readable error message */
 char redirect_url[2048];		/* new url if we've been redirected (HTTP 301/302) */
 static char logfile[255];		/* redirect errors from stderr */
-static int retry_num = 2;	/* number of retries for failed connections */
+static int retry_num = 2;		/* number of retries for failed connections */
 static int enable_metadata = 1;		/* allow shoutcast meta data streaming */
 static int got_opts = 0;		/* is set to 1 if getOpts() was executed */
 static int cache_size = 196608;		/* default cache size; can be overridden at */
@@ -212,9 +198,6 @@ void getOpts()
 	char buf[4096], *ptr;
 	int i;
 	FILE *fd = NULL;
-
-	/* options which can be set from within neutrino */
-	enable_metadata = 1/*g_settings.audioplayer_enable_sc_metadata*/;
 
 	if (got_opts) /* prevent reading in options multiple times */
 		return;
@@ -409,9 +392,6 @@ int request_file(URL *url)
 				snprintf(str, sizeof(str)-1, "\r\n");
 				dprintf(DEBUG_INFO, "> %s", str);
 				send(url->fd, str, strlen(str), 0);
-
-				//if( (meta_int = parse_response(url, &id3, &tmp)) < 0)
-				//	return meta_int;
 				
 				if ((meta_int = parse_response(url, &id3, &tmp)) < 0)
 				{
@@ -444,20 +424,6 @@ int request_file(URL *url)
 
 				/* push the created ID3 header into the stream cache */
 				push(url->stream, (char*)&id3, id3.len);
-#if 0
-				rval = parse_response(url, NULL, NULL);
-				dprintf(DEBUG_NORMAL, "server response parser: return value = %d\n", rval);
-
-				/* if the header indicated a zero length document or an */
-				/* error, then close the cache, if there is any */
-				/* 25.04.05 ChakaZulu: zero length can be a stream so let's try playing */
-				if((slot >= 0) && (rval < 0))
-					cache[slot].closed = 1;
-
-				/* return on error */
-				if( rval < 0 )
-					return rval;
-#endif
 			}
 			break;
 
@@ -676,93 +642,6 @@ int parse_response(URL *url, void * /*opt*/, CSTATE *state)
 		getHeaderStr("icy-url:", state->station_url);
 		getHeaderVal("icy-br:", state->bitrate);
 	}
-#if 0
-	ID3 *id3 = (ID3*)opt;
-	/********************* dirty hack **********************/
-	/* we parse the stream header sent by the server and	*/
-	/* build based on this information an arteficial id3		*/
-	/* header that is pushed into the streamcache before	*/
-	/* any data from the stream is fed into the cache. This	*/
-	/* makes the stream look like an MP3 and we have the	*/
-	/* station information in the display of the player :))	*/
-
-#define SSIZE(a) (\
-   (((a) & 0x0000007f) << 0) | (((a) & 0x00003f80) << 1) | \
-   (((a) & 0x001fc000) << 2) | (((a) & 0xfe000000) << 3))
-
-#define FRAME(b,c) {\
-  strcpy(id3frame.id, (b)); \
-  strcpy(id3frame.base, (c)); \
-  id3frame.size = strlen(id3frame.base); \
-  fcnt = 11 + id3frame.size; }
-
-	if(id3)
-	{
-		int cnt = 0, fcnt = 0;
-		ID3_frame id3frame;
-		uint32_t sz;
-		char station[2048], desc[2048];
-
-		memmove(id3->magic, "ID3", 3);
-		id3->version[0] = 3;
-		id3->version[1] = 0;
-
-		ptr = strstr(header, "icy-name:");
-		if(ptr)
-		{
-			ptr = strchr(ptr, ':') + 1;
-			for(; ((*ptr == '-') || (*ptr == ' ')); ptr++){};
-			strcpy(station, ptr);
-			*strchr(station, '\n') = 0;
-
-			ptr = strchr(station, '-');
-			if(ptr)
-			{
-				*ptr = 0;
-				for(ptr++; ((*ptr == '-') || (*ptr == ' ')); ptr++){};
-				strcpy(desc, ptr);
-			}
-
-			FRAME("TPE1", station);
-			id3frame.size = SSIZE(id3frame.size + 1);
-			memmove(id3->base + cnt, &id3frame, fcnt);
-			cnt += fcnt;
-
-			FRAME("TALB", desc);
-			id3frame.size = SSIZE(id3frame.size + 1);
-			memmove(id3->base + cnt, &id3frame, fcnt);
-			cnt += fcnt;
-		}
-
-		ptr = strstr(header, "icy-genre:");
-		if(ptr)
-		{
-			ptr = strchr(ptr, ':') + 1;
-			for(; ((*ptr == '-') || (*ptr == ' ')); ptr++){};
-			strcpy(str, ptr);
-			*strchr(str, '\n') = 0;
-
-			FRAME("TIT2", str);
-			id3frame.size = SSIZE(id3frame.size + 1);
-			memmove(id3->base + cnt, &id3frame, fcnt);
-			cnt += fcnt;
-		}
-
-		FRAME("COMM", "dbox streamconverter");
-		id3frame.size = SSIZE(id3frame.size + 1);
-		memmove(id3->base + cnt, &id3frame, fcnt);
-		cnt += fcnt;
-
-		sz = 14 + cnt - 10;
-
-		id3->size[0] = (sz & 0xfe000000) >> 21;
-		id3->size[1] = (sz & 0x001fc000) >> 14;
-		id3->size[2] = (sz & 0x00003f80) >> 7;
-		id3->size[3] = (sz & 0x0000007f) >> 0;
-
-		id3->len = 14 + cnt;
-	}
-#endif
 
 	return meta_interval;
 }
@@ -1036,7 +915,7 @@ FILE *f_open(const char *filename, const char *acctype)
 
 		case MODE_PLS:	{
 			char *ptr2, /*buf[4096], use local buf from function */ servers[25][1024];
-			int /*rval,*/ retries = retry_num;
+			int retries = retry_num;
 			ptr = NULL;
 
 			/* fetch the playlist from the shoutcast directory with our own */
@@ -1052,7 +931,7 @@ FILE *f_open(const char *filename, const char *acctype)
 					/* operating system because we don't need/want stream caching for */
 					/* this operation */
 
-					/*rval =*/ fread(buf, sizeof(char), 4096, fd);
+					fread(buf, sizeof(char), 4096, fd);
 					f_close(fd);
 
 					ptr = strstr(buf, "http://");
@@ -1305,25 +1184,23 @@ const char *f_type(FILE *stream, const char *type)
 	/* if the stream could not be found, look for a free slot ... */
 	if(i == CACHEENTMAX)
 	{
-	dprintf(DEBUG_INFO, "stream %p not in type table, ", stream);
+		dprintf(DEBUG_INFO, "stream %p not in type table, ", stream);
 
-	for(i=0 ; (i<CACHEENTMAX) && (stream_type[i].stream != NULL); i++){};
+		for(i=0 ; (i<CACHEENTMAX) && (stream_type[i].stream != NULL); i++)
+		{};
 
-	/* ... and copy the supplied type into the table */
-	if(i < CACHEENTMAX)
-	{
-		if(type)
+		/* ... and copy the supplied type into the table */
+		if(i < CACHEENTMAX)
 		{
-			stream_type[i].stream = stream;
-			strncpy(stream_type[i].type, type, 64);
-			stream_type[i].type[64] = '\0';
-			dprintf(DEBUG_INFO, "added entry (%s) for %p\n", type, stream);
+			if(type)
+			{
+				stream_type[i].stream = stream;
+				strncpy(stream_type[i].type, type, 64);
+				stream_type[i].type[64] = '\0';
+				dprintf(DEBUG_INFO, "added entry (%s) for %p\n", type, stream);
+			}
+			return type;
 		}
-		return type;
-	}
-	//else
-	//	dprintf(stderr, "failed to add entry (%s)\n", type);
-
 	}
 
 	/* the stream is already in the table */
@@ -1373,7 +1250,8 @@ int getCacheSlot(FILE *fd)
 {
 	int i;
 
-	for(i = 0; ( (i < CACHEENTMAX) && ((cache[i].fd != fd) || (!cache[i].cache))); i++){};
+	for(i = 0; ( (i < CACHEENTMAX) && ((cache[i].fd != fd) || (!cache[i].cache))); i++)
+	{};
 
 	return (i == CACHEENTMAX) ? -1 : i;
 }
@@ -1389,12 +1267,12 @@ int push(FILE *fd, char *buf, long len)
 	if(i < 0)
 		return -1;
 
-	//	dprintf(stderr, "push: %d bytes to store [filled: %d of %d], stream: %x\n", len, cache[i].filled, CACHESIZE, fd);
-
-	if(cache[i].fd != fd) {
+	if(cache[i].fd != fd) 
+	{
 		dprintf(DEBUG_INFO, "push: no cache present for stream %p\n", fd);
 		return -1;
 	}
+	
 	do
 	{
 		if(cache[i].closed)
@@ -1632,16 +1510,12 @@ void CacheFillThread(void *c)
 
 		int ret = poll(&pfd, 1, 1000);
 
-		if (ret > 0 && (pfd.revents & POLLIN) == POLLIN) {
-#if 0 //FIXME: fread blocks i/o on dead connection
-			rval = fread(buf, 1, datalen, scache->fd);
-			if ((rval == 0) && feof(scache->fd))
-				break; /* exit cache fill thread if eof and nothing to push */
-#else
+		if (ret > 0 && (pfd.revents & POLLIN) == POLLIN) 
+		{
 			rval = read(fileno(scache->fd), buf, datalen);
 			if (rval == 0)
 				break; /* exit cache fill thread if eof and nothing to push */
-#endif
+
 			/* if there is a filter function set up for this stream, then */
 			/* we need to call it with the propper arguments */
 			if(scache->filter)
@@ -1819,13 +1693,6 @@ void ShoutCAST_MetaFilter(STREAM_FILTER *arg)
 	char*buf = (char*)arg->buf;
 	int meta_start;
 
-#if 0
-	dprintf(stderr, "filter : cnt      : %d\n", filterdata->cnt);
-	dprintf(stderr, "filter : len      : %d\n", filterdata->len);
-	dprintf(stderr, "filter : stored   : %d\n", filterdata->stored);
-	dprintf(stderr, "filter : cnt + len: %d\n", filterdata->cnt + len);
-	dprintf(stderr, "filter : meta_int : %d\n", filterdata->meta_int);
-#endif
 	/* not yet all meta data has been processed */
 	if(filterdata->stored < filterdata->len)
 	{
@@ -1943,7 +1810,8 @@ void ShoutCAST_MetaFilter(STREAM_FILTER *arg)
 }
 
 /**************************** utility functions ******************************/
-void parseURL_url(URL& url) {
+void parseURL_url(URL& url) 
+{
 	/* now lets see what we have ... */
 	char buffer[2048];
 //	printf("parseURL_url: %s\n", url.url);
@@ -1971,15 +1839,6 @@ void parseURL_url(URL& url) {
 		/* if we fetch a playlist file, then set the access mode */
 		/* that it will be parsed and processed automatically. If */
 		/* it does not fail, then the call returns with an opened stream */
-
-/* this currently results in an endless loop due to recursive calls of f_open()
-    if((url.access_mode == HTTP11) && (strstr(url.url, ".pls")))
-    {
-      url.access_mode = MODE_PLS;
-      url.proto_version = SHOUTCAST;
-    }
-*/
-
 		/* extract the file path from the url */
 		ptr = strchr(ptr + 3, '/');
 		if(ptr)
