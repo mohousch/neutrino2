@@ -39,7 +39,7 @@
 #include <sectionsd/sectionsd.h>
 
 // zapit 
-#include <zapit/ci.h>
+#include <zapit/cam.h>
 #include <zapit/zapittypes.h>
 
 

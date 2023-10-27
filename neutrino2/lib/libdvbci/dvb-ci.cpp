@@ -45,7 +45,6 @@
 #include <driver/rcinput.h>
 
 #include <connection/messagetools.h>   /* get_length_field_size */
-#include <zapit/ci.h>
 
 #include <config.h>
 #include <system/debug.h>
@@ -152,6 +151,7 @@ int asn_1_decode(uint16_t * length, unsigned char * asn_1_array, uint32_t asn_1_
 
 	if (asn_1_array_len < 1)
 		return -1;
+		
 	length_field = asn_1_array[0];
 
 	if (length_field < 0x80) 
@@ -159,14 +159,16 @@ int asn_1_decode(uint16_t * length, unsigned char * asn_1_array, uint32_t asn_1_
 		// there is only one word
 		*length = length_field & 0x7f;
 		return 1;
-	} else if (length_field == 0x81) 
+	} 
+	else if (length_field == 0x81) 
 	{
 		if (asn_1_array_len < 2)
 			return -1;
 
 		*length = asn_1_array[1];
 		return 2;
-	} else if (length_field == 0x82) 
+	} 
+	else if (length_field == 0x82) 
 	{
 		if (asn_1_array_len < 3)
 			return -1;
@@ -229,6 +231,8 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 eData sendData(tSlot* slot, unsigned char* data, int len)
 {	
         dprintf(DEBUG_DEBUG, "%s: %p, %d\n", __func__, data, len);
+        
+        int res = 0;
        
 	unsigned char *d = (unsigned char*) malloc(len + 5);
 		
@@ -276,18 +280,17 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 		len = 5;	
 	}
 
-#ifdef direct_write
-	res = write(slot->fd, d, len); 
+	if (slot->sendqueue.empty())
+		res = write(slot->fd, d, len); 
 
 	free(d);
+	
 	if (res < 0 || res != len) 
 	{ 
 		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
-		return eDataError; 
-	}
-#else
-	slot->sendqueue.push( queueData(d, len) );
-#endif	 
+		//return eDataError; 
+		slot->sendqueue.push( queueData(d, len) );
+	}	 
 	
 	return eDataReady;
 }
@@ -382,8 +385,7 @@ void cDvbCi::process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int a
 				eDVBCISession::receiveData(slot, slot->receivedData, slot->receivedLen);
 				eDVBCISession::pollAll();
 
-				//fixme: must also be moved in e2 behind the data processing ;) 
-
+				//
 				free(slot->receivedData);
 				slot->receivedData = NULL;
 				slot->receivedLen = 0;
@@ -508,17 +510,12 @@ void cDvbCi::slot_pollthread(void *c)
 							slot->hasCAManager = false;
 							slot->hasDateTime = false;
 							slot->hasAppManager = false;
-
 							slot->mmiOpened = false;
-
 							slot->init = false;
-
 							sprintf(slot->name, "unknown module %d", slot->slot);
-
 							slot->status = eStatusNone;
 
-							if (g_RCInput)
-								g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
+							g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
 
 							slot->camIsReady = true;
 							
@@ -536,6 +533,7 @@ void cDvbCi::slot_pollthread(void *c)
 			case eStatusWait:
 			{    
 				status = waitData(slot->fd, data, &len);
+				
 				if (status == eDataReady)
 				{
 					//int s_id = data[0];
@@ -561,8 +559,7 @@ void cDvbCi::slot_pollthread(void *c)
 							break;
 						}
 
-						if ((asn_data_length < 1) ||
-						    (asn_data_length > (data_length - (1 + length_field_len)))) 
+						if ((asn_data_length < 1) || (asn_data_length > (data_length - (1 + length_field_len)))) 
 						{
 							printf("Received data with invalid length from module on slot %02x\n", slot->slot);
 							break;
@@ -589,6 +586,7 @@ void cDvbCi::slot_pollthread(void *c)
 						const queueData &qe = slot->sendqueue.top();
 						
 						int res = write(slot->fd, qe.data, qe.len);
+						
 						if (res >= 0 && (unsigned int)res == qe.len)
 						{
 							delete [] qe.data;
@@ -624,17 +622,12 @@ void cDvbCi::slot_pollthread(void *c)
 						slot->hasCAManager = false;
 						slot->hasDateTime = false;
 						slot->hasAppManager = false;
-
 						slot->mmiOpened = false;
-
 						slot->init = false;
-
 						sprintf(slot->name, "unknown module %d", slot->slot);
-
 						slot->status = eStatusNone;
 
-						if (g_RCInput)
-							g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
+						g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
 
 						slot->camIsReady = true;
 					} 
@@ -649,17 +642,12 @@ void cDvbCi::slot_pollthread(void *c)
 						slot->hasCAManager = false;
 						slot->hasDateTime = false;
 						slot->hasAppManager = false;
-
 						slot->mmiOpened = false;
-
 						slot->init = false;
-
 						sprintf(slot->name, "unknown module %d", slot->slot);
-
 						slot->status = eStatusNone;
 
-						if (g_RCInput)
-							g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, slot->slot);
+						g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, slot->slot);
 
 						while(slot->sendqueue.size())
 						{
@@ -690,8 +678,7 @@ void cDvbCi::slot_pollthread(void *c)
 
 			slot->init = true;
 			
-			if (g_RCInput)
-				g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, slot->slot);
+			g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, slot->slot);
 		    
 			//resend a capmt if we have one. this is not very proper but I cant any mechanism in
 			//neutrino currently. so if a cam is inserted a pmt is not resend
@@ -790,19 +777,14 @@ cDvbCi::cDvbCi(int Slots)
 			slot->pClass = this;
 			slot->pollConnection = false;
 			slot->camIsReady = false;
-
 			slot->hasMMIManager = false;
 			slot->hasCAManager = false;
 			slot->hasDateTime = false;
 			slot->hasAppManager = false;
-
 			slot->mmiOpened = false;
-
 			slot->init = false;
-	    
 			slot->caPmt = NULL;
 			slot->source = TUNER_A;
-
 			sprintf(slot->name, "unknown module %d", i);
 
 			slot_data.push_back(slot);

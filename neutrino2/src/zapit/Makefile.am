@@ -30,7 +30,6 @@ libzapit_a_SOURCES = \
 	channel.cpp \
 	dvbstring.cpp \
 	cam.cpp \
-	ci.cpp \
 	frontend.cpp \
 	descriptors.cpp \
 	nit.cpp \

@@ -345,7 +345,7 @@ void CInfoViewer::paintRecordIcon(int posx, int posy)
 		
 		recIcon = new CCIcon();
 		recIcon->setPosition(posx - ICON_OFFSET - iw, posy + 5, iw, ih);
-		recIcon->setIcon(autoshift ? NEUTRINO_ICON_AUTO_SHIFT : NEUTRINO_ICON_REC);
+		recIcon->setIcon( (autoshift || CNeutrinoApp::getInstance()->timeshiftstatus)? NEUTRINO_ICON_AUTO_SHIFT : NEUTRINO_ICON_REC);
 		recIcon->enableRepaint();
 		
 		recIcon->paint();	

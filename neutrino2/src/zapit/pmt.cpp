@@ -533,11 +533,12 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 	
 	delete dmx;
 	
-	// pmt.tmp
+	//
 	int pmtlen;
 	
 	pmtlen = ((buffer[1]&0xf)<<8) + buffer[2] + 3;
 	
+	// pmt.tmp
 	FILE *fout;
 
 	if( !(CZapit::getInstance()->currentMode & RECORD_MODE) && !scan_runs) 

@@ -23,7 +23,6 @@
 #define __zapit_pmt_h__
 
 #include <zapit/channel.h>
-#include <zapit/ci.h>
 #include <zapit/frontend_c.h>
 #include <zapit/descriptors.h>
 
