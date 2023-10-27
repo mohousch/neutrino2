@@ -4273,6 +4273,7 @@ void CNeutrinoApp::realRun(void)
 							videoDecoder->Stop(false); // dont blank
 							
 							//
+#ifdef USE_OPENGL
 							if (playback->playing)
 							{
 								int speed = 0;
@@ -4283,6 +4284,7 @@ void CNeutrinoApp::realRun(void)
 								else
 									playback->SetSpeed(1);
 							}
+#endif
 						}
 					}
 				}
@@ -4360,14 +4362,8 @@ void CNeutrinoApp::realRun(void)
 
 						mfile.ytid = "timeshift";
 
-						//tmpMoviePlayerGui.addToPlaylist(mfile);
-						//tmpMoviePlayerGui.exec(NULL, "urlplayback");
-						////
-						if (!IS_WEBTV(live_channel_id))
-						{
-							CZapit::getInstance()->lockPlayBack();
-						}
 						
+#ifdef USE_OPENGL
 						//
 						if (!playback->playing)
 						{
@@ -4375,6 +4371,10 @@ void CNeutrinoApp::realRun(void)
 							playback->Open();
 							playback->Start(fname);
 						}
+#else
+						tmpMoviePlayerGui.addToPlaylist(mfile);
+						tmpMoviePlayerGui.exec(NULL, "urlplayback");
+#endif
 					}
 				}
 			}
@@ -4397,13 +4397,10 @@ void CNeutrinoApp::realRun(void)
 						//timeshiftstatus = 0;
 						CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
 						
-						////
+						//
+#ifdef USE_OPENGL						
 						playback->Close();
-						
-						if (!IS_WEBTV(live_channel_id))
-						{
-							CZapit::getInstance()->unlockPlayBack();
-						}
+#endif
 					}
 				} 
 				// start record
