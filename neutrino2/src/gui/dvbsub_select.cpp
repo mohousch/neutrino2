@@ -44,7 +44,6 @@
 
 // dvb
 extern int dvbsub_getpid();				// defined in libdvbsub
-//extern int dvbsub_getpid(int *pid, int *running);				// defined in libdvbsub
 // tuxtxt
 extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
 
@@ -94,15 +93,11 @@ int CDVBSubSelectMenuHandler::doMenu()
 		//				
 		DVBSubSelector->enablePaintHead();
 		DVBSubSelector->setTitle(_("Subtitle Select"), NEUTRINO_ICON_SUBT);
-//		DVBSubSelector->setHeadLine(true, true);
 
 		//
-		DVBSubSelector->enablePaintFoot();
-							
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-							
+		DVBSubSelector->enablePaintFoot();					
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};					
 		DVBSubSelector->setFootButtons(&btn);
-//		DVBSubSelector->setFootLine(true, true);
 						
 		//
 		widget->addCCItem(DVBSubSelector);
@@ -127,29 +122,35 @@ int CDVBSubSelectMenuHandler::doMenu()
 			if (s->thisSubType == CZapitAbsSub::DVB) 
 			{
 				CZapitDVBSub * sd = reinterpret_cast<CZapitDVBSub*>(s);
+				
 				printf("[CDVBSubSelectMenuHandler] adding DVB subtitle %s pid 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
+				
 				if(!sep_added) 
 				{
 					sep_added = true;
 				}
+				
 				char spid[10];
 				//int pid = sd->pId;
 				snprintf(spid,sizeof(spid), "DVB:%d", sd->pId);
 				char item[64];
 	
 				snprintf(item,sizeof(item), "DVB: %s", sd->ISO639_language_code.c_str());
-				DVBSubSelector->addItem(new CMenuForwarder(item, sd->pId != dvbsub_getpid() /*dvbsub_getpid(&pid, NULL)*/, NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
+				DVBSubSelector->addItem(new CMenuForwarder(item, sd->pId != dvbsub_getpid(), NULL, &SubtitleChanger, spid, CRCInput::convertDigitToKey(++count)));
 			}
 			
 			//txt subs
 			if (s->thisSubType == CZapitAbsSub::TTX) 
 			{
 				CZapitTTXSub* sd = reinterpret_cast<CZapitTTXSub*>(s);
+				
 				printf("[CDVBSubSelectMenuHandler] adding TTX subtitle %s pid 0x%x mag 0x%X page 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId, sd->teletext_magazine_number, sd->teletext_page_number);
+				
 				if(!sep_added) 
 				{
 					sep_added = true;
 				}
+				
 				char spid[64];
 				int page = ((sd->teletext_magazine_number & 0xFF) << 8) | sd->teletext_page_number;
 				int pid = sd->pId;
@@ -164,7 +165,7 @@ int CDVBSubSelectMenuHandler::doMenu()
 		if(sep_added) 
 		{
 			DVBSubSelector->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
-			DVBSubSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", CRCInput::RC_red, NEUTRINO_ICON_BUTTON_RED ));
+			DVBSubSelector->addItem(new CMenuForwarder(_("Stop subtitles"), true, NULL, &SubtitleChanger, "off", CRCInput::RC_yellow, NEUTRINO_ICON_BUTTON_YELLOW));
 		}
 		else
 			DVBSubSelector->addItem(new CMenuForwarder(_("Subtitles not found"), false));

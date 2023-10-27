@@ -221,7 +221,7 @@ class CNeutrinoApp : public CMenuTarget
 		int getChMode(){return chmode;};	// to custom channel/bouquet mode needed by channel_select widget.
 		
 		//
-		bool doGuiRecord(char * preselectedDir, bool addTimer = false);
+		void doGuiRecord(char * preselectedDir, bool addTimer = false);
 		void startNextRecording();
 		int startAutoRecord(bool addTimer);
 		void stopAutoRecord();

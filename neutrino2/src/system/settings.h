@@ -206,7 +206,12 @@ struct SNeutrinoSettings
 	unsigned char infobar_colored_events_green;
 	unsigned char infobar_colored_events_blue;
 
+	//
 	char font_file[100];
+	std::string icons_dir;
+	std::string buttons_dir;
+	std::string hints_dir;
+	std::string spinner_dir;
 	
 	int timing_menu;
 	int timing_channellist;

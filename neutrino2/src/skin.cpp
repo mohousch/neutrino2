@@ -2991,15 +2991,13 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 			
 	// check if not empty
 	i = scandir(iconsDir.c_str(), &namelist, 0, 0);
-	if(i < 0)
+	if(i > 0)
 	{
-		frameBuffer->setIconBasePath(DATADIR "/icons/");
-	}
-	else
-	{
-		frameBuffer->setIconBasePath(iconsDir);
+		//frameBuffer->setIconBasePath(iconsDir);
+		g_settings.icons_dir = iconsDir;
 		free(namelist);
 	}
+	frameBuffer->setIconBasePath(g_settings.icons_dir);
 			
 	// setButtonPath
 	std::string buttonsDir = CONFIGDIR "/skins/";
@@ -3008,15 +3006,13 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 			
 	// check if not empty
 	i = scandir(buttonsDir.c_str(), &namelist, 0, 0);
-	if(i < 0)
+	if(i > 0)
 	{
-		frameBuffer->setButtonBasePath(DATADIR "/buttons/");
-	}
-	else
-	{
-		frameBuffer->setButtonBasePath(buttonsDir);
+		//frameBuffer->setButtonBasePath(buttonsDir);
+		g_settings.buttons_dir = buttonsDir;
 		free(namelist);
 	}
+	frameBuffer->setButtonBasePath(g_settings.buttons_dir);
 			
 	// setHintPath
 	std::string hintsDir = CONFIGDIR "/skins/";
@@ -3025,15 +3021,13 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 			
 	// check if not empty
 	i = scandir(hintsDir.c_str(), &namelist, 0, 0);
-	if(i < 0)
+	if(i > 0)
 	{
-		frameBuffer->setHintBasePath(DATADIR "/hints/");
-	}
-	else
-	{
-		frameBuffer->setHintBasePath(hintsDir);
+		//frameBuffer->setHintBasePath(hintsDir);
+		g_settings.hints_dir = hintsDir;
 		free(namelist);
 	}
+	frameBuffer->setHintBasePath(g_settings.hints_dir);
 			
 	// setSpinnerPath
 	std::string spinnerDir = CONFIGDIR "/skins/";
@@ -3042,15 +3036,13 @@ void CNeutrinoApp::loadSkin(std::string skinName)
 			
 	// check if not empty
 	i = scandir(spinnerDir.c_str(), &namelist, 0, 0);
-	if(i < 0)
+	if(i > 0)
 	{
-		frameBuffer->setSpinnerBasePath(DATADIR "/spinner/");
-	}
-	else
-	{
-		frameBuffer->setSpinnerBasePath(spinnerDir);
+		//frameBuffer->setSpinnerBasePath(spinnerDir);
+		g_settings.spinner_dir = spinnerDir;
 		free(namelist);
 	}
+	frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
 }
 
 //
@@ -3178,6 +3170,10 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		
 		// font
 		strcpy( g_settings.font_file, skinConfig->getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
+		g_settings.icons_dir = skinConfig->getString("icons_dir", DATADIR "/icons/");
+		g_settings.buttons_dir = skinConfig->getString("buttons_dir", DATADIR "/buttons/");
+		g_settings.hints_dir = skinConfig->getString("hints_dir", DATADIR "/hints/");
+		g_settings.spinner_dir = skinConfig->getString("spinner_dir", DATADIR "/spinner/");
 
 		colorSetupNotifier = new CColorSetupNotifier;
 		colorSetupNotifier->changeNotify("", NULL);
@@ -3303,6 +3299,10 @@ void CNeutrinoApp::saveSkinConfig(const char * const filename)
 
 	// font		
 	skinConfig->setString("font_file", g_settings.font_file);
+	skinConfig->setString("icons_dir", g_settings.icons_dir);
+	skinConfig->setString("buttons_dir", g_settings.buttons_dir);
+	skinConfig->setString("hints_dir", g_settings.hints_dir);
+	skinConfig->setString("spinner_dir", g_settings.spinner_dir);
 
 	if (!skinConfig->saveConfig(filename))
 		printf("CNeutrinoApp::saveSkinConfig %s write error\n", filename);

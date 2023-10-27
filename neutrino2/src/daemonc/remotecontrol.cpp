@@ -730,7 +730,6 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::st
 		if(autoshift) 
 		{
 			CNeutrinoApp::getInstance()->stopAutoRecord();
-			CNeutrinoApp::getInstance()->recordingstatus = 0;
 		}
 		
 		if(scrambled_timer) 

@@ -64,8 +64,6 @@ const keyval MESSAGEBOX_NO_YES_OPTIONS[MESSAGEBOX_NO_YES_OPTION_COUNT] =
 extern char recDir[255];			// defined in neutrino.cpp
 extern char timeshiftDir[255];			// defined in neutrino.cpp
 extern bool autoshift;				// defined in neutrino.cpp
-//extern int startAutoRecord(bool addTimer);	// defined in neutrino.cpp
-//extern void stopAutoRecord();			// defined in neutrino.cpp
 
 CRecordingSettings::CRecordingSettings()
 {
@@ -184,15 +182,11 @@ void CRecordingSettings::showMenu()
 		//
 		recordingSettings->enablePaintHead();
 		recordingSettings->setTitle(_("Recording settings"), NEUTRINO_ICON_RECORDING);
-//		recordingSettings->setHeadLine(true, true);
 
 		//
-		recordingSettings->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
+		recordingSettings->enablePaintFoot();	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
 		recordingSettings->setFootButtons(&btn);
-//		recordingSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(recordingSettings);
@@ -261,6 +255,7 @@ void CRecordingSettings::showMenu()
 
 	//
 	recordingSettings->addItem(new CMenuSeparator(CMenuSeparator::LINE));
+	
 	//epg in name format
 	recordingSettings->addItem(oj11);
 	
@@ -316,6 +311,4 @@ bool CRecAPIDSettingsNotifier::changeNotify(const std::string&, void *)
 
 	return true;
 }
-
-
 

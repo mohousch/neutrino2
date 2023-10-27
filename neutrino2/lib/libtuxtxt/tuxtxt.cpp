@@ -219,9 +219,7 @@ void RenderClearMenuLineBB(char *p, tstPageAttr *attrcol, tstPageAttr *attr)
 
 	PosX = TOPMENUSTARTX;
 	RenderCharBB(' ', attrcol); /* indicator for navigation keys */
-#if 0
-	RenderCharBB(' ', attr); /* separator */
-#endif
+
 	for(col = 0; col < TOPMENUCHARS; col++)
 	{
 		RenderCharBB(*p++, attr);
@@ -266,6 +264,7 @@ void setfontwidth(int newwidth)
 	{
 		int i;
 		fontwidth = newwidth;
+		
 		if (usettf)
 			typettf.width  = (FT_UShort) fontwidth * TTFWidthFactor16 / 16;
 		else
@@ -278,6 +277,7 @@ void setfontwidth(int newwidth)
 				newwidth = 23;
 			typettf.width  = typettf.height = (FT_UShort) newwidth;
 		}
+		
 		for (i = 0; i <= 12; i++)
 			axdrcs[i] = (fontwidth * i + 6) / 12;
 	}
@@ -319,8 +319,10 @@ void dump_page()
 
 	if (!tuxtxt_cache.astCachetable[tuxtxt_cache.page][tuxtxt_cache.subpage])
 		return;
+		
 	tuxtxt_decompress_page(tuxtxt_cache.page,tuxtxt_cache.subpage,pagedata);
-	for (r=1; r < 24; r++)
+	
+	for (r = 1; r < 24; r++)
 	{
 		p = (char *) pagedata+40*(r-1);
 		for (c=0; c < 40; c++)
@@ -419,8 +421,7 @@ void eval_object(int iONr, tstCachedPage *pstCachedPage,
 		}
 		iONr++;
 	}
-	while (0 == eval_triplet(iOData, pstCachedPage, pAPx, pAPy, pAPx0, pAPy0, &drcssubp, &gdrcssubp, &endcol, &attrPassive, pagedata)
-			 || iONr1 == iONr); /* repeat until termination reached */
+	while (0 == eval_triplet(iOData, pstCachedPage, pAPx, pAPy, pAPx0, pAPy0, &drcssubp, &gdrcssubp, &endcol, &attrPassive, pagedata) || iONr1 == iONr); /* repeat until termination reached */
 }
 
 void eval_NumberedObject(int p, int s, int packet, int triplet, int high,
@@ -1130,7 +1131,7 @@ void eval_l25()
 }
 
 /*
- * main loop
+ * reader thread
 */
 static void * reader_thread(void * /*arg*/)
 {
@@ -1212,12 +1213,6 @@ void tuxtx_set_pid(int pid, int page, const char * cc)
 	cfg_national_subset = GetNationalSubset(cc);
 	
 	dprintf(DEBUG_NORMAL, "TuxTxt subtitle set pid %d page %d lang %s (%d)\n", sub_pid, sub_page, cc, cfg_national_subset);
-	
-#if 0
-	ttx_paused = 1;
-	if(sub_pid && sub_page)
-		tuxtx_main(sub_pid, sub_page);
-#endif
 }
 
 int tuxtx_subtitle_running(int *pid, int *page, int *running)
@@ -1237,6 +1232,7 @@ int tuxtx_subtitle_running(int *pid, int *page, int *running)
 	return ret;
 }
 
+// main loop
 int tuxtx_main(int pid, int page, int source)
 {
 	char cvs_revision[] = "$Revision: 1.95 $";
@@ -1425,7 +1421,6 @@ int tuxtx_main(int pid, int page, int source)
 			case RC_7:
 			case RC_8:
 			case RC_9:
-				//PageInput(RCCode - RC_0);
 				PageInput(CRCInput::getNumericValue(RCCode));
 				break;
 
@@ -1450,7 +1445,7 @@ int tuxtx_main(int pid, int page, int source)
 			}
 		}
 
-		// update page or timestring and lcd
+		// update page or timestring
 		RenderPage();		
 	} while ((RCCode != RC_HOME) && (RCCode != RC_STANDBY));
 
@@ -1512,9 +1507,6 @@ int Init( int source )
 
 	subtitledelay = 0;
 	delaystarted = 0;
-
-	/* init lcd */
-	UpdateLCD();
 
 	/* config defaults */
 	screenmode = 0;
@@ -1649,11 +1641,11 @@ int Init( int source )
 	ymosaic[2] = (fontheight * 2 + 1) / 3;
 	ymosaic[3] = fontheight;
 	
-	//{
 	int i1;
 	for (i1 = 0; i1 <= 10; i1++)
+	{
 		aydrcs[i1] = (fontheight * i1 + 5) / 10;
-	//}
+	}
 
 	/* center screen */
 	StartX = sx+ (((ex-sx) - 40*fontwidth) / 2);
@@ -1887,7 +1879,9 @@ int GetTeletextPIDs(int )
 		dmx->sectionFilter(pid, filter, mask, 1);
 		res = dmx->Read(bufPMT, sizeof(bufPMT));
 		dmx->Stop();
-		if(res <= 0) {
+		
+		if(res <= 0) 
+		{
 			perror("TuxTxt <read PMT>");
 			continue;
 		}
@@ -1912,6 +1906,7 @@ int GetTeletextPIDs(int )
 
 						pid_table[pids_found].vtxt_pid     = (bufPMT[pmt_scan + 1]<<8 | bufPMT[pmt_scan + 2]) & 0x1FFF;
 						pid_table[pids_found].service_id = bufPMT[0x03]<<8 | bufPMT[0x04];
+						
 						if (bufPMT[desc_scan + 1] == 5)
 						{
 							country_code[0] = bufPMT[desc_scan + 2] | 0x20;
@@ -2026,9 +2021,6 @@ skip_pid:
 	}
 
 	getpidsdone = 1;
-
-	RenderCharLCD(pids_found/10,  7, 44);
-	RenderCharLCD(pids_found%10, 19, 44);
 
 	return 1;
 }
@@ -2949,7 +2941,6 @@ void ConfigMenu(int Init, int source)
 				break;
 			}/*switch*/
 		}
-		UpdateLCD(); /* update number of cached pages */
 			
 		CFrameBuffer::getInstance()->blit();		
 	} while ((RCCode != RC_HOME) && (RCCode != RC_DBOX) && (RCCode != RC_MUTE));
@@ -3227,8 +3218,6 @@ void PageCatching()
 			RCCode = -1;
 			return;
 		}
-
-		UpdateLCD();
 		
 		CFrameBuffer::getInstance()->blit();
 
@@ -4359,41 +4348,6 @@ void RenderCharBB(int Char, tstPageAttr *Attribute)
 }
 
 /*
- * RenderCharLCD
-*/
-void RenderCharLCD(int /*Digit*/, int /*XPos*/, int /*YPos*/)
-{
-#if 0
-	int x, y;
-
-	/* render digit to lcd backbuffer */
-	for (y = 0; y < 15; y++)
-	{
-		for (x = 0; x < 10; x++)
-		{
-			if (lcd_digits[Digit*15*10 + x + y*10])
-				lcd_backbuffer[XPos + x + ((YPos+y)/8)*120] |= 1 << ((YPos+y)%8);
-			else
-				lcd_backbuffer[XPos + x + ((YPos+y)/8)*120] &= ~(1 << ((YPos+y)%8));
-		}
-	}
-#endif
-}
-
-#if 0
-void RenderCharLCDsmall(int Char, int XPos, int YPos)
-{
-	int old_width = fontwidth;
-	int old_height = fontheight;
-	setfontwidth(fontwidth_small_lcd);
-	typettf.font.pix_height = fontheight = fontwidth_small_lcd;
-	RenderChar(Char, 0, 0, -(YPos<<8 | XPos));
-	setfontwidth(old_width);
-	typettf.font.pix_height = fontheight = old_height;
-}
-#endif
-
-/*
  * RenderMessage
 */
 void RenderMessage(int Message)
@@ -4614,9 +4568,6 @@ void RenderPage()
 {
 	int row, col, byte, startrow = 0;;
 	int national_subset_bak = national_subset;
-
-	/* update lcd */
-	UpdateLCD();
 
 	if (transpmode != 2 && delaystarted)
 	{
@@ -5035,173 +4986,6 @@ void CopyBB2FB()
 
 		return;
 	}
-}
-
-/*
- * UpdateLCD
-*/
-void UpdateLCD()
-{
-#if 0
-	static int init_lcd = 1, old_cached_pages = -1, old_page = -1, old_subpage = -1, old_subpage_max = -1, old_hintmode = -1;
-	int  x, y, subpage_max = 0, update_lcd = 0;
-
-	if (lcd == -1) return; // for Dreamboxes without LCD-Display (5xxx)
-	/* init or update lcd */
-	if (init_lcd)
-	{
-		init_lcd = 0;
-
-		for (y = 0; y < 64; y++)
-		{
-			int lcdbase = (y/8)*120;
-			int lcdmask = 1 << (y%8);
-
-			for (x = 0; x < 120; )
-			{
-				int rommask;
-				int rombyte = lcd_layout[x/8 + y*120/8];
-
-				for (rommask = 0x80; rommask; rommask >>= 1)
-				{
-					if (rombyte & rommask)
-						lcd_backbuffer[x + lcdbase] |= lcdmask;
-					else
-						lcd_backbuffer[x + lcdbase] &= ~lcdmask;
-					x++;
-				}
-			}
-		}
-
-		write(lcd, &lcd_backbuffer, sizeof(lcd_backbuffer));
-
-		for (y = 16; y < 56; y += 8)	/* clear rectangle in backbuffer */
-			for (x = 1; x < 118; x++)
-				lcd_backbuffer[x + (y/8)*120] = 0;
-
-		for (x = 3; x <= 116; x++)
-			lcd_backbuffer[x + (39/8)*120] |= 1 << (39%8);
-
-		for (y = 42; y <= 60; y++)
-			lcd_backbuffer[35 + (y/8)*120] |= 1 << (y%8);
-
-		for (y = 42; y <= 60; y++)
-			lcd_backbuffer[60 + (y/8)*120] |= 1 << (y%8);
-
-		RenderCharLCD(10, 43, 20);
-		RenderCharLCD(11, 79, 20);
-
-		return;
-	}
-	else
-	{
-		int p;
-
-		if (inputcounter == 2)
-			p = tuxtxt_cache.page;
-		else
-			p = temp_page + (0xDD >> 4*(1-inputcounter)); /* partial pageinput (filled with spaces) */
-
-		/* page */
-		if (old_page != p)
-		{
-			RenderCharLCD(p>>8,  7, 20);
-			RenderCharLCD((p&0x0F0)>>4, 19, 20);
-			RenderCharLCD(p&0x00F, 31, 20);
-
-			old_page = p;
-			update_lcd = 1;
-		}
-
-		/* current subpage */
-		if (old_subpage != tuxtxt_cache.subpage)
-		{
-			if (!tuxtxt_cache.subpage)
-			{
-				RenderCharLCD(0, 55, 20);
-				RenderCharLCD(1, 67, 20);
-			}
-			else
-			{
-				if (tuxtxt_cache.subpage >= 0xFF)
-					tuxtxt_cache.subpage = 1;
-				else if (tuxtxt_cache.subpage > 99)
-					tuxtxt_cache.subpage = 0;
-
-				RenderCharLCD(tuxtxt_cache.subpage>>4, 55, 20);
-				RenderCharLCD(tuxtxt_cache.subpage&0x0F, 67, 20);
-			}
-
-			old_subpage = tuxtxt_cache.subpage;
-			update_lcd = 1;
-		}
-
-		/* max subpage */
-		for (x = 0; x <= 0x79; x++)
-		{
-			if (tuxtxt_cache.astCachetable[tuxtxt_cache.page][x])
-				subpage_max = x;
-		}
-
-		if (old_subpage_max != subpage_max)
-		{
-			if (!subpage_max)
-			{
-				RenderCharLCD(0,  91, 20);
-				RenderCharLCD(1, 103, 20);
-			}
-			else
-			{
-				RenderCharLCD(subpage_max>>4,  91, 20);
-				RenderCharLCD(subpage_max&0x0F, 103, 20);
-			}
-
-			old_subpage_max = subpage_max;
-			update_lcd = 1;
-		}
-
-		/* cachestatus */
-		if (old_cached_pages != tuxtxt_cache.cached_pages)
-		{
-			#if 0
-			int s;
-			int p = tuxtxt_cache.cached_pages;
-			for (s=107; s >= 107-4*fontwidth_small_lcd; s -= fontwidth_small_lcd)
-			{
-				int c = p % 10;
-				if (p)
-					RenderCharLCDsmall('0'+c, s, 44);
-				else
-					RenderCharLCDsmall(' ', s, 44);
-				p /= 10;
-			}
-			#else
-			RenderCharLCD(tuxtxt_cache.cached_pages/1000, 67, 44);
-			RenderCharLCD(tuxtxt_cache.cached_pages%1000/100, 79, 44);
-			RenderCharLCD(tuxtxt_cache.cached_pages%100/10, 91, 44);
-			RenderCharLCD(tuxtxt_cache.cached_pages%10, 103, 44);
-			#endif
-
-			old_cached_pages = tuxtxt_cache.cached_pages;
-			update_lcd = 1;
-		}
-
-		/* mode */
-		if (old_hintmode != hintmode)
-		{
-			if (hintmode)
-				RenderCharLCD(12, 43, 44);
-			else
-				RenderCharLCD(13, 43, 44);
-
-			old_hintmode = hintmode;
-			update_lcd = 1;
-		}
-	}
-
-	if (update_lcd)
-		write(lcd, &lcd_backbuffer, sizeof(lcd_backbuffer));
-#endif
 }
 
 /*

@@ -27,9 +27,9 @@
 #define __(string) dgettext("audioplayer", string)
 
 //// globals
-static const char * PLUGINNAME = __("audioplayer");
-static const char * PLUGINVERSION = "0.0.1";
-static const char * PLUGINDESCRIPTION = __("play music files");
+//static const char * PLUGINNAME = __("audioplayer");
+//static const char * PLUGINVERSION = "0.0.1";
+//static const char * PLUGINDESCRIPTION = __("play music files");
 ////
 extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);

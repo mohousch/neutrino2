@@ -78,20 +78,20 @@
 
 #include <record_cs.h>
 
-// defines
+//// defines
 #define FILENAMEBUFFERSIZE 	1024
 #define MAXPIDS			64
-// globals
+
+//// globals
 char rec_filename[FILENAMEBUFFERSIZE];
 static CVCRControl vcrControl;
-//
-extern bool autoshift;
-extern bool autoshift_delete;
-extern CZapitChannel * live_channel;			// defined in zapit.cpp
 static cRecord * record = NULL;
-extern CFrontend * record_fe;
-
 //
+extern bool autoshift;					// defined in neutrino2.cpp
+extern CZapitChannel * live_channel;			// defined in zapit.cpp
+extern CFrontend * record_fe;				// defined in zapit.cpp
+
+////
 CVCRControl * CVCRControl::getInstance()
 {
 	return &vcrControl;
@@ -325,11 +325,11 @@ bool CVCRControl::Stop()
 {
 	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::Stop\n");
 	
-	//std::string extMessage = " ";
-	//time_t end_time = time(0);
+	std::string extMessage = " ";
+	time_t end_time = time(0);
 		
-	//g_movieInfo->length = (int) round((double) (end_time - start_time) / (double) 60);
-	//g_cMovieInfo->encodeMovieInfoXml(&extMessage, g_movieInfo);	
+	g_movieInfo->length = (int) round((double) (end_time - start_time) / (double) 60);
+	g_cMovieInfo->encodeMovieInfoXml(&extMessage, g_movieInfo);	
 
 	bool return_value = (stopRecording() == STREAM2FILE_OK);
 
@@ -865,7 +865,7 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 	// cover
 	CTmdb * tmdb = new CTmdb();
 
-	if(tmdb->getMovieInfo(g_movieInfo->epgTitle))
+	if(tmdb->getMovieInfo(g_movieInfo->epgTitle) && (!CNeutrinoApp::getInstance()->timeshiftstatus || !autoshift))
 	{
 		if ((!tmdb->getDescription().empty())) 
 		{
@@ -959,10 +959,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	struct statfs s;
 
 	// rip rec_filename
-	if(autoshift || CNeutrinoApp::getInstance()->timeshiftstatus)
-		sprintf(rec_filename, "%s_temp", filename);
-	else
-		sprintf(rec_filename, "%s", filename);
+	sprintf(rec_filename, "%s", filename);
 
 	// saveXML/cover
 	sprintf(buf, "%s.xml", filename);
@@ -1031,7 +1028,7 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 
 stream2file_error_msg_t CVCRControl::stopRecording()
 {
-	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::stopRecording\n");
+	dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::stopRecording autoshift:%d timeshift:%d\n", autoshift, CNeutrinoApp::getInstance()->timeshiftstatus);
 	
 	char buf[FILENAMEBUFFERSIZE];
 	char buf1[FILENAMEBUFFERSIZE];

@@ -531,50 +531,50 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	strcpy(g_settings.language, configfile.getString("language", "en").c_str());
 
 	// themes
-	g_settings.menu_Head_alpha = configfile.getInt32( "menu_Head_alpha", 85);
-	g_settings.menu_Head_red = configfile.getInt32( "menu_Head_red", 15);
-	g_settings.menu_Head_green = configfile.getInt32( "menu_Head_green", 15);
-	g_settings.menu_Head_blue = configfile.getInt32( "menu_Head_blue", 15);
+	g_settings.menu_Head_alpha = configfile.getInt32( "menu_Head_alpha", 100);
+	g_settings.menu_Head_red = configfile.getInt32( "menu_Head_red", 0);
+	g_settings.menu_Head_green = configfile.getInt32( "menu_Head_green", 10);
+	g_settings.menu_Head_blue = configfile.getInt32( "menu_Head_blue", 25);
 
 	g_settings.menu_Head_Text_alpha = configfile.getInt32( "menu_Head_Text_alpha", 0);
-	g_settings.menu_Head_Text_red = configfile.getInt32( "menu_Head_Text_red", 100);
-	g_settings.menu_Head_Text_green = configfile.getInt32( "menu_Head_Text_green", 100);
-	g_settings.menu_Head_Text_blue = configfile.getInt32( "menu_Head_Text_blue", 100);
+	g_settings.menu_Head_Text_red = configfile.getInt32( "menu_Head_Text_red", 95);
+	g_settings.menu_Head_Text_green = configfile.getInt32( "menu_Head_Text_green", 70);
+	g_settings.menu_Head_Text_blue = configfile.getInt32( "menu_Head_Text_blue", 0);
 	
 	g_settings.menu_Content_alpha = configfile.getInt32( "menu_Content_alpha", 100);
-	g_settings.menu_Content_red = configfile.getInt32( "menu_Content_red", 15);
-	g_settings.menu_Content_green = configfile.getInt32( "menu_Content_green", 15);
-	g_settings.menu_Content_blue = configfile.getInt32( "menu_Content_blue", 15);
+	g_settings.menu_Content_red = configfile.getInt32( "menu_Content_red", 0);
+	g_settings.menu_Content_green = configfile.getInt32( "menu_Content_green", 25);
+	g_settings.menu_Content_blue = configfile.getInt32( "menu_Content_blue", 50);
 	
 	g_settings.menu_Content_Text_alpha = configfile.getInt32( "menu_Content_Text_alpha", 0);
-	g_settings.menu_Content_Text_red = configfile.getInt32( "menu_Content_Text_red", 85);
-	g_settings.menu_Content_Text_green = configfile.getInt32( "menu_Content_Text_green", 85);
-	g_settings.menu_Content_Text_blue = configfile.getInt32( "menu_Content_Text_blue", 85);
+	g_settings.menu_Content_Text_red = configfile.getInt32( "menu_Content_Text_red", 100);
+	g_settings.menu_Content_Text_green = configfile.getInt32( "menu_Content_Text_green", 100);
+	g_settings.menu_Content_Text_blue = configfile.getInt32( "menu_Content_Text_blue", 100);
 	
 	g_settings.menu_Content_Selected_alpha = configfile.getInt32( "menu_Content_Selected_alpha", 80);
-	g_settings.menu_Content_Selected_red = configfile.getInt32( "menu_Content_Selected_red", 75);
-	g_settings.menu_Content_Selected_green = configfile.getInt32( "menu_Content_Selected_green", 75);
-	g_settings.menu_Content_Selected_blue = configfile.getInt32( "menu_Content_Selected_blue", 75);
+	g_settings.menu_Content_Selected_red = configfile.getInt32( "menu_Content_Selected_red", 25);
+	g_settings.menu_Content_Selected_green = configfile.getInt32( "menu_Content_Selected_green", 55);
+	g_settings.menu_Content_Selected_blue = configfile.getInt32( "menu_Content_Selected_blue", 100);
 	
 	g_settings.menu_Content_Selected_Text_alpha = configfile.getInt32( "menu_Content_Selected_Text_alpha", 0);
-	g_settings.menu_Content_Selected_Text_red = configfile.getInt32( "menu_Content_Selected_Text_red", 25);
-	g_settings.menu_Content_Selected_Text_green = configfile.getInt32( "menu_Content_Selected_Text_green", 25);
-	g_settings.menu_Content_Selected_Text_blue = configfile.getInt32( "menu_Content_Selected_Text_blue", 25);
+	g_settings.menu_Content_Selected_Text_red = configfile.getInt32( "menu_Content_Selected_Text_red", 0);
+	g_settings.menu_Content_Selected_Text_green = configfile.getInt32( "menu_Content_Selected_Text_green", 0);
+	g_settings.menu_Content_Selected_Text_blue = configfile.getInt32( "menu_Content_Selected_Text_blue", 0);
 	
 	g_settings.menu_Content_inactive_alpha = configfile.getInt32( "menu_Content_inactive_alpha", 80);
-	g_settings.menu_Content_inactive_red = configfile.getInt32( "menu_Content_inactive_red", 25);
-	g_settings.menu_Content_inactive_green = configfile.getInt32( "menu_Content_inactive_green", 25);
-	g_settings.menu_Content_inactive_blue = configfile.getInt32( "menu_Content_inactive_blue", 25);
+	g_settings.menu_Content_inactive_red = configfile.getInt32( "menu_Content_inactive_red", 0);
+	g_settings.menu_Content_inactive_green = configfile.getInt32( "menu_Content_inactive_green", 15);
+	g_settings.menu_Content_inactive_blue = configfile.getInt32( "menu_Content_inactive_blue", 35);
 	
 	g_settings.menu_Content_inactive_Text_alpha = configfile.getInt32( "menu_Content_inactive_Text_alpha", 0);
 	g_settings.menu_Content_inactive_Text_red = configfile.getInt32( "menu_Content_inactive_Text_red", 55);
-	g_settings.menu_Content_inactive_Text_green = configfile.getInt32( "menu_Content_inactive_Text_green", 55);
-	g_settings.menu_Content_inactive_Text_blue = configfile.getInt32( "menu_Content_inactive_Text_blue", 55);
+	g_settings.menu_Content_inactive_Text_green = configfile.getInt32( "menu_Content_inactive_Text_green", 70);
+	g_settings.menu_Content_inactive_Text_blue = configfile.getInt32( "menu_Content_inactive_Text_blue", 85);
 
-	g_settings.infobar_alpha = configfile.getInt32( "infobar_alpha", 80);
-	g_settings.infobar_red = configfile.getInt32( "infobar_red", 25);
+	g_settings.infobar_alpha = configfile.getInt32( "infobar_alpha", 100);
+	g_settings.infobar_red = configfile.getInt32( "infobar_red", 0);
 	g_settings.infobar_green = configfile.getInt32( "infobar_green", 25);
-	g_settings.infobar_blue = configfile.getInt32( "infobar_blue", 25);
+	g_settings.infobar_blue = configfile.getInt32( "infobar_blue", 50);
 	
 	g_settings.infobar_Text_alpha = configfile.getInt32( "infobar_Text_alpha", 0);
 	g_settings.infobar_Text_red = configfile.getInt32( "infobar_Text_red", 100);
@@ -586,27 +586,32 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.infobar_colored_events_green = configfile.getInt32( "infobar_colored_events_green", 70);
 	g_settings.infobar_colored_events_blue = configfile.getInt32( "infobar_colored_events_blue", 0);
 	
-	g_settings.menu_Foot_alpha = configfile.getInt32( "menu_Foot_alpha", 85);
-	g_settings.menu_Foot_red = configfile.getInt32( "menu_Foot_red", 15);
-	g_settings.menu_Foot_green = configfile.getInt32( "menu_Foot_green", 15);
-	g_settings.menu_Foot_blue = configfile.getInt32( "menu_Foot_blue", 15);
+	g_settings.menu_Foot_alpha = configfile.getInt32( "menu_Foot_alpha", 100);
+	g_settings.menu_Foot_red = configfile.getInt32( "menu_Foot_red", 0);
+	g_settings.menu_Foot_green = configfile.getInt32( "menu_Foot_green", 10);
+	g_settings.menu_Foot_blue = configfile.getInt32( "menu_Foot_blue", 25);
 		
 	g_settings.menu_Foot_Text_alpha = configfile.getInt32( "menu_Foot_Text_alpha", 0);
-	g_settings.menu_Foot_Text_red = configfile.getInt32( "menu_Foot_Text_red", 100);
-	g_settings.menu_Foot_Text_green = configfile.getInt32( "menu_Foot_Text_green", 100);
-	g_settings.menu_Foot_Text_blue = configfile.getInt32( "menu_Foot_Text_blue", 100);
+	g_settings.menu_Foot_Text_red = configfile.getInt32( "menu_Foot_Text_red", 95);
+	g_settings.menu_Foot_Text_green = configfile.getInt32( "menu_Foot_Text_green", 70);
+	g_settings.menu_Foot_Text_blue = configfile.getInt32( "menu_Foot_Text_blue", 0);
 
-	g_settings.menu_Hint_alpha = configfile.getInt32( "menu_Hint_alpha", 80);
-	g_settings.menu_Hint_red = configfile.getInt32( "menu_Hint_red", 25);
-	g_settings.menu_Hint_green = configfile.getInt32( "menu_Hint_green", 25);
+	g_settings.menu_Hint_alpha = configfile.getInt32( "menu_Hint_alpha", 100);
+	g_settings.menu_Hint_red = configfile.getInt32( "menu_Hint_red", 0);
+	g_settings.menu_Hint_green = configfile.getInt32( "menu_Hint_green", 10);
 	g_settings.menu_Hint_blue = configfile.getInt32( "menu_Hint_blue", 25);
 		
 	g_settings.menu_Hint_Text_alpha = configfile.getInt32( "menu_Hint_Text_alpha", 0);
-	g_settings.menu_Hint_Text_red = configfile.getInt32( "menu_Hint_Text_red", 85);
-	g_settings.menu_Hint_Text_green = configfile.getInt32( "menu_Hint_Text_green", 85);
-	g_settings.menu_Hint_Text_blue = configfile.getInt32( "menu_Hint_Text_blue", 85);
+	g_settings.menu_Hint_Text_red = configfile.getInt32( "menu_Hint_Text_red", 100);
+	g_settings.menu_Hint_Text_green = configfile.getInt32( "menu_Hint_Text_green", 100);
+	g_settings.menu_Hint_Text_blue = configfile.getInt32( "menu_Hint_Text_blue", 100);
 
+	//
 	strcpy( g_settings.font_file, configfile.getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
+	g_settings.icons_dir = configfile.getString("icons_dir", DATADIR "/icons/");
+	g_settings.buttons_dir = configfile.getString("buttons_dir", DATADIR "/buttons/");
+	g_settings.hints_dir = configfile.getString("hints_dir", DATADIR "/hints/");
+	g_settings.spinner_dir = configfile.getString("spinner_dir", DATADIR "/spinner/");
 
 	// menue timing
 	g_settings.timing_menu = configfile.getInt32("timing_menu", DEFAULT_TIMING_MENU);
@@ -1148,7 +1153,12 @@ void CNeutrinoApp::saveSetup(const char * fname)
 	configfile.setInt32( "screen_xres", g_settings.screen_xres);
 	configfile.setInt32( "screen_yres", g_settings.screen_yres);
 
+	//
 	configfile.setString("font_file", g_settings.font_file);
+	configfile.setString("icons_dir", g_settings.icons_dir);
+	configfile.setString("buttons_dir", g_settings.buttons_dir);
+	configfile.setString("hints_dir", g_settings.hints_dir);
+	configfile.setString("spinner_dir", g_settings.spinner_dir);
 
 	// menue timing
 	configfile.setInt32("timing_menu", g_settings.timing_menu);
@@ -1871,12 +1881,12 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 
 	autoshift = 1;
 	CNeutrinoApp::getInstance()->recordingstatus = 1;
-	CNeutrinoApp::getInstance()->timeshiftstatus = 1;
+	//CNeutrinoApp::getInstance()->timeshiftstatus = 1;	// ???
 
 	if( CVCRControl::getInstance()->Record(&eventinfo) == false ) 
 	{
 		CNeutrinoApp::getInstance()->recordingstatus = 0;
-		CNeutrinoApp::getInstance()->timeshiftstatus = 0;
+		//CNeutrinoApp::getInstance()->timeshiftstatus = 0;
 		autoshift = 0;
 		
 		CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );	
@@ -1895,7 +1905,7 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 // stop auto record
 void CNeutrinoApp::stopAutoRecord()
 {
-	if(autoshift && CNeutrinoApp::getInstance()->recordingstatus) 
+	if(autoshift && recordingstatus) 
 	{
 		dprintf(DEBUG_NORMAL, "stopAutoRecord: autoshift, recordingstatus %d, stopping ...\n", CNeutrinoApp::getInstance()->recordingstatus);
 
@@ -1914,16 +1924,19 @@ void CNeutrinoApp::stopAutoRecord()
 		shift_timer = 0;
 	}
 	
+	recordingstatus = 0;
+	
 	CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false);
 }
 
 // do gui-record
-bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
+void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 {
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::doGuiRecord:");
+	
 	CTimerd::RecordingInfo eventinfo;
-	bool refreshGui = false;
 
-	// stop auto record
+	// stop autorecord
 	if(autoshift) 
 		stopAutoRecord();
 
@@ -1962,8 +1975,6 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 
 		eventinfo.apids = TIMERD_APIDS_CONF;
 
-		//bool doRecord = true;
-
 		// rec dir
 		strcpy(recDir, (preselectedDir != NULL) ? preselectedDir : g_settings.network_nfs_recordingdir);
 				
@@ -1972,14 +1983,9 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::doGuiRecord: start record to dir %s\n", recDir);
 
 		// start to record 
-		if( /*!doRecord ||*/ (CVCRControl::getInstance()->Record(&eventinfo) == false ) ) 
+		if(CVCRControl::getInstance()->Record(&eventinfo) == false )
 		{
 			recordingstatus = 0;
-
-			//if(doRecord)
-			//	return true;// try to refresh gui if record was not ok ?
-
-			return refreshGui;
 		}
 		else if (addTimer) // add timer
 		{
@@ -1994,8 +2000,6 @@ bool CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 	}
 		
 	CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
-
-	return refreshGui;
 }
 
 // startNextRecording
@@ -2555,8 +2559,6 @@ void CNeutrinoApp::tvMode( bool rezap )
 	if(stopauto && autoshift) 
 	{
 		stopAutoRecord();
-		recordingstatus = 0;
-		timeshiftstatus = 0;
 	}	
 
 	frameBuffer->useBackground(false);
@@ -2619,9 +2621,8 @@ void CNeutrinoApp::radioMode( bool rezap)
 	if(autoshift) 
 	{
 		dprintf(DEBUG_NORMAL, "CNeutrinoApp::radioMode: standby on: autoshift ! stopping ...\n");
+		
 		stopAutoRecord();
-		recordingstatus = 0;
-		timeshiftstatus = 0;
 	}
 	
 	//
@@ -2714,8 +2715,6 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		{
 			stopAutoRecord();
 			wasshift = true;
-			recordingstatus = 0;
-			timeshiftstatus = 0;
 		}
 		
 		if( mode == mode_scart ) 
@@ -3244,8 +3243,6 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 	if(autoshift) 
 	{
 		stopAutoRecord();
-		recordingstatus = 0;
-		timeshiftstatus = 0;
 	}
 	
 	//
@@ -3665,8 +3662,6 @@ _repeat:
 		if(autoshift) 
 		{
 			stopAutoRecord();
-			recordingstatus = 0;
-			timeshiftstatus = 0;
 		}
 
 		if (nextRecordingInfo != NULL)
@@ -3831,8 +3826,6 @@ _repeat:
 		if(autoshift) 
 		{
 			stopAutoRecord();
-			recordingstatus = 0;
-			timeshiftstatus = 0;
 		}
 
 		delete[] (unsigned char*) data;
@@ -4262,7 +4255,7 @@ void CNeutrinoApp::realRun(void)
 					{
 						if(g_RemoteControl->is_video_started) 
 						{		
-							// ptimeshift
+							// permanenttimeshift / already recording
 							if(recordingstatus) 
 							{
 								timeshiftstatus = recordingstatus;
@@ -4270,16 +4263,26 @@ void CNeutrinoApp::realRun(void)
 							else
 							{
 								// timeshift
-								recordingstatus = 1;
-									
+								recordingstatus = 1;	
 								timeshiftstatus = recordingstatus;
-								
 								doGuiRecord(timeshiftDir, true);
 							}
 
 							// freeze audio/video
 							audioDecoder->Stop();
 							videoDecoder->Stop(false); // dont blank
+							
+							//
+							if (playback->playing)
+							{
+								int speed = 0;
+								playback->GetSpeed(speed);
+								
+								if (speed > 0)
+									playback->SetSpeed(0);
+								else
+									playback->SetSpeed(1);
+							}
 						}
 					}
 				}
@@ -4357,8 +4360,15 @@ void CNeutrinoApp::realRun(void)
 
 						mfile.ytid = "timeshift";
 
-						tmpMoviePlayerGui.addToPlaylist(mfile);
-						tmpMoviePlayerGui.exec(NULL, "urlplayback");
+						//tmpMoviePlayerGui.addToPlaylist(mfile);
+						//tmpMoviePlayerGui.exec(NULL, "urlplayback");
+						////
+						if (!playback->playing)
+						{
+							playback->Close(); // not needed???
+							playback->Open();
+							playback->Start(fname);
+						}
 					}
 				}
 			}
@@ -4369,8 +4379,6 @@ void CNeutrinoApp::realRun(void)
 				if(autoshift) 
 				{
 					stopAutoRecord();
-					recordingstatus = 0;
-					timeshiftstatus = 0;
 				}
 
 				// stop record if recording
@@ -4379,8 +4387,11 @@ void CNeutrinoApp::realRun(void)
 					if(MessageBox(_("Information"), _("You really want to to stop record ?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == CMessageBox::mbrYes)
 					{
 						CTimerd::getInstance()->stopTimerEvent(recording_id);
-						recordingstatus = 0; //FIXME???
+						//recordingstatus = 0;
+						//timeshiftstatus = 0;
 						CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
+						////
+						playback->Close();
 					}
 				} 
 				// start record
@@ -4742,10 +4753,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 	g_Locale->loadLocale(Lang2I18N(g_settings.language).c_str());
 
 	// icons/buttons/hints path
-	frameBuffer->setIconBasePath(DATADIR "/icons/");
-	frameBuffer->setButtonBasePath(DATADIR "/buttons/");
-	frameBuffer->setHintBasePath(DATADIR "/hints/");
-	frameBuffer->setSpinnerBasePath(DATADIR "/spinner/");
+	frameBuffer->setIconBasePath(/*DATADIR "/icons/"*/g_settings.icons_dir);
+	frameBuffer->setButtonBasePath(/*DATADIR "/buttons/"*/g_settings.buttons_dir);
+	frameBuffer->setHintBasePath(/*DATADIR "/hints/"*/g_settings.hints_dir);
+	frameBuffer->setSpinnerBasePath(/*DATADIR "/spinner/"*/g_settings.spinner_dir);
 
 	// setup fonts
 	setupFonts(g_settings.font_file);
@@ -4837,7 +4848,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	g_PluginList->loadPlugins();
 	
 	// load selected skin
-	loadSkin(g_settings.preferred_skin);
+	//loadSkin(g_settings.preferred_skin);
 	
 	// zapit	
 	zapitCfg.lastchannelmode = g_settings.lastChannelMode;
@@ -4845,7 +4856,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	zapitCfg.startchannelradio_id = g_settings.startchannelradio_id;
 	zapitCfg.startchanneltv_nr = g_settings.startchanneltv_nr;
 	zapitCfg.startchannelradio_nr = g_settings.startchannelradio_nr;
-	zapitCfg.saveLastChannel = g_settings.uselastchannel;
+	zapitCfg.saveLastChannel = !g_settings.uselastchannel;
 	
 	current_volume = g_settings.current_volume;
 
