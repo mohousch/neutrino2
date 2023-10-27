@@ -25,6 +25,10 @@ extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
+//// defines
+//FIXME: make this global
+#define __(string) dgettext("systeminfo", string)
+
 bool refreshIt = true;
 
 // construktor
@@ -87,33 +91,33 @@ void CSysInfoWidget::paintHead()
 	cFrameBoxTitle.iWidth = cFrameBox.iWidth;
 	
 	if(mode == SYSINFO)
-		sprintf((char *) buf, "%s", "System-Info:");
+		sprintf((char *) buf, "%s", __("System-Info:"));
 	
 	if(mode == DMESGINFO)
-		sprintf((char *) buf, "%s", "System-Messages:");
+		sprintf((char *) buf, "%s", __("System-Messages:"));
 	
 	if(mode == CPUINFO)
-		sprintf((char *) buf, "%s", "CPU/File-Info:");
+		sprintf((char *) buf, "%s", __("CPU/File-Info:"));
 	
 	if(mode == PSINFO)
-		sprintf((char *) buf, "%s", "Prozess-Liste:");
+		sprintf((char *) buf, "%s", __("Process-List:"));
 	
 	// title
 	CCHeaders headers(&cFrameBoxTitle, buf, titleIcon.iconName.c_str());
 	headers.enablePaintDate();
-	headers.setCorner(RADIUS_SMALL, CORNER_TOP);
-	headers.setGradient(LIGHT2DARK);
-	headers.setLine(false);
+	headers.setCorner(g_settings.Head_radius);
+	headers.setGradient(g_settings.Head_gradient);
+	headers.setLine(g_settings.Head_line, g_settings.Head_line_gradient);
 	headers.paint();
 }
 
 // paint foot
 const struct button_label Buttons[4] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("info") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("dmesg") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("cpu/file") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("ps") },
+	{ NEUTRINO_ICON_BUTTON_RED, __("info") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, __("dmesg") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, __("cpu/file") },
+	{ NEUTRINO_ICON_BUTTON_BLUE, __("ps") },
 	
 };
 
@@ -125,9 +129,9 @@ void CSysInfoWidget::paintFoot()
 	cFrameBoxFoot.iWidth = cFrameBox.iWidth;
 
 	CCFooters footers(&cFrameBoxFoot);
-	footers.setCorner(RADIUS_SMALL, CORNER_BOTTOM);
-	footers.setGradient(DARK2LIGHT);
-	footers.setLine(false);
+	footers.setCorner(g_settings.Foot_radius);
+	footers.setGradient(g_settings.Foot_gradient);
+	footers.setLine(g_settings.Foot_line, g_settings.Foot_line_gradient);
 	footers.setButtons(Buttons, 4);
 	footers.paint();
 }
@@ -151,7 +155,7 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 {
 	dprintf(DEBUG_NORMAL, "CsysInfoWidget::exec:\n");
 
-	int res = RETURN_REPAINT;
+	int res = CMenuTarget::RETURN_REPAINT;
 
 	if(mode == SYSINFO)
 	{
@@ -176,6 +180,8 @@ int CSysInfoWidget::exec(CMenuTarget* parent, const std::string& /*actionKey*/)
 	paintHead();
 	paint();
 	paintFoot();
+	
+	frameBuffer->blit();
 
 	neutrino_msg_t msg; 
 	neutrino_msg_data_t data;
@@ -310,7 +316,7 @@ void CSysInfoWidget::sysinfo()
 
 	// Create tmpfile with date /tmp/sysinfo
 	system("echo 'DATUM:' > /tmp/sysinfo");
-	f=fopen("/tmp/sysinfo","a");
+	f = fopen("/tmp/sysinfo","a");
 	if(f)
 		fprintf(f,"%s\n", line);
 	fclose(f);
@@ -352,7 +358,7 @@ void CSysInfoWidget::sysinfo()
 	}
 	
 	// some calculations
-	if(!(curCPU[0] - prevCPU[0])==0)
+	if(!(curCPU[0] - prevCPU[0]) == 0)
 	{
 		faktor = 100.0/(curCPU[0] - prevCPU[0]);
 		for(i = 0; i < 4; i++)
@@ -398,9 +404,9 @@ void CSysInfoWidget::sysinfo()
 	{
 		fgets(line, 256, f);
 		float ret[4];
-		const char* strTage[2] = {"Tage", "Tag"};
-		const char* strStunden[2] = {"Stunden", "Stunde"};
-		const char* strMinuten[2] = {"Minuten", "Minute"};
+		const char* strTage[2] = {__("Days"), __("Day")};
+		const char* strStunden[2] = {__("Hours"), __("Hour")};
+		const char* strMinuten[2] = {__("Minutes"), __("Minute")};
 		sscanf(line, "%f", &ret[0]);
 		ret[0] /= 60;
 		ret[1] = long(ret[0])/60/24; // Tage
@@ -410,7 +416,7 @@ void CSysInfoWidget::sysinfo()
 
 		f = fopen("/tmp/sysinfo", "a");
 		if(f)
-			fprintf(f, "UPTIME:\n System laeuft seit: %.0f %s %.0f %s %.0f %s\n", ret[1], strTage[int(ret[1]) == 1], ret[2], strStunden[int(ret[2]) == 1], ret[3], strMinuten[int(ret[3]) == 1]);
+			fprintf(f, "UPTIME:\n %s %.0f %s %.0f %s %.0f %s\n", __("System running:"), ret[1], strTage[int(ret[1]) == 1], ret[2], strStunden[int(ret[2]) == 1], ret[3], strMinuten[int(ret[3]) == 1]);
 	}
 	fclose(f);
 

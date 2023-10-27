@@ -385,7 +385,9 @@ void CPSISetup::paint()
 
 	// head
 	CCHeaders headers(x, y, width, hheight, name.c_str(), NEUTRINO_ICON_COLORS);
-	//headers.paint();
+	headers.setCorner(g_settings.Head_radius);
+	headers.setGradient(g_settings.Head_gradient);
+	headers.setLine(g_settings.Head_line, g_settings.Head_line_gradient);
 	
 	//paint slider
 	// contrast

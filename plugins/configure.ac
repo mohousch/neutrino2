@@ -51,6 +51,7 @@ test/locale/Makefile
 netzkino/Makefile
 youtube/Makefile
 systeminfo/Makefile
+systeminfo/locale/Makefile
 tuxcom/Makefile
 tuxcal/Makefile
 tuxcal/daemon/Makefile

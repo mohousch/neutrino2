@@ -554,7 +554,6 @@ void CStreamInfo::paint(int /*mode*/)
 		head = new CCHeaders(x, y, width, 40, _("Stream information"), NEUTRINO_ICON_INFO);
 		head->enablePaintDate();
 		head->setFormat("%d.%m.%Y %H:%M:%S");
-//		head->setLine(true, true);
 		
 		if (paint_mode == 0) 
 			widget->addCCItem(head);
