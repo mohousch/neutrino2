@@ -385,9 +385,9 @@ int CScanTs::exec(CMenuTarget * parent, const std::string & actionKey)
 		const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " "};
 			
 		head.setButtons(&btn);
-		head.setCorner(RADIUS_SMALL);
-		head.setGradient(LIGHT2DARK);
-		
+		head.setCorner(g_settings.Head_radius);
+		head.setGradient(g_settings.Head_gradient);
+		head.setLine(g_settings.Head_line, g_settings.Head_line_gradient);
 		head.paint();
 			
 		frameBuffer->blit();		
@@ -576,8 +576,9 @@ void CScanTs::paint(bool fortest)
 	const struct button_label btn = { NEUTRINO_ICON_BUTTON_HOME, " "};
 			
 	head.setButtons(&btn);
-	head.setCorner(RADIUS_SMALL);
-	head.setGradient(LIGHT2DARK);
+	head.setCorner(g_settings.Head_radius);
+	head.setGradient(g_settings.Head_gradient);
+	head.setLine(g_settings.Head_line, g_settings.Head_line_gradient);
 	head.paint();
 	
 	// main box
