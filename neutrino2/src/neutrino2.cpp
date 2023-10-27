@@ -4363,6 +4363,12 @@ void CNeutrinoApp::realRun(void)
 						//tmpMoviePlayerGui.addToPlaylist(mfile);
 						//tmpMoviePlayerGui.exec(NULL, "urlplayback");
 						////
+						if (!IS_WEBTV(live_channel_id))
+						{
+							CZapit::getInstance()->lockPlayBack();
+						}
+						
+						//
 						if (!playback->playing)
 						{
 							playback->Close(); // not needed???
@@ -4390,8 +4396,14 @@ void CNeutrinoApp::realRun(void)
 						//recordingstatus = 0;
 						//timeshiftstatus = 0;
 						CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
+						
 						////
 						playback->Close();
+						
+						if (!IS_WEBTV(live_channel_id))
+						{
+							CZapit::getInstance()->unlockPlayBack();
+						}
 					}
 				} 
 				// start record
