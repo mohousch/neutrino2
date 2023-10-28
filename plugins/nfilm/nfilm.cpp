@@ -383,6 +383,7 @@ void CNFilm::paintLeftWidgetItems(ClistBox *listBox, bool genre)
 		CMenuForwarder *item3 = new CMenuForwarder(__("Movie top rated"), true, NULL, this, "movie_top_rated");
 		CMenuForwarder *item4 = new CMenuForwarder(__("New movie"), true, NULL, this, "movie_new");
 		CMenuForwarder *item5 = new CMenuForwarder(__("Exit"), true, NULL, this, "exit");
+		item5->setIconName(NEUTRINO_ICON_BUTTON_HOME);
 	
 		listBox->addItem(new CMenuForwarder(__("Search"), true, tmdbsearch.c_str(), this, "search"));
 		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
