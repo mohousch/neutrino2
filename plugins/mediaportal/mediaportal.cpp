@@ -144,24 +144,6 @@ int CMediaPortal::exec(CMenuTarget * parent, const std::string & actionKey)
 
 		return RETURN_REPAINT;
 	}
-	/*
-	else if (actionKey == "delete")
-	{
-		selected = mediaPortal->getSelected();
-
-		// remove selected plugin
-		g_PluginList->removePlugin(selected);
-
-		// relaod plugins
-		g_PluginList->loadPlugins();
-
-		if(selected > (int)g_PluginList->getNumberOfPlugins() - 1)
-			selected = (int)g_PluginList->getNumberOfPlugins() - 1;
-
-		showMenu();
-		return RETURN_EXIT_ALL;
-	}
-	*/
 
 	showMenu();
 	

@@ -59,6 +59,7 @@ fileexplorer/Makefile
 mediaportal/Makefile
 satipclient/Makefile
 icecast/Makefile
+icecast/locale/Makefile
 internetradio/Makefile
 movieplayer/Makefile
 movieplayer/locale/Makefile
@@ -68,6 +69,7 @@ audioplayer/Makefile
 audioplayer/locale/Makefile
 opkg_manager/Makefile
 nfilm/Makefile
+nfilm/locale/Makefile
 ntvshows/Makefile
 upnp/Makefile
 python/Makefile

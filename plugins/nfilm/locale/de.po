@@ -1,0 +1,57 @@
+# German translations for neutrino2-plugins package.
+# Copyright (C) 2023 neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# Automatically generated, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 5.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-10-29 00:03+0200\n"
+"PO-Revision-Date: 2023-10-28 23:37+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Exit"
+msgstr "Beenden"
+
+msgid "Genres"
+msgstr "Genres"
+
+msgid "Movie Trailer"
+msgstr "Movie Trailer"
+
+msgid "Movie in cinema"
+msgstr "In den Kinos"
+
+msgid "Movie popular"
+msgstr "Am populärsten"
+
+msgid "Movie top rated"
+msgstr "Gut bewertet"
+
+msgid "New movie"
+msgstr "Neue Filme"
+
+msgid "Next Focus"
+msgstr "Nächster Fokus"
+
+msgid "Next Page"
+msgstr "Nächste Seite"
+
+msgid "Prev Page"
+msgstr "Vorherige Seite"
+
+msgid "Scan for Movies ..."
+msgstr "Nach Filmen suchen"
+
+msgid "Search"
+msgstr "Suche"
+
+msgid "Start Menu"
+msgstr "Startmenü"

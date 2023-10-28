@@ -26,10 +26,6 @@
 //FIXME: make this global
 #define __(string) dgettext("audioplayer", string)
 
-//// globals
-//static const char * PLUGINNAME = __("audioplayer");
-//static const char * PLUGINVERSION = "0.0.1";
-//static const char * PLUGINDESCRIPTION = __("play music files");
 ////
 extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
@@ -62,9 +58,6 @@ class CMP3Player : public CMenuTarget
 		void addUrl2Playlist(const char *url, const char *name = NULL, const time_t bitrate = 0);
 		void processPlaylistUrl(const char *url, const char *name = NULL, const time_t bitrate = 0);
 		void getMetaData(CAudiofile& File);
-
-		//
-		bool shufflePlaylist(void);
 
 		int showMenu();
 		
@@ -116,31 +109,6 @@ void CMP3Player::hide()
 {
 	frameBuffer->paintBackground();
 	frameBuffer->blit();
-}
-
-bool CMP3Player::shufflePlaylist(void)
-{
-	dprintf(DEBUG_NORMAL, "CMP3Player::shufflePlaylist\n");
-	
-	RandomNumber rnd;
-	bool result = false;
-	
-	if (!(playlist.empty()))
-	{
-		if (selected > 0)
-		{
-			std::swap(playlist[0], playlist[selected]);
-			selected = 0;
-		}
-
-		std::random_shuffle((selected != 0) ? playlist.begin() : playlist.begin() + 1, playlist.end(), rnd);
-
-		selected = 0;
-
-		result = true;
-	}
-	
-	return(result);
 }
 
 void CMP3Player::loadPlaylist()
@@ -360,7 +328,6 @@ void CMP3Player::openFileBrowser()
 			progress.setTitle(__("Receiving list, please wait..."));	
 			progress.paint();
 		}
-		////
 		
 		Path = filebrowser.getCurrentDir();
 		CFileList::const_iterator files = filebrowser.getSelectedFiles().begin();
@@ -605,7 +572,7 @@ const struct button_label AudioPlayerButtons[FOOT_BUTTONS_COUNT] =
 	{ NEUTRINO_ICON_BUTTON_RED, __("Delete") },
 	{ NEUTRINO_ICON_BUTTON_GREEN, __("Add") },
 	{ NEUTRINO_ICON_BUTTON_YELLOW, __("Delete all") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, __("Shuffle") }
+	{ NEUTRINO_ICON_BUTTON_BLUE, __("Reload") }
 };
 
 int CMP3Player::showMenu()
@@ -747,7 +714,8 @@ int CMP3Player::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_blue")
 	{
-		shufflePlaylist();
+		playlist.clear();
+		loadPlaylist();
 		showMenu();
 
 		return RETURN_EXIT_ALL;

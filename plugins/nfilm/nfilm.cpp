@@ -22,6 +22,12 @@
 
 #include <system/ytparser.h>	
 
+
+//// defines
+//FIXME: make this global
+#define __(string) dgettext("nfilm", string)
+
+//// globals
 extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
@@ -164,7 +170,7 @@ void CNFilm::loadGenreList(bool genre)
 {
 	if(genre)
 	{
-		CHintBox loadBox(_("Movie Trailer"), _("Scan for Movies ..."));
+		CHintBox loadBox(__("Movie Trailer"), __("Scan for Movies ..."));
 		loadBox.paint();
 
 		genres.clear();
@@ -186,7 +192,7 @@ void CNFilm::loadTMDBPlaylist(bool genre, const char *txt, const char *list, con
 {
 	dprintf(DEBUG_NORMAL, "CNFilm::loadPlaylist:\n");
 
-	CHintBox loadBox(_("Movie Trailer"), _("Scan for Movies ..."));
+	CHintBox loadBox(__("Movie Trailer"), __("Scan for Movies ..."));
 	loadBox.paint();
 
 	thumbnail_dir = "/tmp/nfilm";
@@ -372,17 +378,13 @@ void CNFilm::paintLeftWidgetItems(ClistBox *listBox, bool genre)
 	}
 	else
 	{
-		CMenuForwarder *item1 = new CMenuForwarder("In den Kinos", true, NULL, this, "movie_in_cinema");
-		CMenuForwarder *item2 = new CMenuForwarder("Am", true, NULL, this, "movie_popular");
-		item2->setOption("populärsten");
-		item2->set2lines(true);
-		CMenuForwarder *item3 = new CMenuForwarder("Am besten", true, NULL, this, "movie_top_rated");
-		item3->setOption("bewertet");
-		item3->set2lines(true);
-		CMenuForwarder *item4 = new CMenuForwarder("Neue Filme", true, NULL, this, "movie_new");
-		CMenuForwarder *item5 = new CMenuForwarder("Beenden", true, NULL, this, "exit");
+		CMenuForwarder *item1 = new CMenuForwarder(__("Movie in cinema"), true, NULL, this, "movie_in_cinema");
+		CMenuForwarder *item2 = new CMenuForwarder(__("Movie popular"), true, NULL, this, "movie_popular");
+		CMenuForwarder *item3 = new CMenuForwarder(__("Movie top rated"), true, NULL, this, "movie_top_rated");
+		CMenuForwarder *item4 = new CMenuForwarder(__("New movie"), true, NULL, this, "movie_new");
+		CMenuForwarder *item5 = new CMenuForwarder(__("Exit"), true, NULL, this, "exit");
 	
-		listBox->addItem(new CMenuForwarder("Suche", true, tmdbsearch.c_str(), this, "search"));
+		listBox->addItem(new CMenuForwarder(__("Search"), true, tmdbsearch.c_str(), this, "search"));
 		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		listBox->addItem(item1);
 		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
@@ -392,7 +394,7 @@ void CNFilm::paintLeftWidgetItems(ClistBox *listBox, bool genre)
 		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		listBox->addItem(item4);
 		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
-		listBox->addItem(new CMenuForwarder("Genres", true, NULL, this, "genres"));
+		listBox->addItem(new CMenuForwarder(__("Genres"), true, NULL, this, "genres"));
 		listBox->addItem(new CMenuSeparator(CMenuSeparator::LINE));
 		listBox->addItem(item5);
 	}
@@ -419,10 +421,10 @@ const struct button_label HeadButtons = { NEUTRINO_ICON_BUTTON_HELP, "" };
 #define FOOT_BUTTONS_COUNT	4
 const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, "Next Page" },
-	{ NEUTRINO_ICON_BUTTON_GREEN, "Next Page" },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("next focus") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("Start Menu") }
+	{ NEUTRINO_ICON_BUTTON_RED, __("Next Page") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, __("Prev Page") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, __("Next Focus") },
+	{ NEUTRINO_ICON_BUTTON_BLUE, __("Start Menu") }
 };
 
 void CNFilm::showMenu(bool genre)
@@ -586,7 +588,7 @@ int CNFilm::exec(CMenuTarget *parent, const std::string& actionKey)
 	{
 		tmdbsearch.clear();
 
-		CStringInputSMS stringInput(_("Search"), tmdbsearch.c_str());
+		CStringInputSMS stringInput(__("Search"), tmdbsearch.c_str());
 		stringInput.exec(NULL, "");
 
 		if(!stringInput.getExitPressed())

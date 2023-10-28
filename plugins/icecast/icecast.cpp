@@ -35,6 +35,10 @@
 # include <plugin.h>
 
 
+//// defines
+//FIXME: make this global
+#define __(string) dgettext("icecast", string)
+//
 #define NEUTRINO_ICON_ICECAST_SMALL		PLUGINDIR "/icecast/icecast_small.png"
 
 #define SHOW_FILE_LOAD_LIMIT 50
@@ -68,7 +72,7 @@ class CIceCast : public CMenuTarget
 
 		//
 		void loadPlaylist(void);
-		bool shufflePlaylist(void);
+		//bool shufflePlaylist(void);
 
 		//
 		void addUrl2Playlist(const char *url, const char *name = NULL, const time_t bitrate = 0);
@@ -122,7 +126,7 @@ void CIceCast::hide()
 	frameBuffer->paintBackground();
 	frameBuffer->blit();
 }
-
+/*
 bool CIceCast::shufflePlaylist(void)
 {
 	dprintf(DEBUG_NORMAL, "CMP3Player::shufflePlaylist\n");
@@ -147,6 +151,7 @@ bool CIceCast::shufflePlaylist(void)
 	
 	return(result);
 }
+*/
 
 void CIceCast::addUrl2Playlist(const char *url, const char *name, const time_t bitrate) 
 {
@@ -313,7 +318,7 @@ void CIceCast::scanXmlData(xmlDocPtr answer_parser, const char *nametag, const c
 
 			long listPos = 1;
 			
-			progress.setTitle(_("Receiving list, please wait"));
+			progress.setTitle(__("Receiving list, please wait"));
 			progress.enableCancelIcon();
 			progress.paint();
 			
@@ -423,7 +428,7 @@ bool CIceCast::openFileBrowser(void)
 		
 		if (maxProgress > SHOW_FILE_LOAD_LIMIT)
 		{
-			progress.setTitle(_("Receiving list, please wait"));	
+			progress.setTitle(__("Receiving list, please wait"));	
 			progress.paint();
 		}
 
@@ -665,7 +670,7 @@ void CIceCast::loadPlaylist(void)
 		scanXmlData(answer_parser, "server_name", "listen_url", "bitrate", true);
 	}
 	else
-		HintBox(_("Information"), _("can't load icecast list"));
+		HintBox(__("Information"), __("can't load icecast list"));
 }
 
 #define HEAD_BUTTONS_COUNT 2
@@ -674,15 +679,15 @@ const struct button_label HeadButtons{ NEUTRINO_ICON_BUTTON_SETUP, "" };
 #define FOOT_BUTTONS_COUNT 4
 const struct button_label AudioPlayerButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("Delete") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Delete all") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("Shuffle") }
+	{ NEUTRINO_ICON_BUTTON_RED, __("Delete") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, __("Add") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, __("Delete all") },
+	{ NEUTRINO_ICON_BUTTON_BLUE, __("Reload") }
 };
 
 void CIceCast::showMenu()
 {
-	ilist = new CMenuWidget(_("ICE Cast"), NEUTRINO_ICON_ICECAST_SMALL, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
+	ilist = new CMenuWidget(__("ICE Cast"), NEUTRINO_ICON_ICECAST_SMALL, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
 
 	for(unsigned int i = 0; i < (unsigned int)playlist.size(); i++)
 	{
@@ -785,7 +790,10 @@ int CIceCast::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_blue")
 	{
-		shufflePlaylist();
+		//shufflePlaylist();
+		loadPlaylist();
+		playlist.clear();
+		
 		showMenu();
 
 		return RETURN_EXIT_ALL;

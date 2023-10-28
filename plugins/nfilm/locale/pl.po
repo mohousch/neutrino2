@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neutrino2-plugins 4.8\n"
+"Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-29 00:15+0200\n"
-"PO-Revision-Date: 2023-09-22 10:51+0200\n"
+"POT-Creation-Date: 2023-10-29 00:03+0200\n"
+"PO-Revision-Date: 2023-10-28 23:37+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: pl\n"
@@ -17,38 +17,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-msgid "Add"
+msgid "Exit"
 msgstr ""
 
-msgid "Artist: "
+msgid "Genres"
 msgstr ""
 
-msgid "Audio Player"
+msgid "Movie Trailer"
 msgstr ""
 
-msgid "Date: "
+msgid "Movie in cinema"
 msgstr ""
 
-msgid "Delete"
+msgid "Movie popular"
 msgstr ""
 
-msgid "Delete all"
+msgid "Movie top rated"
 msgstr ""
 
-msgid "Genre: "
+msgid "New movie"
 msgstr ""
 
-msgid "Length (Min): "
+msgid "Next Focus"
 msgstr ""
 
-msgid "Receiving list, please wait..."
+msgid "Next Page"
 msgstr ""
 
-msgid "Reload"
+msgid "Prev Page"
 msgstr ""
 
-msgid "Title: "
+msgid "Scan for Movies ..."
 msgstr ""
 
-msgid "Track Infos"
+msgid "Search"
+msgstr ""
+
+msgid "Start Menu"
 msgstr ""
