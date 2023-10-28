@@ -6717,11 +6717,11 @@ void CZapit::Start(Zapit_config zapitCfg)
 	prepareChannels();
 	
 	//
-	if (!zapitCfg.saveLastChannel)
+	if (zapitCfg.saveLastChannel)
 	{
-		if (zapitCfg.lastchannelmode == RADIO_MODE)
+		if (lastChannelMode == RADIO_MODE)
 			setRadioMode();
-		else if (zapitCfg.lastchannelmode == TV_MODE)
+		else if (lastChannelMode == TV_MODE)
 			setTVMode();
 	}
 	else // start channel

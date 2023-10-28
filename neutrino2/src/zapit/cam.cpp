@@ -29,9 +29,7 @@
 #include <string.h>
 
 
-/*
- * conditional access descriptors
- */
+//// conditional access descriptors
 CCaDescriptor::CCaDescriptor(const unsigned char * const buffer)
 {
 	descriptor_tag = buffer[0];
@@ -58,9 +56,7 @@ unsigned int CCaDescriptor::writeToBuffer(unsigned char * const buffer) // retur
 }
 
 
-/*
- * generic table containing conditional access descriptors
- */
+//// generic table containing conditional access descriptors
 void CCaTable::addCaDescriptor(const unsigned char * const buffer)
 {
 	CCaDescriptor * dummy = new CCaDescriptor(buffer);
@@ -90,9 +86,7 @@ CCaTable::~CCaTable(void)
 }
 
 
-/*
- * elementary stream information
- */
+//// elementary stream information
 unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns number of bytes written
 {
 	int len = 0;
@@ -116,9 +110,7 @@ unsigned int CEsInfo::writeToBuffer(unsigned char * const buffer) // returns num
 	return len + 5;	
 }
 
-/*
- * contitional access program map table
- */
+//// contitional access program map table
 CCaPmt::~CCaPmt(void)
 {
 	for (unsigned int i = 0; i < es_info.size(); i++)
@@ -210,7 +202,7 @@ const char *CCam::getSocketName(void) const
 
 bool CCam::sendMessage(const char * const data, const size_t length, bool update)
 {
-	/* send_data return false without trying, if no opened connection */
+	// send_data return false without trying, if no opened connection
 	if(update) 
 	{
 		if(!sendData(data, length)) 
