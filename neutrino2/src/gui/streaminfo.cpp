@@ -870,12 +870,8 @@ int CStreamInfo::ts_setup()
 
 		ts_dmx = new cDemux();
 		
-		// open demux
-#if defined (PLATFORM_COOLSTREAM)
-		ts_dmx->Open(DMX_TP_CHANNEL);
-#else	
-		ts_dmx->Open( DMX_TP_CHANNEL, 3*3008*62, live_fe );
-#endif	
+		// open demux	
+		ts_dmx->Open( DMX_TP_CHANNEL, 3*3008*62, live_fe );	
 		
 		if(vpid > 0) 
 		{

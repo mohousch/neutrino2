@@ -8,14 +8,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libnet \
 	-I$(top_srcdir)/lib/xmltree \
 	-I$(top_srcdir)/lib/connection \
+	-I$(top_srcdir)/lib/libdvbapi \
 	@FREETYPE_CFLAGS@
-
-if BOXTYPE_COOLSTREAM
-AM_CPPFLAGS += \
-	-I$(top_srcdir)/lib/libcoolstream
-else
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbapi
-endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 

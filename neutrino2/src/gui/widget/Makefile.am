@@ -9,14 +9,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libxmltree \
 	-I$(top_srcdir)/lib/libeventserver \
 	-I$(top_srcdir)/lib/connection \
+	-I$(top_srcdir)/lib/libdvbapi \
 	@FREETYPE_CFLAGS@
-
-if BOXTYPE_COOLSTREAM
-AM_CPPFLAGS += -I$(top_srcdir)/src/zapit/include \
-	-I$(top_srcdir)/lib/libcoolstream
-else
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbapi
-endif
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions
 

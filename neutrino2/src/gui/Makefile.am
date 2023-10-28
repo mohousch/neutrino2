@@ -15,18 +15,10 @@ AM_CPPFLAGS += \
 	-I$(top_srcdir)/lib/libxmltree \
 	-I$(top_srcdir)/lib/libupnpclient \
 	-I$(top_srcdir)/lib/connection \
+	-I$(top_srcdir)/lib/libdvbapi \
+	-I$(top_srcdir)/lib/libdvbci \
 	@CURL_CFLAGS@ \
 	@FREETYPE_CFLAGS@
-
-if BOXTYPE_COOLSTREAM
-AM_CPPFLAGS += -I$(top_srcdir)/src/zapit/include \
-	-I$(top_srcdir)/lib/libcoolstream
-else
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbapi
-if ENABLE_CI
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbci
-endif
-endif
 
 if !ENABLE_GSTREAMER
 AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include

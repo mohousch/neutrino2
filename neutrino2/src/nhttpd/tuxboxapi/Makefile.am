@@ -10,16 +10,10 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libeventserver \
 	-I$(top_srcdir)/lib/libconfigfile \
 	-I$(top_srcdir)/lib/xmltree \
+	-I$(top_srcdir)/lib/libdvbapi \
 	@FREETYPE_CFLAGS@
 
 AM_CPPFLAGS += -fno-rtti -fno-exceptions -D_FILE_OFFSET_BITS=64
-
-if BOXTYPE_COOLSTREAM
-AM_CPPFLAGS += -I$(top_srcdir)/src/zapit/include \
-	-I$(top_srcdir)/lib/libcoolstream
-else
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbapi
-endif
 
 if !ENABLE_GSTREAMER
 AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include

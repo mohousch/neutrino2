@@ -54,12 +54,8 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 
 	cDemux * dmx = new cDemux();
 	
-	//open
-#if defined (PLATFORM_COOLSTREAM)
-	dmx->Open(DMX_PSI_CHANNEL);
-#else	
-	dmx->Open( DMX_PSI_CHANNEL, SDT_SIZE, CZapit::getInstance()->getFE(feindex) );
-#endif	
+	//open	
+	dmx->Open( DMX_PSI_CHANNEL, SDT_SIZE, CZapit::getInstance()->getFE(feindex) );	
 
 	unsigned char buffer[SDT_SIZE];
 
@@ -250,12 +246,8 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 	
 	cDemux * dmx = new cDemux();
 	
-	// open
-#if defined (PLATFORM_COOLSTREAM)
-	dmx->Open(DMX_PSI_CHANNEL);
-#else	
-	dmx->Open( DMX_PSI_CHANNEL, SDT_SIZE, fe );
-#endif	
+	// open	
+	dmx->Open( DMX_PSI_CHANNEL, SDT_SIZE, fe );	
 	
 	int ret = -1;
 	//CDescriptors descriptor;

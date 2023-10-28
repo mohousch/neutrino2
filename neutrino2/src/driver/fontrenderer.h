@@ -53,7 +53,7 @@ class CFont
 	FT_Error getGlyphBitmap(FT_ULong glyph_index, FTC_SBit *sbit);
 
 	// these are HACKED values, because the font metrics were unusable.
-	int height, DigitHeight, DigitOffset, ascender, descender, upper, lower;
+	int height, ascender, descender, upper, lower;
 	int fontwidth;
 	int maxdigitwidth;
 	uint8_t fg_red, fg_green, fg_blue;
@@ -82,9 +82,7 @@ class CFont
 		int getRenderWidth(const char* text, bool utf8_encoded = true);
 		int getRenderWidth(const std::string &text, bool utf8_encoded = true);
 		int getHeight(void);
-		int getDigitHeight(void);
 		int getMaxDigitWidth(void);
-		int getDigitOffset(void);
 		int getWidth(void);
 		int getSize(){return font.width;}
 		int setSize(int isize);

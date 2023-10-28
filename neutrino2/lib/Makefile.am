@@ -8,11 +8,8 @@ SUBDIRS = \
 	libtuxtxt \
 	libdvbsub \
 	jsoncpp \
-	libiw
-
-if !BOXTYPE_COOLSTREAM
-SUBDIRS += libdvbapi libdvbci
-endif
+	libiw \
+	libdvbapi libdvbci
 
 if !ENABLE_GSTREAMER
 SUBDIRS += libeplayer3

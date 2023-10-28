@@ -106,11 +106,8 @@ bool getUTC(UTC_t * const UTC, const bool TDT)
 	if(dmxUTC == NULL) 
 	{
 		dmxUTC = new cDemux();
-#if defined (PLATFORM_COOLSTREAM)
-		dmxUTC->Open(DMX_PSI_CHANNEL);
-#else
-		dmxUTC->Open( DMX_PSI_CHANNEL, 1026, live_fe );
-#endif		
+
+		dmxUTC->Open( DMX_PSI_CHANNEL, 1026, live_fe );		
 	}
 
 	memset(&filter, 0, DMX_FILTER_SIZE);

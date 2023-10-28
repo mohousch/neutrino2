@@ -110,9 +110,7 @@
 #include <gui/pictureviewer.h>
 #include <gui/motorcontrol.h>
 #include <gui/filebrowser.h>
-#if !defined (PLATFORM_COOLSTREAM)
 #include <gui/cam_menu.h>
-#endif
 #include <gui/hdd_menu.h>
 #include <gui/dboxinfo.h>
 #include <gui/audio_select.h>
@@ -157,11 +155,6 @@
 // libdvbapi
 #include <video_cs.h>
 #include <audio_cs.h>
-
-// libcoolstream
-#if defined (PLATFORM_COOLSTREAM)
-#include <cs_api.h>
-#endif
 
 #if defined (ENABLE_CI)
 #include <libdvbci/dvb-ci.h>
@@ -396,32 +389,18 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	prev_video_Mode = g_settings.video_Mode;
 	
 	//analog mode
-#if defined (PLATFORM_COOLSTREAM)
-	g_settings.analog_mode = configfile.getInt32("analog_mode", (int)ANALOG_SD_RGB_SCART); // default RGB
-#else
 	g_settings.analog_mode = configfile.getInt32("analog_mode", ANALOG_YUV); 	// default yuv
 	
-	g_settings.hdmi_color_space = configfile.getInt32("hdmi_color_space", HDMI_RGB); //default RGB
-#endif	
+	g_settings.hdmi_color_space = configfile.getInt32("hdmi_color_space", HDMI_RGB); //default RGB	
 
 	//aspect ratio
-#if defined (PLATFORM_COOLSTREAM)
-	g_settings.video_Ratio = configfile.getInt32("video_Ratio", DISPLAY_AR_16_9);		// 16:9
-#else
-	g_settings.video_Ratio = configfile.getInt32("video_Ratio", ASPECTRATIO_169);		// 16:9
-#endif	
+	g_settings.video_Ratio = configfile.getInt32("video_Ratio", ASPECTRATIO_169);		// 16:9	
 	 
 	// policy
-#if defined (PLATFORM_COOLSTREAM)
-	g_settings.video_Format = configfile.getInt32("video_Format", DISPLAY_AR_MODE_LETTERBOX);
-#else
-	g_settings.video_Format = configfile.getInt32("video_Format", VIDEOFORMAT_PANSCAN2);
-#endif	
+	g_settings.video_Format = configfile.getInt32("video_Format", VIDEOFORMAT_PANSCAN2);	
 
-	//wss
-#if !defined (PLATFORM_COOLSTREAM)	
-	g_settings.wss_mode = configfile.getInt32("wss_mode", WSS_AUTO);
-#endif	
+	//wss	
+	g_settings.wss_mode = configfile.getInt32("wss_mode", WSS_AUTO);	
 	
 	// psi
 	g_settings.contrast = configfile.getInt32( "contrast", 130);
@@ -434,17 +413,11 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.audio_AnalogMode = configfile.getInt32( "audio_AnalogMode", 0 );		//default=stereo
 	g_settings.audio_DolbyDigital    = configfile.getBool("audio_DolbyDigital", false);
 	
-	// ac3
-#if !defined (PLATFORM_COOLSTREAM)	
-	g_settings.hdmi_dd = configfile.getInt32( "hdmi_dd", AC3_DOWNMIX);	// downmix
-#endif	
+	// ac3	
+	g_settings.hdmi_dd = configfile.getInt32( "hdmi_dd", AC3_DOWNMIX);	// downmix	
 	
 	// avsync
-#if defined (PLATFORM_COOLSTREAM)
-	g_settings.avsync = configfile.getInt32( "avsync", 1);
-#else
 	g_settings.avsync = configfile.getInt32( "avsync", AVSYNC_ON);
-#endif	
 	
 	// ac3 delay
 	g_settings.ac3_delay = configfile.getInt32( "ac3_delay", 0);
@@ -2174,14 +2147,6 @@ void CNeutrinoApp::initZapper()
 	}
 }
 
-#if defined (PLATFORM_COOLSTREAM)
-static void CSSendMessage(uint32_t msg, uint32_t data)
-{
-	if (g_RCInput)
-		g_RCInput->postMsg(msg, data);
-}
-#endif
-
 // quickZap
 void CNeutrinoApp::quickZap(int msg)
 {
@@ -2536,21 +2501,17 @@ void CNeutrinoApp::tvMode( bool rezap )
                 return;
 	}
 	else if( mode == mode_scart )
-	{
-#if !defined (PLATFORM_COOLSTREAM)	  
+	{	  
 		if(videoDecoder)
-			videoDecoder->SetInput(INPUT_ENCODER);
-#endif		
+			videoDecoder->SetInput(INPUT_ENCODER);		
 	}
 	else if( mode == mode_standby ) 
 	{
 		CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
 		
-		// set video standby
-#if !defined (PLATFORM_COOLSTREAM)		
+		// set video standby		
 		if(videoDecoder)
-			videoDecoder->SetInput(STANDBY_OFF);
-#endif		
+			videoDecoder->SetInput(STANDBY_OFF);		
 	}
 
 	bool stopauto = (mode != mode_ts);	
@@ -2599,21 +2560,17 @@ void CNeutrinoApp::radioMode( bool rezap)
 		return;
 	}
 	else if( mode == mode_scart ) 
-	{
-#if !defined (PLATFORM_COOLSTREAM)	  
+	{	  
 		if(videoDecoder)
-			videoDecoder->SetInput(INPUT_ENCODER);
-#endif		
+			videoDecoder->SetInput(INPUT_ENCODER);	
 	}
 	else if( mode == mode_standby ) 
 	{	  
 		CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
 
 		// set video standby
-#if !defined (PLATFORM_COOLSTREAM)
 		if(videoDecoder)
-			videoDecoder->SetInput(STANDBY_OFF);
-#endif		
+			videoDecoder->SetInput(STANDBY_OFF);		
 	}
 
 	mode = mode_radio;
@@ -2666,24 +2623,21 @@ void CNeutrinoApp::scartMode( bool bOnOff )
 
 		lastMode = mode;
 		mode = mode_scart;
-		
-#if !defined (PLATFORM_COOLSTREAM)	  
+			  
 		if(videoDecoder)
 		{
 			videoDecoder->SetInput(INPUT_SCART);
 			videoDecoder->SetStandby(STANDBY_ON);
-		}
-#endif		
+		}	
 	} 
 	else 
-	{
-#if !defined (PLATFORM_COOLSTREAM)	  
+	{	  
 		if(videoDecoder)
 		{
 			videoDecoder->SetInput(INPUT_ENCODER);
 			videoDecoder->SetStandby(STANDBY_OFF);
 		}
-#endif
+
 		mode = mode_unknown;
 		
 		//re-set mode
@@ -2732,19 +2686,13 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 
 		frameBuffer->useBackground(false);
 		frameBuffer->paintBackground();
-		frameBuffer->blit();
-	
-#if defined (PLATFORM_COOLSTREAM)
-		CVFD::getInstance()->Clear();
-#endif		
+		frameBuffer->blit();		
 		
 		// show time in vfd
 		CVFD::getInstance()->setMode(CVFD::MODE_STANDBY);
-		
-#if !defined (PLATFORM_COOLSTREAM)	  
+			  
 		if(videoDecoder)
-			videoDecoder->SetInput(STANDBY_ON);
-#endif		
+			videoDecoder->SetInput(STANDBY_ON);		
 		
 		// zapit standby
 		if(!recordingstatus && !timeshiftstatus)
@@ -2792,11 +2740,9 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 
 		// vfd mode
 		CVFD::getInstance()->setMode(CVFD::MODE_TVRADIO);
-		
-#if !defined (PLATFORM_COOLSTREAM)	  
+			  
 		if(videoDecoder)
-			videoDecoder->SetInput(STANDBY_OFF);
-#endif		
+			videoDecoder->SetInput(STANDBY_OFF);		
 				
 		// setmode?tv/radio
 		mode = mode_unknown;
@@ -3314,12 +3260,6 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		
 		proc_put("/proc/stb/fp/rtc", t + lt->tm_gmtoff);
 #endif		
-
-#if defined (PLATFORM_COOLSTREAM)
-		CVFD::getInstance()->Clear();
-		cs_deregister_messenger();
-		cs_api_exit();
-#endif
 			
 		//
 		if(playback)
@@ -4739,12 +4679,6 @@ int CNeutrinoApp::run(int argc, char **argv)
         //
         setupFrameBuffer();
 	
-	// init coolstream API
-#if defined (PLATFORM_COOLSTREAM)
-	cs_api_init();
-	cs_register_messenger(CSSendMessage);
-#endif
-	
 	// font
 	font.name = NULL;
 	font.filename = NULL;
@@ -4762,10 +4696,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 	g_Locale->loadLocale(Lang2I18N(g_settings.language).c_str());
 
 	// icons/buttons/hints path
-	frameBuffer->setIconBasePath(/*DATADIR "/icons/"*/g_settings.icons_dir);
-	frameBuffer->setButtonBasePath(/*DATADIR "/buttons/"*/g_settings.buttons_dir);
-	frameBuffer->setHintBasePath(/*DATADIR "/hints/"*/g_settings.hints_dir);
-	frameBuffer->setSpinnerBasePath(/*DATADIR "/spinner/"*/g_settings.spinner_dir);
+	frameBuffer->setIconBasePath(g_settings.icons_dir);
+	frameBuffer->setButtonBasePath(g_settings.buttons_dir);
+	frameBuffer->setHintBasePath(g_settings.hints_dir);
+	frameBuffer->setSpinnerBasePath(g_settings.spinner_dir);
 
 	// setup fonts
 	setupFonts(g_settings.font_file);
@@ -4869,14 +4803,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
 	current_volume = g_settings.current_volume;
 
-	// init video / audio decoder
-#if defined (PLATFORM_COOLSTREAM)
-	videoDecoder = new cVideo(g_settings.video_Mode, videoDemux->getChannel(), videoDemux->getBuffer());
-	videoDecoder->Standby(false);
-	
-	audioDecoder = new cAudio(audioDemux->getBuffer(), videoDecoder->GetTVEnc(), NULL);
-	videoDecoder->SetAudioHandle(audioDecoder->GetHandle());
-#else	
+	// init video / audio decoder	
 	videoDecoder = new cVideo();
 		
 	// set video system
@@ -4885,7 +4812,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	
 	// audio decoder
 	audioDecoder = new cAudio();
-#endif
 
 	// audio volume (default)
 	if(audioDecoder)
@@ -4900,19 +4826,11 @@ int CNeutrinoApp::run(int argc, char **argv)
 		videoDecoder->SetWideScreen(g_settings.wss_mode);
 	
 	// avsync
-#if defined (PLATFORM_COOLSTREAM)
-	videoDecoder->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-	audioDecoder->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-	videoDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-	audioDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-	pcrDemux->SetSyncMode((AVSYNC_TYPE)g_settings.avsync);
-#else
 	if(videoDecoder)
 		videoDecoder->SetSyncMode(g_settings.avsync);			
 		
 	if(audioDecoder)
 		audioDecoder->SetSyncMode(g_settings.avsync);
-#endif
 
 	if(audioDecoder)
 	{

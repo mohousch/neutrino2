@@ -421,12 +421,8 @@ int tuxtxt_init_demuxer( /*int source*/ )
 		dmx = new cDemux();
 		
 		printf("TuxTxt: tuxtxt_init_demuxer\n");
-
-#if defined (PLATFORM_COOLSTREAM)
-		dmx->Open(DMX_PES_CHANNEL);
-#else		
-		dmx->Open(DMX_PES_CHANNEL, 2* 3008 * 62, live_fe );
-#endif		
+		
+		dmx->Open(DMX_PES_CHANNEL, 2* 3008 * 62, live_fe );		
 	}
 	/* init successfull */
 

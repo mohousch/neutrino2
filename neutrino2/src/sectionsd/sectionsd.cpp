@@ -2926,11 +2926,8 @@ int eit_set_update_filter(int *fd)
 	if(eitDmx == NULL) 
 	{
 		eitDmx = new cDemux();
-#if defined (PLATFORM_COOLSTREAM)
-		eitDmx->Open(DMX_PSI_CHANNEL);
-#else
-		eitDmx->Open( DMX_PSI_CHANNEL, MAX_SECTION_LENGTH, live_fe );
-#endif		
+
+		eitDmx->Open( DMX_PSI_CHANNEL, MAX_SECTION_LENGTH, live_fe );		
 	}
 
 	unsigned char filter[DMX_FILTER_SIZE];

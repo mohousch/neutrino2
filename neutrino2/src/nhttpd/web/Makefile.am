@@ -94,3 +94,4 @@ install_DATA =	channels.js \
 		ywidget.css \
 		ywidget.js \
 		Y_yweb.js
+

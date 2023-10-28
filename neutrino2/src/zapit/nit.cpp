@@ -55,12 +55,8 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 	memset(secdone, 0, 255);
 	
 	cDemux * dmx = new cDemux();
-	
-#if defined (PLATFORM_COOLSTREAM)
-	dmx->Open(DMX_PSI_CHANNEL);
-#else	
-	dmx->Open(DMX_PSI_CHANNEL, NIT_SIZE, CZapit::getInstance()->getFE(feindex));
-#endif	
+		
+	dmx->Open(DMX_PSI_CHANNEL, NIT_SIZE, CZapit::getInstance()->getFE(feindex));	
 
 	unsigned char buffer[NIT_SIZE];
 

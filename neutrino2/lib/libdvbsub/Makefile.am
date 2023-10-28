@@ -5,14 +5,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib \
 	-I$(top_srcdir)/lib/libconfigfile \
 	-I$(top_srcdir)/lib/connection \
+	-I$(top_srcdir)/lib/libdvbapi \
 	@AVCODEC_CFLAGS@
-
-if BOXTYPE_COOLSTREAM
-AM_CPPFLAGS += -I$(top_srcdir)/src/zapit/include \
-	-I$(top_srcdir)/lib/libcoolstream
-else
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbapi
-endif
 
 AM_CPPFLAGS += -D__STDC_CONSTANT_MACROS
 

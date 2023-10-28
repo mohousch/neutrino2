@@ -502,12 +502,8 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 	
 	cDemux * dmx = new cDemux(); 
 	
-	// open
-#if defined (PLATFORM_COOLSTREAM)
-	dmx->Open(DMX_PSI_CHANNEL);
-#else	
-	dmx->Open( DMX_PSI_CHANNEL, PMT_SIZE, fe );
-#endif	
+	// open	
+	dmx->Open( DMX_PSI_CHANNEL, PMT_SIZE, fe );	
 
 	memset(filter, 0x00, DMX_FILTER_SIZE);
 	memset(mask, 0x00, DMX_FILTER_SIZE);
@@ -688,12 +684,8 @@ int CPmt::pmt_set_update_filter( CZapitChannel * const channel, int * fd, CFront
 	if(pmtDemux == NULL) 
 		pmtDemux = new cDemux();
 	
-	// open 
-#if defined (PLATFORM_COOLSTREAM)
-	pmtDemux->Open(DMX_PSI_CHANNEL);
-#else	
-	pmtDemux->Open(DMX_PSI_CHANNEL, PMT_SIZE, fe );
-#endif	
+	// open 	
+	pmtDemux->Open(DMX_PSI_CHANNEL, PMT_SIZE, fe );	
 
 	if (channel->getPmtPid() == 0)
 		return -1;

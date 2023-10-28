@@ -1294,12 +1294,9 @@ void CRadioText::setPid(uint inPid)
 			if (audioDemux == NULL) 
 			{
 				audioDemux = new cDemux();
-#if defined (PLATFORM_COOLSTREAM)
-				audioDemux->Open( DMX_PES_CHANNEL );
-#else
+
 				if(live_fe)
 					audioDemux->Open(DMX_PES_CHANNEL, 128*1024, live_fe);
-#endif
 			}
 			rt.rt_object = this;
 			//rt.fd = dmxfd;

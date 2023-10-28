@@ -608,12 +608,8 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 
 		if(tpchange) 
 		{
-			cDemux * dmx = new cDemux(); 
-#if defined (PLATFORM_COOLSTREAM)
-			dmx->Open(DMX_PSI_CHANNEL);
-#else			
-			dmx->Open(DMX_PSI_CHANNEL, 1024, CZapit::getInstance()->getFE(feindex));
-#endif			
+			cDemux * dmx = new cDemux(); 			
+			dmx->Open(DMX_PSI_CHANNEL, 1024, CZapit::getInstance()->getFE(feindex));			
 			
 			if (!((dmx->sectionFilter(0x10, filter, mask, 5, 10000) < 0) || (dmx->Read(buff, 1024) < 0))) 
 			{

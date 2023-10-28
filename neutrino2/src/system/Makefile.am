@@ -14,14 +14,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libxmltree \
 	-I$(top_srcdir)/lib/libupnpclient \
 	-I$(top_srcdir)/lib/jsoncpp/include \
+	-I$(top_srcdir)/lib/libdvbapi \
 	@FREETYPE_CFLAGS@
-
-if BOXTYPE_COOLSTREAM
-AM_CPPFLAGS += -I$(top_srcdir)/src/zapit/include \
-	-I$(top_srcdir)/lib/libcoolstream
-else
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbapi
-endif
 
 if !ENABLE_GSTREAMER
 AM_CPPFLAGS += -I$(top_srcdir)/lib/libeplayer3/include

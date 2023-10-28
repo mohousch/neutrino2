@@ -14,18 +14,10 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/libnet \
 	-I$(top_srcdir)/lib/libxmltree \
 	-I$(top_srcdir)/lib/libmd5sum \
+	-I$(top_srcdir)/lib/libdvbapi \
+	-I$(top_srcdir)/lib/libdvbci \
 	@FREETYPE_CFLAGS@ \
 	@FRIBIDI_CFLAGS@
-
-if BOXTYPE_COOLSTREAM
-AM_CPPFLAGS += -I$(top_srcdir)/src/zapit/include \
-	-I$(top_srcdir)/lib/libcoolstream
-else
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbapi
-if ENABLE_CI
-AM_CPPFLAGS += -I$(top_srcdir)/lib/libdvbci
-endif
-endif
 
 if ENABLE_GSTREAMER
 AM_CPPFLAGS += @GSTREAMER_CFLAGS@
@@ -95,6 +87,8 @@ neutrino2_LDADD = \
 	$(top_builddir)/lib/libtuxtxt/libtuxtxt.a \
 	$(top_builddir)/lib/jsoncpp/libjsoncpp.a \
 	$(top_builddir)/lib/libiw/libiw.a \
+	$(top_builddir)/lib/libdvbapi/libdvbapi.a \
+	$(top_builddir)/lib/libdvbci/libdvbci.a \
 	@CURL_LIBS@ \
 	@FREETYPE_LIBS@ \
 	@PNG_LIBS@ \
@@ -102,22 +96,9 @@ neutrino2_LDADD = \
 	@ID3TAG_LIBS@ \
 	@PTHREAD_LIBS@ \
 	@FRIBIDI_LIBS@ \
-	-ljpeg -lrt -lblkid -ldl -lFLAC -lavformat -lavcodec -lavutil -lgif -lpthread -lOpenThreads
+	-ljpeg -lrt -lblkid -ldl -lFLAC -lavformat -lavcodec -lavutil -lgif -lpthread -lOpenThreads -lcrypto -lssl
 
 neutrino2_LDFLAGS = -Wl,--export-dynamic
-
-if !BOXTYPE_COOLSTREAM
-neutrino2_LDADD += $(top_builddir)/lib/libdvbapi/libdvbapi.a
-if ENABLE_CI
-neutrino2_LDADD += $(top_builddir)/lib/libdvbci/libdvbci.a -lcrypto -lssl
-endif
-endif
-
-if BOXTYPE_COOLSTREAM
-neutrino2_LDADD += \
-	-lcoolstream-mt \
-	-lnxp
-endif
 
 if ENABLE_GSTREAMER
 neutrino2_LDADD += @GSTREAMER_LIBS@

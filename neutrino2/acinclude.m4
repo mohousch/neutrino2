@@ -156,9 +156,9 @@ AC_DEFUN([AC_PROG_EGREP],
 AC_DEFUN([TUXBOX_BOXTYPE],[
 
 AC_ARG_WITH(boxtype,
-	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,coolstream,hypercube,venton,xp1000,odin,ixuss,iqonios,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas,abcom, maxytec],
+	[  --with-boxtype          valid values: generic,dgs,gigablue,dreambox,xtrend,fulan,kathrein,ipbox,topfield,fortis_hdbox,octagon,atevio,adb_box,whitebox,vip,homecast,vuplus,azbox,technomate,hypercube,venton,xp1000,odin,ixuss,iqonios,ebox5000,wetek,edision,hd,gi,xpeedc,formuler,miraclebox,spycat,xsarius,zgemma,wwio,axas,abcom, maxytec],
 	[case "${withval}" in
-		generic|dgs|gigablue|dreambox|xtrend|fulan|kathrein|ipbox|hl101|topfield|fortis_hdbox|octagon|atevio|adb_box|whitebox|vip|homecast|vuplus|azbox|technomate|coolstream|hypercube|venton|xp1000|odin|ixuss|iqonios|ebox5000|wetek|edision|hd|gi|xpeedc|formuler|miraclebox|spycat|xsarius|zgemma|wwio|axas|abcom)
+		generic|dgs|gigablue|dreambox|xtrend|fulan|kathrein|ipbox|hl101|topfield|fortis_hdbox|octagon|atevio|adb_box|whitebox|vip|homecast|vuplus|azbox|technomate|hypercube|venton|xp1000|odin|ixuss|iqonios|ebox5000|wetek|edision|hd|gi|xpeedc|formuler|miraclebox|spycat|xsarius|zgemma|wwio|axas|abcom)
 			BOXTYPE="$withval"
 			;;
 		cu*)
@@ -446,13 +446,6 @@ AC_ARG_WITH(boxmodel,
 				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
 			fi
 			;;
-		coolstream)
-			if test "$BOXTYPE" = "coolstream"; then
-				BOXMODEL="$withval"
-			else
-				AC_MSG_ERROR([unknown model $withval for boxtype $BOXTYPE])
-			fi
-			;;
 		hypercube|su980)
 			if test "$BOXTYPE" = "hypercube"; then
 				BOXMODEL="$withval"
@@ -635,7 +628,6 @@ AM_CONDITIONAL(BOXTYPE_HOMECAST, test "$BOXTYPE" = "homecast")
 AM_CONDITIONAL(BOXTYPE_VUPLUS, test "$BOXTYPE" = "vuplus")
 AM_CONDITIONAL(BOXTYPE_AZBOX, test "$BOXTYPE" = "azbox")
 AM_CONDITIONAL(BOXTYPE_TECHNOMATE, test "$BOXTYPE" = "technomate")
-AM_CONDITIONAL(BOXTYPE_COOLSTREAM, test "$BOXTYPE" = "coolstream")
 AM_CONDITIONAL(BOXTYPE_HYPERCUBE, test "$BOXTYPE" = "hypercube")
 AM_CONDITIONAL(BOXTYPE_VENTON, test "$BOXTYPE" = "venton")
 AM_CONDITIONAL(BOXTYPE_IXUSS, test "$BOXTYPE" = "ixuss")
@@ -862,8 +854,6 @@ elif test "$BOXTYPE" = "azbox"; then
 	AC_DEFINE(PLATFORM_AZBOX, 1, [building for azbox])
 elif test "$BOXTYPE" = "technomate"; then
 	AC_DEFINE(PLATFORM_TECHNOMATE, 1, [building for technomate])
-elif test "$BOXTYPE" = "coolstream"; then
-	AC_DEFINE(PLATFORM_COOLSTREAM, 1, [building for coolstream])
 elif test "$BOXTYPE" = "hypercube"; then
 	AC_DEFINE(PLATFORM_HYPERCUBE, 1, [building for hypercube])
 elif test "$BOXTYPE" = "venton"; then

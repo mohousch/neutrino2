@@ -315,16 +315,6 @@ int CFont::getHeight(void)
 	return height;
 }
 
-int CFont::getDigitHeight(void)
-{
-	return DigitHeight;
-}
-
-int CFont::getDigitOffset(void)
-{
-	return DigitOffset;
-}
-
 int CFont::getWidth(void)
 {
 	return fontwidth;

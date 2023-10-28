@@ -45,12 +45,8 @@ int CPat::parsePAT(CZapitChannel * const channel, CFrontend * fe)
 
 	cDemux * dmx = new cDemux();
 	
-	//open
-#if defined (PLATFORM_COOLSTREAM)
-	dmx->Open(DMX_PSI_CHANNEL);
-#else	
-	dmx->Open(DMX_PSI_CHANNEL, PAT_SIZE, fe );
-#endif	
+	//open	
+	dmx->Open(DMX_PSI_CHANNEL, PAT_SIZE, fe );	
 
 	// buffer for program association table
 	unsigned char buffer[PAT_SIZE];
