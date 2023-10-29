@@ -141,7 +141,6 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 		
 		//
 		headers = new CCHeaders();
-//		headers->setLine(true, true);
 	}
 	
 	widget->paintMainFrame(true);

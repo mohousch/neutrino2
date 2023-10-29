@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-29 02:15+0200\n"
-"PO-Revision-Date: 2023-10-29 02:15+0200\n"
+"POT-Creation-Date: 2023-10-29 02:51+0100\n"
+"PO-Revision-Date: 2023-10-29 02:22+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: ru\n"
@@ -17,27 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../../internetradio/internetradio.cpp:657
-msgid "Add"
+msgid "Airing today"
 msgstr ""
 
-#: ../../internetradio/internetradio.cpp:656
-msgid "Delete"
+msgid "Next Page"
 msgstr ""
 
-#: ../../internetradio/internetradio.cpp:658
-msgid "Delete all"
+msgid "On the air"
 msgstr ""
 
-#: ../../internetradio/internetradio.cpp:664
-msgid "Internet Radio"
+msgid "Popular"
 msgstr ""
 
-#: ../../internetradio/internetradio.cpp:307
-#: ../../internetradio/internetradio.cpp:415
-msgid "Receiving list, please wait"
+msgid "Prev Page"
 msgstr ""
 
-#: ../../internetradio/internetradio.cpp:659
-msgid "Reload"
+msgid "Scan for Movies ..."
+msgstr ""
+
+msgid "Serien Trailer"
+msgstr ""
+
+msgid "Top rated"
 msgstr ""

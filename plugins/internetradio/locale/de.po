@@ -41,4 +41,3 @@ msgstr "Liste wird empfangen, bitte warten ..."
 #: ../../internetradio/internetradio.cpp:659
 msgid "Reload"
 msgstr "Neu laden"
-

@@ -1,0 +1,41 @@
+# Bosnian translations for neutrino2-plugins package.
+# Copyright (C) 2023 neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# Automatically generated, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 5.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-10-29 02:51+0100\n"
+"PO-Revision-Date: 2023-10-29 02:22+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: bs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Airing today"
+msgstr ""
+
+msgid "Next Page"
+msgstr ""
+
+msgid "On the air"
+msgstr ""
+
+msgid "Popular"
+msgstr ""
+
+msgid "Prev Page"
+msgstr ""
+
+msgid "Scan for Movies ..."
+msgstr ""
+
+msgid "Serien Trailer"
+msgstr ""
+
+msgid "Top rated"
+msgstr ""

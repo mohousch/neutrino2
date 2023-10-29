@@ -1,0 +1,42 @@
+# German translations for neutrino2-plugins package.
+# Copyright (C) 2023 neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# Automatically generated, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 5.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-10-29 02:51+0100\n"
+"PO-Revision-Date: 2023-10-29 02:22+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Airing today"
+msgstr "Heute auf Sendung"
+
+msgid "Next Page"
+msgstr "Nächste Seite"
+
+msgid "On the air"
+msgstr "Auf Sendung"
+
+msgid "Popular"
+msgstr "Am populärsten"
+
+msgid "Prev Page"
+msgstr "Vorherige Seite"
+
+msgid "Scan for Movies ..."
+msgstr "Nach Filmen suchen ..."
+
+msgid "Serien Trailer"
+msgstr "Serien-Trailer"
+
+msgid "Top rated"
+msgstr "Am besten bewertet"

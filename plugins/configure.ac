@@ -74,6 +74,7 @@ opkg_manager/locale/Makefile
 nfilm/Makefile
 nfilm/locale/Makefile
 ntvshows/Makefile
+ntvshows/locale/Makefile
 upnp/Makefile
 upnp/locale/Makefile
 python/Makefile

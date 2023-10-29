@@ -21,6 +21,10 @@
 #include "nepisodes.h"
 
 
+//// defines
+//FIXME: make this global
+#define __(string) dgettext("ntvshows", string)
+
 CNEpisodes::CNEpisodes(int id, int nr)
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -70,7 +74,7 @@ void CNEpisodes::loadEpisodesTitle()
 	removeThumbnailDir();
 	createThumbnailDir();
 
-	CHintBox loadBox(_("Serien Trailer"), _("Scan for Movies ..."));
+	CHintBox loadBox(__("Serien Trailer"), __("Scan for Movies ..."));
 	loadBox.paint();
 
 	tmdb = new CTmdb();

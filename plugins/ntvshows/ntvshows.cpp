@@ -27,9 +27,14 @@
 #include "nseasons.h"
 
 
+//
 extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
+
+//// defines
+//FIXME: make this global
+#define __(string) dgettext("ntvshows", string)
 
 class CTVShows : public CMenuTarget
 {
@@ -130,7 +135,7 @@ void CTVShows::loadMoviesTitle(void)
 	removeThumbnailDir();
 	createThumbnailDir();
 
-	CHintBox loadBox(_("Serien Trailer"), _("Scan for Movies ..."));
+	CHintBox loadBox(__("Serien Trailer"), __("Scan for Movies ..."));
 	loadBox.paint();
 
 	//
@@ -270,8 +275,8 @@ const struct button_label HeadButtons[HEAD_BUTTONS_COUNT] =
 #define FOOT_BUTTONS_COUNT	4
 const struct button_label FootButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("Next Page") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("Prev Page") },
+	{ NEUTRINO_ICON_BUTTON_RED, __("Next Page") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, __("Prev Page") },
 	{ NEUTRINO_ICON_BUTTON_YELLOW, " " },
 	{ NEUTRINO_ICON_BUTTON_BLUE, " " }
 };
@@ -281,25 +286,24 @@ void CTVShows::showMenu()
 	dprintf(DEBUG_NORMAL, "CTVShows::showMenu:");
 
 	if(plist == "airing_today")
-		caption = "Heute auf Sendung";
+		caption = __("Airing today");
 	else if(plist == "on_the_air")
-		caption = "Auf Sendung";
+		caption = __("On the air");
 	else if(plist == "popular")
-		caption = "Am populärsten";
+		caption = __("Popular");
 	else if(plist == "top_rated")
-		caption = "Am besten bewertet";
+		caption = __("Top rated");
 
 	mlist = new CMenuWidget(caption.c_str(), NEUTRINO_ICON_TMDB, CFrameBuffer::getInstance()->getScreenWidth(), CFrameBuffer::getInstance()->getScreenHeight());
 	
-	
-	// load playlist
-	loadPlaylist();
+	//mlist->clearItems();
+	//mlist->clear();
 
 	for (unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
 		//
 		if(db_movies[i].title == m_vMovieInfo[i].epgTitle)
-				season_id = db_movies[i].id; 
+			season_id = db_movies[i].id; 
 		//
 
 		std::string tmp = m_vMovieInfo[i].ytdate;
@@ -345,10 +349,10 @@ int CTVShows::showCategoriesMenu()
 	menu->setWidgetMode(ClistBox::MODE_MENU);
 	menu->enableShrinkMenu();
 
-	menu->addItem(new CMenuForwarder("Heute auf Sendung", true, NULL, new CTVShows("airing_today"), "airing_today"));
-	menu->addItem(new CMenuForwarder("Auf Sendung", true, NULL, new CTVShows("on_the_air"), "on_the_air"));
-	menu->addItem(new CMenuForwarder("Am populärsten", true, NULL, new CTVShows("popular"), "popular"));
-	menu->addItem(new CMenuForwarder("Am besten bewertet", true, NULL, new CTVShows("top_rated"), "top_rated"));
+	menu->addItem(new CMenuForwarder(__("Airing today"), true, NULL, new CTVShows("airing_today"), "airing_today"));
+	menu->addItem(new CMenuForwarder(__("On the air"), true, NULL, new CTVShows("on_the_air"), "on_the_air"));
+	menu->addItem(new CMenuForwarder(__("Popular"), true, NULL, new CTVShows("popular"), "popular"));
+	menu->addItem(new CMenuForwarder(__("Top rated"), true, NULL, new CTVShows("top_rated"), "top_rated"));
 
 	menu->exec(NULL, "");
 	menu->hide();
@@ -378,9 +382,10 @@ int CTVShows::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		int res = showCategoriesMenu();
 
-		if(res >= 0 && res <= 3)
+		if(res >= 0)
 		{
 			loadMoviesTitle();
+			loadPlaylist();
 			showMenu();
 
 			return RETURN_EXIT_ALL;
@@ -393,6 +398,7 @@ int CTVShows::exec(CMenuTarget* parent, const std::string& actionKey)
 		page++;
 		selected = 0;
 		loadMoviesTitle();
+		loadPlaylist();
 		showMenu();
 
 		return RETURN_EXIT_ALL;
@@ -407,12 +413,14 @@ int CTVShows::exec(CMenuTarget* parent, const std::string& actionKey)
 		selected = 0;
 
 		loadMoviesTitle();
+		loadPlaylist();
 		showMenu();
 
 		return RETURN_EXIT_ALL;
 	}
 
 	loadMoviesTitle();
+	loadPlaylist();
 	showMenu();
 
 	return RETURN_EXIT_ALL;

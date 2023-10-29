@@ -2064,3 +2064,9 @@
 /plugins/systeminfo/locale/sk.mo
 /plugins/systeminfo/locale/sv.mo
 /plugins/systeminfo/locale/systeminfo.pot
+/plugins/icecast/locale/Makefile.in
+/plugins/internetradio/locale/Makefile.in
+/plugins/nfilm/locale/Makefile.in
+/plugins/opkg_manager/locale/Makefile.in
+/plugins/picviewer/locale/Makefile.in
+/plugins/upnp/locale/Makefile.in

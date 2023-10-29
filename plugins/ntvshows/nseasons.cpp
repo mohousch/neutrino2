@@ -22,6 +22,10 @@
 #include "nepisodes.h"
 
 
+//// defines
+//FIXME: make this global
+#define __(string) dgettext("ntvshows", string)
+
 CNSeasons::CNSeasons(int id)
 {
 	frameBuffer = CFrameBuffer::getInstance();
@@ -72,7 +76,7 @@ void CNSeasons::loadSeasonsTitle()
 	removeThumbnailDir();
 	createThumbnailDir();
 
-	CHintBox loadBox(_("Serien Trailer"), _("Scan for Movies ..."));
+	CHintBox loadBox(__("Serien Trailer"), __("Scan for Movies ..."));
 	loadBox.paint();
 
 	tmdb = new CTmdb();
