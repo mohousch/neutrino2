@@ -2473,6 +2473,11 @@ void CNeutrinoApp::tvMode( bool rezap )
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::tvMode: rezap %s\n", rezap ? "yes" : "no");
 	
+	//
+	frameBuffer->useBackground(false);
+	frameBuffer->paintBackground();
+	frameBuffer->blit();
+	
 	if(mode == mode_radio ) 
 	{	  
 		if (g_settings.radiotext_enable && g_Radiotext) 
@@ -2497,10 +2502,6 @@ void CNeutrinoApp::tvMode( bool rezap )
 
         if( mode == mode_tv ) 
 	{
-		frameBuffer->useBackground(false);
-		frameBuffer->paintBackground();
-		frameBuffer->blit();
-	
                 return;
 	}
 	else if( mode == mode_scart )
@@ -2524,10 +2525,6 @@ void CNeutrinoApp::tvMode( bool rezap )
 	{
 		stopAutoRecord();
 	}	
-
-	//frameBuffer->useBackground(false);
-	//frameBuffer->paintBackground();
-	//frameBuffer->blit();
 
 	g_RemoteControl->tvMode();
 	setChannelMode(g_settings.channel_mode, mode);
