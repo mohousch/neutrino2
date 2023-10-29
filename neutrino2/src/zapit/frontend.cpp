@@ -190,11 +190,7 @@ void CFrontend::getFEInfo(void)
 	
 	if(::ioctl(fd, FE_GET_INFO, &info) < 0)
 		perror("FE_GET_INFO");
-//}
 
-//
-//void CFrontend::getFEDelSysMask(void)
-//{
 	dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask:\n");
 	
 	bool legacy = true;

@@ -47,10 +47,7 @@
 
 
 ////
-FT_Error LcdFontRenderClass::myFTC_Face_Requester(FTC_FaceID  face_id,
-                            FT_Library  library,
-                            FT_Pointer  request_data,
-                            FT_Face*    aface)
+FT_Error LcdFontRenderClass::myFTC_Face_Requester(FTC_FaceID face_id, FT_Library library, FT_Pointer request_data, FT_Face *aface)
 {
 	return ((LcdFontRenderClass*)request_data)->FTC_Face_Requester(face_id, aface);
 }
@@ -63,11 +60,13 @@ LcdFontRenderClass::LcdFontRenderClass(CLCDDisplay * fb)
 	dprintf(DEBUG_NORMAL, "LcdFontRenderClass::LcdFontRenderClass: initializing core...\n");
 	
 	fflush(stdout);
+	
 	if (FT_Init_FreeType(&library))
 	{
 		dprintf(DEBUG_NORMAL, "LcdFontRenderClass::LcdFontRenderClass: failed.\n");
 		return;
 	}
+	
 	dprintf(DEBUG_NORMAL, "\n");
 	font = 0;
 	pthread_mutex_init(&render_mutex, NULL);

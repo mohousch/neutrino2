@@ -75,6 +75,8 @@
 #include <vector>
 #include <list>
 
+#include <plugin.h>
+
 #include <gui/widget/listframe.h>
 #include <gui/widget/menue.h>
 #include <gui/widget/textbox.h>
@@ -299,11 +301,13 @@ class CMovieBrowser : public CMenuTarget
 		int movieInfoUpdateAll[MB_INFO_MAX_NUMBER];
 		int movieInfoUpdateAllIfDestEmptyOnly;
 		
+		CMoviePlayerGui tmpMoviePlayerGui;
+		
 	public:  // Functions //////////////////////////////////////////////////////////7
 		CMovieBrowser(const char * path); //P1 
 		CMovieBrowser(); //P1 
 		~CMovieBrowser(); //P1 
-		int exec(const char* path); //P1 
+		int exec(int timeout = -1); //P1 
         	int exec(CMenuTarget* parent, const std::string & actionKey);
 		std::string getCurrentDir(void); //P1 for FileBrowser compatibility
 		CFile * getSelectedFile(void); //P1 for FileBrowser compatibility
@@ -333,11 +337,11 @@ class CMovieBrowser : public CMenuTarget
 		void refreshLastRecordList(void); //P2
 		void refreshBrowserList(void); //P1
 		void refreshFilterList(void); //P1
-		void refreshMovieInfo(void); //P1
+		void refreshMovieInfo(bool refresfGUI = true); //P1
 		void refreshBookmarkList(void); // P3
 		void refreshFoot(void); //P2
 		void refreshTitle(void); //P2
-		void refreshInfo(void); // P2
+		void refreshInfo(bool refreshGUI = false); // P2
 		void refreshLCD(void); // P2
 	
 		///// Events ///////////////////////////
@@ -365,7 +369,7 @@ class CMovieBrowser : public CMenuTarget
 		
 		///// Menu //////////////////////////////////// 
 		bool showMenu(); // P2
-        	void showMovieInfoMenu(MI_MOVIE_INFO* movie_info); // P2
+        	int showMovieInfoMenu(MI_MOVIE_INFO* movie_info); // P2
 		
 		///// settings /////////////////////////////////// 
 		bool loadSettings(MB_SETTINGS* settings); // P2
@@ -386,6 +390,22 @@ class CMovieBrowser : public CMenuTarget
 		void updateFilterSelection(void);
 		void updateSerienames(void);
         	void autoFindSerie(void);
+};
+
+class CMovieInformation : public CMenuTarget
+{
+	public:
+		CMovieInformation(){};
+		~CMovieInformation(){};
+		int exec(CMenuTarget *parent, const std::string &actionKey){ return RETURN_REPAINT;};
+};
+
+class CMovieOption : public CMenuTarget
+{
+	public:
+		CMovieOption(){};
+		~CMovieOption(){};
+		int exec(CMenuTarget *parent, const std::string &actionKey){ return RETURN_REPAINT;};
 };
 
 // Class to show Moviebrowser Information, to be used by menu

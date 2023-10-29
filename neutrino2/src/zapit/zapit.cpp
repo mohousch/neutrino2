@@ -277,9 +277,6 @@ void CZapit::initFrontend()
 
 #if HAVE_DVB_API_VERSION >= 5
 				//
-				//fe->getFEDelSysMask();
-				
-				//
 				if (fe->getDelSysMasked() & DVB_S || fe->getDelSysMasked() & DVB_S2 || fe->getDelSysMasked() & DVB_S2X)
 					have_s = true;
 				if (fe->getDelSysMasked() & DVB_C)
@@ -358,7 +355,7 @@ void CZapit::initFrontend()
 	}
 #endif
 	
-	dprintf(DEBUG_INFO, "CZapit::initFrontend: found %d frontends\n", femap.size());
+	dprintf(DEBUG_NORMAL, "CZapit::initFrontend: found %d frontends\n", femap.size());
 }
 
 void CZapit::OpenFE(void)

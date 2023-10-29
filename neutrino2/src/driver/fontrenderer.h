@@ -94,39 +94,35 @@ class CFont
 
 class FBFontRenderClass
 {
-		struct fontListEntry
-		{
-			char *filename;
-			char *style;
-			char *family;
-			fontListEntry *next;
-			~fontListEntry();
-		}
-		*font;
+	struct fontListEntry
+	{
+		char *filename;
+		char *style;
+		char *family;
+		fontListEntry *next;
+		~fontListEntry();
+	}
+	*font;
 
-		FT_Library	library;
-		FTC_Manager	cacheManager;	/* the cache manager               */
-		FTC_ImageCache	imageCache;	/* the glyph image cache           */
-		FTC_SBitCache	sbitsCache;	/* the glyph small bitmaps cache   */
+	FT_Library	library;
+	FTC_Manager	cacheManager;	/* the cache manager               */
+	FTC_ImageCache	imageCache;	/* the glyph image cache           */
+	FTC_SBitCache	sbitsCache;	/* the glyph small bitmaps cache   */
 
-		FTC_FaceID getFaceID(const char * const family, const char * const style);
-		FT_Error getGlyphBitmap(FTC_ImageTypeRec * font, FT_ULong glyph_index, FTC_SBit *sbit);
-		FT_Error getGlyphBitmap(FTC_ScalerRec *sc, FT_ULong glyph_index, FTC_SBit *sbit);
+	FTC_FaceID getFaceID(const char * const family, const char * const style);
+	FT_Error getGlyphBitmap(FTC_ImageTypeRec * font, FT_ULong glyph_index, FTC_SBit *sbit);
+	FT_Error getGlyphBitmap(FTC_ScalerRec *sc, FT_ULong glyph_index, FTC_SBit *sbit);
 		
-		int xres;	/* the screen resolution in dpi */
-		int yres;	/* defaults to 72 dpi */
+	int xres;	/* the screen resolution in dpi */
+	int yres;	/* defaults to 72 dpi */
 
 	public:
 		pthread_mutex_t     render_mutex;
 
 		FT_Error FTC_Face_Requester(FTC_FaceID face_id, FT_Face* aface);
+		static FT_Error myFTC_Face_Requester(FTC_FaceID face_id, FT_Library library, FT_Pointer request_data, FT_Face *aface);
 
-
-		static FT_Error myFTC_Face_Requester(FTC_FaceID  face_id,
-		                                     FT_Library  library,
-		                                     FT_Pointer  request_data,
-		                                     FT_Face*    aface);
-
+		//
 		CFont *getFont(const char * const family, const char * const style, int size);
 		std::string getFamily(const char * const filename) const;
 		const char * AddFont(const char * const filename, bool make_italics = false);

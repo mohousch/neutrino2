@@ -1,3 +1,5 @@
+SUBDIRS = locale
+
 AM_CPPFLAGS =  \
 	-I$(top_srcdir)/../neutrino2 \
 	-I$(top_srcdir)/../neutrino2/src \
@@ -14,7 +16,7 @@ AM_CPPFLAGS =  \
 
 noinst_LTLIBRARIES = moviebrowser.la
 
-moviebrowser_la_SOURCES = movieplayer.cpp moviebrowser.cpp tstool.cpp
+moviebrowser_la_SOURCES = moviebrowser.cpp tstool.cpp
 	 
 moviebrowser_la_LDFLAGS = -rpath $(PLUGINDIR) -module
 

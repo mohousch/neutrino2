@@ -65,6 +65,7 @@ internetradio/locale/Makefile
 movieplayer/Makefile
 movieplayer/locale/Makefile
 moviebrowser/Makefile
+moviebrowser/locale/Makefile
 picviewer/Makefile
 picviewer/locale/Makefile
 audioplayer/Makefile

@@ -1,0 +1,354 @@
+# German translations for neutrino2-plugins package.
+# Copyright (C) 2023 neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# Automatically generated, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 5.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-10-29 20:41+0100\n"
+"PO-Revision-Date: 2023-10-29 18:19+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "12 years"
+msgstr "12 Jahre"
+
+msgid "16 years"
+msgstr "16 Jahre"
+
+msgid "18 years"
+msgstr "18 Jahre"
+
+msgid "6 years"
+msgstr "6 Jahre"
+
+msgid "Additional paths"
+msgstr "Zusätzliche Pfade"
+
+msgid "Age"
+msgstr "Alter"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Bookmark"
+msgstr "Lesezeichen"
+
+msgid "Bookmark change"
+msgstr "Lesezeichenänderung"
+
+msgid "Bookmarks"
+msgstr "Lesezeichen"
+
+msgid "Browser Options"
+msgstr "Browseroptionen"
+
+msgid "Browser hight [Pixel]"
+msgstr "Browserhöhe [Pixel]"
+
+msgid "Channel"
+msgstr "Kanal"
+
+msgid "Clear all"
+msgstr "Alles löschen"
+
+msgid "Coping, please wait"
+msgstr "Kopieren, bitte warten"
+
+msgid "Copy failed, is there jump bookmarks ? Or check free space."
+msgstr "Der Kopiervorgang ist fehlgeschlagen. Gibt es Sprunglesezeichen? Oder überprüfen Sie den freien Speicherplatz."
+
+msgid "Copy if destination is empty only"
+msgstr "Nur kopieren, wenn das Ziel leer ist"
+
+msgid "Copy jumps"
+msgstr "Sprünge kopieren"
+
+msgid "Copy jumps from movie to new file ?"
+msgstr "Sprünge vom Film in neue Datei kopieren?"
+
+msgid "Country"
+msgstr "Land"
+
+msgid "Cut failed, is there jump bookmarks ? Or check free space."
+msgstr "Der Schnitt ist fehlgeschlagen. Gibt es Sprunglesezeichen? Oder überprüfen Sie den freien Speicherplatz."
+
+msgid "Cut jumps"
+msgstr "Sprünge schneiden"
+
+msgid "Cut jumps from movie ?"
+msgstr "Sprünge aus dem Film herausschneiden?"
+
+msgid "Cutting, please wait"
+msgstr "Schneiden, bitte warten"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Enter new Position (s)"
+msgstr "Neue Position (s) eingeben"
+
+msgid "Error"
+msgstr "Fehler"
+
+msgid "File size (MB)"
+msgstr "Dateigröße (MB)"
+
+msgid "Film Informationen"
+msgstr "Film Informationen"
+
+msgid "Filter movies by category:"
+msgstr "Filme nach Kategorie filtern:"
+
+msgid "Filter:"
+msgstr "Filter:"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Genre"
+msgstr "Genre"
+
+msgid "Help"
+msgstr "Hilfe"
+
+msgid "Hide series"
+msgstr "Serie ausblenden"
+
+msgid "Impossible to truncate playing movie."
+msgstr "Es ist nicht möglich, den abgespielten Film abzuschneiden."
+
+msgid "Info 1"
+msgstr "Info 1"
+
+msgid "Info 2"
+msgstr "Info 2"
+
+msgid "Information"
+msgstr "Information"
+
+msgid "Jump (<0 back , >0 for):"
+msgstr ""
+
+msgid "Last play date"
+msgstr ""
+
+msgid "Last play stop:"
+msgstr ""
+
+msgid "Last played:"
+msgstr ""
+
+msgid "Last recorded:"
+msgstr ""
+
+msgid "Length (Min)"
+msgstr ""
+
+msgid "Load default settings"
+msgstr ""
+
+msgid "Lock movies from"
+msgstr ""
+
+msgid "Movie Browser"
+msgstr ""
+
+msgid "Movie end:"
+msgstr ""
+
+msgid "Movie start:"
+msgstr ""
+
+msgid "Moviebrowser"
+msgstr ""
+
+msgid "NFS settings"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Next focus"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No (temporary)"
+msgstr ""
+
+msgid "No End bookmark defined!"
+msgstr ""
+
+msgid "Not available"
+msgstr ""
+
+msgid "Number of lines last play"
+msgstr ""
+
+msgid "Number of lines last record"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Parental Lock"
+msgstr ""
+
+msgid "Path"
+msgstr ""
+
+msgid "Paths"
+msgstr ""
+
+msgid "Picture"
+msgstr ""
+
+msgid "Position:"
+msgstr ""
+
+msgid "Prefer TMBD infos ?"
+msgstr ""
+
+msgid "Prefer TMDB infos"
+msgstr ""
+
+msgid "Quality"
+msgstr ""
+
+msgid "Record date"
+msgstr ""
+
+msgid "Reload movie info at start"
+msgstr ""
+
+msgid "Remount at start"
+msgstr ""
+
+msgid "Row item"
+msgstr ""
+
+msgid "Row settings"
+msgstr ""
+
+msgid "Row width"
+msgstr ""
+
+msgid "Save changes"
+msgstr ""
+
+msgid "Save changes in all movie info files"
+msgstr ""
+
+msgid "Save settings now"
+msgstr ""
+
+msgid "Scan for Movies ..."
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Serie"
+msgstr ""
+
+msgid "Serie auto create"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "Start update of movie info files"
+msgstr ""
+
+msgid "Titel"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Truncate failed."
+msgstr ""
+
+msgid "Truncate jumps"
+msgstr ""
+
+msgid "Truncate movie ?"
+msgstr ""
+
+msgid "Truncating, please wait"
+msgstr ""
+
+msgid "Use directory"
+msgstr ""
+
+msgid "Use movie directory"
+msgstr ""
+
+msgid "Use record directory"
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "activated"
+msgstr ""
+
+msgid "always"
+msgstr ""
+
+msgid "back"
+msgstr ""
+
+msgid "frame hight"
+msgstr ""
+
+msgid "last play max items"
+msgstr ""
+
+msgid "never"
+msgstr ""
+
+msgid "next focus"
+msgstr ""
+
+msgid "record max items"
+msgstr ""
+
+msgid "remove screenshot?"
+msgstr ""
+
+msgid "row nr"
+msgstr ""
+
+msgid "row width"
+msgstr ""
+
+msgid "save settings now"
+msgstr ""
+
+msgid "scan for Movies ..."
+msgstr "Nach Filmen suchen ..."
+
+msgid "tmdb Info"
+msgstr ""
+
+msgid "yes"
+msgstr "Ja"

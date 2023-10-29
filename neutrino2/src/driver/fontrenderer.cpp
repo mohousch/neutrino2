@@ -46,10 +46,7 @@
 
 
 ////
-FT_Error FBFontRenderClass::myFTC_Face_Requester(FTC_FaceID  face_id,
-        FT_Library  /*library*/,
-        FT_Pointer  request_data,
-        FT_Face*    aface)
+FT_Error FBFontRenderClass::myFTC_Face_Requester(FTC_FaceID face_id, FT_Library library, FT_Pointer request_data, FT_Face *aface)
 {
 	return ((FBFontRenderClass*)request_data)->FTC_Face_Requester(face_id, aface);
 }
@@ -69,7 +66,7 @@ FBFontRenderClass::FBFontRenderClass(const int xr, const int yr)
 	xres = xr;
 	yres = yr;
 
-	int maxbytes = 0; //4 *1024*1024;
+	int maxbytes = 4 *1024*1024;
 	dprintf(DEBUG_INFO, "FBFontRenderClass::FBFontRenderClass: Intializing font cache, using max. %dMB...\n", maxbytes/1024/1024);
 	fflush(stdout);
 	

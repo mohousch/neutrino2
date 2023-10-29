@@ -1,0 +1,353 @@
+# Bosnian translations for neutrino2-plugins package.
+# Copyright (C) 2023 neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# Automatically generated, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 5.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-10-29 20:41+0100\n"
+"PO-Revision-Date: 2023-10-29 18:19+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: bs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "12 years"
+msgstr ""
+
+msgid "16 years"
+msgstr ""
+
+msgid "18 years"
+msgstr ""
+
+msgid "6 years"
+msgstr ""
+
+msgid "Additional paths"
+msgstr ""
+
+msgid "Age"
+msgstr ""
+
+msgid "Audio"
+msgstr ""
+
+msgid "Bookmark"
+msgstr ""
+
+msgid "Bookmark change"
+msgstr ""
+
+msgid "Bookmarks"
+msgstr ""
+
+msgid "Browser Options"
+msgstr ""
+
+msgid "Browser hight [Pixel]"
+msgstr ""
+
+msgid "Channel"
+msgstr ""
+
+msgid "Clear all"
+msgstr ""
+
+msgid "Coping, please wait"
+msgstr ""
+
+msgid "Copy failed, is there jump bookmarks ? Or check free space."
+msgstr ""
+
+msgid "Copy if destination is empty only"
+msgstr ""
+
+msgid "Copy jumps"
+msgstr ""
+
+msgid "Copy jumps from movie to new file ?"
+msgstr ""
+
+msgid "Country"
+msgstr ""
+
+msgid "Cut failed, is there jump bookmarks ? Or check free space."
+msgstr ""
+
+msgid "Cut jumps"
+msgstr ""
+
+msgid "Cut jumps from movie ?"
+msgstr ""
+
+msgid "Cutting, please wait"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Enter new Position (s)"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "File size (MB)"
+msgstr ""
+
+msgid "Film Informationen"
+msgstr ""
+
+msgid "Filter movies by category:"
+msgstr ""
+
+msgid "Filter:"
+msgstr ""
+
+msgid "Format"
+msgstr ""
+
+msgid "Genre"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Hide series"
+msgstr ""
+
+msgid "Impossible to truncate playing movie."
+msgstr ""
+
+msgid "Info 1"
+msgstr ""
+
+msgid "Info 2"
+msgstr ""
+
+msgid "Information"
+msgstr ""
+
+msgid "Jump (<0 back , >0 for):"
+msgstr ""
+
+msgid "Last play date"
+msgstr ""
+
+msgid "Last play stop:"
+msgstr ""
+
+msgid "Last played:"
+msgstr ""
+
+msgid "Last recorded:"
+msgstr ""
+
+msgid "Length (Min)"
+msgstr ""
+
+msgid "Load default settings"
+msgstr ""
+
+msgid "Lock movies from"
+msgstr ""
+
+msgid "Movie Browser"
+msgstr ""
+
+msgid "Movie end:"
+msgstr ""
+
+msgid "Movie start:"
+msgstr ""
+
+msgid "Moviebrowser"
+msgstr ""
+
+msgid "NFS settings"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Next focus"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No (temporary)"
+msgstr ""
+
+msgid "No End bookmark defined!"
+msgstr ""
+
+msgid "Not available"
+msgstr ""
+
+msgid "Number of lines last play"
+msgstr ""
+
+msgid "Number of lines last record"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Parental Lock"
+msgstr ""
+
+msgid "Path"
+msgstr ""
+
+msgid "Paths"
+msgstr ""
+
+msgid "Picture"
+msgstr ""
+
+msgid "Position:"
+msgstr ""
+
+msgid "Prefer TMBD infos ?"
+msgstr ""
+
+msgid "Prefer TMDB infos"
+msgstr ""
+
+msgid "Quality"
+msgstr ""
+
+msgid "Record date"
+msgstr ""
+
+msgid "Reload movie info at start"
+msgstr ""
+
+msgid "Remount at start"
+msgstr ""
+
+msgid "Row item"
+msgstr ""
+
+msgid "Row settings"
+msgstr ""
+
+msgid "Row width"
+msgstr ""
+
+msgid "Save changes"
+msgstr ""
+
+msgid "Save changes in all movie info files"
+msgstr ""
+
+msgid "Save settings now"
+msgstr ""
+
+msgid "Scan for Movies ..."
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Serie"
+msgstr ""
+
+msgid "Serie auto create"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "Start update of movie info files"
+msgstr ""
+
+msgid "Titel"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Truncate failed."
+msgstr ""
+
+msgid "Truncate jumps"
+msgstr ""
+
+msgid "Truncate movie ?"
+msgstr ""
+
+msgid "Truncating, please wait"
+msgstr ""
+
+msgid "Use directory"
+msgstr ""
+
+msgid "Use movie directory"
+msgstr ""
+
+msgid "Use record directory"
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "activated"
+msgstr ""
+
+msgid "always"
+msgstr ""
+
+msgid "back"
+msgstr ""
+
+msgid "frame hight"
+msgstr ""
+
+msgid "last play max items"
+msgstr ""
+
+msgid "never"
+msgstr ""
+
+msgid "next focus"
+msgstr ""
+
+msgid "record max items"
+msgstr ""
+
+msgid "remove screenshot?"
+msgstr ""
+
+msgid "row nr"
+msgstr ""
+
+msgid "row width"
+msgstr ""
+
+msgid "save settings now"
+msgstr ""
+
+msgid "scan for Movies ..."
+msgstr ""
+
+msgid "tmdb Info"
+msgstr ""
+
+msgid "yes"
+msgstr ""

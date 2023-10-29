@@ -75,8 +75,8 @@ class LcdFontRenderClass
 		~fontListEntry();
 	} *font;
 
-	FT_Library		library;
-	FTC_Manager		cacheManager;        /* the cache manager               */
+	FT_Library	library;
+	FTC_Manager	cacheManager;        /* the cache manager               */
 	FTC_ImageCache	imageCache;          /* the glyph image cache           */
 	FTC_SBitCache	sbitsCache;          /* the glyph small bitmaps cache   */
 
@@ -92,20 +92,16 @@ class LcdFontRenderClass
 		const char * AddFont(const char * const filename);
 		void InitFontCache();
 
-		FT_Error FTC_Face_Requester(FTC_FaceID  face_id, FT_Face * aface);
+		FT_Error FTC_Face_Requester(FTC_FaceID face_id, FT_Face * aface);
 
-		static FT_Error myFTC_Face_Requester(FTC_FaceID  face_id,
-                            FT_Library  library,
-                            FT_Pointer  request_data,
-                            FT_Face*    aface);
-
+		static FT_Error myFTC_Face_Requester(FTC_FaceID face_id, FT_Library library, FT_Pointer request_data, FT_Face *aface);
 		//FT_Face getFace(const char *family, const char *style);
 		LcdFont *getFont(const char *family, const char *style, int size);
 		LcdFontRenderClass(CLCDDisplay *fb);
 		~LcdFontRenderClass();
 
-
-	friend class LcdFont;
+		friend class LcdFont;
 };
 
 #endif /* __LCDFONTRENDERER__ */
+
