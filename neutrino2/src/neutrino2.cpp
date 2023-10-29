@@ -805,16 +805,16 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.Head_radius = configfile.getInt32("Head_radius", RADIUS_MID);
 	g_settings.Head_gradient = configfile.getInt32("Head_gradient", DARK2LIGHT);
 	g_settings.Head_gradient_type = configfile.getInt32("Head_gradient_type", GRADIENT_COLOR2TRANSPARENT);
-	g_settings.Head_line = configfile.getInt32("Head_line", false);
-	g_settings.Head_line_gradient = configfile.getInt32("Head_line_gradient", false);
+	g_settings.Head_line = configfile.getInt32("Head_line", true);
+	g_settings.Head_line_gradient = configfile.getInt32("Head_line_gradient", true);
 	
 	// foot
 	g_settings.Foot_corner = configfile.getInt32("Foot_corner", CORNER_BOTTOM);
 	g_settings.Foot_radius = configfile.getInt32("Foot_radius", RADIUS_MID);
 	g_settings.Foot_gradient = configfile.getInt32("Foot_gradient", LIGHT2DARK);
 	g_settings.Foot_gradient_type = configfile.getInt32("Foot_gradient_type", GRADIENT_COLOR2TRANSPARENT);
-	g_settings.Foot_line = configfile.getInt32("Foot_line", false);
-	g_settings.Foot_line_gradient = configfile.getInt32("Foot_line_gradient", false);
+	g_settings.Foot_line = configfile.getInt32("Foot_line", true);
+	g_settings.Foot_line_gradient = configfile.getInt32("Foot_line_gradient", true);
 	
 	// infobar
 	g_settings.infobar_corner = configfile.getInt32("infobar_corner", CORNER_ALL);

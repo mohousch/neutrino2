@@ -448,6 +448,7 @@ void CMovieBrowser::init(void)
 	m_pcWindow = CFrameBuffer::getInstance();
 	
 	widget = NULL;
+	sec_timer_id = 0;
 	
 	headers = NULL;
 	m_pcBrowser = NULL;
@@ -1182,6 +1183,8 @@ int CMovieBrowser::exec(int timeout)
 	
 	m_pcWindow->blit();
 
+	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
+	
 	bool loop = true;
 	bool result;
 	
@@ -1203,6 +1206,10 @@ int CMovieBrowser::exec(int timeout)
 			{
 				loop = false;
 			}
+			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+			{
+				widget->refresh();
+			}
 			else if (CNeutrinoApp::getInstance()->handleMsg(msg, data) & messages_return::cancel_all)
 			{
 				loop = false;
@@ -1216,6 +1223,13 @@ int CMovieBrowser::exec(int timeout)
 	}
 	
 	hide();
+	
+	//
+	if (sec_timer_id)
+	{
+		g_RCInput->killTimer(sec_timer_id);
+		sec_timer_id = 0;
+	}
 	
 	//
 	m_prevBrowserSelection = m_currentBrowserSelection;
@@ -1710,14 +1724,13 @@ void CMovieBrowser::refreshTitle(void)
 	
 	title = __("Movie Browser");
 
-	//CHeaders headers(&m_cBoxFrameTitleRel, title.c_str(), NEUTRINO_ICON_MOVIE);
+	//
 	headers->setTitle(title.c_str());
 	headers->setIcon(NEUTRINO_ICON_MOVIE);
 	headers->enablePaintDate();
 	headers->setButtons(MBHeadButtons, MB_HEAD_BUTTONS_COUNT);
-	headers->setCorner(RADIUS_SMALL);
-	headers->setGradient(LIGHT2DARK);
-	headers->setLine(false);
+	
+	headers->paint();
 }
 
 #define MB_FOOT_BUTTONS_COUNT	4
@@ -1732,7 +1745,7 @@ struct button_label MBFootButtons[MB_FOOT_BUTTONS_COUNT] =
 
 void CMovieBrowser::refreshFoot(void) 
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::refreshFoot:\r\n");
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::refreshFoot:\r\n");
 	
 	footers->clear();
 
@@ -1740,18 +1753,18 @@ void CMovieBrowser::refreshFoot(void)
 	{
 		// red
 		std::string sort_text = __("Filter:");
-		//sort_text += m_localizedItemName[m_settings.sorting.item]; //FIXME:
+		sort_text += m_localizedItemName[m_settings.sorting.item]; //FIXME:
 	
-		//MBFootButtons[0].localename = sort_text.c_str();
-		MBFootButtons[0].localename = __("Filter:");
+		MBFootButtons[0].localename = sort_text.c_str();
+		//MBFootButtons[0].localename = __("Filter:");
 		
 		
 		// green
 		std::string filter_text = __("Filter:");
 		filter_text += m_settings.filter.optionString;
 
-		//MBFootButtons[1].localename = filter_text.c_str();
-		MBFootButtons[1].localename = __("Filter:");
+		MBFootButtons[1].localename = filter_text.c_str();
+		//MBFootButtons[1].localename = __("Filter:");
 	}
 
 	// yellow
@@ -1766,14 +1779,11 @@ void CMovieBrowser::refreshFoot(void)
 		next_text = __("Next focus");
 	}
 
-	MBFootButtons[2].localename = __("next focus");
-
-	//CFooters footers(&m_cBoxFrameFootRel);
+	MBFootButtons[2].localename = next_text;
 
 	footers->setButtons(MBFootButtons, MB_FOOT_BUTTONS_COUNT);
-	footers->setCorner(RADIUS_SMALL);
-	footers->setGradient(DARK2LIGHT);
-	footers->setLine(false);
+	
+	footers->paint();
 }
 
 bool CMovieBrowser::onButtonPress(neutrino_msg_t msg)
@@ -1878,11 +1888,10 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 		{	
 			if(m_movieSelectionHandler != NULL)
 			{
-			 	onDeleteFile(*m_movieSelectionHandler);
+			 	onDeleteFile(*m_movieSelectionHandler); // this Fubction do refresh also
 			}
 		}
 	}
-	////
 	else if(msg == CRCInput::RC_ok)
 	{
 		if(m_movieSelectionHandler != NULL)
@@ -1895,20 +1904,9 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 			tmpMoviePlayerGui.addToPlaylist(*m_movieSelectionHandler);
 			tmpMoviePlayerGui.exec(NULL, "");
 					
-			//res = true;
-			//loop = true;
-			//refresh();
+			refresh();
 		}
-		
-		//refresh();
-		updateSerienames();
-		refreshBrowserList();
-		refreshLastPlayList();
-		refreshLastRecordList();
-		refreshFilterList();
-		refresh();
 	}
-	////
 	else if ( msg == CRCInput::RC_info) 
 	{
 		if(m_movieSelectionHandler != NULL)
@@ -1922,7 +1920,7 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 		}
 	}
 	/*
-	else if (msg == CRCInput::RC_setup) 
+	else if (msg == CRCInput::RC_setup) //FIXME:
 	{
 		showMenu();
 	}
@@ -1933,72 +1931,11 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 		{
 			m_pcWindow->paintBackground();
 			m_pcWindow->blit();
-
-			//				
-			CTmdb * tmdb = new CTmdb();
-
-			if(tmdb->getMovieInfo(m_movieSelectionHandler->epgTitle))
-			{
-				if ((!tmdb->getDescription().empty())) 
-				{
-					std::string buffer;
-
-					buffer = m_movieSelectionHandler->epgTitle;
-					buffer += "\n";
-	
-					// prepare print buffer  
-					buffer += tmdb->createInfoText();
-	
-					std::string tname = tmdb->getThumbnailDir();
-					tname += "/";
-					tname += m_movieSelectionHandler->epgTitle;
-					tname += ".jpg";
-
-					tmdb->getSmallCover(tmdb->getPosterPath(), tname);
-				
-					// scale pic
-					int p_w = 0;
-					int p_h = 0;
-				
-					scaleImage(tname, &p_w, &p_h);
-	
-					CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
-	
-					CInfoBox * infoBox = new CInfoBox(&position, m_movieSelectionHandler->epgTitle.c_str(), NEUTRINO_ICON_TMDB);
-
-					infoBox->setText(buffer.c_str(), tname.c_str(), p_w, p_h);
-					infoBox->exec();
-					delete infoBox;
-
-					if(MessageBox(__("Information"), __("Prefer TMBD infos ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
-					{
-						// rewrite tfile
-						std::string tname = m_movieSelectionHandler->file.Name;
-						changeFileNameExt(tname, ".jpg");
-						if(tmdb->getSmallCover(tmdb->getPosterPath(), tname)) 
-							m_movieSelectionHandler->tfile = tname;
-
-						if(m_movieSelectionHandler->epgInfo1.empty())
-							m_movieSelectionHandler->epgInfo1 = tmdb->getDescription();
-
-						m_movieInfo.saveMovieInfo( *m_movieSelectionHandler);
-					}  
-				}
-				else
-				{
-					MessageBox(__("Information"), __("Not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
-				}
-			}
-			else
-			{
-				MessageBox(__("Information"), __("Not available"), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
-			}
-
-			delete tmdb;
-			tmdb = NULL;
+			
+			::getTMDBInfo(m_movieSelectionHandler->epgTitle.c_str());
+			
+			refresh();
 		}
-
-		refresh();
 	}	
 	else
 	{
@@ -2231,6 +2168,7 @@ void CMovieBrowser::onDeleteFile(MI_MOVIE_INFO& movieSelectionHandler)
 
 	std::string msg = __("Delete");
 	msg += "\r\n ";
+	
 	if (movieSelectionHandler.file.Name.length() > 40)
 	{
 			msg += movieSelectionHandler.file.Name.substr(0, 40);
@@ -2248,6 +2186,7 @@ void CMovieBrowser::onDeleteFile(MI_MOVIE_INFO& movieSelectionHandler)
 			
                 int i = 1;
                 char newpath[1024];
+                
                 do {
 			sprintf(newpath, "%s.%03d", movieSelectionHandler.file.Name.c_str(), i);
 			if(access(newpath, R_OK)) 
@@ -2266,6 +2205,7 @@ void CMovieBrowser::onDeleteFile(MI_MOVIE_INFO& movieSelectionHandler)
                        
 		int ext_pos = 0;
 		ext_pos = fname.rfind('.');
+		
 		if( ext_pos > 0)
 		{
 			std::string extension;
@@ -2618,6 +2558,7 @@ void CMovieBrowser::loadAllTsFileNamesFromStorage(void)
 	updateDir();
 
 	size = m_dir.size();
+	
 	for(i = 0; i < size; i++)
 	{
 		if(*m_dir[i].used == true )

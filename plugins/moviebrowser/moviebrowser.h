@@ -233,6 +233,7 @@ class CMovieBrowser : public CMenuTarget
 		CFrameBuffer * m_pcWindow;
 		
 		CWidget * widget;
+		uint32_t sec_timer_id;
 
 		CListFrame * m_pcBrowser;
 		CListFrame * m_pcLastPlay;

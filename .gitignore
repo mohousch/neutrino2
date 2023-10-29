@@ -2162,3 +2162,17 @@
 /plugins/upnp/locale/sk.mo
 /plugins/upnp/locale/sv.mo
 /plugins/upnp/locale/upnp.pot
+/plugins/moviebrowser/locale/Makefile
+/plugins/moviebrowser/locale/Makefile.in
+/plugins/moviebrowser/locale/ar.mo
+/plugins/moviebrowser/locale/bs.mo
+/plugins/moviebrowser/locale/de.mo
+/plugins/moviebrowser/locale/fr.mo
+/plugins/moviebrowser/locale/it.mo
+/plugins/moviebrowser/locale/moviebrowser.pot
+/plugins/moviebrowser/locale/nl.mo
+/plugins/moviebrowser/locale/pl.mo
+/plugins/moviebrowser/locale/pt.mo
+/plugins/moviebrowser/locale/ru.mo
+/plugins/moviebrowser/locale/sk.mo
+/plugins/moviebrowser/locale/sv.mo
