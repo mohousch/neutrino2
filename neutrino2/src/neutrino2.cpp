@@ -2497,6 +2497,10 @@ void CNeutrinoApp::tvMode( bool rezap )
 
         if( mode == mode_tv ) 
 	{
+		frameBuffer->useBackground(false);
+		frameBuffer->paintBackground();
+		frameBuffer->blit();
+	
                 return;
 	}
 	else if( mode == mode_scart )
@@ -2521,9 +2525,9 @@ void CNeutrinoApp::tvMode( bool rezap )
 		stopAutoRecord();
 	}	
 
-	frameBuffer->useBackground(false);
-	frameBuffer->paintBackground();
-	frameBuffer->blit();
+	//frameBuffer->useBackground(false);
+	//frameBuffer->paintBackground();
+	//frameBuffer->blit();
 
 	g_RemoteControl->tvMode();
 	setChannelMode(g_settings.channel_mode, mode);
@@ -4919,9 +4923,9 @@ int CNeutrinoApp::run(int argc, char **argv)
 			mode = mode_radio;
 
 		// startup pic : FIXME
-		//frameBuffer->useBackground(false);
-		//frameBuffer->loadBackgroundPic("start.jpg");	
-		//frameBuffer->blit();
+		frameBuffer->useBackground(false);
+		frameBuffer->loadBackgroundPic("start.jpg");	
+		frameBuffer->blit();
 	
 		// setup languages
 		CLanguageSettings* languageSettings = new CLanguageSettings(true);
