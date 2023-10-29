@@ -57,9 +57,14 @@
 #include <system/debug.h>
 
 
+//
 extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
+
+//// defines
+//FIXME: make this global
+#define __(string) dgettext("opkg_manager", string)
 
 COPKGManager::COPKGManager()
 {
@@ -142,14 +147,14 @@ int COPKGManager::exec(CMenuTarget * parent, const std::string &actionKey)
 		
 		if( !system(action_name.c_str()))
 		{
-				success = getBlankPkgName(filename) + " successfull installed";
+				success = getBlankPkgName(filename) + __(" successfull installed");
 				
-				MessageBox(_("Information"), _(success.c_str()), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
+				MessageBox(__("Information"), success.c_str(), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO);
 		}
 		else
 		{
-				success = getBlankPkgName(filename) + " install failed";
-				MessageBox(_("Error"), _(success.c_str()), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
+				success = getBlankPkgName(filename) + __(" install failed");
+				MessageBox(__("Error"), _(success.c_str()), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 		}
 		
 		// remove filename.ipk
@@ -188,7 +193,7 @@ bool COPKGManager::showPkgMenu(const int pkg_content_id)
 	std::vector<std::string> urls;
 	CHintBox * loadingBox;
 
-	loadingBox = new CHintBox(_("Information"), _("Loading package list"));	// UTF-8	
+	loadingBox = new CHintBox(__("Information"), __("Loading package list"));	// UTF-8	
 	loadingBox->paint();
 
 	// update list
@@ -196,12 +201,12 @@ bool COPKGManager::showPkgMenu(const int pkg_content_id)
 	{
 		loadingBox->hide();
 		delete loadingBox;
-		MessageBox(_("Error"), _("Update failed"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
+		MessageBox(__("Error"), __("Update failed"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 
 		return false;
 	}
 		
-	CMenuWidget menu(_("OPKG-Manager"), NEUTRINO_ICON_UPDATE, MENU_WIDTH + 50);
+	CMenuWidget menu(__("OPKG-Manager"), NEUTRINO_ICON_UPDATE, MENU_WIDTH + 50);
 	
 	//menu.setHeadCorner(RADIUS_SMALL);
 	//menu.setHeadGradient(LIGHT2DARK);
@@ -232,7 +237,7 @@ bool COPKGManager::showPkgMenu(const int pkg_content_id)
 	
 	if (urls.empty())
 	{
-		HintBox(_("Error"), _("can't get update list")); // UTF-8
+		HintBox(__("Error"), __("can't get update list")); // UTF-8
 		delete loadingBox;
 		return false;
 	}
@@ -269,8 +274,8 @@ int COPKGManager::showMenu()
 	menu->setWidgetMode(ClistBox::MODE_SETUP);
 	menu->enableShrinkMenu();
 
-	menu->addItem(new CMenuForwarder(_("Online Software Manager"), true, NULL, this, "internet" ));
-	menu->addItem(new CMenuForwarder(_("Manuell(ftp) Software Manager"), true, NULL, this, "manual" ));
+	menu->addItem(new CMenuForwarder(__("Online Software Manager"), true, NULL, this, "internet" ));
+	menu->addItem(new CMenuForwarder(__("Manuell(ftp) Software Manager"), true, NULL, this, "manual" ));
 
 	int res = menu->exec (NULL, "");
 	menu->hide ();
@@ -467,7 +472,7 @@ bool COPKGManager::execCmd(const char * cmdstr)
 	
 	if(!system(cmd))
 	{
-		MessageBox(_("Error"), _("Command failed"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
+		MessageBox(__("Error"), __("Command failed"), CMessageBox::mbrCancel, CMessageBox::mbCancel, NEUTRINO_ICON_ERROR);
 		sleep(2);
 		return false;
 	}

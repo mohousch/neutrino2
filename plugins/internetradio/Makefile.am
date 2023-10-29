@@ -1,3 +1,4 @@
+SUBDIRS = locale
 
 AM_CPPFLAGS =  \
 	-I$(srcdir) \

@@ -1,0 +1,33 @@
+# Portuguese translations for neutrino2-plugins package.
+# Copyright (C) 2023 neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# Automatically generated, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 5.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-10-29 02:02+0100\n"
+"PO-Revision-Date: 2023-10-29 02:57+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Information"
+msgstr ""
+
+msgid "No UPnP servers found"
+msgstr ""
+
+msgid "Scan again"
+msgstr ""
+
+msgid "Scanning for UPnP servers"
+msgstr ""
+
+msgid "UPnP Browser"
+msgstr ""

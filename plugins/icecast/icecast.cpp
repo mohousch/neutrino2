@@ -35,25 +35,23 @@
 # include <plugin.h>
 
 
+//
+extern "C" void plugin_exec(void);
+extern "C" void plugin_init(void);
+extern "C" void plugin_del(void);
+
 //// defines
 //FIXME: make this global
 #define __(string) dgettext("icecast", string)
 //
 #define NEUTRINO_ICON_ICECAST_SMALL		PLUGINDIR "/icecast/icecast_small.png"
-
 #define SHOW_FILE_LOAD_LIMIT 50
 #define AUDIOPLAYER_CHECK_FOR_DUPLICATES
 
+//// gloobals
 const long int GET_PLAYLIST_TIMEOUT = 10;
-
-//
 std::string icecasturl = "http://dir.xiph.org/yp.xml";
 const long int GET_ICECAST_TIMEOUT = 90; 		// list is about 500kB!
-
-//
-extern "C" void plugin_exec(void);
-extern "C" void plugin_init(void);
-extern "C" void plugin_del(void);
 
 class CIceCast : public CMenuTarget
 {
@@ -72,8 +70,6 @@ class CIceCast : public CMenuTarget
 
 		//
 		void loadPlaylist(void);
-		//bool shufflePlaylist(void);
-
 		//
 		void addUrl2Playlist(const char *url, const char *name = NULL, const time_t bitrate = 0);
 		void processPlaylistUrl(const char *url, const char *name = NULL, const time_t bitrate = 0);
@@ -85,9 +81,8 @@ class CIceCast : public CMenuTarget
 		//
 		void GetMetaData(CAudiofile& File);
 		void getFileInfoToDisplay(std::string& fileInfo, CAudiofile& file);
-
+		//
 		bool openFileBrowser(void);
-
 		void showMenu();
 		
 	public:
@@ -126,32 +121,6 @@ void CIceCast::hide()
 	frameBuffer->paintBackground();
 	frameBuffer->blit();
 }
-/*
-bool CIceCast::shufflePlaylist(void)
-{
-	dprintf(DEBUG_NORMAL, "CMP3Player::shufflePlaylist\n");
-	
-	RandomNumber rnd;
-	bool result = false;
-	
-	if (!(playlist.empty()))
-	{
-		if (selected > 0)
-		{
-			std::swap(playlist[0], playlist[selected]);
-			selected = 0;
-		}
-
-		std::random_shuffle((selected != 0) ? playlist.begin() : playlist.begin() + 1, playlist.end(), rnd);
-
-		selected = 0;
-
-		result = true;
-	}
-	
-	return(result);
-}
-*/
 
 void CIceCast::addUrl2Playlist(const char *url, const char *name, const time_t bitrate) 
 {
@@ -761,13 +730,6 @@ int CIceCast::exec(CMenuTarget* parent, const std::string& actionKey)
 	{
 		selected = ilist->getSelected();
 
-/*
-		tmpAudioPlayerGui.addToPlaylist(playlist[selected]);
-
-		tmpAudioPlayerGui.setCurrent(0);
-		tmpAudioPlayerGui.setInetMode();
-		tmpAudioPlayerGui.exec(NULL, "");
-*/
 		for (unsigned int i = 0; i < (unsigned int)playlist.size(); i++)
 		{
 			tmpAudioPlayerGui.addToPlaylist(playlist[i]);
@@ -790,7 +752,6 @@ int CIceCast::exec(CMenuTarget* parent, const std::string& actionKey)
 	}
 	else if(actionKey == "RC_blue")
 	{
-		//shufflePlaylist();
 		loadPlaylist();
 		playlist.clear();
 		
@@ -829,7 +790,7 @@ int CIceCast::exec(CMenuTarget* parent, const std::string& actionKey)
 	loadPlaylist();
 	showMenu();
 	
-	return RETURN_EXIT_ALL;
+	return RETURN_REPAINT;
 }
 
 void plugin_init(void)

@@ -2148,7 +2148,7 @@ void ClistBox::paintItems()
 
 		// items background
 		if (paintframe)
-			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight, bgcolor, radius, corner, gradient);
+			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, items_width, items_height + cFrameFootInfoHeight + 20, bgcolor, radius, corner, gradient);
 		else
 		{
 			restoreScreen();

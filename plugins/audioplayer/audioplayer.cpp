@@ -22,18 +22,20 @@
 #include <fstream>
 
 
-//// defines
-//FIXME: make this global
-#define __(string) dgettext("audioplayer", string)
-
-////
+//
 extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
 
-const long int GET_PLAYLIST_TIMEOUT = 10;
 
+//// defines
+//FIXME: make this global
+#define __(string) dgettext("audioplayer", string)
+//
 #define SHOW_FILE_LOAD_LIMIT 50
+
+//// globals
+const long int GET_PLAYLIST_TIMEOUT = 10;
 
 class CMP3Player : public CMenuTarget
 {
@@ -656,7 +658,7 @@ int CMP3Player::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CMP3Player::exec: actionKey:%s\n", actionKey.c_str());
 	
-	int res = RETURN_EXIT_ALL;
+	int res = RETURN_REPAINT;
 	
 	if(parent)
 		hide();

@@ -1,0 +1,43 @@
+# French translations for neutrino2-plugins package.
+# Copyright (C) 2023 neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# Automatically generated, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 5.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-10-29 02:15+0200\n"
+"PO-Revision-Date: 2023-10-29 02:15+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: ../../internetradio/internetradio.cpp:657
+msgid "Add"
+msgstr ""
+
+#: ../../internetradio/internetradio.cpp:656
+msgid "Delete"
+msgstr ""
+
+#: ../../internetradio/internetradio.cpp:658
+msgid "Delete all"
+msgstr ""
+
+#: ../../internetradio/internetradio.cpp:664
+msgid "Internet Radio"
+msgstr ""
+
+#: ../../internetradio/internetradio.cpp:307
+#: ../../internetradio/internetradio.cpp:415
+msgid "Receiving list, please wait"
+msgstr ""
+
+#: ../../internetradio/internetradio.cpp:659
+msgid "Reload"
+msgstr ""

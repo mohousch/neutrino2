@@ -334,8 +334,6 @@ void CMenuWidget::initFrames()
 			x = offx + frameBuffer->getScreenX() + frameBuffer->getScreenWidth() - full_width;
 			y = offy + frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - full_height) >> 1 );
 		}
-		
-		dprintf(DEBUG_NORMAL, "CMenuWidget::initFrames: END\n");
 	}
 }
 

@@ -28,19 +28,22 @@
 # include <plugin.h>
 
 
-#define SHOW_FILE_LOAD_LIMIT 50
-#define AUDIOPLAYER_CHECK_FOR_DUPLICATES
-
-const long int GET_PLAYLIST_TIMEOUT = 10;
-
-//
-#define RADIO_STATION_XML_FILE PLUGINDIR "/internetradio/radio-stations.xml"
-
-
 //
 extern "C" void plugin_exec(void);
 extern "C" void plugin_init(void);
 extern "C" void plugin_del(void);
+
+
+//// defines
+//FIXME: make this global
+#define __(string) dgettext("internetradio", string)
+//
+#define SHOW_FILE_LOAD_LIMIT 50
+#define AUDIOPLAYER_CHECK_FOR_DUPLICATES
+#define RADIO_STATION_XML_FILE PLUGINDIR "/internetradio/radio-stations.xml"
+
+//// globals
+const long int GET_PLAYLIST_TIMEOUT = 10;
 
 class CInternetRadio : public CMenuTarget
 {
@@ -301,7 +304,7 @@ void CInternetRadio::scanXmlData(xmlDocPtr answer_parser, const char *nametag, c
 			element = element_tmp;
 			long listPos = 1;
 			
-			progress.setTitle(_("Receiving list, please wait"));
+			progress.setTitle(__("Receiving list, please wait"));
 			progress.enableCancelIcon();
 			progress.paint();
 			frameBuffer->blit();
@@ -409,7 +412,7 @@ bool CInternetRadio::openFileBrowser(void)
 		
 		if (maxProgress > SHOW_FILE_LOAD_LIMIT)
 		{
-			progress.setTitle(_("Receiving list, please wait"));	
+			progress.setTitle(__("Receiving list, please wait"));	
 			progress.paint();
 		}
 
@@ -650,15 +653,15 @@ const struct button_label HeadButtons{ NEUTRINO_ICON_BUTTON_SETUP, "" };
 #define FOOT_BUTTONS_COUNT 4
 const struct button_label AudioPlayerButtons[FOOT_BUTTONS_COUNT] =
 {
-	{ NEUTRINO_ICON_BUTTON_RED, _("Delete") },
-	{ NEUTRINO_ICON_BUTTON_GREEN, _("Add") },
-	{ NEUTRINO_ICON_BUTTON_YELLOW, _("Delete all") },
-	{ NEUTRINO_ICON_BUTTON_BLUE, _("Shuffle") }
+	{ NEUTRINO_ICON_BUTTON_RED, __("Delete") },
+	{ NEUTRINO_ICON_BUTTON_GREEN, __("Add") },
+	{ NEUTRINO_ICON_BUTTON_YELLOW, __("Delete all") },
+	{ NEUTRINO_ICON_BUTTON_BLUE, __("Reload") }
 };
 
 void CInternetRadio::showMenu()
 {
-	ilist = new CMenuWidget(_("Internet Radio"), NEUTRINO_ICON_MP3, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
+	ilist = new CMenuWidget(__("Internet Radio"), NEUTRINO_ICON_MP3, frameBuffer->getScreenWidth() - 40, frameBuffer->getScreenHeight() - 40);
 
 	for(unsigned int i = 0; i < (unsigned int)playlist.size(); i++)
 	{

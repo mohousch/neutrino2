@@ -1,3 +1,5 @@
+SUBDIRS = locale
+
 AM_CPPFLAGS =  \
 	-I$(top_srcdir)/../neutrino2 \
 	-I$(top_srcdir)/../neutrino2/src \
