@@ -242,13 +242,12 @@ extern int tuxtx_subtitle_running(int *pid, int *page, int *running);
 extern int tuxtx_main(int pid, int page, int source );
 // dvbsub
 extern int dvbsub_init();
-extern int dvbsub_stop();
 extern int dvbsub_close();
+extern int dvbsub_stop();
 extern int dvbsub_start(int pid);
 extern int dvbsub_pause();
 extern int dvbsub_getpid();
 extern void dvbsub_setpid(int pid);
-extern int dvbsub_terminate();
 // zapit
 extern t_channel_id live_channel_id; 			//defined in zapit.cpp
 extern CZapitChannel * live_channel;			// defined in zapit.cpp
@@ -746,7 +745,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.startchannelradio_id = configfile.getInt64("startchannelradio_id", 0);
 	g_settings.startchanneltv_nr =  configfile.getInt32("startchanneltv_nr", 0);
 	g_settings.startchannelradio_nr = configfile.getInt32("startchannelradio_nr", 0);
-	g_settings.uselastchannel = configfile.getInt32("uselastchannel" , 1);
+	g_settings.uselastchannel = configfile.getInt32("uselastchannel" , 0);
 
 	// epg
         g_settings.epg_cache            = configfile.getString("epg_cache_time", "14");
@@ -2099,9 +2098,9 @@ void CNeutrinoApp::initZapper()
 	int tvmode = CZapit::getInstance()->getMode();
 
 	if (tvmode == CZapit::MODE_TV)
-		mode = NeutrinoMessages::mode_tv;
+		mode = mode_tv;
 	else if (tvmode == CZapit::MODE_RADIO)
-		mode = NeutrinoMessages::mode_radio;
+		mode = mode_radio;
 
 	lastMode = mode;
 	
@@ -2915,6 +2914,24 @@ int CNeutrinoApp::exec(CMenuTarget * parent, const std::string & actionKey)
 	return returnval;
 }
 
+// start subtitle
+void CNeutrinoApp::startSubtitles(bool show)
+{
+	if (IS_WEBTV(live_channel_id))
+		return;
+	
+	dprintf(DEBUG_NORMAL, "CNeutrinoApp::startSubtitles\n");
+	
+	if(!show)
+		return;
+	
+	//start dvbsub
+	dvbsub_start(dvbsub_getpid());
+	
+	// start tuxtxt
+	tuxtx_pause_subtitle( false, live_fe?live_fe->fenumber:0 );
+}
+
 // stop subtitle
 void CNeutrinoApp::stopSubtitles()
 {
@@ -2944,24 +2961,6 @@ void CNeutrinoApp::stopSubtitles()
 
 		frameBuffer->blit();
 	}
-}
-
-// start subtitle
-void CNeutrinoApp::startSubtitles(bool show)
-{
-	if (IS_WEBTV(live_channel_id))
-		return;
-	
-	dprintf(DEBUG_NORMAL, "CNeutrinoApp::startSubtitles\n");
-	
-	if(!show)
-		return;
-	
-	//start dvbsub
-	dvbsub_start(dvbsub_getpid());
-	
-	// start tuxtxt
-	tuxtx_pause_subtitle( false, live_fe?live_fe->fenumber:0 );
 }
 
 // select subtitle
@@ -4805,13 +4804,11 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	// init video / audio decoder	
 	videoDecoder = new cVideo();
+	audioDecoder = new cAudio();
 		
 	// set video system
 	if(videoDecoder)
 		videoDecoder->SetVideoSystem(g_settings.video_Mode);	
-	
-	// audio decoder
-	audioDecoder = new cAudio();
 
 	// audio volume (default)
 	if(audioDecoder)
@@ -4844,7 +4841,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 		audioDecoder->setHwPCMDelay(g_settings.pcm_delay);
 	}
 	
-	//
+	// zapit
 	CZapit::getInstance()->Start(zapitCfg);
 	
 	// sectionsd
@@ -4917,11 +4914,12 @@ int CNeutrinoApp::run(int argc, char **argv)
 		int tvmode = CZapit::getInstance()->getMode();
 
 		if (tvmode == CZapit::MODE_TV)
-			mode = NeutrinoMessages::mode_tv;
+			mode = mode_tv;
 		else if (tvmode == CZapit::MODE_RADIO)
-			mode = NeutrinoMessages::mode_radio;
+			mode = mode_radio;
 
 		// startup pic : FIXME
+		//frameBuffer->useBackground(false);
 		//frameBuffer->loadBackgroundPic("start.jpg");	
 		//frameBuffer->blit();
 	

@@ -369,10 +369,12 @@ static void* dvbsub_thread(void* /*arg*/)
 	struct timeval now;
 
 	sub_debug.print(Debug::VERBOSE, "%s started\n", __FUNCTION__);
+	
 	if (!dvbSubtitleConverter)
 		dvbSubtitleConverter = new cDvbSubtitleConverter;
 
 	int timeout = 1000000;
+	
 	while(dvbsub_running) 
 	{
 		uint8_t* packet;
@@ -454,6 +456,7 @@ next_round:
 	delete dvbSubtitleConverter;
 
 	sub_debug.print(Debug::VERBOSE, "%s shutdown\n", __FUNCTION__);
+	
 	pthread_exit(NULL);
 }
 
