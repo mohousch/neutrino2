@@ -129,10 +129,8 @@ int CAudioSelectMenuHandler::doMenu()
 						
 		AudioSelector->enablePaintHead();
 		AudioSelector->setTitle(_("Select language"), NEUTRINO_ICON_AUDIO);
-//		AudioSelector->setHeadLine(true, true);
 
 		AudioSelector->enablePaintFoot();
-//		AudioSelector->setFootLine(true, true);
 							
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 							
@@ -184,7 +182,9 @@ int CAudioSelectMenuHandler::doMenu()
 			if (s->thisSubType == CZapitAbsSub::DVB) 
 			{
 				CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
+				
 				printf("[CAudioSelectMenuHandler] adding DVB subtitle %s pid 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
+				
 				if(!sep_added) 
 				{
 					sep_added = true;

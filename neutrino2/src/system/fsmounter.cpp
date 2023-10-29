@@ -309,14 +309,12 @@ CFSMounter::MountRes CFSMounter::mount(const char * const ip, const char * const
 bool CFSMounter::automount()
 {
 	bool res = true; 
+	
 	for(int i = 0; i < NETWORK_NFS_NR_OF_ENTRIES; i++)
 	{
 		if(g_settings.network_nfs_automount[i])
 		{
-			res = (MRES_OK == mount(g_settings.network_nfs_ip[i].c_str(), g_settings.network_nfs_dir[i], g_settings.network_nfs_local_dir[i], 
-						       (FSType) g_settings.network_nfs_type[i], g_settings.network_nfs_username[i], 
-						       g_settings.network_nfs_password[i], g_settings.network_nfs_mount_options1[i], 
-						       g_settings.network_nfs_mount_options2[i])) && res;
+			res = (MRES_OK == mount(g_settings.network_nfs_ip[i].c_str(), g_settings.network_nfs_dir[i], g_settings.network_nfs_local_dir[i], (FSType) g_settings.network_nfs_type[i], g_settings.network_nfs_username[i], g_settings.network_nfs_password[i], g_settings.network_nfs_mount_options1[i], g_settings.network_nfs_mount_options2[i])) && res;
 		}
 	}
 	

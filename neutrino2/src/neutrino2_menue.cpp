@@ -175,7 +175,6 @@ void CNeutrinoApp::mainMenu(void)
 	item->setHintIcon(NEUTRINO_ICON_MENUITEM_SETTINGS);
 	item->setHint(_("Here you can setup your box"));
 	item->setIconName(NEUTRINO_ICON_BUTTON_SETUP_SMALL);
-	item->setDirectKey(CRCInput::RC_setup);
 	if (nMenu) nMenu->addItem(item);
 		
 	// osd

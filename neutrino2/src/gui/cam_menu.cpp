@@ -65,8 +65,10 @@
 #include <libdvbci/dvb-ci.h>
 
 
+//// globals
 extern cDvbCi * ci;
 
+////
 void CCAMMenuHandler::init(void)
 {
 	hintBox = NULL;
@@ -89,12 +91,12 @@ int CCAMMenuHandler::exec(CMenuTarget * parent, const std::string &actionKey)
 	{
 		return doMenu(1);
 	}	
-	if(actionKey == "reset1") 
+	else if(actionKey == "reset1") 
 	{
 		ci->reset(0);
 		return CMenuTarget::RETURN_EXIT_ALL;
 	}	
-	if(actionKey == "reset2") 
+	else if(actionKey == "reset2") 
 	{
 		ci->reset(1);
 		return CMenuTarget::RETURN_EXIT_ALL;
@@ -138,7 +140,6 @@ void CCAMMenuHandler::doMainMenu()
 		//
 		cammenu->enablePaintHead();
 		cammenu->setTitle(_("CI Cam settings"), NEUTRINO_ICON_CI);
-//		cammenu->setHeadLine(true, true);
 
 		//
 		cammenu->enablePaintFoot();
@@ -146,7 +147,6 @@ void CCAMMenuHandler::doMainMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		cammenu->setFootButtons(&btn);
-//		cammenu->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(cammenu);
@@ -182,8 +182,8 @@ void CCAMMenuHandler::doMainMenu()
 		{
 			sprintf(str, "%s %d", _("No CAM in slot"), i + 1);
 			
-			/*
-			tempMenuWidget = CNeutrinoApp::getInstance()->getWidget("tempcam2");
+			//
+			//tempMenuWidget = CNeutrinoApp::getInstance()->getWidget("tempcam2");
 			
 			if (tempMenuWidget)
 			{
@@ -195,7 +195,6 @@ void CCAMMenuHandler::doMainMenu()
 				}
 			}
 			else
-			*/
 			{
 				//
 				tempMenuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
@@ -211,13 +210,11 @@ void CCAMMenuHandler::doMainMenu()
 				//
 				tempMenu->enablePaintHead();
 				tempMenu->setTitle(str, NEUTRINO_ICON_CI);
-//				tempMenu->setHeadLine(true, true);
 				
 				//
 				tempMenu->enablePaintFoot();		
 				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 				tempMenu->setFootButtons(&btn);
-//				tempMenu->setFootLine(true, true);
 				
 				//
 				tempMenuWidget->addCCItem(tempMenu);
@@ -355,6 +352,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 	else if(msg == NeutrinoMessages::EVT_CI_MMI_MENU || msg == NeutrinoMessages::EVT_CI_MMI_LIST) 
 	{
 		bool sublevel = false;
+		
 		if(msg != NeutrinoMessages::EVT_CI_MMI_MENU)
 			sublevel = true;
 		
@@ -376,8 +374,8 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			CWidget* menuWidget = NULL;
 			ClistBox* menu = NULL;
 			
-			/*
-			menuWidget = CNeutrinoApp::getInstance()->getWidget("tempcam");
+			//
+			//menuWidget = CNeutrinoApp::getInstance()->getWidget("tempcam");
 			
 			if (menuWidget)
 			{
@@ -387,7 +385,6 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 					menu->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);
 			}
 			else
-			*/
 			{
 				//
 				menuWidget = new CWidget(0, 0, MENU_WIDTH, MENU_HEIGHT);
@@ -403,13 +400,11 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				//
 				menu->enablePaintHead();
 				menu->setTitle(convertDVBUTF8(pMenu->title, strlen(pMenu->title), 0).c_str(), NEUTRINO_ICON_CI);
-//				menu->setHeadLine(true, true);
 				
 				//
 				menu->enablePaintFoot();		
 				const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 				menu->setFootButtons(&btn);
-//				menu->setFootLine(true, true);
 				
 				//
 				menuWidget->addCCItem(menu);
@@ -424,6 +419,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 				char * sptr = pMenu->subtitle;
 				char * tptr = sptr;
 				int bpos = 0;
+				
 				for(int i1 = 0; i1 < slen; i1++) 
 				{
 					if((tptr[i1] == 0x8A) || ((bpos >= 38) && (tptr[i1] == 0x20)) ) 
@@ -628,6 +624,7 @@ int CCAMMenuHandler::doMenu(int slot)
 			
 			/* -1 = not our event, 0 = back to top menu, 1 = continue loop, 2 = quit */
 			int ret = handleCamMsg(msg, data, true);
+			
 			if(ret < 0 && (msg > CRCInput::RC_Messages)) 
 			{
 				if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & ( messages_return::cancel_all | messages_return::cancel_info ) )
