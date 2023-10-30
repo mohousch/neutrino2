@@ -218,7 +218,7 @@ class CComponent
 		//
 		virtual void addKey(neutrino_msg_t key, CMenuTarget *menue = NULL, const std::string &action = "");
 		void setSecTimerInterval(uint64_t sec){sec_timer_interval = sec;}; // in sec
-		virtual bool onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data);
+		//
 		virtual int exec(int timeout = -1); // in sec
 };
 

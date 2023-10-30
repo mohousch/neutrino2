@@ -2380,7 +2380,6 @@ void CTestMenu::testClistBox()
 
 	// mode
 	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
-	//rightWidget->setWidgetMode(ClistBox::MODE_MENU);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2469,7 +2468,6 @@ void CTestMenu::testClistBox2()
 
 	// widgettype
 	rightWidget->setWidgetType(CMenuItem::TYPE_CLASSIC);
-	//rightWidget->setWidgetMode(ClistBox::MODE_MENU);
 	rightWidget->enableShrinkMenu();
 
 	// head

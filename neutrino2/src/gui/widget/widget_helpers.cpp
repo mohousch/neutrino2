@@ -76,112 +76,6 @@ void CComponent::addKey(neutrino_msg_t key, CMenuTarget *menue, const std::strin
 }
 
 //
-bool CComponent::onButtonPress(neutrino_msg_t msg, neutrino_msg_data_t data)
-{
-	dprintf(DEBUG_DEBUG, "CComponent::onButtonPress: (msg:%ld) (data:%ld)\n", msg, data);
-	
-	bool ret = true;
-	bool handled = false;
-	
-	//
-	if ( msg <= CRCInput::RC_MaxRC ) 
-	{
-		std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
-					
-		if (it != keyActionMap.end()) 
-		{
-			actionKey = it->second.action;
-
-			if (it->second.menue != NULL)
-			{
-				int rv = it->second.menue->exec(parent, it->second.action);
-
-				//FIXME:review this
-				switch ( rv ) 
-				{
-					case CMenuTarget::RETURN_EXIT_ALL:
-						ret = false; //fall through
-					case CMenuTarget::RETURN_EXIT:
-						ret = false;
-						break;
-					case CMenuTarget::RETURN_REPAINT:
-						ret = true;
-						paint();
-						break;
-				}
-			}
-			else
-				handled = true;
-		}
-		
-		//
-		directKeyPressed(msg);
-	}
-	
-	if (!handled) 
-	{
-		if (msg == CRCInput::RC_up)
-		{
-			scrollLineUp();
-		}
-		else if (msg == CRCInput::RC_down)
-		{
-			scrollLineDown();
-		}
-		else if (msg == CRCInput::RC_left)
-		{
-			swipLeft();
-		}
-		else if (msg == CRCInput::RC_right)
-		{
-			swipRight();
-		}
-		else if (msg == CRCInput::RC_page_up)
-		{
-			scrollPageUp();
-		}
-		else if (msg == CRCInput::RC_page_down)
-		{
-			scrollPageDown();
-		}
-		else if (msg == CRCInput::RC_ok)
-		{
-			int rv = oKKeyPressed(parent);
-				
-			switch ( rv ) 
-			{
-				case CMenuTarget::RETURN_EXIT_ALL:
-					ret = false;
-				case CMenuTarget::RETURN_EXIT:
-					ret = false;
-					break;
-				case CMenuTarget::RETURN_REPAINT:
-					ret = true;
-					paint();
-					break;
-			}
-		}
-		else if (msg == CRCInput::RC_home || msg == CRCInput::RC_timeout) 
-		{
-			ret = false;
-		}
-		else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
-		{
-			if (update())
-			{
-				refresh();
-			}
-		}
-		else if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
-		{
-			ret = false;
-		}
-	}
-	
-	return ret;
-}
-
-//
 int CComponent::exec(int timeout)
 {
 	dprintf(DEBUG_INFO, "CComponent::exec: timeout:%d\n", timeout);
@@ -189,6 +83,7 @@ int CComponent::exec(int timeout)
 	// loop
 	neutrino_msg_t msg;
 	neutrino_msg_data_t data;
+	bool handled = false;
 	bool loop = true;
 
 	//
@@ -207,7 +102,99 @@ int CComponent::exec(int timeout)
 	{
 		g_RCInput->getMsgAbsoluteTimeout(&msg, &data, &timeoutEnd);		
 		
-		loop = onButtonPress(msg, data); //
+		if ( msg <= CRCInput::RC_MaxRC ) 
+		{
+			std::map<neutrino_msg_t, keyAction>::iterator it = keyActionMap.find(msg);
+						
+			if (it != keyActionMap.end()) 
+			{
+				actionKey = it->second.action;
+
+				if (it->second.menue != NULL)
+				{
+					int rv = it->second.menue->exec(parent, it->second.action);
+
+					//
+					switch ( rv ) 
+					{
+						case CMenuTarget::RETURN_EXIT_ALL:
+							loop = false; //fall through
+						case CMenuTarget::RETURN_EXIT:
+							loop = false;
+							break;
+						case CMenuTarget::RETURN_REPAINT:
+							loop = true;
+							paint();
+							break;
+					}
+				}
+				else
+					handled = true;
+			}
+			
+			//
+			directKeyPressed(msg);
+		}
+		
+		if (!handled) 
+		{
+			if (msg == CRCInput::RC_up)
+			{
+				scrollLineUp();
+			}
+			else if (msg == CRCInput::RC_down)
+			{
+				scrollLineDown();
+			}
+			else if (msg == CRCInput::RC_left)
+			{
+				swipLeft();
+			}
+			else if (msg == CRCInput::RC_right)
+			{
+				swipRight();
+			}
+			else if (msg == CRCInput::RC_page_up)
+			{
+				scrollPageUp();
+			}
+			else if (msg == CRCInput::RC_page_down)
+			{
+				scrollPageDown();
+			}
+			else if (msg == CRCInput::RC_ok)
+			{
+				int rv = oKKeyPressed(parent);
+					
+				switch ( rv ) 
+				{
+					case CMenuTarget::RETURN_EXIT_ALL:
+						loop = false;
+					case CMenuTarget::RETURN_EXIT:
+						loop = false;
+						break;
+					case CMenuTarget::RETURN_REPAINT:
+						loop = true;
+						paint();
+						break;
+				}
+			}
+			else if (msg == CRCInput::RC_home || msg == CRCInput::RC_timeout) 
+			{
+				loop = false;
+			}
+			else if ( (msg == NeutrinoMessages::EVT_TIMER) && (data == sec_timer_id) )
+			{
+				if (update())
+				{
+					refresh();
+				}
+			}
+			else if ( CNeutrinoApp::getInstance()->handleMsg( msg, data ) & messages_return::cancel_all ) 
+			{
+				loop = false;
+			}
+		}
 
 		CFrameBuffer::getInstance()->blit();
 	}

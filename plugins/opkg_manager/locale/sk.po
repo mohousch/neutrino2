@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-29 02:23+0200\n"
+"POT-Creation-Date: 2023-10-30 23:59+0100\n"
 "PO-Revision-Date: 2023-10-29 02:23+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,50 +17,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../../opkg_manager/opkg_manager.cpp:156
 msgid " install failed"
 msgstr ""
 
-#: ../../opkg_manager/opkg_manager.cpp:150
 msgid " successfull installed"
 msgstr ""
 
-#: ../../opkg_manager/opkg_manager.cpp:475
 msgid "Command failed"
 msgstr ""
 
-#: ../../opkg_manager/opkg_manager.cpp:157
-#: ../../opkg_manager/opkg_manager.cpp:204
-#: ../../opkg_manager/opkg_manager.cpp:240
-#: ../../opkg_manager/opkg_manager.cpp:475
 msgid "Error"
 msgstr ""
 
-#: ../../opkg_manager/opkg_manager.cpp:152
-#: ../../opkg_manager/opkg_manager.cpp:196
 msgid "Information"
 msgstr ""
 
-#: ../../opkg_manager/opkg_manager.cpp:196
 msgid "Loading package list"
 msgstr ""
 
-#: ../../opkg_manager/opkg_manager.cpp:278
 msgid "Manuell(ftp) Software Manager"
 msgstr ""
 
-#: ../../opkg_manager/opkg_manager.cpp:209
 msgid "OPKG-Manager"
 msgstr ""
 
-#: ../../opkg_manager/opkg_manager.cpp:277
 msgid "Online Software Manager"
 msgstr ""
 
-#: ../../opkg_manager/opkg_manager.cpp:204
 msgid "Update failed"
 msgstr ""
 
-#: ../../opkg_manager/opkg_manager.cpp:240
 msgid "can't get update list"
 msgstr ""
