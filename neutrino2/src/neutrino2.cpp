@@ -1708,7 +1708,7 @@ void CNeutrinoApp::setDebugLevel( int level )
 		"DEBUG"
 	};
 	
-	printf("CNeutrinoApp::setDebugLevel: Debug level: %s\n", DEBUGMODE[debug]);
+	printf("CNeutrinoApp::setDebugLevel: %s\n", DEBUGMODE[debug]);
 }
 
 // setup the framebuffer
