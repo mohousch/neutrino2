@@ -26,13 +26,6 @@
 	License along with this library; if not, write to the
 	Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
 	Boston, MA  02110-1301, USA.
-
-		
-	NOTE for ignorant distributors:
-	It's not allowed to distribute any compiled parts of this code, if you don't accept the terms of GPL.
-	Please read it and understand it right!
-	This means for you: Hold it, if not, leave it! You could face legal action! 
-	Otherwise ask the copyright owners, anything else would be theft!
 */
 
 #ifndef __OPKG_MANAGER__

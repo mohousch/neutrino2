@@ -50,12 +50,10 @@ typedef struct stat64 stat_struct;
 typedef struct dirent64 dirent_struct;
 #define my_stat stat64
 
-//static CProgressBar * timescale;
-
 // tstool
 off64_t get_full_len(char * startname)
 {
-        off64_t fulllength=0;
+        off64_t fulllength = 0;
         struct stat64 s;
         char spart[255];
         int part = 0;
@@ -325,18 +323,12 @@ off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie)
 	}
 
 	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
-
-	//if(!timescale) 
-	//	timescale = new CProgressBar(200, 15, 0, 100, 0);
 	
         int dx = 256;
         int x = (((g_settings.screen_EndX- g_settings.screen_StartX)- dx) / 2) + g_settings.screen_StartX;
         int y = g_settings.screen_EndY - 50;
 	
 	frameBuffer->paintBoxRel (x + 40, y+12, 200, 15, COL_INFOBAR_PLUS_0);
-
-	//timescale->setPosition(x + 41, y + 12, 200, 15);
-	//timescale->paint(x + 41, y + 12, percent);
 	
 	int len = minfo->length;
 	off64_t size = minfo->file.Size;
@@ -477,7 +469,6 @@ off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie)
 				
 				if(msg) 
 				{
-					//timescale->reset();
 					frameBuffer->paintBoxRel (x + 40, y+12, 200, 15, COL_INFOBAR_PLUS_0);
 				}
 				size_t toread = (until-sdone) > BUF_SIZE ? BUF_SIZE : until - sdone;
@@ -513,8 +504,7 @@ off64_t cut_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie)
 					spos += r - wptr;
 					percent = (int) ((float)(spos)/(float)(newsize)*100.);
 
-					//timescale->setPosition(x + 41, y + 12, 200 , 15);
-					//timescale->paint(x + 41, y + 12, percent);
+					
 #if REAL_CUT
 					int wr = write(dstfd, &buf[wptr], r-wptr);
 					if(wr < (r-wptr)) 
@@ -630,15 +620,11 @@ off64_t copy_movie(MI_MOVIE_INFO * minfo, CMovieInfo * cmovie, bool onefile)
 	printf("copy: len %d minute %lld second %lld\n", len, len ? size/len : 511040*60, secsize);
 
 	CFrameBuffer * frameBuffer = CFrameBuffer::getInstance();
-	//if(!timescale)
-	//	timescale = new CProgressBar(200, 15, 0, 100, 0);
+	
         int dx = 256;
         int x = (((g_settings.screen_EndX- g_settings.screen_StartX)- dx) / 2) + g_settings.screen_StartX;
         int y = g_settings.screen_EndY - 50;
 	frameBuffer->paintBoxRel (x + 40, y+12, 200, 15, COL_INFOBAR_PLUS_0);
-
-	//timescale->setPosition(x + 41, y + 12, 200, 15);
-	//timescale->paint(x + 41, y + 12, percent);
 
 	newsize = 0;
 	for(int book_nr = 0; book_nr < MI_MOVIE_BOOK_USER_MAX; book_nr++) 
@@ -745,8 +731,6 @@ next_file:
 			if(msg) 
 			{
 				frameBuffer->paintBoxRel (x + 40, y+12, 200, 15, COL_INFOBAR_PLUS_0);
-
-				//timescale->reset();
 			}
 #if REAL_CUT
 			r = read (srcfd, buf, toread);
@@ -782,8 +766,6 @@ next_file:
 				btotal += r;
 				percent = (int) ((float)(btotal)/(float)(newsize)*100.);
 
-				//timescale->setPosition(x + 41, y + 12, 200, 15);
-				//timescale->paint(x + 41, y + 12, percent);
 #if REAL_CUT
 				int wr = write(dstfd, &buf[wptr], r-wptr);
 				if(wr < (r-wptr)) 
