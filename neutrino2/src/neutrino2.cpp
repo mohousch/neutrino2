@@ -805,16 +805,16 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.Head_radius = configfile.getInt32("Head_radius", RADIUS_MID);
 	g_settings.Head_gradient = configfile.getInt32("Head_gradient", DARK2LIGHT);
 	g_settings.Head_gradient_type = configfile.getInt32("Head_gradient_type", GRADIENT_COLOR2TRANSPARENT);
-	g_settings.Head_line = configfile.getInt32("Head_line", true);
-	g_settings.Head_line_gradient = configfile.getInt32("Head_line_gradient", true);
+	g_settings.Head_line = configfile.getBool("Head_line", true);
+	g_settings.Head_line_gradient = configfile.getBool("Head_line_gradient", true);
 	
 	// foot
 	g_settings.Foot_corner = configfile.getInt32("Foot_corner", CORNER_BOTTOM);
 	g_settings.Foot_radius = configfile.getInt32("Foot_radius", RADIUS_MID);
 	g_settings.Foot_gradient = configfile.getInt32("Foot_gradient", LIGHT2DARK);
 	g_settings.Foot_gradient_type = configfile.getInt32("Foot_gradient_type", GRADIENT_COLOR2TRANSPARENT);
-	g_settings.Foot_line = configfile.getInt32("Foot_line", true);
-	g_settings.Foot_line_gradient = configfile.getInt32("Foot_line_gradient", true);
+	g_settings.Foot_line = configfile.getBool("Foot_line", true);
+	g_settings.Foot_line_gradient = configfile.getBool("Foot_line_gradient", true);
 	
 	// infobar
 	g_settings.infobar_corner = configfile.getInt32("infobar_corner", CORNER_ALL);
@@ -5068,7 +5068,7 @@ void sighandler(int signum)
 int main(int argc, char *argv[])
 {
 	// build date
-	printf(">>> neutrino2 (compiled %s %s) <<<\n", __DATE__, __TIME__);
+	printf(">>> %s v %s (compiled %s %s) <<<\n", PACKAGE_NAME, PACKAGE_VERSION, __DATE__, __TIME__);
 
 	// sighandler
         signal(SIGTERM, sighandler);

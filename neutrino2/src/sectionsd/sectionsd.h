@@ -1,5 +1,3 @@
-#ifndef __sectionsd__
-#define __sectionsd__
 /*
   $Id: sectionsd.h 20.09.2023 mohousch Exp $
 
@@ -20,6 +18,8 @@
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 */
+#ifndef __sectionsd__
+#define __sectionsd__
 
 #include <config.h>
 

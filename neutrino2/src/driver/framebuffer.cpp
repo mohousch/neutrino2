@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: framebuffer.cpp 2013/10/12 mohousch Exp $
+	$Id: framebuffer.cpp 30.10.2023 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
                       2003 thegoodguy
@@ -77,8 +77,6 @@ inline uint32_t make16color(uint16_t r, uint16_t g, uint16_t b, uint16_t t,
 CFrameBuffer::CFrameBuffer()
 : active ( true )
 {
-	//dprintf(DEBUG_NORMAL, "CFrameBuffer::CFrameBuffer()\n");
-
 #if defined (USE_OPENGL)
 	mpGLThreadObj = NULL;
 #endif
@@ -125,7 +123,6 @@ CFrameBuffer* CFrameBuffer::getInstance()
 	if(!frameBuffer) 
 	{
 		frameBuffer = new CFrameBuffer();
-		//dprintf(DEBUG_NORMAL, "CFrameBuffer::getInstance: frameBuffer Instance created\n");
 	} 
 
 	return frameBuffer;

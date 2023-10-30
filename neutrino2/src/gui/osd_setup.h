@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 
-	$id: osd_setup.h 21.09.21 mohousch $
+	$id: osd_setup.h 30.10.2023 mohousch $
 	
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	and some other guys
@@ -39,8 +39,8 @@ class COSDSettings : public CMenuTarget
 		int showMenu(void);
 		
 	public:
-		COSDSettings();
-		~COSDSettings();
+		COSDSettings(){};
+		virtual ~COSDSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -52,8 +52,8 @@ class COSDMenuColorSettings : public CMenuTarget
 		void showMenu();
 		
 	public:
-		COSDMenuColorSettings();
-		~COSDMenuColorSettings();
+		COSDMenuColorSettings(){};
+		virtual ~COSDMenuColorSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -65,8 +65,8 @@ class COSDInfoBarColorSettings : public CMenuTarget
 		void showMenu();
 		
 	public:
-		COSDInfoBarColorSettings();
-		~COSDInfoBarColorSettings();
+		COSDInfoBarColorSettings(){};
+		virtual ~COSDInfoBarColorSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -80,7 +80,7 @@ class CLanguageSettings : public CMenuTarget, CChangeObserver
 		
 	public:
 		CLanguageSettings(bool wizzard = false);
-		~CLanguageSettings();
+		virtual ~CLanguageSettings();
 		
 		bool changeNotify(const std::string& OptionName, void *);
 		
@@ -93,8 +93,8 @@ class CFontSettings : public CMenuTarget
 		void showMenu();
 		
 	public:
-		CFontSettings();
-		~CFontSettings();
+		CFontSettings(){};
+		virtual ~CFontSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -107,7 +107,7 @@ class COSDTimingSettings : public CMenuTarget
 		
 	public:
 		COSDTimingSettings(){};
-		~COSDTimingSettings(){};
+		virtual ~COSDTimingSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -120,7 +120,7 @@ class COSDDiverses : public CMenuTarget
 		
 	public:
 		COSDDiverses(){};
-		~COSDDiverses(){};
+		virtual ~COSDDiverses(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -133,7 +133,7 @@ class CSkinManager : public CMenuTarget
 		
 	public:
 		CSkinManager(){};
-		~CSkinManager(){};
+		virtual ~CSkinManager(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -145,7 +145,7 @@ class CSkinSettings : public CMenuTarget
 		
 	public:
 		CSkinSettings(){};
-		~CSkinSettings(){};
+		virtual ~CSkinSettings(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
@@ -157,9 +157,10 @@ class CPersonalisation : public CMenuTarget
 		
 	public:
 		CPersonalisation(){};
-		~CPersonalisation(){};
+		virtual ~CPersonalisation(){};
 		
 		int exec(CMenuTarget* parent, const std::string& actionKey);
 };
 
 #endif //__osd_setup__
+

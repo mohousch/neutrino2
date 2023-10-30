@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: vcrcontrol.cpp 2013/10/12 mohousch Exp $
+	$Id: vcrcontrol.cpp 30.10.2023 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
@@ -436,7 +436,6 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	// vpid
 	if (si.vpid != 0)
 	{
-		//psi.addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0); //FIXME:
 		::addPid(si.vpid, si.vtype ? EN_TYPE_AVC : EN_TYPE_VIDEO, 0);
 	}
 		
@@ -447,7 +446,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
         for(APIDList::iterator it = apid_list.begin(); it != apid_list.end(); it++) 
 	{
                 pids[numpids++] = it->apid;
-		//psi.addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
+
 		::addPid(it->apid, EN_TYPE_AUDIO, it->ac3 ? 1 : 0);
         }
         
@@ -464,11 +463,12 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 			if (s->thisSubType == CZapitAbsSub::DVB) 
 			{
 				CZapitDVBSub* sd = reinterpret_cast<CZapitDVBSub*>(s);
+				
 				dprintf(DEBUG_NORMAL, "CVCRControl::doRecord: adding DVB subtitle %s pid 0x%x\n", sd->ISO639_language_code.c_str(), sd->pId);
 
 				pids[numpids++] = sd->pId;
 				
-				//psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
+				::addPid(sd->pId, EN_TYPE_DVBSUB, 0);
 			}
 			
 			// teletext sub
@@ -479,7 +479,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 				
 				pids[numpids++] = sd->pId;
 				
-				//psi.addPid(sd->pId, EN_TYPE_DVBSUB, 0, (const char *)sd->ISO639_language_code.c_str());
+				::addPid(sd->pId, EN_TYPE_DVBSUB, 0);
 			}
 		}
         }
@@ -999,8 +999,6 @@ stream2file_error_msg_t CVCRControl::startRecording(const char * const filename,
 	}
 	
 	//
-	//CGenPsi psi;
-	//psi.genpsi(fd);
 	::genpsi(fd);
 	
 	// init record

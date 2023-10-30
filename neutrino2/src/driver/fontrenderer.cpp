@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: fontrenderer.cpp 2013/10/12 mohousch Exp $
+	$Id: fontrenderer.cpp 30.10.2023 mohousch Exp $
 
 	Copyright (C) 2001 Steffen Hehn 'McClean'
         Copyright (C) 2003 thegoodguy
@@ -67,7 +67,7 @@ FBFontRenderClass::FBFontRenderClass(const int xr, const int yr)
 	yres = yr;
 
 	int maxbytes = 4 *1024*1024;
-	dprintf(DEBUG_INFO, "FBFontRenderClass::FBFontRenderClass: Intializing font cache, using max. %dMB...\n", maxbytes/1024/1024);
+	dprintf(DEBUG_NORMAL, "FBFontRenderClass::FBFontRenderClass: Intializing font cache, using max. %dMB...\n", maxbytes/1024/1024);
 	fflush(stdout);
 	
 	if (FTC_Manager_New(library, 10, 20, maxbytes, myFTC_Face_Requester, this, &cacheManager))

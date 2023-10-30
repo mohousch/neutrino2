@@ -60,15 +60,7 @@ const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
         { 1, _("on") }
 };
 
-// osd settings
-COSDSettings::COSDSettings()
-{
-}
-
-COSDSettings::~COSDSettings()
-{
-}
-
+//// osd settings
 int COSDSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -136,11 +128,8 @@ int COSDSettings::showMenu(void)
 	// skin manager
 	osdSettings->addItem( new CMenuForwarder(_("Skin select"), true, NULL, new CSkinManager(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
 		
-	// skin style
+	// skin themes
 	osdSettings->addItem(new CMenuForwarder(_("Skin Style"), true, NULL, new CSkinSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_OSDSETTINGS));
-
-	// Themes
-	//osdSettings->addItem( new CMenuForwarder(_("Themes"), true, NULL, new CThemes(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_THEMES));
 
 	// menu colors
 	osdSettings->addItem( new CMenuForwarder(_("Menu"), true, NULL, new COSDMenuColorSettings(), NULL, CRCInput::RC_nokey, NULL, NEUTRINO_ICON_MENUITEM_MENUCOLORS));
@@ -227,14 +216,7 @@ const keyval RADIUS_TYPE_OPTIONS[RADIUS_TYPE_OPTION_COUNT] =
 	{ RADIUS_VERYLARGE, _("very large") }
 };
 
-COSDMenuColorSettings::COSDMenuColorSettings()
-{
-}
-
-COSDMenuColorSettings::~COSDMenuColorSettings()
-{
-}
-
+////
 int COSDMenuColorSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDMenuColorSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -287,7 +269,6 @@ void COSDMenuColorSettings::showMenu()
 		//
 		OSDmenuColorsSettings->enablePaintHead();
 		OSDmenuColorsSettings->setTitle(_("Menu"), NEUTRINO_ICON_COLORS);
-//		OSDmenuColorsSettings->setHeadLine(true, true);
 
 		//
 		OSDmenuColorsSettings->enablePaintFoot();
@@ -295,7 +276,6 @@ void COSDMenuColorSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		OSDmenuColorsSettings->setFootButtons(&btn);
-//		OSDmenuColorsSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(OSDmenuColorsSettings);
@@ -443,15 +423,7 @@ void COSDMenuColorSettings::showMenu()
 	widget = NULL;
 }
 
-// osd infobarcolor settings
-COSDInfoBarColorSettings::COSDInfoBarColorSettings()
-{
-}
-
-COSDInfoBarColorSettings::~COSDInfoBarColorSettings()
-{
-}
-
+//// osd infobarcolor settings
 int COSDInfoBarColorSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDInfoBarColorSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -504,7 +476,6 @@ void COSDInfoBarColorSettings::showMenu()
 		//
 		OSDinfobarColorSettings->enablePaintHead();
 		OSDinfobarColorSettings->setTitle(_("Infobar"), NEUTRINO_ICON_COLORS);
-//		OSDinfobarColorSettings->setHeadLine(true, true);
 
 		//
 		OSDinfobarColorSettings->enablePaintFoot();
@@ -512,7 +483,6 @@ void COSDInfoBarColorSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		OSDinfobarColorSettings->setFootButtons(&btn);
-//		OSDinfobarColorSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(OSDinfobarColorSettings);
@@ -658,7 +628,6 @@ int CLanguageSettings::showMenu()
 		//
 		languageSettings->enablePaintHead();
 		languageSettings->setTitle(_("Language"), NEUTRINO_ICON_LANGUAGE);
-//		languageSettings->setHeadLine(true, true);
 
 		//
 		languageSettings->enablePaintFoot();
@@ -666,7 +635,6 @@ int CLanguageSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		languageSettings->setFootButtons(&btn);
-//		languageSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(languageSettings);
@@ -744,15 +712,7 @@ bool CLanguageSettings::changeNotify(const std::string& OptionName, void */*data
 }
 
 
-// CFontSettings
-CFontSettings::CFontSettings()
-{
-}
-
-CFontSettings::~CFontSettings()
-{
-}
-
+//// CFontSettings
 int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "CFontSettings::exec: %s\n", actionKey.c_str());
@@ -784,7 +744,8 @@ int CFontSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 			dprintf(DEBUG_NORMAL, "COSDSettings::exec: new font file %s\n", fileBrowser.getSelectedFile()->Name.c_str());
 			
 			CNeutrinoApp::getInstance()->setupFonts(g_settings.font_file);
-			CNeutrinoApp::getInstance()->saveSetup(NEUTRINO_SETTINGS_FILE);
+			CNeutrinoApp::getInstance()->exec(NULL, "savesettings");
+			CNeutrinoApp::getInstance()->exec(NULL, "saveskinsettings");
 		}
 		
 		hide();
@@ -828,7 +789,6 @@ void CFontSettings::showMenu()
 		//
 		fontSettings->enablePaintHead();
 		fontSettings->setTitle(_("Font"), NEUTRINO_ICON_COLORS);
-//		fontSettings->setHeadLine(true, true);
 
 		//
 		fontSettings->enablePaintFoot();
@@ -836,7 +796,6 @@ void CFontSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		fontSettings->setFootButtons(&btn);
-//		fontSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(fontSettings);
@@ -867,7 +826,7 @@ void CFontSettings::showMenu()
 	widget = NULL;
 }
 
-// osd timing settings
+//// osd timing settings
 int COSDTimingSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDTimingSettings::exec: actionKey: %s\n", actionKey.c_str());
@@ -924,7 +883,6 @@ void COSDTimingSettings::showMenu()
 		//
 		osdTimingSettings->enablePaintHead();
 		osdTimingSettings->setTitle(_("Timing"), NEUTRINO_ICON_TIMER);
-//		osdTimingSettings->setHeadLine(true, true);
 
 		//
 		osdTimingSettings->enablePaintFoot();
@@ -932,7 +890,6 @@ void COSDTimingSettings::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		osdTimingSettings->setFootButtons(&btn);
-//		osdTimingSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(osdTimingSettings);
@@ -966,7 +923,7 @@ void COSDTimingSettings::showMenu()
 	widget = NULL;
 }
 
-// diverses
+//// diverses
 int COSDDiverses::exec(CMenuTarget* parent, const std::string& actionKey)
 {
 	dprintf(DEBUG_NORMAL, "COSDDiverses::exec: actionKey: %s\n", actionKey.c_str());
@@ -1064,7 +1021,6 @@ void COSDDiverses::showMenu()
 		//
 		osdDiverseSettings->enablePaintHead();
 		osdDiverseSettings->setTitle(_("Misc settings"), NEUTRINO_ICON_COLORS);
-//		osdDiverseSettings->setHeadLine(true, true);
 
 		//
 		osdDiverseSettings->enablePaintFoot();
@@ -1072,7 +1028,6 @@ void COSDDiverses::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		osdDiverseSettings->setFootButtons(&btn);
-//		osdDiverseSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(osdDiverseSettings);

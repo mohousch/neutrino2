@@ -24,6 +24,7 @@ $Id: genpsi.h,v 1.1 2005/08/15 14:47:52 metallica Exp $
  */
 #ifndef __genpsi_h__
 #define __genpsi_h__
+
 #include <inttypes.h>
 
 
@@ -35,6 +36,7 @@ void addPid(uint16_t pid, uint16_t pidart, short isAC3);
 #define EN_TYPE_TELTEX          0x02
 #define EN_TYPE_PCR             0x03
 #define EN_TYPE_AVC           	0x04
+#define EN_TYPE_DVBSUB		0x08
 
 #endif
 

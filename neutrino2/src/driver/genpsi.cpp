@@ -139,6 +139,9 @@ void addPid(uint16_t pid, uint16_t pidart, short isAC3)
 			
 		case EN_TYPE_TELTEX:
 			break;
+			
+		case EN_TYPE_DVBSUB:
+			break;
 
 		default:
 			break;
@@ -147,7 +150,7 @@ void addPid(uint16_t pid, uint16_t pidart, short isAC3)
 
 //-- special enigma stream description packet for  --
 //-- at least 1 video, 1 audo and 1 PCR-Pid stream --
-//------------------------------------------------------------------------------------
+//--
 static uint8_t pkt_enigma[] =
 {
 	0x47, 0x40, 0x1F, 0x10, 0x00,
@@ -162,7 +165,7 @@ static uint8_t pkt_enigma[] =
 }; 
 
 //-- PAT packet for at least 1 PMT --
-//----------------------------------------------------------
+//--
 static uint8_t pkt_pat[] =
 {
 	0x47, 0x40, 0x00, 0x10, 0x00,			// HEADER-1
@@ -172,7 +175,7 @@ static uint8_t pkt_pat[] =
 };
 
 //-- PMT packet for at least 1 video and 1 audio stream --          
-//--------------------------------------------------------
+//--
 static uint8_t pkt_pmt[] =
 {
 	0x47, 0x4F, 0xFF, 0x10, 0x00,		// HEADER-1
