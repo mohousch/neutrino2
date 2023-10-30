@@ -1243,8 +1243,8 @@ bool CZapit::parseChannelPatPmt(CZapitChannel * thischannel, CFrontend * fe)
 	dprintf(DEBUG_NORMAL, "CZapit::parseChannelPatPmt: looking up pids for channel_id (0x%llx)\n", thischannel->getChannelID());
 	
 	bool failed = false;
-	//CPat pat;
-	//CPmt pmt;
+	CPat pat;
+	CPmt pmt;
 	
 	// get program map table pid from program association table
 	if (thischannel->getPmtPid() == 0) 
@@ -1353,7 +1353,7 @@ int CZapit::zapit(const t_channel_id channel_id, bool in_nvod, bool forupdate)
 	tallchans_iterator cit;
 	bool failed = false;
 	CZapitChannel * newchannel;
-	//CPmt pmt;
+	CPmt pmt;
 
 	dprintf(DEBUG_NORMAL, ANSI_BLUE"CZapit::zapit: channel id 0x%llx nvod %d\n", channel_id, in_nvod);
 
@@ -3644,7 +3644,7 @@ void * CZapit::sdtThread(void */*arg*/)
 	FILE * fd1 = 0;
 	bool updated = 0;
 	
-	//CSdt sdt;
+	CSdt sdt;
 
 	tcur = time(0);
 	tstart = time(0);
@@ -3711,7 +3711,7 @@ void * CZapit::sdtThread(void */*arg*/)
 
 			if(live_channel) 
 			{
-				if( CZapit::getInstance()->sdt.parseCurrentSDT(transport_stream_id, original_network_id, satellitePosition, freq, live_fe) < 0 )
+				if( sdt.parseCurrentSDT(transport_stream_id, original_network_id, satellitePosition, freq, live_fe) < 0 )
 					continue;
 			}
 
@@ -3907,7 +3907,7 @@ void *CZapit::updatePMTFilter(void *)
 		return 0;
 		
 	//
-	//CPmt pmt;
+	CPmt pmt;
 	
 	while (true) 
 	{	
@@ -3919,7 +3919,7 @@ void *CZapit::updatePMTFilter(void *)
 
 			if (ret > 0) 
 			{
-				CZapit::getInstance()->pmt.pmt_stop_update_filter(&pmt_update_fd);
+				pmt.pmt_stop_update_filter(&pmt_update_fd);
 
 				dprintf(DEBUG_INFO, "CZapit::updatePMTFilter: pmt updated, sid 0x%x new version 0x%x\n", (buf[3] << 8) + buf[4], (buf[5] >> 1) & 0x1F);
 
@@ -3930,7 +3930,7 @@ void *CZapit::updatePMTFilter(void *)
 					int vpid = live_channel->getVideoPid();
 					int apid = live_channel->getAudioPid();
 					
-					CZapit::getInstance()->pmt.parsePMT(live_channel, live_fe);
+					pmt.parsePMT(live_channel, live_fe);
 					
 					bool apid_found = false;
 					// check if selected audio pid still present
@@ -3957,7 +3957,7 @@ void *CZapit::updatePMTFilter(void *)
 							ci->SendCaPMT(live_channel->getCaPmt(), live_fe?live_fe->fenumber : 0);
 						}	
 
-						CZapit::getInstance()->pmt.pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
+						pmt.pmt_set_update_filter(live_channel, &pmt_update_fd, live_fe);
 					}
 						
 					eventServer->sendEvent(NeutrinoMessages::EVT_PMT_CHANGED, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
@@ -3969,7 +3969,7 @@ void *CZapit::updatePMTFilter(void *)
 	}
 	
 	// stop update pmt filter
-	CZapit::getInstance()->pmt.pmt_stop_update_filter(&pmt_update_fd);
+	pmt.pmt_stop_update_filter(&pmt_update_fd);
 	pmt_update_fd = -1;
 		
 	
@@ -4810,6 +4810,8 @@ bool CZapit::getSDTS(t_satellite_position satellitePosition, int feindex)
 	stiterator tI;
 	stiterator stI;
 	std::map <transponder_id_t, transponder>::iterator sT;
+	CNit nit;
+	CSdt sdt;
 
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CZapit::getSDTS: scanning tp from sat/service\n");
 
@@ -5187,7 +5189,7 @@ bool CZapit::scanTP(commandScanTP &msg)
 	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::scanTP fe:(%d) scanmode:%d\n", msg.feindex, msg.scanmode);
 	
 	bool ret = true;
-	//CPmt pmt;
+	CPmt pmt;
 	
 	CZapit::stopPlayBack();
 				
@@ -5257,7 +5259,7 @@ bool CZapit::startScan(commandScanProvider &msg)
 	dprintf(DEBUG_NORMAL, ANSI_MAGENTA "CZapit::startScan: fe(%d) scanmode: %d\n", msg.feindex, msg.scanmode);
 	
 	bool ret = true;
-	//CPmt pmt;
+	CPmt pmt;
 	
 	scan_runs = 1;
 	

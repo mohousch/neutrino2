@@ -1,8 +1,6 @@
 /*
  * $Id: sectionsdtypes.h,v 1.1 2004/02/13 14:36:19 thegoodguy Exp $
  *
- * sectionsd's types which are used by the clientlib - d-box2 linux project
- *
  * (C) 2004 by thegoodguy <thegoodguy@berlios.de>
  *
  * This program is free software; you can redistribute it and/or modify

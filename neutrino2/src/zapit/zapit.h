@@ -55,12 +55,6 @@ class CZapitBouquet;
 ////
 class CZapit
 {
-	private:
-		CPat pat;
-		CPmt pmt;
-		CSdt sdt;
-		CNit nit;
-	
 	public:
 		enum zapStatus
 		{

@@ -1,7 +1,6 @@
 //
 //  $Id: sectionsd.cpp 23.09.2023 mohousch Exp $
 //
-//    sectionsd.cpp (network daemon for SI-sections)
 //    (dbox-II-project)
 //
 //    Copyright (C) 2001 by fnbrd

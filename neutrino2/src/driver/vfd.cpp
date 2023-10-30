@@ -6,7 +6,6 @@
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
 
-
 	License: GPL
 
 	This program is free software; you can redistribute it and/or modify

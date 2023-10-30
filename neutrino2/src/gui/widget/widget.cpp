@@ -1,7 +1,6 @@
 /*
 	$Id: widget.cpp 12.03.2020 mohousch Exp $
 
-
 	License: GPL
 
 	This program is free software; you can redistribute it and/or modify

@@ -1,7 +1,6 @@
 /*
 	$Id: listbox.h 2018.08.19 mohousch Exp $
 
-
 	License: GPL
 
 	This program is free software; you can redistribute it and/or modify

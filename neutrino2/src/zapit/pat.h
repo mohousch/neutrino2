@@ -1,5 +1,5 @@
 /*
- * $Id: pat.h 20.10.2023 Exp $
+ * $Id: pat.h 20.10.2023 mohousch Exp $
  *
  * (C) 2002-2003 Andreas Oberritter <obi@tuxbox.org>
  *

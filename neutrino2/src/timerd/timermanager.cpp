@@ -46,7 +46,7 @@
 #include <libeventserver/eventserver.h>
 
 
-// globals
+//// globals
 static pthread_mutex_t tm_eventsMutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 //
 extern bool timeset; 			// from sectionsd.cpp

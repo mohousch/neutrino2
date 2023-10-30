@@ -1,7 +1,6 @@
 /*
 	$Id: framebox.h 09.02.2019 mohousch Exp $
 
-
 	License: GPL
 
 	This program is free software; you can redistribute it and/or modify

@@ -1792,7 +1792,6 @@ void CTestMenu::testCIcon()
 {
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCIcon\n");
 
-	//CIcon testIcon(NEUTRINO_ICON_BUTTON_RED);
 	CCIcon testIcon;
 
 	// paint testIcon
@@ -1801,9 +1800,8 @@ void CTestMenu::testCIcon()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCIcon: icon:%s iw:%d ih:%d\n", testIcon.iconName.c_str(), testIcon.width, testIcon.height);
 	
 	testIcon.setPosition(150 + BORDER_LEFT, 150, testIcon.width, testIcon.height);
-
-	testIcon.paint();
-	CFrameBuffer::getInstance()->blit();
+	
+	testIcon.addKey(CRCInput::RC_red, this, "exit");
 
 	// loop
 	testIcon.exec();

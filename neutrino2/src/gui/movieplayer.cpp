@@ -6,8 +6,6 @@
   Movieplayer (c) 2003, 2004 by gagga
   Based on code by Dirch, obi and the Metzler Bros. Thanks.
 
-  $Id: movieplayer.cpp,v 1.97 2004/07/18 00:54:52 thegoodguy Exp $
-
   Homepage: http://www.giggo.de/dbox2/movieplayer.html
 
   License: GPL

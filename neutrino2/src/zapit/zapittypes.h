@@ -1,7 +1,6 @@
 /*
  * $Id: zapittypes.h 20.09.2023 mohousch Exp $
  *
- *
  * (C) 2002 by thegoodguy <thegoodguy@berlios.de>
  * (C) 2002, 2003 by Andreas Oberritter <obi@tuxbox.org>
  *

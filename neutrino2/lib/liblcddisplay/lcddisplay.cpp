@@ -5,8 +5,6 @@
         baseroutines by Shadow_
 	Homepage: http://dbox.cyberphoria.org/
 
-
-
 	License: GPL
 
 	This program is free software; you can redistribute it and/or modify

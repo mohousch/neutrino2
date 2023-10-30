@@ -20,7 +20,6 @@
 	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-
 #ifndef __hdd_menu__
 #define __hdd_menu__
 
