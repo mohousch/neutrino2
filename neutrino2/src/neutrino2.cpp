@@ -54,6 +54,8 @@
 #include <linux/reboot.h>
 #include <sys/reboot.h>
 
+#include <mcheck.h>
+
 #include <global.h>
 #include <neutrino2.h>
 
@@ -2068,9 +2070,6 @@ void CNeutrinoApp::initZapper()
 {
 	dprintf(DEBUG_NORMAL, "CNeutrinoApp::initZapper\n");
 
-	// start infobar
-	g_InfoViewer->start();
-
 	// read saved epg
 	if (g_settings.epg_save)
 	{
@@ -2107,8 +2106,8 @@ void CNeutrinoApp::initZapper()
 	else if(firstchannel.mode == 'r') 
 	{
 #if defined (ENABLE_LCD)	  
-			g_RCInput->killTimer(g_InfoViewer->lcdUpdateTimer);
-			g_InfoViewer->lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );
+			g_RCInput->killTimer(lcdUpdateTimer);
+			lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );
 #endif		
 		
 			radioMode(false);
@@ -2481,8 +2480,8 @@ void CNeutrinoApp::tvMode( bool rezap )
 		}		
 
 #if defined (ENABLE_LCD)
-		g_RCInput->killTimer(g_InfoViewer->lcdUpdateTimer);
-		g_InfoViewer->lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_TV_MODE, false );
+		g_RCInput->killTimer(lcdUpdateTimer);
+		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_TV_MODE, false );
 #endif		
 
 		CVFD::getInstance()->ShowIcon(VFD_ICON_RADIO, false);
@@ -2538,8 +2537,8 @@ void CNeutrinoApp::radioMode( bool rezap)
 	if(mode == mode_tv ) 
 	{
 #if defined (ENABLE_LCD)	  
-		g_RCInput->killTimer(g_InfoViewer->lcdUpdateTimer);
-		g_InfoViewer->lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );
+		g_RCInput->killTimer(lcdUpdateTimer);
+		lcdUpdateTimer = g_RCInput->addTimer( LCD_UPDATE_TIME_RADIO_MODE, false );
 #endif		
 
 		stopSubtitles();
@@ -5006,6 +5005,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 		saveSetup(NEUTRINO_SETTINGS_FILE);
 	}
 	
+#if defined (ENABLE_LCD)	
+	lcdUpdateTimer = g_RCInput->addTimer(LCD_UPDATE_TIME_TV_MODE, false, true);
+#endif
+	
 	// zapper
 	initZapper();
 	
@@ -5020,6 +5023,10 @@ int CNeutrinoApp::run(int argc, char **argv)
 
 	// exitRun
 	exitRun(SHUTDOWN);
+	
+#ifdef USE_OPENGL
+	muntrace();
+#endif	
 
 	// never reached
 	return 0;
@@ -5061,6 +5068,11 @@ int main(int argc, char *argv[])
 {
 	// build date
 	printf(">>> %s v %s (compiled %s %s) <<<\n", PACKAGE_NAME, PACKAGE_VERSION, __DATE__, __TIME__);
+	
+#ifdef USE_OPENGL
+	setenv("MALLOC_TRACE", "/home/mohousch/tuxbox/neutrino2/mtrace.txt", 1);
+	mtrace();
+#endif	
 
 	// sighandler
         signal(SIGTERM, sighandler);

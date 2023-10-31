@@ -43,6 +43,8 @@
 
 #include <system/settings.h>
 
+#include "moviebrowser.h"
+
 
 #define my_scandir scandir64
 #define my_alphasort alphasort64
@@ -269,11 +271,12 @@ static int get_input(bool * stop)
 	neutrino_msg_t msg;
 	int retval = 0;
 	* stop = false;
+	
 	g_RCInput->getMsg(&msg, &data, 1, false);
 	
 	if(msg == CRCInput::RC_home) 
 	{
-		if(MessageBox(_("Information"), _("Cancel movie cut/split ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
+		if(MessageBox(__("Information"), __("Cancel movie cut/split ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes) 
 		{
 			* stop = true;
 		}

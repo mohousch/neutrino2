@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-30 23:59+0100\n"
+"POT-Creation-Date: 2023-10-31 17:45+0100\n"
 "PO-Revision-Date: 2023-10-29 18:19+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -52,6 +52,9 @@ msgstr "Browseroptionen"
 
 msgid "Browser hight [Pixel]"
 msgstr "Browserhöhe [Pixel]"
+
+msgid "Cancel movie cut/split ?"
+msgstr ""
 
 msgid "Channel"
 msgstr "Kanal"
@@ -191,9 +194,6 @@ msgstr ""
 msgid "No End bookmark defined!"
 msgstr ""
 
-msgid "Not available"
-msgstr ""
-
 msgid "Number of lines last play"
 msgstr ""
 
@@ -216,9 +216,6 @@ msgid "Picture"
 msgstr ""
 
 msgid "Position:"
-msgstr ""
-
-msgid "Prefer TMDB infos"
 msgstr ""
 
 msgid "Quality"
@@ -266,6 +263,9 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
+msgid "Show / Gameshow"
+msgstr ""
+
 msgid "Size"
 msgstr ""
 
@@ -308,25 +308,193 @@ msgstr ""
 msgid "activated"
 msgstr ""
 
+msgid "adult movie/drama"
+msgstr ""
+
+msgid "adventure/western/war"
+msgstr ""
+
+msgid "advertisement/shopping"
+msgstr ""
+
 msgid "always"
+msgstr ""
+
+msgid "arts / culture"
+msgstr ""
+
+msgid "arts/culture magazines"
+msgstr ""
+
+msgid "athletics"
 msgstr ""
 
 msgid "back"
 msgstr ""
 
+msgid "ballet"
+msgstr ""
+
+msgid "broadcasting/press"
+msgstr ""
+
+msgid "cartoons/puppets"
+msgstr ""
+
+msgid "children / juvenile program"
+msgstr ""
+
+msgid "comedy"
+msgstr ""
+
+msgid "cooking"
+msgstr ""
+
+msgid "detective/thriller"
+msgstr ""
+
+msgid "discussion/interview/debate"
+msgstr ""
+
+msgid "documentary"
+msgstr ""
+
+msgid "documentation / magazine"
+msgstr ""
+
+msgid "economics/social advisory"
+msgstr ""
+
+msgid "entertainment programmes for 10 to 16"
+msgstr ""
+
+msgid "entertainment programmes for 6 to 14"
+msgstr ""
+
+msgid "equestrian"
+msgstr ""
+
+msgid "experimental film/video"
+msgstr ""
+
+msgid "fashion"
+msgstr ""
+
+msgid "film/cinema"
+msgstr ""
+
+msgid "fine arts"
+msgstr ""
+
+msgid "fitness & health"
+msgstr ""
+
+msgid "folk/traditional music"
+msgstr ""
+
+msgid "football/soccer"
+msgstr ""
+
+msgid "foreign countries/expeditions"
+msgstr ""
+
 msgid "frame hight"
+msgstr ""
+
+msgid "further education"
+msgstr ""
+
+msgid "game show/quiz/contest"
+msgstr ""
+
+msgid "gardening"
+msgstr ""
+
+msgid "handicraft"
+msgstr ""
+
+msgid "informational/educational/school programmes"
+msgstr ""
+
+msgid "jazz"
+msgstr ""
+
+msgid "languages"
 msgstr ""
 
 msgid "last play max items"
 msgstr ""
 
+msgid "literature"
+msgstr ""
+
+msgid "magazines/reports/documentary"
+msgstr ""
+
+msgid "martial sports"
+msgstr ""
+
+msgid "medicine/physiology/psychology"
+msgstr ""
+
+msgid "motor sports"
+msgstr ""
+
+msgid "motoring"
+msgstr ""
+
+msgid "movie/drama"
+msgstr ""
+
+msgid "music / ballet / dance"
+msgstr ""
+
+msgid "musical/opera"
+msgstr ""
+
+msgid "nature/animals/environment"
+msgstr ""
+
 msgid "never"
+msgstr ""
+
+msgid "new media"
+msgstr ""
+
+msgid "news"
+msgstr ""
+
+msgid "news magazine"
+msgstr ""
+
+msgid "news/weather report"
+msgstr ""
+
+msgid "performing arts"
+msgstr ""
+
+msgid "popular culture/traditional arts"
+msgstr ""
+
+msgid "pre-school children's programmes"
 msgstr ""
 
 msgid "record max items"
 msgstr ""
 
+msgid "religion"
+msgstr ""
+
+msgid "remarkable people"
+msgstr ""
+
 msgid "remove screenshot?"
+msgstr ""
+
+msgid "rock/pop"
+msgstr ""
+
+msgid "romance"
 msgstr ""
 
 msgid "row nr"
@@ -341,7 +509,64 @@ msgstr ""
 msgid "scan for Movies ..."
 msgstr "Nach Filmen suchen ..."
 
+msgid "science fiction/fantasy/horror"
+msgstr ""
+
+msgid "serious music/classical music"
+msgstr ""
+
+msgid "serious/classical/religious/historical movie/drama"
+msgstr ""
+
+msgid "soap/melodrama/folkloric"
+msgstr ""
+
+msgid "social & politic events / business"
+msgstr ""
+
+msgid "social/spiritual sciences"
+msgstr ""
+
+msgid "special events (Olympic Games,World Cup etc.)"
+msgstr ""
+
+msgid "sports"
+msgstr ""
+
+msgid "sports magazines"
+msgstr ""
+
+msgid "talk show"
+msgstr ""
+
+msgid "team sports (excluding football)"
+msgstr ""
+
+msgid "technology/natural sciences"
+msgstr ""
+
+msgid "tennis/squash"
+msgstr ""
+
 msgid "tmdb Info"
+msgstr ""
+
+msgid "tourism/travel"
+msgstr ""
+
+msgid "travel & recreation"
+msgstr ""
+
+msgid "unknown"
+msgstr ""
+
+msgid "variety show"
+msgstr ""
+
+msgid "water sports"
+msgstr ""
+
+msgid "winter sports"
 msgstr ""
 
 msgid "yes"

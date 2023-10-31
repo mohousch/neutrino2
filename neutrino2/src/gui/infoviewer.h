@@ -60,11 +60,7 @@ class CInfoViewer
 		};
 		
 		bool chanready;
-		bool is_visible;
-
-#if defined (ENABLE_LCD)
-		uint32_t lcdUpdateTimer;
-#endif		
+		bool is_visible;		
 		
 	private:
 		void Init(void);
@@ -216,29 +212,20 @@ class CInfoViewer
 		CInfoViewer();
 		~CInfoViewer();
 
-		void start();
+		////
 		void showTitle(const int _ChanNum, const std::string& _ChannelName, const t_satellite_position _satellitePosition, const t_channel_id _new_channel_id = 0, const bool _calledFromNumZap = false, int _epgpos = 0);
 		void killTitle();
-	
+		////
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
 		void clearVirtualZapMode() {virtual_zap_mode = false;}	// used in channellist.cpp
-		
-		//
+		////
 		void showRadiotext(); 	// needed in radiotext
 		void killRadiotext(); 	// needed in radiotext
 		void showSubchan(); 	// needed in CNVODChangeExec
-		
-		//
+		////
 		void getEPG(const t_channel_id for_channel_id, CSectionsd::CurrentNextInfo &info); // needed by CSleepTimerWidget
 		CSectionsd::CurrentNextInfo getCurrentNextInfo() { return info_CurrentNext; }
 };
 
-class CInfoViewerHandler : public CMenuTarget
-{
-	public:
-		int  exec(CMenuTarget* parent,  const std::string& actionkey);
-		int  doMenu();
-
-};
-
 #endif
+

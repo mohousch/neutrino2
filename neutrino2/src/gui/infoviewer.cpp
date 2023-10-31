@@ -279,15 +279,6 @@ void CInfoViewer::initFrames(void)
 	timescale_posy = BoxStartY + SAT_INFOBOX_HEIGHT;
 }
 
-void CInfoViewer::start()
-{
-	dprintf(DEBUG_NORMAL, "CInfoViewer::start\n");
-	
-#if defined (ENABLE_LCD)	
-	lcdUpdateTimer = g_RCInput->addTimer(LCD_UPDATE_TIME_TV_MODE, false, true);
-#endif	
-}
-
 void CInfoViewer::paintTime(int posx, int posy, unsigned int timeFont)
 {
 	dprintf(DEBUG_INFO, "CInfoViewer::paintTime:\n");
@@ -1247,7 +1238,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	else if (msg == NeutrinoMessages::EVT_TIMER) 
 	{
 #if defined (ENABLE_LCD)	  
-		if (data == lcdUpdateTimer) 
+		if (data == CNeutrinoApp::getInstance()->lcdUpdateTimer) 
 		{
 	  		showLcdPercentOver();		
 
@@ -1919,27 +1910,4 @@ void CInfoViewer::showIcon_CA_Status() const
 		}
 	}
 }
-
-int CInfoViewerHandler::exec(CMenuTarget * parent, const std::string &/*actionkey*/)
-{
-	dprintf(DEBUG_NORMAL, "CInfoViewerHandler::exec:\n");
-
-	int res = CMenuTarget::RETURN_EXIT_ALL;
-	CChannelList* channelList;
-	CInfoViewer* i;
-	
-	if (parent) 
-		parent->hide();
-	
-	i = new CInfoViewer;
-	
-	channelList = CNeutrinoApp::getInstance()->channelList;
-	i->start();
-	i->showTitle(channelList->getActiveChannelNumber(), channelList->getActiveChannelName(), channelList->getActiveSatellitePosition(), channelList->getActiveChannel_ChannelID());	// UTF-8
-
-	delete i;
-	
-	return res;
-}
-
 

@@ -84,31 +84,26 @@ class CNeutrinoApp : public CMenuTarget
 			norezap = 0x100		//
 		};
 
+		//// configfile
 		CConfigFile configfile;
-
-		// font
+		//// font
 		neutrino_font_descr_struct font;
-
-		// modes
+		//// modes
 		int mode;
 		int lastMode;
 		int chmode;	// to custom channel/bouquet mode needed by channel_select widget.
-		
+		////
 		CTimerd::RecordingInfo *nextRecordingInfo;
-
 		struct timeval standby_pressed_at;
-
 		CZapit::responseGetLastChannel firstchannel;
-
 		bool skipShutdownTimer;
-
 		CNVODChangeExec *NVODChanger;
 		CRCLock *rcLock;
-		
-		//
+		////
 		fb_pixel_t * mute_pixbuf;
 		fb_pixel_t * vol_pixbuf;
 
+		////
 		void firstChannel();
 		void tvMode( bool rezap = true );
 		void radioMode( bool rezap = true );
@@ -118,36 +113,31 @@ class CNeutrinoApp : public CMenuTarget
 		void initZapper();
 		void setupFrameBuffer();
 		
+		////
 		CNeutrinoApp();
 
 	public:
 		~CNeutrinoApp();
 		static CNeutrinoApp* getInstance();
 		
-		//
-		void setDebugLevel( int level );
-		
-		//
+		////
 		int exec(CMenuTarget* parent, const std::string& actionKey);
-		
-		//
+		////
 		void saveSetup(const char * fname);
 		int loadSetup(const char * fname);
 		void setupFonts(const char* font_file);
-		// skin
+		//// skin
 		void loadSkin(std::string skinName);
 		void readSkinConfig(const char* const filename);
 		void saveSkinConfig(const char* const filename);
 		//
 		CWidget *getWidget(const char *const widgetname, const char *const skinfilename = NULL, const bool data = false);
-//		void parseCWidget(xmlNodePtr node);
-		//
 		void parseClistBox(xmlNodePtr node, CWidget* widget);
 		void parseCHead(xmlNodePtr node, CWidget* widget);
 		void parseCFoot(xmlNodePtr node, CWidget* widget);
 		void parseCTextBox(xmlNodePtr node, CWidget* widget);
-//		void parseCListFrame(xmlNodePtr node, CWidget* widget);
-//		void parseCFrameBox(xmlNodePtr node, CWidget* widget);
+		//void parseCListFrame(xmlNodePtr node, CWidget* widget);
+		//void parseCFrameBox(xmlNodePtr node, CWidget* widget);
 		//
 		void parseCCWindow(xmlNodePtr node, CWidget* widget);
 		void parseCCLabel(xmlNodePtr node, CWidget* widget);
@@ -177,68 +167,60 @@ class CNeutrinoApp : public CMenuTarget
 		int convertBool(const char* const value);
 		int convertBorder(const char * const border);
 		int convertFontSize(const char * const size);
-		
-		//
+		////
 		void mainMenu(void);
 		bool showUserMenu(int button);
 		void selectNVOD();
                 bool getNVODMenu(ClistBox* menu);
-
+		////
 		void audioMute( int newValue, bool isEvent= false );
 		void setVolume(const neutrino_msg_t key, const bool bDoPaint = true);
-
-		// channellist
+		//// channellist
 		CChannelList* TVchannelList;
 		CChannelList* RADIOchannelList;
-
 		CChannelList* channelList;
-
-		//
+		////
 		void channelsInit(bool bOnly = false);
-		
+		////
 		CColorSetupNotifier *colorSetupNotifier;
-
-		//
+		////
 		void readEPG();
 		void saveEpg();
-
-		//
+		////
 		int run(int argc, char **argv);
 		int handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data);
-
-		//
+		////
+		void setDebugLevel( int level );
+		////
 		int getMode() { return mode; };
 		int getLastMode() { return lastMode; };
 		int getChMode(){return chmode;};	// to custom channel/bouquet mode needed by channel_select widget.
-		
-		//
+		////
 		void doGuiRecord(char * preselectedDir, bool addTimer = false);
 		void startNextRecording();
 		int startAutoRecord(bool addTimer);
 		void stopAutoRecord();
-		
-		//
+		////
 		int recordingstatus;
 		int timeshiftstatus;
 		int recording_id;
-				
-		//
+		////
+#if defined (ENABLE_LCD)
+		uint32_t lcdUpdateTimer;
+#endif		
+		////
 		void sendSectionsdConfig(void);
-
-		//
+		////
 		int getChannelMode(void) { return g_settings.channel_mode; };
 		void setChannelMode(int newmode, int nMode);
-		
-		//
+		////
 		void quickZap(int msg);
 		void showInfo(const CZapitChannel *channel);
-		
-		//
+		////
 		void stopSubtitles();
 		void startSubtitles(bool show = true);
 		void selectSubtitles();
-
-		//
+		////
 		void lockPlayBack(void);
 		void unlockPlayBack(void);
 		
