@@ -3,7 +3,7 @@
  
  	Homepage: http://dbox.cyberphoria.org/
 
-	$Id: moviebrowser.h,v 1.5 2006/09/11 21:11:35 guenther Exp $
+	$Id: moviebrowser.h 01.11.2023 mohousch Exp $
 
 	License: GPL
 
@@ -226,7 +226,7 @@ class CMovieBrowser : public CMenuTarget
 		int Dirs_Selectable; // for FileBrowser compatibility, not used in MovieBrowser
 		
 	private: // Variables
-		CFrameBuffer * m_pcWindow;
+		CFrameBuffer * frameBuffer;
 		
 		CWidget * widget;
 		uint32_t sec_timer_id;

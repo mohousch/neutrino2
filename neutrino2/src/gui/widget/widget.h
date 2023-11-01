@@ -124,17 +124,13 @@ class CWidget : public CMenuTarget
 			mainFrameBox.iHeight = dy;
 		};
 		virtual void setPosition(CBox* position){mainFrameBox = *position;};
-		//
-		void setSelected(unsigned int _new) {selected = _new; if (selected < 0) selected = 0;};
-		int getSelected(){return exit_pressed ? -1 : selected;};
+
 		// CCITEMS
 		virtual void addCCItem(CComponent* CCItem, const bool defaultselected = false);
 		bool hasCCItem(){return !CCItems.empty();};
-		int getCCItemsCount(){return CCItems.size();};
 		virtual void clearCCItems(){CCItems.clear();};
 		virtual void paintCCItems();
 		virtual void removeCCItem(long pos);
-		CCITEMLIST getCCItems(){return CCItems;};
 		//
 		virtual void paint();
 		virtual void hide();
@@ -155,14 +151,8 @@ class CWidget : public CMenuTarget
 		//
 		void enableSaveScreen();
 		void setMenuPosition(int p){menu_position = p; initFrames();};
-		// lua compatibility
-		std::string getActionKey(){return actionKey;};
-		neutrino_msg_t getKey(){return msg;};
-		bool getExitPressed(){return exit_pressed;};
-		//
-		inline CBox getWindowsPos(void){return mainFrameBox;};
-		int getMenuPosition(){return menu_position;};
-		// events
+		
+		//// events
 		virtual void onOKKeyPressed();
 		virtual void onHomeKeyPressed();
 		virtual void onUpKeyPressed();
@@ -173,10 +163,26 @@ class CWidget : public CMenuTarget
 		virtual void onPageDownKeyPressed();
 		virtual void onYellowKeyPressed();
 		virtual void onDirectKeyPressed(neutrino_msg_t _msg);
+		
 		//
+		void setSelected(unsigned int _new) {selected = _new; if (selected < 0) selected = 0;};
+		
+		////
 		std::string getWidgetName(){return name;};
 		//
 		CComponent* getCCItem(const int type, const std::string& name = "");
+		//
+		inline CBox getWindowsPos(void){return mainFrameBox;};
+		int getMenuPosition(){return menu_position;};
+		// lua compatibility
+		std::string getActionKey(){return actionKey;};
+		neutrino_msg_t getKey(){return msg;};
+		bool getExitPressed(){return exit_pressed;};
+		//
+		CCITEMLIST getCCItems(){return CCItems;};
+		int getCCItemsCount(){return CCItems.size();};
+		//
+		int getSelected(){return exit_pressed ? -1 : selected;};
 };
 
 #endif // WIDGET_H_

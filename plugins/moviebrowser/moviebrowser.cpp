@@ -3,7 +3,7 @@
 
  	Homepage: http://dbox.cyberphoria.org/
 
-	$Id: moviebrowser.cpp,v 1.10 2013/08/18 11:23:30 mohousch Exp $
+	$Id: moviebrowser.cpp 01.11.2023 mohousch Exp $
 
 	License: GPL
 
@@ -357,7 +357,6 @@ CMovieBrowser::CMovieBrowser(const char* path): configfile ('\t')
 
 CMovieBrowser::CMovieBrowser(): configfile ('\t')
 {
-	dprintf(DEBUG_NORMAL, "$Id: moviebrowser.cpp,v 1.10 2016/01/03 19:28:30 mohousch Exp $\r\n");
 	init();
 }
 
@@ -434,7 +433,7 @@ void CMovieBrowser::init(void)
 	m_file_info_stale = true;
 	m_seriename_stale = true;
 
-	m_pcWindow = CFrameBuffer::getInstance();
+	frameBuffer = CFrameBuffer::getInstance();
 	
 	widget = NULL;
 	sec_timer_id = 0;
@@ -508,13 +507,6 @@ void CMovieBrowser::init(void)
 
 	initFrames();
 	initRows();
-	//initDevelopment();
-
-	//
-//	refreshLastPlayList();	
-//	refreshLastRecordList();	
-//	refreshBrowserList();	
-//	refreshFilterList();
 }
 
 void CMovieBrowser::initGlobalSettings(void)
@@ -739,7 +731,7 @@ bool CMovieBrowser::saveSettings(MB_SETTINGS *settings)
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::saveSettings\r\n"); 
 
 	bool result = true;
-	dprintf(DEBUG_NORMAL, "[mb] saveSettings\r\n");
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::saveSettings\r\n");
 
 	configfile.setInt32("mb_lastPlayMaxItems", settings->lastPlayMaxItems);
 	configfile.setInt32("mb_lastRecordMaxItems", settings->lastRecordMaxItems);
@@ -935,8 +927,8 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 				sleep(1);
 				hintBox->hide();
 				delete hintBox;
-				//m_pcWindow->paintBackground(); // clear screen
-				//m_pcWindow->blit();
+				//frameBuffer->paintBackground(); // clear screen
+				//frameBuffer->blit();
 		
 				off64_t res = cut_movie(m_movieSelectionHandler, &m_movieInfo);
 
@@ -985,8 +977,8 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 				sleep(1);
 				hintBox->hide();
 				delete hintBox;
-				//m_pcWindow->paintBackground(); // clear screen
-				//m_pcWindow->blit();	
+				//frameBuffer->paintBackground(); // clear screen
+				//frameBuffer->blit();	
 
 				off64_t res = copy_movie(m_movieSelectionHandler, &m_movieInfo, true);
 			
@@ -1001,8 +993,8 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 	{
 		if(m_movieSelectionHandler != NULL)
 		{
-			m_pcWindow->paintBackground();
-			m_pcWindow->blit();
+			frameBuffer->paintBackground();
+			frameBuffer->blit();
 
 			::getTMDBInfo(m_movieSelectionHandler->epgTitle.c_str());
 		}
@@ -1035,8 +1027,8 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 	}
 	else if (actionKey == "parentalmenu")
 	{
-		m_pcWindow->paintBackground();
-		m_pcWindow->blit();
+		frameBuffer->paintBackground();
+		frameBuffer->blit();
 			
 		showParentalMenu();
 		
@@ -1044,8 +1036,8 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 	}
 	else if (actionKey == "optionmenudir")
 	{
-		m_pcWindow->paintBackground();
-		m_pcWindow->blit();
+		frameBuffer->paintBackground();
+		frameBuffer->blit();
 		
 		showOptionsMenuDir();
 		
@@ -1053,8 +1045,8 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 	}
 	else if (actionKey == "optionmenubrowser")
 	{
-		m_pcWindow->paintBackground();
-		m_pcWindow->blit();
+		frameBuffer->paintBackground();
+		frameBuffer->blit();
 		
 		showOptionMenuBrowser();
 		
@@ -1062,8 +1054,8 @@ int CMovieBrowser::exec(CMenuTarget * parent, const std::string &actionKey)
 	}
 	else if (actionKey == "optionmenu")
 	{
-		m_pcWindow->paintBackground();
-		m_pcWindow->blit();
+		frameBuffer->paintBackground();
+		frameBuffer->blit();
 		
 		showOptionMenu();
 		
@@ -1139,18 +1131,7 @@ int CMovieBrowser::exec(int timeout)
 	}
 	
 	// reload movies
-	if(m_file_info_stale == true)
-	{
-		dprintf(DEBUG_NORMAL, "CMovieBrowser::::exec: reload:\r\n");
-		loadMovies();
-	}
-	else
-	{
-		// since we cleared everything above, we have to refresh the list now.
-		refreshBrowserList();	
-		refreshLastPlayList();	
-		refreshLastRecordList();
-	}
+	loadMovies();
 
 	// get old movie selection and set position in windows	
 	m_currentBrowserSelection = m_prevBrowserSelection;
@@ -1163,13 +1144,10 @@ int CMovieBrowser::exec(int timeout)
 
 	// update movie selection
 	updateMovieSelection();
-	
-	// on set guiwindow
-	//onSetGUIWindow(m_settings.gui, false);
 
+	//
 	refresh();
-	
-	m_pcWindow->blit();
+	frameBuffer->blit();
 
 	sec_timer_id = g_RCInput->addTimer(1*1000*1000, false);
 	
@@ -1204,7 +1182,7 @@ int CMovieBrowser::exec(int timeout)
 			}
 		}
 		
-		m_pcWindow->blit();	
+		frameBuffer->blit();	
 
 		if ( msg <= CRCInput::RC_MaxRC )
 			timeoutEnd = CRCInput::calcTimeoutEnd(timeout); // calcualate next timeout
@@ -1348,7 +1326,6 @@ void CMovieBrowser::refresh(void)
 	refreshTitle();	
 	refreshFoot();
 	refreshLCD();
-	
 	widget->paint();
 }
 
@@ -1359,7 +1336,7 @@ std::string CMovieBrowser::getCurrentDir(void)
 
 CFile * CMovieBrowser::getSelectedFile(void)
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::getSelectedFile: %s\r\n",m_movieSelectionHandler->file.Name.c_str());
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::getSelectedFile: %s\r\n", m_movieSelectionHandler->file.Name.c_str());
 
 	if(m_movieSelectionHandler != NULL)
 		return(&m_movieSelectionHandler->file);
@@ -1400,7 +1377,7 @@ void CMovieBrowser::refreshMovieInfo(bool refreshGUI)
 	if (refreshGUI)
 	{
 		m_pcInfo->paint();
-		m_pcWindow->blit();
+		frameBuffer->blit();
 	}
 }
 
@@ -1497,7 +1474,7 @@ void CMovieBrowser::refreshFilterList(void)
 
 void CMovieBrowser::refreshLastPlayList(void) //P2
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::refreshlastPlayList:\r\n");
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::refreshlastPlayList:\r\n");
 	
 	std::string string_item;
 
@@ -1558,7 +1535,7 @@ void CMovieBrowser::refreshLastPlayList(void) //P2
 
 void CMovieBrowser::refreshLastRecordList(void) //P2
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::refreshLastRecordList:\r\n");
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::refreshLastRecordList:\r\n");
 	
 	std::string string_item;
 
@@ -1620,7 +1597,7 @@ void CMovieBrowser::refreshLastRecordList(void) //P2
 
 void CMovieBrowser::refreshBrowserList(void) //P1
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::refreshBrowserList: \r\n");
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::refreshBrowserList: \r\n");
 	
 	std::string string_item;
 
@@ -1640,8 +1617,10 @@ void CMovieBrowser::refreshBrowserList(void) //P1
 	{
 		m_currentBrowserSelection = 0;
 		m_movieSelectionHandler = NULL;
+		
 		if(m_pcBrowser != NULL)
 			m_pcBrowser->setLines(&m_browserListLines);//FIXME last delete test
+			
 		return; // exit here if nothing else is to do
 	}
 	
@@ -1702,7 +1681,7 @@ const struct button_label MBHeadButtons[MB_HEAD_BUTTONS_COUNT] =
 void CMovieBrowser::refreshTitle(void) 
 {
 	//Paint Text Background
-	dprintf(DEBUG_INFO, "CMovieBrowser::refreshTitle: %s\r\n",m_textTitle.c_str());
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::refreshTitle: %s\r\n", m_textTitle.c_str());
 	
 	headers->clear();
 	
@@ -1886,8 +1865,8 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 		{
 			playing_info = m_movieSelectionHandler;
 
-			m_pcWindow->paintBackground();
-			m_pcWindow->blit();
+			frameBuffer->paintBackground();
+			frameBuffer->blit();
 			
 			tmpMoviePlayerGui.addToPlaylist(*m_movieSelectionHandler);
 			tmpMoviePlayerGui.exec(NULL, "");
@@ -1899,8 +1878,8 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 	{
 		if(m_movieSelectionHandler != NULL)
 		{
-			m_pcWindow->paintBackground();
-			m_pcWindow->blit();
+			frameBuffer->paintBackground();
+			frameBuffer->blit();
 	  
 			m_movieInfo.showMovieInfo(*m_movieSelectionHandler);
 			
@@ -1910,8 +1889,8 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 	else if (msg == CRCInput::RC_setup) //FIXME:
 	{
 		//first clear screen
-		m_pcWindow->paintBackground();
-		m_pcWindow->blit();
+		frameBuffer->paintBackground();
+		frameBuffer->blit();
 	
 		showMenu();
 	}
@@ -1919,8 +1898,8 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 	{
 		if(m_movieSelectionHandler != NULL)
 		{
-			m_pcWindow->paintBackground();
-			m_pcWindow->blit();
+			frameBuffer->paintBackground();
+			frameBuffer->blit();
 			
 			::getTMDBInfo(m_movieSelectionHandler->epgTitle.c_str());
 			
@@ -2045,18 +2024,6 @@ bool CMovieBrowser::onButtonPressLastRecordList(neutrino_msg_t msg)
 	return (result);
 }
 
-/*
-bool CMovieBrowser::onButtonPressBookmarkList(neutrino_msg_t msg) 
-{
-	dprintf(DEBUG_DEBUG, "CMovieBrowser::onButtonPressBookmarkList: %d\r\n", msg);
-	
-	bool result = true;
-	
-	result = false;
-	return (result);
-}
-*/
-
 bool CMovieBrowser::onButtonPressFilterList(neutrino_msg_t msg) 
 {
 	dprintf(DEBUG_DEBUG, "CMovieBrowser::onButtonPressFilterList: %d,%d\r\n", msg, m_settings.filter.item);
@@ -2154,7 +2121,7 @@ bool CMovieBrowser::onButtonPressMovieInfoList(neutrino_msg_t msg)
 
 void CMovieBrowser::onDeleteFile(MI_MOVIE_INFO& movieSelectionHandler)
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::onDeleteFile:");
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::onDeleteFile:");
 
 	std::string msg = __("Delete");
 	msg += "\r\n ";
@@ -2231,9 +2198,9 @@ void CMovieBrowser::onSetGUIWindow(MB_GUI gui)
 {
 	m_settings.gui = gui;
 	
-	if(gui == MB_GUI_MOVIE_INFO)
+	if (gui == MB_GUI_MOVIE_INFO)
 	{
-		dprintf(DEBUG_NORMAL, "[mb] browser info\r\n");
+		dprintf(DEBUG_NORMAL, "CMovieBrowser::onSetGUIWindow: browser info\r\n");
 		
 		// Paint these frames ...
 		m_showMovieInfo = true;
@@ -2258,9 +2225,9 @@ void CMovieBrowser::onSetGUIWindow(MB_GUI gui)
 		
 		refreshMovieInfo();
 	}
-	else if(gui == MB_GUI_LAST_PLAY)
+	else if (gui == MB_GUI_LAST_PLAY)
 	{
-		dprintf(DEBUG_NORMAL, "[mb] last play \r\n");
+		dprintf(DEBUG_NORMAL, "CMovieBrowser::onSetGUIWindow: last play \r\n");
 		
 		// Paint these frames ...
 		m_showLastRecordFiles = true;
@@ -2285,9 +2252,9 @@ void CMovieBrowser::onSetGUIWindow(MB_GUI gui)
 		
 		refreshMovieInfo();
 	}
-	else if(gui == MB_GUI_LAST_RECORD)
+	else if (gui == MB_GUI_LAST_RECORD)
 	{
-		dprintf(DEBUG_NORMAL, "[mb] last record \r\n");
+		dprintf(DEBUG_NORMAL, "CMovieBrowser::onSetGUIWindow: last record \r\n");
 		// Paint these frames ...
 		m_showLastRecordFiles = true;
 		m_showLastPlayFiles = true;
@@ -2312,9 +2279,9 @@ void CMovieBrowser::onSetGUIWindow(MB_GUI gui)
 		
 		refreshMovieInfo();
 	}
- 	else if(gui == MB_GUI_FILTER)
+ 	else if (gui == MB_GUI_FILTER)
 	{
-		dprintf(DEBUG_NORMAL, "[mb] filter \r\n");
+		dprintf(DEBUG_NORMAL, "CMovieBrowser::onSetGUIWindow: filter \r\n");
 		
 		// Paint these frames ...
 		m_showFilter = true;
@@ -2367,44 +2334,44 @@ void CMovieBrowser::onSetGUIWindowPrev(void)
 
 void CMovieBrowser::onSetFocus(MB_FOCUS new_focus)
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::onSetFocus: %d \r\n", new_focus);
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::onSetFocus: %d \r\n", new_focus);
 	
 	m_windowFocus = new_focus;
 	
 	if(m_windowFocus == MB_FOCUS_BROWSER)
 	{
-			m_pcBrowser->showSelection(true);
-			m_pcLastRecord->showSelection(false);
-			m_pcLastPlay->showSelection(false);
-			m_pcFilter->showSelection(false);
+		m_pcBrowser->showSelection(true);
+		m_pcLastRecord->showSelection(false);
+		m_pcLastPlay->showSelection(false);
+		m_pcFilter->showSelection(false);
 	}
 	else if(m_windowFocus == MB_FOCUS_LAST_PLAY)
 	{
-			m_pcBrowser->showSelection(false);
-			m_pcLastRecord->showSelection(false);
-			m_pcLastPlay->showSelection(true);
-			m_pcFilter->showSelection(false);
+		m_pcBrowser->showSelection(false);
+		m_pcLastRecord->showSelection(false);
+		m_pcLastPlay->showSelection(true);
+		m_pcFilter->showSelection(false);
 	}
 	else if(m_windowFocus == MB_FOCUS_LAST_RECORD)
 	{
-			m_pcBrowser->showSelection(false);
-			m_pcLastRecord->showSelection(true);
-			m_pcLastPlay->showSelection(false);
-			m_pcFilter->showSelection(false);
+		m_pcBrowser->showSelection(false);
+		m_pcLastRecord->showSelection(true);
+		m_pcLastPlay->showSelection(false);
+		m_pcFilter->showSelection(false);
 	}
 	else if(m_windowFocus == MB_FOCUS_MOVIE_INFO)
 	{
-			m_pcBrowser->showSelection(false);
-			m_pcLastRecord->showSelection(false);
-			m_pcLastPlay->showSelection(false);
-			m_pcFilter->showSelection(false);
+		m_pcBrowser->showSelection(false);
+		m_pcLastRecord->showSelection(false);
+		m_pcLastPlay->showSelection(false);
+		m_pcFilter->showSelection(false);
 	}
 	else if(m_windowFocus == MB_FOCUS_FILTER)
 	{
-			m_pcBrowser->showSelection(false);
-			m_pcLastRecord->showSelection(false);
-			m_pcLastPlay->showSelection(false);
-			m_pcFilter->showSelection(true);
+		m_pcBrowser->showSelection(false);
+		m_pcLastRecord->showSelection(false);
+		m_pcLastPlay->showSelection(false);
+		m_pcFilter->showSelection(true);
 	}
 	
 	updateMovieSelection();
@@ -2413,18 +2380,18 @@ void CMovieBrowser::onSetFocus(MB_FOCUS new_focus)
 
 void CMovieBrowser::onSetFocusNext(void) 
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::onSetFocusNext: \r\n");
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::onSetFocusNext: \r\n");
 	
 	if(m_settings.gui == MB_GUI_FILTER)
 	{
 		if(m_windowFocus == MB_FOCUS_BROWSER)
 		{
-			dprintf(DEBUG_NORMAL, "[mb] MB_FOCUS_FILTER\r\n");
+			dprintf(DEBUG_NORMAL, "CMovieBrowser::onSetFocusNext: MB_FOCUS_FILTER\r\n");
 			onSetFocus(MB_FOCUS_FILTER);
 		}
 		else
 		{
-			dprintf(DEBUG_NORMAL, "[mb] MB_FOCUS_BROWSER\r\n");
+			dprintf(DEBUG_NORMAL, "CMovieBrowser::onSetFocusNext: MB_FOCUS_BROWSER\r\n");
 			onSetFocus(MB_FOCUS_BROWSER);
 		}
 	}
@@ -2432,13 +2399,13 @@ void CMovieBrowser::onSetFocusNext(void)
 	{
 		if(m_windowFocus == MB_FOCUS_BROWSER)
 		{
-			dprintf(DEBUG_NORMAL, "[mb] MB_FOCUS_MOVIE_INFO\r\n");
+			dprintf(DEBUG_NORMAL, "CMovieBrowser::onSetFocusNext: MB_FOCUS_MOVIE_INFO\r\n");
 			onSetFocus(MB_FOCUS_MOVIE_INFO);
 			m_windowFocus = MB_FOCUS_MOVIE_INFO;
 		}
 		else
 		{
-			dprintf(DEBUG_NORMAL, "[mb] MB_FOCUS_BROWSER\r\n");
+			dprintf(DEBUG_NORMAL, "CMovieBrowser::onSetFocusNext: MB_FOCUS_BROWSER\r\n");
 			onSetFocus(MB_FOCUS_BROWSER);
 		}
 	}
@@ -2465,7 +2432,7 @@ void CMovieBrowser::onSetFocusNext(void)
 		}
 	}
 	
-	m_pcWindow->blit();
+	frameBuffer->blit();
 }
 
 bool CMovieBrowser::onSortMovieInfoHandleList(std::vector<MI_MOVIE_INFO*>& handle_list, MB_INFO_ITEM sort_item, MB_DIRECTION direction)
@@ -2559,7 +2526,7 @@ void CMovieBrowser::loadAllTsFileNamesFromStorage(void)
 // Note: this function is used recursive, do not add any return within the body due to the recursive counter
 bool CMovieBrowser::loadTsFileNamesFromDir(const std::string & dirname)
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::loadTsFileNamesFromDir: %s\r\n", dirname.c_str());
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::loadTsFileNamesFromDir: %s\r\n", dirname.c_str());
 
 	static int recursive_counter = 0; // recursive counter to be used to avoid hanging
 	bool result = false;
@@ -2679,7 +2646,7 @@ bool CMovieBrowser::readDir(const std::string & dirname, CFileList* flist)
 {
 	bool result = true;
 	
-	dprintf(DEBUG_INFO, "CMovieBrowser::readDir: %s\n",dirname.c_str());
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::readDir: %s\n",dirname.c_str());
 	
 	stat_struct statbuf;
 	dirent_struct **namelist;
@@ -2688,7 +2655,7 @@ bool CMovieBrowser::readDir(const std::string & dirname, CFileList* flist)
 	n = my_scandir(dirname.c_str(), &namelist, 0, my_alphasort);
 	if (n < 0)
 	{
-		perror(("[mb] scandir: "+dirname).c_str());
+		perror(("CMovieBrowser::readDir: scandir: "+dirname).c_str());
 		return false;
 	}
 	
@@ -2729,7 +2696,7 @@ bool CMovieBrowser::delFile(CFile& file)
 
 void CMovieBrowser::updateMovieSelection(void)
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::updateMovieSelection: %d\r\n", m_windowFocus);
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::updateMovieSelection: %d\r\n", m_windowFocus);
 	
 	if (m_vMovieInfo.size() == 0) 
 		return;
@@ -2811,7 +2778,7 @@ void CMovieBrowser::updateMovieSelection(void)
 
 void CMovieBrowser::updateFilterSelection(void)
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::updateFilterSelection:\r\n");
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::updateFilterSelection:\r\n");
 	
 	if( m_FilterLines.lineArray[0].size() == 0) 
 		return;
@@ -2875,12 +2842,12 @@ bool CMovieBrowser::addDir(std::string& dirname, int* used)
 		if(strcmp(m_dir[i].name.c_str(),newdir.name.c_str()) == 0)
 		{
 			// string is identical to previous one
-			dprintf(DEBUG_NORMAL, "[mb] Dir already in list: %s\r\n",newdir.name.c_str());
+			dprintf(DEBUG_NORMAL, "CMovieBrowser::addDir: Dir already in list: %s\r\n",newdir.name.c_str());
 			return (false); 
 		}
 	}
 	
-	dprintf(DEBUG_NORMAL, "[mb] new Dir: %s\r\n",newdir.name.c_str());
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::addDir: new Dir: %s\r\n",newdir.name.c_str());
 	newdir.used = used;
 	m_dir.push_back(newdir);
 	
@@ -2898,8 +2865,8 @@ void CMovieBrowser::loadMovies(void)
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::loadMovies:\n");
 	
 	//first clear screen */
-	m_pcWindow->paintBackground();
-	m_pcWindow->blit();	
+	frameBuffer->paintBackground();
+	frameBuffer->blit();	
 
 	CHintBox loadBox(__("Moviebrowser"), __("Scan for Movies ..."));
 	
@@ -2928,7 +2895,7 @@ void CMovieBrowser::loadMovies(void)
 
 void CMovieBrowser::loadAllMovieInfo(void)
 {
-	dprintf(DEBUG_INFO, "CMovieBrowser::loadAllMovieInfo:\r\n");
+	dprintf(DEBUG_NORMAL, "CMovieBrowser::loadAllMovieInfo:\r\n");
 
 	for(unsigned int i = 0; i < m_vMovieInfo.size(); i++)
 	{
@@ -3688,7 +3655,7 @@ void CMovieBrowser::updateSerienames(void)
 		}
 	}
 	
-	//dprintf(DEBUG_NORMAL, "[mb]->updateSerienames: %d\r\n",m_vHandleSerienames.size());
+	//dprintf(DEBUG_NORMAL, "CMovieBrowser::updateSerienames: %d\r\n",m_vHandleSerienames.size());
 	// TODO sort(m_serienames.begin(), m_serienames.end(), my_alphasort);
 	
 	//m_seriename_stale = false;
@@ -3696,7 +3663,7 @@ void CMovieBrowser::updateSerienames(void)
 
 void CMovieBrowser::autoFindSerie(void)
 {
-	dprintf(DEBUG_INFO, "autoFindSerie\n");
+	dprintf(DEBUG_NORMAL, "autoFindSerie\n");
 	
 	updateSerienames(); // we have to make sure that the seriename array is up to date, otherwise this does not work
 			    // if the array is not stale, the function is left immediately
@@ -3942,17 +3909,12 @@ void CDirMenu::show(void)
 	
 	CMenuWidget dirMenu(__("Additional paths"), NEUTRINO_ICON_MOVIE);
 	dirMenu.enableSaveScreen();
-	//dirMenu.setHeadCorner(RADIUS_SMALL);
-	//dirMenu.setHeadGradient(LIGHT2DARK);
-	//dirMenu.setHeadLine(false);
-	//dirMenu.setFootCorner(RADIUS_SMALL);
-	//dirMenu.setFootGradient(DARK2LIGHT);
-	//dirMenu.setFootLine(false);
 
 	dirMenu.setWidgetMode(ClistBox::MODE_MENU);
 	dirMenu.enableShrinkMenu();
 	
 	updateDirState();
+	
 	for(unsigned int i = 0; i < dirList->size() && i < MAX_DIR; i++)
 	{
 		sprintf(tmp,"%d",i);
@@ -3961,6 +3923,7 @@ void CDirMenu::show(void)
 	}
 	
 	dirMenu.exec(NULL," ");
+	
 	return;
 
 }
