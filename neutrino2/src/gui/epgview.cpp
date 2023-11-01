@@ -150,7 +150,6 @@ CEpgData::CEpgData()
 	headers = NULL;
 	footers = NULL;
 	cFollowScreeningWindow = NULL;
-	audioIcon = NULL;
 	
 	epg_done = -1;
 	
@@ -196,12 +195,6 @@ CEpgData::~CEpgData()
 	{
 		delete cFollowScreeningWindow;
 		cFollowScreeningWindow = NULL;
-	}
-	
-	if (audioIcon)
-	{
-		delete audioIcon;
-		audioIcon = NULL;
 	}
 }
 
@@ -492,12 +485,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		cFollowScreeningWindow = NULL;
 	}
 	
-	if (audioIcon)
-	{
-		delete audioIcon;
-		audioIcon = NULL;
-	}
-	
 	id = a_id;
 
 	// getepg data
@@ -659,10 +646,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		// head
 		headers->enablePaintDate();
 		headers->setFormat("%d.%m.%Y %H:%M:%S");
-//		headers->setLine(true, true);
-		
-		//
-//		footers->setLine(true, true);
 		
 		//
 		widget->addCCItem(textBox);
@@ -735,7 +718,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	
 	// show Content&Component for Dolby & 16:9 //FIXME:
         CSectionsd::ComponentTagList tags;
-        bool have_16_9 = false;
         tags.clear();
 	
 	if ( CSectionsd::getInstance()->getComponentTagsUniqueKey( epgData.eventID, tags ) )
@@ -746,6 +728,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 			int icon_h_aspect = 0;
 			int icon_w_dd = 0;
 			int icon_h_dd = 0;
+			bool have_16_9 = false;
 			
 			frameBuffer->getIconSize(NEUTRINO_ICON_16_9, &icon_w_aspect, &icon_h_aspect);
 			frameBuffer->getIconSize(NEUTRINO_ICON_DD, &icon_w_dd, &icon_h_dd);
@@ -770,7 +753,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
                         }
                 }
         }
-
 
 	//show progressbar
 	if ( epg_done != -1 )
@@ -896,9 +878,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 							
 							if (doRecord)
 							{
-								if (CTimerd::getInstance()->addRecordTimerEvent(channel_id, epgData.epg_times.startzeit, epgData.epg_times.startzeit + epgData.epg_times.dauer, epgData.eventID, epgData.epg_times.startzeit, epgData.epg_times.startzeit - (ANNOUNCETIME + 120 ), TIMERD_APIDS_CONF, true, recDir,false) == -1)
-								{
-									if(askUserOnTimerConflict(epgData.epg_times.startzeit - (ANNOUNCETIME + 120), epgData.epg_times.startzeit + epgData.epg_times.dauer))
+								if (CTimerd::getInstance()->addRecordTimerEvent(channel_id, epgData.epg_times.startzeit, epgData.epg_times.startzeit + epgData.epg_times.dauer, epgData.eventID, epgData.epg_times.startzeit, epgData.epg_times.startzeit - (ANNOUNCETIME + 120 ), TIMERD_APIDS_CONF, true, recDir,false) == -1)									{																		  if(askUserOnTimerConflict(epgData.epg_times.startzeit - (ANNOUNCETIME + 120), epgData.epg_times.startzeit + epgData.epg_times.dauer))
 									{
 										CTimerd::getInstance()->addRecordTimerEvent(channel_id, epgData.epg_times.startzeit, epgData.epg_times.startzeit + epgData.epg_times.dauer, epgData.eventID, epgData.epg_times.startzeit, epgData.epg_times.startzeit - (ANNOUNCETIME + 120 ), TIMERD_APIDS_CONF, true, recDir,true);
 														 
@@ -1007,12 +987,6 @@ void CEpgData::hide()
 	{
 		delete cFollowScreeningWindow;
 		cFollowScreeningWindow = NULL;
-	}
-	
-	if (audioIcon)
-	{
-		delete audioIcon;
-		audioIcon = NULL;
 	}
 }
 
