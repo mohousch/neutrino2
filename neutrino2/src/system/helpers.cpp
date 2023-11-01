@@ -53,7 +53,7 @@
 #include <system/set_threadname.h>
 #include <system/tmdbparser.h>
 
-// zapit includes
+//
 #include <zapit/bouquets.h>
 
 #include <wordexp.h>
@@ -420,6 +420,7 @@ std::string getNowTimeStr(const char* format)
 std::string trim(std::string &str, const std::string &trimChars /*= " \n\r\t"*/)
 {
 	std::string result = str.erase(str.find_last_not_of(trimChars) + 1);
+	
 	return result.erase(0, result.find_first_not_of(trimChars));
 }
 
@@ -427,8 +428,9 @@ std::string replace_all(const std::string &in, const std::string &entity, const 
 {
 	std::string out = in;
 	std::string::size_type loc = 0;
+	
 	while (( loc = out.find(entity, loc)) != std::string::npos )
-	out.replace(loc, entity.length(), symbol);
+		out.replace(loc, entity.length(), symbol);
 	
 	return out;
 }

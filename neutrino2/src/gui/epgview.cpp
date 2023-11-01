@@ -219,7 +219,7 @@ void CEpgData::initFrames()
 	cFootBox.iX = cFrameBox.iX;
 	cFootBox.iY = cFrameBox.iY + cFrameBox.iHeight - cFootBox.iHeight;
 
-	// screening bar
+	// followScreeningBar
 	cFollowScreeningBox.iHeight = g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getHeight() + 6;
 	cFollowScreeningBox.iWidth = cFrameBox.iWidth;
 	cFollowScreeningBox.iX = cFrameBox.iX;
@@ -229,7 +229,7 @@ void CEpgData::initFrames()
 	cTextBox.iX = cFrameBox.iX;
 	cTextBox.iY = cFrameBox.iY + cHeadBox.iHeight;
 	cTextBox.iWidth = cFrameBox.iWidth;
-	cTextBox.iHeight = cFrameBox.iHeight - cHeadBox.iHeight - cFootBox.iHeight - cFollowScreeningBox.iHeight;
+	cTextBox.iHeight = cFrameBox.iHeight - cHeadBox.iHeight - cFootBox.iHeight - cFollowScreeningBox.iHeight - cFollowScreeningBox.iHeight;
 }
 
 #define GENRE_MOVIE_COUNT 9
@@ -719,39 +719,42 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	// show Content&Component for Dolby & 16:9 //FIXME:
         CSectionsd::ComponentTagList tags;
         tags.clear();
+        ////
+        int icon_w_aspect = 0;
+	int icon_h_aspect = 0;
+	int icon_w_dd = 0;
+	int icon_h_dd = 0;
+	bool have_16_9 = false;
+	bool have_dd = false;
+	
+	frameBuffer->getIconSize(NEUTRINO_ICON_16_9, &icon_w_aspect, &icon_h_aspect);
+	frameBuffer->getIconSize(NEUTRINO_ICON_DD, &icon_w_dd, &icon_h_dd);
 	
 	if ( CSectionsd::getInstance()->getComponentTagsUniqueKey( epgData.eventID, tags ) )
         {
                 for (unsigned int i = 0; i < tags.size(); i++)
                 {
-			int icon_w_aspect = 0;
-			int icon_h_aspect = 0;
-			int icon_w_dd = 0;
-			int icon_h_dd = 0;
-			bool have_16_9 = false;
-			
-			frameBuffer->getIconSize(NEUTRINO_ICON_16_9, &icon_w_aspect, &icon_h_aspect);
-			frameBuffer->getIconSize(NEUTRINO_ICON_DD, &icon_w_dd, &icon_h_dd);
-			
 			//FIXME:
                         if( tags[i].streamContent == 1 && (tags[i].componentType == 2 || tags[i].componentType == 3) )
                         {
                         	have_16_9 = true;
-                        	
-                        	if (cFollowScreeningWindow)
-                        	{
-                                	frameBuffer->paintIcon(NEUTRINO_ICON_16_9, cFollowScreeningWindow->getWindowsPos().iX + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("<") + 5 + widthl + 5, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - icon_h_aspect)/2);
-                                }
                         }
                         
                         if( tags[i].streamContent == 2 && tags[i].componentType == 5 )
                         {
-                        	if (cFollowScreeningWindow)
-                        	{
-                               		frameBuffer->paintIcon(NEUTRINO_ICON_DD, cFollowScreeningWindow->getWindowsPos().iX + 10 + g_Font[SNeutrinoSettings::FONT_TYPE_EPG_DATE]->getRenderWidth("<") + 5 + widthl + 5 + have_16_9? icon_w_aspect + 5 : 0, cFollowScreeningWindow->getWindowsPos().iY + (cFollowScreeningWindow->getWindowsPos().iHeight - icon_h_dd)/2);
-                               	}
+                        	have_dd = true;
                         }
                 }
+                
+                if (have_16_9)
+                {
+                	frameBuffer->paintIcon(NEUTRINO_ICON_16_9, widget->getWindowsPos().iX + 10, widget->getWindowsPos().iY + textBox->getWindowsPos().iHeight + (cFollowScreeningWindow->getWindowsPos().iHeight - icon_h_aspect)/2);
+                }
+                        
+		if (have_dd)
+		{
+			frameBuffer->paintIcon(NEUTRINO_ICON_DD, widget->getWindowsPos().iX + 10 + have_16_9? icon_w_aspect + 5 : 0, widget->getWindowsPos().iY + textBox->getWindowsPos().iHeight + (cFollowScreeningWindow->getWindowsPos().iHeight - icon_h_aspect)/2);
+		}
         }
 
 	//show progressbar
