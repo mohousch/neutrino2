@@ -50,12 +50,6 @@
 #include <global.h>
 #include <neutrino2.h>
 
-// curl
-//#include <curl/curl.h>
-//#include <curl/easy.h>
-
-//#include <dirent.h>
-
 
 ////
 CZapitChannel * CZapitBouquet::getChannelByChannelID(const t_channel_id channel_id, const unsigned char serviceType)

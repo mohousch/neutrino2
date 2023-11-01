@@ -241,8 +241,6 @@ bool CAudioPlayer::play(const CAudiofile *file, const bool highPrio)
 
 CAudioPlayer::CAudioPlayer()
 {
-	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
-	
 	init();
 }
 
@@ -312,7 +310,7 @@ void CAudioPlayer::sc_callback(void *arg)
 
 void CAudioPlayer::clearFileData()
 {
-	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
+	dprintf(DEBUG_DEBUG, "CAudioPlayer::%s\n", __FUNCTION__);
 	
 	m_Audiofile.clear();
 	m_played_time = 0;
@@ -338,7 +336,7 @@ bool CAudioPlayer::hasMetaDataChanged()
 
 bool CAudioPlayer::readMetaData(CAudiofile* const file, const bool nice)
 {
-	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
+	dprintf(DEBUG_DEBUG, "CAudioPlayer::%s\n", __FUNCTION__);
 	
 	return CBaseDec::GetMetaDataBase(file, nice);
 }

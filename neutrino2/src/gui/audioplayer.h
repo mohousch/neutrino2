@@ -26,7 +26,6 @@
 #ifndef __audioplayergui__
 #define __audioplayergui__
 
-
 #include <driver/framebuffer.h>
 #include <driver/audiofile.h>
 #include <driver/audioplay.h>
@@ -151,9 +150,7 @@ class CAudioPlayerGui : public CMenuTarget
 		void rev(unsigned int seconds = 0);
 		bool playNext(bool allow_rotate = false);
 		bool playPrev(bool allow_rotate = false);
-
 		bool shufflePlaylist(void);
-
 		void playFile();
 		
 		//

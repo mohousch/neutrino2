@@ -54,8 +54,6 @@
 #include <linux/reboot.h>
 #include <sys/reboot.h>
 
-#include <mcheck.h>
-
 #include <global.h>
 #include <neutrino2.h>
 
@@ -5022,11 +5020,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	realRun();
 
 	// exitRun
-	exitRun(SHUTDOWN);
-	
-#ifdef USE_OPENGL
-	muntrace();
-#endif	
+	exitRun(SHUTDOWN);	
 
 	// never reached
 	return 0;
@@ -5067,12 +5061,7 @@ void sighandler(int signum)
 int main(int argc, char *argv[])
 {
 	// build date
-	printf(">>> %s v %s (compiled %s %s) <<<\n", PACKAGE_NAME, PACKAGE_VERSION, __DATE__, __TIME__);
-	
-#ifdef USE_OPENGL
-	setenv("MALLOC_TRACE", "/home/mohousch/tuxbox/neutrino2/mtrace.txt", 1);
-	mtrace();
-#endif	
+	printf(">>> %s v %s (compiled %s %s) <<<\n", PACKAGE_NAME, PACKAGE_VERSION, __DATE__, __TIME__);	
 
 	// sighandler
         signal(SIGTERM, sighandler);

@@ -426,7 +426,7 @@ void flac_metadata(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadat
 	{
 		case FLAC__METADATA_TYPE_STREAMINFO:
 		{
-			dprintf(DEBUG_NORMAL, "STREAMINFO block received\n");
+			dprintf(DEBUG_INFO, "STREAMINFO block received\n");
 			
 			flacdec->mTotalSamples = metadata->data.stream_info.total_samples;
 			flacdec->mBps = metadata->data.stream_info.bits_per_sample;
@@ -447,7 +447,7 @@ void flac_metadata(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadat
 		case FLAC__METADATA_TYPE_SEEKTABLE: 	printf("SEEKTABLE block received\n"); break;
 		case FLAC__METADATA_TYPE_VORBIS_COMMENT:
 		{
-			printf("VORBISCOMMENT block (a.k.a. FLAC tags) received\n"); 
+			dprintf(DEBUG_DEBUG, "VORBISCOMMENT block (a.k.a. FLAC tags) received\n"); 
 			// if there is an old metadata -> clear it
 			if (flacdec->mMetadata != NULL)
 				FLAC__metadata_object_delete(flacdec->mMetadata);

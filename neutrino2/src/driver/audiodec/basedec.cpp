@@ -94,7 +94,7 @@ CBaseDec::RetCode CBaseDec::DecoderBase(CAudiofile* const in)
 
 bool CBaseDec::GetMetaDataBase(CAudiofile* const in, const bool nice)
 {
-	dprintf(DEBUG_NORMAL, "CBaseDec::%s\n", __FUNCTION__);
+	dprintf(DEBUG_DEBUG, "CBaseDec::%s\n", __FUNCTION__);
 	
 	bool Status = true;
 	FILE* fp;

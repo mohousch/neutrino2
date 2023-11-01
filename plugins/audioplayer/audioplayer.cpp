@@ -272,7 +272,7 @@ void CMP3Player::processPlaylistUrl(const char *url, const char *name, const tim
 
 void CMP3Player::getMetaData(CAudiofile &File)
 {
-	dprintf(DEBUG_NORMAL, "CMP3Player::GetMetaData:\n");
+	dprintf(DEBUG_INFO, "CMP3Player::GetMetaData:\n");
 	
 	bool ret = 1;
 

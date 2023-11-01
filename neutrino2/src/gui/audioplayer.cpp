@@ -1305,7 +1305,7 @@ bool CAudioPlayerGui::shufflePlaylist(void)
 
 		std::random_shuffle((m_current != 0) ? m_playlist.begin() : m_playlist.begin() + 1, m_playlist.end(), rnd);
 
-		m_current = 0;
+		m_current = 0; //
 
 		result = true;
 	}
