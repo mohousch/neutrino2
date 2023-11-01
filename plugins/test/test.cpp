@@ -1371,7 +1371,7 @@ void CTestMenu::testCFrameBoxWidget()
 		artFrame->setPosition(box.iX + 10 + box.iWidth - 10 - pic_w - 20, box.iY + 40 + h_h + 10, pic_w - 20, 250);
 		artFrame->setIconName(m_vMovieInfo[0].tfile.c_str());
 		//artFrame->paintMainFrame(false);
-		artFrame->setActionKey(this, "fire1play");
+		artFrame->setActionKey(this, "fireplay");
 
 		frameBoxWidget->addFrame(artFrame);
 		
@@ -5510,7 +5510,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 	}
 	else if (actionKey == "wplay")
 	{
-		printf("wplay1...");
 		if (!m_vMovieInfo.empty())
 		{
 			if (rightWidget && rightWidget->hasItem())
@@ -5541,9 +5540,14 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 				tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
 				tmpMoviePlayerGui.exec(NULL, "");
 			}
+			else
+			{
+				hide();
+				
+				tmpMoviePlayerGui.addToPlaylist(m_vMovieInfo[0]);
+				tmpMoviePlayerGui.exec(NULL, "");
+			}
 		}
-		
-		printf("wplay2...");
 		
 		return RETURN_REPAINT;
 	}
@@ -6421,20 +6425,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 			selected = frameBoxWidget->getSelected() - 6;
 		else
 			selected = 0;
-
-		if (&m_vMovieInfo[selected].file != NULL) 
-		{
-			CMovieInfoWidget movieInfoWidget;
-			movieInfoWidget.setMovie(m_vMovieInfo[selected]);
-		
-			movieInfoWidget.exec(NULL, "");
-		}
-
-		return RETURN_REPAINT;
-	}
-	else if(actionKey == "fire1play")
-	{
-		selected = 0;
 
 		if (&m_vMovieInfo[selected].file != NULL) 
 		{

@@ -36,6 +36,9 @@
 #include <sys/stat.h>
 #include <dirent.h>
 
+#include <fstream>
+#include <iostream>
+
 #include <gui/widget/hintbox.h>
 #include <gui/widget/messagebox.h>
 
@@ -1370,7 +1373,18 @@ int CSkinSettings::exec(CMenuTarget* parent, const std::string& actionKey)
 				skinConfig += nameInput->getValueString().c_str();
 				skinConfig += ".config";
 				
-				CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
+				//
+				std::ifstream input(skinConfig.c_str());
+				bool overwrite = true;
+
+				// 
+				if (input.is_open()) 
+				{
+					overwrite = CFileHelpers::getInstance()->askToOverwriteFile(skinConfig);
+				}
+				input.close();
+				
+				if (overwrite) CNeutrinoApp::getInstance()->saveSkinConfig(skinConfig.c_str());
 			}
 
 			file_name.clear();
@@ -1470,7 +1484,6 @@ int CPersonalisation::showMenu(void)
 		//
 		personalizeSettings->enablePaintHead();
 		personalizeSettings->setTitle(_("Personalisation"), NEUTRINO_ICON_COLORS);
-//		personalizeSettings->setHeadLine(true, true);
 
 		//
 		personalizeSettings->enablePaintFoot();
@@ -1478,7 +1491,6 @@ int CPersonalisation::showMenu(void)
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		personalizeSettings->setFootButtons(&btn);
-//		personalizeSettings->setFootLine(true, true);
 		
 		//
 		widget->addCCItem(personalizeSettings);

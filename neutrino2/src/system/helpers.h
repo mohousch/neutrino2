@@ -50,28 +50,23 @@
 #include <OpenThreads/Thread>
 
 
-//
+//// misc
 int my_system(const char * cmd);
 int my_system(int argc, const char *arg, ...); /* argc is number of arguments including command */
-
-//
 FILE* my_popen( pid_t& pid, const char *cmdstring, const char *type);
-
-//
 int safe_mkdir(const char * path);
 inline int safe_mkdir(std::string path) { return safe_mkdir(path.c_str()); }
 off_t file_size(const char *filename);
 bool file_exists(const char *filename);
-
-//
 void wakeup_hdd(const char *hdd_dir);
 int check_dir(const char * dir, bool allow_tmp = false);
-
-//
 bool get_fs_usage(const char * dir, uint64_t &btotal, uint64_t &bused, long *bsize=NULL);
 bool get_mem_usage(unsigned long &total, unsigned long &free);
+unsigned long long getcurrenttime();
+void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w = PIC_W, int dest_h = PIC_H);
+void getTMDBInfo(const char * const text);
 
-//
+////
 std::string getPathName(std::string &path);
 std::string getBaseName(std::string &path);
 std::string getFileName(std::string &file);
@@ -79,13 +74,10 @@ std::string getFileExt(std::string &file);
 std::string getNowTimeStr(const char* format);
 std::string trim(std::string &str, const std::string &trimChars = " \n\r\t");
 std::string replace_all(const std::string &in, const std::string &entity, const std::string &symbol);
-
-//
-unsigned long long getcurrenttime();
+////
 void strReplace(std::string & orig, const char *fstr, const std::string rstr);
 std::string& htmlEntityDecode(std::string& text, bool removeTags = false);
-
-//
+////
 std::string toString(int);
 std::string toString(unsigned int);
 std::string toString(long);
@@ -93,31 +85,28 @@ std::string toString(unsigned long);
 std::string toString(long long);
 std::string toString(unsigned long long);
 std::string toString(float);
-
-//
 std::string toHexString(unsigned long long);
 
-//
+//// locale
 std::string Lang2I18N(std::string lang);
 std::string locale2lang(std::string lang);
 
+////
 inline int atoi(std::string &s) { return atoi(s.c_str()); }
 inline int atoi(const std::string &s) { return atoi(s.c_str()); }
 inline int access(std::string &s, int mode) { return access(s.c_str(), mode); }
 inline int access(const std::string &s, int mode) { return access(s.c_str(), mode); }
-
 inline void cstrncpy(char *dest, const char * const src, size_t n) { n--; strncpy(dest, src, n); dest[n] = 0; }
 inline void cstrncpy(char *dest, const std::string &src, size_t n) { n--; strncpy(dest, src.c_str(), n); dest[n] = 0; }
-
+////
 std::string changeFileNameExt(std::string &filename, const char *ext);
-
+std::string removeExtension(std::string& s);
+////
 void splitString(std::string &str, std::string delim, std::vector<std::string> &strlist, int start = 0);
 void splitString(std::string &str, std::string delim, std::map<std::string,std::string> &strmap, int start = 0);
+std::string readFile(std::string file);
 
-//
-std::string removeExtension(std::string& s);
-
-// curl
+//// curl
 struct MemoryStruct 
 {
 	char *memory;
@@ -134,15 +123,12 @@ bool getUrl(std::string &url, std::string &answer, std::string userAgent = "", u
 bool downloadUrl(std::string url, std::string file, std::string userAgent = "", unsigned int timeout = 10);
 std::string getUrlAnswer(std::string url, std::string userAgent = "", unsigned int timeout = 10);
 
-//
+////
 int _select(int maxfd, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
 ssize_t _writeall(int fd, const void *buf, size_t count);
 ssize_t _read(int fd, void *buf, size_t count);
 
-//
-std::string readFile(std::string file);
-
-// proc utils
+//// proc utils
 int proc_put(const char *path, const char *value, const int len);
 int proc_put(const char *path, const char *value);
 int proc_put(const char *path, std::string value);
@@ -157,16 +143,10 @@ int proc_get(const char *path, char *value, const int len);
 unsigned int proc_get_hex(const char *path);
 
 //
-void scaleImage(const std::string &tname, int *p_w, int *p_h, int dest_w = PIC_W, int dest_h = PIC_H);
-
-//
 std::string ReadMarkerValue(std::string strLine, const char* strMarkerName);
-
 //
 std::string randomString(unsigned int length = 10);
 std::string randomFile(std::string suffix = "tmp", std::string directory = "/tmp", unsigned int length = 10);
-
-void getTMDBInfo(const char * const text);
 
 //
 class RandomNumber
@@ -201,8 +181,10 @@ class CFileHelpers
 
 		//
 		bool copyFile(const char *Src, const char *Dst, mode_t mode = 00664);
-		std::string loadFile(CFile & file, int buffer_size);
+		std::string loadFile(CFile & file, int buffer_size = 6000);
+		std::string loadFile(const char * filename);
 		bool saveFile(const CFile& file, const char *text, const int text_size);
+		bool askToOverwriteFile(const std::string& filename);
 };
 
 //

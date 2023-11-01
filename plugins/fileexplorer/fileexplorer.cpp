@@ -95,7 +95,7 @@ BROWSER:
 				std::string buffer;
 				buffer.clear();
 
-				buffer = CFileHelpers::getInstance()->loadFile(*file, 6000);
+				buffer = CFileHelpers::getInstance()->loadFile(*file);
 
 				CBox position(g_settings.screen_StartX + 50, g_settings.screen_StartY + 50, g_settings.screen_EndX - g_settings.screen_StartX - 100, g_settings.screen_EndY - g_settings.screen_StartY - 100); 
 					

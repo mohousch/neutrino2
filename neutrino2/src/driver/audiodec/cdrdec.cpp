@@ -65,5 +65,3 @@ bool CCdrDec::SetMetaData(FILE* in, CAudioMetaData* m)
 	return true;
 }
 
-
- 

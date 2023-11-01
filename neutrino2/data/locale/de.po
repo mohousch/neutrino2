@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-10-31 17:29+0100\n"
+"POT-Creation-Date: 2023-11-01 01:28+0100\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1227,7 +1227,7 @@ msgid "Loading skin "
 msgstr "Skin wird geladen "
 
 msgid "Loading skin style "
-msgstr "Skin-Stil wird geladen "
+msgstr "Skin-Theme wird geladen "
 
 msgid "LocalTV EPG"
 msgstr "LocalTV EPG"
@@ -1897,10 +1897,10 @@ msgid "Save Timer"
 msgstr "Timer speichern"
 
 msgid "Save current skin style"
-msgstr "Aktuellen Skin-Stil speichern"
+msgstr "Aktuellen Skin-Theme speichern"
 
 msgid "Save current style"
-msgstr "Aktuellen Stil speichern"
+msgstr "Aktuellen Skin-Theme speichern"
 
 msgid "Save in channel dir"
 msgstr "speichere in Kanalnamen Ordner"
@@ -1921,7 +1921,7 @@ msgid "Saving changes. Please be patient."
 msgstr "Änderungen werden gespeichert, bitte warten..."
 
 msgid "Saving current style!"
-msgstr "Aktuellen Stil speichern!"
+msgstr "Aktuellen Skin-Theme speichern!"
 
 msgid "Saving settings now, please be patient."
 msgstr "Einstellungen werden gespeichert, Bitte haben Sie etwas Geduld."
@@ -2122,7 +2122,7 @@ msgid "Skin Style"
 msgstr "Farbschema Auswahl"
 
 msgid "Skin Style name"
-msgstr "Name des Skin-Stils"
+msgstr "Name des Skin-Theme"
 
 msgid "Skin select"
 msgstr "Skin-Auswahl"
@@ -2792,7 +2792,7 @@ msgid "checking version"
 msgstr "Version prüfen"
 
 msgid "choose Skin Style."
-msgstr "Skin Still Auswahl"
+msgstr "Skin-Theme Auswahl"
 
 msgid "clear all"
 msgstr "alles löschen"

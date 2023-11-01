@@ -443,10 +443,10 @@ class EpgPlus
 		bool            refreshAll;
 		bool            refreshFooterButtons;
 
-		//
+		////
 		uint32_t sec_timer_id;
 		
-		//
+		////
 		MenuTargetRefreshEpg *refreshEpg;
 		MenuTargetAddRecordTimer *addRecordTimer;
 		MenuTargetAddReminder *addReminder;

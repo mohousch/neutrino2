@@ -159,6 +159,7 @@ FLAC__StreamDecoderWriteStatus flac_write(const FLAC__StreamDecoder *vf, const F
 		flacdec->mSampleRate = frame->header.sample_rate;
 		flacdec->mBps = frame->header.bits_per_sample;
 		flacdec->mBuffersize = MAX_OUTPUT_SAMPLES * flacdec->mChannels * flacdec->mBps / 8;
+		
 		switch(flacdec->mBps)
 		{
 			case 8  : fmt = AFMT_U8;

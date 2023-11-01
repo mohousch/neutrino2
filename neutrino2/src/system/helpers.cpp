@@ -641,6 +641,22 @@ std::string changeFileNameExt(std::string &filename, const char *ext)
 	return filename;
 }
 
+std::string removeExtension(std::string& s)
+{
+	int ext_pos = 0;
+	ext_pos = s.rfind('.');
+	
+	if( ext_pos > 0)
+	{
+		std::string extension;
+		extension = s.substr(ext_pos + 1, s.length() - ext_pos);
+
+		s = s.substr(0, s.length() - (extension.length() + 1));
+	}
+
+	return s;
+}
+
 //
 std::string Lang2I18N(std::string lang)
 {
@@ -734,20 +750,43 @@ void splitString(std::string &str, std::string delim, std::map<std::string,std::
 	}
 }
 
-std::string removeExtension(std::string& s)
+std::string readFile(std::string file)
 {
-	int ext_pos = 0;
-	ext_pos = s.rfind('.');
+	std::string ret_s;
+	std::ifstream tmpData(file.c_str(), std::ifstream::binary);
 	
-	if( ext_pos > 0)
+	if (tmpData.is_open()) 
 	{
-		std::string extension;
-		extension = s.substr(ext_pos + 1, s.length() - ext_pos);
-
-		s = s.substr(0, s.length() - (extension.length() + 1));
+		tmpData.seekg(0, tmpData.end);
+		int length = tmpData.tellg();
+		if (length > 0xffff) 
+		{ 
+			/* longer than 64k? better read in chunks! */
+			std::cerr << __func__ << ": file " << file << " too big (" << length << " bytes)" << std::endl;
+			return "";
+		}
+		
+		tmpData.seekg(0, tmpData.beg);
+		char* buffer = new char[length + 1];
+		if (! buffer) 
+		{
+			std::cerr << __func__ << ": allocating " << (length + 1) << " bytes for buffer failed" << std::endl;
+			return "";
+		}
+		
+		tmpData.read(buffer, length);
+		tmpData.close();
+		buffer[length] = '\0';
+		ret_s = (std::string)buffer;
+		delete [] buffer;
+	}
+	else 
+	{
+		std::cerr << "Error read " << file << std::endl;
+		return "";
 	}
 
-	return s;
+	return ret_s;
 }
 
 // curl
@@ -1060,46 +1099,6 @@ ssize_t _read(int fd, void *buf, size_t count)
 }
 
 //
-std::string readFile(std::string file)
-{
-	std::string ret_s;
-	std::ifstream tmpData(file.c_str(), std::ifstream::binary);
-	
-	if (tmpData.is_open()) 
-	{
-		tmpData.seekg(0, tmpData.end);
-		int length = tmpData.tellg();
-		if (length > 0xffff) 
-		{ 
-			/* longer than 64k? better read in chunks! */
-			std::cerr << __func__ << ": file " << file << " too big (" << length << " bytes)" << std::endl;
-			return "";
-		}
-		
-		tmpData.seekg(0, tmpData.beg);
-		char* buffer = new char[length + 1];
-		if (! buffer) 
-		{
-			std::cerr << __func__ << ": allocating " << (length + 1) << " bytes for buffer failed" << std::endl;
-			return "";
-		}
-		
-		tmpData.read(buffer, length);
-		tmpData.close();
-		buffer[length] = '\0';
-		ret_s = (std::string)buffer;
-		delete [] buffer;
-	}
-	else 
-	{
-		std::cerr << "Error read " << file << std::endl;
-		return "";
-	}
-
-	return ret_s;
-}
-
-//
 std::string randomString(unsigned int length)
 {
 	std::string random = "";
@@ -1120,7 +1119,7 @@ std::string randomFile(std::string suffix, std::string directory, unsigned int l
 	return directory + "/" + randomString(length) + "." + suffix;
 }
 
-// proc utils
+//// proc utils
 int proc_put(const char *path, const char *value, const int len)
 {
 	int ret, ret2;
@@ -1817,6 +1816,14 @@ std::string CFileHelpers::loadFile(CFile& file, int buffer_size)
 	return buf;
 }
 
+std::string CFileHelpers::loadFile(const char *filename)
+{
+	CFile file;
+	file.Name = filename;
+	
+	loadFile(file);
+}
+
 bool CFileHelpers::saveFile(const CFile & file, const char *text, const int text_size)
 {
 	dprintf(DEBUG_INFO, "CFileHelpers::saveFile: %s\n", file.getName().c_str());
@@ -1838,6 +1845,17 @@ bool CFileHelpers::saveFile(const CFile & file, const char *text, const int text
 	}
 
 	return (result);
+}
+
+bool CFileHelpers::askToOverwriteFile(const std::string& filename) 
+{
+	char msg[filename.length() + 127];
+	
+	snprintf(msg, filename.length() + 126, "%s\n%s", _("Do you want to overwrite this file:"), filename.c_str());
+	
+	bool res = (MessageBox(_("Overwrite?"), msg, CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo) == CMessageBox::mbrYes);
+	
+	return res;
 }
 
 //

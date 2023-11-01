@@ -252,9 +252,9 @@ class CFrameBuffer
 		//
 		void paintPixel(const int x, const int y, const fb_pixel_t col);
 		
-		void paintBoxRel(const int x, const int y, const int dx, const int dy, fb_pixel_t col, int radius = 0, int type = CORNER_NONE, int mode = NOGRADIENT, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int grad_type = GRADIENT_COLOR2TRANSPARENT);
+		void paintBoxRel(const int x, const int y, const int dx, const int dy, fb_pixel_t col, int radius = 0, int type = CORNER_NONE, int mode = NOGRADIENT, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int grad_type = GRADIENT_ONECOLOR);
 
-		inline void paintBox(int xa, int ya, int xb, int yb, const fb_pixel_t col, int radius = 0, int type = CORNER_NONE, int mode = NOGRADIENT, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int grad_type = GRADIENT_COLOR2TRANSPARENT) { paintBoxRel(xa, ya, xb - xa, yb - ya, col, radius, type, mode, direction, intensity, grad_type); }
+		inline void paintBox(int xa, int ya, int xb, int yb, const fb_pixel_t col, int radius = 0, int type = CORNER_NONE, int mode = NOGRADIENT, int direction = GRADIENT_VERTICAL, int intensity = INT_LIGHT, int grad_type = GRADIENT_ONECOLOR) { paintBoxRel(xa, ya, xb - xa, yb - ya, col, radius, type, mode, direction, intensity, grad_type); }
 
 		void paintLine(int xa, int ya, int xb, int yb, const fb_pixel_t col);
 
