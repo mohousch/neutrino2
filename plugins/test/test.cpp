@@ -31,33 +31,25 @@ extern "C" void plugin_del(void);
 class CTestMenu : public CMenuTarget
 {
 	private:
-		// variables
+		////
 		CFrameBuffer* frameBuffer;
 
-		//
+		////
 		CAudioPlayerGui tmpAudioPlayerGui;
 		CMoviePlayerGui tmpMoviePlayerGui;
 		CPictureViewerGui tmpPictureViewerGui;
-
-		//
-		int selected;
-
-		//
+		////
 		CFileFilter fileFilter;
 		CFileList filelist;
-
-		// movie
+		//// movie
 		CMovieInfo m_movieInfo;
 		CMoviePlayList m_vMovieInfo;
-
-		// audio
+		//// audio
 		CAudioPlayList AudioPlaylist;
-
-		// pictures
+		//// pictures
 		CPicture pic;
 		CPicturePlayList PicPlaylist;
-
-		// tmdb
+		//// tmdb
 		CTmdb* tmdb;
 		std::string thumbnail_dir;
 		CFileHelpers fileHelper;
@@ -67,59 +59,62 @@ class CTestMenu : public CMenuTarget
 		std::string TVShows;
 		tmdb_video_list_t mvlist;
 		std::string tmdbsearch;
-
-		// channellist
+		//// channellist
 		CChannelList* webTVchannelList;
 		CBouquetList* webTVBouquetList;
 		
-		// CHeaders
-		CBox headBox;
-		CCHeaders * headers;
 		
-		// CFooters
-		CBox footBox;
-		CCFooters *footers;
 
-		// CWidget
-		CWidget *testWidget;
-
-		// CFrameBox
-		CBox topBox;
-		CFrameBox *frameBoxWidget;
+		//
+		int selected;
 		int top_selected;
-
-		// ClistBox
-		CBox leftBox;
-		ClistBox *leftWidget;
 		int left_selected;
-
-		// ClistBox
-		CBox rightBox;
-		ClistBox *rightWidget;
 		int right_selected;
 
+
+		
+
+		
+
+	
+
+		
+
+		
+		//// CHeaders
+		CBox headBox;
+		CCHeaders * headers;
+		//// CFooters
+		CBox footBox;
+		CCFooters *footers;
+		//// CWidget
+		CWidget *testWidget;
+		//// CFrameBox
+		CBox topBox;
+		CFrameBox *frameBoxWidget;
+		//// ClistBox
+		CBox leftBox;
+		ClistBox *leftWidget;
+		//// ClistBox
+		CBox rightBox;
+		ClistBox *rightWidget;
 		// CListFrame
 		CListFrame *listFrame;
-
-		// CWindow
+		//// CWindow
 		CCWindow *windowWidget;
-		
-		// CTextBox
+		//// CTextBox
 		CTextBox* textBoxWidget;
-		
-		// CMenuwidget
+		//// CMenuwidget
 		CMenuWidget* menuWidget;
 		CMenuItem* item;
-		
+		////
 		CComponent* cCItem;
-		
-		// pb window
+		//// pb window
 		CProgressWindow * progressWindow;
-		
-		// pb
+		//// pb
 		CCProgressBar* progressBar;
 
-		// helper functions
+		//// helper functions
 		void loadTMDBPlaylist(const char *txt = "movie", const char *list = "popular", const int seite = 1, bool search = false);
 		void loadMoviePlaylist();
 		void openMovieFileBrowser();
@@ -127,8 +122,7 @@ class CTestMenu : public CMenuTarget
 		void openAudioFileBrowser();
 		void loadPicturePlaylist();
 		void openPictureFileBrowser();	
-
-		// CWidget
+		//// CWidget
 		void testCListFrameWidget();
 		void testClistBoxWidget();
 		void testCComponentWidget();
@@ -136,8 +130,7 @@ class CTestMenu : public CMenuTarget
 		void testCFrameBoxWidget();
 		void testCWidget();
 		void testMultiWidget();
-
-		// CCompenents 
+		//// CCompenents 
 		void testCCWindow(void);
 		void testCWindow();
 		void testCWindowShadow();
@@ -165,17 +158,14 @@ class CTestMenu : public CMenuTarget
 		void testClistBox9();
 		void testCFrameBox();
 		void testCFrameBox1();
-		
-		// CMenuWidget
-		//void testCMenuWidgetListBox();
+		//// CMenuWidget
 		void testCMenuWidgetMenu();
 		void testCMenuWidgetMenuItemInfo();
 		void testCMenuWidgetMenuClassic();
 		void testCMenuWidgetMenuExtended();
 		void testCMenuWidgetMenuFrame();
 		void testCMenuWidgetSetup();
-
-		// misc widgets
+		//// misc widgets
 		void testCStringInput();
 		void testCStringInputSMS();
 		void testCPINInput();
@@ -193,8 +183,6 @@ class CTestMenu : public CMenuTarget
 		void testCHintBox();
 		void testCHintBoxInfo();
 		void testCHelpBox();
-
-		// misc gui widgets
 		void testVFDController();
 		void testColorChooser();
 		void testKeyChooser();
@@ -211,37 +199,31 @@ class CTestMenu : public CMenuTarget
 		void testMountSmallMenu();
 		void testPluginsList();
 
-		//
+		////
 		void testStartPlugin();
-
-		//
 		void testShowActuellEPG();
-
-		//
+		
+		//// players
 		void testPlayMovieURL();
 		void testPlayAudioURL();
 		void testShowPictureURL();
-
-		// players
 		void testPlayMovieFolder();
 		void testPlayAudioFolder();
 		void testShowPictureFolder();
-
-		//
 		void testPlayMovieDir();
 		void testPlayAudioDir();
 		void testShowPictureDir();
 
-		// channel/bouquet list
+		//// channellist / bouquetlist
 		void testCChannellist();
 		void testCBouquetlist();
 		
-		// skin
+		//// skin
 		void testSkinWidget();
 		void testSkinWidget2();
 		void testSkinWidget3();
 		
-		// paint()
+		//// paint()
 		void showMenu();
 		
 
@@ -249,8 +231,6 @@ class CTestMenu : public CMenuTarget
 		CTestMenu();
 		~CTestMenu();
 		int exec(CMenuTarget* parent, const std::string& actionKey);
-
-		// hide()
 		void hide();
 };
 
