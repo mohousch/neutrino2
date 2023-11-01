@@ -229,7 +229,7 @@ void CEpgData::initFrames()
 	cTextBox.iX = cFrameBox.iX;
 	cTextBox.iY = cFrameBox.iY + cHeadBox.iHeight;
 	cTextBox.iWidth = cFrameBox.iWidth;
-	cTextBox.iHeight = cFrameBox.iHeight - cHeadBox.iHeight - cFootBox.iHeight - cFollowScreeningBox.iHeight - cFollowScreeningBox.iHeight;
+	cTextBox.iHeight = cFrameBox.iHeight - cHeadBox.iHeight - cFootBox.iHeight - cFollowScreeningBox.iHeight;
 }
 
 #define GENRE_MOVIE_COUNT 9
@@ -748,12 +748,12 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
                 
                 if (have_16_9)
                 {
-                	frameBuffer->paintIcon(NEUTRINO_ICON_16_9, widget->getWindowsPos().iX + 10, widget->getWindowsPos().iY + textBox->getWindowsPos().iHeight + (cFollowScreeningWindow->getWindowsPos().iHeight - icon_h_aspect)/2);
+                	frameBuffer->paintIcon(NEUTRINO_ICON_16_9, widget->getWindowsPos().iX + 10, textBox->getWindowsPos().iY + textBox->getWindowsPos().iHeight - icon_h_aspect);
                 }
                         
 		if (have_dd)
 		{
-			frameBuffer->paintIcon(NEUTRINO_ICON_DD, widget->getWindowsPos().iX + 10 + have_16_9? icon_w_aspect + 5 : 0, widget->getWindowsPos().iY + textBox->getWindowsPos().iHeight + (cFollowScreeningWindow->getWindowsPos().iHeight - icon_h_aspect)/2);
+			frameBuffer->paintIcon(NEUTRINO_ICON_DD, widget->getWindowsPos().iX + 10 + have_16_9? icon_w_aspect + 5 : 0, textBox->getWindowsPos().iY + textBox->getWindowsPos().iHeight - icon_h_aspect);
 		}
         }
 
