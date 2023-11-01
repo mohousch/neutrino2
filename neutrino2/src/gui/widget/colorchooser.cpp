@@ -63,8 +63,6 @@ static const char* const colorchooser_names[4] =
 
 CColorChooser::CColorChooser(const char * const Name, unsigned char *R, unsigned char *G, unsigned char *B, unsigned char* Alpha, CChangeObserver* Observer) // UTF-8
 {
-	dprintf(DEBUG_NORMAL, "CColorChooser::CColorChooser:\n");
-	
 	observer = Observer;
 	notifier = NULL;
 
@@ -103,8 +101,6 @@ CColorChooser::CColorChooser(const char * const Name, unsigned char *R, unsigned
 
 CColorChooser::~CColorChooser()
 {
-	dprintf(DEBUG_NORMAL, "CColorChooser::del:\n");
-	
 	if (m_cBoxWindow)
 	{
 		delete m_cBoxWindow;
