@@ -1833,10 +1833,6 @@ ClistBox::~ClistBox()
 	dprintf(DEBUG_INFO, "ClistBox:: del (%s)\n", l_name.c_str());
 
 	//
-	items.clear();
-	page_start.clear();
-
-	//
 	if (background)
 	{
 		delete [] background;
@@ -1866,6 +1862,19 @@ ClistBox::~ClistBox()
 	//
 	hbutton_labels.clear();
 	fbutton_labels.clear();
+	
+	//
+	for (unsigned int count = 0; count < items.size(); count++)
+	{
+		CMenuItem *item = items[count];
+		
+		delete item;
+		item = NULL;
+	}
+	
+	//
+	items.clear();
+	page_start.clear();
 }
 
 void ClistBox::addItem(CMenuItem * menuItem, const bool defaultselected)

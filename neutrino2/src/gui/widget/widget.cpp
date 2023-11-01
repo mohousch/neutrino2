@@ -114,10 +114,7 @@ CWidget::CWidget(CBox *position)
 
 CWidget::~CWidget()
 {
-	dprintf(DEBUG_NORMAL, "CWidget::del (%s)\n", name.c_str());	
-		
-	//
-	CCItems.clear();
+	dprintf(DEBUG_NORMAL, "CWidget::del (%s)\n", name.c_str());
 	
 	//
 	if (background)
@@ -125,6 +122,9 @@ CWidget::~CWidget()
 		delete [] background;
 		background = NULL;
 	}
+	
+	//
+	CCItems.clear();
 }
 
 //
