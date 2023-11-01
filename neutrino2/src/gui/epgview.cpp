@@ -748,12 +748,12 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
                 
                 if (have_16_9)
                 {
-                	frameBuffer->paintIcon(NEUTRINO_ICON_16_9, textBox->getWindowsPos().iX + textBox->getWindowsPos().iWidth - 15, textBox->getWindowsPos().iY + textBox->getWindowsPos().iHeight - icon_h_aspect);
+                	frameBuffer->paintIcon(NEUTRINO_ICON_16_9, textBox->getWindowsPos().iX + textBox->getWindowsPos().iWidth - 15 - icon_w_aspect, textBox->getWindowsPos().iY + textBox->getWindowsPos().iHeight - icon_h_aspect);
                 }
                         
 		if (have_dd)
 		{
-			frameBuffer->paintIcon(NEUTRINO_ICON_DD, textBox->getWindowsPos().iX + textBox->getWindowsPos().iWidth - 15 - (have_16_9? icon_w_aspect + 5 : 0), textBox->getWindowsPos().iY + textBox->getWindowsPos().iHeight - icon_h_aspect);
+			frameBuffer->paintIcon(NEUTRINO_ICON_DD, textBox->getWindowsPos().iX + textBox->getWindowsPos().iWidth - 15 - (have_16_9? icon_w_aspect + 5 : 0) - icon_w_dd, textBox->getWindowsPos().iY + textBox->getWindowsPos().iHeight - icon_h_dd);
 		}
         }
 
