@@ -1792,6 +1792,7 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 		else
 			result = false;
 	}
+	//
 	else if (msg == CRCInput::RC_minus) 
 	{
 		onSetGUIWindowPrev();
@@ -1800,6 +1801,7 @@ bool CMovieBrowser::onButtonPressMainFrame(neutrino_msg_t msg)
 	{
 		onSetGUIWindowNext();
 	}
+	//
 	else if (msg == CRCInput::RC_green) 
 	{		
 		if(m_settings.gui == MB_GUI_MOVIE_INFO)

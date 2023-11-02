@@ -38,7 +38,7 @@ extern cVideo * videoDecoder;
 // CFrameItem
 CFrameItem::CFrameItem()
 {
-	captionFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2;
+	captionFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO2; 
 	optionFont = SNeutrinoSettings::FONT_TYPE_EPG_INFO1;
 
 	caption = "";
@@ -142,7 +142,7 @@ void CFrameItem::setPlugin(const char * const pluginName)
 	}
 }
 
-int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
+int CFrameItem::paint(bool selected)
 {
 	dprintf(DEBUG_DEBUG, "CFrameItem::paint:\n");
 
@@ -225,7 +225,7 @@ int CFrameItem::paint(bool selected, bool /*AfterPulldown*/)
 				else if (halign == CComponent::CC_ALIGN_RIGHT)
 					startPosX = window.getWindowsPos().iX + window.getWindowsPos().iWidth - c_w;
 
-				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + 3 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, caption.c_str(), color, 0, true); //
+				g_Font[captionFont]->RenderString(startPosX, window.getWindowsPos().iY + 3 + g_Font[captionFont]->getHeight(), window.getWindowsPos().iWidth - iconOffset - iw - iconOffset, caption.c_str(), (bgcolor == COL_YELLOW_PLUS_0)? COL_BLACK_PLUS_0 : color, 0, true); //
 			}
 
 			// option

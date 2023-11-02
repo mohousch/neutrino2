@@ -91,7 +91,7 @@ class CFrameItem
 		CFrameItem();
 		virtual ~CFrameItem(){};
 
-		int paint(bool selected = false, bool AfterPulldown = false);
+		int paint(bool selected = false);
 		
 		virtual void setMode(int m = FRAME_BOX);
 		int getMode(void){return mode;};

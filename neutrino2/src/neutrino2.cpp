@@ -4188,7 +4188,7 @@ void CNeutrinoApp::realRun(void)
 								// timeshift
 								recordingstatus = 1;	
 								timeshiftstatus = recordingstatus;
-								doGuiRecord(timeshiftDir, true); // addevent = true
+								doGuiRecord(timeshiftDir, true);
 							}
 
 							// freeze audio/video
@@ -4295,16 +4295,16 @@ void CNeutrinoApp::realRun(void)
 							playback->Start(fname);
 						}
 #else
-						//tmpMoviePlayerGui.addToPlaylist(mfile);
-						//tmpMoviePlayerGui.exec(NULL, "urlplayback");
-						//
+						tmpMoviePlayerGui.addToPlaylist(mfile);
+						tmpMoviePlayerGui.exec(NULL, "urlplayback");
+						
 						//if (!playback->playing)
-						{
-							CZapit::getInstance()->lockPlayBack();
-							playback->Close(); // not needed???
-							playback->Open();
-							playback->Start(fname);
-						}
+						//{
+						//	CZapit::getInstance()->lockPlayBack();
+						//	playback->Close(); // not needed???
+						//	playback->Open();
+						//	playback->Start(fname);
+						//}
 #endif
 					}
 				}
@@ -4337,12 +4337,12 @@ void CNeutrinoApp::realRun(void)
 						playback->Close();
 #else
 						//
-						if (playback->playing)
-						{
-							playback->Close(); // not needed???
-						}
+						//if (playback->playing)
+						//{
+						//	playback->Close(); // not needed???
+						//}
 						
-						CZapit::getInstance()->unlockPlayBack();
+						//CZapit::getInstance()->unlockPlayBack();
 #endif
 					}
 				} 
