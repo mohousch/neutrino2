@@ -1948,6 +1948,7 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		if(CVCRControl::getInstance()->Record(&eventinfo) == false )
 		{
 			recordingstatus = 0;
+			timeshiftstatus = 0;
 		}
 		else if (addTimer) // add timer
 		{
@@ -1961,7 +1962,7 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		startNextRecording();
 	}
 		
-	CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
+	if (recordingstatus) CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, true);
 }
 
 // startNextRecording
@@ -3610,12 +3611,7 @@ _repeat:
 					
 				recordingstatus = 0;
 				autoshift = 0;
-					
-				if(timeshiftstatus)
-				{
-					// set timeshift status to false
-					timeshiftstatus = 0;
-				}
+				timeshiftstatus = 0;
 			}
 
 			startNextRecording();
@@ -4192,7 +4188,7 @@ void CNeutrinoApp::realRun(void)
 								// timeshift
 								recordingstatus = 1;	
 								timeshiftstatus = recordingstatus;
-								doGuiRecord(timeshiftDir, true);
+								doGuiRecord(timeshiftDir, true); // addevent = true
 							}
 
 							// freeze audio/video
@@ -4299,8 +4295,16 @@ void CNeutrinoApp::realRun(void)
 							playback->Start(fname);
 						}
 #else
-						tmpMoviePlayerGui.addToPlaylist(mfile);
-						tmpMoviePlayerGui.exec(NULL, "urlplayback");
+						//tmpMoviePlayerGui.addToPlaylist(mfile);
+						//tmpMoviePlayerGui.exec(NULL, "urlplayback");
+						//
+						//if (!playback->playing)
+						{
+							CZapit::getInstance()->lockPlayBack();
+							playback->Close(); // not needed???
+							playback->Open();
+							playback->Start(fname);
+						}
 #endif
 					}
 				}
@@ -4319,7 +4323,11 @@ void CNeutrinoApp::realRun(void)
 				{
 					if(MessageBox(_("Information"), _("You really want to to stop record ?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == CMessageBox::mbrYes)
 					{
-						CTimerd::getInstance()->stopTimerEvent(recording_id);
+						if (recording_id)
+							CTimerd::getInstance()->stopTimerEvent(recording_id);
+						else
+							CVCRControl::getInstance()->Stop();
+							
 						recordingstatus = 0;
 						timeshiftstatus = 0;
 						CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
@@ -4327,6 +4335,14 @@ void CNeutrinoApp::realRun(void)
 						//
 #ifdef USE_OPENGL						
 						playback->Close();
+#else
+						//
+						if (playback->playing)
+						{
+							playback->Close(); // not needed???
+						}
+						
+						CZapit::getInstance()->unlockPlayBack();
 #endif
 					}
 				} 
@@ -4334,6 +4350,7 @@ void CNeutrinoApp::realRun(void)
 				else if(msg != CRCInput::RC_stop )
 				{
 					recordingstatus = 1;
+					timeshiftstatus = 0;
 					doGuiRecord( g_settings.network_nfs_recordingdir, true );
 				}
 			}

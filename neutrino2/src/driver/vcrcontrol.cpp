@@ -298,9 +298,6 @@ void CVCRControl::CutBackNeutrino(const t_channel_id channel_id, const int mode)
 				if(last_mode == NeutrinoMessages::mode_standby)
 					CNeutrinoApp::getInstance()->handleMsg( NeutrinoMessages::CHANGEMODE , NeutrinoMessages::mode_standby);
 			}
-		
-			// zap to record
-			CZapit::getInstance()->zapToRecordID(channel_id);
 		}
 
 		// stop playback im standby

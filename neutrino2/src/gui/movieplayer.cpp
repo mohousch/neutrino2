@@ -616,7 +616,7 @@ void CMoviePlayerGui::stop()
 	//exit play
 	playstate = CMoviePlayerGui::STOPPED;
 			
-	if(playlist[selected].ytid == "timeshift")
+	if(playlist[selected].ytid == "timeshift") //FIXME:
 	{
 		// stop record if recording
 		if( CNeutrinoApp::getInstance()->recordingstatus) 
