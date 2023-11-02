@@ -1329,21 +1329,6 @@ void CMovieBrowser::refresh(void)
 	widget->paint();
 }
 
-std::string CMovieBrowser::getCurrentDir(void)
-{
-	return(m_selectedDir);
-}
-
-CFile * CMovieBrowser::getSelectedFile(void)
-{
-	dprintf(DEBUG_NORMAL, "CMovieBrowser::getSelectedFile: %s\r\n", m_movieSelectionHandler->file.Name.c_str());
-
-	if(m_movieSelectionHandler != NULL)
-		return(&m_movieSelectionHandler->file);
-	else
-		return(NULL);
-}
-
 void CMovieBrowser::refreshMovieInfo(bool refreshGUI)
 {
 	dprintf(DEBUG_NORMAL, "CMovieBrowser::refreshMovieInfo:\n");

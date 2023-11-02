@@ -221,9 +221,9 @@ typedef struct
 // Priorities for Developmemt: P1: critical feature, P2: important feature, P3: for next release, P4: looks nice, lets see
 class CMovieBrowser : public CMenuTarget
 {
-	public: // Variables /////////////////////////////////////////////////
-		int Multi_Select;    // for FileBrowser compatibility, not used in MovieBrowser
-		int Dirs_Selectable; // for FileBrowser compatibility, not used in MovieBrowser
+	//public: // Variables /////////////////////////////////////////////////
+	//	int Multi_Select;    // for FileBrowser compatibility, not used in MovieBrowser
+	//	int Dirs_Selectable; // for FileBrowser compatibility, not used in MovieBrowser
 		
 	private: // Variables
 		CFrameBuffer * frameBuffer;
@@ -306,8 +306,7 @@ class CMovieBrowser : public CMenuTarget
 		~CMovieBrowser(); //P1 
 		int exec(int timeout = -1); //P1 
         	int exec(CMenuTarget* parent, const std::string & actionKey);
-		std::string getCurrentDir(void); //P1 for FileBrowser compatibility
-		CFile * getSelectedFile(void); //P1 for FileBrowser compatibility
+		////
 		MI_MOVIE_BOOKMARKS* getCurrentMovieBookmark(void){if(m_movieSelectionHandler == NULL) return NULL; return(&(m_movieSelectionHandler->bookmarks));};
 		
 		MI_MOVIE_INFO* getCurrentMovieInfo(void){return(m_movieSelectionHandler);}; //P1 return start position in [s]
@@ -392,23 +391,6 @@ class CMovieBrowser : public CMenuTarget
 		void updateSerienames(void);
         	void autoFindSerie(void);
 };
-/*
-class CMovieInformation : public CMenuTarget
-{
-	public:
-		CMovieInformation(){};
-		~CMovieInformation(){};
-		int exec(CMenuTarget *parent, const std::string &actionKey){ return RETURN_REPAINT;};
-};
-
-class CMovieOption : public CMenuTarget
-{
-	public:
-		CMovieOption(){};
-		~CMovieOption(){};
-		int exec(CMenuTarget *parent, const std::string &actionKey){ return RETURN_REPAINT;};
-};
-*/
 
 // Class to show Moviebrowser Information, to be used by menu
 class CMovieHelp : public CMenuTarget

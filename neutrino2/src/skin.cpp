@@ -1304,9 +1304,9 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 				
 	unsigned int paintframe = 1;
 	char* color = NULL;
-	char * gradient = NULL;
-	char *corner = NULL;
-	char * radius = NULL;
+	//char * gradient = NULL;
+	//char *corner = NULL;
+	//char * radius = NULL;
 	
 	char * listboxtype = NULL;
 	char * listboxmode = NULL;
@@ -1319,7 +1319,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	unsigned int paintdate = 0;
 	const char* title = NULL;
 	const char* icon = NULL;
-	const char* format = NULL;
+	//const char* format = NULL;
 	unsigned int halign = 0;
 	unsigned int head_line = 0;
 	unsigned int head_line_gradient = 0;
@@ -1362,9 +1362,9 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	//			
 	paintframe = xmlGetSignedNumericAttribute(node, "paintframe", 0);
 	color = xmlGetAttribute(node, (char*)"color");
-	gradient = xmlGetAttribute(node, (char *)"gradient");
-	corner = xmlGetAttribute(node, (char *)"corner");
-	radius = xmlGetAttribute(node, (char *)"radius");
+	//gradient = xmlGetAttribute(node, (char *)"gradient");
+	//corner = xmlGetAttribute(node, (char *)"corner");
+	//radius = xmlGetAttribute(node, (char *)"radius");
 	listboxtype = xmlGetAttribute(node, (char *)"type");
 	listboxmode = xmlGetAttribute(node, (char *)"mode");
 	scrollbar = xmlGetSignedNumericAttribute(node, "scrollbar", 0);
@@ -1962,7 +1962,7 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	char * textColor = NULL;
 	char * font = NULL;
 	unsigned int mode = CTextBox::SCROLL;
-	unsigned int border = CComponent::BORDER_NO;
+	//unsigned int border = CComponent::BORDER_NO;
 	
 	unsigned int tmode = CTextBox::PIC_RIGHT;
 	unsigned int tw = 0;
@@ -1990,7 +1990,7 @@ void CNeutrinoApp::parseCTextBox(xmlNodePtr node, CWidget* widget)
 	font = xmlGetAttribute(node, (char *)"font");
 		
 	mode = xmlGetSignedNumericAttribute(node, "mode", 0);
-	border = xmlGetSignedNumericAttribute(node, "border", 0);
+	//border = xmlGetSignedNumericAttribute(node, "border", 0);
 		
 	tmode = xmlGetSignedNumericAttribute(node, "tmode", 0);
 	tw = xmlGetSignedNumericAttribute(node, "twidth", 0);
@@ -2169,16 +2169,14 @@ void CNeutrinoApp::parseCCLabel(xmlNodePtr node, CWidget* widget)
 	
 	//
 	char* name = NULL;
-				
+	//			
 	int cc_x = 0;
 	int cc_y = 0;
 	int cc_dx = 0;
 	int cc_dy = 0;
-						
-	unsigned int cc_refresh = 0;
+	//					
+	//unsigned int cc_refresh = 0;
 	unsigned int l_halign = 0;
-	
-	//int font_size = -1;
 	char * font_size = NULL;
 	char* font_color = NULL;
 	
@@ -2191,7 +2189,7 @@ void CNeutrinoApp::parseCCLabel(xmlNodePtr node, CWidget* widget)
 	cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
 	cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
 						
-	cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
+	//cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
 		
 	//
 	font_size = xmlGetAttribute(node, (char *)"font");
@@ -2229,7 +2227,7 @@ void CNeutrinoApp::parseCCLabel(xmlNodePtr node, CWidget* widget)
 							
 	if (!text.empty()) label->setText(_(text.c_str()));
 	label->setHAlign(l_halign);
-	//if (font_size) label->setFont(font_size);
+	//
 	int fs = SNeutrinoSettings::FONT_TYPE_MENU_TITLE;
 	if (font_size) fs = convertFontSize(font_size);
 	label->setFont(fs);
@@ -2254,9 +2252,8 @@ void CNeutrinoApp::parseCCImage(xmlNodePtr node, CWidget* widget)
 	int cc_dx = 0;
 	int cc_dy = 0;
 	
-	char* image = NULL;
-						
-	unsigned int cc_refresh = 0;
+	char* image = NULL;					
+	//unsigned int cc_refresh = 0;
 	
 	//
 	name = xmlGetAttribute(node, (char*)"name");
@@ -2267,8 +2264,7 @@ void CNeutrinoApp::parseCCImage(xmlNodePtr node, CWidget* widget)
 	cc_dx = xmlGetSignedNumericAttribute(node, "width", 0);
 	cc_dy = xmlGetSignedNumericAttribute(node, "height", 0);
 						
-	cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);
-				
+	//cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);			
 	image = xmlGetAttribute(node, (char*)"image");
 		
 	// recalculate posx / posy
@@ -2709,8 +2705,8 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 	char* color = NULL;
 	char *gradient = NULL;
 	char *gradient_type = NULL;
-	char *gradient_direction = NULL;
-	char *gradient_intensity = NULL;
+	//char *gradient_direction = NULL;
+	//char *gradient_intensity = NULL;
 	char * corner = NULL;
 	char * radius = NULL;
 	char * border = NULL;
@@ -2774,8 +2770,8 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				color = xmlGetAttribute(search, (char*)"color");
 				gradient = xmlGetAttribute(search, (char *)"gradient");
 				gradient_type = xmlGetAttribute(search, (char *)"gradienttype");
-				gradient_direction = xmlGetAttribute(search, (char *)"gradientdirection");
-				gradient_intensity = xmlGetAttribute(search, (char *)"gradientintensity");
+				//gradient_direction = xmlGetAttribute(search, (char *)"gradientdirection");
+				//gradient_intensity = xmlGetAttribute(search, (char *)"gradientintensity");
 				corner = xmlGetAttribute(search, (char *)"corner");
 				radius = xmlGetAttribute(search, (char *)"radius");
 				

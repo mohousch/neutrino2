@@ -1812,7 +1812,7 @@ void CNeutrinoApp::setupFonts(const char* font_file)
 	g_SignalFont = g_fontRenderer->getFont(font.name, style[signal_font.style], signal_font.defaultsize + signal_font.size_offset * font.size_offset);
 }
 
-// start auto record (permanent/temp timeshift)
+//// start autoRecord (permanent/temp timeshift)
 int CNeutrinoApp::startAutoRecord(bool addTimer)
 {
 	CTimerd::RecordingInfo eventinfo;
@@ -1845,12 +1845,10 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 
 	autoshift = 1;
 	CNeutrinoApp::getInstance()->recordingstatus = 1;
-	//CNeutrinoApp::getInstance()->timeshiftstatus = 1;	// ???
 
 	if( CVCRControl::getInstance()->Record(&eventinfo) == false ) 
 	{
 		CNeutrinoApp::getInstance()->recordingstatus = 0;
-		//CNeutrinoApp::getInstance()->timeshiftstatus = 0;
 		autoshift = 0;
 		
 		CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );	
@@ -4322,8 +4320,8 @@ void CNeutrinoApp::realRun(void)
 					if(MessageBox(_("Information"), _("You really want to to stop record ?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 30, true) == CMessageBox::mbrYes)
 					{
 						CTimerd::getInstance()->stopTimerEvent(recording_id);
-						//recordingstatus = 0;
-						//timeshiftstatus = 0;
+						recordingstatus = 0;
+						timeshiftstatus = 0;
 						CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
 						
 						//
