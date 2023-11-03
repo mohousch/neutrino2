@@ -248,7 +248,10 @@ typedef enum
 
 #define VDEC_MAXBUFS 0x40
 #endif
-class cVideo : public OpenThreads::Thread
+class cVideo 
+#ifdef USE_OPENGL
+: public OpenThreads::Thread
+#endif
 {
 	friend class GLThreadObj;
 	

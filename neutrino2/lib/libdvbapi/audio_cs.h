@@ -70,7 +70,10 @@ enum {
 };
 
 
-class cAudio : public OpenThreads::Thread
+class cAudio
+#ifdef USE_OPENGL 
+: public OpenThreads::Thread
+#endif
 {
 	private:
 		int audio_fd;
