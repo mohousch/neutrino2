@@ -208,7 +208,7 @@ int cVideo::getAspectRatio(void)
 		}
 	}
 	
-	dprintf(DEBUG_INFO, "%s:%s (ratio=%d)\n", FILENAME, __FUNCTION__, ratio);
+	dprintf(DEBUG_INFO, "cVideo::getAspectRatio (ratio=%d)\n", ratio);
 #endif	
 	
 	return ratio;
@@ -271,7 +271,7 @@ int cVideo::setAspectRatio(int ratio, int format)
 		::close(fd);
 	}
 	
-	dprintf(DEBUG_INFO, "%s %s (aspect=%d format=%d) set %s %s\n", FILENAME, __FUNCTION__, ratio, format, sRatio[ratio], sFormat[format]);
+	dprintf(DEBUG_INFO, "cVideo::setAspectRatio: (aspect=%d format=%d) set %s %s\n", ratio, format, sRatio[ratio], sFormat[format]);
 #endif	
 
     	return 0; 
@@ -315,7 +315,7 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 	height = 576;
 	width = 720;
 	  
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__); 
+	dprintf(DEBUG_INFO, "getPictureInfo\n"); 
 
   	unsigned char buffer[10];
 	int n, fd;	
@@ -367,7 +367,7 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 		}
 	}
 	
-	dprintf(DEBUG_INFO, "%s:%s < w %d, h %d, r %d\n", FILENAME, __FUNCTION__, width, height, rate);
+	dprintf(DEBUG_INFO, "getPictureInfo < w %d, h %d, r %d\n", width, height, rate);
 #endif	
 }
 
@@ -664,12 +664,6 @@ void cVideo::SetStreamType(VIDEO_FORMAT type)
 /* set sync mode */
 void cVideo::SetSyncMode(int mode)
 {
-	dprintf(DEBUG_NORMAL, "cVideo::SetSyncMode:\n");	
-
-#ifndef USE_OPENGL
-#if defined (__sh__)
-        int clock = 0;
-	
 	const char *aAVSYNCTYPE[] = {
 		"AVSYNC_DISABLED",
 		"AVSYNC_ENABLED",
@@ -686,7 +680,11 @@ void cVideo::SetSyncMode(int mode)
 		"audio"
 	};
       	
-	dprintf(DEBUG_INFO, "%s:%s - mode=%s\n", FILENAME, __FUNCTION__, aAVSYNCTYPE[mode]);	
+	dprintf(DEBUG_INFO, "cVideo::setSyncMode: mode=%s\n", aAVSYNCTYPE[mode]);	
+
+#ifndef USE_OPENGL
+#if defined (__sh__)
+        int clock = 0;	
 
 	int fd = ::open("/proc/stb/stream/policy/AV_SYNC", O_RDWR);
 
@@ -705,7 +703,7 @@ void cVideo::SetSyncMode(int mode)
 	   	::close(fd);
         }
 		
-        dprintf(DEBUG_INFO, "%s:%s - set master clock = %s\n", FILENAME, __FUNCTION__, master_clock[clock]);	
+        dprintf(DEBUG_INFO, "cVideo::SetSyncMode: set master clock = %s\n", master_clock[clock]);	
 
 	fd = ::open("/proc/stb/stream/policy/MASTER_CLOCK", O_RDWR);
         if (fd > 0)  
