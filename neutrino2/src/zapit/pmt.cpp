@@ -66,8 +66,6 @@ extern short scan_runs;
 
 unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChannel * const channel, CCaPmt * const caPmt)
 {
-	dprintf(DEBUG_NORMAL, "CPmt::parseESInfo:\n");
-	
 	unsigned short ES_info_length;
 	unsigned short pos;
 	unsigned char descriptor_tag;
@@ -221,7 +219,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 
 			case APPLICATION_SIGNALLING_DESCRIPTOR:
 				channel->setaitPid(esInfo->elementary_PID);
-				dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: channel->setaitPid(0x%x)\n", esInfo->elementary_PID);			
+				//dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: channel->setaitPid(0x%x)\n", esInfo->elementary_PID);			
 				break;
 				
 			case ENHANCED_AC3_DESCRIPTOR:
@@ -313,7 +311,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 	
 						case APPLICATION_SIGNALLING_DESCRIPTOR:
 							channel->setaitPid(esInfo->elementary_PID);
-							dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: channel->setaitPid(0x%x)\n", esInfo->elementary_PID);
+							//dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: channel->setaitPid(0x%x)\n", esInfo->elementary_PID);
 							break;
 							
 						default:
@@ -324,7 +322,7 @@ unsigned short CPmt::parseESInfo(const unsigned char * const buffer, CZapitChann
 				if ( tmp == 3 ) 
 				{
 					channel->setPrivatePid(esInfo->elementary_PID);
-					dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: channel->setPrivatePid(0x%x)\n", esInfo->elementary_PID);
+					//dprintf(DEBUG_NORMAL, "CPmt::parseESInfo: channel->setPrivatePid(0x%x)\n", esInfo->elementary_PID);
 				}
 				descramble = true;
 				break;

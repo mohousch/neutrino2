@@ -106,7 +106,7 @@ void CZapitBouquet::addService(CZapitChannel *newChannel)
 
 void CZapitBouquet::removeService(CZapitChannel *oldChannel)
 {
-	dprintf(DEBUG_NORMAL, "CZapitBouquet::removeService");
+	dprintf(DEBUG_NORMAL, "CZapitBouquet::removeService:");
 	
 	if (oldChannel != NULL) 
 	{

@@ -503,7 +503,7 @@ int cAudio::setSource(int source)
 
 int cAudio::setHwPCMDelay(int delay)
 {  
-	dprintf(DEBUG_INFO, "cAudio::setHwPCMDelay: - delay=%d\n", delay);
+	dprintf(DEBUG_INFO, "cAudio::setHwPCMDelay: delay=%d\n", delay);
 	
 #if !defined (USE_OPENGL)	
 	if (delay != m_pcm_delay )
@@ -524,7 +524,7 @@ int cAudio::setHwPCMDelay(int delay)
 
 int cAudio::setHwAC3Delay(int delay)
 {
-	dprintf(DEBUG_INFO, "cAudio::setHwAC3Delay: - delay=%d\n", delay);
+	dprintf(DEBUG_INFO, "cAudio::setHwAC3Delay: delay=%d\n", delay);
 	
 #if !defined (USE_OPENGL)	
 	if ( delay != m_ac3_delay )
@@ -587,9 +587,9 @@ int cAudio::my_read(uint8_t *buf, int buf_size)
 
 void cAudio::run()
 {
-	dprintf(DEBUG_NORMAL, "cAudio::run\n");
+	dprintf(DEBUG_NORMAL, "cAudio::run: START\n");
 	
-	/* libavcodec & friends */
+	// libavcodec & friends
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	av_register_all();
 #endif
@@ -602,17 +602,15 @@ void cAudio::run()
 	AVPacket avpkt;
 	int ret, driver;
 	int av_ret = 0;
-	/* libao */
+	// libao
 	ao_info *ai;
-	// ao_device *adevice;
-	// ao_sample_format sformat;
-	/* resample */
+	// resample
 	SwrContext *swr = NULL;
 	uint8_t *obuf = NULL;
-	int obuf_sz = 0; /* in samples */
+	int obuf_sz = 0; 	// in samples
 	int obuf_sz_max = 0;
-	int o_ch, o_sr; /* output channels and sample rate */
-	uint64_t o_layout; /* output channels layout */
+	int o_ch, o_sr; 	// output channels and sample rate
+	uint64_t o_layout; 	// output channels layout
 	char tmp[64] = "unknown";
 
 	curr_pts = 0;
@@ -634,16 +632,16 @@ void cAudio::run()
 
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
 	{
-		printf("cAudio::run: avformat_open_input() failed.\n");
+		dprintf(DEBUG_NORMAL, "cAudio::run: avformat_open_input() failed.\n");
 		goto out;
 	}
 	
 	ret = avformat_find_stream_info(avfc, NULL);
-	printf("cAudio::run: avformat_find_stream_info: %d\n", ret);
+	dprintf(DEBUG_NORMAL, "cAudio::run: avformat_find_stream_info: %d\n", ret);
 	
 	if (avfc->nb_streams != 1)
 	{
-		printf("cAudio::run: nb_streams: %d, should be 1!\n", avfc->nb_streams);
+		dprintf(DEBUG_NORMAL, "cAudio::run: nb_streams: %d, should be 1!\n", avfc->nb_streams);
 		goto out;
 	}
 	
@@ -656,9 +654,11 @@ void cAudio::run()
 	
 	if (!codec)
 	{
-		printf("cAudio::run: Codec for %s not found\n", avcodec_get_name(p->codec_id));
+		dprintf(DEBUG_NORMAL, "cAudio::run: Codec for %s not found\n", avcodec_get_name(p->codec_id));
 		goto out;
 	}
+	
+	dprintf(DEBUG_NORMAL, "cAudio::run: decoding %s\n", avcodec_get_name(p->codec_id));
 	
 	if (c)
 		av_free(c);
@@ -667,14 +667,16 @@ void cAudio::run()
 	
 	if (avcodec_open2(c, codec, NULL) < 0)
 	{
-		printf("cAudio::run: avcodec_open2() failed\n");
+		dprintf(DEBUG_NORMAL, "cAudio::run: avcodec_open2() failed\n");
 		goto out;
 	}
 	
 	if (p->sample_rate == 0 || p->channels == 0)
 	{
 		av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
-		printf("cAudio::run: Header missing %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
+		
+		dprintf(DEBUG_NORMAL, "cAudio::run: Header missing %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
+		
 		goto out2;
 	}
 	
@@ -682,14 +684,14 @@ void cAudio::run()
 	
 	if (!frame)
 	{
-		printf("cAudio::run: av_frame_alloc failed\n");
+		dprintf(DEBUG_NORMAL, "cAudio::run: av_frame_alloc failed\n");
 		goto out2;
 	}
 	
-	/* output sample rate, channels, layout could be set here if necessary */
-	o_ch = p->channels;     /* 2 */
-	o_sr = p->sample_rate;      /* 48000 */
-	o_layout = p->channel_layout;   /* AV_CH_LAYOUT_STEREO */
+	// output sample rate, channels, layout could be set here if necessary 
+	o_ch = p->channels;     	// 2
+	o_sr = p->sample_rate;      	// 48000
+	o_layout = p->channel_layout;   // AV_CH_LAYOUT_STEREO
 	
 	if (sformat.channels != o_ch || sformat.rate != o_sr || sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16 || adevice == NULL)
 	{
@@ -706,24 +708,21 @@ void cAudio::run()
 		adevice = ao_open_live(driver, &sformat, NULL);
 		ai = ao_driver_info(driver);
 		
-		printf("cAudio::run: changed params ch %d srate %d bits %d adevice %p\n", o_ch, o_sr, 16, adevice);
-		
-		if (ai)
-			printf("cAudio::runv: libao driver: %d name '%s' short '%s' author '%s'\n", driver, ai->name, ai->short_name, ai->author);
+		dprintf(DEBUG_NORMAL, "cAudio::run: changed params ch %d srate %d bits %d adevice %p\n", o_ch, o_sr, 16, adevice);
 	}
 
 	av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
 	
-	printf("cAudio::run: decoding %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
+	dprintf(DEBUG_NORMAL, "cAudio::run: decoding %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
 	
 	swr = swr_alloc_set_opts(swr,
-	        o_layout, AV_SAMPLE_FMT_S16, o_sr,         /* output */
-	        p->channel_layout, c->sample_fmt, p->sample_rate,  /* input */
+	        o_layout, AV_SAMPLE_FMT_S16, o_sr,         		// output
+	        p->channel_layout, c->sample_fmt, p->sample_rate,  	// input
 	        0, NULL);
 	        
 	if (! swr)
 	{
-		printf("cAudio::run: could not alloc resample context\n");
+		dprintf(DEBUG_NORMAL, "cAudio::run: could not alloc resample context\n");
 		goto out3;
 	}
 	swr_init(swr);
@@ -731,8 +730,10 @@ void cAudio::run()
 	while (thread_started)
 	{
 		int gotframe = 0;
+		
 		if (av_read_frame(avfc, &avpkt) < 0)
 			break;
+			
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
 		avcodec_decode_audio4(c, frame, &gotframe, &avpkt);
 #else
@@ -799,6 +800,8 @@ out:
 	avformat_close_input(&avfc);
 	av_free(pIOCtx->buffer);
 	av_free(pIOCtx);
+	
+	dprintf(DEBUG_NORMAL, "cAudio::run: END\n");
 }
 #endif
 

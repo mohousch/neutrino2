@@ -1227,7 +1227,7 @@ static int my_read(void *, uint8_t *buf, int buf_size)
 
 void cVideo::run(void)
 {
-	dprintf(DEBUG_NORMAL, "cVideo::run\n");
+	dprintf(DEBUG_NORMAL, "cVideo::run: START\n");
 	
 	AVCodec *codec;
 	AVCodecParameters *p = NULL;
@@ -1239,8 +1239,8 @@ void cVideo::run(void)
 	AVPacket avpkt;
 	struct SwsContext *convert = NULL;
 
-	time_t warn_r = 0; /* last read error */
-	time_t warn_d = 0; /* last decode error */
+	time_t warn_r = 0; // last read error
+	time_t warn_d = 0; // last decode error
 	int av_ret = 0;
 
 	bufpos = 0;
@@ -1267,13 +1267,13 @@ void cVideo::run(void)
 	
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
 	{
-		printf("cVideo::run: Could not open input\n");
+		dprintf(DEBUG_NORMAL, "cVideo::run: Could not open input\n");
 		goto out;
 	}
 	
 	while (avfc->nb_streams < 1)
 	{
-		printf("cVideo::run: nb_streams %d, should be 1 => retry\n", avfc->nb_streams);
+		dprintf(DEBUG_NORMAL, "cVideo::run: nb_streams %d, should be 1 => retry\n", avfc->nb_streams);
 		
 		if (av_read_frame(avfc, &avpkt) < 0)
 			printf("cVideo::run: av_read_frame < 0\n");
@@ -1293,13 +1293,13 @@ void cVideo::run(void)
 	
 	if (!codec)
 	{
-		printf("cVideo::run: Codec for %s not found\n", avcodec_get_name(p->codec_id));
+		dprintf(DEBUG_NORMAL, "cVideo::run: Codec for %s not found\n", avcodec_get_name(p->codec_id));
 		goto out;
 	}
 	c = avcodec_alloc_context3(codec);
 	if (avcodec_open2(c, codec, NULL) < 0)
 	{
-		printf("cVideo::run: Could not open codec\n");
+		dprintf(DEBUG_NORMAL, "cVideo::run: Could not open codec\n");
 		goto out;
 	}
 	
@@ -1308,11 +1308,11 @@ void cVideo::run(void)
 	
 	if (!frame || !rgbframe)
 	{
-		printf("cVideo::run: Could not allocate video frame\n");
+		dprintf(DEBUG_NORMAL, "cVideo::run: Could not allocate video frame\n");
 		goto out2;
 	}
 	
-	printf("cVideo::run: decoding %s\n", avcodec_get_name(c->codec_id));
+	dprintf(DEBUG_NORMAL, "cVideo::run: decoding %s\n", avcodec_get_name(c->codec_id));
 	
 	while (thread_running)
 	{
@@ -1403,11 +1403,11 @@ void cVideo::run(void)
 #else
 				int64_t vpts = frame->best_effort_timestamp;
 #endif
-				/* a/v delay determined experimentally :-) */
+				// a/v delay determined experimentally :-)
 				if (StreamType == VIDEO_STREAMTYPE_MPEG2)
-					vpts += 90000 * 4 / 10; /* 400ms */
+					vpts += 90000 * 4 / 10; // 400ms
 				else
-					vpts += 90000 * 3 / 10; /* 300ms */
+					vpts += 90000 * 3 / 10; // 300ms
 
 				f->pts(vpts);
 				AVRational a = av_guess_sample_aspect_ratio(avfc, avfc->streams[0], frame);
@@ -1427,8 +1427,8 @@ void cVideo::run(void)
 				buf_m.unlock();
 			}
 		}
-		else
-			printf("cVideo::run: got_frame: %d stillpicture: %d\n", got_frame, stillpicture);
+		//else
+		//	printf("cVideo::run: got_frame: %d stillpicture: %d\n", got_frame, stillpicture);
 		still_m.unlock();
 		av_packet_unref(&avpkt);
 	}
@@ -1452,6 +1452,8 @@ out:
 		buf_out = 0;
 	}
 	still_m.unlock();
+	
+	dprintf(DEBUG_NORMAL, "cVideo::run: END\n");
 }
 #endif
 

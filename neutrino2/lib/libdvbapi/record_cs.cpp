@@ -36,8 +36,6 @@
 #include "record_cs.h"
 
 
-static const char * FILENAME = "[record_cs.cpp]";
-
 /* helper function to call the cpp thread loop */
 void * execute_record_thread(void *c)
 {
@@ -49,8 +47,6 @@ void * execute_record_thread(void *c)
 
 cRecord::cRecord(int /*num*/)
 {
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
-
 	dmx = NULL;
 	record_thread_running = false;
 	file_fd = -1;
@@ -59,20 +55,21 @@ cRecord::cRecord(int /*num*/)
 
 cRecord::~cRecord()
 {
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
 	Stop();
 }
 
 bool cRecord::Open()
 {
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
+	dprintf(DEBUG_INFO, "cRecord::Open\n");
+	
 	exit_flag = RECORD_STOPPED;
+	
 	return true;
 }
 
 bool cRecord::Start(int fd, unsigned short vpid, unsigned short * apids, int numpids, CFrontend *fe)
 {
-	dprintf(DEBUG_INFO, "%s %s\n", FILENAME, __FUNCTION__);
+	dprintf(DEBUG_INFO, "cRecord::Start\n");
 	
 	int i = 0;
 
@@ -112,7 +109,7 @@ bool cRecord::Start(int fd, unsigned short vpid, unsigned short * apids, int num
 
 bool cRecord::Stop(void)
 {
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
+	dprintf(DEBUG_INFO, "cRecord::Stop\n");
 
 	exit_flag = RECORD_STOPPED;
 

@@ -56,8 +56,8 @@ class cPlayback
 		void FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t *numpida, std::string *language);
 		void FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *language);
 
-		cPlayback(int num = 0);
-		~cPlayback();	
+		cPlayback(int num = 0){};
+		~cPlayback(){};	
 };
 
 #endif

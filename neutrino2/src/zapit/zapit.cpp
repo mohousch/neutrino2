@@ -1825,7 +1825,7 @@ int CZapit::prepareChannels()
 	allchans.clear();  				// <- this invalidates all bouquets, too!
 	
 	// load frontend config
-	loadFrontendConfig();
+	//loadFrontendConfig();
         
     	// load tps
     	loadTransponders();
@@ -3395,9 +3395,6 @@ int CZapit::stopPlayBack(bool sendPmt)
 			delete videoDemux;	//destructor closes dmx
 			videoDemux = NULL;
 		}
-	
-		// stop video decoder (blanking)
-		//videoDecoder->Stop(true);
 	
 		if (pcrDemux)
 		{

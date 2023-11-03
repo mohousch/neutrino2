@@ -1212,7 +1212,7 @@ void tuxtx_set_pid(int pid, int page, const char * cc)
 
 	cfg_national_subset = GetNationalSubset(cc);
 	
-	dprintf(DEBUG_NORMAL, "TuxTxt subtitle set pid %d page %d lang %s (%d)\n", sub_pid, sub_page, cc, cfg_national_subset);
+	dprintf(DEBUG_NORMAL, "tuxtx_set_pid: pid %d page %d lang %s (%d)\n", sub_pid, sub_page, cc, cfg_national_subset);
 }
 
 int tuxtx_subtitle_running(int *pid, int *page, int *running)

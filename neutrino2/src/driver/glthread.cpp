@@ -317,7 +317,7 @@ void GLThreadObj::render()
 	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	////
+	/*
 	if (mVAchanged)
 	{
 		mVAchanged = false;
@@ -330,11 +330,11 @@ void GLThreadObj::render()
 		switch (cmp)
 		{
 			default:
-			case INT_MIN:   /* invalid */
-			case 0:     /* identical */
+			case INT_MIN:   // invalid
+			case 0:     // identical
 				//printf("%s: mVA == mOA (or fullscreen mode :-)\n", __func__);
 				break;
-			case 1:     /* mVA > mOA -- video is wider than display */
+			case 1:     // mVA > mOA -- video is wider than display
 				//hal_debug("%s: mVA > mOA\n", __func__);
 				//xscale = av_q2d(mVA) / av_q2d(mOA);
 				switch (mCrop)
@@ -348,7 +348,7 @@ void GLThreadObj::render()
 						break;
 				}
 				break;
-			case -1:    /* mVA < mOA -- video is taller than display */
+			case -1:    // mVA < mOA -- video is taller than display
 				//hal_debug("%s: mVA < mOA\n", __func__);
 				//xscale = av_q2d(mVA) / av_q2d(mOA);
 				switch (mCrop)
@@ -364,6 +364,7 @@ void GLThreadObj::render()
 				break;
 		}
 	}
+	*/
 	
 	// Display
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);

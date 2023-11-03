@@ -288,7 +288,7 @@ CMenuOptionChooser::CMenuOptionChooser(const char * const Name, int* const Optio
 
 void CMenuOptionChooser::addOption(const char *optionname, const int optionvalue)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionChooser::addOption: %s %d\n", optionname, optionvalue);
+	dprintf(DEBUG_DEBUG, "CMenuOptionChooser::addOption: %s %d\n", optionname, optionvalue);
 	
 	keyval_struct option;
 	
@@ -302,7 +302,7 @@ void CMenuOptionChooser::addOption(const char *optionname, const int optionvalue
 
 int CMenuOptionChooser::exec(CMenuTarget*)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
+	dprintf(DEBUG_DEBUG, "CMenuOptionChooser::exec: (%s)\n", itemName.c_str());
 
 	bool wantsRepaint = false;
 	int ret = CMenuTarget::RETURN_REPAINT;
@@ -571,7 +571,7 @@ CMenuOptionNumberChooser::CMenuOptionNumberChooser(const char * const Name, int 
 
 int CMenuOptionNumberChooser::exec(CMenuTarget*)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
+	dprintf(DEBUG_DEBUG, "CMenuOptionNumberChooser::exec: (%s)\n", itemName.c_str());
 	
 	//
 	if (locked)
@@ -719,7 +719,7 @@ void CMenuOptionStringChooser::addOption(const char * const value)
 
 int CMenuOptionStringChooser::exec(CMenuTarget *)
 {
-	dprintf(DEBUG_INFO, "CMenuOptionStringChooser::exec: (%s)\n", itemName.c_str());
+	dprintf(DEBUG_DEBUG, "CMenuOptionStringChooser::exec: (%s)\n", itemName.c_str());
 
 	bool wantsRepaint = false;
 	int ret = CMenuTarget::RETURN_REPAINT;
@@ -1087,7 +1087,7 @@ CMenuForwarder::CMenuForwarder(const char * const Text, const bool Active, const
 
 CMenuForwarder::~CMenuForwarder()
 {
-	dprintf(DEBUG_INFO, "CMenuForwarder::del (%s)\n", itemName.c_str());
+	dprintf(DEBUG_DEBUG, "CMenuForwarder::del (%s)\n", itemName.c_str());
 			
 	option.clear();
 }
@@ -1152,7 +1152,7 @@ int CMenuForwarder::getWidth(void) const
 
 int CMenuForwarder::exec(CMenuTarget* target)
 {
-	dprintf(DEBUG_INFO, "CMenuForwarder::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
+	dprintf(DEBUG_DEBUG, "CMenuForwarder::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
 
 	int ret = CMenuTarget::RETURN_EXIT;
 	
