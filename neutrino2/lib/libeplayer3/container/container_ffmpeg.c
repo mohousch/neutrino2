@@ -577,7 +577,6 @@ static void FFMPEGThread(Context_t *context)
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
 
 					//FIXME:
-					//
 					if (audioTrack->inject_as_pcm == 1)
 					{
 						AVCodecContext *c = ((AVStream *)(audioTrack->stream))->codec;

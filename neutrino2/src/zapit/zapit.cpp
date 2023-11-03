@@ -3340,7 +3340,6 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 #if !defined (__sh__)
 				videoDecoder->Resume();
 				videoDecoder->Stop();
-				//videoDecoder->Pause();
 #endif				  			
 				videoDecoder->Start();	
 			}

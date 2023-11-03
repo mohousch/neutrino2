@@ -70,19 +70,15 @@ static uint8_t *dmxbuf;
 static int bufpos;
 #endif
 
-static const char * FILENAME = "[video_cs.cpp]";
-
 ////
 cVideo::cVideo(int num)
 { 
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
+	dprintf(DEBUG_INFO, "cVideo::cVideo: num:%d\n", num);
 	
 	video_fd = -1;
 	video_adapter = 0;
 	video_num = num;
-
 	playstate = VIDEO_STOPPED;
-	
 	StreamType = VIDEO_STREAMTYPE_MPEG2;
 	
 #ifdef USE_OPENGL
@@ -104,13 +100,16 @@ cVideo::cVideo(int num)
 
 cVideo::~cVideo(void)
 {  
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
+	dprintf(DEBUG_INFO, "cVideo::~cVideo\n");	
 
 	Close();
 }
 
 bool cVideo::Open(CFrontend * fe)
-{ 
+{
+	dprintf(DEBUG_NORMAL, "cVideo::Open\n");
+	
+#ifndef USE_OPENGL
 	if(fe)
 		video_adapter = fe->feadapter;
 	
@@ -134,22 +133,25 @@ bool cVideo::Open(CFrontend * fe)
 	}
 	
 	dprintf(DEBUG_INFO, "%s %s failed\n", __FUNCTION__, devname);
+#endif
 
 	return false;
 }
 
 bool cVideo::Close()
 { 
-	if(video_fd < 0)
-		return false;
+	dprintf(DEBUG_NORMAL, "cVideo::Close\n");
 	
-	dprintf(DEBUG_NORMAL, "%s:%s\n", FILENAME, __FUNCTION__);	
+#ifndef USE_OPENGL
+	if(video_fd < 0)
+		return false;	
 	
 	if(video_fd >= 0)
 	{
 		::close(video_fd);
 		video_fd = -1;
-	}	
+	}
+#endif	
 
 	return true;
 }
@@ -158,7 +160,7 @@ int cVideo::getAspectRatio(void)
 {  
 	int ratio = ASPECTRATIO_43; // 0 = 4:3, 1 = 16:9
 
-	dprintf(DEBUG_NORMAL, "%s:%s\n", FILENAME, __FUNCTION__);	
+	dprintf(DEBUG_NORMAL, "cVideo::getAspectRatio\n");	
 	 
 #if !defined (USE_OPENGL)	 
 	unsigned char buffer[2];
@@ -221,8 +223,9 @@ bestfit
 /* set aspect ratio */
 int cVideo::setAspectRatio(int ratio, int format) 
 { 
-	dprintf(DEBUG_NORMAL, "%s:%s\n", FILENAME, __FUNCTION__);	
+	dprintf(DEBUG_NORMAL, "cVideo::setAspectRatio\n");	
 
+#ifndef USE_OPENGL
 	const char * sRatio[] =
 	{
 	   	"4:3",
@@ -248,7 +251,6 @@ int cVideo::setAspectRatio(int ratio, int format)
 	};
 #endif
 
-#if !defined (USE_OPENGL)  
 	int fd;
 
 	// aspectratio	
@@ -277,10 +279,42 @@ int cVideo::setAspectRatio(int ratio, int format)
 
 void cVideo::getPictureInfo(int &width, int &height, int &rate) 
 {
+#ifdef USE_OPENGL
+	width = dec_w;
+	height = dec_h;
+	
+	switch (dec_r)
+	{
+		case 23://23.976fps
+			rate = VIDEO_FRAME_RATE_23_976;
+			break;
+		case 24:
+			rate = VIDEO_FRAME_RATE_24;
+			break;
+		case 25:
+			rate = VIDEO_FRAME_RATE_25;
+			break;
+		case 29://29,976fps
+			rate = VIDEO_FRAME_RATE_29_97;
+			break;
+		case 30:
+			rate = VIDEO_FRAME_RATE_30;
+			break;
+		case 50:
+			rate = VIDEO_FRAME_RATE_50;
+			break;
+		case 60:
+			rate = VIDEO_FRAME_RATE_60;
+			break;
+		default:
+			rate = dec_r;
+			break;
+	}
+#else
 	rate = 25;
 	height = 576;
 	width = 720;
-#if !defined (USE_OPENGL)	  
+	  
 	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__); 
 
   	unsigned char buffer[10];
@@ -339,11 +373,13 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 
 int cVideo::Start()
 { 
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "cVideo::Start\n");
 	
 #ifdef USE_OPENGL
 	if (!thread_running)
 		OpenThreads::Thread::start();
+		
+	playstate = VIDEO_PLAYING;
 		
 	return 0;
 #else
@@ -365,7 +401,7 @@ int cVideo::Start()
 
 int cVideo::Stop(bool blank)
 { 
-	dprintf(DEBUG_INFO, "%s:%s blank:%d\n", FILENAME, __FUNCTION__, blank);	
+	dprintf(DEBUG_INFO, "cVideo::Stop: blank:%d\n", blank);	
 	
 #ifdef USE_OPENGL
 	if (thread_running)
@@ -373,6 +409,8 @@ int cVideo::Stop(bool blank)
 		thread_running = false;
 		OpenThreads::Thread::join();
 	}
+	
+	playstate = blank ? VIDEO_STOPPED : VIDEO_FREEZED;
 	
 	return 0;
 #else
@@ -390,28 +428,32 @@ int cVideo::Stop(bool blank)
 
 bool cVideo::Pause(void)
 { 
+	dprintf(DEBUG_INFO, "cVideo::Pause\n");
+	
+#ifndef USE_OPENGL
 	if(video_fd < 0)
 		return false;
-	
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
 		
 	if (::ioctl(video_fd, VIDEO_FREEZE) < 0)
 		perror("VIDEO_FREEZE");
+#endif
 	
 	playstate = VIDEO_FREEZED;	
-		
+	
 	return true;
 }
 
 bool cVideo::Resume(void)
 {
+	dprintf(DEBUG_INFO, "cVideo::Resume\n");	
+	
+#ifndef USE_OPENGL
 	if(video_fd < 0)
 		return false;
-	
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
 		
 	if (::ioctl(video_fd, VIDEO_CONTINUE) < 0)
 		perror("VIDEO_CONTINUE");
+#endif
 	
 	playstate = VIDEO_PLAYING;	
 		
@@ -419,13 +461,14 @@ bool cVideo::Resume(void)
 }
 
 int cVideo::Flush(void)
-{  
-	if(video_fd < 0)
-		return -1;
-	
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
+{ 
+	dprintf(DEBUG_INFO, "cVideo::Flush\n");
 	
 	int ret = -1;
+	
+#ifndef USE_OPENGL 
+	if(video_fd < 0)
+		return -1;
 
 #if defined (__sh__)
 	ret = ::ioctl(video_fd, VIDEO_FLUSH);
@@ -434,39 +477,45 @@ int cVideo::Flush(void)
 #endif
 
 	if(ret < 0)
-		perror("VIDEO_FLUSH");		
+		perror("VIDEO_FLUSH");
+#endif		
 	
 	return ret;
 }
 
 int cVideo::setSlowMotion(int repeat)
 {
-	if(video_fd < 0)
-		return -1;
-	
-	dprintf(DEBUG_INFO, "VIDEO_SLOWMOTION(%d) - \n", repeat);
+	dprintf(DEBUG_INFO, "cVideo::setSlowMotion: (%d)\n", repeat);
 	
 	int ret = -1;
+	
+#ifndef USE_OPENGL
+	if(video_fd < 0)
+		return -1;
 		
 	ret = ::ioctl(video_fd, VIDEO_SLOWMOTION, repeat);
 	if (ret < 0)
-		perror("VIDEO_SLOWMOTION");	
+		perror("VIDEO_SLOWMOTION");
+#endif	
 	
 	return ret;
 }
 
 int cVideo::setFastForward(int skip)
 {
-	if(video_fd < 0)
-		return -1;
-	
-	dprintf(DEBUG_INFO, "VIDEO_FAST_FORWARD(%d) - \n", skip);
+	dprintf(DEBUG_INFO, "cVideo::setFastForward: (%d)\n", skip);
 	
 	int ret = -1;
+	
+#ifndef USE_OPENGL
+	if(video_fd < 0)
+		return -1;
 		
 	ret = ::ioctl(video_fd, VIDEO_FAST_FORWARD, skip);
+	
 	if (ret < 0)
-		perror("VIDEO_FAST_FORWARD");	
+		perror("VIDEO_FAST_FORWARD");
+#endif	
 
 	return ret;
 }
@@ -532,7 +581,7 @@ ntsc
 	};
 #endif
 
-	dprintf(DEBUG_INFO, "%s:%s - video_system=%s\n", FILENAME, __FUNCTION__, aVideoSystems[video_system][0]);	
+	dprintf(DEBUG_INFO, "cVideo::setVideoSystem: video_system=%s\n", aVideoSystems[video_system][0]);	
 
 #if !defined (USE_OPENGL)	
 	int fd = ::open("/proc/stb/video/videomode", O_RDWR);
@@ -566,7 +615,7 @@ int cVideo::SetSpaceColour(int colour_space)
 	
 #endif
 	
-	dprintf(DEBUG_INFO, "%s:%s - mode=%s\n", FILENAME, __FUNCTION__, aCOLORSPACE[colour_space]);	
+	dprintf(DEBUG_INFO, "cVideo::SetSpaceColour: mode=%s\n", aCOLORSPACE[colour_space]);	
 
 #if !defined (USE_OPENGL)
 #if defined (__sh__)
@@ -586,10 +635,6 @@ int cVideo::SetSpaceColour(int colour_space)
 
 void cVideo::SetStreamType(VIDEO_FORMAT type) 
 {
-#if !defined USE_OPENGL
-	if(video_fd < 0)
-		return;
-	
 	const char *aVIDEOFORMAT[] = {
 		"VIDEO_STREAMTYPE_MPEG2",
 		"VIDEO_STREAMTYPE_MPEG4_H264",
@@ -603,7 +648,11 @@ void cVideo::SetStreamType(VIDEO_FORMAT type)
 		"VIDEO_STREAMTYPE_AVS"
 	};
 
-	dprintf(DEBUG_INFO, "%s:%s - type=%s\n", FILENAME, __FUNCTION__, aVIDEOFORMAT[type]);
+	dprintf(DEBUG_INFO, "cVideo::SetStreamType: type=%s\n", aVIDEOFORMAT[type]);
+	
+#if !defined USE_OPENGL
+	if(video_fd < 0)
+		return;
 
 	if (ioctl( video_fd, VIDEO_SET_STREAMTYPE, type) < 0)
 		perror("VIDEO_SET_STREAMTYPE");
@@ -615,8 +664,9 @@ void cVideo::SetStreamType(VIDEO_FORMAT type)
 /* set sync mode */
 void cVideo::SetSyncMode(int mode)
 {
-	dprintf(DEBUG_NORMAL, "%s:%s\n", FILENAME, __FUNCTION__);	
+	dprintf(DEBUG_NORMAL, "cVideo::SetSyncMode:\n");	
 
+#ifndef USE_OPENGL
 #if defined (__sh__)
         int clock = 0;
 	
@@ -663,6 +713,7 @@ void cVideo::SetSyncMode(int mode)
 	   	write(fd, master_clock[clock], strlen(master_clock[clock]));
 	   	::close(fd);
         }
+#endif
 #endif	
 }
 
@@ -671,7 +722,7 @@ void cVideo::SetInput(int val)
 { 
 	const char *input[] = {"encoder", "scart", "aux"};
 	
-	printf("cVideo::SetInput: %s\n", input[val]);	
+	dprintf(DEBUG_NORMAL, "cVideo::SetInput: %s\n", input[val]);	
 
 #if !defined (USE_OPENGL)
 	// avs input
@@ -710,7 +761,7 @@ void cVideo::SetStandby(int val)
 void cVideo::Pig(int x, int y, int w, int h, int osd_w, int osd_h, int num)
 { 
 	//ugly we just resize the video display
-	dprintf(DEBUG_INFO, "%s:%s - x=%d y=%d w=%d h=%d (video_num=%d)\n", FILENAME, __FUNCTION__, x, y, w, h, num);
+	dprintf(DEBUG_INFO, "cVideo::Pig: - x=%d y=%d w=%d h=%d (video_num=%d)\n", x, y, w, h, num);
 	
 	int _x, _y, _w, _h;
 	/* the target "coordinates" seem to be in a PAL sized plane
@@ -825,7 +876,7 @@ void cVideo::SetWideScreen(int val) // 0 = auto, 1 = auto(4:3_off)
 	};
 #endif
 	
-	dprintf(DEBUG_INFO, "%s:%s - mode=%s\n", FILENAME, __FUNCTION__, wss[val]);
+	dprintf(DEBUG_INFO, "cVideo::SetWideScreen: mode=%s\n", wss[val]);
 
 #if !defined (USE_OPENGL)	
 	int fd = ::open("/proc/stb/denc/0/wss", O_RDWR);
@@ -861,8 +912,8 @@ void cVideo::SetAnalogMode(int mode)
 	};
 #endif
 	
-	dprintf(DEBUG_INFO, "%s:%s - mode=%s\n", FILENAME, __FUNCTION__, aANALOGMODE[mode]);	
-
+	dprintf(DEBUG_INFO, "cVideo::SetAnalogMode: mode=%s\n", aANALOGMODE[mode]);	
+	
 #if !defined (USE_OPENGL)	
 	int fd = ::open("/proc/stb/avs/0/colorformat", O_RDWR);
 	
@@ -877,10 +928,11 @@ void cVideo::SetAnalogMode(int mode)
 /* blank on freeze */
 int cVideo::getBlank(void) 
 { 
+	dprintf(DEBUG_INFO, "cVideo::getBlank\n");	
+	
+#ifndef USE_OPENGL
 	if(video_fd < 0)
 		return -1;
-	
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
 
 	struct video_status status;
 
@@ -888,26 +940,35 @@ int cVideo::getBlank(void)
 		perror("VIDEO_GET_STATUS");
 
 	return status.video_blank;
+#else
+	return 1;
+#endif
 }
 
 /* set blank */
 int cVideo::setBlank(int enable) 
-{  
+{ 
+	dprintf(DEBUG_INFO, "cVideo::setBlank\n");	
+	 
+#ifndef USE_OPENGL
 	if(video_fd < 0)
 		return -1;
-	
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
 
 	return ::ioctl(video_fd, VIDEO_SET_BLANK, enable);
+#else
+	return enable;
+#endif
 }
 
 /* get play state */
 int cVideo::getPlayState(void) 
 { 
+	dprintf(DEBUG_INFO, "cVideo::getPlayState:\n");	
+	
+#ifndef USE_OPENGL
 	if(video_fd < 0)
 		return -1;
-	
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
+#endif
 
 	return playstate; 
 }
@@ -915,18 +976,22 @@ int cVideo::getPlayState(void)
 /* set source */
 int cVideo::setSource(int source)
 {
-	if(video_fd < 0)
-		return -1;
-	
 	const char *aVIDEOSTREAMSOURCE[] = {
 		"VIDEO_SOURCE_DEMUX",
 		"VIDEO_SOURCE_MEMORY",
 		"VIDEO_SOURCE_HDMI"
 	};
 		
-	dprintf(DEBUG_INFO, "%s:%s - source=%s\n", FILENAME, __FUNCTION__, aVIDEOSTREAMSOURCE[source]);	
+	dprintf(DEBUG_INFO, "cVideo::setSource: source=%s\n", aVIDEOSTREAMSOURCE[source]);	
+	
+#ifndef USE_OPENGL
+	if(video_fd < 0)
+		return -1;
 	
 	return ::ioctl(video_fd, VIDEO_SELECT_SOURCE, source);
+#else
+	return 0;
+#endif
 }
 
 int64_t cVideo::GetPTS(void)
@@ -954,8 +1019,9 @@ int64_t cVideo::GetPTS(void)
 int cVideo::showSinglePic(const char *filename)
 {
 	
-	dprintf(DEBUG_NORMAL, "showSinglePic %s\n", filename);
+	dprintf(DEBUG_NORMAL, "cVideo::showSinglePic %s\n", filename);
 	
+#ifndef USE_OPENGL
 	int f = ::open(filename, O_RDONLY);
 	
 	if (f >= 0)
@@ -1014,12 +1080,16 @@ int cVideo::showSinglePic(const char *filename)
 		dprintf(DEBUG_NORMAL, "couldnt open %s\n", filename);
 		return -1;
 	}
+#endif
 	
 	return 0;
 }
 
 void cVideo::finishShowSinglePic()
 {
+	dprintf(DEBUG_NORMAL, "cVideo::finishShowSinglePic:\n");
+	
+#ifndef USE_OPENGL
 	if (video_fd >= 0)
 	{
 		// stop playing
@@ -1028,12 +1098,14 @@ void cVideo::finishShowSinglePic()
 		// set source to demux
 		setSource(VIDEO_SOURCE_DEMUX);
 	}
+#endif
 }
 
 void cVideo::setContrast(int Contrast)
 {
-	dprintf(DEBUG_NORMAL, "%s %s (%d)\n", __FILE__, __FUNCTION__, Contrast);
+	dprintf(DEBUG_NORMAL, "cVideo::setContrast: (%d)\n", Contrast);
 	
+#ifndef USE_OPENGL
 	FILE *fd;
 #if defined (__sh__)
 	fd = fopen("/proc/stb/video/plane/psi_contrast", "w");
@@ -1045,12 +1117,14 @@ void cVideo::setContrast(int Contrast)
 		fprintf(fd, "%d", Contrast);
 		fclose(fd);
 	}
+#endif
 }
 
 void cVideo::setSaturation(int Saturation)
 {
-	dprintf(DEBUG_NORMAL, "%s %s (%d)\n", __FILE__, __FUNCTION__, Saturation);
+	dprintf(DEBUG_NORMAL, "cVideo::setSaturation: (%d)\n", Saturation);
 	
+#ifndef USE_OPENGL
 	FILE *fd;
 #if defined (__sh__)
 	fd = fopen("/proc/stb/video/plane/psi_saturation", "w");
@@ -1062,12 +1136,14 @@ void cVideo::setSaturation(int Saturation)
 		fprintf(fd, "%d", Saturation);
 		fclose(fd);
 	}
+#endif
 }
 
 void cVideo::setBrightness(int Brightness)
 {
-	dprintf(DEBUG_NORMAL, "%s %s (%d)\n", __FILE__, __FUNCTION__, Brightness);
+	dprintf(DEBUG_NORMAL, "cVideo::setBrightness: (%d)\n", Brightness);
 	
+#ifndef USE_OPENGL
 	FILE *fd;
 #if defined (__sh__)
 	fd = fopen("/proc/stb/video/plane/psi_brightness", "w");
@@ -1079,12 +1155,14 @@ void cVideo::setBrightness(int Brightness)
 		fprintf(fd, "%d", Brightness);
 		fclose(fd);
 	}
+#endif
 }
 
 void cVideo::setTint(int Tint)
 {
-	dprintf(DEBUG_NORMAL, "%s %s (%d)\n", __FILE__, __FUNCTION__, Tint);
+	dprintf(DEBUG_NORMAL, "cVideo::setTint: (%d)\n", Tint);
 	
+#ifndef USE_OPENGL
 	FILE *fd;
 #if defined (__sh__)
 	fd = fopen("/proc/stb/video/plane/psi_tint", "w");
@@ -1096,6 +1174,7 @@ void cVideo::setTint(int Tint)
 		fprintf(fd, "%d", Tint);
 		fclose(fd);
 	}
+#endif
 }
 
 #ifdef USE_OPENGL
@@ -1175,11 +1254,11 @@ void cVideo::run(void)
 	av_init_packet(&avpkt);
 	inp = av_find_input_format("mpegts");
 	AVIOContext *pIOCtx = avio_alloc_context(inbuf, INBUF_SIZE, // internal Buffer and its size
-	        0,      // bWriteable (1=true,0=false)
-	        NULL,       // user data; will be passed to our callback functions
-	        my_read,    // read callback
-	        NULL,       // write callback
-	        NULL);      // seek callback
+	        0,      	// bWriteable (1=true,0=false)
+	        NULL,       	// user data; will be passed to our callback functions
+	        my_read,    	// read callback
+	        NULL,       	// write callback
+	        NULL);      	// seek callback
 	        
 	avfc = avformat_alloc_context();
 	avfc->pb = pIOCtx;
@@ -1190,18 +1269,19 @@ void cVideo::run(void)
 	
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
 	{
-		//hal_info("%s: Could not open input\n", __func__);
+		printf("cVideo::run: Could not open input\n");
 		goto out;
 	}
 	
 	while (avfc->nb_streams < 1)
 	{
-		printf("%s: nb_streams %d, should be 1 => retry\n", __func__, avfc->nb_streams);
+		printf("cVideo::run: nb_streams %d, should be 1 => retry\n", avfc->nb_streams);
 		
 		if (av_read_frame(avfc, &avpkt) < 0)
-			printf("%s: av_read_frame < 0\n", __func__);
+			printf("cVideo::run: av_read_frame < 0\n");
 			
 		av_packet_unref(&avpkt);
+		
 		if (! thread_running)
 			goto out;
 	}
@@ -1209,19 +1289,19 @@ void cVideo::run(void)
 	p = avfc->streams[0]->codecpar;
 	
 	if (p->codec_type != AVMEDIA_TYPE_VIDEO)
-		printf("%s: no video codec? 0x%x\n", __func__, p->codec_type);
+		printf("cVideo::run: no video codec? 0x%x\n", p->codec_type);
 
 	codec = avcodec_find_decoder(p->codec_id);
 	
 	if (!codec)
 	{
-		printf("%s: Codec for %s not found\n", __func__, avcodec_get_name(p->codec_id));
+		printf("cVideo::run: Codec for %s not found\n", avcodec_get_name(p->codec_id));
 		goto out;
 	}
 	c = avcodec_alloc_context3(codec);
 	if (avcodec_open2(c, codec, NULL) < 0)
 	{
-		printf("%s: Could not open codec\n", __func__);
+		printf("cVideo::run: Could not open codec\n");
 		goto out;
 	}
 	
@@ -1230,11 +1310,11 @@ void cVideo::run(void)
 	
 	if (!frame || !rgbframe)
 	{
-		printf("%s: Could not allocate video frame\n", __func__);
+		printf("cVideo::run: Could not allocate video frame\n");
 		goto out2;
 	}
 	
-	printf("decoding %s\n", avcodec_get_name(c->codec_id));
+	printf("cVideo::run: decoding %s\n", avcodec_get_name(c->codec_id));
 	
 	while (thread_running)
 	{
@@ -1242,7 +1322,7 @@ void cVideo::run(void)
 		{
 			if (warn_r - time(NULL) > 4)
 			{
-				printf("%s: av_read_frame < 0\n", __func__);
+				//printf("%s: av_read_frame < 0\n", __func__);
 				warn_r = time(NULL);
 			}
 			
@@ -1258,7 +1338,7 @@ void cVideo::run(void)
 		{
 			if (warn_d - time(NULL) > 4)
 			{
-				printf("%s: avcodec_decode_video2 %d\n", __func__, av_ret);
+				//printf("cVideo::run: avcodec_decode_video2 %d\n", av_ret);
 				warn_d = time(NULL);
 			}
 			
@@ -1266,8 +1346,8 @@ void cVideo::run(void)
 			continue;
 		}
 		
-		if (avpkt.size > av_ret)
-			hal_info("%s: WARN: pkt->size %d != len %d\n", __func__, avpkt.size, av_ret);
+		//if (avpkt.size > av_ret)
+		//	printf("cVideo::run: WARN: pkt->size %d != len %d\n", avpkt.size, av_ret);
 #else
 		av_ret = avcodec_send_packet(c, &avpkt);
 		
@@ -1275,7 +1355,7 @@ void cVideo::run(void)
 		{
 			if (warn_d - time(NULL) > 4)
 			{
-				printf("%s: avcodec_send_packet %d\n", __func__, av_ret);
+				//printf("cVideo::run: avcodec_send_packet %d\n", av_ret);
 				warn_d = time(NULL);
 			}
 			av_packet_unref(&avpkt);
@@ -1297,7 +1377,7 @@ void cVideo::run(void)
 			        SWS_BICUBIC, 0, 0, 0);
 			        
 			if (!convert)
-				printf("%s: ERROR setting up SWS context\n", __func__);
+				printf("cVideo::run: ERROR setting up SWS context\n");
 			else
 			{
 				buf_m.lock();
@@ -1311,7 +1391,7 @@ void cVideo::run(void)
 				sws_scale(convert, frame->data, frame->linesize, 0, c->height, rgbframe->data, rgbframe->linesize);
 				if (dec_w != c->width || dec_h != c->height)
 				{
-					printf("%s: pic changed %dx%d -> %dx%d\n", __func__, dec_w, dec_h, c->width, c->height);
+					printf("cVideo::run: pic changed %dx%d -> %dx%d\n", dec_w, dec_h, c->width, c->height);
 					dec_w = c->width;
 					dec_h = c->height;
 					w_h_changed = true;
@@ -1340,7 +1420,7 @@ void cVideo::run(void)
 				
 				if (buf_num > (VDEC_MAXBUFS - 1))
 				{
-					//printf("%s: buf_num overflow\n", __func__);
+					//printf("cVideo::run: buf_num overflow\n");
 					buf_out++;
 					buf_out %= VDEC_MAXBUFS;
 					buf_num--;
@@ -1348,16 +1428,9 @@ void cVideo::run(void)
 				dec_r = c->time_base.den / (c->time_base.num * c->ticks_per_frame);
 				buf_m.unlock();
 			}
-			
-			//printf("%s: time_base: %d/%d, ticks: %d rate: %d pts 0x%" PRIx64 "\n", __func__, c->time_base.num, c->time_base.den, c->ticks_per_frame, dec_r,
-#if (LIBAVUTIL_VERSION_MAJOR < 54)
-			 //   av_frame_get_best_effort_timestamp(frame));
-#else
-			//    frame->best_effort_timestamp);
-#endif
 		}
 		else
-			printf("%s: got_frame: %d stillpicture: %d\n", __func__, got_frame, stillpicture);
+			printf("cVideo::run: got_frame: %d stillpicture: %d\n", got_frame, stillpicture);
 		still_m.unlock();
 		av_packet_unref(&avpkt);
 	}

@@ -58,6 +58,9 @@ GLThreadObj::GLThreadObj(int x, int y) : mX(x), mY(y), mReInit(true), mShutDown(
 	mState.width  = mX;
 	mState.height = mY;
 	mState.blit = true;
+	////
+	mVAchanged = true;
+	last_apts = 0;
 
 	initKeys();
 }
@@ -314,6 +317,54 @@ void GLThreadObj::render()
 	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
+	////
+	if (mVAchanged)
+	{
+		mVAchanged = false;
+		zoom = 1.0;
+		xscale = 1.0;
+		//int cmp = (mCrop == VIDEOFORMAT_FULLSCREEN) ? 0 : av_cmp_q(mVA, mOA);
+		int cmp = 0;
+		const AVRational a149 = { 14, 9 };
+		
+		switch (cmp)
+		{
+			default:
+			case INT_MIN:   /* invalid */
+			case 0:     /* identical */
+				//printf("%s: mVA == mOA (or fullscreen mode :-)\n", __func__);
+				break;
+			case 1:     /* mVA > mOA -- video is wider than display */
+				//hal_debug("%s: mVA > mOA\n", __func__);
+				//xscale = av_q2d(mVA) / av_q2d(mOA);
+				switch (mCrop)
+				{
+					case VIDEOFORMAT_PANSCAN:
+						break;
+					case VIDEOFORMAT_LETTERBOX:
+						//zoom = av_q2d(mOA) / av_q2d(mVA);
+						break;
+					default:
+						break;
+				}
+				break;
+			case -1:    /* mVA < mOA -- video is taller than display */
+				//hal_debug("%s: mVA < mOA\n", __func__);
+				//xscale = av_q2d(mVA) / av_q2d(mOA);
+				switch (mCrop)
+				{
+					case VIDEOFORMAT_LETTERBOX:
+						break;
+					case VIDEOFORMAT_PANSCAN:
+						//zoom = av_q2d(mOA) / av_q2d(mVA);
+						break;
+					default:
+						break;
+				}
+				break;
+		}
+	}
+	
 	// Display
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	drawSquare(1.0);
@@ -426,10 +477,7 @@ void GLThreadObj::bltDisplayBuffer()
 	cVideo::SWFramebuffer *buf = videoDecoder->getDecBuf();
 	
 	if (!buf)
-	{
-		if (warn)
-			printf("GLFB::%s did not get a buffer...\n", __func__);
-			
+	{	
 		warn = false;
 		return;
 	}
@@ -485,12 +533,11 @@ void GLThreadObj::bltDisplayBuffer()
 			rate = 2000000 / rate; /* limit to half the frame rate */
 		else
 			rate = 50000; /* minimum 20 fps */
+			
 		if (sleep_us > rate)
 			sleep_us = rate;
 		else if (sleep_us < 1)
 			sleep_us = 1;
 	}
-	
-	//hal_debug("vpts: 0x%" PRIx64 " apts: 0x%" PRIx64 " diff: %6.3f sleep_us %d buf %d\n", buf->pts(), apts, (buf->pts() - apts) / 90000.0, sleep_us, videoDecoder->buf_num);
 }
 

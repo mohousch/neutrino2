@@ -61,6 +61,9 @@ class GLThreadObj : public OpenThreads::Thread
 		AVRational mVA;         /* video aspect ratio */
 		AVRational _mVA;        /* for detecting changes in mVA */
 		bool mVAchanged;
+		float zoom;         /* for cropping */
+		float xscale;           /* and aspect ratio */
+		int mCrop;          /* DISPLAY_AR_MODE */
 
 	private:
 		int mX;				/* window size */
@@ -106,5 +109,4 @@ class GLThreadObj : public OpenThreads::Thread
 };
 
 #endif
-
 

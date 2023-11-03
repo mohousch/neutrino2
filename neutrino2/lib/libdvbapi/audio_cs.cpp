@@ -72,13 +72,10 @@ static int bufpos;
 static cAudio *gThiz = NULL;
 #endif
 
-
-static const char * FILENAME = "[audio_cs.cpp]";
-
 ////
 cAudio::cAudio(int num)
 {  
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
+	dprintf(DEBUG_INFO, "cAudio::cAudio: num:%d\n", num);
 
 	Muted = false;
 	
@@ -109,7 +106,7 @@ cAudio::cAudio(int num)
 
 cAudio::~cAudio(void)
 {  
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
+	dprintf(DEBUG_INFO, "cAudio::~cAudio\n");	
 
 	Close();
 	
@@ -125,6 +122,7 @@ cAudio::~cAudio(void)
 
 bool cAudio::Open(CFrontend * fe)
 { 
+#if !defined USE_OPENGL 
 	if(fe)
 		audio_adapter = fe->feadapter;
 	
@@ -146,23 +144,26 @@ bool cAudio::Open(CFrontend * fe)
 		dprintf(DEBUG_NORMAL, "cAudio::Open %s\n", devname);
 		
 		return true;
-	}	
+	}
+#endif	
 
 	return false;
 }
 
 bool cAudio::Close()
 { 
+	dprintf(DEBUG_NORMAL, "cAudio::Close\n");
+	
+#if !defined USE_OPENGL 
 	if (audio_fd < 0)
 		return false;
-	  
-	dprintf(DEBUG_NORMAL, "%s:%s\n", FILENAME, __FUNCTION__);	
-
+	 
 	if (audio_fd >= 0)
 	{
 		::close(audio_fd);
 		audio_fd = -1;	
 	}
+#endif
 	
 	return true;
 }
@@ -170,12 +171,13 @@ bool cAudio::Close()
 // shut up
 int cAudio::SetMute(int enable)
 { 
-	dprintf(DEBUG_NORMAL, "%s:%s (%d)\n", FILENAME, __FUNCTION__, enable);	
+	dprintf(DEBUG_NORMAL, "cAudio::SetMute (%d)\n", enable);	
 	
 	Muted = enable?true:false;
 	
 	int ret = 0;	
 	
+#if !defined USE_OPENGL
 #if !defined (__sh__)
 	if (audio_fd > 0)
 	{
@@ -186,7 +188,6 @@ int cAudio::SetMute(int enable)
 	}
 #endif
 
-#if !defined (USE_OPENGL)
 	char sMuted[4];
 	sprintf(sMuted, "%d", Muted);
 
@@ -205,10 +206,11 @@ int cAudio::SetMute(int enable)
 /* volume, min = 0, max = 100 */
 int cAudio::setVolume(unsigned int left, unsigned int right)
 { 
-	dprintf(DEBUG_INFO, "%s:%s volume: %d\n", FILENAME, __FUNCTION__, left);
+	dprintf(DEBUG_INFO, "cAudio::setVolume volume: %d\n", left);
 	
 	int ret = -1;
 	
+#if !defined USE_OPENGL
 	volume = (left + right)/2;
 	
 	// map volume
@@ -237,7 +239,7 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 	}
 #endif	
 
-#if !defined (USE_OPENGL) && !defined (PLATFORM_HYPERCUBE)
+#if !defined (PLATFORM_HYPERCUBE)
 	char sVolume[4];
 	
 #if defined (__sh__)
@@ -253,6 +255,7 @@ int cAudio::setVolume(unsigned int left, unsigned int right)
 		write(fd, sVolume, strlen(sVolume));
 		::close(fd);
 	}
+#endif
 #endif
 	
 	return ret;
@@ -270,8 +273,6 @@ int cAudio::Start(void)
 #else
 	if (audio_fd < 0)
 		return false;
-	
-	//dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
 	
 	int ret = -1;
 	
@@ -300,8 +301,6 @@ int cAudio::Stop(void)
 	if (audio_fd < 0)
 		return false;
 	
-	//dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
-	
 	int ret = -1;
 		
 	ret = ::ioctl(audio_fd, AUDIO_STOP);
@@ -317,16 +316,16 @@ bool cAudio::Pause()
 {
 	dprintf(DEBUG_INFO, "cAudio::Pause\n");
 	 
+#if !defined USE_OPENGL
 	if (audio_fd < 0)
 		return false;
-	
-	//dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
 	
 	if (::ioctl(audio_fd, AUDIO_PAUSE) < 0)
 	{
 		perror("AUDIO_PAUSE");
 		return false;
-	}	
+	}
+#endif	
 
 	return true;
 }
@@ -335,25 +334,22 @@ bool cAudio::Resume()
 { 
 	dprintf(DEBUG_INFO, "cAudio::Resume\n");
 	
+#if !defined USE_OPENGL
 	if (audio_fd < 0)
-		return false;
-	
-	//dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
+		return false;	
 
 	if(::ioctl(audio_fd, AUDIO_CONTINUE) < 0)
 	{
 		perror("AUDIO_CONTINUE");
 		return false;
-	}	
+	}
+#endif	
 	
 	return true;
 }
 
 void cAudio::SetStreamType(AUDIO_FORMAT type)
 {
-	if (audio_fd < 0)
-		return;
-	
 	const char* aAUDIOFORMAT[] = {
 		"AUDIO_STREAMTYPE_AC3",
 		"AUDIO_STREAMTYPE_MPEG",
@@ -366,39 +362,47 @@ void cAudio::SetStreamType(AUDIO_FORMAT type)
 		"AUDIO_STREAMTYPE_EAC3",
 	};
 
-	dprintf(DEBUG_INFO, "%s:%s - type=%s\n", FILENAME, __FUNCTION__, aAUDIOFORMAT[type]);
+	dprintf(DEBUG_INFO, "cAudio::SetStreamType - type=%s\n", aAUDIOFORMAT[type]);
+	
+#if !defined USE_OPENGL
+	if (audio_fd < 0)
+		return;
 	
 	if (::ioctl(audio_fd, AUDIO_SET_BYPASS_MODE, type) < 0)
 	{
 		perror("AUDIO_SET_BYPASS_MODE");
 		return;
-	}	
+	}
+#endif	
 
 	StreamType = type;
 }
 
 void cAudio::SetSyncMode(int Mode)
 {
+	dprintf(DEBUG_INFO, "cAudio::SetSyncMode\n");	
+	
+#if !defined USE_OPENGL
 	if (audio_fd < 0)
 		return;
-	
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);	
 	
 	if (::ioctl(audio_fd, AUDIO_SET_AV_SYNC, Mode) < 0)
 	{
 		perror("AUDIO_SET_AV_SYNC");
 		return;
-	}	
+	}
+#endif	
 }
 
 int cAudio::Flush(void)
 {  
-	if (audio_fd < 0)
-		return -1;
-	
-	dprintf(DEBUG_INFO, "%s:%s\n", FILENAME, __FUNCTION__);
+	dprintf(DEBUG_INFO, "cAudio::Flush\n");
 	
 	int ret = -1;
+
+#if !defined USE_OPENGL	
+	if (audio_fd < 0)
+		return -1;
 
 #if defined (__sh__)
 	ret = (::ioctl(audio_fd, AUDIO_FLUSH) < 0);
@@ -408,6 +412,7 @@ int cAudio::Flush(void)
 
 	if(ret < 0)
 		perror("AUDIO_FLUSH");	
+#endif
 	
 	return ret;
 }
@@ -421,15 +426,17 @@ int cAudio::setChannel(int channel)
 		"MONORIGHT",
 	};
 	 
-	dprintf(DEBUG_INFO, "%s:%s %s\n", FILENAME, __FUNCTION__, aAUDIOCHANNEL[channel]);
-
-	if (audio_fd < 0)
-		return -1;
+	dprintf(DEBUG_INFO, "cAudio::setChannel: %s\n", aAUDIOCHANNEL[channel]);
 	
 	int ret = -1;
 
+#if !defined (USE_OPENGL)
+	if (audio_fd < 0)
+		return -1;
+
 	ret = ::ioctl(audio_fd, AUDIO_CHANNEL_SELECT, (audio_channel_select_t)channel);
 		perror("AUDIO_CHANNEL_SELECT");	
+#endif
 	
 	return ret;
 }
@@ -441,8 +448,9 @@ void cAudio::SetHdmiDD(int ac3)
 		"passthrough"
 	};
 	
-	dprintf(DEBUG_NORMAL, "%s:%s %s\n", FILENAME, __FUNCTION__, aHDMIDD[ac3]);	
+	dprintf(DEBUG_NORMAL, "cAudio::SetHdmiDD: %s\n", aHDMIDD[ac3]);	
 
+#if !defined (USE_OPENGL)
 #if defined (__sh__)
 	const char *aHDMIDDSOURCE[] = {
 		"pcm",
@@ -460,7 +468,6 @@ void cAudio::SetHdmiDD(int ac3)
 	}
 #endif
 
-#if !defined (USE_OPENGL)
 	int fd_ac3 = ::open("/proc/stb/audio/ac3", O_RDWR);
 	
 	if(fd_ac3 > 0)
@@ -474,8 +481,7 @@ void cAudio::SetHdmiDD(int ac3)
 /* set source */
 int cAudio::setSource(int source)
 { 
-	if (audio_fd < 0)
-		return -1;
+	int ret = -1;
 	
 	const char *aAUDIOSTREAMSOURCE[] = {
 		"AUDIO_SOURCE_DEMUX",
@@ -483,18 +489,21 @@ int cAudio::setSource(int source)
 		"AUDIO_SOURCE_HDMI"
 	};
 		
-	dprintf(DEBUG_INFO, "%s:%s - source=%s\n", FILENAME, __FUNCTION__, aAUDIOSTREAMSOURCE[source]);
+	dprintf(DEBUG_INFO, "cAudio::setSource: - source=%s\n", aAUDIOSTREAMSOURCE[source]);
 	
-	int ret = -1;
+#if !defined USE_OPENGL	
+	if (audio_fd < 0)
+		return -1;
 
 	ret = ::ioctl(audio_fd, AUDIO_SELECT_SOURCE, source);
-	
+#endif
+
 	return ret;
 }
 
 int cAudio::setHwPCMDelay(int delay)
 {  
-	dprintf(DEBUG_INFO, "%s:%s - delay=%d\n", FILENAME, __FUNCTION__, delay);
+	dprintf(DEBUG_INFO, "cAudio::setHwPCMDelay: - delay=%d\n", delay);
 	
 #if !defined (USE_OPENGL)	
 	if (delay != m_pcm_delay )
@@ -515,7 +524,7 @@ int cAudio::setHwPCMDelay(int delay)
 
 int cAudio::setHwAC3Delay(int delay)
 {
-	dprintf(DEBUG_INFO, "%s:%s - delay=%d\n", FILENAME, __FUNCTION__, delay);
+	dprintf(DEBUG_INFO, "cAudio::setHwAC3Delay: - delay=%d\n", delay);
 	
 #if !defined (USE_OPENGL)	
 	if ( delay != m_ac3_delay )
@@ -578,7 +587,7 @@ int cAudio::my_read(uint8_t *buf, int buf_size)
 
 void cAudio::run()
 {
-	//dprintf(DEBUG_NORMAL, "cAudio::run\n");
+	dprintf(DEBUG_NORMAL, "cAudio::run\n");
 	
 	/* libavcodec & friends */
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
@@ -611,11 +620,11 @@ void cAudio::run()
 	inp = av_find_input_format("mpegts");
 	
 	AVIOContext *pIOCtx = avio_alloc_context(inbuf, INBUF_SIZE, // internal Buffer and its size
-	        0,      // bWriteable (1=true,0=false)
-	        NULL,       // user data; will be passed to our callback functions
-	        _my_read,   // read callback
-	        NULL,       // write callback
-	        NULL);      // seek callback
+	        0,      	// bWriteable (1=true,0=false)
+	        NULL,       	// user data; will be passed to our callback functions
+	        _my_read,   	// read callback
+	        NULL,       	// write callback
+	        NULL);      	// seek callback
 	        
 	avfc = avformat_alloc_context();
 	avfc->pb = pIOCtx;
@@ -625,28 +634,29 @@ void cAudio::run()
 
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
 	{
-		printf("%s: avformat_open_input() failed.\n", __func__);
+		printf("cAudio::run: avformat_open_input() failed.\n");
 		goto out;
 	}
 	
 	ret = avformat_find_stream_info(avfc, NULL);
-	printf("%s: avformat_find_stream_info: %d\n", __func__, ret);
+	printf("cAudio::run: avformat_find_stream_info: %d\n", ret);
 	
 	if (avfc->nb_streams != 1)
 	{
-		printf("%s: nb_streams: %d, should be 1!\n", __func__, avfc->nb_streams);
+		printf("cAudio::run: nb_streams: %d, should be 1!\n", avfc->nb_streams);
 		goto out;
 	}
 	
 	p = avfc->streams[0]->codecpar;
+	
 	if (p->codec_type != AVMEDIA_TYPE_AUDIO)
-		printf("%s: stream 0 no audio codec? 0x%x\n", __func__, p->codec_type);
+		printf("cAudio::run: stream 0 no audio codec? 0x%x\n", p->codec_type);
 
 	codec = avcodec_find_decoder(p->codec_id);
 	
 	if (!codec)
 	{
-		printf("%s: Codec for %s not found\n", __func__, avcodec_get_name(p->codec_id));
+		printf("cAudio::run: Codec for %s not found\n", avcodec_get_name(p->codec_id));
 		goto out;
 	}
 	
@@ -657,14 +667,14 @@ void cAudio::run()
 	
 	if (avcodec_open2(c, codec, NULL) < 0)
 	{
-		//hal_info("%s: avcodec_open2() failed\n", __func__);
+		printf("cAudio::run: avcodec_open2() failed\n");
 		goto out;
 	}
 	
 	if (p->sample_rate == 0 || p->channels == 0)
 	{
 		av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
-		//hal_info("Header missing %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
+		printf("cAudio::run: Header missing %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
 		goto out2;
 	}
 	
@@ -672,9 +682,10 @@ void cAudio::run()
 	
 	if (!frame)
 	{
-		//hal_info("%s: av_frame_alloc failed\n", __func__);
+		printf("cAudio::run: av_frame_alloc failed\n");
 		goto out2;
 	}
+	
 	/* output sample rate, channels, layout could be set here if necessary */
 	o_ch = p->channels;     /* 2 */
 	o_sr = p->sample_rate;      /* 48000 */
@@ -695,19 +706,15 @@ void cAudio::run()
 		adevice = ao_open_live(driver, &sformat, NULL);
 		ai = ao_driver_info(driver);
 		
-		printf("%s: changed params ch %d srate %d bits %d adevice %p\n", __func__, o_ch, o_sr, 16, adevice);
+		printf("cAudio::run: changed params ch %d srate %d bits %d adevice %p\n", o_ch, o_sr, 16, adevice);
+		
 		if (ai)
-			printf("libao driver: %d name '%s' short '%s' author '%s'\n", driver, ai->name, ai->short_name, ai->author);
+			printf("cAudio::runv: libao driver: %d name '%s' short '%s' author '%s'\n", driver, ai->name, ai->short_name, ai->author);
 	}
-#if 0
-	hal_info(" driver options:");
-	for (int i = 0; i < ai->option_count; ++i)
-		fprintf(stderr, " %s", ai->options[i]);
-	fprintf(stderr, "\n");
-#endif
+
 	av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
 	
-	printf("decoding %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
+	printf("cAudio::run: decoding %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
 	
 	swr = swr_alloc_set_opts(swr,
 	        o_layout, AV_SAMPLE_FMT_S16, o_sr,         /* output */
@@ -716,7 +723,7 @@ void cAudio::run()
 	        
 	if (! swr)
 	{
-		//hal_info("could not alloc resample context\n");
+		printf("cAudio::run: could not alloc resample context\n");
 		goto out3;
 	}
 	swr_init(swr);
@@ -773,6 +780,7 @@ void cAudio::run()
 #endif
 			//hal_debug("%s: pts 0x%" PRIx64 " %3f\n", __func__, curr_pts, curr_pts / 90000.0);
 			int o_buf_sz = av_samples_get_buffer_size(&out_linesize, o_ch, obuf_sz, AV_SAMPLE_FMT_S16, 1);
+			
 			if (o_buf_sz > 0)
 				ao_play(adevice, (char *)obuf, o_buf_sz);
 		}
@@ -791,7 +799,6 @@ out:
 	avformat_close_input(&avfc);
 	av_free(pIOCtx->buffer);
 	av_free(pIOCtx);
-	//hal_info("======================== end decoder thread ================================\n");
 }
 #endif
 
