@@ -38,6 +38,9 @@
 
 #include <system/debug.h>
 
+#include <audio_cs.h>
+#include <video_cs.h>
+
 
 //// globals
 GLThreadObj *gThiz = 0; /* GLUT does not allow for an arbitrary argument to the render func */
@@ -46,6 +49,9 @@ int GLxStart;
 int GLyStart;
 int GLWidth;
 int GLHeight;
+////
+extern cVideo *videoDecoder;
+extern cAudio *audioDecoder;
 
 GLThreadObj::GLThreadObj(int x, int y) : mX(x), mY(y), mReInit(true), mShutDown(false), mInitDone(false)
 {
@@ -261,7 +267,7 @@ void GLThreadObj::specialcb(int key, int /*x*/, int /*y*/)
 	}
 }
 
-int sleep_us = 60000;
+int sleep_us = 30000;
 void GLThreadObj::render() 
 {
 	if(mShutDown)
@@ -293,6 +299,9 @@ void GLThreadObj::render()
 	
 	if(mX != glutGet(GLUT_WINDOW_WIDTH) && mY != glutGet(GLUT_WINDOW_HEIGHT))
 		glutReshapeWindow(mX, mY);
+		
+	////
+	bltDisplayBuffer(); /* decoded video stream */
 
 	// OSD
 	if (mState.blit) 
@@ -300,7 +309,7 @@ void GLThreadObj::render()
 		mState.blit = false;
 		bltOSDBuffer();
 	}
-
+	
 	// clear 
 	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -406,5 +415,82 @@ void GLThreadObj::bltOSDBuffer()
 void GLThreadObj::clear()
 {
 	memset(&mOSDBuffer[0], 0, mOSDBuffer.size());
+}
+
+void GLThreadObj::bltDisplayBuffer()
+{
+	if (!videoDecoder) /* cannot start yet */
+		return;
+		
+	static bool warn = true;
+	cVideo::SWFramebuffer *buf = videoDecoder->getDecBuf();
+	
+	if (!buf)
+	{
+		if (warn)
+			printf("GLFB::%s did not get a buffer...\n", __func__);
+			
+		warn = false;
+		return;
+	}
+	
+	warn = true;
+	int w = buf->width(), h = buf->height();
+	
+	if (w == 0 || h == 0)
+		return;
+
+	AVRational a = buf->AR();
+	
+	if (a.den != 0 && a.num != 0 && av_cmp_q(a, _mVA))
+	{
+		_mVA = a;
+		/* _mVA is the raw buffer's aspect, mVA is the real scaled output aspect */
+		av_reduce(&mVA.num, &mVA.den, w * a.num, h * a.den, INT_MAX);
+		mVAchanged = true;
+	}
+
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER, buf->size(), &(*buf)[0], GL_STREAM_DRAW_ARB);
+
+	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+
+	/* "rate control" mechanism starts here...
+	 * this implementation is pretty naive and not working too well, but
+	 * better this than nothing... :-) */
+	int64_t apts = 0;
+	/* 18000 is the magic value for A/V sync in my libao->pulseaudio->intel_hda setup */
+	int64_t vpts = buf->pts() + 18000;
+	
+	if (audioDecoder)
+		apts = audioDecoder->getPts();
+		
+	if (apts != last_apts)
+	{
+		int rate, dummy1, dummy2;
+		
+		if (apts < vpts)
+			sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
+		else if (sleep_us > 1000)
+			sleep_us -= 1000;
+			
+		last_apts = apts;
+		
+		videoDecoder->getPictureInfo(dummy1, dummy2, rate);
+		
+		if (rate > 0)
+			rate = 2000000 / rate; /* limit to half the frame rate */
+		else
+			rate = 50000; /* minimum 20 fps */
+		if (sleep_us > rate)
+			sleep_us = rate;
+		else if (sleep_us < 1)
+			sleep_us = 1;
+	}
+	
+	//hal_debug("vpts: 0x%" PRIx64 " apts: 0x%" PRIx64 " diff: %6.3f sleep_us %d buf %d\n", buf->pts(), apts, (buf->pts() - apts) / 90000.0, sleep_us, videoDecoder->buf_num);
 }
 

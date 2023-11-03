@@ -25,6 +25,8 @@
 #include <config.h>
 #include <string>
 
+#include <OpenThreads/Thread>
+
 #include <zapit/frontend_c.h>
 
 
@@ -68,7 +70,7 @@ enum {
 };
 
 
-class cAudio
+class cAudio : public OpenThreads::Thread
 {
 	private:
 		int audio_fd;
@@ -82,6 +84,13 @@ class cAudio
 		
 		int m_pcm_delay;
 		int m_ac3_delay;
+		
+#ifdef USE_OPENGL
+		bool started;
+		bool thread_started;
+		int64_t curr_pts;
+		void run();
+#endif		
 		
 	public:
 		// construct & destruct
@@ -122,6 +131,14 @@ class cAudio
 		
 		int setHwPCMDelay(int delay);
 		int setHwAC3Delay(int delay);
+		
+#ifdef USE_OPENGL
+		int my_read(uint8_t *buf, int buf_size);
+		int64_t getPts()
+		{
+			return curr_pts;
+		}
+#endif
 };
 
 #endif

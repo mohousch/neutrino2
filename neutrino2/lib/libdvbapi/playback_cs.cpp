@@ -461,10 +461,16 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 #endif 
 			{
 #if GST_VERSION_MAJOR < 1
-				gst_x_overlay_set_xwindow_id(GST_X_OVERLAY(GST_MESSAGE_SRC (msg)), (gulong)GLWinID);
+				gst_x_overlay_set_xwindow_id(GST_X_OVERLAY(GST_MESSAGE_SRC(msg)), GLWinID);
 #else
-				gst_video_overlay_set_window_handle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC (msg)), GLWinID);
-				gst_video_overlay_got_window_handle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC (msg)), GLWinID);
+				//
+				gst_video_overlay_set_window_handle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)), (guintptr)GLWinID);
+				
+				// reshape window
+				gst_video_overlay_set_render_rectangle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)), 0, 0, GLWidth, GLHeight);
+
+				// sync frames
+				gst_video_overlay_expose(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)));
 #endif
 			}
 #endif
@@ -483,13 +489,13 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 }
 #endif
 
-/* its called only one time, (mainmenu/movieplayergui init)*/
+////
 cPlayback::cPlayback(int /*num*/)
 { 
 	dprintf(DEBUG_NORMAL, "%s:%s\n", FILENAME, __FUNCTION__);
 }
 
-/* called at housekepping */
+//
 cPlayback::~cPlayback()
 {  
 	dprintf(DEBUG_NORMAL, "%s:%s\n", FILENAME, __FUNCTION__);

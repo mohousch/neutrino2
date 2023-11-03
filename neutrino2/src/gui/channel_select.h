@@ -46,3 +46,4 @@ class CSelectChannelWidget : public CMenuTarget
 };
 
 #endif
+

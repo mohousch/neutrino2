@@ -80,7 +80,7 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 		demux_source = fe->fenumber;
 	}
 	
-	int flags = O_RDWR;
+	int flags = O_RDWR | O_CLOEXEC;
 	type = Type;
 	
 	if (type != DMX_PSI_CHANNEL)
@@ -122,6 +122,11 @@ bool cDemux::Open(DMX_CHANNEL_TYPE Type, int uBufferSize, CFrontend * fe)
 	}	
 
 	// set demux buffer size
+#ifdef USE_OPENGL
+	
+	if (type == DMX_VIDEO_CHANNEL)
+		uBufferSize = 0x100000;     /* 1MB */
+#endif	
 	if (uBufferSize > 0)
 	{
 		if (::ioctl(demux_fd, DMX_SET_BUFFER_SIZE, uBufferSize) < 0)
@@ -179,8 +184,8 @@ int cDemux::Read(unsigned char * buff, int len, int Timeout)
 	ufds.events = POLLIN;
 	ufds.revents = 0;
 	
-	if (demux_fd < 0 || buff == NULL)
-		return -1;
+	//if (demux_fd < 0 || buff == NULL)
+	//	return -1;
 	
 	if (type == DMX_PSI_CHANNEL && Timeout <= 0)
 		Timeout = 60 * 1000;
@@ -394,12 +399,22 @@ bool cDemux::pesFilter(const unsigned short Pid, const dmx_input_t Input)
 
 	switch(type) 
 	{
-		case DMX_VIDEO_CHANNEL:		  
+		case DMX_VIDEO_CHANNEL:
+#ifdef USE_OPENGL
+			pes.pes_type = DMX_PES_OTHER;
+			pes.output  = DMX_OUT_TSDEMUX_TAP;
+#else		  
 			pes.pes_type = DMX_PES_VIDEO;
+#endif
 			break;
 			
-		case DMX_AUDIO_CHANNEL:		  
+		case DMX_AUDIO_CHANNEL:	
+#ifdef USE_OPENGL
+			pes.pes_type = DMX_PES_OTHER;
+			pes.output  = DMX_OUT_TSDEMUX_TAP;
+#else			  
 			pes.pes_type = DMX_PES_AUDIO;
+#endif
 			break;
 			
 		case DMX_PCR_ONLY_CHANNEL:		  
@@ -421,7 +436,7 @@ bool cDemux::pesFilter(const unsigned short Pid, const dmx_input_t Input)
 			break;
 			
 		case DMX_PIP_CHANNEL:
-			pes.pes_type = DMX_PES_VIDEO1; //for pip channel we need only video
+			pes.pes_type = DMX_PES_VIDEO1; 		//for pip channel we need only video
 			break;
 			
 		default:
@@ -468,31 +483,12 @@ void cDemux::removePid(unsigned short Pid)
 
 void cDemux::getSTC(int64_t * STC)
 { 
-#if defined (USE_OPENGL)
-	if (demux_fd < 0)
-		return;
-	
-	dprintf(DEBUG_DEBUG, "%s:%s dmx(%d,%d) type=%s STC=\n", FILENAME, __FUNCTION__, demux_adapter, demux_num, aDMXCHANNELTYPE[type]);	
-	
-	struct dmx_stc stc;
-	
-	memset(&stc, 0, sizeof(dmx_stc));
-
-	stc.num =  demux_num;
-	stc.base = 1;
-	
-	if(::ioctl(demux_fd, DMX_GET_STC, &stc) < 0 )
-		perror("DMX_GET_STC");
-	
-	*STC = (int64_t)stc.stc;
-#else
 	dprintf(DEBUG_DEBUG, "%s:%s dmx(%d,%d) type=%s STC=\n", FILENAME, __FUNCTION__, demux_adapter, demux_num, aDMXCHANNELTYPE[type]);	
 	
 	int64_t pts = 0;
 	if (videoDecoder)
 		pts = videoDecoder->GetPTS();
 	*STC = pts;
-#endif
 }
 
 

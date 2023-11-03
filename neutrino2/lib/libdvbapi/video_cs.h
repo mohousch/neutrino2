@@ -21,11 +21,22 @@
 #define _VIDEO_CS_H
 
 #include <sys/types.h>
+#include <vector>
 
 #include <linux/dvb/video.h>
+
 #include <driver/framebuffer.h>
 
 #include <zapit/frontend_c.h>
+
+#include <OpenThreads/Thread>
+#include <OpenThreads/Mutex>
+
+#ifdef USE_OPENGL
+extern "C" {
+#include <libavutil/rational.h>
+}
+#endif
 
 
 #ifndef VIDEO_SOURCE_HDMI
@@ -222,16 +233,77 @@ enum {
 	WSS_149_FULL
 };
 
-
-class cVideo
+#ifdef USE_OPENGL
+#define VDEC_MAXBUFS 0x40
+#endif
+class cVideo : public OpenThreads::Thread
 {
+	friend class GLThreadObj;
+	
 	private:
 		int video_fd;
 		int video_num;
 		int video_adapter;
 
 		video_play_state_t playstate;
-		VIDEO_FORMAT StreamType;	
+		VIDEO_FORMAT StreamType;
+		
+#ifdef USE_OPENGL
+		class SWFramebuffer : public std::vector<unsigned char>
+		{
+			public:
+				SWFramebuffer() : mWidth(0), mHeight(0) {}
+				void width(int w)
+				{
+					mWidth = w;
+				}
+				void height(int h)
+				{
+					mHeight = h;
+				}
+				void pts(uint64_t p)
+				{
+					mPts = p;
+				}
+				void AR(AVRational a)
+				{
+					mAR = a;
+				}
+				int width() const
+				{
+					return mWidth;
+				}
+				int height() const
+				{
+					return mHeight;
+				}
+				int64_t pts() const
+				{
+					return mPts;
+				}
+				AVRational AR() const
+				{
+					return mAR;
+				}
+			private:
+				int mWidth;
+				int mHeight;
+				int64_t mPts;
+				AVRational mAR;
+		};
+		int buf_in, buf_out, buf_num;
+		
+		void run();
+		SWFramebuffer buffers[VDEC_MAXBUFS];
+		int dec_w, dec_h;
+		int dec_r;
+		//bool w_h_changed;
+		bool thread_running;
+		OpenThreads::Mutex buf_m;
+		OpenThreads::Mutex still_m;
+		bool stillpicture;
+		bool w_h_changed;
+#endif	
 
 	public:
 		/* constructor & destructor */
@@ -295,6 +367,11 @@ class cVideo
 		void setSaturation(int saturation);
 		void setBrightness(int brightness);
 		void setTint(int tint);
+		
+#ifdef USE_OPENGL
+		SWFramebuffer *getDecBuf(void);
+#endif
 };
 
 #endif
+

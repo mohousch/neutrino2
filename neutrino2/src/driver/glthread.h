@@ -29,6 +29,10 @@
 #include <GL/freeglut.h>
 #include <GL/gl.h>
 
+extern "C" {
+#include <libavutil/rational.h>
+}
+
 #include "rcinput.h"
 
 
@@ -51,6 +55,12 @@ class GLThreadObj : public OpenThreads::Thread
 		//
 		void clear();
 		void blit() { mState.blit = true; }
+		
+		////
+		int64_t last_apts;
+		AVRational mVA;         /* video aspect ratio */
+		AVRational _mVA;        /* for detecting changes in mVA */
+		bool mVAchanged;
 
 	private:
 		int mX;				/* window size */
@@ -92,6 +102,7 @@ class GLThreadObj : public OpenThreads::Thread
 		} mState;
 
 		void bltOSDBuffer();
+		void bltDisplayBuffer();
 };
 
 #endif

@@ -616,24 +616,6 @@ void CMoviePlayerGui::stop()
 	//exit play
 	playstate = CMoviePlayerGui::STOPPED;
 			
-	if(playlist[selected].ytid == "timeshift") //FIXME:
-	{
-		// stop record if recording
-		if( CNeutrinoApp::getInstance()->recordingstatus) 
-		{
-			if(MessageBox(_("Information"), _("You really want to to stop record ?"), CMessageBox::mbrYes, CMessageBox::mbYes | CMessageBox::mbNo, NULL, 450, 30, true) == CMessageBox::mbrYes)
-			{
-				CVCRControl::getInstance()->Stop();
-				CTimerd::getInstance()->stopTimerEvent(CNeutrinoApp::getInstance()->recording_id);
-				CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
-
-				CNeutrinoApp::getInstance()->recording_id = 0;
-				CNeutrinoApp::getInstance()->recordingstatus = 0;
-				CNeutrinoApp::getInstance()->timeshiftstatus = 0;
-			}
-		} 
-	}
-			
 	if(m_loop)
 		m_loop = false;
 			
@@ -989,19 +971,6 @@ void CMoviePlayerGui::PlayFile(void)
 				{ 
 					hide();
 				}
-
-				// movie title
-				if(playlist[selected].ytid != "timeshift")
-				{
-					if (IsVisible()) 
-					{
-						//showMovieInfo();//FIXME:
-					}
-					else 
-					{
-						//showMovieInfo();//FIXME:
-					}
-				}
 			}
 		} 
 		else if ( msg == CRCInput::RC_pause) 
@@ -1026,19 +995,6 @@ void CMoviePlayerGui::PlayFile(void)
 					CVFD::getInstance()->ShowIcon(VFD_ICON_PLAY, false);
 					speed = 0;
 					playback->SetSpeed(speed);
-				}
-
-				//show MovieInfoBar
-				if(playlist[selected].ytid != "timeshift")
-				{
-					if (IsVisible()) 
-					{
-						//showMovieInfo();//FIXME:
-					}
-					else 
-					{
-						//showMovieInfo();//FIXME:
-					}
 				}
 			}
 		} 

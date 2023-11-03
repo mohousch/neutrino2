@@ -63,6 +63,7 @@ int dvbsub_init()
 	
 	// reader-Thread starten
 	trc = pthread_create(&threadReader, 0, reader_thread, (void *) NULL);
+	
 	if (trc) 
 	{
 		fprintf(stderr, "[dvb-sub] failed to create reader-thread (rc=%d)\n", trc);
@@ -331,9 +332,13 @@ static void* reader_thread(void * /*arg*/)
 		while((count < packlen) /* && !dvbsub_paused*/) 
 		{
 			len = dmx->Read(buf+count, packlen-count, 1000);
-			if (len < 0) {
+			
+			if (len < 0) 
+			{
 				continue;
-			} else {
+			} 
+			else 
+			{
 				count += len;
 			}
 		}

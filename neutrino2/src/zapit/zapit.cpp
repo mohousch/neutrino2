@@ -3142,9 +3142,6 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 		//
 		if (avDecoderOpen)
 			closeAVDecoder();
-			
-		//
-		//playback->Close(); // not needed???
 		
 		playback->Open();
 	
@@ -3286,7 +3283,6 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 #if !defined (__sh__)		
 				audioDecoder->Resume();
 				audioDecoder->Stop();
-				//audioDecoder->Pause();
 #endif				  
 				audioDecoder->Start();
 			}
@@ -3387,6 +3383,10 @@ int CZapit::stopPlayBack(bool sendPmt)
 			delete audioDemux;  //destructor closes dmx
 			audioDemux = NULL;
 		}
+		
+		////FIXME:
+		// stop video decoder (blanking)
+		videoDecoder->Stop(true);
 
 		// stop video demux
 		if (videoDemux)
@@ -3398,7 +3398,7 @@ int CZapit::stopPlayBack(bool sendPmt)
 		}
 	
 		// stop video decoder (blanking)
-		videoDecoder->Stop(true);
+		//videoDecoder->Stop(true);
 	
 		if (pcrDemux)
 		{

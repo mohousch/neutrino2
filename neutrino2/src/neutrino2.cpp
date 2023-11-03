@@ -4192,22 +4192,11 @@ void CNeutrinoApp::realRun(void)
 							}
 
 							// freeze audio/video
-							audioDecoder->Stop();
-							videoDecoder->Stop(false); // dont blank
-							
-							//
-#ifdef USE_OPENGL
-							if (playback->playing)
+							if (timeshiftstatus)
 							{
-								int speed = 0;
-								playback->GetSpeed(speed);
-								
-								if (speed > 0)
-									playback->SetSpeed(0);
-								else
-									playback->SetSpeed(1);
+								audioDecoder->Stop();
+								videoDecoder->Stop(false); // dont blank
 							}
-#endif
 						}
 					}
 				}
@@ -4245,67 +4234,15 @@ void CNeutrinoApp::realRun(void)
 							return;
 
 						sprintf(fname, "%s.ts", rec_filename);
-			
-						//
-						cMovieInfo.clearMovieInfo(&mfile);
 
-						mfile.file.Name = fname;
-			
-						// extract channel epg infos
-						CEPGData epgData;
-						event_id_t epgid = 0;
-			
-						if(CSectionsd::getInstance()->getActualEPGServiceKey(live_channel_id & 0xFFFFFFFFFFFFULL, &epgData))
-							epgid = epgData.eventID;
-
-						if(epgid != 0) 
-						{
-							CShortEPGData epgdata;
-				
-							if(CSectionsd::getInstance()->getEPGidShort(epgid, &epgdata)) 
-							{
-								if (!(epgdata.title.empty())) 
-									mfile.epgTitle = epgdata.title;
-					
-								if(!(epgdata.info1.empty()))
-									mfile.epgInfo1 = epgdata.info1;
-					
-								if(!(epgdata.info2.empty()))
-									mfile.epgInfo2 = epgdata.info2;
-							}
-						}
-
-						// epgTitle
-						if(mfile.epgTitle.empty())
-						{
-							std::string Title = mfile.file.getFileName();
-							removeExtension(Title);
-							mfile.epgTitle = Title;
-						}
-
-						mfile.ytid = "timeshift";
-
-						
-#ifdef USE_OPENGL
-						//
+						//						
 						if (!playback->playing)
 						{
+							CZapit::getInstance()->lockPlayBack();
 							playback->Close(); // not needed???
 							playback->Open();
 							playback->Start(fname);
 						}
-#else
-						tmpMoviePlayerGui.addToPlaylist(mfile);
-						tmpMoviePlayerGui.exec(NULL, "urlplayback");
-						
-						//if (!playback->playing)
-						//{
-						//	CZapit::getInstance()->lockPlayBack();
-						//	playback->Close(); // not needed???
-						//	playback->Open();
-						//	playback->Start(fname);
-						//}
-#endif
 					}
 				}
 			}
@@ -4333,17 +4270,12 @@ void CNeutrinoApp::realRun(void)
 						CVFD::getInstance()->ShowIcon(VFD_ICON_TIMESHIFT, false );
 						
 						//
-#ifdef USE_OPENGL						
-						playback->Close();
-#else
-						//
-						//if (playback->playing)
-						//{
-						//	playback->Close(); // not needed???
-						//}
+						if (playback->playing)
+						{
+							playback->Close(); // not needed???
+						}
 						
-						//CZapit::getInstance()->unlockPlayBack();
-#endif
+						CZapit::getInstance()->unlockPlayBack();
 					}
 				} 
 				// start record

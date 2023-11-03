@@ -113,7 +113,9 @@ endif
 
 if USE_OPENGL
 neutrino2_LDADD += \
-	-lglut -lGL -lGLU -lGLEW
+	@SWRESAMPLE_LIBS@ \
+	@SWSCALE_LIBS@ \
+	-lglut -lGL -lGLU -lGLEW -lao
 endif
 
 if ENABLE_PYTHON

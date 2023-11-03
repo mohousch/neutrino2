@@ -165,9 +165,10 @@ bool CFrontend::Open()
 	if (fd < 0) 
 	{
 		// open frontend
-		if( (fd = ::open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC) ) < 0)
+		if ( (fd = open(filename, O_RDWR | O_NONBLOCK) ) < 0)
 		{
-			dprintf(DEBUG_INFO, "CFrontend::Open:cannot open %s\n", filename);
+			//dprintf(DEBUG_INFO, "CFrontend::Open:cannot open %s\n", filename);
+			perror("CFrontend::Open:");
 			return false;
 		}
 		

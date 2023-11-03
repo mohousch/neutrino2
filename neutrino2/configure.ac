@@ -54,6 +54,8 @@ AC_DEFINE(USE_OPENGL,1,[include opengl engine])
 PKG_CHECK_MODULES(GL, gl)
 #PKG_CHECK_MODULES(GLUT, glut)
 PKG_CHECK_MODULES(GLEW, glew)
+PKG_CHECK_MODULES([SWRESAMPLE], [libswresample])
+PKG_CHECK_MODULES([SWSCALE], [libswscale])
 fi
 
 # gstreamer / opengl overlay
