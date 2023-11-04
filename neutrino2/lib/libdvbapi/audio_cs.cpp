@@ -68,8 +68,6 @@ extern cDemux *audioDemux;
 //
 static uint8_t *dmxbuf = NULL;
 static int bufpos;
-//
-static cAudio *gThiz = NULL;
 #endif
 
 ////
@@ -95,7 +93,6 @@ cAudio::cAudio(int num)
 #endif
 
 #ifdef USE_OPENGL
-	gThiz = this;
 	thread_started = false;
 	dmxbuf = (uint8_t *)malloc(DMX_BUF_SZ);
 	bufpos = 0;
@@ -266,28 +263,31 @@ int cAudio::Start(void)
 { 
 	dprintf(DEBUG_INFO, "cAudio::Start\n");
 	
-#ifdef USE_OPENGL
-	OpenThreads::Thread::start();
+	int ret = -1;
 	
-	return 0;
+#ifdef USE_OPENGL
+	if (!thread_started)
+		OpenThreads::Thread::start();
+	
+	ret = 0;
 #else
 	if (audio_fd < 0)
-		return false;
-	
-	int ret = -1;
+		return -1;
 	
 	ret = ::ioctl(audio_fd, AUDIO_PLAY);
 	
 	if(ret < 0)
 		perror("AUDIO_PLAY");	
+#endif
 
 	return ret;
-#endif
 }
 
 int cAudio::Stop(void)
 { 
 	dprintf(DEBUG_INFO, "cAudio::Stop\n");
+	
+	int ret = -1;
 	
 #ifdef USE_OPENGL
 	if (thread_started)
@@ -296,20 +296,18 @@ int cAudio::Stop(void)
 		OpenThreads::Thread::join();
 	}
 	
-	return 0;
+	ret = 0;
 #else
 	if (audio_fd < 0)
-		return false;
-	
-	int ret = -1;
+		return -1;
 		
 	ret = ::ioctl(audio_fd, AUDIO_STOP);
 	
 	if(ret < 0)
 		perror("AUDIO_STOP");	
+#endif
 
 	return ret;
-#endif
 }
 
 bool cAudio::Pause()
@@ -544,25 +542,19 @@ int cAudio::setHwAC3Delay(int delay)
 }
 
 #ifdef USE_OPENGL
-static int _my_read(void *, uint8_t *buf, int buf_size)
-{
-	return gThiz->my_read(buf, buf_size);
-}
-
-int cAudio::my_read(uint8_t *buf, int buf_size)
+static int my_read(void *, uint8_t *buf, int buf_size)
 {
 	int tmp = 0;
 	
+	//
 	if (audioDecoder && audioDemux && bufpos < DMX_BUF_SZ - 4096)
 	{
-		while (bufpos < buf_size && ++tmp < 20)   /* retry max 20 times */
+		while (bufpos < buf_size && ++tmp < 20)   // retry max 20 times
 		{
 			int ret = audioDemux->Read(dmxbuf + bufpos, DMX_BUF_SZ - bufpos, 10);
 			
 			if (ret > 0)
 				bufpos += ret;
-			if (! thread_started)
-				break;
 		}
 	}
 	
@@ -620,7 +612,7 @@ void cAudio::run()
 	AVIOContext *pIOCtx = avio_alloc_context(inbuf, INBUF_SIZE, // internal Buffer and its size
 	        0,      	// bWriteable (1=true,0=false)
 	        NULL,       	// user data; will be passed to our callback functions
-	        _my_read,   	// read callback
+	        my_read,   	// read callback
 	        NULL,       	// write callback
 	        NULL);      	// seek callback
 	        
@@ -769,7 +761,7 @@ void cAudio::run()
 				{
 					//hal_info("av_samples_alloc failed\n");
 					av_packet_unref(&avpkt);
-					break; /* while (thread_started) */
+					break; // while (thread_started)
 				}
 				obuf_sz_max = obuf_sz;
 			}

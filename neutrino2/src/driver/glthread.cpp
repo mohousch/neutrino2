@@ -40,6 +40,7 @@
 
 #include <audio_cs.h>
 #include <video_cs.h>
+#include <playback_cs.h>
 
 
 //// globals
@@ -52,6 +53,7 @@ int GLHeight;
 ////
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
+extern cPlayback *playback;
 
 GLThreadObj::GLThreadObj(int x, int y) : mX(x), mY(y), mReInit(true), mShutDown(false), mInitDone(false)
 {
@@ -317,55 +319,6 @@ void GLThreadObj::render()
 	glBindTexture(GL_TEXTURE_2D, mState.osdtex);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	/*
-	if (mVAchanged)
-	{
-		mVAchanged = false;
-		zoom = 1.0;
-		xscale = 1.0;
-		//int cmp = (mCrop == VIDEOFORMAT_FULLSCREEN) ? 0 : av_cmp_q(mVA, mOA);
-		int cmp = 0;
-		const AVRational a149 = { 14, 9 };
-		
-		switch (cmp)
-		{
-			default:
-			case INT_MIN:   // invalid
-			case 0:     // identical
-				//printf("%s: mVA == mOA (or fullscreen mode :-)\n", __func__);
-				break;
-			case 1:     // mVA > mOA -- video is wider than display
-				//hal_debug("%s: mVA > mOA\n", __func__);
-				//xscale = av_q2d(mVA) / av_q2d(mOA);
-				switch (mCrop)
-				{
-					case VIDEOFORMAT_PANSCAN:
-						break;
-					case VIDEOFORMAT_LETTERBOX:
-						//zoom = av_q2d(mOA) / av_q2d(mVA);
-						break;
-					default:
-						break;
-				}
-				break;
-			case -1:    // mVA < mOA -- video is taller than display
-				//hal_debug("%s: mVA < mOA\n", __func__);
-				//xscale = av_q2d(mVA) / av_q2d(mOA);
-				switch (mCrop)
-				{
-					case VIDEOFORMAT_LETTERBOX:
-						break;
-					case VIDEOFORMAT_PANSCAN:
-						//zoom = av_q2d(mOA) / av_q2d(mVA);
-						break;
-					default:
-						break;
-				}
-				break;
-		}
-	}
-	*/
-	
 	// Display
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	drawSquare(1.0);
@@ -494,7 +447,7 @@ void GLThreadObj::bltDisplayBuffer()
 	if (a.den != 0 && a.num != 0 && av_cmp_q(a, _mVA))
 	{
 		_mVA = a;
-		/* _mVA is the raw buffer's aspect, mVA is the real scaled output aspect */
+		// _mVA is the raw buffer's aspect, mVA is the real scaled output aspect
 		av_reduce(&mVA.num, &mVA.den, w * a.num, h * a.den, INT_MAX);
 		mVAchanged = true;
 	}

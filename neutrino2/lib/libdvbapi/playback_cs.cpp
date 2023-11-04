@@ -333,7 +333,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 				case GST_STATE_CHANGE_READY_TO_PAUSED:
 				{
 #if GST_VERSION_MAJOR >= 1
-					GValue result = { 0, };
+					GValue result = G_VALUE_INIT; //{ 0, };
 #endif
 					GstIterator * children;
 
@@ -460,14 +460,14 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 #if GST_VERSION_MAJOR < 1
 				gst_x_overlay_set_xwindow_id(GST_X_OVERLAY(GST_MESSAGE_SRC(msg)), GLWinID);
 #else
+				// sync frames
+				gst_video_overlay_expose(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)));
+				
 				//
 				gst_video_overlay_set_window_handle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)), (guintptr)GLWinID);
 				
 				// reshape window
 				gst_video_overlay_set_render_rectangle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)), 0, 0, GLWidth, GLHeight);
-
-				// sync frames
-				gst_video_overlay_expose(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)));
 #endif
 			}
 #endif
@@ -487,6 +487,10 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 #endif
 
 ////
+cPlayback::cPlayback(int)
+{
+}
+
 bool cPlayback::Open()
 {
 	dprintf(DEBUG_NORMAL, "cPlayback::Open\n");
@@ -565,9 +569,9 @@ void cPlayback::Close(void)
 		// disconnect sync handler callback
 		bus = gst_pipeline_get_bus(GST_PIPELINE (m_gst_playbin));
 #if GST_VERSION_MAJOR < 1
-		gst_bus_set_sync_handler(bus, NULL, NULL);
+		gst_bus_set_sync_handler(bus, gst_bus_sync_signal_handler, NULL);
 #else
-		gst_bus_set_sync_handler(bus, NULL, NULL, NULL);
+		gst_bus_set_sync_handler(bus, gst_bus_sync_signal_handler, NULL, NULL);
 #endif
 		gst_object_unref(bus);
 		

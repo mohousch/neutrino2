@@ -89,7 +89,6 @@ class cAudio
 		int m_ac3_delay;
 		
 #ifdef USE_OPENGL
-		bool started;
 		bool thread_started;
 		int64_t curr_pts;
 		void run();
@@ -136,7 +135,6 @@ class cAudio
 		int setHwAC3Delay(int delay);
 		
 #ifdef USE_OPENGL
-		int my_read(uint8_t *buf, int buf_size);
 		int64_t getPts()
 		{
 			return curr_pts;

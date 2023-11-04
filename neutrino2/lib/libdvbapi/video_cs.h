@@ -312,7 +312,6 @@ class cVideo
 		SWFramebuffer buffers[VDEC_MAXBUFS];
 		int dec_w, dec_h;
 		int dec_r;
-		//bool w_h_changed;
 		bool thread_running;
 		OpenThreads::Mutex buf_m;
 		OpenThreads::Mutex still_m;
@@ -341,7 +340,7 @@ class cVideo
 		int setSource(int source = VIDEO_SOURCE_DEMUX);
 
 		//
-		int Start();
+		int Start(void);
 		int Stop(bool blank = true);
 		bool Pause(void);
 		bool Resume(void);

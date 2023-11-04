@@ -371,9 +371,11 @@ void cVideo::getPictureInfo(int &width, int &height, int &rate)
 #endif	
 }
 
-int cVideo::Start()
+int cVideo::Start(void)
 { 
 	dprintf(DEBUG_NORMAL, "cVideo::Start\n");
+	
+	int ret = -1;
 	
 #ifdef USE_OPENGL
 	if (!thread_running)
@@ -381,10 +383,10 @@ int cVideo::Start()
 		
 	playstate = VIDEO_PLAYING;
 		
-	return 0;
+	ret = 0;
 #else
 	if(video_fd < 0)
-		return false;
+		return -1;
 
 	if (playstate == VIDEO_PLAYING)
 		return 0;
@@ -392,16 +394,20 @@ int cVideo::Start()
 	playstate = VIDEO_PLAYING;
 	
 	// Video Play
-	if(::ioctl(video_fd, VIDEO_PLAY) < 0)
+	ret = ::ioctl(video_fd, VIDEO_PLAY);
+	
+	if (ret < 0)
 		perror("VIDEO_PLAY");	
-		
-	return true;
 #endif
+
+	return ret;
 }
 
 int cVideo::Stop(bool blank)
 { 
 	dprintf(DEBUG_INFO, "cVideo::Stop: blank:%d\n", blank);	
+	
+	int ret = -1;
 	
 #ifdef USE_OPENGL
 	if (thread_running)
@@ -412,18 +418,20 @@ int cVideo::Stop(bool blank)
 	
 	playstate = blank ? VIDEO_STOPPED : VIDEO_FREEZED;
 	
-	return 0;
+	ret = 0;
 #else
 	if(video_fd < 0)
-		return false;
+		return -1;
 		
 	playstate = blank ? VIDEO_STOPPED : VIDEO_FREEZED;
 	
-	if( ::ioctl(video_fd, VIDEO_STOP, blank ? 1 : 0) < 0 )  
-		perror("VIDEO_STOP");	
+	ret = ::ioctl(video_fd, VIDEO_STOP, blank ? 1 : 0);
 	
-	return true;
+	if (ret < 0) 
+		perror("VIDEO_STOP");	
 #endif
+
+	return ret;
 }
 
 bool cVideo::Pause(void)
@@ -996,10 +1004,12 @@ int64_t cVideo::GetPTS(void)
 {
 #ifdef USE_OPENGL
 	int64_t pts = 0;
+	
 	buf_m.lock();
 	if (buf_num != 0)
 		pts = buffers[buf_out].pts();
 	buf_m.unlock();
+	
 	return pts;
 #else
 	if(video_fd < 0)
@@ -1196,9 +1206,10 @@ static int my_read(void *, uint8_t *buf, int buf_size)
 {
 	int tmp = 0;
 	
+	//
 	if (videoDecoder && videoDemux && bufpos < DMX_BUF_SZ - 4096)
 	{
-		while (bufpos < buf_size && ++tmp < 20)   /* retry max 20 times */
+		while (bufpos < buf_size && ++tmp < 20)   // retry max 20 times
 		{
 			int ret = videoDemux->Read(dmxbuf + bufpos, DMX_BUF_SZ - bufpos, 20);
 			
@@ -1364,6 +1375,7 @@ void cVideo::run(void)
 		if (!av_ret)
 			got_frame = 1;
 #endif
+		//
 		still_m.lock();
 		if (got_frame && ! stillpicture)
 		{
@@ -1442,7 +1454,7 @@ out:
 	avformat_close_input(&avfc);
 	av_free(pIOCtx->buffer);
 	av_free(pIOCtx);
-	/* reset output buffers */
+	// reset output buffers
 	bufpos = 0;
 	still_m.lock();
 	if (!stillpicture)
