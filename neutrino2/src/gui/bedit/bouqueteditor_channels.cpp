@@ -464,7 +464,7 @@ void CBEChannelWidget::internalMoveChannel(unsigned int fromPosition, unsigned i
 	if (toPosition == Channels->size()) 
 		return;
 
-	CZapit::getInstance()->Bouquets[bouquet]->moveService(fromPosition, toPosition, mode == CZapit::MODE_TV ? 1 : 2);
+	CZapit::getInstance()->Bouquets[bouquet]->moveService(fromPosition, toPosition, mode == CZapit::MODE_TV ? ST_DIGITAL_TELEVISION_SERVICE : ST_DIGITAL_RADIO_SOUND_SERVICE);
 
 	channelsChanged = true;
 	Channels = mode == CZapit::MODE_TV ? &(CZapit::getInstance()->Bouquets[bouquet]->tvChannels) : &(CZapit::getInstance()->Bouquets[bouquet]->radioChannels);

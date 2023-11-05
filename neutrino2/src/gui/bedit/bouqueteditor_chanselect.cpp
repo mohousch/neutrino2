@@ -281,7 +281,7 @@ int CBEChannelSelectWidget::exec(CMenuTarget* parent, const std::string& actionK
 				bouquetChannels = mode == CZapit::MODE_TV ? &(CZapit::getInstance()->Bouquets[bouquet]->tvChannels) : &(CZapit::getInstance()->Bouquets[bouquet]->radioChannels);
 		
 				paint();
-				g_RCInput->postMsg(CRCInput::RC_down, 0);
+				//g_RCInput->postMsg(CRCInput::RC_down, 0);
 			}
 		}
 		else if (msg == CRCInput::RC_home)

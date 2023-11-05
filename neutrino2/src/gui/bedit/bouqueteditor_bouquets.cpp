@@ -530,6 +530,7 @@ void CBEBouquetWidget::internalMoveBouquet( unsigned int fromPosition, unsigned 
 {
 	if ( (int) toPosition == -1 ) 
 		return;
+		
 	if ( toPosition == Bouquets->size()) 
 		return;
 

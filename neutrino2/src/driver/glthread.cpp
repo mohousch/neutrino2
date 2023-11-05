@@ -433,6 +433,14 @@ void GLThreadObj::bltDisplayBuffer()
 	if (!buf)
 	{	
 		warn = false;
+		
+		//
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
+		glBufferData(GL_PIXEL_UNPACK_BUFFER, mOSDBuffer.size(), &mOSDBuffer[0], GL_STREAM_DRAW_ARB);
+		glBindTexture(GL_TEXTURE_2D, mState.displaytex);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+		
 		return;
 	}
 	

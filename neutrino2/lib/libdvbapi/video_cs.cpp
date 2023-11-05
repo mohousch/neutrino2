@@ -1226,6 +1226,7 @@ static int my_read(void *, uint8_t *buf, int buf_size)
 		memcpy(buf, dmxbuf, buf_size);
 		memmove(dmxbuf, dmxbuf + buf_size, bufpos - buf_size);
 		bufpos -= buf_size;
+		
 		return buf_size;
 	}
 	
@@ -1456,6 +1457,7 @@ out:
 	av_free(pIOCtx);
 	// reset output buffers
 	bufpos = 0;
+	
 	still_m.lock();
 	if (!stillpicture)
 	{
