@@ -98,6 +98,9 @@ cAudio::cAudio(int num)
 	bufpos = 0;
 	curr_pts = 0;
 	ao_initialize();
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
+	av_register_all();
+#endif
 #endif
 }
 
@@ -580,11 +583,6 @@ static int my_read(void *, uint8_t *buf, int buf_size)
 void cAudio::run()
 {
 	dprintf(DEBUG_NORMAL, "cAudio::run: START\n");
-	
-	// libavcodec & friends
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
-	av_register_all();
-#endif
 
 	AVCodec *codec;
 	AVFormatContext *avfc = NULL;
