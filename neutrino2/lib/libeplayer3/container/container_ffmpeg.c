@@ -414,20 +414,18 @@ static char* searchMeta(AVDictionary * metadata, char* ourTag)
 	return NULL;
 }
 
-/* **************************** */
-/* Worker Thread                */
-/* **************************** */
+//// Worker Thread
 static void FFMPEGThread(Context_t *context) 
 {
 	AVPacket   packet;
-	off_t currentReadPosition = 0; /* last read position */
-	off_t lastReverseSeek = 0;     /* max address to read before seek again in reverse play */
+	off_t currentReadPosition = 0; // last read position
+	off_t lastReverseSeek = 0;     // max address to read before seek again in reverse play 
 	off_t lastSeek = -1;
 	long long int lastPts = -1, currentVideoPts = -1, currentAudioPts = -1, showtime = 0, bofcount = 0;
 	int           err = 0, gotlastPts = 0, audioMute = 0;
 	AudioVideoOut_t avOut;
 
-	/* Softdecoding buffer */
+	// Softdecoding buffer
 	//unsigned char *samples = NULL;
 	AVFrame *samples = NULL;
 
@@ -716,7 +714,6 @@ static void FFMPEGThread(Context_t *context)
 					if ((pts > latestPts) && (!videoTrack) && (!audioTrack))
 						latestPts = pts;
 
-					/*Hellmaster1024: in mkv the duration for ID_TEXT is stored in convergence_duration */
 					ffmpeg_printf(20, "Packet duration %d\n", packet.duration);
 					ffmpeg_printf(20, "Packet convergence_duration %lld\n", packet.convergence_duration);
 
@@ -726,20 +723,14 @@ static void FFMPEGThread(Context_t *context)
 						duration=((float)packet.convergence_duration)/1000.0;		    
 					else if(((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_SSA)
 					{
-						/*Hellmaster1024 if the duration is not stored in packet.duration or
-						  packet.convergence_duration we need to calculate it any other way, for SSA it is stored in
-						  the Text line*/
 						duration = getDurationFromSSALine(packet.data);
 					} 
 					else 
 					{
-						/* no clue yet */
+						// no clue yet
 					}
 
-					/* konfetti: I've found cases where the duration from getDurationFromSSALine
-					* is zero (start end and are really the same in text). I think it make's
-					* no sense to pass those.
-					*/
+					//
 					if (duration > 0 || duration == -1)
 					{
 						SubtitleData_t data;
@@ -775,7 +766,7 @@ static void FFMPEGThread(Context_t *context)
 		}
 		
 		releaseMutex(FILENAME, __FUNCTION__,__LINE__);		
-	} /* while */
+	} // while
 
 	// Freeing the allocated buffer for softdecoding
 	if (samples != NULL) 

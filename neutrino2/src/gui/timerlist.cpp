@@ -280,7 +280,7 @@ CTimerList::CTimerList()
 	cFrameBox.iX = frameBuffer->getScreenX() + (frameBuffer->getScreenWidth() - cFrameBox.iWidth) / 2;
 	cFrameBox.iY = frameBuffer->getScreenY() + (frameBuffer->getScreenHeight() - cFrameBox.iHeight) / 2;
 	
-	/*
+	//
 	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
 	
 	if (timerlistWidget)
@@ -310,7 +310,6 @@ CTimerList::CTimerList()
 		//
 		timerlistWidget->addCCItem(listBox);
 	}
-	*/
 }
 
 CTimerList::~CTimerList()
@@ -688,54 +687,11 @@ void CTimerList::hide()
 		
 		visible = false;
 	}
-	
-	//
-	
-	if (timerlistWidget)
-	{
-		delete timerlistWidget;
-		timerlistWidget = NULL;
-	}
 }
 
 void CTimerList::paint()
 {
 	dprintf(DEBUG_NORMAL, "CTimerList::paint\n");
-	
-	////
-	//
-	timerlistWidget = NULL;
-	listBox = NULL;
-	item = NULL;
-	
-	timerlistWidget = CNeutrinoApp::getInstance()->getWidget("timerlist");
-	
-	if (timerlistWidget)
-	{
-		listBox = (ClistBox*)timerlistWidget->getCCItem(CComponent::CC_LISTBOX);
-	}
-	else
-	{
-		//
-		timerlistWidget = new CWidget(&cFrameBox);
-		timerlistWidget->name = "timerlist";
-		timerlistWidget->setMenuPosition(CWidget::MENU_POSITION_CENTER);
-		
-		//
-		listBox = new ClistBox(&cFrameBox);
-		// head
-		listBox->enablePaintHead();
-		listBox->setTitle(_("Timerlist"), NEUTRINO_ICON_TIMER);
-		listBox->enablePaintDate();
-		listBox->setHeadButtons(&CTimerListHeadButtons, 1);
-		// foot
-		listBox->enablePaintFoot();
-		listBox->setFootButtons(TimerListButtons, 4);
-		
-		//
-		timerlistWidget->addCCItem(listBox);
-	}
-	////
 	
 	listBox->clearItems();
 
@@ -864,9 +820,7 @@ void CTimerList::paint()
 	if (timerlistWidget) 
 		timerlistWidget->paint();
 		
-	////
 	selected = listBox->getSelected();
-	////
 
 	visible = true;
 }

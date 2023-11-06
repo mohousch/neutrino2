@@ -437,30 +437,6 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 		widget = NULL;
 	}
 	
-	if (textBox)
-	{
-		delete textBox;
-		textBox = NULL;
-	}
-	
-	if (headers)
-	{
-		delete headers;
-		headers = NULL;
-	}
-	
-	if (footers)
-	{
-		delete footers;
-		footers = NULL;
-	}
-	
-	if (cFollowScreeningWindow)
-	{
-		delete cFollowScreeningWindow;
-		cFollowScreeningWindow = NULL;
-	}
-	
 	id = a_id;
 
 	// getepg data

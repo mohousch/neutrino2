@@ -530,7 +530,7 @@ class ClistBox : public CComponent
 		void addItem(CMenuItem * menuItem, const bool defaultselected = false);
 		bool hasItem();
 		void clearItems(void){items.clear(); current_page = 0;};
-		void clear(void){hbutton_labels.clear(); fbutton_labels.clear(); current_page = 0;};
+		void clear(void){hbutton_labels.clear(); fbutton_labels.clear(); current_page = 0; items.clear();};
 		void setSelected(unsigned int _new) { selected = _new; };
 		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = CMenuItem::TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
 		////
