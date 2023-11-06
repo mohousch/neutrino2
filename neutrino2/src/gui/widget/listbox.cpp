@@ -358,14 +358,12 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 			
 			//
 			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
-			head->setLine(true, true);
 			
 			//	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 
 			foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 			foot->setButtons(&btn);
-			foot->setLine(true, true);
 			
 			//
 			widget->addCCItem(menu);
@@ -399,10 +397,11 @@ int CMenuOptionChooser::exec(CMenuTarget*)
 		if(select >= 0) 
 			*optionValue = options[select].key;
 			
-		delete menu;
-		menu = NULL;
-		delete widget;
-		widget = NULL;
+		if (widget)
+		{
+			delete widget;
+			widget = NULL;
+		}
 	} 
 	else 
 	{
@@ -775,14 +774,12 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 			
 			//
 			head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
-			head->setLine(true, true);
 			
 			//	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 
 			foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 			foot->setButtons(&btn);
-			foot->setLine(true, true);
 			
 			//
 			widget->addCCItem(menu);
@@ -811,10 +808,11 @@ int CMenuOptionStringChooser::exec(CMenuTarget *)
 		if(select >= 0)
 			strcpy(optionValue, options[select].c_str());
 			
-		delete menu;
-		menu = NULL;
-		delete widget;
-		widget = NULL;
+		if (widget)
+		{
+			delete widget;
+			widget = NULL;
+		}
 	} 
 	else 
 	{

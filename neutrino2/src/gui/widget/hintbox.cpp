@@ -133,6 +133,8 @@ CHintBox::CHintBox(const char * Caption, const char * const Text, const int Widt
 		
 		//
 		headers = new CCHeaders();
+		
+		widget->addCCItem(headers);
 	}
 	
 	widget->paintMainFrame(true);
@@ -153,12 +155,6 @@ CHintBox::~CHintBox(void)
 	dprintf(DEBUG_INFO, "CHintBox::del: (%s)\n", caption.c_str());
 
 	free(message);
-	
-	if (headers)
-	{
-		delete headers;
-		headers = NULL;
-	}
 	
 	if (widget)
 	{
@@ -187,8 +183,6 @@ void CHintBox::paint(void)
 	widget->setBorderMode(borderMode);
 	widget->setBorderColor(borderColor);
 	widget->enableSaveScreen();
-	//
-	widget->addCCItem(headers);
 
 	//
 	refreshPage();

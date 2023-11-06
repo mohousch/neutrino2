@@ -135,9 +135,10 @@ void CMoviePlayerSettings::showMenu()
 	//
 	widget->exec(NULL, "");
 	
-	delete moviePlayerSettings;
-	moviePlayerSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 

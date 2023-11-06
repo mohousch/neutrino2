@@ -156,10 +156,11 @@ int CPluginList::showMenu()
 	pWidget->setTimeOut(g_settings.timing_filebrowser);
 	res = pWidget->exec(NULL, "");
 	
-	delete plist;
-	plist = NULL;
-	delete pWidget;
-	pWidget = NULL;
+	if (pWidget)
+	{
+		delete pWidget;
+		pWidget = NULL;
+	}
 	
 	return res;
 }

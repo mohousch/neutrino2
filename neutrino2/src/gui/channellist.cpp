@@ -184,42 +184,6 @@ CChannelList::~CChannelList()
 	chanlist.clear();
 	events.clear();
 	
-	if (hline)
-	{
-		delete hline;
-		hline = NULL;
-	}
-	
-	if (vline)
-	{
-		delete vline;
-		vline = NULL;
-	}
-	
-	if (foot)
-	{
-		delete foot;
-		foot = NULL;
-	}
-	
-	if (head)
-	{
-		delete head;
-		head = NULL;
-	}
-	
-	if (window)
-	{
-		delete window;
-		window = NULL;
-	}
-	
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -793,43 +757,6 @@ void CChannelList::hide()
 		CFrameBuffer::getInstance()->clearFrameBuffer();
 		
 	frameBuffer->blit();
-	
-	//
-	if (hline)
-	{
-		delete hline;
-		hline = NULL;
-	}
-	
-	if (vline)
-	{
-		delete vline;
-		vline = NULL;
-	}
-	
-	if (foot)
-	{
-		delete foot;
-		foot = NULL;
-	}
-	
-	if (head)
-	{
-		delete head;
-		head = NULL;
-	}
-	
-	if (window)
-	{
-		delete window;
-		window = NULL;
-	}
-	
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
 	
 	if (widget)
 	{
@@ -1480,43 +1407,6 @@ void CChannelList::paint(bool customMode)
 		
 	dprintf(DEBUG_NORMAL, "CChannelList::paint: selected: %d\n", selected);
 	
-	//
-	if (hline)
-	{
-		delete hline;
-		hline = NULL;
-	}
-	
-	if (vline)
-	{
-		delete vline;
-		vline = NULL;
-	}
-	
-	if (foot)
-	{
-		delete foot;
-		foot = NULL;
-	}
-	
-	if (head)
-	{
-		delete head;
-		head = NULL;
-	}
-	
-	if (window)
-	{
-		delete window;
-		window = NULL;
-	}
-	
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -1919,11 +1809,11 @@ int CChannelList::doChannelMenu(void)
 	mWidget->exec(NULL, "");
 	select = menu->getSelected();
 	
-	delete menu;
-	menu = NULL;
-	
-	delete mWidget;
-	mWidget = NULL;
+	if (widget)
+	{
+		delete mWidget;
+		mWidget = NULL;
+	}
 
 	if(select >= 0) 
 	{

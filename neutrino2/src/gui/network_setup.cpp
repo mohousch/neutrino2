@@ -426,10 +426,11 @@ void CNetworkSettings::showMenu()
 	//
 	widget->exec(NULL, "");
 	
-	delete networkSettings;
-	networkSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 
 	delete MyIPChanger;
 	delete dhcpNotifier;

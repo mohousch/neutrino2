@@ -230,10 +230,11 @@ void CLCDSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete lcdSettings;
-	lcdSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 // lcd notifier

@@ -167,10 +167,11 @@ int COSDSettings::showMenu(void)
 	widget->setTimeOut(g_settings.timing_menu);
 	res = widget->exec(NULL, "");
 	
-	delete osdSettings;
-	osdSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 	
 	return res;
 }
@@ -420,10 +421,11 @@ void COSDMenuColorSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete OSDmenuColorsSettings;
-	OSDmenuColorsSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 //// osd infobarcolor settings
@@ -551,10 +553,11 @@ void COSDInfoBarColorSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete OSDinfobarColorSettings;
-	OSDinfobarColorSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 // osd language settings
@@ -692,10 +695,11 @@ int CLanguageSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	res = widget->exec(NULL, "");
 	
-	delete languageSettings;
-	languageSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 	
 	return res;
 }
@@ -823,10 +827,11 @@ void CFontSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete fontSettings;
-	fontSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 //// osd timing settings
@@ -920,10 +925,11 @@ void COSDTimingSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete osdTimingSettings;
-	osdTimingSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 //// diverses
@@ -1091,10 +1097,11 @@ void COSDDiverses::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete osdDiverseSettings;
-	osdDiverseSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 //// skinManager
@@ -1190,10 +1197,11 @@ int CSkinManager::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	res = widget->exec(NULL, "");
 	
-	delete skinMenu;
-	skinMenu = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 	
 	return res;
 }
@@ -1336,10 +1344,11 @@ int CSkinSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	res = widget->exec(NULL, "");
 	
-	delete skinSettings;
-	skinSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 	
 	return res;
 }
@@ -1584,10 +1593,11 @@ int CPersonalisation::showMenu(void)
 	widget->setTimeOut(g_settings.timing_menu);
 	res = widget->exec(NULL, "");
 	
-	delete personalizeSettings;
-	personalizeSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 	
 	return res;
 }

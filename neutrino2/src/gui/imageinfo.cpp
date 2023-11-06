@@ -62,12 +62,6 @@ CImageInfo::CImageInfo()
 
 CImageInfo::~CImageInfo()
 { 	
-	if (head)
-	{
-		delete head;
-		head = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -122,12 +116,6 @@ void CImageInfo::hide()
 {
 	widget->hide();
 	
-	if (head)
-	{
-		delete head;
-		head = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -145,12 +133,6 @@ void CImageInfo::paintLine(int xpos, int font, const char* text)
 
 void CImageInfo::paint()
 {
-	if (head)
-	{
-		delete head;
-		head = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;

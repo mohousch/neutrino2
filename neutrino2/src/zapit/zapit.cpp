@@ -2331,7 +2331,7 @@ void CZapit::makeBouquetfromCurrentservices(const xmlNodePtr root)
 }
 
 //
-void CZapit::parseWebTVBouquet(std::string filename)
+void CZapit::parseWebTVBouquet(std::string &filename)
 {
 	int cnt = 0;	
 
@@ -2686,7 +2686,7 @@ void CZapit::parseWebTVBouquet(std::string filename)
 	dprintf(DEBUG_INFO, "CZapit::loadWebTVBouquet: load %d WEBTV Channels (allchans:%d)\n", cnt, (int) allchans.size());
 }
 
-void CZapit::loadWebTVBouquets(const std::string& dirname)
+void CZapit::loadWebTVBouquets(const std::string &dirname)
 {
 	dprintf(DEBUG_INFO, "CZapit::loadWebTVBouquets: %s\n", dirname.c_str());
 

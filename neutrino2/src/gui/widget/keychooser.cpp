@@ -139,7 +139,6 @@ CKeyChooser::~CKeyChooser()
 	delete keyChooser;
 	delete keyDeleter;
 	
-	//delete menu;
 	//delete widget;
 }
 

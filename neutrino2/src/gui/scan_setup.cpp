@@ -666,12 +666,6 @@ int CScanSetup::showScanService()
 	res = widget->exec(NULL, "");
 	
 	//
-	if (scansetup)
-	{
-		delete scansetup;
-		scansetup = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -769,11 +763,11 @@ int CScanSetup::showMotorSetup()
 	
 	ret = motorMenuWidget->exec(NULL, "");
 	
-	delete motorMenu;
-	motorMenu = NULL;
-	
-	delete motorMenuWidget;
-	motorMenuWidget = NULL;
+	if (motorMenuWidget)
+	{
+		delete motorMenuWidget;
+		motorMenuWidget = NULL;
+	}
 	
 	return ret;
 }
@@ -835,12 +829,6 @@ int CScanSetup::showUnicableSetup()
 
 	//
 	ret = uniWidget->exec(NULL, "");
-	
-	if (uni_setup)
-	{
-		delete uni_setup;
-		uni_setup = NULL;
-	}
 	
 	if (uniWidget)
 	{
@@ -991,23 +979,11 @@ int CScanSetup::showLNBSetup()
 	}
 	
 	ret = satSetupWidget->exec(NULL, "");
-	
-	if (tempsatlistBox)
-	{
-		delete tempsatlistBox;
-		tempsatlistBox = NULL;
-	}
 		
 	if (tempsatWidget)
 	{
 		delete tempsatWidget;
 		tempsatWidget = NULL;
-	}
-	
-	if (satSetup)
-	{
-		delete satSetup;
-		satSetup = NULL;
 	}
 	
 	if (satSetupWidget)
@@ -1081,12 +1057,6 @@ int CScanSetup::showSatOnOffSetup()
 	}
 	
 	ret = satOnOffWidget->exec(NULL, "");
-	
-	if (satOnOfflistBox)
-	{
-		delete satOnOfflistBox;
-		satOnOfflistBox = NULL;
-	}
 	
 	if (satOnOffWidget)
 	{
@@ -1388,10 +1358,11 @@ int CScanSetup::showManualScanSetup()
 	
 	ret = manualScanWidget->exec(NULL, "");
 	
-	delete manualScanlistBox;
-	manualScanlistBox = NULL;
-	delete manualScanWidget;
-	manualScanWidget = NULL;
+	if (manualScanWidget)
+	{
+		delete manualScanWidget;
+		manualScanWidget = NULL;
+	}
 
 	return ret;
 }
@@ -1521,10 +1492,11 @@ int CScanSetup::showAutoScanSetup()
 	
 	ret = autoScanWidget->exec(NULL, "");
 	
-	delete autoScanlistBox;
-	autoScanlistBox = NULL;
-	delete autoScanWidget;
-	autoScanWidget = NULL;
+	if (autoScanWidget)
+	{
+		delete autoScanWidget;
+		autoScanWidget = NULL;
+	}
 
 	return ret;
 }
@@ -1588,11 +1560,11 @@ int CScanSetup::showAllAutoScanSetup()
 	
 	ret = autoScanAllWidget->exec(NULL, "");
 
-	delete autoScanAlllistBox;
-	autoScanAlllistBox = NULL;
-	
-	delete autoScanAllWidget;
-	autoScanAllWidget = NULL;
+	if (autoScanAllWidget)
+	{	
+		delete autoScanAllWidget;
+		autoScanAllWidget = NULL;
+	}
 
 	return ret;
 }
@@ -1772,12 +1744,6 @@ int CTPSelectHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/
 	select = menu->getSelected();
 
 	int retval = tpWidget->exec(NULL, "");
-	
-	if (menu)
-	{
-		delete menu;
-		menu = NULL;
-	}
 	
 	if (tpWidget)
 	{
@@ -2430,9 +2396,6 @@ int CTunerSetup::showMenu()
 	}
 	
 	ret = widget->exec(NULL, "");
-	
-	delete TunerSetup;
-	TunerSetup = NULL;
 	
 	delete widget;
 	widget = NULL;

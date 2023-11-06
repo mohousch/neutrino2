@@ -283,12 +283,6 @@ void CRecordingSettings::showMenu()
 	//
 	widget->exec(NULL, "");
 	
-	if (recordingSettings)
-	{
-		delete recordingSettings;
-		recordingSettings = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;

@@ -146,9 +146,10 @@ void CParentalLockSettings::showMenu()
 	//
 	widget->exec(NULL, "");
 	
-	delete listBox;
-	listBox = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 

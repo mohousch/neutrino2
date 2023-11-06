@@ -224,11 +224,11 @@ void CCAMMenuHandler::doMainMenu()
 	//
 	widget->exec(NULL, "");
 	
-	delete cammenu;
-	cammenu = NULL;
-	
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 #define CI_MSG_TIME 5

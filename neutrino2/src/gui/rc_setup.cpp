@@ -223,12 +223,6 @@ void CRemoteControlSettings::showMenu()
 	//
 	widget->exec(NULL, "");
 	
-	if (remoteControlSettings)
-	{
-		delete remoteControlSettings;
-		remoteControlSettings = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -398,12 +392,6 @@ void CKeysBindingSettings::showMenu()
 	
 	//
 	widget->exec(NULL, "");
-	
-	if (bindSettings)
-	{
-		delete bindSettings;
-		bindSettings = NULL;
-	}
 	
 	if (widget)
 	{

@@ -325,12 +325,6 @@ CTimerList::~CTimerList()
 		plugin_chooser = NULL;
 	}
 	
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (timerlistWidget)
 	{
 		delete timerlistWidget;
@@ -695,19 +689,13 @@ void CTimerList::hide()
 		visible = false;
 	}
 	
-	////
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
+	//
 	
 	if (timerlistWidget)
 	{
 		delete timerlistWidget;
 		timerlistWidget = NULL;
 	}
-	////
 }
 
 void CTimerList::paint()
@@ -1145,12 +1133,6 @@ int CTimerList::modifyTimer()
 
 	res = widget->exec(this, "");
 	
-	if (timerSettings)
-	{
-		delete timerSettings;
-		timerSettings = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -1290,12 +1272,6 @@ int CTimerList::newTimer()
 
 	//
 	res = widget->exec(this, "");
-	
-	if (timerSettings)
-	{
-		delete timerSettings;
-		timerSettings = NULL;
-	}
 	
 	if (widget)
 	{

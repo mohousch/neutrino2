@@ -109,12 +109,6 @@ int CProxySetup::showProxySetup()
 	//
 	int res = widget->exec(NULL, "");
 	
-	if (mn)
-	{
-		delete mn;
-		mn = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;

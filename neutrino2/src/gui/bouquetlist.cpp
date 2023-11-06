@@ -87,12 +87,6 @@ CBouquetList::~CBouquetList()
         
 	Bouquets.clear();
 	
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (bqWidget)
 	{
 		delete bqWidget;
@@ -433,12 +427,6 @@ void CBouquetList::hide()
 		
 	frameBuffer->blit();
 	
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (bqWidget)
 	{
 		delete bqWidget;
@@ -461,12 +449,6 @@ void CBouquetList::paint()
 	dprintf(DEBUG_NORMAL, "CBouquetList::paint\n");
 	
 	//
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (bqWidget)
 	{
 		delete bqWidget;
@@ -593,12 +575,12 @@ int CBouquetList::doMenu()
 		menu->addItem(new CMenuForwarder(_("Copy bouquet to Favorites")), old_selected == i ++);
 		widget->exec(NULL, "");
 		select = menu->getSelected();
-		
-		delete menu;
-		menu = NULL;
-		
-		delete widget;
-		widget = NULL;
+
+		if (widget)
+		{		
+			delete widget;
+			widget = NULL;
+		}
 		
 		dprintf(DEBUG_NORMAL, "CBouquetList::doMenu: %d selected\n", select);
 

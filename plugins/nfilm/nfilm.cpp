@@ -502,20 +502,11 @@ void CNFilm::showMenu(bool genre)
 
 	mainWidget->exec(NULL, ""); // handler
 
-	delete mainWidget;
-	mainWidget = NULL;
-
-	delete headersWidget;
-	headersWidget = NULL;
-
-	delete leftWidget;
-	leftWidget = NULL;
-
-	delete rightWidget;
-	rightWidget = NULL;
-
-	delete footersWidget;
-	footersWidget = NULL;
+	if (mainWidget)
+	{
+		delete mainWidget;
+		mainWidget = NULL;
+	}
 }
 
 int CNFilm::exec(CMenuTarget *parent, const std::string& actionKey)

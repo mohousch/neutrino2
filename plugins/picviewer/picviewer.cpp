@@ -234,11 +234,11 @@ void CPicViewer::showMenu()
 
 	widget->exec(NULL, "");
 	
-	delete plist;
-	plist = NULL;
-	
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 int CPicViewer::exec(CMenuTarget* parent, const std::string& actionKey)

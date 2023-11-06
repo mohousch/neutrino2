@@ -904,7 +904,7 @@ CCText::~CCText()
 }
 
 //
-void CCText::addTextToArray(const std::string & text) // UTF-8
+void CCText::addTextToArray(const std::string &text) // UTF-8
 {
 	if (text == " ")
 	{

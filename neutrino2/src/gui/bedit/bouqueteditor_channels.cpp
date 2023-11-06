@@ -81,12 +81,6 @@ CBEChannelWidget::CBEChannelWidget(const std::string & Caption, unsigned int Bou
 
 CBEChannelWidget::~CBEChannelWidget()
 {
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -177,12 +171,6 @@ void CBEChannelWidget::paint()
 void CBEChannelWidget::hide()
 {
 	widget->hide();
-	
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
 	
 	if (widget)
 	{

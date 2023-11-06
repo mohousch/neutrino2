@@ -64,11 +64,11 @@ void CTimerManager::Init(void)
 	wakeup = 0; 	//fallback
 
 	//
+#ifdef USE_OPENGL
 	int fd = open("/proc/stb/fp/was_timer_wakeup", O_RDONLY);
 	unsigned char buffer[2];
 	
 	int ret = read(fd, buffer, 2);
-	
 	int was_timer_wakeup = atoi((const char*) buffer);
 
 	if(ret < 0)
@@ -84,6 +84,7 @@ void CTimerManager::Init(void)
 	}
 
 	close(fd);
+#endif
 
 	loadRecordingSafety();
 
@@ -479,7 +480,7 @@ void CTimerManager::loadEventsFromConfig()
 
 	if(!config.loadConfig(TIMERD_CONFIGFILE))
 	{
-		/* set defaults if no configuration file exists */
+		// set defaults if no configuration file exists
 		dprintf(DEBUG_NORMAL, "CTimerManager::loadEventsFromConfig: %s not found\n", TIMERD_CONFIGFILE);
 	}
 	else
@@ -706,11 +707,8 @@ void CTimerManager::saveEventsToConfig()
 	for(; pos != events.end(); pos++)
 	{
 		CTimerEvent *event = pos->second;
-		//dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig event #%d\n",event->eventID);
 		event->saveToConfig(&config);
 	}
-	
-	//dprintf(DEBUG_INFO, "\n");
 	
 	config.setInt32 ("EXTRA_TIME_START", m_extraTimeStart);
 	dprintf(DEBUG_INFO, "CTimerManager::saveEventsToConfig: setting EXTRA_TIME_START to %d\n", m_extraTimeStart);
@@ -734,8 +732,6 @@ bool CTimerManager::shutdown()
 	bool status = false;
 	
 	dprintf(DEBUG_NORMAL, "CTimerManager::shutdown: stopping timermanager thread ...\n");
-	
-	dprintf(DEBUG_NORMAL, "CTimerManager::shutdown: Waiting for timermanager thread to terminate ...\n");
 	
 	pthread_cancel(thrTimer);
 	pthread_join(thrTimer, NULL);
@@ -776,6 +772,7 @@ bool CTimerManager::shutdown()
 	{
 		int minutes = ((nextAnnounceTime - time(NULL))/60);
 
+#ifndef USE_OPENGL
 		//Set WakeUp Time
 		char WakeupTime[11];
 		WakeupTime[11] = '\0';
@@ -808,7 +805,8 @@ bool CTimerManager::shutdown()
 			fclose(fd);
 			
 			status = true;
-		}		
+		}
+#endif		
 	}
 
 	pthread_mutex_unlock(&tm_eventsMutex);

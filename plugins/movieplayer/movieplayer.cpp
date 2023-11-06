@@ -472,11 +472,11 @@ void CMoviePlayer::showMenu()
 
 	widget->exec(NULL, "");
 	
-	delete mlist;
-	mlist = NULL;
-	
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 int CMoviePlayer::exec(CMenuTarget* parent, const std::string& actionKey)

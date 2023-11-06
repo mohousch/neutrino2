@@ -82,6 +82,9 @@ CFrameBuffer::CFrameBuffer()
 #endif
 
 	iconBasePath = "";
+	buttonBasePath = "";
+	hintBasePath = "";
+	spinnerBasePath = "";
 	available  = 0;
 	cmap.start = 0;
 	cmap.len = 256;

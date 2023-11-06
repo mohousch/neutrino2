@@ -191,12 +191,6 @@ void CFileBrowser::commonInit()
 
 CFileBrowser::~CFileBrowser()
 {
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -683,13 +677,6 @@ void CFileBrowser::hide()
 	
 	widget->hide();
 	
-	//
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -714,12 +701,6 @@ const struct button_label HButtons[2] =
 void CFileBrowser::paint()
 {
 	dprintf(DEBUG_NORMAL, "CFileBrowser::paint:\n");
-	
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
 	
 	if (widget)
 	{

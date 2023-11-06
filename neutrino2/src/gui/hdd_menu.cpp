@@ -479,11 +479,11 @@ int CHDDMenuHandler::hddMenu()
 	// no parts found
 	ret = widget->exec(NULL, "");
 	
-	delete hddmenu;
-	hddmenu = NULL;
-	
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 
 	return ret;
 }

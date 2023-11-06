@@ -220,12 +220,6 @@ void CNeutrinoApp::mainMenu(void)
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	if (nMenu)
-	{
-		delete nMenu;
-		nMenu = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -521,10 +515,11 @@ bool CNeutrinoApp::showUserMenu(int button)
 	widget->setTimeOut(g_settings.timing_menu);	
 	widget->exec(NULL, "");
 	
-	delete menu;
-	menu = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 
 	return 0;
 }

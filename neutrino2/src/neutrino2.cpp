@@ -3064,10 +3064,11 @@ void CNeutrinoApp::selectNVOD()
                 	widget->setTimeOut(g_settings.timing_menu);
                         widget->exec(NULL, "");
                         
-                        delete NVODSelector;
-                        NVODSelector = NULL;
-                        delete widget;
-                        widget = NULL;
+                        if (widget)
+                        {
+                        	delete widget;
+                        	widget = NULL;
+                        }
                 }	
         }
 }
@@ -3080,7 +3081,7 @@ const keyval OPTIONS_OFF0_ON1_OPTIONS[OPTIONS_OFF0_ON1_OPTION_COUNT] =
         { 1, _("on") }
 };
 
-bool CNeutrinoApp::getNVODMenu(ClistBox* menu)
+bool CNeutrinoApp::getNVODMenu(ClistBox *menu)
 {	
 	//
         if (g_RemoteControl->subChannels.empty())

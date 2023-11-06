@@ -275,10 +275,11 @@ void CGeneralSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete miscSettingsGeneral;
-	miscSettingsGeneral = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 //
@@ -606,10 +607,11 @@ void CChannelListSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete miscSettingsChannelList;
-	miscSettingsChannelList = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 //
@@ -833,10 +835,11 @@ void CEPGSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete miscSettingsEPG;
-	miscSettingsEPG = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 
 	delete epg_IP;
 	epg_IP = NULL;
@@ -1012,10 +1015,11 @@ void CFileBrowserSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete miscSettingsFileBrowser;
-	miscSettingsFileBrowser = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 // misc notifier

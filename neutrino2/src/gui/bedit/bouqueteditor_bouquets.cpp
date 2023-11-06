@@ -83,12 +83,6 @@ CBEBouquetWidget::CBEBouquetWidget()
 
 CBEBouquetWidget::~CBEBouquetWidget()
 {
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -186,12 +180,6 @@ void CBEBouquetWidget::paint()
 void CBEBouquetWidget::hide()
 {
 	widget->hide();
-	
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
 	
 	if (widget)
 	{

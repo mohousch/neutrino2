@@ -242,12 +242,13 @@ int CAudioSelectMenuHandler::doMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	res = widget->exec(NULL, "");
 	
-	delete AudioSelector;
-	AudioSelector = NULL;
-	delete widget;
-        widget = NULL;
-
 	//delete audioSetupNotifierVolPercent;
+	
+	if (widget)
+	{
+		delete widget;
+        	widget = NULL;
+        }
 	
 	return res;
 }

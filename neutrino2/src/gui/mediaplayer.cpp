@@ -109,9 +109,10 @@ void CMediaPlayerMenu::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete mediaPlayer;
-	mediaPlayer = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 

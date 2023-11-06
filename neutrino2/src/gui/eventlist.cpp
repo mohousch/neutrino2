@@ -118,12 +118,6 @@ EventList::~EventList()
 	evtlist.clear();
 	timerlist.clear();
 	
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (evlWidget)
 	{
 		delete evlWidget;
@@ -503,13 +497,6 @@ void EventList::hide()
 {
 	evlWidget->hide();
 	
-	//
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
-	
 	if (evlWidget)
 	{
 		delete evlWidget;
@@ -568,13 +555,6 @@ void EventList::paint(t_channel_id channel_id)
 	// 
 	timerlist.clear();
 	CTimerd::getInstance()->getTimerList(timerlist);
-	
-	//
-	if (listBox)
-	{
-		delete listBox;
-		listBox = NULL;
-	}
 	
 	if (evlWidget)
 	{
@@ -993,10 +973,11 @@ int CEventFinderMenu::showMenu(void)
 	
 	res = widget->exec(NULL, "");
 	
-	delete searchMenu;
-	searchMenu = NULL;
-	delete widget;
-	widget = NULL;	
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;	
+	}
 	
 	return(res);
 }

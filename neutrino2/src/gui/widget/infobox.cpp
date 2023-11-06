@@ -91,19 +91,6 @@ CInfoBox::CInfoBox(const CBox* position, const char * title, const char * icon)
 		widget = new CWidget(&m_cBoxFrame);
 		headers = new CCHeaders();
 		footers = new CCFooters();
-		
-		//
-		headers->setColor(headColor);
-		headers->setCorner(headRadius, headCorner);
-		headers->setGradient(headGradient);
-//		headers->setLine(true, true);
-		
-		//
-		footers->setColor(footColor);
-		footers->setCorner(footRadius, footCorner);
-		footers->setGradient(footGradient);
-//		footers->setLine(true, true);
-		
 		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
 		
 		widget->addCCItem(m_pcTextBox);
@@ -173,15 +160,6 @@ CInfoBox::CInfoBox()
 		
 		headers = new CCHeaders();
 		footers = new CCFooters();
-		
-		headers->setColor(headColor);
-		headers->setCorner(headRadius, headCorner);
-		headers->setGradient(headGradient);
-		
-		footers->setColor(footColor);
-		footers->setCorner(footRadius, footCorner);
-		footers->setGradient(footGradient);
-		
 		m_pcTextBox = new CTextBox(&m_cBoxFrameText);
 		
 		widget->addCCItem(m_pcTextBox);
@@ -216,28 +194,6 @@ CInfoBox::CInfoBox()
 //////////////////////////////////////////////////////////////////////
 CInfoBox::~CInfoBox()
 {
-	if (headers)
-	{
-		headers->clear();
-		
-		delete headers;
-		headers = NULL;
-	}
-		
-	if (footers)
-	{
-		footers->clear();
-		
-		delete footers;
-		footers = NULL;
-	}
-	
-	if (m_pcTextBox != NULL)
-	{
-		delete m_pcTextBox;
-		m_pcTextBox = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;

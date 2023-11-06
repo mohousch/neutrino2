@@ -310,18 +310,16 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 		//
 		menu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY + 50, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight - 100);
 		
-		menu->setWidgetMode(ClistBox::MODE_SETUP);
+		menu->setWidgetMode(ClistBox::MODE_MENU);
 		
 		// 	
 		head = new CCHeaders(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, 50);
-//		head->setLine(true, true);
 			
 		//	
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};		
 
 		foot = new CCFooters(widget->getWindowsPos().iX, widget->getWindowsPos().iY + widget->getWindowsPos().iHeight - 50, widget->getWindowsPos().iWidth, 50);
 		foot->setButtons(&btn);
-//		foot->setLine(true, true);
 			
 		//
 		widget->addCCItem(menu);
@@ -361,12 +359,6 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 
         res = widget->exec(NULL, "");
         
-        if (menu)
-        {
-        	delete menu;
-        	menu = NULL;
-        }
-        
         if (widget)
         {
         	delete widget;
@@ -375,5 +367,4 @@ int CUserMenuMenu::exec(CMenuTarget* parent, const std::string& actionKey)
 
         return res;
 }
-
 

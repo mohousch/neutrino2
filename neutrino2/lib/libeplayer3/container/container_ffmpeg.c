@@ -598,7 +598,18 @@ static void FFMPEGThread(Context_t *context)
 #elif LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
 							bytesDone = avcodec_decode_audio3(c, samples, &decoded_data_size, &packet);
 #else
-							bytesDone = avcodec_decode_audio2(c, samples, &decoded_data_size, packet.data, packet.size);
+							//bytesDone = avcodec_decode_audio2(c, samples, &decoded_data_size, packet.data, packet.size);
+							////
+							byteDone = avcodec_send_packet(c, packet);
+							
+             						if (byteDone < 0 && byteDone != AVERROR(EAGAIN) && byteDone != AVERROR_EOF) 
+             						{
+            						} 
+            						else 
+            						{
+             							byteDone = avcodec_receive_frame(c, samples);
+             						}
+							////
 #endif
 
 							if(bytesDone < 0) // Error Happend

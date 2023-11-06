@@ -109,12 +109,6 @@ CStreamInfo::CStreamInfo()
 
 CStreamInfo::~CStreamInfo()
 {
-	if (head)
-	{
-		delete head;
-		head = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -349,12 +343,6 @@ void CStreamInfo::hide ()
 {
 	widget->hide();
 	
-	if (head)
-	{
-		delete head;
-		head = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -518,12 +506,6 @@ void CStreamInfo::SignalRenderStr(unsigned int value, int _x, int _y)
 void CStreamInfo::paint(int /*mode*/)
 {
 	//
-	if (head)
-	{
-		delete head;
-		head = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;

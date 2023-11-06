@@ -265,11 +265,11 @@ void CMediaPortal::showMenu(void)
 
 	widget->exec(NULL, "");
 	
-	delete mediaPortal;
-	mediaPortal = NULL;
-	
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 }
 
 //plugin API

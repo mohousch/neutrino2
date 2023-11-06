@@ -127,10 +127,11 @@ int CPowerMenu::showMenu(void)
 	widget->setTimeOut(g_settings.timing_menu);
 	res = widget->exec(NULL, "");
 	
-	delete powerMenu;
-	powerMenu = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 	
 	return res;
 }

@@ -261,12 +261,6 @@ bool CFlashUpdate::selectHttpImage(void)
 		
 	widget->exec(NULL, "");
 	
-	if (SelectionWidget)
-	{
-		delete SelectionWidget;
-		SelectionWidget = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -759,12 +753,6 @@ void CFlashExpert::showMTDSelector(const std::string & actionkey)
 	//
 	widget->exec(NULL, "");
 	
-	if (mtdselector)
-	{
-		delete mtdselector;
-		mtdselector = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -845,12 +833,6 @@ void CFlashExpert::showFileSelector(const std::string & actionkey)
 
 	//
 	widget->exec(NULL, "");
-	
-	if (fileselector)
-	{
-		delete fileselector;
-		fileselector = NULL;
-	}
 	
 	if (widget)
 	{
@@ -1113,22 +1095,10 @@ int CUpdateSettings::showMenu()
 	//
 	res = widget->exec(NULL, "");
 	
-	if (mtdexpert)
-	{
-		delete mtdexpert;
-		mtdexpert = NULL;
-	}
-	
 	if (mtdexpertWidget)
 	{
 		delete mtdexpertWidget;
 		mtdexpertWidget = NULL;
-	}
-	
-	if (updateSettings)
-	{
-		delete updateSettings;
-		updateSettings = NULL;
 	}
 	
 	if (widget)

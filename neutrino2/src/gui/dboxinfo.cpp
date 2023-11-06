@@ -493,8 +493,12 @@ int CDBoxInfoWidget::showInfo()
 	}
 	
 	res = dboxInfoWidget->exec(NULL, "");
-	delete dboxInfoWidget;
-	dboxInfoWidget = NULL;
+	
+	if (dboxInfoWidget)
+	{
+		delete dboxInfoWidget;
+		dboxInfoWidget = NULL;
+	}
 	
 	return res;
 }
@@ -580,10 +584,11 @@ int CInfoMenu::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	res = widget->exec(NULL, "");
 	
-	delete infoMenu;
-	infoMenu = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 	
 	return res;
 }

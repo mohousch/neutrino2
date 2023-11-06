@@ -73,13 +73,6 @@ CZapitSetup::CZapitSetup()
 
 CZapitSetup::~CZapitSetup()
 {
-
-	if (zapit)
-	{
-		delete zapit;
-		zapit = NULL;
-	}
-	
 	if (widget)
 	{
 		delete widget;
@@ -240,12 +233,6 @@ void CZapitSetup::showMenu()
 
 	//
 	widget->exec(NULL, "");
-	
-	if (zapit)
-	{
-		delete zapit;
-		zapit = NULL;
-	}
 	
 	if (widget)
 	{

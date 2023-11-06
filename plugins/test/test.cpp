@@ -313,17 +313,7 @@ CTestMenu::~CTestMenu()
 		webTVBouquetList = NULL;
 	}
 	
-	if (headers)
-	{
-		delete headers;
-		headers = NULL;
-	}
 	
-	if (footers)
-	{
-		delete footers;
-		footers = NULL;
-	}
 	
 	if (testWidget)
 	{
@@ -1049,23 +1039,11 @@ void CTestMenu::testCWidget()
 
 	testWidget->exec(NULL, "");
 
-	delete testWidget;
-	testWidget = NULL;
-
-	delete frameBoxWidget;
-	frameBoxWidget = NULL;
-
-	delete leftWidget;
-	leftWidget = NULL;
-
-	delete rightWidget;
-	rightWidget = NULL;
-
-	delete headers;
-	headers = NULL;
-
-	delete footers;
-	footers = NULL;
+	if (testWidget)
+	{
+		delete testWidget;
+		testWidget = NULL;
+	}
 }
 
 void CTestMenu::testCComponentWidget()
@@ -1237,9 +1215,6 @@ void CTestMenu::testCTextBoxWidget()
 	testWidget->addCCItem(textBoxWidget);
 	testWidget->exec(this, "");
 	
-	delete textBoxWidget;
-	textBoxWidget = NULL;
-	
 	delete testWidget;
 	testWidget = NULL;
 }
@@ -1390,9 +1365,6 @@ void CTestMenu::testCFrameBoxWidget()
 	
 	testWidget->exec(NULL, "");
 
-	delete frameBoxWidget;
-	frameBoxWidget = NULL;
-
 	delete testWidget;
 	testWidget = NULL;
 }
@@ -1494,9 +1466,6 @@ void CTestMenu::testCListFrameWidget()
 
 	delete testWidget;
 	testWidget = NULL;
-
-	delete listFrame;
-	listFrame = NULL;
 }
 
 void CTestMenu::testClistBoxWidget()
@@ -1508,28 +1477,16 @@ void CTestMenu::testClistBoxWidget()
 	rightBox.iHeight = frameBuffer->getScreenHeight();
 	rightBox.iX = frameBuffer->getScreenX();
 	rightBox.iY = frameBuffer->getScreenY();
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
 
 	rightWidget = new ClistBox(&rightBox);
 
 	rightWidget->setWidgetType(CMenuItem::TYPE_FRAME);
-//	rightWidget->addWidgetType(CMenuItem::TYPE_STANDARD);
-//	rightWidget->addWidgetType(CMenuItem::TYPE_CLASSIC);
-//	rightWidget->addWidgetType(CMenuItem::TYPE_EXTENDED);
-//	rightWidget->setItemsPerPage(6,2);
 	rightWidget->setSelected(selected);
 	rightWidget->enablePaintHead();
 	rightWidget->setTitle("CWidget(ClistBox)", NEUTRINO_ICON_MP3);
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
-	//rightWidget->setHeadLine(true, true);
 	rightWidget->enablePaintDate();
 	rightWidget->enablePaintFoot();
-	//rightWidget->setFootLine(true, true);
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	rightWidget->enablePaintItemInfo(80);
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_HINTICON);
@@ -1574,15 +1531,11 @@ void CTestMenu::testClistBoxWidget()
 	testWidget->addCCItem(rightWidget);
 
 	testWidget->addKey(CRCInput::RC_info, this, "linfo");
-	//testWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 
 	testWidget->exec(NULL, "");
 	
 	delete testWidget;
 	testWidget = NULL;
-
-	delete rightWidget;
-	rightWidget = NULL;
 }
 
 void CTestMenu::testMultiWidget()
@@ -1759,12 +1712,6 @@ void CTestMenu::testMultiWidget()
 	
 	delete testWidget;
 	testWidget = NULL;
-	
-	delete leftWidget;
-	leftWidget = NULL;
-	
-	delete windowWidget;
-	windowWidget = NULL;
 }
 
 // CIcon
@@ -1803,15 +1750,7 @@ void CTestMenu::testCImage()
 	dprintf(DEBUG_NORMAL, "CTestMenu::testCImage: image:%s iw:%d ih:%d nbp:%d\n", testImage.imageName.c_str(), testImage.iWidth, testImage.iHeight, testImage.iNbp);
 	
 	testImage.setPosition(150 + BORDER_LEFT, 150, testImage.iWidth, testImage.iHeight);
-	//testImage.paint();
-
-	//CFrameBuffer::getInstance()->blit();
-
-	// loop
-	//testWidget = new CWidget();
-	//testWidget->exec(NULL, "");
-	//delete testWidget;
-	//testWidget = NULL;
+	
 	testImage.exec();
 	
 	hide();
@@ -2320,12 +2259,6 @@ void CTestMenu::testClistBox()
 
 	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
 
 	rightWidget = new ClistBox(&Box);
 	
@@ -2372,13 +2305,9 @@ void CTestMenu::testClistBox()
 
 	// footer
 	rightWidget->enablePaintFoot();
-	//rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
 	rightWidget->setHeadGradient(LIGHT2DARK);
 	rightWidget->setFootGradient(DARK2LIGHT);
-
-	// itemInfo
-	//rightWidget->enablePaintItemInfo(70);
 	
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
@@ -2405,12 +2334,6 @@ void CTestMenu::testClistBox2()
 
 	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
 
 	rightWidget = new ClistBox(&Box);
 
@@ -2463,9 +2386,6 @@ void CTestMenu::testClistBox2()
 	
 	rightWidget->setHeadGradient(LIGHT2DARK);
 	rightWidget->setFootGradient(DARK2LIGHT);
-
-	// footinfo
-	//rightWidget->enablePaintItemInfo(70);
 	
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
@@ -2492,12 +2412,6 @@ void CTestMenu::testClistBox3()
 
 	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
 
 	rightWidget = new ClistBox(&Box);
 
@@ -2535,7 +2449,6 @@ void CTestMenu::testClistBox3()
 
 	// widgettype
 	rightWidget->setWidgetType(CMenuItem::TYPE_EXTENDED);
-	//rightWidget->setWidgetMode(ClistBox::MODE_MENU);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2580,12 +2493,6 @@ void CTestMenu::testClistBox4()
 	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
 	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
-
 	rightWidget = new ClistBox(&Box);
 
 	CHintBox loadBox("ClistBox(frame)", __("Scan for Movies ..."));
@@ -2619,7 +2526,6 @@ void CTestMenu::testClistBox4()
 
 	// widgettype
 	rightWidget->setWidgetType(CMenuItem::TYPE_FRAME);
-	//rightWidget->setWidgetMode(ClistBox::MODE_MENU);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->enableShrinkMenu();
 	
@@ -2664,12 +2570,6 @@ void CTestMenu::testClistBox5()
 
 	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
 
 	rightWidget = new ClistBox(&Box);
 
@@ -2714,23 +2614,18 @@ void CTestMenu::testClistBox5()
 	rightWidget->enablePaintHead();
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
-//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-//	rightWidget->setFootLine(true, true);
 
 	// footinfo
 	rightWidget->enablePaintItemInfo(80);
 	rightWidget->setItemInfoMode(CCItemInfo::ITEMINFO_INFO);
 
-	//rightWidget->setSelected(selected);
-
 	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
-	//rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	rightWidget->exec();		
 	
@@ -2753,12 +2648,6 @@ void CTestMenu::testClistBox6()
 
 	Box.iX = frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
 
 	rightWidget = new ClistBox(&Box);
 
@@ -2839,12 +2728,6 @@ void CTestMenu::testClistBox7()
 
 	Box.iX = 50; //frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
 
 	rightWidget = new ClistBox(&Box);
 
@@ -2926,12 +2809,6 @@ void CTestMenu::testClistBox8()
 
 	Box.iX = 50; //frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
 
 	rightWidget = new ClistBox(&Box);
 
@@ -3013,12 +2890,6 @@ void CTestMenu::testClistBox9()
 
 	Box.iX = 50; //frameBuffer->getScreenX() + ((frameBuffer->getScreenWidth() - Box.iWidth ) >> 1 );
 	Box.iY = frameBuffer->getScreenY() + ((frameBuffer->getScreenHeight() - Box.iHeight) >> 1 );
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
 
 	rightWidget = new ClistBox(&Box);
 	
@@ -3051,9 +2922,6 @@ void CTestMenu::testClistBox9()
 
 	// mode
 	rightWidget->setWidgetType(CMenuItem::TYPE_CLASSIC);
-//	rightWidget->addWidgetType(CMenuItem::TYPE_STANDARD);
-//	rightWidget->addWidgetType(CMenuItem::TYPE_EXTENDED);
-//	rightWidget->addWidgetType(CMenuItem::TYPE_FRAME);
 	rightWidget->setWidgetMode(ClistBox::MODE_MENU);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
@@ -3065,12 +2933,10 @@ void CTestMenu::testClistBox9()
 	rightWidget->setHeadButtons(HeadButtons, HEAD_BUTTONS_COUNT);
 	rightWidget->enablePaintDate();
 	rightWidget->setFormat("%d.%m.%Y %H:%M:%S");
-//	rightWidget->setHeadLine(true, true);
 
 	// footer
 	rightWidget->enablePaintFoot();
 	rightWidget->setFootButtons(FootButtons, FOOT_BUTTONS_COUNT);
-//	rightWidget->setFootLine(true, true);
 
 	// itemInfo
 	rightWidget->enablePaintItemInfo(70);
@@ -3082,12 +2948,8 @@ void CTestMenu::testClistBox9()
 	rightWidget->setItemInfoFont(SNeutrinoSettings::FONT_TYPE_PLUGINLIST_ITEMLARGE);
 	
 	//
-	//rightWidget->paintScrollBar(false);
-	
-	//
 	rightWidget->addKey(CRCInput::RC_ok, this, "wplay");
 	rightWidget->addKey(CRCInput::RC_info, this, "linfo");
-	//rightWidget->addKey(CRCInput::RC_setup, this, "lsetup");
 	
 	rightWidget->exec();
 	

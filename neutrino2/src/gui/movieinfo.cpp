@@ -1793,9 +1793,6 @@ void CMovieInfoWidget::funArt()
 
 	delete widget;
 	widget = NULL;
-
-	delete testFrameBox;
-	testFrameBox = NULL;
 }
 
 int CMovieInfoWidget::exec(CMenuTarget* parent, const std::string& actionKey)

@@ -242,20 +242,11 @@ void CNKMovies::showMenu()
 
 	mainWidget->exec(NULL, "");
 
-	delete mainWidget;
-	mainWidget = NULL;
-
-	delete headersWidget;
-	headersWidget = NULL;
-
-	delete leftWidget;
-	leftWidget = NULL;
-
-	delete rightWidget;
-	rightWidget = NULL;
-
-	delete footersWidget;
-	footersWidget = NULL;
+	if (mainWidget)
+	{
+		delete mainWidget;
+		mainWidget = NULL;
+	}
 }
 
 void CNKMovies::showMovieInfo(MI_MOVIE_INFO& movie)

@@ -42,7 +42,7 @@ CMessageBox::CMessageBox(const char* const Caption, const char * const Text, con
 {
 	dprintf(DEBUG_INFO, "CMessageBox::CMessageBox\n");
 	
-	m_cBoxWindow = NULL;
+	widget = NULL;
 	headers = NULL;
 	
 	m_message = strdup(Text);
@@ -111,7 +111,7 @@ CMessageBox::CMessageBox(const char* const Caption, ContentLines& Lines, const i
 {
 	dprintf(DEBUG_INFO, "CMessageBox::CMessageBox\n");
 	
-	m_cBoxWindow = NULL;
+	widget = NULL;
 	headers = NULL;
 	
 	m_message = NULL;
@@ -182,17 +182,10 @@ CMessageBox::~CMessageBox(void)
 	
 	hide();
 	
-	//
-	if (headers)
+	if (widget)
 	{
-		delete headers;
-		headers = NULL;
-	}
-	
-	if (m_cBoxWindow)
-	{
-		delete m_cBoxWindow;
-		m_cBoxWindow = NULL;
+		delete widget;
+		widget = NULL;
 	}
 }
 
@@ -328,26 +321,25 @@ void CMessageBox::initFrames(void)
 	cFrameBox.iY = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2);
 	
 	//
-	m_cBoxWindow = CNeutrinoApp::getInstance()->getWidget("messagebox");
+	widget = CNeutrinoApp::getInstance()->getWidget("messagebox");
 	
-	if (m_cBoxWindow)
+	if (widget)
 	{
-		headers = (CCHeaders*)m_cBoxWindow->getCCItem(CComponent::CC_HEAD);
+		headers = (CCHeaders*)widget->getCCItem(CComponent::CC_HEAD);
 	}
 	else
 	{
 		//
-		m_cBoxWindow = new CWidget(&cFrameBox);
-		m_cBoxWindow->name = "messagebox";
-		m_cBoxWindow->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
+		widget = new CWidget(&cFrameBox);
+		widget->name = "messagebox";
+		widget->setCorner(g_settings.Head_radius | g_settings.Foot_radius, g_settings.Head_corner | g_settings.Foot_corner);
 		
 		headers = new CCHeaders();
 		
-		//
-		//headers->setLine(true, true);
+		widget->addCCItem(headers);
 	}
 
-	m_cBoxWindow->paintMainFrame(true);
+	widget->paintMainFrame(true);
 }
 
 void CMessageBox::paint(void)
@@ -355,10 +347,10 @@ void CMessageBox::paint(void)
 	dprintf(DEBUG_INFO, "CMessageBox::paint\n");
 	
 	// 
-	m_cBoxWindow->setPosition(&cFrameBox);
-	m_cBoxWindow->setBorderMode(borderMode);
-	m_cBoxWindow->setBorderColor(borderColor);
-	m_cBoxWindow->enableSaveScreen();
+	widget->setPosition(&cFrameBox);
+	widget->setBorderMode(borderMode);
+	widget->setBorderColor(borderColor);
+	widget->enableSaveScreen();
 
 	// title
 	if (headers)
@@ -368,9 +360,6 @@ void CMessageBox::paint(void)
 		headers->setTitle(m_caption.c_str());
 		headers->setIcon(m_iconfile.c_str());
 	}
-	
-	//headers.paint();
-	m_cBoxWindow->addCCItem(headers);
 
 	refreshPage();
 }
@@ -380,7 +369,7 @@ void CMessageBox::refreshPage()
 	dprintf(DEBUG_INFO, "CMessageBox::refreshPage\n");
 	
 	//
-	m_cBoxWindow->paint();
+	widget->paint();
 
 	//TextBody
 	int yPos  = CFrameBuffer::getInstance()->getScreenY() + ((CFrameBuffer::getInstance()->getScreenHeight() - m_height) >> 2) + m_theight /*+ (m_fheight >> 1)*/;
@@ -439,7 +428,7 @@ void CMessageBox::hide(void)
 {
 	dprintf(DEBUG_INFO, "CMessageBox::hide:\n");
 
-	m_cBoxWindow->hide();
+	widget->hide();
 }
 
 void CMessageBox::returnDefaultValueOnTimeout(bool returnDefault)

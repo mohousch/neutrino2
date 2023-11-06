@@ -270,10 +270,11 @@ void CAudioSettings::showMenu()
 	widget->setTimeOut(g_settings.timing_menu);
 	widget->exec(NULL, "");
 	
-	delete audioSettings;
-	audioSettings = NULL;
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 	
 	//
 	delete subLangSelectNotifier;

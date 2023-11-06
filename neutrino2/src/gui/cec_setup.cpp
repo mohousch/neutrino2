@@ -179,12 +179,11 @@ int CCECSetup::showMenu()
 	
 	int res = widget->exec(NULL, "");
 	
-	//
-	delete cec;
-	cec = NULL;
-	
-	delete widget;
-	widget = NULL;
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
 
 	return res;
 }

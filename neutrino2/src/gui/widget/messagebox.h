@@ -66,7 +66,7 @@ class CMessageBox
 
 	protected:
 		CBox cFrameBox;
-		CWidget *m_cBoxWindow;
+		CWidget *widget;
 		CCHeaders *headers;
 		CCScrollBar scrollBar;
 
