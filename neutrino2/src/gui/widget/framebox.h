@@ -109,7 +109,7 @@ class CFrameItem
 		virtual void setCaptionFont(unsigned int font){captionFont = font;};
 		virtual void setOptionFont(unsigned int font){optionFont = font;}; 
 		//
-		int exec(CMenuTarget *parent);
+		int exec(CMenuTarget *target);
 		//
 		virtual void setActive(const bool Active);
 		virtual void setMarked(const bool Marked);

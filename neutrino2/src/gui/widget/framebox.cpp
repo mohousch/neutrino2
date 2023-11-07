@@ -431,16 +431,14 @@ int CFrameItem::paint(bool selected)
 	return 0;
 }
 
-int CFrameItem::exec(CMenuTarget *parent)
+int CFrameItem::exec(CMenuTarget *target)
 {
 	dprintf(DEBUG_NORMAL, "CFrameItem::exec: actionKey:(%s)\n", actionKey.c_str());
 
 	int ret = CMenuTarget::RETURN_EXIT;
 
 	if(jumpTarget)
-		ret = jumpTarget->exec(parent, actionKey);
-	else
-		ret = CMenuTarget::RETURN_EXIT;
+		ret = jumpTarget->exec(target, actionKey);
 
 	return ret;
 }

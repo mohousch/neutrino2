@@ -1,5 +1,5 @@
 /*
-	$Id: listbox.cpp 14.10.2022 mohousch Exp $
+	$Id: listbox.cpp 06.11.2023 mohousch Exp $
 
 	License: GPL
 
@@ -1148,7 +1148,7 @@ int CMenuForwarder::getWidth(void) const
 	}
 }
 
-int CMenuForwarder::exec(CMenuTarget* target)
+int CMenuForwarder::exec(CMenuTarget *target)
 {
 	dprintf(DEBUG_DEBUG, "CMenuForwarder::exec: (%s) actionKey: (%s)\n", getName(), actionKey.c_str());
 
@@ -1176,6 +1176,7 @@ int CMenuForwarder::exec(CMenuTarget* target)
 		if(ret) 
 		{
 			setOption(jumpTarget->getValueString().c_str());
+			jumpTarget->clearValueString();
 		}
 	}
 

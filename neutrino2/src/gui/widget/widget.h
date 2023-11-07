@@ -30,6 +30,8 @@
 ////
 class CMenuTarget
 {
+	protected:
+		std::string valueString;
 	public:
 		enum
 		{
@@ -38,11 +40,9 @@ class CMenuTarget
 			RETURN_EXIT 		= 2,
 			RETURN_EXIT_ALL 	= 4
 		};
-
-		std::string valueString;
 				
 	public:
-		CMenuTarget(){valueString.clear();};
+		CMenuTarget(){valueString = "";};
 		virtual ~CMenuTarget(){valueString.clear();};
 		virtual void hide(){valueString.clear();};
 		virtual int exec(CMenuTarget* parent, const std::string& actionKey) = 0;
@@ -50,6 +50,7 @@ class CMenuTarget
 		//
 		virtual std::string& getValueString() {return valueString;};
 		virtual void setValueString(const char *const value){valueString = value;};
+		virtual void clearValueString(void){valueString.clear();};
 };
 
 ////

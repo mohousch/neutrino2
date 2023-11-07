@@ -1,5 +1,5 @@
 /*
-	$Id: listbox.h 2018.08.19 mohousch Exp $
+	$Id: listbox.h 06.11.2023 mohousch Exp $
 
 	License: GPL
 
@@ -262,7 +262,7 @@ class CMenuOptionChooser : public CMenuItem
 
 		int paint(bool selected, bool AfterPulldown = false);
 
-		int exec(CMenuTarget* target);
+		int exec(CMenuTarget *target);
 };
 
 //// CMenuOptionNumberChooser
@@ -319,7 +319,7 @@ class CMenuOptionStringChooser : public CMenuItem
 
 		bool isSelectable(void) const {return (active && !hidden);}
 
-		int exec(CMenuTarget* target);
+		int exec(CMenuTarget *target);
 };
 
 //// CMenuSeparator
@@ -372,7 +372,7 @@ class CMenuForwarder : public CMenuItem
 		int getHeight(void) const;
 		int getWidth(void) const;
 
-		int exec(CMenuTarget* target);
+		int exec(CMenuTarget *target);
 		bool isSelectable(void) const {return (active && !hidden);};
 		
 		void setName(const char * const name){itemName = name;};
