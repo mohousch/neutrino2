@@ -1017,13 +1017,7 @@ int EpgPlus::exec(CChannelList * _channelList, int selectedChannelIndex, CBouque
 			  		this->paint ();
 				}
 	  		} 
-	  		//
-			else if (msg == CRCInput::RC_ok) 
-			{
-				//this->channelList->zapTo(this->selectedChannelEntry->index);
-			} 
-			//
-			else if ( msg == CRCInput::RC_info ) 
+			else if (msg == CRCInput::RC_info || msg == CRCInput::RC_ok) 
 			{
 				TCChannelEventEntries::const_iterator It = this->getSelectedEvent ();
 
