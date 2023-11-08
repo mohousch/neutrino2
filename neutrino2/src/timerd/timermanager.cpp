@@ -153,7 +153,6 @@ void* CTimerManager::timerThread(void *data)
 			for(; pos != timerManager->events.end(); pos++)
 			{
 				event = pos->second;
-				dprintf(DEBUG_DEBUG, "CTimerManager::timerThread: checking event: %03d\n", event->eventID);
 
 				// if event wants to be announced
 				if(event->announceTime > 0 && event->eventState == CTimerd::TIMERSTATE_SCHEDULED ) 
