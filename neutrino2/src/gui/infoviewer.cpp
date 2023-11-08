@@ -527,11 +527,12 @@ void CInfoViewer::showTitle(const int _ChanNum, const std::string& _ChannelName,
 	// botton line
 	if(g_settings.infobar_buttonline)
 	{
-		CCHline hline(buttonBarStartX + BORDER_LEFT, buttonBarStartY, BoxWidth - BORDER_LEFT - BORDER_RIGHT, buttonBarHeight);
+		//CCHline hline(buttonBarStartX + BORDER_LEFT, buttonBarStartY, BoxWidth - BORDER_LEFT - BORDER_RIGHT, buttonBarHeight);
 		
-		hline.setColor(COL_INFOBAR_SHADOW_PLUS_1);
-		hline.setGradient(g_settings.infobar_buttonline_gradient);
-		hline.paint();
+		//hline.setColor(COL_INFOBAR_SHADOW_PLUS_1);
+		//hline.setGradient(g_settings.infobar_buttonline_gradient);
+		//hline.paint();
+		frameBuffer->paintBoxRel(buttonBarStartX + BORDER_LEFT, buttonBarStartY, BoxWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_INFOBAR_SHADOW_PLUS_1, 0, CORNER_NONE, g_settings.infobar_buttonline_gradient? LIGHT2DARK2LIGHT : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
 	}
 
 	// blue button

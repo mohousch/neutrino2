@@ -790,13 +790,12 @@ int CNeutrinoApp::loadSetup(const char * fname)
 
 	// progressbar color
 	g_settings.progressbar_color = configfile.getInt32("progressbar_color", 1);
-	//g_settings.progressbar_gradient_type = configfile.getInt32("progressbar_gradient_type", GRADIENT_ONECOLOR);
 
 	// head
 	g_settings.Head_corner = configfile.getInt32("Head_corner", CORNER_TOP);
 	g_settings.Head_radius = configfile.getInt32("Head_radius", RADIUS_MID);
 	g_settings.Head_gradient = configfile.getInt32("Head_gradient", DARK2LIGHT);
-	g_settings.Head_gradient_type = configfile.getInt32("Head_gradient_type", GRADIENT_ONECOLOR);
+	g_settings.Head_gradient_type = configfile.getInt32("Head_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 	g_settings.Head_line = configfile.getBool("Head_line", true);
 	g_settings.Head_line_gradient = configfile.getBool("Head_line_gradient", true);
 	
@@ -804,7 +803,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.Foot_corner = configfile.getInt32("Foot_corner", CORNER_BOTTOM);
 	g_settings.Foot_radius = configfile.getInt32("Foot_radius", RADIUS_MID);
 	g_settings.Foot_gradient = configfile.getInt32("Foot_gradient", LIGHT2DARK);
-	g_settings.Foot_gradient_type = configfile.getInt32("Foot_gradient_type", GRADIENT_ONECOLOR);
+	g_settings.Foot_gradient_type = configfile.getInt32("Foot_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 	g_settings.Foot_line = configfile.getBool("Foot_line", true);
 	g_settings.Foot_line_gradient = configfile.getBool("Foot_line_gradient", true);
 	
@@ -812,15 +811,15 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	g_settings.infobar_corner = configfile.getInt32("infobar_corner", CORNER_ALL);
 	g_settings.infobar_radius = configfile.getInt32("infobar_radius", RADIUS_VERYLARGE);
 	g_settings.infobar_gradient = configfile.getInt32("infobar_gradient", DARK2LIGHT);
-	g_settings.infobar_gradient_type = configfile.getInt32("infobar_gradient_type", GRADIENT_ONECOLOR);
-	g_settings.infobar_buttonbar = configfile.getBool("infobar_buttonbar", true);
-	g_settings.infobar_buttonline = configfile.getBool("infobar_buttonline", false);
-	g_settings.infobar_buttonline_gradient = configfile.getBool("infobar_buttonline_gradient", false);
+	g_settings.infobar_gradient_type = configfile.getInt32("infobar_gradient_type", GRADIENT_COLOR2TRANSPARENT);
+	g_settings.infobar_buttonbar = configfile.getBool("infobar_buttonbar", false);
+	g_settings.infobar_buttonline = configfile.getBool("infobar_buttonline", true);
+	g_settings.infobar_buttonline_gradient = configfile.getBool("infobar_buttonline_gradient", true);
 	g_settings.infobar_border = configfile.getBool("infobar_border", false);
 	
 	// hint
 	g_settings.Hint_gradient = configfile.getInt32("Hint_gradient", DARK2LIGHT);
-	g_settings.Hint_gradient_type = configfile.getInt32("Hint_gradient_type", GRADIENT_ONECOLOR);
+	g_settings.Hint_gradient_type = configfile.getInt32("Hint_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 	g_settings.Hint_border = configfile.getBool("Hint_border", true);
 	g_settings.Hint_radius = configfile.getInt32("Hint_radius", NO_RADIUS);
 	g_settings.Hint_corner = configfile.getInt32("Hint_corner", CORNER_ALL);
@@ -3544,7 +3543,7 @@ _repeat:
 		
 		return messages_return::handled;
 	}	
-	else if( msg == NeutrinoMessages::EVT_SERVICESCHANGED ) 
+	else if( msg == NeutrinoMessages::EVT_SERVICESCHANGED ) //reinitChannels / bqedit
 	{
 		channelsInit();
 
@@ -3557,7 +3556,7 @@ _repeat:
 			g_RCInput->postMsg(CRCInput::RC_ok, 0);
 		}
 	}
-	else if( msg == NeutrinoMessages::EVT_BOUQUETSCHANGED ) 
+	else if( msg == NeutrinoMessages::EVT_BOUQUETSCHANGED ) // reloadCurrentServices / scan
 	{
 		channelsInit();
 
@@ -3964,7 +3963,7 @@ _repeat:
 		delete[] (unsigned char*) data;
 		return messages_return::handled;
 	}
-	else if (msg == NeutrinoMessages::EVT_SERVICES_UPD) 
+	else if (msg == NeutrinoMessages::EVT_SERVICES_UPD) // sdtthread
 	{
 		channelsInit();
 

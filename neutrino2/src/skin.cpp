@@ -1771,7 +1771,7 @@ void CNeutrinoApp::parseCHead(xmlNodePtr node, CWidget* widget)
 	// gradient
 	int gr = NOGRADIENT;
 	if (gradient) gr = convertGradient(gradient);
-	int gt = GRADIENT_ONECOLOR;
+	int gt = GRADIENT_COLOR2TRANSPARENT;
 	if (gradient_type) gt = convertGradientType(gradient_type);
 	head->setGradient(gr, GRADIENT_VERTICAL, INT_LIGHT, gt);
 	// corner
@@ -1890,7 +1890,7 @@ void CNeutrinoApp::parseCFoot(xmlNodePtr node, CWidget* widget)
 	// gradient
 	int gr = NOGRADIENT;
 	if (gradient) gr = convertGradient(gradient);
-	int gt = GRADIENT_ONECOLOR;
+	int gt = GRADIENT_COLOR2TRANSPARENT;
 	if (gradient_type) gt = convertGradientType(gradient_type);
 	foot->setGradient(gr, GRADIENT_VERTICAL, INT_LIGHT, gt);
 	// corner
@@ -2151,7 +2151,7 @@ void CNeutrinoApp::parseCCWindow(xmlNodePtr node, CWidget* widget)
 	// gradient
 	int gr = NOGRADIENT;
 	if (gradient) gr = convertGradient(gradient);
-	int gt = GRADIENT_ONECOLOR;
+	int gt = GRADIENT_COLOR2TRANSPARENT;
 	if (gradient_type) gt = convertGradientType(gradient_type);
 	
 	window->setGradient(gr, gradient_direction, gradient_intensity, gt);
@@ -2805,7 +2805,7 @@ CWidget *CNeutrinoApp::getWidget(const char * const widgetname, const char *cons
 				// gradient
 				int gr = NOGRADIENT;
 				if (gradient) gr = convertGradient(gradient);
-				int gt = GRADIENT_ONECOLOR;
+				int gt = GRADIENT_COLOR2TRANSPARENT;
 				if (gradient_type) gt = convertGradientType(gradient_type);
 				int gd = GRADIENT_VERTICAL;
 				//if (gradient_direction) gd = convertGradientDirection(gradient_direction);
@@ -3125,7 +3125,7 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		
 		// head
 		g_settings.Head_gradient = configfile.getInt32("Head_gradient", DARK2LIGHT);
-		g_settings.Head_gradient_type = configfile.getInt32("Head_gradient_type", GRADIENT_ONECOLOR);
+		g_settings.Head_gradient_type = configfile.getInt32("Head_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.Head_corner = configfile.getInt32("Head_corner", CORNER_TOP);
 		g_settings.Head_radius = configfile.getInt32("Head_radius", RADIUS_MID);
 		g_settings.Head_line = configfile.getBool("Head_line", false);
@@ -3133,7 +3133,7 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		
 		// foot
 		g_settings.Foot_gradient = configfile.getInt32("Foot_gradient", LIGHT2DARK);
-		g_settings.Foot_gradient_type = configfile.getInt32("Foot_gradient_type", GRADIENT_ONECOLOR);
+		g_settings.Foot_gradient_type = configfile.getInt32("Foot_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.Foot_corner = configfile.getInt32("Foot_corner", CORNER_BOTTOM);
 		g_settings.Foot_radius = configfile.getInt32("Foot_radius", RADIUS_MID);
 		g_settings.Foot_line = configfile.getBool("Foot_line", false);
@@ -3144,15 +3144,15 @@ void CNeutrinoApp::readSkinConfig(const char* const filename)
 		g_settings.infobar_radius = configfile.getInt32("infobar_radius", RADIUS_VERYLARGE);
 		g_settings.infobar_border = configfile.getBool("infobar_border", false);
 		g_settings.infobar_gradient = configfile.getInt32("infobar_gradient", DARK2LIGHT);
-		g_settings.infobar_gradient_type = configfile.getInt32("infobar_gradient_type", GRADIENT_ONECOLOR);
-		g_settings.infobar_buttonbar = configfile.getBool("infobar_buttonbar", true);
-		g_settings.infobar_buttonline = configfile.getBool("infobar_buttonline", false);
-		g_settings.infobar_buttonline_gradient = configfile.getBool("infobar_buttonline_gradient", false);
+		g_settings.infobar_gradient_type = configfile.getInt32("infobar_gradient_type", GRADIENT_COLOR2TRANSPARENT);
+		g_settings.infobar_buttonbar = configfile.getBool("infobar_buttonbar", false);
+		g_settings.infobar_buttonline = configfile.getBool("infobar_buttonline", true);
+		g_settings.infobar_buttonline_gradient = configfile.getBool("infobar_buttonline_gradient", true);
 		
 		// itemInfo
 		g_settings.Hint_border = configfile.getBool("Hint_border", true);
 		g_settings.Hint_gradient = configfile.getInt32("Hint_gradient", DARK2LIGHT);
-		g_settings.Hint_gradient_type = configfile.getInt32("Hint_gradient_type", GRADIENT_ONECOLOR);
+		g_settings.Hint_gradient_type = configfile.getInt32("Hint_gradient_type", GRADIENT_COLOR2TRANSPARENT);
 		g_settings.Hint_radius = configfile.getInt32("Hint_radius", NO_RADIUS);
 		g_settings.Hint_corner = configfile.getInt32("Hint_corner", CORNER_ALL);
 		
