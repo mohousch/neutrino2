@@ -208,7 +208,6 @@ class CTestMenu : public CMenuTarget
 		
 		//// skin
 		void testSkinWidget();
-		void testSkinWidget2();
 		void testSkinWidget3();
 		
 		//// paint()
@@ -4719,28 +4718,9 @@ void CTestMenu::testSkinWidget()
 	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSkinWidget\n");
 	
 	//
-	std::string skin = "\n<skin>\n\t<screen name=\"testmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<head posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradienttype=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Skin\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<listbox posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"0\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\">\n\t\t\t<item id=\"FORWARDER\" localename=\"item 1\" optioninfo=\"test 1\" actionkey=\"do not thing\" target=\"0\" itemicon=\"hint_tvmode\" hint=\"any hint or comments\" iconname=\"red\" directkey=\"red\" lines=\"0\" border=\"BORDER_ALL\" gradient=\"DARK2LIGHT2DARK\" type=\"TYPE_CLASSIC\"/>\n\t\t\t<item id=\"SEPARATOR\" type=\"LINE|STRING\" localename=\"entry\"/>\n\t\t\t<item id=\"FORWARDER\" localename=\"item 2\" lines=\"1\"/>\n\t\t</listbox>\n\t\t<foot posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradienttype=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<button_label name=\"info\"/>\n\t\t</foot>\n\t</screen>\n</skin>\n";
+	std::string skin = "\n<skin>\n\t<screen name=\"testingmenu\" posx=\"0\" posy=\"0\" width=\"700\" height=\"720\" paintframe=\"1\">\n\t\t<head posx=\"30\" posy=\"50\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradienttype=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\" title=\"Test Skin\" icon=\"multimedia\" paintdate=\"1\" format=\"%d.%m.%Y %H:%M:%S\"/>\n\t\t<listbox posx=\"30\" posy=\"100\" width=\"640\" height=\"520\" paintframe=\"0\" mode=\"MODE_MENU\" type=\"TYPE_STANDARD\" scrollbar=\"1\">\n\t\t\t<item id=\"FORWARDER\" localename=\"item 1\" optioninfo=\"test 1\" actionkey=\"do not thing\" target=\"0\" itemicon=\"hint_tvmode\" hint=\"any hint or comments\" iconname=\"red\" directkey=\"red\" lines=\"0\" border=\"BORDER_ALL\" gradient=\"DARK2LIGHT2DARK\" type=\"TYPE_CLASSIC\"/>\n\t\t\t<item id=\"SEPARATOR\" type=\"LINE|STRING\" localename=\"entry\"/>\n\t\t\t<item id=\"FORWARDER\" localename=\"item 2\" lines=\"1\"/>\n\t\t</listbox>\n\t\t<foot posx=\"30\" posy=\"630\" width=\"640\" height=\"40\" paintframe=\"1\" gradient=\"DARK2LIGHT2DARK\" gradienttype=\"GRADIENT_ONECOLOR\" corner=\"CORNER_ALL\" radius=\"RADIUS_MID\">\n\t\t\t<button_label name=\"info\"/>\n\t\t</foot>\n\t</screen>\n</skin>\n";
 	
-	CWidget * widget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str(), true);
-	
-	if (widget)
-	{
-		widget->exec(NULL, "");
-		
-		delete widget;
-		widget = NULL;
-	}
-}
-
-// skin2
-void CTestMenu::testSkinWidget2()
-{
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSkinWidget2\n");
-	
-	//
-	std::string skin = PLUGINDIR "/test/skin.xml";
-	
-	CWidget * widget = CNeutrinoApp::getInstance()->getWidget("testmenu", skin.c_str());
+	CWidget * widget = CNeutrinoApp::getInstance()->getWidget("testingmenu", skin.c_str(), true);
 	
 	if (widget)
 	{
@@ -6278,12 +6258,6 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
-	else if(actionKey == "skin2")
-	{
-		testSkinWidget2();
-		
-		return RETURN_REPAINT;
-	}
 	else if(actionKey == "skin3")
 	{
 		testSkinWidget3();
@@ -6477,7 +6451,6 @@ void CTestMenu::showMenu()
 	//
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "SKIN") );		
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET", true, NULL, this, "skin"));
-	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET2", true, NULL, this, "skin2"));
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET3", true, NULL, this, "skin3"));
 	
 	mWidget->exec(NULL, "");
