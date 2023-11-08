@@ -3434,7 +3434,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 _repeat:
 			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP RES: nNewChannel %d\n", nNewChannel);
 
-			if(nNewChannel == -1) // on cancel
+			if(nNewChannel == -1) // timeout / cancel
 			{
 				// restore orig. bouquet and selected channel on cancel
 				setChannelMode(old_mode, mode);

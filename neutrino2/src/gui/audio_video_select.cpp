@@ -44,7 +44,7 @@
 #include <gui/audio_setup.h>
 
 
-// globals
+//// globals
 unsigned short apids[10];
 unsigned short ac3flags[10];
 unsigned short numpida = 0;

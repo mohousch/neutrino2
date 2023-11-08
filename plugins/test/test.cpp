@@ -63,24 +63,12 @@ class CTestMenu : public CMenuTarget
 		CChannelList* webTVchannelList;
 		CBouquetList* webTVBouquetList;
 		
-		
-
-		//
+		////
 		int selected;
 		int top_selected;
 		int left_selected;
 		int right_selected;
 
-
-		
-
-		
-
-	
-
-		
-
-		
 		//// CHeaders
 		CBox headBox;
 		CCHeaders * headers;
@@ -4766,7 +4754,7 @@ void CTestMenu::testSkinWidget2()
 // skin3
 void CTestMenu::testSkinWidget3()
 {
-	dprintf(DEBUG_NORMAL, "\nCTestMenu::testSkinWidget3\n");
+	dprintf(DEBUG_NORMAL, "CTestMenu::testSkinWidget3\n");
 	
 	//
 	std::string skin = PLUGINDIR "/test/test.xml";

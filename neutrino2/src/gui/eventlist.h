@@ -115,6 +115,7 @@ class EventList
 		int exec(const t_channel_id channel_id, const std::string& channelname); // UTF-8
 };
 
+////
 class CEventListHandler : public CMenuTarget
 {
 	public:
@@ -122,7 +123,7 @@ class CEventListHandler : public CMenuTarget
 
 };
 
-//
+////
 class CEventFinderMenu : public CMenuTarget
 {
         private:

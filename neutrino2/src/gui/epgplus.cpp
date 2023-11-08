@@ -1182,30 +1182,6 @@ void EpgPlus::paint()
 	this->frameBuffer->paintBoxRel (this->sliderX + 2, this->sliderY + int (sliderKnobPosition * sliderKnobHeight), this->sliderWidth - 4, int (sliderKnobHeight) , COL_MENUCONTENT_PLUS_3);	
 }
 
-int CEPGplusHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
-{
-	dprintf(DEBUG_NORMAL, "CEPGplusHandler::exec:\n");
-
-	int res = CMenuTarget::RETURN_REPAINT;
-
-	EpgPlus* e;
-	CChannelList* channelList;
-	
-	if (parent)
-		parent->hide ();
-	
-	e = new EpgPlus;
-
-	channelList = CNeutrinoApp::getInstance()->channelList;
-
-	res = e->exec(channelList, channelList->getSelectedChannelIndex(), bouquetList);
-
-	delete e;
-	e = NULL;
-	
-	return res;
-}
-
 EpgPlus::MenuTargetAddReminder::MenuTargetAddReminder(EpgPlus * _epgPlus) 
 {
   	this->epgPlus = _epgPlus;
@@ -1273,4 +1249,30 @@ int EpgPlus::MenuTargetRefreshEpg::exec(CMenuTarget */*parent*/, const std::stri
 
 	return CMenuTarget::RETURN_EXIT_ALL;
 }
+
+////
+int CEPGplusHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
+{
+	dprintf(DEBUG_NORMAL, "CEPGplusHandler::exec:\n");
+
+	int res = CMenuTarget::RETURN_REPAINT;
+
+	EpgPlus* e;
+	CChannelList* channelList;
+	
+	if (parent)
+		parent->hide ();
+	
+	e = new EpgPlus;
+
+	channelList = CNeutrinoApp::getInstance()->channelList;
+
+	res = e->exec(channelList, channelList->getSelectedChannelIndex(), bouquetList);
+
+	delete e;
+	e = NULL;
+	
+	return res;
+}
+
 

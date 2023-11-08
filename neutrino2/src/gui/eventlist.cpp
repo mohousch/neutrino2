@@ -676,35 +676,14 @@ void EventList::paint(t_channel_id channel_id)
 	evlWidget->paint();
 }
 
-int CEventListHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
-{
-	dprintf(DEBUG_NORMAL, "CEventListHandler::exec:\n");
-
-	int res = CMenuTarget::RETURN_REPAINT;
-	EventList* e;
-	CChannelList* channelList;
-
-	if (parent)
-		parent->hide();
-
-	e = new EventList;
-
-	channelList = CNeutrinoApp::getInstance()->channelList;
-
-	res = e->exec(channelList->getActiveChannel_ChannelID(), channelList->getActiveChannelName());
-
-	delete e;
-
-	return res;
-}
-
 int EventList::findEvents(void)
 {
 	int res = 0;
 	int event = 0;
-	t_channel_id channel_id;  //g_Zapit->getCurrentServiceID()
+	t_channel_id channel_id;  //CZapit::getInstance()->getCurrentServiceID()
 	
 	CEventFinderMenu menu(&event, &m_search_epg_item, &m_search_keyword, &m_search_list, &m_search_channel_id, &m_search_bouquet_id);
+	
 	hide();
 	menu.exec(NULL, "");
 	
@@ -723,6 +702,7 @@ int EventList::findEvents(void)
 		else if(m_search_list == SEARCH_LIST_BOUQUET)
 		{
 			int channel_nr = bouquetList->Bouquets[m_search_bouquet_id]->channelList->getSize();
+			
 			for(int channel = 0; channel < channel_nr; channel++)
 			{
 				channel_id = bouquetList->Bouquets[m_search_bouquet_id]->channelList->getChannelFromIndex(channel)->channel_id;
@@ -734,6 +714,7 @@ int EventList::findEvents(void)
 		{
 			CHintBox box(_("Event list"), _("Search for keyword in EPG..."));
 			box.paint();
+			
 			int bouquet_nr = bouquetList->Bouquets.size();
 			
 			for(int bouquet = 0; bouquet < bouquet_nr; bouquet++)
@@ -746,6 +727,7 @@ int EventList::findEvents(void)
 					CSectionsd::getInstance()->getEventsServiceKey(channel_id & 0xFFFFFFFFFFFFULL, evtlist, m_search_epg_item, m_search_keyword);
 				}
 			}
+			
 			box.hide();
 		}
 		
@@ -790,7 +772,31 @@ int EventList::findEvents(void)
 	
 	return(res);
 }
-  
+
+////
+int CEventListHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
+{
+	dprintf(DEBUG_NORMAL, "CEventListHandler::exec:\n");
+
+	int res = CMenuTarget::RETURN_REPAINT;
+	EventList* e;
+	CChannelList* channelList;
+
+	if (parent)
+		parent->hide();
+
+	e = new EventList;
+
+	channelList = CNeutrinoApp::getInstance()->channelList;
+
+	res = e->exec(channelList->getActiveChannel_ChannelID(), channelList->getActiveChannelName());
+
+	delete e;
+
+	return res;
+}
+
+////
 #define SEARCH_LIST_OPTION_COUNT 3
 const keyval SEARCH_LIST_OPTIONS[SEARCH_LIST_OPTION_COUNT] =
 {
@@ -890,6 +896,8 @@ int CEventFinderMenu::exec(CMenuTarget * parent, const std::string &actionKey)
 				m_search_channelname = bouquetList->Bouquets[nNewBouquet]->channelList->getName();
 			}
 		}
+		
+		setValueString(m_search_channelname.c_str());
 	}	
 	else if(actionKey == "4")
 	{
@@ -923,8 +931,11 @@ int CEventFinderMenu::showMenu(void)
 	CMenuForwarder * mf2 = new CMenuForwarder(_("Keyword"), true, m_search_keyword->c_str(), &stringInput);
 	
 	CMenuOptionChooser * mo0 = new CMenuOptionChooser(_("Search within"), m_search_list, SEARCH_LIST_OPTIONS, SEARCH_LIST_OPTION_COUNT, true);
+	
 	CMenuForwarder * mf1 = new CMenuForwarder("", *m_search_list != EventList::SEARCH_LIST_ALL, m_search_channelname.c_str(), this, "3");
+	
 	CMenuOptionChooser * mo1 = new CMenuOptionChooser(_("Search in EPG"), m_search_epg_item, SEARCH_EPG_OPTIONS, SEARCH_EPG_OPTION_COUNT, true);
+	
 	CMenuForwarder * mf0 = new CMenuForwarder(_("Start Search"), true, NULL, this, "1");
 	
 	//
@@ -950,13 +961,13 @@ int CEventFinderMenu::showMenu(void)
 		searchMenu->setWidgetMode(ClistBox::MODE_SETUP);
 		searchMenu->enableShrinkMenu();
 		
+		//
 		searchMenu->enablePaintHead();
 		searchMenu->setTitle(_("Search in EPG"), NEUTRINO_ICON_FEATURES);
 
-		searchMenu->enablePaintFoot();
-			
-		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
-			
+		//
+		searchMenu->enablePaintFoot();	
+		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
 		searchMenu->setFootButtons(&btn);
 		
 		//

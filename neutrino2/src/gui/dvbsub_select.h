@@ -28,8 +28,6 @@
 #include <gui/widget/listbox.h>
 
 
-using namespace std;
-
 class CDVBSubSelectMenuHandler : public CMenuTarget
 {
 	public:
