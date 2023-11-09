@@ -998,118 +998,118 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 			}
 		} 
-		else if (msg == CRCInput::RC_green) 
+		else if (msg == CRCInput::RC_blue) 
+		{
+			if (mplist && mplist->isPainted())
+			{
+				mplist->hide();
+				doTMDB(playlist[mplist->getSelected()]);
+				showPlaylist();
+			}
+			else
+			{
+				if (IsVisible())
+				{ 
+					hide();
+				}
+				
+				//			
+				if(playlist[selected].ytid.empty())
+				{
+					int pos_sec = position / 1000;
+
+					if (newForwardHintBox.isPainted() == true) 
+					{
+						// yes, let's get the end pos of the jump forward
+						new_bookmark.length = pos_sec - new_bookmark.pos;
+						dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: commercial length: %d\r\n", new_bookmark.length);
+						if (cMovieInfo.addNewBookmark(&playlist[selected], new_bookmark) == true) 
+						{
+							cMovieInfo.saveMovieInfo(playlist[selected]);	// save immediately in xml file
+						}
+						new_bookmark.pos = 0;	// clear again, since this is used as flag for bookmark activity
+						newForwardHintBox.hide();
+					} 
+					else if (newBackwordHintBox.isPainted() == true) 
+					{
+						// yes, let's get the end pos of the jump backward
+						new_bookmark.length = new_bookmark.pos - pos_sec;
+						new_bookmark.pos = pos_sec;
+						dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: loop length: %d\r\n", new_bookmark.length);
+						if (cMovieInfo.addNewBookmark(&playlist[selected], new_bookmark) == true) 
+						{
+							cMovieInfo.saveMovieInfo(playlist[selected]);	// save immediately in xml file
+							jump_not_until = pos_sec + 5;	// avoid jumping for this time
+						}
+						new_bookmark.pos = 0;	// clear again, since this is used as flag for bookmark activity
+						newBackwordHintBox.hide();
+					} 
+					else 
+					{
+						// no, nothing else to do, we open a new bookmark menu
+						new_bookmark.name = "";	// use default name
+						new_bookmark.pos = 0;
+						new_bookmark.length = 0;
+
+						//
+						widget->exec(NULL, "none");
+						int select = -1;
+						select = bookStartMenu->getSelected();
+						
+						//
+						if(select == 0) 
+						{
+							// new bookmark
+							new_bookmark.pos = pos_sec;
+							new_bookmark.length = 0;
+
+							if (cMovieInfo.addNewBookmark(&playlist[selected], new_bookmark) == true)
+								cMovieInfo.saveMovieInfo(playlist[selected]);	// save immediately in xml file
+							new_bookmark.pos = 0;	// clear again, since this is used as flag for bookmark activity
+						} 
+						else if(select == 1) 
+						{
+							// jump forward bookmark
+							new_bookmark.pos = pos_sec;
+							dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: new bookmark 1. pos: %d\r\n", new_bookmark.pos);
+							newForwardHintBox.paint();
+						} 
+						else if(select == 2) 
+						{
+							// jump backward bookmark
+							new_bookmark.pos = pos_sec;
+							dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: new bookmark 1. pos: %d\r\n", new_bookmark.pos);
+							newBackwordHintBox.paint();
+						} 
+						else if(select == 3) 
+						{
+							// movie start bookmark
+							playlist[selected].bookmarks.start = pos_sec;
+
+							dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: New movie start pos: %d\r\n", playlist[selected].bookmarks.start);
+
+							cMovieInfo.saveMovieInfo(playlist[selected]);	// save immediately in xml file
+						} 
+						else if(select == 4) 
+						{
+							// Moviebrowser movie end bookmark
+							playlist[selected].bookmarks.end = pos_sec;
+
+							dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: New movie end pos: %d\r\n", playlist[selected].bookmarks.start);
+
+							cMovieInfo.saveMovieInfo(playlist[selected]);	//save immediately in xml file
+						}
+					}
+				}
+			}		
+		} 
+		else if ( msg == CRCInput::RC_audio || msg == CRCInput::RC_green) 
 		{
 			if (mplist && mplist->isPainted())
 			{
 				mplist->hide();
 				openMovieFileBrowser();
 				//hide();
-				showPlaylist();
-			}
-			else
-			{
-			if (IsVisible())
-			{ 
-				hide();
-			}
-			
-			//			
-			if(playlist[selected].ytid.empty())
-			{
-				int pos_sec = position / 1000;
-
-				if (newForwardHintBox.isPainted() == true) 
-				{
-					// yes, let's get the end pos of the jump forward
-					new_bookmark.length = pos_sec - new_bookmark.pos;
-					dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: commercial length: %d\r\n", new_bookmark.length);
-					if (cMovieInfo.addNewBookmark(&playlist[selected], new_bookmark) == true) 
-					{
-						cMovieInfo.saveMovieInfo(playlist[selected]);	// save immediately in xml file
-					}
-					new_bookmark.pos = 0;	// clear again, since this is used as flag for bookmark activity
-					newForwardHintBox.hide();
-				} 
-				else if (newBackwordHintBox.isPainted() == true) 
-				{
-					// yes, let's get the end pos of the jump backward
-					new_bookmark.length = new_bookmark.pos - pos_sec;
-					new_bookmark.pos = pos_sec;
-					dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: loop length: %d\r\n", new_bookmark.length);
-					if (cMovieInfo.addNewBookmark(&playlist[selected], new_bookmark) == true) 
-					{
-						cMovieInfo.saveMovieInfo(playlist[selected]);	// save immediately in xml file
-						jump_not_until = pos_sec + 5;	// avoid jumping for this time
-					}
-					new_bookmark.pos = 0;	// clear again, since this is used as flag for bookmark activity
-					newBackwordHintBox.hide();
-				} 
-				else 
-				{
-					// no, nothing else to do, we open a new bookmark menu
-					new_bookmark.name = "";	// use default name
-					new_bookmark.pos = 0;
-					new_bookmark.length = 0;
-
-					//
-					widget->exec(NULL, "none");
-					int select = -1;
-					select = bookStartMenu->getSelected();
-					
-					//
-					if(select == 0) 
-					{
-						// new bookmark
-						new_bookmark.pos = pos_sec;
-						new_bookmark.length = 0;
-
-						if (cMovieInfo.addNewBookmark(&playlist[selected], new_bookmark) == true)
-							cMovieInfo.saveMovieInfo(playlist[selected]);	// save immediately in xml file
-						new_bookmark.pos = 0;	// clear again, since this is used as flag for bookmark activity
-					} 
-					else if(select == 1) 
-					{
-						// jump forward bookmark
-						new_bookmark.pos = pos_sec;
-						dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: new bookmark 1. pos: %d\r\n", new_bookmark.pos);
-						newForwardHintBox.paint();
-					} 
-					else if(select == 2) 
-					{
-						// jump backward bookmark
-						new_bookmark.pos = pos_sec;
-						dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: new bookmark 1. pos: %d\r\n", new_bookmark.pos);
-						newBackwordHintBox.paint();
-					} 
-					else if(select == 3) 
-					{
-						// movie start bookmark
-						playlist[selected].bookmarks.start = pos_sec;
-
-						dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: New movie start pos: %d\r\n", playlist[selected].bookmarks.start);
-
-						cMovieInfo.saveMovieInfo(playlist[selected]);	// save immediately in xml file
-					} 
-					else if(select == 4) 
-					{
-						// Moviebrowser movie end bookmark
-						playlist[selected].bookmarks.end = pos_sec;
-
-						dprintf(DEBUG_DEBUG, "CMoviePlayerGui::PlayFile: New movie end pos: %d\r\n", playlist[selected].bookmarks.start);
-
-						cMovieInfo.saveMovieInfo(playlist[selected]);	//save immediately in xml file
-					}
-				}
-			}
-			}		
-		} 
-		else if ( msg == CRCInput::RC_audio || msg == CRCInput::RC_blue) 
-		{
-			if (mplist && mplist->isPainted())
-			{
-				mplist->hide();
-				doTMDB(playlist[mplist->getSelected()]);
 				showPlaylist();
 			}
 			else
