@@ -223,23 +223,13 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int 
 
 	int start_box = 0;
 	int end_box = bSize;
-	uint8_t tr_min = 0xFF;
-	uint8_t tr_max = 0x20;
-	
-#ifdef USE_OPENGL
-	tr_max = 0x20;
-#else
-	tr_max = 0xAA;
-#endif
+	uint8_t tr_min = 0xA0;
+	uint8_t tr_max = 0xFF;
 	
 	if (mode == LIGHT2DARK)
 	{
-#ifdef USE_OPENGL
-		tr_min = 0x20;
-#else
-		tr_min = 0xAA;
-#endif
-		tr_max = 0xFF;
+		tr_min = 0xFF;
+		tr_max = 0xA0;
 	}
 	
 	float factor = (float)(tr_min - tr_max) / (float)(end_box - start_box);
@@ -248,14 +238,11 @@ fb_pixel_t* gradientColorToTransparent(fb_pixel_t col, int bSize, int mode, int 
 	{
 
 		uint8_t tr = limitChar((int)(factor * (float)i + tr_max) + 1);
-		uint8_t r  = (uint8_t)((col & 0x00FF0000) >> 16);
-		uint8_t g  = (uint8_t)((col & 0x0000FF00) >>  8);
-		uint8_t b  = (uint8_t) (col & 0x000000FF);
 
 		gradientBuf[i] = ((tr << 24) & 0xFF000000) |
-			         ((r  << 16) & 0x00FF0000) |
-			         ((g  <<  8) & 0x0000FF00) |
-			         ( b         & 0x000000FF);
+			         ((col  << 16) & 0x00FF0000) |
+			         ((col  <<  8) & 0x0000FF00) |
+			         ( col         & 0x000000FF);
 	}
 
 	return gradientBuf;
