@@ -36,8 +36,6 @@
 
 #include <driver/framebuffer.h>
 
-#include <zapit/settings.h>
-
 
 //
 class CScanSettings

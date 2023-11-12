@@ -29,6 +29,9 @@
 #include <basicclient.h>
 
 
+//// defines
+#define CAMD_UDS_NAME  			"/tmp/camd.socket"
+
 ////
 class CCaDescriptor
 {

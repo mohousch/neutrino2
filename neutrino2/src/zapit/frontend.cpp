@@ -37,7 +37,6 @@
 #include <system/debug.h>
 #include <system/helpers.h>
 
-#include <zapit/settings.h>
 #include <zapit/frontend_c.h>
 
 

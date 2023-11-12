@@ -61,7 +61,6 @@
 #include <zapit/pmt.h>
 #include <zapit/sdt.h>
 #include <zapit/nit.h>
-#include <zapit/settings.h>
 #include <zapit/zapit.h>
 #include <zapit/frontend_c.h>
 #include <zapit/bouquets.h>

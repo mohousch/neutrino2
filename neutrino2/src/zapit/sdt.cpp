@@ -29,10 +29,8 @@
 
 #include <system/debug.h>
 
-/* zapit */
 #include <zapit/descriptors.h>
 #include <zapit/sdt.h>
-#include <zapit/settings.h>
 #include <zapit/zapittypes.h>
 #include <zapit/bouquets.h>
 #include <zapit/zapit.h>

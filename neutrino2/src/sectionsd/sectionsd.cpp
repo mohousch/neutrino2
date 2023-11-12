@@ -67,11 +67,10 @@
 
 #include <global.h>
 
-// zapit includes
-#include <zapit/settings.h>
 #include <configfile.h>
 
 #include <sectionsd/sectionsd.h>
+
 #include <eventserver.h>
 
 #include "abstime.h"

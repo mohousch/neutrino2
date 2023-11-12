@@ -31,14 +31,11 @@
 
 #include <system/debug.h>
 
-// zapit
-#include <zapit/settings.h>
 #include <zapit/descriptors.h>
 #include <zapit/pmt.h>
 #include <zapit/frontend_c.h>
 #include <zapit/zapit.h>
 
-// libdvbapi
 #include <dmx_cs.h>
 
 

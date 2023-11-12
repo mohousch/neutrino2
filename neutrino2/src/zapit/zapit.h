@@ -47,6 +47,30 @@
 #include <zapit/pmt.h>
 
 
+//// settings
+#define SERVICES_XML    		CONFIGDIR "/zapit/services.xml"
+#define BOUQUETS_XML    		CONFIGDIR "/zapit/bouquets.xml"
+#define UBOUQUETS_XML    		CONFIGDIR "/zapit/ubouquets.xml"
+#define MYSERVICES_XML			CONFIGDIR "/zapit/myservices.xml"
+// services
+#define SERVICES_TMP    		"/tmp/services.tmp"
+// sdt update
+#define CURRENTSERVICES_XML     	"/tmp/currentservices.xml"
+#define CURRENTSERVICES_TMP     	"/tmp/currentservices.tmp"
+// providers
+#define CABLES_XML      		CONFIGDIR "/cables.xml"
+#define SATELLITES_XML  		CONFIGDIR "/satellites.xml"
+#define TERRESTRIALS_XML 		CONFIGDIR "/terrestrial.xml"
+#define ATSC_XML                	CONFIGDIR "/atsc.xml"
+// zapit/frontend/audio
+#define ZAPIT_CONFIGFILE      		CONFIGDIR "/zapit/zapit.conf"
+#define SATCONFIG			CONFIGDIR "/zapit/sat.conf"
+#define FRONTEND_CONFIGFILE 		CONFIGDIR "/zapit/frontend.conf"
+#define VOLUME_CONFIG_FILE 		CONFIGDIR "/zapit/audiovolume.conf"
+#define AUDIO_CONFIG_FILE 		CONFIGDIR "/zapit/audio.conf"
+// frontend
+#define DVBADAPTER_MAX			2	// 
+#define FRONTEND_MAX			8	// fbc
 ////
 #define CHANNEL_NAME_SIZE 40
 

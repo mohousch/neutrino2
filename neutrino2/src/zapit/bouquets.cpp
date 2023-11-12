@@ -37,7 +37,6 @@
 
 #include <zapit/bouquets.h>
 #include <zapit/sdt.h>
-#include <zapit/settings.h>
 
 #include <xmlinterface.h>
 

@@ -22,7 +22,6 @@
 
 /* zapit */
 #include <zapit/cam.h>
-#include <zapit/settings.h> /* CAMD_UDS_NAME         */
 
 #include <messagetools.h>   /* get_length_field_size */
 
