@@ -44,9 +44,7 @@
 #include <audio_cs.h>
 #include <dmx_cs.h>
 
-/*zapit includes*/
 #include <zapit/frontend_c.h>
-#include <zapit/satconfig.h>
 
 #include <system/debug.h>
 

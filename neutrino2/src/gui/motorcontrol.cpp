@@ -44,21 +44,19 @@
 #include <system/settings.h>
 #include <system/debug.h>
 
-// zapit includes
-#include <zapit/satconfig.h>
 #include <zapit/frontend_c.h>
 
 
-// globals
+//// globals
 static int g_sig;
 static int g_snr;
 static int last_snr = 0;
 static int moving = 0;
 //
-extern satellite_map_t satellitePositions;					// defined in getServices.cpp
+extern satellite_map_t satellitePositions;
 extern CScanSettings * scanSettings;
 
-// defines
+//// defines
 #define RED_BAR 40
 #define YELLOW_BAR 70
 #define GREEN_BAR 100

@@ -166,10 +166,10 @@
 
 //
 #include <zapit/frontend_c.h>
-#include <zapit/satconfig.h>
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
 #include <zapit/zapit.h>
+#include <zapit/zapittypes.h>
 
 //
 #include <playback_cs.h>

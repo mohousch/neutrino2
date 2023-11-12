@@ -59,7 +59,6 @@
 
 //
 #include <zapit/bouquets.h>
-#include <zapit/satconfig.h>
 #include <zapit/frontend_c.h>
 
 #include <video_cs.h>

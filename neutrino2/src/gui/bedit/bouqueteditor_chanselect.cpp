@@ -38,7 +38,6 @@
 //
 #include <zapit/channel.h>
 #include <zapit/bouquets.h>
-#include <zapit/satconfig.h>
 
 #include <system/debug.h>
 #include <system/helpers.h>
@@ -46,8 +45,7 @@
 #include <gui/bedit/bouqueteditor_chanselect.h>
 
 
-extern satellite_map_t satellitePositions;	// defined in getServices.cpp
-extern transponder_list_t transponders;		// defined in zapit.cpp
+//// globals
 extern tallchans allchans;			// defined in zapit.cpp
 
 ////
@@ -153,22 +151,6 @@ void CBEChannelSelectWidget::paint()
 
 		item->setIcon1(Channels[count]->isHD() ? NEUTRINO_ICON_HD : Channels[count]->isUHD()? NEUTRINO_ICON_UHD : "");
 		item->setIcon2(Channels[count]->scrambled ? NEUTRINO_ICON_SCRAMBLED : "");
-
-		// info1
-		char buf[128];
-		transponder_id_t ct = Channels[count]->getTransponderId();
-		transponder_list_t::iterator tpI = transponders.find(ct);
-		int len = snprintf(buf, sizeof(buf), "%d ", Channels[count]->getFreqId());
-
-		// satname
-		sat_iterator_t sit = satellitePositions.find(Channels[count]->getSatellitePosition());
-		
-		if(sit != satellitePositions.end()) 
-		{
-			snprintf(&buf[len], sizeof(buf) - len, "(%s)\n", sit->second.name.c_str());
-		}
-
-		item->setInfo1(buf);
 
 		listBox->addItem(item);
 	}

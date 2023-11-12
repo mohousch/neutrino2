@@ -49,17 +49,13 @@
 #include <global.h>
 #include <neutrinoMessages.h>
 
-// tuxbox headers
 #include <configfile.h>
 
-// system
 #include <system/debug.h>
 #include <system/settings.h>
 
-//
 #include <driver/encoding.h>
 
-// zapit headers
 #include <zapit/cam.h>
 #include <zapit/pat.h>
 #include <zapit/pmt.h>
@@ -67,14 +63,11 @@
 #include <zapit/nit.h>
 #include <zapit/settings.h>
 #include <zapit/zapit.h>
-#include <zapit/satconfig.h>
 #include <zapit/frontend_c.h>
 #include <zapit/bouquets.h>
 
-// libxmltree
 #include <xmlinterface.h>
 
-// libdvbapi
 #include <dmx_cs.h>
 #include <audio_cs.h>
 #include <video_cs.h>
@@ -118,8 +111,7 @@ tallchans nvodchannels;
 transponder_list_t transponders;    		// from services.xml
 // pmt update filter
 static int pmt_update_fd = -1;
-// frontend config
-CConfigFile fe_configfile(',', false);
+// frontend
 CFrontend * live_fe = NULL;
 CFrontend * record_fe = NULL;
 // Audio/Video Decoder
@@ -723,7 +715,7 @@ uint32_t getConfigValue(int num, const char * name, uint32_t defval)
 	char cfg_key[81];
 	sprintf(cfg_key, "fe%d_%s", num, name);
 	
-	return fe_configfile.getInt32(cfg_key, defval);
+	return config.getInt32(cfg_key, defval);
 }
 
 // borrowed from cst neutrino-hd (femanger.cpp)
@@ -732,7 +724,7 @@ void setConfigValue(int num, const char * name, uint32_t val)
 	char cfg_key[81];
 	
 	sprintf(cfg_key, "fe%d_%s", num, name);
-	fe_configfile.setInt32(cfg_key, val);
+	config.setInt32(cfg_key, val);
 }
 
 // save frontend config
@@ -767,11 +759,11 @@ void CZapit::saveFrontendConfig(int feindex)
 				
 			sprintf(tempd, "%3.6f", getFE(feindex)->gotoXXLatitude);
 			sprintf(cfg_key, "fe%d_gotoXXLatitude", feindex);
-			fe_configfile.setString(cfg_key, tempd );
+			config.setString(cfg_key, tempd );
 				
 			sprintf(tempd, "%3.6f", getFE(feindex)->gotoXXLongitude);
 			sprintf(cfg_key, "fe%d_gotoXXLongitude", feindex);
-			fe_configfile.setString(cfg_key, tempd );
+			config.setString(cfg_key, tempd );
 				
 			setConfigValue(feindex, "gotoXXLaDirection", getFE(feindex)->gotoXXLaDirection);
 			setConfigValue(feindex, "gotoXXLoDirection", getFE(feindex)->gotoXXLoDirection);
@@ -780,14 +772,14 @@ void CZapit::saveFrontendConfig(int feindex)
 		}
 	}
 	
-	fe_configfile.saveConfig(FRONTEND_CONFIGFILE);
+	config.saveConfig(FRONTEND_CONFIGFILE);
 }
 
 void CZapit::loadFrontendConfig()
 {
 	dprintf(DEBUG_NORMAL, "CZapit::loadFrontendConfig\n");
 	
-	if (!fe_configfile.loadConfig(FRONTEND_CONFIGFILE))
+	if (!config.loadConfig(FRONTEND_CONFIGFILE))
 		printf("%s not found\n", FRONTEND_CONFIGFILE);
 	
 	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
@@ -825,10 +817,10 @@ void CZapit::loadFrontendConfig()
 			char cfg_key[81];
 			
 			sprintf(cfg_key, "fe%d_gotoXXLatitude", fe_it->first );
-			fe->gotoXXLatitude = strtod( fe_configfile.getString(cfg_key, "0.0").c_str(), NULL);
+			fe->gotoXXLatitude = strtod(config.getString(cfg_key, "0.0").c_str(), NULL);
 			
 			sprintf(cfg_key, "fe%d_gotoXXLongitude", fe_it->first );
-			fe->gotoXXLongitude = strtod(fe_configfile.getString(cfg_key, "0.0").c_str(), NULL);
+			fe->gotoXXLongitude = strtod(config.getString(cfg_key, "0.0").c_str(), NULL);
 			
 			fe->gotoXXLaDirection = getConfigValue(fe_it->first, "gotoXXLaDirection", 0);
 			fe->gotoXXLoDirection = getConfigValue(fe_it->first, "gotoXXLoDirection", 0);

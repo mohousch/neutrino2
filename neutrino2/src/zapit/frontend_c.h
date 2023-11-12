@@ -29,7 +29,6 @@
 
 #include <zapit/zapittypes.h>
 #include <zapit/channel.h>
-#include <zapit/satconfig.h>
 
 
 #define FEC_S2_QPSK_1_2 (fe_code_rate_t)(FEC_AUTO+1)			//10

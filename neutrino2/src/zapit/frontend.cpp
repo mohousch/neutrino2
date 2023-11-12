@@ -34,14 +34,11 @@
 
 #include <fstream>
 
-/* system */
 #include <system/debug.h>
 #include <system/helpers.h>
 
-/* zapit */
 #include <zapit/settings.h>
 #include <zapit/frontend_c.h>
-#include <zapit/satconfig.h>
 
 
 //// globals

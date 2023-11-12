@@ -34,28 +34,26 @@
 #include <config.h>
 #endif
 
-#include "gui/scan_setup.h"
+#include <global.h>
+
+#include <gui/scan_setup.h>
 
 #include <global.h>
 #include <neutrino2.h>
 
-#include "gui/scan.h"
-#include "gui/motorcontrol.h"
+#include <gui/scan.h>
+#include <gui/motorcontrol.h>
 
 #include <gui/widget/icons.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/hintbox.h>
 
-#include "gui/widget/stringinput.h"
-#include "gui/widget/stringinput_ext.h"
+#include <gui/widget/stringinput.h>
+#include <gui/widget/stringinput_ext.h>
 
 #include <system/debug.h>
 
-#include <global.h>
-
-//zapit includes
 #include <zapit/frontend_c.h>
-#include <zapit/satconfig.h>
 
 
 #ifndef TRANSMISSION_MODE_C1

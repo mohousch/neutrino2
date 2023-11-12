@@ -55,7 +55,7 @@ typedef uint64_t t_channel_id;
 typedef uint64_t transponder_id_t;
 typedef uint16_t t_bouquet_id;		// used in eventlist.h
 
-// channel
+//// channel
 extern "C" {
 #include <libmd5sum/md5.h>
 }
@@ -88,7 +88,7 @@ static inline bool IS_WEBTV(t_channel_id cid)
 #define GET_ORIGINAL_NETWORK_ID_FROM_CHANNEL_ID(channel_id) ((t_original_network_id)((channel_id) >> 16))
 #define GET_SERVICE_ID_FROM_CHANNEL_ID(channel_id) ((t_service_id)(channel_id))
 
-// transponder_id
+//// transponder_id
 #define CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id) ( ((uint64_t)freq << 48) |  ((uint64_t) ( satellitePosition >= 0 ? satellitePosition : (uint64_t)(0xF000+ abs(satellitePosition))) << 32) | ((uint64_t)transport_stream_id << 16) | (uint64_t)original_network_id)
 
 #define GET_ORIGINAL_NETWORK_ID_FROM_TRANSPONDER_ID(transponder_id) ((t_original_network_id)(transponder_id ))
@@ -98,7 +98,7 @@ static inline bool IS_WEBTV(t_channel_id cid)
 
 #define SAME_TRANSPONDER(id1, id2) ((id1 >> 16) == (id2 >> 16))
 
-//
+////
 enum ChannelVideoType {
 	CHANNEL_VIDEO_MPEG2 	= 0,
 	CHANNEL_VIDEO_MPEG4 	= 1,	
@@ -106,7 +106,7 @@ enum ChannelVideoType {
 	CHANNEL_VIDEO_CAVS	= 3
 };
 
-//dvbsi++
+//// dvbsi++
 enum SiDescriptorTag {
 	/* 0x00 - 0x3F: ITU-T Rec. H.222.0 | ISO/IEC 13818-1 */
 	VIDEO_STREAM_DESCRIPTOR				= 0x02,
@@ -243,7 +243,7 @@ typedef enum {
 	/* 0xFF: reserved for future use*/
 } service_type_t;
 
-// diseqc types
+//// diseqc types
 typedef enum {
 	NO_DISEQC,
 	MINI_DISEQC,
@@ -290,7 +290,7 @@ typedef struct
 	unsigned int		plp_id;
 } FrontendParameters;
 
-// transponder
+//// transponder
 struct transponder
 {
 	t_transport_stream_id transport_stream_id;
@@ -338,7 +338,7 @@ typedef std::map<transponder_id_t, transponder> transponder_list_t;
 typedef std::map <transponder_id_t, transponder>::iterator stiterator;  // used in scan.cpp
 typedef std::map<transponder_id_t, bool> sdt_tp_t; 			// used in zapit.cpp sdtthread
 
-//
+////
 typedef struct Zapit_config {
 	bool makeRemainingChannelsBouquet;
 	int scanSDT;
@@ -356,6 +356,35 @@ typedef enum {
 	FE_LOOP,
 	FE_NOTCONNECTED
 } fe_mode_t;
+
+//// sat config
+typedef struct sat_config {
+	t_satellite_position position;
+	int diseqc;
+	int commited;
+	int uncommited;
+	int motor_position;
+	int diseqc_order;
+	int lnbOffsetLow;
+	int lnbOffsetHigh;
+	int lnbSwitch;
+	int use_in_scan;
+	int use_usals;
+	std::string name;
+	int have_channels;
+    	uint32_t system;
+} sat_config_t;
+
+typedef enum diseqc_cmd_order {
+	UNCOMMITED_FIRST,
+	COMMITED_FIRST
+} diseqc_cmd_order_t;
+
+typedef std::map<t_satellite_position, sat_config_t> satellite_map_t;
+typedef std::map<t_satellite_position, sat_config_t>::iterator sat_iterator_t;
+
+typedef std::map <int, std::string> scan_list_t;
+typedef std::map <int, std::string>::iterator scan_list_iterator_t;
 
 #endif /* __zapittypes_h__ */
 
