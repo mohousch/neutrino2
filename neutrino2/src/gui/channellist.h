@@ -100,7 +100,7 @@ class CChannelList
 		CLastChannel lastChList;
 
 		std::string name;
-		std::vector<CZapitChannel*> chanlist;
+		ZapitChannelList chanlist;
 		CZapProtection *zapProtection;
 		CChannelEventList events;
 

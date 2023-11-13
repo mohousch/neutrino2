@@ -192,7 +192,7 @@ bool CZapitChannel::isHD()
 {
 	switch(serviceType) 
 	{
-		case ST_MPEG_2_HD_TELEVISION_SERVICE: 
+		case ST_MPEG2_HD_DIGITAL_TV_SERVICE: 
 		case ST_AVC_HD_DIGITAL_TV_SERVICE:
 			return true;
 			
