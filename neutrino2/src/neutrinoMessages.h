@@ -46,122 +46,122 @@ struct NeutrinoMessages {
 	enum
 	{
 		/* infoviewer */
-		SHOW_EPG				 = RC_Messages + 1,
-		SHOW_INFOBAR				 = RC_Messages + 2,
+		SHOW_EPG				 = CRCInput::RC_Messages + 1,
+		SHOW_INFOBAR				 = CRCInput::RC_Messages + 2,
 		
 		/* vcrcontrol */
-		VCR_ON					 = RC_Messages + 3,
-		VCR_OFF					 = RC_Messages + 4,
+		VCR_ON					 = CRCInput::RC_Messages + 3,
+		VCR_OFF					 = CRCInput::RC_Messages + 4,
 		
 		/* nhttpd */
-		STANDBY_ON				 = RC_Messages + 5,
-		STANDBY_OFF				 = RC_Messages + 6,
+		STANDBY_ON				 = CRCInput::RC_Messages + 5,
+		STANDBY_OFF				 = CRCInput::RC_Messages + 6,
 		
 		/* nhttpd / SHTDCNT / timerd */
-		SHUTDOWN				 = RC_Messages + 8,
+		SHUTDOWN				 = CRCInput::RC_Messages + 8,
 		
 		/* timerd */
-		ANNOUNCE_SHUTDOWN			 = RC_Messages + 9,
-		ANNOUNCE_ZAPTO				 = RC_Messages + 10,
-		ZAPTO					 = RC_Messages + 11,
-		ANNOUNCE_RECORD				 = RC_Messages + 12,
-		RECORD_START				 = RC_Messages + 13,
-		RECORD_STOP				 = RC_Messages + 14,
-		ANNOUNCE_SLEEPTIMER			 = RC_Messages + 15,
-		SLEEPTIMER				 = RC_Messages + 16,
+		ANNOUNCE_SHUTDOWN			 = CRCInput::RC_Messages + 9,
+		ANNOUNCE_ZAPTO				 = CRCInput::RC_Messages + 10,
+		ZAPTO					 = CRCInput::RC_Messages + 11,
+		ANNOUNCE_RECORD				 = CRCInput::RC_Messages + 12,
+		RECORD_START				 = CRCInput::RC_Messages + 13,
+		RECORD_STOP				 = CRCInput::RC_Messages + 14,
+		ANNOUNCE_SLEEPTIMER			 = CRCInput::RC_Messages + 15,
+		SLEEPTIMER				 = CRCInput::RC_Messages + 16,
 		
 		/* nhttpd / vcrcontrol */
-		CHANGEMODE				 = RC_Messages + 17,
+		CHANGEMODE				 = CRCInput::RC_Messages + 17,
 		
 		/* timerd */
-		REMIND					 = RC_Messages + 18,
+		REMIND					 = CRCInput::RC_Messages + 18,
 		
 		/* nhttpd */
-		LOCK_RC                 		 = RC_Messages + 19,
-		UNLOCK_RC               		 = RC_Messages + 20,
-		REBOOT					 = RC_Messages + 21,
-		RESTART					 = RC_Messages + 22,
+		LOCK_RC                 		 = CRCInput::RC_Messages + 19,
+		UNLOCK_RC               		 = CRCInput::RC_Messages + 20,
+		REBOOT					 = CRCInput::RC_Messages + 21,
+		RESTART					 = CRCInput::RC_Messages + 22,
 		
 		/* zapit */ 
-		EVT_BOUQUETSCHANGED                      = RC_Events + 6,
-		EVT_SERVICESCHANGED                      = RC_Events + 7,
-		EVT_SCAN_COMPLETE                        = RC_Events + 16,
-		EVT_SCAN_NUM_TRANSPONDERS                = RC_Events + 17,
-		EVT_SCAN_NUM_CHANNELS                    = RC_Events + 18,
+		EVT_BOUQUETSCHANGED                      = CRCInput::RC_Events + 6,
+		EVT_SERVICESCHANGED                      = CRCInput::RC_Events + 7,
+		EVT_SCAN_COMPLETE                        = CRCInput::RC_Events + 16,
+		EVT_SCAN_NUM_TRANSPONDERS                = CRCInput::RC_Events + 17,
+		EVT_SCAN_NUM_CHANNELS                    = CRCInput::RC_Events + 18,
 		
 		/* triggered from userland / rcinput */
-		EVT_TIMER                                = RC_Events + 20,
+		EVT_TIMER                                = CRCInput::RC_Events + 20,
 		
 		/* remotecontrol */
-		EVT_PROGRAMLOCKSTATUS                    = RC_Events + 22,
+		EVT_PROGRAMLOCKSTATUS                    = CRCInput::RC_Events + 22,
 		
 		/* zapit */
-		EVT_RECORDMODE				 = RC_Events + 24,
-		EVT_ZAP_CA_ID				 = RC_Events + 25,
-		EVT_SCAN_FAILED                          = RC_Events + 29,
-		EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS = RC_Events + 30,
- 		EVT_SCAN_REPORT_FREQUENCY                = RC_Events + 31,
- 		EVT_SCAN_FOUND_RADIO_CHAN                = RC_Events + 32,
- 		EVT_SCAN_FOUND_DATA_CHAN                 = RC_Events + 33,
- 		EVT_SCAN_FOUND_TV_CHAN                   = RC_Events + 34,
- 		EVT_SCAN_REPORT_FREQUENCYP               = RC_Events + 36,
- 		EVT_ZAP_MOTOR                            = RC_Events + 37,
-		EVT_SERVICES_UPD                         = RC_Events + 38,
+		EVT_RECORDMODE				 = CRCInput::RC_Events + 24,
+		EVT_ZAP_CA_ID				 = CRCInput::RC_Events + 25,
+		EVT_SCAN_FAILED                          = CRCInput::RC_Events + 29,
+		EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS = CRCInput::RC_Events + 30,
+ 		EVT_SCAN_REPORT_FREQUENCY                = CRCInput::RC_Events + 31,
+ 		EVT_SCAN_FOUND_RADIO_CHAN                = CRCInput::RC_Events + 32,
+ 		EVT_SCAN_FOUND_DATA_CHAN                 = CRCInput::RC_Events + 33,
+ 		EVT_SCAN_FOUND_TV_CHAN                   = CRCInput::RC_Events + 34,
+ 		EVT_SCAN_REPORT_FREQUENCYP               = CRCInput::RC_Events + 36,
+ 		EVT_ZAP_MOTOR                            = CRCInput::RC_Events + 37,
+		EVT_SERVICES_UPD                         = CRCInput::RC_Events + 38,
 		
 		/* sectionsd */
-		EVT_SI_FINISHED                          = RC_Events + 39,
+		EVT_SI_FINISHED                          = CRCInput::RC_Events + 39,
 		
 		/* zapit */
-		EVT_PMT_CHANGED				 = RC_Events + 40,
+		EVT_PMT_CHANGED				 = CRCInput::RC_Events + 40,
 		
 		/* hdmi cec */
-		EVT_HDMI_CEC_VIEW_ON                     = RC_Events + 41,
-		EVT_HDMI_CEC_STANDBY                     = RC_Events + 42,
+		EVT_HDMI_CEC_VIEW_ON                     = CRCInput::RC_Events + 41,
+		EVT_HDMI_CEC_STANDBY                     = CRCInput::RC_Events + 42,
 
 		/* cicam */
-		EVT_CI_INSERTED				 = RC_Events + 60, /* data = slot num */
-		EVT_CI_REMOVED				 = RC_Events + 61, /* data = slot num */
-		EVT_CI_INIT_OK				 = RC_Events + 62, /* data = slot num */
-		EVT_CI_MMI_MENU				 = RC_Events + 63,
-		EVT_CI_MMI_LIST				 = RC_Events + 64,
-		EVT_CI_MMI_TEXT				 = RC_Events + 65,
-		EVT_CI_MMI_REQUEST_INPUT		 = RC_Events + 66,
-		EVT_CI_MMI_CLOSE			 = RC_Events + 67,
+		EVT_CI_INSERTED				 = CRCInput::RC_Events + 60, /* data = slot num */
+		EVT_CI_REMOVED				 = CRCInput::RC_Events + 61, /* data = slot num */
+		EVT_CI_INIT_OK				 = CRCInput::RC_Events + 62, /* data = slot num */
+		EVT_CI_MMI_MENU				 = CRCInput::RC_Events + 63,
+		EVT_CI_MMI_LIST				 = CRCInput::RC_Events + 64,
+		EVT_CI_MMI_TEXT				 = CRCInput::RC_Events + 65,
+		EVT_CI_MMI_REQUEST_INPUT		 = CRCInput::RC_Events + 66,
+		EVT_CI_MMI_CLOSE			 = CRCInput::RC_Events + 67,
 
 		/* infoviewer */
-		EVT_CURRENTEPG                           = RC_WithData +  1,
-		EVT_NEXTEPG                              = RC_WithData +  2,
+		EVT_CURRENTEPG                           = CRCInput::RC_WithData +  1,
+		EVT_NEXTEPG                              = CRCInput::RC_WithData +  2,
 		
 		/* nhttpd */
-		EVT_POPUP                                = RC_WithData +  3,
-		EVT_EXTMSG                               = RC_WithData +  4,
-		EVT_START_PLUGIN                         = RC_WithData +  5,
+		EVT_POPUP                                = CRCInput::RC_WithData +  3,
+		EVT_EXTMSG                               = CRCInput::RC_WithData +  4,
+		EVT_START_PLUGIN                         = CRCInput::RC_WithData +  5,
 
 		/* sectionsd */
-		EVT_CURRENTNEXT_EPG                      = RC_WithData +  6, /* data: (t_channel_id *) */
-		EVT_TIMESET                              = RC_WithData +  7, /* data: (long long *)    */
+		EVT_CURRENTNEXT_EPG                      = CRCInput::RC_WithData +  6, /* data: (t_channel_id *) */
+		EVT_TIMESET                              = CRCInput::RC_WithData +  7, /* data: (long long *)    */
 
 		/* infoviewer */
-		EVT_NOEPG_YET                            = RC_WithData +  8, /* data: (t_channel_id *) */
+		EVT_NOEPG_YET                            = CRCInput::RC_WithData +  8, /* data: (t_channel_id *) */
 
 		/* timerd */
-		EVT_NEXTPROGRAM                          = RC_WithData +  9, /* data: (t_channel_id *) */
+		EVT_NEXTPROGRAM                          = CRCInput::RC_WithData +  9, /* data: (t_channel_id *) */
 
 		/* zapit */
- 		EVT_SCAN_FOUND_A_CHAN                    = RC_WithData + 10,
-		EVT_SCAN_PROVIDER                        = RC_WithData + 11,
-		EVT_SCAN_SATELLITE                       = RC_WithData + 12,
-		EVT_SCAN_SERVICENAME                     = RC_WithData + 13,
-		EVT_ZAP_COMPLETE                         = RC_WithData + 14, /* data: (t_channel_id *) */
-		EVT_ZAP_FAILED                           = RC_WithData + 15, /* data: (t_channel_id *) */
-		EVT_ZAP_ISNVOD                           = RC_WithData + 16, /* data: (t_channel_id *) */
-		EVT_ZAP_SUB_COMPLETE                     = RC_WithData + 17, /* data: (t_channel_id *) */
-		EVT_ZAP_SUB_FAILED                       = RC_WithData + 18, /* data: (t_channel_id *) */
+ 		EVT_SCAN_FOUND_A_CHAN                    = CRCInput::RC_WithData + 10,
+		EVT_SCAN_PROVIDER                        = CRCInput::RC_WithData + 11,
+		EVT_SCAN_SATELLITE                       = CRCInput::RC_WithData + 12,
+		EVT_SCAN_SERVICENAME                     = CRCInput::RC_WithData + 13,
+		EVT_ZAP_COMPLETE                         = CRCInput::RC_WithData + 14, /* data: (t_channel_id *) */
+		EVT_ZAP_FAILED                           = CRCInput::RC_WithData + 15, /* data: (t_channel_id *) */
+		EVT_ZAP_ISNVOD                           = CRCInput::RC_WithData + 16, /* data: (t_channel_id *) */
+		EVT_ZAP_SUB_COMPLETE                     = CRCInput::RC_WithData + 17, /* data: (t_channel_id *) */
+		EVT_ZAP_SUB_FAILED                       = CRCInput::RC_WithData + 18, /* data: (t_channel_id *) */
 
 		/* remotecontrol */
-		EVT_ZAP_GOT_SUBSERVICES                  = RC_WithData + 19, /* data: (t_channel_id *) */
-		EVT_ZAP_GOTAPIDS                         = RC_WithData + 20, /* data: (t_channel_id *) */
-		EVT_ZAP_GOTPIDS                          = RC_WithData + 21  /* data: (t_channel_id *) */
+		EVT_ZAP_GOT_SUBSERVICES                  = CRCInput::RC_WithData + 19, /* data: (t_channel_id *) */
+		EVT_ZAP_GOTAPIDS                         = CRCInput::RC_WithData + 20, /* data: (t_channel_id *) */
+		EVT_ZAP_GOTPIDS                          = CRCInput::RC_WithData + 21  /* data: (t_channel_id *) */
 	};
 
 	enum

@@ -139,15 +139,6 @@
 typedef unsigned long neutrino_msg_t;
 typedef unsigned long neutrino_msg_data_t;
 
-//rc-code definitions
-static const neutrino_msg_t RC_Repeat   = 0x0400;
-static const neutrino_msg_t RC_Release  = 0x0800;
-static const neutrino_msg_t RC_MaxRC    = KEY_MAX | RC_Repeat | RC_Release; /* /include/linux/input.h: #define KEY_MAX 0x1ff */
-static const neutrino_msg_t RC_KeyBoard = 0x4000;
-static const neutrino_msg_t RC_Events   = 0x80000000;
-static const neutrino_msg_t RC_Messages = 0x90000000;
-static const neutrino_msg_t RC_WithData = 0xA0000000;
-
 #define NEUTRINO_UDS_NAME 		"/tmp/neutrino.sock"
 #define NEUTRINO_RCCONFIG_FILE		CONFIGDIR "/rc.conf"
 
@@ -193,7 +184,7 @@ class CRCInput
 		//rc-code definitions
 		static const neutrino_msg_t RC_Repeat   = 0x0400;
 		static const neutrino_msg_t RC_Release  = 0x0800;
-		static const neutrino_msg_t RC_MaxRC    = KEY_MAX | RC_Repeat | RC_Release; /* /include/linux/input.h: #define KEY_MAX 0x1ff */
+		static const neutrino_msg_t RC_MaxRC    = KEY_MAX | RC_Repeat | RC_Release;
 		static const neutrino_msg_t RC_KeyBoard = 0x4000;
 		static const neutrino_msg_t RC_Events   = 0x80000000;
 		static const neutrino_msg_t RC_Messages = 0x90000000;
