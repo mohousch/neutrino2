@@ -1,4 +1,4 @@
-SUBDIRS = pictureviewer audiodec
+SUBDIRS = audiodec gfx lcd
 
 AM_CPPFLAGS = \
 	-I$(top_builddir) \
@@ -33,12 +33,10 @@ noinst_LIBRARIES = libneutrino2_driver.a
 
 libneutrino2_driver_a_SOURCES = \
 	encoding.cpp \
-	fontrenderer.cpp \
-	framebuffer.cpp \
-	color.cpp \
 	rcinput.cpp \
 	vcrcontrol.cpp \
 	audioplay.cpp \
+	pictureviewer.cpp \
 	file.cpp \
 	audiometadata.cpp \
 	audiofile.cpp \
@@ -46,23 +44,7 @@ libneutrino2_driver_a_SOURCES = \
 	genpsi.cpp \
 	streamts.cpp \
 	radiotext.cpp \
-	radiotools.cpp \
-	png.cpp \
-	jpeg.cpp \
-	bmp.cpp \
-	gif.cpp \
-	crw.cpp \
-	svg.cpp
-
-if ENABLE_LCD
-libneutrino2_driver_a_SOURCES += lcdd.cpp	
-else
-libneutrino2_driver_a_SOURCES += vfd.cpp
-endif
-
-if USE_OPENGL
-libneutrino2_driver_a_SOURCES += glthread.cpp
-endif
+	radiotools.cpp
 
 if !BOXTYPE_DGS 
 if !BOXTYPE_FULAN 

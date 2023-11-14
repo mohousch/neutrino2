@@ -46,7 +46,7 @@
 #include <string>
 #include <vector>
 
-#include <driver/fontrenderer.h>
+#include <driver/gfx/fontrenderer.h>
 
 #include <gui/widget/widget_helpers.h>
 

@@ -28,9 +28,10 @@
 #include <sstream>
 #include <upnpclient.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
+
 #include <driver/audiofile.h>
-#include <driver/pictureviewer/pictureviewer.h>
+#include <driver/pictureviewer.h>
 #include <gui/filebrowser.h>
 #include <gui/widget/menue.h>
 

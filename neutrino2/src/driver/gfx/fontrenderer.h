@@ -37,7 +37,7 @@
 #include FT_CACHE_IMAGE_H
 #include FT_CACHE_SMALL_BITMAPS_H
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 
 class FBFontRenderClass;

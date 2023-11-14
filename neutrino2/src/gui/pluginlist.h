@@ -30,7 +30,8 @@
 #include <gui/widget/listbox.h>
 #include <gui/widget/widget.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
+
 #include <system/localize.h>
 
 #include <gui/plugins.h>

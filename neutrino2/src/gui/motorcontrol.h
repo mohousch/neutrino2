@@ -26,7 +26,7 @@
 #define __motorcontrol__
 
 #include <gui/widget/widget.h>
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 #include <gui/widget/widget_helpers.h>
 #include <string>
 

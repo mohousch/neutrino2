@@ -25,7 +25,7 @@
 
 #include <linux/dvb/video.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 #include <zapit/frontend_c.h>
 

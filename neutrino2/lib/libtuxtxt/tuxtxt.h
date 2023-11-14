@@ -34,7 +34,7 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 #include "tuxtxt_def.h"
 

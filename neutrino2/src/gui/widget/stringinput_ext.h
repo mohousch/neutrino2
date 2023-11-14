@@ -32,7 +32,8 @@
 
 #include <gui/widget/widget.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
+
 #include <system/localize.h>
 
 

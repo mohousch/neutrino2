@@ -237,8 +237,9 @@ src/nhttpd/yhttpd_core/Makefile
 src/nhttpd/yhttpd_mods/Makefile
 src/Makefile
 src/daemonc/Makefile
-src/driver/pictureviewer/Makefile
 src/driver/audiodec/Makefile
+src/driver/gfx/Makefile
+src/driver/lcd/Makefile
 src/driver/Makefile
 src/gui/Makefile
 src/gui/bedit/Makefile

@@ -22,7 +22,7 @@ extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>
 }
-#include "driver/framebuffer.h"
+#include "driver/gfx/framebuffer.h"
 #include "Debug.hpp"
 
 #if LIBAVCODEC_VERSION_INT <= AV_VERSION_INT(57, 1, 99)

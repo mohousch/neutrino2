@@ -32,7 +32,8 @@
 #include <gui/scan.h>
 
 #include <driver/rcinput.h>
-#include <driver/color.h>
+
+#include <driver/gfx/color.h>
 
 #include <gui/widget/messagebox.h>
 

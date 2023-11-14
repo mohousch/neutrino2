@@ -35,12 +35,13 @@
 #include <upnpclient.h>
 
 #include <driver/encoding.h>
-#include <driver/fontrenderer.h>
 #include <driver/rcinput.h>
 #include <driver/audioplay.h>
 #include <driver/audiofile.h>
 #include <driver/audiometadata.h>
-#include <driver/color.h>
+
+#include <driver/gfx/fontrenderer.h>
+#include <driver/gfx/color.h>
 
 #include <daemonc/remotecontrol.h>
 

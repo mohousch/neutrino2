@@ -29,7 +29,7 @@
 #include <cstring>
 
 // tuxbox
-#include <driver/lcdd.h>
+#include <driver/lcd/lcdd.h>
 #include <global.h>
 #include <neutrino2.h>
 #include <system/settings.h>
@@ -40,12 +40,10 @@
 #include <unistd.h>
 
 // nhttpd
-//#include "ylogging.h"
 #include "lcdapi.h"
 
-//static char font_name[3][10]={"Micron","Micron","Pakenham"};
 
-//-------------------------------------------------------------------------
+//
 void CLCDAPI::clear(void)
 {
 	vfd->Clear(); // clear lcd
@@ -66,15 +64,11 @@ bool CLCDAPI::shotPng(char *filename)
 	return vfd->DumpPng(filename);
 }
 
-//-------------------------------------------------------------------------
-// Konstruktor und destruktor
-//-------------------------------------------------------------------------
-
+////
 CLCDAPI::CLCDAPI()
 {
 	vfd = CLCD::getInstance();
 }
-//-------------------------------------------------------------------------
 
 CLCDAPI::~CLCDAPI(void)
 {

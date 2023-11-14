@@ -38,7 +38,8 @@
 
 #include <linux/fb.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
+
 #include <system/debug.h>
 
 

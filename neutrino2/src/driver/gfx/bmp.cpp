@@ -3,7 +3,7 @@
 */
 #include <stdio.h>
 
-#include <framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 #include <cstdlib>
 

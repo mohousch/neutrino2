@@ -33,7 +33,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include <driver/color.h>
+#include <driver/gfx/color.h>
 #include <system/debug.h>
 
 #ifndef FLT_EPSILON

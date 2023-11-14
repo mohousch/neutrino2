@@ -33,7 +33,7 @@ extern "C" {
 #include <libavutil/rational.h>
 }
 
-#include "rcinput.h"
+#include <driver/rcinput.h>
 
 
 class GLThreadObj : public OpenThreads::Thread

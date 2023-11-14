@@ -42,15 +42,15 @@
 #include <libdvbapi/dmx_cs.h>
 
 // driver
-#include <driver/framebuffer.h>
-#include <driver/fontrenderer.h>
-#include <driver/color.h>
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/fontrenderer.h>
+#include <driver/gfx/color.h>
 #include <driver/rcinput.h>
 #include <driver/file.h>
 #include <driver/audiofile.h>
 #include <driver/audiometadata.h>
 #include <driver/encoding.h>
-#include <driver/pictureviewer/pictureviewer.h>
+#include <driver/pictureviewer.h>
 #include <driver/audioplay.h>
 #include <driver/audiodec/basedec.h>
 //#include <driver/stream2file.h>
@@ -184,15 +184,15 @@
 %include <lib/libdvbapi/dmx_cs.h>
 
 // driver
-%include <src/driver/fontrenderer.h>
-%include <src/driver/framebuffer.h>
-%include <src/driver/color.h>
+%include <src/driver/gfx/fontrenderer.h>
+%include <src/driver/gfx/framebuffer.h>
+%include <src/driver/gfx/color.h>
 %include <src/driver/rcinput.h>
 %include <src/driver/file.h>
 %include <src/driver/audiofile.h>
 %include <src/driver/audiometadata.h>
 %include <src/driver/encoding.h>
-%include <src/driver/pictureviewer/pictureviewer.h>
+%include <src/driver/pictureviewer.h>
 %include <src/driver/audioplay.h>
 %include <src/driver/audiodec/basedec.h>
 //%include <src/driver/stream2file.h>

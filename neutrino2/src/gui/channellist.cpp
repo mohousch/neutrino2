@@ -32,9 +32,10 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <driver/fontrenderer.h>
+#include <driver/gfx/fontrenderer.h>
+#include <driver/gfx/color.h>
+
 #include <driver/rcinput.h>
-#include <driver/color.h>
 
 #include <gui/eventlist.h>
 #include <gui/infoviewer.h>

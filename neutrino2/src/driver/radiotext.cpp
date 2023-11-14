@@ -62,7 +62,6 @@
 #include <global.h>
 #include <system/settings.h>
 #include <neutrino2.h>
-#include <driver/color.h>
 
 #include "radiotext.h"
 #include "radiotools.h"
@@ -72,7 +71,8 @@
 
 #include <video_cs.h>
 //
-#include <framebuffer.h>
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/color.h>
 
 #include <system/helpers.h>
 #include <system/debug.h>

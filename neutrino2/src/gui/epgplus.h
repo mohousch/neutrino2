@@ -35,12 +35,12 @@
 #ifndef __EPGPLUS_HPP__
 #define __EPGPLUS_HPP__
 
-#include <driver/framebuffer.h>
-#include <driver/fontrenderer.h>
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/fontrenderer.h>
+#include <driver/gfx/color.h>
+
 #include <driver/rcinput.h>
 #include <system/settings.h>
-
-#include <driver/color.h>
 
 #include <gui/channellist.h>
 #include <gui/infoviewer.h>

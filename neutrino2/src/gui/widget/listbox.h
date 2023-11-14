@@ -28,7 +28,7 @@
 #include <string>
 #include <vector>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 #include <gui/widget/textbox.h>
 #include <gui/widget/widget_helpers.h>

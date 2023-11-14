@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "framebuffer.h"
+#include <driver/gfx/framebuffer.h>
 
 
 #define PNG_BYTES_TO_CHECK 4

@@ -24,7 +24,7 @@ extern "C" {
 #include <setjmp.h>
 
 #include <global.h>
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 

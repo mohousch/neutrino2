@@ -29,8 +29,9 @@
 
 #include <string>
 
-#include <driver/framebuffer.h>
-#include <driver/fontrenderer.h>
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/fontrenderer.h>
+
 #include <driver/rcinput.h>
 
 #include <system/localize.h>

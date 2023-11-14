@@ -36,17 +36,17 @@
 #include <sectionsd/sectionsd.h>
 #include <timerd/timerd.h>
 
-#include <driver/fontrenderer.h>
+#include <driver/gfx/fontrenderer.h>
 #include <driver/rcinput.h>
 
 #if ENABLE_LCD
-#include <driver/lcdd.h>
+#include <driver/lcd/lcdd.h>
 #define CVFD CLCD
 #else
 #if defined (PLATFORM_COOLSTREAM)
 #include <cs_vfd.h>
 #endif
-#include <driver/vfd.h>
+#include <driver/lcd/vfd.h>
 #endif
 
 #include <system/localize.h>

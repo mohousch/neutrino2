@@ -33,9 +33,9 @@
 #include <gui/widget/textbox.h>
 #include <gui/widget/stringinput.h> // locked menu
 
-#include <driver/color.h>
+#include <driver/gfx/color.h>
+#include <driver/gfx/fontrenderer.h>
 
-#include <driver/fontrenderer.h>
 #include <driver/rcinput.h>
 
 #include <system/debug.h>

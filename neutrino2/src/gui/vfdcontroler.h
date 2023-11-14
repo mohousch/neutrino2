@@ -27,7 +27,8 @@
 #ifndef __vfdcontroler__
 #define __vfdcontroler__
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
+
 #include <system/localize.h>
 
 #include <gui/widget/widget.h>

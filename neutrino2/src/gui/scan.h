@@ -25,7 +25,9 @@
 #define __scants__
 
 #include <gui/widget/widget.h>
-#include <driver/framebuffer.h>
+
+#include <driver/gfx/framebuffer.h>
+
 #include <system/localize.h>
 #include <gui/widget/widget_helpers.h>
 #include <string>

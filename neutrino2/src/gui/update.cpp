@@ -31,9 +31,10 @@
 #include <gui/update.h>
 
 #include <driver/encoding.h>
-#include <driver/fontrenderer.h>
 #include <driver/rcinput.h>
-#include <driver/color.h>
+
+#include <driver/gfx/fontrenderer.h>
+#include <driver/gfx/color.h>
 
 #include <gui/filebrowser.h>
 #include <system/fsmounter.h>

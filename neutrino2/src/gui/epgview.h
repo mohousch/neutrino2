@@ -30,12 +30,12 @@
 #include <vector>
 #include <string>
 
-#include <driver/framebuffer.h>
-#include <driver/rcinput.h>
-#include <driver/fontrenderer.h>
-#include <system/settings.h>
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/fontrenderer.h>
+#include <driver/gfx/color.h>
 
-#include <driver/color.h>
+#include <driver/rcinput.h>
+#include <system/settings.h>
 
 #include <gui/widget/widget.h>
 #include <gui/widget/widget_helpers.h>

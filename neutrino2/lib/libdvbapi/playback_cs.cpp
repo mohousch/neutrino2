@@ -34,7 +34,7 @@
 
 #include "playback_cs.h"
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 #include <system/debug.h>
 
 

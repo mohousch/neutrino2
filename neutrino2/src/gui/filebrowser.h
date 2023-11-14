@@ -32,11 +32,13 @@
 #endif
 
 #include <driver/file.h>
-#include <driver/framebuffer.h>
-#include <driver/fontrenderer.h>
+
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/fontrenderer.h>
+#include <driver/gfx/color.h>
+
 #include <driver/rcinput.h>
 
-#include <driver/color.h>
 #include <gui/infoviewer.h>
 
 #include <gui/widget/listbox.h>

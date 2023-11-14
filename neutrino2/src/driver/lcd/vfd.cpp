@@ -30,7 +30,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <driver/vfd.h>
+#include <driver/lcd/vfd.h>
 
 #include <global.h>
 #include <neutrino2.h>

@@ -35,7 +35,7 @@
 
 #include <neutrinoMessages.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 #include <system/setting_helpers.h>
 #include <system/configure_network.h>

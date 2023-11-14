@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 
 ////

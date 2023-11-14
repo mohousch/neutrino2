@@ -29,7 +29,7 @@
 
 #include <gui/widget/icons.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 #include <system/localize.h>
 #include <system/helpers.h>

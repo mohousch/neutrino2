@@ -34,7 +34,7 @@
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 #include <gui/pluginlist.h>
 

@@ -60,14 +60,15 @@
 #include <daemonc/remotecontrol.h>
 
 #include <driver/encoding.h>
-#include <driver/framebuffer.h>
-#include <driver/fontrenderer.h>
 #include <driver/rcinput.h>
 #include <driver/vcrcontrol.h>
 #include <driver/shutdown_count.h>
-#include <driver/color.h>
 #include <driver/streamts.h>
 #include <driver/hdmi_cec.h>
+
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/fontrenderer.h>
+#include <driver/gfx/color.h>
 
 #include <gui/epgplus.h>
 #include <gui/streaminfo.h>

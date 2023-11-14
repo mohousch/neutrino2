@@ -29,9 +29,10 @@
 
 #include <vfdcontroler.h>
 
-#include <driver/fontrenderer.h>
+#include <driver/gfx/fontrenderer.h>
+#include <driver/gfx/color.h>
+
 #include <driver/rcinput.h>
-#include <driver/color.h>
 
 #include <gui/widget/messagebox.h>
 

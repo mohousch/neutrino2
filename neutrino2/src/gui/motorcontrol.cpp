@@ -35,7 +35,7 @@
 #include <neutrino2.h>
 
 #include <driver/rcinput.h>
-#include <driver/color.h>
+#include <driver/gfx/color.h>
 
 #include <gui/motorcontrol.h>
 

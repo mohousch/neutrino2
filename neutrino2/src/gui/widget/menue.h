@@ -30,7 +30,9 @@
 #include <string>
 #include <vector>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/color.h>
+
 #include <driver/rcinput.h>
 
 #include <system/localize.h>
@@ -39,7 +41,6 @@
 #include <gui/widget/textbox.h>
 #include <gui/widget/widget_helpers.h>
 
-#include <driver/color.h>
 #include <gui/plugins.h>
 
 #include <system/settings.h>

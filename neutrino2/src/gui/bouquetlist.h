@@ -29,7 +29,8 @@
 
 #include <gui/channellist.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
+
 #include <system/lastchannel.h>
 
 // zapit includes

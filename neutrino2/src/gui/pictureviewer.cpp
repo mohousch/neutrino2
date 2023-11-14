@@ -33,7 +33,8 @@
 
 #include <daemonc/remotecontrol.h>
 
-#include <driver/fontrenderer.h>
+#include <driver/gfx/fontrenderer.h>
+
 #include <driver/rcinput.h>
 
 #include <gui/nfs.h>

@@ -26,12 +26,14 @@
 
 #include <string>
 
-#include <driver/framebuffer.h>
-#include <driver/pictureviewer/pictureviewer.h>
+#include <driver/gfx/framebuffer.h>
+
+#include <driver/pictureviewer.h>
 #include <gui/widget/widget.h>
 #include <gui/filebrowser.h>
 
 
+////
 class CPicture
 {
 	public:

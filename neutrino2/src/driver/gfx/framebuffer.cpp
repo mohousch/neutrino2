@@ -27,7 +27,8 @@
 #include <config.h>
 #endif
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/color.h>
 
 #include <stdio.h>
 #include <fcntl.h>
@@ -42,7 +43,6 @@
 
 #include <stdint.h>
 
-#include <driver/color.h>
 #include <global.h>
 #include <system/debug.h>
 #include <system/helpers.h>
@@ -50,8 +50,8 @@
 // opengl
 #ifdef USE_OPENGL
 #include <GL/glew.h>
-#include "rcinput.h"
-#include "glthread.h"
+#include <driver/rcinput.h>
+#include <driver/gfx/glthread.h>
 #endif
 
 

@@ -38,8 +38,8 @@
 
 #include <gui/movieinfo.h>
 
-#include <driver/color.h>
-#include <driver/framebuffer.h>
+#include <driver/gfx/color.h>
+#include <driver/gfx/framebuffer.h>
 
 #include <system/settings.h>
 

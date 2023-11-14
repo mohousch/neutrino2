@@ -30,7 +30,7 @@
 #include <config.h>
 #endif
 
-#include <driver/lcdd.h>
+#include <driver/lcd/lcdd.h>
 
 #include <global.h>
 #include <neutrino2.h>

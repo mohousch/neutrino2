@@ -6,14 +6,6 @@
 	Copyright (C) 2001 Steffen Hehn 'McClean'
 	Homepage: http://dbox.cyberphoria.org/
 
-	Kommentar:
-
-	Diese GUI wurde von Grund auf neu programmiert und sollte nun vom
-	Aufbau und auch den Ausbaumoeglichkeiten gut aussehen. Neutrino basiert
-	auf der Client-Server Idee, diese GUI ist also von der direkten DBox-
-	Steuerung getrennt. Diese wird dann von Daemons uebernommen.
-
-
 	License: GPL
 
 	This program is free software; you can redistribute it and/or modify
@@ -40,8 +32,9 @@
 #include <sectionsd/sectionsd.h>
 
 #include <driver/rcinput.h>
-#include <driver/framebuffer.h>
-#include <driver/fontrenderer.h>
+
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/fontrenderer.h>
 
 #include <system/settings.h>
 

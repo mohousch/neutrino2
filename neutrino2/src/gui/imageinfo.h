@@ -28,7 +28,7 @@
 
 #include <gui/widget/widget.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 
 class CImageInfo : public CMenuTarget

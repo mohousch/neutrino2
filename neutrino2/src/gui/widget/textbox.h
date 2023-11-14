@@ -36,9 +36,9 @@
 #include <string>
 #include <vector>
 
-#include <driver/framebuffer.h>
-#include <driver/color.h>
-#include <driver/fontrenderer.h>
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/color.h>
+#include <driver/gfx/fontrenderer.h>
 
 #include <gui/widget/widget_helpers.h>
 

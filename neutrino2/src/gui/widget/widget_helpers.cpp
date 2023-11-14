@@ -24,7 +24,8 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <driver/color.h>
+#include <driver/gfx/color.h>
+
 #include <system/settings.h>
 #include <system/debug.h>
 #include <system/helpers.h>

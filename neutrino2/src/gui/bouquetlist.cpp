@@ -32,7 +32,8 @@
 
 #include <gui/bouquetlist.h>
 
-#include <driver/color.h>
+#include <driver/gfx/color.h>
+#include <driver/gfx/fontrenderer.h>
 
 #include <gui/eventlist.h>
 #include <gui/infoviewer.h>
@@ -41,7 +42,6 @@
 #include <gui/widget/widget_helpers.h>
 #include <gui/widget/icons.h>
 
-#include <driver/fontrenderer.h>
 #include <driver/rcinput.h>
 #include <daemonc/remotecontrol.h>
 #include <system/settings.h>

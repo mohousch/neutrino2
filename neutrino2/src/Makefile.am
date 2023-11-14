@@ -41,7 +41,6 @@ neutrino2_LDADD = \
 	gui/widget/libneutrino2_gui_widget.a \
 	gui/widget/libneutrino2_gui_widget2.a \
 	gui/libneutrino2_gui.a \
-	driver/pictureviewer/libneutrino2_pictureviewer.a \
 	system/libneutrino2_system.a \
 	system/helpers.o \
 	system/ytparser.o \
@@ -51,6 +50,8 @@ neutrino2_LDADD = \
 	gui/pictureviewer.o \
 	gui/audioplayer.o \
 	driver/audiodec/libneutrino2_driver_audiodec.a \
+	driver/gfx/libneutrino2_driver_gfx.a \
+	driver/lcd/libneutrino2_driver_lcd.a \
 	gui/bedit/bouqueteditor_bouquets.o \
 	sectionsd/libsectionsd.a \
 	timerd/libtimerd.a \

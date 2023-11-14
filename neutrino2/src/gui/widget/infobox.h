@@ -37,7 +37,7 @@
 #include <gui/widget/icons.h>
 #include <gui/widget/widget_helpers.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 
 class CInfoBox  

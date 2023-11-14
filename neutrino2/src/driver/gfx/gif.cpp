@@ -5,7 +5,7 @@
 #include <cstring>
 #include <cstdlib>
 
-#include <framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 #include <stdio.h>
 #include <unistd.h>

@@ -30,12 +30,13 @@
 #include <timerd/timerd.h>
 #include <sectionsd/sectionsd.h>
 
-#include <driver/framebuffer.h>
-#include <driver/fontrenderer.h>
+#include <driver/gfx/framebuffer.h>
+#include <driver/gfx/fontrenderer.h>
+#include <driver/gfx/color.h>
+
 #include <driver/rcinput.h>
 #include <system/settings.h>
 
-#include <driver/color.h>
 #include <gui/infoviewer.h>
 
 #include <gui/widget/widget.h>

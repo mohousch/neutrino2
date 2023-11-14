@@ -36,7 +36,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include <driver/fontrenderer.h>
+#include <driver/gfx/fontrenderer.h>
 
 #include <system/debug.h>
 #include <global.h>

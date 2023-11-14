@@ -29,7 +29,7 @@
 
 #include <stdint.h>
 
-#include <driver/framebuffer.h>
+#include <driver/gfx/framebuffer.h>
 
 
 //
