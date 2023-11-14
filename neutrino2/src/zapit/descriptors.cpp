@@ -246,13 +246,13 @@ void CDescriptors::service_list_descriptor(const unsigned char * const buffer, c
 	{
 		t_service_id service_id = buffer[i + 2] << 8 | buffer[i + 3];
 		t_channel_id channel_id = CREATE_CHANNEL_ID;
-		uint8_t service_type = buffer[i+4];
+		uint8_t service_type = buffer[i + 4];
 
 		if(service_type == 0x9A) 
-			service_type = 1;
+			service_type = ST_DIGITAL_TELEVISION_SERVICE;
 
 		if(service_type == 0x86) 
-			service_type = 1;
+			service_type = ST_DIGITAL_TELEVISION_SERVICE;
 
 		service_types[channel_id] = service_type;
 	}
@@ -438,9 +438,9 @@ uint8_t CDescriptors::fix_service_type(uint8_t type)
 	dprintf(DEBUG_INFO, "CDescriptors::fix_service_type: type: 0x%x\n", type);
 	
 	if( (type == 0x9A) || (type == 0x86) || (type == 0xc3) || (type == 0xc5) || (type == 0xc6) )
-		return 1;
+		return ST_DIGITAL_TELEVISION_SERVICE;
 	else if (type == 0xA)	//FIXME
-		return 2;
+		return ST_DIGITAL_RADIO_SOUND_SERVICE;
 
 	return type;
 }
