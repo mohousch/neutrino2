@@ -276,6 +276,12 @@ void CInfoViewer::initFrames(void)
 
 	timescale_posx = BoxStartX + BORDER_LEFT;
 	timescale_posy = BoxStartY + SAT_INFOBOX_HEIGHT;
+	
+	// radiotext
+	rt_dx = BoxEndX - BoxStartX;
+	rt_dy = 25; //
+	rt_x = BoxStartX;
+	rt_y = g_settings.screen_StartY + 10;
 }
 
 void CInfoViewer::paintTime(int posx, int posy, unsigned int timeFont)
@@ -1790,7 +1796,7 @@ void CInfoViewer::killTitle()
 		if (g_settings.radiotext_enable && g_Radiotext) 
 		{
 			g_Radiotext->S_RtOsd = g_Radiotext->haveRadiotext() ? 1 : 0;
-			killRadiotext();
+			//killRadiotext();
 		}
 
 		frameBuffer->blit();		
