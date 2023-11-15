@@ -45,22 +45,22 @@ struct messages_return
 struct NeutrinoMessages {
 	enum
 	{
-		/* infoviewer */
+		// infoviewer
 		SHOW_EPG				 = CRCInput::RC_Messages + 1,
 		SHOW_INFOBAR				 = CRCInput::RC_Messages + 2,
 		
-		/* vcrcontrol */
+		// vcrcontrol
 		VCR_ON					 = CRCInput::RC_Messages + 3,
 		VCR_OFF					 = CRCInput::RC_Messages + 4,
 		
-		/* nhttpd */
+		// nhttpd
 		STANDBY_ON				 = CRCInput::RC_Messages + 5,
 		STANDBY_OFF				 = CRCInput::RC_Messages + 6,
 		
-		/* nhttpd / SHTDCNT / timerd */
+		// nhttpd / SHTDCNT / timerd
 		SHUTDOWN				 = CRCInput::RC_Messages + 8,
 		
-		/* timerd */
+		// timerd
 		ANNOUNCE_SHUTDOWN			 = CRCInput::RC_Messages + 9,
 		ANNOUNCE_ZAPTO				 = CRCInput::RC_Messages + 10,
 		ZAPTO					 = CRCInput::RC_Messages + 11,
@@ -70,32 +70,32 @@ struct NeutrinoMessages {
 		ANNOUNCE_SLEEPTIMER			 = CRCInput::RC_Messages + 15,
 		SLEEPTIMER				 = CRCInput::RC_Messages + 16,
 		
-		/* nhttpd / vcrcontrol */
+		// nhttpd / vcrcontrol
 		CHANGEMODE				 = CRCInput::RC_Messages + 17,
 		
-		/* timerd */
+		// timerd
 		REMIND					 = CRCInput::RC_Messages + 18,
 		
-		/* nhttpd */
+		// nhttpd
 		LOCK_RC                 		 = CRCInput::RC_Messages + 19,
 		UNLOCK_RC               		 = CRCInput::RC_Messages + 20,
 		REBOOT					 = CRCInput::RC_Messages + 21,
 		RESTART					 = CRCInput::RC_Messages + 22,
 		
-		/* zapit */ 
+		// zapit
 		EVT_BOUQUETSCHANGED                      = CRCInput::RC_Events + 6,
 		EVT_SERVICESCHANGED                      = CRCInput::RC_Events + 7,
 		EVT_SCAN_COMPLETE                        = CRCInput::RC_Events + 16,
 		EVT_SCAN_NUM_TRANSPONDERS                = CRCInput::RC_Events + 17,
 		EVT_SCAN_NUM_CHANNELS                    = CRCInput::RC_Events + 18,
 		
-		/* triggered from userland / rcinput */
+		// triggered from userland / rcinput
 		EVT_TIMER                                = CRCInput::RC_Events + 20,
 		
-		/* remotecontrol */
+		// remotecontrol
 		EVT_PROGRAMLOCKSTATUS                    = CRCInput::RC_Events + 22,
 		
-		/* zapit */
+		// zapit
 		EVT_RECORDMODE				 = CRCInput::RC_Events + 24,
 		EVT_ZAP_CA_ID				 = CRCInput::RC_Events + 25,
 		EVT_SCAN_FAILED                          = CRCInput::RC_Events + 29,
@@ -108,17 +108,17 @@ struct NeutrinoMessages {
  		EVT_ZAP_MOTOR                            = CRCInput::RC_Events + 37,
 		EVT_SERVICES_UPD                         = CRCInput::RC_Events + 38,
 		
-		/* sectionsd */
+		// sectionsd
 		EVT_SI_FINISHED                          = CRCInput::RC_Events + 39,
 		
-		/* zapit */
+		// zapit
 		EVT_PMT_CHANGED				 = CRCInput::RC_Events + 40,
 		
-		/* hdmi cec */
+		// hdmi cec
 		EVT_HDMI_CEC_VIEW_ON                     = CRCInput::RC_Events + 41,
 		EVT_HDMI_CEC_STANDBY                     = CRCInput::RC_Events + 42,
 
-		/* cicam */
+		// cicam
 		EVT_CI_INSERTED				 = CRCInput::RC_Events + 60, /* data = slot num */
 		EVT_CI_REMOVED				 = CRCInput::RC_Events + 61, /* data = slot num */
 		EVT_CI_INIT_OK				 = CRCInput::RC_Events + 62, /* data = slot num */
@@ -128,26 +128,26 @@ struct NeutrinoMessages {
 		EVT_CI_MMI_REQUEST_INPUT		 = CRCInput::RC_Events + 66,
 		EVT_CI_MMI_CLOSE			 = CRCInput::RC_Events + 67,
 
-		/* infoviewer */
+		// infoviewer
 		EVT_CURRENTEPG                           = CRCInput::RC_WithData +  1,
 		EVT_NEXTEPG                              = CRCInput::RC_WithData +  2,
 		
-		/* nhttpd */
+		// nhttpd
 		EVT_POPUP                                = CRCInput::RC_WithData +  3,
 		EVT_EXTMSG                               = CRCInput::RC_WithData +  4,
 		EVT_START_PLUGIN                         = CRCInput::RC_WithData +  5,
 
-		/* sectionsd */
+		// sectionsd
 		EVT_CURRENTNEXT_EPG                      = CRCInput::RC_WithData +  6, /* data: (t_channel_id *) */
 		EVT_TIMESET                              = CRCInput::RC_WithData +  7, /* data: (long long *)    */
 
-		/* infoviewer */
+		// infoviewer
 		EVT_NOEPG_YET                            = CRCInput::RC_WithData +  8, /* data: (t_channel_id *) */
 
-		/* timerd */
+		// timerd
 		EVT_NEXTPROGRAM                          = CRCInput::RC_WithData +  9, /* data: (t_channel_id *) */
 
-		/* zapit */
+		// zapit
  		EVT_SCAN_FOUND_A_CHAN                    = CRCInput::RC_WithData + 10,
 		EVT_SCAN_PROVIDER                        = CRCInput::RC_WithData + 11,
 		EVT_SCAN_SATELLITE                       = CRCInput::RC_WithData + 12,
@@ -158,7 +158,7 @@ struct NeutrinoMessages {
 		EVT_ZAP_SUB_COMPLETE                     = CRCInput::RC_WithData + 17, /* data: (t_channel_id *) */
 		EVT_ZAP_SUB_FAILED                       = CRCInput::RC_WithData + 18, /* data: (t_channel_id *) */
 
-		/* remotecontrol */
+		// remotecontrol
 		EVT_ZAP_GOT_SUBSERVICES                  = CRCInput::RC_WithData + 19, /* data: (t_channel_id *) */
 		EVT_ZAP_GOTAPIDS                         = CRCInput::RC_WithData + 20, /* data: (t_channel_id *) */
 		EVT_ZAP_GOTPIDS                          = CRCInput::RC_WithData + 21  /* data: (t_channel_id *) */
@@ -180,3 +180,4 @@ struct NeutrinoMessages {
 };
 
 #endif
+

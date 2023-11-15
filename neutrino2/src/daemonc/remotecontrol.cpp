@@ -457,6 +457,7 @@ void CRemoteControl::getNVODs()
 
 void CRemoteControl::processAPIDnames()
 {
+	//FIXME:
 	has_unresolved_ctags= false;
 	has_ac3 = false; //FIXME what this variable suppoused to do ?? seems unused
 	int pref_found = -1;
@@ -483,7 +484,8 @@ void CRemoteControl::processAPIDnames()
 					lang[3] = 0;
 					desc = lang;
 				}
-				/* processAPIDnames called 2 times, TODO find better way to detect second call */
+				
+				// processAPIDnames called 2 times, TODO find better way to detect second call
 				if(strlen( desc ) != 3)
 					continue;
 				
@@ -492,11 +494,12 @@ void CRemoteControl::processAPIDnames()
 
 				std::string temp(g_settings.pref_lang[i]);
 				std::map<std::string, std::string>::const_iterator it;
+				
 				for(it = iso639.begin(); it != iso639.end(); it++) 
 				{
 					if(temp == it->second && strcasecmp(desc, it->first.c_str()) == 0) 
 					{
-						/* remember first pref found index and pid*/
+						// remember first pref found index and pid
 						if(pref_found < 0) 
 						{
 							pref_found = j;
@@ -510,10 +513,10 @@ void CRemoteControl::processAPIDnames()
 						break;
 					}
 				}
-			} /* for all pids */
-		} /*for all prefs*/
+			}
+		}
 
-		/* reset pref ac3, if it have lower priority */
+		// reset pref ac3, if it have lower priority
 		if((pref_idx >= 0) && (pref_idx < pref_ac3_idx))
 			pref_ac3_found = -1;
 	}
@@ -537,7 +540,7 @@ void CRemoteControl::processAPIDnames()
 		{
 			//strncat(current_PIDs.APIDs[count].desc, " (Dolby Digital)", 25);
 			has_ac3 = true;
-			if((strlen( current_PIDs.APIDs[count].desc ) == 3) && g_settings.audio_DolbyDigital && (ac3_found < 0))
+			if ((strlen( current_PIDs.APIDs[count].desc ) == 3) && g_settings.audio_DolbyDigital && (ac3_found < 0))
 				ac3_found = count;
 		}
 	}
@@ -597,7 +600,7 @@ void CRemoteControl::processAPIDnames()
 	t_channel_id * p = new t_channel_id;
 	*p = current_channel_id;
 			
-	g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOTAPIDS, (const neutrino_msg_data_t)p, false); // data is pointer to allocated memory
+	g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOTAPIDS, (const neutrino_msg_data_t)p, false);
 }
 
 void CRemoteControl::copySubChannelsToZapit(void)
