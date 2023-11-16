@@ -940,42 +940,25 @@ bool cPlayback::SetSpeed(int speed)
 #if defined (ENABLE_GSTREAMER)
 	if(m_gst_playbin)
 	{
-	/*
-		if(speed == 0)
-			trickSeek(0.0);
-		else if(speed == 1)
-			trickSeek(1.0);
-		else
-			trickSeek(speed);
-	*/
 		// pause
 		if (speed == 0)
 		{
 			gst_element_set_state(m_gst_playbin, GST_STATE_PAUSED);
-			//trickSeek(0);
-			//playstate = STATE_PAUSE;
 		}
 		// play/continue
 		else if (speed == 1)
 		{
 			trickSeek(1);
-			//gst_element_set_state(m_gst_playbin, GST_STATE_PLAYING);
-			//
-			//playstate = STATE_PLAY;
 		}
 		//ff
 		else if (speed > 1)
 		{
 			trickSeek(speed);
-			//
-			//playstate = STATE_FF;
 		}
 		//rf
 		else if (speed < 0)
 		{
 			trickSeek(speed);
-			//
-			//playstate = STATE_REW;
 		}
 	}
 #else
@@ -1179,7 +1162,14 @@ bool cPlayback::SetPosition(int position)
 	dprintf(DEBUG_NORMAL, "cPlayback::SetPosition: position: %d msec\n", position);
 	
 #if ENABLE_GSTREAMER
-	gint64 time_nanoseconds = position * 1000000.0;
+	gint64 time_nanoseconds = (gint64)position * 1000000.0;
+	
+	//
+	gint64 pos;
+	GstFormat fmt = GST_FORMAT_TIME;
+	
+	gst_element_query_position(m_gst_playbin, fmt, &pos);
+	time_nanoseconds = pos + ((gint64)position * 1000000.0);
 
 	if(time_nanoseconds < 0) 
 		time_nanoseconds = 0;

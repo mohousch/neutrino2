@@ -43,7 +43,18 @@ DEST = $(PWD)/$(BOXTYPE)
 N2_SRC  = $(PWD)/neutrino2
 N2_OPTS = --with-boxtype=$(BOXTYPE)
 
-CFLAGS = -Wall -O2 -fno-strict-aliasing -O0 -std=c++11
+CFLAGS = -Wall 
+CFLAGS += -O2 
+CFLAGS += -pipe 
+CFLAGS += -fno-strict-aliasing 
+CFLAGS += -O0 
+CFLAGS += -std=c++11 
+CFLAGS += -g
+CFLAGS += -ggdb3
+CFLAGS += -D__KERNEL_STRICT_NAMES
+CFLAGS += -D__STDC_FORMAT_MACROS
+CFLAGS += -D__STDC_CONSTANT_MACROS
+#CFLAGS += -fsanitize=address
 CXXFLAGS = $(CFLAGS) 
 
 export CFLAGS CXXFLAGS
@@ -177,17 +188,6 @@ init:
 	case "$$TESTING" in \
 		1) echo "TESTING=testing" >> config.local;; \
 		2|*) echo "TESTING=" >> config.local;; \
-	esac; \
-	echo ""	
-# fake tuner for testing
-	@echo -e "\nFake Tuner support ?:"
-	@echo "   1)  yes"
-	@echo -e "   \033[01;32m2) no\033[00m"
-	@read -p "Select FAKETUNER support (1-2)?" FAKETUNER; \
-	FAKETUNER=$${FAKETUNER}; \
-	case "$$FAKETUNER" in \
-		1) echo "FAKETUNER=faketuner" >> config.local;; \
-		2|*) echo "FAKETUNER=" >> config.local;; \
 	esac; \
 	echo ""			
 

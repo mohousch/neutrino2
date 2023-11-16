@@ -2119,9 +2119,9 @@ void CNeutrinoApp::initZapper()
 		CSectionsd::getInstance()->pauseScanning(false);
 		CSectionsd::getInstance()->setServiceChanged(live_channel_id, true );
 		
-		// process apids
-		CZapit::getInstance()->getCurrentPIDS(g_RemoteControl->current_PIDs);
-		g_RemoteControl->processAPIDnames();
+		// process apids FIXME:
+		//CZapit::getInstance()->getCurrentPIDS(g_RemoteControl->current_PIDs);
+		//g_RemoteControl->processAPIDnames();
 				
 		// permenant timeshift
 		if(g_settings.auto_timeshift)
@@ -3366,27 +3366,20 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 		}
 	}
 
-	// handle msg with remotecontrol/Infoviewer/Channellist/cicam
-	res = res | g_RemoteControl->handleMsg(msg, data);
+	// handle msg with CRemotecontrol/CInfoviewer/CChannellist/CCAMMenuHandler
+	res = res | g_RemoteControl->handleMsg(msg, data); //FIXME:
 	res = res | g_InfoViewer->handleMsg(msg, data);
 	res = res | channelList->handleMsg(msg, data);
 	
-	if( res != messages_return::unhandled ) 
-	{
-		if( ( msg >= CRCInput::RC_WithData ) && ( msg < CRCInput::RC_WithData + 0x10000000 ) )
-			delete [] (unsigned char*) data;
-
-		return( res & ( 0xFFFFFFFF - messages_return::unhandled ) );
-	}
-
 	// we assume g_CamHandler free/delete data if needed
 #if defined (ENABLE_CI)	
-	res = g_CamHandler->handleMsg(msg, data);
+	res = res | g_CamHandler->handleMsg(msg, data);
+#endif
+
 	if( res != messages_return::unhandled ) 
 	{
 		return(res & (0xFFFFFFFF - messages_return::unhandled));
-	}
-#endif	
+	}	
 
 	// handle Keys
 	if( msg == CRCInput::RC_ok || msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)

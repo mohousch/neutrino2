@@ -3,7 +3,6 @@ AUTOMAKE_OPTIONS = gnu
 SUBDIRS = \
 	test \
 	systeminfo \
-	tuxcom \
 	fileexplorer \
 	mediaportal \
 	icecast \
@@ -16,7 +15,8 @@ SUBDIRS = \
 	ntvshows \
 	satipclient \
 	opkg_manager \
-	upnp
+	upnp \
+	tuxcom
 
 #testing
 if ENABLE_TESTING

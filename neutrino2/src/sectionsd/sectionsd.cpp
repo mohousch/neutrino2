@@ -4994,9 +4994,21 @@ void CSectionsd::Stop(void)
 	
 	if(CZapit::getInstance()->getFrontendCount())
 	{
-		if(dmxUTC) 
+		if(dmxUTC)
+		{
 			delete dmxUTC;
-	
+			dmxUTC = NULL;
+		}
+
+		//
+		eit_stop_update_filter(&eit_update_fd);
+		
+		if(eitDmx)
+		{
+			delete eitDmx;
+			eitDmx = NULL;
+		}
+		
 		pthread_cancel(threadEIT);
 		pthread_join(threadEIT, NULL);
 		
@@ -5008,12 +5020,6 @@ void CSectionsd::Stop(void)
 		
 		pthread_cancel(threadVIASATEIT);
 		pthread_join(threadVIASATEIT, NULL);
-
-		//
-		eit_stop_update_filter(&eit_update_fd);
-		
-		if(eitDmx)
-			delete eitDmx;
 
 		// close eitdmx
 		dmxEIT.close();

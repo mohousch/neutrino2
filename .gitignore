@@ -2207,3 +2207,4 @@
 /neutrino2/src/driver/lcd/lcdd.o
 /neutrino2/src/driver/lcd/libneutrino2_driver_lcd.a
 /neutrino2/src/driver/pictureviewer.o
+/neutrino2/src/driver/lcd/vfd.o

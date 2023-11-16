@@ -307,47 +307,6 @@ void CZapit::initFrontend()
 				delete fe;
 		}
 	}
-
-#if defined (ENABLE_FAKE_TUNER)
-    	for(j = 0; j < 4; j++)
-	{
-		fe = new CFrontend(j, 0); // adapter_num = 0
-			
-		if (j == 0)
-		{
-			fe->info.type = FE_QPSK;
-			strcpy(fe->info.name, "Sat Fake Tuner");
-			fe->deliverySystemMask |= DVB_S;
-			fe->deliverySystemMask |= DVB_S2;
-			fe->deliverySystemMask |= DVB_S2X;
-			have_s = true;
-		}
-		else if (j == 1)
-		{
-			fe->info.type = FE_QAM;
-			strcpy(fe->info.name, "Cable Fake Tuner");
-			fe->deliverySystemMask |= DVB_C;
-			have_c = true;
-		}
-		else if(j == 2)
-		{
-			fe->info.type = FE_OFDM;
-			strcpy(fe->info.name, "Terrestrial Fake Tuner");
-			fe->deliverySystemMask |= DVB_T;
-			fe->deliverySystemMask |= DVB_T2;
-			have_t = true;
-		}
-		else if (j == 3)
-		{
-			fe->info.type = FE_ATSC;
-			strcpy(fe->info.name, "ATSC Fake Tuner");
-			have_a = true;
-		}
-
-		index++;
-		femap.insert(std::pair <unsigned short, CFrontend*> (index, fe));
-	}
-#endif
 	
 	dprintf(DEBUG_NORMAL, "CZapit::initFrontend: found %d frontends\n", femap.size());
 }
@@ -2367,8 +2326,8 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 			while(true)
 			{
 				t_channel_id id = 0;
+				char line[1024] = "";
 				
-				char line[1024];
 				if (!fgets(line, 1024, f))
 					break;
 				
@@ -2527,10 +2486,8 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 	else if(playlist)
 	{
 		std::ifstream infile;
-		char cLine[1024];
-		
+		char cLine[1024] = ""; // causes stack-buffer-overflow
 		t_channel_id id = 0;
-
 		std::string xmltv = "";
 		std::string description = "";
 		std::string title = "";
@@ -2538,7 +2495,6 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 		std::string group = "";
 		std::string epgid = "";
 		std::string alogo = "";
-		//CZapitBouquet* pBouquet = NULL;
 				
 		infile.open(filename.c_str(), std::ifstream::in);
 
@@ -2703,7 +2659,7 @@ void CZapit::loadWebTVBouquets(const std::string &dirname)
 			// name
 			file = dirname + "/" + namelist[i]->d_name;
 
-			parseWebTVBouquet(file);
+			parseWebTVBouquet(file); //FIXME:
 		}
 		free(namelist[i]);
 	}
@@ -2741,7 +2697,7 @@ void CZapit::loadBouquets(bool loadCurrentBouquet)
 	}
 
 	// webTV bouquets
-	loadWebTVBouquets(CONFIGDIR "/webtv");
+	loadWebTVBouquets(CONFIGDIR "/webtv"); //FIXME: ==35683==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x7ffc0899c7df at pc 0x5624fd9cdcf8 bp 0x7ffc08999fa0 sp 0x7ffc08999f90
 
 	//renumServices();
 	makeRemainingChannelsBouquets();

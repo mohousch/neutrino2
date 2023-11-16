@@ -188,7 +188,6 @@ bool getUTC(UTC_t * const UTC, const bool TDT)
 		ret = false;
 
 	dmxUTC->Stop();
-	//delete dmxUTC;
 
 	return ret;
 }

@@ -445,15 +445,16 @@ void CMoviePlayerGui::play(unsigned int pos)
 
 		CVFD::getInstance()->ShowIcon(VFD_ICON_PLAY, true);
 				
-		// set position 
-		playback->SetPosition(startposition * 1000);
-				
 		// get position / duration
 #if defined (PLATFORM_COOLSTREAM)
 		playback->GetPosition(position, duration);
 #else
 		playback->GetPosition(position, duration);
 #endif
+
+		////
+		// set position 
+		playback->SetPosition(startposition * 1000);
 		
 		//
 		if(playlist[selected].file.getType() == CFile::FILE_AUDIO)

@@ -289,7 +289,7 @@ void CTextBox::refreshTextLineArray(void)
 	int pos = 0;
 	int aktWidth = 0;
 	int aktWordWidth = 0;
-	int lineBreakWidth;
+	int lineBreakWidth = 0;
 	int maxTextWidth = 0;
 
 	m_nNrOfNewLine = 0;
