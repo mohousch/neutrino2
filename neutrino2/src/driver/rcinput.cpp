@@ -944,7 +944,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				{
 					read_bytes = recv(fd_eventclient, p, emsg.dataSize, MSG_WAITALL);
 					
-					dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from fd_event msg=(0x%x) data:(0x%x) <\n", emsg.eventID, *(unsigned*) p);
+					//dprintf(DEBUG_NORMAL, ANSI_RED"\nCRCInput::getMsg_us:got event from fd_event msg=(0x%x) data:(0x%x) <\n", emsg.eventID, *(unsigned*) p);
 
 					if (emsg.initiatorID == CEventServer::INITID_NEUTRINO)
 					{					  				
@@ -1249,8 +1249,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 			if ( *msg != RC_nokey )
 			{
-				// raus hier :)
-				//printf("[neutrino] event 0x%x\n", *msg);
 				return;
 			}
 		}
@@ -1285,8 +1283,8 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					now_pressed = (uint64_t) tv.tv_usec + (uint64_t)((uint64_t) tv.tv_sec * (uint64_t) 1000000);
 					if (ev.code == rc_last_key) 
 					{
-						/* only allow selected keys to be repeated */
-						/* (why?)                                  */
+						// only allow selected keys to be repeated
+						// (why?)                            
 						if((trkey == RC_up) || (trkey == RC_down   ) ||
 							(trkey == RC_plus   ) || (trkey == RC_minus  ) ||
 							(trkey == RC_page_down   ) || (trkey == RC_page_up  ) ||
@@ -1298,7 +1296,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 							if (rc_last_repeat_key != ev.code) 
 							{
 								if ((now_pressed > last_keypress + repeat_block) ||
-										/* accept all keys after time discontinuity: */
 										(now_pressed < last_keypress)) 
 									rc_last_repeat_key = ev.code;
 								else
@@ -1318,19 +1315,18 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					{
 #ifdef ENABLE_REPEAT_CHECK
 						if ((now_pressed > last_keypress + repeat_block_generic) ||
-								/* accept all keys after time discontinuity: */
 								(now_pressed < last_keypress)) 
 #endif
 						{
 							last_keypress = now_pressed;
 
 							*msg = trkey;
-							*data = 0; /* <- button pressed */
+							*data = 0; // <- button pressed
 
 							return;
 						}
-					} /*if keyok */
-				} /* if (ev.value) */
+					} //if keyok
+				} // if (ev.value)
 				else 
 				{
 					// clear rc_last_key on keyup event
@@ -1338,12 +1334,13 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					if (trkey == RC_standby) 
 					{
 						*msg = RC_standby;
-						*data = 1; /* <- button released */
+						*data = 1; // <- button released
+						
 						return;
 					}
 				}
-			}/* if FDSET */
-		} /* for NUMBER_OF_EVENT_DEVICES */
+			}// if FDSET
+		} // for NUMBER_OF_EVENT_DEVICES
 
 		// pipe low prio
 		if(FD_ISSET(fd_pipe_low_priority[0], &rfds))
@@ -1362,14 +1359,14 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 		if ( InitialTimeout == 0 )
 		{
-			//nicht warten wenn kein key da ist
 			*msg = RC_timeout;
 			*data = 0;
+			
 			return;
 		}
 		else
 		{
-			//timeout neu kalkulieren
+			// recalculate timeout
 			gettimeofday( &tv, NULL );
 			int64_t getKeyNow = (int64_t) tv.tv_usec + (int64_t)((int64_t) tv.tv_sec * (int64_t) 1000000);
 			int64_t diff = (getKeyNow - getKeyBegin);

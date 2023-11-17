@@ -265,13 +265,6 @@ ifeq ($(FKEYS), fkeys)
 N2_OPTS += --enable-functionkeys
 endif
 
-# FAKETUNER
-FAKETUNER ?=
-
-ifeq ($(FAKETUNER), faketuner)
-N2_OPTS += --enable-fake_tuner
-endif
-
 # test plugins
 TESTING ?= testing
 
@@ -293,7 +286,6 @@ printenv:
 	@echo "SCART			: $(SCART)"
 	@echo "LCD			: $(LCD)"
 	@echo "FKEYS			: $(FKEYS)"
-	@echo "FAKETUNER		: $(FAKETUNER)"
 	@echo "TESTING			: $(TESTING)"
 	@echo '================================================================================'
 

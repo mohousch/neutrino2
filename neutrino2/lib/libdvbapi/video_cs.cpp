@@ -1207,6 +1207,7 @@ cVideo::SWFramebuffer *cVideo::getDecBuf(void)
 	buf_num--;
 	buf_out %= VDEC_MAXBUFS;
 	buf_m.unlock();
+	
 	return p;
 }
 

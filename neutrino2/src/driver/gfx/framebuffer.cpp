@@ -117,6 +117,12 @@ CFrameBuffer::CFrameBuffer()
 	corner_tr = false;
 	corner_bl = false;
 	corner_br = false;
+	
+	//
+	xRes = 0;
+	yRes = 0; 
+	stride = xRes * 4; 
+	bpp = 32;
 }
 
 CFrameBuffer* CFrameBuffer::getInstance()

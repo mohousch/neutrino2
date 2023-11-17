@@ -95,10 +95,6 @@ void CPlugins::addPlugin(const char * dir)
 {
 	dprintf(DEBUG_DEBUG, "CPlugins::addPlugin: %s\n", dir);
 	
-	PluginInit initPlugin;
-	void *handle = NULL;
-	char *error;
-	
 	struct dirent **namelist;
 	std::string fname;
 
@@ -138,14 +134,16 @@ void CPlugins::addPlugin(const char * dir)
 					new_plugin.pluginfile.append(".so");
 					
 					// initPlugin
+					PluginInit initPlugin;
+					void *handle = NULL;
+					const char *error = dlerror();
+					
 					handle = dlopen ( new_plugin.pluginfile.c_str(), RTLD_NOW);
-					if (!handle)
-					{
-						fputs (dlerror(), stderr);
-					} 
-					else
+					
+					if (handle)
 					{
 						initPlugin = (PluginInit) dlsym(handle, "plugin_init");
+						
 						if ((error = dlerror()) != NULL)
 						{
 							fputs(error, stderr);

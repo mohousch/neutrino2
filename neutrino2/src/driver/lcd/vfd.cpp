@@ -119,7 +119,7 @@ CVFD::CVFD()
 		
 		if(fd < 0)
 		{
-			// probe /dev/display (e.g coolstream)
+			// probe /dev/display
 			fd = open("/dev/display", O_RDWR);
 			
 			if(fd < 0)
@@ -156,6 +156,7 @@ CVFD::CVFD()
 	
 	text[0] = 0;
 	clearClock = 0;
+	timeout_cnt = 0;
 }
 
 CVFD::~CVFD()
@@ -203,16 +204,14 @@ void CVFD::count_down()
 }
 
 void CVFD::wake_up() 
-{
-#if defined (PLATFORM_COOLSTREAM)  
+{  
 	if (atoi(g_settings.lcd_setting_dim_time) > 0) 
 	{
 		timeout_cnt = atoi(g_settings.lcd_setting_dim_time);
 		g_settings.lcd_setting_dim_brightness > 0 ? setBrightness(g_settings.lcd_brightness) : setPower(1);
 	}
 	else
-		setPower(1);
-#endif	
+		setPower(1);	
 }
 
 void * CVFD::TimeThread(void *)
@@ -291,10 +290,6 @@ void CVFD::setlcdparameter(int dimm, const int power)
 		perror("VFDBRIGHTNESS");
 	
 	closeDevice();
-#elif defined (PLATFORM_COOLSTREAM)
-	int ret = ioctl(fd, IOC_VFD_SET_BRIGHT, dimm);
-	if(ret < 0)
-		perror("IOC_VFD_SET_BRIGHT");	
 #endif		
 }
 
@@ -517,10 +512,8 @@ void CVFD::setMode(const MODES m, const char * const title)
 			ShowIcon(VFD_ICON_MP3, true);			
 			ShowIcon(VFD_ICON_TV, false);			
 			showAudioPlayMode(AUDIO_MODE_STOP);			
-			showclock = true;
-#if !defined (PLATFORM_COOLSTREAM)			
-			ShowIcon(VFD_ICON_LOCK, false);
-#endif			
+			showclock = true;			
+			ShowIcon(VFD_ICON_LOCK, false);			
 			ShowIcon(VFD_ICON_HD, false);
 			ShowIcon(VFD_ICON_DOLBY, false);
 			//showTime();      /* "showclock = true;" implies that "showTime();" does a "displayUpdate();" */
@@ -731,12 +724,6 @@ void CVFD::Clear()
 		perror("VFDDISPLAYCLR");
 	closeDevice();
 #endif
-#elif (PLATFORM_COOLSTREAM)
-	int ret = ioctl(fd, IOC_VFD_CLEAR_ALL, 0);
-	if(ret < 0)
-		perror("IOC_VFD_SET_TEXT");
-	else
-		text[0] = 0;
 #else
 	ShowText("            "); // 12 empty digits
 #endif
@@ -860,10 +847,6 @@ void CVFD::ShowIcon(vfd_icon icon, bool show)
 		perror("VFDICONDISPLAYONOFF");
 #endif	
 	closeDevice();
-#elif defined (PLATFORM_COOLSTREAM)
-	int ret = ioctl(fd, show ? IOC_VFD_SET_ICON : IOC_VFD_CLEAR_ICON, icon);
-	if(ret < 0)
-		perror(show ? "IOC_VFD_SET_ICON" : "IOC_VFD_CLEAR_ICON");
 #endif
 }
 

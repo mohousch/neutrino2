@@ -64,9 +64,9 @@ void CTimerManager::Init(void)
 	wakeup = 0; 	//fallback
 
 	//
-#ifdef USE_OPENGL
+#ifndef USE_OPENGL
 	int fd = open("/proc/stb/fp/was_timer_wakeup", O_RDONLY);
-	unsigned char buffer[2];
+	char buffer[2];
 	
 	int ret = read(fd, buffer, 2);
 	int was_timer_wakeup = atoi((const char*) buffer);

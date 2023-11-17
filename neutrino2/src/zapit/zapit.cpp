@@ -528,7 +528,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	{
 		CFrontend * fe = fe_it->second;
 		
-		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: fe(%d:%d): (delsys:0x%x) (%s) tuned:%d (locked:%d) fe_TP: 0x%llx - %d chan_TP: 0x%llx\n",
+		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: fe(%d:%d): (delsys:0x%x) (%s) tuned:%d (locked:%d) fe_TP: 0x%llx chan_TP: 0x%llx\n",
 				fe->feadapter,
 				fe->fenumber,
 				fe->deliverySystemMask,
@@ -847,7 +847,7 @@ void CZapit::saveAudioMap()
 			
 		for (audio_map_it = audio_map.begin(); audio_map_it != audio_map.end(); audio_map_it++) 
 		{
-			fprintf(audio_config_file, "0x%llx %d %d %d %d %d %d\n", (uint64_t) audio_map_it->first,
+			fprintf(audio_config_file, "%llx %d %d %d %d %d %d\n", (uint64_t) audio_map_it->first,
                         (int) audio_map_it->second.apid, (int) audio_map_it->second.mode, (int) audio_map_it->second.volume, 
 			(int) audio_map_it->second.subpid, (int) audio_map_it->second.ttxpid, (int) audio_map_it->second.ttxpage);
 		}
@@ -2502,9 +2502,9 @@ void CZapit::parseWebTVBouquet(std::string &filename)
 		{
 			infile.getline(cLine, sizeof(cLine));
 					
-			// remove CR
-			if(cLine[strlen(cLine) - 1] == '\r')
-				cLine[strlen(cLine) - 1] = 0;
+			// FIXME: remove CR
+			//if(cLine[strlen(cLine) - 1] == '\r')
+			//	cLine[strlen(cLine) - 1] = 0;
 				
 			std::string strLine = cLine;
 			
@@ -6634,11 +6634,11 @@ void CZapit::Stop()
 	pthread_join(tsdt, NULL);
 	
 	// stop pmt update filter thread
-	pthread_cancel(tpmt);
-	pthread_join(tpmt, NULL);
+	//pthread_cancel(tpmt);
+	//pthread_join(tpmt, NULL);
 
-	if (pmtDemux)
-		delete pmtDemux;
+	//if (pmtDemux)
+	//	delete pmtDemux;
 
 	//close frontend	
 	for(fe_map_iterator_t it = femap.begin(); it != femap.end(); it++)

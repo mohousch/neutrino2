@@ -932,7 +932,7 @@ void CSectionsd::addNVODevent(const SIevent &evt)
 	{
 		dprintf(DEBUG_INFO, "CSectionsd::addNVODevent: new SIevent failed.\n");
 		return;
-		//throw std::bad_alloc();
+		throw std::bad_alloc();
 	}
 
 	SIeventPtr e(eptr);
@@ -2981,7 +2981,7 @@ void *CSectionsd::fseitThread(void *)
 
 	dmxFSEIT.addfilter(0x60, 0xfe); //other TS, scheduled, freesat epg is only broadcast using table_ids 0x60 (scheduled) and 0x61 (scheduled later)
 
-	int policy;
+	int policy = 0;
 	struct sched_param parm;
 	int rc = pthread_getschedparam(pthread_self(), &policy, &parm);
 	dprintf(DEBUG_DEBUG, "CSectionsd::fseitThread: freesatEitThread getschedparam: %d pol %d, prio %d\n", rc, policy, parm.sched_priority);
@@ -3167,16 +3167,12 @@ void *CSectionsd::fseitThread(void *)
 
 		if ((header->current_next_indicator) && (!dmxFSEIT.real_pauseCounter ))
 		{
-			// Wir wollen nur aktuelle sections
-
-			// Houdini: added new constructor where the buffer is given as a parameter and must be allocated outside
 			// -> no allocation and copy of data into a 2nd buffer
-			//				SIsectionEIT eit(SIsection(section_length + 3, buf));
 			SIsectionEIT eit(section_length + 3, static_buf);
 			// Houdini: if section is not parsed (too short) -> no need to check events
 			if (eit.is_parsed() && eit.header())
 			{
-				// == 0 -> kein event
+				// == 0 -> no event
 
 				//dprintf(DEBUG_DEBUG, "[eitThread] adding %d events [table 0x%x] (begin)\n", eit.events().size(), header.table_id);
 				zeit = time(NULL);
@@ -3426,16 +3422,12 @@ void *CSectionsd::viasateitThread(void *)
 
 		if ((header->current_next_indicator) && (!dmxVIASAT.real_pauseCounter ))
 		{
-			// Wir wollen nur aktuelle sections
-
-			// Houdini: added new constructor where the buffer is given as a parameter and must be allocated outside
 			// -> no allocation and copy of data into a 2nd buffer
-			//				SIsectionEIT eit(SIsection(section_length + 3, buf));
 			SIsectionEIT eit(section_length + 3, static_buf);
 			// Houdini: if section is not parsed (too short) -> no need to check events
 			if (eit.is_parsed() && eit.header())
 			{
-				// == 0 -> kein event
+				// == 0 -> no event
 
 				//dprintf(DEBUG_DEBUG, "[eitThread] adding %d events [table 0x%x] (begin)\n", eit.events().size(), header.table_id);
 				zeit = time(NULL);
@@ -3493,7 +3485,8 @@ void *CSectionsd::eitThread(void *)
 {
 	struct SI_section_header *header;
 	/* we are holding the start_stop lock during this timeout, so don't
-	   make it too long... */
+	   make it too long... 
+	*/
 	unsigned timeoutInMSeconds = EIT_READ_TIMEOUT;
 	bool sendToSleepNow = false;
 
@@ -3506,7 +3499,7 @@ void *CSectionsd::eitThread(void *)
 	   - 2/3 then get scheduled events on this TS
 	   - 4   then get the other TS's scheduled events,
 	   - 4ab (in two steps to reduce the POLLERRs on the DMX device)
-	   */
+	*/
 	// -- set EIT filter  0x4e-0x6F
 	dmxEIT.addfilter(0x00, 0x00); //0 dummy filter
 	dmxEIT.addfilter(0x50, 0xf0); //1  current TS, scheduled
@@ -3519,10 +3512,11 @@ void *CSectionsd::eitThread(void *)
 #endif
 
 	// debug
-	int policy;
+	int policy = 0;
 	struct sched_param parm;
+	
 	int rc = pthread_getschedparam(pthread_self(), &policy, &parm);
-	dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: getschedparam: %d pol %d, prio %d\n", rc, policy, parm.sched_priority);
+	dprintf(DEBUG_NORMAL, "CSectionsd::eitThread: getschedparam: %d pol %d, prio %d\n", rc, policy, parm.sched_priority);
 	
 	dprintf(DEBUG_NORMAL, "CSectionsd::eitThread: pid %d start\n", getpid());
 	
@@ -3533,7 +3527,7 @@ void *CSectionsd::eitThread(void *)
 	{
 		dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: %s: could not allocate static_buf\n", __FUNCTION__);
 		pthread_exit(NULL);
-		//throw std::bad_alloc();
+		throw std::bad_alloc();
 	}
 
 	dmxEIT.start(); // -> unlock
@@ -3559,17 +3553,19 @@ void *CSectionsd::eitThread(void *)
 		time_t zeit = time_monotonic();
 
 		rc = dmxEIT.getSection(static_buf, timeoutInMSeconds, timeoutsDMX);
+		
 		if(sectionsd_stop)
 			break;
 
 		if (timeoutsDMX < 0 && !channel_is_blacklisted)
 		{
 			if (timeoutsDMX == -1)
-				printf("CSectionsd::eitThread: skipping to next filter(%d) (> DMX_HAS_ALL_SECTIONS_SKIPPING)\n", dmxEIT.filter_index+1 );
+				printf("CSectionsd::eitThread: skipping to next filter(%d) (> DMX_HAS_ALL_SECTIONS_SKIPPING)\n", dmxEIT.filter_index + 1 );
 			else if (timeoutsDMX == -2)
-				printf("CSectionsd::eitThread: skipping to next filter(%d) (> DMX_HAS_ALL_CURRENT_SECTIONS_SKIPPING)\n", dmxEIT.filter_index+1 );
+				printf("CSectionsd::eitThread: skipping to next filter(%d) (> DMX_HAS_ALL_CURRENT_SECTIONS_SKIPPING)\n", dmxEIT.filter_index + 1 );
 			else
 				printf("CSectionsd::eitThread: skipping to next filter(%d) (timeouts %d)\n", dmxEIT.filter_index+1, timeoutsDMX);
+				
 			if ( dmxEIT.filter_index + 1 < (signed) dmxEIT.filters.size() )
 			{
 				timeoutsDMX = 0;
@@ -3586,6 +3582,7 @@ void *CSectionsd::eitThread(void *)
 		{
 			readLockServices();
 			MySIservicesOrderUniqueKey::iterator si = mySIservicesOrderUniqueKey.end();
+			
 			//dprintf(DEBUG_DEBUG, "timeoutsDMX %x\n",currentServiceKey);
 
 			if ( messaging_current_servicekey )
@@ -3605,6 +3602,7 @@ void *CSectionsd::eitThread(void *)
 						" reset to 0 (not broadcast)\n", messaging_current_servicekey );
 
 					dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: New Filterindex: %d (ges. %d)\n", dmxEIT.filter_index + 1, (signed) dmxEIT.filters.size() );
+					
 					dmxEIT.change( dmxEIT.filter_index + 1 );
 				}
 				else if (dmxEIT.filter_index >= 1)
@@ -3612,7 +3610,9 @@ void *CSectionsd::eitThread(void *)
 					if (dmxEIT.filter_index + 1 < (signed) dmxEIT.filters.size() )
 					{
 						dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: New Filterindex: %d (ges. %d)\n", dmxEIT.filter_index + 1, (signed) dmxEIT.filters.size() );
+						
 						dmxEIT.change(dmxEIT.filter_index + 1);
+						
 						//dprintf(DEBUG_DEBUG, "[eitThread] timeoutsDMX for 0x%x reset to 0 (skipping to next filter)\n" );
 						timeoutsDMX = 0;
 					}
@@ -3628,7 +3628,8 @@ void *CSectionsd::eitThread(void *)
 
 		if (timeoutsDMX >= CHECK_RESTART_DMX_AFTER_TIMEOUTS && scanning && !channel_is_blacklisted)
 		{
-			dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: skipping to next filter(%d) (> DMX_TIMEOUT_SKIPPING %d)\n", dmxEIT.filter_index+1, timeoutsDMX);
+			dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: skipping to next filter(%d) (> DMX_TIMEOUT_SKIPPING %d)\n", dmxEIT.filter_index + 1, timeoutsDMX);
+			
 			if ( dmxEIT.filter_index + 1 < (signed) dmxEIT.filters.size() )
 			{
 				dmxEIT.change(dmxEIT.filter_index + 1);
@@ -3652,9 +3653,12 @@ void *CSectionsd::eitThread(void *)
 			do {
 				struct timespec abs_wait;
 				struct timeval now;
+				
 				gettimeofday(&now, NULL);
 				TIMEVAL_TO_TIMESPEC(&now, &abs_wait);
+				
 				abs_wait.tv_sec += TIME_EIT_SCHEDULED_PAUSE;
+				
 				dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: going to sleep for %d seconds...\n", TIME_EIT_SCHEDULED_PAUSE);
 				if(sectionsd_stop)
 					break;
@@ -3679,6 +3683,7 @@ void *CSectionsd::eitThread(void *)
 				dprintf(DEBUG_DEBUG, "CSectionsd::eitThread:  waking up again - unknown reason %d\n",rs);
 				dmxEIT.real_unpause();
 			}
+			
 			// update zeit after sleep
 			zeit = time_monotonic();
 		}
@@ -3711,22 +3716,23 @@ void *CSectionsd::eitThread(void *)
 
 		if(sectionsd_stop)
 			break;
+			
+		//
 		if (header->current_next_indicator)
 		{
-			// Wir wollen nur aktuelle sections
-
-			// Houdini: added new constructor where the buffer is given as a parameter and must be allocated outside
 			// -> no allocation and copy of data into a 2nd buffer
-			//				SIsectionEIT eit(SIsection(section_length + 3, buf));
 			SIsectionEIT eit(section_length + 3, static_buf);
+			
 			// Houdini: if section is not parsed (too short) -> no need to check events
 			if (eit.is_parsed() && eit.header())
 			{
-				// == 0 -> kein event
+				// == 0 -> no event
 
 				//dprintf(DEBUG_DEBUG, "[eitThread] adding %d events [table 0x%x] (begin)\n", eit.events().size(), header.table_id);
+				
 				zeit = time(NULL);
-				// Nicht alle Events speichern
+				
+				// dont save all events
 				for (SIevents::iterator e = eit.events().begin(); e != eit.events().end(); e++)
 				{
 					if (!(e->times.empty()))
@@ -3735,21 +3741,25 @@ void *CSectionsd::eitThread(void *)
 								( ( e->times.begin()->startzeit + (long)e->times.begin()->dauer ) > zeit - oldEventsAre ) )
 						{
 							//fprintf(stderr, "%02x ", header.table_id);
+							
 							if(sectionsd_stop)
 								break;
+								
 							//printf("Adding event 0x%llx table %x version %x running %d\n", e->uniqueKey(), header->table_id, header->version_number, e->runningStatus());
+							
+							//
 							CSectionsd::getInstance()->addEvent(*e, zeit);
 						}
 					}
 					else
 					{
-						// pruefen ob nvod event
+						// check nvod event
 						readLockServices();
 						MySIservicesNVODorderUniqueKey::iterator si = mySIservicesNVODorderUniqueKey.find(e->get_channel_id());
 
 						if (si != mySIservicesNVODorderUniqueKey.end())
 						{
-							// Ist ein nvod-event
+							// is nvod-event
 							writeLockEvents();
 
 							for (SInvodReferences::iterator i = si->second->nvods.begin(); i != si->second->nvods.end(); i++)
@@ -3769,6 +3779,7 @@ void *CSectionsd::eitThread(void *)
 			printf("CSectionsd::eitThread: skipped sections for table 0x%x\n", header->table_id);
 		}
 	} // for
+	
 	delete[] static_buf;
 
 	dprintf(DEBUG_DEBUG, "CSectionsd::eitThread: ended\n");
@@ -3802,7 +3813,7 @@ void *CSectionsd::cnThread(void *)
 	{
 		dprintf(DEBUG_DEBUG, "CSectionsd::cnThread: %s: could not allocate static_buf\n", __FUNCTION__);
 		pthread_exit(NULL);
-		//throw std::bad_alloc();
+		throw std::bad_alloc();
 	}
 
 	dmxCN.start(); // -> unlock
@@ -4994,6 +5005,32 @@ void CSectionsd::Stop(void)
 	
 	if(CZapit::getInstance()->getFrontendCount())
 	{
+		/*
+		pthread_cancel(threadCN);
+		pthread_join(threadCN, NULL);
+		
+		pthread_cancel(threadEIT);
+		pthread_join(threadEIT, NULL);
+		
+		pthread_cancel(threadFSEIT);
+		pthread_join(threadFSEIT, NULL);
+		
+		pthread_cancel(threadVIASATEIT);
+		pthread_join(threadVIASATEIT, NULL);
+		*/
+
+		// close eitdmx
+		dmxEIT.close();
+		
+		// close cndmx
+		dmxCN.close();
+		
+		// close freesatdmx
+		dmxFSEIT.close();
+		
+		//
+		dmxVIASAT.close();
+		
 		if(dmxUTC)
 		{
 			delete dmxUTC;
@@ -5008,30 +5045,6 @@ void CSectionsd::Stop(void)
 			delete eitDmx;
 			eitDmx = NULL;
 		}
-		
-		pthread_cancel(threadEIT);
-		pthread_join(threadEIT, NULL);
-		
-		pthread_cancel(threadCN);
-		pthread_join(threadCN, NULL);
-		
-		pthread_cancel(threadFSEIT);
-		pthread_join(threadFSEIT, NULL);
-		
-		pthread_cancel(threadVIASATEIT);
-		pthread_join(threadVIASATEIT, NULL);
-
-		// close eitdmx
-		dmxEIT.close();
-		
-		// close cndmx
-		dmxCN.close();
-		
-		// close freesatdmx
-		dmxFSEIT.close();
-		
-		//
-		dmxVIASAT.close();
 	}
 	
 	sectionsd_stop = 1;

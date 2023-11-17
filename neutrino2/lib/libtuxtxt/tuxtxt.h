@@ -85,22 +85,21 @@ int displaywidth;
 #define TV169FULLSTARTY (720 - 360)/2 //sy
 #define TV169FULLWIDTH  (ex - sx)/2
 #define TV169FULLHEIGHT 360 //(ey - sy)
-
+//
 #define TOPMENUSTARTX TV43STARTX+2
 #define TOPMENUENDX TVENDX
 #define TOPMENUSTARTY StartY
 #define TOPMENUENDY TV43STARTY
-
+//
 #define TOPMENULINEWIDTH ((TOPMENUENDX-TOPMENU43STARTX+fontwidth_topmenusmall-1)/fontwidth_topmenusmall)
 #define TOPMENUINDENTBLK 0
 #define TOPMENUINDENTGRP 1
 #define TOPMENUINDENTDEF 2
 #define TOPMENUSPC 0
 #define TOPMENUCHARS (TOPMENUINDENTDEF+12+TOPMENUSPC+4)
-
+//
 #define FLOFSIZE 4
-
-/* spacing attributes */
+// spacing attributes
 #define alpha_black         0x00
 #define alpha_red           0x01
 #define alpha_green         0x02
@@ -133,8 +132,7 @@ int displaywidth;
 #define new_background      0x1D
 #define hold_mosaic         0x1E
 #define release_mosaic      0x1F
-
-/* rc codes */ 
+// rc codes
 #define RC_0        CRCInput::RC_0
 #define RC_1        CRCInput::RC_1
 #define RC_2        CRCInput::RC_2
@@ -164,7 +162,7 @@ int displaywidth;
 #define RC_HOME     CRCInput::RC_home
 
 //
-typedef enum /* object type */
+typedef enum
 {
 	OBJ_PASSIVE,
 	OBJ_ACTIVE,
@@ -189,16 +187,16 @@ const char *ObjectType[] =
 	"Passive"
 };
 
-/* messages */
+// messages
 #define ShowInfoBar     0
 #define PageNotFound    1
 #define ShowServiceName 2
 #define NoServicesFound 3
 
-/* framebuffer stuff */
+// framebuffer stuff
 static unsigned char * lfb = 0;
 
-/* freetype stuff */
+// freetype stuff
 FT_Library      library;
 FTC_Manager     manager;
 static FTC_SBitCache   cache;
@@ -362,7 +360,7 @@ const unsigned short int arrowtable[] = {
 	8592, 8594, 8593, 8595, 'O', 'K', 8592, 8592
 };
 
-/* national subsets */
+// national subsets
 const char countrystring[] =
 "         Default          "   /*  0 no subset specified */
 "       Czech/Slovak       "   /*  1 czech, slovak */
@@ -416,11 +414,11 @@ enum
 
 const unsigned char countryconversiontable[] = { NAT_UK, NAT_DE, NAT_SW, NAT_IT, NAT_FR, NAT_SP, NAT_CZ, NAT_RO};
 
-/* some data */
+// some data
 char versioninfo[16];
 int hotlist[10];
 int maxhotlist;
-
+//
 int pig, fb;
 int sx, ex, sy, ey;
 int PosX, PosY, StartX, StartY;
@@ -433,18 +431,18 @@ int prev_100, prev_10, next_10, next_100;
 int screen_mode1, screen_mode2, color_mode, trans_mode, national_subset, national_subset_secondary, auto_national, swapupdown, showhex, menulanguage;
 int pids_found, current_service, getpidsdone;
 int SDT_ready;
-int pc_old_row, pc_old_col;     /* for page catching */
-int temp_page;	/* for page input */
+int pc_old_row, pc_old_col;     // for page catching
+int temp_page;	// for page input
 char saveconfig, hotlistchanged;
 signed char clearbbcolor = -1;
 int usettf;
 short pop, gpop, drcs, gdrcs;
-unsigned char tAPx, tAPy;	/* temporary offset to Active Position for objects */
+unsigned char tAPx, tAPy;	// temporary offset to Active Position for objects
 unsigned char axdrcs[12+1+10+1];
 #define aydrcs (axdrcs + 12+1)
 unsigned char FullRowColor[25];
 unsigned char FullScrColor;
-tstPageinfo *pageinfo = 0;/* pointer to cached info of last decoded page */
+tstPageinfo *pageinfo = 0; // pointer to cached info of last decoded page
 const char * fncmodes[] = {"12", "6"};
 const char * saamodes[] = {"4:3_full_format", "16:9_full_format"};
 
@@ -464,11 +462,9 @@ struct _pid_table
 }pid_table[128];
 
 unsigned char restoreaudio = 0;
-/* 0 Nokia, 1 Philips, 2 Sagem */
-/* typ_vcr/dvb: 	v1 a1 v2 a2 v3 a3 (vcr_only: fblk) */
 
-/* language dependent texts */
-#define MAXMENULANGUAGE 10 /* 0 deutsch, 1 englisch, 2 franz\F6sisch, 3 niederl\E4ndisch, 4 griechisch, 5 italienisch, 6 polnisch, 7 schwedisch, 8 suomi, 9 portuguesa, 10 russian */
+// language dependent texts
+#define MAXMENULANGUAGE 10
 const int menusubset[] =   { NAT_DE   , NAT_UK    , NAT_FR       , NAT_UK          , NAT_GR      , NAT_IT       , NAT_PL    , NAT_SW      , NAT_SW ,   NAT_SP,      NAT_RB};//FIXME
 
 #define Menu_StartX (StartX + fontwidth*9/2)
@@ -562,7 +558,6 @@ const char menuatr[Menu_Height*(Menu_Width+1)] =
 };
 
 const char configmenu[][Menu_Height*(Menu_Width+1)] = {};
-
 const char catchmenutext[][81] = {};
 
 const char message_3[][39] = {};
@@ -702,8 +697,6 @@ tstPageAttr atrtable[] =
 unsigned char  page_char[40 * 25];
 tstPageAttr page_atrb[40 * 25];
 
-//unsigned short page_atrb[40 * 25]; /*  ?????:h:cc:bbbb:ffff -> ?=reserved, h=double height, c=charset (0:G0 / 1:G1c / 2:G1s), b=background, f=foreground */
-
 /* colormap */
 const unsigned short defaultcolors[] =	/* 0x0bgr */
 {
@@ -726,15 +719,6 @@ unsigned char bgra[][5] = {
 "\0\0\0\xFF", "\0\0\0\xFF", "\0\0\0\xFF", "\0\0\0\xFF",
 "\0\0\0\xFF", "\0\0\0\xFF", "\0\0\0\xC0", "\0\0\0\x00",
 "\0\0\0\x33" };
-
-/* old 8bit color table */
-#if 0
-unsigned short rd0[] = {0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0x00<<8, 0x00<<8, 0x00<<8, 0,      0      };
-unsigned short gn0[] = {0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0x20<<8, 0x10<<8, 0x20<<8, 0,      0      };
-unsigned short bl0[] = {0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0x40<<8, 0x20<<8, 0x40<<8, 0,      0      };
-unsigned short tr0[] = {0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0x0000 , 0x0000 , 0x0A00 , 0xFFFF, 0x3000 };
-struct fb_cmap colormap_0 = {0, SIZECOLTABLE, rd0, gn0, bl0, tr0};
-#endif
 
 /* tables for color table remapping, first entry (no remapping) skipped, offsets for color index */
 const unsigned char MapTblFG[] = {  0,  0,  8,  8, 16, 16, 16 };

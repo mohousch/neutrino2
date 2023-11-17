@@ -200,17 +200,18 @@ void CFrontend::getFEDelSysMask(void)
 
 #if HAVE_DVB_API_VERSION >= 5
 #ifdef DTV_ENUM_DELSYS
-	struct dtv_property Frontend[1];
-	Frontend[0].cmd = DTV_ENUM_DELSYS;
+	struct dtv_property p[1];
+	memset(p, 0, sizeof(p));
+	p[0].cmd = DTV_ENUM_DELSYS;
 	struct dtv_properties CmdSeq;
 	CmdSeq.num = 1;
-	CmdSeq.props = Frontend;
+	CmdSeq.props = p;
 	
 	int ret = ::ioctl(fd, FE_GET_PROPERTY, &CmdSeq);
 	
 	if (ret >= 0) 
 	{
-		for (uint32_t i = 0; i < Frontend[0].u.buffer.len; i++) 
+		for (uint32_t i = 0; i < p[0].u.buffer.len; i++) 
 		{
 			if (i >= MAX_DELSYS) 
 			{
@@ -218,7 +219,7 @@ void CFrontend::getFEDelSysMask(void)
 				break;
 			}
 
-			switch (Frontend[0].u.buffer.data[i]) 
+			switch (p[0].u.buffer.data[i]) 
 			{
 				case SYS_DVBC_ANNEX_A:
 				case SYS_DVBC_ANNEX_B:
@@ -267,7 +268,7 @@ void CFrontend::getFEDelSysMask(void)
 #endif
 				
 				default:
-					dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: (fe%d:%d) ERROR: delivery system unknown (delivery_system: %d)\n", feadapter, fenumber, Frontend[0].u.buffer.data[i]);
+					dprintf(DEBUG_INFO, "CFrontend::getFEDelSysMask: (fe%d:%d) ERROR: delivery system unknown (delivery_system: %d)\n", feadapter, fenumber, p[0].u.buffer.data[i]);
 					continue;
 			}
 

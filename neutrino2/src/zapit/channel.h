@@ -202,23 +202,22 @@ class CZapitChannel
 
 		~CZapitChannel(void);
 
-		// get methods - read only variables
+		//// get methods - read only variables
 		t_service_id		getServiceId(void)         	const { return service_id; }
 		t_transport_stream_id	getTransportStreamId(void) 	const { return transport_stream_id; }
 		t_original_network_id	getOriginalNetworkId(void) 	const { return original_network_id; }
 		unsigned char        	getServiceType(bool real = false);
 		int 			getVideoType()			{ return videoType;};
-
+		//
 		bool			isHD();
 		bool			is3DTV();
 		bool 			isUHD();
 		bool 			isWEBTV(){return isWebTV;};
-
+		//
 		t_channel_id         	getChannelID(void)         	const { return channel_id; }
 		transponder_id_t       	getTransponderId(void)		const { return CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id); }
 		freq_id_t		getFreqId()			const { return freq; }
-
-		// get methods - read and write variables
+		//// get methods - read and write variables
 		const std::string&	getName(void)			const { return name; }
 		const int 		getNumber(void)			const { return number;}
 		t_satellite_position	getSatellitePosition(void)	const { return satellitePosition; }
@@ -241,14 +240,13 @@ class CZapitChannel
 		t_channel_id		getEPGID(void)	 		const { return epgid;};
 		t_channel_id		getLogoID(void)			const {return logoid;};
 		std::string		getEPGIDName(void)		{return epgidname;};
-
+		//
 		CZapitAudioChannel * 	getAudioChannel(unsigned char index = 0xFF);
 		unsigned short 		getAudioPid(unsigned char index = 0xFF);
 		unsigned char  		getAudioChannelIndex(void)	{ return currentAudioChannel; }
-
+		////
 		int addAudioChannel(const unsigned short pid, const CZapitAudioChannel::ZapitAudioChannelType audioChannelType, const std::string & description, const unsigned char componentTag);
-
-		// set methods
+		//// set methods
 		void setServiceType(const unsigned char pserviceType)	{ serviceType = pserviceType; }
 		inline void setName(const std::string pName)            { name = pName; }
 		void setDescription(const std::string pDescr)		{ description = pDescr;};
@@ -270,15 +268,13 @@ class CZapitChannel
 		void setEPGID(const t_channel_id id)			{ epgid = id; };
 		void setLogoID(const t_channel_id id)			{ logoid = id; };
 		void setEPGIDName(const std::string name)		{ epgidname = name; };
-		
 		// cleanup methods
 		void resetPids(void);
 		
-		// subtitling related methods
+		//// subtitling related methods
 		void addTTXSubtitle(const unsigned int pid, const std::string langCode, const unsigned char magazine_number, const unsigned char page_number, const bool impaired = false);
-
 		void addDVBSubtitle(const unsigned int pid, const std::string langCode, const unsigned char subtitling_type, const unsigned short composition_page_id, const unsigned short ancillary_page_id);
-
+		//
 		unsigned getSubtitleCount() 				const { return channelSubs.size(); };
 		CZapitAbsSub * getChannelSub(int index = -1);
 		int getChannelSubIndex(void);
@@ -303,8 +299,6 @@ struct CmpChannelByChName: public std::binary_function <const CZapitChannel * co
 		return std::lexicographical_compare(c1->getName().begin(), c1->getName().end(), c2->getName().begin(), c2->getName().end(), comparetolower);
 	};
 };
-
-//// CServiceManager
 
 #endif /* __zapit_channel_h__ */
 

@@ -367,11 +367,13 @@ void CTextBox::refreshTextLineArray(void)
 				if (aktWidth > maxTextWidth) 
 					maxTextWidth = aktWidth;
 
+				//
 				if( m_cText[pos] == '\n' || loop == false)
 				{
 					// current line ends with an carriage return, make new line
 					if (m_cText[pos] == '\n')
 						aktLine.erase(aktLine.size() - 1, 1);
+						
 					m_cLineArray.push_back(aktLine);
 					m_nNrOfLines++;
 					aktLine = "";
@@ -424,16 +426,9 @@ void CTextBox::refreshTextLineArray(void)
 		// linesPerPage
 		m_nLinesPerPage = (m_cFrameTextRel.iHeight) / m_nFontTextHeight;
 
-		//if(m_tMode == PIC_CENTER && m_nCurrentPage == 0)
-		//{
-		//	m_nLinesPerPage = (m_cFrameTextRel.iHeight - th - 10) / m_nFontTextHeight;
-		//}
-		//else if(m_tMode == PIC_CENTER && m_nCurrentPage > 0)
-		//	m_nLinesPerPage = (m_cFrameTextRel.iHeight) / m_nFontTextHeight; // FIXME:
-
 		// NrOfPages
 		if(m_nLinesPerPage > 0)
-			m_nNrOfPages = ((m_nNrOfLines - 1) / m_nLinesPerPage) + 1; //FIXME: 
+			m_nNrOfPages = ((m_nNrOfLines - 1) / m_nLinesPerPage) + 1;
 		else
 			m_nNrOfPages = 1;
 
