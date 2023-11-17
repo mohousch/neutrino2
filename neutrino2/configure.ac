@@ -58,15 +58,6 @@ PKG_CHECK_MODULES([SWRESAMPLE], [libswresample])
 PKG_CHECK_MODULES([SWSCALE], [libswscale])
 fi
 
-# gstreamer / opengl overlay
-AC_ARG_ENABLE(overlay,
-	AS_HELP_STRING(--enable-overlay, include gstreamer overlay window into opengl window),
-	,[enable_overlay=no])
-	
-if test "$enable_overlay" = "yes"; then
-AC_DEFINE(USE_OVERLAY,1,[include overlay])
-fi
-
 # gstreamer
 AC_ARG_ENABLE(gstreamer,
 	AS_HELP_STRING(--enable-gstreamer,include gstreamer as player engine support),
@@ -81,8 +72,16 @@ AC_ARG_WITH(gstversion,
 	[GST_MAJORMINOR=$withval],[GST_MAJORMINOR=1.0])
 
 PKG_CHECK_MODULES(GSTREAMER, gstreamer-$GST_MAJORMINOR gstreamer-pbutils-$GST_MAJORMINOR)
-# to overlay video window
-#PKG_CHECK_MODULES(GSTREAMER, gstreamer-$GST_MAJORMINOR gstreamer-pbutils-$GST_MAJORMINOR gstreamer-video-$GST_MAJORMINOR)
+fi
+
+# gstreamer / opengl overlay
+AC_ARG_ENABLE(overlay,
+	AS_HELP_STRING(--enable-overlay, include gstreamer overlay window into opengl window),
+	,[enable_overlay=no])
+	
+if test "$enable_overlay" = "yes"; then
+AC_DEFINE(USE_OVERLAY,1,[include overlay])
+PKG_CHECK_MODULES(GSTREAMER, gstreamer-$GST_MAJORMINOR gstreamer-pbutils-$GST_MAJORMINOR gstreamer-video-$GST_MAJORMINOR)
 fi
 
 # lcd
@@ -175,16 +174,6 @@ AX_LUA_HEADERS
 AX_LUA_LIBS
 
 AC_DEFINE(ENABLE_LUA,1,[include lua interface support])
-fi
-
-# fake tuner
-AC_ARG_ENABLE(fake_tuner,
-	AS_HELP_STRING(--enable-fake_tuner,include fake tuner support for testing),
-	,[enable_fake_tuner=no])
-AM_CONDITIONAL(ENABLE_FAKE_TUNER,test "$enable_fake_tuner" = "yes")
-
-if test "$enable_fake_tuner" = "yes"; then
-AC_DEFINE(ENABLE_FAKE_TUNER,1,[include fake tuner support for testing])
 fi
 
 # testing

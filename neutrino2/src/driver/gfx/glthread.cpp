@@ -21,7 +21,6 @@
 	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#define __STDC_CONSTANT_MACROS
 #include <iostream>
 #include <vector>
 #include <deque>
@@ -271,7 +270,7 @@ void GLThreadObj::specialcb(int key, int /*x*/, int /*y*/)
 		}
 	}
 }
-
+  
 int sleep_us = 30000;
 void GLThreadObj::render() 
 {
