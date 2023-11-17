@@ -2620,7 +2620,46 @@ void ClistBox::paintItemInfo(int pos)
 		{
 			CMenuItem* item = items[pos];
 			
-			if (footInfoMode == CCItemInfo::ITEMINFO_INFO)
+			//
+			if (paint_Foot && fbutton_count == 0)
+			{
+				printf("::paintItemInfo: paint_Foot && fbutton_count\n");	
+				// info icon
+				CCIcon infoIcon;
+				infoIcon.setIcon(NEUTRINO_ICON_INFO);
+				int iw, ih;
+				frameBuffer->getIconSize(NEUTRINO_ICON_INFO, &iw, &ih);
+					
+				//
+				if (paintframe)
+				{
+					// refresh box
+					frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight, itemBox.iWidth, fheight, COL_MENUFOOT_PLUS_0, g_settings.Foot_radius, g_settings.Foot_corner, g_settings.Foot_gradient, GRADIENT_VERTICAL, INT_LIGHT, g_settings.Foot_gradient_type);
+					
+					//
+					label.setPosition(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - iw, fheight - 2);
+				}
+								
+				// paint horizontal line buttom
+				if (g_settings.Foot_line)
+					frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, g_settings.Foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
+				
+				// limit icon height
+				if(ih >= fheight)
+					ih = fheight;
+						
+				infoIcon.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + (fheight - ih)/2, iw, ih);
+				//infoIcon.enableRepaint();
+				//infoIcon.saveScreen();
+				infoIcon.paint();
+
+				// Hint
+				label.setText(item->itemHint.c_str());
+				label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
+				label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
+				label.paint();
+			}
+			else if (footInfoMode == CCItemInfo::ITEMINFO_INFO)
 			{
 				// detailslines
 				itemsLine.setPosition(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight + 2, itemBox.iWidth, cFrameFootInfoHeight);
@@ -2724,45 +2763,6 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.paintMainFrame(true);
 						
 				itemsLine.paint();
-			}
-			
-			//
-			if (paint_Foot && fbutton_count == 0)
-			{	
-				// info icon
-				CCIcon infoIcon;
-				infoIcon.setIcon(NEUTRINO_ICON_INFO);
-				int iw, ih;
-				frameBuffer->getIconSize(NEUTRINO_ICON_INFO, &iw, &ih);
-					
-				//
-				if (paintframe)
-				{
-					// refresh box
-					frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight, itemBox.iWidth, fheight, COL_MENUFOOT_PLUS_0, g_settings.Foot_radius, g_settings.Foot_corner, g_settings.Foot_gradient, GRADIENT_VERTICAL, INT_LIGHT, g_settings.Foot_gradient_type);
-					
-					//
-					label.setPosition(itemBox.iX + BORDER_LEFT + iw + ICON_OFFSET, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + 2, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT - iw, fheight - 2);
-				}
-								
-				// paint horizontal line buttom
-				if (g_settings.Foot_line)
-					frameBuffer->paintBoxRel(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight, itemBox.iWidth - BORDER_LEFT - BORDER_RIGHT, 2, COL_MENUCONTENT_PLUS_5, 0, CORNER_NONE, g_settings.Foot_line_gradient? DARK2LIGHT2DARK : NOGRADIENT, GRADIENT_HORIZONTAL, INT_LIGHT, GRADIENT_ONECOLOR);
-				
-				// limit icon height
-				if(ih >= fheight)
-					ih = fheight;
-						
-				infoIcon.setPosition(itemBox.iX + BORDER_LEFT, itemBox.iY + itemBox.iHeight - cFrameFootInfoHeight - fheight + (fheight - ih)/2, iw, ih);
-				//infoIcon.enableRepaint();
-				//infoIcon.saveScreen();
-				infoIcon.paint();
-
-				// Hint
-				label.setText(item->itemHint.c_str());
-				label.setFont(SNeutrinoSettings::FONT_TYPE_EPG_INFO1);
-				label.setColor(COL_MENUFOOT_TEXT_PLUS_0);
-				label.paint();
 			}
 		}
 	}	
