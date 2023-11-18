@@ -21,7 +21,7 @@ upnp.pot: $(top_srcdir)/upnp/*.cpp
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO) upnp.pot
+CLEANFILES = $(LANGMO)
 
 dist-hook: $(LANGPO)
 

@@ -21,7 +21,7 @@ nfilm.pot: $(top_srcdir)/nfilm/*.cpp
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO) nfilm.pot
+CLEANFILES = $(LANGMO)
 
 dist-hook: $(LANGPO)
 

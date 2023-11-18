@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 5.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-11-18 11:15+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../ntvshows/ntvshows.cpp:289 ../../ntvshows/ntvshows.cpp:352
+msgid "Airing today"
+msgstr ""
+
+#: ../../ntvshows/ntvshows.cpp:278
+msgid "Next Page"
+msgstr ""
+
+#: ../../ntvshows/ntvshows.cpp:291 ../../ntvshows/ntvshows.cpp:353
+msgid "On the air"
+msgstr ""
+
+#: ../../ntvshows/ntvshows.cpp:293 ../../ntvshows/ntvshows.cpp:354
+msgid "Popular"
+msgstr ""
+
+#: ../../ntvshows/ntvshows.cpp:279
+msgid "Prev Page"
+msgstr ""
+
+#: ../../ntvshows/nepisodes.cpp:77 ../../ntvshows/nseasons.cpp:79
+#: ../../ntvshows/ntvshows.cpp:138
+msgid "Scan for Movies ..."
+msgstr ""
+
+#: ../../ntvshows/nepisodes.cpp:77 ../../ntvshows/nseasons.cpp:79
+#: ../../ntvshows/ntvshows.cpp:138
+msgid "Serien Trailer"
+msgstr ""
+
+#: ../../ntvshows/ntvshows.cpp:295 ../../ntvshows/ntvshows.cpp:355
+msgid "Top rated"
+msgstr ""

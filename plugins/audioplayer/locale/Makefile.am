@@ -21,7 +21,7 @@ audioplayer.pot: $(top_srcdir)/audioplayer/*.cpp
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO) audioplayer.pot
+CLEANFILES = $(LANGMO)
 
 dist-hook: $(LANGPO)
 

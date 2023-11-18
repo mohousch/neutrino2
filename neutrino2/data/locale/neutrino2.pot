@@ -1,0 +1,4515 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the neutrino2 package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2 5.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-11-18 11:05+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../src/gui/timerlist.cpp:1013 ../../src/gui/timerlist.cpp:1177
+msgid "'X'=timer '-' no timer"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3118
+#, c-format
+msgid "(%d%% over)"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:631
+msgid "(Re)-Calculate Positions"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:512 ../../src/gui/motorcontrol.cpp:519
+msgid "(a) Motor Position:"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:523
+msgid "(b) Movement:"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:546
+msgid "(c) Step Size:"
+msgstr ""
+
+#: ../../src/gui/filebrowser.cpp:144
+msgid "(date)"
+msgstr ""
+
+#: ../../src/gui/filebrowser.cpp:141
+msgid "(filename)"
+msgstr ""
+
+#: ../../src/gui/filebrowser.cpp:142
+msgid "(filename2)"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:368 ../../src/gui/audioplayer.cpp:386
+msgid "(relative, in seconds)"
+msgstr ""
+
+#: ../../src/gui/filebrowser.cpp:145
+msgid "(size)"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3113
+#, c-format
+msgid "(starting in %d min)"
+msgstr ""
+
+#: ../../src/gui/filebrowser.cpp:143
+msgid "(type)"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1227 ../../src/gui/osd_setup.cpp:1415
+msgid ", please be patient..."
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1015 ../../src/gui/timerlist.cpp:1182
+msgid "0 for unlimited repeats"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:549
+msgid "5 Volt"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:205 ../../src/gui/audio_setup.cpp:298
+msgid "A/V sync"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:209 ../../src/gui/audio_setup.cpp:315
+msgid "AC3 Delay"
+msgstr ""
+
+#: ../../src/gui/audio_video_select.cpp:215
+msgid "AV Select"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:351
+msgid "Abortion of channel scan"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:1012
+msgid "Absolute start directory"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:214
+msgid "Activate settings"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:954 ../../src/gui/movieinfo.cpp:883
+#: ../../src/gui/movieplayer.cpp:2187 ../../src/system/tmdbparser.cpp:252
+msgid "Actors"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:2021
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:54
+#: ../../src/gui/bedit/bouqueteditor_channels.cpp:90
+msgid "Add"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:1806
+msgid "Add to Bouquets"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:222
+msgid "Adult movie / Drama"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:128
+msgid "Advanced"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:216
+msgid "Adventure / Western/War"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:955
+msgid "Age"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1000 ../../src/gui/timerlist.cpp:1001
+#: ../../src/gui/timerlist.cpp:1167 ../../src/gui/timerlist.cpp:1168
+msgid "Alarm time"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:1450 ../../src/neutrino2.cpp:1451
+#: ../../src/neutrino2.cpp:1516 ../../src/neutrino2.cpp:1517
+#: ../../src/neutrino2.cpp:1523 ../../src/neutrino2.cpp:1524
+#: ../../src/gui/bouquetlist.cpp:444
+msgid "All Services"
+msgstr ""
+
+#: ../../src/skin.cpp:217 ../../src/gui/alphasetup.cpp:187
+msgid "Alpha Setup"
+msgstr ""
+
+#: ../../src/gui/audio_select.cpp:154 ../../src/gui/audio_setup.cpp:197
+#: ../../src/gui/audio_setup.cpp:288 ../../src/gui/video_setup.cpp:411
+#: ../../src/gui/video_setup.cpp:466
+msgid "Analog Output"
+msgstr ""
+
+#: ../../src/gui/infoviewer.cpp:1120
+msgid "Antenna positioning"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:727
+msgid "Arabic"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:384
+msgid "Are you sure ?"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:698
+msgid "Are you sure to format ? You will lost all data "
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:507
+msgid "Are you sure to init ?"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:287
+msgid "Arts / Culture"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:297
+msgid "Arts / Culture magazines"
+msgstr ""
+
+#: ../../src/gui/streaminfo.cpp:585 ../../src/gui/streaminfo.cpp:611
+msgid "Aspect Ratio"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:253
+msgid "Athletics"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:619 ../../src/gui/scan.cpp:620
+msgid "Atsc:"
+msgstr ""
+
+#: ../../src/gui/infoviewer.cpp:1744 ../../src/gui/movieinfo.cpp:980
+#: ../../src/gui/movieplayer.cpp:1881
+msgid "Audio"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1053 ../../src/gui/timerlist.cpp:1087
+msgid "Audio PIDs"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:216 ../../src/gui/audioplayer.cpp:349
+#: ../../src/gui/audioplayer.cpp:1414
+msgid "Audio Playlist"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:216
+msgid "Audio language preferences"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:71
+msgid "Audio master"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:173 ../../src/gui/main_setup.cpp:127
+msgid "Audio settings"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:99
+msgid "Audioplayer"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1326 ../../src/gui/audioplayer_setup.cpp:116
+#: ../../src/gui/main_setup.cpp:149
+msgid "Audioplayer settings"
+msgstr ""
+
+#: ../../src/gui/streaminfo.cpp:587 ../../src/gui/streaminfo.cpp:665
+#: ../../src/gui/streaminfo.cpp:671
+msgid "Audiotype"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:237
+msgid "Auto select audio"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:263
+msgid "Auto select subtitles"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:643 ../../src/gui/scan_setup.cpp:1398
+msgid "Auto-Scan"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:655 ../../src/gui/scan_setup.cpp:1533
+msgid "Auto-Scan multiple Satellites"
+msgstr ""
+
+#: ../../src/gui/update.cpp:171
+msgid "Available Images/Packages"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:209
+msgid "BOTTOM"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:207
+msgid "BOTTOM LEFT"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:205
+msgid "BOTTOM RIGHT"
+msgstr ""
+
+#: ../../src/gui/widget/messagebox.cpp:548
+msgid "Back"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:296 ../../src/gui/osd_setup.cpp:301
+#: ../../src/gui/osd_setup.cpp:306 ../../src/gui/osd_setup.cpp:311
+#: ../../src/gui/osd_setup.cpp:316 ../../src/gui/osd_setup.cpp:321
+#: ../../src/gui/osd_setup.cpp:329 ../../src/gui/osd_setup.cpp:354
+#: ../../src/gui/osd_setup.cpp:359 ../../src/gui/osd_setup.cpp:364
+#: ../../src/gui/osd_setup.cpp:369 ../../src/gui/osd_setup.cpp:395
+#: ../../src/gui/osd_setup.cpp:503 ../../src/gui/osd_setup.cpp:514
+msgid "Background"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:468
+msgid "Backup failed"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:281
+msgid "Ballet"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1315
+msgid "Bandwidth"
+msgstr ""
+
+#: ../../src/gui/streaminfo.cpp:157 ../../src/gui/streaminfo.cpp:218
+msgid "Bitrate"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:758 ../../src/gui/movieplayer.cpp:1895
+msgid "Bookmarks"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:407 ../../src/gui/osd_setup.cpp:523
+msgid "Border"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:711
+msgid "Bosnian"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:582
+msgid "Bouquet"
+msgstr ""
+
+#: ../../src/gui/service_menu.cpp:131
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:230
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:585
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:598
+msgid "Bouquet Editor"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:88
+msgid "Bouquet back"
+msgstr ""
+
+#: ../../src/gui/bouquetlist.cpp:62 ../../src/gui/channellist.cpp:101
+#: ../../src/gui/eventlist.cpp:804
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:151
+msgid "Bouquets"
+msgstr ""
+
+#: ../../src/gui/dboxinfo.cpp:159
+msgid "Box Info"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3795
+msgid ""
+"Box will shutdown in 1 min.\n"
+"Cancel Sutdown ?"
+msgstr ""
+
+#: ../../src/gui/psisetup.cpp:138 ../../src/gui/psisetup.cpp:154
+#: ../../src/gui/psisetup.cpp:171 ../../src/gui/psisetup.cpp:187
+#: ../../src/gui/psisetup.cpp:238 ../../src/gui/psisetup.cpp:301
+#: ../../src/gui/psisetup.cpp:393
+msgid "Brightness"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:197 ../../src/gui/lcd_setup.cpp:221
+msgid "Brightness after dim timeout"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:269 ../../src/gui/network_setup.cpp:289
+#: ../../src/gui/network_setup.cpp:593
+msgid "Broadcast"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:295
+msgid "Broadcasting / Press"
+msgstr ""
+
+#: ../../src/gui/imageinfo.cpp:204
+msgid "Built date: "
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:526
+msgid "Buttons Bar"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:529
+msgid "Buttons Line"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:532
+msgid "Buttons Line Gradient"
+msgstr ""
+
+#: ../../src/gui/cam_menu.cpp:326
+msgid "CAM init complete"
+msgstr ""
+
+#: ../../src/gui/cam_menu.cpp:269
+msgid "CAM inserted in slot"
+msgstr ""
+
+#: ../../src/gui/cam_menu.cpp:297
+msgid "CAM removed from slot"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:130
+msgid "CEC Setup"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:160
+msgid "CEC broadcast"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:156 ../../src/gui/cec_setup.cpp:162
+#: ../../src/gui/cec_setup.cpp:239 ../../src/gui/cec_setup.cpp:248
+msgid "CEC mode"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:90
+msgid "CEC mode off"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:92
+msgid "CEC mode recorder"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:91
+msgid "CEC mode tuner"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:177
+msgid "CEC settings"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:158 ../../src/gui/cec_setup.cpp:166
+#: ../../src/gui/cec_setup.cpp:258
+msgid "CEC standby"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:84
+msgid "CEC standby no timer"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:164 ../../src/gui/cec_setup.cpp:262
+msgid "CEC view on"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:168 ../../src/gui/cec_setup.cpp:266
+msgid "CEC volume"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:99
+msgid "CEC volume TV"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:98
+msgid "CEC volume audiosystem"
+msgstr ""
+
+#: ../../src/gui/cec_setup.cpp:97
+msgid "CEC volume off"
+msgstr ""
+
+#: ../../src/gui/service_menu.cpp:136
+msgid "CI Cam"
+msgstr ""
+
+#: ../../src/gui/cam_menu.cpp:134
+msgid "CI Cam settings"
+msgstr ""
+
+#: ../../src/gui/cam_menu.cpp:171
+msgid "CI cam reset"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:261
+msgid "CIFS"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:210
+msgid "CORNER ALL"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:201
+msgid "CORNER NONE"
+msgstr ""
+
+#: ../../src/gui/dboxinfo.cpp:185
+msgid "CPU:"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1126 ../../src/gui/scan_setup.cpp:1426
+msgid "Cable"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:601 ../../src/gui/scan.cpp:602
+msgid "Cable:"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:86 ../../src/gui/update.cpp:707
+#: ../../src/gui/update.cpp:807 ../../src/gui/widget/messagebox.cpp:75
+#: ../../src/gui/widget/messagebox.cpp:131
+#: ../../src/gui/widget/messagebox.cpp:454
+#: ../../src/gui/widget/messagebox.cpp:548
+msgid "Cancel"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:269
+msgid "Cartoons / Puppets"
+msgstr ""
+
+#: ../../src/gui/parentallock_setup.cpp:143
+#: ../../src/gui/parentallock_setup.cpp:144
+msgid "Change PIN code"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:382 ../../src/gui/pictureviewer.cpp:387
+#: ../../src/gui/pictureviewer.cpp:401
+msgid "Change sort order"
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:803 ../../src/gui/movieinfo.cpp:932
+#: ../../src/gui/streaminfo.cpp:710 ../../src/gui/timerlist.cpp:1192
+msgid "Channel"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1073
+msgid "Channel Logo"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:349
+msgid "Channel direct selection"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:90
+msgid "Channel down"
+msgstr ""
+
+#: ../../src/gui/infoviewer.cpp:1109
+msgid "Channel not available"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:89
+msgid "Channel up"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:642 ../../src/gui/scan.cpp:643
+msgid "Channel:"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:346 ../../src/gui/eventlist.cpp:805
+#: ../../src/gui/osd_setup.cpp:914 ../../src/gui/rc_setup.cpp:368
+msgid "Channellist"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:347
+msgid "Channellist Description"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:348
+msgid "Channellist Number"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:158 ../../src/gui/misc_setup.cpp:556
+msgid "Channellist settings"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:448 ../../src/gui/hdd_menu.cpp:911
+#: ../../src/gui/hdd_menu.cpp:943
+msgid "Check filesystem"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:264
+msgid "Children / Juvenile program"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1087
+msgid "Classic"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1319
+msgid "Code Rate HP"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1323
+msgid "Code Rate LP"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:195
+msgid "Color to color"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:193
+msgid "Color to transparent"
+msgstr ""
+
+#: ../../src/gui/video_setup.cpp:418
+msgid "Colour Range"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:218
+msgid "Comedy"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:259 ../../src/gui/scan_setup.cpp:946
+msgid "Commited/Uncommited"
+msgstr ""
+
+#: ../../src/gui/psisetup.cpp:136 ../../src/gui/psisetup.cpp:146
+#: ../../src/gui/psisetup.cpp:169 ../../src/gui/psisetup.cpp:179
+#: ../../src/gui/psisetup.cpp:210 ../../src/gui/psisetup.cpp:273
+#: ../../src/gui/psisetup.cpp:387
+msgid "Contrast"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:203 ../../src/gui/lcd_setup.cpp:225
+msgid "Contrast / Brightness"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:331
+msgid "Cooking"
+msgstr ""
+
+#: ../../src/gui/bouquetlist.cpp:575
+msgid "Copy bouquet to Favorites"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:207 ../../src/gui/recording_setup.cpp:211
+msgid "Correction time in min. (00=off). This time"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:899
+msgid "Country"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1631
+msgid "Create bookmark"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:580 ../../src/gui/misc_setup.cpp:622
+msgid "Create list of HD channels"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:566
+msgid "Current Track"
+msgstr ""
+
+#: ../../src/gui/widget/keychooser.cpp:47
+#: ../../src/gui/widget/keychooser.cpp:53
+msgid "Current key"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:1010 ../../src/gui/channellist.cpp:1072
+msgid "Current transponder"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1062
+msgid "Current version"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:713
+msgid "Czech"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:339
+msgid "DHCP"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:650
+msgid "Data"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1077
+msgid "Date"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:113
+msgid "Debug"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:244 ../../src/gui/misc_setup.cpp:314
+msgid "Debug Level"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:635 ../../src/gui/motorcontrol.cpp:652
+#: ../../src/gui/motorcontrol.cpp:656
+msgid "Decrease Motor Position (a)"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:922
+msgid "Default"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:271 ../../src/gui/network_setup.cpp:291
+#: ../../src/gui/network_setup.cpp:543 ../../src/gui/network_setup.cpp:601
+msgid "Default gateway"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:185
+msgid "Delayed shutdown"
+msgstr ""
+
+#: ../../src/gui/bouquetlist.cpp:620 ../../src/gui/channellist.cpp:1828
+#: ../../src/gui/filebrowser.cpp:476 ../../src/gui/filebrowser.cpp:485
+#: ../../src/gui/movieplayer.cpp:2020 ../../src/gui/pluginlist.cpp:75
+#: ../../src/gui/timerlist.cpp:247
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:53
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:462
+#: ../../src/gui/bedit/bouqueteditor_channels.cpp:89
+#: ../../src/gui/bedit/bouqueteditor_channels.cpp:365
+msgid "Delete"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:446 ../../src/system/setting_helpers.cpp:272
+msgid "Delete WebTV channels"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:2022
+msgid "Delete all"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:1828
+msgid "Delete channel from bouquet?"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:437 ../../src/system/setting_helpers.cpp:271
+msgid "Delete channels"
+msgstr ""
+
+#: ../../src/gui/pluginlist.cpp:217
+msgid "Description: "
+msgstr ""
+
+#: ../../src/gui/epg_menu.cpp:106
+msgid "Details current program"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:215
+msgid "Detective / Thriller"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:605
+msgid "DiSEqC"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:126
+msgid "DiSEqC 1.0"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:127
+msgid "DiSEqC 1.1"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:609
+msgid "DiSEqC-repeats"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:384
+msgid "Diashow mode"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:193 ../../src/gui/lcd_setup.cpp:194
+#: ../../src/gui/lcd_setup.cpp:217 ../../src/gui/lcd_setup.cpp:218
+msgid "Dim timeout"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:378
+msgid "Dir"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3140 ../../src/gui/infoviewer.cpp:822
+#: ../../src/gui/infoviewer.cpp:875
+msgid "Direct-Mode"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:953
+msgid "Director"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1055
+msgid "Directory for updates"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:623
+msgid "Disable (soft) Limits"
+msgstr ""
+
+#: ../../src/gui/alphasetup.cpp:187 ../../src/gui/psisetup.cpp:327
+#: ../../src/gui/screensetup.cpp:107 ../../src/gui/vfdcontroler.cpp:226
+#: ../../src/gui/widget/colorchooser.cpp:237
+#: ../../src/gui/widget/stringinput.cpp:371
+#: ../../src/gui/widget/stringinput_ext.cpp:244
+msgid "Discard changes?"
+msgstr ""
+
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:598
+msgid "Discarding changes. Please be patient."
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:232
+msgid "Discussion / Interview/ Debate"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:943
+msgid "Diseqc input"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:380
+msgid "Display image"
+msgstr ""
+
+msgid "display pics"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:149 ../../src/gui/lcd_setup.cpp:170
+#: ../../src/gui/main_setup.cpp:143
+msgid "Display settings"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:381
+msgid "Do not scale picture"
+msgstr ""
+
+#: ../../src/gui/update.cpp:631
+#, c-format
+msgid ""
+"Do you really want to flash?\n"
+"\n"
+"If a error occurs or the image is not\n"
+"valid, the box will not boot after flashing.\n"
+"\n"
+"Imagename: %s\n"
+"Target: %s"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1240 ../../src/system/helpers.cpp:1856
+msgid "Do you want to overwrite this file:"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:480
+msgid "Do you want to restore the previous settings?"
+msgstr ""
+
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:230
+msgid "Do you want to save the changes?"
+msgstr ""
+
+#: ../../src/gui/imageinfo.cpp:218
+msgid "Docs:"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:231
+msgid "Documentary"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:313
+msgid "Documentation / Magazine"
+msgstr ""
+
+#: ../../src/gui/audio_select.cpp:158 ../../src/gui/audio_setup.cpp:201
+#: ../../src/gui/audio_setup.cpp:219 ../../src/gui/audio_setup.cpp:293
+#: ../../src/gui/audio_video_select.cpp:314
+msgid "Dolby Digital"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:532
+msgid "Drive Mode"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:536
+msgid "Drive Mode/auto stop"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:707
+msgid "Dutch"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:184 ../../src/gui/lcd_setup.cpp:213
+#: ../../src/gui/osd_setup.cpp:915
+msgid "EPG"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:122 ../../src/gui/epg_menu.cpp:85
+#: ../../src/gui/infoviewer.cpp:1653 ../../src/gui/osd_setup.cpp:1526
+msgid "EPG / Timer"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:339
+msgid "EPG Date"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:337 ../../src/gui/eventlist.cpp:812
+msgid "EPG Info1"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:338 ../../src/gui/eventlist.cpp:813
+msgid "EPG Info2"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:771 ../../src/gui/misc_setup.cpp:772
+msgid "EPG Long Description (hours)"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:336 ../../src/gui/eventlist.cpp:811
+msgid "EPG Title"
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:207
+msgid "EPG is not available"
+msgstr ""
+
+#: ../../src/gui/infoviewer.cpp:750 ../../src/gui/infoviewer.cpp:767
+#: ../../src/gui/infoviewer.cpp:1661
+msgid "EPG not available"
+msgstr ""
+
+#: ../../src/gui/infoviewer.cpp:780
+msgid "EPG not loaded..."
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:775 ../../src/gui/misc_setup.cpp:776
+msgid "EPG remove after (std.)"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:783
+msgid "EPG save path"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:161 ../../src/gui/misc_setup.cpp:736
+msgid "EPG settings"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:767 ../../src/gui/misc_setup.cpp:768
+msgid "EPG-Cache (Days)"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:273
+msgid "East"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:306
+msgid "Economics / Social advisory"
+msgstr ""
+
+#: ../../src/gui/bouquetlist.cpp:551 ../../src/gui/channellist.cpp:1782
+msgid "Edit"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:629
+msgid "Enable (soft) Limits"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:190
+msgid "Enable standby"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:656 ../../src/system/helpers.cpp:705
+msgid "English"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:191 ../../src/gui/rc_setup.cpp:194
+msgid "Enter 0 to switch of the blocker (red is space)"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:364 ../../src/gui/audioplayer.cpp:382
+msgid "Enter jump target"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:797 ../../src/gui/timerlist.cpp:918
+msgid "Enter standby"
+msgstr ""
+
+#: ../../src/gui/parentallock_setup.cpp:143
+msgid "Enter your new youth protection pin code here!"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:267
+msgid "Entertainment programmes for 10 to 16"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:266
+msgid "Entertainment programmes for 6 to 14"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:257
+msgid "Equestrian"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:2003 ../../src/gui/audioplayer.cpp:1213
+#: ../../src/gui/channellist.cpp:931 ../../src/gui/channellist.cpp:986
+#: ../../src/gui/infoviewer.cpp:1109 ../../src/gui/misc_setup.cpp:468
+#: ../../src/gui/update.cpp:259 ../../src/gui/update.cpp:389
+#: ../../src/gui/update.cpp:455 ../../src/gui/update.cpp:482
+#: ../../src/gui/update.cpp:518 ../../src/gui/update.cpp:564
+#: ../../src/driver/vcrcontrol.cpp:623
+msgid "Error"
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:715
+msgid "Event list"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:340
+msgid "Eventlist Title"
+msgstr ""
+
+#: ../../src/gui/epg_menu.cpp:103
+msgid "Eventlist current programm"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:343
+msgid "Eventlist date / time"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:341
+msgid "Eventlist large"
+msgstr ""
+
+#: ../../src/gui/epg_menu.cpp:109 ../../src/gui/epgplus.cpp:115
+msgid "Eventlist overview"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:342
+msgid "Eventlist small"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:509 ../../src/gui/osd_setup.cpp:520
+msgid "Events Textcolor"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:841 ../../src/gui/timerlist.cpp:931
+msgid "Execute plugin"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:388 ../../src/gui/pictureviewer.cpp:404
+msgid "Exit"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:294
+msgid "Experimental film / Video"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1022
+msgid "Expert functions"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1051
+msgid "Expert-functions"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1088
+msgid "Extended"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1292
+msgid "FEC"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:138
+msgid "FEC_NONE"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:538
+#, c-format
+msgid "FSK: ab %d"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:298
+msgid "Fashion"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:102
+msgid "Fast"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:274
+msgid "Fast/timeshift record time(hours)"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:1459 ../../src/neutrino2.cpp:1468
+#: ../../src/gui/bouquetlist.cpp:441
+msgid "Favorites"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:148 ../../src/neutrino2_menue.cpp:341
+#: ../../src/gui/infoviewer.cpp:546 ../../src/gui/osd_setup.cpp:1546
+msgid "Features"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1210
+msgid "File could not be created:"
+msgstr ""
+
+msgid "file manager"
+msgstr ""
+
+#: ../../src/gui/update.cpp:791
+msgid "File selector"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:1006
+msgid "File system"
+msgstr ""
+
+#: ../../src/gui/filebrowser.cpp:854 ../../src/gui/osd_setup.cpp:917
+msgid "Filebrowser"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:354
+msgid "Filebrowser item"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:164 ../../src/gui/misc_setup.cpp:982
+msgid "Filebrowser settings"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1164
+msgid "Filename of the play list"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:231
+msgid "Filenames (with EPG data)"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:104
+msgid "Files Browser"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:293
+msgid "Film / Cinema"
+msgstr ""
+
+#: ../../src/gui/filebrowser.cpp:692 ../../src/gui/filebrowser.cpp:868
+msgid "Filter off"
+msgstr ""
+
+#: ../../src/gui/filebrowser.cpp:868
+msgid "Filter on"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:289
+msgid "Fine arts"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:330
+msgid "Fitness & health"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:278
+msgid "Folk / Traditional music"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:147 ../../src/gui/osd_setup.cpp:798
+#: ../../src/gui/osd_setup.cpp:822
+msgid "Font"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:819
+msgid "Font name"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:368
+msgid "Foot"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:250
+msgid "Football / Soccer"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:317
+msgid "Foreign countries / Expeditions"
+msgstr ""
+
+#: ../../src/gui/imageinfo.cpp:223
+msgid "Forum:"
+msgstr ""
+
+#: ../../src/gui/update.cpp:326 ../../src/gui/update.cpp:414
+#, c-format
+msgid ""
+"Found the following new image:\n"
+"Date: %s, %s\n"
+"BaseImage: %s\n"
+"ImageType: %s\n"
+"\n"
+"Do you want to install this version now?"
+msgstr ""
+
+#: ../../src/gui/update.cpp:326 ../../src/gui/update.cpp:414
+#, c-format
+msgid ""
+"Found the following new package:\n"
+"Package: %s\n"
+"Date: %s, %s\n"
+"BaseImage: %s\n"
+"Type: %s\n"
+"\n"
+"Do you want to download and install this version now?"
+msgstr ""
+
+#: ../../src/gui/streaminfo.cpp:586 ../../src/gui/streaminfo.cpp:639
+msgid "Framerate"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:454 ../../src/system/setting_helpers.cpp:273
+msgid "Free Memory"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:715
+msgid "French"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1239 ../../src/gui/scan_setup.cpp:1240
+msgid "Frequency"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:630 ../../src/gui/scan.cpp:631
+msgid "Frequency:"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:875
+msgid "Friday"
+msgstr ""
+
+#: ../../src/gui/dboxinfo.cpp:469
+msgid "Frontend:"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:319
+msgid "Further education"
+msgstr ""
+
+#: ../../src/gui/power_menu.cpp:112
+msgid "GUI restart"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:239
+msgid "Game show / Quiz / Contest"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:332
+msgid "Gardening"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:191 ../../src/gui/rc_setup.cpp:203
+msgid "Generic delay"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:859 ../../src/gui/movieplayer.cpp:2179
+#: ../../src/system/tmdbparser.cpp:238
+msgid "Genre"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:703
+msgid "German"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:648
+msgid "Goto Motor Position (a)"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:627
+msgid "Goto Reference Position"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:335 ../../src/gui/osd_setup.cpp:374
+#: ../../src/gui/osd_setup.cpp:401 ../../src/gui/osd_setup.cpp:535
+msgid "Gradient"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:338 ../../src/gui/osd_setup.cpp:377
+#: ../../src/gui/osd_setup.cpp:404 ../../src/gui/osd_setup.cpp:538
+msgid "Gradient type"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1331
+msgid "Guard Interval"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:955
+msgid "Guests"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:604
+msgid "HD / Crypt Icons"
+msgstr ""
+
+#: ../../src/gui/dboxinfo.cpp:352
+msgid "HDD Devices:"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:458
+msgid "HDD Filexplorer"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:445 ../../src/gui/hdd_menu.cpp:698
+#: ../../src/gui/hdd_menu.cpp:739 ../../src/gui/hdd_menu.cpp:757
+msgid "HDD Format"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:364 ../../src/gui/hdd_menu.cpp:540
+#: ../../src/gui/hdd_menu.cpp:559 ../../src/gui/hdd_menu.cpp:779
+#: ../../src/gui/hdd_menu.cpp:935
+msgid "HDD Init"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:451 ../../src/gui/hdd_menu.cpp:990
+#: ../../src/gui/hdd_menu.cpp:1023 ../../src/gui/hdd_menu.cpp:1045
+#: ../../src/gui/hdd_menu.cpp:1061 ../../src/gui/hdd_menu.cpp:1079
+#: ../../src/gui/hdd_menu.cpp:1088 ../../src/gui/hdd_menu.cpp:1099
+#: ../../src/gui/hdd_menu.cpp:1228 ../../src/gui/hdd_menu.cpp:1237
+#: ../../src/gui/hdd_menu.cpp:1247 ../../src/gui/hdd_menu.cpp:1362
+msgid "HDD Mount"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:990
+msgid "HDD Mount Failed"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:1088 ../../src/gui/hdd_menu.cpp:1099
+msgid "HDD Mount failed !"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:1023 ../../src/gui/hdd_menu.cpp:1045
+#: ../../src/gui/hdd_menu.cpp:1061 ../../src/gui/hdd_menu.cpp:1079
+msgid "HDD Mounted"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:454
+msgid "HDD Umount"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:911 ../../src/gui/hdd_menu.cpp:935
+msgid "HDD check failed !"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:779
+msgid "HDD format failed !"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:559
+msgid "HDD init failed !"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:461
+msgid "HDD mounted"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:194 ../../src/gui/main_setup.cpp:155
+msgid "HDD settings"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:1228
+msgid "HDD umount"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:461 ../../src/gui/hdd_menu.cpp:1247
+#: ../../src/gui/hdd_menu.cpp:1362
+msgid "HDD umounted"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:739 ../../src/gui/hdd_menu.cpp:1237
+msgid "HDD unmount failed !"
+msgstr ""
+
+#: ../../src/gui/video_setup.cpp:504
+msgid "HDMI Color Space"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:614
+msgid "Halt Motor"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:328
+msgid "Handicraft"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:507
+msgid "Hdd Format"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:326
+msgid "Head"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1630 ../../src/gui/movieplayer.cpp:1887
+msgid "Help"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:150
+msgid "Here you can choose plugins"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:189
+msgid "Here you can get device Info"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:213
+msgid "Here you can play / show  music / movies / pics"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:198
+msgid "Here you can power off or standby your device"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1177
+msgid "Here you can select a skin from the following list."
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:124
+msgid "Here you can set Timers and show EPG"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:159
+msgid "Here you can set channel scan and more"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:404
+msgid "Here you can set timers"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:175
+msgid "Here you can setup OSD"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:168
+msgid "Here you can setup your box"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:115
+msgid "Here you can switch between TV / Radio"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:134
+msgid "Here you can switch to scart modus"
+msgstr ""
+
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:167
+msgid "Hide"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1335
+msgid "Hierarchy"
+msgstr ""
+
+#: ../../src/gui/audioplayer_setup.cpp:140
+msgid "High decode priority"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:1041
+msgid "History"
+msgstr ""
+
+#: ../../src/gui/imageinfo.cpp:175 ../../src/gui/imageinfo.cpp:228
+msgid "Home page:"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:823
+msgid "Horizontal (in %)"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:276 ../../src/gui/network_setup.cpp:299
+#: ../../src/gui/proxyserver_setup.cpp:100
+#: ../../src/gui/proxyserver_setup.cpp:101
+msgid "Hostname"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:206 ../../src/gui/rc_setup.cpp:208
+#: ../../src/gui/rc_setup.cpp:340
+msgid "Hot Keys mapping"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:771
+msgid "How long into the future will EPG extended descriptions"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:775
+msgid "How long will EPG-Data be stored after they timed out?"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:767
+msgid "How long will EPG-Data in the future cached?"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:779
+msgid "How many events should be stored?"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:265 ../../src/gui/network_setup.cpp:285
+#: ../../src/gui/network_setup.cpp:443 ../../src/gui/network_setup.cpp:585
+msgid "IP address"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:97
+msgid "ISO-8859-1"
+msgstr ""
+
+#: ../../src/gui/imageinfo.cpp:164
+msgid "Image Info"
+msgstr ""
+
+#: ../../src/gui/dboxinfo.cpp:576 ../../src/gui/imageinfo.cpp:172
+msgid "Image info"
+msgstr ""
+
+#: ../../src/gui/imageinfo.cpp:194
+msgid "Image:"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1084
+msgid "ImageType"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:633 ../../src/gui/motorcontrol.cpp:646
+#: ../../src/gui/motorcontrol.cpp:654
+msgid "Increase Motor Position (a)"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:112
+msgid "Info"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:141 ../../src/gui/osd_setup.cpp:483
+#: ../../src/gui/osd_setup.cpp:916
+msgid "Infobar"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:351
+msgid "Infobar Channel name"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:350
+msgid "Infobar Number"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:352
+msgid "Infobar info"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:353
+msgid "Infobar small"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:2828 ../../src/neutrino2.cpp:2846
+#: ../../src/neutrino2.cpp:2851 ../../src/neutrino2.cpp:2857
+#: ../../src/neutrino2.cpp:3183 ../../src/neutrino2.cpp:3361
+#: ../../src/neutrino2.cpp:3716 ../../src/neutrino2.cpp:3750
+#: ../../src/neutrino2.cpp:3757 ../../src/neutrino2.cpp:3795
+#: ../../src/neutrino2.cpp:3837 ../../src/neutrino2.cpp:3846
+#: ../../src/neutrino2.cpp:4254 ../../src/neutrino2.cpp:4939
+#: ../../src/neutrino2_menue.cpp:187 ../../src/gui/audioplayer.cpp:1329
+#: ../../src/gui/cam_menu.cpp:273 ../../src/gui/cam_menu.cpp:301
+#: ../../src/gui/cam_menu.cpp:330 ../../src/gui/cam_menu.cpp:468
+#: ../../src/gui/cam_menu.cpp:582 ../../src/gui/cam_menu.cpp:597
+#: ../../src/gui/dboxinfo.cpp:554 ../../src/gui/dboxinfo.cpp:573
+#: ../../src/gui/hdd_menu.cpp:131 ../../src/gui/infoviewer.cpp:1125
+#: ../../src/gui/movieplayer.cpp:1531 ../../src/gui/movieplayer.cpp:1652
+#: ../../src/gui/movieplayer.cpp:2213 ../../src/gui/movieplayer.cpp:2243
+#: ../../src/gui/network_setup.cpp:162 ../../src/gui/osd_setup.cpp:1229
+#: ../../src/gui/osd_setup.cpp:1417 ../../src/gui/osd_setup.cpp:1566
+#: ../../src/gui/pictureviewer.cpp:409 ../../src/gui/plugins.cpp:318
+#: ../../src/gui/rc_setup.cpp:259 ../../src/gui/scan_setup.cpp:345
+#: ../../src/gui/timerlist.cpp:1284 ../../src/gui/update.cpp:336
+#: ../../src/gui/update.cpp:344 ../../src/gui/update.cpp:417
+#: ../../src/gui/update.cpp:491 ../../src/gui/update.cpp:533
+#: ../../src/gui/update.cpp:550 ../../src/gui/update.cpp:573
+#: ../../src/gui/update.cpp:623 ../../src/gui/update.cpp:633
+#: ../../src/gui/update.cpp:659 ../../src/gui/video_setup.cpp:491
+#: ../../src/gui/widget/infobox.cpp:215 ../../src/system/helpers.cpp:1311
+#: ../../src/system/helpers.cpp:1316
+msgid "Information"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:268
+msgid "Informational / educational / school programmes"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:609
+msgid "Install menu"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:237 ../../src/gui/network_setup.cpp:454
+msgid "Interface"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:349 ../../src/gui/rc_setup.cpp:102
+msgid "Internet Radio"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:178
+msgid "Invert"
+msgstr ""
+
+#: ../../src/gui/video_setup.cpp:491
+msgid "Is this video mode working ok ?"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:392
+msgid "Item Info"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:279
+msgid "Jazz"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:1377 ../../src/gui/movieplayer.cpp:772
+msgid "Jump over"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:385 ../../src/gui/network_setup.cpp:386
+msgid "Key"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:197
+msgid "Key Repeat-blocker"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:166
+msgid "Keybinding settings"
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:930 ../../src/gui/eventlist.cpp:931
+msgid "Keyword"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:187
+msgid "LCD EPG Align"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:175 ../../src/gui/lcd_setup.cpp:209
+msgid "LED-Power"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:207
+msgid "LED_Power"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:208
+msgid "LEFT"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:962 ../../src/gui/scan_setup.cpp:971
+msgid "LNB High Offset"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:961 ../../src/gui/scan_setup.cpp:970
+msgid "LNB Low Offset"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:963 ../../src/gui/scan_setup.cpp:972
+msgid "LNB switch Offset"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:262
+msgid "LUFS"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:739
+msgid "LaDirection"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:144 ../../src/gui/osd_setup.cpp:636
+msgid "Language"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:320
+msgid "Languages"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:94
+msgid "Last Channel"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:995
+msgid "Last play date"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1727
+msgid "Last play stop:"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:742 ../../src/gui/scan_setup.cpp:743
+msgid "Latitude"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:797 ../../src/gui/timerlist.cpp:917
+msgid "Leave standby"
+msgstr ""
+
+#: ../../src/system/tmdbparser.cpp:229 ../../src/system/tmdbparser.cpp:233
+msgid "Length"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:968 ../../src/gui/movieplayer.cpp:2176
+msgid "Length (Min)"
+msgstr ""
+
+#: ../../src/gui/imageinfo.cpp:233
+msgid "License:"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:347 ../../src/gui/osd_setup.cpp:386
+msgid "Line"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:350 ../../src/gui/osd_setup.cpp:389
+msgid "Line Gradient"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:85
+msgid "List End"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:84
+msgid "List Start"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:292
+msgid "Literature"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:746
+msgid "LoDirection"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1225
+msgid "Loading skin "
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1413
+msgid "Loading skin style "
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:828
+msgid "LocalTV EPG"
+msgstr ""
+
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:171
+msgid "Lock"
+msgstr ""
+
+#: ../../src/system/setting_helpers.cpp:270
+msgid "Lock RC"
+msgstr ""
+
+#: ../../src/gui/rc_lock.cpp:48 ../../src/gui/rc_lock.cpp:54
+msgid "Lock Remote Control"
+msgstr ""
+
+#: ../../src/gui/parentallock_setup.cpp:140
+msgid "Lock program"
+msgstr ""
+
+#: ../../src/gui/widget/stringinput.cpp:818
+msgid "Locked Channel"
+msgstr ""
+
+#: ../../src/gui/widget/stringinput.cpp:823
+#, c-format
+msgid "Locked program (from %d years up)"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:749 ../../src/gui/scan_setup.cpp:750
+msgid "Longitude"
+msgstr ""
+
+#: ../../src/gui/screensetup.cpp:123 ../../src/gui/screensetup.cpp:294
+msgid "Lower Right"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:371 ../../src/gui/nfs.cpp:372
+msgid "MAC address"
+msgstr ""
+
+#: ../../src/gui/update.cpp:475
+msgid "MD5 checking"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:305
+msgid "Magazines / Reports / Documentary"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:94
+msgid "Main Menu"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:592 ../../src/gui/misc_setup.cpp:629
+msgid "Make Remaining Channels list"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:638 ../../src/gui/scan_setup.cpp:1098
+msgid "Manual frequency scan / Test signal"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1091
+msgid "Manuell(ftp) Software Manager"
+msgstr ""
+
+#: ../../src/gui/filebrowser.cpp:691 ../../src/gui/filebrowser.cpp:865
+msgid "Mark"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:258
+msgid "Martial sports"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:779 ../../src/gui/misc_setup.cpp:780
+msgid "Max. Events"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:380
+msgid "Media"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:211 ../../src/gui/mediaplayer.cpp:88
+#: ../../src/gui/osd_setup.cpp:1584
+msgid "Media Player"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:316
+msgid "Medicine / Physiology / Psychology"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:138 ../../src/gui/osd_setup.cpp:275
+#: ../../src/gui/osd_setup.cpp:913
+msgid "Menu"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:335
+msgid "Menu Info"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:333
+msgid "Menu Text"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:334
+msgid "Menu Title"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:355
+msgid "Menu Title2"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:379
+msgid "Menu mode"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1202 ../../src/gui/timerlist.cpp:1203
+msgid "Message"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:125
+msgid "Mini-DiSEqC"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:552
+msgid "Minutes"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:181 ../../src/gui/misc_setup.cpp:161
+#: ../../src/gui/osd_setup.cpp:164 ../../src/gui/osd_setup.cpp:1032
+#: ../../src/gui/rc_setup.cpp:385
+msgid "Misc settings"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1013 ../../src/gui/timerlist.cpp:1177
+msgid "Mo Tu We Th Fr Sa Su"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:362
+msgid "Modechange"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:250
+msgid "Modify"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:972
+msgid "Modify timer"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1261 ../../src/gui/scan_setup.cpp:1269
+#: ../../src/gui/scan_setup.cpp:1277
+msgid "Modulation"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:863
+msgid "Monday"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:567
+msgid "More Screenings on this Channel"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:577
+msgid "Motor Control Settings"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:517 ../../src/gui/motorcontrol.cpp:585
+msgid "Motor Setup"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:626 ../../src/gui/scan_setup.cpp:707
+#: ../../src/gui/scan_setup.cpp:760
+msgid "Motor settings"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:254
+msgid "Motor sports"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:329
+msgid "Motoring"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:422 ../../src/gui/nfs.cpp:329
+msgid "Mount network volume"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:355 ../../src/gui/nfs.cpp:356
+#: ../../src/gui/nfs.cpp:359 ../../src/gui/nfs.cpp:360
+msgid "Mount options"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:1805
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:55
+#: ../../src/gui/bedit/bouqueteditor_channels.cpp:91
+msgid "Move"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:214
+msgid "Movie / Drama"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:774
+msgid "Movie end:"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1628
+msgid "Movie info"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:773 ../../src/gui/movieplayer.cpp:1720
+#: ../../src/gui/movieplayer.cpp:1732
+msgid "Movie start:"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:2060 ../../src/gui/rc_setup.cpp:98
+msgid "Movieplayer"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:139 ../../src/gui/movieplayer.cpp:1633
+#: ../../src/gui/movieplayer_setup.cpp:109
+msgid "Movieplayer settings"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:103
+msgid "Movies Browser"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:275
+msgid "Music / Ballet / Dance"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:280
+msgid "Musical / Opera"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:260
+msgid "NFS"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:280 ../../src/gui/network_setup.cpp:295
+msgid "NTP-Server"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:280
+msgid "NTP-Server example: ntp1.ptb.de"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:281 ../../src/gui/network_setup.cpp:297
+msgid "NTP/DVB-Refresh"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:281
+msgid "NTP/DVB-Time-Sync in minutes"
+msgstr ""
+
+#: ../../src/system/setting_helpers.cpp:347
+msgid "Name"
+msgstr ""
+
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:479
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:540
+msgid "Name of bouquets"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:273 ../../src/gui/network_setup.cpp:293
+#: ../../src/gui/network_setup.cpp:549 ../../src/gui/network_setup.cpp:597
+msgid "Name server"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:314
+msgid "Nature / Animals / Environment"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:267 ../../src/gui/network_setup.cpp:287
+#: ../../src/gui/network_setup.cpp:589
+msgid "Netmask"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:101
+msgid "Network"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:420 ../../src/gui/nfs.cpp:526
+msgid "Network Mount Manager"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:366
+msgid "Network Name"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:133 ../../src/gui/network_setup.cpp:216
+#: ../../src/gui/nfs.cpp:207
+msgid "Network settings"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:1373 ../../src/gui/movieplayer.cpp:770
+msgid "New Bookmark"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:721
+msgid ""
+"New jump back\n"
+" 'blue' for endposition"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:726
+msgid ""
+"New jump forward\n"
+" 'blue' for endposition"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:296
+msgid "New media"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:248 ../../src/gui/timerlist.cpp:1141
+msgid "New timer"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:228
+msgid "News"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:229
+msgid "News / Weather report"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:230
+msgid "News magazine"
+msgstr ""
+
+#: ../../src/gui/filebrowser.cpp:689
+msgid "Next Page"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:87
+msgid "Next bouquet"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:386 ../../src/gui/pictureviewer.cpp:393
+msgid "Next image"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:835
+msgid "Next program"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:131 ../../src/gui/nfs.cpp:149
+#: ../../src/gui/timerlist.cpp:937 ../../src/gui/widget/messagebox.cpp:521
+msgid "No"
+msgstr ""
+
+#: ../../src/gui/cam_menu.cpp:175
+msgid "No CAM in slot"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:931
+msgid ""
+"No channels were found!\n"
+"Please execute a scan\n"
+"(MENU-key -> System)"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:986 ../../src/gui/channellist.cpp:1245
+msgid ""
+"No channels were found!\n"
+"Please execute a scan\n"
+"(MENU-key -> service)"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:502
+msgid "No detailed informations available"
+msgstr ""
+
+#: ../../src/gui/infoviewer.cpp:1671
+msgid "No info for current program available"
+msgstr ""
+
+#: ../../src/gui/widget/keychooser.cpp:134
+msgid "No key"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:4939
+msgid "No neutrino-settings found, Using defaults."
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:220
+msgid "Noise"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:111
+msgid "Normal"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:267
+msgid "North"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:642 ../../src/gui/motorcontrol.cpp:650
+msgid "Not used"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:918
+msgid "Numericzap"
+msgstr ""
+
+#: ../../src/gui/widget/messagebox.cpp:548
+msgid "OK"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:265 ../../src/gui/network_setup.cpp:267
+#: ../../src/gui/network_setup.cpp:269 ../../src/gui/network_setup.cpp:271
+#: ../../src/gui/network_setup.cpp:273 ../../src/gui/nfs.cpp:346
+#: ../../src/gui/nfs.cpp:371 ../../src/gui/timerlist.cpp:1000
+#: ../../src/gui/timerlist.cpp:1004 ../../src/gui/timerlist.cpp:1167
+#: ../../src/gui/timerlist.cpp:1172
+msgid "OK saves, HOME! aborts"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:173 ../../src/gui/osd_setup.cpp:114
+msgid "OSD"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:194
+msgid "One color"
+msgstr ""
+
+#: ../../src/driver/vcrcontrol.cpp:623
+msgid ""
+"One or several recording processes are active.\n"
+"If you encounter this message and no recording is active, please restart Neutrino."
+msgstr ""
+
+#: ../../src/gui/update.cpp:1094
+msgid "Online Software Manager"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:866 ../../src/gui/movieplayer.cpp:2181
+msgid "Original Title"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:952 ../../src/system/tmdbparser.cpp:240
+msgid "Original title"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1241 ../../src/system/helpers.cpp:1858
+msgid "Overwrite?"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:212 ../../src/gui/audio_setup.cpp:320
+msgid "PCM Delay"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:135 ../../src/gui/widget/listbox.cpp:199
+msgid "PIN-Code was wrong! Try again."
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1342 ../../src/gui/scan_setup.cpp:1343
+msgid "PLP ID"
+msgstr ""
+
+#: ../../src/gui/psisetup.cpp:327
+msgid "PSI Setup"
+msgstr ""
+
+#: ../../src/gui/video_setup.cpp:428 ../../src/gui/video_setup.cpp:429
+msgid "PSI settings"
+msgstr ""
+
+#: ../../src/gui/update.cpp:525 ../../src/gui/update.cpp:573
+#: ../../src/gui/update.cpp:618 ../../src/gui/update.cpp:656
+msgid "Package successfully installed"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:83
+msgid "Page Down"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:82
+msgid "Page Up"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:130 ../../src/gui/parentallock_setup.cpp:113
+msgid "Parentallock settings"
+msgstr ""
+
+#: ../../src/gui/update.cpp:691
+msgid "Partition selector"
+msgstr ""
+
+#: ../../src/gui/proxyserver_setup.cpp:106
+#: ../../src/gui/proxyserver_setup.cpp:107
+msgid "Password"
+msgstr ""
+
+msgid "play and edit records and movies"
+msgstr ""
+
+msgid "play movie and record files"
+msgstr ""
+
+msgid "play music files"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:1027
+msgid "Path"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:288
+msgid "Performing arts"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:134 ../../src/gui/recording_setup.cpp:280
+msgid "Permanent timeshift"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:161 ../../src/gui/osd_setup.cpp:1495
+msgid "Personalisation"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:157 ../../src/gui/rc_setup.cpp:100
+msgid "Pictureviewer"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:152 ../../src/gui/pictureviewer_setup.cpp:136
+msgid "Pictureviewer settings"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:367 ../../src/gui/audioplayer.cpp:385
+msgid "Please enter jump target"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1167
+msgid "Please enter the filename of the playlist"
+msgstr ""
+
+#: ../../src/gui/widget/keychooser.cpp:248
+msgid "Please press the new key"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1207
+msgid "Plugin"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:344
+msgid "Pluginlist large"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:345
+msgid "Pluginlist small"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:428 ../../src/gui/pluginlist.cpp:110
+#: ../../src/gui/pluginlist.cpp:229 ../../src/system/setting_helpers.cpp:268
+msgid "Plugins"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1253
+msgid "Polarization"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:719
+msgid "Polish"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:291
+msgid "Popular culture / Traditional arts"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:721
+msgid "Portugues"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:196 ../../src/gui/osd_setup.cpp:1575
+#: ../../src/gui/power_menu.cpp:90
+msgid "Power Menu"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:265
+msgid "Pre-school children's programmes"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:2213
+msgid "Prefer TMDB Infos"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:786 ../../src/gui/misc_setup.cpp:793
+msgid "Preferred EPG language"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:226
+msgid "Preferred language"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:252
+msgid "Preferred subtitle language"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:956
+msgid "Presenter"
+msgstr ""
+
+#: ../../src/gui/filebrowser.cpp:690
+msgid "Prev Page"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:385 ../../src/gui/pictureviewer.cpp:392
+msgid "Previous image"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3692
+msgid "Program unknown"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1053
+msgid "Progressbar Color"
+msgstr ""
+
+#: ../../src/gui/parentallock_setup.cpp:137
+msgid "Prompt for PIN"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:1462 ../../src/gui/scan_setup.cpp:1142
+#: ../../src/gui/scan_setup.cpp:1158 ../../src/gui/scan_setup.cpp:1442
+#: ../../src/gui/scan_setup.cpp:1458
+msgid "Provider"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:637 ../../src/gui/scan.cpp:638
+msgid "Provider:"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:1453 ../../src/gui/bouquetlist.cpp:442
+msgid "Providers"
+msgstr ""
+
+#: ../../src/gui/proxyserver_setup.cpp:88
+msgid "Proxy server"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:417
+msgid "Proxyserver"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:943
+msgid "Quality"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:374
+msgid "Quickzap"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:206
+msgid "RIGHT"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:649
+msgid "Radio"
+msgstr ""
+
+#: ../../src/gui/zapit_setup.cpp:214
+msgid "Radio Channel"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:239 ../../src/gui/misc_setup.cpp:290
+msgid "Radio Text"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:344 ../../src/gui/osd_setup.cpp:383
+#: ../../src/gui/osd_setup.cpp:410 ../../src/gui/osd_setup.cpp:544
+msgid "Radius"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1044
+msgid "Read one partition"
+msgstr ""
+
+#: ../../src/gui/update.cpp:605
+msgid "Read whole image"
+msgstr ""
+
+#: ../../src/gui/update.cpp:602
+msgid "Reading Flash"
+msgstr ""
+
+#: ../../src/gui/power_menu.cpp:118
+msgid "Reboot"
+msgstr ""
+
+#: ../../src/gui/streaminfo.cpp:359
+msgid "Receipt signal"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:98 ../../src/gui/epgplus.cpp:510
+#: ../../src/gui/epgview.cpp:1070 ../../src/gui/eventlist.cpp:534
+#: ../../src/gui/timerlist.cpp:838 ../../src/gui/timerlist.cpp:928
+msgid "Record"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:228 ../../src/gui/timerlist.cpp:1081
+msgid "Record AC3 streams"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:225 ../../src/gui/timerlist.cpp:1079
+msgid "Record alternative streams"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:1001
+msgid "Record date"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1075
+msgid "Record default audio streams"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1077
+msgid "Record standard stream"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:207 ../../src/gui/recording_setup.cpp:208
+msgid "Record start time correction"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:211 ../../src/gui/recording_setup.cpp:212
+msgid "Record stop time correction"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:237 ../../src/gui/timerlist.cpp:1025
+#: ../../src/gui/timerlist.cpp:1195
+msgid "Recording directory"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:136 ../../src/gui/recording_setup.cpp:184
+msgid "Recording settings"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3750
+msgid "Recording starts in a few minutes"
+msgstr ""
+
+#: ../../src/gui/epgplus.cpp:511 ../../src/gui/eventlist.cpp:538
+msgid "Refresh EPG"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1074
+msgid "Release cycle"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:290
+msgid "Religion"
+msgstr ""
+
+#: ../../src/gui/pluginlist.cpp:78 ../../src/gui/timerlist.cpp:249
+msgid "Reload"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:478 ../../src/system/setting_helpers.cpp:276
+msgid "Reload EPG"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:470 ../../src/system/setting_helpers.cpp:275
+msgid "Reload XMLTV EPG"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:462 ../../src/system/setting_helpers.cpp:274
+msgid "Reload channel lists"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:2851
+msgid "Reloading EPG, please be patient."
+msgstr ""
+
+#: ../../src/neutrino2.cpp:2857
+msgid "Reloading XMLTV EPG, please be patient."
+msgstr ""
+
+#: ../../src/neutrino2.cpp:2846
+msgid "Reloading channel lists, please be patient."
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:307
+msgid "Remarkable people"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:839 ../../src/gui/timerlist.cpp:930
+msgid "Remind"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3863
+msgid "Reminder"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:411
+msgid "Remote Control lock"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:146
+msgid "Remote Control settings"
+msgstr ""
+
+#: ../../src/gui/rc_lock.cpp:54
+msgid "Remote control reactivated."
+msgstr ""
+
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:163
+msgid "Rename"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:1375 ../../src/gui/movieplayer.cpp:771
+#: ../../src/gui/timerlist.cpp:1021 ../../src/gui/timerlist.cpp:1189
+msgid "Repeat"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:194 ../../src/gui/rc_setup.cpp:200
+msgid "Repeat delay"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:391
+msgid "Reread image"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:395
+msgid "Reread image (no scaling)"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:270 ../../src/gui/misc_setup.cpp:384
+msgid "Reset settings to defaults"
+msgstr ""
+
+#: ../../src/gui/vfdcontroler.cpp:138 ../../src/gui/vfdcontroler.cpp:166
+#: ../../src/gui/vfdcontroler.cpp:298
+msgid "Reset to defaults"
+msgstr ""
+
+#: ../../src/gui/streaminfo.cpp:584 ../../src/gui/streaminfo.cpp:601
+msgid "Resolution"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:276
+msgid "Rock / Pop"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:220
+msgid "Romance"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:952
+msgid "Rotor position"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:723
+msgid "Russian"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1198
+msgid "SB mode"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:131
+msgid "SMATV Remote Tuning"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:263
+msgid "SMBFS"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:95
+msgid "Same TP"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:871
+msgid "Sat settings"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1028 ../../src/gui/scan_setup.cpp:1174
+#: ../../src/gui/scan_setup.cpp:1474 ../../src/gui/scan_setup.cpp:1554
+#: ../../src/gui/streaminfo.cpp:687
+msgid "Satellite"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:573
+msgid "Satellite Position (Step Mode):"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:550
+msgid "Satellite display on infobar"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:592 ../../src/gui/scan.cpp:593
+msgid "Satellite:"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:1456 ../../src/neutrino2.cpp:1465
+#: ../../src/gui/bouquetlist.cpp:443
+msgid "Satellites"
+msgstr ""
+
+#: ../../src/gui/psisetup.cpp:137 ../../src/gui/psisetup.cpp:150
+#: ../../src/gui/psisetup.cpp:170 ../../src/gui/psisetup.cpp:183
+#: ../../src/gui/psisetup.cpp:224 ../../src/gui/psisetup.cpp:287
+#: ../../src/gui/psisetup.cpp:390
+msgid "Saturation"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:878
+msgid "Saturday"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:391
+msgid "Save RC configuration"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:992
+msgid "Save Timer"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1299
+msgid "Save current skin style"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1377
+msgid "Save current style"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:234
+msgid "Save in channel dir"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:193 ../../src/gui/audioplayer_setup.cpp:136
+#: ../../src/gui/cec_setup.cpp:150 ../../src/gui/hdd_menu.cpp:131
+#: ../../src/gui/hdd_menu.cpp:210 ../../src/gui/lcd_setup.cpp:166
+#: ../../src/gui/misc_setup.cpp:181 ../../src/gui/misc_setup.cpp:576
+#: ../../src/gui/misc_setup.cpp:756 ../../src/gui/misc_setup.cpp:1002
+#: ../../src/gui/movieplayer_setup.cpp:129 ../../src/gui/network_setup.cpp:311
+#: ../../src/gui/osd_setup.cpp:293 ../../src/gui/osd_setup.cpp:500
+#: ../../src/gui/osd_setup.cpp:653 ../../src/gui/osd_setup.cpp:815
+#: ../../src/gui/osd_setup.cpp:910 ../../src/gui/osd_setup.cpp:1049
+#: ../../src/gui/osd_setup.cpp:1511 ../../src/gui/parentallock_setup.cpp:133
+#: ../../src/gui/pictureviewer_setup.cpp:156 ../../src/gui/rc_setup.cpp:186
+#: ../../src/gui/rc_setup.cpp:360 ../../src/gui/recording_setup.cpp:244
+#: ../../src/gui/scan_setup.cpp:345 ../../src/gui/scan_setup.cpp:492
+#: ../../src/gui/scan_setup.cpp:724 ../../src/gui/scan_setup.cpp:939
+#: ../../src/gui/scan_setup.cpp:1115 ../../src/gui/scan_setup.cpp:1415
+#: ../../src/gui/scan_setup.cpp:1550 ../../src/gui/update.cpp:994
+#: ../../src/gui/video_setup.cpp:401 ../../src/gui/zapit_setup.cpp:198
+#: ../../src/system/setting_helpers.cpp:341
+msgid "Save settings now"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1163
+msgid "Save timer"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:764
+msgid "Save/Restore epg on reboot"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:259
+msgid "Saving RC configuration, please wait..."
+msgstr ""
+
+#: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:585
+msgid "Saving changes. Please be patient."
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1377
+msgid "Saving current style!"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:2828
+msgid "Saving settings now, please be patient."
+msgstr ""
+
+#: ../../src/gui/pictureviewer_setup.cpp:160
+msgid "Scaling"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:587
+msgid "Scan Mode"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:595 ../../src/gui/misc_setup.cpp:637
+msgid "Scan SDT for updates"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:577
+msgid "Scan for services"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:566 ../../src/gui/scan_setup.cpp:473
+#: ../../src/gui/service_menu.cpp:128
+msgid "Scan transponder"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1536
+msgid "Scart"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:132
+msgid "Scart Mode"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:100 ../../src/gui/epgplus.cpp:512
+#: ../../src/gui/epgview.cpp:140 ../../src/gui/eventlist.cpp:536
+msgid "Schedule"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:514 ../../src/gui/epgplus.cpp:1198
+#: ../../src/gui/epgview.cpp:861 ../../src/gui/eventlist.cpp:380
+msgid "Schedule Event"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:492 ../../src/gui/epgplus.cpp:1226
+#: ../../src/gui/epgview.cpp:840 ../../src/gui/epgview.cpp:845
+#: ../../src/gui/eventlist.cpp:346 ../../src/gui/eventlist.cpp:351
+msgid "Schedule Record"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:217
+msgid "Science fiction / Fantasy / Horror"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3360
+msgid "Scrambled channel"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:153
+msgid "Screen"
+msgstr ""
+
+#: ../../src/gui/screensetup.cpp:107
+msgid "Screen Setup"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:105
+msgid "Screenshot"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:403
+msgid "Scroll down"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:400
+msgid "Scroll left"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:402
+msgid "Scroll right"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:397
+msgid "Scroll up"
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:535 ../../src/gui/eventlist.cpp:765
+msgid "Search"
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:715
+msgid "Search for keyword in EPG..."
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:937 ../../src/gui/eventlist.cpp:966
+msgid "Search in EPG"
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:933
+msgid "Search within"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:399
+msgid "Security"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3046
+msgid "Select Subservice"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1629
+msgid "Select audio track"
+msgstr ""
+
+#: ../../src/gui/audio_select.cpp:123 ../../src/gui/osd_setup.cpp:709
+msgid "Select language"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3046
+msgid "Select starting-time"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1190 ../../src/gui/scan_setup.cpp:1634
+msgid "Select transponder"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:416
+msgid "Separator"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:418
+msgid "Separator Gradient"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:921
+msgid "Serie"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:221
+msgid "Serious / Classical / Religious / Historical movie / Drama"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:277
+msgid "Serious music / Classical music"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:820
+msgid "Server Box GUI"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:816 ../../src/gui/misc_setup.cpp:817
+msgid "Server Box IP"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:823
+msgid "Server Box type"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:346 ../../src/gui/nfs.cpp:377
+msgid "Server IP"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:2365
+msgid "Servicescan"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:625
+msgid "Set East (soft) Limit"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:621
+msgid "Set West (soft) Limit"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:767
+msgid "Set in days."
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:775
+msgid "Set in hours"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:166 ../../src/gui/main_setup.cpp:106
+msgid "Settings"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:271
+msgid "Settings backup"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:272 ../../src/gui/misc_setup.cpp:480
+msgid "Settings restore"
+msgstr ""
+
+#: ../../src/gui/widget/keychooser.cpp:69
+msgid "Setup New Key"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:283
+msgid "Setup network now"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:162
+msgid "Setup network now, please wait..."
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:304
+msgid "Setup network on startup"
+msgstr ""
+
+#: ../../src/gui/widget/keychooser.cpp:133
+msgid "Setup new key"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:621
+msgid "Setup satellites input / LNB"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:191 ../../src/gui/rc_setup.cpp:194
+msgid "Shortest time (in ms) to recognize 2 keystrokes"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:351
+msgid "Should the search really be aborted?"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:238
+msgid "Show / Gameshow"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1094
+msgid "Show Hints"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:321 ../../src/gui/network_setup.cpp:606
+msgid "Show active network settings"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:1009
+msgid "Show file rights"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:390
+msgid "Show mode"
+msgstr ""
+
+#: ../../src/gui/power_menu.cpp:121 ../../src/gui/timerlist.cpp:834
+#: ../../src/gui/timerlist.cpp:925
+msgid "Shutdown"
+msgstr ""
+
+#: ../../src/gui/sleeptimer.cpp:74
+msgid "Shutdown time in min. (000=off)"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:359
+msgid "Signal small"
+msgstr ""
+
+#: ../../src/gui/movieinfo.cpp:1014
+msgid "Size"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1141
+msgid "Skin Select"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:135 ../../src/gui/osd_setup.cpp:1279
+msgid "Skin Style"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1370
+msgid "Skin Style name"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:132
+msgid "Skin select"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:217
+msgid "Sleep time"
+msgstr ""
+
+#: ../../src/gui/power_menu.cpp:109 ../../src/gui/sleeptimer.cpp:74
+#: ../../src/gui/timerlist.cpp:840 ../../src/gui/timerlist.cpp:929
+msgid "Sleeptimer"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3757
+msgid "Sleeptimer in 1 min"
+msgstr ""
+
+#: ../../src/gui/pictureviewer_setup.cpp:163
+msgid "Slideshow display time"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:709
+msgid "Slovak"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:219
+msgid "Soap / Melodrama / Folkloric"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:304
+msgid "Social & politic events / Business"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:318
+msgid "Social / Spiritual sciences"
+msgstr ""
+
+#: ../../src/gui/service_menu.cpp:140 ../../src/gui/update.cpp:143
+#: ../../src/gui/update.cpp:288 ../../src/gui/update.cpp:974
+msgid "Software update"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1058 ../../src/gui/update.cpp:1059
+msgid "Software update URL"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:266
+msgid "South"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:248
+msgid "Special events (Olympic Games,World Cup etc.)"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:247
+msgid "Sports"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:249
+msgid "Sports magazines"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1086
+msgid "Standard"
+msgstr ""
+
+#: ../../src/gui/power_menu.cpp:115 ../../src/gui/timerlist.cpp:837
+#: ../../src/gui/timerlist.cpp:927
+msgid "Standby"
+msgstr ""
+
+#: ../../src/gui/vfdcontroler.cpp:120 ../../src/gui/vfdcontroler.cpp:130
+#: ../../src/gui/vfdcontroler.cpp:149 ../../src/gui/vfdcontroler.cpp:160
+#: ../../src/gui/vfdcontroler.cpp:193 ../../src/gui/vfdcontroler.cpp:218
+#: ../../src/gui/vfdcontroler.cpp:295
+msgid "Standby Brightness"
+msgstr ""
+
+#: ../../src/gui/pluginlist.cpp:76
+msgid "Start"
+msgstr ""
+
+#: ../../src/gui/zapit_setup.cpp:225 ../../src/gui/zapit_setup.cpp:254
+msgid "Start Channel"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:167 ../../src/gui/zapit_setup.cpp:178
+msgid "Start Channel settings"
+msgstr ""
+
+#: ../../src/gui/zapit_setup.cpp:219
+msgid "Start Mode"
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:939
+msgid "Start Search"
+msgstr ""
+
+#: ../../src/gui/audioplayer_setup.cpp:143
+#: ../../src/gui/movieplayer_setup.cpp:133
+#: ../../src/gui/pictureviewer_setup.cpp:166
+msgid "Start dir."
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1701
+msgid "Start movie from:"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1355 ../../src/gui/scan_setup.cpp:1489
+#: ../../src/gui/scan_setup.cpp:1557
+msgid "Start scan"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:200
+msgid "Startup to standby"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:572
+msgid "Status"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:181
+msgid "Status line"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:528
+msgid "Step Mode"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:616
+msgid "Step/Drive Motor East (b,c)"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:612
+msgid "Step/Drive Motor West (b,c)"
+msgstr ""
+
+#: ../../src/gui/audio_select.cpp:217 ../../src/gui/dvbsub_select.cpp:160
+msgid "Stop subtitles"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1004 ../../src/gui/timerlist.cpp:1007
+#: ../../src/gui/timerlist.cpp:1172 ../../src/gui/timerlist.cpp:1173
+msgid "Stop time"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:644
+msgid "Store Motor Position (a)"
+msgstr ""
+
+#: ../../src/gui/dboxinfo.cpp:579 ../../src/gui/streaminfo.cpp:534
+#: ../../src/gui/streaminfo.cpp:557
+msgid "Stream information"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1059
+msgid "Subchannel display"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:92
+msgid "Subchannel down"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:91
+msgid "Subchannel up"
+msgstr ""
+
+#: ../../src/gui/infoviewer.cpp:1413
+msgid "Subservices"
+msgstr ""
+
+#: ../../src/gui/dvbsub_select.cpp:87
+msgid "Subtitle Select"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:247
+msgid "Subtitle language preferences"
+msgstr ""
+
+#: ../../src/gui/audio_select.cpp:183 ../../src/gui/audio_select.cpp:202
+msgid "Subtitles"
+msgstr ""
+
+#: ../../src/gui/dvbsub_select.cpp:163
+msgid "Subtitles not found"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:881
+msgid "Sunday"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:725
+msgid "Svenska"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:756
+msgid "Swap rotor east/west"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:637 ../../src/gui/motorcontrol.cpp:658
+msgid "Switch Step/Drive Mode (b)"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1283 ../../src/gui/scan_setup.cpp:1284
+msgid "Symbol rate"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:407
+msgid "Syncronisation via"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:157 ../../src/gui/osd_setup.cpp:1555
+#: ../../src/gui/service_menu.cpp:110
+msgid "System"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:99 ../../src/gui/epgplus.cpp:513
+#: ../../src/gui/misc_setup.cpp:264 ../../src/gui/movieplayer.cpp:2023
+msgid "TMDB"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:2243
+msgid "TMDB Infos are not available"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:257
+msgid "TMDB Key:"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:261
+msgid "TMDB Preview"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:258
+msgid "TMDB:"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:204
+msgid "TOP"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:202
+msgid "TOP LEFT"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:203
+msgid "TOP RIGHT"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:648
+msgid "TV"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:115
+msgid "TV & Radio"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:113 ../../src/gui/osd_setup.cpp:1516
+msgid "TV / Radio"
+msgstr ""
+
+#: ../../src/gui/zapit_setup.cpp:211
+msgid "TV Channel"
+msgstr ""
+
+#: ../../src/gui/audio_video_select.cpp:321 ../../src/gui/video_setup.cpp:405
+#: ../../src/gui/video_setup.cpp:475
+msgid "TV-System"
+msgstr ""
+
+#: ../../src/gui/bedit/bouqueteditor_channels.cpp:92
+#: ../../src/gui/bedit/bouqueteditor_chanselect.cpp:108
+msgid "TV/Radio"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:81
+msgid "TV/Radio-mode"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:241
+msgid "Talk show"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:252
+msgid "Team sports (excluding football)"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:315
+msgid "Technology / Natural sciences"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:419
+msgid "Teletext"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:251
+msgid "Tennis / Squash"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:610 ../../src/gui/scan.cpp:611
+msgid "Terrestrial:"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:318 ../../src/gui/network_setup.cpp:557
+msgid "Test network now"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:566 ../../src/gui/scan_setup.cpp:1352
+msgid "Test signal"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:298 ../../src/gui/osd_setup.cpp:303
+#: ../../src/gui/osd_setup.cpp:308 ../../src/gui/osd_setup.cpp:313
+#: ../../src/gui/osd_setup.cpp:318 ../../src/gui/osd_setup.cpp:323
+#: ../../src/gui/osd_setup.cpp:332 ../../src/gui/osd_setup.cpp:355
+#: ../../src/gui/osd_setup.cpp:360 ../../src/gui/osd_setup.cpp:365
+#: ../../src/gui/osd_setup.cpp:371 ../../src/gui/osd_setup.cpp:398
+#: ../../src/gui/osd_setup.cpp:506 ../../src/gui/osd_setup.cpp:517
+msgid "Textcolor"
+msgstr ""
+
+#: ../../src/gui/sleeptimer.cpp:74
+msgid "The STB will shutdown after this time."
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:492 ../../src/gui/epgplus.cpp:1226
+#: ../../src/gui/epgview.cpp:840 ../../src/gui/epgview.cpp:845
+#: ../../src/gui/eventlist.cpp:346 ../../src/gui/eventlist.cpp:351
+msgid ""
+"The event is flagged for record.\n"
+"The box will power on and \n"
+"switch to this channel at the given time."
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:514 ../../src/gui/epgplus.cpp:1198
+#: ../../src/gui/epgview.cpp:861 ../../src/gui/eventlist.cpp:380
+msgid ""
+"The event is scheduled.\n"
+"The box will power on and \n"
+"switch to this channel at the given time."
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1168
+msgid "The extension .m3u will be added automatically"
+msgstr ""
+
+#: ../../src/gui/update.cpp:533 ../../src/gui/update.cpp:659
+msgid ""
+"The image was successfully flashed.\n"
+"The box will be rebooted now."
+msgstr ""
+
+#: ../../src/gui/update.cpp:620
+#, c-format
+msgid ""
+"The image was successfully saved \n"
+"under %s."
+msgstr ""
+
+#: ../../src/gui/update.cpp:344
+msgid ""
+"The image you have selected is an untested version, this means\n"
+"your box maybe fail to boot after update.\n"
+"\n"
+"Do you really want to update to this version?"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:4939
+msgid ""
+"The neutrino-settings have been updated.\n"
+"New Options will be set to default."
+msgstr ""
+
+#: ../../src/driver/vcrcontrol.cpp:623
+msgid ""
+"The recording directory is not writable.\n"
+"Recording will not work."
+msgstr ""
+
+#: ../../src/driver/vcrcontrol.cpp:623
+msgid ""
+"The recording was aborted,\n"
+"because the target file could not be opened."
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:872
+msgid "Thursday"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1080
+msgid "Time"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:208
+msgid "Time Zone"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:405
+msgid "Time-Syncronisation"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:540
+msgid "Timed Step Mode"
+msgstr ""
+
+#: ../../src/gui/cam_menu.cpp:597
+msgid "Timeout waiting CI menu ready"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1245
+msgid "Timer conflict. Create the timer anyway?"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:246
+msgid "Timer settings"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:997 ../../src/gui/timerlist.cpp:1213
+msgid "Timer typ"
+msgstr ""
+
+#: ../../src/neutrino2_menue.cpp:403 ../../src/gui/epg_menu.cpp:112
+#: ../../src/gui/rc_setup.cpp:101 ../../src/gui/timerlist.cpp:304
+#: ../../src/system/setting_helpers.cpp:267
+msgid "Timerlist"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:601
+msgid "Timescale"
+msgstr ""
+
+#: ../../src/gui/infoviewer.cpp:1413
+msgid "Timeselection"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:271
+msgid "Timeshift"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:150 ../../src/gui/osd_setup.cpp:893
+msgid "Timing"
+msgstr ""
+
+#: ../../src/gui/psisetup.cpp:139 ../../src/gui/psisetup.cpp:158
+#: ../../src/gui/psisetup.cpp:172 ../../src/gui/psisetup.cpp:191
+#: ../../src/gui/psisetup.cpp:252 ../../src/gui/psisetup.cpp:315
+#: ../../src/gui/psisetup.cpp:396
+msgid "Tint"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:651
+msgid "Total"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:327
+msgid "Tourism / Travel"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:1327
+msgid "Transmission mode"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:625 ../../src/gui/scan.cpp:626
+msgid "Transponders:"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:373
+msgid "Transponderscan failed!"
+msgstr ""
+
+#: ../../src/gui/scan.cpp:373
+msgid "Transponderscan finished."
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:326
+msgid "Travel & recreation"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:866
+msgid "Tuesday"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:510
+msgid "Tuner mode"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:516
+msgid "Tuner type"
+msgstr ""
+
+#: ../../src/gui/imageinfo.cpp:210
+msgid "Type:"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:753
+msgid "USALS command repeat"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:98
+msgid "UTF-8"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:424 ../../src/gui/nfs.cpp:448
+msgid "Umount network volume"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:260 ../../src/gui/scan_setup.cpp:949
+msgid "Uncommited/Commited"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:129
+msgid "Unicable"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:820
+msgid "Unicable SCR address"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:615
+msgid "Unicable Setup"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:824 ../../src/gui/scan_setup.cpp:825
+msgid "Unicable frequency"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:804
+msgid "Unicable settings"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:130
+msgid "Unicable2 (JESS)"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:842 ../../src/gui/timerlist.cpp:885
+#: ../../src/gui/timerlist.cpp:897
+msgid "Unknown"
+msgstr ""
+
+#: ../../src/gui/screensetup.cpp:122 ../../src/gui/screensetup.cpp:291
+msgid "Upper Left"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:265 ../../src/gui/network_setup.cpp:267
+#: ../../src/gui/network_setup.cpp:269 ../../src/gui/network_setup.cpp:271
+#: ../../src/gui/network_setup.cpp:273 ../../src/gui/nfs.cpp:346
+#: ../../src/gui/nfs.cpp:371 ../../src/gui/timerlist.cpp:1000
+#: ../../src/gui/timerlist.cpp:1004 ../../src/gui/timerlist.cpp:1167
+#: ../../src/gui/timerlist.cpp:1172
+msgid "Use 0..9, or use Up/Down,"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:809
+msgid "Use XMLTV EPG"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:731 ../../src/gui/scan_setup.cpp:955
+msgid "Use gotoXX"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:607 ../../src/gui/rc_setup.cpp:211
+#: ../../src/system/setting_helpers.cpp:345
+msgid "User menu"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:217
+msgid "User menu F1"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:218
+msgid "User menu F2"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:219
+msgid "User menu F3"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:220
+msgid "User menu F4"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:214
+msgid "User menu blue"
+msgstr ""
+
+#: ../../src/gui/proxyserver_setup.cpp:103
+#: ../../src/gui/proxyserver_setup.cpp:104
+msgid "Username"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:240
+msgid "Variety show"
+msgstr ""
+
+#: ../../src/gui/imageinfo.cpp:199
+msgid "Version:"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:824
+msgid "Vertikal (in %)"
+msgstr ""
+
+#: ../../src/gui/audio_video_select.cpp:324 ../../src/gui/video_setup.cpp:408
+#: ../../src/gui/video_setup.cpp:475
+msgid "Video Format"
+msgstr ""
+
+#: ../../src/gui/video_setup.cpp:422 ../../src/gui/video_setup.cpp:480
+msgid "Video Resolution"
+msgstr ""
+
+#: ../../src/gui/main_setup.cpp:124 ../../src/gui/video_setup.cpp:381
+msgid "Video settings"
+msgstr ""
+
+#: ../../src/system/setting_helpers.cpp:269
+msgid "Videotext"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:583
+msgid "Virtual zap"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1065 ../../src/gui/osd_setup.cpp:1066
+msgid "Volume Step Size"
+msgstr ""
+
+#: ../../src/gui/audio_select.cpp:235
+msgid "Volume adjustment (in %)"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1062
+msgid "Volumebar"
+msgstr ""
+
+#: ../../src/gui/widget/keychooser.cpp:250
+msgid "Wait a few seconds for abort"
+msgstr ""
+
+#: ../../src/gui/cam_menu.cpp:582
+msgid "Waiting for CI answer"
+msgstr ""
+
+#: ../../src/gui/infoviewer.cpp:780 ../../src/gui/infoviewer.cpp:1661
+msgid "Waiting for time..."
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:255
+msgid "Water sports"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:869
+msgid "Wednesday"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:274
+msgid "West"
+msgstr ""
+
+#: ../../src/gui/video_setup.cpp:509
+msgid "Wide Screen Auto"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1084
+msgid "Widget Type"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:353
+msgid "Window-Content"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:358
+msgid "Window-Content inactive"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:363
+msgid "Window-Content selected"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:256
+msgid "Winter sports"
+msgstr ""
+
+#: ../../src/gui/update.cpp:1047
+msgid "Write one partition"
+msgstr ""
+
+#: ../../src/gui/update.cpp:641
+msgid "Writing Flash"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:252
+msgid "YT:"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:951 ../../src/gui/movieinfo.cpp:909
+#: ../../src/gui/movieplayer.cpp:2183 ../../src/system/tmdbparser.cpp:242
+msgid "Year of production"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:131 ../../src/gui/nfs.cpp:149
+#: ../../src/gui/timerlist.cpp:938 ../../src/gui/widget/messagebox.cpp:494
+msgid "Yes"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3183 ../../src/neutrino2.cpp:4254
+msgid "You really want to to stop record ?"
+msgstr ""
+
+#: ../../src/gui/update.cpp:336
+msgid ""
+"Your Release cycle differs.\n"
+"To continue?"
+msgstr ""
+
+#: ../../src/gui/rc_lock.cpp:48
+msgid ""
+"Your box remote control will be locked.\n"
+" To unlock it, press <RED> \n"
+" and <MENU> on your remote control."
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:130 ../../src/gui/widget/listbox.cpp:196
+msgid "Youth protection"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:586
+msgid "Zap cycle"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:836 ../../src/gui/timerlist.cpp:926
+msgid "Zap to"
+msgstr ""
+
+#: ../../src/gui/rc_setup.cpp:93
+msgid "Zapping History Bouquet"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3673
+msgid "Zapto timer in one minute"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:398
+msgid "Zoom in"
+msgstr ""
+
+#: ../../src/gui/pictureviewer.cpp:396
+msgid "Zoom out"
+msgstr ""
+
+#: ../../src/gui/proxyserver_setup.cpp:100
+msgid "a empty entry means no proxy"
+msgstr ""
+
+#: ../../src/gui/proxyserver_setup.cpp:103
+#: ../../src/gui/proxyserver_setup.cpp:106
+msgid "a empty entry means no proxy-auth"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1518 ../../src/gui/osd_setup.cpp:1528
+#: ../../src/gui/osd_setup.cpp:1538 ../../src/gui/osd_setup.cpp:1548
+#: ../../src/gui/osd_setup.cpp:1557 ../../src/gui/osd_setup.cpp:1568
+#: ../../src/gui/osd_setup.cpp:1577 ../../src/gui/osd_setup.cpp:1586
+msgid "active"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:1807
+msgid "add channel to my favorites"
+msgstr ""
+
+#: ../../src/gui/pictureviewer_setup.cpp:61
+msgid "advanced"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:118
+msgid "all services"
+msgstr ""
+
+#: ../../src/gui/alphasetup.cpp:123 ../../src/gui/alphasetup.cpp:128
+#: ../../src/gui/alphasetup.cpp:137 ../../src/gui/alphasetup.cpp:142
+#: ../../src/gui/alphasetup.cpp:158 ../../src/gui/alphasetup.cpp:177
+#: ../../src/gui/alphasetup.cpp:247 ../../src/gui/widget/colorchooser.cpp:61
+msgid "alpha"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1015 ../../src/gui/timerlist.cpp:1182
+msgid "amount of timer repeats"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:216
+msgid "angular"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1638
+msgid "approx. 1 minute back"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1644
+msgid "approx. 10 minutes back"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1648
+msgid "approx. 10 seconds back"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1641
+msgid "approx. 5 minutes back"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:79
+msgid "audio master"
+msgstr ""
+
+#: ../../src/gui/audio_setup.cpp:189 ../../src/gui/audioplayer_setup.cpp:132
+#: ../../src/gui/cam_menu.cpp:148 ../../src/gui/cec_setup.cpp:146
+#: ../../src/gui/hdd_menu.cpp:206 ../../src/gui/hdd_menu.cpp:360
+#: ../../src/gui/hdd_menu.cpp:441 ../../src/gui/lcd_setup.cpp:162
+#: ../../src/gui/misc_setup.cpp:177 ../../src/gui/misc_setup.cpp:572
+#: ../../src/gui/misc_setup.cpp:752 ../../src/gui/misc_setup.cpp:998
+#: ../../src/gui/movieplayer_setup.cpp:125 ../../src/gui/network_setup.cpp:307
+#: ../../src/gui/nfs.cpp:220 ../../src/gui/nfs.cpp:342
+#: ../../src/gui/nfs.cpp:463 ../../src/gui/nfs.cpp:542
+#: ../../src/gui/osd_setup.cpp:289 ../../src/gui/osd_setup.cpp:497
+#: ../../src/gui/osd_setup.cpp:650 ../../src/gui/osd_setup.cpp:812
+#: ../../src/gui/osd_setup.cpp:907 ../../src/gui/osd_setup.cpp:1046
+#: ../../src/gui/osd_setup.cpp:1295 ../../src/gui/osd_setup.cpp:1509
+#: ../../src/gui/parentallock_setup.cpp:129
+#: ../../src/gui/pictureviewer_setup.cpp:152 ../../src/gui/rc_setup.cpp:182
+#: ../../src/gui/rc_setup.cpp:356 ../../src/gui/recording_setup.cpp:240
+#: ../../src/gui/scan_setup.cpp:488 ../../src/gui/scan_setup.cpp:721
+#: ../../src/gui/scan_setup.cpp:816 ../../src/gui/scan_setup.cpp:883
+#: ../../src/gui/scan_setup.cpp:935 ../../src/gui/scan_setup.cpp:1041
+#: ../../src/gui/scan_setup.cpp:1111 ../../src/gui/scan_setup.cpp:1411
+#: ../../src/gui/scan_setup.cpp:1546 ../../src/gui/scan_setup.cpp:2384
+#: ../../src/gui/timerlist.cpp:988 ../../src/gui/timerlist.cpp:1073
+#: ../../src/gui/timerlist.cpp:1159 ../../src/gui/update.cpp:187
+#: ../../src/gui/update.cpp:990 ../../src/gui/update.cpp:1038
+#: ../../src/gui/video_setup.cpp:397 ../../src/gui/zapit_setup.cpp:194
+#: ../../src/gui/widget/keychooser.cpp:131
+#: ../../src/system/setting_helpers.cpp:337
+msgid "back"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:771
+msgid "be Cached? (Set in hours)"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:853 ../../src/gui/timerlist.cpp:908
+msgid "biweekly"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:93 ../../src/gui/widget/colorchooser.cpp:60
+msgid "blue"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:988 ../../src/gui/osd_setup.cpp:999
+msgid "bottom left"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:989 ../../src/gui/osd_setup.cpp:1000
+msgid "bottom right"
+msgstr ""
+
+#: ../../src/gui/update.cpp:413
+msgid ""
+"by manual package update version checks are currently not supported.\n"
+"Are you sure that you wish to install this package?"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:694
+msgid "cable"
+msgstr ""
+
+#: ../../src/gui/update.cpp:259 ../../src/gui/update.cpp:455
+msgid "can't get update list"
+msgstr ""
+
+#: ../../src/gui/update.cpp:389 ../../src/system/flashtool.cpp:100
+#: ../../src/system/flashtool.cpp:158
+msgid "can't open file"
+msgstr ""
+
+#: ../../src/system/flashtool.cpp:94 ../../src/system/flashtool.cpp:193
+#: ../../src/system/flashtool.cpp:245
+msgid "can't open mtd-device"
+msgstr ""
+
+#: ../../src/gui/widget/stringinput.cpp:671
+msgid "caps / no caps"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:86
+msgid "center"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:66 ../../src/gui/lcd_setup.cpp:77
+msgid "channel"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:71
+msgid "channel (short) / sep.-line / title"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:70
+msgid "channel (short) / title"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:69
+msgid "channel / sep.-line / title"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:68
+msgid "channel / title"
+msgstr ""
+
+#: ../../src/gui/update.cpp:319
+msgid "checking version"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1333
+msgid "choose Skin Style."
+msgstr ""
+
+#: ../../src/gui/widget/stringinput.cpp:672
+msgid "clear all"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:979
+msgid "colored"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:108
+msgid "create new"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1531
+msgid "create screenshot?"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:851 ../../src/gui/timerlist.cpp:906
+msgid "daily"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:184
+msgid "dark to light"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:186
+msgid "dark to light to dark"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:222 ../../src/gui/recording_setup.cpp:251
+msgid "default audio streams"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:990
+msgid "default center"
+msgstr ""
+
+#: ../../src/gui/channellist.cpp:1804
+msgid "delete"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:282
+msgid "direct connected"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:576
+msgid "directory already mounted"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:349
+msgid "directory/share"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:562
+msgid "don't care"
+msgstr ""
+
+#: ../../src/gui/audio_select.cpp:73
+msgid "downmix"
+msgstr ""
+
+#: ../../src/gui/proxyserver_setup.cpp:100
+msgid "enter proxyserver name or ip, use host:port"
+msgstr ""
+
+#: ../../src/gui/proxyserver_setup.cpp:106
+msgid "enter the proxyserver password"
+msgstr ""
+
+#: ../../src/gui/proxyserver_setup.cpp:103
+msgid "enter the proxyserver username"
+msgstr ""
+
+#: ../../src/system/flashtool.cpp:173
+msgid "erasing flash"
+msgstr ""
+
+#: ../../src/system/flashtool.cpp:280
+msgid "erasure of flash failed"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:602
+msgid "error umounting volume"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:77
+msgid "fast"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:572
+msgid "filesystem type not supported"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:854 ../../src/gui/timerlist.cpp:909
+msgid "fourweekly"
+msgstr ""
+
+#: ../../src/gui/parentallock_setup.cpp:57
+msgid "from 12 years up"
+msgstr ""
+
+#: ../../src/gui/parentallock_setup.cpp:58
+msgid "from 16 years up"
+msgstr ""
+
+#: ../../src/gui/parentallock_setup.cpp:59
+msgid "from 18 years up"
+msgstr ""
+
+#: ../../src/gui/video_setup.cpp:148 ../../src/gui/video_setup.cpp:158
+#: ../../src/gui/video_setup.cpp:174
+msgid "fullscreen"
+msgstr ""
+
+#: ../../src/gui/update.cpp:144 ../../src/gui/update.cpp:297
+msgid "getting update list"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1645
+msgid "goto end"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1642
+msgid "goto middle"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1639
+msgid "goto start"
+msgstr ""
+
+#: ../../src/gui/widget/colorchooser.cpp:59
+msgid "green"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1520 ../../src/gui/osd_setup.cpp:1530
+#: ../../src/gui/osd_setup.cpp:1540 ../../src/gui/osd_setup.cpp:1550
+#: ../../src/gui/osd_setup.cpp:1559 ../../src/gui/osd_setup.cpp:1570
+#: ../../src/gui/osd_setup.cpp:1579 ../../src/gui/osd_setup.cpp:1588
+msgid "hidden"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:991
+msgid "higher center"
+msgstr ""
+
+#: ../../src/gui/update.cpp:482 ../../src/gui/update.cpp:491
+msgid "image has errors"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1521 ../../src/gui/osd_setup.cpp:1531
+#: ../../src/gui/osd_setup.cpp:1541 ../../src/gui/osd_setup.cpp:1551
+#: ../../src/gui/osd_setup.cpp:1560 ../../src/gui/osd_setup.cpp:1571
+#: ../../src/gui/osd_setup.cpp:1580 ../../src/gui/osd_setup.cpp:1589
+msgid "inactive"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:216
+msgid "internet Radio"
+msgstr ""
+
+#: ../../src/gui/plugins.cpp:316
+msgid "is not installed please install again."
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:501
+msgid "is reachable (ping)"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:502
+msgid "is unreachable"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:503
+msgid "is unreachable (host or protocol error)"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:504
+msgid "is unreachable (socket error)"
+msgstr ""
+
+#: ../../src/system/helpers.cpp:717
+msgid "italian"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1337
+msgid "jump backwards"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1323
+msgid "jump ff"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1338
+msgid "jump forwards"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1322
+msgid "jump prev"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:219
+msgid "large"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:85
+msgid "left"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:185
+msgid "light to dark"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:187
+msgid "light to dark to light"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:379
+msgid "local dir"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1519 ../../src/gui/osd_setup.cpp:1529
+#: ../../src/gui/osd_setup.cpp:1539 ../../src/gui/osd_setup.cpp:1549
+#: ../../src/gui/osd_setup.cpp:1558 ../../src/gui/osd_setup.cpp:1569
+#: ../../src/gui/osd_setup.cpp:1578 ../../src/gui/osd_setup.cpp:1587
+msgid "locked"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:1076
+msgid "logos Dir"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:284
+msgid "loop"
+msgstr ""
+
+#: ../../src/gui/update.cpp:413
+msgid ""
+"manual flash update version checks are currently not supported.\n"
+"Are you sure that you wish to install this image?"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:76 ../../src/gui/osd_setup.cpp:218
+msgid "middle"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:567
+msgid "milliseconds"
+msgstr ""
+
+#: ../../src/gui/audio_select.cpp:63 ../../src/gui/audio_setup.cpp:61
+msgid "mono left"
+msgstr ""
+
+#: ../../src/gui/audio_select.cpp:64 ../../src/gui/audio_setup.cpp:62
+msgid "mono right"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:978
+msgid "monochrom"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:855 ../../src/gui/timerlist.cpp:910
+msgid "monthly"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:546
+msgid "mount"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:584
+msgid "mount error"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:580
+msgid "mount error: timeout"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:386
+msgid "mount now"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:352
+msgid "mount on startup"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:588
+msgid "mount successful"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:728
+msgid "moving speed (10 = 1deg/sec)"
+msgstr ""
+
+#: ../../src/gui/network_setup.cpp:280 ../../src/gui/network_setup.cpp:281
+msgid "need reboot or epg-reset"
+msgstr ""
+
+#: ../../src/gui/parentallock_setup.cpp:49
+msgid "never"
+msgstr ""
+
+#: ../../src/gui/audioplayer_setup.cpp:48 ../../src/gui/misc_setup.cpp:82
+#: ../../src/gui/nfs.cpp:253 ../../src/gui/pictureviewer_setup.cpp:53
+#: ../../src/gui/recording_setup.cpp:59
+msgid "no"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:124
+msgid "no DiSEqC"
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:754
+msgid "no epg found"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:183
+msgid "no gradient"
+msgstr ""
+
+#: ../../src/gui/pictureviewer_setup.cpp:62
+msgid "none"
+msgstr ""
+
+#: ../../src/gui/vfdcontroler.cpp:119 ../../src/gui/vfdcontroler.cpp:126
+#: ../../src/gui/vfdcontroler.cpp:147 ../../src/gui/vfdcontroler.cpp:154
+#: ../../src/gui/vfdcontroler.cpp:183 ../../src/gui/vfdcontroler.cpp:208
+#: ../../src/gui/vfdcontroler.cpp:294
+msgid "normal Brightness"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:779
+msgid "normaly 50000, 0 to disable limit"
+msgstr ""
+
+#: ../../src/gui/streaminfo.cpp:769 ../../src/gui/streaminfo.cpp:780
+#: ../../src/gui/streaminfo.cpp:809 ../../src/system/helpers.cpp:1311
+#: ../../src/system/helpers.cpp:1316
+msgid "not available"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:283
+msgid "not connected"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3079 ../../src/gui/audio_select.cpp:55
+#: ../../src/gui/audio_setup.cpp:53 ../../src/gui/audio_setup.cpp:69
+#: ../../src/gui/audio_setup.cpp:77 ../../src/gui/cec_setup.cpp:74
+#: ../../src/gui/cec_setup.cpp:82 ../../src/gui/hdd_menu.cpp:74
+#: ../../src/gui/hdd_menu.cpp:83 ../../src/gui/lcd_setup.cpp:49
+#: ../../src/gui/lcd_setup.cpp:92 ../../src/gui/misc_setup.cpp:75
+#: ../../src/gui/misc_setup.cpp:90 ../../src/gui/misc_setup.cpp:104
+#: ../../src/gui/osd_setup.cpp:62 ../../src/gui/recording_setup.cpp:52
+#: ../../src/gui/scan_setup.cpp:93 ../../src/gui/zapit_setup.cpp:46
+#: ../../src/gui/zapit_setup.cpp:54
+msgid "off"
+msgstr ""
+
+#: ../../src/neutrino2.cpp:3080 ../../src/gui/audio_select.cpp:56
+#: ../../src/gui/audio_setup.cpp:54 ../../src/gui/audio_setup.cpp:70
+#: ../../src/gui/audio_setup.cpp:78 ../../src/gui/cec_setup.cpp:75
+#: ../../src/gui/cec_setup.cpp:83 ../../src/gui/lcd_setup.cpp:50
+#: ../../src/gui/misc_setup.cpp:76 ../../src/gui/misc_setup.cpp:91
+#: ../../src/gui/misc_setup.cpp:105 ../../src/gui/osd_setup.cpp:63
+#: ../../src/gui/recording_setup.cpp:53 ../../src/gui/scan_setup.cpp:94
+#: ../../src/gui/zapit_setup.cpp:47 ../../src/gui/zapit_setup.cpp:55
+msgid "on"
+msgstr ""
+
+#: ../../src/gui/parentallock_setup.cpp:51
+msgid "on broadcasted lock"
+msgstr ""
+
+#: ../../src/gui/parentallock_setup.cpp:50
+msgid "on locked bouquets"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:911 ../../src/gui/timerlist.cpp:1013
+#: ../../src/gui/timerlist.cpp:1014 ../../src/gui/timerlist.cpp:1177
+#: ../../src/gui/timerlist.cpp:1178
+msgid "on weekdays"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:850 ../../src/gui/timerlist.cpp:905
+msgid "once"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:117
+msgid "only radio"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:116
+msgid "only tv"
+msgstr ""
+
+#: ../../src/gui/update.cpp:482 ../../src/gui/update.cpp:491
+msgid "package has errors"
+msgstr ""
+
+#: ../../src/gui/update.cpp:564
+msgid "package install failed"
+msgstr ""
+
+#: ../../src/gui/audio_select.cpp:72
+msgid "passthrough"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:367 ../../src/gui/nfs.cpp:368
+msgid "password"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:56
+msgid "playtime"
+msgstr ""
+
+#: ../../src/system/flashtool.cpp:188
+msgid "programming flash"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:95
+msgid "purple"
+msgstr ""
+
+#: ../../src/gui/bedit/bouqueteditor_chanselect.cpp:109
+msgid "ready"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:217
+msgid "record default audio streams"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:94 ../../src/gui/widget/colorchooser.cpp:58
+msgid "red"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:545
+msgid "remount"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:1015 ../../src/gui/timerlist.cpp:1017
+#: ../../src/gui/timerlist.cpp:1182 ../../src/gui/timerlist.cpp:1183
+msgid "repeats"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:695
+msgid "sat"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1336
+msgid "save play list"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1321
+msgid "save playlist"
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:856
+msgid "see timer"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1634
+msgid "show movie infoviewer"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1327 ../../src/gui/movieplayer.cpp:1635
+msgid "show playlist"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1339
+msgid "shuffle"
+msgstr ""
+
+#: ../../src/gui/audioplayer.cpp:1324
+msgid "shuffle playlist"
+msgstr ""
+
+#: ../../src/gui/pictureviewer_setup.cpp:60
+msgid "simple"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1640
+msgid "skip approx. 1 minute"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1646
+msgid "skip approx. 10 minutes"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1647
+msgid "skip approx. 10 seconds"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1643
+msgid "skip approx. 5 minutes"
+msgstr ""
+
+#: ../../src/gui/movieplayer.cpp:1637
+msgid "skip bookmark"
+msgstr ""
+
+#: ../../src/gui/hdd_menu.cpp:75
+msgid "slow"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:217
+msgid "small"
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:666
+msgid "sorting(A..Z)"
+msgstr ""
+
+#: ../../src/gui/eventlist.cpp:537 ../../src/gui/eventlist.cpp:668
+msgid "sorting(Time)"
+msgstr ""
+
+#: ../../src/gui/audio_select.cpp:62 ../../src/gui/audio_setup.cpp:60
+msgid "stereo"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:556
+msgid "stop on good signal(moving)"
+msgstr ""
+
+#: ../../src/gui/motorcontrol.cpp:558
+msgid "stop on good signal(stopped)"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:196 ../../src/gui/misc_setup.cpp:197
+msgid "switch off after"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:696
+msgid "terrestrial"
+msgstr ""
+
+#: ../../src/system/flashtool.cpp:167
+msgid "the filesize is 0 Bytes"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:78
+msgid "time"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:196
+msgid "time (in minutes) to switch from standby"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:67
+msgid "title"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:196
+msgid "to deep standby (0 = off)."
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:987 ../../src/gui/osd_setup.cpp:998
+msgid "top left"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:986 ../../src/gui/osd_setup.cpp:997
+msgid "top right"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:376
+msgid "type"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:547
+msgid "umount"
+msgstr ""
+
+#: ../../src/gui/epgview.cpp:390 ../../src/gui/streaminfo.cpp:631
+#: ../../src/gui/streaminfo.cpp:651
+#, c-format
+msgid "unknown"
+msgstr ""
+
+#: ../../src/gui/scan_setup.cpp:109
+msgid "update"
+msgstr ""
+
+#: ../../src/gui/nfs.cpp:363 ../../src/gui/nfs.cpp:364
+msgid "username"
+msgstr ""
+
+#: ../../src/gui/osd_setup.cpp:220
+msgid "very large"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:57
+msgid "volume"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:58
+msgid "volume / playtime"
+msgstr ""
+
+#: ../../src/gui/lcd_setup.cpp:59
+msgid "volume / playtime / audio"
+msgstr ""
+
+#: ../../src/gui/infoviewer.cpp:780
+msgid "waiting for EPG..."
+msgstr ""
+
+#: ../../src/gui/timerlist.cpp:852 ../../src/gui/timerlist.cpp:907
+msgid "weekly"
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:211
+msgid "will added to stop time of every record timer."
+msgstr ""
+
+#: ../../src/gui/recording_setup.cpp:207
+msgid "will be deducted of every record timer."
+msgstr ""
+
+#: ../../src/gui/audioplayer_setup.cpp:49 ../../src/gui/misc_setup.cpp:83
+#: ../../src/gui/nfs.cpp:254 ../../src/gui/pictureviewer_setup.cpp:54
+#: ../../src/gui/recording_setup.cpp:60
+msgid "yes"
+msgstr ""
+
+#: ../../src/gui/misc_setup.cpp:251
+msgid "youtube ID Key:"
+msgstr ""

@@ -1,0 +1,70 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 5.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-11-18 11:15+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../nfilm/nfilm.cpp:385
+msgid "Exit"
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:398
+msgid "Genres"
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:173 ../../nfilm/nfilm.cpp:195
+msgid "Movie Trailer"
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:381
+msgid "Movie in cinema"
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:382
+msgid "Movie popular"
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:383
+msgid "Movie top rated"
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:384
+msgid "New movie"
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:427
+msgid "Next Focus"
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:425
+msgid "Next Page"
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:426
+msgid "Prev Page"
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:173 ../../nfilm/nfilm.cpp:195
+msgid "Scan for Movies ..."
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:388 ../../nfilm/nfilm.cpp:583
+msgid "Search"
+msgstr ""
+
+#: ../../nfilm/nfilm.cpp:428
+msgid "Start Menu"
+msgstr ""

@@ -65,8 +65,6 @@
 /neutrino2/data/locale/de.mo
 /neutrino2/data/locale/fr.mo
 /neutrino2/data/locale/it.mo
-/neutrino2/data/locale/neutrino-hd2.pot
-/neutrino2/data/locale/neutrinohd2.pot
 /neutrino2/data/locale/nl.mo
 /neutrino2/data/locale/pl.mo
 /neutrino2/data/locale/pt.mo
@@ -1103,7 +1101,6 @@
 /neutrino2/data/locale/de.mo
 /neutrino2/data/locale/fr.mo
 /neutrino2/data/locale/it.mo
-/neutrino2/data/locale/neutrinohd2.pot
 /neutrino2/data/locale/nl.mo
 /neutrino2/data/locale/pl.mo
 /neutrino2/data/locale/pt.mo
@@ -1866,7 +1863,6 @@
 /neutrino2/src/zapit/zapit.o
 /neutrino2/src/gui/.deps/streaminfo.Po
 /neutrino2/src/gui/streaminfo.o
-/neutrino2/data/locale/neutrino2.pot
 /neutrino2/lib/libiw/.deps/iwlib.Po
 /neutrino2/lib/libiw/.deps/iwscan.Po
 /neutrino2/lib/libiw/Makefile
@@ -2019,11 +2015,9 @@
 /plugins/test/locale/ru.mo
 /plugins/test/locale/sk.mo
 /plugins/test/locale/sv.mo
-/plugins/test/locale/test.pot
 /plugins/audioplayer/locale/Makefile
 /plugins/audioplayer/locale/Makefile.in
 /plugins/audioplayer/locale/ar.mo
-/plugins/audioplayer/locale/audioplayer.pot
 /plugins/audioplayer/locale/bs.mo
 /plugins/audioplayer/locale/de.mo
 /plugins/audioplayer/locale/fr.mo
@@ -2041,7 +2035,6 @@
 /plugins/movieplayer/locale/de.mo
 /plugins/movieplayer/locale/fr.mo
 /plugins/movieplayer/locale/it.mo
-/plugins/movieplayer/locale/movieplayer.pot
 /plugins/movieplayer/locale/nl.mo
 /plugins/movieplayer/locale/pl.mo
 /plugins/movieplayer/locale/pt.mo
@@ -2063,7 +2056,6 @@
 /plugins/systeminfo/locale/ru.mo
 /plugins/systeminfo/locale/sk.mo
 /plugins/systeminfo/locale/sv.mo
-/plugins/systeminfo/locale/systeminfo.pot
 /plugins/icecast/locale/Makefile.in
 /plugins/internetradio/locale/Makefile.in
 /plugins/nfilm/locale/Makefile.in
@@ -2075,7 +2067,6 @@
 /plugins/icecast/locale/bs.mo
 /plugins/icecast/locale/de.mo
 /plugins/icecast/locale/fr.mo
-/plugins/icecast/locale/icecast.pot
 /plugins/icecast/locale/it.mo
 /plugins/icecast/locale/nl.mo
 /plugins/icecast/locale/pl.mo
@@ -2089,7 +2080,6 @@
 /plugins/internetradio/locale/bs.mo
 /plugins/internetradio/locale/de.mo
 /plugins/internetradio/locale/fr.mo
-/plugins/internetradio/locale/internetradio.pot
 /plugins/internetradio/locale/nl.mo
 /plugins/internetradio/locale/pl.mo
 /plugins/internetradio/locale/pt.mo
@@ -2102,7 +2092,6 @@
 /plugins/nfilm/locale/de.mo
 /plugins/nfilm/locale/fr.mo
 /plugins/nfilm/locale/it.mo
-/plugins/nfilm/locale/nfilm.pot
 /plugins/nfilm/locale/nl.mo
 /plugins/nfilm/locale/pl.mo
 /plugins/nfilm/locale/pt.mo
@@ -2117,7 +2106,6 @@
 /plugins/ntvshows/locale/fr.mo
 /plugins/ntvshows/locale/it.mo
 /plugins/ntvshows/locale/nl.mo
-/plugins/ntvshows/locale/ntvshows.pot
 /plugins/ntvshows/locale/pl.mo
 /plugins/ntvshows/locale/pt.mo
 /plugins/ntvshows/locale/ru.mo
@@ -2130,7 +2118,6 @@
 /plugins/opkg_manager/locale/fr.mo
 /plugins/opkg_manager/locale/it.mo
 /plugins/opkg_manager/locale/nl.mo
-/plugins/opkg_manager/locale/opkg_manager.pot
 /plugins/opkg_manager/locale/pl.mo
 /plugins/opkg_manager/locale/pt.mo
 /plugins/opkg_manager/locale/ru.mo
@@ -2143,7 +2130,6 @@
 /plugins/picviewer/locale/fr.mo
 /plugins/picviewer/locale/it.mo
 /plugins/picviewer/locale/nl.mo
-/plugins/picviewer/locale/picviewer.pot
 /plugins/picviewer/locale/pl.mo
 /plugins/picviewer/locale/pt.mo
 /plugins/picviewer/locale/ru.mo
@@ -2161,7 +2147,6 @@
 /plugins/upnp/locale/ru.mo
 /plugins/upnp/locale/sk.mo
 /plugins/upnp/locale/sv.mo
-/plugins/upnp/locale/upnp.pot
 /plugins/moviebrowser/locale/Makefile
 /plugins/moviebrowser/locale/Makefile.in
 /plugins/moviebrowser/locale/ar.mo
@@ -2169,7 +2154,6 @@
 /plugins/moviebrowser/locale/de.mo
 /plugins/moviebrowser/locale/fr.mo
 /plugins/moviebrowser/locale/it.mo
-/plugins/moviebrowser/locale/moviebrowser.pot
 /plugins/moviebrowser/locale/nl.mo
 /plugins/moviebrowser/locale/pl.mo
 /plugins/moviebrowser/locale/pt.mo

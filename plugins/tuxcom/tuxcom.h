@@ -233,8 +233,6 @@ char szSearchstring[FILENAME_MAX];
 char szTextSearchstring[FILENAME_MAX];
 char szPass[20];
 long commandsize;
-
-FILE *conf;
 int language, langselect, autosave, filesize_in_byte;
 
 #define ACTION_NOACTION 0

@@ -21,7 +21,7 @@ picviewer.pot: $(top_srcdir)/picviewer/*.cpp
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO) picviewer.pot
+CLEANFILES = $(LANGMO)
 
 dist-hook: $(LANGPO)
 

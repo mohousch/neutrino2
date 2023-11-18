@@ -30,7 +30,7 @@ neutrino2.pot: $(top_srcdir)/src/*.cpp \
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO) neutrino2.pot
+CLEANFILES = $(LANGMO)
 
 dist-hook: $(LANGPO)
 

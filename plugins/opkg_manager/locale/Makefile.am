@@ -21,7 +21,7 @@ opkg_manager.pot: $(top_srcdir)/opkg_manager/*.cpp
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO) opkg_manager.pot
+CLEANFILES = $(LANGMO)
 
 dist-hook: $(LANGPO)
 

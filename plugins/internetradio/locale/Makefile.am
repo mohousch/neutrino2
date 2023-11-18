@@ -21,7 +21,7 @@ internetradio.pot: $(top_srcdir)/internetradio/*.cpp
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO) internetradio.pot
+CLEANFILES = $(LANGMO)
 
 dist-hook: $(LANGPO)
 

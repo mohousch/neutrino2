@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR neutrino2
+# This file is distributed under the same license as the neutrino2-plugins package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: neutrino2-plugins 5.0\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2023-11-18 11:15+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../systeminfo/systeminfo.cpp:100
+msgid "CPU/File-Info:"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:407
+msgid "Day"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:407
+msgid "Days"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:408
+msgid "Hour"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:408
+msgid "Hours"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:409
+msgid "Minute"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:409
+msgid "Minutes"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:103
+msgid "Process-List:"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:419
+msgid "System running:"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:94
+msgid "System-Info:"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:97
+msgid "System-Messages:"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:119
+msgid "cpu/file"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:118
+msgid "dmesg"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:117
+msgid "info"
+msgstr ""
+
+#: ../../systeminfo/systeminfo.cpp:120
+msgid "ps"
+msgstr ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-11-18 10:30+0100\n"
+"POT-Creation-Date: 2023-11-18 11:05+0100\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2833,6 +2833,9 @@ msgstr "Verzeichnis bereits gemountet"
 msgid "directory/share"
 msgstr "Verzeichnis/Freigabe"
 
+msgid "display pics"
+msgstr "Zeigt Bilder"
+
 msgid "don't care"
 msgstr "ist mir egal"
 
@@ -2859,6 +2862,9 @@ msgstr "Fehler beim Mounten des Volumes"
 
 msgid "fast"
 msgstr "schnell"
+
+msgid "file manager"
+msgstr "Dateien Manager"
 
 msgid "filesystem type not supported"
 msgstr "Dateisystemtyp wird nicht unterstützt"
@@ -3076,6 +3082,15 @@ msgstr "Passthrough"
 
 msgid "password"
 msgstr "Passwort"
+
+msgid "play and edit records and movies"
+msgstr "Spielt und bearbeitet Filme"
+
+msgid "play movie and record files"
+msgstr "Spielt Filme ab"
+
+msgid "play music files"
+msgstr "Spielt Musik Dateien"
 
 msgid "playtime"
 msgstr "Spielzeit"

@@ -21,7 +21,7 @@ test.pot: $(top_srcdir)/test/*.cpp
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO) test.pot
+CLEANFILES = $(LANGMO)
 
 dist-hook: $(LANGPO)
 

@@ -21,7 +21,7 @@ systeminfo.pot: $(top_srcdir)/systeminfo/*.cpp
 	$(MSGFMT) -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
-CLEANFILES = $(LANGMO) systeminfo.pot
+CLEANFILES = $(LANGMO)
 
 dist-hook: $(LANGPO)
 
