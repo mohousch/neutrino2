@@ -894,7 +894,7 @@ void CZapit::saveVolumeMap()
 		return;
 	}
 	for (volume_map_iterator_t it = vol_map.begin(); it != vol_map.end(); ++it)
-		fprintf(volume_config_file, "0x%llx %d %d\n", (uint64_t) it->first, it->second.first, it->second.second);
+		fprintf(volume_config_file, "%llx %d %d\n", (uint64_t) it->first, it->second.first, it->second.second);
 
 	fdatasync(fileno(volume_config_file));
 	fclose(volume_config_file);

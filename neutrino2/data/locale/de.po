@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-11-17 20:50+0100\n"
+"POT-Creation-Date: 2023-11-18 10:30+0100\n"
 "PO-Revision-Date: 2022-01-28 01:41+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -563,9 +563,6 @@ msgstr "Diseqc-Eingang"
 msgid "Display image"
 msgstr "Bild anzeigen"
 
-msgid "display pics"
-msgstr "Zeigt Bilder"
-
 msgid "Display settings"
 msgstr "Bildschirmeinstellungen"
 
@@ -772,9 +769,6 @@ msgstr "Features"
 
 msgid "File could not be created:"
 msgstr "Datei konnte nicht erstellt werden:"
-
-msgid "file manager"
-msgstr "Dateien Manager"
 
 msgid "File selector"
 msgstr "Dateiauswahl"
@@ -3082,15 +3076,6 @@ msgstr "Passthrough"
 
 msgid "password"
 msgstr "Passwort"
-
-msgid "play and edit records and movies"
-msgstr "Spielt und bearbeitet Filme"
-
-msgid "play movie and record files"
-msgstr "Spielt Filme ab"
-
-msgid "play music files"
-msgstr "Spielt Musik Dateien"
 
 msgid "playtime"
 msgstr "Spielzeit"
