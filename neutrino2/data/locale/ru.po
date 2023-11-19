@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 4.5\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-11-19 11:12+0100\n"
+"POT-Creation-Date: 2023-11-19 15:10+0100\n"
 "PO-Revision-Date: 2022-04-21 22:31+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -2805,6 +2805,9 @@ msgstr "каталог уже смонтирован"
 msgid "directory/share"
 msgstr "каталог/общий ресурс"
 
+msgid "display pics"
+msgstr ""
+
 msgid "don't care"
 msgstr "плевать"
 
@@ -2831,6 +2834,9 @@ msgstr "ошибка при подключении тома"
 
 msgid "fast"
 msgstr "быстрый"
+
+msgid "file manager"
+msgstr ""
 
 msgid "filesystem type not supported"
 msgstr "тип файловой системы не поддерживается"
@@ -3046,6 +3052,15 @@ msgstr "пройти через"
 
 msgid "password"
 msgstr "пароль"
+
+msgid "play and edit records and movies"
+msgstr ""
+
+msgid "play movie and record files"
+msgstr ""
+
+msgid "play music files"
+msgstr ""
 
 msgid "playtime"
 msgstr "время игры"

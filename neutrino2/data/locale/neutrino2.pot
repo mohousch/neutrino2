@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-11-19 11:12+0100\n"
+"POT-Creation-Date: 2023-11-19 15:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2400,9 +2400,10 @@ msgstr ""
 msgid "Receipt signal"
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:98 ../../src/gui/epgplus.cpp:510
+#: ../../src/gui/channellist.cpp:98 ../../src/gui/epgplus.cpp:513
 #: ../../src/gui/epgview.cpp:1070 ../../src/gui/eventlist.cpp:534
 #: ../../src/gui/timerlist.cpp:838 ../../src/gui/timerlist.cpp:928
+#: ../../src/gui/epgplus.cpp:493
 msgid "Record"
 msgstr ""
 
@@ -2447,7 +2448,8 @@ msgstr ""
 msgid "Recording starts in a few minutes"
 msgstr ""
 
-#: ../../src/gui/epgplus.cpp:511 ../../src/gui/eventlist.cpp:538
+#: ../../src/gui/epgplus.cpp:514 ../../src/gui/eventlist.cpp:538
+#: ../../src/gui/epgplus.cpp:494
 msgid "Refresh EPG"
 msgstr ""
 
@@ -2709,19 +2711,22 @@ msgstr ""
 msgid "Scart Mode"
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:100 ../../src/gui/epgplus.cpp:512
+#: ../../src/gui/channellist.cpp:100 ../../src/gui/epgplus.cpp:515
 #: ../../src/gui/epgview.cpp:140 ../../src/gui/eventlist.cpp:536
+#: ../../src/gui/epgplus.cpp:495
 msgid "Schedule"
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:514 ../../src/gui/epgplus.cpp:1198
+#: ../../src/gui/channellist.cpp:514 ../../src/gui/epgplus.cpp:1204
 #: ../../src/gui/epgview.cpp:861 ../../src/gui/eventlist.cpp:380
+#: ../../src/gui/epgplus.cpp:1184
 msgid "Schedule Event"
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:492 ../../src/gui/epgplus.cpp:1226
+#: ../../src/gui/channellist.cpp:492 ../../src/gui/epgplus.cpp:1232
 #: ../../src/gui/epgview.cpp:840 ../../src/gui/epgview.cpp:845
 #: ../../src/gui/eventlist.cpp:346 ../../src/gui/eventlist.cpp:351
+#: ../../src/gui/epgplus.cpp:1212
 msgid "Schedule Record"
 msgstr ""
 
@@ -3166,8 +3171,9 @@ msgstr ""
 msgid "System"
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:99 ../../src/gui/epgplus.cpp:513
+#: ../../src/gui/channellist.cpp:99 ../../src/gui/epgplus.cpp:516
 #: ../../src/gui/misc_setup.cpp:264 ../../src/gui/movieplayer.cpp:2023
+#: ../../src/gui/epgplus.cpp:496
 msgid "TMDB"
 msgstr ""
 
@@ -3275,17 +3281,19 @@ msgstr ""
 msgid "The STB will shutdown after this time."
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:492 ../../src/gui/epgplus.cpp:1226
+#: ../../src/gui/channellist.cpp:492 ../../src/gui/epgplus.cpp:1232
 #: ../../src/gui/epgview.cpp:840 ../../src/gui/epgview.cpp:845
 #: ../../src/gui/eventlist.cpp:346 ../../src/gui/eventlist.cpp:351
+#: ../../src/gui/epgplus.cpp:1212
 msgid ""
 "The event is flagged for record.\n"
 "The box will power on and \n"
 "switch to this channel at the given time."
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:514 ../../src/gui/epgplus.cpp:1198
+#: ../../src/gui/channellist.cpp:514 ../../src/gui/epgplus.cpp:1204
 #: ../../src/gui/epgview.cpp:861 ../../src/gui/eventlist.cpp:380
+#: ../../src/gui/epgplus.cpp:1184
 msgid ""
 "The event is scheduled.\n"
 "The box will power on and \n"
@@ -3925,6 +3933,9 @@ msgstr ""
 msgid "directory/share"
 msgstr ""
 
+msgid "display pics"
+msgstr ""
+
 #: ../../src/gui/motorcontrol.cpp:562
 msgid "don't care"
 msgstr ""
@@ -3959,6 +3970,9 @@ msgstr ""
 
 #: ../../src/gui/hdd_menu.cpp:77
 msgid "fast"
+msgstr ""
+
+msgid "file manager"
 msgstr ""
 
 #: ../../src/gui/nfs.cpp:572
@@ -4280,6 +4294,15 @@ msgstr ""
 
 #: ../../src/gui/nfs.cpp:367 ../../src/gui/nfs.cpp:368
 msgid "password"
+msgstr ""
+
+msgid "play and edit records and movies"
+msgstr ""
+
+msgid "play movie and record files"
+msgstr ""
+
+msgid "play music files"
 msgstr ""
 
 #: ../../src/gui/lcd_setup.cpp:56

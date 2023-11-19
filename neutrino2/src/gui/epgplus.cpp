@@ -394,26 +394,6 @@ void EpgPlus::ChannelEntry::paint (bool isSelected, time_t selectedTime)
 	
 	if (isSelected) 
 	{
-		/*
-		for (uint32_t i = 0; i < this->bouquetList->Bouquets.size (); ++i) 
-		{
-			CBouquet *bouquet = this->bouquetList->Bouquets[i];
-			
-			for (int j = 0; j < bouquet->channelList->getSize (); ++j) 
-			{
-				//if ((*bouquet->channelList)[j]->number == this->channel->number) 
-				{
-					this->footer->setBouquetChannelName(bouquet->channelList->getName(), this->channel->getName());
-	
-					bouquet = NULL;
-	
-					break;
-				}
-			}
-			if (bouquet == NULL)
-				break;
-		}
-		*/
 		this->footer->setBouquetChannelName("", this->channel->getName());
 	}
 	
@@ -1257,13 +1237,13 @@ int CEPGplusHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 
 	int res = CMenuTarget::RETURN_REPAINT;
 
-	EpgPlus* e;
-	CChannelList* channelList;
+	EpgPlus* e = NULL;
+	CChannelList* channelList = NULL;
 	
 	if (parent)
 		parent->hide ();
 	
-	e = new EpgPlus;
+	e = new EpgPlus();
 
 	channelList = CNeutrinoApp::getInstance()->channelList;
 
@@ -1274,5 +1254,4 @@ int CEPGplusHandler::exec(CMenuTarget* parent, const std::string &/*actionKey*/)
 	
 	return res;
 }
-
 
