@@ -78,23 +78,21 @@ class EpgPlus
 
 		class Footer;
 
-		// Header
+		//// Header
 		class Header
 		{
-			//// construction / destruction
 			public:
+				//// construction / destruction
 				Header( CFrameBuffer* _frameBuffer , int _x , int _y , int _width);
 				~Header();
 
-			//// methods
-			public:
+				//// methods
 				static void init();
 				void paint();
 				void refresh();
 				static int getUsedHeight();
 
-			//// attributes
-			public:
+				//// attributes
 				CFrameBuffer* frameBuffer;
 
 				int x;
@@ -105,16 +103,15 @@ class EpgPlus
 				static CCHeaders *head;
 		};
 
-		// timeline
+		//// timeline
 		class TimeLine
 		{
-			//// construction / destruction
 			public:
+				//// construction / destruction
 				TimeLine( CFrameBuffer* _frameBuffer , int _x , int _y , int _width , int _startX , int _durationX);
 				~TimeLine();
 
-			//// methods
-			public:
+				//// methods
 				static void init();
 				void paint ( time_t startTime, int _duration);
 				void paintMark ( time_t startTime, int _duration , int _x , int _width);
@@ -122,8 +119,7 @@ class EpgPlus
 				void clearMark();
 				static int getUsedHeight();
 
-			//// attributes
-			public:
+				//// attributes
 				CFrameBuffer* frameBuffer;
 
 				int currentDuration;
@@ -139,16 +135,15 @@ class EpgPlus
 				int durationX;
 		};
 
-		// channel event entry
+		//// channel event entry
 		class ChannelEventEntry
 		{
-			//// construction / destruction
 			public:
+				//// construction / destruction
 				ChannelEventEntry( const CChannelEvent* _channelEvent, CFrameBuffer* _frameBuffer, TimeLine* _timeLine, Footer* _footer, int _x, int _y, int _width);
 				~ChannelEventEntry();
 
-			//// methods
-			public:
+				//// methods
 				static void init();
 
 				bool isSelected
@@ -162,8 +157,7 @@ class EpgPlus
 
 				static int getUsedHeight();
 
-			//// attributes
-			public:
+				//// attributes
 				CChannelEvent channelEvent;
 
 				CFrameBuffer* frameBuffer;
@@ -180,11 +174,11 @@ class EpgPlus
 
 		typedef std::vector<ChannelEventEntry*> TCChannelEventEntries;
 
-		// channel entry
+		//// channel entry
 		class ChannelEntry
 		{
-			//// construction / destruction
 			public:
+				//// construction / destruction
 				ChannelEntry
 				  ( const CZapitChannel* channel
 				  , int index
@@ -198,8 +192,7 @@ class EpgPlus
 
 				~ChannelEntry();
 
-			//// methods
-			public:
+				//// methods
 				static void init();
 
 				void paint
@@ -209,8 +202,7 @@ class EpgPlus
 
 				static int getUsedHeight();
 
-			//// attributes
-			public:
+				//// attributes
 				const CZapitChannel * channel;
 				std::string displayName;
 				int index;
@@ -231,11 +223,11 @@ class EpgPlus
 
 		typedef std::vector<ChannelEntry*> TChannelEntries;
 
-		// footer
+		//// footer
 		class Footer
 		{
-			//// construction / destruction
 			public:
+				//// construction / destruction
 				Footer
 				  ( CFrameBuffer* _frameBuffer
 				  , int _x
@@ -245,8 +237,7 @@ class EpgPlus
 
 				~Footer();
 
-			//// methods
-			public:
+				//// methods
 				static void init();
 
 				void setBouquetChannelName
@@ -266,8 +257,7 @@ class EpgPlus
 
 				static int getUsedHeight();
 	  
-			//// attributes
-			public:
+				//// attributes
 				CFrameBuffer* frameBuffer;
 
 				int x;
@@ -281,17 +271,15 @@ class EpgPlus
 				static CFont*  fontEventShortDescription;
 				static CFont*  fontButtons;
 
-				static int color;
-
 				std::string currentBouquetName;
 				std::string currentChannelName;
 		};
 
-		//
+		////
 		class MenuTargetAddReminder : public CMenuTarget
 		{
 			public:
-				MenuTargetAddReminder( EpgPlus* epgPlus);
+				MenuTargetAddReminder( EpgPlus* _epgPlus);
 
 			public:
 				int exec(CMenuTarget* parent, const std::string& actionKey);
@@ -301,11 +289,11 @@ class EpgPlus
 
 		};
 
-		//
+		////
 		class MenuTargetAddRecordTimer : public CMenuTarget
 		{
 			public:
-				MenuTargetAddRecordTimer ( EpgPlus* epgPlus);
+				MenuTargetAddRecordTimer ( EpgPlus* _epgPlus);
 
 			public:
 				int exec(CMenuTarget* parent , const std::string& actionKey);
@@ -315,11 +303,11 @@ class EpgPlus
 
 		};
 
-		//
+		////
 		class MenuTargetRefreshEpg : public CMenuTarget
 		{
 			public:
-				MenuTargetRefreshEpg ( EpgPlus* epgPlus);
+				MenuTargetRefreshEpg ( EpgPlus* _epgPlus);
 
 			public:
 				int exec(CMenuTarget* parent, const std::string& actionKey);
@@ -335,30 +323,28 @@ class EpgPlus
 		friend class EpgPlus::ChannelEntry;
 		friend class EpgPlus::ChannelEventEntry;
 
-	//// construction / destruction
+	////
 	public:
+		//// construction / destruction
 		EpgPlus();
 		~EpgPlus();
 
-	//// methods
-	public:
+		//// methods
 		void init();
 		void free();
 
 		int exec(CChannelList* channelList , int selectedChannelIndex , CBouquetList* bouquetList); 
 
 	private:
+		//// methods
 		static std::string getTimeString ( const time_t& time , const std::string& format);
-
 		TCChannelEventEntries::const_iterator getSelectedEvent() const;
-
 		void createChannelEntries( int selectedChannelEntryIndex);
 		void paint();
 		void paintChannelEntry( int position);
 		void hide();
 
-	//// properties
-	private:
+		//// properties
 		CFrameBuffer*   frameBuffer;
 
 		TChannelEntries displayedChannelEntries;
@@ -443,8 +429,7 @@ class EpgPlus
 		bool            refreshAll;
 		bool            refreshFooterButtons;
 
-		////
-		uint32_t sec_timer_id;
+		uint32_t 	sec_timer_id;
 		
 		////
 		MenuTargetRefreshEpg *refreshEpg;
