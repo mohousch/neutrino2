@@ -208,6 +208,7 @@ ssize_t writev_with_retry(int fd, const struct iovec *iov, int ic)
 	{
 		write_with_retry(fd, iov[i].iov_base, iov[i].iov_len);
 		len += iov[i].iov_len;
+		
 		if (PlaybackDieNow(0))
 		{
 			return -1;

@@ -757,13 +757,13 @@ void cAudio::run()
 		{
 			int out_linesize;
 			obuf_sz = av_rescale_rnd(swr_get_delay(swr, p->sample_rate) + frame->nb_samples, o_sr, p->sample_rate, AV_ROUND_UP);
+
 			if (obuf_sz > obuf_sz_max)
 			{
-				//hal_info("obuf_sz: %d old: %d\n", obuf_sz, obuf_sz_max);
 				av_free(obuf);
+				
 				if (av_samples_alloc(&obuf, &out_linesize, o_ch, frame->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
 				{
-					//hal_info("av_samples_alloc failed\n");
 					av_packet_unref(&avpkt);
 					break; // while (thread_started)
 				}
@@ -775,7 +775,6 @@ void cAudio::run()
 #else
 			curr_pts = frame->best_effort_timestamp;
 #endif
-			//hal_debug("%s: pts 0x%" PRIx64 " %3f\n", __func__, curr_pts, curr_pts / 90000.0);
 			int o_buf_sz = av_samples_get_buffer_size(&out_linesize, o_ch, obuf_sz, AV_SAMPLE_FMT_S16, 1);
 			
 			if (o_buf_sz > 0)

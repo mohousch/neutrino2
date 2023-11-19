@@ -57,6 +57,12 @@
 
 #include <config.h>
 
+////
+#include <ao/ao.h>
+static ao_device *adevice = NULL;
+static ao_sample_format sformat;
+////
+
 
 #if LIBAVCODEC_VERSION_MAJOR > 54
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000 // 1 second of 48khz 32bit audio
@@ -553,12 +559,10 @@ static void FFMPEGThread(Context_t *context)
 					avOut.height     = videoTrack->height;
 					avOut.type       = "video";
 
-#ifndef USE_OPENGL
 					if (context->output->video->Write(context, &avOut) < 0) 
 					{
 						ffmpeg_err("writing data to video device failed\n");
 					}
-#endif
 				}
 			}
 
@@ -573,6 +577,33 @@ static void FFMPEGThread(Context_t *context)
 						latestPts = currentAudioPts;
 
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
+					
+					#if 0 //def USE_OPENGL
+					int driver;
+					int byte_format = AO_FMT_NATIVE;
+					
+					//if (sformat.bits != bits || sformat.channels != ch || sformat.rate != srate ||
+					  //  sformat.byte_format != byte_format || adevice == NULL)
+					if (adevice == NULL)
+					{
+						driver = ao_default_driver_id();
+						
+						sformat.bits = 16;
+						sformat.channels = ((AVStream*) audioTrack->stream)->codec->channels;
+						sformat.rate = ((AVStream*) audioTrack->stream)->codec->sample_rate;
+						sformat.byte_format = AO_FMT_NATIVE;
+						sformat.matrix = 0;
+						
+						if (adevice)
+							ao_close(adevice);
+							
+						adevice = ao_open_live(driver, &sformat, NULL);
+						ao_info *ai = ao_driver_info(driver);
+						
+						if (ao_play(adevice, (char *)packet.data, packet.size) == 0)
+							ffmpeg_err("writing data to audio device failed\n");
+					}
+					#else
 
 					//FIXME:
 					if (audioTrack->inject_as_pcm == 1)
@@ -591,23 +622,21 @@ static void FFMPEGThread(Context_t *context)
 							//
 							int decoded_data_size = 0; //AVCODEC_MAX_AUDIO_FRAME_SIZE;
 							
-#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 1, 99)
+//#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 1, 99)
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 37, 100)
 							bytesDone = avcodec_decode_audio4(c, samples, &decoded_data_size, &packet);
-#elif LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
-							bytesDone = avcodec_decode_audio3(c, samples, &decoded_data_size, &packet);
+//#elif LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
+//							bytesDone = avcodec_decode_audio3(c, samples, &decoded_data_size, &packet);
 #else
-							//bytesDone = avcodec_decode_audio2(c, samples, &decoded_data_size, packet.data, packet.size);
-							////
-							byteDone = avcodec_send_packet(c, packet);
+							bytesDone = avcodec_send_packet(c, &packet);
 							
-             						if (byteDone < 0 && byteDone != AVERROR(EAGAIN) && byteDone != AVERROR_EOF) 
+             						if (bytesDone < 0 && bytesDone != AVERROR(EAGAIN) && bytesDone != AVERROR_EOF) 
              						{
             						} 
             						else 
             						{
-             							byteDone = avcodec_receive_frame(c, samples);
+             							bytesDone = avcodec_receive_frame(c, samples);
              						}
-							////
 #endif
 
 							if(bytesDone < 0) // Error Happend
@@ -639,7 +668,6 @@ static void FFMPEGThread(Context_t *context)
 							avOut.height     = 0;
 							avOut.type       = "audio";
 
-#ifndef USE_OPENGL
 							if (!context->playback->BackWard)
 							{
 								if (context->output->audio->Write(context, &avOut) < 0)
@@ -647,7 +675,6 @@ static void FFMPEGThread(Context_t *context)
 									ffmpeg_err("writing data to audio device failed\n");
 								}
 							}
-#endif
 						}
 					}
 					else if (audioTrack->have_aacheader == 1)
@@ -665,7 +692,6 @@ static void FFMPEGThread(Context_t *context)
 						avOut.height     = 0;
 						avOut.type       = "audio";
 
-#ifndef USE_OPENGL
 						if (!context->playback->BackWard)
 						{
 							if (context->output->audio->Write(context, &avOut) < 0)
@@ -673,7 +699,6 @@ static void FFMPEGThread(Context_t *context)
 								ffmpeg_err("(aac) writing data to audio device failed\n");
 							}
 						}
-#endif
 					}
 					else
 					{
@@ -688,7 +713,6 @@ static void FFMPEGThread(Context_t *context)
 						avOut.height     = 0;
 						avOut.type       = "audio";
 
-#ifndef USE_OPENGL
 						if (!context->playback->BackWard)
 						{
 							if (context->output->audio->Write(context, &avOut) < 0)
@@ -696,8 +720,8 @@ static void FFMPEGThread(Context_t *context)
 								ffmpeg_err("writing data to audio device failed\n");
 							}
 						}
-#endif
 					}
+					#endif
 				}
 			}
 

@@ -1053,6 +1053,7 @@ static int Write(void* _context, void* _out)
 	linuxdvb_printf(20, "DataLength=%u PrivateLength=%u Pts=%llu FrameRate=%f\n", out->len, out->extralen, out->pts, out->frameRate);
 	linuxdvb_printf(20, "v%d a%d\n", video, audio);
 
+#ifndef USE_OPENGL
 	if (audio) 
 	{
 		char * Encoding = NULL;
@@ -1154,7 +1155,8 @@ static int Write(void* _context, void* _out)
 		}
 
 		free(Encoding);
-	} 
+	}
+#endif 
 
 	return ret;
 }

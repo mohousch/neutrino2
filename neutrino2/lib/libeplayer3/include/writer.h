@@ -83,7 +83,6 @@ extern Writer_t WriterAudioWMA;
 extern Writer_t WriterAudioFLAC;
 extern Writer_t WriterAudioVORBIS;
 extern Writer_t WriterAudioAMR;
-
 // video
 extern Writer_t WriterVideoMPEG1;
 extern Writer_t WriterVideoMPEG2;
@@ -103,7 +102,6 @@ extern Writer_t WriterVideoAVS2;
 extern Writer_t WriterVideoVP6;
 extern Writer_t WriterVideoVP8;
 extern Writer_t WriterVideoVP9;
-
 // subtitle
 extern Writer_t WriterFramebuffer;
 
