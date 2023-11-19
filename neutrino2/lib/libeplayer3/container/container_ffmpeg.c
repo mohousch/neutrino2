@@ -58,9 +58,11 @@
 #include <config.h>
 
 ////
+#ifdef USE_OPENGL
 #include <ao/ao.h>
 static ao_device *adevice = NULL;
 static ao_sample_format sformat;
+#endif
 ////
 
 
