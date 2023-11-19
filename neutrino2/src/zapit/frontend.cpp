@@ -20,7 +20,6 @@
 
 #include <config.h>
 
-/* system c */
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/poll.h>
@@ -1111,6 +1110,13 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 			SETCMD(DTV_DVBT2_PLP_ID, feparams->plp_id);
 #endif
 		}
+	}
+	else if(feparams->delsys == DVB_A)
+	{
+		SETCMD(DTV_DELIVERY_SYSTEM, getFEDeliverySystem(feparams->delsys));
+     		SETCMD(DTV_FREQUENCY, feparams->frequency);
+     		SETCMD(DTV_MODULATION, feparams->modulation);
+     		SETCMD(DTV_INVERSION, feparams->inversion);
 	}
 	else
 	{
