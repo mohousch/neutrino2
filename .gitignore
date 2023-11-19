@@ -2192,3 +2192,7 @@
 /neutrino2/src/driver/lcd/libneutrino2_driver_lcd.a
 /neutrino2/src/driver/pictureviewer.o
 /neutrino2/src/driver/lcd/vfd.o
+/neutrino2/autom4te.cache/output.3
+/neutrino2/autom4te.cache/traces.3
+/neutrino2/src/system/.deps/stacktrace.Po
+/neutrino2/src/system/stacktrace.o

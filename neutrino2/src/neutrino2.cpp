@@ -54,6 +54,10 @@
 #include <linux/reboot.h>
 #include <sys/reboot.h>
 
+#ifdef MEMLEAK_CHECK
+#include <system/stacktrace.h>
+#endif
+
 #include <global.h>
 #include <neutrino2.h>
 
@@ -3278,7 +3282,7 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 		if(g_RemoteControl)
 		{
 			delete g_RemoteControl;
-			g_RemoteControl;
+			g_RemoteControl = NULL;
 		}
 			
 		if (g_EpgData)
@@ -5024,11 +5028,16 @@ void sighandler(int signum)
         }
 }
 
-// main function
+//// main function
 int main(int argc, char *argv[])
 {
 	// build date
-	printf(">>> %s v %s (compiled %s %s) <<<\n", PACKAGE_NAME, PACKAGE_VERSION, __DATE__, __TIME__);	
+	printf(">>> %s v %s (compiled %s %s) <<<\n", PACKAGE_NAME, PACKAGE_VERSION, __DATE__, __TIME__);
+	
+	//
+#ifdef MEMLEAK_CHECK
+	atexit(print_stacktrace);
+#endif	
 
 	// sighandler
         signal(SIGTERM, sighandler);
