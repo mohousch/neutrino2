@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-11-19 15:10+0100\n"
+"POT-Creation-Date: 2023-11-19 19:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "'X'=timer '-' no timer"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:3118
+#: ../../src/neutrino2.cpp:3118 ../../src/neutrino2.cpp:3122
 #, c-format
 msgid "(%d%% over)"
 msgstr ""
@@ -62,7 +62,7 @@ msgstr ""
 msgid "(size)"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:3113
+#: ../../src/neutrino2.cpp:3113 ../../src/neutrino2.cpp:3117
 #, c-format
 msgid "(starting in %d min)"
 msgstr ""
@@ -146,7 +146,10 @@ msgstr ""
 #: ../../src/neutrino2.cpp:1450 ../../src/neutrino2.cpp:1451
 #: ../../src/neutrino2.cpp:1516 ../../src/neutrino2.cpp:1517
 #: ../../src/neutrino2.cpp:1523 ../../src/neutrino2.cpp:1524
-#: ../../src/gui/bouquetlist.cpp:444
+#: ../../src/gui/bouquetlist.cpp:444 ../../src/neutrino2.cpp:1454
+#: ../../src/neutrino2.cpp:1455 ../../src/neutrino2.cpp:1520
+#: ../../src/neutrino2.cpp:1521 ../../src/neutrino2.cpp:1527
+#: ../../src/neutrino2.cpp:1528
 msgid "All Services"
 msgstr ""
 
@@ -339,7 +342,7 @@ msgstr ""
 msgid "Box Info"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:3822
+#: ../../src/neutrino2.cpp:3822 ../../src/neutrino2.cpp:3826
 msgid ""
 "Box will shutdown in 1 min.\n"
 "Cancel Sutdown ?"
@@ -518,7 +521,7 @@ msgstr ""
 msgid "Channel Logo"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:349
+#: ../../src/neutrino2.cpp:349 ../../src/neutrino2.cpp:353
 msgid "Channel direct selection"
 msgstr ""
 
@@ -540,14 +543,15 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:346 ../../src/gui/eventlist.cpp:805
 #: ../../src/gui/osd_setup.cpp:914 ../../src/gui/rc_setup.cpp:368
+#: ../../src/neutrino2.cpp:350
 msgid "Channellist"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:347
+#: ../../src/neutrino2.cpp:347 ../../src/neutrino2.cpp:351
 msgid "Channellist Description"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:348
+#: ../../src/neutrino2.cpp:348 ../../src/neutrino2.cpp:352
 msgid "Channellist Number"
 msgstr ""
 
@@ -759,7 +763,7 @@ msgid "Dir"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3140 ../../src/gui/infoviewer.cpp:822
-#: ../../src/gui/infoviewer.cpp:875
+#: ../../src/gui/infoviewer.cpp:875 ../../src/neutrino2.cpp:3144
 msgid "Direct-Mode"
 msgstr ""
 
@@ -872,15 +876,17 @@ msgstr ""
 msgid "EPG / Timer"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:339
+#: ../../src/neutrino2.cpp:339 ../../src/neutrino2.cpp:343
 msgid "EPG Date"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:337 ../../src/gui/eventlist.cpp:812
+#: ../../src/neutrino2.cpp:341
 msgid "EPG Info1"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:338 ../../src/gui/eventlist.cpp:813
+#: ../../src/neutrino2.cpp:342
 msgid "EPG Info2"
 msgstr ""
 
@@ -889,6 +895,7 @@ msgid "EPG Long Description (hours)"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:336 ../../src/gui/eventlist.cpp:811
+#: ../../src/neutrino2.cpp:340
 msgid "EPG Title"
 msgstr ""
 
@@ -979,7 +986,7 @@ msgstr ""
 #: ../../src/gui/update.cpp:259 ../../src/gui/update.cpp:389
 #: ../../src/gui/update.cpp:455 ../../src/gui/update.cpp:482
 #: ../../src/gui/update.cpp:518 ../../src/gui/update.cpp:564
-#: ../../src/driver/vcrcontrol.cpp:623
+#: ../../src/driver/vcrcontrol.cpp:623 ../../src/neutrino2.cpp:2007
 msgid "Error"
 msgstr ""
 
@@ -987,7 +994,7 @@ msgstr ""
 msgid "Event list"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:340
+#: ../../src/neutrino2.cpp:340 ../../src/neutrino2.cpp:344
 msgid "Eventlist Title"
 msgstr ""
 
@@ -995,11 +1002,11 @@ msgstr ""
 msgid "Eventlist current programm"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:343
+#: ../../src/neutrino2.cpp:343 ../../src/neutrino2.cpp:347
 msgid "Eventlist date / time"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:341
+#: ../../src/neutrino2.cpp:341 ../../src/neutrino2.cpp:345
 msgid "Eventlist large"
 msgstr ""
 
@@ -1007,7 +1014,7 @@ msgstr ""
 msgid "Eventlist overview"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:342
+#: ../../src/neutrino2.cpp:342 ../../src/neutrino2.cpp:346
 msgid "Eventlist small"
 msgstr ""
 
@@ -1065,7 +1072,8 @@ msgid "Fast/timeshift record time(hours)"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:1459 ../../src/neutrino2.cpp:1468
-#: ../../src/gui/bouquetlist.cpp:441
+#: ../../src/gui/bouquetlist.cpp:441 ../../src/neutrino2.cpp:1463
+#: ../../src/neutrino2.cpp:1472
 msgid "Favorites"
 msgstr ""
 
@@ -1090,7 +1098,7 @@ msgstr ""
 msgid "Filebrowser"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:354
+#: ../../src/neutrino2.cpp:354 ../../src/neutrino2.cpp:358
 msgid "Filebrowser item"
 msgstr ""
 
@@ -1509,19 +1517,19 @@ msgstr ""
 msgid "Infobar"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:351
+#: ../../src/neutrino2.cpp:351 ../../src/neutrino2.cpp:355
 msgid "Infobar Channel name"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:350
+#: ../../src/neutrino2.cpp:350 ../../src/neutrino2.cpp:354
 msgid "Infobar Number"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:352
+#: ../../src/neutrino2.cpp:352 ../../src/neutrino2.cpp:356
 msgid "Infobar info"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:353
+#: ../../src/neutrino2.cpp:353 ../../src/neutrino2.cpp:357
 msgid "Infobar small"
 msgstr ""
 
@@ -1551,7 +1559,14 @@ msgstr ""
 #: ../../src/gui/update.cpp:623 ../../src/gui/update.cpp:633
 #: ../../src/gui/update.cpp:659 ../../src/gui/video_setup.cpp:491
 #: ../../src/gui/widget/infobox.cpp:215 ../../src/system/helpers.cpp:1311
-#: ../../src/system/helpers.cpp:1316
+#: ../../src/system/helpers.cpp:1316 ../../src/neutrino2.cpp:2832
+#: ../../src/neutrino2.cpp:2850 ../../src/neutrino2.cpp:2855
+#: ../../src/neutrino2.cpp:2861 ../../src/neutrino2.cpp:3187
+#: ../../src/neutrino2.cpp:3392 ../../src/neutrino2.cpp:3747
+#: ../../src/neutrino2.cpp:3781 ../../src/neutrino2.cpp:3788
+#: ../../src/neutrino2.cpp:3826 ../../src/neutrino2.cpp:3868
+#: ../../src/neutrino2.cpp:3877 ../../src/neutrino2.cpp:4285
+#: ../../src/neutrino2.cpp:4970
 msgid "Information"
 msgstr ""
 
@@ -1810,19 +1825,19 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:335
+#: ../../src/neutrino2.cpp:335 ../../src/neutrino2.cpp:339
 msgid "Menu Info"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:333
+#: ../../src/neutrino2.cpp:333 ../../src/neutrino2.cpp:337
 msgid "Menu Text"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:334
+#: ../../src/neutrino2.cpp:334 ../../src/neutrino2.cpp:338
 msgid "Menu Title"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:355
+#: ../../src/neutrino2.cpp:355 ../../src/neutrino2.cpp:359
 msgid "Menu Title2"
 msgstr ""
 
@@ -2098,7 +2113,7 @@ msgstr ""
 msgid "No key"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:4966
+#: ../../src/neutrino2.cpp:4966 ../../src/neutrino2.cpp:4970
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
@@ -2251,11 +2266,11 @@ msgstr ""
 msgid "Plugin"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:344
+#: ../../src/neutrino2.cpp:344 ../../src/neutrino2.cpp:348
 msgid "Pluginlist large"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:345
+#: ../../src/neutrino2.cpp:345 ../../src/neutrino2.cpp:349
 msgid "Pluginlist small"
 msgstr ""
 
@@ -2317,7 +2332,7 @@ msgstr ""
 msgid "Previous image"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:3719
+#: ../../src/neutrino2.cpp:3719 ../../src/neutrino2.cpp:3723
 msgid "Program unknown"
 msgstr ""
 
@@ -2331,7 +2346,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:1462 ../../src/gui/scan_setup.cpp:1142
 #: ../../src/gui/scan_setup.cpp:1158 ../../src/gui/scan_setup.cpp:1442
-#: ../../src/gui/scan_setup.cpp:1458
+#: ../../src/gui/scan_setup.cpp:1458 ../../src/neutrino2.cpp:1466
 msgid "Provider"
 msgstr ""
 
@@ -2340,6 +2355,7 @@ msgid "Provider:"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:1453 ../../src/gui/bouquetlist.cpp:442
+#: ../../src/neutrino2.cpp:1457
 msgid "Providers"
 msgstr ""
 
@@ -2444,7 +2460,7 @@ msgstr ""
 msgid "Recording settings"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:3777
+#: ../../src/neutrino2.cpp:3777 ../../src/neutrino2.cpp:3781
 msgid "Recording starts in a few minutes"
 msgstr ""
 
@@ -2477,15 +2493,15 @@ msgstr ""
 msgid "Reload channel lists"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:2851
+#: ../../src/neutrino2.cpp:2851 ../../src/neutrino2.cpp:2855
 msgid "Reloading EPG, please be patient."
 msgstr ""
 
-#: ../../src/neutrino2.cpp:2857
+#: ../../src/neutrino2.cpp:2857 ../../src/neutrino2.cpp:2861
 msgid "Reloading XMLTV EPG, please be patient."
 msgstr ""
 
-#: ../../src/neutrino2.cpp:2846
+#: ../../src/neutrino2.cpp:2846 ../../src/neutrino2.cpp:2850
 msgid "Reloading channel lists, please be patient."
 msgstr ""
 
@@ -2497,7 +2513,7 @@ msgstr ""
 msgid "Remind"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:3890
+#: ../../src/neutrino2.cpp:3890 ../../src/neutrino2.cpp:3894
 msgid "Reminder"
 msgstr ""
 
@@ -2602,7 +2618,8 @@ msgid "Satellite:"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:1456 ../../src/neutrino2.cpp:1465
-#: ../../src/gui/bouquetlist.cpp:443
+#: ../../src/gui/bouquetlist.cpp:443 ../../src/neutrino2.cpp:1460
+#: ../../src/neutrino2.cpp:1469
 msgid "Satellites"
 msgstr ""
 
@@ -2678,7 +2695,7 @@ msgstr ""
 msgid "Saving current style!"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:2828
+#: ../../src/neutrino2.cpp:2828 ../../src/neutrino2.cpp:2832
 msgid "Saving settings now, please be patient."
 msgstr ""
 
@@ -2734,7 +2751,7 @@ msgstr ""
 msgid "Science fiction / Fantasy / Horror"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:3387
+#: ../../src/neutrino2.cpp:3387 ../../src/neutrino2.cpp:3391
 msgid "Scrambled channel"
 msgstr ""
 
@@ -2786,7 +2803,7 @@ msgstr ""
 msgid "Security"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:3046
+#: ../../src/neutrino2.cpp:3046 ../../src/neutrino2.cpp:3050
 msgid "Select Subservice"
 msgstr ""
 
@@ -2798,7 +2815,7 @@ msgstr ""
 msgid "Select language"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:3046
+#: ../../src/neutrino2.cpp:3046 ../../src/neutrino2.cpp:3050
 msgid "Select starting-time"
 msgstr ""
 
@@ -2935,7 +2952,7 @@ msgstr ""
 msgid "Shutdown time in min. (000=off)"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:359
+#: ../../src/neutrino2.cpp:359 ../../src/neutrino2.cpp:363
 msgid "Signal small"
 msgstr ""
 
@@ -2968,7 +2985,7 @@ msgstr ""
 msgid "Sleeptimer"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:3784
+#: ../../src/neutrino2.cpp:3784 ../../src/neutrino2.cpp:3788
 msgid "Sleeptimer in 1 min"
 msgstr ""
 
@@ -3325,7 +3342,7 @@ msgid ""
 "Do you really want to update to this version?"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:4966
+#: ../../src/neutrino2.cpp:4966 ../../src/neutrino2.cpp:4970
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
@@ -3664,6 +3681,7 @@ msgid "Yes"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3183 ../../src/neutrino2.cpp:4281
+#: ../../src/neutrino2.cpp:3187 ../../src/neutrino2.cpp:4285
 msgid "You really want to to stop record ?"
 msgstr ""
 
@@ -3696,7 +3714,7 @@ msgstr ""
 msgid "Zapping History Bouquet"
 msgstr ""
 
-#: ../../src/neutrino2.cpp:3700
+#: ../../src/neutrino2.cpp:3700 ../../src/neutrino2.cpp:3704
 msgid "Zapto timer in one minute"
 msgstr ""
 
@@ -4239,7 +4257,7 @@ msgstr ""
 #: ../../src/gui/misc_setup.cpp:90 ../../src/gui/misc_setup.cpp:104
 #: ../../src/gui/osd_setup.cpp:62 ../../src/gui/recording_setup.cpp:52
 #: ../../src/gui/scan_setup.cpp:93 ../../src/gui/zapit_setup.cpp:46
-#: ../../src/gui/zapit_setup.cpp:54
+#: ../../src/gui/zapit_setup.cpp:54 ../../src/neutrino2.cpp:3083
 msgid "off"
 msgstr ""
 
@@ -4251,6 +4269,7 @@ msgstr ""
 #: ../../src/gui/misc_setup.cpp:105 ../../src/gui/osd_setup.cpp:63
 #: ../../src/gui/recording_setup.cpp:53 ../../src/gui/scan_setup.cpp:94
 #: ../../src/gui/zapit_setup.cpp:47 ../../src/gui/zapit_setup.cpp:55
+#: ../../src/neutrino2.cpp:3084
 msgid "on"
 msgstr ""
 

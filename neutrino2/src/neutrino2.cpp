@@ -54,10 +54,6 @@
 #include <linux/reboot.h>
 #include <sys/reboot.h>
 
-#ifdef MEMLEAK_CHECK
-#include <system/stacktrace.h>
-#endif
-
 #include <global.h>
 #include <neutrino2.h>
 
@@ -5032,12 +5028,7 @@ void sighandler(int signum)
 int main(int argc, char *argv[])
 {
 	// build date
-	printf(">>> %s v %s (compiled %s %s) <<<\n", PACKAGE_NAME, PACKAGE_VERSION, __DATE__, __TIME__);
-	
-	//
-#ifdef MEMLEAK_CHECK
-	atexit(print_stacktrace);
-#endif	
+	printf(">>> %s v %s (compiled %s %s) <<<\n", PACKAGE_NAME, PACKAGE_VERSION, __DATE__, __TIME__);	
 
 	// sighandler
         signal(SIGTERM, sighandler);
