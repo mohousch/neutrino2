@@ -55,7 +55,7 @@ static const char * FILENAME = "dvb-ci.cpp";
 #define TAG_MENU_ANSWER                      0x9f880b
 #define TAG_ENTER_MENU                       0x9f8022
 
-extern CRCInput *g_RCInput;
+extern CRCInput *g_RCInput;		// defined in neutrino2.cpp
 
 bool cDvbCi::checkQueueSize(tSlot* slot)
 {
@@ -239,9 +239,7 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 	// only poll connection if we are not awaiting an answer
 	slot->pollConnection = false;	
 		
-	/* 
-	should we send a data last ?
-	*/
+	//
 	if (data != NULL)
 	{
 		if ((data[2] >= T_SB) && (data[2] <= T_NEW_T_C))
@@ -255,11 +253,13 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 
 			d[0] = slot->slot;
 			d[1] = slot->connection_id;
-			d[2] = T_DATA_LAST; 	
+			d[2] = T_DATA_LAST;
+				
 			if (len > 127)
 				d[3] = 4; 		/* pointer to next length */
 			else
 				d[3] = len + 1; 	/* len */
+				
 			d[4] = slot->connection_id; 	/* transport connection identifier*/
 
 			len += 5;	
@@ -270,11 +270,13 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 		//send a data last only
 		d[0] = slot->slot;
 		d[1] = slot->connection_id;
-		d[2] = T_DATA_LAST; 	
+		d[2] = T_DATA_LAST;
+			
 		if (len > 127)
 			d[3] = 4; 		/* pointer to next length */
 		else
 			d[3] = len + 1; 	/* len */
+			
 		d[4] = slot->connection_id; 	/* transport connection identifier*/
 
 		len = 5;	
@@ -282,15 +284,15 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 
 	if (slot->sendqueue.empty())
 		res = write(slot->fd, d, len); 
-
-	free(d);
 	
 	if (res < 0 || res != len) 
 	{ 
 		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
 		//return eDataError; 
 		slot->sendqueue.push( queueData(d, len) );
-	}	 
+	}
+	
+	free(d);	 
 	
 	return eDataReady;
 }
@@ -494,6 +496,7 @@ void cDvbCi::slot_pollthread(void *c)
 				{
 					/* wait for pollpri */
 					status = waitData(slot->fd, data, &len);
+					
 					if (status == eDataStatusChanged)
 					{
 						info.num = slot->slot;
@@ -515,7 +518,7 @@ void cDvbCi::slot_pollthread(void *c)
 							sprintf(slot->name, "unknown module %d", slot->slot);
 							slot->status = eStatusNone;
 
-							g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
+							if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
 
 							slot->camIsReady = true;
 							
@@ -627,7 +630,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
 
 						slot->camIsReady = true;
 					} 
@@ -647,7 +650,7 @@ void cDvbCi::slot_pollthread(void *c)
 						sprintf(slot->name, "unknown module %d", slot->slot);
 						slot->status = eStatusNone;
 
-						g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, slot->slot);
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, slot->slot);
 
 						while(slot->sendqueue.size())
 						{
@@ -678,7 +681,7 @@ void cDvbCi::slot_pollthread(void *c)
 
 			slot->init = true;
 			
-			g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, slot->slot);
+			if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, slot->slot);
 		    
 			//resend a capmt if we have one. this is not very proper but I cant any mechanism in
 			//neutrino currently. so if a cam is inserted a pmt is not resend

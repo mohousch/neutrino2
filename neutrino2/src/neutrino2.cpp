@@ -3251,32 +3251,59 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			
 		//
 		if(playback)
+		{
 			delete playback;
+			playback = NULL;
+		}
 			
 		//
 		if(audioDecoder)
+		{
 			delete audioDecoder;
+			audioDecoder = NULL;
+		}
 	
 		if(videoDecoder)
+		{
 			delete videoDecoder;
+			videoDecoder = NULL;
+		}
 			
 		if (g_RCInput != NULL)
+		{
 			delete g_RCInput;
+			g_RCInput = NULL;
+		}
 			
 		if(g_RemoteControl)
+		{
 			delete g_RemoteControl;
+			g_RemoteControl;
+		}
 			
 		if (g_EpgData)
+		{
 			delete g_EpgData;
+			g_EpgData = NULL;
+		}
 			
 		if (g_EventList)
+		{
 			delete g_EventList;
+			g_EventList = NULL;
+		}
 			
 		if(g_fontRenderer)
+		{
 			delete g_fontRenderer;
+			g_fontRenderer = NULL;
+		}
 			
 		if (frameBuffer != NULL)
+		{
 			delete frameBuffer;
+			frameBuffer = NULL;
+		}
 
 		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
 		
@@ -4708,14 +4735,14 @@ int CNeutrinoApp::run(int argc, char **argv)
 	eventServer->registerEvent2(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 
 	// rc set repeat
-	g_RCInput = new CRCInput;
+	g_RCInput = new CRCInput();
 	g_RCInput->setRepeat(atoi(g_settings.repeat_blocker), atoi(g_settings.repeat_genericblocker));
 
 	// playback
 	playback = new cPlayback();
 
 	// plugins
-	g_PluginList = new CPlugins;
+	g_PluginList = new CPlugins();
 	g_PluginList->setPluginDir(PLUGINDIR);
 	g_PluginList->loadPlugins();
 	
