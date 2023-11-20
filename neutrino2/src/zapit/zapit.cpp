@@ -3389,22 +3389,23 @@ void CZapit::continuePlayBack(void)
 
 void CZapit::closeAVDecoder(void)
 {
-#if !defined (USE_OPENGL)
 	// close videodecoder
 	if(videoDecoder)
+	{
 		videoDecoder->Close();
+	}
 	
 	// close audiodecoder
 	if(audioDecoder)
+	{
 		audioDecoder->Close();
+	}
 
 	avDecoderOpen = false;
-#endif
 }
 
 void CZapit::openAVDecoder(void)
 {
-#if !defined (USE_OPENGL)
 	if(videoDecoder)
 	{
 		// open video decoder
@@ -3424,7 +3425,6 @@ void CZapit::openAVDecoder(void)
 	}
 
 	avDecoderOpen = true;	
-#endif
 }
 
 void CZapit::enterStandby(void)

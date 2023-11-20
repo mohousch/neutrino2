@@ -1270,7 +1270,10 @@ void cVideo::run(void)
 	buf_out = 0;
 	dec_r = 0;
 
+	//
 	av_init_packet(&avpkt);
+	
+	//
 	inp = av_find_input_format("mpegts");
 	AVIOContext *pIOCtx = avio_alloc_context(inbuf, INBUF_SIZE, // internal Buffer and its size
 	        0,      	// bWriteable (1=true,0=false)
@@ -1317,6 +1320,8 @@ void cVideo::run(void)
 		dprintf(DEBUG_NORMAL, "cVideo::run: Codec for %s not found\n", avcodec_get_name(p->codec_id));
 		goto out;
 	}
+	
+	// setup codec context for decoder
 	c = avcodec_alloc_context3(codec);
 	if (avcodec_open2(c, codec, NULL) < 0)
 	{
@@ -1324,6 +1329,7 @@ void cVideo::run(void)
 		goto out;
 	}
 	
+	//
 	frame = av_frame_alloc();
 	rgbframe = av_frame_alloc();
 	
@@ -1337,11 +1343,11 @@ void cVideo::run(void)
 	
 	while (thread_running)
 	{
+		//
 		if (av_read_frame(avfc, &avpkt) < 0)
 		{
 			if (warn_r - time(NULL) > 4)
 			{
-				//printf("%s: av_read_frame < 0\n", __func__);
 				warn_r = time(NULL);
 			}
 			
@@ -1349,6 +1355,7 @@ void cVideo::run(void)
 			continue;
 		}
 		
+		//
 		int got_frame = 0;
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
 		av_ret = avcodec_decode_video2(c, frame, &got_frame, &avpkt);
@@ -1357,16 +1364,12 @@ void cVideo::run(void)
 		{
 			if (warn_d - time(NULL) > 4)
 			{
-				//printf("cVideo::run: avcodec_decode_video2 %d\n", av_ret);
 				warn_d = time(NULL);
 			}
 			
 			av_packet_unref(&avpkt);
 			continue;
 		}
-		
-		//if (avpkt.size > av_ret)
-		//	printf("cVideo::run: WARN: pkt->size %d != len %d\n", avpkt.size, av_ret);
 #else
 		av_ret = avcodec_send_packet(c, &avpkt);
 		
@@ -1374,7 +1377,6 @@ void cVideo::run(void)
 		{
 			if (warn_d - time(NULL) > 4)
 			{
-				//printf("cVideo::run: avcodec_send_packet %d\n", av_ret);
 				warn_d = time(NULL);
 			}
 			av_packet_unref(&avpkt);
@@ -1385,16 +1387,13 @@ void cVideo::run(void)
 		if (!av_ret)
 			got_frame = 1;
 #endif
-		//
+		// setup sws scaler
 		still_m.lock();
 		if (got_frame && ! stillpicture)
 		{
 			unsigned int need = av_image_get_buffer_size(VDEC_PIXFMT, c->width, c->height, 1);
-			
-			convert = sws_getCachedContext(convert,
-			        c->width, c->height, c->pix_fmt,
-			        c->width, c->height, VDEC_PIXFMT,
-			        SWS_BICUBIC, 0, 0, 0);
+
+			convert = sws_getCachedContext(convert, c->width, c->height, c->pix_fmt, c->width, c->height, VDEC_PIXFMT, SWS_BICUBIC, 0, 0, 0);
 			        
 			if (!convert)
 				printf("cVideo::run: ERROR setting up SWS context\n");
@@ -1409,6 +1408,7 @@ void cVideo::run(void)
 					
 				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, &(*f)[0], VDEC_PIXFMT, c->width, c->height, 1);
 				sws_scale(convert, frame->data, frame->linesize, 0, c->height, rgbframe->data, rgbframe->linesize);
+				//
 				if (dec_w != c->width || dec_h != c->height)
 				{
 					printf("cVideo::run: pic changed %dx%d -> %dx%d\n", dec_w, dec_h, c->width, c->height);
@@ -1440,17 +1440,16 @@ void cVideo::run(void)
 				
 				if (buf_num > (VDEC_MAXBUFS - 1))
 				{
-					//printf("cVideo::run: buf_num overflow\n");
 					buf_out++;
 					buf_out %= VDEC_MAXBUFS;
 					buf_num--;
 				}
+				
 				dec_r = c->time_base.den / (c->time_base.num * c->ticks_per_frame);
 				buf_m.unlock();
 			}
 		}
-		//else
-		//	printf("cVideo::run: got_frame: %d stillpicture: %d\n", got_frame, stillpicture);
+		
 		still_m.unlock();
 		av_packet_unref(&avpkt);
 	}
@@ -1464,6 +1463,7 @@ out:
 	avformat_close_input(&avfc);
 	av_free(pIOCtx->buffer);
 	av_free(pIOCtx);
+	
 	// reset output buffers
 	bufpos = 0;
 	

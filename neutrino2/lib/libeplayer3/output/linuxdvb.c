@@ -1096,7 +1096,7 @@ static int Write(void* _context, void* _out)
 
 			if (res <= 0)
 			{
-				linuxdvb_err("failed to write data %d - %d\n", res, errno);
+				linuxdvb_err("failed to write AUDIO data %d - %d\n", res, errno);
 				linuxdvb_err("%s\n", strerror(errno));
 				ret = cERR_LINUXDVB_ERROR;
 			}
@@ -1148,7 +1148,7 @@ static int Write(void* _context, void* _out)
 
 			if (res <= 0)
 			{
-				linuxdvb_err("failed to write data %d - %d\n", res, errno);
+				linuxdvb_err("failed to write VIDEO data %d - %d\n", res, errno);
 				linuxdvb_err("%s\n", strerror(errno));
 				ret = cERR_LINUXDVB_ERROR;
 			}

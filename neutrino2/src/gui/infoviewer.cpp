@@ -944,7 +944,7 @@ void CInfoViewer::showIcon_16_9()
 				
 	const char * aspect_icon = NEUTRINO_ICON_16_9_GREY;
 			
-	if(videoDecoder->getAspectRatio() == ASPECTRATIO_169)
+	if(videoDecoder && videoDecoder->getAspectRatio() == ASPECTRATIO_169)
 		aspect_icon = NEUTRINO_ICON_16_9;
 	
 	if (is_visible)
@@ -971,7 +971,7 @@ void CInfoViewer::showIcon_Resolution() const
 	
 	if (is_visible)
 	{
-		videoDecoder->getPictureInfo(xres, yres, framerate);
+		if (videoDecoder) videoDecoder->getPictureInfo(xres, yres, framerate);
 		
 		// show sd/hd icon on infobar	
 		switch (yres) 

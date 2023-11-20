@@ -57,14 +57,6 @@
 
 #include <config.h>
 
-////
-#ifdef USE_OPENGL
-#include <ao/ao.h>
-static ao_device *adevice = NULL;
-static ao_sample_format sformat;
-#endif
-////
-
 
 #if LIBAVCODEC_VERSION_MAJOR > 54
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000 // 1 second of 48khz 32bit audio
@@ -434,7 +426,6 @@ static void FFMPEGThread(Context_t *context)
 	AudioVideoOut_t avOut;
 
 	// Softdecoding buffer
-	//unsigned char *samples = NULL;
 	AVFrame *samples = NULL;
 
 	ffmpeg_printf(10, "\n");
@@ -561,10 +552,14 @@ static void FFMPEGThread(Context_t *context)
 					avOut.height     = videoTrack->height;
 					avOut.type       = "video";
 
+#ifdef USE_OPENGL
+					//ffmpeg_err("writing data to video device failed\n");
+#else
 					if (context->output->video->Write(context, &avOut) < 0) 
 					{
 						ffmpeg_err("writing data to video device failed\n");
 					}
+#endif
 				}
 			}
 
@@ -580,34 +575,10 @@ static void FFMPEGThread(Context_t *context)
 
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
 					
-					#if 0 //def USE_OPENGL
-					int driver;
-					int byte_format = AO_FMT_NATIVE;
-					
-					//if (sformat.bits != bits || sformat.channels != ch || sformat.rate != srate ||
-					  //  sformat.byte_format != byte_format || adevice == NULL)
-					if (adevice == NULL)
-					{
-						driver = ao_default_driver_id();
-						
-						sformat.bits = 16;
-						sformat.channels = ((AVStream*) audioTrack->stream)->codec->channels;
-						sformat.rate = ((AVStream*) audioTrack->stream)->codec->sample_rate;
-						sformat.byte_format = AO_FMT_NATIVE;
-						sformat.matrix = 0;
-						
-						if (adevice)
-							ao_close(adevice);
-							
-						adevice = ao_open_live(driver, &sformat, NULL);
-						ao_info *ai = ao_driver_info(driver);
-						
-						if (ao_play(adevice, (char *)packet.data, packet.size) == 0)
-							ffmpeg_err("writing data to audio device failed\n");
-					}
-					#else
-
-					//FIXME:
+#ifdef USE_OPENGL
+					//ffmpeg_err("writing data to audio device failed\n");
+#else
+					//
 					if (audioTrack->inject_as_pcm == 1)
 					{
 						AVCodecContext *c = ((AVStream *)(audioTrack->stream))->codec;
@@ -624,11 +595,8 @@ static void FFMPEGThread(Context_t *context)
 							//
 							int decoded_data_size = 0; //AVCODEC_MAX_AUDIO_FRAME_SIZE;
 							
-//#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 1, 99)
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 37, 100)
 							bytesDone = avcodec_decode_audio4(c, samples, &decoded_data_size, &packet);
-//#elif LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
-//							bytesDone = avcodec_decode_audio3(c, samples, &decoded_data_size, &packet);
 #else
 							bytesDone = avcodec_send_packet(c, &packet);
 							
@@ -723,7 +691,7 @@ static void FFMPEGThread(Context_t *context)
 							}
 						}
 					}
-					#endif
+#endif
 				}
 			}
 
@@ -892,10 +860,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 		if (encoding != NULL)
 			ffmpeg_printf(1, "%d. encoding = %s - version %d\n", n, encoding, version);
 
-		/* 
-		some values in track are unset and therefor copyTrack segfaults.
-		so set it by default to NULL!
-		*/
+		//
 		memset(&track, 0, sizeof(track));
 
 		switch (stream->codec->codec_type) 
@@ -924,7 +889,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 				track.aacbuf         = 0;
 				track.have_aacheader = -1;
 
-				double frame_rate = av_q2d(stream->r_frame_rate); /* rational to double */
+				double frame_rate = av_q2d(stream->r_frame_rate); // rational to double
 
 				ffmpeg_printf(10, "frame_rate = %f\n", frame_rate);
 
@@ -1275,11 +1240,11 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 			default:
 				ffmpeg_err("not handled or unknown codec_type %d\n", stream->codec->codec_type);
 				break;	 	 
-		} /* switch (stream->codec->codec_type) */
+		} // switch (stream->codec->codec_type)
 
-	} /* for */
+	} // for
 
-	/* init */
+	// init
 	latestPts = 0;
 	isContainerRunning = 1;
 
