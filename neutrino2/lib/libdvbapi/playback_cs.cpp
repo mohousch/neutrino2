@@ -460,14 +460,14 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 #if GST_VERSION_MAJOR < 1
 				gst_x_overlay_set_xwindow_id(GST_X_OVERLAY(GST_MESSAGE_SRC(msg)), GLWinID);
 #else
-				// sync frames
-				gst_video_overlay_expose(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)));
+				//
+				//gst_video_overlay_expose(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)));
 				
 				//
 				gst_video_overlay_set_window_handle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)), (guintptr)GLWinID);
 				
 				// reshape window
-				gst_video_overlay_set_render_rectangle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)), 0, 0, GLWidth, GLHeight);
+				//gst_video_overlay_set_render_rectangle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)), 0, 0, GLWidth, GLHeight);
 #endif
 			}
 #endif

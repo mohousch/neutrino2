@@ -59,7 +59,7 @@ GLThreadObj::GLThreadObj(int x, int y) : mX(x), mY(y), mReInit(true), mShutDown(
 	mState.width  = mX;
 	mState.height = mY;
 	mState.blit = true;
-	////
+	//
 	mVAchanged = true;
 	last_apts = 0;
 
@@ -85,7 +85,6 @@ void GLThreadObj::initKeys()
 	mSpecialMap[GLUT_KEY_F9] = CRCInput::RC_forward;
 	mSpecialMap[GLUT_KEY_F10] = CRCInput::RC_loop;
 	mSpecialMap[GLUT_KEY_F11] = CRCInput::RC_record;
-	mSpecialMap[GLUT_KEY_F12] = CRCInput::RC_mode;
 
 	mSpecialMap[GLUT_KEY_PAGE_UP]   = CRCInput::RC_page_up;
 	mSpecialMap[GLUT_KEY_PAGE_DOWN] = CRCInput::RC_page_down;
@@ -135,14 +134,14 @@ void GLThreadObj::run()
 		}
 		else
 		{
-			/* start decode thread */
+			// start decode thread
 			gThiz = this;
 			//glutSetCursor(GLUT_CURSOR_NONE);
 			glutDisplayFunc(GLThreadObj::rendercb);
 			glutKeyboardFunc(GLThreadObj::keyboardcb);
 			glutSpecialFunc(GLThreadObj::specialcb);
 			glutReshapeFunc(GLThreadObj::resizecb);
-			setupGLObjects(); /* needs GLEW prototypes */
+			setupGLObjects();
 			glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 			glutMainLoop();
 			releaseGLObjects();
@@ -158,7 +157,7 @@ void GLThreadObj::run()
 		g_RCInput->postMsg(NeutrinoMessages::SHUTDOWN, 0);
 	}
 	else
-	{ /* yeah, whatever... */
+	{
 		::kill(getpid(), SIGKILL);
 	}
 
@@ -168,7 +167,6 @@ void GLThreadObj::run()
 void GLThreadObj::setupCtx()
 {
 	int argc = 1;
-	/* some dummy commandline for GLUT to be happy */
 	char const *argv[2] = { "neutrino2", 0 };
 	dprintf(DEBUG_NORMAL, "GLThreadObj::setupCtx: GL thread starting\n");
 	glutInit(&argc, const_cast<char **>(argv));
@@ -186,11 +184,6 @@ void GLThreadObj::setupCtx()
 
 void GLThreadObj::setupOSDBuffer()
 {	
-	/* 
-	   the OSD buffer size can be decoupled from the actual
-	   window size since the GL can blit-stretch with no
-	   trouble at all, ah, the luxury of ignorance... 
-	*/
 	if(mState.width && mState.height)
 	{
 		int fbmem = mState.width * mState.height * 4 * 2;
@@ -210,7 +203,7 @@ void GLThreadObj::setupGLObjects()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	// 
-	glBindTexture(GL_TEXTURE_2D, mState.displaytex); /* we do not yet know the size so will set that inline */
+	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
@@ -245,7 +238,6 @@ void GLThreadObj::keyboardcb(unsigned char key, int /*x*/, int /*y*/)
 	
 	if(i != gThiz->mKeyMap.end())
 	{ 
-		/* let's assume globals are thread-safe */
 		if(g_RCInput)
 		{
 			g_RCInput->postMsg(i->second, 0);
@@ -304,8 +296,8 @@ void GLThreadObj::render()
 	if(mX != glutGet(GLUT_WINDOW_WIDTH) && mY != glutGet(GLUT_WINDOW_HEIGHT))
 		glutReshapeWindow(mX, mY);
 		
-	////
-	bltDisplayBuffer(); /* decoded video stream */
+	//
+	bltDisplayBuffer(); // decoded video stream
 
 	// OSD
 	if (mState.blit) 
@@ -423,7 +415,7 @@ void GLThreadObj::clear()
 
 void GLThreadObj::bltDisplayBuffer()
 {
-	if (!videoDecoder) /* cannot start yet */
+	if (!videoDecoder)
 		return;
 		
 	static bool warn = true;
@@ -459,6 +451,7 @@ void GLThreadObj::bltDisplayBuffer()
 		mVAchanged = true;
 	}
 
+	// render frame
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
 	glBufferData(GL_PIXEL_UNPACK_BUFFER, buf->size(), &(*buf)[0], GL_STREAM_DRAW_ARB);
 
@@ -467,11 +460,8 @@ void GLThreadObj::bltDisplayBuffer()
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 
-	/* "rate control" mechanism starts here...
-	 * this implementation is pretty naive and not working too well, but
-	 * better this than nothing... :-) */
+	// rate
 	int64_t apts = 0;
-	/* 18000 is the magic value for A/V sync in my libao->pulseaudio->intel_hda setup */
 	int64_t vpts = buf->pts() + 18000;
 	
 	if (audioDecoder)
@@ -479,8 +469,6 @@ void GLThreadObj::bltDisplayBuffer()
 		
 	if (apts != last_apts)
 	{
-		int rate, dummy1, dummy2;
-		
 		if (apts < vpts)
 			sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
 		else if (sleep_us > 1000)
@@ -488,12 +476,14 @@ void GLThreadObj::bltDisplayBuffer()
 			
 		last_apts = apts;
 		
+		//
+		int rate, dummy1, dummy2;
 		videoDecoder->getPictureInfo(dummy1, dummy2, rate);
 		
 		if (rate > 0)
-			rate = 2000000 / rate; /* limit to half the frame rate */
+			rate = 2000000 / rate;
 		else
-			rate = 50000; /* minimum 20 fps */
+			rate = 50000;
 			
 		if (sleep_us > rate)
 			sleep_us = rate;

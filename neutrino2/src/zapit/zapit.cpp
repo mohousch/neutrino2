@@ -1676,8 +1676,8 @@ void CZapit::setRadioMode(void)
 	currentMode |= RADIO_MODE;
 	currentMode &= ~TV_MODE;
 
-	if (!avDecoderOpen)
-		openAVDecoder();
+	// FIXME: ???
+	openAVDecoder();
 }
 
 void CZapit::setTVMode(void)
@@ -1687,8 +1687,8 @@ void CZapit::setTVMode(void)
 	currentMode |= TV_MODE;
 	currentMode &= ~RADIO_MODE;
 
-	if (!avDecoderOpen)
-		openAVDecoder();
+	// FIXME: ???
+	openAVDecoder();
 }
 
 int CZapit::getMode(void)
@@ -3071,9 +3071,7 @@ int CZapit::ChannelIterator::getNrofFirstChannelofBouquet(const unsigned int bou
 	return i;
 }
 
-////
-
-// startplayback return: 0=playing, -1= failed
+//// startplayback return: 0=playing, -1= failed
 int CZapit::startPlayBack(CZapitChannel * thisChannel)
 {
 	dprintf(DEBUG_NORMAL, "CZapit::startPlayBack: chid: 0x%llx\n", thisChannel->getChannelID());
@@ -3090,8 +3088,7 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 	if (IS_WEBTV(thisChannel->getChannelID()))
 	{
 		//
-		if (avDecoderOpen)
-			closeAVDecoder();
+		closeAVDecoder();
 		
 		playback->Open();
 	
@@ -3104,8 +3101,7 @@ int CZapit::startPlayBack(CZapitChannel * thisChannel)
 			return -1;
 			
 		// 
-		if (!avDecoderOpen)
-			openAVDecoder();
+		openAVDecoder();
 
 		bool have_pcr = false;
 		bool have_audio = false;
@@ -3333,7 +3329,6 @@ int CZapit::stopPlayBack(bool sendPmt)
 			audioDemux = NULL;
 		}
 		
-		////FIXME:
 		// stop video decoder (blanking)
 		videoDecoder->Stop(true);
 
@@ -3389,6 +3384,12 @@ void CZapit::continuePlayBack(void)
 
 void CZapit::closeAVDecoder(void)
 {
+	dprintf(DEBUG_NORMAL, "CZapit::closeAVDecoder:\n");
+	
+	if (!avDecoderOpen)
+		return;
+	
+#ifndef USE_OPENGL
 	// close videodecoder
 	if(videoDecoder)
 	{
@@ -3400,16 +3401,23 @@ void CZapit::closeAVDecoder(void)
 	{
 		audioDecoder->Close();
 	}
+#endif
 
 	avDecoderOpen = false;
 }
 
 void CZapit::openAVDecoder(void)
 {
+	dprintf(DEBUG_NORMAL, "CZapit::openAVDecoder:\n");
+	
+	if (avDecoderOpen)
+		return;
+	
+#ifndef USE_OPENGL
 	if(videoDecoder)
 	{
 		// open video decoder
-		videoDecoder->Open();
+		videoDecoder->Open();	//FIXME: adapter ???
 	
 		// set source
 		videoDecoder->setSource(VIDEO_SOURCE_DEMUX);	
@@ -3423,6 +3431,7 @@ void CZapit::openAVDecoder(void)
 		// set source
 		audioDecoder->setSource(AUDIO_SOURCE_DEMUX);
 	}
+#endif
 
 	avDecoderOpen = true;	
 }
@@ -3962,7 +3971,7 @@ void CZapit::lockPlayBack()
 void CZapit::unlockPlayBack()
 {
 	playbackStopForced = false;
-			
+		
 	openAVDecoder();			
 
 	if(live_channel != NULL)

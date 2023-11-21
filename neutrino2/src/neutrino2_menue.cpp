@@ -138,7 +138,7 @@ void CNeutrinoApp::mainMenu(void)
 	if (nMenu) nMenu->addItem(item);
 #endif
 
-	//
+	// line
 	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
 	{
 		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
@@ -177,7 +177,7 @@ void CNeutrinoApp::mainMenu(void)
 	item->setDirectKey(CRCInput::RC_2);
 	if (nMenu) nMenu->addItem(item);
 	
-	//
+	// line
 	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
 	{
 		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
@@ -201,7 +201,7 @@ void CNeutrinoApp::mainMenu(void)
 	item->setState(g_settings.personalize_powermenu);
 	if (nMenu) nMenu->addItem(item);
 	
-	//
+	// line
 	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
 	{
 		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));

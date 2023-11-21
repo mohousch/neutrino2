@@ -380,11 +380,11 @@ int cVideo::Start(void)
 	
 #ifdef USE_OPENGL
 	if (!thread_running)
-		OpenThreads::Thread::start();
+	{
+		ret = OpenThreads::Thread::start();
+	}
 		
 	playstate = VIDEO_PLAYING;
-		
-	ret = 0;
 #else
 	if(video_fd < 0)
 		return -1;
@@ -414,12 +414,10 @@ int cVideo::Stop(bool blank)
 	if (thread_running)
 	{
 		thread_running = false;
-		OpenThreads::Thread::join();
+		ret = OpenThreads::Thread::join();
 	}
 	
 	playstate = blank ? VIDEO_STOPPED : VIDEO_FREEZED;
-	
-	ret = 0;
 #else
 	if(video_fd < 0)
 		return -1;

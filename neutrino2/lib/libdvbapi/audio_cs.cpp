@@ -270,9 +270,9 @@ int cAudio::Start(void)
 	
 #ifdef USE_OPENGL
 	if (!thread_started)
-		OpenThreads::Thread::start();
-	
-	ret = 0;
+	{
+		ret = OpenThreads::Thread::start();
+	}
 #else
 	if (audio_fd < 0)
 		return -1;
@@ -296,10 +296,8 @@ int cAudio::Stop(void)
 	if (thread_started)
 	{
 		thread_started = false;
-		OpenThreads::Thread::join();
+		ret = OpenThreads::Thread::join();
 	}
-	
-	ret = 0;
 #else
 	if (audio_fd < 0)
 		return -1;

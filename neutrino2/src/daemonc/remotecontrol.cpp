@@ -769,7 +769,7 @@ void CRemoteControl::stopvideo()
 {
 	if ( is_video_started )
 	{
-		is_video_started= false;
+		is_video_started = false;
 		CZapit::getInstance()->stopPlayBack();
 	}
 }
