@@ -165,6 +165,10 @@
 
 #include <nhttpd/yhttpd.h>
 
+#ifdef USE_OPENGL
+#include <ao/ao.h>
+#endif
+
 
 //// globals
 int debug = DEBUG_NORMAL;
@@ -3304,6 +3308,10 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			delete frameBuffer;
 			frameBuffer = NULL;
 		}
+		
+#ifdef USE_OPENGL
+		ao_shutdown();
+#endif
 
 		dprintf(DEBUG_NORMAL, ">>> CNeutrinoApp::exitRun: Good bye (retcode: %d) <<<\n", retcode);
 		
@@ -5051,6 +5059,10 @@ int main(int argc, char *argv[])
 
 #if ENABLE_GSTREAMER
 	gst_init(NULL, NULL);
+#endif
+
+#ifdef USE_OPENGL
+	ao_initialize();
 #endif
 
 	// set python path
