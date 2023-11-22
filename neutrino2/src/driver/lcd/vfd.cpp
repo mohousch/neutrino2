@@ -235,6 +235,8 @@ void * CVFD::TimeThread(void *)
 
 void CVFD::init()
 {
+	dprintf(DEBUG_NORMAL, "CVFD::init\n");
+	
 	brightness = -1;
 	
 	// set mode tv/radio
@@ -246,6 +248,8 @@ void CVFD::init()
 		perror("CVFD::init: pthread_create(TimeThread)");
 		return ;
 	}
+	
+	
 	
 	// set led color
 #if defined (PLATFORM_GIGABLUE)

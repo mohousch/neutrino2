@@ -707,11 +707,7 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 
 		// subsink
 		GstElement *subsink = gst_element_factory_make("subsink", "subtitle_sink");
-		if (!subsink)
-		{
-			dprintf(DEBUG_NORMAL, "cPlayback::Start: sorry, can't play subs: missing gst-plugin-subsink\n");
-		}
-		else
+		if (subsink)
 		{
 			//m_subs_to_pull_handler_id = g_signal_connect (subsink, "new-buffer", G_CALLBACK (gstCBsubtitleAvail), this);
 #if GST_VERSION_MAJOR < 1

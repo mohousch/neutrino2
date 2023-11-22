@@ -138,6 +138,8 @@ void* CLCD::TimeThread(void *)
 
 void CLCD::init(const char * fontfile, const char * fontname, const char * fontfile2, const char * fontname2, const char * fontfile3, const char * fontname3)
 {
+	dprintf(DEBUG_NORMAL, "CLCD::init\n");
+	
 	if (!lcdInit(fontfile, fontname, fontfile2, fontname2, fontfile3, fontname3 ))
 	{
 		dprintf(DEBUG_NORMAL, "CLCD::init: LCD-Init failed!\n");
@@ -149,6 +151,8 @@ void CLCD::init(const char * fontfile, const char * fontname, const char * fontf
 		perror("CLCD::init: pthread_create(TimeThread)");
 		return ;
 	}
+	
+	dprintf(DEBUG_NORMAL, "CLCD::init: timeThread created\n");
 }
 
 enum elements {
