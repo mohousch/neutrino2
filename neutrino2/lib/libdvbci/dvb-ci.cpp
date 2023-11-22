@@ -282,17 +282,17 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 		len = 5;	
 	}
 
-	if (slot->sendqueue.empty())
-		res = write(slot->fd, d, len); 
+	/*
+	res = write(slot->fd, d, len);
+	free(d);
 	
 	if (res < 0 || res != len) 
 	{ 
 		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
-		//return eDataError; 
-		slot->sendqueue.push( queueData(d, len) );
+		return eDataError; 
 	}
-	
-	free(d);	 
+	*/
+	slot->sendqueue.push( queueData(d, len) );
 	
 	return eDataReady;
 }
