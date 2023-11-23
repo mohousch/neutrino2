@@ -1465,7 +1465,7 @@ int pop(FILE *fd, char *buf, long len)
 		rval = -1;
 	}
 
-//  dprintf(stderr, "pop:  exitstate: [filled: %3.1f %%], stream: %x\n", 100.0 * (float)cache[i].filled / (float)cache[i].csize, fd);
+	//dprintf(stderr, "pop:  exitstate: [filled: %3.1f %%], stream: %x\n", 100.0 * (float)cache[i].filled / (float)cache[i].csize, fd);
 
 	cache[i].total_bytes_delivered += rval;
 
@@ -1678,7 +1678,6 @@ STREAM_FILTER *ShoutCAST_InitFilter(int meta_int)
 
 void ShoutCAST_MetaFilter(STREAM_FILTER *arg)
 {
-
 	/* bug trap */
 	if(!arg)
 		return;

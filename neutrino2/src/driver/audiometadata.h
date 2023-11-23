@@ -37,7 +37,7 @@
 #define __AUDIO_METADATA__
 
 #include <string>
-#include <mad.h>
+
 
 class CAudioMetaData
 {
@@ -69,8 +69,6 @@ class CAudioMetaData
 		unsigned int bitrate; // overall bitrate, vbr file: current bitrate
 		unsigned int avg_bitrate; // average bitrate in case of vbr file 
 		unsigned int samplerate;
-		enum mad_layer layer;
-		enum mad_mode mode;
 		time_t total_time;
 		long audio_start_pos; // position of first audio frame
 		bool vbr;
@@ -93,3 +91,4 @@ class CAudioMetaData
 };
 
 #endif /* __AUDIO_METADATA__ */
+

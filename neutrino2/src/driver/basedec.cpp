@@ -111,28 +111,7 @@ bool CBaseDec::GetMetaDataBase(CAudiofile* const in, const bool nice)
 		}
 		else
 		{
-			/*
-			if(in->FileExtension == CFile::EXTENSION_MP3)
-			{
-				Status = CMP3Dec::getInstance()->GetMetaData(fp, nice, &in->MetaData);
-			}
-			else if(in->FileExtension == CFile::EXTENSION_WAV)
-			{
-				Status = CWavDec::getInstance()->GetMetaData(fp, nice, &in->MetaData);
-			}
-			else if(in->FileExtension == CFile::EXTENSION_CDR)
-			{
-				Status = CCdrDec::getInstance()->GetMetaData(fp, nice, &in->MetaData);
-			}
-			else if(in->FileExtension == CFile::EXTENSION_FLAC)
-			{
-				Status = CFlacDec::getInstance()->GetMetaData(fp, nice, &in->MetaData);
-			}
-			*/
-			//if ()
-			{
-				Status = CFfmpegDec::getInstance()->GetMetaData(fp, nice, &in->MetaData);
-			}
+			Status = CFfmpegDec::getInstance()->GetMetaData(fp, nice, &in->MetaData);
 			
 			if ( fclose( fp ) == EOF )
 			{

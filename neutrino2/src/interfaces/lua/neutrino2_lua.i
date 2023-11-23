@@ -52,8 +52,7 @@
 #include <driver/encoding.h>
 #include <driver/pictureviewer.h>
 #include <driver/audioplay.h>
-#include <driver/audiodec/basedec.h>
-//#include <driver/stream2file.h>
+#include <driver/basedec.h>
 #include <driver/vcrcontrol.h>
 
 // system
@@ -194,7 +193,7 @@
 %include <src/driver/encoding.h>
 %include <src/driver/pictureviewer.h>
 %include <src/driver/audioplay.h>
-%include <src/driver/audiodec/basedec.h>
+//%include <src/driver/basedec.h>
 //%include <src/driver/stream2file.h>
 %include <src/driver/vcrcontrol.h>
 

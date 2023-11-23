@@ -48,7 +48,7 @@ CAudioMetaData::CAudioMetaData( const CAudioMetaData& src )
   : type( src.type ), type_info( src.type_info ),
 	filesize( src.filesize ), bitrate( src.bitrate ),
 	avg_bitrate( src.avg_bitrate ), samplerate( src.samplerate ),
-	layer( src.layer ), mode( src.mode ), total_time( src.total_time ),
+	total_time( src.total_time ),
 	audio_start_pos( src.audio_start_pos ), vbr( src.vbr ),
 	hasInfoOrXingTag( src.hasInfoOrXingTag ), artist( src.artist ),
 	title( src.title ), album( src.album ), sc_station( src.sc_station ),
@@ -70,8 +70,6 @@ void CAudioMetaData::operator=( const CAudioMetaData& src )
 	bitrate = src.bitrate;
 	avg_bitrate = src.avg_bitrate;
 	samplerate = src.samplerate;
-	layer = src.layer;
-	mode = src.mode;
 	total_time = src.total_time;
 	audio_start_pos = src.audio_start_pos;
 	vbr = src.vbr;

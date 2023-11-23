@@ -40,7 +40,7 @@
 #include <neutrino2.h>
 
 #include <driver/audioplay.h>
-#include <driver/audiodec/netfile.h>
+#include <driver/netfile.h>
 
 #include <system/debug.h>
 

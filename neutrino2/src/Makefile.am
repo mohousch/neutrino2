@@ -92,18 +92,19 @@ neutrino2_LDADD = \
 	@CURL_LIBS@ \
 	@FREETYPE_LIBS@ \
 	@PNG_LIBS@ \
-	@MAD_LIBS@ \
-	@ID3TAG_LIBS@ \
 	@PTHREAD_LIBS@ \
 	@FRIBIDI_LIBS@ \
-	-ljpeg -lrt -lblkid -ldl -lFLAC -lavformat -lavcodec -lavutil -lgif -lpthread -lOpenThreads -lcrypto -lssl
+	@AVFORMAT_LIBS@ \
+	@AVUTIL_LIBS@ \
+	@AVCODEC_LIBS@ \
+	-ljpeg -lrt -lblkid -ldl -lgif -lpthread -lOpenThreads -lcrypto -lssl
 
 neutrino2_LDFLAGS = -Wl,--export-dynamic
 
 if ENABLE_GSTREAMER
 neutrino2_LDADD += @GSTREAMER_LIBS@
 else
-neutrino2_LDADD += $(top_builddir)/lib/libeplayer3/libeplayer3.a -lass -lavformat -lavcodec -lavutil
+neutrino2_LDADD += $(top_builddir)/lib/libeplayer3/libeplayer3.a -lass
 endif
 
 # LCD display

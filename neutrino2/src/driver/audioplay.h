@@ -31,7 +31,7 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#include <driver/audiodec/basedec.h>
+#include <driver/basedec.h>
 #include <driver/audiofile.h>
 #include <driver/audiometadata.h>
 #include <string>
