@@ -48,7 +48,7 @@
 #include <driver/encoding.h>
 #include <driver/pictureviewer.h>
 #include <driver/audioplay.h>
-#include <driver/basedec.h>
+//#include <driver/basedec.h>
 //#include <driver/vcrcontrol.h>
 
 // system

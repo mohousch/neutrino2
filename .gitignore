@@ -2196,3 +2196,9 @@
 /neutrino2/autom4te.cache/traces.3
 /neutrino2/src/system/.deps/stacktrace.Po
 /neutrino2/src/system/stacktrace.o
+/neutrino2/src/driver/.deps/basedec.Po
+/neutrino2/src/driver/.deps/ffmpegdec.Po
+/neutrino2/src/driver/.deps/netfile.Po
+/neutrino2/src/driver/basedec.o
+/neutrino2/src/driver/ffmpegdec.o
+/neutrino2/src/driver/netfile.o

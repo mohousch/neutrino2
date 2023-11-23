@@ -413,26 +413,15 @@ void CMoviePlayerGui::play(unsigned int pos)
 	if(playback->playing)
 		playback->Close();
 
-	// init player
-#if defined (PLATFORM_COOLSTREAM)
-	if(playlist[pos].file.getExtension() != CFile::EXTENSION_TS)
-		is_file_player = true;
-
-	playback->Open(is_file_player ? PLAYMODE_FILE : PLAYMODE_TS);
-#else			
-	playback->Open();
-#endif			
+	// init player			
+	playback->Open();			
 			
 	duration = 0;
 	if(playlist[pos].length != 0)
 		duration = playlist[pos].length * 60 * 1000; // in ms
 			  
 	// PlayBack Start
-#if defined (PLATFORM_COOLSTREAM)			  
-	if(!playback->Start((char *)playlist[pos].file.Name.c_str(), g_vpid, g_vtype, g_currentapid, g_currentac3, duration))
-#else
 	if(!playback->Start((char *)playlist[pos].file.Name.c_str()))
-#endif
 	{
 		dprintf(DEBUG_NORMAL, "CMoviePlayerGui::play: Starting Playback failed!\n");
 		playback->Close();
@@ -446,13 +435,8 @@ void CMoviePlayerGui::play(unsigned int pos)
 		CVFD::getInstance()->ShowIcon(VFD_ICON_PLAY, true);
 				
 		// get position / duration
-#if defined (PLATFORM_COOLSTREAM)
 		playback->GetPosition(position, duration);
-#else
-		playback->GetPosition(position, duration);
-#endif
 
-		////
 		// set position 
 		playback->SetPosition(startposition * 1000);
 		
@@ -499,20 +483,11 @@ void CMoviePlayerGui::playNext()
 			{
 						if (playlist[selected].audioPids[i].selected) 
 						{
-#if defined (PLATFORM_COOLSTREAM)
-							g_currentapid = playlist[selected].audioPids[i].epgAudioPid;
-#else
-							g_currentapid = i;
-#endif							
+							g_currentapid = i;							
 							g_currentac3 = playlist[selected].audioPids[i].atype;
 
 							//
-#if defined (PLATFORM_COOLSTREAM)
-							currentapid = g_currentapid;
-							currentac3 = g_currentac3;
-#else
 							currentapid = 0;
-#endif
 						}
 			}
 
@@ -569,20 +544,11 @@ void CMoviePlayerGui::playPrev()
 			{
 				if (playlist[selected].audioPids[i].selected) 
 				{
-#if defined (PLATFORM_COOLSTREAM)
-					g_currentapid = playlist[selected].audioPids[i].epgAudioPid;
-#else
 					g_currentapid = i;
-#endif
 					g_currentac3 = playlist[selected].audioPids[i].atype;
 
 					//
-#if defined (PLATFORM_COOLSTREAM)
-					currentapid = g_currentapid;
-					currentac3 = g_currentac3;
-#else
 					currentapid = 0;
-#endif
 				}
 			}
 
@@ -658,19 +624,9 @@ void CMoviePlayerGui::PlayFile(void)
 			{
 				if (playlist[selected].audioPids[i].selected) 
 				{
-#if defined (PLATFORM_COOLSTREAM)
-					g_currentapid = playlist[selected].audioPids[i].epgAudioPid;
-#else
-					g_currentapid = i;	//FIXME
-#endif						
+					g_currentapid = i;	//FIXME						
 					g_currentac3 = playlist[selected].audioPids[i].atype;
-
-#if defined (PLATFORM_COOLSTREAM)
-					currentapid = g_currentapid;
-					currentac3 = g_currentac3;
-#else
 					currentapid = 0;
-#endif
 				}
 			}
 
@@ -794,11 +750,8 @@ void CMoviePlayerGui::PlayFile(void)
 		{	  
 			if (playstate == CMoviePlayerGui::PLAY) 
 			{				
-#if defined (PLATFORM_COOLSTREAM)
-				playback->GetPosition(position, duration);
-#else
  				playback->GetPosition(position, duration);
-#endif				
+				
 				// check if !jump is stale (e.g. if user jumped forward or backward)
 				int play_sec = position / 1000;	// get current seconds from moviestart
 
@@ -905,11 +858,7 @@ void CMoviePlayerGui::PlayFile(void)
 		//get position/duration/speed
 		if ( playstate >= CMoviePlayerGui::PLAY )
 		{
-#if defined (PLATFORM_COOLSTREAM)
-			if( playback->GetPosition(position, duration) )
-#else
-			if( playback->GetPosition(position, duration) )
-#endif			
+			if( playback->GetPosition(position, duration) )			
 			{
 				playback->GetSpeed(speed);
 								
@@ -1443,8 +1392,7 @@ void CMoviePlayerGui::PlayFile(void)
 				}
 				jump_not_until = (position / 1000) + 10;
 			}
-		} 
-#if !defined (PLATFORM_COOLSTREAM)		
+		} 		
 		else if (msg == CRCInput::RC_slow) 
 		{
 			if (mplist && !mplist->isPainted())
@@ -1460,8 +1408,7 @@ void CMoviePlayerGui::PlayFile(void)
 				playstate = CMoviePlayerGui::SLOW;
 				update_lcd = true;
 			}
-		}
-#endif		
+		}		
 		else if(msg == CRCInput::RC_red)
 		{
 			if (mplist && mplist->isPainted())

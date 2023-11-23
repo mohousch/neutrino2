@@ -34,20 +34,19 @@ noinst_LIBRARIES = libneutrino2_driver.a
 libneutrino2_driver_a_SOURCES = \
 	encoding.cpp \
 	rcinput.cpp \
+	genpsi.cpp \
 	vcrcontrol.cpp \
-	audioplay.cpp \
 	pictureviewer.cpp \
 	file.cpp \
-	audiometadata.cpp \
-	audiofile.cpp \
 	shutdown_count.cpp \
-	genpsi.cpp \
 	streamts.cpp \
 	radiotext.cpp \
 	radiotools.cpp \
 	netfile.cpp \
+	audiometadata.cpp \
+	audiofile.cpp \
 	ffmpegdec.cpp \
-	basedec.cpp
+	audioplay.cpp
 
 if !BOXTYPE_DGS 
 if !BOXTYPE_FULAN 

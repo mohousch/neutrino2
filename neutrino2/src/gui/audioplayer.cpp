@@ -236,7 +236,7 @@ void CAudioPlayerGui::playFile()
 			loop = false;
 		}
 		
-		if ((m_state != CAudioPlayerGui::STOP) && (CAudioPlayer::getInstance()->getState() == CBaseDec::STOP) && (!m_playlist.empty()))
+		if ((m_state != CAudioPlayerGui::STOP) && (CAudioPlayer::getInstance()->getState() == CAudioPlayer::STOP) && (!m_playlist.empty()))
 		{
 			// refresh background
 			m_frameBuffer->useBackground(false);
@@ -716,7 +716,7 @@ void CAudioPlayerGui::stop()
 {
 	m_state = CAudioPlayerGui::STOP;	
 
-	if(CAudioPlayer::getInstance()->getState() != CBaseDec::STOP)
+	if(CAudioPlayer::getInstance()->getState() != CAudioPlayer::STOP)
 		CAudioPlayer::getInstance()->stop();
 
 	paintInfo(m_playlist[m_current]);
@@ -786,7 +786,7 @@ void CAudioPlayerGui::play(unsigned int pos)
 	m_current = pos;
 
 	// stop if playing
-	if(CAudioPlayer::getInstance()->getState() != CBaseDec::STOP)
+	if(CAudioPlayer::getInstance()->getState() != CAudioPlayer::STOP)
 		CAudioPlayer::getInstance()->stop();
 
 	// play

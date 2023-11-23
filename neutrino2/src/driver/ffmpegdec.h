@@ -30,12 +30,16 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <vector>
-#include "basedec.h"
+
+//#include <driver/basedec.h>
+#include <driver/audiometadata.h>
+
 # if __WORDSIZE == 64
 #  define UINT64_C(c)   c ## UL
 # else
 #  define UINT64_C(c)   c ## ULL
 # endif
+
 extern "C" {
 #include <libavcodec/version.h>
 #include <libavformat/avformat.h>
@@ -46,14 +50,13 @@ extern "C" {
 #include <OpenThreads/Thread>
 #include <OpenThreads/Condition>
 
-class CFfmpegDec : public CBaseDec
+class CFfmpegDec
 {
 	private:
 		bool meta_data_valid;
 		bool is_stream;
 
 		int mChannels;
-		int mSampleRate;
 		size_t buffer_size;
 		unsigned char *buffer;
 		AVFormatContext *avc;
@@ -82,7 +85,6 @@ class CFfmpegDec : public CBaseDec
 
 	public:
 		static CFfmpegDec *getInstance();
-		//virtual RetCode Decoder(FILE *, int, State *, CAudioMetaData *m, time_t *t, unsigned int *secondsToSkip);
 		bool GetMetaData(FILE *in, const bool nice, CAudioMetaData *m);
 		CFfmpegDec();
 		~CFfmpegDec();

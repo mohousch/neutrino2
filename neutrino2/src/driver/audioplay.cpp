@@ -49,11 +49,18 @@
 #include <playback_cs.h>
 
 
+void ShoutcastCallback(void *arg)
+{
+	dprintf(DEBUG_NORMAL, "%s\n", __FUNCTION__);
+	
+	CAudioPlayer::getInstance()->sc_callback(arg);
+}
+
 void CAudioPlayer::stop()
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
 	
-	state = CBaseDec::STOP_REQ;
+	state = STOP_REQ;
 
 	//
 	if(thrPlay)
@@ -64,22 +71,22 @@ void CAudioPlayer::stop()
 	if(playback->playing)
 		playback->Close();
 	
-	state = CBaseDec::STOP;
+	state = STOP;
 }
 
 void CAudioPlayer::pause()
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
 	
-	if(state == CBaseDec::PLAY || state == CBaseDec::FF || state == CBaseDec::REV)
+	if(state == PLAY || state == FF || state == REV)
 	{
-		state = CBaseDec::PAUSE;
+		state = PAUSE;
 
 		playback->SetSpeed(0);
 	}
-	else if(state == CBaseDec::PAUSE)
+	else if(state == PAUSE)
 	{
-		state = CBaseDec::PLAY;
+		state = PLAY;
 
 		playback->SetSpeed(1);		
 	}
@@ -91,15 +98,15 @@ void CAudioPlayer::ff(unsigned int seconds)
 	
 	m_SecondsToSkip = seconds;
 
-	if(state == CBaseDec::PLAY || state == CBaseDec::PAUSE || state == CBaseDec::REV)
+	if(state == PLAY || state == PAUSE || state == REV)
 	{
-		state = CBaseDec::FF;
+		state = FF;
 
 		playback->SetSpeed(2);
 	}
-	else if(state == CBaseDec::FF)
+	else if(state == FF)
 	{
-		state = CBaseDec::PLAY;
+		state = PLAY;
 		
 		playback->SetSpeed(1);
 	}
@@ -111,15 +118,15 @@ void CAudioPlayer::rev(unsigned int seconds)
 	
 	m_SecondsToSkip = seconds;
 
-	if(state == CBaseDec::PLAY || state == CBaseDec::PAUSE || state == CBaseDec::FF)
+	if(state == PLAY || state == PAUSE || state == FF)
 	{
-		state = CBaseDec::REV;
+		state = REV;
 
 		playback->SetSpeed(-2);
 	}
-	else if(state == CBaseDec::REV)
+	else if(state == REV)
 	{
-		state = CBaseDec::PLAY;
+		state = PLAY;
 		
 		playback->SetSpeed(1);
 	}
@@ -140,42 +147,56 @@ CAudioPlayer * CAudioPlayer::getInstance()
 void * CAudioPlayer::PlayThread( void * /*arg*/)
 {
 	//
-	CBaseDec::RetCode Status = CBaseDec::DecoderBase(&getInstance()->m_Audiofile);
+	RetCode Status = OK;
+
+	FILE* fp = NULL;
+	
+	if(getInstance()->m_Audiofile.FileExtension == CFile::EXTENSION_URL)
+	{
+		fp = f_open( getInstance()->m_Audiofile.Filename.c_str(), "rc" );
+
+		if ( fp == NULL )
+		{
+			dprintf(DEBUG_INFO, "CAudioPlayer::PlayThread: Error opening file %s for meta data reading.\n", getInstance()->m_Audiofile.Filename.c_str() );
+
+			Status = INTERNAL_ERR;
+			
+			return NULL;
+		}
+		else
+		{
+			if ( fstatus(fp, ShoutcastCallback) < 0 )
+				fprintf( stderr, "CAudioPlayer::PlayThread: Error adding shoutcast callback: %s\n", err_txt );
+		}
+
+		if ( f_close( fp ) == EOF )
+		{
+			fprintf( stderr, "CAudioPlayer::PlayThread: Could not close file %s.\n", getInstance()->m_Audiofile.Filename.c_str() );
+		}
+	}
 
 	//stop playing if already playing (multiselect)
 	if(playback->playing)
 		playback->Close();
-	
-#if defined (PLATFORM_COOLSTREAM)
-	if(! playback->Open(PLAYMODE_FILE))
-#else	
-	if(! playback->Open())
-#endif	  
+		
+	if(! playback->Open())	  
 		return NULL;
-	
-#if defined (PLATFORM_COOLSTREAM)
-	if(!playback->Start( (char*)getInstance()->m_Audiofile.Filename.c_str(), 0, 0, 0, 0, 0 ))
-#else		
+			
 	if(!playback->Start( (char*)getInstance()->m_Audiofile.Filename.c_str() ))
-#endif
 	{
 		playback->Close();
 		return NULL;
 	}
 		
-	getInstance()->state = CBaseDec::PLAY;
+	getInstance()->state = PLAY;
 	
 	int position = 0;
 	int duration = 0;
 	
 	do {
-#if defined (PLATFORM_COOLSTREAM)
-		if(!playback->GetPosition(position, duration))
-#else
-		if(!playback->GetPosition(position, duration))
-#endif		
+		if(!playback->GetPosition(position, duration))	
 		{
-			getInstance()->state = CBaseDec::STOP;
+			getInstance()->state = STOP;
 			
 			if(playback->playing)
 				playback->Close();
@@ -187,12 +208,12 @@ void * CAudioPlayer::PlayThread( void * /*arg*/)
 			getInstance()->m_Audiofile.MetaData.total_time = duration / 1000; // in sec
 
 		getInstance()->m_played_time = position/1000;	// in sec
-	}while(getInstance()->state != CBaseDec::STOP_REQ);
+	}while(getInstance()->state != STOP_REQ);
 	
 	if(playback->playing)
 		playback->Close();
 
-	getInstance()->state = CBaseDec::STOP;
+	getInstance()->state = STOP;
 	
 	pthread_exit(0);
 
@@ -203,14 +224,14 @@ bool CAudioPlayer::play(const CAudiofile *file, const bool highPrio)
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
 	
-	if (state != CBaseDec::STOP)
+	if (state != STOP)
 		stop();
 
 	getInstance()->clearFileData();
 
 	m_Audiofile = *file;
 	
-	state = CBaseDec::PLAY;
+	state = PLAY;
 
 	pthread_attr_t attr;
 	pthread_attr_init(&attr);
@@ -255,9 +276,9 @@ void CAudioPlayer::init()
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
 	
-	CBaseDec::Init();
+	//Init();
 	
-	state = CBaseDec::STOP;	
+	state = STOP;	
 	thrPlay = 0;
 
 	CFileHelpers::getInstance()->createDir("/tmp/audioplayer", 0755);	
@@ -338,6 +359,26 @@ bool CAudioPlayer::readMetaData(CAudiofile* const file, const bool nice)
 {
 	dprintf(DEBUG_DEBUG, "CAudioPlayer::%s\n", __FUNCTION__);
 	
-	return CBaseDec::GetMetaDataBase(file, nice);
+	bool Status = true;
+	FILE* fp;
+
+	fp = fopen( file->Filename.c_str(), "r" );
+
+	if ( fp == NULL )
+	{
+		dprintf(DEBUG_DEBUG, "CAudioPlayer::readMetaData: Error opening file %s for meta data reading.\n", file->Filename.c_str() );
+		Status = false;
+	}
+	else
+	{
+		Status = CFfmpegDec::getInstance()->GetMetaData(fp, nice, &file->MetaData);
+			
+		if ( fclose( fp ) == EOF )
+		{
+			dprintf(DEBUG_NORMAL, "Could not close file %s.\n", file->Filename.c_str() );
+		}
+	}
+
+	return Status;
 }
 

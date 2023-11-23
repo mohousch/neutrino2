@@ -37,13 +37,13 @@
 #include <global.h>
 #include <driver/audioplay.h>
 #include <sectionsd/edvbstring.h> // UTF8
-#include "ffmpegdec.h"
+#include <driver/ffmpegdec.h>
 
 extern "C" {
 #include <libavcodec/version.h>
 #include <libavutil/opt.h>
 #include <libavutil/samplefmt.h>
-#include <libswresample/swresample.h>
+//#include <libswresample/swresample.h>
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59,0,100)
 #include <libavcodec/avcodec.h>
 #endif
@@ -63,19 +63,13 @@ extern "C" {
 
 #include <OpenThreads/ScopedLock>
 
-#include "netfile.h"
+#include <driver/netfile.h>
+
 #include <system/helpers.h>
 #include <system/debug.h>
 
 
 static OpenThreads::Mutex mutex;
-
-//static int cover_count = 0;
-
-static void __attribute__((unused)) log_callback(void *, int, const char *format, va_list ap)
-{
-	vfprintf(stderr, format, ap);
-}
 
 CFfmpegDec::CFfmpegDec(void)
 {
@@ -354,7 +348,6 @@ bool CFfmpegDec::SetMetaData(FILE *_in, CAudioMetaData *m)
 			// cover
 			if ((avc->streams[i]->disposition & AV_DISPOSITION_ATTACHED_PIC))
 			{
-				mkdir("/tmp/audioplayer/", 0755);
 				std::string cover("/tmp/audioplayer/");
 				cover += m->title + ".jpg";
 				

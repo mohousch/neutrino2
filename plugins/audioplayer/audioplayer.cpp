@@ -103,7 +103,7 @@ CMP3Player::~CMP3Player()
 {
 	playlist.clear();
 
-	if(CAudioPlayer::getInstance()->getState() != CBaseDec::STOP)
+	if(CAudioPlayer::getInstance()->getState() != CAudioPlayer::STOP)
 		CAudioPlayer::getInstance()->stop();
 }
 

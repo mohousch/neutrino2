@@ -31,7 +31,7 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#include <driver/basedec.h>
+#include <driver/ffmpegdec.h>
 #include <driver/audiofile.h>
 #include <driver/audiometadata.h>
 #include <string>
@@ -39,12 +39,31 @@
 
 class CAudioPlayer
 {
+	public:
+		enum State {
+			STOP = 0, 
+			STOP_REQ, 
+			PLAY, 
+			PAUSE, 
+			FF, 
+			REV
+		};
+		
+		enum RetCode { 
+			OK = 0, 
+			READ_ERR, 
+			WRITE_ERR, 
+			DSPSET_ERR, 
+			DATA_ERR, 
+			INTERNAL_ERR 
+		};
+		
 	private:		
 		time_t m_played_time;	
 		int  m_sc_buffered;
 		pthread_t thrPlay;
 		FILE* fp;
-		CBaseDec::State state;
+		State state;
 		static void *PlayThread(void*);
 		void clearFileData();
 		unsigned int m_SecondsToSkip;
@@ -66,7 +85,7 @@ class CAudioPlayer
 		time_t getTimeTotal(){return m_Audiofile.MetaData.total_time;}
 		int getScBuffered(){return m_sc_buffered;}
 		void sc_callback(void *arg); // see comment in .cpp
-		CBaseDec::State getState(){return state;}
+		State getState(){return state;}
 
 		CAudioPlayer();
 		~CAudioPlayer();
