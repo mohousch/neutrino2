@@ -1,4 +1,4 @@
-SUBDIRS = audiodec gfx lcd
+SUBDIRS = gfx lcd
 
 AM_CPPFLAGS = \
 	-I$(top_builddir) \
@@ -44,7 +44,10 @@ libneutrino2_driver_a_SOURCES = \
 	genpsi.cpp \
 	streamts.cpp \
 	radiotext.cpp \
-	radiotools.cpp
+	radiotools.cpp \
+	netfile.cpp \
+	ffmpegdec.cpp \
+	basedec.cpp
 
 if !BOXTYPE_DGS 
 if !BOXTYPE_FULAN 

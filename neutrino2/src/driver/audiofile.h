@@ -50,3 +50,4 @@ class CAudiofile
 typedef std::vector<CAudiofile> CAudioPlayList;
 
 #endif /* __AUDIOFILE_H__ */
+

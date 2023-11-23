@@ -31,10 +31,11 @@
 #endif
 
 #include <basedec.h>
-#include <cdrdec.h>
-#include <mp3dec.h>
-#include <flacdec.h>
-#include <wavdec.h>
+//#include <cdrdec.h>
+//#include <mp3dec.h>
+//#include <flacdec.h>
+//#include <wavdec.h>
+#include <ffmpegdec.h>
 
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -110,6 +111,7 @@ bool CBaseDec::GetMetaDataBase(CAudiofile* const in, const bool nice)
 		}
 		else
 		{
+			/*
 			if(in->FileExtension == CFile::EXTENSION_MP3)
 			{
 				Status = CMP3Dec::getInstance()->GetMetaData(fp, nice, &in->MetaData);
@@ -125,6 +127,11 @@ bool CBaseDec::GetMetaDataBase(CAudiofile* const in, const bool nice)
 			else if(in->FileExtension == CFile::EXTENSION_FLAC)
 			{
 				Status = CFlacDec::getInstance()->GetMetaData(fp, nice, &in->MetaData);
+			}
+			*/
+			//if ()
+			{
+				Status = CFfmpegDec::getInstance()->GetMetaData(fp, nice, &in->MetaData);
 			}
 			
 			if ( fclose( fp ) == EOF )

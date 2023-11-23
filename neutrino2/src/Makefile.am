@@ -49,7 +49,6 @@ neutrino2_LDADD = \
 	gui/movieinfo.o \
 	gui/pictureviewer.o \
 	gui/audioplayer.o \
-	driver/audiodec/libneutrino2_driver_audiodec.a \
 	driver/gfx/libneutrino2_driver_gfx.a \
 	driver/lcd/libneutrino2_driver_lcd.a \
 	gui/bedit/bouqueteditor_bouquets.o \
