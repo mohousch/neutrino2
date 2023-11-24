@@ -31,9 +31,9 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#include <driver/ffmpegdec.h>
+//#include <driver/ffmpegdec.h>
 #include <driver/audiofile.h>
-#include <driver/audiometadata.h>
+//#include <driver/audiometadata.h>
 #include <string>
 
 

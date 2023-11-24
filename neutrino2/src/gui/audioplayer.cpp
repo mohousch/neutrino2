@@ -41,7 +41,6 @@
 
 #include <driver/encoding.h>
 #include <driver/rcinput.h>
-#include <driver/audiometadata.h>
 
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/color.h>

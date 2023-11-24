@@ -38,7 +38,6 @@
 #include <driver/rcinput.h>
 #include <driver/audioplay.h>
 #include <driver/audiofile.h>
-#include <driver/audiometadata.h>
 
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/color.h>

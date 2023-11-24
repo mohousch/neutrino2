@@ -27,10 +27,51 @@
 #include <string>
 #include <vector>
 
-#include <driver/audiometadata.h>
+extern "C" {
+#include <libavcodec/version.h>
+#include <libavformat/avformat.h>
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59,0,100)
+#include <libavcodec/avcodec.h>
+#endif
+}
+#include <OpenThreads/Thread>
+#include <OpenThreads/Condition>
+
 #include <driver/file.h>
 
 
+////
+class CAudioMetaData
+{
+	public:
+		// constructor
+		CAudioMetaData();
+		// copy constructor
+		CAudioMetaData( const CAudioMetaData& src );
+		// assignment operator
+		void operator=( const CAudioMetaData& src );
+		void clear();
+
+		//
+		std::string type_info;
+		long filesize; 			// filesize in bits (for mp3: without leading id3 tag)
+		unsigned int bitrate; 		// overall bitrate, vbr file: current bitrate
+		unsigned int avg_bitrate; 	// average bitrate in case of vbr file 
+		unsigned int samplerate;
+		time_t total_time;
+		long audio_start_pos; 		// position of first audio frame
+		std::string artist;
+		std::string title;
+		std::string album;
+		std::string sc_station;
+		std::string date;
+		std::string genre;
+		std::string track;
+		std::string cover;
+		bool changed;
+};
+
+////
 class CAudiofile
 {
 	public:
@@ -48,6 +89,43 @@ class CAudiofile
 };
 
 typedef std::vector<CAudiofile> CAudioPlayList;
+
+////
+class CFfmpegDec
+{
+	private:
+		bool meta_data_valid;
+		bool is_stream;
+		int mChannels;
+		//
+		AVFormatContext *avc;
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
+		AVCodec *codec;
+#else
+		const AVCodec *codec;
+#endif
+		//
+		int best_stream;
+		bool init(const char *_in);
+		void deInit(void);
+		void GetMeta(AVDictionary *metadata);
+		//
+		std::string title;
+		std::string artist;
+		std::string date;
+		std::string album;
+		std::string genre;
+		std::string type_info;
+		time_t total_time;
+		int bitrate;
+		int samplerate;
+
+	public:
+		static CFfmpegDec *getInstance();
+		bool GetMetaData(const char *in, CAudioMetaData *m);
+		CFfmpegDec();
+		~CFfmpegDec();
+};
 
 #endif /* __AUDIOFILE_H__ */
 

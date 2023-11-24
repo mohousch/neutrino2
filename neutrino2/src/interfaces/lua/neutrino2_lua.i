@@ -48,11 +48,9 @@
 #include <driver/rcinput.h>
 #include <driver/file.h>
 #include <driver/audiofile.h>
-#include <driver/audiometadata.h>
 #include <driver/encoding.h>
 #include <driver/pictureviewer.h>
 #include <driver/audioplay.h>
-//#include <driver/basedec.h>
 #include <driver/vcrcontrol.h>
 
 // system
@@ -144,7 +142,6 @@
 #include <zapit/zapit.h>
 
 // sectionsd
-//#include <sectionsdclient/sectionsdMsg.h>
 #include <sectionsd/sectionsdtypes.h>
 #include <sectionsd/sectionsd.h>
 
@@ -189,12 +186,9 @@
 %include <src/driver/rcinput.h>
 %include <src/driver/file.h>
 %include <src/driver/audiofile.h>
-%include <src/driver/audiometadata.h>
 %include <src/driver/encoding.h>
 %include <src/driver/pictureviewer.h>
 %include <src/driver/audioplay.h>
-//%include <src/driver/basedec.h>
-//%include <src/driver/stream2file.h>
 %include <src/driver/vcrcontrol.h>
 
 
@@ -213,7 +207,6 @@
 
 // widget
 %include <src/gui/widget/icons.h>
-//%include <src/gui/widget/drawable.h>
 %include <src/gui/widget/widget_helpers.h>
 %include <src/gui/widget/progresswindow.h>
 %include <src/gui/widget/messagebox.h>

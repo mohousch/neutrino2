@@ -31,8 +31,22 @@
 #include <stdio.h>
 #include <sys/time.h>
 
+#include <vector>
+
 #include <driver/gfx/framebuffer.h>
 
+
+////
+class CPicture
+{
+	public:
+		std::string Filename;
+		std::string Name;
+		std::string Type;
+		time_t Date;
+};
+
+typedef std::vector<CPicture> CPicturePlayList;
 
 ////
 class CPictureViewer
@@ -86,3 +100,4 @@ class CPictureViewer
 };
 
 #endif
+

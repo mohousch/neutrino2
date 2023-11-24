@@ -34,18 +34,6 @@
 
 
 ////
-class CPicture
-{
-	public:
-		std::string Filename;
-		std::string Name;
-		std::string Type;
-		time_t Date;
-};
-
-typedef std::vector<CPicture> CPicturePlayList;
-
-//
 class CPictureViewerGui : public CMenuTarget
 {
 	public:
