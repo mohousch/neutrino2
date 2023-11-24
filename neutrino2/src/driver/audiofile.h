@@ -95,7 +95,6 @@ class CFfmpegDec
 {
 	private:
 		bool meta_data_valid;
-		bool is_stream;
 		int mChannels;
 		//
 		AVFormatContext *avc;

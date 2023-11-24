@@ -1,4 +1,3 @@
-/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: non-nil; c-basic-offset: 4 -*- */
 /*
   Neutrino-GUI  -   DBoxII-Project
 
@@ -150,7 +149,6 @@ static OpenThreads::Mutex mutex;
 CFfmpegDec::CFfmpegDec(void)
 {
 	meta_data_valid = false;
-	is_stream = true;
 	avc = NULL;		// avcontext
 	
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
@@ -176,16 +174,17 @@ bool CFfmpegDec::init(const char *_in)
 	type_info = "";
 	total_time = 0;
 	bitrate = 0;
+	meta_data_valid = false;
 
 	int r = avformat_open_input(&avc, _in, NULL, NULL);
 	if (r)
 	{
-		is_stream = false;
 		deInit();
 		
 		return false;
 	}
 	
+	//
 	avc->probesize = 128 * 1024;
 	av_opt_set_int(avc, "analyzeduration", 1 * AV_TIME_BASE, 0);
 
@@ -205,7 +204,7 @@ void CFfmpegDec::deInit(void)
 	if (avc)
 	{
 		avformat_close_input(&avc);
-		avformat_free_context(avc);
+		//avformat_free_context(avc);
 		avc = NULL;
 	}
 }
@@ -224,13 +223,15 @@ CFfmpegDec *CFfmpegDec::getInstance()
 
 bool CFfmpegDec::GetMetaData(const char *_in, CAudioMetaData *m)
 {
-	dprintf(DEBUG_NORMAL, "CFfmpegDec::GetMetaData\n");
+	dprintf(DEBUG_DEBUG, "CFfmpegDec::GetMetaData\n");
+	
+	if (!init(_in))
+	{
+		return false;
+	}
 	
 	if (!meta_data_valid)
 	{
-		if (!init(_in))
-			return false;
-
 		mutex.lock();
 		int ret = avformat_find_stream_info(avc, NULL);
 		if (ret < 0)
@@ -243,20 +244,18 @@ bool CFfmpegDec::GetMetaData(const char *_in, CAudioMetaData *m)
 		}
 		mutex.unlock();
 		
-		if (!is_stream)
+		//
+		GetMeta(avc->metadata);
+		
+		//	
+		for (unsigned int i = 0; i < avc->nb_streams; i++)
 		{
-			//
-			GetMeta(avc->metadata);
-			
-			for (unsigned int i = 0; i < avc->nb_streams; i++)
-			{
 #if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(57,25,101)
-				if (avc->streams[i]->codec->codec_type == AVMEDIA_TYPE_AUDIO)
+			if (avc->streams[i]->codec->codec_type == AVMEDIA_TYPE_AUDIO)
 #else
-				if (avc->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
+			if (avc->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
 #endif
-					GetMeta(avc->streams[i]->metadata);
-			}
+				GetMeta(avc->streams[i]->metadata);
 		}
 
 		codec = NULL;
@@ -292,14 +291,13 @@ bool CFfmpegDec::GetMetaData(const char *_in, CAudioMetaData *m)
 		ss << " / " << mChannels << " channel" << (mChannels > 1 ? "s" : "");
 		type_info += ss.str();
 
+		// bitrate / total_time
 		bitrate = 0;
 		total_time = 0;
 
 		if (avc->duration != int64_t(AV_NOPTS_VALUE))
 			total_time = avc->duration / int64_t(AV_TIME_BASE);
 			
-		dprintf(DEBUG_NORMAL, "CFfmpegDec::GetMetaData: format %s (%s) duration %ld\n", avc->iformat->name, type_info.c_str(), total_time);
-
 		// bitrate / cover
 		for (unsigned int i = 0; i < avc->nb_streams; i++)
 		{
@@ -337,20 +335,18 @@ bool CFfmpegDec::GetMetaData(const char *_in, CAudioMetaData *m)
 		m->changed = true;
 	}
 	
-	if (!is_stream)
-	{
-		m->title = title;
-		m->artist = artist;
-		m->date = date;
-		m->album = album;
-		m->genre = genre;
-		m->total_time = total_time;
-	}
-	
+	m->title = title;
+	m->artist = artist;
+	m->date = date;
+	m->album = album;
+	m->genre = genre;
+	m->total_time = total_time;
 	m->type_info = type_info;
 	// make sure bitrate is set to prevent refresh metadata from gui, its a flag
 	m->bitrate = bitrate ? bitrate : 1;
 	m->samplerate = samplerate;
+	
+	deInit();
 
 	return true;
 }

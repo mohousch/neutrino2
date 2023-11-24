@@ -354,7 +354,7 @@ bool CAudioPlayer::readMetaData(CAudiofile* const file, const bool nice)
 	dprintf(DEBUG_DEBUG, "CAudioPlayer::%s\n", __FUNCTION__);
 	
 	bool Status = true;
-	FILE* fp;
+	FILE* fp = NULL;
 
 	fp = fopen( file->Filename.c_str(), "r" );
 
