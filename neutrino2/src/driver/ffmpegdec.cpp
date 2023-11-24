@@ -43,23 +43,10 @@ extern "C" {
 #include <libavcodec/version.h>
 #include <libavutil/opt.h>
 #include <libavutil/samplefmt.h>
-//#include <libswresample/swresample.h>
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59,0,100)
 #include <libavcodec/avcodec.h>
 #endif
 }
-
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55, 28, 1)
-#define av_frame_alloc	avcodec_alloc_frame
-#define av_frame_unref	avcodec_get_frame_defaults
-#define av_frame_free	avcodec_free_frame
-#endif
-
-#if (LIBAVCODEC_VERSION_MAJOR > 55)
-#define	av_free_packet av_packet_unref
-#else
-#define av_packet_unref	av_free_packet
-#endif
 
 #include <OpenThreads/ScopedLock>
 
@@ -74,11 +61,9 @@ static OpenThreads::Mutex mutex;
 CFfmpegDec::CFfmpegDec(void)
 {
 	meta_data_valid = false;
-	buffer_size = 0x1000;
-	buffer = NULL;
-	avc = NULL;
-	c = NULL;//codec
-	avioc = NULL;
+	is_stream = true;
+	avc = NULL;		// avcontext
+	
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(58, 9, 100)
 	avcodec_register_all();
 	av_register_all();
@@ -90,40 +75,7 @@ CFfmpegDec::~CFfmpegDec(void)
 	deInit();
 }
 
-int CFfmpegDec::Read(void *buf, size_t buf_size)
-{
-	return (int) fread(buf, 1, buf_size, (FILE *) in);
-}
-
-static int read_packet(void *opaque, uint8_t *buf, int buf_size)
-{
-#if LIBAVFORMAT_VERSION_MAJOR < 58
-	return ((CFfmpegDec *) opaque)->Read(buf, (size_t) buf_size);
-#else
-	// ffmpeg 4.0+: read_packet MUST return a valid AVERROR code instead of 0.
-	int len = ((CFfmpegDec *) opaque)->Read(buf, (size_t) buf_size);
-	
-	if (len == 0)
-		return AVERROR_EOF;
-	return len;
-#endif
-}
-
-int64_t CFfmpegDec::Seek(int64_t offset, int whence)
-{
-	if (whence == AVSEEK_SIZE)
-		return (int64_t) -1;
-
-	fseek((FILE *) in, (long) offset, whence);
-	return (int64_t) ftell((FILE *) in);
-}
-
-static int64_t seek_packet(void *opaque, int64_t offset, int whence)
-{
-	return ((CFfmpegDec *) opaque)->Seek(offset, whence);
-}
-
-bool CFfmpegDec::init(void *_in, const CFile::FileExtension ft)
+bool CFfmpegDec::init(const char *_in)
 {
 	dprintf(DEBUG_NORMAL, "CFfmpegDec::init\n");
 	
@@ -136,69 +88,23 @@ bool CFfmpegDec::init(void *_in, const CFile::FileExtension ft)
 	total_time = 0;
 	bitrate = 0;
 
-	in = _in;
-	is_stream = fseek((FILE *)in, 0, SEEK_SET);
-	buffer = (unsigned char *) av_malloc(buffer_size);
-	if (!buffer)
-		return false;
-	avc = avformat_alloc_context();
-	if (!avc)
-	{
-		av_freep(&buffer);
-		return false;
-	}
-
-	if (is_stream)
-		avc->probesize = 128 * 1024;
-
-	av_opt_set_int(avc, "analyzeduration", 1 * AV_TIME_BASE, 0);
-
-	avioc = avio_alloc_context(buffer, buffer_size, 0, this, read_packet, NULL, seek_packet);
-	if (!avioc)
-	{
-		av_freep(&buffer);
-		avformat_free_context(avc);
-		return false;
-	}
-	avc->pb = avioc;
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
-	avc->flags |= AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_KEEP_SIDE_DATA;
-	AVInputFormat *input_format = NULL;
-#else
-	avc->flags |= AVFMT_FLAG_CUSTOM_IO;
-	const AVInputFormat *input_format = NULL;
-#endif
-
-	switch (ft)
-	{
-		case CFile::EXTENSION_OGG:
-			input_format = av_find_input_format("ogg");
-			break;
-		case CFile::EXTENSION_MP3:
-			input_format = av_find_input_format("mp3");
-			break;
-		case CFile::EXTENSION_WAV:
-			input_format = av_find_input_format("wav");
-			break;
-		case CFile::EXTENSION_FLAC:
-			input_format = av_find_input_format("flac");
-			break;
-		case CFile::EXTENSION_AAC:
-			input_format = av_find_input_format("aac");
-			break;
-		default:
-			break;
-	}
-
-	int r = avformat_open_input(&avc, "", input_format, NULL);
+	int r = avformat_open_input(&avc, _in, NULL, NULL);
 	if (r)
 	{
-		char buf[200];
-		av_strerror(r, buf, sizeof(buf));
-		fprintf(stderr, "%d %s %d: %s\n", __LINE__, __func__, r, buf);
+		is_stream = false;
 		deInit();
+		
 		return false;
 	}
+	
+	avc->probesize = 128 * 1024;
+	av_opt_set_int(avc, "analyzeduration", 1 * AV_TIME_BASE, 0);
+
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
+	avc->flags |= AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_KEEP_SIDE_DATA;
+#else
+	avc->flags |= AVFMT_FLAG_CUSTOM_IO;
+#endif
 	
 	return true;
 }
@@ -207,34 +113,12 @@ void CFfmpegDec::deInit(void)
 {
 	dprintf(DEBUG_NORMAL, "CFfmpegDec::deInit\n");
 	
-	if (c)
-	{
-#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(57, 83, 100)
-		avcodec_close(c);
-#else
-		avcodec_free_context(&c);
-#endif
-		c = NULL;
-	}
-	
-	if (avioc)
-	{
-#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(57, 83, 100)
-		av_free(avioc);
-#else
-		av_freep(&avioc->buffer);
-		avio_context_free(&avioc);
-#endif
-	}
-	
 	if (avc)
 	{
 		avformat_close_input(&avc);
 		avformat_free_context(avc);
 		avc = NULL;
 	}
-	
-	in = NULL;
 }
 
 CFfmpegDec *CFfmpegDec::getInstance()
@@ -249,20 +133,13 @@ CFfmpegDec *CFfmpegDec::getInstance()
 	return FfmpegDec;
 }
 
-bool CFfmpegDec::GetMetaData(FILE *_in, const bool /*nice*/, CAudioMetaData *m)
+bool CFfmpegDec::GetMetaData(const char *_in, CAudioMetaData *m)
 {
 	dprintf(DEBUG_NORMAL, "CFfmpegDec::GetMetaData\n");
 	
-	return SetMetaData(_in, m);
-}
-
-bool CFfmpegDec::SetMetaData(FILE *_in, CAudioMetaData *m)
-{
-	dprintf(DEBUG_NORMAL, "CFfmpegDec::SetMetaData\n");
-	
 	if (!meta_data_valid)
 	{
-		if (!init(_in, (CFile::FileExtension) m->type))
+		if (!init(_in))
 			return false;
 
 		mutex.lock();
@@ -271,7 +148,8 @@ bool CFfmpegDec::SetMetaData(FILE *_in, CAudioMetaData *m)
 		{
 			mutex.unlock();
 			deInit();
-			printf("avformat_find_stream_info error %d\n", ret);
+			dprintf(DEBUG_NORMAL, "avformat_find_stream_info error %d\n", ret);
+			
 			return false;
 		}
 		mutex.unlock();
@@ -291,8 +169,6 @@ bool CFfmpegDec::SetMetaData(FILE *_in, CAudioMetaData *m)
 					GetMeta(avc->streams[i]->metadata);
 			}
 		}
-
-		//fseek((FILE *) in, 0, SEEK_SET);
 
 		codec = NULL;
 		best_stream = av_find_best_stream(avc, AVMEDIA_TYPE_AUDIO, -1, -1, &codec, 0);
@@ -332,7 +208,8 @@ bool CFfmpegDec::SetMetaData(FILE *_in, CAudioMetaData *m)
 
 		if (avc->duration != int64_t(AV_NOPTS_VALUE))
 			total_time = avc->duration / int64_t(AV_TIME_BASE);
-		printf("CFfmpegDec: format %s (%s) duration %ld\n", avc->iformat->name, type_info.c_str(), total_time);
+			
+		dprintf(DEBUG_NORMAL, "CFfmpegDec::GetMetaData: format %s (%s) duration %ld\n", avc->iformat->name, type_info.c_str(), total_time);
 
 		// bitrate / cover
 		for (unsigned int i = 0; i < avc->nb_streams; i++)

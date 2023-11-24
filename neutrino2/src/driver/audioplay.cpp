@@ -276,8 +276,6 @@ void CAudioPlayer::init()
 {
 	dprintf(DEBUG_NORMAL, "CAudioPlayer::%s\n", __FUNCTION__);
 	
-	//Init();
-	
 	state = STOP;	
 	thrPlay = 0;
 
@@ -371,7 +369,7 @@ bool CAudioPlayer::readMetaData(CAudiofile* const file, const bool nice)
 	}
 	else
 	{
-		Status = CFfmpegDec::getInstance()->GetMetaData(fp, nice, &file->MetaData);
+		Status = CFfmpegDec::getInstance()->GetMetaData(file->Filename.c_str(), &file->MetaData);
 			
 		if ( fclose( fp ) == EOF )
 		{

@@ -357,7 +357,6 @@ int CMoviePlayerGui::exec(CMenuTarget * parent, const std::string & actionKey)
 	
 	// for playing
 	playstate = CMoviePlayerGui::STOPPED;
-	is_file_player = false;
 	
 	//
 	time_forced = false;

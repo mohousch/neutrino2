@@ -87,7 +87,6 @@ class CMoviePlayerGui : public CMenuTarget
 		//
 		bool m_loop;
 		bool m_multiselect;
-		bool is_file_player; // coolstream
 		bool show_bookmark;
 		
 		// timeosd

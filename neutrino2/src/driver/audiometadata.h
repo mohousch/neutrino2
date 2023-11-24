@@ -50,35 +50,14 @@ class CAudioMetaData
 		void operator=( const CAudioMetaData& src );
 		void clear();
 
-		enum AudioType
-		{
-			NONE,
-			CDR,
-			MP3,
-			OGG,
-			WAV,
-			FLAC
-		};
-
 		//
-		AudioType type;
 		std::string type_info;
-
-		long filesize; // filesize in bits (for mp3: without leading id3 tag)
-
-		unsigned int bitrate; // overall bitrate, vbr file: current bitrate
-		unsigned int avg_bitrate; // average bitrate in case of vbr file 
+		long filesize; 			// filesize in bits (for mp3: without leading id3 tag)
+		unsigned int bitrate; 		// overall bitrate, vbr file: current bitrate
+		unsigned int avg_bitrate; 	// average bitrate in case of vbr file 
 		unsigned int samplerate;
 		time_t total_time;
-		long audio_start_pos; // position of first audio frame
-		bool vbr;
-		/* 
-		   if the variable hasInfoOrXingTag is true, this means the values of
-		   VBR and Duration are correct and should not be changed by the
-		   decoder 
-		*/
-		bool hasInfoOrXingTag;
-
+		long audio_start_pos; 		// position of first audio frame
 		std::string artist;
 		std::string title;
 		std::string album;

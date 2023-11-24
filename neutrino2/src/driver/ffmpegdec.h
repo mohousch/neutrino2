@@ -34,12 +34,6 @@
 //#include <driver/basedec.h>
 #include <driver/audiometadata.h>
 
-# if __WORDSIZE == 64
-#  define UINT64_C(c)   c ## UL
-# else
-#  define UINT64_C(c)   c ## ULL
-# endif
-
 extern "C" {
 #include <libavcodec/version.h>
 #include <libavformat/avformat.h>
@@ -50,29 +44,26 @@ extern "C" {
 #include <OpenThreads/Thread>
 #include <OpenThreads/Condition>
 
+
 class CFfmpegDec
 {
 	private:
 		bool meta_data_valid;
 		bool is_stream;
-
 		int mChannels;
-		size_t buffer_size;
-		unsigned char *buffer;
+		//
 		AVFormatContext *avc;
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
 		AVCodec *codec;
 #else
 		const AVCodec *codec;
 #endif
-		AVCodecContext *c;
-		AVIOContext *avioc;
+		//
 		int best_stream;
-		void *in;
-		bool init(void *_in, const CFile::FileExtension ft);
+		bool init(const char *_in);
 		void deInit(void);
 		void GetMeta(AVDictionary *metadata);
-
+		//
 		std::string title;
 		std::string artist;
 		std::string date;
@@ -85,14 +76,11 @@ class CFfmpegDec
 
 	public:
 		static CFfmpegDec *getInstance();
-		bool GetMetaData(FILE *in, const bool nice, CAudioMetaData *m);
+		bool GetMetaData(const char *in, CAudioMetaData *m);
 		CFfmpegDec();
 		~CFfmpegDec();
 		int Read(void *buf, size_t buf_size);
 		int64_t Seek(int64_t offset, int whence);
-
-	protected:
-		virtual bool SetMetaData(FILE *in, CAudioMetaData *m);
 };
 #endif
 
