@@ -1,7 +1,7 @@
 /*
 	Neutrino-GUI  -   DBoxII-Project
 	
-	$Id: audioplay.cpp 2013/10/12 mohousch Exp $
+	$Id: audioplay.cpp 24.11.2023 mohousch Exp $
 
 	audioplayer
 	Copyright (C) 2002 Bjoern Kalkbrenner <terminar@cyberphoria.org>
