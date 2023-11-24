@@ -288,7 +288,7 @@ bool CFfmpegDec::GetMetaData(const char *_in, CAudioMetaData *m)
 			type_info = codec->name;
 		else
 			type_info = "unknown";
-		ss << " / " << mChannels << " channel" << (mChannels > 1 ? "s" : "");
+		ss << " / " << mChannels << " channel" << (mChannels > 1 ? "s " : " ");
 		type_info += ss.str();
 
 		// bitrate / total_time
@@ -346,6 +346,7 @@ bool CFfmpegDec::GetMetaData(const char *_in, CAudioMetaData *m)
 	m->bitrate = bitrate ? bitrate : 1;
 	m->samplerate = samplerate;
 	
+	//
 	deInit();
 
 	return true;
