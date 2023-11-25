@@ -2587,16 +2587,6 @@ void CNeutrinoApp::radioMode( bool rezap)
 		channelList->tuned = 0xfffffff;
 		channelList->zapTo(firstchannel.channelNumber);
 	}
-	
-	//
-	if (g_settings.radiotext_enable) 
-	{
-		if(g_Radiotext == NULL)
-			g_Radiotext = new CRadioText();
-			
-		if (g_Radiotext && !IS_WEBTV(live_channel_id) && live_fe)
-			g_Radiotext->setPid(g_RemoteControl->current_PIDs.APIDs[g_RemoteControl->current_PIDs.PIDs.selected_apid].pid);	
-	}	
 }
 
 // scart Mode
@@ -2666,7 +2656,7 @@ void CNeutrinoApp::standbyMode( bool bOnOff )
 		{
 			// do not things
 		}
-		
+
 		if (mode == mode_radio && g_settings.radiotext_enable && g_Radiotext != NULL)
 		{
 			delete g_Radiotext;

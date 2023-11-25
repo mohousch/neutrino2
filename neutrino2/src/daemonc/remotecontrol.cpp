@@ -298,6 +298,8 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 	}
 	else if ( (msg == NeutrinoMessages::EVT_ZAP_COMPLETE) || (msg == NeutrinoMessages::EVT_ZAP_SUB_COMPLETE) ) 
 	{
+		dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: EVT_ZAP_COMPLETE current_channel_id: 0x%llx\n", current_channel_id);
+		
 		if ((*(t_channel_id *)data) == ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) ? current_channel_id : current_sub_channel_id))
 		{
 			// tell sectionsd to start epg on the zapped channel
@@ -309,10 +311,12 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 			t_channel_id * p = new t_channel_id;
 			*p = current_channel_id;
 		
-			g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOTPIDS, (const neutrino_msg_data_t)p, false); // data is pointer to allocated memory
+			g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOTPIDS, (const neutrino_msg_data_t)p, false);
 
+			//
 			processAPIDnames();
-						
+			
+			//			
 			if (g_settings.radiotext_enable && g_Radiotext && ((CNeutrinoApp::getInstance()->getMode()) == NeutrinoMessages::mode_radio))
 			{
 				g_Radiotext->setPid(current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].pid);

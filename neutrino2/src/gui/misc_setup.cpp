@@ -295,7 +295,7 @@ bool CGeneralSettings::changeNotify(const std::string& OptionName, void */*data*
 		{
 			//
 			if (g_Radiotext == NULL)
-				g_Radiotext = new CRadioText;
+				g_Radiotext = new CRadioText();
 
 			if (g_Radiotext && ((CNeutrinoApp::getInstance()->getMode()) == NeutrinoMessages::mode_radio))
 			{
