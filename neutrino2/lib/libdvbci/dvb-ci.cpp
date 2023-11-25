@@ -1,5 +1,5 @@
 /*
-	$Id: dvb-ci.cpp,v 1.0 2013/08/18 11:23:30 mohousch Exp $
+	$Id: dvb-ci.cpp 25.11.2023 mohousch Exp $
 	License: GPL
 
 	This program is free software; you can redistribute it and/or modify
@@ -44,7 +44,7 @@
 #include <neutrinoMessages.h>
 #include <driver/rcinput.h>
 
-#include <connection/messagetools.h>   /* get_length_field_size */
+#include <connection/messagetools.h>   // get_length_field_size
 
 #include <config.h>
 #include <system/debug.h>
@@ -52,10 +52,10 @@
 
 static const char * FILENAME = "dvb-ci.cpp";
 
-#define TAG_MENU_ANSWER                      0x9f880b
-#define TAG_ENTER_MENU                       0x9f8022
+#define TAG_MENU_ANSWER				0x9f880b
+#define TAG_ENTER_MENU				0x9f8022
 
-extern CRCInput *g_RCInput;		// defined in neutrino2.cpp
+extern CRCInput *g_RCInput;			// defined in neutrino2.cpp
 
 bool cDvbCi::checkQueueSize(tSlot* slot)
 {
@@ -80,7 +80,7 @@ void cDvbCi::CI_MenuAnswer(unsigned char bSlotIndex,unsigned char choice)
 
 void cDvbCi::CI_Answer(unsigned char bSlotIndex,unsigned char *pBuffer,unsigned char nLength)
 {
-	printf("%s:%s: %d\n", FILENAME, __FUNCTION__, bSlotIndex);
+	dprintf(DEBUG_NORMAL, "%s:%s: %d\n", FILENAME, __FUNCTION__, bSlotIndex);
 
 	std::list<tSlot*>::iterator it;
 	
@@ -99,7 +99,7 @@ void cDvbCi::CI_Answer(unsigned char bSlotIndex,unsigned char *pBuffer,unsigned 
 
 void cDvbCi::CI_CloseMMI(unsigned char bSlotIndex)
 {
-	printf("%s:%s %d\n", FILENAME, __FUNCTION__, bSlotIndex);
+	dprintf(DEBUG_NORMAL, "%s:%s %d\n", FILENAME, __FUNCTION__, bSlotIndex);
 
 	std::list<tSlot*>::iterator it;
 	
@@ -116,7 +116,7 @@ void cDvbCi::CI_CloseMMI(unsigned char bSlotIndex)
 
 void cDvbCi::CI_EnterMenu(unsigned char bSlotIndex)
 {
-	printf("%s:%s %d\n", FILENAME, __FUNCTION__, bSlotIndex);
+	dprintf(DEBUG_NORMAL, "%s:%s %d\n", FILENAME, __FUNCTION__, bSlotIndex);
 
 	std::list<tSlot*>::iterator it;
 	
@@ -143,8 +143,7 @@ void cDvbCi::CI_EnterMenu(unsigned char bSlotIndex)
 }
 
 
-/* from dvb-apps
- */
+//// from dvb-apps
 int asn_1_decode(uint16_t * length, unsigned char * asn_1_array, uint32_t asn_1_array_len)
 {
 	uint8_t length_field;
@@ -183,8 +182,8 @@ int asn_1_decode(uint16_t * length, unsigned char * asn_1_array, uint32_t asn_1_
 //wait for a while for some data und read it if some
 eData waitData(int fd, unsigned char* buffer, int* len)
 {
-	int        retval;
-	struct      pollfd fds;
+	int retval;
+	struct pollfd fds;
 	
 	fds.fd = fd;
 	fds.events = POLLOUT | POLLPRI | POLLIN;
@@ -256,11 +255,11 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 			d[2] = T_DATA_LAST;
 				
 			if (len > 127)
-				d[3] = 4; 		/* pointer to next length */
+				d[3] = 4; 		// pointer to next length
 			else
-				d[3] = len + 1; 	/* len */
+				d[3] = len + 1; 	// len
 				
-			d[4] = slot->connection_id; 	/* transport connection identifier*/
+			d[4] = slot->connection_id; 	// transport connection identifier
 
 			len += 5;	
 		}
@@ -273,11 +272,11 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 		d[2] = T_DATA_LAST;
 			
 		if (len > 127)
-			d[3] = 4; 		/* pointer to next length */
+			d[3] = 4; 		// pointer to next length
 		else
-			d[3] = len + 1; 	/* len */
+			d[3] = len + 1; 	// len
 			
-		d[4] = slot->connection_id; 	/* transport connection identifier*/
+		d[4] = slot->connection_id; 	// transport connection identifier
 
 		len = 5;	
 	}
@@ -292,6 +291,7 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 		return eDataError; 
 	}
 	*/
+	
 	slot->sendqueue.push( queueData(d, len) );
 	
 	return eDataReady;
@@ -303,10 +303,10 @@ bool sendCreateTC(tSlot* slot)
 	unsigned char* data = (unsigned char*) malloc(sizeof(char) * 5);
 	
 	data[0] = slot->slot;
-	data[1] = slot->slot + 1; 	/* conid */
+	data[1] = slot->slot + 1; 	// conid
 	data[2] = T_CREATE_T_C;
 	data[3] = 1;
-	data[4] = slot->slot + 1 	/*conid*/;
+	data[4] = slot->slot + 1;	// conid
 
 	sendData(slot, data, 5);
 	
@@ -360,7 +360,7 @@ void cDvbCi::process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int a
 		case T_DATA_LAST:	
 			dprintf(DEBUG_NORMAL, "Got \"Data Last\" from Module\n");
 			
-			/* single package */
+			// single package
 			if (slot->receivedData == NULL) 
 			{
 
@@ -371,7 +371,7 @@ void cDvbCi::process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int a
 			} 
 			else 
 			{
-				/* chained package */
+				// chained package
 				int new_data_length = slot->receivedLen + asn_data_length;
 
 				printf("->chained data\n");
@@ -475,6 +475,8 @@ void cDvbCi::slot_pollthread(void *c)
 		int len = 1024;
 		unsigned char* d;
 		eData status;
+		
+		printf("cDvbCi::slot_pollthread: status:%d\n", slot->status);
 		    
 		switch (slot->status)
 		{
@@ -494,8 +496,10 @@ void cDvbCi::slot_pollthread(void *c)
 				} 
 				else
 				{
-					/* wait for pollpri */
+					// wait for pollpri
 					status = waitData(slot->fd, data, &len);
+					
+					//printf("cDvbCi::slot_pollthread: status:%d\n", status);
 					
 					if (status == eDataStatusChanged)
 					{
@@ -521,21 +525,17 @@ void cDvbCi::slot_pollthread(void *c)
 							if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
 
 							slot->camIsReady = true;
-							
-							//setSource(slot);
-						} 
-						else
-						{
-							//noop
 						}
 					}
 				}
-			} /* case statusnone */
+			}
 			break;
 			
 			case eStatusWait:
 			{    
 				status = waitData(slot->fd, data, &len);
+				
+				//printf("cDvbCi::slot_pollthread: status:%d\n", status);
 				
 				if (status == eDataReady)
 				{
@@ -546,9 +546,9 @@ void cDvbCi::slot_pollthread(void *c)
 					
 					d = data;
 
-					/* taken from the dvb-apps */
+					// taken from the dvb-apps
 					int data_length = len - 2;
-					d += 2; /* remove leading slot and connection id */
+					d += 2; 		// remove leading slot and connection id
 					
 					while (data_length > 0)
 					{
@@ -581,7 +581,7 @@ void cDvbCi::slot_pollthread(void *c)
 						data_length -= asn_data_length;
 
 					} // while (data_length)
-				} /* data ready */
+				} // data ready
 				else if (status == eDataWrite)
 				{
 					if (!slot->sendqueue.empty()) 
@@ -676,7 +676,7 @@ void cDvbCi::slot_pollthread(void *c)
 			break;
 		}
 	   
-		if (slot->hasCAManager && slot->hasAppManager && !slot->init) //declare this as init, but remeber we are still not complete!
+		if (slot->hasCAManager && slot->hasAppManager && !slot->init)
 		{
 
 			slot->init = true;
@@ -693,7 +693,7 @@ void cDvbCi::slot_pollthread(void *c)
 	}
 }
 
-/* helper function to call the cpp thread loop */
+// helper function to call the cpp thread loop
 void* execute_thread(void *c)
 {
 	tSlot* slot = (tSlot*) c;
@@ -704,6 +704,7 @@ void* execute_thread(void *c)
 	return NULL;
 }
 
+////
 bool cDvbCi::SendCaPMT(CCaPmt *caPmt, int source)
 {
 	printf("%s:%s\n", FILENAME, __FUNCTION__);
@@ -729,9 +730,7 @@ bool cDvbCi::SendCaPMT(CCaPmt *caPmt, int source)
 			setSource((*it)->slot, source);
 		}
                
-		/* konfetti: if cam is not ready we must store caPmt too, because
-		* changing the slot should also descramble the channel
-		*/
+		//
 		if ((*it)->fd > 0) 
 		{
 			//FIXME: hmmm is this a copy or did I only save the pointer.
@@ -771,8 +770,8 @@ cDvbCi::cDvbCi(int Slots)
 			
 			ci_num++;
 
-			slot->slot   = i;
-			slot->fd     = fd;
+			slot->slot = i;
+			slot->fd = fd;
 			slot->connection_id = 0;
 			slot->status = eStatusNone;
 			slot->receivedLen = 0;
@@ -792,10 +791,12 @@ cDvbCi::cDvbCi(int Slots)
 
 			slot_data.push_back(slot);
 			
-			/* now reset the slot so the poll pri can happen in the thread */
+			// now reset the slot so the poll pri can happen in the thread
 			reset(i); 
+			
+			usleep(200000);
 
-			/* create a thread for each slot */	  
+			// create a thread for each slot
 			if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot)) 
 			{
 				printf("pthread_create\n");
@@ -874,8 +875,12 @@ void cDvbCi::reset(int slot)
 
 	if (haveFound)
 	{
+#if defined (__sh__)
 		if (ioctl((*it)->fd, CA_RESET, (*it)->slot) < 0)
 			printf("IOCTL CA_RESET failed for slot %d\n", slot);
+#else
+		ioctl((*it)->fd, 0);
+#endif
 	}    
 }
 

@@ -164,7 +164,7 @@ CFfmpegDec::~CFfmpegDec(void)
 
 bool CFfmpegDec::init(const char *_in)
 {
-	dprintf(DEBUG_NORMAL, "CFfmpegDec::init\n");
+	dprintf(DEBUG_DEBUG, "CFfmpegDec::init\n");
 	
 	title = "";
 	artist = "";
@@ -199,7 +199,7 @@ bool CFfmpegDec::init(const char *_in)
 
 void CFfmpegDec::deInit(void)
 {
-	dprintf(DEBUG_NORMAL, "CFfmpegDec::deInit\n");
+	dprintf(DEBUG_DEBUG, "CFfmpegDec::deInit\n");
 	
 	if (avc)
 	{
@@ -354,7 +354,7 @@ bool CFfmpegDec::GetMetaData(const char *_in, CAudioMetaData *m)
 
 void CFfmpegDec::GetMeta(AVDictionary *metadata)
 {
-	dprintf(DEBUG_NORMAL, "CFfmpegDec::GetMeta\n");
+	dprintf(DEBUG_DEBUG, "CFfmpegDec::GetMeta\n");
 	
 	AVDictionaryEntry *tag = NULL;
 	

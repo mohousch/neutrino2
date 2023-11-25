@@ -2622,8 +2622,7 @@ void ClistBox::paintItemInfo(int pos)
 			
 			//
 			if (paint_Foot && fbutton_count == 0)
-			{
-				printf("::paintItemInfo: paint_Foot && fbutton_count\n");	
+			{	
 				// info icon
 				CCIcon infoIcon;
 				infoIcon.setIcon(NEUTRINO_ICON_INFO);

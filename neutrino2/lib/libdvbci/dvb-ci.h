@@ -1,5 +1,5 @@
 /*
-	$Id: dvb-ci.h,v 1.0 2013/08/18 11:23:30 mohousch Exp $
+	$Id: dvb-ci.h 25.11.2023 mohousch Exp $
 	License: GPL
 
 	This program is free software; you can redistribute it and/or modify
@@ -61,9 +61,7 @@ typedef struct
 
 } MMI_ENGUIRY_INFO;
 
-/* ********************************** */
-/* constants taken from dvb-apps 
- */
+// constants taken from dvb-apps 
 #define T_SB                0x80	// sb                           primitive   h<--m
 #define T_RCV               0x81	// receive                      primitive   h-->m
 #define T_CREATE_T_C        0x82	// create transport connection  primitive   h-->m
@@ -74,9 +72,7 @@ typedef struct
 #define T_NEW_T_C           0x87	// new tc / reply to t_request  primitive   h-->m
 #define T_T_C_ERROR         0x77	// error creating tc            primitive   h-->m
 #define T_DATA_LAST         0xA0	// convey data from higher      constructed h<->m
-				 // layers
 #define T_DATA_MORE         0xA1	// convey data from higher      constructed h<->m
-				 // layers
 
 typedef enum {
 	eDataTimeout, 
@@ -137,7 +133,7 @@ typedef struct
 	bool        hasDateTime;
 	
 	bool        mmiOpened;
-	char         name[512];
+	char        name[512];
         bool        init;
  
 	std::priority_queue<queueData> sendqueue;
@@ -152,34 +148,35 @@ class cDvbCi
 {
 	private:
 		int slots;
+		int ci_num;
 
 	        std::list<tSlot*> slot_data;
                 pthread_t slot_thread;
-	public:
-		int ci_num;
-		
-                bool SendCaPMT(CCaPmt *caPmt, int source = TUNER_A);
-
-                void slot_pollthread(void *c);
-                void setSource(int slot, int source);
- 
+                
 		//
+                void setSource(int slot, int source);
+                bool checkQueueSize(tSlot* slot);
+                void process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int asn_data_length, int con_id);
+ 
+ 	public:
+		////
 		cDvbCi(int Slots);
 		~cDvbCi();
 		static cDvbCi * getInstance();
+		
+		//
+		void slot_pollthread(void *c);
 
 		//
 		bool CamPresent(int slot);
 		bool GetName(int slot, char * name);
-		//
                 void CI_MenuAnswer(unsigned char bSlotIndex,unsigned char choice);
                 void CI_Answer(unsigned char bSlotIndex,unsigned char *pBuffer,unsigned char nLength);
                 void CI_CloseMMI(unsigned char bSlotIndex);
                 void CI_EnterMenu(unsigned char bSlotIndex);
-                //
-                bool checkQueueSize(tSlot* slot);
-                void process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int asn_data_length, int con_id);
                 void reset(int slot);
+                bool SendCaPMT(CCaPmt *caPmt, int source = TUNER_A);
+                int getCINum(void){return ci_num;};
 };
 
 #endif //__DVBCI_H
