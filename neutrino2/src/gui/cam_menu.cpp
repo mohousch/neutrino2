@@ -614,7 +614,10 @@ int CCAMMenuHandler::doMenu(int slot)
 				return CMenuTarget::RETURN_REPAINT;
 			} 
 			
-			// -1 = not our event, 0 = back to top menu, 1 = continue loop, 2 = quit
+			// -1 = not our event
+			// 0 = back to top menu
+			// 1 = continue loop
+			// 2 = quit
 			int ret = handleCamMsg(msg, data, true);
 			
 			if(ret < 0 && (msg > CRCInput::RC_Messages)) 

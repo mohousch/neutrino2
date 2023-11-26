@@ -97,8 +97,9 @@ int eDVBCIApplicationManagerSession::doAction()
 
 int eDVBCIApplicationManagerSession::startMMI()
 {
-	dprintf(DEBUG_DEBUG, "in appmanager -> startmmi()\n");
-	const unsigned char tag[3]={0x9F, 0x80, 0x22};  // Tenter_menu
+	dprintf(DEBUG_NORMAL, "in appmanager -> startmmi()\n");
+	
+	const unsigned char tag[3] = {0x9F, 0x80, 0x22};  // Tenter_menu
 	sendAPDU(tag);
 
 	slot->mmiOpened = true;

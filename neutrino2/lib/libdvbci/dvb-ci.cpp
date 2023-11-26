@@ -564,11 +564,66 @@ void cDvbCi::slot_pollthread(void *c)
 
 						slot->camIsReady = true;
 						
-						goto FROM_FIRST;
+						//
+						slot->pollConnection = false;
+					
+						if (len)
+						{
+							eDVBCISession::receiveData(slot, data, len);
+							eDVBCISession::pollAll();
+						}
 					}
 				}
-				
-				sleep(1);
+				else if (status == eDataWrite)
+				{
+					/*
+					if (!slot->sendqueue.empty())
+					{
+						const queueData &qe = slot->sendqueue.top();
+						int res = write(slot->fd, qe.data, qe.len);
+						
+						if (res >= 0 && (unsigned int)res == qe.len)
+						{
+							delete [] qe.data;
+							slot->sendqueue.pop();
+						}
+						else
+						{
+							printf("r = %d, %m\n", res);
+						}
+					}
+					*/
+				}
+				else if (status == eDataStatusChanged)
+				{
+					if (slot->camIsReady)
+					{
+						printf("cam (%d) status changed ->cam now _not_ present\n", slot->slot);
+
+						eDVBCISession::deleteSessions(slot);
+
+						slot->mmiSession = NULL;
+						slot->hasMMIManager = false;
+						slot->hasCAManager = false;
+						slot->hasDateTime = false;
+						slot->hasAppManager = false;
+						slot->mmiOpened = false;
+						slot->init = false;
+						sprintf(slot->name, "unknown module %d", slot->slot);
+						slot->status = eStatusNone;
+
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, slot->slot);
+
+						while(slot->sendqueue.size())
+						{
+							delete [] slot->sendqueue.top().data;
+							slot->sendqueue.pop();
+						}
+
+						slot->camIsReady = false;
+						usleep(100000);	
+					}
+				}
 #endif
 			}
 			break;
@@ -713,10 +768,9 @@ void cDvbCi::slot_pollthread(void *c)
 				}
 #else
 				status = waitData(slot->fd, data, &len);
-FROM_FIRST:
+
 				if (status == eDataReady)
 				{
-					//wait = false;
 					slot->pollConnection = false;
 					
 					if (len)
@@ -727,12 +781,11 @@ FROM_FIRST:
 				}
 				else if (status == eDataWrite)
 				{
-					//wait = true;
-					
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
 						int res = write(slot->fd, qe.data, qe.len);
+						
 						if (res >= 0 && (unsigned int)res == qe.len)
 						{
 							delete [] qe.data;
@@ -798,8 +851,7 @@ FROM_FIRST:
 			
 			if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INIT_OK, slot->slot);
 		    
-			//resend a capmt if we have one. this is not very proper but I cant any mechanism in
-			//neutrino currently. so if a cam is inserted a pmt is not resend
+			//resend a capmt
 			if (slot->caPmt != NULL)
 			{
 				SendCaPMT(slot->caPmt, slot->source);

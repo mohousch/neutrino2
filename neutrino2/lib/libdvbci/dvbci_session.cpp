@@ -72,6 +72,8 @@ int eDVBCISession::parseLengthField(const unsigned char *pkt, int &len)
 
 void eDVBCISession::sendAPDU(const unsigned char *tag, const void *data, int len)
 {
+	printf("eDVBCISession::sendAPDU\n");
+	
 	unsigned char pkt[len + 3 + 4];
 	int l;
 
@@ -147,7 +149,7 @@ eDVBCISession* eDVBCISession::createSession(tSlot *slot, const unsigned char *re
 	unsigned long tag;
 	unsigned short session_nb;
 
-	for (session_nb=1; session_nb < SLMS; ++session_nb)
+	for (session_nb = 1; session_nb < SLMS; ++session_nb)
 		if (!sessions[session_nb-1])
 			break;
 		
