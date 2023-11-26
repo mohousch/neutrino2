@@ -235,6 +235,15 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 	
 #if !defined (__sh__)
 	memcpy(d, data, len);
+	
+	res = write(slot->fd, d, len);
+	free(d);
+	
+	if (res < 0 || res != len) 
+	{ 
+		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
+		return eDataError; 
+	}
 #else
 		
 	// only poll connection if we are not awaiting an answer
@@ -282,18 +291,7 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 
 		len = 5;	
 	}
-#endif
 
-#if defined (__sh__)
-	res = write(slot->fd, d, len);
-	free(d);
-	
-	if (res < 0 || res != len) 
-	{ 
-		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
-		return eDataError; 
-	}
-#else
 	slot->sendqueue.push( queueData(d, len) );
 #endif
 	
