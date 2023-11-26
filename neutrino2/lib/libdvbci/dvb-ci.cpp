@@ -432,7 +432,7 @@ void cDvbCi::process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int a
 	}
 }
 
-
+////
 void cDvbCi::setSource(int slot, int source)
 {
 	char buf[64];
@@ -461,6 +461,27 @@ void cDvbCi::setSource(int slot, int source)
 				break;
 		}
 
+		fclose(ci);
+	}
+}
+
+////
+void cDvbCi::SetTSClock(uint32_t Speed, int slot)
+{
+	char buf[64];
+	snprintf(buf, 64, "/proc/stb/tsmux/ci%d_tsclk", slot);
+	FILE *ci = fopen(buf, "wb");
+	
+	printf("%s -> %s to: %s\n", FILENAME, __func__, Speed > 9 * 1000000 ? "extra_high" : Speed > 6 * 1000000 ? "high" : "normal");
+	
+	if (ci)
+	{
+		if (Speed > 9 * 1000000)
+			fprintf(ci, "extra_high");
+		else if (Speed > 6 * 1000000)
+			fprintf(ci, "high");
+		else
+			fprintf(ci, "normal");
 		fclose(ci);
 	}
 }
@@ -686,14 +707,6 @@ void cDvbCi::slot_pollthread(void *c)
 						if ((checkQueueSize(slot) == false) && ((!slot->hasCAManager) || (slot->mmiOpened)))
 							slot->pollConnection = true;
 					}
-					
-					//
-					if (!checkQueueSize(slot) && slot->pollConnection)
-					{
-						printf("poll\n");
-						
-						sendData(slot, NULL, 0);
-					}
 				}
 				else if (status == eDataStatusChanged)	// 4
 				{
@@ -749,6 +762,14 @@ void cDvbCi::slot_pollthread(void *c)
 						slot->camIsReady = false;
 						usleep(100000);		
 					}
+				}
+				
+				//
+				if (!checkQueueSize(slot) && slot->pollConnection)
+				{
+					printf("poll\n");
+						
+					sendData(slot, NULL, 0);
 				}
 #else
 				if (status == eDataReady)

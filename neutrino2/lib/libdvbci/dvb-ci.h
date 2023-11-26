@@ -177,6 +177,7 @@ class cDvbCi
                 void reset(int slot);
                 bool SendCaPMT(CCaPmt *caPmt, int source = TUNER_A);
                 int getCINum(void){return ci_num;};
+                void SetTSClock(uint32_t Speed, int slot);
 };
 
 #endif //__DVBCI_H
