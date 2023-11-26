@@ -122,6 +122,7 @@ void cDvbCi::CI_EnterMenu(unsigned char bSlotIndex)
 	
         for(it = slot_data.begin(); it != slot_data.end(); ++it)
         {
+/*
 		if ((strstr((*it)->name, "unknown module") != NULL) && ((*it)->slot == bSlotIndex))
 		{
 			//the module has no real name, this is the matter if something while initializing went wrong
@@ -131,6 +132,7 @@ void cDvbCi::CI_EnterMenu(unsigned char bSlotIndex)
 
 			return;
 		}
+*/
 
 		if ((*it)->slot == bSlotIndex) 
 		{
@@ -141,7 +143,6 @@ void cDvbCi::CI_EnterMenu(unsigned char bSlotIndex)
 		}
 	}
 }
-
 
 //// from dvb-apps
 int asn_1_decode(uint16_t * length, unsigned char * asn_1_array, uint32_t asn_1_array_len)
@@ -188,15 +189,16 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 	fds.fd = fd;
 	fds.events = POLLOUT | POLLPRI | POLLIN;
 	
-	retval = poll(&fds, 1, 100);
+	retval = poll(&fds, 1, 200);
 
 	if (retval < 0)
 	{
-		printf("data error\n");
+		//printf("data error\n");
 		return eDataError;
 	}
 	else if (retval == 0)
 	{
+		//printf("dataTimeout\n");
 		return eDataTimeout;
 	}
 	else if (retval > 0)
@@ -211,25 +213,29 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 				return eDataReady;
 			}
 			*len = 0;
+			//printf("data error\n");
 			return eDataError;
 		} 
 		else if (fds.revents & POLLOUT)
 		{ 
+			//printf("dataWrite\n");
 			return eDataWrite;
 		} 
 		else if (fds.revents & POLLPRI)
 		{ 
+			//printf("dataStatusChanged\n");
 			return eDataStatusChanged;
 		}
 	}
 
+	//printf("data error\n");
 	return eDataError;
 }
 
 //send some data on an fd, for a special slot and connection_id
 eData sendData(tSlot* slot, unsigned char* data, int len)
 {	
-        dprintf(DEBUG_DEBUG, "%s: %p, %d\n", __func__, data, len);
+        dprintf(DEBUG_NORMAL, "%s: %p, %d\n", __func__, data, len);
         
         int res = 0;
        
@@ -281,7 +287,7 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 		len = 5;	
 	}
 
-	/*
+#if !defined (__sh__)
 	res = write(slot->fd, d, len);
 	free(d);
 	
@@ -290,9 +296,9 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
 		return eDataError; 
 	}
-	*/
-	
+#else
 	slot->sendqueue.push( queueData(d, len) );
+#endif
 	
 	return eDataReady;
 }
@@ -467,21 +473,24 @@ void cDvbCi::setSource(int slot, int source)
 void cDvbCi::slot_pollthread(void *c)
 {
 	ca_slot_info_t info;
-	unsigned char data[1024];
+	unsigned char data[4096];
 	tSlot* slot = (tSlot*) c;
 	
 	while (1)
 	{
-		int len = 1024;
+		int len = 4096;
 		unsigned char* d;
 		eData status;
 		
-		printf("cDvbCi::slot_pollthread: status:%d\n", slot->status);
+		//printf("cDvbCi::slot_pollthread: status:%d\n", slot->status);
 		    
 		switch (slot->status)
 		{
-			case eStatusNone:
+			case eStatusNone: // 0
 			{
+				//printf("cDvbCi::slot_pollthread: eStatusNone\n");
+				
+#if defined (__sh__)
 				if (slot->camIsReady)
 				{
 					if (sendCreateTC(slot))
@@ -499,10 +508,12 @@ void cDvbCi::slot_pollthread(void *c)
 					// wait for pollpri
 					status = waitData(slot->fd, data, &len);
 					
-					//printf("cDvbCi::slot_pollthread: status:%d\n", status);
+					//printf("cDvbCi::slot_pollthread: DataStatus:%d\n", status);
 					
-					if (status == eDataStatusChanged)
+					if (status == eDataStatusChanged)	// 4
 					{
+						//printf("eDataStatusChanged\n");
+						
 						info.num = slot->slot;
 
 						if (ioctl(slot->fd, CA_GET_SLOT_INFO, &info) < 0)
@@ -528,20 +539,53 @@ void cDvbCi::slot_pollthread(void *c)
 						}
 					}
 				}
-			}
-			break;
-			
-			case eStatusWait:
-			{    
+#else
 				status = waitData(slot->fd, data, &len);
 				
-				//printf("cDvbCi::slot_pollthread: status:%d\n", status);
+				//printf("cDvbCi::slot_pollthread: DataStatus:%d\n", status);
 				
 				if (status == eDataReady)
 				{
-					//int s_id = data[0];
-					//int c_id = data[1];
+					if (!slot->camIsReady)
+					{
+						printf("2. cam (%d) status changed ->cam now present\n", slot->slot);
 
+						slot->mmiSession = NULL;
+						slot->hasMMIManager = false;
+						slot->hasCAManager = false;
+						slot->hasDateTime = false;
+						slot->hasAppManager = false;
+						slot->mmiOpened = false;
+						slot->init = false;
+						sprintf(slot->name, "unknown module %d", slot->slot);
+						slot->status = eStatusNone;
+
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
+
+						slot->camIsReady = true;
+						
+						goto FROM_FIRST;
+					}
+				}
+				
+				sleep(1);
+#endif
+			}
+			break;
+			
+			case eStatusWait:	// 1
+			{ 
+				//printf("cDvbCi::slot_pollthread: eStatusWait\n");
+				 
+#if defined (__sh__)  
+				status = waitData(slot->fd, data, &len);
+				
+				//printf("cDvbCi::slot_pollthread: DataStatus:%d\n", status);
+				
+				if (status == eDataReady)	// 2
+				{
+					//printf("eDataReady\n");
+					
 					slot->pollConnection = false;
 					
 					d = data;
@@ -581,9 +625,11 @@ void cDvbCi::slot_pollthread(void *c)
 						data_length -= asn_data_length;
 
 					} // while (data_length)
-				} // data ready
-				else if (status == eDataWrite)
+				}
+				else if (status == eDataWrite)	// 3
 				{
+					//printf("eDataWrite\n");
+					
 					if (!slot->sendqueue.empty()) 
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -602,13 +648,16 @@ void cDvbCi::slot_pollthread(void *c)
 					}
 					else
 					{
-						//printf("sendqueue emtpy\n");
+						printf("sendqueue emtpy\n");
+						
 						if ((checkQueueSize(slot) == false) && ((!slot->hasCAManager) || (slot->mmiOpened)))
 							slot->pollConnection = true;
 					}
 				}
-				else if (status == eDataStatusChanged)
+				else if (status == eDataStatusChanged)	// 4
 				{
+					//printf("eDataStatusChanged\n");
+					
 					info.num = slot->slot;
 
 					if (ioctl(slot->fd, CA_GET_SLOT_INFO, &info) < 0)
@@ -662,10 +711,75 @@ void cDvbCi::slot_pollthread(void *c)
 						usleep(100000);		
 					}
 				}
+#else
+				status = waitData(slot->fd, data, &len);
+FROM_FIRST:
+				if (status == eDataReady)
+				{
+					//wait = false;
+					slot->pollConnection = false;
+					
+					if (len)
+					{
+						eDVBCISession::receiveData(slot, data, len);
+						eDVBCISession::pollAll();
+					}
+				}
+				else if (status == eDataWrite)
+				{
+					//wait = true;
+					
+					if (!slot->sendqueue.empty())
+					{
+						const queueData &qe = slot->sendqueue.top();
+						int res = write(slot->fd, qe.data, qe.len);
+						if (res >= 0 && (unsigned int)res == qe.len)
+						{
+							delete [] qe.data;
+							slot->sendqueue.pop();
+						}
+						else
+						{
+							printf("r = %d, %m\n", res);
+						}
+					}
+				}
+				else if (status == eDataStatusChanged)
+				{
+					if (slot->camIsReady)
+					{
+						printf("cam (%d) status changed ->cam now _not_ present\n", slot->slot);
+
+						eDVBCISession::deleteSessions(slot);
+
+						slot->mmiSession = NULL;
+						slot->hasMMIManager = false;
+						slot->hasCAManager = false;
+						slot->hasDateTime = false;
+						slot->hasAppManager = false;
+						slot->mmiOpened = false;
+						slot->init = false;
+						sprintf(slot->name, "unknown module %d", slot->slot);
+						slot->status = eStatusNone;
+
+						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_REMOVED, slot->slot);
+
+						while(slot->sendqueue.size())
+						{
+							delete [] slot->sendqueue.top().data;
+							slot->sendqueue.pop();
+						}
+
+						slot->camIsReady = false;
+						usleep(100000);	
+					}
+				}
+#endif
 
 				if (!checkQueueSize(slot) && slot->pollConnection)
 				{
-					//printf("poll\n");
+					printf("poll\n");
+					
 					sendData(slot, NULL, 0);
 				}
 			}
@@ -676,6 +790,7 @@ void cDvbCi::slot_pollthread(void *c)
 			break;
 		}
 	   
+	   	//
 		if (slot->hasCAManager && slot->hasAppManager && !slot->init)
 		{
 
