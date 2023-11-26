@@ -27,7 +27,7 @@ int tuxtxt_init()
 
 	tuxtxt_initialized = 1;
 
-	/* init data */
+	// init data
 	//memset(&tuxtxt_cache.astCachetable, 0, sizeof(tuxtxt_cache.astCachetable));
 	//memset(&tuxtxt_cache.astP29, 0, sizeof(tuxtxt_cache.astP29));
 

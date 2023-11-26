@@ -558,7 +558,8 @@ void cDvbCi::slot_pollthread(void *c)
 						slot->mmiOpened = false;
 						slot->init = false;
 						sprintf(slot->name, "unknown module %d", slot->slot);
-						slot->status = eStatusNone;
+						slot->status = eStatusWait;
+						slot->connection_id = slot->slot + 1;
 
 						if (g_RCInput) g_RCInput->postMsg(NeutrinoMessages::EVT_CI_INSERTED, slot->slot);
 

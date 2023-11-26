@@ -310,7 +310,7 @@ void setcolors(unsigned short *pcolormap, int offset, int number)
 	}
 }
 
-/* hexdump of page contents to stdout for debugging */
+// hexdump of page contents to stdout for debugging
 void dump_page()
 {
 	int r, c;
@@ -1130,9 +1130,7 @@ void eval_l25()
 	} /* is_dec(page) */
 }
 
-/*
- * reader thread
-*/
+//// reader thread
 static void * reader_thread(void * /*arg*/)
 {
 	dprintf(DEBUG_NORMAL, "TuxTxt subtitle thread started\n");
@@ -1269,8 +1267,6 @@ int tuxtx_main(int pid, int page, int source)
 		printf("Tuxtxt No PID given, so scanning for PIDs ...\n");
 	else
 		printf("Tuxtxt using PID 0x%x\n", tuxtxt_cache.vtxtpid);
-
-	
 	
 	// coordinate
 	int x = CFrameBuffer::getInstance()->getScreenX();
@@ -4450,9 +4446,7 @@ void RenderMessage(int Message)
 	CFrameBuffer::getInstance()->blit();	
 }
 
-/*
- * RenderPage
-*/
+// DoFlashing
 void DoFlashing(int startrow)
 {
 	int row, col;
@@ -4573,7 +4567,7 @@ void RenderPage()
 			return;
 	}
 	
-	/* update page or timestring */
+	// update page or timestring 
 	if (transpmode != 2 && tuxtxt_cache.pageupdate && tuxtxt_cache.page_receiving != tuxtxt_cache.page && inputcounter == 2)
 	{
 		if (boxed && subtitledelay) 
@@ -4588,10 +4582,10 @@ void RenderPage()
 				delaystarted = 0;
 		}
 
-		/* reset update flag */
+		// reset update flag
 		tuxtxt_cache.pageupdate = 0;
 
-		/* decode page */
+		// decode page
 		if (tuxtxt_cache.subpagetable[tuxtxt_cache.page] != 0xFF)
 			DecodePage();
 		else
@@ -4600,7 +4594,7 @@ void RenderPage()
 		if (boxed)
 		{ 
 			if (screenmode != 0) 
-				SwitchScreenMode(0); /* turn off divided screen */
+				SwitchScreenMode(0); // turn off divided screen
 		}
 		else 
 		{ 
@@ -4608,7 +4602,7 @@ void RenderPage()
 				SwitchScreenMode(prevscreenmode);
 		}
 
- 		/* display first column?  */
+ 		// display first column?
 		nofirst = show39;
 		for (row = 1; row < 24; row++)
 		{
@@ -4639,7 +4633,7 @@ void RenderPage()
 			clearbbcolor = transp;
 		}
 
-		/* get national subset */
+		// get national subset
 		if (auto_national &&
 			 national_subset <= NAT_MAX_FROM_HEADER && /* not for GR/RU as long as line28 is not evaluated */
 			 pageinfo && pageinfo->nationalvalid) /* individual subset according to page header */
@@ -4647,7 +4641,7 @@ void RenderPage()
 			national_subset = countryconversiontable[pageinfo->national];
 		}
 		
-		/* render page */
+		// render page
 		PosY = StartY + startrow*fontheight;
 		for (row = startrow; row < 24; row++)
 		{
@@ -4669,10 +4663,12 @@ void RenderPage()
 			}
 			PosY += fontheight;
 		}
+		
+		//
 		DoFlashing(startrow);
 		national_subset = national_subset_bak;
 
-		/* update framebuffer */
+		// update framebuffer
 		CopyBB2FB();
 	}
 	else if ( use_gui && transpmode != 2)
@@ -4686,10 +4682,12 @@ void RenderPage()
 				page_atrb[32].bg = menu1;
 				int showpage = tuxtxt_cache.page_receiving;
 				int showsubpage = tuxtxt_cache.subpagetable[showpage];
-				if (showsubpage!=0xff)
+				
+				if (showsubpage != 0xff)
 				{
 					tstCachedPage *pCachedPage;
 					pCachedPage = tuxtxt_cache.astCachetable[showpage][showsubpage];
+					
 					if (pCachedPage && tuxtxt_is_dec(showpage))
 					{
 						PosX = StartX;
@@ -4723,7 +4721,8 @@ void RenderPage()
 					}
 				}
 			}
-			/* update timestring */
+			
+			// update timestring
 			SetPosX(32);
 			for (byte = 0; byte < 8; byte++)
 			{
@@ -4738,6 +4737,7 @@ void RenderPage()
 
 			}
 		}
+		
 		DoFlashing(startrow);
 		national_subset = national_subset_bak;
 	}
@@ -4984,9 +4984,7 @@ void CopyBB2FB()
 	}
 }
 
-/*
- * DecodePage
-*/
+// DecodePage
 void DecodePage()
 {
 	int row, col;
@@ -4995,9 +4993,10 @@ void DecodePage()
 	unsigned char held_mosaic, *p;
 	tstCachedPage *pCachedPage;
 
-	/* copy page to decode buffer */
+	// copy page to decode buffer
 	if (tuxtxt_cache.subpagetable[tuxtxt_cache.page] == 0xff) /* not cached: do nothing */
 		return;
+		
 	if (tuxtxt_cache.zap_subpage_manual)
 		pCachedPage = tuxtxt_cache.astCachetable[tuxtxt_cache.page][tuxtxt_cache.subpage];
 	else
@@ -5179,9 +5178,7 @@ void DecodePage()
 		}
 	}
 	
-	//printf("decode\n");
-	
-	/* decode */
+	// decode
 	for (row = 0; row < ((showflof && pageinfo->p24) ? 25 : 24); row++)
 	{
 		/* start-of-row default conditions */
@@ -5253,13 +5250,15 @@ void DecodePage()
 				case end_box:
 					boxwin = 0;
 					IgnoreAtBlackBgSubst = 0;
-/*					if (boxed)
+					
+// TEST					
+					if (boxed)
 					{
 						foreground = transp;
 						background = transp;
 						IgnoreAtBlackBgSubst = 0;
 					}
-*/
+//
 					break;
 
 				case start_box:
@@ -5269,18 +5268,20 @@ void DecodePage()
 						//background = 0x08;
 					}
 					
-/*					if (boxed)
+// TEST
+					if (boxed)
 					{
 						int rowstart = row * 40;
 						if (col > 0)
 							memset(&page_char[rowstart], ' ', col);
-						for (clear = 0; clear < col; clear++)
+							
+						for (int clear = 0; clear < col; clear++)
 						{
 							page_atrb[rowstart + clear].fg = page_atrb[rowstart + clear].bg = transp;
 							page_atrb[rowstart + clear].IgnoreAtBlackBgSubst = 0;
 						}
 					}
-*/
+//
 					break;
 
 				case normal_size:
