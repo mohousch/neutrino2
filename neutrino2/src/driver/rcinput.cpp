@@ -38,10 +38,6 @@
 #include <utime.h>
 #include <stdlib.h>
 
-#ifdef KEYBOARD_INSTEAD_OF_REMOTE_CONTROL
-#include <termio.h>
-#endif /* KEYBOARD_INSTEAD_OF_REMOTE_CONTROL */
-
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -71,11 +67,6 @@ const char * const RC_EVENT_DEVICE[NUMBER_OF_EVENT_DEVICES] = {
 };
 
 typedef struct input_event t_input_event;
-
-#ifdef KEYBOARD_INSTEAD_OF_REMOTE_CONTROL
-static struct termio orig_termio;
-static bool saved_orig_termio = false;
-#endif /* KEYBOARD_INSTEAD_OF_REMOTE_CONTROL */
 
 bool CRCInput::loadRCConfig(const char * const fileName)
 {
@@ -434,30 +425,6 @@ void CRCInput::open()
 				
 		dprintf(DEBUG_INFO, "CRCInput::open: %s fd %d\n", RC_EVENT_DEVICE[i], fd_rc[i]);		
 	}
-
-#ifdef KEYBOARD_INSTEAD_OF_REMOTE_CONTROL
-	fd_keyb = STDIN_FILENO;
-//#else
-//	fd_keyb = 0;
-#endif /* KEYBOARD_INSTEAD_OF_REMOTE_CONTROL */
-	 
-#ifdef KEYBOARD_INSTEAD_OF_REMOTE_CONTROL
-	::fcntl(fd_keyb, F_SETFL, O_NONBLOCK);
-
-	struct termio new_termio;
-
-	::ioctl(STDIN_FILENO, TCGETA, &orig_termio);
-
-	saved_orig_termio      = true;
-
-	new_termio             = orig_termio;
-	new_termio.c_lflag    &= ~ICANON;
-	//new_termio.c_lflag    &= ~(ICANON|ECHO);
-	new_termio.c_cc[VMIN ] = 1;
-	new_termio.c_cc[VTIME] = 0;
-
-	::ioctl(STDIN_FILENO, TCSETA, &new_termio);
-#endif /* KEYBOARD_INSTEAD_OF_REMOTE_CONTROL */
 	
 	calculateMaxFd();
 }
@@ -473,16 +440,6 @@ void CRCInput::close()
 			fd_rc[i] = -1;
 		}
 	}
-	
-	// fd_kb
-#ifdef KEYBOARD_INSTEAD_OF_REMOTE_CONTROL
-	if (saved_orig_termio)
-	{
-		::ioctl(STDIN_FILENO, TCSETA, &orig_termio);
-				
-		dprintf(DEBUG_DEBUG, "CRCInput::close:Original terminal settings restored.\n");	
-	}
-#endif /* KEYBOARD_INSTEAD_OF_REMOTE_CONTROL */
 
 	calculateMaxFd();
 }
@@ -755,13 +712,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 				FD_SET(fd_rc[i], &rfds);
 		}
 		
-#ifdef KEYBOARD_INSTEAD_OF_REMOTE_CONTROL
-//		if (true)
-//#else
-//		if (fd_keyb > 0)
-		FD_SET(fd_keyb, &rfds);
-#endif /* KEYBOARD_INSTEAD_OF_REMOTE_CONTROL */
-
+		//
 		FD_SET(fd_event, &rfds);
 		FD_SET(fd_pipe_high_priority[0], &rfds);
 		FD_SET(fd_pipe_low_priority[0], &rfds);
@@ -812,118 +763,6 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 			return;
 		}
-
-		// keyboard
-#ifdef KEYBOARD_INSTEAD_OF_REMOTE_CONTROL
-		if (FD_ISSET(fd_keyb, &rfds))
-		{
-			int trkey;
-			char key = 0;
-			
-			read(fd_keyb, &key, sizeof(key));
-
-			switch(key)
-			{
-				case 27: // <- Esc
-					trkey = KEY_HOME;
-					break;
-				case 10: // <- Return
-				case 'o':
-					trkey = KEY_OK;
-					break;
-				case 'p':
-					trkey = KEY_POWER;
-					break;
-				case 's':
-					trkey = KEY_SETUP;
-					break;
-				case 'h':
-					trkey = KEY_HELP;
-					break;
-				case 'i':
-					trkey = KEY_UP;
-					break;
-				case 'm':
-					trkey = KEY_DOWN;
-					break;
-				case 'j':
-					trkey = KEY_LEFT;
-					break;
-				case 'k':
-					trkey = KEY_RIGHT;
-					break;
-				case 'r':
-					trkey = KEY_RED;
-					break;
-				case 'g':
-					trkey = KEY_GREEN;
-					break;
-				case 'y':
-					trkey = KEY_YELLOW;
-					break;
-				case 'b':
-					trkey = KEY_BLUE;
-					break;
-				case '0':
-					trkey = RC_0;
-					break;
-				case '1':
-					trkey = RC_1;
-					break;
-				case '2':
-					trkey = RC_2;
-					break;
-				case '3':
-					trkey = RC_3;
-					break;
-				case '4':
-					trkey = RC_4;
-					break;
-				case '5':
-					trkey = RC_5;
-					break;
-				case '6':
-					trkey = RC_6;
-					break;
-				case '7':
-					trkey = RC_7;
-					break;
-				case '8':
-					trkey = RC_8;
-					break;
-				case '9':
-					trkey = RC_9;
-					break;
-				case '+':
-					trkey = RC_plus;
-					break;
-				case '-':
-					trkey = RC_minus;
-					break;
-				case 'a':
-					trkey = KEY_A;
-					break;
-				case 'u':
-					trkey = KEY_U;
-					break;
-				case '/':
-					trkey = KEY_SLASH;
-					break;
-				case '\\':
-					trkey = KEY_BACKSLASH;
-					break;
-				default:
-					trkey = RC_nokey;
-			}
-			
-			if (trkey != RC_nokey)
-			{
-				*msg = trkey;
-				*data = 0; /* <- button pressed */
-				return;
-			}
-		}
-#endif /* KEYBOARD_INSTEAD_OF_REMOTE_CONTROL */
 
 		// fd_eventclient
 		if(FD_ISSET(fd_event, &rfds)) 
@@ -1319,8 +1158,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 					if (keyok) 
 					{
 #ifdef ENABLE_REPEAT_CHECK
-						if ((now_pressed > last_keypress + repeat_block_generic) ||
-								(now_pressed < last_keypress)) 
+						if ((now_pressed > last_keypress + repeat_block_generic) || (now_pressed < last_keypress)) 
 #endif
 						{
 							last_keypress = now_pressed;

@@ -32,11 +32,6 @@ PKG_CHECK_MODULES(AVCODEC,libavcodec)
 PKG_CHECK_MODULES(AVUTIL,libavutil)
 PKG_CHECK_MODULES(AVFORMAT,libavformat)
 
-# keybaord
-AC_ARG_ENABLE(keyboard-no-rc,
-         [  --enable-keyboard-no-rc enable keyboard control, disable rc control],
-         [AC_DEFINE(KEYBOARD_INSTEAD_OF_REMOTE_CONTROL,1,[enable keyboard control, disable rc control])])
-
 # opengl framebuffer (x86)
 AC_ARG_ENABLE(opengl,
 	AS_HELP_STRING(--enable-opengl,include opengl framebuffer support for x86),
