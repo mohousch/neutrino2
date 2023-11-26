@@ -412,6 +412,7 @@ CRCInput::CRCInput() : configfile('\t')
 	if( !loadRCConfig(NEUTRINO_RCCONFIG_FILE) )
 		printf("CRCInput::CRCInput: Loading of rc config file failed. Using defaults.\n");
 	
+	//
 	open();
 	
 	rc_last_key =  KEY_MAX;
@@ -421,6 +422,7 @@ void CRCInput::open()
 {
 	close();
 
+	// 
 	for (int i = 0; i < NUMBER_OF_EVENT_DEVICES; i++)
 	{
 		if ((fd_rc[i] = ::open(RC_EVENT_DEVICE[i], O_RDONLY)) == -1)
@@ -435,8 +437,8 @@ void CRCInput::open()
 
 #ifdef KEYBOARD_INSTEAD_OF_REMOTE_CONTROL
 	fd_keyb = STDIN_FILENO;
-#else
-	fd_keyb = 0;
+//#else
+//	fd_keyb = 0;
 #endif /* KEYBOARD_INSTEAD_OF_REMOTE_CONTROL */
 	 
 #ifdef KEYBOARD_INSTEAD_OF_REMOTE_CONTROL
@@ -708,7 +710,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 
 	*data = 0;
 
-	// wiederholung reinmachen - dass wirklich die ganze zeit bis timeout gewartet wird!
+	// repeat till timeout
 	gettimeofday( &tv, NULL );
 	getKeyBegin = (uint64_t) tv.tv_usec + (uint64_t)((uint64_t) tv.tv_sec * (uint64_t) 1000000);
 
@@ -725,8 +727,10 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			if ( timers[0].times_out < t_n )
 			{
 				timer_id = checkTimers();
+				
 				*msg = NeutrinoMessages::EVT_TIMER;
 				*data = timer_id;
+				
 				return;
 			}
 			else
@@ -750,12 +754,13 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 			if (fd_rc[i] != -1)
 				FD_SET(fd_rc[i], &rfds);
 		}
+		
 #ifdef KEYBOARD_INSTEAD_OF_REMOTE_CONTROL
-		if (true)
-#else
-		if (fd_keyb > 0)
+//		if (true)
+//#else
+//		if (fd_keyb > 0)
+		FD_SET(fd_keyb, &rfds);
 #endif /* KEYBOARD_INSTEAD_OF_REMOTE_CONTROL */
-			FD_SET(fd_keyb, &rfds);
 
 		FD_SET(fd_event, &rfds);
 		FD_SET(fd_pipe_high_priority[0], &rfds);
