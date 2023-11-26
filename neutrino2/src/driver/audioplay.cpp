@@ -40,13 +40,10 @@
 #include <neutrino2.h>
 
 #include <driver/audioplay.h>
-#include <driver/netfile.h>
-
 #include <system/debug.h>
-
 #include <sectionsd/edvbstring.h> // UTF8
-
 #include <playback_cs.h>
+#include <driver/netfile.h>
 
 
 void ShoutcastCallback(void *arg)

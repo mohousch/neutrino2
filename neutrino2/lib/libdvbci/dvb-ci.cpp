@@ -684,6 +684,7 @@ void cDvbCi::slot_pollthread(void *c)
 				}
 				else if (status == eDataWrite)	// 3
 				{
+					/*
 					if (!slot->sendqueue.empty()) 
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -707,6 +708,7 @@ void cDvbCi::slot_pollthread(void *c)
 						if ((checkQueueSize(slot) == false) && ((!slot->hasCAManager) || (slot->mmiOpened)))
 							slot->pollConnection = true;
 					}
+					*/
 				}
 				else if (status == eDataStatusChanged)	// 4
 				{
