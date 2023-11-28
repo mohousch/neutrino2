@@ -184,7 +184,6 @@ class CRCInput
 		static const neutrino_msg_t RC_Repeat   = 0x0400;
 		static const neutrino_msg_t RC_Release  = 0x0800;
 		static const neutrino_msg_t RC_MaxRC    = KEY_MAX | RC_Repeat | RC_Release;
-		static const neutrino_msg_t RC_KeyBoard = 0x4000;
 		static const neutrino_msg_t RC_Events   = 0x80000000;
 		static const neutrino_msg_t RC_Messages = 0x90000000;
 		static const neutrino_msg_t RC_WithData = 0xA0000000;
@@ -422,6 +421,7 @@ class CRCInput
 		
 		//
 		void postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority = true);
+		void sendEvent(const neutrino_msg_t msg, const void *data = NULL, const unsigned int size = 0, const bool Priority = false);
 		
 		//
 		void clearRCMsg();

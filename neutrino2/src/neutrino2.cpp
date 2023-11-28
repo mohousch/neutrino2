@@ -3680,7 +3680,6 @@ _repeat:
 			}
 			
 			channelList->zapToChannelID(eventinfo->channel_id);
-			//CZapit::getInstance()->zapToServiceIDNOWAIT(eventinfo->channel_id);
 		}
 		
 		delete[] (unsigned char*) data;
@@ -4710,7 +4709,6 @@ int CNeutrinoApp::run(int argc, char **argv)
 	eventServer->registerEvent2(NeutrinoMessages::EVT_BOUQUETSCHANGED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_SERVICESCHANGED, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_SERVICENAME, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
-	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_A_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);
 	eventServer->registerEvent2(NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN, CEventServer::INITID_NEUTRINO, NEUTRINO_UDS_NAME);

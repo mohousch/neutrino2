@@ -535,7 +535,7 @@ void CControlAPI::GetChannel_IDCGI(CyhookHandler *hh)
 void CControlAPI::MessageCGI(CyhookHandler *hh)
 {
 	std::string message;
-	int event = 0;
+	unsigned long event = 0;
 
 	if (!(hh->ParamList["popup"].empty()))
 	{
@@ -557,6 +557,13 @@ void CControlAPI::MessageCGI(CyhookHandler *hh)
 	{
 		message = decodeString(message);
 		eventServer->sendEvent(event, CEventServer::INITID_NEUTRINO, (void *) message.c_str(), message.length() + 1);
+		////
+		//unsigned char* p = NULL;
+		//p = new unsigned char[message.length() + 1];
+		//strncpy((char *)p, (const char*) message.c_str(), message.length() + 1);
+		
+		//g_RCInput->postMsg(event, (const neutrino_msg_data_t)p, false);
+		////
 		hh->SendOk();
 	}
 	else
@@ -1386,6 +1393,7 @@ void CControlAPI::StartPluginCGI(CyhookHandler *hh)
 		{
 			pluginname = hh->ParamList["name"];
 			pluginname = decodeString(pluginname);
+			
 			eventServer->sendEvent(NeutrinoMessages::EVT_START_PLUGIN, CEventServer::INITID_NEUTRINO, (void *) pluginname.c_str(), pluginname.length() + 1);
 
 			hh->SendOk();

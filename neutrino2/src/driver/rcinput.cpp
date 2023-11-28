@@ -841,13 +841,10 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 								*data = *(unsigned*) p;
 								break;
 								
-							case NeutrinoMessages::EVT_SCAN_FOUND_A_CHAN:
-								*msg = NeutrinoMessages::EVT_SCAN_FOUND_A_CHAN;
-								break;
-								
 							case NeutrinoMessages::EVT_SCAN_SERVICENAME:
 								*msg = NeutrinoMessages::EVT_SCAN_SERVICENAME;
 								break;
+								
 							case NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN:
 								*msg  = NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN;
 								*data = *(unsigned*) p;
@@ -880,6 +877,7 @@ void CRCInput::getMsg_us(neutrino_msg_t * msg, neutrino_msg_data_t * data, uint6
 							case NeutrinoMessages::EVT_SCAN_SATELLITE:
 								*msg = NeutrinoMessages::EVT_SCAN_SATELLITE;
 								break;
+								
 							case NeutrinoMessages::EVT_BOUQUETSCHANGED:
 								*msg  = NeutrinoMessages::EVT_BOUQUETSCHANGED;
 								*data = 0;
@@ -1268,6 +1266,246 @@ void CRCInput::postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data,
 	buf.msg  = msg;
 	buf.data = data;
 
+	if (Priority)
+		write(fd_pipe_high_priority[1], &buf, sizeof(buf));
+	else
+		write(fd_pipe_low_priority[1], &buf, sizeof(buf));
+}
+
+////
+void CRCInput::sendEvent(const neutrino_msg_t msg, const void *data, const unsigned int size, const bool Priority)
+{
+	struct event buf;
+	
+	buf.msg  = msg;
+	
+	unsigned char* p = NULL;
+	p = new unsigned char[size];
+
+	if ( p != NULL )
+	{
+		switch (msg)
+		{
+			// zapit
+			case NeutrinoMessages::EVT_RECORDMODE:
+				snprintf((char *)p, size, "%d\n", (unsigned *) data);
+				break;
+								
+			case NeutrinoMessages::EVT_ZAP_COMPLETE:
+			{
+				t_channel_id * chan = new t_channel_id;
+				*chan = (t_channel_id)data;
+				buf.data = (neutrino_msg_data_t)chan;
+				break;
+			}
+								
+			case NeutrinoMessages::EVT_ZAP_FAILED:
+				*p = *(t_channel_id *) data;
+				break;
+								
+			case NeutrinoMessages::EVT_ZAP_SUB_FAILED:
+				*p = *(t_channel_id *) data;
+				break;
+								
+			case NeutrinoMessages::EVT_ZAP_ISNVOD:
+				*p = *(t_channel_id *) data;
+				break;
+								
+			case NeutrinoMessages::EVT_ZAP_SUB_COMPLETE:
+				*p = *(t_channel_id *) data;
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_COMPLETE:
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_NUM_TRANSPONDERS:
+				snprintf((char *)p, size, "%d\n", (unsigned *) data);
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_REPORT_NUM_SCANNED_TRANSPONDERS:
+				snprintf((char *)p, size, "%d\n", (unsigned *) data);
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY:
+				snprintf((char *)p, size, "%d\n", (unsigned *) data);
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_SERVICENAME:
+				strncpy((char *)p, (const char*) data, size);
+				break;
+				
+			case NeutrinoMessages::EVT_SCAN_FOUND_TV_CHAN:
+				//strncpy((char *)p, (const char*) data, size);
+				*p = *(unsigned *) data;
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_FOUND_RADIO_CHAN:
+				//strncpy((char *)p, (const char*) data, size);
+				*p = *(unsigned *) data;
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_FOUND_DATA_CHAN:
+				//snprintf((char *)p, size, "%d\n", (unsigned *) data);
+				*p = *(unsigned *) data;
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCYP:
+				//snprintf((char *)p, size, "%d\n", (unsigned *) data);
+				*p = *(unsigned *) data;
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_NUM_CHANNELS:
+				//snprintf((char *)p, size, "%d\n", (unsigned *) data);
+				*p = *(unsigned*) data;
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_PROVIDER:
+				strncpy((char *)p, (const char*) data, size);
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_SATELLITE:
+				strncpy((char *)p, (const char*) data, size);
+				break;
+								
+			case NeutrinoMessages::EVT_BOUQUETSCHANGED:
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::EVT_SERVICESCHANGED:
+				*p = 0;
+				break;
+							
+			case NeutrinoMessages::EVT_ZAP_CA_ID :
+				snprintf((char *)p, size, "%d\n", (unsigned *) data);
+				break;
+								
+			case NeutrinoMessages::EVT_SCAN_FAILED:
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::EVT_ZAP_MOTOR:
+				snprintf((char *)p, size, "%d\n", (unsigned *) data);
+				break;
+								
+			case NeutrinoMessages::EVT_SERVICES_UPD:
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::EVT_PMT_CHANGED:
+				*p = (neutrino_msg_data_t) data;
+				break;
+							
+			// sectionsd	
+			case NeutrinoMessages::EVT_TIMESET:
+				*p = (neutrino_msg_data_t) data;
+				break;
+								
+			case NeutrinoMessages::EVT_CURRENTNEXT_EPG:
+				*p = (neutrino_msg_data_t) data;
+				break;
+								
+			case NeutrinoMessages::EVT_SI_FINISHED:
+				*p = 0;
+				break;
+								
+			// httpd	
+			case NeutrinoMessages::REBOOT :
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::RESTART :
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::EVT_POPUP :
+				strncpy((char *)p, (const char*) data, size);
+				break;
+								
+			case NeutrinoMessages::EVT_EXTMSG :
+				strncpy((char *)p, (const char*) data, size);
+				break;
+								
+			case NeutrinoMessages::CHANGEMODE :
+				*p = *(size_t*) data;
+				break;
+								
+			case NeutrinoMessages::LOCK_RC :
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::UNLOCK_RC :
+				*p = 0;
+				break;
+								
+			// timerd
+			case NeutrinoMessages::ANNOUNCE_RECORD : //FIXME:
+				*p = (size_t) data;
+				break;
+								
+			case NeutrinoMessages::ANNOUNCE_ZAPTO :
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::ANNOUNCE_SHUTDOWN :
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::ANNOUNCE_SLEEPTIMER :
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::SLEEPTIMER :
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::RECORD_START : //FIXME:
+				*p = (size_t) data;
+				break;
+								
+			case NeutrinoMessages::RECORD_STOP : //FIXME:
+				*p = (size_t) data;
+				break;
+								
+			case NeutrinoMessages::ZAPTO :	//FIXME:
+				strncpy((char *)p, (const char*) data, size);
+				break;
+								
+			case NeutrinoMessages::EVT_NEXTPROGRAM : //FIXME:
+				strncpy((char *)p, (const char*) data, size);
+				break;
+								
+			case NeutrinoMessages::SHUTDOWN :
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::STANDBY_ON :
+				*p = 0;
+				break;
+								
+			case NeutrinoMessages::STANDBY_OFF :
+				*p = 0;
+				break;
+			//	
+			case NeutrinoMessages::REMIND :
+				strncpy((char *)p, (const char*) data, size);
+				break;
+								
+			case NeutrinoMessages::EVT_START_PLUGIN :
+				strncpy((char *)p, (const char*) data, size);
+				break;
+
+								
+			//
+			default:
+				printf("CRCInput::sendEvent: unknow 0x%x\n",  msg);
+		}
+		
+		//
+		//buf.data = (neutrino_msg_data_t) p;
+	}
+	
+	//
 	if (Priority)
 		write(fd_pipe_high_priority[1], &buf, sizeof(buf));
 	else

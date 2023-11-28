@@ -65,7 +65,7 @@ class CEventServer
 		void registerEvent(const int fd);
 		void unRegisterEvent2(const unsigned int eventID, const unsigned int ClientID);
 		void unRegisterEvent(const int fd);
-		void sendEvent(const unsigned int eventID, const initiators initiatorID, const void* eventbody = NULL, const unsigned int eventbodysize = 0);
+		void sendEvent(const unsigned int eventID, const initiators initiatorID = INITID_NEUTRINO, const void* eventbody = NULL, const unsigned int eventbodysize = 0);
 	
 	protected:
 		struct eventClient

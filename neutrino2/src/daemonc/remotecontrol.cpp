@@ -398,7 +398,7 @@ void CRemoteControl::getSubChannels()
 				t_channel_id * p = new t_channel_id;
 				*p = current_channel_id;
 				
-				g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOT_SUBSERVICES, (const neutrino_msg_data_t)p, false); // data is pointer to allocated memory
+				g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOT_SUBSERVICES, (const neutrino_msg_data_t)p, false);
 			}
 		}
 	}

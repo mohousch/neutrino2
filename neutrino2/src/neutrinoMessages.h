@@ -148,7 +148,6 @@ struct NeutrinoMessages {
 		EVT_NEXTPROGRAM                          = CRCInput::RC_WithData +  9, /* data: (t_channel_id *) */
 
 		// zapit
- 		EVT_SCAN_FOUND_A_CHAN                    = CRCInput::RC_WithData + 10,
 		EVT_SCAN_PROVIDER                        = CRCInput::RC_WithData + 11,
 		EVT_SCAN_SATELLITE                       = CRCInput::RC_WithData + 12,
 		EVT_SCAN_SERVICENAME                     = CRCInput::RC_WithData + 13,
