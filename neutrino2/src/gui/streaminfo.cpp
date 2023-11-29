@@ -163,7 +163,7 @@ void CStreamInfo::doSignalStrengthLoop()
 	//CChannelList *channelList = CNeutrinoApp::getInstance ()->channelList;
 	//int curnum = channelList->getActiveChannelNumber();
 	//CZapitChannel * channel = channelList->getChannel(curnum);
-	//CZapit::CCurrentServiceInfo si = CZapit::getInstance()->getCurrentServiceInfo();
+	//CZapit::CServiceInfo si = CZapit::getInstance()->getCurrentServiceInfo();
 	
 	ts_setup();
 	
@@ -715,7 +715,7 @@ void CStreamInfo::paint_techinfo(int xpos, int ypos)
 	  if(!IS_WEBTV(live_channel_id))
 	  {
 		//tsfrequenz
-		CZapit::CCurrentServiceInfo si = CZapit::getInstance()->getCurrentServiceInfo();
+		CZapit::CServiceInfo si = CZapit::getInstance()->getCurrentServiceInfo();
 
 		ypos += iheight;
 		char * f = NULL, *s = NULL, *m = NULL;

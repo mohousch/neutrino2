@@ -527,7 +527,7 @@ void CControlAPI::GetBouquetsxmlCGI(CyhookHandler *hh)
 // get actual channel_id
 void CControlAPI::GetChannel_IDCGI(CyhookHandler *hh)
 {
-	CZapit::CCurrentServiceInfo current_pids = CZapit::getInstance()->getCurrentServiceInfo();
+	CZapit::CServiceInfo current_pids = CZapit::getInstance()->getCurrentServiceInfo();
 	hh->printf("%x%04x%04x\n",current_pids.tsid, current_pids.onid, current_pids.sid);
 }
 

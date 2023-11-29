@@ -419,7 +419,7 @@ bool CVCRControl::doRecord(const t_channel_id channel_id, int mode, const event_
 	CutBackNeutrino(channel_id, mode);
 
 	// getRecordChannelInfo
-	CZapit::CCurrentServiceInfo si;
+	CZapit::CServiceInfo si;
 	si = CZapit::getInstance()->getServiceInfo(channel_id);
 
 	// vpid
@@ -751,7 +751,7 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 	CZapit::getInstance()->getPIDS(channel_id, pids);
 
 	//
-	CZapit::CCurrentServiceInfo si;
+	CZapit::CServiceInfo si;
 
 	si = CZapit::getInstance()->getServiceInfo(channel_id);
 

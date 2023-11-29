@@ -3534,7 +3534,7 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 		//g_RCInput->sendEvent(NeutrinoMessages::EVT_ZAP_COMPLETE, (void *)&channel_id, sizeof(channel_id));
 		//t_channel_id * p = new t_channel_id;
 		//*p = channel_id;
-		//g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_COMPLETE, (const neutrino_msg_data_t)p, false);
+		//g_RCInput->sendEvent(NeutrinoMessages::EVT_ZAP_COMPLETE, &channel_id, sizeof(channel_id));
 	}
 
 	return result;
@@ -3987,11 +3987,8 @@ void CZapit::unlockPlayBack()
 		// cam
 		if (!IS_WEBTV(live_channel->getChannelID()))
 			sendCaPmtPlayBackStart(live_channel, live_fe);
-	}
 			
-	// ci cam	
-	if(live_channel != NULL)
-	{
+		// ci cam	
 		ci->SendCaPMT(live_channel->getCaPmt(), live_fe? live_fe->fenumber : 0);
 	}					
 }
@@ -4168,10 +4165,10 @@ t_channel_id CZapit::getCurrentServiceID()
 	return (live_channel != 0) ? live_channel->getChannelID() : 0;
 }
 
-CZapit::CCurrentServiceInfo CZapit::getCurrentServiceInfo()
+CZapit::CServiceInfo CZapit::getCurrentServiceInfo()
 {
-	CCurrentServiceInfo msgCurrentServiceInfo;
-	memset(&msgCurrentServiceInfo, 0, sizeof(CCurrentServiceInfo));
+	CServiceInfo msgCurrentServiceInfo;
+	memset(&msgCurrentServiceInfo, 0, sizeof(CServiceInfo));
 			
 	if(live_channel) 
 	{
@@ -4250,41 +4247,41 @@ void CZapit::getPIDS( t_channel_id chid, responseGetPIDs &pids )
 	}
 }
 
-CZapit::CCurrentServiceInfo CZapit::getServiceInfo(t_channel_id chid)
+CZapit::CServiceInfo CZapit::getServiceInfo(t_channel_id chid)
 {
-	CCurrentServiceInfo msgCurrentServiceInfo;
-	memset(&msgCurrentServiceInfo, 0, sizeof(CCurrentServiceInfo));
+	CServiceInfo msgServiceInfo;
+	memset(&msgServiceInfo, 0, sizeof(CServiceInfo));
 	
 	CZapitChannel * channel = findChannelByChannelID(chid);
 	
 	if (channel) 
 	{
-		msgCurrentServiceInfo.onid = channel->getOriginalNetworkId();
-		msgCurrentServiceInfo.sid = channel->getServiceId();
-		msgCurrentServiceInfo.tsid = channel->getTransportStreamId();
-		msgCurrentServiceInfo.vpid = channel->getVideoPid();
-		msgCurrentServiceInfo.apid = channel->getAudioPid();
-		msgCurrentServiceInfo.vtxtpid = channel->getTeletextPid();
-		msgCurrentServiceInfo.pmtpid = channel->getPmtPid();
+		msgServiceInfo.onid = channel->getOriginalNetworkId();
+		msgServiceInfo.sid = channel->getServiceId();
+		msgServiceInfo.tsid = channel->getTransportStreamId();
+		msgServiceInfo.vpid = channel->getVideoPid();
+		msgServiceInfo.apid = channel->getAudioPid();
+		msgServiceInfo.vtxtpid = channel->getTeletextPid();
+		msgServiceInfo.pmtpid = channel->getPmtPid();
 				
-		msgCurrentServiceInfo.pmt_version = (channel->getCaPmt() != NULL) ? channel->getCaPmt()->version_number : 0xff;
+		msgServiceInfo.pmt_version = (channel->getCaPmt() != NULL) ? channel->getCaPmt()->version_number : 0xff;
 				
-		msgCurrentServiceInfo.pcrpid = channel->getPcrPid();
-		msgCurrentServiceInfo.vtype = channel->videoType;
+		msgServiceInfo.pcrpid = channel->getPcrPid();
+		msgServiceInfo.vtype = channel->videoType;
 		
 		//
 		transponder_list_t::iterator transponder = transponders.find(channel->getTransponderId());
 		
-		msgCurrentServiceInfo.tsfrequency = transponder->second.feparams.frequency;
-		msgCurrentServiceInfo.rate = transponder->second.feparams.symbol_rate;
-		msgCurrentServiceInfo.fec = transponder->second.feparams.fec_inner;
-		msgCurrentServiceInfo.polarisation = transponder->second.feparams.polarization;
+		msgServiceInfo.tsfrequency = transponder->second.feparams.frequency;
+		msgServiceInfo.rate = transponder->second.feparams.symbol_rate;
+		msgServiceInfo.fec = transponder->second.feparams.fec_inner;
+		msgServiceInfo.polarisation = transponder->second.feparams.polarization;
 	}
 			
-	if(!msgCurrentServiceInfo.fec)
-		msgCurrentServiceInfo.fec = (fe_code_rate)3;
+	if(!msgServiceInfo.fec)
+		msgServiceInfo.fec = (fe_code_rate)3;
 		
-	return msgCurrentServiceInfo;
+	return msgServiceInfo;
 }
 
 void CZapit::setSubServices( subServiceList& subServices )
@@ -4333,10 +4330,10 @@ t_channel_id CZapit::getRecordServiceID()
 	return (rec_channel != 0) ? rec_channel->getChannelID() : 0;
 }
 
-CZapit::CCurrentServiceInfo CZapit::getRecordServiceInfo()
+CZapit::CServiceInfo CZapit::getRecordServiceInfo()
 {
-	CCurrentServiceInfo msgRecordServiceInfo;
-	memset(&msgRecordServiceInfo, 0, sizeof(CCurrentServiceInfo));
+	CServiceInfo msgRecordServiceInfo;
+	memset(&msgRecordServiceInfo, 0, sizeof(CServiceInfo));
 			
 	if(rec_channel) 
 	{

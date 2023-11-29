@@ -774,7 +774,7 @@ std::string  CNeutrinoYParser::func_get_boxtype(CyhookHandler *, std::string)
 //-------------------------------------------------------------------------
 std::string  CNeutrinoYParser::func_get_current_stream_info(CyhookHandler *hh, std::string)
 {
-	CZapit::CCurrentServiceInfo serviceinfo;
+	CZapit::CServiceInfo serviceinfo;
 
 	serviceinfo = CZapit::getInstance()->getCurrentServiceInfo();
 	hh->ParamList["onid"] = itoh(serviceinfo.onid);

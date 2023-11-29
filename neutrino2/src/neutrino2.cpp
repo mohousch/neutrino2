@@ -3325,6 +3325,8 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	// zap complete event
 	if(msg == NeutrinoMessages::EVT_ZAP_COMPLETE) 
 	{
+		dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: EVT_ZAP_COMPLETE current_channel_id: 0x%llx data:0x%llx\n", live_channel_id, *(t_channel_id *)data);
+		
 		// set audio map after channel zap
 		CZapit::getInstance()->getAudioMode(&g_settings.audio_AnalogMode);
 
@@ -3395,8 +3397,6 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	res = res | g_RemoteControl->handleMsg(msg, data); //FIXME:
 	res = res | g_InfoViewer->handleMsg(msg, data);
 	res = res | channelList->handleMsg(msg, data);
-	
-	// we assume g_CamHandler free/delete data if needed
 #if defined (ENABLE_CI)	
 	res = res | g_CamHandler->handleMsg(msg, data);
 #endif

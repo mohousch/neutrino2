@@ -193,7 +193,7 @@ class CZapit
 			SubPIDList  		SubPIDs;
 		};
 
-		class CCurrentServiceInfo
+		class CServiceInfo
 		{
 			public:
 				t_original_network_id onid;
@@ -517,7 +517,7 @@ class CZapit
 		t_channel_id getCurrentServiceID();
 		int32_t getCurrentSatellitePosition();
 		bool getCurrentTP(transponder *TP);
-		CZapit::CCurrentServiceInfo getCurrentServiceInfo();
+		CZapit::CServiceInfo getCurrentServiceInfo();
 		void getCurrentPIDS(responseGetPIDs &pids);
 		// novd
 		void setSubServices( subServiceList& subServices );
@@ -525,10 +525,10 @@ class CZapit
 		void setRecordMode(const bool activate);
 		bool isRecordModeActive();
 		t_channel_id getRecordServiceID();
-		CZapit::CCurrentServiceInfo getRecordServiceInfo();
+		CZapit::CServiceInfo getRecordServiceInfo();
 		void getRecordPIDS(responseGetPIDs &pids);
 		//
-		CZapit::CCurrentServiceInfo getServiceInfo(t_channel_id chid);
+		CZapit::CServiceInfo getServiceInfo(t_channel_id chid);
 		void getPIDS(t_channel_id chid, responseGetPIDs &pids);
 		//
 		void reinitChannels();
