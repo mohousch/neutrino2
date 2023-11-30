@@ -421,7 +421,6 @@ class CRCInput
 		
 		//
 		void postMsg(const neutrino_msg_t msg, const neutrino_msg_data_t data, const bool Priority = true);
-		void sendEvent(const neutrino_msg_t msg, void *data = NULL, const unsigned int size = 0, const bool Priority = false);
 		
 		//
 		void clearRCMsg();

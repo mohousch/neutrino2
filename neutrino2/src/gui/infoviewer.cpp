@@ -1302,6 +1302,7 @@ int CInfoViewer::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
   	} 
   	else if ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) || (msg == NeutrinoMessages::EVT_ZAP_ISNVOD))
 	{
+		dprintf(DEBUG_NORMAL, "CInfoViewer::handleMsg: EVT_ZAP_COMPLETE: channel_id: %llx data: %llx\n", channel_id, *(t_channel_id *)data); 
 		chanready = 1;
 		showSNR();
 		

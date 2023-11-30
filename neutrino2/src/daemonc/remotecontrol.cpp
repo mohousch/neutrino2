@@ -105,7 +105,7 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		     (msg == NeutrinoMessages::EVT_ZAP_FAILED  ) || 
 		     (msg == NeutrinoMessages::EVT_ZAP_ISNVOD  ) ) 
 		{
-			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: timeout EVT_ZAP current_channel_id: 0x%llx data: 0x%llx\n", current_channel_id, *(t_channel_id *)data);
+			dprintf(DEBUG_NORMAL, "CRemoteControl::handleMsg: zap_completion_timeout: %llx EVT_ZAP current_channel_id: 0x%llx data: 0x%llx\n", zap_completion_timeout, current_channel_id, *(t_channel_id *)data);
 			
 			if ((*(t_channel_id *)data) != current_channel_id) 
 			{
@@ -302,10 +302,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		
 		if ((*(t_channel_id *)data) == ((msg == NeutrinoMessages::EVT_ZAP_COMPLETE) ? current_channel_id : current_sub_channel_id))
 		{
-			// tell sectionsd to start epg on the zapped channel
+			// sectionsd
 			CSectionsd::getInstance()->setServiceChanged( current_channel_id, false );
 			
-			// get pids
+			// pids
 			CZapit::getInstance()->getCurrentPIDS(current_PIDs );
 
 			t_channel_id * p = new t_channel_id;
@@ -313,10 +313,10 @@ int CRemoteControl::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data
 		
 			g_RCInput->postMsg(NeutrinoMessages::EVT_ZAP_GOTPIDS, (const neutrino_msg_data_t)p, false);
 
-			//
+			// apids
 			processAPIDnames();
 			
-			//			
+			// radiotext			
 			if (g_settings.radiotext_enable && g_Radiotext && ((CNeutrinoApp::getInstance()->getMode()) == NeutrinoMessages::mode_radio))
 			{
 				g_Radiotext->setPid(current_PIDs.APIDs[current_PIDs.PIDs.selected_apid].pid);
@@ -700,7 +700,7 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::st
 	current_channel_id = channel_id;
 	current_channel_name = channame;
 	
-	dprintf(DEBUG_NORMAL, ANSI_BLUE"CRemoteControl::zapToChannelID: 0x%llx\n", channel_id);
+	dprintf(DEBUG_NORMAL, "CRemoteControl::zapToChannelID: 0x%llx\n", channel_id);
 	
 	if (start_video)
 		startvideo(channel_id);
@@ -722,6 +722,7 @@ void CRemoteControl::zapToChannelID(const t_channel_id channel_id, const std::st
 	director_mode = 0;
 
 	unsigned long long now = getcurrenttime();
+	
 	if ( zap_completion_timeout < now )
 	{
 		g_InfoViewer->chanready = 0;		

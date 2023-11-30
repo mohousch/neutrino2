@@ -3422,14 +3422,14 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 			int old_b = bouquetList->getActiveBouquetNumber();
 			int old_mode = g_settings.channel_mode;
 
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP START: bouquet: %d\n", old_b);
+			dprintf(DEBUG_NORMAL, ANSI_BLINK"CNeutrinoApp::handleMsg: ZAP START: bouquet: %d\n", old_b);
 
 			if(bouquetList->Bouquets.size()) 
 			{
 				old_num = bouquetList->Bouquets[old_b]->channelList->getActiveChannelNumber();
 			}
 			
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP START: bouquet: %d channel: %d\n", old_b, old_num);
+			dprintf(DEBUG_DEBUG, "CNeutrinoApp::handleMsg: ZAP START: bouquet: %d channel: %d\n", old_b, old_num);
 
 			if( msg == CRCInput::RC_ok ) 
 			{
@@ -3449,7 +3449,7 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 				nNewChannel = bouquetList->exec();
 			}
 _repeat:
-			dprintf(DEBUG_NORMAL, "CNeutrinoApp::handleMsg: ZAP RES: nNewChannel %d\n", nNewChannel);
+			dprintf(DEBUG_DEBUG, "CNeutrinoApp::handleMsg: ZAP RES: nNewChannel %d\n", nNewChannel);
 
 			if(nNewChannel == -1) // timeout / cancel
 			{

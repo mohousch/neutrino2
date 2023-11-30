@@ -3531,10 +3531,6 @@ unsigned int CZapit::zapToChannelID(t_channel_id channel_id, bool isSubService)
 	else
 	{
 		eventServer->sendEvent(NeutrinoMessages::EVT_ZAP_COMPLETE, CEventServer::INITID_NEUTRINO, &channel_id, sizeof(channel_id));
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_ZAP_COMPLETE, (void *)&channel_id, sizeof(channel_id));
-		//t_channel_id * p = new t_channel_id;
-		//*p = channel_id;
-		//g_RCInput->sendEvent(NeutrinoMessages::EVT_ZAP_COMPLETE, &channel_id, sizeof(channel_id));
 	}
 
 	return result;
