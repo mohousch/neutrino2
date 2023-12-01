@@ -231,9 +231,10 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
         dprintf(DEBUG_NORMAL, "%s: %p, %d\n", __func__, data, len);
         
         int res = 0;
-	unsigned char *d = (unsigned char*) malloc(len + 5);
 	
 #if !defined (__sh__)
+	unsigned char *d = (unsigned char*) malloc(len);
+	
 	memcpy(d, data, len);
 	
 	res = write(slot->fd, d, len);
@@ -245,6 +246,7 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 		return eDataError; 
 	}
 #else
+	unsigned char *d = (unsigned char*) malloc(len + 5);
 		
 	// only poll connection if we are not awaiting an answer
 	slot->pollConnection = false;	
@@ -585,7 +587,7 @@ void cDvbCi::slot_pollthread(void *c)
 				}
 				else if (status == eDataWrite)
 				{
-					/*
+					//
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -601,7 +603,13 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
-					*/
+					else
+					{
+						printf("sendqueue emtpy\n");
+						
+						if ((checkQueueSize(slot) == false) && ((!slot->hasCAManager) || (slot->mmiOpened)))
+							slot->pollConnection = true;
+					}
 				}
 				else if (status == eDataStatusChanged)
 				{
@@ -788,7 +796,7 @@ void cDvbCi::slot_pollthread(void *c)
 				}
 				else if (status == eDataWrite)
 				{
-					/*
+					//
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -804,7 +812,13 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
-					*/
+					else
+					{
+						printf("sendqueue emtpy\n");
+						
+						if ((checkQueueSize(slot) == false) && ((!slot->hasCAManager) || (slot->mmiOpened)))
+							slot->pollConnection = true;
+					}
 				}
 				else if (status == eDataStatusChanged)
 				{
