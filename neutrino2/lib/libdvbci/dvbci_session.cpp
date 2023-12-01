@@ -107,6 +107,7 @@ void eDVBCISession::sendSPDU(tSlot *slot, unsigned char tag, const void *data, i
 		memcpy(ptr, apdu, alen);
 
 	ptr += alen;
+	
 	//slot->send(pkt, ptr - pkt);
         sendData(slot, pkt, ptr - pkt);
 }

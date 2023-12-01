@@ -299,6 +299,7 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 }
 
 //send a transport connection create request
+#if defined (__sh__)
 bool sendCreateTC(tSlot* slot)
 {
 	unsigned char* data = (unsigned char*) malloc(sizeof(char) * 5);
@@ -431,6 +432,7 @@ void cDvbCi::process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int a
 			printf("unhandled tpdu_tag 0x%0x\n", tpdu_tag);
 	}
 }
+#endif
 
 ////
 void cDvbCi::setSource(int slot, int source)
