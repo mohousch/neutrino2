@@ -143,18 +143,20 @@ init:
 	echo ""
 # 4digits / vfd / lcd / tftlcd
 	@echo -e "\nLCD support ?:"
-	@echo "   1)  4 Digits"
-	@echo "   2)  VFD"
-	@echo -e "   \033[01;32m3)  LCD\033[00m"
-	@echo "   4)  TFT LCD"
-	@read -p "Select LCD support (1-4)?" LCD; \
+	@echo -e "   \033[01;32m1)  None\033[00m"
+	@echo "   2)  4 Digits"
+	@echo "   3)  VFD"
+	@echo "   4)  LCD"
+	@echo "   5)  TFT LCD"
+	@read -p "Select LCD support (1-5)?" LCD; \
 	LCD=$${LCD}; \
 	case "$$LCD" in \
 		1) echo "LCD=4-digits" >> config.local;; \
-		2) echo "LCD=vfd" >> config.local;; \
-		3) echo "LCD=lcd" >> config.local;; \
-		4) echo "LCD=tftlcd" >> config.local;; \
-		*) echo "LCD=lcd" >> config.local;; \
+		2) echo "LCD=4-digits" >> config.local;; \
+		3) echo "LCD=vfd" >> config.local;; \
+		4) echo "LCD=lcd" >> config.local;; \
+		5) echo "LCD=tftlcd" >> config.local;; \
+		*) echo "LCD=4-digits" >> config.local;; \
 	esac; \
 	echo ""	
 # scart
