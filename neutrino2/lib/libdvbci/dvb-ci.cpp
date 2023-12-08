@@ -34,6 +34,8 @@
 
 #include <unistd.h>
 
+#include <config.h>
+
 #include "dvb-ci.h"
 #include "dvbci_session.h"
 #include "dvbci_appmgr.h"
@@ -916,58 +918,65 @@ cDvbCi::cDvbCi(int Slots)
 {
 	printf("%s:%s\n", FILENAME, __FUNCTION__);
 
-	int fd, i;
+	int fd, i, j;
 	char filename[128];
 	ci_num = 0;
 
 	for (i = 0; i < Slots; i++)
 	{
-		sprintf(filename, "/dev/dvb/adapter0/ci%d", i);
-
-		fd = open(filename, O_RDWR | O_NONBLOCK);
-		
-		if(fd < 0)
+		for(j = 0; j < DVBADAPTER_MAX; j++)
 		{
-			sprintf(filename, "/dev/ci%d", i);
+#ifdef USE_OPENGL
+			sprintf(filename, "/dev/dvb/adapter%d/ca%d", j, i);
+#else
+			sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
+#endif
+
 			fd = open(filename, O_RDWR | O_NONBLOCK);
-		}
-	    
-		if (fd > 0)
-		{
-			tSlot *slot = (tSlot*) malloc(sizeof(tSlot));
 			
-			ci_num++;
-
-			slot->slot = i;
-			slot->fd = fd;
-			slot->connection_id = 0;
-			slot->status = eStatusNone;
-			slot->receivedLen = 0;
-			slot->receivedData = NULL;
-			slot->pClass = this;
-			slot->pollConnection = false;
-			slot->camIsReady = false;
-			slot->hasMMIManager = false;
-			slot->hasCAManager = false;
-			slot->hasDateTime = false;
-			slot->hasAppManager = false;
-			slot->mmiOpened = false;
-			slot->init = false;
-			slot->caPmt = NULL;
-			slot->source = TUNER_A;
-			sprintf(slot->name, "unknown module %d", i);
-
-			slot_data.push_back(slot);
-			
-			// now reset the slot so the poll pri can happen in the thread
-			reset(i); 
-			
-			usleep(200000);
-
-			// create a thread for each slot
-			if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot)) 
+			if(fd < 0)
 			{
-				printf("pthread_create\n");
+				sprintf(filename, "/dev/ci%d", i);
+				fd = open(filename, O_RDWR | O_NONBLOCK);
+			}
+		    
+			if (fd > 0)
+			{
+				tSlot *slot = (tSlot*) malloc(sizeof(tSlot));
+				
+				ci_num++;
+
+				slot->slot = i;
+				slot->fd = fd;
+				slot->connection_id = 0;
+				slot->status = eStatusNone;
+				slot->receivedLen = 0;
+				slot->receivedData = NULL;
+				slot->pClass = this;
+				slot->pollConnection = false;
+				slot->camIsReady = false;
+				slot->hasMMIManager = false;
+				slot->hasCAManager = false;
+				slot->hasDateTime = false;
+				slot->hasAppManager = false;
+				slot->mmiOpened = false;
+				slot->init = false;
+				slot->caPmt = NULL;
+				slot->source = TUNER_A;
+				sprintf(slot->name, "unknown module %d", i);
+
+				slot_data.push_back(slot);
+				
+				// now reset the slot so the poll pri can happen in the thread
+				reset(i); 
+				
+				usleep(200000);
+
+				// create a thread for each slot
+				if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot)) 
+				{
+					printf("pthread_create\n");
+				}
 			}
 		}
 	}

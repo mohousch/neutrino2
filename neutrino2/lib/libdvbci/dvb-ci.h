@@ -41,6 +41,7 @@
 #define TUNER_D		3
 
 #define MAX_SLOTS	2
+#define DVBADAPTER_MAX	2
 
 typedef struct
 {
