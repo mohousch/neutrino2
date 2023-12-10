@@ -1290,8 +1290,8 @@ void cVideo::run(void)
 	
 	thread_running = true;
 	
-	//if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
-	if (avformat_open_input(&avfc, "/home/mohousch/Videos/RTL_Television_20131226_003014.ts", NULL, 0) != 0)
+	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
+	//if (avformat_open_input(&avfc, "/home/mohousch/Videos/RTL_Television_20131226_003014.ts", NULL, 0) != 0)
 	{
 		dprintf(DEBUG_NORMAL, "cVideo::run: Could not open input\n");
 		goto out;
