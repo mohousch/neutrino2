@@ -32,7 +32,7 @@ typedef struct pcmPrivateData_s
 	
 	//
 	uint8_t bResampling;
-	/*int32_t*/enum AVCodecID avCodecId;
+	enum AVCodecID avCodecId;
 	
 } pcmPrivateData_t;
 

@@ -722,7 +722,7 @@ static void FFMPEGThread(Context_t *context)
 							extradata.uBitsPerSample = 16;
 							extradata.bLittleEndian = 1;
 							
-							extradata.avCodecId = ((AVStream*)subtitleTrack->stream)->codec->codec_id;
+							extradata.avCodecId = ((AVStream*) audioTrack->stream)->codec->codec_id;
 
 							avOut.data       = samples;
 							avOut.len        = decoded_data_size;
