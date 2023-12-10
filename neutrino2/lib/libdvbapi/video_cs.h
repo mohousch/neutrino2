@@ -248,12 +248,15 @@ typedef enum
 
 #define VDEC_MAXBUFS 0x40
 #endif
+
 class cVideo 
 #ifdef USE_OPENGL
 : public OpenThreads::Thread
 #endif
 {
+#ifdef USE_OPENGL
 	friend class GLThreadObj;
+#endif
 	
 	private:
 		int video_fd;
@@ -312,6 +315,7 @@ class cVideo
 		SWFramebuffer buffers[VDEC_MAXBUFS];
 		int dec_w, dec_h;
 		int dec_r;
+		int64_t dec_vpts;
 		bool thread_running;
 		OpenThreads::Mutex buf_m;
 		OpenThreads::Mutex still_m;
@@ -320,23 +324,22 @@ class cVideo
 #endif	
 
 	public:
-		/* constructor & destructor */
 		cVideo(int num = 0);
 		~cVideo(void);
 
-		/* aspect ratio */
+		//
 		int getAspectRatio(void);
 		void getPictureInfo(int &width, int &height, int &rate);
 		int setAspectRatio(int ratio, int format);
 
-		/* blank on freeze */
+		//
 		int getBlank(void);
 		int setBlank(int enable);
 
-		/* get play state */
+		//
 		int getPlayState(void);
 
-		/* video stream source */
+		//
 		int setSource(int source = VIDEO_SOURCE_DEMUX);
 
 		//
@@ -352,7 +355,7 @@ class cVideo
 		bool Open(CFrontend * fe = NULL);
 		bool Close();
 		
-		/* set video_system */
+		//
 		int SetVideoSystem(int video_system);
 
 		int SetSpaceColour(int space_colour);

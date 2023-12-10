@@ -57,6 +57,17 @@
 
 #include <config.h>
 
+#ifdef USE_OPENGL
+#include <libswscale/swscale.h>
+
+uint8_t *rgbframe = NULL;
+int rgbframe_width = 0;
+int rgbframe_height = 0;
+uint64_t rgbframe_pts = 0;
+int rgbframe_rate = 0;
+#endif
+
+
 
 #if LIBAVCODEC_VERSION_MAJOR > 54
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000 // 1 second of 48khz 32bit audio
@@ -414,7 +425,7 @@ static char* searchMeta(AVDictionary * metadata, char* ourTag)
 	return NULL;
 }
 
-//// Worker Thread
+//// play thread
 static void FFMPEGThread(Context_t *context) 
 {
 	AVPacket   packet;
@@ -427,6 +438,19 @@ static void FFMPEGThread(Context_t *context)
 
 	// Softdecoding buffer
 	AVFrame *samples = NULL;
+	
+#ifdef USE_OPENGL
+	AVFrame *frame = NULL;
+	struct SwsContext *convert = NULL;
+	uint8_t *buffer = NULL;
+	
+	time_t warn_r = 0; // last read error
+	time_t warn_d = 0; // last decode error
+	
+	int av_ret = 0;
+	
+	frame = av_frame_alloc();
+#endif
 
 	ffmpeg_printf(10, "\n");
 
@@ -553,7 +577,81 @@ static void FFMPEGThread(Context_t *context)
 					avOut.type       = "video";
 
 #ifdef USE_OPENGL
-					//ffmpeg_err("writing data to video device failed\n");
+					#if 0
+					AVCodecContext *codec = ((AVStream *)(videoTrack->stream))->codec;
+		
+					//
+					int got_frame = 0;
+					
+					av_ret = avcodec_send_packet(codec, &packet);
+					
+					ffmpeg_printf(10, "av_ret:%d\n", av_ret);
+					
+					/*
+					if (av_ret != 0 && av_ret != AVERROR(EAGAIN))
+					{
+						if (warn_d - time(NULL) > 4)
+						{
+							warn_d = time(NULL);
+						}
+						
+						av_packet_unref(&packet);
+						continue;
+					}
+					*/
+					
+					av_ret = avcodec_receive_frame(codec, frame);
+					
+					if (av_ret != 0 && av_ret != AVERROR(EAGAIN))
+					{
+						if (warn_d - time(NULL) > 4)
+						{
+							warn_d = time(NULL);
+						}
+						
+						av_packet_unref(&packet);
+						continue;
+					}
+					
+					if (!av_ret)
+						got_frame = 1;
+
+					ffmpeg_printf(10, "av_ret:%d (width:%d) (height: %d)\n", av_ret, codec->width, codec->height);
+					// setup sws scaler
+					if (got_frame)
+					{
+						//unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, c->width, c->height, 1);
+
+						convert = sws_getCachedContext(convert, codec->width, codec->height, codec->pix_fmt, codec->width, codec->height, AV_PIX_FMT_RGB32, SWS_BICUBIC, 0, 0, 0);
+							
+						if (convert)
+						{
+							uint8_t* dest[4] = { rgbframe, NULL, NULL, NULL };
+    							int dest_linesize[4] = { rgbframe_width * 4, 0, 0, 0 };
+    								
+							//av_image_fill_arrays(&dest[0], dest_linesize, &rgbframe, AV_PIX_FMT_RGB32, c->width, c->height, 1);
+							//av_image_fill_arrays(rgbframe->data, rgbframe->linesize, &(*f)[0], VDEC_PIXFMT, c->width, c->height, 1);
+							//sws_scale(convert, frame->data, frame->linesize, 0, c->height, rgbframe->data, rgbframe->linesize);
+    							sws_scale(convert, frame->data, frame->linesize, 0, frame->height, dest, dest_linesize);
+							
+#if (LIBAVUTIL_VERSION_MAJOR < 54)
+							int64_t vpts = av_frame_get_best_effort_timestamp(frame);
+#else
+							int64_t vpts = frame->best_effort_timestamp;
+#endif
+
+							rgbframe_pts = vpts;
+							rgbframe_width = videoTrack->codec->width;
+							rgbframe_height = videoTrack->codec->height;
+							rgbframe_rate = videoTrack->codec->time_base.den / (videoTrack->codec->time_base.num * videoTrack->codec->ticks_per_frame);
+						}
+					}
+					
+					av_packet_unref(&packet);
+					//break;
+					#endif
+					ffmpeg_err("writing data to video device failed\n");
+					
 #else
 					if (context->output->video->Write(context, &avOut) < 0) 
 					{
@@ -576,7 +674,7 @@ static void FFMPEGThread(Context_t *context)
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
 					
 #ifdef USE_OPENGL
-					//ffmpeg_err("writing data to audio device failed\n");
+					ffmpeg_err("writing data to audio device failed\n");
 #else
 					//
 					if (audioTrack->inject_as_pcm == 1)
@@ -762,20 +860,32 @@ static void FFMPEGThread(Context_t *context)
 		releaseMutex(FILENAME, __FUNCTION__,__LINE__);		
 	} // while
 
-	// Freeing the allocated buffer for softdecoding
+	//
 	if (samples != NULL) 
 	{
 		av_frame_free(&samples);
 	}
+	
+#ifdef USE_OPENGL
+	if (convert)
+	{
+		sws_freeContext(convert);
+		convert = NULL;
+	}
+	
+	if (frame)
+	{
+		av_frame_free(&frame);
+		frame = NULL;
+	}
+#endif
 
 	hasPlayThreadStarted = 0;
 
 	ffmpeg_printf(10, "terminating\n");
 }
 
-/* **************************** */
-/* Container part for ffmpeg    */
-/* **************************** */
+//// init
 int container_ffmpeg_init(Context_t *context, char * filename)
 {
 	int n, err;

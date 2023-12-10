@@ -20,6 +20,8 @@
 #ifndef pcm_h_
 #define pcm_h_
 
+#include <libavcodec/avcodec.h>
+
 
 typedef struct pcmPrivateData_s
 {
@@ -30,7 +32,7 @@ typedef struct pcmPrivateData_s
 	
 	//
 	uint8_t bResampling;
-	int32_t avCodecId;
+	/*int32_t*/enum AVCodecID avCodecId;
 	
 } pcmPrivateData_t;
 

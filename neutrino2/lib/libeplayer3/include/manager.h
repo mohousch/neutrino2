@@ -48,13 +48,13 @@ typedef struct Track_s
 	int                   height;
 
 	/* stream from ffmpeg */
-	void               *  stream;
+	void               * stream;
 
 	/* codec extra data (header or some other stuff) */
-	void               *  extraData;
+	void                * extraData;
 	int		      extraSize;
 
-	/* */
+	/* aac header*/
 	uint8_t*              aacbuf;
 	unsigned int          aacbuflen;
 	int                   have_aacheader;

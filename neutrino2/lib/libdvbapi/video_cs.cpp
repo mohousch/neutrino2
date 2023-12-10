@@ -62,8 +62,6 @@ extern "C" {
 /* my own buf 256k */
 #define DMX_BUF_SZ 0x20000
 
-#define VDEC_PIXFMT AV_PIX_FMT_RGB32
-
 extern cVideo *videoDecoder;
 extern cDemux *videoDemux;
 //
@@ -94,6 +92,8 @@ cVideo::cVideo(int num)
 	buf_out = 0;
 	dec_w = 0;
 	dec_h = 0;
+	dec_r = 0;
+	dec_vpts = 0;
 	stillpicture = false;
 	w_h_changed = false;
 #endif
@@ -1200,7 +1200,9 @@ cVideo::SWFramebuffer *cVideo::getDecBuf(void)
 		buf_m.unlock();
 		return NULL;
 	}
+	
 	SWFramebuffer *p = &buffers[buf_out];
+	
 	buf_out++;
 	buf_num--;
 	buf_out %= VDEC_MAXBUFS;
@@ -1279,15 +1281,17 @@ void cVideo::run(void)
 	        my_read,    	// read callback
 	        NULL,       	// write callback
 	        NULL);      	// seek callback
-	        
+	
+	//       
 	avfc = avformat_alloc_context();
 	avfc->pb = pIOCtx;
 	avfc->iformat = inp;
 	avfc->probesize = 188 * 5;
-
+	
 	thread_running = true;
 	
-	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
+	//if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
+	if (avformat_open_input(&avfc, "/home/mohousch/Videos/RTL_Television_20131226_003014.ts", NULL, 0) != 0)
 	{
 		dprintf(DEBUG_NORMAL, "cVideo::run: Could not open input\n");
 		goto out;
@@ -1389,13 +1393,11 @@ void cVideo::run(void)
 		still_m.lock();
 		if (got_frame && ! stillpicture)
 		{
-			unsigned int need = av_image_get_buffer_size(VDEC_PIXFMT, c->width, c->height, 1);
+			unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, c->width, c->height, 1);
 
-			convert = sws_getCachedContext(convert, c->width, c->height, c->pix_fmt, c->width, c->height, VDEC_PIXFMT, SWS_BICUBIC, 0, 0, 0);
+			convert = sws_getCachedContext(convert, c->width, c->height, c->pix_fmt, c->width, c->height, AV_PIX_FMT_RGB32, SWS_BICUBIC, 0, 0, 0);
 			        
-			if (!convert)
-				printf("cVideo::run: ERROR setting up SWS context\n");
-			else
+			if (convert)
 			{
 				buf_m.lock();
 				
@@ -1404,7 +1406,8 @@ void cVideo::run(void)
 				if (f->size() < need)
 					f->resize(need);
 					
-				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, &(*f)[0], VDEC_PIXFMT, c->width, c->height, 1);
+				av_image_fill_arrays(rgbframe->data, rgbframe->linesize, &(*f)[0], AV_PIX_FMT_RGB32, c->width, c->height, 1);
+
 				sws_scale(convert, frame->data, frame->linesize, 0, c->height, rgbframe->data, rgbframe->linesize);
 				//
 				if (dec_w != c->width || dec_h != c->height)
@@ -1419,19 +1422,23 @@ void cVideo::run(void)
 				f->height(c->height);
 				
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
-				int64_t vpts = av_frame_get_best_effort_timestamp(frame);
+				dec_vpts = av_frame_get_best_effort_timestamp(frame);
 #else
-				int64_t vpts = frame->best_effort_timestamp;
+				dec_vpts = frame->best_effort_timestamp;
 #endif
 				// a/v delay determined experimentally :-)
-				if (StreamType == VIDEO_STREAMTYPE_MPEG2)
-					vpts += 90000 * 4 / 10; // 400ms
+				if (p->codec_id == AV_CODEC_ID_MPEG2VIDEO)
+					dec_vpts += 90000 * 4 / 10; // 400ms
 				else
-					vpts += 90000 * 3 / 10; // 300ms
+					dec_vpts += 90000 * 3 / 10; // 300ms
 
-				f->pts(vpts);
+				f->pts(dec_vpts);
+				
 				AVRational a = av_guess_sample_aspect_ratio(avfc, avfc->streams[0], frame);
+				
 				f->AR(a);
+				
+				//
 				buf_in++;
 				buf_in %= VDEC_MAXBUFS;
 				buf_num++;
@@ -1444,6 +1451,7 @@ void cVideo::run(void)
 				}
 				
 				dec_r = c->time_base.den / (c->time_base.num * c->ticks_per_frame);
+				
 				buf_m.unlock();
 			}
 		}

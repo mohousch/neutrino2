@@ -42,8 +42,12 @@
 #include <driver/audioplay.h>
 #include <system/debug.h>
 #include <sectionsd/edvbstring.h> // UTF8
-#include <playback_cs.h>
 #include <driver/netfile.h>
+
+#include <playback_cs.h>
+#ifdef USE_OPENGL
+#include <audio_cs.h>
+#endif
 
 
 void ShoutcastCallback(void *arg)

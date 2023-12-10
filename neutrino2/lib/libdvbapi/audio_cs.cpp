@@ -606,7 +606,11 @@ void cAudio::run()
 	char tmp[64] = "unknown";
 
 	curr_pts = 0;
+	
+	//
 	av_init_packet(&avpkt);
+	
+	//
 	inp = av_find_input_format("mpegts");
 	
 	AVIOContext *pIOCtx = avio_alloc_context(inbuf, INBUF_SIZE, // internal Buffer and its size
@@ -615,14 +619,17 @@ void cAudio::run()
 	        my_read,   	// read callback
 	        NULL,       	// write callback
 	        NULL);      	// seek callback
-	        
+
+	//	        
 	avfc = avformat_alloc_context();
 	avfc->pb = pIOCtx;
 	avfc->iformat = inp;
 	avfc->probesize = 188 * 5;
+	
 	thread_started = true;
 
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
+	//if (avformat_open_input(&avfc, "/home/mohousch/Videos/RTL_Television_20131226_003014.ts", NULL, 0) != 0)
 	{
 		dprintf(DEBUG_NORMAL, "cAudio::run: avformat_open_input() failed.\n");
 		goto out;
@@ -717,6 +724,7 @@ void cAudio::run()
 		dprintf(DEBUG_NORMAL, "cAudio::run: could not alloc resample context\n");
 		goto out3;
 	}
+	
 	swr_init(swr);
 	
 	while (thread_started)
@@ -738,6 +746,7 @@ void cAudio::run()
 		else
 		{
 			av_ret = avcodec_receive_frame(c, frame);
+			
 			if (av_ret != 0 && av_ret != AVERROR(EAGAIN))
 			{
 				//hal_info("%s: avcodec_send_packet %d\n", __func__, av_ret);
@@ -763,8 +772,10 @@ void cAudio::run()
 					av_packet_unref(&avpkt);
 					break; // while (thread_started)
 				}
+				
 				obuf_sz_max = obuf_sz;
 			}
+			
 			obuf_sz = swr_convert(swr, &obuf, obuf_sz, (const uint8_t **)frame->extended_data, frame->nb_samples);
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
 			curr_pts = av_frame_get_best_effort_timestamp(frame);
@@ -776,6 +787,7 @@ void cAudio::run()
 			if (o_buf_sz > 0)
 				ao_play(adevice, (char *)obuf, o_buf_sz);
 		}
+		
 		av_packet_unref(&avpkt);
 	}
 	// ao_close(adevice); /* can take long :-(*/
@@ -789,8 +801,8 @@ out2:
 	c = NULL;
 out:
 	avformat_close_input(&avfc);
-	av_free(pIOCtx->buffer);
-	av_free(pIOCtx);
+	//av_free(pIOCtx->buffer);
+	//av_free(pIOCtx);
 	
 	dprintf(DEBUG_NORMAL, "cAudio::run: END\n");
 }
