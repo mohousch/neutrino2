@@ -111,27 +111,27 @@ static int writeData(void* _call)
 
     unsigned char  PesHeader[PES_MAX_HEADER_SIZE + 4];
 
-    divx_printf(10, "\n");
+    divx3_printf(10, "\n");
 
     if (call == NULL)
     {
-        divx_err("call data is NULL...\n");
+        divx3_err("call data is NULL...\n");
         return 0;
     }
 
     if ((call->data == NULL) || (call->len <= 0))
     {
-        divx_err("parsing NULL Data. ignoring...\n");
+        divx3_err("parsing NULL Data. ignoring...\n");
         return 0;
     }
 
     if (call->fd < 0)
     {
-        divx_err("file pointer < 0. ignoring ...\n");
+        divx3_err("file pointer < 0. ignoring ...\n");
         return 0;
     }
 
-    divx_printf(10, "AudioPts %lld\n", call->Pts);
+    divx3_printf(10, "AudioPts %lld\n", call->Pts);
 
 
     struct iovec iov[8];
@@ -176,7 +176,7 @@ static int writeData(void* _call)
 
     int len = call->WriteV(call->fd, iov, ic);
 
-    divx_printf(10, "xvid_Write < len=%d\n", len);
+    divx3_printf(10, "xvid_Write < len=%d\n", len);
 
     return len;
 }
