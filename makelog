@@ -2,7 +2,7 @@
 
 if [ ! -z $1 ] ; then
 	mkdir -p buildlogs
-	LOGFILE=buildlogs/make_$(date +%d.%m.%Y_%H%M).log
+	LOGFILE=buildlogs/make.log
 
 	echo "--- DISTRIBUTION ---" > $LOGFILE
 	cat /etc/*release >> $LOGFILE
