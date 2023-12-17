@@ -106,7 +106,6 @@ class GLThreadObj : public OpenThreads::Thread
 
 		void bltOSDBuffer();
 		void bltDisplayBuffer();
-		void bltPlayBuffer();
 };
 
 #endif

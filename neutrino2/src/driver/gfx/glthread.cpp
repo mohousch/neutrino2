@@ -39,7 +39,6 @@
 
 #include <audio_cs.h>
 #include <video_cs.h>
-#include <playback_cs.h>
 
 
 //// globals
@@ -52,7 +51,6 @@ int GLHeight;
 ////
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
-extern cPlayback *playback;
 
 GLThreadObj::GLThreadObj(int x, int y) : mX(x), mY(y), mReInit(true), mShutDown(false), mInitDone(false)
 {
@@ -298,7 +296,6 @@ void GLThreadObj::render()
 		
 	//
 	bltDisplayBuffer(); // decoded video stream
-	//bltPlayBuffer();
 
 	// OSD
 	if (mState.blit) 
@@ -480,7 +477,6 @@ void GLThreadObj::bltDisplayBuffer()
 		//
 		int rate, dummy1, dummy2;
 		videoDecoder->getPictureInfo(dummy1, dummy2, rate);
-		//rate = videoDecoder->getRate();
 		
 		if (rate > 0)
 			rate = 2000000 / rate;
@@ -489,89 +485,6 @@ void GLThreadObj::bltDisplayBuffer()
 			
 		if (sleep_us > rate)
 			sleep_us = rate;
-		else if (sleep_us < 1)
-			sleep_us = 1;
-	}
-}
-
-////
-extern "C" {
-#include <libavformat/avformat.h>
-#include <libavutil/imgutils.h>
-#include <libswscale/swscale.h>
-}
-
-extern uint8_t *rgbframe;
-extern int rgbframe_width;
-extern int rgbframe_height;
-extern uint64_t rgbframe_pts;
-extern int rgbframe_rate;
-
-void GLThreadObj::bltPlayBuffer()
-{
-	if (!playback->playing)
-		return;
-		
-	static bool warn = true;
-	//uint8_t *buf = videoDecoder->getDecBuf();
-	/*
-	if (!rgbframe)
-	{	
-		warn = false;
-		
-		//
-		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
-		glBufferData(GL_PIXEL_UNPACK_BUFFER, mOSDBuffer.size(), &mOSDBuffer[0], GL_STREAM_DRAW_ARB);
-		glBindTexture(GL_TEXTURE_2D, mState.displaytex);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-		
-		return;
-	}
-	*/
-	
-	warn = true;
-	int w = rgbframe_width, h = rgbframe_height;
-	
-	if (w == 0 || h == 0)
-		return;
-
-	// render frame
-	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
-	glBufferData(GL_PIXEL_UNPACK_BUFFER, sizeof(rgbframe), rgbframe, GL_STREAM_DRAW_ARB);
-
-	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rgbframe_width, rgbframe_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
-
-	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-
-	// rate
-	int64_t apts = 0;
-	int64_t vpts = rgbframe_pts + 18000;
-	
-	//if (audioDecoder)
-	//	apts = audioDecoder->getPts();
-	
-	//if (apts != last_apts)
-	{
-		//if (apts < vpts)
-		//	sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
-		//else if (sleep_us > 1000)
-		//	sleep_us -= 1000;
-			
-		//last_apts = apts;
-		
-		//
-		//int rate, dummy1, dummy2;
-		//videoDecoder->getPictureInfo(dummy1, dummy2, rate);
-		
-		if (rgbframe_rate > 0)
-			rgbframe_rate = 2000000 / rgbframe_rate;
-		else
-			rgbframe_rate = 50000;
-			
-		if (sleep_us > rgbframe_rate)
-			sleep_us = rgbframe_rate;
 		else if (sleep_us < 1)
 			sleep_us = 1;
 	}

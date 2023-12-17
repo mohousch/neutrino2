@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#include <libavformat/avformat.h>
+
  
 typedef enum 
 {
@@ -48,7 +50,7 @@ typedef struct Track_s
 	int                   height;
 
 	/* stream from ffmpeg */
-	void               * stream;
+	AVStream               * stream;
 
 	/* codec extra data (header or some other stuff) */
 	void                * extraData;

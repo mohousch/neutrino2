@@ -577,80 +577,7 @@ static void FFMPEGThread(Context_t *context)
 					avOut.type       = "video";
 
 #ifdef USE_OPENGL
-					#if 0
-					AVCodecContext *codec = ((AVStream *)(videoTrack->stream))->codec;
-		
-					//
-					int got_frame = 0;
-					
-					av_ret = avcodec_send_packet(codec, &packet);
-					
-					ffmpeg_printf(10, "av_ret:%d\n", av_ret);
-					
-					/*
-					if (av_ret != 0 && av_ret != AVERROR(EAGAIN))
-					{
-						if (warn_d - time(NULL) > 4)
-						{
-							warn_d = time(NULL);
-						}
-						
-						av_packet_unref(&packet);
-						continue;
-					}
-					*/
-					
-					av_ret = avcodec_receive_frame(codec, frame);
-					
-					if (av_ret != 0 && av_ret != AVERROR(EAGAIN))
-					{
-						if (warn_d - time(NULL) > 4)
-						{
-							warn_d = time(NULL);
-						}
-						
-						av_packet_unref(&packet);
-						continue;
-					}
-					
-					if (!av_ret)
-						got_frame = 1;
-
-					ffmpeg_printf(10, "av_ret:%d (width:%d) (height: %d)\n", av_ret, codec->width, codec->height);
-					// setup sws scaler
-					if (got_frame)
-					{
-						//unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, c->width, c->height, 1);
-
-						convert = sws_getCachedContext(convert, codec->width, codec->height, codec->pix_fmt, codec->width, codec->height, AV_PIX_FMT_RGB32, SWS_BICUBIC, 0, 0, 0);
-							
-						if (convert)
-						{
-							uint8_t* dest[4] = { rgbframe, NULL, NULL, NULL };
-    							int dest_linesize[4] = { rgbframe_width * 4, 0, 0, 0 };
-    								
-							//av_image_fill_arrays(&dest[0], dest_linesize, &rgbframe, AV_PIX_FMT_RGB32, c->width, c->height, 1);
-							//av_image_fill_arrays(rgbframe->data, rgbframe->linesize, &(*f)[0], VDEC_PIXFMT, c->width, c->height, 1);
-							//sws_scale(convert, frame->data, frame->linesize, 0, c->height, rgbframe->data, rgbframe->linesize);
-    							sws_scale(convert, frame->data, frame->linesize, 0, frame->height, dest, dest_linesize);
-							
-#if (LIBAVUTIL_VERSION_MAJOR < 54)
-							int64_t vpts = av_frame_get_best_effort_timestamp(frame);
-#else
-							int64_t vpts = frame->best_effort_timestamp;
-#endif
-
-							rgbframe_pts = vpts;
-							rgbframe_width = videoTrack->codec->width;
-							rgbframe_height = videoTrack->codec->height;
-							rgbframe_rate = videoTrack->codec->time_base.den / (videoTrack->codec->time_base.num * videoTrack->codec->ticks_per_frame);
-						}
-					}
-					
-					av_packet_unref(&packet);
-					//break;
-					#endif
-					ffmpeg_err("writing data to video device failed\n");
+					ffmpeg_printf(100, "writing data to video device failed\n");
 					
 #else
 					if (context->output->video->Write(context, &avOut) < 0) 
@@ -674,12 +601,12 @@ static void FFMPEGThread(Context_t *context)
 					ffmpeg_printf(200, "AudioTrack index = %d\n",index);
 					
 #ifdef USE_OPENGL
-					ffmpeg_err("writing data to audio device failed\n");
+					ffmpeg_printf(100, "writing data to audio device failed\n");
 #else
 					//
 					if (audioTrack->inject_as_pcm == 1)
 					{
-						AVCodecContext *c = ((AVStream *)(audioTrack->stream))->codec;
+						AVCodecContext *c = audioTrack->stream->codec;
 						int bytesDone = 0;
 						
 						
@@ -717,12 +644,12 @@ static void FFMPEGThread(Context_t *context)
 							    continue;
 
 							pcmPrivateData_t extradata;
-							extradata.uNoOfChannels = ((AVStream*) audioTrack->stream)->codec->channels;
-							extradata.uSampleRate = ((AVStream*) audioTrack->stream)->codec->sample_rate;
+							extradata.uNoOfChannels = audioTrack->stream->codec->channels;
+							extradata.uSampleRate = audioTrack->stream->codec->sample_rate;
 							extradata.uBitsPerSample = 16;
 							extradata.bLittleEndian = 1;
 							
-							extradata.avCodecId = ((AVStream*) audioTrack->stream)->codec->codec_id;
+							extradata.avCodecId = audioTrack->stream->codec->codec_id;
 
 							avOut.data       = samples;
 							avOut.len        = decoded_data_size;
@@ -813,7 +740,7 @@ static void FFMPEGThread(Context_t *context)
 						duration=((float)packet.duration)/1000.0;
 					else if(packet.convergence_duration != 0 && packet.convergence_duration != AV_NOPTS_VALUE )
 						duration=((float)packet.convergence_duration)/1000.0;		    
-					else if(((AVStream*)subtitleTrack->stream)->codec->codec_id == AV_CODEC_ID_SSA)
+					else if(subtitleTrack->stream->codec->codec_id == AV_CODEC_ID_SSA)
 					{
 						duration = getDurationFromSSALine(packet.data);
 					} 
@@ -829,7 +756,7 @@ static void FFMPEGThread(Context_t *context)
 						
 						ffmpeg_printf(100, "videoPts %lld\n", currentVideoPts);
 						
-						data.avCodecId = ((AVStream*)subtitleTrack->stream)->codec->codec_id;
+						data.avCodecId = subtitleTrack->stream->codec->codec_id;
 						data.data      = packet.data;
 						data.len       = packet.size;
 						data.extradata = subtitleTrack->extraData;
@@ -1024,7 +951,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
 
 				track.Name      = "und";
 				track.Encoding  = encoding;
-				track.Index        = n;
+				track.Index     = n;
 
 				track.stream    = stream;
 
