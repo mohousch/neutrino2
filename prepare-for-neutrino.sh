@@ -144,7 +144,7 @@ PACKAGES="\
     	${UBUNTU:+libass-dev}												\
     	${UBUNTU:+libglew-dev}												\
     	${UBUNTU:+freeglut3-dev}											\
-    	${UBUNTU:+libao-dev}												\
+    	${UBUNTU:+libao-dev}												
     	";
 
 if [ "$UBUNTU" == 1 ]; then
