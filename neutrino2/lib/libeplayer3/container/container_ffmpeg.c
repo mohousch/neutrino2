@@ -57,17 +57,6 @@
 
 #include <config.h>
 
-#ifdef USE_OPENGL
-#include <libswscale/swscale.h>
-
-uint8_t *rgbframe = NULL;
-int rgbframe_width = 0;
-int rgbframe_height = 0;
-uint64_t rgbframe_pts = 0;
-int rgbframe_rate = 0;
-#endif
-
-
 
 #if LIBAVCODEC_VERSION_MAJOR > 54
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000 // 1 second of 48khz 32bit audio
@@ -433,24 +422,11 @@ static void FFMPEGThread(Context_t *context)
 	off_t lastReverseSeek = 0;     // max address to read before seek again in reverse play 
 	off_t lastSeek = -1;
 	long long int lastPts = -1, currentVideoPts = -1, currentAudioPts = -1, showtime = 0, bofcount = 0;
-	int           err = 0, gotlastPts = 0, audioMute = 0;
+	int err = 0, gotlastPts = 0, audioMute = 0;
 	AudioVideoOut_t avOut;
 
 	// Softdecoding buffer
 	AVFrame *samples = NULL;
-	
-#ifdef USE_OPENGL
-	AVFrame *frame = NULL;
-	struct SwsContext *convert = NULL;
-	uint8_t *buffer = NULL;
-	
-	time_t warn_r = 0; // last read error
-	time_t warn_d = 0; // last decode error
-	
-	int av_ret = 0;
-	
-	frame = av_frame_alloc();
-#endif
 
 	ffmpeg_printf(10, "\n");
 
@@ -792,20 +768,6 @@ static void FFMPEGThread(Context_t *context)
 	{
 		av_frame_free(&samples);
 	}
-	
-#ifdef USE_OPENGL
-	if (convert)
-	{
-		sws_freeContext(convert);
-		convert = NULL;
-	}
-	
-	if (frame)
-	{
-		av_frame_free(&frame);
-		frame = NULL;
-	}
-#endif
 
 	hasPlayThreadStarted = 0;
 

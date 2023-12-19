@@ -74,6 +74,7 @@ typedef struct Writer_s
 // audio
 extern Writer_t WriterAudioPCM;
 extern Writer_t WriterAudioIPCM;
+extern Writer_t WriterAudioLPCM;
 extern Writer_t WriterAudioMP3;
 extern Writer_t WriterAudioMPEGL3;
 extern Writer_t WriterAudioAC3;
@@ -87,15 +88,13 @@ extern Writer_t WriterAudioAMR;
 // video
 extern Writer_t WriterVideoMPEG1;
 extern Writer_t WriterVideoMPEG2;
-extern Writer_t WriterVideoMPEG4;
+extern Writer_t WriterVideoH263;
 extern Writer_t WriterVideoH264;
 extern Writer_t WriterVideoH265;
 extern Writer_t WriterVideoWMV;
-extern Writer_t WriterVideoDIVX; //mpeg4h264
-extern Writer_t WriterVideoH263;
-extern Writer_t WriterVideoFLV;
-extern Writer_t WriterVideoVC1;
+extern Writer_t WriterVideoDIVX;
 extern Writer_t WriterVideoDIVX3;
+extern Writer_t WriterVideoVC1;
 extern Writer_t WriterVideoMJPEG;
 extern Writer_t WriterVideoRV30;
 extern Writer_t WriterVideoRV40;
@@ -111,6 +110,7 @@ static Writer_t * AvailableWriter[] =
 {
 	&WriterAudioPCM,
 	&WriterAudioIPCM,
+	&WriterAudioLPCM,
 	&WriterAudioMP3,
 	&WriterAudioMPEGL3,
 	&WriterAudioAC3,
@@ -123,13 +123,21 @@ static Writer_t * AvailableWriter[] =
 	//
 	&WriterVideoMPEG1,
 	&WriterVideoMPEG2,
+	&WriterVideoH263,
 	&WriterVideoH264,
 	&WriterVideoH265,
-	&WriterVideoDIVX,  //mpeg4h264
 	&WriterVideoWMV,
-	&WriterVideoH263,
-	&WriterVideoFLV,
+	&WriterVideoDIVX,
+	&WriterVideoDIVX3,
 	&WriterVideoVC1,
+//	&WriterVideoFLV,
+	&WriterVideoMJPEG,
+	&WriterVideoRV30,
+	&WriterVideoRV40,
+	&WriterVideoAVS2,
+	&WriterVideoVP6,
+	&WriterVideoVP8,
+	&WriterVideoVP9,
 	//   
 	&WriterFramebuffer,   
 	NULL

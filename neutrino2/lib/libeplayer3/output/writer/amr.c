@@ -98,7 +98,8 @@ static int writeData(void *_call)
 
     amr_printf(10, "\n");
 
-    if (call == NULL || call->data == NULL || call->len <= 0 || call->fd < 0) {
+    if (call == NULL || call->data == NULL || call->len <= 0 || call->fd < 0) 
+    {
         amr_err("call error wrong data call: %p, data: %p, len: %d, fd: %d\n", call, call->data, call->len, call->fd);
         return 0;
     }
@@ -126,7 +127,8 @@ static int writeData(void *_call)
     PesHeader[headerSize++] = (payload_len >> 8)  & 0xff;
     PesHeader[headerSize++] = payload_len & 0xff;
 
-    if (hasCodecData) {
+    if (hasCodecData) 
+    {
         memcpy(&PesHeader[headerSize], call->private_data + 8, 9);
     }
 
