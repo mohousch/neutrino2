@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-11-23 23:21+0100\n"
+"POT-Creation-Date: 2023-12-17 13:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,6 +22,7 @@ msgid "'X'=timer '-' no timer"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3118 ../../src/neutrino2.cpp:3122
+#: ../../src/neutrino2.cpp:3112
 #, c-format
 msgid "(%d%% over)"
 msgstr ""
@@ -55,6 +56,7 @@ msgid "(filename2)"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:368 ../../src/gui/audioplayer.cpp:386
+#: ../../src/gui/audioplayer.cpp:367 ../../src/gui/audioplayer.cpp:385
 msgid "(relative, in seconds)"
 msgstr ""
 
@@ -63,6 +65,7 @@ msgid "(size)"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3113 ../../src/neutrino2.cpp:3117
+#: ../../src/neutrino2.cpp:3107
 #, c-format
 msgid "(starting in %d min)"
 msgstr ""
@@ -109,14 +112,14 @@ msgstr ""
 
 #: ../../src/gui/epgview.cpp:954 ../../src/gui/movieinfo.cpp:883
 #: ../../src/gui/movieplayer.cpp:2187 ../../src/system/tmdbparser.cpp:252
-#: ../../src/gui/movieplayer.cpp:2134
+#: ../../src/gui/movieplayer.cpp:2134 ../../src/gui/movieplayer.cpp:2133
 msgid "Actors"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:2021
 #: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:54
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:90
-#: ../../src/gui/movieplayer.cpp:1968
+#: ../../src/gui/movieplayer.cpp:1968 ../../src/gui/movieplayer.cpp:1967
 msgid "Add"
 msgstr ""
 
@@ -207,6 +210,7 @@ msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1744 ../../src/gui/movieinfo.cpp:980
 #: ../../src/gui/movieplayer.cpp:1881 ../../src/gui/movieplayer.cpp:1828
+#: ../../src/gui/infoviewer.cpp:1745 ../../src/gui/movieplayer.cpp:1827
 msgid "Audio"
 msgstr ""
 
@@ -215,7 +219,8 @@ msgid "Audio PIDs"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:216 ../../src/gui/audioplayer.cpp:349
-#: ../../src/gui/audioplayer.cpp:1414
+#: ../../src/gui/audioplayer.cpp:1414 ../../src/gui/audioplayer.cpp:215
+#: ../../src/gui/audioplayer.cpp:348 ../../src/gui/audioplayer.cpp:1413
 msgid "Audio Playlist"
 msgstr ""
 
@@ -236,7 +241,7 @@ msgid "Audioplayer"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1326 ../../src/gui/audioplayer_setup.cpp:116
-#: ../../src/gui/main_setup.cpp:149
+#: ../../src/gui/main_setup.cpp:149 ../../src/gui/audioplayer.cpp:1325
 msgid "Audioplayer settings"
 msgstr ""
 
@@ -309,6 +314,7 @@ msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:758 ../../src/gui/movieplayer.cpp:1895
 #: ../../src/gui/movieplayer.cpp:714 ../../src/gui/movieplayer.cpp:1842
+#: ../../src/gui/movieplayer.cpp:713 ../../src/gui/movieplayer.cpp:1841
 msgid "Bookmarks"
 msgstr ""
 
@@ -346,7 +352,7 @@ msgid "Box Info"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3822 ../../src/neutrino2.cpp:3826
-#: ../../src/neutrino2.cpp:3830
+#: ../../src/neutrino2.cpp:3830 ../../src/neutrino2.cpp:3819
 msgid ""
 "Box will shutdown in 1 min.\n"
 "Cancel Sutdown ?"
@@ -632,6 +638,7 @@ msgid "Country"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1631 ../../src/gui/movieplayer.cpp:1578
+#: ../../src/gui/movieplayer.cpp:1577
 msgid "Create bookmark"
 msgstr ""
 
@@ -639,7 +646,7 @@ msgstr ""
 msgid "Create list of HD channels"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:566
+#: ../../src/gui/audioplayer.cpp:566 ../../src/gui/audioplayer.cpp:565
 msgid "Current Track"
 msgstr ""
 
@@ -706,7 +713,7 @@ msgstr ""
 #: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:462
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:89
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:365
-#: ../../src/gui/movieplayer.cpp:1967
+#: ../../src/gui/movieplayer.cpp:1967 ../../src/gui/movieplayer.cpp:1966
 msgid "Delete"
 msgstr ""
 
@@ -715,6 +722,7 @@ msgid "Delete WebTV channels"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:2022 ../../src/gui/movieplayer.cpp:1969
+#: ../../src/gui/movieplayer.cpp:1968
 msgid "Delete all"
 msgstr ""
 
@@ -769,6 +777,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3140 ../../src/gui/infoviewer.cpp:822
 #: ../../src/gui/infoviewer.cpp:875 ../../src/neutrino2.cpp:3144
+#: ../../src/neutrino2.cpp:3134
 msgid "Direct-Mode"
 msgstr ""
 
@@ -830,6 +839,7 @@ msgid ""
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1240 ../../src/system/helpers.cpp:1856
+#: ../../src/gui/audioplayer.cpp:1239
 msgid "Do you want to overwrite this file:"
 msgstr ""
 
@@ -878,6 +888,7 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:122 ../../src/gui/epg_menu.cpp:85
 #: ../../src/gui/infoviewer.cpp:1653 ../../src/gui/osd_setup.cpp:1526
+#: ../../src/gui/infoviewer.cpp:1654
 msgid "EPG / Timer"
 msgstr ""
 
@@ -909,7 +920,7 @@ msgid "EPG is not available"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:750 ../../src/gui/infoviewer.cpp:767
-#: ../../src/gui/infoviewer.cpp:1661
+#: ../../src/gui/infoviewer.cpp:1661 ../../src/gui/infoviewer.cpp:1662
 msgid "EPG not available"
 msgstr ""
 
@@ -962,6 +973,7 @@ msgid "Enter 0 to switch of the blocker (red is space)"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:364 ../../src/gui/audioplayer.cpp:382
+#: ../../src/gui/audioplayer.cpp:363 ../../src/gui/audioplayer.cpp:381
 msgid "Enter jump target"
 msgstr ""
 
@@ -992,6 +1004,7 @@ msgstr ""
 #: ../../src/gui/update.cpp:455 ../../src/gui/update.cpp:482
 #: ../../src/gui/update.cpp:518 ../../src/gui/update.cpp:564
 #: ../../src/driver/vcrcontrol.cpp:623 ../../src/neutrino2.cpp:2007
+#: ../../src/gui/audioplayer.cpp:1212
 msgid "Error"
 msgstr ""
 
@@ -1087,7 +1100,7 @@ msgstr ""
 msgid "Features"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1210
+#: ../../src/gui/audioplayer.cpp:1210 ../../src/gui/audioplayer.cpp:1209
 msgid "File could not be created:"
 msgstr ""
 
@@ -1111,7 +1124,7 @@ msgstr ""
 msgid "Filebrowser settings"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1164
+#: ../../src/gui/audioplayer.cpp:1164 ../../src/gui/audioplayer.cpp:1163
 msgid "Filename of the play list"
 msgstr ""
 
@@ -1245,6 +1258,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:859 ../../src/gui/movieplayer.cpp:2179
 #: ../../src/system/tmdbparser.cpp:238 ../../src/gui/movieplayer.cpp:2126
+#: ../../src/gui/movieplayer.cpp:2125
 msgid "Genre"
 msgstr ""
 
@@ -1382,6 +1396,7 @@ msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1630 ../../src/gui/movieplayer.cpp:1887
 #: ../../src/gui/movieplayer.cpp:1577 ../../src/gui/movieplayer.cpp:1834
+#: ../../src/gui/movieplayer.cpp:1576 ../../src/gui/movieplayer.cpp:1833
 msgid "Help"
 msgstr ""
 
@@ -1579,6 +1594,14 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4289 ../../src/neutrino2.cpp:4974
 #: ../../src/gui/movieplayer.cpp:1478 ../../src/gui/movieplayer.cpp:1599
 #: ../../src/gui/movieplayer.cpp:2160 ../../src/gui/movieplayer.cpp:2190
+#: ../../src/neutrino2.cpp:2822 ../../src/neutrino2.cpp:2840
+#: ../../src/neutrino2.cpp:2845 ../../src/neutrino2.cpp:3177
+#: ../../src/neutrino2.cpp:3740 ../../src/neutrino2.cpp:3774
+#: ../../src/neutrino2.cpp:3819 ../../src/neutrino2.cpp:3861
+#: ../../src/neutrino2.cpp:3870 ../../src/neutrino2.cpp:4278
+#: ../../src/neutrino2.cpp:4962 ../../src/gui/audioplayer.cpp:1328
+#: ../../src/gui/movieplayer.cpp:1477 ../../src/gui/movieplayer.cpp:1598
+#: ../../src/gui/movieplayer.cpp:2159 ../../src/gui/movieplayer.cpp:2189
 msgid "Information"
 msgstr ""
 
@@ -1595,6 +1618,7 @@ msgid "Interface"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:349 ../../src/gui/rc_setup.cpp:102
+#: ../../src/gui/audioplayer.cpp:348
 msgid "Internet Radio"
 msgstr ""
 
@@ -1615,7 +1639,7 @@ msgid "Jazz"
 msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:1377 ../../src/gui/movieplayer.cpp:772
-#: ../../src/gui/movieplayer.cpp:728
+#: ../../src/gui/movieplayer.cpp:728 ../../src/gui/movieplayer.cpp:727
 msgid "Jump over"
 msgstr ""
 
@@ -1688,6 +1712,7 @@ msgid "Last play date"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1727 ../../src/gui/movieplayer.cpp:1674
+#: ../../src/gui/movieplayer.cpp:1673
 msgid "Last play stop:"
 msgstr ""
 
@@ -1704,7 +1729,7 @@ msgid "Length"
 msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:968 ../../src/gui/movieplayer.cpp:2176
-#: ../../src/gui/movieplayer.cpp:2123
+#: ../../src/gui/movieplayer.cpp:2123 ../../src/gui/movieplayer.cpp:2122
 msgid "Length (Min)"
 msgstr ""
 
@@ -1947,26 +1972,31 @@ msgid "Movie / Drama"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:774 ../../src/gui/movieplayer.cpp:730
+#: ../../src/gui/movieplayer.cpp:729
 msgid "Movie end:"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1628 ../../src/gui/movieplayer.cpp:1575
+#: ../../src/gui/movieplayer.cpp:1574
 msgid "Movie info"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:773 ../../src/gui/movieplayer.cpp:1720
 #: ../../src/gui/movieplayer.cpp:1732 ../../src/gui/movieplayer.cpp:729
 #: ../../src/gui/movieplayer.cpp:1667 ../../src/gui/movieplayer.cpp:1679
+#: ../../src/gui/movieplayer.cpp:728 ../../src/gui/movieplayer.cpp:1666
+#: ../../src/gui/movieplayer.cpp:1678
 msgid "Movie start:"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:2060 ../../src/gui/rc_setup.cpp:98
-#: ../../src/gui/movieplayer.cpp:2007
+#: ../../src/gui/movieplayer.cpp:2007 ../../src/gui/movieplayer.cpp:2006
 msgid "Movieplayer"
 msgstr ""
 
 #: ../../src/gui/main_setup.cpp:139 ../../src/gui/movieplayer.cpp:1633
 #: ../../src/gui/movieplayer_setup.cpp:109 ../../src/gui/movieplayer.cpp:1580
+#: ../../src/gui/movieplayer.cpp:1579
 msgid "Movieplayer settings"
 msgstr ""
 
@@ -2043,17 +2073,19 @@ msgid "Network settings"
 msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:1373 ../../src/gui/movieplayer.cpp:770
-#: ../../src/gui/movieplayer.cpp:726
+#: ../../src/gui/movieplayer.cpp:726 ../../src/gui/movieplayer.cpp:725
 msgid "New Bookmark"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:721 ../../src/gui/movieplayer.cpp:677
+#: ../../src/gui/movieplayer.cpp:676
 msgid ""
 "New jump back\n"
 " 'blue' for endposition"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:726 ../../src/gui/movieplayer.cpp:682
+#: ../../src/gui/movieplayer.cpp:681
 msgid ""
 "New jump forward\n"
 " 'blue' for endposition"
@@ -2122,7 +2154,7 @@ msgstr ""
 msgid "No detailed informations available"
 msgstr ""
 
-#: ../../src/gui/infoviewer.cpp:1671
+#: ../../src/gui/infoviewer.cpp:1671 ../../src/gui/infoviewer.cpp:1672
 msgid "No info for current program available"
 msgstr ""
 
@@ -2131,7 +2163,7 @@ msgid "No key"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:4966 ../../src/neutrino2.cpp:4970
-#: ../../src/neutrino2.cpp:4974
+#: ../../src/neutrino2.cpp:4974 ../../src/neutrino2.cpp:4962
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
@@ -2187,7 +2219,7 @@ msgid "Online Software Manager"
 msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:866 ../../src/gui/movieplayer.cpp:2181
-#: ../../src/gui/movieplayer.cpp:2128
+#: ../../src/gui/movieplayer.cpp:2128 ../../src/gui/movieplayer.cpp:2127
 msgid "Original Title"
 msgstr ""
 
@@ -2196,6 +2228,7 @@ msgid "Original title"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1241 ../../src/system/helpers.cpp:1858
+#: ../../src/gui/audioplayer.cpp:1240
 msgid "Overwrite?"
 msgstr ""
 
@@ -2270,10 +2303,11 @@ msgid "Pictureviewer settings"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:367 ../../src/gui/audioplayer.cpp:385
+#: ../../src/gui/audioplayer.cpp:366 ../../src/gui/audioplayer.cpp:384
 msgid "Please enter jump target"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1167
+#: ../../src/gui/audioplayer.cpp:1167 ../../src/gui/audioplayer.cpp:1166
 msgid "Please enter the filename of the playlist"
 msgstr ""
 
@@ -2324,6 +2358,7 @@ msgid "Pre-school children's programmes"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:2213 ../../src/gui/movieplayer.cpp:2160
+#: ../../src/gui/movieplayer.cpp:2159
 msgid "Prefer TMDB Infos"
 msgstr ""
 
@@ -2352,7 +2387,7 @@ msgid "Previous image"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3719 ../../src/neutrino2.cpp:3723
-#: ../../src/neutrino2.cpp:3727
+#: ../../src/neutrino2.cpp:3727 ../../src/neutrino2.cpp:3716
 msgid "Program unknown"
 msgstr ""
 
@@ -2481,7 +2516,7 @@ msgid "Recording settings"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3777 ../../src/neutrino2.cpp:3781
-#: ../../src/neutrino2.cpp:3785
+#: ../../src/neutrino2.cpp:3785 ../../src/neutrino2.cpp:3774
 msgid "Recording starts in a few minutes"
 msgstr ""
 
@@ -2515,14 +2550,17 @@ msgid "Reload channel lists"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:2851 ../../src/neutrino2.cpp:2855
+#: ../../src/neutrino2.cpp:2845
 msgid "Reloading EPG, please be patient."
 msgstr ""
 
 #: ../../src/neutrino2.cpp:2857 ../../src/neutrino2.cpp:2861
+#: ../../src/neutrino2.cpp:2851
 msgid "Reloading XMLTV EPG, please be patient."
 msgstr ""
 
 #: ../../src/neutrino2.cpp:2846 ../../src/neutrino2.cpp:2850
+#: ../../src/neutrino2.cpp:2840
 msgid "Reloading channel lists, please be patient."
 msgstr ""
 
@@ -2535,7 +2573,7 @@ msgid "Remind"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3890 ../../src/neutrino2.cpp:3894
-#: ../../src/neutrino2.cpp:3898
+#: ../../src/neutrino2.cpp:3898 ../../src/neutrino2.cpp:3887
 msgid "Reminder"
 msgstr ""
 
@@ -2557,7 +2595,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:1375 ../../src/gui/movieplayer.cpp:771
 #: ../../src/gui/timerlist.cpp:1021 ../../src/gui/timerlist.cpp:1189
-#: ../../src/gui/movieplayer.cpp:727
+#: ../../src/gui/movieplayer.cpp:727 ../../src/gui/movieplayer.cpp:726
 msgid "Repeat"
 msgstr ""
 
@@ -2719,6 +2757,7 @@ msgid "Saving current style!"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:2828 ../../src/neutrino2.cpp:2832
+#: ../../src/neutrino2.cpp:2822
 msgid "Saving settings now, please be patient."
 msgstr ""
 
@@ -2828,10 +2867,12 @@ msgid "Security"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3046 ../../src/neutrino2.cpp:3050
+#: ../../src/neutrino2.cpp:3040
 msgid "Select Subservice"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1629 ../../src/gui/movieplayer.cpp:1576
+#: ../../src/gui/movieplayer.cpp:1575
 msgid "Select audio track"
 msgstr ""
 
@@ -2840,6 +2881,7 @@ msgid "Select language"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3046 ../../src/neutrino2.cpp:3050
+#: ../../src/neutrino2.cpp:3040
 msgid "Select starting-time"
 msgstr ""
 
@@ -3010,7 +3052,7 @@ msgid "Sleeptimer"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3784 ../../src/neutrino2.cpp:3788
-#: ../../src/neutrino2.cpp:3792
+#: ../../src/neutrino2.cpp:3792 ../../src/neutrino2.cpp:3781
 msgid "Sleeptimer in 1 min"
 msgstr ""
 
@@ -3102,6 +3144,7 @@ msgid "Start dir."
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1701 ../../src/gui/movieplayer.cpp:1648
+#: ../../src/gui/movieplayer.cpp:1647
 msgid "Start movie from:"
 msgstr ""
 
@@ -3164,7 +3207,7 @@ msgstr ""
 msgid "Subchannel up"
 msgstr ""
 
-#: ../../src/gui/infoviewer.cpp:1413
+#: ../../src/gui/infoviewer.cpp:1413 ../../src/gui/infoviewer.cpp:1414
 msgid "Subservices"
 msgstr ""
 
@@ -3216,10 +3259,12 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:99 ../../src/gui/epgplus.cpp:516
 #: ../../src/gui/misc_setup.cpp:264 ../../src/gui/movieplayer.cpp:2023
 #: ../../src/gui/epgplus.cpp:496 ../../src/gui/movieplayer.cpp:1970
+#: ../../src/gui/movieplayer.cpp:1969
 msgid "TMDB"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:2243 ../../src/gui/movieplayer.cpp:2190
+#: ../../src/gui/movieplayer.cpp:2189
 msgid "TMDB Infos are not available"
 msgstr ""
 
@@ -3342,7 +3387,7 @@ msgid ""
 "switch to this channel at the given time."
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1168
+#: ../../src/gui/audioplayer.cpp:1168 ../../src/gui/audioplayer.cpp:1167
 msgid "The extension .m3u will be added automatically"
 msgstr ""
 
@@ -3368,7 +3413,7 @@ msgid ""
 msgstr ""
 
 #: ../../src/neutrino2.cpp:4966 ../../src/neutrino2.cpp:4970
-#: ../../src/neutrino2.cpp:4974
+#: ../../src/neutrino2.cpp:4974 ../../src/neutrino2.cpp:4962
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
@@ -3432,7 +3477,7 @@ msgstr ""
 msgid "Timescale"
 msgstr ""
 
-#: ../../src/gui/infoviewer.cpp:1413
+#: ../../src/gui/infoviewer.cpp:1413 ../../src/gui/infoviewer.cpp:1414
 msgid "Timeselection"
 msgstr ""
 
@@ -3645,6 +3690,7 @@ msgid "Waiting for CI answer"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:780 ../../src/gui/infoviewer.cpp:1661
+#: ../../src/gui/infoviewer.cpp:1662
 msgid "Waiting for time..."
 msgstr ""
 
@@ -3698,7 +3744,7 @@ msgstr ""
 
 #: ../../src/gui/epgview.cpp:951 ../../src/gui/movieinfo.cpp:909
 #: ../../src/gui/movieplayer.cpp:2183 ../../src/system/tmdbparser.cpp:242
-#: ../../src/gui/movieplayer.cpp:2130
+#: ../../src/gui/movieplayer.cpp:2130 ../../src/gui/movieplayer.cpp:2129
 msgid "Year of production"
 msgstr ""
 
@@ -3709,7 +3755,8 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3183 ../../src/neutrino2.cpp:4281
 #: ../../src/neutrino2.cpp:3187 ../../src/neutrino2.cpp:4285
-#: ../../src/neutrino2.cpp:4289
+#: ../../src/neutrino2.cpp:4289 ../../src/neutrino2.cpp:3177
+#: ../../src/neutrino2.cpp:4278
 msgid "You really want to to stop record ?"
 msgstr ""
 
@@ -3743,7 +3790,7 @@ msgid "Zapping History Bouquet"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3700 ../../src/neutrino2.cpp:3704
-#: ../../src/neutrino2.cpp:3708
+#: ../../src/neutrino2.cpp:3708 ../../src/neutrino2.cpp:3697
 msgid "Zapto timer in one minute"
 msgstr ""
 
@@ -3799,18 +3846,22 @@ msgid "angular"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1638 ../../src/gui/movieplayer.cpp:1585
+#: ../../src/gui/movieplayer.cpp:1584
 msgid "approx. 1 minute back"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1644 ../../src/gui/movieplayer.cpp:1591
+#: ../../src/gui/movieplayer.cpp:1590
 msgid "approx. 10 minutes back"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1648 ../../src/gui/movieplayer.cpp:1595
+#: ../../src/gui/movieplayer.cpp:1594
 msgid "approx. 10 seconds back"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1641 ../../src/gui/movieplayer.cpp:1588
+#: ../../src/gui/movieplayer.cpp:1587
 msgid "approx. 5 minutes back"
 msgstr ""
 
@@ -3941,6 +3992,7 @@ msgid "create new"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1531 ../../src/gui/movieplayer.cpp:1478
+#: ../../src/gui/movieplayer.cpp:1477
 msgid "create screenshot?"
 msgstr ""
 
@@ -4052,14 +4104,17 @@ msgid "getting update list"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1645 ../../src/gui/movieplayer.cpp:1592
+#: ../../src/gui/movieplayer.cpp:1591
 msgid "goto end"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1642 ../../src/gui/movieplayer.cpp:1589
+#: ../../src/gui/movieplayer.cpp:1588
 msgid "goto middle"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1639 ../../src/gui/movieplayer.cpp:1586
+#: ../../src/gui/movieplayer.cpp:1585
 msgid "goto start"
 msgstr ""
 
@@ -4089,7 +4144,7 @@ msgstr ""
 msgid "inactive"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:216
+#: ../../src/gui/audioplayer.cpp:216 ../../src/gui/audioplayer.cpp:215
 msgid "internet Radio"
 msgstr ""
 
@@ -4117,19 +4172,19 @@ msgstr ""
 msgid "italian"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1337
+#: ../../src/gui/audioplayer.cpp:1337 ../../src/gui/audioplayer.cpp:1336
 msgid "jump backwards"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1323
+#: ../../src/gui/audioplayer.cpp:1323 ../../src/gui/audioplayer.cpp:1322
 msgid "jump ff"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1338
+#: ../../src/gui/audioplayer.cpp:1338 ../../src/gui/audioplayer.cpp:1337
 msgid "jump forwards"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1322
+#: ../../src/gui/audioplayer.cpp:1322 ../../src/gui/audioplayer.cpp:1321
 msgid "jump prev"
 msgstr ""
 
@@ -4287,6 +4342,7 @@ msgstr ""
 #: ../../src/gui/osd_setup.cpp:62 ../../src/gui/recording_setup.cpp:52
 #: ../../src/gui/scan_setup.cpp:93 ../../src/gui/zapit_setup.cpp:46
 #: ../../src/gui/zapit_setup.cpp:54 ../../src/neutrino2.cpp:3083
+#: ../../src/neutrino2.cpp:3073
 msgid "off"
 msgstr ""
 
@@ -4298,7 +4354,7 @@ msgstr ""
 #: ../../src/gui/misc_setup.cpp:105 ../../src/gui/osd_setup.cpp:63
 #: ../../src/gui/recording_setup.cpp:53 ../../src/gui/scan_setup.cpp:94
 #: ../../src/gui/zapit_setup.cpp:47 ../../src/gui/zapit_setup.cpp:55
-#: ../../src/neutrino2.cpp:3084
+#: ../../src/neutrino2.cpp:3084 ../../src/neutrino2.cpp:3074
 msgid "on"
 msgstr ""
 
@@ -4390,11 +4446,11 @@ msgstr ""
 msgid "sat"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1336
+#: ../../src/gui/audioplayer.cpp:1336 ../../src/gui/audioplayer.cpp:1335
 msgid "save play list"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1321
+#: ../../src/gui/audioplayer.cpp:1321 ../../src/gui/audioplayer.cpp:1320
 msgid "save playlist"
 msgstr ""
 
@@ -4403,19 +4459,21 @@ msgid "see timer"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1634 ../../src/gui/movieplayer.cpp:1581
+#: ../../src/gui/movieplayer.cpp:1580
 msgid "show movie infoviewer"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1327 ../../src/gui/movieplayer.cpp:1635
-#: ../../src/gui/movieplayer.cpp:1582
+#: ../../src/gui/movieplayer.cpp:1582 ../../src/gui/audioplayer.cpp:1326
+#: ../../src/gui/movieplayer.cpp:1581
 msgid "show playlist"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1339
+#: ../../src/gui/audioplayer.cpp:1339 ../../src/gui/audioplayer.cpp:1338
 msgid "shuffle"
 msgstr ""
 
-#: ../../src/gui/audioplayer.cpp:1324
+#: ../../src/gui/audioplayer.cpp:1324 ../../src/gui/audioplayer.cpp:1323
 msgid "shuffle playlist"
 msgstr ""
 
@@ -4424,22 +4482,27 @@ msgid "simple"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1640 ../../src/gui/movieplayer.cpp:1587
+#: ../../src/gui/movieplayer.cpp:1586
 msgid "skip approx. 1 minute"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1646 ../../src/gui/movieplayer.cpp:1593
+#: ../../src/gui/movieplayer.cpp:1592
 msgid "skip approx. 10 minutes"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1647 ../../src/gui/movieplayer.cpp:1594
+#: ../../src/gui/movieplayer.cpp:1593
 msgid "skip approx. 10 seconds"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1643 ../../src/gui/movieplayer.cpp:1590
+#: ../../src/gui/movieplayer.cpp:1589
 msgid "skip approx. 5 minutes"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1637 ../../src/gui/movieplayer.cpp:1584
+#: ../../src/gui/movieplayer.cpp:1583
 msgid "skip bookmark"
 msgstr ""
 

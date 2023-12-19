@@ -1291,7 +1291,6 @@ void cVideo::run(void)
 	thread_running = true;
 	
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
-	//if (avformat_open_input(&avfc, "/home/mohousch/Videos/RTL_Television_20131226_003014.ts", NULL, 0) != 0)
 	{
 		dprintf(DEBUG_NORMAL, "cVideo::run: Could not open input\n");
 		goto out;
@@ -1426,11 +1425,11 @@ void cVideo::run(void)
 #else
 				dec_vpts = frame->best_effort_timestamp;
 #endif
-				// a/v delay determined experimentally :-)
-				if (p->codec_id == AV_CODEC_ID_MPEG2VIDEO)
-					dec_vpts += 90000 * 4 / 10; // 400ms
-				else
-					dec_vpts += 90000 * 3 / 10; // 300ms
+//				// a/v delay determined experimentally :-)
+//				if (p->codec_id == AV_CODEC_ID_MPEG2VIDEO)
+//					dec_vpts += 90000 * 4 / 10; // 400ms
+//				else
+//					dec_vpts += 90000 * 3 / 10; // 300ms
 
 				f->pts(dec_vpts);
 				

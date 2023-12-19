@@ -457,14 +457,15 @@ void GLThreadObj::bltDisplayBuffer()
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-
-	// rate
+	
+	//
 	int64_t apts = 0;
 	int64_t vpts = buf->pts() + 18000;
 	
 	if (audioDecoder)
 		apts = audioDecoder->getPts();
-	//	
+	
+	//		
 	if (apts != last_apts)
 	{
 		if (apts < vpts)

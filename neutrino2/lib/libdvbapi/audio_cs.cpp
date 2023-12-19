@@ -629,7 +629,6 @@ void cAudio::run()
 	thread_started = true;
 
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
-	//if (avformat_open_input(&avfc, "/home/mohousch/Videos/RTL_Television_20131226_003014.ts", NULL, 0) != 0)
 	{
 		dprintf(DEBUG_NORMAL, "cAudio::run: avformat_open_input() failed.\n");
 		goto out;
@@ -801,8 +800,8 @@ out2:
 	c = NULL;
 out:
 	avformat_close_input(&avfc);
-	//av_free(pIOCtx->buffer);
-	//av_free(pIOCtx);
+	av_free(pIOCtx->buffer);
+	av_free(pIOCtx);
 	
 	dprintf(DEBUG_NORMAL, "cAudio::run: END\n");
 }
