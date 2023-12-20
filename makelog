@@ -1,7 +1,6 @@
 #!/bin/bash
 
 if [ ! -z $1 ] ; then
-#	mkdir -p buildlogs
 	LOGFILE=make.log
 
 	echo "--- DISTRIBUTION ---" > $LOGFILE

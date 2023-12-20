@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-12-17 13:20+0100\n"
+"POT-Creation-Date: 2023-12-19 14:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -123,7 +123,8 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:1806
+#: ../../src/gui/channellist.cpp:1806 ../../src/gui/channellist.cpp:1807
+#: ../../src/gui/channellist.cpp:1808
 msgid "Add to Bouquets"
 msgstr ""
 
@@ -714,6 +715,7 @@ msgstr ""
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:89
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:365
 #: ../../src/gui/movieplayer.cpp:1967 ../../src/gui/movieplayer.cpp:1966
+#: ../../src/gui/channellist.cpp:1829 ../../src/gui/channellist.cpp:1830
 msgid "Delete"
 msgstr ""
 
@@ -726,7 +728,8 @@ msgstr ""
 msgid "Delete all"
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:1828
+#: ../../src/gui/channellist.cpp:1828 ../../src/gui/channellist.cpp:1829
+#: ../../src/gui/channellist.cpp:1830
 msgid "Delete channel from bouquet?"
 msgstr ""
 
@@ -953,6 +956,7 @@ msgid "Economics / Social advisory"
 msgstr ""
 
 #: ../../src/gui/bouquetlist.cpp:551 ../../src/gui/channellist.cpp:1782
+#: ../../src/gui/channellist.cpp:1783 ../../src/gui/channellist.cpp:1784
 msgid "Edit"
 msgstr ""
 
@@ -1964,6 +1968,7 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:1805
 #: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:55
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:91
+#: ../../src/gui/channellist.cpp:1806 ../../src/gui/channellist.cpp:1807
 msgid "Move"
 msgstr ""
 
@@ -3818,7 +3823,8 @@ msgstr ""
 msgid "active"
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:1807
+#: ../../src/gui/channellist.cpp:1807 ../../src/gui/channellist.cpp:1808
+#: ../../src/gui/channellist.cpp:1809
 msgid "add channel to my favorites"
 msgstr ""
 
@@ -4016,7 +4022,8 @@ msgstr ""
 msgid "default center"
 msgstr ""
 
-#: ../../src/gui/channellist.cpp:1804
+#: ../../src/gui/channellist.cpp:1804 ../../src/gui/channellist.cpp:1805
+#: ../../src/gui/channellist.cpp:1806
 msgid "delete"
 msgstr ""
 
