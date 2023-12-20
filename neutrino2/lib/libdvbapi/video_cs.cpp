@@ -1251,7 +1251,7 @@ void cVideo::run(void)
 {
 	dprintf(DEBUG_NORMAL, "cVideo::run: START\n");
 	
-#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(60,3,100)
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(59,37,100)
 	const AVCodec *codec;
 	const AVInputFormat *inp;
 #else
