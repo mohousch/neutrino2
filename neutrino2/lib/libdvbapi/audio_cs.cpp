@@ -46,6 +46,7 @@
 #include "dmx_cs.h"
 
 extern "C" {
+#include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavutil/opt.h>
 #include <libavutil/samplefmt.h>
@@ -586,9 +587,9 @@ void cAudio::run()
 {
 	dprintf(DEBUG_NORMAL, "cAudio::run: START\n");
 
-	AVCodec *codec;
+	const AVCodec *codec;
 	AVFormatContext *avfc = NULL;
-	AVInputFormat *inp;
+	const AVInputFormat *inp;
 	AVFrame *frame;
 	uint8_t *inbuf = (uint8_t *)av_malloc(INBUF_SIZE);
 	AVPacket avpkt;

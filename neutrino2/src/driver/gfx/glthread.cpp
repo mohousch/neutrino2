@@ -41,7 +41,9 @@
 #include <video_cs.h>
 #include <playback_cs.h>
 
+#ifndef ENABLE_GSTREAMER
 #include <libeplayer3/playback.h>
+#endif
 
 
 //// globals
@@ -54,8 +56,9 @@ int GLHeight;
 ////
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
-extern cPlayback *playback;
+#ifndef ENABLE_GSTREAMER
 extern CPlayBack *player;
+#endif
 
 GLThreadObj::GLThreadObj(int x, int y) : mX(x), mY(y), mReInit(true), mShutDown(false), mInitDone(false)
 {
@@ -301,7 +304,9 @@ void GLThreadObj::render()
 		
 	//
 	bltDisplayBuffer(); // decoded video stream
+#ifndef ENABLE_GSTREAMER
 	bltPlayBuffer();
+#endif
 
 	// OSD
 	if (mState.blit) 
@@ -471,7 +476,7 @@ void GLThreadObj::bltDisplayBuffer()
 	
 	if (audioDecoder)
 		apts = audioDecoder->getPts();
-	//	
+	
 	if (apts != last_apts)
 	{
 		if (apts < vpts)
@@ -481,7 +486,7 @@ void GLThreadObj::bltDisplayBuffer()
 			
 		last_apts = apts;
 		
-		/*
+		//
 		int rate, dummy1, dummy2;
 		videoDecoder->getPictureInfo(dummy1, dummy2, rate);
 		
@@ -494,11 +499,11 @@ void GLThreadObj::bltDisplayBuffer()
 			sleep_us = rate;
 		else if (sleep_us < 1)
 			sleep_us = 1;
-		*/
 	}
 }
 
 //
+#ifndef ENABLE_GSTREAMER
 void GLThreadObj::bltPlayBuffer()
 {
 	if (!player)
@@ -576,4 +581,6 @@ void GLThreadObj::bltPlayBuffer()
 			sleep_us = 1;
 	}
 }
+#endif
+
 

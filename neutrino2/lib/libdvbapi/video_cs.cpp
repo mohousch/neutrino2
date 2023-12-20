@@ -52,6 +52,7 @@
 #include "dmx_cs.h"
 
 extern "C" {
+#include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavutil/imgutils.h>
 #include <libswscale/swscale.h>
@@ -1250,11 +1251,11 @@ void cVideo::run(void)
 {
 	dprintf(DEBUG_NORMAL, "cVideo::run: START\n");
 	
-	AVCodec *codec;
+	const AVCodec *codec;
 	AVCodecParameters *p = NULL;
 	AVCodecContext *c = NULL;
 	AVFormatContext *avfc = NULL;
-	AVInputFormat *inp;
+	const AVInputFormat *inp;
 	AVFrame *frame, *rgbframe;
 	uint8_t *inbuf = (uint8_t *)av_malloc(INBUF_SIZE);
 	AVPacket avpkt;

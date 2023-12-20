@@ -43,6 +43,7 @@
 
 // fribidi
 #include <fribidi/fribidi.h>
+#include <pthread.h>
 
 
 ////
