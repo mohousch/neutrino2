@@ -35,10 +35,12 @@ extern "C" {
 #include <libavutil/rational.h>
 }
 
+#include <dirent.h>
+
 #include <config.h>
 
-//#define USE_OPENGL
- 
+
+//// 
 #ifdef USE_OPENGL
 typedef enum
 {
@@ -52,11 +54,29 @@ typedef enum
 	FRAME_RATE_60
 } FRAME_RATE;
 
-#define VDEC_MAXBUFS 0x40
+#define VDEC_MAXBUFS 				0x40
 #endif
 
 //// defines
-#define AAC_HEADER_LENGTH       7
+#define AAC_HEADER_LENGTH       		7
+
+#define INVALID_PTS_VALUE                       0x200000000ull
+
+//#define BIG_READS
+#if defined (BIG_READS)
+#define BLOCK_COUNT                             8
+#else
+#define BLOCK_COUNT                             1
+#endif
+#define TP_PACKET_SIZE                          188
+#define BD_TP_PACKET_SIZE                       192
+#define NUMBER_PACKETS                          (199*BLOCK_COUNT)
+#define BUFFER_SIZE                             (TP_PACKET_SIZE*NUMBER_PACKETS)
+#define PADDING_LENGTH                          (1024*BLOCK_COUNT)
+
+// subtitle hacks ->for file subtitles
+#define TEXTSRTOFFSET 				100
+#define TEXTSSAOFFSET 				200
 
 typedef ssize_t (* WriteV_t)(int, const struct iovec *, int);
  
@@ -129,6 +149,13 @@ class CPlayBack : public OpenThreads::Thread
 			enum AVCodecID avCodecId;
 			
 		} pcmPrivateData_t;
+		
+		typedef struct BitPacker_s
+		{
+			unsigned char*      Ptr;
+			unsigned int        BitBuffer;
+			int                 Remaining;
+		} BitPacker_t;
 		
 		////
 		typedef enum 
@@ -335,6 +362,14 @@ class CPlayBack : public OpenThreads::Thread
 		bool hasPlayThreadStarted;
 		
 		////
+		void PutBits(BitPacker_t * ld, unsigned int code, unsigned int length);
+		void FlushBits(BitPacker_t * ld);
+		void getExtension(char * FILENAMEname, char ** extension);
+		void getUPNPExtension(char * FILENAMEname, char ** extension) ;
+		char * basename(char * name);
+		char * dirname(char * name);
+		uint32_t ReadUint32(uint8_t *buffer);
+		uint16_t ReadUInt16(uint8_t *buffer);
 		int aac_get_sample_rate_index (uint32_t sample_rate);
 		char* Codec2Encoding(AVCodecContext *codec, int* version);
 		int64_t calcPts(AVStream* stream, AVPacket* packet);

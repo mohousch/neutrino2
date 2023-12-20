@@ -54,11 +54,9 @@ extern "C" {
 }
 
 #include <playback.h>
-#include "misc.h"
-//#include "aac.h"
-//#include "pcm.h"
 
 
+//// defines
 #define PLAYBACK_DEBUG
 #define PLAYBACK_SILENT
 
@@ -108,6 +106,168 @@ static ao_device *adevice = NULL;
 //static AVCodecContext *c = NULL;
 //static AVCodecParameters *p = NULL;
 #endif
+
+////
+void CPlayBack::PutBits(BitPacker_t * ld, unsigned int code, unsigned int length)
+{
+	unsigned int bit_buf;
+	int bit_left;
+
+	bit_buf = ld->BitBuffer;
+	bit_left = ld->Remaining;
+
+	playback_printf(100, "code = %d, length = %d, bit_buf = 0x%x, bit_left = %d\n", code, length, bit_buf, bit_left);
+
+	if (length < bit_left)
+	{
+		/* fits into current buffer */
+		bit_buf = (bit_buf << length) | code;
+		bit_left -= length;
+	}
+	else
+	{
+		/* doesn't fit */
+		bit_buf <<= bit_left;
+		bit_buf |= code >> (length - bit_left);
+		ld->Ptr[0] = (char)(bit_buf >> 24);
+		ld->Ptr[1] = (char)(bit_buf >> 16);
+		ld->Ptr[2] = (char)(bit_buf >> 8);
+		ld->Ptr[3] = (char)bit_buf;
+		ld->Ptr   += 4;
+		length    -= bit_left;
+		bit_buf    = code & ((1 << length) - 1);
+		bit_left   = 32 - length;
+		bit_buf = code;
+	}
+
+	playback_printf(100, "bit_left = %d, bit_buf = 0x%x\n", bit_left, bit_buf);
+
+	/* writeback */
+	ld->BitBuffer = bit_buf;
+	ld->Remaining = bit_left;
+}
+
+void CPlayBack::FlushBits(BitPacker_t * ld)
+{
+	ld->BitBuffer <<= ld->Remaining;
+	
+	while (ld->Remaining < 32)
+	{
+		playback_printf(100, "flushing 0x%2.2x\n", ld->BitBuffer >> 24);
+
+		*ld->Ptr++ = ld->BitBuffer >> 24;
+		ld->BitBuffer <<= 8;
+		ld->Remaining += 8;
+	}
+	
+	ld->Remaining = 32;
+	ld->BitBuffer = 0;
+}
+
+//
+void CPlayBack::getExtension(char * FILENAMEname, char ** extension) 
+{
+	int i = 0;
+	int stringlength;
+
+	if (extension == NULL)
+		return;
+	  
+	*extension = NULL;
+	
+	if (FILENAMEname == NULL)
+		return;
+
+	stringlength = (int) strlen(FILENAMEname);
+
+	for (i = 0; stringlength - i > 0; i++) 
+	{
+		if (FILENAMEname[stringlength - i - 1] == '.') 
+		{
+			*extension = strdup(FILENAMEname+(stringlength - i));
+			break;
+		}
+	}
+}
+
+void CPlayBack::getUPNPExtension(char * FILENAMEname, char ** extension) 
+{
+	char* str;
+
+	if (extension == NULL)
+		return;
+	  
+	*extension = NULL;
+	
+	if (FILENAMEname == NULL)
+		return;
+
+	str = strstr(FILENAMEname, "ext=");
+
+	if (str != NULL)
+	{
+		*extension = strdup(str + strlen("ext=") + 1);
+		return;
+	}
+	*extension = NULL;
+}
+
+//
+char * CPlayBack::basename(char * name)
+{
+	int i = 0;
+	int pos = 0;
+
+	while(name[i] != 0)
+	{
+		if(name[i] == '/')
+			pos = i;
+		i++;
+	}
+
+	if(name[pos] == '/')
+		pos++;
+
+	return name + pos;
+}
+
+//
+char * CPlayBack::dirname(char * name)
+{
+	static char path[100];
+	int i = 0;
+	int pos = 0;
+
+	while((name[i] != 0) && (i < sizeof(path)))
+	{
+		if(name[i] == '/')
+			pos = i;
+		path[i] = name[i];
+		i++;
+	}
+
+	path[i] = 0;
+	path[pos] = 0;
+
+	return path;
+}
+
+uint32_t CPlayBack::ReadUint32(uint8_t *buffer)
+{
+	uint32_t num = (uint32_t)buffer[0] << 24 |
+	               (uint32_t)buffer[1] << 16 |
+	               (uint32_t)buffer[2] << 8  |
+	               (uint32_t)buffer[3];
+	return num;
+}
+
+uint16_t CPlayBack::ReadUInt16(uint8_t *buffer)
+{
+	uint16_t num = (uint16_t)buffer[0] << 8 |
+	               (uint16_t)buffer[1];
+	return num;
+}
+
 
 //
 int CPlayBack::aac_get_sample_rate_index (uint32_t sample_rate)
