@@ -498,8 +498,7 @@ void GLThreadObj::bltDisplayBuffer()
 	}
 }
 
-////
-#if 1
+//
 void GLThreadObj::bltPlayBuffer()
 {
 	if (!player)
@@ -562,7 +561,7 @@ void GLThreadObj::bltPlayBuffer()
 			
 		last_apts = apts;
 		
-		/*
+		//
 		int rate = 0;
 		player->getRate(rate);
 		
@@ -575,8 +574,6 @@ void GLThreadObj::bltPlayBuffer()
 			sleep_us = rate;
 		else if (sleep_us < 1)
 			sleep_us = 1;
-		*/
 	}
 }
-#endif
 

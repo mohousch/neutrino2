@@ -1,5 +1,6 @@
 /*
- * playback.h 12.12.202023 mohousch.
+ * playback.h 12.12.2023 mohousch.
+ * based on libeplayer3
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -289,7 +290,7 @@ class CPlayBack : public OpenThreads::Thread
 				int64_t mPts;
 				AVRational mAR;
 		};
-		int buf_in, buf_out, buf_num;
+		//int buf_in, buf_out, buf_num;
 		
 		SWFramebuffer buffers[VDEC_MAXBUFS];
 		int dec_w;

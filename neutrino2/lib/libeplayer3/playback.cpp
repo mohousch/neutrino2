@@ -1,5 +1,6 @@
 /*
- * playback.cpp 12.12.202023 mohousch.
+ * playback.cpp 12.12.2023 mohousch.
+ * based on libeplayer3
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -502,9 +503,6 @@ CPlayBack::CPlayBack()
 	latestPts = 0;
 	
 	////
-	buf_num = 0;
-	buf_in = 0;
-	buf_out = 0;
 	dec_w = 0;
 	dec_h = 0;
 	dec_r = 0;
@@ -602,9 +600,6 @@ int CPlayBack::playbackOpen(char *filename)
 	    	return cERR_PLAYBACK_ERROR;
 	}
 	
-	buf_num = 0;
-	buf_in = 0;
-	buf_out = 0;
 	dec_w = 0;
 	dec_h = 0;
 	dec_r = 0;
@@ -1644,19 +1639,7 @@ CPlayBack::SWFramebuffer *CPlayBack::getDecBuf(void)
 {
 	buf_m.lock();
 	
-	//
-	if (buf_num == 0)
-	{
-		buf_m.unlock();
-		return NULL;
-	}
-	
-	SWFramebuffer *p = &buffers[buf_out];
-	
-	//
-	buf_out++;
-	buf_num--;
-	buf_out %= VDEC_MAXBUFS;
+	SWFramebuffer *p = &buffers[0];
 
 	buf_m.unlock();
 	
@@ -1703,7 +1686,6 @@ int CPlayBack::writeVideoData(Track_t *track, AVPacket *packet)
 	AVFrame *rgbframe = NULL;
 	struct SwsContext *convert = NULL;
 	AVCodec *codec = NULL;
-	AVCodecContext *ctx = NULL;
 	
 	time_t warn_r = 0;
 	time_t warn_d = 0;
@@ -1712,16 +1694,15 @@ int CPlayBack::writeVideoData(Track_t *track, AVPacket *packet)
 	rgbframe = av_frame_alloc();
 	
 	codec = avcodec_find_decoder(track->stream->codec->codec_id);
-	ctx = track->stream->codec;
 					
 	// init avcontext
-	av_ret = avcodec_open2(ctx, codec, NULL);
+	av_ret = avcodec_open2(track->stream->codec, codec, NULL);
 		
 	//
 	int got_frame = 0;
 	
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
-	av_ret = avcodec_decode_video2(ctx, frame, &got_frame, packet);
+	av_ret = avcodec_decode_video2(track->stream->codec, frame, &got_frame, packet);
 		
 	if (av_ret < 0)
 	{
@@ -1731,7 +1712,7 @@ int CPlayBack::writeVideoData(Track_t *track, AVPacket *packet)
 		}
 	}
 #else
-	av_ret = avcodec_send_packet(ctx, packet);
+	av_ret = avcodec_send_packet(track->stream->codec, packet);
 		
 	if (av_ret != 0 && av_ret != AVERROR(EAGAIN))
 	{
@@ -1741,7 +1722,7 @@ int CPlayBack::writeVideoData(Track_t *track, AVPacket *packet)
 		}
 	}
 		
-	av_ret = avcodec_receive_frame(ctx, frame);
+	av_ret = avcodec_receive_frame(track->stream->codec, frame);
 	
 	if (av_ret == 0)
 		got_frame = 1;
@@ -1750,36 +1731,34 @@ int CPlayBack::writeVideoData(Track_t *track, AVPacket *packet)
 	// setup swsscaler
 	if (got_frame)
 	{
-		unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+		unsigned int need = av_image_get_buffer_size(AV_PIX_FMT_RGB32, track->stream->codec->width, track->stream->codec->height, 1);
 						
-		convert = sws_getContext(ctx->width, ctx->height, ctx->pix_fmt,
-                                        ctx->width, ctx->height, AV_PIX_FMT_RGB32,
-                                        SWS_BILINEAR, NULL, NULL, NULL);
+		convert = sws_getContext(track->stream->codec->width, track->stream->codec->height, track->stream->codec->pix_fmt, track->stream->codec->width, track->stream->codec->height, AV_PIX_FMT_RGB32, SWS_BILINEAR, NULL, NULL, NULL);
 							
 		if (convert)
 		{
 			buf_m.lock();
 				
-			SWFramebuffer *f = &buffers[buf_in];
+			SWFramebuffer *f = &buffers[0];
 				
 			if (f->size() < need)
 				f->resize(need);
 								
-			av_image_fill_arrays(rgbframe->data, rgbframe->linesize, &(*f)[0], AV_PIX_FMT_RGB32, ctx->width, ctx->height, 1);
+			av_image_fill_arrays(rgbframe->data, rgbframe->linesize, &(*f)[0], AV_PIX_FMT_RGB32, track->stream->codec->width, track->stream->codec->height, 1);
 
-			sws_scale(convert, frame->data, frame->linesize, 0, ctx->height, rgbframe->data, rgbframe->linesize);
+			sws_scale(convert, frame->data, frame->linesize, 0, track->stream->codec->height, rgbframe->data, rgbframe->linesize);
 			
 			//
-			if (dec_w != ctx->width || dec_h != ctx->height)
+			if (dec_w != track->stream->codec->width || dec_h != track->stream->codec->height)
 			{
-				playback_printf(10, "CPlayBack::run: pic changed %dx%d -> %dx%d\n", dec_w, dec_h, ctx->width, ctx->height);
-				dec_w = ctx->width;
-				dec_h = ctx->height;
+				playback_printf(10, "CPlayBack::run: pic changed %dx%d -> %dx%d\n", dec_w, dec_h, track->stream->codec->width, track->stream->codec->height);
+				dec_w = track->stream->codec->width;
+				dec_h = track->stream->codec->height;
 				w_h_changed = true;
 			}
 							
-			f->width(ctx->width);
-			f->height(ctx->height);	
+			f->width(track->stream->codec->width);
+			f->height(track->stream->codec->height);	
 			
 			//
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
@@ -1800,19 +1779,7 @@ int CPlayBack::writeVideoData(Track_t *track, AVPacket *packet)
 							
 			f->AR(a);
 							
-			//
-			buf_in++;
-			buf_in %= VDEC_MAXBUFS;
-			buf_num++;
-							
-			if (buf_num > (VDEC_MAXBUFS - 1))
-			{
-				buf_out++;
-				buf_out %= VDEC_MAXBUFS;
-				buf_num--;
-			}
-							
-			//dec_r = ctx->time_base.den / (ctx->time_base.num * ctx->ticks_per_frame);
+			//dec_r = track->stream->codec->time_base.den / (track->stream->codec->time_base.num * track->stream->codec->ticks_per_frame);
 			dec_r = track->frame_rate/1000;
 							
 			buf_m.unlock();
