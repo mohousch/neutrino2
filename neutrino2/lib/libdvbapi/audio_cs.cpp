@@ -587,9 +587,14 @@ void cAudio::run()
 {
 	dprintf(DEBUG_NORMAL, "cAudio::run: START\n");
 
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(60,3,100)
 	const AVCodec *codec;
-	AVFormatContext *avfc = NULL;
 	const AVInputFormat *inp;
+#else
+	AVCodec *codec;
+	AVInputFormat *inp;
+#endif
+	AVFormatContext *avfc = NULL;
 	AVFrame *frame;
 	uint8_t *inbuf = (uint8_t *)av_malloc(INBUF_SIZE);
 	AVPacket avpkt;
