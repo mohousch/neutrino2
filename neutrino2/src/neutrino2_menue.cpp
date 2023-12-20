@@ -58,6 +58,9 @@
 
 #include <driver/encoding.h>
 
+////
+#include <libeplayer3/playback.h>
+
 
 // mainmenu
 void CNeutrinoApp::mainMenu(void)

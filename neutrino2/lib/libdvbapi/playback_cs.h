@@ -24,6 +24,7 @@
 #include <string>
 
 #include <config.h>
+#include "video_cs.h"
 
 
 class cPlayback
@@ -61,3 +62,4 @@ class cPlayback
 };
 
 #endif
+

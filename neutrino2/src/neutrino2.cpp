@@ -576,7 +576,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 
 	//
 	strcpy( g_settings.font_file, configfile.getString( "font_file", DATADIR "/fonts/arial.ttf" ).c_str() );
-	g_settings.icons_dir = configfile.getString("icons_dir", DATADIR "/icons/");
+//	g_settings.icons_dir = configfile.getString("icons_dir", DATADIR "/icons/");
 	g_settings.buttons_dir = configfile.getString("buttons_dir", DATADIR "/buttons/");
 	g_settings.hints_dir = configfile.getString("hints_dir", DATADIR "/hints/");
 	g_settings.spinner_dir = configfile.getString("spinner_dir", DATADIR "/spinner/");
@@ -4743,7 +4743,7 @@ int CNeutrinoApp::run(int argc, char **argv)
 	g_PluginList->loadPlugins();
 	
 	// load selected skin
-	loadSkin(g_settings.preferred_skin);
+	//loadSkin(g_settings.preferred_skin);
 	
 	// zapit	
 	zapitCfg.lastchannelmode = g_settings.lastChannelMode;

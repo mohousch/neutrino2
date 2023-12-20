@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2-plugins 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-11-18 11:15+0100\n"
+"POT-Creation-Date: 2023-11-24 12:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,22 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../upnp/upnp.cpp:615 ../../upnp/upnp.cpp:627
+#: ../../upnp/upnp.cpp:614 ../../upnp/upnp.cpp:626
 msgid "Information"
 msgstr ""
 
-#: ../../upnp/upnp.cpp:627
+#: ../../upnp/upnp.cpp:626
 msgid "No UPnP servers found"
 msgstr ""
 
-#: ../../upnp/upnp.cpp:84
+#: ../../upnp/upnp.cpp:83
 msgid "Scan again"
 msgstr ""
 
-#: ../../upnp/upnp.cpp:615
+#: ../../upnp/upnp.cpp:614
 msgid "Scanning for UPnP servers"
 msgstr ""
 
-#: ../../upnp/upnp.cpp:664 ../../upnp/upnp.cpp:777
+#: ../../upnp/upnp.cpp:663 ../../upnp/upnp.cpp:776
 msgid "UPnP Browser"
 msgstr ""

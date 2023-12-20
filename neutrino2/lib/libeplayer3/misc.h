@@ -48,7 +48,7 @@ void FlushBits(BitPacker_t * ld);
 /* MISC Functions                */
 /* ***************************** */
 
-static inline void getExtension(char * FILENAMEname, char ** extension) 
+inline void getExtension(char * FILENAMEname, char ** extension) 
 {
 	int i = 0;
 	int stringlength;
@@ -73,7 +73,7 @@ static inline void getExtension(char * FILENAMEname, char ** extension)
 	}
 }
 
-static inline void getUPNPExtension(char * FILENAMEname, char ** extension) 
+inline void getUPNPExtension(char * FILENAMEname, char ** extension) 
 {
 	char* str;
 
@@ -96,7 +96,7 @@ static inline void getUPNPExtension(char * FILENAMEname, char ** extension)
 }
 
 /* the function returns the base name */
-static inline char * basename(char * name)
+inline char * basename(char * name)
 {
 	int i = 0;
 	int pos = 0;
@@ -115,7 +115,7 @@ static inline char * basename(char * name)
 }
 
 /* the function returns the directry name */
-static inline char * dirname(char * name)
+inline char * dirname(char * name)
 {
 	static char path[100];
 	int i = 0;
@@ -135,7 +135,7 @@ static inline char * dirname(char * name)
 	return path;
 }
 
-static inline uint32_t ReadUint32(uint8_t *buffer)
+inline uint32_t ReadUint32(uint8_t *buffer)
 {
 	uint32_t num = (uint32_t)buffer[0] << 24 |
 	               (uint32_t)buffer[1] << 16 |
@@ -144,7 +144,7 @@ static inline uint32_t ReadUint32(uint8_t *buffer)
 	return num;
 }
 
-static inline uint16_t ReadUInt16(uint8_t *buffer)
+inline uint16_t ReadUInt16(uint8_t *buffer)
 {
 	uint16_t num = (uint16_t)buffer[0] << 8 |
 	               (uint16_t)buffer[1];

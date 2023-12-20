@@ -210,6 +210,9 @@ class CTestMenu : public CMenuTarget
 		void testSkinWidget();
 		void testSkinWidget3();
 		
+		//// misc
+		void testPlayBack();
+		
 		//// paint()
 		void showMenu();
 		
@@ -4750,6 +4753,19 @@ void CTestMenu::testSkinWidget3()
 	}
 }
 
+void CTestMenu::testPlayBack()
+{
+	dprintf(DEBUG_NORMAL, "CTestMenu::testPlayBack:\n");
+	
+	/*
+	CPlayBack *playback = new CPlayBack();
+	playback->playbackOpen("/home/mohousch/Videos/3sat_HD_20230731_102144.ts");
+	
+	delete playback;
+	playback = NULL;
+	*/
+}
+
 // exec
 int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 {
@@ -6264,6 +6280,12 @@ int CTestMenu::exec(CMenuTarget *parent, const std::string &actionKey)
 		
 		return RETURN_REPAINT;
 	}
+	else if (actionKey == "playback")
+	{
+		testPlayBack();
+		
+		return RETURN_REPAINT;
+	}
 
 	showMenu();
 	
@@ -6452,6 +6474,10 @@ void CTestMenu::showMenu()
 	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "SKIN") );		
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET", true, NULL, this, "skin"));
 	mainMenu->addItem(new CMenuForwarder("SKIN-WIDGET3", true, NULL, this, "skin3"));
+	
+	//
+	mainMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE | CMenuSeparator::STRING, "MISC") );
+	mainMenu->addItem(new CMenuForwarder("PLAYBACK", true, NULL, this, "playback"));	
 	
 	mWidget->exec(NULL, "");
 	

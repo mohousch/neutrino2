@@ -176,6 +176,9 @@
 #include <video_cs.h>
 #include <audio_cs.h>
 
+////
+#include <libeplayer3/playback.h>
+
 
 //// globals
 extern  SNeutrinoSettings g_settings;

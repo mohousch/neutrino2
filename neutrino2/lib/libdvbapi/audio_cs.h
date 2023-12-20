@@ -135,10 +135,7 @@ class cAudio
 		int setHwAC3Delay(int delay);
 		
 #ifdef USE_OPENGL
-		int64_t getPts()
-		{
-			return curr_pts;
-		}
+		int64_t getPts(){return curr_pts;};
 #endif
 };
 

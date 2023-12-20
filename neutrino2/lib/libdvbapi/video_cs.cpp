@@ -1291,7 +1291,6 @@ void cVideo::run(void)
 	thread_running = true;
 	
 	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
-	//if (avformat_open_input(&avfc, "/home/mohousch/Videos/RTL_Television_20131226_003014.ts", NULL, 0) != 0)
 	{
 		dprintf(DEBUG_NORMAL, "cVideo::run: Could not open input\n");
 		goto out;
@@ -1359,6 +1358,7 @@ void cVideo::run(void)
 		
 		//
 		int got_frame = 0;
+		
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57,37,100)
 		av_ret = avcodec_decode_video2(c, frame, &got_frame, &avpkt);
 		
@@ -1386,6 +1386,7 @@ void cVideo::run(void)
 		}
 		
 		av_ret = avcodec_receive_frame(c, frame);
+		
 		if (!av_ret)
 			got_frame = 1;
 #endif

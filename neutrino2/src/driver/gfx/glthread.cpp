@@ -41,6 +41,8 @@
 #include <video_cs.h>
 #include <playback_cs.h>
 
+#include <libeplayer3/playback.h>
+
 
 //// globals
 GLThreadObj *gThiz = 0; /* GLUT does not allow for an arbitrary argument to the render func */
@@ -53,6 +55,7 @@ int GLHeight;
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
 extern cPlayback *playback;
+extern CPlayBack *player;
 
 GLThreadObj::GLThreadObj(int x, int y) : mX(x), mY(y), mReInit(true), mShutDown(false), mInitDone(false)
 {
@@ -298,7 +301,7 @@ void GLThreadObj::render()
 		
 	//
 	bltDisplayBuffer(); // decoded video stream
-	//bltPlayBuffer();
+	bltPlayBuffer();
 
 	// OSD
 	if (mState.blit) 
@@ -329,6 +332,7 @@ void GLThreadObj::render()
 	}
 
 	// simply limit to 30 Hz, if anyone wants to do this properly, feel free
+	//printf("sleep_us:%d\n", sleep_us);
 	usleep(sleep_us);
 	
 	glutPostRedisplay();
@@ -477,10 +481,9 @@ void GLThreadObj::bltDisplayBuffer()
 			
 		last_apts = apts;
 		
-		//
+		/*
 		int rate, dummy1, dummy2;
 		videoDecoder->getPictureInfo(dummy1, dummy2, rate);
-		//rate = videoDecoder->getRate();
 		
 		if (rate > 0)
 			rate = 2000000 / rate;
@@ -491,31 +494,21 @@ void GLThreadObj::bltDisplayBuffer()
 			sleep_us = rate;
 		else if (sleep_us < 1)
 			sleep_us = 1;
+		*/
 	}
 }
 
 ////
-extern "C" {
-#include <libavformat/avformat.h>
-#include <libavutil/imgutils.h>
-#include <libswscale/swscale.h>
-}
-
-extern uint8_t *rgbframe;
-extern int rgbframe_width;
-extern int rgbframe_height;
-extern uint64_t rgbframe_pts;
-extern int rgbframe_rate;
-
+#if 1
 void GLThreadObj::bltPlayBuffer()
 {
-	if (!playback->playing)
+	if (!player)
 		return;
-		
+			
 	static bool warn = true;
-	//uint8_t *buf = videoDecoder->getDecBuf();
-	/*
-	if (!rgbframe)
+	CPlayBack::SWFramebuffer *buf = player->getDecBuf();
+	
+	if (!buf)
 	{	
 		warn = false;
 		
@@ -528,52 +521,62 @@ void GLThreadObj::bltPlayBuffer()
 		
 		return;
 	}
-	*/
 	
 	warn = true;
-	int w = rgbframe_width, h = rgbframe_height;
+	int w = buf->width(), h = buf->height();
 	
 	if (w == 0 || h == 0)
 		return;
 
+	AVRational a = buf->AR();
+	
+	if (a.den != 0 && a.num != 0 && av_cmp_q(a, _mVA))
+	{
+		_mVA = a;
+		// _mVA is the raw buffer's aspect, mVA is the real scaled output aspect
+		av_reduce(&mVA.num, &mVA.den, w * a.num, h * a.den, INT_MAX);
+		mVAchanged = true;
+	}
+
 	// render frame
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, mState.displaypbo);
-	glBufferData(GL_PIXEL_UNPACK_BUFFER, sizeof(rgbframe), rgbframe, GL_STREAM_DRAW_ARB);
+	glBufferData(GL_PIXEL_UNPACK_BUFFER, buf->size(), &(*buf)[0], GL_STREAM_DRAW_ARB);
 
 	glBindTexture(GL_TEXTURE_2D, mState.displaytex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rgbframe_width, rgbframe_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, 0);
 
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 
-	// rate
+	//
 	int64_t apts = 0;
-	int64_t vpts = rgbframe_pts + 18000;
+	int64_t vpts = buf->pts() + 18000;
 	
-	//if (audioDecoder)
-	//	apts = audioDecoder->getPts();
-	
-	//if (apts != last_apts)
+	apts = player->getPts();
+		
+	if (apts != last_apts)
 	{
-		//if (apts < vpts)
-		//	sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
-		//else if (sleep_us > 1000)
-		//	sleep_us -= 1000;
+		if (apts < vpts)
+			sleep_us = (sleep_us*2 + (vpts - apts) * 10 / 9) / 3;
+		else if (sleep_us > 1000)
+			sleep_us -= 1000;
 			
-		//last_apts = apts;
+		last_apts = apts;
 		
-		//
-		//int rate, dummy1, dummy2;
-		//videoDecoder->getPictureInfo(dummy1, dummy2, rate);
+		/*
+		int rate = 0;
+		player->getRate(rate);
 		
-		if (rgbframe_rate > 0)
-			rgbframe_rate = 2000000 / rgbframe_rate;
+		if (rate > 0)
+			rate = 2000000 / rate;
 		else
-			rgbframe_rate = 50000;
+			rate = 50000;
 			
-		if (sleep_us > rgbframe_rate)
-			sleep_us = rgbframe_rate;
+		if (sleep_us > rate)
+			sleep_us = rate;
 		else if (sleep_us < 1)
 			sleep_us = 1;
+		*/
 	}
 }
+#endif
 

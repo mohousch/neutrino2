@@ -1,8 +1,7 @@
 #!/bin/bash
 
 if [ ! -z $1 ] ; then
-	mkdir -p buildlogs
-	LOGFILE=buildlogs/make.log
+	LOGFILE=make.log
 
 	echo "--- DISTRIBUTION ---" > $LOGFILE
 	cat /etc/*release >> $LOGFILE

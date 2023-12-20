@@ -61,9 +61,9 @@ class GLThreadObj : public OpenThreads::Thread
 		AVRational mVA;         /* video aspect ratio */
 		AVRational _mVA;        /* for detecting changes in mVA */
 		bool mVAchanged;
-		float zoom;         /* for cropping */
+		float zoom;         	/* for cropping */
 		float xscale;           /* and aspect ratio */
-		int mCrop;          /* DISPLAY_AR_MODE */
+		int mCrop;          	/* DISPLAY_AR_MODE */
 
 	private:
 		int mX;				/* window size */
@@ -73,15 +73,14 @@ class GLThreadObj : public OpenThreads::Thread
 		bool mInitDone;			/* condition predicate */
 
 		std::vector<unsigned char> mOSDBuffer; /* silly bounce buffer */
-		std::vector<unsigned char> mDisplayBuffer; /* silly bounce buffer */
 
 		std::map<unsigned char, neutrino_msg_t> mKeyMap;
 		std::map<int, neutrino_msg_t> mSpecialMap;
 
 		static void resizecb(int w, int h);
 		void checkReinit(int x, int y);		/* e.g. in case window was resized */
-		static void rendercb();		/* callback for GLUT */
-		void render();			/* actual render function */
+		static void rendercb();			/* callback for GLUT */
+		void render();				/* actual render function */
 		static void keyboardcb(unsigned char key, int x, int y);
 		static void specialcb(int key, int x, int y);
 
