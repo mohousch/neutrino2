@@ -161,7 +161,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return "V_H263";
 			
 		case AV_CODEC_ID_FLV1:
-			return "V_FLV";
+			return "V_FLV1";
 			
 		case AV_CODEC_ID_VP5:
     		case AV_CODEC_ID_VP6:
@@ -220,17 +220,17 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 #if LIBAVCODEC_VERSION_MAJOR < 54
 		case CODEC_ID_FFH264:
 #endif
-			return "V_MPEG4/ISO/AVC";
+			return "V_H264";
 			
 #if LIBAVCODEC_VERSION_INT > AV_VERSION_INT(55, 92, 100)
     		case AV_CODEC_ID_HEVC:
         		return "V_HEVC";
 #endif
 
-		case AV_CODEC_ID_THEORA:
+		case AV_CODEC_ID_THEORA:	// no codec handler
 			return "V_THEORA";
 		
-		/* audio */	
+		// audio
 		case AV_CODEC_ID_MP2:
 			return "A_MPEG/L3";
 			
@@ -282,7 +282,7 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
     		case AV_CODEC_ID_AMR_WB:
         		return "A_AMR";
 			
-		/* subtitle */
+		// subtitle
 		case AV_CODEC_ID_SSA:
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(55, 3, 100)
     		case AV_CODEC_ID_ASS:

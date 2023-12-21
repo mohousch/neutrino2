@@ -751,7 +751,7 @@ static int writeReverseData(void* _call)
 static WriterCaps_t caps = {
 	"h264",
 	eVideo,
-	"V_MPEG4/ISO/AVC",
+	"V_H264",
 	VIDEO_STREAMTYPE_MPEG4_H264
 };
 

@@ -186,6 +186,21 @@ struct Writer_s WriterVideoH263 = {
 	&reset,
 	&writeData,
 	NULL,
-	&caps_h263,
+	&caps_h263
+};
+
+// flv1
+static WriterCaps_t caps_flv1 = {
+	"flv1",
+	eVideo,
+	"V_FLV1",
+	VIDEO_STREAMTYPE_MPEG4_H263
+};
+
+struct Writer_s WriterVideoFLV1 = {
+	&reset,
+	&writeData,
+	NULL,
+	&caps_flv1
 };
 
