@@ -35,6 +35,7 @@
 #include "playback_cs.h"
 
 #include <driver/gfx/framebuffer.h>
+
 #include <system/debug.h>
 
 
@@ -90,16 +91,6 @@ GstBus * bus = NULL;
 bool end_eof = false;
 #define HTTP_TIMEOUT 30
 #else
-//#include <common.h>
-//#include <subtitle.h>
-//#include <linux/fb.h>
-
-//extern OutputHandler_t	OutputHandler;
-//extern PlaybackHandler_t	PlaybackHandler;
-//extern ContainerHandler_t	ContainerHandler;
-//extern ManagerHandler_t	ManagerHandler;
-
-//static Context_t * player = NULL;
 #include <libeplayer3/playback.h>
 
 CPlayBack * player = NULL;
@@ -511,38 +502,6 @@ bool cPlayback::Open()
 	m_gst_playbin = gst_element_factory_make("playbin", "playbin");
 #endif
 #else
-/*
-	player = (Context_t*)malloc(sizeof(Context_t));
-
-	//init player
-	if(player) 
-	{
-		player->playback	= &PlaybackHandler;
-		player->output		= &OutputHandler;
-		player->container	= &ContainerHandler;
-		player->manager		= &ManagerHandler;
-	}
-
-	// registration of output devices
-	if(player && player->output) 
-	{
-		player->output->Command(player, OUTPUT_ADD, (void*)"audio");
-		player->output->Command(player, OUTPUT_ADD, (void*)"video");		
-		player->output->Command(player, OUTPUT_ADD, (void*)"subtitle");		
-	}
-
-	// subtitle
-	SubtitleOutputDef_t out;
-
-	out.screen_width = CFrameBuffer::getInstance()->getScreenWidth();
-	out.screen_height = CFrameBuffer::getInstance()->getScreenHeight();
-	out.framebufferFD = CFrameBuffer::getInstance()->getFileHandle();
-	out.destination   = (unsigned char *)CFrameBuffer::getInstance()->getFrameBufferPointer();
-	out.destStride    = CFrameBuffer::getInstance()->getStride();
-	out.shareFramebuffer = 1;
-    
-	player->output->subtitle->Command(player, (OutputCmd_t)OUTPUT_SET_SUBTITLE_OUTPUT, (void*) &out);
-*/
 	player = new CPlayBack();
 #endif
 
@@ -609,25 +568,6 @@ void cPlayback::Close(void)
 		dprintf(DEBUG_NORMAL, "GST playbin closed\n");
 	}
 #else
-/*
-	if(player && player->output) 
-	{
-		player->output->Command(player, OUTPUT_CLOSE, NULL);
-		player->output->Command(player,OUTPUT_DEL, (void*)"audio");
-		player->output->Command(player,OUTPUT_DEL, (void*)"video");		
-		player->output->Command(player,OUTPUT_DEL, (void*)"subtitle");	
-	}
-
-	if(player && player->playback)
-		player->playback->Command(player, PLAYBACK_CLOSE, NULL);
-
-
-	if(player)
-	{
-		free(player);
-		player = NULL;
-	}
-*/
 	if (player)
 	{
 		delete player;
@@ -760,37 +700,13 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 	if(uri != NULL)
 		g_free(uri);
 #else
-/*	
-	//open file
-	if(player && player->playback && player->playback->Command(player, PLAYBACK_OPEN, (char *)file.c_str()) >= 0) 
-	{
-		// play it baby 
-		if(player && player->output && player->playback) 
-		{
-        		player->output->Command(player, OUTPUT_OPEN, NULL);
-			
-			if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) // playback.c uses "int = 0" for "true"
-			{
-				playing = true;
-				mSpeed = 1;
-			}
-		}		
-	}
-	else
-	{
-		dprintf(DEBUG_NORMAL, "cPlayback::Start: failed to start playing file, sorry we can not play\n");
-		playing = false;
-	}
-*/
-	
 	if (player->playbackOpen((char *) file.c_str()))
 	{
-		//player->playbackPlay();
+		//
 		Play();
 		playing = true;
 		mSpeed = 1;
 	}
-	////
 #endif
 
 	dprintf(DEBUG_NORMAL, "cPlayback::Start: (playing %d)\n", playing);	
@@ -813,17 +729,6 @@ bool cPlayback::Play(void)
 		playing = true;
 	}
 #else
-/*
-	if(player && player->output && player->playback) 
-	{
-        	player->output->Command(player, OUTPUT_OPEN, NULL);
-			
-		if (player->playback->Command(player, PLAYBACK_PLAY, NULL) == 0 ) // playback.c uses "int = 0" for "true"
-		{
-			playing = true;
-		}
-	}
-*/
 	if (player->playbackPlay())
 	{
 		playing = true;
@@ -849,13 +754,6 @@ bool cPlayback::Stop(void)
 		gst_element_set_state(m_gst_playbin, GST_STATE_NULL);
 	}
 #else
-/*
-	if(player && player->playback && player->output) 
-		player->playback->Command(player, PLAYBACK_STOP, NULL);
-	
-	if(player && player->container && player->container->selectedContainer)
-		player->container->selectedContainer->Command(player, CONTAINER_STOP, NULL);
-*/
 	player->playbackStop();
 #endif
 
@@ -882,9 +780,6 @@ bool cPlayback::SetAPid(unsigned short pid, int /*_ac3*/)
 
 	if(pid != mAudioStream)
 	{
-		//if(player && player->playback)
-		//	player->playback->Command(player, PLAYBACK_SWITCH_AUDIO, (void*)&track);
-
 		mAudioStream = pid;
 	}
 #endif	
@@ -902,9 +797,6 @@ bool cPlayback::SetSubPid(unsigned short pid)
 
 	if(pid != mSubStream)
 	{
-		//if(player && player->playback)
-		//	player->playback->Command(player, PLAYBACK_SWITCH_SUBTITLE, (void*)&track);
-
 		mSubStream = pid;
 	}
 #endif	
@@ -991,64 +883,6 @@ bool cPlayback::SetSpeed(int speed)
 		}
 	}
 #else
-/*
-	int speedmap = 0;
-	
-	if(player && player->playback) 
-	{
-		if(speed > 1) 		//forwarding
-		{
-			//
-			if (speed > 7) 
-				speed = 7;
-			
-			switch(speed)
-			{
-				case 2: speedmap = 3; break;
-				case 3: speedmap = 7; break;
-				case 4: speedmap = 15; break;
-				case 5: speedmap = 31; break;
-				case 6: speedmap = 63; break;
-				case 7: speedmap = 127; break;
-			}
-
-			player->playback->Command(player, PLAYBACK_FASTFORWARD, (void*)&speedmap);
-		}
-		else if(speed == 0)	//pausing
-		{
-			player->playback->Command(player, PLAYBACK_PAUSE, NULL);
-		}
-		else if (speed < 0)	//backwarding
-		{
-			//
-			if (speed > -1) 
-				speed = -1;
-			
-			if (speed < -7) 
-				speed = -7;
-			
-			switch(speed)
-			{
-				case -1: speedmap = -5; break;
-				case -2: speedmap = -10; break;
-				case -3: speedmap = -20; break;
-				case -4: speedmap = -40; break;
-				case -5: speedmap = -80; break;
-				case -6: speedmap = -160; break;
-				case -7: speedmap = -320; break;
-			}
-			
-			player->playback->Command(player, PLAYBACK_FASTBACKWARD, (void*)&speedmap);
-
-			// trickseek
-			//player->playback->Command(player, PLAYBACK_SEEK, (void*)&speedmap);
-		}
-		else if(speed == 1) 	//continue
-		{
-			player->playback->Command(player, PLAYBACK_CONTINUE, NULL);
-		}
-	}
-*/
 #endif
 
 	mSpeed = speed;
@@ -1069,12 +903,6 @@ bool cPlayback::SetSlow(int slow)
 		trickSeek(0.5);
 	}
 #else
-/*
-	if(player && player->playback) 
-	{
-		player->playback->Command(player, PLAYBACK_SLOWMOTION, (void*)&slow);
-	}
-*/
 #endif
 
 	mSpeed = slow;
@@ -1151,39 +979,6 @@ bool cPlayback::GetPosition(int &position, int &duration)
 		dprintf(DEBUG_DEBUG, "(duration: %d msec)\n", duration);
 	}
 #else
-/*
-	if (player && player->playback && !player->playback->isPlaying) 
-	{	  
-		dprintf(DEBUG_NORMAL, "cPlayback::%s !!!!EOF!!!! < -1\n", __func__);
-		
-		playing = false;
-	
-		return false;
-	} 
-
-	// position
-	uint64_t vpts = 0;
-
-	if(player && player->playback)
-		player->playback->Command(player, PLAYBACK_PTS, &vpts);
-
-	position = vpts/90;
-	
-	dprintf(DEBUG_DEBUG, "%s: position: %d ms ", __FUNCTION__, position);
-	
-	// duration
-	double length = 0;
-
-	if(player && player->playback)
-		player->playback->Command(player, PLAYBACK_LENGTH, &length);
-	
-	if(length < 0) 
-		length = 0;
-
-	duration = (int)(length*1000);
-	
-	dprintf(DEBUG_DEBUG, "(duration: %d ms)\n", duration);
-*/
 #endif
 	
 	return true;
@@ -1214,12 +1009,6 @@ bool cPlayback::SetPosition(int position)
 		gst_element_seek(m_gst_playbin, 1.0, GST_FORMAT_TIME, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_ACCURATE), GST_SEEK_TYPE_SET, time_nanoseconds, GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE);
 	}
 #else
-/*
-	float pos = (position/1000); // in sec
-
-	if(player && player->playback)
-		player->playback->Command(player, PLAYBACK_SEEK, (void*)&pos);
-*/
 #endif
 
 	return true;
@@ -1314,51 +1103,6 @@ void cPlayback::FindAllPids(uint16_t *apids, unsigned short *ac3flags, uint16_t 
 		*numpida = i;
 	}
 #else
-/*
-	char ** TrackList = NULL;
-	
-	// audio pids
-	if(player && player->manager && player->manager->audio) 
-	{
-		player->manager->audio->Command(player, MANAGER_LIST, &TrackList);
-
-		if (TrackList != NULL) 
-		{
-			printf("cPlayback::FindAllPids: AudioTrack List\n");
-			int i = 0,j = 0;
-
-			for (i = 0, j = 0; TrackList[i] != NULL; i += 2, j++) 
-			{
-				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
-				apids[j] = j;
-				
-				if( (!strncmp("A_MPEG/L3", TrackList[i + 1], 9)) || (!strncmp("A_MP3", TrackList[i + 1], 5)) )
-					ac3flags[j] = 4;
-				else if(!strncmp("A_AC3", TrackList[i + 1], 5))
-					ac3flags[j] = 1;
-				else if(!strncmp("A_DTS", TrackList[i + 1], 5))
-					ac3flags[j] = 6;
-				else if(!strncmp("A_AAC", TrackList[i + 1], 5))
-					ac3flags[j] = 5;
-				else if(!strncmp("A_PCM", TrackList[i + 1], 5))
-					ac3flags[j] = 0; 	//todo
-				else if(!strncmp("A_VORBIS", TrackList[i + 1], 8))
-					ac3flags[j] = 0;	//todo
-				else if(!strncmp("A_FLAC", TrackList[i + 1], 6))
-					ac3flags[j] = 0;	//todo
-				else
-					ac3flags[j] = 0;	//todo
-
-				language[j] = TrackList[i];
-				
-				free(TrackList[i]);
-				free(TrackList[i+1]);
-			}
-			free(TrackList);
-			*numpida = j;
-		}
-	}
-*/
 #endif	
 }
 
@@ -1368,33 +1112,6 @@ void cPlayback::FindAllSubPids(uint16_t *apids, uint16_t *numpida, std::string *
 	dprintf(DEBUG_NORMAL, "cPlayback::FindAllSubPids:\n");
 
 #if !defined (ENABLE_GSTREAMER)
-/*
-	char ** TrackList = NULL;
-	
-	if(player && player->manager && player->manager->subtitle) 
-	{
-		player->manager->subtitle->Command(player, MANAGER_LIST, &TrackList);
-
-		if (TrackList != NULL) 
-		{
-			printf("cPlayback::FindAllSubPids: SubTrack List\n");
-			int i = 0, j = 0;
-
-			for (i = 0, j = 0; TrackList[i] != NULL; i += 2, j++) 
-			{
-				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
-				apids[j] = j;
-
-				language[j] = TrackList[i];
-				
-				free(TrackList[i]);
-				free(TrackList[i + 1]);
-			}
-			free(TrackList);
-			*numpida = j;
-		}
-	}
-*/
 #endif
 }
 
