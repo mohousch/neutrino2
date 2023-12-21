@@ -84,7 +84,7 @@ typedef enum
 GstElement * m_gst_playbin = NULL;
 GstElement * audioSink = NULL;
 GstElement * videoSink = NULL;
-GstElement * sink = NULL;
+GstElement *subsink = NULL;
 gchar * uri = NULL;
 GstBus * bus = NULL;
 bool end_eof = false;
@@ -153,7 +153,6 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 	
 	// source
 	GstObject * source;
-	GstElement *subsink;
 	source = GST_MESSAGE_SRC(msg);
 	
 	if (!GST_IS_OBJECT(source))
@@ -235,44 +234,12 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 					gst_tag_list_free(result);
 					break;
 				}
+				
 				if (m_stream_tags)
 					gst_tag_list_free(m_stream_tags);
 				m_stream_tags = result;
 			}
 
-			// id3cover
-			const GValue *gv_image = gst_tag_list_get_value_index(tags, GST_TAG_IMAGE, 0);
-			if ( gv_image )
-			{
-				GstBuffer *buf_image;
-#if GST_VERSION_MAJOR < 1
-				buf_image = gst_value_get_buffer(gv_image);
-#else
-				GstSample *sample;
-				sample = (GstSample *)g_value_get_boxed(gv_image);
-				buf_image = gst_sample_get_buffer(sample);
-#endif
-				int fd = open("/tmp/.id3coverart", O_CREAT|O_WRONLY|O_TRUNC, 0644);
-				if (fd >= 0)
-				{
-					guint8 *data;
-					gsize size;
-#if GST_VERSION_MAJOR < 1
-					data = GST_BUFFER_DATA(buf_image);
-					size = GST_BUFFER_SIZE(buf_image);
-#else
-					GstMapInfo map;
-					gst_buffer_map(buf_image, &map, GST_MAP_READ);
-					data = map.data;
-					size = map.size;
-#endif
-					int ret = write(fd, data, size);
-#if GST_VERSION_MAJOR >= 1
-					gst_buffer_unmap(buf_image, &map);
-#endif
-					close(fd);
-				}
-			}
 			gst_tag_list_free(tags);
 			break;
 		}
@@ -291,7 +258,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 			if(!strncmp(warn->message , "Internal data flow problem", 26) && !strncmp(sourceName, "subtitle_sink", 13))
 			{
 				printf("Gstreamer warning : %s (%i) from %s\n" , warn->message, warn->code, sourceName);
-				subsink = gst_bin_get_by_name(GST_BIN(m_gst_playbin), "subtitle_sink");
+
 				if(subsink)
 				{
 					if (!gst_element_seek (subsink, m_currentTrickRatio, GST_FORMAT_TIME, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT),
@@ -338,7 +305,6 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 					GstIterator * children;
 
 					//
-					subsink = gst_bin_get_by_name(GST_BIN(m_gst_playbin), "subtitle_sink");
 					if (subsink)
 					{
 #ifdef GSTREAMER_SUBTITLE_SYNC_MODE_BUG
@@ -553,21 +519,16 @@ void cPlayback::Close(void)
 	end_eof = false;
 
 	// disconnect subtitle callback
-	/*
-	GstElement *subsink = gst_bin_get_by_name(GST_BIN(m_gst_playbin), "subtitle_sink");
-
 	if (subsink)
 	{
 		//g_signal_handler_disconnect (subsink, m_subs_to_pull_handler_id);
-		gst_object_unref(subsink);
+		gst_object_unref(GST_OBJECT(subsink));
 	}
-	*/
 	
 	// disconnect bus handler
 	if (m_gst_playbin)
 	{
 		// disconnect sync handler callback
-		bus = gst_pipeline_get_bus(GST_PIPELINE (m_gst_playbin));
 #if GST_VERSION_MAJOR < 1
 		gst_bus_set_sync_handler(bus, gst_bus_sync_signal_handler, NULL);
 #else
@@ -706,7 +667,7 @@ bool cPlayback::Start(char *filename, const char * const suburi)
 		g_object_set(G_OBJECT (m_gst_playbin), "uri", uri, NULL);
 
 		// subsink
-		GstElement *subsink = gst_element_factory_make("subsink", "subtitle_sink");
+		subsink = gst_element_factory_make("subsink", "subtitle_sink");
 		if (subsink)
 		{
 			//m_subs_to_pull_handler_id = g_signal_connect (subsink, "new-buffer", G_CALLBACK (gstCBsubtitleAvail), this);
