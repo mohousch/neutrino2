@@ -378,7 +378,7 @@ char* CPlayBack::Codec2Encoding(AVCodecContext *codec, int* version)
 #if LIBAVCODEC_VERSION_MAJOR < 54
 		case CODEC_ID_FFH264:
 #endif
-			return "V_MPEG4/ISO/AVC";
+			return "V_H264";
 			
 #if LIBAVCODEC_VERSION_INT > AV_VERSION_INT(55, 92, 100)
     		case AV_CODEC_ID_HEVC:
