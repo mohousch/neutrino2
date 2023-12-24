@@ -636,12 +636,12 @@
 	</screen>
 	
 	<screen name="boxinfo" width="1180" height="620" paintframe="0" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<image width="1180" height="620" image="menu_bg3.png"/>
+		<image width="1180" height="620" image="menu_bg3.png" scale="1"/>
 		<head posx="10" posy="10" width="1160" height="60" title="Box Info" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
 	</screen>
 	
 	<screen name="imageinfo" width="1180" height="620" paintframe="0" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL" position="MENU_POSITION_CENTER">
-		<image width="1180" height="620" image="menu_bg3.png"/>
+		<image width="1180" height="620" image="menu_bg3.png" scale="1"/>
 		<head posx="10" posy="10" width="1160" height="60" title="Image Info" icon="information" paintdate="1" format="%d.%m.%Y %H:%M:%S" line="1"/>
 	</screen>
 	
