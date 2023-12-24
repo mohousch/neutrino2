@@ -15,12 +15,3 @@ if !ENABLE_GSTREAMER
 SUBDIRS += libeplayer3
 endif
 
-if ENABLE_LCD
-SUBDIRS += liblcddisplay
-endif
-
-
-
-
-
-

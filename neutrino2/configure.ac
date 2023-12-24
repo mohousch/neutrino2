@@ -199,7 +199,6 @@ lib/libnet/Makefile
 lib/libxmltree/Makefile
 lib/libtuxtxt/Makefile
 lib/libdvbsub/Makefile
-lib/liblcddisplay/Makefile
 lib/libdvbapi/Makefile
 lib/libeplayer3/Makefile
 lib/jsoncpp/Makefile

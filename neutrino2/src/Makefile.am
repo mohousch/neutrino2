@@ -107,11 +107,6 @@ else
 neutrino2_LDADD += $(top_builddir)/lib/libeplayer3/libeplayer3.a -lass
 endif
 
-# LCD display
-if ENABLE_LCD
-neutrino2_LDADD += $(top_builddir)/lib/liblcddisplay/liblcddisplay.a
-endif
-
 if USE_OPENGL
 neutrino2_LDADD += \
 	@SWRESAMPLE_LIBS@ \

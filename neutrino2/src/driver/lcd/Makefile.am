@@ -15,10 +15,6 @@ AM_CPPFLAGS = \
 	@FREETYPE_CFLAGS@ \
 	@FRIBIDI_CFLAGS@
 
-if ENABLE_LCD
-AM_CPPFLAGS += -I$(top_srcdir)/lib/liblcddisplay
-endif
-
 if ENABLE_GSTREAMER
 AM_CPPFLAGS += @GSTREAMER_CFLAGS@
 else
@@ -30,7 +26,7 @@ AM_CXXFLAGS = -fno-rtti -fno-exceptions
 noinst_LIBRARIES = libneutrino2_driver_lcd.a 
 
 if ENABLE_LCD
-libneutrino2_driver_lcd_a_SOURCES = lcdd.cpp	
+libneutrino2_driver_lcd_a_SOURCES = lcddisplay.cpp fontrenderer.cpp lcdd.cpp 	
 else
 libneutrino2_driver_lcd_a_SOURCES = vfd.cpp
 endif

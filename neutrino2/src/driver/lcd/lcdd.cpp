@@ -37,7 +37,7 @@
 #include <system/settings.h>
 #include <system/debug.h>
 
-#include <liblcddisplay/lcddisplay.h>
+#include <driver/lcd/lcddisplay.h>
 #include <gui/widget/icons.h>
 
 #include <fcntl.h>
