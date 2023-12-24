@@ -55,7 +55,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define LPCM_DEBUG
+//#define LPCM_DEBUG
 
 #ifdef LPCM_DEBUG
 

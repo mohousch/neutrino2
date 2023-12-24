@@ -50,7 +50,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define MJPEG_DEBUG
+//#define MJPEG_DEBUG
 
 #ifdef MJPEG_DEBUG
 

@@ -50,7 +50,7 @@
 /* Makros/Constants	      */
 /* ***************************** */
 
-#define VP_DEBUG
+//#define VP_DEBUG
 
 #ifdef VP_DEBUG
 

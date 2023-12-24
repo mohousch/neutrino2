@@ -50,7 +50,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define DIVX_DEBUG
+//#define DIVX_DEBUG
 
 #ifdef DIVX_DEBUG
 

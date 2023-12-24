@@ -51,7 +51,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define DIVX3_DEBUG
+//#define DIVX3_DEBUG
 
 #ifdef DIVX3_DEBUG
 

@@ -49,7 +49,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define VORBIS_DEBUG
+//#define VORBIS_DEBUG
 
 #ifdef VORBIS_DEBUG
 

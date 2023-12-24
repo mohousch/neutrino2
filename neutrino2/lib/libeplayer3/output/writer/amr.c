@@ -51,7 +51,7 @@
 /* Makros/Constants              */
 /* ***************************** */
 
-#define AMR_DEBUG
+//#define AMR_DEBUG
 
 #ifdef AMR_DEBUG
 
