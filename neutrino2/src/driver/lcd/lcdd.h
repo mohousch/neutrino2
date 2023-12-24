@@ -41,7 +41,7 @@
 #include <configfile.h>
 #include <pthread.h>
 
-#include <liblcddisplay/fontrenderer.h>
+#include <driver/lcd/fontrenderer.h>
 
 
 #define LCDDIR_VAR CONFIGDIR "/lcdd"

@@ -2205,3 +2205,7 @@
 /make.log
 /neutrino2/lib/libeplayer3/.deps/playback.Po
 /neutrino2/lib/libeplayer3/playback.o
+/neutrino2/src/driver/lcd/.deps/fontrenderer.Po
+/neutrino2/src/driver/lcd/.deps/lcddisplay.Po
+/neutrino2/src/driver/lcd/fontrenderer.o
+/neutrino2/src/driver/lcd/lcddisplay.o

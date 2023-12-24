@@ -2,7 +2,7 @@
 
 noinst_LIBRARIES = libeplayer3.a
 
-CXXFLAGS = -Wall
+AM_CXXFLAGS = -Wall
 
 AM_CPPFLAGS = \
 	-I$(top_builddir) \

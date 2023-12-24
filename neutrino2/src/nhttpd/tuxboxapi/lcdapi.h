@@ -28,8 +28,8 @@
 
 // tuxbox
 #include <driver/lcd/lcdd.h>
-#include <liblcddisplay/lcddisplay.h>
-#include <liblcddisplay/fontrenderer.h>
+#include <driver/lcd/lcddisplay.h>
+#include <driver/lcd/fontrenderer.h>
 
 class CLCDDisplay;
 class LcdFontRenderClass;

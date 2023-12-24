@@ -34,7 +34,7 @@
 #include <neutrino2.h>
 #include <system/settings.h>
 
-#include <liblcddisplay/lcddisplay.h>
+#include <driver/lcd/lcddisplay.h>
 
 #include <fcntl.h>
 #include <unistd.h>
