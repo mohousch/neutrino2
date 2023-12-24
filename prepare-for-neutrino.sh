@@ -145,21 +145,25 @@ PACKAGES="\
     	${UBUNTU:+libglew-dev}												\
     	${UBUNTU:+freeglut3-dev}											\
     	${UBUNTU:+libao-dev}												
-    	";
+	";
 
 if [ "$UBUNTU" == 1 ]; then
 	UBUNTU_VERSION=`lsb_release -r | grep "Release" | cut -f2 | cut -d . -f1`
 elif [ "$UBUNTU" == 2 ]; then
 	MINT_VERSION=`lsb_release -r | grep "Release" | cut -f2 | cut -d . -f1`
 fi
-if ([ "$UBUNTU" == 1  ] &&  [ "$UBUNTU_VERSION" -ge "11" ]) || ([ "$UBUNTU" == 2 ] && [ "$MINT_VERSION" -ge "5" ]); then
+# debian / linuxmint lmde
+if ([ "$UBUNTU" == 1  ] &&  [ "$UBUNTU_VERSION" -ge "12" ]) || ([ "$UBUNTU" == 2 ] && [ "$MINT_VERSION" -ge "6" ]); then
 	PACKAGES="$PACKAGES \
 	${UBUNTU:+libtool-bin} \
+	${UBUNTU:+gtk-doc-tools}
 	";
 fi
-if ([ "$UBUNTU" == 1  ] &&  [ "$UBUNTU_VERSION" -ge "22" ]) || ([ "$UBUNTU" == 2 ] && [ "$MINT_VERSION" -ge "21" ]); then
+# ubuntu / linuxmint
+if ([ "$UBUNTU" == 1  ] &&  [ "$UBUNTU_VERSION" -ge "23" ]) || ([ "$UBUNTU" == 2 ] && [ "$MINT_VERSION" -ge "21" ]); then
 	PACKAGES="$PACKAGES \
-	${UBUNTU:+gtk-doc-tools} \
+	${UBUNTU:+libtool-bin} \
+	${UBUNTU:+gtk-doc-tools}
 	";
 fi
 
@@ -172,7 +176,7 @@ if [ `which arch > /dev/null 2>&1 && arch || uname -m` == x86_64 ]; then
 	${UBUNTU:+lib32z1-dev}          ${SUSE:+zlib-devel-32bit}       ${FEDORA:+libgcc.i686}                        \
 	                                                                ${FEDORA:+ncurses-devel.i686}                 \
 	                                                                ${FEDORA:+redhat-lsb.i686}                    \
-	                                ${SUSE:+libstdc++-devel-32bit}  ${FEDORA:+glibc-static.i686}                  \
+	                                ${SUSE:+libstdc++-devel-32bit}  ${FEDORA:+glibc-static.i686}
 	";
 fi
 echo $INSTALL $PACKAGES
