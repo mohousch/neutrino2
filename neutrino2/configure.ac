@@ -255,6 +255,7 @@ data/skins/MetrixHD/buttons/Makefile
 data/skins/MetrixHD/hints/Makefile
 data/skins/titan/Makefile
 data/skins/neutrino2/Makefile
+data/skins/elgato/Makefile
 data/locale/Makefile
 src/sectionsd/Makefile
 src/timerd/Makefile

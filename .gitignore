@@ -2207,3 +2207,5 @@
 /neutrino2/src/driver/lcd/.deps/lcddisplay.Po
 /neutrino2/src/driver/lcd/fontrenderer.o
 /neutrino2/src/driver/lcd/lcddisplay.o
+/neutrino2/data/skins/elgato/Makefile
+/neutrino2/data/skins/elgato/Makefile.in

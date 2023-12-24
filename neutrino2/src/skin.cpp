@@ -2253,7 +2253,7 @@ void CNeutrinoApp::parseCCImage(xmlNodePtr node, CWidget* widget)
 	int cc_dy = 0;
 	
 	char* image = NULL;					
-	//unsigned int cc_refresh = 0;
+	unsigned int cc_scale = 0;
 	
 	//
 	name = xmlGetAttribute(node, (char*)"name");
@@ -2266,6 +2266,7 @@ void CNeutrinoApp::parseCCImage(xmlNodePtr node, CWidget* widget)
 						
 	//cc_refresh = xmlGetSignedNumericAttribute(node, "refresh", 0);			
 	image = xmlGetAttribute(node, (char*)"image");
+	cc_scale = xmlGetSignedNumericAttribute(node, "scale", 0);	
 		
 	// recalculate posx / posy
 	int x = cc_x;
@@ -2299,6 +2300,8 @@ void CNeutrinoApp::parseCCImage(xmlNodePtr node, CWidget* widget)
 			pic->setImage(filename.c_str());
 		else
 			pic->setImage(image);
+			
+		pic->setScaling(cc_scale);
 	}
 							
 	if (widget) widget->addCCItem(pic);	
