@@ -114,37 +114,37 @@ PACKAGES="\
 	${UBUNTU:+libssl-dev}           ${SUSE:+libopenssl-devel}    ${FEDORA:+openssl-devel}                         \
 	${UBUNTU:+libmount-dev}                                                                                       \
 	${UBUNTU:+mtools}                                                                                             \
-	${UBUNTU:+u-boot-tools}												\
-	${UBUNTU:+android-sdk-libsparse-utils}										\
-	${UBUNTU:+lua5.2}                                                                                       	\
-	${UBUNTU:+liblua5.2-dev}                                                                                       	\
-    	${UBUNTU:+python-dev-is-python3}                                                                                       	\
-    	${UBUNTU:+libfreetype6-dev}											\
-    	${UBUNTU:+libid3tag0-dev}											\
-    	${UBUNTU:+libmad0-dev}												\
-    	${UBUNTU:+libavformat-dev}											\
-    	${UBUNTU:+libfribidi-dev}											\
-    	${UBUNTU:+libogg-dev}												\
-    	${UBUNTU:+libpng-dev}												\
-    	${UBUNTU:+libgif-dev}												\
-    	${UBUNTU:+libjpeg-dev}												\
-    	${UBUNTU:+libflac-dev}												\
-    	${UBUNTU:+libvorbis-dev}											\
-    	${UBUNTU:+libopenthreads-dev}											\
-    	${UBUNTU:+libblkid-dev}												\
-    	${UBUNTU:+libgstreamer1.0-dev}											\
-    	${UBUNTU:+libgstreamer-plugins-base1.0-dev}									\
-    	${UBUNTU:+libgstreamer-plugins-bad1.0-dev}									\
-    	${UBUNTU:+lua-json}												\
-    	${UBUNTU:+lua-expat}												\
-    	${UBUNTU:+lua-posix}												\
-    	${UBUNTU:+lua-socket}												\
-    	${UBUNTU:+lua-soap}												\
-    	${UBUNTU:+lua-curl}												\
-    	${UBUNTU:+libass-dev}												\
-    	${UBUNTU:+libglew-dev}												\
-    	${UBUNTU:+freeglut3-dev}											\
-    	${UBUNTU:+libao-dev}												
+	${UBUNTU:+u-boot-tools}											      \
+	${UBUNTU:+android-sdk-libsparse-utils}									      \
+	${UBUNTU:+lua5.2}                                                                                             \
+	${UBUNTU:+liblua5.2-dev}                                                                                      \
+    	${UBUNTU:+python-dev-is-python3}                                                                              \
+    	${UBUNTU:+libfreetype6-dev}										      \
+    	${UBUNTU:+libid3tag0-dev}										      \
+    	${UBUNTU:+libmad0-dev}											      \
+    	${UBUNTU:+libavformat-dev}										      \
+    	${UBUNTU:+libfribidi-dev}										      \
+    	${UBUNTU:+libogg-dev}											      \
+    	${UBUNTU:+libpng-dev}											      \
+    	${UBUNTU:+libgif-dev}											      \
+    	${UBUNTU:+libjpeg-dev}											      \
+    	${UBUNTU:+libflac-dev}											      \
+    	${UBUNTU:+libvorbis-dev}										      \
+    	${UBUNTU:+libopenthreads-dev}										      \
+    	${UBUNTU:+libblkid-dev}											      \
+    	${UBUNTU:+libgstreamer1.0-dev}										      \
+    	${UBUNTU:+libgstreamer-plugins-base1.0-dev}								      \
+    	${UBUNTU:+libgstreamer-plugins-bad1.0-dev}								      \
+    	${UBUNTU:+lua-json}											      \
+    	${UBUNTU:+lua-expat}											      \
+    	${UBUNTU:+lua-posix}											      \
+    	${UBUNTU:+lua-socket}											      \
+    	${UBUNTU:+lua-soap}											      \
+    	${UBUNTU:+lua-curl}											      \
+    	${UBUNTU:+libass-dev}											      \
+    	${UBUNTU:+libglew-dev}											      \
+    	${UBUNTU:+freeglut3-dev}										      \
+    	${UBUNTU:+libao-dev}
 	";
 
 if [ "$UBUNTU" == 1 ]; then
