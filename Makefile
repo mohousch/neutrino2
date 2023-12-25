@@ -239,15 +239,11 @@ N2_OPTS += --enable-ci
 endif
 
 # SCART
-SCART ?= scart
-
 ifeq ($(SCART), scart)
 N2_OPTS += --enable-scart
 endif
 
 # LCD 
-LCD ?= lcd
-
 ifeq ($(LCD), lcd)
 N2_OPTS += --enable-lcd
 endif
@@ -261,15 +257,11 @@ N2_OPTS += --enable-lcd --enable-tftlcd
 endif
 
 # FKEYS
-FKEY ?=
-
 ifeq ($(FKEYS), fkeys)
 N2_OPTS += --enable-functionkeys
 endif
 
 # test plugins
-TESTING ?= testing
-
 ifeq ($(TESTING), testing)
 N2_OPTS += --enable-testing
 endif
