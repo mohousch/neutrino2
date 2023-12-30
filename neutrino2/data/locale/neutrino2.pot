@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-12-19 14:54+0100\n"
+"POT-Creation-Date: 2023-12-30 23:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -720,6 +720,7 @@ msgid "Delete"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:446 ../../src/system/setting_helpers.cpp:272
+#: ../../src/neutrino2_menue.cpp:449 ../../src/neutrino2_menue.cpp:448
 msgid "Delete WebTV channels"
 msgstr ""
 
@@ -734,6 +735,7 @@ msgid "Delete channel from bouquet?"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:437 ../../src/system/setting_helpers.cpp:271
+#: ../../src/neutrino2_menue.cpp:440 ../../src/neutrino2_menue.cpp:439
 msgid "Delete channels"
 msgstr ""
 
@@ -891,7 +893,8 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:122 ../../src/gui/epg_menu.cpp:85
 #: ../../src/gui/infoviewer.cpp:1653 ../../src/gui/osd_setup.cpp:1526
-#: ../../src/gui/infoviewer.cpp:1654
+#: ../../src/gui/infoviewer.cpp:1654 ../../src/neutrino2_menue.cpp:125
+#: ../../src/neutrino2_menue.cpp:124
 msgid "EPG / Timer"
 msgstr ""
 
@@ -1101,6 +1104,8 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:148 ../../src/neutrino2_menue.cpp:341
 #: ../../src/gui/infoviewer.cpp:546 ../../src/gui/osd_setup.cpp:1546
+#: ../../src/neutrino2_menue.cpp:151 ../../src/neutrino2_menue.cpp:344
+#: ../../src/neutrino2_menue.cpp:150 ../../src/neutrino2_menue.cpp:343
 msgid "Features"
 msgstr ""
 
@@ -1217,6 +1222,7 @@ msgid "Framerate"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:454 ../../src/system/setting_helpers.cpp:273
+#: ../../src/neutrino2_menue.cpp:457 ../../src/neutrino2_menue.cpp:456
 msgid "Free Memory"
 msgstr ""
 
@@ -1404,19 +1410,23 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:150
+#: ../../src/neutrino2_menue.cpp:150 ../../src/neutrino2_menue.cpp:153
+#: ../../src/neutrino2_menue.cpp:152
 msgid "Here you can choose plugins"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:189
+#: ../../src/neutrino2_menue.cpp:189 ../../src/neutrino2_menue.cpp:192
+#: ../../src/neutrino2_menue.cpp:191
 msgid "Here you can get device Info"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:213
+#: ../../src/neutrino2_menue.cpp:213 ../../src/neutrino2_menue.cpp:216
+#: ../../src/neutrino2_menue.cpp:215
 msgid "Here you can play / show  music / movies / pics"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:198
+#: ../../src/neutrino2_menue.cpp:198 ../../src/neutrino2_menue.cpp:201
+#: ../../src/neutrino2_menue.cpp:200
 msgid "Here you can power off or standby your device"
 msgstr ""
 
@@ -1424,31 +1434,38 @@ msgstr ""
 msgid "Here you can select a skin from the following list."
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:124
+#: ../../src/neutrino2_menue.cpp:124 ../../src/neutrino2_menue.cpp:127
+#: ../../src/neutrino2_menue.cpp:126
 msgid "Here you can set Timers and show EPG"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:159
+#: ../../src/neutrino2_menue.cpp:159 ../../src/neutrino2_menue.cpp:162
+#: ../../src/neutrino2_menue.cpp:161
 msgid "Here you can set channel scan and more"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:404
+#: ../../src/neutrino2_menue.cpp:404 ../../src/neutrino2_menue.cpp:407
+#: ../../src/neutrino2_menue.cpp:406
 msgid "Here you can set timers"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:175
+#: ../../src/neutrino2_menue.cpp:175 ../../src/neutrino2_menue.cpp:178
+#: ../../src/neutrino2_menue.cpp:177
 msgid "Here you can setup OSD"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:168
+#: ../../src/neutrino2_menue.cpp:168 ../../src/neutrino2_menue.cpp:171
+#: ../../src/neutrino2_menue.cpp:170
 msgid "Here you can setup your box"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:115
+#: ../../src/neutrino2_menue.cpp:115 ../../src/neutrino2_menue.cpp:118
+#: ../../src/neutrino2_menue.cpp:117
 msgid "Here you can switch between TV / Radio"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:134
+#: ../../src/neutrino2_menue.cpp:134 ../../src/neutrino2_menue.cpp:137
+#: ../../src/neutrino2_menue.cpp:136
 msgid "Here you can switch to scart modus"
 msgstr ""
 
@@ -1606,6 +1623,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:4962 ../../src/gui/audioplayer.cpp:1328
 #: ../../src/gui/movieplayer.cpp:1477 ../../src/gui/movieplayer.cpp:1598
 #: ../../src/gui/movieplayer.cpp:2159 ../../src/gui/movieplayer.cpp:2189
+#: ../../src/neutrino2_menue.cpp:190 ../../src/neutrino2_menue.cpp:189
 msgid "Information"
 msgstr ""
 
@@ -1855,7 +1873,8 @@ msgid "Media"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:211 ../../src/gui/mediaplayer.cpp:88
-#: ../../src/gui/osd_setup.cpp:1584
+#: ../../src/gui/osd_setup.cpp:1584 ../../src/neutrino2_menue.cpp:214
+#: ../../src/neutrino2_menue.cpp:213
 msgid "Media Player"
 msgstr ""
 
@@ -2206,6 +2225,7 @@ msgid "OK saves, HOME! aborts"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:173 ../../src/gui/osd_setup.cpp:114
+#: ../../src/neutrino2_menue.cpp:176 ../../src/neutrino2_menue.cpp:175
 msgid "OSD"
 msgstr ""
 
@@ -2334,6 +2354,7 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:428 ../../src/gui/pluginlist.cpp:110
 #: ../../src/gui/pluginlist.cpp:229 ../../src/system/setting_helpers.cpp:268
+#: ../../src/neutrino2_menue.cpp:431 ../../src/neutrino2_menue.cpp:430
 msgid "Plugins"
 msgstr ""
 
@@ -2354,7 +2375,8 @@ msgid "Portugues"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:196 ../../src/gui/osd_setup.cpp:1575
-#: ../../src/gui/power_menu.cpp:90
+#: ../../src/gui/power_menu.cpp:90 ../../src/neutrino2_menue.cpp:199
+#: ../../src/neutrino2_menue.cpp:198
 msgid "Power Menu"
 msgstr ""
 
@@ -2543,14 +2565,17 @@ msgid "Reload"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:478 ../../src/system/setting_helpers.cpp:276
+#: ../../src/neutrino2_menue.cpp:481 ../../src/neutrino2_menue.cpp:480
 msgid "Reload EPG"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:470 ../../src/system/setting_helpers.cpp:275
+#: ../../src/neutrino2_menue.cpp:473 ../../src/neutrino2_menue.cpp:472
 msgid "Reload XMLTV EPG"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:462 ../../src/system/setting_helpers.cpp:274
+#: ../../src/neutrino2_menue.cpp:465 ../../src/neutrino2_menue.cpp:464
 msgid "Reload channel lists"
 msgstr ""
 
@@ -2582,7 +2607,8 @@ msgstr ""
 msgid "Reminder"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:411
+#: ../../src/neutrino2_menue.cpp:411 ../../src/neutrino2_menue.cpp:414
+#: ../../src/neutrino2_menue.cpp:413
 msgid "Remote Control lock"
 msgstr ""
 
@@ -2791,7 +2817,8 @@ msgstr ""
 msgid "Scart"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:132
+#: ../../src/neutrino2_menue.cpp:132 ../../src/neutrino2_menue.cpp:135
+#: ../../src/neutrino2_menue.cpp:134
 msgid "Scart Mode"
 msgstr ""
 
@@ -2951,6 +2978,7 @@ msgid "Set in hours"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:166 ../../src/gui/main_setup.cpp:106
+#: ../../src/neutrino2_menue.cpp:169 ../../src/neutrino2_menue.cpp:168
 msgid "Settings"
 msgstr ""
 
@@ -3257,7 +3285,8 @@ msgid "Syncronisation via"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:157 ../../src/gui/osd_setup.cpp:1555
-#: ../../src/gui/service_menu.cpp:110
+#: ../../src/gui/service_menu.cpp:110 ../../src/neutrino2_menue.cpp:160
+#: ../../src/neutrino2_menue.cpp:159
 msgid "System"
 msgstr ""
 
@@ -3306,6 +3335,7 @@ msgid "TV & Radio"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:113 ../../src/gui/osd_setup.cpp:1516
+#: ../../src/neutrino2_menue.cpp:116 ../../src/neutrino2_menue.cpp:115
 msgid "TV / Radio"
 msgstr ""
 
@@ -3339,7 +3369,8 @@ msgstr ""
 msgid "Technology / Natural sciences"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:419
+#: ../../src/neutrino2_menue.cpp:419 ../../src/neutrino2_menue.cpp:422
+#: ../../src/neutrino2_menue.cpp:421
 msgid "Teletext"
 msgstr ""
 
@@ -3474,7 +3505,8 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:403 ../../src/gui/epg_menu.cpp:112
 #: ../../src/gui/rc_setup.cpp:101 ../../src/gui/timerlist.cpp:304
-#: ../../src/system/setting_helpers.cpp:267
+#: ../../src/system/setting_helpers.cpp:267 ../../src/neutrino2_menue.cpp:406
+#: ../../src/neutrino2_menue.cpp:405
 msgid "Timerlist"
 msgstr ""
 
