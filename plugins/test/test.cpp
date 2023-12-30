@@ -299,62 +299,6 @@ CTestMenu::~CTestMenu()
 		delete webTVBouquetList;
 		webTVBouquetList = NULL;
 	}
-	
-	
-	
-	if (testWidget)
-	{
-		delete testWidget;
-		testWidget = NULL;
-	}
-	
-	if (frameBoxWidget)
-	{
-		delete frameBoxWidget;
-		frameBoxWidget = NULL;
-	}
-	
-	if (rightWidget)
-	{
-		delete rightWidget;
-		rightWidget = NULL;
-	}
-	
-	if (leftWidget)
-	{
-		delete leftWidget;
-		leftWidget = NULL;
-	}
-	
-	if (listFrame)
-	{
-		delete listFrame;
-		listFrame = NULL;
-	}
-	
-	if (windowWidget)
-	{
-		delete windowWidget;
-		windowWidget = NULL;
-	}
-	
-	if (textBoxWidget)
-	{
-		delete textBoxWidget;
-		textBoxWidget = NULL;
-	}
-	
-	if (progressBar)
-	{
-		delete progressBar;
-		progressBar = NULL;
-	}
-	
-	if (progressWindow)
-	{
-		delete progressWindow;
-		progressWindow = NULL;
-	}
 }
 
 void CTestMenu::hide()
