@@ -76,7 +76,7 @@ CMenuItem::CMenuItem()
 			
 	//
 	nLinesItem = false;
-	widgetType = TYPE_STANDARD;
+	widgetType = ClistBox::TYPE_STANDARD;
 	widgetMode = ClistBox::MODE_LISTBOX;
 	isPlugin = false;
 	paintIconName = true;
@@ -989,7 +989,7 @@ int CMenuSeparator::paint(bool /*selected*/, bool /*AfterPulldown*/)
 
 	int height = getHeight();
 
-	if(widgetType != TYPE_FRAME)
+	if(widgetType != ClistBox::TYPE_FRAME)
 	{
 		// paint item
 		if (paintFrame)
@@ -1099,11 +1099,11 @@ int CMenuForwarder::getHeight(void) const
 	if (hidden)
 		return 0;
 
-	if(widgetType == TYPE_FRAME)
+	if(widgetType == ClistBox::TYPE_FRAME)
 	{
 		ih = dy;
 	}
-	else if(widgetType == TYPE_CLASSIC)
+	else if(widgetType == ClistBox::TYPE_CLASSIC)
 	{
 		ih = ITEM_ICON_H_MINI;
 			
@@ -1136,7 +1136,7 @@ int CMenuForwarder::getHeight(void) const
 
 int CMenuForwarder::getWidth(void) const
 {
-	if(widgetType == TYPE_FRAME)
+	if(widgetType == ClistBox::TYPE_FRAME)
 	{
 		return dx;
 	}
@@ -1243,7 +1243,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		color = COL_MENUCONTENTINACTIVE_TEXT_PLUS_0;
 	}
 
-	if(widgetType == TYPE_FRAME)
+	if(widgetType == ClistBox::TYPE_FRAME)
 	{		
 		//
 		if(selected)
@@ -1409,31 +1409,34 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		int bpp = 0;
 		int icon_offset = 0;
 
-		if(widgetType == TYPE_CLASSIC)
+		if(widgetType == ClistBox::TYPE_CLASSIC)
 		{
-			icon_h = ITEM_ICON_H_MINI;
-			icon_w = ITEM_ICON_W_MINI;
-			
-			if(nLinesItem && widgetMode == ClistBox::MODE_LISTBOX)
+			if (paintIconName && !itemIcon.empty())
 			{
-				icon_h = ITEM_ICON_H_MINI*2;
+				icon_offset = ICON_OFFSET;
+				icon_h = ITEM_ICON_H_MINI;
 				icon_w = ITEM_ICON_W_MINI;
-			}
-					
-			if (!itemIcon.empty())
-			{
+				
+				if(nLinesItem && widgetMode == ClistBox::MODE_LISTBOX)
+				{
+					icon_h = ITEM_ICON_H_MINI*2;
+					icon_w = ITEM_ICON_W_MINI;
+				}
+			
 				frameBuffer->paintHintIcon(itemIcon.c_str(), x + BORDER_LEFT + number_width + number_offset, y + ((height - icon_h)/2), icon_w, icon_h);
 			}
 		}
 		else // standard|extended
 		{
-			if (!iconName.empty() && paintIconName)
+			if (paintIconName && !iconName.empty())
 			{
 				icon_offset = ICON_OFFSET;
+				icon_h = g_Font[SNeutrinoSettings::FONT_TYPE_MENU]->getHeight() + 4;
+				icon_w = 1.63*icon_h;
 				
 				//get icon size
 				frameBuffer->getIconSize(iconName.c_str(), &icon_w, &icon_h);
-				
+					
 				// scale iconName
 				if (icon_h >= getHeight())
 				{
@@ -1441,7 +1444,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 					if (icon_w > 1.63*icon_h)
 						icon_w = 1.63*icon_h;
 				}
-		
+			
 				frameBuffer->paintIcon(iconName, x + BORDER_LEFT + number_width + number_offset, y, height, true, icon_w, icon_h);
 			}
 		}
@@ -1472,7 +1475,7 @@ int CMenuForwarder::paint(bool selected, bool /*AfterPulldown*/)
 		if(l_text_width >= dx - BORDER_LEFT - BORDER_RIGHT)
 			l_text_width = dx - BORDER_LEFT - BORDER_RIGHT;
 			
-		if (widgetType == TYPE_CLASSIC)
+		if (widgetType == ClistBox::TYPE_CLASSIC)
 		{
 			if (nLinesItem)
 			{
@@ -1673,7 +1676,7 @@ ClistBox::ClistBox(const int x, const int y, const int dx, const int dy)
 	maxItemsPerPage = itemsPerX*itemsPerY;
 
 	//
-	widgetType = CMenuItem::TYPE_STANDARD;
+	widgetType = TYPE_STANDARD;
 	widgetMode = MODE_LISTBOX;
 
 	background = NULL;
@@ -1787,7 +1790,7 @@ ClistBox::ClistBox(CBox* position)
 	iteminfoscale = false;
 
 	//
-	widgetType = CMenuItem::TYPE_STANDARD;
+	widgetType = TYPE_STANDARD;
 	widgetMode = MODE_LISTBOX;
 	
 	//
@@ -1942,7 +1945,7 @@ void ClistBox::initFrames()
 	}
 
 	// init frames
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		//
 		if (paintframe)
@@ -1985,7 +1988,7 @@ void ClistBox::initFrames()
 		// footInfoBox
 		if(paintFootInfo)
 		{
-			if(widgetType == CMenuItem::TYPE_STANDARD)
+			if(widgetType == TYPE_STANDARD)
 			{
 				cFrameFootInfoHeight = footInfoHeight;
 			}
@@ -2059,7 +2062,7 @@ void ClistBox::initFrames()
 		items_width = itemBox.iWidth - sb_width;
 
 		// extended
-		if(widgetType == CMenuItem::TYPE_EXTENDED)
+		if(widgetType == TYPE_EXTENDED)
 		{
 			items_width = 2*(itemBox.iWidth/3) - sb_width;			
 		}
@@ -2074,7 +2077,7 @@ void ClistBox::paint()
 	initFrames();
 	
 	//
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - 20;
 		items_width = itemBox.iWidth;
@@ -2091,7 +2094,7 @@ void ClistBox::paint()
 		items_width = itemBox.iWidth - sb_width;
 
 		// extended
-		if(widgetType == CMenuItem::TYPE_EXTENDED)
+		if(widgetType == TYPE_EXTENDED)
 		{
 			items_width = 2*(itemBox.iWidth/3) - sb_width;			
 		}
@@ -2102,7 +2105,7 @@ void ClistBox::paint()
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, items_height, bgcolor, radius, corner, gradient);
 			
 			//
-			if(widgetType == CMenuItem::TYPE_EXTENDED && widgetMode == ClistBox::MODE_MENU)
+			if(widgetType == TYPE_EXTENDED && widgetMode == MODE_MENU)
 			{
 				frameBuffer->paintBoxRel(itemBox.iX + items_width, itemBox.iY + hheight, itemBox.iWidth - items_width, items_height, COL_MENUCONTENTDARK_PLUS_0);
 
@@ -2128,7 +2131,7 @@ void ClistBox::paint()
 	}
 	
 	//
-	if (widgetType == CMenuItem::TYPE_EXTENDED)
+	if (widgetType == TYPE_EXTENDED)
 	{
 		itemsLine.setPosition(itemBox.iX + items_width + (itemBox.iWidth - items_width - ITEM_ICON_W)/2, itemBox.iY + (itemBox.iHeight - ITEM_ICON_H)/2, ITEM_ICON_W, ITEM_ICON_H);
 		itemsLine.enableSaveScreen();
@@ -2147,7 +2150,7 @@ void ClistBox::paintItems()
 {
 	dprintf(DEBUG_INFO, "ClistBox::paintItems:\n");
 
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		item_start_y = itemBox.iY + hheight + 10;
 		items_height = itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight - 20;
@@ -2231,7 +2234,7 @@ void ClistBox::paintItems()
 		items_width = itemBox.iWidth - sb_width;
 
 		// extended
-		if(widgetType == CMenuItem::TYPE_EXTENDED)
+		if(widgetType == TYPE_EXTENDED)
 		{
 			items_width = 2*(itemBox.iWidth/3) - sb_width;			
 		}
@@ -2252,7 +2255,7 @@ void ClistBox::paintItems()
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY + hheight, itemBox.iWidth, items_height, bgcolor, radius, corner, gradient);
 			
 			//
-			if(widgetType == CMenuItem::TYPE_EXTENDED && widgetMode == ClistBox::MODE_MENU)
+			if(widgetType == TYPE_EXTENDED && widgetMode == MODE_MENU)
 			{
 				frameBuffer->paintBoxRel(itemBox.iX + items_width, item_start_y, itemBox.iWidth - items_width, items_height, COL_MENUCONTENTDARK_PLUS_0);
 
@@ -2268,7 +2271,7 @@ void ClistBox::paintItems()
 		{
 			if (scrollbar)
 			{
-				if(widgetType == CMenuItem::TYPE_EXTENDED)
+				if(widgetType == TYPE_EXTENDED)
 					scrollBar.paint(itemBox.iX + items_width, itemBox.iY + hheight, itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight, total_pages, current_page);
 				else
 					scrollBar.paint(itemBox.iX + itemBox.iWidth - SCROLLBAR_WIDTH, itemBox.iY + hheight, itemBox.iHeight - hheight - fheight - cFrameFootInfoHeight, total_pages, current_page);
@@ -2318,7 +2321,7 @@ void ClistBox::paintHead()
 	{
 		dprintf(DEBUG_INFO, "ClistBox::paintHead:\n");
 		
-		if(widgetType == CMenuItem::TYPE_FRAME)
+		if(widgetType == TYPE_FRAME)
 		{
 			// box
 			frameBuffer->paintBoxRel(itemBox.iX, itemBox.iY, itemBox.iWidth, hheight, COL_MENUCONTENT_PLUS_0);
@@ -2492,7 +2495,7 @@ void ClistBox::paintFoot()
 	{
 		dprintf(DEBUG_INFO, "ClistBox::paintFoot:\n");
 		
-		if(widgetType == CMenuItem::TYPE_FRAME)
+		if(widgetType == TYPE_FRAME)
 		{
 			if(fbutton_count)
 			{
@@ -2614,7 +2617,7 @@ void ClistBox::paintItemInfo(int pos)
 {
 	dprintf(DEBUG_INFO, "ClistBox::paintItemInfo: %d\n", pos); 
 	
-	if( (widgetType == CMenuItem::TYPE_STANDARD) || (widgetType == CMenuItem::TYPE_CLASSIC) )
+	if( (widgetType == TYPE_STANDARD) || (widgetType == TYPE_CLASSIC) )
 	{
 		if(paintFootInfo)
 		{
@@ -2678,7 +2681,7 @@ void ClistBox::paintItemInfo(int pos)
 				itemsLine.setMode(CCItemInfo::ITEMINFO_HINTITEM);
 				itemsLine.setHint(item->itemHint.c_str());
 					
-				if (widgetType == CMenuItem::TYPE_STANDARD)
+				if (widgetType == TYPE_STANDARD)
 				{
 					std::string fname = item->itemIcon;
 						
@@ -2765,7 +2768,7 @@ void ClistBox::paintItemInfo(int pos)
 			}
 		}
 	}	
-	else if(widgetType == CMenuItem::TYPE_EXTENDED)
+	else if(widgetType == TYPE_EXTENDED)
 	{
 		CMenuItem* item = items[pos];
 		
@@ -2863,7 +2866,7 @@ void ClistBox::paintItemInfo(int pos)
 			}
 		}
 	}
-	else if(widgetType == CMenuItem::TYPE_FRAME)
+	else if(widgetType == TYPE_FRAME)
 	{
 		if (paintFootInfo)
 		{	
@@ -2902,7 +2905,7 @@ void ClistBox::hideItemInfo()
 	
 	if (paintFootInfo)
 	{
-	    	if(widgetType == CMenuItem::TYPE_STANDARD || widgetType == CMenuItem::TYPE_CLASSIC)
+	    	if(widgetType == TYPE_STANDARD || widgetType == TYPE_CLASSIC)
 		{
 			itemsLine.hide();
 		} 
@@ -2976,7 +2979,7 @@ void ClistBox::scrollLineDown(const int)
 {
 	dprintf(DEBUG_INFO, "ClistBox::scrollLineDown:\n");
 	
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		if(items.size())
 		{
@@ -3046,7 +3049,7 @@ void ClistBox::scrollLineUp(const int)
 {
 	dprintf(DEBUG_INFO, "ClistBox::scrollLineUp:\n");
 	
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		if(items.size())
 		{
@@ -3117,7 +3120,7 @@ void ClistBox::scrollPageDown(const int)
 {
 	dprintf(DEBUG_INFO, "ClistBox::scrollPageDown:\n");
 	
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		if(items.size())
 		{
@@ -3178,7 +3181,7 @@ void ClistBox::scrollPageUp(const int)
 {
 	dprintf(DEBUG_INFO, "ClistBox::scrollPageUp:\n");
 	
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		if(items.size())
 		{
@@ -3270,7 +3273,7 @@ int ClistBox::swipLeft()
 	
 	int ret = CMenuTarget::RETURN_NONE;
 
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		if(items.size())
 		{
@@ -3309,7 +3312,7 @@ int ClistBox::swipLeft()
 			}
 		}
 	}
-	else if(widgetType == CMenuItem::TYPE_STANDARD)
+	else if(widgetType == TYPE_STANDARD)
 	{
 		if(widgetMode == MODE_SETUP)
 		{
@@ -3337,7 +3340,7 @@ int ClistBox::swipRight()
 	
 	int ret = CMenuTarget::RETURN_NONE;
 
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == TYPE_FRAME)
 	{
 		if(items.size())
 		{
@@ -3373,7 +3376,7 @@ int ClistBox::swipRight()
 			}
 		}
 	}
-	else if(widgetType == CMenuItem::TYPE_STANDARD)
+	else if(widgetType == TYPE_STANDARD)
 	{
 		if(widgetMode == MODE_SETUP)
 		{

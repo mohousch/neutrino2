@@ -976,7 +976,7 @@ void CTestMenu::testCWidget()
 
 	//
 	rightWidget = new ClistBox(&rightBox);
-	rightWidget->setWidgetType(CMenuItem::TYPE_FRAME);
+	rightWidget->setWidgetType(ClistBox::TYPE_FRAME);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->setSelected(right_selected);
 	rightWidget->enablePaintItemInfo(80);
@@ -1467,7 +1467,7 @@ void CTestMenu::testClistBoxWidget()
 
 	rightWidget = new ClistBox(&rightBox);
 
-	rightWidget->setWidgetType(CMenuItem::TYPE_FRAME);
+	rightWidget->setWidgetType(ClistBox::TYPE_FRAME);
 	rightWidget->setSelected(selected);
 	rightWidget->enablePaintHead();
 	rightWidget->setTitle("CWidget(ClistBox)", NEUTRINO_ICON_MP3);
@@ -2279,7 +2279,7 @@ void CTestMenu::testClistBox()
 	}
 
 	// mode
-	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
+	rightWidget->setWidgetType(ClistBox::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2357,7 +2357,7 @@ void CTestMenu::testClistBox2()
 	}
 
 	// widgettype
-	rightWidget->setWidgetType(CMenuItem::TYPE_CLASSIC);
+	rightWidget->setWidgetType(ClistBox::TYPE_CLASSIC);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2435,7 +2435,7 @@ void CTestMenu::testClistBox3()
 	}
 
 	// widgettype
-	rightWidget->setWidgetType(CMenuItem::TYPE_EXTENDED);
+	rightWidget->setWidgetType(ClistBox::TYPE_EXTENDED);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2512,7 +2512,7 @@ void CTestMenu::testClistBox4()
 	}
 
 	// widgettype
-	rightWidget->setWidgetType(CMenuItem::TYPE_FRAME);
+	rightWidget->setWidgetType(ClistBox::TYPE_FRAME);
 	rightWidget->setItemsPerPage(6,2);
 	rightWidget->enableShrinkMenu();
 	
@@ -2593,7 +2593,7 @@ void CTestMenu::testClistBox5()
 	}
 
 	// mode
-	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
+	rightWidget->setWidgetType(ClistBox::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2673,7 +2673,7 @@ void CTestMenu::testClistBox6()
 	}
 
 	// mode
-	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
+	rightWidget->setWidgetType(ClistBox::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2753,7 +2753,7 @@ void CTestMenu::testClistBox7()
 	}
 
 	// mode
-	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
+	rightWidget->setWidgetType(ClistBox::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2834,7 +2834,7 @@ void CTestMenu::testClistBox8()
 	}
 
 	// mode
-	rightWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
+	rightWidget->setWidgetType(ClistBox::TYPE_STANDARD);
 	rightWidget->enableShrinkMenu();
 
 	// head
@@ -2908,7 +2908,7 @@ void CTestMenu::testClistBox9()
 	}
 
 	// mode
-	rightWidget->setWidgetType(CMenuItem::TYPE_CLASSIC);
+	rightWidget->setWidgetType(ClistBox::TYPE_CLASSIC);
 	rightWidget->setWidgetMode(ClistBox::MODE_MENU);
 	rightWidget->enableShrinkMenu();
 	rightWidget->paintMainFrame(true);
@@ -3268,7 +3268,7 @@ void CTestMenu::testCMenuWidgetMenu()
 	menuWidget->addItem(item);
 	
 	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
-	menuWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
+	menuWidget->setWidgetType(ClistBox::TYPE_STANDARD);
 	menuWidget->enableShrinkMenu();
 	menuWidget->enablePaintDate();
 	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
@@ -3353,7 +3353,7 @@ void CTestMenu::testCMenuWidgetMenuItemInfo()
 	menuWidget->addItem(item);
 	
 	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
-	menuWidget->setWidgetType(CMenuItem::TYPE_STANDARD);
+	menuWidget->setWidgetType(ClistBox::TYPE_STANDARD);
 	menuWidget->enableShrinkMenu();
 	menuWidget->enablePaintDate();
 	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
@@ -3440,7 +3440,7 @@ void CTestMenu::testCMenuWidgetMenuClassic()
 	menuWidget->addItem(item);
 	
 	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
-	menuWidget->setWidgetType(CMenuItem::TYPE_CLASSIC);
+	menuWidget->setWidgetType(ClistBox::TYPE_CLASSIC);
 	menuWidget->enableShrinkMenu();
 	menuWidget->enablePaintDate();
 	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
@@ -3526,7 +3526,7 @@ void CTestMenu::testCMenuWidgetMenuExtended()
 	menuWidget->addItem(item);
 	
 	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
-	menuWidget->setWidgetType(CMenuItem::TYPE_EXTENDED);
+	menuWidget->setWidgetType(ClistBox::TYPE_EXTENDED);
 	menuWidget->enableShrinkMenu();
 	menuWidget->enablePaintDate();
 	//menuWidget->setFormat("%d.%m.%Y %H:%M:%S");
@@ -3612,7 +3612,7 @@ void CTestMenu::testCMenuWidgetMenuFrame()
 	menuWidget->addItem(item);
 	
 	menuWidget->setWidgetMode(ClistBox::MODE_MENU);
-	menuWidget->setWidgetType(CMenuItem::TYPE_FRAME);
+	menuWidget->setWidgetType(ClistBox::TYPE_FRAME);
 	menuWidget->setItemsPerPage(6, 2);
 	menuWidget->enableShrinkMenu();
 	menuWidget->enablePaintDate();

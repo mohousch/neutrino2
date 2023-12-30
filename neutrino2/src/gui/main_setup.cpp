@@ -106,7 +106,7 @@ void CMainSettingsMenu::showMenu(void)
 		mainSettings->setTitle(_("Settings"), NEUTRINO_ICON_SETTINGS);
 		mainSettings->enablePaintDate();
 		//
-		if (mainSettings->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		if (mainSettings->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			mainSettings->enablePaintFoot();	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	

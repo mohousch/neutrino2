@@ -180,9 +180,6 @@ class testMenu(CMenuTarget):
 		self.listWidget.setWidgetType(TYPE_STANDARD)
 		self.listWidget.setWidgetMode(MODE_LISTBOX)
 		self.listWidget.enableShrinkMenu()
-		self.listWidget.addWidgetType(TYPE_CLASSIC)
-		self.listWidget.addWidgetType(TYPE_EXTENDED)
-		self.listWidget.addWidgetType(TYPE_FRAME)
 		self.listWidget.enablePaintItemInfo(70)
 
 		# messageBox

@@ -88,7 +88,7 @@ void CMediaPlayerMenu::showMenu()
 		mediaPlayer->setTitle(_("Media Player"), NEUTRINO_ICON_MULTIMEDIA);
 		mediaPlayer->enablePaintDate();
 		//
-		if (mediaPlayer->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		if (mediaPlayer->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			mediaPlayer->enablePaintFoot();	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	

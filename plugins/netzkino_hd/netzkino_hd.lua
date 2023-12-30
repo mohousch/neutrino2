@@ -292,7 +292,7 @@ function get_movies_menu(_id)
 	
 	--m_movies:clear()
 
-	--m_movies:setWidgetType(neutrino2.CMenuItem_TYPE_FRAME)
+	--m_movies:setWidgetType(neutrino2.ClistBox_TYPE_FRAME)
 	--m_movies:setItemsPerPage(6, 2)
 
 	m_movies:setFootButtons(yellow)

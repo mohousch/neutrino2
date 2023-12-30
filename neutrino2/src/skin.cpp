@@ -1097,25 +1097,25 @@ int CNeutrinoApp::convertClistBoxType(const char * const type)
 {
 	dprintf(DEBUG_DEBUG, "CNeutrinoApp::convertClistBoxType: type: %s\n", type);
 	
-	int t = CMenuItem::TYPE_STANDARD;
+	int t = ClistBox::TYPE_STANDARD;
 	
 	if (type != NULL)
 	{
 		if ( strcmp(type, "TYPE_STANDARD") == 0)
 		{
-			t = CMenuItem::TYPE_STANDARD;
+			t = ClistBox::TYPE_STANDARD;
 		}
 		else if ( strcmp(type, "TYPE_CLASSIC") == 0)
 		{
-			t = CMenuItem::TYPE_CLASSIC;
+			t = ClistBox::TYPE_CLASSIC;
 		}
 		else if ( strcmp(type, "TYPE_EXTENDED") == 0)
 		{
-			t = CMenuItem::TYPE_EXTENDED;
+			t = ClistBox::TYPE_EXTENDED;
 		}
 		else if ( strcmp(type, "TYPE_FRAME") == 0)
 		{
-			t = CMenuItem::TYPE_FRAME;
+			t = ClistBox::TYPE_FRAME;
 		}
 	}
 	
@@ -1425,7 +1425,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	if (name) listBox->cc_name = name;
 		
 	//
-	int t = CMenuItem::TYPE_STANDARD;
+	int t = ClistBox::TYPE_STANDARD;
 	if (listboxtype) t = convertClistBoxType(listboxtype);
 	listBox->setWidgetType(t);
 	//
@@ -1494,6 +1494,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	listBox->setItemGradient(item_gr);
 	// item2lines
 	if (item2lines) listBox->setItem2Lines();
+	// itemiconname
 	if (itemiconname) listBox->disablePaintIconName();
 				
 	// ITEM	
@@ -1613,7 +1614,7 @@ void CNeutrinoApp::parseClistBox(xmlNodePtr node, CWidget* widget)
 	CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED;
 	unsigned int mode = ClistBox::MODE_MENU;
 	unsigned int shortcut = CRCInput::RC_nokey;
-	unsigned int type = CMenuItem::TYPE_STANDARD;
+	unsigned int type = ClistBox::TYPE_STANDARD;
 	unsigned int i_lines = false;
 	unsigned int i_border = false;
 					

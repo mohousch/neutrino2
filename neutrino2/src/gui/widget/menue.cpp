@@ -122,7 +122,7 @@ void CMenuWidget::Init(const std::string &Icon, const int mwidth, const int mhei
 	sec_timer_id = 0;
 
 	//
-	widgetType = CMenuItem::TYPE_STANDARD;
+	widgetType = ClistBox::TYPE_STANDARD;
 	shrinkMenu = false;
 	widgetMode = ClistBox::MODE_MENU;
 
@@ -208,7 +208,7 @@ void CMenuWidget::initFrames()
 	} 
 
 	// init frames
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == ClistBox::TYPE_FRAME)
 	{
 		//
 		page_start.clear();
@@ -256,7 +256,7 @@ void CMenuWidget::initFrames()
 		// footInfo height
 		if(paintFootInfo)
 		{
-			if(widgetType == CMenuItem::TYPE_STANDARD)
+			if(widgetType == ClistBox::TYPE_STANDARD)
 			{
 				cFrameFootInfoHeight = footInfoHeight;
 			}
@@ -334,7 +334,7 @@ void CMenuWidget::paintHead()
 {
 	dprintf(DEBUG_DEBUG, "CMenuWidget::paintHead:\n");
 	
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == ClistBox::TYPE_FRAME)
 	{
 		// headBox
 		frameBuffer->paintBoxRel(x, y, width, hheight, COL_MENUHEAD_PLUS_0);
@@ -488,7 +488,7 @@ void CMenuWidget::paintFoot()
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::paintFoot:\n");
 	
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == ClistBox::TYPE_FRAME)
 	{
 		if(fbutton_count)
 		{
@@ -591,7 +591,7 @@ void CMenuWidget::paintItems()
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::paintItems:\n");
 	
-	if(widgetType == CMenuItem::TYPE_FRAME)
+	if(widgetType == ClistBox::TYPE_FRAME)
 	{
 		item_start_y = y + hheight + 10;
 		items_height = height - hheight - fheight - cFrameFootInfoHeight - 20;  //TEST
@@ -672,7 +672,7 @@ void CMenuWidget::paintItems()
 		items_width = width - sb_width;
 
 		// extended
-		if(widgetType == CMenuItem::TYPE_EXTENDED)
+		if(widgetType == ClistBox::TYPE_EXTENDED)
 		{
 			items_width = 2*(width/3) - sb_width;
 		}
@@ -690,7 +690,7 @@ void CMenuWidget::paintItems()
 		// paint items background
 		frameBuffer->paintBoxRel(x, item_start_y, width, items_height, COL_MENUCONTENT_PLUS_0);
 		
-		if(widgetType == CMenuItem::TYPE_EXTENDED && widgetMode == ClistBox::MODE_MENU)
+		if(widgetType == ClistBox::TYPE_EXTENDED && widgetMode == ClistBox::MODE_MENU)
 		{
 			frameBuffer->paintBoxRel(x + items_width, item_start_y, width - items_width, items_height, COL_MENUCONTENTDARK_PLUS_0);
 
@@ -699,7 +699,7 @@ void CMenuWidget::paintItems()
 		// paint right scrollBar if we have more then one page
 		if(total_pages > 1)
 		{
-			if(widgetType == CMenuItem::TYPE_EXTENDED)
+			if(widgetType == ClistBox::TYPE_EXTENDED)
 				scrollBar.paint(x + 2*(width/3) - SCROLLBAR_WIDTH, item_start_y, items_height, total_pages, current_page);
 			else
 				scrollBar.paint(x + width - SCROLLBAR_WIDTH, item_start_y, items_height, total_pages, current_page);
@@ -744,7 +744,7 @@ void CMenuWidget::paintItemInfo(int pos)
 {
 	dprintf(DEBUG_INFO, "CMenuWidget::paintItemInfo:\n");
 	
-	if(widgetType == CMenuItem::TYPE_STANDARD)
+	if(widgetType == ClistBox::TYPE_STANDARD)
 	{
 		if(widgetMode == ClistBox::MODE_MENU || widgetMode == ClistBox::MODE_SETUP)
 		{
@@ -866,7 +866,7 @@ void CMenuWidget::paintItemInfo(int pos)
 			}
 		}
 	}
-	else if(widgetType == CMenuItem::TYPE_CLASSIC)
+	else if(widgetType == ClistBox::TYPE_CLASSIC)
 	{
 		if(widgetMode == ClistBox::MODE_MENU || widgetMode == ClistBox::MODE_SETUP)
 		{
@@ -988,7 +988,7 @@ void CMenuWidget::paintItemInfo(int pos)
 			}
 		}
 	}
-	else if(widgetType == CMenuItem::TYPE_EXTENDED)
+	else if(widgetType == ClistBox::TYPE_EXTENDED)
 	{
 		CMenuItem* item = items[pos];
 
@@ -1086,7 +1086,7 @@ void CMenuWidget::paintItemInfo(int pos)
 			}
 		}
 	}
-	else if(widgetType == CMenuItem::TYPE_FRAME)
+	else if(widgetType == ClistBox::TYPE_FRAME)
 	{
 		if(paintFootInfo)
 		{
@@ -1122,7 +1122,7 @@ void CMenuWidget::hideItemInfo()
 	
 	if (paintFootInfo)
 	{
-		if( (widgetType == CMenuItem::TYPE_STANDARD) || (widgetType == CMenuItem::TYPE_CLASSIC && widgetMode == ClistBox::MODE_LISTBOX) )
+		if( (widgetType == ClistBox::TYPE_STANDARD) || (widgetType == ClistBox::TYPE_CLASSIC && widgetMode == ClistBox::MODE_LISTBOX) )
 		{
 			itemsLine.hide();
 		}
@@ -1296,29 +1296,6 @@ void CMenuWidget::integratePlugins(CPlugins::i_type_t integration, const unsigne
 	}
 }
 
-/*
-void CMenuWidget::changeWidgetType()
-{
-	dprintf(DEBUG_NORMAL, "CMenuWidget::changeWidgetType:\n");
-
-	if(widget.size())
-	{
-		hide();
-
-		cnt++;
-
-		if(cnt >= (int)widget.size())
-		{
-			cnt = 0;
-		}
-			
-		widgetType = widget[cnt];
-
-		paint();
-	}
-}
-*/
-
 int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 {
 	dprintf(DEBUG_NORMAL, "CMenuWidget::exec: (%s)\n", l_name.c_str());
@@ -1438,7 +1415,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 					
 				case (CRCInput::RC_page_up) :
-					if(widgetType == CMenuItem::TYPE_FRAME)
+					if(widgetType == ClistBox::TYPE_FRAME)
 					{
 						pos = (int) page_start[current_page + 1];
 						if(pos >= (int) items.size()) 
@@ -1447,7 +1424,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 						selected = pos;
 						paintItems();
 					}
-					else if(widgetType == CMenuItem::TYPE_STANDARD || widgetType == CMenuItem::TYPE_CLASSIC || widgetType == CMenuItem::TYPE_EXTENDED)
+					else if(widgetType == ClistBox::TYPE_STANDARD || widgetType == ClistBox::TYPE_CLASSIC || widgetType == ClistBox::TYPE_EXTENDED)
 					{
 						if(current_page) 
 						{
@@ -1512,7 +1489,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 
 				case (CRCInput::RC_page_down) :
-					if(widgetType == CMenuItem::TYPE_FRAME)
+					if(widgetType == ClistBox::TYPE_FRAME)
 					{
 						pos = (int) page_start[current_page] - 1;
 			
@@ -1522,7 +1499,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 						selected = pos;
 						paintItems();
 					}
-					else if(widgetType == CMenuItem::TYPE_STANDARD || widgetType == CMenuItem::TYPE_CLASSIC || widgetType == CMenuItem::TYPE_EXTENDED)
+					else if(widgetType == ClistBox::TYPE_STANDARD || widgetType == ClistBox::TYPE_CLASSIC || widgetType == ClistBox::TYPE_EXTENDED)
 					{
 						pos = (int) page_start[current_page + 1];
 
@@ -1558,7 +1535,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 					
 				case (CRCInput::RC_up) :
-					if(widgetType == CMenuItem::TYPE_FRAME)
+					if(widgetType == ClistBox::TYPE_FRAME)
 					{
 						pos = selected - itemsPerX;
 
@@ -1581,7 +1558,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							}
 						}
 					}
-					else if(widgetType == CMenuItem::TYPE_STANDARD || widgetType == CMenuItem::TYPE_CLASSIC || widgetType == CMenuItem::TYPE_EXTENDED)
+					else if(widgetType == ClistBox::TYPE_STANDARD || widgetType == ClistBox::TYPE_CLASSIC || widgetType == ClistBox::TYPE_EXTENDED)
 					{
 						//search next / prev selectable item
 						for (unsigned int count = 1; count < items.size(); count++) 
@@ -1616,7 +1593,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 					
 				case (CRCInput::RC_down) :
-					if(widgetType == CMenuItem::TYPE_FRAME)
+					if(widgetType == ClistBox::TYPE_FRAME)
 					{
 						pos = selected + itemsPerX;
 
@@ -1640,7 +1617,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							} 
 						}
 					}
-					else if(widgetType == CMenuItem::TYPE_STANDARD || widgetType == CMenuItem::TYPE_CLASSIC || widgetType == CMenuItem::TYPE_EXTENDED)
+					else if(widgetType == ClistBox::TYPE_STANDARD || widgetType == ClistBox::TYPE_CLASSIC || widgetType == ClistBox::TYPE_EXTENDED)
 					{
 						//search next / prev selectable item
 						for (unsigned int count = 1; count < items.size(); count++) 
@@ -1673,7 +1650,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 
 				case (CRCInput::RC_left):
-					if(widgetType == CMenuItem::TYPE_FRAME)
+					if(widgetType == ClistBox::TYPE_FRAME)
 					{
 						for (unsigned int count = 1; count < items.size(); count++) 
 						{
@@ -1706,11 +1683,11 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 						}
 
 					}
-					else if (widgetType == CMenuItem::TYPE_EXTENDED)
+					else if (widgetType == ClistBox::TYPE_EXTENDED)
 					{
 						textBox->scrollPageUp(1);
 					}
-					else if(widgetType == CMenuItem::TYPE_STANDARD)
+					else if(widgetType == ClistBox::TYPE_STANDARD)
 					{
 						if(widgetMode == ClistBox::MODE_SETUP)
 						{
@@ -1750,7 +1727,7 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 					break;
 					
 				case (CRCInput::RC_right):
-					if(widgetType == CMenuItem::TYPE_FRAME)
+					if(widgetType == ClistBox::TYPE_FRAME)
 					{
 						for (unsigned int count = 1; count < items.size(); count++) 
 						{
@@ -1780,11 +1757,11 @@ int CMenuWidget::exec(CMenuTarget* parent, const std::string&)
 							}
 						}
 					}
-					else if (widgetType == CMenuItem::TYPE_EXTENDED)
+					else if (widgetType == ClistBox::TYPE_EXTENDED)
 					{
 						textBox->scrollPageDown(1);
 					}
-					else if(widgetType == CMenuItem::TYPE_STANDARD)
+					else if(widgetType == ClistBox::TYPE_STANDARD)
 					{
 						if(widgetMode == ClistBox::MODE_SETUP)
 						{

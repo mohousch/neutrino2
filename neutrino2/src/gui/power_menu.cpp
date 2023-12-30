@@ -91,7 +91,7 @@ int CPowerMenu::showMenu(void)
 		powerMenu->enablePaintDate();
 		
 		//
-		if (powerMenu->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		if (powerMenu->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			powerMenu->enablePaintFoot();	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	

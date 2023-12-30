@@ -439,7 +439,7 @@ void CMoviePlayer::showMenu()
 
 	//
 	mlist->setWidgetMode(ClistBox::MODE_LISTBOX);
-	mlist->setWidgetType(CMenuItem::TYPE_FRAME);
+	mlist->setWidgetType(ClistBox::TYPE_FRAME);
 	mlist->setItemsPerPage(6, 2);
 	
 	//

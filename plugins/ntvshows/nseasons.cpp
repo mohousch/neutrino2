@@ -185,7 +185,7 @@ void CNSeasons::showMenu()
 	}
 
 	listBox->setWidgetMode(ClistBox::MODE_LISTBOX);
-	listBox->setWidgetType(CMenuItem::TYPE_FRAME);
+	listBox->setWidgetType(ClistBox::TYPE_FRAME);
 	listBox->setItemsPerPage(6, 2);
 	//listBox->setItemBoxColor(COL_YELLOW);
 	listBox->setSelected(selected);

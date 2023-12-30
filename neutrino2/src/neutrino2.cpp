@@ -606,7 +606,7 @@ int CNeutrinoApp::loadSetup(const char * fname)
 	//
 	g_settings.preferred_skin = configfile.getString("preferred_skin", "neutrino2");
 	////
-	g_settings.widget_type = configfile.getInt32("widget_type", CMenuItem::TYPE_CLASSIC);
+	g_settings.widget_type = configfile.getInt32("widget_type", ClistBox::TYPE_CLASSIC);
 	g_settings.item_info = configfile.getBool("item_info", false);
 	g_settings.theme = configfile.getString("theme", "default.config");
 	////

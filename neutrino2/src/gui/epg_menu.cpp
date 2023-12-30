@@ -85,7 +85,7 @@ int CEPGMenuHandler::doMenu()
 		redMenu->setTitle(_("EPG / Timer"), NEUTRINO_ICON_BUTTON_EPG);
 		redMenu->enablePaintDate();
 		// foot
-		if (redMenu->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		if (redMenu->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			redMenu->enablePaintFoot();	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};

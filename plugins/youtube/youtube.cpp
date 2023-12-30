@@ -157,7 +157,7 @@ void CYTBrowser::showMenu()
 
 	//
 	moviesMenu->setWidgetMode(ClistBox::MODE_LISTBOX);
-	moviesMenu->setWidgetType(CMenuItem::TYPE_FRAME);
+	moviesMenu->setWidgetType(ClistBox::TYPE_FRAME);
 	moviesMenu->setItemsPerPage(3, 2);
 
 	//

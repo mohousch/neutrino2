@@ -95,7 +95,7 @@ void CNeutrinoApp::mainMenu(void)
 		nMenu->enablePaintDate();
 		
 		// foot
-		if (nMenu->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		if (nMenu->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			nMenu->enablePaintFoot();
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " " };	
@@ -139,7 +139,7 @@ void CNeutrinoApp::mainMenu(void)
 #endif
 
 	// line
-	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
+	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == ClistBox::TYPE_STANDARD)
 	{
 		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
 	}
@@ -178,7 +178,7 @@ void CNeutrinoApp::mainMenu(void)
 	if (nMenu) nMenu->addItem(item);
 	
 	// line
-	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
+	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == ClistBox::TYPE_STANDARD)
 	{
 		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
 	}
@@ -202,7 +202,7 @@ void CNeutrinoApp::mainMenu(void)
 	if (nMenu) nMenu->addItem(item);
 	
 	// line
-	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == CMenuItem::TYPE_STANDARD)
+	if (nMenu && g_settings.preferred_skin == "neutrino" && nMenu->getWidgetType() == ClistBox::TYPE_STANDARD)
 	{
 		nMenu->addItem(new CMenuSeparator(CMenuSeparator::LINE, NULL, true));
 	}
@@ -371,11 +371,11 @@ bool CNeutrinoApp::showUserMenu(int button)
 		menu->enablePaintDate();
 		
 		// foot
-		if (menu->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		if (menu->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			menu->enablePaintFoot();	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " " };
-			//if (g_settings.widget_type == CMenuItem::TYPE_STANDARD || !g_settings.item_info)	
+			//if (g_settings.widget_type == ClistBox::TYPE_STANDARD || !g_settings.item_info)	
 			menu->setFootButtons(&btn);
 		}
 		

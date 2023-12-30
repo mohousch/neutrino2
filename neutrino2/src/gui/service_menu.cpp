@@ -110,7 +110,7 @@ int CServiceMenu::showMenu(void)
 		service->setTitle(_("System"), NEUTRINO_ICON_SERVICE);
 		service->enablePaintDate();
 		// foot
-		if (service->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		if (service->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			service->enablePaintFoot();	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	

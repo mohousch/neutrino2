@@ -1997,7 +1997,7 @@ void CMoviePlayerGui::showPlaylist()
 		mplist->addItem(item);
 	}
 
-	mplist->setWidgetType(CMenuItem::TYPE_FRAME);
+	mplist->setWidgetType(ClistBox::TYPE_FRAME);
 	mplist->setItemsPerPage(6, 2);
 	
 	mplist->setSelected(selected);

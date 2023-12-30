@@ -239,7 +239,17 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 					gst_tag_list_free(m_stream_tags);
 				m_stream_tags = result;
 			}
-
+			
+			////
+			guint value;
+			int frameRate = 0;
+			
+			if (gst_tag_list_get_uint(m_stream_tags, GST_TAG_BITRATE, &value))
+			{
+				frameRate = (int) value;
+			}
+			printf("FRAMERATE:%d\n", frameRate);
+			
 			gst_tag_list_free(tags);
 			break;
 		}
@@ -436,7 +446,42 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 				//gst_video_overlay_set_render_rectangle(GST_VIDEO_OVERLAY(GST_MESSAGE_SRC(msg)), 0, 0, GLWidth, GLHeight);
 #endif
 			}
+			else
 #endif
+			////
+			{
+				const GstStructure *msgstruct = gst_message_get_structure(msg);
+				
+				if(NULL != msgstruct)
+            			{
+                			const gchar *eventname = gst_structure_get_name(msgstruct);
+                			
+                			if( eventname )
+                			{
+                    				if (!strcmp(eventname, "eventSizeChanged") || !strcmp(eventname, "eventSizeAvail"))
+                    				{
+                        				int aspect = 0;
+                        				int width  = 0;
+                        				int height = 0;
+                        				
+                        				gst_structure_get_int (msgstruct, "aspect_ratio", &aspect);
+                        				gst_structure_get_int (msgstruct, "width", &width);
+                        				gst_structure_get_int (msgstruct, "height", &height);
+                    				}
+                    				else if (!strcmp(eventname, "eventFrameRateChanged") || !strcmp(eventname, "eventFrameRateAvail"))
+                    				{
+                        				int framerate = 0;
+                        				gst_structure_get_int (msgstruct, "frame_rate", &framerate);
+							printf("RATE:%d\n", framerate);
+                    				}
+                    				else if (!strcmp(eventname, "eventProgressiveChanged") || !strcmp(eventname, "eventProgressiveAvail"))
+                    				{
+                        				int progressive = 0;
+                        				gst_structure_get_int (msgstruct, "progressive", &progressive);
+                    				}
+                			}
+                		}
+			}
 		}
 		break;
 #endif		

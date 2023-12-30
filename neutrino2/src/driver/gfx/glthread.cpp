@@ -51,6 +51,7 @@ int GLHeight;
 ////
 extern cVideo *videoDecoder;
 extern cAudio *audioDecoder;
+extern cPlayback *playback;
 
 GLThreadObj::GLThreadObj(int x, int y) : mX(x), mY(y), mReInit(true), mShutDown(false), mInitDone(false)
 {
@@ -325,7 +326,7 @@ void GLThreadObj::render()
 		dprintf(DEBUG_NORMAL, "GLThreadObj::render: GLError:%d 0x%04x\n", err, err);
 	}
 
-	// simply limit to 30 Hz, if anyone wants to do this properly, feel free
+	// simply limit to 30 Hz, if anyone wants to do this properly, feel free	
 	usleep(sleep_us);
 	
 	glutPostRedisplay();
@@ -472,7 +473,7 @@ void GLThreadObj::bltDisplayBuffer()
 			sleep_us = (sleep_us * 2 + (vpts - apts) * 10 / 9) / 3;
 		else if (sleep_us > 1000)
 			sleep_us -= 1000;
-			
+		
 		last_apts = apts;
 		
 		//

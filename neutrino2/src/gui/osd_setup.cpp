@@ -114,7 +114,7 @@ int COSDSettings::showMenu(void)
 		osdSettings->setTitle(_("OSD"), NEUTRINO_ICON_COLORS);
 		osdSettings->enablePaintDate();
 		//
-		if (osdSettings->getWidgetType() != CMenuItem::TYPE_STANDARD)
+		if (osdSettings->getWidgetType() != ClistBox::TYPE_STANDARD)
 		{
 			osdSettings->enablePaintFoot();	
 			const struct button_label btn = { NEUTRINO_ICON_INFO, " "};	
@@ -1083,9 +1083,9 @@ void COSDDiverses::showMenu()
 	{
 		CMenuItem *item = new CMenuOptionChooser(_("Widget Type"), &g_settings.widget_type);
 		item->setActive(true);
-		item->addOption(_("Standard"), CMenuItem::TYPE_STANDARD);
-		item->addOption(_("Classic"), CMenuItem::TYPE_CLASSIC);
-		item->addOption(_("Extended"), CMenuItem::TYPE_EXTENDED);
+		item->addOption(_("Standard"), ClistBox::TYPE_STANDARD);
+		item->addOption(_("Classic"), ClistBox::TYPE_CLASSIC);
+		item->addOption(_("Extended"), ClistBox::TYPE_EXTENDED);
 		
 		osdDiverseSettings->addItem(item);
 	}
@@ -1133,7 +1133,7 @@ int CSkinManager::showMenu()
 		skinMenu = new ClistBox(widget->getWindowsPos().iX, widget->getWindowsPos().iY, widget->getWindowsPos().iWidth, widget->getWindowsPos().iHeight);
 
 		skinMenu->setWidgetMode(ClistBox::MODE_LISTBOX);
-		skinMenu->setWidgetType(CMenuItem::TYPE_CLASSIC);
+		skinMenu->setWidgetType(ClistBox::TYPE_CLASSIC);
 		skinMenu->enableShrinkMenu();
 		
 		//

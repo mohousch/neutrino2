@@ -67,16 +67,7 @@ class CMenuItem
 			MENUITEM_FORWARDER
 		};
 		
-		// widgettype
-		enum
-		{
-			TYPE_STANDARD = 0,
-			TYPE_CLASSIC,
-			TYPE_EXTENDED,
-			TYPE_FRAME
-		};
-		
-		// item state
+		// state
 		enum
 		{
 			ITEM_ACTIVE,
@@ -382,7 +373,7 @@ class CMenuForwarder : public CMenuItem
 class ClistBox : public CComponent
 {
 	public:
-		// listBox mode
+		// mode
 		enum 
 		{
 			MODE_LISTBOX = 0,
@@ -390,6 +381,16 @@ class ClistBox : public CComponent
 			MODE_SETUP
 		};
 		
+		// type
+		enum
+		{
+			TYPE_STANDARD = 0,
+			TYPE_CLASSIC,
+			TYPE_EXTENDED,
+			TYPE_FRAME
+		};
+		
+		/*
 		enum 
 		{
 			FLAG_NONE,
@@ -397,6 +398,7 @@ class ClistBox : public CComponent
 			FLAG_ADJUSTLOCALE,
 			FLAG_ADJUSTOPTION,
 		};
+		*/
 
 		//
 		std::vector<CMenuItem*> items;
@@ -532,7 +534,7 @@ class ClistBox : public CComponent
 		void clearItems(void){items.clear(); current_page = 0;};
 		void clear(void){hbutton_labels.clear(); fbutton_labels.clear(); current_page = 0; items.clear();};
 		void setSelected(unsigned int _new) { selected = _new; };
-		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = CMenuItem::TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
+		void integratePlugins(CPlugins::i_type_t integration = CPlugins::I_TYPE_DISABLED, const unsigned int shortcut = CRCInput::RC_nokey, bool enabled = true, int imode = MODE_MENU, int itype = TYPE_STANDARD, bool i2lines = false, int iBorder = CComponent::BORDER_NO);
 		////
 		void initFrames(); // public
 		void paintHead();
@@ -556,7 +558,7 @@ class ClistBox : public CComponent
 		// frame method
 		void setItemsPerPage(int itemsX = 6, int itemsY = 3){itemsPerX = itemsX; itemsPerY = itemsY; maxItemsPerPage = itemsPerX*itemsPerY;};
 		//
-		void setWidgetType(int type){widgetType = type;};
+		void setWidgetType(int type){widgetType = type; initFrames();};
 		void setWidgetMode(int mode){widgetMode = mode;};
 		
 		//// item properties
