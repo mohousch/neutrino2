@@ -1627,72 +1627,72 @@ void CTestMenu::testMultiWidget()
 	testWidget->addCCItem(windowWidget);
 	
 	// icon
-	CCIcon testIcon;
-	testIcon.setIcon(NEUTRINO_ICON_BUTTON_RED);
-	testIcon.setPosition(Box.iX + 150, Box.iY + 150, testIcon.width, testIcon.height);
+	CCIcon *testIcon = new CCIcon();
+	testIcon->setIcon(NEUTRINO_ICON_BUTTON_RED);
+	testIcon->setPosition(Box.iX + 150, Box.iY + 150, testIcon->width, testIcon->height);
 	
-	testWidget->addCCItem(&testIcon);
+	testWidget->addCCItem(testIcon);
 	
 	// image
-	CCImage testImage;
+	CCImage *testImage = new CCImage();
 	if (!m_vMovieInfo.empty())
-		testImage.setImage(m_vMovieInfo[0].tfile.c_str());
-	testImage.setPosition(Box.iX + Box.iWidth - 210, Box.iY + 50, 200, 350);
+		testImage->setImage(m_vMovieInfo[0].tfile.c_str());
+	testImage->setPosition(Box.iX + Box.iWidth - 210, Box.iY + 50, 200, 350);
 	
-	testWidget->addCCItem(&testImage);
+	testWidget->addCCItem(testImage);
 	
 	// label
-	CCLabel testLabel;
-	testLabel.setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
-	testLabel.setColor(COL_GREEN_PLUS_0);
-	testLabel.paintMainFrame(true);
-	testLabel.setText("this is a CComponent label test :-)");
-	testLabel.setPosition(Box.iX + 20, Box.iY + 50, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
+	CCLabel *testLabel = new CCLabel();
+	testLabel->setFont(SNeutrinoSettings::FONT_TYPE_MENU_TITLE);
+	testLabel->setColor(COL_GREEN_PLUS_0);
+	testLabel->paintMainFrame(true);
+	testLabel->setText("this is a CComponent label test :-)");
+	testLabel->setPosition(Box.iX + 20, Box.iY + 50, Box.iWidth, g_Font[SNeutrinoSettings::FONT_TYPE_MENU_TITLE]->getHeight());
 	
-	testWidget->addCCItem(&testLabel);
+	testWidget->addCCItem(testLabel);
 	
 	// CButtons
-	CCButtons testButton(Box.iX + 10, Box.iY + Box.iHeight - 100, Box.iWidth, 40);
+	CCButtons *testButton = new CCButtons(Box.iX + 10, Box.iY + Box.iHeight - 100, Box.iWidth, 40);
 	int icon_w, icon_h;
 	CFrameBuffer::getInstance()->getIconSize(NEUTRINO_ICON_BUTTON_RED, &icon_w, &icon_h);
-	//testButton.setPosition(Box.iX + 10, Box.iY + Box.iHeight - 100, Box.iWidth, 40);
-	testButton.setButtons(FootButtons, FOOT_BUTTONS_COUNT);
+	//testButton->setPosition(Box.iX + 10, Box.iY + Box.iHeight - 100, Box.iWidth, 40);
+	testButton->setButtons(FootButtons, FOOT_BUTTONS_COUNT);
 	
-	testWidget->addCCItem(&testButton);
+	testWidget->addCCItem(testButton);
 	
 	// Hline
-	CCHline testHline(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 10, 10);
-	//testHline.setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 10, 10);
+	CCHline *testHline = new CCHline(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 10, 10);
+	//testHline->setPosition(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 10, 10);
 	
-	testWidget->addCCItem(&testHline);
+	testWidget->addCCItem(testHline);
 	
 	// Vline
-	CCVline testVline(Box.iX, Box.iY + 10, 10, Box.iHeight - 20);
-	//testVline.setPosition(Box.iX, Box.iY + 10, 10, Box.iHeight - 20);
+	CCVline *testVline = new CCVline(Box.iX, Box.iY + 10, 10, Box.iHeight - 20);
+	//testVline->setPosition(Box.iX, Box.iY + 10, 10, Box.iHeight - 20);
 	
-	testWidget->addCCItem(&testVline);
+	testWidget->addCCItem(testVline);
 	
 	// CCFrameLine
-	CCFrameLine testFrameLine(Box.iX + 10, Box.iY + 140, testIcon.width + 100, testIcon.height + 20);
+	CCFrameLine *testFrameLine = new CCFrameLine(Box.iX + 10, Box.iY + 140, testIcon->width + 100, testIcon->height + 20);
 	
-	testWidget->addCCItem(&testFrameLine);
+	testWidget->addCCItem(testFrameLine);
 	
 	// text
-	CCText testText(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
-	testText.setText(buffer.c_str());
+	CCText *testText = new CCText(Box.iX + 10, Box.iY + Box.iHeight/2, Box.iWidth - 20, Box.iHeight/4);
+	testText->setText(buffer.c_str());
 	
-	testWidget->addCCItem(&testText);
+	testWidget->addCCItem(testText);
 
 	// grid
-	CCGrid testGrid(Box.iX + 180 + testIcon.width + 100 + 20, Box.iY + 100, 200, 160);
-	testGrid.setColor(COL_PURPLE_PLUS_0);
+	CCGrid *testGrid = new CCGrid(Box.iX + 180 + testIcon->width + 100 + 20, Box.iY + 100, 200, 160);
+	testGrid->setColor(COL_PURPLE_PLUS_0);
 	
-	testWidget->addCCItem(&testGrid);
+	testWidget->addCCItem(testGrid);
 	
 	// pig
-	CCPig testPig(Box.iX + 180 + testIcon.width + 100 + 20 + 200 + 10, Box.iY + 100, 300, 160);
+	CCPig *testPig = new CCPig(Box.iX + 180 + testIcon->width + 100 + 20 + 200 + 10, Box.iY + 100, 300, 160);
 	
-	testWidget->addCCItem(&testPig);
+	testWidget->addCCItem(testPig);
 	
 	//
 	testWidget->exec(NULL, "");
