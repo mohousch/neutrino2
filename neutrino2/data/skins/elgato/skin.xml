@@ -116,7 +116,8 @@
 		</listbox>
 	</screen>
 	
-	<screen name="transponder" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<screen name="transponder" width="600" height="600" paintframe="0" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+		<image width="600" height="600" image="menu_bg2.png"/>
 		<listbox posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" painthead="1" title="Select transponder" icon="softupdate" headline="1" paintfoot="1" footline="1" scrollbar="1">
 			<foot_button_label name="information"/>
 		</listbox>
@@ -164,7 +165,8 @@
 		</listbox>
 	</screen>
 	
-	<screen name="satfindMenu" width="600" height="600" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<screen name="satfindMenu" width="600" height="600" paintframe="0" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" position="MENU_POSITION_CENTER" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+		<image width="600" height="600" image="menu_bg2.png"/>
 		<listbox posx="30" posy="30" width="540" height="540" paintframe="0" type="TYPE_STANDARD" mode="MODE_SETUP" itemborder="1" painthead="1" title="Motor settings" icon="softupdate" headline="1" paintfoot="1" footline="1" scrollbar="1">
 			<foot_button_label name="information"/>
 		</listbox>
@@ -620,11 +622,11 @@
 		<foot posx="10" posy="550" width="1160" height="60" paintframe="0" line="1"/>
 	</screen>
 	
-	<screen name="hintbox" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<screen name="hintbox" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_COLOR2TRANSPARENT" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<head posx="60" posy="60" width="1160" height="60" line="1"/>
 	</screen>
 	
-	<screen name="messagebox" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_ONECOLOR" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
+	<screen name="messagebox" width="1180" height="620" paintframe="1" gradient="DARK2LIGHT2DARK" gradienttype="GRADIENT_COLOR2TRANSPARENT" radius="RADIUS_VERYLARGE" corner="CORNER_ALL">
 		<head posx="60" posy="60" width="1160" height="60" line="1"/>
 	</screen>
 	
