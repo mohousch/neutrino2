@@ -3292,12 +3292,6 @@ void CNeutrinoApp::exitRun(int retcode, bool save)
 			delete g_fontRenderer;
 			g_fontRenderer = NULL;
 		}
-			
-		if (frameBuffer != NULL)
-		{
-			delete frameBuffer;
-			frameBuffer = NULL;
-		}
 		
 #ifdef USE_OPENGL
 		ao_shutdown();

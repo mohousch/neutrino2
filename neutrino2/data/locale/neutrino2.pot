@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2023-12-30 23:57+0100\n"
+"POT-Creation-Date: 2024-01-29 10:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -354,6 +354,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3822 ../../src/neutrino2.cpp:3826
 #: ../../src/neutrino2.cpp:3830 ../../src/neutrino2.cpp:3819
+#: ../../src/neutrino2.cpp:3813
 msgid ""
 "Box will shutdown in 1 min.\n"
 "Cancel Sutdown ?"
@@ -1624,6 +1625,10 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1477 ../../src/gui/movieplayer.cpp:1598
 #: ../../src/gui/movieplayer.cpp:2159 ../../src/gui/movieplayer.cpp:2189
 #: ../../src/neutrino2_menue.cpp:190 ../../src/neutrino2_menue.cpp:189
+#: ../../src/neutrino2.cpp:3382 ../../src/neutrino2.cpp:3734
+#: ../../src/neutrino2.cpp:3768 ../../src/neutrino2.cpp:3775
+#: ../../src/neutrino2.cpp:3813 ../../src/neutrino2.cpp:3855
+#: ../../src/neutrino2.cpp:4272 ../../src/neutrino2.cpp:4956
 msgid "Information"
 msgstr ""
 
@@ -2188,6 +2193,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:4966 ../../src/neutrino2.cpp:4970
 #: ../../src/neutrino2.cpp:4974 ../../src/neutrino2.cpp:4962
+#: ../../src/neutrino2.cpp:4956
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
@@ -2415,6 +2421,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3719 ../../src/neutrino2.cpp:3723
 #: ../../src/neutrino2.cpp:3727 ../../src/neutrino2.cpp:3716
+#: ../../src/neutrino2.cpp:3710
 msgid "Program unknown"
 msgstr ""
 
@@ -2544,6 +2551,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3777 ../../src/neutrino2.cpp:3781
 #: ../../src/neutrino2.cpp:3785 ../../src/neutrino2.cpp:3774
+#: ../../src/neutrino2.cpp:3768
 msgid "Recording starts in a few minutes"
 msgstr ""
 
@@ -2604,6 +2612,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3890 ../../src/neutrino2.cpp:3894
 #: ../../src/neutrino2.cpp:3898 ../../src/neutrino2.cpp:3887
+#: ../../src/neutrino2.cpp:3881
 msgid "Reminder"
 msgstr ""
 
@@ -2846,7 +2855,7 @@ msgid "Science fiction / Fantasy / Horror"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:3387 ../../src/neutrino2.cpp:3391
-#: ../../src/neutrino2.cpp:3395
+#: ../../src/neutrino2.cpp:3395 ../../src/neutrino2.cpp:3381
 msgid "Scrambled channel"
 msgstr ""
 
@@ -3086,6 +3095,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3784 ../../src/neutrino2.cpp:3788
 #: ../../src/neutrino2.cpp:3792 ../../src/neutrino2.cpp:3781
+#: ../../src/neutrino2.cpp:3775
 msgid "Sleeptimer in 1 min"
 msgstr ""
 
@@ -3450,6 +3460,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:4966 ../../src/neutrino2.cpp:4970
 #: ../../src/neutrino2.cpp:4974 ../../src/neutrino2.cpp:4962
+#: ../../src/neutrino2.cpp:4956
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
@@ -3793,7 +3804,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3183 ../../src/neutrino2.cpp:4281
 #: ../../src/neutrino2.cpp:3187 ../../src/neutrino2.cpp:4285
 #: ../../src/neutrino2.cpp:4289 ../../src/neutrino2.cpp:3177
-#: ../../src/neutrino2.cpp:4278
+#: ../../src/neutrino2.cpp:4278 ../../src/neutrino2.cpp:4272
 msgid "You really want to to stop record ?"
 msgstr ""
 
@@ -3828,6 +3839,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3700 ../../src/neutrino2.cpp:3704
 #: ../../src/neutrino2.cpp:3708 ../../src/neutrino2.cpp:3697
+#: ../../src/neutrino2.cpp:3691
 msgid "Zapto timer in one minute"
 msgstr ""
 
