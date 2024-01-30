@@ -248,7 +248,7 @@ GstBusSyncReply Gst_bus_call(GstBus *bus, GstMessage * msg, gpointer /*user_data
 			{
 				frameRate = (int) value;
 			}
-			printf("FRAMERATE:%d\n", frameRate);
+			//printf("FRAMERATE:%d\n", frameRate);
 			
 			gst_tag_list_free(tags);
 			break;
