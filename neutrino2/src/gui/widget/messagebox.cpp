@@ -30,8 +30,6 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <gui/widget/icons.h>
-
 #include <system/debug.h>
 #include <system/settings.h>
 

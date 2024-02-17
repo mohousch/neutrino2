@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-01-29 10:31+0100\n"
+"POT-Creation-Date: 2024-02-17 09:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,24 +43,25 @@ msgstr ""
 msgid "(c) Step Size:"
 msgstr ""
 
-#: ../../src/gui/filebrowser.cpp:144
+#: ../../src/gui/filebrowser.cpp:144 ../../src/gui/filebrowser.cpp:143
 msgid "(date)"
 msgstr ""
 
-#: ../../src/gui/filebrowser.cpp:141
+#: ../../src/gui/filebrowser.cpp:141 ../../src/gui/filebrowser.cpp:140
 msgid "(filename)"
 msgstr ""
 
-#: ../../src/gui/filebrowser.cpp:142
+#: ../../src/gui/filebrowser.cpp:142 ../../src/gui/filebrowser.cpp:141
 msgid "(filename2)"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:368 ../../src/gui/audioplayer.cpp:386
 #: ../../src/gui/audioplayer.cpp:367 ../../src/gui/audioplayer.cpp:385
+#: ../../src/gui/audioplayer.cpp:366 ../../src/gui/audioplayer.cpp:384
 msgid "(relative, in seconds)"
 msgstr ""
 
-#: ../../src/gui/filebrowser.cpp:145
+#: ../../src/gui/filebrowser.cpp:145 ../../src/gui/filebrowser.cpp:144
 msgid "(size)"
 msgstr ""
 
@@ -70,7 +71,7 @@ msgstr ""
 msgid "(starting in %d min)"
 msgstr ""
 
-#: ../../src/gui/filebrowser.cpp:143
+#: ../../src/gui/filebrowser.cpp:143 ../../src/gui/filebrowser.cpp:142
 msgid "(type)"
 msgstr ""
 
@@ -82,7 +83,7 @@ msgstr ""
 msgid "0 for unlimited repeats"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:549
+#: ../../src/gui/scan_setup.cpp:549 ../../src/gui/scan_setup.cpp:548
 msgid "5 Volt"
 msgstr ""
 
@@ -106,13 +107,14 @@ msgstr ""
 msgid "Absolute start directory"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:214
+#: ../../src/gui/hdd_menu.cpp:214 ../../src/gui/hdd_menu.cpp:213
 msgid "Activate settings"
 msgstr ""
 
 #: ../../src/gui/epgview.cpp:954 ../../src/gui/movieinfo.cpp:883
 #: ../../src/gui/movieplayer.cpp:2187 ../../src/system/tmdbparser.cpp:252
 #: ../../src/gui/movieplayer.cpp:2134 ../../src/gui/movieplayer.cpp:2133
+#: ../../src/gui/epgview.cpp:956 ../../src/gui/movieplayer.cpp:2132
 msgid "Actors"
 msgstr ""
 
@@ -120,6 +122,8 @@ msgstr ""
 #: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:54
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:90
 #: ../../src/gui/movieplayer.cpp:1968 ../../src/gui/movieplayer.cpp:1967
+#: ../../src/gui/movieplayer.cpp:1966
+#: ../../src/gui/bedit/bouqueteditor_channels.cpp:89
 msgid "Add"
 msgstr ""
 
@@ -128,15 +132,15 @@ msgstr ""
 msgid "Add to Bouquets"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:222
+#: ../../src/gui/epgview.cpp:222 ../../src/gui/epgview.cpp:224
 msgid "Adult movie / Drama"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:128
+#: ../../src/gui/scan_setup.cpp:128 ../../src/gui/scan_setup.cpp:127
 msgid "Advanced"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:216
+#: ../../src/gui/epgview.cpp:216 ../../src/gui/epgview.cpp:218
 msgid "Adventure / Western/War"
 msgstr ""
 
@@ -165,11 +169,11 @@ msgstr ""
 
 #: ../../src/gui/audio_select.cpp:154 ../../src/gui/audio_setup.cpp:197
 #: ../../src/gui/audio_setup.cpp:288 ../../src/gui/video_setup.cpp:411
-#: ../../src/gui/video_setup.cpp:466
+#: ../../src/gui/video_setup.cpp:466 ../../src/gui/audio_select.cpp:152
 msgid "Analog Output"
 msgstr ""
 
-#: ../../src/gui/infoviewer.cpp:1120
+#: ../../src/gui/infoviewer.cpp:1120 ../../src/gui/infoviewer.cpp:1121
 msgid "Antenna positioning"
 msgstr ""
 
@@ -181,19 +185,19 @@ msgstr ""
 msgid "Are you sure ?"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:698
+#: ../../src/gui/hdd_menu.cpp:698 ../../src/gui/hdd_menu.cpp:697
 msgid "Are you sure to format ? You will lost all data "
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:507
+#: ../../src/gui/hdd_menu.cpp:507 ../../src/gui/hdd_menu.cpp:506
 msgid "Are you sure to init ?"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:287
+#: ../../src/gui/epgview.cpp:287 ../../src/gui/epgview.cpp:289
 msgid "Arts / Culture"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:297
+#: ../../src/gui/epgview.cpp:297 ../../src/gui/epgview.cpp:299
 msgid "Arts / Culture magazines"
 msgstr ""
 
@@ -201,7 +205,7 @@ msgstr ""
 msgid "Aspect Ratio"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:253
+#: ../../src/gui/epgview.cpp:253 ../../src/gui/epgview.cpp:255
 msgid "Athletics"
 msgstr ""
 
@@ -212,6 +216,7 @@ msgstr ""
 #: ../../src/gui/infoviewer.cpp:1744 ../../src/gui/movieinfo.cpp:980
 #: ../../src/gui/movieplayer.cpp:1881 ../../src/gui/movieplayer.cpp:1828
 #: ../../src/gui/infoviewer.cpp:1745 ../../src/gui/movieplayer.cpp:1827
+#: ../../src/gui/infoviewer.cpp:1746 ../../src/gui/movieplayer.cpp:1826
 msgid "Audio"
 msgstr ""
 
@@ -222,6 +227,8 @@ msgstr ""
 #: ../../src/gui/audioplayer.cpp:216 ../../src/gui/audioplayer.cpp:349
 #: ../../src/gui/audioplayer.cpp:1414 ../../src/gui/audioplayer.cpp:215
 #: ../../src/gui/audioplayer.cpp:348 ../../src/gui/audioplayer.cpp:1413
+#: ../../src/gui/audioplayer.cpp:214 ../../src/gui/audioplayer.cpp:347
+#: ../../src/gui/audioplayer.cpp:1412
 msgid "Audio Playlist"
 msgstr ""
 
@@ -243,6 +250,7 @@ msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1326 ../../src/gui/audioplayer_setup.cpp:116
 #: ../../src/gui/main_setup.cpp:149 ../../src/gui/audioplayer.cpp:1325
+#: ../../src/gui/audioplayer.cpp:1324
 msgid "Audioplayer settings"
 msgstr ""
 
@@ -260,10 +268,12 @@ msgid "Auto select subtitles"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:643 ../../src/gui/scan_setup.cpp:1398
+#: ../../src/gui/scan_setup.cpp:642 ../../src/gui/scan_setup.cpp:1397
 msgid "Auto-Scan"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:655 ../../src/gui/scan_setup.cpp:1533
+#: ../../src/gui/scan_setup.cpp:654 ../../src/gui/scan_setup.cpp:1532
 msgid "Auto-Scan multiple Satellites"
 msgstr ""
 
@@ -284,6 +294,7 @@ msgid "BOTTOM RIGHT"
 msgstr ""
 
 #: ../../src/gui/widget/messagebox.cpp:548
+#: ../../src/gui/widget/messagebox.cpp:546
 msgid "Back"
 msgstr ""
 
@@ -301,11 +312,11 @@ msgstr ""
 msgid "Backup failed"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:281
+#: ../../src/gui/epgview.cpp:281 ../../src/gui/epgview.cpp:283
 msgid "Ballet"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:1315
+#: ../../src/gui/scan_setup.cpp:1315 ../../src/gui/scan_setup.cpp:1314
 msgid "Bandwidth"
 msgstr ""
 
@@ -316,6 +327,7 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:758 ../../src/gui/movieplayer.cpp:1895
 #: ../../src/gui/movieplayer.cpp:714 ../../src/gui/movieplayer.cpp:1842
 #: ../../src/gui/movieplayer.cpp:713 ../../src/gui/movieplayer.cpp:1841
+#: ../../src/gui/movieplayer.cpp:712 ../../src/gui/movieplayer.cpp:1840
 msgid "Bookmarks"
 msgstr ""
 
@@ -327,7 +339,7 @@ msgstr ""
 msgid "Bosnian"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:582
+#: ../../src/gui/scan_setup.cpp:582 ../../src/gui/scan_setup.cpp:581
 msgid "Bouquet"
 msgstr ""
 
@@ -335,6 +347,7 @@ msgstr ""
 #: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:230
 #: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:585
 #: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:598
+#: ../../src/gui/service_menu.cpp:132
 msgid "Bouquet Editor"
 msgstr ""
 
@@ -345,6 +358,7 @@ msgstr ""
 #: ../../src/gui/bouquetlist.cpp:62 ../../src/gui/channellist.cpp:101
 #: ../../src/gui/eventlist.cpp:804
 #: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:151
+#: ../../src/gui/eventlist.cpp:805
 msgid "Bouquets"
 msgstr ""
 
@@ -376,7 +390,7 @@ msgstr ""
 msgid "Broadcast"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:295
+#: ../../src/gui/epgview.cpp:295 ../../src/gui/epgview.cpp:297
 msgid "Broadcasting / Press"
 msgstr ""
 
@@ -396,40 +410,42 @@ msgstr ""
 msgid "Buttons Line Gradient"
 msgstr ""
 
-#: ../../src/gui/cam_menu.cpp:326
+#: ../../src/gui/cam_menu.cpp:326 ../../src/gui/cam_menu.cpp:327
 msgid "CAM init complete"
 msgstr ""
 
-#: ../../src/gui/cam_menu.cpp:269
+#: ../../src/gui/cam_menu.cpp:269 ../../src/gui/cam_menu.cpp:270
 msgid "CAM inserted in slot"
 msgstr ""
 
-#: ../../src/gui/cam_menu.cpp:297
+#: ../../src/gui/cam_menu.cpp:297 ../../src/gui/cam_menu.cpp:298
 msgid "CAM removed from slot"
 msgstr ""
 
-#: ../../src/gui/cec_setup.cpp:130
+#: ../../src/gui/cec_setup.cpp:130 ../../src/gui/cec_setup.cpp:128
 msgid "CEC Setup"
 msgstr ""
 
-#: ../../src/gui/cec_setup.cpp:160
+#: ../../src/gui/cec_setup.cpp:160 ../../src/gui/cec_setup.cpp:158
 msgid "CEC broadcast"
 msgstr ""
 
 #: ../../src/gui/cec_setup.cpp:156 ../../src/gui/cec_setup.cpp:162
 #: ../../src/gui/cec_setup.cpp:239 ../../src/gui/cec_setup.cpp:248
+#: ../../src/gui/cec_setup.cpp:154 ../../src/gui/cec_setup.cpp:160
+#: ../../src/gui/cec_setup.cpp:237 ../../src/gui/cec_setup.cpp:246
 msgid "CEC mode"
 msgstr ""
 
-#: ../../src/gui/cec_setup.cpp:90
+#: ../../src/gui/cec_setup.cpp:90 ../../src/gui/cec_setup.cpp:88
 msgid "CEC mode off"
 msgstr ""
 
-#: ../../src/gui/cec_setup.cpp:92
+#: ../../src/gui/cec_setup.cpp:92 ../../src/gui/cec_setup.cpp:90
 msgid "CEC mode recorder"
 msgstr ""
 
-#: ../../src/gui/cec_setup.cpp:91
+#: ../../src/gui/cec_setup.cpp:91 ../../src/gui/cec_setup.cpp:89
 msgid "CEC mode tuner"
 msgstr ""
 
@@ -438,43 +454,46 @@ msgid "CEC settings"
 msgstr ""
 
 #: ../../src/gui/cec_setup.cpp:158 ../../src/gui/cec_setup.cpp:166
-#: ../../src/gui/cec_setup.cpp:258
+#: ../../src/gui/cec_setup.cpp:258 ../../src/gui/cec_setup.cpp:156
+#: ../../src/gui/cec_setup.cpp:164 ../../src/gui/cec_setup.cpp:256
 msgid "CEC standby"
 msgstr ""
 
-#: ../../src/gui/cec_setup.cpp:84
+#: ../../src/gui/cec_setup.cpp:84 ../../src/gui/cec_setup.cpp:82
 msgid "CEC standby no timer"
 msgstr ""
 
 #: ../../src/gui/cec_setup.cpp:164 ../../src/gui/cec_setup.cpp:262
+#: ../../src/gui/cec_setup.cpp:162 ../../src/gui/cec_setup.cpp:260
 msgid "CEC view on"
 msgstr ""
 
 #: ../../src/gui/cec_setup.cpp:168 ../../src/gui/cec_setup.cpp:266
+#: ../../src/gui/cec_setup.cpp:166 ../../src/gui/cec_setup.cpp:264
 msgid "CEC volume"
 msgstr ""
 
-#: ../../src/gui/cec_setup.cpp:99
+#: ../../src/gui/cec_setup.cpp:99 ../../src/gui/cec_setup.cpp:97
 msgid "CEC volume TV"
 msgstr ""
 
-#: ../../src/gui/cec_setup.cpp:98
+#: ../../src/gui/cec_setup.cpp:98 ../../src/gui/cec_setup.cpp:96
 msgid "CEC volume audiosystem"
 msgstr ""
 
-#: ../../src/gui/cec_setup.cpp:97
+#: ../../src/gui/cec_setup.cpp:97 ../../src/gui/cec_setup.cpp:95
 msgid "CEC volume off"
 msgstr ""
 
-#: ../../src/gui/service_menu.cpp:136
+#: ../../src/gui/service_menu.cpp:136 ../../src/gui/service_menu.cpp:137
 msgid "CI Cam"
 msgstr ""
 
-#: ../../src/gui/cam_menu.cpp:134
+#: ../../src/gui/cam_menu.cpp:134 ../../src/gui/cam_menu.cpp:135
 msgid "CI Cam settings"
 msgstr ""
 
-#: ../../src/gui/cam_menu.cpp:171
+#: ../../src/gui/cam_menu.cpp:171 ../../src/gui/cam_menu.cpp:172
 msgid "CI cam reset"
 msgstr ""
 
@@ -495,6 +514,7 @@ msgid "CPU:"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1126 ../../src/gui/scan_setup.cpp:1426
+#: ../../src/gui/scan_setup.cpp:1125 ../../src/gui/scan_setup.cpp:1425
 msgid "Cable"
 msgstr ""
 
@@ -507,10 +527,14 @@ msgstr ""
 #: ../../src/gui/widget/messagebox.cpp:131
 #: ../../src/gui/widget/messagebox.cpp:454
 #: ../../src/gui/widget/messagebox.cpp:548
+#: ../../src/gui/widget/messagebox.cpp:73
+#: ../../src/gui/widget/messagebox.cpp:129
+#: ../../src/gui/widget/messagebox.cpp:452
+#: ../../src/gui/widget/messagebox.cpp:546
 msgid "Cancel"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:269
+#: ../../src/gui/epgview.cpp:269 ../../src/gui/epgview.cpp:271
 msgid "Cartoons / Puppets"
 msgstr ""
 
@@ -526,6 +550,7 @@ msgstr ""
 
 #: ../../src/gui/eventlist.cpp:803 ../../src/gui/movieinfo.cpp:932
 #: ../../src/gui/streaminfo.cpp:710 ../../src/gui/timerlist.cpp:1192
+#: ../../src/gui/eventlist.cpp:804
 msgid "Channel"
 msgstr ""
 
@@ -541,7 +566,7 @@ msgstr ""
 msgid "Channel down"
 msgstr ""
 
-#: ../../src/gui/infoviewer.cpp:1109
+#: ../../src/gui/infoviewer.cpp:1109 ../../src/gui/infoviewer.cpp:1110
 msgid "Channel not available"
 msgstr ""
 
@@ -555,7 +580,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:346 ../../src/gui/eventlist.cpp:805
 #: ../../src/gui/osd_setup.cpp:914 ../../src/gui/rc_setup.cpp:368
-#: ../../src/neutrino2.cpp:350
+#: ../../src/neutrino2.cpp:350 ../../src/gui/eventlist.cpp:806
 msgid "Channellist"
 msgstr ""
 
@@ -572,11 +597,12 @@ msgid "Channellist settings"
 msgstr ""
 
 #: ../../src/gui/hdd_menu.cpp:448 ../../src/gui/hdd_menu.cpp:911
-#: ../../src/gui/hdd_menu.cpp:943
+#: ../../src/gui/hdd_menu.cpp:943 ../../src/gui/hdd_menu.cpp:447
+#: ../../src/gui/hdd_menu.cpp:910 ../../src/gui/hdd_menu.cpp:942
 msgid "Check filesystem"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:264
+#: ../../src/gui/epgview.cpp:264 ../../src/gui/epgview.cpp:266
 msgid "Children / Juvenile program"
 msgstr ""
 
@@ -584,11 +610,11 @@ msgstr ""
 msgid "Classic"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:1319
+#: ../../src/gui/scan_setup.cpp:1319 ../../src/gui/scan_setup.cpp:1318
 msgid "Code Rate HP"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:1323
+#: ../../src/gui/scan_setup.cpp:1323 ../../src/gui/scan_setup.cpp:1322
 msgid "Code Rate LP"
 msgstr ""
 
@@ -604,11 +630,12 @@ msgstr ""
 msgid "Colour Range"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:218
+#: ../../src/gui/epgview.cpp:218 ../../src/gui/epgview.cpp:220
 msgid "Comedy"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:259 ../../src/gui/scan_setup.cpp:946
+#: ../../src/gui/scan_setup.cpp:258 ../../src/gui/scan_setup.cpp:945
 msgid "Commited/Uncommited"
 msgstr ""
 
@@ -623,7 +650,7 @@ msgstr ""
 msgid "Contrast / Brightness"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:331
+#: ../../src/gui/epgview.cpp:331 ../../src/gui/epgview.cpp:333
 msgid "Cooking"
 msgstr ""
 
@@ -640,7 +667,7 @@ msgid "Country"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1631 ../../src/gui/movieplayer.cpp:1578
-#: ../../src/gui/movieplayer.cpp:1577
+#: ../../src/gui/movieplayer.cpp:1577 ../../src/gui/movieplayer.cpp:1576
 msgid "Create bookmark"
 msgstr ""
 
@@ -649,6 +676,7 @@ msgid "Create list of HD channels"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:566 ../../src/gui/audioplayer.cpp:565
+#: ../../src/gui/audioplayer.cpp:564
 msgid "Current Track"
 msgstr ""
 
@@ -717,16 +745,21 @@ msgstr ""
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:365
 #: ../../src/gui/movieplayer.cpp:1967 ../../src/gui/movieplayer.cpp:1966
 #: ../../src/gui/channellist.cpp:1829 ../../src/gui/channellist.cpp:1830
+#: ../../src/gui/filebrowser.cpp:475 ../../src/gui/filebrowser.cpp:484
+#: ../../src/gui/movieplayer.cpp:1965 ../../src/gui/pluginlist.cpp:74
+#: ../../src/gui/bedit/bouqueteditor_channels.cpp:88
+#: ../../src/gui/bedit/bouqueteditor_channels.cpp:364
 msgid "Delete"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:446 ../../src/system/setting_helpers.cpp:272
 #: ../../src/neutrino2_menue.cpp:449 ../../src/neutrino2_menue.cpp:448
+#: ../../src/neutrino2_menue.cpp:445
 msgid "Delete WebTV channels"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:2022 ../../src/gui/movieplayer.cpp:1969
-#: ../../src/gui/movieplayer.cpp:1968
+#: ../../src/gui/movieplayer.cpp:1968 ../../src/gui/movieplayer.cpp:1967
 msgid "Delete all"
 msgstr ""
 
@@ -737,34 +770,35 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:437 ../../src/system/setting_helpers.cpp:271
 #: ../../src/neutrino2_menue.cpp:440 ../../src/neutrino2_menue.cpp:439
+#: ../../src/neutrino2_menue.cpp:436
 msgid "Delete channels"
 msgstr ""
 
-#: ../../src/gui/pluginlist.cpp:217
+#: ../../src/gui/pluginlist.cpp:217 ../../src/gui/pluginlist.cpp:216
 msgid "Description: "
 msgstr ""
 
-#: ../../src/gui/epg_menu.cpp:106
+#: ../../src/gui/epg_menu.cpp:106 ../../src/gui/epg_menu.cpp:105
 msgid "Details current program"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:215
+#: ../../src/gui/epgview.cpp:215 ../../src/gui/epgview.cpp:217
 msgid "Detective / Thriller"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:605
+#: ../../src/gui/scan_setup.cpp:605 ../../src/gui/scan_setup.cpp:604
 msgid "DiSEqC"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:126
+#: ../../src/gui/scan_setup.cpp:126 ../../src/gui/scan_setup.cpp:125
 msgid "DiSEqC 1.0"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:127
+#: ../../src/gui/scan_setup.cpp:127 ../../src/gui/scan_setup.cpp:126
 msgid "DiSEqC 1.1"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:609
+#: ../../src/gui/scan_setup.cpp:609 ../../src/gui/scan_setup.cpp:608
 msgid "DiSEqC-repeats"
 msgstr ""
 
@@ -783,11 +817,12 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3140 ../../src/gui/infoviewer.cpp:822
 #: ../../src/gui/infoviewer.cpp:875 ../../src/neutrino2.cpp:3144
-#: ../../src/neutrino2.cpp:3134
+#: ../../src/neutrino2.cpp:3134 ../../src/gui/infoviewer.cpp:823
+#: ../../src/gui/infoviewer.cpp:876
 msgid "Direct-Mode"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:953
+#: ../../src/gui/epgview.cpp:953 ../../src/gui/epgview.cpp:955
 msgid "Director"
 msgstr ""
 
@@ -804,6 +839,8 @@ msgstr ""
 #: ../../src/gui/widget/colorchooser.cpp:237
 #: ../../src/gui/widget/stringinput.cpp:371
 #: ../../src/gui/widget/stringinput_ext.cpp:244
+#: ../../src/gui/widget/colorchooser.cpp:238
+#: ../../src/gui/widget/stringinput.cpp:370
 msgid "Discard changes?"
 msgstr ""
 
@@ -811,11 +848,11 @@ msgstr ""
 msgid "Discarding changes. Please be patient."
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:232
+#: ../../src/gui/epgview.cpp:232 ../../src/gui/epgview.cpp:234
 msgid "Discussion / Interview/ Debate"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:943
+#: ../../src/gui/scan_setup.cpp:943 ../../src/gui/scan_setup.cpp:942
 msgid "Diseqc input"
 msgstr ""
 
@@ -845,7 +882,7 @@ msgid ""
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1240 ../../src/system/helpers.cpp:1856
-#: ../../src/gui/audioplayer.cpp:1239
+#: ../../src/gui/audioplayer.cpp:1239 ../../src/gui/audioplayer.cpp:1238
 msgid "Do you want to overwrite this file:"
 msgstr ""
 
@@ -861,17 +898,17 @@ msgstr ""
 msgid "Docs:"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:231
+#: ../../src/gui/epgview.cpp:231 ../../src/gui/epgview.cpp:233
 msgid "Documentary"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:313
+#: ../../src/gui/epgview.cpp:313 ../../src/gui/epgview.cpp:315
 msgid "Documentation / Magazine"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:158 ../../src/gui/audio_setup.cpp:201
 #: ../../src/gui/audio_setup.cpp:219 ../../src/gui/audio_setup.cpp:293
-#: ../../src/gui/audio_video_select.cpp:314
+#: ../../src/gui/audio_video_select.cpp:314 ../../src/gui/audio_select.cpp:156
 msgid "Dolby Digital"
 msgstr ""
 
@@ -895,7 +932,8 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:122 ../../src/gui/epg_menu.cpp:85
 #: ../../src/gui/infoviewer.cpp:1653 ../../src/gui/osd_setup.cpp:1526
 #: ../../src/gui/infoviewer.cpp:1654 ../../src/neutrino2_menue.cpp:125
-#: ../../src/neutrino2_menue.cpp:124
+#: ../../src/neutrino2_menue.cpp:124 ../../src/neutrino2_menue.cpp:121
+#: ../../src/gui/epg_menu.cpp:84 ../../src/gui/infoviewer.cpp:1655
 msgid "EPG / Timer"
 msgstr ""
 
@@ -904,12 +942,12 @@ msgid "EPG Date"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:337 ../../src/gui/eventlist.cpp:812
-#: ../../src/neutrino2.cpp:341
+#: ../../src/neutrino2.cpp:341 ../../src/gui/eventlist.cpp:813
 msgid "EPG Info1"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:338 ../../src/gui/eventlist.cpp:813
-#: ../../src/neutrino2.cpp:342
+#: ../../src/neutrino2.cpp:342 ../../src/gui/eventlist.cpp:814
 msgid "EPG Info2"
 msgstr ""
 
@@ -918,20 +956,22 @@ msgid "EPG Long Description (hours)"
 msgstr ""
 
 #: ../../src/neutrino2.cpp:336 ../../src/gui/eventlist.cpp:811
-#: ../../src/neutrino2.cpp:340
+#: ../../src/neutrino2.cpp:340 ../../src/gui/eventlist.cpp:812
 msgid "EPG Title"
 msgstr ""
 
-#: ../../src/gui/eventlist.cpp:207
+#: ../../src/gui/eventlist.cpp:207 ../../src/gui/eventlist.cpp:208
 msgid "EPG is not available"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:750 ../../src/gui/infoviewer.cpp:767
 #: ../../src/gui/infoviewer.cpp:1661 ../../src/gui/infoviewer.cpp:1662
+#: ../../src/gui/infoviewer.cpp:751 ../../src/gui/infoviewer.cpp:768
+#: ../../src/gui/infoviewer.cpp:1663
 msgid "EPG not available"
 msgstr ""
 
-#: ../../src/gui/infoviewer.cpp:780
+#: ../../src/gui/infoviewer.cpp:780 ../../src/gui/infoviewer.cpp:781
 msgid "EPG not loaded..."
 msgstr ""
 
@@ -951,11 +991,11 @@ msgstr ""
 msgid "EPG-Cache (Days)"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:273
+#: ../../src/gui/scan_setup.cpp:273 ../../src/gui/scan_setup.cpp:272
 msgid "East"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:306
+#: ../../src/gui/epgview.cpp:306 ../../src/gui/epgview.cpp:308
 msgid "Economics / Social advisory"
 msgstr ""
 
@@ -982,6 +1022,7 @@ msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:364 ../../src/gui/audioplayer.cpp:382
 #: ../../src/gui/audioplayer.cpp:363 ../../src/gui/audioplayer.cpp:381
+#: ../../src/gui/audioplayer.cpp:362 ../../src/gui/audioplayer.cpp:380
 msgid "Enter jump target"
 msgstr ""
 
@@ -993,15 +1034,15 @@ msgstr ""
 msgid "Enter your new youth protection pin code here!"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:267
+#: ../../src/gui/epgview.cpp:267 ../../src/gui/epgview.cpp:269
 msgid "Entertainment programmes for 10 to 16"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:266
+#: ../../src/gui/epgview.cpp:266 ../../src/gui/epgview.cpp:268
 msgid "Entertainment programmes for 6 to 14"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:257
+#: ../../src/gui/epgview.cpp:257 ../../src/gui/epgview.cpp:259
 msgid "Equestrian"
 msgstr ""
 
@@ -1012,11 +1053,12 @@ msgstr ""
 #: ../../src/gui/update.cpp:455 ../../src/gui/update.cpp:482
 #: ../../src/gui/update.cpp:518 ../../src/gui/update.cpp:564
 #: ../../src/driver/vcrcontrol.cpp:623 ../../src/neutrino2.cpp:2007
-#: ../../src/gui/audioplayer.cpp:1212
+#: ../../src/gui/audioplayer.cpp:1212 ../../src/gui/audioplayer.cpp:1211
+#: ../../src/gui/infoviewer.cpp:1110
 msgid "Error"
 msgstr ""
 
-#: ../../src/gui/eventlist.cpp:715
+#: ../../src/gui/eventlist.cpp:715 ../../src/gui/eventlist.cpp:716
 msgid "Event list"
 msgstr ""
 
@@ -1024,7 +1066,7 @@ msgstr ""
 msgid "Eventlist Title"
 msgstr ""
 
-#: ../../src/gui/epg_menu.cpp:103
+#: ../../src/gui/epg_menu.cpp:103 ../../src/gui/epg_menu.cpp:102
 msgid "Eventlist current programm"
 msgstr ""
 
@@ -1037,6 +1079,7 @@ msgid "Eventlist large"
 msgstr ""
 
 #: ../../src/gui/epg_menu.cpp:109 ../../src/gui/epgplus.cpp:115
+#: ../../src/gui/epg_menu.cpp:108
 msgid "Eventlist overview"
 msgstr ""
 
@@ -1056,7 +1099,7 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:294
+#: ../../src/gui/epgview.cpp:294 ../../src/gui/epgview.cpp:296
 msgid "Experimental film / Video"
 msgstr ""
 
@@ -1072,24 +1115,24 @@ msgstr ""
 msgid "Extended"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:1292
+#: ../../src/gui/scan_setup.cpp:1292 ../../src/gui/scan_setup.cpp:1291
 msgid "FEC"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:138
+#: ../../src/gui/scan_setup.cpp:138 ../../src/gui/scan_setup.cpp:137
 msgid "FEC_NONE"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:538
+#: ../../src/gui/epgview.cpp:538 ../../src/gui/epgview.cpp:540
 #, c-format
 msgid "FSK: ab %d"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:298
+#: ../../src/gui/epgview.cpp:298 ../../src/gui/epgview.cpp:300
 msgid "Fashion"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:102
+#: ../../src/gui/scan_setup.cpp:102 ../../src/gui/scan_setup.cpp:101
 msgid "Fast"
 msgstr ""
 
@@ -1107,10 +1150,13 @@ msgstr ""
 #: ../../src/gui/infoviewer.cpp:546 ../../src/gui/osd_setup.cpp:1546
 #: ../../src/neutrino2_menue.cpp:151 ../../src/neutrino2_menue.cpp:344
 #: ../../src/neutrino2_menue.cpp:150 ../../src/neutrino2_menue.cpp:343
+#: ../../src/neutrino2_menue.cpp:147 ../../src/neutrino2_menue.cpp:340
+#: ../../src/gui/infoviewer.cpp:547
 msgid "Features"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1210 ../../src/gui/audioplayer.cpp:1209
+#: ../../src/gui/audioplayer.cpp:1208
 msgid "File could not be created:"
 msgstr ""
 
@@ -1123,6 +1169,7 @@ msgid "File system"
 msgstr ""
 
 #: ../../src/gui/filebrowser.cpp:854 ../../src/gui/osd_setup.cpp:917
+#: ../../src/gui/filebrowser.cpp:853
 msgid "Filebrowser"
 msgstr ""
 
@@ -1135,6 +1182,7 @@ msgid "Filebrowser settings"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1164 ../../src/gui/audioplayer.cpp:1163
+#: ../../src/gui/audioplayer.cpp:1162
 msgid "Filename of the play list"
 msgstr ""
 
@@ -1146,27 +1194,28 @@ msgstr ""
 msgid "Files Browser"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:293
+#: ../../src/gui/epgview.cpp:293 ../../src/gui/epgview.cpp:295
 msgid "Film / Cinema"
 msgstr ""
 
 #: ../../src/gui/filebrowser.cpp:692 ../../src/gui/filebrowser.cpp:868
+#: ../../src/gui/filebrowser.cpp:691 ../../src/gui/filebrowser.cpp:867
 msgid "Filter off"
 msgstr ""
 
-#: ../../src/gui/filebrowser.cpp:868
+#: ../../src/gui/filebrowser.cpp:868 ../../src/gui/filebrowser.cpp:867
 msgid "Filter on"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:289
+#: ../../src/gui/epgview.cpp:289 ../../src/gui/epgview.cpp:291
 msgid "Fine arts"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:330
+#: ../../src/gui/epgview.cpp:330 ../../src/gui/epgview.cpp:332
 msgid "Fitness & health"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:278
+#: ../../src/gui/epgview.cpp:278 ../../src/gui/epgview.cpp:280
 msgid "Folk / Traditional music"
 msgstr ""
 
@@ -1183,11 +1232,11 @@ msgstr ""
 msgid "Foot"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:250
+#: ../../src/gui/epgview.cpp:250 ../../src/gui/epgview.cpp:252
 msgid "Football / Soccer"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:317
+#: ../../src/gui/epgview.cpp:317 ../../src/gui/epgview.cpp:319
 msgid "Foreign countries / Expeditions"
 msgstr ""
 
@@ -1224,6 +1273,7 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:454 ../../src/system/setting_helpers.cpp:273
 #: ../../src/neutrino2_menue.cpp:457 ../../src/neutrino2_menue.cpp:456
+#: ../../src/neutrino2_menue.cpp:453
 msgid "Free Memory"
 msgstr ""
 
@@ -1232,6 +1282,7 @@ msgid "French"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1239 ../../src/gui/scan_setup.cpp:1240
+#: ../../src/gui/scan_setup.cpp:1238
 msgid "Frequency"
 msgstr ""
 
@@ -1247,7 +1298,7 @@ msgstr ""
 msgid "Frontend:"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:319
+#: ../../src/gui/epgview.cpp:319 ../../src/gui/epgview.cpp:321
 msgid "Further education"
 msgstr ""
 
@@ -1255,11 +1306,11 @@ msgstr ""
 msgid "GUI restart"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:239
+#: ../../src/gui/epgview.cpp:239 ../../src/gui/epgview.cpp:241
 msgid "Game show / Quiz / Contest"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:332
+#: ../../src/gui/epgview.cpp:332 ../../src/gui/epgview.cpp:334
 msgid "Gardening"
 msgstr ""
 
@@ -1269,7 +1320,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:859 ../../src/gui/movieplayer.cpp:2179
 #: ../../src/system/tmdbparser.cpp:238 ../../src/gui/movieplayer.cpp:2126
-#: ../../src/gui/movieplayer.cpp:2125
+#: ../../src/gui/movieplayer.cpp:2125 ../../src/gui/movieplayer.cpp:2124
 msgid "Genre"
 msgstr ""
 
@@ -1295,11 +1346,11 @@ msgstr ""
 msgid "Gradient type"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:1331
+#: ../../src/gui/scan_setup.cpp:1331 ../../src/gui/scan_setup.cpp:1330
 msgid "Guard Interval"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:955
+#: ../../src/gui/epgview.cpp:955 ../../src/gui/epgview.cpp:957
 msgid "Guests"
 msgstr ""
 
@@ -1311,18 +1362,22 @@ msgstr ""
 msgid "HDD Devices:"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:458
+#: ../../src/gui/hdd_menu.cpp:458 ../../src/gui/hdd_menu.cpp:457
 msgid "HDD Filexplorer"
 msgstr ""
 
 #: ../../src/gui/hdd_menu.cpp:445 ../../src/gui/hdd_menu.cpp:698
 #: ../../src/gui/hdd_menu.cpp:739 ../../src/gui/hdd_menu.cpp:757
+#: ../../src/gui/hdd_menu.cpp:444 ../../src/gui/hdd_menu.cpp:697
+#: ../../src/gui/hdd_menu.cpp:738 ../../src/gui/hdd_menu.cpp:756
 msgid "HDD Format"
 msgstr ""
 
 #: ../../src/gui/hdd_menu.cpp:364 ../../src/gui/hdd_menu.cpp:540
 #: ../../src/gui/hdd_menu.cpp:559 ../../src/gui/hdd_menu.cpp:779
-#: ../../src/gui/hdd_menu.cpp:935
+#: ../../src/gui/hdd_menu.cpp:935 ../../src/gui/hdd_menu.cpp:363
+#: ../../src/gui/hdd_menu.cpp:539 ../../src/gui/hdd_menu.cpp:558
+#: ../../src/gui/hdd_menu.cpp:778 ../../src/gui/hdd_menu.cpp:934
 msgid "HDD Init"
 msgstr ""
 
@@ -1332,56 +1387,69 @@ msgstr ""
 #: ../../src/gui/hdd_menu.cpp:1088 ../../src/gui/hdd_menu.cpp:1099
 #: ../../src/gui/hdd_menu.cpp:1228 ../../src/gui/hdd_menu.cpp:1237
 #: ../../src/gui/hdd_menu.cpp:1247 ../../src/gui/hdd_menu.cpp:1362
+#: ../../src/gui/hdd_menu.cpp:450 ../../src/gui/hdd_menu.cpp:989
+#: ../../src/gui/hdd_menu.cpp:1022 ../../src/gui/hdd_menu.cpp:1044
+#: ../../src/gui/hdd_menu.cpp:1060 ../../src/gui/hdd_menu.cpp:1078
+#: ../../src/gui/hdd_menu.cpp:1087 ../../src/gui/hdd_menu.cpp:1098
+#: ../../src/gui/hdd_menu.cpp:1227 ../../src/gui/hdd_menu.cpp:1236
+#: ../../src/gui/hdd_menu.cpp:1246 ../../src/gui/hdd_menu.cpp:1361
 msgid "HDD Mount"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:990
+#: ../../src/gui/hdd_menu.cpp:990 ../../src/gui/hdd_menu.cpp:989
 msgid "HDD Mount Failed"
 msgstr ""
 
 #: ../../src/gui/hdd_menu.cpp:1088 ../../src/gui/hdd_menu.cpp:1099
+#: ../../src/gui/hdd_menu.cpp:1087 ../../src/gui/hdd_menu.cpp:1098
 msgid "HDD Mount failed !"
 msgstr ""
 
 #: ../../src/gui/hdd_menu.cpp:1023 ../../src/gui/hdd_menu.cpp:1045
 #: ../../src/gui/hdd_menu.cpp:1061 ../../src/gui/hdd_menu.cpp:1079
+#: ../../src/gui/hdd_menu.cpp:1022 ../../src/gui/hdd_menu.cpp:1044
+#: ../../src/gui/hdd_menu.cpp:1060 ../../src/gui/hdd_menu.cpp:1078
 msgid "HDD Mounted"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:454
+#: ../../src/gui/hdd_menu.cpp:454 ../../src/gui/hdd_menu.cpp:453
 msgid "HDD Umount"
 msgstr ""
 
 #: ../../src/gui/hdd_menu.cpp:911 ../../src/gui/hdd_menu.cpp:935
+#: ../../src/gui/hdd_menu.cpp:910 ../../src/gui/hdd_menu.cpp:934
 msgid "HDD check failed !"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:779
+#: ../../src/gui/hdd_menu.cpp:779 ../../src/gui/hdd_menu.cpp:778
 msgid "HDD format failed !"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:559
+#: ../../src/gui/hdd_menu.cpp:559 ../../src/gui/hdd_menu.cpp:558
 msgid "HDD init failed !"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:461
+#: ../../src/gui/hdd_menu.cpp:461 ../../src/gui/hdd_menu.cpp:460
 msgid "HDD mounted"
 msgstr ""
 
 #: ../../src/gui/hdd_menu.cpp:194 ../../src/gui/main_setup.cpp:155
+#: ../../src/gui/hdd_menu.cpp:193
 msgid "HDD settings"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:1228
+#: ../../src/gui/hdd_menu.cpp:1228 ../../src/gui/hdd_menu.cpp:1227
 msgid "HDD umount"
 msgstr ""
 
 #: ../../src/gui/hdd_menu.cpp:461 ../../src/gui/hdd_menu.cpp:1247
-#: ../../src/gui/hdd_menu.cpp:1362
+#: ../../src/gui/hdd_menu.cpp:1362 ../../src/gui/hdd_menu.cpp:460
+#: ../../src/gui/hdd_menu.cpp:1246 ../../src/gui/hdd_menu.cpp:1361
 msgid "HDD umounted"
 msgstr ""
 
 #: ../../src/gui/hdd_menu.cpp:739 ../../src/gui/hdd_menu.cpp:1237
+#: ../../src/gui/hdd_menu.cpp:738 ../../src/gui/hdd_menu.cpp:1236
 msgid "HDD unmount failed !"
 msgstr ""
 
@@ -1393,11 +1461,11 @@ msgstr ""
 msgid "Halt Motor"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:328
+#: ../../src/gui/epgview.cpp:328 ../../src/gui/epgview.cpp:330
 msgid "Handicraft"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:507
+#: ../../src/gui/hdd_menu.cpp:507 ../../src/gui/hdd_menu.cpp:506
 msgid "Hdd Format"
 msgstr ""
 
@@ -1408,26 +1476,27 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1630 ../../src/gui/movieplayer.cpp:1887
 #: ../../src/gui/movieplayer.cpp:1577 ../../src/gui/movieplayer.cpp:1834
 #: ../../src/gui/movieplayer.cpp:1576 ../../src/gui/movieplayer.cpp:1833
+#: ../../src/gui/movieplayer.cpp:1575 ../../src/gui/movieplayer.cpp:1832
 msgid "Help"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:150 ../../src/neutrino2_menue.cpp:153
-#: ../../src/neutrino2_menue.cpp:152
+#: ../../src/neutrino2_menue.cpp:152 ../../src/neutrino2_menue.cpp:149
 msgid "Here you can choose plugins"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:189 ../../src/neutrino2_menue.cpp:192
-#: ../../src/neutrino2_menue.cpp:191
+#: ../../src/neutrino2_menue.cpp:191 ../../src/neutrino2_menue.cpp:188
 msgid "Here you can get device Info"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:213 ../../src/neutrino2_menue.cpp:216
-#: ../../src/neutrino2_menue.cpp:215
+#: ../../src/neutrino2_menue.cpp:215 ../../src/neutrino2_menue.cpp:212
 msgid "Here you can play / show  music / movies / pics"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:198 ../../src/neutrino2_menue.cpp:201
-#: ../../src/neutrino2_menue.cpp:200
+#: ../../src/neutrino2_menue.cpp:200 ../../src/neutrino2_menue.cpp:197
 msgid "Here you can power off or standby your device"
 msgstr ""
 
@@ -1436,37 +1505,37 @@ msgid "Here you can select a skin from the following list."
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:124 ../../src/neutrino2_menue.cpp:127
-#: ../../src/neutrino2_menue.cpp:126
+#: ../../src/neutrino2_menue.cpp:126 ../../src/neutrino2_menue.cpp:123
 msgid "Here you can set Timers and show EPG"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:159 ../../src/neutrino2_menue.cpp:162
-#: ../../src/neutrino2_menue.cpp:161
+#: ../../src/neutrino2_menue.cpp:161 ../../src/neutrino2_menue.cpp:158
 msgid "Here you can set channel scan and more"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:404 ../../src/neutrino2_menue.cpp:407
-#: ../../src/neutrino2_menue.cpp:406
+#: ../../src/neutrino2_menue.cpp:406 ../../src/neutrino2_menue.cpp:403
 msgid "Here you can set timers"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:175 ../../src/neutrino2_menue.cpp:178
-#: ../../src/neutrino2_menue.cpp:177
+#: ../../src/neutrino2_menue.cpp:177 ../../src/neutrino2_menue.cpp:174
 msgid "Here you can setup OSD"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:168 ../../src/neutrino2_menue.cpp:171
-#: ../../src/neutrino2_menue.cpp:170
+#: ../../src/neutrino2_menue.cpp:170 ../../src/neutrino2_menue.cpp:167
 msgid "Here you can setup your box"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:115 ../../src/neutrino2_menue.cpp:118
-#: ../../src/neutrino2_menue.cpp:117
+#: ../../src/neutrino2_menue.cpp:117 ../../src/neutrino2_menue.cpp:114
 msgid "Here you can switch between TV / Radio"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:134 ../../src/neutrino2_menue.cpp:137
-#: ../../src/neutrino2_menue.cpp:136
+#: ../../src/neutrino2_menue.cpp:136 ../../src/neutrino2_menue.cpp:133
 msgid "Here you can switch to scart modus"
 msgstr ""
 
@@ -1474,7 +1543,7 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:1335
+#: ../../src/gui/scan_setup.cpp:1335 ../../src/gui/scan_setup.cpp:1334
 msgid "Hierarchy"
 msgstr ""
 
@@ -1629,10 +1698,18 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3768 ../../src/neutrino2.cpp:3775
 #: ../../src/neutrino2.cpp:3813 ../../src/neutrino2.cpp:3855
 #: ../../src/neutrino2.cpp:4272 ../../src/neutrino2.cpp:4956
+#: ../../src/neutrino2_menue.cpp:186 ../../src/gui/audioplayer.cpp:1327
+#: ../../src/gui/cam_menu.cpp:274 ../../src/gui/cam_menu.cpp:302
+#: ../../src/gui/cam_menu.cpp:331 ../../src/gui/cam_menu.cpp:469
+#: ../../src/gui/cam_menu.cpp:583 ../../src/gui/cam_menu.cpp:598
+#: ../../src/gui/hdd_menu.cpp:130 ../../src/gui/infoviewer.cpp:1126
+#: ../../src/gui/movieplayer.cpp:1476 ../../src/gui/movieplayer.cpp:1597
+#: ../../src/gui/movieplayer.cpp:2158 ../../src/gui/movieplayer.cpp:2188
+#: ../../src/gui/scan_setup.cpp:344 ../../src/gui/widget/infobox.cpp:214
 msgid "Information"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:268
+#: ../../src/gui/epgview.cpp:268 ../../src/gui/epgview.cpp:270
 msgid "Informational / educational / school programmes"
 msgstr ""
 
@@ -1645,7 +1722,7 @@ msgid "Interface"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:349 ../../src/gui/rc_setup.cpp:102
-#: ../../src/gui/audioplayer.cpp:348
+#: ../../src/gui/audioplayer.cpp:348 ../../src/gui/audioplayer.cpp:347
 msgid "Internet Radio"
 msgstr ""
 
@@ -1661,12 +1738,13 @@ msgstr ""
 msgid "Item Info"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:279
+#: ../../src/gui/epgview.cpp:279 ../../src/gui/epgview.cpp:281
 msgid "Jazz"
 msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:1377 ../../src/gui/movieplayer.cpp:772
 #: ../../src/gui/movieplayer.cpp:728 ../../src/gui/movieplayer.cpp:727
+#: ../../src/gui/movieplayer.cpp:726
 msgid "Jump over"
 msgstr ""
 
@@ -1683,6 +1761,7 @@ msgid "Keybinding settings"
 msgstr ""
 
 #: ../../src/gui/eventlist.cpp:930 ../../src/gui/eventlist.cpp:931
+#: ../../src/gui/eventlist.cpp:932
 msgid "Keyword"
 msgstr ""
 
@@ -1703,14 +1782,17 @@ msgid "LEFT"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:962 ../../src/gui/scan_setup.cpp:971
+#: ../../src/gui/scan_setup.cpp:961 ../../src/gui/scan_setup.cpp:970
 msgid "LNB High Offset"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:961 ../../src/gui/scan_setup.cpp:970
+#: ../../src/gui/scan_setup.cpp:960 ../../src/gui/scan_setup.cpp:969
 msgid "LNB Low Offset"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:963 ../../src/gui/scan_setup.cpp:972
+#: ../../src/gui/scan_setup.cpp:962 ../../src/gui/scan_setup.cpp:971
 msgid "LNB switch Offset"
 msgstr ""
 
@@ -1718,7 +1800,7 @@ msgstr ""
 msgid "LUFS"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:739
+#: ../../src/gui/scan_setup.cpp:739 ../../src/gui/scan_setup.cpp:738
 msgid "LaDirection"
 msgstr ""
 
@@ -1726,7 +1808,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:320
+#: ../../src/gui/epgview.cpp:320 ../../src/gui/epgview.cpp:322
 msgid "Languages"
 msgstr ""
 
@@ -1739,11 +1821,12 @@ msgid "Last play date"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1727 ../../src/gui/movieplayer.cpp:1674
-#: ../../src/gui/movieplayer.cpp:1673
+#: ../../src/gui/movieplayer.cpp:1673 ../../src/gui/movieplayer.cpp:1672
 msgid "Last play stop:"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:742 ../../src/gui/scan_setup.cpp:743
+#: ../../src/gui/scan_setup.cpp:741
 msgid "Latitude"
 msgstr ""
 
@@ -1757,6 +1840,7 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:968 ../../src/gui/movieplayer.cpp:2176
 #: ../../src/gui/movieplayer.cpp:2123 ../../src/gui/movieplayer.cpp:2122
+#: ../../src/gui/movieplayer.cpp:2121
 msgid "Length (Min)"
 msgstr ""
 
@@ -1780,11 +1864,11 @@ msgstr ""
 msgid "List Start"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:292
+#: ../../src/gui/epgview.cpp:292 ../../src/gui/epgview.cpp:294
 msgid "Literature"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:746
+#: ../../src/gui/scan_setup.cpp:746 ../../src/gui/scan_setup.cpp:745
 msgid "LoDirection"
 msgstr ""
 
@@ -1817,15 +1901,18 @@ msgid "Lock program"
 msgstr ""
 
 #: ../../src/gui/widget/stringinput.cpp:818
+#: ../../src/gui/widget/stringinput.cpp:817
 msgid "Locked Channel"
 msgstr ""
 
 #: ../../src/gui/widget/stringinput.cpp:823
+#: ../../src/gui/widget/stringinput.cpp:822
 #, c-format
 msgid "Locked program (from %d years up)"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:749 ../../src/gui/scan_setup.cpp:750
+#: ../../src/gui/scan_setup.cpp:748
 msgid "Longitude"
 msgstr ""
 
@@ -1841,11 +1928,11 @@ msgstr ""
 msgid "MD5 checking"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:305
+#: ../../src/gui/epgview.cpp:305 ../../src/gui/epgview.cpp:307
 msgid "Magazines / Reports / Documentary"
 msgstr ""
 
-#: ../../src/neutrino2_menue.cpp:94
+#: ../../src/neutrino2_menue.cpp:94 ../../src/neutrino2_menue.cpp:93
 msgid "Main Menu"
 msgstr ""
 
@@ -1854,6 +1941,7 @@ msgid "Make Remaining Channels list"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:638 ../../src/gui/scan_setup.cpp:1098
+#: ../../src/gui/scan_setup.cpp:637 ../../src/gui/scan_setup.cpp:1097
 msgid "Manual frequency scan / Test signal"
 msgstr ""
 
@@ -1862,10 +1950,11 @@ msgid "Manuell(ftp) Software Manager"
 msgstr ""
 
 #: ../../src/gui/filebrowser.cpp:691 ../../src/gui/filebrowser.cpp:865
+#: ../../src/gui/filebrowser.cpp:690 ../../src/gui/filebrowser.cpp:864
 msgid "Mark"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:258
+#: ../../src/gui/epgview.cpp:258 ../../src/gui/epgview.cpp:260
 msgid "Martial sports"
 msgstr ""
 
@@ -1879,11 +1968,11 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:211 ../../src/gui/mediaplayer.cpp:88
 #: ../../src/gui/osd_setup.cpp:1584 ../../src/neutrino2_menue.cpp:214
-#: ../../src/neutrino2_menue.cpp:213
+#: ../../src/neutrino2_menue.cpp:213 ../../src/neutrino2_menue.cpp:210
 msgid "Media Player"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:316
+#: ../../src/gui/epgview.cpp:316 ../../src/gui/epgview.cpp:318
 msgid "Medicine / Physiology / Psychology"
 msgstr ""
 
@@ -1916,11 +2005,11 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:125
+#: ../../src/gui/scan_setup.cpp:125 ../../src/gui/scan_setup.cpp:124
 msgid "Mini-DiSEqC"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:552
+#: ../../src/gui/epgview.cpp:552 ../../src/gui/epgview.cpp:554
 msgid "Minutes"
 msgstr ""
 
@@ -1947,7 +2036,8 @@ msgid "Modify timer"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1261 ../../src/gui/scan_setup.cpp:1269
-#: ../../src/gui/scan_setup.cpp:1277
+#: ../../src/gui/scan_setup.cpp:1277 ../../src/gui/scan_setup.cpp:1260
+#: ../../src/gui/scan_setup.cpp:1268 ../../src/gui/scan_setup.cpp:1276
 msgid "Modulation"
 msgstr ""
 
@@ -1955,7 +2045,7 @@ msgstr ""
 msgid "Monday"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:567
+#: ../../src/gui/epgview.cpp:567 ../../src/gui/epgview.cpp:569
 msgid "More Screenings on this Channel"
 msgstr ""
 
@@ -1968,15 +2058,16 @@ msgid "Motor Setup"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:626 ../../src/gui/scan_setup.cpp:707
-#: ../../src/gui/scan_setup.cpp:760
+#: ../../src/gui/scan_setup.cpp:760 ../../src/gui/scan_setup.cpp:625
+#: ../../src/gui/scan_setup.cpp:706 ../../src/gui/scan_setup.cpp:759
 msgid "Motor settings"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:254
+#: ../../src/gui/epgview.cpp:254 ../../src/gui/epgview.cpp:256
 msgid "Motor sports"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:329
+#: ../../src/gui/epgview.cpp:329 ../../src/gui/epgview.cpp:331
 msgid "Motoring"
 msgstr ""
 
@@ -1993,20 +2084,21 @@ msgstr ""
 #: ../../src/gui/bedit/bouqueteditor_bouquets.cpp:55
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:91
 #: ../../src/gui/channellist.cpp:1806 ../../src/gui/channellist.cpp:1807
+#: ../../src/gui/bedit/bouqueteditor_channels.cpp:90
 msgid "Move"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:214
+#: ../../src/gui/epgview.cpp:214 ../../src/gui/epgview.cpp:216
 msgid "Movie / Drama"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:774 ../../src/gui/movieplayer.cpp:730
-#: ../../src/gui/movieplayer.cpp:729
+#: ../../src/gui/movieplayer.cpp:729 ../../src/gui/movieplayer.cpp:728
 msgid "Movie end:"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1628 ../../src/gui/movieplayer.cpp:1575
-#: ../../src/gui/movieplayer.cpp:1574
+#: ../../src/gui/movieplayer.cpp:1574 ../../src/gui/movieplayer.cpp:1573
 msgid "Movie info"
 msgstr ""
 
@@ -2014,18 +2106,20 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1732 ../../src/gui/movieplayer.cpp:729
 #: ../../src/gui/movieplayer.cpp:1667 ../../src/gui/movieplayer.cpp:1679
 #: ../../src/gui/movieplayer.cpp:728 ../../src/gui/movieplayer.cpp:1666
-#: ../../src/gui/movieplayer.cpp:1678
+#: ../../src/gui/movieplayer.cpp:1678 ../../src/gui/movieplayer.cpp:727
+#: ../../src/gui/movieplayer.cpp:1665 ../../src/gui/movieplayer.cpp:1677
 msgid "Movie start:"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:2060 ../../src/gui/rc_setup.cpp:98
 #: ../../src/gui/movieplayer.cpp:2007 ../../src/gui/movieplayer.cpp:2006
+#: ../../src/gui/movieplayer.cpp:2005
 msgid "Movieplayer"
 msgstr ""
 
 #: ../../src/gui/main_setup.cpp:139 ../../src/gui/movieplayer.cpp:1633
 #: ../../src/gui/movieplayer_setup.cpp:109 ../../src/gui/movieplayer.cpp:1580
-#: ../../src/gui/movieplayer.cpp:1579
+#: ../../src/gui/movieplayer.cpp:1579 ../../src/gui/movieplayer.cpp:1578
 msgid "Movieplayer settings"
 msgstr ""
 
@@ -2033,11 +2127,11 @@ msgstr ""
 msgid "Movies Browser"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:275
+#: ../../src/gui/epgview.cpp:275 ../../src/gui/epgview.cpp:277
 msgid "Music / Ballet / Dance"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:280
+#: ../../src/gui/epgview.cpp:280 ../../src/gui/epgview.cpp:282
 msgid "Musical / Opera"
 msgstr ""
 
@@ -2075,7 +2169,7 @@ msgstr ""
 msgid "Name server"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:314
+#: ../../src/gui/epgview.cpp:314 ../../src/gui/epgview.cpp:316
 msgid "Nature / Animals / Environment"
 msgstr ""
 
@@ -2084,7 +2178,7 @@ msgstr ""
 msgid "Netmask"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:101
+#: ../../src/gui/scan_setup.cpp:101 ../../src/gui/scan_setup.cpp:100
 msgid "Network"
 msgstr ""
 
@@ -2103,24 +2197,25 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:1373 ../../src/gui/movieplayer.cpp:770
 #: ../../src/gui/movieplayer.cpp:726 ../../src/gui/movieplayer.cpp:725
+#: ../../src/gui/movieplayer.cpp:724
 msgid "New Bookmark"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:721 ../../src/gui/movieplayer.cpp:677
-#: ../../src/gui/movieplayer.cpp:676
+#: ../../src/gui/movieplayer.cpp:676 ../../src/gui/movieplayer.cpp:675
 msgid ""
 "New jump back\n"
 " 'blue' for endposition"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:726 ../../src/gui/movieplayer.cpp:682
-#: ../../src/gui/movieplayer.cpp:681
+#: ../../src/gui/movieplayer.cpp:681 ../../src/gui/movieplayer.cpp:680
 msgid ""
 "New jump forward\n"
 " 'blue' for endposition"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:296
+#: ../../src/gui/epgview.cpp:296 ../../src/gui/epgview.cpp:298
 msgid "New media"
 msgstr ""
 
@@ -2128,19 +2223,19 @@ msgstr ""
 msgid "New timer"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:228
+#: ../../src/gui/epgview.cpp:228 ../../src/gui/epgview.cpp:230
 msgid "News"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:229
+#: ../../src/gui/epgview.cpp:229 ../../src/gui/epgview.cpp:231
 msgid "News / Weather report"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:230
+#: ../../src/gui/epgview.cpp:230 ../../src/gui/epgview.cpp:232
 msgid "News magazine"
 msgstr ""
 
-#: ../../src/gui/filebrowser.cpp:689
+#: ../../src/gui/filebrowser.cpp:689 ../../src/gui/filebrowser.cpp:688
 msgid "Next Page"
 msgstr ""
 
@@ -2158,10 +2253,11 @@ msgstr ""
 
 #: ../../src/gui/nfs.cpp:131 ../../src/gui/nfs.cpp:149
 #: ../../src/gui/timerlist.cpp:937 ../../src/gui/widget/messagebox.cpp:521
+#: ../../src/gui/widget/messagebox.cpp:519
 msgid "No"
 msgstr ""
 
-#: ../../src/gui/cam_menu.cpp:175
+#: ../../src/gui/cam_menu.cpp:175 ../../src/gui/cam_menu.cpp:176
 msgid "No CAM in slot"
 msgstr ""
 
@@ -2179,11 +2275,12 @@ msgid ""
 "(MENU-key -> service)"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:502
+#: ../../src/gui/epgview.cpp:502 ../../src/gui/epgview.cpp:504
 msgid "No detailed informations available"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1671 ../../src/gui/infoviewer.cpp:1672
+#: ../../src/gui/infoviewer.cpp:1673
 msgid "No info for current program available"
 msgstr ""
 
@@ -2197,7 +2294,7 @@ msgstr ""
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:220
+#: ../../src/gui/hdd_menu.cpp:220 ../../src/gui/hdd_menu.cpp:219
 msgid "Noise"
 msgstr ""
 
@@ -2205,7 +2302,7 @@ msgstr ""
 msgid "Normal"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:267
+#: ../../src/gui/scan_setup.cpp:267 ../../src/gui/scan_setup.cpp:266
 msgid "North"
 msgstr ""
 
@@ -2218,6 +2315,7 @@ msgid "Numericzap"
 msgstr ""
 
 #: ../../src/gui/widget/messagebox.cpp:548
+#: ../../src/gui/widget/messagebox.cpp:546
 msgid "OK"
 msgstr ""
 
@@ -2232,6 +2330,7 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:173 ../../src/gui/osd_setup.cpp:114
 #: ../../src/neutrino2_menue.cpp:176 ../../src/neutrino2_menue.cpp:175
+#: ../../src/neutrino2_menue.cpp:172
 msgid "OSD"
 msgstr ""
 
@@ -2251,15 +2350,17 @@ msgstr ""
 
 #: ../../src/gui/movieinfo.cpp:866 ../../src/gui/movieplayer.cpp:2181
 #: ../../src/gui/movieplayer.cpp:2128 ../../src/gui/movieplayer.cpp:2127
+#: ../../src/gui/movieplayer.cpp:2126
 msgid "Original Title"
 msgstr ""
 
 #: ../../src/gui/epgview.cpp:952 ../../src/system/tmdbparser.cpp:240
+#: ../../src/gui/epgview.cpp:954
 msgid "Original title"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1241 ../../src/system/helpers.cpp:1858
-#: ../../src/gui/audioplayer.cpp:1240
+#: ../../src/gui/audioplayer.cpp:1240 ../../src/gui/audioplayer.cpp:1239
 msgid "Overwrite?"
 msgstr ""
 
@@ -2272,6 +2373,7 @@ msgid "PIN-Code was wrong! Try again."
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1342 ../../src/gui/scan_setup.cpp:1343
+#: ../../src/gui/scan_setup.cpp:1341
 msgid "PLP ID"
 msgstr ""
 
@@ -2313,7 +2415,7 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:288
+#: ../../src/gui/epgview.cpp:288 ../../src/gui/epgview.cpp:290
 msgid "Performing arts"
 msgstr ""
 
@@ -2335,10 +2437,12 @@ msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:367 ../../src/gui/audioplayer.cpp:385
 #: ../../src/gui/audioplayer.cpp:366 ../../src/gui/audioplayer.cpp:384
+#: ../../src/gui/audioplayer.cpp:365 ../../src/gui/audioplayer.cpp:383
 msgid "Please enter jump target"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1167 ../../src/gui/audioplayer.cpp:1166
+#: ../../src/gui/audioplayer.cpp:1165
 msgid "Please enter the filename of the playlist"
 msgstr ""
 
@@ -2361,10 +2465,12 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:428 ../../src/gui/pluginlist.cpp:110
 #: ../../src/gui/pluginlist.cpp:229 ../../src/system/setting_helpers.cpp:268
 #: ../../src/neutrino2_menue.cpp:431 ../../src/neutrino2_menue.cpp:430
+#: ../../src/neutrino2_menue.cpp:427 ../../src/gui/pluginlist.cpp:109
+#: ../../src/gui/pluginlist.cpp:228
 msgid "Plugins"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:1253
+#: ../../src/gui/scan_setup.cpp:1253 ../../src/gui/scan_setup.cpp:1252
 msgid "Polarization"
 msgstr ""
 
@@ -2372,7 +2478,7 @@ msgstr ""
 msgid "Polish"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:291
+#: ../../src/gui/epgview.cpp:291 ../../src/gui/epgview.cpp:293
 msgid "Popular culture / Traditional arts"
 msgstr ""
 
@@ -2382,16 +2488,16 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:196 ../../src/gui/osd_setup.cpp:1575
 #: ../../src/gui/power_menu.cpp:90 ../../src/neutrino2_menue.cpp:199
-#: ../../src/neutrino2_menue.cpp:198
+#: ../../src/neutrino2_menue.cpp:198 ../../src/neutrino2_menue.cpp:195
 msgid "Power Menu"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:265
+#: ../../src/gui/epgview.cpp:265 ../../src/gui/epgview.cpp:267
 msgid "Pre-school children's programmes"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:2213 ../../src/gui/movieplayer.cpp:2160
-#: ../../src/gui/movieplayer.cpp:2159
+#: ../../src/gui/movieplayer.cpp:2159 ../../src/gui/movieplayer.cpp:2158
 msgid "Prefer TMDB Infos"
 msgstr ""
 
@@ -2407,11 +2513,11 @@ msgstr ""
 msgid "Preferred subtitle language"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:956
+#: ../../src/gui/epgview.cpp:956 ../../src/gui/epgview.cpp:958
 msgid "Presenter"
 msgstr ""
 
-#: ../../src/gui/filebrowser.cpp:690
+#: ../../src/gui/filebrowser.cpp:690 ../../src/gui/filebrowser.cpp:689
 msgid "Prev Page"
 msgstr ""
 
@@ -2436,6 +2542,8 @@ msgstr ""
 #: ../../src/neutrino2.cpp:1462 ../../src/gui/scan_setup.cpp:1142
 #: ../../src/gui/scan_setup.cpp:1158 ../../src/gui/scan_setup.cpp:1442
 #: ../../src/gui/scan_setup.cpp:1458 ../../src/neutrino2.cpp:1466
+#: ../../src/gui/scan_setup.cpp:1141 ../../src/gui/scan_setup.cpp:1157
+#: ../../src/gui/scan_setup.cpp:1441 ../../src/gui/scan_setup.cpp:1457
 msgid "Provider"
 msgstr ""
 
@@ -2508,7 +2616,8 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:98 ../../src/gui/epgplus.cpp:513
 #: ../../src/gui/epgview.cpp:1070 ../../src/gui/eventlist.cpp:534
 #: ../../src/gui/timerlist.cpp:838 ../../src/gui/timerlist.cpp:928
-#: ../../src/gui/epgplus.cpp:493
+#: ../../src/gui/epgplus.cpp:493 ../../src/gui/epgview.cpp:1072
+#: ../../src/gui/eventlist.cpp:535
 msgid "Record"
 msgstr ""
 
@@ -2556,7 +2665,7 @@ msgid "Recording starts in a few minutes"
 msgstr ""
 
 #: ../../src/gui/epgplus.cpp:514 ../../src/gui/eventlist.cpp:538
-#: ../../src/gui/epgplus.cpp:494
+#: ../../src/gui/epgplus.cpp:494 ../../src/gui/eventlist.cpp:539
 msgid "Refresh EPG"
 msgstr ""
 
@@ -2564,26 +2673,30 @@ msgstr ""
 msgid "Release cycle"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:290
+#: ../../src/gui/epgview.cpp:290 ../../src/gui/epgview.cpp:292
 msgid "Religion"
 msgstr ""
 
 #: ../../src/gui/pluginlist.cpp:78 ../../src/gui/timerlist.cpp:249
+#: ../../src/gui/pluginlist.cpp:77
 msgid "Reload"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:478 ../../src/system/setting_helpers.cpp:276
 #: ../../src/neutrino2_menue.cpp:481 ../../src/neutrino2_menue.cpp:480
+#: ../../src/neutrino2_menue.cpp:477
 msgid "Reload EPG"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:470 ../../src/system/setting_helpers.cpp:275
 #: ../../src/neutrino2_menue.cpp:473 ../../src/neutrino2_menue.cpp:472
+#: ../../src/neutrino2_menue.cpp:469
 msgid "Reload XMLTV EPG"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:462 ../../src/system/setting_helpers.cpp:274
 #: ../../src/neutrino2_menue.cpp:465 ../../src/neutrino2_menue.cpp:464
+#: ../../src/neutrino2_menue.cpp:461
 msgid "Reload channel lists"
 msgstr ""
 
@@ -2602,7 +2715,7 @@ msgstr ""
 msgid "Reloading channel lists, please be patient."
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:307
+#: ../../src/gui/epgview.cpp:307 ../../src/gui/epgview.cpp:309
 msgid "Remarkable people"
 msgstr ""
 
@@ -2617,7 +2730,7 @@ msgid "Reminder"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:411 ../../src/neutrino2_menue.cpp:414
-#: ../../src/neutrino2_menue.cpp:413
+#: ../../src/neutrino2_menue.cpp:413 ../../src/neutrino2_menue.cpp:410
 msgid "Remote Control lock"
 msgstr ""
 
@@ -2636,6 +2749,7 @@ msgstr ""
 #: ../../src/gui/movieinfo.cpp:1375 ../../src/gui/movieplayer.cpp:771
 #: ../../src/gui/timerlist.cpp:1021 ../../src/gui/timerlist.cpp:1189
 #: ../../src/gui/movieplayer.cpp:727 ../../src/gui/movieplayer.cpp:726
+#: ../../src/gui/movieplayer.cpp:725
 msgid "Repeat"
 msgstr ""
 
@@ -2664,15 +2778,15 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:276
+#: ../../src/gui/epgview.cpp:276 ../../src/gui/epgview.cpp:278
 msgid "Rock / Pop"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:220
+#: ../../src/gui/epgview.cpp:220 ../../src/gui/epgview.cpp:222
 msgid "Romance"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:952
+#: ../../src/gui/scan_setup.cpp:952 ../../src/gui/scan_setup.cpp:951
 msgid "Rotor position"
 msgstr ""
 
@@ -2684,7 +2798,7 @@ msgstr ""
 msgid "SB mode"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:131
+#: ../../src/gui/scan_setup.cpp:131 ../../src/gui/scan_setup.cpp:130
 msgid "SMATV Remote Tuning"
 msgstr ""
 
@@ -2696,13 +2810,15 @@ msgstr ""
 msgid "Same TP"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:871
+#: ../../src/gui/scan_setup.cpp:871 ../../src/gui/scan_setup.cpp:870
 msgid "Sat settings"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1028 ../../src/gui/scan_setup.cpp:1174
 #: ../../src/gui/scan_setup.cpp:1474 ../../src/gui/scan_setup.cpp:1554
-#: ../../src/gui/streaminfo.cpp:687
+#: ../../src/gui/streaminfo.cpp:687 ../../src/gui/scan_setup.cpp:1027
+#: ../../src/gui/scan_setup.cpp:1173 ../../src/gui/scan_setup.cpp:1473
+#: ../../src/gui/scan_setup.cpp:1553
 msgid "Satellite"
 msgstr ""
 
@@ -2772,7 +2888,12 @@ msgstr ""
 #: ../../src/gui/scan_setup.cpp:1115 ../../src/gui/scan_setup.cpp:1415
 #: ../../src/gui/scan_setup.cpp:1550 ../../src/gui/update.cpp:994
 #: ../../src/gui/video_setup.cpp:401 ../../src/gui/zapit_setup.cpp:198
-#: ../../src/system/setting_helpers.cpp:341
+#: ../../src/system/setting_helpers.cpp:341 ../../src/gui/cec_setup.cpp:148
+#: ../../src/gui/hdd_menu.cpp:130 ../../src/gui/hdd_menu.cpp:209
+#: ../../src/gui/scan_setup.cpp:344 ../../src/gui/scan_setup.cpp:491
+#: ../../src/gui/scan_setup.cpp:723 ../../src/gui/scan_setup.cpp:938
+#: ../../src/gui/scan_setup.cpp:1114 ../../src/gui/scan_setup.cpp:1414
+#: ../../src/gui/scan_setup.cpp:1549
 msgid "Save settings now"
 msgstr ""
 
@@ -2805,7 +2926,7 @@ msgstr ""
 msgid "Scaling"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:587
+#: ../../src/gui/scan_setup.cpp:587 ../../src/gui/scan_setup.cpp:586
 msgid "Scan Mode"
 msgstr ""
 
@@ -2813,12 +2934,13 @@ msgstr ""
 msgid "Scan SDT for updates"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:577
+#: ../../src/gui/scan_setup.cpp:577 ../../src/gui/scan_setup.cpp:576
 msgid "Scan for services"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:566 ../../src/gui/scan_setup.cpp:473
-#: ../../src/gui/service_menu.cpp:128
+#: ../../src/gui/service_menu.cpp:128 ../../src/gui/scan_setup.cpp:472
+#: ../../src/gui/service_menu.cpp:129
 msgid "Scan transponder"
 msgstr ""
 
@@ -2827,30 +2949,34 @@ msgid "Scart"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:132 ../../src/neutrino2_menue.cpp:135
-#: ../../src/neutrino2_menue.cpp:134
+#: ../../src/neutrino2_menue.cpp:134 ../../src/neutrino2_menue.cpp:131
 msgid "Scart Mode"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:100 ../../src/gui/epgplus.cpp:515
 #: ../../src/gui/epgview.cpp:140 ../../src/gui/eventlist.cpp:536
-#: ../../src/gui/epgplus.cpp:495
+#: ../../src/gui/epgplus.cpp:495 ../../src/gui/epgview.cpp:142
+#: ../../src/gui/eventlist.cpp:537
 msgid "Schedule"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:514 ../../src/gui/epgplus.cpp:1204
 #: ../../src/gui/epgview.cpp:861 ../../src/gui/eventlist.cpp:380
-#: ../../src/gui/epgplus.cpp:1184
+#: ../../src/gui/epgplus.cpp:1184 ../../src/gui/epgview.cpp:863
+#: ../../src/gui/eventlist.cpp:381
 msgid "Schedule Event"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:492 ../../src/gui/epgplus.cpp:1232
 #: ../../src/gui/epgview.cpp:840 ../../src/gui/epgview.cpp:845
 #: ../../src/gui/eventlist.cpp:346 ../../src/gui/eventlist.cpp:351
-#: ../../src/gui/epgplus.cpp:1212
+#: ../../src/gui/epgplus.cpp:1212 ../../src/gui/epgview.cpp:842
+#: ../../src/gui/epgview.cpp:847 ../../src/gui/eventlist.cpp:347
+#: ../../src/gui/eventlist.cpp:352
 msgid "Schedule Record"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:217
+#: ../../src/gui/epgview.cpp:217 ../../src/gui/epgview.cpp:219
 msgid "Science fiction / Fantasy / Horror"
 msgstr ""
 
@@ -2888,18 +3014,20 @@ msgid "Scroll up"
 msgstr ""
 
 #: ../../src/gui/eventlist.cpp:535 ../../src/gui/eventlist.cpp:765
+#: ../../src/gui/eventlist.cpp:536 ../../src/gui/eventlist.cpp:766
 msgid "Search"
 msgstr ""
 
-#: ../../src/gui/eventlist.cpp:715
+#: ../../src/gui/eventlist.cpp:715 ../../src/gui/eventlist.cpp:716
 msgid "Search for keyword in EPG..."
 msgstr ""
 
 #: ../../src/gui/eventlist.cpp:937 ../../src/gui/eventlist.cpp:966
+#: ../../src/gui/eventlist.cpp:938 ../../src/gui/eventlist.cpp:967
 msgid "Search in EPG"
 msgstr ""
 
-#: ../../src/gui/eventlist.cpp:933
+#: ../../src/gui/eventlist.cpp:933 ../../src/gui/eventlist.cpp:934
 msgid "Search within"
 msgstr ""
 
@@ -2913,11 +3041,12 @@ msgid "Select Subservice"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1629 ../../src/gui/movieplayer.cpp:1576
-#: ../../src/gui/movieplayer.cpp:1575
+#: ../../src/gui/movieplayer.cpp:1575 ../../src/gui/movieplayer.cpp:1574
 msgid "Select audio track"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:123 ../../src/gui/osd_setup.cpp:709
+#: ../../src/gui/audio_select.cpp:121
 msgid "Select language"
 msgstr ""
 
@@ -2927,6 +3056,7 @@ msgid "Select starting-time"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1190 ../../src/gui/scan_setup.cpp:1634
+#: ../../src/gui/scan_setup.cpp:1189 ../../src/gui/scan_setup.cpp:1633
 msgid "Select transponder"
 msgstr ""
 
@@ -2942,11 +3072,11 @@ msgstr ""
 msgid "Serie"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:221
+#: ../../src/gui/epgview.cpp:221 ../../src/gui/epgview.cpp:223
 msgid "Serious / Classical / Religious / Historical movie / Drama"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:277
+#: ../../src/gui/epgview.cpp:277 ../../src/gui/epgview.cpp:279
 msgid "Serious music / Classical music"
 msgstr ""
 
@@ -2966,7 +3096,7 @@ msgstr ""
 msgid "Server IP"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:2365
+#: ../../src/gui/scan_setup.cpp:2365 ../../src/gui/scan_setup.cpp:2364
 msgid "Servicescan"
 msgstr ""
 
@@ -2988,6 +3118,7 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:166 ../../src/gui/main_setup.cpp:106
 #: ../../src/neutrino2_menue.cpp:169 ../../src/neutrino2_menue.cpp:168
+#: ../../src/neutrino2_menue.cpp:165
 msgid "Settings"
 msgstr ""
 
@@ -3019,7 +3150,7 @@ msgstr ""
 msgid "Setup new key"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:621
+#: ../../src/gui/scan_setup.cpp:621 ../../src/gui/scan_setup.cpp:620
 msgid "Setup satellites input / LNB"
 msgstr ""
 
@@ -3031,7 +3162,7 @@ msgstr ""
 msgid "Should the search really be aborted?"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:238
+#: ../../src/gui/epgview.cpp:238 ../../src/gui/epgview.cpp:240
 msgid "Show / Gameshow"
 msgstr ""
 
@@ -3084,7 +3215,7 @@ msgstr ""
 msgid "Skin select"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:217
+#: ../../src/gui/hdd_menu.cpp:217 ../../src/gui/hdd_menu.cpp:216
 msgid "Sleep time"
 msgstr ""
 
@@ -3107,20 +3238,21 @@ msgstr ""
 msgid "Slovak"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:219
+#: ../../src/gui/epgview.cpp:219 ../../src/gui/epgview.cpp:221
 msgid "Soap / Melodrama / Folkloric"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:304
+#: ../../src/gui/epgview.cpp:304 ../../src/gui/epgview.cpp:306
 msgid "Social & politic events / Business"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:318
+#: ../../src/gui/epgview.cpp:318 ../../src/gui/epgview.cpp:320
 msgid "Social / Spiritual sciences"
 msgstr ""
 
 #: ../../src/gui/service_menu.cpp:140 ../../src/gui/update.cpp:143
 #: ../../src/gui/update.cpp:288 ../../src/gui/update.cpp:974
+#: ../../src/gui/service_menu.cpp:141
 msgid "Software update"
 msgstr ""
 
@@ -3128,19 +3260,19 @@ msgstr ""
 msgid "Software update URL"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:266
+#: ../../src/gui/scan_setup.cpp:266 ../../src/gui/scan_setup.cpp:265
 msgid "South"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:248
+#: ../../src/gui/epgview.cpp:248 ../../src/gui/epgview.cpp:250
 msgid "Special events (Olympic Games,World Cup etc.)"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:247
+#: ../../src/gui/epgview.cpp:247 ../../src/gui/epgview.cpp:249
 msgid "Sports"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:249
+#: ../../src/gui/epgview.cpp:249 ../../src/gui/epgview.cpp:251
 msgid "Sports magazines"
 msgstr ""
 
@@ -3160,7 +3292,7 @@ msgstr ""
 msgid "Standby Brightness"
 msgstr ""
 
-#: ../../src/gui/pluginlist.cpp:76
+#: ../../src/gui/pluginlist.cpp:76 ../../src/gui/pluginlist.cpp:75
 msgid "Start"
 msgstr ""
 
@@ -3176,7 +3308,7 @@ msgstr ""
 msgid "Start Mode"
 msgstr ""
 
-#: ../../src/gui/eventlist.cpp:939
+#: ../../src/gui/eventlist.cpp:939 ../../src/gui/eventlist.cpp:940
 msgid "Start Search"
 msgstr ""
 
@@ -3187,12 +3319,13 @@ msgid "Start dir."
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1701 ../../src/gui/movieplayer.cpp:1648
-#: ../../src/gui/movieplayer.cpp:1647
+#: ../../src/gui/movieplayer.cpp:1647 ../../src/gui/movieplayer.cpp:1646
 msgid "Start movie from:"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1355 ../../src/gui/scan_setup.cpp:1489
-#: ../../src/gui/scan_setup.cpp:1557
+#: ../../src/gui/scan_setup.cpp:1557 ../../src/gui/scan_setup.cpp:1354
+#: ../../src/gui/scan_setup.cpp:1488 ../../src/gui/scan_setup.cpp:1556
 msgid "Start scan"
 msgstr ""
 
@@ -3221,6 +3354,7 @@ msgid "Step/Drive Motor West (b,c)"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:217 ../../src/gui/dvbsub_select.cpp:160
+#: ../../src/gui/audio_select.cpp:215 ../../src/gui/dvbsub_select.cpp:161
 msgid "Stop subtitles"
 msgstr ""
 
@@ -3251,10 +3385,11 @@ msgid "Subchannel up"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1413 ../../src/gui/infoviewer.cpp:1414
+#: ../../src/gui/infoviewer.cpp:1415
 msgid "Subservices"
 msgstr ""
 
-#: ../../src/gui/dvbsub_select.cpp:87
+#: ../../src/gui/dvbsub_select.cpp:87 ../../src/gui/dvbsub_select.cpp:88
 msgid "Subtitle Select"
 msgstr ""
 
@@ -3263,10 +3398,11 @@ msgid "Subtitle language preferences"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:183 ../../src/gui/audio_select.cpp:202
+#: ../../src/gui/audio_select.cpp:181 ../../src/gui/audio_select.cpp:200
 msgid "Subtitles"
 msgstr ""
 
-#: ../../src/gui/dvbsub_select.cpp:163
+#: ../../src/gui/dvbsub_select.cpp:163 ../../src/gui/dvbsub_select.cpp:164
 msgid "Subtitles not found"
 msgstr ""
 
@@ -3278,7 +3414,7 @@ msgstr ""
 msgid "Svenska"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:756
+#: ../../src/gui/scan_setup.cpp:756 ../../src/gui/scan_setup.cpp:755
 msgid "Swap rotor east/west"
 msgstr ""
 
@@ -3287,6 +3423,7 @@ msgid "Switch Step/Drive Mode (b)"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:1283 ../../src/gui/scan_setup.cpp:1284
+#: ../../src/gui/scan_setup.cpp:1282
 msgid "Symbol rate"
 msgstr ""
 
@@ -3296,19 +3433,20 @@ msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:157 ../../src/gui/osd_setup.cpp:1555
 #: ../../src/gui/service_menu.cpp:110 ../../src/neutrino2_menue.cpp:160
-#: ../../src/neutrino2_menue.cpp:159
+#: ../../src/neutrino2_menue.cpp:159 ../../src/neutrino2_menue.cpp:156
+#: ../../src/gui/service_menu.cpp:111
 msgid "System"
 msgstr ""
 
 #: ../../src/gui/channellist.cpp:99 ../../src/gui/epgplus.cpp:516
 #: ../../src/gui/misc_setup.cpp:264 ../../src/gui/movieplayer.cpp:2023
 #: ../../src/gui/epgplus.cpp:496 ../../src/gui/movieplayer.cpp:1970
-#: ../../src/gui/movieplayer.cpp:1969
+#: ../../src/gui/movieplayer.cpp:1969 ../../src/gui/movieplayer.cpp:1968
 msgid "TMDB"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:2243 ../../src/gui/movieplayer.cpp:2190
-#: ../../src/gui/movieplayer.cpp:2189
+#: ../../src/gui/movieplayer.cpp:2189 ../../src/gui/movieplayer.cpp:2188
 msgid "TMDB Infos are not available"
 msgstr ""
 
@@ -3340,12 +3478,13 @@ msgstr ""
 msgid "TV"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:115
+#: ../../src/gui/scan_setup.cpp:115 ../../src/gui/scan_setup.cpp:114
 msgid "TV & Radio"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:113 ../../src/gui/osd_setup.cpp:1516
 #: ../../src/neutrino2_menue.cpp:116 ../../src/neutrino2_menue.cpp:115
+#: ../../src/neutrino2_menue.cpp:112
 msgid "TV / Radio"
 msgstr ""
 
@@ -3360,6 +3499,7 @@ msgstr ""
 
 #: ../../src/gui/bedit/bouqueteditor_channels.cpp:92
 #: ../../src/gui/bedit/bouqueteditor_chanselect.cpp:108
+#: ../../src/gui/bedit/bouqueteditor_channels.cpp:91
 msgid "TV/Radio"
 msgstr ""
 
@@ -3367,24 +3507,24 @@ msgstr ""
 msgid "TV/Radio-mode"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:241
+#: ../../src/gui/epgview.cpp:241 ../../src/gui/epgview.cpp:243
 msgid "Talk show"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:252
+#: ../../src/gui/epgview.cpp:252 ../../src/gui/epgview.cpp:254
 msgid "Team sports (excluding football)"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:315
+#: ../../src/gui/epgview.cpp:315 ../../src/gui/epgview.cpp:317
 msgid "Technology / Natural sciences"
 msgstr ""
 
 #: ../../src/neutrino2_menue.cpp:419 ../../src/neutrino2_menue.cpp:422
-#: ../../src/neutrino2_menue.cpp:421
+#: ../../src/neutrino2_menue.cpp:421 ../../src/neutrino2_menue.cpp:418
 msgid "Teletext"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:251
+#: ../../src/gui/epgview.cpp:251 ../../src/gui/epgview.cpp:253
 msgid "Tennis / Squash"
 msgstr ""
 
@@ -3397,6 +3537,7 @@ msgid "Test network now"
 msgstr ""
 
 #: ../../src/gui/scan.cpp:566 ../../src/gui/scan_setup.cpp:1352
+#: ../../src/gui/scan_setup.cpp:1351
 msgid "Test signal"
 msgstr ""
 
@@ -3417,7 +3558,9 @@ msgstr ""
 #: ../../src/gui/channellist.cpp:492 ../../src/gui/epgplus.cpp:1232
 #: ../../src/gui/epgview.cpp:840 ../../src/gui/epgview.cpp:845
 #: ../../src/gui/eventlist.cpp:346 ../../src/gui/eventlist.cpp:351
-#: ../../src/gui/epgplus.cpp:1212
+#: ../../src/gui/epgplus.cpp:1212 ../../src/gui/epgview.cpp:842
+#: ../../src/gui/epgview.cpp:847 ../../src/gui/eventlist.cpp:347
+#: ../../src/gui/eventlist.cpp:352
 msgid ""
 "The event is flagged for record.\n"
 "The box will power on and \n"
@@ -3426,7 +3569,8 @@ msgstr ""
 
 #: ../../src/gui/channellist.cpp:514 ../../src/gui/epgplus.cpp:1204
 #: ../../src/gui/epgview.cpp:861 ../../src/gui/eventlist.cpp:380
-#: ../../src/gui/epgplus.cpp:1184
+#: ../../src/gui/epgplus.cpp:1184 ../../src/gui/epgview.cpp:863
+#: ../../src/gui/eventlist.cpp:381
 msgid ""
 "The event is scheduled.\n"
 "The box will power on and \n"
@@ -3434,6 +3578,7 @@ msgid ""
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1168 ../../src/gui/audioplayer.cpp:1167
+#: ../../src/gui/audioplayer.cpp:1166
 msgid "The extension .m3u will be added automatically"
 msgstr ""
 
@@ -3498,7 +3643,7 @@ msgstr ""
 msgid "Timed Step Mode"
 msgstr ""
 
-#: ../../src/gui/cam_menu.cpp:597
+#: ../../src/gui/cam_menu.cpp:597 ../../src/gui/cam_menu.cpp:598
 msgid "Timeout waiting CI menu ready"
 msgstr ""
 
@@ -3517,7 +3662,8 @@ msgstr ""
 #: ../../src/neutrino2_menue.cpp:403 ../../src/gui/epg_menu.cpp:112
 #: ../../src/gui/rc_setup.cpp:101 ../../src/gui/timerlist.cpp:304
 #: ../../src/system/setting_helpers.cpp:267 ../../src/neutrino2_menue.cpp:406
-#: ../../src/neutrino2_menue.cpp:405
+#: ../../src/neutrino2_menue.cpp:405 ../../src/neutrino2_menue.cpp:402
+#: ../../src/gui/epg_menu.cpp:111
 msgid "Timerlist"
 msgstr ""
 
@@ -3526,6 +3672,7 @@ msgid "Timescale"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:1413 ../../src/gui/infoviewer.cpp:1414
+#: ../../src/gui/infoviewer.cpp:1415
 msgid "Timeselection"
 msgstr ""
 
@@ -3548,11 +3695,11 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:327
+#: ../../src/gui/epgview.cpp:327 ../../src/gui/epgview.cpp:329
 msgid "Tourism / Travel"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:1327
+#: ../../src/gui/scan_setup.cpp:1327 ../../src/gui/scan_setup.cpp:1326
 msgid "Transmission mode"
 msgstr ""
 
@@ -3568,7 +3715,7 @@ msgstr ""
 msgid "Transponderscan finished."
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:326
+#: ../../src/gui/epgview.cpp:326 ../../src/gui/epgview.cpp:328
 msgid "Travel & recreation"
 msgstr ""
 
@@ -3576,11 +3723,11 @@ msgstr ""
 msgid "Tuesday"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:510
+#: ../../src/gui/scan_setup.cpp:510 ../../src/gui/scan_setup.cpp:509
 msgid "Tuner mode"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:516
+#: ../../src/gui/scan_setup.cpp:516 ../../src/gui/scan_setup.cpp:515
 msgid "Tuner type"
 msgstr ""
 
@@ -3588,7 +3735,7 @@ msgstr ""
 msgid "Type:"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:753
+#: ../../src/gui/scan_setup.cpp:753 ../../src/gui/scan_setup.cpp:752
 msgid "USALS command repeat"
 msgstr ""
 
@@ -3601,30 +3748,32 @@ msgid "Umount network volume"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:260 ../../src/gui/scan_setup.cpp:949
+#: ../../src/gui/scan_setup.cpp:259 ../../src/gui/scan_setup.cpp:948
 msgid "Uncommited/Commited"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:129
+#: ../../src/gui/scan_setup.cpp:129 ../../src/gui/scan_setup.cpp:128
 msgid "Unicable"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:820
+#: ../../src/gui/scan_setup.cpp:820 ../../src/gui/scan_setup.cpp:819
 msgid "Unicable SCR address"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:615
+#: ../../src/gui/scan_setup.cpp:615 ../../src/gui/scan_setup.cpp:614
 msgid "Unicable Setup"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:824 ../../src/gui/scan_setup.cpp:825
+#: ../../src/gui/scan_setup.cpp:823
 msgid "Unicable frequency"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:804
+#: ../../src/gui/scan_setup.cpp:804 ../../src/gui/scan_setup.cpp:803
 msgid "Unicable settings"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:130
+#: ../../src/gui/scan_setup.cpp:130 ../../src/gui/scan_setup.cpp:129
 msgid "Unicable2 (JESS)"
 msgstr ""
 
@@ -3651,6 +3800,7 @@ msgid "Use XMLTV EPG"
 msgstr ""
 
 #: ../../src/gui/scan_setup.cpp:731 ../../src/gui/scan_setup.cpp:955
+#: ../../src/gui/scan_setup.cpp:730 ../../src/gui/scan_setup.cpp:954
 msgid "Use gotoXX"
 msgstr ""
 
@@ -3684,7 +3834,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:240
+#: ../../src/gui/epgview.cpp:240 ../../src/gui/epgview.cpp:242
 msgid "Variety show"
 msgstr ""
 
@@ -3721,7 +3871,7 @@ msgstr ""
 msgid "Volume Step Size"
 msgstr ""
 
-#: ../../src/gui/audio_select.cpp:235
+#: ../../src/gui/audio_select.cpp:235 ../../src/gui/audio_select.cpp:233
 msgid "Volume adjustment (in %)"
 msgstr ""
 
@@ -3733,16 +3883,17 @@ msgstr ""
 msgid "Wait a few seconds for abort"
 msgstr ""
 
-#: ../../src/gui/cam_menu.cpp:582
+#: ../../src/gui/cam_menu.cpp:582 ../../src/gui/cam_menu.cpp:583
 msgid "Waiting for CI answer"
 msgstr ""
 
 #: ../../src/gui/infoviewer.cpp:780 ../../src/gui/infoviewer.cpp:1661
-#: ../../src/gui/infoviewer.cpp:1662
+#: ../../src/gui/infoviewer.cpp:1662 ../../src/gui/infoviewer.cpp:781
+#: ../../src/gui/infoviewer.cpp:1663
 msgid "Waiting for time..."
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:255
+#: ../../src/gui/epgview.cpp:255 ../../src/gui/epgview.cpp:257
 msgid "Water sports"
 msgstr ""
 
@@ -3750,7 +3901,7 @@ msgstr ""
 msgid "Wednesday"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:274
+#: ../../src/gui/scan_setup.cpp:274 ../../src/gui/scan_setup.cpp:273
 msgid "West"
 msgstr ""
 
@@ -3774,7 +3925,7 @@ msgstr ""
 msgid "Window-Content selected"
 msgstr ""
 
-#: ../../src/gui/epgview.cpp:256
+#: ../../src/gui/epgview.cpp:256 ../../src/gui/epgview.cpp:258
 msgid "Winter sports"
 msgstr ""
 
@@ -3793,11 +3944,13 @@ msgstr ""
 #: ../../src/gui/epgview.cpp:951 ../../src/gui/movieinfo.cpp:909
 #: ../../src/gui/movieplayer.cpp:2183 ../../src/system/tmdbparser.cpp:242
 #: ../../src/gui/movieplayer.cpp:2130 ../../src/gui/movieplayer.cpp:2129
+#: ../../src/gui/epgview.cpp:953 ../../src/gui/movieplayer.cpp:2128
 msgid "Year of production"
 msgstr ""
 
 #: ../../src/gui/nfs.cpp:131 ../../src/gui/nfs.cpp:149
 #: ../../src/gui/timerlist.cpp:938 ../../src/gui/widget/messagebox.cpp:494
+#: ../../src/gui/widget/messagebox.cpp:492
 msgid "Yes"
 msgstr ""
 
@@ -3876,7 +4029,7 @@ msgstr ""
 msgid "advanced"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:118
+#: ../../src/gui/scan_setup.cpp:118 ../../src/gui/scan_setup.cpp:117
 msgid "all services"
 msgstr ""
 
@@ -3884,6 +4037,7 @@ msgstr ""
 #: ../../src/gui/alphasetup.cpp:137 ../../src/gui/alphasetup.cpp:142
 #: ../../src/gui/alphasetup.cpp:158 ../../src/gui/alphasetup.cpp:177
 #: ../../src/gui/alphasetup.cpp:247 ../../src/gui/widget/colorchooser.cpp:61
+#: ../../src/gui/widget/colorchooser.cpp:62
 msgid "alpha"
 msgstr ""
 
@@ -3896,22 +4050,22 @@ msgid "angular"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1638 ../../src/gui/movieplayer.cpp:1585
-#: ../../src/gui/movieplayer.cpp:1584
+#: ../../src/gui/movieplayer.cpp:1584 ../../src/gui/movieplayer.cpp:1583
 msgid "approx. 1 minute back"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1644 ../../src/gui/movieplayer.cpp:1591
-#: ../../src/gui/movieplayer.cpp:1590
+#: ../../src/gui/movieplayer.cpp:1590 ../../src/gui/movieplayer.cpp:1589
 msgid "approx. 10 minutes back"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1648 ../../src/gui/movieplayer.cpp:1595
-#: ../../src/gui/movieplayer.cpp:1594
+#: ../../src/gui/movieplayer.cpp:1594 ../../src/gui/movieplayer.cpp:1593
 msgid "approx. 10 seconds back"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1641 ../../src/gui/movieplayer.cpp:1588
-#: ../../src/gui/movieplayer.cpp:1587
+#: ../../src/gui/movieplayer.cpp:1587 ../../src/gui/movieplayer.cpp:1586
 msgid "approx. 5 minutes back"
 msgstr ""
 
@@ -3945,7 +4099,14 @@ msgstr ""
 #: ../../src/gui/update.cpp:990 ../../src/gui/update.cpp:1038
 #: ../../src/gui/video_setup.cpp:397 ../../src/gui/zapit_setup.cpp:194
 #: ../../src/gui/widget/keychooser.cpp:131
-#: ../../src/system/setting_helpers.cpp:337
+#: ../../src/system/setting_helpers.cpp:337 ../../src/gui/cam_menu.cpp:149
+#: ../../src/gui/cec_setup.cpp:144 ../../src/gui/hdd_menu.cpp:205
+#: ../../src/gui/hdd_menu.cpp:359 ../../src/gui/hdd_menu.cpp:440
+#: ../../src/gui/scan_setup.cpp:487 ../../src/gui/scan_setup.cpp:720
+#: ../../src/gui/scan_setup.cpp:815 ../../src/gui/scan_setup.cpp:882
+#: ../../src/gui/scan_setup.cpp:934 ../../src/gui/scan_setup.cpp:1040
+#: ../../src/gui/scan_setup.cpp:1110 ../../src/gui/scan_setup.cpp:1410
+#: ../../src/gui/scan_setup.cpp:1545 ../../src/gui/scan_setup.cpp:2383
 msgid "back"
 msgstr ""
 
@@ -3958,6 +4119,7 @@ msgid "biweekly"
 msgstr ""
 
 #: ../../src/gui/lcd_setup.cpp:93 ../../src/gui/widget/colorchooser.cpp:60
+#: ../../src/gui/widget/colorchooser.cpp:61
 msgid "blue"
 msgstr ""
 
@@ -3994,6 +4156,7 @@ msgid "can't open mtd-device"
 msgstr ""
 
 #: ../../src/gui/widget/stringinput.cpp:671
+#: ../../src/gui/widget/stringinput.cpp:670
 msgid "caps / no caps"
 msgstr ""
 
@@ -4030,6 +4193,7 @@ msgid "choose Skin Style."
 msgstr ""
 
 #: ../../src/gui/widget/stringinput.cpp:672
+#: ../../src/gui/widget/stringinput.cpp:671
 msgid "clear all"
 msgstr ""
 
@@ -4037,12 +4201,12 @@ msgstr ""
 msgid "colored"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:108
+#: ../../src/gui/scan_setup.cpp:108 ../../src/gui/scan_setup.cpp:107
 msgid "create new"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1531 ../../src/gui/movieplayer.cpp:1478
-#: ../../src/gui/movieplayer.cpp:1477
+#: ../../src/gui/movieplayer.cpp:1477 ../../src/gui/movieplayer.cpp:1476
 msgid "create screenshot?"
 msgstr ""
 
@@ -4071,7 +4235,7 @@ msgstr ""
 msgid "delete"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:282
+#: ../../src/gui/scan_setup.cpp:282 ../../src/gui/scan_setup.cpp:281
 msgid "direct connected"
 msgstr ""
 
@@ -4090,7 +4254,7 @@ msgstr ""
 msgid "don't care"
 msgstr ""
 
-#: ../../src/gui/audio_select.cpp:73
+#: ../../src/gui/audio_select.cpp:73 ../../src/gui/audio_select.cpp:71
 msgid "downmix"
 msgstr ""
 
@@ -4118,7 +4282,7 @@ msgstr ""
 msgid "error umounting volume"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:77
+#: ../../src/gui/hdd_menu.cpp:77 ../../src/gui/hdd_menu.cpp:76
 msgid "fast"
 msgstr ""
 
@@ -4155,21 +4319,22 @@ msgid "getting update list"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1645 ../../src/gui/movieplayer.cpp:1592
-#: ../../src/gui/movieplayer.cpp:1591
+#: ../../src/gui/movieplayer.cpp:1591 ../../src/gui/movieplayer.cpp:1590
 msgid "goto end"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1642 ../../src/gui/movieplayer.cpp:1589
-#: ../../src/gui/movieplayer.cpp:1588
+#: ../../src/gui/movieplayer.cpp:1588 ../../src/gui/movieplayer.cpp:1587
 msgid "goto middle"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1639 ../../src/gui/movieplayer.cpp:1586
-#: ../../src/gui/movieplayer.cpp:1585
+#: ../../src/gui/movieplayer.cpp:1585 ../../src/gui/movieplayer.cpp:1584
 msgid "goto start"
 msgstr ""
 
 #: ../../src/gui/widget/colorchooser.cpp:59
+#: ../../src/gui/widget/colorchooser.cpp:60
 msgid "green"
 msgstr ""
 
@@ -4196,6 +4361,7 @@ msgid "inactive"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:216 ../../src/gui/audioplayer.cpp:215
+#: ../../src/gui/audioplayer.cpp:214
 msgid "internet Radio"
 msgstr ""
 
@@ -4224,18 +4390,22 @@ msgid "italian"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1337 ../../src/gui/audioplayer.cpp:1336
+#: ../../src/gui/audioplayer.cpp:1335
 msgid "jump backwards"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1323 ../../src/gui/audioplayer.cpp:1322
+#: ../../src/gui/audioplayer.cpp:1321
 msgid "jump ff"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1338 ../../src/gui/audioplayer.cpp:1337
+#: ../../src/gui/audioplayer.cpp:1336
 msgid "jump forwards"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1322 ../../src/gui/audioplayer.cpp:1321
+#: ../../src/gui/audioplayer.cpp:1320
 msgid "jump prev"
 msgstr ""
 
@@ -4270,7 +4440,7 @@ msgstr ""
 msgid "logos Dir"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:284
+#: ../../src/gui/scan_setup.cpp:284 ../../src/gui/scan_setup.cpp:283
 msgid "loop"
 msgstr ""
 
@@ -4281,6 +4451,7 @@ msgid ""
 msgstr ""
 
 #: ../../src/gui/hdd_menu.cpp:76 ../../src/gui/osd_setup.cpp:218
+#: ../../src/gui/hdd_menu.cpp:75
 msgid "middle"
 msgstr ""
 
@@ -4289,10 +4460,12 @@ msgid "milliseconds"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:63 ../../src/gui/audio_setup.cpp:61
+#: ../../src/gui/audio_select.cpp:61
 msgid "mono left"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:64 ../../src/gui/audio_setup.cpp:62
+#: ../../src/gui/audio_select.cpp:62
 msgid "mono right"
 msgstr ""
 
@@ -4328,7 +4501,7 @@ msgstr ""
 msgid "mount successful"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:728
+#: ../../src/gui/scan_setup.cpp:728 ../../src/gui/scan_setup.cpp:727
 msgid "moving speed (10 = 1deg/sec)"
 msgstr ""
 
@@ -4346,11 +4519,11 @@ msgstr ""
 msgid "no"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:124
+#: ../../src/gui/scan_setup.cpp:124 ../../src/gui/scan_setup.cpp:123
 msgid "no DiSEqC"
 msgstr ""
 
-#: ../../src/gui/eventlist.cpp:754
+#: ../../src/gui/eventlist.cpp:754 ../../src/gui/eventlist.cpp:755
 msgid "no epg found"
 msgstr ""
 
@@ -4379,7 +4552,7 @@ msgstr ""
 msgid "not available"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:283
+#: ../../src/gui/scan_setup.cpp:283 ../../src/gui/scan_setup.cpp:282
 msgid "not connected"
 msgstr ""
 
@@ -4393,7 +4566,10 @@ msgstr ""
 #: ../../src/gui/osd_setup.cpp:62 ../../src/gui/recording_setup.cpp:52
 #: ../../src/gui/scan_setup.cpp:93 ../../src/gui/zapit_setup.cpp:46
 #: ../../src/gui/zapit_setup.cpp:54 ../../src/neutrino2.cpp:3083
-#: ../../src/neutrino2.cpp:3073
+#: ../../src/neutrino2.cpp:3073 ../../src/gui/audio_select.cpp:53
+#: ../../src/gui/cec_setup.cpp:72 ../../src/gui/cec_setup.cpp:80
+#: ../../src/gui/hdd_menu.cpp:73 ../../src/gui/hdd_menu.cpp:82
+#: ../../src/gui/scan_setup.cpp:92
 msgid "off"
 msgstr ""
 
@@ -4406,6 +4582,8 @@ msgstr ""
 #: ../../src/gui/recording_setup.cpp:53 ../../src/gui/scan_setup.cpp:94
 #: ../../src/gui/zapit_setup.cpp:47 ../../src/gui/zapit_setup.cpp:55
 #: ../../src/neutrino2.cpp:3084 ../../src/neutrino2.cpp:3074
+#: ../../src/gui/audio_select.cpp:54 ../../src/gui/cec_setup.cpp:73
+#: ../../src/gui/cec_setup.cpp:81 ../../src/gui/scan_setup.cpp:93
 msgid "on"
 msgstr ""
 
@@ -4427,11 +4605,11 @@ msgstr ""
 msgid "once"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:117
+#: ../../src/gui/scan_setup.cpp:117 ../../src/gui/scan_setup.cpp:116
 msgid "only radio"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:116
+#: ../../src/gui/scan_setup.cpp:116 ../../src/gui/scan_setup.cpp:115
 msgid "only tv"
 msgstr ""
 
@@ -4443,7 +4621,7 @@ msgstr ""
 msgid "package install failed"
 msgstr ""
 
-#: ../../src/gui/audio_select.cpp:72
+#: ../../src/gui/audio_select.cpp:72 ../../src/gui/audio_select.cpp:70
 msgid "passthrough"
 msgstr ""
 
@@ -4481,6 +4659,7 @@ msgid "record default audio streams"
 msgstr ""
 
 #: ../../src/gui/lcd_setup.cpp:94 ../../src/gui/widget/colorchooser.cpp:58
+#: ../../src/gui/widget/colorchooser.cpp:59
 msgid "red"
 msgstr ""
 
@@ -4498,10 +4677,12 @@ msgid "sat"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1336 ../../src/gui/audioplayer.cpp:1335
+#: ../../src/gui/audioplayer.cpp:1334
 msgid "save play list"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1321 ../../src/gui/audioplayer.cpp:1320
+#: ../../src/gui/audioplayer.cpp:1319
 msgid "save playlist"
 msgstr ""
 
@@ -4510,21 +4691,24 @@ msgid "see timer"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1634 ../../src/gui/movieplayer.cpp:1581
-#: ../../src/gui/movieplayer.cpp:1580
+#: ../../src/gui/movieplayer.cpp:1580 ../../src/gui/movieplayer.cpp:1579
 msgid "show movie infoviewer"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1327 ../../src/gui/movieplayer.cpp:1635
 #: ../../src/gui/movieplayer.cpp:1582 ../../src/gui/audioplayer.cpp:1326
-#: ../../src/gui/movieplayer.cpp:1581
+#: ../../src/gui/movieplayer.cpp:1581 ../../src/gui/audioplayer.cpp:1325
+#: ../../src/gui/movieplayer.cpp:1580
 msgid "show playlist"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1339 ../../src/gui/audioplayer.cpp:1338
+#: ../../src/gui/audioplayer.cpp:1337
 msgid "shuffle"
 msgstr ""
 
 #: ../../src/gui/audioplayer.cpp:1324 ../../src/gui/audioplayer.cpp:1323
+#: ../../src/gui/audioplayer.cpp:1322
 msgid "shuffle playlist"
 msgstr ""
 
@@ -4533,31 +4717,31 @@ msgid "simple"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1640 ../../src/gui/movieplayer.cpp:1587
-#: ../../src/gui/movieplayer.cpp:1586
+#: ../../src/gui/movieplayer.cpp:1586 ../../src/gui/movieplayer.cpp:1585
 msgid "skip approx. 1 minute"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1646 ../../src/gui/movieplayer.cpp:1593
-#: ../../src/gui/movieplayer.cpp:1592
+#: ../../src/gui/movieplayer.cpp:1592 ../../src/gui/movieplayer.cpp:1591
 msgid "skip approx. 10 minutes"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1647 ../../src/gui/movieplayer.cpp:1594
-#: ../../src/gui/movieplayer.cpp:1593
+#: ../../src/gui/movieplayer.cpp:1593 ../../src/gui/movieplayer.cpp:1592
 msgid "skip approx. 10 seconds"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1643 ../../src/gui/movieplayer.cpp:1590
-#: ../../src/gui/movieplayer.cpp:1589
+#: ../../src/gui/movieplayer.cpp:1589 ../../src/gui/movieplayer.cpp:1588
 msgid "skip approx. 5 minutes"
 msgstr ""
 
 #: ../../src/gui/movieplayer.cpp:1637 ../../src/gui/movieplayer.cpp:1584
-#: ../../src/gui/movieplayer.cpp:1583
+#: ../../src/gui/movieplayer.cpp:1583 ../../src/gui/movieplayer.cpp:1582
 msgid "skip bookmark"
 msgstr ""
 
-#: ../../src/gui/hdd_menu.cpp:75
+#: ../../src/gui/hdd_menu.cpp:75 ../../src/gui/hdd_menu.cpp:74
 msgid "slow"
 msgstr ""
 
@@ -4565,15 +4749,17 @@ msgstr ""
 msgid "small"
 msgstr ""
 
-#: ../../src/gui/eventlist.cpp:666
+#: ../../src/gui/eventlist.cpp:666 ../../src/gui/eventlist.cpp:667
 msgid "sorting(A..Z)"
 msgstr ""
 
 #: ../../src/gui/eventlist.cpp:537 ../../src/gui/eventlist.cpp:668
+#: ../../src/gui/eventlist.cpp:538 ../../src/gui/eventlist.cpp:669
 msgid "sorting(Time)"
 msgstr ""
 
 #: ../../src/gui/audio_select.cpp:62 ../../src/gui/audio_setup.cpp:60
+#: ../../src/gui/audio_select.cpp:60
 msgid "stereo"
 msgstr ""
 
@@ -4630,12 +4816,12 @@ msgid "umount"
 msgstr ""
 
 #: ../../src/gui/epgview.cpp:390 ../../src/gui/streaminfo.cpp:631
-#: ../../src/gui/streaminfo.cpp:651
+#: ../../src/gui/streaminfo.cpp:651 ../../src/gui/epgview.cpp:392
 #, c-format
 msgid "unknown"
 msgstr ""
 
-#: ../../src/gui/scan_setup.cpp:109
+#: ../../src/gui/scan_setup.cpp:109 ../../src/gui/scan_setup.cpp:108
 msgid "update"
 msgstr ""
 
@@ -4659,7 +4845,7 @@ msgstr ""
 msgid "volume / playtime / audio"
 msgstr ""
 
-#: ../../src/gui/infoviewer.cpp:780
+#: ../../src/gui/infoviewer.cpp:780 ../../src/gui/infoviewer.cpp:781
 msgid "waiting for EPG..."
 msgstr ""
 

@@ -29,7 +29,8 @@
 #include <global.h>
 
 #include <gui/widget/listframe.h>
-#include <gui/widget/icons.h>
+
+#include <driver/gfx/icons.h>
 
 #include <system/debug.h>
 #include <system/settings.h>

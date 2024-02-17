@@ -31,6 +31,8 @@
 
 #include <gui/widget/menue.h>
 
+#include <driver/gfx/icons.h>
+
 #include <string>
 
 

@@ -22,6 +22,8 @@
 #ifndef __epg_menu__
 #define __epg_menu__
 
+#include <driver/gfx/icons.h>
+
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 

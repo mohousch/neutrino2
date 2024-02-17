@@ -44,7 +44,6 @@
 #include <gui/scan.h>
 #include <gui/motorcontrol.h>
 
-#include <gui/widget/icons.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/hintbox.h>
 

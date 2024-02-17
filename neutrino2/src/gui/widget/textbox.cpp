@@ -31,7 +31,6 @@
 #include <global.h>
 
 #include <gui/widget/textbox.h>
-#include <gui/widget/icons.h>
 
 #include <system/debug.h>
 #include <system/settings.h>

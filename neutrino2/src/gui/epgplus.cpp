@@ -37,7 +37,6 @@
 
 #include <timerd/timerd.h>
 
-#include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/infobox.h>
@@ -45,6 +44,7 @@
 #include <gui/bouquetlist.h>
 
 #include <driver/rcinput.h>
+#include <driver/gfx/icons.h>
 
 #include <algorithm>
 #include <sstream>

@@ -32,7 +32,6 @@
 
 #include <gui/pluginlist.h>
 #include <gui/widget/infobox.h>
-#include <gui/widget/icons.h>
 
 #include <sstream>
 #include <fstream>

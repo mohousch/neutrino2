@@ -24,6 +24,8 @@
 #ifndef __audio_selector__
 #define __audio_selector__
 
+#include <driver/gfx/icons.h>
+
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>
 

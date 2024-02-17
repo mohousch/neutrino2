@@ -28,7 +28,6 @@
 
 #include <infobox.h>
 
-#include <gui/widget/icons.h>
 #include <neutrino2.h>
 
 #include <system/debug.h>

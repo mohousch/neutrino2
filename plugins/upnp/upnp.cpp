@@ -41,6 +41,7 @@
 
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/color.h>
+#include <driver/gfx/icons.h>
 
 #include <daemonc/remotecontrol.h>
 
@@ -48,7 +49,6 @@
 #include <gui/infoviewer.h>
 
 #include <gui/widget/widget_helpers.h>
-#include <gui/widget/icons.h>
 #include <gui/widget/menue.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/hintbox.h>

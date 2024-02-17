@@ -27,10 +27,9 @@
 
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/color.h>
+#include <driver/gfx/icons.h>
 
 #include <driver/rcinput.h>
-
-#include <gui/widget/icons.h>
 
 #include <daemonc/remotecontrol.h>
 

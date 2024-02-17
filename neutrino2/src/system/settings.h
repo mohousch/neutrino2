@@ -34,7 +34,7 @@
 
 #include <system/localize.h>
 
-#include <gui/widget/icons.h>
+#include <driver/gfx/icons.h>
 
 #include <string>
 #include <list>

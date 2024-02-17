@@ -37,7 +37,8 @@
 
 #include <gui/widget/messagebox.h>
 #include <gui/widget/colorchooser.h>
-#include <gui/widget/icons.h>
+
+#include <driver/gfx/icons.h>
 
 
 #define VALUE_R     0

@@ -31,10 +31,11 @@
 
 #include <global.h>
 
+#include <driver/gfx/icons.h>
+
 #include <gui/eventlist.h>
 #include <gui/timerlist.h>
 
-#include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
 
 #include <global.h>

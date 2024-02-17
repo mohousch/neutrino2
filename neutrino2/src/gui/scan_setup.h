@@ -35,6 +35,7 @@
 #include <gui/scan.h>
 
 #include <driver/gfx/framebuffer.h>
+#include <driver/gfx/icons.h>
 
 
 //

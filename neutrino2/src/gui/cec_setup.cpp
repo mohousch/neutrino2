@@ -40,8 +40,6 @@
 #include <global.h>
 #include <neutrino2.h>
 
-#include <gui/widget/icons.h>
-
 #include <driver/hdmi_cec.h>
 
 #include <system/debug.h>

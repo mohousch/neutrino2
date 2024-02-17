@@ -35,7 +35,6 @@
 
 #include <driver/rcinput.h>
 
-#include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
 
 #include <system/debug.h>

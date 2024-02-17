@@ -23,6 +23,7 @@
 #ifndef __hdd_menu__
 #define __hdd_menu__
 
+#include <driver/gfx/icons.h>
 
 #include <gui/widget/widget.h>
 #include <gui/widget/listbox.h>

@@ -27,7 +27,6 @@
 
 #include <global.h>
 #include <neutrino2.h>
-#include <gui/widget/icons.h>
 
 #include <gui/epg_menu.h>
 

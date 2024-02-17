@@ -59,7 +59,6 @@
 #include <neutrino2.h>
 #include <gui/widget/stringinput.h>
 #include <sys/vfs.h> // for statfs
-#include <gui/widget/icons.h>
 #include <sys/mount.h>
 #include <utime.h>
 
@@ -68,6 +67,7 @@
 #include <system/settings.h>
 
 #include <driver/vcrcontrol.h>
+#include <driver/gfx/icons.h>
 
 #include <gui/widget/infobox.h>
 #include <system/tmdbparser.h>

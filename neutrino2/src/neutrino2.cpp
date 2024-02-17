@@ -69,6 +69,7 @@
 #include <driver/gfx/framebuffer.h>
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/color.h>
+#include <driver/gfx/icons.h>
 
 #include <gui/epgplus.h>
 #include <gui/streaminfo.h>
@@ -76,7 +77,6 @@
 #include <gui/widget/colorchooser.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/hintbox.h>
-#include <gui/widget/icons.h>
 #include <gui/widget/keychooser.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/stringinput_ext.h>

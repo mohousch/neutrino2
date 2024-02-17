@@ -34,6 +34,7 @@
 
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/color.h>
+#include <driver/gfx/icons.h>
 
 #include <driver/rcinput.h>
 
@@ -42,7 +43,6 @@
 #include <gui/epgplus.h>
 
 #include <gui/widget/widget_helpers.h>
-#include <gui/widget/icons.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/infobox.h>
 

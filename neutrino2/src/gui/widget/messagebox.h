@@ -31,12 +31,12 @@
 #include <string>
 
 #include <driver/gfx/framebuffer.h>
+#include <driver/gfx/icons.h>
 
 #include <system/localize.h>
 #include <system/settings.h>
 
 #include <gui/widget/drawable.h>
-#include <gui/widget/icons.h>
 #include <gui/widget/widget_helpers.h>
 
 

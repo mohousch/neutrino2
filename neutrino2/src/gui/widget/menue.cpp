@@ -34,12 +34,12 @@
 #include <neutrino2.h>
 
 #include <gui/widget/menue.h>
-#include <gui/widget/icons.h>
 #include <gui/widget/textbox.h>
 #include <gui/widget/stringinput.h> // locked menu
 
 #include <driver/gfx/color.h>
 #include <driver/gfx/fontrenderer.h>
+#include <driver/gfx/icons.h>
 
 #include <gui/pluginlist.h>
 

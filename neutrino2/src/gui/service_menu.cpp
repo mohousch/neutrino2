@@ -44,8 +44,9 @@
 #include <gui/widget/hintbox.h>
 #include <gui/widget/messagebox.h>
 
+#include <driver/gfx/icons.h>
+
 #include <gui/scan_setup.h>
-#include <gui/widget/icons.h>
 #include <gui/update.h>
 #include <gui/cam_menu.h>
 #include <gui/imageinfo.h>

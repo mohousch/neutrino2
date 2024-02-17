@@ -37,7 +37,6 @@
 #include <daemonc/remotecontrol.h>
 
 #include <gui/widget/textbox.h>
-#include <gui/widget/icons.h>
 #include <gui/mediaplayer.h>
 #include <gui/service_menu.h>
 #include <gui/main_setup.h>

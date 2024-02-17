@@ -50,6 +50,7 @@
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/framebuffer.h>
 #include <driver/gfx/color.h>
+#include <driver/gfx/icons.h>
 
 #include <driver/rcinput.h>
 #include <driver/radiotext.h>
@@ -75,14 +76,12 @@
 #include <gui/widget/menue.h>
 #include <gui/widget/messagebox.h>
 #include <gui/widget/hintbox.h>
-#include <gui/widget/icons.h>
 #include <gui/widget/keychooser.h>
 #include <gui/widget/stringinput.h>
 #include <gui/widget/stringinput_ext.h>
 #include <gui/widget/helpbox.h>
 #include <gui/widget/infobox.h>
 #include <gui/widget/textbox.h>
-#include <gui/widget/icons.h>
 #include <gui/widget/listbox.h>
 #include <gui/widget/listframe.h>
 #include <gui/widget/framebox.h>

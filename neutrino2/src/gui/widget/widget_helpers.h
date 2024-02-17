@@ -36,6 +36,7 @@
 #include <driver/gfx/fontrenderer.h>
 #include <driver/gfx/framebuffer.h>
 #include <driver/gfx/color.h>
+#include <driver/gfx/icons.h>
 
 #include <system/localize.h>
 #include <system/settings.h>

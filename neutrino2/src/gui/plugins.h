@@ -27,8 +27,7 @@
 #include <string>
 #include <vector>
 
-#include <gui/widget/icons.h>
-
+#include <driver/gfx/icons.h>
 #include <driver/gfx/framebuffer.h>
 
 #include <system/localize.h>
