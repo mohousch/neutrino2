@@ -69,8 +69,8 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 	unsigned short descriptors_loop_length;
 	unsigned short running_status;
 
-	bool EIT_schedule_flag;
-	bool EIT_present_following_flag;
+	//bool EIT_schedule_flag;
+	//bool EIT_present_following_flag;
 	bool free_CA_mode;
 
 	unsigned char filter[DMX_FILTER_SIZE];
@@ -119,8 +119,8 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 		for (pos = 11; pos < section_length - 1; pos += descriptors_loop_length + 5) 
 		{
 			service_id = (buffer[pos] << 8) | buffer[pos + 1];
-			EIT_schedule_flag = buffer[pos + 2] & 0x02;
-			EIT_present_following_flag = buffer[pos + 2] & 0x01;
+			//EIT_schedule_flag = buffer[pos + 2] & 0x02;
+			//EIT_present_following_flag = buffer[pos + 2] & 0x01;
 			running_status = buffer [pos + 3] & 0xE0;
 			free_CA_mode = buffer [pos + 3] & 0x10;
 			descriptors_loop_length = ((buffer[pos + 3] & 0x0F) << 8) | buffer[pos + 4];
@@ -157,10 +157,6 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 						descriptor.linkage_descriptor(buffer + pos2);
 						break;
 	
-					//case NVOD_REFERENCE_DESCRIPTOR:
-					//	descriptor.NVOD_reference_descriptor(buffer + pos2);
-					//	break;
-	
 					case TIME_SHIFTED_SERVICE_DESCRIPTOR:
 						descriptor.time_shifted_service_descriptor(buffer + pos2);
 						break;
@@ -186,7 +182,7 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 						break;
 	
 					default:
-						descriptor.generic_descriptor(buffer + pos2);
+						dprintf(DEBUG_DEBUG, "CSdt::parseSDT::descriptor_tag: %02x\n", buffer[pos]);
 						break;
 				}
 			}
@@ -212,7 +208,6 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 	dmx->Open( DMX_PSI_CHANNEL, SDT_SIZE, fe );	
 	
 	int ret = -1;
-	//CDescriptors descriptor;
 
 	unsigned char buffer[SDT_SIZE];
 
@@ -228,8 +223,9 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 	unsigned short descriptors_loop_length;
 	unsigned short running_status;
 
-	bool EIT_schedule_flag;
-	bool EIT_present_following_flag;
+	//
+	//bool EIT_schedule_flag;
+	//bool EIT_present_following_flag;
 	//bool free_CA_mode;
 
 	unsigned char filter[DMX_FILTER_SIZE];
@@ -275,8 +271,8 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 		for (pos = 11; pos < section_length - 1; pos += descriptors_loop_length + 5) 
 		{
 			service_id = (buffer[pos] << 8) | buffer[pos + 1];
-			EIT_schedule_flag = buffer[pos + 2] & 0x02;
-			EIT_present_following_flag = buffer[pos + 2] & 0x01;
+			//EIT_schedule_flag = buffer[pos + 2] & 0x02;
+			//EIT_present_following_flag = buffer[pos + 2] & 0x01;
 			running_status = buffer [pos + 3] & 0xE0;
 			//free_CA_mode = buffer [pos + 3] & 0x10;
 			descriptors_loop_length = ((buffer[pos + 3] & 0x0F) << 8) | buffer[pos + 4];
@@ -285,13 +281,14 @@ int CSdt::parseCurrentSDT( const t_transport_stream_id p_transport_stream_id, co
 			{
 				switch (buffer[pos2]) 
 				{
-					case 0x48:
+					case SERVICE_DESCRIPTOR:
 						descriptor.current_service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq);
 						ret = 0;
 						break;
 	
 					default:
-						descriptor.generic_descriptor(buffer + pos2);
+						dprintf(DEBUG_DEBUG, "CSdt::parseCurrentSDT: descriptor_tag: %02x\n", buffer[pos]);
+						//descriptor.generic_descriptor(buffer + pos2);
 						break;
 				}
 			}

@@ -637,7 +637,7 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 					break;
 					
 				default:
-					dprintf(DEBUG_DEBUG, "decriptor_tag: %02x\n", buffer[i]);
+					dprintf(DEBUG_DEBUG, "CPmt::parsePMT: decriptor_tag: %02x\n", buffer[i]);
 					break;
 			}
 		}

@@ -4184,14 +4184,14 @@ CZapit::CServiceInfo CZapit::getCurrentServiceInfo()
 				
 		if(live_fe != NULL)
 		{
-					msgCurrentServiceInfo.tsfrequency = live_fe->getFrequency();
-					msgCurrentServiceInfo.rate = live_fe->getRate();
-					msgCurrentServiceInfo.fec = live_fe->getCFEC();
+			msgCurrentServiceInfo.tsfrequency = live_fe->getFrequency();
+			msgCurrentServiceInfo.rate = live_fe->getRate();
+			msgCurrentServiceInfo.fec = live_fe->getCFEC();
 						
-					if ( live_fe->getInfo()->type == FE_QPSK)
-						msgCurrentServiceInfo.polarisation = live_fe->getPolarization();
-					else
-						msgCurrentServiceInfo.polarisation = 2;
+			if ( live_fe->getInfo()->type == FE_QPSK)
+				msgCurrentServiceInfo.polarisation = live_fe->getPolarization();
+			else
+				msgCurrentServiceInfo.polarisation = 2;
 		}
 				
 		msgCurrentServiceInfo.vtype = live_channel->videoType;

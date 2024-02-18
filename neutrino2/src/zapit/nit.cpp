@@ -118,32 +118,24 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 		{
 			switch (buffer[pos])
 			{
-				case 0x40:
+				case NETWORK_NAME_DESCRIPTOR:
 					descriptor.network_name_descriptor(buffer + pos);
 					break;
 
-				case 0x4A:
+				case LINKAGE_DESCRIPTOR:
 					descriptor.linkage_descriptor(buffer + pos);
 					break;
 
-				case 0x5B:
+				case MULTILINGUAL_NETWORK_NAME_DESCRIPTOR:
 					descriptor.multilingual_network_name_descriptor(buffer + pos);
 					break;
 
-				/*
-				case 0x5F:
+				case PRIVATE_DATA_SPECIFIER_DESCRIPTOR:
 					descriptor.private_data_specifier_descriptor(buffer + pos);
-					break;
-				*/
-
-				case 0x80: // unknown, Eutelsat 13.0E
-					break;
-
-				case 0x90: // unknown, Eutelsat 13.0E 
 					break;
 
 				default:
-					dprintf(DEBUG_DEBUG, "CNit::parseNIT: first_descriptor_tag: %02x\n", buffer[pos]);
+					dprintf(DEBUG_DEBUG, "first_descriptor_tag: %02x\n", buffer[pos]);
 					break;
 			}
 		}
@@ -211,9 +203,6 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 							goto _return;
 						}
 						break;
-
-					//case 0x82: // unknown, Eutelsat 13.0E
-					//	break;
 
 					default:
 						dprintf(DEBUG_DEBUG, "CNit::parseNIT: second_descriptor_tag: %02x\n", buffer[pos2]);

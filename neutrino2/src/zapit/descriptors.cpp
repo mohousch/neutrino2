@@ -564,10 +564,12 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 		I->second.setName(serviceName);
 		I->second.setServiceType(real_type);
 		I->second.scrambled = free_ca;
+		
 		channel = &I->second;
 	}
 
 	transponder_id_t tpid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
+	
 	if(service_wr) 
 	{
 		std::pair<std::map<t_channel_id, CZapitChannel>::iterator,bool> ret;
@@ -578,6 +580,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 				std::pair <t_channel_id, CZapitChannel> (channel_id, CZapitChannel (serviceName, service_id, transport_stream_id, original_network_id, real_type, satellitePosition, freq )));
 
 		ret.first->second.scrambled = free_ca;
+		
 		channel = &ret.first->second;
 	}
 
@@ -618,7 +621,7 @@ void CDescriptors::service_descriptor(const unsigned char * const buffer, const 
 				{
 					switch (buff[pos]) 
 					{
-						case 0x40:
+						case NETWORK_NAME_DESCRIPTOR:
 							if (buff[pos + 1] > 30)
 								buff[pos + 1] = 30;
 
