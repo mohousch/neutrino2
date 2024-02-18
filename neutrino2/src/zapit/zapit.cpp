@@ -4792,6 +4792,7 @@ _repeat:
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, CEventServer::INITID_NEUTRINO, &actual_freq, sizeof(actual_freq));
 
 		// by sat send pol to neutrino
+#if HAVE_DVB_API_VERSION >= 5
 		if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
 #else
 		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)

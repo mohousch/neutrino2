@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-02-17 09:59+0100\n"
+"POT-Creation-Date: 2024-02-18 14:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4107,6 +4107,7 @@ msgstr ""
 #: ../../src/gui/scan_setup.cpp:934 ../../src/gui/scan_setup.cpp:1040
 #: ../../src/gui/scan_setup.cpp:1110 ../../src/gui/scan_setup.cpp:1410
 #: ../../src/gui/scan_setup.cpp:1545 ../../src/gui/scan_setup.cpp:2383
+#: ../../src/gui/scan_setup.cpp:2381
 msgid "back"
 msgstr ""
 
