@@ -415,12 +415,10 @@ bool CZapit::loopCanTune(CFrontend * fe, CZapitChannel * thischannel)
 	if(fe->tuned && (fe->getCurrentSatellitePosition() != thischannel->getSatellitePosition()))
 		return false;
 		
-	////FIXME:TEST
 	transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
 
 	if (transponder == transponders.end())
 		return false;
-	////
 
 	bool tp_band = ((int)thischannel->getFreqId()*1000 >= fe->lnbSwitch);
 	//uint8_t tp_pol = thischannel->polarization & 1;
@@ -433,57 +431,6 @@ bool CZapit::loopCanTune(CFrontend * fe, CZapitChannel * thischannel)
 		return true;
 	
 	return false;
-}
-
-// getPreferredFrontend
-CFrontend * CZapit::getPreferredFrontend(CZapitChannel * thischannel)
-{
-	// check for frontend
-	CFrontend * pref_frontend = NULL;
-	
-	t_satellite_position satellitePosition = thischannel->getSatellitePosition();
-	sat_iterator_t sit = satellitePositions.find(satellitePosition);
-	
-	// get preferred frontend
-	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
-	{
-		CFrontend * fe = fe_it->second;
-		
-		dprintf(DEBUG_DEBUG, "CZapit::getPreferredFrontend: fe(%d,%d): tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx - chan_freq: %d chan_TP: 0x%llx sat-position: %d sat-name:%s input-type:%d\n",
-				fe->feadapter,
-				fe->fenumber,
-				fe->tuned,
-				fe->locked,
-				fe->getFrequency(), 
-				fe->getTsidOnid(), 
-				thischannel->getFreqId(), 
-				thischannel->getTransponderId(), 
-				satellitePosition,
-				sit->second.name.c_str(),
-				sit->second.system);
-				
-		// skip not connected frontend
-		if( fe->mode == (fe_mode_t)FE_NOTCONNECTED )
-			continue;
-
-		// same tid frontend (locked)
-		if(fe->locked && fe->getTsidOnid() == thischannel->getTransponderId())
-		{
-			pref_frontend = fe;
-			break;
-		}
-		// first zap/record/other frontend type
-		else if (sit != satellitePositions.end()) 
-		{
-			if( (fe->getDeliverySystem() & sit->second.system) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
-			{
-				pref_frontend = fe;
-				break;
-			}
-		}
-	}
-	
-	return pref_frontend;
 }
 
 // NOTE: this can be used only after we found our record_fe???
@@ -504,10 +451,10 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	// check for frontend
 	CFrontend * free_frontend = NULL;
 	
-	////FIXME:TEST
-	//t_satellite_position satellitePosition = thischannel->getSatellitePosition();
-	//sat_iterator_t sit = satellitePositions.find(satellitePosition);
-	transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
+	t_satellite_position satellitePosition = thischannel->getSatellitePosition();
+	sat_iterator_t sit = satellitePositions.find(satellitePosition);
+	//// FIXME: this too slowly but sure
+	//transponder_list_t::iterator transponder = transponders.find(thischannel->getTransponderId());
 	
 	// close unused frontend
 	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
@@ -515,7 +462,8 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 		CFrontend * fe = fe_it->second;
 			
 		// skip tuned frontend and have same tid or same type as channel to tune
-		if( (fe->tuned) && (fe->getTsidOnid() == thischannel->getTransponderId() || fe->getDeliverySystem() & /*sit->second.system*/transponder->second.feparams.delsys) )
+		if( (fe->tuned) && (fe->getTsidOnid() == thischannel->getTransponderId() || fe->getDeliverySystem() & sit->second.system) )
+		//if( (fe->tuned) && (fe->getTsidOnid() == thischannel->getTransponderId() || fe->getDeliverySystem() & /*sit->second.system*/transponder->second.feparams.delsys) )
 			continue;
 
 		// close not locked tuner
@@ -535,9 +483,7 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 				FEMODE[fe->mode],
 				fe->tuned,
 				fe->locked,
-				//fe->getFrequency(), 
 				fe->getTsidOnid(), 
-				//thischannel->getFreqId(), 
 				thischannel->getTransponderId());
 				
 		// skip not connected frontend
@@ -551,11 +497,11 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 			break;
 		}
 		// first zap/record/other frontend type
-		//else if (sit != satellitePositions.end()) 
-		else if (transponder != transponders.end())
+		else if (sit != satellitePositions.end()) 
+		//else if (transponder != transponders.end())
 		{	
-			//if ( (fe->getDeliverySystem() & sit->second.system) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
-			if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			if ( (fe->getDeliverySystem() & sit->second.system) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			//if ( (fe->getDeliverySystem() & transponder->second.feparams.delsys) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
 			{
 				free_frontend = fe;
 				break;
@@ -650,6 +596,57 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 		printf("%s can not get record frontend\n", __FUNCTION__);
 	
 	return rec_frontend;
+}
+
+// getPreferredFrontend
+CFrontend * CZapit::getPreferredFrontend(CZapitChannel * thischannel)
+{
+	// check for frontend
+	CFrontend * pref_frontend = NULL;
+	
+	t_satellite_position satellitePosition = thischannel->getSatellitePosition();
+	sat_iterator_t sit = satellitePositions.find(satellitePosition);
+	
+	// get preferred frontend
+	for(fe_map_iterator_t fe_it = femap.begin(); fe_it != femap.end(); fe_it++) 
+	{
+		CFrontend * fe = fe_it->second;
+		
+		dprintf(DEBUG_DEBUG, "CZapit::getPreferredFrontend: fe(%d,%d): tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx - chan_freq: %d chan_TP: 0x%llx sat-position: %d sat-name:%s input-type:%d\n",
+				fe->feadapter,
+				fe->fenumber,
+				fe->tuned,
+				fe->locked,
+				fe->getFrequency(), 
+				fe->getTsidOnid(), 
+				thischannel->getFreqId(), 
+				thischannel->getTransponderId(), 
+				satellitePosition,
+				sit->second.name.c_str(),
+				sit->second.system);
+				
+		// skip not connected frontend
+		if( fe->mode == (fe_mode_t)FE_NOTCONNECTED )
+			continue;
+
+		// same tid frontend (locked)
+		if(fe->locked && fe->getTsidOnid() == thischannel->getTransponderId())
+		{
+			pref_frontend = fe;
+			break;
+		}
+		// first zap/record/other frontend type
+		else if (sit != satellitePositions.end()) 
+		{
+			if( (fe->getDeliverySystem() & sit->second.system) && (!fe->locked) && ( fe->mode == (fe_mode_t)FE_SINGLE || (fe->mode == (fe_mode_t)FE_LOOP && loopCanTune(fe, thischannel)) ) )
+			{
+				pref_frontend = fe;
+				break;
+			}
+		}
+	}
+	
+	return pref_frontend;
 }
 
 void CZapit::lockFrontend(CFrontend *fe)
@@ -3719,11 +3716,12 @@ void * CZapit::sdtThread(void */*arg*/)
 					case DVB_T2:
 					case DVB_DTMB:
 						sprintf(satstr, "\t<%s name=\"%s\">\n", "terrestrial", spos_it->second.name.c_str());
-						sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" bw=\"%hu\" hp=\"%hu\" lp=\"%hu\" con=\"%hu\" tm=\"%hu\" gi=\"%hu\" hi=\"%hu\">\n",
+						sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" bw=\"%hu\" hp=\"%hu\" lp=\"%hu\" con=\"%hu\" tm=\"%hu\" gi=\"%hu\" hi=\"%hu\" syss=\"%hu\">\n",
 						tI->second.transport_stream_id, tI->second.original_network_id,
 						tI->second.feparams.frequency, tI->second.feparams.inversion,
 						tI->second.feparams.bandwidth, tI->second.feparams.code_rate_HP,
-						tI->second.feparams.code_rate_LP, tI->second.feparams.modulation,tI->second.feparams.transmission_mode, tI->second.feparams.guard_interval, tI->second.feparams.hierarchy_information);
+						tI->second.feparams.code_rate_LP, tI->second.feparams.modulation,tI->second.feparams.transmission_mode, tI->second.feparams.guard_interval, tI->second.feparams.hierarchy_information,
+						tI->second.feparams.delsys);
 						delsys = "</terrestrial>";
 						break;
 
@@ -4912,7 +4910,7 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 	memset(&feparams, 0x00, sizeof(FrontendParameters));
 
 	freq_id_t freq;
-	feparams.inversion = INVERSION_AUTO;
+	feparams.inversion = (fe_spectral_inversion_t)INVERSION_AUTO;
 	feparams.delsys = CZapit::getInstance()->getFE(feindex)->getForcedDelSys(); // ???
 
 	//frequency
@@ -4976,7 +4974,9 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satell
 		feparams.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(transponder, "transmission_mode", 0);
 		feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(transponder, "guard_interval", 0);
 		feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(transponder, "hierarchy_information", 0);
-		feparams.inversion = (fe_spectral_inversion_t)xmlGetNumericAttribute(transponder, "inversion", 0);
+		
+		if (xmlGetAttribute(transponder, (char *)"inversion")) 
+			feparams.inversion = (fe_spectral_inversion_t)xmlGetNumericAttribute(transponder, "inversion", 0);
 		
 		if (xmlGetAttribute(transponder, (char *)"system"))
 		{
@@ -5851,7 +5851,7 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 			feparams.frequency = xmlGetNumericAttribute(tps, "frequency", 0);
 
 		// inversion
-		feparams.inversion = INVERSION_AUTO;
+		feparams.inversion = (fe_spectral_inversion_t)INVERSION_AUTO;
 
 		if (frontendType == FE_QAM) 		//DVB-C
 		{
@@ -5869,7 +5869,9 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 			feparams.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(tps, "transmission_mode", 0);
 			feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(tps, "guard_interval", 0);
 			feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(tps, "hierarchy_information", 0);
-			feparams.inversion = (fe_spectral_inversion_t)xmlGetNumericAttribute(tps, "inversion", 0);
+			
+			if (xmlGetAttribute(tps, (char *)"inversion"))
+				feparams.inversion = (fe_spectral_inversion_t)xmlGetNumericAttribute(tps, "inversion", 0);
 
 			if (xmlGetAttribute(tps, (char *)"system"))
 			{
