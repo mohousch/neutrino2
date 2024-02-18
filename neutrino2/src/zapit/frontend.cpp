@@ -757,19 +757,19 @@ uint32_t CFrontend::getFEBandwidth(fe_bandwidth_t bandwidth)
 	{
 		case BANDWIDTH_8_MHZ:
 		default:
-			bandwidth_hz  = 8000000;
+			bandwidth_hz = 8000000;
 			break;
 			
 		case BANDWIDTH_7_MHZ:
-			bandwidth_hz  = 7000000;
+			bandwidth_hz = 7000000;
 			break;
 			
 		case BANDWIDTH_6_MHZ:
-			bandwidth_hz  = 6000000;
+			bandwidth_hz = 6000000;
 			break;
 
 		case BANDWIDTH_5_MHZ:
-			bandwidth_hz  = 5000000;
+			bandwidth_hz = 5000000;
 			break;
 			
 		case BANDWIDTH_1_712_MHZ:
@@ -777,11 +777,11 @@ uint32_t CFrontend::getFEBandwidth(fe_bandwidth_t bandwidth)
 			break;
 			
 		case BANDWIDTH_10_MHZ:
-			bandwidth_hz  = 10000000;
+			bandwidth_hz = 10000000;
 			break;
 
 		case BANDWIDTH_AUTO:
-			bandwidth_hz  = 0;
+			bandwidth_hz = 0;
 	}
 
 	return bandwidth_hz;
@@ -987,35 +987,14 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
   	memset(&CmdSeq, 0, sizeof(CmdSeq));
 
   	CmdSeq.props = Frontend;
+  	////
+  	CmdSeq.num = 0;
 
 	// clear
   	SETCMD(DTV_CLEAR, 0);
 
-	if (::ioctl(fd, FE_SET_PROPERTY, &CmdSeq) < 0) 
-	{
-		perror("FE_SET_PROPERTY");
-     	}
-
-  	CmdSeq.num = 0;
-
-	// check frontend status
-	struct dvb_frontend_event ev;
-
-	struct pollfd pfd;
-	pfd.fd = fd;
-	pfd.events = POLLIN | POLLPRI;
-	pfd.revents = 0;
-
-	int ret = poll(&pfd, 1, 100);
-
-	if (ret > 0) 
-	{
-		if (::ioctl(fd, FE_GET_EVENT, &ev) < 0)
-			tuned = false;
-	}
-
 	//
-	if (feparams->delsys == DVB_S || feparams->delsys == DVB_S2)
+	if (feparams->delsys == DVB_S || feparams->delsys == DVB_S2 || feparams->delsys == DVB_S2X)
 	{
 		// common for DVB-S and DVB-S2
 		SETCMD(DTV_DELIVERY_SYSTEM, delsys);
@@ -1038,12 +1017,14 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
 		SETCMD(DTV_INNER_FEC, fec );
 		SETCMD(DTV_INVERSION, feparams->inversion);
 	
-		//DVB-S2
+		// DVB-S2
 		if (getFEDeliverySystem(feparams->delsys) == SYS_DVBS2) 
 		{
 			SETCMD(DTV_ROLLOFF, rolloff);
 			SETCMD(DTV_PILOT, pilot);		
 		}
+		
+		// DVB_S2X
 	}
 	else if (feparams->delsys == DVB_C)
 	{
