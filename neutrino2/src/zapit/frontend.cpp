@@ -751,7 +751,7 @@ void CFrontend::getDelSys(int f, int m, char *&fec, char *&sys, char *&mod)
 //
 uint32_t CFrontend::getFEBandwidth(fe_bandwidth_t bandwidth)
 {
-	uint32_t bandwidth_hz = 0;
+	uint32_t bandwidth_hz = 0;	// BANDWIDTH_AUTO
 
 	switch (bandwidth) 
 	{
@@ -1571,7 +1571,7 @@ int CFrontend::setParameters(transponder * TP, bool nowait)
 		// setSecVoltage
 		secSetVoltage(powered ? SEC_VOLTAGE_13 : SEC_VOLTAGE_OFF, 100);
 			
-		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d:%d) freq= %d band=%d HP=%d LP=%d const=%d trans=%d guard=%d hierarchy=%d inv= %d plp_id=%d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.bandwidth, TP->feparams.code_rate_HP, TP->feparams.code_rate_LP, TP->feparams.modulation, TP->feparams.transmission_mode, TP->feparams.guard_interval, TP->feparams.hierarchy_information, TP->feparams.inversion, (TP->feparams.delsys = DVB_T2)?TP->feparams.plp_id : 0);
+		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d:%d) freq= %d band=%d HP=%d LP=%d const=%d trans=%d guard=%d hierarchy=%d inv=%d plp_id=%d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.bandwidth, TP->feparams.code_rate_HP, TP->feparams.code_rate_LP, TP->feparams.modulation, TP->feparams.transmission_mode, TP->feparams.guard_interval, TP->feparams.hierarchy_information, TP->feparams.inversion, (TP->feparams.delsys = DVB_T2)?TP->feparams.plp_id : 0);
 	}
 	
 	do {

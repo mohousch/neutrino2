@@ -1778,7 +1778,7 @@ int CZapit::prepareChannels()
 	allchans.clear();  				// <- this invalidates all bouquets, too!
 	
 	// load frontend config
-	//loadFrontendConfig();
+	loadFrontendConfig();
         
     	// load tps
     	loadTransponders();
@@ -3694,6 +3694,8 @@ void * CZapit::sdtThread(void */*arg*/)
 				switch(spos_it->second.system)
 				{
 					case DVB_S: /* satellite */
+					case DVB_S2:
+					case DVB_S2X:
 						sprintf(satstr, "\t<%s name=\"%s\" position=\"%hd\">\n", "sat", spos_it->second.name.c_str(), satellitePosition);
 						sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" pol=\"%hu\">\n",
 						tI->second.transport_stream_id, tI->second.original_network_id,
@@ -3714,8 +3716,10 @@ void * CZapit::sdtThread(void */*arg*/)
 						break;
 						
 					case DVB_T: /* terrestrial */
+					case DVB_T2:
+					case DVB_DTMB:
 						sprintf(satstr, "\t<%s name=\"%s\">\n", "terrestrial", spos_it->second.name.c_str());
-						sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" band=\"%hu\" HP=\"%hu\" LP=\"%hu\" const=\"%hu\" trans=\"%hu\" guard=\"%hu\" hierarchy=\"%hu\">\n",
+						sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" bw=\"%hu\" hp=\"%hu\" lp=\"%hu\" con=\"%hu\" tm=\"%hu\" gi=\"%hu\" hi=\"%hu\">\n",
 						tI->second.transport_stream_id, tI->second.original_network_id,
 						tI->second.feparams.frequency, tI->second.feparams.inversion,
 						tI->second.feparams.bandwidth, tI->second.feparams.code_rate_HP,
@@ -4788,7 +4792,10 @@ _repeat:
 		eventServer->sendEvent(NeutrinoMessages::EVT_SCAN_REPORT_FREQUENCY, CEventServer::INITID_NEUTRINO, &actual_freq, sizeof(actual_freq));
 
 		// by sat send pol to neutrino
+		if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
+#else
 		if( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QPSK)
+#endif		
 		{
 			actual_polarisation = ((tI->second.feparams.symbol_rate/1000) << 16) | (tI->second.feparams.fec_inner << 8) | (uint)tI->second.feparams.polarization;
 
@@ -4891,7 +4898,7 @@ _repeat:
 	return true;
 }
 
-bool CZapit::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, int feindex)
+bool CZapit::scanTransponder(xmlNodePtr transponder, t_satellite_position satellitePosition, int feindex)
 {
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CZapit::scanTransponder:\n");
 	
@@ -4954,7 +4961,6 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satel
 		feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(transponder, "fec_inner", 0);
 		feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(transponder, "modulation", 0);
 		feparams.delsys = DVB_C;
-		diseqc_pos = 0;
 	}
 #if HAVE_DVB_API_VERSION >= 5
 	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2)
@@ -4970,13 +4976,14 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satel
 		feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(transponder, "guard_interval", 0);
 		feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(transponder, "hierarchy_information", 0);
 		feparams.inversion = (fe_spectral_inversion_t)xmlGetNumericAttribute(transponder, "inversion", 0);
-		system = xmlGetNumericAttribute(transponder, "system", 0);
 		
 		if (xmlGetAttribute(transponder, (char *)"system"))
 		{
+			system = xmlGetNumericAttribute(transponder, "system", 0);
+			
 			if (system == 0)
 		    		feparams.delsys = DVB_T;
-		    	else if (system == 1)
+		    	else //if (system == 1)
 		    	{
 		    		feparams.delsys = DVB_T2;
 		    		feparams.plp_id = xmlGetNumericAttribute(transponder, "plp_id", 0);
@@ -4987,8 +4994,6 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satel
             		feparams.delsys = DVB_T2;
             		feparams.plp_id = xmlGetNumericAttribute(transponder, "plp_id", 0);
             	}
-			
-		diseqc_pos = 0;
 	}
 #if HAVE_DVB_API_VERSION >= 5
 	else if (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S ||CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_S2)
@@ -5030,7 +5035,7 @@ bool CZapit::scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satel
 	return true;
 }
 
-bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex)
+bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, int feindex)
 {
 	dprintf(DEBUG_NORMAL, ANSI_YELLOW "CZapit::scanProvider:\n");
 	
@@ -5060,7 +5065,7 @@ bool CZapit::scanProvider(xmlNodePtr search, t_satellite_position satellitePosit
 		if(abort_scan)
 			return false;
 
-		scanTransponder(tps, diseqc_pos, satellitePosition, feindex);
+		scanTransponder(tps, satellitePosition, feindex);
 
 		// next transponder
 		tps = tps->xmlNextNode;
@@ -5266,7 +5271,6 @@ void * CZapit::scanThread(void * data)
 	scan_list_iterator_t spI;
 	char providerName[80] = "";
 	char *frontendType;
-	uint8_t diseqc_pos = 0;
 	processed_transponders = 0;
 	failed_transponders = 0;
 	found_transponders = 0;
@@ -5274,7 +5278,6 @@ void * CZapit::scanThread(void * data)
  	found_radio_chans = 0;
  	found_data_chans = 0;
 	found_channels = 0;
-	bool satfeed = false;
 	curr_sat = 0;
 	scantransponders.clear();
 	scanedtransponders.clear();
@@ -5369,19 +5372,8 @@ void * CZapit::scanThread(void * data)
 			// provider is not wanted - jump to the next one
 			if (spI != scanProviders.end()) 
 			{
-				// get name of current satellite oder cable provider
+				// provider name
 				strcpy(providerName, xmlGetAttribute(search,  "name"));
-
-				// satfeed
-#if HAVE_DVB_API_VERSION >= 5
-    				if ( (CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_C || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_T2 || CZapit::getInstance()->getFE(feindex)->getForcedDelSys() == DVB_A) && xmlGetAttribute(search, "satfeed") )
-#else
-				if( ( CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_OFDM || CZapit::getInstance()->getFE(feindex)->getInfo()->type == FE_QAM) && xmlGetAttribute(search, "satfeed") )
-#endif
-				{
-					if (!strcmp(xmlGetAttribute(search, "satfeed"), "true"))
-						satfeed = true;
-				}
 
 				// increase sat counter
 				curr_sat++;
@@ -5393,7 +5385,7 @@ void * CZapit::scanThread(void * data)
 				dprintf(DEBUG_INFO, "CZapit::scanThread: scanning %s at %d bouquetMode %d\n", providerName, position, CZapit::getInstance()->_bouquetMode);
 				
 				// this invoke addToScan	
-				if ( !CZapit::getInstance()->scanProvider(search, position, diseqc_pos, satfeed, feindex) )
+				if ( !CZapit::getInstance()->scanProvider(search, position, feindex) )
 				{
 					found_channels = 0;
 					break;
@@ -5596,7 +5588,7 @@ void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePo
 			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(node, "mod", 0);
 			feparams.delsys = DVB_C;
 		}
-		// DVB-T
+		// DVB-T/T2
 		else if (frontendType == FE_OFDM)
 		{
 			feparams.bandwidth = (fe_bandwidth_t) xmlGetNumericAttribute(node, "bw", 0);
@@ -5609,7 +5601,7 @@ void CZapit::parseTransponders(xmlNodePtr node, t_satellite_position satellitePo
 			feparams.plp_id = (unsigned int) xmlGetNumericAttribute(node, "pli", 0);
 			feparams.delsys = (uint32_t) xmlGetNumericAttribute(node, "sys", 0);
 		}
-		// DVB-S
+		// DVB-S/S2
 		else if (frontendType == FE_QPSK)
 		{
 			feparams.fec_inner = (fe_code_rate_t) xmlGetNumericAttribute(node, "fec", 0);
@@ -5884,7 +5876,7 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 
 		    		if (system == 0)
 		    			feparams.delsys = DVB_T;
-		    		else if (system == 1)
+		    		else //if (system == 1)
 		    		{
 		    			feparams.delsys = DVB_T2;
 		    			feparams.plp_id = (unsigned int) xmlGetNumericAttribute(tps, "plp_id", 0);
@@ -6117,9 +6109,6 @@ int CZapit::loadTransponders()
 			{
 				if(!(strcmp(xmlGetName(search), "cable"))) 
 				{
-					//flags ???
-					//satfeed ???
-					
 					char * name = xmlGetAttribute(search, "name");
 
 					if(satellitePositions.find(position) == satellitePositions.end()) 
@@ -6372,6 +6361,8 @@ void CZapit::saveServices(bool tocopy)
 			switch(spos_it->second.system)
 			{
 				case DVB_S:
+				case DVB_S2:
+				case DVB_S2X:
 					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" sr=\"%u\" fec=\"%hu\" pol=\"%hu\" sys=\"%hu\">\n",
 							tI->second.transport_stream_id, tI->second.original_network_id,
 							tI->second.feparams.frequency, tI->second.feparams.inversion,
@@ -6389,6 +6380,8 @@ void CZapit::saveServices(bool tocopy)
 					break;
 
 				case DVB_T:
+				case DVB_T2:
+				case DVB_DTMB:
 					sprintf(tpstr, "\t\t<TS id=\"%04x\" on=\"%04x\" frq=\"%u\" inv=\"%hu\" bw=\"%hu\" hp=\"%hu\" lp=\"%hu\" con=\"%hu\" tm=\"%hu\" gi=\"%hu\" hi=\"%hu\" sys=\"%hu\">\n",
                                         tI->second.transport_stream_id, tI->second.original_network_id,
                                         tI->second.feparams.frequency, tI->second.feparams.inversion,

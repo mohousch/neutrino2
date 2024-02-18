@@ -434,8 +434,8 @@ class CZapit
 		//// scanManager
 		bool tuneFrequency(FrontendParameters *feparams, t_satellite_position satellitePosition, int feindex);
 		bool getSDTS(t_satellite_position satellitePosition, int feindex);
-		bool scanTransponder(xmlNodePtr transponder, uint8_t diseqc_pos, t_satellite_position satellitePosition, int feindex);
-		bool scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, uint8_t diseqc_pos, bool satfeed, int feindex);
+		bool scanTransponder(xmlNodePtr transponder, t_satellite_position satellitePosition, int feindex);
+		bool scanProvider(xmlNodePtr search, t_satellite_position satellitePosition, int feindex);
 		void saveScanBouquets(const CZapit::bouquetMode bouquetMode, const char * const providerName);
 		//
 		void closeAVDecoder(void);

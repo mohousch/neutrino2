@@ -38,7 +38,7 @@
 #include <system/debug.h>
 
 #include <driver/lcd/lcddisplay.h>
-#include <gui/widget/icons.h>
+#include <driver/gfx/icons.h>
 
 #include <fcntl.h>
 #include <time.h>

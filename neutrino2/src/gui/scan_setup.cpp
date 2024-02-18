@@ -2363,7 +2363,6 @@ int CTunerSetup::showMenu()
 		TunerSetup->enablePaintHead();
 		TunerSetup->setTitle(_("Servicescan"), NEUTRINO_ICON_SCAN);
 		TunerSetup->enablePaintDate();
-//		TunerSetup->setHeadLine(true, true);
 		
 		//
 		TunerSetup->enablePaintFoot();
@@ -2371,7 +2370,6 @@ int CTunerSetup::showMenu()
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			
 		TunerSetup->setFootButtons(&btn);
-//		TunerSetup->setFootLine(true, true);
 		
 		//		
 		widget->addCCItem(TunerSetup);
