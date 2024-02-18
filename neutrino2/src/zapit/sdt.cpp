@@ -129,96 +129,60 @@ int CSdt::parseSDT(t_transport_stream_id *p_transport_stream_id, t_original_netw
 			{
 				switch (buffer[pos2]) 
 				{
-					case 0x0A:
+					case ISO_639_LANGUAGE_DESCRIPTOR:
 						descriptor.ISO_639_language_descriptor(buffer + pos2);
 						break;
 	
-					case 0x40:
+					case NETWORK_NAME_DESCRIPTOR:
 						descriptor.network_name_descriptor(buffer + pos2);
 						break;
 
-					case 0x42:
+					case STUFFING_DESCRIPTOR:
 						descriptor.stuffing_descriptor(buffer + pos2);
 						break;
 	
-					case 0x47:
+					case BOUQUET_NAME_DESCRIPTOR:
 						descriptor.bouquet_name_descriptor(buffer + pos2);
 						break;
 	
-					case 0x48:
+					case SERVICE_DESCRIPTOR:
 						descriptor.service_descriptor(buffer + pos2, service_id, transport_stream_id, original_network_id, satellitePosition, freq, free_CA_mode, feindex);
 						break;
 	
-					case 0x49:
+					case COUNTRY_AVAILABILITY_DESCRIPTOR:
 						descriptor.country_availability_descriptor(buffer + pos2);
 						break;
 	
-					case 0x4A:
+					case LINKAGE_DESCRIPTOR:
 						descriptor.linkage_descriptor(buffer + pos2);
 						break;
 	
-					//case 0x4B:
+					//case NVOD_REFERENCE_DESCRIPTOR:
 					//	descriptor.NVOD_reference_descriptor(buffer + pos2);
 					//	break;
 	
-					case 0x4C:
+					case TIME_SHIFTED_SERVICE_DESCRIPTOR:
 						descriptor.time_shifted_service_descriptor(buffer + pos2);
 						break;
 	
-					case 0x51:
+					case MOSAIC_DESCRIPTOR:
 						descriptor.mosaic_descriptor(buffer + pos2);
 						break;
 	
-					case 0x53:
+					case CA_IDENTIFIER_DESCRIPTOR:
 						descriptor.CA_identifier_descriptor(buffer + pos2);
 						break;
 	
-					case 0x5D:
+					case MULTILINGUAL_SERVICE_NAME_DESCRIPTOR:
 						descriptor.multilingual_service_name_descriptor(buffer + pos2);
 						break;
 	
-					case 0x5F:
+					case PRIVATE_DATA_SPECIFIER_DESCRIPTOR:
 						descriptor.private_data_specifier_descriptor(buffer + pos2);
 						break;
 	
-					case 0x64:
+					case DATA_BROADCAST_DESCRIPTOR:
 						descriptor.data_broadcast_descriptor(buffer + pos2);
-						break;
-	
-					case 0x80: // unknown, Eutelsat 13.0E
-						break;
-	
-					case 0x84: // unknown, Eutelsat 13.0E
-						break;
-	
-					case 0x86: // unknown, Eutelsat 13.0E
-						break;
-	
-					case 0x88: // unknown, Astra 19.2E
-						break;
-	
-					case 0xB2: // unknown, Eutelsat 13.0E
-						break;
-	
-					case 0xC0: // unknown, Eutelsat 13.0E
-						break;
-	
-					case 0xE4: // unknown, Astra 19.2E
-						break;
-	
-					case 0xE5: // unknown, Astra 19.2E 
-						break;
-	
-					case 0xE7: // unknown, Eutelsat 13.0E
-						break;
-	
-					case 0xED: // unknown, Astra 19.2E
-						break;
-	
-					case 0xF8: // unknown, Astra 19.2E
-						break;
-	
-					case 0xF9: // unknown, Astra 19.2E
 						break;
 	
 					default:

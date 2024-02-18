@@ -101,6 +101,8 @@ class CDescriptors
 		void subtitling_descriptor(const unsigned char * const buffer);
 
 		int terrestrial_delivery_system_descriptor(const unsigned char * const buffer, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);
+		
+		int terrestrial2_delivery_system_descriptor(const unsigned char * const buffer, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex = 0);
 
 		void multilingual_network_name_descriptor(const unsigned char * const buffer);
 		void multilingual_bouquet_name_descriptor(const unsigned char * const buffer);

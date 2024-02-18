@@ -635,6 +635,7 @@ int CPmt::parsePMT(CZapitChannel * const channel, CFrontend * fe)
 				case CA_DESCRIPTOR:
 					caPmt->addCaDescriptor(buffer + i);
 					break;
+					
 				default:
 					dprintf(DEBUG_DEBUG, "decriptor_tag: %02x\n", buffer[i]);
 					break;

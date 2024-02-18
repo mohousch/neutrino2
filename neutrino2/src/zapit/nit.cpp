@@ -164,15 +164,15 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 			{
 				switch (buffer[pos2])
 				{
-					case 0x41:
+					case SERVICE_LIST_DESCRIPTOR:
 						descriptor.service_list_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq);
 						break;
 
-					case 0x42:
+					case STUFFING_DESCRIPTOR:
 						descriptor.stuffing_descriptor(buffer + pos2);
 						break;
 
-					case 0x43:
+					case SATELLITE_DELIVERY_SYSTEM_DESCRIPTOR:
 						if (descriptor.satellite_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
 						{
 							ret = -2;
@@ -180,7 +180,7 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 						}
 						break;
 
-					case 0x44:
+					case CABLE_DELIVERY_SYSTEM_DESCRIPTOR:
 						if (descriptor.cable_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
 						{
 							ret = -2;
@@ -188,7 +188,7 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 						}
 						break;
 
-					case 0x5A:
+					case TERRESTRIAL_DELIVERY_SYSTEM_DESCRIPTOR:
 						if(descriptor.terrestrial_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
 						{
 							ret = -2;
@@ -196,16 +196,24 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 						}
 						break;
 
-					case 0x5F:
+					case PRIVATE_DATA_SPECIFIER_DESCRIPTOR:
 						descriptor.private_data_specifier_descriptor(buffer + pos2);
 						break;
 
-					case 0x62:
+					case FREQUENCY_LIST_DESCRIPTOR:
 						descriptor.frequency_list_descriptor(buffer + pos2);
 						break;
-
-					case 0x82: // unknown, Eutelsat 13.0E
+						
+					case EXTENSION_DESCRIPTOR: // T2
+						if(descriptor.terrestrial2_delivery_system_descriptor(buffer + pos2, transport_stream_id, original_network_id, satellitePosition, freq, feindex) < 0)
+						{
+							ret = -2;
+							goto _return;
+						}
 						break;
+
+					//case 0x82: // unknown, Eutelsat 13.0E
+					//	break;
 
 					default:
 						dprintf(DEBUG_DEBUG, "CNit::parseNIT: second_descriptor_tag: %02x\n", buffer[pos2]);

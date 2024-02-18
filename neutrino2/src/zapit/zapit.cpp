@@ -5867,7 +5867,7 @@ void CZapit::parseSatTransponders(fe_type_t frontendType, xmlNodePtr search, t_s
 			feparams.code_rate_LP = (fe_code_rate_t) xmlGetNumericAttribute(tps, "code_rate_lp", 0);
 			feparams.modulation = (fe_modulation_t) xmlGetNumericAttribute(tps, "constellation", 0);
 			feparams.transmission_mode = (fe_transmit_mode_t) xmlGetNumericAttribute(tps, "transmission_mode", 0);
-			feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(tps, "guard_interval", 0);
+			feparams.guard_interval = (fe_guard_interval_t) xmlGetNumericAttribute(tps, "guard_interval", 4);
 			feparams.hierarchy_information = (fe_hierarchy_t) xmlGetNumericAttribute(tps, "hierarchy_information", 0);
 			
 			if (xmlGetAttribute(tps, (char *)"inversion"))

@@ -63,9 +63,9 @@ uint32_t  found_data_chans;
 std::string lastServiceName;
 std::map <t_channel_id, uint8_t> service_types;
 ////
-extern tallchans allchans;   			//  defined in zapit.cpp
-extern tallchans curchans;   			//  defined in zapit.cpp
-extern BouquetList scanBouquets;
+extern tallchans allchans;   			// defined in zapit.cpp
+extern tallchans curchans;   			// defined in zapit.cpp
+extern BouquetList scanBouquets;		// defined in zapit.cpp
 
 ////
 void CDescriptors::generic_descriptor(const unsigned char * const buffer)
@@ -1043,7 +1043,60 @@ void CDescriptors::announcement_support_descriptor(const unsigned char * const)
 {
 }
 
-/* 0x6F ... 0x7F: reserved */
+/* 0x7F */
+int CDescriptors::terrestrial2_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
+{
+	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	
+	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM)
+		return -1;
+		
+	FrontendParameters feparams;
+	transponder_id_t TsidOnid;
+	
+	// delsys
+	feparams.delsys = DVB_T2;
+	
+	// inv
+	feparams.inversion = INVERSION_AUTO;
+	
+	// freq
+	feparams.frequency = UINT32(&buffer[2]);
+	feparams.frequency *= 10;
+	
+	// band
+	feparams.bandwidth = (fe_bandwidth_t)((buffer[6] >> 5) & 0x07);
+	
+	// const
+	feparams.modulation = CFrontend::getModulation((buffer[7] >> 6) & 0x03);
+	
+	// hierarchy
+	feparams.hierarchy_information = (fe_hierarchy_t)((buffer[7] >> 3) & 0x07);
+	
+	// HP
+	feparams.code_rate_HP = CFrontend::getCodeRate(buffer[7] & 0x07);
+	
+	// LP
+	feparams.code_rate_LP = CFrontend::getCodeRate((buffer[8] >> 5) & 0x07);
+	
+	// guard
+	feparams.guard_interval = (fe_guard_interval_t)((buffer[8] >> 3) & 0x03);
+	 
+	// trans
+	feparams.transmission_mode = (fe_transmit_mode_t)((buffer[8] >> 1) & 0x03);
+	
+	// plp
+	feparams.plp_id = 0;
+
+	freq = feparams.frequency/1000000;
+
+	TsidOnid = CREATE_TRANSPONDER_ID(freq, satellitePosition, original_network_id, transport_stream_id);
+
+	CZapit::getInstance()->addToScan(TsidOnid, &feparams, true, feindex);
+		
+	return 0;
+}
+
 /* 0x80 ... 0xFE: user private */
 /* 0xFF: forbidden */
 
