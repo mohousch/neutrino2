@@ -1488,7 +1488,7 @@ int CFrontend::setParameters(transponder * TP, bool nowait)
 		// set Sec for Sat
 		setSec(TP->diseqc, TP->feparams.polarization, high_band);
 
-		dprintf(DEBUG_NORMAL, "CFrontend::setParameters: fe(%d:%d) freq= %d (offset= %d) fec= %d\n", feadapter, fenumber, TP->feparams.frequency, freq_offset, TP->feparams.fec_inner);
+		dprintf(DEBUG_NORMAL, "CFrontend::setParameters: fe(%d:%d) freq=%d (offset=%d) fec=%d\n", feadapter, fenumber, TP->feparams.frequency, freq_offset, TP->feparams.fec_inner);
 	}
 
 	//
@@ -1502,7 +1502,7 @@ int CFrontend::setParameters(transponder * TP, bool nowait)
 		if (TP->feparams.frequency < 1000*1000)
 			TP->feparams.frequency = TP->feparams.frequency * 1000;
 		
-		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d,%d) freq= %d fec= %d mod= %d inv= %d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.fec_inner, TP->feparams.modulation, TP->feparams.inversion);
+		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d,%d) freq=%d fec=%d mod=%d inv=%d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.fec_inner, TP->feparams.modulation, TP->feparams.inversion);
 	}
 
 	//
@@ -1518,7 +1518,7 @@ int CFrontend::setParameters(transponder * TP, bool nowait)
 		// setSecVoltage
 		secSetVoltage(powered ? SEC_VOLTAGE_13 : SEC_VOLTAGE_OFF, 100);
 			
-		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d:%d) freq= %d band=%d HP=%d LP=%d const=%d trans=%d guard=%d hierarchy=%d inv=%d plp_id=%d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.bandwidth, TP->feparams.code_rate_HP, TP->feparams.code_rate_LP, TP->feparams.modulation, TP->feparams.transmission_mode, TP->feparams.guard_interval, TP->feparams.hierarchy_information, TP->feparams.inversion, (TP->feparams.delsys = DVB_T2)?TP->feparams.plp_id : 0);
+		dprintf(DEBUG_NORMAL, "cFrontend::setParameters: fe(%d:%d) freq=%d band=%d HP=%d LP=%d const=%d trans=%d guard=%d hierarchy=%d inv=%d plp_id=%d\n", feadapter, fenumber, TP->feparams.frequency, TP->feparams.bandwidth, TP->feparams.code_rate_HP, TP->feparams.code_rate_LP, TP->feparams.modulation, TP->feparams.transmission_mode, TP->feparams.guard_interval, TP->feparams.hierarchy_information, TP->feparams.inversion, (TP->feparams.delsys = DVB_T2)?TP->feparams.plp_id : 0);
 	}
 	
 	do {
