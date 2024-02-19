@@ -193,7 +193,7 @@ class CFrontend
 		void setSec(const uint8_t sat_no, const uint8_t pol, const bool high_band);
 		
 		//
-		void setFrontend(const FrontendParameters *feparams, bool nowait = false);
+		void setFrontend(const FrontendParameters *feparams);
 		
 	public:
 		CFrontend(int num = 0, int adap = 0);
@@ -261,8 +261,8 @@ class CFrontend
 		
 		//
 		bool tuneChannel(CZapitChannel *channel, bool nvod);
-		int setParameters(transponder *TP, bool nowait = false);
-		int tuneFrequency (FrontendParameters * feparams, bool nowait = false);
+		int setParameters(transponder *TP);
+		int tuneFrequency (FrontendParameters * feparams);
 		
 		//
 		bool sendUncommittedSwitchesCommand(int input);

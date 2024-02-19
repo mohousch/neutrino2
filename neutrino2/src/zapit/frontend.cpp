@@ -881,7 +881,7 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 // set frontend
 /// S2API ///
 #if HAVE_DVB_API_VERSION >= 5
-void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
+void CFrontend::setFrontend(const FrontendParameters *feparams)
 {
 	dprintf(DEBUG_NORMAL, "CFontend::setFrontend: fe(%d:%d) delsys:0x%x (feparams.delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask, feparams->delsys);
 	
@@ -1073,7 +1073,7 @@ void CFrontend::setFrontend(const FrontendParameters *feparams, bool /*nowait*/)
      	}
 }
 #else //api3
-void CFrontend::setFrontend(const FrontendParameters * feparams, bool nowait)
+void CFrontend::setFrontend(const FrontendParameters * feparams)
 {
 	dprintf(DEBUG_NORMAL, "CFontend::setFrontend: fe(%d:%d)\n", feadapter, fenumber);
 		
@@ -1102,11 +1102,6 @@ void CFrontend::setFrontend(const FrontendParameters * feparams, bool nowait)
 			dprintf(DEBUG_NORMAL, "CFrontend::setFrontend: unknown frontend type, exiting\n");
 			break;
 	}
-	
-	// getDelSys
-	//char *f, *s, *m;
-	//getDelSys(fec_inner, modulation, f, s, m);
-	//dprintf(DEBUG_INFO, "cFrontend::setFrontend fe(%d:%d) DEMOD: FEC %s system %s modulation %s\n", feadapter, fenumber, f, s, m);
 
 	// clear event queue
 	struct dvb_frontend_event event;
@@ -1428,11 +1423,11 @@ bool CFrontend::tuneChannel(CZapitChannel * channel, bool nvod)
 	if (transponder == transponders.end())
 		return false;
 
-	return tuneFrequency(&transponder->second.feparams, false);
+	return tuneFrequency(&transponder->second.feparams);
 }
 
 //
-int CFrontend::tuneFrequency(FrontendParameters * feparams, bool nowait)
+int CFrontend::tuneFrequency(FrontendParameters * feparams)
 {
 	dprintf(DEBUG_NORMAL, "CFrontend::tuneFrequency: fe(%d:%d) delsys:0x%x (params.delsys:0x%x)\n", feadapter, fenumber, deliverySystemMask, feparams->delsys);
 	
@@ -1448,11 +1443,11 @@ int CFrontend::tuneFrequency(FrontendParameters * feparams, bool nowait)
 	if(info.type == FE_QPSK)
 		TP.feparams.polarization = feparams->polarization;
 
-	return setParameters(&TP, nowait);
+	return setParameters(&TP);
 }
 
 //
-int CFrontend::setParameters(transponder * TP, bool nowait)
+int CFrontend::setParameters(transponder * TP)
 {
 	int freq_offset = 0;
 	
@@ -1517,7 +1512,7 @@ int CFrontend::setParameters(transponder * TP, bool nowait)
 	do {
 		tuned = false;
 
-		setFrontend(&TP->feparams, nowait);
+		setFrontend(&TP->feparams);
 		
 		getEvent();
 	} while (0);

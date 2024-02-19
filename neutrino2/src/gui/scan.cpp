@@ -48,12 +48,12 @@
 #include <gui/pictureviewer.h>
 
 
-#define RED_BAR 40
-#define YELLOW_BAR 70
-#define GREEN_BAR 100
-#define BAR_BORDER 2
-#define BAR_WIDTH 150
-#define BAR_HEIGHT 8//(13 + BAR_BORDER*2)
+#define RED_BAR 	40
+#define YELLOW_BAR 	70
+#define GREEN_BAR 	100
+#define BAR_BORDER 	2
+#define BAR_WIDTH 	150
+#define BAR_HEIGHT 	8
 
 extern satellite_map_t satellitePositions;					// defined in getServices.cpp
 extern CScanSettings * scanSettings;		// defined in scan_setup.cpp

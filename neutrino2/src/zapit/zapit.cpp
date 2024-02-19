@@ -4659,7 +4659,7 @@ bool CZapit::tuneFrequency(FrontendParameters *feparams, t_satellite_position sa
 		}
 	}
 
-	return CZapit::getInstance()->getFE(feindex)->tuneFrequency(feparams, false);
+	return CZapit::getInstance()->getFE(feindex)->tuneFrequency(feparams);
 }
 
 int CZapit::addToScan(transponder_id_t TsidOnid, FrontendParameters *feparams, bool fromnit, int feindex)
@@ -5135,7 +5135,7 @@ bool CZapit::tuneTP(transponder TP, int feindex)
 		getFE(feindex)->driveToSatellitePosition(satellitePosition);
 		
 	// tuneFreq
-	ret = getFE(feindex)->tuneFrequency(&TP.feparams, true);
+	ret = getFE(feindex)->tuneFrequency(&TP.feparams);
 			
 	// set retune flag
 	retune = true;
