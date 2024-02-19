@@ -329,7 +329,7 @@ struct transponder
 };
 
 typedef std::map<transponder_id_t, transponder> transponder_list_t;
-typedef std::map <transponder_id_t, transponder>::iterator stiterator;  // used in scan.cpp
+typedef std::map <transponder_id_t, transponder>::iterator stiterator;
 typedef std::map<transponder_id_t, bool> sdt_tp_t; 			// used in zapit.cpp sdtthread
 
 ////
