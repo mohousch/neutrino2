@@ -437,7 +437,7 @@ uint8_t CDescriptors::fix_service_type(uint8_t type)
 {
 	dprintf(DEBUG_INFO, "CDescriptors::fix_service_type: type: 0x%x\n", type);
 	
-	if( (type == 0x9A) || (type == 0x86) || (type == 0xc3) || (type == 0xc5) || (type == 0xc6) )
+	if( (type == 0x9A) || (type == 0x86) || (type == 0xc3) || (type == 0xc5) || (type == 0xc6) || (type == 0x1f) )
 		return ST_DIGITAL_TELEVISION_SERVICE;
 	else if (type == 0xA)	//FIXME
 		return ST_DIGITAL_RADIO_SOUND_SERVICE;
