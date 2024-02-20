@@ -31,38 +31,6 @@
 
 
 ////
-class CShortEPGData
-{
-	public:
-		std::string title;
-		std::string info1;
-		std::string info2;
-
-		CShortEPGData()
-		{
-			title = "";
-			info1 = "";
-			info2 = "";
-		};
-};
-
-class CEPGData;
-
-class CChannelEvent
-{
-	public:
-		t_channel_id       get_channel_id(void) const { return GET_CHANNEL_ID_FROM_EVENT_ID(eventID); }
-		event_id_t         eventID;
-		std::string        description;
-		std::string        text;
-		time_t             startTime;
-		unsigned           duration;
-		t_channel_id 	   channelID; 
-};
-
-typedef std::vector<CChannelEvent> CChannelEventList;
-
-////
 class CSectionsd
 {
 	public:
@@ -108,18 +76,12 @@ class CSectionsd
 		};
 		typedef std::vector<responseGetLinkageDescriptors> LinkageDescriptorList;
 
-		struct sectionsdTime
-		{
-			time_t startzeit;
-			unsigned dauer;
-		} /*__attribute__ ((packed))*/ ;
-
 		struct responseGetNVODTimes
 		{
 			t_service_id                    service_id;
 			t_original_network_id           original_network_id;
 			t_transport_stream_id           transport_stream_id;
-			CSectionsd::sectionsdTime 	zeit;
+			sectionsdTime 	zeit;
 		};
 		typedef std::vector<responseGetNVODTimes> NVODTimesList;
 
@@ -225,8 +187,6 @@ class CSectionsd
 		void freeMemory();
 		void readSIfromXML(const char *epgxmlname);
 		void writeSI2XML(const char *epgxmlname);
-		
-		//
 		void readSIfromXMLTV(const char *url);
 		void readSIfromLocalTV(const t_channel_id chid);
 		
@@ -237,35 +197,6 @@ class CSectionsd
 		
 		//
 		void dumpStatus(void);
-};
-
-class CEPGData
-{
-	public:
-		uint64_t eventID;
-		CSectionsd::sectionsdTime	epg_times;
-		std::string                     title;
-		std::string                     info1;
-		std::string                     info2;
-		// 21.07.2005 - extended event data
-		std::vector<std::string>	itemDescriptions;
-		std::vector<std::string>	items;
-		char                            fsk;
-		unsigned char                   table_id;
-		std::string                     contentClassification;
-		std::string                     userClassification;
-
-		CEPGData()
-		{
-			eventID               =  0;
-			title                 = "";
-			info1                 = "";
-			info2                 = "";
-			fsk                   =  0;
-			table_id              = 0xff;
-			contentClassification = "";
-			userClassification    = "";
-		};
 };
 
 #endif
