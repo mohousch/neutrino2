@@ -2696,7 +2696,7 @@ void CZapit::loadBouquets(bool loadCurrentBouquet)
 	// webTV bouquets
 	loadWebTVBouquets(CONFIGDIR "/webtv"); //FIXME: ==35683==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x7ffc0899c7df at pc 0x5624fd9cdcf8 bp 0x7ffc08999fa0 sp 0x7ffc08999f90
 
-	//renumServices();
+	//
 	makeRemainingChannelsBouquets();
 }
 
@@ -5420,12 +5420,11 @@ void * CZapit::scanThread(void * data)
 	if (found_channels) 
 	{
 		CZapit::getInstance()->saveServices(true);
-		
-		dprintf(DEBUG_NORMAL, "CZapit::scanThread: save services done\n"); 
-		
 	        CZapit::getInstance()->saveZapitBouquets();
+	        //
 	        CZapit::getInstance()->clearAll();
 		CZapit::getInstance()->loadBouquets();
+		CZapit::getInstance()->renumServices();
 		
 		dprintf(DEBUG_INFO, "CZapit::scanThread: save bouquets done\n");
 		
@@ -5528,11 +5527,12 @@ void * CZapit::scanTransponderThread(void * data)
 	if(found_channels) 
 	{
 		CZapit::getInstance()->saveServices(true);
-		
 		CZapit::getInstance()->saveScanBouquets(CZapit::getInstance()->_bouquetMode, providerName);
 	        CZapit::getInstance()->saveZapitBouquets();
+	        //
 	        CZapit::getInstance()->clearAll();
 		CZapit::getInstance()->loadBouquets();
+		CZapit::getInstance()->renumServices();
 		
 		// notify client about end of scan
 		scan_runs = 0;
