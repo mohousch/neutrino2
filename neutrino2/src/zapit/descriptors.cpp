@@ -1049,6 +1049,7 @@ void CDescriptors::announcement_support_descriptor(const unsigned char * const)
 /* 0x7F */
 int CDescriptors::terrestrial2_delivery_system_descriptor(const unsigned char * const buffer, t_transport_stream_id transport_stream_id, t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq, int feindex)
 {
+// FIXME: dummy function
 	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
 	
 	if ( CZapit::getInstance()->getFE(feindex)->getInfo()->type != FE_OFDM)
