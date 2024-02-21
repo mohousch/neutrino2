@@ -70,11 +70,14 @@ extern BouquetList scanBouquets;		// defined in zapit.cpp
 ////
 void CDescriptors::generic_descriptor(const unsigned char * const buffer)
 {
-	dprintf(DEBUG_NORMAL, "CDescriptors::generic descriptor dump:");
+	if (debug > DEBUG_NORMAL)
+	{
+		printf("CDescriptors::generic descriptor dump:");
 
-	for (unsigned short i = 0; i < buffer[1] + 2; i++)
-		printf(" %02x", buffer[i]);
-	printf("\n");
+		for (unsigned short i = 0; i < buffer[1] + 2; i++)
+			printf(" %02x", buffer[i]);
+		printf("\n");
+	}
 }
 
 /* 0x02 */
@@ -240,7 +243,7 @@ void CDescriptors::network_name_descriptor(const unsigned char * const buffer)
 /* 0x41 */
 void CDescriptors::service_list_descriptor(const unsigned char * const buffer, const t_transport_stream_id transport_stream_id, const t_original_network_id original_network_id, t_satellite_position satellitePosition, freq_id_t freq)
 {
-	dprintf(DEBUG_NORMAL, "[descriptor] %s:\n", __FUNCTION__);
+	dprintf(DEBUG_NORMAL, "CDescriptors::service_list_descriptor:\n");
 	
 	for (int i = 0; i < buffer[1]; i += 3) 
 	{
@@ -437,9 +440,10 @@ uint8_t CDescriptors::fix_service_type(uint8_t type)
 {
 	dprintf(DEBUG_INFO, "CDescriptors::fix_service_type: type: 0x%x\n", type);
 	
-	if( (type == 0x9A) || (type == 0x86) || (type == 0xc3) || (type == 0xc5) || (type == 0xc6) || (type == 0x1f) )
+	if( (type == 0x9A) || (type == 0x86) || (type == 0xc3) || (type == 0xc5) || (type == 0xc6) || (type == 0x1f) 
+	|| (type == 0x11) || (type == 0x16) || (type == 0x19) || (type == 0x82) || (type == 0x87) || (type == 0xd3) )
 		return ST_DIGITAL_TELEVISION_SERVICE;
-	else if (type == 0xA)	//FIXME
+	else if (type == 0x0A)	//FIXME
 		return ST_DIGITAL_RADIO_SOUND_SERVICE;
 
 	return type;

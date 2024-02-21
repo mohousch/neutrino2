@@ -136,6 +136,7 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 
 				default:
 					dprintf(DEBUG_DEBUG, "first_descriptor_tag: %02x\n", buffer[pos]);
+					descriptor.generic_descriptor(buffer + pos);
 					break;
 			}
 		}
@@ -205,7 +206,8 @@ int CNit::parseNIT(t_satellite_position satellitePosition, freq_id_t freq, int f
 						break;
 
 					default:
-						dprintf(DEBUG_DEBUG, "CNit::parseNIT: second_descriptor_tag: %02x\n", buffer[pos2]);
+						dprintf(DEBUG_DEBUG, "CNit::parseNIT: second_descriptor_tag: %02x\n", buffer[pos]);
+						descriptor.generic_descriptor(buffer + pos2);
 						break;
 				}
 			}
