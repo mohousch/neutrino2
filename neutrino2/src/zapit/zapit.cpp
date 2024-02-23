@@ -511,14 +511,12 @@ CFrontend * CZapit::getFrontend(CZapitChannel * thischannel)
 	
 	if(free_frontend)
 	{
-		printf("%s Selected fe: (%d:%d) (delsys:0x%x)\n", __FUNCTION__, free_frontend->feadapter, free_frontend->fenumber,free_frontend->deliverySystemMask);
+		dprintf(DEBUG_NORMAL, "CZapit::getFrontend: Selected fe(%d:%d) (delsys:0x%x)\n", free_frontend->feadapter, free_frontend->fenumber,free_frontend->deliverySystemMask);
 		
 		if(free_frontend->standby)
 			initTuner(free_frontend);
 		
 	}
-	else
-		printf("CZapit::%s can not get free frontend\n", __FUNCTION__);
 	
 	return free_frontend;
 }
@@ -586,14 +584,12 @@ CFrontend * CZapit::getRecordFrontend(CZapitChannel * thischannel)
 	
 	if(rec_frontend)
 	{
-		printf("%s Selected fe: (%d,%d)\n", __FUNCTION__, rec_frontend->feadapter, rec_frontend->fenumber);
+		dprintf(DEBUG_NORMAL, "CZapit::getRecordFrontend: Selected fe(%d,%d)\n", rec_frontend->feadapter, rec_frontend->fenumber);
 		
 		if(rec_frontend->standby)
 			initTuner(rec_frontend);
 		
 	}
-	else
-		printf("%s can not get record frontend\n", __FUNCTION__);
 	
 	return rec_frontend;
 }
@@ -612,7 +608,7 @@ CFrontend * CZapit::getPreferredFrontend(CZapitChannel * thischannel)
 	{
 		CFrontend * fe = fe_it->second;
 		
-		dprintf(DEBUG_DEBUG, "CZapit::getPreferredFrontend: fe(%d,%d): tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx - chan_freq: %d chan_TP: 0x%llx sat-position: %d sat-name:%s input-type:%d\n",
+		dprintf(DEBUG_NORMAL, "CZapit::getPreferredFrontend: fe(%d,%d): tuned:%d (locked:%d) fe_freq: %d fe_TP: 0x%llx - chan_freq: %d chan_TP: 0x%llx sat-position: %d sat-name:%s input-type:%d\n",
 				fe->feadapter,
 				fe->fenumber,
 				fe->tuned,
@@ -3386,7 +3382,6 @@ void CZapit::closeAVDecoder(void)
 	if (!avDecoderOpen)
 		return;
 	
-#ifndef USE_OPENGL
 	// close videodecoder
 	if(videoDecoder)
 	{
@@ -3398,7 +3393,6 @@ void CZapit::closeAVDecoder(void)
 	{
 		audioDecoder->Close();
 	}
-#endif
 
 	avDecoderOpen = false;
 }
@@ -3410,7 +3404,6 @@ void CZapit::openAVDecoder(void)
 	if (avDecoderOpen)
 		return;
 	
-#ifndef USE_OPENGL
 	if(videoDecoder)
 	{
 		// open video decoder
@@ -3428,7 +3421,6 @@ void CZapit::openAVDecoder(void)
 		// set source
 		audioDecoder->setSource(AUDIO_SOURCE_DEMUX);
 	}
-#endif
 
 	avDecoderOpen = true;	
 }

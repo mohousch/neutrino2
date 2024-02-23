@@ -25,6 +25,7 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <asm/types.h>
+#include <syscall.h>
 
 #include <linux/dvb/ca.h>
 #include <poll.h>
@@ -180,7 +181,7 @@ int asn_1_decode(uint16_t * length, unsigned char * asn_1_array, uint32_t asn_1_
 	return -1;
 }
 
-//wait for a while for some data und read it if some
+// wait for a while for some data und read it if some
 eData waitData(int fd, unsigned char* buffer, int* len)
 {
 	int retval;
@@ -188,8 +189,9 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 	
 	fds.fd = fd;
 	fds.events = POLLOUT | POLLPRI | POLLIN;
+	fds.revents = 0;
 	
-	retval = poll(&fds, 1, 200);
+	retval = poll(&fds, 1, 9000);
 
 	if (retval < 0)
 	{
@@ -201,7 +203,7 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 	}
 	else if (retval > 0)
 	{
-		if (fds.revents & POLLIN)
+		if (fds.revents & ( POLLIN | POLLPRI ))
 		{ 
 			int n = read (fd, buffer, *len);
 		      
@@ -235,12 +237,12 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
         int res = 0;
 	
 #if !defined (__sh__)
-	unsigned char *d = (unsigned char*) malloc(len);
+	//unsigned char *d = (unsigned char*) malloc(len);
 	
-	memcpy(d, data, len);
+	//memcpy(d, data, len);
 	
-	res = write(slot->fd, d, len);
-	free(d);
+	res = write(slot->fd, data, len);
+	//free(d);
 	
 	if (res < 0 || res != len) 
 	{ 
@@ -494,16 +496,20 @@ void cDvbCi::SetTSClock(uint32_t Speed, int slot)
 
 void cDvbCi::slot_pollthread(void *c)
 {
+	dprintf(DEBUG_NORMAL, "cDvbCi::slot_pollthread: starting... tid %ld\n", syscall(__NR_gettid));
+	
 	ca_slot_info_t info;
-	unsigned char data[4096];
+	unsigned char data[128];
 	tSlot* slot = (tSlot*) c;
+	int len = 128;
+#if defined (__sh__)
+	unsigned char* d;
+#endif
+	eData status;
 	
 	while (1)
-	{
-		int len = 4096;
-		unsigned char* d;
-		eData status;
-		    
+	{ 
+		// check status   
 		switch (slot->status)
 		{
 			case eStatusNone: // 0
@@ -1056,7 +1062,12 @@ void cDvbCi::reset(int slot)
 		if (ioctl((*it)->fd, CA_RESET, (*it)->slot) < 0)
 			printf("IOCTL CA_RESET failed for slot %d\n", slot);
 #else
+#ifdef USE_OPENGL
+		if (ioctl((*it)->fd, CA_RESET, (*it)->slot) < 0)
+			printf("IOCTL CA_RESET failed for slot %d\n", slot);
+#else
 		ioctl((*it)->fd, 0);
+#endif
 #endif
 	}    
 }

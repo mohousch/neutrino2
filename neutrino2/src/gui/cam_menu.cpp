@@ -321,6 +321,7 @@ int CCAMMenuHandler::handleCamMsg(const neutrino_msg_t msg, neutrino_msg_data_t 
 			delete hintBox;
 			hintBox = NULL;
 		}
+		
 		char name[255] = "Unknown";
 		
 		ci->GetName((int) data, name);
