@@ -191,7 +191,7 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 	fds.events = POLLOUT | POLLPRI | POLLIN;
 	fds.revents = 0;
 	
-	retval = poll(&fds, 1, 9000);
+	retval = poll(&fds, 1, 300);
 
 	if (retval < 0)
 	{
@@ -236,20 +236,7 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
         
         int res = 0;
 	
-#if !defined (__sh__)
-	//unsigned char *d = (unsigned char*) malloc(len);
-	
-	//memcpy(d, data, len);
-	
-	res = write(slot->fd, data, len);
-	//free(d);
-	
-	if (res < 0 || res != len) 
-	{ 
-		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
-		return eDataError; 
-	}
-#else
+#if defined (__sh__)
 	unsigned char *d = (unsigned char*) malloc(len + 5);
 		
 	// only poll connection if we are not awaiting an answer
@@ -299,6 +286,16 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 	}
 
 	slot->sendqueue.push( queueData(d, len) );
+#else
+	res = ::write(slot->fd, data, len);
+	
+	printf("sandData: res:%m\n", res);
+	
+	if (res < 0 || res != len) 
+	{ 
+		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
+		return eDataError; 
+	}
 #endif
 	
 	return eDataReady;
@@ -595,7 +592,8 @@ void cDvbCi::slot_pollthread(void *c)
 				}
 				else if (status == eDataWrite)
 				{
-					//
+					// FIXME:
+					/*
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -611,6 +609,7 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
+					*/
 				}
 				else if (status == eDataStatusChanged)
 				{
@@ -695,7 +694,8 @@ void cDvbCi::slot_pollthread(void *c)
 				}
 				else if (status == eDataWrite)	// 3
 				{
-					//
+					// FIXME
+					/*
 					if (!slot->sendqueue.empty()) 
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -719,6 +719,7 @@ void cDvbCi::slot_pollthread(void *c)
 						if ((checkQueueSize(slot) == false) && ((!slot->hasCAManager) || (slot->mmiOpened)))
 							slot->pollConnection = true;
 					}
+					*/
 				}
 				else if (status == eDataStatusChanged)	// 4
 				{
@@ -796,7 +797,8 @@ void cDvbCi::slot_pollthread(void *c)
 				}
 				else if (status == eDataWrite)
 				{
-					//
+					// FIXME:
+					/*
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -812,6 +814,7 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
+					*/
 				}
 				else if (status == eDataStatusChanged)
 				{
@@ -938,12 +941,12 @@ cDvbCi::cDvbCi(int Slots)
 			sprintf(filename, "/dev/dvb/adapter%d/ci%d", j, i);
 #endif
 
-			fd = open(filename, O_RDWR | O_NONBLOCK);
+			fd = open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
 			
 			if(fd < 0)
 			{
-				sprintf(filename, "/dev/ci%d", i);
-				fd = open(filename, O_RDWR | O_NONBLOCK);
+				sprintf(filename, "/dev/ci%d", j); //FIXME:
+				fd = open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
 			}
 		    
 			if (fd > 0)
@@ -974,9 +977,9 @@ cDvbCi::cDvbCi(int Slots)
 				slot_data.push_back(slot);
 				
 				// now reset the slot so the poll pri can happen in the thread
-				reset(i); 
+				//reset(i); 
 				
-				usleep(200000);
+				//usleep(200000);
 
 				// create a thread for each slot
 				if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot)) 

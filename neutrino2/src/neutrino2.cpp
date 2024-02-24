@@ -3391,24 +3391,13 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 	res = res | g_RemoteControl->handleMsg(msg, data); //FIXME:
 	res = res | g_InfoViewer->handleMsg(msg, data);
 	res = res | channelList->handleMsg(msg, data);
-	
-	if( res != messages_return::unhandled ) 
-	{
-		if( ( msg>= CRCInput::RC_WithData ) && ( msg< CRCInput::RC_WithData+ 0x10000000 ) ) 
-		{
-			delete[] (unsigned char*) data;
-		}
-		
-		return( res & ( 0xFFFFFFFF - messages_return::unhandled ) );
-	}
-	
 #if defined (ENABLE_CI)	
-	res = g_CamHandler->handleMsg(msg, data);
+	res = res | g_CamHandler->handleMsg(msg, data);
 #endif
-
+	
 	if( res != messages_return::unhandled ) 
 	{
-		return(res & (0xFFFFFFFF - messages_return::unhandled));
+		return( res & ( 0xFFFFFFFF - messages_return::unhandled ) );
 	}	
 
 	// handle Keys
