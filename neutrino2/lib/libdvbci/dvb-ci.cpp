@@ -602,6 +602,7 @@ void cDvbCi::slot_pollthread(void *c)
 				else if (status == eDataWrite)
 				{
 					// FIXME:
+					/*
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -617,6 +618,7 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
+					*/
 				}
 				else if (status == eDataStatusChanged)
 				{
@@ -805,7 +807,7 @@ void cDvbCi::slot_pollthread(void *c)
 				else if (status == eDataWrite)
 				{
 					// FIXME:
-					//
+					/*
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
@@ -821,6 +823,7 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
+					*/
 				}
 				else if (status == eDataStatusChanged)
 				{
