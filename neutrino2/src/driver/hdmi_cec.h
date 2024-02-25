@@ -127,3 +127,4 @@ class hdmi_cec : public OpenThreads::Thread
 };
 
 #endif // __HDMI_CEC_H__
+

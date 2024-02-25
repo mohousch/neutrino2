@@ -164,11 +164,9 @@ void CRemoteControlSettings::showMenu()
 		//
 		remoteControlSettings->enablePaintHead();
 		remoteControlSettings->setTitle(_("Keybinding settings"), NEUTRINO_ICON_KEYBINDING);
-//		remoteControlSettings->setHeadLine(true, true);
 
 		//
 		remoteControlSettings->enablePaintFoot();
-//		remoteControlSettings->setFootLine(true, true);
 			
 		const struct button_label btn = { NEUTRINO_ICON_INFO, " "};
 			

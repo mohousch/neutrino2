@@ -701,7 +701,7 @@ void CControlAPI::RCEmCGI(CyhookHandler *hh)
 		sendcode = CRCInput::RC_blue;
 	else if ( !strcmp(keyname.c_str(), "KEY_SAT"))
 		sendcode = CRCInput::RC_sat;
-	else if ( !strcmp(keyname.c_str(), "KEY_HELP"))
+	else if ( !strcmp(keyname.c_str(), "KEY_INFO"))
 		sendcode = CRCInput::RC_info;
 	else if ( !strcmp(keyname.c_str(), "KEY_NEXT"))
 		sendcode = CRCInput::RC_next;
@@ -723,6 +723,26 @@ void CControlAPI::RCEmCGI(CyhookHandler *hh)
 		sendcode = CRCInput::RC_stop;
 	else if ( !strcmp(keyname.c_str(), "KEY_PLAY"))
 		sendcode = CRCInput::RC_play;
+	else if ( !strcmp(keyname.c_str(), "KEY_MUSIC"))
+		sendcode = CRCInput::RC_music;
+	else if ( !strcmp(keyname.c_str(), "KEY_PICTURE"))
+		sendcode = CRCInput::RC_picture;
+	else if ( !strcmp(keyname.c_str(), "KEY_VIDEO"))
+		sendcode = CRCInput::RC_video;
+	else if ( !strcmp(keyname.c_str(), "KEY_NET"))
+		sendcode = CRCInput::RC_net;
+	else if ( !strcmp(keyname.c_str(), "KEY_RECALL"))
+		sendcode = CRCInput::RC_recall;
+	else if ( !strcmp(keyname.c_str(), "KEY_PIP"))
+		sendcode = CRCInput::RC_pip;
+	else if ( !strcmp(keyname.c_str(), "KEY_BOOKMARK"))
+		sendcode = CRCInput::RC_bookmark;
+	else if ( !strcmp(keyname.c_str(), "KEY_PIPPOS"))
+		sendcode = CRCInput::RC_pippos;
+	else if ( !strcmp(keyname.c_str(), "KEY_PIPSWAP"))
+		sendcode = CRCInput::RC_pipswap;
+	else if ( !strcmp(keyname.c_str(), "KEY_PIPSUBCH"))
+		sendcode = CRCInput::RC_pipsubch;
 	
 	if (sendcode == -1) 
 	{

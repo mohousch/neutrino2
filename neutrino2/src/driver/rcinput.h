@@ -102,7 +102,7 @@
 #endif
 
 #ifndef KEY_PICTURE	
-#define KEY_PICTURE	0x03e
+#define KEY_PICTURE	0x0a9
 #endif
 
 #ifndef KEY_REPEAT	
@@ -252,7 +252,7 @@ class CRCInput
 
 			//
 			RC_music	= KEY_MUSIC,
-			RC_picture	= KEY_ARCHIVE,			
+			RC_picture	= KEY_PICTURE,			
 					
 			RC_loop		= KEY_REPEAT,
 			RC_slow		= KEY_SLOW,

@@ -640,8 +640,8 @@ int CNeutrinoApp::loadSetup(const char * fname)
 
 	// media keys
 	g_settings.key_movieplayer = configfile.getInt32( "key_movieplayer", CRCInput::RC_video );
-	g_settings.key_audioplayer = configfile.getInt32( "key_audioplayer", CRCInput::RC_nokey );
-	g_settings.key_pictureviewer = configfile.getInt32( "key_pictureviewer", CRCInput::RC_nokey );
+	g_settings.key_audioplayer = configfile.getInt32( "key_audioplayer", CRCInput::RC_music );
+	g_settings.key_pictureviewer = configfile.getInt32( "key_pictureviewer", CRCInput::RC_picture );
 	g_settings.key_timerlist = configfile.getInt32( "key_timerlist", CRCInput::RC_nokey );
 	g_settings.key_inetradio = configfile.getInt32( "key_inetradio", CRCInput::RC_nokey );
 	g_settings.key_moviebrowser = configfile.getInt32( "key_moviebrowser", CRCInput::RC_nokey );
@@ -3394,13 +3394,8 @@ int CNeutrinoApp::handleMsg(const neutrino_msg_t msg, neutrino_msg_data_t data)
 #if defined (ENABLE_CI)	
 	res = res | g_CamHandler->handleMsg(msg, data);
 #endif
-	
-	if( res != messages_return::unhandled ) 
-	{
-		return( res & ( 0xFFFFFFFF - messages_return::unhandled ) );
-	}	
 
-	// handle Keys
+	// 
 	if( msg == CRCInput::RC_ok || msg == CRCInput::RC_sat || msg == CRCInput::RC_favorites)
 	{
 		if(g_InfoViewer->is_visible)
@@ -3643,6 +3638,7 @@ _repeat:
 		}
 		
 		delete[] (unsigned char*) data;
+		
 		return messages_return::handled;
 	}
 	else if( msg == NeutrinoMessages::EVT_PMT_CHANGED) 
@@ -3677,6 +3673,7 @@ _repeat:
 		}
 		
 		delete[] (unsigned char*) data;
+		
 		return messages_return::handled;
 	}
 	else if( msg == NeutrinoMessages::ANNOUNCE_ZAPTO) 
@@ -3807,7 +3804,7 @@ _repeat:
 		
 		return messages_return::handled;
 	}
-	else if( msg == NeutrinoMessages::ANNOUNCE_SHUTDOWN) 
+	else if( msg == NeutrinoMessages::ANNOUNCE_SHUTDOWN ) 
 	{
 		if( mode != mode_scart )
 			skipShutdownTimer = (MessageBox(_("Information"), _("Box will shutdown in 1 min.\nCancel Sutdown ?"), CMessageBox::mbrNo, CMessageBox::mbYes | CMessageBox::mbNo, NULL, MESSAGEBOX_WIDTH, 5, false, CComponent::BORDER_ALL) == CMessageBox::mbrYes);
@@ -3847,6 +3844,7 @@ _repeat:
 		{
 			skipShutdownTimer = false;
 		}
+		
 		return messages_return::handled;
 	}
 	else if ( msg == NeutrinoMessages::EVT_POPUP ) 
@@ -3972,6 +3970,7 @@ _repeat:
 		g_PluginList->startPlugin((const char *)data);
 		
 		delete[] (unsigned char*) data;
+		
 		return messages_return::handled;
 	}
 	else if (msg == NeutrinoMessages::EVT_SERVICES_UPD) // sdtthread
@@ -3998,8 +3997,13 @@ _repeat:
 #endif
 
 	//
-	if ((msg >= CRCInput::RC_WithData) && (msg < CRCInput::RC_WithData + 0x10000000))
-		delete[] (unsigned char*) data;
+	if( res != messages_return::unhandled ) 
+	{
+		if ((msg >= CRCInput::RC_WithData) && (msg < CRCInput::RC_WithData + 0x10000000))
+			delete[] (unsigned char*) data;
+			
+		return( res & ( 0xFFFFFFFF - messages_return::unhandled ) );
+	}	
 
 	return messages_return::unhandled;
 }
