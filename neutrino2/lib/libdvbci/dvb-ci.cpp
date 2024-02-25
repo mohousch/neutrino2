@@ -191,7 +191,7 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 	fds.events = POLLOUT | POLLPRI | POLLIN;
 	fds.revents = 0;
 	
-	retval = poll(&fds, 1, 300);
+	retval = ::poll(&fds, 1, 300);
 
 	if (retval < 0)
 	{
@@ -205,7 +205,7 @@ eData waitData(int fd, unsigned char* buffer, int* len)
 	{
 		if (fds.revents & ( POLLIN | POLLPRI ))
 		{ 
-			int n = read (fd, buffer, *len);
+			int n = ::read (fd, buffer, *len);
 		      
 			if (n > 0)
 			{
@@ -287,13 +287,17 @@ eData sendData(tSlot* slot, unsigned char* data, int len)
 
 	slot->sendqueue.push( queueData(d, len) );
 #else
-	res = ::write(slot->fd, data, len);
-	
-	printf("sandData: res:%m\n", res);
+	if (slot->sendqueue.empty())
+		res = ::write(slot->fd, data, len);
 	
 	if (res < 0 || res != len) 
 	{ 
+		unsigned char *d = new unsigned char[len];
+		memcpy(d, data, len);
+		slot->sendqueue.push( queueData(d, len) );
+		
 		printf("error writing data to fd %d, slot %d: %m\n", slot->fd, slot->slot);
+		
 		return eDataError; 
 	}
 #endif
@@ -419,7 +423,7 @@ void cDvbCi::process_tpdu(tSlot* slot, unsigned char tpdu_tag, __u8* data, int a
 				send_data[3] = 1;
 				send_data[4] = slot->connection_id;
 
-				write(slot->fd, send_data, 5);
+				::write(slot->fd, send_data, 5);
 			} 
 			else
 			{
@@ -495,14 +499,19 @@ void cDvbCi::slot_pollthread(void *c)
 {
 	dprintf(DEBUG_NORMAL, "cDvbCi::slot_pollthread: starting... tid %ld\n", syscall(__NR_gettid));
 	
-	ca_slot_info_t info;
-	unsigned char data[128];
 	tSlot* slot = (tSlot*) c;
-	int len = 128;
+	ca_slot_info_t info;
+	eData status;
+#ifdef USE_OPENGL
+	unsigned char data[1024];
+	int len = 1024;
+#else
+	unsigned char data[4096];
+	int len = 4096;
+#endif
 #if defined (__sh__)
 	unsigned char* d;
 #endif
-	eData status;
 	
 	while (1)
 	{ 
@@ -593,11 +602,10 @@ void cDvbCi::slot_pollthread(void *c)
 				else if (status == eDataWrite)
 				{
 					// FIXME:
-					/*
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
-						int res = write(slot->fd, qe.data, qe.len);
+						int res = ::write(slot->fd, qe.data, qe.len);
 						
 						if (res >= 0 && (unsigned int)res == qe.len)
 						{
@@ -609,7 +617,6 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
-					*/
 				}
 				else if (status == eDataStatusChanged)
 				{
@@ -700,7 +707,7 @@ void cDvbCi::slot_pollthread(void *c)
 					{
 						const queueData &qe = slot->sendqueue.top();
 						
-						int res = write(slot->fd, qe.data, qe.len);
+						int res = ::write(slot->fd, qe.data, qe.len);
 						
 						if (res >= 0 && (unsigned int)res == qe.len)
 						{
@@ -798,11 +805,11 @@ void cDvbCi::slot_pollthread(void *c)
 				else if (status == eDataWrite)
 				{
 					// FIXME:
-					/*
+					//
 					if (!slot->sendqueue.empty())
 					{
 						const queueData &qe = slot->sendqueue.top();
-						int res = write(slot->fd, qe.data, qe.len);
+						int res = ::write(slot->fd, qe.data, qe.len);
 						
 						if (res >= 0 && (unsigned int)res == qe.len)
 						{
@@ -814,7 +821,6 @@ void cDvbCi::slot_pollthread(void *c)
 							printf("r = %d, %m\n", res);
 						}
 					}
-					*/
 				}
 				else if (status == eDataStatusChanged)
 				{
@@ -930,10 +936,57 @@ cDvbCi::cDvbCi(int Slots)
 	int fd, i, j;
 	char filename[128];
 	ci_num = 0;
-
+	
+	//
 	for (i = 0; i < Slots; i++)
 	{
-		for(j = 0; j < DVBADAPTER_MAX; j++)
+		sprintf(filename, "/dev/ci%d", i); 
+		fd = open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
+		
+		if (fd > 0)
+		{
+			tSlot *slot = (tSlot*) malloc(sizeof(tSlot));
+				
+			ci_num++;
+
+			slot->slot = i;
+			slot->fd = fd;
+			slot->connection_id = 0;
+			slot->status = eStatusNone;
+			slot->receivedLen = 0;
+			slot->receivedData = NULL;
+			slot->pClass = this;
+			slot->pollConnection = false;
+			slot->camIsReady = false;
+			slot->hasMMIManager = false;
+			slot->hasCAManager = false;
+			slot->hasDateTime = false;
+			slot->hasAppManager = false;
+			slot->mmiOpened = false;
+			slot->init = false;
+			slot->caPmt = NULL;
+			slot->source = TUNER_A;
+			sprintf(slot->name, "unknown module %d", i);
+
+			slot_data.push_back(slot);
+				
+			// now reset the slot so the poll pri can happen in the thread
+			reset(i); 
+				
+			usleep(200000);
+
+			// create a thread for each slot
+			if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot)) 
+			{
+				printf("pthread_create\n");
+			}
+		}
+	}
+	
+	//
+	for(j = 0; j < DVBADAPTER_MAX; j++)
+	{
+		for (i = 0; i < Slots; i++)
 		{
 #ifdef USE_OPENGL
 			sprintf(filename, "/dev/dvb/adapter%d/ca%d", j, i);
@@ -942,12 +995,6 @@ cDvbCi::cDvbCi(int Slots)
 #endif
 
 			fd = open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
-			
-			if(fd < 0)
-			{
-				sprintf(filename, "/dev/ci%d", j); //FIXME:
-				fd = open(filename, O_RDWR | O_NONBLOCK | O_CLOEXEC);
-			}
 		    
 			if (fd > 0)
 			{
@@ -977,9 +1024,9 @@ cDvbCi::cDvbCi(int Slots)
 				slot_data.push_back(slot);
 				
 				// now reset the slot so the poll pri can happen in the thread
-				//reset(i); 
+				reset(i); 
 				
-				//usleep(200000);
+				usleep(200000);
 
 				// create a thread for each slot
 				if (pthread_create(&slot->slot_thread, 0, execute_thread,  (void*)slot)) 

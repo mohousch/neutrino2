@@ -813,7 +813,7 @@ struct dvb_frontend_event CFrontend::getEvent(void)
 
 	while ((int) timer_msec < TIMEOUT_MAX_MS) 
 	{
-		int ret = poll(&pfd, 1, TIMEOUT_MAX_MS);
+		int ret = ::poll(&pfd, 1, TIMEOUT_MAX_MS);
 
 		if (ret < 0) 
 		{
