@@ -117,7 +117,6 @@ class CSectionsd
 		static void *cnThread(void *);
 		static void *fseitThread(void *);
 		static void *viasateitThread(void *);
-		//
 		static void *houseKeepingThread(void *);
 		//
 		static void *insertEventsfromFile(void *);
