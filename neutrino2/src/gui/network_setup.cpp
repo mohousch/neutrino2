@@ -46,7 +46,6 @@
 
 #include <gui/network_setup.h>
 
-
 #include <gui/proxyserver_setup.h>
 #include <gui/nfs.h>
 

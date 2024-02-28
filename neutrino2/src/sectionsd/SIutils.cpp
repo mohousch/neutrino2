@@ -126,16 +126,7 @@ int saveStringToXMLfile(FILE *out, const char *c, int /*withControlCodes*/)
 {
 	if(!c)
 		return 1;
-	// Die Umlaute sind ISO-8859-9 [5]
-	/*
-	  char buf[6000];
-	  int inlen=strlen(c);
-	  int outlen=sizeof(buf);
-	//  UTF8Toisolat1((unsigned char *)buf, &outlen, (const unsigned char *)c, &inlen);
-	  isolat1ToUTF8((unsigned char *)buf, &outlen, (const unsigned char *)c, &inlen);
-	  buf[outlen]=0;
-	  c=buf;
-	*/
+	
 	for(; *c; c++) 
 	{
 		switch ((unsigned char)*c) 
@@ -143,47 +134,27 @@ int saveStringToXMLfile(FILE *out, const char *c, int /*withControlCodes*/)
 			case '<':
 				fprintf(out, "&lt;");
 				break;
+				
 			case '>':
 				fprintf(out, "&gt;");
 				break;
+				
 			case '&':
 				fprintf(out, "&amp;");
 				break;
+				
 			case '\"':
 				fprintf(out, "&quot;");
 				break;
+				
 			case '\'':
 				fprintf(out, "&apos;");
 				break;
-#if 0
-			case 0x81:
-			case 0x82:
-				break;
-			case 0x86:
-				if(withControlCodes)
-					fprintf(out, "<b>");
-				break;
-			case 0x87:
-				if(withControlCodes)
-					fprintf(out, "</b>");
-				break;
-			case 0x8a:
-				if(withControlCodes)
-					fprintf(out, "<br/>");
-				break;
-			default:
-				if (*c<32)
-					break;
-				if ((*c>=32) && (((unsigned char)*c)<128))
-					fprintf(out, "%c", *c);
-				else
-					fprintf(out, "&#%d;", *c);
-#else
+
 			default:
 				if ((unsigned char)*c<32)
 					break;
 				fprintf(out, "%c", *c);
-#endif
 		} // case
 
 	} // for
