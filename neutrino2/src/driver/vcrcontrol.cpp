@@ -781,9 +781,9 @@ std::string CVCRControl::getMovieInfoString(const t_channel_id channel_id, const
 			if(epgdata.contentClassification.size() > 0 )
 				g_movieInfo->genreMajor = epgdata.contentClassification[0];
 				
-			g_movieInfo->length = epgdata.epg_times.dauer	/ 60;
+			g_movieInfo->length = epgdata.epg_times.duration	/ 60;
 				
-			dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::getMovieInfoString: fsk:%d, Genre:%d, Dauer: %d min\r\n",g_movieInfo->parentalLockAge,g_movieInfo->genreMajor,g_movieInfo->length);	
+			dprintf(DEBUG_NORMAL, ANSI_BLUE "CVCRControl::getMovieInfoString: fsk:%d, Genre:%d, Duration: %d min\r\n",g_movieInfo->parentalLockAge,g_movieInfo->genreMajor,g_movieInfo->length);	
 		}
 	} 
 	else if (!epgTitle.empty()) 

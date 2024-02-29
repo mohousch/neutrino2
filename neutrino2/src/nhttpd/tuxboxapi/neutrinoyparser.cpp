@@ -423,7 +423,7 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 
 					t_channel_id channel_id = create_channel_id(cmd.service_id, cmd.original_network_id, cmd.transport_stream_id);
 
-					timestr = timeString(ni->zeit.startzeit); // FIXME: time is wrong (at least on little endian)!
+					timestr = timeString(ni->zeit.starttime); // FIXME: time is wrong (at least on little endian)!
 					CSectionsd::getInstance()->getActualEPGServiceKey(channel_id&0xFFFFFFFFFFFFULL, &epg); // FIXME: der scheissendreck geht nit!!!
 					yresult += string_printf("<tr>\n<td align=\"left\" style=\"width: 31px\" class=\"%cepg\">&nbsp;</td>", classname);
 					yresult += string_printf("<td class=\"%cepg\">%s&nbsp;", classname, timestr.c_str());
@@ -462,7 +462,7 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 
 			if ((has_current_next) && (currentNextInfo.flags & CSectionsd::epgflags::has_next)) 
 			{
-				timestr = timeString(currentNextInfo.next_zeit.startzeit);
+				timestr = timeString(currentNextInfo.next_zeit.starttime);
 				yresult += string_printf("<br />%s&nbsp;%s", timestr.c_str(), currentNextInfo.next_name.c_str());
 			}
 

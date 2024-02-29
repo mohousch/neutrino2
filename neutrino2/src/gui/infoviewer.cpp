@@ -719,7 +719,7 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 		{
 			for ( eli = evtlist.begin(); eli!=evtlist.end(); ++eli ) 
 			{
-				if ((uint)eli->startTime >= info_CurrentNext.current_zeit.startzeit + info_CurrentNext.current_zeit.dauer)
+				if ((uint)eli->startTime >= info_CurrentNext.current_zeit.starttime + info_CurrentNext.current_zeit.duration)
 					break;
 			}
 			
@@ -744,8 +744,8 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 
 			info_CurrentNext.flags 			= CSectionsd::epgflags::has_current;
 			info_CurrentNext.current_uniqueKey      = eli->eventID;
-			info_CurrentNext.current_zeit.startzeit = eli->startTime;
-			info_CurrentNext.current_zeit.dauer     = eli->duration;
+			info_CurrentNext.current_zeit.starttime = eli->startTime;
+			info_CurrentNext.current_zeit.duration     = eli->duration;
 
 			if (eli->description.empty())
 				info_CurrentNext.current_name   = _("EPG not available");
@@ -761,8 +761,8 @@ void CInfoViewer::getCurrentNextEPG(t_channel_id ChannelID, bool newChan, int EP
 				{
 					info_CurrentNext.flags                  = CSectionsd::epgflags::has_current | CSectionsd::epgflags::has_next;
 					info_CurrentNext.next_uniqueKey         = eli->eventID;
-					info_CurrentNext.next_zeit.startzeit    = eli->startTime;
-					info_CurrentNext.next_zeit.dauer        = eli->duration;
+					info_CurrentNext.next_zeit.starttime    = eli->startTime;
+					info_CurrentNext.next_zeit.duration        = eli->duration;
 
 					if (eli->description.empty())
 						info_CurrentNext.next_name      = _("EPG not available");
@@ -1574,18 +1574,18 @@ void CInfoViewer::showEPGData(bool calledFromEvent)
 
   	if (is_visible) 
 	{
-		// start zeit/dauer
+		// starttime / duration
 		if ((g_RemoteControl->current_channel_id == channel_id) && (g_RemoteControl->subChannels.size () > 0) && (!g_RemoteControl->are_subchannels)) 
 		{
 	  		is_nvod = true;
-	  		info_CurrentNext.current_zeit.startzeit = g_RemoteControl->subChannels[g_RemoteControl->selected_subchannel].startzeit;
-	  		info_CurrentNext.current_zeit.dauer = g_RemoteControl->subChannels[g_RemoteControl->selected_subchannel].dauer;
+	  		info_CurrentNext.current_zeit.starttime = g_RemoteControl->subChannels[g_RemoteControl->selected_subchannel].starttime;
+	  		info_CurrentNext.current_zeit.duration = g_RemoteControl->subChannels[g_RemoteControl->selected_subchannel].duration;
 		} 
 		else 
 		{
 	  		if ((info_CurrentNext.flags & CSectionsd::epgflags::has_current) && (info_CurrentNext.flags & CSectionsd::epgflags::has_next) && (showButtonBar) ) 
 			{
-				if ((uint) info_CurrentNext.next_zeit.startzeit < (info_CurrentNext.current_zeit.startzeit + info_CurrentNext.current_zeit.dauer)) 
+				if ((uint) info_CurrentNext.next_zeit.starttime < (info_CurrentNext.current_zeit.starttime + info_CurrentNext.current_zeit.duration)) 
 				{
 		  			is_nvod = true;
 				}
@@ -1597,8 +1597,8 @@ void CInfoViewer::showEPGData(bool calledFromEvent)
 
 		if (info_CurrentNext.flags & CSectionsd::epgflags::has_current) 
 		{
-	  		int seit = (jetzt - info_CurrentNext.current_zeit.startzeit + 30) / 60;
-	  		int rest = (info_CurrentNext.current_zeit.dauer / 60) - seit;
+	  		int seit = (jetzt - info_CurrentNext.current_zeit.starttime + 30) / 60;
+	  		int rest = (info_CurrentNext.current_zeit.duration / 60) - seit;
 			
 	  		if (seit < 0) 
 			{
@@ -1607,7 +1607,7 @@ void CInfoViewer::showEPGData(bool calledFromEvent)
 	  		} 
 			else 
 			{
-				runningPercent = (unsigned) ((float) (jetzt - info_CurrentNext.current_zeit.startzeit) / (float) info_CurrentNext.current_zeit.dauer * 100.);
+				runningPercent = (unsigned) ((float) (jetzt - info_CurrentNext.current_zeit.starttime) / (float) info_CurrentNext.current_zeit.duration * 100.);
 
 				if(runningPercent > 100)
 					runningPercent = 100;
@@ -1615,16 +1615,16 @@ void CInfoViewer::showEPGData(bool calledFromEvent)
 				sprintf (runningRest, "%d / %d", seit, rest);
 	  		}
 
-	  		struct tm * pStartZeit = localtime(&info_CurrentNext.current_zeit.startzeit);
-	  		sprintf(runningStart, "%02d:%02d", pStartZeit->tm_hour, pStartZeit->tm_min);
+	  		struct tm * pstarttime = localtime(&info_CurrentNext.current_zeit.starttime);
+	  		sprintf(runningStart, "%02d:%02d", pstarttime->tm_hour, pstarttime->tm_min);
 		} 
 
 		if (info_CurrentNext.flags & CSectionsd::epgflags::has_next) 
 		{
-	  		unsigned dauer = info_CurrentNext.next_zeit.dauer / 60;
-	  		sprintf (nextDuration, "%d min", dauer);
-	  		struct tm *pStartZeit = localtime (&info_CurrentNext.next_zeit.startzeit);
-	  		sprintf(nextStart, "%02d:%02d", pStartZeit->tm_hour, pStartZeit->tm_min);
+	  		unsigned duration = info_CurrentNext.next_zeit.duration / 60;
+	  		sprintf (nextDuration, "%d min", duration);
+	  		struct tm *pstarttime = localtime (&info_CurrentNext.next_zeit.starttime);
+	  		sprintf(nextStart, "%02d:%02d", pstarttime->tm_hour, pstarttime->tm_min);
 		} 
 		
 	  	//percent
@@ -1877,10 +1877,10 @@ void CInfoViewer::showLcdPercentOver()
 
 		if (info_CurrentNext.flags & CSectionsd::epgflags::has_current) 
 		{
-			if (jetzt < info_CurrentNext.current_zeit.startzeit)
+			if (jetzt < info_CurrentNext.current_zeit.starttime)
 				runningPercent = 0;
 			else
-				runningPercent = MIN ((unsigned) ((float) (jetzt - info_CurrentNext.current_zeit.startzeit) / (float) info_CurrentNext.current_zeit.dauer * 100.), 100);
+				runningPercent = MIN ((unsigned) ((float) (jetzt - info_CurrentNext.current_zeit.starttime) / (float) info_CurrentNext.current_zeit.duration * 100.), 100);
 		}
 
 		CVFD::getInstance()->showPercentOver(runningPercent);	

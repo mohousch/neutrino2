@@ -1829,7 +1829,7 @@ int CNeutrinoApp::startAutoRecord(bool addTimer)
 	if (CSectionsd::getInstance()->getActualEPGServiceKey(live_channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
 	{
 		eventinfo.epgID = epgData.eventID;
-		eventinfo.epg_starttime = epgData.epg_times.startzeit;
+		eventinfo.epg_starttime = epgData.epg_times.starttime;
 		strncpy(eventinfo.epgTitle, epgData.title.c_str(), EPG_TITLE_MAXLEN-1);
 		eventinfo.epgTitle[EPG_TITLE_MAXLEN - 1] = 0;
 	}
@@ -1921,15 +1921,15 @@ void CNeutrinoApp::doGuiRecord(char * preselectedDir, bool addTimer)
 		if (CSectionsd::getInstance()->getActualEPGServiceKey(eventinfo.channel_id & 0xFFFFFFFFFFFFULL, &epgData ))
 		{
 			eventinfo.epgID = epgData.eventID;
-			eventinfo.epg_starttime = epgData.epg_times.startzeit;
+			eventinfo.epg_starttime = epgData.epg_times.starttime;
 			strncpy(eventinfo.epgTitle, epgData.title.c_str(), EPG_TITLE_MAXLEN-1);
 			eventinfo.epgTitle[EPG_TITLE_MAXLEN - 1] = 0;
 				
 			// record end time
 			CTimerd::getInstance()->getRecordingSafety(pre, post);
 				
-			if (epgData.epg_times.startzeit > 0)
-				record_end = epgData.epg_times.startzeit + epgData.epg_times.dauer + post;
+			if (epgData.epg_times.starttime > 0)
+				record_end = epgData.epg_times.starttime + epgData.epg_times.duration + post;
 		}
 		else 
 		{
@@ -3093,22 +3093,22 @@ bool CNeutrinoApp::getNVODMenu(ClistBox *menu)
 			char nvod_s[255];
 			struct  tm *tmZeit;
 
-			tmZeit = localtime(&e->startzeit);
+			tmZeit = localtime(&e->starttime);
 			sprintf(nvod_time_a, "%02d:%02d", tmZeit->tm_hour, tmZeit->tm_min);
 
-			time_t endtime = e->startzeit + e->dauer;
+			time_t endtime = e->starttime + e->duration;
 			tmZeit = localtime(&endtime);
 			sprintf(nvod_time_e, "%02d:%02d", tmZeit->tm_hour, tmZeit->tm_min);
 
 			time_t jetzt = time(NULL);
-			if(e->startzeit > jetzt) 
+			if(e->starttime > jetzt) 
 			{
-				int mins = (e->startzeit - jetzt)/ 60;
+				int mins = (e->starttime - jetzt)/ 60;
 				sprintf(nvod_time_x, _("(starting in %d min)"), mins);
 			}
-			else if( (e->startzeit <= jetzt) && (jetzt < endtime) ) 
+			else if( (e->starttime <= jetzt) && (jetzt < endtime) ) 
 			{
-				int proz = (jetzt - e->startzeit)*100/ e->dauer;
+				int proz = (jetzt - e->starttime)*100/ e->duration;
 				sprintf(nvod_time_x, _("(%d%% over)"), proz);
 			}
 			else

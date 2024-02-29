@@ -318,27 +318,27 @@ class SItime
 	public:
 		SItime(time_t s, unsigned d) 
 		{
-			startzeit = s;
-			dauer = d; // in Sekunden, 0 -> time shifted (cinedoms)
+			starttime = s;
+			duration = d; // in Sekunden, 0 -> time shifted (cinedoms)
 		}
 		
 		// Std-Copy
 		SItime(const SItime &t) 
 		{
-			startzeit = t.startzeit;
-			dauer = t.dauer;
+			starttime = t.starttime;
+			duration = t.duration;
 		}
 		
 		// Der Operator zum sortieren
 		bool operator < (const SItime& t) const 
 		{
-			return startzeit < t.startzeit;
+			return starttime < t.starttime;
 		}
 		
 		void dump(void) const 
 		{
-			printf("Startzeit: %s", ctime(&startzeit));
-			printf("Dauer: %02u:%02u:%02u (%umin, %us)\n", dauer/3600, (dauer%3600)/60, dauer%60, dauer/60, dauer);
+			printf("Starttime: %s", ctime(&starttime));
+			printf("Duration: %02u:%02u:%02u (%umin, %us)\n", duration/3600, (duration%3600)/60, duration%60, duration/60, duration);
 		}
 		
 		int saveXML(FILE *file) const 
@@ -346,17 +346,11 @@ class SItime
 			// Ist so noch nicht in Ordnung, das sollte untergliedert werden,
 			// da sonst evtl. time,date,duration,time,date,... auftritt
 			// und eine rein sequentielle Ordnung finde ich nicht ok.
-			/*
-			struct tm *zeit=localtime(&startzeit);
-			fprintf(file, "\t\t\t\t\t<time>%02d:%02d:%02d</time>\n", zeit->tm_hour, zeit->tm_min, zeit->tm_sec);
-			fprintf(file, "\t\t\t\t\t<date>%02d.%02d.%04d</date>\n", zeit->tm_mday, zeit->tm_mon+1, zeit->tm_year+1900);
-			fprintf(file, "\t\t\t\t\t<duration>%u</duration>\n", dauer);
-			*/
-			fprintf(file, "\t\t\t<time start_time=\"%u\" duration=\"%u\"/>\n", (unsigned int) startzeit, dauer);
+			fprintf(file, "\t\t\t<time start_time=\"%u\" duration=\"%u\"/>\n", (unsigned int) starttime, duration);
 			return 0;
 		}
-		time_t startzeit;  // lokale Zeit, 0 -> time shifted (cinedoms)
-		unsigned dauer; // in Sekunden, 0 -> time shifted (cinedoms)
+		time_t starttime;  // lokale Zeit, 0 -> time shifted (cinedoms)
+		unsigned duration; // in Sekunden, 0 -> time shifted (cinedoms)
 };
 
 typedef std::set <SItime, std::less<SItime> > SItimes;
@@ -530,3 +524,4 @@ class SIevents : public std::set <SIevent, std::less<SIevent> >
 };
 
 #endif // SIEVENTS_HPP
+

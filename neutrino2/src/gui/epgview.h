@@ -79,8 +79,8 @@ class CEpgData
 		
 		void initFrames();
 
-		void GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* startzeit, bool clear = true);
-		void GetPrevNextEPGData( uint64_t id, time_t* startzeit );
+		void GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* starttime, bool clear = true);
+		void GetPrevNextEPGData( uint64_t id, time_t* starttime );
 		bool hasFollowScreenings(const t_channel_id channel_id, const std::string & title);
 		int FollowScreenings(const t_channel_id channel_id, const std::string & title);
 		void showTimerEventBar(bool show);
@@ -92,7 +92,7 @@ class CEpgData
 
 		CEpgData();
 		~CEpgData();
-		int show(const t_channel_id channel_id, uint64_t id = 0, time_t * startzeit = NULL, bool doLoop = true );
+		int show(const t_channel_id channel_id, uint64_t id = 0, time_t * starttime = NULL, bool doLoop = true );
 		void hide();
 };
 

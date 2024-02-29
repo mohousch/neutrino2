@@ -337,7 +337,7 @@ struct OrderServiceUniqueKeyFirstStartTimeEventUniqueKey
 	{
 		return
 			(p1->get_channel_id() == p2->get_channel_id()) ?
-			(p1->times.begin()->startzeit == p2->times.begin()->startzeit ? p1->eventID < p2->eventID : p1->times.begin()->startzeit < p2->times.begin()->startzeit )
+			(p1->times.begin()->starttime == p2->times.begin()->starttime ? p1->eventID < p2->eventID : p1->times.begin()->starttime < p2->times.begin()->starttime )
 				:
 				(p1->get_channel_id() < p2->get_channel_id());
 	}
@@ -352,10 +352,10 @@ struct OrderFirstEndTimeServiceIDEventUniqueKey
 	bool operator()(const SIeventPtr &p1, const SIeventPtr &p2)
 	{
 		return
-			p1->times.begin()->startzeit + (long)p1->times.begin()->dauer == p2->times.begin()->startzeit + (long)p2->times.begin()->dauer ?
+			p1->times.begin()->starttime + (long)p1->times.begin()->duration == p2->times.begin()->starttime + (long)p2->times.begin()->duration ?
 			(p1->service_id == p2->service_id ? p1->uniqueKey() > p2->uniqueKey() : p1->service_id < p2->service_id)
 				:
-				( p1->times.begin()->startzeit + (long)p1->times.begin()->dauer < p2->times.begin()->startzeit + (long)p2->times.begin()->dauer ) ;
+				( p1->times.begin()->starttime + (long)p1->times.begin()->duration < p2->times.begin()->starttime + (long)p2->times.begin()->duration ) ;
 	}
 };
 
@@ -588,7 +588,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 			} 
 			else 
 			{
-				if ((!myNextEvent || (myNextEvent && (*myNextEvent).uniqueKey() != evt.uniqueKey() && (*myNextEvent).times.begin()->startzeit < evt.times.begin()->startzeit)) && (!myCurrentEvent || (myCurrentEvent && (*myCurrentEvent).uniqueKey() != evt.uniqueKey()))) 
+				if ((!myNextEvent || (myNextEvent && (*myNextEvent).uniqueKey() != evt.uniqueKey() && (*myNextEvent).times.begin()->starttime < evt.times.begin()->starttime)) && (!myCurrentEvent || (myCurrentEvent && (*myCurrentEvent).uniqueKey() != evt.uniqueKey()))) 
 				{
 					if (myNextEvent)
 						delete myNextEvent;
@@ -722,7 +722,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 			
 			while ((t1 != si->second->times.end()) && (t2 != evt.times.end())) 
 			{
-				if ((t1->startzeit != t2->startzeit) || (t1->dauer != t2->dauer)) 
+				if ((t1->starttime != t2->starttime) || (t1->duration != t2->duration)) 
 				{
 					already_exists = false;
 					break;
@@ -741,7 +741,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 		si->second->item = evt.item;
 		si->second->vps = evt.vps;
 		
-		if ((evt.getExtendedText().length() > 0) && (evt.times.begin()->startzeit < zeit + secondsExtendedTextCache))
+		if ((evt.getExtendedText().length() > 0) && (evt.times.begin()->starttime < zeit + secondsExtendedTextCache))
 			si->second->setExtendedText("OFF",evt.getExtendedText().c_str());
 			
 		if (evt.getText().length() > 0)
@@ -764,7 +764,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 		SIeventPtr e(eptr);
 
 		//Strip ExtendedDescription if too far in the future
-		if ((e->times.begin()->startzeit > zeit + secondsExtendedTextCache) && (SIlanguage::getMode() == LANGUAGE_MODE_OFF) && (zeit != 0))
+		if ((e->times.begin()->starttime > zeit + secondsExtendedTextCache) && (SIlanguage::getMode() == LANGUAGE_MODE_OFF) && (zeit != 0))
 			e->setExtendedText("OFF","");
 
 		/*
@@ -777,8 +777,8 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 			unsigned short eventID = e->eventID;
 			event_id_t e_key = e->uniqueKey();
 			t_channel_id e_chid = e->get_channel_id();
-			time_t start_time = e->times.begin()->startzeit;
-			time_t end_time = e->times.begin()->startzeit + (long)e->times.begin()->dauer;
+			time_t start_time = e->times.begin()->starttime;
+			time_t end_time = e->times.begin()->starttime + (long)e->times.begin()->duration;
 			/* create an event that's surely behind the one to check in the sort order */
 			e->eventID = 0xFFFF; /* lowest order sort criteria is eventID */
 			/* returns an iterator that's behind 'e' */
@@ -798,12 +798,12 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 					/* do we need this check? */
 					if (x_key == e_key)
 						continue;
-					if ((*x)->times.begin()->startzeit >= end_time)
+					if ((*x)->times.begin()->starttime >= end_time)
 						continue;
 					/* iterating backwards: if the endtime of the stored events
 					 * is earlier than the starttime of the new one, we'll never
 					 * find an identical one => bail out */
-					if ((*x)->times.begin()->startzeit + (long)(*x)->times.begin()->dauer <= start_time)
+					if ((*x)->times.begin()->starttime + (long)(*x)->times.begin()->duration <= start_time)
 						break;
 					/* here we have an overlapping event */
 					dprintf(DEBUG_DEBUG, "CSectionsd::addEvent: %s: delete 0x%016llx.%02x time = 0x%016llx.%02x\n", __func__, x_key, (*x)->table_id, e_key, e->table_id);
@@ -841,7 +841,7 @@ void CSectionsd::addEvent(const SIevent &evt, const time_t zeit, bool cn)
 			//if ((*lastEvent)->times.size() == 1)
 			if (*lastEvent != NULL && (*lastEvent)->times.size() == 1)
 			{
-				if ((*lastEvent)->times.begin()->startzeit + (long)(*lastEvent)->times.begin()->dauer >= now - oldEventsAre)
+				if ((*lastEvent)->times.begin()->starttime + (long)(*lastEvent)->times.begin()->duration >= now - oldEventsAre)
 					back = true;
 			} 
 			else
@@ -1008,7 +1008,7 @@ void CSectionsd::removeOldEvents(const long seconds)
 		goodtimefound = false;
 		for (SItimes::iterator t = (*e)->times.begin(); t != (*e)->times.end(); t++) 
 		{
-			if (t->startzeit + (long)t->dauer >= zeit - seconds) 
+			if (t->starttime + (long)t->duration >= zeit - seconds) 
 			{
 				goodtimefound=true;
 				// one time found -> exit times loop
@@ -1050,7 +1050,7 @@ void CSectionsd::removeDupEvents(void)
 			continue;
 			
 		// check for same time
-		if (((*e1)->times.begin()->startzeit != (*e2)->times.begin()->startzeit) || ((*e1)->times.begin()->dauer != (*e2)->times.begin()->dauer))
+		if (((*e1)->times.begin()->starttime != (*e2)->times.begin()->starttime) || ((*e1)->times.begin()->duration != (*e2)->times.begin()->duration))
 			continue;
 
 		if ((*e1)->table_id == (*e2)->table_id)
@@ -1115,14 +1115,14 @@ const SIevent& CSectionsd::findActualSIeventForServiceUniqueKey(const t_channel_
 
 			for (SItimes::iterator t = (*e)->times.begin(); t != (*e)->times.end(); ++t) 
 			{
-				if ((long)(azeit + plusminus) < (long)(t->startzeit + t->dauer))
+				if ((long)(azeit + plusminus) < (long)(t->starttime + t->duration))
 				{
 					if (flag != 0)
 						*flag |= epgflags::has_later; // later events are present...
 
-					if (t->startzeit <= (long)(azeit + plusminus))
+					if (t->starttime <= (long)(azeit + plusminus))
 					{
-						//printf("azeit %d, startzeit+t->dauer %d \n", azeit, (long)(t->startzeit+t->dauer) );
+						//printf("azeit %d, starttime+t->duration %d \n", azeit, (long)(t->starttime+t->duration) );
 
 						if (flag != 0)
 							*flag |= epgflags::has_current; // aktuelles event da...
@@ -1148,7 +1148,7 @@ const SIevent& CSectionsd::findNextSIeventForServiceUniqueKey(const t_channel_id
 		if ((*e)->get_channel_id() == serviceUniqueKey)
 		{
 			for (SItimes::iterator t = (*e)->times.begin(); t != (*e)->times.end(); ++t)
-				if ((long)(azeit) < (long)(t->startzeit + t->dauer))
+				if ((long)(azeit) < (long)(t->starttime + t->duration))
 				{
 					zeit = *t;
 					return *(*e);
@@ -1159,7 +1159,7 @@ const SIevent& CSectionsd::findNextSIeventForServiceUniqueKey(const t_channel_id
 	return nullEvt;
 }
 
-// Sucht das naechste Event anhand unique key und Startzeit
+// Sucht das naechste Event anhand unique key und starttime
 const SIevent& CSectionsd::findNextSIevent(const event_id_t uniqueKey, SItime &zeit)
 {
 	MySIeventsOrderUniqueKey::iterator eFirst = mySIeventsOrderUniqueKey.find(uniqueKey);
@@ -1175,7 +1175,7 @@ const SIevent& CSectionsd::findNextSIevent(const event_id_t uniqueKey, SItime &z
 			nextnvodtimes = eFirst->second->times.begin();
 			while ( nextnvodtimes != eFirst->second->times.end() ) 
 			{
-				if ( nextnvodtimes->startzeit == zeit.startzeit )
+				if ( nextnvodtimes->starttime == zeit.starttime )
 					break;
 				else
 					++nextnvodtimes;
@@ -1184,7 +1184,7 @@ const SIevent& CSectionsd::findNextSIevent(const event_id_t uniqueKey, SItime &z
 
 		MySIeventsOrderFirstEndTimeServiceIDEventUniqueKey::iterator eNext;
 
-		//Startzeit not first - we can't use the ordered list...
+		//starttime not first - we can't use the ordered list...
 		for (MySIeventsOrderFirstEndTimeServiceIDEventUniqueKey::iterator e = mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.begin(); e !=
 					mySIeventsOrderFirstEndTimeServiceIDEventUniqueKey.end(); ++e ) 
 		{
@@ -1192,11 +1192,11 @@ const SIevent& CSectionsd::findNextSIevent(const event_id_t uniqueKey, SItime &z
 			{
 				for (SItimes::iterator t = (*e)->times.begin(); t != (*e)->times.end(); ++t) 
 				{
-					if (t->startzeit > zeit.startzeit) 
+					if (t->starttime > zeit.starttime) 
 					{
 						if (nexttimes != eFirst->second->times.end()) 
 						{
-							if (t->startzeit < nexttimes->startzeit) 
+							if (t->starttime < nexttimes->starttime) 
 							{
 								eNext = e;
 								nexttimes = t;
@@ -1220,7 +1220,7 @@ const SIevent& CSectionsd::findNextSIevent(const event_id_t uniqueKey, SItime &z
 			if (nextnvodtimes != eFirst->second->times.end()) 
 			{
 				//both times are set - take the first
-				if (nexttimes->startzeit < nextnvodtimes->startzeit) 
+				if (nexttimes->starttime < nextnvodtimes->starttime) 
 				{
 					zeit = *nexttimes;
 					return *(*eNext);
@@ -1250,7 +1250,7 @@ const SIevent& CSectionsd::findNextSIevent(const event_id_t uniqueKey, SItime &z
 	return nullEvt;
 }
 
-// Sucht das naechste UND vorhergehende Event anhand unique key und Startzeit
+// Sucht das naechste UND vorhergehende Event anhand unique key und starttime
 void CSectionsd::findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, SIevent &prev, SItime &prev_zeit, SIevent &next, SItime &next_zeit)
 {
 	prev = nullEvt;
@@ -1269,7 +1269,7 @@ void CSectionsd::findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, S
 
 			for (SItimes::iterator t = eFirst->second->times.begin(); t != eFirst->second->times.end(); ++t)
 			{
-				if (t->startzeit == zeit.startzeit)
+				if (t->starttime == zeit.starttime)
 				{
 					if (t != eFirst->second->times.begin())
 					{
@@ -3181,8 +3181,8 @@ void *CSectionsd::fseitThread(void *)
 				{
 					if (!(e->times.empty()))
 					{
-						if ( ( e->times.begin()->startzeit < zeit + secondsToCache ) &&
-								( ( e->times.begin()->startzeit + (long)e->times.begin()->dauer ) > zeit - oldEventsAre ) )
+						if ( ( e->times.begin()->starttime < zeit + secondsToCache ) &&
+								( ( e->times.begin()->starttime + (long)e->times.begin()->duration ) > zeit - oldEventsAre ) )
 						{
 							//fprintf(stderr, "%02x ", header.table_id);
 							CSectionsd::getInstance()->addEvent(*e, zeit);
@@ -3436,7 +3436,7 @@ void *CSectionsd::viasateitThread(void *)
 				{
 					if (!(e->times.empty()))
 					{
-						if ( ( e->times.begin()->startzeit < zeit + secondsToCache ) && ( ( e->times.begin()->startzeit + (long)e->times.begin()->dauer ) > zeit - oldEventsAre ) )
+						if ( ( e->times.begin()->starttime < zeit + secondsToCache ) && ( ( e->times.begin()->starttime + (long)e->times.begin()->duration ) > zeit - oldEventsAre ) )
 						{
 							//fprintf(stderr, "%02x ", header.table_id);
 							CSectionsd::getInstance()->addEvent(*e, zeit);
@@ -3737,8 +3737,8 @@ void *CSectionsd::eitThread(void *)
 				{
 					if (!(e->times.empty()))
 					{
-						if ( ( e->times.begin()->startzeit < zeit + secondsToCache ) &&
-								( ( e->times.begin()->startzeit + (long)e->times.begin()->dauer ) > zeit - oldEventsAre ) )
+						if ( ( e->times.begin()->starttime < zeit + secondsToCache ) &&
+								( ( e->times.begin()->starttime + (long)e->times.begin()->duration ) > zeit - oldEventsAre ) )
 						{
 							//fprintf(stderr, "%02x ", header.table_id);
 							
@@ -4283,8 +4283,8 @@ void CSectionsd::getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEven
 					{
 						CChannelEvent aEvent;
 						aEvent.eventID = (*e)->uniqueKey();
-						aEvent.startTime = t->startzeit;
-						aEvent.duration = t->dauer;
+						aEvent.startTime = t->starttime;
+						aEvent.duration = t->duration;
 						aEvent.description = (*e)->getName();
 						if (((*e)->getText()).empty())
 							aEvent.text = (*e)->getExtendedText().substr(0, 120);
@@ -4296,7 +4296,7 @@ void CSectionsd::getEventsServiceKey(t_channel_id serviceUniqueKey, CChannelEven
 				} // if = serviceID
 			}
 			else if ( serviceIDfound )
-				break; // sind nach serviceID und startzeit sortiert -> nicht weiter suchen
+				break; // sind nach serviceID und starttime sortiert -> nicht weiter suchen
 		}
 
 		unlockEvents();
@@ -4362,8 +4362,8 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, Current
 		} 
 		else 
 		{
-			zeitEvt1.startzeit = currentEvt.times.begin()->startzeit;
-			zeitEvt1.dauer = currentEvt.times.begin()->dauer;
+			zeitEvt1.starttime = currentEvt.times.begin()->starttime;
+			zeitEvt1.duration = currentEvt.times.begin()->duration;
 		}
 		SItime zeitEvt2(zeitEvt1);
 
@@ -4430,7 +4430,7 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, Current
 						{
 							time_t azeit = time(NULL);
 
-							if (eFirst->second->times.begin()->startzeit < azeit &&
+							if (eFirst->second->times.begin()->starttime < azeit &&
 									eFirst->second->uniqueKey() == nextEvt.uniqueKey() - 1)
 								flag |= epgflags::has_no_current;
 						}
@@ -4475,20 +4475,20 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, Current
 	sectionsdTime time_cur;
 	sectionsdTime time_nxt;
 	now = time(NULL);
-	time_cur.startzeit = currentEvt.times.begin()->startzeit;
-	time_cur.dauer = currentEvt.times.begin()->dauer;
-	time_nxt.startzeit = nextEvt.times.begin()->startzeit;
-	time_nxt.dauer = nextEvt.times.begin()->dauer;
+	time_cur.starttime = currentEvt.times.begin()->starttime;
+	time_cur.duration = currentEvt.times.begin()->duration;
+	time_nxt.starttime = nextEvt.times.begin()->starttime;
+	time_nxt.duration = nextEvt.times.begin()->duration;
 	
 	// for nvod events that have multiple times, find the one that matches the current time... 
 	if (currentEvt.times.size() > 1) 
 	{
 		for (SItimes::iterator t = currentEvt.times.begin(); t != currentEvt.times.end(); ++t) 
 		{
-			if ((long)now < (long)(t->startzeit + t->dauer) && (long)now > (long)t->startzeit) 
+			if ((long)now < (long)(t->starttime + t->duration) && (long)now > (long)t->starttime) 
 			{
-				time_cur.startzeit = t->startzeit;
-				time_cur.dauer =t->dauer;
+				time_cur.starttime = t->starttime;
+				time_cur.duration =t->duration;
 				break;
 			}
 		}
@@ -4499,23 +4499,23 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, Current
 	{
 		for (SItimes::iterator t = nextEvt.times.begin(); t != nextEvt.times.end(); ++t) 
 		{
-			if ((long)(time_cur.startzeit + time_cur.dauer) <= (long)(t->startzeit)) 
+			if ((long)(time_cur.starttime + time_cur.duration) <= (long)(t->starttime)) 
 			{ // TODO: it's not "long", it's "time_t"
-				time_nxt.startzeit = t->startzeit;
-				time_nxt.dauer =t->dauer;
+				time_nxt.starttime = t->starttime;
+				time_nxt.duration =t->duration;
 				break;
 			}
 		}
 	}
 
 	current_next.current_uniqueKey = currentEvt.uniqueKey();
-	current_next.current_zeit.startzeit = time_cur.startzeit;
-	current_next.current_zeit.dauer = time_cur.dauer;
+	current_next.current_zeit.starttime = time_cur.starttime;
+	current_next.current_zeit.duration = time_cur.duration;
 	current_next.current_name = currentEvt.getName();
 
 	current_next.next_uniqueKey = nextEvt.uniqueKey();
-	current_next.next_zeit.startzeit = time_nxt.startzeit;
-	current_next.next_zeit.dauer = time_nxt.dauer;
+	current_next.next_zeit.starttime = time_nxt.starttime;
+	current_next.next_zeit.duration = time_nxt.duration;
 	current_next.next_name = nextEvt.getName();
 
 	current_next.flags = flag;
@@ -4556,10 +4556,10 @@ bool CSectionsd::getEPGidShort(event_id_t epgID, CShortEPGData * epgdata)
 	return ret;
 }
 
-bool CSectionsd::getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata)
+bool CSectionsd::getEPGid(const event_id_t epgID, const time_t starttime, CEPGData * epgdata)
 {
 	bool ret = false;
-	dprintf(DEBUG_DEBUG, "CSectionsd::getEPGid: Request of actual EPG for 0x%llx 0x%lx\n", epgID, startzeit);
+	dprintf(DEBUG_DEBUG, "CSectionsd::getEPGid: Request of actual EPG for 0x%llx 0x%lx\n", epgID, starttime);
 
 	const SIevent& evt = findSIeventForEventUniqueKey(epgID);
 
@@ -4572,7 +4572,7 @@ bool CSectionsd::getEPGid(const event_id_t epgID, const time_t startzeit, CEPGDa
 		SItimes::iterator t = evt.times.begin();
 
 		for (; t != evt.times.end(); ++t)
-			if (t->startzeit == startzeit)
+			if (t->starttime == starttime)
 				break;
 
 		if (t == evt.times.end()) 
@@ -4593,8 +4593,8 @@ bool CSectionsd::getEPGid(const event_id_t epgID, const time_t startzeit, CEPGDa
 			epgdata->fsk = evt.getFSK();
 			epgdata->table_id = evt.table_id;
 
-			epgdata->epg_times.startzeit = t->startzeit;
-			epgdata->epg_times.dauer = t->dauer;
+			epgdata->epg_times.starttime = t->starttime;
+			epgdata->epg_times.duration = t->duration;
 
 			ret = true;
 		}
@@ -4623,17 +4623,17 @@ bool CSectionsd::getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEP
 		if (myCurrentEvent) 
 		{
 			evt = *myCurrentEvent;
-			zeit.startzeit = evt.times.begin()->startzeit;
-			zeit.dauer = evt.times.begin()->dauer;
+			zeit.starttime = evt.times.begin()->starttime;
+			zeit.duration = evt.times.begin()->duration;
 			if (evt.times.size() > 1) 
 			{
 				time_t now = time(NULL);
 				for (SItimes::iterator t = evt.times.begin(); t != evt.times.end(); ++t) 
 				{
-					if ((long)now < (long)(t->startzeit + t->dauer) && (long)now > (long)t->startzeit) 
+					if ((long)now < (long)(t->starttime + t->duration) && (long)now > (long)t->starttime) 
 					{
-						zeit.startzeit = t->startzeit;
-						zeit.dauer = t->dauer;
+						zeit.starttime = t->starttime;
+						zeit.duration = t->duration;
 						break;
 					}
 				}
@@ -4660,8 +4660,8 @@ bool CSectionsd::getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEP
 		epgdata->fsk = evt.getFSK();
 		epgdata->table_id = evt.table_id;
 
-		epgdata->epg_times.startzeit = zeit.startzeit;
-		epgdata->epg_times.dauer = zeit.dauer;
+		epgdata->epg_times.starttime = zeit.starttime;
+		epgdata->epg_times.duration = zeit.duration;
 
 		ret = true;
 	} 
@@ -4733,14 +4733,14 @@ void CSectionsd::getChannelEvents(CChannelEventList &eList, bool tv_mode, t_chan
 		{
 			for (SItimes::iterator t = (*e)->times.begin(); t != (*e)->times.end(); ++t)
 			{
-				if (t->startzeit <= azeit && azeit <= (long)(t->startzeit + t->dauer))
+				if (t->starttime <= azeit && azeit <= (long)(t->starttime + t->duration))
 				{
 					CChannelEvent aEvent;
 
 					aEvent.channelID = (*e)->get_channel_id();
 					aEvent.eventID = (*e)->uniqueKey();
-					aEvent.startTime = t->startzeit;
-					aEvent.duration = t->dauer;
+					aEvent.startTime = t->starttime;
+					aEvent.duration = t->duration;
 					aEvent.description = (*e)->getName();
 					
 					if (((*e)->getText()).empty())
@@ -4855,8 +4855,8 @@ bool CSectionsd::getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, NVO
 				response.service_id =  ni->service_id;
 				response.original_network_id = ni->original_network_id;
 				response.transport_stream_id = ni->transport_stream_id;
-				response.zeit.startzeit = zeitEvt1.startzeit;
-				response.zeit.dauer = zeitEvt1.dauer;
+				response.zeit.starttime = zeitEvt1.starttime;
+				response.zeit.duration = zeitEvt1.duration;
 
 				nvod_list.insert( nvod_list.end(), response);
 				ret = true;

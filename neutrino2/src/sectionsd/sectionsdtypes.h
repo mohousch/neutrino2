@@ -67,8 +67,8 @@ typedef std::vector<CChannelEvent> CChannelEventList;
 
 struct sectionsdTime
 {
-	time_t startzeit;
-	unsigned dauer;
+	time_t starttime;
+	unsigned duration;
 };
 
 ////
@@ -80,7 +80,6 @@ class CEPGData
 		std::string                     title;
 		std::string                     info1;
 		std::string                     info2;
-		// 21.07.2005 - extended event data
 		std::vector<std::string>	itemDescriptions;
 		std::vector<std::string>	items;
 		char                            fsk;

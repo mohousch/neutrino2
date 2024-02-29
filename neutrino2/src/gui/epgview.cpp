@@ -421,16 +421,16 @@ void CEpgData::showHead(const t_channel_id channel_id)
 	}
 }
 
-int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_startzeit, bool doLoop )
+int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_starttime, bool doLoop )
 {
 	dprintf(DEBUG_NORMAL, "CEpgData::show: 0x%llx\n", channel_id);
 
 	int res = CMenuTarget::RETURN_REPAINT;
 	static uint64_t id;
-	static time_t startzeit;
+	static time_t starttime;
 	 
-	if(a_startzeit)
-		startzeit = *a_startzeit;
+	if(a_starttime)
+		starttime = *a_starttime;
 		
 	//
 	if (widget)
@@ -442,7 +442,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	id = a_id;
 
 	// getepg data
-	GetEPGData(channel_id, id, &startzeit);
+	GetEPGData(channel_id, id, &starttime);
 	
 	if (doLoop)
 	{
@@ -544,10 +544,10 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	}
 	
 	// length information
-	if (epgData.epg_times.dauer > 0)
+	if (epgData.epg_times.duration > 0)
 	{
 		char lengthInfo[11] = "";
-		sprintf(lengthInfo, "%d", epgData.epg_times.dauer / 60);
+		sprintf(lengthInfo, "%d", epgData.epg_times.duration / 60);
 		
 		epgBuffer += lengthInfo;
 		epgBuffer += " ";
@@ -722,7 +722,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 	}
 
 	// get prevnext epg data
-	GetPrevNextEPGData( epgData.eventID, &epgData.epg_times.startzeit );
+	GetPrevNextEPGData( epgData.eventID, &epgData.epg_times.starttime );
 
 	// prev <<<<
 	if (prev_id != 0)
@@ -767,7 +767,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 				widget->refresh();
 
 				//
-				GetEPGData(channel_id, id, &startzeit, false);
+				GetEPGData(channel_id, id, &starttime, false);
 				
 				if ( epg_done!= -1 ) 
 				{
@@ -835,9 +835,9 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 							
 							if (doRecord)
 							{
-								if (CTimerd::getInstance()->addRecordTimerEvent(channel_id, epgData.epg_times.startzeit, epgData.epg_times.startzeit + epgData.epg_times.dauer, epgData.eventID, epgData.epg_times.startzeit, epgData.epg_times.startzeit - (ANNOUNCETIME + 120 ), TIMERD_APIDS_CONF, true, recDir,false) == -1)									{																		  if(askUserOnTimerConflict(epgData.epg_times.startzeit - (ANNOUNCETIME + 120), epgData.epg_times.startzeit + epgData.epg_times.dauer))
+								if (CTimerd::getInstance()->addRecordTimerEvent(channel_id, epgData.epg_times.starttime, epgData.epg_times.starttime + epgData.epg_times.duration, epgData.eventID, epgData.epg_times.starttime, epgData.epg_times.starttime - (ANNOUNCETIME + 120 ), TIMERD_APIDS_CONF, true, recDir,false) == -1)									{																		  if(askUserOnTimerConflict(epgData.epg_times.starttime - (ANNOUNCETIME + 120), epgData.epg_times.starttime + epgData.epg_times.duration))
 									{
-										CTimerd::getInstance()->addRecordTimerEvent(channel_id, epgData.epg_times.startzeit, epgData.epg_times.startzeit + epgData.epg_times.dauer, epgData.eventID, epgData.epg_times.startzeit, epgData.epg_times.startzeit - (ANNOUNCETIME + 120 ), TIMERD_APIDS_CONF, true, recDir,true);
+										CTimerd::getInstance()->addRecordTimerEvent(channel_id, epgData.epg_times.starttime, epgData.epg_times.starttime + epgData.epg_times.duration, epgData.eventID, epgData.epg_times.starttime, epgData.epg_times.starttime - (ANNOUNCETIME + 120 ), TIMERD_APIDS_CONF, true, recDir,true);
 														 
 										MessageBox(_("Schedule Record"), _("The event is flagged for record.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, CComponent::BORDER_ALL);
 									}
@@ -858,7 +858,7 @@ int CEpgData::show(const t_channel_id channel_id, uint64_t a_id, time_t * a_star
 					{
 						if(CTimerd::getInstance()->isTimerdAvailable())
 						{
-							CTimerd::getInstance()->addZaptoTimerEvent(channel_id, epgData.epg_times.startzeit, epgData.epg_times.startzeit - ANNOUNCETIME, 0, epgData.eventID, epgData.epg_times.startzeit, 0);
+							CTimerd::getInstance()->addZaptoTimerEvent(channel_id, epgData.epg_times.starttime, epgData.epg_times.starttime - ANNOUNCETIME, 0, epgData.eventID, epgData.epg_times.starttime, 0);
 										
 							MessageBox(_("Schedule Event"), _("The event is scheduled.\nThe box will power on and \nswitch to this channel at the given time."), CMessageBox::mbrBack, CMessageBox::mbBack, NEUTRINO_ICON_INFO, MENU_WIDTH, -1, false, CComponent::BORDER_ALL);
 						}
@@ -923,7 +923,7 @@ void CEpgData::hide()
 	}
 }
 
-void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* startzeit, bool clear)
+void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* starttime, bool clear)
 {
 	if(clear)
 	{
@@ -933,15 +933,15 @@ void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* st
 		epgData.info2.clear();
 		epgData.contentClassification.clear();
 		epgData.userClassification.clear();
-		epgData.epg_times.startzeit = NULL;
-		epgData.epg_times.dauer = 0;
+		epgData.epg_times.starttime = NULL;
+		epgData.epg_times.duration = 0;
 		
 		epgBuffer.clear();
 	}
 
 	bool res;
 	if ( id != 0 )
-		res = CSectionsd::getInstance()->getEPGid(id, *startzeit, &epgData);
+		res = CSectionsd::getInstance()->getEPGid(id, *starttime, &epgData);
 	else
 		res = CSectionsd::getInstance()->getActualEPGServiceKey(channel_id & 0xFFFFFFFFFFFFULL, &epgData);
 
@@ -958,30 +958,30 @@ void CEpgData::GetEPGData(const t_channel_id channel_id, uint64_t id, time_t* st
 			reformatExtendedEvents("Presenter", _("Presenter"), false, epgData);
 		}
 		
-		struct tm *pStartZeit = localtime(&(epgData.epg_times).startzeit);
+		struct tm *pstarttime = localtime(&(epgData.epg_times).starttime);
 		char temp[11];
-		strftime( temp, sizeof(temp), "%d.%m.%Y", pStartZeit);
+		strftime( temp, sizeof(temp), "%d.%m.%Y", pstarttime);
 		epg_date= temp;
-		strftime( temp, sizeof(temp), "%H:%M", pStartZeit);
+		strftime( temp, sizeof(temp), "%H:%M", pstarttime);
 		epg_start= temp;
 
-		long int uiEndTime((epgData.epg_times).startzeit + (epgData.epg_times).dauer);
+		long int uiEndTime((epgData.epg_times).starttime + (epgData.epg_times).duration);
 		struct tm *pEndeZeit = localtime((time_t*)&uiEndTime);
 		strftime( temp, sizeof(temp), "%H:%M", pEndeZeit);
 		epg_end = temp;
 
 		epg_done = -1;
 		
-		if (( time(NULL)- (epgData.epg_times).startzeit )>= 0 )
+		if (( time(NULL)- (epgData.epg_times).starttime )>= 0 )
 		{
-			unsigned nProcentagePassed=(unsigned)((float)(time(NULL) -(epgData.epg_times).startzeit)/(float)(epgData.epg_times).dauer*100.);
+			unsigned nProcentagePassed=(unsigned)((float)(time(NULL) -(epgData.epg_times).starttime)/(float)(epgData.epg_times).duration*100.);
 			if (nProcentagePassed <= 100)
 				epg_done = nProcentagePassed;
 		}
 	}
 }
 
-void CEpgData::GetPrevNextEPGData(uint64_t id, time_t* startzeit)
+void CEpgData::GetPrevNextEPGData(uint64_t id, time_t* starttime)
 {
         prev_id = 0;
         next_id = 0;
@@ -989,7 +989,7 @@ void CEpgData::GetPrevNextEPGData(uint64_t id, time_t* startzeit)
 
         for ( i = 0; i < evtlist.size(); i++ )
         {
-                if ( ( evtlist[i].eventID == id ) && ( evtlist[i].startTime == *startzeit ) )
+                if ( ( evtlist[i].eventID == id ) && ( evtlist[i].startTime == *starttime ) )
                 {
                         if ( i > 0 )
                         {
@@ -1019,7 +1019,7 @@ int CEpgData::FollowScreenings(const t_channel_id /*channel_id*/, const std::str
 {
 	CChannelEventList::iterator e;
 	time_t			curtime;
-	struct  tm		*tmStartZeit;
+	struct  tm		*tmstarttime;
 	std::string		screening_dates,screening_nodual;
 	int			count;
 	char			tmpstr[256];
@@ -1037,17 +1037,17 @@ int CEpgData::FollowScreenings(const t_channel_id /*channel_id*/, const std::str
 		if (e->description == title) 
 		{
 			count++;
-			tmStartZeit = localtime(&(e->startTime));
+			tmstarttime = localtime(&(e->startTime));
 
 			screening_dates = "    ";
 
-			strftime(tmpstr, sizeof(tmpstr), "%A", tmStartZeit);
+			strftime(tmpstr, sizeof(tmpstr), "%A", tmstarttime);
 			screening_dates += _(tmpstr);
 
-			strftime(tmpstr, sizeof(tmpstr), "  %d.%m.%Y", tmStartZeit );
+			strftime(tmpstr, sizeof(tmpstr), "  %d.%m.%Y", tmstarttime );
 			screening_dates += tmpstr;
 
-			strftime(tmpstr, sizeof(tmpstr), "  %H:%M", tmStartZeit );
+			strftime(tmpstr, sizeof(tmpstr), "  %H:%M", tmstarttime );
 			screening_dates += tmpstr;
 
 			if (screening_dates != screening_nodual)

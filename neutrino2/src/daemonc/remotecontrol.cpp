@@ -53,18 +53,18 @@ CSubService::CSubService(const t_original_network_id anoriginal_network_id, cons
 	service.original_network_id = anoriginal_network_id;
 	service.service_id          = aservice_id;
 	service.transport_stream_id = atransport_stream_id;
-	startzeit                   = 0;
-	dauer                       = 0;
+	starttime                   = 0;
+	duration                       = 0;
 	subservice_name             = asubservice_name;
 }
 
-CSubService::CSubService(const t_original_network_id anoriginal_network_id, const t_service_id aservice_id, const t_transport_stream_id atransport_stream_id, const time_t astartzeit, const unsigned adauer)
+CSubService::CSubService(const t_original_network_id anoriginal_network_id, const t_service_id aservice_id, const t_transport_stream_id atransport_stream_id, const time_t astarttime, const unsigned aduration)
 {
 	service.original_network_id = anoriginal_network_id;
 	service.service_id          = aservice_id;
 	service.transport_stream_id = atransport_stream_id;
-	startzeit                   = astartzeit;
-	dauer                       = adauer;
+	starttime                  = astarttime;
+	duration                       = aduration;
 	subservice_name             = "";
 }
 
@@ -418,19 +418,19 @@ void CRemoteControl::getNVODs()
 			
 			for (unsigned int i=0; i< NVODs.size(); i++)
 			{
-				if ( NVODs[i].zeit.dauer> 0 )
+				if ( NVODs[i].zeit.duration> 0 )
 				{
 					CSubService newService(
 						NVODs[i].original_network_id,
 						NVODs[i].service_id,
 						NVODs[i].transport_stream_id,
-						NVODs[i].zeit.startzeit, 
-						NVODs[i].zeit.dauer);
+						NVODs[i].zeit.starttime, 
+						NVODs[i].zeit.duration);
 
 					CSubServiceListSorted::iterator e= subChannels.begin();
 					for(; e!=subChannels.end(); ++e)
 					{
-						if ( e->startzeit > newService.startzeit )
+						if ( e->starttime > newService.starttime )
 							break;
 					}
 					subChannels.insert( e, newService );

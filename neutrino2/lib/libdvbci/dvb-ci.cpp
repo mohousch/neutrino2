@@ -503,8 +503,8 @@ void cDvbCi::slot_pollthread(void *c)
 	ca_slot_info_t info;
 	eData status;
 #ifdef USE_OPENGL
-	unsigned char data[1024];
-	int len = 1024;
+	unsigned char data[256];
+	int len = 256;
 #else
 	unsigned char data[4096];
 	int len = 4096;

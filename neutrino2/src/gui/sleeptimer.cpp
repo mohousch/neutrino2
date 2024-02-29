@@ -63,11 +63,11 @@ int CSleepTimerWidget::exec(CMenuTarget* parent, const std::string &)
   	if ( info_CurrentNext.flags & CSectionsd::epgflags::has_current) 
 	{
   		time_t jetzt = time(NULL);
-  		int current_epg_zeit_dauer_rest = (info_CurrentNext.current_zeit.dauer + 150 - (jetzt - info_CurrentNext.current_zeit.startzeit ))/60 ;
+  		int current_epg_zeit_duration_rest = (info_CurrentNext.current_zeit.duration + 150 - (jetzt - info_CurrentNext.current_zeit.starttime ))/60 ;
   		
-  		if(shutdown_min == 0 && current_epg_zeit_dauer_rest > 0 && current_epg_zeit_dauer_rest < 1000)
+  		if(shutdown_min == 0 && current_epg_zeit_duration_rest > 0 && current_epg_zeit_duration_rest < 1000)
   		{
-  			sprintf(value,"%03d", current_epg_zeit_dauer_rest);
+  			sprintf(value,"%03d", current_epg_zeit_duration_rest);
   		}
   	}
 
