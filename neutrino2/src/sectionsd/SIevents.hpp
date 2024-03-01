@@ -507,15 +507,7 @@ struct printSIeventWithService : public std::unary_function<SIevent, void>
 	const SIservices *s;
 };
 
-class SIevents : public std::set <SIevent, std::less<SIevent> >
-{
-	public:
-		// Entfernt anhand der Services alle time shifted events (Service-Typ 0)
-		// und sortiert deren Zeiten in die Events mit dem Text ein.
-		void mergeAndRemoveTimeShiftedEvents(const SIservices &);
-		// Loescht alte Events (aufgrund aktueller Zeit - seconds und Zeit im Event)
-		void removeOldEvents(long seconds);
-};
+typedef std::set <SIevent, std::less<SIevent> > SIevents;
 
 #endif // SIEVENTS_HPP
 

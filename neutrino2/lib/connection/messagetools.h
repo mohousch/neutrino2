@@ -32,3 +32,4 @@ size_t get_length_field_size (const unsigned int length);
 unsigned int parse_length_field (const unsigned char * buffer);
 
 #endif /* __messagetools_h__ */
+
