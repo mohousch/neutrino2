@@ -1251,7 +1251,7 @@ const SIevent& CSectionsd::findNextSIevent(const event_id_t uniqueKey, SItime &z
 }
 
 // Sucht das naechste UND vorhergehende Event anhand unique key und starttime
-void CSectionsd::findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, SIevent &prev, SItime &prev_zeit, SIevent &next, SItime &next_zeit)
+void CSectionsd::findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, SIevent &prev, SItime &prev_time, SIevent &next, SItime &next_time)
 {
 	prev = nullEvt;
 	next = nullEvt;
@@ -1274,7 +1274,7 @@ void CSectionsd::findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, S
 					if (t != eFirst->second->times.begin())
 					{
 						--t;
-						prev_zeit = *t;
+						prev_time = *t;
 						prev = *(eFirst->second);
 						prev_ok = true;
 						++t;
@@ -1284,7 +1284,7 @@ void CSectionsd::findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, S
 
 					if (t != eFirst->second->times.end())
 					{
-						next_zeit = *t;
+						next_time = *t;
 						next = *(eFirst->second);
 						next_ok = true;
 					}
@@ -1305,7 +1305,7 @@ void CSectionsd::findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, S
 
 			if ((*eNext)->get_channel_id() == eFirst->second->get_channel_id())
 			{
-				prev_zeit = *((*eNext)->times.begin());
+				prev_time = *((*eNext)->times.begin());
 				prev = *(*eNext);
 			}
 
@@ -1318,7 +1318,7 @@ void CSectionsd::findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, S
 		{
 			if ((*eNext)->get_channel_id() == eFirst->second->get_channel_id())
 			{
-				next_zeit = *((*eNext)->times.begin());
+				next_time = *((*eNext)->times.begin());
 				next = *(*eNext);
 			}
 		}
@@ -4509,13 +4509,13 @@ void CSectionsd::getCurrentNextServiceKey(t_channel_id uniqueServiceKey, Current
 	}
 
 	current_next.current_uniqueKey = currentEvt.uniqueKey();
-	current_next.current_zeit.starttime = time_cur.starttime;
-	current_next.current_zeit.duration = time_cur.duration;
+	current_next.current_time.starttime = time_cur.starttime;
+	current_next.current_time.duration = time_cur.duration;
 	current_next.current_name = currentEvt.getName();
 
 	current_next.next_uniqueKey = nextEvt.uniqueKey();
-	current_next.next_zeit.starttime = time_nxt.starttime;
-	current_next.next_zeit.duration = time_nxt.duration;
+	current_next.next_time.starttime = time_nxt.starttime;
+	current_next.next_time.duration = time_nxt.duration;
 	current_next.next_name = nextEvt.getName();
 
 	current_next.flags = flag;

@@ -373,12 +373,7 @@ void SIevent::dump(void) const
 			printf(" 0x%02hhx", userClassification[i]);
 		printf("\n");
 	}
-	/*
-	  if(startzeit)
-	  printf("Startzeit: %s", ctime(&startzeit));
-	  if(dauer)
-	  printf("Dauer: %02u:%02u:%02u (%umin, %us)\n", dauer/3600, (dauer%3600)/60, dauer%60, dauer/60, dauer);
-	*/
+	
 	for_each(times.begin(), times.end(), printSItime());
 	for_each(components.begin(), components.end(), printSIcomponent());
 	for_each(ratings.begin(), ratings.end(), printSIparentalRating());

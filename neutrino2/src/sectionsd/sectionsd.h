@@ -88,11 +88,11 @@ class CSectionsd
 		struct CurrentNextInfo
 		{
 			event_id_t                      current_uniqueKey;
-			sectionsdTime 			current_zeit;
+			sectionsdTime 			current_time;
 			std::string                     current_name;
 			char                            current_fsk;
 			event_id_t                      next_uniqueKey;
-			sectionsdTime 			next_zeit;
+			sectionsdTime 			next_time;
 			std::string                     next_name;
 			unsigned                        flags;
 		};
@@ -139,7 +139,7 @@ class CSectionsd
 		const SIevent& findActualSIeventForServiceUniqueKey(const t_channel_id serviceUniqueKey, SItime& zeit, long plusminus = 0, unsigned *flag = 0);
 		const SIevent& findNextSIeventForServiceUniqueKey(const t_channel_id serviceUniqueKey, SItime& zeit);
 		const SIevent &findNextSIevent(const event_id_t uniqueKey, SItime &zeit);
-		void findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, SIevent &prev, SItime &prev_zeit, SIevent &next, SItime &next_zeit);
+		void findPrevNextSIevent(const event_id_t uniqueKey, SItime &zeit, SIevent &prev, SItime &prev_time, SIevent &next, SItime &next_time);
 		bool channel_in_requested_list(t_channel_id * clist, t_channel_id chid, int len);
 		void write_epg_xml_header(FILE * fd, const t_original_network_id onid, const t_transport_stream_id tsid, const t_service_id sid);
 		void write_index_xml_header(FILE * fd);
@@ -177,7 +177,7 @@ class CSectionsd
 		void getCurrentNextServiceKey(t_channel_id uniqueServiceKey, CurrentNextInfo& current_next );
 		bool getActualEPGServiceKey(const t_channel_id uniqueServiceKey, CEPGData * epgdata);
 		bool getEPGidShort(event_id_t epgID, CShortEPGData * epgdata);
-		bool getEPGid(const event_id_t epgID, const time_t startzeit, CEPGData * epgdata);
+		bool getEPGid(const event_id_t epgID, const time_t starttime, CEPGData * epgdata);
 		bool getComponentTagsUniqueKey(const event_id_t uniqueKey, ComponentTagList& tags);
 		bool getLinkageDescriptorsUniqueKey(const event_id_t uniqueKey, LinkageDescriptorList& descriptors);
 		bool getNVODTimesServiceKey(const t_channel_id uniqueServiceKey, NVODTimesList& nvod_list);

@@ -462,7 +462,7 @@ std::string CNeutrinoYParser::func_get_bouquets_with_epg(CyhookHandler *hh, std:
 
 			if ((has_current_next) && (currentNextInfo.flags & CSectionsd::epgflags::has_next)) 
 			{
-				timestr = timeString(currentNextInfo.next_zeit.starttime);
+				timestr = timeString(currentNextInfo.next_time.starttime);
 				yresult += string_printf("<br />%s&nbsp;%s", timestr.c_str(), currentNextInfo.next_name.c_str());
 			}
 
