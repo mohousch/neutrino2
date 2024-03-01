@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neutrino2 5.0\n"
 "Report-Msgid-Bugs-To: <see README>\n"
-"POT-Creation-Date: 2024-02-18 14:09+0100\n"
+"POT-Creation-Date: 2024-03-01 16:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -368,7 +368,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3822 ../../src/neutrino2.cpp:3826
 #: ../../src/neutrino2.cpp:3830 ../../src/neutrino2.cpp:3819
-#: ../../src/neutrino2.cpp:3813
+#: ../../src/neutrino2.cpp:3813 ../../src/neutrino2.cpp:3810
 msgid ""
 "Box will shutdown in 1 min.\n"
 "Cancel Sutdown ?"
@@ -386,7 +386,8 @@ msgid "Brightness after dim timeout"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:269 ../../src/gui/network_setup.cpp:289
-#: ../../src/gui/network_setup.cpp:593
+#: ../../src/gui/network_setup.cpp:593 ../../src/gui/network_setup.cpp:268
+#: ../../src/gui/network_setup.cpp:288 ../../src/gui/network_setup.cpp:592
 msgid "Broadcast"
 msgstr ""
 
@@ -411,6 +412,7 @@ msgid "Buttons Line Gradient"
 msgstr ""
 
 #: ../../src/gui/cam_menu.cpp:326 ../../src/gui/cam_menu.cpp:327
+#: ../../src/gui/cam_menu.cpp:328
 msgid "CAM init complete"
 msgstr ""
 
@@ -581,6 +583,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:346 ../../src/gui/eventlist.cpp:805
 #: ../../src/gui/osd_setup.cpp:914 ../../src/gui/rc_setup.cpp:368
 #: ../../src/neutrino2.cpp:350 ../../src/gui/eventlist.cpp:806
+#: ../../src/gui/rc_setup.cpp:366
 msgid "Channellist"
 msgstr ""
 
@@ -697,7 +700,7 @@ msgstr ""
 msgid "Czech"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:339
+#: ../../src/gui/network_setup.cpp:339 ../../src/gui/network_setup.cpp:338
 msgid "DHCP"
 msgstr ""
 
@@ -728,6 +731,8 @@ msgstr ""
 
 #: ../../src/gui/network_setup.cpp:271 ../../src/gui/network_setup.cpp:291
 #: ../../src/gui/network_setup.cpp:543 ../../src/gui/network_setup.cpp:601
+#: ../../src/gui/network_setup.cpp:270 ../../src/gui/network_setup.cpp:290
+#: ../../src/gui/network_setup.cpp:542 ../../src/gui/network_setup.cpp:600
 msgid "Default gateway"
 msgstr ""
 
@@ -1017,6 +1022,7 @@ msgid "English"
 msgstr ""
 
 #: ../../src/gui/rc_setup.cpp:191 ../../src/gui/rc_setup.cpp:194
+#: ../../src/gui/rc_setup.cpp:189 ../../src/gui/rc_setup.cpp:192
 msgid "Enter 0 to switch of the blocker (red is space)"
 msgstr ""
 
@@ -1315,6 +1321,7 @@ msgid "Gardening"
 msgstr ""
 
 #: ../../src/gui/rc_setup.cpp:191 ../../src/gui/rc_setup.cpp:203
+#: ../../src/gui/rc_setup.cpp:189 ../../src/gui/rc_setup.cpp:201
 msgid "Generic delay"
 msgstr ""
 
@@ -1565,12 +1572,14 @@ msgstr ""
 
 #: ../../src/gui/network_setup.cpp:276 ../../src/gui/network_setup.cpp:299
 #: ../../src/gui/proxyserver_setup.cpp:100
-#: ../../src/gui/proxyserver_setup.cpp:101
+#: ../../src/gui/proxyserver_setup.cpp:101 ../../src/gui/network_setup.cpp:275
+#: ../../src/gui/network_setup.cpp:298
 msgid "Hostname"
 msgstr ""
 
 #: ../../src/gui/rc_setup.cpp:206 ../../src/gui/rc_setup.cpp:208
-#: ../../src/gui/rc_setup.cpp:340
+#: ../../src/gui/rc_setup.cpp:340 ../../src/gui/rc_setup.cpp:204
+#: ../../src/gui/rc_setup.cpp:338
 msgid "Hot Keys mapping"
 msgstr ""
 
@@ -1592,6 +1601,8 @@ msgstr ""
 
 #: ../../src/gui/network_setup.cpp:265 ../../src/gui/network_setup.cpp:285
 #: ../../src/gui/network_setup.cpp:443 ../../src/gui/network_setup.cpp:585
+#: ../../src/gui/network_setup.cpp:264 ../../src/gui/network_setup.cpp:284
+#: ../../src/gui/network_setup.cpp:442 ../../src/gui/network_setup.cpp:584
 msgid "IP address"
 msgstr ""
 
@@ -1706,6 +1717,13 @@ msgstr ""
 #: ../../src/gui/movieplayer.cpp:1476 ../../src/gui/movieplayer.cpp:1597
 #: ../../src/gui/movieplayer.cpp:2158 ../../src/gui/movieplayer.cpp:2188
 #: ../../src/gui/scan_setup.cpp:344 ../../src/gui/widget/infobox.cpp:214
+#: ../../src/neutrino2.cpp:3731 ../../src/neutrino2.cpp:3765
+#: ../../src/neutrino2.cpp:3772 ../../src/neutrino2.cpp:3810
+#: ../../src/neutrino2.cpp:3853 ../../src/neutrino2.cpp:3862
+#: ../../src/neutrino2.cpp:4276 ../../src/neutrino2.cpp:4960
+#: ../../src/gui/cam_menu.cpp:332 ../../src/gui/cam_menu.cpp:470
+#: ../../src/gui/cam_menu.cpp:584 ../../src/gui/cam_menu.cpp:599
+#: ../../src/gui/network_setup.cpp:161 ../../src/gui/rc_setup.cpp:257
 msgid "Information"
 msgstr ""
 
@@ -1718,6 +1736,7 @@ msgid "Install menu"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:237 ../../src/gui/network_setup.cpp:454
+#: ../../src/gui/network_setup.cpp:236 ../../src/gui/network_setup.cpp:453
 msgid "Interface"
 msgstr ""
 
@@ -1749,10 +1768,11 @@ msgid "Jump over"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:385 ../../src/gui/network_setup.cpp:386
+#: ../../src/gui/network_setup.cpp:384
 msgid "Key"
 msgstr ""
 
-#: ../../src/gui/rc_setup.cpp:197
+#: ../../src/gui/rc_setup.cpp:197 ../../src/gui/rc_setup.cpp:195
 msgid "Key Repeat-blocker"
 msgstr ""
 
@@ -1962,7 +1982,7 @@ msgstr ""
 msgid "Max. Events"
 msgstr ""
 
-#: ../../src/gui/rc_setup.cpp:380
+#: ../../src/gui/rc_setup.cpp:380 ../../src/gui/rc_setup.cpp:378
 msgid "Media"
 msgstr ""
 
@@ -2015,7 +2035,7 @@ msgstr ""
 
 #: ../../src/gui/main_setup.cpp:181 ../../src/gui/misc_setup.cpp:161
 #: ../../src/gui/osd_setup.cpp:164 ../../src/gui/osd_setup.cpp:1032
-#: ../../src/gui/rc_setup.cpp:385
+#: ../../src/gui/rc_setup.cpp:385 ../../src/gui/rc_setup.cpp:383
 msgid "Misc settings"
 msgstr ""
 
@@ -2023,7 +2043,7 @@ msgstr ""
 msgid "Mo Tu We Th Fr Sa Su"
 msgstr ""
 
-#: ../../src/gui/rc_setup.cpp:362
+#: ../../src/gui/rc_setup.cpp:362 ../../src/gui/rc_setup.cpp:360
 msgid "Modechange"
 msgstr ""
 
@@ -2072,6 +2092,7 @@ msgid "Motoring"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:422 ../../src/gui/nfs.cpp:329
+#: ../../src/gui/network_setup.cpp:421
 msgid "Mount network volume"
 msgstr ""
 
@@ -2140,18 +2161,20 @@ msgid "NFS"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:280 ../../src/gui/network_setup.cpp:295
+#: ../../src/gui/network_setup.cpp:279 ../../src/gui/network_setup.cpp:294
 msgid "NTP-Server"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:280
+#: ../../src/gui/network_setup.cpp:280 ../../src/gui/network_setup.cpp:279
 msgid "NTP-Server example: ntp1.ptb.de"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:281 ../../src/gui/network_setup.cpp:297
+#: ../../src/gui/network_setup.cpp:280 ../../src/gui/network_setup.cpp:296
 msgid "NTP/DVB-Refresh"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:281
+#: ../../src/gui/network_setup.cpp:281 ../../src/gui/network_setup.cpp:280
 msgid "NTP/DVB-Time-Sync in minutes"
 msgstr ""
 
@@ -2166,6 +2189,8 @@ msgstr ""
 
 #: ../../src/gui/network_setup.cpp:273 ../../src/gui/network_setup.cpp:293
 #: ../../src/gui/network_setup.cpp:549 ../../src/gui/network_setup.cpp:597
+#: ../../src/gui/network_setup.cpp:272 ../../src/gui/network_setup.cpp:292
+#: ../../src/gui/network_setup.cpp:548 ../../src/gui/network_setup.cpp:596
 msgid "Name server"
 msgstr ""
 
@@ -2174,7 +2199,8 @@ msgid "Nature / Animals / Environment"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:267 ../../src/gui/network_setup.cpp:287
-#: ../../src/gui/network_setup.cpp:589
+#: ../../src/gui/network_setup.cpp:589 ../../src/gui/network_setup.cpp:266
+#: ../../src/gui/network_setup.cpp:286 ../../src/gui/network_setup.cpp:588
 msgid "Netmask"
 msgstr ""
 
@@ -2183,15 +2209,16 @@ msgid "Network"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:420 ../../src/gui/nfs.cpp:526
+#: ../../src/gui/network_setup.cpp:419
 msgid "Network Mount Manager"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:366
+#: ../../src/gui/network_setup.cpp:366 ../../src/gui/network_setup.cpp:365
 msgid "Network Name"
 msgstr ""
 
 #: ../../src/gui/main_setup.cpp:133 ../../src/gui/network_setup.cpp:216
-#: ../../src/gui/nfs.cpp:207
+#: ../../src/gui/nfs.cpp:207 ../../src/gui/network_setup.cpp:215
 msgid "Network settings"
 msgstr ""
 
@@ -2290,7 +2317,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:4966 ../../src/neutrino2.cpp:4970
 #: ../../src/neutrino2.cpp:4974 ../../src/neutrino2.cpp:4962
-#: ../../src/neutrino2.cpp:4956
+#: ../../src/neutrino2.cpp:4956 ../../src/neutrino2.cpp:4960
 msgid "No neutrino-settings found, Using defaults."
 msgstr ""
 
@@ -2324,7 +2351,9 @@ msgstr ""
 #: ../../src/gui/network_setup.cpp:273 ../../src/gui/nfs.cpp:346
 #: ../../src/gui/nfs.cpp:371 ../../src/gui/timerlist.cpp:1000
 #: ../../src/gui/timerlist.cpp:1004 ../../src/gui/timerlist.cpp:1167
-#: ../../src/gui/timerlist.cpp:1172
+#: ../../src/gui/timerlist.cpp:1172 ../../src/gui/network_setup.cpp:264
+#: ../../src/gui/network_setup.cpp:266 ../../src/gui/network_setup.cpp:268
+#: ../../src/gui/network_setup.cpp:270 ../../src/gui/network_setup.cpp:272
 msgid "OK saves, HOME! aborts"
 msgstr ""
 
@@ -2527,7 +2556,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3719 ../../src/neutrino2.cpp:3723
 #: ../../src/neutrino2.cpp:3727 ../../src/neutrino2.cpp:3716
-#: ../../src/neutrino2.cpp:3710
+#: ../../src/neutrino2.cpp:3710 ../../src/neutrino2.cpp:3707
 msgid "Program unknown"
 msgstr ""
 
@@ -2560,7 +2589,7 @@ msgstr ""
 msgid "Proxy server"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:417
+#: ../../src/gui/network_setup.cpp:417 ../../src/gui/network_setup.cpp:416
 msgid "Proxyserver"
 msgstr ""
 
@@ -2568,7 +2597,7 @@ msgstr ""
 msgid "Quality"
 msgstr ""
 
-#: ../../src/gui/rc_setup.cpp:374
+#: ../../src/gui/rc_setup.cpp:374 ../../src/gui/rc_setup.cpp:372
 msgid "Quickzap"
 msgstr ""
 
@@ -2660,7 +2689,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3777 ../../src/neutrino2.cpp:3781
 #: ../../src/neutrino2.cpp:3785 ../../src/neutrino2.cpp:3774
-#: ../../src/neutrino2.cpp:3768
+#: ../../src/neutrino2.cpp:3768 ../../src/neutrino2.cpp:3765
 msgid "Recording starts in a few minutes"
 msgstr ""
 
@@ -2725,7 +2754,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3890 ../../src/neutrino2.cpp:3894
 #: ../../src/neutrino2.cpp:3898 ../../src/neutrino2.cpp:3887
-#: ../../src/neutrino2.cpp:3881
+#: ../../src/neutrino2.cpp:3881 ../../src/neutrino2.cpp:3879
 msgid "Reminder"
 msgstr ""
 
@@ -2754,6 +2783,7 @@ msgid "Repeat"
 msgstr ""
 
 #: ../../src/gui/rc_setup.cpp:194 ../../src/gui/rc_setup.cpp:200
+#: ../../src/gui/rc_setup.cpp:192 ../../src/gui/rc_setup.cpp:198
 msgid "Repeat delay"
 msgstr ""
 
@@ -2851,7 +2881,7 @@ msgstr ""
 msgid "Saturday"
 msgstr ""
 
-#: ../../src/gui/rc_setup.cpp:391
+#: ../../src/gui/rc_setup.cpp:391 ../../src/gui/rc_setup.cpp:389
 msgid "Save RC configuration"
 msgstr ""
 
@@ -2893,7 +2923,8 @@ msgstr ""
 #: ../../src/gui/scan_setup.cpp:344 ../../src/gui/scan_setup.cpp:491
 #: ../../src/gui/scan_setup.cpp:723 ../../src/gui/scan_setup.cpp:938
 #: ../../src/gui/scan_setup.cpp:1114 ../../src/gui/scan_setup.cpp:1414
-#: ../../src/gui/scan_setup.cpp:1549
+#: ../../src/gui/scan_setup.cpp:1549 ../../src/gui/network_setup.cpp:310
+#: ../../src/gui/rc_setup.cpp:184 ../../src/gui/rc_setup.cpp:358
 msgid "Save settings now"
 msgstr ""
 
@@ -2905,7 +2936,7 @@ msgstr ""
 msgid "Save/Restore epg on reboot"
 msgstr ""
 
-#: ../../src/gui/rc_setup.cpp:259
+#: ../../src/gui/rc_setup.cpp:259 ../../src/gui/rc_setup.cpp:257
 msgid "Saving RC configuration, please wait..."
 msgstr ""
 
@@ -3031,7 +3062,7 @@ msgstr ""
 msgid "Search within"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:399
+#: ../../src/gui/network_setup.cpp:399 ../../src/gui/network_setup.cpp:398
 msgid "Security"
 msgstr ""
 
@@ -3134,15 +3165,15 @@ msgstr ""
 msgid "Setup New Key"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:283
+#: ../../src/gui/network_setup.cpp:283 ../../src/gui/network_setup.cpp:282
 msgid "Setup network now"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:162
+#: ../../src/gui/network_setup.cpp:162 ../../src/gui/network_setup.cpp:161
 msgid "Setup network now, please wait..."
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:304
+#: ../../src/gui/network_setup.cpp:304 ../../src/gui/network_setup.cpp:303
 msgid "Setup network on startup"
 msgstr ""
 
@@ -3155,6 +3186,7 @@ msgid "Setup satellites input / LNB"
 msgstr ""
 
 #: ../../src/gui/rc_setup.cpp:191 ../../src/gui/rc_setup.cpp:194
+#: ../../src/gui/rc_setup.cpp:189 ../../src/gui/rc_setup.cpp:192
 msgid "Shortest time (in ms) to recognize 2 keystrokes"
 msgstr ""
 
@@ -3171,6 +3203,7 @@ msgid "Show Hints"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:321 ../../src/gui/network_setup.cpp:606
+#: ../../src/gui/network_setup.cpp:320 ../../src/gui/network_setup.cpp:605
 msgid "Show active network settings"
 msgstr ""
 
@@ -3226,7 +3259,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3784 ../../src/neutrino2.cpp:3788
 #: ../../src/neutrino2.cpp:3792 ../../src/neutrino2.cpp:3781
-#: ../../src/neutrino2.cpp:3775
+#: ../../src/neutrino2.cpp:3775 ../../src/neutrino2.cpp:3772
 msgid "Sleeptimer in 1 min"
 msgstr ""
 
@@ -3427,7 +3460,7 @@ msgstr ""
 msgid "Symbol rate"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:407
+#: ../../src/gui/network_setup.cpp:407 ../../src/gui/network_setup.cpp:406
 msgid "Syncronisation via"
 msgstr ""
 
@@ -3533,6 +3566,7 @@ msgid "Terrestrial:"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:318 ../../src/gui/network_setup.cpp:557
+#: ../../src/gui/network_setup.cpp:317 ../../src/gui/network_setup.cpp:556
 msgid "Test network now"
 msgstr ""
 
@@ -3605,7 +3639,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:4966 ../../src/neutrino2.cpp:4970
 #: ../../src/neutrino2.cpp:4974 ../../src/neutrino2.cpp:4962
-#: ../../src/neutrino2.cpp:4956
+#: ../../src/neutrino2.cpp:4956 ../../src/neutrino2.cpp:4960
 msgid ""
 "The neutrino-settings have been updated.\n"
 "New Options will be set to default."
@@ -3635,7 +3669,7 @@ msgstr ""
 msgid "Time Zone"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:405
+#: ../../src/gui/network_setup.cpp:405 ../../src/gui/network_setup.cpp:404
 msgid "Time-Syncronisation"
 msgstr ""
 
@@ -3644,6 +3678,7 @@ msgid "Timed Step Mode"
 msgstr ""
 
 #: ../../src/gui/cam_menu.cpp:597 ../../src/gui/cam_menu.cpp:598
+#: ../../src/gui/cam_menu.cpp:599
 msgid "Timeout waiting CI menu ready"
 msgstr ""
 
@@ -3744,6 +3779,7 @@ msgid "UTF-8"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:424 ../../src/gui/nfs.cpp:448
+#: ../../src/gui/network_setup.cpp:423
 msgid "Umount network volume"
 msgstr ""
 
@@ -3791,7 +3827,9 @@ msgstr ""
 #: ../../src/gui/network_setup.cpp:273 ../../src/gui/nfs.cpp:346
 #: ../../src/gui/nfs.cpp:371 ../../src/gui/timerlist.cpp:1000
 #: ../../src/gui/timerlist.cpp:1004 ../../src/gui/timerlist.cpp:1167
-#: ../../src/gui/timerlist.cpp:1172
+#: ../../src/gui/timerlist.cpp:1172 ../../src/gui/network_setup.cpp:264
+#: ../../src/gui/network_setup.cpp:266 ../../src/gui/network_setup.cpp:268
+#: ../../src/gui/network_setup.cpp:270 ../../src/gui/network_setup.cpp:272
 msgid "Use 0..9, or use Up/Down,"
 msgstr ""
 
@@ -3805,27 +3843,27 @@ msgid "Use gotoXX"
 msgstr ""
 
 #: ../../src/gui/motorcontrol.cpp:607 ../../src/gui/rc_setup.cpp:211
-#: ../../src/system/setting_helpers.cpp:345
+#: ../../src/system/setting_helpers.cpp:345 ../../src/gui/rc_setup.cpp:209
 msgid "User menu"
 msgstr ""
 
-#: ../../src/gui/rc_setup.cpp:217
+#: ../../src/gui/rc_setup.cpp:217 ../../src/gui/rc_setup.cpp:215
 msgid "User menu F1"
 msgstr ""
 
-#: ../../src/gui/rc_setup.cpp:218
+#: ../../src/gui/rc_setup.cpp:218 ../../src/gui/rc_setup.cpp:216
 msgid "User menu F2"
 msgstr ""
 
-#: ../../src/gui/rc_setup.cpp:219
+#: ../../src/gui/rc_setup.cpp:219 ../../src/gui/rc_setup.cpp:217
 msgid "User menu F3"
 msgstr ""
 
-#: ../../src/gui/rc_setup.cpp:220
+#: ../../src/gui/rc_setup.cpp:220 ../../src/gui/rc_setup.cpp:218
 msgid "User menu F4"
 msgstr ""
 
-#: ../../src/gui/rc_setup.cpp:214
+#: ../../src/gui/rc_setup.cpp:214 ../../src/gui/rc_setup.cpp:212
 msgid "User menu blue"
 msgstr ""
 
@@ -3884,6 +3922,7 @@ msgid "Wait a few seconds for abort"
 msgstr ""
 
 #: ../../src/gui/cam_menu.cpp:582 ../../src/gui/cam_menu.cpp:583
+#: ../../src/gui/cam_menu.cpp:584
 msgid "Waiting for CI answer"
 msgstr ""
 
@@ -3958,6 +3997,7 @@ msgstr ""
 #: ../../src/neutrino2.cpp:3187 ../../src/neutrino2.cpp:4285
 #: ../../src/neutrino2.cpp:4289 ../../src/neutrino2.cpp:3177
 #: ../../src/neutrino2.cpp:4278 ../../src/neutrino2.cpp:4272
+#: ../../src/neutrino2.cpp:4276
 msgid "You really want to to stop record ?"
 msgstr ""
 
@@ -3992,7 +4032,7 @@ msgstr ""
 
 #: ../../src/neutrino2.cpp:3700 ../../src/neutrino2.cpp:3704
 #: ../../src/neutrino2.cpp:3708 ../../src/neutrino2.cpp:3697
-#: ../../src/neutrino2.cpp:3691
+#: ../../src/neutrino2.cpp:3691 ../../src/neutrino2.cpp:3688
 msgid "Zapto timer in one minute"
 msgstr ""
 
@@ -4107,7 +4147,8 @@ msgstr ""
 #: ../../src/gui/scan_setup.cpp:934 ../../src/gui/scan_setup.cpp:1040
 #: ../../src/gui/scan_setup.cpp:1110 ../../src/gui/scan_setup.cpp:1410
 #: ../../src/gui/scan_setup.cpp:1545 ../../src/gui/scan_setup.cpp:2383
-#: ../../src/gui/scan_setup.cpp:2381
+#: ../../src/gui/scan_setup.cpp:2381 ../../src/gui/network_setup.cpp:306
+#: ../../src/gui/rc_setup.cpp:180 ../../src/gui/rc_setup.cpp:354
 msgid "back"
 msgstr ""
 
@@ -4370,19 +4411,19 @@ msgstr ""
 msgid "is not installed please install again."
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:501
+#: ../../src/gui/network_setup.cpp:501 ../../src/gui/network_setup.cpp:500
 msgid "is reachable (ping)"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:502
+#: ../../src/gui/network_setup.cpp:502 ../../src/gui/network_setup.cpp:501
 msgid "is unreachable"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:503
+#: ../../src/gui/network_setup.cpp:503 ../../src/gui/network_setup.cpp:502
 msgid "is unreachable (host or protocol error)"
 msgstr ""
 
-#: ../../src/gui/network_setup.cpp:504
+#: ../../src/gui/network_setup.cpp:504 ../../src/gui/network_setup.cpp:503
 msgid "is unreachable (socket error)"
 msgstr ""
 
@@ -4507,6 +4548,7 @@ msgid "moving speed (10 = 1deg/sec)"
 msgstr ""
 
 #: ../../src/gui/network_setup.cpp:280 ../../src/gui/network_setup.cpp:281
+#: ../../src/gui/network_setup.cpp:279
 msgid "need reboot or epg-reset"
 msgstr ""
 
