@@ -33,10 +33,6 @@
 #include <sectionsd/sectionsdtypes.h>
 
 
-// forward references
-class SIservice;
-class SIevent;
-
 struct sdt_service {
 	unsigned service_id_hi			: 8;
 	unsigned service_id_lo			: 8;
@@ -210,9 +206,7 @@ struct printSIservice : public std::unary_function<SIservice, void>
 	void operator() (const SIservice &s) { s.dump();}
 };
 
-// Als Klasse, da ich nicht weiss, wie man eine Forward-Referenz auf ein typedef macht
-class SIservices : public std::set <SIservice, std::less<SIservice> >
-{
-};
+typedef std::set <SIservice, std::less<SIservice> > SIservices;
 
 #endif // SISERVICES_HPP
+

@@ -38,10 +38,6 @@
 #include <sectionsd/SIservices.hpp>
 
 
-// forward references
-class SIservice;
-class SIservices;
-
 struct eit_event {
 	unsigned event_id_hi			: 8;
 	unsigned event_id_lo			: 8;
@@ -444,7 +440,6 @@ class SIevent
 		}
 		int saveXML(FILE *file, const char *serviceName) const; // saves the event
 		void dump(void) const; // dumps the event to stdout
-		void dumpSmall(void) const; // dumps the event to stdout (not all information)
 		char getFSK() const;
 		
 	protected:
@@ -507,7 +502,6 @@ struct printSIeventWithService : public std::unary_function<SIevent, void>
 			//printf("Provider-Name: %s\n", k->providerName.c_str());
 		}
 		e.dump();
-		//e.dumpSmall();
 		printf("\n");
 	}
 	const SIservices *s;
